@@ -28,13 +28,28 @@ namespace Comm {
 
     /// bundles all communicators for a specific role/pid
     struct Bundle_t {
+        /// unique island identifier (group of pilot, opt, workers)
         int island_id;
+
+        /// global pid of the group (pilot, opt, worker) leader
         int leader_pid;
+
+        /// global pid of the pilot for this group
         int master_pid;
+
+        /// local pid of the pilot in the communicator groups
         int master_local_pid;
+
+        /// communicator of all workers
         MPI_Comm worker;
+
+        /// communicator of all optimizers
         MPI_Comm opt;
+
+        /// communicator of coworkers, i.e. a subset of ranks assigned to one worker
         MPI_Comm coworkers;
+
+        /// world communicator as passed to the CommSplitter
         MPI_Comm world;
     };
 }

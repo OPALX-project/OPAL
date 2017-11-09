@@ -39,12 +39,13 @@ public:
      *  @param[in] params
      *  @param[in] name of the simulation
      *  @param[in] comm MPI communicator used for running the simulation
+     *  @param[in] groupId worker group (unique) identifier
      *  @param[in] args command line arguments passed to the framework
      */
     OpalSimulation(Expressions::Named_t objectives,
                    Expressions::Named_t constraints,
                    Param_t params, std::string name, MPI_Comm comm,
-                   CmdArguments_t args);
+                   int groupId, CmdArguments_t args);
 
     virtual ~OpalSimulation();
 

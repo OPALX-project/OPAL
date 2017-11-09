@@ -43,7 +43,9 @@ public:
         pilot_rank_      = comms.master_local_pid;
         is_idle_         = true;
         coworker_comm_   = comms.coworkers;
+        group_id_        = comms.leader_pid;
 
+        // the leader is fixed to the first rank in the internal comm group
         leader_pid_      = 0;
         int my_local_pid = 0;
         MPI_Comm_rank(coworker_comm_, &my_local_pid);
@@ -65,6 +67,7 @@ private:
 
     bool is_idle_;
     MPI_Comm coworker_comm_;
+    int group_id_;
 
     Expressions::Named_t objectives_;
     Expressions::Named_t constraints_;
@@ -102,7 +105,7 @@ private:
                         try {
                             SimPtr_t sim(new Sim_t(objectives_, constraints_,
                                     params, simulation_name_, coworker_comm_,
-                                    cmd_args_));
+                                    group_id_, cmd_args_));
 
                             sim->run();
                         } catch(OptPilotException &ex) {
@@ -184,7 +187,8 @@ protected:
             reqVarContainer_t requested_results;
             try {
                 SimPtr_t sim(new Sim_t(objectives_, constraints_,
-                        params, simulation_name_, coworker_comm_, cmd_args_));
+                        params, simulation_name_, coworker_comm_, 
+                        group_id_, cmd_args_));
 
                 // run simulation in a "blocking" fashion
                 sim->run();

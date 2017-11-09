@@ -8,8 +8,6 @@
 #include "Util/CmdArguments.h"
 #include "Util/OptPilotException.h"
 
-//TODO: what is the performance difference between using MPI_COMM_WORLD and
-//      p2p communication vs. communicator groups??
 /**
  *  \brief Role assignment according to strategy (that might use hardware
  *         network information).
@@ -89,9 +87,10 @@ public:
         bundle.island_id        = Strategy_t::group_id_;
 
         bundle.leader_pid       = Strategy_t::leader_;
+        bundle.leader_local_pid = Strategy_t::leader_local_pid_;
+
         bundle.master_pid       = Strategy_t::poller_;
-        //FIXME: is it always 0?
-        bundle.master_local_pid = 0; //poller_local_pid_;
+        bundle.master_local_pid = Strategy_t::master_local_pid_;
 
         bundle.worker           = my_worker_comm_;
         bundle.opt              = my_opt_comm_;
@@ -117,6 +116,7 @@ private:
 
     /// local (wrt. the communicator group) rank of the master/pilot process
     int poller_local_pid_;
+    int leader_local_pid_;
 };
 
 #endif

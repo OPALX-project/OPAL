@@ -40,48 +40,60 @@ public:
                    group_id_   = rank_ / group_size;
         Comm::id_t group_start = group_id_ * group_size;
 
-        // Fix Pilot to core start_group + 1
+        // fix Pilot to the of the group
         poller_ = group_start;
+        master_local_pid_ = 0;
 
-        // Master and Optimizer fixed to first two cores of group
+        worker_group_id_ = 0;
+
+        // Pilot/Master and Optimizer fixed to first two cores of group
         if(rank_ % group_size == 0) {
 
             role_ = POLLER;
-            leader_ = 0;
+            leader_local_pid_ = 0;
 
         } else if(rank_ % group_size == 1) {
 
             role_ = OPTIMIZER;
-            leader_ = 1;
+            leader_local_pid_ = 1;
 
         } else {
 
             role_ = WORKER;
-            Comm::localId_t worker_group = ((rank_ % group_size) - 2) /
+            worker_group_id_ = ((rank_ - 2) % (group_size - 2)) /
                                            num_coworkers_worker_;
 
-            leader_ = group_start + 2 + worker_group * num_coworkers_worker_;
-            leader_ = leader_ % group_size;
+            leader_local_pid_ = 2 + worker_group_id_ * num_coworkers_worker_;
+
+            // worker group id is global rank of leader
+            worker_group_id_ = group_start + leader_;
         }
 
-        // define coloring for splitting starting with INTERNAL comm
-        colorings_.push_back(group_start + leader_);
+        // define coloring for splitting starting with INTERGROUP comm
+        // this is always the "color" of the leader (global rank)
+        leader_ = leader_local_pid_ + group_start;
+        colorings_.push_back(leader_);
 
-        // .. and optimizer -- poller leaders
+        // now we can create individual comm group between leaders of
+        // different groups, i.e. the optimizer leader and pilot leader.
+        // all non-participating ranks put MPI_UNDEFINED.
+
+        // for optimizer -- pilot leaders
         if(role_ == WORKER ||
-           rank_ % group_size != static_cast<size_t>(leader_))
+           rank_ % group_size != static_cast<size_t>(local_leader_pid_))
             colorings_.push_back(MPI_UNDEFINED);
         else
             colorings_.push_back(group_id_);
 
-        // .. and worker -- poller leaders
+        // for worker -- pilot leaders
         if(role_ == OPTIMIZER ||
-           rank_ % group_size != static_cast<size_t>(leader_))
+           rank_ % group_size != static_cast<size_t>(local_leader_pid_))
             colorings_.push_back(MPI_UNDEFINED);
         else
-            colorings_.push_back(group_id_);
+            colorings_.push_back(worker_group_id_);
 
-        // .. and finally the "world" communicator
+        // and finally the "world" communicator for all ranks 
+        // with the same role
         if(role_ == WORKER)
             colorings_.push_back(0);
         else if(role_ == OPTIMIZER)
@@ -89,9 +101,11 @@ public:
         else
             colorings_.push_back(2);
 
-        //FIXME:
-        if(role_ == POLLER)
-            leader_ = 1;
+        //FIXME: pilot/master is its own leader? unused most likely!
+        if(role_ == POLLER) {
+            poller_ = MPI_UNDEFINED;
+            local_leader_pid_ = MPI_UNDEFINED;
+        }
     }
 
 private:
@@ -109,7 +123,6 @@ private:
                       << "in arguments.. Aborting." << "\e[0m" << std::endl;
             MPI_Abort(getComm(), -111);
         }
-
 
         num_masters_ = 1;
         try {
