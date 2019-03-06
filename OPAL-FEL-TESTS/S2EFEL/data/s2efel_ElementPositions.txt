@@ -1,0 +1,8 @@
+"BEGIN: GUN"                  0                 0                 0                 
+"END: GUN"                    0.2927            0                 0                 
+"BEGIN: BF"                   0                 0                 0                 
+"END: BF"                     0.5               0                 0                 
+"BEGIN: M"                    0                 0                 0                 
+"END: M"                      0.5               0                 0                 
+"BEGIN: DR1"                  0.5               0                 0                 
+"END: DR1"                    10.5              0                 0                 
