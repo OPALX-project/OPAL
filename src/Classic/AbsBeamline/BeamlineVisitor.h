@@ -43,6 +43,7 @@ class CyclotronValley;
 class Degrader;
 class Diagnostic;
 class Drift;
+class Undulator;
 class FlexibleCollimator;
 class Lambertson;
 class Marker;
@@ -129,6 +130,9 @@ public:
 
     /// Apply the algorithm to a drift space.
     virtual void visitDrift(const Drift &) = 0;
+
+    /// Apply the algorithm to a undulator space.
+    virtual void visitUndulator(const Undulator &) = 0;
 
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &) = 0;

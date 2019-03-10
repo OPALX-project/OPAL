@@ -42,6 +42,7 @@ class ElementImage;
 
 enum ElemType {
     isDrift,
+    isUndulator,
     isSolenoid,
     isSource,
     isRF,
@@ -160,7 +161,8 @@ public:
                     , CYCLOTRONVALLEY
                     , DEGRADER
                     , DIAGNOSTIC
-                    , DRIFT
+		    , DRIFT
+		    , UNDULATOR   
                     , FLEXIBLECOLLIMATOR
                     , INTEGRATOR
                     , LAMBERTSON
