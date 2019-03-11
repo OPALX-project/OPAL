@@ -46,9 +46,14 @@ OpalUndulator::OpalUndulator():
                           ("NSLICES",
                           "The number of slices/ steps for this element in Map Tracking", 1);
 
+    itsAttr[K] = Attributes::makeReal
+                          ("K",
+                          "The undulator parameter", 1);
+
 
     registerStringAttribute("GEOMETRY");
     registerRealAttribute("NSLICES");
+    registerRealAttribute("K");
     registerOwnership();
 
     setElement(new UndulatorRep("UNDULATOR"));
@@ -87,27 +92,32 @@ bool OpalUndulator::isUndulator() const {
 void OpalUndulator::update() {
     OpalElement::update();
 
-    UndulatorRep *drf = static_cast<UndulatorRep *>(getElement());
-    drf->setElementLength(Attributes::getReal(itsAttr[LENGTH]));
-    drf->setNSlices(Attributes::getReal(itsAttr[NSLICES]));
+    UndulatorRep *ur = static_cast<UndulatorRep *>(getElement());
+    ur->setElementLength(Attributes::getReal(itsAttr[LENGTH]));
+    ur->setNSlices(Attributes::getReal(itsAttr[NSLICES]));
     if(itsAttr[WAKEF] && owk_m == NULL) {
         owk_m = (OpalWake::find(Attributes::getString(itsAttr[WAKEF])))->clone(getOpalName() + std::string("_wake"));
-        owk_m->initWakefunction(*drf);
-        drf->setWake(owk_m->wf_m);
+        owk_m->initWakefunction(*ur);
+        ur->setWake(owk_m->wf_m);
     }
 
     if(itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == NULL) {
         parmatint_m = (ParticleMatterInteraction::find(Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION])))->clone(getOpalName() + std::string("_parmatint"));
-        parmatint_m->initParticleMatterInteractionHandler(*drf);
-        drf->setParticleMatterInteraction(parmatint_m->handler_m);
+        parmatint_m->initParticleMatterInteractionHandler(*ur);
+        ur->setParticleMatterInteraction(parmatint_m->handler_m);
     }
     if(itsAttr[GEOMETRY] && obgeo_m == NULL) {
         obgeo_m = (BoundaryGeometry::find(Attributes::getString(itsAttr[GEOMETRY])))->clone(getOpalName() + std::string("_geometry"));
         if(obgeo_m) {
-	    drf->setBoundaryGeometry(obgeo_m);
+	    ur->setBoundaryGeometry(obgeo_m);
         }
     }
 
+
+    ur->setK(itsAttr[K]);
+
+
+
     // Transmit "unknown" attributes.
-    OpalElement::updateUnknown(drf);
+    OpalElement::updateUnknown(ur);
 }

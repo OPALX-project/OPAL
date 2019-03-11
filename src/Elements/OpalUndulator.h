@@ -36,6 +36,7 @@ public:
     enum {
          GEOMETRY = COMMON,       // geometry of boundary, one more enum member besides the common ones in OpalElement.
 		 NSLICES,	  // The number of slices / steps per element for map tracking
+	 K,                       // The undulator parameter
 	 SIZE
 
     };

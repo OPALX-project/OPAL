@@ -71,6 +71,10 @@ public:
     //  of the element, and a copy of the user-defined attributes.
     virtual ElementImage *getImage() const;
 
+    virtual void setK(double k);
+    virtual double getK();
+
+
 private:
 
     // Not implemented.
@@ -81,6 +85,11 @@ private:
 
     /// The geometry.
     StraightGeometry geometry;
+
+    /// The undulator parameter
+    double k_m;
+
+
 };
 
 #endif // CLASSIC_UndulatorRep_HH

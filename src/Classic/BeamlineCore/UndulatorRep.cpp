@@ -112,3 +112,11 @@ ElementImage *UndulatorRep::getImage() const {
 
     return image;
 }
+
+/*
+  Here we 
+
+ */
+
+void   UndulatorRep::setK(double k) { k_m = k; }
+double UndulatorRep::getK() { return k_m; }
