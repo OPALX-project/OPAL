@@ -34,6 +34,7 @@
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/FlexibleCollimator.h"
@@ -148,6 +149,11 @@ void OrbitTracker::visitDiagnostic(const Diagnostic &diag) {
 
 void OrbitTracker::visitDrift(const Drift &drift) {
     applyDrift(flip_s * drift.getElementLength());
+}
+
+void OrbitTracker::visitUndulator(const Undulator &u) {
+  INFOMSG("Undulator not implemented");
+  // ada    applyDrift(flip_s * drift.getElementLength());
 }
 
 void OrbitTracker::visitFlexibleCollimator(const FlexibleCollimator &coll) {

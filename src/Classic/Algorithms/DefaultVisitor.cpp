@@ -27,6 +27,7 @@
 #include "AbsBeamline/Cyclotron.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/FlexibleCollimator.h"
@@ -130,6 +131,11 @@ void DefaultVisitor::visitDiagnostic(const Diagnostic &diag) {
 void DefaultVisitor::visitDrift(const Drift &drf) {
     applyDefault(drf);
 }
+
+void DefaultVisitor::visitUndulator(const Undulator &u) {
+    applyDefault(u);
+}
+
 
 void DefaultVisitor::visitFlexibleCollimator(const FlexibleCollimator &coll) {
     applyDefault(coll);

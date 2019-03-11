@@ -24,6 +24,7 @@
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/FlexibleCollimator.h"
@@ -108,6 +109,10 @@ void ThinMapper::visitDiagnostic(const Diagnostic &diag) {
 
 void ThinMapper::visitDrift(const Drift &drift) {
     applyDrift(flip_s * drift.getElementLength());
+}
+
+void ThinMapper::visitUndulator(const Undulator &u) {
+     INFOMSG("Undulator not implemented");
 }
 
 void ThinMapper::visitFlexibleCollimator(const FlexibleCollimator &coll) {
