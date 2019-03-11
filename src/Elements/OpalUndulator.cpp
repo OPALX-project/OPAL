@@ -27,8 +27,8 @@
 // ------------------------------------------------------------------------
 
 OpalUndulator::OpalUndulator():
-    OpalElement(SIZE, "DRIFT",
-                "The \"DRIFT\" element defines a drift space."),
+    OpalElement(SIZE, "UNDULATOR",
+                "The \"UNDULATOR\" element defines a undulator."),
     owk_m(NULL),
     parmatint_m(NULL),
     obgeo_m(NULL) {
@@ -51,7 +51,7 @@ OpalUndulator::OpalUndulator():
     registerRealAttribute("NSLICES");
     registerOwnership();
 
-    setElement(new UndulatorRep("DRIFT"));
+    setElement(new UndulatorRep("UNDULATOR"));
 }
 
 
