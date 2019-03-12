@@ -36,6 +36,7 @@
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/Drift.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/FlexibleCollimator.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/Lambertson.h"
@@ -121,6 +122,9 @@ public:
 
     /// Apply the algorithm to a Drift.
     virtual void visitDrift(const Drift &);
+
+    /// Apply the algorithm to a Undulator.
+    virtual void visitUndulator(const Undulator &);
 
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &);
@@ -355,6 +359,10 @@ inline void ParallelTTracker::visitDiagnostic(const Diagnostic &diag) {
     itsOpalBeamline_m.visit(diag, *this, itsBunch_m);
 }
 
+
+inline void ParallelTTracker::visitUndulator(const Undulator &u) {
+    itsOpalBeamline_m.visit(u, *this, itsBunch_m);
+}
 
 inline void ParallelTTracker::visitDrift(const Drift &drift) {
     itsOpalBeamline_m.visit(drift, *this, itsBunch_m);

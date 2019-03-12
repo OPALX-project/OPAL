@@ -24,6 +24,7 @@
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/FlexibleCollimator.h"
@@ -134,6 +135,10 @@ void LinearMapper::visitDiagnostic(const Diagnostic &diag) {
 
 void LinearMapper::visitDrift(const Drift &drift) {
     applyDrift(flip_s * drift.getElementLength());
+}
+
+void LinearMapper::visitUndulator(const Undulator &u) {
+    INFOMSG("Undulator not implemented");
 }
 
 void LinearMapper::visitFlexibleCollimator(const FlexibleCollimator &coll) {

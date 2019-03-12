@@ -85,18 +85,22 @@ M:  Solenoid, L = 0.5, ELEMEDGE=0.0, KS = SF,
 
 value,{KSBF,SF};
 
-//----------------------------------------------------------------------------
-//Drift after gun.
+// Drift after gun.
 
-DR1: DRIFT, L = 10.0, ELEMEDGE = 0.5;
+DR1: DRIFT,    L = 1.0, ELEMEDGE = 0.5;
 
-//----------------------------------------------------------------------------
+// Undulator
+
+U1: UNDULATOR, L = 1.0, ELEMEDGE = 1.5;
+
+
+
 // DEFINE BEAM LINE
 
 GS:  Line = (GUN, BF, M);
 
 // Complete accelerator
-DRIVE: Line = (GS, DR1);
+DRIVE: Line = (GS, DR1, U1);
 
 //----------------------------------------------------------------------------
 // INITIAL DISTRIBUTION

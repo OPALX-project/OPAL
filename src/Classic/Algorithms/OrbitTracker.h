@@ -79,6 +79,9 @@ public:
     /// Apply the algorithm to a drift.
     virtual void visitDrift(const Drift &);
 
+    /// Apply the algorithm to a undulator - NOT implemented.
+    virtual void visitUndulator(const Undulator &);
+
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &);
 

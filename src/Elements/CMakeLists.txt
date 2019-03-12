@@ -8,6 +8,7 @@ set (_SRCS
   OpalCCollimator.cpp
   OpalCyclotron.cpp
   OpalDrift.cpp
+  OpalUndulator.cpp
   OpalECollimator.cpp
   OpalFlexibleCollimator.cpp
   OpalDegrader.cpp
@@ -77,6 +78,7 @@ set (HDRS
     OpalCyclotronValley.h
     OpalDegrader.h
     OpalDrift.h
+    OpalUndulator.h
     OpalECollimator.h
     OpalElement.h
     OpalHKicker.h

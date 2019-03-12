@@ -12,6 +12,7 @@
 #include "AbsBeamline/Cyclotron.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/FlexibleCollimator.h"
@@ -106,6 +107,9 @@ public:
 
     /// Apply the algorithm to a drift.
     virtual void visitDrift(const Drift &);
+
+    /// Apply the algorithm to a drift.
+    virtual void visitUndulator(const Undulator &);
 
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &);
@@ -307,6 +311,12 @@ void SpecificElementVisitor<ELEM>::visitDiagnostic(const Diagnostic &element) {
 template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitDrift(const Drift &element) {
     CastsTrait<ELEM, Drift>::apply(allElementsOfTypeE, element);
+}
+
+
+template<class ELEM>
+void SpecificElementVisitor<ELEM>::visitUndulator(const Undulator &element) {
+    CastsTrait<ELEM, Undulator>::apply(allElementsOfTypeE, element);
 }
 
 template<class ELEM>
