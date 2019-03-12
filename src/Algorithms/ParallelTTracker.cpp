@@ -19,8 +19,18 @@
 
 #include "Algorithms/ParallelTTracker.h"
 
-#include "mithra/fieldvector.hh"
-
+#include <vector>
+#include <iterator>
+#include <stdio.h>
+#include <map>
+#include <sys/time.h>
+#include <complex>
+#include <algorithm>
+#include <utility>
+#include <list>
+#include <mpi.h>
+#include <algorithm>
+#include <sys/stat.h>
 #include <cfloat>
 #include <iostream>
 #include <fstream>
@@ -29,6 +39,22 @@
 #include <string>
 #include <limits>
 #include <cmath>
+
+
+/** Include darius header files.  */
+
+#include "fieldvector.hh"
+#include "stdinclude.hh"
+#include "readdata.hh"
+#include "database.hh"
+#include "classes.hh"
+#include "datainput.hh"
+#include "readdata.hh"
+#include "solver.hh"
+#include "fdtd.hh"
+#include "fdtdSC.hh"
+
+
 
 #include "Algorithms/OrbitThreader.h"
 #include "Algorithms/CavityAutophaser.h"
@@ -651,6 +677,7 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
     IpplTimings::stopTimer(fieldEvaluationTimer_m);
 
     computeWakefield(elements);
+    computeUndulator(elements);
     computeParticleMatterInteraction(elements, oth);
 
     reduce(locPartOutOfBounds, globPartOutOfBounds, OpOrAssign());
@@ -677,6 +704,55 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
             << "remaining " << itsBunch_m->getTotalNum() << " particles" << endl;
     }
 }
+
+void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
+
+    /* Activate namespaces                                                                                */
+    using namespace Darius;
+
+    Inform msg("Undulator: ", *gmsg);
+    bool inUndulator = false;
+
+    IndexMap::value_t::const_iterator it = elements.begin();
+    const IndexMap::value_t::const_iterator end = elements.end();
+    for (; it != end; ++ it)
+        inUndulator = (*it)->getType() == ElementBase::UNDULATOR;
+    if (!inUndulator)
+        return;
+
+    msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
+    msg << __FILE__ << " L: " << __LINE__ << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;
+    msg << __FILE__ << " L: " << __LINE__ << " Version 2.0, Copyright 2019, Arya Fallahi" << endl;
+    msg << __FILE__ << " L: " << __LINE__ << " Written by Arya Fallahi, IT'IS Foundation, Zurich, Switzerland" << endl;
+    msg << __FILE__ << " L: " << __LINE__ << " ---- in computeUndulator :::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
+    msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
+
+    /* Create the solver database.                                                                        */
+    Darius::Mesh                          mesh;
+
+    /* Create the bunch database.                                                                         */
+    Bunch                                 bunch;
+
+    /* Create the seed database.                                                                          */
+    Seed                                  seed;
+
+    /* Create the undulator database.                                                                     */
+    std::vector<Darius::Undulator>        undulator;
+    undulator.clear();
+
+    /* Create the external field database.                                                                */
+    std::vector<ExtField>                 extField;
+    extField.clear();
+
+    /* Create the free electron laser database.                                                           */
+    std::vector<FreeElectronLaser>        FEL;
+    FEL.clear();
+
+
+
+
+}
+
 
 void ParallelTTracker::computeWakefield(IndexMap::value_t &elements) {
     bool hasWake = false;

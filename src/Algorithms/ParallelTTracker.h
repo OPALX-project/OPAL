@@ -307,6 +307,7 @@ private:
     void computeExternalFields(OrbitThreader &oth);
     void computeWakefield(IndexMap::value_t &elements);
     void computeParticleMatterInteraction(IndexMap::value_t elements, OrbitThreader &oth);
+    void computeUndulator(IndexMap::value_t &elements);
     void computeSpaceChargeFields(unsigned long long step);
     // void prepareOpalBeamlineSections();
     void dumpStats(long long step, bool psDump, bool statDump);

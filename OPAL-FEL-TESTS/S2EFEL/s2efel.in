@@ -13,7 +13,7 @@ Title, string="AWA Photoinjector";
 //Global Parameters
 
 REAL rf_freq             = 1.3e9;     //RF frequency. (Hz)
-REAL n_particles         = 1E+5;      //Number of particles in simulation.
+REAL n_particles         = 1E+4;      //Number of particles in simulation.
 REAL beam_bunch_charge   = 1e-9;      //Charge of bunch. (C)
 
 //Initial Momentum Calculation
@@ -134,7 +134,7 @@ Dist: DISTRIBUTION, TYPE = FLATTOP,
         TFALL = 6.0e-12,       
         TPULSEFWHM = 20.0e-12, 
         CUTOFFLONG = 4.0,
-        NBIN = 9,
+        NBIN = 5,
         EMISSIONSTEPS = 100,
         EMISSIONMODEL = ASTRA,
         EKIN = 0.55,           
@@ -152,7 +152,7 @@ Dist: DISTRIBUTION, TYPE = FLATTOP,
 // for most efficient space charge calculation.
 
 FS_SC: Fieldsolver, FSTYPE = FFT, 
-            MX = 32, MY = 32, MT = 32, // SC grid size is 32^3
+            MX = 16, MY = 16, MT = 16, // SC grid size is 32^3
             PARFFTX = true, 
             PARFFTY = true, 
             PARFFTT = true,  // parallel in the z direction only
@@ -174,7 +174,7 @@ BEAM1:  BEAM, PARTICLE = ELECTRON, pc = P0, NPART = n_particles,
 // In the case below, 1.0e-13 is used for 0.0 to 0.4 m, 
 // and 3.0e-12 is used from 0.4 to 5 m. 
 
-TRACK, LINE = DRIVE, BEAM = BEAM1, MAXSTEPS = 1000000, DT = {1.E-12, 3.E-11}, ZSTOP={0.4, 5.05};
+TRACK, LINE = DRIVE, BEAM = BEAM1, MAXSTEPS = 1000000, DT = {1.E-12, 3.E-10}, ZSTOP={0.1, 2.5};
 RUN, METHOD = "PARALLEL-T", BEAM = BEAM1, 
     FIELDSOLVER = FS_SC, DISTRIBUTION = Dist;
 ENDTRACK;
