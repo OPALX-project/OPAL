@@ -164,7 +164,7 @@ if (BUILD_OPAL_UNIT_TESTS)
 endif ()
 
 option (ENABLE_AMR "Enable AMReX based AMR solver" OFF)
-IF (ENABLE_AMR)
+if (ENABLE_AMR)
     message ("Enable AMR_SOLVER    " ${ENABLE_AMR})
     enable_language (Fortran)
 
@@ -213,6 +213,13 @@ if (ENABLE_SAAMG_SOLVER OR ENABLE_AMR_MG_SOLVER)
         message (FATAL_ERROR  "")
     endif ()
 endif ()
+
+option (ENABLE_OPAL_FEL "Enable OPAL FEL" OFF)
+if (ENABLE_OPAL_FEL)
+    message ("Enable OPAL FEL: " ${ENABLE_OPAL_FEL})
+    find_package (MITHRA MODULE REQUIRED)
+    add_DEFINITIONS (-DOPAL_FEL)
+endif()
 
 option (DBG_SCALARFIELD "Enable dump of scalar field rho_m" OFF)
 if (DBG_SCALARFIELD)
