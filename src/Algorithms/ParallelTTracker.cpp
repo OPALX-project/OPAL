@@ -723,7 +723,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     if (!inUndulator)
         return;
 
-    Undulator* ur = dynamic_cast<Undulator*>(it.get());
+    UndulatorRep* ur = dynamic_cast<UndulatorRep*>((*it).get());
     std::string fname = ur->getFilename();
 
     msg << "jobfile: " << fname << endl;
@@ -739,21 +739,21 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::Mesh                          mesh;
 
     /* Create the bunch database.                                                                         */
-    Bunch                                 bunch;
+    Darius::Bunch                                 bunch;
 
     /* Create the seed database.                                                                          */
-    Seed                                  seed;
+    Darius::Seed                                  seed;
 
     /* Create the undulator database.                                                                     */
     std::vector<Darius::Undulator>        undulator;
     undulator.clear();
 
     /* Create the external field database.                                                                */
-    std::vector<ExtField>                 extField;
+    std::vector<Darius::ExtField>                 extField;
     extField.clear();
 
     /* Create the free electron laser database.                                                           */
-    std::vector<FreeElectronLaser>        FEL;
+    std::vector<Darius::FreeElectronLaser>        FEL;
     FEL.clear();
 
 
