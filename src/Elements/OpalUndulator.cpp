@@ -50,10 +50,13 @@ OpalUndulator::OpalUndulator():
                           ("K",
                           "The undulator parameter", 1);
 
+    itsAttr[FNAME] = Attributes::makeString
+      ("FNAME", "Jobfilenam for mithra", "");
 
     registerStringAttribute("GEOMETRY");
     registerRealAttribute("NSLICES");
     registerRealAttribute("K");
+    registerStringAttribute("FNAME");
     registerOwnership();
 
     setElement(new UndulatorRep("UNDULATOR"));
@@ -114,7 +117,8 @@ void OpalUndulator::update() {
     }
 
 
-    ur->setK(itsAttr[K]);
+    ur->setK(Attributes::getReal(itsAttr[K]));
+    ur->setFilename(Attributes::getString(itsAttr[FNAME]));
 
 
 

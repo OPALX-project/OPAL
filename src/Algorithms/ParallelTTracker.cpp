@@ -43,18 +43,18 @@
 
 /** Include darius header files.  */
 
-#include "fieldvector.hh"
-#include "stdinclude.hh"
-#include "readdata.hh"
-#include "database.hh"
-#include "classes.hh"
-#include "datainput.hh"
-#include "readdata.hh"
-#include "solver.hh"
-#include "fdtd.hh"
-#include "fdtdSC.hh"
+#include "mithra/fieldvector.hh"
+#include "mithra/stdinclude.hh"
+#include "mithra/readdata.hh"
+#include "mithra/database.hh"
+#include "mithra/classes.hh"
+#include "mithra/datainput.hh"
+#include "mithra/readdata.hh"
+#include "mithra/solver.hh"
+#include "mithra/fdtd.hh"
+#include "mithra/fdtdSC.hh"
 
-
+#include "BeamlineCore/UndulatorRep.h"
 
 #include "Algorithms/OrbitThreader.h"
 #include "Algorithms/CavityAutophaser.h"
@@ -708,17 +708,25 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
 void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
 
     /* Activate namespaces                                                                                */
-    using namespace Darius;
 
     Inform msg("Undulator: ", *gmsg);
     bool inUndulator = false;
 
     IndexMap::value_t::const_iterator it = elements.begin();
     const IndexMap::value_t::const_iterator end = elements.end();
-    for (; it != end; ++ it)
+    for (; it != end; ++ it) {
         inUndulator = (*it)->getType() == ElementBase::UNDULATOR;
+
+        if ( inUndulator )
+            break;
+    }
     if (!inUndulator)
         return;
+
+    Undulator* ur = dynamic_cast<Undulator*>(it.get());
+    std::string fname = ur->getFilename();
+
+    msg << "jobfile: " << fname << endl;
 
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;

@@ -73,6 +73,8 @@ public:
 
     virtual void setK(double k);
     virtual double getK();
+    virtual void setFilename(const std::string& fname);
+    virtual const std::string& getFilename() const;
 
 
 private:
@@ -89,7 +91,8 @@ private:
     /// The undulator parameter
     double k_m;
 
-
+    /// The mithra file
+    std::string fname_m;
 };
 
 #endif // CLASSIC_UndulatorRep_HH

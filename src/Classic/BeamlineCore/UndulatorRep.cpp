@@ -49,19 +49,25 @@ namespace {
 
 UndulatorRep::UndulatorRep():
     Undulator(),
-    geometry(0.0)
+    geometry(0.0),
+    k_m(0.0),
+    fname_m("")
 {}
 
 
 UndulatorRep::UndulatorRep(const UndulatorRep &right):
     Undulator(right),
-    geometry(right.geometry)
+    geometry(right.geometry),
+    k_m(right.k_m),
+    fname_m(right.fname_m)
 {}
 
 
 UndulatorRep::UndulatorRep(const std::string &name):
     Undulator(name),
-    geometry()
+    geometry(),
+    k_m(0.0),
+    fname_m("")
 {}
 
 
@@ -120,3 +126,11 @@ ElementImage *UndulatorRep::getImage() const {
 
 void   UndulatorRep::setK(double k) { k_m = k; }
 double UndulatorRep::getK() { return k_m; }
+
+void UndulatorRep::setFilename(const std::string&fname) {
+  fname_m = fname;
+}
+
+const std::string& UndulatorRep::getFilename() const {
+  return fname_m;
+}
