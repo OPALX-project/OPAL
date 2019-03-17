@@ -7,7 +7,7 @@
 // ------------------------------------------------------------------------
 //
 // Class: ParallelCyclotronTracker
-//   The class for tracking particles with 3D space charge in Cyclotrons and FFAG's
+//   The class for tracking particles with 3D space charge in Cyclotrons and FFAGs
 //
 // ------------------------------------------------------------------------
 //
@@ -17,18 +17,19 @@
 // ------------------------------------------------------------------------
 
 #include "Algorithms/ParallelCyclotronTracker.h"
-#include "Algorithms/PolynomialTimeDependence.h"
-#include "Elements/OpalPolynomialTimeDependence.h"
 
-#include <cfloat>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <limits>
 #include <vector>
+
+#include "AbstractObjects/Element.h"
 #include "AbstractObjects/OpalData.h"
 
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Cyclotron.h"
+#include "AbsBeamline/CyclotronValley.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
@@ -46,6 +47,7 @@
 #include "AbsBeamline/PluginElement.h"
 #include "AbsBeamline/Probe.h"
 #include "AbsBeamline/RBend.h"
+#include "AbsBeamline/Ring.h"
 #include "AbsBeamline/RFCavity.h"
 #include "AbsBeamline/RFQuadrupole.h"
 #include "AbsBeamline/SBend.h"
@@ -54,27 +56,17 @@
 #include "AbsBeamline/Separator.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
-#include "AbsBeamline/CyclotronValley.h"
 #include "AbsBeamline/Stripper.h"
 #include "AbsBeamline/VariableRFCavity.h"
 #include "AbsBeamline/VariableRFCavityFringeField.h"
 
-#include "AbstractObjects/Element.h"
+#include "Algorithms/Ctunes.h"
+#include "Algorithms/PolynomialTimeDependence.h"
 
-#include "Beamlines/FlaggedBeamline.h"
-#include "Elements/OpalBeamline.h"
-#include "AbsBeamline/Ring.h"
-
-#include "BeamlineGeometry/Euclid3D.h"
-#include "BeamlineGeometry/PlanarArcGeometry.h"
-#include "BeamlineGeometry/RBendGeometry.h"
-#include "BeamlineGeometry/StraightGeometry.h"
 #include "Beamlines/Beamline.h"
+#include "Beamlines/FlaggedBeamline.h"
 
-#include "Fields/BMultipoleField.h"
-#include "FixedAlgebra/FTps.h"
-#include "FixedAlgebra/FTpsMath.h"
-#include "FixedAlgebra/FVps.h"
+#include "Elements/OpalBeamline.h"
 
 #include "Physics/Physics.h"
 
@@ -87,20 +79,11 @@
 #include "Structure/H5PartWrapperForPC.h"
 #include "Structure/BoundaryGeometry.h"
 
-#include "Algorithms/Ctunes.h"
-#include <cassert>
-
-#include <hdf5.h>
-#include "H5hut.h"
-
 //FIXME Remove headers and dynamic_cast in readOneBunchFromFile
 #include "Algorithms/PartBunch.h"
 #ifdef ENABLE_AMR
     #include "Algorithms/AmrPartBunch.h"
 #endif
-
-class Beamline;
-class PartData;
 
 using Physics::pi;
 using Physics::q_e;
@@ -112,11 +95,7 @@ Vector_t const ParallelCyclotronTracker::xaxis = Vector_t(1.0, 0.0, 0.0);
 Vector_t const ParallelCyclotronTracker::yaxis = Vector_t(0.0, 1.0, 0.0);
 Vector_t const ParallelCyclotronTracker::zaxis = Vector_t(0.0, 0.0, 1.0);
 
-//#define PSdim 6
-
 extern Inform *gmsg;
-
-// typedef FVector<double, PSdim> Vector;
 
 /**
  * Constructor ParallelCyclotronTracker
@@ -228,7 +207,6 @@ ParallelCyclotronTracker::~ParallelCyclotronTracker() {
 }
 
 /// set the working sub-mode for multi-bunch mode: "FORCE" or "AUTO"
-inline
 void ParallelCyclotronTracker::setMultiBunchMode(const std::string& mbmode)
 {
     if ( mbmode.compare("FORCE") == 0 ) {
@@ -431,8 +409,8 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron &cycl) {
         *gmsg         << "*     (Use BANDRF type cyclotron and use RFMAPFN to load both magnetic" << endl;
         *gmsg         << "*     and electric fields, setting SUPERPOSE to an array of TRUE values.)" << endl;
         *gmsg         << "* 2.) For high currents it is strongly recommended to use the SAAMG fieldsolver," << endl;
-        *gmsg         << "*     FFT does not give the correct results (boundaty conditions are missing)." << endl;
-        *gmsg         << "* 3.) The whole geometry will be meshed and used for the fieldsolve." << endl;
+        *gmsg         << "*     FFT does not give the correct results (boundary conditions are missing)." << endl;
+        *gmsg         << "* 3.) The whole geometry will be meshed and used for the fieldsolver." << endl;
         *gmsg         << "*     There will be no transformations of the bunch into a local frame und consequently," << endl;
         *gmsg         << "*     the problem will be treated non-relativistically!" << endl;
         *gmsg         << "*     (This is not an issue for spiral inflectors as they are typically < 100 keV/amu.)" << endl;
@@ -3049,7 +3027,7 @@ std::tuple<double, double, double> ParallelCyclotronTracker::initializeTracking_
             break;
         case MODE::UNDEFINED:
         default:
-            throw OpalException("ParallelCyclotronTracker::GenericTracker()",
+            throw OpalException("ParallelCyclotronTracker::initializeTracking_m()",
                                 "No such tracking mode.");
     }
 
@@ -3086,10 +3064,8 @@ void ParallelCyclotronTracker::finalizeTracking_m(dvector_t& Ttime,
             break;
         }
         case MODE::SINGLE:
-        {
             closeFiles();
-            // no break, continue here!
-        }
+            // fall through
         case MODE::BUNCH:  // we do nothing
         case MODE::UNDEFINED:
         default:
@@ -3242,7 +3218,7 @@ void ParallelCyclotronTracker::singleMode_m(double& t, const double dt,
 
 void ParallelCyclotronTracker::bunchMode_m(double& t, const double dt, bool& dumpEachTurn) {
 
-     // Flag for transition from single-bunch to multi-bunches mode
+    // Flag for transition from single-bunch to multi-bunches mode
     static bool flagTransition = false;
 
     // single particle dumping
@@ -3463,7 +3439,7 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
     itsBunch_m->Bf = Vector_t(0.0);
     itsBunch_m->Ef = Vector_t(0.0);
 
-    if (spiral_flag and itsBunch_m->getFieldSolverType() == "SAAMG") {
+    if (spiral_flag && itsBunch_m->getFieldSolverType() == "SAAMG") {
         // --- Single bunch mode with spiral inflector --- //
 
         // If we are doing a spiral inflector simulation and are using the SAAMG solver
@@ -3618,11 +3594,11 @@ void ParallelCyclotronTracker::injectBunch_m(bool& flagTransition) {
 
             Vector_t Rmean = itsBunch_m->get_centroid(); // m
 
-            RThisTurn_m = sqrt(pow(Rmean[0], 2.0) + pow(Rmean[1], 2.0));
+            RThisTurn_m = std::hypot(Rmean[0],Rmean[1]);
 
             Vector_t Rrms = itsBunch_m->get_rrms(); // m
 
-            double XYrms =  sqrt(pow(Rrms[0], 2.0) + pow(Rrms[1], 2.0));
+            double XYrms = std::hypot(Rrms[0], Rrms[1]);
 
             // If the distance between two neighboring bunches is less than 5 times of its 2D rms size
             // start multi-bunch simulation, fill current phase space to initialR and initialP arrays

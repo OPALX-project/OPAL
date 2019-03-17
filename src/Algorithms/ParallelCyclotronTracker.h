@@ -28,7 +28,6 @@
 
 #include "Structure/MultiBunchDump.h"
 
-class BMultipoleField;
 template <class T, unsigned Dim>
 class PartBunchBase;
 
@@ -59,7 +58,7 @@ public:
         FORCE  = 1,
         AUTO   = 2
     };
-    
+
     // multi-bunch binning type
     enum class MB_BINNING {
         GAMMA = 0,
@@ -77,8 +76,8 @@ public:
     //  The particle bunch tracked is initially empty.
     //  If [b]revBeam[/b] is true, the beam runs from s = C to s = 0.
     //  If [b]revTrack[/b] is true, we track against the beam.
-    explicit ParallelCyclotronTracker(const Beamline &bl, const PartData &data,
-                                      bool revBeam, bool revTrack);
+    ParallelCyclotronTracker(const Beamline &bl, const PartData &data,
+                             bool revBeam, bool revTrack);
 
     /// Constructor.
     //  The beam line to be tracked is "bl".
@@ -86,10 +85,10 @@ public:
     //  The particle bunch tracked is taken from [b]bunch[/b].
     //  If [b]revBeam[/b] is true, the beam runs from s = C to s = 0.
     //  If [b]revTrack[/b] is true, we track against the beam.
-    explicit ParallelCyclotronTracker(const Beamline &bl, PartBunchBase<double, 3> *bunch, DataSink &ds,
-                                      const PartData &data, bool revBeam,
-                                      bool revTrack, int maxSTEPS,
-                                      int timeIntegrator, int numBunch);
+    ParallelCyclotronTracker(const Beamline &bl, PartBunchBase<double, 3> *bunch, DataSink &ds,
+                             const PartData &data, bool revBeam,
+                             bool revTrack, int maxSTEPS,
+                             int timeIntegrator, int numBunch);
 
     virtual ~ParallelCyclotronTracker();
 
@@ -220,8 +219,9 @@ public:
     inline void setLastDumpedStep(const int para) {lastDumpedStep_m = para ; }
 
     /// set the control parameter for "AUTO" sub-mode
-    inline void  setParaAutoMode(const double para) {CoeffDBunches_m = para; }
+    inline void setParaAutoMode(const double para) {CoeffDBunches_m = para; }
 
+    ///@{ Method for restart
     inline void setPr(double x) {referencePr = x;}
     inline void setPt(double x) {referencePt = x;}
     inline void setPz(double x) {referencePz = x;}
@@ -232,7 +232,7 @@ public:
     inline void setPhi(double x) {referencePhi = x;}
     inline void setPsi(double x) {referencePsi = x;}
     inline void setPreviousH5Local(bool x) {previousH5Local = x;}
-
+    ///@}
     void bgf_main_collision_test();
     void initializeBoundaryGeometry();
 

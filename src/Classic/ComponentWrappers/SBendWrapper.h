@@ -29,7 +29,7 @@ class BMultipoleField;
 
 // Class SBendWrapper
 // ------------------------------------------------------------------------
-/// Representation of a perturbed sectorr bend.
+/// Representation of a perturbed sector bend.
 //  A SBendWrapper represents a unique instance of a bend magnet
 //  in the accelerator model. It defines imperfections of the field,
 //  related to an ``ideal'' magnet contained in the wrapper.

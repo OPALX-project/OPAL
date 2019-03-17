@@ -16,15 +16,13 @@ TrimCoilMirrored::TrimCoilMirrored(double bmax,
     bslope_m = bslope / mm2m;
 }
 
-void TrimCoilMirrored::doApplyField(const double r, const double z, double *br, double *bz)
+void TrimCoilMirrored::doApplyField(const double r, const double z, const double phi_rad, double *br, double *bz)
 {
     /// update bz and br with trim coil contributions
     // for some discussion on the formulas see
     // http://doi.org/10.1103/PhysRevSTAB.14.054402
     // https://gitlab.psi.ch/OPAL/src/issues/157
     // https://gitlab.psi.ch/OPAL/src/issues/110
-
-    if (std::abs(bmax_m) < 1e-20) return;
 
     // unitless constants
     const double Amax1 = 1;

@@ -5,6 +5,7 @@
 #include <memory>
 #include "AbstractObjects/Definition.h"
 
+class Attribute;
 class TrimCoil;
 
 // Class OpalTrimCoil
@@ -56,6 +57,8 @@ private:
     /// Private copy constructor, called by clone
     OpalTrimCoil(const std::string &name, OpalTrimCoil *parent);
 
+    /// Helper method for printing
+    void printPolynom(Inform& os, const Attribute& attr) const;
 };
 
 inline Inform &operator<<(Inform &os, const OpalTrimCoil &b) {

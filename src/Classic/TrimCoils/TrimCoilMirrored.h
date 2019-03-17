@@ -22,7 +22,7 @@ private:
     double bslope_m;
 
     /// @copydoc TrimCoil::doApplyField
-    virtual void doApplyField(const double r, const double z, double *br, double *bz);
+    virtual void doApplyField(const double r, const double z, const double phi_rad, double *br, double *bz);
 
     TrimCoilMirrored() = delete;
 };

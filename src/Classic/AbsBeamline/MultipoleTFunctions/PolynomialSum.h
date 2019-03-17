@@ -53,7 +53,7 @@ class PolynomialSum {
 public:
     /** Default constructor, initialises empty sum */
     PolynomialSum();
-    /** Constructor, initalises sum with a single polynomial from input
+    /** Constructor, initialises sum with a single polynomial from input
      *  \param polynomial -> The polynomial sum is initialised with this \n
      *  polynomial as the first and only term
      */

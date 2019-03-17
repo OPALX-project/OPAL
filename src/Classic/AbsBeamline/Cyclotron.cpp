@@ -87,21 +87,21 @@ Cyclotron::~Cyclotron() {
 }
 
 
-void Cyclotron::applyTrimCoil_m(const double r, const double z, double *br, double *bz) {
+void Cyclotron::applyTrimCoil_m(const double r, const double z, const double tet_rad,  double *br, double *bz) {
      for (auto trimcoil : trimcoils_m) {
-         trimcoil->applyField(r,z,br,bz);
+         trimcoil->applyField(r,tet_rad,z,br,bz);
      }
 }
 
-void Cyclotron::applyTrimCoil(const double r, const double z, double& br, double& bz) {
+void Cyclotron::applyTrimCoil(const double r, const double z, const double tet_rad,  double& br, double& bz) {
     //Changed from > to >= to include case where bz == 0 and trimCoilThreshold_m == 0 -DW
     if (std::abs(bz) >= trimCoilThreshold_m)  {
-        applyTrimCoil_m(r, z, &br, &bz);
+        applyTrimCoil_m(r, z, tet_rad, &br, &bz);
     }
     else {
         // make sure to have a smooth transition
         double tmp_bz = 0.0;
-        applyTrimCoil_m(r, z, &br, &tmp_bz);
+        applyTrimCoil_m(r, z, tet_rad, &br, &tmp_bz);
         bz += tmp_bz * std::abs(bz) / trimCoilThreshold_m;
     }
 }
@@ -391,7 +391,7 @@ bool Cyclotron::apply(const Vector_t &R, const Vector_t &P, const double &t, Vec
 
     double tet_rad = tet;
 
-    // the actual angle of particle
+    // the actual angle of particle in degree
     tet = tet / pi * 180.0;
 
     // Necessary for gap phase output -DW
@@ -411,7 +411,7 @@ bool Cyclotron::apply(const Vector_t &R, const Vector_t &P, const double &t, Vec
         /* Bz */
         double bz = - bzint;
 
-        this->applyTrimCoil(rad, R[2], br, bz);
+        this->applyTrimCoil(rad, R[2], tet_rad, br, bz);
         
         /* Br Btheta -> Bx By */
         B[0] = br * cos(tet_rad) - bt * sin(tet_rad);
@@ -525,7 +525,7 @@ void Cyclotron::apply(const double& rad, const double& z,
                       const double& tet_rad, double& br,
                       double& bt, double& bz) {
     this->interpolate(rad, tet_rad, br, bt, bz);
-    this->applyTrimCoil(rad, z, br, bz);
+    this->applyTrimCoil(rad, z, tet_rad, br, bz);
 }
 
 void Cyclotron::finalise() {
@@ -713,15 +713,13 @@ bool Cyclotron::interpolate(const double& rad,
         r2t2 = idx(ir + 1, it + 1);
     }
 
-    double bzf = 0.0 /*, bzcub = 0.0*/;
-
     if((it >= 0) && (ir >= 0) && (it < Bfield.ntetS) && (ir < Bfield.nrad)) {
 
         // B_{z}
-        bzf = Bfield.bfld[r1t1] * wr2 * wt2 +
-              Bfield.bfld[r2t1] * wr1 * wt2 +
-              Bfield.bfld[r1t2] * wr2 * wt1 +
-              Bfield.bfld[r2t2] * wr1 * wt1;
+        double bzf = Bfield.bfld[r1t1] * wr2 * wt2 +
+                     Bfield.bfld[r2t1] * wr1 * wt2 +
+                     Bfield.bfld[r1t2] * wr2 * wt1 +
+                     Bfield.bfld[r2t2] * wr1 * wt1;
 
         bzint = /*- */bzf ;
 

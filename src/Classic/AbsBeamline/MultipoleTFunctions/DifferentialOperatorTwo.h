@@ -53,7 +53,7 @@ namespace polynomial {
 
 class DifferentialOperatorTwo {
 public:
-    /** Default constructor, initalises identity operator */
+    /** Default constructor, initialises identity operator */
     DifferentialOperatorTwo();
     /** Constructor, initialises operator with zero polynomials and
       * derivatives up to xDerivatives in x and sDerivatives in s

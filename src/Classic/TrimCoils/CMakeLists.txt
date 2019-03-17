@@ -1,6 +1,7 @@
 set (_SRCS
     OpalTrimCoil.cpp
     TrimCoil.cpp
+    TrimCoilFit.cpp
     TrimCoilBFit.cpp
     TrimCoilPhaseFit.cpp
     TrimCoilMirrored.cpp
@@ -15,6 +16,7 @@ ADD_OPAL_SOURCES(${_SRCS})
 set (HDRS
     OpalTrimCoil.h
     TrimCoil.h
+    TrimCoilFit.h
     TrimCoilBFit.h
     TrimCoilPhaseFit.h
     TrimCoilMirrored.h

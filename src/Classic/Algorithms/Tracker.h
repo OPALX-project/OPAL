@@ -121,10 +121,8 @@ public:
     /// Apply the algorithm to a patch.
     virtual void visitPatch(const Patch &pat);
 
-
     /// Apply the algorithm to an align wrapper.
     virtual void visitAlignWrapper(const AlignWrapper &);
-
 
     /// Apply the algorithm to an integrator capable of tracking.
     virtual void visitTrackIntegrator(const TrackIntegrator &);
@@ -138,30 +136,8 @@ public:
     /// get total number of tracked bunches
     virtual int  getNumBunch() { return 0; }
 
-    /// set the working sub-mode for multi-bunch mode
-    virtual void  setMultiBunchMode(const std::string& mbmode) {};
-
-    /// set the control parameter for sub-mode of multi-bunch mode
-    virtual void  setParaAutoMode(const double /*para*/) {};
-
-    /// set last dumped step
-    virtual void setLastDumpedStep(const int /*para*/) { };
-
-    /// set coefficients for track (default value is for proton in cyclotron)
-    virtual void setTrackCoeff(double /* para */) {};
     /// set multipacting flag
-    virtual void setMpacflg(bool /* mpacflg */) {};
-
-    virtual void setPr(double) { } ;
-    virtual void setPt(double) { } ;
-    virtual void setPz(double) { } ;
-    virtual void setR(double) { } ;
-    virtual void setTheta(double) { } ;
-    virtual void setZ(double) { } ;
-    virtual void setBeGa(double) { } ;
-    virtual void setPhi(double) { } ;
-    virtual void setPsi(double) { } ;
-    virtual void setPreviousH5Local(bool) { } ;
+    //virtual void setMpacflg(bool /* mpacflg */) {};
 
     // standing wave structures
     FieldList cavities_m;

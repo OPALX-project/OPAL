@@ -115,7 +115,7 @@ TrackRun::TrackRun():
     itsAttr[MB_ETA] = Attributes::makeReal("MB_ETA",
                                            "The scale parameter for binning in multi-bunch mode",
                                            0.01);
-    
+
     itsAttr[MB_BINNING] = Attributes::makeString
                           ("MB_BINNING", "Type of energy binning in multi-bunch mode: GAMMA or BUNCH", "GAMMA");
 
@@ -197,7 +197,7 @@ void TrackRun::execute() {
                                      Track::block->bunch, Track::block->reference,
                                      false, false);
     } else if(method == "THICK") {
-	setupThickTracker();
+        setupThickTracker();
     } else if(method == "PARALLEL-SLICE" || method == "OPAL-E") {
         setupSliceTracker();
     } else if(method == "PARALLEL-T" || method == "OPAL-T") {
@@ -761,7 +761,7 @@ void TrackRun::setupCyclotronTracker(){
     *gmsg << "* Phase space dump frequency = " << Options::psDumpFreq << endl;
     *gmsg << "* Statistics dump frequency  = " << Options::statDumpFreq << " w.r.t. the time step." << endl;
     *gmsg << "* ********************************************************************************** " << endl;
-    
+
     ds->setMaxNumBunches(specifiedNumBunch);
 
     itsTracker = new ParallelCyclotronTracker(*Track::block->use->fetchLine(),
@@ -769,23 +769,25 @@ void TrackRun::setupCyclotronTracker(){
                                               false, false, Track::block->localTimeSteps.front(),
                                               Track::block->timeIntegrator, specifiedNumBunch);
 
+    ParallelCyclotronTracker* cyclTracker = dynamic_cast<ParallelCyclotronTracker*>(itsTracker);
+
     if(opal->inRestartRun()) {
 
         H5PartWrapperForPC *h5pw = static_cast<H5PartWrapperForPC*>(phaseSpaceSink_m);
-        itsTracker->setBeGa(h5pw->getMeanMomentum());
+        cyclTracker->setBeGa(h5pw->getMeanMomentum());
 
-        itsTracker->setPr(h5pw->getReferencePr());
-        itsTracker->setPt(h5pw->getReferencePt());
-        itsTracker->setPz(h5pw->getReferencePz());
+        cyclTracker->setPr(h5pw->getReferencePr());
+        cyclTracker->setPt(h5pw->getReferencePt());
+        cyclTracker->setPz(h5pw->getReferencePz());
 
-        itsTracker->setR(h5pw->getReferenceR());
-        itsTracker->setTheta(h5pw->getReferenceT());
-        itsTracker->setZ(h5pw->getReferenceZ());
+        cyclTracker->setR(h5pw->getReferenceR());
+        cyclTracker->setTheta(h5pw->getReferenceT());
+        cyclTracker->setZ(h5pw->getReferenceZ());
 
         // The following is for restarts in local frame
-        itsTracker->setPhi(h5pw->getAzimuth());
-        itsTracker->setPsi(h5pw->getElevation());
-        itsTracker->setPreviousH5Local(h5pw->getPreviousH5Local());
+        cyclTracker->setPhi(h5pw->getAzimuth());
+        cyclTracker->setPsi(h5pw->getElevation());
+        cyclTracker->setPreviousH5Local(h5pw->getPreviousH5Local());
     }
 
     // statistical data are calculated (rms, eps etc.)
@@ -829,31 +831,28 @@ void TrackRun::setupCyclotronTracker(){
               << "----------------------------*** " << endl;
 
         double paraMb = Attributes::getReal(itsAttr[PARAMB]);
-        itsTracker->setParaAutoMode(paraMb);
+        cyclTracker->setParaAutoMode(paraMb);
 
         if(opal->inRestartRun()) {
 
-            itsTracker->setLastDumpedStep(opal->getRestartStep());
+            cyclTracker->setLastDumpedStep(opal->getRestartStep());
 
             if(Track::block->bunch->pbin_m->getLastemittedBin() < 2) {
                 *gmsg << "In this restart job, the multi-bunches mode is forcely set to AUTO mode." << endl;
-                itsTracker->setMultiBunchMode("AUTO");
+                cyclTracker->setMultiBunchMode("AUTO");
             } else {
                 *gmsg << "In this restart job, the multi-bunches mode is forcely set to FORCE mode." << endl
                       << "If the existing bunch number is less than the specified number of TURN, "
                       << "readin the phase space of STEP#0 from h5 file consecutively" << endl;
-                itsTracker->setMultiBunchMode("FORCE");
+                cyclTracker->setMultiBunchMode("FORCE");
             }
         } else {
             std::string mbmode = Util::toUpper(Attributes::getString(itsAttr[MBMODE]));
-            itsTracker->setMultiBunchMode(mbmode);
+            cyclTracker->setMultiBunchMode(mbmode);
         }
-        
-        ParallelCyclotronTracker* tracker_p = dynamic_cast<ParallelCyclotronTracker*>(itsTracker);
-        
-        tracker_p->setMultiBunchEta(Attributes::getReal(itsAttr[MB_ETA]));
-        
-        tracker_p->setMultiBunchBinning(Attributes::getString(itsAttr[MB_BINNING]));
+
+        cyclTracker->setMultiBunchEta    (Attributes::getReal  (itsAttr[MB_ETA]));
+        cyclTracker->setMultiBunchBinning(Attributes::getString(itsAttr[MB_BINNING]));
     }
 }
 

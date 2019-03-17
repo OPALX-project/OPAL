@@ -21,16 +21,16 @@
 // ------------------------------------------------------------------------
 
 #include "AbsBeamline/Cyclotron.h"
+#include "BeamlineGeometry/PlanarArcGeometry.h"
 #include "Fields/BMultipoleField.h"
 #include "MemoryManagement/Pointer.h"
 
 class BMultipoleField;
 
-
 // Class CyclotronWrapper
 // ------------------------------------------------------------------------
-/// Representation of a perturbed sectorr bend.
-//  A CyclotronWrapper represents a unique instance of a bend magnet
+/// Representation of a perturbed cyclotron.
+//  A CyclotronWrapper represents a unique instance of a cyclotron
 //  in the accelerator model. It defines imperfections of the field,
 //  related to an ``ideal'' magnet contained in the wrapper.
 

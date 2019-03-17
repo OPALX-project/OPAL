@@ -22,10 +22,6 @@
 
 #include "Fields/StaticMagneticField.h"
 
-class Channel;
-class ElementImage;
-
-
 // Class BMultipoleField
 // ------------------------------------------------------------------------
 /// The magnetic field of a multipole.

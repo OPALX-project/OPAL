@@ -595,7 +595,7 @@ void PartBunchBase<T, Dim>::boundp() {
         }
 
         if (volume < 1e-21 && getTotalNum() > 1 && std::abs(sum(Q)) > 0.0) {
-            WARNMSG(level1 << "!!! Extremly high particle density detected !!!" << endl);
+            WARNMSG(level1 << "!!! Extremely high particle density detected !!!" << endl);
         }
         //INFOMSG("It is a full boundp hz= " << hr_m << " rmax= " << rmax_m << " rmin= " << rmin_m << endl);
 
