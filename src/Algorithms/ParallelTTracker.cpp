@@ -706,8 +706,7 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
 }
 
 void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
-
-    /* Activate namespaces                                                                                */
+                                                                              */
 
     Inform msg("Undulator: ", *gmsg);
     bool inUndulator = false;
@@ -736,28 +735,40 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
 
     /* Create the solver database.                                                                        */
-    Darius::Mesh                          mesh;
+    Darius::Mesh                               mesh;
 
     /* Create the bunch database.                                                                         */
-    Darius::Bunch                                 bunch;
+    Darius::Bunch                              bunch;
 
     /* Create the seed database.                                                                          */
-    Darius::Seed                                  seed;
+    Darius::Seed                               seed;
 
     /* Create the undulator database.                                                                     */
-    std::vector<Darius::Undulator>        undulator;
+    std::vector<Darius::Undulator>             undulator;
     undulator.clear();
 
     /* Create the external field database.                                                                */
-    std::vector<Darius::ExtField>                 extField;
+    std::vector<Darius::ExtField>              extField;
     extField.clear();
 
     /* Create the free electron laser database.                                                           */
-    std::vector<Darius::FreeElectronLaser>        FEL;
+    std::vector<Darius::FreeElectronLaser>     FEL;
     FEL.clear();
 
-
-
+    /* Open input parameter parser and instantiate the databases.                                         */
+    Darius::ParseDarius parser (fname, mesh, bunch, seed, undulator, extField, FEL);
+    parser.setJobParameters();
+    
+    /* Initialize the class for the FDTD computations.                                                    */
+    Darius::FdTd   fdtd   (mesh, bunch, seed, undulator, extField, FEL);
+    Darius::FdTdSC fdtdsc (mesh, bunch, seed, undulator, extField, FEL);
+    
+    /* Solve for the fields and the bunch distribution over the specified time.                           */
+    if ( mesh.spaceCharge_ )
+        fdtdsc.solve();
+    else
+        fdtd.solve();
+            
 
 }
 
