@@ -706,7 +706,7 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
 }
 
 void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
-                                                                              */
+                                                                
 
     Inform msg("Undulator: ", *gmsg);
     bool inUndulator = false;
@@ -733,7 +733,11 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     msg << __FILE__ << " L: " << __LINE__ << " Written by Arya Fallahi, IT'IS Foundation, Zurich, Switzerland" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " ---- in computeUndulator :::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-
+    
+    /* Parse the command line options                                                                     */
+    std::list<std::string> jobFile = read_file(fname);
+    cleanJobFile(jobFile);
+   
     /* Create the solver database.                                                                        */
     Darius::Mesh                               mesh;
 
@@ -756,7 +760,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     FEL.clear();
 
     /* Open input parameter parser and instantiate the databases.                                         */
-    Darius::ParseDarius parser (fname, mesh, bunch, seed, undulator, extField, FEL);
+    Darius::ParseDarius parser (jobFile, mesh, bunch, seed, undulator, extField, FEL);
     parser.setJobParameters();
     
     /* Initialize the class for the FDTD computations.                                                    */
