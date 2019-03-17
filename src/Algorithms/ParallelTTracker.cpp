@@ -735,8 +735,9 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     
     /* Parse the command line options                                                                     */
-    std::list<std::string> jobFile = read_file(fname);
-    cleanJobFile(jobFile);
+    const char *cfname = fname.c_str();
+    std::list<std::string> jobFile = Darius::read_file(cfname);
+    Darius::cleanJobFile(jobFile);
    
     /* Create the solver database.                                                                        */
     Darius::Mesh                               mesh;
