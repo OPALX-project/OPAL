@@ -30,7 +30,7 @@ class Fieldmap;
 class LossDataSink;
 class TrimCoil;
 
-enum BFieldType {PSIBF,CARBONBF,ANSYSBF,AVFEQBF,FFAGBF,BANDRF,SYNCHRO};
+enum BFieldType {PSIBF,CARBONBF,ANSYSBF,AVFEQBF,FFABF,BANDRF,SYNCHRO};
 
 struct BfieldData {
     std::string filename;
@@ -231,7 +231,7 @@ protected:
     void   getFieldFromFile_Carbon(const double &scaleFactor);
     void   getFieldFromFile_CYCIAE(const double &scaleFactor);
     void   getFieldFromFile_AVFEQ(const double &scaleFactor);
-    void   getFieldFromFile_FFAG(const double &scaleFactor);
+    void   getFieldFromFile_FFA(const double &scaleFactor);
     void   getFieldFromFile_BandRF(const double &scaleFactor);
     void   getFieldFromFile_Synchrocyclotron(const double &scaleFactor);
 

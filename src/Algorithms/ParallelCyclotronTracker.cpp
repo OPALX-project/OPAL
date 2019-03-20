@@ -7,7 +7,7 @@
 // ------------------------------------------------------------------------
 //
 // Class: ParallelCyclotronTracker
-//   The class for tracking particles with 3D space charge in Cyclotrons and FFAGs
+//   The class for tracking particles with 3D space charge in Cyclotrons and FFAs
 //
 // ------------------------------------------------------------------------
 //
@@ -52,7 +52,7 @@
 #include "AbsBeamline/RFQuadrupole.h"
 #include "AbsBeamline/SBend.h"
 #include "AbsBeamline/SBend3D.h"
-#include "AbsBeamline/ScalingFFAGMagnet.h"
+#include "AbsBeamline/ScalingFFAMagnet.h"
 #include "AbsBeamline/Separator.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
@@ -542,7 +542,7 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron &cycl) {
      * fieldflag = 2, readin carbon cyclotron field file created by Jianjun Yang, TYPE=CARBONCYCL
      * fieldflag = 3, readin ANSYS format file for CYCIAE-100 created by Jianjun Yang, TYPE=CYCIAE
      * fieldflag = 4, readin AVFEQ format file for Riken cyclotrons
-     * fieldflag = 5, readin FFAG format file for MSU/FNAL FFAG
+     * fieldflag = 5, readin FFA format file for MSU/FNAL FFA
      * fieldflag = 6, readin both median plane B field map and 3D E field map of RF cavity for compact cyclotron
      * fieldflag = 7, read in fields for Daniel's synchrocyclotron simulations
      */
@@ -838,13 +838,13 @@ void ParallelCyclotronTracker::visitSBend3D(const SBend3D &bend) {
                             "Need to define a RINGDEFINITION to use SBend3D element");
 }
 
-void ParallelCyclotronTracker::visitScalingFFAGMagnet(const ScalingFFAGMagnet &bend) {
-    *gmsg << "Adding ScalingFFAGMagnet" << endl;
+void ParallelCyclotronTracker::visitScalingFFAMagnet(const ScalingFFAMagnet &bend) {
+    *gmsg << "Adding ScalingFFAMagnet" << endl;
     if (opalRing_m != NULL) {
         opalRing_m->appendElement(bend);
     } else {
-        throw OpalException("ParallelCyclotronTracker::visitScalingFFAGMagnet",
-                            "Need to define a RINGDEFINITION to use ScalingFFAGMagnet element");
+        throw OpalException("ParallelCyclotronTracker::visitScalingFFAMagnet",
+                            "Need to define a RINGDEFINITION to use ScalingFFAMagnet element");
     }
 }
 

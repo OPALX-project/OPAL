@@ -124,7 +124,7 @@
 #include "Elements/OpalRCollimator.h"
 #include "Elements/OpalSBend.h"
 #include "Elements/OpalSBend3D.h"
-#include "Elements/OpalScalingFFAGMagnet.h"
+#include "Elements/OpalScalingFFAMagnet.h"
 #include "Elements/OpalSeparator.h"
 #include "Elements/OpalSeptum.h"
 #include "Elements/OpalSextupole.h"
@@ -279,7 +279,7 @@ namespace {
         opal->create(new OpalRCollimator());
         opal->create(new OpalSBend());
         opal->create(new OpalSBend3D());
-        opal->create(new OpalScalingFFAGMagnet());
+        opal->create(new OpalScalingFFAMagnet());
         opal->create(new OpalSeparator());
         opal->create(new OpalSeptum());
         opal->create(new OpalSextupole());

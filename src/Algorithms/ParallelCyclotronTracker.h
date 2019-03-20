@@ -164,8 +164,8 @@ public:
     /// Apply the algorithm to a SBend3D.
     virtual void visitSBend3D(const SBend3D &);
 
-    /// Apply the algorithm to a ScalingFFAGMagnet.
-    virtual void visitScalingFFAGMagnet(const ScalingFFAGMagnet &bend);
+    /// Apply the algorithm to a ScalingFFAMagnet.
+    virtual void visitScalingFFAMagnet(const ScalingFFAMagnet &bend);
 
     /// Apply the algorithm to a Separator.
     virtual void visitSeparator(const Separator &);

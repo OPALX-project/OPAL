@@ -33,16 +33,16 @@
 #include "opal_test_utilities/SilenceTest.h"
 
 #include "Classic/AbsBeamline/EndFieldModel/Tanh.h"
-#include "Classic/AbsBeamline/ScalingFFAGMagnet.h"
+#include "Classic/AbsBeamline/ScalingFFAMagnet.h"
 #include "Classic/AbsBeamline/Offset.h"
 
-class ScalingFFAGMagnetTest : public ::testing::Test {
+class ScalingFFAMagnetTest : public ::testing::Test {
 public:
-    ScalingFFAGMagnetTest() : sector_m(NULL), fout_m(), silencer_m() {
+    ScalingFFAMagnetTest() : sector_m(NULL), fout_m(), silencer_m() {
     }
 
     void SetUp( ) {
-        sector_m = new ScalingFFAGMagnet("test");
+        sector_m = new ScalingFFAMagnet("test");
         // characteristic length is R*dphi => 0.6545 m
         endfieldmodel::Tanh* tanh = new endfieldmodel::Tanh(psi0_m, psi0_m/5., 20);
         sector_m->setEndField(tanh);
@@ -65,10 +65,10 @@ public:
         sector_m = NULL;
     }
 
-    ~ScalingFFAGMagnetTest() {
+    ~ScalingFFAMagnetTest() {
     }
 
-    ScalingFFAGMagnet* sector_m;
+    ScalingFFAMagnet* sector_m;
     std::ofstream fout_m;
     double r0_m = 24; // m
     double magnetLength_m = 0.63; // m
@@ -211,8 +211,8 @@ private:
     OpalTestUtilities::SilenceTest silencer_m;
 };
 
-TEST_F(ScalingFFAGMagnetTest, ConstructorTest) {
-    ScalingFFAGMagnet* test = new ScalingFFAGMagnet("test");
+TEST_F(ScalingFFAMagnetTest, ConstructorTest) {
+    ScalingFFAMagnet* test = new ScalingFFAMagnet("test");
     std::vector<int> data(15);
     size_t i = 0;
     test->setTanDelta(++i);
@@ -232,9 +232,9 @@ TEST_F(ScalingFFAGMagnetTest, ConstructorTest) {
     test->setAzimuthalExtent(++i);
     test->setVerticalExtent(++i);
 
-    std::vector<ScalingFFAGMagnet*> magnets(2);
+    std::vector<ScalingFFAMagnet*> magnets(2);
     magnets[0] = test;
-    magnets[1] = dynamic_cast<ScalingFFAGMagnet*>(test->clone());
+    magnets[1] = dynamic_cast<ScalingFFAMagnet*>(test->clone());
     for (size_t j = 0; j < magnets.size(); ++j) {
         i = 0;
         test = magnets[j];
@@ -265,7 +265,7 @@ TEST_F(ScalingFFAGMagnetTest, ConstructorTest) {
     delete magnets[1];
 }
 
-TEST_F(ScalingFFAGMagnetTest, PlacementTest) {
+TEST_F(ScalingFFAMagnetTest, PlacementTest) {
     // test that when we are X0 from the centre, we get By = 0.5*B0
     double centre_length = dynamic_cast<endfieldmodel::Tanh*>(sector_m->getEndField())->getX0();
     for (double phi_start = 0.; phi_start < psi0_m*3.1; phi_start += psi0_m/2.) {
@@ -284,7 +284,7 @@ TEST_F(ScalingFFAGMagnetTest, PlacementTest) {
     }
 }
 
-TEST_F(ScalingFFAGMagnetTest, DFCoefficientsTest) {
+TEST_F(ScalingFFAMagnetTest, DFCoefficientsTest) {
     sector_m->setTanDelta(0.0);
     sector_m->setMaxOrder(5);
     sector_m->setFieldIndex(5);
@@ -307,7 +307,7 @@ TEST_F(ScalingFFAGMagnetTest, DFCoefficientsTest) {
     }
 }
 
-TEST_F(ScalingFFAGMagnetTest, DFCoefficientsTanDeltaTest) {
+TEST_F(ScalingFFAMagnetTest, DFCoefficientsTanDeltaTest) {
     sector_m->setTanDelta(2.0);
     sector_m->setMaxOrder(4); // BUG - max order is 1 to high
     sector_m->setFieldIndex(5);
@@ -331,7 +331,7 @@ TEST_F(ScalingFFAGMagnetTest, DFCoefficientsTanDeltaTest) {
     }
 }
 
-TEST_F(ScalingFFAGMagnetTest, TanhTest) {
+TEST_F(ScalingFFAMagnetTest, TanhTest) {
     double numericalDerivative = sector_m->getEndField()->function(-psi0_m, 0);
     for (size_t order = 0; order < 5; ++order) {
         double analyticalDerivative = sector_m->getEndField()->function(-psi0_m, order);
@@ -345,7 +345,7 @@ TEST_F(ScalingFFAGMagnetTest, TanhTest) {
     }
 }
 
-TEST_F(ScalingFFAGMagnetTest, BTwoDTest) {
+TEST_F(ScalingFFAMagnetTest, BTwoDTest) {
     std::ofstream fout("/tmp/b_twod.out");
     bool passtest = true;
     for (double y = 0.; y < 0.025; y += 0.015) {
@@ -358,7 +358,7 @@ TEST_F(ScalingFFAGMagnetTest, BTwoDTest) {
     EXPECT_TRUE(passtest);
 }
 
-TEST_F(ScalingFFAGMagnetTest, ConvergenceYTest) {
+TEST_F(ScalingFFAMagnetTest, ConvergenceYTest) {
     std::ofstream fout("/tmp/convergence_y.out");
     bool passtest = true;
     for (double y = 0.00001; y < 0.02; y *= 2.) {
@@ -370,7 +370,7 @@ TEST_F(ScalingFFAGMagnetTest, ConvergenceYTest) {
     EXPECT_TRUE(passtest);
 }
 
-TEST_F(ScalingFFAGMagnetTest, ConvergenceOrderTest) {
+TEST_F(ScalingFFAMagnetTest, ConvergenceOrderTest) {
     for (double y = 0.5; y > 0.2; y /= 10.) { // 50 cm off midplane
         std::cout << "order y divB |curlB| curlB" << std::endl;
         std::vector<double> divBVec(13);
@@ -403,7 +403,7 @@ TEST_F(ScalingFFAGMagnetTest, ConvergenceOrderTest) {
     sector_m->setMaxOrder(10);
 }
 
-TEST_F(ScalingFFAGMagnetTest, ConvergenceOrderHackedTest) {
+TEST_F(ScalingFFAMagnetTest, ConvergenceOrderHackedTest) {
     double y = 0.05;
     bool cylindrical = false;
     int maxOrder = 10;
@@ -460,7 +460,7 @@ TEST_F(ScalingFFAGMagnetTest, ConvergenceOrderHackedTest) {
 }
 
 
-TEST_F(ScalingFFAGMagnetTest, ConvergenceEndLengthTest) {
+TEST_F(ScalingFFAMagnetTest, ConvergenceEndLengthTest) {
     std::ofstream fout("/tmp/convergence_endlength.out");
     bool passtest = true;
     for (double endLength = 1.; endLength < 10.1; endLength += 1.) {
@@ -472,7 +472,7 @@ TEST_F(ScalingFFAGMagnetTest, ConvergenceEndLengthTest) {
     EXPECT_TRUE(passtest);
 }
 
-TEST_F(ScalingFFAGMagnetTest, VerticalBoundingBoxTest) {
+TEST_F(ScalingFFAMagnetTest, VerticalBoundingBoxTest) {
     sector_m->setVerticalExtent(0.1);
     Vector_t mom, E, B;
     double t = 0;
@@ -487,7 +487,7 @@ TEST_F(ScalingFFAGMagnetTest, VerticalBoundingBoxTest) {
     EXPECT_FALSE(sector_m->apply(pos, mom, t, E, B));
 }
 
-TEST_F(ScalingFFAGMagnetTest, RadialBoundingBoxTest) {
+TEST_F(ScalingFFAMagnetTest, RadialBoundingBoxTest) {
     sector_m->setRMin(r0_m-0.1);
     Vector_t mom, E, B;
     double t = 0;
@@ -507,7 +507,7 @@ TEST_F(ScalingFFAGMagnetTest, RadialBoundingBoxTest) {
     EXPECT_TRUE(sector_m->apply(pos4, mom, t, E, B));
 }
 
-TEST_F(ScalingFFAGMagnetTest, AzimuthalBoundingBoxTest) {
+TEST_F(ScalingFFAMagnetTest, AzimuthalBoundingBoxTest) {
     sector_m->setAzimuthalExtent(psi0_m*5.);
     sector_m->setPhiStart(psi0_m*3.);
     Vector_t mom, E, B;
@@ -520,7 +520,7 @@ TEST_F(ScalingFFAGMagnetTest, AzimuthalBoundingBoxTest) {
     }
 }
 
-TEST_F(ScalingFFAGMagnetTest, GeometryTest) {
+TEST_F(ScalingFFAMagnetTest, GeometryTest) {
     Euclid3D delta = sector_m->getGeometry().getTotalTransform();
     Vector3D vec = delta.getVector();
     Vector3D rot = delta.getRotation().getAxis();

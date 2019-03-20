@@ -194,7 +194,7 @@ int Cyclotron::getFieldFlag(const std::string& type) const {
      * fieldflag = 2, readin carbon cyclotron field file created by Jianjun Yang, TYPE=CARBONCYCL
      * fieldflag = 3, readin ANSYS format file for CYCIAE-100 created by Jianjun Yang, TYPE=CYCIAE
      * fieldflag = 4, readin AVFEQ format file for Riken cyclotrons
-     * fieldflag = 5, readin FFAG format file for MSU/FNAL FFAG
+     * fieldflag = 5, readin FFA format file for MSU/FNAL FFA
      * fieldflag = 6, readin both median plane B field map and 3D E field map of RF cavity for compact cyclotron
      * fieldflag = 7, read in fields for Daniel's synchrocyclotron simulations
      */
@@ -205,7 +205,7 @@ int Cyclotron::getFieldFlag(const std::string& type) const {
         fieldflag = 3;
     } else if(type == std::string("AVFEQ")) {
         fieldflag = 4;
-    } else if(type == std::string("FFAG")) {
+    } else if(type == std::string("FFA")) {
         fieldflag = 5;
     } else if(type == std::string("BANDRF")) {
         fieldflag = 6;
@@ -693,9 +693,9 @@ bool Cyclotron::interpolate(const double& rad,
     // r1t1 : the index of the "min angle, min radius" point in the 2D field array.
     // considering  the array start with index of zero, minus 1.
 
-    if(myBFieldType_m != FFAGBF) {
+    if(myBFieldType_m != FFABF) {
         /*
-          For FFAG this does not work
+          For FFA this does not work
         */
         r1t1 = it + ntetS * ir - 1;
         r1t2 = r1t1 + 1;
@@ -743,7 +743,7 @@ bool Cyclotron::interpolate(const double& rad,
 
 
 void Cyclotron::read(const int &fieldflag, const double &scaleFactor) {
-    //    PSIBF, AVFEQBF, ANSYSBF, FFAGBF
+    //    PSIBF, AVFEQBF, ANSYSBF, FFABF
     // for your own format field, you should add your own getFieldFromFile() function by yourself.
 
     if(fieldflag == 1) {
@@ -767,9 +767,9 @@ void Cyclotron::read(const int &fieldflag, const double &scaleFactor) {
         getFieldFromFile_AVFEQ(scaleFactor);
 
     } else if(fieldflag == 5) {
-        *gmsg << "* Read FFAG data MSU/FNAL " << getBScale() << endl;
-        myBFieldType_m = FFAGBF;
-        getFieldFromFile_FFAG(scaleFactor);
+        *gmsg << "* Read FFA data MSU/FNAL " << getBScale() << endl;
+        myBFieldType_m = FFABF;
+        getFieldFromFile_FFA(scaleFactor);
 
     } else if(fieldflag == 6) {
         *gmsg << "* Read both median plane B field map and 3D E field map of RF cavity for compact cyclotron" << getBScale() << endl;
@@ -1045,7 +1045,7 @@ void Cyclotron::initialise(PartBunchBase<double, 3> *bunch, const int &fieldflag
 }
 
 
-void Cyclotron::getFieldFromFile_FFAG(const double &scaleFactor) {
+void Cyclotron::getFieldFromFile_FFA(const double &scaleFactor) {
 
     /*
       Field is read in from ascci file (COSY output) in the oder:
@@ -1076,10 +1076,10 @@ void Cyclotron::getFieldFromFile_FFAG(const double &scaleFactor) {
     vector<double>::iterator vit;
 
     *gmsg << "* ----------------------------------------------" << endl;
-    *gmsg << "*    READ IN FFAG FIELD MAP     " << endl;
+    *gmsg << "*    READ IN FFA FIELD MAP     " << endl;
     *gmsg << "* ----------------------------------------------" << endl;
 
-    BP.Bfact = -10.0; // T->kG and H- for the current FNAL FFAG
+    BP.Bfact = -10.0; // T->kG and H- for the current FNAL FFA
 
     ifstream file_to_read(fmapfn_m.c_str());
     const int max_num_of_char_in_a_line = 128;

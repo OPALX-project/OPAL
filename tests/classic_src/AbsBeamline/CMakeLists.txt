@@ -5,7 +5,7 @@ set (_SRCS
     PolynomialTest.cpp
     RingTest.cpp
     SBend3DTest.cpp
-    ScalingFFAGMagnetTest.cpp
+    ScalingFFAMagnetTest.cpp
     TrimCoilTest.cpp
     VariableRFCavityTest.cpp
     VariableRFCavityFringeFieldTest.cpp

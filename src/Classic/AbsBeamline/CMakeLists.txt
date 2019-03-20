@@ -42,7 +42,7 @@ set (_SRCS
   Ring.cpp
   SBend.cpp
   SBend3D.cpp
-  ScalingFFAGMagnet.cpp
+  ScalingFFAMagnet.cpp
   Separator.cpp
   Septum.cpp
   Solenoid.cpp
@@ -100,7 +100,7 @@ set (HDRS
     Ring.h
     SBend3D.h
     SBend.h
-    ScalingFFAGMagnet.h
+    ScalingFFAMagnet.h
     SectorFieldMapComponent.h
     Separator.h
     Septum.h

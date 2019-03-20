@@ -32,8 +32,9 @@
 
 #include "H5hut.h"
 
-#include <gsl/gsl_rng.h>
 #include <gsl/gsl_histogram.h>
+#include <gsl/gsl_qrng.h>
+#include <gsl/gsl_rng.h>
 
 #ifdef WITH_UNIT_TESTS
 #include <gtest/gtest_prod.h>
@@ -53,15 +54,15 @@ class H5PartWrapper;
 namespace DistrTypeT
 {
     enum DistrTypeT {NODIST,
-                    FROMFILE,
-                    GAUSS,
-                    BINOMIAL,
-                    FLATTOP,
-                    SURFACEEMISSION,
-                    SURFACERANDCREATE,
-                    GUNGAUSSFLATTOPTH,
-	            ASTRAFLATTOPTH,
-		    MATCHEDGAUSS
+                     FROMFILE,
+                     GAUSS,
+                     BINOMIAL,
+                     FLATTOP,
+                     SURFACEEMISSION,
+                     SURFACERANDCREATE,
+                     GUNGAUSSFLATTOPTH,
+                     ASTRAFLATTOPTH,
+                     MATCHEDGAUSS
                     };
 }
 
@@ -430,6 +431,8 @@ private:
     void adjustPhaseSpace(double massIneV);
     void reflectDistribution(size_t &numberOfParticles);
     void scaleDistCoordinates();
+    /// Select and allocate gsl random number generator
+    gsl_qrng* selectRandomGenerator(std::string, unsigned int dimension);
     void setAttributes();
     void setDistParametersBinomial(double massIneV);
     void setDistParametersFlattop(double massIneV);

@@ -27,17 +27,17 @@
 
 #include <cmath>
 
-#include "AbsBeamline/ScalingFFAGMagnet.h"
+#include "AbsBeamline/ScalingFFAMagnet.h"
 #include "Algorithms/PartBunch.h"
 #include "AbsBeamline/BeamlineVisitor.h"
 
-ScalingFFAGMagnet::ScalingFFAGMagnet(const std::string &name)
+ScalingFFAMagnet::ScalingFFAMagnet(const std::string &name)
         : Component(name),
          planarArcGeometry_m(1., 1.), dummy(), endField_m(NULL) {
     setElType(isDrift);
 }
 
-ScalingFFAGMagnet::ScalingFFAGMagnet(const ScalingFFAGMagnet &right)
+ScalingFFAMagnet::ScalingFFAMagnet(const ScalingFFAMagnet &right)
         : Component(right),
           planarArcGeometry_m(right.planarArcGeometry_m),
           dummy(), maxOrder_m(right.maxOrder_m), tanDelta_m(right.tanDelta_m),
@@ -56,64 +56,64 @@ ScalingFFAGMagnet::ScalingFFAGMagnet(const ScalingFFAGMagnet &right)
     r0_m = right.r0_m;
 }
 
-ScalingFFAGMagnet::~ScalingFFAGMagnet() {
+ScalingFFAMagnet::~ScalingFFAMagnet() {
     if (endField_m != NULL) {
         delete endField_m;
     }
 }
 
-ElementBase* ScalingFFAGMagnet::clone() const {
-    ScalingFFAGMagnet* magnet = new ScalingFFAGMagnet(*this);
+ElementBase* ScalingFFAMagnet::clone() const {
+    ScalingFFAMagnet* magnet = new ScalingFFAMagnet(*this);
     magnet->initialise();
     return magnet;
 }
 
-EMField &ScalingFFAGMagnet::getField() {
+EMField &ScalingFFAMagnet::getField() {
     return dummy;
 }
 
-const EMField &ScalingFFAGMagnet::getField() const {
+const EMField &ScalingFFAMagnet::getField() const {
     return dummy;
 }
 
-bool ScalingFFAGMagnet::apply(const size_t &i, const double &t,
+bool ScalingFFAMagnet::apply(const size_t &i, const double &t,
                     Vector_t &E, Vector_t &B) {
     return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
 }
 
-void ScalingFFAGMagnet::initialise() {
+void ScalingFFAMagnet::initialise() {
     calculateDfCoefficients();
     planarArcGeometry_m.setElementLength(r0_m*phiEnd_m); // length = phi r
     planarArcGeometry_m.setCurvature(1./r0_m);
 }
 
-void ScalingFFAGMagnet::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void ScalingFFAMagnet::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
     RefPartBunch_m = bunch;
     initialise();
 }
 
-void ScalingFFAGMagnet::finalise() {
+void ScalingFFAMagnet::finalise() {
     RefPartBunch_m = NULL;
 }
 
-bool ScalingFFAGMagnet::bends() const {
+bool ScalingFFAMagnet::bends() const {
     return true;
 }
 
-BGeometryBase& ScalingFFAGMagnet::getGeometry() {
+BGeometryBase& ScalingFFAMagnet::getGeometry() {
     return planarArcGeometry_m;
 }
 
-const BGeometryBase& ScalingFFAGMagnet::getGeometry() const {
+const BGeometryBase& ScalingFFAMagnet::getGeometry() const {
     return planarArcGeometry_m;
 }
 
-void ScalingFFAGMagnet::accept(BeamlineVisitor& visitor) const {
-    visitor.visitScalingFFAGMagnet(*this);
+void ScalingFFAMagnet::accept(BeamlineVisitor& visitor) const {
+    visitor.visitScalingFFAMagnet(*this);
 }
 
 
-bool ScalingFFAGMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
+bool ScalingFFAMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
     Vector_t pos = R - centre_m;
     double r = sqrt(pos[0]*pos[0]+pos[2]*pos[2]);
     double phi = -atan2(pos[0], pos[2]); // angle between y-axis and position vector in anticlockwise direction
@@ -129,7 +129,7 @@ bool ScalingFFAGMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
 }
 
 
-bool ScalingFFAGMagnet::getFieldValueCylindrical(const Vector_t &pos, Vector_t &B) const {
+bool ScalingFFAMagnet::getFieldValueCylindrical(const Vector_t &pos, Vector_t &B) const {
 
     double r = pos[0];
     double z = pos[1];
@@ -173,12 +173,12 @@ bool ScalingFFAGMagnet::getFieldValueCylindrical(const Vector_t &pos, Vector_t &
 }
 
 
-bool ScalingFFAGMagnet::apply(const Vector_t &R, const Vector_t &P,
+bool ScalingFFAMagnet::apply(const Vector_t &R, const Vector_t &P,
                     const double &t, Vector_t &E, Vector_t &B) {
     return getFieldValue(R, B);
 }
 
-void ScalingFFAGMagnet::calculateDfCoefficients() {
+void ScalingFFAMagnet::calculateDfCoefficients() {
     dfCoefficients_m = std::vector<std::vector<double> >(maxOrder_m+1);
     dfCoefficients_m[0] = std::vector<double>(1, 1.); // f_0 = 1.*0th derivative
     for (size_t n = 0; n < maxOrder_m; n += 2) { // n indexes the power in z
@@ -201,7 +201,7 @@ void ScalingFFAGMagnet::calculateDfCoefficients() {
 
 }
 
-void ScalingFFAGMagnet::setEndField(endfieldmodel::EndFieldModel* endField) {
+void ScalingFFAMagnet::setEndField(endfieldmodel::EndFieldModel* endField) {
     if (endField_m != NULL) {
         delete endField_m;
     }

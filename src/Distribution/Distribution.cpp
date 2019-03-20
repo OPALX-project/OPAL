@@ -46,7 +46,6 @@
 #include <gsl/gsl_sf_erf.h>
 #include <gsl/gsl_linalg.h>
 #include <gsl/gsl_blas.h>
-#include <gsl/gsl_qrng.h>
 
 #include <sys/time.h>
 
@@ -333,11 +332,7 @@ void Distribution::create(size_t &numberOfParticles, double massIneV) {
         createDistributionBinomial(numberOfLocalParticles, massIneV);
         break;
     case DistrTypeT::FLATTOP:
-        createDistributionFlattop(numberOfLocalParticles, massIneV);
-        break;
     case DistrTypeT::GUNGAUSSFLATTOPTH:
-        createDistributionFlattop(numberOfLocalParticles, massIneV);
-        break;
     case DistrTypeT::ASTRAFLATTOPTH:
         createDistributionFlattop(numberOfLocalParticles, massIneV);
         break;
@@ -996,8 +991,6 @@ void Distribution::checkIfEmitted() {
     switch (distrTypeT_m) {
 
     case DistrTypeT::ASTRAFLATTOPTH:
-        emitting_m = true;
-        break;
     case DistrTypeT::GUNGAUSSFLATTOPTH:
         emitting_m = true;
         break;
@@ -2360,21 +2353,7 @@ void Distribution::generateFlattopLaserProfile(size_t numberOfParticles) {
 
 void Distribution::generateFlattopT(size_t numberOfParticles) {
 
-    gsl_qrng *quasiRandGen2D = NULL;
-
-    if (Options::rngtype != std::string("RANDOM")) {
-        INFOMSG("RNGTYPE= " << Options::rngtype << endl);
-        if (Options::rngtype == std::string("HALTON")) {
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_halton, 2);
-        } else if (Options::rngtype == std::string("SOBOL")) {
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_sobol, 2);
-        } else if (Options::rngtype == std::string("NIEDERREITER")) {
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_niederreiter_2, 2);
-        } else {
-            INFOMSG("RNGTYPE= " << Options::rngtype << " not known, using HALTON" << endl);
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_halton, 2);
-        }
-    }
+    gsl_qrng *quasiRandGen2D = selectRandomGenerator(Options::rngtype,2);
 
     int saveProcessor = -1;
     const int myNode = Ippl::myNode();
@@ -2420,8 +2399,7 @@ void Distribution::generateFlattopT(size_t numberOfParticles) {
 
     }
 
-    if (quasiRandGen2D != NULL)
-        gsl_qrng_free(quasiRandGen2D);
+    gsl_qrng_free(quasiRandGen2D);
 
     if (distrTypeT_m == DistrTypeT::ASTRAFLATTOPTH)
         generateAstraFlattopT(numberOfParticles);
@@ -2432,25 +2410,8 @@ void Distribution::generateFlattopT(size_t numberOfParticles) {
 
 void Distribution::generateFlattopZ(size_t numberOfParticles) {
 
-    gsl_qrng *quasiRandGen1D = NULL;
-    gsl_qrng *quasiRandGen2D = NULL;
-    if (Options::rngtype != std::string("RANDOM")) {
-        INFOMSG("RNGTYPE= " << Options::rngtype << endl);
-        if (Options::rngtype == std::string("HALTON")) {
-            quasiRandGen1D = gsl_qrng_alloc(gsl_qrng_halton, 1);
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_halton, 2);
-        } else if (Options::rngtype == std::string("SOBOL")) {
-            quasiRandGen1D = gsl_qrng_alloc(gsl_qrng_sobol, 1);
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_sobol, 2);
-        } else if (Options::rngtype == std::string("NIEDERREITER")) {
-            quasiRandGen1D = gsl_qrng_alloc(gsl_qrng_niederreiter_2, 1);
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_niederreiter_2, 2);
-        } else {
-            INFOMSG("RNGTYPE= " << Options::rngtype << " not known, using HALTON" << endl);
-            quasiRandGen1D = gsl_qrng_alloc(gsl_qrng_halton, 1);
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_halton, 2);
-        }
-    }
+    gsl_qrng *quasiRandGen1D = selectRandomGenerator(Options::rngtype,1);
+    gsl_qrng *quasiRandGen2D = selectRandomGenerator(Options::rngtype,2);
 
     int saveProcessor = -1;
     const int myNode = Ippl::myNode();
@@ -2507,10 +2468,8 @@ void Distribution::generateFlattopZ(size_t numberOfParticles) {
         }
     }
 
-    if (quasiRandGen1D != NULL) {
-        gsl_qrng_free(quasiRandGen1D);
-        gsl_qrng_free(quasiRandGen2D);
-    }
+    gsl_qrng_free(quasiRandGen1D);
+    gsl_qrng_free(quasiRandGen2D);
 }
 
 void Distribution::generateGaussZ(size_t numberOfParticles) {
@@ -2742,25 +2701,8 @@ void Distribution::generateLongFlattopT(size_t numberOfParticles) {
     if (numModulationPeriods != 0.0)
         modulationPeriod = flattopTime / numModulationPeriods;
 
-    gsl_qrng *quasiRandGen1D = NULL;
-    gsl_qrng *quasiRandGen2D = NULL;
-    if (Options::rngtype != std::string("RANDOM")) {
-        INFOMSG("RNGTYPE= " << Options::rngtype << endl);
-        if (Options::rngtype == std::string("HALTON")) {
-            quasiRandGen1D = gsl_qrng_alloc(gsl_qrng_halton, 1);
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_halton, 2);
-        } else if (Options::rngtype == std::string("SOBOL")) {
-            quasiRandGen1D = gsl_qrng_alloc(gsl_qrng_sobol, 1);
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_sobol, 2);
-        } else if (Options::rngtype == std::string("NIEDERREITER")) {
-            quasiRandGen1D = gsl_qrng_alloc(gsl_qrng_niederreiter_2, 1);
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_niederreiter_2, 2);
-        } else {
-            INFOMSG("RNGTYPE= " << Options::rngtype << " not known, using HALTON" << endl);
-            quasiRandGen1D = gsl_qrng_alloc(gsl_qrng_halton, 1);
-            quasiRandGen2D = gsl_qrng_alloc(gsl_qrng_halton, 2);
-        }
-    }
+    gsl_qrng *quasiRandGen1D = selectRandomGenerator(Options::rngtype,1);
+    gsl_qrng *quasiRandGen2D = selectRandomGenerator(Options::rngtype,2);
 
     for (size_t partIndex = 0; partIndex < numFlat; partIndex++) {
 
@@ -2837,10 +2779,8 @@ void Distribution::generateLongFlattopT(size_t numberOfParticles) {
         }
     }
 
-    if (quasiRandGen1D != NULL) {
-        gsl_qrng_free(quasiRandGen1D);
-        gsl_qrng_free(quasiRandGen2D);
-    }
+    gsl_qrng_free(quasiRandGen1D);
+    gsl_qrng_free(quasiRandGen2D);
 }
 
 void Distribution::generateTransverseGauss(size_t numberOfParticles) {
@@ -3122,18 +3062,14 @@ void Distribution::printDist(Inform &os, size_t numberOfParticles) const {
     case DistrTypeT::BINOMIAL:
         printDistBinomial(os);
         break;
-    case DistrTypeT::FLATTOP:
-        printDistFlattop(os);
-        break;
     case DistrTypeT::SURFACEEMISSION:
         printDistSurfEmission(os);
         break;
     case DistrTypeT::SURFACERANDCREATE:
         printDistSurfAndCreate(os);
         break;
+    case DistrTypeT::FLATTOP:
     case DistrTypeT::GUNGAUSSFLATTOPTH:
-        printDistFlattop(os);
-        break;
     case DistrTypeT::ASTRAFLATTOPTH:
         printDistFlattop(os);
         break;
@@ -3512,23 +3448,42 @@ void Distribution::reflectDistribution(size_t &numberOfParticles) {
 void Distribution::scaleDistCoordinates() {
     // at this point the distributions of an array of distributions are still separated
 
-    const double xmult = Attributes::getReal(itsAttr[Attrib::Distribution::XMULT]);
-    const double pxmult = Attributes::getReal(itsAttr[Attrib::Distribution::PXMULT]);
-    const double ymult = Attributes::getReal(itsAttr[Attrib::Distribution::YMULT]);
-    const double pymult = Attributes::getReal(itsAttr[Attrib::Distribution::PYMULT]);
+    const double xmult    = Attributes::getReal(itsAttr[Attrib::Distribution::XMULT]);
+    const double pxmult   = Attributes::getReal(itsAttr[Attrib::Distribution::PXMULT]);
+    const double ymult    = Attributes::getReal(itsAttr[Attrib::Distribution::YMULT]);
+    const double pymult   = Attributes::getReal(itsAttr[Attrib::Distribution::PYMULT]);
     const double longmult = (emitting_m ?
-                             Attributes::getReal(itsAttr[Attrib::Distribution::TMULT]):
+                             Attributes::getReal(itsAttr[Attrib::Distribution::TMULT]) :
                              Attributes::getReal(itsAttr[Attrib::Distribution::ZMULT]));
-    const double pzmult = Attributes::getReal(itsAttr[Attrib::Distribution::PZMULT]);
+    const double pzmult   = Attributes::getReal(itsAttr[Attrib::Distribution::PZMULT]);
 
     for (size_t particleIndex = 0; particleIndex < tOrZDist_m.size(); ++ particleIndex) {
-        xDist_m.at(particleIndex) *= xmult;
-        pxDist_m.at(particleIndex) *= pxmult;
-        yDist_m.at(particleIndex) *= ymult;
-        pyDist_m.at(particleIndex) *= pymult;
+        xDist_m.at(particleIndex)    *= xmult;
+        pxDist_m.at(particleIndex)   *= pxmult;
+        yDist_m.at(particleIndex)    *= ymult;
+        pyDist_m.at(particleIndex)   *= pymult;
         tOrZDist_m.at(particleIndex) *= longmult;
-        pzDist_m.at(particleIndex) *= pzmult;
+        pzDist_m.at(particleIndex)   *= pzmult;
     }
+}
+
+gsl_qrng* Distribution::selectRandomGenerator(std::string,unsigned int dimension)
+{
+    gsl_qrng *quasiRandGen = nullptr;
+    if (Options::rngtype != std::string("RANDOM")) {
+        INFOMSG("RNGTYPE= " << Options::rngtype << endl);
+        if (Options::rngtype == std::string("HALTON")) {
+            quasiRandGen = gsl_qrng_alloc(gsl_qrng_halton, dimension);
+        } else if (Options::rngtype == std::string("SOBOL")) {
+            quasiRandGen = gsl_qrng_alloc(gsl_qrng_sobol, dimension);
+        } else if (Options::rngtype == std::string("NIEDERREITER")) {
+            quasiRandGen = gsl_qrng_alloc(gsl_qrng_niederreiter_2, dimension);
+        } else {
+            INFOMSG("RNGTYPE= " << Options::rngtype << " not known, using HALTON" << endl);
+            quasiRandGen = gsl_qrng_alloc(gsl_qrng_halton, dimension);
+        }
+    }
+    return quasiRandGen;
 }
 
 void Distribution::setAttributes() {
@@ -3910,19 +3865,19 @@ void Distribution::setFieldEmissionParameters() {
 
     darkCurrentParts_m = static_cast<size_t> (Attributes::getReal(itsAttr[Attrib::Distribution::NPDARKCUR]));
     darkInwardMargin_m = Attributes::getReal(itsAttr[Attrib::Distribution::INWARDMARGIN]);
-    eInitThreshold_m = Attributes::getReal(itsAttr[Attrib::Distribution::EINITHR]);
-    workFunction_m = Attributes::getReal(itsAttr[Attrib::Distribution::FNPHIW]);
+    eInitThreshold_m   = Attributes::getReal(itsAttr[Attrib::Distribution::EINITHR]);
+    workFunction_m     = Attributes::getReal(itsAttr[Attrib::Distribution::FNPHIW]);
     fieldEnhancement_m = Attributes::getReal(itsAttr[Attrib::Distribution::FNBETA]);
-    maxFN_m = static_cast<size_t> (Attributes::getReal(itsAttr[Attrib::Distribution::FNMAXEMI]));
-    fieldThrFN_m = Attributes::getReal(itsAttr[Attrib::Distribution::FNFIELDTHR]);
-    paraFNA_m = Attributes::getReal(itsAttr[Attrib::Distribution::FNA]);
-    paraFNB_m = Attributes::getReal(itsAttr[Attrib::Distribution::FNB]);
-    paraFNY_m = Attributes::getReal(itsAttr[Attrib::Distribution::FNY]);
-    paraFNVYZe_m = Attributes::getReal(itsAttr[Attrib::Distribution::FNVYZERO]);
-    paraFNVYSe_m = Attributes::getReal(itsAttr[Attrib::Distribution::FNVYSECOND]);
-    secondaryFlag_m = Attributes::getReal(itsAttr[Attrib::Distribution::SECONDARYFLAG]);
-    ppVw_m = Attributes::getReal(itsAttr[Attrib::Distribution::VW]);
-    vVThermal_m = Attributes::getReal(itsAttr[Attrib::Distribution::VVTHERMAL]);
+    maxFN_m            = static_cast<size_t> (Attributes::getReal(itsAttr[Attrib::Distribution::FNMAXEMI]));
+    fieldThrFN_m       = Attributes::getReal(itsAttr[Attrib::Distribution::FNFIELDTHR]);
+    paraFNA_m          = Attributes::getReal(itsAttr[Attrib::Distribution::FNA]);
+    paraFNB_m          = Attributes::getReal(itsAttr[Attrib::Distribution::FNB]);
+    paraFNY_m          = Attributes::getReal(itsAttr[Attrib::Distribution::FNY]);
+    paraFNVYZe_m       = Attributes::getReal(itsAttr[Attrib::Distribution::FNVYZERO]);
+    paraFNVYSe_m       = Attributes::getReal(itsAttr[Attrib::Distribution::FNVYSECOND]);
+    secondaryFlag_m    = Attributes::getReal(itsAttr[Attrib::Distribution::SECONDARYFLAG]);
+    ppVw_m             = Attributes::getReal(itsAttr[Attrib::Distribution::VW]);
+    vVThermal_m        = Attributes::getReal(itsAttr[Attrib::Distribution::VVTHERMAL]);
 
 }
 
@@ -3978,11 +3933,8 @@ void Distribution::setEmissionTime(double &maxT, double &minT) {
         switch (distrTypeT_m) {
 
         case DistrTypeT::FLATTOP:
-            tEmission_m = tPulseLengthFWHM_m + (cutoffR_m[2] - sqrt(2.0 * log(2.0)))
-                * (sigmaTRise_m + sigmaTFall_m);
-            break;
-
         case DistrTypeT::GAUSS:
+        case DistrTypeT::GUNGAUSSFLATTOPTH:
             tEmission_m = tPulseLengthFWHM_m + (cutoffR_m[2] - sqrt(2.0 * log(2.0)))
                 * (sigmaTRise_m + sigmaTFall_m);
             break;
@@ -3993,11 +3945,6 @@ void Distribution::setEmissionTime(double &maxT, double &minT) {
              * creation. Only this distribution type does it this way. This is
              * a legacy feature.
              */
-            break;
-
-        case DistrTypeT::GUNGAUSSFLATTOPTH:
-            tEmission_m = tPulseLengthFWHM_m + (cutoffR_m[2] - sqrt(2.0 * log(2.0)))
-                * (sigmaTRise_m + sigmaTFall_m);
             break;
 
         default:

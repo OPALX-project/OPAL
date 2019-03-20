@@ -12,7 +12,7 @@ on the largest HPC clusters available today.
 The OPAL framework makes it easy to add new features in the form of new C++ classes. It comes
 in the following flavours:
 OPAL-CYCL tracks particles with 3D space charge including neighbouring turns in cyclotrons and
-FFAG’s with time as the independent variable.
+FFAs with time as the independent variable.
 OPAL-T can be used to model beam lines, linacs, rf-photo injectors and complete XFEL’s excluding
 the undulator.
 </B>

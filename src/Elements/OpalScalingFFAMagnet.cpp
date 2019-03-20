@@ -29,14 +29,14 @@
 #include "Utilities/OpalException.h"  // used?
 
 #include "AbsBeamline/EndFieldModel/Tanh.h" // classic
-#include "AbsBeamline/ScalingFFAGMagnet.h" // classic
-#include "Elements/OpalScalingFFAGMagnet.h"
+#include "AbsBeamline/ScalingFFAMagnet.h" // classic
+#include "Elements/OpalScalingFFAMagnet.h"
 
 extern Inform *gmsg;
 
-OpalScalingFFAGMagnet::OpalScalingFFAGMagnet() :
-    OpalElement(SIZE, "SCALINGFFAGMAGNET",
-             "The \"ScalingFFAGMagnet\" element defines a FFAG scaling magnet with zero or non-zero spiral angle.") {
+OpalScalingFFAMagnet::OpalScalingFFAMagnet() :
+    OpalElement(SIZE, "SCALINGFFAMAGNET",
+             "The \"ScalingFFAMagnet\" element defines a FFA scaling magnet with zero or non-zero spiral angle.") {
     itsAttr[B0] = Attributes::makeReal
                               ("B0", "The nominal dipole field of the magnet [T].");
     itsAttr[R0] = Attributes::makeReal("R0", "Radial scale [m].");
@@ -47,11 +47,11 @@ OpalScalingFFAGMagnet::OpalScalingFFAGMagnet() :
     itsAttr[MAX_Y_POWER] = Attributes::makeReal("MAX_Y_POWER",
       "The maximum power in y that will be considered in the field expansion.");
     itsAttr[END_LENGTH] = Attributes::makeReal("END_LENGTH",
-                                          "The end length of the spiral FFAG [m].");
+                                          "The end length of the spiral FFA [m].");
     itsAttr[HEIGHT] = Attributes::makeReal("HEIGHT",
                                        "Full height of the magnet. Particles moving more than height/2. off the midplane (either above or below) are out of the aperture [m].");
     itsAttr[CENTRE_LENGTH] = Attributes::makeReal("CENTRE_LENGTH",
-                                       "The centre length of the spiral FFAG [m].");
+                                       "The centre length of the spiral FFA [m].");
     itsAttr[RADIAL_NEG_EXTENT] = Attributes::makeReal("RADIAL_NEG_EXTENT",
                                        "Particles are considered outside the tracking region if radius is greater than R0-RADIAL_NEG_EXTENT [m].");
     itsAttr[RADIAL_POS_EXTENT] = Attributes::makeReal("RADIAL_POS_EXTENT",
@@ -77,38 +77,38 @@ OpalScalingFFAGMagnet::OpalScalingFFAGMagnet() :
     registerRealAttribute("AZIMUTHAL_EXTENT");
     registerOwnership();
 
-    ScalingFFAGMagnet* magnet = new ScalingFFAGMagnet("ScalingFFAGMagnet");
+    ScalingFFAMagnet* magnet = new ScalingFFAMagnet("ScalingFFAMagnet");
     magnet->setEndField(new endfieldmodel::Tanh(1., 1., 1));
     setElement(magnet->makeAlignWrapper());
 }
 
 
-OpalScalingFFAGMagnet::OpalScalingFFAGMagnet(const std::string &name,
-                                             OpalScalingFFAGMagnet *parent) :
+OpalScalingFFAMagnet::OpalScalingFFAMagnet(const std::string &name,
+                                             OpalScalingFFAMagnet *parent) :
     OpalElement(name, parent) {
-    ScalingFFAGMagnet* magnet = new ScalingFFAGMagnet(name);
+    ScalingFFAMagnet* magnet = new ScalingFFAMagnet(name);
     magnet->setEndField(new endfieldmodel::Tanh(1., 1., 1));
     setElement(magnet->makeAlignWrapper());
 }
 
 
-OpalScalingFFAGMagnet::~OpalScalingFFAGMagnet() {
+OpalScalingFFAMagnet::~OpalScalingFFAMagnet() {
 }
 
 
-OpalScalingFFAGMagnet *OpalScalingFFAGMagnet::clone(const std::string &name) {
-    return new OpalScalingFFAGMagnet(name, this);
+OpalScalingFFAMagnet *OpalScalingFFAMagnet::clone(const std::string &name) {
+    return new OpalScalingFFAMagnet(name, this);
 }
 
 
-void OpalScalingFFAGMagnet::
+void OpalScalingFFAMagnet::
 fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
     OpalElement::fillRegisteredAttributes(base, flag);
 }
 
 
-void OpalScalingFFAGMagnet::update() {
-    ScalingFFAGMagnet *magnet = dynamic_cast<ScalingFFAGMagnet*>(getElement()->removeWrappers());
+void OpalScalingFFAMagnet::update() {
+    ScalingFFAMagnet *magnet = dynamic_cast<ScalingFFAMagnet*>(getElement()->removeWrappers());
 
     // use L = r0*theta; we define the magnet ito length for UI but ito angles
     // internally; and use m as external default unit and mm internally

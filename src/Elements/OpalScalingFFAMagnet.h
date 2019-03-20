@@ -25,16 +25,16 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef OPAL_OPALSCALINGFFAGMAGNET_H
-#define OPAL_OPALSCALINGFFAGMAGNET_H
+#ifndef OPAL_OPALSCALINGFFAMAGNET_H
+#define OPAL_OPALSCALINGFFAMAGNET_H
 
 #include "Elements/OpalBend.h"
 
-/** OpalScalingFFAGMagnet provides user interface information for the SCALINGFFAG object
+/** OpalScalingFFAMagnet provides user interface information for the SCALINGFFA object
  *
  *  Defines three parameters - field map name, units for field, length for field
  */
-class OpalScalingFFAGMagnet : public OpalElement {
+class OpalScalingFFAMagnet : public OpalElement {
   public:
     /** enum maps string to integer value for UI definitions */
     enum {
@@ -55,13 +55,13 @@ class OpalScalingFFAGMagnet : public OpalElement {
     };
 
     /** Default constructor initialises UI parameters. */
-    OpalScalingFFAGMagnet();
+    OpalScalingFFAMagnet();
 
     /** Destructor does nothing */
-    virtual ~OpalScalingFFAGMagnet();
+    virtual ~OpalScalingFFAMagnet();
 
     /** Inherited copy constructor */
-    virtual OpalScalingFFAGMagnet *clone(const std::string &name);
+    virtual OpalScalingFFAMagnet *clone(const std::string &name);
 
     /** Fill in all registered attributes
      *
@@ -69,17 +69,17 @@ class OpalScalingFFAGMagnet : public OpalElement {
      */
     virtual void fillRegisteredAttributes(const ElementBase &, ValueFlag);
 
-    /** Update the ScalingFFAG with new parameters from UI parser */
+    /** Update the ScalingFFA with new parameters from UI parser */
     virtual void update();
 
   private:
     // Not implemented.
-    OpalScalingFFAGMagnet(const OpalScalingFFAGMagnet &);
-    void operator=(const OpalScalingFFAGMagnet &);
+    OpalScalingFFAMagnet(const OpalScalingFFAMagnet &);
+    void operator=(const OpalScalingFFAMagnet &);
 
     // Clone constructor.
-    OpalScalingFFAGMagnet(const std::string &name, OpalScalingFFAGMagnet *parent);
+    OpalScalingFFAMagnet(const std::string &name, OpalScalingFFAMagnet *parent);
 };
 
-#endif // OPAL_OPALSCALINGFFAGMAGNET_H
+#endif // OPAL_OPALSCALINGFFAMAGNET_H
 

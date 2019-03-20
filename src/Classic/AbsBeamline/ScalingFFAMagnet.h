@@ -30,22 +30,22 @@
 #include "AbsBeamline/EndFieldModel/EndFieldModel.h"
 #include "AbsBeamline/Component.h"
 
-#ifndef ABSBEAMLINE_ScalingFFAGMagnet_H
-#define ABSBEAMLINE_ScalingFFAGMagnet_H
+#ifndef ABSBEAMLINE_ScalingFFAMagnet_H
+#define ABSBEAMLINE_ScalingFFAMagnet_H
 
-/** Sector bending magnet with an FFAG-style field index and spiral end shape
+/** Sector bending magnet with an FFA-style field index and spiral end shape
  */
 
-class ScalingFFAGMagnet : public Component {
+class ScalingFFAMagnet : public Component {
   public:
-    /** Construct a new ScalingFFAGMagnet
+    /** Construct a new ScalingFFAMagnet
      *
-     *  \param name User-defined name of the ScalingFFAGMagnet
+     *  \param name User-defined name of the ScalingFFAMagnet
      */
-    explicit ScalingFFAGMagnet(const std::string &name);
+    explicit ScalingFFAMagnet(const std::string &name);
 
     /** Destructor - deletes map */
-    ~ScalingFFAGMagnet();
+    ~ScalingFFAMagnet();
 
     /** Inheritable copy constructor */
     ElementBase* clone() const;
@@ -91,7 +91,7 @@ class ScalingFFAGMagnet : public Component {
      */
     bool getFieldValueCylindrical(const Vector_t &R, Vector_t &B) const;
 
-     /** Initialise the ScalingFFAGMagnet
+     /** Initialise the ScalingFFAMagnet
       *
       *  \param bunch the global bunch object
       *  \param startField not used
@@ -99,17 +99,17 @@ class ScalingFFAGMagnet : public Component {
       */
       void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
 
-     /** Initialise the ScalingFFAGMagnet
+     /** Initialise the ScalingFFAMagnet
       *
       *  Sets up the field expansion and the geometry; call after changing any
       *  field parameters
       */
     void initialise();
 
-     /** Finalise the ScalingFFAGMagnet - sets bunch to NULL */
+     /** Finalise the ScalingFFAMagnet - sets bunch to NULL */
     void finalise();
 
-    /** Return true - ScalingFFAGMagnet always bends the reference particle */
+    /** Return true - ScalingFFAMagnet always bends the reference particle */
     inline bool bends() const;
 
     /** Not implemented */
@@ -162,14 +162,14 @@ class ScalingFFAGMagnet : public Component {
 
     /** Get the fringe field
      *
-     *  Returns the fringe field model; ScalingFFAGMagnet retains ownership of the
+     *  Returns the fringe field model; ScalingFFAMagnet retains ownership of the
      *  returned memory.
      */
     endfieldmodel::EndFieldModel* getEndField() const {return endField_m;}
 
     /** Set the fringe field
       * 
-      * - endField: the new fringe field; ScalingFFAGMagnet takes ownership of the
+      * - endField: the new fringe field; ScalingFFAMagnet takes ownership of the
       *   memory associated with endField.
       */
     void setEndField(endfieldmodel::EndFieldModel* endField);
@@ -242,9 +242,9 @@ class ScalingFFAGMagnet : public Component {
     void calculateDfCoefficients();
 
     /** Copy constructor */
-    ScalingFFAGMagnet(const ScalingFFAGMagnet &right);
+    ScalingFFAMagnet(const ScalingFFAMagnet &right);
 
-    ScalingFFAGMagnet& operator=(const ScalingFFAGMagnet& rhs);
+    ScalingFFAMagnet& operator=(const ScalingFFAMagnet& rhs);
     PlanarArcGeometry planarArcGeometry_m;
     BMultipoleField dummy;
 
