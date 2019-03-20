@@ -723,6 +723,10 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         return;
 
     UndulatorRep* ur = dynamic_cast<UndulatorRep*>((*it).get());
+    if (ur->getIsDone())
+        return;
+    ur->setIsDone();
+    
     std::string fname = ur->getFilename();
 
     msg << "jobfile: " << fname << endl;
@@ -773,7 +777,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         fdtdsc.solve();
     else
         fdtd.solve();
-            
+    
 
 }
 

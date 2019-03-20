@@ -51,7 +51,8 @@ UndulatorRep::UndulatorRep():
     Undulator(),
     geometry(0.0),
     k_m(0.0),
-    fname_m("")
+    fname_m(""),
+    is_done_m(false)
 {}
 
 
@@ -59,7 +60,8 @@ UndulatorRep::UndulatorRep(const UndulatorRep &right):
     Undulator(right),
     geometry(right.geometry),
     k_m(right.k_m),
-    fname_m(right.fname_m)
+    fname_m(right.fname_m),
+    is_done_m(false)
 {}
 
 
@@ -67,7 +69,8 @@ UndulatorRep::UndulatorRep(const std::string &name):
     Undulator(name),
     geometry(),
     k_m(0.0),
-    fname_m("")
+    fname_m(""),
+    is_done_m(false)
 {}
 
 
@@ -134,3 +137,7 @@ void UndulatorRep::setFilename(const std::string&fname) {
 const std::string& UndulatorRep::getFilename() const {
   return fname_m;
 }
+
+void UndulatorRep::setIsDone() { is_done_m = true; }
+
+bool UndulatorRep::getIsDone() const { return is_done_m; }

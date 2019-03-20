@@ -75,6 +75,8 @@ public:
     virtual double getK();
     virtual void setFilename(const std::string& fname);
     virtual const std::string& getFilename() const;
+    virtual void setIsDone();
+    virtual bool getIsDone() const;
 
 
 private:
@@ -93,6 +95,9 @@ private:
 
     /// The mithra file
     std::string fname_m;
+    
+    /// Mithra has already run
+    bool is_done_m;
 };
 
 #endif // CLASSIC_UndulatorRep_HH
