@@ -770,7 +770,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::FdTd   fdtd   (mesh, bunch, seed, undulator, extField, FEL);
     Darius::FdTdSC fdtdsc (mesh, bunch, seed, undulator, extField, FEL);
     
-    /* Get particles                                                                                     */
+    /* Get bunch                                                                                          */
     std::list<Darius::Charge>	qv;
     double q = itsBunch_m->getChargePerParticle();
     const unsigned int localNum = itsBunch_m->getLocalNum();
@@ -780,7 +780,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         charge.rnp  = itsBunch_m->R[i];
         cahrge.gbnp = itsBunch_m->P[i];
         qv.push_back(charge);
-               
     }
     
     /* Solve for the fields and the bunch distribution over the specified time.                           */
