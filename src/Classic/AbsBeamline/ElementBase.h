@@ -436,7 +436,8 @@ public:
     void fixPosition();
     bool isPositioned() const;
 
-    virtual CoordinateSystemTrafo getBeginToEnd() const;
+    virtual CoordinateSystemTrafo getEdgeToBegin() const;
+    virtual CoordinateSystemTrafo getEdgeToEnd() const;
 
     void setAperture(const ApertureType& type, const std::vector<double> &args);
     std::pair<ElementBase::ApertureType, std::vector<double> > getAperture() const;
@@ -604,7 +605,16 @@ CoordinateSystemTrafo ElementBase::getCSTrafoGlobal2Local() const
 { return csTrafoGlobal2Local_m; }
 
 inline
-CoordinateSystemTrafo ElementBase::getBeginToEnd() const
+CoordinateSystemTrafo ElementBase::getEdgeToBegin() const
+{
+    CoordinateSystemTrafo ret(Vector_t(0, 0, 0),
+                              Quaternion(1, 0, 0, 0));
+
+    return ret;
+}
+
+inline
+CoordinateSystemTrafo ElementBase::getEdgeToEnd() const
 {
     CoordinateSystemTrafo ret(Vector_t(0, 0, getElementLength()),
                               Quaternion(1, 0, 0, 0));

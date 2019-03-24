@@ -428,7 +428,7 @@ void OpalBeamline::plot3DLattice() {
                 corners.push_back(rotDiagonal.rotate(toBegin.transformFrom(point)));
             }
         } else {
-            CoordinateSystemTrafo toEnd = element->getBeginToEnd() * toBegin;
+            CoordinateSystemTrafo toEnd = element->getEdgeToEnd() * toBegin;
             auto aperture = element->getAperture();
             double elementHeightFront = aperture.second[0];
             double elementHeightBack = aperture.second[0] * aperture.second[2];
@@ -507,8 +507,9 @@ void OpalBeamline::save3DLattice() {
     MeshGenerator mesh;
     for (; it != end; ++ it) {
         std::shared_ptr<Component> element = (*it).getElement();
-        CoordinateSystemTrafo toEnd = element->getBeginToEnd() * (*it).getCoordTransformationTo();
-        Vector_t entry3D = (*it).getCoordTransformationTo().getOrigin();
+        CoordinateSystemTrafo toBegin = element->getEdgeToBegin() * (*it).getCoordTransformationTo();
+        CoordinateSystemTrafo toEnd = element->getEdgeToEnd() * (*it).getCoordTransformationTo();
+        Vector_t entry3D = toBegin.getOrigin();
         Vector_t exit3D = toEnd.getOrigin();
 
         mesh.add(*(element.get()));
@@ -518,6 +519,8 @@ void OpalBeamline::save3DLattice() {
 
             Bend * bendElement = static_cast<Bend*>(element.get());
             std::vector<Vector_t> designPath = bendElement->getDesignPath();
+            CoordinateSystemTrafo toEnd = bendElement->getBeginToEnd_local() * (*it).getCoordTransformationTo();
+            Vector_t exit3D = toEnd.getOrigin();
 
             unsigned int size = designPath.size();
             unsigned int minNumSteps = std::max(20.0,

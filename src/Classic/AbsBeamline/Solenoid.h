@@ -89,6 +89,10 @@ public:
     virtual double getElementLength() const;
 
     virtual void getElementDimensions(double &zBegin, double &zEnd) const;
+
+    virtual CoordinateSystemTrafo getEdgeToBegin() const;
+    virtual CoordinateSystemTrafo getEdgeToEnd() const;
+
 private:
 
     //  std::string name;                   /**< The name of the object*/
@@ -105,4 +109,23 @@ private:
     void operator=(const Solenoid &);
 };
 
+
+
+inline
+CoordinateSystemTrafo Solenoid::getEdgeToBegin() const
+{
+    CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m),
+                              Quaternion(1, 0, 0, 0));
+
+    return ret;
+}
+
+inline
+CoordinateSystemTrafo Solenoid::getEdgeToEnd() const
+{
+    CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m + length_m),
+                              Quaternion(1, 0, 0, 0));
+
+    return ret;
+}
 #endif // CLASSIC_Solenoid_HH

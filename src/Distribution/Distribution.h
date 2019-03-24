@@ -187,15 +187,16 @@ namespace Attrib
             EY,
             ET,
             SECTOR,                     // Matched-Gauss: single sector or full machine
+            NSECTORS,                   // Matched-Gauss: number of sectors to average field
             NSTEPS,                     // Matched-Gauss: number of steps for closed orbit finder
+            RGUESS,                     // Matched-Gauss: guess for closed orbit finder
+            DENERGY,                    // Matched-Gauss: energy step for closed orbit finder
             LINE,
             RESIDUUM,
             MAXSTEPSCO,
             MAXSTEPSSI,
             ORDERMAPS,
             //            E2,
-            RGUESS,
-            DENERGY,
             ID1,                       // special particle that the user can set
             ID2,                       // special particle that the user can set
             SCALABLE,

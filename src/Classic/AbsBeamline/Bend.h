@@ -129,7 +129,8 @@ public:
     std::vector<Vector_t> getOutline() const;
     MeshData getSurfaceMesh() const;
 
-    virtual CoordinateSystemTrafo getBeginToEnd() const;
+    virtual CoordinateSystemTrafo getEdgeToEnd() const;
+    CoordinateSystemTrafo getBeginToEnd_local() const;
 
     virtual bool isInside(const Vector_t &r) const;
 
@@ -214,7 +215,6 @@ private:
     bool treatAsDrift(Inform &msg, double chordlength);
     void retrieveDesignEnergy(double startField);
 
-    CoordinateSystemTrafo getBeginToEnd_local() const;
     void setCSTrafoToEntranceRegion(const CoordinateSystemTrafo &trafo);
     void setCSTrafoToExitRegion(const CoordinateSystemTrafo &trafo);
     Vector_t transformToEntranceRegion(const Vector_t &R) const;
@@ -403,7 +403,7 @@ double Bend::getMapLength() const
 }
 
 inline
-CoordinateSystemTrafo Bend::getBeginToEnd() const
+CoordinateSystemTrafo Bend::getEdgeToEnd() const
 {
     return beginToEnd_m;
 }

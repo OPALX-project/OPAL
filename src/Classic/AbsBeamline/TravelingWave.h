@@ -103,6 +103,8 @@ public:
     virtual void getElementDimensions(double &begin,
                                       double &end) const;
 
+    virtual CoordinateSystemTrafo getEdgeToBegin() const;
+    virtual CoordinateSystemTrafo getEdgeToEnd() const;
 
 private:
     Fieldmap *CoreFieldmap_m;
@@ -237,4 +239,23 @@ inline
 void TravelingWave::setMode(double mode) {
     Mode_m = mode;
 }
+
+inline
+CoordinateSystemTrafo TravelingWave::getEdgeToBegin() const
+{
+    CoordinateSystemTrafo ret(Vector_t(0, 0, -0.5 * PeriodLength_m),
+                              Quaternion(1, 0, 0, 0));
+
+    return ret;
+}
+
+inline
+CoordinateSystemTrafo TravelingWave::getEdgeToEnd() const
+{
+    CoordinateSystemTrafo ret(Vector_t(0, 0, -0.5 * PeriodLength_m + length_m),
+                              Quaternion(1, 0, 0, 0));
+
+    return ret;
+}
+
 #endif // CLASSIC_TravelingWave_HH

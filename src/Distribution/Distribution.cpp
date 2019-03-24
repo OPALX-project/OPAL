@@ -50,6 +50,7 @@
 #include <sys/time.h>
 
 #include <boost/regex.hpp>
+#include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
 
 extern Inform *gmsg;
 
@@ -1250,7 +1251,6 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
 
     /*
       ToDo:
-      - add flag in order to calculate tunes from FMLOWE to FMHIGHE
       - eliminate physics and error
     */
 
@@ -1281,13 +1281,21 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
      */
     Cyclotron* CyclotronElement = const_cast<Cyclotron*>(CyclotronVisitor.front());
 
-    bool full = !Attributes::getBool(itsAttr[Attrib::Distribution::SECTOR]);
-
-    int Nint = (int)Attributes::getReal(itsAttr[Attrib::Distribution::NSTEPS]);
+    bool full    = !Attributes::getBool(itsAttr[Attrib::Distribution::SECTOR]);
+    int Nint     = (int)Attributes::getReal(itsAttr[Attrib::Distribution::NSTEPS]);
+    int Nsectors = (int)Attributes::getReal(itsAttr[Attrib::Distribution::NSECTORS]);
 
     if ( Nint < 0 )
         throw OpalException("Distribution::CreateMatchedGaussDistribution()",
                             "Negative number of integration steps");
+
+    if ( Nsectors < 0 )
+        throw OpalException("Distribution::CreateMatchedGaussDistribution()",
+                            "Negative number of sectors");
+
+    if ( Nsectors > 1 && full == false )
+        throw OpalException("Distribution::CreateMatchedGaussDistribution()",
+                            "Averaging over sectors can only be done with SECTOR=FALSE");
 
     *gmsg << "* ----------------------------------------------------" << endl;
     *gmsg << "* About to find closed orbit and matched distribution " << endl;
@@ -1295,23 +1303,25 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
     *gmsg << "* EX= " << Attributes::getReal(itsAttr[Attrib::Distribution::EX])
           << "  EY= " << Attributes::getReal(itsAttr[Attrib::Distribution::EY])
           << "  ET= " << Attributes::getReal(itsAttr[Attrib::Distribution::ET]) << endl;
-    if ( full )
-        *gmsg << "* SECTOR: " << "match using all sectors" << endl;
+    if ( full ) {
+        *gmsg << "* SECTOR: " << "match using all sectors, with" << endl
+              << "* NSECTORS = " << Nsectors << " to average the field over" << endl;
+    }
     else
         *gmsg << "* SECTOR: " << "match using single sector" << endl;
+
     *gmsg << "* NSTEPS = " << Nint << endl
           << "* HN= "      << CyclotronElement->getCyclHarm()
           << "  PHIINIT= " << CyclotronElement->getPHIinit()  << endl
           << "* ----------------------------------------------------" << endl;
 
-    if ( CyclotronElement->getFMLowE() < 0 ||
+    if ( CyclotronElement->getFMLowE()  < 0 ||
          CyclotronElement->getFMHighE() < 0 )
     {
         throw OpalException("Distribution::CreateMatchedGaussDistribution()",
-                            "Missing attributes 'FMLOWE' and/or 'FMHIHGE' in "
+                            "Missing attributes 'FMLOWE' and/or 'FMHIGHE' in "
                             "'CYCLOTRON' definition.");
     }
-
 
     std::size_t maxitCOF =
         Attributes::getReal(itsAttr[Attrib::Distribution::MAXSTEPSCO]);
@@ -1335,32 +1345,8 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
         typedef boost::numeric::odeint::runge_kutta4<container_t> rk4_t;
         typedef ClosedOrbitFinder<double,unsigned int, rk4_t> cof_t;
 
-        cof_t cof(E_m*1E-6, massIneV*1E-6, Nint, CyclotronElement, false);
-
-        if ( !cof.findOrbit(accuracy, maxitCOF, denergy, rguess) ) {
-            throw OpalException("Distribution::CreateMatchedGaussDistribution()",
-                                "Closed orbit finder didn't converge.");
-        }
-
-        cof.computeOrbitProperties();
-
-        std::pair<double, double> tunes = cof.getTunes();
-        double ravg = cof.getAverageRadius(); // average radius
-
-        container_t reo = cof.getOrbit(CyclotronElement->getPHIinit());
-        container_t peo = cof.getMomentum(CyclotronElement->getPHIinit());
-
-
-        *gmsg << "* ----------------------------" << endl
-              << "* Closed orbit info (Gordon units):" << endl
-              << "*" << endl
-              << "* average radius:   " << ravg   << " [m]" << endl
-              << "* initial radius:   " << reo[0] << " [m]" << endl
-              << "* initial momentum: " << peo[0] << " [Beta Gamma]" << endl
-              << "* frequency error:  " << cof.getFrequencyError() << endl
-              << "* horizontal tune:  " << tunes.first << endl
-              << "* vertical tune:    " << tunes.second << endl
-              << "* ----------------------------" << endl << endl;
+        cof_t cof(massIneV*1E-6, Nint, CyclotronElement, false, Nsectors);
+        cof.findOrbit(accuracy, maxitCOF, E_m*1E-6, denergy, rguess, true);
 
         std::exit(0);
     }
@@ -3528,10 +3514,12 @@ void Distribution::setAttributes() {
 
     itsAttr[Attrib::Distribution::RGUESS]
         = Attributes::makeReal("RGUESS", "Guess value of radius (m) for closed orbit finder ", -1);
-    
+
     itsAttr[Attrib::Distribution::DENERGY]
         = Attributes::makeReal("DENERGY", "Energy step size for closed orbit finder [GeV]", 0.001);
 
+    itsAttr[Attrib::Distribution::NSECTORS]
+        = Attributes::makeReal("NSECTORS", "Number of sectors to average field, for closed orbit finder ", 1);
 
     itsAttr[Attrib::Distribution::FNAME]
         = Attributes::makeString("FNAME", "File for reading in 6D particle "
