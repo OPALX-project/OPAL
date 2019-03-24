@@ -711,26 +711,24 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Inform msg("Undulator: ", *gmsg);
     bool inUndulator = false;
 
+    /* Check if in Undulator                                                                               */
     IndexMap::value_t::const_iterator it = elements.begin();
     const IndexMap::value_t::const_iterator end = elements.end();
     for (; it != end; ++ it) {
         inUndulator = (*it)->getType() == ElementBase::UNDULATOR;
-
         if ( inUndulator )
             break;
     }
     if (!inUndulator)
         return;
-
     UndulatorRep* ur = dynamic_cast<UndulatorRep*>((*it).get());
     if (ur->getIsDone())
         return;
     ur->setIsDone();
-    
     std::string fname = ur->getFilename();
-
     msg << "jobfile: " << fname << endl;
-
+    
+    /* Start MITHRA                                                                                        */
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " Version 2.0, Copyright 2019, Arya Fallahi" << endl;
@@ -772,11 +770,24 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::FdTd   fdtd   (mesh, bunch, seed, undulator, extField, FEL);
     Darius::FdTdSC fdtdsc (mesh, bunch, seed, undulator, extField, FEL);
     
+    /* Get particles                                                                                     */
+    std::list<Darius::Charge>	qv;
+    double q = itsBunch_m->getChargePerParticle();
+    const unsigned int localNum = itsBunch_m->getLocalNum();
+    for (unsigned int i = 0; i < localNum; ++ i) {
+        Darius::Charge charge;
+        cahrge.q    = q; 
+        charge.rnp  = itsBunch_m->R[i];
+        cahrge.gbnp = itsBunch_m->P[i];
+        qv.push_back(charge);
+               
+    }
+    
     /* Solve for the fields and the bunch distribution over the specified time.                           */
     if ( mesh.spaceCharge_ )
-        fdtdsc.solve();
+        fdtdsc.solve(qv);
     else
-        fdtd.solve();
+        fdtd.solve(qv);
     
 
 }
