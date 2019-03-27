@@ -772,13 +772,15 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     
     /* Get bunch                                                                                          */
     std::list<Darius::Charge>	qv;
-    double q = itsBunch_m->getChargePerParticle();
-    const unsigned int localNum = itsBunch_m->getLocalNum();
-    for (unsigned int i = 0; i < localNum; ++ i) {
-        Darius::Charge charge;
-        cahrge.q    = q; 
-        charge.rnp  = itsBunch_m->R[i];
-        cahrge.gbnp = itsBunch_m->P[i];
+    Darius::Charge charge;
+    charge.q = itsBunch_m->getChargePerParticle();
+    const unsigned int totalNum = itsBunch_m->getTotalNum();
+    for (unsigned int i = 0; i < totalNum; ++ i) {
+        for (unsigned int d = 0; d < 3; d++) {
+            
+            charge.rnp[d] = itsBunch_m->R[i](d);
+            charge.gbnp[d] = itsBunch_m->P[i](d);
+        }
         qv.push_back(charge);
     }
     
