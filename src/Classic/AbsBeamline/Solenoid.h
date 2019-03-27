@@ -45,7 +45,7 @@ public:
     virtual ~Solenoid();
 
     /// Apply visitor to Solenoid.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
     /// Get solenoid field Bz in Teslas.
     virtual double getBz() const = 0;
@@ -53,25 +53,25 @@ public:
     void setKS(double ks);
     void setDKS(double ks);
 
-    virtual void addKR(int i, double t, Vector_t &K);
+    virtual void addKR(int i, double t, Vector_t &K) override;
 
-    virtual void addKT(int i, double t, Vector_t &K);
+    virtual void addKT(int i, double t, Vector_t &K) override;
 
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
-    virtual void finalise();
+    virtual void finalise() override;
 
-    virtual bool bends() const;
+    virtual bool bends() const override;
 
-    virtual void goOnline(const double &kineticEnergy);
+    virtual void goOnline(const double &kineticEnergy) override;
 
-    virtual void goOffline();
+    virtual void goOffline() override;
 
     //  Assign the field filename.
     void setFieldMapFN(std::string fn);
@@ -80,18 +80,18 @@ public:
 
     bool getFast() const;
 
-    virtual ElementBase::ElementType getType() const;
+    virtual ElementBase::ElementType getType() const override;
 
-    virtual void getDimensions(double &zBegin, double &zEnd) const;
+    virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
-    virtual bool isInside(const Vector_t &r) const;
+    virtual bool isInside(const Vector_t &r) const override;
 
-    virtual double getElementLength() const;
+    virtual double getElementLength() const override;
 
-    virtual void getElementDimensions(double &zBegin, double &zEnd) const;
+    virtual void getElementDimensions(double &zBegin, double &zEnd) const override;
 
-    virtual CoordinateSystemTrafo getEdgeToBegin() const;
-    virtual CoordinateSystemTrafo getEdgeToEnd() const;
+    virtual CoordinateSystemTrafo getEdgeToBegin() const override;
+    virtual CoordinateSystemTrafo getEdgeToEnd() const override;
 
 private:
 

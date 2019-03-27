@@ -55,14 +55,14 @@ public:
     virtual ~Multipole();
 
     /// Apply visitor to Multipole.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
 
     /// Get multipole field.
-    virtual BMultipoleField &getField() = 0;
+    virtual BMultipoleField &getField() override = 0;
 
     /// Get multipole field. Version for const object.
-    virtual const BMultipoleField &getField() const = 0;
+    virtual const BMultipoleField &getField() const override = 0;
 
     /// Get normal component.
     //  Return the normal component of order [b]n[/b] in T/m**(n-1).
@@ -106,32 +106,32 @@ public:
     bool isFocusing(unsigned int component) const;
 
     /// Get geometry.
-    virtual StraightGeometry &getGeometry() = 0;
+    virtual StraightGeometry &getGeometry() override = 0;
 
     /// Get geometry.
-    virtual const StraightGeometry &getGeometry() const = 0;
+    virtual const StraightGeometry &getGeometry() const override = 0;
 
-    virtual void addKR(int i, double t, Vector_t &K);
+    virtual void addKR(int i, double t, Vector_t &K) override;
 
-    virtual void addKT(int i, double t, Vector_t &K);
+    virtual void addKT(int i, double t, Vector_t &K) override;
 
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
-    virtual void finalise();
+    virtual void finalise() override;
 
-    virtual bool bends() const;
+    virtual bool bends() const override;
 
-    virtual ElementBase::ElementType getType() const;
+    virtual ElementBase::ElementType getType() const override;
 
-    virtual void getDimensions(double &zBegin, double &zEnd) const;
+    virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
-    virtual bool isInside(const Vector_t &r) const;
+    virtual bool isInside(const Vector_t &r) const override;
 private:
     void computeField(Vector_t R, Vector_t &E, Vector_t &B);
 

@@ -47,64 +47,64 @@ public:
     virtual ~TravelingWave();
 
     /// Apply visitor to TravelingWave.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
     /// Get RF amplitude.
-    virtual double getAmplitude() const = 0;
+    virtual double getAmplitude() const override = 0;
 
     /// Get RF frequencey.
-    virtual double getFrequency() const = 0;
+    virtual double getFrequency() const override = 0;
 
     /// Get RF phase.
-    virtual double getPhase() const = 0;
+    virtual double getPhase() const override = 0;
 
-    virtual void setPhasem(double phase);
+    virtual void setPhasem(double phase) override;
 
     void setNumCells(int NumCells);
 
     void setMode(double mode);
 
-    virtual double getAutoPhaseEstimate(const double & E0, const double & t0, const double & q, const double & m);
+    virtual double getAutoPhaseEstimate(const double & E0, const double & t0, const double & q, const double & m) override;
 
     virtual std::pair<double, double> trackOnAxisParticle(const double & p0,
                                                           const double & t0,
                                                           const double & dt,
                                                           const double & q,
                                                           const double & mass,
-                                                          std::ofstream *out = NULL);
+                                                          std::ofstream *out = NULL) override;
 
-    virtual void addKR(int i, double t, Vector_t &K);
+    virtual void addKR(int i, double t, Vector_t &K) override;
 
-    virtual void addKT(int i, double t, Vector_t &K);
+    virtual void addKT(int i, double t, Vector_t &K) override;
 
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
-    virtual void finalise();
+    virtual void finalise() override;
 
-    virtual bool bends() const;
+    virtual bool bends() const override;
 
-    virtual void goOnline(const double &kineticEnergy);
+    virtual void goOnline(const double &kineticEnergy) override;
 
-    virtual void goOffline();
+    virtual void goOffline() override;
 
-    virtual ElementBase::ElementType getType() const;
+    virtual ElementBase::ElementType getType() const override;
 
-    virtual void getDimensions(double &zBegin, double &zEnd) const;
+    virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
-    virtual bool isInside(const Vector_t &r) const;
+    virtual bool isInside(const Vector_t &r) const override;
 
-    virtual double getElementLength() const;
+    virtual double getElementLength() const override;
     virtual void getElementDimensions(double &begin,
-                                      double &end) const;
+                                      double &end) const override;
 
-    virtual CoordinateSystemTrafo getEdgeToBegin() const;
-    virtual CoordinateSystemTrafo getEdgeToEnd() const;
+    virtual CoordinateSystemTrafo getEdgeToBegin() const override;
+    virtual CoordinateSystemTrafo getEdgeToEnd() const override;
 
 private:
     Fieldmap *CoreFieldmap_m;

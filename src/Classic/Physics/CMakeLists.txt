@@ -12,4 +12,3 @@ set (HDRS
 )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Physics")
-install (FILES ${_SRCS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Physics")

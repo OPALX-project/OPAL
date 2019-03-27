@@ -270,7 +270,7 @@ void OpalBeamline::compute3DLattice() {
                                                        sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
                     Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t(0, 0, 1));
                     double distanceEntryHETruePath = euclidean_norm(truePath.front());
-                    double distanceExitHETruePath = euclidean_norm(truePath.back() - exitHardEdge);
+                    double distanceExitHETruePath = euclidean_norm(rotationAboutZ.rotate(truePath.back()) - exitHardEdge);
                     double pathLengthTruePath = (*it).getEnd() - (*it).getStart();
                     arcLength = pathLengthTruePath - distanceEntryHETruePath - distanceExitHETruePath;
                 }
@@ -341,7 +341,7 @@ void OpalBeamline::compute3DLattice() {
                                                    sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
                 Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t(0, 0, 1));
                 double distanceEntryHETruePath = euclidean_norm(truePath.front());
-                double distanceExitHETruePath = euclidean_norm(truePath.back() - exitHardEdge);
+                double distanceExitHETruePath = euclidean_norm(rotationAboutZ.rotate(truePath.back()) - exitHardEdge);
                 double pathLengthTruePath = (*it).getEnd() - (*it).getStart();
                 arcLength = pathLengthTruePath - distanceEntryHETruePath - distanceExitHETruePath;
             }

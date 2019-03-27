@@ -42,7 +42,7 @@ public:
     virtual ~Separator();
 
     /// Apply visitor to Separator.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
     /// Get horizontal component Ex of field in V/m.
     virtual double getEx() const = 0;
@@ -50,15 +50,15 @@ public:
     /// Get vertical component Ey of field in V/m.
     virtual double getEy() const = 0;
 
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
-    virtual void finalise();
+    virtual void finalise() override;
 
-    virtual bool bends() const;
+    virtual bool bends() const override;
 
-    virtual ElementBase::ElementType getType() const;
+    virtual ElementBase::ElementType getType() const override;
 
-    virtual void getDimensions(double &zBegin, double &zEnd) const;
+    virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
 private:
 

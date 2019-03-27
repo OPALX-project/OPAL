@@ -67,10 +67,10 @@ class VariableRFCavity: public Component {
      *  The RF cavity finds the "time dependence" models by doing a string
      *  lookup against a list held by AbstractTimeDependence at accept time.
      */
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
     /** Inheritable deepcopy method */
-    virtual ElementBase* clone() const;
+    virtual ElementBase* clone() const override;
 
     /** Calculate the field at the position of the i^th particle 
      *
@@ -81,7 +81,7 @@ class VariableRFCavity: public Component {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
     /** Calculate the field at a given position
      *
@@ -93,7 +93,7 @@ class VariableRFCavity: public Component {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
 
     /** Calculate the field at a given position. This is identical to "apply".
@@ -106,25 +106,25 @@ class VariableRFCavity: public Component {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
     /** Initialise ready for tracking
      * 
      *  Just sets RefPartBunch_m
      */
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
     /** Finalise following tracking
      * 
      *  Just sets RefPartBunch_m to NULL
      */
-    virtual void finalise();
+    virtual void finalise() override;
 
     /** @returns false (cavity does not bend the trajectory) */
-    virtual bool bends() const {return false;}
+    virtual bool bends() const override {return false;}
 
     /** Not used (does nothing) */
-    virtual void getDimensions(double &zBegin, double &zEnd) const {}
+    virtual void getDimensions(double &zBegin, double &zEnd) const override {}
 
     /** Get the amplitude at a given time
      *
@@ -199,14 +199,14 @@ class VariableRFCavity: public Component {
     { frequencyName_m = frequency; }
 
     /** Set the cavity geometry */
-    virtual StraightGeometry& getGeometry();
+    virtual StraightGeometry& getGeometry() override;
     /** @returns the cavity geometry */
-    virtual const StraightGeometry& getGeometry() const;
+    virtual const StraightGeometry& getGeometry() const override;
 
     /// Not implemented
-    virtual EMField &getField();
+    virtual EMField &getField() override;
     /// Not implemented
-    virtual const EMField &getField() const;
+    virtual const EMField &getField() const override;
   protected:
     void initNull();
     void initialise() const;

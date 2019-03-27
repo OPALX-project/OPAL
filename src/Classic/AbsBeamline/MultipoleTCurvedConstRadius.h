@@ -91,18 +91,18 @@ public:
     /** Destructor */ 
     ~MultipoleTCurvedConstRadius();
     /** Inheritable copy constructor */
-    virtual ElementBase* clone() const;
+    virtual ElementBase* clone() const override;
     /** Accept a beamline visitor */
-    void accept(BeamlineVisitor &visitor) const;
+    void accept(BeamlineVisitor &visitor) const override;
     /** Return the cell geometry */
-    PlanarArcGeometry& getGeometry();
+    PlanarArcGeometry& getGeometry() override;
     /** Return the cell geometry */
-    const PlanarArcGeometry& getGeometry() const;
+    const PlanarArcGeometry& getGeometry() const override;
     /** Set the number of terms used in calculation of field components \n
      *  Maximum power of z in Bz is 2 * maxOrder_m
      *  \param maxOrder -> Number of terms in expansion in z
      */
-    virtual void setMaxOrder(const std::size_t &maxOrder);
+    virtual void setMaxOrder(const std::size_t &maxOrder) override;
     /** Get highest power of x in polynomial expansions */
     std::size_t getMaxXOrder() const;
     /** Set the number of terms used in polynomial expansions
@@ -110,9 +110,9 @@ public:
      */
     void setMaxXOrder(const std::size_t &maxXOrder);
     /** Set the bending angle of the magnet */
-    virtual void setBendAngle(const double &angle);
+    virtual void setBendAngle(const double &angle) override;
     /** Get the bending angle of the magnet */
-    virtual double getBendAngle() const;
+    virtual double getBendAngle() const override;
     /** Initialise the MultipoleT
      *  \param bunch -> Bunch the global bunch object
      *  \param startField -> Not used
@@ -120,7 +120,7 @@ public:
      */
     virtual void initialise(PartBunchBase<double, 3>* bunch,
                             double &startField,
-                            double &endField);
+                            double &endField) override;
 private:
     MultipoleTCurvedConstRadius operator=(
                                 const MultipoleTCurvedConstRadius &rhs);
@@ -131,21 +131,21 @@ private:
     /** Geometry */
     PlanarArcGeometry planarArcGeometry_m;
     /** Transform to Frenet-Serret coordinates for sector magnets */
-    virtual void transformCoords(Vector_t &R);
+    virtual void transformCoords(Vector_t &R) override;
     /** Transform B-field from Frenet-Serret coordinates to lab coordinates */
-    virtual void transformBField(Vector_t &B, const Vector_t &R);
+    virtual void transformBField(Vector_t &B, const Vector_t &R) override;
     double angle_m;
     /** Radius of curvature \n
      *  If radius of curvature is infinite, -1 is returned \n
      *  @f$ \rho(s) = length_m / angle_m @f$
      *  \param s -> Coordinate s
      */
-    virtual double getRadius(const double &s);
+    virtual double getRadius(const double &s) override;
     /** Returns the scale factor @f$ h_s = 1 + x / \rho @f$
      *  \param x -> Coordinate x
      *  \param s -> Coordinate s
      */
-    virtual double getScaleFactor(const double &x, const double &s);
+    virtual double getScaleFactor(const double &x, const double &s) override;
     /** Calculate fn(x, s) by expanding the differential operator
      *  (from Laplacian and scalar potential) in terms of polynomials
      *  \param n -> nth derivative
@@ -154,7 +154,7 @@ private:
      */
     virtual double getFn(const std::size_t &n,
                          const double &x,
-                         const double &s);
+                         const double &s) override;
 };
 
 inline

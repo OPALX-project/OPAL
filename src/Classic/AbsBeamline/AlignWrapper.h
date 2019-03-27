@@ -43,19 +43,19 @@ class AlignWrapper: public ElementBase {
 public:
 
     /// Apply BeamlineVisitor.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
     /// Return clone.
     //  Return an identical deep copy of the wrapper and its contents.
-    virtual AlignWrapper *clone() const;
+    virtual AlignWrapper *clone() const override;
 
     /// Make structural copy.
-    virtual ElementBase *copyStructure();
+    virtual ElementBase *copyStructure() override;
 
     /// Set sharable flag.
     //  The whole structure depending on [b]this[/b] is marked as sharable.
     //  After this call a [b]copyStructure()[/b] call reuses the element.
-    virtual void makeSharable();
+    virtual void makeSharable() override;
 
 
     /// Get entrance patch.
@@ -80,12 +80,12 @@ public:
     /// Get geometry.
     //  Return the element geometry.
     //  Version for non-constant object.
-    virtual BGeometryBase &getGeometry();
+    virtual BGeometryBase &getGeometry() override;
 
     /// Get geometry.
     //  Return the element geometry.
     //  Version for constant object.
-    virtual const BGeometryBase &getGeometry() const;
+    virtual const BGeometryBase &getGeometry() const override;
 
     /// Return the offset.
     //  This method can be used to get or set the offset. The offset is
@@ -95,44 +95,44 @@ public:
 
     /// Get element type std::string.
     //  Returns the type std::string for the enclosed item.
-    virtual ElementBase::ElementBase::ElementType getType() const;
+    virtual ElementBase::ElementBase::ElementType getType() const override;
 
     /// Disallow misalignment of an already misaligned object.
     //  This method returns [b]this[/b], since "this" is already an
     //  AlignWrapper.
-    virtual ElementBase *makeAlignWrapper();
+    virtual ElementBase *makeAlignWrapper() override;
 
     /// Allow field errors.
     //  Wrap the contained element in a field wrapper, unless such a
     //  wrapper already exists.
-    virtual ElementBase *makeFieldWrapper();
+    virtual ElementBase *makeFieldWrapper() override;
 
     /// Remove AlignWrapper.
     //  Return the element or field wrapper contained in "this".
     //  Version for non-const object.
-    virtual ElementBase *removeAlignWrapper();
+    virtual ElementBase *removeAlignWrapper() override;
 
     /// Remove AlignWrapper.
     //  Return the element or field wrapper contained in "this".
     //  Version for const object.
-    virtual const ElementBase *removeAlignWrapper() const;
+    virtual const ElementBase *removeAlignWrapper() const override;
 
     /// Remove field wrapper.
     //  Remove any field wrapper on the contained object.
-    virtual ElementBase *removeFieldWrapper();
+    virtual ElementBase *removeFieldWrapper() override;
 
     /// Remove field wrapper.
     //  Remove the field wrapper for constant object.
-    virtual const ElementBase *removeFieldWrapper() const;
+    virtual const ElementBase *removeFieldWrapper() const override;
 
     /// Return the design element.
     //  This method removes all wrappers on the contained object.
     //  Version for non-const object.
-    virtual ElementBase *removeWrappers();
+    virtual ElementBase *removeWrappers() override;
 
     /// Return the design element.
     //  Version for const object.
-    virtual const ElementBase *removeWrappers() const;
+    virtual const ElementBase *removeWrappers() const override;
 
 private:
 

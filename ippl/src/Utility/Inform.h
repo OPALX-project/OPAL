@@ -35,12 +35,6 @@
 #include <iomanip>
 #include <sstream>
 
-// range of Inform message levels
-#define MIN_INFORM_LEVEL	1
-#define MAX_INFORM_LEVEL	5
-
-// how large is the buffer for this object?
-#define MAX_INFORM_MSG_SIZE     32000
 #define INFORM_ALL_NODES        (-1)
 
 

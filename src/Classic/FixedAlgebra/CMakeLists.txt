@@ -45,5 +45,6 @@ set (HDRS
     TransportMath.h
 )
 
-install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/FixedAlgebra")
+install (FILES ${HDRS}  DESTINATION "${CMAKE_INSTALL_PREFIX}/include/FixedAlgebra")
+# Some source files included in header files
 install (FILES ${_SRCS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/FixedAlgebra")

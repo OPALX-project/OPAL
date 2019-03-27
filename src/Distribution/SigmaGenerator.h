@@ -106,12 +106,13 @@ public:
      * @param cycl is the cyclotron element
      * @param N is the number of integration steps (closed orbit computation). That's why its also the number
      *    of maps (for each integration step a map)
+     * @param Nsectors is the number of sectors that the field map is averaged over (closed orbit computation)
      * @param truncOrder is the truncation order for power series of the Hamiltonian
      * @param write is a boolean (default: true). If true all maps of all iterations are stored, otherwise not.
      */
     SigmaGenerator(value_type I, value_type ex, value_type ey, value_type ez,
                    value_type E, value_type m, const Cyclotron* cycl,
-                   size_type N, size_type truncOrder, bool write = true);
+                   size_type N, size_type Nsectors, size_type truncOrder, bool write = true);
 
     /// Searches for a matched distribution.
     /*!
@@ -209,10 +210,10 @@ public:
     value_type Emin_m;
     /// Maximum energy reached in cyclotron, \f$ \left[E_{max}\right] = MeV \f$
     value_type Emax_m;
-    /// Number of (symmetric) sectors
-    size_type nSector_m;
     /// Number of integration steps for closed orbit computation
     size_type N_m;
+    /// Number of (symmetric) sectors the field is averaged over
+    size_type nSectors_m;
     /// Number of integration steps per sector (--> also: number of maps per sector)
     size_type nStepsPerSector_m;
     
@@ -222,18 +223,12 @@ public:
     /// Error of computation
     value_type error_m;
 
-    /// Location of magnetic fieldmap
-    std::string fieldmap_m;
-
     /// Truncation order of the power series for the Hamiltonian (cyclotron and space charge)
     size_type truncOrder_m;
 
     /// Decides for writing output (default: true)
     bool write_m;
     
-    /// Scale the magnetic field values (default: 1.0)
-    value_type scaleFactor_m;
-
     /// Stores the stationary distribution (sigma matrix)
     matrix_type sigma_m;
 
@@ -333,6 +328,7 @@ SigmaGenerator<Value_type, Size_type>::SigmaGenerator(value_type I,
                                                       value_type m,
                                                       const Cyclotron* cycl,
                                                       size_type N,
+                                                      size_type Nsectors,
                                                       size_type truncOrder,
                                                       bool write)
     : I_m(I)
@@ -347,15 +343,13 @@ SigmaGenerator<Value_type, Size_type>::SigmaGenerator(value_type I,
     , converged_m(false)
     , Emin_m(cycl->getFMLowE())
     , Emax_m(cycl->getFMHighE())
-    , nSector_m(cycl->getSymmetry())
     , N_m(N)
+    , nSectors_m(Nsectors)
     , nStepsPerSector_m(N/cycl->getSymmetry())
     , nSteps_m(N)
     , error_m(std::numeric_limits<value_type>::max())
-    , fieldmap_m(cycl->getFieldMapFN())
     , truncOrder_m(truncOrder)
     , write_m(write)
-    , scaleFactor_m(cycl->getBScale())
     , sigmas_m(nStepsPerSector_m)
     , rinit_m(0.0)
     , prinit_m(0.0)
@@ -463,7 +457,7 @@ template<typename Value_type, typename Size_type>
 
         if (!harmonic) {
             ClosedOrbitFinder<value_type, size_type,
-                boost::numeric::odeint::runge_kutta4<container_type> > cof(m_m, N_m, cycl, false);
+                boost::numeric::odeint::runge_kutta4<container_type> > cof(m_m, N_m, cycl, false, nSectors_m);
 
             if ( !cof.findOrbit(accuracy, maxitOrbit, E_m, denergy, rguess) ) {
                 throw OpalException("SigmaGenerator::match()",

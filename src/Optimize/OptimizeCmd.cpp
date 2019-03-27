@@ -436,8 +436,7 @@ void OptimizeCmd::execute() {
         std::ifstream infile(tmplFile.c_str());
 
         std::map<std::string, short> dvarCheck;
-        auto itr = dvars.begin();
-        for (; itr != dvars.end(); ++ itr) {
+        for (auto itr = dvars.begin(); itr != dvars.end(); ++ itr) {
             dvarCheck.insert(std::make_pair(boost::get<0>(itr->second), 0));
         }
 
@@ -447,7 +446,7 @@ void OptimizeCmd::execute() {
 
             //XXX doing the inverse would be better
             for(auto &check: dvarCheck) {
-                size_t pos = line.find("_" + check.first + "_");
+                pos = line.find("_" + check.first + "_");
                 if (pos != std::string::npos &&
                     dvarCheck.find(check.first) != dvarCheck.end()) {
                     dvarCheck.at(check.first) = 1;

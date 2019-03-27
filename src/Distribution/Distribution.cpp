@@ -1362,6 +1362,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
                                             massIneV*1E-6,
                                             CyclotronElement,
                                             Nint,
+                                            Nsectors,
                                             Attributes::getReal(itsAttr[Attrib::Distribution::ORDERMAPS]),
                                             writeMap);
 

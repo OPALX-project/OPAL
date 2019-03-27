@@ -48,42 +48,42 @@ public:
     virtual ~RBend3D();
 
     /** Inheritable copy constructor */
-    ElementBase* clone() const;
+    ElementBase* clone() const override;
 
     /** Return the cell geometry */
-    BGeometryBase& getGeometry();
+    BGeometryBase& getGeometry() override;
 
     /** Return the cell geometry */
-    const BGeometryBase& getGeometry() const;
+    const BGeometryBase& getGeometry() const override;
 
     /** Return a dummy (0.) field value (what is this for?) */
-    EMField &getField();
+    EMField &getField() override;
 
     /** Return a dummy (0.) field value (what is this for?) */
-    const EMField &getField() const;
+    const EMField &getField() const override;
 
     /// Apply visitor to RBend3D.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
-    virtual void addKR(int i, double t, Vector_t &K);
+    virtual void addKR(int i, double t, Vector_t &K) override;
 
-    virtual void addKT(int i, double t, Vector_t &K);
+    virtual void addKT(int i, double t, Vector_t &K) override;
 
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
-    virtual void finalise();
+    virtual void finalise() override;
 
-    virtual bool bends() const;
+    virtual bool bends() const override;
 
-    virtual void goOnline(const double &kineticEnergy);
+    virtual void goOnline(const double &kineticEnergy) override;
 
-    virtual void goOffline();
+    virtual void goOffline() override;
 
     //  Assign the field filename.
     void setFieldMapFN(std::string fn);
@@ -92,11 +92,11 @@ public:
 
     bool getFast() const;
 
-    virtual ElementBase::ElementType getType() const;
+    virtual ElementBase::ElementType getType() const override;
 
-    virtual void getDimensions(double &zBegin, double &zEnd) const;
+    virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
-    virtual bool isInside(const Vector_t &r) const;
+    virtual bool isInside(const Vector_t &r) const override;
 
     MeshData getSurfaceMesh() const;
 

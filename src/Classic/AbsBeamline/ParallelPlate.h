@@ -46,13 +46,13 @@ public:
     virtual ~ParallelPlate();
 
     /// Apply visitor to ParallelPlate.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
 
 
-    void getDimensions(double &zBegin, double &zEnd) const;
+    void getDimensions(double &zBegin, double &zEnd) const override;
 
-    ElementBase::ElementType getType() const;
+    ElementBase::ElementType getType() const override;
 
     std::string getFieldMapFN() const;
 
@@ -68,19 +68,19 @@ public:
     // void setElementLength(double length);
     // double getElementLength() const;
 
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
     virtual void initialise(PartBunchBase<double, 3> *bunch);
 
-    virtual void finalise();
+    virtual void finalise() override;
 
-    virtual bool bends() const;
+    virtual bool bends() const override;
 
 
 private:

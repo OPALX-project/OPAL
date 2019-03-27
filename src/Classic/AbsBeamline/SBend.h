@@ -77,7 +77,7 @@ public:
     virtual ~SBend();
 
     /// Apply visitor to SBend.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
 
     /*
@@ -90,19 +90,19 @@ public:
 
     /// Get SBend geometry.
     //  Version for non-constant object.
-    virtual PlanarArcGeometry &getGeometry() = 0;
+    virtual PlanarArcGeometry &getGeometry() override = 0;
 
     /// Get SBend geometry
     //  Version for constant object.
-    virtual const PlanarArcGeometry &getGeometry() const = 0;
+    virtual const PlanarArcGeometry &getGeometry() const override = 0;
 
     /// Get multipole expansion of field.
     //  Version for non-constant object.
-    virtual BMultipoleField &getField() = 0;
+    virtual BMultipoleField &getField() override = 0;
 
     /// Get multipole expansion of field.
     //  Version for constant object.
-    virtual const BMultipoleField &getField() const = 0;
+    virtual const BMultipoleField &getField() const override = 0;
 
     /// Get normal component.
     //  Return the normal component of order [b]n[/b] in T/m**(n-1).
@@ -158,11 +158,11 @@ public:
     /*
      * Methods for OPAL-SLICE.
      */
-    virtual void addKR(int /* i */, double /* t */, Vector_t &/* K */) { };
-    virtual void addKT(int /* i */, double /* t */, Vector_t &/* K */) { };
+    virtual void addKR(int /* i */, double /* t */, Vector_t &/* K */) override { };
+    virtual void addKT(int /* i */, double /* t */, Vector_t &/* K */) override { };
 
 
-    virtual ElementBase::ElementType getType() const;
+    virtual ElementBase::ElementType getType() const override;
 
 private:
 
@@ -170,7 +170,7 @@ private:
     void operator=(const SBend &);
 
     virtual bool findChordLength(Inform &msg,
-                                 double &chordLength);
+                                 double &chordLength) override;
 
 };
 

@@ -22,7 +22,7 @@ public:
     virtual ~CCollimator();
 
     /// Apply visitor to CCollimator.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
     ///@{ Override implementation of PluginElement
     virtual void goOnline(const double &kineticEnergy) override;
     virtual ElementBase::ElementType getType() const override;

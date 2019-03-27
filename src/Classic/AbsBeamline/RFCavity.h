@@ -47,7 +47,7 @@ public:
     virtual ~RFCavity();
 
     /// Apply visitor to RFCavity.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
     /// Get RF amplitude.
     virtual double getAmplitude() const = 0;
@@ -106,46 +106,44 @@ public:
                                                           const double & mass,
 							  std::ofstream *out = NULL);
 
-    virtual void addKR(int i, double t, Vector_t &K);
+    virtual void addKR(int i, double t, Vector_t &K) override;
 
-    virtual void addKT(int i, double t, Vector_t &K);
+    virtual void addKT(int i, double t, Vector_t &K) override;
 
     virtual bool apply(const size_t &i,
                        const double &t,
                        Vector_t &E,
-                       Vector_t &B);
+                       Vector_t &B) override;
 
     virtual bool apply(const Vector_t &R,
                        const Vector_t &P,
                        const double &t,
                        Vector_t &E,
-                       Vector_t &B);
+                       Vector_t &B) override;
 
     virtual bool applyToReferenceParticle(const Vector_t &R,
                                           const Vector_t &P,
                                           const double &t,
                                           Vector_t &E,
-                                          Vector_t &B);
+                                          Vector_t &B) override;
 
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
     virtual void initialise(PartBunchBase<double, 3> *bunch,
                             std::shared_ptr<AbstractTimeDependence> freq_atd,
                             std::shared_ptr<AbstractTimeDependence> ampl_atd,
                             std::shared_ptr<AbstractTimeDependence> phase_atd);
 
-    virtual void finalise();
+    virtual void finalise() override;
 
-    virtual bool bends() const;
+    virtual bool bends() const override;
 
-    virtual void goOnline(const double &kineticEnergy);
+    virtual void goOnline(const double &kineticEnergy) override;
 
-    virtual void goOffline();
+    virtual void goOffline() override;
 
-    using Component::setDesignEnergy;
-    virtual void setDesignEnergy(const double& ekin);
-    virtual void setDesignEnergy(const double& ekin, bool);
-    virtual double getDesignEnergy() const;
+    virtual void setDesignEnergy(const double& ekin, bool changeable = true)  override;
+    virtual double getDesignEnergy() const override;
 
     void setRmin(double rmin);
 
@@ -175,9 +173,9 @@ public:
 
     virtual double getPhi0() const;
 
-    virtual void setComponentType(std::string name);
+    virtual void setComponentType(std::string name) override;
 
-    virtual std::string getComponentType()const;
+    virtual std::string getComponentType()const override;
 
     virtual double getCycFrequency()const;
 
@@ -185,11 +183,11 @@ public:
 
     double spline(double z, double *za);
 
-    virtual ElementBase::ElementType getType() const;
+    virtual ElementBase::ElementType getType() const override;
 
-    virtual void getDimensions(double &zBegin, double &zEnd) const;
+    virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
-    virtual bool isInside(const Vector_t &r) const;
+    virtual bool isInside(const Vector_t &r) const override;
 
     void setAmplitudeModel(std::shared_ptr<AbstractTimeDependence> time_dep);
     void setAmplitudeModelName(std::string name);
@@ -203,12 +201,12 @@ public:
     void setFrequencyModelName(std::string name);
     std::string getFrequencyModelName();
 
-    virtual double getElementLength() const;
+    virtual double getElementLength() const override;
     virtual void getElementDimensions(double &begin,
-                                      double &end) const;
+                                      double &end) const override;
 
-    virtual CoordinateSystemTrafo getEdgeToBegin() const;
-    virtual CoordinateSystemTrafo getEdgeToEnd() const;
+    virtual CoordinateSystemTrafo getEdgeToBegin() const override;
+    virtual CoordinateSystemTrafo getEdgeToEnd() const override;
 
 protected:
     std::shared_ptr<AbstractTimeDependence> phase_td_m;
@@ -342,12 +340,6 @@ double RFCavity::getdB(const int & i,
     return dz / (frequency * frequency * dt * dt) *
         (frequency * dt * (F[i] * sin(frequency * t[i]) - F[i-1] * sin(frequency * t[i-1])) +
          (F[i] - F[i-1]) * (cos(frequency * t[i]) - cos(frequency * t[i-1])));
-}
-
-inline
-void RFCavity::setDesignEnergy(const double& ekin)
-{
-    designEnergy_m = ekin;
 }
 
 inline

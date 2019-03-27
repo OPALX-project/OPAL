@@ -97,13 +97,13 @@ public:
     /** Destructor */ 
     ~MultipoleT();
     /** Inheritable copy constructor */
-    ElementBase* clone() const;
+    ElementBase* clone() const override;
     /** Return a dummy field value */
-    EMField &getField();
+    EMField &getField() override;
     /** Return a dummy field value */
-    const EMField &getField() const;
+    const EMField &getField() const override;
     /** Not implemented */
-    void getDimensions(double &zBegin, double &zEnd) const;
+    void getDimensions(double &zBegin, double &zEnd) const override;
     /** Calculate the field at some arbitrary position
      *  If particle is outside field map true is returned,
      *  otherwise false is returned
@@ -114,9 +114,9 @@ public:
      *  \param B -> Calculated magnetic field
      */
     bool apply(const Vector_t &R, const Vector_t &P, const double &t,
-               Vector_t &E, Vector_t &B);
+               Vector_t &E, Vector_t &B) override;
     /** Calculate the field at the position of the ith particle
-     *  \param i -> Index of the particle event; field is calculated at this
+     *  \param i -> Index of the particle event override; field is calculated at this
      *  position
      *  If particle is outside field map true is returned,
      *  otherwise false is returned
@@ -124,7 +124,7 @@ public:
      *  \param E -> Calculated electric field - always 0 (no E-field)
      *  \param B -> Calculated magnetic field
      */
-    bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
     /** Initialise the MultipoleT
      *  \param bunch -> Bunch the global bunch object
      *  \param startField -> Not used
@@ -132,20 +132,20 @@ public:
      */
     void initialise(PartBunchBase<double, 3>*,
                     double &startField,
-                    double &endField);
+                    double &endField) override;
     /** Initialises the geometry */
     void initialise();
 
     /** Finalise the MultipoleT - sets bunch to NULL */
-    void finalise();
+    void finalise() override;
     /** Return true if dipole component not zero */
-    bool bends() const;
+    bool bends() const override;
     /** Return the cell geometry */
-    PlanarArcGeometry& getGeometry();
+    PlanarArcGeometry& getGeometry() override;
     /** Return the cell geometry */
-    const PlanarArcGeometry& getGeometry() const;
+    const PlanarArcGeometry& getGeometry() const override;
     /** Accept a beamline visitor */
-    void accept(BeamlineVisitor& visitor) const;
+    void accept(BeamlineVisitor& visitor) const override;
     /** Get the dipole constant B_0 */
     double getDipoleConstant() const;
     /** Set the dipole constant B_0 */

@@ -82,7 +82,7 @@ public:
     virtual ~RBend();
 
     /// Apply visitor to RBend.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
     /*
      * Methods for OPAL-MAP
@@ -94,19 +94,19 @@ public:
 
     /// Get RBend geometry.
     //  Version for non-constant object.
-    virtual RBendGeometry &getGeometry() = 0;
+    virtual RBendGeometry &getGeometry() override = 0;
 
     /// Get RBend geometry
     //  Version for constant object.
-    virtual const RBendGeometry &getGeometry() const = 0;
+    virtual const RBendGeometry &getGeometry() const override = 0;
 
     /// Get multipole expansion of field.
     //  Version for non-constant object.
-    virtual BMultipoleField &getField() = 0;
+    virtual BMultipoleField &getField() override = 0;
 
     /// Get multipole expansion of field.
     //  Version for constant object.
-    virtual const BMultipoleField &getField() const = 0;
+    virtual const BMultipoleField &getField() const override = 0;
 
     /// Get normal component.
     //  Return the normal component of order [b]n[/b] in T/m**(n-1).
@@ -162,17 +162,17 @@ public:
     /*
      * Methods for OPAL-SLICE.
      */
-    virtual void addKR(int i, double t, Vector_t &K);
-    virtual void addKT(int i, double t, Vector_t &K);
+    virtual void addKR(int i, double t, Vector_t &K) override;
+    virtual void addKT(int i, double t, Vector_t &K) override;
 
 
     /*
      * Methods for OPAL-T.
      */
 
-    virtual ElementBase::ElementType getType() const;
-    virtual void setBendAngle(double angle);
-    virtual void setEntranceAngle(double entranceAngle);
+    virtual ElementBase::ElementType getType() const override;
+    virtual void setBendAngle(double angle) override;
+    virtual void setEntranceAngle(double entranceAngle) override;
 
 private:
 
@@ -180,7 +180,7 @@ private:
     void operator=(const RBend &);
 
     virtual bool findChordLength(Inform &msg,
-                                 double &chordLength);
+                                 double &chordLength) override;
 };
 
 #endif // CLASSIC_RBend_HH

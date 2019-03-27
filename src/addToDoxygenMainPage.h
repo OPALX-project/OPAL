@@ -33,7 +33,6 @@ Daniel Winklehner (MIT)
 For further information contact: <a href="mailto:andreas.adelmann@psi.ch">andreas.adelmann@psi.ch</a> -
 Andreas Adelmann
 </P>
-Last modified today
 </P>
 
 <P>

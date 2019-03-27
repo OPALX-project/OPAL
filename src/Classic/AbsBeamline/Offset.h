@@ -147,20 +147,20 @@ class Offset : public Component {
      *
      *  Sets ring radius
      */
-    void accept(BeamlineVisitor &) const;
+    void accept(BeamlineVisitor &) const override;
 
     /** Just calls the copy constructor on *this */
-    ElementBase* clone() const;
+    ElementBase* clone() const override;
 
     /** Returns true if either input angle or output angle are greater than
      *  float_tolerance
      */
-    bool bends() const;
+    bool bends() const override;
 
     void initialise(PartBunchBase<double, 3> *bunch, double &startField,
-                            double &endField);
-    void finalise();
-    void getDimensions(double &zBegin, double &zEnd) const {}
+                            double &endField) override;
+    void finalise() override;
+    void getDimensions(double &zBegin, double &zEnd) const override {}
 
     void setEndPosition(Vector_t position);
     Vector_t getEndPosition() const;
@@ -178,16 +178,16 @@ class Offset : public Component {
      */
     bool getIsLocal() const;
 
-    Euclid3DGeometry& getGeometry();
-    const Euclid3DGeometry& getGeometry() const;
+    Euclid3DGeometry& getGeometry() override;
+    const Euclid3DGeometry& getGeometry() const override;
     void updateGeometry(Vector_t startPosition, Vector_t startDirection);
     void updateGeometry();
     bool isGeometryAllocated() const;
 
     /// Not implemented - throws GeneralClassicException
-    EMField &getField();
+    EMField &getField() override;
     /// Not implemented - throws GeneralClassicException
-    const EMField &getField() const;
+    const EMField &getField() const override;
     /** Calculate the angle between vectors on the midplane
      *
      *  Returns theta in domain -pi, pi. A positive angle means a rotation

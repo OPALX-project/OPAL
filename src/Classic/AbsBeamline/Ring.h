@@ -92,7 +92,7 @@ class Ring : public Component {
      *  "Bin" data to -1 and store in LossDataSink
      */
     virtual bool apply(const size_t &id, const double &t, Vector_t &E,
-                       Vector_t &B);
+                       Vector_t &B) override;
 
     /** Overwrite data in vector E and B with electromagnetic field at point R
      *
@@ -111,7 +111,7 @@ class Ring : public Component {
      *  "Bin" data to -1
      */
     virtual bool apply(const Vector_t &R, const Vector_t &P,
-                       const double &t, Vector_t &E, Vector_t &B);
+                       const double &t, Vector_t &E, Vector_t &B) override;
 
     /** Initialise the Ring
      *
@@ -122,7 +122,7 @@ class Ring : public Component {
      *  @param scaleFactor - not used
      */
     virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField,
-                            double &endField);
+                            double &endField) override;
 
     /** Initialise the Ring - set the bunch and allocate a new LossDataSink
      *
@@ -135,10 +135,10 @@ class Ring : public Component {
      *
      *  Ring relinquishes RefPartBunchBase<double, 3> pointer and deletes LossDataSink
      */
-    virtual void finalise();
+    virtual void finalise() override;
 
     /** Returns true - Ring is assumed to bend particles, being a ring */
-    virtual bool bends() const {return true;}
+    virtual bool bends() const override {return true;}
 
     /** Accept the BeamlineVisitor
      *
@@ -146,13 +146,13 @@ class Ring : public Component {
      *  this function is that it enables us to store a pointer to the visitor
      *  object or something
      */
-    virtual void accept(BeamlineVisitor& visitor) const;
+    virtual void accept(BeamlineVisitor& visitor) const override;
 
     /** Not implemented - always throws an exception */
-    virtual void getDimensions(double &zBegin, double &zEnd) const;
+    virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
     /** Inherited copy constructor */
-    virtual ElementBase* clone() const {return new Ring(*this);}
+    virtual ElementBase* clone() const override {return new Ring(*this);}
 
     /** Add element to the ring
      *
@@ -176,16 +176,16 @@ class Ring : public Component {
     void appendElement(const Component &element);
 
     /** Not implemented, throws an exception */
-    virtual EMField &getField() {throw GeneralClassicException("Ring::getField", "Not implemented");}
+    virtual EMField &getField() override {throw GeneralClassicException("Ring::getField", "Not implemented");}
 
     /** Not implemented, throws an exception */
-    virtual const EMField &getField() const {throw GeneralClassicException("Ring::getField", "Not implemented");}
+    virtual const EMField &getField() const override {throw GeneralClassicException("Ring::getField", "Not implemented");}
 
     /** Not implemented */
-    virtual PlanarArcGeometry &getGeometry() {return planarArcGeometry_m;}
+    virtual PlanarArcGeometry &getGeometry() override {return planarArcGeometry_m;}
 
     /** Not implemented */
-    virtual const PlanarArcGeometry &getGeometry() const {return planarArcGeometry_m;}
+    virtual const PlanarArcGeometry &getGeometry() const override {return planarArcGeometry_m;}
 
     /** Set LossDataSink to sink.
      *

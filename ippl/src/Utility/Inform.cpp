@@ -31,6 +31,10 @@
 #include <fstream>
 #include <cstring>
 
+// range of Inform message levels
+constexpr int MIN_INFORM_LEVEL = 1;
+constexpr int MAX_INFORM_LEVEL = 5;
+
 /////////////////////////////////////////////////////////////////////
 // manipulator functions
 

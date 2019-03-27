@@ -76,10 +76,10 @@ class VariableRFCavityFringeField : public VariableRFCavity {
      *  The RF cavity finds the "time dependence" models by doing a string
      *  lookup against a list held by AbstractTimeDependence at accept time.
      */
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
     /** Inheritable deepcopy method */
-    virtual ElementBase* clone() const;
+    virtual ElementBase* clone() const override;
 
     /** Calculate the field at the position of the i^th particle 
      *
@@ -90,7 +90,7 @@ class VariableRFCavityFringeField : public VariableRFCavity {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
     /** Calculate the field at a given position
      *
@@ -102,7 +102,7 @@ class VariableRFCavityFringeField : public VariableRFCavity {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
 
     /** Calculate the field at a given position. This is identical to "apply".
@@ -115,7 +115,7 @@ class VariableRFCavityFringeField : public VariableRFCavity {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
     /** Set the endFieldModel
      *
@@ -139,7 +139,7 @@ class VariableRFCavityFringeField : public VariableRFCavity {
      */
     virtual void initialise(PartBunchBase<double, 3> *bunch,
                             double &startField,
-                            double &endField);
+                            double &endField) override;
 
     /** Get the offset of centre of the cavity field from the element start in metres */
     virtual inline void setCavityCentre(double zCentre);

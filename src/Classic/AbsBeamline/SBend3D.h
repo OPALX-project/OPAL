@@ -62,7 +62,7 @@ class SBend3D : public Component {
     ~SBend3D();
 
     /** Inheritable copy constructor */
-    ElementBase* clone() const;
+    ElementBase* clone() const override;
 
     /** Calculate the field at the position of the ith particle
      *
@@ -73,7 +73,7 @@ class SBend3D : public Component {
      *  \param B calculated magnetic field
      *  \returns true if particle is outside the field map
      */
-    bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
     /** Calculate the field at some arbitrary position
      *
@@ -84,7 +84,7 @@ class SBend3D : public Component {
      *  \returns true if particle is outside the field map, else false
      */
     bool apply(const Vector_t &R, const Vector_t &P, const double &t,
-               Vector_t &E, Vector_t &B);
+               Vector_t &E, Vector_t &B) override;
 
      /** Initialise the SBend3D
       *
@@ -92,31 +92,31 @@ class SBend3D : public Component {
       *  \param startField not used
       *  \param endField not used
       */
-    void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+    void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
      /** Finalise the SBend3D - sets bunch to NULL */
-    void finalise();
+    void finalise() override;
 
     /** Return true - SBend3D always bends the reference particle */
-    inline bool bends() const;
+    inline bool bends() const override;
 
     /** Not implemented */
-    void getDimensions(double &zBegin, double &zEnd) const {}
+    void getDimensions(double &zBegin, double &zEnd) const override {}
 
     /** Return the cell geometry */
-    BGeometryBase& getGeometry();
+    BGeometryBase& getGeometry() override;
 
     /** Return the cell geometry */
-    const BGeometryBase& getGeometry() const;
+    const BGeometryBase& getGeometry() const override;
 
     /** Return a dummy (0.) field value (what is this for?) */
-    EMField &getField();
+    EMField &getField() override;
 
     /** Return a dummy (0.) field value (what is this for?) */
-    const EMField &getField() const;
+    const EMField &getField() const override;
 
     /** Accept a beamline visitor */
-    void accept(BeamlineVisitor& visitor) const;
+    void accept(BeamlineVisitor& visitor) const override;
 
     /** Set the field map file
      *

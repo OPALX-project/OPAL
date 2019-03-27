@@ -347,8 +347,7 @@ bool Cyclotron::apply(const size_t &id, const double &t, Vector_t &E, Vector_t &
 
   bool flagNeedUpdate = false;
 
-  const double rpos = sqrt(RefPartBunch_m->R[id](0) * RefPartBunch_m->R[id](0)
-                           + RefPartBunch_m->R[id](1) * RefPartBunch_m->R[id](1));
+  const double rpos = std::hypot(RefPartBunch_m->R[id](0), RefPartBunch_m->R[id](1));
   const double zpos = RefPartBunch_m->R[id](2);
 
   if (zpos > maxz_m || zpos < minz_m || rpos > maxr_m || rpos < minr_m){
@@ -377,7 +376,7 @@ bool Cyclotron::apply(const size_t &id, const double &t, Vector_t &E, Vector_t &
 
 bool Cyclotron::apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) {
 
-    const double rad = sqrt(R[0] * R[0] + R[1] * R[1]);
+    const double rad   = std::hypot(R[0],R[1]);
     const double tempv = atan(R[1] / R[0]);
     double tet = tempv;
 

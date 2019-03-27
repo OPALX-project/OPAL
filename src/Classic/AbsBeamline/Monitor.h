@@ -67,38 +67,38 @@ public:
     virtual ~Monitor();
 
     /// Apply visitor to Monitor.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor &) const override;
 
     /// Get geometry.
-    virtual StraightGeometry &getGeometry() = 0;
+    virtual StraightGeometry &getGeometry() override = 0;
 
     /// Get geometry. Version for const object.
-    virtual const StraightGeometry &getGeometry() const = 0;
+    virtual const StraightGeometry &getGeometry() const override = 0;
 
     /// Get plane on which monitor observes.
     virtual Plane getPlane() const = 0;
 
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
     virtual bool applyToReferenceParticle(const Vector_t &R,
                                           const Vector_t &P,
                                           const double &t,
                                           Vector_t &E,
-                                          Vector_t &B);
+                                          Vector_t &B) override;
 
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
-    virtual void finalise();
+    virtual void finalise() override;
 
-    virtual bool bends() const;
+    virtual bool bends() const override;
 
-    virtual void goOnline(const double &kineticEnergy);
+    virtual void goOnline(const double &kineticEnergy) override;
 
-    virtual void goOffline();
+    virtual void goOffline() override;
 
-    virtual ElementBase::ElementType getType() const;
+    virtual ElementBase::ElementType getType() const override;
 
-    virtual void getDimensions(double &zBegin, double &zEnd) const;
+    virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
     void setOutputFN(std::string fn);
 

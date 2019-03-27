@@ -90,18 +90,18 @@ public:
     /** Destructor */ 
     ~MultipoleTStraight();
     /** Inheritable copy constructor */
-    virtual ElementBase* clone() const;
+    virtual ElementBase* clone() const override;
     /** Accept a beamline visitor */
-    void accept(BeamlineVisitor &visitor) const;
+    void accept(BeamlineVisitor &visitor) const override;
     /** Set the number of terms used in calculation of field components \n
      *  Maximum power of z in Bz is 2 * maxOrder_m
      *  \param maxOrder -> Number of terms in expansion in z
      */
-    virtual void setMaxOrder(const std::size_t &maxOrder);
+    virtual void setMaxOrder(const std::size_t &maxOrder) override;
     /** Return the cell geometry */
-    StraightGeometry& getGeometry();
+    StraightGeometry& getGeometry() override;
     /** Return the cell geometry */
-    const StraightGeometry& getGeometry() const;
+    const StraightGeometry& getGeometry() const override;
     /** Initialise the MultipoleT
      *  \param bunch -> Bunch the global bunch object
      *  \param startField -> Not used
@@ -109,35 +109,35 @@ public:
      */
     virtual void initialise(PartBunchBase<double, 3>* bunch,
                             double &startField,
-                            double &endField);
+                            double &endField) override;
 private:
     MultipoleTStraight operator=(const MultipoleTStraight &rhs);
     /** Geometry */
     StraightGeometry straightGeometry_m;
     /** Transform to Frenet-Serret coordinates for sector magnets */
-    virtual void transformCoords(Vector_t &R);
+    virtual void transformCoords(Vector_t &R) override;
     /** Transform B-field from Frenet-Serret coordinates to lab coordinates */
-    virtual void transformBField(Vector_t &B, const Vector_t &R);
+    virtual void transformBField(Vector_t &B, const Vector_t &R) override;
     /** Radius of curvature \n
      *  Straight magnet, infinite radius, infinity (1.0e300) is returned
      *  \param s -> Coordinate s
      */
-    virtual double getRadius(const double &s);
+    virtual double getRadius(const double &s) override;
     /** Returns the scale factor @f$ h_s = 1@f$
      *  \param x -> Coordinate x
      *  \param s -> Coordinate s
      */
-    virtual double getScaleFactor(const double &x, const double &s);
+    virtual double getScaleFactor(const double &x, const double &s) override;
     /** Get x-component of the B-field \n
      *  This function has been overloaded because calculating \n
      *  the B-field directly is quicker and more accurate
      */
-    virtual double getBx (const Vector_t &R);
+    virtual double getBx (const Vector_t &R) override;
     /** Get s-component of the B-field \n
      *  This function has been overloaded because calculating \n
      *  the B-field directly is quicker and more accurate
      */
-    virtual double getBs (const Vector_t &R);
+    virtual double getBs (const Vector_t &R) override;
     /** Calculate fn(x, s) by expanding the differential operator
      *  (from Laplacian and scalar potential) in terms of polynomials
      *  \param n -> nth derivative
@@ -146,7 +146,7 @@ private:
      */
     virtual double getFn(const std::size_t &n,
                          const double &x,
-                         const double &s);
+                         const double &s) override;
 };
 
 inline
