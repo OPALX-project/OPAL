@@ -22,6 +22,7 @@
 
 #include "Utilities/ArithmeticError.h"
 
+#include <string>
 
 // Class SizeError
 // ------------------------------------------------------------------------
@@ -42,7 +43,7 @@ public:
     // [DD]the message string identifying the exception
     // [/DL]
     // Construction/destruction.
-    SizeError(const string &meth, const string &msg);
+    SizeError(const std::string &meth, const std::string &msg);
 
     SizeError(const SizeError &);
     virtual ~SizeError();

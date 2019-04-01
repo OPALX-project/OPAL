@@ -22,9 +22,6 @@
 
 #include <string>
 
-using std::string;
-
-
 // Class ClassicException
 // ------------------------------------------------------------------------
 /// The abstract base class for all exceptions in CLASSIC.

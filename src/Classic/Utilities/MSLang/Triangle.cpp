@@ -20,7 +20,7 @@ namespace mslang {
                   << indent << indentbase << trafo_m(2, 0) << "\t" << trafo_m(2, 1) << "\t" << trafo_m(2, 2) << std::endl;
     }
     void Triangle::apply(std::vector<std::shared_ptr<Base> > &bfuncs) {
-        bfuncs.emplace_back(std::move(this->clone()));
+        bfuncs.emplace_back(this->clone());
     }
 
     std::shared_ptr<Base>  Triangle::clone() const {
@@ -29,7 +29,7 @@ namespace mslang {
         tri->bb_m = bb_m;
 
         for (auto item: divisor_m) {
-            tri->divisor_m.emplace_back(std::move(item->clone()));
+            tri->divisor_m.emplace_back(item->clone());
         }
 
         return std::static_pointer_cast<Base>(tri);

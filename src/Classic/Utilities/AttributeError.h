@@ -22,6 +22,7 @@
 
 #include "Utilities/ClassicException.h"
 
+#include <string>
 
 // Class AttributeError
 // ------------------------------------------------------------------------
@@ -40,7 +41,7 @@ public:
     // [DT][b]msg [/b]
     // [DD]the message string identifying the exception
     // [/DL]
-    AttributeError(const string &meth, const string &msg);
+    AttributeError(const std::string &meth, const std::string &msg);
 
     AttributeError(const AttributeError &);
     virtual ~AttributeError();

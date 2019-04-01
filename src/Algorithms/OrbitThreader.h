@@ -62,7 +62,7 @@ private:
     };
 
     struct elementPositionComp {
-        bool operator() (const elementPosition &a, const elementPosition &b) {
+        bool operator() (const elementPosition &a, const elementPosition &b) const {
             return a.elementEdge_m < b.elementEdge_m;
         }
     };

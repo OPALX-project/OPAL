@@ -20,7 +20,7 @@ namespace mslang {
         divisor_m->apply(denom);
         for (auto item: nom) {
             item->divideBy(denom);
-            bfuncs.emplace_back(std::move(item->clone()));
+            bfuncs.emplace_back(item->clone());
         }
 
         for (auto item: nom)

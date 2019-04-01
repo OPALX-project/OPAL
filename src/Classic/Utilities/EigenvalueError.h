@@ -22,6 +22,7 @@
 
 #include "Utilities/ArithmeticError.h"
 
+#include <string>
 
 // Class EigenvalueError
 // ------------------------------------------------------------------------
@@ -41,7 +42,7 @@ public:
     // [DT][b]msg [/b]
     // [DD]the message string identifying the exception
     // [/DL]
-    EigenvalueError(const string &meth, const string &msg);
+    EigenvalueError(const std::string &meth, const std::string &msg);
 
     EigenvalueError(const EigenvalueError &);
     virtual ~EigenvalueError();

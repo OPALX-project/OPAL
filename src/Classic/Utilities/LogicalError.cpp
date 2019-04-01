@@ -25,7 +25,7 @@
 // ------------------------------------------------------------------------
 
 
-LogicalError::LogicalError(const string &meth, const string &msg):
+LogicalError::LogicalError(const std::string &meth, const std::string &msg):
     ClassicException(meth, msg)
 {}
 

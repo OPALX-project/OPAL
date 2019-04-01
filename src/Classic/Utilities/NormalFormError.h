@@ -22,6 +22,7 @@
 
 #include "Utilities/ArithmeticError.h"
 
+#include <string>
 
 // Class NormalFormError
 // ------------------------------------------------------------------------
@@ -41,7 +42,7 @@ public:
     // [DT][b]msg [/b]
     // [DD]the message string identifying the exception
     // [/DL]
-    NormalFormError(const string &meth, const string &msg);
+    NormalFormError(const std::string &meth, const std::string &msg);
 
     NormalFormError(const NormalFormError &);
     virtual ~NormalFormError();

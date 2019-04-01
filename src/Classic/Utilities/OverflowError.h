@@ -22,6 +22,7 @@
 
 #include "Utilities/ArithmeticError.h"
 
+#include <string>
 
 // Class OverflowError
 // ------------------------------------------------------------------------
@@ -39,7 +40,7 @@ public:
     // [DD]the name of the method or function detecting the exception
     // [/DL]
     // Construction/destruction.
-    OverflowError(const string &meth);
+    OverflowError(const std::string &meth);
 
     OverflowError(const OverflowError &);
     virtual ~OverflowError();

@@ -22,6 +22,7 @@
 
 #include "Utilities/ClassicException.h"
 
+#include <string>
 
 // Class LogicalError
 // ------------------------------------------------------------------------
@@ -41,7 +42,7 @@ public:
     // [DT][b]msg [/b]
     // [DD]the message string identifying the exception
     // [/DL]
-    LogicalError(const string &meth, const string &msg);
+    LogicalError(const std::string &meth, const std::string &msg);
 
     LogicalError(const LogicalError &);
     virtual ~LogicalError();

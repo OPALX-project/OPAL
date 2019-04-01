@@ -23,6 +23,7 @@
 #include "Algebra/Array1D.h"
 #include "FixedAlgebra/FMatrix.h"
 #include "FixedAlgebra/FTps.h"
+
 #include <complex>
 
 template <class T, int N> class FLieGenerator;
@@ -432,7 +433,7 @@ factorBerzForestIrwin(const FTps<double, 2 * N> &HH) {
     FMatrix<double, 2 * N, 2 * N> M = makeMatrix(H_2);
 
     // Eigenvalues and eigenvectors of M.
-    FVector<complex<double>, 2 * N> mu; // eigenvalues
+    FVector<std::complex<double>, 2 * N> mu; // eigenvalues
     FMatrix<double, 2 * N, 2 * N> V;   // eigenvectors
     FMatrix<double, 2 * N, 2 * N> V_inv; // inverse of V
     {
@@ -473,10 +474,10 @@ factorBerzForestIrwin(const FTps<double, 2 * N> &HH) {
             R_inv(i + 1, i)   = + 1.0;
             R_inv(i + 1, i + 1) = - 1.0;
 
-            if(std::abs(imag(mu[i])) > tol) {
+            if(std::abs(std::imag(mu[i])) > tol) {
                 // "stable" eigenvalue pair.
-                double c       = cos(imag(mu[i]));
-                double s       = sin(imag(mu[i]));
+                double c       = std::cos(std::imag(mu[i]));
+                double s       = std::sin(std::imag(mu[i]));
                 Rot(i,  i)     = + c;
                 Rot(i,  i + 1)   = + s;
                 Rot(i + 1, i)     = - s;
@@ -485,8 +486,8 @@ factorBerzForestIrwin(const FTps<double, 2 * N> &HH) {
                 I_dir(i + 1, i)   = 1.0;
             } else {
                 // "unstable" eigenvalue pair.
-                double ch      = cosh(real(mu[i]));
-                double sh      = sinh(real(mu[i]));
+                double ch      = std::cosh(std::real(mu[i]));
+                double sh      = std::sinh(std::real(mu[i]));
                 Rot(i,  i)     = + ch;
                 Rot(i,  i + 1)   = - sh;
                 Rot(i + 1, i)     = - sh;
@@ -515,22 +516,22 @@ factorBerzForestIrwin(const FTps<double, 2 * N> &HH) {
 
         for(int m = f.getBottomIndex(); m < f.getTopIndex(); m++) {
             const FMonomial<2 * N> &index = FTpsData<2 * N>::getExponents(m);
-            complex<double> factor = 0.0;
+            std::complex<double> factor = 0.0;
             int count = 0;
 
             for(int j = 0; j < 2 * modes; j += 2) {
-                if(std::abs(imag(mu[j])) > tol) count += index[j+1];
+                if(std::abs(std::imag(mu[j])) > tol) count += index[j+1];
                 factor += double(index[j]) * mu[j] + double(index[j+1]) * mu[j+1];
             }
 
             if(std::abs(factor) > tol) {
                 // Term can be removed.
                 factor = 1.0 / factor;
-                a[m] = real(factor);
-                b[m] = imag(factor);
+                a[m] = std::real(factor);
+                b[m] = std::imag(factor);
             }
 
-            pi[m] = pow(- 1.0, (count + 1) / 2);
+            pi[m] = std::pow(- 1.0, (count + 1) / 2);
         }
 
         // Compute cal_T^(-1) * f.
@@ -1084,7 +1085,7 @@ catenateZero(const DragtFinnMap<N> &g) const {
     h.assign(g_mat * f_mat);
 
     // Extract the generators.
-    int order = max(getOrder(), g.getOrder());
+    int order = std::max(getOrder(), g.getOrder());
     FMatrix<double, 2 * N, 2 * N> g_inv = FLUMatrix<double, 2 * N>(g_mat).inverse();
     FTps<double, 2 * N> f_gen =
         itsGenerators.filter(2, itsGenerators.getMaxOrder()).substitute(g_inv)
@@ -1355,12 +1356,12 @@ move_g_1(DragtFinnMap<N> &f, DragtFinnMap<N> &g) {
 
 template <int N>
 int DragtFinnMap<N>::
-orderModes(FMatrix<double, 2 * N, 2 * N> &V, FVector<complex<double>, 2 * N> &mu) {
+orderModes(FMatrix<double, 2 * N, 2 * N> &V, FVector<std::complex<double>, 2 * N> &mu) {
     // Static constant.
     static const double tol = 1.0e-12;
 
     FMatrix<double, 2 * N, 2 * N>      tmat(V);
-    FVector<complex<double>, 2 * N> tmu(mu);
+    FVector<std::complex<double>, 2 * N> tmu(mu);
     int nDim = 2 * N;
     int n_c = 0;
     int n_r = 0;
@@ -1373,7 +1374,7 @@ orderModes(FMatrix<double, 2 * N, 2 * N> &V, FVector<complex<double>, 2 * N> &mu
             for(int j = 0; j < 2 * N; ++j) V(j, nDim) = 0.0;
             V(nDim, nDim) = 1.0;
             i++;
-        } else if(std::abs(imag(tmu[i])) < tol) {
+        } else if(std::abs(std::imag(tmu[i])) < tol) {
             // Collect "unstable" modes in lower indices of tmat.
             if(n_r != i) {
                 tmu[n_r] = tmu[i];
@@ -1417,14 +1418,14 @@ orderModes(FMatrix<double, 2 * N, 2 * N> &V, FVector<complex<double>, 2 * N> &mu
 
         // Swap values to make pair.
         if(m != i + 1) {
-            swap(tmu[m], tmu[i+1]);
+            std::swap(tmu[m], tmu[i+1]);
             tmat.swapColumns(m, i + 1);
         }
 
         // Take positive eigenvalue first.
         int i1 = i;
         int i2 = i;
-        if(real(tmu[i]) > 0.0) {
+        if(std::real(tmu[i]) > 0.0) {
             ++i2;
         } else {
             ++i1;
@@ -1466,8 +1467,8 @@ orderModes(FMatrix<double, 2 * N, 2 * N> &V, FVector<complex<double>, 2 * N> &mu
 
         if(k != i) {
             // Move eigenvector pair to its place.
-            swap(mu[i],   mu[k]);
-            swap(mu[i+1], mu[k+1]);
+            std::swap(mu[i],   mu[k]);
+            std::swap(mu[i+1], mu[k+1]);
             V.swapColumns(i,     k);
             V.swapColumns(i + 1, k + 1);
         }

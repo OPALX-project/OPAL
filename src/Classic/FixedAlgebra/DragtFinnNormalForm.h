@@ -24,14 +24,6 @@
 #include <algorithm>
 #include <complex>
 
-using std::complex;
-using std::abs;
-using std::arg;
-using std::imag;
-using std::pow;
-using std::real;
-using std::swap;
-
 template <int> class DragtFinnMap;
 template <class T, int> class FLieGenerator;
 template <class T, int, int> class FMatrix;
@@ -77,7 +69,7 @@ public:
     const DragtFinnMap<N> &normalisingMap() const;
 
     /// Get eigenvalues of the linear part as a complex vector.
-    const FVector<complex<double>, 2 * N> &eigenValues() const;
+    const FVector<std::complex<double>, 2 * N> &eigenValues() const;
 
     /// Get eigenvectors of the linear part in packed form.
     const FMatrix<double, 2 * N, 2 * N> &eigenVectors() const;
@@ -91,7 +83,7 @@ public:
 protected:
 
     // Order the modes of the map and associate them to the planes.
-    void orderModes(FVector<complex<double>, 2 * N>, FMatrix<double, 2 * N, 2 * N>);
+    void orderModes(FVector<std::complex<double>, 2 * N>, FMatrix<double, 2 * N, 2 * N>);
 
 private:
 
@@ -110,7 +102,7 @@ private:
     DragtFinnMap<N> N_scr;
 
     // The vector of eigenvalues.
-    FVector<complex<double>, 2 * N> lambda;
+    FVector<std::complex<double>, 2 * N> lambda;
 
     // The matrix of eigenvectors.
     FMatrix<double, 2 * N, 2 * N> V;
@@ -175,18 +167,18 @@ DragtFinnNormalForm<N>::DragtFinnNormalForm(const DragtFinnMap<N> &map):
         R_inv(i, i) = R_inv(i, i + 1) = R_inv(i + 1, i) = 1.0;
         R_inv(i + 1, i + 1) = -1.0;
 
-        if(std::abs(imag(lambda[i])) > tol) {
+        if(std::abs(std::imag(lambda[i])) > tol) {
             // Complex eigenvalue pair.
-            Rot(i, i)   = Rot(i + 1, i + 1) = real(lambda[i]);
-            Rot(i, i + 1) = imag(lambda[i]);
-            Rot(i + 1, i) = - imag(lambda[i]);
+            Rot(i, i)   = Rot(i + 1, i + 1) = std::real(lambda[i]);
+            Rot(i, i + 1) = std::imag(lambda[i]);
+            Rot(i + 1, i) = - std::imag(lambda[i]);
 
             I_dir(i, i) = I_dir(i + 1, i + 1) = 0.0;
             I_dir(i, i + 1) = I_dir(i + 1, i) = 1.0;
         } else {
             // Real eigenvalue pair.
-            Rot(i, i) = Rot(i + 1, i + 1) = real(lambda[i] + lambda[i+1]) * 0.5;
-            Rot(i, i + 1) = Rot(i + 1, i) = real(lambda[i] - lambda[i+1]) * 0.5;
+            Rot(i, i) = Rot(i + 1, i + 1) = std::real(lambda[i] + lambda[i+1]) * 0.5;
+            Rot(i, i + 1) = Rot(i + 1, i) = std::real(lambda[i] - lambda[i+1]) * 0.5;
         }
     }
 
@@ -210,12 +202,12 @@ DragtFinnNormalForm<N>::DragtFinnNormalForm(const DragtFinnMap<N> &map):
 
         for(int m = f.getBottomIndex(); m < f.getTopIndex(); ++m) {
             const FMonomial<2 * N> &index = FTpsData<2 * N>::getExponents(m);
-            complex<double> factor = 1.0;
+            std::complex<double> factor = 1.0;
             int count = 0;
 
             for(int j = 0; j < 2 * freedom; j += 2) {
-                if(std::abs(imag(lambda[j])) > tol) count += index[j+1];
-                factor *= (pow(lambda[j], index[j]) * pow(lambda[j+1], index[j+1]));
+                if(std::abs(std::imag(lambda[j])) > tol) count += index[j+1];
+                factor *= (std::pow(lambda[j], index[j]) * std::pow(lambda[j+1], index[j+1]));
             }
 
             if(std::abs(1.0 - factor) < tol) {
@@ -224,11 +216,11 @@ DragtFinnNormalForm<N>::DragtFinnNormalForm(const DragtFinnMap<N> &map):
             } else {
                 // Term can be removed.
                 factor = 1.0 / (1.0 - factor);
-                a[m] = real(factor);
-                b[m] = imag(factor);
+                a[m] = std::real(factor);
+                b[m] = std::imag(factor);
             }
 
-            pi[m] = pow(-1.0, int(count + 1) / 2);
+            pi[m] = std::pow(-1.0, int(count + 1) / 2);
         }
 
         // Compute cal_T^(-1) * f and T_omega.
@@ -299,7 +291,7 @@ FLieGenerator<double, N> DragtFinnNormalForm<N>::invariant(int mode) const {
         b[j+2] =   V(j,  2 * mode + 1);
     }
 
-    if(std::abs(imag(lambda[2*mode])) > tol) {
+    if(std::abs(std::imag(lambda[2*mode])) > tol) {
         return (a * a + b * b);
     } else {
         return (a * a - b * b);
@@ -320,7 +312,7 @@ const DragtFinnMap<N> &DragtFinnNormalForm<N>::normalisingMap() const {
 
 
 template <int N>
-const FVector<complex<double>, 2 * N> &DragtFinnNormalForm<N>::eigenValues() const {
+const FVector<std::complex<double>, 2 * N> &DragtFinnNormalForm<N>::eigenValues() const {
     return lambda;
 }
 
@@ -333,7 +325,7 @@ const FMatrix<double, 2 * N, 2 * N> &DragtFinnNormalForm<N>::eigenVectors() cons
 
 template <int N>
 void DragtFinnNormalForm<N>::orderModes
-(FVector<complex<double>, 2 * N> tlam, FMatrix<double, 2 * N, 2 * N> tmat) {
+(FVector<std::complex<double>, 2 * N> tlam, FMatrix<double, 2 * N, 2 * N> tmat) {
     // Static constant.
     int nDim = 2 * N;
     int n_c = 0;
@@ -347,7 +339,7 @@ void DragtFinnNormalForm<N>::orderModes
             std::fill(V.col_begin(nDim), V.col_end(nDim), 0.0);
             V(nDim, nDim) = 1.0;
             i++;
-        } else if(std::abs(imag(tlam[i])) < tol) {
+        } else if(std::abs(std::imag(tlam[i])) < tol) {
             // Collect "unstable" modes in lower indices of tmat.
             if(n_r != i) {
                 tlam[n_r] = tlam[i];
@@ -399,7 +391,7 @@ void DragtFinnNormalForm<N>::orderModes
 
         // Swap values to make pair.
         if(m != i + 1) {
-            swap(tlam[m], tlam[i+1]);
+            std::swap(tlam[m], tlam[i+1]);
             tmat.swapColumns(m, i + 1);
         }
 
@@ -453,21 +445,21 @@ void DragtFinnNormalForm<N>::orderModes
 
         if(k != i) {
             // Move eigenvector pair to its place.
-            swap(lambda[i],   lambda[k]);
-            swap(lambda[i+1], lambda[k+1]);
+            std::swap(lambda[i],   lambda[k]);
+            std::swap(lambda[i+1], lambda[k+1]);
             V.swapColumns(i, k);
             V.swapColumns(i + 1, k + 1);
         }
 
-        if(std::abs(imag(lambda[i])) > tol) {
+        if(std::abs(std::imag(lambda[i])) > tol) {
             // Rotate complex eigenvectors to make their main components real.
-            double re = V(i, i)   / sqrt(V(i, i) * V(i, i) + V(i, i + 1) * V(i, i + 1));
+            double re = V(i, i)     / sqrt(V(i, i) * V(i, i) + V(i, i + 1) * V(i, i + 1));
             double im = V(i, i + 1) / sqrt(V(i, i) * V(i, i) + V(i, i + 1) * V(i, i + 1));
 
             for(int j = 0; j < 2 * N; j++) {
-                double real_part = re * V(j, i) + im * V(j, i + 1);
+                double real_part = re * V(j, i)     + im * V(j, i + 1);
                 double imag_part = re * V(j, i + 1) - im * V(j, i);
-                V(j, i)   = real_part;
+                V(j, i)     = real_part;
                 V(j, i + 1) = imag_part;
             }
         }

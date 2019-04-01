@@ -22,6 +22,7 @@
 
 #include "Utilities/ArithmeticError.h"
 
+#include <string>
 
 // Class ConvergenceError
 // ------------------------------------------------------------------------
@@ -40,7 +41,7 @@ public:
     // [DT][b]msg [/b]
     // [DD]the message string identifying the exception
     // [/DL]
-    ConvergenceError(const string &method, const string &message);
+    ConvergenceError(const std::string &method, const std::string &message);
 
     ConvergenceError(const ConvergenceError &);
     virtual ~ConvergenceError();

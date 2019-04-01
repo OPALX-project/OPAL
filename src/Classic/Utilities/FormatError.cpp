@@ -26,7 +26,7 @@
 // ------------------------------------------------------------------------
 
 
-FormatError::FormatError(const string &meth, const string &msg):
+FormatError::FormatError(const std::string &meth, const std::string &msg):
     ClassicException(meth, msg)
 {}
 

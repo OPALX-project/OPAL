@@ -51,7 +51,7 @@ namespace mslang {
     }
 
     void Ellipse::apply(std::vector<std::shared_ptr<Base> > &bfuncs) {
-        bfuncs.emplace_back(std::move(this->clone()));
+        bfuncs.emplace_back(this->clone());
     }
 
     std::shared_ptr<Base> Ellipse::clone() const{
@@ -62,7 +62,7 @@ namespace mslang {
         elps->bb_m = bb_m;
 
         for (auto item: divisor_m) {
-            elps->divisor_m.emplace_back(std::move(item->clone()));
+            elps->divisor_m.emplace_back(item->clone());
         }
 
         return std::static_pointer_cast<Base>(elps);

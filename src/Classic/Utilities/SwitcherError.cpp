@@ -1,6 +1,6 @@
 #include "SwitcherError.h"
 
-SwitcherError::SwitcherError(const string &meth, const string &msg):
+SwitcherError::SwitcherError(const std::string &meth, const std::string &msg):
     ClassicException(meth, msg)
 {}
 

@@ -19,6 +19,8 @@ public:
     /// Exemplar constructor.
     OpalSample();
 
+    virtual ~OpalSample() {};
+
     /// Make clone.
     virtual OpalSample *clone(const std::string &name);
 

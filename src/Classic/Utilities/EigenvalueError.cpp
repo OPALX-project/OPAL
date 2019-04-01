@@ -25,7 +25,7 @@
 // ------------------------------------------------------------------------
 
 
-EigenvalueError::EigenvalueError(const string &meth, const string &msg):
+EigenvalueError::EigenvalueError(const std::string &meth, const std::string &msg):
     ArithmeticError(meth, msg)
 {}
 

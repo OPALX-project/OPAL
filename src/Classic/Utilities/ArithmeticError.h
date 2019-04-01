@@ -22,6 +22,7 @@
 
 #include "Utilities/ClassicException.h"
 
+#include <string>
 
 // Class ArithmeticError
 // ------------------------------------------------------------------------
@@ -41,7 +42,7 @@ protected:
     // [DT][b]msg [/b]
     // [DD]the message string identifying the exception
     // [/DL]
-    ArithmeticError(const string &meth, const string &msg);
+    ArithmeticError(const std::string &meth, const std::string &msg);
 
     ArithmeticError(const ArithmeticError &);
     virtual ~ArithmeticError();

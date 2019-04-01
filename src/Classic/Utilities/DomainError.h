@@ -22,6 +22,7 @@
 
 #include "Utilities/ArithmeticError.h"
 
+#include <string>
 
 // Class DomainError
 // ------------------------------------------------------------------------
@@ -38,7 +39,7 @@ public:
     // [DT][b]meth[/b]
     // [DD]the name of the method or function detecting the exception
     // [/DL]
-    DomainError(const string &meth);
+    DomainError(const std::string &meth);
 
     DomainError(const DomainError &);
     virtual ~DomainError();

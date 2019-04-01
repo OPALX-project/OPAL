@@ -25,14 +25,6 @@
 #include <algorithm>
 #include <complex>
 
-using std::complex;
-using std::abs;
-using std::arg;
-using std::imag;
-using std::pow;
-using std::real;
-using std::swap;
-
 template <class T, int, int> class FMatrix;
 template <class T, int> class FTps;
 template <class T, int> class FVps;
@@ -78,7 +70,7 @@ public:
     const FTps<double, N> &normalisingMap() const;
 
     /// Get eigenvalues of the linear part as a complex vector.
-    const FVector<complex<double>, N> &eigenValues() const;
+    const FVector<std::complex<double>, N> &eigenValues() const;
 
     /// Get eigenvectors of the linear part in packed form.
     const FMatrix<double, N, N> &eigenVectors() const;
@@ -92,7 +84,7 @@ public:
 protected:
 
     // Order the modes of the map and associate them to the planes.
-    void orderModes(FVector<complex<double>, N>, FMatrix<double, N, N>);
+    void orderModes(FVector<std::complex<double>, N>, FMatrix<double, N, N>);
 
 private:
 
@@ -111,7 +103,7 @@ private:
     FTps<double, N> N_Lie;
 
     // The vector of eigenvalues.
-    FVector<complex<double>, N> lambda;
+    FVector<std::complex<double>, N> lambda;
 
     // The matrix of eigenvectors.
     FMatrix<double, N, N> V;
@@ -180,8 +172,8 @@ FNormalForm<N>::FNormalForm(const FVps<double, N> &M_scr):
         // Store linear part of normal form.
         double c1, c2;
 
-        if(std::abs(imag(lambda[i])) > tol) {
-            c1 = c2 = arg(lambda[i]) / 2.0;
+        if(std::abs(std::imag(lambda[i])) > tol) {
+            c1 = c2 = std::arg(lambda[i]) / 2.0;
         } else {
             c1 = log(std::abs(lambda[i])) / 2.0;
             c2 = - c1;
@@ -201,18 +193,18 @@ FNormalForm<N>::FNormalForm(const FVps<double, N> &M_scr):
         R_inv(i, i) = R_inv(i, i + 1) = R_inv(i + 1, i) = 1.0;
         R_inv(i + 1, i + 1) = -1.0;
 
-        if(std::abs(imag(lambda[i])) > tol) {
+        if(std::abs(std::imag(lambda[i])) > tol) {
             // Complex eigenvalue pair.
-            Rot(i, i)   = Rot(i + 1, i + 1) = real(lambda[i]);
-            Rot(i, i + 1) = imag(lambda[i]);
-            Rot(i + 1, i) = - imag(lambda[i]);
+            Rot(i, i)   = Rot(i + 1, i + 1) = std::real(lambda[i]);
+            Rot(i, i + 1) = std::imag(lambda[i]);
+            Rot(i + 1, i) = - std::imag(lambda[i]);
 
             I_dir(i, i) = I_dir(i + 1, i + 1) = 0.0;
             I_dir(i, i + 1) = I_dir(i + 1, i) = 1.0;
         } else {
             // Real eigenvalue pair.
-            Rot(i, i) = Rot(i + 1, i + 1) = real(lambda[i] + lambda[i+1]) * 0.5;
-            Rot(i, i + 1) = Rot(i + 1, i) = real(lambda[i] - lambda[i+1]) * 0.5;
+            Rot(i, i) = Rot(i + 1, i + 1) = std::real(lambda[i] + lambda[i+1]) * 0.5;
+            Rot(i, i + 1) = Rot(i + 1, i) = std::real(lambda[i] - lambda[i+1]) * 0.5;
         }
     }
 
@@ -252,12 +244,12 @@ FNormalForm<N>::FNormalForm(const FVps<double, N> &M_scr):
         for(int m = FTps<double, N>::getSize(omega);
             m < FTps<double, N>::getSize(omega + 1); m++) {
             const FMonomial<N> &index = FTpsData<N>::getExponents(m);
-            complex<double> factor = 1.0;
+            std::complex<double> factor = 1.0;
             int count = 0;
 
             for(int j = 0; j < 2 * freedom; j += 2) {
-                if(std::abs(imag(lambda[j])) > tol) count += index[j+1];
-                factor *= (pow(lambda[j], index[j]) * pow(lambda[j+1], index[j+1]));
+                if(std::abs(std::imag(lambda[j])) > tol) count += index[j+1];
+                factor *= (std::pow(lambda[j], index[j]) * std::pow(lambda[j+1], index[j+1]));
             }
 
             if(std::abs(1.0 - factor) < tol) {
@@ -266,11 +258,11 @@ FNormalForm<N>::FNormalForm(const FVps<double, N> &M_scr):
             } else {
                 // Term can be removed.
                 factor = 1.0 / (1.0 - factor);
-                a.setCoefficient(m, real(factor));
-                b.setCoefficient(m, imag(factor));
+                a.setCoefficient(m, std::real(factor));
+                b.setCoefficient(m, std::imag(factor));
             }
 
-            pi.setCoefficient(m, pow(-1.0, int(count + 1) / 2));
+            pi.setCoefficient(m, std::pow(-1.0, int(count + 1) / 2));
         }
 
         // Compute cal_T^(-1) * f and T_omega.
@@ -358,7 +350,7 @@ FTps<double, N> FNormalForm<N>::invariant(int mode) const {
         b.setCoefficient(j + 2,   V(j,  2 * mode + 1));
     }
 
-    if(std::abs(imag(lambda[2*mode])) > tol) {
+    if(std::abs(std::imag(lambda[2*mode])) > tol) {
         return (a * a + b * b);
     } else {
         return (a * a - b * b);
@@ -379,7 +371,7 @@ const FTps<double, N> &FNormalForm<N>::normalisingMap() const {
 
 
 template <int N>
-const FVector<complex<double>, N> &FNormalForm<N>::eigenValues() const {
+const FVector<std::complex<double>, N> &FNormalForm<N>::eigenValues() const {
     return lambda;
 }
 
@@ -391,7 +383,7 @@ const FMatrix<double, N, N> &FNormalForm<N>::eigenVectors() const {
 
 
 template <int N>
-void FNormalForm<N>::orderModes(FVector<complex<double>, N> tlam,
+void FNormalForm<N>::orderModes(FVector<std::complex<double>, N> tlam,
                                 FMatrix<double, N, N> tmat) {
     // Static constant.
     int nDim = N;
@@ -406,7 +398,7 @@ void FNormalForm<N>::orderModes(FVector<complex<double>, N> tlam,
             std::fill(V.col_begin(nDim), V.col_end(nDim), 0.0);
             V(nDim, nDim) = 1.0;
             i++;
-        } else if(std::abs(imag(tlam[i])) < tol) {
+        } else if(std::abs(std::imag(tlam[i])) < tol) {
             // Collect "unstable" modes in lower indices of tmat.
             if(n_r != i) {
                 tlam[n_r] = tlam[i];
@@ -458,7 +450,7 @@ void FNormalForm<N>::orderModes(FVector<complex<double>, N> tlam,
 
         // Swap values to make pair.
         if(m != i + 1) {
-            swap(tlam[m], tlam[i+1]);
+            std::swap(tlam[m], tlam[i+1]);
             tmat.swapColumns(m, i + 1);
         }
 
@@ -511,21 +503,21 @@ void FNormalForm<N>::orderModes(FVector<complex<double>, N> tlam,
 
         if(k != i) {
             // Move eigenvector pair to its place.
-            swap(lambda[i],   lambda[k]);
-            swap(lambda[i+1], lambda[k+1]);
+            std::swap(lambda[i],   lambda[k]);
+            std::swap(lambda[i+1], lambda[k+1]);
             V.swapColumns(i, k);
             V.swapColumns(i + 1, k + 1);
         }
 
-        if(std::abs(imag(lambda[i])) > tol) {
+        if(std::abs(std::imag(lambda[i])) > tol) {
             // Rotate complex eigenvectors to make their main components real.
-            double re = V(i, i)   / sqrt(V(i, i) * V(i, i) + V(i, i + 1) * V(i, i + 1));
+            double re = V(i, i)     / sqrt(V(i, i) * V(i, i) + V(i, i + 1) * V(i, i + 1));
             double im = V(i, i + 1) / sqrt(V(i, i) * V(i, i) + V(i, i + 1) * V(i, i + 1));
 
             for(int j = 0; j < N; j++) {
-                double real_part = re * V(j, i) + im * V(j, i + 1);
+                double real_part = re * V(j, i)     + im * V(j, i + 1);
                 double imag_part = re * V(j, i + 1) - im * V(j, i);
-                V(j, i)   = real_part;
+                V(j, i)     = real_part;
                 V(j, i + 1) = imag_part;
             }
         }

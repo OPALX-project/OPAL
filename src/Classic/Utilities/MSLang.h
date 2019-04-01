@@ -65,7 +65,7 @@ namespace mslang {
         virtual void divideBy(std::vector<std::shared_ptr<Base> > &divisors) {
             for (auto item: divisors) {
                 if (bb_m.doesIntersect(item->bb_m)) {
-                    divisor_m.emplace_back(std::move(item->clone()));
+                    divisor_m.emplace_back(item->clone());
                 }
             }
         }

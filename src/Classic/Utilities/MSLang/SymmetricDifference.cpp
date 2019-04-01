@@ -20,7 +20,7 @@ namespace mslang {
         secondOperand_m->apply(second);
         for (auto item: first) {
             item->divideBy(second);
-            bfuncs.emplace_back(std::move(item->clone()));
+            bfuncs.emplace_back(item->clone());
         }
 
         for (auto item: first)
@@ -31,7 +31,7 @@ namespace mslang {
         firstOperand_m->apply(first);
         for (auto item: second) {
             item->divideBy(first);
-            bfuncs.emplace_back(std::move(item->clone()));
+            bfuncs.emplace_back(item->clone());
         }
 
         for (auto item: first)

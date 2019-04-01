@@ -87,7 +87,7 @@ namespace mslang {
     }
 
     void Rectangle::apply(std::vector<std::shared_ptr<Base> > &bfuncs) {
-        bfuncs.emplace_back(std::move(this->clone()));
+        bfuncs.emplace_back(this->clone());
     }
 
     std::shared_ptr<Base> Rectangle::clone() const {
@@ -98,7 +98,7 @@ namespace mslang {
         rect->bb_m = bb_m;
 
         for (auto item: divisor_m) {
-            rect->divisor_m.emplace_back(std::move(item->clone()));
+            rect->divisor_m.emplace_back(item->clone());
         }
 
         return std::static_pointer_cast<Base>(rect);

@@ -25,7 +25,7 @@
 // ------------------------------------------------------------------------
 
 
-CLRangeError::CLRangeError(const string &meth, const string &msg):
+CLRangeError::CLRangeError(const std::string &meth, const std::string &msg):
     ArithmeticError(meth, msg)
 {}
 

@@ -25,7 +25,7 @@
 // ------------------------------------------------------------------------
 
 
-SizeError::SizeError(const string &meth, const string &msg):
+SizeError::SizeError(const std::string &meth, const std::string &msg):
     ArithmeticError(meth, msg)
 {}
 

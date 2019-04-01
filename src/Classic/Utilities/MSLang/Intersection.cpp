@@ -26,7 +26,7 @@ namespace mslang {
 
         for (auto item: first) {
             item->divideBy(firstrep);
-            bfuncs.emplace_back(std::move(item->clone()));
+            bfuncs.emplace_back(item->clone());
         }
 
         for (auto item: first)

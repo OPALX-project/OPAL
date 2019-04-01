@@ -22,6 +22,7 @@
 
 #include "Utilities/ClassicException.h"
 
+#include <string>
 
 // Class FormatError
 // ------------------------------------------------------------------------
@@ -40,7 +41,7 @@ public:
     // [DT][b]msg [/b]
     // [DD]the message string identifying the exception
     // [/DL]
-    FormatError(const string &meth, const string &msg);
+    FormatError(const std::string &meth, const std::string &msg);
 
     FormatError(const FormatError &);
     virtual ~FormatError();

@@ -26,7 +26,7 @@
 
 
 AttributeError::AttributeError
-(const string &meth, const string &msg):
+(const std::string &meth, const std::string &msg):
     ClassicException(meth, msg)
 {}
 

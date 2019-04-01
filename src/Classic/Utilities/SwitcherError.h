@@ -3,10 +3,12 @@
 
 #include "Utilities/ClassicException.h"
 
+#include <string>
+
 class SwitcherError:public ClassicException
 {
 public:
-    SwitcherError(const string &meth, const string &msg);
+    SwitcherError(const std::string &meth, const std::string &msg);
 
     SwitcherError(const SwitcherError &);
     virtual ~SwitcherError();

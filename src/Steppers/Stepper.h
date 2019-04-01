@@ -47,6 +47,7 @@ public:
         }
         return isBad;
     };
+    virtual ~Stepper() {};
 
 protected:
     const FieldFunction& fieldfunc_m;

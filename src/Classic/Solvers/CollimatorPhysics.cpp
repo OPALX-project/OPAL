@@ -735,6 +735,13 @@ void  CollimatorPhysics::Rot(double &px, double &pz, double &x, double &z, doubl
     pz = -pxz * sin(Psixz) * sin(thetacou) + pxz * cos(Psixz) * cos(thetacou);
 }
 
+Vector_t ArbitraryRotation(Vector_t &W, Vector_t &Rorg, double Theta) {
+    double C=cos(Theta);
+    double S=sin(Theta);
+    W = W / sqrt(dot(W,W));
+    return Rorg * C + cross(W,Rorg) * S + W * dot(W,Rorg) * (1.0-C);
+}
+
 /// Coulomb Scattering: Including Multiple Coulomb Scattering and large angle Rutherford Scattering.
 /// Using the distribution given in Classical Electrodynamics, by J. D. Jackson.
 //--------------------------------------------------------------------------
@@ -768,17 +775,6 @@ void  CollimatorPhysics::CoulombScat(Vector_t &R, Vector_t &P, const double &del
     if (collshape_m == ElementBase::CCOLLIMATOR)
         R = R * 1e-3;
 
-    double P2 = gsl_rng_uniform(rGen_m);
-    if (P2 < 0.0047) {
-        double P3 = gsl_rng_uniform(rGen_m);
-        double thetaru = 2.5 * sqrt(1 / P3) * sqrt(2.0) * theta0;
-        double P4 = gsl_rng_uniform(rGen_m);
-        if (P4 > 0.5)
-            thetaru = -thetaru;
-        coord = 0; // no change in coordinates but one in momenta-direction
-        Rot(P(0), P(2), R(0), R(2), xplane, normP, thetaru, deltas, coord);
-    }
-
     // y-direction: See Physical Review, "Multiple Scattering"
     z1 = gsl_ran_gaussian(rGen_m, 1.0);
     z2 = gsl_ran_gaussian(rGen_m, 1.0);
@@ -799,15 +795,22 @@ void  CollimatorPhysics::CoulombScat(Vector_t &R, Vector_t &P, const double &del
     if (collshape_m == ElementBase::CCOLLIMATOR)
         R = R * 1e3;
 
-    P2 = gsl_rng_uniform(rGen_m);
+    double P2 = gsl_rng_uniform(rGen_m);
     if (P2 < 0.0047) {
         double P3 = gsl_rng_uniform(rGen_m);
-        double thetaru = 2.5 * sqrt(1 / P3) * sqrt(2.0) * theta0;
-        double P4 = gsl_rng_uniform(rGen_m);
-        if (P4 > 0.5)
-            thetaru = -thetaru;
-        coord = 0; // no change in coordinates but one in momenta-direction
-        Rot(P(1), P(2), R(1), R(2), yplane, normP, thetaru, deltas, coord);
+
+        double thetaru = 2.5 * sqrt(1 / P3) * 2.0 * theta0;
+        double phiru = 2.0 * M_PI * gsl_rng_uniform(rGen_m);
+        double th0=atan2(sqrt(P(0)*P(0)+P(1)*P(1)),fabs(P(2)));
+        Vector_t W,X;
+        X(0)=cos(phiru)*sin(thetaru);
+        X(1)=sin(phiru)*sin(thetaru);
+        X(2)=cos(thetaru);
+        X*=sqrt(dot(P,P));
+        W(0)=-P(1);
+        W(1)= P(0);
+        W(2)= 0.0;
+        P = ArbitraryRotation(W, X,th0);
     }
 }
 

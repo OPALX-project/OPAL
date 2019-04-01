@@ -1501,7 +1501,7 @@ std::pair<Vector_t, Vector_t> Bend::getDesignPathSecant(double startsAtDistFromE
     double stepSize = euclidean_norm(step);
     tangent = step / stepSize;
     startPosition = refTrajMap_m[i] + diff * tangent;
-    tangent = tangent;
+    //tangent = tangent;
 
     return std::make_pair(startPosition, tangent);
 }
