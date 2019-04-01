@@ -722,6 +722,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     if (!inUndulator)
         return;
     UndulatorRep* ur = dynamic_cast<UndulatorRep*>((*it).get());
+    
+    /* Check if Mithra has already been run                                                                 */
     if (ur->getIsDone())
         return;
     ur->setIsDone();
@@ -741,11 +743,48 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     std::list<std::string> jobFile = Darius::read_file(cfname);
     Darius::cleanJobFile(jobFile);
    
+    /* Get bunch                                                                                          */
+    std::list<Darius::Charge>	qv;
+    Darius::Charge charge;
+    charge.q = itsBunch_m->getChargePerParticle() / (1.6*10E-19);
+    const unsigned int localNum = itsBunch_m->getLocalNum();
+    for (unsigned int i = 0; i < localNum; ++i) {
+        for (unsigned int d = 0; d < 3; ++d) {
+            charge.rnp[d] = itsBunch_m->R[i](d);
+            charge.gbnp[d] = itsBunch_m->P[i](d);
+        }
+        qv.push_back(charge);
+    }
+    
+    /* Parameters to initialize bunch                                                                     */
+    Darius::BunchInitialize bunchInit;
+    bunchInit.bunchType_ = "OPAL";
+    bunchInit.numberOfParticles_ = localNum;
+      cloudCharge_			= 0.0;
+      initialGamma_			= 0.0;
+      initialBeta_			= 0.0;
+      initialDirection_			= 0.0;
+      position_.clear();
+      numbers_				= 0;
+      latticeConstants_			= 0.0;
+      sigmaPosition_			= 0.0;
+      sigmaGammaBeta_			= 0.0;
+      tranTrun_				= 0.0;
+      longTrun_				= 0.0;
+      fileName_				= "";
+      inputVector_          = qv;
+      bF_				= 0.0;
+      bFP_				= 0.0;
+      shotNoise_			= false;
+      lambda_				= 0.0;
+    
+
     /* Create the solver database.                                                                        */
     Darius::Mesh                               mesh;
 
     /* Create the bunch database.                                                                         */
     Darius::Bunch                              bunch;
+    bunch.bunchInit_.push_back(bunchInit);
 
     /* Create the seed database.                                                                          */
     Darius::Seed                               seed;
@@ -770,25 +809,12 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::FdTd   fdtd   (mesh, bunch, seed, undulator, extField, FEL);
     Darius::FdTdSC fdtdsc (mesh, bunch, seed, undulator, extField, FEL);
     
-    /* Get bunch                                                                                          */
-    std::list<Darius::Charge>	qv;
-    Darius::Charge charge;
-    charge.q = itsBunch_m->getChargePerParticle();
-    const unsigned int totalNum = itsBunch_m->getTotalNum();
-    for (unsigned int i = 0; i < totalNum; ++ i) {
-        for (unsigned int d = 0; d < 3; d++) {
-            
-            charge.rnp[d] = itsBunch_m->R[i](d);
-            charge.gbnp[d] = itsBunch_m->P[i](d);
-        }
-        qv.push_back(charge);
-    }
     
     /* Solve for the fields and the bunch distribution over the specified time.                           */
     if ( mesh.spaceCharge_ )
-        fdtdsc.solve(qv);
+        fdtdsc.solve();
     else
-        fdtd.solve(qv);
+        fdtd.solve();
     
 
 }
