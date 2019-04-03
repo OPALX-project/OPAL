@@ -767,15 +767,21 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         Darius::FieldVector<double> fv (0.0);
         for (unsigned int d = 0; d < 3; ++d) 
             fv[d] = itsBunch_m->get_pmean()(d);
-        fv /= fv.norm();
+        fv.dv( fv.norm(), fv );
         bunchInit.initialDirection_		= fv;
         
         for (unsigned int d = 0; d < 3; ++d) 
             fv[d] = itsBunch_m->get_rmean()(d);
         bunchInit.position_.push_back(fv);
         
-        bunchInit.sigmaPosition_		= itsBunch_m->get_rrms();
-        bunchInit.sigmaGammaBeta_		= itsBunch_m->get_prms();
+        for (unsigned int d = 0; d < 3; ++d) 
+            fv[d] = itsBunch_m->get_rrms()(d);
+        bunchInit.sigmaPosition_		= fv;
+
+        for (unsigned int d = 0; d < 3; ++d) 
+            fv[d] = itsBunch_m->get_prms()(d);
+        bunchInit.sigmaGammaBeta_		= fv;
+
         bunchInit.tranTrun_				= std::max( itsBunch_m->get_maxExtent()(0), itsBunch_m->get_maxExtent()(1) );
         bunchInit.longTrun_				= itsBunch_m->get_maxExtent()(2);
         bunchInit.inputVector_          = qv;    
