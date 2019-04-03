@@ -50,7 +50,7 @@ Vector_t Beamline::getOrigin3D() const {
     return Vector_t(0);
 }
 
-Quaternion Beamline::getCoordTransformationTo() const {
+Quaternion Beamline::getInitialDirection() const {
     return Quaternion(1, 0, 0, 0);
 }
 

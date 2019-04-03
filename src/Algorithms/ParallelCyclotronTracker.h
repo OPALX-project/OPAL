@@ -19,7 +19,6 @@
 // ------------------------------------------------------------------------
 
 #include "Algorithms/Tracker.h"
-#include "Structure/DataSink.h"
 #include "AbsBeamline/ElementBase.h"
 #include <vector>
 #include <tuple>
@@ -27,6 +26,8 @@
 #include "Steppers/Steppers.h"
 
 #include "Structure/MultiBunchDump.h"
+
+class DataSink;
 
 template <class T, unsigned Dim>
 class PartBunchBase;
@@ -70,14 +71,6 @@ public:
     typedef std::pair<double[8], Component *>      element_pair;
     typedef std::pair<ElementBase::ElementType, element_pair>        type_pair;
     typedef std::list<type_pair *>                 beamline_list;
-    /// Constructor.
-    //  The beam line to be tracked is "bl".
-    //  The particle reference data are taken from "data".
-    //  The particle bunch tracked is initially empty.
-    //  If [b]revBeam[/b] is true, the beam runs from s = C to s = 0.
-    //  If [b]revTrack[/b] is true, we track against the beam.
-    ParallelCyclotronTracker(const Beamline &bl, const PartData &data,
-                             bool revBeam, bool revTrack);
 
     /// Constructor.
     //  The beam line to be tracked is "bl".
@@ -261,9 +254,6 @@ private:
     static Vector_t const yaxis;
     static Vector_t const zaxis;
 
-    /// The scale factor for dimensionless variables
-    double scaleFactor_m;
-
     /// The reference variables
     double bega;
     double referenceR;
@@ -294,7 +284,7 @@ private:
     // 1 for FORCE,
     // 2 for AUTO
     MB_MODE multiBunchMode_m;
-    
+
     // 0 for GAMMA (default),
     // 1 for BUNCH
     MB_BINNING binningType_m;
@@ -335,18 +325,21 @@ private:
     const size_t initialLocalNum_m;
     const size_t initialTotalNum_m;
 
-    std::ofstream outfTheta0_m;
-    std::ofstream outfTheta1_m;
-    std::ofstream outfTheta2_m;
-    std::ofstream outfThetaEachTurn_m;
-
+    /// output coordinates at different azimuthal angles and one after every turn
+    std::vector<std::ofstream> outfTheta_m;
+    /// the different azimuthal angles for the outfTheta_m output files
+    std::vector<double> azimuth_angle_m;
+    ///@ open / close output coordinate files
+    void openFiles(std::string fn);
+    void closeFiles();
+    ///@}
+    /// output file for six dimensional phase space
+    std::ofstream outfTrackOrbit_m;
 
     //store the data of the beam which are required for injecting a new bunch for multibunch
     /// filename
     std::string onebunch_m;
 
-    void openFiles(std::string fn);
-    void closeFiles();
 
     void buildupFieldList(double BcParameter[], ElementBase::ElementType elementType, Component *elptr);
 
@@ -357,7 +350,7 @@ private:
 
     bool readOneBunchFromFile(const size_t BeamCount);
     void saveOneBunch();
-    
+
     void updateParticleBins_m();
 
     bool checkGapCross(Vector_t Rold, Vector_t Rnew, RFCavity * rfcavity, double &DistOld);
@@ -456,14 +449,12 @@ private:
     // destroy particles if they are marked as Bin=-1 in the plugin elements or out of global apeture
     bool deleteParticle();
 
-    std::ofstream outfTrackOrbit_m;
-
     void initTrackOrbitFile();
 
     void singleParticleDump();
 
     void bunchDumpStatData();
-    
+
     // @param azimuth (global) [deg] of dump
     void bunchDumpStatDataPerBin(const double& azimuth);
 
@@ -493,9 +484,6 @@ private:
     struct settings {
         int scSolveFreq;
         int stepsPerTurn;
-        double azimuth_angle0;
-        double azimuth_angle1;
-        double azimuth_angle2;
         double deltaTheta;
         int stepsNextCheck;
     } setup_m;

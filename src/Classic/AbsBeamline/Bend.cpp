@@ -1436,76 +1436,6 @@ bool Bend::treatAsDrift(Inform &msg, double chordLength) {
         return false;
 }
 
-void Bend::retrieveDesignEnergy(double startField) {
-    // energyEvolution_t::iterator it = OpalData::getInstance()->getFirstEnergyData();
-    // energyEvolution_t::iterator end = OpalData::getInstance()->getLastEnergyData();
-    // for (; it != end; ++ it) {
-    //     if ((*it).first > startField) break;
-    //     designEnergy_m = (*it).second;
-    // }
-}
-
-std::pair<Vector_t, Vector_t> Bend::getDesignPathSecant(double startsAtDistFromEdge, double length) const {
-
-    length = std::abs(length);
-    Vector_t startPosition(0.0);
-    Vector_t tangent(0, 0, 1);
-
-    double pathLength = refTrajMap_m[0](2);
-    unsigned int size = refTrajMap_m.size();
-
-    for (unsigned int i = 1; i < size; ++ i) {
-        Vector_t step = refTrajMap_m[i] - refTrajMap_m[i-1];
-        double stepSize = euclidean_norm(step);
-        if (pathLength + stepSize > startsAtDistFromEdge) {
-            double diff = startsAtDistFromEdge - pathLength;
-            tangent = step / stepSize;
-            startPosition = refTrajMap_m[i-1] + diff * tangent;
-
-
-            if (length <= 1e-12) {
-                return std::make_pair(startPosition, tangent);
-            }
-
-            for (unsigned j = i; j < size; ++ j) {
-                Vector_t position = refTrajMap_m[j];
-
-                if (euclidean_norm(position - startPosition) >= length) {
-                    step = refTrajMap_m[j-1] - refTrajMap_m[j];
-                    double tau = (dot(startPosition - position, step) - sqrt(std::pow(dot(startPosition - position, step), 2) - dot(step, step) * (dot(startPosition - position, startPosition - position) - std::pow(length, 2)))) / dot(step, step);
-
-                    tangent = position + tau * step - startPosition;
-                    tangent /= euclidean_norm(tangent);
-
-                    return std::make_pair(startPosition, tangent);
-                }
-            }
-
-            Vector_t position = refTrajMap_m[size - 1];
-            Vector_t step = position - refTrajMap_m[size - 2];
-            step /= euclidean_norm(step);
-            double tau = (dot(startPosition - position, step) + sqrt(std::pow(dot(startPosition - position, step), 2) - dot(step, step) * (dot(startPosition - position, startPosition - position) - std::pow(length, 2)))) / dot(step, step);
-
-            tangent = position + tau * step - startPosition;
-            tangent /= euclidean_norm(tangent);
-
-            return std::make_pair(startPosition, tangent);
-        }
-
-        pathLength += stepSize;
-    }
-
-    double diff = startsAtDistFromEdge - pathLength;
-    unsigned int i = size - 1;
-    Vector_t step = refTrajMap_m[i] - refTrajMap_m[i-1];
-    double stepSize = euclidean_norm(step);
-    tangent = step / stepSize;
-    startPosition = refTrajMap_m[i] + diff * tangent;
-    //tangent = tangent;
-
-    return std::make_pair(startPosition, tangent);
-}
-
 std::vector<Vector_t> Bend::getOutline() const {
     std::vector<Vector_t> outline;
     Vector_t rotationCenter = Vector_t(-designRadius_m * cosEntranceAngle_m, 0.0, designRadius_m * sinEntranceAngle_m);
@@ -1908,9 +1838,3 @@ std::array<double,2> Bend::getExitFringeFieldLength() const {
 
     return extFFL;
 }
-
-
-
-
-
-

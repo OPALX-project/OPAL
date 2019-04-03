@@ -88,7 +88,7 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
                                    bool revTrack):
     Tracker(beamline, reference, revBeam, revTrack),
     itsDataSink_m(NULL),
-    itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getCoordTransformationTo()),
+    itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getInitialDirection()),
     RefPartR_m(0.0),
     RefPartP_m(0.0),
     globalEOL_m(false),
@@ -112,11 +112,10 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     WakeFieldTimer_m(IpplTimings::getTimer("WakeField")),
     particleMaterStatus_m(false),
     totalParticlesInSimulation_m(0)
-    // , logger_m("designPath_" + std::to_string(Ippl::myNode()) + ".dat")
 {
 
     CoordinateSystemTrafo labToRef(beamline.getOrigin3D(),
-                                   beamline.getCoordTransformationTo().conjugate());
+                                   beamline.getInitialDirection());
     referenceToLabCSTrafo_m = labToRef.inverted();
 
 #ifdef OPAL_DKS
@@ -137,7 +136,7 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
                                    const std::vector<double> &dt):
     Tracker(beamline, bunch, reference, revBeam, revTrack),
     itsDataSink_m(&ds),
-    itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getCoordTransformationTo()),
+    itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getInitialDirection()),
     RefPartR_m(0.0),
     RefPartP_m(0.0),
     globalEOL_m(false),
@@ -158,11 +157,10 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     WakeFieldTimer_m(IpplTimings::getTimer("WakeField")),
     particleMaterStatus_m(false),
     totalParticlesInSimulation_m(0)
-    // , logger_m("designPath_" + std::to_string(Ippl::myNode()) + ".dat")
 {
 
     CoordinateSystemTrafo labToRef(beamline.getOrigin3D(),
-                                   beamline.getCoordTransformationTo());
+                                   beamline.getInitialDirection());
     referenceToLabCSTrafo_m = labToRef.inverted();
 
     for (std::vector<unsigned long long>::const_iterator it = maxSteps.begin(); it != maxSteps.end(); ++ it) {
@@ -287,6 +285,7 @@ void ParallelTTracker::execute() {
 
         restoreCavityPhases();
     } else {
+
         RefPartR_m = Vector_t(0.0);
         RefPartP_m = euclidean_norm(itsBunch_m->get_pmean_Distribution()) * Vector_t(0, 0, 1);
 
@@ -387,7 +386,7 @@ void ParallelTTracker::execute() {
             itsBunch_m->setT(t);
 
             if (t > 0.0) {
-                updateRefToLabCSTrafo(pusher);
+                updateReference(pusher);
             }
 
             if (deletedParticles_m) {
@@ -1267,12 +1266,15 @@ void ParallelTTracker::writePhaseSpace(const long long step, bool psDump, bool s
     }
 }
 
+void ParallelTTracker::updateReference(const BorisPusher &pusher) {
+    updateReferenceParticle(pusher);
+    updateRefToLabCSTrafo();
+}
+
 void ParallelTTracker::updateReferenceParticle(const BorisPusher &pusher) {
-    //static size_t step = 0;
     const double dt = std::min(itsBunch_m->getT(), itsBunch_m->getdT());
     const double scaleFactor = Physics::c * dt;
     Vector_t Ef(0.0), Bf(0.0);
-    // Vector_t oldR = RefPartR_m;
 
     RefPartR_m /= scaleFactor;
     pusher.push(RefPartR_m, RefPartP_m, dt);
@@ -1302,35 +1304,11 @@ void ParallelTTracker::updateReferenceParticle(const BorisPusher &pusher) {
         Bf += refToLocalCSTrafo.rotateFrom(localB);
     }
 
-    // if (step % loggingFrequency_m == 0) {
-    //     Vector_t R = referenceToLabCSTrafo_m.transformTo(RefPartR_m);
-    //     Vector_t P = referenceToLabCSTrafo_m.rotateTo(RefPartP_m);
-    //     Vector_t lEf = referenceToLabCSTrafo_m.rotateTo(Ef);
-    //     Vector_t lBf = referenceToLabCSTrafo_m.rotateTo(Bf);
-    //     logger_m << std::setw(18) << std::setprecision(8) << pathLength_m + euclidean_norm(RefPartR_m - oldR)
-    //              << std::setw(18) << std::setprecision(8) << R(0)
-    //              << std::setw(18) << std::setprecision(8) << R(1)
-    //              << std::setw(18) << std::setprecision(8) << R(2)
-    //              << std::setw(18) << std::setprecision(8) << P(0)
-    //              << std::setw(18) << std::setprecision(8) << P(1)
-    //              << std::setw(18) << std::setprecision(8) << P(2)
-    //              << std::setw(18) << std::setprecision(8) << lEf(0)
-    //              << std::setw(18) << std::setprecision(8) << lEf(1)
-    //              << std::setw(18) << std::setprecision(8) << lEf(2)
-    //              << std::setw(18) << std::setprecision(8) << lBf(0)
-    //              << std::setw(18) << std::setprecision(8) << lBf(1)
-    //              << std::setw(18) << std::setprecision(8) << lBf(2)
-    //              << std::setw(18) << std::setprecision(8) << Util::getEnergy(RefPartP_m, itsBunch_m->getM() * 1e-6)
-    //              << std::setw(18) << std::setprecision(8) << (itsBunch_m->getT() - 0.5 * itsBunch_m->getdT()) * 1e9
-    //              << std::endl;
-    // }
-
     pusher.kick(RefPartR_m, RefPartP_m, Ef, Bf, dt);
 
     RefPartR_m /= scaleFactor;
     pusher.push(RefPartR_m, RefPartP_m, dt);
     RefPartR_m *= scaleFactor;
-    //++ step;
 }
 
 void ParallelTTracker::transformBunch(const CoordinateSystemTrafo &trafo) {
@@ -1343,9 +1321,7 @@ void ParallelTTracker::transformBunch(const CoordinateSystemTrafo &trafo) {
     }
 }
 
-void ParallelTTracker::updateRefToLabCSTrafo(const BorisPusher &pusher) {
-    updateReferenceParticle(pusher);
-
+void ParallelTTracker::updateRefToLabCSTrafo() {
     pathLength_m += euclidean_norm(RefPartR_m);
 
     CoordinateSystemTrafo update(RefPartR_m,

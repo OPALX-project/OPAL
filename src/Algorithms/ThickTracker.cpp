@@ -43,7 +43,7 @@ ThickTracker::ThickTracker(const Beamline &beamline,
     , RefPartR_m(0.0)
     , RefPartP_m(0.0)
     , itsDataSink_m(nullptr)
-    , itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getCoordTransformationTo())
+    , itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getInitialDirection())
     , zstart_m(0.0)
     , zstop_m(0.0)
     , threshold_m(1.0e-6)
@@ -53,7 +53,7 @@ ThickTracker::ThickTracker(const Beamline &beamline,
     , mapTracking_m(   IpplTimings::getTimer("mapTracking"))
 {
     CoordinateSystemTrafo labToRef(beamline.getOrigin3D(),
-                                   beamline.getCoordTransformationTo());
+                                   beamline.getInitialDirection());
     referenceToLabCSTrafo_m = labToRef.inverted();
 }
 
@@ -74,7 +74,7 @@ ThickTracker::ThickTracker(const Beamline &beamline,
     , RefPartR_m(0.0)
     , RefPartP_m(0.0)
     , itsDataSink_m(&ds)
-    , itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getCoordTransformationTo())
+    , itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getInitialDirection())
     , zstart_m(zstart)
     , zstop_m(zstop[0])
     , threshold_m(1.0e-6)
@@ -89,7 +89,7 @@ ThickTracker::ThickTracker(const Beamline &beamline,
 
 
     CoordinateSystemTrafo labToRef(beamline.getOrigin3D(),
-                                   beamline.getCoordTransformationTo());
+                                   beamline.getInitialDirection());
     referenceToLabCSTrafo_m = labToRef.inverted();
 }
 
@@ -104,7 +104,7 @@ void ThickTracker::visitBeamline(const Beamline &bl) {
     const FlaggedBeamline* fbl = static_cast<const FlaggedBeamline*>(&bl);
     if (fbl->getRelativeFlag()) {
         *gmsg << " do stuff" << endl;
-        OpalBeamline stash(fbl->getOrigin3D(), fbl->getCoordTransformationTo());
+        OpalBeamline stash(fbl->getOrigin3D(), fbl->getInitialDirection());
         stash.swap(itsOpalBeamline_m);
         fbl->iterate(*this, false);
         itsOpalBeamline_m.prepareSections();

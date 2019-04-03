@@ -320,16 +320,14 @@ private:
 
     void transformBunch(const CoordinateSystemTrafo &trafo);
 
-    void updateRefToLabCSTrafo(const BorisPusher &pusher);
+    void updateReference(const BorisPusher &pusher);
+    void updateRefToLabCSTrafo();
     void findStartPosition(const BorisPusher &pusher);
     void autophaseCavities(const BorisPusher &pusher);
 
     void evenlyDistributeParticles();
 
     static unsigned long long getMaxSteps(std::queue<unsigned long long> numSteps);
-
-    // std::ofstream logger_m;
-    // size_t loggingFrequency_m;
 };
 
 inline void ParallelTTracker::visitAlignWrapper(const AlignWrapper &wrap) {

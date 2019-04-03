@@ -12,8 +12,6 @@
 #include "Algorithms/PartBinsCyc.h"
 #include "Algorithms/PartData.h"
 #include "Algorithms/Quaternion.h"
-#include "Utilities/SwitcherError.h"
-#include "Physics/Physics.h"
 
 #include <iosfwd>
 #include <vector>

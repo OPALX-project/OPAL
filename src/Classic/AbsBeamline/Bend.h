@@ -124,8 +124,6 @@ public:
     double getExitAngle() const;
     double getMapLength() const;
 
-    std::pair<Vector_t, Vector_t> getDesignPathSecant(double startsAtDistFromEdge, double length) const;
-
     std::vector<Vector_t> getOutline() const;
     MeshData getSurfaceMesh() const;
 
@@ -213,7 +211,6 @@ private:
     void setFieldBoundaries(double startField, double endField);
     void setupPusher(PartBunchBase<double, 3> *bunch);
     bool treatAsDrift(Inform &msg, double chordlength);
-    void retrieveDesignEnergy(double startField);
 
     void setCSTrafoToEntranceRegion(const CoordinateSystemTrafo &trafo);
     void setCSTrafoToExitRegion(const CoordinateSystemTrafo &trafo);

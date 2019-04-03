@@ -1,13 +1,13 @@
 #ifndef PART_BUNCH_BASE_HPP
 #define PART_BUNCH_BASE_HPP
 
-#include "PartBunchBase.h"
-
 #include "Distribution/Distribution.h"
 
 #include "AbstractObjects/OpalData.h"   // OPAL file
+#include "Physics/Physics.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
+#include "Utilities/SwitcherError.h"
 #include "Utilities/Util.h"
 
 extern Inform *gmsg;
@@ -1993,7 +1993,7 @@ void PartBunchBase<T, Dim>::correctEnergy(double avrgp_m) {
 template <class T, unsigned Dim>
 Inform &PartBunchBase<T, Dim>::print(Inform &os) {
 
-    if(getTotalNum() != 0) {  // to suppress Nan's
+    if(getTotalNum() != 0) {  // to suppress Nans
         Inform::FmtFlags_t ff = os.flags();
 
         double lengthUnitConverter = 1;
@@ -2016,12 +2016,14 @@ Inform &PartBunchBase<T, Dim>::print(Inform &os) {
            << "dEkin = "             << std::setw(17) << Util::getEnergyString(dE_m) << "\n";
         os << "* rmax            = " << Util::getLengthString(rmax_m, 5) << "\n";
         os << "* rmin            = " << Util::getLengthString(rmin_m, 5) << "\n";
-        os << "* rms beam size   = " << Util::getLengthString(rrms_m, 5) << "\n";
-        os << "* rms momenta     = " << std::setw(12) << std::setprecision(5) << prms_m << " [beta gamma]\n";
-        os << "* mean position   = " << Util::getLengthString(rmean_m, 5) << "\n";
-        os << "* mean momenta    = " << std::setw(12) << std::setprecision(5) << pmean_m << " [beta gamma]\n";
-        os << "* rms emittance   = " << std::setw(12) << std::setprecision(5) << eps_m << " (not normalized)\n";
-        os << "* rms correlation = " << std::setw(12) << std::setprecision(5) << rprms_m << "\n";
+        if (getTotalNum() >= 2) { // to suppress Nans
+            os << "* rms beam size   = " << Util::getLengthString(rrms_m, 5) << "\n";
+            os << "* rms momenta     = " << std::setw(12) << std::setprecision(5) << prms_m << " [beta gamma]\n";
+            os << "* mean position   = " << Util::getLengthString(rmean_m, 5) << "\n";
+            os << "* mean momenta    = " << std::setw(12) << std::setprecision(5) << pmean_m << " [beta gamma]\n";
+            os << "* rms emittance   = " << std::setw(12) << std::setprecision(5) << eps_m << " (not normalized)\n";
+            os << "* rms correlation = " << std::setw(12) << std::setprecision(5) << rprms_m << "\n";
+        }
         os << "* hr              = " << Util::getLengthString(get_hr(), 5) << "\n";
         os << "* dh              = " << std::setw(13) << std::setprecision(5) << dh_m * 100 << " [%]\n";
         os << "* t               = " << std::setw(17) << Util::getTimeString(getT()) << "         "

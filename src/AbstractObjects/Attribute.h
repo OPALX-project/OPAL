@@ -69,7 +69,7 @@ public:
 
     /// Constructor defining a parser and an optional value.
     //  The default value is ``undefined''.
-    Attribute(AttributeHandler *h, AttributeBase *b = 0);
+    Attribute(AttributeHandler *h, AttributeBase *b = nullptr);
 
     ~Attribute();
     const Attribute &operator=(const Attribute &);
@@ -170,7 +170,7 @@ private:
 // ------------------------------------------------------------------------
 
 inline Attribute::operator bool() const {
-    return base != 0;
+    return base != nullptr;
 }
 
 inline bool Attribute::defaultUsed() const {

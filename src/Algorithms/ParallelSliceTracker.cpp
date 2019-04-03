@@ -22,7 +22,7 @@ ParallelSliceTracker::ParallelSliceTracker(const Beamline &beamline,
     Tracker(beamline, reference, revBeam, revTrack) {
 
     CoordinateSystemTrafo labToRef(beamline.getOrigin3D(),
-                                   beamline.getCoordTransformationTo().conjugate());
+                                   beamline.getInitialDirection());
     referenceToLabCSTrafo_m = labToRef.inverted();
 
 }
@@ -46,7 +46,7 @@ ParallelSliceTracker::ParallelSliceTracker(const Beamline &beamline,
     itsDataSink_m   = &ds;
 
     CoordinateSystemTrafo labToRef(beamline.getOrigin3D(),
-                                   beamline.getCoordTransformationTo());
+                                   beamline.getInitialDirection());
     referenceToLabCSTrafo_m = labToRef.inverted();
 
     for (std::vector<unsigned long long>::const_iterator it = maxSteps.begin(); it != maxSteps.end(); ++ it) {
@@ -78,7 +78,7 @@ ParallelSliceTracker::~ParallelSliceTracker()
 void ParallelSliceTracker::visitBeamline(const Beamline &bl) { // borrowed from ParallelTTracker
     const FlaggedBeamline* fbl = static_cast<const FlaggedBeamline*>(&bl);
     if (fbl->getRelativeFlag()) {
-        OpalBeamline stash(fbl->getOrigin3D(), fbl->getCoordTransformationTo());
+        OpalBeamline stash(fbl->getOrigin3D(), fbl->getInitialDirection());
         stash.swap(itsOpalBeamline_m);
         fbl->iterate(*this, false);
         itsOpalBeamline_m.prepareSections();

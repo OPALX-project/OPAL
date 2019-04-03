@@ -41,7 +41,7 @@ class OpalBeamline {
 public:
     OpalBeamline();
     OpalBeamline(const Vector_t& origin,
-                 const Quaternion& coordTrafoTo);
+                 const Quaternion& rotation);
     ~OpalBeamline();
 
     OpalSection &getSectionAt(const Vector_t &, long &);
@@ -65,24 +65,9 @@ public:
     CoordinateSystemTrafo getCSTrafoLab2Local(const std::shared_ptr<Component> &comp) const;
     CoordinateSystemTrafo getCSTrafoLab2Local() const;
     CoordinateSystemTrafo getMisalignment(const std::shared_ptr<Component> &comp) const;
-    // void getSectionIndexAt(const Vector_t &, long &) const;
-    // double getSectionStart(const long &) const;
-    // double getSectionEnd(const unsigned int &) const;
-    // double getSectionEnd(const Vector_t &, long);
 
     double getStart(const Vector_t &) const;
     double getEnd(const Vector_t &) const;
-
-    // void setOrientation(const Vector_t &, const Vector_t &);
-    // void setOrientation(const Vector_t &, const unsigned int &);
-    // void updateOrientation(const Vector_t &, const Vector_t &, const double &, const double &);
-
-    // const Vector_t &getOrientation(const Vector_t &) const;
-    // const Vector_t &getOrientation(const long &) const;
-
-    // void resetStatus();
-    // void setStatus(const unsigned int &, const bool &);
-    // const bool &getStatus(const unsigned int &) const;
 
     void switchElements(const double &, const double &, const double &kineticEnergy, const bool &nomonitors = false);
     void switchAllElements();
@@ -123,11 +108,6 @@ public:
 
     bool containsSource();
 private:
-    FieldList::iterator partiallyInsideDipole(const FieldList::iterator &it,
-                                              const FieldList::iterator &begin,
-                                              const FieldList::iterator &end,
-                                              const unsigned int &minOrder);
-
     FieldList elements_m;
     bool prepared_m;
     bool containsSource_m;
@@ -137,35 +117,6 @@ private:
     static CompVec dummy_list_m;
     static OpalSection dummy_section_m;
 };
-
-
-// inline WakeFunction *OpalBeamline::getWakeFunction(const unsigned int &index) {
-//     if(index < sections_m.size()) {
-//         return sections_m[index].getWakeFunction();
-//     }
-//     return NULL;
-// }
-
-// inline std::shared_ptr<const ElementBase> OpalBeamline::getWakeFunctionOwner(const unsigned int &index) {
-//     if(index < sections_m.size()) {
-//         return sections_m[index].getWakeFunctionOwner();
-//     }
-//     return NULL;
-// }
-
-// inline BoundaryGeometry *OpalBeamline::getBoundaryGeometry(const unsigned int &index) {
-//     if(index < sections_m.size()) {
-//         return sections_m[index].getBoundaryGeometry();
-//     }
-//     return NULL;
-// }
-
-// inline ParticleMatterInteractionHandler *OpalBeamline::getParticleMatterInteractionHandler(const unsigned int &index) {
-//     if(index < sections_m.size()) {
-//         return sections_m[index].getParticleMatterInteractionHandler();
-//     }
-//     return 0;
-// }
 
 template<class T> inline
 void OpalBeamline::visit(const T &element, BeamlineVisitor &, PartBunchBase<double, 3> *bunch) {

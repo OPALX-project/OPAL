@@ -30,7 +30,7 @@ extern Inform *gmsg;
 // ------------------------------------------------------------------------
 
 Attribute::Attribute():
-    base(),
+    base(nullptr),
     handler(),
     isDefault(true)
 {}
@@ -69,7 +69,7 @@ AttributeBase &Attribute::getBase() const {
 }
 
 bool Attribute::isBaseAllocated() const {
-    return base != NULL;
+    return base != nullptr;
 }
 
 AttributeHandler &Attribute::getHandler() const {

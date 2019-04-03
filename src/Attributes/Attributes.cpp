@@ -54,7 +54,7 @@ namespace Attributes {
     // Boolean value.
 
     Attribute makeBool(const std::string &name, const std::string &help) {
-        return Attribute(new Bool(name, help), 0);
+        return Attribute(new Bool(name, help), nullptr);
     }
 
 
@@ -64,7 +64,8 @@ namespace Attributes {
 
 
     bool getBool(const Attribute &attr) {
-        if(AttributeBase *base = &attr.getBase()) {
+        if(attr.isBaseAllocated()) {
+            AttributeBase *base = &attr.getBase();
             if(dynamic_cast<Bool *>(&attr.getHandler())) {
                 return dynamic_cast<SValue<bool> *>(base)->evaluate();
             } else if(SValue<SRefAttr<bool> > *ref =
@@ -98,12 +99,13 @@ namespace Attributes {
     // ----------------------------------------------------------------------
     // Boolean array value.
     Attribute makeBoolArray(const std::string &name, const std::string &help) {
-        return Attribute(new BoolArray(name, help), 0);
+        return Attribute(new BoolArray(name, help), nullptr);
     }
 
 
     std::vector<bool> getBoolArray(const Attribute &attr) {
-        if(AttributeBase *base = &attr.getBase()) {
+        if(attr.isBaseAllocated()) {
+            AttributeBase *base = &attr.getBase();
             if(AValue<bool> *value =
                    dynamic_cast<AValue<bool>*>(base)) {
                 return value->evaluate();
@@ -201,7 +203,7 @@ namespace Attributes {
     // Real value.
 
     Attribute makeReal(const std::string &name, const std::string &help) {
-        return Attribute(new Real(name, help), 0);
+        return Attribute(new Real(name, help), nullptr);
     }
 
 
@@ -213,7 +215,8 @@ namespace Attributes {
 
 
     double getReal(const Attribute &attr) {
-        if(AttributeBase *base = &attr.getBase()) {
+        if(attr.isBaseAllocated()) {
+            AttributeBase *base = &attr.getBase();
             if(dynamic_cast<Real *>(&attr.getHandler())) {
                 return dynamic_cast<SValue<double> *>(base)->evaluate();
             } else if(SValue<SRefAttr<double> > *ref =
@@ -239,7 +242,7 @@ namespace Attributes {
             value.set(val);
         } else {
             throw OpalException("Attributes::setReal()", "Attribute \"" +
-                                attr.getName() + "\" is not logical.");
+                                attr.getName() + "\" is not real.");
         }
     }
 
@@ -248,13 +251,14 @@ namespace Attributes {
     // Real array value.
 
     Attribute makeRealArray(const std::string &name, const std::string &help) {
-        return Attribute(new RealArray(name, help), 0);
+        return Attribute(new RealArray(name, help), nullptr);
     }
 
 
     std::vector<double> getRealArray(const Attribute &attr) {
-        if(AttributeBase *base = &attr.getBase()) {
+        if(attr.isBaseAllocated()) {
             if(dynamic_cast<RealArray *>(&attr.getHandler())) {
+                AttributeBase *base = &attr.getBase();
                 return dynamic_cast<AValue<double>*>(base)->evaluate();
             } else {
                 throw OpalException("Attributes::getRealArray()", "Attribute \"" +
@@ -282,7 +286,7 @@ namespace Attributes {
     // Reference value.
 
     Attribute makeReference(const std::string &name, const std::string &help) {
-        return Attribute(new Reference(name, help), 0);
+        return Attribute(new Reference(name, help), nullptr);
     }
 
 
@@ -290,7 +294,7 @@ namespace Attributes {
     // String value.
 
     Attribute makeString(const std::string &name, const std::string &help) {
-        return Attribute(new String(name, help), 0);
+        return Attribute(new String(name, help), nullptr);
     }
 
 
@@ -301,7 +305,8 @@ namespace Attributes {
 
 
     std::string getString(const Attribute &attr) {
-        if(AttributeBase *base = &attr.getBase()) {
+        if(attr.isBaseAllocated()) {
+            AttributeBase *base = &attr.getBase();
             std::string expr;
             if(dynamic_cast<String *>(&attr.getHandler())) {
                 expr = dynamic_cast<SValue<std::string> *>(base)->evaluate();
@@ -366,12 +371,13 @@ namespace Attributes {
     // String array value.
 
     Attribute makeStringArray(const std::string &name, const std::string &help) {
-        return Attribute(new StringArray(name, help), 0);
+        return Attribute(new StringArray(name, help), nullptr);
     }
 
 
     std::vector<std::string> getStringArray(const Attribute &attr) {
-        if(AttributeBase *base = &attr.getBase()) {
+        if(attr.isBaseAllocated()) {
+            AttributeBase *base = &attr.getBase();
             if(dynamic_cast<StringArray *>(&attr.getHandler())) {
                 auto opal = OpalData::getInstance();
 
@@ -429,7 +435,7 @@ namespace Attributes {
     // Table row reference value.
 
     Attribute makeTableRow(const std::string &name, const std::string &help) {
-        return Attribute(new TableRow(name, help), 0);
+        return Attribute(new TableRow(name, help), nullptr);
     }
 
 
@@ -464,12 +470,13 @@ namespace Attributes {
     // Token list value.
 
     Attribute makeTokenList(const std::string &name, const std::string &help) {
-        return Attribute(new TokenList(name, help), 0);
+        return Attribute(new TokenList(name, help), nullptr);
     }
 
 
     std::list<Token> getTokenList(const Attribute &attr) {
-        if(AttributeBase *base = &attr.getBase()) {
+        if(attr.isBaseAllocated()) {
+            AttributeBase *base = &attr.getBase();
             if(dynamic_cast<TokenList *>(&attr.getHandler())) {
                 return dynamic_cast<SValue<std::list<Token> > *>(base)->evaluate();
             } else {
@@ -496,12 +503,13 @@ namespace Attributes {
     // Token list array value.
 
     Attribute makeTokenListArray(const std::string &name, const std::string &help) {
-        return Attribute(new TokenListArray(name, help), 0);
+        return Attribute(new TokenListArray(name, help), nullptr);
     }
 
 
     std::vector<std::list<Token> > getTokenListArray(const Attribute &attr) {
-        if(AttributeBase *base = &attr.getBase()) {
+        if(attr.isBaseAllocated()) {
+            AttributeBase *base = &attr.getBase();
             if(dynamic_cast<TokenListArray *>(&attr.getHandler())) {
                 return dynamic_cast<AValue<std::list<Token> > *>(base)->evaluate();
             } else {
@@ -520,5 +528,4 @@ namespace Attributes {
         // Token lists are never expressions, so AValue will do here.
         attr.set(new AValue<std::list<Token> >(value));
     }
-
 }
