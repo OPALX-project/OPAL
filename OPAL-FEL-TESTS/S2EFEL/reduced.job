@@ -23,21 +23,6 @@ MESH
  
 BUNCH
 {
-  bunch-initialization
-  {
-    type    						= OPAL
-    distribution					= uniform
-    charge						= 1.846e8
-    number-of-particles					= 1024
-    gamma						= 100.41
-    direction     	    				= (    0.0,     0.0,       1.0)
-    position						= (    0.0,     0.0,       0.0)
-    sigma-position					= (  260.0,   260.0,     50.25)
-    sigma-momentum					= ( 1.0e-8,  1.0e-8, 100.41e-4)
-    transverse-truncation				= 1040.0
-    longitudinal-truncation     			= 90.0
-    bunching-factor					= 0.01
-  }
   
   bunch-sampling
   {

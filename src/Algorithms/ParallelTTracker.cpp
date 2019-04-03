@@ -760,7 +760,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::BunchInitialize bunchInit;
         bunchInit.bunchType_            = "OPAL";
         bunchInit.numberOfParticles_    = localNum;
-        bunchInit.cloudCharge_			= charge.q * localnum;    
+        bunchInit.cloudCharge_			= charge.q * localNum;    
         bunchInit.initialGamma_			= itsBunch_m->get_gamma(); 
         bunchInit.initialBeta_			= sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));
         
