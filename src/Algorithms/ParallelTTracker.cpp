@@ -743,10 +743,11 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     std::list<std::string> jobFile = Darius::read_file(cfname);
     Darius::cleanJobFile(jobFile);
    
-    /* Get bunch                                                                                          */
+    /* Get particles in bunch                                                                             */
+    itsBunch_m->calcBeamParameters();
     std::list<Darius::Charge>	qv;
     Darius::Charge charge;
-    charge.q = itsBunch_m->getChargePerParticle() / (1.6*10E-19);
+    charge.q = itsBunch_m->getChargePerParticle() / (-1.6e-19);  // In elementary charges
     const unsigned int localNum = itsBunch_m->getLocalNum();
     for (unsigned int i = 0; i < localNum; ++i) {
         for (unsigned int d = 0; d < 3; ++d) {
@@ -758,26 +759,26 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     
     /* Parameters to initialize bunch                                                                     */
     Darius::BunchInitialize bunchInit;
-    bunchInit.bunchType_ = "OPAL";
-    bunchInit.numberOfParticles_ = localNum;
-      cloudCharge_			= 0.0;
-      initialGamma_			= 0.0;
-      initialBeta_			= 0.0;
-      initialDirection_			= 0.0;
-      position_.clear();
-      numbers_				= 0;
-      latticeConstants_			= 0.0;
-      sigmaPosition_			= 0.0;
-      sigmaGammaBeta_			= 0.0;
-      tranTrun_				= 0.0;
-      longTrun_				= 0.0;
-      fileName_				= "";
-      inputVector_          = qv;
-      bF_				= 0.0;
-      bFP_				= 0.0;
-      shotNoise_			= false;
-      lambda_				= 0.0;
-    
+        bunchInit.bunchType_            = "OPAL";
+        bunchInit.numberOfParticles_    = localNum;
+        bunchInit.cloudCharge_			= charge.q * localnum;    
+        bunchInit.initialGamma_			= itsBunch_m->get_gamma(); 
+        bunchInit.initialBeta_			= sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));
+        
+        Darius::FieldVector<double> fv (0.0);
+        for (unsigned int d = 0; d < 3; ++d) 
+            fv[d] = itsBunch_m->get_pmean()(d);
+        bunchInit.initialDirection_		= fv / fv.norm();
+        
+        for (unsigned int d = 0; d < 3; ++d) 
+            fv[d] = itsBunch_m->get_rmean()(d);
+        bunchInit.position_.push_back(fv);
+        
+        bunchInit.sigmaPosition_		= itsBunch->get_rrms();
+        bunchInit.sigmaGammaBeta_		= itsBunch->get_prms();
+        bunchInit.tranTrun_				= std::max( itsBunch->get_maxExtent()(0), itsBunch->get_maxExtent()(1) );
+        bunchInit.longTrun_				= itsBunch->get_maxExtent()(2);
+        bunchInit.inputVector_          = qv;    
 
     /* Create the solver database.                                                                        */
     Darius::Mesh                               mesh;
@@ -808,7 +809,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     /* Initialize the class for the FDTD computations.                                                    */
     Darius::FdTd   fdtd   (mesh, bunch, seed, undulator, extField, FEL);
     Darius::FdTdSC fdtdsc (mesh, bunch, seed, undulator, extField, FEL);
-    
     
     /* Solve for the fields and the bunch distribution over the specified time.                           */
     if ( mesh.spaceCharge_ )
