@@ -767,16 +767,17 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         Darius::FieldVector<double> fv (0.0);
         for (unsigned int d = 0; d < 3; ++d) 
             fv[d] = itsBunch_m->get_pmean()(d);
-        bunchInit.initialDirection_		= fv / fv.norm();
+        fv /= fv.norm();
+        bunchInit.initialDirection_		= fv;
         
         for (unsigned int d = 0; d < 3; ++d) 
             fv[d] = itsBunch_m->get_rmean()(d);
         bunchInit.position_.push_back(fv);
         
-        bunchInit.sigmaPosition_		= itsBunch->get_rrms();
-        bunchInit.sigmaGammaBeta_		= itsBunch->get_prms();
-        bunchInit.tranTrun_				= std::max( itsBunch->get_maxExtent()(0), itsBunch->get_maxExtent()(1) );
-        bunchInit.longTrun_				= itsBunch->get_maxExtent()(2);
+        bunchInit.sigmaPosition_		= itsBunch_m->get_rrms();
+        bunchInit.sigmaGammaBeta_		= itsBunch_m->get_prms();
+        bunchInit.tranTrun_				= std::max( itsBunch_m->get_maxExtent()(0), itsBunch_m->get_maxExtent()(1) );
+        bunchInit.longTrun_				= itsBunch_m->get_maxExtent()(2);
         bunchInit.inputVector_          = qv;    
 
     /* Create the solver database.                                                                        */
