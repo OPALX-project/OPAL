@@ -13,7 +13,7 @@ Title, string="AWA Photoinjector";
 //Global Parameters
 
 REAL rf_freq             = 1.3e9;     //RF frequency. (Hz)
-REAL n_particles         = 1E+3;      //Number of particles in simulation.
+REAL n_particles         = 1E+4;      //Number of particles in simulation.
 REAL beam_bunch_charge   = 1e-9;      //Charge of bunch. (C)
 
 //Initial Momentum Calculation
@@ -152,7 +152,7 @@ Dist: DISTRIBUTION, TYPE = FLATTOP,
 // for most efficient space charge calculation.
 
 FS_SC: Fieldsolver, FSTYPE = FFT, 
-            MX = 8, MY = 8, MT = 8, // SC grid size is 8^3
+            MX = 16, MY = 16, MT = 16, // SC grid size is 32^3
             PARFFTX = true, 
             PARFFTY = true, 
             PARFFTT = true,  // parallel in the z direction only
