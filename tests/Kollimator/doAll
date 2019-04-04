@@ -1,9 +1,0 @@
-#!/bin/bash
-#
-#
-for NP in 1
-do
- mkdir -p ${NP}p
- mpirun -np ${NP} $OPAL_EXE_PATH/opal collimator-${NP}p.in | tee collimator-${NP}p.out
- mv *.h5 *.out *.stat *.lbal ${NP}p
-done

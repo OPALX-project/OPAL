@@ -1,2 +1,0 @@
-#!/bin/bash
-mpirun -np 4 $OPAL_EXE_PATH/opal Degrader-1.in --info 3 --warn 0 2>&1

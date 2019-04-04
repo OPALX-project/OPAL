@@ -147,9 +147,8 @@ public:
 
     void setOrigin3D(const Vector_t& ori);
     Vector_t getOrigin3D() const;
-
-    void setCoordTransformationTo(const Quaternion& trafoTo);
-    Quaternion getCoordTransformationTo() const;
+    void setInitialDirection(const Quaternion& rot);
+    Quaternion getInitialDirection() const;
 
     void setRelativeFlag(bool flag);
     bool getRelativeFlag() const;
@@ -453,12 +452,12 @@ Vector_t TBeamline<T>::getOrigin3D() const {
 }
 
 template <class T> inline
-void TBeamline<T>::setCoordTransformationTo(const Quaternion& trafoTo) {
+void TBeamline<T>::setInitialDirection(const Quaternion& trafoTo) {
     itsCoordTrafoTo_m = trafoTo;
 }
 
 template <class T> inline
-Quaternion TBeamline<T>::getCoordTransformationTo() const {
+Quaternion TBeamline<T>::getInitialDirection() const {
     return itsCoordTrafoTo_m;
 }
 

@@ -189,7 +189,7 @@ ParallelTTracker::~ParallelTTracker() {
 void ParallelTTracker::visitBeamline(const Beamline &bl) {
     const FlaggedBeamline* fbl = static_cast<const FlaggedBeamline*>(&bl);
     if (fbl->getRelativeFlag()) {
-        OpalBeamline stash(fbl->getOrigin3D(), fbl->getCoordTransformationTo());
+        OpalBeamline stash(fbl->getOrigin3D(), fbl->getInitialDirection());
         stash.swap(itsOpalBeamline_m);
         fbl->iterate(*this, false);
         itsOpalBeamline_m.prepareSections();

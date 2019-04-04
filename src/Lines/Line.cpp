@@ -232,9 +232,9 @@ void Line::parse(Statement &stat) {
             Quaternion rotTheta(cos(0.5 * theta), 0, -sin(0.5 * theta), 0);
             Quaternion rotPhi(cos(0.5 * phi), -sin(0.5 * phi), 0, 0);
             Quaternion rotPsi(cos(0.5 * psi), 0, 0, -sin(0.5 * psi));
-            line->setCoordTransformationTo(rotPsi * rotPhi * rotTheta);
+            line->setInitialDirection(rotPsi * rotPhi * rotTheta);
         } else {
-            line->setCoordTransformationTo(Quaternion(1, 0, 0, 0));
+            line->setInitialDirection(Quaternion(1, 0, 0, 0));
             if (itsAttr[ORIENTATION]) {
                 throw OpalException("Line::parse","Parameter orientation is array of 3 values (theta, phi, psi);\n" +
                                     std::to_string(direction.size()) + " values provided");
@@ -256,7 +256,7 @@ void Line::parse(Statement &stat) {
         Quaternion rotPsi(cos(0.5 * psi), 0, 0, -sin(0.5 * psi));
 
         line->setOrigin3D(origin);
-        line->setCoordTransformationTo(rotPsi * rotPhi * rotTheta);
+        line->setInitialDirection(rotPsi * rotPhi * rotTheta);
 
         line->setRelativeFlag(!itsAttr[X].defaultUsed() ||
                               !itsAttr[Y].defaultUsed() ||

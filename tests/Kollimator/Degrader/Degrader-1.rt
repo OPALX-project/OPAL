@@ -1,4 +1,0 @@
-"Simple slab of carbon as degrader of a 72 MeV proton beam"
-out "Ekin" last 1E-03
-out "rms beam size" last 1E-04
-out "rms emittance" last 1E-04

@@ -2222,6 +2222,10 @@ bool ParallelCyclotronTracker::deleteParticle(){
               << "on stripper, collimator, septum, or out of cyclotron aperture"
               << endl;
 
+        if (totalnum == 0) {
+            return flagNeedUpdate;
+        }
+
         Vector_t const meanR = calcMeanR();
         Vector_t const meanP = calcMeanP();
 
