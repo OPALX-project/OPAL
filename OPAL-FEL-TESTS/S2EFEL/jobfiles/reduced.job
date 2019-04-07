@@ -1,11 +1,3 @@
-#  Darius input file                                                                                                                                          
-#                                                                                                        
-#  physics - model a free electron laser based on a magnetic undulator
-#                                                                                                 
-#  mpirun -np 4 ../darius FEL-IR.job
-#  
-#  in the LSF system: 
-#  bsub -n 48 -W 2:00 -J "FEL-IR" -o mithra.out 'mpirun ../darius FEL-IR.job'
 
 MESH
 {
@@ -14,7 +6,7 @@ MESH
   mesh-lengths						= ( 3200, 3200.0, 280.0) 
   mesh-resolution					= ( 100.0,  100.0,    0.4)
   mesh-center						= ( 0.0,     0.0,   0.0)
-  total-time						= 30000
+  total-time						= 300
   bunch-time-step					= 1.6
   bunch-time-start              			= 0.0
   mesh-truncation-order					= 2

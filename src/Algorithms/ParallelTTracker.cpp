@@ -697,7 +697,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         return;
     UndulatorRep* ur = dynamic_cast<UndulatorRep*>((*it).get());
     
-    /* Check if Mithra has already been run                                                                 */
+    /* Check if Mithra has already been run and get filename                                                                 */
     if (ur->getIsDone())
         return;
     ur->setIsDone();
