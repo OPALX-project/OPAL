@@ -74,6 +74,7 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
     bool flagNeedUpdate = false;
     bool flagresetMQ = false;
     Vector_t rmin, rmax, strippoint;
+    bunch->get_bounds(rmin, rmax);
     // interested in absolute maximum
     double xmax = std::max(std::abs(rmin(0)), std::abs(rmax(0)));
     double ymax = std::max(std::abs(rmin(1)), std::abs(rmax(1)));

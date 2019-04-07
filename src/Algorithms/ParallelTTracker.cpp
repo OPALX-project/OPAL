@@ -80,8 +80,6 @@
 
 class PartData;
 
-using namespace std;
-
 ParallelTTracker::ParallelTTracker(const Beamline &beamline,
                                    const PartData &reference,
                                    bool revBeam,
@@ -89,8 +87,6 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     Tracker(beamline, reference, revBeam, revTrack),
     itsDataSink_m(NULL),
     itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getInitialDirection()),
-    RefPartR_m(0.0),
-    RefPartP_m(0.0),
     globalEOL_m(false),
     wakeStatus_m(false),
     wakeFunction_m(NULL),
@@ -114,10 +110,6 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     totalParticlesInSimulation_m(0)
 {
 
-    CoordinateSystemTrafo labToRef(beamline.getOrigin3D(),
-                                   beamline.getInitialDirection());
-    referenceToLabCSTrafo_m = labToRef.inverted();
-
 #ifdef OPAL_DKS
     if (IpplInfo::DKSEnabled)
         setupDKS();
@@ -137,8 +129,6 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     Tracker(beamline, bunch, reference, revBeam, revTrack),
     itsDataSink_m(&ds),
     itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getInitialDirection()),
-    RefPartR_m(0.0),
-    RefPartP_m(0.0),
     globalEOL_m(false),
     wakeStatus_m(false),
     wakeFunction_m(NULL),
@@ -148,7 +138,7 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     minStepforReBin_m(-1),
     minBinEmitted_m(std::numeric_limits<size_t>::max()),
     repartFreq_m(-1),
-    emissionSteps_m(numeric_limits<unsigned int>::max()),
+    emissionSteps_m(std::numeric_limits<unsigned int>::max()),
     numParticlesInSimulation_m(0),
     timeIntegrationTimer1_m(IpplTimings::getTimer("TIntegration1")),
     timeIntegrationTimer2_m(IpplTimings::getTimer("TIntegration2")),
@@ -158,11 +148,6 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     particleMaterStatus_m(false),
     totalParticlesInSimulation_m(0)
 {
-
-    CoordinateSystemTrafo labToRef(beamline.getOrigin3D(),
-                                   beamline.getInitialDirection());
-    referenceToLabCSTrafo_m = labToRef.inverted();
-
     for (std::vector<unsigned long long>::const_iterator it = maxSteps.begin(); it != maxSteps.end(); ++ it) {
         localTrackSteps_m.push(*it);
     }
@@ -239,7 +224,6 @@ void ParallelTTracker::restoreCavityPhases() {
 
 void ParallelTTracker::execute() {
     Inform msg("ParallelTTracker ", *gmsg);
-
     OpalData::getInstance()->setInPrepState(true);
 
     BorisPusher pusher(itsReference);
@@ -276,22 +260,23 @@ void ParallelTTracker::execute() {
     if ( OpalData::getInstance()->hasPriorTrack() ||
          OpalData::getInstance()->inRestartRun()) {
 
-        referenceToLabCSTrafo_m = itsBunch_m->toLabTrafo_m;
-        RefPartR_m = referenceToLabCSTrafo_m.transformFrom(itsBunch_m->RefPartR_m);
-        RefPartP_m = referenceToLabCSTrafo_m.rotateFrom(itsBunch_m->RefPartP_m);
-
         pathLength_m = itsBunch_m->get_sPos();
         zstart_m = pathLength_m;
 
         restoreCavityPhases();
     } else {
 
-        RefPartR_m = Vector_t(0.0);
-        RefPartP_m = euclidean_norm(itsBunch_m->get_pmean_Distribution()) * Vector_t(0, 0, 1);
+        double momentum = euclidean_norm(itsBunch_m->get_pmean_Distribution());
+        CoordinateSystemTrafo beamlineToLab = itsOpalBeamline_m.getCSTrafoLab2Local().inverted();
+        itsBunch_m->toLabTrafo_m = beamlineToLab;
+
+        itsBunch_m->RefPartR_m = beamlineToLab.transformTo(Vector_t(0.0));
+        itsBunch_m->RefPartP_m = beamlineToLab.rotateTo(momentum * Vector_t(0, 0, 1));
 
         if (itsBunch_m->getTotalNum() > 0) {
             if (!itsOpalBeamline_m.containsSource()) {
-                RefPartP_m = itsReference.getP() / itsBunch_m->getM() * Vector_t(0, 0, 1);
+                momentum = itsReference.getP() / itsBunch_m->getM();
+                itsBunch_m->RefPartP_m = beamlineToLab.rotateTo(momentum * Vector_t(0, 0, 1));
             }
 
             if (zstart_m > pathLength_m) {
@@ -307,8 +292,8 @@ void ParallelTTracker::execute() {
         itsBunch_m->get_bounds(rmin, rmax);
     }
     OrbitThreader oth(itsReference,
-                      referenceToLabCSTrafo_m.transformTo(RefPartR_m),
-                      referenceToLabCSTrafo_m.rotateTo(RefPartP_m),
+                      itsBunch_m->RefPartR_m,
+                      itsBunch_m->RefPartP_m,
                       pathLength_m,
                       -rmin(2),
                       itsBunch_m->getT(),
@@ -329,9 +314,6 @@ void ParallelTTracker::execute() {
     double t = itsBunch_m->getT() - globalTimeShift;
     itsBunch_m->setT(t);
 
-    itsBunch_m->RefPartR_m = referenceToLabCSTrafo_m.transformTo(RefPartR_m);
-    itsBunch_m->RefPartP_m = referenceToLabCSTrafo_m.rotateTo(RefPartP_m);
-
     *gmsg << level1 << *itsBunch_m << endl;
 
     unsigned long long step = itsBunch_m->getGlobalTrackStep();
@@ -347,8 +329,6 @@ void ParallelTTracker::execute() {
           << "max integration steps " << getMaxSteps(localTrackSteps_m) << ", next step= " << step << endl;
 
     setOptionalVariables();
-
-    itsBunch_m->toLabTrafo_m = referenceToLabCSTrafo_m;
 
 #ifdef OPAL_DKS
     if (IpplInfo::DKSEnabled)
@@ -394,9 +374,6 @@ void ParallelTTracker::execute() {
                 deletedParticles_m = false;
             }
 
-            itsBunch_m->toLabTrafo_m = referenceToLabCSTrafo_m;
-            itsBunch_m->RefPartR_m = referenceToLabCSTrafo_m.transformTo(RefPartR_m);
-            itsBunch_m->RefPartP_m = referenceToLabCSTrafo_m.rotateTo(RefPartP_m);
             itsBunch_m->set_sPos(pathLength_m);
 
             if (hasEndOfLineReached()) break;
@@ -407,7 +384,8 @@ void ParallelTTracker::execute() {
 
             itsBunch_m->incTrackSteps();
 
-            double driftPerTimeStep = euclidean_norm(itsBunch_m->getdT() * Physics::c * RefPartP_m / Util::getGamma(RefPartP_m));
+            double beta = euclidean_norm(itsBunch_m->RefPartP_m / Util::getGamma(itsBunch_m->RefPartP_m));
+            double driftPerTimeStep = itsBunch_m->getdT() * Physics::c * beta;
             if (std::abs(zStop_m.front() - pathLength_m) < 0.5 * driftPerTimeStep)
                 localTrackSteps_m.front() = step;
         }
@@ -420,9 +398,6 @@ void ParallelTTracker::execute() {
         zStop_m.pop();
     }
 
-    itsBunch_m->toLabTrafo_m = referenceToLabCSTrafo_m;
-    itsBunch_m->RefPartR_m = referenceToLabCSTrafo_m.transformTo(RefPartR_m);
-    itsBunch_m->RefPartP_m = referenceToLabCSTrafo_m.rotateTo(RefPartP_m);
     itsBunch_m->set_sPos(pathLength_m);
 
     if (numParticlesInSimulation_m > minBinEmitted_m) {
@@ -543,7 +518,7 @@ void ParallelTTracker::emitParticles(long long step) {
 
     if (itsBunch_m->getIfBeamEmitting()) {
         CoordinateSystemTrafo gunToLab = itsOpalBeamline_m.getCSTrafoLab2Local().inverted();
-        CoordinateSystemTrafo refToGun = itsOpalBeamline_m.getCSTrafoLab2Local() * referenceToLabCSTrafo_m;
+        CoordinateSystemTrafo refToGun = itsOpalBeamline_m.getCSTrafoLab2Local() * itsBunch_m->toLabTrafo_m;
 
         transformBunch(refToGun);
 
@@ -643,7 +618,7 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
 
     for (; it != end; ++ it) {
         CoordinateSystemTrafo refToLocalCSTrafo = (itsOpalBeamline_m.getMisalignment((*it)) *
-                                                   (itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * referenceToLabCSTrafo_m));
+                                                   (itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * itsBunch_m->toLabTrafo_m));
         CoordinateSystemTrafo localToRefCSTrafo = refToLocalCSTrafo.inverted();
 
         (*it)->setCurrentSCoordinate(pathLength_m + rmin(2));
@@ -988,7 +963,7 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
             for (auto it: activeParticleMatterInteractionHandlers_m) {
                 ElementBase* element = it->getElement();
                 CoordinateSystemTrafo refToLocalCSTrafo = (element->getMisalignment() *
-                                                           (element->getCSTrafoGlobal2Local() * referenceToLabCSTrafo_m));
+                                                           (element->getCSTrafoGlobal2Local() * itsBunch_m->toLabTrafo_m));
                 CoordinateSystemTrafo localToRefCSTrafo = refToLocalCSTrafo.inverted();
 
                 const unsigned int localNum = itsBunch_m->getLocalNum();
@@ -1082,7 +1057,7 @@ void ParallelTTracker::dumpStats(long long step, bool psDump, bool statDump) {
 
     if (numParticlesInSimulation_m == 0) {
         msg << myt2.time() << " "
-            << "Step " << setw(6) <<  itsBunch_m->getGlobalTrackStep() << "; "
+            << "Step " << std::setw(6) <<  itsBunch_m->getGlobalTrackStep() << "; "
             << "   -- no emission yet --     "
             << "t= "   << Util::getTimeString(itsBunch_m->getT())
             << endl;
@@ -1093,8 +1068,8 @@ void ParallelTTracker::dumpStats(long long step, bool psDump, bool statDump) {
     size_t totalParticles_f = numParticlesInSimulation_m;
     if (totalParticles_f <= minBinEmitted_m) {
         msg << myt2.time() << " "
-            << "Step " << setw(6) << itsBunch_m->getGlobalTrackStep() << "; "
-            << "only " << setw(4) << totalParticles_f << " particles emitted; "
+            << "Step " << std::setw(6) << itsBunch_m->getGlobalTrackStep() << "; "
+            << "only " << std::setw(4) << totalParticles_f << " particles emitted; "
             << "t= "   << Util::getTimeString(itsBunch_m->getT()) << ", "
             << "E="    << Util::getEnergyString(itsBunch_m->get_meanKineticEnergy()) << ", "
             << endl;
@@ -1104,7 +1079,7 @@ void ParallelTTracker::dumpStats(long long step, bool psDump, bool statDump) {
     } else {
 
         msg << myt2.time() << " "
-            << "Step " << setw(6)  <<  itsBunch_m->getGlobalTrackStep() << " "
+            << "Step " << std::setw(6)  <<  itsBunch_m->getGlobalTrackStep() << " "
             << "at "   << Util::getLengthString(pathLength_m) << ", "
             << "t= "   << Util::getTimeString(itsBunch_m->getT()) << ", "
             << "E="    << Util::getEnergyString(itsBunch_m->get_meanKineticEnergy())
@@ -1132,7 +1107,7 @@ void ParallelTTracker::setOptionalVariables() {
 
     // there is no point to do repartitioning with one node
     if (Ippl::getNodes() == 1) {
-        repartFreq_m = numeric_limits<unsigned int>::max();
+        repartFreq_m = std::numeric_limits<unsigned int>::max();
     } else {
         repartFreq_m = Options::repartFreq * 100;
         RealVariable *rep = dynamic_cast<RealVariable *>(OpalData::getInstance()->find("REPARTFREQ"));
@@ -1183,13 +1158,13 @@ void ParallelTTracker::writePhaseSpace(const long long step, bool psDump, bool s
     if (psDump || statDump) {
         externalB = Vector_t(0.0);
         externalE = Vector_t(0.0);
-        itsOpalBeamline_m.getFieldAt(referenceToLabCSTrafo_m.transformTo(RefPartR_m),
-                                     referenceToLabCSTrafo_m.rotateTo(RefPartP_m),
+        itsOpalBeamline_m.getFieldAt(itsBunch_m->RefPartR_m,
+                                     itsBunch_m->RefPartP_m,
                                      itsBunch_m->getT() - 0.5 * itsBunch_m->getdT(),
                                      externalE,
                                      externalB);
-        FDext[0] = referenceToLabCSTrafo_m.rotateFrom(externalB);
-        FDext[1] = referenceToLabCSTrafo_m.rotateFrom(externalE * 1e-6);
+        FDext[0] = itsBunch_m->toLabTrafo_m.rotateFrom(externalB);
+        FDext[1] = itsBunch_m->toLabTrafo_m.rotateFrom(externalE * 1e-6);
     }
 
     if (statDump) {
@@ -1227,15 +1202,18 @@ void ParallelTTracker::writePhaseSpace(const long long step, bool psDump, bool s
         // Write fields to .h5 file.
         const size_t localNum = itsBunch_m->getLocalNum();
         double distToLastStop = zStop_m.back() - pathLength_m;
-        Vector_t driftPerTimeStep = itsBunch_m->getdT() * Physics::c * RefPartP_m / Util::getGamma(RefPartP_m);
+        Vector_t beta = itsBunch_m->RefPartP_m / Util::getGamma(itsBunch_m->RefPartP_m);
+        Vector_t driftPerTimeStep = itsBunch_m->getdT() * Physics::c * itsBunch_m->toLabTrafo_m.rotateFrom(beta);
         bool driftToCorrectPosition = std::abs(distToLastStop) < 0.5 * euclidean_norm(driftPerTimeStep);
         Ppos_t stashedR;
+        Vector_t stashedRefPartR;
 
         if (driftToCorrectPosition) {
             const double tau = distToLastStop / euclidean_norm(driftPerTimeStep) * itsBunch_m->getdT();
             if (localNum > 0) {
                 stashedR.create(localNum);
                 stashedR = itsBunch_m->R;
+                stashedRefPartR = itsBunch_m->RefPartR_m;
 
                 for (size_t i = 0; i < localNum; ++ i) {
                     itsBunch_m->R[i] += tau * (Physics::c * itsBunch_m->P[i] / Util::getGamma(itsBunch_m->P[i]) -
@@ -1243,10 +1221,11 @@ void ParallelTTracker::writePhaseSpace(const long long step, bool psDump, bool s
                 }
             }
 
-            itsBunch_m->RefPartR_m = referenceToLabCSTrafo_m.transformTo(RefPartR_m + tau * driftPerTimeStep / itsBunch_m->getdT());
+            driftPerTimeStep = itsBunch_m->toLabTrafo_m.rotateTo(driftPerTimeStep);
+            itsBunch_m->RefPartR_m = itsBunch_m->RefPartR_m + tau * driftPerTimeStep / itsBunch_m->getdT();
             CoordinateSystemTrafo update(tau * driftPerTimeStep / itsBunch_m->getdT(),
-                                         Quaternion());
-            itsBunch_m->toLabTrafo_m = referenceToLabCSTrafo_m * update.inverted();
+                                         Quaternion(1.0, 0.0, 0.0, 0.0));
+            itsBunch_m->toLabTrafo_m = itsBunch_m->toLabTrafo_m * update.inverted();
 
             itsBunch_m->set_sPos(zStop_m.back());
 
@@ -1263,7 +1242,7 @@ void ParallelTTracker::writePhaseSpace(const long long step, bool psDump, bool s
                 stashedR.destroy(localNum, 0);
             }
 
-            itsBunch_m->RefPartR_m = referenceToLabCSTrafo_m.transformTo(RefPartR_m);
+            itsBunch_m->RefPartR_m = stashedRefPartR;
             itsBunch_m->set_sPos(pathLength_m);
 
             itsBunch_m->calcBeamParameters();
@@ -1283,19 +1262,19 @@ void ParallelTTracker::updateReferenceParticle(const BorisPusher &pusher) {
     const double scaleFactor = Physics::c * dt;
     Vector_t Ef(0.0), Bf(0.0);
 
-    RefPartR_m /= scaleFactor;
-    pusher.push(RefPartR_m, RefPartP_m, dt);
-    RefPartR_m *= scaleFactor;
+    itsBunch_m->RefPartR_m /= scaleFactor;
+    pusher.push(itsBunch_m->RefPartR_m, itsBunch_m->RefPartP_m, dt);
+    itsBunch_m->RefPartR_m *= scaleFactor;
 
-    IndexMap::value_t elements = itsOpalBeamline_m.getElements(referenceToLabCSTrafo_m.transformTo(RefPartR_m));
+    IndexMap::value_t elements = itsOpalBeamline_m.getElements(itsBunch_m->RefPartR_m);
     IndexMap::value_t::const_iterator it = elements.begin();
     const IndexMap::value_t::const_iterator end = elements.end();
 
     for (; it != end; ++ it) {
-        CoordinateSystemTrafo refToLocalCSTrafo = itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * referenceToLabCSTrafo_m;
+        const CoordinateSystemTrafo &refToLocalCSTrafo = itsOpalBeamline_m.getCSTrafoLab2Local((*it));
 
-        Vector_t localR = refToLocalCSTrafo.transformTo(RefPartR_m);
-        Vector_t localP = refToLocalCSTrafo.rotateTo(RefPartP_m);
+        Vector_t localR = refToLocalCSTrafo.transformTo(itsBunch_m->RefPartR_m);
+        Vector_t localP = refToLocalCSTrafo.rotateTo(itsBunch_m->RefPartP_m);
         Vector_t localE(0.0), localB(0.0);
 
         if ((*it)->applyToReferenceParticle(localR,
@@ -1311,11 +1290,11 @@ void ParallelTTracker::updateReferenceParticle(const BorisPusher &pusher) {
         Bf += refToLocalCSTrafo.rotateFrom(localB);
     }
 
-    pusher.kick(RefPartR_m, RefPartP_m, Ef, Bf, dt);
+    pusher.kick(itsBunch_m->RefPartR_m, itsBunch_m->RefPartP_m, Ef, Bf, dt);
 
-    RefPartR_m /= scaleFactor;
-    pusher.push(RefPartR_m, RefPartP_m, dt);
-    RefPartR_m *= scaleFactor;
+    itsBunch_m->RefPartR_m /= scaleFactor;
+    pusher.push(itsBunch_m->RefPartR_m, itsBunch_m->RefPartP_m, dt);
+    itsBunch_m->RefPartR_m *= scaleFactor;
 }
 
 void ParallelTTracker::transformBunch(const CoordinateSystemTrafo &trafo) {
@@ -1329,17 +1308,17 @@ void ParallelTTracker::transformBunch(const CoordinateSystemTrafo &trafo) {
 }
 
 void ParallelTTracker::updateRefToLabCSTrafo() {
-    pathLength_m += euclidean_norm(RefPartR_m);
+    Vector_t R = itsBunch_m->toLabTrafo_m.transformFrom(itsBunch_m->RefPartR_m);
 
-    CoordinateSystemTrafo update(RefPartR_m,
-                                 getQuaternion(RefPartP_m, Vector_t(0, 0, 1)));
+    Vector_t P = itsBunch_m->toLabTrafo_m.rotateFrom(itsBunch_m->RefPartP_m);
 
-    RefPartR_m = update.transformTo(RefPartR_m);
-    RefPartP_m = update.rotateTo(RefPartP_m);
+    pathLength_m += euclidean_norm(R);
+
+    CoordinateSystemTrafo update(R, getQuaternion(P, Vector_t(0, 0, 1)));
 
     transformBunch(update);
 
-    referenceToLabCSTrafo_m = referenceToLabCSTrafo_m * update.inverted();
+    itsBunch_m->toLabTrafo_m = itsBunch_m->toLabTrafo_m * update.inverted();
 }
 
 void ParallelTTracker::findStartPosition(const BorisPusher &pusher) {
@@ -1350,9 +1329,10 @@ void ParallelTTracker::findStartPosition(const BorisPusher &pusher) {
     dtCurrentTrack_m = dtAllTracks_m.front();
     changeDT();
 
-    if (Util::getEnergy(RefPartP_m, itsBunch_m->getM()) < 1e-3) {
+    if (Util::getEnergy(itsBunch_m->RefPartP_m, itsBunch_m->getM()) < 1e-3) {
         double gamma = 0.1 / itsBunch_m->getM() + 1.0;
-        RefPartP_m = sqrt(std::pow(gamma, 2) - 1) * Vector_t(0, 0, 1);
+        double beta = sqrt(1.0 - 1.0 / std::pow(gamma, 2));
+        itsBunch_m->RefPartP_m = itsBunch_m->toLabTrafo_m.rotateTo(beta * gamma * Vector_t(0, 0, 1));
     }
 
     while (true) {
@@ -1361,9 +1341,9 @@ void ParallelTTracker::findStartPosition(const BorisPusher &pusher) {
         t += itsBunch_m->getdT();
         itsBunch_m->setT(t);
 
-        Vector_t oldR = RefPartR_m;
+        Vector_t oldR = itsBunch_m->RefPartR_m;
         updateReferenceParticle(pusher);
-        pathLength_m += euclidean_norm(RefPartR_m - oldR);
+        pathLength_m += euclidean_norm(itsBunch_m->RefPartR_m - oldR);
 
         if (pathLength_m > zStop_m.front()) {
             if (localTrackSteps_m.size() == 0) return;
@@ -1375,25 +1355,23 @@ void ParallelTTracker::findStartPosition(const BorisPusher &pusher) {
             changeDT();
         }
 
-        double speed = euclidean_norm(RefPartP_m) * Physics::c / sqrt(dot(RefPartP_m, RefPartP_m) + 1);
+        double speed = euclidean_norm(itsBunch_m->RefPartP_m * Physics::c / Util::getGamma(itsBunch_m->RefPartP_m));
         if (std::abs(pathLength_m - zstart_m) <=  0.5 * itsBunch_m->getdT() * speed) {
             double tau = (pathLength_m - zstart_m) / speed;
 
             t += tau;
             itsBunch_m->setT(t);
 
-            RefPartR_m /= (Physics::c * tau);
-            pusher.push(RefPartR_m, RefPartP_m, tau);
-            RefPartR_m *= (Physics::c * tau);
+            itsBunch_m->RefPartR_m /= (Physics::c * tau);
+            pusher.push(itsBunch_m->RefPartR_m, itsBunch_m->RefPartP_m, tau);
+            itsBunch_m->RefPartR_m *= (Physics::c * tau);
 
             pathLength_m = zstart_m;
 
-            CoordinateSystemTrafo update(RefPartR_m,
-                                         getQuaternion(RefPartP_m, Vector_t(0, 0, 1)));
-            referenceToLabCSTrafo_m = referenceToLabCSTrafo_m * update.inverted();
-
-            RefPartR_m = update.transformTo(RefPartR_m);
-            RefPartP_m = update.rotateTo(RefPartP_m);
+            Vector_t R = itsBunch_m->toLabTrafo_m.transformFrom(itsBunch_m->RefPartR_m);
+            Vector_t P = itsBunch_m->toLabTrafo_m.rotateFrom(itsBunch_m->RefPartP_m);
+            CoordinateSystemTrafo update(R, getQuaternion(P, Vector_t(0, 0, 1)));
+            itsBunch_m->toLabTrafo_m = itsBunch_m->toLabTrafo_m * update.inverted();
 
             return;
         }
@@ -1403,36 +1381,28 @@ void ParallelTTracker::findStartPosition(const BorisPusher &pusher) {
 void ParallelTTracker::autophaseCavities(const BorisPusher &pusher) {
 
     double t = itsBunch_m->getT();
-    Vector_t nextR = RefPartR_m / (Physics::c * itsBunch_m->getdT());
-    pusher.push(nextR, RefPartP_m, itsBunch_m->getdT());
+    Vector_t nextR = itsBunch_m->RefPartR_m / (Physics::c * itsBunch_m->getdT());
+    pusher.push(nextR, itsBunch_m->RefPartP_m, itsBunch_m->getdT());
     nextR *= Physics::c * itsBunch_m->getdT();
 
-    auto elementSet = itsOpalBeamline_m.getElements(referenceToLabCSTrafo_m.transformTo(nextR));
+    auto elementSet = itsOpalBeamline_m.getElements(nextR);
     for (auto element: elementSet) {
         if (element->getType() == ElementBase::TRAVELINGWAVE) {
             const TravelingWave *TWelement = static_cast<const TravelingWave *>(element.get());
             if (!TWelement->getAutophaseVeto()) {
-                RefPartR_m = referenceToLabCSTrafo_m.transformTo(RefPartR_m);
-                RefPartP_m = referenceToLabCSTrafo_m.rotateTo(RefPartP_m);
                 CavityAutophaser ap(itsReference, element);
-                ap.getPhaseAtMaxEnergy(itsOpalBeamline_m.transformToLocalCS(element, RefPartR_m),
-                                       itsOpalBeamline_m.rotateToLocalCS(element, RefPartP_m),
+                ap.getPhaseAtMaxEnergy(itsOpalBeamline_m.transformToLocalCS(element, itsBunch_m->RefPartR_m),
+                                       itsOpalBeamline_m.rotateToLocalCS(element, itsBunch_m->RefPartP_m),
                                        t, itsBunch_m->getdT());
-                RefPartR_m = referenceToLabCSTrafo_m.transformFrom(RefPartR_m);
-                RefPartP_m = referenceToLabCSTrafo_m.rotateFrom(RefPartP_m);
             }
 
         } else if (element->getType() == ElementBase::RFCAVITY) {
             const RFCavity *RFelement = static_cast<const RFCavity *>(element.get());
             if (!RFelement->getAutophaseVeto()) {
-                RefPartR_m = referenceToLabCSTrafo_m.transformTo(RefPartR_m);
-                RefPartP_m = referenceToLabCSTrafo_m.rotateTo(RefPartP_m);
                 CavityAutophaser ap(itsReference, element);
-                ap.getPhaseAtMaxEnergy(itsOpalBeamline_m.transformToLocalCS(element, RefPartR_m),
-                                       itsOpalBeamline_m.rotateToLocalCS(element, RefPartP_m),
+                ap.getPhaseAtMaxEnergy(itsOpalBeamline_m.transformToLocalCS(element, itsBunch_m->RefPartR_m),
+                                       itsOpalBeamline_m.rotateToLocalCS(element, itsBunch_m->RefPartP_m),
                                        t, itsBunch_m->getdT());
-                RefPartR_m = referenceToLabCSTrafo_m.transformFrom(RefPartR_m);
-                RefPartP_m = referenceToLabCSTrafo_m.rotateFrom(RefPartP_m);
             }
         }
     }

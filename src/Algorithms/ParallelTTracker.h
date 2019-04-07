@@ -205,9 +205,6 @@ private:
 
     OpalBeamline itsOpalBeamline_m;
 
-    Vector_t RefPartR_m;
-    Vector_t RefPartP_m;
-
     bool globalEOL_m;
 
     bool wakeStatus_m;
@@ -251,8 +248,6 @@ private:
     IpplTimings::TimerRef fieldEvaluationTimer_m ;
     IpplTimings::TimerRef BinRepartTimer_m;
     IpplTimings::TimerRef WakeFieldTimer_m;
-
-    CoordinateSystemTrafo referenceToLabCSTrafo_m;
 
     std::set<ParticleMatterInteractionHandler*> activeParticleMatterInteractionHandlers_m;
     bool particleMaterStatus_m;

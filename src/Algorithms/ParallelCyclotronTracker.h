@@ -22,6 +22,7 @@
 #include "AbsBeamline/ElementBase.h"
 #include <vector>
 #include <tuple>
+#include <memory>
 
 #include "Steppers/Steppers.h"
 
@@ -326,11 +327,11 @@ private:
     const size_t initialTotalNum_m;
 
     /// output coordinates at different azimuthal angles and one after every turn
-    std::vector<std::ofstream> outfTheta_m;
+    std::vector<std::unique_ptr<std::ofstream> > outfTheta_m;
     /// the different azimuthal angles for the outfTheta_m output files
     std::vector<double> azimuth_angle_m;
     ///@ open / close output coordinate files
-    void openFiles(std::string fn);
+    void openFiles(size_t numFiles, std::string fn);
     void closeFiles();
     ///@}
     /// output file for six dimensional phase space

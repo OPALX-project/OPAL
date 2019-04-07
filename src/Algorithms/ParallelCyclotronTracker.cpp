@@ -246,9 +246,9 @@ void ParallelCyclotronTracker::bgf_main_collision_test() {
  *
  * @param fn Base file name
  */
-void ParallelCyclotronTracker::openFiles(std::string SfileName) {
+void ParallelCyclotronTracker::openFiles(size_t numFiles, std::string SfileName) {
 
-    for (unsigned int i=0; i<outfTheta_m.size(); i++) {
+    for (unsigned int i=0; i<numFiles; i++) {
         std::string SfileName2 = SfileName;
         if (i<=2) {
             SfileName2 += std::string("-Angle" + std::to_string(int(i)) + ".dat");
@@ -258,12 +258,12 @@ void ParallelCyclotronTracker::openFiles(std::string SfileName) {
             SfileName2 += std::string("-afterEachTurn.dat");
         }
 
-        outfTheta_m[i].precision(8);
-        outfTheta_m[i].setf(std::ios::scientific, std::ios::floatfield);
-        outfTheta_m[i].open(SfileName2.c_str());
-        outfTheta_m[i] << "# r [mm]        beta_r*gamma       "
-                       << "theta [deg]     beta_theta*gamma        "
-                       << "z [mm]          beta_z*gamma" << std::endl;
+        outfTheta_m.emplace_back(new std::ofstream(SfileName2.c_str()));
+        outfTheta_m.back()->precision(8);
+        outfTheta_m.back()->setf(std::ios::scientific, std::ios::floatfield);
+        *outfTheta_m.back() << "# r [mm]        beta_r*gamma       "
+                            << "theta [deg]     beta_theta*gamma        "
+                            << "z [mm]          beta_z*gamma" << std::endl;
     }
 }
 
@@ -274,7 +274,7 @@ void ParallelCyclotronTracker::openFiles(std::string SfileName) {
  */
 void ParallelCyclotronTracker::closeFiles() {
     for (auto & file : outfTheta_m) {
-        file.close();
+        file->close();
     }
 }
 
@@ -2890,7 +2890,6 @@ std::tuple<double, double, double> ParallelCyclotronTracker::initializeTracking_
     azimuth_angle_m[0] = 0.0;
     azimuth_angle_m[1] = 22.5 * Physics::deg2rad;
     azimuth_angle_m[2] = 45.0 * Physics::deg2rad;
-    outfTheta_m.resize(azimuth_angle_m.size() + 1); // 1 more for file after every turn
 
     double harm       = getHarmonicNumber();
     double dt         = itsBunch_m->getdT() * 1.0e9 * harm; // time step size (s --> ns)
@@ -2973,7 +2972,7 @@ std::tuple<double, double, double> ParallelCyclotronTracker::initializeTracking_
                                     "SINGLE PARTICLE MODE ONLY WORKS SERIALLY ON A SINGLE NODE!");
 
             // For single particle mode open output files
-            openFiles(OpalData::getInstance()->getInputBasename());
+            openFiles(azimuth_angle_m.size() + 1, OpalData::getInstance()->getInputBasename());
             break;
         case MODE::BUNCH:
             break;
@@ -3327,16 +3326,16 @@ void ParallelCyclotronTracker::dumpAzimuthAngles_m(const double& t,
     for (unsigned int i=0; i<=2; i++) {
         if ((oldReferenceTheta < azimuth_angle_m[i] - setup_m.deltaTheta) &&
             (  temp_meanTheta >= azimuth_angle_m[i] - setup_m.deltaTheta)) {
-            outfTheta_m[i] << "#Turn number = " << turnnumber_m
-                           << ", Time = " << t << " [ns]" << std::endl
-                           << " " << std::hypot(R(0), R(1))
-                           << " " << P(0) * std::cos(temp_meanTheta) + P(1) * std::sin(temp_meanTheta)
-                           << " " << temp_meanTheta * Physics::rad2deg
-                           << " " << - P(0) * std::sin(temp_meanTheta) + P(1) * std::cos(temp_meanTheta)
-                           << " " << R(2)
-                           << " " << P(2) << std::endl;
+            *(outfTheta_m[i]) << "#Turn number = " << turnnumber_m
+                              << ", Time = " << t << " [ns]" << std::endl
+                              << " " << std::hypot(R(0), R(1))
+                              << " " << P(0) * std::cos(temp_meanTheta) + P(1) * std::sin(temp_meanTheta)
+                              << " " << temp_meanTheta * Physics::rad2deg
+                              << " " << - P(0) * std::sin(temp_meanTheta) + P(1) * std::cos(temp_meanTheta)
+                              << " " << R(2)
+                              << " " << P(2) << std::endl;
+            }
         }
-    }
 }
 
 void ParallelCyclotronTracker::dumpThetaEachTurn_m(const double& t,
@@ -3353,16 +3352,16 @@ void ParallelCyclotronTracker::dumpThetaEachTurn_m(const double& t,
 
         *gmsg << "* SPT: Finished turn " << turnnumber_m - 1 << endl;
 
-        outfTheta_m[3] << "#Turn number = " << turnnumber_m
-                       << ", Time = " << t << " [ns]" << std::endl
-                       << " " << std::sqrt(R(0) * R(0) + R(1) * R(1))
-                       << " " << P(0) * std::cos(temp_meanTheta) +
-                                 P(1) * std::sin(temp_meanTheta)
-                       << " " << temp_meanTheta / Physics::deg2rad
-                       << " " << - P(0) * std::sin(temp_meanTheta) +
-                                   P(1) * std::cos(temp_meanTheta)
-                       << " " << R(2)
-                       << " " << P(2) << std::endl;
+        *(outfTheta_m[3]) << "#Turn number = " << turnnumber_m
+                          << ", Time = " << t << " [ns]" << std::endl
+                          << " " << std::sqrt(R(0) * R(0) + R(1) * R(1))
+                          << " " << P(0) * std::cos(temp_meanTheta) +
+                                    P(1) * std::sin(temp_meanTheta)
+                          << " " << temp_meanTheta / Physics::deg2rad
+                          << " " << - P(0) * std::sin(temp_meanTheta) +
+                                      P(1) * std::cos(temp_meanTheta)
+                          << " " << R(2)
+                          << " " << P(2) << std::endl;
     }
 }
 
