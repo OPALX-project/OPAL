@@ -765,7 +765,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::Undulator uParam;
     uParam.k_ = ur->getK();
     uParam.lu_ = ur->getLambda();
-    uParam.length_ = ur->getLength() / uParam.lu_;  // In units of lu
+    uParam.length_ = ur->getElementLength() / uParam.lu_;  // In units of lu
     
     /* Create the solver database.                                                                        */
     Darius::Mesh                               mesh;
