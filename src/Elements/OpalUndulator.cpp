@@ -50,12 +50,17 @@ OpalUndulator::OpalUndulator():
                           ("K",
                           "The undulator parameter", 1);
 
+    itsAttr[LAMBDA] = Attributes::makeReal
+                          ("LAMBDA",
+                          "The undulator period", 1);
+
     itsAttr[FNAME] = Attributes::makeString
-      ("FNAME", "Jobfilenam for mithra", "");
+      ("FNAME", "Jobfilename for mithra", "");
 
     registerStringAttribute("GEOMETRY");
     registerRealAttribute("NSLICES");
     registerRealAttribute("K");
+    registerRealAttribute("LAMBDA");
     registerStringAttribute("FNAME");
     registerOwnership();
 

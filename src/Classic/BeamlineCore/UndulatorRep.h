@@ -73,6 +73,8 @@ public:
 
     virtual void setK(double k);
     virtual double getK();
+    virtual void setLambda(double lambda);
+    virtual double getLambda();
     virtual void setFilename(const std::string& fname);
     virtual const std::string& getFilename() const;
     virtual void setIsDone();
@@ -92,6 +94,9 @@ private:
 
     /// The undulator parameter
     double k_m;
+
+    /// The undulator period
+    double lambda_m;
 
     /// The mithra file
     std::string fname_m;

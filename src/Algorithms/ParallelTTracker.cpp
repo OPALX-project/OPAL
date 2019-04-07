@@ -733,34 +733,40 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     
     /* Parameters to initialize bunch                                                                     */
     Darius::BunchInitialize bunchInit;
-        bunchInit.bunchType_            = "OPAL";
-        bunchInit.numberOfParticles_    = localNum;
-        bunchInit.cloudCharge_			= charge.q * localNum;    
-        bunchInit.initialGamma_			= itsBunch_m->get_gamma(); 
-        bunchInit.initialBeta_			= sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));
+    bunchInit.bunchType_            = "OPAL";
+    bunchInit.numberOfParticles_    = localNum;
+    bunchInit.cloudCharge_			= charge.q * localNum;    
+    bunchInit.initialGamma_			= itsBunch_m->get_gamma(); 
+    bunchInit.initialBeta_			= sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));
         
-        Darius::FieldVector<double> fv (0.0);
-        for (unsigned int d = 0; d < 3; ++d) 
-            fv[d] = itsBunch_m->get_pmean()(d);
-        fv.dv( fv.norm(), fv );
-        bunchInit.initialDirection_		= fv;
+    Darius::FieldVector<double> fv (0.0);
+    for (unsigned int d = 0; d < 3; ++d) 
+        fv[d] = itsBunch_m->get_pmean()(d);
+    fv.dv( fv.norm(), fv );
+    bunchInit.initialDirection_		= fv;
         
-        for (unsigned int d = 0; d < 3; ++d) 
-            fv[d] = itsBunch_m->get_rmean()(d);
-        bunchInit.position_.push_back(fv);
+    for (unsigned int d = 0; d < 3; ++d) 
+        fv[d] = itsBunch_m->get_rmean()(d);
+    bunchInit.position_.push_back(fv);
         
-        for (unsigned int d = 0; d < 3; ++d) 
-            fv[d] = itsBunch_m->get_rrms()(d);
-        bunchInit.sigmaPosition_		= fv;
+    for (unsigned int d = 0; d < 3; ++d) 
+        fv[d] = itsBunch_m->get_rrms()(d);
+    bunchInit.sigmaPosition_		= fv;
 
-        for (unsigned int d = 0; d < 3; ++d) 
-            fv[d] = itsBunch_m->get_prms()(d);
-        bunchInit.sigmaGammaBeta_		= fv;
+    for (unsigned int d = 0; d < 3; ++d) 
+        fv[d] = itsBunch_m->get_prms()(d);
+    bunchInit.sigmaGammaBeta_		= fv;
 
-        bunchInit.tranTrun_				= std::max( itsBunch_m->get_maxExtent()(0), itsBunch_m->get_maxExtent()(1) );
-        bunchInit.longTrun_				= itsBunch_m->get_maxExtent()(2);
-        bunchInit.inputVector_          = qv;    
+    bunchInit.tranTrun_				= std::max( itsBunch_m->get_maxExtent()(0), itsBunch_m->get_maxExtent()(1) );
+    bunchInit.longTrun_				= itsBunch_m->get_maxExtent()(2);
+    bunchInit.inputVector_          = qv;   
 
+    /* Undulator parameters                 */
+    Darius::Undulator uParam;
+    uParam.k_ = ur->getK();
+    uParam.lu_ = ur->getLambda();
+    uParam.length_ = ur->getLength() / uParam.lu_;  // In units of lu
+    
     /* Create the solver database.                                                                        */
     Darius::Mesh                               mesh;
 
@@ -774,6 +780,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     /* Create the undulator database.                                                                     */
     std::vector<Darius::Undulator>             undulator;
     undulator.clear();
+    undulator.push_back(uParam);
 
     /* Create the external field database.                                                                */
     std::vector<Darius::ExtField>              extField;

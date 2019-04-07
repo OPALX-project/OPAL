@@ -51,6 +51,7 @@ UndulatorRep::UndulatorRep():
     Undulator(),
     geometry(0.0),
     k_m(0.0),
+    lambda_m(0.0),
     fname_m(""),
     is_done_m(false)
 {}
@@ -60,15 +61,17 @@ UndulatorRep::UndulatorRep(const UndulatorRep &right):
     Undulator(right),
     geometry(right.geometry),
     k_m(right.k_m),
+    lambda_m(right.lambda_m),
     fname_m(right.fname_m),
-    is_done_m(false)
+    is_done_m(right.is_done_m)
 {}
 
 
 UndulatorRep::UndulatorRep(const std::string &name):
     Undulator(name),
-    geometry(),
+    geometry(0.0),
     k_m(0.0),
+    lambda_m(0.0),
     fname_m(""),
     is_done_m(false)
 {}
@@ -130,14 +133,11 @@ ElementImage *UndulatorRep::getImage() const {
 void   UndulatorRep::setK(double k) { k_m = k; }
 double UndulatorRep::getK() { return k_m; }
 
-void UndulatorRep::setFilename(const std::string&fname) {
-  fname_m = fname;
-}
+void   UndulatorRep::setLambda(double lambda) { lambda_m = lambda; }
+double UndulatorRep::getLambda() { return lambda_m; }
 
-const std::string& UndulatorRep::getFilename() const {
-  return fname_m;
-}
+void UndulatorRep::setFilename(const std::string&fname) { fname_m = fname; }
+const std::string& UndulatorRep::getFilename() const { return fname_m;}
 
 void UndulatorRep::setIsDone() { is_done_m = true; }
-
 bool UndulatorRep::getIsDone() const { return is_done_m; }
