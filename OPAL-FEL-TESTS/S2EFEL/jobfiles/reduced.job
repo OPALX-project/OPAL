@@ -112,17 +112,6 @@ FIELD
   }
 }
 
-UNDULATOR
-{
-  static-undulator
-  {  
-    undulator-parameter					= 1.417
-    period						= 3.0e4
-    length						= 300
-    polarization-angle					= 0.0
-  }
-}
-
 FEL-OUTPUT
 {
   radiation-power
