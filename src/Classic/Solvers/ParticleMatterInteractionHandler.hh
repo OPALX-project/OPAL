@@ -25,6 +25,7 @@ public:
     virtual std::string getName() = 0;
     virtual size_t getParticlesInMat() = 0;
     virtual unsigned getRediffused() = 0;
+    virtual unsigned int getNumEntered() = 0;
     void setFlagAllParticlesIn(bool p);
     bool getFlagAllParticlesIn() const;
     void updateElement(ElementBase *newref);

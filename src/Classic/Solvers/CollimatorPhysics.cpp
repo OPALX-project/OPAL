@@ -104,7 +104,6 @@ CollimatorPhysics::CollimatorPhysics(const std::string &name, ElementBase *eleme
     rho_m(0.0),
     X0_m(0.0),
     I_m(0.0),
-    n_m(0.0),
     bunchToMatStat_m(0),
     stoppedPartStat_m(0),
     rediffusedStat_m(0),
@@ -491,7 +490,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 65.19 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 2.590;
         A3_c = 9.660e2;
@@ -507,7 +505,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 42.70 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 2.601;
         A3_c = 1.701e3;
@@ -523,7 +520,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 42.70 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 2.601;
         A3_c = 1.701e3;
@@ -539,7 +535,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 9.8 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 7.248;
         A3_c = 9.545e3;
@@ -560,7 +555,7 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 39.95 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
+
         A2_c = 3.350;
         A3_c = 1683;
         A4_c = 1900;
@@ -576,7 +571,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 24.01 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 4.739;
         A3_c = 2.766e3;
@@ -591,7 +585,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 12.86 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 4.194;
         A3_c = 4.649e3;
@@ -606,7 +599,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 16.16 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 5.489;
         A3_c = 5.260e3;
@@ -621,7 +613,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 27.94 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 7.227;
         A3_c = 1.121e4;
@@ -636,7 +627,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 37.99 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 3.350;
         A3_c = 1.683e3;
@@ -651,7 +641,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 39.95 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 2.601;
         A3_c = 1.701e3;
@@ -666,7 +655,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 6.46 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 5.458;
         A3_c = 7.852e3;
@@ -681,7 +669,6 @@ void  CollimatorPhysics::Material() {
 
         X0_m = 36.08 / rho_m / 100;
         I_m = 10 * Z_m;
-        n_m = rho_m / A_m * Avo;
 
         A2_c = 2.199;
         A3_c = 2.393e3;

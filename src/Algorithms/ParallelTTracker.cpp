@@ -962,9 +962,10 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
 
             //if max particles per node is 2, and only one degrader has particles set
             //AllParticlesIn for this degrader to true
-            int maxPerNode = itsBunch_m->getLocalNum();
-            reduce(maxPerNode, maxPerNode, OpMaxAssign());
-            bool allParticlesInMat = (maxPerNode == 0 &&
+            unsigned int localNum = itsBunch_m->getLocalNum();
+            unsigned int totalNum = 0;
+            reduce(localNum, totalNum, OpAddAssign());
+            bool allParticlesInMat = (totalNum == 0 &&
                                       degradersWithParticlesCount == 1);
 
             if (allParticlesInMat) {
@@ -973,7 +974,8 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
             }
 
             auto boundingSphere = itsBunch_m->getLocalBoundingSphere();
-            unsigned redifusedParticles = 0;
+            unsigned int rediffusedParticles = 0;
+            unsigned int numEnteredParticles = 0;
             for (auto it: activeParticleMatterInteractionHandlers_m) {
                 ElementBase* element = it->getElement();
                 CoordinateSystemTrafo refToLocalCSTrafo = (element->getMisalignment() *
@@ -998,7 +1000,8 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
                     itsBunch_m->P[i] = localToRefCSTrafo.rotateTo(itsBunch_m->P[i]);
                 }
 
-                redifusedParticles += it->getRediffused();
+                rediffusedParticles += it->getRediffused();
+                numEnteredParticles += it->getNumEntered();
                 //if all particles where in material update time to time in degrader
                 if (it->getFlagAllParticlesIn()) {
                     double timeDifference = it->getTime() - itsBunch_m->getdT() - itsBunch_m->getT();
@@ -1018,8 +1021,9 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
 
             //perform boundp only if there are particles in the bunch, or there are particles
             //comming out of the degrader
-            if (maxPerNode > 0 || redifusedParticles > 0) {
-                if (itsBunch_m->hasFieldSolver()) {
+            if (numEnteredParticles > 0 || rediffusedParticles > 0) {
+                totalNum -= (numEnteredParticles + rediffusedParticles);
+                if (totalNum > minBinEmitted_m && itsBunch_m->hasFieldSolver()) {
                     itsBunch_m->boundp();
                 } else {
                     itsBunch_m->updateNumTotal();
