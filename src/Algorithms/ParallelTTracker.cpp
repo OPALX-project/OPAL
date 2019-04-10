@@ -753,9 +753,10 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_prms()(d);
     bunchInit.sigmaGammaBeta_		= fv;
-    bunchInit.tranTrun_				= std::max( itsBunch_m->get_maxExtent()(0), itsBunch_m->get_maxExtent()(1) );
-    bunchInit.longTrun_				= itsBunch_m->get_maxExtent()(2);
-    bunchInit.inputVector_          = qv;   
+    Vector_t bunchSize = itsBunch_m->get_maxExtent() - itsBunch_m->get_origin();
+    bunchInit.tranTrun_				= std::max( bunchSize(0), bunchSize(1) );
+    bunchInit.longTrun_				= bunchSize(2);
+    bunchInit.inputVector_                      = qv;   
     // bunchInit.bF = 0.01;
     
     /* Undulator parameters                 */
