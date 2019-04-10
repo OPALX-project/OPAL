@@ -753,7 +753,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_prms()(d);
     bunchInit.sigmaGammaBeta_		= fv;
-    Vector_t bunchSize = itsBunch_m->get_maxExtent() - itsBunch_m->get_origin();
+    Vector_t bunchSize = ( itsBunch_m->get_maxExtent() - itsBunch_m->get_origin() ) / 2;
     bunchInit.tranTrun_				= std::max( bunchSize(0), bunchSize(1) );
     bunchInit.longTrun_				= bunchSize(2);
     bunchInit.inputVector_                      = qv;   
@@ -769,7 +769,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     /* Create the solver database.                                                                        */
     Darius::Mesh                               mesh;
     mesh.lengthScale_ = 1.0;
-    //mesh.meshCenter_ = {0.0, 0.0, 0.0};
+    mesh.meshCenter_ = 0.0;
     //mesh.meshLength_ = {};  // TODO
     //mesh.meshResolution_ =   // TODO
     mesh.timeScale_ = 1.0;
