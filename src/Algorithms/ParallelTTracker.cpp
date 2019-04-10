@@ -769,9 +769,9 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     /* Create the solver database.                                                                        */
     Darius::Mesh                               mesh;
     mesh.lengthScale_ = 1.0;
-    mesh.meshCenter_ = {0.0, 0.0, 0.0};
-    mesh.meshLength_ = {};  // TODO
-    mesh.meshResolution_ =   // TODO
+    //mesh.meshCenter_ = {0.0, 0.0, 0.0};
+    //mesh.meshLength_ = {};  // TODO
+    //mesh.meshResolution_ =   // TODO
     mesh.timeScale_ = 1.0;
     mesh.totalTime_ = 1.0e-10;  // TODO
     mesh.truncationOrder_ = 2;
