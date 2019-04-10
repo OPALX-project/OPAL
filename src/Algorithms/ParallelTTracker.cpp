@@ -716,7 +716,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     const char *cfname = fname.c_str();
     std::list<std::string> jobFile = Darius::read_file(cfname);
     Darius::cleanJobFile(jobFile);
-   
+
     /* Get particles in bunch                                                                             */
     itsBunch_m->calcBeamParameters();
     std::list<Darius::Charge>	qv;
@@ -733,47 +733,54 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     
     /* Parameters to initialize bunch                                                                     */
     Darius::BunchInitialize bunchInit;
+    Darius::FieldVector<double> fv (0.0);
+    
     bunchInit.bunchType_            = "OPAL";
     bunchInit.numberOfParticles_    = localNum;
     bunchInit.cloudCharge_			= charge.q * localNum;    
     bunchInit.initialGamma_			= itsBunch_m->get_gamma(); 
-    bunchInit.initialBeta_			= sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));
-        
-    Darius::FieldVector<double> fv (0.0);
+    bunchInit.initialBeta_			= sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));    
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_pmean()(d);
     fv.dv( fv.norm(), fv );
     bunchInit.initialDirection_		= fv;
-        
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rmean()(d);
     bunchInit.position_.push_back(fv);
-        
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rrms()(d);
     bunchInit.sigmaPosition_		= fv;
-
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_prms()(d);
     bunchInit.sigmaGammaBeta_		= fv;
-
     bunchInit.tranTrun_				= std::max( itsBunch_m->get_maxExtent()(0), itsBunch_m->get_maxExtent()(1) );
     bunchInit.longTrun_				= itsBunch_m->get_maxExtent()(2);
     bunchInit.inputVector_          = qv;   
-
+    // bunchInit.bF = 0.01;
+    
     /* Undulator parameters                 */
     Darius::Undulator uParam;
     uParam.k_ = ur->getK();
     uParam.lu_ = ur->getLambda();
     uParam.length_ = ur->getElementLength() / uParam.lu_;  // In units of lu
+    // uParam.rb_ = ;
     
     /* Create the solver database.                                                                        */
     Darius::Mesh                               mesh;
-
+    mesh.lengthScale_ = 1.0;
+    mesh.meshCenter_ = {0.0, 0.0, 0.0};
+    mesh.meshLength_ = {};  // TODO
+    mesh.meshResolution_ =   // TODO
+    mesh.timeScale_ = 1.0;
+    mesh.totalTime_ = 1.0e-10;  // TODO
+    mesh.truncationOrder_ = 2;
+    mesh.spaceCharge_ = 0;
+    
     /* Create the bunch database.                                                                         */
     Darius::Bunch                              bunch;
     bunch.bunchInit_.push_back(bunchInit);
-
+    bunch.timeStart_ = 0.0;
+    bunch.timeStep_ = 1.6;  // TODO
     /* Create the seed database.                                                                          */
     Darius::Seed                               seed;
 
