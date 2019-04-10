@@ -123,6 +123,7 @@ void OpalUndulator::update() {
 
 
     ur->setK(Attributes::getReal(itsAttr[K]));
+    ur->setLambda(Attributes::getReal(itsAttr[LAMBDA]));
     ur->setFilename(Attributes::getString(itsAttr[FNAME]));
 
 
