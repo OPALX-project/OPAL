@@ -782,7 +782,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     fv[2] = mesh.meshLength_[2] / 500;
     mesh.meshResolution_ = fv;
     mesh.timeScale_ = 1.0;
-    mesh.totalTime_ = uLength / bunchInit.initialBeta_ / 3e8 / 10;  // the /10 is only to reduce computational time for testing
+    mesh.totalTime_ = uLength / bunchInit.initialBeta_ / Darius::C0;
     mesh.truncationOrder_ = 2;
     mesh.spaceCharge_ = 0;
     
