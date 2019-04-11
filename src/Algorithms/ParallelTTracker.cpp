@@ -770,7 +770,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::Mesh                               mesh;
     mesh.lengthScale_ = 1.0;
     for (unsigned int d = 0; d < 3; ++d)
-        fv[d] = bunchInit.position_[d];
+        fv[d] = bunchInit.position_[0][d];
     mesh.meshCenter_ = fv;
     fv[0] = 10 * bunchInit.sigmaPosition_[0];
     fv[1] = 10 * bunchInit.sigmaPosition_[1];
