@@ -742,8 +742,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.initialBeta_			= sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));    
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_pmean()(d);
-    for (unsigned int d = 0; d < 3; ++d) 
-        fv[d] = fv[d] / fv.norm();
+    double norm = sqrt( fv.norm() );
+    fv /= norm;
     bunchInit.initialDirection_		= fv;
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rmean()(d);
@@ -792,7 +792,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunch.timeStart_ = itsBunch_m->getT();
     int m = 5;  // dt = m * dt_bunch
     bunch.timeStep_ = mesh.meshResolution_[2] * bunchInit.initialGamma_ *
-        bunchInit.initialGamma_ / Darius::C0 / ( 1 + uParam.k_ *  uParam.k_ ) / m;
+        bunchInit.initialGamma_ / Darius::C0 / ( 1 + .5 * uParam.k_ *  uParam.k_ ) / m;
     /* Create the seed database.                                                                          */
     Darius::Seed                               seed;
 
