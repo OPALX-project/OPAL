@@ -91,7 +91,7 @@ DR1: DRIFT,    L = 1.0, ELEMEDGE = 0.5;
 
 // Undulator
 
-U1: UNDULATOR, L = 1.0, ELEMEDGE = 1.5, K = 1.417, LAMBDA = 3.0e-2, FNAME = "jobfiles/reduced.job";
+U1: UNDULATOR, L = 6.0, ELEMEDGE = 1.5, K = 1.417, LAMBDA = 1, FNAME = "jobfiles/reduced.job";
 
 
 

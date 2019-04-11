@@ -757,31 +757,41 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.tranTrun_				= std::max( bunchSize(0), bunchSize(1) );
     bunchInit.longTrun_				= bunchSize(2);
     bunchInit.inputVector_                      = qv;   
-    // bunchInit.bF = 0.01;
     
     /* Undulator parameters                 */
     Darius::Undulator uParam;
     uParam.k_ = ur->getK();
     uParam.lu_ = ur->getLambda();
-    uParam.length_ = ur->getElementLength() / uParam.lu_;  // In units of lu
+    double uLength =  ur->getElementLength();
+    uParam.length_ = uLength / uParam.lu_;  // In units of lu
     // uParam.rb_ = ;
     
     /* Create the solver database.                                                                        */
     Darius::Mesh                               mesh;
     mesh.lengthScale_ = 1.0;
-    mesh.meshCenter_ = 0.0;
-    //mesh.meshLength_ = {};  // TODO
-    //mesh.meshResolution_ =   // TODO
+    for (unsigned int d = 0; d < 3; ++d)
+        fv[d] = bunchInit.position_[d];
+    mesh.meshCenter_ = fv;
+    fv[0] = 10 * bunchInit.sigmaPosition_[0];
+    fv[1] = 10 * bunchInit.sigmaPosition_[1];
+    fv[2] = 3 * bunchInit.sigmaPosition_[2];
+    mesh.meshLength_ = fv;
+    fv[0] = mesh.meshLength_[0] / 30;
+    fv[1] = mesh.meshLength_[1] / 30;
+    fv[2] = mesh.meshLength_[2] / 500;
+    mesh.meshResolution_ = fv;
     mesh.timeScale_ = 1.0;
-    mesh.totalTime_ = 1.0e-10;  // TODO
+    mesh.totalTime_ = uLength / bunchInit.initialBeta_ / 3e8 / 100;  // the /100 is only to reduce computational time for testing
     mesh.truncationOrder_ = 2;
     mesh.spaceCharge_ = 0;
     
     /* Create the bunch database.                                                                         */
     Darius::Bunch                              bunch;
     bunch.bunchInit_.push_back(bunchInit);
-    bunch.timeStart_ = 0.0;
-    bunch.timeStep_ = 1.6;  // TODO
+    bunch.timeStart_ = itsBunch_m->getT();
+    int m = 5;  // dt = m * dt_bunch
+    bunch.timeStep_ = mesh.meshResolution_[2] * bunchInit.initialGamma_ *
+        bunchInit.initialGamma_ / Darius::C0 / ( 1 + uParam.k_ *  uParam.k_ ) / m;
     /* Create the seed database.                                                                          */
     Darius::Seed                               seed;
 

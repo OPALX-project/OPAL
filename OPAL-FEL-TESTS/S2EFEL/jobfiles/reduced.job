@@ -43,22 +43,7 @@ FIELD
     wavelength						= 0.0
     CEP  						= 0.0
   }
-  
-  field-sampling
-  {
-    sample						= false
-    type						= over-line
-    field						= Ex
-    field                           			= Ey
-    field                           			= Ez
-    directory						= ./
-    base-name						= field-sampling/field
-    rhythm						= 30
-    line-begin						= (0.0, 0.0, 100.0)
-    line-end						= (0.0, 0.0, 130.0)
-    resolution						= 100
-  }
-  
+    
   field-visualization
   {
     sample						= false
