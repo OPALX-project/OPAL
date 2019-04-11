@@ -812,6 +812,13 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::ParseDarius parser (jobFile, mesh, bunch, seed, undulator, extField, FEL);
     parser.setJobParameters();
     
+    /* Show the parameters for the simulation.                                                            */
+    mesh.show();
+    bunch.show();
+    seed.show();
+    for (unsigned int i = 0; i < undulator.size(); i++) 	undulator[i].show();
+    for (unsigned int i = 0; i < extField.size();  i++) 	extField[i] .show();
+
     /* Initialize the class for the FDTD computations.                                                    */
     Darius::FdTd   fdtd   (mesh, bunch, seed, undulator, extField, FEL);
     Darius::FdTdSC fdtdsc (mesh, bunch, seed, undulator, extField, FEL);
