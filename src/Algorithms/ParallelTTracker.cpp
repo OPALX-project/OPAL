@@ -1022,7 +1022,7 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
                         itsBunch_m->setdT(timeDifference / numSteps);
                         BorisPusher pusher(itsReference);
                         for (unsigned int i = 0; i < numSteps; ++ i) {
-                            updateReferenceParticle(pusher);
+                            updateReference(pusher);
                         }
                         itsBunch_m->setdT(origdT);
                     }

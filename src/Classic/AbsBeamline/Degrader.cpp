@@ -24,7 +24,9 @@
 #include "Fields/Fieldmap.h"
 #include "Structure/LossDataSink.h"
 #include "Utilities/Options.h"
+#include "Solvers/ParticleMatterInteractionHandler.hh"
 #include "Physics/Physics.h"
+#include "Utilities/Util.h"
 #include <memory>
 
 extern Inform *gmsg;
@@ -120,6 +122,22 @@ bool Degrader::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B)
     }
 
     return false;
+}
+
+bool Degrader::applyToReferenceParticle(const Vector_t &R,
+                                        const Vector_t &P,
+                                        const double &t,
+                                        Vector_t &E,
+                                        Vector_t &B) {
+    if (!isInMaterial(R(2))) return false;
+
+    const double eV2GeV = 1e-9;
+    double Ekin = Util::getEnergy(P, RefPartBunch_m->getM() * eV2GeV);
+    bool isDead = getParticleMatterInteraction()->computeEnergyLoss(Ekin, RefPartBunch_m->getdT(), false);
+    double deltaP = Util::getP(Ekin, RefPartBunch_m->getM() * eV2GeV) - euclidean_norm(P);
+    E(2) += deltaP * RefPartBunch_m->getM() / (RefPartBunch_m->getdT() * RefPartBunch_m->getQ() * Physics::c);
+
+    return isDead;
 }
 
 void Degrader::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
