@@ -748,6 +748,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rmean()(d);
     bunchInit.position_.push_back(fv);
+    std::cout << "THE BUNCH Z POSITION IS  " << fv[2] << std::endl;
+    std::cout << "THE BUCH MAX EXTENT INE Z IS " << itsBunch_m->get_maxExtent()(2) << std::endl;
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rrms()(d);
     bunchInit.sigmaPosition_		= fv;
