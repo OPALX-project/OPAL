@@ -8,6 +8,7 @@
 //-------------------------------------------------------------------------
 #include "Solvers/CollimatorPhysics.hh"
 #include "Physics/Physics.h"
+#include "Physics/Material.h"
 #include "Algorithms/PartBunchBase.h"
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/FlexibleCollimator.h"
@@ -86,6 +87,7 @@ CollimatorPhysics::CollimatorPhysics(const std::string &name, ElementBase *eleme
     ParticleMatterInteractionHandler(name, element),
     T_m(0.0),
     dT_m(0.0),
+    material_m(material),
     hitTester_m(nullptr),
     Z_m(0),
     A_m(0.0),
@@ -118,7 +120,6 @@ CollimatorPhysics::CollimatorPhysics(const std::string &name, ElementBase *eleme
     rGen_m = gsl_rng_alloc(gsl_rng_default);
     gsl_rng_set(rGen_m, Options::seed);
 
-    material_m = Util::toUpper(material);
     configureMaterialParameters();
 
     collshape_m = element_ref_m->getType();
@@ -457,221 +458,16 @@ void CollimatorPhysics::applyNonDKS(PartBunchBase<double, 3> *bunch,
 //  ------------------------------------------------------------------------
 void  CollimatorPhysics::configureMaterialParameters() {
 
-    if (material_m == "BERYLLIUM" || material_m == "BERILIUM") {
-        Z_m = 4.0;
-        A_m = 9.012;
-        rho_m = 1.848;
-
-        X0_m = 65.19 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 2.590;
-        A3_c = 9.660e2;
-        A4_c = 1.538e2;
-        A5_c = 3.475e-2;
-
-    }
-
-    else if (material_m == "GRAPHITE") {
-        Z_m = 6.0;
-        A_m = 12.0107;
-        rho_m = 2.210;
-
-        X0_m = 42.70 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 2.601;
-        A3_c = 1.701e3;
-        A4_c = 1.279e3;
-        A5_c = 1.638e-2;
-
-    }
-
-    else if (material_m == "GRAPHITER6710") {
-        Z_m = 6.0;
-        A_m = 12.0107;
-        rho_m = 1.88;
-
-        X0_m = 42.70 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 2.601;
-        A3_c = 1.701e3;
-        A4_c = 1.279e3;
-        A5_c = 1.638e-2;
-
-    }
-
-    else if (material_m == "MOLYBDENUM") {
-        Z_m = 42.0;
-        A_m = 95.94;
-        rho_m = 10.22;
-
-        X0_m = 9.8 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 7.248;
-        A3_c = 9.545e3;
-        A4_c = 4.802e2;
-        A5_c = 5.376e-3;
-    }
-
-    /*
-      needs to be checked !
-
-      Z from http://journals.aps.org/prb/pdf/10.1103/PhysRevB.40.8530
-    */
-
-    else if (material_m == "MYLAR") {
-        Z_m = 6.702;
-        A_m = 12.88;
-        rho_m = 1.4;
-
-        X0_m = 39.95 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 3.350;
-        A3_c = 1683;
-        A4_c = 1900;
-        A5_c = 2.513e-02;
-    }
-
-
-    //new materials
-    else if (material_m == "ALUMINUM") {
-        Z_m = 13;
-        A_m = 26.98;
-        rho_m = 2.7;
-
-        X0_m = 24.01 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 4.739;
-        A3_c = 2.766e3;
-        A4_c = 1.645e2;
-        A5_c = 2.023e-2;
-    }
-
-    else if (material_m == "COPPER") {
-        Z_m = 29;
-        A_m = 63.54;
-        rho_m = 8.96;
-
-        X0_m = 12.86 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 4.194;
-        A3_c = 4.649e3;
-        A4_c = 8.113e1;
-        A5_c = 2.242e-2;
-    }
-
-    else if (material_m == "TITAN") {
-        Z_m = 22;
-        A_m = 47.8;
-        rho_m = 4.54;
-
-        X0_m = 16.16 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 5.489;
-        A3_c = 5.260e3;
-        A4_c = 6.511e2;
-        A5_c = 8.930e-3;
-    }
-
-    else if (material_m == "ALUMINAAL2O3") {
-        Z_m = 50;
-        A_m = 101.96;
-        rho_m = 3.97;
-
-        X0_m = 27.94 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 7.227;
-        A3_c = 1.121e4;
-        A4_c = 3.864e2;
-        A5_c = 4.474e-3;
-    }
-
-    else if (material_m == "AIR") {
-        Z_m = 7;
-        A_m = 14;
-        rho_m = 0.0012;
-
-        X0_m = 37.99 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 3.350;
-        A3_c = 1.683e3;
-        A4_c = 1.900e3;
-        A5_c = 2.513e-2;
-    }
-
-    else if (material_m == "KAPTON") {
-        Z_m = 6;
-        A_m = 12;
-        rho_m = 1.4;
-
-        X0_m = 39.95 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 2.601;
-        A3_c = 1.701e3;
-        A4_c = 1.279e3;
-        A5_c = 1.638e-2;
-    }
-
-    else if (material_m == "GOLD") {
-        Z_m = 79;
-        A_m = 197;
-        rho_m = 19.3;
-
-        X0_m = 6.46 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 5.458;
-        A3_c = 7.852e3;
-        A4_c = 9.758e2;
-        A5_c = 2.077e-2;
-    }
-
-    else if (material_m == "WATER") {
-        Z_m = 10;
-        A_m = 18;
-        rho_m = 1;
-
-        X0_m = 36.08 / rho_m / 100;
-        I_m = 10 * Z_m;
-
-        A2_c = 2.199;
-        A3_c = 2.393e3;
-        A4_c = 2.699e3;
-        A5_c = 1.568e-2;
-    }
-
-    else if (material_m == "BoronCarbide") {
-        Z_m = 26;
-        A_m = 55.25;
-        rho_m = 2.48;
-
-        X0_m = 50.14 / rho_m / 100;
-        I_m = 12 * Z_m + 7.0;
-
-        A2_c = 3.963;
-        A3_c = 6065.0;
-        A4_c = 1243.0;
-        A5_c = 7.782e-3;
-    }
-
-    else {
-        throw GeneralClassicException("CollimatorPhysics::Material", "Material not found ...");
-    }
-    // mean exitation energy from Leo
-    if (Z_m < 13.0)
-        I_m = 12 * Z_m + 7.0;
-    else
-        I_m = 9.76 * Z_m + (Z_m * 58.8 * std::pow(Z_m, -1.19));
+    auto material = Physics::Material::getMaterial(material_m);
+    Z_m = material->getAtomicNumber();
+    A_m = material->getAtomicMass();
+    rho_m = material->getMassDensity();
+    X0_m = material->getRadiationLength();
+    I_m = material->getMeanExcitationEnergy();
+    A2_c = material->getStoppingPowerFitCoefficients(Physics::Material::A2);
+    A3_c = material->getStoppingPowerFitCoefficients(Physics::Material::A3);
+    A4_c = material->getStoppingPowerFitCoefficients(Physics::Material::A4);
+    A5_c = material->getStoppingPowerFitCoefficients(Physics::Material::A5);
 }
 
 // Implement the rotation in 2 dimensions here

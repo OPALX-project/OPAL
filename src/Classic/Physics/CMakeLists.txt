@@ -1,4 +1,5 @@
 set (_SRCS
+    Material.cpp
   )
 
 include_directories (
@@ -8,6 +9,7 @@ include_directories (
 ADD_OPAL_SOURCES(${_SRCS})
 
 set (HDRS
+    Material.h
     Physics.h
 )
 
