@@ -747,6 +747,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.initialDirection_		= fv;
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rmean()(d);
+    fv[3] += itsBunch_m->get_sPos();
     bunchInit.position_.push_back(fv);
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rrms()(d);

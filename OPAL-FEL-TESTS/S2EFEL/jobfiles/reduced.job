@@ -75,7 +75,7 @@ FEL-OUTPUT
     type						= at-point
     directory						= ./
     base-name						= power-sampling/power
-    plane-position					= .001
+    plane-position					= 1.1e-4
     normalized-frequency				= 1.00
   }
 }
