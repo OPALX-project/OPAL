@@ -747,7 +747,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.initialDirection_		= fv;
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rmean()(d);
-    fv[3] += itsBunch_m->get_sPos();
+    fv[2] += itsBunch_m->get_sPos();
     bunchInit.position_.push_back(fv);
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rrms()(d);
@@ -755,9 +755,13 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_prms()(d);
     bunchInit.sigmaGammaBeta_		= fv;
-    Vector_t bunchSize = ( itsBunch_m->get_maxExtent() - itsBunch_m->get_origin() ) / 2;
-    bunchInit.tranTrun_				= std::max( bunchSize(0), bunchSize(1) );
-    bunchInit.longTrun_				= bunchSize(2);
+    for (unsigned int i = 0; i < 2; ++i){
+        bunchInit.tranTrun_ = itsBunch_m->get_maxExtent()(i) > bunchInit.tranTrun_ 
+            ?  itsBunch_m->get_maxExtent()(i) : bunchInit.tranTrun_;
+        bunchInit.tranTrun_ = abs( itsBunch_m->get_origin()(i) ) > bunchInit.tranTrun_ 
+            ?  abs( itsBunch_m->get_origin()(i) ) : bunchInit.tranTrun_;
+    }
+    bunchInit.longTrun_ = std::max( abs( itsBunch_m->get_origin()(2) ), itsBunch_m->get_maxExtent()(2) );
     bunchInit.inputVector_                      = qv;   
     
     /* Undulator parameters                 */
