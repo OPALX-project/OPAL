@@ -22,7 +22,7 @@ BUNCH
     sample						= false
     directory						= ./
     base-name						= bunch-profile/bunch
-    time						= 16.0
+    time						= 2.0e-10
   }
 }
 

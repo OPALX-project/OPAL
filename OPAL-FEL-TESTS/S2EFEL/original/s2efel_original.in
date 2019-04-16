@@ -91,7 +91,7 @@ DR1: DRIFT,    L = 1.0, ELEMEDGE = 0.5;
 
 // Undulator
 
-U1: UNDULATOR, L = 1.0, ELEMEDGE = 1.5, FNAME = "jobfiles/reduced.job";
+U1: UNDULATOR, L = 1.0, ELEMEDGE = 1.5, FNAME = "test_FEL_IR.job";
 
 
 
