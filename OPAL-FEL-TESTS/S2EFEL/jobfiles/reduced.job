@@ -3,18 +3,18 @@ BUNCH
   
   bunch-sampling
   {
-    sample						= false
+    sample						= true
     directory						= ./
     base-name 						= bunch-sampling/bunch
-    rhythm						= 8
+    rhythm						= 2.0e-10
   }
     
   bunch-visualization
   {
-    sample						= false
+    sample						= true
     directory						= ./
     base-name						= bunch-visualization/bunch
-    rhythm						= 5.0
+    rhythm						= 2.0e-10
   }
     
   bunch-profile
