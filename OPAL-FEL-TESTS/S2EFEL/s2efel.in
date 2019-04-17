@@ -7,100 +7,29 @@ OPTION, VERSION=10900;
 
 REAL REPARTFREQ=1000000;
 
-Title, string="AWA Photoinjector";
+Title, string="UNDULATOR";
 
 //----------------------------------------------------------------------------
 //Global Parameters
 
-REAL rf_freq             = 1.3e9;     //RF frequency. (Hz)
-REAL n_particles         = 1E+3;      //Number of particles in simulation.
-REAL beam_bunch_charge   = 1e-9;      //Charge of bunch. (C)
+// REAL rf_freq             = 1.3e9;     //RF frequency. (Hz)
+REAL n_particles         = 1024;      //Number of particles in simulation.
+REAL beam_bunch_charge   = 1.846e8 * 1.6e-19;      //Charge of bunch. (C)
 
 //Initial Momentum Calculation
-REAL Edes    = 1.4e-9; //initial energy in GeV
-REAL gamma   = (Edes+EMASS)/EMASS; 
+REAL gamma   = 100.41; 
 REAL beta    = sqrt(1-(1/gamma^2));
 REAL P0      = gamma*beta*EMASS;    //inital z momentum
 
 //Printing initial energy and momentum to terminal output.
-value , {Edes, P0};
+value , {gamma, P0};
 
-//----------------------------------------------------------------------------
-// RF photoinjector (Gun)
-//
-// Cavity/RF field.
-//
-// L:        physical element length (real in m). Length (of field map) (m).
-// VOLT:     field scaling factor (real). RF field magnitude (MV/m).
-// FMAPFN:   file name, or full path name to file (string)
-// ELEMEDGE: physical start of the element on the floor (m)
-// TYPE:     specifies "STANDING", "TRAVELLING" or "SINGLE GAP" structure
-// FREQ:     RF frequency of cavity (real in MHz). Resonance frequency.
-// LAG:      cavity phase (radians)
-//
-
-REAL gun_inj_phase = 0.0;  // Rf injection phase (in degrees) with restpect 
-                      // to max phase. i.e. 0.0 inj phase corresponds 
-                      // to running on crest (max energy).
-
-GUN:    RFCavity, L = 0.2927, VOLT = 60.0, ELEMEDGE = 0.0, TYPE = "STANDING",
-        FMAPFN = "fieldmaps/DriveGun.T7", FREQ = 1300.0, LAG = (gun_inj_phase*Pi)/180.0; 
-        //LAG (phase) is converted to radians
-
-//----------------------------------------------------------------------------
-// Solenoids
-//
-// L:           Physcial element length (m)
-// ELEMEDGE:    Physcial start of element (m)
-// KS:          Solenoid strength (Rad/m)
-// FMAPFM:      Field file (string)
-
-// Note: OPAL scales the field file based on the max magnetic 
-// field value in the file, not Bz on axis. The max field 
-// value is normalized to 1 [T], and scaled with KS. 
-// i.e. The max value in the BF_559 file = 0.162544398 [T]. 
-// Therefore, setting KS = 0.162544398 runs the magnet at max current.
-
-REAL KSBF = 0.162544398;
-if (OPALVERSION>15000)
- KSBF = KSBF/1.3528; 
-
-// Buck and Focusing Solenoid
-BF: Solenoid, L = 0.5, ELEMEDGE=0.0, KS = KSBF,
-    FMAPFN = "fieldmaps/BF_550.T7";
-
-// Matching Solenoid 
-// Max value in the M_440 file = 1.973966
-// Conversion from Current (I) to Scaling factor:
-// Scaling Factor (KS) = (I / Imax) * 1.973966
-// Where Imax for this Matching solenoid = 440 [A]
-
-REAL I  = 273; //[A]
-REAL SF = (I/440)*1.973966;
-if (OPALVERSION>15000)
- SF = SF/3.2306;
-
-M:  Solenoid, L = 0.5, ELEMEDGE=0.0, KS = SF,
-    FMAPFN = "fieldmaps/M_440.T7";
-
-value,{KSBF,SF};
-
-// Drift after gun.
-
-DR1: DRIFT,    L = 1.0, ELEMEDGE = 0.5;
 
 // Undulator
 
-U1: UNDULATOR, L = 6.0, ELEMEDGE = 1.5, K = 1.417, LAMBDA = .03, FNAME = "reduced.job";
+UND: UNDULATOR, L = 9.0, ELEMEDGE = 1.19814e-4, K = 1.417, LAMBDA = .03, FNAME = "reduced.job";
 
-
-
-// DEFINE BEAM LINE
-
-GS:  Line = (GUN, BF, M);
-
-// Complete accelerator
-DRIVE: Line = (GS, DR1, U1);
+DRIVE: Line = (UND);
 
 //----------------------------------------------------------------------------
 // INITIAL DISTRIBUTION
@@ -165,16 +94,16 @@ FS_SC: Fieldsolver, FSTYPE = FFT,
 //----------------------------------------------------------------------------
 // Electron Beam Definition
 
+// BEAM1:  BEAM, PARTICLE = ELECTRON, pc = P0, NPART = n_particles,
+        BFREQ = rf_freq, BCURRENT = beam_bunch_charge * rf_freq, CHARGE = -1;
+total_mithra_time = 3e-8;
 BEAM1:  BEAM, PARTICLE = ELECTRON, pc = P0, NPART = n_particles,
-        BFREQ = rf_freq,BCURRENT = beam_bunch_charge * rf_freq, CHARGE = -1;
+	BCURRENT = beam_bunch_charge / total_mithra_time , CHARGE = -1;
 
 //----------------------------------------------------------------------------
 // Simulate the beamline using TRACK and RUN.
-// Note, different time steps are set based on the z location in the beam line.
-// In the case below, 1.0e-13 is used for 0.0 to 0.4 m, 
-// and 3.0e-12 is used from 0.4 to 5 m. 
 
-TRACK, LINE = DRIVE, BEAM = BEAM1, MAXSTEPS = 1000000, DT = {1.E-12, 3.E-10}, ZSTOP={0.1, 2.5};
+TRACK, LINE = DRIVE, BEAM = BEAM1, MAXSTEPS = 1000000, DT = 3.E-10, ZSTOP= 10.0 ;
 RUN, METHOD = "PARALLEL-T", BEAM = BEAM1, 
     FIELDSOLVER = FS_SC, DISTRIBUTION = Dist;
 ENDTRACK;
