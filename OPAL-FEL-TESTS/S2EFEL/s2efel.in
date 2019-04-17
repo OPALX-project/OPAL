@@ -33,48 +33,10 @@ DRIVE: Line = (UND);
 
 //----------------------------------------------------------------------------
 // INITIAL DISTRIBUTION
-//
-// Flattop distribution. 
-// SIGMAX/Y:      RMS radius of transverse beam size (Laser radius in m). 
-// TRISE/FALL:    Rise time/fall time in longitudinal direction (s).
-// TPULSEFWHM:    FWHM in longitudinal direction (s).
-// CUTOFFLONG:    Longitudinal cuttoff in units of sigma.
-// NBIN:          Number of energy bins to use during emission.
-// DEBIN:         Defines when to combine bins (Min energy difference in KeV). 
-// EMISSIONSTEPS: Number of steps during emssion. 
-//                Emission time step is adjusted to fit this number.
-// EKIN:          Kinetic energy of electrons at emission (eV). 
-// ELASER:        Energy of laser (eV). 
-// W:             Photocathode work functioin (eV). 
-// FE:            Fermi energy of photocathode (eV). 
-// CATHTEMP:      Operating temperature of photocathode (K). 
 
-// Note, ELASER, W, FE, and CATHTEMP are used for the NONEQUIL emission model.
-// These values are not necessary when using other models.
-
-// Note, If you want a Gaussian, in the longitudinal direction:
-//      TRISE/FALL = 1.6869*simgar
-//      Sigmar     = FWHM / 2.35 (this equation is only valid for 1.3 GHz)
-
-Dist: DISTRIBUTION, TYPE = FLATTOP,
-        SIGMAX = 0.00075,
-        SIGMAY = 0.00075,
-        TRISE = 6.0e-12,       
-        TFALL = 6.0e-12,       
-        TPULSEFWHM = 20.0e-12, 
-        CUTOFFLONG = 4.0,
-        NBIN = 5,
-        EMISSIONSTEPS = 100,
-        EMISSIONMODEL = ASTRA,
-        EKIN = 0.55,           
-        EMITTED = True,        
-        WRITETOFILE = False;    //Saves the distribution to a text file
-
-// Note on emission time step: FWHM pulse width divided by emission 
-// steps gives the time step for the emissions process. 
-// i.e 20.0e-12 / 100 gives a time step of 2e-13 (s) during emission. 
-// This is the not the same as the time step used in rest of the file. 
-
+Dist: DISTRIBUTION, TYPE = FROMFILE,
+      	FNAME = "bunch-profile.txt";
+	
 //----------------------------------------------------------------------------
 // Define Field solvers
 // The mesh sizes should be a factor of 2 
