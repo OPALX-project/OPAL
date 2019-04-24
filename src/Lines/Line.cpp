@@ -25,8 +25,6 @@
 #include "Attributes/Attributes.h"
 #include "Beamlines/Beamline.h"
 #include "Beamlines/FlaggedElmPtr.h"
-#include "Errors/AlignHandler.h"
-#include "Errors/AlignWriter.h"
 #include "Expressions/SAutomatic.h"
 #include "Expressions/SBinary.h"
 #include "Expressions/SRefExpr.h"

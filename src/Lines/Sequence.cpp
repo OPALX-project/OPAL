@@ -23,9 +23,6 @@
 #include "BeamlineCore/DriftRep.h"
 #include "Beamlines/Beamline.h"
 #include "Elements/OpalDrift.h"
-#include "Errors/AlignHandler.h"
-#include "Errors/AlignReader.h"
-#include "Errors/AlignWriter.h"
 #include "Lines/FlatWriter.h"
 
 #include "Lines/Replacer.h"

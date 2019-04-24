@@ -17,15 +17,7 @@ add_subdirectory(Parser)
 add_subdirectory(Physics)
 add_subdirectory(Solvers)
 add_subdirectory(Structure)
-add_subdirectory(Utilities)
 add_subdirectory(TrimCoils)
-
-install (FILES Utilities/ClassicException.h Utilities/ClassicRandom.h Utilities/Options.h Utilities/OptionTypes.h 
-    DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Utilities"
-)
+add_subdirectory(Utilities)
 
 set(OPAL_SRCS "${OPAL_SRCS}" PARENT_SCOPE)
-
-#Turn on gcov
-set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
-set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)

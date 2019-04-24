@@ -38,7 +38,6 @@
 #include "BasicActions/Option.h"
 
 #include "Distribution/Distribution.h"
-#include "Elements/OpalBeamBeam3D.h"
 #include "Track/Track.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Round.h"

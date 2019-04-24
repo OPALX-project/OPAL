@@ -52,7 +52,6 @@
 
 // Commands introducing a special mode.
 #include "Editor/EditCmd.h"
-#include "Errors/ErrorCmd.h"
 #include "Match/MatchCmd.h"
 #include "Track/TrackCmd.h"
 
@@ -88,8 +87,6 @@
 #include "ValueDefinitions/StringConstant.h"
 
 // Element commands.
-#include "Elements/OpalBeamBeam.h"
-#include "Elements/OpalBeamBeam3D.h"
 #include "Elements/OpalCavity.h"
 #include "Elements/OpalCCollimator.h"
 #include "Elements/OpalCyclotron.h"
@@ -177,7 +174,6 @@ namespace {
         opal->create(new Envelope());
         opal->create(new Help());
         opal->create(new EditCmd());
-        opal->create(new ErrorCmd());
         opal->create(new List());
         opal->create(new MakeSequence());
         opal->create(new MatchCmd());
@@ -243,8 +239,6 @@ namespace {
 
     void makeElements() {
         OpalData *opal = OpalData::getInstance();
-        opal->create(new OpalBeamBeam());
-        opal->create(new OpalBeamBeam3D());
         opal->create(new OpalCavity());
         opal->create(new OpalCCollimator());
         opal->create(new OpalCyclotron());

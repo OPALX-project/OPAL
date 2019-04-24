@@ -12,7 +12,6 @@
 
 #include "H5hut.h"
 
-#include "Structure/PriEmissionPhysics.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Expressions/SRefExpr.h"
 #include "Elements/OpalBeamline.h"
@@ -2331,54 +2330,6 @@ int BoundaryGeometry::emitSecondaryVaughan (
                          nEmissionMode_m);
     }
     return 1;
-}
-
-/**
-   Here we call field emission model.
-
-   \return number of emitted electrons
- */
-size_t BoundaryGeometry::doFNemission (
-    OpalBeamline& itsOpalBeamline,
-    PartBunchBase<double, 3>* itsBunch,
-    const double t
-    ) {
-    // Self-field is not considered at moment. Only 1D Child-Langmuir law is
-    // implemented for space charge limited current density.
-    const double fa = parameterFNA_m / workFunction_m * fieldEnhancement_m * fieldEnhancement_m;
-    size_t Nstp = 0;
-    for (int i = 0; i < numTriangles_m; i++) {
-        if ( !(TriBGphysicstag_m[i] & BGphysics::FNEmission)) {
-            // skip triangles without emission
-            continue;
-        }
-        Vector_t E (0.0), B (0.0);
-        Vector_t centroid (0.0);
-        itsOpalBeamline.getFieldAt (TriBarycenters_m[i], centroid, t, E, B);
-        double Enormal = dot (TriNormals_m[i], E);
-        /* Enormal should be negative as E field direction should be
-           opposite to inward normal of surface */
-        if (Enormal < fieldFNthreshold_m) {
-            std::vector<Vector_t> vertex;
-            vertex.push_back (Point (i, 1));
-            vertex.push_back (Point (i, 2));
-            vertex.push_back (Point (i, 3));
-            PriEmissionPhysics::Fieldemission (itsBunch, fa, Enormal,
-                                               parameterFNB_m,
-                                               workFunction_m,
-                                               parameterFNVYZe_m,
-                                               parameterFNVYSe_m,
-                                               parameterFNY_m,
-                                               fieldEnhancement_m,
-                                               maxFNemission_m,
-                                               TriAreas_m[i],
-                                               vertex,
-                                               TriNormals_m[i],
-                                               Nstp);
-        }
-    }
-    *gmsg << "* Emit " << Nstp << " field emission particles at the surfaces" << endl;
-    return Nstp;
 }
 
 /**

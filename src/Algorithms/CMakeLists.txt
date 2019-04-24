@@ -1,23 +1,21 @@
 set (_SRCS
-  Hamiltonian.cpp
-  IndexMap.cpp
-  OrbitThreader.cpp
-  BeamBeam3D.cpp
-  LieMapper.cpp
-  MapAnalyser.cpp
-  NilTracker.cpp
-  MPSplitIntegrator.cpp
-  ThickMapper.cpp
-  ThickTracker.cpp
-  # AutophaseTracker.cpp
   CavityAutophaser.cpp
   Ctunes.cpp
+  IndexMap.cpp
+  Hamiltonian.cpp
+  LieMapper.cpp
   lomb.cpp
+  NilTracker.cpp
+  MapAnalyser.cpp
+  MPSplitIntegrator.cpp
+  OrbitThreader.cpp
   ParallelTTracker.cpp
   ParallelCyclotronTracker.cpp
   ParallelSliceTracker.cpp
   StatisticalErrors.cpp
   StatisticalErrorsUtilities.cpp
+  ThickMapper.cpp
+  ThickTracker.cpp
   TransportMapper.cpp
   bet/EnvelopeSlice.cpp
   bet/EnvelopeBunch.cpp
@@ -41,8 +39,6 @@ include_directories (
 add_opal_sources(${_SRCS})
 
 set (HDRS
-    #AutophaseTracker.h
-    BeamBeam3D.h
     CavityAutophaser.h
     Ctunes.h
     Hamiltonian.h

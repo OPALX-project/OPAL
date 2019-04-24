@@ -1,7 +1,5 @@
 set (_SRCS
   AttCell.cpp
-  OpalBeamBeam.cpp
-  OpalBeamBeam3D.cpp
   OpalBend.cpp
   OpalCavity.cpp
   OpalTravelingWave.cpp
@@ -68,8 +66,6 @@ add_opal_sources(${_SRCS})
 
 set (HDRS
     AttCell.h
-    OpalBeamBeam3D.h
-    OpalBeamBeam.h
     OpalBeamline.h
     OpalBend.h
     OpalCavity.h

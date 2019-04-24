@@ -11,7 +11,6 @@ set (_SRCS
   DomainError.cpp
   EigenvalueError.cpp
   FormatError.cpp
-  Gauss.cpp
   GeneralClassicException.cpp
   InverseGauss.cpp
   LogicalError.cpp
@@ -66,7 +65,6 @@ set (HDRS
     DomainError.h
     EigenvalueError.h
     FormatError.h
-    Gauss.h
     GeneralClassicException.h
     InverseGauss.h
     LogicalError.h

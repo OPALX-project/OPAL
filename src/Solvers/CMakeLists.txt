@@ -7,7 +7,6 @@ set (_SRCS
   EllipticDomain.cpp
   ArbitraryDomain.cpp
   BoxCornerDomain.cpp
-  TaperDomain.cpp
   )
 
 set(AMR_MG_DIR "")
@@ -19,7 +18,7 @@ if ( ENABLE_AMR )
         add_subdirectory (AMR_MG)
         set(AMR_MG_DIR "${CMAKE_CURRENT_SOURCE_DIR}/AMR_MG")
     endif ( ENABLE_AMR_MG_SOLVER )
-    
+
 endif (ENABLE_AMR )
 
 include_directories (
@@ -40,7 +39,6 @@ set (HDRS
     P3MPoissonSolver.h
     PoissonSolver.h
     RectangularDomain.h
-    TaperDomain.h
 )
 
 if ( ENABLE_AMR )
