@@ -13,7 +13,7 @@ Title, string="UNDULATOR";
 //Global Parameters
 
 // REAL rf_freq             = 1.3e9;     //RF frequency. (Hz)
-REAL n_particles         = 1024;      //Number of particles in simulation.
+REAL n_particles         = 1176;      //Number of particles in simulation.
 REAL beam_bunch_charge   = 1.846e8 * 1.6e-19;      //Charge of bunch. (C)
 
 //Initial Momentum Calculation
@@ -27,7 +27,7 @@ value , {gamma, P0};
 
 // Undulator
 
-UND: UNDULATOR, L = 9.0, ELEMEDGE = 1.19814e-4, K = 1.417, LAMBDA = .03, FNAME = "reduced.job";
+UND: UNDULATOR, L = 9.0, ELEMEDGE = 0.0, K = 1.417, LAMBDA = .03, FNAME = "reduced.job";
 
 DRIVE: Line = (UND);
 
@@ -35,7 +35,7 @@ DRIVE: Line = (UND);
 // INITIAL DISTRIBUTION
 
 Dist: DISTRIBUTION, TYPE = FROMFILE,
-      	FNAME = "bunch-profile.txt";
+      	FNAME = "bunch-profile.csv";
 	
 //----------------------------------------------------------------------------
 // Define Field solvers
@@ -57,8 +57,8 @@ FS_SC: Fieldsolver, FSTYPE = FFT,
 // Electron Beam Definition
 
 // BEAM1:  BEAM, PARTICLE = ELECTRON, pc = P0, NPART = n_particles,
-        BFREQ = rf_freq, BCURRENT = beam_bunch_charge * rf_freq, CHARGE = -1;
-total_mithra_time = 3e-8;
+//        BFREQ = rf_freq, BCURRENT = beam_bunch_charge * rf_freq, CHARGE = -1;
+REAL total_mithra_time = 3e-8;
 BEAM1:  BEAM, PARTICLE = ELECTRON, pc = P0, NPART = n_particles,
 	BCURRENT = beam_bunch_charge / total_mithra_time , CHARGE = -1;
 
