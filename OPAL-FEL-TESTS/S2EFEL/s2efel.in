@@ -35,7 +35,7 @@ DRIVE: Line = (UND);
 // INITIAL DISTRIBUTION
 
 Dist: DISTRIBUTION, TYPE = FROMFILE,
-      	FNAME = "bunch-profile.csv";
+      	FNAME = "initial-profile.tsv";
 	
 //----------------------------------------------------------------------------
 // Define Field solvers

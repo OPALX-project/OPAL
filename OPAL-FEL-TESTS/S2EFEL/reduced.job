@@ -6,15 +6,15 @@ BUNCH
     sample						= true
     directory						= ./
     base-name 						= bunch-sampling/bunch
-    rhythm						= 2.0e-10
+    rhythm						= 8.0e-12
   }
     
   bunch-visualization
   {
-    sample						= true
+    sample						= false
     directory						= ./
     base-name						= bunch-visualization/bunch
-    rhythm						= 2.0e-10
+    rhythm						= 5.0e-12
   }
     
   bunch-profile
