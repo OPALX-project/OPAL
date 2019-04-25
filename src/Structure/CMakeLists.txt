@@ -3,7 +3,6 @@ set (_SRCS
   OpalWake.cpp
   ParticleMatterInteraction.cpp
   SecondaryEmissionPhysics.cpp
-  PriEmissionPhysics.cpp
   BoundaryGeometry.cpp
   FieldSolver.cpp
   DataSink.cpp
@@ -11,11 +10,9 @@ set (_SRCS
   H5PartWrapperForPC.cpp
   H5PartWrapperForPS.cpp
   H5PartWrapperForPT.cpp
-#  SDDSParser.cpp
   MultiBunchDump.cpp
   OpalInputInterpreter.cpp
   IpplInfoWrapper.cpp
-  TracerParticles.cpp
 )
 
 include_directories (
@@ -37,11 +34,8 @@ set (HDRS
     MultiBunchDump.h
     OpalInputInterpreter.h
     OpalWake.h
-    PriEmissionPhysics.h
-#    SDDSParser.h
     SecondaryEmissionPhysics.h
     ParticleMatterInteraction.h
-    TracerParticles.hpp
 )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Structure")

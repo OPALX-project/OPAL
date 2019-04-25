@@ -108,11 +108,6 @@ public:
         PartBunchBase<double, 3>* itsBunch,
         double& seyNum);
 
-    size_t doFNemission (
-        OpalBeamline& itsOpalBeamline,
-        PartBunchBase<double, 3>* itsBunch,
-        const double t);
-
     Inform& printInfo (
         Inform& os) const;
 
