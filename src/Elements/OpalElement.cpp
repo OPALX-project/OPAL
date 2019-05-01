@@ -36,11 +36,7 @@
 
 #include <cmath>
 #include <cctype>
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 #include <vector>
 #include <boost/regex.hpp>
 
@@ -523,18 +519,9 @@ void OpalElement::printMultipoleStrength
             double ss = Attributes::getReal(sSkew);
             double strength = sqrt(sn * sn + ss * ss);
             if(strength) {
-#if defined(__GNUC__) && __GNUC__ < 3
-                char buffer[80];
-                std::ostrstream ts(buffer, 80);
-#else
                 std::ostringstream ts;
-#endif
                 ts << strength;
-#if defined(__GNUC__) && __GNUC__ < 3
-                std::string image(buffer);
-#else
                 std::string image = ts.str();
-#endif
                 if(length) {
                     image = "(" + image + ")*(" + length.getImage() + ")";
                 }
@@ -688,18 +675,9 @@ void OpalElement::printAttribute
 
 void OpalElement::printAttribute
 (std::ostream &os, const std::string &name, double value, int &len) {
-#if defined(__GNUC__) && __GNUC__ < 3
-    char buffer[80];
-    std::ostrstream ss(buffer, sizeof(buffer));
-#else
     std::ostringstream ss;
-#endif
     ss << value << std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-    printAttribute(os, name, std::string(buffer), len);
-#else
     printAttribute(os, name, ss.str(), len);
-#endif
 }
 
 

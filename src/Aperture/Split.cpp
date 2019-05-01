@@ -12,11 +12,7 @@
 #include "AbsBeamline/Cyclotron.h"
 #include "Utilities/Timer.h"
 #include <fstream>
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 #include <iomanip>
 #include <string>
 
@@ -773,19 +769,8 @@ MSplit::A_row &MSplit::findRow(const PlaceRep &place) {
         row.leave(*i);
     }
 
-#if defined(__GNUC__) && __GNUC__ < 3
-    char buffer[128];
-    std::ostrstream os(buffer, sizeof(buffer));
-#else
     std::ostringstream os;
-#endif
     os <<  row <<  std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-    std::string name(buffer);
-    throw OpalException("MSplit::findRow()", "A_row \"" + name +
-                        "\" not found in twiss table \"" + getOpalName() + "\".");
-#else
     throw OpalException("MSplit::findRow()", "A_row \"" + os.str() +
                         "\" not found in twiss table \"" + getOpalName() + "\".");
-#endif
 }

@@ -33,14 +33,8 @@
 
 #include <cmath>
 #include <iostream>
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 #include <vector>
-
-extern Inform *gmsg;
 
 // Class Sequence
 // ------------------------------------------------------------------------
@@ -359,23 +353,13 @@ double Sequence::findDriftLength(TLine::iterator drift) const {
         driftLength = 0.0;
     } else if(driftLength < 0.0) {
         driftLength = 0.0;
-#if defined(__GNUC__) && __GNUC__ < 3
-        static const int BUFSIZE = 512;
-        char buffer[BUFSIZE];
-        std::ostrstream os(buffer, BUFSIZE);
-#else
         std::ostringstream os;
-#endif
         os << "Inconsistent positions in sequence \"" << getOpalName() + "\";\n"
            << "previous element:  \"" << prev_name + "\" at = "
            << prev->itsPosition << ",\n"
            << "following element: \"" << next_name + "\" at = "
            << next->itsPosition << "." << std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-        throw OpalException("Sequence::findDriftLength()", buffer);
-#else
         throw OpalException("Sequence::findDriftLength()", os.str());
-#endif
         // ada 15-6-2000 move driftLength = 0.0; bevore throw
     }
 

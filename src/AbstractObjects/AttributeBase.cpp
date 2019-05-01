@@ -17,11 +17,7 @@
 // ------------------------------------------------------------------------
 
 #include "AbstractObjects/AttributeBase.h"
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 
 // Class AttributeBase
 // ------------------------------------------------------------------------
@@ -36,20 +32,10 @@ AttributeBase::~AttributeBase()
 
 
 std::string AttributeBase::getImage() const {
-#if defined(__GNUC__) && __GNUC__ < 3
-    std::ostrstream os;
-#else
     std::ostringstream os;
-#endif
     print(os);
     os << std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-    std::string img(os.str());
-    os.freeze(0);
-    return img;
-#else
     return os.str();
-#endif
 }
 
 

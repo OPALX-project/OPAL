@@ -35,11 +35,7 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 
 
 // Local structures.
@@ -410,21 +406,10 @@ const Survey::Row &Survey::findRow(const PlaceRep &place) {
         row.leave(*i);
     }
 
-#if defined(__GNUC__) && __GNUC__ < 3
-    char buffer[128];
-    std::ostrstream os(buffer, sizeof(buffer));
-#else
     std::ostringstream os;
-#endif
     os << row << std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-    std::string name(buffer);
-    throw OpalException("Survey::setRow()", "Row \"" + name +
-                        "\" not found in survey table \"" + getOpalName() + "\".");
-#else
     throw OpalException("Survey::setRow()", "Row \"" + os.str() +
                         "\" not found in survey table \"" + getOpalName() + "\".");
-#endif
 }
 
 
@@ -547,19 +532,10 @@ void Survey::printTable(std::ostream &os, const CellArray &cells) const {
     os << "Element         ";
     for(CellArray::const_iterator cell = cells.begin();
         cell < cells.end(); ++cell) {
-#if defined(__GNUC__) && __GNUC__ < 3
-        char buffer[256];
-        std::ostrstream ss(buffer, 256);
-#else
         std::ostringstream ss;
-#endif
         cell->itsExpr->print(ss, 0);
         ss << std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-        std::string image(buffer);
-#else
         std::string image = ss.str();
-#endif
 
         if(int(image.length()) < cell->printWidth) {
             // Right adjust the column header.
@@ -581,18 +557,9 @@ void Survey::printTable(std::ostream &os, const CellArray &cells) const {
         if(current->getSelectionFlag()) {
             std::string name = current->getElement()->getName();
             if(int occur = current->getCounter()) {
-#if defined(__GNUC__) && __GNUC__ < 3
-                char buffer[128];
-                std::ostrstream tos(buffer, 128);
-#else
                 std::ostringstream tos;
-#endif
                 tos << name << '[' << occur << ']' << std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-                name = buffer;
-#else
                 name = tos.str();
-#endif
             }
 
             if(name.length() > 16) {

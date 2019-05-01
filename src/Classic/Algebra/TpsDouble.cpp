@@ -19,8 +19,8 @@
 //
 // ------------------------------------------------------------------------
 
-#include "Algebra/Tps.cpp"
-#include "Algebra/Vps.cpp"
+#include "Algebra/Tps.hpp"
+#include "Algebra/Vps.hpp"
 
 
 // Force instantiation of Tps<double> class.

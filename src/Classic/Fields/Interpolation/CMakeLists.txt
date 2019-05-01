@@ -11,7 +11,6 @@ set (_SRCS
   SquarePolynomialVector.cpp
   ThreeDGrid.cpp
   TriLinearInterpolator.cpp
-  VectorMap.cpp
 )
 
 include_directories (

@@ -60,11 +60,7 @@
 #include <cerrno>
 #include <cmath>
 #include <list>
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 #include <vector>
 
 
@@ -413,18 +409,9 @@ namespace Expressions {
                 parseDelimiter(stat, '(');
                 double value = parseRealConst(stat);
                 parseDelimiter(stat, ')');
-#if defined(__GNUC__) && __GNUC__ < 3
-                char buffer[128];
-                std::ostrstream os(buffer, sizeof(buffer));
-#else
                 std::ostringstream os;
-#endif
                 os << value << std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-                result += std::string(buffer);
-#else
                 result += os.str();
-#endif
             } else {
                 result += temp;
             }

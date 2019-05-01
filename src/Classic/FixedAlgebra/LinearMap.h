@@ -214,6 +214,6 @@ std::ostream &operator<<(std::ostream &os, const LinearMap<T, N> &vps);
 
 
 // Implementation.
-#include "FixedAlgebra/LinearMap.cpp"
+#include "FixedAlgebra/LinearMap.hpp"
 
 #endif // CLASSIC_LinearMap_HH

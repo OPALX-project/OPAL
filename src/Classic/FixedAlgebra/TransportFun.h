@@ -262,7 +262,7 @@ std::ostream &operator<<(std::ostream &os, const TransportFun<T, N> &);
 
 
 // Implementation.
-#include "FixedAlgebra/TransportFun.cpp"
+#include "FixedAlgebra/TransportFun.hpp"
 #include "FixedAlgebra/TransportMap.h"
 
 #endif // CLASSIC_TransportFun_HH

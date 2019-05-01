@@ -330,6 +330,6 @@ std::ostream &operator<<(std::ostream &os, const FVps<T, N> &vps);
 
 
 // Implementation.
-#include "FixedAlgebra/FVps.cpp"
+#include "FixedAlgebra/FVps.hpp"
 
 #endif // CLASSIC_FVps_HH

@@ -15,11 +15,7 @@
 #include "Utilities/Timer.h"
 #include <iostream>
 #include <fstream>
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 #include <iomanip>
 #include <string>
 
@@ -1037,19 +1033,8 @@ Aperture::A_row &Aperture::findRow(const PlaceRep &place) {
         row.leave(*i);
     }
 
-#if defined(__GNUC__) && __GNUC__ < 3
-    char buffer[128];
-    std::ostrstream os(buffer, sizeof(buffer));
-#else
     std::ostringstream os;
-#endif
     os << row << std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-    std::string name(buffer);
-    throw OpalException("Aperture::findRow()", "A_row \"" + name +
-                        "\" not found in twiss table \"" + getOpalName() + "\".");
-#else
     throw OpalException("Aperture::findRow()", "A_row \"" + os.str() +
                         "\" not found in twiss table \"" + getOpalName() + "\".");
-#endif
 }

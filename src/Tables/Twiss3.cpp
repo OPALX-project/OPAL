@@ -24,11 +24,7 @@
 #include "Utilities/OpalException.h"
 #include <fstream>
 #include <iomanip>
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 #include <iostream>
 
 using std::setw;
@@ -131,18 +127,9 @@ void Twiss3::formatPrint(std::ostream &os, const Twiss *table) const {
         if(row->getSelectionFlag()) {
             std::string name = row->getElement()->getName();
             if(int occur = row->getCounter()) {
-#if defined(__GNUC__) && __GNUC__ < 3
-                char buffer[128];
-                std::ostrstream tos(buffer, 128);
-#else
                 std::ostringstream tos;
-#endif
                 tos << name << '[' << occur << ']' << std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-                name = buffer;
-#else
                 name = tos.str();
-#endif
             }
 
             if(name.length() > 16) {

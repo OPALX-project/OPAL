@@ -25,11 +25,7 @@
 #include "Utilities/OpalException.h"
 #include "AbstractObjects/OpalData.h"
 #include <iosfwd>
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 #include <vector>
 
 
@@ -137,19 +133,10 @@ namespace Expressions {
 
     template <class T>
     const std::string ARefExpr<T>::getImage() const {
-#if defined(__GNUC__) && __GNUC__ < 3
-        char buffer[128];
-        std::ostrstream os(buffer, sizeof(buffer));
-#else
         std::ostringstream os;
-#endif
         print(os);
         os << std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-        return std::string(buffer);
-#else
         return os.str();
-#endif
     }
 
 

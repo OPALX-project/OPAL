@@ -38,11 +38,7 @@
 #include "Physics/Physics.h"
 #include "Utilities/Options.h"
 #include <iostream>
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 #include <vector>
 
 

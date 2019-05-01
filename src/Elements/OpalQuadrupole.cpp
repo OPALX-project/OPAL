@@ -28,11 +28,7 @@
 
 #include <cmath>
 #include <iostream>
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 
 
 // Class OpalQuadrupole
@@ -114,18 +110,9 @@ fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
     if(length != 0.0) scale *= length;
 
     for(int order = 1; order <= field.order(); ++order) {
-#if defined(__GNUC__) && __GNUC__ < 3
-        char buffer[10];
-        std::ostrstream ss(buffer, 10);
-#else
         std::ostringstream ss;
-#endif
         ss << (order - 1) << std::ends;
-#if defined(__GNUC__) && __GNUC__ < 3
-        std::string orderString(buffer);
-#else
         std::string orderString = ss.str();
-#endif
 
         std::string normName = "K" + orderString + "L";
         registerRealAttribute(normName)->setReal(scale * field.normal(order));

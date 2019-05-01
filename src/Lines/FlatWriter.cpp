@@ -31,11 +31,7 @@
 #include "Beamlines/Beamline.h"
 #include "Beamlines/FlaggedElmPtr.h"
 #include <vector>
-#if defined(__GNUC__) && __GNUC__ < 3
-#include <strstream>
-#else
 #include <sstream>
-#endif
 
 extern Inform *gmsg;
 
@@ -90,11 +86,7 @@ void FlatWriter::visitMapIntegrator(const MapIntegrator &i) {
             //                 that it would be re-initialised each pass.
             for(int k = 0; k < slices; ++k) {
 
-#if defined(__GNUC__) && __GNUC__ < 3
-                ostrstream splitNameStream;
-#else
                 std::ostringstream splitNameStream;
-#endif
                 splitNameStream << name << ".." << k + 1 << std::ends ;
                 std::string splitName = splitNameStream.str();
 

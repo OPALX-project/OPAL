@@ -217,6 +217,6 @@ operator-(const FVector<T, N> &lhs, const TransportMap<T, N> &rhs);
 
 
 // Implementation.
-#include "FixedAlgebra/TransportMap.cpp"
+#include "FixedAlgebra/TransportMap.hpp"
 
 #endif // CLASSIC_TransportMap_HH
