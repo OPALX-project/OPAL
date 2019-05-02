@@ -780,11 +780,11 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.meshCenter_ = fv;
     fv[0] = 10 * bunchInit.sigmaPosition_[0];
     fv[1] = 10 * bunchInit.sigmaPosition_[1];
-    fv[2] = 3 * bunchInit.sigmaPosition_[2];
+    fv[2] = 6 * bunchInit.sigmaPosition_[2];
     mesh.meshLength_ = fv;
     fv[0] = mesh.meshLength_[0] / 30;
     fv[1] = mesh.meshLength_[1] / 30;
-    fv[2] = mesh.meshLength_[2] / 500;
+    fv[2] = mesh.meshLength_[2] / 700;
     mesh.meshResolution_ = fv;
     mesh.timeScale_ = 1.0;
     mesh.totalTime_ = uLength / bunchInit.initialBeta_ / Darius::C0;
