@@ -35,7 +35,8 @@ DRIVE: Line = (UND);
 // INITIAL DISTRIBUTION
 
 Dist: DISTRIBUTION, TYPE = FROMFILE,
-      	FNAME = "initial-profile.tsv";
+      	FNAME = "initial-profile.tsv",
+	EMITTED = FALSE;
 	
 //----------------------------------------------------------------------------
 // Define Field solvers
