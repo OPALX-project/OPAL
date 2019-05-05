@@ -39,7 +39,7 @@ namespace {
             &CyclotronValleyRep::getElementLength,
             &CyclotronValleyRep::setElementLength
         },
-	{ 0, 0, 0 }
+        { 0, 0, 0 }
     };
 }
 

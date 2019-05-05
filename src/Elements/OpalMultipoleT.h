@@ -34,7 +34,7 @@
 
 /** OpalMultipoleT provides user interface information for the MultipoleT object
  *
- *  Defines input parameters 
+ *  Defines input parameters
  */
 class OpalMultipoleT: public OpalElement {
 
@@ -43,20 +43,20 @@ public:
     // The attributes of class OpalMultipoleT
     enum {
         TP = COMMON,     // Transverse field components
-	RFRINGE,         // Length of right fringe field
-	LFRINGE,         // Length of left fringe field
-	HAPERT,          // Aperture horizontal dimension
-	VAPERT,          // Aperture vertical dimension
-	MAXFORDER,       // Maximum order in the field expansion
+        RFRINGE,         // Length of right fringe field
+        LFRINGE,         // Length of left fringe field
+        HAPERT,          // Aperture horizontal dimension
+        VAPERT,          // Aperture vertical dimension
+        MAXFORDER,       // Maximum order in the field expansion
         MAXXORDER,       // Maximum order in x in polynomial expansions
-	ANGLE,           // Bending angle of a sector magnet
-	ROTATION,        // Rotation angle about central axis for skew elements
-	EANGLE,          // Entrance angle
-	VARRADIUS,       // Variable radius flag
+        ANGLE,           // Bending angle of a sector magnet
+        ROTATION,        // Rotation angle about central axis for skew elements
+        EANGLE,          // Entrance angle
+        VARRADIUS,       // Variable radius flag
         BBLENGTH,        // Distance between centre of magnet and entrance
-	SIZE             // size of the enum
+        SIZE             // size of the enum
     };
-    
+
     /** Default constructor initialises UI parameters. */
     OpalMultipoleT();
 
@@ -87,8 +87,3 @@ public:
 };
 
 #endif // OPAL_OpalMultipoleT_HH
-   
- 
-  
-
-

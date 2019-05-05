@@ -35,7 +35,7 @@
 
 /** OpalMultipoleTStraight provides user interface information for the MultipoleTStraight object
  *
- *  Defines input parameters 
+ *  Defines input parameters
  */
 class OpalMultipoleTStraight: public OpalElement {
 
@@ -44,17 +44,17 @@ public:
     // The attributes of class OpalMultipoleTStraight
     enum {
         TP = COMMON,     // Transverse field components
-	RFRINGE,         // Length of right fringe field
-	LFRINGE,         // Length of left fringe field
-	HAPERT,          // Aperture horizontal dimension
-	VAPERT,          // Aperture vertical dimension
-	MAXFORDER,       // Maximum order in the field expansion
-	ROTATION,        // Rotation angle about central axis for skew elements
-	EANGLE,          // Entrance angle
+        RFRINGE,         // Length of right fringe field
+        LFRINGE,         // Length of left fringe field
+        HAPERT,          // Aperture horizontal dimension
+        VAPERT,          // Aperture vertical dimension
+        MAXFORDER,       // Maximum order in the field expansion
+        ROTATION,        // Rotation angle about central axis for skew elements
+        EANGLE,          // Entrance angle
         BBLENGTH,        // Distance between centre of magnet and entrance
-	SIZE             // size of the enum
+        SIZE             // size of the enum
     };
-    
+
     /** Default constructor initialises UI parameters. */
     OpalMultipoleTStraight();
 
@@ -85,8 +85,3 @@ public:
 };
 
 #endif
-   
- 
-  
-
-

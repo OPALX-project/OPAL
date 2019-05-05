@@ -72,12 +72,12 @@ public:
     typedef Size_type size_type;
     /// Type for storing maps
     typedef boost::numeric::ublas::matrix<value_type> matrix_type;
-    
+
     typedef std::complex<value_type> complex_t;
-    
+
     /// Type for storing complex matrices
     typedef boost::numeric::ublas::matrix<complex_t> cmatrix_type;
-    
+
     /// Type for storing the sparse maps
     typedef boost::numeric::ublas::compressed_matrix<complex_t,
                                                      boost::numeric::ublas::row_major
@@ -130,14 +130,14 @@ public:
      */
     bool match(value_type accuracy, size_type maxit, size_type maxitOrbit,
                Cyclotron* cycl, value_type denergy, value_type rguess, bool harmonic, bool full);
-    
+
     /*!
      * Eigenvalue / eigenvector solver
      * @param Mturn is a 6x6 dimensional one turn transfer matrix
      * @param R is the 6x6 dimensional transformation matrix (gets computed)
      */
     void eigsolve_m(const matrix_type& Mturn, sparse_matrix_type& R);
-    
+
     /*!
      * @param R is the 6x6 dimensional transformation matrix
      * @param invR is the 6x6 dimensional inverse transformation (gets computed)
@@ -148,7 +148,7 @@ public:
 
     /// Block diagonalizes the symplex part of the one turn transfer matrix
     /*! It computes the transformation matrix <b>R</b> and its inverse <b>invR</b>.
-     * 
+     *
      * @param Mturn is a 6x6 dimensional one turn transfer matrix
      * @param R is the 6x6 dimensional transformation matrix (gets computed)
      * @param invR is the 6x6 dimensional inverse transformation (gets computed)
@@ -174,11 +174,11 @@ public:
 
     /// Returns the emittances (ex,ey,ez) in \f$ \pi\ mm\ mrad \f$ for which the code converged (since the whole simulation is done on normalized emittances)
     std::array<value_type,3> getEmittances() const;
-    
+
     const double& getInjectionRadius() const {
         return rinit_m;
     }
-    
+
     const double& getInjectionMomentum() const {
         return prinit_m;
     }
@@ -216,10 +216,10 @@ public:
     size_type nSectors_m;
     /// Number of integration steps per sector (--> also: number of maps per sector)
     size_type nStepsPerSector_m;
-    
+
     /// Number of integration steps in total
     size_type nSteps_m;
-    
+
     /// Error of computation
     value_type error_m;
 
@@ -228,7 +228,7 @@ public:
 
     /// Decides for writing output (default: true)
     bool write_m;
-    
+
     /// Stores the stationary distribution (sigma matrix)
     matrix_type sigma_m;
 
@@ -243,19 +243,19 @@ public:
 
     /// All variables x, px, y, py, z, delta
     Series x_m, px_m, y_m, py_m, z_m, delta_m;
-    
+
     double rinit_m;
     double prinit_m;
 
     /*! Initializes a first guess of the sigma matrix with the assumption of
      * a spherical symmetric beam (ex = ey = ez). For each angle split the
      * same initial guess is taken.
-     * 
+     *
      * @param nuz is the vertical tune
      * @param ravg is the average radius of the closed orbit
      */
     void initialize(value_type, value_type);
-    
+
     /// Computes the new initial sigma matrix
     /*!
      * @param M is the 6x6 one turn transfer matrix
@@ -280,8 +280,8 @@ public:
      * @param newS is the new sigma matrix
      */
     value_type L2ErrorNorm(const matrix_type&, const matrix_type&);
-    
-    
+
+
     /// Returns the Lp-error norm between the old and new sigma-matrix
     /*!
      * @param oldS is the old sigma matrix
@@ -294,7 +294,7 @@ public:
      * @param val is the floating point value which is transformed to a string
      */
     std::string float2string(value_type val);
-    
+
     /// Called within SigmaGenerator::match().
     /*!
      * @param tunes
@@ -469,7 +469,7 @@ template<typename Value_type, typename Size_type>
             // properties of one turn
             tunes = cof.getTunes();
             ravg = cof.getAverageRadius();                   // average radius
-            
+
             value_type angle = cycl->getPHIinit();
             container_type h_turn = cof.getInverseBendingRadius(angle);
             container_type r_turn = cof.getOrbit(angle);
@@ -477,7 +477,7 @@ template<typename Value_type, typename Size_type>
             container_type fidx_turn = cof.getFieldIndex(angle);
 
             container_type peo = cof.getMomentum(angle);
-            
+
             // write properties to file
             if (write_m)
                 writeOrbitOutput_m(tunes, ravg, cof.getFrequencyError(),
@@ -500,15 +500,15 @@ template<typename Value_type, typename Size_type>
             std::copy_n(h_turn.begin(), nSteps_m, h.begin());
             std::copy_n(fidx_turn.begin(), nSteps_m, fidx.begin());
             std::copy_n(ds_turn.begin(), nSteps_m, ds.begin());
-            
+
             rinit_m = r[0];
             prinit_m = peo[0];
-            
+
         } else {
             *gmsg << "Not yet supported." << endl;
             return false;
         }
-        
+
         // initialize sigma matrices (for each angle one) (first guess)
         initialize(tunes.second,ravg);
 
@@ -647,13 +647,13 @@ template<typename Value_type, typename Size_type>
     } catch(const std::exception& e) {
         std::cerr << e.what() << std::endl;
     }
-    
+
     if ( converged_m && write_m ) {
         // write tunes
         std::ofstream writeSigmaMatched("data/MatchedDistributions.dat", std::ios::app);
-        
+
         std::array<double,3> emit = this->getEmittances();
-        
+
         writeSigmaMatched << "* Converged (Ex, Ey, Ez) = (" << emit[0]
                           << ", " << emit[1] << ", " << emit[2]
                           << ") pi mm mrad for E= " << E_m << " (MeV)"
@@ -668,7 +668,7 @@ template<typename Value_type, typename Size_type>
             }
             writeSigmaMatched << " \\\\" << std::endl;
         }
-        
+
         writeSigmaMatched << std::endl;
         writeSigmaMatched.close();
     }
@@ -686,97 +686,97 @@ void SigmaGenerator<Value_type, Size_type>::eigsolve_m(const matrix_type& Mturn,
     typedef gsl_matrix_complex*           gsl_cmatrix_t;
     typedef gsl_eigen_nonsymmv_workspace* gsl_wspace_t;
     typedef boost::numeric::ublas::vector<complex_t> complex_vector_type;
-    
+
     gsl_cvector_t evals = gsl_vector_complex_alloc(6);
     gsl_cmatrix_t evecs = gsl_matrix_complex_alloc(6, 6);
     gsl_wspace_t wspace = gsl_eigen_nonsymmv_alloc(6);
     gsl_matrix_t      M = gsl_matrix_alloc(6, 6);
-    
+
     // go to GSL
     for (size_type i = 0; i < 6; ++i){
         for (size_type j = 0; j < 6; ++j) {
             gsl_matrix_set(M, i, j, Mturn(i,j));
         }
     }
-    
+
     /*int status = */gsl_eigen_nonsymmv(M, evals, evecs, wspace);
-    
+
 //     if ( !status )
 //         throw OpalException("SigmaGenerator::eigsolve_m()",
 //                             "Couldn't perform eigendecomposition!");
-    
+
     /*status = *///gsl_eigen_nonsymmv_sort(evals, evecs, GSL_EIGEN_SORT_ABS_ASC);
-    
+
 //     if ( !status )
 //         throw OpalException("SigmaGenerator::eigsolve_m()",
 //                             "Couldn't sort eigenvalues and eigenvectors!");
-    
+
     // go to UBLAS
     for( size_type i = 0; i < 6; i++){
         gsl_vector_complex_view evec_i = gsl_matrix_complex_column(evecs, i);
-        
+
         for(size_type j = 0;j < 6; j++){
             gsl_complex zgsl = gsl_vector_complex_get(&evec_i.vector, j);
             complex_t z(GSL_REAL(zgsl), GSL_IMAG(zgsl));
             R(i,j) = z;
         }
     }
-    
+
     // Sorting the Eigenvectors
     // This is an arbitrary threshold that has worked for me. (We should fix this)
     value_type threshold = 10e-12;
     bool isZdirection = false;
     std::vector<complex_vector_type> zVectors{};
     std::vector<complex_vector_type> xyVectors{};
-    
+
     for(size_type i = 0; i < 6; i++){
         complex_t z = R(i,0);
-	if(std::abs(z) < threshold) z = 0.;
-	if(z == 0.) isZdirection = true;
-	complex_vector_type v(6);
-	if(isZdirection){
-	    for(size_type j = 0;j < 6; j++){
-	        complex_t z = R(i,j);
-		v(j) = z;
-	    }
-	    zVectors.push_back(v);
-	}
-	else{
-	    for(size_type j = 0; j < 6; j++){
-	        complex_t z = R(i,j);
-		v(j) = z;
-	    }
-	    xyVectors.push_back(v);
-	}
-	isZdirection = false;
+        if(std::abs(z) < threshold) z = 0.;
+        if(z == 0.) isZdirection = true;
+        complex_vector_type v(6);
+        if(isZdirection){
+            for(size_type j = 0;j < 6; j++){
+                complex_t z = R(i,j);
+                v(j) = z;
+            }
+            zVectors.push_back(v);
+        }
+        else{
+            for(size_type j = 0; j < 6; j++){
+                complex_t z = R(i,j);
+                v(j) = z;
+            }
+            xyVectors.push_back(v);
+        }
+        isZdirection = false;
     }
-    
+
     //if z-direction not found, then the system does not behave as expected
     if(zVectors.size() != 2)
         throw OpalException("SigmaGenerator::eigsolve_m()",
                             "Couldn't find the vertical Eigenvectors.");
-    
+
     // Norms the Eigenvectors
      for(size_type i = 0; i < 4; i++){
         value_type norm{0};
         for(size_type j = 0; j < 6; j++) norm += std::norm(xyVectors[i](j));
-	for(size_type j = 0; j < 6; j++) xyVectors[i](j) /= std::sqrt(norm);
+        for(size_type j = 0; j < 6; j++) xyVectors[i](j) /= std::sqrt(norm);
     }
     for(size_type i = 0; i < 2; i++){
         value_type norm{0};
         for(size_type j = 0; j < 6; j++) norm += std::norm(zVectors[i](j));
-	for(size_type j = 0; j < 6; j++) zVectors[i](j) /= std::sqrt(norm);
+        for(size_type j = 0; j < 6; j++) zVectors[i](j) /= std::sqrt(norm);
     }
-    
+
     for(value_type i = 0; i < 6; i++){
         R(i,0) = xyVectors[0](i);
         R(i,1) = xyVectors[1](i);
         R(i,2) = zVectors[0](i);
         R(i,3) = zVectors[1](i);
         R(i,4) = xyVectors[2](i);
-        R(i,5) = xyVectors[3](i); 
+        R(i,5) = xyVectors[3](i);
     }
-    
+
     gsl_vector_complex_free(evals);
     gsl_matrix_complex_free(evecs);
     gsl_eigen_nonsymmv_free(wspace);
@@ -789,25 +789,25 @@ bool SigmaGenerator<Value_type, Size_type>::invertMatrix_m(const sparse_matrix_t
                                                            sparse_matrix_type& invR)
 {
     typedef boost::numeric::ublas::permutation_matrix<size_type> pmatrix_t;
-    
+
     //creates a working copy of R
     cmatrix_type A(R);
-    
+
     //permutation matrix for the LU-factorization
     pmatrix_t pm(A.size1());
-    
+
     //LU-factorization
     int res = lu_factorize(A,pm);
-    
+
     if( res != 0)
         return false;
-    
+
     // create identity matrix of invR
     invR.assign(boost::numeric::ublas::identity_matrix<complex_t>(A.size1()));
-    
+
     // backsubstitute to get the inverse
     boost::numeric::ublas::lu_substitute(A, pm, invR);
-    
+
     return true;
 }
 
@@ -816,9 +816,9 @@ template<typename Value_type, typename Size_type>
 void SigmaGenerator<Value_type, Size_type>::decouple(const matrix_type& Mturn,
                                                      sparse_matrix_type& R,
                                                      sparse_matrix_type& invR)
-{    
+{
     this->eigsolve_m(Mturn, R);
-    
+
     if ( !this->invertMatrix_m(R, invR) )
         throw OpalException("SigmaGenerator::decouple()",
                             "Couldn't compute inverse matrix!");
@@ -996,27 +996,27 @@ void SigmaGenerator<Value_type, Size_type>::initialize(value_type nuz,
     // Remark: We multiply with 10^{6} (= mega) to convert emittances back.
     // 1 m^{2} = 10^{6} mm^{2}
     matrix_type sigma = boost::numeric::ublas::zero_matrix<value_type>(6);
-    
+
     // formula (30), [sigma(0,0)] = m^2 rad * 10^{6} = mm^{2} rad = mm mrad
     sigma(0,0) = invAB * (B * ex / Omega + A * ez / omega) * mega;
-    
+
     // [sigma(0,5)] = [sigma(5,0)] = m rad * 10^{6} = mm mrad	// 1000: m --> mm and 1000 to promille
     sigma(0,5) = sigma(5,0) = invAB * (ex / Omega + ez / omega) * mega;
-    
+
     // [sigma(1,1)] = rad * 10^{6} = mrad (and promille)
     sigma(1,1) = invAB * (B * ex * Omega + A * ez * omega) * mega;
-    
+
     // [sigma(1,4)] = [sigma(4,1)] = m rad * 10^{6} = mm mrad
     sigma(1,4) = sigma(4,1) = invAB * (ex * Omega+ez * omega) / (K * gamma2_m) * mega;
-    
+
     // formula (31), [sigma(2,2)] = m rad * 10^{6} = mm mrad
     sigma(2,2) = ey / (std::sqrt(h * h * nuz * nuz - K)) * mega;
-    
+
     sigma(3,3) = (ey * mega) * (ey * mega) / sigma(2,2);
-    
+
     // [sigma(4,4)] = m^{2} rad * 10^{6} = mm^{2} rad = mm mrad
     sigma(4,4) = invAB * (A * ex * Omega + B * ez * omega) / (K * gamma2_m) * mega;
-    
+
     // formula (30), [sigma(5,5)] = rad * 10^{6} = mrad (and promille)
     sigma(5,5) = invAB * (ex / (B * Omega) + ez / (A * omega)) * mega;
 
@@ -1054,16 +1054,16 @@ SigmaGenerator<Value_type, Size_type>::updateInitialSigma(const matrix_type& M,
      * with diagonal matrix D (stores eigenvalues of sigma*S (emittances apart from +- i),
      * skew-symmetric matrix (formula (13)), and tranformation matrices E, E^{-1}
      */
-    
+
     cmatrix_type S = boost::numeric::ublas::zero_matrix<complex_t>(6,6);
     S(0,1) = S(2,3) = S(4,5) = 1;
     S(1,0) = S(3,2) = S(5,4) = -1;
-    
+
     // Build new D-Matrix
     // Section 2.4 Eq. 18 in M. Frey Semester thesis
-    // D = diag(i*emx,-i*emx,i*emy,-i*emy,i*emz, -i*emz) 
-    
-    
+    // D = diag(i*emx,-i*emx,i*emy,-i*emy,i*emz, -i*emz)
+
+
     cmatrix_type D = boost::numeric::ublas::zero_matrix<complex_t>(6,6);
     value_type invbg = 1.0 / (beta_m * gamma_m);
     complex_t im(0,1);
@@ -1071,18 +1071,18 @@ SigmaGenerator<Value_type, Size_type>::updateInitialSigma(const matrix_type& M,
         D(2*i, 2*i) = emittance_m[i] * invbg * im;
         D(2*i+1, 2*i+1) = -emittance_m[i] * invbg * im;
     }
-    
+
     // Computing of new Sigma
     // sigma = -R*D*R^{-1}*S
     cmatrix_type csigma(6, 6);
     csigma = boost::numeric::ublas::prod(invR, S);
     csigma = boost::numeric::ublas::prod(D, csigma);
     csigma = boost::numeric::ublas::prod(-R, csigma);
-    
+
     matrix_type sigma(6,6);
     for (size_type i = 0; i < 6; ++i){
         for (size_type j = 0; j < 6; ++j){
-            sigma(i,j) = csigma(i,j).real(); 
+            sigma(i,j) = csigma(i,j).real();
         }
     }
 
@@ -1160,7 +1160,7 @@ typename SigmaGenerator<Value_type, Size_type>::value_type
 {
     // compute difference
     matrix_type diff = newS - oldS;
-    
+
     std::for_each(diff.data().begin(), diff.data().end(),
                   [](value_type& val) {
                       return std::abs(val);
@@ -1197,20 +1197,20 @@ void SigmaGenerator<Value_type, Size_type>::writeOrbitOutput_m(
         writeTunes << "energy [MeV]" << std::setw(15)
                    << "nur" << std::setw(25)
                    << "nuz" << std::endl;
-    
+
     writeTunes << E_m << std::setw(30) << std::setprecision(10)
                << tunes.first << std::setw(25)
                << tunes.second << std::endl;
-    
+
     // write average radius
     std::ofstream writeAvgRadius("data/AverageValues.dat", std::ios::app);
-    
+
     if (writeAvgRadius.tellp() == 0) // if nothing yet written --> write description
         writeAvgRadius << "energy [MeV]" << std::setw(15)
                        << "avg. radius [m]" << std::setw(15)
                        << "r [m]" << std::setw(15)
                        << "pr [m]" << std::endl;
-    
+
     writeAvgRadius << E_m << std::setw(25) << std::setprecision(10)
                    << ravg << std::setw(25) << std::setprecision(10)
                    << r_turn[0] << std::setw(25) << std::setprecision(10)
@@ -1222,7 +1222,7 @@ void SigmaGenerator<Value_type, Size_type>::writeOrbitOutput_m(
     if(writePhase.tellp() == 0) // if nothing yet written --> write description
         writePhase << "energy [MeV]" << std::setw(15)
                    << "freq. error" << std::endl;
-    
+
     writePhase << E_m << std::setw(30) << std::setprecision(10)
                << freqError << std::endl;
 
@@ -1235,7 +1235,7 @@ void SigmaGenerator<Value_type, Size_type>::writeOrbitOutput_m(
                     << std::setw(25) << "inverse bending radius"
                     << std::setw(25) << "field index"
                     << std::setw(25) << "path length" << std::endl;
-        
+
     for (size_type i = 0; i < r_turn.size(); ++i) {
         writeProperties << std::setprecision(10) << std::left
                         << std::setw(25) << r_turn[i]
@@ -1244,7 +1244,7 @@ void SigmaGenerator<Value_type, Size_type>::writeOrbitOutput_m(
                         << std::setw(25) << fidx_turn[i]
                         << std::setw(25) << ds_turn[i] << std::endl;
     }
-        
+
     // close all files within this if-statement
     writeTunes.close();
     writeAvgRadius.close();

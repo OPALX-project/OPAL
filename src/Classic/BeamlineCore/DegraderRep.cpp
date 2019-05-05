@@ -39,7 +39,7 @@ namespace {
             &DegraderRep::getElementLength,
             &DegraderRep::setElementLength
         },
-	{ 0, 0, 0 }
+        { 0, 0, 0 }
     };
 }
 

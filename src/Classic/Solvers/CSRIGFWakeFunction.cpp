@@ -86,8 +86,8 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
         if(print_criterion) {
             static unsigned int file_number = 0;
             if(counter == 0) file_number = 0;
-	    double spos = bunch->get_sPos();
-	    if (Ippl::myNode() == 0) {
+            double spos = bunch->get_sPos();
+            if (Ippl::myNode() == 0) {
                 std::stringstream filename_str;
                 filename_str << "data/" << bendName_m << "-CSRWake" << std::setw(5) << std::setfill('0') << file_number << ".txt";
                 std::ofstream csr(filename_str.str().c_str());
@@ -99,7 +99,7 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
                 }
                 csr.close();
                 msg << "** wrote " << filename_str.str() << endl;
-	    }
+            }
             ++ file_number;
         }
         ++ counter;

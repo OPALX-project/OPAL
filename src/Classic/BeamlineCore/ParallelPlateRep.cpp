@@ -55,7 +55,7 @@ namespace {
             &ParallelPlateRep::getPhase,
             &ParallelPlateRep::setPhase
         },
-	{ 0, 0, 0 }
+        { 0, 0, 0 }
     };
 }
 

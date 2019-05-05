@@ -171,9 +171,9 @@ next_row:
         j = ++low;
 
         // Restart search for next column.
-	/*
+        /*
         Die Abbruchbedingung in der Methode balance auf Zeile 176 der Datei /scratch2/amas/l_felsimsvn/src/opal/classic/5.0/src/Algebra/ComplexEigen.cpp
-        sollte von 
+        sollte von
          if(j = upp) break;
         auf
          if(j >= upp) break;
@@ -184,15 +184,15 @@ next_row:
 
          Matrix<double> m(2,2,0.0);
 
-         m[0][0]=1;  
+         m[0][0]=1;
          m[1][1]=3;
 
          DoubleEigen de(m,true);
 
-         Dies ist zwar ein bisschen ein akademischer Fall, war aber ausgerechnet mein erstes Testbeispiel. 
+         Dies ist zwar ein bisschen ein akademischer Fall, war aber ausgerechnet mein erstes Testbeispiel.
          Die vorgeschlagene Änderung ist performancemässig gleichwertig und sollte keine negativen Seiteneffekte haben.
 
-	*/
+        */
 next_column:
         if(j >= upp) break;
     }
@@ -573,7 +573,7 @@ int ComplexEigen::hqr2(Matrix<complex<double> > &h, int low,
     for(ssize_t en = upp + 1; en-- > low;) {
         ssize_t its = 0;
 
-	ssize_t l = en;
+        ssize_t l = en;
         // Look for singlengle small sub-diagonal element.
         while(true) {
             for(; l > low; l--) {

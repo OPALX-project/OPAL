@@ -660,27 +660,27 @@ public:
         double& tmin,       // tmin and tmax are unchanged, if there is
         double& tmax        // no intersection
         ) const {
-	double tmin_ = (pts[r.sign[0]][0]   - r.origin[0]) * r.inv_direction[0];
-	double tmax_ = (pts[1-r.sign[0]][0] - r.origin[0]) * r.inv_direction[0];
-	const double tymin = (pts[r.sign[1]][1]   - r.origin[1]) * r.inv_direction[1];
-	const double tymax = (pts[1-r.sign[1]][1] - r.origin[1]) * r.inv_direction[1];
-	if ( (tmin_ > tymax) || (tymin > tmax_) )
+        double tmin_ = (pts[r.sign[0]][0]   - r.origin[0]) * r.inv_direction[0];
+        double tmax_ = (pts[1-r.sign[0]][0] - r.origin[0]) * r.inv_direction[0];
+        const double tymin = (pts[r.sign[1]][1]   - r.origin[1]) * r.inv_direction[1];
+        const double tymax = (pts[1-r.sign[1]][1] - r.origin[1]) * r.inv_direction[1];
+        if ( (tmin_ > tymax) || (tymin > tmax_) )
             return 0;       // no intersection
-	if (tymin > tmin_)
+        if (tymin > tmin_)
             tmin_ = tymin;
-	if (tymax < tmax_)
+        if (tymax < tmax_)
             tmax_ = tymax;
-	const double tzmin = (pts[r.sign[2]][2]   - r.origin[2]) * r.inv_direction[2];
-	const double tzmax = (pts[1-r.sign[2]][2] - r.origin[2]) * r.inv_direction[2];
-	if ( (tmin_ > tzmax) || (tzmin > tmax_) )
+        const double tzmin = (pts[r.sign[2]][2]   - r.origin[2]) * r.inv_direction[2];
+        const double tzmax = (pts[1-r.sign[2]][2] - r.origin[2]) * r.inv_direction[2];
+        if ( (tmin_ > tzmax) || (tzmin > tmax_) )
             return 0;       // no intersection
-	if (tzmin > tmin_)
-		tmin_ = tzmin;
-	tmin = tmin_;
-	if (tzmax < tmax_)
-		tmax_ = tzmax;
-	tmax = tmax_;
-	return (tmax >= 0);
+        if (tzmin > tmin_)
+            tmin_ = tzmin;
+        tmin = tmin_;
+        if (tzmax < tmax_)
+            tmax_ = tzmax;
+        tmax = tmax_;
+        return (tmax >= 0);
     }
 
     inline bool intersect (
@@ -2115,8 +2115,8 @@ BoundaryGeometry::writeGeomToVtk (std::string fn) {
     of << "POINTS " << Points_m.size () << " float" << std::endl;
     for (unsigned int i = 0; i < Points_m.size (); i++)
         of << Points_m[i](0) << " "
-	   << Points_m[i](1) << " "
-	   << Points_m[i](2) << std::endl;
+           << Points_m[i](1) << " "
+           << Points_m[i](2) << std::endl;
     of << std::endl;
 
     of << "CELLS "
@@ -2124,17 +2124,17 @@ BoundaryGeometry::writeGeomToVtk (std::string fn) {
        << 4 * numTriangles_m << std::endl;
     for (int i = 0; i < numTriangles_m; i++)
         of << "3 "
-	   << PointID (i, 1) << " "
-	   << PointID (i, 2) << " "
-	   << PointID (i, 3) << std::endl;
+           << PointID (i, 1) << " "
+           << PointID (i, 2) << " "
+           << PointID (i, 3) << std::endl;
     of << "CELL_TYPES " << numTriangles_m << std::endl;
     for (int i = 0; i < numTriangles_m; i++)
-	of << "5" << std::endl;
+        of << "5" << std::endl;
     of << "CELL_DATA " << numTriangles_m << std::endl;
     of << "SCALARS " << "cell_attribute_data" << " float " << "1" << std::endl;
     of << "LOOKUP_TABLE " << "default" << std::endl;
     for (int i = 0; i < numTriangles_m; i++)
-	of << (float)(i) << std::endl;
+        of << (float)(i) << std::endl;
     of << std::endl;
 }
 

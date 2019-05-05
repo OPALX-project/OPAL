@@ -233,14 +233,14 @@ void OpalCyclotron::update() {
     std::vector<std::string> trimcoil   = Attributes::getStringArray(itsAttr[TRIMCOIL]);
 
     if ( !trimcoil.empty() ) {
-        
+
         std::vector<TrimCoil* > trimcoils;
-        
+
         for (std::vector<std::string>::const_iterator tit = trimcoil.begin();
              tit != trimcoil.end(); ++tit)
         {
             OpalTrimCoil *tc = OpalTrimCoil::find(*tit);
-            
+
             if ( tc ) {
                 tc->initOpalTrimCoil();
                 trimcoils.push_back(tc->trimcoil_m.get());
@@ -260,7 +260,7 @@ void OpalCyclotron::update() {
     if(itsAttr[GEOMETRY] && obgeo_m == nullptr) {
       obgeo_m = BoundaryGeometry::find(Attributes::getString(itsAttr[GEOMETRY]));
       if(obgeo_m) {
-	cycl->setBoundaryGeometry(obgeo_m);
+          cycl->setBoundaryGeometry(obgeo_m);
       }
     }
 

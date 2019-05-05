@@ -421,7 +421,7 @@ void PartBunchBase<T, Dim>::calcGammas_cycl() {
     for(unsigned int n = 0; n < getLocalNum(); n++) {
         if ( this->Bin[n] > -1 ) {
             bingamma_m[this->Bin[n]] += sqrt(1.0 + dot(this->P[n], this->P[n]));
-	}
+        }
     }
 
     allreduce(*bingamma_m.get(), emittedBins, std::plus<double>());
@@ -934,7 +934,7 @@ void PartBunchBase<T, Dim>::getLocalBounds(Vector_t &rmin, Vector_t &rmax) {
         double maxValue = 1e8;
         rmin = Vector_t(maxValue, maxValue, maxValue);
         rmax = Vector_t(-maxValue, -maxValue, -maxValue);
-	return;
+        return;
     }
 
     rmin = R[0];
@@ -942,7 +942,7 @@ void PartBunchBase<T, Dim>::getLocalBounds(Vector_t &rmin, Vector_t &rmax) {
     for (size_t i = 1; i < localNum; ++ i) {
         for (unsigned short d = 0; d < 3u; ++ d) {
             if (rmin(d) > R[i](d)) rmin(d) = R[i](d);
-	    else if (rmax(d) < R[i](d)) rmax(d) = R[i](d);
+            else if (rmax(d) < R[i](d)) rmax(d) = R[i](d);
         }
     }
 }
@@ -1098,8 +1098,8 @@ double PartBunchBase<T, Dim>::get_sPos() {
             }
         }
         reduce(z, z, OpAddAssign());
-	reduce(numPrimBeamParts, numPrimBeamParts, OpAddAssign());
-	if(numPrimBeamParts != 0)
+        reduce(numPrimBeamParts, numPrimBeamParts, OpAddAssign());
+        if(numPrimBeamParts != 0)
             z = z / numPrimBeamParts;
         return z;
     } else {

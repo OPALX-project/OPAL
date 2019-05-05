@@ -252,7 +252,7 @@ public:
     void createBoundaryGeometry(PartBunchBase<double, 3> *p, BoundaryGeometry &bg);
     void createOpalCycl(PartBunchBase<double, 3> *beam,
                         size_t numberOfParticles,
-			double current, const Beamline &bl);
+                        double current, const Beamline &bl);
     void createOpalE(Beam *beam,
                      std::vector<Distribution *> addedDistributions,
                      EnvelopeBunch *envelopeBunch,

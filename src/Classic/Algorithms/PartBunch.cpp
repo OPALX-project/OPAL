@@ -200,7 +200,7 @@ void PartBunch::computeSelfFields(int binNumber) {
         int mz2 = (int)nr_m[2] / 2;
 
         for (int i=0; i<mx; i++ )
-	    *gmsg << "Bin " << binNumber
+            *gmsg << "Bin " << binNumber
                   << ", Self Field along x axis E = " << eg_m[i][my2][mz2]
                   << ", Pot = " << rho_m[i][my2][mz2]  << endl;
 
@@ -328,7 +328,7 @@ void PartBunch::computeSelfFields(int binNumber) {
         //int mz2 = (int)nr_m[2] / 2;
 
         for (int i=0; i<mx; i++ )
-	    *gmsg << "Bin " << binNumber
+            *gmsg << "Bin " << binNumber
                   << ", Image Field along x axis E = " << eg_m[i][my2][mz2]
                   << ", Pot = " << rho_m[i][my2][mz2]  << endl;
 
@@ -707,7 +707,7 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
         /// retrive coefficient: -1/(eps)
         rho_m *= getCouplingConstant();
 
-	// If debug flag is set, dump scalar field (potential 'phi') into file under ./data/
+        // If debug flag is set, dump scalar field (potential 'phi') into file under ./data/
 #ifdef DBG_SCALARFIELD
         INFOMSG("*** START DUMPING SCALAR FIELD ***" << endl);
 
@@ -897,7 +897,7 @@ void PartBunch::computeSelfFields_cycl(int bin) {
         /// retrive coefficient: -1/(eps)
         rho_m *= getCouplingConstant();
 
-	// If debug flag is set, dump scalar field (potential 'phi') into file under ./data/
+        // If debug flag is set, dump scalar field (potential 'phi') into file under ./data/
 #ifdef DBG_SCALARFIELD
         INFOMSG("*** START DUMPING SCALAR FIELD ***" << endl);
 
@@ -939,7 +939,7 @@ void PartBunch::computeSelfFields_cycl(int bin) {
         int mz2 = (int)nr_m[2] / 2;
 
         for (int i=0; i<mx; i++ )
-	    *gmsg << "Bin " << bin
+            *gmsg << "Bin " << bin
                   << ", Field along x axis Ex = " << eg_m[i][my2][mz2]
                   << ", Pot = " << rho_m[i][my2][mz2]  << endl;
 

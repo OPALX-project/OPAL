@@ -25,9 +25,9 @@
 #include <math.h>
 
 ArbitraryDomain::ArbitraryDomain( BoundaryGeometry * bgeom,
-   	                          Vector_t nr,
-	                          Vector_t hr,
-	                          std::string interpl){
+                                  Vector_t nr,
+                                  Vector_t hr,
+                                  std::string interpl){
     bgeom_m  = bgeom;
     minCoords_m = bgeom->getmincoords();
     maxCoords_m = bgeom->getmaxcoords();
@@ -100,8 +100,8 @@ void ArbitraryDomain::compute(Vector_t hr){
                     rotateZAxisWithQuaternion(dir, localToGlobalQuaternion_m);
                     if (bgeom_m->intersectRayBoundary(P, dir, I)) {
                         I -= geomCentroid_m;
-  		        rotateWithQuaternion(I, globalToLocalQuaternion_m);
-       	      		IntersectHiZ.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[2]));
+                        rotateWithQuaternion(I, globalToLocalQuaternion_m);
+                        IntersectHiZ.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[2]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
                         *gmsg << "zdir=+1 " << dir << " x,y,z= " << idx << "," << idy << "," << idz << " P=" << P <<" I=" << I << endl;
@@ -110,8 +110,8 @@ void ArbitraryDomain::compute(Vector_t hr){
 
                     if (bgeom_m->intersectRayBoundary(P, -dir, I)) {
                         I -= geomCentroid_m;
-			rotateWithQuaternion(I, globalToLocalQuaternion_m);
-       	      		IntersectLoZ.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[2]));
+                        rotateWithQuaternion(I, globalToLocalQuaternion_m);
+                        IntersectLoZ.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[2]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
                         *gmsg << "zdir=-1 " << -dir << " x,y,z= " << idx << "," << idy << "," << idz << " P=" << P <<" I=" << I << endl;
@@ -131,8 +131,8 @@ void ArbitraryDomain::compute(Vector_t hr){
 
                     if (bgeom_m->intersectRayBoundary(P, -dir, I)) {
                         I -= geomCentroid_m;
-			rotateWithQuaternion(I, globalToLocalQuaternion_m);
-       	      		IntersectLoY.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[1]));
+                        rotateWithQuaternion(I, globalToLocalQuaternion_m);
+                        IntersectLoY.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[1]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
                         *gmsg << "ydir=-1" << -dir << " x,y,z= " << idx << "," << idy << "," << idz << " P=" << P <<" I=" << I << endl;
@@ -142,8 +142,8 @@ void ArbitraryDomain::compute(Vector_t hr){
                     rotateXAxisWithQuaternion(dir, localToGlobalQuaternion_m);
                     if (bgeom_m->intersectRayBoundary(P, dir, I)) {
                         I -= geomCentroid_m;
-			rotateWithQuaternion(I, globalToLocalQuaternion_m);
-       	      		IntersectHiX.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[0]));
+                        rotateWithQuaternion(I, globalToLocalQuaternion_m);
+                        IntersectHiX.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[0]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
                         *gmsg << "xdir=+1 " << dir << " x,y,z= " << idx << "," << idy << "," << idz << " P=" << P <<" I=" << I << endl;
@@ -152,8 +152,8 @@ void ArbitraryDomain::compute(Vector_t hr){
 
                     if (bgeom_m->intersectRayBoundary(P, -dir, I)){
                         I -= geomCentroid_m;
-			rotateWithQuaternion(I, globalToLocalQuaternion_m);
-       	      		IntersectLoX.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[0]));
+                        rotateWithQuaternion(I, globalToLocalQuaternion_m);
+                        IntersectLoX.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[0]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
                         *gmsg << "xdir=-1 " << -dir << " x,y,z= " << idx << "," << idy << "," << idz << " P=" << P <<" I=" << I << endl;
@@ -175,11 +175,11 @@ void ArbitraryDomain::compute(Vector_t hr){
     for (idz = 0; idz < nr[2]; idz++) {
         for (idy = 0; idy < nr[1]; idy++) {
             for (idx = 0; idx < nr[0]; idx++) {
-		if (isInside(idx, idy, idz)) {
+                if (isInside(idx, idy, idz)) {
                     IdxMap[toCoordIdx(idx, idy, idz)] = id;
                     CoordMap[id] = toCoordIdx(idx, idy, idz);
                     id++;
-		}
+                }
             }
         }
     }
@@ -264,10 +264,10 @@ void ArbitraryDomain::compute(Vector_t hr, NDIndex<3> localId){
                     dir = Vector_t(0, 0, 1);
 
                     if (bgeom_m->intersectRayBoundary(P, dir, I)) {
-			//I -= geomCentroid_m;
-			//I -= globalMeanR_m;
+                        //I -= geomCentroid_m;
+                        //I -= globalMeanR_m;
                         //rotateWithQuaternion(I, globalToLocalQuaternion_m);
-       	      		IntersectHiZ.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[2]));
+                        IntersectHiZ.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[2]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
                         *gmsg << "zdir=+1 " << dir << " x,y,z= " << idx << "," << idy << "," << idz << " P=" << P <<" I=" << I << endl;
@@ -275,10 +275,10 @@ void ArbitraryDomain::compute(Vector_t hr, NDIndex<3> localId){
                     }
 
                     if (bgeom_m->intersectRayBoundary(P, -dir, I)) {
-			//I -= geomCentroid_m;
-			//I -= globalMeanR_m;
-			//rotateWithQuaternion(I, globalToLocalQuaternion_m);
-       	      		IntersectLoZ.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[2]));
+                        //I -= geomCentroid_m;
+                        //I -= globalMeanR_m;
+                        //rotateWithQuaternion(I, globalToLocalQuaternion_m);
+                        IntersectLoZ.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[2]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
                         *gmsg << "zdir=-1 " << -dir << " x,y,z= " << idx << "," << idy << "," << idz << " P=" << P <<" I=" << I << endl;
@@ -300,10 +300,10 @@ void ArbitraryDomain::compute(Vector_t hr, NDIndex<3> localId){
                     }
 
                     if (bgeom_m->intersectRayBoundary(P, -dir, I)) {
-			//I -= geomCentroid_m;
-			//I -= globalMeanR_m;
-			//rotateWithQuaternion(I, globalToLocalQuaternion_m);
-       	      		IntersectLoY.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[1]));
+                        //I -= geomCentroid_m;
+                        //I -= globalMeanR_m;
+                        //rotateWithQuaternion(I, globalToLocalQuaternion_m);
+                        IntersectLoY.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[1]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
                         *gmsg << "ydir=-1" << -dir << " x,y,z= " << idx << "," << idy << "," << idz << " P=" << P <<" I=" << I << endl;
@@ -314,10 +314,10 @@ void ArbitraryDomain::compute(Vector_t hr, NDIndex<3> localId){
                     dir = Vector_t(1, 0, 0);
 
                     if (bgeom_m->intersectRayBoundary(P, dir, I)) {
-			//I -= geomCentroid_m;
-			//I -= globalMeanR_m;
-			//rotateWithQuaternion(I, globalToLocalQuaternion_m);
-       	      		IntersectHiX.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[0]));
+                        //I -= geomCentroid_m;
+                        //I -= globalMeanR_m;
+                        //rotateWithQuaternion(I, globalToLocalQuaternion_m);
+                        IntersectHiX.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[0]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
                         *gmsg << "xdir=+1 " << dir << " x,y,z= " << idx << "," << idy << "," << idz << " P=" << P <<" I=" << I << endl;
@@ -325,10 +325,10 @@ void ArbitraryDomain::compute(Vector_t hr, NDIndex<3> localId){
                     }
 
                     if (bgeom_m->intersectRayBoundary(P, -dir, I)){
-		        //I -= geomCentroid_m;
-			//I -= globalMeanR_m;
-			//rotateWithQuaternion(I, globalToLocalQuaternion_m);
-       	      		IntersectLoX.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[0]));
+                        //I -= geomCentroid_m;
+                        //I -= globalMeanR_m;
+                        //rotateWithQuaternion(I, globalToLocalQuaternion_m);
+                        IntersectLoX.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[0]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
                         *gmsg << "xdir=-1 " << -dir << " x,y,z= " << idx << "," << idy << "," << idz << " P=" << P <<" I=" << I << endl;
@@ -388,7 +388,7 @@ void ArbitraryDomain::compute(Vector_t hr, NDIndex<3> localId){
     for(int idz = localId[2].first() - zGhostOffsetLeft; idz <= localId[2].last() + zGhostOffsetRight; idz++) {
         for(int idy = 0; idy < nr[1]; idy++) {
             for(int idx = 0; idx < nr[0]; idx++) {
-		if(isInside(idx, idy, idz)) {
+                if(isInside(idx, idy, idz)) {
                     IdxMap[toCoordIdx(idx, idy, idz)] = index;
                     CoordMap[index] = toCoordIdx(idx, idy, idz);
                     index++;
@@ -538,9 +538,9 @@ void ArbitraryDomain::constantInterpolation(int idx, int idy, int idz, double& W
         S = 0.0;
 
     if(!isInside(idx,idy,idz-1))
-	F = 0.0;
+        F = 0.0;
     if(!isInside(idx,idy,idz+1))
-	B = 0.0;
+        B = 0.0;
 }
 
 void ArbitraryDomain::linearInterpolation(int idx, int idy, int idz, double& W, double& E, double& S, double& N, double& F, double& B, double& C, double &scaleFactor)
@@ -663,10 +663,10 @@ void ArbitraryDomain::getNeighbours(int idx, int idy, int idz, int &W, int &E, i
         S = -1;
 
     if(!isInside(idx,idy,idz-1))
-	F = -1;
+        F = -1;
 
     if(!isInside(idx,idy,idz+1))
-	B = -1;
+        B = -1;
 
 }
 

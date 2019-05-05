@@ -126,7 +126,7 @@ int TUNE_class::lombAnalysis(std::vector<double> &x, std::vector<double> &y, int
                 if(pairy[pairc] > 4.) {
                     memset(mess, '\0', sizeof(mess));
                     sprintf(mess, "%12.8f %8.2f %8.3f %d", pairx[pairc]*Norm, pairy[pairc], probi, i);
-		    *gmsg << "* " << mess << endl;
+                    *gmsg << "* " << mess << endl;
                 }
             }
             pairc++;
@@ -188,7 +188,7 @@ int TUNE_class::lombAnalysis(double *x, double *y, int Ndat, int nhis)
     if(datcnt > (q - p - 10)) {
         memset(mess, '\0', sizeof(mess));
         sprintf(mess, "Just found %d data points that are == 0!", datcnt);
-	*gmsg << "* " << mess << endl;
+        *gmsg << "* " << mess << endl;
         return(-1);
     }
 
@@ -205,7 +205,7 @@ int TUNE_class::lombAnalysis(double *x, double *y, int Ndat, int nhis)
     if(stat != 0) {
         memset(mess, '\0', sizeof(mess));
         sprintf(mess, "@C3ERROR: Lomb analysis failed!");
-	*gmsg << "* " << mess << endl;
+        *gmsg << "* " << mess << endl;
 
         delete la;
         la = NULL;
@@ -245,7 +245,7 @@ int TUNE_class::lombAnalysis(double *x, double *y, int Ndat, int nhis)
                     memset(mess, '\0', sizeof(mess));
                     sprintf(mess, "%12.8f %8.2f %8.3f %d", pairx[pairc], pairy[pairc],
                             probi, i);
-		    *gmsg << "* " << mess << endl;
+                    *gmsg << "* " << mess << endl;
                 }
             }
             pairc++;

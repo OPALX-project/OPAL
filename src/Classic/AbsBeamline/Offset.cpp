@@ -208,11 +208,11 @@ bool operator==(const Offset& off1, const Offset& off2) {
     }
     for (int i = 0; i < 3; ++i) {
       if ( (fabs(off1.getEndPosition()(i)-off2.getEndPosition()(i)) > tol) ||
-	   (fabs(off1.getEndDirection()(i)-off2.getEndDirection()(i)) > tol))
+           (fabs(off1.getEndDirection()(i)-off2.getEndDirection()(i)) > tol))
             return false;
     }
     if ( (!off1.isGeometryAllocated() && off2.isGeometryAllocated()) ||
-	 (!off2.isGeometryAllocated() && off1.isGeometryAllocated()))
+         (!off2.isGeometryAllocated() && off1.isGeometryAllocated()))
         return false;
     Euclid3D transform1 = off1.getGeometry().getTotalTransform();
     Euclid3D transform2 = off2.getGeometry().getTotalTransform();

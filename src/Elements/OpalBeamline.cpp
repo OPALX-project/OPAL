@@ -130,7 +130,7 @@ void OpalBeamline::switchElements(const double &min, const double &max, const do
             }
         }
 
-	fprev = flit;
+        fprev = flit;
     }
 }
 

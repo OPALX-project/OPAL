@@ -458,27 +458,27 @@ energyEvolution_t::iterator OpalData::getLastEnergyData() {
 
 
 // Mesh_t* OpalData::getMesh() {
-// 	return p->mesh_m;
+//  return p->mesh_m;
 // }
 
 // FieldLayout_t* OpalData::getFieldLayout() {
-// 	return p->FL_m;
+//  return p->FL_m;
 // }
 
 // Layout_t* OpalData::getLayout() {
-// 	return p->PL_m;
+//  return p->PL_m;
 // }
 
 // void OpalData::setMesh(Mesh_t *mesh) {
-// 	p->mesh_m = mesh;
+//  p->mesh_m = mesh;
 // }
 
 // void OpalData::setFieldLayout(FieldLayout_t *fieldlayout) {
-// 	p->FL_m = fieldlayout;
+//  p->FL_m = fieldlayout;
 // }
 
 // void OpalData::setLayout(Layout_t *layout) {
-// 	p->PL_m = layout;
+//  p->PL_m = layout;
 // }
 
 void OpalData::setGlobalPhaseShift(double shift) {

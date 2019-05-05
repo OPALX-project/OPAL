@@ -361,22 +361,22 @@ MapType Fieldmap::readHeader(std::string Filename) {
 #endif
         char name[20];
         h5_size_t len_name = sizeof(name);
-	h5_prop_t props = H5CreateFileProp ();
+        h5_prop_t props = H5CreateFileProp ();
         MPI_Comm comm = Ippl::getComm();
         h5err = H5SetPropFileMPIOCollective (props, &comm);
         assert (h5err != H5_ERR);
         h5_file_t file = H5OpenFile (Filename.c_str(), H5_O_RDONLY, props);
-	assert (file != (h5_file_t)H5_ERR);
-	H5CloseProp (props);
+        assert (file != (h5_file_t)H5_ERR);
+        H5CloseProp (props);
 
-	h5err = H5SetStep(file, 0);
+        h5err = H5SetStep(file, 0);
         assert (h5err != H5_ERR);
 
-	h5_int64_t num_fields = H5BlockGetNumFields(file);
+        h5_int64_t num_fields = H5BlockGetNumFields(file);
         assert (num_fields != H5_ERR);
-	MapType maptype = UNKNOWN;
+        MapType maptype = UNKNOWN;
 
-	for(h5_ssize_t i = 0; i < num_fields; ++ i) {
+        for(h5_ssize_t i = 0; i < num_fields; ++ i) {
             h5err = H5BlockGetFieldInfo(
                 file, (h5_size_t)i, name, len_name, NULL, NULL, NULL, NULL);
             assert (h5err != H5_ERR);

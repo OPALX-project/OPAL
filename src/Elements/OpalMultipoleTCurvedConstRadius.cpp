@@ -63,13 +63,13 @@ OpalMultipoleTCurvedConstRadius::OpalMultipoleTCurvedConstRadius():
     itsAttr[EANGLE] = Attributes::makeReal
                   ("EANGLE", "The entrance angle (rad)");
     itsAttr[MAXFORDER] = Attributes::makeReal
-                  ("MAXFORDER", 
+                  ("MAXFORDER",
                    "Number of terms used in each field component");
     itsAttr[MAXXORDER] = Attributes::makeReal
-                  ("MAXXORDER", 
+                  ("MAXXORDER",
                    "Number of terms used in polynomial expansions");
     itsAttr[ROTATION] = Attributes::makeReal
-                  ("ROTATION", 
+                  ("ROTATION",
                    "Rotation angle about its axis for skew elements (rad)");
     itsAttr[BBLENGTH] = Attributes::makeReal
                   ("BBLENGTH",
@@ -82,8 +82,8 @@ OpalMultipoleTCurvedConstRadius::OpalMultipoleTCurvedConstRadius():
 }
 
 
-OpalMultipoleTCurvedConstRadius::OpalMultipoleTCurvedConstRadius(const std::string &name, 
-			       OpalMultipoleTCurvedConstRadius *parent):
+OpalMultipoleTCurvedConstRadius::OpalMultipoleTCurvedConstRadius(const std::string &name,
+                                                                 OpalMultipoleTCurvedConstRadius *parent):
     OpalElement(name, parent) {
     setElement((new MultipoleTCurvedConstRadius(name))->makeWrappers());
 }
@@ -105,16 +105,16 @@ void OpalMultipoleTCurvedConstRadius::print(std::ostream &os) const {
 
 void OpalMultipoleTCurvedConstRadius::
 fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);   
-    const MultipoleTCurvedConstRadius *multT = 
+    OpalElement::fillRegisteredAttributes(base, flag);
+    const MultipoleTCurvedConstRadius *multT =
         dynamic_cast<const MultipoleTCurvedConstRadius*>(base.removeAlignWrapper());
-    
+
     for(unsigned int order = 1; order <= multT->getTransMaxOrder(); order++) {
         std::ostringstream ss;
-	ss << order;
-	std::string orderString = ss.str();
+        ss << order;
+        std::string orderString = ss.str();
         std::string attrName = "TP" + orderString;
-	registerRealAttribute(attrName)->setReal(multT->getTransProfile(order));
+        registerRealAttribute(attrName)->setReal(multT->getTransProfile(order));
     }
 
     registerRealAttribute("LFRINGE")->setReal(multT->getFringeLength().at(0));
@@ -127,7 +127,7 @@ fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
     registerRealAttribute("ANGLE")->setReal(multT->getBendAngle());
     registerRealAttribute("EANGLE")->setReal(multT->getEntranceAngle());
     registerRealAttribute("BBLENGTH")->setReal(multT->getBoundingBoxLength());
-    
+
 }
 
 
@@ -143,14 +143,14 @@ void OpalMultipoleTCurvedConstRadius::update() {
     multT->setElementLength(length);
     multT->setLength(length);
     multT->setBendAngle(angle);
-    multT->setAperture(Attributes::getReal(itsAttr[VAPERT]), 
-		       Attributes::getReal(itsAttr[HAPERT]));
-  
+    multT->setAperture(Attributes::getReal(itsAttr[VAPERT]),
+                       Attributes::getReal(itsAttr[HAPERT]));
+
     multT->setFringeField(Attributes::getReal(itsAttr[LENGTH])/2,
                           Attributes::getReal(itsAttr[LFRINGE]),
-                          Attributes::getReal(itsAttr[RFRINGE])); 
+                          Attributes::getReal(itsAttr[RFRINGE]));
     multT->setBoundingBoxLength(Attributes::getReal(itsAttr[BBLENGTH]));
-    const std::vector<double> transProfile = 
+    const std::vector<double> transProfile =
                               Attributes::getRealArray(itsAttr[TP]);
     std::size_t transSize = transProfile.size();
     if (transSize == 0) {
@@ -165,13 +165,13 @@ void OpalMultipoleTCurvedConstRadius::update() {
     multT->setEntranceAngle(Attributes::getReal(itsAttr[EANGLE]));
 
     PlanarArcGeometry &geometry = multT->getGeometry();
-    
+
     if(length) {
         geometry = PlanarArcGeometry(2 * boundingBoxLength, angle / length);
     } else {
         geometry = PlanarArcGeometry(angle);
     }
-    
+
     for(std::size_t comp = 0; comp < transSize; comp++) {
         multT->setTransProfile(comp, transProfile[comp]);
     }

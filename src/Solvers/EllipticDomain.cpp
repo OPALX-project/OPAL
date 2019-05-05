@@ -48,7 +48,7 @@ EllipticDomain::EllipticDomain(BoundaryGeometry *bgeom, Vector_t nr, std::string
     SemiMajor = bgeom->getA();
     SemiMinor = bgeom->getB();
     setMinMaxZ(bgeom->getS(), bgeom->getLength());
-    Vector_t hr_m; 
+    Vector_t hr_m;
     hr_m[0] = (getXRangeMax()-getXRangeMin())/nr[0];
     hr_m[1] = (getYRangeMax()-getYRangeMin())/nr[1];
     hr_m[2] = (getZRangeMax()-getZRangeMin())/nr[2];
@@ -122,27 +122,27 @@ void EllipticDomain::compute(Vector_t hr){
                 pos = x * hr[0] - mx;
                 if (pos <= -SemiMajor || pos >= SemiMajor)
                 {
-                	IntersectYDir.insert(std::pair<int, double>(x, 0));
-	                IntersectYDir.insert(std::pair<int, double>(x, 0));
-		}else{
-                	yd = std::abs(sqrt(sminsq - sminsq * pos * pos / smajsq)); // + 0.5*nr[1]*hr[1]);
-	                IntersectYDir.insert(std::pair<int, double>(x, yd));
-       		        IntersectYDir.insert(std::pair<int, double>(x, -yd));
-		}
+                    IntersectYDir.insert(std::pair<int, double>(x, 0));
+                    IntersectYDir.insert(std::pair<int, double>(x, 0));
+                }else{
+                    yd = std::abs(sqrt(sminsq - sminsq * pos * pos / smajsq)); // + 0.5*nr[1]*hr[1]);
+                    IntersectYDir.insert(std::pair<int, double>(x, yd));
+                    IntersectYDir.insert(std::pair<int, double>(x, -yd));
+                }
 
             }
 
             for(y = 0; y < nr[1]; y++) {
                 pos = y * hr[1] - my;
-		if (pos <= -SemiMinor || pos >= SemiMinor)
+                if (pos <= -SemiMinor || pos >= SemiMinor)
                 {
-                	IntersectXDir.insert(std::pair<int, double>(y, 0));
-	                IntersectXDir.insert(std::pair<int, double>(y, 0));
-		}else{
-	                xd = std::abs(sqrt(smajsq - smajsq * pos * pos / sminsq)); // + 0.5*nr[0]*hr[0]);
-        	        IntersectXDir.insert(std::pair<int, double>(y, xd));
-               		IntersectXDir.insert(std::pair<int, double>(y, -xd));
-		}
+                    IntersectXDir.insert(std::pair<int, double>(y, 0));
+                    IntersectXDir.insert(std::pair<int, double>(y, 0));
+                }else{
+                    xd = std::abs(sqrt(smajsq - smajsq * pos * pos / sminsq)); // + 0.5*nr[0]*hr[0]);
+                    IntersectXDir.insert(std::pair<int, double>(y, xd));
+                    IntersectXDir.insert(std::pair<int, double>(y, -xd));
+                }
             }
     }
 }
@@ -198,27 +198,27 @@ void EllipticDomain::compute(Vector_t hr, NDIndex<3> localId){
                 pos = x * hr[0] - mx;
                 if (pos <= -SemiMajor || pos >= SemiMajor)
                 {
-                	IntersectYDir.insert(std::pair<int, double>(x, 0));
-	                IntersectYDir.insert(std::pair<int, double>(x, 0));
-		}else{
-                	yd = std::abs(sqrt(sminsq - sminsq * pos * pos / smajsq)); // + 0.5*nr[1]*hr[1]);
-	                IntersectYDir.insert(std::pair<int, double>(x, yd));
-       		        IntersectYDir.insert(std::pair<int, double>(x, -yd));
-		}
+                    IntersectYDir.insert(std::pair<int, double>(x, 0));
+                    IntersectYDir.insert(std::pair<int, double>(x, 0));
+                }else{
+                    yd = std::abs(sqrt(sminsq - sminsq * pos * pos / smajsq)); // + 0.5*nr[1]*hr[1]);
+                    IntersectYDir.insert(std::pair<int, double>(x, yd));
+                    IntersectYDir.insert(std::pair<int, double>(x, -yd));
+                }
 
             }
 
             for(y = localId[0].first(); y < localId[1].last(); y++) {
                 pos = y * hr[1] - my;
-		if (pos <= -SemiMinor || pos >= SemiMinor)
+                if (pos <= -SemiMinor || pos >= SemiMinor)
                 {
-                	IntersectXDir.insert(std::pair<int, double>(y, 0));
-	                IntersectXDir.insert(std::pair<int, double>(y, 0));
-		}else{
-	                xd = std::abs(sqrt(smajsq - smajsq * pos * pos / sminsq)); // + 0.5*nr[0]*hr[0]);
-        	        IntersectXDir.insert(std::pair<int, double>(y, xd));
-               		IntersectXDir.insert(std::pair<int, double>(y, -xd));
-		}
+                    IntersectXDir.insert(std::pair<int, double>(y, 0));
+                    IntersectXDir.insert(std::pair<int, double>(y, 0));
+                }else{
+                    xd = std::abs(sqrt(smajsq - smajsq * pos * pos / sminsq)); // + 0.5*nr[0]*hr[0]);
+                    IntersectXDir.insert(std::pair<int, double>(y, xd));
+                    IntersectXDir.insert(std::pair<int, double>(y, -xd));
+                }
             }
     }
 }

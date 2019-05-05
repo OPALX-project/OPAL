@@ -70,7 +70,7 @@ OpalDrift::~OpalDrift() {
     if(parmatint_m)
         delete parmatint_m;
     if(obgeo_m)
-	delete obgeo_m;
+        delete obgeo_m;
 }
 
 
@@ -104,7 +104,7 @@ void OpalDrift::update() {
     if(itsAttr[GEOMETRY] && obgeo_m == NULL) {
         obgeo_m = (BoundaryGeometry::find(Attributes::getString(itsAttr[GEOMETRY])))->clone(getOpalName() + std::string("_geometry"));
         if(obgeo_m) {
-	    drf->setBoundaryGeometry(obgeo_m);
+            drf->setBoundaryGeometry(obgeo_m);
         }
     }
 

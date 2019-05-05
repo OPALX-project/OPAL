@@ -88,8 +88,8 @@ namespace {
         MAXITERS,   // max number of iterations [SAAMG only]
         PRECMODE,   // preconditioner mode [SAAMG only]
         RC,         // cutoff radius for PP interactions
-	ALPHA,      // Green’s function splitting parameter
-	EPSILON,    // regularization for PP interaction
+        ALPHA,      // Green’s function splitting parameter
+        EPSILON,    // regularization for PP interaction
 #ifdef ENABLE_AMR
         AMR_MAXLEVEL,       // AMR, maximum refinement level
         AMR_REFX,           // AMR, refinement ratio in x
@@ -655,7 +655,7 @@ std::string FieldSolver::getTagging_m() const {
     std::function<bool(const std::string&)> all_digits = [](const std::string& s) {
         // 15. Feb. 2019
         // https://stackoverflow.com/questions/19678572/how-to-validate-that-there-are-only-digits-in-a-string
-        return std::all_of(s.begin(),  s.end(), 
+        return std::all_of(s.begin(),  s.end(),
         [](char c) { return std::isdigit(c); });
     };
 

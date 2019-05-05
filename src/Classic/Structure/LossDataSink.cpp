@@ -83,7 +83,7 @@
         throw GeneralClassicException(std::string(__func__), ss.str()); \
     }\
 }
-    
+
 #define OPEN_FILE( fname, mode, props ) {        \
     H5file_m = H5OpenFile (fname, mode, props); \
     if(H5file_m == (h5_file_t)H5_ERR) { \
@@ -222,7 +222,7 @@ void LossDataSink::addParticle(const Vector_t &x,const  Vector_t &p, const size_
 
 // For ring type simulation, dump the time and turn number
 void LossDataSink::addParticle(const Vector_t &x, const Vector_t &p, const size_t id,
-			       const double time, const size_t turn) {
+                               const double time, const size_t turn) {
     addParticle(x, p, id);
     turn_m.push_back(turn);
     time_m.push_back(time);
@@ -238,7 +238,7 @@ void LossDataSink::save(unsigned int numSets) {
         if (!Options::enableHDF5) return;
 
         fn_m = element_m + std::string(".h5");
-	INFOMSG(level2 << "Save " << fn_m << endl);
+        INFOMSG(level2 << "Save " << fn_m << endl);
         if (Options::openMode == Options::WRITE || !fs::exists(fn_m)) {
             openH5();
             writeHeaderH5();
@@ -252,22 +252,22 @@ void LossDataSink::save(unsigned int numSets) {
         for (unsigned int i = 0; i < numSets; ++ i) {
             saveH5(i);
         }
-	CLOSE_FILE ();
-	H5file_m = 0;
+        CLOSE_FILE ();
+        H5file_m = 0;
     }
     else {
         fn_m = element_m + std::string(".loss");
         INFOMSG(level2 << "Save " << fn_m << endl);
-	if (Options::openMode == Options::WRITE || !fs::exists(fn_m)) {
-	    appendASCII();
+        if (Options::openMode == Options::WRITE || !fs::exists(fn_m)) {
+            appendASCII();
         } else {
-	    openASCII();
+            openASCII();
         }
         writeHeaderASCII();
         saveASCII();
         closeASCII();
     }
-        Ippl::Comm->barrier();
+    Ippl::Comm->barrier();
 
     x_m.clear();
     y_m.clear();
@@ -356,7 +356,7 @@ void LossDataSink::saveH5(unsigned int setIdx) {
     if (hasTimeAttribute()) {
         WRITE_DATA_FLOAT64 ("time", &time_m[startIdx]);
         larray.assign (turn_m.begin() + startIdx, turn_m.end() );
-	WRITE_DATA_INT64 ("turn", &larray[0]);
+        WRITE_DATA_INT64 ("turn", &larray[0]);
     }
 
     ++ H5call_m;

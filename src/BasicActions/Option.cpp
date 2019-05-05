@@ -258,7 +258,7 @@ Option::Option():
                                                      "The frequency to dump grid "
                                                      "and particle data "
                                                      "(default: 10)", amrYtDumpFreq);
-    
+
     itsAttr[AMR_REGRID_FREQ] = Attributes::makeReal("AMR_REGRID_FREQ",
                                                     "The frequency to perform a regrid "
                                                     "in multi-bunch mode (default: 10)",
@@ -382,9 +382,9 @@ void Option::execute() {
     ///       not for the distributions
     if(itsAttr[SEED]) {
         seed = int(Attributes::getReal(itsAttr[SEED]));
-	if (seed == -1)
+        if (seed == -1)
             rangen.init55(time(0));
-	else
+        else
             rangen.init55(seed);
     }
 

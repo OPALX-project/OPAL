@@ -29,7 +29,7 @@ bool Fieldmap::interpreteLine(std::ifstream & in, T & value, const bool & file_l
             missingValuesWarning();
             return false;
         }
-	std::string expecting(boost::typeindex::type_id<T>().pretty_name());
+        std::string expecting(boost::typeindex::type_id<T>().pretty_name());
         interpreteWarning((interpreter.rdstate() ^ std::ios_base::eofbit), read_all, expecting, buffer);
     }
     return (!(interpreter.rdstate() ^ std::ios_base::eofbit) && read_all);   // eof should not be an error but if not eof
@@ -59,8 +59,8 @@ bool Fieldmap::interpreteLine(std::ifstream & in, S & value1, T & value2, const 
             missingValuesWarning();
             return false;
         }
-	std::string expecting(boost::typeindex::type_id<S>().pretty_name());
-	expecting += std::string(" ") + boost::typeindex::type_id<T>().pretty_name();
+        std::string expecting(boost::typeindex::type_id<S>().pretty_name());
+        expecting += std::string(" ") + boost::typeindex::type_id<T>().pretty_name();
         interpreteWarning((interpreter.rdstate() ^ std::ios_base::eofbit), read_all, expecting, buffer);
     }
     return (!(interpreter.rdstate() ^ std::ios_base::eofbit) && read_all);   // eof should not be an error but if not eof
@@ -92,9 +92,9 @@ bool Fieldmap::interpreteLine(std::ifstream & in, S & value1, T & value2, U & va
             missingValuesWarning();
             return false;
         }
-	std::string expecting(boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
-			      boost::typeindex::type_id<T>().pretty_name() + std::string(" ") +
-			      boost::typeindex::type_id<U>().pretty_name());
+        std::string expecting(boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
+                              boost::typeindex::type_id<T>().pretty_name() + std::string(" ") +
+                              boost::typeindex::type_id<U>().pretty_name());
         interpreteWarning((interpreter.rdstate() ^ std::ios_base::eofbit), read_all, expecting, buffer);
     }
     return (!(interpreter.rdstate() ^ std::ios_base::eofbit) && read_all);   // eof should not be an error but if not eof
@@ -128,10 +128,10 @@ bool Fieldmap::interpreteLine(std::ifstream & in, S & value1, T & value2, U & va
             missingValuesWarning();
             return false;
         }
-	std::string expecting(boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
-			      boost::typeindex::type_id<T>().pretty_name() + std::string(" ") +
-			      boost::typeindex::type_id<U>().pretty_name() + std::string(" ") +
-			      boost::typeindex::type_id<V>().pretty_name());
+        std::string expecting(boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
+                              boost::typeindex::type_id<T>().pretty_name() + std::string(" ") +
+                              boost::typeindex::type_id<U>().pretty_name() + std::string(" ") +
+                              boost::typeindex::type_id<V>().pretty_name());
         interpreteWarning((interpreter.rdstate() ^ std::ios_base::eofbit), read_all, expecting, buffer);
     }
     return (!(interpreter.rdstate() ^ std::ios_base::eofbit) && read_all);   // eof should not be an error but if not eof
@@ -169,12 +169,12 @@ bool Fieldmap::interpreteLine(std::ifstream & in, S & value1, S & value2, S & va
             missingValuesWarning();
             return false;
         }
-	std::string expecting(boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
-			      boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
-			      boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
-			      boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
-			      boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
-			      boost::typeindex::type_id<S>().pretty_name());
+        std::string expecting(boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
+                              boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
+                              boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
+                              boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
+                              boost::typeindex::type_id<S>().pretty_name() + std::string(" ") +
+                              boost::typeindex::type_id<S>().pretty_name());
         interpreteWarning((interpreter.rdstate() ^ std::ios_base::eofbit), read_all, expecting, buffer);
     }
     return (!(interpreter.rdstate() ^ std::ios_base::eofbit) && read_all);   // eof should not be an error but if not eof

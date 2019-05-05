@@ -61,10 +61,10 @@ void Match::deleteVariable(const std::string &name) {
     for(VarList::iterator var = theVariables.begin();
         var != theVariables.end();) { // for loop without increment
         if((*var)->getName() == name) {
-	  var = theVariables.erase(var); // new value: one after the erased element
-	} else {
-	  ++var;
-	}
+            var = theVariables.erase(var); // new value: one after the erased element
+        } else {
+            ++var;
+        }
     }
 }
 

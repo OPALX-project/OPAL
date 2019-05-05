@@ -102,7 +102,7 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
     if(currentGeometry->getFilename() == "") {
         if(currentGeometry->getTopology() == "ELLIPTIC"){
             bp = new EllipticDomain(currentGeometry, orig_nr_m, hr_m, interpl);
-	} else if (currentGeometry->getTopology() == "BOXCORNER") {
+        } else if (currentGeometry->getTopology() == "BOXCORNER") {
             bp = new BoxCornerDomain(currentGeometry->getA(), currentGeometry->getB(), currentGeometry->getC(), currentGeometry->getLength(),currentGeometry->getL1(), currentGeometry->getL2(), orig_nr_m, hr_m, interpl);
             bp->compute(itsBunch_m->get_hr());
         } else {
@@ -119,7 +119,7 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
                                 "Please set PARFFTX=FALSE, PARFFTY=FALSE, PARFFTT=TRUE in \n"
                                 "the definition of the field solver in the input file.\n");
         }
-	bp = new ArbitraryDomain(currentGeometry, orig_nr_m, hr_m, interpl);
+        bp = new ArbitraryDomain(currentGeometry, orig_nr_m, hr_m, interpl);
     }
 
     Map = 0;
@@ -239,7 +239,7 @@ void MGPoissonSolver::extrapolateLHS() {
         }
         *LHS = *(*P)(0);
      } else
-	    throw OpalException("MGPoissonSolver", "Invalid number of old LHS: " + std::to_string(OldLHS.size()));
+        throw OpalException("MGPoissonSolver", "Invalid number of old LHS: " + std::to_string(OldLHS.size()));
 }
 
 
@@ -300,8 +300,8 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
     }
     for (int idz = localId[2].first(); idz <= localId[2].last(); idz++) {
         for (int idy = localId[1].first(); idy <= localId[1].last(); idy++) {
-    	    for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
-		    if (bp->isInside(idx, idy, idz))
+            for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
+                if (bp->isInside(idx, idy, idz))
                         RHS->Values()[id++] = 4*M_PI*rho[idx][idy][idz].get()/scaleFactor;
             }
         }
@@ -402,7 +402,7 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
     rho = 0.0;
     for (int idz = localId[2].first(); idz <= localId[2].last(); idz++) {
         for (int idy = localId[1].first(); idy <= localId[1].last(); idy++) {
-    	    for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
+            for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
                   NDIndex<3> l(Index(idx, idx), Index(idy, idy), Index(idz, idz));
                   if (bp->isInside(idx, idy, idz))
                      rho.localElement(l) = LHS->Values()[id++]*scaleFactor;
@@ -426,8 +426,8 @@ void MGPoissonSolver::redistributeWithRCB(NDIndex<3> localId) {
 
     for (int idz = localId[2].first(); idz <= localId[2].last(); idz++) {
         for (int idy = localId[1].first(); idy <= localId[1].last(); idy++) {
-    	    for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
-		    if (bp->isInside(idx, idy, idz))
+            for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
+                if (bp->isInside(idx, idy, idz))
                     numMyGridPoints++;
              }
         }
@@ -444,8 +444,8 @@ void MGPoissonSolver::redistributeWithRCB(NDIndex<3> localId) {
 
     for (int idz = localId[2].first(); idz <= localId[2].last(); idz++) {
         for (int idy = localId[1].first(); idy <= localId[1].last(); idy++) {
-    	    for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
-		    if (bp->isInside(idx, idy, idz)) {
+            for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
+                if (bp->isInside(idx, idy, idz)) {
                     v[0] = (double)idx;
                     v[stride] = (double)idy;
                     v[stride2] = (double)idz;
@@ -486,12 +486,12 @@ void MGPoissonSolver::IPPLToMap3D(NDIndex<3> localId) {
     for (int idz = localId[2].first(); idz <= localId[2].last(); idz++) {
         for (int idy = localId[1].first(); idy <= localId[1].last(); idy++) {
             for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
-		    if (bp->isInside(idx, idy, idz)) {
+                if (bp->isInside(idx, idy, idz)) {
                     MyGlobalElements.push_back(bp->getIdx(idx, idy, idz));
                     NumMyElements++;
                 }
             }
-	}
+        }
     }
     Map = new Epetra_Map(-1, NumMyElements, &MyGlobalElements[0], 0, Comm);
 }
@@ -542,7 +542,7 @@ void MGPoissonSolver::ComputeStencil(Vector_t hr, Teuchos::RCP<Epetra_Vector> RH
             Values[NumEntries++] = BV;
         }
 
-    	// if matrix has already been filled (FillComplete()) we can only
+        // if matrix has already been filled (FillComplete()) we can only
         // replace entries
 
         if(A->Filled()) {

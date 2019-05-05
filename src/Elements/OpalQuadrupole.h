@@ -36,7 +36,7 @@ public:
         DK1,          // The normal quadupole coefficient error.
         K1S,          // The skew quadrupole coefficient.
         DK1S,         // The skew quadrupole coefficient error.
-        NSLICES,	  // The number of slices / steps per element for map tracking
+        NSLICES,      // The number of slices / steps per element for map tracking
         SIZE
     };
 

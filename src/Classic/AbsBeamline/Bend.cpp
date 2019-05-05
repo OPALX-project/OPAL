@@ -113,7 +113,7 @@ Bend::Bend(const Bend &right):
     sinEntranceAngle_m(right.sinEntranceAngle_m),
     tanEntranceAngle_m(right.tanEntranceAngle_m),
     tanExitAngle_m(right.tanExitAngle_m),
-	nSlices_m(right.nSlices_m){
+    nSlices_m(right.nSlices_m){
 
     setElType(isDipole);
 
@@ -154,7 +154,7 @@ Bend::Bend(const std::string &name):
     sinEntranceAngle_m(0.0),
     tanEntranceAngle_m(0.0),
     tanExitAngle_m(0.0),
-	nSlices_m(1){
+    nSlices_m(1){
 
     setElType(isDipole);
 
@@ -475,11 +475,11 @@ Vector_t Bend::calcEntranceFringeField(const Vector_t &R,
 
 
         // B(1) = (engeFunc *
-	//  (1.0 - 0.5 * engeFuncSecDerivNorm * pow(Rprime(1), 2.0)));
+        //  (1.0 - 0.5 * engeFuncSecDerivNorm * pow(Rprime(1), 2.0)));
 
-	B(1) = (engeFunc - 0.5 * engeFuncSecDeriv * pow(Rprime(1), 2.0));
+        B(1) = (engeFunc - 0.5 * engeFuncSecDeriv * pow(Rprime(1), 2.0));
 
-	B(2) = engeFuncDeriv * Rprime(1);
+        B(2) = engeFuncDeriv * Rprime(1);
     }
 
     return toEntranceRegion.rotateFrom(B);
@@ -514,7 +514,7 @@ Vector_t Bend::calcExitFringeField(const Vector_t &R,
 
         //B(1) = (engeFunc *
         //        (1.0 - 0.5 * engeFuncSecDerivNorm * pow(Rprime(1), 2.0)));
-	B(1) = (engeFunc - 0.5 * engeFuncSecDeriv * pow(Rprime(1), 2.0));
+        B(1) = (engeFunc - 0.5 * engeFuncSecDeriv * pow(Rprime(1), 2.0));
 
         B(2) = engeFuncDeriv * Rprime(1);
     }
@@ -859,7 +859,7 @@ bool Bend::findIdealBendParameters(double chordLength) {
         }
         designRadius_m = chordLength / (2.0 * std::sin(angle_m / 2.0));
 
-	fieldAmplitude_m = ((refCharge / std::abs(refCharge)) *
+        fieldAmplitude_m = ((refCharge / std::abs(refCharge)) *
                             refBetaGamma * refMass /
                             (Physics::c * designRadius_m));
         reinitialize = true;

@@ -32,7 +32,7 @@
 
 /** ---------------------------------------------------------------------
   *
-  * MultipoleT defines a straight or curved combined function magnet (up 
+  * MultipoleT defines a straight or curved combined function magnet (up
   * to arbitrary multipole component) with Fringe Fields
   *
   * ---------------------------------------------------------------------
@@ -47,29 +47,29 @@
   *     ...  @f] \n
   *     (x,z,s) -> Frenet-Serret local coordinates along the magnet \n
   *     z -> vertical component \n
-  *     assume mid-plane symmetry \n 
+  *     assume mid-plane symmetry \n
   *     set field on mid-plane -> @f$ B_z = f_0(x,s) = T(x) \cdot S(s) @f$ \n
   *     T(x) -> transverse profile; this is a polynomial describing
   *             the field expansion on the mid-plane inside the magnet
   *             (not in the fringe field);
-  *             1st term is the dipole strength, 2nd term is the 
+  *             1st term is the dipole strength, 2nd term is the
   *             quadrupole gradient * x, etc. \n
   *          -> when setting the magnet, one gives the multipole
-  *             coefficients of this polynomial (i.e. dipole strength,  
+  *             coefficients of this polynomial (i.e. dipole strength,
   *             quadrupole gradient, etc.) \n
   * \n
   * ------------- example ----------------------------------------------- \n
-  *     Setting a combined function magnet with dipole, quadrupole and 
+  *     Setting a combined function magnet with dipole, quadrupole and
   *     sextupole components: \n
   *     @f$ T(x) = B_0 + B_1 \cdot x + B_2 \cdot x^2 @f$\n
   *     user gives @f$ B_0, B_1, B_2 @f$ \n
   * ------------- example end ------------------------------------------- \n
   * \n
   *     S(s) -> fringe field \n
-  *     recursion -> @f$ f_n (x,s) = (-1)^n \cdot \sum_{i=0}^{n} C_n^i 
+  *     recursion -> @f$ f_n (x,s) = (-1)^n \cdot \sum_{i=0}^{n} C_n^i
   *     \cdot T^{(2i)} \cdot S^{(2n-2i)} @f$ \n
   *     for curved magnets the above recursion is more complicated \n
-  *     @f$ C_n^i @f$ -> binomial coeff; 
+  *     @f$ C_n^i @f$ -> binomial coeff;
   *     @f$ T^{(n)} @f$ -> n-th derivative
   *
   * ---------------------------------------------------------------------
@@ -87,14 +87,14 @@
 #include <vector>
 
 class MultipoleT: public Component {
-public: 
+public:
     /** Constructor
      *  \param name -> User-defined name
      */
     explicit MultipoleT(const std::string &name);
     /** Copy constructor */
     MultipoleT(const MultipoleT &right);
-    /** Destructor */ 
+    /** Destructor */
     ~MultipoleT();
     /** Inheritable copy constructor */
     ElementBase* clone() const override;
@@ -166,7 +166,7 @@ public:
     /** Get the maximum order in the given transverse profile */
     std::size_t getTransMaxOrder() const;
     /** Set the maximum order in the given transverse profile
-     *  \param transMaxOrder -> Highest power of x in field expansion 
+     *  \param transMaxOrder -> Highest power of x in field expansion
      */
     void setTransMaxOrder(std::size_t transMaxOrder);
     /** Set transverse profile T(x)
@@ -183,15 +183,15 @@ public:
     std::vector<double> getTransProfile() const;
     /** Set fringe field model \n
      *  Tanh model used here \n
-     *  @f[ 1/2 * \left [tanh \left( \frac{s + s_0}{\lambda_{left}} \right) 
-     *  - tanh \left( \frac{s - s_0}{\lambda_{right}} \right) \right] @f] 
+     *  @f[ 1/2 * \left [tanh \left( \frac{s + s_0}{\lambda_{left}} \right)
+     *  - tanh \left( \frac{s - s_0}{\lambda_{right}} \right) \right] @f]
      *  \param s0 -> Centre field length
      *  \param \lambda_{left} -> Left end field length
      *  \param \lambda_{right} -> Right end field length
      */
     bool setFringeField(double s0, double lambda_left, double lambda_right);
     /** Return vector of 2 doubles
-      * [left fringe length, right fringelength]  
+      * [left fringe length, right fringelength]
       */
     std::vector<double> getFringeLength() const;
     /** Set the bending angle of the magnet */
@@ -204,7 +204,7 @@ public:
     void setEntranceAngle(double entranceAngle);
     /** Get the entrance angle */
     double getEntranceAngle() const;
-    /** Get the bending radius \n 
+    /** Get the bending radius \n
       * Not used, when needed radius is found from length_m / angle_m
       */
     double getBendRadius() const;
@@ -260,7 +260,7 @@ private:
     std::vector<polynomial::RecursionRelationTwo> recursion_VarRadius_m;
     std::vector<polynomial::RecursionRelation> recursion_ConstRadius_m;
     /** Highest power in given mid-plane field */
-    std::size_t transMaxOrder_m = 0; 
+    std::size_t transMaxOrder_m = 0;
     /** List of transverse profile coefficients */
     std::vector<double> transProfile_m;
     /** Geometry */
@@ -367,7 +367,7 @@ inline
     double MultipoleT::getEntranceAngle() const {
         return entranceAngle_m;
 }
-inline 
+inline
     double MultipoleT::getTransProfile(int n) const {
         return transProfile_m[n];
 }
@@ -375,7 +375,7 @@ inline
     std::vector<double> MultipoleT::getTransProfile() const {
         return transProfile_m;
 }
-inline 
+inline
     double MultipoleT::getDipoleConstant() const {
          return transProfile_m[0];
 }
@@ -397,16 +397,16 @@ inline
     std::size_t MultipoleT::getTransMaxOrder() const {
         return transMaxOrder_m;
 }
-inline 
+inline
     void MultipoleT::setTransMaxOrder(std::size_t transMaxOrder) {
         transMaxOrder_m = transMaxOrder;
-	transProfile_m.resize(transMaxOrder + 1, 0.);
+        transProfile_m.resize(transMaxOrder + 1, 0.);
 }
 inline
     double MultipoleT::getRotation() const {
          return rotation_m;
 }
-inline 
+inline
     void MultipoleT::setRotation(double rot) {
          rotation_m = rot;
 }

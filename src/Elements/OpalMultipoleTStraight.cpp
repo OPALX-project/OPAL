@@ -61,10 +61,10 @@ OpalMultipoleTStraight::OpalMultipoleTStraight():
     itsAttr[EANGLE] = Attributes::makeReal
                   ("EANGLE", "The entrance angle (rad)");
     itsAttr[MAXFORDER] = Attributes::makeReal
-                  ("MAXFORDER", 
+                  ("MAXFORDER",
                    "Number of terms used in each field component");
     itsAttr[ROTATION] = Attributes::makeReal
-                  ("ROTATION", 
+                  ("ROTATION",
                    "Rotation angle about its axis for skew elements (rad)");
     itsAttr[BBLENGTH] = Attributes::makeReal
                   ("BBLENGTH",
@@ -76,8 +76,8 @@ OpalMultipoleTStraight::OpalMultipoleTStraight():
 }
 
 
-OpalMultipoleTStraight::OpalMultipoleTStraight(const std::string &name, 
-			       OpalMultipoleTStraight *parent):
+OpalMultipoleTStraight::OpalMultipoleTStraight(const std::string &name,
+                                               OpalMultipoleTStraight *parent):
     OpalElement(name, parent) {
     setElement((new MultipoleTStraight(name))->makeWrappers());
 }
@@ -99,16 +99,16 @@ void OpalMultipoleTStraight::print(std::ostream &os) const {
 
 void OpalMultipoleTStraight::
 fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);   
-    const MultipoleTStraight *multT = 
+    OpalElement::fillRegisteredAttributes(base, flag);
+    const MultipoleTStraight *multT =
         dynamic_cast<const MultipoleTStraight*>(base.removeAlignWrapper());
-    
+
     for(unsigned int order = 1; order <= multT->getTransMaxOrder(); order++) {
         std::ostringstream ss;
-	ss << order;
-	std::string orderString = ss.str();
+        ss << order;
+        std::string orderString = ss.str();
         std::string attrName = "TP" + orderString;
-	registerRealAttribute(attrName)->setReal(multT->getTransProfile(order));
+        registerRealAttribute(attrName)->setReal(multT->getTransProfile(order));
     }
 
     registerRealAttribute("LFRINGE")->setReal(multT->getFringeLength().at(0));
@@ -119,7 +119,7 @@ fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
     registerRealAttribute("ROTATION")->setReal(multT->getRotation());
     registerRealAttribute("EANGLE")->setReal(multT->getEntranceAngle());
     registerRealAttribute("BBLENGTH")->setReal(multT->getBoundingBoxLength());
-    
+
 }
 
 
@@ -133,14 +133,14 @@ void OpalMultipoleTStraight::update() {
     double boundingBoxLength = Attributes::getReal(itsAttr[BBLENGTH]);
     multT->setElementLength(length);
     multT->setLength(length);
-    multT->setAperture(Attributes::getReal(itsAttr[VAPERT]), 
-		       Attributes::getReal(itsAttr[HAPERT]));
-  
+    multT->setAperture(Attributes::getReal(itsAttr[VAPERT]),
+                       Attributes::getReal(itsAttr[HAPERT]));
+
     multT->setFringeField(Attributes::getReal(itsAttr[LENGTH])/2,
                           Attributes::getReal(itsAttr[LFRINGE]),
-                          Attributes::getReal(itsAttr[RFRINGE])); 
+                          Attributes::getReal(itsAttr[RFRINGE]));
     multT->setBoundingBoxLength(Attributes::getReal(itsAttr[BBLENGTH]));
-    const std::vector<double> transProfile = 
+    const std::vector<double> transProfile =
                               Attributes::getRealArray(itsAttr[TP]);
     int transSize = transProfile.size();
 
@@ -150,9 +150,9 @@ void OpalMultipoleTStraight::update() {
     multT->setEntranceAngle(Attributes::getReal(itsAttr[EANGLE]));
 
     StraightGeometry &geometry = multT->getGeometry();
-    
+
     geometry = StraightGeometry(2 * boundingBoxLength);
-    
+
     for(int comp = 0; comp < transSize; comp++) {
         multT->setTransProfile(comp, transProfile[comp]);
     }

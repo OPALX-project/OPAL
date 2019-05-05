@@ -332,12 +332,12 @@ void OpalParser::parseDefine(Statement &stat) const {
         Object *classObject = find(clsName);
 
         if(classObject == 0) {
-	  if (clsName == "SURFACEPHYSICS")
+            if (clsName == "SURFACEPHYSICS")
               throw ParseError("OpalParser::parseDefine()",
-			       "The object \"" + clsName + "\" is changed to \"PARTICLEMATTERINTERACTION\".");
-	  else
-	      throw ParseError("OpalParser::parseDefine()",
-			       "The object \"" + clsName + "\" is unknown.");
+                               "The object \"" + clsName + "\" is changed to \"PARTICLEMATTERINTERACTION\".");
+            else
+                throw ParseError("OpalParser::parseDefine()",
+                                 "The object \"" + clsName + "\" is unknown.");
         }
 
         Object *copy = 0;
@@ -591,7 +591,7 @@ Statement *OpalParser::readStatement(TokenStream *is) const {
         ERRORMSG("     " << *stat <<"    a" << what << '\n' << endl);
 
         stat = readStatement(is);
-	exit(1);
+        exit(1);
     }
 
     return stat;
@@ -619,7 +619,7 @@ void OpalParser::run() const {
             } while (pos != std::string::npos);
             errorMsg << "    " << what << endl;
 
-	    MPI_Abort(MPI_COMM_WORLD, -100);
+            MPI_Abort(MPI_COMM_WORLD, -100);
         }
 
         delete stat;

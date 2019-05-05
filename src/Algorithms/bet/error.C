@@ -29,18 +29,18 @@
 #include "error.h"
 #include "libprf/prf.h"
 
-static int 
+static int
   firstTime   = 1,
   reportLevel = 0,   // verbosity level
   nodeID      = 0;   // required to be MPI compatible
 
 static char
-  *fName = NULL; 
+  *fName = NULL;
 
 void initErrorMsg(int level,const char *fbase) {
-  stdprf ();	/* set standard functions */
-  extprf ();	/* set extended standard functions */
-  fltprf ();	/* set floating standard functions */
+  stdprf ();    /* set standard functions */
+  extprf ();    /* set extended standard functions */
+  fltprf ();    /* set floating standard functions */
 
   reportLevel = level;
 
@@ -60,7 +60,7 @@ void initErrorFilename(const char *fbase) {
     if (fName) {
       free(fName);
     }
-    
+
     fName = (char *) malloc(sizeof(char)*(strlen(fbase)+10));
     if (fName) {
 #ifdef USE_MPI
@@ -69,14 +69,14 @@ void initErrorFilename(const char *fbase) {
 #else
       sprintf(fName,"%s.msg",fbase);
 #endif
-      
+
       sprintf(cmd,"rm -f %s",fName);
       system(cmd);
       free(cmd);
       firstTime = 1;
     } else {
       fprintf(stderr,"ERROR in initErrorFilename: %s (%s)\n",
-	      "Insufficient memory to allocate filename",fbase);
+              "Insufficient memory to allocate filename",fbase);
     }
   }
 } /* initErrorFileName() */
@@ -86,15 +86,15 @@ void setReportLevel(int level) {
 }
 
 void writeError(ErrorMode m,ErrorType t,const char* fmt, ...) {
-  if ((m == errModeAll) || 
-      ((m == errModeMaster) && (nodeID == 0)) || 
+  if ((m == errModeAll) ||
+      ((m == errModeMaster) && (nodeID == 0)) ||
       ((m == errModeSlave)  && (nodeID  > 0))) {
 
     va_list ap;
     char    str[4096],mpiStr[20];
 
     va_start(ap,fmt);
-    
+
     switch (t) {
     case errMessage: sprf(str,"MSG:.. "); break;
     case errWarning: sprf(str,"WAR:.. "); break;
@@ -109,23 +109,23 @@ void writeError(ErrorMode m,ErrorType t,const char* fmt, ...) {
 
     sprfv(str, fmt, &ap);
     va_end(ap);
-    
+
     fprintf(stderr,"%s\n",str);
     fflush(stderr);
 
     if (fName) {
-      FILE *ofp = fopen(fName,(firstTime==1?"w":"a"));
-      
-      if (ofp) {
-	fprintf(ofp,"%s\n",str);
-	fclose(ofp);
-      } else if (firstTime == 1) {
-	int myerr = errno;
-	fprintf(stderr,
-		"writeError cannot open %s (%d)\n%s\n",
-		fName,myerr,strerror(myerr));
-      }
-      firstTime = 0;
+        FILE *ofp = fopen(fName,(firstTime==1?"w":"a"));
+
+        if (ofp) {
+            fprintf(ofp,"%s\n",str);
+            fclose(ofp);
+        } else if (firstTime == 1) {
+            int myerr = errno;
+            fprintf(stderr,
+                    "writeError cannot open %s (%d)\n%s\n",
+                    fName,myerr,strerror(myerr));
+        }
+        firstTime = 0;
     }
   }
   if (t == errFatal) {
@@ -138,23 +138,23 @@ void writeError(ErrorMode m,ErrorType t,const char* fmt, ...) {
 }
 
 void writeError(int level,ErrorMode m,ErrorType t,const char* fmt, ...) {
-  if ((m == errModeAll) || 
-      ((m == errModeMaster) && (nodeID == 0)) || 
+  if ((m == errModeAll) ||
+      ((m == errModeMaster) && (nodeID == 0)) ||
       ((m == errModeSlave)  && (nodeID  > 0))) {
 
     if ((level <= reportLevel) || (t == errFatal)) {
       va_list ap;
       char    str[4096],mpiStr[20];
-    
+
       va_start(ap,fmt);
-      
+
       switch (t) {
       case errMessage: sprf(str,"MSG:.. "); break;
       case errWarning: sprf(str,"WAR:.. "); break;
       case errGeneral: sprf(str,"ERR:.. "); break;
       case errFatal:   sprf(str,"FATAL: "); break;
       }
-      
+
 #ifdef USE_MPI
       sprintf(mpiStr,"%2d ",mpi_rank);
       sprf(str,mpiStr);
@@ -167,18 +167,18 @@ void writeError(int level,ErrorMode m,ErrorType t,const char* fmt, ...) {
       fflush(stderr);
 
       if (fName) {
-	FILE *ofp = fopen(fName,(firstTime==1?"w":"a"));
-	
-	if (ofp) {
-	  fprintf(ofp,"%s\n",str);
-	  fclose(ofp);
-	} else if (firstTime == 1) {
-	  int myerr = errno;
-	  fprintf(stderr,
-		  "writeError cannot open %s (%d)\n%s\n",
-		  fName,myerr,strerror(myerr));
-	}
-	firstTime = 0;
+          FILE *ofp = fopen(fName,(firstTime==1?"w":"a"));
+
+          if (ofp) {
+              fprintf(ofp,"%s\n",str);
+              fclose(ofp);
+          } else if (firstTime == 1) {
+              int myerr = errno;
+              fprintf(stderr,
+                      "writeError cannot open %s (%d)\n%s\n",
+                      fName,myerr,strerror(myerr));
+          }
+          firstTime = 0;
       }
     }
   }
@@ -190,4 +190,3 @@ void writeError(int level,ErrorMode m,ErrorType t,const char* fmt, ...) {
     exit(1);
   }
 }
-

@@ -144,7 +144,7 @@ public:
      *  \return Returns the number of the time step just written.
      */
     int writePhaseSpace_cycl(PartBunchBase<double, 3> *beam, Vector_t FDext[], double E,
-			     double refPr, double refPt, double refPz,
+                             double refPr, double refPt, double refPz,
                              double refR, double refTheta, double refZ,
                              double azimuth, double elevation, bool local);
 
@@ -233,12 +233,12 @@ public:
      */
     void writeGridLBalHeader(PartBunchBase<double, 3> *beam,
                              std::ofstream &outputFile);
-    
+
     void writeGridLBalData(PartBunchBase<double, 3> *beam,
                            std::ofstream &outputFile,
                            unsigned int pwi);
 #endif
-    
+
 
 private:
 
@@ -249,9 +249,9 @@ private:
 
     void rewindLines(const std::string &fileName, size_t numberOfLines) const;
     void replaceVersionString(const std::string &fileName) const;
-    
+
     void open_m(std::ofstream& os, const std::string& fileName) const;
-    
+
     /** \brief First write to the statistics output file.
      *
      * Initially set to std::ios::out so that SDDS format header information is written to file
@@ -277,7 +277,7 @@ private:
 
     /// Name of output file for processor memory information
     std::string memFileName_m;
-    
+
 #ifdef ENABLE_AMR
     /// Name of output file for grid load balancing information
     std::string gridLBalFileName_m;

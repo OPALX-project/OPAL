@@ -168,12 +168,12 @@ void H5PartWrapper::copyFile(const std::string &sourceFile, int lastStep, h5_int
         Ippl::Comm->barrier();
 
         open(flags);
-	props = H5CreateFileProp ();
-	comm = Ippl::getComm();
-	h5err = H5SetPropFileMPIOCollective (props, &comm);
-	assert (h5err != H5_ERR);
-	source = H5OpenFile (sourceFileName.c_str(), H5_O_RDONLY, props);
-	assert (source != (h5_file_t)H5_ERR);
+        props = H5CreateFileProp ();
+        comm = Ippl::getComm();
+        h5err = H5SetPropFileMPIOCollective (props, &comm);
+        assert (h5err != H5_ERR);
+        source = H5OpenFile (sourceFileName.c_str(), H5_O_RDONLY, props);
+        assert (source != (h5_file_t)H5_ERR);
         H5CloseProp (props);
         copyHeader(source);
 

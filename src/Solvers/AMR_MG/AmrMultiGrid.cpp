@@ -47,37 +47,37 @@ AmrMultiGrid::AmrMultiGrid(AmrBoxLib* itsAmrObject_p,
     , flag_m(std::ios::out)
 {
     node_mp = KokkosClassic::Details::getNode<amr::node_t>(); //KokkosClassic::DefaultNode::getDefaultNode();
-    
+
 #if AMR_MG_TIMER
     this->initTimer_m();
 #endif
-    
+
     const Boundary bcs[AMREX_SPACEDIM] = {
         this->convertToEnumBoundary_m(bcx),
         this->convertToEnumBoundary_m(bcy),
         this->convertToEnumBoundary_m(bcz)
     };
-    
+
     this->initPhysicalBoundary_m(&bcs[0]);
-    
+
     smootherType_m = this->convertToEnumSmoother_m(smoother);
-    
+
     norm_m = this->convertToEnumNorm_m(norm);
-    
+
     const Interpolater interpolater = this->convertToEnumInterpolater_m(interp);
     this->initInterpolater_m(interpolater);
-    
+
     // interpolater for crse-fine-interface
     this->initCrseFineInterp_m(Interpolater::LAGRANGE);
-    
+
     // preconditioner
     const Preconditioner precond = this->convertToEnumPreconditioner_m(prec);
     this->initPrec_m(precond, rebalance, reuse);
-    
+
     // base level solver
     const BaseSolver solver = this->convertToEnumBaseSolver_m(bsolver);
     this->initBaseSolver_m(solver, rebalance, reuse);
-    
+
     if (boost::filesystem::exists(fname_m)) {
         flag_m = std::ios::app;
         INFOMSG("Appending solver information to existing file: " << fname_m << endl);
@@ -97,10 +97,10 @@ void AmrMultiGrid::solve(AmrScalarFieldContainer_t &rho,
     lbase_m = baseLevel;
     lfine_m = finestLevel;
     nlevel_m = lfine_m - lbase_m + 1;
-    
+
     /* we cannot use the previous solution
      * if we have to regrid (AmrPoissonSolver::hasToRegrid())
-     * 
+     *
      * regrid_m is set in AmrBoxlib::regrid()
      */
     bool reset = !prevAsGuess;
@@ -121,22 +121,22 @@ void AmrMultiGrid::solve(AmrScalarFieldContainer_t &rho,
     for (int lev = nlevel_m - 1; lev > -1; --lev) {
         averageDown_m(lev);
     }
-    
+
     // write efield to AMReX
-    this->computeEfield_m(efield);    
-    
+    this->computeEfield_m(efield);
+
     // copy solution back
     for (int lev = 0; lev < nlevel_m; ++lev) {
         int ilev = lbase_m + lev;
-        
+
         phi[ilev]->setVal(0.0, phi[ilev]->nGrow());
-        
+
         this->trilinos2amrex_m(lev, 0, *phi[ilev], mglevel_m[lev]->phi_p);
     }
-    
+
     if ( verbose_m )
         this->writeSDDSData_m(error);
-    
+
     // we can now reset
     this->regrid_m = false;
 }
@@ -146,7 +146,7 @@ void AmrMultiGrid::setNumberOfSweeps(const std::size_t& nSweeps) {
     if ( nSweeps < 0 )
         throw OpalException("AmrMultiGrid::setNumberOfSweeps()",
                             "The number of smoothing sweeps needs to be non-negative!");
-    
+
     nSweeps_m = nSweeps;
 }
 
@@ -155,7 +155,7 @@ void AmrMultiGrid::setMaxNumberOfIterations(const std::size_t& maxiter) {
     if ( maxiter < 1 )
         throw OpalException("AmrMultiGrid::setMaxNumberOfIterations()",
                             "The max. number of iterations needs to be positive!");
-    
+
     maxiter_m = maxiter;
 }
 
@@ -179,7 +179,7 @@ void AmrMultiGrid::initPhysicalBoundary_m(const Boundary* bc)
 {
     // make sure it's reset
     nBcPoints_m = 0;
-    
+
     for (unsigned int i = 0; i < AMREX_SPACEDIM; ++i) {
         switch ( bc[i] ) {
             case Boundary::DIRICHLET:
@@ -209,18 +209,18 @@ void AmrMultiGrid::initLevels_m(const amrex::Vector<AmrField_u>& rho,
 {
     if ( !regrid )
         return;
-    
+
     mglevel_m.resize(nlevel_m);
-    
+
     amrex::Periodicity period(AmrIntVect_t(D_DECL(0, 0, 0)));
-    
+
     AmrIntVect_t rr = AmrIntVect_t(D_DECL(2, 2, 2));
-    
+
     for (int lev = 0; lev < nlevel_m; ++lev) {
         int ilev = lbase_m + lev;
-        
+
         mglevel_m[lev].reset(nullptr);
-        
+
         mglevel_m[lev].reset(new AmrMultiGridLevel_t(itsAmrObject_mp->getMeshScaling(),
                                                      rho[ilev]->boxArray(),
                                                      rho[ilev]->DistributionMap(),
@@ -281,7 +281,7 @@ void AmrMultiGrid::initLevels_m(const amrex::Vector<AmrField_u>& rho,
          */
         mglevel_m[lev]->refmask->setDomainBndry(AmrMultiGridLevel_t::Mask::PHYSBNDRY,
                                                 mglevel_m[lev]->geom);
-        
+
         mglevel_m[lev]->refmask->FillBoundary(period);
     }
 }
@@ -299,7 +299,7 @@ void AmrMultiGrid::clearMasks_m() {
 void AmrMultiGrid::initGuess_m(bool reset) {
     if ( !reset )
         return;
-    
+
     // reset
     for (int lev = 0; lev < nlevel_m; ++lev)
         mglevel_m[lev]->phi_p->putScalar(0.0);
@@ -307,23 +307,23 @@ void AmrMultiGrid::initGuess_m(bool reset) {
 
 
 AmrMultiGrid::scalar_t AmrMultiGrid::iterate_m() {
-    
+
     // initial error
     std::vector<scalar_t> rhsNorms;
     std::vector<scalar_t> resNorms;
-    
+
     this->initResidual_m(rhsNorms, resNorms);
-    
+
     std::for_each(rhsNorms.begin(), rhsNorms.end(),
                   [this](double& val){ val *= eps_m; });
-    
+
     nIter_m = 0;
     bIter_m = 0;
-    
+
     while ( !isConverged_m(rhsNorms, resNorms) && nIter_m < maxiter_m ) {
-        
+
         relax_m(lfine_m);
-        
+
 //         /* in contrast to algorithm, we average down now
 //          * --> potential is valid also on coarse covered
 //          * cells
@@ -332,29 +332,29 @@ AmrMultiGrid::scalar_t AmrMultiGrid::iterate_m() {
 //         for (int lev = nlevel_m - 1; lev > -1; --lev) {
 //             averageDown_m(lev);
 //         }
-        
+
         // update residual
         for (int lev = 0; lev < nlevel_m; ++lev) {
-            
+
             this->residual_m(lev,
                              mglevel_m[lev]->residual_p,
                              mglevel_m[lev]->rho_p,
                              mglevel_m[lev]->phi_p);
         }
-        
-        
+
+
         for (lo_t lev = 0; lev < nlevel_m; ++lev)
             resNorms[lev] = getLevelResidualNorm(lev);
-        
+
         ++nIter_m;
-        
+
 #if AMR_MG_WRITE
         this->writeResidualNorm_m();
 #endif
-        
+
         bIter_m += solver_mp->getNumIters();
     }
-    
+
     return std::accumulate(resNorms.begin(),
                            resNorms.end(), 0.0,
                            std::plus<scalar_t>());
@@ -379,20 +379,20 @@ void AmrMultiGrid::residual_m(const lo_t& level,
      * r = b - A*x
      */
     if ( level < lfine_m ) {
-        
+
         vector_t fine2crse(mglevel_m[level]->Awf_p->getDomainMap(), true);
-        
-        // get boundary for 
+
+        // get boundary for
         if ( mglevel_m[level]->Bfine_p != Teuchos::null ) {
             mglevel_m[level]->Bfine_p->apply(*mglevel_m[level+1]->phi_p, fine2crse);
         }
-        
+
         // operation: fine2crse += A * x
         mglevel_m[level]->Awf_p->apply(*x, fine2crse,
                                        Teuchos::NO_TRANS,
                                        scalar_t(1.0),
                                        scalar_t(1.0));
-        
+
         if ( mglevel_m[level]->Bcrse_p != Teuchos::null ) {
             // operation: fine2crse += B * phi^(l-1)
             mglevel_m[level]->Bcrse_p->apply(*mglevel_m[level-1]->phi_p,
@@ -401,28 +401,28 @@ void AmrMultiGrid::residual_m(const lo_t& level,
                                              scalar_t(1.0),
                                              scalar_t(1.0));
         }
-        
+
         Teuchos::RCP<vector_t> uncov_Ax = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p, true) );
         mglevel_m[level]->UnCovered_p->apply(fine2crse, *uncov_Ax);
-        
+
         Teuchos::RCP<vector_t> uncov_b = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p, true) );
-    
+
         mglevel_m[level]->UnCovered_p->apply(*b, *uncov_b);
-    
+
         // ONLY subtract coarse rho
 //         mglevel_m[level]->residual_p->putScalar(0.0);
-        
+
         r->update(1.0, *uncov_b, -1.0, *uncov_Ax, 0.0);
-        
+
     } else {
         /* finest level: Awf_p == Anf_p
-         * 
+         *
          * In this case we use Awf_p instead of Anf_p since Anf_p might be
          * made positive definite for the bottom solver.
          */
         Teuchos::RCP<vector_t> Ax = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p, true) );
         mglevel_m[level]->Awf_p->apply(*x, *Ax);
-        
+
         if ( mglevel_m[level]->Bcrse_p != Teuchos::null ) {
             // operationr: Ax += B * phi^(l-1)
             mglevel_m[level]->Bcrse_p->apply(*mglevel_m[level-1]->phi_p,
@@ -437,19 +437,19 @@ void AmrMultiGrid::residual_m(const lo_t& level,
 
 
 void AmrMultiGrid::relax_m(const lo_t& level) {
-    
+
     if ( level == lfine_m ) {
-        
+
         if ( level == lbase_m ) {
             /* Anf_p == Awf_p
-             * 
+             *
              * In this case we use Awf_p instead of Anf_p since Anf_p might be
              * made positive definite for the bottom solver.
              */
             Teuchos::RCP<vector_t> tmp = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p, true) );
             mglevel_m[level]->Awf_p->apply(*mglevel_m[level]->phi_p, *tmp);
             mglevel_m[level]->residual_p->update(1.0, *mglevel_m[level]->rho_p, -1.0, *tmp, 0.0);
-            
+
         } else {
             this->residual_no_fine_m(level,
                                      mglevel_m[level]->residual_p,
@@ -458,65 +458,65 @@ void AmrMultiGrid::relax_m(const lo_t& level) {
                                      mglevel_m[level]->rho_p);
         }
     }
-    
+
     if ( level > 0 ) {
-        // phi^(l, save) = phi^(l)        
+        // phi^(l, save) = phi^(l)
         Teuchos::RCP<vector_t> phi_save = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p) );
         Tpetra::deep_copy(*phi_save, *mglevel_m[level]->phi_p);
-        
+
         mglevel_m[level-1]->error_p->putScalar(0.0);
-        
+
         // smoothing
         this->smooth_m(level,
                        mglevel_m[level]->error_p,
                        mglevel_m[level]->residual_p);
-        
-        
+
+
         // phi = phi + e
         mglevel_m[level]->phi_p->update(1.0, *mglevel_m[level]->error_p, 1.0);
-        
+
         /*
          * restrict
          */
         this->restrict_m(level);
-        
+
         this->relax_m(level - 1);
-        
+
         /*
          * prolongate / interpolate
          */
         this->prolongate_m(level);
-        
+
         // residual update
         Teuchos::RCP<vector_t> tmp = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p) );
         this->residual_no_fine_m(level, tmp,
                                  mglevel_m[level]->error_p,
                                  mglevel_m[level-1]->error_p,
                                  mglevel_m[level]->residual_p);
-        
+
         Tpetra::deep_copy(*mglevel_m[level]->residual_p, *tmp);
-        
+
         // delta error
         Teuchos::RCP<vector_t> derror = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p, true) );
-        
+
         // smoothing
         this->smooth_m(level, derror, mglevel_m[level]->residual_p);
-        
+
         // e^(l) += de^(l)
         mglevel_m[level]->error_p->update(1.0, *derror, 1.0);
-        
+
         // phi^(l) = phi^(l, save) + e^(l)
         mglevel_m[level]->phi_p->update(1.0, *phi_save, 1.0, *mglevel_m[level]->error_p, 0.0);
-        
+
     } else {
         // e = A^(-1)r
 #if AMR_MG_TIMER
     IpplTimings::startTimer(bottomTimer_m);
 #endif
-    
+
         solver_mp->solve(mglevel_m[level]->error_p,
                          mglevel_m[level]->residual_p);
-        
+
 #if AMR_MG_TIMER
     IpplTimings::stopTimer(bottomTimer_m);
 #endif
@@ -536,18 +536,18 @@ void AmrMultiGrid::residual_no_fine_m(const lo_t& level,
     IpplTimings::startTimer(residnofineTimer_m);
 #endif
     vector_t crse2fine(mglevel_m[level]->Anf_p->getDomainMap(), true);
-    
-    // get boundary for 
+
+    // get boundary for
     if ( mglevel_m[level]->Bcrse_p != Teuchos::null ) {
         mglevel_m[level]->Bcrse_p->apply(*crs_rhs, crse2fine);
     }
-    
+
     // operation: crse2fine = 1.0 * crse2fine  + 1.0 * A^(l) * rhs
     mglevel_m[level]->Anf_p->apply(*rhs, crse2fine,
                                    Teuchos::NO_TRANS,
                                    scalar_t(1.0),
                                    scalar_t(1.0));
-    
+
     result->update(1.0, *b, -1.0, crse2fine, 0.0);
 #if AMR_MG_TIMER
     IpplTimings::stopTimer(residnofineTimer_m);
@@ -558,18 +558,18 @@ void AmrMultiGrid::residual_no_fine_m(const lo_t& level,
 #if AMR_MG_WRITE
 void AmrMultiGrid::writeResidualNorm_m() {
     scalar_t err = 0.0;
-    
+
     std::ofstream out;
     if ( comm_mp->getRank() == 0 )
         out.open("residual.dat", std::ios::app);
-    
+
     for (int lev = 0; lev < nlevel_m; ++lev) {
         scalar_t tmp = evalNorm_m(mglevel_m[lev]->residual_p);
-        
+
         if ( comm_mp->getRank() == 0 )
             out << std::setw(15) << std::right << tmp;
     }
-    
+
     if ( comm_mp->getRank() == 0 )
         out.close();
 }
@@ -580,7 +580,7 @@ typename AmrMultiGrid::scalar_t
 AmrMultiGrid::evalNorm_m(const Teuchos::RCP<const vector_t>& x)
 {
     scalar_t norm = 0.0;
-    
+
     switch ( norm_m ) {
         case Norm::L1:
         {
@@ -610,35 +610,35 @@ void AmrMultiGrid::initResidual_m(std::vector<scalar_t>& rhsNorms,
 {
     rhsNorms.clear();
     resNorms.clear();
-    
+
 #if AMR_MG_WRITE
     std::ofstream out;
-    
+
     if ( comm_mp->getRank() == 0) {
         out.open("residual.dat", std::ios::out);
-    
+
         for (int lev = 0; lev < nlevel_m; ++lev)
             out << std::setw(14) << std::right << "level" << lev;
         out << std::endl;
     }
 #endif
-    
+
     for (int lev = 0; lev < nlevel_m; ++lev) {
         this->residual_m(lev,
                          mglevel_m[lev]->residual_p,
                          mglevel_m[lev]->rho_p,
                          mglevel_m[lev]->phi_p);
-        
+
         resNorms.push_back(evalNorm_m(mglevel_m[lev]->residual_p));
-        
+
 #if AMR_MG_WRITE
         if ( comm_mp->getRank() == 0 )
             out << std::setw(15) << std::right << resNorms.back();
 #endif
-        
+
         rhsNorms.push_back(evalNorm_m(mglevel_m[lev]->rho_p));
     }
-    
+
 #if AMR_MG_WRITE
     if ( comm_mp->getRank() == 0 )
         out.close();
@@ -650,10 +650,10 @@ void AmrMultiGrid::computeEfield_m(AmrVectorFieldContainer_t& efield) {
     Teuchos::RCP<vector_t> efield_p = Teuchos::null;
     for (int lev = nlevel_m - 1; lev > -1; --lev) {
         int ilev = lbase_m + lev;
-        
+
         efield_p = Teuchos::rcp( new vector_t(mglevel_m[lev]->map_p, false) );
-        
-        
+
+
         for (int d = 0; d < AMREX_SPACEDIM; ++d) {
             efield[ilev][d]->setVal(0.0, efield[ilev][d]->nGrow());
             mglevel_m[lev]->G_p[d]->apply(*mglevel_m[lev]->phi_p, *efield_p);
@@ -675,7 +675,7 @@ void AmrMultiGrid::setup_m(const amrex::Vector<AmrField_u>& rho,
         this->buildSingleLevel_m(rho, phi, matrices);
     else
         this->buildMultiLevel_m(rho, phi, matrices);
-    
+
     mglevel_m[lfine_m]->error_p->putScalar(0.0);
 
     if ( matrices ) {
@@ -697,7 +697,7 @@ void AmrMultiGrid::buildSingleLevel_m(const amrex::Vector<AmrField_u>& rho,
     this->open_m(lbase_m, matrices);
 
     const scalar_t* invdx = mglevel_m[lbase_m]->invCellSize();
-    
+
     const scalar_t invdx2[] = {
         D_DECL( invdx[0] * invdx[0],
                 invdx[1] * invdx[1],
@@ -712,10 +712,10 @@ void AmrMultiGrid::buildSingleLevel_m(const amrex::Vector<AmrField_u>& rho,
             const basefab_t&  mfab = (*mglevel_m[lbase_m]->mask)[mfi];
             const farraybox_t& rhofab = (*rho[lbase_m])[mfi];
             const farraybox_t& pfab = (*phi[lbase_m])[mfi];
-            
+
             const int* lo = tbx.loVect();
             const int* hi = tbx.hiVect();
-            
+
             for (int i = lo[0]; i <= hi[0]; ++i) {
                 for (int j = lo[1]; j <= hi[1]; ++j) {
 #if AMREX_SPACEDIM == 3
@@ -723,14 +723,14 @@ void AmrMultiGrid::buildSingleLevel_m(const amrex::Vector<AmrField_u>& rho,
 #endif
                         AmrIntVect_t iv(D_DECL(i, j, k));
                         go_t gidx = mglevel_m[lbase_m]->serialize(iv);
-                        
+
                         this->buildNoFinePoissonMatrix_m(lbase_m, gidx, iv, mfab, invdx2);
-                        
+
                         this->buildGradientMatrix_m(lbase_m, gidx, iv, mfab, invdx);
-                        
+
                         mglevel_m[lbase_m]->rho_p->replaceGlobalValue(gidx, rhofab(iv, 0));
                         mglevel_m[lbase_m]->phi_p->replaceGlobalValue(gidx, pfab(iv, 0));
-                        
+
 #if AMREX_SPACEDIM == 3
                     }
 #endif
@@ -757,7 +757,7 @@ void AmrMultiGrid::buildMultiLevel_m(const amrex::Vector<AmrField_u>& rho,
     // the base level has no smoother --> nlevel_m - 1
     if ( matrices )
         smoother_m.resize(nlevel_m-1);
-    
+
     for (int lev = 0; lev < nlevel_m; ++lev) {
         this->open_m(lev, matrices);
 
@@ -784,10 +784,10 @@ void AmrMultiGrid::buildMultiLevel_m(const amrex::Vector<AmrField_u>& rho,
                 const basefab_t&  cfab = (*mglevel_m[lev]->crsemask)[mfi];
                 const farraybox_t& rhofab = (*rho[ilev])[mfi];
                 const farraybox_t& pfab = (*phi[ilev])[mfi];
-                
+
                 const int* lo = tbx.loVect();
                 const int* hi = tbx.hiVect();
-                
+
                 for (int i = lo[0]; i <= hi[0]; ++i) {
                     int ii = i << 1;
                     for (int j = lo[1]; j <= hi[1]; ++j) {
@@ -846,107 +846,107 @@ void AmrMultiGrid::open_m(const lo_t& level,
                           const bool& matrices)
 {
     if ( matrices ) {
-    
+
         if ( level > lbase_m ) {
-            
+
             /*
              * interpolation matrix
              */
-            
+
             int nNeighbours = (nBcPoints_m + 1) * interp_mp->getNumberOfPoints();
-    
+
             mglevel_m[level]->I_p = Teuchos::rcp( new matrix_t(mglevel_m[level]->map_p,
                                                                nNeighbours,
                                                                Tpetra::StaticProfile) );
-            
+
             /*
              * coarse boundary matrix
              */
-            
+
             nNeighbours = 2 * AMREX_SPACEDIM * nBcPoints_m *
                           2 * AMREX_SPACEDIM * interface_mp->getNumberOfPoints();
-            
+
             mglevel_m[level]->Bcrse_p = Teuchos::rcp(
                 new matrix_t(mglevel_m[level]->map_p, nNeighbours,
                              Tpetra::StaticProfile) );
-            
+
         }
-        
-        
+
+
         if ( level < lfine_m ) {
-            
+
             /*
              * restriction matrix
              */
-            
+
             // refinement 2
             int nNeighbours = AMREX_D_TERM(2, * 2, * 2);
-            
+
             mglevel_m[level]->R_p = Teuchos::rcp(
                 new matrix_t(mglevel_m[level]->map_p, nNeighbours,
                              Tpetra::StaticProfile) );
-            
+
             /*
              * fine boundary matrix
              */
-            
+
             //                              refinement 2
             nNeighbours = 2 * AMREX_SPACEDIM * AMREX_D_TERM(2, * 2, * 2);
-            
+
             mglevel_m[level]->Bfine_p = Teuchos::rcp(
                 new matrix_t(mglevel_m[level]->map_p, nNeighbours,
                              Tpetra::StaticProfile) );
-            
+
         }
-        
+
         /*
          * no-fine Poisson matrix
          */
-        
+
         int nPhysBoundary = 2 * AMREX_SPACEDIM * nBcPoints_m;
-    
+
         // number of internal stencil points
         int nIntBoundary = AMREX_SPACEDIM * interface_mp->getNumberOfPoints();
-    
+
         int nEntries = (AMREX_SPACEDIM << 1) + 2 /* plus boundaries */ + nPhysBoundary + nIntBoundary;
-    
+
         mglevel_m[level]->Anf_p = Teuchos::rcp(
             new matrix_t(mglevel_m[level]->map_p, nEntries,
                          Tpetra::StaticProfile) );
-        
+
         /*
          * with-fine / composite Poisson matrix
          */
-        
+
         nEntries = (AMREX_SPACEDIM << 1) + 5 /* plus boundaries */ +
                    nPhysBoundary + nIntBoundary;
-    
+
         mglevel_m[level]->Awf_p = Teuchos::rcp(
             new matrix_t(mglevel_m[level]->map_p, nEntries,
                          Tpetra::StaticProfile) );
-        
+
         /*
          * uncovered cells matrix
          */
         mglevel_m[level]->UnCovered_p = Teuchos::rcp(
             new matrix_t(mglevel_m[level]->map_p, 1,
                          Tpetra::StaticProfile) );
-        
+
         /*
          * gradient matrices
          */
         nEntries = 11;
-    
+
         for (int d = 0; d < AMREX_SPACEDIM; ++d) {
             mglevel_m[level]->G_p[d] = Teuchos::rcp(
                 new matrix_t(mglevel_m[level]->map_p, nEntries,
                              Tpetra::StaticProfile) );
         }
     }
-    
+
     mglevel_m[level]->rho_p = Teuchos::rcp(
         new vector_t(mglevel_m[level]->map_p, false) );
-    
+
     if ( matrices ) {
         mglevel_m[level]->phi_p = Teuchos::rcp(
             new vector_t(mglevel_m[level]->map_p, false) );
@@ -956,32 +956,32 @@ void AmrMultiGrid::open_m(const lo_t& level,
 
 void AmrMultiGrid::close_m(const lo_t& level,
                            const bool& matrices)
-{    
+{
     if ( matrices ) {
         if ( level > lbase_m ) {
-            
+
             mglevel_m[level]->I_p->fillComplete(mglevel_m[level-1]->map_p,  // col map (domain map)
                                                 mglevel_m[level]->map_p);   // row map (range map)
-            
+
             mglevel_m[level]->Bcrse_p->fillComplete(mglevel_m[level-1]->map_p,  // col map
                                                     mglevel_m[level]->map_p);   // row map
         }
-        
+
         if ( level < lfine_m ) {
-            
+
             mglevel_m[level]->R_p->fillComplete(mglevel_m[level+1]->map_p,
                                                   mglevel_m[level]->map_p);
-            
+
             mglevel_m[level]->Bfine_p->fillComplete(mglevel_m[level+1]->map_p,
                                                     mglevel_m[level]->map_p);
         }
-        
+
         mglevel_m[level]->Anf_p->fillComplete();
-        
+
         mglevel_m[level]->Awf_p->fillComplete();
-        
+
         mglevel_m[level]->UnCovered_p->fillComplete();
-        
+
         for (int d = 0; d < AMREX_SPACEDIM; ++d)
             mglevel_m[level]->G_p[d]->fillComplete();
     }
@@ -997,29 +997,29 @@ void AmrMultiGrid::buildNoFinePoissonMatrix_m(const lo_t& level,
     /*
      * Laplacian of "no fine"
      */
-    
+
     /*
      * 1D not supported
      * 2D --> 5 elements per row
      * 3D --> 7 elements per row
      */
-    
+
     umap_t map;
     indices_t indices;
     coefficients_t values;
-    
+
     /*
      * check neighbours in all directions (Laplacian stencil --> cross)
      */
     for (int d = 0; d < AMREX_SPACEDIM; ++d) {
         for (int shift = -1; shift <= 1; shift += 2) {
-            AmrIntVect_t biv = iv;                        
+            AmrIntVect_t biv = iv;
             biv[d] += shift;
-            
+
             switch ( mfab(biv) )
             {
                 case AmrMultiGridLevel_t::Mask::INTERIOR:
-                case AmrMultiGridLevel_t::Mask::COVERED: // covered --> interior cell 
+                case AmrMultiGridLevel_t::Mask::COVERED: // covered --> interior cell
                 {
                     map[mglevel_m[level]->serialize(biv)] += invdx2[d];
                     break;
@@ -1033,7 +1033,7 @@ void AmrMultiGrid::buildNoFinePoissonMatrix_m(const lo_t& level,
                         throw OpalException("AmrMultiGrid::buildNoFinePoissonMatrix_m()",
                                             "Error in mask for level "
                                             + std::to_string(level) + "!");
-#endif    
+#endif
                     /* Dirichlet boundary conditions from coarser level.
                      */
                     interface_mp->fine(biv, map, invdx2[d], d, -shift,
@@ -1054,7 +1054,7 @@ void AmrMultiGrid::buildNoFinePoissonMatrix_m(const lo_t& level,
             }
         }
     }
-    
+
     // check center
     map[gidx] += AMREX_D_TERM(- 2.0 * invdx2[0],
                               - 2.0 * invdx2[1],
@@ -1079,35 +1079,35 @@ void AmrMultiGrid::buildCompositePoissonMatrix_m(const lo_t& level,
 {
     /*
      * Laplacian of "with fine"
-     * 
+     *
      * For the finest level: Awf == Anf
      */
     if ( rfab(iv) == AmrMultiGridLevel_t::Refined::YES ) //|| lbase_m != lfine_m )
-	return;
-    /*                                                                                                            
+        return;
+    /*
      * Only cells that are not refined
      */
-        
+
     /*
      * 1D not supported by AmrMultiGrid
      * 2D --> 5 elements per row
      * 3D --> 7 elements per row
      */
-    
+
     umap_t map;
     indices_t indices;
     coefficients_t values;
-    
+
     /*
      * Only cells that are not refined
      */
-    
+
     /*
      * check neighbours in all directions (Laplacian stencil --> cross)
      */
     for (int d = 0; d < AMREX_SPACEDIM; ++d) {
         for (int shift = -1; shift <= 1; shift += 2) {
-            AmrIntVect_t biv = iv;                        
+            AmrIntVect_t biv = iv;
             biv[d] += shift;
 
             if ( rfab(biv) != AmrMultiGridLevel_t::Refined::YES )
@@ -1135,18 +1135,18 @@ void AmrMultiGrid::buildCompositePoissonMatrix_m(const lo_t& level,
                                             "Error in mask for level "
                                             + std::to_string(level) + "!");
 #endif
-                    
+
                     /* We are on the fine side of the crse-fine interface
                      * --> normal stencil --> no flux matching required
                      * --> interpolation of fine ghost cell required
                      * (used together with Bcrse)
                      */
-                    
+
                     /* Dirichlet boundary conditions from coarser level.
                      */
                     interface_mp->fine(biv, map, invdx2[d], d, -shift,
                                        mglevel_m[level].get());
-                    
+
                     // add center once
                     map[gidx] -= invdx2[d];
                     break;
@@ -1156,7 +1156,7 @@ void AmrMultiGrid::buildCompositePoissonMatrix_m(const lo_t& level,
                     // physical boundary cell
                     mglevel_m[level]->applyBoundary(biv, d, map,
                                                     invdx2[d] /*matrix coefficient*/);
-                    
+
                     // add center once
                     map[gidx] -= invdx2[d];
                     break;
@@ -1173,13 +1173,13 @@ void AmrMultiGrid::buildCompositePoissonMatrix_m(const lo_t& level,
                  * required --> interpolation of fine ghost cell
                  * (used together with Bfine)
                  */
-                
-                
+
+
                 // flux matching, coarse part
-                
+
                 /* 2D --> 2 fine cells to compute flux per coarse-fine-interace --> avg = 2
                  * 3D --> 4 fine cells to compute flux per coarse-fine-interace --> avg = 4
-                 * 
+                 *
                  * @precondition: refinement of 2
                  */
                 // top and bottom for all directions
@@ -1187,24 +1187,24 @@ void AmrMultiGrid::buildCompositePoissonMatrix_m(const lo_t& level,
                 const scalar_t* invfdx = mglevel_m[level+1]->invCellSize();
                 scalar_t invavg = AMREX_D_PICK(1.0, 0.5, 0.25);
                 scalar_t value = - invavg * invcdx[d] * invfdx[d];
-                
+
                 for (int d1 = 0; d1 < 2; ++d1) {
 #if AMREX_SPACEDIM == 3
                     for (int d2 = 0; d2 < 2; ++d2) {
 #endif
-                        
+
                         /* in order to get a top iv --> needs to be odd value in "d"
                          * in order to get a bottom iv --> needs to be even value in "d"
                          */
                         AmrIntVect_t fake(D_DECL(0, 0, 0));
-                        
+
                         fake[(d+1)%AMREX_SPACEDIM] = d1;
 #if AMREX_SPACEDIM == 3
                         fake[(d+2)%AMREX_SPACEDIM] = d2;
 #endif
                         interface_mp->coarse(iv, map, value, d, shift, rfab,
                                              fake, mglevel_m[level].get());
-                        
+
 #if AMREX_SPACEDIM == 3
                     }
 #endif
@@ -1239,24 +1239,24 @@ void AmrMultiGrid::buildRestrictionMatrix_m(const lo_t& level,
     /*
      * x^(l) = R * x^(l+1)
      */
-    
+
     // finest level does not need to have a restriction matrix
     if ( rfab(iv) == AmrMultiGridLevel_t::Refined::NO || level == lfine_m )
         return;
-    
+
     /* Difficulty:  If a fine cell belongs to another processor than the underlying
      *              coarse cell, we get an error when filling the matrix since the
      *              cell (--> global index) does not belong to the same processor.
      * Solution:    Find all coarse cells that are covered by fine cells, thus,
      *              the distributionmap is correct.
-     * 
-     * 
+     *
+     *
      */
     indices_t indices;
     indices.reserve(2 << (AMREX_SPACEDIM - 1));
     coefficients_t values;
     values.reserve(2 << (AMREX_SPACEDIM -1));
-    
+
     // neighbours
     for (int iref = 0; iref < 2; ++iref) {
         for (int jref = 0; jref < 2; ++jref) {
@@ -1264,7 +1264,7 @@ void AmrMultiGrid::buildRestrictionMatrix_m(const lo_t& level,
             for (int kref = 0; kref < 2; ++kref) {
 #endif
                 AmrIntVect_t riv(D_DECL(ii + iref, jj + jref, kk + kref));
-                
+
                 indices.push_back( mglevel_m[level+1]->serialize(riv) );
                 values.push_back( AMREX_D_PICK(0.5, 0.25, 0.125) );
 #if AMREX_SPACEDIM == 3
@@ -1272,7 +1272,7 @@ void AmrMultiGrid::buildRestrictionMatrix_m(const lo_t& level,
 #endif
         }
     }
-    
+
     mglevel_m[level]->R_p->insertGlobalValues(gidx,
                                               indices.size(),
                                               &values[0],
@@ -1288,28 +1288,28 @@ void AmrMultiGrid::buildInterpolationMatrix_m(const lo_t& level,
     /* crse: level - 1
      * fine (this): level
      */
-    
+
     /*
      * This does not include ghost cells
      * --> no boundaries
-     * 
+     *
      * x^(l) = I * x^(l-1)
      */
-    
+
     if ( level == lbase_m )
         return;
-    
+
     umap_t map;
     indices_t indices;
     coefficients_t values;
-                    
+
     /*
      * we need boundary + indices from coarser level
      */
     interp_mp->stencil(iv, cfab,  map, 1.0, mglevel_m[level-1].get());
-    
+
     this->map2vector_m(map, indices, values);
-    
+
     mglevel_m[level]->I_p->insertGlobalValues(gidx,
                                               indices.size(),
                                               &values[0],
@@ -1328,34 +1328,34 @@ void AmrMultiGrid::buildCrseBoundaryMatrix_m(const lo_t& level,
      * fine (this): level
      * coarse:      level - 1
      */
-    
+
     // the base level has only physical boundaries
     if ( level == lbase_m )
         return;
-    
+
     // iv is a fine cell
-    
+
     umap_t map;
     indices_t indices;
     coefficients_t values;
-    
+
     // check its neighbours to see if at crse-fine interface
     for (int d = 0; d < AMREX_SPACEDIM; ++d) {
         for (int shift = -1; shift <= 1; shift += 2) {
             // neighbour
             AmrIntVect_t niv = iv;
             niv[d] += shift;
-            
+
             if ( mfab(niv) == AmrMultiGridLevel_t::Mask::BNDRY )
             {
                 // neighbour does not belong to fine grids
                 // includes no cells at physical boundary
-                
+
                 // coarse cell that is not refined
                 AmrIntVect_t civ = iv;
                 civ[d] += shift;
                 civ.coarsen(mglevel_m[level]->refinement());
-                
+
                 // we need boundary + indices from coarser level
                 // we need normalization by mesh size squared (of fine cell size)
                 // --> Laplacian for fine cell
@@ -1372,9 +1372,9 @@ void AmrMultiGrid::buildCrseBoundaryMatrix_m(const lo_t& level,
 #endif
         }
     }
-    
+
     this->map2vector_m(map, indices, values);
-    
+
     mglevel_m[level]->Bcrse_p->insertGlobalValues(gidx,
                                                   indices.size(),
                                                   &values[0],
@@ -1392,11 +1392,11 @@ void AmrMultiGrid::buildFineBoundaryMatrix_m(const lo_t& level,
     /* fine: level + 1
      * coarse (this): level
      */
-    
+
     // the finest level does not need data from a finer level
     if ( rfab(iv) == AmrMultiGridLevel_t::Refined::YES || level == lfine_m )
         return;
-    
+
     const scalar_t* invcdx = mglevel_m[level]->invCellSize();
     const scalar_t* invfdx = mglevel_m[level+1]->invCellSize();
 
@@ -1406,7 +1406,7 @@ void AmrMultiGrid::buildFineBoundaryMatrix_m(const lo_t& level,
     umap_t map;
     indices_t indices;
     coefficients_t values;
-    
+
     auto fill = [&](umap_t& map,
                     D_DECL(int ii, int jj, int kk),
                     int* begin, int* end, int d,
@@ -1422,13 +1422,13 @@ void AmrMultiGrid::buildFineBoundaryMatrix_m(const lo_t& level,
                      * outside of the "domain" --> we need to interpolate
                      */
                     AmrIntVect_t riv(D_DECL(iref, jref, kref));
-                    
+
                     if ( (riv[d] >> 1) /*refinement*/ == iv[d] ) {
                         /* the fine cell is on the coarse side --> fine
                          * ghost cell --> we need to interpolate
                          */
                         scalar_t value = - invavg * invcdx[d] * invfdx[d];
-                        
+
                         interface_mp->fine(riv, map, value, d, shift,
                                            mglevel_m[level+1].get());
                     } else {
@@ -1441,11 +1441,11 @@ void AmrMultiGrid::buildFineBoundaryMatrix_m(const lo_t& level,
             }
         }
     };
-    
-    
+
+
     /*
      * iv is a coarse cell that got not refined
-     * 
+     *
      * --> check all neighbours to see if at crse-fine
      * interface
      */
@@ -1454,25 +1454,25 @@ void AmrMultiGrid::buildFineBoundaryMatrix_m(const lo_t& level,
             // neighbour
             AmrIntVect_t covered = iv;
             covered[d] += shift;
-                
+
             if ( rfab(covered) == AmrMultiGridLevel_t::Refined::YES &&
                  mfab(covered) != AmrMultiGridLevel_t::PHYSBNDRY )
             {
                 // neighbour is covered by fine cells
-                
+
                 /*
                  * "shift" is the amount to a coarse cell that got refined
                  * "d" is the direction to shift
                  *
                  * --> check all covered neighbour cells
                  */
-                
+
                 /* we need to iterate over correct fine cells. It depends
                  * on the orientation of the interface
                  */
                 int begin[AMREX_SPACEDIM] = { D_DECL( int(d == 0), int(d == 1), int(d == 2) ) };
                 int end[AMREX_SPACEDIM]   = { D_DECL( int(d != 0), int(d != 1), int(d != 2) ) };
-                
+
                 /*
                  * neighbour cell got refined but is not on physical boundary
                  * --> we are at a crse-fine interface
@@ -1481,7 +1481,7 @@ void AmrMultiGrid::buildFineBoundaryMatrix_m(const lo_t& level,
                  * are required to satisfy the flux matching
                  * condition
                  */
-                
+
                 switch ( shift ) {
                     case -1:
                     {
@@ -1513,11 +1513,11 @@ void AmrMultiGrid::buildFineBoundaryMatrix_m(const lo_t& level,
             }
         }
     }
-    
+
     this->map2vector_m(map, indices, values);
-    
+
     // iv: not covered coarse cell at crse-fine interface
-    
+
     mglevel_m[level]->Bfine_p->insertGlobalValues(gidx,
                                                   indices.size(),
                                                   &values[0],
@@ -1548,7 +1548,7 @@ void AmrMultiGrid::buildGradientMatrix_m(const lo_t& level,
     umap_t map;
     indices_t indices;
     coefficients_t values;
-    
+
     auto check = [&](const AmrIntVect_t& iv,
                      const basefab_t& mfab,
                      int dir,
@@ -1571,15 +1571,15 @@ void AmrMultiGrid::buildGradientMatrix_m(const lo_t& level,
                                         "Error in mask for level "
                                         + std::to_string(level) + "!");
 #endif
-                
+
                 scalar_t value = - shift * 0.5 * invdx[dir];
-                
+
                 // use 1st order Lagrange --> only cells of this level required
                 AmrIntVect_t tmp = iv;
                 // first fine cell on refined coarse cell (closer to interface)
                 tmp[dir] -= shift;
                 map[mglevel_m[level]->serialize(tmp)] += 2.0 * value;
-                
+
                 // second fine cell on refined coarse cell (further away from interface)
                 tmp[dir] -= shift;
                 map[mglevel_m[level]->serialize(tmp)] -= value;
@@ -1588,9 +1588,9 @@ void AmrMultiGrid::buildGradientMatrix_m(const lo_t& level,
             case AmrMultiGridLevel_t::Mask::PHYSBNDRY:
             {
                 // physical boundary cells
-                
+
                 scalar_t value = - shift * 0.5 * invdx[dir];
-                
+
                 mglevel_m[level]->applyBoundary(iv, dir,
                                                 map, value);
                 break;
@@ -1599,16 +1599,16 @@ void AmrMultiGrid::buildGradientMatrix_m(const lo_t& level,
                 break;
         }
     };
-    
+
     for (int d = 0; d < AMREX_SPACEDIM; ++d) {
         for (int shift = -1; shift <= 1; shift += 2) {
-            AmrIntVect_t niv = iv;                        
+            AmrIntVect_t niv = iv;
             niv[d] += shift;
             check(niv, mfab, d, shift);
         }
-        
+
         this->map2vector_m(map, indices, values);
-        
+
         mglevel_m[level]->G_p[d]->insertGlobalValues(gidx,
                                                      indices.size(),
                                                      &values[0],
@@ -1628,19 +1628,19 @@ void AmrMultiGrid::amrex2trilinos_m(const lo_t& level,
     for (amrex::MFIter mfi(mf, true); mfi.isValid(); ++mfi) {
         const amrex::Box&          tbx  = mfi.tilebox();
         const amrex::FArrayBox&    fab = mf[mfi];
-        
+
         const int* lo = tbx.loVect();
         const int* hi = tbx.hiVect();
-        
+
         for (int i = lo[0]; i <= hi[0]; ++i) {
             for (int j = lo[1]; j <= hi[1]; ++j) {
 #if AMREX_SPACEDIM == 3
                 for (int k = lo[2]; k <= hi[2]; ++k) {
 #endif
                     AmrIntVect_t iv(D_DECL(i, j, k));
-                    
+
                     go_t gidx = mglevel_m[level]->serialize(iv);
-                    
+
                     mv->replaceGlobalValue(gidx, fab(iv, comp));
 #if AMREX_SPACEDIM == 3
                 }
@@ -1657,24 +1657,24 @@ void AmrMultiGrid::trilinos2amrex_m(const lo_t& level,
                                     const Teuchos::RCP<vector_t>& mv)
 {
     Teuchos::ArrayRCP<const amr::scalar_t> data =  mv->get1dView();
-    
+
     for (amrex::MFIter mfi(mf, true); mfi.isValid(); ++mfi) {
         const amrex::Box&          tbx  = mfi.tilebox();
         amrex::FArrayBox&          fab = mf[mfi];
-        
+
         const int* lo = tbx.loVect();
         const int* hi = tbx.hiVect();
-        
+
         for (int i = lo[0]; i <= hi[0]; ++i) {
             for (int j = lo[1]; j <= hi[1]; ++j) {
 #if AMREX_SPACEDIM == 3
                 for (int k = lo[2]; k <= hi[2]; ++k) {
 #endif
                     AmrIntVect_t iv(D_DECL(i, j, k));
-                    
+
                     go_t gidx = mglevel_m[level]->serialize(iv);
                     lo_t lidx = mglevel_m[level]->map_p->getLocalElement(gidx);
-                    
+
                     fab(iv, comp) = data[lidx];
                 }
 #if AMREX_SPACEDIM == 3
@@ -1691,10 +1691,10 @@ void AmrMultiGrid::map2vector_m(umap_t& map, indices_t& indices,
 {
     indices.clear();
     values.clear();
-    
+
     indices.reserve(map.size());
     values.reserve(map.size());
-    
+
     std::for_each(map.begin(), map.end(),
                   [&](const std::pair<const go_t, scalar_t>& entry)
                   {
@@ -1702,7 +1702,7 @@ void AmrMultiGrid::map2vector_m(umap_t& map, indices_t& indices,
                       values.push_back(entry.second);
                   }
     );
-    
+
     map.clear();
 }
 
@@ -1717,7 +1717,7 @@ void AmrMultiGrid::smooth_m(const lo_t& level,
 
     // base level has no smoother --> l - 1
     smoother_m[level-1]->smooth(e, mglevel_m[level]->Anf_p, r);
-    
+
 #if AMR_MG_TIMER
     IpplTimings::stopTimer(smoothTimer_m);
 #endif
@@ -1725,56 +1725,56 @@ void AmrMultiGrid::smooth_m(const lo_t& level,
 
 
 void AmrMultiGrid::restrict_m(const lo_t& level) {
-    
+
 #if AMR_MG_TIMER
         IpplTimings::startTimer(restrictTimer_m);
 #endif
-    
+
     Teuchos::RCP<vector_t> tmp = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p) );
-    
+
     this->residual_no_fine_m(level, tmp,
                              mglevel_m[level]->error_p,
                              mglevel_m[level-1]->error_p,
                              mglevel_m[level]->residual_p);
-    
+
     mglevel_m[level-1]->residual_p->putScalar(0.0);
-    
+
     // average down: residual^(l-1) = R^(l) * tmp
     mglevel_m[level-1]->R_p->apply(*tmp, *mglevel_m[level-1]->residual_p);
-    
-    
+
+
     // composite matrix, i.e. matrix without covered cells
     // r^(l-1) = rho^(l-1) - A * phi^(l-1)
-    
+
     vector_t fine2crse(mglevel_m[level-1]->Awf_p->getDomainMap(), true);
-    
-    // get boundary for 
+
+    // get boundary for
     mglevel_m[level-1]->Bfine_p->apply(*mglevel_m[level]->phi_p, fine2crse);
-    
+
     // operation: fine2coarse += A * phi
     mglevel_m[level-1]->Awf_p->apply(*mglevel_m[level-1]->phi_p,
                                      fine2crse, Teuchos::NO_TRANS,
                                      scalar_t(1.0), scalar_t(1.0));
-    
+
     if ( mglevel_m[level-1]->Bcrse_p != Teuchos::null ) {
         //  operation: fine2coarse += B * phi
         mglevel_m[level-1]->Bcrse_p->apply(*mglevel_m[level-2]->phi_p,
                                            fine2crse, Teuchos::NO_TRANS,
                                            scalar_t(1.0), scalar_t(1.0));
     }
-    
+
     Teuchos::RCP<vector_t> uncoveredRho = Teuchos::rcp( new vector_t(mglevel_m[level-1]->map_p, true) );
-    
+
     mglevel_m[level-1]->UnCovered_p->apply(*mglevel_m[level-1]->rho_p, *uncoveredRho);
-    
-    
+
+
     //FIXME tmp2 not needed
     Teuchos::RCP<vector_t> tmp2 = Teuchos::rcp( new vector_t(mglevel_m[level-1]->map_p, true) );
     mglevel_m[level-1]->UnCovered_p->apply(fine2crse, *tmp2);
-    
+
     // ONLY subtract coarse rho
     mglevel_m[level-1]->residual_p->update(1.0, *uncoveredRho, -1.0, *tmp2, 1.0);
-    
+
 #if AMR_MG_TIMER
         IpplTimings::stopTimer(restrictTimer_m);
 #endif
@@ -1799,19 +1799,19 @@ void AmrMultiGrid::prolongate_m(const lo_t& level) {
 
 
 void AmrMultiGrid::averageDown_m(const lo_t& level) {
-    
+
     if (level == lfine_m )
         return;
-    
+
     Teuchos::RCP<vector_t> phicrse = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p, false) );
-    
+
     // operation: phicrse = 0.0 * phicrse + 1.0 * R^(l) * phi^(l+1)
     mglevel_m[level]->R_p->apply(*mglevel_m[level+1]->phi_p, *phicrse);
-    
+
     Teuchos::RCP<vector_t> uncov_phi = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p, true) );
-    
+
     mglevel_m[level]->UnCovered_p->apply(*mglevel_m[level]->phi_p, *uncov_phi);
-    
+
     mglevel_m[level]->phi_p->update(1.0, *phicrse, 1.0, *uncov_phi, 0.0);
 }
 
@@ -1960,13 +1960,13 @@ void AmrMultiGrid::initPrec_m(const Preconditioner& prec,
 AmrMultiGrid::Boundary
 AmrMultiGrid::convertToEnumBoundary_m(const std::string& bc) {
     std::map<std::string, Boundary> map;
-    
+
     map["DIRICHLET"]    = Boundary::DIRICHLET;
     map["OPEN"]         = Boundary::OPEN;
     map["PERIODIC"]     = Boundary::PERIODIC;
-    
+
     auto boundary = map.find(Util::toUpper(bc));
-    
+
     if ( boundary == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumBoundary_m()",
                             "No boundary type '" + bc + "'.");
@@ -1976,13 +1976,13 @@ AmrMultiGrid::convertToEnumBoundary_m(const std::string& bc) {
 AmrMultiGrid::Interpolater
 AmrMultiGrid::convertToEnumInterpolater_m(const std::string& interp) {
     std::map<std::string, Interpolater> map;
-    
+
     map["TRILINEAR"]    = Interpolater::TRILINEAR;
     map["LAGRANGE"]     = Interpolater::LAGRANGE;
     map["PC"]           = Interpolater::PIECEWISE_CONST;
-    
+
     auto interpolater = map.find(Util::toUpper(interp));
-    
+
     if ( interpolater == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumInterpolater_m()",
                             "No interpolater '" + interp + "'.");
@@ -1993,7 +1993,7 @@ AmrMultiGrid::convertToEnumInterpolater_m(const std::string& interp) {
 AmrMultiGrid::BaseSolver
 AmrMultiGrid::convertToEnumBaseSolver_m(const std::string& bsolver) {
     std::map<std::string, BaseSolver> map;
-    
+
     map["BICGSTAB"]         = BaseSolver::BICGSTAB;
     map["MINRES"]           = BaseSolver::MINRES;
     map["PCPG"]             = BaseSolver::PCPG;
@@ -2008,7 +2008,7 @@ AmrMultiGrid::convertToEnumBaseSolver_m(const std::string& bsolver) {
 #ifdef HAVE_AMESOS2_SUPERLU
     map["SUPERLU"]          = BaseSolver::SUPERLU;
 #endif
-#ifdef HAVE_AMESOS2_UMFPACK  
+#ifdef HAVE_AMESOS2_UMFPACK
     map["UMFPACK"]          = BaseSolver::UMFPACK;
 #endif
 #ifdef HAVE_AMESOS2_PARDISO_MKL
@@ -2021,9 +2021,9 @@ AmrMultiGrid::convertToEnumBaseSolver_m(const std::string& bsolver) {
     map["LAPACK"]           = BaseSolver::LAPACK;
 #endif
     map["SA"]               = BaseSolver::SA;
-    
+
     auto solver = map.find(Util::toUpper(bsolver));
-    
+
     if ( solver == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumBaseSolver_m()",
                             "No bottom solver '" + bsolver + "'.");
@@ -2034,15 +2034,15 @@ AmrMultiGrid::convertToEnumBaseSolver_m(const std::string& bsolver) {
 AmrMultiGrid::Preconditioner
 AmrMultiGrid::convertToEnumPreconditioner_m(const std::string& prec) {
     std::map<std::string, Preconditioner> map;
-    
+
     map["NONE"]         = Preconditioner::NONE;
-    
+
     Ifpack2Preconditioner_t::fillMap(map);
-    
+
     MueLuPreconditioner_t::fillMap(map);
-    
+
     auto precond = map.find(Util::toUpper(prec));
-    
+
     if ( precond == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumPreconditioner_m()",
                             "No preconditioner '" + prec + "'.");
@@ -2059,15 +2059,15 @@ AmrMultiGrid::convertToEnumSmoother_m(const std::string& smoother) {
 AmrMultiGrid::Norm
 AmrMultiGrid::convertToEnumNorm_m(const std::string& norm) {
     std::map<std::string, Norm> map;
-    
+
     map["L1"]   = Norm::L1;
     map["L2"]   = Norm::L2;
     map["LINF"] = Norm::LINF;
-    
+
     snorm_m = Util::toUpper(norm);
-    
+
     auto n = map.find(snorm_m);
-    
+
     if ( n == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumNorm_m()",
                             "No norm '" + norm + "'.");
@@ -2081,7 +2081,7 @@ void AmrMultiGrid::writeSDDSHeader_m(std::ofstream& outfile) {
     std::string dateStr(simtimer.date());
     std::string timeStr(simtimer.time());
     std::string indent("        ");
-    
+
     outfile << "SDDS1" << std::endl;
     outfile << "&description\n"
             << indent << "text=\"Solver statistics '" << OpalData::getInstance()->getInputFn()
@@ -2146,28 +2146,28 @@ void AmrMultiGrid::writeSDDSHeader_m(std::ofstream& outfile) {
 
 void AmrMultiGrid::writeSDDSData_m(const scalar_t& error) {
     IpplTimings::startTimer(dumpTimer_m);
-    
+
     unsigned int pwi = 10;
-    
+
     std::ofstream outfile;
-    
+
     if ( comm_mp->getRank() == 0 ) {
         outfile.open(fname_m.c_str(), flag_m);
         outfile.precision(15);
         outfile.setf(std::ios::scientific, std::ios::floatfield);
-        
+
         if ( flag_m == std::ios::out ) {
             flag_m = std::ios::app;
             writeSDDSHeader_m(outfile);
         }
-        
+
         outfile << itsAmrObject_mp->getT() * 1e9 << std::setw(pwi) << '\t'  // 1
                 << this->nIter_m << std::setw(pwi) << '\t'                  // 2
                 << this->bIter_m << std::setw(pwi) << '\t'                  // 3
                 << this->regrid_m << std::setw(pwi) <<  '\t'                // 4
                 << error << '\n';                                           // 5
     }
-    
+
     IpplTimings::stopTimer(dumpTimer_m);
 }
 

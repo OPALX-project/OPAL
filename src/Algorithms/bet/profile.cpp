@@ -93,7 +93,7 @@ Profile::Profile(char *fname, double eps) {
     for(i = 0; i < n; i++) {
       int res = fscanf(f, "%lf %lf", &x[i], &y[i]);
       if (res !=0)
-	ERRORMSG("fscanf in profile.cpp has res!=0" << endl);
+          ERRORMSG("fscanf in profile.cpp has res!=0" << endl);
     }
     fclose(f);
 
@@ -295,4 +295,3 @@ double Profile::Labs() {
     return (((x == NULL) || (x[n-1] == x[0]) || (ym == 0.0)) ? 0.0 :
             fabs(qromb(f3, x[0], x[n-1]) / ym));
 }
-

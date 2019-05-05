@@ -118,7 +118,7 @@ bool CyclotronValley::applyToReferenceParticle(const Vector_t &tmpR, const Vecto
     Vector_t  tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
     if(!fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB)) {
-	B +=scale_m * tmpB;
+        B +=scale_m * tmpB;
         return false;
     }
     return true;

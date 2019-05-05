@@ -1099,15 +1099,15 @@ void DataSink::writeSurfaceInteraction(PartBunchBase<double, 3> *beam, long long
     if(firstWriteH5Surface_m) {
         firstWriteH5Surface_m = false;
 
-	h5_prop_t props = H5CreateFileProp ();
-	MPI_Comm comm = Ippl::getComm();
-	H5SetPropFileMPIOCollective (props, &comm);
-	H5fileS_m = H5OpenFile (surfaceLossFileName_m.c_str(), H5_O_WRONLY, props);
+        h5_prop_t props = H5CreateFileProp ();
+        MPI_Comm comm = Ippl::getComm();
+        H5SetPropFileMPIOCollective (props, &comm);
+        H5fileS_m = H5OpenFile (surfaceLossFileName_m.c_str(), H5_O_WRONLY, props);
         if(H5fileS_m == (h5_file_t)H5_ERR) {
             throw OpalException("DataSink::writeSurfaceInteraction",
                                 "failed to open h5 file '" + surfaceLossFileName_m + "' for surface loss");
         }
-	H5CloseProp (props);
+        H5CloseProp (props);
 
     }
     int nTot = bg.getNumBFaces();

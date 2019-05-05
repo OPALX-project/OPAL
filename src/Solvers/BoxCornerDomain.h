@@ -20,20 +20,20 @@
     A_m and B_m are the half apperture of the box
 
 
-                                     / (A_m,B_m)       
+                                     / (A_m,B_m)
                                     /
                                    /
                                   /
     L1_m                         /
-------------      --------------+ (-A_m,B_m)       
+------------      --------------+ (-A_m,B_m)
            | L2_m |             |
-        C_m|      |             | 
+        C_m|      |             |
            |------|             |      /
-	 .....                  |     /
+         .....                  |     /
 (0,0)---.......-----------------+    /
          .....                  |   /
    z                            |  /
-   |                            | / 
+   |                            | /
 --------------------------------+/ (-A_m,-B_m)
 
             Length_m
@@ -107,7 +107,7 @@ public:
     double getYRangeMin() { return  -B_m;} // actBMin_m; }
     double getYRangeMax() { return  B_m; } // actBMax_m; }
     double getZRangeMin() { return  L1_m;}
-    double getZRangeMax() { return  L1_m+L2_m; } 
+    double getZRangeMax() { return  L1_m+L2_m; }
 
 
     //TODO: ?
@@ -142,7 +142,7 @@ private:
     /// the maximal hight of the box
     double B_m;
 
-    
+
     /// because the geometry can change in the y direction
     double actBMin_m;
 

@@ -54,9 +54,9 @@ public:
         GAPWIDTH,       // constant gap width of cavity
         PHI0,           // initial phase of cavity
         DESIGNENERGY,   // The mean kinetic energy at exit
-	PHASE_MODEL,    // time dependent phase
-	AMPLITUDE_MODEL,// time dependent amplitude
-	FREQUENCY_MODEL,// time dependent frequency
+        PHASE_MODEL,    // time dependent phase
+        AMPLITUDE_MODEL,// time dependent amplitude
+        FREQUENCY_MODEL,// time dependent frequency
         SIZE
     };
 

@@ -154,10 +154,10 @@ void ParallelSliceTracker::printRFPhases() {
 
         if (element->getType() == ElementBase::TRAVELINGWAVE) {
             phase = static_cast<TravelingWave *>(element.get())->getPhasem();
-	    frequency = static_cast<TravelingWave *>(element.get())->getFrequencym();
+            frequency = static_cast<TravelingWave *>(element.get())->getFrequencym();
         } else {
             phase = static_cast<RFCavity *>(element.get())->getPhasem();
-	    frequency = static_cast<RFCavity *>(element.get())->getFrequencym();
+            frequency = static_cast<RFCavity *>(element.get())->getFrequencym();
         }
 
         msg << (it == cl.begin()? "": "\n")
@@ -167,7 +167,7 @@ void ParallelSliceTracker::printRFPhases() {
     }
 
     msg << "-------------------------------------------------------------------------------------\n"
-	<< endl;
+        << endl;
 }
 
 void ParallelSliceTracker::applyEntranceFringe(double angle, double curve,

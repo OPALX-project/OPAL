@@ -577,7 +577,7 @@ void EnvelopeBunch::setBinnedLShape(EnvelopeBunchShape shape, double z0, double 
         case bsRect:
 
             bunch_width = Physics::c * emission_time_s * slices_m[0]->p[SLI_beta];
-	    //            std::cout << "bunch_width = " << bunch_width << " SLI_beta= " << slices_m[0]->p[SLI_beta] << std::endl;
+//            std::cout << "bunch_width = " << bunch_width << " SLI_beta= " << slices_m[0]->p[SLI_beta] << std::endl;
             for(int i = 0; i < numMySlices_m; i++) {
                 slices_m[i]->p[SLI_z] = -(((numSlices_m - 1) - (mySliceStartOffset_m + i)) * bunch_width) / numSlices_m;
             }
@@ -634,10 +634,10 @@ void EnvelopeBunch::setBinnedLShape(EnvelopeBunchShape shape, double z0, double 
     /*
     for(unsigned int i = 0; i < bins_m.size(); i++) {
       if(bins_m[i].size() > 0) {
-	std::cout << Ippl::Comm->myNode() << ": Bin " << i << ": ";
-	for(unsigned int j = 0; j < bins_m[i].size(); j++)
-	  std::cout << " " << mySliceStartOffset_m + bins_m[i][j] << "(" << slices_m[j]->p[SLI_z] << ")";
-	std::cout << std::endl;
+    std::cout << Ippl::Comm->myNode() << ": Bin " << i << ": ";
+    for(unsigned int j = 0; j < bins_m[i].size(); j++)
+      std::cout << " " << mySliceStartOffset_m + bins_m[i][j] << "(" << slices_m[j]->p[SLI_z] << ")";
+    std::cout << std::endl;
       }
     }
     */

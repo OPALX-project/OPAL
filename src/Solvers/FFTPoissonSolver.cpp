@@ -244,37 +244,37 @@ void FFTPoissonSolver::initializeFields() {
 
       if (Ippl::myNode() == 0) {
 
-	//create stream for greens function
-	dksbase.createStream(streamGreens);
-	dksbase.createStream(streamFFT);
+          //create stream for greens function
+          dksbase.createStream(streamGreens);
+          dksbase.createStream(streamFFT);
 
-	//create fft plans for multiple reuse
-	int dimsize[3] = {2*nr_m[0], 2*nr_m[1], 2*nr_m[2]};
+          //create fft plans for multiple reuse
+          int dimsize[3] = {2*nr_m[0], 2*nr_m[1], 2*nr_m[2]};
 
-	dksbase.setupFFT(3, dimsize);
+          dksbase.setupFFT(3, dimsize);
 
-	//allocate memory
-	int sizegreen = tmpgreen_m.getLayout().getDomain().size();
-	int sizerho2_m = rho2_m.getLayout().getDomain().size();
-	int sizecomp = grntr_m.getLayout().getDomain().size();
+          //allocate memory
+          int sizegreen = tmpgreen_m.getLayout().getDomain().size();
+          int sizerho2_m = rho2_m.getLayout().getDomain().size();
+          int sizecomp = grntr_m.getLayout().getDomain().size();
 
-	tmpgreen_ptr = dksbase.allocateMemory<double>(sizegreen, dkserr);
-	rho2_m_ptr = dksbase.allocateMemory<double>(sizerho2_m, dkserr);
-	rho2real_m_ptr = dksbase.allocateMemory<double>(sizerho2_m, dkserr);
+          tmpgreen_ptr = dksbase.allocateMemory<double>(sizegreen, dkserr);
+          rho2_m_ptr = dksbase.allocateMemory<double>(sizerho2_m, dkserr);
+          rho2real_m_ptr = dksbase.allocateMemory<double>(sizerho2_m, dkserr);
 
-	grntr_m_ptr = dksbase.allocateMemory< std::complex<double>  >(sizecomp, dkserr);
-	rho2tr_m_ptr = dksbase.allocateMemory< std::complex<double> > (sizecomp, dkserr);
+          grntr_m_ptr = dksbase.allocateMemory< std::complex<double>  >(sizecomp, dkserr);
+          rho2tr_m_ptr = dksbase.allocateMemory< std::complex<double> > (sizecomp, dkserr);
 
-	//send rho2real_m_ptr to other mpi processes
-	//send streamFFT to other processes
-	for (int p = 1; p < Ippl::getNodes(); p++) {
-	  dksbase.sendPointer( rho2real_m_ptr, p, Ippl::getComm() );
-	}
+          //send rho2real_m_ptr to other mpi processes
+          //send streamFFT to other processes
+          for (int p = 1; p < Ippl::getNodes(); p++) {
+              dksbase.sendPointer( rho2real_m_ptr, p, Ippl::getComm() );
+          }
       } else {
-	//create stream for FFT data transfer
-	dksbase.createStream(streamFFT);
-	//receive pointer
-	rho2real_m_ptr = dksbase.receivePointer(0, Ippl::getComm(), dkserr);
+          //create stream for FFT data transfer
+          dksbase.createStream(streamFFT);
+          //receive pointer
+          rho2real_m_ptr = dksbase.receivePointer(0, Ippl::getComm(), dkserr);
       }
     }
 
@@ -529,14 +529,14 @@ void FFTPoissonSolver::integratedGreensFunctionDKS() {
    */
   NDIndex<3> idx =  layout4_m->getDomain();
   dksbase.callGreensIntegral(tmpgreen_ptr, idx[0].length(), idx[1].length(), idx[2].length(),
-			     nr_m[0]+1, nr_m[1]+1, hr_m[0], hr_m[1], hr_m[2], streamGreens);
+                             nr_m[0]+1, nr_m[1]+1, hr_m[0], hr_m[1], hr_m[2], streamGreens);
 
   Index I = nr_m[0] + 1;
   Index J = nr_m[1] + 1;
   Index K = nr_m[2] + 1;
 
   dksbase.callGreensIntegration(rho2_m_ptr, tmpgreen_ptr, nr_m[0]+1, nr_m[1]+1, nr_m[2]+1,
-				streamGreens);
+                                streamGreens);
 
   dksbase.callMirrorRhoField(rho2_m_ptr, nr_m[0], nr_m[1], nr_m[2], streamGreens);
 #endif

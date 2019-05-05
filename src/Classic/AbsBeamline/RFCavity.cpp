@@ -794,7 +794,7 @@ pair<double, double> RFCavity::trackOnAxisParticle(const double &p0,
                                                    const double &dt,
                                                    const double &q,
                                                    const double &mass,
-						   std::ofstream *out) {
+                                                   std::ofstream *out) {
     Vector_t p(0, 0, p0);
     double t = t0;
     BorisPusher integrator(*RefPartBunch_m->getReference());
@@ -807,8 +807,8 @@ pair<double, double> RFCavity::trackOnAxisParticle(const double &p0,
     Vector_t Ef(0.0), Bf(0.0);
 
     if (out) *out << std::setw(18) << z[2]
-		  << std::setw(18) << Util::getEnergy(p, mass)
-		  << std::endl;
+                  << std::setw(18) << Util::getEnergy(p, mass)
+                  << std::endl;
     while(z(2) + dz < zend && z(2) + dz > zbegin) {
         z /= cdt;
         integrator.push(z, p, dt);
@@ -827,9 +827,9 @@ pair<double, double> RFCavity::trackOnAxisParticle(const double &p0,
         z *= cdt;
         t += dt;
 
-	if (out) *out << std::setw(18) << z[2]
-		      << std::setw(18) << Util::getEnergy(p, mass)
-		      << std::endl;
+        if (out) *out << std::setw(18) << z[2]
+                      << std::setw(18) << Util::getEnergy(p, mass)
+                      << std::endl;
     }
 
     const double beta = sqrt(1. - 1 / (dot(p, p) + 1.));

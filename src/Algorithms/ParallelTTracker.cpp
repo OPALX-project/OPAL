@@ -1212,7 +1212,7 @@ void ParallelTTracker::writePhaseSpace(const long long step, bool psDump, bool s
     if (statDump) {
         std::vector<std::pair<std::string, unsigned int> > collimatorLosses;
         FieldList collimators = itsOpalBeamline_m.getElementByType(ElementBase::CCOLLIMATOR);
-	if (collimators.size() != 0) {
+        if (collimators.size() != 0) {
             for (FieldList::iterator it = collimators.begin(); it != collimators.end(); ++ it) {
                 FlexibleCollimator* coll = static_cast<FlexibleCollimator*>(it->getElement().get());
                 std::string name = coll->getName();
@@ -1233,7 +1233,7 @@ void ParallelTTracker::writePhaseSpace(const long long step, bool psDump, bool s
             for (size_t i = 0; i < collimatorLosses.size(); ++ i){
                 collimatorLosses[i].second = bareLosses[i];
             }
-	}
+        }
         // Write statistical data.
         itsDataSink_m->writeStatData(itsBunch_m, FDext, collimatorLosses);
 

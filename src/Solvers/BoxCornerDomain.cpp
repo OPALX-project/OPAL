@@ -39,7 +39,7 @@ BoxCornerDomain::BoxCornerDomain(double A, double B, double C, double Length, do
       std::string file("boxcorner.dat");
       os_m.open(file.c_str());
       if(os_m.bad()) {
-	*gmsg << "Unable to open output file " <<  file << endl;
+          *gmsg << "Unable to open output file " <<  file << endl;
       }
       //os_m << "# ...." << endl;
     }
@@ -73,7 +73,7 @@ void BoxCornerDomain::compute(Vector_t hr){
     actBMax_m = std::max(bL,bH);
 
     INFOMSG(" BoxCorner L= " << Length_m << " L1= " << L1_m << " L2= " << L2_m << " A= " << A_m << " B= " << B_m << " C= " << C_m
-	    << " bL= " << bL << " bH= " << bH <<  " actBMin= " << actBMin_m << " actBMax=max(bL,bH)= " << actBMax_m << endl);
+            << " bL= " << bL << " bH= " << bH <<  " actBMin= " << actBMin_m << " actBMax=max(bL,bH)= " << actBMax_m << endl);
 
     //reset number of points inside domain
 

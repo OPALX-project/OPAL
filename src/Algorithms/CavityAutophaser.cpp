@@ -266,7 +266,7 @@ double CavityAutophaser::track(Vector_t R,
                                double t,
                                const double dt,
                                const double phase,
-			       std::ofstream *out) const {
+                               std::ofstream *out) const {
     const Vector_t &refP = initialP_m;
 
     RFCavity *rfc = static_cast<RFCavity *>(itsCavity_m.get());
@@ -278,7 +278,7 @@ double CavityAutophaser::track(Vector_t R,
                                                             dt,
                                                             itsReference_m.getQ(),
                                                             itsReference_m.getM() * 1e-6,
-							    out);
+                                                            out);
     rfc->setPhasem(initialPhase);
 
     double finalKineticEnergy = Util::getEnergy(Vector_t(0.0, 0.0, pe.first), itsReference_m.getM() * 1e-6);

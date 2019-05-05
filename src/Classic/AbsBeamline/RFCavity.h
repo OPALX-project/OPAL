@@ -104,7 +104,7 @@ public:
                                                           const double & dt,
                                                           const double & q,
                                                           const double & mass,
-							  std::ofstream *out = NULL);
+                                                          std::ofstream *out = NULL);
 
     virtual void addKR(int i, double t, Vector_t &K) override;
 

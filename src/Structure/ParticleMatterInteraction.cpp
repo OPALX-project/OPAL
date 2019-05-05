@@ -40,7 +40,7 @@ namespace {
         RADIUS, // Radius of the tube
         SIGMA,
         TAU,
-	NPART,
+        NPART,
         SIZE
     };
 }

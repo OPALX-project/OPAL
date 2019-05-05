@@ -179,7 +179,7 @@ void OpalCavity::update() {
     if(itsAttr[GEOMETRY] && obgeo_m == NULL) {
         obgeo_m = (BoundaryGeometry::find(Attributes::getString(itsAttr[GEOMETRY])))->clone(getOpalName() + std::string("_geometry"));
         if(obgeo_m) {
-	    rfc->setBoundaryGeometry(obgeo_m);
+            rfc->setBoundaryGeometry(obgeo_m);
         }
     }
 
