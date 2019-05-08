@@ -12,7 +12,7 @@ Title, string="UNDULATOR";
 //----------------------------------------------------------------------------
 //Global Parameters
 
-// REAL rf_freq             = 1.3e9;     //RF frequency. (Hz)
+REAL rf_freq             = 1.0;     //RF frequency. (Hz)
 REAL n_particles         = 1176;      //Number of particles in simulation.
 REAL beam_bunch_charge   = 1.846e8 * 1.6e-19;      //Charge of bunch. (C)
 
@@ -35,8 +35,9 @@ DRIVE: Line = (UND);
 // INITIAL DISTRIBUTION
 
 Dist: DISTRIBUTION, TYPE = FROMFILE,
-      	FNAME = "initial-profile.tsv",
+      	FNAME = "initial-profile-for-OPAL.tsv",
 	EMITTED = FALSE;
+
 	
 //----------------------------------------------------------------------------
 // Define Field solvers
@@ -61,7 +62,7 @@ FS_SC: Fieldsolver, FSTYPE = FFT,
 //        BFREQ = rf_freq, BCURRENT = beam_bunch_charge * rf_freq, CHARGE = -1;
 REAL total_mithra_time = 3e-8;
 BEAM1:  BEAM, PARTICLE = ELECTRON, pc = P0, NPART = n_particles,
-	BCURRENT = beam_bunch_charge / total_mithra_time , CHARGE = -1;
+	BFREQ = rf_freq, BCURRENT = beam_bunch_charge / total_mithra_time , CHARGE = -1;
 
 //----------------------------------------------------------------------------
 // Simulate the beamline using TRACK and RUN.
