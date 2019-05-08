@@ -719,14 +719,16 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
 
     /* Get particles in bunch                                                                             */
     itsBunch_m->calcBeamParameters();
+    
     std::list<Darius::Charge>	qv;
     Darius::Charge charge;
     charge.q = itsBunch_m->getChargePerParticle() / (-1.6e-19);  // In elementary charges
+    std::cout << "THIS IS THE CHARGE PER PARTICLE" << charge.q << std::endl;   // REMOVE
     const unsigned int localNum = itsBunch_m->getLocalNum();
     for (unsigned int i = 0; i < localNum; ++i) {
         for (unsigned int d = 0; d < 3; ++d) {
-            charge.rnp[d] = itsBunch_m->R[i](d);
-            charge.gbnp[d] = itsBunch_m->P[i](d);
+            charge.rnp[d] = ( itsBunch_m->toLabTrafo_m.transformTo(itsBunch_m->R[i]) )[d];
+            charge.gbnp[d] = ( itsBunch_m->toLabTrafo_m.rotateTo(itsBunch_m->P[i]) )[d];
         }
         qv.push_back(charge);
     }
@@ -735,26 +737,26 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::BunchInitialize bunchInit;
     Darius::FieldVector<double> fv (0.0);
     
-    bunchInit.bunchType_            = "OPAL";
-    bunchInit.numberOfParticles_    = localNum;
-    bunchInit.cloudCharge_			= charge.q * localNum;    
-    bunchInit.initialGamma_			= itsBunch_m->get_gamma(); 
-    bunchInit.initialBeta_			= sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));    
+    bunchInit.bunchType_ = "OPAL";
+    bunchInit.numberOfParticles_ = localNum;
+    bunchInit.cloudCharge_ = charge.q * localNum;    
+    bunchInit.initialGamma_ = itsBunch_m->get_gamma(); 
+    bunchInit.initialBeta_ = sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));    
     for (unsigned int d = 0; d < 3; ++d) 
-        fv[d] = itsBunch_m->get_pmean()(d);
+        fv[d] = itsBunch_m->toLabTrafo_m.rotateTo( itsBunch_m->get_pmean() ) [d];
     double norm = sqrt( fv.norm() );
     fv /= norm;
-    bunchInit.initialDirection_		= fv;
+    bunchInit.initialDirection_	= fv;
     for (unsigned int d = 0; d < 3; ++d) 
-        fv[d] = itsBunch_m->get_rmean()(d);
-    fv[2] += itsBunch_m->get_sPos();
+        fv[d] = itsBunch_m->toLabTrafo_m.transformTo( itsBunch_m->get_rmean() ) [d];
+    // fv[2] += itsBunch_m->get_sPos();
     bunchInit.position_.push_back(fv);
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rrms()(d);
-    bunchInit.sigmaPosition_		= fv;
+    bunchInit.sigmaPosition_ = fv;
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_prms()(d);
-    bunchInit.sigmaGammaBeta_		= fv;
+    bunchInit.sigmaGammaBeta_ = fv;
     for (unsigned int i = 0; i < 2; ++i){
         bunchInit.tranTrun_ = itsBunch_m->get_maxExtent()(i) > bunchInit.tranTrun_ 
             ?  itsBunch_m->get_maxExtent()(i) : bunchInit.tranTrun_;
@@ -762,7 +764,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
             ?  abs( itsBunch_m->get_origin()(i) ) : bunchInit.tranTrun_;
     }
     bunchInit.longTrun_ = std::max( abs( itsBunch_m->get_origin()(2) ), itsBunch_m->get_maxExtent()(2) );
-    bunchInit.inputVector_                      = qv;   
+    bunchInit.inputVector_ = qv;   
     
     /* Undulator parameters                 */
     Darius::Undulator uParam;
