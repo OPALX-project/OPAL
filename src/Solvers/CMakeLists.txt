@@ -12,7 +12,7 @@ set (HDRS
     PoissonSolver.h
 )
 
-if ( HAVE_SAAMG_SOLVER )
+if ( ENABLE_SAAMG_SOLVER )
     list(APPEND _SRCS
          ArbitraryDomain.cpp
          BoxCornerDomain.cpp
@@ -29,7 +29,7 @@ if ( HAVE_SAAMG_SOLVER )
          RectangularDomain.h
          )
 
-endif (HAVE_SAAMG_SOLVER )
+endif ( ENABLE_SAAMG_SOLVER )
 
 set(AMR_MG_DIR "")
 
