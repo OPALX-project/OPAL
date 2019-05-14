@@ -681,7 +681,7 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
 
 void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
                                                                 
-
+    
     Inform msg("Undulator: ", *gmsg);
     bool inUndulator = false;
 
@@ -719,12 +719,18 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
 
     /* Get particles in bunch                                                                             */
     itsBunch_m->calcBeamParameters();
-    transformBunch(itsBunch_m->toLabTrafo_m.inverted());  // REMOVE OR CHECK
+    Quaternion alignment = getQuaternion(itsBunch_m->get_pmean(), Vector_t(0, 0, 1));  // REMOVE OR CHECK
+    CoordinateSystemTrafo beamToReferenceCSTrafo(Vector_t(0, 0, pathLength_m), alignment.conjugate());  // REMOVE OR CHECK
+    CoordinateSystemTrafo referenceToBeamCSTrafo = beamToReferenceCSTrafo.inverted();  // REMOVE OR CHECK
+    const unsigned int localNum = itsBunch_m->getLocalNum();    
+    for (unsigned int i = 0; i < localNum; ++i) {
+        itsBunch_m->R[i] = referenceToBeamCSTrafo.transformTo(itsBunch_m->R[i]);
+        itsBunch_m->P[i] = referenceToBeamCSTrafo.rotateTo(itsBunch_m->P[i]);
+    }    
 
     std::list<Darius::Charge>	qv;
     Darius::Charge charge;
     charge.q = itsBunch_m->getChargePerParticle() / (-1.6e-19);  // In elementary charges
-    const unsigned int localNum = itsBunch_m->getLocalNum();
     double average_of_z = 0;  // REMOVE
     for (unsigned int i = 0; i < localNum; ++i) {
         for (unsigned int d = 0; d < 3; ++d) {
@@ -750,8 +756,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.initialGamma_ = itsBunch_m->get_gamma(); 
     bunchInit.initialBeta_ = sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));    
     for (unsigned int d = 0; d < 3; ++d) 
-        // fv[d] = ( itsBunch_m->get_pmean() )[d];
-        fv[d] = itsBunch_m->toLabTrafo_m.rotateTo( itsBunch_m->get_pmean() ) [d];
+        fv[d] = ( itsBunch_m->get_pmean() )[d];
+        // fv[d] = itsBunch_m->toLabTrafo_m.rotateTo( itsBunch_m->get_pmean() ) [d];
     double norm = sqrt( fv.norm() );
     fv /= norm;
     bunchInit.initialDirection_	= fv;
@@ -796,7 +802,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.timeScale_ = 1.0;
     mesh.totalTime_ = uLength / bunchInit.initialBeta_ / Darius::C0;
     mesh.truncationOrder_ = 2;
-    mesh.spaceCharge_ = 0;
+    mesh.spaceCharge_ = 0;  // LATER CHANGE TO 1
     
     /* Create the bunch database.                                                                         */
     Darius::Bunch                              bunch;
@@ -805,6 +811,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     int m = 5;  // dt = m * dt_bunch
     bunch.timeStep_ = mesh.meshResolution_[2] * bunchInit.initialGamma_ *
         bunchInit.initialGamma_ / Darius::C0 / ( 1 + .5 * uParam.k_ *  uParam.k_ ) / m;
+
     /* Create the seed database.                                                                          */
     Darius::Seed                               seed;
 
@@ -841,7 +848,11 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         fdtdsc.solve();
     else
         fdtd.solve();
-    
+
+    for (unsigned int i = 0; i < localNum; ++i) {
+        itsBunch_m->R[i] = beamToReferenceCSTrafo.transformTo(itsBunch_m->R[i]);
+        itsBunch_m->P[i] = beamToReferenceCSTrafo.rotateTo(itsBunch_m->P[i]);
+    }        
 
 }
 
