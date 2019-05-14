@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include <gtest/gtest_prod.h>
-#include "AbsBeamline/Bend.h"
+#include "AbsBeamline/Bend2D.h"
 #include "Fields/Fieldmap.h"
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "BeamlineCore/RBendRep.h"
@@ -102,7 +102,7 @@ TEST(Maxwell, Zeros)
     bunch->resetM(0.938);
     bunch->setdT(1.0e-12);//time step
     double startField = 2.0, endField = 10.0 ;
-    myMagnet->Bend::initialise(bunch, startField, endField);
+    myMagnet->Bend2D::initialise(bunch, startField, endField);
     delete partData;
     delete bunch;
     Vector_t R(0. ,0., 0.);
@@ -120,9 +120,9 @@ TEST(Maxwell, Zeros)
 		  //std::cout<<"Step #"<<step<<endl;
 		  counter ++;
 		  Vector_t B(0.0);
-		  R(0) = (myMagnet->Bend::designRadius_m + x) * cos(phi);
+		  R(0) = (myMagnet->Bend2D::designRadius_m + x) * cos(phi);
 		  R(1) = z;
-		  R(2) = (myMagnet->Bend::designRadius_m + x) * sin(phi);
+		  R(2) = (myMagnet->Bend2D::designRadius_m + x) * sin(phi);
 		  double t = 0;
 		  myMagnet->apply(R, P, t , E, B);
 		  //B /= myMagnet->fieldAmplitude_m; //normalisation
@@ -147,14 +147,14 @@ TEST(Maxwell, Zeros)
 
 	        }
     //fout.close();
-    cout<<"bending radius: "<<myMagnet->Bend::designRadius_m<<endl;
+    cout<<"bending radius: "<<myMagnet->Bend2D::designRadius_m<<endl;
     cout<<"field amplitude: "<<myMagnet->fieldAmplitude_m<<endl;
     /**
     Vector_t B(0.0);
     double phi_new = Physics::pi / 20 ;
-    R[0] = (myMagnet->Bend::designRadius_m ) * cos(phi_new);
+    R[0] = (myMagnet->Bend2D::designRadius_m ) * cos(phi_new);
     R[1] = 0.005;
-    R[2] = (myMagnet->Bend::designRadius_m ) * sin(phi_new);
+    R[2] = (myMagnet->Bend2D::designRadius_m ) * sin(phi_new);
     myMagnet->apply(R, P, 0 , E, B);
     cout<<"Derivative vs stepSize:"<<endl;
     cout<<partialsDerivB(R, B,1.0, myMagnet)[1][2]<<' '<<1.0<<endl;

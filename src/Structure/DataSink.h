@@ -27,6 +27,10 @@
 #include "Utilities/Util.h"
 #include "H5hut.h"
 
+#ifdef __linux__
+    #include "MemoryProfiler.h"
+#endif
+
 template <class T, unsigned Dim>
 class PartBunchBase;
 class EnvelopeBunch;
@@ -237,6 +241,10 @@ public:
     void writeGridLBalData(PartBunchBase<double, 3> *beam,
                            std::ofstream &outputFile,
                            unsigned int pwi);
+
+    bool writeAmrStatistics(PartBunchBase<double, 3> *beam);
+    
+    void memoryDump(PartBunchBase<double, 3> *beam);
 #endif
 
 
@@ -305,6 +313,10 @@ private:
     bool doHDF5_m;
 
     H5PartWrapper *h5wrapper_m;
+
+#ifdef __linux__
+    std::unique_ptr<MemoryProfiler> memprof_m;
+#endif
 };
 
 inline

@@ -135,7 +135,7 @@ void AmrParticleBase<PLayout>::update() {
 
 
 template<class PLayout>
-void AmrParticleBase<PLayout>::update(int lev_min, int lev_max) {
+void AmrParticleBase<PLayout>::update(int lev_min, int lev_max, bool isRegrid) {
     
     IpplTimings::startTimer(updateParticlesTimer_m);
 
@@ -145,7 +145,7 @@ void AmrParticleBase<PLayout>::update(int lev_min, int lev_max) {
     PAssert(Layout != 0);
     
     // ask the layout manager to update our atoms, etc.
-    Layout->update(*this, lev_min, lev_max);
+    Layout->update(*this, lev_min, lev_max, isRegrid);
     
     //sort the particles by grid and level
     sort();

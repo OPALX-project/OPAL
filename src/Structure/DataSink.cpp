@@ -36,6 +36,9 @@ DataSink::DataSink() :
     lossWrCounter_m(0),
     doHDF5_m(true),
     h5wrapper_m(NULL)
+#ifdef __linux__
+    , memprof_m(new MemoryProfiler())
+#endif
 { }
 
 DataSink::DataSink(H5PartWrapper *h5wrapper, int restartStep):
@@ -44,6 +47,9 @@ DataSink::DataSink(H5PartWrapper *h5wrapper, int restartStep):
     H5call_m(0),
     lossWrCounter_m(0),
     h5wrapper_m(h5wrapper)
+#ifdef __linux__
+    , memprof_m(new MemoryProfiler())
+#endif
 {
     namespace fs = boost::filesystem;
 
@@ -97,6 +103,7 @@ DataSink::DataSink(H5PartWrapper *h5wrapper, int restartStep):
     }
 
     if (Options::memoryDump) {
+#ifndef __linux__
         if (fs::exists(memFileName_m)) {
             INFOMSG("Appending memory consumption to existing data file: " << memFileName_m << endl);
             if (Ippl::myNode() == 0) {
@@ -105,6 +112,7 @@ DataSink::DataSink(H5PartWrapper *h5wrapper, int restartStep):
         } else {
             INFOMSG("Creating new file for memory consumption data: " << memFileName_m << endl);
         }
+#endif
     }
 
 #ifdef ENABLE_AMR
@@ -127,6 +135,9 @@ DataSink::DataSink(H5PartWrapper *h5wrapper):
     H5call_m(0),
     lossWrCounter_m(0),
     h5wrapper_m(h5wrapper)
+#ifdef __linux__
+    , memprof_m(new MemoryProfiler())
+#endif
 {
     /// Constructor steps:
     /// Get timers from IPPL.
@@ -346,15 +357,23 @@ void DataSink::doWriteStatData(PartBunchBase<double, 3> *beam,
     /// header information.
     std::ofstream os_statData;
     std::ofstream os_lBalData;
+
+#ifndef __linux__
     std::ofstream os_memData;
+#endif
+
 #ifdef ENABLE_AMR
     std::ofstream os_gridLBalData;
 #endif
     double Q = beam->getCharge();
 
     if ( Options::memoryDump ) {
+#ifdef __linux__
+        memprof_m->write(beam->getT() * 1e9);
+#else
         IpplMemoryUsage::IpplMemory_p memory = IpplMemoryUsage::getInstance();
         memory->sample();
+#endif
     }
 
     if (Ippl::myNode() == 0) {
@@ -362,8 +381,10 @@ void DataSink::doWriteStatData(PartBunchBase<double, 3> *beam,
         open_m(os_statData, statFileName_m);
         open_m(os_lBalData, lBalFileName_m);
 
+#ifndef __linux__
         if ( Options::memoryDump )
             open_m(os_memData, memFileName_m);
+#endif
 
 #ifdef ENABLE_AMR
         if ( dynamic_cast<AmrPartBunch*>(beam) != nullptr )
@@ -375,8 +396,10 @@ void DataSink::doWriteStatData(PartBunchBase<double, 3> *beam,
             writeSDDSHeader(os_statData, losses);
             writeLBalHeader(beam, os_lBalData);
 
+#ifndef __linux__
             if ( Options::memoryDump )
                 writeMemoryHeader(os_memData);
+#endif
 
 #ifdef ENABLE_AMR
             if ( dynamic_cast<AmrPartBunch*>(beam) != nullptr )
@@ -474,10 +497,12 @@ void DataSink::doWriteStatData(PartBunchBase<double, 3> *beam,
 
         os_lBalData.close();
 
+#ifndef __linux__
         if ( Options::memoryDump ) {
             writeMemoryData(beam, os_memData, pwi);
             os_memData.close();
         }
+#endif
 
 #ifdef ENABLE_AMR
         if ( dynamic_cast<AmrPartBunch*>(beam) != nullptr ) {
@@ -507,15 +532,23 @@ void DataSink::writeStatData(EnvelopeBunch &beam, Vector_t FDext[], double sposH
     /// header information.
     std::ofstream os_statData;
     std::ofstream os_lBalData;
+
+#ifndef __linux__
     std::ofstream os_memData;
+#endif
+
 #ifdef ENABLE_AMR
     std::ofstream os_gridLBalData;
 #endif
     double en = beam.get_meanKineticEnergy() * 1e-6;
 
     if ( Options::memoryDump ) {
+#ifdef __linux__
+        memprof_m->write(beam.getT() * 1e9);
+#else
         IpplMemoryUsage::IpplMemory_p memory = IpplMemoryUsage::getInstance();
         memory->sample();
+#endif
     }
 
     if (Ippl::myNode() == 0) {
@@ -523,8 +556,10 @@ void DataSink::writeStatData(EnvelopeBunch &beam, Vector_t FDext[], double sposH
         open_m(os_statData, statFileName_m);
         open_m(os_lBalData, lBalFileName_m);
 
+#ifndef __linux__
         if ( Options::memoryDump )
             open_m(os_memData, memFileName_m);
+#endif
 
 #ifdef ENABLE_AMR
         if ( dynamic_cast<AmrPartBunch*>(&beam) != nullptr )
@@ -536,8 +571,10 @@ void DataSink::writeStatData(EnvelopeBunch &beam, Vector_t FDext[], double sposH
             writeSDDSHeader(os_statData);
             writeLBalHeader(&beam, os_lBalData);
 
+#ifndef __linux__
             if ( Options::memoryDump )
                 writeMemoryHeader(os_memData);
+#endif
 
 #ifdef ENABLE_AMR
             if ( dynamic_cast<AmrPartBunch*>(&beam) != nullptr )
@@ -604,10 +641,12 @@ void DataSink::writeStatData(EnvelopeBunch &beam, Vector_t FDext[], double sposH
         writeLBalData(&beam, os_lBalData, pwi);
         os_lBalData.close();
 
+#ifndef __linux__
         if ( Options::memoryDump ) {
             writeMemoryData(&beam, os_memData, pwi);
             os_memData.close();
         }
+#endif
 
 #ifdef ENABLE_AMR
         if ( dynamic_cast<AmrPartBunch*>(&beam) != nullptr ) {
@@ -1692,10 +1731,10 @@ void DataSink::writeGridLBalHeader(PartBunchBase<double, 3> *beam,
     for (int p = 0; p < Ippl::getNodes(); ++p) {
         outputFile << "&column\n"
                    << indent << "name=processor-" << p << ",\n"
-                   << indent << "type=double,\n"
+                   << indent << "type=long,\n"
                    << indent << "units=1,\n"
                    << indent << "description=\"" << columnStart
-                   << " Number of boxes per processor " << p << "\"\n"
+                   << " Number of grid points per processor " << p << "\"\n"
                    << "&end\n";
         ++columnStart;
     }
@@ -1724,12 +1763,12 @@ void DataSink::writeGridLBalData(PartBunchBase<double, 3> *beam,
 
     os_gridLBalData << amrbeam->getT() * 1e9 << std::setw(pwi) << "\t";     // 1
 
-    std::map<int, int> gridsPerCore;
+    std::map<int, long> gridPtsPerCore;
 
     int nLevel = (amrbeam->getAmrObject())->maxLevel() + 1;
     std::vector<int> gridsPerLevel;
 
-    amrbeam->getAmrObject()->getGridStatistics(gridsPerCore, gridsPerLevel);
+    amrbeam->getAmrObject()->getGridStatistics(gridPtsPerCore, gridsPerLevel);
 
     os_gridLBalData << "\t";
     for (int lev = 0; lev < nLevel; ++lev) {
@@ -1738,13 +1777,119 @@ void DataSink::writeGridLBalData(PartBunchBase<double, 3> *beam,
 
     int nProcs = Ippl::getNodes();
     for (int p = 0; p < nProcs; ++p) {
-        os_gridLBalData << gridsPerCore[p] << std::setw(pwi);
+        os_gridLBalData << gridPtsPerCore[p] << std::setw(pwi);
 
         if ( p < nProcs - 1 )
             os_gridLBalData << "\t";
     }
     os_gridLBalData << std::endl;
 }
+
+
+bool DataSink::writeAmrStatistics(PartBunchBase<double, 3> *beam) {
+
+    AmrPartBunch* amrbeam = dynamic_cast<AmrPartBunch*>(beam);
+
+    if ( !amrbeam )
+        return false;
+
+    /// Start timer.
+    IpplTimings::startTimer(StatMarkerTimer_m);
+
+    /// Set width of write fields in output files.
+    unsigned int pwi = 10;
+
+    beam->gatherLoadBalanceStatistics();
+
+    amrbeam->gatherLevelStatistics();
+
+    /// Write data to files. If this is the first write to the beam statistics file, write SDDS
+    /// header information.
+    std::ofstream os_lBalData;
+#ifndef __linux__
+    std::ofstream os_memData;
+#endif
+    std::ofstream os_gridLBalData;
+
+    if ( Options::memoryDump ) {
+#ifdef __linux__
+        memprof_m->write(beam->getT() * 1e9);
+#else
+        IpplMemoryUsage::IpplMemory_p memory = IpplMemoryUsage::getInstance();
+        memory->sample();
+#endif
+    }
+
+    if (Ippl::myNode() == 0) {
+        open_m(os_lBalData, lBalFileName_m);
+
+#ifndef __linux__
+        if ( Options::memoryDump )
+            open_m(os_memData, memFileName_m);
+#endif
+
+        open_m(os_gridLBalData, gridLBalFileName_m);
+
+        if (mode_m == std::ios::out) {
+            mode_m = std::ios::app;
+
+            writeLBalHeader(beam, os_lBalData);
+
+#ifndef __linux__
+            if ( Options::memoryDump )
+                writeMemoryHeader(os_memData);
+#endif
+
+            writeGridLBalHeader(beam, os_gridLBalData);
+        }
+
+        writeLBalData(beam, os_lBalData, pwi);
+
+        os_lBalData.close();
+
+#ifndef __linux__
+        if ( Options::memoryDump ) {
+            writeMemoryData(beam, os_memData, pwi);
+            os_memData.close();
+        }
+#endif
+
+        writeGridLBalData(beam, os_gridLBalData, pwi);
+        os_gridLBalData.close();
+    }
+
+    /// %Stop timer.
+    IpplTimings::stopTimer(StatMarkerTimer_m);
+    
+    return true;
+}
+
+
+void DataSink::memoryDump(PartBunchBase<double, 3> *beam) {
+#ifdef __linux__
+    if ( Options::memoryDump ) {
+        memprof_m->write(beam->getT() * 1e9);
+    }
+#else
+    if ( Ippl::myNode() != 0 || !Options::memoryDump) {
+        return;
+    }
+
+    std::ofstream os_memData;
+    open_m(os_memData, memFileName_m);
+
+    if (mode_m == std::ios::out) {
+        mode_m = std::ios::app;
+
+        writeMemoryHeader(os_memData);
+    }
+
+    unsigned int pwi = 10;
+    writeMemoryData(beam, os_memData, pwi);
+    os_memData.close();
+#endif
+}
+
 #endif
 
 // vi: set et ts=4 sw=4 sts=4:

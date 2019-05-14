@@ -46,7 +46,7 @@ public:
     
     void writeBunch(const AmrPartBunch* bunch_p,
                     const double& time,
-                    const double& scale);
+                    const double& gamma);
     
 private:
     /* Copied and slightely modified version of
@@ -59,6 +59,7 @@ private:
      * @param count how many particles on this grid
      * @param where file offset
      * @param bunch_p to get data from
+     * @param gamma is the Lorentz factor
      */
     void writeParticles_m(int level,
                           std::ofstream& ofs,
@@ -66,7 +67,8 @@ private:
                           amrex::Vector<int>& which,
                           amrex::Vector<int>& count,
                           amrex::Vector<long>& where,
-                          const AmrPartBunch* bunch_p) const;
+                          const AmrPartBunch* bunch_p,
+                          const double gamma) const;
     
 private:
     std::string dir_m;                      ///< directory where to write files

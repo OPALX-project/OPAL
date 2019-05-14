@@ -685,7 +685,8 @@ private:
     IpplTimings::TimerRef restrictTimer_m;      ///< timer for restriction operation
     IpplTimings::TimerRef smoothTimer_m;        ///< timer for all smoothing steps
     IpplTimings::TimerRef interpTimer_m;        ///< prolongation timer
-    IpplTimings::TimerRef residnofineTimer_m;   ///< timer for no-fine residual computation
+    IpplTimings::TimerRef efieldTimer_m;        ///< timer for e-field calculation + copy
+    IpplTimings::TimerRef averageTimer_m;       ///> timer for average down process
     IpplTimings::TimerRef bottomTimer_m;        ///< bottom solver timer
     IpplTimings::TimerRef dumpTimer_m;          ///< write SDDS file timer
 #endif

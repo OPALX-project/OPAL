@@ -1,12 +1,12 @@
 // ------------------------------------------------------------------------
-// $RCSfile: Bend.cpp,v $
+// $RCSfile: Bend2D.cpp,v $
 // ------------------------------------------------------------------------
 // $Revision: 1.1.1.1 $
 // ------------------------------------------------------------------------
 // Copyright: see Copyright.readme
 // ------------------------------------------------------------------------
 //
-// Definitions for class: Bend
+// Definitions for class: Bend2D
 //   Defines the abstract interface for a sector bend magnet.
 //
 // ------------------------------------------------------------------------
@@ -18,7 +18,7 @@
 //
 // ------------------------------------------------------------------------
 
-#include "AbsBeamline/Bend.h"
+#include "AbsBeamline/Bend2D.h"
 #include "Algorithms/PartBunchBase.h"
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Utilities/Options.h"
@@ -34,10 +34,10 @@
 
 extern Inform *gmsg;
 
-// Class Bend
+// Class Bend2D
 // ------------------------------------------------------------------------
 
-Bend::Bend():
+Bend2D::Bend2D():
     BendBase(),
     messageHeader_m(" * "),
     pusher_m(),
@@ -78,7 +78,7 @@ Bend::Bend():
 
 }
 
-Bend::Bend(const Bend &right):
+Bend2D::Bend2D(const Bend2D &right):
     BendBase(right),
     messageHeader_m(" * "),
     pusher_m(right.pusher_m),
@@ -119,7 +119,7 @@ Bend::Bend(const Bend &right):
 
 }
 
-Bend::Bend(const std::string &name):
+Bend2D::Bend2D(const std::string &name):
     BendBase(name),
     messageHeader_m(" * "),
     pusher_m(),
@@ -160,7 +160,7 @@ Bend::Bend(const std::string &name):
 
 }
 
-Bend::~Bend() {
+Bend2D::~Bend2D() {
     if (entryFieldAccel_m != NULL) {
         for (unsigned int i = 0; i < 3u; ++ i) {
             gsl_spline_free(entryFieldValues_m[i]);
@@ -188,7 +188,7 @@ Bend::~Bend() {
  *  This function merely repackages the field arrays as type Vector_t and calls
  *  the equivalent method but with the Vector_t data types.
  */
-bool Bend::apply(const size_t &i,
+bool Bend2D::apply(const size_t &i,
                  const double &t,
                  Vector_t &E,
                  Vector_t &B) {
@@ -212,7 +212,7 @@ bool Bend::apply(const size_t &i,
     return false;
 }
 
-bool Bend::apply(const Vector_t &R,
+bool Bend2D::apply(const Vector_t &R,
                  const Vector_t &P,
                  const double &t,
                  Vector_t &E,
@@ -235,7 +235,7 @@ bool Bend::apply(const Vector_t &R,
 
 }
 
-bool Bend::applyToReferenceParticle(const Vector_t &R,
+bool Bend2D::applyToReferenceParticle(const Vector_t &R,
                                     const Vector_t &P,
                                     const double &t,
                                     Vector_t &E,
@@ -257,11 +257,11 @@ bool Bend::applyToReferenceParticle(const Vector_t &R,
     return false;
 }
 
-void Bend::goOnline(const double &) {
+void Bend2D::goOnline(const double &) {
     online_m = true;
 }
 
-void Bend::initialise(PartBunchBase<double, 3> *bunch,
+void Bend2D::initialise(PartBunchBase<double, 3> *bunch,
                       double &startField,
                       double &endField) {
 
@@ -305,7 +305,7 @@ void Bend::initialise(PartBunchBase<double, 3> *bunch,
     }
 }
 
-void Bend::adjustFringeFields(double ratio) {
+void Bend2D::adjustFringeFields(double ratio) {
     findChordLength(*gmsg, chordLength_m);
 
     double delta = std::abs(entranceParameter1_m - entranceParameter2_m);
@@ -323,7 +323,7 @@ void Bend::adjustFringeFields(double ratio) {
     setupFringeWidths();
 }
 
-double Bend::calculateBendAngle() {
+double Bend2D::calculateBendAngle() {
 
     const double mass = RefPartBunch_m->getM();
     const double gamma = designEnergy_m / mass + 1.0;
@@ -365,7 +365,7 @@ double Bend::calculateBendAngle() {
 
 }
 
-void Bend::calcEngeFunction(double zNormalized,
+void Bend2D::calcEngeFunction(double zNormalized,
                              const std::vector<double> &engeCoeff,
                              int polyOrder,
                              double &engeFunc,
@@ -429,7 +429,7 @@ void Bend::calcEngeFunction(double zNormalized,
     }
 }
 
-Vector_t Bend::calcCentralField(const Vector_t &R,
+Vector_t Bend2D::calcCentralField(const Vector_t &R,
                                 double deltaX) {
 
     Vector_t B(0, 0, 0);
@@ -448,7 +448,7 @@ Vector_t Bend::calcCentralField(const Vector_t &R,
     return B;
 }
 
-Vector_t Bend::calcEntranceFringeField(const Vector_t &R,
+Vector_t Bend2D::calcEntranceFringeField(const Vector_t &R,
                                        double deltaX) {
 
     const CoordinateSystemTrafo toEntranceRegion(Vector_t(0, 0, entranceParameter2_m),
@@ -485,7 +485,7 @@ Vector_t Bend::calcEntranceFringeField(const Vector_t &R,
     return toEntranceRegion.rotateFrom(B);
 }
 
-Vector_t Bend::calcExitFringeField(const Vector_t &R,
+Vector_t Bend2D::calcExitFringeField(const Vector_t &R,
                                    double deltaX) {
 
     const CoordinateSystemTrafo fromEndToExitRegion(Vector_t(0, 0, exitParameter2_m),
@@ -521,7 +521,7 @@ Vector_t Bend::calcExitFringeField(const Vector_t &R,
     return toExitRegion.rotateFrom(B);
 }
 
-bool Bend::calculateMapField(const Vector_t &R, Vector_t &B) {
+bool Bend2D::calculateMapField(const Vector_t &R, Vector_t &B) {
 
     B = Vector_t(0.0);
     bool verticallyInside = (std::abs(R(1)) < 0.5 * gap_m);
@@ -584,7 +584,7 @@ bool Bend::calculateMapField(const Vector_t &R, Vector_t &B) {
     return hitMaterial;
 }
 
-void Bend::calculateRefTrajectory(double &angleX, double &angleY) {
+void Bend2D::calculateRefTrajectory(double &angleX, double &angleY) {
 
     const double mass = RefPartBunch_m->getM();
     const double gamma = designEnergy_m / mass + 1.;
@@ -651,7 +651,7 @@ void Bend::calculateRefTrajectory(double &angleX, double &angleY) {
     angleX = -atan2(P(0), P(2)) + entranceAngle_m;
 }
 
-double Bend::estimateFieldAdjustmentStep(double actualBendAngle,
+double Bend2D::estimateFieldAdjustmentStep(double actualBendAngle,
                                           double mass,
                                           double betaGamma) {
 
@@ -669,7 +669,7 @@ double Bend::estimateFieldAdjustmentStep(double actualBendAngle,
 
 }
 
-void Bend::findBendEffectiveLength(double startField, double endField) {
+void Bend2D::findBendEffectiveLength(double startField, double endField) {
 
     /*
      * Use an iterative procedure to set the width of the
@@ -759,7 +759,7 @@ void Bend::findBendEffectiveLength(double startField, double endField) {
     }
 }
 
-void Bend::findBendStrength(double mass,
+void Bend2D::findBendStrength(double mass,
                             double gamma,
                             double betaGamma,
                             double charge) {
@@ -840,7 +840,7 @@ void Bend::findBendStrength(double mass,
     }
 }
 
-bool Bend::findIdealBendParameters(double chordLength) {
+bool Bend2D::findIdealBendParameters(double chordLength) {
 
     double refMass = RefPartBunch_m->getM();
     double refGamma = designEnergy_m / refMass + 1.0;
@@ -882,7 +882,7 @@ bool Bend::findIdealBendParameters(double chordLength) {
     return reinitialize;
 }
 
-void Bend::findReferenceExitOrigin(double &x, double &z) {
+void Bend2D::findReferenceExitOrigin(double &x, double &z) {
 
     /*
      * Find x,z coordinates of reference trajectory as it passes exit edge
@@ -903,7 +903,7 @@ void Bend::findReferenceExitOrigin(double &x, double &z) {
     }
 }
 
-bool Bend::initializeFieldMap(Inform &msg) {
+bool Bend2D::initializeFieldMap(Inform &msg) {
 
     fieldmap_m = Fieldmap::getFieldmap(fileName_m, fast_m);
 
@@ -918,7 +918,7 @@ bool Bend::initializeFieldMap(Inform &msg) {
 
 }
 
-bool Bend::inMagnetCentralRegion(const Vector_t &R) const {
+bool Bend2D::inMagnetCentralRegion(const Vector_t &R) const {
 
     Vector_t rotationCenter(-designRadius_m * cosEntranceAngle_m, R(1), designRadius_m * sinEntranceAngle_m);
     double distFromRotCenter = euclidean_norm(R - rotationCenter);
@@ -936,14 +936,14 @@ bool Bend::inMagnetCentralRegion(const Vector_t &R) const {
     return false;
 }
 
-bool Bend::inMagnetEntranceRegion(const Vector_t &R) const {
+bool Bend2D::inMagnetEntranceRegion(const Vector_t &R) const {
 
     return (R(2) >= entranceParameter1_m &&
             R(2) < 0.0 &&
             std::abs(R(0)) < aperture_m.second[0]);
 }
 
-bool Bend::inMagnetExitRegion(const Vector_t &R) const {
+bool Bend2D::inMagnetExitRegion(const Vector_t &R) const {
 
     Vector_t Rprime = getBeginToEnd_local().transformTo(R);
 
@@ -952,14 +952,14 @@ bool Bend::inMagnetExitRegion(const Vector_t &R) const {
             std::abs(Rprime(0)) < aperture_m.second[0]);
 }
 
-bool Bend::isPositionInEntranceField(const Vector_t &R) const {
+bool Bend2D::isPositionInEntranceField(const Vector_t &R) const {
 
     return (polyOrderEntry_m >= 0 &&
             R(2) >= entranceParameter1_m &&
             R(2) < entranceParameter3_m);
 }
 
-bool Bend::isPositionInExitField(const Vector_t &R) const {
+bool Bend2D::isPositionInExitField(const Vector_t &R) const {
     Vector_t Rprime = getBeginToEnd_local().transformTo(R);
 
     return (polyOrderExit_m >= 0 &&
@@ -967,7 +967,7 @@ bool Bend::isPositionInExitField(const Vector_t &R) const {
             Rprime(2) < exitParameter3_m);
 }
 
-void Bend::print(Inform &msg, double bendAngleX, double bendAngleY) {
+void Bend2D::print(Inform &msg, double bendAngleX, double bendAngleY) {
     msg << level2 << "\n"
         << "Start of field map:      "
         << startField_m
@@ -1067,7 +1067,7 @@ void Bend::print(Inform &msg, double bendAngleX, double bendAngleY) {
 }
 
 
-void Bend::readFieldMap(Inform &msg) {
+void Bend2D::readFieldMap(Inform &msg) {
     msg << level2 << getName() << " using file ";
     fieldmap_m->getInfo(&msg);
 
@@ -1147,7 +1147,7 @@ void Bend::readFieldMap(Inform &msg) {
     }
 }
 
-bool Bend::reinitialize() {
+bool Bend2D::reinitialize() {
 
     setBendStrength();
     double bendAngleX = 0.0;
@@ -1163,7 +1163,7 @@ bool Bend::reinitialize() {
     return false;
 }
 
-void Bend::setBendEffectiveLength(double startField, double endField) {
+void Bend2D::setBendEffectiveLength(double startField, double endField) {
 
     // Find initial angle.
     double actualBendAngle = calculateBendAngle();
@@ -1175,7 +1175,7 @@ void Bend::setBendEffectiveLength(double startField, double endField) {
 
 }
 
-void Bend::setBendStrength() {
+void Bend2D::setBendStrength() {
 
     // Estimate bend field magnitude.
     double mass = RefPartBunch_m->getM();
@@ -1191,7 +1191,7 @@ void Bend::setBendStrength() {
     findBendStrength(mass, gamma, betaGamma, charge);
 }
 
-void Bend::setEngeOriginDelta(double delta) {
+void Bend2D::setEngeOriginDelta(double delta) {
     /*
      * This function is used to shift the perpendicular distance of the
      * entrance and exit Enge function origins with respect to the entrance
@@ -1213,7 +1213,7 @@ void Bend::setEngeOriginDelta(double delta) {
     setupFringeWidths();
 }
 
-void Bend::setFieldCalcParam() {
+void Bend2D::setFieldCalcParam() {
 
     cosEntranceAngle_m = cos(entranceAngle_m);
     sinEntranceAngle_m = sin(entranceAngle_m);
@@ -1307,7 +1307,7 @@ void Bend::setFieldCalcParam() {
     maxAngleExitAperture -= rotationCenter;
 }
 
-void Bend::setGapFromFieldMap() {
+void Bend2D::setGapFromFieldMap() {
 
     if(gap_m <= 0.0)
         gap_m = fieldmap_m->getFieldGap();
@@ -1316,7 +1316,7 @@ void Bend::setGapFromFieldMap() {
 
 }
 
-bool Bend::setupBendGeometry(Inform &msg, double &startField, double &endField) {
+bool Bend2D::setupBendGeometry(Inform &msg, double &startField, double &endField) {
 
     chordLength_m = 0.0;
     if(!findChordLength(msg, chordLength_m))
@@ -1368,7 +1368,7 @@ bool Bend::setupBendGeometry(Inform &msg, double &startField, double &endField) 
 
 }
 
-bool Bend::setupDefaultFieldMap(Inform &msg) {
+bool Bend2D::setupDefaultFieldMap(Inform &msg) {
 
     if(length_m <= 0.0) {
         ERRORMSG("If using \"1DPROFILE1-DEFAULT\" field map you must set the "
@@ -1384,7 +1384,7 @@ bool Bend::setupDefaultFieldMap(Inform &msg) {
 
 }
 
-void Bend::setFieldBoundaries(double startField, double endField) {
+void Bend2D::setFieldBoundaries(double startField, double endField) {
 
     startField_m = startField - deltaBeginEntry_m / cos(entranceAngle_m);
     endField_m = (startField + angle_m * designRadius_m +
@@ -1392,14 +1392,14 @@ void Bend::setFieldBoundaries(double startField, double endField) {
 
 }
 
-void Bend::setupPusher(PartBunchBase<double, 3> *bunch) {
+void Bend2D::setupPusher(PartBunchBase<double, 3> *bunch) {
 
     RefPartBunch_m = bunch;
     pusher_m.initialise(bunch->getReference());
 
 }
 
-bool Bend::treatAsDrift(Inform &msg, double chordLength) {
+bool Bend2D::treatAsDrift(Inform &msg, double chordLength) {
     if(designEnergy_m <= 0.0) {
         WARNMSG("Warning: bend design energy is zero. Treating as drift."
                 << endl);
@@ -1436,7 +1436,7 @@ bool Bend::treatAsDrift(Inform &msg, double chordLength) {
         return false;
 }
 
-std::vector<Vector_t> Bend::getOutline() const {
+std::vector<Vector_t> Bend2D::getOutline() const {
     std::vector<Vector_t> outline;
     Vector_t rotationCenter = Vector_t(-designRadius_m * cosEntranceAngle_m, 0.0, designRadius_m * sinEntranceAngle_m);
     unsigned int numSteps = 2;
@@ -1539,7 +1539,7 @@ std::vector<Vector_t> Bend::getOutline() const {
     return outline;
 }
 
-MeshData Bend::getSurfaceMesh() const {
+MeshData Bend2D::getSurfaceMesh() const {
     MeshData mesh;
     const Vector_t hgap(0, 0.5 * getFullGap(), 0);
     std::vector<Vector_t> outline = getOutline();
@@ -1767,7 +1767,7 @@ MeshData Bend::getSurfaceMesh() const {
     return mesh;
 }
 
-bool Bend::isInside(const Vector_t &R) const {
+bool Bend2D::isInside(const Vector_t &R) const {
     if (std::abs(R(1)) > gap_m) return false;
 
     if (inMagnetEntranceRegion(R)) {
@@ -1781,25 +1781,25 @@ bool Bend::isInside(const Vector_t &R) const {
     return (std::abs(R(1)) < 0.5 * gap_m && inMagnetCentralRegion(R));
 }
 
-void Bend::setupFringeWidths()
+void Bend2D::setupFringeWidths()
 {
     widthEntranceFringe_m = 2 * std::min(entranceParameter3_m - entranceParameter1_m, aperture_m.second[0]) + aperture_m.second[0];
     widthExitFringe_m = 2 * std::min(exitParameter3_m - exitParameter1_m, aperture_m.second[0]) + aperture_m.second[0];
 }
 
 //set the number of slices for map tracking
-void Bend::setNSlices(const std::size_t& nSlices) {
+void Bend2D::setNSlices(const std::size_t& nSlices) {
     nSlices_m = nSlices;
 }
 
 //get the number of slices for map tracking
-std::size_t Bend::getNSlices() const {
+std::size_t Bend2D::getNSlices() const {
     return nSlices_m;
 }
 
 /// Get entrance fringe field length.
 //  Used to create fringe fields in ThickTracker, (before edge[m], after edge[m])
-std::array<double,2> Bend::getEntranceFringeFieldLength() const {
+std::array<double,2> Bend2D::getEntranceFringeFieldLength() const {
     double entrParam1, entrParam2, entrParam3;
 
     fieldmap_m->get1DProfile1EntranceParam(entrParam1,
@@ -1819,7 +1819,7 @@ std::array<double,2> Bend::getEntranceFringeFieldLength() const {
 
 /// Get exit fringe field length.
 //  Used to create fringe fields in ThickTracker, (after edge[m], before edge[m])
-std::array<double,2> Bend::getExitFringeFieldLength() const {
+std::array<double,2> Bend2D::getExitFringeFieldLength() const {
     std::array<double,2> extFFL;
 
     double exitParam1, exitParam2, exitParam3;

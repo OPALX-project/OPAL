@@ -108,27 +108,18 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
 }
 
 void CSRIGFWakeFunction::initialize(const ElementBase *ref) {
-    double End;
     if(ref->getType() == ElementBase::RBEND ||
        ref->getType() == ElementBase::SBEND) {
 
-        const Bend *bend = static_cast<const Bend *>(ref);
-        // const RBend *bend = dynamic_cast<const RBend *>(ref);
+        const Bend2D *bend = static_cast<const Bend2D *>(ref);
+        double End;
+
         bendRadius_m = bend->getBendRadius();
         bend->getDimensions(Begin_m, End);
         Length_m = bend->getEffectiveLength();
         FieldBegin_m = bend->getEffectiveCenter() - Length_m / 2.0;
         totalBendAngle_m = std::abs(bend->getBendAngle());
         bendName_m = bend->getName();
-
-    // } else if(dynamic_cast<const SBend *>(ref)) {
-    //     const SBend *bend = dynamic_cast<const SBend *>(ref);
-    //     bendRadius_m = bend->getBendRadius();
-    //     bend->getDimensions(Begin_m, End);
-    //     Length_m = bend->getEffectiveLength();
-    //     FieldBegin_m = bend->getEffectiveCenter() - Length_m / 2.0;
-    //     totalBendAngle_m = bend->getBendAngle();
-    //     bendName_m = bend->getName();
     }
 }
 

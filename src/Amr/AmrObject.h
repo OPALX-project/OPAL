@@ -29,8 +29,8 @@ public:
         POTENTIAL,
         EFIELD,
         MOMENTA,
-        MAX_NUM_PARTICLES,      ///< max. #particles per cell
-        MIN_NUM_PARTICLES       ///< min. #particles per cell
+        MIN_NUM_PARTICLES,       ///< min. #particles per cell
+        MAX_NUM_PARTICLES        ///< max. #particles per cell
     };
     
     
@@ -59,10 +59,10 @@ public:
     
     /*!
      * Collect information about grid load balancing.
-     * @param gridsPerCore is filled.
+     * @param gridPtsPerCore is filled.
      * @param gridsPerLevel is filled
      */
-    virtual void getGridStatistics(std::map<int, int>& gridsPerCore,
+    virtual void getGridStatistics(std::map<int, long>& gridPtsPerCore,
                                    std::vector<int>& gridsPerLevel) const = 0;
     
     /*!
@@ -72,12 +72,9 @@ public:
     
     /*!
      * Update of mesh according to chosen refinement strategy.
-     * @param lbase base level to regrid
-     * @param lfine finest level to regrid
      * @param time of regrid
-     * @param bin is the energy bin
      */
-    virtual void regrid(int lbase, int lfine, double time, int bin = 0) = 0;
+    virtual void regrid(double time) = 0;
     
     /*!
      * Choose a new tagging strategy.
@@ -169,6 +166,7 @@ public:
     static std::string enum2string(int number);
 
 protected:
+
     TaggingCriteria tagging_m;  ///< Tagging strategy
     
     double scaling_m;           ///< Scaling factor for tagging [0, 1]
@@ -183,6 +181,7 @@ protected:
     
     /// timer for selfField calculation (used in concrete AmrObject classes)
     IpplTimings::TimerRef amrSolveTimer_m;
+    IpplTimings::TimerRef amrRegridTimer_m;
 };
 
 #endif

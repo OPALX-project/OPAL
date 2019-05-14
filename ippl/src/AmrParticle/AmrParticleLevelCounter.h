@@ -101,7 +101,8 @@ public:
             --inum;
         }
     }
-    
+
+
     /*!
      * @returns the total particle count
      * (should be the same as AmrParticleBase::LocalNum)
@@ -109,7 +110,29 @@ public:
     T getLocalNumAllLevel() {
         return begin( count_m.size() );
     }
-    
+
+
+    /*!
+     * @returns the total particle count up to the given level
+     */
+    T getLocalNumUpToLevel(T level) const {
+        PAssert_GE(level, T(0));
+        T sum = 0;
+        for (T i = 0; i <= level; ++i) {
+            sum += end(i) - begin(i);
+        }
+        return sum;
+    }
+
+
+    /*!
+     * @returns the total particle count at the given level
+     */
+    T getLocalNumAtLevel(T level) const {
+        PAssert_GE(level, T(0));
+        return end(level) - begin(level);
+    }
+
 private:
     /*!
      * Find the level the particle belongs to

@@ -1419,7 +1419,7 @@ bool PartBunchBase<T, Dim>::calcBunchBeamParameters(MultiBunchDump::beaminfo_t& 
     std::vector<double> local(7 * Dim + 1);
 
     for(unsigned long k = 0; k < localNum; ++ k) {
-        if ( bunchNum[k] != bunch || ID[k] == 0 ) {
+        if ( bunchNum[k] != bunch ) { //|| ID[k] == 0 ) {
             continue;
         }
 
@@ -2059,8 +2059,11 @@ size_t PartBunchBase<T, Dim>::calcMoments() {
     std::vector<double> loc_moments(4 * Dim + Dim * ( 2 * Dim + 1 ));
 
     long int totalNum = this->getTotalNum();
+#ifndef ENABLE_AMR
     if (OpalData::getInstance()->isInOPALCyclMode()) {
-
+        /* FIXME After issue 287 is resolved this shouldn't be necessary
+         * anymore
+         */
         for(unsigned long k = 0; k < localNum; ++ k) {
             if (ID[k] == 0) {
                 part[1] = P[k](0);
@@ -2090,6 +2093,7 @@ size_t PartBunchBase<T, Dim>::calcMoments() {
         }
         allreduce(totalNum, 1, std::less<long int>());
     }
+#endif
 
     for(unsigned long k = 0; k < localNum; ++ k) {
         part[1] = P[k](0);

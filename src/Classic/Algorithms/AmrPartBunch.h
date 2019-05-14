@@ -93,6 +93,14 @@ public:
      */
     void updateLorentzFactor(int bin=0);
     
+    /*!
+     * Update the Lorentz factor before every domainMapping in order
+     * to have the correct boosted frame for the particle redistribution,
+     * regrid and computation of the self-field forces. This function is
+     * only used in the single bunch case.
+     * @param gamma is the Lorentz factor
+     */
+    void updateLorentzFactor(double gamma);
     
     //FIXME BCs
     void setBCAllPeriodic() {}

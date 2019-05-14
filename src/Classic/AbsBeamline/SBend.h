@@ -21,7 +21,7 @@
 //
 // ------------------------------------------------------------------------
 
-#include "AbsBeamline/Bend.h"
+#include "AbsBeamline/Bend2D.h"
 #include "BeamlineGeometry/PlanarArcGeometry.h"
 #include "Fields/BMultipoleField.h"
 #include <string>
@@ -65,7 +65,7 @@
  * Here we defined the magnet as a field map.
  */
 
-class SBend: public Bend {
+class SBend: public Bend2D {
 
 public:
 

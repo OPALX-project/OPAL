@@ -346,8 +346,14 @@ void Option::execute() {
     version = Attributes::getReal(itsAttr[VERSION]);
 #ifdef ENABLE_AMR
     amr = Attributes::getBool(itsAttr[AMR]);
-    amrYtDumpFreq = Attributes::getReal(itsAttr[AMR_YT_DUMP_FREQ]);
-    amrRegridFreq = Attributes::getReal(itsAttr[AMR_REGRID_FREQ]);
+    amrYtDumpFreq = int(Attributes::getReal(itsAttr[AMR_YT_DUMP_FREQ]));
+
+    if ( amrYtDumpFreq < 1 ) {
+        amrYtDumpFreq = std::numeric_limits<int>::max();
+    }
+
+    amrRegridFreq = int(Attributes::getReal(itsAttr[AMR_REGRID_FREQ]));
+    amrRegridFreq = ( amrRegridFreq < 1 ) ? 1 : amrRegridFreq;
 #endif
     memoryDump = Attributes::getBool(itsAttr[MEMORYDUMP]);
     haloShift  = Attributes::getReal(itsAttr[HALOSHIFT]);
@@ -409,6 +415,7 @@ void Option::execute() {
 
     if(itsAttr[SCSOLVEFREQ]) {
         scSolveFreq = int(Attributes::getReal(itsAttr[SCSOLVEFREQ]));
+        scSolveFreq = ( scSolveFreq < 1 ) ? 1 : scSolveFreq;
     }
 
 

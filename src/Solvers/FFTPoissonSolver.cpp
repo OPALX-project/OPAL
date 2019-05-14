@@ -388,7 +388,7 @@ void FFTPoissonSolver::computePotentialDKS(Field_t &rho) {
 
     if (Ippl::myNode() == 0) {
         IpplTimings::startTimer(GreensFunctionTimer_m);
-        integratedGreensFunction();
+        integratedGreensFunctionDKS();
         IpplTimings::stopTimer(GreensFunctionTimer_m);
         //transform the greens function
         int dimsize[3] = {2*nr_m[0], 2*nr_m[1], 2*nr_m[2]};

@@ -100,6 +100,7 @@ public:
 
     MeshData getSurfaceMesh() const;
 
+    virtual double getExitAngle() const;
 private:
     double trackRefParticleThrough(double dt, bool print = false);
 
@@ -119,5 +120,10 @@ private:
     // Not implemented.
     void operator=(const RBend3D &);
 };
+
+inline
+double RBend3D::getExitAngle() const {
+    return getBendAngle() - getEntranceAngle();
+}
 
 #endif // CLASSIC_RBend3D_HH

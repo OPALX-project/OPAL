@@ -78,6 +78,8 @@ public:
      * @param attrib to scatter onto grid
      * @param f field on grid
      * @param pp particle position (not used for AMReX call)
+     * @param pbin the particle bin attribute
+     * @param bin to scatter (default: -1 --> scatter all particles)
      * @param level for which we put particles onto the grid
      */
     template <class FT, unsigned Dim, class PT>

@@ -61,7 +61,7 @@ public:
     double getYStart() const;
     double getYEnd()   const;
     ///@}
-    /// Check if bunch particles hit
+    /// Check if bunch particles are lost
     bool check(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double tstep);
     /// Checks if coordinate is within element
     int  checkPoint(const double & x, const double & y) const;

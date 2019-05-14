@@ -37,7 +37,9 @@
 
 #ifdef ENABLE_AMR
     #include "Amr/AmrBoxLib.h"
+#ifdef AMREX_ENABLE_FBASELIB
     #include "Solvers/BoxLibSolvers/FMGPoissonSolver.h"
+#endif
     #include "Solvers/AMReXSolvers/MLPoissonSolver.h"
     #include "Amr/AmrDefs.h"
     #include "Algorithms/AmrPartBunch.h"
@@ -705,19 +707,21 @@ void FieldSolver::initAmrObject_m() {
 
 void FieldSolver::initAmrSolver_m() {
     std::string fsType = Util::toUpper(Attributes::getString(itsAttr[FSTYPE]));
-    if (fsType == "FMG") {
+
+    if ( fsType == "ML" ) {
+        if ( dynamic_cast<AmrBoxLib*>( itsAmrObject_mp.get() ) == 0 )
+            throw OpalException("FieldSolver::initAmrSolver_m()",
+                                "ML solver requires AMReX.");
+        solver_m = new MLPoissonSolver(static_cast<AmrBoxLib*>(itsAmrObject_mp.get()));
+#ifdef AMREX_ENABLE_FBASELIB
+    } else if (fsType == "FMG") {
 
         if ( dynamic_cast<AmrBoxLib*>( itsAmrObject_mp.get() ) == 0 )
             throw OpalException("FieldSolver::initAmrSolver_m()",
                                 "FMultiGrid solver requires AMReX.");
 
         solver_m = new FMGPoissonSolver(static_cast<AmrBoxLib*>(itsAmrObject_mp.get()));
-
-    } else if ( fsType == "ML" ) {
-        if ( dynamic_cast<AmrBoxLib*>( itsAmrObject_mp.get() ) == 0 )
-            throw OpalException("FieldSolver::initAmrSolver_m()",
-                                "ML solver requires AMReX.");
-        solver_m = new MLPoissonSolver(static_cast<AmrBoxLib*>(itsAmrObject_mp.get()));
+#endif
     } else if (fsType == "HYPRE") {
         throw OpalException("FieldSolver::initAmrSolver_m()",
                             "HYPRE solver not yet implemented.");

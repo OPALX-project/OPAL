@@ -10,6 +10,7 @@ set (_SRCS
   H5PartWrapperForPC.cpp
   H5PartWrapperForPS.cpp
   H5PartWrapperForPT.cpp
+#  SDDSParser.cpp
   MultiBunchDump.cpp
   OpalInputInterpreter.cpp
   IpplInfoWrapper.cpp
@@ -18,8 +19,6 @@ set (_SRCS
 include_directories (
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
-
-add_opal_sources(${_SRCS})
 
 set (HDRS
     Beam.h
@@ -37,5 +36,13 @@ set (HDRS
     SecondaryEmissionPhysics.h
     ParticleMatterInteraction.h
 )
+
+if(UNIX AND NOT APPLE)
+    # for Linux, BSD, Solaris, Minix
+    list(APPEND _SRCS MemoryProfiler.cpp)
+    list(APPEND HDRS MemoryProfiler.h)
+endif()
+
+add_opal_sources(${_SRCS})
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Structure")

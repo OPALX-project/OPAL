@@ -124,7 +124,7 @@ endif ()
 set (Boost_USE_MULTITHREADED OFF)
 set (Boost_USE_STATIC_RUNTIME OFF)
 find_package (Boost
-    REQUIRED COMPONENTS chrono filesystem iostreams regex serialization system)
+    REQUIRED COMPONENTS chrono filesystem iostreams regex serialization system timer)
 if (Boost_INCLUDE_DIRS)
     if (${Boost_VERSION} VERSION_LESS 106000)
 	message (FATAL_ERROR

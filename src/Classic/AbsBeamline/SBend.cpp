@@ -33,19 +33,19 @@ extern Inform *gmsg;
 // ------------------------------------------------------------------------
 
 SBend::SBend():
-    Bend()
+    Bend2D()
 {
     setMessageHeader("SBend ");
 }
 
 SBend::SBend(const SBend &right):
-    Bend(right)
+    Bend2D(right)
 {
     setMessageHeader("SBend ");
 }
 
 SBend::SBend(const std::string &name):
-    Bend(name)
+    Bend2D(name)
 {
     setMessageHeader("SBend ");
 }

@@ -21,7 +21,7 @@
 #include "Elements/OpalElement.h"
 #include "AbsBeamline/AlignWrapper.h"
 #include "AbsBeamline/ElementImage.h"
-#include "AbsBeamline/Bend.h"
+#include "AbsBeamline/Bend2D.h"
 #include "AbstractObjects/Attribute.h"
 #include "AbstractObjects/Expressions.h"
 #include "AbstractObjects/OpalData.h"

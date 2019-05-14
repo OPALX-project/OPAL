@@ -1,7 +1,7 @@
 #include "Structure/MeshGenerator.h"
 #include "Physics/Physics.h"
 #include "Utilities/Util.h"
-#include "AbsBeamline/Bend.h"
+#include "AbsBeamline/Bend2D.h"
 #include "AbsBeamline/RBend3D.h"
 #include "AbsBeamline/Multipole.h"
 
@@ -22,7 +22,7 @@ void MeshGenerator::add(const ElementBase &element) {
     if (element.getType() == ElementBase::SBEND ||
         element.getType() == ElementBase::RBEND) {
 
-        const Bend* dipole = static_cast<const Bend*>(&element);
+        const Bend2D* dipole = static_cast<const Bend2D*>(&element);
         mesh = dipole->getSurfaceMesh();
         mesh.type_m = DIPOLE;
     } else if (element.getType() == ElementBase::RBEND3D) {

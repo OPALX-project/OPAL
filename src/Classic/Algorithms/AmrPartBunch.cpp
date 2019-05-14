@@ -246,6 +246,11 @@ void AmrPartBunch::updateLorentzFactor(int bin) {
         gamma = 1.0;
     }
 
+    updateLorentzFactor(gamma);
+}
+
+
+void AmrPartBunch::updateLorentzFactor(double gamma) {
     // keep all 1.0, except longitudinal direction
     Vector_t lorentzFactor(1.0, 1.0, 1.0);
 

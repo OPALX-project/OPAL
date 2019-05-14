@@ -78,24 +78,16 @@ public:
     /*!
      * Inherited from AmrObject
      */
-    void getGridStatistics(std::map<int, int>& gridsPerCore,
+    void regrid(double time);
+
+    void getGridStatistics(std::map<int, long>& gridPtsPerCore,
                            std::vector<int>& gridsPerLevel) const;
     
     /*!
      * Initial gridding. Sets up all levels.
      */
     void initFineLevels();
-    
-    /*!
-     * Inherited from AmrObject
-     * @param lbase start of regridding.
-     * @param lfine end of regridding.
-     * @param time of simulation (step).
-     * @param bin is the energy bin
-     */
-    void regrid(int lbase, int lfine, double time, int bin = 0);
-    
-    
+
     VectorPair_t getEExtrema();
     
     double getRho(int x, int y, int z);
@@ -198,8 +190,23 @@ protected:
     void MakeNewLevelFromCoarse (int lev, AmrReal_t time,
                                  const AmrGrid_t& ba,
                                  const AmrProcMap_t& dm);
-    
+
 private:
+    /*!
+     * Update of mesh according to chosen refinement strategy.
+     * Rebuild levels finer than lbase.
+     * @param lbase base level to start regriding
+     * @param time of regrid
+     */
+    void doRegrid_m(int lbase, double time);
+    
+    /*!
+     * Called within doRegrid_m(). Redistribute
+     * particles and delete levels on particle side.
+     * @param old_finest level
+     */
+    void postRegrid_m(int old_finest);
+
     
     /* ATTENTION
      * The tagging routines assume the particles to be in the

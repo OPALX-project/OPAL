@@ -3,7 +3,7 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 #include "AbstractObjects/OpalData.h"
-#include "AbsBeamline/Bend.h"
+#include "AbsBeamline/Bend2D.h"
 #include "Structure/MeshGenerator.h"
 
 #include <boost/filesystem.hpp>
@@ -400,7 +400,7 @@ void OpalBeamline::plot3DLattice() {
         std::vector<Vector_t> corners;
 
         if (element->getType() == ElementBase::RBEND || element->getType() == ElementBase::SBEND) {
-            std::vector<Vector_t> outline = static_cast<const Bend*>(element.get())->getOutline();
+            std::vector<Vector_t> outline = static_cast<const Bend2D*>(element.get())->getOutline();
 
             for (auto point: outline) {
                 corners.push_back(rotDiagonal.rotate(toBegin.transformFrom(point)));
@@ -495,7 +495,7 @@ void OpalBeamline::save3DLattice() {
         if (element->getType() == ElementBase::SBEND ||
             element->getType() == ElementBase::RBEND) {
 
-            Bend * bendElement = static_cast<Bend*>(element.get());
+            Bend2D * bendElement = static_cast<Bend2D*>(element.get());
             std::vector<Vector_t> designPath = bendElement->getDesignPath();
             CoordinateSystemTrafo toEnd = bendElement->getBeginToEnd_local() * (*it).getCoordTransformationTo();
             Vector_t exit3D = toEnd.getOrigin();
@@ -662,7 +662,7 @@ void OpalBeamline::save3DInput() {
 
         if ((*it).getElement()->getType() == ElementBase::RBEND ||
             (*it).getElement()->getType() == ElementBase::SBEND) {
-            const Bend* dipole = static_cast<const Bend*>((*it).getElement().get());
+            const Bend2D* dipole = static_cast<const Bend2D*>((*it).getElement().get());
             double angle = dipole->getBendAngle();
             double E1 = dipole->getEntranceAngle();
             double E2 = dipole->getExitAngle();
@@ -699,7 +699,7 @@ void OpalBeamline::activateElements() {
         std::shared_ptr<Component> element = (*it).getElement();
         if (element->getType() == ElementBase::SBEND ||
             element->getType() == ElementBase::RBEND) {
-            Bend * bendElement = static_cast<Bend*>(element.get());
+            Bend2D * bendElement = static_cast<Bend2D*>(element.get());
             designEnergy = bendElement->getDesignEnergy() * 1e-6;
         }
         (*it).setOn(designEnergy);

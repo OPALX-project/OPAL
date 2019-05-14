@@ -311,6 +311,13 @@ private:
 
     int turnnumber_m;
 
+    // only for dumping
+    double azimuth_m;
+    double prevAzimuth_m;
+
+    // only for dumping to stat-file --> make azimuth monotonically increasing
+    void dumpAngle_m(const double& theta);
+
     double eta_m; // parameter for reset bin in multi-bunch run
 
     // record how many bunches has already been injected. ONLY FOR MPM
@@ -363,6 +370,8 @@ private:
     IpplTimings::TimerRef DumpTimer_m ;
     IpplTimings::TimerRef TransformTimer_m;
     IpplTimings::TimerRef BinRepartTimer_m;
+    IpplTimings::TimerRef PluginElemTimer_m;
+    IpplTimings::TimerRef DelParticleTimer_m;
 
     Vector_t calcMeanR() const;
 
@@ -434,21 +443,21 @@ private:
     // Apply effects of RF Gap Crossings.
     // Update time and path length.
     // Unit assumptions: [itsBunch_m->R] = m, [itsBunch_m->P] = 1, [h] = s, [c] = m/s, [itsBunch_m->getT()] = s
-    void push(double h);
+    bool push(double h);
 
     // Kick particles for time h
     // The fields itsBunch_m->Bf, itsBunch_m->Ef are used to calculate the forces
-    void kick(double h);
+    bool kick(double h);
 
     // Apply the trilogy half push - kick - half push,
     // considering only external fields
     void borisExternalFields(double h);
 
     // apply the plugin elements: probe, collimator, stripper, septum
-    void applyPluginElements(const double dt);
+    bool applyPluginElements(const double dt);
 
     // destroy particles if they are marked as Bin=-1 in the plugin elements or out of global apeture
-    bool deleteParticle();
+    bool deleteParticle(bool = false);
 
     void initTrackOrbitFile();
 
@@ -457,7 +466,7 @@ private:
     void bunchDumpStatData();
 
     // @param azimuth (global) [deg] of dump
-    void bunchDumpStatDataPerBin(const double& azimuth);
+    void bunchDumpStatDataPerBunch(const double& azimuth);
 
     void bunchDumpPhaseSpaceData();
 

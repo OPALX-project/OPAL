@@ -76,12 +76,41 @@ std::unique_ptr<AmrBoxLib> AmrBoxLib::create(const AmrInfo& info,
 }
 
 
-void AmrBoxLib::getGridStatistics(std::map<int, int>& gridsPerCore,
+void AmrBoxLib::regrid(double time) {
+    IpplTimings::startTimer(this->amrRegridTimer_m);
+
+    *gmsg << "* Start regriding:" << endl
+          << "*     Old finest level: "
+          << finest_level << endl;
+
+    /* ATTENTION: The bunch might be updated during
+     * the regrid process!
+     * We regrid from base level 0 up to the finest level.
+     */
+    int old_finest = finest_level;
+    
+    int lev_top = std::min(finest_level, max_level - 1);
+    for (int i = 0; i <= lev_top; ++i) {
+        this->doRegrid_m(i, time);
+        lev_top = std::min(finest_level, max_level - 1);
+    }
+
+    this->postRegrid_m(old_finest);
+
+    *gmsg << "*     New finest level: "
+          << finest_level << endl
+          << "* Finished regriding" << endl;
+
+    IpplTimings::stopTimer(this->amrRegridTimer_m);
+}
+
+
+void AmrBoxLib::getGridStatistics(std::map<int, long>& gridPtsPerCore,
                                   std::vector<int>& gridsPerLevel) const
 {
     typedef std::vector<int> container_t;
     
-    gridsPerCore.clear();
+    gridPtsPerCore.clear();
     gridsPerLevel.clear();
     
     gridsPerLevel.resize(max_level + 1);
@@ -91,11 +120,14 @@ void AmrBoxLib::getGridStatistics(std::map<int, int>& gridsPerCore,
          * container value: cores that owns box
          */
         const container_t& pmap = this->dmap[lev].ProcessorMap();
+        const AmrGrid_t& ba = this->grids[lev];
         
         gridsPerLevel[lev] = pmap.size();
-    
-        for (container_t::const_iterator it = pmap.begin(); it != pmap.end(); ++it)
-            gridsPerCore[*it] += 1;
+
+        // iterate over all boxes
+        for (unsigned int i = 0; i < ba.size(); ++i) {
+            gridPtsPerCore[pmap[i]] += ba[i].numPts();
+        }
     }
 }
 
@@ -118,27 +150,7 @@ void AmrBoxLib::initFineLevels() {
         }
 
         if ( max_level > 0 ) {
-            
-            amrpbase_p->update(0, 0);
-            
-            int lev_top = std::min(finest_level, max_level - 1);
-            
-            *gmsg << "* Start regriding:" << endl
-                  << "*     Old finest level: "
-                  << finest_level << endl;
-            
-            /* ATTENTION: The bunch has to be updated during
-             * the regrid process!
-             * We regrid from base level 0 up to the finest level.
-             */
-            for (int i = 0; i <= lev_top; ++i) {
-                this->regrid(i, lev_top, bunch_mp->getT() * 1.0e9 /*time [ns] */);
-                lev_top = std::min(finest_level, max_level - 1);
-            }
-            
-            *gmsg << "*     New finest level: "
-                  << finest_level << endl
-                  << "* Finished regriding" << endl;
+            this->regrid(bunch_mp->getT() * 1.0e9 /*time [ns] */);
         }
 
         if ( !isForbidTransform ) {
@@ -151,46 +163,6 @@ void AmrBoxLib::initFineLevels() {
         
         refined_m = true;
     }
-}
-
-void AmrBoxLib::regrid(int lbase, int lfine, double time, int bin) {
-    int new_finest = 0;
-    AmrGridContainer_t new_grids(finest_level+2);
-    AmrPartBunch::pbase_t* amrpbase_p = bunch_mp->getAmrParticleBase();
-    
-    MakeNewGrids(lbase, time, new_finest, new_grids);
-
-    BL_ASSERT(new_finest <= finest_level+1);
-    
-    for (int lev = lbase+1; lev <= new_finest; ++lev)
-    {
-        if (lev <= finest_level) // an old level
-        {
-            if (new_grids[lev] != grids[lev]) // otherwise nothing
-            {
-                AmrProcMap_t new_dmap(new_grids[lev]);
-                RemakeLevel(lev, time, new_grids[lev], new_dmap);
-            }
-        }
-        else  // a new level
-        {
-            AmrProcMap_t new_dmap(new_grids[lev]);
-            MakeNewLevel(lev, time, new_grids[lev], new_dmap);
-        }
-        
-        layout_mp->setFinestLevel(new_finest);
-        // We need to update from lbase and not from lev
-        amrpbase_p->update(lbase, new_finest);
-    }
-    
-    for (int lev = new_finest+1; lev <= finest_level; ++lev) {
-        ClearLevel(lev);
-    }
-    
-    finest_level = new_finest;
-
-    PoissonSolver *solver = bunch_mp->getFieldSolver();
-    solver->hasToRegrid();
 }
 
 
@@ -219,7 +191,7 @@ AmrBoxLib::VectorPair_t AmrBoxLib::getEExtrema() {
 
 double AmrBoxLib::getRho(int x, int y, int z) {
     //TODO
-    throw OpalException("AmrBoxLib::getRho(x, y, z) ", "Not yet Implemented.");
+    throw OpalException("AmrBoxLib::getRho(x, y, z)", "Not yet Implemented.");
     return 0.0;
 }
 
@@ -251,7 +223,7 @@ void AmrBoxLib::computeSelfFields_cycl(double gamma) {
     
     /// Lorentz transformation
     /// In particle rest frame, the longitudinal length (y for cyclotron) enlarged
-    bunch_mp->updateLorentzFactor();
+    bunch_mp->updateLorentzFactor(gamma);
     
     // map on Amr domain + Lorentz transform
     double scalefactor = amrpbase_p->domainMapping();
@@ -365,7 +337,7 @@ void AmrBoxLib::computeSelfFields_cycl(double gamma) {
         ytWriter.writeFields(rho_m, phi_m, efield_m, rr, this->geom,
                              nLevel, time, scalefactor);
         
-        ytWriter.writeBunch(bunch_mp, time, scalefactor);
+        ytWriter.writeBunch(bunch_mp, time, gamma);
     }
 }
 
@@ -400,24 +372,7 @@ void AmrBoxLib::computeSelfFields_cycl(int bin) {
     amrpbase_p->update();
 
     if ( !(bunch_mp->getLocalTrackStep() % Options::amrRegridFreq) ) {
-        int lev_top = std::min(finest_level, max_level - 1);
-
-        *gmsg << "* Start regriding:" << endl
-              << "*     Old finest level: "
-              << finest_level << endl;
-
-        /* ATTENTION: The bunch has to be updated during
-         * the regrid process!
-         * We regrid from base level 0 up to the finest level.
-         */
-        for (int i = 0; i <= lev_top; ++i) {
-            this->regrid(i, lev_top, bunch_mp->getT() * 1.0e9 /*time [ns] */);
-            lev_top = std::min(finest_level, max_level - 1);
-        }
-
-        *gmsg << "*     New finest level: "
-              << finest_level << endl
-              << "* Finished regriding" << endl;
+        this->regrid(bunch_mp->getT() * 1.0e9 /*time [ns] */);
     }
 
     amrpbase_p->setForbidTransform(false);
@@ -533,7 +488,7 @@ void AmrBoxLib::computeSelfFields_cycl(int bin) {
         ytWriter.writeFields(rho_m, phi_m, efield_m, rr, this->geom,
                              nLevel, time, scalefactor);
         
-        ytWriter.writeBunch(bunch_mp, time, scalefactor);
+        ytWriter.writeBunch(bunch_mp, time, gamma);
     }
 
     isPoissonSolved_m = true;
@@ -721,9 +676,8 @@ void AmrBoxLib::ClearLevel(int lev) {
     }
     ClearBoxArray(lev);
     ClearDistributionMap(lev);
-    
-//     layout_mp->ClearParticleBoxArray(lev);
-//     layout_mp->ClearParticleDistributionMap(lev);
+
+    this->isFirstTagging_m[lev] = true;
 }
 
 
@@ -776,16 +730,94 @@ void AmrBoxLib::MakeNewLevelFromCoarse (int lev, AmrReal_t time,
 }
 
 
+void AmrBoxLib::doRegrid_m(int lbase, double time) {
+    int new_finest = 0;
+    AmrGridContainer_t new_grids(finest_level+2);
+    
+    MakeNewGrids(lbase, time, new_finest, new_grids);
+
+    BL_ASSERT(new_finest <= finest_level+1);
+    
+    for (int lev = lbase+1; lev <= new_finest; ++lev)
+    {
+        if (lev <= finest_level) // an old level
+        {
+            if (new_grids[lev] != grids[lev]) // otherwise nothing
+            {
+                AmrProcMap_t new_dmap(new_grids[lev]);
+                RemakeLevel(lev, time, new_grids[lev], new_dmap);
+            }
+        }
+        else  // a new level
+        {
+            AmrProcMap_t new_dmap(new_grids[lev]);
+            MakeNewLevel(lev, time, new_grids[lev], new_dmap);
+        }
+        
+        layout_mp->setFinestLevel(new_finest);
+    }
+
+    // now we are safe to delete deprecated levels
+    for (int lev = new_finest+1; lev <= finest_level; ++lev) {
+        ClearLevel(lev);
+    }
+    
+    finest_level = new_finest;
+}
+
+
+void AmrBoxLib::postRegrid_m(int old_finest) {
+    /* ATTENTION: In this call the bunch has to be updated
+     * since each particle needs to be assigned to its latest
+     * grid and sent to the corresponding MPI-process.
+     * 
+     * We need to update the bunch before we clear
+     * levels, otherwise the particle level counter
+     * is invalidated.
+     */
+
+    // redistribute particles and assign correct grid and level
+    AmrPartBunch::pbase_t* amrpbase_p = bunch_mp->getAmrParticleBase();
+    amrpbase_p->update(0, finest_level, true);
+
+    // check if no particles left on higher levels
+    const auto& LocalNumPerLevel = amrpbase_p->getLocalNumPerLevel();
+
+    for (int lev = finest_level+1; lev <= old_finest; ++lev) {
+        if ( LocalNumPerLevel.getLocalNumAtLevel(lev) != 0 ) {
+            throw OpalException("AmrBoxLib::postRegrid_m()",
+                                "Still particles on level " + std::to_string(lev) + "!");
+        }
+        layout_mp->ClearParticleBoxArray(lev);
+        layout_mp->ClearParticleDistributionMap(lev);
+        layout_mp->clearLevelMask(lev);
+    }
+
+    if ( bunch_mp->getLocalNum() != LocalNumPerLevel.getLocalNumUpToLevel(finest_level) ) {
+        std::string localnum = std::to_string(bunch_mp->getLocalNum());
+        std::string levelnum = std::to_string(LocalNumPerLevel.getLocalNumUpToLevel(finest_level));
+        throw OpalException("AmrBoxLib::postRegrid_m()",
+                            "Number of particles do not agree: " + localnum + " != " + levelnum);
+    }
+
+    PoissonSolver *solver = bunch_mp->getFieldSolver();
+    solver->hasToRegrid();
+}
+
+
 void AmrBoxLib::tagForChargeDensity_m(int lev, TagBoxArray_t& tags,
                                       AmrReal_t time, int ngrow)
 {
+    // we need to update first
     AmrPartBunch::pbase_t* amrpbase_p = bunch_mp->getAmrParticleBase();
+    amrpbase_p->update(0, lev, true);
+    
     for (int i = lev; i <= finest_level; ++i)
         rho_m[i]->setVal(0.0, rho_m[i]->nGrow());
     
     // the new scatter function averages the value also down to the coarsest level
     amrpbase_p->scatter(bunch_mp->Q, rho_m,
-                        bunch_mp->R, lev, finest_level, bunch_mp->Bin);
+                        bunch_mp->R, 0, lev, bunch_mp->Bin);
     
     const double& scalefactor = amrpbase_p->getScalingFactor();
     
@@ -835,7 +867,7 @@ void AmrBoxLib::tagForPotentialStrength_m(int lev, TagBoxArray_t& tags,
      */
     if ( !isPoissonSolved_m || !phi_m[lev]->ok() || this->isFirstTagging_m[lev] ) {
         *gmsg << level2 << "* Level " << lev << ": We need to perform "
-              << "charge tagging in the first time step" << endl;
+              << "charge tagging if a new level is created." << endl;
         this->tagForChargeDensity_m(lev, tags, time, ngrow);
         this->isFirstTagging_m[lev] = false;
         return;
@@ -847,6 +879,7 @@ void AmrBoxLib::tagForPotentialStrength_m(int lev, TagBoxArray_t& tags,
 
     AmrReal_t threshold = phi_m[lev]->norm0(0, 0 /*nghost*/, false /*local*/);
     
+    threshold *= scaling_m;
     
 #ifdef _OPENMP
 #pragma omp parallel
@@ -888,7 +921,7 @@ void AmrBoxLib::tagForEfield_m(int lev, TagBoxArray_t& tags,
      */
     if ( !isPoissonSolved_m || !efield_m[lev][0]->ok() || this->isFirstTagging_m[lev] ) {
         *gmsg << level2 << "* Level " << lev << ": We need to perform "
-              << "charge tagging in the first time step" << endl;
+              << "charge tagging if a new level is created." << endl;
         this->tagForChargeDensity_m(lev, tags, time, ngrow);
         this->isFirstTagging_m[lev] = false;
         return;
@@ -948,6 +981,8 @@ void AmrBoxLib::tagForMomenta_m(int lev, TagBoxArray_t& tags,
                                 AmrReal_t time, int ngrow)
 {
     AmrPartBunch::pbase_t* amrpbase_p = bunch_mp->getAmrParticleBase();
+    // we need to update first
+    amrpbase_p->update(0, lev, true);
     const auto& LocalNumPerLevel = amrpbase_p->getLocalNumPerLevel();
     
     size_t lBegin = LocalNumPerLevel.begin(lev);
@@ -1005,6 +1040,8 @@ void AmrBoxLib::tagForMaxNumParticles_m(int lev, TagBoxArray_t& tags,
                                         AmrReal_t time, int ngrow)
 {
     AmrPartBunch::pbase_t* amrpbase_p = bunch_mp->getAmrParticleBase();
+    // we need to update first
+    amrpbase_p->update(0, lev, true);
     const auto& LocalNumPerLevel = amrpbase_p->getLocalNumPerLevel();
     
     size_t lBegin = LocalNumPerLevel.begin(lev);
@@ -1053,6 +1090,8 @@ void AmrBoxLib::tagForMinNumParticles_m(int lev, TagBoxArray_t& tags,
                                         AmrReal_t time, int ngrow)
 {
     AmrPartBunch::pbase_t* amrpbase_p = bunch_mp->getAmrParticleBase();
+    // we need to update first
+    amrpbase_p->update(0, lev, true);
     const auto& LocalNumPerLevel = amrpbase_p->getLocalNumPerLevel();
     
     size_t lBegin = LocalNumPerLevel.begin(lev);
@@ -1112,6 +1151,9 @@ void AmrBoxLib::initBaseLevel_m(const AmrIntArray_t& nGridPts) {
     AmrGrid_t ba(bx);
     ba.maxSize( this->maxGridSize(0) );
     
+    // chop grids to guarantee #grids == #procs on base level
+    ba = this->MakeBaseGrids();
+
     AmrProcMap_t dmap;
     dmap.define(ba, amrex::ParallelDescriptor::NProcs());
     

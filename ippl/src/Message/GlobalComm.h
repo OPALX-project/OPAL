@@ -122,6 +122,9 @@ template <typename T, class Op>
 void reduce(const T* input, T* output, int count, Op op, int root = 0);
 
 template <typename T, class Op>
+void new_reduce(const T* input, T* output, int count, Op op, int root = 0);
+
+template <typename T, class Op>
 void reduce(const T& input, T& output, int count, Op op, int root = 0);
 
 template <typename T, class Op>

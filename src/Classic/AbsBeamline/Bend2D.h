@@ -9,7 +9,7 @@
 // Copyright: see Copyright.readme
 // ------------------------------------------------------------------------
 //
-// Definitions for class: Bend
+// Definitions for class: Bend2D
 //   Defines the abstract interface for a general bend magnet.
 //
 // ------------------------------------------------------------------------
@@ -39,7 +39,7 @@ class Fieldmap;
 class MeshData;
 
 /*
- * Class Bend
+ * Class Bend2D
  *
  * Interface for general bend magnet.
  *
@@ -47,18 +47,18 @@ class MeshData;
  *
  */
 
-class Bend: public BendBase {
+class Bend2D: public BendBase {
 
 public:
 
     /// Constructor with given name.
-    explicit Bend(const std::string &name);
+    explicit Bend2D(const std::string &name);
 
-    Bend();
-    Bend(const Bend &);
-    virtual ~Bend();
+    Bend2D();
+    Bend2D(const Bend2D &);
+    virtual ~Bend2D();
 
-    /// Apply visitor to Bend.
+    /// Apply visitor to Bend2D.
     virtual void accept(BeamlineVisitor &) const = 0;
 
     /*
@@ -107,21 +107,15 @@ public:
 
     double getStartElement() const;
 
-    void setExitAngle(double exitAngle);
-
-    /*
-     * Set the name of the field map.
-     *
-     * For now this means a file that contains Enge function coefficients
-     * that describe the fringe fields at the entrance and exit.
-     */
     /// Set quadrupole field component.
     void setK1(double k1);
 
     void resetReinitializeFlag();
     void resetRecalcRefTrajFlag();
 
-    double getExitAngle() const;
+    void setExitAngle(double exitAngle);
+    virtual double getExitAngle() const;
+
     double getMapLength() const;
 
     std::vector<Vector_t> getOutline() const;
@@ -158,7 +152,7 @@ private:
     FRIEND_TEST(Maxwell, Zeros);
 #endif
     // Not implemented.
-    void operator=(const Bend &);
+    void operator=(const Bend2D &);
 
     void adjustFringeFields(double ratio);
     double calculateBendAngle();
@@ -314,120 +308,120 @@ private:
 
 
 inline
-void Bend::finalise() {
+void Bend2D::finalise() {
     online_m = false;
 }
 
 inline
-void Bend::getDimensions(double &sBegin, double &sEnd) const {
+void Bend2D::getDimensions(double &sBegin, double &sEnd) const {
     sBegin = startField_m;
     sEnd = endField_m;
 }
 
 inline
-double Bend::getBendRadius() const {
+double Bend2D::getBendRadius() const {
     return designRadius_m;
 }
 
 inline
-double Bend::getEffectiveCenter() const {
+double Bend2D::getEffectiveCenter() const {
     return elementEdge_m + designRadius_m * angle_m / 2.0;
 }
 
 inline
-double Bend::getEffectiveLength() const {
+double Bend2D::getEffectiveLength() const {
     return designRadius_m * angle_m;
 }
 
 inline
-double Bend::getStartElement() const {
+double Bend2D::getStartElement() const {
     return elementEdge_m;
 }
 
 inline
-void Bend::setK1(double k1) {
+void Bend2D::setK1(double k1) {
     if (std::abs(k1) > 0.0) {
-        throw GeneralClassicException("Bend::setK1",
+        throw GeneralClassicException("Bend2D::setK1",
                                       "Quadrupole field temporarily not supported");
     }
     fieldIndex_m = k1;
 }
 
 inline
-void Bend::resetReinitializeFlag() {
+void Bend2D::resetReinitializeFlag() {
     reinitialize_m = true;
 }
 
 inline
-void Bend::resetRecalcRefTrajFlag() {
+void Bend2D::resetRecalcRefTrajFlag() {
     recalcRefTraj_m = true;
 }
 
 inline
-void Bend::setMessageHeader(const std::string & header)
+void Bend2D::setMessageHeader(const std::string & header)
 {
     messageHeader_m = header;
 }
 
 inline
-double Bend::getStartField() const
+double Bend2D::getStartField() const
 {
     return startField_m;
 }
 
 inline
-Fieldmap* Bend::getFieldmap()
+Fieldmap* Bend2D::getFieldmap()
 {
     return fieldmap_m;
 }
 
 inline
-double Bend::getExitAngle() const
+double Bend2D::getExitAngle() const
 {
     return exitAngle_m;
 }
 
 inline
-void Bend::setExitAngle(double angle)
+void Bend2D::setExitAngle(double angle)
 {
     exitAngle_m = angle;
 }
 
 inline
-double Bend::getMapLength() const
+double Bend2D::getMapLength() const
 {
     return exitParameter2_m - entranceParameter2_m;
 }
 
 inline
-CoordinateSystemTrafo Bend::getEdgeToEnd() const
+CoordinateSystemTrafo Bend2D::getEdgeToEnd() const
 {
     return beginToEnd_m;
 }
 
 inline
-CoordinateSystemTrafo Bend::getBeginToEnd_local() const
+CoordinateSystemTrafo Bend2D::getBeginToEnd_local() const
 {
     return beginToEnd_lcs_m;
 }
 
 inline
-void Bend::setCSTrafoToEntranceRegion(const CoordinateSystemTrafo &trafo) {
+void Bend2D::setCSTrafoToEntranceRegion(const CoordinateSystemTrafo &trafo) {
     toEntranceRegion_m = trafo;
 }
 
 inline
-void Bend::setCSTrafoToExitRegion(const CoordinateSystemTrafo &trafo) {
+void Bend2D::setCSTrafoToExitRegion(const CoordinateSystemTrafo &trafo) {
     toExitRegion_m = trafo;
 }
 
 inline
-Vector_t Bend::transformToEntranceRegion(const Vector_t &R) const {
+Vector_t Bend2D::transformToEntranceRegion(const Vector_t &R) const {
     return toEntranceRegion_m.transformTo(R);
 }
 
 inline
-Vector_t Bend::transformToExitRegion(const Vector_t &R) const {
+Vector_t Bend2D::transformToExitRegion(const Vector_t &R) const {
     return toExitRegion_m.transformTo(R);
 }
 

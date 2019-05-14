@@ -148,7 +148,6 @@ CollimatorPhysics::CollimatorPhysics(const std::string &name, ElementBase *eleme
         curandInitSet = -1;
     }
 
-    DegraderInitTimer_m = IpplTimings::getTimer("DegraderInit");
 #endif
 
     DegraderApplyTimer_m = IpplTimings::getTimer("DegraderApply");
@@ -317,7 +316,7 @@ void CollimatorPhysics::apply(PartBunchBase<double, 3> *bunch,
     */
 
 #ifdef OPAL_DKS
-    if (collshape_m == DEGRADER && IpplInfo::DKSEnabled) {
+    if (collshape_m == ElementBase::DEGRADER && IpplInfo::DKSEnabled) {
         applyDKS(bunch, boundingSphere, numParticlesInSimulation);
     } else {
         applyNonDKS(bunch, boundingSphere, numParticlesInSimulation);
@@ -665,7 +664,7 @@ void CollimatorPhysics::print(Inform &msg) {
 
     // ToDo: need to move that to a statistics function
 #ifdef OPAL_DKS
-    if (collshape_m == DEGRADER && IpplInfo::DKSEnabled)
+    if (collshape_m == ElementBase::DEGRADER && IpplInfo::DKSEnabled)
         locPartsInMat_m = numparticles + dksParts_m.size();
     else
         locPartsInMat_m = locParts_m.size();
@@ -860,8 +859,6 @@ void CollimatorPhysics::setupCollimatorDKS(PartBunchBase<double, 3> *bunch,
 
     if (curandInitSet == -1) {
 
-        IpplTimings::startTimer(DegraderInitTimer_m);
-
         //int size = bunch->getLocalNum() + 0.5 * bunch->getLocalNum();
         //int size = bunch->getTotalNum() + 0.5 * bunch->getTotalNum();
         int size = numParticlesInSimulation;
@@ -892,8 +889,6 @@ void CollimatorPhysics::setupCollimatorDKS(PartBunchBase<double, 3> *bunch,
                                  A_m, A2_c, A3_c, A4_c, A5_c, X0_m, I_m, dT_m, 1e-4
                                 };
         dksbase.writeDataAsync<double>(par_ptr, params, numpar);
-
-        IpplTimings::stopTimer(DegraderInitTimer_m);
 
     }
 

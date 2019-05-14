@@ -134,7 +134,6 @@ private:
     void clearCollimatorDKS();
 
     void applyDKS();
-    void applyHost(PartBunchBase<double, 3> *bunch, Degrader *deg, Collimator *coll);
     void deleteParticleFromLocalVectorDKS();
 
 #endif

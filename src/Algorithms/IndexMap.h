@@ -23,7 +23,7 @@ public:
 
     value_t query(key_t::first_type s, key_t::second_type ds);
 
-    void tidyUp();
+    void tidyUp(double zstop);
 
     void print(std::ostream&) const;
     void saveSDDS(double startS) const;

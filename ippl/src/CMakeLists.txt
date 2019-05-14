@@ -131,19 +131,20 @@ include_directories (
 
 add_library ( ippl ${IPPL_SRCS} ${IPPL_SRCS_FORT} )
 
-target_link_libraries(
-    ippl
-    )
-
 if (ENABLE_DKS)
     message ( "DKS include dirs: ${DKS_INCLUDE_DIR}")
     include_directories (${DKS_INCLUDE_DIR})
     link_directories (${DKS_LIBRARY_DIR})
     target_link_libraries (
         ${TARGET_LINK_LIBRARIES} 
-        dks
+	ippl
+	dks
         ${DKS_CUDA_LIBS}
         )
+else()
+    target_link_libraries(
+        ippl
+    )
 endif ()
 
 install (FILES ${MAKE_DEF} DESTINATION lib)

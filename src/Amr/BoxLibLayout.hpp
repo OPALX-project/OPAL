@@ -6,6 +6,7 @@
 #include "Message/Formatter.h"
 #include "Utilities/OpalException.h"
 
+#include <cassert>
 #include <cmath>
 
 template <class T, unsigned Dim>
@@ -113,7 +114,7 @@ void BoxLibLayout<T, Dim>::update(IpplParticleBase< BoxLibLayout<T,Dim> >& PData
 // // redistribute the particles using BoxLibs ParGDB class to determine where particle should go
 template<class T, unsigned Dim>
 void BoxLibLayout<T, Dim>::update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
-                                  int lev_min, int lev_max)
+                                  int lev_min, int lev_max, bool isRegrid)
 {
     // in order to avoid transforms when already done
     if ( !PData.isForbidTransform() ) {
@@ -157,6 +158,15 @@ void BoxLibLayout<T, Dim>::update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
     unsigned sent = 0;
     size_t lBegin = LocalNumPerLevel.begin(lev_min);
     size_t lEnd   = LocalNumPerLevel.end(lev_max);
+
+    /* in the case of regrid we might lose a level
+     * and therefore the level counter is invalidated
+     */
+    if ( isRegrid ) {
+        lBegin = 0;
+        lEnd   = LocalNum;
+    }
+
 
     //loop trough particles and assign grid and level to each particle
     //if particle doesn't belong to this process save the index of the particle to be sent
@@ -339,6 +349,7 @@ typename BoxLibLayout<T, Dim>::AmrIntVect_t
     return iv;
 }
 
+
 template <class T, unsigned Dim>
 void BoxLibLayout<T, Dim>::buildLevelMask(int lev, const int ncells) {
     int covered = 0;
@@ -401,7 +412,14 @@ void BoxLibLayout<T, Dim>::buildLevelMask(int lev, const int ncells) {
 
 
 template <class T, unsigned Dim>
-const std::unique_ptr<typename BoxLibLayout<T, Dim>::mask_t>&
+void BoxLibLayout<T, Dim>::clearLevelMask(int lev) {
+    assert(lev >= (int).masks_m.size());
+    masks_m[lev].reset(nullptr);
+}
+
+
+template <class T, unsigned Dim>
+const std::unique_ptr<typename BoxLibLayout<T, Dim>::mask_t>& 
 BoxLibLayout<T, Dim>::getLevelMask(int lev) const {
     if ( lev >= (int)masks_m.size() ) {
         throw OpalException("BoxLibLayout::getLevelMask()",

@@ -6,7 +6,7 @@ set (_SRCS
   AttributeSet.cpp
   BeamBeam.cpp
   BeamlineVisitor.cpp
-  Bend.cpp
+  Bend2D.cpp
   BendBase.cpp
   CCollimator.cpp
   Component.cpp
@@ -64,7 +64,7 @@ set (HDRS
     AttributeSet.h
     BeamBeam.h
     BeamlineVisitor.h
-    Bend.h
+    Bend2D.h
     BendBase.h
     CCollimator.h
     Component.h

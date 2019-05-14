@@ -272,7 +272,7 @@ void AmrYtWriter::writeFields(const amr::AmrScalarFieldContainer_t& rho,
 
 void AmrYtWriter::writeBunch(const AmrPartBunch* bunch_p,
                              const double& time,
-                             const double& scale)
+                             const double& gamma)
 {
     /* According to
      * 
@@ -287,8 +287,7 @@ void AmrYtWriter::writeBunch(const AmrPartBunch* bunch_p,
      * 
      * in AMReX_ParticleContainerI.H with AMReX_Particles.H and AMReX_ParticleI.H.
      * 
-     * ATTENTION: We need to scale the geometry and cell sizes according to the
-     * particle mapping
+     * ATTENTION: We need to Lorentz transform the particles.
      */
     
     const AmrLayout_t* layout_p = static_cast<const AmrLayout_t*>(&bunch_p->getLayout());
@@ -482,7 +481,7 @@ void AmrYtWriter::writeBunch(const AmrPartBunch* bunch_p,
                 // Do it grid block by grid block remembering the seek offset
                 // for the start of writing of each block of data.
                 //
-                writeParticles_m(lev, myStream, nfi.FileNumber(), which, count, where, bunch_p);
+                writeParticles_m(lev, myStream, nfi.FileNumber(), which, count, where, bunch_p, gamma);
             }
 
             amrex::ParallelDescriptor::ReduceIntSum (which.dataPtr(), which.size(), IOProcNumber);
@@ -537,7 +536,8 @@ void AmrYtWriter::writeParticles_m(int level,
                                    amrex::Vector<int>& which,
                                    amrex::Vector<int>& count,
                                    amrex::Vector<long>& where,
-                                   const AmrPartBunch* bunch_p) const
+                                   const AmrPartBunch* bunch_p,
+                                   const double gamma) const
 {
     /* Copied and modified of
      * 
@@ -625,6 +625,12 @@ void AmrYtWriter::writeParticles_m(int level,
                 // coordinates
                 for (int j = 0; j < AMREX_SPACEDIM; ++j)
                     rptr[idx++] = bunch_p->R[ip](j);
+                
+                // Lorentz transform
+                if ( OpalData::getInstance()->isInOPALCyclMode() )
+                    rptr[1] *= gamma; // y is longitudinal direction
+                else
+                    rptr[2] *= gamma; // z is longitudinal direction
                 
                 // momenta
                 for (int j = 0; j < AMREX_SPACEDIM; ++j)

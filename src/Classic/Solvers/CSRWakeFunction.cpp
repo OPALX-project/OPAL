@@ -113,10 +113,12 @@ void CSRWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
 }
 
 void CSRWakeFunction::initialize(const ElementBase *ref) {
-    double End;
     if(ref->getType() == ElementBase::RBEND ||
        ref->getType() == ElementBase::SBEND) {
-        const Bend *bend = static_cast<const Bend *>(ref);
+
+        const Bend2D *bend = static_cast<const Bend2D *>(ref);
+        double End;
+
         bendRadius_m = bend->getBendRadius();
         bend->getDimensions(Begin_m, End);
         Length_m = bend->getEffectiveLength();

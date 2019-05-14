@@ -94,8 +94,9 @@ public:
      * lev_min >= 0.
      * @param lev_min is the start level to update
      * @param lev_max is the last level to update
+     * @param isRegrid is true if we are updating the grids (default: false)
      */
-    void update(int lev_min, int lev_max);
+    void update(int lev_min, int lev_max, bool isRegrid = false);
     
     // Update the particle object after a timestep.  This routine will change
     // our local, total, create particle counts properly.

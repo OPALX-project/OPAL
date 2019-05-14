@@ -22,7 +22,7 @@ public:
     double getBendAngle() const;
     virtual void setEntranceAngle(double entranceAngle);
     double getEntranceAngle() const;
-
+    virtual double getExitAngle() const = 0;
     void setFullGap(double);
     double getFullGap() const;
 

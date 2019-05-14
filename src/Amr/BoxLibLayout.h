@@ -153,10 +153,12 @@ public:
      * @param lev_min base level to update
      * @param lev_max finest level to update
      * (if -1 update all levels starting from lev_min)
-     * @param canSwap
+     * @param isRegrid in regrid mode a level might be deleted, thus
+     * the particle level counter might be invalidated --> we need to
+     * iterate through all particles.
      */
     void update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
-                int lev_min = 0, int lev_max = -1);
+                int lev_min = 0, int lev_max = -1, bool isRegrid = false);
     
     
     /*
@@ -193,7 +195,9 @@ public:
      * forces near coarse-fine interfaces.
      */
     void buildLevelMask(int lev, const int ncells = 1);
-    
+
+    void clearLevelMask(int lev);
+
     const std::unique_ptr<mask_t>& getLevelMask(int lev) const;
     
     

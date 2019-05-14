@@ -474,6 +474,17 @@ void reduce(const T* input, T* output, int count, Op op, int root) {
 }
 
 template <typename T, class Op>
+void new_reduce(const T* input, T* output, int count, Op op, int root) {
+    MPI_Datatype type = get_mpi_datatype<T>(*input);
+    
+    MPI_Op mpiOp = get_mpi_op<Op>(op);
+    
+    MPI_Reduce(const_cast<T*>(input), output, count, type,
+               mpiOp, root, Ippl::getComm());
+}
+
+
+template <typename T, class Op>
 void reduce(const T& input, T& output, int count, Op op, int root) {
     reduce(&input, &output, count, op, root);
 }

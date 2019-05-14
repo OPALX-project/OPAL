@@ -6,7 +6,7 @@
 #include "Algorithms/IndexMap.h"
 #include "AbstractObjects/OpalData.h"
 #include "AbsBeamline/Multipole.h"
-#include "AbsBeamline/Bend.h"
+#include "AbsBeamline/Bend2D.h"
 #include "Utilities/Util.h"
 #include "Physics/Physics.h"
 #include "OPALconfig.h"
@@ -24,6 +24,8 @@ IndexMap::IndexMap():
 { }
 
 void IndexMap::print(std::ostream &out) const {
+    if (mapRange2Element_m.size() == 0) return;
+
     out << "Size of map " << mapRange2Element_m.size() << " sections " << std::endl;
     out << std::fixed << std::setprecision(6);
     auto mapIti = mapRange2Element_m.begin();
@@ -115,11 +117,19 @@ void IndexMap::add(key_t::first_type initialS, key_t::second_type finalS, const 
     }
 }
 
-void IndexMap::tidyUp() {
+void IndexMap::tidyUp(double zstop) {
     map_t::reverse_iterator rit = mapRange2Element_m.rbegin();
 
-    if (rit != mapRange2Element_m.rend() && (*rit).second.size() == 0) {
+    if (rit != mapRange2Element_m.rend() &&
+        (*rit).second.size() == 0 &&
+        zstop > (*rit).first.first &&
+        zstop < (*rit).first.second) {
+
+        key_t key((*rit).first.first, zstop);
+        value_t val;
+
         mapRange2Element_m.erase(std::next(rit).base());
+        mapRange2Element_m.insert(std::pair<key_t, value_t>(key, val));
     }
 }
 
@@ -133,17 +143,18 @@ enum elements {
     SOLENOID,
     RFCAVITY,
     MONITOR,
+    OTHER,
     SIZE
 };
 
-void IndexMap::saveSDDS(double startS) const {
+void IndexMap::saveSDDS(double initialPathLength) const {
     auto opal = OpalData::getInstance();
     if (opal->isOptimizerRun()) return;
 
     std::string fileName("data/" + OpalData::getInstance()->getInputBasename() + "_ElementPositions.sdds");
     std::ofstream sdds;
     if (OpalData::getInstance()->hasPriorTrack() && boost::filesystem::exists(fileName)) {
-        Util::rewindLinesSDDS(fileName, startS, false);
+        Util::rewindLinesSDDS(fileName, initialPathLength, false);
         sdds.open(fileName, std::ios::app);
     } else {
         sdds.open(fileName);
@@ -221,6 +232,12 @@ void IndexMap::saveSDDS(double startS) const {
              << indent << "description=\"10 monitor present\" \n"
              << "&end\n";
         sdds << "&column \n"
+             << indent << "name=other, \n"
+             << indent << "type=float, \n"
+             << indent << "units=1, \n"
+             << indent << "description=\"11 other element present\" \n"
+             << "&end\n";
+        sdds << "&column \n"
              << indent << "name=element_names, \n"
              << indent << "type=string, \n"
              << indent << "description=\"names of elements\" \n"
@@ -236,7 +253,7 @@ void IndexMap::saveSDDS(double startS) const {
     std::vector<std::vector<int> > allItems(SIZE);
     std::vector<double> allPositions;
     std::vector<std::string> allNames;
-    std::vector<double> typeMultipliers = {3.3333e-1, 1.0, 0.5, 0.25, 1.0, 1.0, 1.0, 1.0, 1.0};
+    std::vector<double> typeMultipliers = {3.3333e-1, 1.0, 0.5, 0.25, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
     unsigned int counter = 0;
 
     auto mapIti = mapRange2Element_m.begin();
@@ -252,7 +269,7 @@ void IndexMap::saveSDDS(double startS) const {
             case ElementBase::RBEND:
             case ElementBase::SBEND:
                 {
-                    const Bend* bend = static_cast<const Bend*>(element.get());
+                    const Bend2D* bend = static_cast<const Bend2D*>(element.get());
                     if (bend->getRotationAboutZ() > 0.5 * Physics::pi &&
                         bend->getRotationAboutZ() < 1.5 * Physics::pi) {
                         items[DIPOLE] = -1;
@@ -296,7 +313,8 @@ void IndexMap::saveSDDS(double startS) const {
                 items[MONITOR] = 1;
                 break;
             default:
-                continue;
+                items[OTHER] = 1;
+                break;
             }
 
             names += element->getName() + ", ";
@@ -325,6 +343,26 @@ void IndexMap::saveSDDS(double startS) const {
     }
 
     if (counter == 0) return;
+
+    if (allPositions.front() > initialPathLength) {
+        {
+            auto tmp = allPositions;
+            allPositions = std::vector<double>(4, initialPathLength);
+            allPositions.insert(allPositions.end(), tmp.begin(), tmp.end());
+        }
+
+        {
+            auto tmp = allNames;
+            allNames = std::vector<std::string>(4, "");
+            allNames.insert(allNames.end(), tmp.begin(), tmp.end());
+        }
+
+        for (unsigned int i = 0; i < SIZE; ++ i) {
+            auto tmp = allItems[i];
+            allItems[i] = std::vector<int>(4, 0);
+            allItems[i].insert(allItems[i].end(), tmp.begin(), tmp.end());
+        }
+    }
 
     const unsigned int totalSize = counter;
     for (unsigned int i = 0; i < SIZE; ++ i) {

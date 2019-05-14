@@ -8,6 +8,7 @@ BelosBottomSolver<Level>::BelosBottomSolver(std::string solvertype,
                                             const std::shared_ptr<prec_t>& prec_p)
     : problem_mp( Teuchos::rcp( new problem_t() ) ),
       prec_mp(prec_p),
+      A_mp(Teuchos::null),
       reltol_m(1.0e-9),
       maxiter_m(100)
 {
@@ -55,23 +56,23 @@ template <class Level>
 void BelosBottomSolver<Level>::setOperator(const Teuchos::RCP<matrix_t>& A,
                                            Level* level_p)
 {
-    
     // make positive definite --> rhs has to change sign as well
-    A->resumeFill();
-    A->scale(-1.0);
-    A->fillComplete();
+    A_mp = A->clone(A->getNode());
+    A_mp->resumeFill();
+    A_mp->scale(-1.0);
+    A_mp->fillComplete();
     
     if ( problem_mp == Teuchos::null )
         throw OpalException("BelosBottomSolver::setOperator()",
                             "No problem defined.");
     
-    problem_mp->setOperator(A);
+    problem_mp->setOperator(A_mp);
     
     static IpplTimings::TimerRef precTimer = IpplTimings::getTimer("AMR MG prec setup");
 
     if ( prec_mp != nullptr ) {
         IpplTimings::startTimer(precTimer);
-        prec_mp->create(A, level_p);
+        prec_mp->create(A_mp, level_p);
         IpplTimings::stopTimer(precTimer);
         problem_mp->setLeftPrec(prec_mp->get());
     }

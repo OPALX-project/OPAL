@@ -13,10 +13,15 @@
 
 #include "Ippl.h"
 
+extern Inform *gmsg;
+
 MultiBunchDump::MultiBunchDump()
     : fbase_m(OpalData::getInstance()->getInputBasename())
     , fext_m(".smb")
-{ }
+{
+    // in case of non-restart mode we first delete all *.smb files
+    this->remove_m();
+}
 
 
 void MultiBunchDump::writeHeader(const std::string& fname) const {
@@ -246,4 +251,32 @@ void MultiBunchDump::close_m(std::ofstream& out) const {
     if ( out.is_open() ) {
         out.close();
     }
+}
+
+
+void MultiBunchDump::remove_m() const {
+    if ( Ippl::myNode() != 0 || OpalData::getInstance()->inRestartRun() ) {
+        *gmsg << "* Multi-Bunch Dump (restart mode): Appending "
+              << "multi-bunch data to existing smb-files." << endl;
+        return;
+    }
+
+    namespace fs = boost::filesystem;
+    fs::path curDir(fs::current_path());
+    std::list<fs::path> files;
+    // 1. Mai 2019
+    // https://stackoverflow.com/questions/11140483/how-to-get-list-of-files-with-a-specific-extension-in-a-given-folder
+    for (const auto & entry : fs::directory_iterator(curDir)) {
+        if ( fs::is_regular_file(entry) && entry.path().extension() == fext_m) {
+            files.push_back(entry.path());
+        }
+    }
+
+    // delete *.smb files
+    while ( !files.empty() ) {
+        fs::path path = files.front();
+        fs::remove(path);
+        files.pop_front();
+    }
+    *gmsg << "* Multi-Bunch Dump: Deleted existing multi-bunch smb-files." << endl;
 }

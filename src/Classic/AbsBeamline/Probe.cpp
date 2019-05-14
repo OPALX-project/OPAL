@@ -49,7 +49,6 @@ double Probe::getStep() const {
 }
 
 bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double tstep) {
-    bool flagprobed = false;
     Vector_t rmin, rmax;
     bunch->get_bounds(rmin, rmax);
     // interested in absolute minimum and maximum
@@ -140,14 +139,13 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
             probepoint *= 0.001;
 
             lossDs_m->addParticle(probepoint, bunch->P[i], bunch->ID[i], t+dt, turnnumber);
-            flagprobed = true;
         }
 
         peakfinder_m->evaluate(turnnumber);
     }
 
-    reduce(&flagprobed, &flagprobed + 1, &flagprobed, OpBitwiseOrAssign());
-    return flagprobed;
+    // we do not lose particles in the probe
+    return false;
 }
 
 ElementBase::ElementType Probe::getType() const {

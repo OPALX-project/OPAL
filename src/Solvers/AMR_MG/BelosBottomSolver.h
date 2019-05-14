@@ -64,6 +64,7 @@ private:
     Teuchos::RCP<Teuchos::ParameterList> params_mp; ///< parameter list of solver
     Teuchos::RCP<solver_t>  solver_mp;              ///< solver instance
     std::shared_ptr<prec_t> prec_mp;                ///< preconditioner
+    Teuchos::RCP<matrix_t> A_mp;                    ///< copy of matrix (has to be positive definite)
     
     scalar_t reltol_m;                              ///< relative tolerance
     

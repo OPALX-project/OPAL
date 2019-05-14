@@ -139,6 +139,8 @@ ParallelCyclotronTracker::ParallelCyclotronTracker(const Beamline &beamline,
     TransformTimer_m   = IpplTimings::getTimer("Frametransform");
     DumpTimer_m        = IpplTimings::getTimer("Dump");
     BinRepartTimer_m   = IpplTimings::getTimer("Binaryrepart");
+    PluginElemTimer_m  = IpplTimings::getTimer("PluginElements");
+    DelParticleTimer_m = IpplTimings::getTimer("DeleteParticles");
 
     // FIXME Change track command
     if ( initialTotalNum_m == 1 ) {
@@ -239,6 +241,24 @@ void ParallelCyclotronTracker::bgf_main_collision_test() {
         }
     }
 }
+
+// only used for dumping into stat file
+void ParallelCyclotronTracker::dumpAngle_m(const double& theta) {
+    if ( prevAzimuth_m < 0.0 ) { // only at first occurrence
+        azimuth_m = theta;
+    } else {
+        double dtheta = theta - prevAzimuth_m;
+        if ( dtheta < 0 ) {
+            dtheta += 360.0;
+        }
+        if ( dtheta > 180 ) { // rotating clockwise, reduce angle
+            dtheta -= 360;
+        }
+        azimuth_m += dtheta;
+    }
+    prevAzimuth_m = theta;
+}
+
 
 
 /**
@@ -1367,11 +1387,11 @@ void ParallelCyclotronTracker::GenericTracker() {
     ivector_t TturnNumber;
 
     // Apply the plugin elements: probe, collimator, stripper, septum once before first step
-    applyPluginElements(dt);
+    bool flagNeedUpdate = applyPluginElements(dt);
 
     // Destroy particles if they are marked as Bin = -1 in the plugin elements
     // or out of global aperture
-    deleteParticle();
+    deleteParticle(flagNeedUpdate);
 
     /********************************
      *     Main integration loop    *
@@ -1577,7 +1597,8 @@ bool ParallelCyclotronTracker::getTunes(dvector_t &t, dvector_t &r, dvector_t &z
 }
 
 void ParallelCyclotronTracker::saveOneBunch() {
-
+    static IpplTimings::TimerRef saveBunchTimer = IpplTimings::getTimer("Save Bunch H5");
+    IpplTimings::startTimer(saveBunchTimer);
     *gmsg << endl;
     *gmsg << "* Store beam to H5 file for multibunch simulation ... ";
 
@@ -1637,11 +1658,13 @@ void ParallelCyclotronTracker::saveOneBunch() {
     h5wrapper.close();
 
     *gmsg << "Done." << endl;
+    IpplTimings::stopTimer(saveBunchTimer);
 }
 
 
 bool ParallelCyclotronTracker::readOneBunchFromFile(const size_t BinID) {
-
+    static IpplTimings::TimerRef readBunchTimer = IpplTimings::getTimer("Read Bunch H5");
+    IpplTimings::startTimer(readBunchTimer);
     *gmsg << endl;
     *gmsg << "* Read beam from H5 file for multibunch simulation ... ";
 
@@ -1704,11 +1727,14 @@ bool ParallelCyclotronTracker::readOneBunchFromFile(const size_t BinID) {
 
     *gmsg << "Done." << endl;
 
+    IpplTimings::stopTimer(readBunchTimer);
     return true;
 }
 
 
 void ParallelCyclotronTracker::updateParticleBins_m() {
+    static IpplTimings::TimerRef binningTimer = IpplTimings::getTimer("Particle Binning");
+    IpplTimings::startTimer(binningTimer);
     switch ( binningType_m ) {
         case MB_BINNING::GAMMA:
             itsBunch_m->resetPartBinID2(eta_m);
@@ -1719,6 +1745,7 @@ void ParallelCyclotronTracker::updateParticleBins_m() {
         default:
             itsBunch_m->resetPartBinID2(eta_m);
     }
+    IpplTimings::stopTimer(binningTimer);
 }
 
 
@@ -1771,6 +1798,7 @@ void ParallelCyclotronTracker::repartition() {
 
 void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t> & particleVectors,
                                              double phi, Vector_t const translationToGlobal) {
+    IpplTimings::startTimer(TransformTimer_m);
     particleVectors -= translationToGlobal;
 
     Tenzor<double, 3> const rotation( cos(phi), sin(phi), 0,
@@ -1781,11 +1809,12 @@ void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t> & particle
 
         particleVectors[i] = dot(rotation, particleVectors[i]);
     }
+    IpplTimings::stopTimer(TransformTimer_m);
 }
 
 void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t> & particleVectors,
                                              double phi, Vector_t const translationToGlobal) {
-
+    IpplTimings::startTimer(TransformTimer_m);
     Tenzor<double, 3> const rotation(cos(phi), -sin(phi), 0,
                                      sin(phi),  cos(phi), 0,
                                      0,         0, 1); // counter-clockwise rotation
@@ -1796,24 +1825,27 @@ void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t> & particle
     }
 
     particleVectors += translationToGlobal;
+    IpplTimings::stopTimer(TransformTimer_m);
 }
 
 
 inline void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t> & particleVectors,
                                                     Quaternion_t const quaternion,
                                                     Vector_t const meanR) {
+    IpplTimings::startTimer(TransformTimer_m);
 
     // Translation from global to local
     particleVectors -= meanR;
 
     // Rotation to align P_mean with x-axis
     rotateWithQuaternion(particleVectors, quaternion);
+    IpplTimings::stopTimer(TransformTimer_m);
 }
 
 inline void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t> & particleVectors,
                                                     Quaternion_t const quaternion,
                                                     Vector_t const meanR) {
-
+    IpplTimings::startTimer(TransformTimer_m);
     // Reverse the quaternion by multiplying the axis components (x,y,z) with -1
     Quaternion_t reverseQuaternion = quaternion * -1.0;
     reverseQuaternion(0) *= -1.0;
@@ -1823,6 +1855,7 @@ inline void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t> & p
 
     // Translation from local to global
     particleVectors += meanR;
+    IpplTimings::stopTimer(TransformTimer_m);
 }
 
 inline void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t> & particleVectors,
@@ -1830,6 +1863,7 @@ inline void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t> & p
                                                     double const psi,
                                                     Vector_t const meanR) {
 
+    IpplTimings::startTimer(TransformTimer_m);
     //double const tolerance = 1.0e-4; // TODO What is a good angle threshold? -DW
 
     // Translation from global to local
@@ -1842,6 +1876,7 @@ inline void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t> & p
     // rotate around x-axis next
     //if (fabs(psi) > tolerance)
     rotateAroundX(particleVectors, psi);
+    IpplTimings::stopTimer(TransformTimer_m);
 }
 
 inline void ParallelCyclotronTracker::globalToLocal(Vector_t & myVector,
@@ -1849,6 +1884,7 @@ inline void ParallelCyclotronTracker::globalToLocal(Vector_t & myVector,
                                                     double const psi,
                                                     Vector_t const meanR) {
 
+    IpplTimings::startTimer(TransformTimer_m);
     //double const tolerance = 1.0e-4; // TODO What is a good angle threshold? -DW
 
     // Translation from global to local
@@ -1861,6 +1897,7 @@ inline void ParallelCyclotronTracker::globalToLocal(Vector_t & myVector,
     // rotate around x-axis next
     //if (fabs(psi) > tolerance)
     rotateAroundX(myVector, psi);
+    IpplTimings::stopTimer(TransformTimer_m);
 }
 
 inline void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t> & particleVectors,
@@ -1868,6 +1905,7 @@ inline void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t> & p
                                                     double const psi,
                                                     Vector_t const meanR) {
 
+    IpplTimings::startTimer(TransformTimer_m);
     //double const tolerance = 1.0e-4; // TODO What is a good angle threshold? -DW
 
     // If theta is large enough (i.e. there is significant momentum in z direction)
@@ -1880,6 +1918,7 @@ inline void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t> & p
 
     // Translation from local to global
     particleVectors += meanR;
+    IpplTimings::stopTimer(TransformTimer_m);
 }
 
 inline void ParallelCyclotronTracker::localToGlobal(Vector_t & myVector,
@@ -1887,6 +1926,7 @@ inline void ParallelCyclotronTracker::localToGlobal(Vector_t & myVector,
                                                     double const psi,
                                                     Vector_t const meanR) {
 
+    IpplTimings::startTimer(TransformTimer_m);
     //double const tolerance = 1.0e-4; // TODO What is a good angle threshold? -DW
 
     // If theta is large enough (i.e. there is significant momentum in z direction)
@@ -1899,6 +1939,7 @@ inline void ParallelCyclotronTracker::localToGlobal(Vector_t & myVector,
 
     // Translation from local to global
     myVector += meanR;
+    IpplTimings::stopTimer(TransformTimer_m);
 }
 
 inline void ParallelCyclotronTracker::rotateWithQuaternion(ParticleAttrib<Vector_t> & particleVectors, Quaternion_t const quaternion) {
@@ -2032,7 +2073,7 @@ inline void ParallelCyclotronTracker::getQuaternionTwoVectors(Vector_t u, Vector
 }
 
 
-void ParallelCyclotronTracker::push(double h) {
+bool ParallelCyclotronTracker::push(double h) {
     /* h   [ns]
      * dt1 [ns]
      * dt2 [ns]
@@ -2042,6 +2083,7 @@ void ParallelCyclotronTracker::push(double h) {
     // h [ns] --> h [s]
     h *= 1.0e-9;
 
+    bool flagNeedUpdate = false;
     std::list<CavityCrossData> cavCrossDatas;
     for(beamline_list::iterator sindex = ++(FieldDimensions.begin()); sindex != FieldDimensions.end(); ++sindex) {
         if(((*sindex)->first) == ElementBase::RFCAVITY) {
@@ -2079,6 +2121,7 @@ void ParallelCyclotronTracker::push(double h) {
                 itsBunch_m->R[i] += dt2 * itsBunch_m->P[i] * c_gamma;
             }
         }
+        flagNeedUpdate |= (itsBunch_m->Bin[i] < 0);
     }
     itsBunch_m->setT(itsBunch_m->getT() + h);
 
@@ -2089,12 +2132,14 @@ void ParallelCyclotronTracker::push(double h) {
     itsBunch_m->setLPath(PathLength_m);
 
     IpplTimings::stopTimer(IntegrationTimer_m);
+    return flagNeedUpdate;
 }
 
 
-void ParallelCyclotronTracker::kick(double h) {
+bool ParallelCyclotronTracker::kick(double h) {
     IpplTimings::startTimer(IntegrationTimer_m);
 
+    bool flagNeedUpdate = false;
     BorisPusher pusher;
     double const q = itsBunch_m->Q[0] / q_e; // For now all particles have the same charge
     double const M = itsBunch_m->M[0] * 1.0e9; // For now all particles have the same rest energy
@@ -2104,8 +2149,10 @@ void ParallelCyclotronTracker::kick(double h) {
         pusher.kick(itsBunch_m->R[i], itsBunch_m->P[i],
                     itsBunch_m->Ef[i], itsBunch_m->Bf[i],
                     h * 1.0e-9, M, q);
+        flagNeedUpdate |= (itsBunch_m->Bin[i] < 0);
     }
     IpplTimings::stopTimer(IntegrationTimer_m);
+    return flagNeedUpdate;
 }
 
 
@@ -2113,7 +2160,7 @@ void ParallelCyclotronTracker::borisExternalFields(double h) {
     // h in [ns]
 
     // push particles for first half step
-    push(0.5 * h);
+    bool flagNeedUpdate = push(0.5 * h);
 
     // Evaluate external fields
     IpplTimings::startTimer(IntegrationTimer_m);
@@ -2128,22 +2175,24 @@ void ParallelCyclotronTracker::borisExternalFields(double h) {
     IpplTimings::stopTimer(IntegrationTimer_m);
 
     // Kick particles for full step
-    kick(h);
+    flagNeedUpdate |= kick(h);
 
     // push particles for second half step
-    push(0.5 * h);
+    flagNeedUpdate |= push(0.5 * h);
 
     // apply the plugin elements: probe, collimator, stripper, septum
-    applyPluginElements(h);
+    flagNeedUpdate |= applyPluginElements(h);
     // destroy particles if they are marked as Bin=-1 in the plugin elements or out of global apeture
-    deleteParticle();
+    deleteParticle(flagNeedUpdate);
 }
 
 
-void ParallelCyclotronTracker::applyPluginElements(const double dt) {
+bool ParallelCyclotronTracker::applyPluginElements(const double dt) {
+    IpplTimings::startTimer(PluginElemTimer_m);
     // Plugin Elements are all defined in mm, change beam to mm before applying
     itsBunch_m->R *= Vector_t(1000.0);
 
+    bool flag = false;
     for(beamline_list::iterator sindex = ++(FieldDimensions.begin()); sindex != FieldDimensions.end(); ++sindex) {
         ElementBase::ElementType type = ((*sindex)->first);
         if( type == ElementBase::CCOLLIMATOR ||
@@ -2152,24 +2201,28 @@ void ParallelCyclotronTracker::applyPluginElements(const double dt) {
             type == ElementBase::STRIPPER) {
 
             PluginElement* element = static_cast<PluginElement *>(((*sindex)->second).second);
-            bool flag = element->check(itsBunch_m,
-                                       turnnumber_m,
-                                       itsBunch_m->getT() * 1e9  /*[ns]*/,
-                                       dt);
-            if (type == ElementBase::STRIPPER && flag == true) {
+            bool tmp = element->check(itsBunch_m,
+                                      turnnumber_m,
+                                      itsBunch_m->getT() * 1e9  /*[ns]*/,
+                                      dt);
+            flag |= tmp;
+
+            if ( tmp ) {
                 itsBunch_m->updateNumTotal();
-                *gmsg << "* Total number of particles after stripping = " << itsBunch_m->getTotalNum() << endl;
+                *gmsg << "* Total number of particles = " << itsBunch_m->getTotalNum() << endl;
             }
         }
     }
 
     itsBunch_m->R *= Vector_t(0.001);
+    IpplTimings::stopTimer(PluginElemTimer_m);
+    return flag;
 }
 
-bool ParallelCyclotronTracker::deleteParticle(){
+bool ParallelCyclotronTracker::deleteParticle(bool flagNeedUpdate){
+    IpplTimings::startTimer(DelParticleTimer_m);
     // Update immediately if any particles are lost during this step
 
-    bool flagNeedUpdate = (min(itsBunch_m->Bin) < 0);
     allreduce(flagNeedUpdate, 1, std::logical_or<bool>());
 
     if(flagNeedUpdate) {
@@ -2258,6 +2311,8 @@ bool ParallelCyclotronTracker::deleteParticle(){
         if ( itsBunch_m->weHaveBins() )
             updateParticleBins_m();
     }
+
+    IpplTimings::stopTimer(DelParticleTimer_m);
     return flagNeedUpdate;
 }
 
@@ -2577,13 +2632,18 @@ void ParallelCyclotronTracker::singleParticleDump() {
 
 void ParallelCyclotronTracker::bunchDumpStatData(){
 
-    // dump stat file per bin in case of multi-bunch mode
+    IpplTimings::startTimer(DumpTimer_m);
+
+    // dump stat file per bunch in case of multi-bunch mode
     if ( multiBunchMode_m != MB_MODE::NONE ) {
         double phi = 0.0, psi = 0.0;
         Vector_t meanR = calcMeanR();
 
         // Bunch (global) angle w.r.t. x-axis (cylinder coordinates)
         double theta = calculateAngle(meanR(0), meanR(1)) * Physics::rad2deg;
+
+        // fix azimuth_m --> make monotonically increasing
+        dumpAngle_m(theta);
 
         if(Options::psDumpFrame != Options::GLOBAL) {
             Vector_t meanP = calcMeanP();
@@ -2601,17 +2661,22 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
             globalToLocal(itsBunch_m->P, phi, psi);
         }
 
-        bunchDumpStatDataPerBin(theta);
+        bunchDumpStatDataPerBunch(azimuth_m);
+
+#ifdef ENABLE_AMR
+        if ( !itsDataSink->writeAmrStatistics(itsBunch_m) ) {
+            itsDataSink->memoryDump(itsBunch_m);
+        }
+#endif
 
         if(Options::psDumpFrame != Options::GLOBAL) {
             localToGlobal(itsBunch_m->R, phi, psi, meanR);
             localToGlobal(itsBunch_m->P, phi, psi);
         }
 
+        IpplTimings::stopTimer(DumpTimer_m);
         return;
     }
-
-    IpplTimings::startTimer(DumpTimer_m);
 
     /*
       in case before a bunchDumpPhasespaceData has
@@ -2641,6 +2706,9 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
 
     // Bunch (global) angle w.r.t. x-axis (cylinder coordinates)
     double azimuth = calculateAngle(meanR(0), meanR(1)) * Physics::rad2deg;
+
+    // fix azimuth_m --> make monotonically increasing
+    dumpAngle_m(azimuth);
 
     // --------------  Calculate the external fields at the center of the bunch ----------------- //
     beamline_list::iterator DumpSindex = FieldDimensions.begin();
@@ -2675,7 +2743,7 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
     FDext_m[1] = extE_m;        // kV/mm? -DW
 
     // Save the stat file
-    itsDataSink->writeStatData(itsBunch_m, FDext_m, E, azimuth);
+    itsDataSink->writeStatData(itsBunch_m, FDext_m, E, azimuth_m);
 
     //itsBunch_m->R *= Vector_t(1000.0); // m -> mm
 
@@ -2689,9 +2757,7 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
 }
 
 
-void ParallelCyclotronTracker::bunchDumpStatDataPerBin(const double& azimuth) {
-    IpplTimings::startTimer(DumpTimer_m);
-
+void ParallelCyclotronTracker::bunchDumpStatDataPerBunch(const double& azimuth) {
     for (short b = 0; b < BunchCount_m; ++b) {
 
         MultiBunchDump::beaminfo_t binfo;
@@ -2701,8 +2767,6 @@ void ParallelCyclotronTracker::bunchDumpStatDataPerBin(const double& azimuth) {
             itsMBDump_m->writeData(binfo, b);
         }
     }
-
-    IpplTimings::stopTimer(DumpTimer_m);
 }
 
 
@@ -2925,6 +2989,8 @@ std::tuple<double, double, double> ParallelCyclotronTracker::initializeTracking_
     }
 
     turnnumber_m = 1;
+    azimuth_m = -1.0;
+    prevAzimuth_m = -1.0;
 
     // --- Output to user --- //
     *gmsg << "* Beginning of this run is at t = " << t << " [ns]" << endl;
@@ -3111,7 +3177,7 @@ void ParallelCyclotronTracker::singleMode_m(double& t, const double dt,
     // * timestep (bgf_main_collision_test() predicts the next step automatically)      * //
 
     // apply the plugin elements: probe, collimator, stripper, septum
-    applyPluginElements(dt);
+    bool flagNeedUpdate = applyPluginElements(dt);
 
     // check if we lose particles at the boundary
     bgf_main_collision_test();
@@ -3163,7 +3229,8 @@ void ParallelCyclotronTracker::singleMode_m(double& t, const double dt,
 
     // Destroy particles if they are marked as Bin = -1 in the plugin elements
     // or out of the global aperture
-    deleteParticle();
+    flagNeedUpdate |= (itsBunch_m->Bin[i] < 0);
+    deleteParticle(flagNeedUpdate);
 }
 
 
@@ -3187,13 +3254,7 @@ void ParallelCyclotronTracker::bunchMode_m(double& t, const double dt, bool& dum
     if (itsBunch_m->hasFieldSolver()) {
 
         if (step_m % setup_m.scSolveFreq == 0) {
-
-            IpplTimings::startTimer(TransformTimer_m);
-
             computeSpaceChargeFields_m();
-
-            IpplTimings::stopTimer(TransformTimer_m);
-
         } else {
             // If we are not solving for the space charge fields at this time step
             // we will apply the fields from the previous step and have to rotate them
@@ -3218,7 +3279,7 @@ void ParallelCyclotronTracker::bunchMode_m(double& t, const double dt, bool& dum
     // *** This was moved here b/c collision should be tested before the **********************
     // *** actual timestep (bgf_main_collision_test() predicts the next step automatically) -DW
     // Apply the plugin elements: probe, collimator, stripper, septum
-    applyPluginElements(dt);
+    bool flagNeedUpdate = applyPluginElements(dt);
 
     // check if we lose particles at the boundary
     bgf_main_collision_test();
@@ -3239,13 +3300,15 @@ void ParallelCyclotronTracker::bunchMode_m(double& t, const double dt, bool& dum
             itsBunch_m->cavityGapCrossed[i] = false;
         else
             gapCrossKick_m(i, t, dt, Rold, Pold);
+
+        flagNeedUpdate |= (itsBunch_m->Bin[i] < 0);
     }
 
     IpplTimings::stopTimer(IntegrationTimer_m);
 
     // Destroy particles if they are marked as Bin = -1 in the plugin elements
     // or out of global aperture
-    deleteParticle();
+    deleteParticle(flagNeedUpdate);
 
     // Recalculate bingamma and reset the BinID for each particles according to its current gamma
     if (itsBunch_m->weHaveBins() && BunchCount_m > 1 && step_m % Options::rebinFreq == 0)
@@ -3379,14 +3442,10 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
 
         //itsBunch_m->R *= Vector_t(0.001); // mm --> m
 
-        IpplTimings::stopTimer(TransformTimer_m);
-
         itsBunch_m->setGlobalMeanR(Vector_t(0.0, 0.0, 0.0));
         itsBunch_m->setGlobalToLocalQuaternion(Quaternion_t(1.0, 0.0, 0.0, 0.0));
 
         itsBunch_m->computeSelfFields_cycl(1.0);
-
-        IpplTimings::startTimer(TransformTimer_m);
 
         //itsBunch_m->R *= Vector_t(1000.0); // m --> mm
 
@@ -3440,8 +3499,6 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
         else
             itsBunch_m->boundp();
 
-        IpplTimings::stopTimer(TransformTimer_m);
-
         if ((itsBunch_m->weHaveBins()) && BunchCount_m > 1) {
             // --- Multibunche mode --- //
 
@@ -3476,9 +3533,6 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
             itsBunch_m->computeSelfFields_cycl(temp_meangamma);
 
         }
-
-
-        IpplTimings::startTimer(TransformTimer_m);
 
         //scale coordinates back
         //itsBunch_m->R *= Vector_t(1000.0); // m --> mm

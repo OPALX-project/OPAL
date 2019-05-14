@@ -1,26 +1,21 @@
 #include "AmrObject.h"
 
 AmrObject::AmrObject()
-    : tagging_m(CHARGE_DENSITY),
-      scaling_m(0.75),
-      chargedensity_m(1.0e-15),
-      maxNumPart_m(1),
-      minNumPart_m(1),
-      refined_m(false),
-      amrSolveTimer_m(IpplTimings::getTimer("AMR solve"))
+    : AmrObject(CHARGE_DENSITY, 0.75, 1.0e-15)
 { }
 
 
 AmrObject::AmrObject(TaggingCriteria tagging,
                      double scaling,
                      double chargedensity)
-    : tagging_m(tagging),
-      scaling_m(scaling),
-      chargedensity_m(chargedensity),
-      maxNumPart_m(1),
-      minNumPart_m(1),
-      refined_m(false),
-      amrSolveTimer_m(IpplTimings::getTimer("AMR solve"))
+    : tagging_m(tagging)
+    , scaling_m(scaling)
+    , chargedensity_m(chargedensity)
+    , maxNumPart_m(1)
+    , minNumPart_m(1)
+    , refined_m(false)
+    , amrSolveTimer_m(IpplTimings::getTimer("AMR solve"))
+    , amrRegridTimer_m(IpplTimings::getTimer("AMR regrid"))
 { }
 
 
@@ -96,11 +91,11 @@ std::string AmrObject::enum2string(int number) {
         case TaggingCriteria::MOMENTA:
             tagging = "MOMENTA";
             break;
-        case TaggingCriteria::MAX_NUM_PARTICLES:
-            tagging = "MAX_NUM_PARTICLES";
-            break;
         case TaggingCriteria::MIN_NUM_PARTICLES:
             tagging = "MIN_NUM_PARTICLES";
+            break;
+        case TaggingCriteria::MAX_NUM_PARTICLES:
+            tagging = "MAX_NUM_PARTICLES";
             break;
         default:
             throw OpalException("AmrObject::enum2string(int)",
