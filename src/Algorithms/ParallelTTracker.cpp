@@ -718,9 +718,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::cleanJobFile(jobFile);
 
     /* Get particles in bunch                                                                             */
-    // Quaternion alignment = getQuaternion(itsBunch_m->get_pmean(), Vector_t(0, 0, 1));  // REMOVE OR CHECK
-    // CoordinateSystemTrafo beamToReferenceCSTrafo(Vector_t(0, 0, pathLength_m), alignment.conjugate());  // REMOVE OR CHECK
-    // CoordinateSystemTrafo referenceToBeamCSTrafo = beamToReferenceCSTrafo.inverted();  // REMOVE OR CHECK
     const unsigned int localNum = itsBunch_m->getLocalNum();    
     double rmean = itsBunch_m->get_rmean()[2];
     for (unsigned int i = 0; i < localNum; ++i) {
@@ -758,10 +755,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.initialDirection_	= fv;
     for (unsigned int d = 0; d < 3; ++d) {
         fv[d] = 0.0;
-        // fv[d] = ( itsBunch_m->get_rmean() )[d];
-        // fv[d] = itsBunch_m->toLabTrafo_m.transformTo( itsBunch_m->get_rmean() ) [d];
     }
-    // fv[2] += itsBunch_m->get_sPos();
     bunchInit.position_.push_back(fv);
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rrms()(d);
@@ -798,12 +792,12 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.timeScale_ = 1.0;
     mesh.totalTime_ = uLength / bunchInit.initialBeta_ / Darius::C0;
     mesh.truncationOrder_ = 2;
-    mesh.spaceCharge_ = 0;  // LATER CHANGE TO 1
+    mesh.spaceCharge_ = 1;  // LATER CHANGE TO 1
     
     /* Create the bunch database.                                                                         */
     Darius::Bunch                              bunch;
     bunch.bunchInit_.push_back(bunchInit);
-    bunch.timeStart_ = itsBunch_m->getT();
+    bunch.timeStart_ = 0.0;
     int m = 5;  // dt = m * dt_bunch
     bunch.timeStep_ = mesh.meshResolution_[2] * bunchInit.initialGamma_ *
         bunchInit.initialGamma_ / Darius::C0 / ( 1 + .5 * uParam.k_ *  uParam.k_ ) / m;
