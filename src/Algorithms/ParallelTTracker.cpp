@@ -718,20 +718,19 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::cleanJobFile(jobFile);
 
     /* Get particles in bunch                                                                             */
-    itsBunch_m->calcBeamParameters();
-    Quaternion alignment = getQuaternion(itsBunch_m->get_pmean(), Vector_t(0, 0, 1));  // REMOVE OR CHECK
-    CoordinateSystemTrafo beamToReferenceCSTrafo(Vector_t(0, 0, pathLength_m), alignment.conjugate());  // REMOVE OR CHECK
-    CoordinateSystemTrafo referenceToBeamCSTrafo = beamToReferenceCSTrafo.inverted();  // REMOVE OR CHECK
+    // Quaternion alignment = getQuaternion(itsBunch_m->get_pmean(), Vector_t(0, 0, 1));  // REMOVE OR CHECK
+    // CoordinateSystemTrafo beamToReferenceCSTrafo(Vector_t(0, 0, pathLength_m), alignment.conjugate());  // REMOVE OR CHECK
+    // CoordinateSystemTrafo referenceToBeamCSTrafo = beamToReferenceCSTrafo.inverted();  // REMOVE OR CHECK
     const unsigned int localNum = itsBunch_m->getLocalNum();    
+    double rmean = itsBunch_m->get_rmean()[2];
     for (unsigned int i = 0; i < localNum; ++i) {
-        itsBunch_m->R[i] = referenceToBeamCSTrafo.transformTo(itsBunch_m->R[i]);
-        itsBunch_m->P[i] = referenceToBeamCSTrafo.rotateTo(itsBunch_m->P[i]);
+        itsBunch_m->R[i](2) = itsBunch_m->R[i](2) - rmean;
     }    
+    itsBunch_m->calcBeamParameters();
 
     std::list<Darius::Charge>	qv;
     Darius::Charge charge;
     charge.q = itsBunch_m->getChargePerParticle() / (-1.6e-19);  // In elementary charges
-    double average_of_z = 0;  // REMOVE
     for (unsigned int i = 0; i < localNum; ++i) {
         for (unsigned int d = 0; d < 3; ++d) {
             charge.rnp[d] = (itsBunch_m->R[i])[d];
@@ -739,12 +738,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
             // charge.rnp[d] = ( itsBunch_m->toLabTrafo_m.transformTo(itsBunch_m->R[i]) )[d];
             // charge.gbnp[d] = ( itsBunch_m->toLabTrafo_m.rotateTo(itsBunch_m->P[i]) )[d];
         }
-        average_of_z += charge.rnp[2];  // REMOVE
         qv.push_back(charge);
     }
-    average_of_z /= localNum;  // REMOVE
-    std::cout << "THE AVERAGE Z POSITION OF PARTICLES IS = " << average_of_z << std::endl;  // REMOVE
-    std::cout << "AND SPOS IS = " << itsBunch_m->get_sPos() << std::endl;  // REMOVE
 
     /* Parameters to initialize bunch                                                                     */
     Darius::BunchInitialize bunchInit;
@@ -762,7 +757,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     fv /= norm;
     bunchInit.initialDirection_	= fv;
     for (unsigned int d = 0; d < 3; ++d) {
-        fv[d] = ( itsBunch_m->get_rmean() )[d];
+        fv[d] = 0.0;
+        // fv[d] = ( itsBunch_m->get_rmean() )[d];
         // fv[d] = itsBunch_m->toLabTrafo_m.transformTo( itsBunch_m->get_rmean() ) [d];
     }
     // fv[2] += itsBunch_m->get_sPos();
@@ -791,12 +787,12 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     for (unsigned int d = 0; d < 3; ++d)
         fv[d] = bunchInit.position_[0][d];
     mesh.meshCenter_ = fv;
-    fv[0] = 10 * bunchInit.sigmaPosition_[0];
-    fv[1] = 10 * bunchInit.sigmaPosition_[1];
-    fv[2] = 6 * bunchInit.sigmaPosition_[2];
+    fv[0] = 12.5 * bunchInit.sigmaPosition_[0];
+    fv[1] = 12.5 * bunchInit.sigmaPosition_[1];
+    fv[2] = 8 * bunchInit.sigmaPosition_[2];
     mesh.meshLength_ = fv;
-    fv[0] = mesh.meshLength_[0] / 30;
-    fv[1] = mesh.meshLength_[1] / 30;
+    fv[0] = mesh.meshLength_[0] / 32;
+    fv[1] = mesh.meshLength_[1] / 32;
     fv[2] = mesh.meshLength_[2] / 700;
     mesh.meshResolution_ = fv;
     mesh.timeScale_ = 1.0;
@@ -848,11 +844,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         fdtdsc.solve();
     else
         fdtd.solve();
-
-    for (unsigned int i = 0; i < localNum; ++i) {
-        itsBunch_m->R[i] = beamToReferenceCSTrafo.transformTo(itsBunch_m->R[i]);
-        itsBunch_m->P[i] = beamToReferenceCSTrafo.rotateTo(itsBunch_m->P[i]);
-    }        
 
 }
 
