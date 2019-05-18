@@ -28,37 +28,6 @@ BUNCH
 
 FIELD
 {
-
-  field-initialization
-  {
-    type      						= gaussian-beam
-    position  						= ( 0.0, 0.0, -2500.0e-6)
-    direction						= ( 0.0, 0.0, 1.0)
-    polarization 					= ( 0.0, 1.0, 0.0)
-    radius-parallel					= 0.5e-6
-    radius-perpendicular				= 0.5e-6
-    strength-parameter					= 0.0
-    signal-type    					= gaussian
-    offset    						= 0.00e-9
-    variance  						= 1.00e-6
-    wavelength						= 0.0
-    CEP  						= 0.0
-  }
-  
-    
-  field-visualization
-  {
-    sample						= false
-    type						= in-plane
-    field						= Ex
-    field						= Ey
-    field						= Ez
-    plane						= x-normal
-    position						= (0.0, 0.0, 110.0)
-    directory						= ./
-    base-name						= field-visualization/field1
-    rhythm						= 5.0
-  }
   
   field-visualization
   {
