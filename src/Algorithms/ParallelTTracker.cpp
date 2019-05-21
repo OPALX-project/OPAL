@@ -718,22 +718,24 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::cleanJobFile(jobFile);
 
     /* Get particles in bunch                                                                             */
+    itsBunch_m->calcBeamParameters();
     const unsigned int localNum = itsBunch_m->getLocalNum();    
-    double rmean = itsBunch_m->get_rmean()[2];
+    double zmean = itsBunch_m->get_rmean()[2];
     for (unsigned int i = 0; i < localNum; ++i) {
-        itsBunch_m->R[i](2) = itsBunch_m->R[i](2) - rmean;
+        itsBunch_m->R[i](2) = itsBunch_m->R[i](2) - zmean;
     }    
     itsBunch_m->calcBeamParameters();
+    
+    msg << "Bunch before undulator, z-coordinate centered around zmean: " << endl;
+    itsBunch_m->print(msg);
 
     std::list<Darius::Charge>	qv;
     Darius::Charge charge;
-    charge.q = itsBunch_m->getChargePerParticle() / (-1.6e-19);  // In elementary charges
+    charge.q = itsBunch_m->getChargePerParticle() / (-1.602e-19);  // In elementary charges
     for (unsigned int i = 0; i < localNum; ++i) {
         for (unsigned int d = 0; d < 3; ++d) {
             charge.rnp[d] = (itsBunch_m->R[i])[d];
             charge.gbnp[d] = (itsBunch_m->P[i])[d];
-            // charge.rnp[d] = ( itsBunch_m->toLabTrafo_m.transformTo(itsBunch_m->R[i]) )[d];
-            // charge.gbnp[d] = ( itsBunch_m->toLabTrafo_m.rotateTo(itsBunch_m->P[i]) )[d];
         }
         qv.push_back(charge);
     }
@@ -741,15 +743,13 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     /* Parameters to initialize bunch                                                                     */
     Darius::BunchInitialize bunchInit;
     Darius::FieldVector<double> fv (0.0);
-    
-    bunchInit.bunchType_ = "OPAL";
+    bunchInit.bunchType_ = "charge-vector";
     bunchInit.numberOfParticles_ = localNum;
     bunchInit.cloudCharge_ = charge.q * localNum;    
     bunchInit.initialGamma_ = itsBunch_m->get_gamma(); 
     bunchInit.initialBeta_ = sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));    
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = ( itsBunch_m->get_pmean() )[d];
-        // fv[d] = itsBunch_m->toLabTrafo_m.rotateTo( itsBunch_m->get_pmean() ) [d];
     double norm = sqrt( fv.norm() );
     fv /= norm;
     bunchInit.initialDirection_	= fv;
@@ -765,7 +765,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.sigmaGammaBeta_ = fv;
     bunchInit.tranTrun_ = 4 * std::max( bunchInit.sigmaPosition_[0], bunchInit.sigmaPosition_[1] );
     bunchInit.longTrun_ = 2.5 * bunchInit.sigmaPosition_[2]; 
-    bunchInit.inputVector_ = qv;   
+    bunchInit.inputVector_ = qv;
     
     /* Undulator parameters                 */
     Darius::Undulator uParam;
@@ -773,7 +773,16 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     uParam.lu_ = ur->getLambda();
     double uLength =  ur->getElementLength();
     uParam.length_ = uLength / uParam.lu_;  // In units of lu
-    // uParam.rb_ = ;
+    double gamma_ = bunchInit.initialGamma_ / sqrt(1 + .5 * uParam.k_ * uParam.k_);
+    double beta_ = sqrt(1.0 - 1.0 / (gamma_ * gamma_));    
+
+    /* Radiation output parameters                                                                        */
+    Darius::FreeElectronLaser FELParam;
+    FELParam.radiationPower_.sampling_ = 1;
+    FELParam.radiationPower_.z_.push_back(2 * bunchInit.sigmaPosition_[2]);
+    FELParam.radiationPower_.lambda_.push_back(1);
+    FELParam.radiationPower_.samplingType("at-point");
+    FELParam.radiationPower_.directory_ = "./power-sampling/power";
     
     /* Create the solver database.                                                                        */
     Darius::Mesh                               mesh;
@@ -789,18 +798,21 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     fv[1] = mesh.meshLength_[1] / 32;
     fv[2] = mesh.meshLength_[2] / 700;
     mesh.meshResolution_ = fv;
+    double dz = uParam.lu_ / FELParam.radiationPower_.lambda_[0] / pow(gamma_, 2);
+    if (mesh.meshResolution_[2] > dz ) {
+        mesh.meshResolution_[2] = .99 * dz;
+    }
     mesh.timeScale_ = 1.0;
-    mesh.totalTime_ = uLength / bunchInit.initialBeta_ / Darius::C0;
+    mesh.totalTime_ = uLength / beta_ / Darius::C0;
     mesh.truncationOrder_ = 2;
-    mesh.spaceCharge_ = 1;  // LATER CHANGE TO 1
+    mesh.spaceCharge_ = 1;
     
     /* Create the bunch database.                                                                         */
     Darius::Bunch                              bunch;
     bunch.bunchInit_.push_back(bunchInit);
     bunch.timeStart_ = 0.0;
     int m = 5;  // dt = m * dt_bunch
-    bunch.timeStep_ = mesh.meshResolution_[2] * bunchInit.initialGamma_ *
-        bunchInit.initialGamma_ / Darius::C0 / ( 1 + .5 * uParam.k_ *  uParam.k_ ) / m;
+    bunch.timeStep_ = mesh.meshResolution_[2] * gamma_ * gamma_ / Darius::C0 / m;
 
     /* Create the seed database.                                                                          */
     Darius::Seed                               seed;
@@ -817,6 +829,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     /* Create the free electron laser database.                                                           */
     std::vector<Darius::FreeElectronLaser>     FEL;
     FEL.clear();
+    FEL.push_back(FELParam);
 
     /* Open input parameter parser and instantiate the databases.                                         */
     Darius::ParseDarius parser (jobFile, mesh, bunch, seed, undulator, extField, FEL);
