@@ -39,7 +39,6 @@ private:
     double pathLength_m;
     double dZ_m;
     double time_m;
-    const double initialTime_m;
     double dt_m;
     const size_t maxIntegSteps_m;
     const double zstop_m;

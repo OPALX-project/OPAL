@@ -260,7 +260,7 @@ protected:
 
         boost::scoped_ptr<Opt_t> opt(
                 new Opt_t(objectives_, constraints_, dvars_, objectives_.size(),
-                          comm_->getBundle(), cmd_args_, hypervolRef_));
+                          comm_->getBundle(), cmd_args_, hypervolRef_, comm_->getNrWorkerGroups()));
         opt->initialize();
 
         std::cout << "Stop Opt.." << std::endl;

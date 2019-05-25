@@ -208,6 +208,7 @@ public:
     double getdT() const;
 
     void   setT(double t);
+    void   incrementT();
     double getT() const;
 
     /**

@@ -37,10 +37,7 @@ namespace {
         // DESCRIPTION OF SINGLE PARTICLE:
         TYPE,       // The type of the wake
         MATERIAL,   // From of the tube
-        RADIUS, // Radius of the tube
-        SIGMA,
-        TAU,
-        NPART,
+        ENABLERUTHERFORD,
         SIZE
     };
 }
@@ -56,16 +53,8 @@ ParticleMatterInteraction::ParticleMatterInteraction():
     itsAttr[MATERIAL] = Attributes::makeString
                         ("MATERIAL", "The material of the surface");
 
-    itsAttr[RADIUS] = Attributes::makeReal
-                      ("RADIUS", "The radius of the beam pipe [m]");
-
-    itsAttr[SIGMA] = Attributes::makeReal
-                     ("SIGMA", "Material constant dependant on the  beam pipe material");
-
-    itsAttr[TAU] = Attributes::makeReal
-                   ("TAU", "Material constant dependant on the  beam pipe material");
-
-    itsAttr[NPART] = Attributes::makeReal("NPART", "Number of particles in bunch");
+    itsAttr[ENABLERUTHERFORD] = Attributes::makeBool("ENABLERUTHERFORD",
+                                                     "Enable large angle scattering", true);
 
     ParticleMatterInteraction *defParticleMatterInteraction = clone("UNNAMED_PARTICLEMATTERINTERACTION");
     defParticleMatterInteraction->builtin = true;
@@ -130,15 +119,15 @@ void ParticleMatterInteraction::initParticleMatterInteractionHandler(ElementBase
     *gmsg << "* ParticleMatterInteraction::initParticleMatterInteractionHandler " << endl;
     *gmsg << "* ********************************************************************************** " << endl;
 
-    itsElement_m = &element;
-    material_m = Util::toUpper(Attributes::getString(itsAttr[MATERIAL]));
+    std::string material = Util::toUpper(Attributes::getString(itsAttr[MATERIAL]));
+    bool enableRutherford = Attributes::getBool(itsAttr[ENABLERUTHERFORD]);
 
     const std::string type = Util::toUpper(Attributes::getString(itsAttr[TYPE]));
     if(type == "CCOLLIMATOR" ||
        type == "COLLIMATOR" ||
        type == "DEGRADER") {
 
-        handler_m = new CollimatorPhysics(getOpalName(), itsElement_m, material_m);
+        handler_m = new CollimatorPhysics(getOpalName(), &element, material, enableRutherford);
         *gmsg << *this << endl;
     } else {
         handler_m = 0;

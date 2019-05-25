@@ -76,6 +76,7 @@ namespace {
         RECOMBINATIONPROBABILITY,
         SIMBINCROSSOVERNU,
         INITIALOPTIMIZATION,
+        BIRTHCONTROL,
         SIMTMPDIR,
         TEMPLATEDIR,
         FIELDMAPDIR,
@@ -143,6 +144,8 @@ OptimizeCmd::OptimizeCmd():
         ("SIMBIN_CROSSOVER_NU", "Simulated binary crossover, default: 2.0");
     itsAttr[INITIALOPTIMIZATION] = Attributes::makeBool
         ("INITIAL_OPTIMIZATION", "Optimize speed of initial generation, default: false");
+    itsAttr[BIRTHCONTROL] = Attributes::makeBool
+        ("BIRTH_CONTROL", "Enforce strict population sizes (or flexible to keep workers busy), default: false");
     itsAttr[SIMTMPDIR] = Attributes::makeString
         ("SIMTMPDIR", "Directory where simulations are run");
     itsAttr[TEMPLATEDIR] = Attributes::makeString
@@ -260,6 +263,7 @@ void OptimizeCmd::execute() {
             {RECOMBINATIONPROBABILITY, "recombination-probability"},
             {SIMBINCROSSOVERNU, "simbin-crossover-nu"},
             {INITIALOPTIMIZATION, "initial-optimization"},
+            {BIRTHCONTROL, "birth-control"},
             {RESTART_FILE, "restartfile"},
             {RESTART_STEP, "restartstep"}
         });
@@ -307,6 +311,16 @@ void OptimizeCmd::execute() {
         Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]).size()  != objectivesstr.size()) {
         throw OpalException("OptimizeCmd::execute",
                             "The hypervolume reference point should have the same dimension as the objectives");
+    }
+    if (Attributes::getString(itsAttr[STARTPOPULATION])     != "" &&
+        Attributes::getBool(  itsAttr[INITIALOPTIMIZATION]) == true) {
+        throw OpalException("OptimizeCmd::execute",
+                            "No INITIAL_OPTIMIZATION possible when reading initial population from file (STARTPOPULATION)");
+    }
+    if (Attributes::getBool(itsAttr[BIRTHCONTROL])        == true &&
+        Attributes::getBool(itsAttr[INITIALOPTIMIZATION]) == true) {
+        throw OpalException("OptimizeCmd::execute",
+                            "No INITIAL_OPTIMIZATION possible with BIRTH_CONTROL");
     }
 
     if (Attributes::getString(itsAttr[SIMTMPDIR]) != "") {

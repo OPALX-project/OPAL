@@ -250,7 +250,7 @@ private:
     IpplTimings::TimerRef WakeFieldTimer_m;
 
     std::set<ParticleMatterInteractionHandler*> activeParticleMatterInteractionHandlers_m;
-    bool particleMaterStatus_m;
+    bool particleMatterStatus_m;
 
     unsigned long totalParticlesInSimulation_m;
 

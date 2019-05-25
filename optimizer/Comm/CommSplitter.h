@@ -77,9 +77,10 @@ public:
 
     MPI_Comm mpiComm() const { return world_comm_; }
     int globalRank()   const { return global_rank_; }
-    int PilotRank()    const { return Strategy_t::poller_; }
+    int pilotRank()    const { return Strategy_t::poller_; }
     int getLeader()    const { return Strategy_t::leader_; }
 
+    int getNrWorkerGroups() const { return Strategy_t::getNrWorkerGroups();}
 
     /// construct comm bundle and return
     Comm::Bundle_t getBundle() const {

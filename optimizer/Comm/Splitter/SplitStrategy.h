@@ -43,6 +43,9 @@ public:
      */
     virtual void split() = 0;
 
+    /// Get number of worker groups
+    virtual int getNrWorkerGroups() const = 0;
+
     MPI_Comm getComm()  const { return comm_; }
 
     int getRank()       const { return rank_; }
@@ -52,10 +55,6 @@ public:
     Role_t getRole()    const { return role_; }
     int getLeader()     const { return leader_; }
     int getPoller()     const { return poller_; }
-
-    std::vector<int> getWorkers()     const { return workers_; }
-    std::vector<int> getOptimizers()  const { return optimizers_; }
-    std::vector<int> getCoworkers()   const { return coworkers_; }
 
 
 private:
@@ -83,18 +82,6 @@ protected:
 
     /// every core can specifies a master
     int poller_;
-
-    /// used in master <-> workers communicator
-    std::vector<int> workers_;
-
-    /// used in aster <-> optimizers communicator
-    std::vector<int> optimizers_;
-
-    /// every role has one or more pids to solve the task at hand
-    // a worker leader has more worker-cores to solve the forward problem
-    // a optimizer leader has more opt-cores to solve the opt problem
-    // a master has other masters working on the same opt problem
-    std::vector<int> coworkers_;
 };
 
 #endif

@@ -52,7 +52,8 @@ public:
             DVarContainer_t dvars,
             size_t dim, Comm::Bundle_t comms,
             CmdArguments_t args,
-            std::vector<double> hypervolRef);
+            std::vector<double> hypervolRef,
+            int nrWorkerGroups);
 
 
     /**
@@ -73,8 +74,8 @@ public:
             Comm::Bundle_t comms,
             CmdArguments_t args);
 
-    /// Starting selection algorithm and variator PISA state machine
-    void initialize();
+    /// Initialization and start algorithm
+    virtual void initialize();
 
     /// type used in solution state exchange with other optimizers
     typedef std::vector< SampleIndividual > SolutionState_t;
@@ -93,7 +94,6 @@ protected:
     void dispatch_forward_solves();
 
 private:
-
 
     std::map<std::string,
              std::shared_ptr<SamplingMethod>

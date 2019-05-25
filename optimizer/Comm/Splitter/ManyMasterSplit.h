@@ -32,7 +32,7 @@ public:
     {}
 
 
-    void split() {
+    virtual void split() {
 
         parseArguments();
 
@@ -92,6 +92,10 @@ public:
         //FIXME:
         if(role_ == POLLER)
             leader_ = 1;
+    }
+
+    virtual int getNrWorkerGroups() const {
+        return (num_procs_ - 2 * num_masters_) / num_coworkers_worker_;
     }
 
 private:

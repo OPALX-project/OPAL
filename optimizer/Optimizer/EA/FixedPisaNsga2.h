@@ -69,12 +69,13 @@ public:
                    Expressions::Named_t constraints,
                    DVarContainer_t dvars, size_t dim, Comm::Bundle_t comms,
                    CmdArguments_t args,
-                   std::vector<double> hypervolRef);
+                   std::vector<double> hypervolRef,
+                   int nrWorkerGroups);
 
     ~FixedPisaNsga2();
 
     /// Starting selection algorithm and variator PISA state machine
-    void initialize();
+    virtual void initialize();
 
     /// type used in solution state exchange with other optimizers
     typedef std::vector< Individual > SolutionState_t;
@@ -130,11 +131,9 @@ private:
 
     std::string getStateString(PisaState_t) const;
 
-    //FIXME:
     // selector parameters
     int seed;   /* seed for random number generator */
     const int tournament_m = 1;  /* number of opponents for mating selection */
-    size_t selector_mu_; ///< number of finished individuals in current generation
 
     /// the current state of the state machine
     PisaState_t curState_m;
@@ -181,8 +180,13 @@ private:
 
     /// size of initial population
     size_t alpha_m;
-    /// initial population optimization flag (doubles initial population)
+    /// initial population optimization flag (increases initial population)
     bool initialOptimization_m;
+    /// enforce strict population size
+    bool birthControl_m;
+    /// population file to be started from
+    std::string file_start_m;
+
     /// number of parents the selector chooses
     //size_t mu_m;
     /// number of children the variator produces
@@ -193,6 +197,8 @@ private:
     size_t act_gen = 1;
     /// maximal generation (stopping criterion)
     size_t maxGenerations_m;
+    /// number of individuals running
+    int num_workergroups_m;
 
     /// result file name
     std::string resultFile_m;

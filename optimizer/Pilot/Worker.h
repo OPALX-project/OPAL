@@ -12,9 +12,6 @@
 #include "Util/MPIHelper.h"
 #include "Util/CmdArguments.h"
 
-#include "Simulation/Simulation.h"
-
-
 /**
  *  \class Worker
  *  \brief A worker MPI entity consists of a processor group that runs a

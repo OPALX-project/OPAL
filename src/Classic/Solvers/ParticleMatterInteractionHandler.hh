@@ -31,7 +31,9 @@ public:
     void updateElement(ElementBase *newref);
     ElementBase* getElement();
 
-    virtual bool computeEnergyLoss(double &Eng, const double deltat, bool includeFluctuations = true) const = 0;
+    virtual bool computeEnergyLoss(Vector_t &P,//double &Eng,
+                                   const double deltat,
+                                   bool includeFluctuations = true) const = 0;
 protected:
     ElementBase *element_ref_m;
     bool allParticleInMat_m; ///< if all particles are in matter stay inside the particle matter interaction

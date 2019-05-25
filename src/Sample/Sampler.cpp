@@ -19,7 +19,8 @@ Sampler::Sampler(Expressions::Named_t objectives,
                  DVarContainer_t dvars,
                  size_t dim, Comm::Bundle_t comms,
                  CmdArguments_t args,
-                 std::vector<double> hypervolRef)
+                 std::vector<double> hypervolRef,
+                 int nrWorkerGroups)
     : Optimizer(comms.opt)
 {
     throw OptPilotException("Sampler::Sampler",

@@ -73,14 +73,9 @@ void Corrector::accept(BeamlineVisitor &visitor) const {
 
 bool Corrector::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) {
     Vector_t &R = RefPartBunch_m->R[i];
+    Vector_t &P = RefPartBunch_m->P[i];
 
-    if (R(2) >= 0.0 && R(2) < getElementLength()) {
-        if (!isInsideTransverse(R)) return true;
-
-        B += kickField_m;
-    }
-
-    return false;
+    return apply(R, P, t, E, B);
 }
 
 bool Corrector::apply(const Vector_t &R,
@@ -88,10 +83,22 @@ bool Corrector::apply(const Vector_t &R,
                       const double &t,
                       Vector_t &E,
                       Vector_t &B) {
+
     if (R(2) >= 0.0 && R(2) < getElementLength()) {
         if (!isInsideTransverse(R)) return true;
 
-        B += kickField_m;
+        double tau = 1.0;
+        const double &dt = RefPartBunch_m->getdT();
+        const double stepSize = dt * Physics::c * P(2) / Util::getGamma(P);
+
+        if (R(2) < stepSize) {
+            tau = R(2) / stepSize + 0.5;
+        }
+        if (getElementLength() - R(2) < stepSize) {
+            tau += (getElementLength() - R(2)) / stepSize - 0.5;
+        }
+
+        B += kickField_m * tau;
     }
 
     return false;

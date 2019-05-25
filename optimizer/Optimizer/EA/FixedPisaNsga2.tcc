@@ -1,6 +1,5 @@
 #include <iostream>
 #include <sstream>
-#include <cassert>
 #include <cmath>
 #include <cstring>
 #include <set>
@@ -37,7 +36,8 @@ FixedPisaNsga2<CO, MO>::FixedPisaNsga2(
                            DVarContainer_t dvars,
                            size_t dim, Comm::Bundle_t comms,
                            CmdArguments_t args,
-                           std::vector<double> hypervolRef)
+                           std::vector<double> hypervolRef,
+                           int nrWorkerGroups)
              : Optimizer(comms.opt)
              , statistics_(new Statistics<size_t>("individuals"))
              , comms_(comms)
@@ -46,6 +46,7 @@ FixedPisaNsga2<CO, MO>::FixedPisaNsga2(
              , dvars_m(dvars)
              , args_m(args)
              , dim_m(dim)
+             , num_workergroups_m(nrWorkerGroups)
              , hvol_ref_m(hypervolRef)
 {
     my_local_pid_ = 0;
@@ -77,11 +78,14 @@ FixedPisaNsga2<CO, MO>::FixedPisaNsga2(
     current_hvol_       = std::numeric_limits<double>::max();
     hvol_progress_      = std::numeric_limits<double>::max();
 
-    //XXX: we can also set alpha_m to number of workers
     lambda_m              = args->getArg<int>("num-ind-gen", 2, false);
     alpha_m               = args->getArg<int>("initialPopulation", true);
     //mu_m                = lambda_m;
-    initialOptimization_m = args->getArg<bool>("initial-optimization", false);
+
+    // initial population arguments
+    file_start_m          = args_m->getArg<std::string>("start-population",     "",    false);
+    initialOptimization_m = args_m->getArg<bool>       ("initial-optimization", false, false);
+    birthControl_m        = args_m->getArg<bool>       ("birth-control",        false, false);
 
     file_param_descr_ = "%ID,";
 
@@ -424,8 +428,8 @@ template< template <class> class CO, template <class> class MO >
 void FixedPisaNsga2<CO, MO>::toSelectorAndCommit() {
 
     to_selector_.clear();
-    selector_mu_ = finishedBuffer_m.size();
-    for(size_t i = 0; i < selector_mu_; i++) {
+    const size_t size = finishedBuffer_m.size();
+    for(size_t i = 0; i < size; i++) {
         unsigned int id = finishedBuffer_m.front();
         to_selector_.insert(id);
         finishedBuffer_m.pop_front();
@@ -536,11 +540,10 @@ void FixedPisaNsga2<CO, MO>::runStateMachine() {
     // information about initial population to ini file.
     case Initialize: {
         if(initialized_m == false) {
-            if (initialOptimization_m == true) {
-              // double population such that workers keep busy until full initial population is found
-              variator_m->initial_population(2*alpha_m);
-            } else {
-              variator_m->initial_population(alpha_m);
+            variator_m->initial_population(alpha_m, file_start_m);
+            if (initialOptimization_m == true && birthControl_m == false && file_start_m.empty()) {
+                // increase population such that workers keep busy until full initial population is found
+                variator_m->initial_population(num_workergroups_m, "");
             }
             dispatch_forward_solves();
             initialized_m = true;
@@ -557,9 +560,10 @@ void FixedPisaNsga2<CO, MO>::runStateMachine() {
             toSelectorAndCommit();
             curState_m = InitializeSelector;
 
-            if (initialOptimization_m == false) {
-                //FIXME: and double the population again to have all workers busy
-                variator_m->initial_population(alpha_m);
+            // add additional worker jobs to the queue so that single job won't keep system idle
+            if (initialOptimization_m == false && birthControl_m == false && file_start_m.empty()) {
+                // increase population to have all workers busy
+                variator_m->initial_population(num_workergroups_m, "");
                 dispatch_forward_solves();
             }
         }
@@ -1004,9 +1008,7 @@ void FixedPisaNsga2<CO, MO>::environmentalSelection() {
                 min = j;
         }
         // swap
-        unsigned int p_min = pp_all[min];
-        pp_all[min] = pp_all[i];
-        pp_all[i] = p_min;
+        std::swap(pp_all[min], pp_all[i]);
     }
     // erase others
     pp_all.erase(pp_all.begin() + alpha_m, pp_all.end());
@@ -1016,8 +1018,8 @@ void FixedPisaNsga2<CO, MO>::environmentalSelection() {
 /* Fills mating pool 'parent_queue_' */
 template< template <class> class CO, template <class> class MO >
 void FixedPisaNsga2<CO, MO>::matingSelection() {
-    // select at least lambda_m parents
-    for (size_t i = 0; i < std::max(selector_mu_, lambda_m); i++) {
+    // select lambda_m parents
+    for (size_t i = 0; i < lambda_m; i++) {
         int winner = irand(pp_all.size());
 
         for (int j = 0; j < tournament_m; j++) {

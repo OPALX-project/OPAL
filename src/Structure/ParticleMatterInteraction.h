@@ -72,17 +72,6 @@ private:
 
     // Clone constructor.
     ParticleMatterInteraction(const std::string &name, ParticleMatterInteraction *parent);
-
-    // The particle reference data.
-    PartData reference;
-
-    // The conversion from GeV to eV.
-    static const double energy_scale;
-
-    // the element the particle mater interaction is attached to
-    ElementBase *itsElement_m;
-    std::string material_m;
-
 };
 
 inline std::ostream &operator<<(std::ostream &os, const ParticleMatterInteraction &b) {

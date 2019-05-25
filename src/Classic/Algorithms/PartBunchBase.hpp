@@ -1077,6 +1077,12 @@ void PartBunchBase<T, Dim>::setT(double t) {
 
 
 template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::incrementT() {
+    t_m += dt_m;
+}
+
+
+template <class T, unsigned Dim>
 double PartBunchBase<T, Dim>::getT() const {
     return t_m;
 }
@@ -1805,13 +1811,6 @@ bool PartBunchBase<T, Dim>::resetPartBinID2(const double eta) {
     for(unsigned long int n = 0; n < getLocalNum(); n++) {
 
         double temp_betagamma = sqrt(pow(P[n](0), 2) + pow(P[n](1), 2));
-#ifdef ENABLE_AMR
-        // FIXME: Restrict to 1 GeV proton
-        if ( temp_betagamma > 1.808 ) {
-            Bin[n] = -1;
-            continue;
-        }
-#endif
         int itsBinID = floor((asinh(temp_betagamma) - asinh0) / eta + 1.0E-6);
         Bin[n] = itsBinID;
         if(maxbinIndex < itsBinID) {
@@ -2059,7 +2058,6 @@ size_t PartBunchBase<T, Dim>::calcMoments() {
     std::vector<double> loc_moments(4 * Dim + Dim * ( 2 * Dim + 1 ));
 
     long int totalNum = this->getTotalNum();
-#ifndef ENABLE_AMR
     if (OpalData::getInstance()->isInOPALCyclMode()) {
         /* FIXME After issue 287 is resolved this shouldn't be necessary
          * anymore
@@ -2093,7 +2091,6 @@ size_t PartBunchBase<T, Dim>::calcMoments() {
         }
         allreduce(totalNum, 1, std::less<long int>());
     }
-#endif
 
     for(unsigned long k = 0; k < localNum; ++ k) {
         part[1] = P[k](0);

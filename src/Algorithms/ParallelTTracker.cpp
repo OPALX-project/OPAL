@@ -106,7 +106,7 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     fieldEvaluationTimer_m(IpplTimings::getTimer("External field eval")),
     BinRepartTimer_m(IpplTimings::getTimer("Binaryrepart")),
     WakeFieldTimer_m(IpplTimings::getTimer("WakeField")),
-    particleMaterStatus_m(false),
+    particleMatterStatus_m(false),
     totalParticlesInSimulation_m(0)
 {
 
@@ -145,7 +145,7 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     fieldEvaluationTimer_m(IpplTimings::getTimer("External field eval")),
     BinRepartTimer_m(IpplTimings::getTimer("Binaryrepart")),
     WakeFieldTimer_m(IpplTimings::getTimer("WakeField")),
-    particleMaterStatus_m(false),
+    particleMatterStatus_m(false),
     totalParticlesInSimulation_m(0)
 {
     for (std::vector<unsigned long long>::const_iterator it = maxSteps.begin(); it != maxSteps.end(); ++ it) {
@@ -311,14 +311,14 @@ void ParallelTTracker::execute() {
 
     setTime();
 
-    double t = itsBunch_m->getT() - globalTimeShift;
-    itsBunch_m->setT(t);
+    double time = itsBunch_m->getT() - globalTimeShift;
+    itsBunch_m->setT(time);
 
     *gmsg << level1 << *itsBunch_m << endl;
 
     unsigned long long step = itsBunch_m->getGlobalTrackStep();
     OPALTimer::Timer myt1;
-    *gmsg << "Track start at: " << myt1.time() << ", t= " << Util::getTimeString(t) << "; "
+    *gmsg << "Track start at: " << myt1.time() << ", t= " << Util::getTimeString(time) << "; "
           << "zstart at: " << Util::getLengthString(pathLength_m)
           << endl;
 
@@ -362,10 +362,9 @@ void ParallelTTracker::execute() {
 
             timeIntegration2(pusher);
 
-            t += itsBunch_m->getdT();
-            itsBunch_m->setT(t);
+            itsBunch_m->incrementT();
 
-            if (t > 0.0) {
+            if (itsBunch_m->getT() > 0.0) {
                 updateReference(pusher);
             }
 
@@ -971,13 +970,13 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
             activeParticleMatterInteractionHandlers_m.insert(it);
         }
 
-        if(!particleMaterStatus_m) {
-            msg << level2 << "============== START PARTICLE MATER INTERACTION CALCULATION =============" << endl;
-            particleMaterStatus_m = true;
+        if(!particleMatterStatus_m) {
+            msg << level2 << "============== START PARTICLE MATTER INTERACTION CALCULATION =============" << endl;
+            particleMatterStatus_m = true;
         }
     }
 
-    if (particleMaterStatus_m) {
+    if (particleMatterStatus_m) {
         do {
             ///all particles in material if max per node is 2 and other degraders have 0 particles
             //check if more than one degrader has particles
@@ -1033,7 +1032,8 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
 
                 rediffusedParticles += it->getRediffused();
                 numEnteredParticles += it->getNumEntered();
-                //if all particles where in material update time to time in degrader
+
+                //if all particles were in material update time to time in degrader
                 if (it->getFlagAllParticlesIn()) {
                     double timeDifference = it->getTime() - itsBunch_m->getdT() - itsBunch_m->getT();
                     if (timeDifference > 0.0) {
@@ -1063,14 +1063,14 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
 
             //if bunch has no particles update time to time in degrader
             if (itsBunch_m->getTotalNum() == 0)
-                itsBunch_m->setT(itsBunch_m->getT() + itsBunch_m->getdT());
+                itsBunch_m->incrementT();
 
         } while (itsBunch_m->getTotalNum() == 0);
 
 
         if (activeParticleMatterInteractionHandlers_m.size() == 0) {
-            msg << level2 << "============== END PARTICLE MATER INTERACTION CALCULATION =============" << endl;
-            particleMaterStatus_m = false;
+            msg << level2 << "============== END PARTICLE MATTER INTERACTION CALCULATION =============" << endl;
+            particleMatterStatus_m = false;
         }
     }
 }

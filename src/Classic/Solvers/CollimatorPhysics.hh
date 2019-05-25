@@ -78,7 +78,10 @@ struct InsideTester {
 
 class CollimatorPhysics: public ParticleMatterInteractionHandler {
 public:
-    CollimatorPhysics(const std::string &name, ElementBase *element, std::string &mat);
+    CollimatorPhysics(const std::string &name,
+                      ElementBase *element,
+                      std::string &mat,
+                      bool enableRutherford);
     ~CollimatorPhysics();
 
     void apply(PartBunchBase<double, 3> *bunch,
@@ -96,28 +99,28 @@ public:
     size_t getParticlesInMat();
     unsigned getRediffused();
     unsigned int getNumEntered();
-    void doPhysics(PartBunchBase<double, 3> *bunch);
+    void computeInteraction();
 
-    virtual bool computeEnergyLoss(double &Eng, const double deltat, bool includeFluctuations = true) const;
+    virtual bool computeEnergyLoss(Vector_t &P,
+                                   const double deltat,
+                                   bool includeFluctuations = true) const;
 
 private:
 
     void configureMaterialParameters();
-    void computeCoulombScattering(Vector_t &R, Vector_t &P, const double &deltat);
+    void computeCoulombScattering(Vector_t &R,
+                                  Vector_t &P,
+                                  double dt);
 
-    void applyRotation(double &px,
-                       double &pz,
-                       double &x,
-                       double &z,
+    void applyRotation(Vector_t &P,
+                       Vector_t &R,
                        double xplane,
-                       double Norm_P,
-                       double thetacou,
-                       double deltas,
-                       int coord);
+                       double thetacou);
+    void applyRandomRotation(Vector_t &P, double theta0);
 
     void copyFromBunch(PartBunchBase<double, 3> *bunch,
                        const std::pair<Vector_t, double> &boundingSphere);
-    void addBackToBunch(PartBunchBase<double, 3> *bunch, unsigned i);
+    void addBackToBunch(PartBunchBase<double, 3> *bunch);
 
     void applyNonDKS(PartBunchBase<double, 3> *bunch,
                      const std::pair<Vector_t, double> &boundingSphere,
@@ -128,7 +131,7 @@ private:
                   size_t numParticlesInSimulation);
     void copyFromBunchDKS(PartBunchBase<double, 3> *bunch,
                         const std::pair<Vector_t, double> &boundingSphere);
-    void addBackToBunchDKS(PartBunchBase<double, 3> *bunch, unsigned i);
+    void addBackToBunchDKS(PartBunchBase<double, 3> *bunch);
 
     void setupCollimatorDKS(PartBunchBase<double, 3> *bunch, size_t numParticlesInSimulation);
     void clearCollimatorDKS();
@@ -140,6 +143,10 @@ private:
     void deleteParticleFromLocalVector();
 
     void calcStat(double Eng);
+
+    void push();
+    void resetTimeStep();
+    void setTimeStepForLeavingParticles();
 
     double  T_m;                               // own time, maybe larger than in the bunch object
     double dT_m;                               // dt from bunch
@@ -169,8 +176,8 @@ private:
     unsigned int stoppedPartStat_m;
     // number of particles that leave the material in current step
     unsigned int rediffusedStat_m;
-    // number of local particles that are in the material
-    size_t locPartsInMat_m;
+    // total number of particles that are in the material
+    unsigned int totalPartsInMat_m;
 
     // some statistics
     double Eavg_m;                            // average kinetic energy
@@ -181,6 +188,7 @@ private:
 
     std::unique_ptr<LossDataSink> lossDs_m;
 
+    bool enableRutherford_m;
 #ifdef OPAL_DKS
     DKSOPAL dksbase;
     int curandInitSet;
@@ -218,7 +226,7 @@ double CollimatorPhysics::getTime() {
 
 inline
 size_t CollimatorPhysics::getParticlesInMat() {
-    return locPartsInMat_m;
+    return totalPartsInMat_m;
 }
 
 inline
