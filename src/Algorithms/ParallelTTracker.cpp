@@ -697,13 +697,11 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         return;
     UndulatorRep* ur = dynamic_cast<UndulatorRep*>((*it).get());
     
-    /* Check if Mithra has already been run and get filename                                                                 */
+    /* Check if Mithra has already been run                                                                 */
     if (ur->getIsDone())
         return;
     ur->setIsDone();
-    std::string fname = ur->getFilename();
-    msg << "jobfile: " << fname << endl;
-    
+
     /* Start MITHRA                                                                                        */
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;
@@ -712,18 +710,12 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     msg << __FILE__ << " L: " << __LINE__ << " ---- in computeUndulator :::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     
-    /* Parse the command line options                                                                     */
-    const char *cfname = fname.c_str();
-    std::list<std::string> jobFile = Darius::read_file(cfname);
-    Darius::cleanJobFile(jobFile);
-
-    /* Get particles in bunch                                                                             */
+    /* Get particles in bunch and center around z_mean                                                                */
     itsBunch_m->calcBeamParameters();
     const unsigned int localNum = itsBunch_m->getLocalNum();    
     double zmean = itsBunch_m->get_rmean()[2];
-    for (unsigned int i = 0; i < localNum; ++i) {
-        itsBunch_m->R[i](2) = itsBunch_m->R[i](2) - zmean;
-    }    
+    for (unsigned int i = 0; i < localNum; ++i)
+        itsBunch_m->R[i](2) = itsBunch_m->R[i](2) - zmean;   
     itsBunch_m->calcBeamParameters();
     
     msg << "Bunch before undulator, z-coordinate centered around zmean: " << endl;
@@ -739,6 +731,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         }
         qv.push_back(charge);
     }
+    msg << "Done passing particles to Mithra" << endl;
 
     /* Parameters to initialize bunch                                                                     */
     Darius::BunchInitialize bunchInit;
@@ -754,8 +747,9 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     fv /= norm;
     bunchInit.initialDirection_	= fv;
     for (unsigned int d = 0; d < 3; ++d) {
-        fv[d] = 0.0;
+        fv[d] = itsBunch_m->get_rmean()[d];
     }
+    fv[2] = 0.0;
     bunchInit.position_.push_back(fv);
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rrms()(d);
@@ -763,9 +757,10 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_prms()(d);
     bunchInit.sigmaGammaBeta_ = fv;
-    bunchInit.tranTrun_ = 4 * std::max( bunchInit.sigmaPosition_[0], bunchInit.sigmaPosition_[1] );
-    bunchInit.longTrun_ = 2.5 * bunchInit.sigmaPosition_[2]; 
+    bunchInit.tranTrun_ = ur->getTranTrun();
+    bunchInit.longTrun_ = ur->getLongTrun();
     bunchInit.inputVector_ = qv;
+    msg << "Done getting bunch parameters" << endl;
     
     /* Undulator parameters                 */
     Darius::Undulator uParam;
@@ -775,44 +770,44 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     uParam.length_ = uLength / uParam.lu_;  // In units of lu
     double gamma_ = bunchInit.initialGamma_ / sqrt(1 + .5 * uParam.k_ * uParam.k_);
     double beta_ = sqrt(1.0 - 1.0 / (gamma_ * gamma_));    
+    msg << "Done passing undulator parameters to Mithra" << endl;
 
-    /* Radiation output parameters                                                                        */
+    /* Radiation output parameters         */
     Darius::FreeElectronLaser FELParam;
     FELParam.radiationPower_.sampling_ = 1;
-    FELParam.radiationPower_.z_.push_back(2 * bunchInit.sigmaPosition_[2]);
-    FELParam.radiationPower_.lambda_.push_back(1);
     FELParam.radiationPower_.samplingType("at-point");
-    FELParam.radiationPower_.directory_ = "./power-sampling/power";
-    
-    /* Create the solver database.                                                                        */
+    FELParam.radiationPower_.z_ = ur->getRadiationZ();
+    FELParam.radiationPower_.lambda_ = ur->getRadiationLambda();
+    FELParam.radiationPower_.directory_ = ur->getRadiationDirectory();
+    msg << "Done passing radiation output parameters to Mithra" << endl;
+
+    /* Create the solver database                     */
     Darius::Mesh                               mesh;
-    mesh.lengthScale_ = 1.0;
+    mesh.lengthScale_ = 1.0; 
+    mesh.timeScale_ = 1.0;
     for (unsigned int d = 0; d < 3; ++d)
         fv[d] = bunchInit.position_[0][d];
     mesh.meshCenter_ = fv;
-    fv[0] = 12.5 * bunchInit.sigmaPosition_[0];
-    fv[1] = 12.5 * bunchInit.sigmaPosition_[1];
-    fv[2] = 8 * bunchInit.sigmaPosition_[2];
+    for (unsigned int d = 0; d < 3; ++d)
+        fv[d] = ur->getMeshLength()[d];
     mesh.meshLength_ = fv;
-    fv[0] = mesh.meshLength_[0] / 32;
-    fv[1] = mesh.meshLength_[1] / 32;
-    fv[2] = mesh.meshLength_[2] / 700;
+    for (unsigned int d = 0; d < 3; ++d)
+        fv[d] = ur->getMeshResolution()[d];
     mesh.meshResolution_ = fv;
-    double dz = uParam.lu_ / FELParam.radiationPower_.lambda_[0] / pow(gamma_, 2);
-    if (mesh.meshResolution_[2] > dz ) {
-        mesh.meshResolution_[2] = .99 * dz;
-    }
-    mesh.timeScale_ = 1.0;
-    mesh.totalTime_ = uLength / beta_ / Darius::C0;
-    mesh.truncationOrder_ = 2;
-    mesh.spaceCharge_ = 1;
-    
+    mesh.totalTime_ = ur->getTotalTime();
+    if (mesh.totalTime_ == 0.0)
+        mesh.totalTime_ = uLength / beta_ / Darius::C0;
+    mesh.truncationOrder_ = ur->getTruncationOrder();
+    mesh.spaceCharge_ = ur->getSpaceCharge();
+    msg << "Done passing mesh parameters to Mithra" << endl;
+
     /* Create the bunch database.                                                                         */
     Darius::Bunch                              bunch;
     bunch.bunchInit_.push_back(bunchInit);
     bunch.timeStart_ = 0.0;
-    int m = 5;  // dt = m * dt_bunch
+    unsigned int m = ur->getTimeStepRatio();  // dt = m * dt_bunch
     bunch.timeStep_ = mesh.meshResolution_[2] * gamma_ * gamma_ / Darius::C0 / m;
+    msg << "Done passing timestep parameters to Mithra" << endl;
 
     /* Create the seed database.                                                                          */
     Darius::Seed                               seed;
@@ -830,10 +825,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     std::vector<Darius::FreeElectronLaser>     FEL;
     FEL.clear();
     FEL.push_back(FELParam);
-
-    /* Open input parameter parser and instantiate the databases.                                         */
-    Darius::ParseDarius parser (jobFile, mesh, bunch, seed, undulator, extField, FEL);
-    parser.setJobParameters();
     
     /* Show the parameters for the simulation.                                                            */
     mesh.show();

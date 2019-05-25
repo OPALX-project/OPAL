@@ -72,11 +72,33 @@ public:
     virtual ElementImage *getImage() const;
 
     virtual void setK(double k);
-    virtual double getK();
+    virtual double getK() const;
     virtual void setLambda(double lambda);
-    virtual double getLambda();
+    virtual double getLambda() const;
     virtual void setFilename(const std::string& fname);
     virtual const std::string& getFilename() const;
+    virtual void setTranTrun(double tranTrun);
+    virtual double getTranTrun() const;
+    virtual void setLongTrun(double longTrun);
+    virtual double getLongTrun() const;
+    virtual void setRadiationZ(std::vector<double> rz);
+    virtual std::vector<double> getRadiationZ() const;
+    virtual void setRadiationLambda(std::vector<double> rl);
+    virtual std::vector<double> getRadiationLambda() const;
+    virtual void setRadiationDirectory(const std::string& rd);
+    virtual const std::string& getRadiationDirectory() const;
+    virtual void setMeshLength(std::vector<double> ml);
+    virtual std::vector<double> getMeshLength() const;
+    virtual void setMeshResolution(std::vector<double> mr);
+    virtual std::vector<double> getMeshResolution() const;
+    virtual void setTruncationOrder(unsigned int trunOrder);
+    virtual unsigned int getTruncationOrder() const;
+    virtual void setSpaceCharge(bool sc);
+    virtual bool getSpaceCharge() const;
+    virtual void setTimeStepRatio(double m);
+    virtual unsigned int getTimeStepRatio() const;
+    virtual void setTotalTime(double tt);
+    virtual double getTotalTime() const;
     virtual void setIsDone();
     virtual bool getIsDone() const;
 
@@ -95,11 +117,44 @@ private:
     /// The undulator parameter
     double k_m;
 
-    /// The undulator period
+    /// Undulator period
     double lambda_m;
 
-    /// The mithra file
+    /// Mithra file
     std::string fname_m;
+    
+    /// Transverse truncation of input bunch
+    double tranTrun_m;
+    
+    /// Longitudinal truncation of input bunch
+    double longTrun_m;
+
+    /// Distances from the bunch at which to measure radiation
+    std::vector<double> radiationZ_m;
+
+    /// The wavelength of the harmonic whose power should be measured, normalized to the radiation wavelength
+    std::vector<double> radiationLambda_m;
+
+    /// Directory in which to save radiation power
+    std::string radiationDirectory_m;
+
+    /// Mesh size
+    std::vector<double> meshLength_m;
+
+    /// Mesh dx, dy, dz
+    std::vector<double> meshResolution_m;    
+
+    /// First or second order absorbing boundary conditions
+    unsigned int truncationOrder_m;
+
+    /// Whether or not to consider space-charge effects
+    bool spaceCharge_m;
+
+    /// Ratio between mesh time-step and bunch time-step (both computed by mithra)
+    unsigned int m_m;
+    
+    /// Total time to run undulator
+    double totalTime_m;
     
     /// Mithra has already run
     bool is_done_m;

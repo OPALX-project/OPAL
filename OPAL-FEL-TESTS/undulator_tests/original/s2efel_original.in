@@ -13,9 +13,8 @@ Title, string="AWA Photoinjector";
 //Global Parameters
 
 REAL rf_freq             = 1.3e9;     //RF frequency. (Hz)
-# REAL n_particles         = 10000;      //Number of particles in simulation.
-REAL n_particles         = 1224;      //Number of particles in simulation.	
-REAL beam_bunch_charge   = 1.846e8 * 1.6e-19 * 1e6;      //Charge of bunch. (C)
+REAL n_particles         = 1E+4;      //Number of particles in simulation.
+REAL beam_bunch_charge   = 1e-9;      //Charge of bunch. (C)
 
 //Initial Momentum Calculation
 REAL Edes    = 1.4e-9; //initial energy in GeV
@@ -44,7 +43,7 @@ REAL gun_inj_phase = 0.0;  // Rf injection phase (in degrees) with restpect
                       // to max phase. i.e. 0.0 inj phase corresponds 
                       // to running on crest (max energy).
 
-GUN:    RFCavity, L = 0.2927, VOLT = 60.0 * 6.6, ELEMEDGE = 0.0, TYPE = "STANDING",
+GUN:    RFCavity, L = 0.2927, VOLT = 60.0, ELEMEDGE = 0.0, TYPE = "STANDING",
         FMAPFN = "fieldmaps/DriveGun.T7", FREQ = 1300.0, LAG = (gun_inj_phase*Pi)/180.0; 
         //LAG (phase) is converted to radians
 
@@ -92,11 +91,9 @@ DR1: DRIFT,    L = 1.0, ELEMEDGE = 0.5;
 
 // Undulator
 
-U1: UNDULATOR, L = 9.0, ELEMEDGE = 1.5, K = 1.417, LAMBDA = .03,
-     TRANTRUN = 1040e-6, LONGTRUN = 90e-6, 
-     MESHLENGTH = { 3.2E-3, 3.2E-3, .28E-3 }, MESHRESOLUTION = {100e-6, 100e-6, .4e-6},
-     TRUNORDER = 2, SPACECHARGE = 1,
-     RADZ = 1.1e-4, RADLAMBDA = 1, RADDIRECTORY = "power-sampling/power";
+U1: UNDULATOR, L = 1.0, ELEMEDGE = 1.5, FNAME = "test_FEL_IR.job";
+
+
 
 // DEFINE BEAM LINE
 
@@ -133,7 +130,7 @@ DRIVE: Line = (GS, DR1, U1);
 Dist: DISTRIBUTION, TYPE = FLATTOP,
         SIGMAX = 0.00075,
         SIGMAY = 0.00075,
-        TRISE = 6.0e-12,      
+        TRISE = 6.0e-12,       
         TFALL = 6.0e-12,       
         TPULSEFWHM = 20.0e-12, 
         CUTOFFLONG = 4.0,
@@ -155,7 +152,7 @@ Dist: DISTRIBUTION, TYPE = FLATTOP,
 // for most efficient space charge calculation.
 
 FS_SC: Fieldsolver, FSTYPE = FFT, 
-            MX = 8, MY = 8, MT = 8, // SC grid size is 8^3
+            MX = 16, MY = 16, MT = 16, // SC grid size is 32^3
             PARFFTX = true, 
             PARFFTY = true, 
             PARFFTT = true,  // parallel in the z direction only

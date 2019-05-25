@@ -1,0 +1,123 @@
+SDDS1
+&description
+        text="Memory statistics 's2efel.in' 21/05/201911:08:45",
+        contents="memory info"
+&end
+&parameter
+        name=processors,
+        type=long,
+        description="Number of Cores used"
+&end
+&parameter
+        name=revision,
+        type=string,
+        description="git revision of opal"
+&end
+&parameter
+        name=flavor,
+        type=string,
+        description="OPAL flavor that wrote file"
+&end
+&column
+        name=t,
+        type=double,
+        units=ns,
+        description="1 Time"
+&end
+&column
+        name=VmPeak-Min,
+        type=double,
+        units=,
+        description="2 Minimum peak virtual memory size"
+&end
+&column
+        name=VmPeak-Max,
+        type=double,
+        units=,
+        description="3 Maximum peak virtual memory size"
+&end
+&column
+        name=VmPeak-Avg,
+        type=double,
+        units=,
+        description="4 Average peak virtual memory size"
+&end
+&column
+        name=VmSize-Min,
+        type=double,
+        units=,
+        description="5 Minimum virtual memory size"
+&end
+&column
+        name=VmSize-Max,
+        type=double,
+        units=,
+        description="6 Maximum virtual memory size"
+&end
+&column
+        name=VmSize-Avg,
+        type=double,
+        units=,
+        description="7 Average virtual memory size"
+&end
+&column
+        name=VmHWM-Min,
+        type=double,
+        units=,
+        description="8 Minimum peak resident set size"
+&end
+&column
+        name=VmHWM-Max,
+        type=double,
+        units=,
+        description="9 Maximum peak resident set size"
+&end
+&column
+        name=VmHWM-Avg,
+        type=double,
+        units=,
+        description="10 Average peak resident set size"
+&end
+&column
+        name=VmRSS-Min,
+        type=double,
+        units=,
+        description="11 Minimum resident set size"
+&end
+&column
+        name=VmRSS-Max,
+        type=double,
+        units=,
+        description="12 Maximum resident set size"
+&end
+&column
+        name=VmRSS-Avg,
+        type=double,
+        units=,
+        description="13 Average resident set size"
+&end
+&column
+        name=VmStk-Min,
+        type=double,
+        units=,
+        description="14 Minimum stack size"
+&end
+&column
+        name=VmStk-Max,
+        type=double,
+        units=,
+        description="15 Maximum stack size"
+&end
+&column
+        name=VmStk-Avg,
+        type=double,
+        units=,
+        description="16 Average stack size"
+&end
+&data
+        mode=ascii,
+        no_row_counts=1
+&end
+1
+OPAL 2.1.0 git rev. #23f013618fe84366de41bee170e70705bb90e0cf
+opal-t

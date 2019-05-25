@@ -57,11 +57,53 @@ OpalUndulator::OpalUndulator():
     itsAttr[FNAME] = Attributes::makeString
       ("FNAME", "Jobfilename for mithra", "");
 
+    itsAttr[TRANTRUN] = Attributes::makeReal
+                          ("TRANTRUN",
+                          "Transverse truncation of input bunch", 1);
+    itsAttr[LONGTRUN] = Attributes::makeReal
+                          ("LONGTRUN",
+                          "Longitudinal truncation of input bunch", 1);
+    itsAttr[RADZ] = Attributes::makeRealArray
+                          ("RADZ",
+			   "Distances from bunch in which to measure radiation");
+    itsAttr[RADLAMBDA] = Attributes::makeRealArray
+                          ("RADLAMBDA",
+			   "Normalized wavelengths to measure");
+    itsAttr[RADDIRECTORY] = Attributes::makeString
+                          ("RADDIRECTORY",
+                          "Directory to store radiation power", "");
+    itsAttr[MESHLENGTH] = Attributes::makeRealArray
+                          ("MESHLENGTH",
+			   "Size of computational mesh");
+    itsAttr[MESHRESOLUTION] = Attributes::makeRealArray
+                          ("MESHRESOLUTION",
+			   "dx, dy, dz of the mesh");
+    itsAttr[TRUNORDER] = Attributes::makeReal
+                          ("TRUNORDER",
+                          "Order of boundary absorbing conditions", 1);
+    itsAttr[SPACECHARGE] = Attributes::makeReal
+                          ("SPACECHARGE",
+                          "Whether to consider space-charge effects or not", 1);
+    itsAttr[TIMESTEPRATIO] = Attributes::makeReal
+                          ("TIMESTEPRATIO",
+                          "Ratio between mesh time-step and bunch time-step", 1);
+    itsAttr[TOTALTIME] = Attributes::makeReal
+                          ("TOTALTIME",
+                          "Total time of undulator simulation", 0.0);
+
+
     registerStringAttribute("GEOMETRY");
     registerRealAttribute("NSLICES");
     registerRealAttribute("K");
     registerRealAttribute("LAMBDA");
     registerStringAttribute("FNAME");
+    registerRealAttribute("TRANTRUN");
+    registerRealAttribute("LONGTRUN");
+    registerStringAttribute("RADDIRECTORY");
+    registerRealAttribute("TRUNORDER");
+    registerRealAttribute("SPACECHARGE");
+    registerRealAttribute("TIMESTEPRATIO");
+    registerRealAttribute("TOTALTIME");
     registerOwnership();
 
     setElement(new UndulatorRep("UNDULATOR"));
@@ -125,8 +167,17 @@ void OpalUndulator::update() {
     ur->setK(Attributes::getReal(itsAttr[K]));
     ur->setLambda(Attributes::getReal(itsAttr[LAMBDA]));
     ur->setFilename(Attributes::getString(itsAttr[FNAME]));
-
-
+    ur->setTranTrun(Attributes::getReal(itsAttr[TRANTRUN]));
+    ur->setLongTrun(Attributes::getReal(itsAttr[LONGTRUN]));
+    ur->setRadiationZ(Attributes::getRealArray(itsAttr[RADZ]));
+    ur->setRadiationLambda(Attributes::getRealArray(itsAttr[RADLAMBDA]));
+    ur->setRadiationDirectory(Attributes::getString(itsAttr[RADDIRECTORY]));
+    ur->setMeshLength(Attributes::getRealArray(itsAttr[MESHLENGTH]));
+    ur->setMeshResolution(Attributes::getRealArray(itsAttr[MESHRESOLUTION]));
+    ur->setTruncationOrder(Attributes::getReal(itsAttr[TRUNORDER]));
+    ur->setSpaceCharge(Attributes::getReal(itsAttr[SPACECHARGE]));
+    ur->setTimeStepRatio(Attributes::getReal(itsAttr[TIMESTEPRATIO]));
+    ur->setTotalTime(Attributes::getReal(itsAttr[TOTALTIME]));
 
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(ur);

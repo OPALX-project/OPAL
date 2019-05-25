@@ -39,8 +39,18 @@ public:
 	 K,                       // The undulator parameter
 	 LAMBDA,                  // The undulator period
 	 FNAME,
+	 TRANTRUN,
+	 LONGTRUN,
+	 RADZ,
+	 RADLAMBDA,
+	 RADDIRECTORY,
+	 MESHLENGTH,
+	 MESHRESOLUTION,
+	 TRUNORDER,
+	 SPACECHARGE,
+	 TIMESTEPRATIO,
+	 TOTALTIME,
 	 SIZE
-
     };
     /// Exemplar constructor.
     OpalUndulator();
