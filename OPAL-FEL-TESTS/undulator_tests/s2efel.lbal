@@ -1,6 +1,6 @@
 SDDS1
 &description
-        text="Processor statistics 's2efel.in' 25/05/201914:29:50",
+        text="Processor statistics 's2efel.in' 27/05/201910:19:39",
         contents="stat parameters"
 &end
 &parameter
@@ -35,6 +35,6 @@ SDDS1
         no_row_counts=1
 &end
 1
-OPAL 2.1.0 git rev. #23f013618fe84366de41bee170e70705bb90e0cf
+OPAL 2.1.0 git rev. #9a878ceebc3c54fa422f5e5c68f50fbe857123d0
 opal-t
 3.089999999999997e+01         	1224

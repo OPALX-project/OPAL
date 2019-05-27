@@ -1,5 +1,5 @@
 #!/bin/bash -l 
-#SBATCH --job-name=OPALUndulator
+#SBATCH --job-name=S2EFEL
 #SBATCH --time=05:30:00
 #SBATCH --ntasks=1
 #SBATCH --partition=merlin 

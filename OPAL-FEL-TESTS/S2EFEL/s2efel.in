@@ -13,7 +13,7 @@ Title, string="AWA Photoinjector";
 //Global Parameters
 
 REAL rf_freq             = 1.3e9;     //RF frequency. (Hz)
-# REAL n_particles         = 10000;      //Number of particles in simulation.
+// REAL n_particles         = 10000;      //Number of particles in simulation.
 REAL n_particles         = 1224;      //Number of particles in simulation.	
 REAL beam_bunch_charge   = 1.846e8 * 1.6e-19 * 1e6;      //Charge of bunch. (C)
 
@@ -94,9 +94,10 @@ DR1: DRIFT,    L = 1.0, ELEMEDGE = 0.5;
 
 U1: UNDULATOR, L = 9.0, ELEMEDGE = 1.5, K = 1.417, LAMBDA = .03,
      TRANTRUN = 1040e-6, LONGTRUN = 90e-6, 
-     MESHLENGTH = { 3.2E-3, 3.2E-3, .28E-3 }, MESHRESOLUTION = {100e-6, 100e-6, .4e-6},
+     MESHLENGTH = { 3.2e-3, 3.2e-3, .28e-3 }, MESHRESOLUTION = {100e-6, 100e-6, .4e-6},
      TRUNORDER = 2, SPACECHARGE = 1,
-     RADZ = 1.1e-4, RADLAMBDA = 1, RADDIRECTORY = "power-sampling/power";
+     RADZ = 1.1e-4, RADLAMBDA = 1, RADDIRECTORY = "power-sampling/power",
+     TOTALTIME = 3.003e-8, TIMESTEPRATIO = 5;
 
 // DEFINE BEAM LINE
 
@@ -131,11 +132,11 @@ DRIVE: Line = (GS, DR1, U1);
 //      Sigmar     = FWHM / 2.35 (this equation is only valid for 1.3 GHz)
 
 Dist: DISTRIBUTION, TYPE = FLATTOP,
-        SIGMAX = 0.00075,
-        SIGMAY = 0.00075,
+        SIGMAX = 0.00075 / 19,
+        SIGMAY = 0.00075 / 19,
         TRISE = 6.0e-12,      
         TFALL = 6.0e-12,       
-        TPULSEFWHM = 20.0e-12, 
+        TPULSEFWHM = 20.0e-12 / 51, 
         CUTOFFLONG = 4.0,
         NBIN = 5,
         EMISSIONSTEPS = 100,
