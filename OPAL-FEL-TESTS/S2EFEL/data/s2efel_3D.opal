@@ -12,7 +12,7 @@ Title, string="AWA Photoinjector";
 REAL rf_freq             = 1.3e9;
      
 REAL n_particles         = 1224;
-      REAL beam_bunch_charge   = 1.846e8 * 1.6e-19 * 1e6;
+      REAL beam_bunch_charge   = 29.5e-12 * 1e6;
       
 REAL Edes    = 1.4e-9;
  REAL gamma   = (Edes+EMASS)/EMASS;
@@ -40,13 +40,13 @@ value,{KSBF,SF};
 
 DR1: DRIFT,    L = 1.0, Z = 0.5;
 
-U1: UNDULATOR, L = 9.0, Z = 1.5, K = 1.417, LAMBDA = .03,     TRANTRUN = 1040e-6, LONGTRUN = 90e-6,      MESHLENGTH = { 3.2e-3, 3.2e-3, .28e-3 }, MESHRESOLUTION = {100e-6, 100e-6, .4e-6},     TRUNORDER = 2, SPACECHARGE = 1,     RADZ = 1.1e-4, RADLAMBDA = 1, RADDIRECTORY = "power-sampling/power",     TOTALTIME = 3.003e-8, TIMESTEPRATIO = 5;
+U1: UNDULATOR, L = 9.0, Z = 1.5, K = 1.417, LAMBDA = .03,     TRANTRUN = 1.05e-3, LONGTRUN = 50e-06,      MESHLENGTH = { 3.2e-03, 3.2e-03, 6e-03 }, MESHRESOLUTION = {3e-05, 3e-05, 3e-06},     TRUNORDER = 2, SPACECHARGE = 1,     RADZ = 1.1e-4, RADLAMBDA = 1, RADDIRECTORY = "power-sampling/power",     TOTALTIME = 3.003e-8, TIMESTEPRATIO = 5;
 
 GS:  Line = (GUN, BF, M);
 
 DRIVE: Line = (GS, DR1, U1);
 
-Dist: DISTRIBUTION, TYPE = FLATTOP,        SIGMAX = 0.00075 / 19,        SIGMAY = 0.00075 / 19,        TRISE = 6.0e-12,              TFALL = 6.0e-12,               TPULSEFWHM = 20.0e-12 / 51,         CUTOFFLONG = 4.0,        NBIN = 5,        EMISSIONSTEPS = 100,        EMISSIONMODEL = ASTRA,        EKIN = 0.55,                   EMITTED = True,                WRITETOFILE = False;
+Dist: DISTRIBUTION, TYPE = FLATTOP,        SIGMAX = 0.00075 / 19,        SIGMAY = 0.00075 / 19,        TRISE = 6.0e-12,              TFALL = 6.0e-12,               TPULSEFWHM = 20.0e-12 / 100,         CUTOFFLONG = 4.0,        NBIN = 5,        EMISSIONSTEPS = 100,        EMISSIONMODEL = ASTRA,        EKIN = 0.55,                   EMITTED = True,                WRITETOFILE = False;
     
 FS_SC: Fieldsolver, FSTYPE = FFT,             MX = 8, MY = 8, MT = 8,             PARFFTX = true,             PARFFTY = true,             PARFFTT = true,              BCFFTX = open,             BCFFTY = open,             BCFFTT = open,            BBOXINCR = 1,             GREENSF = INTEGRATED;
 
