@@ -34,24 +34,7 @@ extern Inform *gmsg;
 // ------------------------------------------------------------------------
 
 TravelingWave::TravelingWave():
-    RFCavity(),
-    CoreFieldmap_m(NULL),
-    scaleCore_m(1.0),
-    scaleCoreError_m(0.0),
-    phaseCore1_m(0.0),
-    phaseCore2_m(0.0),
-    phaseExit_m(0.0),
-    length_m(0.0),
-    startCoreField_m(0.0),
-    startExitField_m(0.0),
-    mappedStartExitField_m(0.0),
-    PeriodLength_m(0.0),
-    NumCells_m(1),
-    CellLength_m(0.0),
-    Mode_m(1),
-    fast_m(true),
-    autophaseVeto_m(false),
-    designEnergy_m(-1.0)
+    TravelingWave("")
 {}
 
 

@@ -37,21 +37,7 @@ using namespace std;
 // ------------------------------------------------------------------------
 
 ElementBase::ElementBase():
-    RCObject(),
-    shareFlag(true),
-    csTrafoGlobal2Local_m(),
-    misalignment_m(),
-    elementEdge_m(0),
-    rotationZAxis_m(0.0),
-    elementID(""),
-    userAttribs(),
-    wake_m(NULL),
-    bgeometry_m(NULL),
-    parmatint_m(NULL),
-    elType_m(isOther),
-    positionIsFixed(false),
-    elementPosition_m(0.0),
-    elemedgeSet_m(false)
+    ElementBase("")
 {}
 
 

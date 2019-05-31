@@ -38,12 +38,8 @@ const std::vector<double> Component::defaultAperture_m =
 
 
 Component::Component():
-    ElementBase(),
-    exit_face_slope_m(0.0),
-    RefPartBunch_m(NULL),
-    online_m(false) {
-    setAperture(ElementBase::ELLIPTICAL, defaultAperture_m);
-}
+    Component("")
+{}
 
 
 Component::Component(const Component &right):

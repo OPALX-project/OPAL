@@ -38,11 +38,7 @@ using namespace std;
 // Class Monitor
 // ------------------------------------------------------------------------
 Monitor::Monitor():
-    Component(),
-    filename_m(""),
-    plane_m(OFF),
-    type_m(SPATIAL),
-    numPassages_m(0)
+    Monitor("")
 {}
 
 

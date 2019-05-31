@@ -39,39 +39,8 @@ using namespace std;
 // ------------------------------------------------------------------------
 
 RFCavity::RFCavity():
-    Component(),
-    phase_td_m(nullptr),
-    amplitude_td_m(nullptr),
-    frequency_td_m(nullptr),
-    filename_m(""),
-    scale_m(1.0),
-    scaleError_m(0.0),
-    phase_m(0.0),
-    phaseError_m(0.0),
-    frequency_m(0.0),
-    fast_m(true),
-    autophaseVeto_m(false),
-    designEnergy_m(-1.0),
-    fieldmap_m(nullptr),
-    startField_m(0.0),
-    endField_m(0.0),
-    length_m(0.0),
-    type_m(SW),
-    rmin_m(0.0),
-    rmax_m(0.0),
-    angle_m(0.0),
-    sinAngle_m(0.0),
-    cosAngle_m(0.0),
-    pdis_m(0.0),
-    gapwidth_m(0.0),
-    phi0_m(0.0),
-    RNormal_m(nullptr),
-    VrNormal_m(nullptr),
-    DvDr_m(nullptr),
-    num_points_m(0)
-{
-    setElType(isRF);
-}
+    RFCavity("")
+{}
 
 
 RFCavity::RFCavity(const RFCavity &right):

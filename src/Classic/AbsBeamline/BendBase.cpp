@@ -1,21 +1,8 @@
 #include "AbsBeamline/BendBase.h"
 
 BendBase::BendBase():
-    Component(),
-    length_m(0.0),
-    chordLength_m(0.0),
-    angle_m(0.0),
-    entranceAngle_m(0.0),
-    gap_m(0.0),
-    designEnergy_m(0.0),
-    designEnergyChangeable_m(true),
-    bX_m(0.0),
-    bY_m(0.0),
-    fieldAmplitude_m(0.0),
-    fileName_m("")
-{
-    setElType(isDipole);
-}
+    BendBase("")
+{}
 
 BendBase::BendBase(const BendBase &right):
     Component(right),

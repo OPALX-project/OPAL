@@ -33,16 +33,8 @@ extern Inform *gmsg;
 // ------------------------------------------------------------------------
 
 CyclotronValley::CyclotronValley():
-    Component(),
-    filename_m(""),
-    fieldmap_m(NULL),
-    scale_m(1.0),
-    ElementEdge_m(0.0),
-    startField_m(0.0),
-    endField_m(0.0),
-    fast_m(false) {
-    setElType(isRF);
-}
+    CyclotronValley("")
+{}
 
 
 CyclotronValley::CyclotronValley(const CyclotronValley &right):

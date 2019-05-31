@@ -33,10 +33,8 @@ extern Inform *gmsg;
 // ------------------------------------------------------------------------
 
 RBend::RBend():
-    Bend2D()
-{
-    setMessageHeader("RBend ");
-}
+    RBend("")
+{}
 
 RBend::RBend(const RBend &right):
     Bend2D(right)

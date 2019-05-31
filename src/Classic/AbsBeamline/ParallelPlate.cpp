@@ -33,15 +33,8 @@ extern Inform *gmsg;
 // ------------------------------------------------------------------------
 
 ParallelPlate::ParallelPlate():
-    Component(),
-    filename_m(""),
-    scale_m(1.0),
-    phase_m(0.0),
-    frequency_m(0.0),
-    length_m(0.0),
-    ptime_m(0.0) {
-    setElType(isRF);
-}
+    ParallelPlate("")
+{}
 
 
 ParallelPlate::ParallelPlate(const ParallelPlate &right):

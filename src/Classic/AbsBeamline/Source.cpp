@@ -17,13 +17,8 @@ extern Inform *gmsg;
 const std::string Source::defaultDistribution("DISTRIBUTION");
 
 Source::Source():
-    Component(),
-    ElementEdge_m(0.0),
-    startField_m(0.0),
-    endField_m(0.0)
-{
-    setElType(isSource);
-}
+    Source("")
+{}
 
 
 Source::Source(const Source &right):

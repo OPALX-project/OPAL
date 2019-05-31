@@ -38,7 +38,7 @@
 using namespace endfieldmodel;
 
 MultipoleT::MultipoleT(const std::string &name):
-    Component(name),   
+    Component(name),
     fringeField_l(endfieldmodel::Tanh()),
     fringeField_r(endfieldmodel::Tanh()),
     maxOrder_m(5),
@@ -77,10 +77,9 @@ MultipoleT::MultipoleT(const MultipoleT &right):
     dummy() {
     RefPartBunch_m = right.RefPartBunch_m;
 }
-    
 
 MultipoleT::~MultipoleT() {
-} 
+}
 
 ElementBase* MultipoleT::clone() const {
     MultipoleT* newMultipole = new MultipoleT(*this);

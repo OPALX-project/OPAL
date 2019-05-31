@@ -37,16 +37,7 @@ using namespace std;
 // ------------------------------------------------------------------------
 
 Degrader::Degrader():
-    Component(),
-    filename_m(""),
-    PosX_m(0),
-    PosY_m(0),
-    PosZ_m(0),
-    MomentumX_m(0),
-    MomentumY_m(0),
-    MomentumZ_m(0),
-    time_m(0),
-    id_m(0)
+    Degrader("")
 {}
 
 Degrader::Degrader(const Degrader &right):

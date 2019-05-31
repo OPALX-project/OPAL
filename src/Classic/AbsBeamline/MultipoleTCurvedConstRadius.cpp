@@ -34,7 +34,7 @@ using namespace endfieldmodel;
 
 MultipoleTCurvedConstRadius::MultipoleTCurvedConstRadius(
                              const std::string &name):
-    MultipoleTBase(name),   
+    MultipoleTBase(name),
     maxOrderX_m(10),
     planarArcGeometry_m(1.0, 1.0),
     angle_m(0.0) {
@@ -51,7 +51,7 @@ MultipoleTCurvedConstRadius::MultipoleTCurvedConstRadius(
 }
 
 MultipoleTCurvedConstRadius::~MultipoleTCurvedConstRadius() {
-} 
+}
 
 ElementBase* MultipoleTCurvedConstRadius::clone() const {
     return new MultipoleTCurvedConstRadius(*this);

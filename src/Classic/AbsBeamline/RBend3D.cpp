@@ -32,16 +32,8 @@ extern Inform *gmsg;
 // ------------------------------------------------------------------------
 
 RBend3D::RBend3D():
-    BendBase(),
-    myFieldmap_m(NULL),
-    fieldAmplitudeError_m(0.0),
-    startField_m(0.0),
-    lengthField_m(0.0),
-    fast_m(false),
-    geometry_m(),
-    dummyField_m() {
-    setElType(isDipole);
-}
+    RBend3D("")
+{}
 
 
 RBend3D::RBend3D(const RBend3D &right):

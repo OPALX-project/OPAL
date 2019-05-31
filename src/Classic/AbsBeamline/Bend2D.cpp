@@ -38,45 +38,8 @@ extern Inform *gmsg;
 // ------------------------------------------------------------------------
 
 Bend2D::Bend2D():
-    BendBase(),
-    messageHeader_m(" * "),
-    pusher_m(),
-    fieldmap_m(NULL),
-    fast_m(false),
-    designRadius_m(0.0),
-    exitAngle_m(0.0),
-    fieldIndex_m(0.0),
-    startField_m(0.0),
-    endField_m(0.0),
-    reinitialize_m(false),
-    recalcRefTraj_m(false),
-    entranceParameter1_m(0.0),
-    entranceParameter2_m(0.0),
-    entranceParameter3_m(0.0),
-    exitParameter1_m(0.0),
-    exitParameter2_m(0.0),
-    exitParameter3_m(0.0),
-    entryFieldValues_m(NULL),
-    exitFieldValues_m(NULL),
-    entryFieldAccel_m(NULL),
-    exitFieldAccel_m(NULL),
-    deltaBeginEntry_m(0.0),
-    deltaEndEntry_m(0.0),
-    polyOrderEntry_m(0),
-    xExit_m(0.0),
-    zExit_m(0.0),
-    deltaBeginExit_m(0.0),
-    deltaEndExit_m(0.0),
-    polyOrderExit_m(0),
-    cosEntranceAngle_m(1.0),
-    sinEntranceAngle_m(0.0),
-    tanEntranceAngle_m(0.0),
-    tanExitAngle_m(0.0),
-    nSlices_m(1){
-
-    setElType(isDipole);
-
-}
+    Bend2D("")
+{}
 
 Bend2D::Bend2D(const Bend2D &right):
     BendBase(right),

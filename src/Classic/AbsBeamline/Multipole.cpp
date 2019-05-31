@@ -40,16 +40,8 @@ namespace{
 // ------------------------------------------------------------------------
 
 Multipole::Multipole():
-    Component(),
-    NormalComponents(1, 0.0),
-    NormalComponentErrors(1, 0.0),
-    SkewComponents(1, 0.0),
-    SkewComponentErrors(1, 0.0),
-    max_SkewComponent_m(1),
-    max_NormalComponent_m(1),
-    nSlices_m(1) {
-    setElType(isMultipole);
-}
+    Multipole("")
+{}
 
 
 Multipole::Multipole(const Multipole &right):

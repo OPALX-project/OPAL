@@ -33,16 +33,8 @@ extern Inform *gmsg;
 // ------------------------------------------------------------------------
 
 Solenoid::Solenoid():
-    Component(),
-    filename_m(""),
-    myFieldmap_m(NULL),
-    scale_m(1.0),
-    scaleError_m(0.0),
-    startField_m(0.0),
-    length_m(0.0),
-    fast_m(true) {
-    setElType(isSolenoid);
-}
+    Solenoid("")
+{}
 
 
 Solenoid::Solenoid(const Solenoid &right):

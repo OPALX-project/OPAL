@@ -34,21 +34,11 @@
 using namespace endfieldmodel;
 
 MultipoleTBase::MultipoleTBase():
-    Component(),   
-    fringeField_l(endfieldmodel::Tanh()),
-    fringeField_r(endfieldmodel::Tanh()),
-    maxOrder_m(3),
-    transMaxOrder_m(0),
-    length_m(1.0),
-    entranceAngle_m(0.0),
-    rotation_m(0.0),
-    boundingBoxLength_m(0.0),
-    verticalApert_m(0.5),
-    horizontalApert_m(0.5) {
-}
+    MultipoleTBase("")
+{}
 
 MultipoleTBase::MultipoleTBase(const std::string &name):
-    Component(name),   
+    Component(name),
     fringeField_l(endfieldmodel::Tanh()),
     fringeField_r(endfieldmodel::Tanh()),
     maxOrder_m(3),
@@ -77,9 +67,9 @@ MultipoleTBase::MultipoleTBase(const MultipoleTBase &right):
     dummy() {
     RefPartBunch_m = right.RefPartBunch_m;
 }
-    
+
 MultipoleTBase::~MultipoleTBase() {
-} 
+}
 
 bool MultipoleTBase::apply(const Vector_t &R, const Vector_t &P,
                            const double &t,Vector_t &E, Vector_t &B) {

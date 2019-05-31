@@ -16,13 +16,8 @@ extern Inform *gmsg;
 // ------------------------------------------------------------------------
 
 FlexibleCollimator::FlexibleCollimator():
-    Component(),
-    description_m(""),
-    filename_m(""),
-    informed_m(false),
-    losses_m(0),
-    lossDs_m(nullptr),
-    parmatint_m(NULL){}
+    FlexibleCollimator("")
+{}
 
 
 FlexibleCollimator::FlexibleCollimator(const FlexibleCollimator &right):

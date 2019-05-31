@@ -34,7 +34,7 @@
 using namespace endfieldmodel;
 
 MultipoleTStraight::MultipoleTStraight(const std::string &name):
-    MultipoleTBase(name),   
+    MultipoleTBase(name),
     straightGeometry_m(getLength()) {
 }
 
@@ -43,10 +43,10 @@ MultipoleTStraight::MultipoleTStraight(const MultipoleTStraight &right):
     straightGeometry_m(right.straightGeometry_m) {
     RefPartBunch_m = right.RefPartBunch_m;
 }
-    
+
 
 MultipoleTStraight::~MultipoleTStraight() {
-} 
+}
 
 ElementBase* MultipoleTStraight::clone() const {
     return new MultipoleTStraight(*this);

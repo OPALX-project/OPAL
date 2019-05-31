@@ -31,35 +31,29 @@ extern Inform *gmsg;
 // ------------------------------------------------------------------------
 
 Corrector::Corrector():
-  Component(),
-  kickX_m(0.0),
-  kickY_m(0.0),
-  designEnergy_m(0.0),
-  designEnergyChangeable_m(true),
-  kickFieldSet_m(false),
-  kickField_m(0.0)
+    Corrector("")
 { }
 
 
 Corrector::Corrector(const Corrector &right):
-  Component(right),
-  kickX_m(right.kickX_m),
-  kickY_m(right.kickY_m),
-  designEnergy_m(right.designEnergy_m),
-  designEnergyChangeable_m(right.designEnergyChangeable_m),
-  kickFieldSet_m(right.kickFieldSet_m),
-  kickField_m(right.kickField_m)
+    Component(right),
+    kickX_m(right.kickX_m),
+    kickY_m(right.kickY_m),
+    designEnergy_m(right.designEnergy_m),
+    designEnergyChangeable_m(right.designEnergyChangeable_m),
+    kickFieldSet_m(right.kickFieldSet_m),
+    kickField_m(right.kickField_m)
 { }
 
 
 Corrector::Corrector(const std::string &name):
-  Component(name),
-  kickX_m(0.0),
-  kickY_m(0.0),
-  designEnergy_m(0.0),
-  designEnergyChangeable_m(true),
-  kickFieldSet_m(false),
-  kickField_m(0.0)
+    Component(name),
+    kickX_m(0.0),
+    kickY_m(0.0),
+    designEnergy_m(0.0),
+    designEnergyChangeable_m(true),
+    kickFieldSet_m(false),
+    kickField_m(0.0)
 { }
 
 

@@ -44,11 +44,8 @@ Offset::Offset(const std::string& name)
 }
 
 Offset::Offset()
-    : Component(), _is_local(false), geometry_m(NULL) {
-    geometry_m = new Euclid3DGeometry(Euclid3D());
-    setElType(isDrift);
-}
-
+    : Offset("")
+{}
 
 Offset::Offset(std::string name, const Offset& rhs)
     : Component(name), _is_local(false), geometry_m(NULL) {

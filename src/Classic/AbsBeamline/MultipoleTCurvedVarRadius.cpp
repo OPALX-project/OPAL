@@ -35,7 +35,7 @@
 using namespace endfieldmodel;
 
 MultipoleTCurvedVarRadius::MultipoleTCurvedVarRadius(const std::string &name):
-    MultipoleTBase(name),   
+    MultipoleTBase(name),
     maxOrderX_m(10),
     varRadiusGeometry_m(1.0, 1.0, 1.0, 1.0, 1.0),
     angle_m(0.0) {
@@ -50,10 +50,9 @@ MultipoleTCurvedVarRadius::MultipoleTCurvedVarRadius(
     angle_m(right.angle_m) {
     RefPartBunch_m = right.RefPartBunch_m;
 }
-    
 
 MultipoleTCurvedVarRadius::~MultipoleTCurvedVarRadius() {
-} 
+}
 
 ElementBase* MultipoleTCurvedVarRadius::clone() const {
     return new MultipoleTCurvedVarRadius(*this);
