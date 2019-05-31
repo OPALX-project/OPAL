@@ -52,17 +52,17 @@ OpalUndulator::OpalUndulator():
 
     itsAttr[LAMBDA] = Attributes::makeReal
                           ("LAMBDA",
-                          "The undulator period", 1);
+                          "The undulator period", 0.0);
 
     itsAttr[FNAME] = Attributes::makeString
       ("FNAME", "Jobfilename for mithra", "");
 
     itsAttr[TRANTRUN] = Attributes::makeReal
                           ("TRANTRUN",
-                          "Transverse truncation of input bunch", 1);
+                          "Transverse truncation of input bunch", 0.0);
     itsAttr[LONGTRUN] = Attributes::makeReal
                           ("LONGTRUN",
-                          "Longitudinal truncation of input bunch", 1);
+                          "Longitudinal truncation of input bunch", 0.0);
     itsAttr[RADZ] = Attributes::makeRealArray
                           ("RADZ",
 			   "Distances from bunch in which to measure radiation");
@@ -80,7 +80,7 @@ OpalUndulator::OpalUndulator():
 			   "dx, dy, dz of the mesh");
     itsAttr[TRUNORDER] = Attributes::makeReal
                           ("TRUNORDER",
-                          "Order of boundary absorbing conditions", 1);
+                          "Order of boundary absorbing conditions", 2);
     itsAttr[SPACECHARGE] = Attributes::makeReal
                           ("SPACECHARGE",
                           "Whether to consider space-charge effects or not", 1);

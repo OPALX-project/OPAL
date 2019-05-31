@@ -748,7 +748,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     for (unsigned int d = 0; d < 3; ++d) {
         fv[d] = itsBunch_m->get_rmean()[d];
     }
-    fv[2] = 0.0;
+    // fv[2] = 0.0;
     bunchInit.position_.push_back(fv);
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rrms()(d);
@@ -756,9 +756,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_prms()(d);
     bunchInit.sigmaGammaBeta_ = fv;
-    bunchInit.tranTrun_ = ur->getTranTrun();
-    bunchInit.longTrun_ = ur->getLongTrun();
     bunchInit.inputVector_ = qv;
+    bunchInit.longTrun_ = itsBunch_m->get_maxExtent()[2];
     msg << "Done getting bunch parameters" << endl;
     
     /* Undulator parameters                 */
