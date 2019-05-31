@@ -92,12 +92,11 @@ DR1: DRIFT,    L = 1.0, ELEMEDGE = 0.5;
 
 // Undulator
 
-U1: UNDULATOR, L = 9.0, ELEMEDGE = 1.5, K = 1.417, LAMBDA = .03,
-     TRANTRUN = 1.05e-3, LONGTRUN = 50e-06, 
-     MESHLENGTH = { 3.2e-03, 3.2e-03, 6e-03 }, MESHRESOLUTION = {3e-05, 3e-05, 3e-06},
+U1: UNDULATOR, L = 30.0, ELEMEDGE = 1.5, K = 1.417, LAMBDA = .3,
+     MESHLENGTH = { 3.2e-03, 3.2e-03, 6e-03 }, MESHRESOLUTION = { 3e-05, 3e-05, 3e-06 },
      TRUNORDER = 2, SPACECHARGE = 1,
      RADZ = 1.1e-4, RADLAMBDA = 1, RADDIRECTORY = "power-sampling/power",
-     TOTALTIME = 3.003e-8, TIMESTEPRATIO = 5;
+     TIMESTEPRATIO = 5;
 
 // DEFINE BEAM LINE
 
@@ -157,8 +156,8 @@ Dist: DISTRIBUTION, TYPE = FLATTOP,
 
 FS_SC: Fieldsolver, FSTYPE = FFT, 
             MX = 8, MY = 8, MT = 8, // SC grid size is 8^3
-            PARFFTX = true, 
-            PARFFTY = true, 
+            PARFFTX = false, 
+            PARFFTY = false, 
             PARFFTT = true,  // parallel in the z direction only
             BCFFTX = open, 
             BCFFTY = open, 

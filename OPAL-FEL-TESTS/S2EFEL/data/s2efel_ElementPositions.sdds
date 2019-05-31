@@ -83,7 +83,7 @@ SDDS1
         mode=ascii, 
         no_row_counts=1 
 &end
-OPAL 2.1.0 # git rev. 473491098fbb04b1c5e1c3d07f5da9c637494b24
+OPAL 2.1.0 # git rev. 65d77eda35fd7b9d414bde3b62273c8d1ec8fc68
                0         0     0     0     0     0     0     0     0     0     0 ""
                0         0     0     0     0     0     0     1     1     0     0 "BF, M, GUN"
       0.29264745         0     0     0     0     0     0     1    -1     0     0 "BF, M, GUN"

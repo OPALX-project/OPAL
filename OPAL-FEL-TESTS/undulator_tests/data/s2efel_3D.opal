@@ -19,7 +19,7 @@ REAL P0      = gamma*beta*EMASS;
     
 value , {gamma, P0};
 
-UND: UNDULATOR, L = 9.0, , K = 1.417, LAMBDA = .03,      TRANTRUN = 1040e-6, LONGTRUN = 90e-6,      MESHLENGTH = { 3.2e-3, 3.2e-3, .28e-3 }, MESHRESOLUTION = {100e-6, 100e-6, .4e-6},     TRUNORDER = 2, SPACECHARGE = 1,     RADZ = 1.1e-4, RADLAMBDA = 1, RADDIRECTORY = "power-sampling/power",     TOTALTIME = 3.003e-8, TIMESTEPRATIO = 5;
+UND: UNDULATOR, L = 9.0, , K = 1.417, LAMBDA = .03,      MESHLENGTH = { 3.2e-3, 3.2e-3, .28e-3 }, MESHRESOLUTION = {100e-6, 100e-6, .4e-6},     TRUNORDER = 2, SPACECHARGE = 1,     RADZ = 1.1e-4, RADLAMBDA = 1, RADDIRECTORY = "power-sampling/power",     TOTALTIME = 3.003e-8, TIMESTEPRATIO = 5;
 
 DRIVE: Line = (UND);
 
