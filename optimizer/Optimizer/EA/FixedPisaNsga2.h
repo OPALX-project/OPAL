@@ -20,6 +20,7 @@
 
 #include "Optimizer/Optimizer.h"
 #include "Optimizer/EA/Individual.h"
+#include "Optimizer/EA/Population.h"
 #include "Optimizer/EA/Variator.h"
 
 #include <boost/smart_ptr.hpp>
@@ -27,7 +28,6 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "Util/Trace/Trace.h"
-
 
 /**
  *  \class FixedPisaNsga2
@@ -83,9 +83,9 @@ public:
     typedef Individual Individual_t;
     typedef Variator< Individual_t, CrossoverOperator, MutationOperator >
         Variator_t;
+    typedef Population< Individual_t > Population_t;
     /// alias for usage in template
-    using individual = typename FixedPisaNsga2::Individual_t;
-
+    using individual = boost::shared_ptr<typename FixedPisaNsga2::Individual_t>;
 
 protected:
 
@@ -110,8 +110,6 @@ protected:
 
 
 private:
-
-    int my_local_pid_;
 
     /// all PISA states
     enum PisaState_t {
@@ -161,7 +159,10 @@ private:
     std::deque<unsigned int> finishedBuffer_m;
 
     /// mapping from unique job ID to individual
-    std::map<size_t, boost::shared_ptr<Individual> > jobmapping_m;
+    std::map<size_t, individual > jobmapping_m;
+
+    /// population of pareto-front (for final output)
+    boost::shared_ptr<Population_t> paretoFront_m;
 
     /// indicating if initial population has been created
     bool initialized_m;
@@ -209,6 +210,8 @@ private:
     int dump_freq_m;
     /// dump offspring / parents flag
     bool dump_offspring_m;
+    /// dump old data format
+    bool dump_dat_m;
     /// convergence accuracy if maxGenerations not set
     double hvol_eps_;
     double expected_hvol_;
@@ -252,18 +255,21 @@ private:
     void calcDistances();
     void environmentalSelection();
     void matingSelection();
-    int dominates(unsigned int p_ind_a, unsigned int p_ind_b);
+    int dominates(individual ind_a, individual ind_b);
 
+    /// check if individual in pareto front and add if not
+    bool checkParetoFront(unsigned int id);
     /// Dumps index, objective values and bit string of all individuals in
     /// global_population.
-    void dumpPopulationToFile();
-    void dumpPopulationToJSON();
+    void dumpPopulation(boost::shared_ptr<Population_t>);
+    void dumpPopulationToFile(boost::shared_ptr<Population_t>, std::ostringstream& filename, bool dump_offspring);
+    void dumpPopulationToJSON(boost::shared_ptr<Population_t>, std::ostringstream& filename, bool dump_offspring);
     void dumpIndividualToFile(int id,
-                              boost::shared_ptr<individual>& ind,
+                              individual& ind,
                               std::ofstream& file,
                               const size_t numDigits);
     void dumpIndividualToJSON(int id,
-                              boost::shared_ptr<individual>& ind,
+                              individual& ind,
                               boost::property_tree::ptree& tree);
 
     /**

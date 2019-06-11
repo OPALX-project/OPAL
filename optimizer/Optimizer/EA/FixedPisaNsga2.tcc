@@ -49,14 +49,12 @@ FixedPisaNsga2<CO, MO>::FixedPisaNsga2(
              , num_workergroups_m(nrWorkerGroups)
              , hvol_ref_m(hypervolRef)
 {
-    my_local_pid_ = 0;
-    MPI_Comm_rank(comms_.opt, &my_local_pid_);
-
     //FIXME: proper rand gen initialization (use boost?!)
     srand(time(NULL) + comms_.island_id);
 
     dump_freq_m      = args->getArg<int>("dump-freq", 1, false);
     dump_offspring_m = args->getArg<bool>("dump-offspring", true, false);
+    dump_dat_m       = args->getArg<bool>("dump-dat", false, false);
 
     maxGenerations_m = args->getArg<int>("maxGenerations", true);
     resultFile_m     = args->getArg<std::string>("outfile", "-th_generation.dat", false);
@@ -103,17 +101,16 @@ FixedPisaNsga2<CO, MO>::FixedPisaNsga2(
         file_param_descr_ += '%' + dName + ',';
         dNames.push_back(dName);
         dVarBounds_m.push_back(
-                std::pair<double, double>
-                    (boost::get<LOWER_BOUND>(itr->second),
-                     boost::get<UPPER_BOUND>(itr->second)));
+                               std::pair<double, double>
+                               (boost::get<LOWER_BOUND>(itr->second),
+                                boost::get<UPPER_BOUND>(itr->second)));
     }
     file_param_descr_ = file_param_descr_.substr(0,
                                                  file_param_descr_.size()-1);
 
-
     // setup variator
-    variator_m.reset(new Variator_t(dNames, dVarBounds_m, constraints_m, args));
-
+    variator_m.   reset(new Variator_t(dNames, dVarBounds_m, constraints_m, args));
+    paretoFront_m.reset(new Population_t());
 
     // Traces and statistics
     std::ostringstream trace_filename;
@@ -175,14 +172,12 @@ void FixedPisaNsga2<CO, MO>::initialize() {
           << total.count()/statistics_->getStatisticValue("accepted")
           << std::endl;
     stats << "time per infeasible ind = "
-          << total.count()/statistics_->getStatisticValue("infeasible")
+          << (statistics_->getStatisticValue("infeasible") ? total.count()/statistics_->getStatisticValue("infeasible") : 0)
           << std::endl;
     statistics_->dumpStatistics(stats);
     stats << "__________________________________________" << std::endl;
     progress_->log(stats);
-
 }
-
 
 template< template <class> class CO, template <class> class MO >
 bool FixedPisaNsga2<CO, MO>::onMessage(MPI_Status status, size_t length) {
@@ -215,13 +210,13 @@ bool FixedPisaNsga2<CO, MO>::onMessage(MPI_Status status, size_t length) {
         delete[] buffer;
 
         std::set<unsigned int> new_state_ids;
-        for (individual ind : new_states) {
+        for (Individual_t ind : new_states) {
 
             // only insert individual if not already in population
             if(variator_m->population()->isRepresentedInPopulation(ind.genes_m))
                 continue;
 
-            boost::shared_ptr<individual> new_ind(new individual);
+            individual new_ind(new Individual_t);
             new_ind->genes_m = ind.genes_m;
             new_ind->objectives_m = ind.objectives_m;
 
@@ -243,7 +238,7 @@ bool FixedPisaNsga2<CO, MO>::onMessage(MPI_Status status, size_t length) {
     case REQUEST_FINISHED: {
 
         unsigned int jid = static_cast<unsigned int>(length);
-        typename std::map<size_t, boost::shared_ptr<individual> >::iterator it;
+        typename std::map<size_t, individual >::iterator it;
         it = jobmapping_m.find(jid);
 
         std::ostringstream dump;
@@ -258,7 +253,7 @@ bool FixedPisaNsga2<CO, MO>::onMessage(MPI_Status status, size_t length) {
                                     "non-existing job");
         }
 
-        boost::shared_ptr<individual> ind = it->second;
+        individual ind = it->second;
         jobmapping_m.erase(it);
 
         //size_t dummy = 1;
@@ -299,6 +294,8 @@ bool FixedPisaNsga2<CO, MO>::onMessage(MPI_Status status, size_t length) {
 
         finishedBuffer_m.push_back(jid);
         statistics_->changeStatisticBy("accepted", 1);
+        // check for pareto front
+        checkParetoFront(jid);
 
         return true;
     }
@@ -351,8 +348,7 @@ void FixedPisaNsga2<CO, MO>::postPoll() {
 
         // dump current generation (or their parents)
         if((act_gen + 1) % dump_freq_m == 0) {
-            dumpPopulationToFile();
-            dumpPopulationToJSON();
+            dumpPopulation(variator_m->population());
         }
 
         // we can only send all finished individuals (selector does not support
@@ -389,11 +385,11 @@ void FixedPisaNsga2<CO, MO>::exchangeSolutionStates() {
     boost::archive::text_oarchive oa(os);
 
     SolutionState_t population;
-    typename std::map<unsigned int, boost::shared_ptr<individual> >::iterator itr;
+    typename std::map<unsigned int, individual >::iterator itr;
     for(itr  = variator_m->population()->begin();
         itr != variator_m->population()->end(); itr++) {
 
-        individual ind;
+        Individual_t ind;
         ind.genes_m = std::vector<double>(itr->second->genes_m);
         ind.objectives_m = std::vector<double>(itr->second->objectives_m);
         population.push_back(ind);
@@ -460,8 +456,7 @@ void FixedPisaNsga2<CO, MO>::dispatch_forward_solves() {
             //}
         //}
 
-        boost::shared_ptr<individual> ind =
-            variator_m->popIndividualToEvaluate();
+        individual ind = variator_m->popIndividualToEvaluate();
         Param_t params;
         DVarContainer_t::iterator itr;
         size_t i = 0;
@@ -483,7 +478,7 @@ void FixedPisaNsga2<CO, MO>::dispatch_forward_solves() {
         //MPI_Send_reqvars(reqs, pilot_rank, comms_.opt);
 
         jobmapping_m.insert(
-                std::pair<size_t, boost::shared_ptr<individual> >(jid, ind));
+                std::pair<size_t, individual >(jid, ind));
 
         std::ostringstream dump;
         dump << "dispatched simulation with ID " << jid << std::endl;
@@ -553,8 +548,7 @@ void FixedPisaNsga2<CO, MO>::runStateMachine() {
         //     the selector
         if(finishedBuffer_m.size() >= alpha_m) {
             if(dump_offspring_m == true) { // dump first generation - no parents yet
-                dumpPopulationToFile();
-                dumpPopulationToJSON();
+                dumpPopulation(variator_m->population());
             }
             act_gen = 2;
             toSelectorAndCommit();
@@ -574,11 +568,14 @@ void FixedPisaNsga2<CO, MO>::runStateMachine() {
     case Stop: {
         // variator_m->population()->keepSurvivors(archive_);
         if (dump_offspring_m == false) {
-            dumpPopulationToFile();
-            dumpPopulationToJSON();
+            dumpPopulation(variator_m->population());
         }
-        // don't clean population otherwise final hypervolume calculation can't be done
-        //variator_m->population()->clean_population();
+        // dump Pareto front
+        std::ostringstream filename;
+        filename << resultDir_m << "/" << "ParetoFront_" << resultFile_m
+                 << "_" << comms_.island_id;
+        dumpPopulationToJSON(paretoFront_m, filename, false);
+
         curState_m = VariatorStopped;
 
         // notify pilot that we have converged
@@ -600,8 +597,7 @@ void FixedPisaNsga2<CO, MO>::runStateMachine() {
     // case Reset: {
     //     act_gen = 1;
     //     variator_m->population()->keepSurvivors(archive_);
-    //     dumpPopulationToFile();
-    //     dumpPopulationToJSON();
+    //     dumpPopulation(variator_m->population());
 
     //     variator_m->population()->clean_population();
     //     curState_m = ReadyForReset;
@@ -623,7 +619,7 @@ void FixedPisaNsga2<CO, MO>::runStateMachine() {
         selection();
 
         // write arc file (all individuals that could ever be used again)
-        typename std::map<unsigned int, boost::shared_ptr<individual> >
+        typename std::map<unsigned int, individual >
             ::iterator it;
         for(it =  variator_m->population()->begin();
             it != variator_m->population()->end(); it++) {
@@ -668,28 +664,34 @@ void FixedPisaNsga2<CO, MO>::runStateMachine() {
     }
 }
 
-
-
-
 template< template <class> class CO, template <class> class MO >
-void FixedPisaNsga2<CO, MO>::dumpPopulationToFile() {
-
-    // only dump old data format if the user requests it
-    if(! args_m->getArg<bool>("dump-dat", false, false)) return;
-
-    std::ofstream file;
+void FixedPisaNsga2<CO, MO>::dumpPopulation(boost::shared_ptr<Population_t> population) {
     std::ostringstream filename;
     int fileNumber = act_gen;
     if (dump_offspring_m == false) fileNumber--; // parents are from generation earlier (keeping filenumbers the same)
     filename << resultDir_m << "/" << fileNumber << "_" << resultFile_m
              << "_" << comms_.island_id;
+
+    // only dump old data format if the user requests it
+    if (dump_dat_m == true)
+        dumpPopulationToFile(population, filename, dump_offspring_m);
+
+    dumpPopulationToJSON(population, filename, dump_offspring_m);
+}
+
+template< template <class> class CO, template <class> class MO >
+void FixedPisaNsga2<CO, MO>::dumpPopulationToFile(boost::shared_ptr<Population_t> population,
+                                                  std::ostringstream& filename,
+                                                  bool dump_offspring) {
+
+    std::ofstream file;
     file.open(filename.str().c_str(), std::ios::out);
 
-    typename std::map<unsigned int, boost::shared_ptr<individual> >::iterator it;
-    it = variator_m->population()->begin();
+    typename std::map<unsigned int, individual >::iterator it;
+    it = population->begin();
     // find maximum length of ID
     auto maxID = it->first;
-    for(it ++; it != variator_m->population()->end(); it++) {
+    for(it ++; it != population->end(); it++) {
         if (it->first > maxID)
             maxID = it->first;
     }
@@ -713,17 +715,16 @@ void FixedPisaNsga2<CO, MO>::dumpPopulationToFile() {
     file.precision(6);
     file << std::scientific;
 
-    if (dump_offspring_m == true) {
+    if (dump_offspring == true) {
         for (auto id : finishedBuffer_m) {
-            auto ind = variator_m->population()->get_staging(id); // get from staging area
+            auto ind = population->get_staging(id); // get from staging area
             if (ind) // pointer might be uninitialised (should not happen)
                 dumpIndividualToFile(id, ind, file, numDigits);
             else
                 std::cout << "Individual " << id << " from buffer not found!" << std::endl;
         }
     } else {
-        for(it  = variator_m->population()->begin();
-            it != variator_m->population()->end(); it++) {
+        for(it  = population->begin(); it != population->end(); it++) {
             dumpIndividualToFile(it->first, it->second, file, numDigits);
         }
     }
@@ -733,7 +734,7 @@ void FixedPisaNsga2<CO, MO>::dumpPopulationToFile() {
 
 template< template <class> class CO, template <class> class MO >
 void FixedPisaNsga2<CO, MO>::dumpIndividualToFile(int idx,
-                                                  boost::shared_ptr<individual>& ind,
+                                                  individual& ind,
                                                   std::ofstream& file,
                                                   const size_t numDigits) {
 
@@ -749,7 +750,9 @@ void FixedPisaNsga2<CO, MO>::dumpIndividualToFile(int idx,
 }
 
 template< template <class> class CO, template <class> class MO >
-void FixedPisaNsga2<CO, MO>::dumpPopulationToJSON() {
+void FixedPisaNsga2<CO, MO>::dumpPopulationToJSON(boost::shared_ptr<Population_t> population,
+                                                  std::ostringstream& filename,
+                                                  bool dump_offspring) {
 
     typedef boost::property_tree::ptree ptree_t;
     ptree_t tree;
@@ -787,33 +790,27 @@ void FixedPisaNsga2<CO, MO>::dumpPopulationToJSON() {
 
     tree.add_child("constraints", constraints);
 
-    if (dump_offspring_m == true) {
+    if (dump_offspring == true) {
         for (auto id : finishedBuffer_m) {
-            auto ind = variator_m->population()->get_staging(id); // get from staging area
+            auto ind = population->get_staging(id); // get from staging area
             if (ind) // pointer might be uninitialised (should not happen)
                 dumpIndividualToJSON(id, ind, tree);
             else
                 std::cout << "Individual " << id << " from buffer not found!" << std::endl;
         }
     } else {
-        for (auto it = variator_m->population()->begin();
-             it != variator_m->population()->end(); it++) {
+        for (auto it = population->begin(); it != population->end(); it++) {
             dumpIndividualToJSON(it->first, it->second, tree);
         }
     }
 
-    std::ostringstream filename;
-    int fileNumber = act_gen;
-    if (dump_offspring_m == false) fileNumber--; // parents are from generation earlier (keeping filenumbers the same)
-    filename << resultDir_m << "/" << fileNumber << "_" << resultFile_m
-             << "_" << comms_.island_id << ".json";
-
+    filename << ".json";
     boost::property_tree::write_json(filename.str(), tree);
 }
 
 template< template <class> class CO, template <class> class MO >
 void FixedPisaNsga2<CO, MO>::dumpIndividualToJSON(int idx,
-                                                  boost::shared_ptr<individual>& ind,
+                                                  individual& ind,
                                                   boost::property_tree::ptree& tree) {
 
     std::string id = std::to_string(idx);
@@ -902,7 +899,9 @@ void FixedPisaNsga2<CO, MO>::calcFitnesses()
             if (f[i] == -1) continue; // don't consider if already in a front
             for (j = 0; j < size && j != i; j++) {
                 if (f[j] == -1) continue;
-                if (dominates(pp_all[j], pp_all[i])) {
+                individual ind_i = variator_m->population()->get_individual(pp_all[i]);
+                individual ind_j = variator_m->population()->get_individual(pp_all[j]);
+                if (dominates(ind_j, ind_i)) {
                     d[i] = 1;
                     break;
                 }
@@ -945,7 +944,7 @@ void FixedPisaNsga2<CO, MO>::calcDistances()
                 int min_index = -1;
                 int min = i;
                 size_t idx1 = pp_all[front[l][i]];
-                boost::shared_ptr<individual> ind1 =
+                individual ind1 =
                     variator_m->population()->get_individual(idx1);
                 double obj_min = ind1->objectives_m[d];
 
@@ -953,9 +952,9 @@ void FixedPisaNsga2<CO, MO>::calcDistances()
 
                     // size_t idx1 = pp_all[front[l][j]];
                     size_t idx2 = pp_all[front[l][j]];
-                    // boost::shared_ptr<individual> ind1 =
+                    // individual ind1 =
                     //     variator_m->population()->get_individual(idx1);
-                    boost::shared_ptr<individual> ind2 =
+                    individual ind2 =
                         variator_m->population()->get_individual(idx2);
                     // double obj1 = ind1->objectives_m[d];
                     double obj2 = ind2->objectives_m[d];
@@ -977,9 +976,9 @@ void FixedPisaNsga2<CO, MO>::calcDistances()
                 else {
                     size_t idx1 = pp_all[front[l][i+1]];
                     size_t idx2 = pp_all[front[l][i-1]];
-                    boost::shared_ptr<individual> ind1 =
+                    individual ind1 =
                         variator_m->population()->get_individual(idx1);
-                    boost::shared_ptr<individual> ind2 =
+                    individual ind2 =
                         variator_m->population()->get_individual(idx2);
                     double obj1 = ind1->objectives_m[d];
                     double obj2 = ind2->objectives_m[d];
@@ -1021,7 +1020,6 @@ void FixedPisaNsga2<CO, MO>::matingSelection() {
     // select lambda_m parents
     for (size_t i = 0; i < lambda_m; i++) {
         int winner = irand(pp_all.size());
-
         for (int j = 0; j < tournament_m; j++) {
             int opponent = irand(pp_all.size());
             if (fitness_[pp_all[opponent]] < fitness_[pp_all[winner]]
@@ -1037,25 +1035,43 @@ void FixedPisaNsga2<CO, MO>::matingSelection() {
 /* Determines if one individual dominates another.
    Minimizing fitness values. */
 template< template <class> class CO, template <class> class MO >
-int FixedPisaNsga2<CO, MO>::dominates(unsigned int p_ind_a, unsigned int p_ind_b) {
+int FixedPisaNsga2<CO, MO>::dominates(individual ind_a, individual ind_b) {
 
     int a_is_worse = 0, b_is_worse = 0;
     // int equal = 1;
 
-    boost::shared_ptr<individual> ind1 =
-        variator_m->population()->get_individual(p_ind_a);
-    boost::shared_ptr<individual> ind2 =
-        variator_m->population()->get_individual(p_ind_b);
-
-    for (size_t i = 0; i < ind1->objectives_m.size()/* && !a_is_worse*/; i++) {
-        if (ind1->objectives_m[i] > ind2->objectives_m[i]) a_is_worse = 1;
-        if (ind1->objectives_m[i] < ind2->objectives_m[i]) b_is_worse = 1;
-        // a_is_worse = ind1->objectives_m[i] > ind2->objectives_m[i];
-        // equal = (ind1->objectives_m[i] == ind2->objectives_m[i]) && equal;
+    for (size_t i = 0; i < ind_a->objectives_m.size()/* && !a_is_worse*/; i++) {
+        if (ind_a->objectives_m[i] > ind_b->objectives_m[i]) a_is_worse = 1;
+        if (ind_a->objectives_m[i] < ind_b->objectives_m[i]) b_is_worse = 1;
+        // a_is_worse = ind_a->objectives_m[i] > ind_b->objectives_m[i];
+        // equal = (ind_a->objectives_m[i] == ind_b->objectives_m[i]) && equal;
     }
 
     return (b_is_worse && !a_is_worse);
     // return (!equal && !a_is_worse);
+}
+
+template< template <class> class CO, template <class> class MO >
+bool FixedPisaNsga2<CO, MO>::checkParetoFront(unsigned int newid) {
+    individual newInd = variator_m->population()->get_staging(newid);
+
+    for (auto it = paretoFront_m->begin(); it != paretoFront_m->end(); it++) {
+        if (dominates(it->second, newInd) == true) return false;
+    }
+    //check if same (should happen rarely)
+    if (paretoFront_m->isRepresentedInPopulation(newInd->genes_m) == true)
+        return false;
+
+    for (auto it = paretoFront_m->begin(); it != paretoFront_m->end(); it++) {
+        if (dominates(newInd, it->second) == true) {
+            // remove individuals no longer in Pareto front
+            it = paretoFront_m->erase(it);
+        }
+    }
+    paretoFront_m->add_individual(newInd);
+    paretoFront_m->commit_individuals();
+
+    return true;
 }
 
 template< template <class> class CO, template <class> class MO >

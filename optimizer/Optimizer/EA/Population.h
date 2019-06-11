@@ -7,8 +7,8 @@
 #include <queue>
 #include <set>
 #include <cmath>
-#include <sstream>
 #include <fstream>
+#include <sstream>
 
 #include "boost/smart_ptr.hpp"
 
@@ -81,7 +81,6 @@ public:
      *  none found
      */
     individual get_individual(int identity) {
-
         indItr_t it;
         if(identity == -1)
             it = individuals.begin();
@@ -101,7 +100,6 @@ public:
      *  none found
      */
     individual get_staging(int identity) {
-
         indItr_t it;
         if(identity == -1)
             it = stagingArea.begin();
@@ -212,13 +210,8 @@ public:
     indItr_t begin() { return individuals.begin(); }
     /// iterator end on population container
     indItr_t end()   { return individuals.end(); }
-
-    /* /// Remove (and cleanup) all individuals in the population */
-    /* void clean_population() { */
-
-    /*     stagingArea.clear(); */
-    /*     individuals.clear(); */
-    /* } */
+    /// erase individual
+    indItr_t erase(indItr_t it) { return individuals.erase(it); }
 
 private:
 

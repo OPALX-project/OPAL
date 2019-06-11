@@ -24,7 +24,6 @@ public:
     /// entry point for optimizer
     virtual void initialize() = 0;
 
-
 protected:
 
     // propagate poller hooks
