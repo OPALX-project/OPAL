@@ -22,8 +22,8 @@
 extern Inform* gmsg;
 
 #define SQR(x) ((x)*(x))
-#define PointID(triangle_id, vertex_id) Triangles_m[4 * (triangle_id) + (vertex_id)]
-#define Point(triangle_id, vertex_id)   Points_m[Triangles_m[4 * (triangle_id) + (vertex_id)]]
+#define PointID(triangle_id, vertex_id) Triangles_m[triangle_id][vertex_id]
+#define Point(triangle_id, vertex_id)   Points_m[Triangles_m[triangle_id][vertex_id]]
 
 #define EPS 10e-10
 
@@ -108,10 +108,9 @@ static void write_voxel_mesh (
     of << "DATASET UNSTRUCTURED_GRID" << std::endl;
     of << "POINTS " << numpoints << " float" << std::endl;
 
-    const auto end_it = ids.end();
     const auto nr0_times_nr1 = nr[0] * nr[1];
-    for (auto it = ids.begin (); it != end_it; it++) {
-        int id = it->first;
+    for (auto& elem: ids) {
+        auto id = elem.first;
         int k = (id - 1) / nr0_times_nr1;
         int rest = (id - 1) % nr0_times_nr1;
         int j = rest / nr[0];
@@ -243,23 +242,6 @@ face_plane (
     if (gsl_fcmp (p[2], 0.5, EPS) > 0) outcode_fcmp |= 0x10;
     if (gsl_fcmp (p[2],-0.5, EPS) < 0) outcode_fcmp |= 0x20;
 
-#if 0
-    int outcode = 0;
-    if (p[0] >  .5) outcode |= 0x01;
-    if (p[0] < -.5) outcode |= 0x02;
-    if (p[1] >  .5) outcode |= 0x04;
-    if (p[1] < -.5) outcode |= 0x08;
-    if (p[2] >  .5) outcode |= 0x10;
-    if (p[2] < -.5) outcode |= 0x20;
-
-    if (outcode != outcode_fcmp) {
-        *gmsg << "* " << __func__ << ":"
-              << " P=" << p
-              << "  outcode=" << outcode
-              << "  outcode_fcmp=" << outcode_fcmp
-              << endl;
-    }
-#endif
     return(outcode_fcmp);
 }
 
@@ -286,29 +268,6 @@ bevel_2d (
     if (gsl_fcmp(-p[1] + p[2], 1.0, EPS) > 0) outcode_fcmp |= 0x400;
     if (gsl_fcmp(-p[1] - p[2], 1.0, EPS) > 0) outcode_fcmp |= 0x800;
 
-#if 0
-    int outcode = 0;
-    if ( p[0] + p[1] > 1.0) outcode |= 0x001;
-    if ( p[0] - p[1] > 1.0) outcode |= 0x002;
-    if (-p[0] + p[1] > 1.0) outcode |= 0x004;
-    if (-p[0] - p[1] > 1.0) outcode |= 0x008;
-    if ( p[0] + p[2] > 1.0) outcode |= 0x010;
-    if ( p[0] - p[2] > 1.0) outcode |= 0x020;
-    if (-p[0] + p[2] > 1.0) outcode |= 0x040;
-    if (-p[0] - p[2] > 1.0) outcode |= 0x080;
-    if ( p[1] + p[2] > 1.0) outcode |= 0x100;
-    if ( p[1] - p[2] > 1.0) outcode |= 0x200;
-    if (-p[1] + p[2] > 1.0) outcode |= 0x400;
-    if (-p[1] - p[2] > 1.0) outcode |= 0x800;
-
-    if (outcode != outcode_fcmp) {
-        *gmsg << "* " << __func__ << ":"
-              << " P=" << p
-              << "  outcode=" << outcode
-              << "  outcode_fcmp=" << outcode_fcmp
-              << endl;
-    }
-#endif
     return(outcode_fcmp);
 }
 
@@ -330,25 +289,7 @@ bevel_3d (
     if (gsl_fcmp(-p[0] + p[1] - p[2], 1.5, EPS) > 0) outcode_fcmp |= 0x20;
     if (gsl_fcmp(-p[0] - p[1] + p[2], 1.5, EPS) > 0) outcode_fcmp |= 0x40;
     if (gsl_fcmp(-p[0] - p[1] - p[2], 1.5, EPS) > 0) outcode_fcmp |= 0x80;
-#if 0
-    int outcode = 0;
-    if (( p[0] + p[1] + p[2]) > 1.5) outcode |= 0x01;
-    if (( p[0] + p[1] - p[2]) > 1.5) outcode |= 0x02;
-    if (( p[0] - p[1] + p[2]) > 1.5) outcode |= 0x04;
-    if (( p[0] - p[1] - p[2]) > 1.5) outcode |= 0x08;
-    if ((-p[0] + p[1] + p[2]) > 1.5) outcode |= 0x10;
-    if ((-p[0] + p[1] - p[2]) > 1.5) outcode |= 0x20;
-    if ((-p[0] - p[1] + p[2]) > 1.5) outcode |= 0x40;
-    if ((-p[0] - p[1] - p[2]) > 1.5) outcode |= 0x80;
 
-    if (outcode != outcode_fcmp) {
-        *gmsg << "* " << __func__ << ":"
-              << " P=" << p
-              << "  outcode=" << outcode
-              << "  outcode_fcmp=" << outcode_fcmp
-              << endl;
-    }
-#endif
     return(outcode_fcmp);
 }
 
@@ -755,11 +696,7 @@ static inline double computeArea (
 
 BoundaryGeometry::BoundaryGeometry() :
     Definition (
-        SIZE, "GEOMETRY", "The \"GEOMETRY\" statement defines the beam pipe geometry."),
-    TriPrPartloss_m (NULL),
-    TriSePartloss_m (NULL),
-    TriFEPartloss_m (NULL),
-    Triangles_m (NULL) {
+        SIZE, "GEOMETRY", "The \"GEOMETRY\" statement defines the beam pipe geometry.") {
 
     itsAttr[FGEOM] = Attributes::makeString
         ("FGEOM",
@@ -871,12 +808,7 @@ BoundaryGeometry::BoundaryGeometry() :
 BoundaryGeometry::BoundaryGeometry(
     const std::string& name,
     BoundaryGeometry* parent
-    ) :
-    Definition (name, parent),
-    TriPrPartloss_m (NULL),
-    TriSePartloss_m (NULL),
-    TriFEPartloss_m (NULL),
-    Triangles_m (NULL) {
+    ) : Definition (name, parent) {
     gsl_rng_env_setup();
     randGen_m = gsl_rng_alloc(gsl_rng_default);
 
@@ -892,15 +824,6 @@ BoundaryGeometry::BoundaryGeometry(
  }
 
 BoundaryGeometry::~BoundaryGeometry() {
-       if (Triangles_m)
-          delete Triangles_m;
-       if (TriPrPartloss_m )
-           delete TriPrPartloss_m ;
-       if (TriFEPartloss_m)
-           delete TriFEPartloss_m;
-       if (TriSePartloss_m)
-           delete TriSePartloss_m;
-
     gsl_rng_free(randGen_m);
 }
 
@@ -1252,61 +1175,39 @@ BoundaryGeometry::mapPoint2Voxel (
 
 
 inline void
-BoundaryGeometry::computeTriangleVoxelization (
-    const int triangle_id,
-    std::unordered_map< int, std::unordered_set<int> >& voxels
-    ) {
-    Vector_t v1 = getPoint (triangle_id, 1);
-    Vector_t v2 = getPoint (triangle_id, 2);
-    Vector_t v3 = getPoint (triangle_id, 3);
-    Vector_t bbox_min = {
-        MIN3 (v1[0], v2[0], v3[0]),
-        MIN3 (v1[1], v2[1], v3[1]),
-        MIN3 (v1[2], v2[2], v3[2]) };
-    Vector_t bbox_max = {
-        MAX3 (v1[0], v2[0], v3[0]),
-        MAX3 (v1[1], v2[1], v3[1]),
-        MAX3 (v1[2], v2[2], v3[2]) };
-    int i_min, j_min, k_min;
-    int i_max, j_max, k_max;
-    mapPoint2VoxelIndices (bbox_min, i_min, j_min, k_min);
-    mapPoint2VoxelIndices (bbox_max, i_max, j_max, k_max);
-
-    voxels.reserve ((i_max-i_min+1) * (j_max-j_min+1) * (k_max-k_min+1));
-    std::unordered_set<int> triangle (&triangle_id, &triangle_id+1);
-    for (int i = i_min; i <= i_max; i++) {
-        for (int j = j_min; j <= j_max; j++) {
-            for (int k = k_min; k <= k_max; k++) {
-                // test if voxel (i,j,k) has an intersection with triangle
-                if (intersectTriangleVoxel (triangle_id, i, j, k) == INSIDE) {
-                    int voxel_id = mapVoxelIndices2ID (i, j, k);
-                    voxels[voxel_id] = triangle;
-                }
-            }
-        }
-    }
-}
-
-inline void
 BoundaryGeometry::computeMeshVoxelization (void) {
 
     for (int triangle_id = 0; triangle_id < numTriangles_m; triangle_id++) {
-        std::unordered_map< int, std::unordered_set<int> > voxels;
-        computeTriangleVoxelization (triangle_id, voxels);
-
-        // add map for given triangle to map for mesh
-        for (auto mapIt = voxels.begin (); mapIt != voxels.end (); mapIt++) {
-            auto it = voxelMesh_m.ids.find (mapIt->first);
-            if (it == voxelMesh_m.ids.end ()) {
-                voxelMesh_m.ids [mapIt->first] = mapIt->second;
-            } else {
-                it->second.insert (mapIt->second.begin(), mapIt->second.end());
+        std::vector<int> voxels;
+        Vector_t v1 = getPoint (triangle_id, 1);
+        Vector_t v2 = getPoint (triangle_id, 2);
+        Vector_t v3 = getPoint (triangle_id, 3);
+        Vector_t bbox_min = {
+            MIN3 (v1[0], v2[0], v3[0]),
+            MIN3 (v1[1], v2[1], v3[1]),
+            MIN3 (v1[2], v2[2], v3[2]) };
+        Vector_t bbox_max = {
+            MAX3 (v1[0], v2[0], v3[0]),
+            MAX3 (v1[1], v2[1], v3[1]),
+            MAX3 (v1[2], v2[2], v3[2]) };
+        int i_min, j_min, k_min;
+        int i_max, j_max, k_max;
+        mapPoint2VoxelIndices (bbox_min, i_min, j_min, k_min);
+        mapPoint2VoxelIndices (bbox_max, i_max, j_max, k_max);
+        
+        for (int i = i_min; i <= i_max; i++) {
+            for (int j = j_min; j <= j_max; j++) {
+                for (int k = k_min; k <= k_max; k++) {
+                    // test if voxel (i,j,k) has an intersection with triangle
+                    if (intersectTriangleVoxel (triangle_id, i, j, k) == INSIDE) {
+                        auto id = mapVoxelIndices2ID (i, j, k);
+                        voxelMesh_m.ids [id].insert (triangle_id);
+                    }
+                }
             }
         }
-        if (triangle_id > 0 && (triangle_id % 1000) == 0)
-            *gmsg << "* Triangle ID: " << triangle_id << endl;
     } // for_each triangle
-    *gmsg << "* Boundary index set built done." << endl;
+    *gmsg << "* Mesh voxelization done." << endl;
     if(Ippl::myNode() == 0) {
         write_voxel_mesh (voxelMesh_m.ids,
                           voxelMesh_m.sizeOfVoxel,
@@ -1315,21 +1216,20 @@ BoundaryGeometry::computeMeshVoxelization (void) {
     }
 }
 
-
 void BoundaryGeometry::initialize () {
 
     class Local {
-
+        
     public:
 
         static void computeGeometryInterval (BoundaryGeometry* bg) {
 
             bg->minExtent_m = get_min_extent (bg->Points_m);
             bg->maxExtent_m = get_max_extent (bg->Points_m);
-
+            
             /*
-              Calculate the maximum dimension of triangles. This value will be used to
-              define the cubic box size
+              Calculate the maximum size of triangles. This value will be used to
+              define the voxel size
             */
             double longest_edge_max_m = 0.0;
             for (int i = 0; i < bg->numTriangles_m; i++) {
@@ -1378,14 +1278,41 @@ void BoundaryGeometry::initialize () {
             bg->voxelMesh_m.minExtent = bg->minExtent_m - 0.5 * bg->voxelMesh_m.sizeOfVoxel;
             bg->voxelMesh_m.maxExtent = bg->maxExtent_m + 0.5 * bg->voxelMesh_m.sizeOfVoxel;
             bg->voxelMesh_m.nr_m += 1;
-
-            *gmsg << "* Geometry interval built done." << endl;
         }
 
+        /*
+          To speed up ray-triangle intersection tests, the normal vector of
+          all triangles are pointing inward. Since this is clearly not
+          guaranteed for the triangles in the H5hut file, this must be checked
+          for each triangel and - if necessary changed - after reading the mesh.
 
-/*
+          To test whether the normal of a triangle is pointing inward or outward,
+          we choose a random point P close to the center of the triangle and test
+          whether this point is inside or outside the geometry. The way we choose
+          P guarantees that the vector spanned by P and a vertex of the triangle
+          points into the same direction as the normal vector. From this it
+          follows that if P is inside the geometry the normal vector is pointing
+          to the inside and vise versa.
 
-  Following combinations are possible:
+          Since the inside-test is computational expensive we perform this test
+          for one reference triangle T (per sub-mesh) only. Knowing the adjacent
+          triangles for all three edges of a triangle for all triangles of the
+          mesh facilitates another approach using the orientation of the 
+          reference triangle T. Assuming that the normal vector of T points to
+          the inside of the geometry an adjacent triangle of T has an inward
+          pointing normal vector if and only if it has the same orientation as
+          T.
+
+          Starting with the reference triangle T we can change the orientation 
+          of the adjancent triangle of T and so on.
+
+          NOTE: For the time being we do not make use of the inward pointing
+          normals.
+
+          FIXME: Describe the basic ideas behind the following comment! Without
+          it is completely unclear.
+
+          Following combinations are possible:
               1,1 && 2,2   1,2 && 2,1   1,3 && 2,1
               1,1 && 2,3   1,2 && 2,3   1,3 && 2,2
               1,1 && 3,2   1,2 && 3,1   1,3 && 3,1
@@ -1401,9 +1328,9 @@ void BoundaryGeometry::initialize () {
              (3,1 && 2,2) (3,2 && 2,1) (3,3 && 2,1)
              (3,1 && 2,3) (3,2 && 2,3) (3,3 && 2,2)
 
-  Note:
-     Since we find vertices with lower enumeration first, we
-     can ignore combinations in ()
+          Note:
+          Since we find vertices with lower enumeration first, we
+          can ignore combinations in ()
 
                   2 2           2 3           3 2           3 3
                    *             *             *             *
@@ -1477,41 +1404,51 @@ change orient.:                               yes           no
 Change orientation if diff is:
 (1,1) || (1,-2) || (2,2) || (2,-1) || (2,-1)
 
-*/
+        */
 
-        static void orientTriangles (BoundaryGeometry* bg, int ref_id, int triangle_id) {
-            // find pts of common edge
-            int ic[2];
-            int id[2];
-            int n = 0;
-            for (int i = 1; i <= 3; i++) {
+        static void computeTriangleNeighbors (
+            BoundaryGeometry* bg,
+            std::vector<std::set<int>>& neighbors
+            ) {
+            std::vector<std::set<int>> adjacencies_to_pt (bg->Points_m.size());
+
+            // for each triangles find adjacent triangles for each vertex
+            for (int triangle_id = 0; triangle_id < bg->numTriangles_m; triangle_id++) {
                 for (int j = 1; j <= 3; j++) {
-                    if (bg->PointID (triangle_id, j) == bg->PointID (ref_id, i)) {
-                        id[n] = j;
-                        ic[n] = i;
-                        n++;
-                        if (n == 2) goto edge_found;
-                    }
+                    auto pt_id = bg->PointID (triangle_id, j);
+                    assert (pt_id < bg->Points_m.size ());
+                    adjacencies_to_pt [pt_id].insert (triangle_id);
                 }
             }
-            assert (n == 2);
-        edge_found:
-            int diff = id[1] - id[0];
-            if ((((ic[1] - ic[0]) == 1) && ((diff == 1) || (diff == -2))) ||
-                (((ic[1] - ic[0]) == 2) && ((diff == -1) || (diff == 2)))) {
-                bg->PointID (triangle_id, id[0]) = bg->PointID (ref_id, ic[1]);
-                bg->PointID (triangle_id, id[1]) = bg->PointID (ref_id, ic[0]);
+
+            for (int triangle_id = 0; triangle_id < bg->numTriangles_m; triangle_id++) {
+                std::set<int>  to_A = adjacencies_to_pt [bg->PointID (triangle_id, 1)];
+                std::set<int>  to_B = adjacencies_to_pt [bg->PointID (triangle_id, 2)];
+                std::set<int>  to_C = adjacencies_to_pt [bg->PointID (triangle_id, 3)];
+
+                std::set<int> intersect;
+                std::set_intersection (
+                    to_A.begin(), to_A.end(),
+                    to_B.begin(), to_B.end(),
+                    std::inserter(intersect,intersect.begin()));
+                std::set_intersection(
+                    to_B.begin(), to_B.end(),
+                    to_C.begin(), to_C.end(),
+                    std::inserter(intersect,intersect.begin()));
+                std::set_intersection(
+                    to_C.begin(), to_C.end(),
+                    to_A.begin(), to_A.end(),
+                    std::inserter(intersect, intersect.begin()));
+                intersect.erase (triangle_id);
+
+                neighbors [triangle_id] = intersect;
             }
-            bg->isOriented_m [triangle_id] = true;
-            const auto neighbors = bg->triangleNeighbors_m[triangle_id];
-            const auto endIt = neighbors.end ();
-            for (auto triangleIt = neighbors.begin(); triangleIt != endIt; triangleIt++) {
-                if (!bg->isOriented_m [*triangleIt])
-                    orientTriangles (bg, triangle_id, *triangleIt);
-            }
+            *gmsg << "* " << __func__ << ": Computing neighbors done" << endl;
         }
 
         /*
+          Helper function for hasInwardPointingNormal()
+
           Determine if a point x is outside or inside the geometry or just on
           the boundary. Return true if point is inside geometry or on the
           boundary, false otherwise
@@ -1550,47 +1487,7 @@ Change orientation if diff is:
             return ((intersection_points.size () % 2) == 1);
         }
 
-
-        static void computeTriangleNeighbors (
-            BoundaryGeometry* bg
-            ) {
-            std::set<int> * adjacencies_to_pt = new std::set<int> [bg->Points_m.size ()];
-
-            // for each triangles find adjacent triangles for each vertex
-            for (int triangle_id = 0; triangle_id < bg->numTriangles_m; triangle_id++) {
-                for (int j = 1; j <= 3; j++) {
-                    unsigned int pt_id = bg->PointID (triangle_id, j);
-                    assert (pt_id < bg->Points_m.size ());
-                    adjacencies_to_pt [pt_id].insert (triangle_id);
-                }
-            }
-
-            for (int triangle_id = 0; triangle_id < bg->numTriangles_m; triangle_id++) {
-                std::set<int>  to_A = adjacencies_to_pt [bg->PointID (triangle_id, 1)];
-                std::set<int>  to_B = adjacencies_to_pt [bg->PointID (triangle_id, 2)];
-                std::set<int>  to_C = adjacencies_to_pt [bg->PointID (triangle_id, 3)];
-
-                std::set<int> intersect;
-                std::set_intersection (
-                    to_A.begin(), to_A.end(),
-                    to_B.begin(), to_B.end(),
-                    std::inserter(intersect,intersect.begin()));
-                std::set_intersection(
-                    to_B.begin(), to_B.end(),
-                    to_C.begin(), to_C.end(),
-                    std::inserter(intersect,intersect.begin()));
-                std::set_intersection(
-                    to_C.begin(), to_C.end(),
-                    to_A.begin(), to_A.end(),
-                    std::inserter(intersect, intersect.begin()));
-                intersect.erase (triangle_id);
-
-                bg->triangleNeighbors_m [triangle_id] = intersect;
-            }
-
-            delete[] adjacencies_to_pt;
-        }
-
+        // helper for function  makeTriangleNormalInwardPointing()
         static bool hasInwardPointingNormal (
             BoundaryGeometry* const bg,
             const int triangle_id
@@ -1622,52 +1519,68 @@ Change orientation if diff is:
             return (is_inside && dotPA_N >= 0) || (!is_inside && dotPA_N < 0);
         }
 
-        /*
-          Recursively get inward-pointing normal of all surface triangles.
-
-          The basic idea is as follow:
-          -  get the inward-pointing normal of the first triangle by determine
-             whether a nearby point is inside or outside the boundary geometry.
-             (using ray-triangle intersection and even/odd intersection number).
-          -  Then use a recursion method to switch the vertex order of adjacent
-             triangles. The inward normal is stored in TriNormals_m.
-        */
-        static void makeTriangleNormalInwardPointingSubMesh (
-            BoundaryGeometry* bg,
-            const int triangle_id
-            ) {
-            if (!hasInwardPointingNormal (bg, triangle_id)) {
-                int id = bg->PointID (triangle_id, 2);
-                bg->PointID (triangle_id, 2) = bg->PointID (triangle_id, 3);
-                bg->PointID (triangle_id, 3) = id;
+        // helper for function  makeTriangleNormalInwardPointing()
+        static void orientTriangle (BoundaryGeometry* bg, int ref_id, int triangle_id) {
+            // find pts of common edge
+            int ic[2];
+            int id[2];
+            int n = 0;
+            for (int i = 1; i <= 3; i++) {
+                for (int j = 1; j <= 3; j++) {
+                    if (bg->PointID (triangle_id, j) == bg->PointID (ref_id, i)) {
+                        id[n] = j;
+                        ic[n] = i;
+                        n++;
+                        if (n == 2) goto edge_found;
+                    }
+                }
             }
-            bg->isOriented_m [triangle_id] = true;
-
-            /*
-              orient all triangles, starting with the neighbors of the first
-            */
-            const auto& neighbors = bg->triangleNeighbors_m[triangle_id];
-            orientTriangles (bg, triangle_id, *neighbors.begin());
+            assert (n == 2);
+        edge_found:
+            int diff = id[1] - id[0];
+            if ((((ic[1] - ic[0]) == 1) && ((diff == 1) || (diff == -2))) ||
+                (((ic[1] - ic[0]) == 2) && ((diff == -1) || (diff == 2)))) {
+                bg->PointID (triangle_id, id[0]) = bg->PointID (ref_id, ic[1]);
+                bg->PointID (triangle_id, id[1]) = bg->PointID (ref_id, ic[0]);
+            }
         }
 
         static void makeTriangleNormalInwardPointing (BoundaryGeometry* bg) {
-            computeTriangleNeighbors (bg);
+            std::vector<std::set<int>> neighbors (bg->numTriangles_m);
 
-            bg->isOriented_m = new bool[bg->numTriangles_m];
-            memset (bg->isOriented_m, 0, sizeof (bg->isOriented_m[0])*bg->numTriangles_m);
+            computeTriangleNeighbors (bg, neighbors);
 
+            // loop over all sub-meshes
             int triangle_id = 0;
             int parts = 0;
+            std::vector<int> triangles (bg->numTriangles_m);
+            std::vector<int>::size_type queue_cursor = 0;
+            std::vector<int>::size_type queue_end = 0;
+            std::vector <bool> isOriented (bg->numTriangles_m, false);
             do {
                 parts++;
-                makeTriangleNormalInwardPointingSubMesh (bg, triangle_id);
-                while ((triangle_id < bg->numTriangles_m) && bg->isOriented_m[triangle_id])
+                // find next untested triangle, trivial for the first sub-mesh
+                while ((triangle_id < bg->numTriangles_m) && isOriented [triangle_id])
                     triangle_id++;
-            } while (triangle_id < bg->numTriangles_m);
 
-            delete[] bg->isOriented_m;
-            bg->isOriented_m = 0;
-            bg->triangleNeighbors_m.clear ();
+                // ensure that normal of this triangle is inward pointing
+                if (!hasInwardPointingNormal (bg, triangle_id)) {
+                    std::swap (bg->PointID (triangle_id, 2), bg->PointID (triangle_id, 3));
+                }
+                isOriented [triangle_id] = true;
+
+                // loop over all triangles in sub-mesh
+                triangles [queue_end++] = triangle_id;
+                do {
+                    for (auto neighbor_id: neighbors [triangle_id]) {
+                        if (isOriented [neighbor_id]) continue;
+                        orientTriangle (bg, triangle_id, neighbor_id);
+                        isOriented [neighbor_id] = true;
+                        triangles[queue_end++] = neighbor_id;
+                    }
+                    triangle_id = triangles [++queue_cursor];
+                } while (queue_cursor < queue_end);
+            } while (queue_end < bg->numTriangles_m);
 
             if (parts == 1) {
                 *gmsg << "* " << __func__ << ": mesh is contiguous." << endl;
@@ -1675,20 +1588,6 @@ Change orientation if diff is:
                 *gmsg << "* " << __func__ << ": mesh is discontiguous (" << parts << ") parts." << endl;
             }
             *gmsg << "* Triangle Normal built done." << endl;
-        }
-
-        /*
-          We define some tags in namespace BGphysics for each surface triangle to
-          identify the physical reactions for each triangle when amplitude of
-          electrostatic field exceeds some threshold or particles incident the surface.
-        */
-        static void setBGphysicstag (BoundaryGeometry* bg) {
-            for (int i = 0; i < bg->numTriangles_m; i++) {
-                bg->TriBGphysicstag_m.push_back (
-                    BGphysics::Absorption
-                    | BGphysics::FNEmission
-                    | BGphysics::SecondaryEmission);
-            }
         }
 
     };
@@ -1739,7 +1638,7 @@ Change orientation if diff is:
     H5FedSetLevel (m, 0);
 
     numTriangles_m = H5FedGetNumElementsTotal (m);
-    Triangles_m = new int[numTriangles_m * 4];
+    Triangles_m.resize (numTriangles_m);
 
     // iterate over all co-dim 0 entities, i.e. elements
     h5_loc_id_t local_id;
@@ -1772,18 +1671,20 @@ Change orientation if diff is:
     *gmsg << "* Reading mesh done." << endl;
 
     Local::computeGeometryInterval (this);
-
     computeMeshVoxelization ();
 
-    TriPrPartloss_m = new double[numTriangles_m];
-    TriFEPartloss_m = new double[numTriangles_m];
-    TriSePartloss_m = new double[numTriangles_m];
+    TriPrPartloss_m.resize (numTriangles_m, 0.0);
+    TriFEPartloss_m.resize (numTriangles_m, 0.0);
+    TriSePartloss_m.resize (numTriangles_m, 0.0);
+
+    auto tags = BGphysics::Absorption|BGphysics::FNEmission|BGphysics::SecondaryEmission;
+    TriBGphysicstag_m.resize (numTriangles_m, tags);
+
+    Local::makeTriangleNormalInwardPointing (this);
+
     TriNormals_m.resize (numTriangles_m);
     TriBarycenters_m.resize (numTriangles_m);
     TriAreas_m.resize (numTriangles_m);
-
-    Local::makeTriangleNormalInwardPointing (this);
-    Local::setBGphysicstag (this);
 
     for (int i = 0; i < numTriangles_m; i++) {
         const Vector_t& A = getPoint (i, 1);
@@ -1792,10 +1693,6 @@ Change orientation if diff is:
 
         TriBarycenters_m[i] = ((A + B + C) / 3.0);
         TriAreas_m[i] = computeArea (A, B, C);
-
-        TriPrPartloss_m[i] = 0.0;
-        TriFEPartloss_m[i] = 0.0;
-        TriSePartloss_m[i] = 0.0;
         TriNormals_m[i] = normalVector (A, B, C);
 
     }

@@ -25,6 +25,7 @@ class ElementBase;
 #include <assert.h>
 #include <unordered_map>
 #include <unordered_set>
+#include <array>
 
 #include "AbstractObjects/Definition.h"
 #include "Attributes/Attributes.h"
@@ -308,20 +309,20 @@ public:
        @param TriPrPartloss_m[i]:
        cummulative sum of primary particles charge hitting triangle 'i'
     */
-    double* TriPrPartloss_m;
+    std::vector<double> TriPrPartloss_m;
 
     /**
        @param TriSePartloss_m store the number of secondary particles hitting the
        Id th triangle. The Id number is the same with triangle Id(not vertex ID).
     */
-    double* TriSePartloss_m;
+    std::vector<double> TriSePartloss_m;
 
     /**
        @param TriFEPartloss_m store the number of field emission/darkcurrent
        particles hitting the Id th triangle. The Id number is the same with
        triangle Id(not vertex ID).
     */
-    double* TriFEPartloss_m;
+    std::vector<double> TriFEPartloss_m;
 
     /**
        @param TriBGphysicstag_m store the tags of each boundary triangle for
@@ -393,8 +394,9 @@ private:
     std::string h5FileName_m;           // H5hut filename
 
     std::vector<Vector_t> Points_m;     // geometry point coordinates
-    int* Triangles_m;                   // boundary faces given by point n-tuples
-    int numTriangles_m;                // number of boundary triangles
+    std::vector<std::array<int,4>> Triangles_m;   // boundary faces defined via point IDs
+                                        // please note: 4 is correct, historical reasons!
+    int numTriangles_m;                 // number of boundary triangles
 
     std::vector<Vector_t> TriNormals_m; // oriented normal vector of triangles
     std::vector<double> TriAreas_m;     // area of triangles
@@ -411,10 +413,6 @@ private:
             std::unordered_set<int>> ids; // intersecting triangles
 
     } voxelMesh_m;
-
-    bool* isOriented_m;                  // IDs of oriented triangles.
-    std::map< int, std::set<int> >
-            triangleNeighbors_m;        // map vertex ID to triangles with this vertex
 
     int debugFlags_m;
 
@@ -476,7 +474,7 @@ private:
 
     inline const Vector_t& getPoint (const int triangle_id, const int vertex_id) {
         assert (1 <= vertex_id && vertex_id <=3);
-        return Points_m[Triangles_m[4 * triangle_id + vertex_id]];
+        return Points_m[Triangles_m[triangle_id][vertex_id]];
     }
 
     enum INTERSECTION_TESTS {
@@ -495,8 +493,6 @@ private:
     inline int mapVoxelIndices2ID (const int i, const int j, const int k);
     inline Vector_t mapIndices2Voxel (const int, const int, const int);
     inline Vector_t mapPoint2Voxel (const Vector_t&);
-    inline void computeTriangleVoxelization (
-        const int, std::unordered_map< int, std::unordered_set<int> >&);
     inline void computeMeshVoxelization (void);
 
     enum {
