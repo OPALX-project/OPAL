@@ -198,8 +198,6 @@ public:
     void writeImpactStatistics(PartBunchBase<double, 3> *beam, long long int &step, size_t &impact, double &sey_num,
                                size_t numberOfFieldEmittedParticles, bool nEmissionMode, std::string fn);
 
-    void writeSurfaceInteraction(PartBunchBase<double, 3> *beam, long long int &step, BoundaryGeometry &bg, std::string fn);
-
     /** \brief Write SDDS header.
      *
      * Writes the appropriate SDDS format header information to processor statistics file so the SDDS tools can be used
@@ -293,9 +291,6 @@ private:
 
     /// Name of output file for surface loss data.
     std::string surfaceLossFileName_m;
-
-    /// H5 file for surface loss data.
-    h5_file_t H5fileS_m;
 
     /// Current record, or time step, of H5 file.
     int H5call_m;
