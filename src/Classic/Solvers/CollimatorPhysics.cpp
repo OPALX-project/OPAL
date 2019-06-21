@@ -25,11 +25,10 @@
 
 #include "Ippl.h"
 
+#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-
-using Physics::pi;
 
 #ifdef OPAL_DKS
 const int CollimatorPhysics::numpar = 13;
@@ -327,7 +326,7 @@ bool CollimatorPhysics::computeEnergyLoss(Vector_t &P,
     constexpr double massProton_keV = Physics::m_p * GeV2keV;
     constexpr double massProton_amu = 1.007276466879;
     constexpr double chargeProton = Physics::z_p;
-    constexpr double K = 4.0 * pi * Physics::Avo * std::pow(Physics::r_e * m2cm, 2) * massElectron_keV;
+    constexpr double K = 4.0 * Physics::pi * Physics::Avo * Physics::r_e * m2cm * Physics::r_e * m2cm * massElectron_keV;
 
     double gamma = Util::getGamma(P);
     const double gammaSqr = std::pow(gamma, 2);
@@ -425,7 +424,7 @@ void  CollimatorPhysics::computeCoulombScattering(Vector_t &R,
     constexpr double GeV2eV = 1e9;
     constexpr double massProton_eV = Physics::m_p * GeV2eV;
     constexpr double chargeProton = Physics::z_p;
-    constexpr double sqrtThreeInv = 1.0 / sqrt(3.0);
+    constexpr double sqrtThreeInv = 0.57735026918962576451; // sqrt(1.0 / 3.0)
     const double normP = euclidean_norm(P);
     const double gammaSqr = std::pow(normP, 2) + 1.0;
     const double beta = sqrt(1.0 - 1.0 / gammaSqr);

@@ -244,7 +244,7 @@ public:
 
     bool writeAmrStatistics(PartBunchBase<double, 3> *beam);
     
-    void memoryDump(PartBunchBase<double, 3> *beam);
+    void noAmrDump(PartBunchBase<double, 3> *beam);
 #endif
 
 

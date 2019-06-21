@@ -170,8 +170,10 @@ private:
 #endif
 
     // y_b   y_t
-    static const scalar_t lookup1_ms[2];
-    static const scalar_t lookup2_ms[2];
+    static const scalar_t lookup1a_ms[2];
+    static const scalar_t lookup2a_ms[2];
+    static const scalar_t lookup1b_ms[2];
+    static const scalar_t lookup2b_ms[2];
 #if AMREX_SPACEDIM == 3
     static const scalar_t lookup3_ms[2];
     static const scalar_t lookup3r_ms[2];

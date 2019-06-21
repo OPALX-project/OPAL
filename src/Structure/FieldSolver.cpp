@@ -108,6 +108,7 @@ namespace {
         AMR_MAX_NUM_PART,
         AMR_MIN_NUM_PART,
         AMR_SCALING,
+        AMR_DOMAIN_RATIO,
 #endif
 #ifdef HAVE_AMR_MG_SOLVER
         // AMR_MG = Adaptive-Mesh-Refinement Multi-Grid
@@ -270,6 +271,12 @@ FieldSolver::FieldSolver():
                                                 "Scaling value for maximum value tagging "
                                                 "(only POTENTIAL / CHARGE_DENSITY / "
                                                 "MOMENTA", 0.75);
+
+    itsAttr[AMR_DOMAIN_RATIO] = Attributes::makeRealArray("AMR_DOMAIN_RATIO",
+                                                         "Box ratio of AMR computation domain. Default: [-1, 1]^3");
+
+    // default
+    Attributes::setRealArray(itsAttr[AMR_DOMAIN_RATIO], {1.0, 1.0, 1.0});
 #endif
 
 #ifdef HAVE_AMR_MG_SOLVER
@@ -583,6 +590,12 @@ Inform &FieldSolver::printInfo(Inform &os) const {
            << "* AMR_MIN_NUM_PART " << Attributes::getReal(itsAttr[AMR_MIN_NUM_PART]) << '\n'
            << "* AMR_DENSITY      " << Attributes::getReal(itsAttr[AMR_DENSITY]) << '\n'
            << "* AMR_SCALING      " << Attributes::getReal(itsAttr[AMR_SCALING]) << endl;
+        auto length = Attributes::getRealArray(itsAttr[AMR_DOMAIN_RATIO]);
+        os << "* AMR_DOMAIN_RATIO ( ";
+        for (auto& l : length) {
+            os << l << " ";
+        }
+        os << ")" << endl;
     }
 #endif
 
@@ -669,6 +682,10 @@ std::string FieldSolver::getTagging_m() const {
 
 void FieldSolver::initAmrObject_m() {
 
+    auto domain = Attributes::getRealArray(itsAttr[AMR_DOMAIN_RATIO]);
+    dynamic_cast<AmrPartBunch*>(itsBunch_m)->setAmrDomainRatio(
+        Attributes::getRealArray(itsAttr[AMR_DOMAIN_RATIO])
+    );
     itsBunch_m->set_meshEnlargement(Attributes::getReal(itsAttr[BBOXINCR]) * 0.01);
 
     // setup initial info for creating the object

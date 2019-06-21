@@ -1865,28 +1865,42 @@ bool DataSink::writeAmrStatistics(PartBunchBase<double, 3> *beam) {
 }
 
 
-void DataSink::memoryDump(PartBunchBase<double, 3> *beam) {
+void DataSink::noAmrDump(PartBunchBase<double, 3> *beam) {
 #ifdef __linux__
     if ( Options::memoryDump ) {
         memprof_m->write(beam->getT() * 1e9);
     }
 #else
-    if ( Ippl::myNode() != 0 || !Options::memoryDump) {
+    if ( Ippl::myNode() != 0 ) {
         return;
     }
 
     std::ofstream os_memData;
-    open_m(os_memData, memFileName_m);
+    if ( Options::memoryDump ) {
+        open_m(os_memData, memFileName_m);
+    }
+
+    std::ofstream os_lBalData;
+    open_m(os_lBalData, lBalFileName_m);
 
     if (mode_m == std::ios::out) {
         mode_m = std::ios::app;
 
-        writeMemoryHeader(os_memData);
+        writeLBalHeader(os_lBalData);
+
+        if ( Options::memoryDump )
+            writeMemoryHeader(os_memData);
     }
 
     unsigned int pwi = 10;
-    writeMemoryData(beam, os_memData, pwi);
-    os_memData.close();
+
+    if ( Options::memoryDump ) {
+        writeMemoryData(beam, os_memData, pwi);
+        os_memData.close();
+    }
+
+    writeLBalData(beam, os_lBalData, pwi);
+    os_lBalData.close();
 #endif
 }
 

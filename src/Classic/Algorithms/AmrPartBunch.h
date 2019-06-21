@@ -75,7 +75,13 @@ public:
         for (int i = 0; i < 3; ++i)
             hr_m[i] = hr[i];
     }
-    
+
+    /*!
+     * Change the AMR Poisson computation domain.
+     * @param ratio per direction.
+     */
+    void setAmrDomainRatio(const std::vector<double>& ratio);
+
     void gatherLevelStatistics();
     
     /*!

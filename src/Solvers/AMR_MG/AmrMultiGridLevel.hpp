@@ -188,6 +188,13 @@ const amr::scalar_t& AmrMultiGridLevel<MatrixType, VectorType>::invCellSize(lo_t
 
 
 template <class MatrixType, class VectorType>
+bool AmrMultiGridLevel<MatrixType, VectorType>::isValid(const AmrIntVect_t& iv) const {
+    return ( iv.allGT(AmrIntVect_t(D_DECL(-1, -1, -1))) &&
+             iv.allLT(AmrIntVect_t(D_DECL(nr_m[0], nr_m[1], nr_m[2]))) );
+}
+
+
+template <class MatrixType, class VectorType>
 void AmrMultiGridLevel<MatrixType, VectorType>::buildMap_m(const Teuchos::RCP<comm_t>& comm,
                                                            const Teuchos::RCP<node_t>& node)
 {

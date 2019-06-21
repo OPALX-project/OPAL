@@ -5,6 +5,8 @@
 #include <AMReX_ParmParse.H>
 #include <AMReX_Interpolater.H>
 
+#include <cassert>
+
 FMGPoissonSolver::FMGPoissonSolver(AmrBoxLib* itsAmrObject_p)
     : AmrPoissonSolver<AmrBoxLib>(itsAmrObject_p),
       reltol_m(1.0e-15),
@@ -44,10 +46,16 @@ void FMGPoissonSolver::solve(AmrScalarFieldContainer_t& rho,
 
     amrex::Vector< AmrScalarFieldContainer_t > grad_phi_edge(rho.size());
 
+    amrex::Vector< AmrField_t > tmp(rho.size());
+
+    assert(baseLevel <= finestLevel);
+    assert(finestLevel < (int)rho.size());
+
     for (int lev = baseLevel; lev <= finestLevel ; ++lev) {
         const AmrProcMap_t& dmap = rho[lev]->DistributionMap();
         grad_phi_edge[lev].resize(AMREX_SPACEDIM);
-
+        tmp[lev].define(rho[lev]->boxArray(), dmap, AMREX_SPACEDIM, 1);
+        
         for (int n = 0; n < AMREX_SPACEDIM; ++n) {
             AmrGrid_t ba = rho[lev]->boxArray();
             grad_phi_edge[lev][n].reset(new AmrField_t(ba.surroundingNodes(n), dmap, 1, 1));
@@ -57,9 +65,7 @@ void FMGPoissonSolver::solve(AmrScalarFieldContainer_t& rho,
 
     for (int i = 0; i <= finestLevel; ++i) {
         phi[i]->setVal(0.0, 1);
-        for (int j = 0; j < AMREX_SPACEDIM; ++j) {
-            efield[i][j]->setVal(0.0, 1);
-        }
+        tmp[i].setVal(0.0, 1);
     }
 
     double residNorm = this->solveWithF90_m(amrex::GetVecOfPtrs(rho),
@@ -78,11 +84,14 @@ void FMGPoissonSolver::solve(AmrScalarFieldContainer_t& rho,
     }
 
     for (int lev = baseLevel; lev <= finestLevel; ++lev) {
-        for (int j = 0; j < AMREX_SPACEDIM; ++j) {
-            amrex::average_face_to_cellcenter(*(efield[lev][j].get()),
-                                              amrex::GetVecOfConstPtrs(grad_phi_edge[lev]),
-                                              geom[lev]);
+        amrex::average_face_to_cellcenter(tmp[lev],
+                                          amrex::GetVecOfConstPtrs(grad_phi_edge[lev]),
+                                          geom[lev]);
 
+        for (int j = 0; j < AMREX_SPACEDIM; ++j) {
+            efield[lev][j]->setVal(0.0, 1);
+            amr::AmrField_t::Copy(*(efield[lev][j].get()),
+                                  tmp[lev], j, 0, 1, 1);
             efield[lev][j]->FillBoundary(0, 1, geom[lev].periodicity());
             // we need also minus sign due to \vec{E} = - \nabla\phi
             efield[lev][j]->mult(-1.0, 0, 1);

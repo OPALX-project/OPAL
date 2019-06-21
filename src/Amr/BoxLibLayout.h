@@ -66,14 +66,14 @@ public:
      * The real computational domain is multiplied with the mesh
      * enlargement factor (in [%]) in BoxLibLayout::initBaseBox_m().
      */
-    static const Vector_t lowerBound;
+    static Vector_t lowerBound;
     
     /*! Upper physical domain boundary (each dimension). It has to be
      * greater than 1 since all particles are within \f$[-1, 1]^3\f$.
      * The real computational domain is multiplied with the mesh
      * enlargement factor (in [%]) in BoxLibLayout::initBaseBox_m().
      */
-    static const Vector_t upperBound;
+    static Vector_t upperBound;
 
 public:
     
@@ -134,7 +134,16 @@ public:
      */
     void setBoundingBox(double dh);
     
-    
+    /*!
+     * The Poisson computation domain is per default [-1,1]^3.
+     * With this method this can be changed in order to account
+     * for the different extent per direction.
+     * @param ratio, if e.g. ratio = [1, 2, 0.75], then the box is
+     * [-1, 1] x [-2, 2] x [-0.75, 0.75]
+     */
+    void setDomainRatio(const std::vector<double>& ratio);
+
+
     /*
      * Functions of IpplParticleBase
      */

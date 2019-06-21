@@ -10,11 +10,11 @@
 #include <cmath>
 
 template <class T, unsigned Dim>
-const Vector_t BoxLibLayout<T, Dim>::lowerBound = - Vector_t(1.0, 1.0, 1.0);
+Vector_t BoxLibLayout<T, Dim>::lowerBound = - Vector_t(1.0, 1.0, 1.0);
 
 
 template <class T, unsigned Dim>
-const Vector_t BoxLibLayout<T, Dim>::upperBound = Vector_t(1.0, 1.0, 1.0);
+Vector_t BoxLibLayout<T, Dim>::upperBound = Vector_t(1.0, 1.0, 1.0);
 
 
 template<class T, unsigned Dim>
@@ -95,6 +95,35 @@ void BoxLibLayout<T, Dim>::setBoundingBox(double dh) {
     int maxGridSize = this->m_ba[0][0].length(0);
 
     this->initBaseBox_m(nGridPoints, maxGridSize, dh);
+}
+
+
+template <class T, unsigned Dim>
+void BoxLibLayout<T, Dim>::setDomainRatio(const std::vector<double>& ratio) {
+
+    static bool isCalled = false;
+
+    if ( isCalled ) {
+        return;
+    }
+
+    isCalled = true;
+
+    if ( ratio.size() != Dim ) {
+        throw OpalException("BoxLibLayout::setDomainRatio() ",
+                            "Length " + std::to_string(ratio.size()) +
+                            " != " + std::to_string(Dim));
+    }
+
+    for (unsigned int i = 0; i < Dim; ++i) {
+        if ( ratio[i] <= 0.0 ) {
+            throw OpalException("BoxLibLayout::setDomainRatio() ",
+                                "The ratio has to be larger than zero.");
+        }
+
+        lowerBound[i] *= ratio[i];
+        upperBound[i] *= ratio[i];
+    }
 }
 
 
@@ -413,7 +442,7 @@ void BoxLibLayout<T, Dim>::buildLevelMask(int lev, const int ncells) {
 
 template <class T, unsigned Dim>
 void BoxLibLayout<T, Dim>::clearLevelMask(int lev) {
-    assert(lev >= (int).masks_m.size());
+    assert(lev < (int)masks_m.size());
     masks_m[lev].reset(nullptr);
 }
 
@@ -749,8 +778,12 @@ void BoxLibLayout<T, Dim>::initBaseBox_m(int nGridPoints,
     // physical box (in meters)
     AmrDomain_t real_box;
     for (int d = 0; d < AMREX_SPACEDIM; ++d) {
-        real_box.setLo(d, lowerBound[d] - dh);
-        real_box.setHi(d, upperBound[d] + dh);
+
+        assert(lowerBound[d] < 0);
+        assert(upperBound[d] > 0);
+
+        real_box.setLo(d, lowerBound[d] * (1.0 + dh));
+        real_box.setHi(d, upperBound[d] * (1.0 + dh));
     }
 
     AmrGeometry_t::ProbDomain(real_box);

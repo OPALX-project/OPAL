@@ -2665,7 +2665,7 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
 
 #ifdef ENABLE_AMR
         if ( !itsDataSink->writeAmrStatistics(itsBunch_m) ) {
-            itsDataSink->memoryDump(itsBunch_m);
+            itsDataSink->noAmrDump(itsBunch_m);
         }
 #endif
 

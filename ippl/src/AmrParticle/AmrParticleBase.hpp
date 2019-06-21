@@ -261,9 +261,14 @@ const double& AmrParticleBase<PLayout>::domainMapping(bool inverse) {
         rmin *= gamma;
         rmax *= gamma;
 
-        Vector_t tmp = Vector_t(std::max( std::abs(rmin[0]), std::abs(rmax[0]) ),
-                                std::max( std::abs(rmin[1]), std::abs(rmax[1]) ),
-                                std::max( std::abs(rmin[2]), std::abs(rmax[2]) )
+        PLayout& layout = this->getLayout();
+
+        const auto& lo = layout.lowerBound;
+        const auto& hi = layout.upperBound;
+
+        Vector_t tmp = Vector_t(std::max( std::abs(rmin[0] / lo[0]), std::abs(rmax[0] / hi[0]) ),
+                                std::max( std::abs(rmin[1] / lo[1]), std::abs(rmax[1] / hi[1]) ),
+                                std::max( std::abs(rmin[2] / lo[2]), std::abs(rmax[2] / hi[2]) )
                                );
         
         scale = std::max( tmp[0], tmp[1] );

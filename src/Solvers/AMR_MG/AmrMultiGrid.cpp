@@ -124,7 +124,7 @@ void AmrMultiGrid::solve(AmrScalarFieldContainer_t &rho,
 
     // write efield to AMReX
     this->computeEfield_m(efield);
-
+    
     // copy solution back
     for (int lev = 0; lev < nlevel_m; ++lev) {
         int ilev = lbase_m + lev;
@@ -224,8 +224,6 @@ void AmrMultiGrid::initLevels_m(const amrex::Vector<AmrField_u>& rho,
     for (int lev = 0; lev < nlevel_m; ++lev) {
         int ilev = lbase_m + lev;
 
-        mglevel_m[lev].reset(nullptr);
-
         mglevel_m[lev].reset(new AmrMultiGridLevel_t(itsAmrObject_mp->getMeshScaling(),
                                                      rho[ilev]->boxArray(),
                                                      rho[ilev]->DistributionMap(),
@@ -248,11 +246,10 @@ void AmrMultiGrid::initLevels_m(const amrex::Vector<AmrField_u>& rho,
             new AmrMultiGridLevel_t::mask_t(ba,
                                             mglevel_m[lev]->dmap, 1, 2)
             );
+        mglevel_m[lev]->crsemask->setVal(AmrMultiGridLevel_t::Refined::NO, 2);
     }
 
     for (int lev = 1; lev < nlevel_m; ++lev) {
-
-        mglevel_m[lev]->crsemask->setVal(AmrMultiGridLevel_t::Refined::NO, 2);
         mglevel_m[lev]->crsemask->setVal(AmrMultiGridLevel_t::Refined::YES, 0);
 
         // used for boundary interpolation --> replaces expensive calls to isBoundary
@@ -445,10 +442,10 @@ void AmrMultiGrid::relax_m(const lo_t& level) {
         if ( level == lbase_m ) {
             /* Anf_p == Awf_p
              */
-            Teuchos::RCP<vector_t> tmp = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p, true) );
-            mglevel_m[level]->Anf_p->apply(*mglevel_m[level]->phi_p, *tmp);
-            mglevel_m[level]->residual_p->update(1.0, *mglevel_m[level]->rho_p, -1.0, *tmp, 0.0);
-
+            Teuchos::RCP<vector_t> Ax = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p, true) );
+            mglevel_m[level]->Anf_p->apply(*mglevel_m[level]->phi_p, *Ax);
+            mglevel_m[level]->residual_p->update(1.0, *mglevel_m[level]->rho_p, -1.0, *Ax, 0.0);
+            
         } else {
             this->residual_no_fine_m(level,
                                      mglevel_m[level]->residual_p,
@@ -652,6 +649,7 @@ void AmrMultiGrid::computeEfield_m(AmrVectorFieldContainer_t& efield) {
 
         for (int d = 0; d < AMREX_SPACEDIM; ++d) {
             efield[ilev][d]->setVal(0.0, efield[ilev][d]->nGrow());
+            efield_p->putScalar(0.0);
             mglevel_m[lev]->G_p[d]->apply(*mglevel_m[lev]->phi_p, *efield_p);
             this->trilinos2amrex_m(lev, 0, *efield[ilev][d], efield_p);
         }
@@ -1704,6 +1702,13 @@ void AmrMultiGrid::map2vector_m(umap_t& map, indices_t& indices,
     std::for_each(map.begin(), map.end(),
                   [&](const std::pair<const go_t, scalar_t>& entry)
                   {
+#ifndef NDEBUG
+                      if ( entry.first < 0 ) {
+                          throw OpalException("AmrMultiGrid::map2vector_m()",
+                                              "Negative matrix index!");
+                      }
+#endif
+
                       indices.push_back(entry.first);
                       values.push_back(entry.second);
                   }

@@ -159,7 +159,14 @@ public:
      * frame for a certain direction
      */
     const scalar_t& invCellSize(lo_t dir) const;
-    
+
+    /*!
+     * Check if a cell on that level is valid
+     * @param iv is the cell
+     * @returns true if the cell is valid
+     */
+    bool isValid(const AmrIntVect_t& iv) const;
+
 private:
     /*!
      * Build a mask specifying if a grid point is covered,

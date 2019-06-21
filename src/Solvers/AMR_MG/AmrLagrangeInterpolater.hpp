@@ -11,14 +11,22 @@ constexpr typename AmrLagrangeInterpolater<Level>::lpattern_t
     AmrLagrangeInterpolater<Level>::lpattern_ms;
 #endif
 
-//                                                      y_t   y_b
+//                                                      y_b   y_t
 template <class Level>
 const typename AmrLagrangeInterpolater<Level>::scalar_t
-    AmrLagrangeInterpolater<Level>::lookup1_ms[2] = {-0.25, 0.25};
+    AmrLagrangeInterpolater<Level>::lookup1a_ms[2] = {0.25, -0.25};
 
 template <class Level>
 const typename AmrLagrangeInterpolater<Level>::scalar_t
-    AmrLagrangeInterpolater<Level>::lookup2_ms[2] = {1.25, 0.75};
+    AmrLagrangeInterpolater<Level>::lookup2a_ms[2] = {0.75, 1.25};
+
+template <class Level>
+const typename AmrLagrangeInterpolater<Level>::scalar_t
+    AmrLagrangeInterpolater<Level>::lookup1b_ms[2] = {-0.25, 0.25};
+
+template <class Level>
+const typename AmrLagrangeInterpolater<Level>::scalar_t
+    AmrLagrangeInterpolater<Level>::lookup2b_ms[2] = {1.25, 0.75};
 
 #if AMREX_SPACEDIM == 3
 template <class Level>
@@ -188,15 +196,15 @@ void AmrLagrangeInterpolater<Level>::crseLinear_m(
     // factor for fine
     scalar_t fac = 8.0 / 15.0 * scale;
     
-    if ( rfab(niv) != Level::Refined::YES ) {
+    if ( mglevel->isValid(niv) && rfab(niv) != Level::Refined::YES ) {
         // check r / u / b --> 1: valid; 0: not valid
-        map[mglevel->serialize(iv)] += fac * lookup2_ms[top];
-        map[mglevel->serialize(niv)] += fac * lookup1_ms[top];
+        map[mglevel->serialize(iv)] += fac * lookup2a_ms[top];
+        map[mglevel->serialize(niv)] += fac * lookup1a_ms[top];
         
-    } else if ( rfab(miv) != Level::Refined::YES ) {
+    } else if ( mglevel->isValid(miv) && rfab(miv) != Level::Refined::YES ) {
         // check l / f --> 1: valid; 0: not valid
-        map[mglevel->serialize(iv)] += fac * lookup2_ms[top];
-        map[mglevel->serialize(miv)] += fac * lookup1_ms[top];
+        map[mglevel->serialize(iv)] += fac * lookup2a_ms[top];
+        map[mglevel->serialize(miv)] += fac * lookup1a_ms[top];
         
     } else
         throw OpalException("AmrLagrangeInterpolater::crseLinear_m()",
@@ -236,8 +244,8 @@ void AmrLagrangeInterpolater<Level>::crseLinear_m(
         for (int j = -1; j < 2; ++j) {
             
             tmp[d2] += j;
-            
-            area[bit] = rfab(tmp);
+            // make use of "short-circuit evaluation"
+            area[bit] = ( mglevel->isValid(tmp) && rfab(tmp) );
             ++bit;
             
             // undo
@@ -271,13 +279,13 @@ void AmrLagrangeInterpolater<Level>::crseLinear_m(
         case this->lpattern_ms[0]:
         {
             // corner top right pattern
-            L[0] = lookup1_ms[top1]; // L_{-1}
-            L[1] = lookup2_ms[top1]; // L_{0}
+            L[0] = lookup1a_ms[top1]; // L_{-1}
+            L[1] = lookup2a_ms[top1]; // L_{0}
             begin[0] = -1;
             end[0]   =  0;
             
-            K[0] = lookup1_ms[top2]; // K_{-1}
-            K[1] = lookup2_ms[top2]; // K_{0}
+            K[0] = lookup1a_ms[top2]; // K_{-1}
+            K[1] = lookup2a_ms[top2]; // K_{0}
             begin[1] = -1;
             end[1]   =  0;
             break;
@@ -285,13 +293,13 @@ void AmrLagrangeInterpolater<Level>::crseLinear_m(
         case this->lpattern_ms[1]:
         {
             // corner bottom right pattern
-            L[0] = lookup2_ms[top1]; // L_{0}
-            L[1] = lookup1_ms[top1]; // L_{1}
+            L[0] = lookup2b_ms[top1]; // L_{0}
+            L[1] = lookup1b_ms[top1]; // L_{1}
             begin[0] = 0;
             end[0]   = 1;
             
-            K[0] = lookup1_ms[top2]; // K_{-1}
-            K[1] = lookup2_ms[top2]; // K_{0}
+            K[0] = lookup1a_ms[top2]; // K_{-1}
+            K[1] = lookup2a_ms[top2]; // K_{0}
             begin[1] = -1;
             end[1]   =  0;
             break;
@@ -299,13 +307,13 @@ void AmrLagrangeInterpolater<Level>::crseLinear_m(
         case this->lpattern_ms[2]:
         {
             // corner bottom left pattern
-            L[0] = lookup2_ms[top1]; // L_{0}
-            L[1] = lookup1_ms[top1]; // L_{1}
+            L[0] = lookup2b_ms[top1]; // L_{0}
+            L[1] = lookup1b_ms[top1]; // L_{1}
             begin[0] = 0;
             end[0]   = 1;
             
-            K[0] = lookup2_ms[top2]; // K_{0}
-            K[1] = lookup1_ms[top2]; // K_{1}
+            K[0] = lookup2b_ms[top2]; // K_{0}
+            K[1] = lookup1b_ms[top2]; // K_{1}
             begin[1] = 0;
             end[1]   = 1;
             break;
@@ -313,13 +321,13 @@ void AmrLagrangeInterpolater<Level>::crseLinear_m(
         case this->lpattern_ms[3]:
         {
             // corner top left pattern
-            L[0] = lookup1_ms[top1]; // L_{-1}
-            L[1] = lookup2_ms[top1]; // L_{0}
+            L[0] = lookup1a_ms[top1]; // L_{-1}
+            L[1] = lookup2a_ms[top1]; // L_{0}
             begin[0] = -1;
             end[0]   =  0;
             
-            K[0] = lookup2_ms[top2]; // K_{0}
-            K[1] = lookup1_ms[top2]; // K_{1}
+            K[0] = lookup2b_ms[top2]; // K_{0}
+            K[1] = lookup1b_ms[top2]; // K_{1}
             begin[1] = 0;
             end[1]   = 1;
             break;
@@ -515,7 +523,7 @@ void AmrLagrangeInterpolater<Level>::crseQuadratic_m(
             
             tmp[d2] += j;
             
-            area[bit] = rfab(tmp);
+            area[bit] = ( mglevel->isValid(tmp) && rfab(tmp) );
             ++bit;
             
             // undo

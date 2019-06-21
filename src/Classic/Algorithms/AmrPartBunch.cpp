@@ -199,6 +199,11 @@ void AmrPartBunch::computeSelfFields_cycl(int bin) {
 }
 
 
+void AmrPartBunch::setAmrDomainRatio(const std::vector<double>& ratio) {
+    AmrLayout_t* layout_p = &amrpbase_mp->getAmrLayout();
+    layout_p->setDomainRatio(ratio);
+}
+
 void AmrPartBunch::gatherLevelStatistics() {
     int nLevel = amrobj_mp->maxLevel() + 1;
     
