@@ -18,12 +18,17 @@
 
 class SDDSDataRow {
 public:
-    SDDSDataRow(const std::vector<std::string>& cN):
-        columnNames_m(cN)
+    SDDSDataRow(const std::vector<std::string>& cN, bool header):
+        columnNames_m(cN),
+        header_m(header),
+        indent_m("        ")
     { }
 
     template<typename T>
     void addColumn(const std::string& name,
+                   const std::string& type,
+                   const std::string& unit,
+                   const std::string& desc,
                    const T& value);
 
     std::ostream& write(std::ostream &os) const;
@@ -34,9 +39,16 @@ private:
                            long unsigned int,
                            char,
                            std::string> variant_t;
+    
+    typedef std::tuple<std::string,
+                       std::string,
+                       std::string> info_t;
 
     std::vector<std::string> columnNames_m;
     std::map<std::string, variant_t> columnValues_m;
+    std::map<std::string, info_t>    columnInfo_m;
+    bool header_m;
+    std::string indent_m;
 };
 
 class SDDSWriter {
@@ -73,6 +85,8 @@ public:
 
 
     bool exists();
+    
+    bool isModeOut();
 
 protected:
 
@@ -125,12 +139,12 @@ protected:
      */
     std::ios_base::openmode mode_m;
 
-
-private:
-
     void writeDescription_m();
 
     void writeParameters_m();
+
+private:
+
 
     void writeColumns_m();
 
@@ -156,6 +170,11 @@ bool SDDSWriter::exists() {
     return boost::filesystem::exists(fname_m);
 }
 
+
+inline
+bool SDDSWriter::isModeOut() {
+    return (mode_m == std::ios::out);
+}
 
 template<typename T>
 void SDDSWriter::writeValue(const T& value) {
@@ -221,15 +240,42 @@ void SDDSWriter::addColumn(const std::string& name,
 
 template<typename T>
 void SDDSDataRow::addColumn(const std::string& name,
+                            const std::string& type,
+                            const std::string& unit,
+                            const std::string& desc,
                             const T& value) {
     if (columnValues_m.find(name) != columnValues_m.end()) return;
 
     variant_t var = value;
     columnValues_m.insert(std::make_pair(name, var));
+    
+    if ( header_m )
+        columnInfo_m.insert(std::make_pair(name, std::make_tuple(type, unit, desc)));
 }
 
 inline
 std::ostream& SDDSDataRow::write(std::ostream& os) const {
+    if (!columnInfo_m.empty()) {
+        int column = 1;
+        for (const auto name: columnNames_m) {
+            auto it = columnInfo_m.find(name);
+            if (it == columnInfo_m.end()) {
+                throw OpalException("SDDSDataRow::write",
+                                    "info for column '" + name + "' not provided");
+            }
+            os << "&column\n"
+               << indent_m << "name=" << name << ",\n"
+               << indent_m << "type=" << std::get<0>(it->second) << ",\n"
+               << indent_m << "units=" << std::get<1>(it->second) << ",\n"
+               << indent_m << "description=\"" << column++ << " " << std::get<2>(it->second) << "\"\n"
+               << "&end\n";
+        }
+        os << "&data\n"
+           << indent_m << "mode=ascii" << ",\n"
+           << indent_m << "no_row_counts=1" << "\n"
+           << "&end";
+    }
+
     for (const auto name: columnNames_m) {
         auto it = columnValues_m.find(name);
         if (it == columnValues_m.end()) {

@@ -104,6 +104,12 @@ void SDDSWriter::open() {
     if ( Ippl::myNode() != 0 || os_m.is_open() )
         return;
 
+    static bool isFirst = true;
+    if ( isFirst ) {
+        isFirst = false;
+        mode_m = std::ios::app;
+    }
+
     os_m.open(fname_m.c_str(), mode_m);
     os_m.precision(15);
     os_m.setf(std::ios::scientific, std::ios::floatfield);
