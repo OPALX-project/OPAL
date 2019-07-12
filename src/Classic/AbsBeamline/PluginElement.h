@@ -69,14 +69,26 @@ public:
 protected:
     /// Sets geometry geom_m with element width dist
     void setGeom(const double dist);
+    /// Change probe width depending on step size and angle of particle
+    void changeWidth(PartBunchBase<double, 3> *bunch, const double tstep);
+    /// Calculate angle of particle/bunch wrt to element
+    double calculateIncidentAngle(double xp, double yp) const;
 
 private:
+    /// Check if bunch is close to element
+    bool preCheck(PartBunchBase<double, 3> *bunch) {return doPreCheck(bunch);}
+    /// Finalise call after check
+    bool finaliseCheck(PartBunchBase<double, 3> *bunch, bool flagNeedUpdate) {return doFinaliseCheck(bunch, flagNeedUpdate);}
     /// Pure virtual hook for initialise
-    virtual void doInitialise(PartBunchBase<double, 3> *bunch) {};
+    virtual void doInitialise(PartBunchBase<double, 3> *bunch) {}
     /// Pure virtual hook for check
     virtual bool doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double tstep) = 0;
     /// Virtual hook for setGeom
     virtual void doSetGeom() {};
+    /// Virtual hook for preCheck
+    virtual bool doPreCheck(PartBunchBase<double, 3>*) {return true;}
+    /// Virtual hook for finaliseCheck
+    virtual bool doFinaliseCheck(PartBunchBase<double, 3> *, bool flagNeedUpdate) {return flagNeedUpdate;}
     /// Virtual hook for finalise
     virtual void doFinalise() {};
     /// Virtual hook for goOffline
@@ -94,6 +106,7 @@ protected:
     double rstart_m;
     double rend_m;
     ///@}
+    double rmin_m;    ///< radius closest to the origin
     Point  geom_m[5]; ///< actual geometry positions with adaptive width such that each particle hits element once per turn
     double A_m, B_m, R_m, C_m; ///< Geometric lengths used in calculations
 

@@ -26,8 +26,6 @@
 
 #include "Steppers/Steppers.h"
 
-#include "Structure/MultiBunchDump.h"
-
 class DataSink;
 
 template <class T, unsigned Dim>
@@ -242,8 +240,6 @@ private:
     Beamline *itsBeamline;
 
     DataSink *itsDataSink;
-
-    std::unique_ptr<MultiBunchDump> itsMBDump_m;
 
     BoundaryGeometry *bgf_m;
 
@@ -464,9 +460,6 @@ private:
     void singleParticleDump();
 
     void bunchDumpStatData();
-
-    // @param azimuth (global) [deg] of dump
-    void bunchDumpStatDataPerBunch(const double& azimuth);
 
     void bunchDumpPhaseSpaceData();
 

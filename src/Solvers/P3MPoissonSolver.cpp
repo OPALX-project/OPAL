@@ -459,7 +459,7 @@ void P3MPoissonSolver::test(PartBunchBase<double, 3> *bunch) {
 
         if (it%10 == 0){
             bunch->calcBeamParameters();
-            ds->writeStatData(bunch, FDext, it);
+            ds->dumpSDDS(bunch, FDext, it);
         }
         msg << "Finished iteration " << it << endl;
     }

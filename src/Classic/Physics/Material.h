@@ -80,7 +80,6 @@ namespace Physics {
 
     inline
     double Material::getStoppingPowerFitCoefficients(Material::FitCoeffs n) const {
-        if (n >= 4) return 0.0;
         return stoppingPowerFitCoefficients_m[n];
     }
 

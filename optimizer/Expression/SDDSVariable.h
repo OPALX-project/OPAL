@@ -14,23 +14,39 @@
 
 
 /**
- *  A simple expression to get SDDS (filename = third value) value near a
- *  specific spos (second argument) for a variable (name = first argument).
+ *  A simple expression to get SDDS (filename) value near a
+ *  specific position (ref_val, default: spos) of a reference
+ *  variable (ref_name) for a variable (var_name). Possible
+ *  argument orders:
+ *      args = [var_name, ref_val, filename]
+ *      args = [var_name, ref_name, ref_val, filename]
  */
 struct SDDSVariable {
 
     static const std::string name;
 
     Expressions::Result_t operator()(client::function::arguments_t args) {
-
-        if (args.size() != 3) {
-            throw OptPilotException("SDDSVariable::operator()",
-                                    "sddsVariableAt expects 3 arguments, " + std::to_string(args.size()) + " given");
+        switch ( args.size() ) {
+            case 3: {
+                var_name_      = boost::get<std::string>(args[0]);
+                ref_name_      = "s";
+                ref_val_       = boost::get<double>(args[1]);
+                stat_filename_ = boost::get<std::string>(args[2]);
+                break;
+            }
+            case 4: {
+                var_name_      = boost::get<std::string>(args[0]);
+                ref_name_      = boost::get<std::string>(args[1]);
+                ref_val_       = boost::get<double>(args[2]);
+                stat_filename_ = boost::get<std::string>(args[3]);
+                break;
+            }
+            default: {
+                throw OptPilotException("SDDSVariable::operator()",
+                                        "sddsVariableAt expects 3 or 4 arguments, " +
+                                        std::to_string(args.size()) + " given");
+            }
         }
-
-        var_name_      = boost::get<std::string>(args[0]);
-        spos_          = boost::get<double>(args[1]);
-        stat_filename_ = boost::get<std::string>(args[2]);
 
         bool is_valid = true;
 
@@ -44,7 +60,7 @@ struct SDDSVariable {
 
         double sim_value = 0.0;
         try {
-            sim_stats->getInterpolatedValue(spos_, var_name_, sim_value);
+            sim_stats->getInterpolatedValue(ref_name_, ref_val_, var_name_, sim_value);
         } catch(SDDSParserException &e) {
             std::cout << "Exception while getting value "
                       << "from SDDS file: " << e.what()
@@ -64,12 +80,17 @@ private:
 
     std::string var_name_;
     std::string stat_filename_;
-    double spos_;
+    std::string ref_name_;
+    double ref_val_;
 };
 
 /**
  *  A simple expression to get value from stat file near a
- *  specific spos (second argument) for a variable (name = first argument).
+ *  specific position (ref_val, default: spos) of a reference
+ *  variable (ref_var) for a variable (var_name). Possible
+ *  argument orders:
+ *      args = [var_name, ref_val]
+ *      args = [var_name, ref_name, ref_val]
  */
 
 struct sameSDDSVariable {
@@ -84,12 +105,14 @@ struct sameSDDSVariable {
     }
 
     Expressions::Result_t operator()(client::function::arguments_t args) {
-        if (args.size() != 2) {
+        if (args.size() < 2 || args.size() > 3) {
             throw OptPilotException("sameSDDSVariable::operator()",
-                                    "statVariableAt expects 2 arguments, " + std::to_string(args.size()) + " given");
+                                    "statVariableAt expects 2 or 3 arguments, " +
+                                    std::to_string(args.size()) + " given");
         }
 
         args.push_back(stat_filename_);
+
         return var_(args);
     }
 

@@ -62,7 +62,6 @@ private:
     void setupSliceTracker();
     void setupTTracker();
     void setupCyclotronTracker();
-    void setupStatisticalErrors(const std::string & method);
     void setupThickTracker();
     void setupFieldsolver();
 

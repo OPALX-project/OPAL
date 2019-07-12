@@ -585,12 +585,12 @@ void ThickTracker::dump_m() {
 
 
     if ( psDump ) {
-        itsDataSink_m->writePhaseSpace(itsBunch_m, FDext);
+        itsDataSink_m->dumpH5(itsBunch_m, FDext);
     }
 
     if ( statDump ) {
         std::vector<std::pair<std::string, unsigned int> > collimatorLosses;
-        itsDataSink_m->writeStatData(itsBunch_m, FDext, collimatorLosses);
+        itsDataSink_m->dumpSDDS(itsBunch_m, FDext, collimatorLosses);
     }
 }
 

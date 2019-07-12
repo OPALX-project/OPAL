@@ -1,16 +1,15 @@
 #ifndef OPAL_MULTI_BUNCH_DUMP_H
 #define OPAL_MULTI_BUNCH_DUMP_H
 
-#include <string>
-#include <fstream>
+#include "SDDSWriter.h"
 
-class MultiBunchDump {
+class MultiBunchDump : public SDDSWriter {
 
 public:
     struct beaminfo_t {
         double time;
         double azimuth;
-        unsigned int nParticles;
+        long unsigned int nParticles;
         double ekin;
         double dEkin;
         double rrms[3];
@@ -21,23 +20,23 @@ public:
     };
 
 public:
-    MultiBunchDump();
+    MultiBunchDump(const std::string& fname, bool restart,
+                   const short& bunch);
 
-    void writeHeader(const std::string& fname) const;
+    void fillHeader();
 
-    void writeData(const beaminfo_t& binfo, short bunch);
+    using SDDSWriter::write;
+    void write(PartBunchBase<double, 3>* beam, const double& azimuth);
 
-private:
-    void open_m(std::ofstream& out, const std::string& fname) const;
-
-    void close_m(std::ofstream& out) const;
-
-    // in non-restart mode we delete all *.smb files initially
-    void remove_m() const;
+    bool calcBunchBeamParameters(PartBunchBase<double, 3>* beam);
 
 private:
-    std::string fbase_m;
-    std::string fext_m;
+    bool isFirst_m;
+
+    // the bunch number
+    short bunch_m;
+
+    beaminfo_t binfo_m;
 };
 
 #endif

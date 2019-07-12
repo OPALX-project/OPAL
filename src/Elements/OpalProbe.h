@@ -53,7 +53,7 @@ public:
     /// Fill in all registered attributes.
     virtual void fillRegisteredAttributes(const ElementBase &, ValueFlag);
 
-    /// Update the embedded CLASSIC septum.
+    /// Update the embedded CLASSIC probe.
     virtual void update();
 
 private:

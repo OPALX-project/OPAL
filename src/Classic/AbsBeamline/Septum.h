@@ -38,6 +38,8 @@ private:
     virtual void doInitialise(PartBunchBase<double, 3> *bunch) override;
     /// Record hits when bunch particles pass
     virtual bool doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double tstep) override;
+    /// Virtual hook for preCheck
+    virtual bool doPreCheck(PartBunchBase<double, 3>*) override;
 
     ///@{ input geometry positions
     double width_m;

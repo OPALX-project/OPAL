@@ -142,9 +142,12 @@ int main(int argc, char *argv[]) {
     hmsg << mySpace <<  "  \\____/|_| /_/    \\_\\______|" << endl;
 
 
+    std::string gitRevision = "git rev. " + Util::getGitRevision();
+    std::string copyRight = "(c) PSI, http://amas.web.psi.ch";
     *gmsg << endl
-          << "This is OPAL (Object Oriented Parallel Accelerator Library) Version " << OPAL_PROJECT_VERSION << "\n\n"
-          << "                (c) PSI, http://amas.web.psi.ch" << endl
+          << "This is OPAL (Object Oriented Parallel Accelerator Library) Version " << OPAL_PROJECT_VERSION << "\n"
+          << std::setw(37 + gitRevision.length() / 2) << std::right << gitRevision << "\n\n" << endl
+          << std::setw(37 + copyRight.length() / 2) << std::right << copyRight << "\n\n" << endl
           << "The optimiser (former opt-Pilot) is integrated " << endl
           << endl;
 
@@ -411,7 +414,7 @@ int main(int argc, char *argv[]) {
         delete Ippl::Warn;
         delete Ippl::Error;
         delete Ippl::Debug;
-        
+
         return 0;
 
     } catch(OpalException &ex) {
@@ -520,6 +523,6 @@ int main(int argc, char *argv[]) {
 
         MPI_Abort(MPI_COMM_WORLD, -100);
     }
-    
+
     return 1;
 }

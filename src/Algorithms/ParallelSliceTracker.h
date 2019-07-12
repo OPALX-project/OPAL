@@ -331,14 +331,12 @@ inline void ParallelSliceTracker::writePhaseSpace(const long long step, const do
 
     if(step % Options::psDumpFreq == 0) {
         //itsDataSink->stashPhaseSpaceEnvelope(*itsBunch_m, FDext, rmax(2), sposRef, rmin(2));
-        itsDataSink_m->writePhaseSpaceEnvelope(*itsBunch_m, FDext,
-                                             rmax(2), sposRef, rmin(2));
+        itsDataSink_m->dumpH5(*itsBunch_m, FDext, rmax(2), sposRef, rmin(2));
         msg     << *itsBunch_m << endl;
     }
 
     if(step % Options::statDumpFreq == 0) {
-        itsDataSink_m->writeStatData(*itsBunch_m, FDext,
-                                   rmax(2), sposRef, rmin(2));
+        itsDataSink_m->dumpSDDS(*itsBunch_m, FDext, rmax(2), sposRef, rmin(2));
     }
 }
 
@@ -362,7 +360,7 @@ inline void ParallelSliceTracker::writeLastStepPhaseSpace(const long long step, 
             FDext[2*k+1] = externalE * 1e-6;
         }
 
-        itsDataSink_m->writeStatData(*itsBunch_m, FDext, rmax(2), sposRef, rmin(2));
+        itsDataSink_m->dumpSDDS(*itsBunch_m, FDext, rmax(2), sposRef, rmin(2));
     } else
         INFOMSG("* Invalid bunch! No statistics dumped." << endl);
 }

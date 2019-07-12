@@ -143,6 +143,7 @@ private:
     void deleteParticleFromLocalVector();
 
     void calcStat(double Eng);
+    void gatherStatistics();
 
     void push();
     void resetTimeStep();
@@ -190,19 +191,19 @@ private:
 
     bool enableRutherford_m;
 #ifdef OPAL_DKS
-    DKSOPAL dksbase;
-    int curandInitSet;
+    DKSOPAL dksbase_m;
+    int curandInitSet_m;
 
-    int ierr;
-    int maxparticles;
-    int numparticles;
-    int numlocalparts;
+    int ierr_m;
+    int maxparticles_m;
+    int numparticles_m;
+    int numlocalparts_m;
     void *par_ptr;
     void *mem_ptr;
 
     std::vector<PART_DKS> dksParts_m;
 
-    static const int numpar;
+    static const int numpar_m;
 #endif
 
     IpplTimings::TimerRef DegraderApplyTimer_m;

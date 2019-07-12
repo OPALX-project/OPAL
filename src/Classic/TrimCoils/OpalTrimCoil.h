@@ -17,7 +17,6 @@ class TrimCoil;
 class OpalTrimCoil: public Definition {
 
 public:
-
     /// Exemplar constructor.
     OpalTrimCoil();
 
@@ -40,6 +39,7 @@ public:
     virtual void update();
 
     /// Print method, called at initialisation
+    using Definition::print;
     Inform& print(Inform& os) const;
 
     /// Initialise implementation

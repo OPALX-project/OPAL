@@ -1,44 +1,61 @@
 #
-# Find GSL includes and library
+# Find GSL includes and libraries
 #
-# FindGSL() shipped with CMake is somehow broken in newer versions (>= 3.9,
-# maybe also 3.7 and 3.8). It works only if GSL_ROOT_DIR is set. Hints do
-# not work.
+# The FindGSL module shipped with CMake has some drawbacks. To be 
+# able to find GSL, the CMake variable GSL_ROOT_DIR *must* be set.
+# The environment variable C_INCLUDE_PATH and LIBRARY_PATH are
+# *not* taken into account.
 #
-# :FIXME: For the time being we use our own version.
+# The following variables will be set if GSL is found:
 #
-# GSL_INCLUDE_DIR - where to find ippl.h
-# GSL_LIBRARY     - GSL library to link against.
-# GSL_CBLAS_LIBRARY - GSL CBlas library to link against
-# GSL_FOUND       - do not attempt to use if "no" or undefined.
+# GSL_INCLUDE_DIR	where to find GSL include files
+# GSL_LIBRARY		GSL library to link against.
+# GSL_CBLAS_LIBRARY 	GSL CBlas library to link against
+# GSL_LIBRARIES		GSL libraries required for linking
+# GSL_FOUND		set to True if GSL was found
+#
 
-FIND_PATH (GSL_INCLUDE_DIR gsl/gsl_fft.h
-    HINTS $ENV{GSL_ROOT_DIR}/include $ENV{GSL_INCLUDE_PATH} $ENV{GSL_INCLUDE_DIR} $ENV{GSL_PREFIX}/include $ENV{GSL_DIR}/include $ENV{GSL}/include
-    PATHS ENV C_INCLUDE_PATH
-)
+if( DEFINED ENV{GSL_ROOT_DIR} )
+  set( GSL_ROOT_DIR $ENV{GSL_ROOT_DIR} )
+elseif( DEFINED ENV{GSL_DIR} )
+  set( GSL_ROOT_DIR $ENV{GSL_DIR} )
+elseif( DEFINED ENV{GSL_HOME} )
+  set( GSL_ROOT_DIR $ENV{GSL_HOME} )
+elseif( DEFINED ENV{GSL_PREFIX} )
+  set( GSL_ROOT_DIR $ENV{GSL_PREFIX} )
+elseif( DEFINED ENV{GSL} )
+  set( GSL_ROOT_DIR $ENV{GSL} )
+else()
+  set( GSL_ROOT_DIR "/usr" )
+endif()
 
+find_path( GSL_INCLUDE_DIR gsl/gsl_fft.h
+  HINTS ${GSL_ROOT_DIR}/include $ENV{GSL_INCLUDE_PATH} $ENV{GSL_INCLUDE_DIR}
+  PATHS ENV C_INCLUDE_PATH
+  )
 
-FIND_LIBRARY (GSL_LIBRARY gsl
-    HINTS $ENV{GSL_ROOT_DIR}/lib $ENV{GSL_LIBRARY_PATH} $ENV{GSL_LIBRARY_DIR} $ENV{GSL_PREFIX}/lib $ENV{GSL_DIR}/lib $ENV{GSL}/lib
-    PATHS ENV LIBRARY_PATH
-)
+find_library( GSL_LIBRARY gsl
+  HINTS ${GSL_ROOT_DIR}/lib $ENV{GSL_LIBRARY_PATH} $ENV{GSL_LIBRARY_DIR}
+  PATHS ENV LIBRARY_PATH
+  )
 
-FIND_LIBRARY (GSL_CBLAS_LIBRARY gslcblas
-    HINTS $ENV{GSL_ROOT_DIR}/lib $ENV{GSL_LIBRARY_PATH} $ENV{GSL_LIBRARY_DIR} $ENV{GSL_PREFIX}/lib $ENV{GSL_DIR}/lib $ENV{GSL}/lib
-    PATHS ENV LIBRARY_PATH
-)
+find_library (GSL_CBLAS_LIBRARY gslcblas
+  HINTS ${GSL_ROOT_DIR}/lib $ENV{GSL_LIBRARY_PATH} $ENV{GSL_LIBRARY_DIR}
+  PATHS ENV LIBRARY_PATH
+  )
 
-IF (GSL_INCLUDE_DIR AND GSL_LIBRARY AND GSL_CBLAS_LIBRARY)
-    SET( GSL_FOUND "YES" )
-ENDIF()
+if( GSL_INCLUDE_DIR AND GSL_LIBRARY AND GSL_CBLAS_LIBRARY)
+  set( GSL_FOUND "YES" )
+  set( GSL_LIBRARIES ${GSL_LIBRARY},${GSL_CBLAS_LIBRARY} )
+endif()
 
-IF (GSL_FOUND)
-   IF (NOT GSL_FIND_QUIETLY)
-      MESSAGE(STATUS "Found GSL libraries: ${GSL_LIBRARY}")
-      MESSAGE(STATUS "Found GSL include dir: ${GSL_INCLUDE_DIR}")
-   ENDIF (NOT GSL_FIND_QUIETLY)
-ELSE ()
-   IF (GSL_FIND_REQUIRED)
-      MESSAGE(FATAL_ERROR "Could not find GSL!")
-   ENDIF ()
-ENDIF ()
+if( GSL_FOUND )
+  if( NOT GSL_FIND_QUIETLY )
+    message( STATUS "Found GSL libraries: ${GSL_LIBRARY}")
+    message( STATUS "Found GSL include dir: ${GSL_INCLUDE_DIR}")
+  endif()
+else()
+  if( GSL_FIND_REQUIRED )
+    message( FATAL_ERROR "Could not find GSL!" )
+  endif()
+endif()

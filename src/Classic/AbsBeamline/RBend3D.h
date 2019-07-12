@@ -100,7 +100,7 @@ public:
 
     MeshData getSurfaceMesh() const;
 
-    virtual double getExitAngle() const;
+    virtual double getExitAngle() const override;
 private:
     double trackRefParticleThrough(double dt, bool print = false);
 

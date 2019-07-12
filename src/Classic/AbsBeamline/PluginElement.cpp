@@ -95,6 +95,17 @@ void PluginElement::setDimensions(double xstart, double xend, double ystart, dou
     B_m = xstart_m - xend_m;
     R_m = std::sqrt(A_m*A_m+B_m*B_m);
     C_m = ystart_m*xend_m - xstart_m*yend_m;
+
+    // element equation: A*X + B*Y + C = 0
+    // point closest to origin https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line
+    double x_close = 0.0;
+    if (R_m > 0.0)
+        x_close = - A_m * C_m / (R_m * R_m);
+
+    if (x_close > std::min(xstart_m, xend_m) && x_close < std::max(xstart_m, xend_m) )
+        rmin_m  = std::abs(C_m) / std::hypot(A_m,B_m);
+    else
+        rmin_m = rstart_m;
 }
 
 void PluginElement::setGeom(const double dist) {
@@ -126,6 +137,49 @@ void PluginElement::setGeom(const double dist) {
     doSetGeom();
 }
 
+void PluginElement::changeWidth(PartBunchBase<double, 3> *bunch, const double tstep) {
+
+    Vector_t meanP(0.0, 0.0, 0.0);
+    for(unsigned int i = 0; i < bunch->getLocalNum(); ++i) {
+        for(int d = 0; d < 3; ++d) {
+            meanP(d) += bunch->P[i](d);
+        }
+    }
+    reduce(meanP, meanP, OpAddAssign());
+    meanP = meanP / Vector_t(bunch->getTotalNum());
+
+    double stangle = calculateIncidentAngle(meanP(0), meanP(1));
+    constexpr double c_mmtns = Physics::c * 1.0e-6; // m/s --> mm/ns
+    double lstep   = euclidean_norm(meanP) / Util::getGamma(meanP) * c_mmtns * tstep; // [mm]
+    double sWidth  = lstep / sqrt( 1 + 1/stangle/stangle );
+    setGeom(sWidth);
+}
+
+double PluginElement::calculateIncidentAngle(double xp, double yp) const {
+    double k1, k2, tangle = 0.0;
+    if ( B_m == 0.0 && xp == 0.0) {
+        // width is 0.0, keep non-zero
+        tangle = 0.1;
+    } else if ( B_m == 0.0 ){
+        k1 = yp / xp;
+        if (k1 == 0.0)
+            tangle = 1.0e12;
+        else
+            tangle = std::abs(1 / k1);
+    } else if ( xp == 0.0 ) {
+        k2 = - A_m/B_m;
+        if ( k2 == 0.0 )
+            tangle = 1.0e12;
+        else
+            tangle = std::abs(1 / k2);
+    } else {
+        k1 = yp / xp;
+        k2 = - A_m / B_m;
+        tangle = std::abs(( k1-k2 ) / (1 + k1*k2));
+    }
+    return tangle;
+}
+
 double PluginElement::getXStart() const {
     return xstart_m;
 }
@@ -144,7 +198,15 @@ double PluginElement::getYEnd() const {
 
 bool PluginElement::check(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double tstep) {
     bool flag = false;
-    flag = doCheck(bunch, turnnumber, t, tstep); // virtual hook
+    // check if bunch close
+    bool bunchClose = preCheck(bunch);
+
+    if (bunchClose == true) {
+        flag = doCheck(bunch, turnnumber, t, tstep); // virtual hook
+    }
+    // finalise, can have reduce
+    flag = finaliseCheck(bunch, flag);
+
     return flag;
 }
 
@@ -156,8 +218,8 @@ void PluginElement::getDimensions(double &zBegin, double &zEnd) const {
 int PluginElement::checkPoint(const double &x, const double &y) const {
     int    cn = 0;
     for(int i = 0; i < 4; i++) {
-        if(((geom_m[i].y <= y) && (geom_m[i+1].y > y))
-           || ((geom_m[i].y > y) && (geom_m[i+1].y <= y))) {
+        if((   (geom_m[i].y <= y) && (geom_m[i+1].y >  y))
+           || ((geom_m[i].y >  y) && (geom_m[i+1].y <= y))) {
 
             float vt = (float)(y - geom_m[i].y) / (geom_m[i+1].y - geom_m[i].y);
             if(x < geom_m[i].x + vt * (geom_m[i+1].x - geom_m[i].x))

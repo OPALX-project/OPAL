@@ -89,6 +89,67 @@ namespace SDDS {
 
 
         /**
+         *  Converts the string value of a parameter to a value
+         *  of type T.
+         *
+         *  @param ref_name reference quantity (e.g. spos)
+         *  @param ref_val interpolate value of reference quantity (e.g. spos)
+         *  @param col_name parameter name
+         *  @param nval store result of type T in nval
+         */
+        template <typename T>
+        void getInterpolatedValue(std::string ref_name, double ref_val,
+                                  std::string col_name, T& nval) {
+            T value_before = 0;
+            T value_after  = 0;
+            double value_before_ref = 0;
+            double value_after_ref  = 0;
+
+
+            size_t col_idx_ref = getColumnIndex(ref_name);
+            ast::columnData_t &ref_values = sddsData_m.sddsColumns_m[col_idx_ref].values_m;
+            int index = getColumnIndex(col_name);
+            ast::columnData_t &col_values = sddsData_m.sddsColumns_m[index].values_m;
+
+            size_t this_row = 0;
+            size_t num_rows = ref_values.size();
+            int datatype = (int)getColumnType(col_name);
+            for(this_row = 0; this_row < num_rows; this_row++) {
+                value_after_ref = boost::get<double>(ref_values[this_row]);
+
+                if(ref_val < value_after_ref) {
+
+                    size_t prev_row = 0;
+                    if(this_row > 0) prev_row = this_row - 1;
+
+                    value_before = getBoostVariantValue<T>(col_values[prev_row], datatype);
+                    value_after  = getBoostVariantValue<T>(col_values[this_row], datatype);
+
+                    value_before_ref = boost::get<double>(ref_values[prev_row]);
+                    value_after_ref  = boost::get<double>(ref_values[this_row]);
+
+                    break;
+                }
+            }
+
+            if(this_row == num_rows)
+                throw SDDSParserException("SDDSParser::getInterpolatedValue",
+                                          "all values < specified reference value");
+
+            // simple linear interpolation
+            if(ref_val - value_before_ref < 1e-8)
+                nval = value_before;
+            else
+                nval = value_before + (ref_val - value_before_ref)
+                    * (value_after - value_before)
+                    / (value_after_ref - value_before_ref);
+
+            if (!std::isfinite(nval))
+                throw SDDSParserException("SDDSParser::getInterpolatedValue",
+                                          "Interpolated value either NaN or Inf.");
+        }
+
+        /**
          *  Converts the string value of a parameter at a position spos to a value
          *  of type T.
          *
@@ -98,50 +159,7 @@ namespace SDDS {
          */
         template <typename T>
         void getInterpolatedValue(double spos, std::string col_name, T& nval) {
-
-            T value_before = 0;
-            T value_after  = 0;
-            double value_before_spos = 0;
-            double value_after_spos  = 0;
-
-
-            size_t col_idx_spos = getColumnIndex("s");
-            ast::columnData_t &spos_values = sddsData_m.sddsColumns_m[col_idx_spos].values_m;
-            int index = getColumnIndex(col_name);
-            ast::columnData_t &col_values = sddsData_m.sddsColumns_m[index].values_m;
-
-            size_t this_row = 0;
-            size_t num_rows = spos_values.size();
-            int datatype = (int)getColumnType(col_name);
-            for(this_row = 0; this_row < num_rows; this_row++) {
-                value_after_spos = boost::get<double>(spos_values[this_row]);
-
-                if(spos < value_after_spos) {
-
-                    size_t prev_row = 0;
-                    if(this_row > 0) prev_row = this_row - 1;
-
-                    value_before = getBoostVariantValue<T>(col_values[prev_row], datatype);
-                    value_after  = getBoostVariantValue<T>(col_values[this_row], datatype);
-
-                    value_before_spos = boost::get<double>(spos_values[prev_row]);
-                    value_after_spos  = boost::get<double>(spos_values[this_row]);
-
-                    break;
-                }
-            }
-
-            if(this_row == num_rows)
-                throw SDDSParserException("SDDSParser::getInterpolatedValue",
-                                          "all values < specified spos");
-
-            // simple linear interpolation
-            if(spos - value_before_spos < 1e-8)
-                nval = value_before;
-            else
-                nval = value_before + (spos - value_before_spos)
-                    * (value_after - value_before)
-                    / (value_after_spos - value_before_spos);
+            getInterpolatedValue("s", spos, col_name, nval);
         }
 
         /**

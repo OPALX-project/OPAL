@@ -65,12 +65,11 @@ typedef FFT<CCTransform, 3, double>              FFTC_t;
 
 
 namespace ParticleType {
-    enum { REGULAR,
-           FIELDEMISSION,
-           SECONDARY,
-           NEWSECONDARY,
-           STRIPPED,
-           PROBE};
+    enum type { REGULAR,
+                FIELDEMISSION,
+                SECONDARY,
+                NEWSECONDARY,
+                STRIPPED};
 }
 
 #endif

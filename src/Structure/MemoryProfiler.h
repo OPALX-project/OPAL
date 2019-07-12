@@ -6,8 +6,9 @@
 #include <map>
 #include <vector>
 
+#include "SDDSWriter.h"
 
-class MemoryProfiler {
+class MemoryProfiler : public SDDSWriter {
     /* Pay attention with units. /proc/[pid]/status returns values in
      * KiB (Kibibyte) although the units say kB.
      * KiB has base 2 not base 10
@@ -17,9 +18,7 @@ public:
     typedef std::vector<long double> vm_t;
     typedef std::vector<std::string> units_t;
     
-    MemoryProfiler();
-    
-    ~MemoryProfiler();
+    MemoryProfiler(const std::string& fname, bool restart);
 
     enum VirtualMemory {
         VMPEAK = 0, // VmPeak: Peak virtual memory size.
@@ -39,16 +38,15 @@ public:
                     // included (since Linux 2.6.34).
     };
     
-    void write(double time);
+    void write(PartBunchBase<double, 3> *beam) override;
     
 private:
-    void header_m();
-    void update_m();
-    void compute_m(vm_t& vmMin, vm_t& vmMax, vm_t& vmAvg);
+    void header();
+    void update();
+    void compute(vm_t& vmMin, vm_t& vmMax, vm_t& vmAvg);
     
 private:
     std::string fname_m;
-    std::ofstream ofstream_m;
     std::map<std::string, int> procinfo_m;
     vm_t vmem_m;
     units_t unit_m;

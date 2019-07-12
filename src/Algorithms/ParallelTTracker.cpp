@@ -1241,7 +1241,7 @@ void ParallelTTracker::writePhaseSpace(const long long step, bool psDump, bool s
             }
         }
         // Write statistical data.
-        itsDataSink_m->writeStatData(itsBunch_m, FDext, collimatorLosses);
+        itsDataSink_m->dumpSDDS(itsBunch_m, FDext, collimatorLosses);
 
         msg << level3 << "* Wrote beam statistics." << endl;
     }
@@ -1282,7 +1282,7 @@ void ParallelTTracker::writePhaseSpace(const long long step, bool psDump, bool s
         if (!statDump && !driftToCorrectPosition) itsBunch_m->calcBeamParameters();
 
         msg << *itsBunch_m << endl;
-        itsDataSink_m->writePhaseSpace(itsBunch_m, FDext);
+        itsDataSink_m->dumpH5(itsBunch_m, FDext);
 
         if (driftToCorrectPosition) {
             if (localNum > 0) {

@@ -44,14 +44,18 @@ Sampler::Sampler(const std::map<std::string,
 {
     my_local_pid_ = 0;
     MPI_Comm_rank(comms_.opt, &my_local_pid_);
-    
-    std::string fname = "samples_" + std::to_string(comms_.island_id) + ".json";
 
-    resultFile_m = args->getArg<std::string>("outfile", fname, false);
-    resultDir_m = args->getArg<std::string>("outdir", "samples", false);
+    std::string resultFile = args->getArg<std::string>("outfile", "output", false);
+    std::string resultDir = args->getArg<std::string>("outdir", "samples", false);
+    jsonDumpFreq_m = args->getArg<std::size_t>("jsonDumpFreq", true);
 
-    if ( !boost::filesystem::exists(resultDir_m) ) {
-        boost::filesystem::create_directory(resultDir_m);
+    std::ostringstream filename;
+    filename << resultDir << "/" << resultFile
+             << "_samples_" << comms_.island_id << ".json";
+    jsonFname_m = filename.str();
+
+    if ( !boost::filesystem::exists(resultDir) ) {
+        boost::filesystem::create_directory(resultDir);
     }
 
     DVarContainer_t::iterator itr;
@@ -61,6 +65,8 @@ Sampler::Sampler(const std::map<std::string,
                     (boost::get<LOWER_BOUND>(itr->second),
                      boost::get<UPPER_BOUND>(itr->second)));
     }
+
+    writeJsonHeader();
 }
 
 
@@ -135,7 +141,7 @@ bool Sampler::onMessage(MPI_Status status, size_t length) {
                 }
             }
 
-            addIndividualToJSON_m(ind);
+            addIndividualToJSON(ind);
 
             jobmapping_m.erase(it);
 
@@ -155,14 +161,14 @@ bool Sampler::onMessage(MPI_Status status, size_t length) {
 void Sampler::postPoll() {
 
     if ( act_sample_m < nSamples_m ) {
-        this->createNewIndividual_m();
+        this->createNewIndividual();
     }
 
     runStateMachine();
 }
 
 
-void Sampler::createNewIndividual_m() {
+void Sampler::createNewIndividual() {
 
     std::vector<std::string> dNames;
 
@@ -186,11 +192,15 @@ void Sampler::createNewIndividual_m() {
     individuals_m.push(ind);
 }
 
-void Sampler::dumpIndividualsToJSON_m() {
 
-    tree_m.put("name", "sampler");
-    tree_m.put(OPAL_PROJECT_NAME " version", OPAL_PROJECT_VERSION);
-    tree_m.put("git revision", Util::getGitRevision());
+void Sampler::writeJsonHeader() {
+    namespace pt = boost::property_tree;
+
+    pt::ptree tree;
+
+    tree.put("name", "sampler");
+    tree.put(OPAL_PROJECT_NAME " version", OPAL_PROJECT_VERSION);
+    tree.put("git revision", Util::getGitRevision());
 
     std::stringstream bounds;
     DVarContainer_t::iterator itr = dvars_m.begin();
@@ -199,39 +209,72 @@ void Sampler::dumpIndividualsToJSON_m() {
     {
         std::string dvar = boost::get<VAR_NAME>(itr->second);
         bounds << "[ " << it->first << ", " << it->second << " ]";
-        tree_m.put("dvar-bounds." + dvar, bounds.str());
+        tree.put("dvar-bounds." + dvar, bounds.str());
         bounds.str("");
     }
 
-    std::ostringstream filename;
-    filename << resultDir_m << "/" << resultFile_m
-             << "_samples_" << comms_.island_id << ".json";
-
-    boost::property_tree::write_json(filename.str(), tree_m);
+    pt::write_json(jsonFname_m, tree);
 }
 
-void Sampler::addIndividualToJSON_m(const boost::shared_ptr<Individual_t>& ind) {
-    
-    std::string id = std::to_string(ind->id);
-    
-    DVarContainer_t::iterator itr;
-    for(itr = dvars_m.begin(); itr != dvars_m.end(); itr++) {
-        std::string name = boost::get<VAR_NAME>(itr->second);
-        int i = ind->getIndex(name);
-        tree_m.put("samples." + id + ".dvar." + name, ind->genes[i]);
+
+void Sampler::dumpIndividualsToJSON() {
+
+    if (individualsToDump_m.empty()) {
+        return;
     }
 
-    Expressions::Named_t::iterator expr_it;
-    expr_it = objectives_m.begin();
+    namespace pt = boost::property_tree;
 
-    for(size_t i=0; i < ind->objectives.size(); i++, expr_it++) {
-        std::string name = expr_it->first;
+    pt::ptree tree;
+    pt::read_json(jsonFname_m, tree);
 
-        // skip dummy objective (SamplePilot.h, line 64)
-        if ( name == "dummy" )
-            continue;
+    pt::ptree samples;
+    
+    if ( tree.get_optional<std::string>("samples") ) {
+        /* we already have individuals in the JSON
+         * file
+         */
+        samples = tree.get_child("samples");
+        tree.erase("samples");
+    }
 
-        tree_m.put("samples." + id + ".obj." + name, ind->objectives[i]);
+    while (!individualsToDump_m.empty()) {
+        Individual_t ind = individualsToDump_m.front();
+        individualsToDump_m.pop_front();
+
+        std::string id = std::to_string(ind.id);
+
+        DVarContainer_t::iterator itr;
+        for(itr = dvars_m.begin(); itr != dvars_m.end(); itr++) {
+            std::string name = boost::get<VAR_NAME>(itr->second);
+            int i = ind.getIndex(name);
+            samples.put(id + ".dvar." + name, ind.genes[i]);
+        }
+
+        Expressions::Named_t::iterator expr_it;
+        expr_it = objectives_m.begin();
+
+        for(size_t i=0; i < ind.objectives.size(); i++, expr_it++) {
+            std::string name = expr_it->first;
+
+            // skip dummy objective (in constructor of SamplePilot.h)
+            if ( name == "dummy" )
+                continue;
+
+            samples.put(id + ".obj." + name, ind.objectives[i]);
+        }
+    }
+
+    tree.add_child("samples", samples);
+    boost::property_tree::write_json(jsonFname_m, tree);
+}
+
+
+void Sampler::addIndividualToJSON(const boost::shared_ptr<Individual_t>& ind) {
+    individualsToDump_m.push_back(*ind);
+
+    if (jsonDumpFreq_m <= individualsToDump_m.size()) {
+        dumpIndividualsToJSON();
     }
 }
 
@@ -252,9 +295,9 @@ void Sampler::runStateMachine() {
         }
         case STOP: {
 
-            dumpIndividualsToJSON_m();
-
             curState_m = TERMINATE;
+
+            dumpIndividualsToJSON();
 
             // notify pilot that we have converged
             int dummy = 0;

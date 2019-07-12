@@ -19,6 +19,8 @@
 #include "Util/OptPilotException.h"
 #include "Util/NativeHashGenerator.h"
 
+#include "AbstractObjects/OpalData.h"
+
 #include "Expression/SumErrSq.h"
 #include "Expression/FromFile.h"
 
@@ -121,7 +123,8 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
     fs::path pwd = fs::current_path();
     if (!fs::exists(dataFile))
         throw OptPilotException("OpalSimulation::OpalSimulation",
-                                "The data file '" + dataFile + "' \n     doesn't exist in directory '" + pwd.native() + "'");
+                                "The data file '" + dataFile + "' \n" +
+                                "     doesn't exist in directory '" + pwd.native() + "'");
 
     if (!fs::exists(tmplFile))
         throw OptPilotException("OpalSimulation::OpalSimulation",
@@ -152,27 +155,20 @@ bool OpalSimulation::hasResultsAvailable() {
 
 
 void OpalSimulation::createSymlink_m(const std::string& path) {
-    struct dirent **files;
-    int count = scandir(path.c_str(), &files, 0, alphasort);
+    namespace fs = boost::filesystem;
 
-    for(int i=0; i<count; i++) {
-        if (files[i]->d_name == std::string(".") ||
-            files[i]->d_name == std::string("..")) continue;
-        std::string source = path + "/" + files[i]->d_name;
-        std::string target = simulationDirName_ + '/' + files[i]->d_name;
-        int err = symlink(source.c_str(), target.c_str());
-        if (err != 0) {
-            throw OptPilotException("OpalSimulation::createSymlink()",
-                                    "Cannot create symbolic link '" + source + "' to " +
-                                    target);
+    for (auto &p: fs::directory_iterator(path)) {
+        fs::path source = p.path();
+        fs::path target(simulationDirName_ + "/");
+        target +=source.filename();
+
+        try {
+            fs::create_symlink(source, target);
+        } catch (fs::filesystem_error &e) {
+            std::cerr << e.what() << "\n"
+                      << "in OpalSimulation::createSymlink()" << std::endl;
         }
     }
-
-    for(int i=0; i<count; i++) {
-        free(files[i]);
-    }
-
-    free(files);
 }
 
 
@@ -180,21 +176,23 @@ void OpalSimulation::copyH5_m() {
     CmdArguments_t args = getArgs();
     std::string restartfile = args->getArg<std::string>("restartfile", "", false);
 
-    if ( !restartfile.empty() ) {
-        namespace fs = boost::filesystem;
-        if ( !fs::exists(restartfile) ) {
-            throw OptPilotException("OpalSimulation::copyH5_m()",
-                                    "H5 file '" + restartfile + "' doesn't exist.");
-        }
+    if (restartfile.empty()) return;
 
-        try {
-            fs::path srcfile(restartfile);
-            fs::path targetfile(simulationDirName_ + "/" + simulationName_ + ".h5");
-            fs::copy_file(srcfile, targetfile);
-        } catch (fs::filesystem_error &ex) {
-            throw OptPilotException("OpalSimulation::copyH5_m()",
-                                    ex.what());
-        }
+    namespace fs = boost::filesystem;
+    if ( !fs::exists(restartfile) ) {
+        std::cerr << "H5 file '" + restartfile + "' doesn't exist." << "\n"
+                  << "in OpalSimulation::copyH5_m()" << std::endl;
+
+        return;
+    }
+
+    try {
+        fs::path srcfile(restartfile);
+        fs::path targetfile(simulationDirName_ + "/" + simulationName_ + ".h5");
+        fs::copy_file(srcfile, targetfile);
+    } catch (fs::filesystem_error &ex) {
+        std::cerr << ex.what() << "\n"
+                  << "in OpalSimulation::copyH5_m()" << std::endl;
     }
 }
 
@@ -202,46 +200,103 @@ void OpalSimulation::copyH5_m() {
 void OpalSimulation::setupSimulation() {
     namespace fs = boost::filesystem;
 
+    CmdArguments_t args = getArgs();
+    std::string restartfile = args->getArg<std::string>("restartfile", "", false);
+
     if ( id_m > -1 ) {
         std::ostringstream tmp;
         tmp << simTmpDir_ << "/" << id_m;
         simulationDirName_ = tmp.str();
     }
+    std::string dataDir = simulationDirName_ + "/data";
 
-    // only on processor in comm group has to setup files
-    int rank = 0;
-    MPI_Comm_rank(comm_, &rank);
-    if(rank == 0) {
-        if (fs::exists(simulationDirName_)) {
-            fs::remove_all(simulationDirName_);
-        }
+    OpalData *opal = OpalData::getInstance();
+    opal->setOptimizerFlag();
 
-        mkdir((const char*)(simulationDirName_.c_str()), 0755);
-
-        std::string infile = simulationDirName_ + "/" +
-                             simulationName_ + ".in";
-        gs_->writeInputFile(infile);
-
-        // linking fieldmaps + distributions
-        if(getenv("FIELDMAPS") == NULL) {
-            throw OptPilotException("OpalSimulation::setupSimulation",
-                "Environment variable FIELDMAPS not defined!");
-        }
-
-        std::string fieldmapPath = getenv("FIELDMAPS");
-        this->createSymlink_m(fieldmapPath);
-
-        if ( getenv("DISTRIBUTIONS") != NULL ) {
-            std::string distPath = getenv("DISTRIBUTIONS");
-            this->createSymlink_m(distPath);
-        }
-
-        this->copyH5_m();
+    // linking fieldmaps + distributions
+    if (getenv("FIELDMAPS") == NULL) {
+        throw OptPilotException("OpalSimulation::setupSimulation",
+                                "Environment variable FIELDMAPS not defined!");
     }
 
+    setupFSStructure();
+
     MPI_Barrier(comm_);
+
+    if (!fs::exists(simulationDirName_)) {
+        throw OptPilotException("OpalSimulation::setupSimulation",
+                                "Directory '" + simulationDirName_ + "' doesn't exist");
+    }
+
+    if (!fs::exists(dataDir)) {
+        throw OptPilotException("OpalSimulation::setupSimulation",
+                                "Directory '" + dataDir + "' doesn't exist");
+    }
+
+    if (!restartfile.empty() &&
+        !fs::exists(simulationDirName_ + "/" + simulationName_ + ".h5")) {
+        throw OptPilotException("OpalSimulation::setupSimulation",
+                                "H5 file '" + simulationDirName_ + "/" + simulationName_ + ".h5' doesn't exist");
+    }
 }
 
+void OpalSimulation::setupFSStructure() {
+    namespace fs = boost::filesystem;
+
+    int rank = 0;
+    MPI_Comm_rank(comm_, &rank);
+    if (rank != 0) return;     // only one processor in comm group has to setup files
+
+    if (fs::exists(simulationDirName_)) {
+        fs::remove_all(simulationDirName_);
+    }
+
+    try {
+        fs::create_directory(simulationDirName_);
+        fs::permissions(simulationDirName_,
+                        fs::owner_all |
+                        fs::group_read |
+                        fs::group_exe |
+                        fs::others_read |
+                        fs::others_exe);
+
+    } catch (fs::filesystem_error &e) {
+        std::cerr << e.what() << "\n"
+                  << "in OpalSimulation::setupSimulation" << std::endl;
+        return;
+    }
+
+    try {
+        std::string dataDir = simulationDirName_ + "/data";
+
+        fs::create_directory(dataDir);
+        fs::permissions(dataDir,
+                        fs::owner_all |
+                        fs::group_read |
+                        fs::group_exe |
+                        fs::others_read |
+                        fs::others_exe);
+
+    } catch (fs::filesystem_error &e) {
+        std::cerr << e.what() << "\n"
+                  << "in OpalSimulation::setupSimulation" << std::endl;
+        return;
+    }
+
+    std::string infile = simulationDirName_ + "/" +
+        simulationName_ + ".in";
+    gs_->writeInputFile(infile);
+
+    std::string fieldmapPath = getenv("FIELDMAPS");
+    this->createSymlink_m(fieldmapPath);
+
+    if (getenv("DISTRIBUTIONS") != NULL) {
+        std::string distPath = getenv("DISTRIBUTIONS");
+        this->createSymlink_m(distPath);
+    }
+
+    this->copyH5_m();
+}
 
 void OpalSimulation::redirectOutToFile() {
 

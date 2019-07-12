@@ -57,6 +57,10 @@ private:
     virtual void doSetGeom() override;
     /// Virtual hook for finalise
     virtual void doFinalise() override;
+    /// Virtual hook for preCheck
+    virtual bool doPreCheck(PartBunchBase<double, 3>*) override;
+    /// Virtual hook for finaliseCheck
+    virtual bool doFinaliseCheck(PartBunchBase<double, 3> *bunch, bool flagNeedUpdate) override;
 
     bool informed_m = false; ///< Flag if error information already printed
 
@@ -65,7 +69,6 @@ private:
     double zend_m;
     double width_m;
     ///@}
-    double rmin_m; ///< minimum extend in r
     double rmax_m; ///< maximum extend in r
 
     ParticleMatterInteractionHandler *parmatint_m = nullptr;

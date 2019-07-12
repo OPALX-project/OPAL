@@ -1405,134 +1405,6 @@ void PartBunchBase<T, Dim>::calcBeamParametersInitial() {
 
 
 template <class T, unsigned Dim>
-bool PartBunchBase<T, Dim>::calcBunchBeamParameters(MultiBunchDump::beaminfo_t& binfo, short bunch) {
-    if ( !OpalData::getInstance()->isInOPALCyclMode() ) {
-        return false;
-    }
-
-    const unsigned long localNum = getLocalNum();
-
-    long int bunchTotalNum = 0;
-    unsigned long bunchLocalNum = 0;
-
-    /* container:
-     *
-     * ekin, <x>, <y>, <z>, <p_x>, <p_y>, <p_z>,
-     * <x^2>, <y^2>, <z^2>, <p_x^2>, <p_y^2>, <p_z^2>,
-     * <xp_x>, <y_py>, <zp_z>,
-     * <x^3>, <y^3>, <z^3>, <x^4>, <y^4>, <z^4>
-     */
-    std::vector<double> local(7 * Dim + 1);
-
-    for(unsigned long k = 0; k < localNum; ++ k) {
-        if ( bunchNum[k] != bunch ) { //|| ID[k] == 0 ) {
-            continue;
-        }
-
-        ++bunchTotalNum;
-        ++bunchLocalNum;
-
-        // ekin
-        local[0] += std::sqrt(dot(P[k], P[k]) + 1.0);
-
-        for (unsigned int i = 0; i < Dim; ++i) {
-
-            double r = R[k](i);
-
-            // <x>, <y>, <z>
-            local[i + 1] += r;
-
-            // <p_x>, <p_y, <p_z>
-            local[i + Dim + 1] += P[k](i);
-
-            // <x^2>, <y^2>, <z^2>
-            double r2 = r * r;
-            local[i + 2 * Dim + 1] += r2;
-
-            // <p_x^2>, <p_y^2>, <p_z^2>
-            local[i + 3 * Dim + 1] += P[k](i) * P[k](i);
-
-            // <xp_x>, <y_py>, <zp_z>
-            local[i + 4 * Dim + 1] += r * P[k](i);
-
-            // <x^3>, <y^3>, <z^3>
-            local[i + 5 * Dim + 1] += r2 * r;
-
-            // <x^4>, <y^4>, <z^4>
-            local[i + 6 * Dim + 1] += r2 * r2;
-        }
-    }
-
-    // inefficient
-    allreduce(bunchTotalNum, 1, std::plus<long int>());
-
-    if ( bunchTotalNum == 0 )
-        return false;
-
-    // ekin
-    const double m0 = getM() * 1.0e-6;
-    local[0] -= bunchLocalNum;
-    local[0] *= m0;
-
-    allreduce(local.data(), local.size(), std::plus<double>());
-
-    double invN = 1.0 / double(bunchTotalNum);
-    binfo.ekin = local[0] * invN;
-
-    binfo.time       = getT() * 1e9;  // ns
-    binfo.nParticles = bunchTotalNum;
-
-    for (unsigned int i = 0; i < Dim; ++i) {
-
-        double w = local[i + 1] * invN;
-        double pw = local[i + Dim + 1] * invN;
-        double w2 = local[i + 2 * Dim + 1] * invN;
-        double pw2 = local[i + 3 * Dim + 1] * invN;
-        double wpw = local[i + 4 * Dim + 1] * invN;
-        double w3 = local[i + 5 * Dim + 1] * invN;
-        double w4 = local[i + 6 * Dim + 1] * invN;
-
-        // <x>, <y>, <z>
-        binfo.mean[i] = w;
-
-        // central: <p_w^2> - <p_w>^2 (w = x, y, z)
-        binfo.prms[i] = pw2 - pw * pw;
-        if ( binfo.prms[i] < 0 ) {
-            binfo.prms[i] = 0.0;
-        }
-
-        // central: <wp_w> - <w><p_w>
-        wpw = wpw - w * pw;
-
-        // central: <w^2> - <w>^2 (w = x, y, z)
-        binfo.rrms[i] = w2 - w * w;
-
-        // central: normalized emittance
-        binfo.emit[i] = (binfo.rrms[i] * binfo.prms[i] - wpw * wpw);
-        binfo.emit[i] =  std::sqrt(std::max(binfo.emit[i], 0.0));
-
-        // central: <w^4> - 4 * <w> * <w^3> + 6 * <w>^2 * <w^2> - 3 * <w>^4
-        double tmp = w4
-                   - 4.0 * w * w3
-                   + 6.0 * w * w * w2
-                   - 3.0 * w * w * w * w;
-        binfo.halo[i] = tmp / ( binfo.rrms[i] * binfo.rrms[i] );
-
-        // central: sqrt(<w^2> - <w>^2) (w = x, y, z)
-        binfo.rrms[i] = std::sqrt(binfo.rrms[i]);
-
-        // central: sqrt(<p_w^2> - <p_w>^2)
-        binfo.prms[i] = std::sqrt(binfo.prms[i]);
-    }
-
-    double tmp = 1.0 / std::pow(binfo.ekin / m0 + 1.0, 2.0);
-    binfo.dEkin = binfo.prms[1] * m0 * std::sqrt(1.0 - tmp);
-
-    return true;
-}
-
-
-template <class T, unsigned Dim>
 double PartBunchBase<T, Dim>::getCouplingConstant() const {
     return couplingConstant_m;
 }
@@ -1882,6 +1754,16 @@ double PartBunchBase<T, Dim>::getE() const {
     return reference->getE();
 }
 
+
+template <class T, unsigned Dim>
+ParticleType::type PartBunchBase<T, Dim>::getPType() const {
+    return refPType_m;
+}
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::setPType(ParticleType::type type) {
+    refPType_m = type;
+}
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::resetQ(double q)  {
@@ -2392,12 +2274,20 @@ void PartBunchBase<T, Dim>::resetID() {
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::update() {
-    pbase->update();
+    try {
+        pbase->update();
+    } catch (const IpplException &ex) {
+        throw OpalException(ex.where(), ex.what());
+    }
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::update(const ParticleAttrib<char>& canSwap) {
-    pbase->update(canSwap);
+    try {
+        pbase->update(canSwap);
+    } catch (const IpplException &ex) {
+        throw OpalException(ex.where(), ex.what());
+    }
 }
 
 template <class T, unsigned Dim>

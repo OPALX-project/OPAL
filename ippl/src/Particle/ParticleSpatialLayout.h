@@ -30,11 +30,14 @@
 #include "Region/RegionLayout.h"
 #include "Message/Message.h"
 #include "FieldLayout/FieldLayoutUser.h"
+#include "Utility/IpplException.h"
+
 #include <cstddef>
 
 #include <vector>
 #include <iostream>
 #include <map>
+#include <functional>
 
 #include "BoxParticleCachingPolicy.h"
 
@@ -1178,6 +1181,7 @@ protected:
 
         int minParticlesPerNode = PData.getMinimumNumberOfParticlesPerCore();
         int particlesLeft = LocalNum;
+        bool responsibleNodeNotFound = false;
         for (unsigned int ip=0; ip<LocalNum; ++ip)
         {
             for (unsigned int j = 0; j < Dim; j++)
@@ -1200,14 +1204,26 @@ protected:
             typename RegionLayout<T,Dim,Mesh>::touch_range_dv touchingVN = RLayout.touch_range_rdv(pLoc);
 
             //external location
-            PInsist(touchingVN.first != touchingVN.second, "could not find node responsible for particle;\nmesh does not seem correctly adapted to particle distribution");
+            if (touchingVN.first == touchingVN.second) {
+                responsibleNodeNotFound = true;
+                break;
+            }
             destination = (*(touchingVN.first)).second->getNode();
 
             msgsend[destination] = 1;
 
             p2n.insert(std::pair<unsigned, unsigned>(destination, ip));
             sent++;
-	    particlesLeft--;
+            particlesLeft--;
+        }
+
+        allreduce(&responsibleNodeNotFound,
+                  1,
+                  std::logical_or<bool>());
+
+        if (responsibleNodeNotFound) {
+            throw IpplException("ParticleSpatialLayout::new_swap_particles",
+                                "could not find node responsible for particle");
         }
 
         //reduce message count so every node knows how many messages to receive
@@ -1284,7 +1300,7 @@ protected:
 
    template < class PB >
     size_t new_swap_particles(size_t LocalNum, PB& PData,
-                      const ParticleAttrib<char>& canSwap)
+                              const ParticleAttrib<char>& canSwap)
     {
         Ippl::Comm->barrier();
         static int sent = 0;
@@ -1305,7 +1321,8 @@ protected:
         std::multimap<unsigned, unsigned> p2n; //<node ID, particle ID>
 
         int minParticlesPerNode = PData.getMinimumNumberOfParticlesPerCore();
-	int particlesLeft = LocalNum;
+        int particlesLeft = LocalNum;
+        bool responsibleNodeNotFound = false;
         for (unsigned int ip=0; ip<LocalNum; ++ip)
         {
             if (!bool(canSwap[ip]))//skip if it can't be swapped
@@ -1325,20 +1342,32 @@ protected:
             if (found)
                 continue;
 
-	    if (particlesLeft <= minParticlesPerNode)
-	        continue; //leave atleast minimum number of particles per core
+            if (particlesLeft <= minParticlesPerNode)
+                continue; //leave atleast minimum number of particles per core
 
             typename RegionLayout<T,Dim,Mesh>::touch_range_dv touchingVN = RLayout.touch_range_rdv(pLoc);
 
 			//external location
-            PInsist(touchingVN.first != touchingVN.second, "could not find node responsible for particle;\nmesh does not seem correctly adapted to particle distribution");
+            if (touchingVN.first == touchingVN.second) {
+                responsibleNodeNotFound = true;
+                break;
+            }
             destination = (*(touchingVN.first)).second->getNode();
 
             msgsend[destination] = 1;
 
             p2n.insert(std::pair<unsigned, unsigned>(destination, ip));
             sent++;
-	    particlesLeft--;
+            particlesLeft--;
+        }
+
+        allreduce(&responsibleNodeNotFound,
+                  1,
+                  std::logical_or<bool>());
+
+        if (responsibleNodeNotFound) {
+            throw IpplException("ParticleSpatialLayout::new_swap_particles",
+                                "could not find node responsible for particle");
         }
 
         //reduce message count so every node knows how many messages to receive

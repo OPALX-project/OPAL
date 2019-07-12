@@ -29,7 +29,6 @@
 #include "Algorithms/ParallelTTracker.h"
 #include "Algorithms/ParallelSliceTracker.h"
 #include "Algorithms/ParallelCyclotronTracker.h"
-#include "Algorithms/StatisticalErrors.h"
 #include "Algorithms/NilTracker.h"
 
 #include "Attributes/Attributes.h"
@@ -82,8 +81,6 @@ namespace {
         BOUNDARYGEOMETRY, // The boundary geometry
         DISTRIBUTION, // The particle distribution
         MULTIPACTING, // MULTIPACTING flag
-        OBJECTIVES,   // for which columns of an sdds file statistical errors should be considered
-        // THE INTEGRATION TIMESTEP IN SEC
         SIZE
     };
 }
@@ -128,8 +125,6 @@ TrackRun::TrackRun():
                              ("DISTRIBUTION", "List of particle distributions to be used ");
     itsAttr[MULTIPACTING] = Attributes::makeBool
                             ("MULTIPACTING", "Multipacting flag, default: false. Set true to initialize primary particles according to BoundaryGeometry", false);
-    itsAttr[OBJECTIVES] = Attributes::makeStringArray
-                          ("OBJECTIVES", "List of SDDS columns that should be considered when evaluating statistical errors");
 
     registerOwnership(AttributeHandler::SUB_COMMAND);
 
@@ -203,8 +198,6 @@ void TrackRun::execute() {
         setupTTracker();
     } else if(method == "CYCLOTRON-T" || method == "OPAL-CYCL") {
         setupCyclotronTracker();
-    } else if(method.substr(0,18) == "STATISTICAL-ERRORS") {
-        setupStatisticalErrors(method);
     } else {
         throw OpalException("TrackRun::execute()",
                             "Method name \"" + method + "\" unknown.");
@@ -761,8 +754,6 @@ void TrackRun::setupCyclotronTracker(){
     *gmsg << "* Statistics dump frequency  = " << Options::statDumpFreq << " w.r.t. the time step." << endl;
     *gmsg << "* ********************************************************************************** " << endl;
 
-    ds->setMaxNumBunches(specifiedNumBunch);
-
     itsTracker = new ParallelCyclotronTracker(*Track::block->use->fetchLine(),
                                               Track::block->bunch, *ds, Track::block->reference,
                                               false, false, Track::block->localTimeSteps.front(),
@@ -852,48 +843,6 @@ void TrackRun::setupCyclotronTracker(){
 
         cyclTracker->setMultiBunchEta    (Attributes::getReal  (itsAttr[MB_ETA]));
         cyclTracker->setMultiBunchBinning(Attributes::getString(itsAttr[MB_BINNING]));
-    }
-}
-
-void TrackRun::setupStatisticalErrors(const std::string & method) {
-    std::vector<std::string> tmp;
-    std::string arguments = method.substr(19,method.length() - 20);
-    boost::algorithm::split(tmp, arguments, boost::algorithm::is_any_of(","));
-
-    for (std::string &arg: tmp) {
-        boost::algorithm::trim(arg);
-    }
-
-    if (Util::toUpper(tmp.at(0)) == "PARALLEL-T" ||
-        Util::toUpper(tmp.at(0)) == "CYCLOTRON-T" ||
-        Util::toUpper(tmp.at(0)) == "PARALLEL-SLICE" ||
-        Util::toUpper(tmp.at(0)) == "THIN" ||
-        Util::toUpper(tmp.at(0)) == "THICK") {
-
-        if (tmp.size() != 3) {
-            throw OpalException("TrackRun::setupStatisticalErrors()",
-                                "number of arguments: " + std::to_string(tmp.size()) + " != 3");
-        }
-
-        if(!opal->hasBunchAllocated()) {
-            itsTracker = new StatisticalErrors(*Track::block->use->fetchLine(),
-                                               Track::block->reference,
-                                               false,
-                                               false,
-                                               tmp.at(0),
-                                               std::stoul(tmp.at(1)),
-                                               std::stoul(tmp.at(2)),
-                                               Attributes::getStringArray(itsAttr[OBJECTIVES]));
-        } else {
-            itsTracker = new NilTracker(*Track::block->use->fetchLine(),
-                                        Track::block->reference,
-                                        false,
-                                        false);
-        }
-
-    } else {
-        throw OpalException("TrackRun::setupStatisticalErrors()",
-                            "unkonwn method '" + tmp.at(0) + "' provided");
     }
 }
 

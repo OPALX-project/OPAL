@@ -1,22 +1,14 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Cyclotron.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
 // Definitions for class: Cyclotron
-//   Defines the abstract interface for a cyclotron.
-//
-// ------------------------------------------------------------------------
+// Defines the abstract interface for a cyclotron.
 // Class category: AbsBeamline
-// ------------------------------------------------------------------------
 //
-// $Date: 2007/08/01 $
-// $Author: Yang, Adelmann $
+// Copyright (c) 2008-2019
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
 //
-// ------------------------------------------------------------------------
+// OPAL is licensed under GNU GPL version 3.
+//
 
 #include "AbsBeamline/Cyclotron.h"
 
@@ -37,7 +29,6 @@ throw GeneralClassicException("Cyclotron::getFieldFromFile",\
 extern Inform *gmsg;
 
 using Physics::pi;
-using namespace std;
 
 // Class Cyclotron
 // ------------------------------------------------------------------------
@@ -87,13 +78,17 @@ Cyclotron::~Cyclotron() {
 }
 
 
-void Cyclotron::applyTrimCoil_m(const double r, const double z, const double tet_rad,  double *br, double *bz) {
+void Cyclotron::applyTrimCoil_m(const double r, const double z,
+                                const double tet_rad,
+                                double *br, double *bz) {
      for (auto trimcoil : trimcoils_m) {
          trimcoil->applyField(r,tet_rad,z,br,bz);
      }
 }
 
-void Cyclotron::applyTrimCoil(const double r, const double z, const double tet_rad,  double& br, double& bz) {
+void Cyclotron::applyTrimCoil(const double r, const double z,
+                              const double tet_rad,
+                              double& br, double& bz) {
     //Changed from > to >= to include case where bz == 0 and trimCoilThreshold_m == 0 -DW
     if (std::abs(bz) >= trimCoilThreshold_m)  {
         applyTrimCoil_m(r, z, tet_rad, &br, &bz);
@@ -170,19 +165,19 @@ void Cyclotron::setFieldMapFN(std::string f) {
     fmapfn_m = f;
 }
 
-string Cyclotron::getFieldMapFN() const {
+std::string Cyclotron::getFieldMapFN() const {
     return fmapfn_m;
 }
 
-void Cyclotron::setRfFieldMapFN(vector<string> f) {
+void Cyclotron::setRfFieldMapFN(std::vector<std::string> f) {
     RFfilename_m = f;
 }
 
-void Cyclotron::setRFFCoeffFN(vector<string> f) {
+void Cyclotron::setRFFCoeffFN(std::vector<std::string> f) {
     RFFCoeff_fn_m = f;
 }
 
-void Cyclotron::setRFVCoeffFN(vector<string> f) {
+void Cyclotron::setRFVCoeffFN(std::vector<std::string> f) {
     RFVCoeff_fn_m = f;
 }
 
@@ -190,12 +185,13 @@ int Cyclotron::getFieldFlag(const std::string& type) const {
     /**
      * To ease the initialise() function, set a integral parameter fieldflag internally.
      * Its value is  by the option "TYPE" of the element  "CYCLOTRON"
-     * fieldflag = 1, readin PSI format measured field file (default)
-     * fieldflag = 2, readin carbon cyclotron field file created by Jianjun Yang, TYPE=CARBONCYCL
-     * fieldflag = 3, readin ANSYS format file for CYCIAE-100 created by Jianjun Yang, TYPE=CYCIAE
-     * fieldflag = 4, readin AVFEQ format file for Riken cyclotrons
-     * fieldflag = 5, readin FFA format file for MSU/FNAL FFA
-     * fieldflag = 6, readin both median plane B field map and 3D E field map of RF cavity for compact cyclotron
+     * fieldflag = 1, read in PSI format measured field file (default)
+     * fieldflag = 2, read in carbon cyclotron field file created by Jianjun Yang, TYPE=CARBONCYCL
+     * fieldflag = 3, read in ANSYS format file for CYCIAE-100 created by Jianjun Yang, TYPE=CYCIAE
+     * fieldflag = 4, read in AVFEQ format file for Riken cyclotrons
+     * fieldflag = 5, read in FFA format file for MSU/FNAL FFA
+     * fieldflag = 6, read in both median plane B field map and 3D E field map
+     *                of RF cavity for compact cyclotron
      * fieldflag = 7, read in fields for Daniel's synchrocyclotron simulations
      */
     int  fieldflag;
@@ -216,11 +212,11 @@ int Cyclotron::getFieldFlag(const std::string& type) const {
     return fieldflag;
 }
 
-void Cyclotron::setRfPhi(vector<double> f) {
+void Cyclotron::setRfPhi(std::vector<double> f) {
     rfphi_m = f;
 }
 
-void Cyclotron::setRfFrequ(vector<double> f) {
+void Cyclotron::setRfFrequ(std::vector<double> f) {
     rffrequ_m = f;
 }
 
@@ -274,7 +270,7 @@ double Cyclotron::getBScale() const {
     return bscale_m;
 }
 
-void Cyclotron::setEScale(vector<double> s) {
+void Cyclotron::setEScale(std::vector<double> s) {
     escale_m = s;
 }
 
@@ -353,16 +349,22 @@ bool Cyclotron::apply(const size_t &id, const double &t, Vector_t &E, Vector_t &
   if (zpos > maxz_m || zpos < minz_m || rpos > maxr_m || rpos < minr_m){
       flagNeedUpdate = true;
       Inform gmsgALL("OPAL ", INFORM_ALL_NODES);
-      gmsgALL << level2 << getName() << ": particle "<< id <<" out of the global aperture of cyclotron!"<< endl;
-      gmsgALL << level2 << getName() << ": Coords: "<< RefPartBunch_m->R[id] << endl;
+      gmsgALL << level2 << getName()
+              << ": particle " << id
+              << " out of the global aperture of cyclotron!" << endl;
+      gmsgALL << level2 << getName()
+              << ": Coords: "<< RefPartBunch_m->R[id] << endl;
 
   } else{
 
       flagNeedUpdate = apply(RefPartBunch_m->R[id], RefPartBunch_m->P[id], t, E, B);
       if(flagNeedUpdate){
           Inform gmsgALL("OPAL ", INFORM_ALL_NODES);
-          gmsgALL << level2 << getName() << ": particle "<< id <<" out of the field map boundary!"<< endl;
-          gmsgALL << level2 << getName() << ": Coords: "<< RefPartBunch_m->R[id] << endl;
+          gmsgALL << level2 << getName()
+                  << ": particle "<< id
+                  << " out of the field map boundary!" << endl;
+          gmsgALL << level2 << getName()
+                  << ": Coords: "<< RefPartBunch_m->R[id] << endl;
       }
   }
 
@@ -374,7 +376,8 @@ bool Cyclotron::apply(const size_t &id, const double &t, Vector_t &E, Vector_t &
   return flagNeedUpdate;
 }
 
-bool Cyclotron::apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) {
+bool Cyclotron::apply(const Vector_t &R, const Vector_t &P,
+                      const double &t, Vector_t &E, Vector_t &B) {
 
     const double rad   = std::hypot(R[0],R[1]);
     const double tempv = atan(R[1] / R[0]);
@@ -425,42 +428,32 @@ bool Cyclotron::apply(const Vector_t &R, const Vector_t &P, const double &t, Vec
     }
 
     //The RF field is supposed to be sampled on a cartesian grid
-    vector<Fieldmap *>::const_iterator fi  = RFfields_m.begin();
-    vector<double>::const_iterator rffi    = rffrequ_m.begin();
-    vector<double>::const_iterator rfphii  = rfphi_m.begin();
-    vector<double>::const_iterator escali  = escale_m.begin();
-    vector<bool>::const_iterator superposei = superpose_m.begin();
-    vector< vector<double> >::const_iterator rffci;
-    vector< vector<double> >::const_iterator rfvci;
-    if(myBFieldType_m == SYNCHRO) {
-        rffci = rffc_m.begin();
-        rfvci = rfvc_m.begin();
-    }
+    std::vector<Fieldmap *>::const_iterator fi  = RFfields_m.begin();
+    std::vector<double>::const_iterator rffi    = rffrequ_m.begin();
+    std::vector<double>::const_iterator rfphii  = rfphi_m.begin();
+    std::vector<double>::const_iterator escali  = escale_m.begin();
+    std::vector<bool>::const_iterator superposei = superpose_m.begin();
+    std::vector<std::vector<double>>::const_iterator rffci = rffc_m.begin();
+    std::vector<std::vector<double>>::const_iterator rfvci = rfvc_m.begin();
+
     double xBegin(0), xEnd(0), yBegin(0), yEnd(0), zBegin(0), zEnd(0);
     int fcount = 0;
 
     for(; fi != RFfields_m.end(); ++fi, ++rffi, ++rfphii, ++escali, ++superposei) {
-        if(myBFieldType_m == SYNCHRO) {
-          ++rffci, ++rfvci;
-        }
-
         (*fi)->getFieldDimensions(xBegin, xEnd, yBegin, yEnd, zBegin, zEnd);
-        bool SuperPose = *superposei;
-        if (fcount > 0 && SuperPose == false) {
-            //INFOMSG ("Field maps taken : " << fcount << "Superpose false" << endl);
-            continue;
-        }
+        if (fcount > 0 && *superposei == false) continue;
 
         // Ok, this is a total patch job, but now that the internal cyclotron units are in m, we have to
         // change stuff here to match with the input units of mm in the fieldmaps. -DW
         const Vector_t temp_R = R * Vector_t(1000.0); //Keep this until we have transitioned fully to m -DW
 
-        if ((temp_R(0) >= xBegin && temp_R(0) <= xEnd && temp_R(1) >= yBegin && temp_R(1) <= yEnd && temp_R(2) >= zBegin && temp_R(2) <= zEnd) == false)
-            continue;
+        if (temp_R(0) < xBegin || temp_R(0) > xEnd ||
+            temp_R(1) < yBegin || temp_R(1) > yEnd ||
+            temp_R(2) < zBegin || temp_R(2) > zEnd) continue;
 
         Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
-        if((*fi)->getFieldstrength(temp_R, tmpE, tmpB) == true) // out of bounds
-            continue;
+        // out of bounds?
+        if ((*fi)->getFieldstrength(temp_R, tmpE, tmpB)) continue;
 
         ++fcount;
 
@@ -473,7 +466,6 @@ bool Cyclotron::apply(const Vector_t &R, const Vector_t &P, const double &t, Vec
                 powert *= (t * 1e-9);
                 frequency += fcoef * powert; // Add frequency ramp (in MHz/s^n)
             }
-
             powert = 1;
             for(const double vcoef : (*rfvci)) {
                 powert *= (t * 1e-9);
@@ -486,15 +478,11 @@ bool Cyclotron::apply(const Vector_t &R, const Vector_t &P, const double &t, Vec
         E += ebscale * cos(phase) * tmpE;
         B -= ebscale * sin(phase) * tmpB;
 
-        // INFOMSG("Field " << fcount << " BANDRF E= " << tmpE << " R= " << R << " phase " << phase << endl);
-
         if(myBFieldType_m != SYNCHRO)
             continue;
 
         // Some phase output -DW
-
         if (tet >= 90.0 && waiting_for_gap == 1) {
-
             double phase_print = 180.0 * phase / pi;
             phase_print = fmod(phase_print, 360) - 360.0;
 
@@ -515,6 +503,9 @@ bool Cyclotron::apply(const Vector_t &R, const Vector_t &P, const double &t, Vec
             *gmsg << "Gap 2 B-Field = (" << B[0] << "/" << B[1] << "/" << B[2] << ")" << endl;
             *gmsg << "RF Frequency = " << frequency << " MHz" << endl;
             waiting_for_gap = 0;
+        }
+        if(myBFieldType_m == SYNCHRO) {
+            ++rffci, ++rfvci;
         }
     }
     return false;
@@ -677,14 +668,13 @@ bool Cyclotron::interpolate(const double& rad,
 
     int it = (int) xit;
 
-    //    *gmsg << R << " tet_map= " << tet_map << " ir= " << ir << " it= " << it << " bf= " << Bfield.bfld[idx(ir,it)] << endl;
-
     const double wt1 = xit - (double)it;
     const double wt2 = 1.0 - wt1;
 
-    // it : the number of point on the inner path whose angle is less than the particle' corresponding angle.
+    // it : the number of point on the inner path whose angle is less than
+    // the particle' corresponding angle.
     // include zero degree point
-    it = it + 1;
+    it++;
 
     int r1t1, r2t1, r1t2, r2t2;
     int ntetS = Bfield.ntet + 1;
@@ -813,8 +803,8 @@ void Cyclotron::getdiffs() {
 
             int kEdge;
 
-            kEdge = max(k - 2, 0);
-            kEdge = min(kEdge, Bfield.ntet - 5);
+            kEdge = std::max(k - 2, 0);
+            kEdge = std::min(kEdge, Bfield.ntet - 5);
 
             int dkFromEdge = k - kEdge;
             int index = idx(i, k);
@@ -835,8 +825,8 @@ void Cyclotron::getdiffs() {
             double rac = BP.rarr[i];
             // define iredg, the reference index for radial interpolation
             // standard: i-2 minimal: 0 (not negative!)  maximal: nrad-4
-            int iredg = max(i - 2, 0);
-            iredg = min(iredg, Bfield.nrad - 5);
+            int iredg = std::max(i - 2, 0);
+            iredg = std::min(iredg, Bfield.nrad - 5);
             int irtak = i - iredg;
             int index = idx(i, k);
             int indexredg = idx(iredg, k);
@@ -1065,14 +1055,12 @@ void Cyclotron::getFieldFromFile_FFA(const double &scaleFactor) {
       2.1000   2.0  2.0987  0.0733      0.0000000000000000
     */
 
-
-
-    vector<double> rv;
-    vector<double> thv;
-    vector<double> xv;
-    vector<double> yv;
-    vector<double> bzv;
-    vector<double>::iterator vit;
+    std::vector<double> rv;
+    std::vector<double> thv;
+    std::vector<double> xv;
+    std::vector<double> yv;
+    std::vector<double> bzv;
+    std::vector<double>::iterator vit;
 
     *gmsg << "* ----------------------------------------------" << endl;
     *gmsg << "*    READ IN FFA FIELD MAP     " << endl;
@@ -1080,27 +1068,13 @@ void Cyclotron::getFieldFromFile_FFA(const double &scaleFactor) {
 
     BP.Bfact = -10.0; // T->kG and H- for the current FNAL FFA
 
-    ifstream file_to_read(fmapfn_m.c_str());
+    std::ifstream file_to_read(fmapfn_m.c_str());
     const int max_num_of_char_in_a_line = 128;
     const int num_of_header_lines = 1;
 
     // STEP2: SKIP ALL THE HEADER LINES
     for(int i = 0; i < num_of_header_lines; ++i)
         file_to_read.ignore(max_num_of_char_in_a_line, '\n');
-
-/*
-    while(!file_to_read.eof()) {
-        double r, th, x, y, bz;
-        file_to_read >> r >> th >> x >> y >> bz;
-        if((int)th != 360) {
-            rv.push_back(r * 1000.0);
-            thv.push_back(th);
-            xv.push_back(x * 1000.0);
-            yv.push_back(y * 1000.0);
-            bzv.push_back(bz);
-        }
-    }
-*/
 
     // TEMP for OPAL 2.0 changing this to m -DW
     while(!file_to_read.eof()) {
@@ -1153,13 +1127,15 @@ void Cyclotron::getFieldFromFile_FFA(const double &scaleFactor) {
 
     int count = 0;
     if((Ippl::getNodes()) == 1 && Options::info) {
-        fstream fp;
-        fp.open("data/gnu.out", ios::out);
+        std::fstream fp;
+        fp.open("data/gnu.out", std::ios::out);
 
         for(int r = 0; r < Bfield.nrad; r++) {
             for(int k = 0; k < Bfield.ntet; k++) {
                 Bfield.bfld[idx(r, k)] = bzv[count] * BP.Bfact;
-                fp << BP.rmin + (r * BP.delr) << " \t " << k*(BP.tetmin + BP.dtet) << " \t " << Bfield.bfld[idx(r, k)] << endl;
+                fp << BP.rmin + (r * BP.delr) << " \t "
+                   << k*(BP.tetmin + BP.dtet) << " \t "
+                   << Bfield.bfld[idx(r, k)] << std::endl;
                 count++;
             }
         }
@@ -1184,15 +1160,18 @@ void Cyclotron::getFieldFromFile_AVFEQ(const double &scaleFactor) {
                              theta maximum(90deg)
                              theta step(0.5deg).
 
-        From the next line data repeat the block for a given r which the first line of the block tells.
-        Each block consists of the data Bz from theta minimum (0deg) to theta maximum(90deg) with theta step(0.5deg).
+        From the next line data repeat the block for a given r which the
+        first line of the block tells. Each block consists of the data Bz
+        from theta minimum (0deg) to theta maximum(90deg) with theta
+        step(0.5deg).
     */
 
     BP.Bfact = scaleFactor / 1000.;
 
     if((f = fopen(fmapfn_m.c_str(), "r")) == NULL) {
-        throw GeneralClassicException("Cyclotron::getFieldFromFile_AVFEQ",
-                                      "failed to open file '" + fmapfn_m + "', please check if it exists");
+        throw GeneralClassicException(
+            "Cyclotron::getFieldFromFile_AVFEQ",
+            "failed to open file '" + fmapfn_m + "', please check if it exists");
     }
 
     CHECK_CYC_FSCANF_EOF(fscanf(f, "%lf", &BP.rmin));
@@ -1229,7 +1208,8 @@ void Cyclotron::getFieldFromFile_AVFEQ(const double &scaleFactor) {
     int ntotidx = idx(Bfield.nrad, Bfield.ntetS) + 1;
 
     Bfield.ntot = Bfield.ntetS * Bfield.nrad;
-    *gmsg << "* Total stored grid point number ( ntetS * nrad ) : " << Bfield.ntot << " ntot-idx= " << ntotidx << endl;
+    *gmsg << "* Total stored grid point number ( ntetS * nrad ) : "
+          << Bfield.ntot << " ntot-idx= " << ntotidx << endl;
 
     Bfield.bfld.resize(Bfield.ntot);
     Bfield.dbt.resize(Bfield.ntot);
@@ -1238,25 +1218,27 @@ void Cyclotron::getFieldFromFile_AVFEQ(const double &scaleFactor) {
 
     *gmsg << "* rescaling of the fields with factor: " << BP.Bfact << endl;
 
-    fstream fp;
+    std::fstream fp;
     if((Ippl::getNodes()) == 1 && Options::info)
-      fp.open("data/gnu.out", ios::out);
+        fp.open("data/gnu.out", std::ios::out);
 
     double tmp;
     int count = 0;
 
     for(int r = 0; r < Bfield.nrad; r++) {
-      CHECK_CYC_FSCANF_EOF(fscanf(f, "%16lE", &tmp));   // over read
-      for(int k = 0; k < Bfield.ntetS; k++) {
-          CHECK_CYC_FSCANF_EOF(fscanf(f, "%16lE", &(Bfield.bfld[idx(r, k)])));
-          Bfield.bfld[idx(r, k)] *= BP.Bfact;
-          if((Ippl::getNodes()) == 1 && Options::info)
-              fp << BP.rmin + (r * BP.delr) << " \t " << k*(BP.tetmin + BP.dtet) << " \t " << Bfield.bfld[idx(r, k)] << " idx= " << idx(r, k)  << endl;
-          count++;
-      }
+        CHECK_CYC_FSCANF_EOF(fscanf(f, "%16lE", &tmp));   // over read
+        for(int k = 0; k < Bfield.ntetS; k++) {
+            CHECK_CYC_FSCANF_EOF(fscanf(f, "%16lE", &(Bfield.bfld[idx(r, k)])));
+            Bfield.bfld[idx(r, k)] *= BP.Bfact;
+            if((Ippl::getNodes()) == 1 && Options::info)
+                fp << BP.rmin + (r * BP.delr) << " \t "
+                   << k*(BP.tetmin + BP.dtet) << " \t "
+                   << Bfield.bfld[idx(r, k)] << " idx= " << idx(r, k)  << std::endl;
+            count++;
+        }
     }
     if((Ippl::getNodes()) == 1 && Options::info)
-      fp.close();
+        fp.close();
     fclose(f);
     *gmsg << "* Field Map read successfully nelem= " << count << endl << endl;
 }
@@ -1325,28 +1307,26 @@ void Cyclotron::getFieldFromFile_Carbon(const double &scaleFactor) {
     }
 
     if((Ippl::getNodes()) == 1 && Options::info) {
-        fstream fp1, fp2;
-        fp1.open("data/gnu.out", ios::out);
-        fp2.open("data/eb.out", ios::out);
+        std::fstream fp1, fp2;
+        fp1.open("data/gnu.out", std::ios::out);
+        fp2.open("data/eb.out", std::ios::out);
         for(int i = 0; i < Bfield.nrad; i++) {
             for(int k = 0; k < Bfield.ntet; k++) {
-                fp1 << BP.rmin + (i * BP.delr) << " \t " << k * (BP.tetmin + BP.dtet) << " \t " << Bfield.bfld[idx(i, k)] << endl;
+                fp1 << BP.rmin + (i * BP.delr) << " \t "
+                    << k * (BP.tetmin + BP.dtet) << " \t "
+                    << Bfield.bfld[idx(i, k)] << std::endl;
 
                 Vector_t tmpR = Vector_t (BP.rmin + (i * BP.delr), 0.0, k * (BP.tetmin + BP.dtet));
                 Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
                 tmpR /= 1000.0; // -> mm to m
-                vector<Fieldmap *>::const_iterator fi  = RFfields_m.begin();
-                vector<double>::const_iterator rffi    = rffrequ_m.begin();
-                vector<double>::const_iterator rfphii  = rfphi_m.begin();
-                vector<double>::const_iterator escali  = escale_m.begin();
-                for(; fi != RFfields_m.end(); ++fi, ++rffi, ++rfphii, ++escali) {
+                for (auto& fi: RFfields_m) {
                     Vector_t E(0.0, 0.0, 0.0), B(0.0, 0.0, 0.0);
-                    if(!(*fi)->getFieldstrength(tmpR, tmpE, tmpB)) {
+                    if(!fi->getFieldstrength(tmpR, tmpE, tmpB)) {
                         tmpE += E;
                         tmpB -= B;
                     }
                 }
-                fp2 << tmpR  <<  " \t E= " << tmpE << "\t B= " << tmpB << endl;
+                fp2 << tmpR  <<  " \t E= " << tmpE << "\t B= " << tmpB << std::endl;
             }
         }
         fp1.close();
@@ -1424,14 +1404,14 @@ void Cyclotron::getFieldFromFile_CYCIAE(const double &scaleFactor) {
             CHECK_CYC_FSCANF_EOF(fscanf(f, "%d", &dtmp));
             CHECK_CYC_FSCANF_EOF(fscanf(f, "%d", &dtmp));
             CHECK_CYC_FSCANF_EOF(fscanf(f, "%lf", &(Bfield.bfld[idx(i, k)])));
-            Bfield.bfld[idx(i, k)] = Bfield.bfld[idx(i, k)] * (-10.0); //  T --> kGs, minus for minus hydrongen
+            //  T --> kGs, minus for minus hydrogen
+            Bfield.bfld[idx(i, k)] = Bfield.bfld[idx(i, k)] * (-10.0);
         }
 
         for(int k = nHalfPoints; k < Bfield.ntet; k++) {
             Bfield.bfld[idx(i, k)] = Bfield.bfld[idx(i, Bfield.ntet-k)];
         }
     }
-    //  for(int i=0; i < 300; i++) msg <<"i="<<i<<", Bfield = "<< Bfield.bfld[i]<<endl;
 
     fclose(f);
 
@@ -1441,21 +1421,16 @@ void Cyclotron::getFieldFromFile_CYCIAE(const double &scaleFactor) {
 void Cyclotron::getFieldFromFile_BandRF(const double &scaleFactor) {
 
     // read 3D E&B field data file
-    vector<string>::const_iterator fm    = RFfilename_m.begin();
-    // loop over all field maps and superpose fields
-    vector<double>::const_iterator rffi    = rffrequ_m.begin();
-    vector<double>::const_iterator rfphii  = rfphi_m.begin();
-    vector<double>::const_iterator escali  = escale_m.begin();
 
-    for(; fm != RFfilename_m.end(); ++fm, ++rffi, ++rfphii, ++escali) {
-        Fieldmap *f = Fieldmap::getFieldmap(*fm, false);
+    // loop over all field maps and superpose fields
+    for(auto& fm: RFfilename_m) {
+        Fieldmap *f = Fieldmap::getFieldmap(fm, false);
         if(f == NULL) {
-            throw GeneralClassicException("Cyclotron::getFieldFromFile_BandRF",
-                                          "failed to open file '" + *fm + "', please check if it exists");
+            throw GeneralClassicException(
+                "Cyclotron::getFieldFromFile_BandRF",
+                "failed to open file '" + fm + "', please check if it exists");
         }
         f->readMap();
-        // if (IPPL::Comm->getOutputLevel() != 0)
-        //     f->getInfo(gmsg);
         RFfields_m.push_back(f);
     }
     // read CARBON type B field
@@ -1465,13 +1440,10 @@ void Cyclotron::getFieldFromFile_BandRF(const double &scaleFactor) {
 void Cyclotron::getFieldFromFile_Synchrocyclotron(const double &scaleFactor) {
 
     // read 3D E&B field data file
-    vector<string>::const_iterator fm    = RFfilename_m.begin();
-    vector<string>::const_iterator rffcfni = RFFCoeff_fn_m.begin();
-    vector<string>::const_iterator rfvcfni = RFVCoeff_fn_m.begin();
+    std::vector<std::string>::const_iterator fm = RFfilename_m.begin();
+    std::vector<std::string>::const_iterator rffcfni = RFFCoeff_fn_m.begin();
+    std::vector<std::string>::const_iterator rfvcfni = RFVCoeff_fn_m.begin();
     // loop over all field maps and superpose fields
-    vector<double>::const_iterator rffi    = rffrequ_m.begin();
-    vector<double>::const_iterator rfphii  = rfphi_m.begin();
-    vector<double>::const_iterator escali  = escale_m.begin();
     int fcount = 0;
     FILE *rffcf = NULL;
     FILE *rfvcf = NULL;
@@ -1481,11 +1453,12 @@ void Cyclotron::getFieldFromFile_Synchrocyclotron(const double &scaleFactor) {
     *gmsg << "*      READ IN 3D RF Fields and Frequency Coefficients        " << endl;
     *gmsg << "* ------------------------------------------------------------" << endl;
 
-    for(; fm != RFfilename_m.end(); ++fm, ++rffi, ++rfphii, ++escali, ++rffcfni, ++rfvcfni, ++fcount) {
+    for(; fm != RFfilename_m.end(); ++fm, ++rffcfni, ++rfvcfni, ++fcount) {
         Fieldmap *f = Fieldmap::getFieldmap(*fm, false);
         if(f == NULL) {
-            throw GeneralClassicException("Cyclotron::getFieldFromFile_Synchrocyclotron",
-                                          "failed to open file '" + *fm + "', please check if it exists");
+            throw GeneralClassicException(
+                "Cyclotron::getFieldFromFile_Synchrocyclotron",
+                "failed to open file '" + *fm + "', please check if it exists");
         }
         f->readMap();
         // if (IPPL::Comm->getOutputLevel() != 0) f->getInfo(gmsg);
@@ -1497,11 +1470,12 @@ void Cyclotron::getFieldFromFile_Synchrocyclotron(const double &scaleFactor) {
         rffcf = fopen((*rffcfni).c_str(), "r");
 
         if(rffcf == NULL) {
-            throw GeneralClassicException("Cyclotron::getFieldFromFile_Synchrocyclotron",
-                                          "failed to open file '" + *rffcfni + "', please check if it exists");
+            throw GeneralClassicException(
+                "Cyclotron::getFieldFromFile_Synchrocyclotron",
+                "failed to open file '" + *rffcfni + "', please check if it exists");
         }
 
-        vector<double> fcoeff;
+        std::vector<double> fcoeff;
 
         int nc; //Number of coefficients
         double value;
@@ -1523,11 +1497,12 @@ void Cyclotron::getFieldFromFile_Synchrocyclotron(const double &scaleFactor) {
         rfvcf = fopen((*rfvcfni).c_str(), "r");
 
         if(rfvcf == NULL) {
-            throw GeneralClassicException("Cyclotron::getFieldFromFile_Synchrocyclotron",
-                                          "failed to open file '" + *rfvcfni + "', please check if it exists");
+            throw GeneralClassicException(
+                "Cyclotron::getFieldFromFile_Synchrocyclotron",
+                "failed to open file '" + *rfvcfni + "', please check if it exists");
         }
 
-        vector<double> vcoeff;
+        std::vector<double> vcoeff;
 
         CHECK_CYC_FSCANF_EOF(fscanf(rfvcf, "%d", &nc));
         *gmsg << "* Number of coefficients in file: " << nc << endl;
@@ -1549,3 +1524,10 @@ void Cyclotron::getDimensions(double &zBegin, double &zEnd) const
 { }
 
 #undef CHECK_CYC_FSCANF_EOF
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode:nil
+// End:

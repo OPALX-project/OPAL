@@ -1,25 +1,21 @@
 #include "MemoryProfiler.h"
 
 #ifdef __linux__
-    #include <sys/types.h>
-    #include <unistd.h>
+#include <sys/types.h>
+#include <unistd.h>
 #endif
 
-#include "OPALconfig.h"
-#include "AbstractObjects/OpalData.h"
 #include "Utilities/Timer.h"
-#include "Utilities/Util.h"
 #include "Utilities/OpalException.h"
 
 #include <boost/filesystem.hpp>
 
 #include "Ippl.h"
 
-#include <iomanip>
+#include <sstream>
 
-
-MemoryProfiler::MemoryProfiler()
-    : fname_m(OpalData::getInstance()->getInputBasename() + ".mem")
+MemoryProfiler::MemoryProfiler(const std::string& fname, bool restart)
+    : SDDSWriter(fname, restart)
 {
     procinfo_m = {
         {"VmPeak:", VirtualMemory::VMPEAK},
@@ -36,194 +32,112 @@ MemoryProfiler::MemoryProfiler()
         {"VmPMD:",  VirtualMemory::VMPMD},
         {"VmSwap:", VirtualMemory::VMSWAP}
     };
-    
+
     vmem_m.resize(procinfo_m.size());
     unit_m.resize(procinfo_m.size());
-    
-    if ( !boost::filesystem::exists(fname_m) ) {
-        this->header_m();
-    }
 }
 
 
-MemoryProfiler::~MemoryProfiler() {
-    if ( ofstream_m.is_open() )
-        ofstream_m.close();
-}
+void MemoryProfiler::header() {
 
-
-void MemoryProfiler::header_m() {
-    
-    if ( Ippl::myNode() != 0 )
+    static bool isFirst = true;
+    if ( !isFirst ) {
         return;
-    
-    ofstream_m.open(fname_m, std::ios::out);
-    
+    }
+    isFirst = false;
+
+    columns_m.addColumn("t", "double", "ns", "Time");
+
+    columns_m.addColumn("s", "double", "m", "Path length");
+
+    // peak virtual memory size
+    columns_m.addColumn("VmPeak-Min", "double", unit_m[VirtualMemory::VMPEAK],
+                        "Minimum peak virtual memory size");
+
+    columns_m.addColumn("VmPeak-Max", "double", unit_m[VirtualMemory::VMPEAK],
+                        "Maximum peak virtual memory size");
+
+    columns_m.addColumn("VmPeak-Avg", "double", unit_m[VirtualMemory::VMPEAK],
+                        "Average peak virtual memory size");
+
+    // virtual memory size
+    columns_m.addColumn("VmSize-Min", "double", unit_m[VirtualMemory::VMSIZE],
+                        "Minimum virtual memory size");
+
+    columns_m.addColumn("VmSize-Max", "double", unit_m[VirtualMemory::VMSIZE],
+                        "Maximum virtual memory size");
+
+    columns_m.addColumn("VmSize-Avg", "double", unit_m[VirtualMemory::VMSIZE],
+                        "Average virtual memory size");
+
+    // peak resident set size ("high water mark")
+    columns_m.addColumn("VmHWM-Min", "double", unit_m[VirtualMemory::VMHWM],
+                        "Minimum peak resident set size");
+
+    columns_m.addColumn("VmHWM-Max", "double", unit_m[VirtualMemory::VMHWM],
+                        "Maximum peak resident set size");
+
+    columns_m.addColumn("VmHWM-Avg", "double", unit_m[VirtualMemory::VMHWM],
+                        "Average peak resident set size");
+
+    // resident set size
+    columns_m.addColumn("VmRSS-Min", "double", unit_m[VirtualMemory::VMRSS],
+                        "Minimum resident set size");
+
+    columns_m.addColumn("VmRSS-Max", "double", unit_m[VirtualMemory::VMRSS],
+                        "Maximum resident set size");
+
+    columns_m.addColumn("VmRSS-Avg", "double", unit_m[VirtualMemory::VMRSS],
+                        "Average resident set size");
+
+    // stack size
+    columns_m.addColumn("VmStk-Min", "double", unit_m[VirtualMemory::VMSTK],
+                        "Minimum stack size");
+
+    columns_m.addColumn("VmStk-Max", "double", unit_m[VirtualMemory::VMSTK],
+                        "Maximum stack size");
+
+    columns_m.addColumn("VmStk-Avg", "double", unit_m[VirtualMemory::VMSTK],
+                        "Average stack size");
+
+    if ( mode_m == std::ios::app )
+        return;
+
     OPALTimer::Timer simtimer;
 
     std::string dateStr(simtimer.date());
     std::string timeStr(simtimer.time());
-    std::string indent("        ");
 
-    ofstream_m << "SDDS1" << std::endl;
-    ofstream_m << "&description\n"
-               << indent << "text=\"Memory statistics '"
-               << OpalData::getInstance()->getInputFn() << "' "
-               << dateStr << "" << timeStr << "\",\n"
-               << indent << "contents=\"memory info\"\n"
-               << "&end\n";
-    ofstream_m << "&parameter\n"
-               << indent << "name=processors,\n"
-               << indent << "type=long,\n"
-               << indent << "description=\"Number of Cores used\"\n"
-               << "&end\n";
-    ofstream_m << "&parameter\n"
-               << indent << "name=revision,\n"
-               << indent << "type=string,\n"
-               << indent << "description=\"git revision of opal\"\n"
-               << "&end\n";
-    ofstream_m << "&parameter\n"
-               << indent << "name=flavor,\n"
-               << indent << "type=string,\n"
-               << indent << "description=\"OPAL flavor that wrote file\"\n"
-               << "&end\n";
-    ofstream_m << "&column\n"
-               << indent << "name=t,\n"
-               << indent << "type=double,\n"
-               << indent << "units=ns,\n"
-               << indent << "description=\"1 Time\"\n"
-               << "&end\n";
+    std::stringstream ss;
+    ss << "Memory statistics '"
+       << OpalData::getInstance()->getInputFn() << "' "
+       << dateStr << "" << timeStr;
 
-    // peak virtual memory size
-    ofstream_m << "&column\n"
-               << indent << "name=VmPeak-Min,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMPEAK] + ",\n"
-               << indent << "description=\"2 Minimum peak virtual memory size\"\n"
-               << "&end\n";
-    ofstream_m << "&column\n"
-               << indent << "name=VmPeak-Max,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMPEAK] + ",\n"
-               << indent << "description=\"3 Maximum peak virtual memory size\"\n"
-               << "&end\n";
-    ofstream_m << "&column\n"
-               << indent << "name=VmPeak-Avg,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMPEAK] + ",\n"
-               << indent << "description=\"4 Average peak virtual memory size\"\n"
-               << "&end\n";
+    this->addDescription(ss.str(), "memory info");
 
-    // virtual memory size
-    ofstream_m << "&column\n"
-               << indent << "name=VmSize-Min,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMSIZE] + ",\n"
-               << indent << "description=\"5 Minimum virtual memory size\"\n"
-               << "&end\n";
-    ofstream_m << "&column\n"
-               << indent << "name=VmSize-Max,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMSIZE] + ",\n"
-               << indent << "description=\"6 Maximum virtual memory size\"\n"
-               << "&end\n";
-    ofstream_m << "&column\n"
-               << indent << "name=VmSize-Avg,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMSIZE] + ",\n"
-               << indent << "description=\"7 Average virtual memory size\"\n"
-               << "&end\n";
+    this->addDefaultParameters();
 
-    // peak resident set size ("high water mark")
-    ofstream_m << "&column\n"
-               << indent << "name=VmHWM-Min,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMHWM] + ",\n"
-               << indent << "description=\"8 Minimum peak resident set size\"\n"
-               << "&end\n";
-    ofstream_m << "&column\n"
-               << indent << "name=VmHWM-Max,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMHWM] + ",\n"
-               << indent << "description=\"9 Maximum peak resident set size\"\n"
-               << "&end\n";
-    ofstream_m << "&column\n"
-               << indent << "name=VmHWM-Avg,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMHWM] + ",\n"
-               << indent << "description=\"10 Average peak resident set size\"\n"
-               << "&end\n";
-
-    // resident set size
-    ofstream_m << "&column\n"
-               << indent << "name=VmRSS-Min,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMRSS] + ",\n"
-               << indent << "description=\"11 Minimum resident set size\"\n"
-               << "&end\n";
-    ofstream_m << "&column\n"
-               << indent << "name=VmRSS-Max,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMRSS] + ",\n"
-               << indent << "description=\"12 Maximum resident set size\"\n"
-               << "&end\n";
-    ofstream_m << "&column\n"
-               << indent << "name=VmRSS-Avg,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMRSS] + ",\n"
-               << indent << "description=\"13 Average resident set size\"\n"
-               << "&end\n";
-
-    // stack size
-    ofstream_m << "&column\n"
-               << indent << "name=VmStk-Min,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMSTK] + ",\n"
-               << indent << "description=\"14 Minimum stack size\"\n"
-               << "&end\n";
-    ofstream_m << "&column\n"
-               << indent << "name=VmStk-Max,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMSTK] + ",\n"
-               << indent << "description=\"15 Maximum stack size\"\n"
-               << "&end\n";
-    ofstream_m << "&column\n"
-               << indent << "name=VmStk-Avg,\n"
-               << indent << "type=double,\n"
-               << indent << "units=" + unit_m[VirtualMemory::VMSTK] + ",\n"
-               << indent << "description=\"16 Average stack size\"\n"
-               << "&end\n";
-    
-    ofstream_m << "&data\n"
-               << indent << "mode=ascii,\n"
-               << indent << "no_row_counts=1\n"
-               << "&end\n";
-
-    ofstream_m << Ippl::getNodes() << std::endl;
-    ofstream_m << OPAL_PROJECT_NAME << " " << OPAL_PROJECT_VERSION << " git rev. #" << Util::getGitRevision() << std::endl;
-    ofstream_m << (OpalData::getInstance()->isInOPALTMode()? "opal-t":
-                   (OpalData::getInstance()->isInOPALCyclMode()? "opal-cycl": "opal-env")) << std::endl;
-    ofstream_m.close();
+    this->addInfo("ascii", 1);
 }
 
 
-void MemoryProfiler::update_m() {
+void MemoryProfiler::update() {
 #ifdef __linux__
     static pid_t pid = getpid();
     std::string fname = "/proc/" + std::to_string(pid) + "/status";
-    
+
     if ( !boost::filesystem::exists(fname) ) {
-        throw OpalException("MemoryProfiler::update_m()",
+        throw OpalException("MemoryProfiler::update()",
                             "File '" + fname + "' doesn't exist.");
     }
-    
+
     std::ifstream ifs(fname.c_str());
-    
+
     if ( !ifs.is_open() ) {
-        throw OpalException("MemoryProfiler::update_m()",
+        throw OpalException("MemoryProfiler::update()",
                             "Failed to open '" + fname + "'.");
     }
-    
+
     std::string token = "";
     while (ifs >> token) {
         if ( !procinfo_m.count(token) ) {
@@ -233,15 +147,15 @@ void MemoryProfiler::update_m() {
         ifs >> vmem_m[idx]
             >> unit_m[idx];
     }
-    
+
     ifs.close();
 #endif
 }
 
 
-void MemoryProfiler::compute_m(vm_t& vmMin,
-                               vm_t& vmMax,
-                               vm_t& vmAvg)
+void MemoryProfiler::compute(vm_t& vmMin,
+                             vm_t& vmMax,
+                             vm_t& vmAvg)
 {
     if ( Ippl::getNodes() == 1 ) {
         for (unsigned int i = 0; i < vmem_m.size(); ++i) {
@@ -249,9 +163,9 @@ void MemoryProfiler::compute_m(vm_t& vmMin,
         }
         return;
     }
-    
+
     new_reduce(vmem_m.data(), vmAvg.data(), vmem_m.size(), std::plus<double>());
-    
+
     double inodes = 1.0 / double(Ippl::getNodes());
     for (auto& vm : vmAvg) {
         vm *= inodes;
@@ -262,44 +176,58 @@ void MemoryProfiler::compute_m(vm_t& vmMin,
 }
 
 
-void MemoryProfiler::write(double time) {
-    
-    this->update_m();
-    
+void MemoryProfiler::write(PartBunchBase<double, 3> *beam) {
+
+    this->update();
+
     vm_t vmMin(vmem_m.size());
     vm_t vmMax(vmem_m.size());
     vm_t vmAvg(vmem_m.size());
-    
-    this->compute_m(vmMin, vmMax, vmAvg);
-    
+
+    this->compute(vmMin, vmMax, vmAvg);
+
     if ( Ippl::myNode() != 0 ) {
         return;
     }
-    
-    int width = 12;
-    
-    ofstream_m.open(fname_m, std::ios::app);
-    
-    ofstream_m << time          << std::setw(width) << "\t"
-               << vmMin[VMPEAK] << std::setw(width) << "\t"
-               << vmMax[VMPEAK] << std::setw(width) << "\t"
-               << vmAvg[VMPEAK] << std::setw(width) << "\t"
-               
-               << vmMin[VMSIZE] << std::setw(width) << "\t"
-               << vmMax[VMSIZE] << std::setw(width) << "\t"
-               << vmAvg[VMSIZE] << std::setw(width) << "\t"
-               
-               << vmMin[VMHWM]  << std::setw(width) << "\t"
-               << vmMax[VMHWM]  << std::setw(width) << "\t"
-               << vmAvg[VMHWM]  << std::setw(width) << "\t"
-               
-               << vmMin[VMRSS]  << std::setw(width) << "\t"
-               << vmMax[VMRSS]  << std::setw(width) << "\t"
-               << vmAvg[VMRSS]  << std::setw(width) << "\t"
-               
-               << vmMin[VMSTK]  << std::setw(width) << "\t"
-               << vmMax[VMSTK]  << std::setw(width) << "\t"
-               << vmAvg[VMSTK]  << std::setw(width) << "\n";
 
-    ofstream_m.close();
+    double  pathLength = 0.0;
+    if (OpalData::getInstance()->isInOPALCyclMode())
+        pathLength = beam->getLPath();
+    else
+        pathLength = beam->get_sPos();
+
+    header();
+
+    this->open();
+
+    this->writeHeader();
+
+    columns_m.addColumnValue("t", beam->getT() * 1e9);             // 1
+    columns_m.addColumnValue("s", pathLength);                     // 2
+
+    // boost::variant can't overload double and long double. By using a
+    // string this shortcoming can be bypassed.
+    columns_m.addColumnValue("VmPeak-Min", toString(vmMin[VMPEAK]));
+    columns_m.addColumnValue("VmPeak-Max", toString(vmMax[VMPEAK]));
+    columns_m.addColumnValue("VmPeak-Avg", toString(vmAvg[VMPEAK]));
+
+    columns_m.addColumnValue("VmSize-Min", toString(vmMin[VMSIZE]));
+    columns_m.addColumnValue("VmSize-Max", toString(vmMax[VMSIZE]));
+    columns_m.addColumnValue("VmSize-Avg", toString(vmAvg[VMSIZE]));
+
+    columns_m.addColumnValue("VmHWM-Min", toString(vmMin[VMHWM]));
+    columns_m.addColumnValue("VmHWM-Max", toString(vmMax[VMHWM]));
+    columns_m.addColumnValue("VmHWM-Avg", toString(vmAvg[VMHWM]));
+
+    columns_m.addColumnValue("VmRSS-Min", toString(vmMin[VMRSS]));
+    columns_m.addColumnValue("VmRSS-Max", toString(vmMax[VMRSS]));
+    columns_m.addColumnValue("VmRSS-Avg", toString(vmAvg[VMRSS]));
+
+    columns_m.addColumnValue("VmStk-Min", toString(vmMin[VMSTK]));
+    columns_m.addColumnValue("VmStk-Max", toString(vmMax[VMSTK]));
+    columns_m.addColumnValue("VmStk-Avg", toString(vmAvg[VMSTK]));
+
+    this->writeRow();
+
+    this->close();
 }

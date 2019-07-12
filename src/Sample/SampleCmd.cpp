@@ -63,6 +63,7 @@ namespace {
         KEEP,
         RESTART_FILE,
         RESTART_STEP,
+        JSON_DUMP_FREQ,
         SIZE
     };
 }
@@ -105,6 +106,10 @@ SampleCmd::SampleCmd():
     itsAttr[RESTART_STEP] = Attributes::makeReal
         ("RESTART_STEP", "Restart from given H5 step (optional)",
          std::numeric_limits<int>::min());
+    itsAttr[JSON_DUMP_FREQ] = Attributes::makeReal
+        ("JSON_DUMP_FREQ", "Defines how often new individuals are appended to the final JSON file, "
+         "i.e. every time JSON_DUMP_FREQ samples finished they are written (optional)",
+         std::numeric_limits<size_t>::max());
     registerOwnership(AttributeHandler::COMMAND);
 }
 
@@ -296,7 +301,8 @@ void SampleCmd::execute() {
             {NUMMASTERS, "num-masters"},
             {NUMCOWORKERS, "num-coworkers"},
             {RESTART_FILE, "restartfile"},
-            {RESTART_STEP, "restartstep"}
+            {RESTART_STEP, "restartstep"},
+            {JSON_DUMP_FREQ, "jsonDumpFreq"}
         });
 
     auto it = argumentMapper.end();

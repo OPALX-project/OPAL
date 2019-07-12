@@ -10,10 +10,15 @@ set (_SRCS
   H5PartWrapperForPC.cpp
   H5PartWrapperForPS.cpp
   H5PartWrapperForPT.cpp
-#  SDDSParser.cpp
   MultiBunchDump.cpp
-  OpalInputInterpreter.cpp
   IpplInfoWrapper.cpp
+  H5Writer.cpp
+  MemoryWriter.cpp
+  LBalWriter.cpp
+  StatWriter.cpp
+  SDDSColumn.cpp
+  SDDSColumnSet.cpp
+  SDDSWriter.cpp
 )
 
 include_directories (
@@ -31,11 +36,22 @@ set (HDRS
     H5PartWrapper.h
     IpplInfoWrapper.h
     MultiBunchDump.h
-    OpalInputInterpreter.h
     OpalWake.h
     SecondaryEmissionPhysics.h
     ParticleMatterInteraction.h
+    H5Writer.h
+    MemoryWriter.h
+    LBalWriter.h
+    StatWriter.h
+    SDDSColumn.h
+    SDDSColumnSet.h
+    SDDSWriter.h
 )
+
+if (ENABLE_AMR)
+    list(APPEND _SRCS GridLBalWriter.cpp)
+    list(APPEND HDRS GridLBalWriter.h)
+endif()
 
 if(UNIX AND NOT APPLE)
     # for Linux, BSD, Solaris, Minix

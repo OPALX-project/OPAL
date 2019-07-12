@@ -120,6 +120,9 @@ private:
     /// create directories, input files, fieldmaps...
     void setupSimulation();
 
+    /// create directories, input files, symlinks...
+    void setupFSStructure();
+
     /// get variables for expression evaluation from SDDS file. Can throw SDDSParserException
     void getVariableDictionary(variableDictionary_t& dictionary,
                                const std::string& filename,
