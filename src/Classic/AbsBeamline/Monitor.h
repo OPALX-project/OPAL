@@ -23,6 +23,7 @@
 
 #include "AbsBeamline/Component.h"
 #include "BeamlineGeometry/StraightGeometry.h"
+#include "Structure/LossDataSink.h"
 
 #include <map>
 #include <string>
@@ -30,7 +31,6 @@
 template <class T, unsigned Dim>
 class PartBunchBase;
 class BeamlineVisitor;
-class LossDataSink;
 
 // Class Monitor
 // ------------------------------------------------------------------------
@@ -103,6 +103,8 @@ public:
     void setOutputFN(std::string fn);
 
     void setType(Type type);
+
+    static void writeStatistics();
 private:
 
     // Not implemented.
@@ -112,10 +114,9 @@ private:
     Type type_m;
     unsigned int numPassages_m;
 
-    static std::map<std::string, unsigned int> h5pfiles_s;
-
     std::unique_ptr<LossDataSink> lossDs_m;
 
+    static std::map<double, SetStatistics> statFileEntries_sm;
     static const double halfLength_s;
 };
 

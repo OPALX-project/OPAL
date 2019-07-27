@@ -6,21 +6,16 @@ extern Inform* gmsg;
 template <class Level>
 BelosBottomSolver<Level>::BelosBottomSolver(std::string solvertype,
                                             const std::shared_ptr<prec_t>& prec_p)
-    : problem_mp( Teuchos::rcp( new problem_t() ) ),
-      prec_mp(prec_p),
-      A_mp(Teuchos::null),
-      reltol_m(1.0e-9),
-      maxiter_m(100)
+    : BottomSolver<Teuchos::RCP<amr::matrix_t>,
+                                Teuchos::RCP<amr::multivector_t>,
+                                Level>()
+    , problem_mp( Teuchos::rcp( new problem_t() ) )
+    , prec_mp(prec_p)
+    , A_mp(Teuchos::null)
+    , reltol_m(1.0e-9)
+    , maxiter_m(100)
 {
     this->initSolver_m(solvertype);
-}
-
-
-template <class Level>
-BelosBottomSolver<Level>::~BelosBottomSolver() {
-    problem_mp = Teuchos::null;
-    params_mp = Teuchos::null;
-    solver_mp = Teuchos::null;
 }
 
 
@@ -76,6 +71,8 @@ void BelosBottomSolver<Level>::setOperator(const Teuchos::RCP<matrix_t>& A,
         IpplTimings::stopTimer(precTimer);
         problem_mp->setLeftPrec(prec_mp->get());
     }
+
+    this->isInitialized_m = true;
 }
 
 

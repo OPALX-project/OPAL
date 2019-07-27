@@ -39,25 +39,30 @@
 #include <queue>
 #include <sstream>
 
-DataSink::DataSink() {
+DataSink::DataSink()
+    : isMultiBunch_m(false)
+{
     this->init();
 }
 
-DataSink::DataSink(H5PartWrapper *h5wrapper, bool restart)
+
+DataSink::DataSink(H5PartWrapper *h5wrapper, bool restart, short numBunch)
+    : isMultiBunch_m(numBunch > 1)
 {
     if (restart && !Options::enableHDF5) {
         throw OpalException("DataSink::DataSink()",
                             "Can not restart when HDF5 is disabled");
     }
 
-    this->init(restart, h5wrapper);
+    this->init(restart, h5wrapper, numBunch);
 
     if ( restart )
         rewindLines();
 }
 
-DataSink::DataSink(H5PartWrapper *h5wrapper)
-    : DataSink(h5wrapper, false)
+
+DataSink::DataSink(H5PartWrapper *h5wrapper, short numBunch)
+    : DataSink(h5wrapper, false, numBunch)
 { }
 
 
@@ -272,27 +277,16 @@ void DataSink::writeImpactStatistics(PartBunchBase<double, 3> *beam, long long &
 
 
 void DataSink::writeMultiBunchStatistics(PartBunchBase<double, 3> *beam,
-                                         const double& azimuth) {
+                                         MultiBunchHandler* mbhandler_p) {
     /// Start timer.
     IpplTimings::startTimer(StatMarkerTimer_m);
 
-    std::string fn = OpalData::getInstance()->getInputBasename();
-    bool restart   = OpalData::getInstance()->inRestartRun();
-
-    // if new bunch in machine --> generate new writer for it
-    short bunch = mbWriter_m.size();
-    while ( bunch < beam->getNumBunch() ) {
-        std::stringstream ss;
-        ss << fn << "-bunch-"
-           << std::setw(4) << std::setfill('0') << bunch << ".smb";
-        mbWriter_m.push_back(
-            mbWriter_t(new MultiBunchDump(ss.str(), restart, bunch))
-        );
-        ++bunch;
-    }
-
-    for (auto& mb : mbWriter_m) {
-        mb->write(beam, azimuth);
+    for (short b = 0; b < mbhandler_p->getNumBunch(); ++b) {
+        bool isOk = mbhandler_p->calcBunchBeamParameters(beam, b);
+        const MultiBunchHandler::beaminfo_t& binfo = mbhandler_p->getBunchInfo(b);
+        if (isOk) {
+            mbWriter_m[b]->write(beam, binfo);
+        }
     }
 
     for (size_t i = 0; i < sddsWriter_m.size(); ++i)
@@ -303,30 +297,54 @@ void DataSink::writeMultiBunchStatistics(PartBunchBase<double, 3> *beam,
 }
 
 
-void DataSink::rewindLines() {
-    unsigned int linesToRewind = 0;
-    // use stat file to get position
-    if ( statWriter_m->exists() ) {
-        double spos = h5Writer_m->getLastPosition();
-        linesToRewind = statWriter_m->rewindToSpos(spos);
-        statWriter_m->replaceVersionString();
-        h5Writer_m->close();
-    }
-
-    // rewind all others
-    if ( linesToRewind > 0 ) {
-        for (size_t i = 0; i < sddsWriter_m.size(); ++i)
-            sddsWriter_m[i]->rewindLines(linesToRewind);
+void DataSink::setMultiBunchInitialPathLengh(MultiBunchHandler* mbhandler_p) {
+    for (short b = 0; b < mbhandler_p->getNumBunch(); ++b) {
+        MultiBunchHandler::beaminfo_t& binfo = mbhandler_p->getBunchInfo(b);
+        binfo.pathlength = mbWriter_m[b]->getLastValue("s");
     }
 }
 
 
-void DataSink::init(bool restart, H5PartWrapper* h5wrapper) {
+void DataSink::rewindLines() {
+    unsigned int linesToRewind = 0;
+
+    double spos = h5Writer_m->getLastPosition();
+    if (isMultiBunch_m) {
+        /* first check if multi-bunch restart
+         * 
+         * first element of vector belongs to first
+         * injected bunch in machine --> rewind lines
+         * according to that file --> thus rewind in
+         * reversed order
+         */
+        for (std::vector<mbWriter_t>::reverse_iterator rit = mbWriter_m.rbegin();
+             rit != mbWriter_m.rend(); ++rit)
+        {
+            if ((*rit)->exists()) {
+                linesToRewind = (*rit)->rewindToSpos(spos);
+                (*rit)->replaceVersionString();
+            }
+        }
+    } else if ( statWriter_m->exists() ) {
+        // use stat file to get position
+        linesToRewind = statWriter_m->rewindToSpos(spos);
+        statWriter_m->replaceVersionString();
+    }
+    h5Writer_m->close();
+
+    // rewind all others
+    if ( linesToRewind > 0 ) {
+        for (size_t i = 0; i < sddsWriter_m.size(); ++i) {
+            sddsWriter_m[i]->rewindLines(linesToRewind);
+            sddsWriter_m[i]->replaceVersionString();
+        }
+    }
+}
+
+
+void DataSink::init(bool restart, H5PartWrapper* h5wrapper, short numBunch) {
     std::string fn = OpalData::getInstance()->getInputBasename();
-    
-    /* Set file write flags to true. These will be set to false after first
-     * write operation.
-     */
+
     lossWrCounter_m = 0;
     StatMarkerTimer_m = IpplTimings::getTimer("Write Stat");
 
@@ -356,14 +374,33 @@ void DataSink::init(bool restart, H5PartWrapper* h5wrapper) {
 #endif
     }
 
+    if ( isMultiBunch_m ) {
+        initMultiBunchDump(numBunch);
+    }
+
     if ( Options::enableHDF5 ) {
         h5Writer_m = h5Writer_t(new H5Writer(h5wrapper, restart));
     }
 }
 
+
+void DataSink::initMultiBunchDump(short numBunch) {
+    bool restart   = OpalData::getInstance()->inRestartRun();
+    std::string fn = OpalData::getInstance()->getInputBasename();
+    short bunch = mbWriter_m.size();
+    while (bunch < numBunch) {
+        std::string fname = fn + std::string("-bunch-") +
+                            convertToString(bunch, 4) + std::string(".smb");
+        mbWriter_m.push_back(
+            mbWriter_t(new MultiBunchDump(fname, restart))
+        );
+        ++bunch;
+    }
+}
+
 // vi: set et ts=4 sw=4 sts=4:
 // Local Variables:
-// mode:c
+// mode:c++
 // c-basic-offset: 4
 // indent-tabs-mode:nil
 // End:

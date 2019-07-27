@@ -964,10 +964,12 @@ BoundaryGeometry::intersectLineTriangle (
         if (r < 0.0) {                  // ray goes away from triangle
             return 0;                   // => no intersect
         }
+        break;
     case SEGMENT:
         if (r < 0 || 1.0 < r) {         // intersection on extended
             return 0;                   // segment
         }
+        break;
     case LINE:
         break;
     };

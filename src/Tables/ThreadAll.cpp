@@ -131,7 +131,7 @@ void ThreadAll::execute() {
             } else {
                 ++iter;
             }
-        } catch(DomainError) {
+        } catch(const DomainError &) {
             // Domain error detected;
             // attempt to correct in the plane which has the larger deviation.
             FVector<double, 6> orbit = itsTracker->getOrbit();

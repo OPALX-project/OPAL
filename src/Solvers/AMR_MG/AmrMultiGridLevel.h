@@ -167,20 +167,20 @@ public:
      */
     bool isValid(const AmrIntVect_t& iv) const;
 
-private:
     /*!
      * Build a mask specifying if a grid point is covered,
      * an interior cell, at physical boundary or at interior boundary
      */
-    void buildLevelMask_m();
-    
+    void buildLevelMask();
+
+private:
     /*!
      * Build Tpetra::Map of this level
      * @param comm MPI communicator
      * @param node Kokkos node type
      */
-    void buildMap_m(const Teuchos::RCP<comm_t>& comm,
-                    const Teuchos::RCP<node_t>& node);
+    void buildMap(const Teuchos::RCP<comm_t>& comm,
+                  const Teuchos::RCP<node_t>& node);
     
 public:
     const amrex::BoxArray& grids;           ///< boxes of this level

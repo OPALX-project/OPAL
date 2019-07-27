@@ -42,8 +42,6 @@ public:
     BelosBottomSolver(std::string solvertype = "Pseudoblock CG",
                       const std::shared_ptr<prec_t>& prec_p = nullptr);
     
-    ~BelosBottomSolver();
-    
     void solve(const Teuchos::RCP<mv_t>& x,
                const Teuchos::RCP<mv_t>& b);
     

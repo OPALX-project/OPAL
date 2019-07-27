@@ -154,9 +154,11 @@ namespace Util {
     unsigned int rewindLinesSDDS(const std::string &fileName, double maxSPos, bool checkForTime) {
         if (Ippl::myNode() > 0) return 0;
 
+        std::fstream fs(fileName.c_str(), std::fstream::in);
+        if (!fs.is_open()) return 0;
+
         std::string line;
         std::queue<std::string> allLines;
-        std::fstream fs;
         unsigned int numParameters = 0;
         unsigned int numColumns = 0;
         unsigned int sposColumnNr = 0;
@@ -172,9 +174,6 @@ namespace Util {
         boost::smatch match;
 
         std::istringstream linestream;
-        fs.open (fileName.c_str(), std::fstream::in);
-
-        if (!fs.is_open()) return 0;
 
         while (getline(fs, line)) {
             allLines.push(line);

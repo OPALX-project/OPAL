@@ -31,9 +31,6 @@ OpalBeamline::~OpalBeamline() {
     elements_m.clear();
 }
 
-CompVec OpalBeamline::dummy_list_m = CompVec();
-OpalSection OpalBeamline::dummy_section_m = OpalSection(dummy_list_m, 0., 0.);
-
 std::set<std::shared_ptr<Component>> OpalBeamline::getElements(const Vector_t &x) {
     std::set<std::shared_ptr<Component> > elementSet;
     FieldList::iterator it = elements_m.begin();

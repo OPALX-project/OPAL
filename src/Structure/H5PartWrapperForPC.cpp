@@ -108,7 +108,7 @@ void H5PartWrapperForPC::readStepHeader(PartBunchBase<double, 3>* bunch) {
 
     h5_int64_t numBunch;
     READSTEPATTRIB(Int64, file_m, "NumBunch", &numBunch);
-    bunch->setNumBunch((int)numBunch);
+    bunch->setNumBunch((short)numBunch);
 
     if (predecessorOPALFlavour_m == "opal-cycl") {
         READSTEPATTRIB(Float64, file_m, "REFPR", (h5_float64_t*) &referenceMomentum_m[0]);

@@ -20,19 +20,17 @@ static2a: 0-Hfield for IsoDAR central region RF
 #include <fstream>
 #include <ios>
 #include <iostream>
-#include "Ippl.h"
 #include "H5hut.h"
 #include <cassert>
 #include <string>
 #include <algorithm>
-using namespace std;
+#include <cmath>
+
 
 int main(int argc,char *argv[]) {
-    Ippl ippl(argc, argv);
-    Inform msg("ascii2h5block ");  
     
     if (argc != 3) {
-        msg << "Wrong number of arguments: ascii2h5block efield.txt outfield" << endl;
+        std::cout << "Wrong number of arguments: ascii2h5block efield.txt outfield" << std::endl;
         exit(1);
     }
 
@@ -40,8 +38,8 @@ int main(int argc,char *argv[]) {
     std::string ehfout(argv[2]);
     std::string ehfout_c = ehfout + std::string("_CYC.h5part");
 
-    msg << "--------------------------------------------------------" << endl;
-    msg << "Using " << efin << " to create " << ehfout_c << endl;
+    std::cout << "--------------------------------------------------------" << std::endl;
+    std::cout << "Using " << efin << " to create " << ehfout_c << std::endl;
 
     // Open file streams
     std::ifstream finE;
@@ -52,7 +50,7 @@ int main(int argc,char *argv[]) {
     int nlinesE = std::count(std::istreambuf_iterator<char>(finE), 
 			     std::istreambuf_iterator<char>(), '\n');
     
-    msg << "Lines in finE: " << nlinesE << endl;
+    std::cout << "Lines in finE: " << nlinesE << std::endl;
 
     // Header has 5 lines
     int nlines = nlinesE - 5;
@@ -60,7 +58,7 @@ int main(int argc,char *argv[]) {
     // Reset iterator
     finE.seekg(0, finE.beg);
     
-    string templine;
+    std::string templine;
 
     // Skip the 5 header lines
     for (int i = 0; i < 5; i++){
@@ -94,7 +92,6 @@ int main(int argc,char *argv[]) {
     
     /*N.B.: Daniela's files now have the structure: Bx,By,Bz; no complex numbers
      units are cm, V/cm and Gauss */
-    double tmp;              
     for(int i = 0; i < nlines; i++) {
         finE >> Ex[i] >> Ey[i] >> Ez[i];
     }
@@ -106,22 +103,22 @@ int main(int argc,char *argv[]) {
     int i_temp = 0;
 
     for (int i = 0; i < nlines; i++){
-        E_temp = sqrt(Ex[i] * Ex[i] + Ey[i] * Ey[i] + Ez[i] * Ez[i]);
+        E_temp = std::sqrt(Ex[i] * Ex[i] + Ey[i] * Ey[i] + Ez[i] * Ez[i]);
         if (E_temp > Emax) {
             Emax = E_temp;
             i_temp = i;
         }
     }
 
-    msg << "Hardcoded limits: x(" << xbegin << "/" << xend << ") cm" << endl;
-    msg << "Hardcoded limits: y(" << ybegin << "/" << yend << ") cm" << endl;
-    msg << "Hardcoded limits: z(" << zbegin << "/" << zend << ") cm" << endl;
+    std::cout << "Hardcoded limits: x(" << xbegin << "/" << xend << ") cm" << std::endl;
+    std::cout << "Hardcoded limits: y(" << ybegin << "/" << yend << ") cm" << std::endl;
+    std::cout << "Hardcoded limits: z(" << zbegin << "/" << zend << ") cm" << std::endl;
 
     // Set spacing 
     // TODO: Make program find spacing automatically -DW
     double spacing = 0.2;
 
-    msg << "Hardcoded spacing: " << spacing << " cm" << endl;
+    std::cout << "Hardcoded spacing: " << spacing << " cm" << std::endl;
 
     double gridPx_temp = (xend - xbegin) / spacing + 1.0;
     double gridPy_temp = (yend - ybegin) / spacing + 1.0;
@@ -133,14 +130,14 @@ int main(int argc,char *argv[]) {
 
     int nlines_hc = gridPx * gridPy * gridPz;
 
-    msg << "Hardcoded nlines: " << nlines_hc << endl;
-    msg << "File nlines: " << nlines << endl; 
+    std::cout << "Hardcoded nlines: " << nlines_hc << std::endl;
+    std::cout << "File nlines: " << nlines << std::endl; 
 
-    msg << "Grid dimensions: Px = " << gridPx << " , Py = " << gridPy << " , Pz = " << gridPz << endl;
+    std::cout << "Grid dimensions: Px = " << gridPx << " , Py = " << gridPy << " , Pz = " << gridPz << std::endl;
 
-    msg << "E_max = (" << Ex[i_temp] << ", "<< Ey[i_temp] << ", " << Ez[i_temp] << ") V/cm at index " << i_temp << "." << endl;
+    std::cout << "E_max = (" << Ex[i_temp] << ", "<< Ey[i_temp] << ", " << Ez[i_temp] << ") V/cm at index " << i_temp << "." << std::endl;
 
-    msg << "Converting from V/cm and cm to kV/mm and mm before saving h5part" << endl;
+    std::cout << "Converting from V/cm and cm to kV/mm and mm before saving h5part" << std::endl;
 
 
     // Here we also convert from from G to kG
@@ -178,8 +175,8 @@ int main(int argc,char *argv[]) {
     xend *= 10; yend *= 10; zend *= 10;
 
     // Write h5part file for OPAL-CYC
-    h5_int64_t h5err;
-    h5_file_t *file = H5OpenFile(ehfout_c.c_str(), H5_O_WRONLY, MPI_COMM_WORLD);
+    h5_err_t h5err;
+    h5_file_t file = H5OpenFile(ehfout_c.c_str(), H5_O_WRONLY, H5_PROP_DEFAULT);
     h5err = H5Block3dSetView(file,
                              0, gridPx - 1,
                              0, gridPy - 1,
@@ -252,6 +249,6 @@ int main(int argc,char *argv[]) {
     foutEH.close();
     */
 
-    msg << "Done, bye ..." << endl;
-    msg << "--------------------------------------------------------" << endl;
+    std::cout << "Done, bye ..." << std::endl;
+    std::cout << "--------------------------------------------------------" << std::endl;
 }

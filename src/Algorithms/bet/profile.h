@@ -19,6 +19,8 @@
 
 #include <stdio.h>
 
+#include <vector>
+
 enum Interpol_type {
     itype_spline,      // spline interpolation
     itype_lin,         // linearl interpolation
@@ -30,8 +32,8 @@ class Profile {
     double
     yMax,                // maximum of array
     yMin,                // minimum of array
-    sf,                  // scaling factor (1.0 by default)
-    *x, *y, *y2;
+    sf;                  // scaling factor (1.0 by default)
+    std::vector<double> x, y, y2;
 
 private:
     void create();         // general creator routine
@@ -45,7 +47,6 @@ public:
     Profile(               // creator from file
         char *,                 // filename
         double = 0.0);          // cutoff value
-    ~Profile();
 
     void normalize();      // set max of profile to 1.0
     void scale(double);    // scale the amplitude

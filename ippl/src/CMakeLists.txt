@@ -121,10 +121,6 @@ if (ENABLE_AMR)
     add_subdirectory(AmrParticle)
 endif ()
 
-set (MAKE_DEF
-    ../test/Makefile.def
-    )
-
 include_directories (
     BEFORE ${CMAKE_CURRENT_SOURCE_DIR}
     )
@@ -147,7 +143,6 @@ else()
     )
 endif ()
 
-install (FILES ${MAKE_DEF} DESTINATION lib)
 install (TARGETS ippl DESTINATION lib)
 install (FILES ${IPPL_BASEDIR_HDRS} DESTINATION include)
 

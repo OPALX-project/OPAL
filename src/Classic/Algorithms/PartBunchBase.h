@@ -300,8 +300,20 @@ public:
     void incTrackSteps();
     long long getLocalTrackStep() const;
 
-    void setNumBunch(int n);
-    int getNumBunch() const;
+    void setNumBunch(short n);
+    short getNumBunch() const;
+
+    // used in ParallelCyclotronTracker for multi-bunch mode
+    void setTotalNumPerBunch(size_t numpart, short n);
+    size_t getTotalNumPerBunch(short n) const;
+
+    void setLocalNumPerBunch(size_t numpart, short n);
+    size_t getLocalNumPerBunch(short n) const;
+
+    /* used in initializeTracking_m of ParallelCyclotronTracker
+     * for multi-bunch mode
+     */
+    void countTotalNumPerBunch();
 
     void setGlobalMeanR(Vector_t globalMeanR);
     Vector_t getGlobalMeanR();
@@ -653,7 +665,11 @@ protected:
     long long globalTrackStep_m;
 
     /// current bunch number
-    int numBunch_m;
+    short numBunch_m;
+
+    /// number of particles per bunch
+    std::vector<size_t> bunchTotalNum_m;
+    std::vector<size_t> bunchLocalNum_m;
 
     /// this parameter records the current steps since last bunch injection
     /// it helps to inject new bunches correctly in the restart run of OPAL-cycl

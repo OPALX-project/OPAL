@@ -132,7 +132,7 @@ void ThreadBpm::execute() {
                 // Go to next element.
                 ++iter;
             }
-        } catch(DomainError) {
+        } catch(const DomainError &) {
             break;
         }
     }

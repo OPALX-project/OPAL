@@ -21,7 +21,6 @@
 
 #include "BasicActions/Option.h"
 #include "Utilities/Options.h"
-#include "Utilities/OpalSection.h"
 #include "Utilities/ClassicField.h"
 
 #include "Algorithms/CoordinateSystemTrafo.h"
@@ -43,9 +42,6 @@ public:
     OpalBeamline(const Vector_t& origin,
                  const Quaternion& rotation);
     ~OpalBeamline();
-
-    OpalSection &getSectionAt(const Vector_t &, long &);
-    OpalSection &getSection(const unsigned int &);
 
     void activateElements();
     std::set<std::shared_ptr<Component>> getElements(const Vector_t &x);
@@ -113,9 +109,6 @@ private:
     bool containsSource_m;
 
     CoordinateSystemTrafo coordTransformationTo_m;
-
-    static CompVec dummy_list_m;
-    static OpalSection dummy_section_m;
 };
 
 template<class T> inline

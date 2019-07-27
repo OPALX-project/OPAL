@@ -8,35 +8,15 @@ bool LF2<FieldFunction, Arguments ...>::doAdvance_m(PartBunchBase<double, 3>* bu
                                                     Arguments& ... args) const
 {
     bool flagNoDeletion = true;
-    
+
     // push for first LF2 half step
     push_m(bunch->R[i], bunch->P[i], 0.5 * dt * 1.0e-9);  // ns --> s
-    
-    //BEGIN REMOVE
-    bunch->setT(bunch->getT() + dt * 1.0e-9);
 
-    // Path length update
-    double dotP = dot(bunch->P[0], bunch->P[0]);
-    double gamma = sqrt(1.0 + dotP);
-    double PathLength_m = bunch->getLPath() + dt * 1.0e-9 * sqrt(dotP) * Physics::c / gamma;
-    bunch->setLPath(PathLength_m);
-    //END REMOVE
-    
     flagNoDeletion = kick_m(bunch, i, t, dt * 1.0e-9, args ...);
-    
+
     // push for second LF2 half step
     push_m(bunch->R[i], bunch->P[i], 0.5 * dt * 1.0e-9);  // ns --> s
-    
-    //BEGIN REMOVE
-    bunch->setT(bunch->getT() + dt * 1.0e-9);
 
-    // Path length update
-    dotP = dot(bunch->P[0], bunch->P[0]);
-    gamma = sqrt(1.0 + dotP);
-    PathLength_m += dt * 1.0e-9 * sqrt(dotP) * Physics::c / gamma;
-    bunch->setLPath(PathLength_m);
-    //END REMOVE
-    
     return flagNoDeletion;
 }
 

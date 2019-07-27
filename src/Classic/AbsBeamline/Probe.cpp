@@ -98,7 +98,8 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
          */
         probepoint *= 0.001;
 
-        lossDs_m->addParticle(probepoint, bunch->P[i], bunch->ID[i], t+dt, turnnumber);
+        lossDs_m->addParticle(probepoint, bunch->P[i], bunch->ID[i], t+dt,
+                              turnnumber, bunch->bunchNum[i]);
     }
 
     peakfinder_m->evaluate(turnnumber);

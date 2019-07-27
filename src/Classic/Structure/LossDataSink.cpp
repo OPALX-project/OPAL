@@ -102,9 +102,26 @@
 }
 
 
-extern Inform *gmsg;
+SetStatistics::SetStatistics():
+    tmean_m(0.0),
+    trms_m(0.0),
+    rmin_m(0.0),
+    rmax_m(0.0),
+    rmean_m(0.0),
+    pmean_m(0.0),
+    rrms_m(0.0),
+    prms_m(0.0),
+    rprms_m(0.0),
+    normEmit_m(0.0),
+    rsqsum_m(0.0),
+    psqsum_m(0.0),
+    rpsum_m(0.0),
+    eps2_m(0.0),
+    eps_norm_m(0.0),
+    fac_m(0.0)
+    { }
 
-std::map<double, std::string> LossDataSink::statFileEntries_s;
+extern Inform *gmsg;
 
 LossDataSink::LossDataSink(std::string elem, bool hdf5Save, ElementBase::ElementType type):
     h5hut_mode_m(hdf5Save),
@@ -121,6 +138,7 @@ LossDataSink::LossDataSink(std::string elem, bool hdf5Save, ElementBase::Element
     pz_m.clear();
     id_m.clear();
     turn_m.clear();
+    bunchNum_m.clear();
     time_m.clear();
 }
 
@@ -144,6 +162,7 @@ LossDataSink::LossDataSink(const LossDataSink &rsh):
     pz_m.clear();
     id_m.clear();
     turn_m.clear();
+    bunchNum_m.clear();
     time_m.clear();
 }
 
@@ -222,10 +241,12 @@ void LossDataSink::addParticle(const Vector_t &x,const  Vector_t &p, const size_
 
 // For ring type simulation, dump the time and turn number
 void LossDataSink::addParticle(const Vector_t &x, const Vector_t &p, const size_t id,
-                               const double time, const size_t turn) {
+                               const double time, const size_t turn,
+                               const size_t& bunchNum) {
     addParticle(x, p, id);
     turn_m.push_back(turn);
     time_m.push_back(time);
+    bunchNum_m.push_back(bunchNum);
 }
 
 void LossDataSink::save(unsigned int numSets) {
@@ -247,8 +268,6 @@ void LossDataSink::save(unsigned int numSets) {
             GET_NUM_STEPS ();
         }
 
-        splitSets(numSets);
-        saveStatistics(numSets);
         for (unsigned int i = 0; i < numSets; ++ i) {
             saveH5(i);
         }
@@ -277,6 +296,7 @@ void LossDataSink::save(unsigned int numSets) {
     pz_m.clear();
     id_m.clear();
     turn_m.clear();
+    bunchNum_m.clear();
     time_m.clear();
     spos_m.clear();
     refTime_m.clear();
@@ -357,6 +377,8 @@ void LossDataSink::saveH5(unsigned int setIdx) {
         WRITE_DATA_FLOAT64 ("time", &time_m[startIdx]);
         larray.assign (turn_m.begin() + startIdx, turn_m.end() );
         WRITE_DATA_INT64 ("turn", &larray[0]);
+        larray.assign (bunchNum_m.begin() + startIdx, bunchNum_m.end() );
+        WRITE_DATA_INT64 ("bunchNumber", &larray[0]);
     }
 
     ++ H5call_m;
@@ -382,6 +404,7 @@ void LossDataSink::saveASCII() {
                 os_m << pz_m[i] << "   ";
                 os_m << id_m[i]   << "   ";
                 os_m << turn_m[i] << "   ";
+                os_m << bunchNum_m[i] << "   ";
                 os_m << time_m[i] << " " << std::endl;
             }
         }
@@ -469,6 +492,7 @@ void LossDataSink::saveASCII() {
                 smsg->put(py_m[i]);
                 smsg->put(pz_m[i]);
                 smsg->put(turn_m[i]);
+                smsg->put(bunchNum_m[i]);
                 smsg->put(time_m[i]);
             }
         }
@@ -489,441 +513,207 @@ void LossDataSink::saveASCII() {
     }
 }
 
+/**
+ * In Opal-T monitors can be traversed several times. We know how
+* many times the bunch passes because we register the passage of
+* the reference particle. This code tries to determine to which
+* bunch (same bunch but different times) a particle belongs. For
+* this we could use algorithms from data science such as k-means
+* or dbscan. But they are an overkill for this application because
+* the bunches are well separated.
+*
+* In a first step we a assign to each bunch the same number of
+* particles and compute the mean time of passage and with it a time
+* range. Of course this is only an approximation. So we reassign
+* the particles to the bunches using the time ranges compute a
+* better approximation. Two iterations should be sufficient for
+* Opal-T where the temporal separation is large.
+*
+* @param numSets number of passes of the reference particle
+*
+*/
 void LossDataSink::splitSets(unsigned int numSets) {
-    if (numSets <= 1) return;
+    if (numSets <= 1 ||
+        x_m.size() == 0 ||
+        time_m.size() != x_m.size()) return;
 
     const size_t nLoc = x_m.size();
     size_t avgNumPerSet = nLoc / numSets;
     std::vector<size_t> numPartsInSet(numSets, avgNumPerSet);
-    // size_t test = numSets * avgNumPerSet;
     for (unsigned int j = 0; j < (nLoc - numSets * avgNumPerSet); ++ j) {
         ++ numPartsInSet[j];
-        // ++ test;
     }
+    startSet_m.resize(numSets + 1, 0);
 
-    if (/*nLoc > 0 && */time_m.size() == nLoc) {
-        std::vector<double> meanT(2 * numSets, 0.0);
-        std::vector<double> timeRange(2 * numSets, 0.0);
-        double minmaxT[] = {time_m[0], -time_m[0]};
-        size_t i = 0;
+    std::vector<double> data(2 * numSets, 0.0);
+    double* meanT = &data[0];
+    double* numParticles = &data[numSets];
+    std::vector<double> timeRange(numSets, 0.0);
+    double maxT = time_m[0];
+
+    for (unsigned int iteration = 0; iteration < 2; ++ iteration) {
+        size_t partIdx = 0;
         for (unsigned int j = 0; j < numSets; ++ j) {
+
             const size_t &numThisSet = numPartsInSet[j];
-            for (size_t k = 0; k < numThisSet; ++ k, ++ i) {
-                meanT[2 * j] += time_m[i];
-                minmaxT[0] = std::min(minmaxT[0], time_m[i]);
-                minmaxT[1] = std::min(minmaxT[1], -time_m[i]);
+            for (size_t k = 0; k < numThisSet; ++ k, ++ partIdx) {
+                meanT[j] += time_m[partIdx];
+                maxT = std::max(maxT, time_m[partIdx]);
             }
-            meanT[2 * j + 1] = numThisSet;
+            numParticles[j] = numThisSet;
         }
 
-        reduce(&(meanT[0]), &(meanT[0]) + 2 * numSets, &(meanT[0]), OpAddAssign());
-        reduce(minmaxT, minmaxT + 2, minmaxT, OpMinAssign());
+        allreduce(&(data[0]), 2 * numSets, std::plus<double>());
 
         for (unsigned int j = 0; j < numSets; ++ j) {
-            meanT[2 * j] /= meanT[2 * j + 1];
+            meanT[j] /= numParticles[j];
         }
 
-        timeRange[0] = minmaxT[0];
-        for (unsigned int j = 1; j < numSets; ++ j) {
-            timeRange[2 * j - 1] = 0.5 * (meanT[2 * (j - 1)] + meanT[2 * j]);
-            timeRange[2 * j] = timeRange[2 * j - 1];
+        for (unsigned int j = 0; j < numSets - 1; ++ j) {
+            timeRange[j] = 0.5 * (meanT[j] + meanT[j + 1]);
         }
-        timeRange[2 * numSets - 1] = -minmaxT[1];
+        timeRange[numSets - 1] = maxT;
 
-        size_t j = 0;
+        std::fill(numPartsInSet.begin(),
+                  numPartsInSet.end(),
+                  0);
+
+        size_t setNum = 0;
         size_t idxPrior = 0;
-        startSet_m.push_back(0);
-
         for (size_t idx = 0; idx < nLoc; ++ idx) {
-            if (time_m[idx] > timeRange[2 * j + 1]) {
-                startSet_m.push_back(idx);
-                numPartsInSet[j] = idx - idxPrior;
+            if (time_m[idx] > timeRange[setNum]) {
+                numPartsInSet[setNum] = idx - idxPrior;
                 idxPrior = idx;
-                ++ j;
+                ++ setNum;
             }
         }
         numPartsInSet[numSets - 1] = nLoc - idxPrior;
-        startSet_m.push_back(nLoc);
+    }
 
-        i = 0;
-        for (unsigned int j = 0; j < numSets; ++ j) {
-            const size_t &numThisSet = numPartsInSet[j];
-            for (size_t k = 0; k < numThisSet; ++ k, ++ i) {
-                meanT[2 * j] += time_m[i];
-                minmaxT[0] = std::min(minmaxT[0], time_m[i]);
-                minmaxT[1] = std::min(minmaxT[1], -time_m[i]);
-            }
-            meanT[2 * j + 1] = numThisSet;
-        }
-
-        reduce(&(meanT[0]), &(meanT[0]) + 2 * numSets, &(meanT[0]), OpAddAssign());
-
-        for (unsigned int j = 0; j < numSets; ++ j) {
-            meanT[2 * j] /= meanT[2 * j + 1];
-        }
-
+    for (unsigned int i = 0; i < numSets; ++ i) {
+        startSet_m[i + 1] = startSet_m[i] + numPartsInSet[i];
     }
 }
 
-void LossDataSink::saveStatistics(unsigned int numSets) {
-    if (type_m != ElementBase::MONITOR || !hasTimeAttribute()) return;
-
-    for (unsigned int setIdx = 0; setIdx < numSets; ++ setIdx) {
-
-        size_t startIdx = 0;
-        size_t nLoc = x_m.size();
-        if (setIdx + 1 < startSet_m.size()) {
-            startIdx = startSet_m[setIdx];
-            nLoc = startSet_m[setIdx + 1] - startSet_m[setIdx];
+namespace {
+    void cminmax(double &min, double &max, double val) {
+        if (-val > min) {
+            min = -val;
+        } else if (val > max) {
+            max = val;
         }
-
-        double tmean(0.0), trms(0.0);
-        Vector_t rmean(0.0), pmean(0.0), rrms(0.0), prms(0.0), rprms(0.0), normEmit(0.0);
-        Vector_t rsqsum(0.0), psqsum(0.0), rpsum(0.0), eps2(0.0), eps_norm(0.0), fac(0.0);
-
-        double part[6];
-
-        const unsigned int totalSize = 45;
-        double plainData[totalSize];
-        double rmax[] = {0.0, 0.0, 0.0};
-
-        {
-            Util::KahanAccumulation data[totalSize];
-            Util::KahanAccumulation *centroid = data + 1;
-            Util::KahanAccumulation *moments = data + 7;
-            Util::KahanAccumulation *others = data + 43;
-
-            data[0].sum = nLoc;
-
-            unsigned int idx = startIdx;
-            for(unsigned long k = 0; k < nLoc; ++ k, ++ idx) {
-                part[1] = px_m[idx];
-                part[3] = py_m[idx];
-                part[5] = pz_m[idx];
-                part[0] = x_m[idx];
-                part[2] = y_m[idx];
-                part[4] = z_m[idx];
-
-                for(int i = 0; i < 6; i++) {
-                    centroid[i] += part[i];
-                    for(int j = 0; j <= i; j++) {
-                        moments[i * 6 + j] += part[i] * part[j];
-                    }
-                }
-                others[0] += time_m[idx];
-                others[1] += std::pow(time_m[idx], 2);
-
-                rmax[0] = std::max(rmax[0], std::abs(x_m[idx]));
-                rmax[1] = std::max(rmax[1], std::abs(y_m[idx]));
-                rmax[2] = std::max(rmax[2], std::abs(z_m[idx]));
-            }
-
-            for(int i = 0; i < 6; i++) {
-                for(int j = 0; j < i; j++) {
-                    moments[j * 6 + i] = moments[i * 6 + j];
-                }
-            }
-
-            for (unsigned int i = 0; i < totalSize; ++ i) {
-                plainData[i] = data[i].sum;
-            }
-        }
-
-        reduce(plainData, plainData + totalSize, plainData, OpAddAssign());
-        reduce(rmax, rmax + 3, rmax, OpMaxAssign());
-
-        if (Ippl::myNode() != 0) continue;
-
-        double *centroid = plainData + 1;
-        double *moments = plainData + 7;
-        double *others = plainData + 43;
-        double nTotal = plainData[0];
-        for(unsigned int i = 0 ; i < 3u; i++) {
-            rmean(i) = centroid[2 * i] / nTotal;
-            pmean(i) = centroid[(2 * i) + 1] / nTotal;
-            rsqsum(i) = moments[2 * i * 6 + 2 * i] - nTotal * rmean(i) * rmean(i);
-            psqsum(i) = std::max(0.0, moments[(2 * i + 1) * 6 + (2 * i) + 1] - nTotal * pmean(i) * pmean(i));
-            rpsum(i) = moments[(2 * i) * 6 + (2 * i) + 1] - nTotal * rmean(i) * pmean(i);
-        }
-        tmean = others[0] / nTotal;
-        trms = sqrt(std::max(0.0, (others[1] / nTotal - std::pow(tmean, 2))));
-
-        eps2 = (rsqsum * psqsum - rpsum * rpsum) / (1.0 * nTotal * nTotal);
-
-        rpsum /= nTotal;
-
-        for(unsigned int i = 0 ; i < 3u; i++) {
-            rrms(i) = sqrt(std::max(0.0, rsqsum(i)) / nTotal);
-            prms(i) = sqrt(std::max(0.0, psqsum(i)) / nTotal);
-            eps_norm(i)  =  std::sqrt(std::max(0.0, eps2(i)));
-            double tmp = rrms(i) * prms(i);
-            fac(i) = (tmp == 0) ? 0.0 : 1.0 / tmp;
-        }
-
-        rprms = rpsum * fac;
-
-        std::stringstream statOut;
-        statOut.precision(8);
-        statOut << element_m << "\t"
-                << spos_m[setIdx] << "\t"
-                << refTime_m[setIdx] * 1e9 << "\t"
-                << (unsigned int)floor(nTotal + 0.5) << "\t"
-                << rrms(0) << "\t"
-                << rrms(1) << "\t"
-                << rrms(2) << "\t"
-                << trms * 1e9 << "\t"
-                << prms(0) << "\t"
-                << prms(1) << "\t"
-                << prms(2) << "\t"
-                << eps_norm(0) << "\t"
-                << eps_norm(1) << "\t"
-                << eps_norm(2) << "\t"
-                << rmean(0) << "\t"
-                << rmean(1) << "\t"
-                << rmean(2) << "\t"
-                << tmean * 1e9 << "\t"
-                << RefPartR_m[setIdx](0) << "\t"
-                << RefPartR_m[setIdx](1) << "\t"
-                << RefPartR_m[setIdx](2) << "\t"
-                << RefPartP_m[setIdx](0) << "\t"
-                << RefPartP_m[setIdx](1) << "\t"
-                << RefPartP_m[setIdx](2) << "\t"
-                << rmax[0] << "\t"
-                << rmax[1] << "\t"
-                << rmax[2] << "\t"
-                << rprms(0) << "\t"
-                << rprms(1) << "\t"
-                << rprms(2) << "\t"
-                << std::endl;
-
-        statFileEntries_s.insert(std::make_pair(spos_m[setIdx], statOut.str()));
     }
 }
 
-void LossDataSink::writeStatistics() {
-    if (Ippl::myNode() != 0 || statFileEntries_s.size() == 0) return;
+SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
+    SetStatistics stat;
+    double part[6];
 
-    namespace fs = boost::filesystem;
+    const unsigned int totalSize = 45;
+    double plainData[totalSize];
+    double rminmax[6];
 
-    std::string fileName = OpalData::getInstance()->getInputBasename() + std::string("_Monitors.stat");
-    std::ofstream statOut;
+    Util::KahanAccumulation data[totalSize];
+    Util::KahanAccumulation *localCentroid = data + 1;
+    Util::KahanAccumulation *localMoments = data + 7;
+    Util::KahanAccumulation *localOthers = data + 43;
 
-    if (Options::openMode == Options::APPEND && fs::exists(fileName)) {
-        Util::rewindLinesSDDS(fileName, statFileEntries_s.begin()->first);
-
-        statOut.open(fileName, std::ios::app);
-    } else {
-        statOut.open(fileName);
-        std::string indent("        ");
-
-        statOut << "SDDS1\n";
-        statOut << "&description \n"
-                << indent << "text=\"Statistics data of monitors\", \n"
-                << indent << "contents=\"stat parameters\"\n"
-                << "&end\n";
-        statOut << "&parameter \n"
-                << indent << "name=revision, \n"
-                << indent << "type=string, \n"
-                << indent << "description=\"git revision of opal\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=name, \n"
-                << indent << "type=string \n"
-                << indent << "description=\"1 Monitor name\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=s, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"2 Longitudinal Position\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=t, \n"
-                << indent << "type=double, \n"
-                << indent << "units=ns, \n"
-                << indent << "description=\"3 Passage Time Reference Particle\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=numParticles, \n"
-                << indent << "type=long, \n"
-                << indent << "units=1, \n"
-                << indent << "description=\"4 Number of Macro Particles\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=rms_x, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"5 RMS Beamsize in x\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=rms_y, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"6 RMS Beamsize in y\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=rms_s, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"7 RMS Beamsize in s\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=rms_t, \n"
-                << indent << "type=double, \n"
-                << indent << "units=ns, \n"
-                << indent << "description=\"8 RMS Passage Time\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=rms_px, \n"
-                << indent << "type=double, \n"
-                << indent << "units=1, \n"
-                << indent << "description=\"9 RMS Momenta in x\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=rms_py, \n"
-                << indent << "type=double, \n"
-                << indent << "units=1, \n"
-                << indent << "description=\"10 RMS Momenta in y\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=rms_ps, \n"
-                << indent << "type=double, \n"
-                << indent << "units=1, \n"
-                << indent << "description=\"11 RMS Momenta in s\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=emit_x, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"12 Normalized Emittance x\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=emit_y, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"13 Normalized Emittance y\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=emit_s, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"14 Normalized Emittance s\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=mean_x, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"15 Mean Beam Position in x\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=mean_y, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"16 Mean Beam Position in y\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=mean_s, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"17 Mean Beam Position in s\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=mean_t, \n"
-                << indent << "type=double, \n"
-                << indent << "units=ns, \n"
-                << indent << "description=\"18 Mean Passage Time\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=ref_x, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"19 x coordinate of reference particle in lab cs\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=ref_y, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"20 y coordinate of reference particle in lab cs\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=ref_z, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"21 z coordinate of reference particle in lab cs\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=ref_px, \n"
-                << indent << "type=double, \n"
-                << indent << "units=1, \n"
-                << indent << "description=\"22 x momentum of reference particle in lab cs\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=ref_py, \n"
-                << indent << "type=double, \n"
-                << indent << "units=1, \n"
-                << indent << "description=\"23 y momentum of reference particle in lab cs\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=ref_pz, \n"
-                << indent << "type=double, \n"
-                << indent << "units=1, \n"
-                << indent << "description=\"24 z momentum of reference particle in lab cs\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=max_x, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"25 Max Beamsize in x\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=max_y, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"26 Max Beamsize in y\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=max_s, \n"
-                << indent << "type=double, \n"
-                << indent << "units=m, \n"
-                << indent << "description=\"27 Max Beamsize in s\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=xpx, \n"
-                << indent << "type=double, \n"
-                << indent << "units=1, \n"
-                << indent << "description=\"28 Correlation xpx\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=ypy, \n"
-                << indent << "type=double, \n"
-                << indent << "units=1, \n"
-                << indent << "description=\"29 Correlation ypy\"\n"
-                << "&end\n";
-        statOut << "&column \n"
-                << indent << "name=zpz, \n"
-                << indent << "type=double, \n"
-                << indent << "units=1, \n"
-                << indent << "description=\"30 Correlation zpz\"\n"
-                << "&end\n";
-        statOut << "&data \n"
-                << indent << "mode=ascii,\n"
-                << indent << "no_row_counts=1\n"
-                << "&end\n";
-
-        statOut << OPAL_PROJECT_NAME << " " << OPAL_PROJECT_VERSION << " git rev. " << Util::getGitRevision() << std::endl;
+    size_t startIdx = 0;
+    size_t nLoc = x_m.size();
+    if (setIdx + 1 < startSet_m.size()) {
+        startIdx = startSet_m[setIdx];
+        nLoc = startSet_m[setIdx + 1] - startSet_m[setIdx];
     }
 
-    for (auto entry: statFileEntries_s) {
-        statOut << entry.second;
+    data[0].sum = nLoc;
+
+    unsigned int idx = startIdx;
+    for(unsigned long k = 0; k < nLoc; ++ k, ++ idx) {
+        part[1] = px_m[idx];
+        part[3] = py_m[idx];
+        part[5] = pz_m[idx];
+        part[0] = x_m[idx];
+        part[2] = y_m[idx];
+        part[4] = z_m[idx];
+
+        for(int i = 0; i < 6; i++) {
+            localCentroid[i] += part[i];
+            for(int j = 0; j <= i; j++) {
+                localMoments[i * 6 + j] += part[i] * part[j];
+            }
+        }
+        localOthers[0] += time_m[idx];
+        localOthers[1] += std::pow(time_m[idx], 2);
+
+        ::cminmax(rminmax[0], rminmax[1], x_m[idx]);
+        ::cminmax(rminmax[2], rminmax[3], y_m[idx]);
+        ::cminmax(rminmax[4], rminmax[5], z_m[idx]);
     }
 
-    statOut.close();
-    statFileEntries_s.clear();
+    for(int i = 0; i < 6; i++) {
+        for(int j = 0; j < i; j++) {
+            localMoments[j * 6 + i] = localMoments[i * 6 + j];
+        }
+    }
+
+    for (unsigned int i = 0; i < totalSize; ++ i) {
+        plainData[i] = data[i].sum;
+    }
+
+    new_reduce(plainData, totalSize, std::plus<double>());
+    new_reduce(rminmax, 6, std::greater<double>());
+
+    if (Ippl::myNode() != 0) return stat;
+
+    double *centroid = plainData + 1;
+    double *moments = plainData + 7;
+    double *others = plainData + 43;
+
+    stat.element_m = element_m;
+    stat.spos_m = spos_m[setIdx];
+    stat.refTime_m = refTime_m[setIdx];
+    stat.RefPartR_m = RefPartR_m[setIdx];
+    stat.RefPartP_m = RefPartP_m[setIdx];
+    stat.nTotal_m = (unsigned long)floor(plainData[0] + 0.5);
+
+    for(unsigned int i = 0 ; i < 3u; i++) {
+        stat.rmean_m(i) = centroid[2 * i] / stat.nTotal_m;
+        stat.pmean_m(i) = centroid[(2 * i) + 1] / stat.nTotal_m;
+        stat.rsqsum_m(i) = (moments[2 * i * 6 + 2 * i] -
+                            stat.nTotal_m * std::pow(stat.rmean_m(i), 2));
+        stat.psqsum_m(i) = std::max(0.0,
+                                    moments[(2 * i + 1) * 6 + (2 * i) + 1] -
+                                    stat.nTotal_m * std::pow(stat.pmean_m(i), 2));
+        stat.rpsum_m(i) = (moments[(2 * i) * 6 + (2 * i) + 1] -
+                           stat.nTotal_m * stat.rmean_m(i) * stat.pmean_m(i));
+    }
+    stat.tmean_m = others[0] / stat.nTotal_m;
+    stat.trms_m = sqrt(std::max(0.0, (others[1] / stat.nTotal_m - std::pow(stat.tmean_m, 2))));
+
+    stat.eps2_m = ((stat.rsqsum_m * stat.psqsum_m - stat.rpsum_m * stat.rpsum_m) /
+                   (1.0 * stat.nTotal_m * stat.nTotal_m));
+
+    stat.rpsum_m /= stat.nTotal_m;
+
+    for(unsigned int i = 0 ; i < 3u; i++) {
+        stat.rrms_m(i) = sqrt(std::max(0.0, stat.rsqsum_m(i)) / stat.nTotal_m);
+        stat.prms_m(i) = sqrt(std::max(0.0, stat.psqsum_m(i)) / stat.nTotal_m);
+        stat.eps_norm_m(i)  =  std::sqrt(std::max(0.0, stat.eps2_m(i)));
+        double tmp = stat.rrms_m(i) * stat.prms_m(i);
+        stat.fac_m(i) = (tmp == 0) ? 0.0 : 1.0 / tmp;
+        stat.rmin_m(i) = -rminmax[2 * i];
+        stat.rmax_m(i) = rminmax[2 * i + 1];
+    }
+
+    stat.rprms_m = stat.rpsum_m * stat.fac_m;
+
+    return stat;
 }
+
 
 // vi: set et ts=4 sw=4 sts=4:
 // Local Variables:
-// mode:c
+// mode:c++
 // c-basic-offset: 4
 // indent-tabs-mode:nil
 // End:

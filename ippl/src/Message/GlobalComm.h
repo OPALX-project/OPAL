@@ -116,13 +116,16 @@ void scatter(const T* input, T* output, int count, int root = 0);
 
 /* Reduce data coming from all nodes to a specific node
  * (default: 0). Apply certain operation
- * 
+ *
  */
 template <typename T, class Op>
 void reduce(const T* input, T* output, int count, Op op, int root = 0);
 
 template <typename T, class Op>
 void new_reduce(const T* input, T* output, int count, Op op, int root = 0);
+
+template <typename T, class Op>
+void new_reduce(T* inout, int count, Op op, int root = 0);
 
 template <typename T, class Op>
 void reduce(const T& input, T& output, int count, Op op, int root = 0);

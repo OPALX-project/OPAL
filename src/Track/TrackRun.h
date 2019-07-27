@@ -65,6 +65,8 @@ private:
     void setupThickTracker();
     void setupFieldsolver();
 
+    void initDataSink(const int& numBunch = 1);
+
     double setDistributionParallelT(Beam *beam);
 
     // Pointer to tracking algorithm.

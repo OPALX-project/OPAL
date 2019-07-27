@@ -47,8 +47,8 @@ public:
      * opposed to a calculation restart).
      */
     DataSink();
-    DataSink(H5PartWrapper *h5wrapper, bool restart);
-    DataSink(H5PartWrapper *h5wrapper);
+    DataSink(H5PartWrapper *h5wrapper, bool restart, short numBunch);
+    DataSink(H5PartWrapper *h5wrapper, short numBunch);
 
     void dumpH5(PartBunchBase<double, 3> *beam, Vector_t FDext[]) const;
     
@@ -113,48 +113,61 @@ public:
 
     /** no statWriter_m dump
      * @param beam
-     * @param azimuth (global) [deg] of dump
+     * @param mbhandler is the multi-bunch handler
      */
     void writeMultiBunchStatistics(PartBunchBase<double, 3> *beam,
-                                   const double& azimuth);
+                                   MultiBunchHandler* mbhandler);
+
+    /**
+     * In restart mode we need to set the correct path length
+     * of each bunch
+     * @param mbhandler is the multi-bunch handler
+     */
+    void setMultiBunchInitialPathLengh(MultiBunchHandler* mbhandler_p);
 
 private:
-    DataSink(const DataSink &) { }
-    DataSink &operator = (const DataSink &) { return *this; }
-    
+    DataSink(const DataSink& ds) = delete;
+    DataSink &operator = (const DataSink &) = delete;
+
     void rewindLines();
-    
+
     void init(bool restart = false,
-              H5PartWrapper* h5wrapper = nullptr);
-    
-    
+              H5PartWrapper* h5wrapper = nullptr,
+              short numBunch = 1);
+
+
     h5Writer_t      h5Writer_m;
     statWriter_t    statWriter_m;
     std::vector<sddsWriter_t> sddsWriter_m;
-    std::list<mbWriter_t> mbWriter_m;
-    
-    static std::string convertToString(int number);
+    std::vector<mbWriter_t> mbWriter_m;
+
+    static std::string convertToString(int number, int setw = 5);
 
     /// needed to create index for vtk file
     unsigned int lossWrCounter_m;
 
     /// Timer to track statistics write time.
     IpplTimings::TimerRef StatMarkerTimer_m;
+
+    const bool isMultiBunch_m;
+
+    void initMultiBunchDump(short numBunch);
 };
 
 
 inline
-std::string DataSink::convertToString(int number) {
+std::string DataSink::convertToString(int number, int setw) {
     std::stringstream ss;
-    ss << std::setw(5) << std::setfill('0') <<  number;
+    ss << std::setw(setw) << std::setfill('0') <<  number;
     return ss.str();
 }
+
 
 #endif // DataSink_H_
 
 // vi: set et ts=4 sw=4 sts=4:
 // Local Variables:
-// mode:c
+// mode:c++
 // c-basic-offset: 4
 // indent-tabs-mode:nil
 // End:

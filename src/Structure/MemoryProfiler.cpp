@@ -7,6 +7,8 @@
 
 #include "Utilities/Timer.h"
 #include "Utilities/OpalException.h"
+#include "AbstractObjects/OpalData.h"
+#include "Algorithms/PartBunchBase.h"
 
 #include <boost/filesystem.hpp>
 
@@ -40,11 +42,9 @@ MemoryProfiler::MemoryProfiler(const std::string& fname, bool restart)
 
 void MemoryProfiler::header() {
 
-    static bool isFirst = true;
-    if ( !isFirst ) {
+    if (this->hasColumns()) {
         return;
     }
-    isFirst = false;
 
     columns_m.addColumn("t", "double", "ns", "Time");
 

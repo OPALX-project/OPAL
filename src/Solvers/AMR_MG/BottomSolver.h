@@ -8,6 +8,8 @@ template <class Matrix, class Vector, class Level>
 class BottomSolver {
     
 public:
+
+    BottomSolver() : isInitialized_m(false) { };
     
     virtual ~BottomSolver() { };
     
@@ -34,6 +36,18 @@ public:
      * @returns the number of required iterations
      */
     virtual std::size_t getNumIters() = 0;
+
+    bool hasOperator() const;
+
+
+protected:
+    bool isInitialized_m;
 };
+
+
+template <class Matrix, class Vector, class Level>
+bool BottomSolver<Matrix, Vector, Level>::hasOperator() const {
+    return isInitialized_m;
+}
 
 #endif

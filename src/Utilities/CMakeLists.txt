@@ -1,7 +1,6 @@
 set (_SRCS
   OpalException.cpp
   OpalFilter.cpp
-  OpalSection.cpp
   RegularExpression.cpp
   Round.cpp
   Timer.cpp
@@ -19,7 +18,6 @@ set (HDRS
     NumToStr.h
     OpalException.h
     OpalFilter.h
-    OpalSection.h
     RegularExpression.h
     Round.h
     Timer.h

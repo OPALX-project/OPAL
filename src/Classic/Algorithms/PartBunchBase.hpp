@@ -1,6 +1,8 @@
 #ifndef PART_BUNCH_BASE_HPP
 #define PART_BUNCH_BASE_HPP
 
+#include <numeric>
+
 #include "Distribution/Distribution.h"
 
 #include "AbstractObjects/OpalData.h"   // OPAL file
@@ -65,6 +67,8 @@ PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb)
       localTrackStep_m(0),
       globalTrackStep_m(0),
       numBunch_m(1),
+      bunchTotalNum_m(1),
+      bunchLocalNum_m(1),
       SteptoLastInj_m(0),
       globalPartPerNode_m(nullptr),
       dist_m(nullptr),
@@ -710,6 +714,11 @@ void PartBunchBase<T, Dim>::boundp_destroy() {
     if(weHaveBins()) {
         pbin_m->updatePartInBin_cyc(countLost.get());
     }
+
+    /* we also need to update the number of particles per bunch
+     * expensive since does an allreduce!
+     */
+    countTotalNumPerBunch();
 
     IpplTimings::startTimer(boundpUpdateTimer_m);
     update();
@@ -1568,14 +1577,70 @@ long long PartBunchBase<T, Dim>::getLocalTrackStep() const {
 
 
 template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::setNumBunch(int n) {
+void PartBunchBase<T, Dim>::setNumBunch(short n) {
     numBunch_m = n;
+    bunchTotalNum_m.resize(n);
+    bunchLocalNum_m.resize(n);
 }
 
 
 template <class T, unsigned Dim>
-int PartBunchBase<T, Dim>::getNumBunch() const {
+short PartBunchBase<T, Dim>::getNumBunch() const {
     return numBunch_m;
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::setTotalNumPerBunch(size_t totalnum, short n) {
+    PAssert_LT(n, (short)bunchTotalNum_m.size());
+    bunchTotalNum_m[n] = totalnum;
+}
+
+
+template <class T, unsigned Dim>
+size_t PartBunchBase<T, Dim>::getTotalNumPerBunch(short n) const {
+    PAssert_LT(n, (short)bunchTotalNum_m.size());
+    return bunchTotalNum_m[n];
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::setLocalNumPerBunch(size_t localnum, short n) {
+    PAssert_LT(n, (short)bunchLocalNum_m.size());
+    bunchLocalNum_m[n] = localnum;
+}
+
+
+template <class T, unsigned Dim>
+size_t PartBunchBase<T, Dim>::getLocalNumPerBunch(short n) const {
+    PAssert_LT(n, (short)bunchLocalNum_m.size());
+    return bunchLocalNum_m[n];
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::countTotalNumPerBunch() {
+    bunchTotalNum_m.clear();
+    bunchTotalNum_m.resize(numBunch_m);
+    bunchLocalNum_m.clear();
+    bunchLocalNum_m.resize(numBunch_m);
+
+    for (size_t i = 0; i < this->getLocalNum(); ++i) {
+        PAssert_LT(this->bunchNum[i], numBunch_m);
+        ++bunchLocalNum_m[this->bunchNum[i]];
+    }
+
+    allreduce(bunchLocalNum_m.data(), bunchTotalNum_m.data(),
+              bunchLocalNum_m.size(), std::plus<size_t>());
+
+    size_t totalnum = std::accumulate(bunchTotalNum_m.begin(),
+                                      bunchTotalNum_m.end(), 0);
+
+    if ( totalnum != this->getTotalNum() )
+        throw OpalException("PartBunchBase::countTotalNumPerBunch()",
+                            "Sum of total number of particles per bunch (" +
+                            std::to_string(totalnum) + ") != total number of particles (" +
+                            std::to_string(this->getTotalNum()) + ")");
 }
 
 
@@ -2200,6 +2265,7 @@ void PartBunchBase<T, Dim>::setup(AbstractParticle<T, Dim>* pb) {
     // set the default IPPL behaviour
     setMinimumNumberOfParticlesPerCore(0);
 }
+
 
 template <class T, unsigned Dim>
 size_t PartBunchBase<T, Dim>::getTotalNum() const {

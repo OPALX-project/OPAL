@@ -48,9 +48,9 @@ AmrMultiGridLevel<MatrixType,
         bc_mp[j] = bc[j];
     }
     
-    this->buildLevelMask_m();
+    this->buildLevelMask();
     
-    this->buildMap_m(comm, node);
+    this->buildMap(comm, node);
     
     
     residual_p = Teuchos::rcp( new vector_t(map_p, false) );
@@ -147,7 +147,7 @@ void AmrMultiGridLevel<MatrixType, VectorType>::applyBoundary(const AmrIntVect_t
 
 
 template <class MatrixType, class VectorType>
-void AmrMultiGridLevel<MatrixType, VectorType>::buildLevelMask_m() {
+void AmrMultiGridLevel<MatrixType, VectorType>::buildLevelMask() {
     amrex::Periodicity period(AmrIntVect_t(D_DECL(0, 0, 0)));
     mask.reset(new mask_t(grids, dmap, 1, 1));
     mask->BuildMask(geom.Domain(), period,
@@ -195,8 +195,8 @@ bool AmrMultiGridLevel<MatrixType, VectorType>::isValid(const AmrIntVect_t& iv) 
 
 
 template <class MatrixType, class VectorType>
-void AmrMultiGridLevel<MatrixType, VectorType>::buildMap_m(const Teuchos::RCP<comm_t>& comm,
-                                                           const Teuchos::RCP<node_t>& node)
+void AmrMultiGridLevel<MatrixType, VectorType>::buildMap(const Teuchos::RCP<comm_t>& comm,
+                                                         const Teuchos::RCP<node_t>& node)
 {
     
     go_t localNumElements = 0;

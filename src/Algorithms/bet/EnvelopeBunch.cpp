@@ -13,7 +13,6 @@
 #include <mpi.h>
 
 #include "Algorithms/bet/math/root.h"     // root finding routines
-#include "Algorithms/bet/math/sort.h"     // sorting routines
 #include "Algorithms/bet/math/linfit.h"   // linear fitting routines
 #include "Algorithms/bet/math/savgol.h"   // savgol smoothing routine
 #include "Algorithms/bet/math/rk.h"       // Runge-Kutta Integration
@@ -721,16 +720,12 @@ void EnvelopeBunch::calcI() {
     already_called = 1;
 
     std::vector<double> z1(numSlices_m, 0.0);
-    std::vector<double> b(numSlices_m, 0.0);
+    std::vector<double> b (numSlices_m, 0.0);
     double bSum = 0.0;
     double dz2Sum = 0.0;
     int n1 = 0;
     int my_start = 0, my_end = 0;
 
-    for(int i = 0; i < numSlices_m; i++) {
-        z1[i] = 0.0;
-        b[i] = 0.0;
-    }
     for(int i = 0; i < numSlices_m; i++) {
         if(b_m[i] > 0.0) {
             if((unsigned int) i == mySliceStartOffset_m)
@@ -759,8 +754,20 @@ void EnvelopeBunch::calcI() {
     double sigma_dz = sqrt(dz2Sum / (n1 - 1));
     double beta = bSum / n1;
 
-    //sort z1 according to beta's
-    sort2(&z1.front(), &b.front(), n1);
+    //sort beta's according to z1 with temporary vector of pairs
+    std::vector<std::pair<double,double>> z1_b(numSlices_m);
+    for (int i=0; i<numSlices_m; i++) {
+        z1_b[i] = std::make_pair(z1[i],b[i]);
+    }
+
+    std::sort(z1_b.begin(), z1_b.end(),
+              [](const std::pair<double,double> &left, const std::pair<double,double> &right)
+              {return left.first < right.first;});
+
+    for (int i=0; i<numSlices_m; i++) {
+        z1[i] = z1_b[i].first;
+        b [i] = z1_b[i].second;
+    }
 
     double q = Q_m > 0.0 ? Q_m / numSlices_m : Physics::q_e;
     double dz = 0.0;

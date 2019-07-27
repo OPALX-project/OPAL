@@ -27,6 +27,7 @@
 #include "Utilities/Util.h"
 #include <boost/filesystem.hpp>
 #include "AbstractObjects/OpalData.h"
+#include "Structure/MonitorStatisticsWriter.h"
 
 #include <fstream>
 #include <memory>
@@ -37,6 +38,10 @@ using namespace std;
 
 // Class Monitor
 // ------------------------------------------------------------------------
+
+std::map<double, SetStatistics> Monitor::statFileEntries_sm;
+const double Monitor::halfLength_s = 0.005;
+
 Monitor::Monitor():
     Monitor("")
 {}
@@ -169,15 +174,15 @@ void Monitor::finalise() {
 }
 
 void Monitor::goOnline(const double &) {
-    if(Monitor::h5pfiles_s.find(filename_m) == Monitor::h5pfiles_s.end()) {
-        Monitor::h5pfiles_s.insert(pair<string, unsigned int>(filename_m, 1));
-    } else {
-        (*Monitor::h5pfiles_s.find(filename_m)).second ++;
-    }
     online_m = true;
 }
 
 void Monitor::goOffline() {
+    auto stats = lossDs_m->computeStatistics(numPassages_m);
+    for (auto &stat: stats) {
+        statFileEntries_sm.insert(std::make_pair(stat.spos_m, stat));
+    }
+
     if (type_m != TEMPORAL) {
         lossDs_m->save(numPassages_m);
     }
@@ -201,5 +206,23 @@ ElementBase::ElementType Monitor::getType() const {
     return MONITOR;
 }
 
-map<string, unsigned int> Monitor::h5pfiles_s = map<string, unsigned int>();
-const double Monitor::halfLength_s = 0.005;
+void Monitor::writeStatistics() {
+    if (statFileEntries_sm.size() == 0) return;
+
+    std::string fileName = OpalData::getInstance()->getInputBasename() + std::string("_Monitors.stat");
+    auto instance = OpalData::getInstance();
+    bool hasPriorTrack = instance->hasPriorTrack();
+    bool inRestartRun = instance->inRestartRun();
+
+    auto it = statFileEntries_sm.begin();
+    double spos = it->first;
+    Util::rewindLinesSDDS(fileName, spos, false);
+
+    MonitorStatisticsWriter writer(fileName, hasPriorTrack || inRestartRun);
+
+    for (const auto &entry: statFileEntries_sm) {
+        writer.addRow(entry.second);
+    }
+
+    statFileEntries_sm.clear();
+}

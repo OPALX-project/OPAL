@@ -27,6 +27,8 @@ public:
 
     void writeRow(std::ostream& os) const;
 
+    bool hasColumns() const;
+
 private:
     std::vector<SDDSColumn> columns_m;
     std::map<std::string, unsigned int> name2idx_m;
@@ -50,6 +52,12 @@ void SDDSColumnSet::addColumnValue(const std::string& name,
 
     auto & col = columns_m[it->second];
     col.addValue(val);
+}
+
+
+inline
+bool SDDSColumnSet::hasColumns() const {
+    return !name2idx_m.empty();
 }
 
 

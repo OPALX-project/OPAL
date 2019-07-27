@@ -40,9 +40,11 @@ IpplMemoryUsage::IpplMemoryUsage(Unit unit, bool reset)
         case Unit::BIT:
             conversion_factor_m = 8.0e3;
             unit_m = "bit";
+            break;
         case Unit::B:
             conversion_factor_m = 1.0e3;
             unit_m = "B";
+            break;
         case Unit::KB:
             conversion_factor_m = 1.0;
             unit_m = "kB";

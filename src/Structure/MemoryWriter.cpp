@@ -1,5 +1,7 @@
 #include "MemoryWriter.h"
 
+#include "AbstractObjects/OpalData.h"
+#include "Algorithms/PartBunchBase.h"
 #include "Utilities/Timer.h"
 #include "Ippl.h"
 
@@ -10,11 +12,9 @@ MemoryWriter::MemoryWriter(const std::string& fname, bool restart)
 
 void MemoryWriter::fillHeader() {
 
-    static bool isFirst = true;
-    if ( !isFirst ) {
+    if (this->hasColumns()) {
         return;
     }
-    isFirst = false;
 
     columns_m.addColumn("t", "double", "ns", "Time");
 
@@ -25,7 +25,7 @@ void MemoryWriter::fillHeader() {
 
     for (int p = 0; p < Ippl::getNodes(); ++p) {
         std::stringstream tmp1;
-        tmp1 << "processor-" << p;
+        tmp1 << "\"processor-" << p << "\"";
 
         std::stringstream tmp2;
         tmp2 << "Memory per processor " << p;
@@ -90,7 +90,7 @@ void MemoryWriter::write(PartBunchBase<double, 3> *beam)
 
     for (int p = 0; p < nProcs; p++) {
         std::stringstream ss;
-        ss << "processor-" << p;
+        ss << "\"processor-" << p << "\"";
         columns_m.addColumnValue(ss.str(),  memory->getMemoryUsage(p));
     }
 

@@ -7,11 +7,8 @@
 #include "AbstractObjects/OpalData.h"
 #include "AbsBeamline/Multipole.h"
 #include "AbsBeamline/Bend2D.h"
-#include "Utilities/Util.h"
 #include "Physics/Physics.h"
-#include "OPALconfig.h"
-
-#include <boost/filesystem.hpp>
+#include "Structure/ElementPositionWriter.h"
 
 extern Inform *gmsg;
 
@@ -151,109 +148,9 @@ void IndexMap::saveSDDS(double initialPathLength) const {
     auto opal = OpalData::getInstance();
     if (opal->isOptimizerRun()) return;
 
-    std::string fileName("data/" + OpalData::getInstance()->getInputBasename() + "_ElementPositions.sdds");
-    std::ofstream sdds;
-    if (OpalData::getInstance()->hasPriorTrack() && boost::filesystem::exists(fileName)) {
-        Util::rewindLinesSDDS(fileName, initialPathLength, false);
-        sdds.open(fileName, std::ios::app);
-    } else {
-        sdds.open(fileName);
-
-        std::string indent("        ");
-
-        sdds << "SDDS1\n"
-             << "&description \n"
-             << indent << "text=\"Element positions '" << OpalData::getInstance()->getInputFn() << "'\", \n"
-             << indent << "contents=\"element positions\" \n"
-             << "&end\n";
-        sdds << "&parameter\n"
-             << indent << "name=revision, \n"
-             << indent << "type=string,\n"
-             << indent << "description=\"git revision of opal\"\n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=s, \n"
-             << indent << "type=double, \n"
-             << indent << "units=m, \n"
-             << indent << "description=\"1 longitudinal position\" \n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=dipole, \n"
-             << indent << "type=float, \n"
-             << indent << "units=1, \n"
-             << indent << "description=\"2 dipole field present\" \n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=quadrupole, \n"
-             << indent << "type=float, \n"
-             << indent << "units=1, \n"
-             << indent << "description=\"3 quadrupole field present\" \n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=sextupole, \n"
-             << indent << "type=float, \n"
-             << indent << "units=1, \n"
-             << indent << "description=\"4 sextupole field present\" \n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=octupole, \n"
-             << indent << "type=float, \n"
-             << indent << "units=1, \n"
-             << indent << "description=\"5 octupole field present\" \n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=decapole, \n"
-             << indent << "type=float, \n"
-             << indent << "units=1, \n"
-             << indent << "description=\"6 decapole field present\" \n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=multipole, \n"
-             << indent << "type=float, \n"
-             << indent << "units=1, \n"
-             << indent << "description=\"7 higher multipole field present\" \n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=solenoid, \n"
-             << indent << "type=float, \n"
-             << indent << "units=1, \n"
-             << indent << "description=\"8 solenoid field present\" \n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=rfcavity, \n"
-             << indent << "type=float, \n"
-             << indent << "units=1, \n"
-             << indent << "description=\"9 RF field present\" \n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=monitor, \n"
-             << indent << "type=float, \n"
-             << indent << "units=1, \n"
-             << indent << "description=\"10 monitor present\" \n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=other, \n"
-             << indent << "type=float, \n"
-             << indent << "units=1, \n"
-             << indent << "description=\"11 other element present\" \n"
-             << "&end\n";
-        sdds << "&column \n"
-             << indent << "name=element_names, \n"
-             << indent << "type=string, \n"
-             << indent << "description=\"names of elements\" \n"
-             << "&end\n";
-        sdds << "&data \n"
-             << indent << "mode=ascii, \n"
-             << indent << "no_row_counts=1 \n"
-             << "&end\n";
-
-        sdds << OPAL_PROJECT_NAME << " " << OPAL_PROJECT_VERSION << " # git rev. " << Util::getGitRevision() << std::endl;
-    }
-
     std::vector<std::vector<int> > allItems(SIZE);
     std::vector<double> allPositions;
     std::vector<std::string> allNames;
-    std::vector<double> typeMultipliers = {3.3333e-1, 1.0, 0.5, 0.25, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
     unsigned int counter = 0;
 
     auto mapIti = mapRange2Element_m.begin();
@@ -380,16 +277,18 @@ void IndexMap::saveSDDS(double initialPathLength) const {
         allItems[RFCAVITY][4 * j + 2] = -allItems[RFCAVITY][4 * j + 1];
     }
 
+    std::string fileName("data/" + OpalData::getInstance()->getInputBasename() + "_ElementPositions.sdds");
+    ElementPositionWriter writer(fileName);
+
     for (unsigned int i = 0; i < 4 * totalSize; ++ i) {
-        sdds << std::setw(16) << std::setprecision(8) << allPositions[i];
-
-        sdds << std::setw(10) << std::setprecision(5) << allItems[0][i] * typeMultipliers[0];
-        for (unsigned int j = 1; j < SIZE; ++ j)
-            sdds << std::setw(6) << std::setprecision(3) << allItems[j][i] * typeMultipliers[j];
-        sdds << " \"" << allNames[i] << "\"\n";
+        std::vector<int> values(SIZE, 0);
+        for (unsigned int j = 0; j < SIZE; ++ j) {
+            values[j] = allItems[j][i];
+        }
+        writer.addRow(allPositions[i],
+                      values,
+                      allNames[i]);
     }
-
-    sdds.close();
 }
 
 std::pair<double, double> IndexMap::getRange(const IndexMap::value_t::value_type &element,

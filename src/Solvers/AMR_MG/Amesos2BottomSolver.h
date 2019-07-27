@@ -29,8 +29,6 @@ public:
      */
     Amesos2BottomSolver(std::string solvertype = "klu2");
     
-    ~Amesos2BottomSolver();
-    
     void solve(const Teuchos::RCP<mv_t>& x,
                const Teuchos::RCP<mv_t>& b);
     

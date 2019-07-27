@@ -14,11 +14,11 @@
 
 #include "Ippl.h"
 #include <iostream>
+#include <algorithm>
 #include <cmath>
 #include <stdlib.h>
 #include <string.h>
 
-#include "Algorithms/bet/math/sort.h"
 #include "Algorithms/bet/math/interpol.h"
 #include "Algorithms/bet/math/integrate.h"
 #include "Algorithms/bet/profile.h"
@@ -42,25 +42,14 @@ static double f3(double x) {
 
 Profile::Profile(double v) {
     n = 0;
-    x = NULL;
-    y = NULL;
-    y2 = NULL;
 
     sf   = 1.0;
     yMin = v;
     yMax = v;
 }
 
-Profile::Profile(double *_x, double *_y, int _n) {
-    n  = _n;
-
-    x  = (double *) malloc(sizeof(double) * n);
-    y  = (double *) malloc(sizeof(double) * n);
-    if((x == NULL) || (y == NULL))
-        std::cout << "Profile::Profile: Insuffient memory for Profile(n = " << n << " )" << std::endl;
-    memcpy(x, _x, sizeof(double)*n);
-    memcpy(y, _y, sizeof(double)*n);
-
+Profile::Profile(double *_x, double *_y, int _n) :
+    n(_n), x(_x, _x + _n), y(_y, _y + _n) {
     create();
 } /* Profile::Profile() */
 
@@ -82,12 +71,9 @@ Profile::Profile(char *fname, double eps) {
     fclose(f);
 
     n = i;
-    x = (double *) malloc(sizeof(double) * n);
-    y = (double *) malloc(sizeof(double) * n);
+    x.resize(n);
+    y.resize(n);
 
-    if((x == NULL) || (y == NULL)) {
-        std::cout << "Profile::Profile: Insuffient memory for Profile(n = " << n << " )" << std::endl;
-    }
     // read all values
     f = fopen(fname, "r");
     for(i = 0; i < n; i++) {
@@ -117,12 +103,6 @@ Profile::Profile(char *fname, double eps) {
     create();
 } /* Profile::Profile() */
 
-Profile::~Profile() {
-    if(x)  free(x);
-    if(y)  free(y);
-    if(y2) free(y2);
-} /* Profile::~Profile() */
-
 void Profile::create() {
     int
     i, j, k;
@@ -131,18 +111,30 @@ void Profile::create() {
 
     sf = 1.0;
 
-    y2   = (double *) malloc(sizeof(double) * n);
+    y2.resize(n);
     yMax = y[0];
     yMin = yMax;
 
-    if(y2 == NULL) {
-        std::cout << "Profile::Profile: Insuffient memory for Profile y2 (n = " << n << " )" << std::endl;
-    }
     for(i = 0; i < n; i++) {
         if(y[i] < yMin) yMin = y[i];
         if(y[i] > yMax) yMax = y[i];
     }
-    sort2(x, y, n);
+
+    //sort y according to x
+    std::vector<std::pair<double,double>> xy(n);
+    for (int i=0; i<n; i++) {
+        xy[i] = std::make_pair(x[i],y[i]);
+    }
+
+    std::sort(xy.begin(), xy.end(),
+              [](const std::pair<double,double> &left, const std::pair<double,double> &right)
+              {return left.first < right.first;});
+
+    for (int i=0; i<n; i++) {
+        x[i] = xy[i].first;
+        y[i] = xy[i].second;
+    }
+
 
     /* remove points with identical x-value
        take the average if the situation does occur */
@@ -163,21 +155,21 @@ void Profile::create() {
     }
     n = i;
 
-    spline(x, y, n, y2);
+    spline(&x[0], &y[0], n, &y2[0]);
 } /* Profile::create() */
 
 double Profile::get(double xa, Interpol_type tp) {
     double val = 0.0;
 
-    if(x) {
+    if(x.empty()==false) {
         if(xa < x[0]) val = 0.0;
         else if(xa > x[n-1]) val = 0.0;
         else switch(tp) {
                 case itype_lin :
-                    lsplint(x, y, y2, n, xa, &val);
+                    lsplint(&x[0], &y[0], &y2[0], n, xa, &val);
                     break;
                 default :
-                    lsplint(x, y, y2, n, xa, &val);
+                    lsplint(&x[0], &y[0], &y2[0], n, xa, &val);
                     break;
             }
     }
@@ -262,11 +254,11 @@ double Profile::max() {
 }
 
 double Profile::xMax() {
-    return (x ? x[n-1] : 0.0);
+    return ((x.empty()==false) ? x[n-1] : 0.0);
 }
 
 double Profile::xMin() {
-    return (x ? x[0] : 0.0);
+    return ((x.empty()==false) ? x[0] : 0.0);
 }
 
 double Profile::Leff() {
@@ -274,7 +266,7 @@ double Profile::Leff() {
 
     ym       = fabs((fabs(yMin) > fabs(yMax)) ? yMin : yMax);
     cProfile = this;
-    return (((x == NULL) || (x[n-1] == x[0]) || (ym == 0.0)) ? 0.0 :
+    return ((x.empty() || (x[n-1] == x[0]) || (ym == 0.0)) ? 0.0 :
             fabs(qromb(f1, x[0], x[n-1]) / ym));
 }
 
@@ -283,7 +275,7 @@ double Profile::Leff2() {
 
     ym       = pow((fabs(yMin) > fabs(yMax)) ? yMin : yMax, 2);
     cProfile = this;
-    return (((x == NULL) || (x[n-1] == x[0]) || (ym == 0.0)) ? 0.0 :
+    return ((x.empty() || (x[n-1] == x[0]) || (ym == 0.0)) ? 0.0 :
             fabs(qromb(f2, x[0], x[n-1]) / ym));
 }
 
@@ -292,6 +284,6 @@ double Profile::Labs() {
 
     ym       = fabs((fabs(yMin) > fabs(yMax)) ? yMin : yMax);
     cProfile = this;
-    return (((x == NULL) || (x[n-1] == x[0]) || (ym == 0.0)) ? 0.0 :
+    return ((x.empty() || (x[n-1] == x[0]) || (ym == 0.0)) ? 0.0 :
             fabs(qromb(f3, x[0], x[n-1]) / ym));
 }

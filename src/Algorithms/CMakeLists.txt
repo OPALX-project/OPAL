@@ -8,6 +8,7 @@ set (_SRCS
   NilTracker.cpp
   MapAnalyser.cpp
   MPSplitIntegrator.cpp
+  MultiBunchHandler.cpp
   OrbitThreader.cpp
   ParallelTTracker.cpp
   ParallelCyclotronTracker.cpp
@@ -18,7 +19,6 @@ set (_SRCS
   bet/EnvelopeSlice.cpp
   bet/EnvelopeBunch.cpp
   bet/profile.cpp
-  bet/math/sort.cpp
   bet/math/integrate.cpp
   bet/math/interpol.cpp
   bet/math/rk.cpp
@@ -45,6 +45,7 @@ set (HDRS
     lomb.h
     MapAnalyser.h
     MPSplitIntegrator.h
+    MultiBunchHandler.h
     NilTracker.h
     OrbitThreader.h
     ParallelCyclotronTracker.h
@@ -64,7 +65,6 @@ set (HDRS
     bet/math/rk.h
     bet/math/root.h
     bet/math/savgol.h
-    bet/math/sort.h
     bet/math/svdfit.h
 )
 

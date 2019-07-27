@@ -1,13 +1,11 @@
 template <class Level>
 Amesos2BottomSolver<Level>::Amesos2BottomSolver(std::string solvertype)
-    : solvertype_m(solvertype)
+    : BottomSolver<Teuchos::RCP<amr::matrix_t>,
+                                Teuchos::RCP<amr::multivector_t>,
+                                Level>()
+    , solvertype_m(solvertype)
+    , solver_mp(Teuchos::null)
 { }
-
-
-template <class Level>
-Amesos2BottomSolver<Level>::~Amesos2BottomSolver() {
-    solver_mp = Teuchos::null;
-}
 
 
 template <class Level>
@@ -33,6 +31,8 @@ void Amesos2BottomSolver<Level>::setOperator(const Teuchos::RCP<matrix_t>& A,
     
     solver_mp->symbolicFactorization();
     solver_mp->numericFactorization();
+
+    this->isInitialized_m = true;
 }
 
 

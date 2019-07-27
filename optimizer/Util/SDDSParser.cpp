@@ -49,8 +49,8 @@ SDDS::file SDDS::SDDSParser::run() {
 
     if (!success || contentsIter != contentsEnd)
         {
-            throw SDDSParserException("StatisticalErrors::parseSDDSFile",
-                                    "could not parse SDDS file");
+            throw SDDSParserException("SDDSParser::parseSDDSFile",
+                                      "could not parse SDDS file");
         }
 
     unsigned int param_order = 0;
@@ -90,8 +90,8 @@ std::string SDDS::SDDSParser::readFile() {
         return contents;
     }
 
-    throw SDDSParserException("StatisticalErrors::readSDDSFile",
-                            "could not open file '" + sddsFileName_m + "'");
+    throw SDDSParserException("SDDSParser::readSDDSFile",
+                              "could not open file '" + sddsFileName_m + "'");
 
     return std::string("");
 }

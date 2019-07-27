@@ -1,23 +1,16 @@
 #ifndef OPAL_STAT_WRITER_H
 #define OPAL_STAT_WRITER_H
 
-#include "SDDSWriter.h"
+#include "StatBaseWriter.h"
 
 #include "Algorithms/bet/EnvelopeBunch.h"
 
-class StatWriter : public SDDSWriter {
+class StatWriter : public StatBaseWriter {
 
 public:
     typedef std::vector<std::pair<std::string, unsigned int> > losses_t;
 
     StatWriter(const std::string& fname, bool restart);
-
-    /** \brief
-     *  delete the last 'numberOfLines' lines of the statistics file
-     */
-    unsigned int rewindToSpos(double maxSpos);
-
-    using SDDSWriter::write;
 
     /** \brief Write statistical data.
      *
@@ -47,14 +40,5 @@ public:
 private:
     void fillHeader(const losses_t &losses = losses_t());
 };
-
-
-inline
-unsigned int StatWriter::rewindToSpos(double maxSPos) {
-    if (Ippl::myNode() == 0) {
-        return Util::rewindLinesSDDS(this->fname_m, maxSPos);
-    }
-    return 0;
-}
 
 #endif

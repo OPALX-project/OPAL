@@ -4,6 +4,7 @@
 #include "OPALconfig.h"
 #include "Util/SDDSParser.h"
 #include "Ippl.h"
+#include "Algorithms/PartBunchBase.h"
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/Util.h"
 
@@ -97,6 +98,15 @@ void SDDSWriter::replaceVersionString() {
     }
 
     fs.close();
+}
+
+
+double SDDSWriter::getLastValue(const std::string& column) {
+    SDDS::SDDSParser parser(fname_m);
+    parser.run();
+    double val = 0.0;
+    parser.getValue(-1, column, val);
+    return val;
 }
 
 

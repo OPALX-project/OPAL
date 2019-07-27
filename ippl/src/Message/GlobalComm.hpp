@@ -448,7 +448,7 @@ bool scatter(InputIterator s1, InputIterator s2,
 template <typename T>
 void gather(const T* input, T* output, int count, int root) {
     MPI_Datatype type = get_mpi_datatype<T>(*input);
-    
+
     MPI_Gather(const_cast<T*>(input), count, type,
                output, count, type, root, Ippl::getComm());
 }
@@ -457,7 +457,7 @@ void gather(const T* input, T* output, int count, int root) {
 template <typename T>
 void scatter(const T* input, T* output, int count, int root) {
     MPI_Datatype type = get_mpi_datatype<T>(*input);
-    
+
     MPI_Scatter(const_cast<T*>(input), count, type,
                 output, count, type, root, Ippl::getComm());
 }
@@ -466,9 +466,9 @@ void scatter(const T* input, T* output, int count, int root) {
 template <typename T, class Op>
 void reduce(const T* input, T* output, int count, Op op, int root) {
     MPI_Datatype type = get_mpi_datatype<T>(*input);
-    
+
     MPI_Op mpiOp = get_mpi_op<Op>(op);
-    
+
     MPI_Reduce(const_cast<T*>(input), output, count, type,
                mpiOp, root, Ippl::getComm());
 }
@@ -476,11 +476,27 @@ void reduce(const T* input, T* output, int count, Op op, int root) {
 template <typename T, class Op>
 void new_reduce(const T* input, T* output, int count, Op op, int root) {
     MPI_Datatype type = get_mpi_datatype<T>(*input);
-    
+
     MPI_Op mpiOp = get_mpi_op<Op>(op);
-    
+
     MPI_Reduce(const_cast<T*>(input), output, count, type,
                mpiOp, root, Ippl::getComm());
+}
+
+
+template <typename T, class Op>
+void new_reduce(T* inout, int count, Op op, int root) {
+    MPI_Datatype type = get_mpi_datatype<T>(*inout);
+
+    MPI_Op mpiOp = get_mpi_op<Op>(op);
+
+    if (Ippl::myNode() == root) {
+        MPI_Reduce(MPI_IN_PLACE, inout, count, type,
+                   mpiOp, root, Ippl::getComm());
+    } else {
+        MPI_Reduce(inout, inout, count, type,
+                   mpiOp, root, Ippl::getComm());
+    }
 }
 
 
@@ -493,9 +509,9 @@ void reduce(const T& input, T& output, int count, Op op, int root) {
 template <typename T, class Op>
 void allreduce(const T* input, T* output, int count, Op op) {
     MPI_Datatype type = get_mpi_datatype<T>(*input);
-    
+
     MPI_Op mpiOp = get_mpi_op<Op>(op);
-    
+
     MPI_Allreduce(const_cast<T*>(input), output, count, type,
                   mpiOp, Ippl::getComm());
 }
@@ -509,9 +525,9 @@ void allreduce(const T& input, T& output, int count, Op op) {
 template <typename T, class Op>
 void allreduce(T* inout, int count, Op op) {
     MPI_Datatype type = get_mpi_datatype<T>(*inout);
-    
+
     MPI_Op mpiOp = get_mpi_op<Op>(op);
-    
+
     MPI_Allreduce(MPI_IN_PLACE, inout, count, type,
                   mpiOp, Ippl::getComm());
 }

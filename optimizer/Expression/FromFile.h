@@ -41,7 +41,7 @@ struct FromFile {
 
         try {
             readValues();
-        } catch(OptPilotException e) {
+        } catch(const OptPilotException& e) {
             return boost::make_tuple(0.0, false);
         }
 

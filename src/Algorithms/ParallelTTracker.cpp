@@ -76,7 +76,7 @@
 #include "Utilities/OpalException.h"
 #include "Solvers/ParticleMatterInteractionHandler.hh"
 #include "Structure/BoundaryGeometry.h"
-#include "Structure/LossDataSink.h"
+#include "AbsBeamline/Monitor.h"
 
 class PartData;
 
@@ -419,7 +419,7 @@ void ParallelTTracker::execute() {
         freeDeviceMemory();
 #endif
 
-    LossDataSink::writeStatistics();
+    Monitor::writeStatistics();
 
     OpalData::getInstance()->setPriorTrack();
 }

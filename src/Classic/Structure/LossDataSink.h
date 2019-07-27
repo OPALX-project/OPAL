@@ -13,10 +13,47 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <functional>
+#include <set>
 
 #include <hdf5.h>
 #include "H5hut.h"
 
+struct SetStatistics {
+    SetStatistics();
+
+    std::string element_m;
+    double spos_m;
+    double refTime_m; // ns
+    double tmean_m; // ns
+    double trms_m; // ns
+    unsigned long nTotal_m;
+    Vector_t RefPartR_m;
+    Vector_t RefPartP_m;
+    Vector_t rmin_m;
+    Vector_t rmax_m;
+    Vector_t rmean_m;
+    Vector_t pmean_m;
+    Vector_t rrms_m;
+    Vector_t prms_m;
+    Vector_t rprms_m;
+    Vector_t normEmit_m;
+    Vector_t rsqsum_m;
+    Vector_t psqsum_m;
+    Vector_t rpsum_m;
+    Vector_t eps2_m;
+    Vector_t eps_norm_m;
+    Vector_t fac_m;
+};
+
+namespace std {
+    template<>
+    struct less<SetStatistics> : binary_function<SetStatistics, SetStatistics, bool> {
+        bool operator() (const SetStatistics& x, const SetStatistics& y) const {
+            return x.spos_m < y.spos_m;
+        }
+    };
+}
 /*
   - In the destructor we do ALL the file handling
   - h5hut_mode_m defines h5hut or ASCII
@@ -42,11 +79,14 @@ class LossDataSink {
 
     void addParticle(const Vector_t &x, const Vector_t &p, const size_t id);
 
-    void addParticle(const Vector_t &x, const Vector_t &p, const size_t  id, const double time, const size_t turn);
+    void addParticle(const Vector_t &x, const Vector_t &p, const size_t  id,
+                     const double time, const size_t turn, const size_t& bunchNum = 0);
 
     size_t size() const;
 
-    static void writeStatistics();
+    std::set<SetStatistics> computeStatistics(unsigned int numSets);
+
+    // static void writeStatistics();
 
 private:
     void openASCII() {
@@ -88,7 +128,7 @@ private:
     void reportOnError(h5_int64_t rc, const char* file, int line);
 
     void splitSets(unsigned int numSets);
-    void saveStatistics(unsigned int numSets);
+    SetStatistics computeSetStatistics(unsigned int setIdx);
 
     // filename without extension
     std::string fn_m;
@@ -114,6 +154,7 @@ private:
     std::vector<double> px_m;
     std::vector<double> py_m;
     std::vector<double> pz_m;
+    std::vector<size_t> bunchNum_m;
 
     std::vector<size_t> turn_m;
     std::vector<double> time_m;
@@ -127,7 +168,6 @@ private:
     std::vector<unsigned long> startSet_m;
 
     ElementBase::ElementType type_m;
-    static std::map<double, std::string> statFileEntries_s;
 };
 
 inline
@@ -135,11 +175,24 @@ size_t LossDataSink::size() const {
     return x_m.size();
 }
 
+inline
+std::set<SetStatistics> LossDataSink::computeStatistics(unsigned int numStatistics) {
+    std::set<SetStatistics> stats;
+
+    splitSets(numStatistics);
+
+    for (unsigned int i = 0; i < numStatistics; ++ i) {
+        stats.insert(computeSetStatistics(i));
+    }
+
+    return stats;
+}
+
 #endif
 
 // vi: set et ts=4 sw=4 sts=4:
 // Local Variables:
-// mode:c
+// mode:c++
 // c-basic-offset: 4
 // indent-tabs-mode:nil
 // End:

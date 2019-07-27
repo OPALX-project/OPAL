@@ -10,13 +10,16 @@
 #include <utility>
 #include <ostream>
 #include <iomanip>
+#include <sstream>
 
 #include <boost/filesystem.hpp>
 #include <boost/variant.hpp>
 
-#include "Algorithms/PartBunchBase.h"
 #include "Structure/SDDSColumn.h"
 #include "Structure/SDDSColumnSet.h"
+
+template <class T, unsigned Dim>
+class PartBunchBase;
 
 class SDDSWriter {
 
@@ -52,6 +55,7 @@ public:
 
     void replaceVersionString();
 
+    double getLastValue(const std::string& column);
 
     bool exists() const;
 
@@ -103,6 +107,11 @@ protected:
     std::ios_base::openmode mode_m;
 
     SDDSColumnSet columns_m;
+
+    /* The columns of the SDDS file need to be
+     * added only once.
+     */
+    bool hasColumns() const;
 
 private:
 
@@ -174,6 +183,12 @@ std::string SDDSWriter::toString(const T& val) {
     ss.precision(precision_m);
     ss << val;
     return ss.str();
+}
+
+
+inline
+bool SDDSWriter::hasColumns() const {
+    return columns_m.hasColumns();
 }
 
 #endif

@@ -9,10 +9,13 @@
 template <class Level>
 MueLuBottomSolver<Level>::MueLuBottomSolver(const bool& rebalance,
                                             const std::string& reuse)
-    : A_mp(Teuchos::null),
-      nSweeps_m(4),
-      rebalance_m(rebalance),
-      setupTimer_m(IpplTimings::getTimer("AMR MG bsolver setup"))
+    : BottomSolver<Teuchos::RCP<amr::matrix_t>,
+                                Teuchos::RCP<amr::multivector_t>,
+                                Level>()
+    , A_mp(Teuchos::null)
+    , nSweeps_m(4)
+    , rebalance_m(rebalance)
+    , setupTimer_m(IpplTimings::getTimer("AMR MG bsolver setup"))
 {
     this->initMueLuList_m(reuse);
     
@@ -49,58 +52,55 @@ void MueLuBottomSolver<Level>::setOperator(const Teuchos::RCP<matrix_t>& A,
     A_mp = MueLu::TpetraCrs_To_XpetraMatrix<scalar_t, lo_t, go_t, node_t>(A);
     A_mp->SetFixedBlockSize(1); // only 1 DOF per node (pure Laplace problem)
 
-    static bool first = true;
-    
-    if ( first ) {
-        first = false;
+    Teuchos::RCP<mv_t> coords_p = Teuchos::rcp(
+        new amr::multivector_t(A->getDomainMap(), AMREX_SPACEDIM, false)
+    );
 
-        Teuchos::RCP<mv_t> coords_p = Teuchos::rcp(
-            new amr::multivector_t(A->getDomainMap(), AMREX_SPACEDIM, false)
-        );
+    const scalar_t* domain = level_p->geom.ProbLo();
+    const scalar_t* dx = level_p->cellSize();
+    for (amrex::MFIter mfi(level_p->grids, level_p->dmap, true);
+        mfi.isValid(); ++mfi)
+    {
+        const AmrBox_t&       tbx = mfi.tilebox();
+        const lo_t* lo = tbx.loVect();
+        const lo_t* hi = tbx.hiVect();
 
-        const scalar_t* domain = level_p->geom.ProbLo();
-        const scalar_t* dx = level_p->cellSize();
-        for (amrex::MFIter mfi(level_p->grids, level_p->dmap, true);
-            mfi.isValid(); ++mfi)
-        {
-            const AmrBox_t&       tbx = mfi.tilebox();
-            const lo_t* lo = tbx.loVect();
-            const lo_t* hi = tbx.hiVect();
-    
-            for (lo_t i = lo[0]; i <= hi[0]; ++i) {
-                for (lo_t j = lo[1]; j <= hi[1]; ++j) {
+        for (lo_t i = lo[0]; i <= hi[0]; ++i) {
+            for (lo_t j = lo[1]; j <= hi[1]; ++j) {
 #if AMREX_SPACEDIM == 3
-                    for (lo_t k = lo[2]; k <= hi[2]; ++k) {
+                for (lo_t k = lo[2]; k <= hi[2]; ++k) {
 #endif
-                        AmrIntVect_t iv(D_DECL(i, j, k));
-                        go_t gidx = level_p->serialize(iv);
-                        
-                        coords_p->replaceGlobalValue(gidx, 0, domain[0] + (0.5 + i) * dx[0]);
-                        coords_p->replaceGlobalValue(gidx, 1, domain[1] + (0.5 + j) * dx[1]);
+                    AmrIntVect_t iv(D_DECL(i, j, k));
+                    go_t gidx = level_p->serialize(iv);
+
+                    coords_p->replaceGlobalValue(gidx, 0, domain[0] + (0.5 + i) * dx[0]);
+                    coords_p->replaceGlobalValue(gidx, 1, domain[1] + (0.5 + j) * dx[1]);
 #if AMREX_SPACEDIM == 3
-                        coords_p->replaceGlobalValue(gidx, 2, domain[2] + (0.5 + k) * dx[2]);
-                    }
-#endif
+                    coords_p->replaceGlobalValue(gidx, 2, domain[2] + (0.5 + k) * dx[2]);
                 }
+#endif
             }
         }
-    
-        Teuchos::RCP<xmv_t> coordinates = MueLu::TpetraMultiVector_To_XpetraMultiVector(coords_p);
-
-        Teuchos::RCP<mv_t> nullspace = Teuchos::rcp(new mv_t(A->getRowMap(), 1));
-        Teuchos::RCP<xmv_t> xnullspace = MueLu::TpetraMultiVector_To_XpetraMultiVector(nullspace);
-        xnullspace->putScalar(1.0);
-        hierarchy_mp->GetLevel(0)->Set("Nullspace", xnullspace);
-        hierarchy_mp->GetLevel(0)->Set("Coordinates", coordinates);
-        hierarchy_mp->setDefaultVerbLevel(Teuchos::VERB_HIGH);
-        hierarchy_mp->IsPreconditioner(false);
-        hierarchy_mp->GetLevel(0)->Set("A", A_mp);
     }
+
+    Teuchos::RCP<xmv_t> coordinates = MueLu::TpetraMultiVector_To_XpetraMultiVector(coords_p);
+
+    Teuchos::RCP<mv_t> nullspace = Teuchos::rcp(new mv_t(A->getRowMap(), 1));
+    Teuchos::RCP<xmv_t> xnullspace = MueLu::TpetraMultiVector_To_XpetraMultiVector(nullspace);
+    xnullspace->putScalar(1.0);
+    hierarchy_mp->GetLevel(0)->Set("Nullspace", xnullspace);
+    hierarchy_mp->GetLevel(0)->Set("Coordinates", coordinates);
+    hierarchy_mp->setDefaultVerbLevel(Teuchos::VERB_HIGH);
+    hierarchy_mp->IsPreconditioner(false);
+    hierarchy_mp->GetLevel(0)->Set("A", A_mp);
+
 
     Teuchos::RCP<level_t> finest_p = hierarchy_mp->GetLevel(0);
     finest_p->Set("A", A_mp);
 
     factory_mp->SetupHierarchy(*hierarchy_mp);
+
+    this->isInitialized_m = true;
 
     IpplTimings::stopTimer(setupTimer_m);
 }
