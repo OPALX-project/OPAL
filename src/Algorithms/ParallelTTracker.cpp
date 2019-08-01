@@ -588,6 +588,7 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
     const IndexMap::value_t::const_iterator end = elements.end();
 
     for (; it != end; ++ it) {
+        (*it)->checkLengthResolution(itsBunch_m->getdT(), itsBunch_m->RefPartP_m);
         CoordinateSystemTrafo refToLocalCSTrafo = (itsOpalBeamline_m.getMisalignment((*it)) *
                                                    (itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * itsBunch_m->toLabTrafo_m));
         CoordinateSystemTrafo localToRefCSTrafo = refToLocalCSTrafo.inverted();

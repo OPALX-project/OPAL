@@ -455,6 +455,8 @@ public:
     void setRotationAboutZ(double rotation);
     double getRotationAboutZ() const;
 
+    void checkLengthResolution(double dt,
+                               const Vector_t &P) const;
 protected:
     bool isInsideTransverse(const Vector_t &r, double f = 1) const;
 
@@ -722,6 +724,5 @@ double ElementBase::getElementPosition() const {
 inline
 bool ElementBase::isElementPositionSet() const
 { return elemedgeSet_m; }
-
 
 #endif // CLASSIC_ElementBase_HH

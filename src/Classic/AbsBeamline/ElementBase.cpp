@@ -332,3 +332,22 @@ void ElementBase::setCurrentSCoordinate(double s) {
         }
     }
 }
+
+void ElementBase::checkLengthResolution(double dt,
+                                        const Vector_t &P) const
+{
+    if (getType() == DRIFT) return;
+
+    constexpr int minNumSteps = 10;
+    double length = getElementLength();
+    double betaZ = P(2) / Util::getGamma(P);
+    if (minNumSteps * dt * Physics::c * betaZ > length) {
+        dt = length / (minNumSteps * Physics::c * betaZ);
+        std::ostringstream message;
+        message.precision(4);
+        message << "Time step too big for element '" << getName() << "'!\n"
+                << "Should be less than " << std::scientific << dt << " [s]";
+        throw GeneralClassicException("ElementBase:checkElementResolution",
+                                      message.str());
+    }
+}
