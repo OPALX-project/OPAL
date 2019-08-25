@@ -213,7 +213,7 @@ public:
                 if (viableA == true && viableB == true) {
                     break;
                 }
-                std::cout << "Individual not viable, I try again: iter= " << iter << std::endl;
+                std::cout << "Individuals not viable, I try again: iter= " << iter << std::endl;
                 iter++;
                 // if maximum number of tries then create new individual(s)
                 if (iter > 100) {

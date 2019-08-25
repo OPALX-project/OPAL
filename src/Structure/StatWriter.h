@@ -12,6 +12,7 @@ public:
 
     StatWriter(const std::string& fname, bool restart);
 
+    using SDDSWriter::write;
     /** \brief Write statistical data.
      *
      * Writes statistical beam data to proper output file. This is information such as RMS beam parameters

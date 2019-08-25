@@ -12,7 +12,9 @@ public:
     SDDSColumn(const std::string& name,
                const std::string& type,
                const std::string& unit,
-               const std::string& desc);
+               const std::string& desc,
+               std::ios_base::fmtflags flags,
+               unsigned short precision);
 
     template<typename T>
     void addValue(const T& val);
@@ -42,6 +44,9 @@ private:
     std::string name_m;
     desc_t description_m;
     variant_t value_m;
+
+    std::ios_base::fmtflags writeFlags_m;
+    unsigned short writePrecision_m;
 
     mutable bool set_m;
 };

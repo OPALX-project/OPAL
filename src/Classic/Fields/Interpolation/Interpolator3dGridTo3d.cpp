@@ -73,7 +73,7 @@ void Interpolator3dGridTo3d::setAll(ThreeDGrid* grid,
             break;
         default:
             throw(LogicalError(
-                    "Interpolator3dGridTo3d::Set",
+                    "Interpolator3dGridTo3d::setAll",
                     "Did not recognise interpolation algorithm"
                    )
       );

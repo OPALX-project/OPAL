@@ -337,7 +337,7 @@ VectorMap* SectorMagneticFieldMap::IO::getInterpolatorPolyPatch(
     // too lazy to write code to handle this case - not available to user anyway
     if (sym != SectorMagneticFieldMap::dipole) {
         throw(LogicalError(
-                     "SectorMagneticFieldMap::IO::ReadMap",
+                     "SectorMagneticFieldMap::IO::getInterpolatorPolyPatch",
                      "Failed to recognise symmetry type"
                ));
     }

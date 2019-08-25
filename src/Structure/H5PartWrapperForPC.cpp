@@ -205,7 +205,7 @@ void H5PartWrapperForPC::readStepData(PartBunchBase<double, 3>* bunch,
     for(long int n = 0; n < numParticles; ++ n) {
         bunch->M[n] = f64buffer[n];
     }
-    
+
     if ( bunch->getNumBunch() > 1 ) {
         std::vector<char> ibuffer(numParticles * sizeof(h5_int64_t));
         h5_int64_t *i64buffer = reinterpret_cast<h5_int64_t*>(&ibuffer[0]);
@@ -459,7 +459,7 @@ void H5PartWrapperForPC::writeStepHeader(PartBunchBase<double, 3>* bunch,
     } catch (std::out_of_range & m) {
         ERRORMSG(m.what() << endl);
 
-        throw OpalException("H5PartWrapperForPC::wirteStepHeader",
+        throw OpalException("H5PartWrapperForPC::writeStepHeader",
                             "some additional step attribute not found");
     }
 }
@@ -560,10 +560,10 @@ void H5PartWrapperForPC::writeStepData(PartBunchBase<double, 3>* bunch) {
             i64buffer[i] =  bunch->Bin[i];
         for (size_t i = skipID; i < numLocalParticles; ++ i)
             i64buffer[i] = bunch->Bin[i + 1];
-        
+
         WRITEDATA(Int64, file_m, "bin", i64buffer);
     }
-    
+
     for  (size_t i = 0; i < skipID; ++ i)
         i64buffer[i] = bunch->bunchNum[i];
     for (size_t i = skipID; i < numLocalParticles; ++ i)

@@ -1,5 +1,6 @@
 #include "ElementPositionWriter.h"
-#include "Structure/LossDataSink.h"
+
+#include "Ippl.h"
 #include "AbstractObjects/OpalData.h"
 
 ElementPositionWriter::ElementPositionWriter(const std::string& fname)
@@ -17,27 +18,83 @@ void ElementPositionWriter::fillHeader() {
                          "element positions");
     this->addDefaultParameters();
 
-    columns_m.addColumn("s", "double", "m", "longitudinal position");
-    columns_m.addColumn("dipole", "float", "1", "dipole field present");
-    columns_m.addColumn("quadrupole", "float", "1", "quadrupole field present");
-    columns_m.addColumn("sextupole", "float", "1", "sextupole field present");
-    columns_m.addColumn("octupole", "float", "1", "octupole field present");
-    columns_m.addColumn("decapole", "float", "1", "decapole field present");
-    columns_m.addColumn("multipole", "float", "1", "higher multipole field present");
-    columns_m.addColumn("solenoid", "float", "1", "solenoid field present");
-    columns_m.addColumn("rfcavity", "float", "1", "RF field present");
-    columns_m.addColumn("monitor", "float", "1", "monitor present");
-    columns_m.addColumn("other", "float", "1", "other element present");
-    columns_m.addColumn("element_names", "string", "", "names of elements");
-
-    this->writeHeader();
+    columns_m.addColumn("s",
+                        "double",
+                        "m",
+                        "longitudinal position",
+                        std::ios_base::fixed,
+                        10);
+    columns_m.addColumn("dipole",
+                        "float",
+                        "1",
+                        "dipole field present",
+                        std::ios_base::fixed,
+                        4);
+    columns_m.addColumn("quadrupole",
+                        "float",
+                        "1",
+                        "quadrupole field present",
+                        std::ios_base::fixed,
+                        4);
+    columns_m.addColumn("sextupole",
+                        "float",
+                        "1",
+                        "sextupole field present",
+                        std::ios_base::fixed,
+                        4);
+    columns_m.addColumn("octupole",
+                        "float",
+                        "1",
+                        "octupole field present",
+                        std::ios_base::fixed,
+                        4);
+    columns_m.addColumn("decapole",
+                        "float",
+                        "1",
+                        "decapole field present",
+                        std::ios_base::fixed,
+                        4);
+    columns_m.addColumn("multipole",
+                        "float",
+                        "1",
+                        "higher multipole field present",
+                        std::ios_base::fixed,
+                        4);
+    columns_m.addColumn("solenoid",
+                        "float",
+                        "1",
+                        "solenoid field present",
+                        std::ios_base::fixed,
+                        4);
+    columns_m.addColumn("rfcavity",
+                        "float",
+                        "1",
+                        "RF field present",
+                        std::ios_base::fixed,
+                        4);
+    columns_m.addColumn("monitor",
+                        "float",
+                        "1",
+                        "monitor present",
+                        std::ios_base::fixed,
+                        4);
+    columns_m.addColumn("other",
+                        "float",
+                        "1",
+                        "other element present",
+                        std::ios_base::fixed,
+                        4);
+    columns_m.addColumn("element_names",
+                        "string",
+                        "",
+                        "names of elements");
 
     this->addInfo("ascii", 1);
 }
 
 
 void ElementPositionWriter::addRow(double spos,
-                                   const std::vector<int> &row,
+                                   const std::vector<double> &row,
                                    const std::string &elements) {
 
     if ( Ippl::myNode() != 0 )

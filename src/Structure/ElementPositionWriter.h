@@ -9,7 +9,7 @@ public:
     ElementPositionWriter(const std::string& fname);
 
     void addRow(double spos,
-                const std::vector<int>& row,
+                const std::vector<double>& row,
                 const std::string& elements);
 
 private:

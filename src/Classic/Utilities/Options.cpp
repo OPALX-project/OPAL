@@ -25,9 +25,6 @@ namespace Options {
 
     bool writeBendTrajectories = false;
 
-    OPENMODE openMode = WRITE;
-
-
     // The global program options.
     bool mtrace = false;
     bool psDumpEachTurn = false;

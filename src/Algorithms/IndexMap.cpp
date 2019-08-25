@@ -2,6 +2,7 @@
 #include <limits>
 #include <iostream>
 #include <fstream>
+#include <tuple>
 
 #include "Algorithms/IndexMap.h"
 #include "AbstractObjects/OpalData.h"
@@ -13,6 +14,9 @@
 extern Inform *gmsg;
 
 const double IndexMap::oneMinusEpsilon_m = 1.0 - std::numeric_limits<double>::epsilon();
+namespace {
+    void insertFlags(std::vector<double> &flags, std::shared_ptr<Component> element);
+}
 
 IndexMap::IndexMap():
     mapRange2Element_m(),
@@ -145,149 +149,196 @@ enum elements {
 };
 
 void IndexMap::saveSDDS(double initialPathLength) const {
-    auto opal = OpalData::getInstance();
-    if (opal->isOptimizerRun()) return;
+    if (mapRange2Element_m.size() == 0) return;
 
-    std::vector<std::vector<int> > allItems(SIZE);
-    std::vector<double> allPositions;
-    std::vector<std::string> allNames;
-    unsigned int counter = 0;
+    std::vector<std::tuple<double, std::vector<double>, std::string> > sectors;
 
+    // add for each sector four rows:
+    // (s_i, 0)
+    // (s_i, 1)
+    // (s_f, 1)
+    // (s_f, 0)
+    // to the file, where
+    // s_i is the start of the range and
+    // s_f is the end of the range.
     auto mapIti = mapRange2Element_m.begin();
     auto mapItf = mapRange2Element_m.end();
     for (; mapIti != mapItf; mapIti++) {
-        const auto key = (*mapIti).first;
-        const auto val = (*mapIti).second;
+        const auto &sectorElements = (*mapIti).second;
+        if (sectorElements.size() == 0)
+            continue;
 
-        std::vector<int> items(SIZE, 0);
-        std::string names("");
-        for (auto element: val) {
-            switch (element->getType()) {
-            case ElementBase::RBEND:
-            case ElementBase::SBEND:
-                {
-                    const Bend2D* bend = static_cast<const Bend2D*>(element.get());
-                    if (bend->getRotationAboutZ() > 0.5 * Physics::pi &&
-                        bend->getRotationAboutZ() < 1.5 * Physics::pi) {
-                        items[DIPOLE] = -1;
-                    } else {
-                        items[DIPOLE] = 1;
-                    }
+        const auto &sectorRange = (*mapIti).first;
+
+        double sectorBegin = sectorRange.first;
+        double sectorEnd = sectorRange.second;
+
+        std::vector<std::tuple<double, std::vector<double>, std::string> > currentSector(4);
+        std::get<0>(currentSector[0]) = sectorBegin;
+        std::get<0>(currentSector[1]) = sectorBegin;
+        std::get<0>(currentSector[2]) = sectorEnd;
+        std::get<0>(currentSector[3]) = sectorEnd;
+
+        for (unsigned short i = 0; i < 4; ++ i) {
+            auto &flags = std::get<1>(currentSector[i]);
+            flags.resize(SIZE, 0);
+        }
+
+        for (auto element: sectorElements) {
+            auto elementPassages = mapElement2Range_m.equal_range(element);
+            auto passage = elementPassages.first;
+            auto end = elementPassages.second;
+            for (; passage != end; ++ passage) {
+                const auto &elementRange = (*passage).second;
+                double elementBegin = elementRange.first;
+                double elementEnd = elementRange.second;
+
+                if (elementBegin <= sectorBegin &&
+                    elementEnd >= sectorEnd) {
+                    break;
                 }
-                break;
-            case ElementBase::MULTIPOLE:
-                {
-                    const Multipole* mult = static_cast<const Multipole*>(element.get());
-                    switch(mult->getMaxNormalComponentIndex()) {
-                    case 1:
-                        items[DIPOLE] = (mult->isFocusing(0)? 1: -1);
-                        break;
-                    case 2:
-                        items[QUADRUPOLE] = (mult->isFocusing(1)? 1: -1);
-                        break;
-                    case 3:
-                        items[SEXTUPOLE] = (mult->isFocusing(2)? 1: -1);
-                        break;
-                    case 4:
-                        items[OCTUPOLE] = (mult->isFocusing(3)? 1: -1);
-                        break;
-                    case 5:
-                        items[DECAPOLE] = (mult->isFocusing(4)? 1: -1);
-                        break;
-                    default:
-                        items[MULTIPOLE] = 1;
-                    }
-                }
-                break;
-            case ElementBase::SOLENOID:
-                items[SOLENOID] = 1;
-                break;
-            case ElementBase::RFCAVITY:
-            case ElementBase::TRAVELINGWAVE:
-                items[RFCAVITY] = 1;
-                break;
-            case ElementBase::MONITOR:
-                items[MONITOR] = 1;
-                break;
-            default:
-                items[OTHER] = 1;
-                break;
             }
 
-            names += element->getName() + ", ";
+            const auto &elementRange = (*passage).second;
+            if (elementRange.first < sectorBegin) {
+                ::insertFlags(std::get<1>(currentSector[0]), element);
+                std::get<2>(currentSector[0]) += element->getName() + ", ";
+            }
+
+            ::insertFlags(std::get<1>(currentSector[1]), element);
+            std::get<2>(currentSector[1]) += element->getName() + ", ";
+
+            ::insertFlags(std::get<1>(currentSector[2]), element);
+            std::get<2>(currentSector[2]) += element->getName() + ", ";
+
+            if (elementRange.second > sectorEnd) {
+                ::insertFlags(std::get<1>(currentSector[3]), element);
+                std::get<2>(currentSector[3]) += element->getName() + ", ";
+            }
         }
 
-        if (names.length() == 0) continue;
-
-        allPositions.push_back(key.first);
-        allPositions.push_back(key.first);
-        allPositions.push_back(key.second);
-        allPositions.push_back(key.second);
-
-        allNames.push_back("");
-        allNames.push_back(names.substr(0, names.length() - 2));
-        allNames.push_back(allNames.back());
-        allNames.push_back("");
-
-        for (unsigned int i = 0; i < SIZE; ++ i) {
-            allItems[i].push_back(0);
-            allItems[i].push_back(items[i]);
-            allItems[i].push_back(items[i]);
-            allItems[i].push_back(0);
-        }
-
-        ++ counter;
-    }
-
-    if (counter == 0) return;
-
-    if (allPositions.front() > initialPathLength) {
-        {
-            auto tmp = allPositions;
-            allPositions = std::vector<double>(4, initialPathLength);
-            allPositions.insert(allPositions.end(), tmp.begin(), tmp.end());
-        }
-
-        {
-            auto tmp = allNames;
-            allNames = std::vector<std::string>(4, "");
-            allNames.insert(allNames.end(), tmp.begin(), tmp.end());
-        }
-
-        for (unsigned int i = 0; i < SIZE; ++ i) {
-            auto tmp = allItems[i];
-            allItems[i] = std::vector<int>(4, 0);
-            allItems[i].insert(allItems[i].end(), tmp.begin(), tmp.end());
+        for (unsigned short i = 0; i < 4; ++ i) {
+            sectors.push_back(currentSector[i]);
         }
     }
 
-    const unsigned int totalSize = counter;
-    for (unsigned int i = 0; i < SIZE; ++ i) {
-        for (unsigned int j = 0; j < totalSize - 1; ++ j) {
-            if (allItems[i][4 * j + 1] == 0) continue;
-            if (allItems[i][4 * (j + 1) + 1] == 0) continue;
-            if (allItems[i][4 * j + 1] * allItems[i][4 * (j + 1) + 1] < 0) continue;
-            if (std::abs(allPositions[4 * j + 3] - allPositions[4 * (j + 1)]) > 1e-6) continue;
+    // make the entries of the rf cavities a zigzag line
+    const unsigned int numEntries = sectors.size();
+    auto it = mapElement2Range_m.begin();
+    auto end = mapElement2Range_m.end();
+    for (; it != end; ++ it) {
+        auto element = (*it).first;
+        auto name = element->getName();
+        auto type = element->getType();
+        if (type != ElementBase::RFCAVITY &&
+            type != ElementBase::TRAVELINGWAVE) {
+            continue;
+        }
 
-            allItems[i][4 * j + 3] = allItems[i][4 * (j + 1)] = allItems[i][4 * j + 1];
+        auto range = (*it).second;
+
+        unsigned int i = 0;
+        for (; i < numEntries; ++ i) {
+            if (std::get<0>(sectors[i]) >= range.first) {
+                break;
+            }
+        }
+
+        if (i == numEntries) continue;
+
+        unsigned int j = ++ i;
+        while (std::get<0>(sectors[j]) < range.second) {
+            ++ j;
+        }
+
+        double length = range.second - range.first;
+        for (; i <= j; ++ i) {
+            double pos = std::get<0>(sectors[i]);
+            auto &items = std::get<1>(sectors[i]);
+
+            items[RFCAVITY] = 1.0 - 2 * (pos - range.first) / length;
         }
     }
 
-    for (unsigned int j = 0; j < totalSize; ++ j) {
-        allItems[RFCAVITY][4 * j + 2] = -allItems[RFCAVITY][4 * j + 1];
+    // add row if range of first sector starts after initialPathLength
+    if (std::get<0>(sectors[0]) > initialPathLength) {
+        auto tmp = sectors;
+        sectors = std::vector<std::tuple<double, std::vector<double>, std::string> >(1);
+        std::get<0>(sectors[0]) = initialPathLength;
+        std::get<1>(sectors[0]).resize(SIZE, 0.0);
+
+        sectors.insert(sectors.end(), tmp.begin(), tmp.end());
     }
 
     std::string fileName("data/" + OpalData::getInstance()->getInputBasename() + "_ElementPositions.sdds");
     ElementPositionWriter writer(fileName);
 
-    for (unsigned int i = 0; i < 4 * totalSize; ++ i) {
-        std::vector<int> values(SIZE, 0);
-        for (unsigned int j = 0; j < SIZE; ++ j) {
-            values[j] = allItems[j][i];
+    for (auto sector: sectors) {
+        std::string names = std::get<2>(sector);
+        if (names != "") {
+            names = names.substr(0, names.length() - 2);
         }
-        writer.addRow(allPositions[i],
-                      values,
-                      allNames[i]);
+        names = "\"" + names + "\"";
+        writer.addRow(std::get<0>(sector),
+                      std::get<1>(sector),
+                      names);
+    }
+}
+
+namespace {
+    void insertFlags(std::vector<double> &flags, std::shared_ptr<Component> element) {
+        switch (element->getType()) {
+        case ElementBase::RBEND:
+        case ElementBase::SBEND:
+            {
+                const Bend2D* bend = static_cast<const Bend2D*>(element.get());
+                if (bend->getRotationAboutZ() > 0.5 * Physics::pi &&
+                    bend->getRotationAboutZ() < 1.5 * Physics::pi) {
+                    flags[DIPOLE] = -1;
+                } else {
+                    flags[DIPOLE] = 1;
+                }
+            }
+            break;
+        case ElementBase::MULTIPOLE:
+            {
+                const Multipole* mult = static_cast<const Multipole*>(element.get());
+                switch(mult->getMaxNormalComponentIndex()) {
+                case 1:
+                    flags[DIPOLE] = (mult->isFocusing(0)? 1: -1);
+                    break;
+                case 2:
+                    flags[QUADRUPOLE] = (mult->isFocusing(1)? 1: -1);
+                    break;
+                case 3:
+                    flags[SEXTUPOLE] = (mult->isFocusing(2)? 1: -1);
+                    break;
+                case 4:
+                    flags[OCTUPOLE] = (mult->isFocusing(3)? 1: -1);
+                    break;
+                case 5:
+                    flags[DECAPOLE] = (mult->isFocusing(4)? 1: -1);
+                    break;
+                default:
+                    flags[MULTIPOLE] = 1;
+                }
+            }
+            break;
+        case ElementBase::SOLENOID:
+            flags[SOLENOID] = 1;
+            break;
+        case ElementBase::RFCAVITY:
+        case ElementBase::TRAVELINGWAVE:
+            flags[RFCAVITY] = 1;
+            break;
+        case ElementBase::MONITOR:
+            flags[MONITOR] = 1;
+            break;
+        default:
+            flags[OTHER] = 1;
+            break;
+        }
+
     }
 }
 

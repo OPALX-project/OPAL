@@ -1,8 +1,6 @@
 #ifndef OPAL_BEAMLINE_H
 #define OPAL_BEAMLINE_H
 
-#include <list>
-#include <limits>
 #include <set>
 #include <string>
 
@@ -19,21 +17,17 @@
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Source.h"
 
-#include "BasicActions/Option.h"
-#include "Utilities/Options.h"
 #include "Utilities/ClassicField.h"
 
 #include "Algorithms/CoordinateSystemTrafo.h"
 
-class Tracker;
 template <class T, unsigned Dim>
 class PartBunchBase;
 class ParticleMatterInteractionHandler;
 class BoundaryGeometry;
-class WakeFunction;
 
-#define BEAMLINE_EOL  0x80000000   // end of line
-#define BEAMLINE_PARTICLEMATTERINTERACTION 0x08000000 // has particle matter interaction
+//#define BEAMLINE_EOL  0x80000000   // end of line
+//#define BEAMLINE_PARTICLEMATTERINTERACTION 0x08000000 // has particle matter interaction
 
 class OpalBeamline {
 
@@ -66,19 +60,14 @@ public:
     double getEnd(const Vector_t &) const;
 
     void switchElements(const double &, const double &, const double &kineticEnergy, const bool &nomonitors = false);
-    void switchAllElements();
 
     void switchElementsOff(const double &, ElementBase::ElementType eltype = ElementBase::ANY);
     void switchElementsOff();
-
-    WakeFunction *getWakeFunction(const unsigned int &);
-    std::shared_ptr<const ElementBase> getWakeFunctionOwner(const unsigned int &);
 
     ParticleMatterInteractionHandler *getParticleMatterInteractionHandler(const unsigned int &);
 
     BoundaryGeometry *getBoundaryGeometry(const unsigned int &);
 
-    void getKFactors(const unsigned int &index, const Vector_t &pos, const long &sindex, const double &t, Vector_t &KR, Vector_t &KT);
     unsigned long getFieldAt(const unsigned int &, const Vector_t &, const long &, const double &, Vector_t &, Vector_t &);
     unsigned long getFieldAt(const Vector_t &, const Vector_t &, const double &, Vector_t &, Vector_t &);
 
@@ -87,17 +76,11 @@ public:
 
     void prepareSections();
     void compute3DLattice();
-    void plot3DLattice();
     void save3DLattice();
     void save3DInput();
     void print(Inform &) const;
 
     FieldList getElementByType(ElementBase::ElementType);
-
-    // need this for autophasing in case we have multiple tracks
-    double calcBeamlineLength();
-
-    void removeElement(const std::string &ElName);
 
     void swap(OpalBeamline & rhs);
     void merge(OpalBeamline &rhs);
@@ -167,16 +150,6 @@ void OpalBeamline::visit<Separator>(const Separator &element, BeamlineVisitor &,
 template<> inline
 void OpalBeamline::visit<Septum>(const Septum &element, BeamlineVisitor &, PartBunchBase<double, 3> *) {
     WARNMSG(element.getTypeString() << " not implemented yet!" << endl);
-}
-
-inline
-void OpalBeamline::removeElement(const std::string &ElName) {
-    for(FieldList::iterator flit = elements_m.begin(); flit != elements_m.end(); ++ flit) {
-        if(flit->getElement()->getName() == ElName) {
-            flit->setStart(-flit->getEnd());
-            flit->setEnd(-flit->getEnd());
-        }
-    }
 }
 
 inline

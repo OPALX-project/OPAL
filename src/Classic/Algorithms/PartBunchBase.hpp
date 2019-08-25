@@ -1278,7 +1278,6 @@ void PartBunchBase<T, Dim>::get_PBounds(Vector_t &min, Vector_t &max) const {
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::calcBeamParameters() {
-    using Physics::c;
 
     Vector_t eps2, fac, rsqsum, psqsum, rpsum;
 
@@ -1330,10 +1329,10 @@ void PartBunchBase<T, Dim>::calcBeamParameters() {
 
     rprms_m = rpsum * fac;
 
-    Dx_m = moments_m(0, 5) / N;
+    Dx_m  = moments_m(0, 5) / N;
     DDx_m = moments_m(1, 5) / N;
 
-    Dy_m = moments_m(2, 5) / N;
+    Dy_m  = moments_m(2, 5) / N;
     DDy_m = moments_m(3, 5) / N;
 
     // Find unnormalized emittance.
@@ -1717,7 +1716,6 @@ double PartBunchBase<T, Dim>::calcMeanPhi() {
     return meanPhi;
 }
 
-
 // this function reset the BinID for each particles according to its current beta*gamma
 // it is for multi-turn extraction cyclotron with small energy gain
 // the bin number can be different with the bunch number
@@ -1901,7 +1899,7 @@ template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::calcEMean() {
 
     const double totalNp = static_cast<double>(getTotalNum());
-    const double locNp = static_cast<double>(getLocalNum());
+    const double locNp   = static_cast<double>(getLocalNum());
 
     eKin_m = 0.0;
 

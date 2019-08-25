@@ -1,6 +1,7 @@
 #include "MonitorStatisticsWriter.h"
-#include "Structure/LossDataSink.h"
 
+#include "Structure/LossDataSink.h"
+#include "Ippl.h"
 
 MonitorStatisticsWriter::MonitorStatisticsWriter(const std::string& fname, bool restart)
     : SDDSWriter(fname, restart)

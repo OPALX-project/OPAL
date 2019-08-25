@@ -28,6 +28,7 @@
 #include "Steppers/Steppers.h"
 
 class DataSink;
+class PluginElement;
 
 template <class T, unsigned Dim>
 class PartBunchBase;
@@ -213,6 +214,8 @@ private:
     beamline_list FieldDimensions;
     std::list<Component *> myElements;
     Beamline *itsBeamline;
+    std::vector<PluginElement*> pluginElements_m;
+    std::vector<CavityCrossData> cavCrossDatas_m;
 
     DataSink *itsDataSink;
 
@@ -256,7 +259,7 @@ private:
 
     // for each bunch we have a path length
     double pathLength_m;
-
+    // Multi time step tracker
     void MtsTracker();
 
     void GenericTracker();
@@ -401,7 +404,6 @@ private:
     // Apply effects of RF Gap Crossings.
     // Unit assumptions: [itsBunch_m->R] = m, [itsBunch_m->P] = 1, [h] = s, [c] = m/s, [itsBunch_m->getT()] = s
     bool push(double h);
-
     // Kick particles for time h
     // The fields itsBunch_m->Bf, itsBunch_m->Ef are used to calculate the forces
     bool kick(double h);
@@ -413,7 +415,7 @@ private:
     // apply the plugin elements: probe, collimator, stripper, septum
     bool applyPluginElements(const double dt);
 
-    // destroy particles if they are marked as Bin=-1 in the plugin elements or out of global apeture
+    // destroy particles if they are marked as Bin=-1 in the plugin elements or out of global aperture
     bool deleteParticle(bool = false);
 
     void initTrackOrbitFile();
@@ -456,7 +458,11 @@ private:
 
     stepper::INTEGRATOR stepper_m;
 
-    void update_m(double& t, const double& dt, const bool& dumpEachTurn);
+    /// Check if turn done
+    bool isTurnDone();
+
+    /// Update time and path length, write to output files
+    void update_m(double& t, const double& dt, const bool& finishedTurn);
 
     /*!
      * @returns the time t [ns], time step dt [ns] and the azimuth angle [rad]
@@ -468,13 +474,13 @@ private:
                             dvector_t& Tdeltz,
                             ivector_t& TturnNumber);
 
-    void seoMode_m(double& t, const double dt, bool& dumpEachTurn,
+    void seoMode_m(double& t, const double dt, bool& finishedTurn,
                    dvector_t& Ttime, dvector_t& Tdeltr,
                    dvector_t& Tdeltz, ivector_t& TturnNumber);
 
-    void singleMode_m(double& t, const double dt, bool& dumpEachTurn, double& oldReferenceTheta);
+    void singleMode_m(double& t, const double dt, bool& finishedTurn, double& oldReferenceTheta);
 
-    void bunchMode_m(double& t, const double dt, bool& dumpEachTurn);
+    void bunchMode_m(double& t, const double dt, bool& finishedTurn);
 
     void gapCrossKick_m(size_t i, double t, double dt,
                         const Vector_t& Rold, const Vector_t& Pold);
@@ -490,7 +496,7 @@ private:
                                     const Vector_t& R,
                                     const Vector_t& P,
                                     const double& temp_meanTheta,
-                                    bool& dumpEachTurn);
+                                    bool& finishedTurn);
 
     void computeSpaceChargeFields_m();
 
@@ -520,7 +526,7 @@ private:
     void updateAzimuthAndRadius();
 
     /** multi-bunch mode: set the path length of each bunch in case of restart mode
-     * 
+     *
      * At creation of DataSink the lines are rewinded properly --> the last entry of
      * the path length is therefore the initial path length at restart.
      * @pre In order to work properly in restart mode, the lines in the multi-bunch

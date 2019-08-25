@@ -34,8 +34,6 @@
 #include "Attributes/Attributes.h"
 #include "BasicActions/DumpFields.h"
 
-// extern Inform *gmsg;
-
 std::unordered_set<DumpFields*> DumpFields::dumpsSet_m;
 
 std::string DumpFields::dumpfields_docstring =
@@ -116,9 +114,7 @@ void DumpFields::buildGrid() {
     checkInt(nx, "X_STEPS");
     checkInt(ny, "Y_STEPS");
     checkInt(nz, "Z_STEPS");
-    if (grid_m != NULL) {
-        delete grid_m;
-    }
+    delete grid_m;
 
     grid_m = new interpolation::ThreeDGrid(dx, dy, dz,
                                            x0, y0, z0,
@@ -148,11 +144,11 @@ void DumpFields::checkInt(double real, std::string name, double tolerance) {
 
 void DumpFields::writeFieldThis(Component* field) {
     if (grid_m == NULL) {
-        throw OpalException("DumpFields::writeField",
+        throw OpalException("DumpFields::writeFieldThis",
                             "The grid was NULL; there was a problem with the DumpFields initialisation.");
     }
     if (field == NULL) {
-        throw OpalException("DumpFields::writeField",
+        throw OpalException("DumpFields::writeFieldThis",
                             "The field to be written was NULL.");
     }
     double time = 0.;
@@ -160,7 +156,7 @@ void DumpFields::writeFieldThis(Component* field) {
     Vector_t centroid(0., 0., 0.);
     std::ofstream fout(filename_m.c_str(), std::ofstream::out);
     if (!fout.good()) {
-        throw OpalException("DumpFields::writeField",
+        throw OpalException("DumpFields::writeFieldThis",
                             "Failed to open DumpFields file "+filename_m);
     }
     // set precision
@@ -183,7 +179,7 @@ void DumpFields::writeFieldThis(Component* field) {
         fout << B[0] << " " << B[1] << " " << B[2] << "\n";
     }
     if (!fout.good()) {
-        throw OpalException("DumpFields::writeField",
+        throw OpalException("DumpFields::writeFieldThis",
                             "Something went wrong during writing "+filename_m);
     }
     fout.close();

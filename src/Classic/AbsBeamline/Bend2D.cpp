@@ -46,20 +46,22 @@ Bend2D::Bend2D(const Bend2D &right):
     messageHeader_m(" * "),
     pusher_m(right.pusher_m),
     fieldmap_m(right.fieldmap_m),
-    fast_m(right.fast_m),
     designRadius_m(right.designRadius_m),
     exitAngle_m(right.exitAngle_m),
     fieldIndex_m(right.fieldIndex_m),
     startField_m(right.startField_m),
     endField_m(right.endField_m),
+    widthEntranceFringe_m(right.widthEntranceFringe_m),
+    widthExitFringe_m(right.widthExitFringe_m),
     reinitialize_m(right.reinitialize_m),
-    recalcRefTraj_m(right.recalcRefTraj_m),
     entranceParameter1_m(right.entranceParameter1_m),
     entranceParameter2_m(right.entranceParameter2_m),
     entranceParameter3_m(right.entranceParameter3_m),
     exitParameter1_m(right.exitParameter1_m),
     exitParameter2_m(right.exitParameter2_m),
     exitParameter3_m(right.exitParameter3_m),
+    engeCoeffsEntry_m(right.engeCoeffsEntry_m),
+    engeCoeffsExit_m(right.engeCoeffsExit_m),
     entryFieldValues_m(NULL),
     exitFieldValues_m(NULL),
     entryFieldAccel_m(NULL),
@@ -67,8 +69,6 @@ Bend2D::Bend2D(const Bend2D &right):
     deltaBeginEntry_m(right.deltaBeginEntry_m),
     deltaEndEntry_m(right.deltaEndEntry_m),
     polyOrderEntry_m(right.polyOrderEntry_m),
-    xExit_m(right.xExit_m),
-    zExit_m(right.zExit_m),
     deltaBeginExit_m(right.deltaBeginExit_m),
     deltaEndExit_m(right.deltaEndExit_m),
     polyOrderExit_m(right.polyOrderExit_m),
@@ -76,6 +76,12 @@ Bend2D::Bend2D(const Bend2D &right):
     sinEntranceAngle_m(right.sinEntranceAngle_m),
     tanEntranceAngle_m(right.tanEntranceAngle_m),
     tanExitAngle_m(right.tanExitAngle_m),
+    beginToEnd_m(right.beginToEnd_m),
+    beginToEnd_lcs_m(right.beginToEnd_lcs_m),
+    toEntranceRegion_m(right.toEntranceRegion_m),
+    toExitRegion_m(right.toExitRegion_m),
+    computeAngleTrafo_m(right.computeAngleTrafo_m),
+    maxAngle_m(right.maxAngle_m),
     nSlices_m(right.nSlices_m){
 
     setElType(isDipole);
@@ -87,14 +93,14 @@ Bend2D::Bend2D(const std::string &name):
     messageHeader_m(" * "),
     pusher_m(),
     fieldmap_m(NULL),
-    fast_m(false),
     designRadius_m(0.0),
     exitAngle_m(0.0),
     fieldIndex_m(0.0),
     startField_m(0.0),
     endField_m(0.0),
+    widthEntranceFringe_m(0.0),
+    widthExitFringe_m(0.0),
     reinitialize_m(false),
-    recalcRefTraj_m(false),
     entranceParameter1_m(0.0),
     entranceParameter2_m(0.0),
     entranceParameter3_m(0.0),
@@ -108,8 +114,6 @@ Bend2D::Bend2D(const std::string &name):
     deltaBeginEntry_m(0.0),
     deltaEndEntry_m(0.0),
     polyOrderEntry_m(0),
-    xExit_m(0.0),
-    zExit_m(0.0),
     deltaBeginExit_m(0.0),
     deltaEndExit_m(0.0),
     polyOrderExit_m(0),
@@ -117,6 +121,7 @@ Bend2D::Bend2D(const std::string &name):
     sinEntranceAngle_m(0.0),
     tanEntranceAngle_m(0.0),
     tanExitAngle_m(0.0),
+    maxAngle_m(0.0),
     nSlices_m(1){
 
     setElType(isDipole);
@@ -133,13 +138,9 @@ Bend2D::~Bend2D() {
         }
         delete[] entryFieldValues_m;
         delete[] exitFieldValues_m;
-        entryFieldValues_m = NULL;
-        exitFieldValues_m = NULL;
 
         gsl_interp_accel_free(entryFieldAccel_m);
         gsl_interp_accel_free(exitFieldAccel_m);
-        entryFieldAccel_m = NULL;
-        exitFieldAccel_m = NULL;
     }
 }
 /*
@@ -155,24 +156,8 @@ bool Bend2D::apply(const size_t &i,
                  const double &t,
                  Vector_t &E,
                  Vector_t &B) {
-
-    if(designRadius_m > 0.0) {
-
-        // Shift position to magnet frame.
-        Vector_t X = RefPartBunch_m->R[i];
-
-        Vector_t bField(0.0);
-        if (!calculateMapField(X, bField)) {
-
-            B += fieldAmplitude_m * bField;
-
-            return false;
-        }
-
-        return true;
-    }
-
-    return false;
+    Vector_t P;
+    return apply(RefPartBunch_m->R[i], P, t, E, B);
 }
 
 bool Bend2D::apply(const Vector_t &R,
@@ -203,21 +188,7 @@ bool Bend2D::applyToReferenceParticle(const Vector_t &R,
                                     const double &t,
                                     Vector_t &E,
                                     Vector_t &B) {
-    if(designRadius_m > 0.0) {
-
-        // Get field from field map.
-        Vector_t bField(0.0);
-        Vector_t X = R;// + Vector_t(0, 0, startField_m/* - elementEdge_m*/);
-        if (!calculateMapField(X, bField)) {
-
-            B += fieldAmplitude_m * bField;
-
-            return false;
-        }
-
-        return true;
-    }
-    return false;
+    return apply(R, P, t, E, B);
 }
 
 void Bend2D::goOnline(const double &) {
@@ -244,7 +215,6 @@ void Bend2D::initialise(PartBunchBase<double, 3> *bunch,
         double bendAngleX = 0.0;
         double bendAngleY = 0.0;
         calculateRefTrajectory(bendAngleX, bendAngleY);
-        recalcRefTraj_m = true;
         print(msg, bendAngleX, bendAngleY);
 
         // Pass start and end of field to calling function.
@@ -816,7 +786,7 @@ bool Bend2D::findIdealBendParameters(double chordLength) {
         if(angle_m < 0.0) {
             // Negative angle is a positive bend rotated 180 degrees.
             entranceAngle_m = copysign(1, angle_m) * entranceAngle_m;
-            exitAngle_m = copysign(1, angle_m) * exitAngle_m;
+            setExitAngle(copysign(1, angle_m) * exitAngle_m);
             angle_m = std::abs(angle_m);
             rotationZAxis_m += Physics::pi;
         }
@@ -843,27 +813,6 @@ bool Bend2D::findIdealBendParameters(double chordLength) {
         reinitialize = false;
     }
     return reinitialize;
-}
-
-void Bend2D::findReferenceExitOrigin(double &x, double &z) {
-
-    /*
-     * Find x,z coordinates of reference trajectory as it passes exit edge
-     * of the bend magnet. This assumes an entrance position of (x,z) = (0,0).
-     */
-    if(angle_m <= Physics::pi / 2.0) {
-        x = - designRadius_m * (1.0 - std::cos(angle_m));
-        z = designRadius_m * std::sin(angle_m);
-    } else if(angle_m <= Physics::pi) {
-        x = -designRadius_m * (1.0 + std::sin(angle_m - Physics::pi / 2.0));
-        z = designRadius_m * std::cos(angle_m - Physics::pi / 2.0);
-    } else if(angle_m <= 3.0 * Physics::pi / 2.0) {
-        x = -designRadius_m * (2.0 - std::cos(angle_m - Physics::pi));
-        z = -designRadius_m * std::sin(angle_m - Physics::pi);
-    } else {
-        x = -designRadius_m * (1.0 - std::cos(angle_m - 3.0 * Physics::pi / 2.0));
-        z = -designRadius_m * std::sin(angle_m - 3.0 * Physics::pi / 2.0);
-    }
 }
 
 bool Bend2D::initializeFieldMap(Inform &msg) {
@@ -1110,22 +1059,6 @@ void Bend2D::readFieldMap(Inform &msg) {
     }
 }
 
-bool Bend2D::reinitialize() {
-
-    setBendStrength();
-    double bendAngleX = 0.0;
-    double bendAngleY = 0.0;
-    calculateRefTrajectory(bendAngleX, bendAngleY);
-
-    // INFOMSG(level2 << "Bend design energy changed to: "
-    //         << designEnergy_m * 1.0e-6
-    //         << " MeV"
-    //         << endl);
-    print(*Ippl::Info, bendAngleX, bendAngleY);
-
-    return false;
-}
-
 void Bend2D::setBendEffectiveLength(double startField, double endField) {
 
     // Find initial angle.
@@ -1183,15 +1116,13 @@ void Bend2D::setFieldCalcParam() {
     tanEntranceAngle_m = tan(entranceAngle_m);
 
     deltaBeginEntry_m = std::abs(entranceParameter1_m - entranceParameter2_m);
-    deltaEndEntry_m = std::abs(entranceParameter2_m - entranceParameter3_m);
+    deltaEndEntry_m   = std::abs(entranceParameter2_m - entranceParameter3_m);
 
     deltaBeginExit_m = std::abs(exitParameter1_m - exitParameter2_m);
-    deltaEndExit_m = std::abs(exitParameter2_m - exitParameter3_m);
+    deltaEndExit_m   = std::abs(exitParameter2_m - exitParameter3_m);
 
     double bendAngle = getBendAngle();
     double entranceAngle = getEntranceAngle();
-    double exitAngle = getExitAngle();
-    tanExitAngle_m = tan(exitAngle);
 
     double rotationAngleAboutZ = getRotationAboutZ();
     Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
@@ -1200,8 +1131,8 @@ void Bend2D::setFieldCalcParam() {
     Vector_t rotationAxis(0, -1, 0);
     Quaternion_t halfRotationAboutAxis(cos(0.5 * (0.5 * bendAngle - entranceAngle)),
                                        sin(0.5 * (0.5 * bendAngle - entranceAngle)) * rotationAxis);
-    Quaternion_t exitFaceRotation(cos(0.5 * (bendAngle - entranceAngle - exitAngle)),
-                                  sin(0.5 * (bendAngle - entranceAngle - exitAngle)) * rotationAxis);
+    Quaternion_t exitFaceRotation(cos(0.5 * (bendAngle - entranceAngle - exitAngle_m)),
+                                  sin(0.5 * (bendAngle - entranceAngle - exitAngle_m)) * rotationAxis);
     Vector_t chord = getChordLength() * halfRotationAboutAxis.rotate(Vector_t(0, 0, 1));
     beginToEnd_lcs_m = CoordinateSystemTrafo(chord, exitFaceRotation.conjugate());
     beginToEnd_m = beginToEnd_lcs_m * CoordinateSystemTrafo(Vector_t(0.0), rotationAboutZ.conjugate());
@@ -1295,7 +1226,6 @@ bool Bend2D::setupBendGeometry(Inform &msg, double &startField, double &endField
     if (getType() == RBEND) {
         setEntranceAngle(getEntranceAngle());
     }
-    findReferenceExitOrigin(xExit_m, zExit_m);
 
     /*
      * Set field map geometry.
@@ -1796,8 +1726,6 @@ std::array<double,2> Bend2D::getExitFringeFieldLength() const {
 
     extFFL[0] = ( exitParameter3_m-exitParameter2_m ); //after edge
     extFFL[1] = ( exitParameter2_m-exitParameter1_m ); //before edge
-
-
 
     return extFFL;
 }

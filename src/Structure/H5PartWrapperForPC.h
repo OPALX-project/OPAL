@@ -2,7 +2,7 @@
 #define OPAL_H5PARTWRAPPERFORPC_H
 
 /*!
-  H5PartWrapperForPT: a class that manages calls to H5Part for the cyclotron tracker
+  H5PartWrapperForPC: a class that manages calls to H5Part for the cyclotron tracker
 */
 
 #include "Structure/H5PartWrapper.h"

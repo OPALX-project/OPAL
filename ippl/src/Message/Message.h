@@ -211,7 +211,7 @@ public:
         }
 
         // copy constructor
-        MsgItem(const MsgItem &m) : item(&defbuf), 	elements(m.elements), bytesize(m.bytesize),
+        MsgItem(const MsgItem &m) : item(&defbuf), elements(m.elements), bytesize(m.bytesize),
                 defbuf(m.defbuf), needDelete(m.needDelete)
         {
             // either we just copy the 'item' pointer, or we copy the default buf

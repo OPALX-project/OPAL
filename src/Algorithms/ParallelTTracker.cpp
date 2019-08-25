@@ -235,7 +235,7 @@ void ParallelTTracker::execute() {
     evenlyDistributeParticles();
 
     if (OpalData::getInstance()->hasPriorTrack() || OpalData::getInstance()->inRestartRun()) {
-        Options::openMode = Options::APPEND;
+        OpalData::getInstance()->setOpenMode(OpalData::OPENMODE::APPEND);
     }
 
     prepareSections();

@@ -65,6 +65,13 @@ public:
 
     ~OpalData();
 
+    /// Enum for writing to files
+    enum class OPENMODE {
+        WRITE,
+        APPEND,
+        UNDEFINED
+    };
+
     /// reset object for consecutive runs
     void reset();
 
@@ -200,6 +207,9 @@ public:
 
     /// get the dump frequency as found in restart file
     int getRestartDumpFreq() const;
+
+    void setOpenMode(OPENMODE openMode);
+    OPENMODE getOpenMode() const;
 
     /// set the last step in a run for possible follow-up run
     void setLastStep(const int &step);

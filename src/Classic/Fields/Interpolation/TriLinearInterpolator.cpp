@@ -64,9 +64,9 @@ void TriLinearInterpolator::function
     double dx = (Point[0]-coordinates_m->x(i+1))/
                 (coordinates_m->x(i+2)-coordinates_m->x(i+1));
     double f_x[2][2];
-    f_x[0][0] = (f_m[i+1][j][k] - f_m[i][j][k]) * dx + f_m[i][j][k];
-    f_x[1][0] = (f_m[i+1][j+1][k] - f_m[i][j+1][k]) * dx + f_m[i][j+1][k];
-    f_x[0][1] = (f_m[i+1][j][k+1] - f_m[i][j][k+1]) * dx + f_m[i][j][k+1];
+    f_x[0][0] = (f_m[i+1][j]  [k]   - f_m[i][j]  [k])   * dx + f_m[i][j]  [k];
+    f_x[1][0] = (f_m[i+1][j+1][k]   - f_m[i][j+1][k])   * dx + f_m[i][j+1][k];
+    f_x[0][1] = (f_m[i+1][j]  [k+1] - f_m[i][j]  [k+1]) * dx + f_m[i][j]  [k+1];
     f_x[1][1] = (f_m[i+1][j+1][k+1] - f_m[i][j+1][k+1]) * dx + f_m[i][j+1][k+1];
     // interpolation in y
     double f_xy[2];

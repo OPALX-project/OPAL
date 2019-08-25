@@ -23,7 +23,6 @@
 #include "BeamlineCore/DriftRep.h"
 #include "Beamlines/Beamline.h"
 #include "Elements/OpalDrift.h"
-#include "Lines/FlatWriter.h"
 
 #include "Lines/Replacer.h"
 #include "Lines/SequenceParser.h"

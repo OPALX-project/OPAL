@@ -16,7 +16,9 @@ public:
     void addColumn(const std::string& name,
                    const std::string& type,
                    const std::string& unit,
-                   const std::string& desc);
+                   const std::string& desc,
+                   std::ios_base::fmtflags flags = std::ios_base::scientific,
+                   unsigned short precision = 15);
 
     template<typename T>
     void addColumnValue(const std::string& name,

@@ -32,8 +32,6 @@
 #include <fstream>
 #include <memory>
 
-extern Inform *gmsg;
-
 using namespace std;
 
 // Class Monitor
@@ -121,14 +119,13 @@ bool Monitor::applyToReferenceParticle(const Vector_t &R,
                                           RefPartBunch_m->P[i], RefPartBunch_m->ID[i],
                                           time, 0);
                 }
-                Options::OPENMODE mode = Options::openMode;
+                OpalData::OPENMODE openMode;
                 if (numPassages_m > 0) {
-                    Options::openMode = Options::APPEND;
+                    openMode = OpalData::OPENMODE::APPEND;
+                } else {
+                    openMode = OpalData::getInstance()->getOpenMode();
                 }
-                lossDs_m->save();
-                if (numPassages_m > 0) {
-                    Options::openMode = mode;
-                }
+                lossDs_m->save(1, openMode);
             }
 
             ++ numPassages_m;
@@ -153,7 +150,8 @@ void Monitor::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
         currentPosition = bunch->get_sPos();
     }
 
-    if (Options::openMode == Options::WRITE || currentPosition < startField) {
+    if (OpalData::getInstance()->getOpenMode() == OpalData::OPENMODE::WRITE ||
+        currentPosition < startField) {
         namespace fs = boost::filesystem;
 
         fs::path lossFileName = fs::path(filename_m + ".h5");

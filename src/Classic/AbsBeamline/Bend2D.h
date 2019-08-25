@@ -33,6 +33,7 @@
 #endif
 
 #include <array>
+#include <string>
 #include <vector>
 
 class Fieldmap;
@@ -110,9 +111,6 @@ public:
     /// Set quadrupole field component.
     void setK1(double k1);
 
-    void resetReinitializeFlag();
-    void resetRecalcRefTrajFlag();
-
     void setExitAngle(double exitAngle);
     virtual double getExitAngle() const;
 
@@ -185,7 +183,6 @@ private:
     virtual bool findChordLength(Inform &msg,
                                  double &chordLength) = 0;
     bool findIdealBendParameters(double chordLength);
-    void findReferenceExitOrigin(double &x, double &z);
     bool initializeFieldMap(Inform &msg);
     bool inMagnetCentralRegion(const Vector_t &R) const;
     bool inMagnetEntranceRegion(const Vector_t &R) const;
@@ -194,7 +191,6 @@ private:
     bool isPositionInExitField(const Vector_t &R) const;
     void print(Inform &msg, double bendAngleX, double bendAngle);
     void readFieldMap(Inform &msg);
-    bool reinitialize();
     void setBendEffectiveLength(double startField, double endField);
     void setBendStrength();
     void setEngeOriginDelta(double delta);
@@ -217,7 +213,7 @@ private:
     /// through the bend.
 
     Fieldmap *fieldmap_m;       /// Magnet field map.
-    bool fast_m;                /// Flag to turn on fast field calculation.
+    const bool fast_m = false;  /// Flag to turn on fast field calculation.
 
     double designRadius_m;      /// Bend design radius (m).
 
@@ -238,8 +234,6 @@ private:
      * constant.
      */
     bool reinitialize_m;
-
-    bool recalcRefTraj_m;       /// Re-calculate reference trajectory.
 
     /*
      * Enge function field map members.
@@ -277,12 +271,6 @@ private:
     double deltaEndEntry_m;         /// Perpendicular distance from entrance Enge
     /// function origin that Enge function ends.
     int polyOrderEntry_m;           /// Enge function order for entry region.
-
-    /*
-     * The ideal reference trajectory passes through (xExit_m, zExit_m).
-     */
-    double xExit_m;
-    double zExit_m;
 
     double deltaBeginExit_m;        /// Perpendicular distance from exit Enge
     /// function origin that Enge function starts.
@@ -348,16 +336,6 @@ void Bend2D::setK1(double k1) {
 }
 
 inline
-void Bend2D::resetReinitializeFlag() {
-    reinitialize_m = true;
-}
-
-inline
-void Bend2D::resetRecalcRefTrajFlag() {
-    recalcRefTraj_m = true;
-}
-
-inline
 void Bend2D::setMessageHeader(const std::string & header)
 {
     messageHeader_m = header;
@@ -385,6 +363,7 @@ inline
 void Bend2D::setExitAngle(double angle)
 {
     exitAngle_m = angle;
+    tanExitAngle_m = tan(exitAngle_m);
 }
 
 inline

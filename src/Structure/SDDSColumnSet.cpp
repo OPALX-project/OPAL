@@ -3,7 +3,9 @@
 void SDDSColumnSet::addColumn(const std::string& name,
                               const std::string& type,
                               const std::string& unit,
-                              const std::string& desc) {
+                              const std::string& desc,
+                              std::ios_base::fmtflags flags,
+                              unsigned short prec) {
 
     if (name2idx_m.find(name) != name2idx_m.end()) {
         throw OpalException("SDDSColumnSet::addColumn",
@@ -11,7 +13,7 @@ void SDDSColumnSet::addColumn(const std::string& name,
     }
 
     name2idx_m.insert(std::make_pair(name, columns_m.size()));
-    columns_m.emplace_back(SDDSColumn(name, type, unit, desc));
+    columns_m.emplace_back(SDDSColumn(name, type, unit, desc, flags, prec));
 }
 
 

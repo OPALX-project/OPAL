@@ -16,8 +16,6 @@
 #include <sstream>
 #include <set>
 
-extern Inform *gmsg;
-
 H5PartWrapperForPS::H5PartWrapperForPS(const std::string &fileName, h5_int32_t flags):
     H5PartWrapper(fileName, flags)
 { }
@@ -334,7 +332,7 @@ void H5PartWrapperForPS::writeStepHeader(PartBunchBase<double, 3>* bunch,
     } catch (std::out_of_range & m) {
         ERRORMSG(m.what() << endl);
 
-        throw OpalException("H5PartWrapperForPC::wirteStepHeader",
+        throw OpalException("H5PartWrapperForPC::writeStepHeader",
                             "some additional step attribute not found");
     }
     ++ numSteps_m;

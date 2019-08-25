@@ -6,9 +6,13 @@
 SDDSColumn::SDDSColumn(const std::string& name,
                        const std::string& type,
                        const std::string& unit,
-                       const std::string& desc):
+                       const std::string& desc,
+                       std::ios_base::fmtflags flags,
+                       unsigned short prec):
     name_m(name),
     description_m(std::make_tuple(type, unit, desc)),
+    writeFlags_m(flags),
+    writePrecision_m(prec),
     set_m(false)
 { }
 
@@ -34,6 +38,8 @@ void SDDSColumn::writeValue(std::ostream& os) const {
                             "value for column '" + name_m + "' isn't set");
     }
 
+    os.setf(writeFlags_m);
+    os.precision(writePrecision_m);
     os << value_m << std::setw(10) << "\t";
     set_m = false;
 }

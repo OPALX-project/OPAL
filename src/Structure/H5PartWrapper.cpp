@@ -13,8 +13,6 @@
 
 #include <fstream>
 
-extern Inform *gmsg;
-
 namespace {
     const h5_int64_t H5TypesCHAR = H5_STRING_T;
     const h5_int64_t H5TypesFLOAT = H5_FLOAT32_T;

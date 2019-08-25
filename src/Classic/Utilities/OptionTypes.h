@@ -7,11 +7,6 @@ namespace Options {
         BUNCH_MEAN=1,
         REFERENCE=2
     };
-
-    enum OPENMODE {
-        WRITE,
-        APPEND
-    };
 }
 
 #endif

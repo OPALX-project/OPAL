@@ -1,5 +1,5 @@
 #include "Elements/OpalBeamline.h"
-#include "Utilities/OpalException.h"
+
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 #include "AbstractObjects/OpalData.h"
@@ -9,7 +9,6 @@
 #include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 #include <fstream>
-using namespace std;
 
 OpalBeamline::OpalBeamline():
     elements_m(),
@@ -45,10 +44,6 @@ std::set<std::shared_ptr<Component>> OpalBeamline::getElements(const Vector_t &x
     }
 
     return elementSet;
-}
-
-void OpalBeamline::getKFactors(const unsigned int &index, const Vector_t &pos, const long &sindex, const double &t, Vector_t &KR, Vector_t &KT) {
-
 }
 
 unsigned long OpalBeamline::getFieldAt(const unsigned int &index, const Vector_t &pos, const long &sindex, const double &t, Vector_t &E, Vector_t &B) {
@@ -131,16 +126,6 @@ void OpalBeamline::switchElements(const double &min, const double &max, const do
     }
 }
 
-
-void OpalBeamline::switchAllElements() {
-    for(FieldList::iterator flit = elements_m.begin(); flit != elements_m.end(); ++ flit) {
-        if(!(*flit).isOn()) {
-            (*flit).setOn(-1.0);
-        }
-    }
-
-}
-
 void OpalBeamline::switchElementsOff(const double &min, ElementBase::ElementType eltype) {
     if(eltype == ElementBase::ANY) {
         for(FieldList::iterator flit = elements_m.begin(); flit != elements_m.end(); ++ flit) {
@@ -174,11 +159,6 @@ void OpalBeamline::prepareSections() {
 void OpalBeamline::print(Inform &msg) const {
 }
 
-
-double OpalBeamline::calcBeamlineLength() {
-    return 0.0;
-}
-
 void OpalBeamline::swap(OpalBeamline & rhs) {
     std::swap(elements_m, rhs.elements_m);
     std::swap(prepared_m, rhs.prepared_m);
@@ -210,7 +190,6 @@ FieldList OpalBeamline::getElementByType(ElementBase::ElementType type) {
 
 void OpalBeamline::compute3DLattice() {
     static unsigned int order = 0;
-    FieldList::iterator it = elements_m.begin();
     const FieldList::iterator end = elements_m.end();
 
     unsigned int minOrder = order;
@@ -228,7 +207,7 @@ void OpalBeamline::compute3DLattice() {
 
                 return edgeA < edgeB;
             });
-        it = elements_m.begin();
+        FieldList::iterator it = elements_m.begin();
         for (; it != end; ++ it) {
             if ((*it).isPositioned()) {
                 continue;
@@ -293,7 +272,7 @@ void OpalBeamline::compute3DLattice() {
     double endPriorPathLength = 0.0;
     CoordinateSystemTrafo currentCoordTrafo = coordTransformationTo_m;
 
-    it = elements_m.begin();
+    FieldList::iterator it = elements_m.begin();
     for (; it != end; ++ it) {
         if ((*it).isPositioned()) continue;
 
@@ -366,101 +345,6 @@ void OpalBeamline::compute3DLattice() {
     elements_m.sort(ClassicField::SortAsc);
 }
 
-void OpalBeamline::plot3DLattice() {
-    auto opal = OpalData::getInstance();
-    if (opal->isOptimizerRun() || Ippl::myNode() != 0) return;
-
-    elements_m.sort([](const ClassicField& a, const ClassicField& b) {
-            double edgeA = 0.0, edgeB = 0.0;
-            if (a.getElement()->isElementPositionSet())
-                edgeA = a.getElement()->getElementPosition();
-
-            if (b.getElement()->isElementPositionSet())
-                edgeB = b.getElement()->getElementPosition();
-
-            return edgeA < edgeB;
-        });
-
-    FieldList::iterator it = elements_m.begin();
-    FieldList::iterator end = elements_m.end();
-
-    Quaternion rotDiagonal(0.5, 0.5 * Vector_t(-1, 1, -1));
-
-    Vector_t origin = rotDiagonal.rotate(coordTransformationTo_m.getOrigin());
-    Vector_t direction = rotDiagonal.rotate(coordTransformationTo_m.rotateFrom(Vector_t(0, 0, 1)));
-    Vector_t minX = Vector_t(999999.9), maxX(-999999.9);
-    std::map<std::string, std::vector<Vector_t > > elementCorners;
-
-    for (; it != end; ++ it) {
-        std::shared_ptr<Component> element = (*it).getElement();
-        CoordinateSystemTrafo toBegin = (*it).getCoordTransformationTo();
-        std::vector<Vector_t> corners;
-
-        if (element->getType() == ElementBase::RBEND || element->getType() == ElementBase::SBEND) {
-            std::vector<Vector_t> outline = static_cast<const Bend2D*>(element.get())->getOutline();
-
-            for (auto point: outline) {
-                corners.push_back(rotDiagonal.rotate(toBegin.transformFrom(point)));
-            }
-        } else {
-            CoordinateSystemTrafo toEnd = element->getEdgeToEnd() * toBegin;
-            auto aperture = element->getAperture();
-            double elementHeightFront = aperture.second[0];
-            double elementHeightBack = aperture.second[0] * aperture.second[2];
-
-            corners.push_back(rotDiagonal.rotate(toEnd.transformFrom(Vector_t(0.0))));
-            corners.push_back(rotDiagonal.rotate(toBegin.transformFrom(Vector_t(0))));
-            corners.push_back(rotDiagonal.rotate(toBegin.transformFrom(-elementHeightFront * Vector_t(1, 0, 0))));
-            corners.push_back(rotDiagonal.rotate(toEnd.transformFrom(-elementHeightBack * Vector_t(1, 0, 0))));
-            corners.push_back(rotDiagonal.rotate(toEnd.transformFrom(Vector_t(0.0))));
-            corners.push_back(rotDiagonal.rotate(toEnd.transformFrom(elementHeightBack * Vector_t(1, 0, 0))));
-            corners.push_back(rotDiagonal.rotate(toBegin.transformFrom(elementHeightFront * Vector_t(1, 0, 0))));
-            corners.push_back(rotDiagonal.rotate(toBegin.transformFrom(Vector_t(0))));
-        }
-
-        elementCorners.insert(std::make_pair(element->getName(), corners));
-        const unsigned int numCorners = corners.size();
-        for (unsigned int i = 0 ; i < numCorners; ++ i) {
-            const Vector_t & X = corners[i];
-
-            if (X(0) < minX(0)) minX(0) = X(0);
-            else if (X(0) > maxX(0)) maxX(0) = X(0);
-
-            if (X(1) < minX(1)) minX(1) = X(1);
-            else if (X(1) > maxX(1)) maxX(1) = X(1);
-        }
-    }
-
-    std::ofstream gpl;
-    std::string fileName = "data/" + OpalData::getInstance()->getInputBasename() + "_ElementPositions.gpl";
-    if (Options::openMode == Options::APPEND && boost::filesystem::exists(fileName)) {
-        gpl.open(fileName, std::ios_base::app);
-    } else {
-        gpl.open(fileName);
-    }
-    gpl.precision(8);
-
-    it = elements_m.begin();
-    for (; it != end; ++ it) {
-        std::shared_ptr<Component> element = (*it).getElement();
-
-        if (element->getType() != ElementBase::DRIFT) {
-            const std::vector<Vector_t> &corners = elementCorners[element->getName()];
-            const unsigned int numCorners = corners.size();
-
-            gpl << "# " << element->getName() << "\n";
-            for (unsigned int i = 0; i < numCorners; ++ i) {
-                gpl << std::setw(18) << corners[i](0)
-                    << std::setw(18) << -corners[i](1) << "\n";
-            }
-            gpl << std::setw(18) << corners.front()(0)
-                << std::setw(18) << -corners.front()(1) << "\n\n";
-        }
-    }
-
-    elements_m.sort(ClassicField::SortAsc);
-}
-
 void OpalBeamline::save3DLattice() {
     if (Ippl::myNode() != 0 || OpalData::getInstance()->isOptimizerRun()) return;
 
@@ -473,7 +357,8 @@ void OpalBeamline::save3DLattice() {
 
     std::ofstream pos;
     std::string fileName = "data/" + OpalData::getInstance()->getInputBasename() + "_ElementPositions.txt";
-    if (Options::openMode == Options::APPEND && boost::filesystem::exists(fileName)) {
+    if (OpalData::getInstance()->getOpenMode() == OpalData::OPENMODE::APPEND &&
+        boost::filesystem::exists(fileName)) {
         pos.open(fileName, std::ios_base::app);
     } else {
         pos.open(fileName);
@@ -494,8 +379,8 @@ void OpalBeamline::save3DLattice() {
 
             Bend2D * bendElement = static_cast<Bend2D*>(element.get());
             std::vector<Vector_t> designPath = bendElement->getDesignPath();
-            CoordinateSystemTrafo toEnd = bendElement->getBeginToEnd_local() * (*it).getCoordTransformationTo();
-            Vector_t exit3D = toEnd.getOrigin();
+            toEnd = bendElement->getBeginToEnd_local() * (*it).getCoordTransformationTo();
+            exit3D = toEnd.getOrigin();
 
             unsigned int size = designPath.size();
             unsigned int minNumSteps = std::max(20.0,
@@ -517,12 +402,12 @@ void OpalBeamline::save3DLattice() {
 
             for (unsigned int i = frequency; i + 1 < size; i += frequency) {
 
-                Vector_t position = (*it).getCoordTransformationTo().transformFrom(designPath[i]);
+                position = (*it).getCoordTransformationTo().transformFrom(designPath[i]);
                 pos << std::setw(30) << std::left << std::string("\"MID: ") + element->getName() + std::string("\"")
                     << std::setw(18) << std::setprecision(10) << position(2)
                     << std::setw(18) << std::setprecision(10) << position(0)
                     << std::setw(18) << std::setprecision(10) << position(1)
-                    << endl;
+                    << std::endl;
             }
 
             position = (*it).getCoordTransformationTo().transformFrom(designPath.back());
@@ -597,7 +482,7 @@ namespace {
     unsigned int getMinimalSignificantDigits(double num, const unsigned int maxDigits) {
         char buf[32];
         snprintf(buf, 32, "%.*f", maxDigits + 1, num);
-        string numStr(buf);
+        std::string numStr(buf);
         unsigned int length = numStr.length();
 
         unsigned int numDigits = maxDigits;

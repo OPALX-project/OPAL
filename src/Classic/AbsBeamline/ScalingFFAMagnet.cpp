@@ -46,9 +46,7 @@ ScalingFFAMagnet::ScalingFFAMagnet(const ScalingFFAMagnet &right)
           phiEnd_m(right.phiEnd_m), azimuthalExtent_m(right.azimuthalExtent_m),
           verticalExtent_m(right.verticalExtent_m), centre_m(right.centre_m),
           dfCoefficients_m(right.dfCoefficients_m) {
-    if (endField_m != NULL) {
-        delete endField_m;
-    }
+    delete endField_m;
     endField_m = right.endField_m->clone();
     RefPartBunch_m = right.RefPartBunch_m;
     setElType(isDrift);
@@ -57,9 +55,7 @@ ScalingFFAMagnet::ScalingFFAMagnet(const ScalingFFAMagnet &right)
 }
 
 ScalingFFAMagnet::~ScalingFFAMagnet() {
-    if (endField_m != NULL) {
-        delete endField_m;
-    }
+    delete endField_m;
 }
 
 ElementBase* ScalingFFAMagnet::clone() const {

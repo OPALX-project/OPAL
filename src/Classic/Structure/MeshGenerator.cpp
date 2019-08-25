@@ -15,7 +15,6 @@ MeshGenerator::MeshGenerator():
 { }
 
 void MeshGenerator::add(const ElementBase &element) {
-    auto apert = element.getAperture();
     double start = 0.0;
 
     MeshData mesh;
@@ -35,6 +34,7 @@ void MeshGenerator::add(const ElementBase &element) {
         double end, length;
         element.getElementDimensions(start, end);
         length = end - start;
+        auto apert = element.getAperture();
 
         switch (apert.first) {
         case ElementBase::RECTANGULAR:

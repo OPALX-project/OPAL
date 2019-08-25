@@ -50,7 +50,7 @@ public:
     /// Set output filename
     void setOutputFN(std::string fn);
     /// Get output filename
-    std::string getOutputFN();
+    std::string getOutputFN() const;
 
     /// Set dimensions and consistency checks
     void setDimensions(double xstart, double xend, double ystart, double yend);
@@ -65,6 +65,8 @@ public:
     bool check(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double tstep);
     /// Checks if coordinate is within element
     int  checkPoint(const double & x, const double & y) const;
+    /// Save output
+    void save();
 
 protected:
     /// Sets geometry geom_m with element width dist
@@ -111,6 +113,7 @@ protected:
     double A_m, B_m, R_m, C_m; ///< Geometric lengths used in calculations
 
     std::unique_ptr<LossDataSink> lossDs_m;   ///< Pointer to Loss instance
+    int numPassages_m = 0; ///< Number of turns (number of times save() method is called)
 };
 
 #endif // CLASSIC_PluginElement_HH

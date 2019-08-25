@@ -40,10 +40,6 @@ public:
     TSV_MetaAssignScalar<Vektor<T,D>,T,OpAssign>::apply(*this,T(0));
   }
 
-  // A noninitializing ctor.
-  class DontInitialize {};
-  Vektor(DontInitialize) {}
-
   // Copy Constructor
   Vektor(const Vektor<T,D> &rhs) {
     TSV_MetaAssign< Vektor<T,D> , Vektor<T,D> ,OpAssign >::apply(*this,rhs);

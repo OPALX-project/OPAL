@@ -71,7 +71,7 @@ void PluginElement::setOutputFN(std::string fn) {
     filename_m = fn;
 }
 
-std::string PluginElement::getOutputFN() {
+std::string PluginElement::getOutputFN() const {
     if (filename_m == std::string(""))
         return getName();
     else
@@ -227,4 +227,15 @@ int PluginElement::checkPoint(const double &x, const double &y) const {
         }
     }
     return (cn & 1);  // 0 if even (out), and 1 if odd (in)
+}
+
+void PluginElement::save() {
+    OpalData::OPENMODE openMode;
+    if (numPassages_m > 0) {
+        openMode = OpalData::OPENMODE::APPEND;
+    } else {
+        openMode = OpalData::getInstance()->getOpenMode();
+    }
+    lossDs_m->save(1, openMode);
+    numPassages_m++;
 }

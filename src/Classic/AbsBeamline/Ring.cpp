@@ -275,7 +275,7 @@ void Ring::appendElement(const Component &element) {
         << section->getStartNormal()(0) << ", "
         << section->getStartNormal()(1) << ", "
         << section->getStartNormal()(2) << "), phi " << dphi << endl;
-    msg << "* End position ("
+    msg << "* End position   ("
         << section->getEndPosition()(0) << ", "
         << section->getEndPosition()(1) << ", "
         << section->getEndPosition()(2) << ") normal ("

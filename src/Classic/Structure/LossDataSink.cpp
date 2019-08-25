@@ -121,8 +121,6 @@ SetStatistics::SetStatistics():
     fac_m(0.0)
     { }
 
-extern Inform *gmsg;
-
 LossDataSink::LossDataSink(std::string elem, bool hdf5Save, ElementBase::ElementType type):
     h5hut_mode_m(hdf5Save),
     H5file_m(0),
@@ -249,10 +247,14 @@ void LossDataSink::addParticle(const Vector_t &x, const Vector_t &p, const size_
     bunchNum_m.push_back(bunchNum);
 }
 
-void LossDataSink::save(unsigned int numSets) {
+void LossDataSink::save(unsigned int numSets, OpalData::OPENMODE openMode) {
 
     if (element_m == std::string("")) return;
     if (hasNoParticlesToDump()) return;
+
+    if (openMode == OpalData::OPENMODE::UNDEFINED) {
+        openMode = OpalData::getInstance()->getOpenMode();
+    }
 
     namespace fs = boost::filesystem;
     if (h5hut_mode_m) {
@@ -260,7 +262,7 @@ void LossDataSink::save(unsigned int numSets) {
 
         fn_m = element_m + std::string(".h5");
         INFOMSG(level2 << "Save " << fn_m << endl);
-        if (Options::openMode == Options::WRITE || !fs::exists(fn_m)) {
+        if (openMode == OpalData::OPENMODE::WRITE || !fs::exists(fn_m)) {
             openH5();
             writeHeaderH5();
         } else {
@@ -277,12 +279,12 @@ void LossDataSink::save(unsigned int numSets) {
     else {
         fn_m = element_m + std::string(".loss");
         INFOMSG(level2 << "Save " << fn_m << endl);
-        if (Options::openMode == Options::WRITE || !fs::exists(fn_m)) {
-            appendASCII();
-        } else {
+        if (openMode == OpalData::OPENMODE::WRITE || !fs::exists(fn_m)) {
             openASCII();
+            writeHeaderASCII();
+        } else {
+            appendASCII();
         }
-        writeHeaderASCII();
         saveASCII();
         closeASCII();
     }
@@ -329,10 +331,6 @@ bool LossDataSink::hasTimeAttribute() {
     return tLoc > 0;
 }
 
-
-
-
-
 void LossDataSink::saveH5(unsigned int setIdx) {
     size_t startIdx = 0;
     size_t nLoc = x_m.size();
@@ -341,7 +339,7 @@ void LossDataSink::saveH5(unsigned int setIdx) {
         nLoc = startSet_m[setIdx + 1] - startSet_m[setIdx];
     }
 
-    std::unique_ptr<size_t[]> locN(new size_t[Ippl::getNodes()]);
+    std::unique_ptr<size_t[]>  locN(new size_t[Ippl::getNodes()]);
     std::unique_ptr<size_t[]> globN(new size_t[Ippl::getNodes()]);
 
     for(int i = 0; i < Ippl::getNodes(); i++) {
@@ -390,36 +388,27 @@ void LossDataSink::saveASCII() {
       ASCII output
     */
     int tag = Ippl::Comm->next_tag(IPPL_APP_TAG3, IPPL_APP_CYCLE);
+    bool hasTime = hasTimeAttribute(); // reduce needed for the case when node 0 has no particles
     if(Ippl::Comm->myNode() == 0) {
         const unsigned partCount = x_m.size();
 
-        if (time_m.size() != 0) {
-            for(unsigned i = 0; i < partCount; i++) {
-                os_m << element_m   << "   ";
-                os_m << x_m[i] << "   ";
-                os_m << y_m[i] << "   ";
-                os_m << z_m[i] << "   ";
-                os_m << px_m[i] << "   ";
-                os_m << py_m[i] << "   ";
-                os_m << pz_m[i] << "   ";
-                os_m << id_m[i]   << "   ";
+        for(unsigned i = 0; i < partCount; i++) {
+            os_m << element_m   << "   ";
+            os_m << x_m[i] << "   ";
+            os_m << y_m[i] << "   ";
+            os_m << z_m[i] << "   ";
+            os_m << px_m[i] << "   ";
+            os_m << py_m[i] << "   ";
+            os_m << pz_m[i] << "   ";
+            os_m << id_m[i]   << "   ";
+            if (hasTime) {
                 os_m << turn_m[i] << "   ";
                 os_m << bunchNum_m[i] << "   ";
-                os_m << time_m[i] << " " << std::endl;
+                os_m << time_m[i];
             }
+            os_m << std::endl;
         }
-        else {
-            for(unsigned i = 0; i < partCount; i++) {
-                os_m << element_m   << "   ";
-                os_m << x_m[i] << "   ";
-                os_m << y_m[i] << "   ";
-                os_m << z_m[i] << "   ";
-                os_m << px_m[i] << "   ";
-                os_m << py_m[i] << "   ";
-                os_m << pz_m[i] << "   ";
-                os_m << id_m[i]   << "   " << std::endl;
-            }
-        }
+
         int notReceived =  Ippl::getNodes() - 1;
         while(notReceived > 0) {
             unsigned dataBlocks = 0;
@@ -430,51 +419,36 @@ void LossDataSink::saveASCII() {
             }
             notReceived--;
             rmsg->get(&dataBlocks);
-            if (time_m.size() != 0) {
-                for(unsigned i = 0; i < dataBlocks; i++) {
-                    long id, turn;
-                    double rx, ry, rz, px, py, pz, time;
-                    rmsg->get(&id);
-                    rmsg->get(&rx);
-                    rmsg->get(&ry);
-                    rmsg->get(&rz);
-                    rmsg->get(&px);
-                    rmsg->get(&py);
-                    rmsg->get(&pz);
+            for(unsigned i = 0; i < dataBlocks; i++) {
+                long id;
+                size_t bunchNum, turn;
+                double rx, ry, rz, px, py, pz, time;
+                rmsg->get(&id);
+                rmsg->get(&rx);
+                rmsg->get(&ry);
+                rmsg->get(&rz);
+                rmsg->get(&px);
+                rmsg->get(&py);
+                rmsg->get(&pz);
+                if (hasTime) {
                     rmsg->get(&turn);
+                    rmsg->get(&bunchNum);
                     rmsg->get(&time);
-                    os_m << element_m << "   ";
-                    os_m << rx << "   ";
-                    os_m << ry << "   ";
-                    os_m << rz << "   ";
-                    os_m << px << "   ";
-                    os_m << py << "   ";
-                    os_m << pz << "   ";
-                    os_m << id << "   ";
+                }
+                os_m << element_m << "   ";
+                os_m << rx << "   ";
+                os_m << ry << "   ";
+                os_m << rz << "   ";
+                os_m << px << "   ";
+                os_m << py << "   ";
+                os_m << pz << "   ";
+                os_m << id << "   ";
+                if (hasTime) {
                     os_m << turn << "   ";
-                    os_m << time << std::endl;
+                    os_m << bunchNum << "   ";
+                    os_m << time;
                 }
-            }
-            else {
-                for(unsigned i = 0; i < dataBlocks; i++) {
-                    long id;
-                    double rx, ry, rz, px, py, pz;
-                    rmsg->get(&id);
-                    rmsg->get(&rx);
-                    rmsg->get(&ry);
-                    rmsg->get(&rz);
-                    rmsg->get(&px);
-                    rmsg->get(&py);
-                    rmsg->get(&pz);
-                    os_m << element_m << "   ";
-                    os_m << rx << "   ";
-                    os_m << ry << "   ";
-                    os_m << rz << "   ";
-                    os_m << px << "   ";
-                    os_m << py << "   ";
-                    os_m << pz << "   ";
-                    os_m << id << " " << std::endl;
-                }
+                os_m << std::endl;
             }
             delete rmsg;
         }
@@ -482,29 +456,18 @@ void LossDataSink::saveASCII() {
         Message *smsg = new Message();
         const unsigned msgsize = x_m.size();
         smsg->put(msgsize);
-        if (time_m.size() != 0) {
-            for(unsigned i = 0; i < msgsize; i++) {
-                smsg->put(id_m[i]);
-                smsg->put(x_m[i]);
-                smsg->put(y_m[i]);
-                smsg->put(z_m[i]);
-                smsg->put(px_m[i]);
-                smsg->put(py_m[i]);
-                smsg->put(pz_m[i]);
+        for(unsigned i = 0; i < msgsize; i++) {
+            smsg->put(id_m[i]);
+            smsg->put(x_m[i]);
+            smsg->put(y_m[i]);
+            smsg->put(z_m[i]);
+            smsg->put(px_m[i]);
+            smsg->put(py_m[i]);
+            smsg->put(pz_m[i]);
+            if (hasTime) {
                 smsg->put(turn_m[i]);
                 smsg->put(bunchNum_m[i]);
                 smsg->put(time_m[i]);
-            }
-        }
-        else {
-            for(unsigned i = 0; i < msgsize; i++) {
-                smsg->put(id_m[i]);
-                smsg->put(x_m[i]);
-                smsg->put(y_m[i]);
-                smsg->put(z_m[i]);
-                smsg->put(px_m[i]);
-                smsg->put(py_m[i]);
-                smsg->put(pz_m[i]);
             }
         }
         bool res = Ippl::Comm->send(smsg, 0, tag);

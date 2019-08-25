@@ -446,7 +446,7 @@ void SampleCmd::execute() {
         boost::shared_ptr<Comm_t>  comm(new Comm_t(args, MPI_COMM_WORLD));
         if (comm->isWorker())
             stashEnvironment();
-        
+
         if ( comm->isOptimizer() ) {
             for (sampleMethods_t::iterator it = sampleMethods.begin();
                  it != sampleMethods.end(); ++it)

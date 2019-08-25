@@ -19,7 +19,6 @@
 #include "ValueDefinitions/RealVariable.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
-#include "Utilities/Options.h"
 #include <iostream>
 
 

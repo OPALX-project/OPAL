@@ -268,7 +268,7 @@ void Beam::update() {
         if(gamma > 1.0) {
             reference.setGamma(gamma);
         } else {
-            throw OpalException("Beam::execute()",
+            throw OpalException("Beam::update()",
                                 "\"GAMMA\" should be greater than 1.");
         }
     } else if(itsAttr[ENERGY]) {
@@ -276,7 +276,7 @@ void Beam::update() {
         if(energy > reference.getM()) {
             reference.setE(energy);
         } else {
-            throw OpalException("Beam::execute()",
+            throw OpalException("Beam::update()",
                                 "\"ENERGY\" should be greater than \"MASS\".");
         }
     } else if(itsAttr[PC]) {
@@ -284,7 +284,7 @@ void Beam::update() {
         if(pc > 0.0) {
             reference.setP(pc);
         } else {
-            throw OpalException("Beam::execute()",
+            throw OpalException("Beam::update()",
                                 "\"PC\" should be greater than 0.");
         }
     };

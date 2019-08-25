@@ -350,17 +350,8 @@ void OpalSimulation::run() {
     // setup OPAL command line options
     std::ostringstream inputFileName;
     inputFileName << simulationName_ << ".in";
-
-    char exe_name[] = "opal";
     char *inputfile = new char[inputFileName.str().size()+1] ;
     strcpy(inputfile, inputFileName.str().c_str());
-    char nocomm[] = "--nocomminit";
-    char info[] = "--info";
-    char info0[] = "0";
-    char warn[] = "--warn";
-    char warn0[] = "0";
-    char *arg[] = { exe_name, inputfile, nocomm, info, info0, warn, warn0 };
-
     int seed = Options::seed;
 
     CmdArguments_t args = getArgs();
@@ -373,6 +364,14 @@ void OpalSimulation::run() {
             throw OpalException("OpalSimulation::run()",
                                 "Restart specified but no restart H5 file available.");
         }
+
+        char exe_name[] = "opal";
+        char nocomm[]   = "--nocomminit";
+        char info[]     = "--info";
+        char info0[]    = "0";
+        char warn[]     = "--warn";
+        char warn0[]    = "0";
+        char *arg[]     = { exe_name, inputfile, nocomm, info, info0, warn, warn0 };
 
         //FIXME: this seems to crash OPAL in some cases
         //redirectOutToFile();

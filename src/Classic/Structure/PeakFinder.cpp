@@ -29,39 +29,39 @@ PeakFinder::PeakFinder(std::string elem, double min,
 
 
 void PeakFinder::addParticle(const Vector_t& R) {
-    
+
     double radius = std::hypot(R(0),R(1));
     radius_m.push_back(radius);
-    
+
     peakRadius_m += radius;
     ++registered_m;
 }
 
 
 void PeakFinder::evaluate(const int& turn) {
-    
+
     if ( first_m ) {
         turn_m = turn;
         first_m = false;
     }
-    
+
     if ( turn_m != turn ) {
         finished_m = true;
     }
-    
+
     bool globFinished = false;
-    
+
     if ( !singlemode_m )
         allreduce(finished_m, globFinished, 1, std::logical_and<bool>());
     else
         globFinished = finished_m;
-    
+
     if ( globFinished ) {
-        
+
         this->computeCentroid_m();
-        
+
         turn_m = turn;
-        
+
         // reset
         peakRadius_m = 0.0;
         registered_m = 0;
@@ -71,29 +71,29 @@ void PeakFinder::evaluate(const int& turn) {
 
 
 void PeakFinder::save() {
-    
+
     createHistogram_m();
-    
+
     // last turn is not yet computed
     this->computeCentroid_m();
-    
+
     if ( !peaks_m.empty() ) {
         // only rank 0 will go in here
-        
+
         fn_m   = element_m + std::string(".peaks");
         hist_m = element_m + std::string(".hist");
-        
+
         INFOMSG("Save " << fn_m << " and " << hist_m << endl);
-        
+
         if(OpalData::getInstance()->inRestartRun())
             this->append_m();
         else
             this->open_m();
-        
+
         this->saveASCII_m();
-        
+
         this->close_m();
-        
+
     }
 
     radius_m.clear();
@@ -104,16 +104,16 @@ void PeakFinder::save() {
 void PeakFinder::computeCentroid_m() {
     double globPeakRadius = 0.0;
     int globRegister = 0;
-    
+
     //FIXME inefficient
     if ( !singlemode_m ) {
         reduce(peakRadius_m, globPeakRadius, 1, std::plus<double>());
-        reduce(registered_m, globRegister, 1, std::plus<int>());
+        reduce(registered_m, globRegister,   1, std::plus<int>());
     } else {
         globPeakRadius = peakRadius_m;
         globRegister = registered_m;
     }
-    
+
     if ( Ippl::myNode() == 0 ) {
         if ( globRegister > 0 )
             peaks_m.push_back(globPeakRadius / double(globRegister));
@@ -124,7 +124,7 @@ void PeakFinder::createHistogram_m() {
     /*
      * create local histograms
      */
-    
+
     globHist_m.resize(nBins_m);
     container_t locHist(nBins_m,0.0);
 
@@ -134,7 +134,7 @@ void PeakFinder::createHistogram_m() {
         if (bin < 0 || (unsigned int)bin >= nBins_m) continue; // Probe might save particles outside its boundary
         ++locHist[bin];
     }
-    
+
     /*
      * create global histograms
      */
@@ -144,7 +144,7 @@ void PeakFinder::createHistogram_m() {
     } else {
         globHist_m.swap(locHist);
     }
-    
+
 //     reduce(locHist.data(), globHist_m.data(), locHist.size(), std::plus<double>());
 }
 

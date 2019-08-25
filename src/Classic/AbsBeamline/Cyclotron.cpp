@@ -1037,10 +1037,10 @@ void Cyclotron::initialise(PartBunchBase<double, 3> *bunch, const int &fieldflag
 void Cyclotron::getFieldFromFile_FFA(const double &scaleFactor) {
 
     /*
-      Field is read in from ascci file (COSY output) in the oder:
+      Field is read in from ascii file (COSY output) in the order:
       R(m) theta(Deg) x(m) y(m) Bz(T).
 
-      Theta is the fast varing variable
+      Theta is the fast varying variable
 
       2.0000   0.0  2.0000  0.0000      0.0000000000000000
       2.0000   1.0  1.9997  0.0349      0.0000000000000000

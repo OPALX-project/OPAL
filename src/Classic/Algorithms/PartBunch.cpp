@@ -33,7 +33,6 @@
 #include "Distribution/Distribution.h"  // OPAL file
 #include "Structure/FieldSolver.h"      // OPAL file
 #include "Utilities/GeneralClassicException.h"
-#include "Structure/LossDataSink.h"
 
 #include "Algorithms/ListElem.h"
 

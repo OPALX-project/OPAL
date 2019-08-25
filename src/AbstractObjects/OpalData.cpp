@@ -103,21 +103,21 @@ struct OpalDataImpl {
     // dump frequency as found in restart file
     int restart_dump_freq_m;
 
+    /// Mode for writing files
+    OpalData::OPENMODE openMode_m = OpalData::OPENMODE::WRITE;
+
     // last step of a run
     int last_step_m;
 
     bool hasBunchAllocated_m;
-
-    bool hasDataSinkAllocated_m;
-
-
     // The particle bunch to be tracked.
     PartBunchBase<double, 3> *bunch_m;
+
+    bool hasDataSinkAllocated_m;
 
     DataSink *dataSink_m;
 
     bool hasSLBunchAllocated_m;
-
     // The particle bunch to be tracked.
     EnvelopeBunch *slbunch_m;
 
@@ -372,6 +372,14 @@ void OpalData::setRestartDumpFreq(const int &N) {
 
 int OpalData::getRestartDumpFreq() const {
     return p->restart_dump_freq_m;
+}
+
+void OpalData::setOpenMode(OPENMODE openMode) {
+    p->openMode_m = openMode;
+}
+
+OpalData::OPENMODE OpalData::getOpenMode() const {
+    return p->openMode_m;
 }
 
 void OpalData::setLastStep(const int &step) {

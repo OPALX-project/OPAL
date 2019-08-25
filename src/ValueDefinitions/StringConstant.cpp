@@ -19,7 +19,6 @@
 #include "ValueDefinitions/StringConstant.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
-#include "Utilities/Options.h"
 #include "Utilities/Util.h"
 #include <iostream>
 

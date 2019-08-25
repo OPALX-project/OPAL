@@ -66,8 +66,6 @@ namespace Options {
 
     extern bool writeBendTrajectories;
 
-    extern OPENMODE openMode;
-
     extern bool idealized;
 
     /// Trace flag.

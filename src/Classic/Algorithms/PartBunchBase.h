@@ -149,7 +149,7 @@ public:
     /** delete particles which are too far away from the center of beam*/
     void boundp_destroy();
 
-    /** This is only temporary in order to get the collimator and pepperpot workinh */
+    /** This is only temporary in order to get the collimator and pepperpot working */
     size_t boundp_destroyT();
 
     size_t destroyT();
@@ -574,7 +574,7 @@ protected:
     double t_m;
     /// mean energy of the bunch (MeV)
     double eKin_m;
-    /// energy spread of the beam in keV
+    /// energy spread of the beam in MeV
     double dE_m;
     /// the position along design trajectory
     double spos_m;

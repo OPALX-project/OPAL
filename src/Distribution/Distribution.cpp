@@ -1377,7 +1377,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
         std::array<double,3> Emit = siggen->getEmittances();
 
         if (rguess > 0)
-            *gmsg << "* RGUESS " << rguess/1000.0 << " (m) " << endl;
+            *gmsg << "* RGUESS " << rguess << " (m) " << endl;
 
         *gmsg << "* Converged (Ex, Ey, Ez) = (" << Emit[0] << ", " << Emit[1] << ", "
               << Emit[2] << ") pi mm mrad for E= " << E_m*1E-6 << " (MeV)" << endl;
@@ -1552,7 +1552,7 @@ void Distribution::createOpalCycl(PartBunchBase<double, 3> *beam,
     // Set distribution type.
     setDistType();
 
-    // Emitting particles in not supported in OpalCyclT.
+    // Emitting particles is not supported in OPAL-cycl.
     emitting_m = false;
 
     // Create distribution.
@@ -1911,12 +1911,12 @@ size_t Distribution::emitParticles(PartBunchBase<double, 3> *beam, double eZ) {
              * is much slower than doing a swap and popping off the end
              * of the vector.
              */
-            std::swap(xDist_m.at(*ptbErasedIt), xDist_m.back());
-            std::swap(pxDist_m.at(*ptbErasedIt), pxDist_m.back());
-            std::swap(yDist_m.at(*ptbErasedIt), yDist_m.back());
-            std::swap(pyDist_m.at(*ptbErasedIt), pyDist_m.back());
+            std::swap( xDist_m.at(*ptbErasedIt),      xDist_m.back());
+            std::swap(pxDist_m.at(*ptbErasedIt),     pxDist_m.back());
+            std::swap( yDist_m.at(*ptbErasedIt),      yDist_m.back());
+            std::swap(pyDist_m.at(*ptbErasedIt),     pyDist_m.back());
             std::swap(tOrZDist_m.at(*ptbErasedIt), tOrZDist_m.back());
-            std::swap(pzDist_m.at(*ptbErasedIt), pzDist_m.back());
+            std::swap(pzDist_m.at(*ptbErasedIt),     pzDist_m.back());
             if (additionalRNs_m.size() == xDist_m.size()) {
                 std::swap(additionalRNs_m.at(*ptbErasedIt), additionalRNs_m.back());
 
@@ -2488,7 +2488,7 @@ void Distribution::generateGaussZ(size_t numberOfParticles) {
     }
 #endif
 /*
-    //Sets the GSL error handler off, exception will be handled internaly with a renormalization method
+    //Sets the GSL error handler off, exception will be handled internally with a renormalization method
     gsl_set_error_handler_off();
 */
     int errcode = gsl_linalg_cholesky_decomp(corMat);
@@ -4497,34 +4497,27 @@ void Distribution::writeOutFileHeader() {
     } else {
         outputFile.setf(std::ios::left);
         outputFile << "# ";
+        outputFile.width(17);
+        outputFile << "x [m]";
+        outputFile.width(17);
+        outputFile << "px [betax gamma]";
+        outputFile.width(17);
+        outputFile << "y [m]";
+        outputFile.width(17);
+        outputFile << "py [betay gamma]";
         if (emitting_m) {
             outputFile.width(17);
-            outputFile << "x [m]";
-            outputFile.width(17);
-            outputFile << "px [betax gamma]";
-            outputFile.width(17);
-            outputFile << "y [m]";
-            outputFile.width(17);
-            outputFile << "py [betay gamma]";
-            outputFile.width(17);
             outputFile << "t [s]";
+        } else {
             outputFile.width(17);
-            outputFile << "pz [betaz gamma]" ;
+            outputFile << "z [m]";
+        }
+        outputFile.width(17);
+        outputFile << "pz [betaz gamma]" ;
+        if (emitting_m) {
             outputFile.width(17);
             outputFile << "Bin Number" << std::endl;
         } else {
-            outputFile.width(17);
-            outputFile << "x [m]";
-            outputFile.width(17);
-            outputFile << "px [betax gamma]";
-            outputFile.width(17);
-            outputFile << "y [m]";
-            outputFile.width(17);
-            outputFile << "py [betay gamma]";
-            outputFile.width(17);
-            outputFile << "z [m]";
-            outputFile.width(17);
-            outputFile << "pz [betaz gamma]";
             if (numberOfEnergyBins_m > 0) {
                 outputFile.width(17);
                 outputFile << "Bin Number";
@@ -4737,10 +4730,10 @@ void Distribution::adjustPhaseSpace(double massIneV) {
     }
 
     double avrg[6];
-    avrg[0] = std::accumulate(xDist_m.begin(), xDist_m.end(), 0.0) / totalNumberParticles_m;
-    avrg[1] = std::accumulate(pxDist_m.begin(), pxDist_m.end(), 0.0) / totalNumberParticles_m;
-    avrg[2] = std::accumulate(yDist_m.begin(), yDist_m.end(), 0.0) / totalNumberParticles_m;
-    avrg[3] = std::accumulate(pyDist_m.begin(), pyDist_m.end(), 0.0) / totalNumberParticles_m;
+    avrg[0] = std::accumulate( xDist_m.begin(),      xDist_m.end(), 0.0) / totalNumberParticles_m;
+    avrg[1] = std::accumulate(pxDist_m.begin(),     pxDist_m.end(), 0.0) / totalNumberParticles_m;
+    avrg[2] = std::accumulate( yDist_m.begin(),      yDist_m.end(), 0.0) / totalNumberParticles_m;
+    avrg[3] = std::accumulate(pyDist_m.begin(),     pyDist_m.end(), 0.0) / totalNumberParticles_m;
     avrg[4] = std::accumulate(tOrZDist_m.begin(), tOrZDist_m.end(), 0.0) / totalNumberParticles_m;
     avrg[5] = 0.0;
     for (unsigned int i = 0; i < pzDist_m.size(); ++ i) {
@@ -4756,10 +4749,10 @@ void Distribution::adjustPhaseSpace(double massIneV) {
     // \sum_{i = 0}^{N-1} \sqrt{(pz_i + \eps)^2 + px_i^2 + py_i^2} = N p
     double eps = avrgpz_m - avrg[5];
     for (unsigned int i = 0; i < pzDist_m.size(); ++ i) {
-        xDist_m[i] -= avrg[0];
-        pxDist_m[i] -= avrg[1];
-        yDist_m[i] -= avrg[2];
-        pyDist_m[i] -= avrg[3];
+        xDist_m[i]    -= avrg[0];
+        pxDist_m[i]   -= avrg[1];
+        yDist_m[i]    -= avrg[2];
+        pyDist_m[i]   -= avrg[3];
         tOrZDist_m[i] -= avrg[4];
         pzDist_m[i] += eps;
     }

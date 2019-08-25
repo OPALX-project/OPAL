@@ -16,8 +16,6 @@
 #include <sstream>
 #include <set>
 
-extern Inform *gmsg;
-
 H5PartWrapperForPT::H5PartWrapperForPT(const std::string &fileName, h5_int32_t flags):
     H5PartWrapper(fileName, flags)
 { }
@@ -194,34 +192,34 @@ void H5PartWrapperForPT::writeHeader() {
     std::stringstream OPAL_version;
     OPAL_version << OPAL_PROJECT_NAME << " " << OPAL_PROJECT_VERSION << " # git rev. " << Util::getGitRevision();
     WRITESTRINGFILEATTRIB(file_m, "OPAL_version", OPAL_version.str().c_str());
-    
-    
+
+
     WRITESTRINGFILEATTRIB(file_m, "idUnit", "1");
     WRITESTRINGFILEATTRIB(file_m, "xUnit", "m");
     WRITESTRINGFILEATTRIB(file_m, "yUnit", "m");
     WRITESTRINGFILEATTRIB(file_m, "zUnit", "m");
-    
+
     WRITESTRINGFILEATTRIB(file_m, "pxUnit", "#beta#gamma");
     WRITESTRINGFILEATTRIB(file_m, "pyUnit", "#beta#gamma");
     WRITESTRINGFILEATTRIB(file_m, "pzUnit", "#beta#gamma");
-    
+
     WRITESTRINGFILEATTRIB(file_m, "ptypeUnit", "1");
     WRITESTRINGFILEATTRIB(file_m, "qUnit", "C");
-    
+
     if (Options::ebDump) {
         WRITESTRINGFILEATTRIB(file_m, "ExUnit", "MV/m");
         WRITESTRINGFILEATTRIB(file_m, "EyUnit", "MV/m");
         WRITESTRINGFILEATTRIB(file_m, "EzUnit", "MV/m");
-        
+
         WRITESTRINGFILEATTRIB(file_m, "BxUnit", "T");
         WRITESTRINGFILEATTRIB(file_m, "ByUnit", "T");
         WRITESTRINGFILEATTRIB(file_m, "BzUnit", "T");
     }
-    
+
     if (Options::rhoDump) {
         WRITESTRINGFILEATTRIB(file_m, "rhoUnit", "C/m^3");
     }
-    
+
     WRITESTRINGFILEATTRIB(file_m, "TaitBryantAnglesUnit", "rad");
 
     WRITESTRINGFILEATTRIB(file_m, "SPOSUnit", "m");
@@ -236,12 +234,12 @@ void H5PartWrapperForPT::writeHeader() {
     WRITESTRINGFILEATTRIB(file_m, "centroidUnit", "m");
     WRITESTRINGFILEATTRIB(file_m, "RMSPUnit", "#beta#gamma");
     WRITESTRINGFILEATTRIB(file_m, "MEANPUnit", "#beta#gamma");
-    
+
     WRITESTRINGFILEATTRIB(file_m, "minXUnit", "m");
     WRITESTRINGFILEATTRIB(file_m, "maxXUnit", "m");
     WRITESTRINGFILEATTRIB(file_m, "minPUnit", "#beta#gamma");
     WRITESTRINGFILEATTRIB(file_m, "maxPUnit", "#beta#gamma");
-    
+
     WRITESTRINGFILEATTRIB(file_m, "dEUnit", "MeV");
 
     WRITESTRINGFILEATTRIB(file_m, "MASSUnit", "GeV");
@@ -259,7 +257,7 @@ void H5PartWrapperForPT::writeHeader() {
     WRITESTRINGFILEATTRIB(file_m, "RefPartRUnit", "m");
     WRITESTRINGFILEATTRIB(file_m, "RefPartPUnit", "#beta#gamma");
     WRITESTRINGFILEATTRIB(file_m, "SteptoLastInjUnit", "1");
-    
+
     WRITESTRINGFILEATTRIB(file_m, "dump frequencyUnit", "1")
     WRITESTRINGFILEATTRIB(file_m, "dPhiGlobalUnit", "rad")
 
@@ -378,7 +376,7 @@ void H5PartWrapperForPT::writeStepHeader(PartBunchBase<double, 3>* bunch, const 
     } catch (std::out_of_range & m) {
         ERRORMSG(m.what() << endl);
 
-        throw OpalException("H5PartWrapperForPC::wirteStepHeader",
+        throw OpalException("H5PartWrapperForPC::writeStepHeader",
                             "some additional step attribute not found");
     }
 
