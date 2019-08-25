@@ -1,0 +1,7 @@
+#!/bin/bash -l 
+#SBATCH --job-name=S2EFEL
+#SBATCH --time=05:30:00
+#SBATCH --ntasks=1
+#SBATCH --mem=120G
+#SBATCH --clusters=merlin6
+mpirun $OPAL_EXE_PATH/opal s2efel.in --info 4 
