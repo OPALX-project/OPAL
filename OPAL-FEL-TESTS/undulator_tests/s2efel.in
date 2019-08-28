@@ -50,7 +50,7 @@ Dist: DISTRIBUTION, TYPE = FROMFILE,
 
 FS_SC: Fieldsolver, FSTYPE = FFT, 
             MX = 8, MY = 8, MT = 8, // SC grid size is 8^3
-            PARFFTX = true, 
+            PARFFTX = true,
             PARFFTY = true, 
             PARFFTT = true,  // parallel in the z direction only
             BCFFTX = open, 

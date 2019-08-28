@@ -25,7 +25,7 @@ DRIVE: Line = (UND);
 
 Dist: DISTRIBUTION, TYPE = FROMFILE,      	FNAME = "initial-profile-for-OPAL.tsv",	EMITTED = FALSE;
 
-FS_SC: Fieldsolver, FSTYPE = FFT,             MX = 8, MY = 8, MT = 8,             PARFFTX = true,             PARFFTY = true,             PARFFTT = true,              BCFFTX = open,             BCFFTY = open,             BCFFTT = open,            BBOXINCR = 1,             GREENSF = INTEGRATED;
+FS_SC: Fieldsolver, FSTYPE = FFT,             MX = 8, MY = 8, MT = 8,             PARFFTX = true,            PARFFTY = true,             PARFFTT = true,              BCFFTX = open,             BCFFTY = open,             BCFFTT = open,            BBOXINCR = 1,             GREENSF = INTEGRATED;
 
 REAL mithra_time = 3e-8;
 BEAM1:  BEAM, PARTICLE = ELECTRON, pc = P0, NPART = n_particles,	BFREQ = 1 / mithra_time, BCURRENT = beam_bunch_charge / mithra_time , CHARGE = -1;

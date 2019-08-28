@@ -712,6 +712,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     /* Get particles in bunch and center around z_mean                                                                */
     itsBunch_m->calcBeamParameters();
     const unsigned int localNum = itsBunch_m->getLocalNum();    
+    const unsigned int totalNum = itsBunch_m->getTotalNum();
     double zmean = itsBunch_m->get_rmean()[2];
     for (unsigned int i = 0; i < localNum; ++i)
         itsBunch_m->R[i](2) = itsBunch_m->R[i](2) - zmean;   
@@ -736,8 +737,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::BunchInitialize bunchInit;
     Darius::FieldVector<double> fv (0.0);
     bunchInit.bunchType_ = "charge-vector";
-    bunchInit.numberOfParticles_ = localNum;
-    bunchInit.cloudCharge_ = charge.q * localNum;    
+    bunchInit.numberOfParticles_ = totalNum;
+    bunchInit.cloudCharge_ = charge.q * totalNum;    
     bunchInit.initialGamma_ = itsBunch_m->get_gamma(); 
     bunchInit.initialBeta_ = sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));    
     for (unsigned int d = 0; d < 3; ++d) 
@@ -781,6 +782,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
 
     /* Create the solver database                     */
     Darius::Mesh                               mesh;
+    mesh.initialize();
     mesh.lengthScale_ = 1.0; 
     mesh.timeScale_ = 1.0;
     for (unsigned int d = 0; d < 3; ++d)

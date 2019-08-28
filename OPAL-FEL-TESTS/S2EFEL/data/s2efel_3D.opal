@@ -46,7 +46,7 @@ GS:  Line = (GUN, BF, M);
 
 DRIVE: Line = (GS, DR1, U1);
 
-Dist: DISTRIBUTION, TYPE = FLATTOP,        SIGMAX = 0.00075 / 19,        SIGMAY = 0.00075 / 19,        TRISE = 6.0e-12 / 100,              TFALL = 6.0e-12 / 100,               TPULSEFWHM = 20.0e-12 / 100,         CUTOFFLONG = 4.0,        NBIN = 5,        EMISSIONSTEPS = 100,        EMISSIONMODEL = ASTRA,        EKIN = 0.55,                   EMITTED = True,                WRITETOFILE = False;
+Dist: DISTRIBUTION, TYPE = FLATTOP,        SIGMAX = 0.00075 / 19,        SIGMAY = 0.00075 / 19,        TRISE = 6.0e-12,              TFALL = 6.0e-12,               TPULSEFWHM = 20.0e-12 / 100,         CUTOFFLONG = 4.0,        NBIN = 5,        EMISSIONSTEPS = 100,        EMISSIONMODEL = ASTRA,        EKIN = 0.55,                   EMITTED = True,                WRITETOFILE = False;
     
 FS_SC: Fieldsolver, FSTYPE = FFT,             MX = 8, MY = 8, MT = 8,             PARFFTX = false,             PARFFTY = false,             PARFFTT = true,              BCFFTX = open,             BCFFTY = open,             BCFFTT = open,            BBOXINCR = 1,             GREENSF = INTEGRATED;
 

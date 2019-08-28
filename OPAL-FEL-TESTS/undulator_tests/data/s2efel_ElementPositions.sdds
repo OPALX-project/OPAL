@@ -1,90 +1,102 @@
 SDDS1
-&description 
-        text="Element positions 's2efel.in'", 
-        contents="element positions" 
+&description
+        text="Element positions 's2efel.in'",
+        contents="element positions"
 &end
 &parameter
-        name=revision, 
+        name=processors,
+        type=long,
+        description="Number of Cores used"
+&end
+&parameter
+        name=revision,
         type=string,
         description="git revision of opal"
 &end
-&column 
-        name=s, 
-        type=double, 
-        units=m, 
-        description="1 longitudinal position" 
+&parameter
+        name=flavor,
+        type=string,
+        description="OPAL flavor that wrote file"
 &end
-&column 
-        name=dipole, 
-        type=float, 
-        units=1, 
-        description="2 dipole field present" 
+&column
+        name=s,
+        type=double,
+        units=m,
+        description="1 longitudinal position"
 &end
-&column 
-        name=quadrupole, 
-        type=float, 
-        units=1, 
-        description="3 quadrupole field present" 
+&column
+        name=dipole,
+        type=float,
+        units=1,
+        description="2 dipole field present"
 &end
-&column 
-        name=sextupole, 
-        type=float, 
-        units=1, 
-        description="4 sextupole field present" 
+&column
+        name=quadrupole,
+        type=float,
+        units=1,
+        description="3 quadrupole field present"
 &end
-&column 
-        name=octupole, 
-        type=float, 
-        units=1, 
-        description="5 octupole field present" 
+&column
+        name=sextupole,
+        type=float,
+        units=1,
+        description="4 sextupole field present"
 &end
-&column 
-        name=decapole, 
-        type=float, 
-        units=1, 
-        description="6 decapole field present" 
+&column
+        name=octupole,
+        type=float,
+        units=1,
+        description="5 octupole field present"
 &end
-&column 
-        name=multipole, 
-        type=float, 
-        units=1, 
-        description="7 higher multipole field present" 
+&column
+        name=decapole,
+        type=float,
+        units=1,
+        description="6 decapole field present"
 &end
-&column 
-        name=solenoid, 
-        type=float, 
-        units=1, 
-        description="8 solenoid field present" 
+&column
+        name=multipole,
+        type=float,
+        units=1,
+        description="7 higher multipole field present"
 &end
-&column 
-        name=rfcavity, 
-        type=float, 
-        units=1, 
-        description="9 RF field present" 
+&column
+        name=solenoid,
+        type=float,
+        units=1,
+        description="8 solenoid field present"
 &end
-&column 
-        name=monitor, 
-        type=float, 
-        units=1, 
-        description="10 monitor present" 
+&column
+        name=rfcavity,
+        type=float,
+        units=1,
+        description="9 RF field present"
 &end
-&column 
-        name=other, 
-        type=float, 
-        units=1, 
-        description="11 other element present" 
+&column
+        name=monitor,
+        type=float,
+        units=1,
+        description="10 monitor present"
 &end
-&column 
-        name=element_names, 
-        type=string, 
-        description="names of elements" 
+&column
+        name=other,
+        type=float,
+        units=1,
+        description="11 other element present"
 &end
-&data 
-        mode=ascii, 
-        no_row_counts=1 
+&column
+        name=element_names,
+        type=string,
+        description="12 names of elements"
 &end
-OPAL 2.1.0 # git rev. 65d77eda35fd7b9d414bde3b62273c8d1ec8fc68
-               0         0     0     0     0     0     0     0     0     0     0 ""
-               0         0     0     0     0     0     0     0     0     0     1 "UND"
-       8.9933277         0     0     0     0     0     0     0     0     0     1 "UND"
-       8.9933277         0     0     0     0     0     0     0     0     0     0 ""
+&data
+        mode=ascii,
+        no_row_counts=1
+&end
+8
+OPAL 2.1.0 git rev. #ba0ec4eb35bf0e3b0f2aac3fb953b38118abaaf6
+opal-t
+0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	""         	
+0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x1p+0         	"UND"         	
+0x1.1fc9572ef9f23p+3         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x1p+0         	"UND"         	
+0x1.1fc9572ef9f23p+3         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	0x0p+0         	""         	

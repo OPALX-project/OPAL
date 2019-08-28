@@ -1,0 +1,291 @@
+
+
+
+Warning: the unstable module 'gsl/2.4' has been loaded.
+
+
+Warning: the unstable module 'boost/1.66.0' has been loaded.
+
+
+Warning: the unstable module 'H5hut/2.0.0rc4' has been loaded.
+
+
+
+Warning: the unstable module 'trilinos/12.12.1' has been loaded.
+
+Warning: the unstable module 'amrex/18.07_3d' has been loaded.
+Ippl> CommMPI: Parent process waiting for children ...
+Ippl> CommMPI: Started job 1 on host `merlin-c-103.psi.ch'.
+Ippl> CommMPI: Started job 2 on host `merlin-c-103.psi.ch'.
+Ippl> CommMPI: Started job 3 on host `merlin-c-103.psi.ch'.
+Ippl> CommMPI: Started job 4 on host `merlin-c-103.psi.ch'.
+Ippl> CommMPI: Started job 5 on host `merlin-c-103.psi.ch'.
+Ippl> CommMPI: Started job 6 on host `merlin-c-103.psi.ch'.
+Ippl> CommMPI: Started job 7 on host `merlin-c-103.psi.ch'.
+Ippl> CommMPI: Child 2 ready.
+Ippl> CommMPI: Child 3 ready.
+Ippl> CommMPI: Child 1 ready.
+Ippl> CommMPI: Child 4 ready.
+Ippl> CommMPI: Child 5 ready.
+Ippl> CommMPI: Child 7 ready.
+Ippl> CommMPI: Child 6 ready.
+Ippl> CommMPI: Initialization complete.
+{0}>                ____  _____       ___ 
+{0}>               / __ \|  __ \ /\   | | 
+{0}>              | |  | | |__) /  \  | |
+{0}>              | |  | |  ___/ /\ \ | |
+{0}>              | |__| | |  / ____ \| |____
+{0}>               \____/|_| /_/    \_\______|
+OPAL{0}> 
+OPAL{0}> This is OPAL (Object Oriented Parallel Accelerator Library) Version 2.1.0
+OPAL{0}>             git rev. ba0ec4eb35bf0e3b0f2aac3fb953b38118abaaf6
+OPAL{0}> 
+OPAL{0}> 
+OPAL{0}>                      (c) PSI, http://amas.web.psi.ch
+OPAL{0}> 
+OPAL{0}> 
+OPAL{0}> The optimiser (former opt-Pilot) is integrated 
+OPAL{0}> 
+OPAL{0}> Please send cookies, goodies or other motivations (wine and beer ... ) 
+OPAL{0}> to the OPAL developers opal@lists.psi.ch
+OPAL{0}> 
+OPAL{0}> Time: 16:45:18 date: 27/08/2019
+OPAL{0}> 
+OPAL{0}> Couldn't find startup file "/psi/home/albajacas_a/init.opal".
+OPAL{0}> Note: this is not mandatory for an OPAL simulation!
+OPAL{0}> 
+OPAL{0}> * Reading input stream "s2efel.in".
+OPAL{0}> 
+OPAL{0}> value: {GAMMA,P0}={100.41,0.0513069}
+OPAL{0}> 
+OPAL{0}> * ********************************************************************************** 
+OPAL{0}> * Selected Tracking Method == PARALLEL-T, NEW TRACK
+OPAL{0}> * ********************************************************************************** 
+Ippl{0}[3]> BC set for normal Beam
+OPAL{0}[2]> * Generation of distribution with seed = 123456789
+OPAL{0}[2]> * isn't scalable with number of particles and cores.
+OPAL{0}[3]> 
+OPAL{0}[3]> ------------------------------------------------------------------------------------
+OPAL{0}[3]> READ INITIAL DISTRIBUTION FROM FILE "initial-profile-for-OPAL.tsv"
+OPAL{0}[3]> ------------------------------------------------------------------------------------
+OPAL{0}[3]> 
+Ippl{0}> Creating new file for data: s2efel.stat
+Ippl{0}> Creating new file for data: s2efel.lbal
+OPAL{0}> 
+OPAL{0}> * ************* D I S T R I B U T I O N ********************************************
+OPAL{0}> * 
+OPAL{0}> * Number of particles: 1224
+OPAL{0}> * 
+OPAL{0}> * Distribution type: FROMFILE
+OPAL{0}> * 
+OPAL{0}> * Input file:        initial-profile-for-OPAL.tsv
+OPAL{0}> * 
+OPAL{0}> * Distribution is injected.
+OPAL{0}> * 
+OPAL{0}> * **********************************************************************************
+OPAL{0}> 
+OPAL{0}> * ************* B E A M ************************************************************ 
+OPAL{0}> * BEAM        BEAM1
+OPAL{0}> * PARTICLE    ELECTRON
+OPAL{0}> * CURRENT     9.845333e+02 A
+OPAL{0}> * FREQUENCY   3.333333e+07 MHz
+OPAL{0}> * CHARGE      -e * 1.000000e+00 
+OPAL{0}> * REST MASS   5.109989e-04 GeV
+OPAL{0}> * MOMENTUM    5.130686e-02
+OPAL{0}> * NPART       1.224000e+03
+OPAL{0}> * ********************************************************************************** 
+OPAL{0}> 
+OPAL{0}> * ************* F I E L D S O L V E R ********************************************** 
+OPAL{0}> * FIELDSOLVER  FS_SC
+OPAL{0}> * TYPE         FFT
+OPAL{0}> * N-PROCESSORS 8
+OPAL{0}> * MX           8.000000e+00
+OPAL{0}> * MY           8.000000e+00
+OPAL{0}> * MT           8.000000e+00
+OPAL{0}> * BBOXINCR     1.000000e+00
+OPAL{0}> * GRRENSF      INTEGRATED
+OPAL{0}> * XDIM         parallel  
+OPAL{0}> * YDIM         parallel  
+OPAL{0}> * Z(T)DIM      parallel  
+Ippl{0}[3]> ======UniformCartesian<3,MFLOAT>==begin======
+Ippl{0}[3]> gridSizes[0] = 9
+Ippl{0}[3]> gridSizes[1] = 9
+Ippl{0}[3]> gridSizes[2] = 9
+Ippl{0}[3]> origin = ( 0 , 0 , 0 )
+Ippl{0}[3]> meshSpacing[0] = 1
+Ippl{0}[3]> meshSpacing[1] = 1
+Ippl{0}[3]> meshSpacing[2] = 1
+Ippl{0}[3]> Dvc[0] = ( -0.25 , -0.25 , -0.25 )
+Ippl{0}[3]> Dvc[1] = ( 0.25 , -0.25 , -0.25 )
+Ippl{0}[3]> Dvc[2] = ( -0.25 , 0.25 , -0.25 )
+Ippl{0}[3]> Dvc[3] = ( 0.25 , 0.25 , -0.25 )
+Ippl{0}[3]> Dvc[4] = ( -0.25 , -0.25 , 0.25 )
+Ippl{0}[3]> Dvc[5] = ( 0.25 , -0.25 , 0.25 )
+Ippl{0}[3]> Dvc[6] = ( -0.25 , 0.25 , 0.25 )
+Ippl{0}[3]> Dvc[7] = ( 0.25 , 0.25 , 0.25 )
+Ippl{0}[3]> cell volume = 1
+Ippl{0}[3]> ======UniformCartesian<3,MFLOAT>==end========
+Ippl{0}[3]> 
+Ippl{0}[3]> ParticleSpatialLayout, with particle distribution:
+Ippl{0}[3]>     Number of particles 0  Number of particles 0  Number of particles 0  Number of particles 0  Number of particles 0  Number of particles 0  Number of particles 0  Number of particles 0  
+Ippl{0}[3]> SpatialLayout decomposition = Total Domain = {[0,8),[0,8),[0,8)}
+Ippl{0}[3]> Local Rnodes = 1
+Ippl{0}[3]>  rnode 0 : {[0,4),[0,4),[0,4)}
+Ippl{0}[3]> Remote Rnodes = 7
+Ippl{0}[3]>  rnode 0 : {[0,4),[0,4),[4,8)}
+Ippl{0}[3]>  rnode 1 : {[0,4),[4,8),[0,4)}
+Ippl{0}[3]>  rnode 2 : {[0,4),[4,8),[4,8)}
+Ippl{0}[3]>  rnode 3 : {[4,8),[0,4),[0,4)}
+Ippl{0}[3]>  rnode 4 : {[4,8),[0,4),[4,8)}
+Ippl{0}[3]>  rnode 5 : {[4,8),[4,8),[0,4)}
+Ippl{0}[3]>  rnode 6 : {[4,8),[4,8),[4,8)}
+Ippl{0}[3]> Internal FieldLayout = Domain = {[0:7:1],[0:7:1],[0:7:1]}
+Ippl{0}[3]> FieldLayoutUsers = 4
+Ippl{0}[3]> Total number of vnodes = 8
+Ippl{0}[3]> Local Vnodes = 1
+Ippl{0}[3]>  vnode 0: Node = 0 ; vnode_m = 0 ; Domain = {[0:3:1],[0:3:1],[0:3:1]}
+Ippl{0}[3]> Remote Vnodes = 7
+Ippl{0}[3]>  vnode 0 : Node = 1 ; vnode_m = 1 ; Domain = {[0:3:1],[0:3:1],[4:7:1]}
+Ippl{0}[3]>  vnode 1 : Node = 2 ; vnode_m = 2 ; Domain = {[0:3:1],[4:7:1],[0:3:1]}
+Ippl{0}[3]>  vnode 2 : Node = 3 ; vnode_m = 3 ; Domain = {[0:3:1],[4:7:1],[4:7:1]}
+Ippl{0}[3]>  vnode 3 : Node = 4 ; vnode_m = 4 ; Domain = {[4:7:1],[0:3:1],[0:3:1]}
+Ippl{0}[3]>  vnode 4 : Node = 5 ; vnode_m = 5 ; Domain = {[4:7:1],[0:3:1],[4:7:1]}
+Ippl{0}[3]>  vnode 5 : Node = 6 ; vnode_m = 6 ; Domain = {[4:7:1],[4:7:1],[0:3:1]}
+Ippl{0}[3]>  vnode 6 : Node = 7 ; vnode_m = 7 ; Domain = {[4:7:1],[4:7:1],[4:7:1]}
+Ippl{0}[3]> 
+OPAL{0}> 
+OPAL{0}> * ********************************************************************************** 
+OPAL{0}> 
+OPAL{0}[2]> Phase space dump frequency 1000 and statistics dump frequency 1000 w.r.t. the time step.
+Ippl{0}[3]> UND gone live
+OPAL{0}> 
+OPAL{0}> Size of map 2 sections 
+OPAL{0}> Key: (0.000000 - 8.993328) number of overlapping elements 1
+OPAL{0}>                            UND
+OPAL{0}> Key: (8.993328 - 9.083261) number of overlapping elements 0
+OPAL{0}> 
+Ippl{0}> Creating new file for data: data/s2efel_ElementPositions.sdds
+OPAL{0}> 
+OPAL{0}> * ************** B U N C H ********************************************************* 
+OPAL{0}> * NP              = 1224
+OPAL{0}> * Qtot            =       29.536 [pC]         Qi    =       24.131 [fC]
+OPAL{0}> * Ekin            =      50.798 [MeV]         dEkin =       2.972 [keV]
+OPAL{0}> * rmax            = (    694.15800 ,    715.85400 ,     70.36943 ) [um]
+OPAL{0}> * rmin            = (   -719.02400 ,   -698.95400 ,    -71.58157 ) [um]
+OPAL{0}> * rms beam size   = (    255.38394 ,    257.31206 ,     35.05220 ) [um]
+OPAL{0}> * rms momenta     = (  9.64540e-09 ,  9.78948e-09 ,  5.81597e-03 ) [beta gamma]
+OPAL{0}> * mean position   = (     -0.56717 ,     -0.85945 ,      0.00000 ) [um]
+OPAL{0}> * mean momenta    = ( -1.76663e-10 , -3.61243e-11 ,  1.00405e+02 ) [beta gamma]
+OPAL{0}> * rms emittance   = (  2.45274e-14 ,  2.50739e-14 ,  2.03025e-09 ) (not normalized)
+OPAL{0}> * rms correlation = (  2.21189e-02 , -3.34460e-02 ,  1.21629e-02 )
+OPAL{0}> * hr              = (    205.92081 ,    206.15774 ,     20.68429 ) [um]
+OPAL{0}> * dh              =   1.00000e+00 [%]
+OPAL{0}> * t               =        0.000 [fs]         dT    =      300.000 [ps]
+OPAL{0}> * spos            =        0.000 [um]
+OPAL{0}> * ********************************************************************************** 
+OPAL{0}> 
+OPAL{0}> Track start at: 16:45:18, t= 0.000 [fs]; zstart at: 0.000 [um]
+OPAL{0}> Executing ParallelTTracker, initial dt= 300.000 [ps];
+OPAL{0}> max integration steps 1000000, next step= 0
+ParallelTTracker {0}[2]> MINBINEMITTED 10
+ParallelTTracker {0}[2]> MINSTEPFORREBIN 200
+ParallelTTracker {0}[2]> REPARTFREQ 1000000
+Undulator: {0}> /psi/home/albajacas_a/OPAL/src/src/Algorithms/ParallelTTracker.cpp L: 705 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+Undulator: {0}> /psi/home/albajacas_a/OPAL/src/src/Algorithms/ParallelTTracker.cpp L: 706 MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation
+Undulator: {0}> /psi/home/albajacas_a/OPAL/src/src/Algorithms/ParallelTTracker.cpp L: 707 Version 2.0, Copyright 2019, Arya Fallahi
+Undulator: {0}> /psi/home/albajacas_a/OPAL/src/src/Algorithms/ParallelTTracker.cpp L: 708 Written by Arya Fallahi, IT'IS Foundation, Zurich, Switzerland
+Undulator: {0}> /psi/home/albajacas_a/OPAL/src/src/Algorithms/ParallelTTracker.cpp L: 709 ---- in computeUndulator :::::::::::::::::::::::::::::::::::::::::::::::::::::
+Undulator: {0}> /psi/home/albajacas_a/OPAL/src/src/Algorithms/ParallelTTracker.cpp L: 710 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+Undulator: {0}> Bunch before undulator, z-coordinate centered around zmean: 
+Undulator: {0}> 
+Undulator: {0}> * ************** B U N C H ********************************************************* 
+Undulator: {0}> * NP              = 1224
+Undulator: {0}> * Qtot            =       29.536 [pC]         Qi    =       24.131 [fC]
+Undulator: {0}> * Ekin            =      50.798 [MeV]         dEkin =       2.972 [keV]
+Undulator: {0}> * rmax            = (    694.15801 ,    715.85400 ,     70.36934 ) [um]
+Undulator: {0}> * rmin            = (   -719.02400 ,   -698.95400 ,    -71.58126 ) [um]
+Undulator: {0}> * rms beam size   = (    255.38394 ,    257.31206 ,     35.05221 ) [um]
+Undulator: {0}> * rms momenta     = (  9.64540e-09 ,  9.78948e-09 ,  5.81597e-03 ) [beta gamma]
+Undulator: {0}> * mean position   = (     -0.56717 ,     -0.85945 ,      0.00000 ) [um]
+Undulator: {0}> * mean momenta    = ( -1.76663e-10 , -3.61243e-11 ,  1.00405e+02 ) [beta gamma]
+Undulator: {0}> * rms emittance   = (  2.45274e-14 ,  2.50739e-14 ,  2.03025e-09 ) (not normalized)
+Undulator: {0}> * rms correlation = (  2.21189e-02 , -3.34459e-02 ,  1.21703e-02 )
+Undulator: {0}> * hr              = (    205.92081 ,    206.15774 ,     20.68423 ) [um]
+Undulator: {0}> * dh              =   1.00000e+00 [%]
+Undulator: {0}> * t               =        0.000 [fs]         dT    =      300.000 [ps]
+Undulator: {0}> * spos            =        0.000 [um]
+Undulator: {0}> * ********************************************************************************** 
+Undulator: {0}> Done passing particles to Mithra
+Undulator: {0}> Done getting bunch parameters
+Undulator: {0}> Done passing undulator parameters to Mithra
+Undulator: {0}> Done passing radiation output parameters to Mithra
+Undulator: {0}> Done passing mesh parameters to Mithra
+Undulator: {0}> Done passing timestep parameters to Mithra
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:44 ::: 	 	  Length scale = 1
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:45 ::: 	 	  Total mesh length vector = (0.0032,0.0032,0.00028)
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:46 ::: 	 	  Meshing resolution vector = (0.0001,0.0001,4e-07)
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:47 ::: 	 	  Meshing center = (-5.67172e-07,-8.59447e-07,3.85494e-19)
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:48 ::: 	 	  Time scale = 1
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:49 ::: 	 	  Total simulation time = 3.003e-08
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:50 ::: 	 	  Mesh truncation order = 2
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:52 ::: 	 	  Space-charge = true 
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:56 ::: 	 	  Solver = Non-standard finite-difference 
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:525 ::: 	 	  Type of the bunch initialization = charge-vector
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:526 ::: 	 	  Type of the current profile = 
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:527 ::: 	 	  Number of macro-particles = 148
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:528 ::: 	 	  Total charge of the cloud = 2.2293e+07
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:529 ::: 	 	  Initial mean gamma of the bunch = 100.41
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:530 ::: 	 	  Initial mean speed of the bunch = 0.99995
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:531 ::: 	 	  Initial direction of the bunch speed = (-1.7595e-12,-3.59786e-13,1)
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:533 ::: 	 	  Initial position of the bunch = (-5.67172e-07,-8.59447e-07,3.85494e-19)
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:534 ::: 	 	  Position spread of the bunch = (0.000255384,0.000257312,3.50522e-05)
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:535 ::: 	 	  Momentum spread of the bunch = (9.6454e-09,9.78948e-09,0.00581597)
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:536 ::: 	 	  Transverse truncation points of the bunch = 0
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:537 ::: 	 	  Longitudinal truncation points of the bunch = 7.03693e-05
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:547 ::: 	 	  Initial bunching factor in the bunch = 0
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:548 ::: 	 	  Initialization time of the bunch = 0
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:549 ::: 	 	  Time step for the bunch calculation = 1.34257e-12
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:1012 ::: 	 	 Seed type = plane-wave
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:1015 ::: 	 	 Seed position [0; 0; 0]
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:1019 ::: 	 	 Seed direction [0; 0; 0]
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:1023 ::: 	 	 Seed amplitude = 0
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:1025 ::: 	 	 Seed polarization [0; 0; 0]
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:672 ::: 	 	  Signal type = gaussian pulse
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:677 ::: 	 	  Signal offset         = 0
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:678 ::: 	 	  Signal variance       = 0
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:679 ::: 	 	  Signal frequency  = 0
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:680 ::: 	 	  Signal carrier envelope phase = 0
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:1230 ::: 	 	  Undulator type is static.
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:1231 ::: 	 	  Undulator parameter = 1.417
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:1232 ::: 	 	  Undulator period = 0.03
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:1233 ::: 	 	  Undulator begin = 0
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:1234 ::: 	 	  Undulator length = 300
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:1235 ::: 	 	  Magnetic field angle with respect to x = 0
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:62 ::: 	 	 ::: Boosting the given parameters into the electron rest frame 
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:142 ::: 	 	 The beginning of the undulator is set at the point 0.000100183
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:166 ::: 	 	 Time step for the field update is set to 6.71287e-12
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:183 ::: 	 	 Time step for the bunch update is set to 1.34257e-12
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:200 ::: 	 	 Modulation wavelength of the bunch outside the undulator is set to 0.000564324
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:236 ::: 	 	 The given parameters are boosted into the electron rest frame :::
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:278 ::: 	 	 ::: Initializing the temporal and spatial mesh of the problem.
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:364 ::: 	 	 The temporal and spatial mesh of the problem is initialized. :::
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:373 ::: 	 	  ::: Initializing the field update data
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:517 ::: 	 	  The field update data are initialized. :::
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:1652 ::: 	 	 ::: Initializing the FEL radiation power data.
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:1813 ::: 	 	  The FEL radiation power data is initialized. :::
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:2059 ::: 	 	 ::: Initializing the FEL radiation energy data.
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:2143 ::: 	 	  The FEL radiation energy data is initialized. :::
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/fdtdSC.hh:59 ::: 	 	 -> Run the time domain simulation ...
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/solver.hh:801 ::: 	 	 [[[ Initializing the bunch and prepare the charge vector 
+Tue Aug 27 16:45:18 2019 ::: /psi/home/albajacas_a/mithra/source/classes.hh:466 ::: 	 	 The number of the particles and the input vector size do not match !!!
+-------------------------------------------------------
+Primary job  terminated normally, but 1 process returned
+a non-zero exit code. Per user-direction, the job has been aborted.
+-------------------------------------------------------
+--------------------------------------------------------------------------
+mpirun detected that one or more processes exited with non-zero status, thus causing
+the job to be terminated. The first process to do so was:
+
+  Process name: [[9097,1],0]
+  Exit code:    1
+--------------------------------------------------------------------------
