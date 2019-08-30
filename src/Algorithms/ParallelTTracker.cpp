@@ -773,12 +773,12 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
 
     /* Radiation output parameters         */
     Darius::FreeElectronLaser FELParam;
-    FELParam.radiationPower_.sampling_ = 1;
-    FELParam.radiationPower_.samplingType("at-point");
-    FELParam.radiationPower_.z_ = ur->getRadiationZ();
-    FELParam.radiationPower_.lambda_ = ur->getRadiationLambda();
-    FELParam.radiationPower_.directory_ = ur->getRadiationDirectory();
-    msg << "Done passing radiation output parameters to Mithra" << endl;
+    // FELParam.radiationPower_.sampling_ = 1;
+    // FELParam.radiationPower_.samplingType("at-point");
+    // FELParam.radiationPower_.z_ = ur->getRadiationZ();
+    // FELParam.radiationPower_.lambda_ = ur->getRadiationLambda();
+    // FELParam.radiationPower_.directory_ = ur->getRadiationDirectory();
+    // msg << "Done passing radiation output parameters to Mithra" << endl;
 
     /* Create the solver database                     */
     Darius::Mesh                               mesh;
@@ -826,6 +826,14 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     FEL.clear();
     FEL.push_back(FELParam);
     
+    /* Get filename with desired output data */
+    std::string fname = ur->getFilename();
+    const char *cfname = fname.c_str();
+    std::list<std::string> jobFile = Darius::read_file(cfname);
+    Darius::cleanJobFile(jobFile);
+    Darius::ParseDarius parser (jobFile, mesh, bunch, seed, undulator, extField, FEL);
+    parser.setJobParameters();
+
     /* Show the parameters for the simulation.                                                            */
     mesh.show();
     bunch.show();

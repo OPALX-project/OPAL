@@ -55,7 +55,7 @@ OpalUndulator::OpalUndulator():
                           "The undulator period", 0.0);
 
     itsAttr[FNAME] = Attributes::makeString
-      ("FNAME", "Jobfilename for mithra", "");
+      ("FNAME", "jobfile with desired output data from the undulator", "");
 
     itsAttr[TRANTRUN] = Attributes::makeReal
                           ("TRANTRUN",

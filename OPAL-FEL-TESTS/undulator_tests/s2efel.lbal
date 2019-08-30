@@ -1,6 +1,6 @@
 SDDS1
 &description
-        text="Processor statistics 's2efel.in' 27/08/201914:10:06",
+        text="Processor statistics 's2efel.in' 30/08/201914:04:29",
         contents="lbal parameters"
 &end
 &parameter
@@ -30,11 +30,53 @@ SDDS1
         units=1,
         description="2 Number of particles of processor 0"
 &end
+&column
+        name="processor-1",
+        type=long,
+        units=1,
+        description="3 Number of particles of processor 1"
+&end
+&column
+        name="processor-2",
+        type=long,
+        units=1,
+        description="4 Number of particles of processor 2"
+&end
+&column
+        name="processor-3",
+        type=long,
+        units=1,
+        description="5 Number of particles of processor 3"
+&end
+&column
+        name="processor-4",
+        type=long,
+        units=1,
+        description="6 Number of particles of processor 4"
+&end
+&column
+        name="processor-5",
+        type=long,
+        units=1,
+        description="7 Number of particles of processor 5"
+&end
+&column
+        name="processor-6",
+        type=long,
+        units=1,
+        description="8 Number of particles of processor 6"
+&end
+&column
+        name="processor-7",
+        type=long,
+        units=1,
+        description="9 Number of particles of processor 7"
+&end
 &data
         mode=ascii,
         no_row_counts=1
 &end
-1
-OPAL 2.1.0 git rev. #ba0ec4eb35bf0e3b0f2aac3fb953b38118abaaf6
+8
+OPAL 2.1.0 git rev. #2d968c59218f6358087588c91c5f84802caa847a
 opal-t
-3.089999999999997e+01         	1224         	
+3.089999999999997e+01         	184         	176         	112         	168         	172         	156         	132         	124         	
