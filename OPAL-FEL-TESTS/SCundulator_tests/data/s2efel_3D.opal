@@ -19,11 +19,11 @@ REAL P0      = gamma*beta*EMASS;
     
 value , {gamma, P0};
 
-UND: UNDULATOR, L = 9.0, , K = 1.417, LAMBDA = .03,      MESHLENGTH = { 3.2e-3, 3.2e-3, .28e-3 }, MESHRESOLUTION = {50e-6, 50e-6, .1e-6},     TRUNORDER = 2, SPACECHARGE = 0,     FNAME = "undulator_output.job",     TOTALTIME = 3.0e-8, TIMESTEPRATIO = 2;
+UND: UNDULATOR, L = 9.0, , K = 1.417, LAMBDA = .03,      MESHLENGTH = { 3.2e-3, 3.2e-3, .28e-3 }, MESHRESOLUTION = {50e-6, 50e-6, .1e-6},     TRUNORDER = 2, SPACECHARGE = 1,     FNAME = "undulator_output.job",     TOTALTIME = 3.0e-8, TIMESTEPRATIO = 2;
 
 DRIVE: Line = (UND);
 
-Dist: DISTRIBUTION, TYPE = FROMFILE,      	FNAME = "initial-profile-for-OPAL-unboosted.tsv",	EMITTED = FALSE;
+Dist: DISTRIBUTION, TYPE = FROMFILE,      	FNAME = "initial-profile-for-OPAL.tsv",	EMITTED = FALSE;
 
 FS_SC: Fieldsolver, FSTYPE = FFT,             MX = 8, MY = 8, MT = 8,             PARFFTX = true,            PARFFTY = true,             PARFFTT = true,              BCFFTX = open,             BCFFTY = open,             BCFFTT = open,            BBOXINCR = 1,             GREENSF = INTEGRATED;
 

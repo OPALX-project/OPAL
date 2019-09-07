@@ -29,7 +29,7 @@ value , {gamma, P0};
 
 UND: UNDULATOR, L = 9.0, ELEMEDGE = 0.0, K = 1.417, LAMBDA = .03, 
      MESHLENGTH = { 3.2e-3, 3.2e-3, .28e-3 }, MESHRESOLUTION = {50e-6, 50e-6, .1e-6},
-     TRUNORDER = 2, SPACECHARGE = 0,
+     TRUNORDER = 2, SPACECHARGE = 1,
      FNAME = "undulator_output.job",
      TOTALTIME = 3.0e-8, TIMESTEPRATIO = 2;
 
@@ -39,7 +39,7 @@ DRIVE: Line = (UND);
 // INITIAL DISTRIBUTION
 
 Dist: DISTRIBUTION, TYPE = FROMFILE,
-      	FNAME = "initial-profile-for-OPAL-unboosted.tsv",
+      	FNAME = "initial-profile-for-OPAL.tsv",
 	EMITTED = FALSE;
 
 	

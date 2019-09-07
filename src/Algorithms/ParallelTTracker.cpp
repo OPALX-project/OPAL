@@ -724,6 +724,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     std::list<Darius::Charge>	qv;
     Darius::Charge charge;
     charge.q = itsBunch_m->getChargePerParticle() / (-1.602e-19);  // In elementary charges
+    charge.q = 1.846e8 / totalNum;  // REMOVE THIS
     for (unsigned int i = 0; i < localNum; ++i) {
         for (unsigned int d = 0; d < 3; ++d) {
             charge.rnp[d] = (itsBunch_m->R[i])[d];
@@ -739,28 +740,38 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.bunchType_ = "charge-vector";
     bunchInit.numberOfParticles_ = totalNum;
     bunchInit.cloudCharge_ = charge.q * totalNum;    
+    bunchInit.cloudCharge_ = 1.846e8;  // REMOVE THIS
     bunchInit.initialGamma_ = itsBunch_m->get_gamma(); 
     bunchInit.initialBeta_ = sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));    
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = ( itsBunch_m->get_pmean() )[d];
     double norm = sqrt( fv.norm() );
+    fv[0] = 0.0;  // REMOVE THIS
+    fv[1] = 0.0;  // REMOVE THIS
     fv /= norm;
     bunchInit.initialDirection_	= fv;
     for (unsigned int d = 0; d < 3; ++d) {
-        fv[d] = itsBunch_m->get_rmean()[d];
+        // fv[d] = itsBunch_m->get_rmean()[d];
+        fv[d] = 0.0;  // REMOVE THIS
     }
-    // fv[2] = 0.0;
     bunchInit.position_.push_back(fv);
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rrms()(d);
+    fv[0] = 26e-05;  // REMOVE THIS
+    fv[1] = 26e-05;  // REMOVE THIS
     bunchInit.sigmaPosition_ = fv;
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_prms()(d);
+    fv[0] = 1e-8;  // REMOVE THIS
+    fv[1] = 1e-8;  // REMOVE THIS
+    fv[2] = 1.0041e-2;  // REMOVE THIS
     bunchInit.sigmaGammaBeta_ = fv;
     bunchInit.inputVector_ = qv;
     bunchInit.longTrun_ = itsBunch_m->get_maxExtent()[2];
     msg << "Done getting bunch parameters" << endl;
-    
+    bunchInit.sigmaPosition_[2] = 5.025e-05;  // REMOVE THIS
+    bunchInit.longTrun_ = 9e-05;  // REMOVE THIS
+
     /* Undulator parameters                 */
     Darius::Undulator uParam;
     uParam.k_ = ur->getK();
@@ -772,7 +783,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     msg << "Done passing undulator parameters to Mithra" << endl;
 
     /* Radiation output parameters         */
-    Darius::FreeElectronLaser FELParam;
+    // Darius::FreeElectronLaser FELParam;
     // FELParam.radiationPower_.sampling_ = 1;
     // FELParam.radiationPower_.samplingType("at-point");
     // FELParam.radiationPower_.z_ = ur->getRadiationZ();
@@ -786,7 +797,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.lengthScale_ = 1.0; 
     mesh.timeScale_ = 1.0;
     for (unsigned int d = 0; d < 3; ++d)
-        fv[d] = bunchInit.position_[0][d];
+        // fv[d] = bunchInit.position_[0][d];
+        fv[d] = 0.0;
     mesh.meshCenter_ = fv;
     for (unsigned int d = 0; d < 3; ++d)
         fv[d] = ur->getMeshLength()[d];
@@ -807,6 +819,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunch.timeStart_ = 0.0;
     unsigned int m = ur->getTimeStepRatio();  // dt = m * dt_bunch
     bunch.timeStep_ = mesh.meshResolution_[2] * gamma_ * gamma_ / Darius::C0 / m;
+    bunch.timeStep_ = 1.6e-12;  // REMOVE THIS
     msg << "Done passing timestep parameters to Mithra" << endl;
 
     /* Create the seed database.                                                                          */
@@ -824,7 +837,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     /* Create the free electron laser database.                                                           */
     std::vector<Darius::FreeElectronLaser>     FEL;
     FEL.clear();
-    FEL.push_back(FELParam);
+    // FEL.push_back(FELParam);
     
     /* Get filename with desired output data */
     std::string fname = ur->getFilename();
