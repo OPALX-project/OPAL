@@ -1191,7 +1191,7 @@ Vector_t PartBunchBase<T, Dim>::get_pmean() const {
 
 template <class T, unsigned Dim>
 Vector_t PartBunchBase<T, Dim>::get_pmean_Distribution() const {
-    if (dist_m && dist_m->getType() != DistrTypeT::FROMFILE)
+    if (dist_m)// && dist_m->getType() != DistrTypeT::FROMFILE)
         return dist_m->get_pmean();
 
     double gamma = 0.1 / getM() + 1; // set default 0.1 eV

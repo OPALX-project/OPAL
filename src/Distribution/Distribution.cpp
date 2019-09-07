@@ -1328,10 +1328,10 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
 
     double rguess =
         Attributes::getReal(itsAttr[Attrib::Distribution::RGUESS]);
-    
+
     double denergy = 1000.0 *
         Attributes::getReal(itsAttr[Attrib::Distribution::DENERGY]);
-    
+
     if ( denergy < 0.0 )
         throw OpalException("Distribution:CreateMatchedGaussDistribution()",
                             "DENERGY < 0");
@@ -4401,7 +4401,7 @@ void Distribution::shiftBeam(double &maxTOrZ, double &minTOrZ) {
             maxTOrZ -= maxTOrZ;
         }
 
-    } else {
+    } else if (distrTypeT_m != DistrTypeT::FROMFILE) {
         double avgZ[] = {0.0, 1.0 * tOrZDist_m.size()};
         for (double tOrZ : tOrZDist_m)
             avgZ[0] += tOrZ;

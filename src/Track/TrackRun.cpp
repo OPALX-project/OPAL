@@ -81,6 +81,7 @@ namespace {
         BOUNDARYGEOMETRY, // The boundary geometry
         DISTRIBUTION, // The particle distribution
         MULTIPACTING, // MULTIPACTING flag
+        TRACKBACK,
         SIZE
     };
 }
@@ -125,7 +126,8 @@ TrackRun::TrackRun():
                              ("DISTRIBUTION", "List of particle distributions to be used ");
     itsAttr[MULTIPACTING] = Attributes::makeBool
                             ("MULTIPACTING", "Multipacting flag, default: false. Set true to initialize primary particles according to BoundaryGeometry", false);
-
+    itsAttr[TRACKBACK] = Attributes::makeBool
+        ("TRACKBACK", "Track in reverse direction, default: false", false);
     registerOwnership(AttributeHandler::SUB_COMMAND);
 
     opal = OpalData::getInstance();
@@ -318,19 +320,15 @@ void TrackRun::setupSliceTracker() {
     if (Track::block->bunch->getTotalNum() > 0) {
         double spos = Track::block->zstart;
         auto &zstop = Track::block->zstop;
-        auto &timeStep = Track::block->localTimeSteps;
-        auto &dT = Track::block->dT;
+        auto it = Track::block->dT.begin();
 
         unsigned int i = 0;
         while (i + 1 < zstop.size() && zstop[i + 1] < spos) {
             ++ i;
+            ++ it;
         }
 
-        zstop.erase(zstop.begin(), zstop.begin() + i);
-        timeStep.erase(timeStep.begin(), timeStep.begin() + i);
-        dT.erase(dT.begin(), dT.begin() + i);
-
-        Track::block->bunch->setdT(dT.front());
+        Track::block->bunch->setdT(*it);
     } else {
         Track::block->zstart = 0.0;
     }
@@ -550,19 +548,15 @@ void TrackRun::setupTTracker(){
     if (Track::block->bunch->getTotalNum() > 0) {
         double spos = Track::block->zstart;
         auto &zstop = Track::block->zstop;
-        auto &timeStep = Track::block->localTimeSteps;
-        auto &dT = Track::block->dT;
+        auto it = Track::block->dT.begin();
 
         unsigned int i = 0;
         while (i + 1 < zstop.size() && zstop[i + 1] < spos) {
             ++ i;
+            ++ it;
         }
 
-        zstop.erase(zstop.begin(), zstop.begin() + i);
-        timeStep.erase(timeStep.begin(), timeStep.begin() + i);
-        dT.erase(dT.begin(), dT.begin() + i);
-
-        Track::block->bunch->setdT(dT.front());
+        Track::block->bunch->setdT(*it);
     } else {
         Track::block->zstart = 0.0;
     }
@@ -585,7 +579,7 @@ void TrackRun::setupTTracker(){
                                       *ds,
                                       Track::block->reference,
                                       false,
-                                      false,
+                                      Attributes::getBool(itsAttr[TRACKBACK]),
                                       Track::block->localTimeSteps,
                                       Track::block->zstart,
                                       Track::block->zstop,

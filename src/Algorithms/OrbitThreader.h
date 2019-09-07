@@ -34,13 +34,23 @@ public:
     IndexMap::value_t getTouchingElements(const std::pair<double, double> &range);
 
 private:
+    /// position of reference particle in lab coordinates
     Vector_t r_m;
+    /// momentum of reference particle
     Vector_t p_m;
+    /// position of reference particle in path length
     double pathLength_m;
-    double dZ_m;
+    /// distance to track back before tracking forward
+    /// (length of bunch but not beyond cathode)
+    double distTrackBack_m;
+    /// the simulated time
     double time_m;
+    /// the time step
     double dt_m;
+
+    /// the number of time steps to track
     const size_t maxIntegSteps_m;
+    /// final position in path length
     const double zstop_m;
 
     OpalBeamline &itsOpalBeamline_m;

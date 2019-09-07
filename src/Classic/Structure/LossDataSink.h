@@ -182,7 +182,10 @@ std::set<SetStatistics> LossDataSink::computeStatistics(unsigned int numStatisti
     splitSets(numStatistics);
 
     for (unsigned int i = 0; i < numStatistics; ++ i) {
-        stats.insert(computeSetStatistics(i));
+        auto setStats = computeSetStatistics(i);
+        if (setStats.nTotal_m > 0) {
+            stats.insert(setStats);
+        }
     }
 
     return stats;

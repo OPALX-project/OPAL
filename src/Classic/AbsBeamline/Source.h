@@ -2,7 +2,8 @@
 #define CLASSIC_SOURCE_HH
 
 #include "AbsBeamline/Component.h"
-#include "Distribution/Distribution.h"
+#include "Structure/LossDataSink.h"
+
 class OpalBeamline;
 
 template <class T, unsigned Dim>
@@ -26,8 +27,7 @@ public:
 
     virtual void addKT(int i, double t, Vector_t &K) override;
 
-    using Component::apply;
-    virtual bool apply(const double &t);
+    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
     virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
@@ -43,26 +43,15 @@ public:
 
     virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
-    void setDistribution(std::vector<std::string> distNames);
-
-    void setBeamline(OpalBeamline *beamline);
 private:
 
     double ElementEdge_m;
     double startField_m;           /**< startingpoint of field, m*/
     double endField_m;
 
-    std::vector<Distribution*> distrs_m;
+    std::unique_ptr<LossDataSink> lossDs_m;
 
-    OpalBeamline *beamline_m;
     // Not implemented.
     void operator=(const Source &);
-
-    static const std::string defaultDistribution;
 };
-
-inline
-void Source::setBeamline(OpalBeamline *beamline) {
-    beamline_m = beamline;
-}
 #endif // CLASSIC_SOURCE_HH

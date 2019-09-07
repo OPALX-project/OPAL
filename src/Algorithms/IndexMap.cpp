@@ -51,7 +51,7 @@ void IndexMap::print(std::ostream &out) const {
 }
 
 IndexMap::value_t IndexMap::query(key_t::first_type s, key_t::second_type ds) {
-    const double lowerLimit = (ds < s? s - ds: 0);
+    const double lowerLimit = s - ds;//(ds < s? s - ds: 0);
     const double upperLimit = std::min(totalPathLength_m, s + ds);
     value_t elementSet;
 
@@ -88,7 +88,11 @@ IndexMap::value_t IndexMap::query(key_t::first_type s, key_t::second_type ds) {
 }
 
 void IndexMap::add(key_t::first_type initialS, key_t::second_type finalS, const value_t &val) {
+    if (initialS > finalS) {
+        std::swap(initialS, finalS);
+    }
     key_t key(initialS, finalS * oneMinusEpsilon_m);
+
     mapRange2Element_m.insert(std::pair<key_t, value_t>(key, val));
     totalPathLength_m = (*mapRange2Element_m.rbegin()).first.second;
 

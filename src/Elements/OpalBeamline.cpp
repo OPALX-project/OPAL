@@ -214,58 +214,60 @@ void OpalBeamline::compute3DLattice() {
             }
             (*it).order_m = minOrder;
             std::shared_ptr<Component> element = (*it).getElement();
-            if (element->getType() == ElementBase::SBEND ||
-                element->getType() == ElementBase::RBEND ||
-                element->getType() == ElementBase::RBEND3D) {
 
-                double beginThisPathLength = element->getElementPosition();
-                Vector_t beginThis3D(0, 0, beginThisPathLength - endPriorPathLength);
-                BendBase * bendElement = static_cast<BendBase*>(element.get());
-                double thisLength = bendElement->getChordLength();
-                double bendAngle = bendElement->getBendAngle();
-                double entranceAngle = bendElement->getEntranceAngle();
-                double arcLength = (thisLength * std::abs(bendAngle) / (2 * sin(std::abs(bendAngle) / 2)));
-
-                double rotationAngleAboutZ = bendElement->getRotationAboutZ();
-                Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
-                                            sin(-0.5 * rotationAngleAboutZ) * Vector_t(0, 0, 1));
-
-                Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t(0, -1, 0));
-                effectiveRotationAxis /= euclidean_norm(effectiveRotationAxis);
-
-                Quaternion_t rotationAboutAxis(cos(0.5 * bendAngle),
-                                               sin(0.5 * bendAngle) * effectiveRotationAxis);
-                Quaternion_t halfRotationAboutAxis(cos(0.25 * bendAngle),
-                                                   sin(0.25 * bendAngle) * effectiveRotationAxis);
-                Quaternion_t entryFaceRotation(cos(0.5 * entranceAngle),
-                                               sin(0.5 * entranceAngle) * effectiveRotationAxis);
-
-                if (!Options::idealized) {
-                    std::vector<Vector_t> truePath = bendElement->getDesignPath();
-                    Quaternion_t directionExitHardEdge(cos(0.5 * (0.5 * bendAngle - entranceAngle)),
-                                                       sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
-                    Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t(0, 0, 1));
-                    double distanceEntryHETruePath = euclidean_norm(truePath.front());
-                    double distanceExitHETruePath = euclidean_norm(rotationAboutZ.rotate(truePath.back()) - exitHardEdge);
-                    double pathLengthTruePath = (*it).getEnd() - (*it).getStart();
-                    arcLength = pathLengthTruePath - distanceEntryHETruePath - distanceExitHETruePath;
-                }
-
-                Vector_t chord = thisLength * halfRotationAboutAxis.rotate(Vector_t(0, 0, 1));
-                Vector_t endThis3D = beginThis3D + chord;
-                double endThisPathLength = beginThisPathLength + arcLength;
-
-                CoordinateSystemTrafo fromEndLastToBeginThis(beginThis3D,
-                                                             (entryFaceRotation * rotationAboutZ).conjugate());
-                CoordinateSystemTrafo fromEndLastToEndThis(endThis3D,
-                                                           rotationAboutAxis.conjugate());
-
-                (*it).setCoordTransformationTo(fromEndLastToBeginThis * currentCoordTrafo);
-
-                currentCoordTrafo = (fromEndLastToEndThis * currentCoordTrafo);
-
-                endPriorPathLength = endThisPathLength;
+            if (element->getType() != ElementBase::SBEND &&
+                element->getType() != ElementBase::RBEND &&
+                element->getType() != ElementBase::RBEND3D) {
+                continue;
             }
+
+            double beginThisPathLength = element->getElementPosition();
+            Vector_t beginThis3D(0, 0, beginThisPathLength - endPriorPathLength);
+            BendBase * bendElement = static_cast<BendBase*>(element.get());
+            double thisLength = bendElement->getChordLength();
+            double bendAngle = bendElement->getBendAngle();
+            double entranceAngle = bendElement->getEntranceAngle();
+            double arcLength = (thisLength * std::abs(bendAngle) / (2 * sin(std::abs(bendAngle) / 2)));
+
+            double rotationAngleAboutZ = bendElement->getRotationAboutZ();
+            Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
+                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t(0, 0, 1));
+
+            Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t(0, -1, 0));
+            effectiveRotationAxis /= euclidean_norm(effectiveRotationAxis);
+
+            Quaternion_t rotationAboutAxis(cos(0.5 * bendAngle),
+                                           sin(0.5 * bendAngle) * effectiveRotationAxis);
+            Quaternion_t halfRotationAboutAxis(cos(0.25 * bendAngle),
+                                               sin(0.25 * bendAngle) * effectiveRotationAxis);
+            Quaternion_t entryFaceRotation(cos(0.5 * entranceAngle),
+                                           sin(0.5 * entranceAngle) * effectiveRotationAxis);
+
+            if (!Options::idealized) {
+                std::vector<Vector_t> truePath = bendElement->getDesignPath();
+                Quaternion_t directionExitHardEdge(cos(0.5 * (0.5 * bendAngle - entranceAngle)),
+                                                   sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
+                Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t(0, 0, 1));
+                double distanceEntryHETruePath = euclidean_norm(truePath.front());
+                double distanceExitHETruePath = euclidean_norm(rotationAboutZ.rotate(truePath.back()) - exitHardEdge);
+                double pathLengthTruePath = (*it).getEnd() - (*it).getStart();
+                arcLength = pathLengthTruePath - distanceEntryHETruePath - distanceExitHETruePath;
+            }
+
+            Vector_t chord = thisLength * halfRotationAboutAxis.rotate(Vector_t(0, 0, 1));
+            Vector_t endThis3D = beginThis3D + chord;
+            double endThisPathLength = beginThisPathLength + arcLength;
+
+            CoordinateSystemTrafo fromEndLastToBeginThis(beginThis3D,
+                                                         (entryFaceRotation * rotationAboutZ).conjugate());
+            CoordinateSystemTrafo fromEndLastToEndThis(endThis3D,
+                                                       rotationAboutAxis.conjugate());
+
+            (*it).setCoordTransformationTo(fromEndLastToBeginThis * currentCoordTrafo);
+
+            currentCoordTrafo = (fromEndLastToEndThis * currentCoordTrafo);
+
+            endPriorPathLength = endThisPathLength;
         }
     }
 
@@ -283,6 +285,9 @@ void OpalBeamline::compute3DLattice() {
         double thisLength = element->getElementLength();
         Vector_t beginThis3D(0, 0, beginThisPathLength - endPriorPathLength);
 
+        if (element->getType() == ElementBase::SOURCE) {
+            beginThis3D(2) -= thisLength;
+        }
         if (element->getType() == ElementBase::MONITOR) {
             beginThis3D(2) -= 0.5 * thisLength;
         }

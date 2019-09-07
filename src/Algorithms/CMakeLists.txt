@@ -10,9 +10,10 @@ set (_SRCS
   MPSplitIntegrator.cpp
   MultiBunchHandler.cpp
   OrbitThreader.cpp
-  ParallelTTracker.cpp
   ParallelCyclotronTracker.cpp
   ParallelSliceTracker.cpp
+  ParallelTTracker.cpp
+  StepSizeConfig.cpp
   ThickMapper.cpp
   ThickTracker.cpp
   TransportMapper.cpp
@@ -51,6 +52,7 @@ set (HDRS
     ParallelCyclotronTracker.h
     ParallelSliceTracker.h
     ParallelTTracker.h
+    StepSizeConfig.h
     ThickMapper.h
     ThickTracker.h
     TransportMapper.h

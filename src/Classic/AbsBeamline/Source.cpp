@@ -14,8 +14,6 @@ extern Inform *gmsg;
 // Class Source
 // ------------------------------------------------------------------------
 
-const std::string Source::defaultDistribution("DISTRIBUTION");
-
 Source::Source():
     Source("")
 {}
@@ -65,26 +63,37 @@ void Source::addKR(int i, double t, Vector_t &K) {
 void Source::addKT(int i, double t, Vector_t &K) {
 }
 
-bool Source::apply(const double &t) {
-    Vector_t externalE = Vector_t(0.0);
-    Vector_t externalB = Vector_t(0.0);
-    beamline_m->getFieldAt(csTrafoGlobal2Local_m.getOrigin(),
-                           Vector_t(0.0),
-                           RefPartBunch_m->getT() + 0.5 * RefPartBunch_m->getdT(),
-                           externalE,
-                           externalB);
-    for (Distribution* dist: distrs_m) {
-        dist->emitParticles(RefPartBunch_m, externalE(2));
+bool Source::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) {
+    const Vector_t &R = RefPartBunch_m->R[i];
+    const Vector_t &P = RefPartBunch_m->P[i];
+    const double &dt = RefPartBunch_m->dt[i];
+    const double recpgamma = Physics::c * dt / Util::getGamma(P);
+    const double end = getElementLength();
+    if (online_m && dt < 0.0) {
+        if (R(2) > end &&
+            (R(2) + P(2) * recpgamma) < end) {
+            double frac = (end - R(2)) / (P(2) * recpgamma);
+
+            lossDs_m->addParticle(R + frac * recpgamma * P,
+                                  P, RefPartBunch_m->ID[i], t + frac * dt, 0);
+
+            return true;
+        }
     }
 
     return false;
 }
 
 void Source::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
-    // Inform msg("Source ", *gmsg);
-    // double zBegin = 0.0, zEnd = 0.0, rBegin = 0.0, rEnd = 0.0;
-
     RefPartBunch_m = bunch;
+    endField = startField;
+    startField -= getElementLength();
+
+    std::string filename = getName();
+    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(filename,
+                                                              !Options::asciidump,
+                                                              getType()));
+
 }
 
 void Source::finalise()
@@ -101,6 +110,7 @@ void Source::goOnline(const double &) {
 
 void Source::goOffline() {
     online_m = false;
+    lossDs_m->save();
 }
 
 void Source::getDimensions(double &zBegin, double &zEnd) const {
@@ -111,16 +121,4 @@ void Source::getDimensions(double &zBegin, double &zEnd) const {
 
 ElementBase::ElementType Source::getType() const {
     return SOURCE;
-}
-
-void Source::setDistribution(std::vector<std::string> distNames) {
-    const size_t numberOfDistributions = distNames.size();
-    if (numberOfDistributions == 0) {
-        distrs_m.push_back(Distribution::find(defaultDistribution));
-    } else {
-        for (std::string name: distNames) {
-            distrs_m.push_back(Distribution::find(name));
-            distrs_m.back()->setNumberOfDistributions(numberOfDistributions);
-        }
-    }
 }

@@ -37,9 +37,13 @@ enum FORMAT {
 
 typedef h5_file_t file_t;
 
-data_t readStepData(file_t file);
+data_t readStepData(file_t file, bool temporal);
 attributes_t readStepAttributes(file_t file);
-void readH5HutFile(const std::string &fname, size_t step, data_t &data, attributes_t &attr);
+void readH5HutFile(const std::string &fname,
+                   size_t step,
+                   bool temporal,
+                   data_t &data,
+                   attributes_t &attr);
 void convertToElegantUnits(data_t &data);
 void writeSDDSFile(const std::string &fname, const data_t &data, const attributes_t &attr, FORMAT form);
 void printInfo(const std::string &input);
@@ -50,6 +54,7 @@ int main(int argc, char **argv) {
 
     std::string inputFile(""), outputFile("/dev/stdout");
     bool doPrintInfo = false;
+    bool temporal = false;
     int step = -1;
     FORMAT form = ASCII;
 
@@ -75,6 +80,8 @@ int main(int argc, char **argv) {
                 return 0;
             } else if (std::string(argv[i]) == "--info") {
                 doPrintInfo = true;
+            } else if (std::string(argv[i]) == "--temporal") {
+                temporal = true;
             } else {
                 inputFile = std::string(argv[i]);
             }
@@ -94,7 +101,7 @@ int main(int argc, char **argv) {
 
     data_t data;
     attributes_t attr;
-    readH5HutFile(inputFile, step, data, attr);
+    readH5HutFile(inputFile, step, temporal, data, attr);
     convertToElegantUnits(data);
     writeSDDSFile(outputFile, data, attr, form);
 
@@ -106,7 +113,11 @@ void reportOnError(h5_int64_t rc, const char* file, int line) {
         std::cerr << "H5 rc= " << rc << " in " << file << " @ line " << line << std::endl;
 }
 
-void readH5HutFile(const std::string &fname, size_t step, data_t &data, attributes_t &attr) {
+void readH5HutFile(const std::string &fname,
+                   size_t step,
+                   bool temporal,
+                   data_t &data,
+                   attributes_t &attr) {
     h5_prop_t props = H5CreateFileProp ();
     MPI_Comm comm = MPI_COMM_WORLD;
     H5SetPropFileMPIOCollective (props, &comm);
@@ -118,12 +129,12 @@ void readH5HutFile(const std::string &fname, size_t step, data_t &data, attribut
 
     REPORTONERROR(H5SetStep(file, readStep));
 
-    data = readStepData(file);
+    data = readStepData(file, temporal);
     attr = readStepAttributes(file);
     REPORTONERROR(H5CloseFile(file));
 }
 
-data_t readStepData(file_t file) {
+data_t readStepData(file_t file, bool temporal) {
     data_t data;
 
     h5_ssize_t numParticles = H5PartGetNumParticles(file);
@@ -144,11 +155,19 @@ data_t readStepData(file_t file) {
     }
     data.insert(std::make_pair(std::string("y"), dData));
 
-    READDATA(Float64, file, "z", f64buffer);
-    for(long int n = 0; n < numParticles; ++ n) {
-        dData[n] = f64buffer[n];
+    if (temporal) {
+        READDATA(Float64, file, "time", f64buffer);
+        for(long int n = 0; n < numParticles; ++ n) {
+            dData[n] = f64buffer[n];
+        }
+        data.insert(std::make_pair(std::string("time"), dData));
+    } else {
+        READDATA(Float64, file, "z", f64buffer);
+        for(long int n = 0; n < numParticles; ++ n) {
+            dData[n] = f64buffer[n];
+        }
+        data.insert(std::make_pair(std::string("z"), dData));
     }
-    data.insert(std::make_pair(std::string("z"), dData));
 
     READDATA(Float64, file, "px", f64buffer);
     for(long int n = 0; n < numParticles; ++ n) {
@@ -201,22 +220,32 @@ attributes_t readStepAttributes(file_t file) {
 }
 
 void convertToElegantUnits(data_t &data) {
-    const size_t size = data["x"].size();
+    size_t size;
+    bool temporal = false;
+
+    try {
+        size = data["z"].size();
+    } catch (...) {
+        temporal = true;
+        size = data["x"].size();
+    }
 
     for (size_t i = 0; i < size; ++ i) {
         data["px"][i] /= data["pz"][i];
         data["py"][i] /= data["pz"][i];
+        if (temporal) continue;
+
         data["z"][i] /= -299792458.0;
     }
 }
 
 void writeSDDSFile(const std::string &fname, const data_t &data, const attributes_t &attr, FORMAT form) {
-    const std::map<std::string, std::string> nameConversion {{"x", "x"},
-                                                              {"y", "y"},
-                                                              {"t", "z"},
-                                                              {"xp", "px"},
-                                                              {"yp", "py"},
-                                                              {"p", "pz"}};
+    std::map<std::string, std::string> nameConversion {{"x", "x"},
+                                                       {"y", "y"},
+                                                       {"t", "z"},
+                                                       {"xp", "px"},
+                                                       {"yp", "py"},
+                                                       {"p", "pz"}};
     const std::map<std::string, std::string> nameUnits {{"x", "m"},
                                                         {"y", "m"},
                                                         {"t", "s"},
@@ -236,6 +265,13 @@ void writeSDDSFile(const std::string &fname, const data_t &data, const attribute
     char buffer0[256];
     char buffer1[64];
     char buffer2[8];
+
+    for (const auto entry: data) {
+        if (entry.first == "time") {
+            nameConversion["t"] = "time";
+            break;
+        }
+    }
 
     strcpy(buffer0, fname.c_str());
     strcpy(buffer1, "extracted OPAL data");
@@ -368,6 +404,7 @@ void printUsage(char **argv) {
               << indent << std::setw(width) << std::left << "--binary"                << "= whether SDDS output should be in \n"
               << indent << std::setw(width + 2) << std::left << " "                   <<   "binary format. Default: ASCII\n"
               << indent << std::setw(width) << std::left << "--info"                  << "= printing path length corresponding to step\n"
+              << indent << std::setw(width) << std::left << "--time-of-arrival"       << "= extract and save the time of arrival instead of the longitudinal position\n"
               << indent << std::setw(width) << std::left << "--help"                  << "= this help\n"
               << std::endl;
 }

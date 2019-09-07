@@ -11,11 +11,12 @@
 #include <cstring>
 #include <unistd.h>
 
-std::vector<std::vector<double> > readSDDSFile(std::string fname);
+std::vector<std::vector<double> > readSDDSFile(std::string fname, bool temporal);
 void printUsage(char **argv);
 
 int main(int argc, char **argv) {
     std::string inputFile(""), outputFile("/dev/stdout");
+    bool temporal = false;
 
     if (argc == 1) {
         printUsage(argv);
@@ -30,6 +31,8 @@ int main(int argc, char **argv) {
                 inputFile = std::string(argv[++ i]);
             } else if (std::string(argv[i]) == "--output" && i + 1 < argc) {
                 outputFile = std::string(argv[++ i]);
+            } else if (std::string(argv[i]) == "--temporal") {
+                temporal = true;
             } else if (std::string(argv[i]) == "--help") {
                 printUsage(argv);
                 return 0;
@@ -47,7 +50,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    auto data = readSDDSFile(inputFile);
+    auto data = readSDDSFile(inputFile, temporal);
     std::ofstream out(outputFile);
     out.precision(8);
     out << data.size() << "\n";
@@ -61,7 +64,7 @@ int main(int argc, char **argv) {
     return 0;
 }
 
-std::vector<std::vector<double> > readSDDSFile(std::string fname) {
+std::vector<std::vector<double> > readSDDSFile(std::string fname, bool temporal) {
 
     SDDS_DATASET SDDS_dataset;
     void *columnData;
@@ -122,6 +125,8 @@ std::vector<std::vector<double> > readSDDSFile(std::string fname) {
     for (std::vector<double> &row: fileData) {
         row[1] *= row[5];
         row[3] *= row[5];
+        if (temporal) continue;
+
         row[4] *= -299792458.0;
     }
 
@@ -147,6 +152,7 @@ void printUsage(char **argv) {
               << "Options\n\n"
               << indent << std::setw(width) << std::left << "--input <path to input>" << "= path to input file\n"
               << indent << std::setw(width) << std::left << "--output <file name>"    << "= name of output. If omitted, directed\n"
+              << indent << std::setw(width) << std::left << "--time-of-arrival"       << "= extract and save the time of arrival instead of the longitudinal position\n"
               << indent << std::setw(width + 2)          << " "                       <<   "to stdout\n"
               << indent << std::setw(width) << std::left << "--help"                  << "= this help\n"
               << std::endl;

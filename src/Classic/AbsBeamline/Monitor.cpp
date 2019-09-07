@@ -78,7 +78,8 @@ bool Monitor::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) 
     const double recpgamma = Physics::c * dt / Util::getGamma(P);
     const double middle = 0.5 * getElementLength();
     if (online_m && type_m == SPATIAL) {
-        if (R(2) < middle && R(2) + P(2) * recpgamma > middle) {
+        if (dt * R(2) < dt * middle && // multiply with dt to allow back tracking
+            dt * (R(2) + P(2) * recpgamma) > dt * middle) {
             double frac = (middle - R(2)) / (P(2) * recpgamma);
 
             lossDs_m->addParticle(R + frac * recpgamma * P,
@@ -99,7 +100,8 @@ bool Monitor::applyToReferenceParticle(const Vector_t &R,
         const double recpgamma = Physics::c * dt / Util::getGamma(P);
         const double middle = 0.5 * getElementLength();
 
-        if (R(2) < middle && R(2) + P(2) * recpgamma > middle) {
+        if (dt * R(2) < dt * middle && // multiply with dt to allow back tracking
+            dt * (R(2) + P(2) * recpgamma) > dt * middle) {
             double frac = (middle - R(2)) / (P(2) * recpgamma);
             double time = t + frac * dt;
             Vector_t dR = (0.5 + frac) * P * recpgamma;
@@ -115,7 +117,7 @@ bool Monitor::applyToReferenceParticle(const Vector_t &R,
 
                 for (unsigned int i = 0; i < localNum; ++ i) {
                     const double recpgamma = Physics::c * dt / Util::getGamma(RefPartBunch_m->P[i]);
-                    lossDs_m->addParticle(RefPartBunch_m->R[i] + frac * RefPartBunch_m->P[i] * recpgamma,
+                    lossDs_m->addParticle(RefPartBunch_m->R[i] + frac * RefPartBunch_m->P[i] * recpgamma - halfLength_s,
                                           RefPartBunch_m->P[i], RefPartBunch_m->ID[i],
                                           time, 0);
                 }

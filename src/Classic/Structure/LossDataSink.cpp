@@ -103,8 +103,14 @@
 
 
 SetStatistics::SetStatistics():
+    element_m(""),
+    spos_m(0.0),
+    refTime_m(0.0),
     tmean_m(0.0),
     trms_m(0.0),
+    nTotal_m(0),
+    RefPartR_m(0.0),
+    RefPartP_m(0.0),
     rmin_m(0.0),
     rmax_m(0.0),
     rmean_m(0.0),
@@ -627,6 +633,7 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
     new_reduce(rminmax, 6, std::greater<double>());
 
     if (Ippl::myNode() != 0) return stat;
+    if (plainData[0] == 0.0) return stat;
 
     double *centroid = plainData + 1;
     double *moments = plainData + 7;

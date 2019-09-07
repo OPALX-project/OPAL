@@ -72,12 +72,12 @@ OrbitThreader::OrbitThreader(const PartData &ref,
             logger_m.open(fileName, std::ios_base::app);
         }
 
-        loggingFrequency_m = std::max(1.0, floor(1e-11 / dt_m + 0.5));
+        loggingFrequency_m = std::max(1.0, floor(1e-11 / std::abs(dt_m) + 0.5));
     } else {
         loggingFrequency_m = std::numeric_limits<size_t>::max();
     }
 
-    dZ_m = std::min(pathLength_m, std::max(0.0, maxDiffZBunch));
+    distTrackBack_m = std::min(pathLength_m, std::max(0.0, maxDiffZBunch));
 }
 
 void OrbitThreader::execute() {
@@ -110,7 +110,9 @@ void OrbitThreader::execute() {
         registerElement(elementSet, initialS,  initialR, initialP);
 
         if (errorFlag_m == HITMATERIAL) {
-            pathLength_m += 1.0;
+            // Shouldn't be reached because reference particle
+            // isn't stopped by collimators
+            pathLength_m += std::copysign(1.0, dt_m);
         }
 
         imap_m.add(initialS, pathLength_m, elementSet);
@@ -144,7 +146,6 @@ void OrbitThreader::integrate(const IndexMap::value_t &activeSet, size_t maxStep
     static size_t step = 0;
     CoordinateSystemTrafo labToBeamline = itsOpalBeamline_m.getCSTrafoLab2Local();
     const double oldPathLength = pathLength_m;
-    double stepLength;
     Vector_t nextR;
     do {
         errorFlag_m = EVERYTHINGFINE;
@@ -211,15 +212,13 @@ void OrbitThreader::integrate(const IndexMap::value_t &activeSet, size_t maxStep
         nextR *= Physics::c * dt_m;
 
         if ((activeSet.size() == 0 && std::abs(pathLength_m - oldPathLength) > maxDrift) ||
-            (activeSet.size() > 0  && pathLength_m > zstop_m)) {
+            (activeSet.size() > 0  && dt_m * pathLength_m > dt_m * zstop_m) ||
+            (pathLength_m < 0.0 && dt_m < 0.0)) {
             errorFlag_m = EOL;
             return;
         }
 
-        stepLength = std::abs(dt_m) * euclidean_norm(p_m) / sqrt(dot(p_m, p_m) + 1) * Physics::c;
-    } while ((dt_m > 0.0 ||
-              euclidean_norm(labToBeamline.transformTo(r_m)) > stepLength)  &&
-             (activeSet == itsOpalBeamline_m.getElements(nextR)));
+    } while (activeSet == itsOpalBeamline_m.getElements(nextR));
 }
 
 bool OrbitThreader::containsCavity(const IndexMap::value_t &activeSet) {
@@ -286,8 +285,8 @@ void OrbitThreader::trackBack(double maxDrift) {
     integrator_m.push(nextR, p_m, dt_m);
     nextR *= Physics::c * dt_m;
 
-    maxDrift = std::min(maxDrift, dZ_m);
-    while (initialPathLength - pathLength_m < dZ_m) {
+    maxDrift = std::min(maxDrift, distTrackBack_m);
+    while (std::abs(initialPathLength - pathLength_m) < distTrackBack_m) {
         auto elementSet = itsOpalBeamline_m.getElements(nextR);
 
         integrate(elementSet, 1000, maxDrift);
@@ -453,7 +452,7 @@ double OrbitThreader::computeMaximalImplicitDrift() {
         }
     }
 
-    maxDrift = std::min(maxIntegSteps_m * dt_m * Physics::c, maxDrift);
+    maxDrift = std::min(maxIntegSteps_m * std::abs(dt_m) * Physics::c, maxDrift);
 
     return maxDrift;
 }

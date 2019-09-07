@@ -49,12 +49,9 @@ void OpalSource::update() {
 
     SourceRep *sol =
         dynamic_cast<SourceRep *>(getElement()->removeWrappers());
-    double length = Attributes::getReal(itsAttr[LENGTH]);
-    std::vector<std::string> distribution = Attributes::getStringArray(itsAttr[DISTRIBUTION]);
+    double length = 0.05;
 
     sol->setElementLength(length);
-
-    sol->setDistribution(distribution);
 
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(sol);

@@ -21,6 +21,7 @@
 #include "Algorithms/Tracker.h"
 #include "Steppers/BorisPusher.h"
 #include "Structure/DataSink.h"
+#include "Algorithms/StepSizeConfig.h"
 
 #include "BasicActions/Option.h"
 #include "Utilities/Options.h"
@@ -63,9 +64,7 @@
 
 #include <list>
 #include <vector>
-#include <queue>
 
-class BorisPusher;
 class ParticleMatterInteractionHandler;
 
 class ParallelTTracker: public Tracker {
@@ -218,14 +217,13 @@ private:
     /// where to start
     double zstart_m;
 
-    /// where to stop
-    std::queue<double> zStop_m;
+    /// stores informations where to change the time step and
+    /// where to stop the simulation,
+    /// the time step sizes and
+    /// the number of time steps with each configuration
+    StepSizeConfig stepSizes_m;
 
     double dtCurrentTrack_m;
-    std::queue<double> dtAllTracks_m;
-
-    /// The maximal number of steps the system is integrated per TRACK
-    std::queue<unsigned long long> localTrackSteps_m;
 
     // This variable controls the minimal number of steps of emission (using bins)
     // before we can merge the bins
@@ -296,8 +294,8 @@ private:
 
     void timeIntegration1(BorisPusher & pusher);
     void timeIntegration2(BorisPusher & pusher);
-    void selectDT();
-    void changeDT();
+    void selectDT(bool backTrack = false);
+    void changeDT(bool backTrack = false);
     void emitParticles(long long step);
     void computeExternalFields(OrbitThreader &oth);
     void computeWakefield(IndexMap::value_t &elements);
@@ -317,12 +315,11 @@ private:
 
     void updateReference(const BorisPusher &pusher);
     void updateRefToLabCSTrafo();
+    void applyFractionalStep(const BorisPusher &pusher, double tau);
     void findStartPosition(const BorisPusher &pusher);
     void autophaseCavities(const BorisPusher &pusher);
 
     void evenlyDistributeParticles();
-
-    static unsigned long long getMaxSteps(std::queue<unsigned long long> numSteps);
 };
 
 inline void ParallelTTracker::visitAlignWrapper(const AlignWrapper &wrap) {
@@ -462,18 +459,6 @@ inline void ParallelTTracker::pushParticles(const BorisPusher &pusher) {
         pusher.push(itsBunch_m->R[i], itsBunch_m->P[i], itsBunch_m->dt[i]);
     }
     itsBunch_m->switchOffUnitlessPositions(true);
-}
-
-inline
-unsigned long long ParallelTTracker::getMaxSteps(std::queue<unsigned long long> numSteps) {
-    unsigned long long totalNumSteps = 0;
-
-    while (numSteps.size() > 0) {
-        totalNumSteps += numSteps.front();
-        numSteps.pop();
-    }
-
-    return totalNumSteps;
 }
 
 #ifdef OPAL_DKS
