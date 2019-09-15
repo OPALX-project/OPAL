@@ -99,6 +99,8 @@ public:
     virtual unsigned int getTimeStepRatio() const;
     virtual void setTotalTime(double tt);
     virtual double getTotalTime() const;
+    virtual void setLFringe(double lf);
+    virtual double getLFringe() const;
     virtual void setIsDone();
     virtual bool getIsDone() const;
 
@@ -155,6 +157,9 @@ private:
     
     /// Total time to run undulator
     double totalTime_m;
+
+    /// Distance from the undulator at which the bunch fields its fields
+    double lFringe_m;
     
     /// Mithra has already run
     bool is_done_m;

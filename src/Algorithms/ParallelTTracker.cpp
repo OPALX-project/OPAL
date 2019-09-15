@@ -678,28 +678,55 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
 }
 
 void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
-                                                                
     
     Inform msg("Undulator: ", *gmsg);
     bool inUndulator = false;
+    UndulatorRep* ur;
+    const unsigned int localNum = itsBunch_m->getLocalNum();    
+    const unsigned int totalNum = itsBunch_m->getTotalNum();
+    double leftEdge, rightEdge;
 
     /* Check if in Undulator                                                                               */
     IndexMap::value_t::const_iterator it = elements.begin();
     const IndexMap::value_t::const_iterator end = elements.end();
     for (; it != end; ++ it) {
         inUndulator = (*it)->getType() == ElementBase::UNDULATOR;
-        if ( inUndulator )
+        if ( inUndulator ){
+            /* Check if bunch center has entered the undulator's fringe field                     */
+            ur = dynamic_cast<UndulatorRep*>((*it).get());
+            ur->getDimensions( leftEdge, rightEdge );
+            if ( (itsBunch_m->get_sPos() < leftEdge) || (itsBunch_m->get_sPos() >= rightEdge))
+                return;           
             break;
+        }
     }
     if (!inUndulator)
         return;
-    UndulatorRep* ur = dynamic_cast<UndulatorRep*>((*it).get());
-    
+
     /* Check if Mithra has already been run                                                                 */
     if (ur->getIsDone())
         return;
     ur->setIsDone();
+    
+    /* Transform to local coordinates  */
+    CoordinateSystemTrafo refToLocalCSTrafo = (itsOpalBeamline_m.getMisalignment((*it)) *
+                                               (itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * itsBunch_m->toLabTrafo_m));
+    CoordinateSystemTrafo localToRefCSTrafo = refToLocalCSTrafo.inverted();    
+    for (unsigned int i = 0; i < localNum; ++i){
+        itsBunch_m->R[i] = refToLocalCSTrafo.transformTo(itsBunch_m->R[i]);
+        itsBunch_m->P[i] = refToLocalCSTrafo.rotateTo(itsBunch_m->P[i]);
+    }
 
+    itsBunch_m->calcBeamParameters();
+    msg << "Bunch before undulator in local coordinate system: " << endl;
+    itsBunch_m->print(msg);    
+    
+    /* Center bunch around z = 0                                                                */
+    double zmean = itsBunch_m->get_rmean()[2];
+    for (unsigned int i = 0; i < localNum; ++i)
+        itsBunch_m->R[i](2) = itsBunch_m->R[i](2) - zmean;   
+    itsBunch_m->calcBeamParameters();
+      
     /* Start MITHRA                                                                                        */
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;
@@ -708,22 +735,9 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     msg << __FILE__ << " L: " << __LINE__ << " ---- in computeUndulator :::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     
-    /* Get particles in bunch and center around z_mean                                                                */
-    itsBunch_m->calcBeamParameters();
-    const unsigned int localNum = itsBunch_m->getLocalNum();    
-    const unsigned int totalNum = itsBunch_m->getTotalNum();
-    double zmean = itsBunch_m->get_rmean()[2];
-    for (unsigned int i = 0; i < localNum; ++i)
-        itsBunch_m->R[i](2) = itsBunch_m->R[i](2) - zmean;   
-    itsBunch_m->calcBeamParameters();
-    
-    msg << "Bunch before undulator, z-coordinate centered around zmean: " << endl;
-    itsBunch_m->print(msg);
-
     std::list<Darius::Charge>	qv;
     Darius::Charge charge;
     charge.q = itsBunch_m->getChargePerParticle() / (-1.602e-19);  // In elementary charges
-    charge.q = 1.846e8 / totalNum;  // REMOVE THIS
     for (unsigned int i = 0; i < localNum; ++i) {
         for (unsigned int d = 0; d < 3; ++d) {
             charge.rnp[d] = (itsBunch_m->R[i])[d];
@@ -739,43 +753,32 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.bunchType_ = "charge-vector";
     bunchInit.numberOfParticles_ = totalNum;
     bunchInit.cloudCharge_ = charge.q * totalNum;    
-    bunchInit.cloudCharge_ = 1.846e8;  // REMOVE THIS
     bunchInit.initialGamma_ = itsBunch_m->get_gamma(); 
     bunchInit.initialBeta_ = sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));    
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = ( itsBunch_m->get_pmean() )[d];
     double norm = sqrt( fv.norm() );
-    fv[0] = 0.0;  // REMOVE THIS
-    fv[1] = 0.0;  // REMOVE THIS
     fv /= norm;
     bunchInit.initialDirection_	= fv;
-    for (unsigned int d = 0; d < 3; ++d) {
-        // fv[d] = itsBunch_m->get_rmean()[d];
-        fv[d] = 0.0;  // REMOVE THIS
-    }
+    for (unsigned int d = 0; d < 3; ++d)
+        fv[d] = itsBunch_m->get_rmean()[d];
     bunchInit.position_.push_back(fv);
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_rrms()(d);
-    fv[0] = 26e-05;  // REMOVE THIS
-    fv[1] = 26e-05;  // REMOVE THIS
     bunchInit.sigmaPosition_ = fv;
     for (unsigned int d = 0; d < 3; ++d) 
         fv[d] = itsBunch_m->get_prms()(d);
-    fv[0] = 1e-8;  // REMOVE THIS
-    fv[1] = 1e-8;  // REMOVE THIS
-    fv[2] = 1.0041e-2;  // REMOVE THIS
     bunchInit.sigmaGammaBeta_ = fv;
     bunchInit.inputVector_ = qv;
     bunchInit.longTrun_ = itsBunch_m->get_maxExtent()[2];
     msg << "Done getting bunch parameters" << endl;
-    bunchInit.sigmaPosition_[2] = 5.025e-05;  // REMOVE THIS
-    bunchInit.longTrun_ = 9e-05;  // REMOVE THIS
 
     /* Undulator parameters                 */
     Darius::Undulator uParam;
     uParam.k_ = ur->getK();
     uParam.lu_ = ur->getLambda();
-    double uLength =  ur->getElementLength();
+    uParam.rb_ = ur->getLFringe() - zmean;
+    double uLength =  ur->getElementLength() - ur->getLFringe();
     uParam.length_ = uLength / uParam.lu_;  // In units of lu
     double gamma_ = bunchInit.initialGamma_ / sqrt(1 + .5 * uParam.k_ * uParam.k_);
     double beta_ = sqrt(1.0 - 1.0 / (gamma_ * gamma_));    
@@ -796,7 +799,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.lengthScale_ = 1.0; 
     mesh.timeScale_ = 1.0;
     for (unsigned int d = 0; d < 3; ++d)
-        // fv[d] = bunchInit.position_[0][d];
         fv[d] = 0.0;
     mesh.meshCenter_ = fv;
     for (unsigned int d = 0; d < 3; ++d)
@@ -807,7 +809,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.meshResolution_ = fv;
     mesh.totalTime_ = ur->getTotalTime();
     if (mesh.totalTime_ == 0.0)
-        mesh.totalTime_ = uLength / beta_ / Darius::C0;
+        mesh.totalTime_ = 2 * uParam.rb_ / bunchInit.initialBeta_ / Darius::C0 + uLength / beta_ / Darius::C0;
     mesh.truncationOrder_ = ur->getTruncationOrder();
     mesh.spaceCharge_ = ur->getSpaceCharge();
     msg << "Done passing mesh parameters to Mithra" << endl;
@@ -818,7 +820,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunch.timeStart_ = 0.0;
     unsigned int m = ur->getTimeStepRatio();  // dt = m * dt_bunch
     bunch.timeStep_ = mesh.meshResolution_[2] * gamma_ * gamma_ / Darius::C0 / m;
-    bunch.timeStep_ = 1.6e-12;  // REMOVE THIS
     msg << "Done passing timestep parameters to Mithra" << endl;
 
     /* Create the seed database.                                                                          */
@@ -858,11 +859,13 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::FdTdSC fdtdsc (mesh, bunch, seed, undulator, extField, FEL);
     
     /* Solve for the fields and the bunch distribution over the specified time.                           */
+    qv.clear();
     if ( mesh.spaceCharge_ )
         fdtdsc.solve();
     else
         fdtd.solve();
-
+    MPI_Finalize();  // EVENTUALLY REMOVE THIS
+    exit(0);  // EVENTUALLY REMOVE THIS
 }
 
 

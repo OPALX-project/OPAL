@@ -90,6 +90,8 @@ OpalUndulator::OpalUndulator():
     itsAttr[TOTALTIME] = Attributes::makeReal
                           ("TOTALTIME",
                           "Total time of undulator simulation", 0.0);
+    itsAttr[LFRINGE] = Attributes::makeReal("LFRINGE", 
+					    "Distance from the undulator where the bunch starts to feel the undulator fields", 1.0);
 
 
     registerStringAttribute("GEOMETRY");
@@ -104,6 +106,7 @@ OpalUndulator::OpalUndulator():
     registerRealAttribute("SPACECHARGE");
     registerRealAttribute("TIMESTEPRATIO");
     registerRealAttribute("TOTALTIME");
+    registerRealAttribute("LFRINGE");
     registerOwnership();
 
     setElement(new UndulatorRep("UNDULATOR"));
@@ -178,6 +181,7 @@ void OpalUndulator::update() {
     ur->setSpaceCharge(Attributes::getReal(itsAttr[SPACECHARGE]));
     ur->setTimeStepRatio(Attributes::getReal(itsAttr[TIMESTEPRATIO]));
     ur->setTotalTime(Attributes::getReal(itsAttr[TOTALTIME]));
+    ur->setLFringe(Attributes::getReal(itsAttr[LFRINGE]));
 
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(ur);

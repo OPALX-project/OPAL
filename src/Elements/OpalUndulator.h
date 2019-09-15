@@ -50,6 +50,7 @@ public:
 	 SPACECHARGE,
 	 TIMESTEPRATIO,
 	 TOTALTIME,
+	 LFRINGE,
 	 SIZE
     };
     /// Exemplar constructor.

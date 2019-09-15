@@ -60,6 +60,7 @@ UndulatorRep::UndulatorRep():
     spaceCharge_m(1),
     m_m(5),
     totalTime_m(0.0),
+    lFringe_m(1.0),
     is_done_m(false)
 {}
 
@@ -81,6 +82,7 @@ UndulatorRep::UndulatorRep(const UndulatorRep &right):
     spaceCharge_m(right.spaceCharge_m),
     m_m(right.m_m),
     totalTime_m(right.totalTime_m),
+    lFringe_m(right.lFringe_m),
     is_done_m(right.is_done_m)
 {}
 
@@ -98,6 +100,7 @@ UndulatorRep::UndulatorRep(const std::string &name):
     spaceCharge_m(1),
     m_m(5),
     totalTime_m(0.0),
+    lFringe_m(1.0),
     is_done_m(false)
 {}
 
@@ -191,6 +194,9 @@ unsigned int UndulatorRep::getTimeStepRatio() const { return m_m; }
 
 void UndulatorRep::setTotalTime(double tt) { totalTime_m = tt; }
 double UndulatorRep::getTotalTime() const { return totalTime_m; }
+
+void UndulatorRep::setLFringe(double lf) { lFringe_m = lf; }
+double UndulatorRep::getLFringe() const { return lFringe_m; }
 
 void UndulatorRep::setIsDone() { is_done_m = true; }
 bool UndulatorRep::getIsDone() const { return is_done_m; }
