@@ -92,10 +92,9 @@ DR1: DRIFT,    L = 1.0, ELEMEDGE = 0.5;
 
 // Undulator
 
-U1: UNDULATOR, L = 30.0, ELEMEDGE = 1.5, K = 1.417, LAMBDA = .3,
+U1: UNDULATOR, L = 30.0, LFRINGE = 1.0, ELEMEDGE = 1.5, K = 1.417, LAMBDA = .3,
      MESHLENGTH = { 3.2e-03, 3.2e-03, 6e-03 }, MESHRESOLUTION = { 3e-05, 3e-05, 3e-06 },
      TRUNORDER = 2, SPACECHARGE = 1,
-     RADZ = 1.1e-4, RADLAMBDA = 1, RADDIRECTORY = "power-sampling/power",
      TIMESTEPRATIO = 5;
 
 // DEFINE BEAM LINE

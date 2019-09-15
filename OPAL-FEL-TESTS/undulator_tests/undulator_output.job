@@ -7,7 +7,7 @@ BUNCH
     sample						= true
     directory						= ./
     base-name 						= bunch-sampling/bunch
-    rhythm						= 4e-9
+    rhythm						= 100e-12
   }
     
   bunch-visualization
@@ -19,7 +19,7 @@ BUNCH
   }
   bunch-profile
   {
-    sample						= true
+    sample						= false
     directory						= ./
     base-name						= bunch-profile/bunch
     time						= 0.0
@@ -32,7 +32,7 @@ FIELD
 {
   field-sampling
   {
-    sample						= true
+    sample						= false
     type						= at-point
     field						= Ex
     field                           			= Ey
