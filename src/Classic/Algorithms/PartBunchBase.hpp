@@ -1940,15 +1940,10 @@ Inform &PartBunchBase<T, Dim>::print(Inform &os) {
     if(getTotalNum() != 0) {  // to suppress Nans
         Inform::FmtFlags_t ff = os.flags();
 
-        double lengthUnitConverter = 1;
         double pathLength = get_sPos();
         if (OpalData::getInstance()->isInOPALCyclMode()) {
-            lengthUnitConverter = 0.001;
             pathLength = getLPath();
         }
-
-        rmax_m *= lengthUnitConverter;
-        rmin_m *= lengthUnitConverter;
 
         os << std::scientific;
         os << level1 << "\n";
@@ -1975,9 +1970,6 @@ Inform &PartBunchBase<T, Dim>::print(Inform &os) {
         os << "* spos            = " << std::setw(17) << Util::getLengthString(pathLength) << "\n";
         os << "* ********************************************************************************** " << endl;
         os.flags(ff);
-
-        rmax_m /= lengthUnitConverter;
-        rmin_m /= lengthUnitConverter;
     }
     return os;
 }

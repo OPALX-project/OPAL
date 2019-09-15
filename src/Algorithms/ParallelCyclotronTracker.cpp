@@ -1506,7 +1506,7 @@ bool ParallelCyclotronTracker::checkGapCross(Vector_t Rold, Vector_t Rnew,
     double distOld = (Rold[0] * sinx - Rold[1] * cosx) - PerpenDistance;
     if(distOld > 0.0 && distNew <= 0.0) flag = true;
     // This parameter is used correct cavity phase
-    Dold = distOld;
+    Dold = 1.0e3 * distOld; // m --> mm
     return flag;
 }
 
