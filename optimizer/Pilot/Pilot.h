@@ -113,7 +113,8 @@ public:
           const Expressions::Named_t &obj,
           const Expressions::Named_t &cons,
           std::vector<double> hypervolRef = {},
-          bool isOptimizerRun = true)
+          bool isOptimizerRun = true,
+          std::vector<std::string> filesToKeep = {})
         : Poller(comm->mpiComm())
         , comm_(comm)
         , cmd_args_(args)
@@ -123,7 +124,7 @@ public:
         , hypervolRef_(hypervolRef)
     {
         if (isOptimizerRun)
-            setup(known_expr_funcs);
+            setup(known_expr_funcs, filesToKeep);
     }
 
     virtual ~Pilot()
@@ -185,7 +186,9 @@ protected:
     boost::scoped_ptr<Trace> job_trace_;
 
 private:
-    void setup(functionDictionary_t known_expr_funcs) {
+    void setup(functionDictionary_t known_expr_funcs,
+               const std::vector<std::string> &filesToKeep)
+    {
         global_rank_ = comm_->globalRank();
 
         if(global_rank_ == 0) {
@@ -210,7 +213,7 @@ private:
 
         // here the control flow starts to diverge
         if      ( comm_->isOptimizer() ) { startOptimizer(); }
-        else if ( comm_->isWorker()    ) { startWorker();    }
+        else if ( comm_->isWorker()    ) { startWorker(filesToKeep);    }
         else if ( comm_->isPilot()     ) { startPilot();     }
     }
 
@@ -267,7 +270,7 @@ protected:
     }
 
     virtual
-    void startWorker() {
+    void startWorker(const std::vector<std::string> &filesToKeep) {
 
         std::ostringstream os;
         os << "\033[01;35m" << "  " << global_rank_ << " (PID: " << getpid() << ") ▶ Worker"
@@ -283,7 +286,7 @@ protected:
 
         boost::scoped_ptr< Worker<Sim_t> > w(
                 new Worker<Sim_t>(objectives_, constraints_, simName,
-                    comm_->getBundle(), cmd_args_));
+                    comm_->getBundle(), cmd_args_, true, filesToKeep));
 
         std::cout << "Stop Worker.." << std::endl;
     }
@@ -425,6 +428,16 @@ protected:
 
             size_t job_id = recv_value;
 
+
+            MPI_Status st;
+            MPI_Probe(status.MPI_SOURCE, MPI_WORKER_DIRECTORY_TAG, worker_comm_, &st);
+            int len = 0;
+            MPI_Get_count(&st, MPI_CHAR, &len);
+            std::unique_ptr<char> buf(new char[len]);
+            MPI_Recv(buf.get(), len, MPI_CHAR, status.MPI_SOURCE,
+                     MPI_WORKER_DIRECTORY_TAG, worker_comm_, &st);
+            std::string simdir(buf.get(), len);
+
             size_t dummy = 1;
             MPI_Send(&dummy, 1, MPI_UNSIGNED_LONG, status.MPI_SOURCE,
                      MPI_WORKER_FINISHED_ACK_TAG, worker_comm_);
@@ -446,6 +459,9 @@ protected:
             int opt_master_rank = comm_->getLeader();
             MPI_Send(&job_id, 1, MPI_UNSIGNED_LONG, opt_master_rank,
                      MPI_OPT_JOB_FINISHED_TAG, opt_comm_);
+
+            MPI_Send(simdir.c_str(), simdir.size(), MPI_CHAR, opt_master_rank,
+                     MPI_OPT_DIRECTORY_TAG, opt_comm_);
 
             MPI_Send_reqvars(res, opt_master_rank, opt_comm_);
 

@@ -85,6 +85,7 @@ namespace {
         MUTATION,
         RESTART_FILE,
         RESTART_STEP,
+        KEEP,
         SIZE
     };
 }
@@ -163,6 +164,8 @@ OptimizeCmd::OptimizeCmd():
     itsAttr[RESTART_STEP] = Attributes::makeReal
         ("RESTART_STEP", "Restart from given H5 step (optional)",
          std::numeric_limits<int>::min());
+    itsAttr[KEEP] = Attributes::makeStringArray
+        ("KEEP", "List of files to keep for each simulation. (default: all files kept)");
     registerOwnership(AttributeHandler::COMMAND);
 }
 
@@ -185,6 +188,7 @@ void OptimizeCmd::execute() {
 
     fs::path inputfile(Attributes::getString(itsAttr[INPUT]));
 
+    std::vector<std::string> filesToKeep    = Attributes::getStringArray(itsAttr[KEEP]);
     std::vector<std::string> dvarsstr       = Attributes::getStringArray(itsAttr[DVARS]);
     std::vector<std::string> objectivesstr  = Attributes::getStringArray(itsAttr[OBJECTIVES]);
     std::vector<std::string> constraintsstr = Attributes::getStringArray(itsAttr[CONSTRAINTS]);
@@ -482,7 +486,7 @@ void OptimizeCmd::execute() {
     try {
         CmdArguments_t args(new CmdArguments(argv.size(), &argv[0]));
 
-        this->run(args, funcs, dvars, objectives, constraints);
+        this->run(args, funcs, dvars, objectives, constraints, filesToKeep);
 
     } catch (OptPilotException &e) {
         std::cout << "Exception caught: " << e.what() << std::endl;
@@ -563,7 +567,8 @@ void OptimizeCmd::run(const CmdArguments_t& args,
                       const functionDictionary_t& funcs,
                       const DVarContainer_t& dvars,
                       const Expressions::Named_t& objectives,
-                      const Expressions::Named_t& constraints)
+                      const Expressions::Named_t& constraints,
+                      const std::vector<std::string>& filesToKeep)
 {
     typedef OpalSimulation Sim_t;
 
@@ -586,7 +591,8 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE])));
+                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                                              true, filesToKeep));
             break;
         }
         case CrossOver::Blend + Mutation::OneBit:

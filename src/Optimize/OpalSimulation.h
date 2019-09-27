@@ -67,6 +67,8 @@ public:
     /// returns container containing all requested variables with results
     reqVarContainer_t getResults() { return requestedVars_; }
 
+    std::string getSimDirectory() { return hash_; }
+
     /// set job id (SAMPLE command)
     void setFilename(int id) { id_m = id; }
 
@@ -78,6 +80,8 @@ private:
     std::string simulationDirName_;
     /// temporary directory for simulation data (environment var SIMTMPDIR)
     std::string simTmpDir_;
+
+    std::string hash_;
 
     /// holds current directory (for restoring)
     std::string pwd_;

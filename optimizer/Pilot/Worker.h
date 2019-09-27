@@ -51,9 +51,11 @@ public:
            std::string simName,
            Comm::Bundle_t comms,
            CmdArguments_t args,
-           bool isOptimizer = true)
+           bool isOptimizer = true,
+           std::vector<std::string> filesToKeep = {})
         : Poller(comms.worker)
         , cmd_args_(args)
+        , filesToKeep_m(filesToKeep)
     {
         objectives_      = objectives;
         constraints_     = constraints;
@@ -201,6 +203,7 @@ protected:
             //MPI_Recv_reqvars(reqVars, (size_t)pilot_rank_, comm_m);
 
             reqVarContainer_t requested_results;
+            std::string simdir;
             try {
                 SimPtr_t sim(new Sim_t(objectives_, constraints_,
                         params, simulation_name_, coworker_comm_, cmd_args_));
@@ -208,8 +211,17 @@ protected:
                 // run simulation in a "blocking" fashion
                 sim->run();
                 sim->collectResults();
-                sim->cleanUp();
+
+                if ( filesToKeep_m.empty() ) {
+                    sim->cleanUp();
+                } else {
+                    // if empty, we keep all files
+                    sim->cleanUp(filesToKeep_m);
+                }
+
                 requested_results = sim->getResults();
+                simdir = sim->getSimDirectory();
+
             } catch(OptPilotException &ex) {
                 std::cout << "Exception while running simulation: "
                           << ex.what() << std::endl;
@@ -218,11 +230,15 @@ protected:
             MPI_Send(&job_id, 1, MPI_UNSIGNED_LONG, pilot_rank_,
                      MPI_WORKER_FINISHED_TAG, comm_m);
 
+            MPI_Send(simdir.c_str(), simdir.size(), MPI_CHAR, pilot_rank_,
+                     MPI_WORKER_DIRECTORY_TAG, comm_m);
+
             size_t dummy = 0;
             MPI_Recv(&dummy, 1, MPI_UNSIGNED_LONG, pilot_rank_,
                      MPI_WORKER_FINISHED_ACK_TAG, comm_m, &status);
 
             MPI_Send_reqvars(requested_results, (size_t)pilot_rank_, comm_m);
+
 
             is_idle_ = true;
             return true;
@@ -234,6 +250,8 @@ protected:
             throw OptPilotException("Worker::onMessage", os.str());
         }
     }
+private:
+    const std::vector<std::string> filesToKeep_m;
 };
 
 #endif

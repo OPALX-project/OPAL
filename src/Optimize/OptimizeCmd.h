@@ -60,7 +60,8 @@ private:
              const functionDictionary_t& funcs,
              const DVarContainer_t& dvars,
              const Expressions::Named_t& objectives,
-             const Expressions::Named_t& constraints);
+             const Expressions::Named_t& constraints,
+             const std::vector<std::string>&);
 };
 
 #endif

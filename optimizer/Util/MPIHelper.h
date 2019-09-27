@@ -19,6 +19,9 @@
 /// notifies coworkers about new jobs
 #define MPI_COWORKER_NEW_JOB_TAG       0x14
 
+#define MPI_WORKER_DIRECTORY_TAG       0x15
+#define MPI_OPT_DIRECTORY_TAG          0x16
+
 
 /// optimizer sends new job to pilot
 #define MPI_OPT_NEW_JOB_TAG            0x21
@@ -56,6 +59,7 @@ enum MPITag_t {
     , REQUEST_FINISHED = MPI_OPT_JOB_FINISHED_TAG
     , EXCHANGE_SOL_STATE_TAG = MPI_EXCHANGE_SOL_STATE_TAG
     , EXCHANGE_SOL_STATE_RES_SIZE_TAG = MPI_EXCHANGE_SOL_STATE_RES_SIZE_TAG
+    , WORKER_DIRECTORY_TAG = MPI_WORKER_DIRECTORY_TAG
 };
 
 /// Worker state is either idle or running

@@ -100,12 +100,12 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
 
     // hash the dictionary to get a short unique directory name for temporary
     // simulation data
-    std::string hash = NativeHashGenerator::generate(dict);
+    hash_ = NativeHashGenerator::generate(dict);
 
     std::ostringstream tmp;
     tmp.precision(15);
 
-    tmp << simTmpDir_ << "/" << hash << "_" << leader_;
+    tmp << simTmpDir_ << "/" << hash_ << "_" << leader_;
 
     simulationDirName_ = tmp.str();
 
