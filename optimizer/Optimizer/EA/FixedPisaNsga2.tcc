@@ -25,6 +25,8 @@
 #include "Util/Trace/Timestamp.h"
 #include "Util/Trace/FileSink.h"
 
+#include "boost/filesystem.hpp"
+
 
 template< template <class> class CO, template <class> class MO >
 FixedPisaNsga2<CO, MO>::FixedPisaNsga2(
@@ -252,6 +254,15 @@ bool FixedPisaNsga2<CO, MO>::onMessage(MPI_Status status, size_t length) {
         boost::shared_ptr<individual> ind = it->second;
         jobmapping_m.erase(it);
 
+        MPI_Status st;
+        MPI_Probe(status.MPI_SOURCE, MPI_OPT_DIRECTORY_TAG, comms_.opt, &st);
+        int len = 0;
+        MPI_Get_count(&st, MPI_CHAR, &len);
+        std::unique_ptr<char> buf(new char[len]);
+        MPI_Recv(buf.get(), len, MPI_CHAR, status.MPI_SOURCE,
+                 MPI_OPT_DIRECTORY_TAG, comms_.opt, &st);
+        std::string simdir(buf.get(), len);
+
         //size_t dummy = 1;
         //MPI_Send(&dummy, 1, MPI_UNSIGNED_LONG, status.MPI_SOURCE,
         //         MPI_WORKER_FINISHED_ACK_TAG, comms_.listen);
@@ -281,6 +292,13 @@ bool FixedPisaNsga2<CO, MO>::onMessage(MPI_Status status, size_t length) {
                 variator_m->infeasible(ind);
                 statistics_->changeStatisticBy("infeasible", 1);
                 dispatch_forward_solves();
+
+                std::string dir = args_->getArg<std::string>("simtmpdir");
+                std::ostringstream tmp;
+                tmp << dir << "/" << ind->simdir;
+                boost::filesystem::path p(tmp.str());
+                boost::filesystem::remove_all(p);
+
                 return true;
             } else {
                  // update objective value for valid objective
@@ -288,6 +306,8 @@ bool FixedPisaNsga2<CO, MO>::onMessage(MPI_Status status, size_t length) {
                     ind->objectives.push_back(itr->second.value[0]);
             }
         }
+
+        ind->simdir = simdir;
 
         finishedBuffer_m.push(jid);
         statistics_->changeStatisticBy("accepted", 1);
@@ -796,6 +816,8 @@ void FixedPisaNsga2<CO, MO>::dumpPopulationToJSON() {
             file << "\n";
         }
         file << "\t\t}\n";
+
+        file << "\t\t\"dir\":\t\t" << temp->simdir << "\n";
 
         file << "\t" << "}" << std::endl;
     }

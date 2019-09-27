@@ -104,6 +104,8 @@ public:
     /// id
     unsigned int id = 0;
 
+    std::string simdir = "";
+
 private:
     /// check bounds
     bool checkBounds() {

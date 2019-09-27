@@ -61,14 +61,23 @@ public:
     /// set job id (SAMPLE command)
     void setFilename(int id) { id_m = id; }
 
+    std::string getSimDirectory() { return simDir_; }
+
+    /// remove temporary simulation files (if Boost filesystem library is not
+    /// available, this call do nothing).
+    void cleanUp();
+
+    void cleanUp(const std::vector<std::string>& keep);
+
 private:
-    
+
     /// identification of the simulation (corresponding to output filename)
     std::string simulationName_;
     /// full path of simulation directory (where simulation will be run)
     std::string simulationDirName_;
     /// temporary directory for simulation data (environment var SIMTMPDIR)
     std::string simTmpDir_;
+    std::string simDir_;
 
     /// holds current directory (for restoring)
     std::string pwd_;
@@ -91,15 +100,12 @@ private:
 
     /// object to generate simulation input files
     boost::scoped_ptr<GenerateOpalSimulation> gs_;
-    
+
     /// job id (SAMPLE command)
     int id_m;
 
     /// mark a solution as invalid
     void invalidBunch();
-    /// remove temporary simulation files (if Boost filesystem library is not
-    /// available, this call do nothing).
-    void cleanUp();
 
     /// check if we already have simulated the current set of design vars
     bool hasResultsAvailable();

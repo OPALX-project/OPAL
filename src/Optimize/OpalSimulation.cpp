@@ -32,6 +32,8 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 
+#include "Utilities/Util.h"
+
 OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
                                Expressions::Named_t constraints,
                                Param_t params, std::string name,
@@ -99,9 +101,29 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
     std::ostringstream tmp;
     tmp.precision(15);
 
-    tmp << simTmpDir_ << "/" << hash << "_" << leader_;
-
+    tmp << hash << "_" << leader_;
+    simDir_ = tmp.str();
+    tmp.str(std::string());
+    tmp << simTmpDir_ << "/" << simDir_;
     simulationDirName_ = tmp.str();
+
+    int nTrials = 10000;
+    while (fs::exists(simulationDirName_) && nTrials > 0) {
+        std::ostringstream tmp1;
+        tmp1.precision(15);
+        tmp1 << hash << "_" << leader_ << "_" << nTrials;
+        simDir_ = tmp1.str();
+        tmp1.str(std::string());
+        tmp1 << simTmpDir_ << "/" << simDir_;
+        simulationDirName_ = tmp1.str();
+        --nTrials;
+    }
+
+    if (fs::exists(simulationDirName_)) {
+        throw OptPilotException("OpalSimulation::OpalSimulation",
+                                "Tried to generate a unique directory a 10000 times. I give up now.");
+    }
+
 
     std::string tmplDir = args->getArg<std::string>("templates");
     if (tmplDir == "") {
@@ -437,7 +459,7 @@ void OpalSimulation::collectResults() {
                   << simulationDirName_.c_str() << std::endl;
     }
 
-    cleanUp();
+//     cleanUp();
 }
 
 bool OpalSimulation::getVariableDictionary(variableDictionary_t& dictionary,
@@ -503,5 +525,42 @@ void OpalSimulation::cleanUp() {
         std::cout << "Can't remove directory '" << simulationDirName_ << "', (" << ex.what() << ")" << std::endl;
     } catch(...) {
         std::cout << "Can't remove directory '" << simulationDirName_ << "'" << std::endl;
+    }
+}
+
+void OpalSimulation::cleanUp(const std::vector<std::string>& keep) {
+    namespace fs = boost::filesystem;
+
+    if ( keep.empty() ) {
+        // if empty we keep all files
+        return;
+    }
+
+    try {
+        int my_rank = 0;
+        MPI_Comm_rank(comm_, &my_rank);
+        if (my_rank == 0) {
+            fs::path p(simulationDirName_.c_str());
+            fs::directory_iterator it{p};
+            while ( it != fs::directory_iterator{} ) {
+                std::string extension = Util::toUpper(fs::extension(it->path().filename()));
+
+                // remove .
+                extension.erase(0, 1);
+
+                auto result = std::find(keep.begin(), keep.end(), extension);
+
+                if ( result == keep.end() ) {
+                    fs::remove_all(it->path());
+                }
+                ++it;
+            }
+        }
+    } catch(fs::filesystem_error &ex) {
+        std::cout << "Can't remove file in directory '" << simulationDirName_
+                  << "', (" << ex.what() << ")" << std::endl;
+    } catch(...) {
+        std::cout << "Can't remove file in directory '" << simulationDirName_
+                  << "'" << std::endl;
     }
 }

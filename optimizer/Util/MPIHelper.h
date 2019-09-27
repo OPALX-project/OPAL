@@ -18,6 +18,8 @@
 
 /// notifies coworkers about new jobs
 #define MPI_COWORKER_NEW_JOB_TAG       0x14
+#define MPI_WORKER_DIRECTORY_TAG       0x15
+#define MPI_OPT_DIRECTORY_TAG          0x16
 
 
 /// optimizer sends new job to pilot

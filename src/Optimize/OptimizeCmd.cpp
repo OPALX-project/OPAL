@@ -67,6 +67,7 @@ namespace {
         SIMTMPDIR,
         TEMPLATEDIR,
         FIELDMAPDIR,
+        KEEP,
         SIZE
     };
 }
@@ -126,6 +127,9 @@ OptimizeCmd::OptimizeCmd():
         ("TEMPLATEDIR", "Directory where templates are stored");
     itsAttr[FIELDMAPDIR] = Attributes::makeString
         ("FIELDMAPDIR", "Directory where field maps are stored");
+    itsAttr[KEEP] = Attributes::makeStringArray
+        ("KEEP", "List of files to keep for each simulation. (default: all files kept)");
+
 
     registerOwnership(AttributeHandler::COMMAND);
 }
@@ -147,6 +151,7 @@ void OptimizeCmd::execute() {
     auto opal = OpalData::getInstance();
     fs::path inputfile(Attributes::getString(itsAttr[INPUT]));
 
+    std::vector<std::string> filesToKeep    = Attributes::getStringArray(itsAttr[KEEP]);
     std::vector<std::string> dvarsstr = Attributes::getStringArray(itsAttr[DVARS]);
     std::vector<std::string> objectivesstr = Attributes::getStringArray(itsAttr[OBJECTIVES]);
     std::vector<std::string> constraintsstr = Attributes::getStringArray(itsAttr[CONSTRAINTS]);
@@ -343,7 +348,7 @@ void OptimizeCmd::execute() {
         CmdArguments_t args(new CmdArguments(argv.size(), &argv[0]));
 
         boost::shared_ptr<Comm_t>  comm(new Comm_t(args, MPI_COMM_WORLD));
-        boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm, funcs, dvars, objectives, constraints));
+        boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm, funcs, dvars, objectives, constraints, filesToKeep));
 
     } catch (OptPilotException &e) {
         std::cout << "Exception caught: " << e.what() << std::endl;
