@@ -128,11 +128,7 @@ void StatWriter::write(PartBunchBase<double, 3> *beam, Vector_t FDext[],
     if (Options::beamHaloBoundary > 0)
         npOutside = beam->calcNumPartsOutside(Options::beamHaloBoundary*beam->get_rrms());
 
-    double  pathLength = 0.0;
-    if (OpalData::getInstance()->isInOPALCyclMode())
-        pathLength = beam->getLPath();
-    else
-        pathLength = beam->get_sPos();
+    double  pathLength = beam->get_sPos();
 
     /// Write data to files. If this is the first write to the beam statistics file, write SDDS
     /// header information.

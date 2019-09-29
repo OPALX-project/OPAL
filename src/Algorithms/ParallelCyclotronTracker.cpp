@@ -2307,7 +2307,7 @@ void ParallelCyclotronTracker::initDistInGlobalFrame() {
 
             *gmsg << "* Restart in the global frame" << endl;
 
-            pathLength_m = itsBunch_m->getLPath();
+            pathLength_m = itsBunch_m->get_sPos();
             //itsBunch_m->R *= Vector_t(1000.0); // m --> mm
         }
     }
@@ -3450,7 +3450,7 @@ void ParallelCyclotronTracker::saveInjectValues() {
     MultiBunchHandler::injection_t& inj = mbHandler_m->getInjectionValues();
 
     inj.time       = itsBunch_m->getT() * 1.0e9; /*ns*/
-    inj.pathlength = itsBunch_m->getLPath();
+    inj.pathlength = itsBunch_m->get_sPos();
     inj.azimuth    = azimuth_m;
     inj.radius     = radius;
 }
@@ -3469,7 +3469,7 @@ void ParallelCyclotronTracker::updatePathLength(const double& dt) {
     computePathLengthUpdate(lpaths, dt);
 
     pathLength_m += lpaths.back();
-    itsBunch_m->setLPath(pathLength_m);
+    itsBunch_m->set_sPos(pathLength_m);
 
     if ( isMultiBunch() ) {
         mbHandler_m->updatePathLength(lpaths);

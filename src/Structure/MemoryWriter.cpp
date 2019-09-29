@@ -65,11 +65,7 @@ void MemoryWriter::write(PartBunchBase<double, 3> *beam)
         return;
     }
 
-    double  pathLength = 0.0;
-    if (OpalData::getInstance()->isInOPALCyclMode())
-        pathLength = beam->getLPath();
-    else
-        pathLength = beam->get_sPos();
+    double  pathLength = beam->get_sPos();
 
     fillHeader();
 

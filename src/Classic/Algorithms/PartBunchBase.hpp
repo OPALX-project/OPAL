@@ -62,7 +62,6 @@ PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb)
       tEmission_m(0.0),
       bingamma_m(nullptr),
       binemitted_m(nullptr),
-      lPath_m(0.0),
       stepsPerTurn_m(0),
       localTrackStep_m(0),
       globalTrackStep_m(0),
@@ -1098,28 +1097,8 @@ double PartBunchBase<T, Dim>::getT() const {
 
 
 template <class T, unsigned Dim>
-
 double PartBunchBase<T, Dim>::get_sPos() {
-    if(sum(PType != ParticleType::REGULAR)) {
-        const size_t n = getLocalNum();
-        size_t numPrimBeamParts = 0;
-        double z = 0.0;
-        if(n != 0) {
-            for(size_t i = 0; i < n; i++) {
-                if(PType[i] == ParticleType::REGULAR) {
-                    z += R[i](2);
-                    numPrimBeamParts++;
-                }
-            }
-        }
-        reduce(z, z, OpAddAssign());
-        reduce(numPrimBeamParts, numPrimBeamParts, OpAddAssign());
-        if(numPrimBeamParts != 0)
-            z = z / numPrimBeamParts;
-        return z;
-    } else {
-        return spos_m;
-    }
+    return spos_m;
 }
 
 
@@ -1518,18 +1497,6 @@ std::string PartBunchBase<T, Dim>::getFieldSolverType() const {
         return fs_m->getFieldSolverType();
     else
         return "";
-}
-
-
-template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::setLPath(double s) {
-    lPath_m = s;
-}
-
-
-template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getLPath() const {
-    return lPath_m;
 }
 
 
@@ -1941,9 +1908,6 @@ Inform &PartBunchBase<T, Dim>::print(Inform &os) {
         Inform::FmtFlags_t ff = os.flags();
 
         double pathLength = get_sPos();
-        if (OpalData::getInstance()->isInOPALCyclMode()) {
-            pathLength = getLPath();
-        }
 
         os << std::scientific;
         os << level1 << "\n";

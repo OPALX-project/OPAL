@@ -285,9 +285,6 @@ public:
 
     std::string getFieldSolverType() const;
 
-    void setLPath(double s);
-    double getLPath() const;
-
     void setStepsPerTurn(int n);
     int getStepsPerTurn() const;
 
@@ -651,9 +648,6 @@ protected:
     // holds number of emitted particles of the bin
     // jjyang: opal-cycl use *nBin_m of pbin_m
     std::unique_ptr<size_t[]> binemitted_m;
-
-    /// path length from the start point
-    double lPath_m;
 
     /// steps per turn for OPAL-cycl
     int stepsPerTurn_m;

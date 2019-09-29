@@ -86,7 +86,7 @@ void H5PartWrapperForPC::readStep(PartBunchBase<double, 3>* bunch,
 void H5PartWrapperForPC::readStepHeader(PartBunchBase<double, 3>* bunch) {
     h5_float64_t pathLength;
     READSTEPATTRIB(Float64, file_m, "SPOS", &pathLength);
-    bunch->setLPath(pathLength);
+    bunch->set_sPos(pathLength);
 
     h5_int64_t ltstep;
     READSTEPATTRIB(Int64, file_m, "LocalTrackStep", &ltstep);
@@ -330,7 +330,7 @@ void H5PartWrapperForPC::writeStepHeader(PartBunchBase<double, 3>* bunch,
     bunch->calcBeamParameters();
 
     double   t          = bunch->getT();
-    double   pathLength = bunch->getLPath();
+    double   pathLength = bunch->get_sPos();
     Vector_t rmin       = bunch->get_origin();
     Vector_t rmax       = bunch->get_maxExtent();
     Vector_t centroid   = bunch->get_centroid();
