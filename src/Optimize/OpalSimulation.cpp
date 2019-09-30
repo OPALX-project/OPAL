@@ -100,14 +100,38 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
 
     // hash the dictionary to get a short unique directory name for temporary
     // simulation data
-    hash_ = NativeHashGenerator::generate(dict);
+    std::string hash = NativeHashGenerator::generate(dict);
 
     std::ostringstream tmp;
     tmp.precision(15);
 
-    tmp << simTmpDir_ << "/" << hash_ << "_" << leader_;
+    tmp << hash << "_" << leader_;
+    simdir_ = tmp.str();
+    tmp.str(std::string());
+    tmp << simTmpDir_ << "/" << simdir_;
+
 
     simulationDirName_ = tmp.str();
+
+    int nTrials = 100;
+    while (fs::exists(simulationDirName_) && nTrials > 0) {
+        std::ostringstream tmp1;
+        tmp1.precision(15);
+        std::string hash1 = NativeHashGenerator::generate(dict);
+        tmp1 << hash1 << "_" << leader_;
+        simdir_ = tmp1.str();
+        tmp1.str(std::string());
+        tmp1 << simTmpDir_ << "/" << simdir_;
+        simulationDirName_ = tmp1.str();
+        --nTrials;
+    }
+
+    if (fs:exists(simulationDirName_)) {
+        throw OptPilotException("OpalSimulation::OpalSimulation",
+                                "Tried to generate a unique directory a 100 times. I give up now.");
+    }
+
+
 
     std::string tmplDir = args->getArg<std::string>("templates");
     if (tmplDir == "") {
@@ -247,9 +271,9 @@ void OpalSimulation::setupFSStructure() {
     MPI_Comm_rank(comm_, &rank);
     if (rank != 0) return;     // only one processor in comm group has to setup files
 
-    if (fs::exists(simulationDirName_)) {
-        fs::remove_all(simulationDirName_);
-    }
+//     if (fs::exists(simulationDirName_)) {
+//         fs::remove_all(simulationDirName_);
+//     }
 
     try {
         fs::create_directory(simulationDirName_);
