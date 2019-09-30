@@ -173,6 +173,11 @@ target_link_libraries( opal
     ${CMAKE_DL_LIBS}
     )
 
+if (ENABLE_OPAL_FEL)
+    include_directories (${MITHRA_INCLUDE_DIR})
+    #target_include_directories(opal PRIVATE ${MITHRA_INCLUDE_DIR})
+endif()
+
 install (TARGETS ${TEST_EXE} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
 install (TARGETS opal RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
 install (TARGETS libOPAL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
