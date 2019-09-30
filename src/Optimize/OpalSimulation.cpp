@@ -104,23 +104,19 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
 
     std::ostringstream tmp;
     tmp.precision(15);
-
     tmp << hash << "_" << leader_;
     simdir_ = tmp.str();
-    tmp.str(std::string());
     tmp << simTmpDir_ << "/" << simdir_;
 
 
     simulationDirName_ = tmp.str();
 
-    int nTrials = 100;
+    int nTrials = 10000;
     while (fs::exists(simulationDirName_) && nTrials > 0) {
         std::ostringstream tmp1;
         tmp1.precision(15);
-        std::string hash1 = NativeHashGenerator::generate(dict);
-        tmp1 << hash1 << "_" << leader_;
+        tmp1 << hash << "_" << leader_ << "_" << nTrials;
         simdir_ = tmp1.str();
-        tmp1.str(std::string());
         tmp1 << simTmpDir_ << "/" << simdir_;
         simulationDirName_ = tmp1.str();
         --nTrials;
@@ -128,7 +124,7 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
 
     if (fs:exists(simulationDirName_)) {
         throw OptPilotException("OpalSimulation::OpalSimulation",
-                                "Tried to generate a unique directory a 100 times. I give up now.");
+                                "Tried to generate a unique directory a 10000 times. I give up now.");
     }
 
 
