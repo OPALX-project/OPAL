@@ -106,6 +106,7 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
     tmp.precision(15);
     tmp << hash << "_" << leader_;
     simdir_ = tmp.str();
+    tmp.str(std::string());
     tmp << simTmpDir_ << "/" << simdir_;
 
 
