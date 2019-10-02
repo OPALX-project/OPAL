@@ -124,7 +124,7 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
         --nTrials;
     }
 
-    if (fs:exists(simulationDirName_)) {
+    if (fs::exists(simulationDirName_)) {
         throw OptPilotException("OpalSimulation::OpalSimulation",
                                 "Tried to generate a unique directory a 10000 times. I give up now.");
     }
@@ -674,7 +674,7 @@ void OpalSimulation::cleanUp(const std::vector<std::string>& keep) {
                 auto result = std::find(keep.begin(), keep.end(), extension);
 
                 if ( result == keep.end() ) {
-                    fs::remove(it->path());
+                    fs::remove_all(it->path());
                 }
                 ++it;
             }

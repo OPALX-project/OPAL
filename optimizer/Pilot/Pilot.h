@@ -428,6 +428,9 @@ protected:
 
             size_t job_id = recv_value;
 
+            size_t dummy = 1;
+            MPI_Send(&dummy, 1, MPI_UNSIGNED_LONG, status.MPI_SOURCE,
+                     MPI_WORKER_FINISHED_ACK_TAG, worker_comm_);
 
             MPI_Status st;
             MPI_Probe(status.MPI_SOURCE, MPI_WORKER_DIRECTORY_TAG, worker_comm_, &st);
@@ -438,9 +441,6 @@ protected:
                      MPI_WORKER_DIRECTORY_TAG, worker_comm_, &st);
             std::string simdir(buf.get(), len);
 
-            size_t dummy = 1;
-            MPI_Send(&dummy, 1, MPI_UNSIGNED_LONG, status.MPI_SOURCE,
-                     MPI_WORKER_FINISHED_ACK_TAG, worker_comm_);
 
             reqVarContainer_t res;
             MPI_Recv_reqvars(res, status.MPI_SOURCE, worker_comm_);

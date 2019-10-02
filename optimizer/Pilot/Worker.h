@@ -230,12 +230,12 @@ protected:
             MPI_Send(&job_id, 1, MPI_UNSIGNED_LONG, pilot_rank_,
                      MPI_WORKER_FINISHED_TAG, comm_m);
 
-            MPI_Send(simdir.c_str(), simdir.size(), MPI_CHAR, pilot_rank_,
-                     MPI_WORKER_DIRECTORY_TAG, comm_m);
-
             size_t dummy = 0;
             MPI_Recv(&dummy, 1, MPI_UNSIGNED_LONG, pilot_rank_,
                      MPI_WORKER_FINISHED_ACK_TAG, comm_m, &status);
+
+            MPI_Send(simdir.c_str(), simdir.size(), MPI_CHAR, pilot_rank_,
+                     MPI_WORKER_DIRECTORY_TAG, comm_m);
 
             MPI_Send_reqvars(requested_results, (size_t)pilot_rank_, comm_m);
 
