@@ -25,12 +25,13 @@ namespace client { namespace code_gen
         template <typename ErrorHandler>
         requirements(ErrorHandler& error_handler_)
         {
-            using namespace boost::phoenix::arg_names;
             namespace phx = boost::phoenix;
             using boost::phoenix::function;
 
-            error_handler = function<ErrorHandler>(error_handler_)(
-                  std::string("Error! "), _2, phx::cref(error_handler_.iters)[_1]);
+            error_handler = function<ErrorHandler>(error_handler_)
+                (std::string("Error! "),
+                 phx::arg_names::_2,
+                 phx::cref(error_handler_.iters)[phx::arg_names::_1]);
         }
 
         bool operator()(ast::nil) { BOOST_ASSERT(0); return false; }

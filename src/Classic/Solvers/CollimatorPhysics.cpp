@@ -717,7 +717,7 @@ void CollimatorPhysics::gatherStatistics() {
     unsigned int locPartsInMat;
 #ifdef OPAL_DKS
     if (collshape_m == ElementBase::DEGRADER && IpplInfo::DKSEnabled)
-        locPartsInMat_m = numparticles_m + dksParts_m.size();
+        locPartsInMat = numparticles_m + dksParts_m.size();
     else
         locPartsInMat = locParts_m.size();
 #else

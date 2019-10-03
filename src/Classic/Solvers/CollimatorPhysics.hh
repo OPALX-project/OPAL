@@ -131,7 +131,7 @@ private:
                   size_t numParticlesInSimulation);
     void copyFromBunchDKS(PartBunchBase<double, 3> *bunch,
                         const std::pair<Vector_t, double> &boundingSphere);
-    void addBackToBunchDKS(PartBunchBase<double, 3> *bunch);
+    void addBackToBunchDKS(PartBunchBase<double, 3> *bunch, unsigned int i);
 
     void setupCollimatorDKS(PartBunchBase<double, 3> *bunch, size_t numParticlesInSimulation);
     void clearCollimatorDKS();

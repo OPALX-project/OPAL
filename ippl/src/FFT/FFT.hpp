@@ -974,8 +974,7 @@ FFT<RCTransform,Dim,T>::transformDKSRC(
     //*** just use f field as is and keep decomposition as defined in input file ***//
     RealField_t* tempR = &f;
 
-    typename RealField_t::const_iterator_if rl_i, rl_end = tempR->end_if();
-    rl_i = tempR->begin_if();
+    typename RealField_t::const_iterator_if rl_i = tempR->begin_if();
 
     // get the lfields
     RealLField_t* rldf = (*rl_i).second.get();
@@ -1377,8 +1376,7 @@ FFT<RCTransform,Dim,T>::transformDKSCR(
     //***Use g as is and keep decomposition as defined in input file***/
     tempR = &g;
 
-    typename RealField_t::const_iterator_if rl_i, rl_end = tempR->end_if();
-    rl_i = tempR->begin_if();
+    typename RealField_t::const_iterator_if rl_i = tempR->begin_if();
 
     // Get the LFields
     RealLField_t* rldf = (*rl_i).second.get();
