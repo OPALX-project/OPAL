@@ -815,7 +815,7 @@ void FixedPisaNsga2<CO, MO>::dumpPopulationToJSON() {
                 file << ",";
             file << "\n";
         }
-        file << "\t\t}\n";
+        file << "\t\t},\n";
 
         file << "\t\t\"dir\":\t\t" << temp->simdir << "\n";
 
