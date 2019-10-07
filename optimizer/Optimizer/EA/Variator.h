@@ -134,7 +134,7 @@ public:
         }
     }
 
-    /// set an individual as individual: replace with a new individual
+    /// set an individual as infeasible: replace with a new individual
     void infeasible(boost::shared_ptr<ind_t> ind) {
         population_m->remove_individual(ind);
         new_individual();
@@ -175,8 +175,25 @@ public:
 
             // handle special case where we have an odd number of offspring
             if(tmp.empty()) {
-                if (drand(1) <= mutationProbability_m)
-                    this->mutate(a, args_);
+                if (drand(1) <= mutationProbability_m) {
+                    // temporary copy in case not successful
+                    boost::shared_ptr<ind_t> copyA(new ind_t(a));
+                    int iter = 0;
+                    while (true) {
+                        // assign with shared pointer constructor
+                        *a = copyA;
+                        this->mutate(a, args_);
+                        // check if viable offspring
+                        if (a->viable()) break;
+
+                        iter++;
+                        // if maximum number of tries then create new individual
+                        if (iter > 100) {
+                            infeasible(a);
+                            break;
+                        }
+                    }
+                }
                 break;
             }
 

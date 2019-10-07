@@ -457,6 +457,7 @@ void FixedPisaNsga2<CO, MO>::dispatch_forward_solves() {
         //}
 
         individual ind = variator_m->popIndividualToEvaluate();
+        if (ind == NULL) continue;
         Param_t params;
         DVarContainer_t::iterator itr;
         size_t i = 0;
