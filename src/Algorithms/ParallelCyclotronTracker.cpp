@@ -79,6 +79,7 @@
 
 #include "Structure/BoundaryGeometry.h"
 #include "Structure/DataSink.h"
+#include "Structure/LossDataSink.h"
 
 using Physics::pi;
 using Physics::q_e;
@@ -167,6 +168,8 @@ ParallelCyclotronTracker::ParallelCyclotronTracker(const Beamline &beamline,
  *
  */
 ParallelCyclotronTracker::~ParallelCyclotronTracker() {
+    if(bgf_m)
+        lossDs_m->save();
     for(Component* component : myElements) {
         delete(component);
     }
@@ -197,7 +200,12 @@ void ParallelCyclotronTracker::bgf_main_collision_test() {
         int res = bgf_m->partInside(itsBunch_m->R[i], itsBunch_m->P[i], dtime, itsBunch_m->PType[i], itsBunch_m->Q[i], intecoords, triId);
         //int res = bgf_m->partInside(itsBunch_m->R[i]*1.0e-3, itsBunch_m->P[i], dtime, itsBunch_m->PType[i], itsBunch_m->Q[i], intecoords, triId);
         if(res >= 0) {
+            lossDs_m->addParticle(itsBunch_m->R[i]*1000, itsBunch_m->P[i],
+                                  itsBunch_m->ID[i], itsBunch_m->getT()*1e9,
+                                  turnnumber_m, itsBunch_m->bunchNum[i]);
             itsBunch_m->Bin[i] = -1;
+            Inform gmsgALL("OPAL", INFORM_ALL_NODES);
+            gmsgALL << level4 << "* Particle " << itsBunch_m->ID[i] << " lost on boundary geometry" << endl;
         }
     }
 }
@@ -557,31 +565,31 @@ void ParallelCyclotronTracker::visitBeamBeam(const BeamBeam &) {
  */
 void ParallelCyclotronTracker::visitCCollimator(const CCollimator &coll) {
 
-    *gmsg << "* --------- Collimator -----------------------------" << endl;
+    *gmsg << "* ------------------------------ Collimator ------------------------------" << endl;
 
     CCollimator* elptr = dynamic_cast<CCollimator *>(coll.clone());
     myElements.push_back(elptr);
 
     double xstart = elptr->getXStart();
-    *gmsg << "* Xstart= " << xstart << " [mm]" << endl;
+    *gmsg << "* Xstart  = " << xstart << " [mm]" << endl;
 
     double xend = elptr->getXEnd();
-    *gmsg << "* Xend= " << xend << " [mm]" << endl;
+    *gmsg << "* Xend    = " << xend << " [mm]" << endl;
 
     double ystart = elptr->getYStart();
-    *gmsg << "* Ystart= " << ystart << " [mm]" << endl;
+    *gmsg << "* Ystart  = " << ystart << " [mm]" << endl;
 
     double yend = elptr->getYEnd();
-    *gmsg << "* Yend= " << yend << " [mm]" << endl;
+    *gmsg << "* Yend    = " << yend << " [mm]" << endl;
 
     double zstart = elptr->getZStart();
-    *gmsg << "* Zstart= " << zstart << " [mm]" << endl;
+    *gmsg << "* Zstart  = " << zstart << " [mm]" << endl;
 
     double zend = elptr->getZEnd();
-    *gmsg << "* Zend= " << zend << " [mm]" << endl;
+    *gmsg << "* Zend    = " << zend << " [mm]" << endl;
 
     double width = elptr->getWidth();
-    *gmsg << "* Width= " << width << " [mm]" << endl;
+    *gmsg << "* Width   = " << width << " [mm]" << endl;
 
     elptr->initialise(itsBunch_m);
 
@@ -770,21 +778,23 @@ void ParallelCyclotronTracker::visitMultipoleTCurvedVarRadius(const MultipoleTCu
  * @param prob
  */
 void ParallelCyclotronTracker::visitProbe(const Probe &prob) {
-    *gmsg << "* -----------  Probe -------------------------------" << endl;
+    *gmsg << "* ------------------------------  Probe ------------------------------" << endl;
     Probe *elptr = dynamic_cast<Probe *>(prob.clone());
     myElements.push_back(elptr);
 
+    *gmsg << "* Name    = " << elptr->getName() << endl;
+
     double xstart = elptr->getXStart();
-    *gmsg << "XStart= " << xstart << " [mm]" << endl;
+    *gmsg << "* XStart  = " << xstart << " [mm]" << endl;
 
     double xend = elptr->getXEnd();
-    *gmsg << "XEnd= " << xend << " [mm]" << endl;
+    *gmsg << "* XEnd    = " << xend << " [mm]" << endl;
 
     double ystart = elptr->getYStart();
-    *gmsg << "YStart= " << ystart << " [mm]" << endl;
+    *gmsg << "* YStart  = " << ystart << " [mm]" << endl;
 
     double yend = elptr->getYEnd();
-    *gmsg << "YEnd= " << yend << " [mm]" << endl;
+    *gmsg << "* YEnd    = " << yend << " [mm]" << endl;
 
     // initialise, do nothing
     elptr->initialise(itsBunch_m);
@@ -856,7 +866,7 @@ void ParallelCyclotronTracker::visitVariableRFCavityFringeField
  */
 void ParallelCyclotronTracker::visitRFCavity(const RFCavity &as) {
 
-    *gmsg << "* --------- RFCavity ------------------------------" << endl;
+    *gmsg << "* ------------------------------ RFCavity ------------------------------" << endl;
 
     RFCavity *elptr = dynamic_cast<RFCavity *>(as.clone());
     myElements.push_back(elptr);
@@ -977,25 +987,25 @@ void ParallelCyclotronTracker::visitSeparator(const Separator &sep) {
  */
 void ParallelCyclotronTracker::visitSeptum(const Septum &sept) {
 
-    *gmsg << endl << "* -----------------------------  Septum ------------------------------- *" << endl;
+    *gmsg << endl << "* ------------------------------ Septum ------------------------------- *" << endl;
 
     Septum *elptr = dynamic_cast<Septum *>(sept.clone());
     myElements.push_back(elptr);
 
     double xstart = elptr->getXStart();
-    *gmsg << "XStart = " << xstart << " [mm]" << endl;
+    *gmsg << "* XStart  = " << xstart << " [mm]" << endl;
 
     double xend = elptr->getXEnd();
-    *gmsg << "XEnd = " << xend << " [mm]" << endl;
+    *gmsg << "* XEnd    = " << xend << " [mm]" << endl;
 
     double ystart = elptr->getYStart();
-    *gmsg << "YStart = " << ystart << " [mm]" << endl;
+    *gmsg << "* YStart  = " << ystart << " [mm]" << endl;
 
     double yend = elptr->getYEnd();
-    *gmsg << "YEnd = " << yend << " [mm]" << endl;
+    *gmsg << "* YEnd    = " << yend << " [mm]" << endl;
 
     double width = elptr->getWidth();
-    *gmsg << "Width = " << width << " [mm]" << endl;
+    *gmsg << "* Width   = " << width << " [mm]" << endl;
 
 
     // initialise, do nothing
@@ -1057,29 +1067,34 @@ void ParallelCyclotronTracker::visitCyclotronValley(const CyclotronValley &cv) {
 
 void ParallelCyclotronTracker::visitStripper(const Stripper &stripper) {
 
-    *gmsg << "* ---------Stripper------------------------------" << endl;
+    *gmsg << "* ------------------------------ Stripper ------------------------------" << endl;
 
     Stripper *elptr = dynamic_cast<Stripper *>(stripper.clone());
     myElements.push_back(elptr);
 
+    *gmsg << "* Name    = " << elptr->getName() << endl;
+    
     double xstart = elptr->getXStart();
-    *gmsg << "XStart= " << xstart << " [mm]" << endl;
+    *gmsg << "* XStart  = " << xstart << " [mm]" << endl;
 
     double xend = elptr->getXEnd();
-    *gmsg << "XEnd= " << xend << " [mm]" << endl;
+    *gmsg << "* XEnd    = " << xend << " [mm]" << endl;
 
     double ystart = elptr->getYStart();
-    *gmsg << "YStart= " << ystart << " [mm]" << endl;
+    *gmsg << "* YStart  = " << ystart << " [mm]" << endl;
 
     double yend = elptr->getYEnd();
-    *gmsg << "YEnd= " << yend << " [mm]" << endl;
+    *gmsg << "* YEnd    = " << yend << " [mm]" << endl;
 
     double opcharge = elptr->getOPCharge();
-    *gmsg << "Charge of outcoming particle = +e * " << opcharge << endl;
+    *gmsg << "* Charge of outcoming particle = +e * " << opcharge << endl;
 
     double opmass = elptr->getOPMass();
     *gmsg << "* Mass of the outcoming particle = " << opmass << " [GeV/c^2]" << endl;
 
+    bool stop = elptr->getStop();
+    *gmsg << std::boolalpha << "* Particles stripped will be deleted after interaction -> " << stop << endl;
+    
     elptr->initialise(itsBunch_m);
 
     double BcParameter[8] = {};
@@ -1191,6 +1206,8 @@ void ParallelCyclotronTracker::execute() {
 
     // Get BoundaryGeometry that is already initialized
     bgf_m = OpalData::getInstance()->getGlobalGeometry();
+    if (bgf_m)
+        lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink("GEOM",!Options::asciidump));
 
     // External field arrays for dumping
     for(int k = 0; k < 2; k++)
@@ -2158,7 +2175,8 @@ bool ParallelCyclotronTracker::deleteParticle(bool flagNeedUpdate){
 
         *gmsg << "At step " << step_m
               << ", lost "  << globLostParticleNum << " particles "
-              << "on stripper, collimator, septum, or out of cyclotron aperture"
+              << "on stripper, collimator, septum, geometry, "
+              << "out of cyclotron aperture or beam stripping"
               << endl;
 
         if (totalnum[bunchCount] == 0) {

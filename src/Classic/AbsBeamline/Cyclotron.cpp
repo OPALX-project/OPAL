@@ -341,39 +341,38 @@ double Cyclotron::getFMHighE() const { return fmHighE_m;}
 
 bool Cyclotron::apply(const size_t &id, const double &t, Vector_t &E, Vector_t &B) {
 
-  bool flagNeedUpdate = false;
+    bool flagNeedUpdate = false;
 
-  const double rpos = std::hypot(RefPartBunch_m->R[id](0), RefPartBunch_m->R[id](1));
-  const double zpos = RefPartBunch_m->R[id](2);
+    const double rpos = std::hypot(RefPartBunch_m->R[id](0), RefPartBunch_m->R[id](1));
+    const double zpos = RefPartBunch_m->R[id](2);
 
-  if (zpos > maxz_m || zpos < minz_m || rpos > maxr_m || rpos < minr_m){
-      flagNeedUpdate = true;
-      Inform gmsgALL("OPAL ", INFORM_ALL_NODES);
-      gmsgALL << level2 << getName()
-              << ": particle " << id
-              << " out of the global aperture of cyclotron!" << endl;
-      gmsgALL << level2 << getName()
-              << ": Coords: "<< RefPartBunch_m->R[id] << endl;
+    Inform gmsgALL("OPAL", INFORM_ALL_NODES);
+    if (zpos > maxz_m || zpos < minz_m || rpos > maxr_m || rpos < minr_m){
+        flagNeedUpdate = true;
+        gmsgALL << level4 << getName()
+                << ": Particle " << id
+                << " out of the global aperture of cyclotron!" << endl;
+        gmsgALL << level4 << getName()
+                << ": Coords: "<< RefPartBunch_m->R[id] << endl;
 
-  } else{
+    } else{
+        flagNeedUpdate = apply(RefPartBunch_m->R[id], RefPartBunch_m->P[id], t, E, B);
+        if(flagNeedUpdate){
+            gmsgALL << level4 << getName()
+                    << ": Particle "<< id
+                    << " out of the field map boundary!" << endl;
+            gmsgALL << level4 << getName()
+                    << ": Coords: "<< RefPartBunch_m->R[id] << endl;
+        }
+    }
 
-      flagNeedUpdate = apply(RefPartBunch_m->R[id], RefPartBunch_m->P[id], t, E, B);
-      if(flagNeedUpdate){
-          Inform gmsgALL("OPAL ", INFORM_ALL_NODES);
-          gmsgALL << level2 << getName()
-                  << ": particle "<< id
-                  << " out of the field map boundary!" << endl;
-          gmsgALL << level2 << getName()
-                  << ": Coords: "<< RefPartBunch_m->R[id] << endl;
-      }
-  }
+    if (flagNeedUpdate) {
+        lossDs_m->addParticle(RefPartBunch_m->R[id], RefPartBunch_m->P[id],
+                              id, t, 0, RefPartBunch_m->bunchNum[id]);
+        RefPartBunch_m->Bin[id] = -1;
+    }
 
-  if (flagNeedUpdate) {
-      lossDs_m->addParticle(RefPartBunch_m->R[id], RefPartBunch_m->P[id],id);
-      RefPartBunch_m->Bin[id] = -1;
-  }
-
-  return flagNeedUpdate;
+    return flagNeedUpdate;
 }
 
 bool Cyclotron::apply(const Vector_t &R, const Vector_t &P,

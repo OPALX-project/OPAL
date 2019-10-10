@@ -127,8 +127,7 @@ void FM3DH5Block::readMap() {
     h5err = H5CloseFile(file);
     assert (h5err != H5_ERR);
 
-    INFOMSG(level3 << typeset_msg("read in fieldmap '" + Filename_m  + "'", "info") << "\n"
-            << endl);
+    INFOMSG(level3 << typeset_msg("fieldmap '" + Filename_m  + "' read", "info") << endl);
 }
 
 void FM3DH5Block::freeMap() {
@@ -140,8 +139,7 @@ void FM3DH5Block::freeMap() {
         FieldstrengthHy_m.clear();
         FieldstrengthHz_m.clear();
 
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m + "'", "info") << "\n"
-                << endl);
+        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m + "'", "info") << endl);
     }
 }
 

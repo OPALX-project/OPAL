@@ -115,9 +115,6 @@ void ParticleMatterInteraction::update() {
 
 
 void ParticleMatterInteraction::initParticleMatterInteractionHandler(ElementBase &element) {
-    *gmsg << "* ************* P A R T I C L E  M A T E R  I N T E R A C T I O N ****************** " << endl;
-    *gmsg << "* ParticleMatterInteraction::initParticleMatterInteractionHandler " << endl;
-    *gmsg << "* ********************************************************************************** " << endl;
 
     std::string material = Util::toUpper(Attributes::getString(itsAttr[MATERIAL]));
     bool enableRutherford = Attributes::getBool(itsAttr[ENABLERUTHERFORD]);
@@ -143,6 +140,7 @@ void ParticleMatterInteraction::updateElement(ElementBase *element) {
 void ParticleMatterInteraction::print(std::ostream &os) const {
     os << "* ************* P A R T I C L E  M A T T E R  I N T E R A C T I O N ****************** " << std::endl;
     os << "* PARTICLEMATTERINTERACTION " << getOpalName() << '\n'
+       << "* TYPE           " << Attributes::getString(itsAttr[TYPE]) << '\n'
        << "* MATERIAL       " << Attributes::getString(itsAttr[MATERIAL]) << '\n';
     os << "* ********************************************************************************** " << std::endl;
 }

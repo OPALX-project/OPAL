@@ -2040,7 +2040,8 @@ BoundaryGeometry::writeGeomToVtk (std::string fn) {
 
 Inform&
 BoundaryGeometry::printInfo (Inform& os) const {
-    os << "* *************Boundary Geometry Info*********************************************** " << endl;
+    os << endl;
+    os << "* ************* B O U N D A R Y  G E O M E T R Y *********************************** " << endl;
     os << "* GEOMETRY                   " << getOpalName () << '\n'
        << "* FGEOM                      " << Attributes::getString (itsAttr[FGEOM]) << '\n'
        << "* TOPO                       " << Attributes::getString (itsAttr[TOPO]) << '\n'

@@ -93,6 +93,7 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
     size_t tempnum = bunch->getLocalNum();
     int pflag = 0;
 
+    Inform gmsgALL("OPAL", INFORM_ALL_NODES);
     for(unsigned int i = 0; i < tempnum; ++i) {
         if(bunch->PType[i] != ParticleType::REGULAR) continue;
 
@@ -113,7 +114,9 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
         flagNeedUpdate = true;
         if (stop_m) {
             bunch->Bin[i] = -1;
+            gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i] << " is deleted by stripper " << getName() << endl;
         } else {
+            gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i] << " collide in stripper " << getName() << endl;
             // change charge and mass of PartData when the reference particle hits the stripper.
             if(bunch->ID[i] == 0)
                 bunch->setPType(ParticleType::STRIPPED);
