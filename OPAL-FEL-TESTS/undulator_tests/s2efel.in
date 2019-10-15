@@ -13,8 +13,8 @@ Title, string="UNDULATOR";
 //Global Parameters
 
 REAL rf_freq             = 1.0;     //RF frequency. (Hz)
-REAL n_particles         = 150548;      //Number of particles in simulation.
-REAL beam_bunch_charge   =  1.6e-19 * 1e6 * 1.846e8;      //Charge of bunch. (C)
+REAL n_particles         = 1.846e08;      //Number of particles in simulation.
+REAL beam_bunch_charge   =  1.6e-19 * 1e6 * 1.846e08;      //Charge of bunch. (C)
 
 //Initial Momentum Calculation
 REAL gamma   = 100.41; 

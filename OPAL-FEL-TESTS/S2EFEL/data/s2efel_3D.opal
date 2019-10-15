@@ -7,19 +7,16 @@ OPTION, VERSION=10900;
 
 REAL REPARTFREQ=1000000;
 
-Title, string="AWA Photoinjector";
+Title, string="AWA Photoinjector + undulator";
 
-REAL rf_freq             = 1.3e9;
-     
-REAL n_particles         = 1224;
-      REAL beam_bunch_charge   = 29.5e-12 * 1e6;
+REAL n_particles         = 1e6;
+      REAL beam_bunch_charge   =  1.602e-19 * 1.846e08 * 1e6 ;
       
-REAL Edes    = 1.4e-9;
- REAL gamma   = (Edes+EMASS)/EMASS;
- REAL beta    = sqrt(1-(1/gamma^2));
+REAL gamma = 100.41;
+REAL beta    = sqrt(1-(1/gamma^2));
 REAL P0      = gamma*beta*EMASS;
     
-value , {Edes, P0};
+value , {gamma, P0};
 
 REAL gun_inj_phase = 0.0;
   
@@ -38,21 +35,21 @@ M:  Solenoid, L = 0.5, , KS = SF,    FMAPFN = "fieldmaps/M_440.T7";
 
 value,{KSBF,SF};
 
-DR1: DRIFT,    L = 1.0, Z = 0.5;
-
-U1: UNDULATOR, L = 30.0, Z = 1.5, K = 1.417, LAMBDA = .3,     MESHLENGTH = { 3.2e-03, 3.2e-03, 6e-03 }, MESHRESOLUTION = { 3e-05, 3e-05, 3e-06 },     TRUNORDER = 2, SPACECHARGE = 1,     RADZ = 1.1e-4, RADLAMBDA = 1, RADDIRECTORY = "power-sampling/power",     TIMESTEPRATIO = 5;
+U1: UNDULATOR, L = 10.0, LFRINGE = 1.0, Z = 0.5, K = 1.417, LAMBDA = .03,     MESHLENGTH = { 3200e-06, 3200e-06, 280e-06 }, MESHRESOLUTION = { 50e-06, 50e-06, .07e-06 },     TRUNORDER = 2, SPACECHARGE = 1,     FNAME = "undulator_output.job", TIMESTEPRATIO = 3;
 
 GS:  Line = (GUN, BF, M);
 
-DRIVE: Line = (GS, DR1, U1);
+DRIVE: Line = (GS, U1);
 
-Dist: DISTRIBUTION, TYPE = FLATTOP,        SIGMAX = 0.00075 / 19,        SIGMAY = 0.00075 / 19,        TRISE = 6.0e-12,              TFALL = 6.0e-12,               TPULSEFWHM = 20.0e-12 / 100,         CUTOFFLONG = 4.0,        NBIN = 5,        EMISSIONSTEPS = 100,        EMISSIONMODEL = ASTRA,        EKIN = 0.55,                   EMITTED = True,                WRITETOFILE = False;
+REAL sigmaz = 50e-05;
+Dist: DISTRIBUTION, TYPE = FLATTOP,        SIGMAX = 260e-05,        SIGMAY = 260e-05,        TRISE = 6.0e-12,               TFALL = 6.0e-12,               TPULSEFWHM = sigmaz / ( beta * CLIGHT ),         CUTOFFLONG = 4.0,        NBIN = 5,        EMISSIONSTEPS = 100,        EMISSIONMODEL = ASTRA,        EKIN = 0.55,                   EMITTED = True,                WRITETOFILE = False;
     
-FS_SC: Fieldsolver, FSTYPE = FFT,             MX = 8, MY = 8, MT = 8,             PARFFTX = false,             PARFFTY = false,             PARFFTT = true,              BCFFTX = open,             BCFFTY = open,             BCFFTT = open,            BBOXINCR = 1,             GREENSF = INTEGRATED;
+FS_SC: Fieldsolver, FSTYPE = FFT,             MX = 16, MY = 16, MT = 16,             PARFFTX = true,             PARFFTY = true,             PARFFTT = true,             BCFFTX = open,             BCFFTY = open,             BCFFTT = open,            BBOXINCR = 1,             GREENSF = INTEGRATED;
 
-BEAM1:  BEAM, PARTICLE = ELECTRON, pc = P0, NPART = n_particles,        BFREQ = rf_freq,BCURRENT = beam_bunch_charge * rf_freq, CHARGE = -1;
+REAL rf_freq =  beta * CLIGHT / sigmaz;
+BEAM1:  BEAM, PARTICLE = ELECTRON, GAMMA = gamma, NPART = n_particles,        BFREQ = rf_freq, BCURRENT = beam_bunch_charge * rf_freq, CHARGE = -1;
 
-TRACK, LINE = DRIVE, BEAM = BEAM1, MAXSTEPS = 1000000, DT = {1.E-12, 3.E-10}, ZSTOP={0.1, 2.5};
+TRACK, LINE = DRIVE, BEAM = BEAM1, MAXSTEPS = 1000000, DT = 1.E-11, ZSTOP = 12.0;
 RUN, METHOD = "PARALLEL-T", BEAM = BEAM1,     FIELDSOLVER = FS_SC, DISTRIBUTION = Dist;
 ENDTRACK;
 

@@ -19,11 +19,11 @@ BUNCH
   }
   bunch-profile
   {
-    sample						= false
+    sample						= true
     directory						= ./
     base-name						= bunch-profile/bunch
     time						= 0.0
-    rhythm						= 4e-9
+    rhythm						= 1e-8
   }
 }
 

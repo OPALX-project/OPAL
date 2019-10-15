@@ -1,7 +1,10 @@
 #!/bin/bash -l 
-#SBATCH --job-name=S2EFEL
-#SBATCH --time=05:30:00
-#SBATCH --ntasks=1
-#SBATCH --mem=120G
+#SBATCH --job-name=onlyGun
+#SBATCH --time=00:39:00
+#SBATCH --ntasks=4
+#SBATCH --nodes=1
 #SBATCH --clusters=merlin6
-mpirun $OPAL_EXE_PATH/opal s2efel.in --info 4 
+#SBATCH --partition=hourly
+#mpirun $OPAL_EXE_PATH/opal s2efel.in --info 4 
+#mpirun $OPAL_EXE_PATH/opal no_gun.in --info 4 
+mpirun $OPAL_EXE_PATH/opal only_gun.in --info 4 

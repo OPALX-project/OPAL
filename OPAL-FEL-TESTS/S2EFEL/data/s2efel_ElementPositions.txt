@@ -4,7 +4,5 @@
 "END: BF"                     0.5               0                 0                 
 "BEGIN: M"                    0                 0                 0                 
 "END: M"                      0.5               0                 0                 
-"BEGIN: DR1"                  0.5               0                 0                 
-"END: DR1"                    1.5               0                 0                 
-"BEGIN: U1"                   1.5               0                 0                 
-"END: U1"                     31.5              0                 0                 
+"BEGIN: U1"                   0.5               0                 0                 
+"END: U1"                     10.5              0                 0                 

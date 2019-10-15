@@ -1,6 +1,0 @@
-#!/bin/bash -l 
-#SBATCH --job-name=OPALUndulator
-#SBATCH --time=05:30:00
-#SBATCH --ntasks=1
-#SBATCH --partition=merlin 
-mpirun $OPAL_EXE_PATH/opal s2efel.in --info 4 

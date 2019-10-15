@@ -1,6 +1,0 @@
-"BEGIN: DR1"                  0                 0                 0                 
-"END: DR1"                    0.5               0                 0                 
-"BEGIN: UND"                  0.5               0                 0                 
-"END: UND"                    10.5              0                 0                 
-"BEGIN: DR2"                  10.5              0                 0                 
-"END: DR2"                    12                0                 0                 
