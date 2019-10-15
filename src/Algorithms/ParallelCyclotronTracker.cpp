@@ -27,6 +27,7 @@
 #include "AbstractObjects/Element.h"
 #include "AbstractObjects/OpalData.h"
 
+#include "AbsBeamline/BeamStripping.h"
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Cyclotron.h"
@@ -384,12 +385,12 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron &cycl) {
 
     *gmsg << "* -------------------------- Adding Cyclotron ---------------------------- *" << endl;
 
-    Cyclotron *elptr = dynamic_cast<Cyclotron *>(cycl.clone());
-    myElements.push_back(elptr);
+    cycl_m = dynamic_cast<Cyclotron *>(cycl.clone());
+    myElements.push_back(cycl_m);
 
     // Is this a Spiral Inflector Simulation? If yes, we'll give the user some
     // useful information
-    spiral_flag = elptr->getSpiralFlag();
+    spiral_flag = cycl_m->getSpiralFlag();
 
     if(spiral_flag) {
 
@@ -415,11 +416,11 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron &cycl) {
 
         // Get reference values from cyclotron element
         // For now, these are still stored in mm. should be the only ones. -DW
-        referenceR     = elptr->getRinit();
-        referenceTheta = elptr->getPHIinit();
-        referenceZ     = elptr->getZinit();
-        referencePr    = elptr->getPRinit();
-        referencePz    = elptr->getPZinit();
+        referenceR     = cycl_m->getRinit();
+        referenceTheta = cycl_m->getPHIinit();
+        referenceZ     = cycl_m->getZinit();
+        referencePr    = cycl_m->getPRinit();
+        referencePz    = cycl_m->getPZinit();
 
         if(referenceTheta <= -180.0 || referenceTheta > 180.0) {
             throw OpalException("Error in ParallelCyclotronTracker::visitCyclotron",
@@ -500,29 +501,29 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron &cycl) {
     *gmsg << "* Reference axial momentum (Pz) = " << referencePz * 1000.0 << " [MCU]" << endl;
     *gmsg << endl;
 
-    double sym = elptr->getSymmetry();
+    double sym = cycl_m->getSymmetry();
     *gmsg << "* " << sym << "-fold field symmetry " << endl;
 
     // ckr: this just returned the default value as defined in Component.h
-    // double rff = elptr->getRfFrequ();
+    // double rff = cycl_m->getRfFrequ();
     // *gmsg << "* Rf frequency= " << rff << " [MHz]" << endl;
 
-    std::string fmfn = elptr->getFieldMapFN();
+    std::string fmfn = cycl_m->getFieldMapFN();
     *gmsg << "* Field map file name = " << fmfn << " " << endl;
 
-    std::string type = elptr->getCyclotronType();
+    std::string type = cycl_m->getCyclotronType();
     *gmsg << "* Type of cyclotron = " << type << " " << endl;
 
-    double rmin = elptr->getMinR();
-    double rmax = elptr->getMaxR();
+    double rmin = cycl_m->getMinR();
+    double rmax = cycl_m->getMaxR();
     *gmsg << "* Radial aperture = " << rmin << " ... " << rmax<<" [m] "<< endl;
 
-    double zmin = elptr->getMinZ();
-    double zmax = elptr->getMaxZ();
+    double zmin = cycl_m->getMinZ();
+    double zmax = cycl_m->getMaxZ();
     *gmsg << "* Vertical aperture = " << zmin << " ... " << zmax<<" [m]"<< endl;
 
-    double h = elptr->getCyclHarm();
-    *gmsg << "* Number of trimcoils = " << elptr->getNumberOfTrimcoils() << endl;
+    double h = cycl_m->getCyclHarm();
+    *gmsg << "* Number of trimcoils = " << cycl_m->getNumberOfTrimcoils() << endl;
     *gmsg << "* Harmonic number h = " << h << " " << endl;
 
     /**
@@ -536,18 +537,18 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron &cycl) {
      * fieldflag = 6, readin both median plane B field map and 3D E field map of RF cavity for compact cyclotron
      * fieldflag = 7, read in fields for Daniel's synchrocyclotron simulations
      */
-    int fieldflag = elptr->getFieldFlag(type);
+    int fieldflag = cycl_m->getFieldFlag(type);
 
     // Read in cyclotron field maps (midplane + 3D fields if desired).
-    elptr->initialise(itsBunch_m, fieldflag, elptr->getBScale());
+    cycl_m->initialise(itsBunch_m, fieldflag, cycl_m->getBScale());
 
     double BcParameter[8] = {};
 
-    BcParameter[0] = 0.001 * elptr->getRmin();
-    BcParameter[1] = 0.001 * elptr->getRmax();
+    BcParameter[0] = 0.001 * cycl_m->getRmin();
+    BcParameter[1] = 0.001 * cycl_m->getRmax();
 
     // Store inner radius and outer radius of cyclotron field map in the list
-    buildupFieldList(BcParameter, ElementBase::CYCLOTRON, elptr);
+    buildupFieldList(BcParameter, ElementBase::CYCLOTRON, cycl_m);
 }
 
 /**
@@ -556,6 +557,39 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron &cycl) {
  */
 void ParallelCyclotronTracker::visitBeamBeam(const BeamBeam &) {
     *gmsg << "In BeamBeam tracker is missing " << endl;
+}
+
+
+void ParallelCyclotronTracker::visitBeamStripping(const BeamStripping &bstp) {
+    *gmsg << "* ------------------------------ Beam Stripping ------------------------------" << endl;
+
+    BeamStripping* elptr = dynamic_cast<BeamStripping *>(bstp.clone());
+    myElements.push_back(elptr);
+
+    double BcParameter[8] = {};
+
+    if(elptr->getPressureMapFN() == "") {
+        double pressure = elptr->getPressure();
+        *gmsg << "* Pressure     = " << pressure << " [mbar]" << endl;
+        BcParameter[0] = pressure;
+    }
+
+    double temperature = elptr->getTemperature();
+    *gmsg << "* Temperature  = " << temperature << " [K]" << endl;
+
+    std::string gas = elptr->getResidualGas();
+    *gmsg << "* Residual gas = " << gas << endl;
+
+    bool stop = elptr->getStop();
+    *gmsg << std::boolalpha << "* Particles stripped will be deleted after interaction -> " << stop << endl;
+
+    elptr->initialise(itsBunch_m, elptr->getPScale());
+    
+    BcParameter[1] = temperature;
+    BcParameter[2] = stop;
+
+    buildupFieldList(BcParameter, ElementBase::BEAMSTRIPPING, elptr);
+
 }
 
 /**
@@ -1183,7 +1217,7 @@ void ParallelCyclotronTracker::execute() {
         opalRing_m->lockRing();
 
     // Display the selected elements
-    *gmsg << "* -------------------------------------" << endl;
+    *gmsg << "* ---------------------------------------------------" << endl;
     *gmsg << "* The selected Beam line elements are :" << endl;
 
     for(auto fd : FieldDimensions) {
@@ -1202,7 +1236,7 @@ void ParallelCyclotronTracker::execute() {
         }
     }
 
-    *gmsg << "* -------------------------------------" << endl;
+    *gmsg << "* ---------------------------------------------------" << endl;
 
     // Get BoundaryGeometry that is already initialized
     bgf_m = OpalData::getInstance()->getGlobalGeometry();
@@ -2074,6 +2108,14 @@ bool ParallelCyclotronTracker::applyPluginElements(const double dt) {
     // Plugin Elements are all defined in mm, change beam to mm before applying
     itsBunch_m->R *= Vector_t(1000.0);
 
+    for(beamline_list::iterator sindex = ++(FieldDimensions.begin()); sindex != FieldDimensions.end(); ++sindex) {
+        if(((*sindex)->first) == ElementBase::BEAMSTRIPPING) {
+            BeamStripping *bstp = static_cast<BeamStripping *>(((*sindex)->second).second);
+            bstp->checkBeamStripping(itsBunch_m, cycl_m, turnnumber_m,
+                                     itsBunch_m->getT()*1e9 /*[ns]*/, dt);
+        }
+    }
+
     bool flag = false;
     for (PluginElement* element : pluginElements_m) {
         bool tmp = element->check(itsBunch_m,
@@ -2084,7 +2126,8 @@ bool ParallelCyclotronTracker::applyPluginElements(const double dt) {
 
         if ( tmp ) {
             itsBunch_m->updateNumTotal();
-            *gmsg << "* Total number of particles = " << itsBunch_m->getTotalNum() << endl;
+            *gmsg << "* Total number of particles after PluginElement= "
+                  << itsBunch_m->getTotalNum() << endl;
         }
     }
 
@@ -2173,11 +2216,13 @@ bool ParallelCyclotronTracker::deleteParticle(bool flagNeedUpdate){
 
         reduce(locNumLost, globLostParticleNum, 1, std::plus<size_t>());
 
-        *gmsg << "At step " << step_m
-              << ", lost "  << globLostParticleNum << " particles "
-              << "on stripper, collimator, septum, geometry, "
-              << "out of cyclotron aperture or beam stripping"
-              << endl;
+        if ( globLostParticleNum > 0 ) {
+            *gmsg << "At step " << step_m
+                  << ", lost "  << globLostParticleNum << " particles "
+                  << "on stripper, collimator, septum, geometry, "
+                  << "out of cyclotron aperture or beam stripping"
+                  << endl;
+        }
 
         if (totalnum[bunchCount] == 0) {
             IpplTimings::stopTimer(DelParticleTimer_m);
@@ -2509,7 +2554,6 @@ void ParallelCyclotronTracker::singleParticleDump() {
     } else {
 
         for(size_t i = 0; i < itsBunch_m->getLocalNum(); i++) {
-
             if(itsBunch_m->ID[i] == 0 || itsBunch_m->ID[i] == 1) {
 
                 outfTrackOrbit_m << "ID" << itsBunch_m->ID[i] << " ";
@@ -2675,6 +2719,7 @@ void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
     }
 
     double const betagamma_temp = sqrt(dot(meanP, meanP));
+
     double const E = itsBunch_m->get_meanKineticEnergy();
 
     // Bunch (global) angle w.r.t. x-axis (cylinder coordinates)

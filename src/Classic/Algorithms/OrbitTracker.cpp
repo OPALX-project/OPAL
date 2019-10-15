@@ -93,6 +93,11 @@ void OrbitTracker::visitBeamBeam(const BeamBeam &) {
 }
 
 
+void OrbitTracker::visitBeamStripping(const BeamStripping &) {
+    // *** MISSING *** Map for beam stripping.
+}
+
+
 void OrbitTracker::visitCCollimator(const CCollimator &coll) {
     applyDrift(flip_s * coll.getElementLength());
 }

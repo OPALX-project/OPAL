@@ -72,11 +72,20 @@ namespace Physics {
     /// The fine structure constant, no dimension
     constexpr double alpha      = 7.29735308e-03;
 
+    /// The atomic mass constant energy equivalent in GeV
+    constexpr double uam        = 0.93149410242;
+
     /// The electron rest mass in GeV
     constexpr double m_e        = 0.51099892e-03;
 
+    /// Rydberg's energy (Rydberg's constant times hc) in GeV
+    constexpr double E_ryd      = 13.605693122994e-9;
+ 
     /// The classical electron radius in m
     constexpr double r_e        = 2.81794092e-15;
+
+    /// Bohr radius in m
+    constexpr double a0         = 5.29177210903e-11;
 
     /// The reduced Compton wave length for electrons in m
     constexpr double lamda_e    = 3.86159323e-13;
@@ -110,6 +119,9 @@ namespace Physics {
 
     /// The h- rest mass in GeV
     constexpr double m_hm       = 0.939277e+00;
+
+    /// The hyodrogen atom rest mass in GeV
+    constexpr double m_h        = 1.00782503224 * uam;
 
     /// The deuteron rest mass in GeV
     constexpr double m_d        = 2*0.931494027e+00;

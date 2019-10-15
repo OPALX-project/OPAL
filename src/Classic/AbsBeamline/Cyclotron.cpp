@@ -1423,6 +1423,7 @@ void Cyclotron::getFieldFromFile_BandRF(const double &scaleFactor) {
 
     // loop over all field maps and superpose fields
     for(auto& fm: RFfilename_m) {
+        *gmsg << "* Reading " << fm << endl;
         Fieldmap *f = Fieldmap::getFieldmap(fm, false);
         if(f == NULL) {
             throw GeneralClassicException(

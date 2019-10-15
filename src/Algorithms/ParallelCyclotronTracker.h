@@ -54,7 +54,6 @@ public:
         SEO = 1,
         BUNCH = 2
     };
-
     typedef std::vector<double> dvector_t;
     typedef std::vector<int> ivector_t;
     typedef std::pair<double[8], Component *>      element_pair;
@@ -90,6 +89,9 @@ public:
 
     /// Apply the algorithm to a BeamBeam.
     virtual void visitBeamBeam(const BeamBeam &);
+
+    /// Apply the algorithm to a Beam Stripping.
+    virtual void visitBeamStripping(const BeamStripping &);
 
     /// Apply the algorithm to a collimator.
     virtual void visitCCollimator(const CCollimator &);
@@ -221,6 +223,8 @@ private:
     DataSink *itsDataSink;
 
     BoundaryGeometry *bgf_m;
+
+    Cyclotron *cycl_m;
 
     /// The maximal number of steps the system is integrated
     int maxSteps_m;

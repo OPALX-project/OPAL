@@ -36,6 +36,7 @@ class CyclotronWrapper;
 
 // Specific element classes interacting with a BeamlineVisitor
 class BeamBeam;
+class BeamStripping;
 class CCollimator;
 class Corrector;
 class Cyclotron;
@@ -112,6 +113,9 @@ public:
 
     /// Apply the algorithm to a beam-beam interaction.
     virtual void visitBeamBeam(const BeamBeam &) = 0;
+
+    /// Apply the algorithm to a beam stripping interaction.
+    virtual void visitBeamStripping(const BeamStripping &) = 0;
 
     /// Apply the algorithm to a collimator.
     virtual void visitCCollimator(const CCollimator &) = 0;

@@ -14,13 +14,14 @@
 //
 // ------------------------------------------------------------------------
 
-#include "Structure/ParticleMatterInteraction.h"
-#include "Solvers/CollimatorPhysics.hh"
+#include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "Physics/Physics.h"
+#include "Structure/ParticleMatterInteraction.h"
+#include "Solvers/BeamStrippingPhysics.hh"
+#include "Solvers/CollimatorPhysics.hh"
 #include "Utilities/OpalException.h"
-#include "AbsBeamline/ElementBase.h"
 #include "Utilities/Util.h"
 
 extern Inform *gmsg;
@@ -126,11 +127,15 @@ void ParticleMatterInteraction::initParticleMatterInteractionHandler(ElementBase
 
         handler_m = new CollimatorPhysics(getOpalName(), &element, material, enableRutherford);
         *gmsg << *this << endl;
-    } else {
+    }
+    else if(type == "BEAMSTRIPPING") {
+        handler_m = new BeamStrippingPhysics(getOpalName(), &element);
+        *gmsg << *this << endl;
+    }
+    else {
         handler_m = 0;
         INFOMSG(getOpalName() + ": no particle mater interaction handler attached, TYPE == " << Attributes::getString(itsAttr[TYPE]) << endl);
     }
-
 }
 
 void ParticleMatterInteraction::updateElement(ElementBase *element) {
@@ -140,7 +145,10 @@ void ParticleMatterInteraction::updateElement(ElementBase *element) {
 void ParticleMatterInteraction::print(std::ostream &os) const {
     os << "* ************* P A R T I C L E  M A T T E R  I N T E R A C T I O N ****************** " << std::endl;
     os << "* PARTICLEMATTERINTERACTION " << getOpalName() << '\n'
-       << "* TYPE           " << Attributes::getString(itsAttr[TYPE]) << '\n'
-       << "* MATERIAL       " << Attributes::getString(itsAttr[MATERIAL]) << '\n';
+       << "* TYPE           " << Attributes::getString(itsAttr[TYPE]) << '\n';
+
+    if ( Attributes::getString(itsAttr[TYPE]) != "BEAMSTRIPPING" ) 
+        os << "* MATERIAL       " << Attributes::getString(itsAttr[MATERIAL]) << '\n';
+
     os << "* ********************************************************************************** " << std::endl;
 }

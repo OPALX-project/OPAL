@@ -92,6 +92,9 @@ void ThickMapper::visitBeamBeam(const BeamBeam &) {
     // *** MISSING *** Map for beam-beam.
 }
 
+void ThickMapper::visitBeamStripping(const BeamStripping &) {
+    // *** MISSING *** Map for beam Stripping.
+}
 
 void ThickMapper::visitCCollimator(const CCollimator &coll) {
     applyDrift(flip_s * coll.getElementLength());

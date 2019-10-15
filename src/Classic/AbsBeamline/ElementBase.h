@@ -153,6 +153,7 @@ public:
                     , BEAMBEAM
                     , BEAMBEAM3D
                     , BEAMLINE
+                    , BEAMSTRIPPING
                     , CCOLLIMATOR
                     , CORRECTOR
                     , CORRECTORWRAPPER

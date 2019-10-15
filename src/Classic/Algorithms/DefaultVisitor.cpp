@@ -22,6 +22,7 @@
 
 #include "AbsBeamline/AlignWrapper.h"
 #include "AbsBeamline/BeamBeam.h"
+#include "AbsBeamline/BeamStripping.h"
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Cyclotron.h"
@@ -101,11 +102,13 @@ void DefaultVisitor::visitBeamBeam(const BeamBeam &bb) {
     applyDefault(bb);
 }
 
+void DefaultVisitor::visitBeamStripping(const BeamStripping &bstp) {
+    applyDefault(bstp);
+}
 
 void DefaultVisitor::visitCCollimator(const CCollimator &coll) {
     applyDefault(coll);
 }
-
 
 void DefaultVisitor::visitCyclotron(const Cyclotron &cyc) {
     applyDefault(cyc);
@@ -114,7 +117,6 @@ void DefaultVisitor::visitCyclotron(const Cyclotron &cyc) {
 void DefaultVisitor::visitComponent(const Component &comp) {
     applyDefault(comp);
 }
-
 
 void DefaultVisitor::visitCorrector(const Corrector &corr) {
     applyDefault(corr);

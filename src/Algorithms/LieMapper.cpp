@@ -108,6 +108,9 @@ void LieMapper::visitBeamBeam(const BeamBeam &map) {
     // *** MISSING *** Map for beam-beam.
 }
 
+void LieMapper::visitBeamStripping(const BeamStripping &map) {
+    // *** MISSING *** Map for beam stripping.
+}
 
 void LieMapper::visitCCollimator(const CCollimator &coll) {
     applyDrift(flip_s * coll.getElementLength());

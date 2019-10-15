@@ -93,6 +93,9 @@ public:
     /// Apply the algorithm to a BeamBeam.
     virtual void visitBeamBeam(const BeamBeam &);
 
+    /// Apply the algorithm to a BeamStripping.
+    virtual void visitBeamStripping(const BeamStripping &);
+
     /// Apply the algorithm to a Collimator.
     virtual void visitCCollimator(const CCollimator &);
 

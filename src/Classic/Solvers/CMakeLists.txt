@@ -1,4 +1,5 @@
 set (_SRCS
+  BeamStrippingPhysics.cpp
   CollimatorPhysics.cpp
   CSRWakeFunction.cpp
   CSRIGFWakeFunction.cpp
@@ -12,6 +13,7 @@ include_directories (
 ADD_OPAL_SOURCES(${_SRCS})
 
 set (HDRS
+    BeamStrippingPhysics.hh
     GreenWakeFunction.hh
     CollimatorPhysics.hh
     CSRWakeFunction.hh

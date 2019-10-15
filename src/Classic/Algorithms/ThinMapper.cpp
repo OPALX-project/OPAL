@@ -74,6 +74,9 @@ void ThinMapper::visitBeamBeam(const BeamBeam &bb) {
     // *** MISSING *** Map algorithm on BeamBeam
 }
 
+void ThinMapper::visitBeamStripping(const BeamStripping &bstp) {
+    // *** MISSING *** Map algorithm on BeamStripping
+}
 
 void ThinMapper::visitDegrader(const Degrader &deg) {
     applyDrift(flip_s * deg.getElementLength());

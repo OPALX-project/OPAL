@@ -21,6 +21,7 @@
 
 #include "Algorithms/ThinTracker.h"
 #include "AbsBeamline/BeamBeam.h"
+#include "AbsBeamline/BeamStripping.h"
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Diagnostic.h"
@@ -164,6 +165,10 @@ void ThinTracker::visitBeamBeam(const BeamBeam &bb) {
     }
 }
 
+
+void ThinTracker::visitBeamStripping(const BeamStripping &bstp) {
+//    applyDrift(flip_s * bstp.getElementLength());
+}
 
 void ThinTracker::visitCCollimator(const CCollimator &coll) {
     applyDrift(flip_s * coll.getElementLength());

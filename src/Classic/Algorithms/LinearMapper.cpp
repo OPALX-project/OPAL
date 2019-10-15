@@ -96,6 +96,9 @@ void LinearMapper::visitBeamBeam(const BeamBeam &) {
     // *** MISSING *** Map for beam-beam.
 }
 
+void LinearMapper::visitBeamStripping(const BeamStripping &) {
+    // *** MISSING *** Map for beam stripping.
+}
 
 void LinearMapper::visitCCollimator(const CCollimator &coll) {
     applyDrift(flip_s * coll.getElementLength());

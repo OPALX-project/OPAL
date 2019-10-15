@@ -7,6 +7,7 @@
 
 #include "AbsBeamline/AlignWrapper.h"
 #include "AbsBeamline/BeamBeam.h"
+#include "AbsBeamline/BeamStripping.h"
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Cyclotron.h"
@@ -83,6 +84,9 @@ public:
 
     /// Apply the algorithm to a beam-beam.
     virtual void visitBeamBeam(const BeamBeam &);
+
+    /// Apply the algorithm to a beam stripping.
+    virtual void visitBeamStripping(const BeamStripping &);
 
     /// Apply the algorithm to a collimator.
     virtual void visitCCollimator(const CCollimator &);
@@ -271,6 +275,11 @@ void SpecificElementVisitor<ELEM>::execute()
 template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitBeamBeam(const BeamBeam &element) {
     CastsTrait<ELEM, BeamBeam>::apply(allElementsOfTypeE, element);
+}
+
+template<class ELEM>
+void SpecificElementVisitor<ELEM>::visitBeamStripping(const BeamStripping &element) {
+    CastsTrait<ELEM, BeamStripping>::apply(allElementsOfTypeE, element);
 }
 
 template<class ELEM>
