@@ -2658,7 +2658,7 @@ void Distribution::generateLongFlattopT(size_t numberOfParticles) {
         bool allow = false;
         while (!allow) {
             t = gsl_ran_gaussian_tail(randGen_m, 0, sigmaTFall_m);
-            if (t <= sigmaTRise_m * cutoffR_m[2]) {
+            if (t <= sigmaTFall_m * cutoffR_m[2]) {
                 t = -t + sigmaTFall_m * cutoffR_m[2];
                 allow = true;
             }
@@ -2703,7 +2703,7 @@ void Distribution::generateLongFlattopT(size_t numberOfParticles) {
             else
                 t = gsl_rng_uniform(randGen_m);
 
-            t = flattopTime * t + sigmaTFall_m * cutoffR_m[2];
+            t = flattopTime * t;
 
         } else {
 
@@ -2728,6 +2728,8 @@ void Distribution::generateLongFlattopT(size_t numberOfParticles) {
 
             }
         }
+        // Shift the uniform part of distribution behind the fall
+        t += sigmaTFall_m * cutoffR_m[2];
 
         // Save to each processor in turn.
         saveProcessor++;
