@@ -865,8 +865,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         fdtdsc.solve();
     else
         fdtd.solve();
-    MPI_Finalize();  // EVENTUALLY REMOVE THIS
-    exit(0);  // EVENTUALLY REMOVE THIS
+
+    /* Here bunch needs to be transferred back to OPAL                                                   */
 }
 
 
