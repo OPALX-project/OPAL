@@ -239,7 +239,7 @@ void Beam::update() {
             Physics::m_mu,
             Physics::m_d,
             Physics::m_xe,
-            2 * Physics::m_p
+            Physics::m_h2p
         };
 
         static const double charges[] = {

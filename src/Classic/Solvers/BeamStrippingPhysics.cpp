@@ -36,12 +36,11 @@ using Physics::kB;
 using Physics::q_e;
 using Physics::m_e;
 using Physics::c;
-using Physics::h_bar;
 using Physics::m_hm;
 using Physics::m_p;
 using Physics::m_h;
+using Physics::m_h2p;
 using Physics::E_ryd;
-using Physics::a0;
 
 namespace {
     struct InsideTester {
@@ -119,7 +118,7 @@ void BeamStrippingPhysics::apply(PartBunchBase<double, 3> *bunch,
     if (bunch->get_sPos() != 0) {
         if(abs(mass-m_hm)  < 1E-6 || 
            abs(mass-m_p)   < 1E-6 || 
-           abs(mass-2*m_p) < 1E-6 || 
+           abs(mass-m_h2p) < 1E-6 || 
            abs(mass-m_h)   < 1E-6)
             doPhysics(bunch);
         else {
@@ -293,7 +292,7 @@ void BeamStrippingPhysics::crossSection(const Vector_t &R, double Eng){
             CS_b = csAnalyticFunctionTabata(Eng, Eth, a1, a2, a3, a4, a5, a6) +
                 csAnalyticFunctionTabata(Eng, Eth, a7, a8, a9, a10, a11, a12);
         }
-        else if(abs(mass_m-2*m_p) < 1E-6 && charge_m == q_e) {
+        else if(abs(mass_m-m_h2p) < 1E-6 && charge_m == q_e) {
             // Proton production
             Eth = csCoefProtonProduction_H2plus_Tabata[0];
             a1 = csCoefProtonProduction_H2plus_Tabata[1];
@@ -512,11 +511,11 @@ bool BeamStrippingPhysics::lorentzStripping(double &gamma, double &E) {
 
     //Theoretical
     const double eps0 = 0.75419 * q_e;
-    const double hbar = h_bar*1E9*q_e;
+    const double hbar = Physics::h_bar*1E9*q_e;
     const double me = m_e*1E9*q_e/(c*c);
     const double p = 0.0126;
     const double S0 = 0.783;
-    const double a = 2.01407/a0;
+    const double a = 2.01407/Physics::a0;
     const double k0 = sqrt(2 * me * eps0)/hbar;
     const double N = (sqrt(2 * k0 * (k0+a) * (2*k0+a)))/a;
     double zT = eps0 / (q_e * E);
@@ -557,7 +556,7 @@ void BeamStrippingPhysics::secondaryParticles(PartBunchBase<double, 3> *bunch, s
             transformToHminus(bunch, i);
     }
 
-    else if(abs(mass_m-2*m_p) < 1E-6 && charge_m == q_e) {
+    else if(abs(mass_m-m_h2p) < 1E-6 && charge_m == q_e) {
         if(NCS_c>NCS_b && NCS_b>NCS_a){
             if(r > (NCS_a+NCS_b)/NCS_total)
                 transformToH3plus(bunch, i);
@@ -639,7 +638,7 @@ void BeamStrippingPhysics::transformToH3plus(PartBunchBase<double, 3> *bunch, si
     Inform gmsgALL("OPAL", INFORM_ALL_NODES);
     gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i]
             << " is transformed to H3+" << endl;
-    bunch->M[i] = 3*m_p;
+    bunch->M[i] = Physics::m_h3p;
     bunch->Q[i] = q_e;
 }
 

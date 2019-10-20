@@ -764,15 +764,10 @@ WARN_LOGFILE           =
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-#INPUT                  = ./src \
-#                         ./src/Classic \
-#                        ./ippl/src \
-#			 ./optimizer
+INPUT                  = ./src \
+                         ./ippl/src \
+                         ./optimizer
 
-INPUT                   =   ./src/Algorithms/ThickTracker.h \
-                            ./src/Algorithms/Hamiltonian.h  \
-                            ./src/Algorithms/MapAnalyser.h \
-                                
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
 # libiconv (or the iconv built into libc) for the transcoding. See the libiconv
@@ -796,10 +791,10 @@ FILE_PATTERNS          = *.c \
                          *.cc \
                          *.h \
                          *.hh \
-			 *.H \
-			 *.f90 \
-			 *.hpp
-			 
+                         *.H \
+                         *.f90 \
+                         *.hpp
+
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
 # be searched for input files as well.

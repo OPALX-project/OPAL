@@ -323,7 +323,7 @@ bool CollimatorPhysics::computeEnergyLoss(Vector_t &P,
     constexpr double GeV2keV = 1e6;
     constexpr double massElectron_keV = Physics::m_e * GeV2keV;
     constexpr double massProton_keV = Physics::m_p * GeV2keV;
-    constexpr double massProton_amu = 1.007276466879;
+    constexpr double massProton_amu = Physics::m_p / Physics::amu;
     constexpr double chargeProton = Physics::z_p;
     constexpr double K = 4.0 * Physics::pi * Physics::Avo * Physics::r_e * m2cm * Physics::r_e * m2cm * massElectron_keV;
 
