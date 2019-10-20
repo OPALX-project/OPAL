@@ -77,10 +77,8 @@ public:
     virtual double getLambda() const;
     virtual void setFilename(const std::string& fname);
     virtual const std::string& getFilename() const;
-    virtual void setTranTrun(double tranTrun);
-    virtual double getTranTrun() const;
-    virtual void setLongTrun(double longTrun);
-    virtual double getLongTrun() const;
+    virtual void setBF(double bf);
+    virtual double getBF() const;
     virtual void setRadiationZ(std::vector<double> rz);
     virtual std::vector<double> getRadiationZ() const;
     virtual void setRadiationLambda(std::vector<double> rl);
@@ -125,12 +123,9 @@ private:
     /// Mithra file
     std::string fname_m;
     
-    /// Transverse truncation of input bunch
-    double tranTrun_m;
+    /// Desired bunching factor before entering undulator
+    double bf_m;
     
-    /// Longitudinal truncation of input bunch
-    double longTrun_m;
-
     /// Distances from the bunch at which to measure radiation
     std::vector<double> radiationZ_m;
 

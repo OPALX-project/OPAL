@@ -39,8 +39,7 @@ public:
 	 K,                       // The undulator parameter
 	 LAMBDA,                  // The undulator period
 	 FNAME,
-	 TRANTRUN,
-	 LONGTRUN,
+	 BF,
 	 RADZ,
 	 RADLAMBDA,
 	 RADDIRECTORY,

@@ -57,12 +57,9 @@ OpalUndulator::OpalUndulator():
     itsAttr[FNAME] = Attributes::makeString
       ("FNAME", "jobfile with desired output data from the undulator", "");
 
-    itsAttr[TRANTRUN] = Attributes::makeReal
-                          ("TRANTRUN",
-                          "Transverse truncation of input bunch", 0.0);
-    itsAttr[LONGTRUN] = Attributes::makeReal
-                          ("LONGTRUN",
-                          "Longitudinal truncation of input bunch", 0.0);
+    itsAttr[BF] = Attributes::makeReal
+                          ("BF",
+                          "Desired initial bunching factor. If zero, the bunch's density modulation is not modified", 0.0);
     itsAttr[RADZ] = Attributes::makeRealArray
                           ("RADZ",
 			   "Distances from bunch in which to measure radiation");
@@ -99,8 +96,7 @@ OpalUndulator::OpalUndulator():
     registerRealAttribute("K");
     registerRealAttribute("LAMBDA");
     registerStringAttribute("FNAME");
-    registerRealAttribute("TRANTRUN");
-    registerRealAttribute("LONGTRUN");
+    registerRealAttribute("BF");
     registerStringAttribute("RADDIRECTORY");
     registerRealAttribute("TRUNORDER");
     registerRealAttribute("SPACECHARGE");
@@ -170,8 +166,7 @@ void OpalUndulator::update() {
     ur->setK(Attributes::getReal(itsAttr[K]));
     ur->setLambda(Attributes::getReal(itsAttr[LAMBDA]));
     ur->setFilename(Attributes::getString(itsAttr[FNAME]));
-    ur->setTranTrun(Attributes::getReal(itsAttr[TRANTRUN]));
-    ur->setLongTrun(Attributes::getReal(itsAttr[LONGTRUN]));
+    ur->setBF(Attributes::getReal(itsAttr[BF]));
     ur->setRadiationZ(Attributes::getRealArray(itsAttr[RADZ]));
     ur->setRadiationLambda(Attributes::getRealArray(itsAttr[RADLAMBDA]));
     ur->setRadiationDirectory(Attributes::getString(itsAttr[RADDIRECTORY]));

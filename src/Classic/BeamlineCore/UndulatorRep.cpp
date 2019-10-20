@@ -53,8 +53,7 @@ UndulatorRep::UndulatorRep():
     k_m(0.0),
     lambda_m(0.0),
     fname_m(""),
-    tranTrun_m(0.0),
-    longTrun_m(0.0),
+    bf_m(0.0),
     radiationDirectory_m(""),
     truncationOrder_m(2),
     spaceCharge_m(1),
@@ -71,8 +70,7 @@ UndulatorRep::UndulatorRep(const UndulatorRep &right):
     k_m(right.k_m),
     lambda_m(right.lambda_m),
     fname_m(right.fname_m),
-    tranTrun_m(right.tranTrun_m),
-    longTrun_m(right.longTrun_m),
+    bf_m(right.bf_m),
     radiationZ_m(right.radiationZ_m),
     radiationLambda_m(right.radiationLambda_m),
     radiationDirectory_m(right.radiationDirectory_m),
@@ -93,8 +91,7 @@ UndulatorRep::UndulatorRep(const std::string &name):
     k_m(0.0),
     lambda_m(0.0),
     fname_m(""),
-    tranTrun_m(0.0),
-    longTrun_m(0.0),
+    bf_m(0.0),
     radiationDirectory_m(""),
     truncationOrder_m(2),
     spaceCharge_m(1),
@@ -162,11 +159,8 @@ double UndulatorRep::getLambda() const { return lambda_m; }
 void UndulatorRep::setFilename(const std::string&fname) { fname_m = fname; }
 const std::string& UndulatorRep::getFilename() const { return fname_m;}
 
-void UndulatorRep::setTranTrun(double tranTrun) { tranTrun_m = tranTrun; }
-double UndulatorRep::getTranTrun() const { return tranTrun_m; };
-
-void UndulatorRep::setLongTrun(double longTrun) {longTrun_m = longTrun; }
-double UndulatorRep::getLongTrun() const { return longTrun_m; }
+void UndulatorRep::setBF(double bf) { bf_m = bf; }
+double UndulatorRep::getBF() const { return bf_m; };
 
 void UndulatorRep::setRadiationZ(std::vector<double> rz) { radiationZ_m = rz; }
 std::vector<double> UndulatorRep::getRadiationZ() const { return radiationZ_m; }

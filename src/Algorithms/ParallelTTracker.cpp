@@ -771,6 +771,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.sigmaGammaBeta_ = fv;
     bunchInit.inputVector_ = qv;
     bunchInit.longTrun_ = itsBunch_m->get_maxExtent()[2];
+    bunchInit.bF_ = ur->getBF();
     msg << "Done getting bunch parameters" << endl;
 
     /* Undulator parameters                 */
