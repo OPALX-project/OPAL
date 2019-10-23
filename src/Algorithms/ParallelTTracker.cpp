@@ -819,8 +819,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::Bunch                              bunch;
     bunch.bunchInit_.push_back(bunchInit);
     bunch.timeStart_ = 0.0;
-    unsigned int m = ur->getTimeStepRatio();  // dt = m * dt_bunch
-    bunch.timeStep_ = mesh.meshResolution_[2] * gamma_ * gamma_ / Darius::C0 / m;
+    bunch.ratioTS_ = ur->getTimeStepRatio();  // dt = m * dt_bunch
     msg << "Done passing timestep parameters to Mithra" << endl;
 
     /* Create the seed database.                                                                          */
