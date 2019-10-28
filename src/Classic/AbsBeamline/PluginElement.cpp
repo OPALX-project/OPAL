@@ -137,21 +137,11 @@ void PluginElement::setGeom(const double dist) {
     doSetGeom();
 }
 
-void PluginElement::changeWidth(PartBunchBase<double, 3> *bunch, const double tstep) {
+void PluginElement::changeWidth(PartBunchBase<double, 3> *bunch, int i, const double tstep, const double tangle) {
 
-    Vector_t meanP(0.0, 0.0, 0.0);
-    for(unsigned int i = 0; i < bunch->getLocalNum(); ++i) {
-        for(int d = 0; d < 3; ++d) {
-            meanP(d) += bunch->P[i](d);
-        }
-    }
-    reduce(meanP, meanP, OpAddAssign());
-    meanP = meanP / Vector_t(bunch->getTotalNum());
-
-    double stangle = calculateIncidentAngle(meanP(0), meanP(1));
     constexpr double c_mmtns = Physics::c * 1.0e-6; // m/s --> mm/ns
-    double lstep   = euclidean_norm(meanP) / Util::getGamma(meanP) * c_mmtns * tstep; // [mm]
-    double sWidth  = lstep / sqrt( 1 + 1/stangle/stangle );
+    double lstep   = euclidean_norm(bunch->P[i]) / Util::getGamma(bunch->P[i]) * c_mmtns * tstep; // [mm]
+    double sWidth  = lstep / sqrt( 1 + 1/tangle/tangle );
     setGeom(sWidth);
 }
 

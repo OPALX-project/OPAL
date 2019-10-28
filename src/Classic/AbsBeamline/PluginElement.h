@@ -72,7 +72,7 @@ protected:
     /// Sets geometry geom_m with element width dist
     void setGeom(const double dist);
     /// Change probe width depending on step size and angle of particle
-    void changeWidth(PartBunchBase<double, 3> *bunch, const double tstep);
+    void changeWidth(PartBunchBase<double, 3> *bunch, int i, const double tstep, const double tangle);
     /// Calculate angle of particle/bunch wrt to element
     double calculateIncidentAngle(double xp, double yp) const;
 

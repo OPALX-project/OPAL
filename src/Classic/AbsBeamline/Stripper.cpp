@@ -84,25 +84,23 @@ bool Stripper::doPreCheck(PartBunchBase<double, 3> *bunch) {
 
 //change the stripped particles to outcome particles
 bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double tstep) {
-    changeWidth(bunch, tstep);
-
     bool flagNeedUpdate = false;
     Vector_t strippoint;
 
     size_t count = 0;
     size_t tempnum = bunch->getLocalNum();
-    int pflag = 0;
 
     Inform gmsgALL("OPAL", INFORM_ALL_NODES);
     for(unsigned int i = 0; i < tempnum; ++i) {
         if(bunch->PType[i] != ParticleType::REGULAR) continue;
 
-        pflag = checkPoint(bunch->R[i](0), bunch->R[i](1));
+        double tangle = calculateIncidentAngle(bunch->P[i](0), bunch->P[i](1));
+        changeWidth(bunch, i, tstep, tangle);
+        int pflag = checkPoint(bunch->R[i](0), bunch->R[i](1));
         if(pflag == 0) continue;
 
         // dist1 > 0, right hand, dt > 0; dist1 < 0, left hand, dt < 0
         double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m * 1.0e-3; // [m]
-        double tangle = calculateIncidentAngle(bunch->P[i](0), bunch->P[i](1));
         double dist2 = dist1 * sqrt(1.0 + 1.0 / tangle / tangle);
         double dt = dist2 / (sqrt(1.0 - 1.0 / (1.0 + dot(bunch->P[i], bunch->P[i]))) * Physics::c) * 1.0e9; // [ns]
         strippoint(0) = (B_m * B_m * bunch->R[i](0) - A_m * B_m* bunch->R[i](1) - A_m * C_m) / (R_m * R_m);

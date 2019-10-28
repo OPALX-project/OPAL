@@ -66,13 +66,12 @@ bool Probe::doPreCheck(PartBunchBase<double, 3> *bunch) {
 }
 
 bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double tstep) {
-    changeWidth(bunch, tstep);
-
+    Vector_t probepoint;
     size_t tempnum = bunch->getLocalNum();
 
-    Vector_t probepoint;
-
     for(unsigned int i = 0; i < tempnum; ++i) {
+        double tangle = calculateIncidentAngle(bunch->P[i](0), bunch->P[i](1));
+        changeWidth(bunch, i, tstep, tangle);
         int pflag = checkPoint(bunch->R[i](0), bunch->R[i](1));
         if(pflag == 0) continue;
         // calculate closest point at probe -> better to use momentum direction
@@ -84,7 +83,6 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
         // calculate time correction for probepoint
         // dist1 > 0, right hand, dt > 0; dist1 < 0, left hand, dt < 0
         double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m * 1.0e-3; // [m]
-        double tangle = calculateIncidentAngle(bunch->P[i](0), bunch->P[i](1));
         double dist2 = dist1 * sqrt(1.0 + 1.0 / tangle / tangle);
         double dt = dist2 / (sqrt(1.0 - 1.0 / (1.0 + dot(bunch->P[i], bunch->P[i]))) * Physics::c) * 1.0e9;
 
