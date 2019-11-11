@@ -201,7 +201,7 @@ void ParallelCyclotronTracker::bgf_main_collision_test() {
         int res = bgf_m->partInside(itsBunch_m->R[i], itsBunch_m->P[i], dtime, itsBunch_m->PType[i], itsBunch_m->Q[i], intecoords, triId);
         //int res = bgf_m->partInside(itsBunch_m->R[i]*1.0e-3, itsBunch_m->P[i], dtime, itsBunch_m->PType[i], itsBunch_m->Q[i], intecoords, triId);
         if(res >= 0) {
-            lossDs_m->addParticle(itsBunch_m->R[i]*1000, itsBunch_m->P[i],
+            lossDs_m->addParticle(itsBunch_m->R[i], itsBunch_m->P[i],
                                   itsBunch_m->ID[i], itsBunch_m->getT()*1e9,
                                   turnnumber_m, itsBunch_m->bunchNum[i]);
             itsBunch_m->Bin[i] = -1;

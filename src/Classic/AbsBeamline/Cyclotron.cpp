@@ -353,7 +353,7 @@ bool Cyclotron::apply(const size_t &id, const double &t, Vector_t &E, Vector_t &
                 << ": Particle " << id
                 << " out of the global aperture of cyclotron!" << endl;
         gmsgALL << level4 << getName()
-                << ": Coords: "<< RefPartBunch_m->R[id] << endl;
+                << ": Coords: "<< RefPartBunch_m->R[id] << " m"  << endl;
 
     } else{
         flagNeedUpdate = apply(RefPartBunch_m->R[id], RefPartBunch_m->P[id], t, E, B);
@@ -362,7 +362,7 @@ bool Cyclotron::apply(const size_t &id, const double &t, Vector_t &E, Vector_t &
                     << ": Particle "<< id
                     << " out of the field map boundary!" << endl;
             gmsgALL << level4 << getName()
-                    << ": Coords: "<< RefPartBunch_m->R[id] << endl;
+                    << ": Coords: "<< RefPartBunch_m->R[id] << " m" << endl;
         }
     }
 

@@ -106,6 +106,7 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
         strippoint(0) = (B_m * B_m * bunch->R[i](0) - A_m * B_m* bunch->R[i](1) - A_m * C_m) / (R_m * R_m);
         strippoint(1) = (A_m * A_m * bunch->R[i](1) - A_m * B_m* bunch->R[i](0) - B_m * C_m) / (R_m * R_m);
         strippoint(2) = bunch->R[i](2);
+        strippoint = strippoint*0.001; // mm->m
         lossDs_m->addParticle(strippoint, bunch->P[i], bunch->ID[i], t+dt,
                               turnnumber, bunch->bunchNum[i]);
 

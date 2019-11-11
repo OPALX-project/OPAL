@@ -104,7 +104,7 @@ private:
     void writeHeaderASCII() {
         if(Ippl::myNode() == 0) {
             //FIXME Issue #45 (Cyclotron units)
-            os_m << "# Element " << element_m << " x (mm),  y (mm),  z (mm),  px ( ),  py ( ),  pz ( ), id";
+            os_m << "# Element " << element_m << " x (m),  y (m),  z (m),  px ( ),  py ( ),  pz ( ), id";
             if (time_m.size() != 0) {
                 os_m << ",  turn, bunchNumber, time (ns) ";
             }

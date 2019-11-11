@@ -265,7 +265,8 @@ void IndexMap::saveSDDS(double initialPathLength) const {
     }
 
     // add row if range of first sector starts after initialPathLength
-    if (std::get<0>(sectors[0]) > initialPathLength) {
+    if (sectors.size() > 0 &&
+        std::get<0>(sectors[0]) > initialPathLength) {
         auto tmp = sectors;
         sectors = std::vector<std::tuple<double, std::vector<double>, std::string> >(1);
         std::get<0>(sectors[0]) = initialPathLength;

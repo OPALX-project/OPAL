@@ -1170,10 +1170,8 @@ protected:
         typename RegionLayout<T,Dim,Mesh>::iterator_iv localV, localEnd = RLayout.end_iv();
         typename RegionLayout<T,Dim,Mesh>::iterator_dv remoteV;
 
-        int *msgsend = new int[N];
-        std::fill(msgsend, msgsend+N, 0);
-        int *msgrecv = new int[N];
-        std::fill(msgrecv, msgrecv+N, 0);
+        std::vector<int> msgsend(N, 0);
+        std::vector<int> msgrecv(N, 0);
 
         NDRegion<T,Dim> pLoc;
 
@@ -1227,23 +1225,23 @@ protected:
         }
 
         //reduce message count so every node knows how many messages to receive
-        MPI_Allreduce(msgsend, msgrecv, N, MPI_INT, MPI_SUM, Ippl::getComm());
+        MPI_Allreduce(&(msgsend[0]), &(msgrecv[0]), N, MPI_INT, MPI_SUM, Ippl::getComm());
 
         int tag = Ippl::Comm->next_tag(P_SPATIAL_TRANSFER_TAG,P_LAYOUT_CYCLE);
 
         typename std::multimap<unsigned, unsigned>::iterator i = p2n.begin();
 
-        Format *format = PData.getFormat();
+        std::unique_ptr<Format> format(PData.getFormat());
 
 
         std::vector<MPI_Request> requests;
-        std::vector<MsgBuffer*> buffers;
+        std::vector<std::shared_ptr<MsgBuffer> > buffers;
 
         while (i!=p2n.end())
         {
             unsigned cur_destination = i->first;
 
-            MsgBuffer *msgbuf = new MsgBuffer(format, p2n.count(i->first));
+            std::shared_ptr<MsgBuffer> msgbuf(new MsgBuffer(format.get(), p2n.count(i->first)));
 
             for (; i!=p2n.end() && i->first == cur_destination; ++i)
             {
@@ -1255,7 +1253,7 @@ protected:
 
             MPI_Request request = Ippl::Comm->raw_isend( msgbuf->getBuffer(), msgbuf->getSize(), cur_destination, tag);
 
-			//remember request and buffer so we can delete them later
+            //remember request and buffer so we can delete them later
             requests.push_back(request);
             buffers.push_back(msgbuf);
         }
@@ -1263,13 +1261,13 @@ protected:
         LocalNum -= PData.getDestroyNum();  // update local num
         PData.performDestroy();
 
-		//receive new particles
+        //receive new particles
         for (int k = 0; k<msgrecv[myN]; ++k)
         {
             int node = Communicate::COMM_ANY_NODE;
             char *buffer = 0;
             int bufsize = Ippl::Comm->raw_probe_receive(buffer, node, tag);
-            MsgBuffer recvbuf(format, buffer, bufsize);
+            MsgBuffer recvbuf(format.get(), buffer, bufsize);
 
             Message *msg = recvbuf.get();
             while (msg != 0)
@@ -1282,18 +1280,8 @@ protected:
 
         }
 
-		//wait for communication to finish and clean up buffers
+        //wait for communication to finish and clean up buffers
         MPI_Waitall(requests.size(), &(requests[0]), MPI_STATUSES_IGNORE);
-        for (unsigned int j = 0; j<buffers.size(); ++j)
-        {
-            delete buffers[j];
-        }
-
-        delete[] msgsend;
-        delete[] msgrecv;
-        delete format;
-
-        //std::cout << "node " << myN << " sent particles " << sent - old_sent << std::endl;
 
         return LocalNum;
     }
@@ -1311,10 +1299,8 @@ protected:
         typename RegionLayout<T,Dim,Mesh>::iterator_iv localV, localEnd = RLayout.end_iv();
         typename RegionLayout<T,Dim,Mesh>::iterator_dv remoteV;
 
-        int *msgsend = new int[N];
-        std::fill(msgsend, msgsend+N, 0);
-        int *msgrecv = new int[N];
-        std::fill(msgrecv, msgrecv+N, 0);
+        std::vector<int> msgsend(N, 0);
+        std::vector<int> msgrecv(N, 0);
 
         NDRegion<T,Dim> pLoc;
 
@@ -1347,7 +1333,7 @@ protected:
 
             typename RegionLayout<T,Dim,Mesh>::touch_range_dv touchingVN = RLayout.touch_range_rdv(pLoc);
 
-			//external location
+            //external location
             if (touchingVN.first == touchingVN.second) {
                 responsibleNodeNotFound = true;
                 break;
@@ -1371,22 +1357,22 @@ protected:
         }
 
         //reduce message count so every node knows how many messages to receive
-        MPI_Allreduce(msgsend, msgrecv, N, MPI_INT, MPI_SUM, Ippl::getComm());
+        MPI_Allreduce(&(msgsend[0]), &(msgrecv[0]), N, MPI_INT, MPI_SUM, Ippl::getComm());
 
         int tag = Ippl::Comm->next_tag(P_SPATIAL_TRANSFER_TAG,P_LAYOUT_CYCLE);
 
         typename std::multimap<unsigned, unsigned>::iterator i = p2n.begin();
 
-        Format *format = PData.getFormat();
+        std::unique_ptr<Format> format(PData.getFormat());
 
         std::vector<MPI_Request> requests;
-        std::vector<MsgBuffer*> buffers;
+        std::vector<std::shared_ptr<MsgBuffer> > buffers;
 
         while (i!=p2n.end())
         {
             unsigned cur_destination = i->first;
 
-            MsgBuffer *msgbuf = new MsgBuffer(format, p2n.count(i->first));
+            std::shared_ptr<MsgBuffer> msgbuf(new MsgBuffer(format.get(), p2n.count(i->first)));
 
             for (; i!=p2n.end() && i->first == cur_destination; ++i)
             {
@@ -1398,7 +1384,7 @@ protected:
 
             MPI_Request request = Ippl::Comm->raw_isend( msgbuf->getBuffer(), msgbuf->getSize(), cur_destination, tag);
 
-			//remember request and buffer so we can delete them later
+            //remember request and buffer so we can delete them later
             requests.push_back(request);
             buffers.push_back(msgbuf);
         }
@@ -1406,13 +1392,13 @@ protected:
         LocalNum -= PData.getDestroyNum();  // update local num
         PData.performDestroy();
 
-		//receive new particles
+        //receive new particles
         for (int k = 0; k<msgrecv[myN]; ++k)
         {
             int node = Communicate::COMM_ANY_NODE;
             char *buffer = 0;
             int bufsize = Ippl::Comm->raw_probe_receive(buffer, node, tag);
-            MsgBuffer recvbuf(format, buffer, bufsize);
+            MsgBuffer recvbuf(format.get(), buffer, bufsize);
 
             Message *msg = recvbuf.get();
             while (msg != 0)
@@ -1423,17 +1409,8 @@ protected:
             }
         }
 
-		//wait for communication to finish and clean up buffers
+        //wait for communication to finish and clean up buffers
         MPI_Waitall(requests.size(), &(requests[0]), 0);
-        for (unsigned int j = 0; j<buffers.size(); ++j)
-        {
-            delete buffers[j];
-        }
-
-        delete[] msgsend;
-        delete[] msgrecv;
-        delete format;
-        //std::cout << "node " << myN << " sent particles " << sent - old_sent << std::endl;
 
         return LocalNum;
     }

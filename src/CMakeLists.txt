@@ -141,18 +141,6 @@ endif ()
 #
 add_library (libOPAL ${OPAL_SRCS})
 set_target_properties (libOPAL PROPERTIES OUTPUT_NAME OPAL)
-target_link_libraries (libOPAL
-    ${OPTP_LIBS}
-    ${OPTP_LIBRARY}
-    ${IPPL_LIBRARY}
-    ${GSL_LIBRARY}
-    ${GSL_CBLAS_LIBRARY}
-    ${H5Hut_LIBRARY}
-    ${HDF5_LIBRARIES}
-    ${Boost_LIBRARIES}
-    m
-    z
-    )
 
 if (ENABLE_DKS)
     target_link_libraries (libOPAL
@@ -170,6 +158,16 @@ target_link_libraries (libOPAL
 add_executable (opal Main.cpp)
 target_link_libraries( opal
     libOPAL
+    ${OPTP_LIBS}
+    ${OPTP_LIBRARY}
+    ${IPPL_LIBRARY}
+    ${GSL_LIBRARY}
+    ${GSL_CBLAS_LIBRARY}
+    ${H5Hut_LIBRARY}
+    ${HDF5_LIBRARIES}
+    ${Boost_LIBRARIES}
+    m
+    z
     ${CMAKE_DL_LIBS}
     )
 
