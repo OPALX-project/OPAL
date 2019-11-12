@@ -1201,6 +1201,9 @@ void ParallelCyclotronTracker::execute() {
       Initialize common variables and structures
       for the integrators
     */
+    if (OpalData::getInstance()->inRestartRun()) {
+        OpalData::getInstance()->setOpenMode(OpalData::OPENMODE::APPEND);
+    }
 
     step_m          = 0;
     restartStep0_m  = 0;
