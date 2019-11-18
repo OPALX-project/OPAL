@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
 
      /* other variables */
      int state = -1;
-     char statefile[FILE_NAME_LENGTH];
+     char *statefile;
      int result;
      
      /* reading command line parameters */
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
      sscanf(argv[3], "%lf", &poll);
 
      /* generate name of statefile */
-     sprintf(statefile, "%ssta", filenamebase);
+     asprintf(&statefile, "%ssta", filenamebase);
 
      /* main loop */
      while (state != 6) /* stop state for selector */

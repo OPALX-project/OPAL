@@ -2,9 +2,6 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
  *
  ***************************************************************************/
 
@@ -310,18 +307,6 @@ struct PETE_TUTree : public PETE_Expr< PETE_TUTree<Value_t, Child_t> >
   
   PETE_TUTree(const Child_t& c)
   : Child(c) { }
-
-#if ( defined(PETE_BITWISE_COPY) && !defined(IPPL_INSURE) )
-
-  // For efficiency, make the copy constructor bitwise. USE WITH CARE.
-
-  PETE_TUTree(const PETE_TUTree<Value_t,Child_t>& t)
-  {
-    memcpy(this, &t, sizeof(*this));
-  }
-
-#endif
-  
 };
 
 
@@ -368,18 +353,6 @@ struct PETE_TBTree :
   
   PETE_TBTree(const Left_t& l, const Right_t& r)
   : Left(l), Right(r) { }
-
-#if ( defined(PETE_BITWISE_COPY) && !defined(IPPL_INSURE) )
-
-  // For efficiency, make the copy constructor bitwise. USE WITH CARE.
-
-  PETE_TBTree(const PETE_TBTree<Value_t, Left_t, Right_t>& t)
-  {
-    memcpy(this,&t,sizeof(*this));
-  }
-
-#endif
-
 };
 
 
@@ -432,17 +405,6 @@ public:
 
   PETE_TTTree(const Left_t& l, const Middle_t& m,const Right_t& r)
     : Left(l), Middle(m), Right(r) {}
-
-#if ( defined(PETE_BITWISE_COPY) && !defined(IPPL_INSURE) )
-
-  // For efficiency, make the copy constructor bitwise. USE WITH CARE.
-
-  PETE_TTTree(const PETE_TTTree<Value_t, Left_t, Middle_t, Right_t>& t)
-  {
-    memcpy(this,&t,sizeof(*this));
-  }
-
-#endif
 };
 
 
@@ -1322,8 +1284,3 @@ struct PETEBinaryReturn<ARG1,ARG2,FnBinary_ ## FUNC> {                      \
 
 #endif // PETE_H
 
-/***************************************************************************
- * $RCSfile: PETE.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:28 $
- * IPPL_VERSION_ID: $Id: PETE.h,v 1.1.1.1 2003/01/23 07:40:28 adelmann Exp $ 
- ***************************************************************************/

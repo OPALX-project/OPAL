@@ -43,7 +43,7 @@ set (CMAKE_CXX_EXTENSIONS OFF)
 
 add_definitions (-DIPPL_LINUX -DIPPL_STRINGSTREAM)
 add_definitions (-DIPPL_MPI -DMPICH_SKIP_MPICXX -DIPPL_DONT_POOL)
-add_definitions (-DIPPL_USE_XDIV_RNG -DPETE_BITWISE_COPY)
+add_definitions (-DIPPL_USE_XDIV_RNG)
 add_definitions (-DIPPL_USE_PARTIAL_SPECIALIZATION)
 add_definitions (-Drestrict=__restrict__ -DNOCTAssert)
 
