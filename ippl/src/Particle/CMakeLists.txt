@@ -1,56 +1,65 @@
-SET (_SRCS
-  )
+set (_SRCS
+    )
 
-SET (_HDRS
-  BoxParticleCachingPolicy.h
-  CellParticleCachingPolicy.h
-  GenArrayParticle.h
-  GenParticle.h
-  IntCIC.h
-  Interpolator.h
-  IntNGP.h
-  IntTSC.h
-  IntSUDS.h
-  NoParticleCachingPolicy.h
-  PairBuilder/BasicPairBuilder.h
-  PairBuilder/HashPairBuilder.h
-  PairBuilder/HashPairBuilderPeriodic.h
-  PairBuilder/PairConditions.h
-  PairBuilder/SortingPairBuilder.h
-  ParticleAttribBase.h
-  ParticleAttrib.hpp
-  ParticleAttribElem.h
-  ParticleAttrib.h
-  ParticleBalancer.hpp
-  ParticleBalancer.h
-  IpplParticleBase.hpp
-  IpplParticleBase.h
-  ParticleBConds.h
-  ParticleCashedLayout.hpp
-  ParticleCashedLayout.h
-  ParticleInteractAttrib.hpp
-  ParticleInteractAttrib.h
-  ParticleInteractLayout.hpp
-  ParticleInteractLayout.h
-  ParticleLayout.hpp
-  ParticleLayoutFromGrid.h
-  ParticleLayout.h
-  ParticleSpatialLayout.hpp
-  ParticleSpatialLayout.h
-  ParticleUniformLayout.hpp
-  ParticleUniformLayout.h
-  PAssign.hpp
-  PAssignDefs.h
-  PAssign.h
-  )
+set (_HDRS
+    BoxParticleCachingPolicy.h
+    CellParticleCachingPolicy.h
+    GenArrayParticle.h
+    GenParticle.h
+    IntCIC.h
+    Interpolator.h
+    IntNGP.h
+    IntTSC.h
+    IntSUDS.h
+    NoParticleCachingPolicy.h
+    PairBuilder/BasicPairBuilder.h
+    PairBuilder/HashPairBuilder.h
+    PairBuilder/HashPairBuilderPeriodic.h
+    PairBuilder/PairConditions.h
+    PairBuilder/SortingPairBuilder.h
+    ParticleAttribBase.h
+    ParticleAttrib.hpp
+    ParticleAttribElem.h
+    ParticleAttrib.h
+    ParticleBalancer.hpp
+    ParticleBalancer.h
+    IpplParticleBase.hpp
+    IpplParticleBase.h
+    ParticleBConds.h
+    ParticleCashedLayout.hpp
+    ParticleCashedLayout.h
+    ParticleInteractAttrib.hpp
+    ParticleInteractAttrib.h
+    ParticleInteractLayout.hpp
+    ParticleInteractLayout.h
+    ParticleLayout.hpp
+    ParticleLayoutFromGrid.h
+    ParticleLayout.h
+    ParticleSpatialLayout.hpp
+    ParticleSpatialLayout.h
+    ParticleUniformLayout.hpp
+    ParticleUniformLayout.h
+    PAssign.hpp
+    PAssignDefs.h
+    PAssign.h
+    )
 
-INCLUDE_DIRECTORIES (
-  ${CMAKE_CURRENT_SOURCE_DIR}
-)
+include_directories (
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 
-ADD_IPPL_SOURCES (${_SRCS})
-ADD_IPPL_HEADERS (${_HDRS})
+add_ippl_sources (${_SRCS})
+add_ippl_headers (${_HDRS})
 
-INSTALL (FILES ${_HDRS} DESTINATION include/Particle)
+install (FILES ${_HDRS} DESTINATION include/Particle)
 
-ADD_SUBDIRECTORY (PairBuilder)
+add_subdirectory (PairBuilder)
+
+# vi: set et ts=4 sw=4 sts=4:
+
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:
+

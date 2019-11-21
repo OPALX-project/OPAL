@@ -1,18 +1,14 @@
-FILE (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-MESSAGE (STATUS "Adding test AMR found in ${_relPath}")
-#     MESSAGE (STATUS "MPI COMPILER ${MPI_UNDERLYING_COMPILER}")
+file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
+message (STATUS "Adding test AMR found in ${_relPath}")
     
 find_package (MPI REQUIRED)
-#     message (STATUS "The C++ compiler identification is: ${CMAKE_CXX_COMPILER_ID}")
-#     message (STATUS "The C++ compiler version is: ${CMAKE_CXX_COMPILER_VERSION}")
 message (STATUS "The MPI C++ compiler is: ${MPI_CXX_COMPILER}")
-#     message (STATUS "The underlying C++ compiler is: ${CMAKE_CXX_COMPILER}")
-    
-set (CMAKE_CXX_FLAGS "-O3 ${CMAKE_CXX_FLAGS} -DBL_USE_FORTRAN_MPI")
-    
-set (CMAKE_CXX_FLAGS
-    "${IPPL_CMAKE_CXX_FLAGS} -std=c++11 -DPARALLEL_IO ${CMAKE_CXX_FLAGS}"
-)
+
+add_definitions (-DBL_USE_FORTRAN_MPI)
+add_definitions (-DPARALLEL_IO)
+
+add_compile_options (-O3)
+add_compile_options (-std=c++11)
     
 include_directories (
     ${CMAKE_SOURCE_DIR}/src
@@ -35,11 +31,11 @@ link_directories (
 )
     
 # remove digits from hostname: edison03 -> edison
-STRING(REGEX MATCH "[^0-9]*" HOSTNAME_BASE "${HOSTNAME}")
+string (REGEX MATCH "[^0-9]*" HOSTNAME_BASE "${HOSTNAME}")
     
-IF(${HOSTNAME_BASE} MATCHES "edison" OR ${HOSTNAME_BASE} MATCHES "cori" OR
-   ${HOSTNAME_BASE} MATCHES "daint")
-    SET (LIBS
+if (${HOSTNAME_BASE} MATCHES "edison" OR ${HOSTNAME_BASE} MATCHES "cori" OR
+        ${HOSTNAME_BASE} MATCHES "daint")
+    set (LIBS
         ${H5Hut_LIBRARY}
         ${HDF5_LIBRARIES}
         ${IPPL_LIBRARY}
@@ -47,8 +43,8 @@ IF(${HOSTNAME_BASE} MATCHES "edison" OR ${HOSTNAME_BASE} MATCHES "cori" OR
         m
         z
     )
-ELSE()
-    SET (LIBS
+else ()
+    set (LIBS
         ${H5Hut_LIBRARY}
         ${HDF5_LIBRARIES}
         ${IPPL_LIBRARY}
@@ -58,51 +54,50 @@ ELSE()
         m
         z
     )
-ENDIF(${HOSTNAME_BASE} MATCHES "edison" OR ${HOSTNAME_BASE} MATCHES "cori" OR
-      ${HOSTNAME_BASE} MATCHES "daint")
+endif ()
     
 #     add_executable (testAmrPartBunch testAmrPartBunch.cpp AmrOpal.cpp AmrPartBunch.cpp ../H5Reader.cpp Distribution.cpp ${CMAKE_CURRENT_SOURCE_DIR}/../../../src/Classic/Physics/Physics.cpp Solver.cpp)
 #     add_executable (testSolver testSolver.cpp ../H5Reader.cpp Distribution.cpp Solver.cpp)
 add_executable (iterative iterative.cpp)
 #     add_executable (testError error.cpp AmrPartBunch.cpp ../H5Reader.cpp Distribution.cpp PoissonProblems.cpp Solver.cpp AmrOpal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/../../../src/Classic/Physics/Physics.cpp)
 add_executable (testGaussian
-                testGaussian.cpp
-                ../AmrOpal.cpp AmrPartBunch.cpp
-                ../H5Reader.cpp ../Distribution.cpp
-                ../Solver.cpp)
+    testGaussian.cpp
+    ../AmrOpal.cpp AmrPartBunch.cpp
+    ../H5Reader.cpp ../Distribution.cpp
+    ../Solver.cpp)
     
 add_executable (testUniform
-                testUniform.cpp
-                ../AmrOpal.cpp AmrPartBunch.cpp
-                ../H5Reader.cpp ../Distribution.cpp
-                ../Solver.cpp)
+    testUniform.cpp
+    ../AmrOpal.cpp AmrPartBunch.cpp
+    ../H5Reader.cpp ../Distribution.cpp
+    ../Solver.cpp)
     
 add_executable (testUnifSphere
-                testUnifSphere.cpp
-                ../AmrOpal.cpp AmrPartBunch.cpp
-                ../Solver.cpp)# HypreABecLap.H HypreABecLap.cpp)
+    testUnifSphere.cpp
+    ../AmrOpal.cpp AmrPartBunch.cpp
+    ../Solver.cpp)# HypreABecLap.H HypreABecLap.cpp)
     
 add_executable (testGridSolve
-                testGridSolve.cpp
-                ../Solver.cpp)
+    testGridSolve.cpp
+    ../Solver.cpp)
     
 add_executable (testUnifSphereGrid
-                testUnifSphereGrid.cpp
-                ../AmrOpal.cpp AmrPartBunch.cpp
-                ../Solver.cpp)
+    testUnifSphereGrid.cpp
+    ../AmrOpal.cpp AmrPartBunch.cpp
+    ../Solver.cpp)
     
     
 add_executable(testReal
-                testReal.cpp
-                ../H5Reader.cpp ../Distribution.cpp
-                ../AmrOpal.cpp AmrPartBunch.cpp
-                ../Solver.cpp)
+    testReal.cpp
+    ../H5Reader.cpp ../Distribution.cpp
+    ../AmrOpal.cpp AmrPartBunch.cpp
+    ../Solver.cpp)
     
 add_executable(testMultiBunch
-                testMultiBunch.cpp
-                ../H5Reader.cpp ../Distribution.cpp
-                ../AmrOpal.cpp AmrPartBunch.cpp
-                ../Solver.cpp)
+    testMultiBunch.cpp
+    ../H5Reader.cpp ../Distribution.cpp
+    ../AmrOpal.cpp AmrPartBunch.cpp
+    ../Solver.cpp)
     
 add_executable (testH5Read testH5Read.cpp ../H5Reader.cpp)
 
@@ -111,90 +106,66 @@ add_executable (testHdf5 testHdf5.cpp)
 add_executable(toFile toFile.cpp ../H5Reader.cpp ../Distribution.cpp)
     
 add_executable (testTracker
-                testTracker.cpp
-                ../AmrOpal.cpp AmrPartBunch.cpp
-                ../H5Reader.cpp ../Distribution.cpp
-                ../Solver.cpp)
+    testTracker.cpp
+    ../AmrOpal.cpp AmrPartBunch.cpp
+    ../H5Reader.cpp ../Distribution.cpp
+    ../Solver.cpp)
     
 add_executable (testOldPlasma
-                testOldPlasma.cpp
-                ../AmrOpal.cpp AmrPartBunch.cpp
-                ../H5Reader.cpp ../Distribution.cpp
-                ../Solver.cpp)
-    
+    testOldPlasma.cpp
+    ../AmrOpal.cpp AmrPartBunch.cpp
+    ../H5Reader.cpp ../Distribution.cpp
+    ../Solver.cpp)
+
 add_executable (testPerfectLoadBalancing
-                testPerfectLoadBalancing.cpp
-                ../AmrOpal.cpp AmrPartBunch.cpp
-                ../H5Reader.cpp ../Distribution.cpp
-                ../Solver.cpp)
+    testPerfectLoadBalancing.cpp
+    ../AmrOpal.cpp AmrPartBunch.cpp
+    ../H5Reader.cpp ../Distribution.cpp
+    ../Solver.cpp)
 
 add_executable (testOldPerformance
-                testOldPerformance.cpp
-                ../AmrOpal.cpp AmrPartBunch.cpp
-                ../H5Reader.cpp ../Distribution.cpp
-                ../Solver.cpp)
+    testOldPerformance.cpp
+    ../AmrOpal.cpp AmrPartBunch.cpp
+    ../H5Reader.cpp ../Distribution.cpp
+    ../Solver.cpp)
     
-    # Boxlib has a circular dependency between -lcboxlib and -lfboxlib --> resolve by: -lcboxlib -lfboxlib -lcboxlib
-#     target_link_libraries (testAmrPartBunch ${LIBS} -lgfortran ${AMREX_LIBRARIES} -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-#     target_link_libraries (testSolver ${LIBS} -lgfortran ${AMREX_LIBRARIES} -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-#     target_link_libraries (testError ${LIBS} -lgfortran ${AMREX_LIBRARIES} -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
+# Boxlib has a circular dependency between -lcboxlib and -lfboxlib
+# --> resolve by: -lcboxlib -lfboxlib -lcboxlib
+
+# target_link_libraries (testAmrPartBunch ${LIBS})
+# target_link_libraries (testSolver ${LIBS})
+# target_link_libraries (testError ${LIBS})
 
 target_link_libraries (iterative)
 
-target_link_libraries (testH5Read ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
+set (LIBS
+    ${LIBS}
+    -lgfortran
+    ${AMREX_LIBRARIES}
+    -lcboxlib
+    ${OTHER_CMAKE_EXE_LINKER_FLAGS}
+    ${CMAKE_DL_LIBS}
+    )
+    
+target_link_libraries (testH5Read               ${LIBS})
+target_link_libraries (testHdf5                 ${LIBS})
+target_link_libraries (testGaussian             ${LIBS})
+target_link_libraries (testUniform              ${LIBS})
+target_link_libraries (testUnifSphere           ${LIBS})
+target_link_libraries (testGridSolve            ${LIBS})
+target_link_libraries (testUnifSphereGrid       ${LIBS})
+target_link_libraries (testReal                 ${LIBS})
+target_link_libraries (testMultiBunch           ${LIBS})
+target_link_libraries (toFile                   ${LIBS})
+target_link_libraries (testTracker              ${LIBS})
+target_link_libraries (testOldPlasma            ${LIBS} -lboost_system -lboost_filesystem)
+target_link_libraries (testPerfectLoadBalancing ${LIBS})
+target_link_libraries (testOldPerformance       ${LIBS})
 
-target_link_libraries (testHdf5 ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-target_link_libraries (testGaussian ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-target_link_libraries (testUniform ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-target_link_libraries (testUnifSphere ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-                        
-target_link_libraries (testGridSolve ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-
-target_link_libraries (testUnifSphereGrid ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-
-target_link_libraries (testReal ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-target_link_libraries (testMultiBunch ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-target_link_libraries (toFile ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-target_link_libraries (testTracker ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-target_link_libraries (testOldPlasma ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS}
-                        -lboost_system -lboost_filesystem)
-    
-target_link_libraries (testPerfectLoadBalancing ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-
-target_link_libraries (testOldPerformance ${LIBS}
-                        -lgfortran ${AMREX_LIBRARIES}
-                        -lcboxlib ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-
+# vi: set et ts=4 sw=4 sts=4:
+  
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

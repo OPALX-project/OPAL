@@ -18,8 +18,9 @@ if (ENABLE_AMR)
         ${Fortran_LIBS}
         ${AMREX_EXTRA_Fortran_LINK_LINE}
         ${AMREX_LIBRARIES}
-        )
-else (ENABLE_AMR)
+        
+    )
+else ()
     set(AMR_LIBS "")
 endif ()
 

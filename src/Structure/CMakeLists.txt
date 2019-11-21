@@ -59,12 +59,20 @@ if (ENABLE_AMR)
     list(APPEND HDRS GridLBalWriter.h)
 endif()
 
-if(UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE)
     # for Linux, BSD, Solaris, Minix
-    list(APPEND _SRCS MemoryProfiler.cpp)
-    list(APPEND HDRS MemoryProfiler.h)
+    list (APPEND _SRCS MemoryProfiler.cpp)
+    list (APPEND HDRS MemoryProfiler.h)
 endif()
 
-add_opal_sources(${_SRCS})
+add_opal_sources (${_SRCS})
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Structure")
+
+# vi: set et ts=4 sw=4 sts=4:
+  
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

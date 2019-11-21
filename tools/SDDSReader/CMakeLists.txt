@@ -1,22 +1,20 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 2.8.10)
-PROJECT (StandAloneSDDSReader)
-SET (StandAloneSDDSReader_VERSION_MAJOR 0)
-SET (StandAloneSDDSReader_VERSION_MINOR 1)
+cmake_minimum_required (VERSION 2.8.10)
+project (StandAloneSDDSReader)
+set (StandAloneSDDSReader_VERSION_MAJOR 0)
+set (StandAloneSDDSReader_VERSION_MINOR 1)
 
 configure_file(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/config.h)
 
-set (CMAKE_CXX_FLAGS
-    "${IPPL_CMAKE_CXX_FLAGS} -DPARALLEL_IO ${CMAKE_CXX_FLAGS}"
-    )
+add_definitions (-DPARALLEL_IO)
 
-SET (PARSERPATH "${CMAKE_SOURCE_DIR}/src/Structure")
+set (PARSERPATH "${CMAKE_SOURCE_DIR}/src/Structure")
 
-INCLUDE_DIRECTORIES (
+include_directories (
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/Classic
 )
 
-SET (SRCS
+set (SRCS
   ${CMAKE_SOURCE_DIR}/src/Structure/SDDSParser.cpp
   ${CMAKE_SOURCE_DIR}/src/Structure/SDDSParser/array.cpp
   ${CMAKE_SOURCE_DIR}/src/Structure/SDDSParser/associate.cpp
@@ -32,14 +30,22 @@ SET (SRCS
   ${CMAKE_SOURCE_DIR}/src/Classic/Utilities/ClassicException.cpp
 )
 
-SET (LIBS
+set (LIBS
     ${Boost_LIBRARIES}
     ${MPI_LIBRARIES}
     z
     dl
 )
 
-ADD_EXECUTABLE( SDDSReader main.cpp ${SRCS})
-TARGET_LINK_LIBRARIES( SDDSReader ${LIBS} )
+add_executable (SDDSReader main.cpp ${SRCS})
+target_link_libraries (SDDSReader ${LIBS})
 
-INSTALL(TARGETS SDDSReader RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
+install (TARGETS SDDSReader RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
+
+# vi: set et ts=4 sw=4 sts=4:
+  
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

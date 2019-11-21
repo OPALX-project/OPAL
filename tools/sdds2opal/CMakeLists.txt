@@ -25,3 +25,11 @@ ADD_EXECUTABLE( sdds2opal main.cpp )
 TARGET_LINK_LIBRARIES( sdds2opal ${SDDS_LIBS} )
 
 INSTALL(TARGETS sdds2opal RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
+
+# vi: set et ts=4 sw=4 sts=4:
+  
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

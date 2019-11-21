@@ -24,7 +24,7 @@ private:
     virtual void readMap();
     virtual void freeMap();
 
-    double *restrict FourCoefs_m;
+    double *__restrict__ FourCoefs_m;
 
     double frequency_m;
     double xlrep_m;

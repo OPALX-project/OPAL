@@ -1,18 +1,26 @@
-SET (_SRCS
+set (_SRCS
     )
 
-SET (_HDRS
+set (_HDRS
     ParticleAmrLayout.h
     AmrParticleBase.h
     AmrParticleBase.hpp
     AmrParticleLevelCounter.h
     )
 
-INCLUDE_DIRECTORIES (
+include_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}
-)
+    )
 
 ADD_IPPL_SOURCES (${_SRCS})
 ADD_IPPL_HEADERS (${_HDRS})
 
-INSTALL (FILES ${_HDRS} DESTINATION include/AmrParticle)
+install (FILES ${_HDRS} DESTINATION include/AmrParticle)
+
+# vi: set et ts=4 sw=4 sts=4:
+
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

@@ -1,31 +1,28 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 2.8.10)
-cmake_policy(SET CMP0048 NEW)
-PROJECT (MSLANG VERSION 0.1)
+cmake_minimum_required (VERSION 2.8.10)
+cmake_policy (SET CMP0048 NEW)
+project (MSLANG)
+set (MSLANG_VERSION_MAJOR 0)
+set (MSLANG_VERSION_MINOR 1)
 
-#SET (MSLANG_VERSION_MAJOR 0)
-#SET (MSLANG_VERSION_MINOR 1)
+add_definitions (-DIPPL_MPI)
+add_definitions (-DIPPL_DONT_POOL)
+add_definitions (-DIPPL_USE_XDIV_RNG)
+add_definitions (-DIPPL_USE_PARTIAL_SPECIALIZATION)
+add_definitions (-DNOCTAssert)
 
-SET (IPPL_CXX_FLAGS
-    "-DIPPL_LINUX -DIPPL_STRINGSTREAM -DIPPL_MPI -DMPICH_SKIP_MPICXX -DIPPL_DONT_POOL -DIPPL_USE_XDIV_RNG -DIPPL_USE_PARTIAL_SPECIALIZATION -Drestrict=__restrict__ -DNOCTAssert ${IPPL_CXX_FLAGS}"
-    )
-
- SET (CMAKE_CXX_FLAGS
-     "${OTHER_CXX_FLAGS} ${IPPL_CXX_FLAGS} ${CMAKE_CXX_FLAGS} "
-     )
-
-INCLUDE_DIRECTORIES (
+include_directories (
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_SOURCE_DIR}/src/Classic
     ${CMAKE_SOURCE_DIR}/ippl/src
     ${GSL_INCLUDE_DIR}
 )
 
-LINK_DIRECTORIES (
+link_directories (
     ${IPPL_LIBRARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
 )
 
-SET (MSLANG_LIBS
+set (MSLANG_LIBS
     libOPAL
     ${OPTP_LIBS}
     ${OPTP_LIBRARY}
@@ -39,8 +36,16 @@ SET (MSLANG_LIBS
     z
 )
 
-MESSAGE( STATUS "Compiling MSLang")
-ADD_EXECUTABLE( mslang mslang.cpp )
-TARGET_LINK_LIBRARIES( mslang ${MSLANG_LIBS} )
+message (STATUS "Compiling MSLang")
+add_executable (mslang mslang.cpp)
+target_link_libraries (mslang ${MSLANG_LIBS})
 
-INSTALL(TARGETS mslang RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
+install (TARGETS mslang RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
+
+# vi: set et ts=4 sw=4 sts=4:
+  
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

@@ -2,7 +2,7 @@ set (_SRCS
     FFTBoxPoissonSolver.cpp
     FFTPoissonSolver.cpp
     P3MPoissonSolver.cpp
- )
+    )
 
 set (HDRS
     FFTBoxPoissonSolver.h
@@ -10,50 +10,58 @@ set (HDRS
     IrregularDomain.h
     P3MPoissonSolver.h
     PoissonSolver.h
-)
+    )
 
-if ( ENABLE_SAAMG_SOLVER )
-    list(APPEND _SRCS
-         ArbitraryDomain.cpp
-         BoxCornerDomain.cpp
-         EllipticDomain.cpp
-         MGPoissonSolver.cpp
-         RectangularDomain.cpp
-         )
+if (ENABLE_SAAMG_SOLVER)
+    list (APPEND _SRCS
+        ArbitraryDomain.cpp
+        BoxCornerDomain.cpp
+        EllipticDomain.cpp
+        MGPoissonSolver.cpp
+        RectangularDomain.cpp
+        )
 
-    list(APPEND HDRS
-         ArbitraryDomain.h
-         BoxCornerDomain.h
-         EllipticDomain.h
-         MGPoissonSolver.h
-         RectangularDomain.h
-         )
+    list (APPEND HDRS
+        ArbitraryDomain.h
+        BoxCornerDomain.h
+        EllipticDomain.h
+        MGPoissonSolver.h
+        RectangularDomain.h
+        )
 
-endif ( ENABLE_SAAMG_SOLVER )
+endif ()
 
-set(AMR_MG_DIR "")
+set (AMR_MG_DIR "")
 
-if ( ENABLE_AMR )
-    list(APPEND _SRCS AMReXSolvers/MLPoissonSolver.cpp)
-    list(APPEND HDRS AmrPoissonSolver.h AMReXSolvers/MLPoissonSolver.h)
+if (ENABLE_AMR)
+    list (APPEND _SRCS AMReXSolvers/MLPoissonSolver.cpp)
+    list (APPEND HDRS AmrPoissonSolver.h AMReXSolvers/MLPoissonSolver.h)
     
-    if ( AMREX_ENABLE_FBASELIB )
-        list(APPEND _SRCS BoxLibSolvers/FMGPoissonSolver.cpp)
-        list(APPEND AMR_HDRS BoxLibSolvers/FMGPoissonSolver.h)
-    endif ( AMREX_ENABLE_FBASELIB )
+    if (AMREX_ENABLE_FBASELIB)
+        list (APPEND _SRCS BoxLibSolvers/FMGPoissonSolver.cpp)
+        list (APPEND AMR_HDRS BoxLibSolvers/FMGPoissonSolver.h)
+    endif ()
 
-    if ( ENABLE_AMR_MG_SOLVER )
+    if (ENABLE_AMR_MG_SOLVER)
         add_subdirectory (AMR_MG)
-        set(AMR_MG_DIR "${CMAKE_CURRENT_SOURCE_DIR}/AMR_MG")
-    endif ( ENABLE_AMR_MG_SOLVER )
+        set (AMR_MG_DIR "${CMAKE_CURRENT_SOURCE_DIR}/AMR_MG")
+    endif ()
 
-endif ( ENABLE_AMR )
+endif ()
 
 include_directories (
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${AMR_MG_DIR}
-)
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${AMR_MG_DIR}
+    )
 
-add_opal_sources(${_SRCS})
+add_opal_sources (${_SRCS})
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Solvers")
+
+# vi: set et ts=4 sw=4 sts=4:
+
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

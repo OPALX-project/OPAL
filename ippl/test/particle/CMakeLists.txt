@@ -1,5 +1,5 @@
-FILE (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-MESSAGE (STATUS "Adding test FFT found in ${_relPath}")
+file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
+message (STATUS "Adding test FFT found in ${_relPath}")
 
 include_directories (
     ${CMAKE_SOURCE_DIR}/src
@@ -14,25 +14,24 @@ link_directories (
     ${CMAKE_SOURCE_DIR}/src
 )
 
-set (CMAKE_CXX_FLAGS
-        "${IPPL_CMAKE_CXX_FLAGS} -std=c++11 -DPARALLEL_IO ${CMAKE_CXX_FLAGS}"
-    )
+add_compile_options (-std=c++11)
+add_definitions (-DPARALLEL_IO)
 
-SET (IPPL_LIBS ippl)
-SET (COMPILE_FLAGS ${OPAL_CXX_FLAGS})
+set (IPPL_LIBS ippl)
+set (COMPILE_FLAGS ${OPAL_CXX_FLAGS})
 
-IF (ENABLE_DKS)
+if (ENABLE_DKS)
    
    include_directories (${DKS_INCLUDE_DIR})
    link_directories (${DKS_LIBRARY_DIR})
    #SET (IPPL_LIBS ${IPPL_LIBS} dks)
    SET (IPPL_LIBS ${IPPL_LIBS} ${DKS_LIBRARY_DIR}/libdks.a)
 
-ENDIF (ENABLE_DKS)
+endif ()
 
 set_source_files_properties(SOURCE PIC3d.cpp p3m3d.cpp
-                            PROPERTY COMPILE_FLAGS
-                            -fno-tree-vrp)
+    PROPERTY COMPILE_FLAGS
+    -fno-tree-vrp)
 
 #add_executable (PIC3d PIC3d.cpp)
 #target_link_libraries (PIC3d ${IPPL_LIBS})
@@ -96,3 +95,10 @@ target_link_libraries (
 #add_executable (test-scatter-1 test-scatter-1.cpp)
 #target_link_libraries (test-scatter-1 ${IPPL_LIBS})
 
+# vi: set et ts=4 sw=4 sts=4:
+  
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

@@ -1,39 +1,39 @@
 set (_SRCS
-  CavityAutophaser.cpp
-  Ctunes.cpp
-  IndexMap.cpp
-  Hamiltonian.cpp
-  LieMapper.cpp
-  lomb.cpp
-  NilTracker.cpp
-  MapAnalyser.cpp
-  MPSplitIntegrator.cpp
-  MultiBunchHandler.cpp
-  OrbitThreader.cpp
-  ParallelCyclotronTracker.cpp
-  ParallelSliceTracker.cpp
-  ParallelTTracker.cpp
-  StepSizeConfig.cpp
-  ThickMapper.cpp
-  ThickTracker.cpp
-  TransportMapper.cpp
-  bet/EnvelopeSlice.cpp
-  bet/EnvelopeBunch.cpp
-  bet/profile.cpp
-  bet/math/integrate.cpp
-  bet/math/interpol.cpp
-  bet/math/rk.cpp
-  bet/math/functions.cpp
-  bet/math/linfit.cpp
-  bet/math/root.cpp
-  bet/math/savgol.cpp
-  bet/math/svdfit.cpp
-  bet/BetError.cpp
-  )
+    CavityAutophaser.cpp
+    Ctunes.cpp
+    IndexMap.cpp
+    Hamiltonian.cpp
+    LieMapper.cpp
+    lomb.cpp
+    NilTracker.cpp
+    MapAnalyser.cpp
+    MPSplitIntegrator.cpp
+    MultiBunchHandler.cpp
+    OrbitThreader.cpp
+    ParallelCyclotronTracker.cpp
+    ParallelSliceTracker.cpp
+    ParallelTTracker.cpp
+    StepSizeConfig.cpp
+    ThickMapper.cpp
+    ThickTracker.cpp
+    TransportMapper.cpp
+    bet/EnvelopeSlice.cpp
+    bet/EnvelopeBunch.cpp
+    bet/profile.cpp
+    bet/math/integrate.cpp
+    bet/math/interpol.cpp
+    bet/math/rk.cpp
+    bet/math/functions.cpp
+    bet/math/linfit.cpp
+    bet/math/root.cpp
+    bet/math/savgol.cpp
+    bet/math/svdfit.cpp
+    bet/BetError.cpp
+    )
 
 include_directories (
-  ${CMAKE_CURRENT_SOURCE_DIR}
-)
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 
 add_opal_sources(${_SRCS})
 
@@ -68,6 +68,14 @@ set (HDRS
     bet/math/root.h
     bet/math/savgol.h
     bet/math/svdfit.h
-)
+    )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Algorithms")
+
+# vi: set et ts=4 sw=4 sts=4:
+
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

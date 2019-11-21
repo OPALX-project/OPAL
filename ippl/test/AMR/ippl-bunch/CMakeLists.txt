@@ -1,15 +1,11 @@
-FILE (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-MESSAGE (STATUS "Adding test AMR found in ${_relPath}")
-#     MESSAGE (STATUS "MPI COMPILER ${MPI_UNDERLYING_COMPILER}")
-    
-set (CMAKE_CXX_FLAGS
-    "-O3 ${CMAKE_CXX_FLAGS}"
-    )
-    
-set (CMAKE_CXX_FLAGS
-    "${IPPL_CMAKE_CXX_FLAGS} -std=c++11 -DPARALLEL_IO -DIPPL_AMR ${CMAKE_CXX_FLAGS}"
-)
+file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
+message (STATUS "Adding test AMR found in ${_relPath}")
 
+add_compile_options (-O3)
+add_compile_options (-std=c++11)
+
+add_definitions (-DPARALLEL_IO)
+add_definitions (-DIPPL_AMR)
 add_definitions(${AMREX_DEFINES})
     
 include_directories (
@@ -66,3 +62,11 @@ set( EXECS
 )
 
 install (TARGETS ${EXECS} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/libexec/amr/ippl-bunch")
+
+# vi: set et ts=4 sw=4 sts=4:
+  
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

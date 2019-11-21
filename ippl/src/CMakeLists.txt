@@ -23,47 +23,6 @@ set (IPPL_COMPILE_USER \"${WHOAMI_OUT}\")
 
 configure_file (IpplVersions.h.in ${CMAKE_CURRENT_SOURCE_DIR}/IpplVersions.h)
 
-if (UNUSED)
-    ### print the compiler flags #############################
-    set (PRETTY_PRINT_WIDTH 78)
-    string (TOUPPER ${CMAKE_BUILD_TYPE} CMAKE_BUILD_TYPE_STR)
-    set (COMPILE_FLAGS_STR
-        "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${CMAKE_BUILD_TYPE_STR}}")
-    string (REGEX REPLACE " +" ";" COMPILE_FLAGS_LIST ${COMPILE_FLAGS_STR})
-    
-    list (LENGTH COMPILE_FLAGS_LIST NUMBER_OF_COMPILE_FLAGS)
-    set (CURRENT_FLAG_INDEX 0)
-
-    message ("")
-    message ("Building IPPL with:")
-    while (${CURRENT_FLAG_INDEX} LESS ${NUMBER_OF_COMPILE_FLAGS})
-        set (FLAGS_PRETTY_PRINT "")
-        
-        list (GET COMPILE_FLAGS_LIST ${CURRENT_FLAG_INDEX} CURRENT_FLAG)
-        string (LENGTH ${CURRENT_FLAG} LENGTH_INCL_NEXT)
-        
-        while (${LENGTH_INCL_NEXT} LESS ${PRETTY_PRINT_WIDTH})
-            set (FLAGS_PRETTY_PRINT
-                "${FLAGS_PRETTY_PRINT} ${CURRENT_FLAG}")
-            
-            math (EXPR CURRENT_FLAG_INDEX "(${CURRENT_FLAG_INDEX} + 1)")
-           
-            if (${CURRENT_FLAG_INDEX} EQUAL ${NUMBER_OF_COMPILE_FLAGS})
-                set (LENGTH_INCL_NEXT ${PRETTY_PRINT_WIDTH})
-            else (${CURRENT_FLAG_INDEX} EQUAL ${NUMBER_OF_COMPILE_FLAGS})
-                list (GET COMPILE_FLAGS_LIST ${CURRENT_FLAG_INDEX} CURRENT_FLAG)
-                if (CURRENT_FLAG)
-                    string (LENGTH ${CURRENT_FLAG} LENGTH_CURRENT_FLAG)
-                    math (EXPR LENGTH_INCL_NEXT "${LENGTH_INCL_NEXT} + 1 + ${LENGTH_CURRENT_FLAG}")
-                endif ()
-            endif ()
-        endwhile ()
-        string (STRIP ${FLAGS_PRETTY_PRINT} FLAGS_PRETTY_PRINT)
-        message (STATUS "${FLAGS_PRETTY_PRINT}")
-    endwhile ()
-    message ("")
-endif ()
-
 set (IPPL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 macro (add_ippl_sources)
     file (RELATIVE_PATH _relPath "${IPPL_SRC_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -147,6 +106,7 @@ install (TARGETS ippl DESTINATION lib)
 install (FILES ${IPPL_BASEDIR_HDRS} DESTINATION include)
 
 # vi: set et ts=4 sw=4 sts=4:
+
 # Local Variables:
 # mode:cmake
 # cmake-tab-width: 4

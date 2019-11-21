@@ -39,9 +39,7 @@
 #include <iostream>
 #include <new>
 #include <cstring>
-#ifndef IPPL_GPLUSPLUS
 #include <functional>
-#endif
 
 
 // Helper functions.
@@ -529,7 +527,7 @@ template <class T>
 Tps<T> &Tps<T>::operator*=(const T &rhs) {
     unique();
     T *x = rep->data();
-    std::transform(x, x + rep->len, x, std::bind2nd(std::multiplies<T>(), rhs));
+    std::transform(x, x + rep->len, x, std::bind(std::multiplies<T>(), std::placeholders::_1, rhs));
     return *this;
 }
 
@@ -538,7 +536,7 @@ template <class T>
 Tps<T> &Tps<T>::operator/=(const T &rhs) {
     if(rhs == T(0)) throw DivideError("Tps::operator/()");
     T *x = rep->data();
-    std::transform(x, x + rep->len, x, std::bind2nd(std::divides<T>(), rhs));
+    std::transform(x, x + rep->len, x, std::bind(std::divides<T>(), std::placeholders::_1, rhs));
     return *this;
 }
 
@@ -879,7 +877,7 @@ Tps<T> Tps<T>::multiply(const Tps<T> &rhs, int trunc) const {
             const T y  = rhs.rep->data()[0];
             T *z = result.rep->data();
             std::transform(x, x + rep->len, z,
-                           std::bind2nd(std::multiplies<T>(), y));
+                           std::bind(std::multiplies<T>(), std::placeholders::_1, y));
             return result;
         }
     } else {
@@ -889,7 +887,7 @@ Tps<T> Tps<T>::multiply(const Tps<T> &rhs, int trunc) const {
         const T *y = rhs.rep->data();
         T *z = result.rep->data();
         std::transform(y, y + rep->len, z,
-                       std::bind2nd(std::multiplies<T>(), x));
+                       std::bind(std::multiplies<T>(), std::placeholders::_1, x));
         return result;
     }
 }

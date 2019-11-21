@@ -1,18 +1,16 @@
-FILE (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-MESSAGE (STATUS "Adding test AMR found in ${_relPath}")
-#     MESSAGE (STATUS "MPI COMPILER ${MPI_UNDERLYING_COMPILER}")
-    
-set (CMAKE_CXX_FLAGS
-    "-O3 ${CMAKE_CXX_FLAGS} -DBL_USE_FORTRAN_MPI -DUNIQUE_PTR -DHAVE_AMR_MG_SOLVER"
-    )
-    
-set (CMAKE_CXX_FLAGS
-    "${IPPL_CMAKE_CXX_FLAGS} -std=c++11 -DUSEH5FEDV2 -DPARALLEL_IO -DIPPL_AMR ${CMAKE_CXX_FLAGS}"
-)
+file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
+message (STATUS "Adding test AMR found in ${_relPath}")
 
-set (CMAKE_CXX_FLAGS "-DHAVE_AMR_MG_SOLVER ${CMAKE_CXX_FLAGS}")
+add_compile_options (-O3)
+add_compile_options (-std=c++11)
 
-add_definitions(${AMREX_DEFINES})
+add_definitions (-DBL_USE_FORTRAN_MPI)
+add_definitions (-DUNIQUE_PTR)
+add_definitions (-DHAVE_AMR_MG_SOLVER)
+add_definitions (-DUSEH5FEDV2)
+add_definitions (-DPARALLEL_IO)
+add_definitions (-DIPPL_AMR)
+add_definitions (${AMREX_DEFINES})
 
 add_compile_options(-Wno-deprecated-declarations)
 
@@ -48,99 +46,78 @@ link_directories (
 
 set (TESTLIBS amropal multigrid)
 
-set(EXECS "")
+set (EXECS "")
 
-IF ( ${AMREX_DIM} EQUAL 2 )
+if (${AMREX_DIM} EQUAL 2)
+    add_executable (testRestrictionMatrix       testRestrictionMatrix.cpp)
+    add_executable (testInterpolationMatrix     testInterpolationMatrix.cpp)
+    add_executable (testBoundaryMatrix          testBoundaryMatrix.cpp)
+    add_executable (testSmootherMatrix          testSmootherMatrix.cpp)
+    add_executable (testPoissonMatrix           testPoissonMatrix.cpp)
+    add_executable (testNoFine                  testNoFine.cpp)
+    add_executable (testWithFine                testWithFine.cpp)
+    add_executable (testSpecialPoissonMatrix    testSpecialPoissonMatrix.cpp)
+    add_executable (testLagrange                testLagrange.cpp)
+endif ()
 
-    add_executable( testRestrictionMatrix testRestrictionMatrix.cpp)
-    
-    add_executable( testInterpolationMatrix testInterpolationMatrix.cpp)
-    
-    add_executable( testBoundaryMatrix testBoundaryMatrix.cpp)
-    
-    add_executable( testSmootherMatrix testSmootherMatrix.cpp)
-    
-    add_executable( testPoissonMatrix testPoissonMatrix.cpp)
-    
-    add_executable( testNoFine testNoFine.cpp)
-    
-    add_executable( testWithFine testWithFine.cpp)
-    
-    add_executable( testSpecialPoissonMatrix testSpecialPoissonMatrix.cpp)
-    
-    add_executable( testLagrange testLagrange.cpp)
-    
-ENDIF ( ${AMREX_DIM} EQUAL 2 )
+# add_executable (testAmrMultigrid
+#     testAmrMultigrid.cpp)
 
-# add_executable( testAmrMultigrid
-#                 testAmrMultigrid.cpp)
+# add_executable (testSolverComparison
+#     testSolverComparison.cpp
+#     ../Solver.cpp)
 
-# add_executable( testSolverComparison
-#                 testSolverComparison.cpp
-#                 ../Solver.cpp)
-
-IF ( ${AMREX_DIM} EQUAL 3 )
+if (${AMREX_DIM} EQUAL 3)
+    set (LIBS
+        ${GSL_LIBRARY}
+        ${GSL_CLBAS_LIBRARY}
+        ${Trilinos_LIBRARIES}
+        ${Trilinos_TPL_LIBRARIES}
+        ${OTHER_CMAKE_EXE_LINKER_FLAGS}
+        ${CMAKE_DL_LIBS})
+        )
     add_executable( testCopy testCopy.cpp)
-
-    target_link_libraries (testCopy ${TESTLIBS} ${GSL_LIBRARY} ${GSL_CLBAS_LIBRARY}
-                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-                           ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
+    target_link_libraries (testCopy
+        ${TESTLIBS}
+        ${LIBS}
+        )
     
     add_executable( testBitPattern testBitPattern.cpp)
-    
-    target_link_libraries (testBitPattern ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
+    target_link_libraries (testBitPattern
+        ${OTHER_CMAKE_EXE_LINKER_FLAGS}
+        ${CMAKE_DL_LIBS}
+        )
     
     add_executable( trilinos2ippl trilinos2ippl.cpp)
+    target_link_libraries (trilinos2ippl
+        ${TESTLIBS}
+        ${LIBS}
+        )
     
-    target_link_libraries (trilinos2ippl ${TESTLIBS} ${GSL_LIBRARY} ${GSL_CLBAS_LIBRARY}
-                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-                           ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-    set( EXECS
+    set (EXECS
          ${EXECS}
          testBitPattern
          trilinos2ippl
          testCopy
-    )
-ENDIF ( ${AMREX_DIM} EQUAL 3 )
-                        
+         )
+endif ()
 
-IF ( ${AMREX_DIM} EQUAL 2 )
-    target_link_libraries (testRestrictionMatrix ${TESTLIBS}
-                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-                           ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-
-    target_link_libraries (testInterpolationMatrix ${TESTLIBS}
-                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-                           ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-    target_link_libraries (testBoundaryMatrix ${TESTLIBS}
-                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-                           ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-    target_link_libraries (testSmootherMatrix ${TESTLIBS}
-                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-                           ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-    target_link_libraries (testPoissonMatrix ${TESTLIBS}
-                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-                           ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-    target_link_libraries (testNoFine ${TESTLIBS}
-                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-                           ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-    target_link_libraries (testWithFine ${TESTLIBS}
-                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-                           ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-    target_link_libraries (testSpecialPoissonMatrix ${TESTLIBS}
-                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-                           ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-    
-    target_link_libraries (testLagrange ${TESTLIBS}
-                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-                           ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
+if (${AMREX_DIM} EQUAL 2)
+    set (LIBS
+        ${Trilinos_LIBRARIES}
+        ${Trilinos_TPL_LIBRARIES}
+        ${OTHER_CMAKE_EXE_LINKER_FLAGS}
+        ${CMAKE_DL_LIBS}
+        )
+    target_link_libraries (testRestrictionMatrix        ${TESTLIBS} ${LIBS})
+    target_link_libraries (testInterpolationMatrix      ${TESTLIBS} ${LIBS})
+    target_link_libraries (testBoundaryMatrix           ${TESTLIBS} ${LIBS})
+    target_link_libraries (testSmootherMatrix           ${TESTLIBS} ${LIBS})
+    target_link_libraries (testPoissonMatrix            ${TESTLIBS} ${LIBS})
+    target_link_libraries (testNoFine                   ${TESTLIBS} ${LIBS})
+    target_link_libraries (testWithFine                 ${TESTLIBS} ${LIBS})
+    target_link_libraries (testSpecialPoissonMatrix     ${TESTLIBS} ${LIBS})
+    target_link_libraries (testLagrange                 ${TESTLIBS} ${LIBS})
 
     set( EXECS
          ${EXECS}
@@ -154,21 +131,23 @@ IF ( ${AMREX_DIM} EQUAL 2 )
          testSpecialPoissonMatrix
          testLagrange
     )
-ENDIF ( ${AMREX_DIM} EQUAL 2 )
+endif ()
 
-# target_link_libraries (testAmrMultigrid ${TESTLIBS}
-#                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-#                            ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-
-# target_link_libraries (testSolverComparison ${TESTLIBS}
-#                           ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-#                            ${OTHER_CMAKE_EXE_LINKER_FLAGS} ${CMAKE_DL_LIBS})
-
-
-set( EXECS
-     ${EXECS}
-#      testAmrMultigrid
-#      testSolverComparison
-)
+# target_link_libraries (testAmrMultigrid               ${TESTLIBS} ${LIBS})
+# target_link_libraries (testSolverComparison           ${TESTLIBS} ${LIBS})
+#
+# set( EXECS
+#     ${EXECS}
+#     testAmrMultigrid
+#     testSolverComparison
+#     )
 
 install (TARGETS ${EXECS} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/libexec/amr/trilinos")
+
+# vi: set et ts=4 sw=4 sts=4:
+  
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

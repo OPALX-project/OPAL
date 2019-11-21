@@ -3,8 +3,8 @@ find_package (GTest REQUIRED)
 set (TEST_EXE opal_unit_tests)
 set (SRC_DIRS classic_src opal_src)
 
-add_compile_options (${IPPL_CMAKE_CXX_FLAGS} )
-add_definitions (-DPARALLEL_IO -DWITH_UNIT_TESTS)
+add_definitions (-DPARALLEL_IO)
+add_definitions (-DWITH_UNIT_TESTS)
 
 set (TEST_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 macro (add_sources)
@@ -79,3 +79,11 @@ target_link_libraries (
     ${GTEST_BOTH_LIBRARIES}
     pthread
 )
+
+# vi: set et ts=4 sw=4 sts=4:
+  
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

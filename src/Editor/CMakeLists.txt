@@ -1,21 +1,21 @@
 set (_SRCS
-  Edit.cpp
-  EditCmd.cpp
-  EditCycle.cpp
-  EditEnd.cpp
-  EditFlatten.cpp
-  EditInstall.cpp
-  EditMove.cpp
-  EditParser.cpp
-  EditReflect.cpp
-  EditRemove.cpp
-  EditReplace.cpp
-  EditSelect.cpp
-  )
+    Edit.cpp
+    EditCmd.cpp
+    EditCycle.cpp
+    EditEnd.cpp
+    EditFlatten.cpp
+    EditInstall.cpp
+    EditMove.cpp
+    EditParser.cpp
+    EditReflect.cpp
+    EditRemove.cpp
+    EditReplace.cpp
+    EditSelect.cpp
+    )
 
 include_directories (
-  ${CMAKE_CURRENT_SOURCE_DIR}
-)
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 
 add_opal_sources(${_SRCS})
 
@@ -32,6 +32,14 @@ set (HDRS
     EditRemove.h
     EditReplace.h
     EditSelect.h
-)
+    )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Editor")
+
+# vi: set et ts=4 sw=4 sts=4:
+
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:
