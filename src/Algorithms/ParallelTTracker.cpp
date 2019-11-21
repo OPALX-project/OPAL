@@ -41,18 +41,17 @@
 #include <cmath>
 
 
-/** Include darius header files.  */
-
-#include "mithra/fieldvector.hh"
-#include "mithra/stdinclude.hh"
-#include "mithra/readdata.hh"
-#include "mithra/database.hh"
-#include "mithra/classes.hh"
-#include "mithra/datainput.hh"
-#include "mithra/readdata.hh"
-#include "mithra/solver.hh"
-#include "mithra/fdtd.hh"
-#include "mithra/fdtdSC.hh"
+/** Include header files for Mithra full-wave solver.  */
+#include "source/fieldvector.hh"
+#include "source/stdinclude.hh"
+#include "source/readdata.hh"
+#include "source/database.hh"
+#include "source/classes.hh"
+#include "source/datainput.hh"
+#include "source/readdata.hh"
+#include "source/solver.hh"
+#include "source/fdtd.hh"
+#include "source/fdtdSC.hh"
 
 #include "BeamlineCore/UndulatorRep.h"
 
