@@ -25,10 +25,7 @@
 #include <algorithm>
 #include <numeric>
 #include <cmath>
-
-#ifndef POOMA_GPLUSPLUS
 #include <functional>
-#endif
 
 // Template class Vector<T>
 // ------------------------------------------------------------------------
@@ -161,7 +158,7 @@ Vector<T> Vector<T>::operator-() const {
 template<class T>
 Vector<T> &Vector<T>::operator*=(const T &val) {
     std::transform(this->begin(), this->end(), this->begin(),
-                   std::bind2nd(std::multiplies<T>(), val));
+                   std::bind(std::multiplies<T>(), std::placeholders::_1, val));
     return *this;
 }
 
@@ -169,7 +166,7 @@ Vector<T> &Vector<T>::operator*=(const T &val) {
 template<class T>
 Vector<T> &Vector<T>::operator/=(const T &val) {
     std::transform(this->begin(), this->end(), this->begin(),
-                   std::bind2nd(std::divides<T>(), val));
+                   std::bind(std::divides<T>(), std::placeholders::_1, val));
     return *this;
 }
 
@@ -238,7 +235,7 @@ template<class T>
 Vector<T> operator*(const T &x, const Vector<T> &V1) {
     Vector<T> result = V1;
     std::transform(V1.begin(), V1.end(), result.begin(),
-                   std::bind2nd(std::multiplies<T>(), x));
+                   std::bind(std::multiplies<T>(), std::placeholders::_1, x));
     return result;
 }
 

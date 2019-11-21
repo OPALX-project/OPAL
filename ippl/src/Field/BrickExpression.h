@@ -11,11 +11,6 @@
 #ifndef BRICK_EXPRESSION_H
 #define BRICK_EXPRESSION_H
 
-// define away "restrict" if we need to
-#ifdef IPPL_NO_RESTRICT
-#define restrict /**/
-#endif
-
 // include files
 #include "Utility/Pooled.h"
 #include "Utility/RefCounted.h"
@@ -49,11 +44,7 @@ public:
       {
       }
 
-#ifdef IPPL_RESTRICT_BUG
   virtual void apply();
-#else
-  virtual void apply() restrict;
-#endif
 
 private:
   LHS Lhs;

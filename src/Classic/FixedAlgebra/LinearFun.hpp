@@ -30,9 +30,8 @@
 #include <iomanip>
 #include <iostream>
 #include <cstring>
-#ifndef IPPL_GPLUSPLUS
 #include <functional>
-#endif
+
 // Implementation of template class LinearFun<T,N>.
 // ------------------------------------------------------------------------
 

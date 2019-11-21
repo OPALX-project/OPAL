@@ -289,32 +289,6 @@ permute(const CompressedBrickIterator<T,D1>& iter,
 
   unsigned int d1, d2;
 
-#ifdef IPPL_DEBUG
-  // Do a sanity check.
-  // Make sure that any indexes in current that don't appear
-  // in perm have length of 1.
-  // It is ok to have indexes in perm that don't appear in current.
-  // They just get zero stride.
-
-  // Check each Index in current.
-  for (d1=0; d1<D1; ++d1)
-    {
-      // Compare with every Index in perm.
-      for (d2=0; d2<D2; ++d2)
-	// If they match, check the next one.
-	if ( perm[d2].sameBase( current[d1] ) )
-	  {
-	    goto FoundIt;
-	  }
-      // Didn't find it.
-      // Make sure the length is 1.
-      PAssert_EQ( current[d1].length(), 1 );
-    FoundIt:
-      ;
-    }
-
-#endif
-
   // This is the iterator we'll be building.
   CompressedBrickIterator<T,D2> permute(iter.GetCompressedData());
   if ( iter.IsCompressed() )

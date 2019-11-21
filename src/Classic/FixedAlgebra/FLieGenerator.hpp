@@ -27,8 +27,7 @@
 #include "FixedAlgebra/FTps.h"
 #include <complex>
 #include <iosfwd>
-
-
+#include <functional>
 
 // Template class FLieGenerator<T,N>.
 // This code contains various tweaks for speed.
@@ -149,14 +148,13 @@ FLieGenerator<T, N> FLieGenerator<T, N>::operator-() const {
     }
 }
 
-
 template<class T, int N>
 FLieGenerator<T, N> &FLieGenerator<T, N>::operator*=(const T &val) {
     if(itsOrder < 0) {
         return *this;
     } else {
         std::transform(itsCoeffs.begin(), itsCoeffs.end(), itsCoeffs.begin(),
-                       std::bind2nd(std::multiplies<T>(), val));
+                       std::bind(std::multiplies<T>(), std::placeholders::_1, val));
         return *this;
     }
 }
@@ -168,7 +166,7 @@ FLieGenerator<T, N> &FLieGenerator<T, N>::operator/=(const T &val) {
         return *this;
     } else {
         std::transform(itsCoeffs.begin(), itsCoeffs.end(), itsCoeffs.begin(),
-                       std::bind2nd(std::divides<T>(), val));
+                       std::bind(std::divides<T>(), std::placeholders::_1, val));
         return *this;
     }
 }

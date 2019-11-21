@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <numeric>
 #include <cmath>
+#include <functional>
 
 // Template class FVector<T,N>
 // ------------------------------------------------------------------------
@@ -143,7 +144,7 @@ FVector<T, N> FVector<T, N>::operator-() const {
 template<class T, int N>
 FVector<T, N> &FVector<T, N>::operator*=(const T &val) {
     std::transform(this->begin(), this->end(), this->begin(),
-                   std::bind2nd(std::multiplies<T>(), val));
+                   std::bind(std::multiplies<T>(), std::placeholders::_1, val));
     return *this;
 }
 
@@ -151,7 +152,7 @@ FVector<T, N> &FVector<T, N>::operator*=(const T &val) {
 template<class T, int N>
 FVector<T, N> &FVector<T, N>::operator/=(const T &val) {
     std::transform(this->begin(), this->end(), this->begin(),
-                   std::bind2nd(std::divides<T>(), val));
+                   std::bind(std::divides<T>(), std::placeholders::_1, val));
     return *this;
 }
 
@@ -220,7 +221,7 @@ template<class T, int N>
 FVector<T, N> operator*(const T &x, const FVector<T, N> &lhs) {
     FVector<T, N> result(lhs);
     std::transform(lhs.begin(), lhs.end(), result.begin(),
-                   std::bind2nd(std::multiplies<T>(), x));
+                   std::bind(std::multiplies<T>(), std::placeholders::_1, x));
     return result;
 }
 

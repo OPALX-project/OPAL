@@ -25,7 +25,7 @@
 #include "Utilities/SizeError.h"
 #include <algorithm>
 #include <numeric>
-
+#include <functional>
 
 // Template class FMatrix<T,R,C>
 // ------------------------------------------------------------------------
@@ -174,7 +174,7 @@ FMatrix<T, R, C> &FMatrix<T, R, C>::operator=(const FArray2D<T, R, C> &rhs) {
 template<class T, int R, int C>
 FMatrix<T, R, C> &FMatrix<T, R, C>::operator*=(const T &rhs) {
     std::transform(this->begin(), this->end(), this->begin(),
-                   std::bind2nd(std::multiplies<T>(), rhs));
+                   std::bind(std::multiplies<T>(), std::placeholders::_1, rhs));
     return *this;
 }
 
@@ -182,7 +182,7 @@ FMatrix<T, R, C> &FMatrix<T, R, C>::operator*=(const T &rhs) {
 template<class T, int R, int C>
 FMatrix<T, R, C> &FMatrix<T, R, C>::operator/=(const T &rhs) {
     std::transform(this->begin(), this->end(), this->begin(),
-                   std::bind2nd(std::divides<T>(), rhs));
+                   std::bind(std::divides<T>(), std::placeholders::_1, rhs));
     return *this;
 }
 

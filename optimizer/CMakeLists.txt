@@ -34,7 +34,6 @@ add_subdirectory (extlib)
 #-----------------------------------------------------------------------------
 # Build liboptp for linking to OPAL
 #
-add_compile_options (${IPPL_CMAKE_CXX_FLAGS})
 
 include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 add_library (optp ${OPTP_SRCS} ${PILOT_OPAL_SRCS})
@@ -72,3 +71,11 @@ if (ENABLE_DOXYDOC)
             )
     endif ()
 endif ()
+
+# vi: set et ts=4 sw=4 sts=4:
+  
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

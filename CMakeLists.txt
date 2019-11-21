@@ -41,14 +41,15 @@ set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS OFF)
 
-add_definitions (-DIPPL_LINUX -DIPPL_STRINGSTREAM)
-add_definitions (-DIPPL_MPI -DMPICH_SKIP_MPICXX -DIPPL_DONT_POOL)
+add_definitions (-DIPPL_MPI)
+add_definitions (-DIPPL_DONT_POOL)
 add_definitions (-DIPPL_USE_XDIV_RNG)
 add_definitions (-DIPPL_USE_PARTIAL_SPECIALIZATION)
-add_definitions (-Drestrict=__restrict__ -DNOCTAssert)
+add_definitions (-DNOCTAssert)
 
 add_compile_options (-Wall)
 add_compile_options (-funroll-loops -fstrict-aliasing)
+
 option (USE_STATIC_LIBRARIES "Link with static libraries if available" ON)
 if (NOT ${USE_STATIC_LIBRARIES})
     add_compile_options (-fPIE -fPIC)
@@ -73,7 +74,6 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     add_compile_options (-ftemplate-depth=1024)
     # Allow overloaded virtual functions (instances to be fixed in OPAL)
     #add_compile_options (-Wno-overloaded-virtual)
-    add_definitions(-DIPPL_RESTRICT_BUG)
     if (ENABLE_OpenMP)
 	    add_compile_options (-fopenmp)
     endif ()
@@ -280,10 +280,11 @@ install (
     DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/${PROJECT_NAME}"
     RENAME ${PROJECT_NAME}Config.cmake
     )
-
+  
 # vi: set et ts=4 sw=4 sts=4:
+  
 # Local Variables:
-# mode:cmake
+# mode: cmake
 # cmake-tab-width: 4
-# indent-tabs-mode:nil
+# indent-tabs-mode: nil
 # End:

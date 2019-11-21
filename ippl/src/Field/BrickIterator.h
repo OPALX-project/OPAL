@@ -21,12 +21,6 @@
 // forward declarations
 template <unsigned Dim> class NDIndex;
 
-// define away "restrict" if we need to
-#ifdef IPPL_NO_RESTRICT
-#define restrict /**/
-#endif
-
-
 //----------------------------------------------------------------------
 // A set of counters for a brick iterator.
 template<unsigned Dim>
@@ -188,7 +182,7 @@ public:
 
 protected: 
   void op_pp();
-  T* restrict Current;		// The current datum.
+  T* __restrict__ Current;		// The current datum.
   vec<int,Dim> Strides;		// The strides in the data.
   bool Whole;			// True if iterating over whole brick
 };

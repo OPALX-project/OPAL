@@ -1,13 +1,9 @@
 set (DKS_VERSION_OPAL \"${DKS_VERSION}\")
 
-add_definitions (
-    "${IPPL_CMAKE_CXX_FLAGS} -DPARALLEL_IO ${CMAKE_CXX_FLAGS}"
-    )
+add_definitions (-DPARALLEL_IO)
 
 if (ENABLE_SAAMG_SOLVER)
-    set (CMAKE_CXX_FLAGS
-        "-DHAVE_SAAMG_SOLVER ${CMAKE_CXX_FLAGS}"
-        )
+    add_definitions (-DHAVE_SAAMG_SOLVER)
     set (SAAMG_SOLVER_LIBS
         ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
         ${Fortran_LIBS}
@@ -22,21 +18,18 @@ if (ENABLE_AMR)
         ${Fortran_LIBS}
         ${AMREX_EXTRA_Fortran_LINK_LINE}
         ${AMREX_LIBRARIES}
-        
-    )
+        )
 else (ENABLE_AMR)
     set(AMR_LIBS "")
-endif (ENABLE_AMR)
+endif ()
 
 if (ENABLE_AMR AND ENABLE_AMR_MG_SOLVER)
-    set (CMAKE_CXX_FLAGS
-        "-DHAVE_AMR_MG_SOLVER ${CMAKE_CXX_FLAGS}"
-    )
+    add_definitions (-DHAVE_AMR_MG_SOLVER)
     set (AMR_MG_SOLVER_LIBS
         ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES})
-else (ENABLE_AMR AND ENABLE_AMR_MG_SOLVER)
+else ()
     set (AMR_MG_SOLVER_LIBS "")
-endif(ENABLE_AMR AND ENABLE_AMR_MG_SOLVER)
+endif ()
 
 configure_file(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/OPALconfig.h)
 configure_file(revision.h.in ${CMAKE_CURRENT_SOURCE_DIR}/OPALrevision.h)
@@ -73,8 +66,8 @@ macro (ADD_OPAL_HEADERS )
     endif ()
 endmacro ()
 
-ADD_OPAL_SOURCES(opal.cpp)
-ADD_OPAL_SOURCES(changes.cpp)
+add_opal_sources (opal.cpp)
+add_opal_sources (changes.cpp)
 
 add_subdirectory (AbstractObjects)
 add_subdirectory (Algebra)
@@ -106,7 +99,7 @@ if (ENABLE_AMR)
     add_subdirectory (Amr)
 endif ()
 
-include_directories ( BEFORE
+include_directories (BEFORE
     ${OPAL_SRC_DIR}
     ${CLASSIC_SRC_DIR}
     ${IPPL_INCLUDE_DIR}
@@ -190,12 +183,9 @@ set (HDRS
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/src")
 
 # vi: set et ts=4 sw=4 sts=4:
+
 # Local Variables:
 # mode:cmake
 # cmake-tab-width: 4
 # indent-tabs-mode:nil
 # End:
-
-#Turn on gcov
-#set(CMAKE_CXX_FLAGS "-g -O0 -Wall -fprofile-arcs -ftest-coverage")
-#set(CMAKE_CXX_OUTPUT_EXTENSION_REPLACE 1)

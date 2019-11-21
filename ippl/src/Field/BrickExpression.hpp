@@ -35,7 +35,7 @@ class BrickExpLoop
 {
 public: 
   static inline void
-  apply(LHS& restrict Lhs, RHS& restrict Rhs, OP Op)
+  apply(LHS& __restrict__ Lhs, RHS& __restrict__ Rhs, OP Op)
     {
       int n0 = Lhs.size(0);
       int n1 = Lhs.size(1);
@@ -74,7 +74,7 @@ template<class LHS, class RHS, class OP>
 class BrickExpLoop<LHS,RHS,OP,1U>
 {
 public:
-  static inline void apply(LHS& restrict Lhs, RHS& restrict Rhs, OP Op)
+  static inline void apply(LHS& __restrict__ Lhs, RHS& __restrict__ Rhs, OP Op)
     {
       int n0 = Lhs.size(0);
       for (int i0=0; i0<n0; ++i0) {
@@ -90,7 +90,7 @@ class BrickExpLoop<LHS,RHS,OP,2U>
 {
 public:
   static inline void
-  apply(LHS& restrict Lhs, RHS& restrict Rhs, OP Op)
+  apply(LHS& __restrict__ Lhs, RHS& __restrict__ Rhs, OP Op)
     {
       int n0 = Lhs.size(0);
       int n1 = Lhs.size(1);
@@ -109,7 +109,7 @@ class BrickExpLoop<LHS,RHS,OP,3U>
 {
 public:
   static inline void
-  apply(LHS& restrict Lhs, RHS& restrict Rhs, OP Op)
+  apply(LHS& __restrict__ Lhs, RHS& __restrict__ Rhs, OP Op)
     {
       int n0 = Lhs.size(0);
       int n1 = Lhs.size(1);
@@ -126,11 +126,7 @@ public:
 // BrickExpression::apply - just use BrickExpLoop
 // ada: remove restrict from apply to make  g++ 2.95.3 happy
 template<unsigned Dim, class LHS, class RHS, class OP>
-#ifdef IPPL_RESTRICT_BUG
  void BrickExpression<Dim,LHS,RHS,OP>::apply()
-#else
- void BrickExpression<Dim,LHS,RHS,OP>::apply() restrict
-#endif
 {
   
   

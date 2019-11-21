@@ -27,9 +27,7 @@
 #include <iostream>
 #include <new>
 #include <cstring>
-#ifndef IPPL_GPLUSPLUS
 #include <functional>
-#endif
 
 // Class RegularExpression::Expression
 // ------------------------------------------------------------------------

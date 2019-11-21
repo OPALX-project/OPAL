@@ -575,17 +575,15 @@ template <class T, int N>
 FTps<T, N> &FTps<T, N>::operator*=(const T &rhs) {
     unique();
     std::transform(begin(getMinOrder()), end(getMaxOrder()), begin(getMinOrder()),
-                   std::bind2nd(std::multiplies<T>(), rhs));
+                   std::bind(std::multiplies<T>(), std::placeholders::_1, rhs));
     return *this;
 }
-
 
 template <class T, int N>
 FTps<T, N> &FTps<T, N>::operator/=(const T &rhs) {
     if(rhs == T(0)) throw DivideError("FTps::operator/=()");
     return *this *= T(1) / rhs;
 }
-
 
 template <class T, int N>
 FTps<T, N> FTps<T, N>::scaleMonomials(const FTps<T, N> &rhs) const {
