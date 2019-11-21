@@ -1,39 +1,39 @@
 set (_SRCS
-  AbstractMapper.cpp
-  AbstractTimeDependence.cpp
-  AbstractTracker.cpp
-  CoordinateSystemTrafo.cpp
-  DefaultVisitor.cpp
-  Flagger.cpp
-  IdealMapper.cpp
-  LinearMapper.cpp
-  MapIntegrator.cpp
-  Mapper.cpp
-  OrbitTracker.cpp
-  PartBunch.cpp
-  PartBins.cpp
-  PartBinsCyc.cpp
-  PartData.cpp
-  OpalParticle.cpp
-  PolynomialTimeDependence.cpp
-  SplineTimeDependence.cpp
-  Surveyor.cpp
-  ThinMapper.cpp
-  ThinTracker.cpp
-  TrackIntegrator.cpp
-  Tracker.cpp
-  Quaternion.cpp
-  )
+    AbstractMapper.cpp
+    AbstractTimeDependence.cpp
+    AbstractTracker.cpp
+    CoordinateSystemTrafo.cpp
+    DefaultVisitor.cpp
+    Flagger.cpp
+    IdealMapper.cpp
+    LinearMapper.cpp
+    MapIntegrator.cpp
+    Mapper.cpp
+    OrbitTracker.cpp
+    PartBunch.cpp
+    PartBins.cpp
+    PartBinsCyc.cpp
+    PartData.cpp
+    OpalParticle.cpp
+    PolynomialTimeDependence.cpp
+    SplineTimeDependence.cpp
+    Surveyor.cpp
+    ThinMapper.cpp
+    ThinTracker.cpp
+    TrackIntegrator.cpp
+    Tracker.cpp
+    Quaternion.cpp
+    )
 
-if ( ENABLE_AMR )
-    list(APPEND _SRCS AmrPartBunch.cpp)
-endif ( ENABLE_AMR )
+if (ENABLE_AMR)
+    list (APPEND _SRCS AmrPartBunch.cpp)
+endif ()
 
 include_directories (
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  )
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 
-ADD_OPAL_SOURCES(${_SRCS})
+add_opal_sources (${_SRCS})
 
 set (HDRS
     AbstractMapper.h
@@ -65,10 +65,18 @@ set (HDRS
     Tracker.h
     TrackIntegrator.h
     Vektor.h
-)
+    )
 
-if ( ENABLE_AMR )
+if (ENABLE_AMR)
     list(APPEND HDRS AmrPartBunch.h)
-endif ( ENABLE_AMR )
+endif ()
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Algorithms")
+
+# vi: set et ts=4 sw=4 sts=4:
+
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

@@ -1,53 +1,53 @@
 set (_SRCS
-  BDipoleField.cpp
-  BMultipoleField.cpp
-  ConstBField.cpp
-  ConstBzField.cpp
-  ConstEField.cpp
-  ConstEzField.cpp
-  EDipoleField.cpp
-  EMField.cpp
-  NullField.cpp
-  StaticElectricField.cpp
-  StaticMagneticField.cpp
-  Fieldmap.cpp
-  FM3DH5Block.cpp
-  FM3DH5Block_nonscale.cpp
-  FM3DMagnetoStaticH5Block.cpp
-  FM3DMagnetoStatic.cpp
-  FM3DMagnetoStaticExtended.cpp
-  FM3DDynamic.cpp
-  FM2DElectroStatic.cpp
-  FM2DMagnetoStatic.cpp
-  FM2DDynamic.cpp
-  FM1DDynamic.cpp
-  FM1DDynamic_fast.cpp
-  Astra1D_fast.cpp
-  Astra1DDynamic.cpp
-  Astra1DDynamic_fast.cpp
-  FM1DElectroStatic.cpp
-  FM1DElectroStatic_fast.cpp
-  Astra1DElectroStatic.cpp
-  Astra1DElectroStatic_fast.cpp
-  FM1DMagnetoStatic.cpp
-  FM1DMagnetoStatic_fast.cpp
-  Astra1DMagnetoStatic.cpp
-  Astra1DMagnetoStatic_fast.cpp
-  FM1DProfile1.cpp
-  FM1DProfile2.cpp
-  FMDummy.cpp
-  SectorMagneticFieldMap.cpp
-  SectorField.cpp
-  )
+    BDipoleField.cpp
+    BMultipoleField.cpp
+    ConstBField.cpp
+    ConstBzField.cpp
+    ConstEField.cpp
+    ConstEzField.cpp
+    EDipoleField.cpp
+    EMField.cpp
+    NullField.cpp
+    StaticElectricField.cpp
+    StaticMagneticField.cpp
+    Fieldmap.cpp
+    FM3DH5Block.cpp
+    FM3DH5Block_nonscale.cpp
+    FM3DMagnetoStaticH5Block.cpp
+    FM3DMagnetoStatic.cpp
+    FM3DMagnetoStaticExtended.cpp
+    FM3DDynamic.cpp
+    FM2DElectroStatic.cpp
+    FM2DMagnetoStatic.cpp
+    FM2DDynamic.cpp
+    FM1DDynamic.cpp
+    FM1DDynamic_fast.cpp
+    Astra1D_fast.cpp
+    Astra1DDynamic.cpp
+    Astra1DDynamic_fast.cpp
+    FM1DElectroStatic.cpp
+    FM1DElectroStatic_fast.cpp
+    Astra1DElectroStatic.cpp
+    Astra1DElectroStatic_fast.cpp
+    FM1DMagnetoStatic.cpp
+    FM1DMagnetoStatic_fast.cpp
+    Astra1DMagnetoStatic.cpp
+    Astra1DMagnetoStatic_fast.cpp
+    FM1DProfile1.cpp
+    FM1DProfile2.cpp
+    FMDummy.cpp
+    SectorMagneticFieldMap.cpp
+    SectorField.cpp
+    )
 
 include_directories (
-  Interpolation
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  )
+    Interpolation
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 
 add_subdirectory (Interpolation)
 
-ADD_OPAL_SOURCES(${_SRCS})
+add_opal_sources (${_SRCS})
 
 set (HDRS
     AcceleratingField.h
@@ -93,6 +93,14 @@ set (HDRS
     SectorMagneticFieldMap.h
     StaticElectricField.h
     StaticMagneticField.h
-)
+    )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Fields")
+
+# vi: set et ts=4 sw=4 sts=4:
+
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

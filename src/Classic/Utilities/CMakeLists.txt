@@ -1,56 +1,56 @@
 set (_SRCS
-  ArithmeticError.cpp
-  AttributeError.cpp
-  CLRangeError.cpp
-  ClassicException.cpp
-  ClassicField.cpp
-  ClassicRandom.cpp
-  ComplexErrorFun.cpp
-  ConvergenceError.cpp
-  DivideError.cpp
-  DomainError.cpp
-  EigenvalueError.cpp
-  FormatError.cpp
-  GeneralClassicException.cpp
-  InverseGauss.cpp
-  LogicalError.cpp
-  Mesher.cpp
-  MSLang.cpp
-  MSLang/ArgumentExtractor.cpp
-  MSLang/BoundingBox.cpp
-  MSLang/Difference.cpp
-  MSLang/Ellipse.cpp
-  MSLang/Intersection.cpp
-  MSLang/Mask.cpp
-  MSLang/matheval.cpp
-  MSLang/Polygon.cpp
-  MSLang/QuadTree.cpp
-  MSLang/Rectangle.cpp
-  MSLang/Repeat.cpp
-  MSLang/Rotation.cpp
-  MSLang/Shear.cpp
-  MSLang/SymmetricDifference.cpp
-  MSLang/Translation.cpp
-  MSLang/Triangle.cpp
-  MSLang/Union.cpp
-  NormalFormError.cpp
-  Options.cpp
-  OverflowError.cpp
-  ParseError.cpp
-  PortableBitmapReader.cpp
-  PortableGraymapReader.cpp
-  RingSection.cpp
-  SingularMatrixError.cpp
-  SizeError.cpp
-  SwitcherError.cpp
-  Util.cpp
-  )
+    ArithmeticError.cpp
+    AttributeError.cpp
+    CLRangeError.cpp
+    ClassicException.cpp
+    ClassicField.cpp
+    ClassicRandom.cpp
+    ComplexErrorFun.cpp
+    ConvergenceError.cpp
+    DivideError.cpp
+    DomainError.cpp
+    EigenvalueError.cpp
+    FormatError.cpp
+    GeneralClassicException.cpp
+    InverseGauss.cpp
+    LogicalError.cpp
+    Mesher.cpp
+    MSLang.cpp
+    MSLang/ArgumentExtractor.cpp
+    MSLang/BoundingBox.cpp
+    MSLang/Difference.cpp
+    MSLang/Ellipse.cpp
+    MSLang/Intersection.cpp
+    MSLang/Mask.cpp
+    MSLang/matheval.cpp
+    MSLang/Polygon.cpp
+    MSLang/QuadTree.cpp
+    MSLang/Rectangle.cpp
+    MSLang/Repeat.cpp
+    MSLang/Rotation.cpp
+    MSLang/Shear.cpp
+    MSLang/SymmetricDifference.cpp
+    MSLang/Translation.cpp
+    MSLang/Triangle.cpp
+    MSLang/Union.cpp
+    NormalFormError.cpp
+    Options.cpp
+    OverflowError.cpp
+    ParseError.cpp
+    PortableBitmapReader.cpp
+    PortableGraymapReader.cpp
+    RingSection.cpp
+    SingularMatrixError.cpp
+    SizeError.cpp
+    SwitcherError.cpp
+    Util.cpp
+    )
 
 include_directories (
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  )
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 
-ADD_OPAL_SOURCES(${_SRCS})
+add_opal_sources (${_SRCS})
 
 set (HDRS
     ArithmeticError.h
@@ -101,6 +101,14 @@ set (HDRS
     SizeError.h
     SwitcherError.h
     Util.h
-)
+    )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Utilities")
+
+# vi: set et ts=4 sw=4 sts=4:
+
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:

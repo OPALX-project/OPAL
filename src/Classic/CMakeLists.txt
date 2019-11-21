@@ -21,3 +21,11 @@ add_subdirectory(TrimCoils)
 add_subdirectory(Utilities)
 
 set(OPAL_SRCS "${OPAL_SRCS}" PARENT_SCOPE)
+
+# vi: set et ts=4 sw=4 sts=4:
+
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# End:
