@@ -36,4 +36,4 @@ Example to instantiate an undulator/wiggler
 	  FNAME = "undulator_output.job", TOTALTIME = 8.1e-9;
 ```
 
-An example of the file indicating the desired output can be found in [/examples-OPAL-FEL/undulator_output.job](https://gitlab.psi.ch/albajacas_a/src/blob/master/examples-OPAL-FEL/undulator_output.job)
+Example files can be found in [/examples-OPAL-FEL](https://gitlab.psi.ch/albajacas_a/src/blob/master/examples-OPAL-FEL)
