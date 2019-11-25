@@ -6,13 +6,13 @@ The documentation has been moved to the [Wiki](https://gitlab.psi.ch/OPAL/src/wi
 A new undulator/wiggler element is added to OPAL-t. When a particle bunch approaches it, the solver will change to a full-wave solver that will simulate the run through the undulator.
 
 
-Based on [MITHRA](https://github.com/aryafallahi/mithra) full-wave Maxwell code for FELs by, Arya Fallahi.
+Based on [MITHRA](https://github.com/aryafallahi/mithra) full-wave Maxwell code for FELs, by Arya Fallahi.
 
 ## To compile OPAL-FEL
 
 * Clone repository `git@gitlab.psi.ch:albajacas_a/mithra.git`
 * Set environment variable
-  `MITHRA_INCLUDE_DIR=/path/to/mithra/source`
+  `MITHRA_INCLUDE_DIR=/path/to/mithra`
 * Build OPAL with `cmake -DENABLE_OPAL_FEL=yes ..`
 
 ## To use UNDULATOR element
@@ -36,4 +36,4 @@ Example to instantiate an undulator/wiggler
 	  FNAME = "undulator_output.job", TOTALTIME = 8.1e-9;
 ```
 
-An example of an undulator "desired output" file can be found in the `examples` directory
+Example files can be found in [/examples-OPAL-FEL](https://gitlab.psi.ch/albajacas_a/src/blob/master/examples-OPAL-FEL)
