@@ -1,0 +1,95 @@
+# Data output from undulator
+ 
+BUNCH
+{  
+  bunch-sampling
+  {
+    sample						= true
+    directory						= ./
+    base-name 						= bunch-sampling/bunch
+    rhythm						= 6e-11
+  }
+    
+  bunch-visualization
+  {
+    sample						= false
+    directory						= ./
+    base-name						= bunch-visualization/bunch
+    rhythm						= 5.0
+  }
+
+  bunch-profile
+  {
+    sample						= true
+    directory						= ./
+    base-name						= bunch-profile/bunch
+    rhythm						= 1e-9
+  }
+
+bunch-screen
+  {
+    sample						= true
+    directory						= ./
+    base-name						= bunch-screen/bunch
+    position						= -.4
+    position						= .9
+    position						= 1.1
+  }
+}
+
+
+FIELD
+{
+  field-sampling
+  {
+    sample						= false
+    type						= at-point
+    field						= Ex
+    field                           			= Ey
+    field                           			= Ez
+    directory						= ./
+    base-name						= field-sampling/field
+    rhythm						= 3.2e-12
+    position						= (0.0, 0.0, 110.0e-6)
+#    line-begin						= (0.0, 0.0, 100.0)
+#    line-end						= (0.0, 0.0, 130.0)
+#    number-of-points					= 100
+  }
+  
+  field-visualization
+  {
+    sample						= false
+    type						= in-plane
+    field						= Ex
+    field						= Ey
+    field						= Ez
+    plane						= yz
+    position						= (0.0, 0.0, 110.0)
+    directory						= ./
+    base-name						= field-visualization/field1
+    rhythm						= 5.0
+  }
+    
+  field-profile
+  {
+    sample						= false
+    field                           			= Q
+    directory						= ./
+    base-name						= field-profile/field
+    rhythm						= 100
+  }
+}
+
+
+FEL-OUTPUT
+{
+  radiation-power
+  {
+    sample						= true
+    type						= at-point
+    directory						= ./
+    base-name						= power-sampling/power-NSFD
+    plane-position					= 8e-3
+    normalized-frequency				= 1.00
+  }
+}

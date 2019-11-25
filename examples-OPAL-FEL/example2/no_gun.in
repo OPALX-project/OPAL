@@ -15,32 +15,36 @@ Title, string="UNDULATOR";
 //Global Parameters
 
 REAL rf_freq             = 1.0;     //RF frequency. (Hz)
-REAL n_particles         = 5e4;      //Number of particles in simulation.
-REAL beam_bunch_charge   =  1e-09;      //Charge of bunch. (C)
+REAL n_particles         = 1e05;      //Number of particles in simulation.
+REAL beam_bunch_charge   =  1.6e-19 * 1e6 * 1.846e08;      //Charge of bunch. (C)
 
 //Initial Momentum Calculation
-REAL gamma   = 50 / EMASS; // Energy in MeV
+REAL gamma   = 100.41; 
 REAL beta    = sqrt(1-(1/gamma^2));
 REAL P0      = gamma*beta*EMASS;    //inital z momentum
 
 //Printing initial energy and momentum to terminal output.
 value , {gamma, P0};
 
-// Undulator of length 85cm + 50cm fringe distance at the entrance
-UND: UNDULATOR, L = 1.35, LFRINGE = .5, ELEMEDGE = .01, K = 11.1, LAMBDA = 8.5e-2,
-     MESHLENGTH = { 5e-3, 5e-3, 18e-3 }, MESHRESOLUTION = { .1e-3, .1e-3, 2e-6},
-     TRUNORDER = 2, SPACECHARGE = 1, TOTALTIME = 8.1e-9,
+// Drift in the beginning
+DR1: DRIFT, L = .01, ELEMEDGE = 0.0;
+
+// Undulator of length 9m + 1m fringe distance at the entrance
+UND: UNDULATOR, L = 10.2, LFRINGE = 1.2, ELEMEDGE = .01, K = 1.417, LAMBDA = .03,
+     MESHLENGTH = { 3.2e-3, 3.2e-3, .28e-3 }, MESHRESOLUTION = {50e-6, 50e-6, .1e-6},
+     TRUNORDER = 2, SPACECHARGE = 1,
      FNAME = "undulator_output.job", TIMESTEPRATIO = 1;
 
-DRIVE: Line = (UND);
+DRIVE: Line = (DR1, UND);
 
 //----------------------------------------------------------------------------
 // INITIAL DISTRIBUTION
 
 Dist: DISTRIBUTION, TYPE = GAUSS,
-      SIGMAR = .5e-03, SIGMAZ = 6e-03,
-      SIGMAPX = 1e-03, SIGMAPY = 1e-03, SIGMAPZ = 1e-02,
+      SIGMAR = 260e-06, SIGMAZ = 50.25e-06,
+      SIGMAPX = 1e-08, SIGMAPY = 1e-08, SIGMAPZ = 1e-02,
       EMITTED = FALSE;
+
 	
 //----------------------------------------------------------------------------
 // Define Field solvers
@@ -60,13 +64,18 @@ FS_SC: Fieldsolver, FSTYPE = FFT,
 
 //----------------------------------------------------------------------------
 // Electron Beam Definition
+
+// BEAM1:  BEAM, PARTICLE = ELECTRON, pc = P0, NPART = n_particles,
+//        BFREQ = rf_freq, BCURRENT = beam_bunch_charge * rf_freq, CHARGE = -1;
+
+REAL mithra_time = 3e-8;
 BEAM1:  BEAM, PARTICLE = ELECTRON, GAMMA = gamma, NPART = n_particles,
-	BFREQ = 1, BCURRENT = beam_bunch_charge * 1e6 , CHARGE = -1;
+	BFREQ = 1 / mithra_time, BCURRENT = beam_bunch_charge / mithra_time , CHARGE = -1;
 
 //----------------------------------------------------------------------------
 // Simulate the beamline using TRACK and RUN.
 
-TRACK, LINE = DRIVE, BEAM = BEAM1, MAXSTEPS = 1000000, DT = 3.E-12, ZSTOP= 2.0 ;
+TRACK, LINE = DRIVE, BEAM = BEAM1, MAXSTEPS = 1000000, DT = 3.E-12, ZSTOP= 11.0 ;
 RUN, METHOD = "PARALLEL-T", BEAM = BEAM1, 
     FIELDSOLVER = FS_SC, DISTRIBUTION = Dist;
 ENDTRACK;

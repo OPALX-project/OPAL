@@ -1,0 +1,77 @@
+OPTION, PSDUMPFREQ = 1000;   // 6d data written every 300 time steps (h5).
+OPTION, STATDUMPFREQ = 1000;  // Beam Stats written every 10 time steps (stat).
+OPTION, BOUNDPDESTROYFQ=10; // Delete lost particles, if any
+OPTION, AUTOPHASE=4;        // Autophase is on, and phase of max energy
+                            // gain will be found automatically for cavities.
+OPTION, VERSION=10900;
+
+OPTION, RNGTYPE = "HALTON";  // Use Halton RNG to start bunch, just like it is done in Mithra
+
+REAL REPARTFREQ=1000000;
+
+Title, string="UNDULATOR";
+
+//----------------------------------------------------------------------------
+//Global Parameters
+
+REAL rf_freq             = 1.0;     //RF frequency. (Hz)
+REAL n_particles         = 5e4;      //Number of particles in simulation.
+REAL beam_bunch_charge   =  1e-09;      //Charge of bunch. (C)
+
+//Initial Momentum Calculation
+REAL gamma   = 50 / EMASS; // Energy in MeV
+REAL beta    = sqrt(1-(1/gamma^2));
+REAL P0      = gamma*beta*EMASS;    //inital z momentum
+
+//Printing initial energy and momentum to terminal output.
+value , {gamma, P0};
+
+// Drift in the beginning
+DR1: DRIFT, L = .01, ELEMEDGE = 0.0;
+
+// Undulator of length 85cm + 50cm fringe distance at the entrance
+UND: UNDULATOR, L = 1.35, LFRINGE = .5, ELEMEDGE = .01, K = 11.1, LAMBDA = 8.5e-2,
+     MESHLENGTH = { 5e-3, 5e-3, 18e-3 }, MESHRESOLUTION = { .1e-3, .1e-3, 2e-6},
+     TRUNORDER = 2, SPACECHARGE = 1, TOTALTIME = 8.1e-9,
+     FNAME = "undulator_output.job", TIMESTEPRATIO = 1;
+
+DRIVE: Line = (DR1, UND);
+
+//----------------------------------------------------------------------------
+// INITIAL DISTRIBUTION
+
+Dist: DISTRIBUTION, TYPE = FROMFILE,
+      FNAME = "initialDistro_5e4.in",
+      EMITTED = FALSE;
+
+	
+//----------------------------------------------------------------------------
+// Define Field solvers
+// The mesh sizes should be a factor of 2 
+// for most efficient space charge calculation.
+
+FS_SC: Fieldsolver, FSTYPE = FFT, 
+            MX = 32, MY = 32, MT = 32, // SC grid size is 8^3
+            PARFFTX = true,
+            PARFFTY = true, 
+            PARFFTT = true, 
+            BCFFTX = open, 
+            BCFFTY = open, 
+            BCFFTT = open,
+            BBOXINCR = 1, 
+            GREENSF = INTEGRATED;
+
+//----------------------------------------------------------------------------
+// Electron Beam Definition
+BEAM1:  BEAM, PARTICLE = ELECTRON, GAMMA = gamma, NPART = n_particles,
+	BFREQ = 1, BCURRENT = beam_bunch_charge * 1e6 , CHARGE = -1;
+
+//----------------------------------------------------------------------------
+// Simulate the beamline using TRACK and RUN.
+
+TRACK, LINE = DRIVE, BEAM = BEAM1, MAXSTEPS = 1000000, DT = 3.E-12, ZSTOP= 2.0 ;
+RUN, METHOD = "PARALLEL-T", BEAM = BEAM1, 
+    FIELDSOLVER = FS_SC, DISTRIBUTION = Dist;
+ENDTRACK;
+
+Quit;

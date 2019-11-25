@@ -17,24 +17,13 @@ BUNCH
     base-name						= bunch-visualization/bunch
     rhythm						= 5.0
   }
-  
   bunch-profile
   {
     sample						= true
     directory						= ./
     base-name						= bunch-profile/bunch
     time						= 0.0
-    rhythm						= 3e-9
-  }
-
-  bunch-screen
-  {
-    sample						= true
-    directory						= ./
-    base-name						= bunch-screen/bunch
-    position						= 2.3
-    position						= 2.2
-    position						= 2.4
+    rhythm						= 4e-8
   }
 }
 
@@ -90,7 +79,7 @@ FEL-OUTPUT
     type						= at-point
     directory						= ./
     base-name						= power-sampling/power-NSFD
-    plane-position					= 35e-6
+    plane-position					= 1.1e-4
     normalized-frequency				= 1.00
   }
 }
