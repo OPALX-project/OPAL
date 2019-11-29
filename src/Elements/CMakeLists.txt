@@ -49,6 +49,7 @@ set (_SRCS
     OpalSRot.cpp
     OpalVariableRFCavity.cpp
     OpalVariableRFCavityFringeField.cpp
+    OpalVerticalFFAMagnet.cpp
     OpalVKicker.cpp
     OpalVMonitor.cpp
     OpalYRot.cpp
@@ -114,6 +115,7 @@ set (HDRS
     OpalTravelingWave.h
     OpalVariableRFCavity.h
     OpalVariableRFCavityFringeField.h
+    OpalVerticalFFAMagnet.h
     OpalVKicker.h
     OpalVMonitor.h
     OpalYRot.h

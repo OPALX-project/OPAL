@@ -51,6 +51,7 @@ set (_SRCS
     TravelingWave.cpp
     VariableRFCavity.cpp
     VariableRFCavityFringeField.cpp
+    VerticalFFAMagnet.cpp
     )
 
 include_directories (
@@ -111,6 +112,7 @@ set (HDRS
     TravelingWave.h
     VariableRFCavity.h
     VariableRFCavityFringeField.h
+    VerticalFFAMagnet.h
     )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/AbsBeamline")
