@@ -181,6 +181,9 @@ public:
     virtual void visitVariableRFCavityFringeField
                                       (const VariableRFCavityFringeField &cav);
 
+    /// Apply the algorithm to a VerticalFFAMagnet.
+    virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet &bend);
+
     /// Apply the algorithm to the top-level beamline.
     //  overwrite the execute-methode from DefaultVisitor
     virtual void execute();
