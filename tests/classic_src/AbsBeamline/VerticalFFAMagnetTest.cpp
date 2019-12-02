@@ -45,7 +45,7 @@ public:
     endfieldmodel::Tanh* tanh_m; // magnet_m owns this memory
     const double mm = 1e3;
     const double tesla = 10.;
-    // OpalTestUtilities::SilenceTest silencer_m;
+    OpalTestUtilities::SilenceTest silencer_m;
 };
 
 TEST_F(VerticalFFAMagnetTest, ConstructorTest) {

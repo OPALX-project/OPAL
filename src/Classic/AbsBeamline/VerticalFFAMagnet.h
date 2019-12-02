@@ -13,7 +13,7 @@ namespace endfieldmodel {
 /** Bending magnet with an exponential dependence on field in the vertical plane
  *
  *  VerticalFFAMagnet makes a rectangular bending magnet with a dipole field
- *  that has a dependence like
+ *  that has a dependence like B0 exp(mz)
  */
 
 class VerticalFFAMagnet : public Component {
@@ -163,16 +163,16 @@ class VerticalFFAMagnet : public Component {
     /** set the maximum extent above z = 0 */
     inline void setPositiveVerticalExtent(double positiveExtent);
 
-    /** Get the length of the bounding box (centred on magnet centre */
+    /** Get the length of the bounding box (centred on magnet centre) */
     double getBBLength() const {return bbLength_m/mm;}
 
-    /** Set the length of the bounding box (centred on magnet centre */
+    /** Set the length of the bounding box (centred on magnet centre) */
     void setBBLength(double bbLength) {bbLength_m = bbLength*mm;}
 
-    /** Get the full width of the bounding box (centred on magnet centre */
+    /** Get the full width of the bounding box (centred on magnet centre) */
     double getWidth() const {return halfWidth_m/mm*2.;}
 
-    /** Set the full width of the bounding box (centred on magnet centre */
+    /** Set the full width of the bounding box (centred on magnet centre) */
     void setWidth(double width) {halfWidth_m = width/2*mm;}
 
     /** Get the coefficients used for the field expansion
@@ -206,7 +206,6 @@ private:
     std::unique_ptr<endfieldmodel::EndFieldModel> endField_m;
     std::vector<std::vector<double> > dfCoefficients_m;
 
-    const double fp_tolerance = 1e-18;
     const double mm=1000.;
     const double Tesla=10.;
 };
