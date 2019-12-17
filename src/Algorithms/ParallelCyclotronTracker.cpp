@@ -61,6 +61,7 @@
 #include "AbsBeamline/Stripper.h"
 #include "AbsBeamline/VariableRFCavity.h"
 #include "AbsBeamline/VariableRFCavityFringeField.h"
+#include "AbsBeamline/VerticalFFAMagnet.h"
 
 #include "Algorithms/Ctunes.h"
 #include "Algorithms/PolynomialTimeDependence.h"
@@ -891,6 +892,15 @@ void ParallelCyclotronTracker::visitVariableRFCavityFringeField
     else
         throw OpalException("ParallelCyclotronTracker::visitVariableRFCavityFringeField",
                             "Need to define a RINGDEFINITION to use VariableRFCavity element");
+}
+
+void ParallelCyclotronTracker::visitVerticalFFAMagnet(const VerticalFFAMagnet &mag) {
+    *gmsg << "Adding Vertical FFA Magnet" << endl;
+    if (opalRing_m != NULL)
+        opalRing_m->appendElement(mag);
+    else
+        throw OpalException("ParallelCyclotronTracker::visitVerticalFFAMagnet",
+                            "Need to define a RINGDEFINITION to use VerticalFFAMagnet element");
 }
 
 /**
@@ -2142,6 +2152,11 @@ bool ParallelCyclotronTracker::applyPluginElements(const double dt) {
 bool ParallelCyclotronTracker::deleteParticle(bool flagNeedUpdate){
     IpplTimings::startTimer(DelParticleTimer_m);
     // Update immediately if any particles are lost during this step
+
+    if ((step_m + 1) % Options::delPartFreq != 0) {
+        IpplTimings::stopTimer(DelParticleTimer_m);
+        return false;
+    }
 
     allreduce(flagNeedUpdate, 1, std::logical_or<bool>());
 

@@ -40,6 +40,7 @@
 #include "Structure/H5PartWrapper.h"
 #include "Structure/H5PartWrapperForPC.h"
 #include "Utilities/Util.h"
+#include "Utilities/EarlyLeaveException.h"
 
 #include <gsl/gsl_cdf.h>
 #include <gsl/gsl_randist.h>
@@ -1348,7 +1349,8 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
         cof_t cof(massIneV*1E-6, Nint, CyclotronElement, false, Nsectors);
         cof.findOrbit(accuracy, maxitCOF, E_m*1E-6, denergy, rguess, true);
 
-        std::exit(0);
+        throw EarlyLeaveException("Distribution::CreateMatchedGaussDistribution()",
+                                  "Do only tune calculation.");
     }
 
     bool writeMap = true;

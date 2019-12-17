@@ -151,6 +151,9 @@ public:
     /// Apply the algorithm to a scaling FFA magnet.
     virtual void visitScalingFFAMagnet(const ScalingFFAMagnet &);
 
+    /// Apply the algorithm to a RF cavity.
+    virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet &);
+
     /// Apply the algorithm to a separator.
     virtual void visitSeparator(const Separator &);
 

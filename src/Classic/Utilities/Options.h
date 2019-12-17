@@ -161,6 +161,9 @@ namespace Options {
 
     /// The constant parameter C to shift halo, by < w^4 > / < w^2 > ^2 - C (w=x,y,z)
     extern double haloShift;
+
+    /// The frequency to delete particles (currently: OPAL-cycl only)
+    extern unsigned int delPartFreq;
 }
 
 #endif // OPAL_Options_HH

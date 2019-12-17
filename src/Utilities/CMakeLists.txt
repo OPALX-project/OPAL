@@ -1,4 +1,5 @@
 set (_SRCS
+    EarlyLeaveException.cpp
     OpalException.cpp
     OpalFilter.cpp
     RegularExpression.cpp
@@ -15,6 +16,7 @@ include_directories (
 add_opal_sources(${_SRCS})
 
 set (HDRS
+    EarlyLeaveException.h
     NumToStr.h
     OpalException.h
     OpalFilter.h

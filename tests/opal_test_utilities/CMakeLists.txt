@@ -1,5 +1,6 @@
 set (_SRCS
   SilenceTest.cpp
+  Maxwell.cpp
 )
 
 include_directories (

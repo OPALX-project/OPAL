@@ -759,6 +759,7 @@ void TrackRun::setupFieldsolver() {
         size_t numParticles = beam->getNumberOfParticles();
 
         if (!opal->inRestartRun() && numParticles < numGridPoints
+            && Util::toUpper(fs->getType()) != std::string("SAAMG") // in SPIRAL/SAAMG we're meshing the whole domain -DW
 #ifdef ENABLE_AMR
             && !Options::amr)
 #else

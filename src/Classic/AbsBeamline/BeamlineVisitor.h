@@ -74,6 +74,7 @@ class Stripper;
 class TravelingWave;
 class VariableRFCavity;
 class VariableRFCavityFringeField;
+class VerticalFFAMagnet;
 
 // Integrators.
 class Integrator;
@@ -264,6 +265,9 @@ public:
 
     /// Apply the algorithm to an integrator capable of mapping.
     virtual void visitMapIntegrator(const MapIntegrator &) = 0;
+
+    /// Apply the algorithm to a vertical FFA magnet
+    virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet &) = 0;
 
 private:
 

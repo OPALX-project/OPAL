@@ -108,4 +108,6 @@ namespace Options {
     bool memoryDump = false;
 
     double haloShift = 0.0;
+
+    unsigned int delPartFreq = 1;
 }

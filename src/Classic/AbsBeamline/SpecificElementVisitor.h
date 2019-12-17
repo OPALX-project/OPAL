@@ -38,6 +38,7 @@
 #include "AbsBeamline/SBend.h"
 #include "AbsBeamline/SBend3D.h"
 #include "AbsBeamline/ScalingFFAMagnet.h"
+#include "AbsBeamline/VerticalFFAMagnet.h"
 #include "AbsBeamline/Separator.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
@@ -193,6 +194,9 @@ public:
 
     /// Apply the algorithm to a spiral sector magnet.
     virtual void visitScalingFFAMagnet(const ScalingFFAMagnet &);
+
+    /// Apply the algorithm to a spiral sector magnet.
+    virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet &);
 
     /// Apply the algorithm to a ParallelPlate.
     virtual void visitParallelPlate(const ParallelPlate &);
@@ -439,6 +443,11 @@ void SpecificElementVisitor<ELEM>::visitSBend3D(const SBend3D &element) {
 template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitScalingFFAMagnet(const ScalingFFAMagnet &element) {
     CastsTrait<ELEM, ScalingFFAMagnet>::apply(allElementsOfTypeE, element);
+}
+
+template<class ELEM>
+void SpecificElementVisitor<ELEM>::visitVerticalFFAMagnet(const VerticalFFAMagnet &element) {
+    CastsTrait<ELEM, VerticalFFAMagnet>::apply(allElementsOfTypeE, element);
 }
 
 template<class ELEM>

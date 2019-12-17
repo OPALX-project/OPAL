@@ -35,6 +35,7 @@ Inform *gmsg;
 #include "Utilities/Options.h"
 #include "Utilities/Options.h"
 #include "Utilities/OpalException.h"
+#include "Utilities/EarlyLeaveException.h"
 #include "Utilities/Util.h"
 
 #include "OPALconfig.h"
@@ -361,13 +362,6 @@ int main(int argc, char *argv[]) {
             }
         }
 
-        IpplTimings::stopTimer(mainTimer);
-
-        IpplTimings::print();
-
-        IpplTimings::print(std::string("timing.dat"),
-                           OpalData::getInstance()->getProblemCharacteristicValues());
-
         if(Ippl::myNode() == 0) {
             std::ifstream errormsg("errormsg.txt");
             if(errormsg.good()) {
@@ -398,25 +392,8 @@ int main(int argc, char *argv[]) {
             errormsg.close();
         }
 
-        Ippl::Comm->barrier();
-        Fieldmap::clearDictionary();
-        OpalData::deleteInstance();
-        delete gmsg;
-
-#ifdef ENABLE_AMR
-    if ( initAMR ) {
-        amrex::Finalize(true);
-    }
-#endif
-
-        delete ippl;
-        delete Ippl::Info;
-        delete Ippl::Warn;
-        delete Ippl::Error;
-        delete Ippl::Debug;
-
-        return 0;
-
+    } catch(EarlyLeaveException& ex) {
+        // do nothing here
     } catch(OpalException &ex) {
         Inform errorMsg("Error", std::cerr, INFORM_ALL_NODES);
         errorMsg << "\n*** User error detected by function \""
@@ -524,5 +501,30 @@ int main(int argc, char *argv[]) {
         MPI_Abort(MPI_COMM_WORLD, -100);
     }
 
-    return 1;
+
+    IpplTimings::stopTimer(mainTimer);
+
+    IpplTimings::print();
+
+    IpplTimings::print(std::string("timing.dat"),
+                       OpalData::getInstance()->getProblemCharacteristicValues());
+
+    Ippl::Comm->barrier();
+    Fieldmap::clearDictionary();
+    OpalData::deleteInstance();
+    delete gmsg;
+
+#ifdef ENABLE_AMR
+    if ( initAMR ) {
+        amrex::Finalize(true);
+    }
+#endif
+
+    delete ippl;
+    delete Ippl::Info;
+    delete Ippl::Warn;
+    delete Ippl::Error;
+    delete Ippl::Debug;
+
+    return 0;
 }

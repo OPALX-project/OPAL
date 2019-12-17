@@ -120,6 +120,23 @@ public:
                                           Vector_t &E,
                                           Vector_t &B);
 
+    /** Calculate the four-potential at some position relative to the component
+     *
+     *  \param R position in the local coordinate system of the component
+     *  \param t time
+     *  \param A filled with the calculated magnetic vector potential
+     *  \param phi filled with the calculated electric potential
+     *  Note that any existing values in A and phi may be overwritten by this
+     *  method.
+     *
+     *  \returns true if particle is outside the field map, else false
+     *  Default for component is to return false and make no change to A and phi
+     */
+    virtual bool getPotential(const Vector_t &R, 
+                               const double &t,
+                               Vector_t &A,
+                               double &phi) {return false;}
+
     virtual double getDesignEnergy() const;
     virtual void setDesignEnergy(const double& energy, bool changeable);
 
