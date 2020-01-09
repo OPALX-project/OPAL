@@ -80,7 +80,6 @@ namespace {
         FIELDSOLVER,  // The field solver attached
         BOUNDARYGEOMETRY, // The boundary geometry
         DISTRIBUTION, // The particle distribution
-        MULTIPACTING, // MULTIPACTING flag
         TRACKBACK,
         SIZE
     };
@@ -124,8 +123,6 @@ TrackRun::TrackRun():
                            ("BOUNDARYGEOMETRY", "Boundary geometry to be used NONE (default)", "NONE");
     itsAttr[DISTRIBUTION] = Attributes::makeStringArray
                              ("DISTRIBUTION", "List of particle distributions to be used ");
-    itsAttr[MULTIPACTING] = Attributes::makeBool
-                            ("MULTIPACTING", "Multipacting flag, default: false. Set true to initialize primary particles according to BoundaryGeometry", false);
     itsAttr[TRACKBACK] = Attributes::makeBool
         ("TRACKBACK", "Track in reverse direction, default: false", false);
     registerOwnership(AttributeHandler::SUB_COMMAND);
@@ -514,35 +511,23 @@ void TrackRun::setupTTracker(){
     if (!isFollowupTrack && !opal->inRestartRun())
         Track::block->bunch->setT(Track::block->t0_m);
 
-    bool mpacflg = Attributes::getBool(itsAttr[MULTIPACTING]);
-    if(!mpacflg) {
-        if (Track::block->bunch->getIfBeamEmitting()) {
-            Track::block->bunch->setChargeZeroPart(charge);
-        } else {
-            Track::block->bunch->setCharge(charge);
-        }
-        // set coupling constant
-        double coefE = 1.0 / (4 * pi * epsilon_0);
-        Track::block->bunch->setCouplingConstant(coefE);
-
-
-        // statistical data are calculated (rms, eps etc.)
-        Track::block->bunch->calcBeamParameters();
+    if (Track::block->bunch->getIfBeamEmitting()) {
+        Track::block->bunch->setChargeZeroPart(charge);
     } else {
-        Track::block->bunch->setChargeZeroPart(charge);// just set bunch->qi_m=charge, don't set bunch->Q[] as we have not initialized any particle yet.
-        Track::block->bunch->calcBeamParametersInitial();// we have not initialized any particle yet.
+        Track::block->bunch->setCharge(charge);
     }
+    // set coupling constant
+    double coefE = 1.0 / (4 * pi * epsilon_0);
+    Track::block->bunch->setCouplingConstant(coefE);
 
+    // statistical data are calculated (rms, eps etc.)
+    Track::block->bunch->calcBeamParameters();
 
     initDataSink();
 
     if(!opal->hasBunchAllocated()) {
-        if(!mpacflg) {
-            *gmsg << std::scientific;
-            *gmsg << *dist << endl;
-        } else {
-            *gmsg << "* Multipacting flag is true. The particle distribution in the run command will be ignored " << endl;
-        }
+        *gmsg << std::scientific;
+        *gmsg << *dist << endl;
     }
 
     if (Track::block->bunch->getTotalNum() > 0) {
@@ -585,8 +570,6 @@ void TrackRun::setupTTracker(){
                                       Track::block->zstop,
                                       Track::block->dT);
 #endif
-// #endif
-    // itsTracker->setMpacflg(mpacflg); // set multipacting flag in ParallelTTracker
 }
 
 void TrackRun::setupCyclotronTracker(){
@@ -805,44 +788,41 @@ void TrackRun::initDataSink(const int& numBunch) {
 
 double TrackRun::setDistributionParallelT(Beam *beam) {
 
-    // If multipacting flag is not set, get distribution(s).
-    if (!Attributes::getBool(itsAttr[MULTIPACTING])) {
-        /*
-         * Distribution(s) can be set via a single distribution or a list
-         * (array) of distributions. If an array is defined the first in the
-         * list is treated as the primary distribution. All others are added to
-         * it to create the full distribution.
-         */
-        std::vector<std::string> distributionArray
-            = Attributes::getStringArray(itsAttr[DISTRIBUTION]);
-        const size_t numberOfDistributions = distributionArray.size();
+    /*
+     * Distribution(s) can be set via a single distribution or a list
+     * (array) of distributions. If an array is defined the first in the
+     * list is treated as the primary distribution. All others are added to
+     * it to create the full distribution.
+     */
+    std::vector<std::string> distributionArray
+        = Attributes::getStringArray(itsAttr[DISTRIBUTION]);
+    const size_t numberOfDistributions = distributionArray.size();
 
-        if (numberOfDistributions == 0) {
-            dist = Distribution::find(defaultDistribution);
-        } else {
-            dist = Distribution::find(distributionArray.at(0));
-            dist->setNumberOfDistributions(numberOfDistributions);
+    if (numberOfDistributions == 0) {
+        dist = Distribution::find(defaultDistribution);
+    } else {
+        dist = Distribution::find(distributionArray.at(0));
+        dist->setNumberOfDistributions(numberOfDistributions);
 
-            if (numberOfDistributions > 1) {
-                *gmsg << endl
-                      << "---------------------------------" << endl
-                      << "Found more than one distribution:" << endl << endl;
-                *gmsg << "Main Distribution" << endl
-                      << "---------------------------------" << endl
-                      << distributionArray.at(0) << endl << endl
-                      << "Secondary Distribution(s)" << endl
-                      << "---------------------------------" << endl;
+        if (numberOfDistributions > 1) {
+            *gmsg << endl
+                  << "---------------------------------" << endl
+                  << "Found more than one distribution:" << endl << endl;
+            *gmsg << "Main Distribution" << endl
+                  << "---------------------------------" << endl
+                  << distributionArray.at(0) << endl << endl
+                  << "Secondary Distribution(s)" << endl
+                  << "---------------------------------" << endl;
 
-                for (size_t i = 1; i < numberOfDistributions; ++ i) {
-                    Distribution *distribution = Distribution::find(distributionArray.at(i));
-                    distribution->setNumberOfDistributions(numberOfDistributions);
-                    distrs_m.push_back(distribution);
+            for (size_t i = 1; i < numberOfDistributions; ++ i) {
+                Distribution *distribution = Distribution::find(distributionArray.at(i));
+                distribution->setNumberOfDistributions(numberOfDistributions);
+                distrs_m.push_back(distribution);
 
-                    *gmsg << distributionArray.at(i) << endl;
-                }
-                *gmsg << endl
-                      << "---------------------------------" << endl << endl;
+                *gmsg << distributionArray.at(i) << endl;
             }
+            *gmsg << endl
+                  << "---------------------------------" << endl << endl;
         }
     }
 
@@ -852,22 +832,20 @@ double TrackRun::setDistributionParallelT(Beam *beam) {
     size_t numberOfParticles = beam->getNumberOfParticles();
     if (!opal->hasBunchAllocated()) {
         if (!opal->inRestartRun()) {
-            if (!Attributes::getBool(itsAttr[MULTIPACTING])) {
-                /*
-                 * Here we are not doing a restart or doing a mulitpactor run
-                 * and we do not have a bunch already allocated.
-                 */
-                Track::block->bunch->setDistribution(dist,
-                                                     distrs_m,
-                                                     numberOfParticles);
+            /*
+             * Here we are not doing a restart run
+             * and we do not have a bunch already allocated.
+             */
+            Track::block->bunch->setDistribution(dist,
+                                                 distrs_m,
+                                                 numberOfParticles);
 
-                /*
-                 * If this is an injected beam (rather than an emitted beam), we
-                 * make sure it doesn't have any particles at z < 0.
-                 */
+            /*
+             * If this is an injected beam (rather than an emitted beam), we
+             * make sure it doesn't have any particles at z < 0.
+             */
 
-                opal->setGlobalPhaseShift(0.5 * dist->getTEmission() + dist->getEmissionTimeShift());
-            }
+            opal->setGlobalPhaseShift(0.5 * dist->getTEmission() + dist->getEmissionTimeShift());
         } else {
             /*
              * Read in beam from restart file.

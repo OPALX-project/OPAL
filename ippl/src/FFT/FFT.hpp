@@ -17,12 +17,6 @@
 #include "Field/BareField.h"
 #include "Utility/IpplStats.h"
 
-#ifdef IPPL_PRINTDEBUG
-#define FFTDBG(x) x
-#else
-#define FFTDBG(x)
-#endif
-
 //=============================================================================
 // FFT CCTransform Constructors
 //=============================================================================
@@ -1080,8 +1074,6 @@ FFT<RCTransform,Dim,T>::transform(
     typename FFT<RCTransform,Dim,T>::ComplexField_t& g,
     const bool& constInput)
 {
-    FFTDBG(Inform tmsg("FFT-RC-forward"));
-
     // time the whole mess
 
     // indicate we're doing another fft
@@ -1141,8 +1133,6 @@ FFT<RCTransform,Dim,T>::transform(
 
 
         // transpose AND PERMUTE TO REAL FIELD WITH TRANSFORM DIM FIRST
-        FFTDBG(tmsg << "doing transpose of real field into temporary ");
-        FFTDBG(tmsg << "with layout = " << tempR->getLayout() << std::endl);
         (*tempR)[tempR->getDomain()] = f[in_dom];
 
     }
@@ -1177,8 +1167,6 @@ FFT<RCTransform,Dim,T>::transform(
                 temp = &g;
         }
     }
-
-    FFTDBG(tmsg << "doing real->complex fft of first dimension ..." << std::endl);
 
     // loop over all the vnodes, working on the lfield in each.
     typename RealField_t::const_iterator_if rl_i, rl_end = tempR->end_if();
@@ -1250,10 +1238,6 @@ FFT<RCTransform,Dim,T>::transform(
 
         if (!skipTranspose) {
             // transpose and permute to field with transform dim first
-            FFTDBG(tmsg << "doing complex->complex transpose into field ");
-            FFTDBG(tmsg << "with layout = " << tempFields_m[idim]->getLayout());
-            FFTDBG(tmsg << std::endl);
-
             (*tempFields_m[idim])[tempLayouts_m[idim]->getDomain()] =
                 (*temp)[temp->getLayout().getDomain()];
 
@@ -1267,10 +1251,6 @@ FFT<RCTransform,Dim,T>::transform(
             // so do the transpose here using g instead
 
             // transpose and permute to field with transform dim first
-            FFTDBG(tmsg << "doing final complex->complex transpose ");
-            FFTDBG(tmsg << "into return ");
-            FFTDBG(tmsg << "with layout = " << g.getLayout());
-            FFTDBG(tmsg << std::endl);
 
             g[out_dom] = (*temp)[temp->getLayout().getDomain()];
 
@@ -1280,9 +1260,6 @@ FFT<RCTransform,Dim,T>::transform(
             temp = &g;  // field* management aid
 
         }
-
-
-        FFTDBG(tmsg << "doing complex->complex fft of other dimension .." << std::endl);
 
         // loop over all the vnodes, working on the lfield in each.
         typename ComplexField_t::const_iterator_if l_i, l_end = temp->end_if();
@@ -1319,11 +1296,6 @@ FFT<RCTransform,Dim,T>::transform(
 
 
         // Now assign into output Field, and compress last temp's storage:
-        FFTDBG(tmsg << "Doing cleanup complex->complex transpose ");
-        FFTDBG(tmsg << "into return ");
-        FFTDBG(tmsg << "with layout = " << g.getLayout());
-        FFTDBG(tmsg << std::endl);
-
         g[out_dom] = (*temp)[temp->getLayout().getDomain()];
 
         if (this->compressTemps()) *temp = 0;
@@ -1484,8 +1456,6 @@ FFT<RCTransform,Dim,T>::transform(
     typename FFT<RCTransform,Dim,T>::RealField_t& g,
     const bool& constInput)
 {
-    FFTDBG(Inform tmsg("FFT-RC-reverse"));
-
     // indicate we're doing another FFT
     // INCIPPLSTAT(incFFTs);
 
@@ -1531,8 +1501,6 @@ FFT<RCTransform,Dim,T>::transform(
 
         if (!skipTranspose) {
             // transpose and permute to Field with transform dim first
-            FFTDBG(tmsg << "Doing complex->complex transpose into field ");
-            FFTDBG(tmsg << "with layout = "<<tempFields_m[idim]->getLayout()<<std::endl);
             (*tempFields_m[idim])[tempLayouts_m[idim]->getDomain()] =
                 (*temp)[temp->getLayout().getDomain()];
 
@@ -1541,9 +1509,6 @@ FFT<RCTransform,Dim,T>::transform(
                 *temp = 0;
             temp = tempFields_m[idim];  // Field* management aid
         }
-
-        FFTDBG(tmsg << "Doing complex->complex fft of other dimension .." << std::endl);
-
 
         // Loop over all the Vnodes, working on the LField in each.
         typename ComplexField_t::const_iterator_if l_i, l_end = temp->end_if();
@@ -1630,8 +1595,6 @@ FFT<RCTransform,Dim,T>::transform(
 
     if (!skipTemp) {
         // transpose and permute to complex Field with transform dim first
-        FFTDBG(tmsg << "Doing final complex->complex transpose into field ");
-        FFTDBG(tmsg << "with layout = "<<tempFields_m[0]->getLayout()<<std::endl);
         (*tempFields_m[0])[tempLayouts_m[0]->getDomain()] =
             (*temp)[temp->getLayout().getDomain()];
 
@@ -1640,9 +1603,6 @@ FFT<RCTransform,Dim,T>::transform(
             *temp = 0;
         temp = tempFields_m[0];
     }
-
-
-    FFTDBG(tmsg << "Doing complex->real fft of final dimension ..." << std::endl);
 
     // Loop over all the Vnodes, working on the LField in each.
     typename RealField_t::const_iterator_if rl_i, rl_end = tempR->end_if();
@@ -1691,8 +1651,6 @@ FFT<RCTransform,Dim,T>::transform(
 
 
         // Now assign into output Field, and compress last temp's storage:
-        FFTDBG(tmsg << "Doing cleanup real->real transpose into return ");
-        FFTDBG(tmsg << "with layout = " << g.getLayout() << std::endl);
         g[out_dom] = (*tempR)[tempR->getLayout().getDomain()];
 
         if (this->compressTemps())

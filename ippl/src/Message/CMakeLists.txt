@@ -10,8 +10,6 @@ set (_SRCS
 set (_HDRS
     CommCreator.h
     CommMPI.h
-    CommPM.h
-    CommSHMEMPI.h
     Communicate.h
     CRC.h
     DataTypes.h

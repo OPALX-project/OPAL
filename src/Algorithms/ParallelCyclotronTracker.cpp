@@ -31,7 +31,6 @@
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Cyclotron.h"
-#include "AbsBeamline/CyclotronValley.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
@@ -1092,15 +1091,6 @@ void ParallelCyclotronTracker::visitParallelPlate(const ParallelPlate &pplate) {
 
     //buildupFieldList(startField, endField, elptr);
 
-}
-
-/**
- *
- *
- * @param cv
- */
-void ParallelCyclotronTracker::visitCyclotronValley(const CyclotronValley &cv) {
-    // Do nothing here.
 }
 
 /**

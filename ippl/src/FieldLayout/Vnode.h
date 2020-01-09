@@ -2,10 +2,7 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
+  *
  ***************************************************************************/
 
 #ifndef VNODE_H
@@ -13,7 +10,6 @@
 
 // include files
 #include "Utility/RefCounted.h"
-#include "Utility/Pooled.h"
 #include "Index/NDIndex.h"
 
 #include <iostream>
@@ -38,7 +34,7 @@ std::ostream& operator<<(std::ostream&, const Vnode<Dim>&);
 //----------------------------------------------------------------------
 
 template<unsigned Dim>
-class Vnode : public RefCounted, public Pooled< Vnode<Dim> >
+class Vnode : public RefCounted
 {
 
 private:
@@ -98,11 +94,4 @@ operator<<(std::ostream& out, const Vnode<Dim>& v) {
   return out;
 }
 
-
 #endif // VNODE_H
-
-/***************************************************************************
- * $RCSfile: Vnode.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:27 $
- * IPPL_VERSION_ID: $Id: Vnode.h,v 1.1.1.1 2003/01/23 07:40:27 adelmann Exp $ 
- ***************************************************************************/

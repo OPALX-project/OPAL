@@ -48,15 +48,6 @@ extern int widthOfElements;
 // Function prototypes; see FieldDebug.cpp for comments:
 //------------------------------------------------------
 // For printing all elements of a Field:
-#ifdef __MWERKS__
-// Work around CW4 bug with default arguments of template functions
-template<class T>
-void fp1(BareField<T, 1U>& field) {fp1(field, true);}
-template<class T>
-void fp2(BareField<T, 2U>& field) {fp2(field, true);}
-template<class T>
-void fp3(BareField<T, 3U>& field) {fp3(field, true);}
-#endif // __MWERKS__
 template<class T>
 void fp1(BareField<T, 1U>& field, bool docomm = true);
 template<class T>
@@ -65,15 +56,6 @@ template<class T>
 void fp3(BareField<T, 3U>& field, bool docomm = true);
 
 // For printing all elements of a Field, including global guard layers:
-#ifdef __MWERKS__
-// Work around CW4 bug with default arguments of template functions
-template<class T>
-void ggfp1(BareField<T, 1U>& field) {ggfp1(field,true);}
-template<class T>
-void ggfp2(BareField<T, 2U>& field) {ggfp2(field,true);}
-template<class T>
-void ggfp3(BareField<T, 3U>& field) {ggfp3(field,true);}
-#endif // __MWERKS__
 template<class T>
 void ggfp1(BareField<T, 1U>& field, bool docomm = true);
 template<class T>
@@ -92,16 +74,6 @@ template<class T>
 void agfp3(BareField<T, 3U>& field);
 
 // For printing one element of a Field:
-#ifdef __MWERKS__
-// Work around CW4 bug with default arguments of template functions
-template<class T>
-void efp1(BareField<T, 1U>& field, int i) {efp1(field,i,true);}
-template<class T>
-void efp2(BareField<T, 2U>& field, int i, int j) {efp2(field,i,j,true);}
-template<class T>
-void efp3(BareField<T, 3U>& field, int i, int j, int k) {
-  efp3(field,i,j,k,true);}
-#endif // __MWERKS__
 template<class T>
 void efp1(BareField<T, 1U>& field, int i, bool docomm = true);
 template<class T>
@@ -110,25 +82,6 @@ template<class T>
 void efp3(BareField<T, 3U>& field, int i, int j, int k, bool docomm = true);
 
 // For printing strided subrange of  elements of a Field:
-#ifdef __MWERKS__
-// Work around CW4 bug with default arguments of template functions
-template<class T>
-void sfp1(BareField<T, 1U>& field, 
-	  int ibase, int ibound, int istride) {
-  sfp1(field,ibase,ibound,istride,true);}
-template<class T>
-void sfp2(BareField<T, 2U>& field, 
-	  int ibase, int ibound, int istride, 
-	  int jbase, int jbound, int jstride) {
-  sfp2(field,ibase,ibound,istride,jbase,jbound,jstride,true);}
-template<class T>
-void sfp3(BareField<T, 3U>& field, 
-	  int ibase, int ibound, int istride,
-	  int jbase, int jbound, int jstride, 
-	  int kbase, int kbound, int kstride) {
-  sfp3(field,ibase,ibound,istride,jbase,jbound,jstride,
-       kbase,kbound,kstride,true);}
-#endif // __MWERKS__
 template<class T>
 void sfp1(BareField<T, 1U>& field, 
 	  int ibase, int ibound, int istride, bool docomm = true);

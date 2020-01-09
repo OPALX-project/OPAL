@@ -177,8 +177,6 @@ void ParticleCashedLayout<T,Dim,Mesh>::rebuild_interaction_data() {
 
   unsigned int j, d;			// loop variables
 
-  DEBUGMSG("ParticleCashedLayout: rebuilding interaction node data."<<endl);
-
   // initialize data about interaction nodes, and get the inter radius
   InteractionNodes = 0;
   //FIXME: SAME FIX AS BELOW
@@ -207,16 +205,12 @@ void ParticleCashedLayout<T,Dim,Mesh>::rebuild_interaction_data() {
 
       // use the RegionLayout to find all remote Vnodes which touch the domain
       // being checked here
-      DEBUGMSG("  Checking domain " << chkDom << endl);
       typename RegionLayout<T,Dim,Mesh>::touch_range_dv touchingVN =
           this->RLayout.touch_range_rdv(chkDom);
       typename RegionLayout<T,Dim,Mesh>::touch_iterator_dv tVN = touchingVN.first;
-      DEBUGMSG("  Touching vnodes:" << endl);
       for ( ; tVN != touchingVN.second; ++tVN) {
           // note that we need to send a message to the node which contains
           // this remote Vnode
-          DEBUGMSG("    vnode: node = " << ((*tVN).second)->getNode());
-          DEBUGMSG(", domain = " << ((*tVN).second)->getDomain() << endl);
           unsigned vn = ((*tVN).second)->getNode();
           if ( ! InterNodeList[vn] ) {
               InterNodeList[vn] = true;
@@ -225,9 +219,7 @@ void ParticleCashedLayout<T,Dim,Mesh>::rebuild_interaction_data() {
       }
   }
 
-  DEBUGMSG("  There are " << InteractionNodes << " inter. nodes." << endl);
-
-  // set the flag indicating the swap ghost particle routine should
+    // set the flag indicating the swap ghost particle routine should
   // be called the next time we try to access the cashed particles
   // or do anything of utility with the ghost particles
   NeedGhostSwap = true;
@@ -246,8 +238,6 @@ void ParticleCashedLayout<T,Dim,Mesh>::rebuild_interaction_data(
 {
   unsigned j, d;			// loop variables
   unsigned pe = Ippl::myNode();
-
-  DEBUGMSG("ParticleCashedLayout: rebuilding interaction node data."<<endl);
 
   // initialize data about interaction nodes, and get the inter radius
   InteractionNodes = 0;
@@ -290,14 +280,10 @@ void ParticleCashedLayout<T,Dim,Mesh>::rebuild_interaction_data(
 
     // use the RegionLayout to find all remote Vnodes which touch
     // the domain being checked here
-    DEBUGMSG("  Checking domain " << chkDom << endl);
     touchingVN = this->RLayout.touch_range_rdv(chkDom);
-    DEBUGMSG("  Touching vnodes:" << endl);
     for (tVN = touchingVN.first; tVN != touchingVN.second; ++tVN) {
       // note that we need to send a message to the node which contains
       // this remote Vnode
-      DEBUGMSG("    vnode: node = " << ((*tVN).second)->getNode());
-      DEBUGMSG(", domain = " << ((*tVN).second)->getDomain() << endl);
       unsigned vn = ((*tVN).second)->getNode();
       if ( ! InterNodeList[vn] ) {
         InterNodeList[vn] = true;
@@ -359,14 +345,10 @@ void ParticleCashedLayout<T,Dim,Mesh>::rebuild_interaction_data(
 
       // use the RegionLayout to find all remote Vnodes which touch
       // the domain being checked here
-      DEBUGMSG("  Checking domain " << refDom << endl);
       touchingVN = this->RLayout.touch_range_rdv(refDom);
-      DEBUGMSG("  Touching vnodes:" << endl);
       for (tVN = touchingVN.first; tVN != touchingVN.second; ++tVN) {
         // note that we need to send a message to the node which contains
         // this remote Vnode
-        DEBUGMSG("    vnode: node = " << ((*tVN).second)->getNode());
-        DEBUGMSG(", domain = " << ((*tVN).second)->getDomain() << endl);
         unsigned vn = ((*tVN).second)->getNode();
         if ( ! InterNodeList[vn] ) {
           InterNodeList[vn] = true;
@@ -390,8 +372,6 @@ void ParticleCashedLayout<T,Dim,Mesh>::rebuild_interaction_data(
     }
 
   }
-
-  DEBUGMSG("  There are " << InteractionNodes << " inter. nodes." << endl);
 
   // set the flag indicating the swap ghost particle routine should
   // be called the next time we try to access the cashed particles

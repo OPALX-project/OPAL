@@ -2,9 +2,6 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
  *
  ***************************************************************************/
 
@@ -13,8 +10,6 @@
 
 // include files
 #include "Utility/Vec.h"
-#include "Utility/RefCounted.h"
-#include "Utility/Pooled.h"
 #include "Message/Message.h"
 #include "PETE/IpplExpressions.h"
 
@@ -192,9 +187,3 @@ protected:
 #include "Field/BrickIterator.hpp"
 
 #endif // BRICK_ITERATOR_H
-
-/***************************************************************************
- * $RCSfile: BrickIterator.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:26 $
- * IPPL_VERSION_ID: $Id: BrickIterator.h,v 1.1.1.1 2003/01/23 07:40:26 adelmann Exp $ 
- ***************************************************************************/

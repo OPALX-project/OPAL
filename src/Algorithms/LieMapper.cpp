@@ -40,7 +40,6 @@
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/ParallelPlate.h"
-#include "AbsBeamline/CyclotronValley.h"
 
 #include "BeamlineGeometry/Euclid3D.h"
 #include "BeamlineGeometry/PlanarArcGeometry.h"
@@ -301,10 +300,6 @@ void LieMapper::visitRBend(const RBend &bend) {
 
 void LieMapper::visitParallelPlate(const ParallelPlate &pplate) {
     // Do nothing.
-}
-
-void LieMapper::visitCyclotronValley(const CyclotronValley &cv) {
-    // Do nothing here.
 }
 
 void LieMapper::visitRFCavity(const RFCavity &as) {

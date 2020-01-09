@@ -177,8 +177,6 @@ std::string ElementBase::getTypeString(ElementBase::ElementType type) {
         return "Cyclotron";
     case CYCLOTRONWRAPPER:
         return "Cyclotronwrapper";
-    case CYCLOTRONVALLEY:
-        return "CyclotronValley";
     case DEGRADER:
         return "Degrader";
     case DIAGNOSTIC:

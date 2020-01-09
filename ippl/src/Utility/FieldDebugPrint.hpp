@@ -34,14 +34,6 @@
 #include "Message/Message.h"
 #include <iomanip>
 
-// debugging macro
-#ifdef IPPL_PRINTDEBUG
-#define FDPDBG(x) x
-#else
-#define FDPDBG(x)
-#endif
-
-
 // Print out the data for a given field, using it's whole domain
 template<class T, unsigned Dim>
 void FieldDebugPrint<T,Dim>::print(BareField<T,Dim>& F,
@@ -84,17 +76,10 @@ void FieldDebugPrint<T,Dim>::print(BareField<T,Dim>& F,
 				   Inform& out,
                                    bool allnodes) {
 
-  // a debug Inform object
-  FDPDBG(Inform dbgmsg("FieldDebugPrint", INFORM_ALL_NODES));
-  FDPDBG(dbgmsg << "Printing domain " << view);
-  FDPDBG(dbgmsg << " for a Field with total domain " << F.getDomain() << endl);
-  FDPDBG(dbgmsg << "Involving all nodes? " << allnodes << endl);
-
   // generate a new communication tag, if necessary
   int tag;
   if (allnodes) {
     tag = Ippl::Comm->next_tag(FP_GATHER_TAG, FP_TAG_CYCLE);
-    FDPDBG(dbgmsg << "Using tag = " << tag << endl);
   }
 
   // determine the maximum domain of the field
@@ -103,8 +88,6 @@ void FieldDebugPrint<T,Dim>::print(BareField<T,Dim>& F,
     domain = AddGuardCells(F.getDomain(), F.getGuardCellSizes());
   else
     domain = F.getDomain();
-  FDPDBG(dbgmsg << "Maximum domain of the field (possibly with GC's) = ");
-  FDPDBG(dbgmsg << domain << endl);
 
   // check that the view is contained inside of the Field's domain
   if(!domain.contains(view)) {
@@ -117,7 +100,6 @@ void FieldDebugPrint<T,Dim>::print(BareField<T,Dim>& F,
   // guard cells are filled.  But we can only do this if this is
   // being called by all the nodes, since it requires communication.
   if (allnodes && F.isDirty()) {
-    FDPDBG(dbgmsg << "Filling guard cells first." << endl);
     F.fillGuardCells();
   }
 
@@ -159,8 +141,6 @@ void FieldDebugPrint<T,Dim>::print(BareField<T,Dim>& F,
         if (view.touches(lo)) {
 	  datahere = 1;
 	  NDIndex<Dim> intersection = lo.intersect(view);
-          FDPDBG(dbgmsg << "Node " << Ippl::myNode() << " sending domain ");
-          FDPDBG(dbgmsg << intersection << " to node 0." << endl);
 	  T compressed_data;
 	  LFI rhs = l.begin(intersection, compressed_data);
 	  rhs.TryCompress();
@@ -189,8 +169,6 @@ void FieldDebugPrint<T,Dim>::print(BareField<T,Dim>& F,
 	  // Extract the intersection domain from the message.
 	  NDIndex<Dim> localBlock;
 	  localBlock.getMessage(*mess);
-          FDPDBG(dbgmsg << "Parent receiving domain " << localBlock);
-          FDPDBG(dbgmsg << " from node " << any_node << endl);
 
 	  // Extract the rhs iterator from it.
 	  T compressed_value;
@@ -243,8 +221,6 @@ void FieldDebugPrint<T,Dim>::print(BareField<T,Dim>& F,
         myLField.Uncompress();
         availLField.Uncompress();
         NDIndex<Dim> intersection = lo.intersect(view);
-        FDPDBG(dbgmsg << "Node "<<Ippl::myNode()<<" copying local domain ");
-        FDPDBG(dbgmsg << intersection << " into local LField storage."<<endl);
         LFI lhs = myLField.begin(intersection);
         LFI rhs = l.begin(intersection);
         BrickExpression<Dim,LFI,LFI,OpAssign>(lhs,rhs).apply();
@@ -264,8 +240,6 @@ void FieldDebugPrint<T,Dim>::print(BareField<T,Dim>& F,
         myLField.Uncompress();
         availLField.Uncompress();
         NDIndex<Dim> intersection = lo.intersect(view);
-        FDPDBG(dbgmsg << "Node "<<Ippl::myNode()<<" copying local domain ");
-        FDPDBG(dbgmsg << intersection << " into local LField storage."<<endl);
         LFI lhs = myLField.begin(intersection);
         LFI rhs = l.begin(intersection);
         BrickExpression<Dim,LFI,LFI,OpAssign>(lhs,rhs).apply();
@@ -273,8 +247,6 @@ void FieldDebugPrint<T,Dim>::print(BareField<T,Dim>& F,
         BrickExpression<Dim,BLFI,BPS,OpAssign>(blhs,trueitem).apply();
       }
     }
-
-    FDPDBG(dbgmsg << "Finished assembling data; now printing." << endl);
 
     // finally, we can print
     out << "~~~~~~~~ field slice ";

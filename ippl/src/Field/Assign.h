@@ -46,12 +46,6 @@ template<class T, unsigned Dim, unsigned Brackets> class IndexedBareField;
 template <bool IsExpr>
 class ExprTag
 {
-#ifdef IPPL_PURIFY
-public:
-  ExprTag() {}
-  ExprTag(const ExprTag<IsExpr> &) {}
-  ExprTag<IsExpr>& operator=(const ExprTag<IsExpr> &) { return *this; }
-#endif
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -74,28 +68,11 @@ assign(const IndexedBareField<T1,Dim,Dim> &a, RHS b, OP op, ExprTag<true> et) {
   assign(a, b, op, et, true);
 }
 
-#ifdef __MWERKS__
-// Work around CodeWarrior 4.0 bug
-// Component = Expression
-template<class A, class RHS, class OP, class Tag, class TP>
-void
-assign(PETE_TUTree<OpParens<TP>,A> lhs, RHS rhs, OP op, Tag tag) {
-  assign(lhs, rhs, op, tag, true);
-}
-
-// Component = Expression
-template<class A, class RHS, class OP, class Tag, class TP>
-void
-assign(PETE_TUTree<OpParens<TP>,A> lhs, RHS rhs, OP op, Tag,
-       bool fillGC); // tjw added fillGC 12/16/1997 new BC hack
-
-#else
 // Component = Expression
 template<class A, class RHS, class OP, class Tag, class TP>
 void
 assign(PETE_TUTree<OpParens<TP>,A> lhs, RHS rhs, OP op, Tag,
        bool fillGC=true); // tjw added fillGC 12/16/1997 new BC hack
-#endif // __MWERKS__
 
 // BareField = BareField, with communication.
 template<class T1, unsigned D1, class RHS, class Op>

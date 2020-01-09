@@ -293,44 +293,18 @@ int main(int argc, char *argv[])
     // Transform in all directions
     FFT<CCTransform,D,double> ccfft(ndiStandard, compressTemps);
 
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    int forward = +1;
-    int inverse = -1;
-#else
     // set direction names
     ccfft.setDirectionName(+1, "forward");
     ccfft.setDirectionName(-1, "inverse");
-#endif
 
     testmsg << "In-place CC transform using all-parallel layout ..." << endl;
     timer.start();
     // Test complex<-->complex transform (simple test: forward then inverse
     // transform, see if get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    ccfft.transform(forward, CFieldPPStan);
-#else
     ccfft.transform("forward", CFieldPPStan);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    ccfft.transform(inverse, CFieldPPStan);
-#else
     ccfft.transform("inverse", CFieldPPStan);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldPPStan = Abs(CFieldPPStan - CFieldPPStan_save);
@@ -348,30 +322,10 @@ int main(int argc, char *argv[])
     timer.start();
     // Test complex<-->complex transform (simple test: forward then inverse
     // transform, see if get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    ccfft.transform(forward, CFieldSPStan);
-#else
     ccfft.transform("forward", CFieldSPStan);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    ccfft.transform(inverse, CFieldSPStan);
-#else
     ccfft.transform("inverse", CFieldSPStan);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldSPStan = Abs(CFieldSPStan - CFieldSPStan_save);
@@ -389,30 +343,10 @@ int main(int argc, char *argv[])
     timer.start();
     // Test complex<-->complex transform (simple test: forward then inverse
     // transform, see if get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    ccfft.transform(forward, CFieldSPStan, CFieldSPPerm, constInput);
-#else
     ccfft.transform("forward", CFieldSPStan, CFieldSPPerm, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    ccfft.transform(inverse, CFieldSPPerm, CFieldSPStan, constInput);
-#else
     ccfft.transform("inverse", CFieldSPPerm, CFieldSPStan, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldSPStan = Abs(CFieldSPStan - CFieldSPStan_save);
@@ -443,42 +377,18 @@ int main(int argc, char *argv[])
     // create RC FFT object
     FFT<RCTransform,D,double> rcfft(ndiStandard, ndiStandard0h, compressTemps);
 
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-#else
     // set direction names
     rcfft.setDirectionName(+1, "forward");
     rcfft.setDirectionName(-1, "inverse");
-#endif
 
     testmsg << "RC transform using all-parallel layout ..." << endl;
     timer.start();
     // Test real<-->complex transform (simple test: forward then inverse
     // transform, see if we get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    rcfft.transform(forward, RFieldPPStan, CFieldPPStan0h, constInput);
-#else
     rcfft.transform("forward", RFieldPPStan, CFieldPPStan0h, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    rcfft.transform(inverse, CFieldPPStan0h, RFieldPPStan, constInput);
-#else
     rcfft.transform("inverse", CFieldPPStan0h, RFieldPPStan, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldPPStan = Abs(RFieldPPStan - RFieldPPStan_save);
@@ -496,30 +406,10 @@ int main(int argc, char *argv[])
     timer.start();
     // Test real<-->complex transform (simple test: forward then inverse
     // transform, see if we get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    rcfft.transform(forward, RFieldSPStan, CFieldSPStan0h, constInput);
-#else
     rcfft.transform("forward", RFieldSPStan, CFieldSPStan0h, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    rcfft.transform(inverse, CFieldSPStan0h, RFieldSPStan, constInput);
-#else
     rcfft.transform("inverse", CFieldSPStan0h, RFieldSPStan, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
@@ -538,30 +428,10 @@ int main(int argc, char *argv[])
     timer.start();
     // Test real<-->complex transform (simple test: forward then inverse
     // transform, see if we get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    rcfft.transform(forward, RFieldSPStan, CFieldSPPerm0h, constInput);
-#else
     rcfft.transform("forward", RFieldSPStan, CFieldSPPerm0h, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    rcfft.transform(inverse, CFieldSPPerm0h, RFieldSPStan, constInput);
-#else
     rcfft.transform("inverse", CFieldSPPerm0h, RFieldSPStan, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
@@ -592,42 +462,18 @@ int main(int argc, char *argv[])
     // create Sine FFT object
     FFT<SineTransform,D,double> sinefft(ndiStandard, ndiStandard1h,
                                         sineTransformDims, compressTemps);
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-#else
     // set direction names
     sinefft.setDirectionName(+1,"forward");
     sinefft.setDirectionName(-1,"inverse");
-#endif
 
     testmsg << "Sine and RC transform using all-parallel layout ..." << endl;
     timer.start();
     // Test sine transform (simple test: forward then inverse
     // transform, see if we get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft.transform(forward, RFieldPPStan, CFieldPPStan1h, constInput);
-#else
     sinefft.transform("forward", RFieldPPStan, CFieldPPStan1h, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft.transform(inverse, CFieldPPStan1h, RFieldPPStan, constInput);
-#else
     sinefft.transform("inverse", CFieldPPStan1h, RFieldPPStan, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldPPStan = Abs(RFieldPPStan - RFieldPPStan_save);
@@ -645,30 +491,10 @@ int main(int argc, char *argv[])
     timer.start();
     // Test sine transform (simple test: forward then inverse
     // transform, see if we get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft.transform(forward, RFieldSPStan, CFieldSPStan1h, constInput);
-#else
     sinefft.transform("forward", RFieldSPStan, CFieldSPStan1h, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft.transform(inverse, CFieldSPStan1h, RFieldSPStan, constInput);
-#else
     sinefft.transform("inverse", CFieldSPStan1h, RFieldSPStan, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
@@ -688,30 +514,10 @@ int main(int argc, char *argv[])
     timer.start();
     // Test sine transform (simple test: forward then inverse
     // transform, see if we get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft.transform(forward, RFieldSPStan, CFieldSPPerm1h, constInput);
-#else
     sinefft.transform("forward", RFieldSPStan, CFieldSPPerm1h, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft.transform(inverse, CFieldSPPerm1h, RFieldSPStan, constInput);
-#else
     sinefft.transform("inverse", CFieldSPPerm1h, RFieldSPStan, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
@@ -734,42 +540,18 @@ int main(int argc, char *argv[])
     // create Sine FFT object
     FFT<SineTransform,D,double> sinefft2(ndiStandard, sineTransformDims,
                                          compressTemps);
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-#else
     // set direction names
     sinefft2.setDirectionName(+1,"forward");
     sinefft2.setDirectionName(-1,"inverse");
-#endif
 
     testmsg << "In-place sine transform using all-parallel layout ..." << endl;
     timer.start();
     // Test sine transform (simple test: forward then inverse
     // transform, see if we get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft2.transform(forward, RFieldPPStan);
-#else
     sinefft2.transform("forward", RFieldPPStan);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft2.transform(inverse, RFieldPPStan);
-#else
     sinefft2.transform("inverse", RFieldPPStan);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldPPStan = Abs(RFieldPPStan - RFieldPPStan_save);
@@ -787,30 +569,10 @@ int main(int argc, char *argv[])
     timer.start();
     // Test sine transform (simple test: forward then inverse
     // transform, see if we get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft2.transform(forward, RFieldSPStan);
-#else
     sinefft2.transform("forward", RFieldSPStan);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft2.transform(inverse, RFieldSPStan);
-#else
     sinefft2.transform("inverse", RFieldSPStan);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
@@ -829,30 +591,10 @@ int main(int argc, char *argv[])
     timer.start();
     // Test sine transform (simple test: forward then inverse
     // transform, see if we get back original values.
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
-#endif
     testmsg << "Forward transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft2.transform(forward, RFieldSPStan, RFieldSPStan, constInput);
-#else
     sinefft2.transform("forward", RFieldSPStan, RFieldSPStan, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-    cout << "PE " << pe << " about to invoke inverse FFT::transform()" << endl;
-#endif
     testmsg << "Inverse transform ..." << endl;
-#ifdef __MWERKS__
-    // Is this CW4 bug or bug in this source or IPPL FFT sources?
-    sinefft2.transform(inverse, RFieldSPStan, RFieldSPStan, constInput);
-#else
     sinefft2.transform("inverse", RFieldSPStan, RFieldSPStan, constInput);
-#endif
-#ifdef IPPL_PRINTDEBUG
-    cout << "PE " << pe << " back from FFT::transform()" << endl;
-#endif
     timer.stop();
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);

@@ -146,7 +146,7 @@ void SIndex<Dim>::setup() {
   // create new LSIndex objects for the local vnodes
   typename FieldLayout<Dim>::iterator_iv locvn = Layout->begin_iv();
   for ( ; locvn != Layout->end_iv(); ++locvn)
-    IndexList.push_back(new LSIndex<Dim>((*locvn).second.get()));
+    IndexList.push_back(std::make_shared<LSIndex<Dim>>((*locvn).second.get()));
 
   // save our bounding box information
   BoundingBox = Layout->getDomain();
@@ -186,7 +186,6 @@ bool SIndex<Dim>::addIndex(SIndex<Dim>::iterator_iv& curr,
 
   // if the point is in the LField's region, add it
   if ((*curr)->contains(so) && ! (*curr)->hasIndex(so)) {
-    (*curr).CopyForWrite();
     (*curr)->addIndex(so);
     return true;
   }
@@ -265,7 +264,6 @@ bool SIndex<Dim>::removeIndex(SIndex<Dim>::iterator_iv& curr,
   
   
   if ((*curr)->hasIndex(so)) {
-    (*curr).CopyForWrite();
     (*curr)->removeIndex(so);
     return true;
   }
@@ -336,7 +334,6 @@ void SIndex<Dim>::clear() {
 
   // tell all LSIndex objects to remove their points
   for (iterator_iv a = begin_iv(); a != end_iv(); ++a) {
-    (*a).CopyForWrite();
     (*a)->clear();
   }
 }

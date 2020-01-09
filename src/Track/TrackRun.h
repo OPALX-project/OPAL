@@ -21,6 +21,7 @@
 #include "AbstractObjects/Action.h"
 
 #include <string>
+#include <vector>
 
 class Beam;
 class OpalData;

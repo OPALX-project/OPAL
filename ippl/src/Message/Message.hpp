@@ -127,13 +127,7 @@ PutSingleItem<T, false, false>::put(Message& m, T beg, T end)
         // void and store it
         if (!m.willCopy())
         {
-#ifdef __MWERKS__
             m.putmsg((void*) (&*beg), sizeof(T2), d);
-#else
-            // Is this bad C++ or mwerks bug? Certain STL implems this might be wrong:
-            m.putmsg((void*) (&*beg), sizeof(T2), d);
-            //m.putmsg((void*) beg, sizeof(T2), d);
-#endif // __MWERKS__
         }
         else
         {

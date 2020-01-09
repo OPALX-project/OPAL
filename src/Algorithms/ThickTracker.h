@@ -25,7 +25,6 @@
 #include "AbsBeamline/BeamStripping.h"
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
-#include "AbsBeamline/CyclotronValley.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/Drift.h"
@@ -210,11 +209,6 @@ public:
 
     /// Apply the algorithm to a ParallelPlate.
     virtual void visitParallelPlate(const ParallelPlate &);
-
-    /// Apply the algorithm to a CyclotronValley.
-    virtual void visitCyclotronValley(const CyclotronValley &);
-
-
 
     /// Apply the algorithm to a beam line.
     //  overwrite the execute-methode from DefaultVisitor
@@ -581,11 +575,6 @@ inline void ThickTracker::visitSolenoid(const Solenoid &solenoid) {
 inline void ThickTracker::visitParallelPlate(const ParallelPlate &pplate) {
 //     itsOpalBeamline_m.visit(pplate, *this, itsBunch_m);
     this->throwElementError_m("ParallelPlate");
-}
-
-inline void ThickTracker::visitCyclotronValley(const CyclotronValley &cv) {
-//     itsOpalBeamline_m.visit(cv, *this, itsBunch_m);
-    this->throwElementError_m("CyclotronValley");
 }
 
 #endif // OPAL_ThickTracker_HH

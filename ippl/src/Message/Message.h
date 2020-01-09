@@ -605,15 +605,6 @@ inline void getMessage_iter(Message &m, OutputIterator o)
     m.get_iter(o);
 }
 
-
-#if ( defined(IPPL_MPIXX) || defined(IPPL_PM) )
-#define main mpi_main
-extern "C"
-{
-    int mpi_main(int, char**);
-}
-#endif // IPPL_MPIXX || IPPL_PM
-
 #include "Message/Message.hpp"
 
 #endif // MESSAGE_H

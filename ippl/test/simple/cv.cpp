@@ -25,23 +25,12 @@
 #include <iostream>
 #include "Ippl.h"
 
-/*
-template < unsigned Dim > 
-void 
-initVectorCell(Field<Vektor<double,Dim>,Dim,UniformCartesian<Dim>,Cell>&);
-template < unsigned Dim > 
-void 
-initScalarCell(Field<double,Dim,UniformCartesian<Dim>,Cell>&);
-*/
-
-// #ifdef __MWERKS__
 void initVectorCell(Field<Vektor<double,1U>,1U,UniformCartesian<1U>,Cell>& C1);
 void initVectorCell(Field<Vektor<double,2U>,2U,UniformCartesian<2U>,Cell>& C1);
 void initVectorCell(Field<Vektor<double,3U>,3U,UniformCartesian<3U>,Cell>& C1);
 void initScalarCell(Field<double,1U,UniformCartesian<1U>,Cell>& C1);
 void initScalarCell(Field<double,2U,UniformCartesian<2U>,Cell>& C1);
 void initScalarCell(Field<double,3U,UniformCartesian<3U>,Cell>& C1);
-// #endif // __MWERKS__
 
 const unsigned Dim = 2;
 int size = 8;

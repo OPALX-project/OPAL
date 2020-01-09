@@ -34,13 +34,6 @@
 #include "Utility/IpplInfo.h"
 #include "Utility/IpplStats.h"
 
-// debugging macros
-#ifdef IPPL_PRINTDEBUG
-#define DPFDBG(x) x
-#else
-#define DPFDBG(x)
-#endif
-
 ///////////////////////////////////////////////////////////////////////////
 // Constructor: make a DiscParticle for reading or writing.
 // fname = name of file (without extensions)
@@ -241,7 +234,6 @@ bool DiscParticle::write_meta() {
 
   // close data file and return
   fclose(outputMeta);
-  DPFDBG(printDebug());
   return true;
 }
 
@@ -260,14 +252,6 @@ bool DiscParticle::read_meta() {
 
   bool iserror = false;
   int tag = Ippl::Comm->next_tag(DF_READ_META_TAG, DF_TAG_CYCLE);
-
-  DPFDBG(std::string dbgmsgname("DP:read_meta:"));
-  DPFDBG(dbgmsgname += Config->getConfigFile());
-  DPFDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-  DPFDBG(dbgmsg << "Starting to read meta info: mySMP=" << Config->mySMP());
-  DPFDBG(dbgmsg << ", mybox0=" << Config->getSMPBox0());
-  DPFDBG(dbgmsg << ", numfiles=" << Config->getNumFiles());
-  DPFDBG(dbgmsg << endl);
 
   // initialize data before reading .meta file
   TypeString = "unknown";
@@ -447,9 +431,6 @@ bool DiscParticle::read_meta() {
 	  iserror = true;
         }
 
-	DPFDBG(dbgmsg << "On box0: finished line with tokens[0]='"<<tokens[0]);
-	DPFDBG(dbgmsg << "' ... iserror = " << iserror << endl);
-
 	// print if there was an error
 	if (iserror) {
 	  ERRORMSG("Format error on line " << linesread << " in file ");
@@ -463,23 +444,12 @@ bool DiscParticle::read_meta() {
         break;
     }
 
-    DPFDBG(dbgmsg << "Summary of meta info:" << endl);
-    DPFDBG(dbgmsg << "  iserror = " << iserror << endl);
-    DPFDBG(dbgmsg << "  NumRecords = " << RecordList.size() << endl);
-    DPFDBG(dbgmsg << "  TypeString = " << TypeString << endl);
-    DPFDBG(dbgmsg << "  NextOffset = " << static_cast<long>(CurrentOffset));
-    DPFDBG(dbgmsg << endl);
-
     // now send meta info to all nodes which expect it
     int numinform = Config->getNumOtherSMP();
-    DPFDBG(dbgmsg << "Informing " << numinform << " SMP's of meta info");
-    DPFDBG(dbgmsg << endl);
     for (int s=0; s <= numinform; ++s) {
       int smp = Config->mySMP();
       if (s != numinform)
 	smp = Config->getOtherSMP(s);
-      DPFDBG(dbgmsg << "SMP " << smp << " has " <<Config->getNumSMPNodes(smp));
-      DPFDBG(dbgmsg << " nodes to check." << endl);
       for (unsigned int n=0; n < Config->getNumSMPNodes(smp); ++n) {
         int node = Config->getSMPNode(smp, n);
         if (node != Ippl::myNode()) {
@@ -521,8 +491,6 @@ bool DiscParticle::read_meta() {
 	  }
 
           // send the message to the intended node
-          DPFDBG(dbgmsg<<"Sending meta info to node " << node << " with tag ");
-          DPFDBG(dbgmsg<< tag << ", on SMP " << smp << endl);
           Ippl::Comm->send(msg, node, tag);
         }
       }
@@ -532,53 +500,39 @@ bool DiscParticle::read_meta() {
     // all other nodes (which are not Box0 nodes) should get a message
     // telling them the meta info
     int node = Config->getSMPBox0();
-    DPFDBG(dbgmsg << "Waiting for meta info from node " << node);
-    DPFDBG(dbgmsg << " with tag " << tag << endl);
     Message *msg = Ippl::Comm->receive_block(node, tag);
     PAssert(msg);
 
     // get info out of message
-    DPFDBG(dbgmsg << "Summary of received meta info:" << endl);
     ::getMessage(*msg, TypeString);
-    DPFDBG(dbgmsg << "  TypeString = " << TypeString << endl);
     int errint = 0, numrec = 0, val = 0;
     msg->get(errint);
     iserror = (errint != 0);
-    DPFDBG(dbgmsg << "  iserror = " << iserror << endl);
     if (!iserror) {
       long curroff = 0;
       msg->get(curroff);
       CurrentOffset = curroff;
-      DPFDBG(dbgmsg << "  CurrentOffset = " << curroff << endl);
       msg->get(numrec);
-      DPFDBG(dbgmsg << "  NumRecords = " << numrec << endl);
       for (int r=0; r < numrec; ++r) {
-	DPFDBG(dbgmsg << "  For record " << r << ":" << endl);
 	RecordList.push_back(new RecordInfo());
 	int filesnum = RecordList[r]->localparticles.size();
 	msg->get(filesnum);
-	DPFDBG(dbgmsg << "    Filesets=" << filesnum << endl);
 	msg->get(RecordList[r]->attributes);
 	int numattr = RecordList[r]->attributes;
 	if (RecordList[r]->attributes == 0)
 	  numattr = 1;
-	DPFDBG(dbgmsg << "    Attribs=" << numattr << endl);
 	msg->get(RecordList[r]->globalparticles);
-	DPFDBG(dbgmsg << "    Global#="<<RecordList[r]->globalparticles<<endl);
 	for (int p=0; p < filesnum; ++p) {
 	  msg->get(val);
-	  DPFDBG(dbgmsg << "    Local " << p << " = " << val << endl);
 	  RecordList[r]->localparticles.push_back(val);
 	}
 	for (int b=0; b < numattr; ++b) {
 	  msg->get(val);
-	  DPFDBG(dbgmsg << "    Bytesize " << b << " = " << val << endl);
 	  RecordList[r]->bytesize.push_back(val);
 	}
 	for (int t=0; t < numattr; ++t) {
 	  std::string dtype;
 	  ::getMessage(*msg, dtype);
-	  DPFDBG(dbgmsg << "    Disctype " << t << " = " << dtype << endl);
 	  RecordList[r]->disctypes.push_back(dtype);
 	}
 	for (int z=0; z < filesnum; ++z) {
@@ -588,8 +542,6 @@ bool DiscParticle::read_meta() {
 	  for (int o=0; o < numattr; ++o) {
 	    msg->get(value);
 	    offset = value;
-	    DPFDBG(dbgmsg << "    Offset " << z << "," << o << " = ");
-	    DPFDBG(dbgmsg << offset << endl);
 	    offsetvec.push_back(offset);
 	  }
 	  RecordList[r]->offset.push_back(offsetvec);
@@ -604,15 +556,11 @@ bool DiscParticle::read_meta() {
   // at the end, if there was an error, get rid of all the existing record
   // info
   if (iserror) {
-    DPFDBG(dbgmsg<<"Cleaning up error record info at end of read_meta"<<endl);
     std::vector<RecordInfo *>::iterator rec = RecordList.begin();
     for ( ; rec != RecordList.end(); ++rec)
       delete (*rec);
     RecordList.erase(RecordList.begin(), RecordList.end());
   }
-
-  // print out summary
-  DPFDBG(printDebug());
 
   // return whether there was an error
   return (!iserror);
@@ -622,9 +570,7 @@ bool DiscParticle::read_meta() {
 ///////////////////////////////////////////////////////////////////////////
 bool DiscParticle::write_data(FILE *outputData, std::vector<Message *> &msgvec,
 			      RecordInfo *info) {
-
-  DPFDBG(Inform dbgmsg("DiscParticle::write_data", INFORM_ALL_NODES));
-
+        
   // a vector for storing information about how many particles are in each msg
   std::vector<int> numvec;
   std::vector<Offset_t> offsetvec;
@@ -643,7 +589,6 @@ bool DiscParticle::write_data(FILE *outputData, std::vector<Message *> &msgvec,
   if (numattr == 0)
     numattr = 1;
   for (int a=0; a < numattr; ++a) {
-    DPFDBG(dbgmsg<<"Writing out data from messages for attrib " << a << endl);
     offsetvec.push_back(CurrentOffset);
 
     // loop over all the nodes that provided data
@@ -658,8 +603,6 @@ bool DiscParticle::write_data(FILE *outputData, std::vector<Message *> &msgvec,
       } else {
 	nump = numvec[n];
       }
-      DPFDBG(dbgmsg << "  Attrib " << a << " has " << nump << " particles ");
-      DPFDBG(dbgmsg << "from node " << n << endl);
 
       if (nump > 0) {
 	// get the data for this attribute
@@ -667,8 +610,6 @@ bool DiscParticle::write_data(FILE *outputData, std::vector<Message *> &msgvec,
 
 	// write it out now ...
 	unsigned int totalbytes = nump * info->bytesize[a];
-	DPFDBG(dbgmsg << "  Writing out block of " << nump << " particles, ");
-	DPFDBG(dbgmsg << "with " << totalbytes << " bytes." << endl);
 	if (fwrite(msgdata, 1, totalbytes, outputData) != totalbytes) {
 	  ERRORMSG("Write error in DiscParticle::write_data" << endl);
 	  fclose(outputData);
@@ -690,7 +631,6 @@ bool DiscParticle::write_data(FILE *outputData, std::vector<Message *> &msgvec,
   }
 
   // save the offset information for each attribute
-  DPFDBG(dbgmsg << "At end of attrib write; totalnum = " << totalnum << endl);
   info->offset.push_back(offsetvec);
   info->localparticles.push_back(totalnum);
 
@@ -705,12 +645,10 @@ bool DiscParticle::write_data(FILE *outputData, std::vector<Message *> &msgvec,
 void *DiscParticle::read_data(FILE *outputData, unsigned int attrib,
 			      unsigned int record, unsigned int fileset) {
 
-  DPFDBG(Inform dbgmsg("DiscParticle::read_data", INFORM_ALL_NODES));
 
   // determine the byte size of the attribute, and the offset
   int nump = RecordList[record]->localparticles[fileset];
   int bytesize = RecordList[record]->bytesize[attrib];
-  DPFDBG(dbgmsg << "Particles=" << nump << ", sizeof(T)=" << bytesize << endl);
 
   // if there are no particles to read, just return
   if (nump < 1 || bytesize < 1)
@@ -719,7 +657,6 @@ void *DiscParticle::read_data(FILE *outputData, unsigned int attrib,
   // seek to proper position first, for the first attribute
   if (attrib == 0) {
     Offset_t seekpos = RecordList[record]->offset[fileset][attrib];
-    DPFDBG(dbgmsg << "seekpos = " << seekpos << endl);
     if (fseek(outputData, seekpos, SEEK_SET) != 0) {
       ERRORMSG("Error seeking to position " << static_cast<long>(seekpos));
       ERRORMSG(" in .data file for DiscParticle::read_data." << endl);
@@ -733,7 +670,6 @@ void *DiscParticle::read_data(FILE *outputData, unsigned int attrib,
   void *buffer = malloc(totalbytes);
 
   // read the data into the provided buffer
-  DPFDBG(dbgmsg << "Reading " << totalbytes << " bytes from file ..." << endl);
   if (fread(buffer, 1, totalbytes, outputData) != totalbytes) {
     ERRORMSG("Read error in DiscParticle::read_data" << endl);
     free(buffer);
@@ -741,11 +677,6 @@ void *DiscParticle::read_data(FILE *outputData, unsigned int attrib,
     return 0;
   }
 
-  //DPFDBG(dbgmsg << "Read in block of " << size << " elements:" << endl);
-  //DPFDBG(for (unsigned int i=0; i < size; ++i))
-  //DPFDBG(  dbgmsg << "  buffer[" << i << "] = " << buffer[i] << endl);
-
-  //  ADDIPPLSTAT(incDiscBytesRead, totalbytes);
   return buffer;
 }
 

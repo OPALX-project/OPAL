@@ -45,31 +45,14 @@ extern int widthOfElements;
 // Function prototypes; see ParticleDebug.cpp for comments:
 //------------------------------------------------------
 // For printing all elements of a ParticleAttrib:
-#ifdef __MWERKS__
-// Work around CW4 bug with default arguments of template functions
-template<class T>
-void pap(ParticleAttrib<T>& pattr) {pap(pattr,true);}
-#endif // __MWERKS__
 template<class T>
 void pap(ParticleAttrib<T>& pattr, bool docomm = true);
 
 // For printing one element of a ParticleAttrib:
-#ifdef __MWERKS__
-// Work around CW4 bug with default arguments of template functions
-template<class T>
-void epap(ParticleAttrib<T>& pattr, int i) {epap(pattr,i,true);}
-#endif // __MWERKS__
 template<class T>
 void epap(ParticleAttrib<T>& pattr, int i, bool docomm = true);
 
 // For printing strided subrange of elements of a ParticleAttrib:
-#ifdef __MWERKS__
-// Work around CW4 bug with default arguments of template functions
-template<class T>
-void spap(ParticleAttrib<T>& pattr, 
-	  int ibase, int ibound, int istride) {
-  spap(pattr,ibase,ibound,istride,true);}
-#endif // __MWERKS__
 template<class T>
 void spap(ParticleAttrib<T>& pattr, 
 	  int ibase, int ibound, int istride, bool docomm = true);

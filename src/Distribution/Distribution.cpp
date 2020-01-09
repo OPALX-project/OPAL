@@ -2555,11 +2555,11 @@ void Distribution::generateGaussZ(size_t numberOfParticles) {
     for (size_t partIndex = 0; partIndex < numberOfParticles; partIndex++) {
         bool allow = false;
 
-        double x = 0.0;
+        double x  = 0.0;
         double px = 0.0;
-        double y = 0.0;
+        double y  = 0.0;
         double py = 0.0;
-        double z = 0.0;
+        double z  = 0.0;
         double pz = 0.0;
 
         while (!allow) {
@@ -2572,39 +2572,25 @@ void Distribution::generateGaussZ(size_t numberOfParticles) {
 
             gsl_blas_dgemv(CblasNoTrans, 1.0, corMat, rx, 0.0, ry);
 
-            x = gsl_vector_get(ry, 0);
+            x  = gsl_vector_get(ry, 0);
             px = gsl_vector_get(ry, 1);
-            y = gsl_vector_get(ry, 2);
+            y  = gsl_vector_get(ry, 2);
             py = gsl_vector_get(ry, 3);
-            z = gsl_vector_get(ry, 4);
+            z  = gsl_vector_get(ry, 4);
             pz = gsl_vector_get(ry, 5);
 
-            bool xAndYOk = false;
-            if (cutoffR_m[0] < SMALLESTCUTOFF && cutoffR_m[1] < SMALLESTCUTOFF)
-                xAndYOk = true;
-            else if (cutoffR_m[0] < SMALLESTCUTOFF)
-                xAndYOk = (std::abs(y) <= cutoffR_m[1]);
-            else if (cutoffR_m[1] < SMALLESTCUTOFF)
-                xAndYOk = (std::abs(x) <= cutoffR_m[0]);
-            else
-                xAndYOk = (pow(x / cutoffR_m[0], 2.0) + pow(y / cutoffR_m[1], 2.0) <= 1.0);
+            bool xAndYOk   = (pow( x / cutoffR_m[0], 2.0) + pow( y / cutoffR_m[1], 2.0) <= 1.0);
+            bool pxAndPyOk = (pow(px / cutoffP_m[0], 2.0) + pow(py / cutoffP_m[1], 2.0) <= 1.0);
 
-            bool pxAndPyOk = false;
-            if (cutoffP_m[0] < SMALLESTCUTOFF && cutoffP_m[1] < SMALLESTCUTOFF)
-                pxAndPyOk = true;
-            else if (cutoffP_m[0] < SMALLESTCUTOFF)
-                pxAndPyOk = (std::abs(py) <= cutoffP_m[1]);
-            else if (cutoffP_m[1] < SMALLESTCUTOFF)
-                pxAndPyOk = (std::abs(px) <= cutoffP_m[0]);
-            else
-                pxAndPyOk = (pow(px / cutoffP_m[0], 2.0) + pow(py / cutoffP_m[1], 2.0) <= 1.0);
+            bool zOk  = (std::abs(z)  <= cutoffR_m[2]);
+            bool pzOk = (std::abs(pz) <= cutoffP_m[2]);
 
-            allow = (xAndYOk && pxAndPyOk && std::abs(z) < cutoffR_m[2] && std::abs(pz) < cutoffP_m[2]);
+            allow = (xAndYOk && pxAndPyOk && zOk && pzOk);
         }
 
-        x *= sigmaR_m[0];
-        y *= sigmaR_m[1];
-        z *= sigmaR_m[2];
+        x  *= sigmaR_m[0];
+        y  *= sigmaR_m[1];
+        z  *= sigmaR_m[2];
         px *= sigmaP_m[0];
         py *= sigmaP_m[1];
         pz *= sigmaP_m[2];
@@ -2828,25 +2814,8 @@ void Distribution::generateTransverseGauss(size_t numberOfParticles) {
             y = gsl_vector_get(ry, 2);
             py = gsl_vector_get(ry, 3);
 
-            bool xAndYOk = false;
-            if (cutoffR_m[0] < SMALLESTCUTOFF && cutoffR_m[1] < SMALLESTCUTOFF)
-                xAndYOk = true;
-            else if (cutoffR_m[0] < SMALLESTCUTOFF)
-                xAndYOk = (std::abs(y) <= cutoffR_m[1]);
-            else if (cutoffR_m[1] < SMALLESTCUTOFF)
-                xAndYOk = (std::abs(x) <= cutoffR_m[0]);
-            else
-                xAndYOk = (pow(x / cutoffR_m[0], 2.0) + pow(y / cutoffR_m[1], 2.0) <= 1.0);
-
-            bool pxAndPyOk = false;
-            if (cutoffP_m[0] < SMALLESTCUTOFF && cutoffP_m[1] < SMALLESTCUTOFF)
-                pxAndPyOk = true;
-            else if (cutoffP_m[0] < SMALLESTCUTOFF)
-                pxAndPyOk = (std::abs(py) <= cutoffP_m[1]);
-            else if (cutoffP_m[1] < SMALLESTCUTOFF)
-                pxAndPyOk = (std::abs(px) <= cutoffP_m[0]);
-            else
-                pxAndPyOk = (pow(px / cutoffP_m[0], 2.0) + pow(py / cutoffP_m[1], 2.0) <= 1.0);
+            bool xAndYOk   = (pow( x / cutoffR_m[0], 2.0) + pow( y / cutoffR_m[1], 2.0) <= 1.0);
+            bool pxAndPyOk = (pow(px / cutoffP_m[0], 2.0) + pow(py / cutoffP_m[1], 2.0) <= 1.0);
 
             allow = (xAndYOk && pxAndPyOk);
 
@@ -4260,6 +4229,14 @@ void Distribution::setDistParametersGauss(double massIneV) {
         sigmaR_m[1] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR]));
         cutoffR_m[0] = Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFR]);
         cutoffR_m[1] = Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFR]);
+    }
+
+    // if cutoff 0 then infinite cutoff (except for CUTOFFLONG)
+    for (int i=0; i<3; i++) {
+        if (cutoffR_m[i] < SMALLESTCUTOFF && i!=2)
+            cutoffR_m[i] = std::numeric_limits<double>::max();
+        if (cutoffP_m[i] < SMALLESTCUTOFF)
+            cutoffP_m[i] = std::numeric_limits<double>::max();
     }
 }
 

@@ -37,12 +37,6 @@ using namespace std;
 #include <unistd.h>
 #include <cstdio>
 
-// debugging macros
-#ifdef IPPL_PRINTDEBUG
-#define CDCDBG(x) x
-#else
-#define CDCDBG(x)
-#endif
 
 ///////////////////////////////////////////////////////////////////////////
 // a simple routine to take an input string and a list of token separators,
@@ -310,10 +304,6 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
   string ConfigItems;
   string NodeNameItems;
 
-  CDCDBG(string dbgmsgname("DC:parse_config:"));
-  CDCDBG(dbgmsgname += ConfigFile);
-  CDCDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-
   // create a tag for use in sending info to/from other nodes
   int tag = Ippl::Comm->next_tag(DF_MAKE_HOST_MAP_TAG, DF_TAG_CYCLE);
 
@@ -321,9 +311,6 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
   NumSMPs = 0;
   FileSMPs = 0;
   MySMP = 0;
-
-  CDCDBG(dbgmsg << "Parsing config file info on node " << Ippl::myNode());
-  CDCDBG(dbgmsg << " of " << Ippl::getNodes() << " nodes." << endl);
 
   // initialize the list of node information
   for (int i=0; i < Ippl::getNodes(); ++i)
@@ -336,8 +323,6 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
     strcpy(name, "localhost");
   }
   NodeNameItems = name;
-
-  CDCDBG(dbgmsg << "  My hostname is " << NodeNameItems << endl);
 
   // all other nodes send their hostname to node 0; node 0 gets the names,
   // reads the config file, then broadcasts all the necessary info to all
@@ -362,7 +347,6 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
     if ((inC = fopen(ConfigFile.c_str(), "r")) != 0) {
       // read in each line, and append it to end of broadcast string
       while (fgets(bufferstore, bufferSize, inC) != 0) {
-	CDCDBG(dbgmsg << "Read config line '" << bufferstore << "'." << endl);
 	// skip leading spaces, and any comment lines starting with '#'
 	buffer = bufferstore;
 	while (*buffer == ' ' || *buffer == '\t' || *buffer == '\n')
@@ -378,7 +362,6 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
     // see if there was an error, or no config file was specified ...
     // if so, use default
     if (ConfigItems.length() == 0) {
-      CDCDBG(dbgmsg << "Using default DiscConfig configuration '* .'" << endl);
       ConfigItems = "* .";
       ConfigItems += "\n";
     }
@@ -404,51 +387,34 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
       Message *msg = new Message;
       ::putMessage(*msg,ConfigItems);
       ::putMessage(*msg,NodeNameItems);
-      CDCDBG(dbgmsg << "  Broadcasting config info " << ConfigItems << endl);
-      CDCDBG(dbgmsg << "  Broadcasting node names " << NodeNameItems << endl);
       Ippl::Comm->broadcast_others(msg, tag);
     }
   }
 
   // from the configuration string, break it up into single lines and parse.
   // This sets up the SMP information list.
-  CDCDBG(dbgmsg << "  My ConfigItems = " << ConfigItems << endl);
   string *conflines;
   int conflinenum = dc_tokenize_string(ConfigItems.c_str(), "\n", conflines);
-  CDCDBG(dbgmsg << "  Parsed config line list into " << conflinenum);
-  CDCDBG(dbgmsg << " words." << endl);
   for (int is=0; is < conflinenum; ++is) {
-    CDCDBG(dbgmsg << "  Examining confline " << is << " = '");
-    CDCDBG(dbgmsg << conflines[is] << "'." << endl);
 
     // tokenize string, and store values
     string *tokens;
     int ntok = dc_tokenize_string(conflines[is].c_str(), " \t,\n", tokens);
-    CDCDBG(dbgmsg << "  Parsed config line " << is << " into " << ntok);
-    CDCDBG(dbgmsg << " words:");
-    for (int ntok2=0; ntok2 < ntok; ++ntok2) {
-      CDCDBG(dbgmsg << "  '" << tokens[ntok2] << "'");
-    }
-    CDCDBG(dbgmsg << endl);
     if (ntok != 2) {
       ERRORMSG("Wrong number of parameters in DiscConfig config file ");
       ERRORMSG("'" << ConfigFile << "' (" << ntok << " != 2)" << endl);
       Ippl::abort("Exiting due to DiscConfig error.");
     } else {
-      CDCDBG(dbgmsg << "Looking at tokens '" << tokens[0].c_str());
-      CDCDBG(dbgmsg << "'  '" << tokens[1].c_str() << "'." << endl);
       // append / to directory name if necessary, and also the base filename
       if (tokens[1].c_str()[tokens[1].length() - 1] != '/')
 	tokens[1] += "/";
       tokens[1] += BaseFile;
       if (tokens[0] == "*") {
 	// save the wildcard string
-	CDCDBG(dbgmsg << "  ... Wildcard token." << endl);
 	WildCard = tokens[1];
       } else {
 	// line was good ... store the values found there.  If a line is
 	// repeated, we just replace the value.
-	CDCDBG(dbgmsg << "  ... SMP info token." << endl);
         SMPData *smpd = 0;
         vmap<string,SMPData *>::iterator smpiter = SMPMap.find(tokens[0]);
         if (smpiter != SMPMap.end())
@@ -475,21 +441,10 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
   }
 
   // set up the node information list
-  CDCDBG(dbgmsg << "  My NodeNameItems = " << NodeNameItems << endl);
   string *nodenames;
-#ifdef IPPL_PRINTDEBUG
-  int nodenamenum = dc_tokenize_string(NodeNameItems.c_str(), " ", nodenames);
-  CDCDBG(dbgmsg << "  Parsed node name list into " << nodenamenum);
-  CDCDBG(dbgmsg << " words." << endl);
-#else
   dc_tokenize_string(NodeNameItems.c_str(), " ", nodenames);
-#endif
   for (int in=0; in < Ippl::getNodes(); ++in) {
     // get node number and node name from list of node information
-    CDCDBG(dbgmsg << "  converting to node from nodestring '");
-    CDCDBG(dbgmsg << nodenames[2*in + 1] << "'" << endl);
-    CDCDBG(dbgmsg << "  converting to node from nodename   '");
-    CDCDBG(dbgmsg << nodenames[2*in] << "'" << endl);
     int node = atoi(nodenames[2*in + 1].c_str());
     string machine = nodenames[2*in];
 
@@ -498,13 +453,11 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
     vmap<string,SMPData *>::iterator smpiter = SMPMap.find(machine);
     if (smpiter != SMPMap.end()) {
       // this SMP has already been set up earlier
-      CDCDBG(dbgmsg << "  SMP " << machine << " found in SMPMap." << endl);
       smpdata = (*smpiter).second;
     } else {
       // we must make a new info structure for this SMP, since it was
       // not mentioned in the configuration file.  The routine
       // sets the value of smpdata to a newly allocated pointer
-      CDCDBG(dbgmsg << "  SMP " << machine << " not found in SMPMap." << endl);
       add_SMP_directory(smpdata, WildCard, machine, WritingFile);
     }
 
@@ -519,7 +472,6 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
 
   // go through the SMP list, assign them numbers, and sort the node data
   int firstSMPWithFiles = (-1);
-  CDCDBG(dbgmsg << "Assigning numbers to " << SMPMap.size()<<" SMP's"<< endl);
   vmap<string,SMPData *>::iterator smpa;
   for (smpa = SMPMap.begin() ; smpa != SMPMap.end(); ++smpa) {
     // add this SMP info to our SMPList array (for fast access)
@@ -571,10 +523,6 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
       SMPList[firstSMPWithFiles]->InformSMPList.push_back(smpdata->SMPIndex);
     }
   }
-
-  // print out summary
-  CDCDBG(printDebug(dbgmsg));
-  CDCDBG(dbgmsg << endl);
 
   return true;
 }

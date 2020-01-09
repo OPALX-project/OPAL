@@ -113,10 +113,6 @@ void DiscField<Dim>::initialize(const char *base, const char *config,
   NumVnodes = 0;
   VnodeTally = 0;
 
-#ifdef IPPL_DIRECTIO
-  openedDirectIO = false;
-#endif
-
   // save the number of fields, which indicates if this object is being
   // opened for reading or writing
   NumFields = numFields;
@@ -210,52 +206,14 @@ int DiscField<Dim>::open_df_file_fd(const std::string& fnm, const std::string& s
 
   // Form the open flags
   int flags = origflags;
-#ifdef IPPL_DIRECTIO
-  openedDirectIO = false;
-  if (IpplInfo::useDirectIO) {
-    flags |= O_DIRECT;
-    openedDirectIO = true;
-  }
-#endif
 
   // Try to open the file
   int f = ::open(fnamebuf.c_str(), flags, 0644);
   if (f < 0) {
-    // If we tried with direct-io but failed, see if we can dothis without dio
-#ifdef IPPL_DIRECTIO
-    f = ::open(fnamebuf.c_str(), origflags, 0644);
-    openedDirectIO = (f >= 0);
-#endif
-
-    // If that still did not work, we're screwed
-    if (f < 0) {
-      ERRORMSG("DiscField: Could not open file '" << fnamebuf.c_str());
-      ERRORMSG("' on node " << Ippl::myNode() << ", f = " << f << "."<<endl);
-      return (-1);
-    }
+    ERRORMSG("DiscField: Could not open file '" << fnamebuf.c_str());
+    ERRORMSG("' on node " << Ippl::myNode() << ", f = " << f << "."<<endl);
+    return (-1);
   }
-
-  // Get direct-io info, if necessary
-
-#ifdef IPPL_DIRECTIO
-  if (openedDirectIO) {
-    if (::fcntl(f, F_DIOINFO, &dioinfo) != 0) {
-      ERRORMSG("DiscField: Could not get dio info for '"<< fnamebuf.c_str());
-      ERRORMSG("' using direct io on node ");
-      ERRORMSG(Ippl::myNode() << "." << endl);
-      close(f);
-      return (-1);
-    }
-
-    DFDBG(std::string dbgmsgname("DF:open_df_file_fd"));
-    DFDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-    DFDBG(dbgmsg << "Opened file '" << fnamebuf.c_str() << "' with direct-io");
-    DFDBG(dbgmsg << ", dioinfo = (miniosz="<<dioinfo.d_miniosz<<", maxiosz=");
-    DFDBG(dbgmsg << dioinfo.d_maxiosz << ", mem=" << dioinfo.d_mem << ")");
-    DFDBG(dbgmsg << endl);
-  }
-#endif
-
   return f;
 }
 
@@ -538,13 +496,6 @@ bool DiscField<Dim>::read_meta() {
   bool iserror = false;
   int tag = Ippl::Comm->next_tag(DF_READ_META_TAG, DF_TAG_CYCLE);
 
-  DFDBG(std::string dbgmsgname("DF:read_meta:"));
-  DFDBG(dbgmsgname += Config->getConfigFile());
-  DFDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-  DFDBG(dbgmsg << "Starting to read meta info: mySMP=" << mySMP());
-  DFDBG(dbgmsg << ", mybox0=" << myBox0() << ", numfiles=" << numFiles());
-  DFDBG(dbgmsg << endl);
-
   // on Box0 nodes, read in the meta data ... on others, wait for
   // Box0 nodes to send info to them
   if ((unsigned int) Ippl::myNode() == myBox0()) {
@@ -641,9 +592,6 @@ bool DiscField<Dim>::read_meta() {
 	  iserror = true;
         }
 
-	DFDBG(dbgmsg << "On box0: finished line with tokens[0]='"<<tokens[0]);
-	DFDBG(dbgmsg << "' ... iserror = " << iserror << endl);
-
 	if (iserror)
           break;
       }
@@ -676,25 +624,12 @@ bool DiscField<Dim>::read_meta() {
         break;
     }
 
-    DFDBG(dbgmsg << "Summary of meta info:" << endl);
-    DFDBG(dbgmsg << "  iserror = " << iserror << endl);
-    DFDBG(dbgmsg << "  DataDimension = " << DataDimension << endl);
-    DFDBG(dbgmsg << "  NumFields = " << NumFields << endl);
-    DFDBG(dbgmsg << "  NumRecords = " << NumRecords << endl);
-    DFDBG(dbgmsg << "  Size = " << Size << endl);
-    DFDBG(dbgmsg << "  TypeString = " << TypeString << endl);
-
     // now send meta info to all nodes which expect it
     int numinform = Config->getNumOtherSMP();
-    DFDBG(dbgmsg << "Preparing messages to send to other nodes ..." << endl);
-    DFDBG(dbgmsg << "  Must send data to my SMP nodes, and to ");
-    DFDBG(dbgmsg << numinform << " other SMP's." << endl);
     for (int s=0; s <= numinform; ++s) {
       int smp = mySMP();
       if (s != numinform)
 	smp = Config->getOtherSMP(s);
-      DFDBG(dbgmsg << "  Preparing messages for SMP " << smp << " with ");
-      DFDBG(dbgmsg << Config->getNumSMPNodes(smp) << " nodes." << endl);
       for (unsigned int n=0; n < Config->getNumSMPNodes(smp); ++n) {
         int node = Config->getSMPNode(smp, n);
         if (node != Ippl::myNode()) {
@@ -709,12 +644,7 @@ bool DiscField<Dim>::read_meta() {
           ::putMessage(*msg, TypeString);
 
           // send the message to the intended node
-          DFDBG(dbgmsg << "  Sending meta info to node " << node);
-	  DFDBG(dbgmsg << " with tag " << tag << ", on SMP " << smp << endl);
           Ippl::Comm->send(msg, node, tag);
-        } else {
-	  DFDBG(dbgmsg << "  Skipping send to node " << node);
-	  DFDBG(dbgmsg << " since it is my node." << endl);
 	}
       }
     }
@@ -723,27 +653,18 @@ bool DiscField<Dim>::read_meta() {
     // all other nodes (which are not Box0 nodes) should get a message
     // telling them the meta info
     int node = myBox0();
-    DFDBG(dbgmsg << "Waiting for meta info from node " << node);
-    DFDBG(dbgmsg << " with tag " << tag << endl);
     Message *msg = Ippl::Comm->receive_block(node, tag);
     PAssert(msg);
 
     // get info out of message
-    DFDBG(dbgmsg << "Summary of received meta info:" << endl);
     int errint = 0;
     msg->get(errint);
     iserror = (errint != 0);
-    DFDBG(dbgmsg << "  iserror = " << iserror << endl);
     msg->get(DataDimension);
-    DFDBG(dbgmsg << "  DataDimension = " << DataDimension << endl);
     msg->get(NumFields);
-    DFDBG(dbgmsg << "  NumFields = " << NumFields << endl);
     msg->get(NumRecords);
-    DFDBG(dbgmsg << "  NumRecords = " << NumRecords << endl);
     ::getMessage(*msg, Size);
-    DFDBG(dbgmsg << "  Size = " << Size << endl);
     ::getMessage(*msg, TypeString);
-    DFDBG(dbgmsg << "  TypeString = " << TypeString << endl);
 
     // we're done with this message
     delete msg;
@@ -878,13 +799,6 @@ bool DiscField<Dim>::write_layout() {
 template <unsigned Dim>
 int DiscField<Dim>::read_layout(int record, int sf) {
 
-  DFDBG(std::string dbgmsgname("DF:read_layout:"));
-  DFDBG(dbgmsgname += Config->getConfigFile());
-  DFDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-  DFDBG(dbgmsg << "Starting to read layout info for record " << record);
-  DFDBG(dbgmsg << ", file " << sf << ": mySMP=" << mySMP() << ", mybox0=");
-  DFDBG(dbgmsg << myBox0() << ", numfiles=" << numFiles() << endl);
-
   // open the layout data file
   std::string filename = Config->getFilename(sf) + ".layout";
   FILE *outputLayout = open_df_file(Config->getFilename(sf),
@@ -892,14 +806,9 @@ int DiscField<Dim>::read_layout(int record, int sf) {
   if (outputLayout == 0)
     return (-1);
 
-  DFDBG(dbgmsg << "On box0: sf=" << sf << ", opened file '");
-  DFDBG(dbgmsg << filename << "' ..." << endl);
-
   // seek to the proper location
   Offset_t seekpos = record*sizeof(int) +
     VnodeTally[sf][record]*6*Dim*sizeof(int);
-  DFDBG(dbgmsg << "  Seeking to position ");
-  DFDBG(dbgmsg << static_cast<long>(seekpos) << endl);
 
   if (fseek(outputLayout, seekpos, SEEK_SET) != 0) {
     ERRORMSG("Error seeking to position " << static_cast<long>(seekpos));
@@ -942,11 +851,6 @@ int DiscField<Dim>::compute_expected(const FieldLayout<Dim> &f,
 				     const NDIndex<Dim> &readDomain) {
   int expected = 0;
 
-  DFDBG(std::string dbgmsgname("DF:compute_expected"));
-  DFDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-  DFDBG(dbgmsg << "Computing expected size for node " << Ippl::myNode());
-  DFDBG(dbgmsg <<endl);
-
   typename FieldLayout<Dim>::const_iterator_iv local = f.begin_iv();
   for (; local != f.end_iv(); ++local) {
     // Compute the size of the domain of this vnode, and add it to the
@@ -954,19 +858,9 @@ int DiscField<Dim>::compute_expected(const FieldLayout<Dim> &f,
     NDIndex<Dim>& domain = (NDIndex<Dim>&)(*local).second.get()->getDomain();
     if (domain.touches(readDomain)) {
       NDIndex<Dim> newdomain = domain.intersect(readDomain);
-      DFDBG(dbgmsg << "Intersection of " << domain << " and " << readDomain);
-      DFDBG(dbgmsg << " = " << newdomain << endl);
       // expected += domain.size();
       expected += newdomain.size();
-    } else {
-      DFDBG(dbgmsg << "No intersection of " << domain << " and ");
-      DFDBG(dbgmsg << readDomain << endl);
     }
-
-    DFDBG(dbgmsg << "  Size for local domain " << domain << " = ");
-    DFDBG(dbgmsg << domain.size() << ", readDomain = " << readDomain);
-    DFDBG(dbgmsg << ", new expected for node " << Ippl::myNode() << " ");
-    DFDBG(dbgmsg << expected << endl);
   }
 
   return expected;

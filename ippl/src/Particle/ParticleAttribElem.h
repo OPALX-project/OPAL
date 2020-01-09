@@ -138,34 +138,13 @@ public:
   // Assignment operators
   //
 
-#ifdef __MWERKS__
-  // assign a general expression
-  template<class T1>
-  const ParticleAttribElem<T,Dim>& operator=(PETE_Expr<T1>& rhs) {
-    assign(*this,rhs);
-    return *this;
-  }
-#else
   // assign a general expression
   template<class T1>
   const ParticleAttribElem<T,Dim>& operator=(const PETE_Expr<T1>& rhs) {
     assign(*this,rhs);
     return *this;
   }
-#endif // __MWERKS__
 
-#ifdef __MWERKS__ // 1/8/99 Needed?
-  // assignment of a ParticleAttribElem
-  const ParticleAttribElem<T,Dim>&
-  operator=(ParticleAttribElem<T,Dim>& rhs) {
-    if (size() > rhs.size()) {
-      ERRORMSG("Attempting to copy particle attributes with unequal sizes.");
-      ERRORMSG("\n" << size() << " != " << rhs.size() << endl);
-    }
-    assign(*this,rhs);
-    return *this;
-  }
-#else
   // assignment of a ParticleAttribElem
   const ParticleAttribElem<T,Dim>&
   operator=(const ParticleAttribElem<T,Dim>& rhs) {
@@ -176,7 +155,6 @@ public:
     assign(*this,rhs);
     return *this;
   }
-#endif // __MWERKS__
 
   // assignment of a scalar
   const ParticleAttribElem<T,Dim>& operator=(Element_t rhs) {

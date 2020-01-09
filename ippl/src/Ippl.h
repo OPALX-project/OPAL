@@ -55,10 +55,8 @@
 #include "Field/IndexedBareField.h"
 #include "Field/IndexedField.h"
 #include "Field/GuardCellSizes.h"
-#include "Utility/FieldBlock.h"
 #include "Utility/FieldPrint.h"
 #include "Utility/FieldDebugPrint.h"
-#include "Utility/FieldView.h"
 #include "Utility/FieldDebug.h"
 #include "Utility/DiscField.h"
 

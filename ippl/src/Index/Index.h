@@ -327,21 +327,6 @@ public:
       {
       }
 
-#ifdef IPPL_PURIFY
-    cursor(const cursor &model)
-      : Current(model.Current), Stride(model.Stride),
-	First(model.First), Dim(model.Dim), I(model.I) {}
-    cursor& operator=(const cursor &rhs)
-    {
-      Current = rhs.Current;
-      Stride = rhs.Stride;
-      First = rhs.First;
-      Dim = rhs.Dim;
-      I = rhs.I;
-      return *this;
-    }
-#endif
-
     int operator*() const { return Current; }
     int offset() const { return Current; }
     int offset(int i) const

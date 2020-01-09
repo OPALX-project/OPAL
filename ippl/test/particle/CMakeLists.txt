@@ -43,6 +43,7 @@ target_link_libraries (
     ${H5Hut_LIBRARY}
     ${HDF5_LIBRARIES}
     ${MPI_CXX_LIBRARIES}
+    boost_timer
 )
 
 #add_executable (p3m3d p3m3d.cpp)
@@ -59,6 +60,7 @@ target_link_libraries (
     p3m3dTwoStreamParallel
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
+    boost_timer
 )
 
 add_executable (p3m3dRegressionTests p3m3dRegressionTests.cpp)
@@ -66,6 +68,7 @@ target_link_libraries (
     p3m3dRegressionTests
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
+    boost_timer
 )
 
 #add_executable (p3m3dMicrobunching p3m3dMicrobunching.cpp)

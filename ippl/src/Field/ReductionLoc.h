@@ -71,25 +71,6 @@ for_each(const BareFieldIterator<T,D>& expr, FindLocation<D>& find_loc, C)
 //
 //////////////////////////////////////////////////////////////////////
 
-#ifdef __MWERKS__
-// Workaround for CodeWarrior 4 bug
-// Funny "MMMin" name is to avoid conflict with Min defined elsewhere in r1,
-// and "MMin defined iin IpplExpressions.h.
-template<class T, unsigned D> 
-struct MMMin {
-  typedef typename T::PETE_Expr_t::PETE_Return_t type_t;
-  static inline type_t apply(const PETE_Expr<T>& expr, NDIndex<D>& loc) {
-    return Reduction(Expressionize<typename T::PETE_Expr_t>::apply( expr.PETE_unwrap().MakeExpression() ), 
-	      OpLT(), OpMinAssign(),loc);
-  }
-};
-
-template<class T, unsigned D> 
-inline typename MMMin<T,D>::type_t 
-min(const PETE_Expr<T>& expr, NDIndex<D>& loc) {
-  return MMMin<T,D>::apply(expr, loc);
-}
-#else
 template<class T, unsigned D> 
 inline typename T::PETE_Expr_t::PETE_Return_t
 min(const PETE_Expr<T>& expr, NDIndex<D>& loc)
@@ -97,27 +78,7 @@ min(const PETE_Expr<T>& expr, NDIndex<D>& loc)
   return Reduction(Expressionize<typename T::PETE_Expr_t>::apply(expr.PETE_unwrap().MakeExpression()),
 		   OpLT(),OpMinAssign(),loc);
 }
-#endif // __MWERKS__
 
-#ifdef __MWERKS__
-// Workaround for CodeWarrior 4 bug
-// Funny "MMMax" name is to avoid conflict with Max defined elsewhere in r1,
-// and "MMax defined iin IpplExpressions.h.
-template<class T, unsigned D> 
-struct MMMax {
-  typedef typename T::PETE_Expr_t::PETE_Return_t type_t;
-  static inline type_t apply(const PETE_Expr<T>& expr, NDIndex<D>& loc) {
-    return Reduction(Expressionize<typename T::PETE_Expr_t>::apply( expr.PETE_unwrap().MakeExpression() ), 
-	      OpGT(), OpMaxAssign(),loc);
-  }
-};
-
-template<class T, unsigned D> 
-inline typename MMMax<T,D>::type_t 
-max(const PETE_Expr<T>& expr, NDIndex<D>& loc) {
-  return MMMax<T,D>::apply(expr, loc);
-}
-#else
 template<class T, unsigned D>
 inline typename T::PETE_Expr_t::PETE_Return_t
 max(const PETE_Expr<T>& expr, NDIndex<D>& loc)
@@ -125,7 +86,6 @@ max(const PETE_Expr<T>& expr, NDIndex<D>& loc)
   return Reduction(Expressionize<typename T::PETE_Expr_t>::apply(expr.PETE_unwrap().MakeExpression()),
 		   OpGT(),OpMaxAssign(),loc);
 }
-#endif // __MWERKS__
 
 //////////////////////////////////////////////////////////////////////
 

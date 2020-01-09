@@ -810,11 +810,6 @@ get_meshSpacing(unsigned d, MFLOAT* spacings) const
 template<class T>
 struct OpMeshPeriodic
 {
-#ifdef IPPL_PURIFY
-  OpMeshPeriodic() {}
-  OpMeshPeriodic(const OpMeshPeriodic<T> &) {}
-  OpMeshPeriodic<T>& operator=(const OpMeshPeriodic<T> &) { return *this; }
-#endif
 };
 template<class T>
 inline void PETE_apply(OpMeshPeriodic<T> e, T& a, T b) { a = b; }

@@ -363,11 +363,6 @@ ComponentFunctionFace(typename ApplyToComponentType<T>::type
 template<class T>
 struct OpPeriodic
 {
-#ifdef IPPL_PURIFY
-  OpPeriodic() {}
-  OpPeriodic(const OpPeriodic<T> &) {}
-  OpPeriodic<T>& operator=(const OpPeriodic<T> &) { return *this; }
-#endif
 };
 template<class T>
 inline void PETE_apply(const OpPeriodic<T>& e, T& a, const T& b) {a = b; }
@@ -425,11 +420,6 @@ COMPONENT_APPLY_BUILTIN(OpPeriodicComponent,dcomplex)
 template<class T>
 struct OpInterpolation
 {
-#ifdef IPPL_PURIFY
-  OpInterpolation() {}
-  OpInterpolation(const OpInterpolation<T> &) {}
-  OpInterpolation<T>& operator=(const OpInterpolation<T> &) { return *this; }
-#endif
 };
 template<class T>
 inline void PETE_apply(const OpInterpolation<T>& e, T& a, const T& b) {a = a + b; }
@@ -546,8 +536,6 @@ void PeriodicFaceBCApply(PeriodicFace<T,D,M,Cell>& pf,
       offset = domain[d].length();
     }
 
-  DEBUGMSG("PeriodicFaceBCApply domain" << domain << " d= " << d << " slab= " << slab[d] << endl);
-
   // Loop over the ones the slab touches.
   typename Field<T,D,M,Cell>::iterator_if fill_i;
   for (fill_i=A.begin_if(); fill_i!=A.end_if(); ++fill_i)
@@ -639,8 +627,6 @@ void InterpolationFaceBCApply(InterpolationFace<T,D,M,Cell>& pf,
       slab[d] = Index( domain[d].min() - A.leftGuard(d), domain[d].min()-1 );
       offset = domain[d].length();
     }
-
-  DEBUGMSG("InterpolationFaceBCApply domain" << domain << " d= " << d << " slab= " << slab[d] << endl);
 
   // Loop over the ones the slab touches.
   typename Field<T,D,M,Cell>::iterator_if fill_i;
@@ -5434,14 +5420,7 @@ void EurekaFace<T,D,M,C>::apply(Field<T,D,M,C>& field)
 // for any classes except Vektor, Tenzor and SymTenzor.
 //
 
-#ifdef __MWERKS__
-// Work around CodeWarrior 4 Professional template-matching bug; requires
-// putting D template parameter on EurekaAssign struct and all the
-// specializations:
-template<class T, int D>
-#else
 template<class T>
-#endif // __MWERKS__
 struct EurekaAssign
 {
   static const T& get(const T& x, int) {
@@ -5502,16 +5481,8 @@ fillSlabWithZero(Field<T,D,M,C>& field,
                   // Check to see if the component is zero.
                   // Check through a class so that this statement
                   // isn't a compile error if T is something like int.
-#ifdef __MWERKS__
-// Work around CodeWarrior 4 Professional template-matching bug; requires
-// putting D template parameter on EurekaAssign struct and all the
-// specializations:
-                  if ( EurekaAssign<T,D>::get(*lf.begin(),component)==0 )
-                    continue;
-#else
                   if ( EurekaAssign<T>::get(*lf.begin(),component)==0 )
                     continue;
-#endif // __MWERKS__
                 }
               // Not compressed to zero.
               // Have to uncompress.
@@ -5543,14 +5514,7 @@ fillSlabWithZero(Field<T,D,M,C>& field,
           else
             {
               // The type of the expression.
-#ifdef __MWERKS__
-// Work around CodeWarrior 4 Professional template-matching bug; requires
-// putting D template parameter on EurekaAssign struct and all the
-// specializations:
-	      typedef BrickExpression<D,Lhs_t,Rhs_t,EurekaAssign<T,D> > Expr_t;
-#else
 	      typedef BrickExpression<D,Lhs_t,Rhs_t,EurekaAssign<T> > Expr_t;
-#endif // __MWERKS__
 
 	      // Sanity check.
 	      PAssert_GE(component, 0);
@@ -5569,14 +5533,7 @@ fillSlabWithZero(Field<T,D,M,C>& field,
 //
 
 template<class T, unsigned int D>
-#ifdef __MWERKS__
-// Work around CodeWarrior 4 Professional template-matching bug; requires
-// putting D template parameter on EurekaAssign struct and all the
-// specializations:
-struct EurekaAssign< Vektor<T,D>, D >
-#else
 struct EurekaAssign< Vektor<T,D> >
-#endif // __MWERKS__
 {
   static T& get( Vektor<T,D>& x, int c ) { return x[c]; }
   static T  get( const Vektor<T,D>& x, int c ) { return x[c]; }
@@ -5585,14 +5542,7 @@ struct EurekaAssign< Vektor<T,D> >
 };
 
 template<class T, unsigned int D>
-#ifdef __MWERKS__
-// Work around CodeWarrior 4 Professional template-matching bug; requires
-// putting D template parameter on EurekaAssign struct and all the
-// specializations:
-struct EurekaAssign< Tenzor<T,D>, D >
-#else
 struct EurekaAssign< Tenzor<T,D> >
-#endif // __MWERKS__
 {
   static T& get( Tenzor<T,D>& x, int c ) { return x[c]; }
   static T  get( const Tenzor<T,D>& x, int c ) { return x[c]; }
@@ -5601,14 +5551,7 @@ struct EurekaAssign< Tenzor<T,D> >
 };
 
 template<class T, unsigned int D>
-#ifdef __MWERKS__
-// Work around CodeWarrior 4 Professional template-matching bug; requires
-// putting D template parameter on EurekaAssign struct and all the
-// specializations:
-struct EurekaAssign< AntiSymTenzor<T,D>, D >
-#else
 struct EurekaAssign< AntiSymTenzor<T,D> >
-#endif // __MWERKS__
 {
   static T& get( AntiSymTenzor<T,D>& x, int c ) { return x[c]; }
   static T  get( const AntiSymTenzor<T,D>& x, int c ) { return x[c]; }
@@ -5617,14 +5560,7 @@ struct EurekaAssign< AntiSymTenzor<T,D> >
 };
 
 template<class T, unsigned int D>
-#ifdef __MWERKS__
-// Work around CodeWarrior 4 Professional template-matching bug; requires
-// putting D template parameter on EurekaAssign struct and all the
-// specializations:
-struct EurekaAssign< SymTenzor<T,D>, D >
-#else
 struct EurekaAssign< SymTenzor<T,D> >
-#endif // __MWERKS__
 {
   static T& get( SymTenzor<T,D>& x, int c ) { return x[c]; }
   static T  get( const SymTenzor<T,D>& x, int c ) { return x[c]; }
@@ -5637,25 +5573,12 @@ struct EurekaAssign< SymTenzor<T,D> >
 // Assign a component of the right hand side to a component of the left.
 //
 
-#ifdef __MWERKS__
-// Work around CodeWarrior 4 Professional template-matching bug; requires
-// putting D template parameter on EurekaAssign struct and all the
-// specializations:
-template<class T, int D>
-inline void PETE_apply(const EurekaAssign<T,D>& e, T& a, const T& b)
-{
-  EurekaAssign<T,D>::get(a,e.m_component) =
-    EurekaAssign<T,D>::get(b,e.m_component);
-}
-#else
 template<class T>
 inline void PETE_apply(const EurekaAssign<T>& e, T& a, const T& b)
 {
   EurekaAssign<T>::get(a,e.m_component) =
     EurekaAssign<T>::get(b,e.m_component);
 }
-#endif // __MWERKS__
-
 
 //////////////////////////////////////////////////////////////////////
 

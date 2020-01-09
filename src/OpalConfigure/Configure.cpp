@@ -136,7 +136,6 @@
 //#include "Elements/OpalWire.h"
 #include "Elements/OpalYRot.h"
 #include "Elements/OpalParallelPlate.h"
-#include "Elements/OpalCyclotronValley.h"
 #include "Elements/OpalStripper.h"
 #include "Elements/OpalRingDefinition.h"
 #include "Elements/OpalVariableRFCavity.h"
@@ -293,7 +292,6 @@ namespace {
         // opal->create(new OpalWire());
         opal->create(new OpalYRot());
         opal->create(new OpalParallelPlate());
-        opal->create(new OpalCyclotronValley());
         opal->create(new OpalStripper());
         opal->create(new Line());
         opal->create(new Sequence());

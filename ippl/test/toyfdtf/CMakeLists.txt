@@ -30,6 +30,7 @@ target_link_libraries (
     ipplToyFDTD
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
+    boost_timer
 )
 
 # vi: set et ts=4 sw=4 sts=4:

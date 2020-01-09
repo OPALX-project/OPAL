@@ -40,7 +40,6 @@
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/ParallelPlate.h"
-#include "AbsBeamline/CyclotronValley.h"
 
 #include "Algorithms/MapIntegrator.h"
 #include "BeamlineGeometry/Euclid3D.h"
@@ -396,10 +395,6 @@ void TransportMapper::visitSolenoid(const Solenoid &solenoid) {
 
 void TransportMapper::visitParallelPlate(const ParallelPlate &pplate) {
     // Do nothing.
-}
-
-void TransportMapper::visitCyclotronValley(const CyclotronValley &cv) {
-    // Do nothing here.
 }
 
 void TransportMapper::visitAlignWrapper(const AlignWrapper &wrap) {

@@ -588,15 +588,6 @@ void LField<T,Dim>::ReallyUncompress(bool fill_domain)
       for (int i=0; i<n; i++)
 	P[i] = val;
     }
-#ifdef IPPL_PURIFY
-  else
-    {
-      // To avoid Purify UMR's, fill with default value anyway
-      T val = T();
-      for (int i=0; i<n; i++)
-	P[i] = val;
-    }
-#endif
 
   // Make the Begin iterator point to the new data.
 
@@ -725,11 +716,7 @@ LField<T,Dim>::allocateStorage(int newsize)
 
   // Allocate the storage, creating some extra to account for offset, and
   // then add in the offset.
-#ifdef IPPL_DIRECTIO
-  P = (T *)valloc(sizeof(T) * (newsize + extra));
-#else
-    P = new T[newsize + extra];
-#endif
+  P = new T[newsize + extra];
   P += extra;
 
   ADDIPPLSTAT(incLFieldBytes, (newsize+extra)*sizeof(T));
@@ -754,15 +741,7 @@ LField<T,Dim>::deallocateStorage()
       if (IpplInfo::offsetStorage)
 	P -= (offsetBlocks*IPPL_CACHE_LINE_SIZE / sizeof(T));
 
-      // Free the storage
-
-#ifdef IPPL_DIRECTIO
-      free(P);
-#else
       delete [] P;
-#endif
-      // Reset our own pointer to zero
-
       P = 0;
     }
 }

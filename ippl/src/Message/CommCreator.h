@@ -35,7 +35,7 @@ class CommCreator
 public:
 
   // enumeration of communication libraries
-  enum { PM, MPI, SHMEMPI, SERIAL, COMMLIBRARIES };
+  enum { MPI, SERIAL, COMMLIBRARIES };
 
 public:
     // constructor and destructor

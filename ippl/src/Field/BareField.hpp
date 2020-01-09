@@ -319,10 +319,6 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
   // iterators for looping through LField's of this BareField
   iterator_if lf_i, lf_e = ncf.end_if();
 
-#ifdef IPPL_PRINTDEBUG
-  Inform msg("fillGuardCells", INFORM_ALL_NODES);
-#endif
-
   // ----------------------------------------
   // First the send loop.
   // Loop over all the local nodes and
@@ -339,16 +335,10 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
     
     // set up messages to be sent
     Message** mess = new Message*[nprocs];
-#ifdef IPPL_PRINTDEBUG
-    int* ndomains = new int[nprocs];
-#endif
     int iproc;
     for (iproc=0; iproc<nprocs; ++iproc) {
       mess[iproc] = NULL;
       recvmsg[iproc] = false;
-#ifdef IPPL_PRINTDEBUG
-      ndomains[iproc] = 0;
-#endif
     }
     
     // now do main loop over LFields, packing overlaps into proper messages
@@ -374,9 +364,6 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
 
       
       const NDIndex<Dim>& lo = lf.getOwned();
-#ifdef IPPL_PRINTDEBUG
-      msg << "Finding send overlap regions for domain " << lo << endl;
-#endif
       // Loop over the remote domains which have guard cells
       // that this local domain touches.
       typename Layout_t::touch_range_dv
@@ -387,11 +374,6 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
 	NDIndex<Dim> intersection = lo.intersect( (*remote_i).first );
         // Find out who owns this remote domain.
         int rnode = (*remote_i).second->getNode();
-#ifdef IPPL_PRINTDEBUG
-	msg << "  Overlap domain = " << (*remote_i).first << endl;
-	msg << "  Inters. domain = " << intersection;
-	msg << " --> node " << rnode << endl;
-#endif
 	// Create an LField iterator for this intersection region,
 	// and try to compress it.
         // storage for LField compression
@@ -404,9 +386,6 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
         PAssert(mess[rnode]);
 	mess[rnode]->put(intersection); // puts Dim items in Message
 	mess[rnode]->put(msgval);       // puts 3 items in Message
-#ifdef IPPL_PRINTDEBUG
-        ndomains[rnode]++;
-#endif
       }
     
     }
@@ -424,20 +403,11 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
     // Send all the messages.
     for (iproc=0; iproc<nprocs; ++iproc) {
       if (mess[iproc]) {
-#ifdef IPPL_PRINTDEBUG
-        msg << "fillGuardCells: Sending message to node " << iproc << endl
-            << "  number of domains  = " << ndomains[iproc] << endl
-            << "  number of MsgItems = " << mess[iproc]->size() << endl;
-#endif
         Ippl::Comm->send(mess[iproc], iproc, tag);
       }
     }
     
     delete [] mess;
-#ifdef IPPL_PRINTDEBUG
-    delete [] ndomains;
-#endif
-    
 
     // ----------------------------------------
     // Handle the local fills.
@@ -502,21 +472,12 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
 		  
 	    // Nope, we really have to copy.
 	    LFI lhs = lf.begin(intersection);
-#ifdef IPPL_PRINTDEBUG
-	    msg << "  Inters. domain=" << intersection << endl;
-#endif
 	    // And do the assignment.
 	    BrickExpression<Dim,LFI,LFI,OpAssign>(lhs,rhs).apply();
 	  }
 	      
 	  
         }
-#ifdef IPPL_PRINTDEBUG
-        else {
-	  msg << "  Both sides compressed and equal ... val = ";
-	  msg << *rf.begin() << endl;
-        }
-#endif
       }
     }
     
@@ -535,10 +496,6 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
 
       // Determine the number of domains being sent
       int ndoms = rmess->size() / (Dim + 3);
-#ifdef IPPL_PRINTDEBUG
-      msg << "fillGuardCells: Message received from node " << any_node
-          << ", number of domains = " << ndoms << endl;
-#endif
       for (int idom=0; idom<ndoms; ++idom) {
         // Extract the intersection domain from the message.
         NDIndex<Dim> intersection;
@@ -548,9 +505,6 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
         T compressed_value;
         LFI rhs(compressed_value);
         rhs.getMessage(*rmess);
-#ifdef IPPL_PRINTDEBUG
-        msg << "Received remote overlap region = " << intersection << endl;
-#endif
 
         // Find the LField it is destined for.
         typename ac_recv_type::iterator hit = recv_ac.find( intersection );
@@ -558,13 +512,6 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
         // Build the lhs brick iterator.
         LField<T,Dim> &lf = *(*hit).second;
         // Check and see if we really have to do this.
-#ifdef IPPL_PRINTDEBUG
-        msg << "   LHS compressed ? " << lf.IsCompressed();
-        msg << ", LHS value = " << *lf.begin() << endl;
-        msg << "   RHS compressed ? " << rhs.IsCompressed();
-        msg << ", RHS value = " << *rhs << endl;
-        msg << "   *rhs == *lf.begin() ? " << (*rhs == *lf.begin()) << endl;
-#endif
         if ( !(rhs.IsCompressed() && lf.IsCompressed() &&
              (*rhs == *lf.begin())) )
 	{
@@ -572,9 +519,6 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
 	  lf.Uncompress();
 	  LFI lhs = lf.begin(intersection);
 	  // Do the assignment.
-#ifdef IPPL_PRINTDEBUG
-	  msg << "   Doing copy." << endl;
-#endif
 	  BrickExpression<Dim,LFI,LFI,OpAssign>(lhs,rhs).apply();
 	}
 
@@ -649,21 +593,12 @@ void BareField<T,Dim>::fillGuardCells(bool reallyFill) const
 		  
 	    // Nope, we really have to copy.
 	    LFI lhs = lf.begin(intersection);
-#ifdef IPPL_PRINTDEBUG
-	    msg << "  Inters. domain=" << intersection << endl;
-#endif
 	    // And do the assignment.
 	    BrickExpression<Dim,LFI,LFI,OpAssign>(lhs,rhs).apply();
 	  }
 	      
 	  
         }
-#ifdef IPPL_PRINTDEBUG
-        else {
-	  msg << "  Both sides compressed and equal ... val = ";
-	  msg << *rf.begin() << endl;
-        }
-#endif
       }
     }
     
@@ -771,10 +706,6 @@ void BareField<T,Dim>::accumGuardCells()
   // iterators for looping through LField's of this BareField
   iterator_if lf_i, lf_e = end_if();
 
-#ifdef IPPL_PRINTDEBUG
-  Inform msg("accumGuardCells", INFORM_ALL_NODES);
-#endif
-
   // ----------------------------------------
   // First the send loop.
   // Loop over all the local nodes and
@@ -791,16 +722,10 @@ void BareField<T,Dim>::accumGuardCells()
     
     // set up messages to be sent
     Message** mess = new Message*[nprocs];
-#ifdef IPPL_PRINTDEBUG
-    int* ndomains = new int[nprocs];
-#endif
     int iproc;
     for (iproc=0; iproc<nprocs; ++iproc) {
       mess[iproc] = NULL;
       recvmsg[iproc] = false;
-#ifdef IPPL_PRINTDEBUG
-      ndomains[iproc] = 0;
-#endif
     }
     
     // now do main loop over LFields, packing overlaps into proper messages
@@ -825,9 +750,6 @@ void BareField<T,Dim>::accumGuardCells()
 
       
       const NDIndex<Dim> &lf_domain = lf.getAllocated();
-#ifdef IPPL_PRINTDEBUG
-      msg << "Finding send overlap regions for domain " << lf_domain << endl;
-#endif
       // Loop over the remote domains that touch this local
       // domain's guard cells
       typename Layout_t::touch_range_dv
@@ -838,11 +760,6 @@ void BareField<T,Dim>::accumGuardCells()
 	NDIndex<Dim> intersection = lf_domain.intersect( (*remote_i).first );
         // Find out who owns this remote domain.
         int rnode = (*remote_i).second->getNode();
-#ifdef IPPL_PRINTDEBUG
-	msg << "  Overlap domain = " << (*remote_i).first << endl;
-	msg << "  Inters. domain = " << intersection;
-	msg << " --> node " << rnode << endl;
-#endif
 	// Create an LField iterator for this intersection region,
 	// and try to compress it.
         // storage for LField compression
@@ -855,9 +772,6 @@ void BareField<T,Dim>::accumGuardCells()
         PAssert(mess[rnode]);
 	mess[rnode]->put(intersection); // puts Dim items in Message
 	mess[rnode]->put(msgval);       // puts 3 items in Message
-#ifdef IPPL_PRINTDEBUG
-        ndomains[rnode]++;
-#endif
       }
     
     }
@@ -875,20 +789,11 @@ void BareField<T,Dim>::accumGuardCells()
     // Send all the messages.
     for (iproc=0; iproc<nprocs; ++iproc) {
       if (mess[iproc]) {
-#ifdef IPPL_PRINTDEBUG
-        msg << "accumGuardCells: Sending message to node " << iproc << endl
-            << "  number of domains  = " << ndomains[iproc] << endl
-            << "  number of MsgItems = " << mess[iproc]->size() << endl;
-#endif
         Ippl::Comm->send(mess[iproc], iproc, tag);
       }
     }
     
     delete [] mess;
-#ifdef IPPL_PRINTDEBUG
-    delete [] ndomains;
-#endif
-    
 
     // ----------------------------------------
     // Handle the local fills.
@@ -947,9 +852,6 @@ void BareField<T,Dim>::accumGuardCells()
           // Build iterator for rf real cells
           LFI rhs = rf.begin(intersection);
 
-#ifdef IPPL_PRINTDEBUG
-          msg << "  Inters. domain=" << intersection << endl;
-#endif
           // And do the accumulation
           BrickExpression<Dim,LFI,LFI,OpAddAssign>(rhs,lhs).apply();
 	}    
@@ -972,10 +874,6 @@ void BareField<T,Dim>::accumGuardCells()
 
       // Determine the number of domains being sent
       int ndoms = rmess->size() / (Dim + 3);
-#ifdef IPPL_PRINTDEBUG
-      msg << "accumGuardCells: Message received from node " << any_node
-          << ", number of domains = " << ndoms << endl;
-#endif
       for (int idom=0; idom<ndoms; ++idom) {
         // Extract the intersection domain from the message.
         NDIndex<Dim> intersection;
@@ -985,9 +883,6 @@ void BareField<T,Dim>::accumGuardCells()
         T compressed_value;
         LFI rhs(compressed_value);
         rhs.getMessage(*rmess);
-#ifdef IPPL_PRINTDEBUG
-        msg << "Received remote overlap region = " << intersection << endl;
-#endif
 
         // Find the LField it is destined for.
         typename ac_recv_type::iterator hit = recv_ac.find( intersection );
@@ -1067,9 +962,6 @@ void BareField<T,Dim>::accumGuardCells()
           // Build iterator for rf real cells
           LFI rhs = rf.begin(intersection);
 
-#ifdef IPPL_PRINTDEBUG
-          msg << "  Inters. domain=" << intersection << endl;
-#endif
           // And do the accumulation
           BrickExpression<Dim,LFI,LFI,OpAddAssign>(rhs,lhs).apply();
 	}    
@@ -1091,126 +983,6 @@ void BareField<T,Dim>::accumGuardCells()
 }
 
 //////////////////////////////////////////////////////////////////////
-
-// netCDF write operation for 1,2, and 3 Dimensionsal arrays
-// currently, only prints out doubles (RTTI would help....)
-// look here for more I/O capabilities
-
-template< class T, unsigned Dim >
-void BareField<T,Dim>::write(char* fname) const
-{
-  
-  
-  
-#ifdef IPPL_NETCDF
-
-  int ncid;			      // NetCDF file ID
-  int varVID;			      // NetCDF variable ID's
-
-  // Create the NetCDF file, overwrite if already exists:
-  ncid = nccreate(fname, NC_CLOBBER);
-  // Select no-fill mode, to avoid wasting time initializing values
-  // into variables with no UNLIMITED dimension upon creation:
-  int fillmode = ncsetfill(ncid,NC_NOFILL); //tjwdebug
-  // Initialize metadata:
-  // Dimensions:
-
-  //tjw  const NDIndex<Dim> &domain = Layout->get_Domain();
-  const NDIndex<Dim> &domain = getDomain();
-
-  // Variables:
-  // Order them with x-direction last, so that IPPL's FORTRAN-ordered LField's
-  // give the C interface of NetCDF what it expects (last dimension varying 
-  // fastest).
-  int dimids[Dim];
-  if ( Dim==1 )
-    {
-      dimids[0] = ncdimdef(ncid, "nx", domain[0].length());
-    } 
-  else if ( Dim==2 )
-    {
-      dimids[1] = ncdimdef(ncid, "nx", domain[1].length());
-      dimids[0] = ncdimdef(ncid, "ny", domain[0].length());
-    } 
-  else if ( Dim==3 )
-    {
-      dimids[2] = ncdimdef(ncid, "nx", domain[0].length());
-      dimids[1] = ncdimdef(ncid, "ny", domain[1].length());
-      dimids[0] = ncdimdef(ncid, "nz", domain[2].length());
-    } 
-  else if ( Dim>3 )
-    {
-      ERRORMSG("BareField: Can't write more than 3 dimensions." << endl);
-    }
-  varVID = ncvardef(ncid, fname, NC_DOUBLE, Dim, dimids);
-  // End (metadata) definition mode and close file (par_io requires):
-  int errRet = ncendef(ncid);
-
-  // Loop over all the Vnodes, creating an LField in each.
-  long startIndex[Dim];
-  long countIndex[Dim];
-  int rcode;
-
-  for (const_iterator_if l_i = begin_if(); l_i != end_if(); ++l_i)
-    {
-      // find the offset within the global space
-      LField<T,Dim> *ldf = (*l_i).second.get();
-      const NDIndex<Dim> &Owned = ldf->getOwned();
-
-      int size = 1;
-      for(unsigned int i = 0 ; i < Dim ; i++ )
-	{
-	  startIndex[Dim - i - 1] = Owned[i].first();
-	  countIndex[Dim - i - 1] = Owned[i].length();
-	  size *= countIndex[Dim - i - 1];
-	}
-      double* buffer = new double[size]; 
-
-      int icount = 0;
-      typename LField<T,Dim>::iterator lf_bi = ldf->begin();
-      if ( Dim==1 )
-	{
-	  int n0 = ldf->size(0);
-	  for (int i0=0; i0<n0; ++i0)
-	    buffer[icount++] = lf_bi.offset(i0);
-	}
-      else if ( Dim==2 )
-	{
-	  int n0 = ldf->size(0);
-	  int n1 = ldf->size(1);
-	  for (int i1=0; i1<n1; ++i1)
-	    for (int i0=0; i0<n0; ++i0)
-	      buffer[icount++] = lf_bi.offset(i0,i1);
-	}
-      else if ( Dim==3 )
-	{
-	  int n0 = ldf->size(0);
-	  int n1 = ldf->size(1);
-	  int n2 = ldf->size(2);
-	  for (int i2=0; i2<n2; ++i2)
-	    for (int i1=0; i1<n1; ++i1)
-	      for (int i0=0; i0<n0; ++i0)
-		buffer[icount++] = lf_bi.offset(i0,i1,i2);
-	}
-      rcode = ncvarput(ncid, varVID, startIndex,countIndex, buffer);
-      if ( rcode != 0)
-	{
-	  ERRORMSG("BareField: ncvarput() error, rcode=" << rcode << endl);
-	}
-      delete [] buffer;
-    }
-  rcode = ncclose(ncid);   // Everybody/master closes file.
-#else
-  ERRORMSG("[Bare]Field::write(\"filename\") requires that you run 'conf' "
-	   << endl << "   "
-	   << "with the NETCDF option when building libippl.a; you haven't."
-	   << endl);
-#endif 
-}
-
-//////////////////////////////////////////////////////////////////////
-
-
 //
 // An output function which writes out the BareField
 // a vnode at a time and includes the border information
@@ -1414,14 +1186,6 @@ void BareField<T,Dim>::notifyUserOfDelete(UserList* userlist)
 // in the BareField::localElement body
 template<unsigned Dim, bool exists>
 class LFieldDimTag {
-#ifdef IPPL_PURIFY
-  // Add explicit default/copy constructors and op= to avoid UMR's.
-public:
-  LFieldDimTag() {}
-  LFieldDimTag(const LFieldDimTag<Dim,exists> &) {}
-  LFieldDimTag<Dim,exists>&
-  operator=(const LFieldDimTag<Dim,exists> &) { return *this; }
-#endif
 };
 
 // 1, 2, 3, and N Dimensional functions

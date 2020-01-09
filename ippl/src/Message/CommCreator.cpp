@@ -23,33 +23,17 @@
  *
  ***************************************************************************/
 
-// include files
 #include "Message/CommCreator.h"
 #include "Message/Communicate.h"
-
-
-// include files for specific communication libraries
-
-
-#if defined(IPPL_MPI)
 #include "Message/CommMPI.h"
-#endif
-
-#if defined(IPPL_SHMEMPI)
-#include "Message/CommSHMEMPI.h"
-#endif
-
-#if defined(IPPL_PM)
-#include "Message/CommPM.h"
-#endif
 
 #include <cstring>
 
 // static data for this file
 static const char *CommLibraryNames[CommCreator::COMMLIBRARIES] =
-  { "pm", "mpi", "shmempi","serial" };
+  { "mpi", "serial" };
 
-static const char *CommLibraryList = "pm, mpi, shmempi, or serial";
+static const char *CommLibraryList = "mpi or serial";
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -77,24 +61,9 @@ const char *CommCreator::getAllLibraryNames()
 bool CommCreator::supported(int cm)
 {
     
-    if (cm == PM)
-    {
-#ifdef IPPL_PM
-        return true;
-#endif
-    }
-    else if (cm == MPI)
-    {
-#ifdef IPPL_MPI
-        return true;
-#endif
-    }
-    else if (cm == SHMEMPI)
-    {
-#ifdef IPPL_SHMEMPI
-        return true;
-#endif
-  } 
+  if (cm == MPI) {
+    return true;
+  }
   else if (cm == SERIAL) {
     return true;
   }
@@ -132,23 +101,9 @@ Communicate *CommCreator::create(int cm, int& argc, char**& argv, int nodes,
     // to avoid warning message
     if (doinit) { }
 
-    if (cm == PM)
+    if (cm == MPI)
     {
-#ifdef IPPL_PM
-        comm = new CommPM(argc, argv, nodes);
-#endif
-    }
-    else if (cm == MPI)
-    {
-#ifdef IPPL_MPI
         comm = new CommMPI(argc, argv, nodes, doinit, mpicomm);
-#endif
-    }
-    else if (cm == SHMEMPI)
-    {
-#ifdef IPPL_SHMEMPI
-        comm = new CommSHMEMPI(argc, argv, nodes);
-#endif
     }
     else if (cm == SERIAL)
     {

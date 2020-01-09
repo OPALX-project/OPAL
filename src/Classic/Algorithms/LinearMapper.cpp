@@ -41,7 +41,6 @@
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/ParallelPlate.h"
-#include "AbsBeamline/CyclotronValley.h"
 
 #include "Algorithms/MapIntegrator.h"
 #include "BeamlineGeometry/Euclid3D.h"
@@ -376,10 +375,6 @@ void LinearMapper::visitSolenoid(const Solenoid &solenoid) {
 
 void LinearMapper::visitParallelPlate(const ParallelPlate &pplate) {
     //do nothing
-}
-
-void LinearMapper::visitCyclotronValley(const CyclotronValley &cv) {
-    // Do nothing.
 }
 
 

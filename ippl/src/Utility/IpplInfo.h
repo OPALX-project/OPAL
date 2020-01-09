@@ -36,7 +36,6 @@
  *   INFOMSG("This is some information " << 34 << endl);
  *   WARNMSG("This is a warning " << 34 << endl);
  *   ERRORMSG("This is an error message " << 34 << endl);
- *   DEBUGMSG("This is some debugging info " << 34 << endl);
  *
  * There is also a 'typedef IpplInfo Ippl' here, so you can simply use
  * the name 'Ippl' instead of the longer 'IpplInfo' to access this class.
@@ -65,14 +64,6 @@
 class IpplStats;
 class IpplInfo;
 std::ostream& operator<<(std::ostream&, const IpplInfo&);
-
-
-#ifdef IPPL_RUNTIME_ERRCHECK
-// special routine used in runtime debugging error detection
-extern "C" {
-void __C_runtime_error (int trap_code, char *name, int line_no, ...);
-};
-#endif
 
 
 class IpplInfo {
@@ -220,13 +211,6 @@ public:
   // return true if we should try to retransmit messages on error
   static bool retransmit() { return (UseChecksums && Retransmit); }
 
-#ifdef IPPL_COMM_ALARMS
-  // A timeout quantity, in seconds, to allow us to wait a certain number
-  // of seconds before we signal a timeout when we're trying to receive
-  // a message.
-  static unsigned int getCommTimeout() { return CommTimeoutSeconds; }
-#endif
-
   // Static data about a limit to the number of nodes that should be used
   // in FFT operations.  If this is <= 0 or > number of nodes, it is ignored.
   static int maxFFTNodes() { return MaxFFTNodes; }
@@ -305,11 +289,6 @@ public:
   // individual LField has been processed in an expression.
   static bool extraCompressChecks;
 
-  // Static flag telling whether to try to use direct-io.  This is only
-  // possible if the library is compiled with the IPPL_DIRECTIO option,
-  // and you are on a system that provides this capablity.
-  static bool useDirectIO;
-
   // Static routine giving one a place to stop at with #$%$%#1 stupid
   // debuggers.
   static void here();
@@ -371,14 +350,6 @@ private:
   // try to read from a single file (vs just having one node do it).
   static bool PerSMPParallelIO;
 
-#ifdef IPPL_COMM_ALARMS
-  // A timeout quantity, in seconds, to allow us to wait a certain number
-  // of seconds before we signal a timeout when we're trying to receive
-  // a message.  By default, this will be zero; change it with the
-  // --msgtimeout <seconds> flag
-  static unsigned int CommTimeoutSeconds;
-#endif
-
   static std::stack<StaticIpplInfo> stashedStaticMembers;
 
   // Indicate an error occurred while trying to parse the given command-line
@@ -397,14 +368,6 @@ private:
 #define INFOMSG(msg)  { *IpplInfo::Info << msg; }
 #define WARNMSG(msg)  { *IpplInfo::Warn << msg; }
 #define ERRORMSG(msg) { *IpplInfo::Error << msg; }
-
-// special macro to print debugging messages
-#ifdef IPPL_PRINTDEBUG
-#define DEBUGMSG(msg) { *IpplInfo::Debug << msg; }
-#else
-#define DEBUGMSG(msg)
-#endif
-
 
 // typedef so that we can have a 'Ippl' class that's easier to manipulate
 typedef IpplInfo Ippl;

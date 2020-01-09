@@ -28,11 +28,11 @@ add_executable (TestRC TestRC.cpp)
 #add_executable (TestRCMIC TestRCMIC.cpp)
 add_executable (TestFFTCos TestFFTCos.cpp)
 
-target_link_libraries (TestFFT ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
-target_link_libraries (TestRC ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
-#target_link_libraries (TestRCGPU ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
-#target_link_libraries (TestRCMIC ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
-target_link_libraries (TestFFTCos ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
+target_link_libraries (TestFFT ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
+target_link_libraries (TestRC ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
+#target_link_libraries (TestRCGPU ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
+#target_link_libraries (TestRCMIC ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
+target_link_libraries (TestFFTCos ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
 
 # vi: set et ts=4 sw=4 sts=4:
   

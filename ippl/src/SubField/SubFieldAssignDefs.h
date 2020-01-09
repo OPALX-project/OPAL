@@ -35,30 +35,6 @@ for_each(SubFieldIter<T,D,S> &p, DomainCompressed, C)
   return p.DomainCompressed();
 }
 
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, class C, unsigned int D>
-inline bool
-for_each(SubFieldIter<T,D,SIndex<D> > &p, DomainCompressed, C)
-{
-  return p.DomainCompressed();
-}
-
-template<class T, class C, unsigned int D>
-inline bool
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, DomainCompressed, C)
-{
-  return p.DomainCompressed();
-}
-
-template<class T, class C, unsigned int D>
-inline bool
-for_each(SubFieldIter<T,D,SOffset<D> > &p, DomainCompressed, C)
-{
-  return p.DomainCompressed();
-}
-#endif // __MWERKS__
-
 template<class T, class C, unsigned int D>
 inline bool
 for_each(typename BareField<T,D>::iterator&, DomainCompressed, C)
@@ -100,30 +76,6 @@ for_each(SubFieldIter<T,D,S> &p, SameSubsetType s, C)
   return p.matchType(s.fID);
 }
 
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, class C, unsigned int D>
-inline bool
-for_each(SubFieldIter<T,D,SIndex<D> > &p, SameSubsetType s, C)
-{
-  return p.matchType(s.fID);
-}
-
-template<class T, class C, unsigned int D>
-inline bool
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, SameSubsetType s, C)
-{
-  return p.matchType(s.fID);
-}
-
-template<class T, class C, unsigned int D>
-inline bool
-for_each(SubFieldIter<T,D,SOffset<D> > &p, SameSubsetType s, C)
-{
-  return p.matchType(s.fID);
-}
-#endif // __MWERKS__
-
 template<class T, class C, unsigned int D>
 inline bool
 for_each(typename BareField<T,D>::iterator&, SameSubsetType s, C)
@@ -163,33 +115,6 @@ for_each(SubFieldIter<T,D,S> &p, SubsetInit, C)
   p.initialize();
   return 0;
 }
-
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,SIndex<D> > &p, SubsetInit, C) 
-{
-  p.initialize();
-  return 0;
-}
-
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, SubsetInit, C) 
-{
-  p.initialize();
-  return 0;
-}
-
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,SOffset<D> > &p, SubsetInit, C) 
-{
-  p.initialize();
-  return 0;
-}
-#endif // __MWERKS__
 
 template<class T, class C, unsigned int D>
 inline int
@@ -231,33 +156,6 @@ for_each(SubFieldIter<T,D,S> &p, SubsetNextLField, C)
   return 0;
 }
 
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,SIndex<D> > &p, SubsetNextLField, C)
-{
-  p.nextLField();
-  return 0;
-}
-
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, SubsetNextLField, C)
-{
-  p.nextLField();
-  return 0;
-}
-
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,SOffset<D> > &p, SubsetNextLField, C)
-{
-  p.nextLField();
-  return 0;
-}
-#endif // __MWERKS__
-
 template<class T, class C, unsigned int D>
 inline int
 for_each(typename BareField<T,D>::iterator&, SubsetNextLField, C)
@@ -293,30 +191,6 @@ for_each(SubFieldIter<T,D,S> &p, SameFieldID s, C)
   return p.getBareField().get_Id() == s.fID;
 }
 
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, class C, unsigned int D>
-inline bool
-for_each(const SubFieldIter<T,D,SIndex<D> > &p, const SameFieldID &s, C)
-{
-  return p.getBareField().get_Id() == s.fID;
-}
-
-template<class T, class C, unsigned int D>
-inline bool
-for_each(const SubFieldIter<T,D,NDIndex<D> > &p, const SameFieldID &s, C)
-{
-  return p.getBareField().get_Id() == s.fID;
-}
-
-template<class T, class C, unsigned int D>
-inline bool
-for_each(const SubFieldIter<T,D,SOffset<D> > &p, const SameFieldID &s, C)
-{
-  return p.getBareField().get_Id() == s.fID;
-}
-#endif // __MWERKS__
-
 //////////////////////////////////////////////////////////////////////
 //
 // Plugbase.
@@ -330,30 +204,6 @@ for_each(SubFieldIter<T,D,S> &p, const PlugBase<D>& f, C)
   return p.plugBase(f.Domain);
 }
 
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, unsigned D, class C>
-inline bool
-for_each(SubFieldIter<T,D,SIndex<D> > &p, const PlugBase<D>& f, C)
-{
-  return p.plugBase(f.Domain);
-}
-
-template<class T, unsigned D, class C>
-inline bool
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, const PlugBase<D>& f, C)
-{
-  return p.plugBase(f.Domain);
-}
-
-template<class T, unsigned D, class C>
-inline bool
-for_each(SubFieldIter<T,D,SOffset<D> > &p, const PlugBase<D>& f, C)
-{
-  return p.plugBase(f.Domain);
-}
-#endif // __MWERKS__
-
 //////////////////////////////////////////////////////////////////////
 //
 // Check for compression.
@@ -366,30 +216,6 @@ for_each(SubFieldIter<T,D,S> &p, IsCompressed, C)
 {
   return p.IsCompressed();
 }
-
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, class C, unsigned int D>
-inline bool
-for_each(SubFieldIter<T,D,SIndex<D> > &p, IsCompressed, C)
-{
-  return p.IsCompressed();
-}
-
-template<class T, class C, unsigned int D>
-inline bool
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, IsCompressed, C)
-{
-  return p.IsCompressed();
-}
-
-template<class T, class C, unsigned int D>
-inline bool
-for_each(SubFieldIter<T,D,SOffset<D> > &p, IsCompressed, C)
-{
-  return p.IsCompressed();
-}
-#endif // __MWERKS__
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -405,30 +231,6 @@ for_each(SubFieldIter<T,D,S> &p, EvalFunctor_0)
   return *p;
 }
 
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,SIndex<D> > &p, EvalFunctor_0)
-{
-  return *p;
-}
-
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, EvalFunctor_0)
-{
-  return *p;
-}
-
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,SOffset<D> > &p, EvalFunctor_0)
-{
-  return *p;
-}
-#endif // __MWERKS__
-
 //////////////////////////////////////////////////////////////////////
 //
 // Evaluation functors.
@@ -442,30 +244,6 @@ for_each(SubFieldIter<T,D,S> &p, const EvalFunctor_1& e)
 {
   return p.offset(e.I);
 }
-
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,SIndex<D> > &p, const EvalFunctor_1& e)
-{
-  return p.offset(e.I);
-}
-
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, const EvalFunctor_1& e)
-{
-  return p.offset(e.I);
-}
-
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,SOffset<D> > &p, const EvalFunctor_1& e)
-{
-  return p.offset(e.I);
-}
-#endif // __MWERKS__
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -481,30 +259,6 @@ for_each(SubFieldIter<T,D,S> &p, const EvalFunctor_2& e)
   return p.offset(e.I,e.J);
 }
 
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,SIndex<D> > &p, const EvalFunctor_2& e)
-{
-  return p.offset(e.I,e.J);
-}
-
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, const EvalFunctor_2& e)
-{
-  return p.offset(e.I,e.J);
-}
-
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,SOffset<D> > &p, const EvalFunctor_2& e)
-{
-  return p.offset(e.I,e.J);
-}
-#endif // __MWERKS__
-
 //////////////////////////////////////////////////////////////////////
 //
 // Evaluation functors.
@@ -518,30 +272,6 @@ for_each(SubFieldIter<T,D,S> &p, const EvalFunctor_3& e)
 {
   return p.offset(e.I,e.J,e.K);
 }
-
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,SIndex<D> > &p, const EvalFunctor_3& e)
-{
-  return p.offset(e.I,e.J,e.K);
-}
-
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, const EvalFunctor_3& e)
-{
-  return p.offset(e.I,e.J,e.K);
-}
-
-template<class T, unsigned int D>
-inline T&
-for_each(SubFieldIter<T,D,SOffset<D> > &p, const EvalFunctor_3& e)
-{
-  return p.offset(e.I,e.J,e.K);
-}
-#endif // __MWERKS__
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -557,33 +287,6 @@ for_each(SubFieldIter<T,D,S> &p, StepFunctor s, C)
   return 0;
 }
 
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,SIndex<D> > &p, StepFunctor s, C)
-{
-  p.step(s.D);
-  return 0;
-}
-
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, StepFunctor s, C)
-{
-  p.step(s.D);
-  return 0;
-}
-
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,SOffset<D> > &p, StepFunctor s, C)
-{
-  p.step(s.D);
-  return 0;
-}
-#endif // __MWERKS__
-
 //////////////////////////////////////////////////////////////////////
 //
 // Rewind in some dimension.
@@ -597,33 +300,6 @@ for_each(SubFieldIter<T,D,S> &p, RewindFunctor s, C)
   p.rewind(s.D);
   return 0;
 }
-
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,SIndex<D> > &p, RewindFunctor s, C)
-{
-  p.rewind(s.D);
-  return 0;
-}
-
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, RewindFunctor s, C)
-{
-  p.rewind(s.D);
-  return 0;
-}
-
-template<class T, class C, unsigned int D>
-inline int
-for_each(SubFieldIter<T,D,SOffset<D> > &p, RewindFunctor s, C)
-{
-  p.rewind(s.D);
-  return 0;
-}
-#endif // __MWERKS__
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -639,30 +315,6 @@ for_each(SubFieldIter<T,D,S> &p, HasUnitStride, C)
   return false;
 }
 
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, unsigned int D, class C>
-inline bool
-for_each(SubFieldIter<T,D,SIndex<D> > &p, HasUnitStride, C)
-{
-  return false;
-}
-
-template<class T, unsigned int D, class C>
-inline bool
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, HasUnitStride, C)
-{
-  return false;
-}
-
-template<class T, unsigned int D, class C>
-inline bool
-for_each(SubFieldIter<T,D,SOffset<D> > &p, HasUnitStride, C)
-{
-  return false;
-}
-#endif // __MWERKS__
-
 //////////////////////////////////////////////////////////////////////
 //
 // Ask each term to fill guard cells and compress itself
@@ -677,38 +329,6 @@ for_each(SubFieldIter<T,D,S> &p, const FillGCIfNecessaryTag<D,T1> &f, C)
   p.FillGCIfNecessary();
   return 0;
 }
-
-#ifdef __MWERKS__
-// Work around partial-specialization template matching bug in CW4
-template<class T, unsigned int D, class C, class T1>
-inline int
-for_each(SubFieldIter<T,D,SIndex<D> > &p, const FillGCIfNecessaryTag<D,T1> &f, C)
-{
-  //tjw3/3/99  p.FillGCIfNecessary(f.I, f.I);
-  p.FillGCIfNecessary();
-  return 0;
-}
-
-template<class T, unsigned int D, class C, class T1>
-inline int
-for_each(SubFieldIter<T,D,NDIndex<D> > &p, const FillGCIfNecessaryTag<D,T1> &f, C)
-{
-  //tjw3/3/99  p.FillGCIfNecessary(f.I, f.I);
-  p.FillGCIfNecessary();
-  return 0;
-}
-
-template<class T, unsigned int D, class C, class T1>
-inline int
-for_each(SubFieldIter<T,D,SOffset<D> > &p, const FillGCIfNecessaryTag<D,T1> &f, C)
-{
-  //tjw3/3/99  p.FillGCIfNecessary(f.I, f.I);
-  p.FillGCIfNecessary();
-  return 0;
-}
-
-#endif // __MWERKS__
-
 
 #endif // SUB_FIELD_ASSIGN_DEFS_H
 

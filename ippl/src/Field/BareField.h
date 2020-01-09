@@ -316,7 +316,6 @@ public:
   // 
 
   void write(std::ostream&);
-  void write(char*) const;
   void writeb(char*) const;
 
   //

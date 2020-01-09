@@ -51,11 +51,6 @@ public:
     // individual LField has been processed in an expression.
     bool extraCompressChecks;
 
-    // flag telling whether to try to use direct-io.  This is only
-    // possible if the library is compiled with the IPPL_DIRECTIO option,
-    // and you are on a system that provides this capablity.
-    bool useDirectIO;
-
     MPI_Comm communicator_m;
 
     // counter indicating how many IpplInit objects have been created.
@@ -105,14 +100,6 @@ public:
     // I/O within a single SMP, for example by having multipple processors
     // try to read from a single file (vs just having one node do it).
     bool PerSMPParallelIO;
-
-#ifdef IPPL_COMM_ALARMS
-    // A timeout quantity, in seconds, to allow us to wait a certain number
-    // of seconds before we signal a timeout when we're trying to receive
-    // a message.  By default, this will be zero; change it with the
-    // --msgtimeout <seconds> flag
-    unsigned int CommTimeoutSeconds;
-#endif
 
 };
 

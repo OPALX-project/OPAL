@@ -30,13 +30,6 @@
 // A tag indicating the Field centering type
 template <class C>
 class CenteringTag {
-#ifdef IPPL_PURIFY
-  // Add explicit default/copy constructors and op= to avoid UMR's.
-public:
-  CenteringTag() {}
-  CenteringTag(const CenteringTag<C> &) {}
-  CenteringTag<C>& operator=(const CenteringTag<C> &) { return *this; }
-#endif
 };
 
 // Return NDIndex referring to the nearest Field element to the given position

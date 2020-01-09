@@ -30,11 +30,6 @@ struct SameFieldID
 
 struct IsCompressed
 {
-#ifdef IPPL_PURIFY
-  IsCompressed() {}
-  IsCompressed(const IsCompressed &) {}
-  IsCompressed& operator=(const IsCompressed &) { return *this; }
-#endif
   typedef bool PETE_Return_t;
 };
 
@@ -77,11 +72,6 @@ struct UnitEvalFunctor_3 : public EvalFunctor_3
 //
 struct BeginLField
 {
-#ifdef IPPL_PURIFY
-  BeginLField() {}
-  BeginLField(const BeginLField &) {}
-  BeginLField& operator=(const BeginLField &) { return *this; }
-#endif
   typedef int PETE_Return_t;
 };
 
@@ -90,11 +80,6 @@ struct BeginLField
 //
 struct NextLField
 {
-#ifdef IPPL_PURIFY
-  NextLField() {}
-  NextLField(const NextLField &) {}
-  NextLField& operator=(const NextLField &) { return *this; }
-#endif
   typedef int PETE_Return_t;
 };
 
@@ -120,11 +105,6 @@ struct RewindFunctor
 
 struct HasUnitStride
 {
-#ifdef IPPL_PURIFY
-  HasUnitStride() {}
-  HasUnitStride(const HasUnitStride &) {}
-  HasUnitStride& operator=(const HasUnitStride &) { return *this; }
-#endif
   typedef bool PETE_Return_t;
 };
 

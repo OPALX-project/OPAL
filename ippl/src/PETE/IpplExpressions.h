@@ -266,26 +266,6 @@ PETE_DefineAssign((a = (a||b))   ,(a = (a||b.value))   , OpOrAssign)
 // 
 //=========================================================================
 
-#ifdef __MWERKS__
-// Workaround for CodeWarrior 4 bug
-// Funny "MMin" name is to avoid conflict with Min defined elsewhere in r1
-template<class T> 
-struct MMin {
-  typedef typename T::PETE_Expr_t::PETE_Return_t type_t;
-  static inline type_t apply(const PETE_Expr<T>& expr) {
-    type_t val ;
-    Reduction(val, Expressionize<typename T::PETE_Expr_t>::apply( expr.PETE_unwrap().MakeExpression() ), 
-	      OpAssign(), OpMinAssign());
-    return val;
-  }
-};
-
-template<class T> 
-inline typename MMin<T>::type_t 
-min(const PETE_Expr<T>& expr) {
-  return MMin<T>::apply(expr);
-}
-#else
 template<class T> 
 inline typename T::PETE_Expr_t::PETE_Return_t
 min(const PETE_Expr<T>& expr)
@@ -297,28 +277,7 @@ min(const PETE_Expr<T>& expr)
 	    OpMinAssign());
   return val;
 }
-#endif // __MWERKS__
 
-#ifdef __MWERKS__
-// Workaround for CodeWarrior 4 bug
-// Funny "MMax" name is to avoid conflict with Max defined elsewhere in r1
-template<class T> 
-struct MMax {
-  typedef typename T::PETE_Expr_t::PETE_Return_t type_t;
-  static inline type_t apply(const PETE_Expr<T>& expr) {
-    type_t val ;
-    Reduction(val, Expressionize<typename T::PETE_Expr_t>::apply(expr.PETE_unwrap().MakeExpression()),
-	      OpAssign(), OpMaxAssign());
-    return val;
-  }
-};
-
-template<class T> 
-inline typename MMax<T>::type_t 
-max(const PETE_Expr<T>& expr) {
-  return MMax<T>::apply(expr);
-}
-#else
 template<class T> 
 inline typename T::PETE_Expr_t::PETE_Return_t
 max(const PETE_Expr<T>& expr)
@@ -330,8 +289,6 @@ max(const PETE_Expr<T>& expr)
 	    OpMaxAssign());
   return val;
 }
-#endif // __MWERKS__
-
 
 //=========================================================================
 //

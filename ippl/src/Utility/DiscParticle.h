@@ -11,13 +11,6 @@
 #ifndef DISC_PARTICLE_H
 #define DISC_PARTICLE_H
 
-// debugging macros
-#ifdef IPPL_PRINTDEBUG
-#define DPCTLDBG(x) x
-#else
-#define DPCTLDBG(x)
-#endif
-
 // include files
 #include "Utility/DiscConfig.h"
 #include "Utility/IpplInfo.h"
@@ -183,14 +176,8 @@ public:
       }
     }
 
-    DPCTLDBG(std::string dbgmsgname("DiscParticle::read(IpplParticleBase) "));
-    DPCTLDBG(dbgmsgname += Config->getConfigFile());
-    DPCTLDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-
     // since we're reading in data for the entire IpplParticleBase, delete all the
     // existing particles, and do an update, before reading in new particles
-    DPCTLDBG(dbgmsg << "Deleting existing " << pbase.getLocalNum());
-    DPCTLDBG(dbgmsg << " particles." << endl);
     pbase.destroy(pbase.getLocalNum(), 0);
     pbase.update();
 
@@ -206,7 +193,6 @@ public:
 
 	  // open the data file
 	  std::string filename = Config->getFilename(sf) + ".data";
-	  DPCTLDBG(dbgmsg<<"Opening data file '" << filename << "' ..."<<endl);
 	  FILE *datafile = open_file(filename, std::string("r"));
 
 	  // if the file is available, read it
@@ -228,7 +214,6 @@ public:
 	    }
 
 	    // create new particles, by getting them from the message
-	    DPCTLDBG(dbgmsg<<"Creating "<<localnum << " new particles."<<endl);
 	    pbase.getMessageAndCreate(*msg);
 
 	    // we're done with the message now
@@ -239,11 +224,7 @@ public:
     }
 
     // at the end, do an update to get everything where it is supposed to be
-    DPCTLDBG(dbgmsg << "Doing final update after reading in particles ...");
-    DPCTLDBG(dbgmsg << endl);
     pbase.update();
-    DPCTLDBG(dbgmsg << "This node now has " << pbase.getLocalNum());
-    DPCTLDBG(dbgmsg << " local particles." << endl);
     return true;
   }
 
@@ -292,15 +273,6 @@ public:
       return false;
     }
 
-// ada:  incDiscReads is not found   INCIPPLSTAT(incDiscReads);
-
-    DPCTLDBG(std::string dbgmsgname("DiscParticle::read(ParticleAttrib) "));
-    DPCTLDBG(dbgmsgname += Config->getConfigFile());
-    DPCTLDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-
-    // delete all the existing particles before reading in new particles
-    DPCTLDBG(dbgmsg << "Deleting existing " << pattr.size());
-    DPCTLDBG(dbgmsg << " particles." << endl);
     pattr.destroy(pattr.size(), 0);
 
     // if we're on a box0 node, read in the data for the attributes
@@ -315,7 +287,6 @@ public:
 
 	  // open the data file
 	  std::string filename = Config->getFilename(sf) + ".data";
-	  DPCTLDBG(dbgmsg<<"Opening data file '"<<filename << "' ..." << endl);
 	  FILE *datafile = open_file(filename, std::string("r"));
 
 	  // if the file is available, read it
@@ -333,7 +304,6 @@ public:
 	    msg->putmsg(buf, get_ElemByteSize(record, 0), localnum);
 
 	    // create new particles, by getting them from the message
-	    DPCTLDBG(dbgmsg<<"Creating "<<localnum<<" new particles." << endl);
 	    pattr.getMessage(*msg, localnum);
 
 	    // we're done with the message now
@@ -343,8 +313,6 @@ public:
       }
     }
 
-    DPCTLDBG(dbgmsg << "This node now has " << pattr.size());
-    DPCTLDBG(dbgmsg << " local particles." << endl);
     return true;
   }
 
@@ -389,12 +357,6 @@ public:
       return false;
     }
 
-//   ada:  incDiscWrites is not found  INCIPPLSTAT(incDiscWrites);
-
-    DPCTLDBG(std::string dbgmsgname("DiscParticle::write(IpplParticleBase) "));
-    DPCTLDBG(dbgmsgname += Config->getConfigFile());
-    DPCTLDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-
     // create a new record entry, and set it to the proper values
     RecordInfo *info = new RecordInfo;
     info->attributes = pbase.numAttributes();
@@ -406,8 +368,6 @@ public:
 
     // Create a message with our local particles, which will then be used
     // to write out the data
-    DPCTLDBG(dbgmsg << "Putting local " << pbase.getLocalNum());
-    DPCTLDBG(dbgmsg << " particles into a message." << endl);
     Message *msg = new Message;
     pbase.putMessage(*msg, pbase.getLocalNum(), 0);
 
@@ -420,7 +380,6 @@ public:
       if (get_NumRecords() == 0)
 	openmode = "w";
       std::string filename = Config->getFilename(0) + ".data";
-      DPCTLDBG(dbgmsg << "Opening data file '" << filename << "' ..." << endl);
       FILE *datafile = open_file(filename, openmode);
       if (datafile == 0) {
 	delete info;
@@ -442,19 +401,12 @@ public:
 
       // now wait for messages from all the other nodes with their particle
       // data, and save the messages
-      DPCTLDBG(dbgmsg << "Box0 node waiting to receive " << notreceived);
-      DPCTLDBG(dbgmsg << " messages, from this SMP and ");
-      DPCTLDBG(dbgmsg << Config->getNumOtherSMP() << " other SMPs." << endl);
       while (notreceived > 0) {
 	// receive the message
 	int any_node = COMM_ANY_NODE;
 	Message *recmsg = Ippl::Comm->receive_block(any_node, tag);
 	PAssert(recmsg);
 	notreceived--;
-
-	DPCTLDBG(dbgmsg<<"Received msg from node " << any_node << " w tag ");
-	DPCTLDBG(dbgmsg<< tag << "; still waiting for " << notreceived);
-	DPCTLDBG(dbgmsg<< " messages." << endl);
 
 	// get the number of particles and save the info
 	// write the info out to disk
@@ -474,8 +426,6 @@ public:
 
     } else {
       // just send out the message with our local particles now
-      DPCTLDBG(dbgmsg<<"Sending " << pbase.getLocalNum()<<" ptcls to node ");
-      DPCTLDBG(dbgmsg<< Config->getSMPBox0() << " with tag " << tag << endl);
       Ippl::Comm->send(msg, Config->getSMPBox0(), tag);
 
       // and save extra necessary info into RecordInfo struct
@@ -484,19 +434,16 @@ public:
     }
 
     // add this new record information to our list
-    DPCTLDBG(dbgmsg << "Finished writing; saving RecordInfo record ..."<<endl);
     RecordList.push_back(info);
 
     // rewrite the meta file, if we're on a box0 node
     if ((unsigned int) Ippl::myNode() == Config->getSMPBox0()) {
-      DPCTLDBG(dbgmsg << "Doing final re-write of .meta file ..." << endl);
       if (!write_meta())
 	return false;
     }
 
     // to be safe, do a barrier here, since some nodes could have had very
     // little to do
-    DPCTLDBG(dbgmsg << "At final barrier at end of write ..." << endl);
     Ippl::Comm->barrier();
 
     // return success
@@ -537,12 +484,6 @@ public:
       return false;
     }
 
-// ada:  incDiscWrites is not found    INCIPPLSTAT(incDiscWrites);
-
-    DPCTLDBG(std::string dbgmsgname("DiscParticle::write(ParticleAttrib) "));
-    DPCTLDBG(dbgmsgname += Config->getConfigFile());
-    DPCTLDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-
     // create a new record entry, and set it to the proper values
     RecordInfo *info = new RecordInfo;
     info->attributes = 0;
@@ -552,8 +493,6 @@ public:
 
     // Create a message with our local particles, which will then be used
     // to write out the data
-    DPCTLDBG(dbgmsg << "Putting local " << pattr.size());
-    DPCTLDBG(dbgmsg << " particles into a message." << endl);
     Message *msg = new Message;
     msg->put(pattr.size());
     pattr.putMessage(*msg, pattr.size(), 0);
@@ -567,7 +506,6 @@ public:
       if (get_NumRecords() == 0)
 	openmode = "w";
       std::string filename = Config->getFilename(0) + ".data";
-      DPCTLDBG(dbgmsg << "Opening data file '" << filename << "' ..." << endl);
       FILE *datafile = open_file(filename, openmode);
       if (datafile == 0) {
 	delete info;
@@ -589,19 +527,12 @@ public:
 
       // now wait for messages from all the other nodes with their particle
       // data, and save the messages
-      DPCTLDBG(dbgmsg << "Box0 node waiting to receive " << notreceived);
-      DPCTLDBG(dbgmsg << " messages, from this SMP and ");
-      DPCTLDBG(dbgmsg << Config->getNumOtherSMP() << " other SMPs." << endl);
       while (notreceived > 0) {
 	// receive the message
 	int any_node = COMM_ANY_NODE;
 	Message *recmsg = Ippl::Comm->receive_block(any_node, tag);
 	PAssert(recmsg);
 	notreceived--;
-
-	DPCTLDBG(dbgmsg<< "Received msg from node " << any_node << " w tag ");
-	DPCTLDBG(dbgmsg<< tag << "; still waiting for " << notreceived);
-	DPCTLDBG(dbgmsg<< " messages." << endl);
 
 	// get the number of particles and save the info
 	// write the info out to disk
@@ -621,8 +552,6 @@ public:
 
     } else {
       // just send out the message with our local particles now
-      DPCTLDBG(dbgmsg << "Sending " << pattr.size() << " particles to node ");
-      DPCTLDBG(dbgmsg << Config->getSMPBox0() << " with tag " << tag << endl);
       Ippl::Comm->send(msg, Config->getSMPBox0(), tag);
 
       // and save extra necessary info into RecordInfo struct
@@ -631,19 +560,16 @@ public:
     }
 
     // add this new record information to our list
-    DPCTLDBG(dbgmsg << "Finished writing; saving RecordInfo record ..."<<endl);
     RecordList.push_back(info);
 
     // rewrite the meta file, if we're on a box0 node
     if ((unsigned int) Ippl::myNode() == Config->getSMPBox0()) {
-      DPCTLDBG(dbgmsg << "Doing final re-write of .meta file ..." << endl);
       if (!write_meta())
 	return false;
     }
 
     // to be safe, do a barrier here, since some nodes could have had very
     // little to do
-    DPCTLDBG(dbgmsg << "At final barrier at end of write ..." << endl);
     Ippl::Comm->barrier();
 
     // return success

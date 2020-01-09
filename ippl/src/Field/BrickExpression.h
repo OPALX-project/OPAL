@@ -2,9 +2,6 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
  *
  ***************************************************************************/
 
@@ -12,27 +9,12 @@
 #define BRICK_EXPRESSION_H
 
 // include files
-#include "Utility/Pooled.h"
-#include "Utility/RefCounted.h"
 #include "Field/AssignTags.h"
-
-//////////////////////////////////////////////////////////////////////
-/*
-class BrickExpressionBase : public RefCounted, public Pooled
-{
-public:
-  BrickExpressionBase() {}
-  virtual ~BrickExpressionBase() {}
-  virtual void apply() restrict =0;
-};
-*/
-//////////////////////////////////////////////////////////////////////
 
 // template<unsigned Dim, class LHS, class RHS, class OP>
 // class BrickExpression : public BrickExpressionBase
 template<unsigned Dim, class LHS, class RHS, class OP>
-class BrickExpression :
-  public RefCounted, public Pooled< BrickExpression<Dim,LHS,RHS,OP> >
+class BrickExpression
 {
 public: 
   BrickExpression(const LHS& l, const RHS& r)

@@ -77,14 +77,6 @@ CompressedBrickIterator(const NDIndex<Dim>& o, T& compressed)
 template<unsigned Dim, bool B=(Dim<=3)>
 class CompressedLoopTag
 {
-#ifdef IPPL_PURIFY
-  // Add explicit default/copy constructors and op= to avoid UMR's.
-public:
-  CompressedLoopTag() {}
-  CompressedLoopTag(const CompressedLoopTag<Dim,B> &) {}
-  CompressedLoopTag<Dim,B>&
-  operator=(const CompressedLoopTag<Dim,B> &) { return *this; }
-#endif
 };
 
 //

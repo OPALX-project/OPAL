@@ -53,40 +53,6 @@ assign(const ParticleAttribElem<T,D>& a,
 
 //////////////////////////////////////////////////////////////////////
 
-#ifdef __MWERKS__
-#define ASSIGNMENT_OPERATORS_PTCL(FUNC,OP)				    \
-									    \
-template<class T, unsigned D, class RHS>				    \
-inline void								    \
-FUNC(const ParticleAttribElem<T,D>& lhs, const PETE_Expr<RHS>& rhs)	    \
-{									    \
-  assign(lhs,rhs.PETE_unwrap().MakeExpression(),OP());		            \
-}									    \
-									    \
-template<class T, unsigned D>						    \
-inline void								    \
-FUNC(ParticleAttribElem<T,D>& lhs,                                    \
-     typename AppTypeTraits<T>::Element_t rhs)                              \
-{									    \
-  assign(lhs,PETE_Scalar<typename AppTypeTraits<T>::Element_t>(rhs),OP());  \
-}									    \
-									    \
-template<class T, class RHS>				                    \
-inline void								    \
-FUNC(const ParticleAttrib<T>& lhs, const PETE_Expr<RHS>& rhs)	            \
-{									    \
-  assign(lhs,rhs.PETE_unwrap().MakeExpression(),OP());		            \
-}									    \
-									    \
-template<class T> 						            \
-inline void								    \
-FUNC(const ParticleAttrib<T>& lhs, T rhs)			            \
-{									    \
-  assign(lhs,PETE_Scalar<T>(rhs),OP());		 	                    \
-}
-//TJW: Delete the middle third one up from here to get TestParticleDebug to
-//TJW: compile. 12/4/98
-#else
 #define ASSIGNMENT_OPERATORS_PTCL(FUNC,OP)				    \
 									    \
 template<class T, unsigned D, class RHS>				    \
@@ -117,7 +83,6 @@ FUNC(const ParticleAttrib<T>& lhs, T rhs)			            \
 {									    \
   assign(lhs,PETE_Scalar<T>(rhs),OP());		 	                    \
 }
-#endif // __MWERKS__
 
 ASSIGNMENT_OPERATORS_PTCL(assign,OpAssign)
 ASSIGNMENT_OPERATORS_PTCL(operator<<,OpAssign)

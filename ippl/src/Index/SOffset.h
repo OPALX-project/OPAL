@@ -271,64 +271,26 @@ SOffset<Dim>::inside(const NDIndex<Dim>& ndi) const {
 // a tag class used to indicate how many elements and when to split a loop
 template<unsigned int Dim, int Flag>
 class DivideSOffsetCopyTag {
-#ifdef IPPL_PURIFY
-  // Add explicit default/copy constructors and op= to avoid UMR's.
-public:
-  DivideSOffsetCopyTag() {}
-  DivideSOffsetCopyTag(const DivideSOffsetCopyTag<Dim,Flag> &) {}
-  DivideSOffsetCopyTag<Dim,Flag>&
-  operator=(const DivideSOffsetCopyTag<Dim,Flag> &) { return *this; }
-#endif
 };
 
 // simple functors for performing operations on SOffset elements
 struct SOffsetAssignOp {
-#ifdef IPPL_PURIFY
-  // Add explicit default/copy constructors and op= to avoid UMR's.
-  SOffsetAssignOp() {}
-  SOffsetAssignOp(const SOffsetAssignOp &) {}
-  SOffsetAssignOp& operator=(const SOffsetAssignOp &) { return *this; }
-#endif
   void operator()(int& a, int b) { a = b; }
 };
 
 struct SOffsetAddAssignOp {
-#ifdef IPPL_PURIFY
-  // Add explicit default/copy constructors and op= to avoid UMR's.
-  SOffsetAddAssignOp() {}
-  SOffsetAddAssignOp(const SOffsetAddAssignOp &) {}
-  SOffsetAddAssignOp& operator=(const SOffsetAddAssignOp &) { return *this; }
-#endif
   void operator()(int& a, int b) { a += b; }
 };
 
 struct SOffsetSubAssignOp {
-#ifdef IPPL_PURIFY
-  // Add explicit default/copy constructors and op= to avoid UMR's.
-  SOffsetSubAssignOp() {}
-  SOffsetSubAssignOp(const SOffsetSubAssignOp &) {}
-  SOffsetSubAssignOp& operator=(const SOffsetSubAssignOp &) { return *this; }
-#endif
   void operator()(int& a, int b) { a -= b; }
 };
 
 struct SOffsetMultAssignOp {
-#ifdef IPPL_PURIFY
-  // Add explicit default/copy constructors and op= to avoid UMR's.
-  SOffsetMultAssignOp() {}
-  SOffsetMultAssignOp(const SOffsetMultAssignOp &) {}
-  SOffsetMultAssignOp& operator=(const SOffsetMultAssignOp &) { return *this; }
-#endif
   void operator()(int& a, int b) { a *= b; }
 };
 
 struct SOffsetDivAssignOp {
-#ifdef IPPL_PURIFY
-  // Add explicit default/copy constructors and op= to avoid UMR's.
-  SOffsetDivAssignOp() {}
-  SOffsetDivAssignOp(const SOffsetDivAssignOp &) {}
-  SOffsetDivAssignOp& operator=(const SOffsetDivAssignOp &) { return *this; }
-#endif
   void operator()(int& a, int b) { a /= b; }
 };
 

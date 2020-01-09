@@ -44,7 +44,6 @@
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/Source.h"
 #include "AbsBeamline/ParallelPlate.h"
-#include "AbsBeamline/CyclotronValley.h"
 #include "AbsBeamline/Stripper.h"
 
 #include "Beamlines/FlaggedElmPtr.h"
@@ -200,9 +199,6 @@ public:
 
     /// Apply the algorithm to a ParallelPlate.
     virtual void visitParallelPlate(const ParallelPlate &);
-
-    /// Apply the algorithm to a CyclotronValley.
-    virtual void visitCyclotronValley(const CyclotronValley &);
 
     /// Apply the algorithm to a charge stripper.
     virtual void visitStripper(const Stripper &);
@@ -473,11 +469,6 @@ void SpecificElementVisitor<ELEM>::visitSource(const Source &element) {
 template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitParallelPlate(const ParallelPlate &element) {
     CastsTrait<ELEM, ParallelPlate>::apply(allElementsOfTypeE, element);
-}
-
-template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitCyclotronValley(const CyclotronValley &element) {
-    CastsTrait<ELEM, CyclotronValley>::apply(allElementsOfTypeE, element);
 }
 
 template<class ELEM>

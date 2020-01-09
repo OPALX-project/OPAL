@@ -400,51 +400,26 @@ struct PETETrinaryReturn
 
 struct OpIdentity
 {
-#ifdef IPPL_PURIFY
-  OpIdentity() {}
-  OpIdentity(const OpIdentity &) {}
-  OpIdentity& operator=(const OpIdentity &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct OpUnaryMinus
 {
-#ifdef IPPL_PURIFY
-  OpUnaryMinus() {}
-  OpUnaryMinus(const OpUnaryMinus &) {}
-  OpUnaryMinus& operator=(const OpUnaryMinus &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct OpUnaryPlus
 {
-#ifdef IPPL_PURIFY
-  OpUnaryPlus() {}
-  OpUnaryPlus(const OpUnaryPlus &) {}
-  OpUnaryPlus& operator=(const OpUnaryPlus &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct OpBitwiseNot
 {
-#ifdef IPPL_PURIFY
-  OpBitwiseNot() {}
-  OpBitwiseNot(const OpBitwiseNot &) {}
-  OpBitwiseNot& operator=(const OpBitwiseNot &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct OpNot
 {
-#ifdef IPPL_PURIFY
-  OpNot() {}
-  OpNot(const OpNot &) {}
-  OpNot& operator=(const OpNot &) { return *this; }
-#endif
   typedef bool type;
   enum { tag = PETE_Type2Index<bool>::val };
 };
@@ -452,11 +427,6 @@ struct OpNot
 template <class T>
 struct OpCast
 {
-#ifdef IPPL_PURIFY
-  OpCast() {}
-  OpCast(const OpCast<T> &) {}
-  OpCast& operator=(const OpCast<T> &) { return *this; }
-#endif
   typedef T type;
   enum { tag = PETE_Type2Index<T>::val };
 };
@@ -470,171 +440,86 @@ struct OpCast
 
 struct FnArcCos
 {
-#ifdef IPPL_PURIFY
-  FnArcCos() {}
-  FnArcCos(const FnArcCos &) {}
-  FnArcCos& operator=(const FnArcCos &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnArcSin
 {
-#ifdef IPPL_PURIFY
-  FnArcSin() {}
-  FnArcSin(const FnArcSin &) {}
-  FnArcSin& operator=(const FnArcSin &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnArcTan
 {
-#ifdef IPPL_PURIFY
-  FnArcTan() {}
-  FnArcTan(const FnArcTan &) {}
-  FnArcTan& operator=(const FnArcTan &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnCeil
 {
-#ifdef IPPL_PURIFY
-  FnCeil() {}
-  FnCeil(const FnCeil &) {}
-  FnCeil& operator=(const FnCeil &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnCos
 {
-#ifdef IPPL_PURIFY
-  FnCos() {}
-  FnCos(const FnCos &) {}
-  FnCos& operator=(const FnCos &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnHypCos
 {
-#ifdef IPPL_PURIFY
-  FnHypCos() {}
-  FnHypCos(const FnHypCos &) {}
-  FnHypCos& operator=(const FnHypCos &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnExp
 {
-#ifdef IPPL_PURIFY
-  FnExp() {}
-  FnExp(const FnExp &) {}
-  FnExp& operator=(const FnExp &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnFabs
 {
-#ifdef IPPL_PURIFY
-  FnFabs() {}
-  FnFabs(const FnFabs &) {}
-  FnFabs& operator=(const FnFabs &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnFloor
 {
-#ifdef IPPL_PURIFY
-  FnFloor() {}
-  FnFloor(const FnFloor &) {}
-  FnFloor& operator=(const FnFloor &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnLog
 {
-#ifdef IPPL_PURIFY
-  FnLog() {}
-  FnLog(const FnLog &) {}
-  FnLog& operator=(const FnLog &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnLog10
 {
-#ifdef IPPL_PURIFY
-  FnLog10() {}
-  FnLog10(const FnLog10 &) {}
-  FnLog10& operator=(const FnLog10 &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnSin
 {
-#ifdef IPPL_PURIFY
-  FnSin() {}
-  FnSin(const FnSin &) {}
-  FnSin& operator=(const FnSin &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnHypSin
 {
-#ifdef IPPL_PURIFY
-  FnHypSin() {}
-  FnHypSin(const FnHypSin &) {}
-  FnHypSin& operator=(const FnHypSin &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnSqrt
 {
-#ifdef IPPL_PURIFY
-  FnSqrt() {}
-  FnSqrt(const FnSqrt &) {}
-  FnSqrt& operator=(const FnSqrt &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnTan
 {
-#ifdef IPPL_PURIFY
-  FnTan() {}
-  FnTan(const FnTan &) {}
-  FnTan& operator=(const FnTan &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnHypTan
 {
-#ifdef IPPL_PURIFY
-  FnHypTan() {}
-  FnHypTan(const FnHypTan &) {}
-  FnHypTan& operator=(const FnHypTan &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnErf
 {
-#ifdef IPPL_PURIFY
-  FnErf() {}
-  FnErf(const FnErf &) {}
-  FnErf& operator=(const FnErf &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
@@ -648,189 +533,99 @@ struct FnErf
 
 struct OpAdd
 {
-#ifdef IPPL_PURIFY
-  OpAdd() {}
-  OpAdd(const OpAdd &) {}
-  OpAdd& operator=(const OpAdd &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct OpSubtract
 {
-#ifdef IPPL_PURIFY
-  OpSubtract() {}
-  OpSubtract(const OpSubtract &) {}
-  OpSubtract& operator=(const OpSubtract &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct OpMultipply
 {
-#ifdef IPPL_PURIFY
-  OpMultipply() {}
-  OpMultipply(const OpMultipply &) {}
-  OpMultipply& operator=(const OpMultipply &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct OpDivide
 {
-#ifdef IPPL_PURIFY
-  OpDivide() {}
-  OpDivide(const OpDivide &) {}
-  OpDivide& operator=(const OpDivide &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct OpMod
 {
-#ifdef IPPL_PURIFY
-  OpMod() {}
-  OpMod(const OpMod &) {}
-  OpMod& operator=(const OpMod &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct OpLT
 {
-#ifdef IPPL_PURIFY
-  OpLT() {}
-  OpLT(const OpLT &) {}
-  OpLT& operator=(const OpLT &) { return *this; }
-#endif
   typedef bool type;
   enum { tag = PETE_Type2Index<bool>::val };
 };
 
 struct OpGT
 {
-#ifdef IPPL_PURIFY
-  OpGT() {}
-  OpGT(const OpGT &) {}
-  OpGT& operator=(const OpGT &) { return *this; }
-#endif
   typedef bool type;
   enum { tag = PETE_Type2Index<bool>::val };
 };
 
 struct OpLE
 {
-#ifdef IPPL_PURIFY
-  OpLE() {}
-  OpLE(const OpLE &) {}
-  OpLE& operator=(const OpLE &) { return *this; }
-#endif
   typedef bool type;
   enum { tag = PETE_Type2Index<bool>::val };
 };
 
 struct OpGE
 {
-#ifdef IPPL_PURIFY
-  OpGE() {}
-  OpGE(const OpGE &) {}
-  OpGE& operator=(const OpGE &) { return *this; }
-#endif
   typedef bool type;
   enum { tag = PETE_Type2Index<bool>::val };
 };
 
 struct OpEQ
 {
-#ifdef IPPL_PURIFY
-  OpEQ() {}
-  OpEQ(const OpEQ &) {}
-  OpEQ& operator=(const OpEQ &) { return *this; }
-#endif
   typedef bool type;
   enum { tag = PETE_Type2Index<bool>::val };
 };
 
 struct OpNE
 {
-#ifdef IPPL_PURIFY
-  OpNE() {}
-  OpNE(const OpNE &) {}
-  OpNE& operator=(const OpNE &) { return *this; }
-#endif
   typedef bool type;
   enum { tag = PETE_Type2Index<bool>::val };
 };
 
 struct OpAnd
 {
-#ifdef IPPL_PURIFY
-  OpAnd() {}
-  OpAnd(const OpAnd &) {}
-  OpAnd& operator=(const OpAnd &) { return *this; }
-#endif
   typedef bool type;
   enum { tag = PETE_Type2Index<bool>::val };
 };
 
 struct OpOr
 {
-#ifdef IPPL_PURIFY
-  OpOr() {}
-  OpOr(const OpOr &) {}
-  OpOr& operator=(const OpOr &) { return *this; }
-#endif
   typedef bool type;
   enum { tag = PETE_Type2Index<bool>::val };
 };
 
 struct OpBitwiseXor
 {
-#ifdef IPPL_PURIFY
-  OpBitwiseXor() {}
-  OpBitwiseXor(const OpBitwiseXor &) {}
-  OpBitwiseXor& operator=(const OpBitwiseXor &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct OpBitwiseAnd
 {
-#ifdef IPPL_PURIFY
-  OpBitwiseAnd() {}
-  OpBitwiseAnd(const OpBitwiseAnd &) {}
-  OpBitwiseAnd& operator=(const OpBitwiseAnd &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct OpBitwiseOr
 {
-#ifdef IPPL_PURIFY
-  OpBitwiseOr() {}
-  OpBitwiseOr(const OpBitwiseOr &) {}
-  OpBitwiseOr& operator=(const OpBitwiseOr &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct OpLeftShift
 {
-#ifdef IPPL_PURIFY
-  OpLeftShift() {}
-  OpLeftShift(const OpLeftShift &) {}
-  OpLeftShift& operator=(const OpLeftShift &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpRightShift
 {
-#ifdef IPPL_PURIFY
-  OpRightShift() {}
-  OpRightShift(const OpRightShift &) {}
-  OpRightShift& operator=(const OpRightShift &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
@@ -843,51 +638,26 @@ struct OpRightShift
 
 struct FnCopysign
 {
-#ifdef IPPL_PURIFY
-  FnCopysign() {}
-  FnCopysign(const FnCopysign &) {}
-  FnCopysign& operator=(const FnCopysign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct FnLdexp
 {
-#ifdef IPPL_PURIFY
-  FnLdexp() {}
-  FnLdexp(const FnLdexp &) {}
-  FnLdexp& operator=(const FnLdexp &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct FnPow
 {
-#ifdef IPPL_PURIFY
-  FnPow() {}
-  FnPow(const FnPow &) {}
-  FnPow& operator=(const FnPow &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct FnFmod
 {
-#ifdef IPPL_PURIFY
-  FnFmod() {}
-  FnFmod(const FnFmod &) {}
-  FnFmod& operator=(const FnFmod &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct FnArcTan2
 {
-#ifdef IPPL_PURIFY
-  FnArcTan2() {}
-  FnArcTan2(const FnArcTan2 &) {}
-  FnArcTan2& operator=(const FnArcTan2 &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
@@ -900,111 +670,56 @@ struct FnArcTan2
 
 struct OpAssign
 {
-#ifdef IPPL_PURIFY
-  OpAssign() {}
-  OpAssign(const OpAssign &) {}
-  OpAssign& operator=(const OpAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpAddAssign
 {
-#ifdef IPPL_PURIFY
-  OpAddAssign() {}
-  OpAddAssign(const OpAddAssign &) {}
-  OpAddAssign& operator=(const OpAddAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpSubtractAssign
 {
-#ifdef IPPL_PURIFY
-  OpSubtractAssign() {}
-  OpSubtractAssign(const OpSubtractAssign &) {}
-  OpSubtractAssign& operator=(const OpSubtractAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpMultipplyAssign
 {
-#ifdef IPPL_PURIFY
-  OpMultipplyAssign() {}
-  OpMultipplyAssign(const OpMultipplyAssign &) {}
-  OpMultipplyAssign& operator=(const OpMultipplyAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpDivideAssign
 {
-#ifdef IPPL_PURIFY
-  OpDivideAssign() {}
-  OpDivideAssign(const OpDivideAssign &) {}
-  OpDivideAssign& operator=(const OpDivideAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpModAssign
 {
-#ifdef IPPL_PURIFY
-  OpModAssign() {}
-  OpModAssign(const OpModAssign &) {}
-  OpModAssign& operator=(const OpModAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpBitwiseXorAssign
 {
-#ifdef IPPL_PURIFY
-  OpBitwiseXorAssign() {}
-  OpBitwiseXorAssign(const OpBitwiseXorAssign &) {}
-  OpBitwiseXorAssign& operator=(const OpBitwiseXorAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpBitwiseAndAssign
 {
-#ifdef IPPL_PURIFY
-  OpBitwiseAndAssign() {}
-  OpBitwiseAndAssign(const OpBitwiseAndAssign &) {}
-  OpBitwiseAndAssign& operator=(const OpBitwiseAndAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpBitwiseOrAssign
 {
-#ifdef IPPL_PURIFY
-  OpBitwiseOrAssign() {}
-  OpBitwiseOrAssign(const OpBitwiseOrAssign &) {}
-  OpBitwiseOrAssign& operator=(const OpBitwiseOrAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpLeftShiftAssign
 {
-#ifdef IPPL_PURIFY
-  OpLeftShiftAssign() {}
-  OpLeftShiftAssign(const OpLeftShiftAssign &) {}
-  OpLeftShiftAssign& operator=(const OpLeftShiftAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpRightShiftAssign
 {
-#ifdef IPPL_PURIFY
-  OpRightShiftAssign() {}
-  OpRightShiftAssign(const OpRightShiftAssign &) {}
-  OpRightShiftAssign& operator=(const OpRightShiftAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
@@ -1017,11 +732,6 @@ struct OpRightShiftAssign
 
 struct OpWhere
 {
-#ifdef IPPL_PURIFY
-  OpWhere() {}
-  OpWhere(const OpWhere &) {}
-  OpWhere& operator=(const OpWhere &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 

@@ -4,8 +4,6 @@ project (MSLANG)
 set (MSLANG_VERSION_MAJOR 0)
 set (MSLANG_VERSION_MINOR 1)
 
-add_definitions (-DIPPL_MPI)
-add_definitions (-DIPPL_DONT_POOL)
 add_definitions (-DIPPL_USE_XDIV_RNG)
 add_definitions (-DIPPL_USE_PARTIAL_SPECIALIZATION)
 add_definitions (-DNOCTAssert)
@@ -32,6 +30,7 @@ set (MSLANG_LIBS
     ${H5Hut_LIBRARY}
     ${HDF5_LIBRARY}
     ${Boost_LIBRARIES}
+    boost_timer
     m
     z
 )

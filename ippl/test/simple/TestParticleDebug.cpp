@@ -129,20 +129,6 @@ int main(int argc, char *argv[])
   int np = 16;
   parts.globalCreate(np);
 
-  // Initialize position values
-// #ifdef __MWERKS__
-//   assign(parts.R(0), RNGLatticeSequence<double> (0.0, 4.0, np));
-//   assign(parts.R(1), RNGLatticeSequence<double> (0.0, 4.0, np));
-//   assign(parts.R(2), RNGLatticeSequence<double> (0.0, 4.0, np));
-// #else
-//   // Note: found that operator=() doesn't work for SGI as well as MWERKS:
-//   //   parts.R(0) = RNGLatticeSequence<double> (0.0, 4.0, np);
-//   //   parts.R(1) = RNGLatticeSequence<double> (0.0, 4.0, np);
-//   //   parts.R(2) = RNGLatticeSequence<double> (0.0, 4.0, np);
-//   assign(parts.R(0), RNGLatticeSequence<double> (0.0, 4.0, np));
-//   assign(parts.R(1), RNGLatticeSequence<double> (0.0, 4.0, np));
-//   assign(parts.R(2), RNGLatticeSequence<double> (0.0, 4.0, np));
-// #endif // __MWERKS__
   double deltaPX = 4.0/np;
   for (int p = 0; p < parts.getLocalNum(); p++) {
     double positionComponent = 0.0 + deltaPX*parts.ID[p];;

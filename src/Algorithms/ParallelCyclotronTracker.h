@@ -171,9 +171,6 @@ public:
     /// Apply the algorithm to a ParallelPlate, it is empty for cyclotrontracker .
     virtual void visitParallelPlate(const ParallelPlate &);
 
-    /// Apply the algorithm to a CyclotronValley.it is empty for cyclotrontracker .
-    virtual void visitCyclotronValley(const CyclotronValley &);
-
     /// Apply the algorithm to a VariabelRFCavity.
     virtual void visitVariableRFCavity(const VariableRFCavity &cav);
 

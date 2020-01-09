@@ -14,13 +14,12 @@
 // include files
 #include "Index/SOffset.h"
 #include "FieldLayout/Vnode.h"
-#include "Utility/RefCounted.h"
 #include "Utility/Vec.h"
 
 #include <vector>
 
 /***********************************************************************
- * 
+ *
  * LSIndex represents a set of single-point indices for a Field, just
  * for a single vnode.  SIndex contains a list of these LSIndex objects.
  * Expressions involving sparse indices are constrained to have the same
@@ -30,7 +29,7 @@
  ***********************************************************************/
 
 template<unsigned int Dim>
-class LSIndex : public RefCounted {
+class LSIndex {
 
 public:
   // useful typedefs

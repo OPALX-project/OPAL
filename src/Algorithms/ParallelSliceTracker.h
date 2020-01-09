@@ -36,7 +36,6 @@
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/ParallelPlate.h"
-#include "AbsBeamline/CyclotronValley.h"
 
 #include "Algorithms/ParallelTTracker.h"
 
@@ -91,7 +90,6 @@ public:
     virtual void visitSolenoid(const Solenoid &);
     virtual void visitSource(const Source &);
     virtual void visitParallelPlate(const ParallelPlate &);
-    virtual void visitCyclotronValley(const CyclotronValley &);
 
     virtual void execute();
 
@@ -284,10 +282,6 @@ inline void ParallelSliceTracker::visitSource(const Source &source) {
 
 inline void ParallelSliceTracker::visitParallelPlate(const ParallelPlate &pplate) {
     //do nothing.
-}
-
-inline void ParallelSliceTracker::visitCyclotronValley(const CyclotronValley &cv) {
-    // Do nothing here.
 }
 
 inline void ParallelSliceTracker::kickParticles() {

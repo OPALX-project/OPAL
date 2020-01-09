@@ -1,2 +1,0 @@
-$MYMPIRUN -np 64 hdf5write-1 32 32 32 10000000 10 NGP OOO GUARDCELLS --processes 64 --commlib mpi
-$MYMPIRUN -np 64 hdf5read-1  --processes 62 --commlib mpi

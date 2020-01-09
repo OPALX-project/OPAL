@@ -21,7 +21,6 @@ class BeamBeam;
 class BeamStripping;
 class CCollimator;
 class Corrector;
-class CyclotronValley;
 class Degrader;
 class Diagnostic;
 class Drift;
@@ -59,7 +58,6 @@ public:
     NIL_VISITELEMENT(BeamStripping)
     NIL_VISITELEMENT(CCollimator)
     NIL_VISITELEMENT(Corrector)
-    NIL_VISITELEMENT(CyclotronValley)
     NIL_VISITELEMENT(Degrader)
     NIL_VISITELEMENT(Diagnostic)
     NIL_VISITELEMENT(Drift)

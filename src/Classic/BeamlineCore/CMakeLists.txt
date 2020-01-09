@@ -1,40 +1,39 @@
 set (_SRCS
-  BeamBeamRep.cpp
-  BeamStrippingRep.cpp
-  CCollimatorRep.cpp
-  CorrectorRep.cpp
-  CyclotronRep.cpp
-  CyclotronValleyRep.cpp
-  DegraderRep.cpp
-  DriftRep.cpp
-  UndulatorRep.cpp
-  FlexibleCollimatorRep.cpp
-  MarkerRep.cpp
-  MonitorRep.cpp
-  MultipoleRep.cpp
-  Octupole.cpp
-  ParallelPlateRep.cpp
-  PatchRep.cpp
-  ProbeRep.cpp
-  Quadrupole.cpp
-  RBendRep.cpp
-  RFCavityRep.cpp
-  SBendRep.cpp
-  SeparatorRep.cpp
-  SeptumRep.cpp
-  Sextupole.cpp
-  SkewOctupole.cpp
-  SkewQuadrupole.cpp
-  SkewSextupole.cpp
-  SolenoidRep.cpp
-  SourceRep.cpp
-  StripperRep.cpp
-  TravelingWaveRep.cpp
-  XCorrectorRep.cpp
-  XMonitorRep.cpp
-  YCorrectorRep.cpp
-  YMonitorRep.cpp
-  )
+    BeamBeamRep.cpp
+    BeamStrippingRep.cpp
+    CCollimatorRep.cpp
+    CorrectorRep.cpp
+    CyclotronRep.cpp
+    DegraderRep.cpp
+    DriftRep.cpp
+    UndulatorRep.cpp
+    FlexibleCollimatorRep.cpp
+    MarkerRep.cpp
+    MonitorRep.cpp
+    MultipoleRep.cpp
+    Octupole.cpp
+    ParallelPlateRep.cpp
+    PatchRep.cpp
+    ProbeRep.cpp
+    Quadrupole.cpp
+    RBendRep.cpp
+    RFCavityRep.cpp
+    SBendRep.cpp
+    SeparatorRep.cpp
+    SeptumRep.cpp
+    Sextupole.cpp
+    SkewOctupole.cpp
+    SkewQuadrupole.cpp
+    SkewSextupole.cpp
+    SolenoidRep.cpp
+    SourceRep.cpp
+    StripperRep.cpp
+    TravelingWaveRep.cpp
+    XCorrectorRep.cpp
+    XMonitorRep.cpp
+    YCorrectorRep.cpp
+    YMonitorRep.cpp
+    )
 
 include_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -48,7 +47,6 @@ set (HDRS
     CCollimatorRep.h
     CorrectorRep.h
     CyclotronRep.h
-    CyclotronValleyRep.h
     DegraderRep.h
     DriftRep.h
     UndulatorRep.h	

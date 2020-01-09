@@ -13,7 +13,6 @@ set (_SRCS
     Component.cpp
     Corrector.cpp
     Cyclotron.cpp
-    CyclotronValley.cpp
     Degrader.cpp
     Diagnostic.cpp
     Drift.cpp
@@ -73,7 +72,6 @@ set (HDRS
     Component.h
     Corrector.h
     Cyclotron.h
-    CyclotronValley.h
     Degrader.h
     Diagnostic.h
     Drift.h
@@ -104,7 +102,6 @@ set (HDRS
     SBend3D.h
     SBend.h
     ScalingFFAMagnet.h
-    SectorFieldMapComponent.h
     Separator.h
     Septum.h
     Solenoid.h

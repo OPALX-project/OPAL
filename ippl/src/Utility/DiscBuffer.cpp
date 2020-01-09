@@ -64,11 +64,7 @@ DiscBuffer::DiscBuffer()
 DiscBuffer::~DiscBuffer()
 {
   if (buffer_s != 0)
-#ifdef IPPL_DIRECTIO
-    free(buffer_s);
-#else
     delete [] buffer_s;
-#endif
 
   size_s = 0;
   buffer_s = 0;
@@ -87,27 +83,15 @@ void *DiscBuffer::resize(long sz)
   if (sz > size_s)
     {
       // Reset our existing size
-
       size_s = sz;
 
       // Free the old buffer, if necessary, and create a new one
-
-#ifdef IPPL_DIRECTIO
-      if (buffer_s != 0)
-	{
-	  free(buffer_s);
-	  buffer_s = 0;
-	}
-      buffer_s = (char *)valloc(size_s);
-#else
       if (buffer_s != 0)
 	{
 	  delete [] buffer_s;
 	  buffer_s = 0;
 	}
       buffer_s = new char[size_s];
-#endif
-
       PAssert(buffer_s);
     }
 

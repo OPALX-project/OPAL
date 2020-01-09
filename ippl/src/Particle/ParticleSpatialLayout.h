@@ -514,25 +514,6 @@ protected:
                                     ERRORMSG("This occurred when searching for point " << pLoc);
                                     ERRORMSG(" in RegionLayout = " << RLayout << endl);
                                     Ippl::abort();
-
-                                    // JCC:
-                                    /*
-                                    }
-                                            else {
-                                      DEBUGMSG("Local particle " << ip << " with ID=");
-                                      DEBUGMSG(PData.ID[ip] << " at ");
-                                      DEBUGMSG(PData.R[ip] << " might be outside of global domain ");
-                                      DEBUGMSG(RLayout.getDomain() << endl);
-                                      DEBUGMSG("Attempting to nudge it to the right to see if it ");
-                                      DEBUGMSG("is in a crack, along dim = " << nudged << endl);
-                                      DEBUGMSG("Previously checked  pos = " << pLoc << endl);
-                                      T oldval = PData.R[ip][nudged];
-                                      pLoc[nudged] = PRegion<T>(oldval, oldval + pNudge[nudged]);
-                                      nudged++;
-                                      DEBUGMSG("Will check with new pos = " << pLoc << endl);
-                                    }
-                                    */
-
                                 }
                                 else
                                 {
@@ -980,25 +961,6 @@ protected:
                                     ERRORMSG("This occurred when searching for point " << pLoc);
                                     ERRORMSG(" in RegionLayout = " << RLayout << endl);
                                     Ippl::abort();
-
-                                    // JCC:
-                                    /*
-                                    }
-                                            else {
-                                      DEBUGMSG("Local particle " << ip << " with ID=");
-                                      DEBUGMSG(PData.ID[ip] << " at ");
-                                      DEBUGMSG(PData.R[ip] << " might be outside of global domain ");
-                                      DEBUGMSG(RLayout.getDomain() << endl);
-                                      DEBUGMSG("Attempting to nudge it to the right to see if it ");
-                                      DEBUGMSG("is in a crack, along dim = " << nudged << endl);
-                                      DEBUGMSG("Previously checked  pos = " << pLoc << endl);
-                                      T oldval = PData.R[ip][nudged];
-                                      pLoc[nudged] = PRegion<T>(oldval, oldval + pNudge[nudged]);
-                                      nudged++;
-                                      DEBUGMSG("Will check with new pos = " << pLoc << endl);
-                                    }
-                                    */
-
                                 }
                                 else
                                 {

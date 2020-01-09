@@ -315,16 +315,8 @@ private:
 
   // Calculate the boundary region of the given mesh, and the number of
   // vertices
-#if defined(__MWERKS__)
-#if __MWERKS__ < 0x2300
-  const NDRegion<T,Dim> getMeshDomain(MeshType *);
-#else
-  NDRegion<T,Dim> getMeshDomain(MeshType *);
-#endif
-#else
   // Is this really a C++ error here, or just something mwerksCW4 doesn't grok?
   NDRegion<T,Dim> getMeshDomain(MeshType *);
-#endif // __MWERKS__
   NDIndex<Dim>    getMeshVertices(MeshType *);
 
   //

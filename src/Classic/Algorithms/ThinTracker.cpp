@@ -43,7 +43,6 @@
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/ParallelPlate.h"
-#include "AbsBeamline/CyclotronValley.h"
 
 #include "Algorithms/MapIntegrator.h"
 #include "Algorithms/PartBunchBase.h"
@@ -181,12 +180,6 @@ void ThinTracker::visitDegrader(const Degrader &deg) {
 void ThinTracker::visitParallelPlate(const ParallelPlate &pplate) {
     //do nothing
 }
-
-
-void ThinTracker::visitCyclotronValley(const CyclotronValley &cv) {
-    // Do nothing.
-}
-
 
 void ThinTracker::visitCorrector(const Corrector &corr) {
     // Drift through first half of length.

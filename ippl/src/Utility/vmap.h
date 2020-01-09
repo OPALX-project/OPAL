@@ -46,13 +46,6 @@ template<class Key>
 class dummy_less
 {
 public:
-#ifdef IPPL_PURIFY
-  // Add explicit default/copy constructors and op= to avoid UMR's.
-  dummy_less() {}
-  dummy_less(const dummy_less<Key> &) {}
-  dummy_less<Key>& operator=(const dummy_less<Key> &) { return *this; }
-#endif
-
   bool operator()(const Key l, const Key r) const
   {
     return l < r;
@@ -79,15 +72,6 @@ std::binary_function<value_type, value_type, bool>
     Compare comp;
   public:
     value_compare(const Compare &c) : comp(c) {}
-#ifdef IPPL_PURIFY
-    value_compare() {}
-    value_compare(const value_compare &model) : comp(model.comp) {}
-    value_compare& operator=(const value_compare &rhs)
-    {
-      comp = rhs.comp;
-      return *this;
-    }
-#endif
     bool operator()(const value_type& x, const value_type& y) const
     {
       return comp(x.first, y.first);

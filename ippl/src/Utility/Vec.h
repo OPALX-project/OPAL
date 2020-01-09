@@ -75,14 +75,6 @@ private:
 
 template<unsigned Length, int Flag>
 class DivideVecCopyTag {
-#ifdef IPPL_PURIFY
-  // Add explicit default/copy constructors and op= to avoid UMR's.
-public:
-  DivideVecCopyTag() {}
-  DivideVecCopyTag(const DivideVecCopyTag<Length,Flag> &) {}
-  DivideVecCopyTag<Length,Flag>&
-  operator=(const DivideVecCopyTag<Length,Flag> &) { return *this; }
-#endif
 };
 
 //

@@ -136,9 +136,6 @@ public:
     /// get total number of tracked bunches
     virtual int  getNumBunch() { return 0; }
 
-    /// set multipacting flag
-    //virtual void setMpacflg(bool /* mpacflg */) {};
-
     // standing wave structures
     FieldList cavities_m;
 

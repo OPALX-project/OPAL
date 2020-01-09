@@ -121,9 +121,6 @@ public:
     /// Apply the algorithm to a ParallelPlate.
     virtual void visitParallelPlate(const ParallelPlate &);
 
-    /// Apply the algorithm to a CyclotronValley.
-    virtual void visitCyclotronValley(const CyclotronValley &);
-
 protected:
 
     // Apply a drift length.

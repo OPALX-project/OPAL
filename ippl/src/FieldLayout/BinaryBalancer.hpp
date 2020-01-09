@@ -343,7 +343,6 @@ SendReduce(IndexIterator domainsBegin, IndexIterator domainsEnd,
               mess->setCopy(false).setDelete(true).put(p,p+(*dbp).length());
             }
           // Send the message to proc di.
-	  DEBUGMSG("Comm->Send to Node " << di << ", tag=" << tag << endl);
 	  Ippl::Comm->send(mess, di, tag);
         }
       // Clear out the buffers.
@@ -409,7 +408,6 @@ ReceiveReduce(NDIndex<Dim>& domain, BareField<double,Dim>& weights,
     if (found_touch[i]) expected++;
   delete [] found_touch;
 
-  DEBUGMSG("ReceiveReduce, msgs expected=" << expected << endl);
   // Receive messages until we're done.
   while ( --expected >= 0 )
     {
@@ -417,7 +415,6 @@ ReceiveReduce(NDIndex<Dim>& domain, BareField<double,Dim>& weights,
       int any_node = COMM_ANY_NODE;
       Message *mess = Ippl::Comm->receive_block(any_node,reduce_tag);
       PAssert(mess);
-      DEBUGMSG("ReceiveReduce: Comm->Receive from Node " << any_node << ", tag=" << reduce_tag << endl);
       // Loop over all the domains in this message.
       int received_domains = 0;
       mess->get(received_domains);
@@ -461,7 +458,6 @@ BcastCuts(int cutLoc, int cutAxis, int bcast_tag)
   // Make a message.
   Message *mess = new Message();
   // Add the data to it.
-  DEBUGMSG("Broadcast cutLoc=" << cutLoc << ", cutAxis=" << cutAxis << endl);
   mess->put(cutLoc);
   mess->put(cutAxis);
   // Send it out.
@@ -500,7 +496,6 @@ ReceiveCuts(std::vector< NDIndex<Dim> > &domains,
       int cutLocation = 0, cutAxis = 0;
       Message *mess = Ippl::Comm->receive_block(whichDomain,bcast_tag);
       PAssert(mess);
-      DEBUGMSG("ReceiveCuts: received bcast " << expected << endl);
       mess->get(cutLocation);
       mess->get(cutAxis);
       delete mess;
@@ -565,9 +560,7 @@ CutEach(std::vector< NDIndex<Dim> >& domains,
   /*out << "bcast_tag=" << bcast_tag << endl;*/
 
   // Do the sends for the reduces.
-  DEBUGMSG("Do SendReduce" << endl);
   SendReduce(domains.begin(),domains.end(),weights,reduce_tag);
-  DEBUGMSG("Did SendReduce" << endl);
 
   // On the appropriate processors, receive the data for the reduce,
   // and broadcast the cuts.
@@ -576,20 +569,14 @@ CutEach(std::vector< NDIndex<Dim> >& domains,
     {
       // Receive partially reduced data, finish the reduction, find the median.
       int cutAxis, cutLoc;
-      DEBUGMSG("Do ReceiveReduce" << endl);
       ReceiveReduce(domains[mynode],weights,reduce_tag,
 		    nprocs[mynode],cutLoc,cutAxis);
-      DEBUGMSG("Did ReceiveReduce" << endl);
       // Broadcast those cuts out to everybody.
-      DEBUGMSG("Do BcastCuts" << endl);
       BcastCuts(cutLoc,cutAxis,bcast_tag);
-      DEBUGMSG("Did BcastCuts" << endl);
     }
 
   // Receive the broadcast cuts and slice up the domains.
-  DEBUGMSG("Do ReceiveCuts" << endl);
   ReceiveCuts(domains,nprocs,bcast_tag);
-  DEBUGMSG("Did ReceiveCuts" << endl);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -622,9 +609,7 @@ CalcBinaryRepartition(FieldLayout<Dim>& layout, BareField<double,Dim>& weights)
   while ( mprocs>1 )
     {
       // Cut all the domains in half.
-      DEBUGMSG("Do Cut " << mprocs << endl);
       CutEach(domains,procs,weights);
-      DEBUGMSG("Did Cut " << mprocs << endl);
 
       // Find the max number of procs assigned to a domain.
       mprocs = 0;

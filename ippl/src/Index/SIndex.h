@@ -16,7 +16,6 @@
 #include "Index/SOffset.h"
 #include "Index/LSIndex.h"
 #include "FieldLayout/FieldLayoutUser.h"
-#include "Utility/RefCounted.h"
 #include "Utility/Inform.h"
 #include <memory>
 

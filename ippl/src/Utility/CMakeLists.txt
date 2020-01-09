@@ -4,67 +4,56 @@ set (_SRCS
     DiscMeta.cpp
     DiscParticleFunctions.cpp
     FieldDebugFunctions.cpp
-    ParticleDebugFunctions.cpp
     Inform.cpp
-    Pool.cpp
     IpplCounter.cpp
+    IpplInfo.cpp
+    IpplMemoryUsage.cpp
+    IpplMessageCounter.cpp
     IpplStats.cpp
     IpplTimings.cpp
-    IpplMessageCounter.cpp
-    IpplMemoryUsage.cpp
-    IpplInfo.cpp
+    PAssert.cpp
+    ParticleDebugFunctions.cpp
     RNGSimple.cpp
-    RNGXDiv.cpp
     RNGXCI.cpp
+    RNGXDiv.cpp
     RandomNumberGen.cpp
     StaticIpplInfo.cpp
     Timer.cpp
     Unique.cpp
     User.cpp
     UserList.cpp
-    PAssert.cpp
     )
 
 set (_HDRS
     DiscBuffer.h
     DiscConfig.h
-    DiscField.hpp
     DiscField.h
+    DiscField.hpp
     DiscMeta.h
-    DiscParticle.hpp
     DiscParticle.h
+    DiscParticle.hpp
     DiscType.h
-    FieldBlock.hpp
-    FieldBlock.h
-    FieldDebug.hpp
     FieldDebug.h
+    FieldDebug.hpp
     FieldDebugFunctions.h
-    FieldDebugPrint.hpp
     FieldDebugPrint.h
-    FieldPrint.hpp
+    FieldDebugPrint.hpp
     FieldPrint.h
-    FieldView.hpp
-    FieldView.h
+    FieldPrint.hpp
     Inform.h
     IplCounter.h
     IpplCounter.h
+    IpplException.h
     IpplInfo.h
     IpplMemoryUsage.h
     IpplMessageCounter.h
     IpplStats.h
     IpplTimings.h
-    my_auto_ptr.h
     NamedObj.h
-    ParticleDebug.hpp
-    ParticleDebug.h
-    ParticleDebugFunctions.h
     PAssert.h
-    Pooled.hpp
-    Pooled.h
-    Pool.h
-    RandomNumberGen.h
-    RefBlock.h
-    RefCounted.h
+    ParticleDebug.h
+    ParticleDebug.hpp
+    ParticleDebugFunctions.h
     RNGAssignDefs.h
     RNGBitReverse.h
     RNGLattice.h
@@ -72,6 +61,9 @@ set (_HDRS
     RNGSimple.h
     RNGXCI.h
     RNGXDiv.h
+    RandomNumberGen.h
+    RefBlock.h
+    RefCounted.h
     SequenceGen.h
     StaticIpplInfo.h
     Timer.h
@@ -79,8 +71,9 @@ set (_HDRS
     User.h
     UserList.h
     Vec.h
-    vmap.hpp
+    my_auto_ptr.h
     vmap.h
+    vmap.hpp
     )
 
 include_directories (

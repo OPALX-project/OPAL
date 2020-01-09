@@ -81,52 +81,22 @@ struct ApplyToComponentType< AntiSymTenzor<T,D> >
 
 class scalar_tag
 {
-#ifdef IPPL_PURIFY
-public:
-  scalar_tag() {}
-  scalar_tag(const scalar_tag &) {}
-  scalar_tag& operator=(const scalar_tag &) { return *this; }
-#endif
 };
 
 class vektor_tag
 {
-#ifdef IPPL_PURIFY
-public:
-  vektor_tag() {}
-  vektor_tag(const vektor_tag &) {}
-  vektor_tag& operator=(const vektor_tag &) { return *this; }
-#endif
 };
 
 class tenzor_tag
 {
-#ifdef IPPL_PURIFY
-public:
-  tenzor_tag() {}
-  tenzor_tag(const tenzor_tag &) {}
-  tenzor_tag& operator=(const tenzor_tag &) { return *this; }
-#endif
 };
 
 class symtenzor_tag
 {
-#ifdef IPPL_PURIFY
-public:
-  symtenzor_tag() {}
-  symtenzor_tag(const symtenzor_tag &) {}
-  symtenzor_tag& operator=(const symtenzor_tag &) { return *this; }
-#endif
 };
 
 class antisymtenzor_tag
 {
-#ifdef IPPL_PURIFY
-public:
-  antisymtenzor_tag() {}
-  antisymtenzor_tag(const antisymtenzor_tag &) {}
-  antisymtenzor_tag& operator=(const antisymtenzor_tag &) { return *this; }
-#endif
 };
 
 // Implement tag types for intrinsic types:

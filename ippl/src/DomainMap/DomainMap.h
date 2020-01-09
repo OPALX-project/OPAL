@@ -2,9 +2,6 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
  *
  ***************************************************************************/
 
@@ -63,7 +60,6 @@ It should gradually get expanded to include as many as make sense.
 ***********************************************************************/
 
 // include files
-#include "Utility/Pooled.h"
 #include "Utility/PAssert.h"
 
 #include <list>
@@ -94,9 +90,8 @@ public:
 
 private:
     // A class for the nodes of the tree.
-    // Subclass from Pooled so that new and delete are fast.
     // Not visible from outside of DomainMap
-    class Node : public Pooled<Node>
+    class Node
     {
     public: 
         typedef std::list<value_type> cont_type; // The type for the container
@@ -543,8 +538,3 @@ private:
 
 #endif // DOMAIN_MAP_H
 
-/***************************************************************************
- * $RCSfile: DomainMap.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:25 $
- * IPPL_VERSION_ID: $Id: DomainMap.h,v 1.1.1.1 2003/01/23 07:40:25 adelmann Exp $ 
- ***************************************************************************/

@@ -633,11 +633,6 @@ template<> struct PETE_Index2Type<255> {
 // Abs function: special return for complex numbers.
 
 struct FnAbs {
-#ifdef IPPL_PURIFY
-  FnAbs() {}
-  FnAbs(const FnAbs &) {}
-  FnAbs& operator=(const FnAbs &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
@@ -648,20 +643,10 @@ template<> struct PETEUnaryReturn<dcomplex, FnAbs> {
 // The conj, norm, arg, real, and imag functions for complex numbers.
 
 struct FnConj {
-#ifdef IPPL_PURIFY
-  FnConj() {}
-  FnConj(const FnConj &) {}
-  FnConj& operator=(const FnConj &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnNorm {
-#ifdef IPPL_PURIFY
-  FnNorm() {}
-  FnNorm(const FnNorm &) {}
-  FnNorm& operator=(const FnNorm &) { return *this; }
-#endif
   typedef double type;
   enum { tag = PETE_Type2Index<double>::val };
 };
@@ -671,11 +656,6 @@ template<> struct PETEUnaryReturn<dcomplex, FnNorm> {
 };
 
 struct FnArg {
-#ifdef IPPL_PURIFY
-  FnArg() {}
-  FnArg(const FnArg &) {}
-  FnArg& operator=(const FnArg &) { return *this; }
-#endif
   typedef double type;
   enum { tag = PETE_Type2Index<double>::val };
 };
@@ -685,11 +665,6 @@ template<> struct PETEUnaryReturn<dcomplex, FnArg> {
 };
 
 struct FnReal {
-#ifdef IPPL_PURIFY
-  FnReal() {}
-  FnReal(const FnReal &) {}
-  FnReal& operator=(const FnReal &) { return *this; }
-#endif
   typedef double type;
   enum { tag = PETE_Type2Index<double>::val };
 };
@@ -699,11 +674,6 @@ template<> struct PETEUnaryReturn<dcomplex, FnReal> {
 };
 
 struct FnImag {
-#ifdef IPPL_PURIFY
-  FnImag() {}
-  FnImag(const FnImag &) {}
-  FnImag& operator=(const FnImag &) { return *this; }
-#endif
   typedef double type;
   enum { tag = PETE_Type2Index<double>::val };
 };
@@ -715,11 +685,6 @@ template<> struct PETEUnaryReturn<dcomplex, FnImag> {
 // The sign function.
 
 struct FnSign {
-#ifdef IPPL_PURIFY
-  FnSign() {}
-  FnSign(const FnSign &) {}
-  FnSign& operator=(const FnSign &) { return *this; }
-#endif
   typedef int type;
   enum { tag = PETE_Type2Index<int>::val };
 };
@@ -736,38 +701,18 @@ struct OpParens
 // Tensor functions: trace, det (determinant),  and transpose
 
 struct FnTrace {
-#ifdef IPPL_PURIFY
-  FnTrace() {}
-  FnTrace(const FnTrace &) {}
-  FnTrace& operator=(const FnTrace &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnDet {
-#ifdef IPPL_PURIFY
-  FnDet() {}
-  FnDet(const FnDet &) {}
-  FnDet& operator=(const FnDet &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnTranspose {
-#ifdef IPPL_PURIFY
-  FnTranspose() {}
-  FnTranspose(const FnTranspose &) {}
-  FnTranspose& operator=(const FnTranspose &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
 struct FnCofactors {
-#ifdef IPPL_PURIFY
-  FnCofactors() {}
-  FnCofactors(const FnCofactors &) {}
-  FnCofactors& operator=(const FnCofactors &) { return *this; }
-#endif
   enum { tag = PETE_UnaryPassThruTag };
 };
 
@@ -901,60 +846,30 @@ _UNARY_TENSOR_RETURNS_(dcomplex,3U)
 // Min and Max functions.
 
 struct FnMin {
-#ifdef IPPL_PURIFY
-  FnMin() {}
-  FnMin(const FnMin &) {}
-  FnMin& operator=(const FnMin &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct FnMax {
-#ifdef IPPL_PURIFY
-  FnMax() {}
-  FnMax(const FnMax &) {}
-  FnMax& operator=(const FnMax &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 // Dot, dot-dot, and outerProduct functions.
 
 struct FnDot {
-#ifdef IPPL_PURIFY
-  FnDot() {}
-  FnDot(const FnDot &) {}
-  FnDot& operator=(const FnDot &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct FnDotDot {
-#ifdef IPPL_PURIFY
-  FnDotDot() {}
-  FnDotDot(const FnDotDot &) {}
-  FnDotDot& operator=(const FnDotDot &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 struct FnOuterProduct {
-#ifdef IPPL_PURIFY
-  FnOuterProduct() {}
-  FnOuterProduct(const FnOuterProduct &) {}
-  FnOuterProduct& operator=(const FnOuterProduct &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
 // Cross-product:
 
 struct FnCross {
-#ifdef IPPL_PURIFY
-  FnCross() {}
-  FnCross(const FnCross &) {}
-  FnCross& operator=(const FnCross &) { return *this; }
-#endif
   enum { tag = PETE_BinaryPromoteTag };
 };
 
@@ -1733,38 +1648,18 @@ _ANTISYMTENZOR_RETURNS_(dcomplex,double,3U)
 ///////////////////////////////////////////////////////////////////////////
 
 struct OpMinAssign {
-#ifdef IPPL_PURIFY
-  OpMinAssign() {}
-  OpMinAssign(const OpMinAssign &) {}
-  OpMinAssign& operator=(const OpMinAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpMaxAssign {
-#ifdef IPPL_PURIFY
-  OpMaxAssign() {}
-  OpMaxAssign(const OpMaxAssign &) {}
-  OpMaxAssign& operator=(const OpMaxAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpAndAssign {
-#ifdef IPPL_PURIFY
-  OpAndAssign() {}
-  OpAndAssign(const OpAndAssign &) {}
-  OpAndAssign& operator=(const OpAndAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 
 struct OpOrAssign {
-#ifdef IPPL_PURIFY
-  OpOrAssign() {}
-  OpOrAssign(const OpOrAssign &) {}
-  OpOrAssign& operator=(const OpOrAssign &) { return *this; }
-#endif
   enum { tag = PETE_BinaryUseLeftTag };
 };
 

@@ -2,9 +2,6 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
  *
  ***************************************************************************/
 
@@ -12,7 +9,6 @@
 #define LFIELD_H
 
 // include files
-#include "Utility/Pooled.h"
 #include "Field/CompressedBrickIterator.h"
 
 #include <iostream>
@@ -48,7 +44,7 @@ struct ToTheDim<1>
 
 // This stores the local data for a Field.
 template<class T, unsigned Dim>
-class LField : public Pooled< LField<T,Dim> >
+class LField
 {
 
 public: 
@@ -298,9 +294,3 @@ std::ostream& operator<<(std::ostream& out, const LField<T,Dim>& a)
 #include "Field/LField.hpp"
 
 #endif // LFIELD_H
-
-/***************************************************************************
- * $RCSfile: LField.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:26 $
- * IPPL_VERSION_ID: $Id: LField.h,v 1.1.1.1 2003/01/23 07:40:26 adelmann Exp $ 
- ***************************************************************************/

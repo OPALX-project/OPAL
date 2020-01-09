@@ -59,7 +59,6 @@
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/Source.h"
 #include "AbsBeamline/ParallelPlate.h"
-#include "AbsBeamline/CyclotronValley.h"
 #include "AbsBeamline/Stripper.h"
 
 #include "Algorithms/MapIntegrator.h"
@@ -266,12 +265,8 @@ void DefaultVisitor::visitParallelPlate(const ParallelPlate &pplate) {
     applyDefault(pplate);
 }
 
-void DefaultVisitor::visitCyclotronValley(const CyclotronValley &cv) {
-    applyDefault(cv);
-}
-
-void DefaultVisitor::visitStripper(const Stripper &cv) {
-    applyDefault(cv);
+void DefaultVisitor::visitStripper(const Stripper &stripper) {
+    applyDefault(stripper);
 }
 
 void DefaultVisitor::visitBeamline(const Beamline &bl) {

@@ -11,15 +11,6 @@
 #ifndef DISC_FIELD_H
 #define DISC_FIELD_H
 
-// debugging macros
-#ifdef IPPL_PRINTDEBUG
-#define DFDBG(x) x
-#define CDFDBG(x) x
-#else
-#define DFDBG(x)
-#define CDFDBG(x)
-#endif
-
 // include files
 #include "Index/NDIndex.h"
 #include "Field/BrickExpression.h"
@@ -194,12 +185,6 @@ public:
       IpplTimings::getTimer("DiscField read");
     IpplTimings::startTimer(readtimer);
 
-    DFDBG(std::string dbgmsgname("DF:read:"));
-    DFDBG(dbgmsgname += Config->getConfigFile());
-    DFDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-    DFDBG(dbgmsg << "At start of read: Field layout=" << f.getLayout()<<endl);
-    DFDBG(dbgmsg << "At start of read: Read domain =" << readDomain << endl);
-
     // Get a new tag value for this read operation, used for all sends
     // to other nodes with data.
     int tag = Ippl::Comm->next_tag(DF_READ_TAG, DF_TAG_CYCLE);
@@ -219,8 +204,6 @@ public:
     //       - copy it into the relevant vnode
     //       - decrement your expected value.
     // When expected hits zero, we're done with reading on that node.
-
-    DFDBG(dbgmsg << "Reading data from " << numFiles()<<" filesets:"<<endl);
 
     for (unsigned int sf=0; sf < numFiles(); ++sf) {
 
@@ -256,11 +239,6 @@ public:
       // preparing the buffer that will be used to read those vnodes.
       distribute_offsets(offdata, vnodes, maxsize, readDomain);
 
-      DFDBG(dbgmsg << "After reading and distributing offset data: ");
-      DFDBG(dbgmsg << "Node " << Ippl::myNode() << " will read ");
-      DFDBG(dbgmsg << vnodes << " vnodes, with maxsize = " << maxsize);
-      DFDBG(dbgmsg << endl);
-
       // Loop through all the vnodes now; they will appear in any
       // order, which is fine, we just read them and and see where they
       // go.  The info in the offset struct includes the domain for that
@@ -274,10 +252,6 @@ public:
 	// If there is no intersection of this vnode and the read-domain,
 	// we can just skip it entirely.
 	if (! vnodeblock.touches(readDomain)) {
-	  DFDBG(dbgmsg << "Skipping vnode " << vn << ", no intersection ");
-	  DFDBG(dbgmsg << "between " << vnodeblock << " and ");
-	  DFDBG(dbgmsg << readDomain << endl);
-
 	  continue;
 	}
 
@@ -289,11 +263,6 @@ public:
 	NDIndex<Dim> chunkblock = chunk_domain(vnodeblock, chunkelems, msdim,
 					       offdata[vn].isCompressed);
  
-	DFDBG(dbgmsg << "Reading in chunks in blocks of size " << chunkblock);
-	DFDBG(dbgmsg << " and max buffer elems = " << maxsize);
-	DFDBG(dbgmsg << " in vnode " << vn << " with total domain ");
-	DFDBG(dbgmsg << vnodeblock << endl);
-
 	// Initialize the NDIndex we'll use to indicate what portion of the
 	// domain we're reading and processing.
 	NDIndex<Dim> currblock = vnodeblock;
@@ -348,30 +317,17 @@ public:
 	  int nelems = currblock.size();
 	  unread -= nelems;
 
-	  DFDBG(dbgmsg << "Starting processing of chunk with domain ");
-	  DFDBG(dbgmsg << currblock << " in vnode " << vn);
-	  DFDBG(dbgmsg << " at offset = " << offdata[vn].offset << endl);
-	  DFDBG(dbgmsg << "After this, still have " << unread << " unread.");
-	  DFDBG(dbgmsg << endl);
-
 	  // Set the seek position now, if necessary
 	  if (!offdata[vn].isCompressed && seekpos < 0) {
 	    seekpos = offdata[vn].offset * sizeof(T);
-	    DFDBG(dbgmsg << "Set seek position = " << seekpos << endl);
 	  }
 
 	  // At this point, we might be able to skip a lot of work if this
 	  // particular chunk does not intersect with our read domain any.
 	  if (! currblock.touches(readDomain)) {
-	    DFDBG(dbgmsg << "Skipping sub-vnode chunk " << currblock);
-	    DFDBG(dbgmsg << ", no intersection with readDomain ");
-	    DFDBG(dbgmsg << readDomain << endl);
-
 	    // Before we skip the rest, we must update the offset
 	    Offset_t readbytes  = nelems * sizeof(T);
 	    seekpos += readbytes;
-	    DFDBG(dbgmsg << "Updating offset at end of skip operation to ");
-	    DFDBG(dbgmsg << seekpos << endl);
 
 	    // Then, we're done with this chunk, move on to the next.
 	    continue;
@@ -379,9 +335,6 @@ public:
 
 	  // Put the intersecting domain in readDomainSection.
 	  NDIndex<Dim> readDomainSection = currblock.intersect(readDomain);
-	  DFDBG(dbgmsg << "Intersection of chunk " << currblock);
-	  DFDBG(dbgmsg << " and read domain " << readDomain << " = ");
-	  DFDBG(dbgmsg << readDomainSection << endl);
 
 	  // if it is not compressed, read in the data.  If it is,
 	  // just keep the buffer pointer at zero.
@@ -389,8 +342,6 @@ public:
 	  if (!offdata[vn].isCompressed) {
 	    // If we have not yet done so, open the data file.
 	    if (outputDatafd < 0) {
-	      DFDBG(dbgmsg << "Opening input data file ...");
-	      DFDBG(dbgmsg << endl);
 	      outputDatafd = open_df_file_fd(Config->getFilename(sf), ".data",
 					     O_RDONLY);
 	    }
@@ -403,18 +354,7 @@ public:
 	    // this a little bigger to match the device block size.
 
 	    long nbytes = maxsize*sizeof(T);
-#ifdef IPPL_DIRECTIO
-	    if (openedDirectIO) {
-	      nbytes += dioinfo.d_miniosz; // extra in case offset is wrong
-	      size_t ndiff  = nbytes % dioinfo.d_miniosz;
-	      if (ndiff > 0)
-		nbytes += (dioinfo.d_miniosz - ndiff);
-	    }
-#endif
 	    buffer = static_cast<T *>(DiscBuffer::resize(nbytes));
-	    DFDBG(dbgmsg << "On box0: resized buf to " << DiscBuffer::size());
-	    DFDBG(dbgmsg << " bytes ... current block will need ");
-	    DFDBG(dbgmsg << nelems * sizeof(T) << " bytes." << endl);
 
 	    // Create some initial values for what and where to read.
 	    // We might adjust these if we're doing direct-io.
@@ -426,59 +366,13 @@ public:
 	    // seekpos now.  Add in the extra amount we'll be reading.
 	    seekpos += readbytes;
 
-#ifdef IPPL_DIRECTIO
-	    // If we're doing direct-io, we will need to adjust the start
-	    // and end of our buffers and offsets ...
-	    if (openedDirectIO) {
-	      // Find out how much our offset is off from multipple of
-	      // block size, and move it back by the difference.  Then we
-	      // will read in extra data and our storage will be offset to
-	      // start at the place where the new data is actually located.
-
-	      PAssert_GE(readoffset, 0);
-	      Offset_t extra = readoffset % dioinfo.d_miniosz;
-	      readoffset -= extra;
-	      DFDBG(dbgmsg << "DIO: Moving read offset back by " << extra);
-	      DFDBG(dbgmsg << " bytes, to readoffset = " << readoffset<<endl);
-
-	      // Compute the number of elements to read.  We might also need
-	      // to extend the read size to get the total read size to be a
-	      // multipple of the device block size.
-
-	      readbytes += extra;
-	      size_t ndiff = readbytes % dioinfo.d_miniosz;
-	      if (ndiff > 0)
-		readbytes += (dioinfo.d_miniosz - ndiff);
-	      PAssert_GE(nbytes, readbytes);
-	      DFDBG(dbgmsg << "DIO: Adjusted readbytes from ");
-	      DFDBG(dbgmsg << (nelems * sizeof(T)) << " to " << readbytes);
-	      DFDBG(dbgmsg << endl);
-
-	      // Point the buffer at the real first element, adjusted to
-	      // counteract our moving the offset location back to a
-	      // block-size multipple.
-	      PAssert_EQ(extra % sizeof(T), 0);
-	      buffer += (extra / sizeof(T));
-	      DFDBG(dbgmsg << "DIO: Adjusted buffer pointer forward ");
-	      DFDBG(dbgmsg << (extra / sizeof(T)) << " elements." << endl);
-	    }
-#endif
-
 	    // Read data in a way that might do direct-io
-	    DFDBG(dbgmsg << "Calling read_data with readbytes=" << readbytes);
-	    DFDBG(dbgmsg << ", readoffset=" << readoffset << endl);
 	    read_data(outputDatafd, readbuffer, readbytes, readoffset);
 	  }
 
 	  // we have the data block now; find out where the data should
 	  // go, and either send the destination node a message, or copy
 	  // the data into the destination lfield.
-
-	  DFDBG(dbgmsg << "Finding destination nodes for block with ");
-	  DFDBG(dbgmsg << "domain = " << currblock << ", compressed = ");
-	  DFDBG(dbgmsg << offdata[vn].isCompressed << " ..." << endl);
-	  DFDBG(dbgmsg << "We will use the portion " << readDomainSection);
-	  DFDBG(dbgmsg << " from this block." << endl);
 
 	  // Set up to loop over the touching remote vnodes, and send out
 	  // messages
@@ -496,9 +390,7 @@ public:
 	    // Compute the intersection of our domain and the remote vnode
 	    //	    NDIndex<Dim> ri = currblock.intersect((*rv_i).first);
 	    NDIndex<Dim> ri = readDomainSection.intersect((*rv_i).first);
-	    DFDBG(dbgmsg << "Block intersects with remote domain ");
-	    DFDBG(dbgmsg << (*rv_i).first << " = " << ri << endl);
-
+	    
 	    // Find out who will be sending this data
 	    int rnode = (*rv_i).second->getNode();
 
@@ -509,14 +401,10 @@ public:
 	    LFI cbi(buffer, ri, currblock, offdata[vn].compressedVal);
 	    cbi.TryCompress();
 	    cbi.putMessage(*msg, false);  // 'false' = avoid copy if possible
-	    DFDBG(dbgmsg << "Sending subblock " << ri << " from block ");
-	    DFDBG(dbgmsg << currblock << " to node " << rnode);
-	    DFDBG(dbgmsg << " with tag " << tag << endl);
 	    Ippl::Comm->send(msg, rnode, tag);
 
 	    // Decrement the remaining count
 	    remaining -= ri.size();
-	    DFDBG(dbgmsg << "After send, remaining = " << remaining << endl);
 	  }
 
 	  // loop over touching local vnodes, and copy in data, if there
@@ -535,14 +423,10 @@ public:
 	      // Find the intersection.
 	      NDIndex<Dim> ri = lo.intersect(ro);
 
-	      DFDBG(dbgmsg << "Doing local copy of domain " << ri);
-	      DFDBG(dbgmsg << " into LField with domain " << lo << endl);
-	      
 	      // If these are compressed we might not have to do any work.
 	      if (lf.IsCompressed() &&
 		  offdata[vn].isCompressed &&
 		  ro.contains(lo)) {
-		DFDBG(dbgmsg << "  Doing comp-comp assign." << endl);
 		PETE_apply(OpAssign(),*lf.begin(),offdata[vn].compressedVal);
 	      } else {
 		// Build an iterator for the read-data block
@@ -553,7 +437,6 @@ public:
 		if (rhs_i.CanCompress(*rhs_i) && f.compressible() &&
 		    ri.contains(lf.getAllocated())) {
 		  // Compress the whole LField to the value on the right
-		  DFDBG(dbgmsg << "  Doing lfield-comp assign." << endl);
 		  lf.Compress(*rhs_i);
 		} else { // Assigning only part of LField on the left
 		  // Must uncompress lhs, if not already uncompressed
@@ -563,7 +446,6 @@ public:
 		  LFI lhs_i = lf.begin(ri);
 
 		  // And do the assignment.
-		  DFDBG(dbgmsg << "  Doing uncomp-uncomp assign." << endl);
 		  Expr_t(lhs_i,rhs_i).apply();
 		}
 	      }
@@ -575,10 +457,6 @@ public:
 	      int bsize = ri.size();
 	      remaining -= bsize;
 	      expected -= bsize;
-
-	      DFDBG(dbgmsg << "Finished copying in local data, now ");
-	      DFDBG(dbgmsg << "expecting " << expected << " elems with ");
-	      DFDBG(dbgmsg << remaining << " elems remaining." << endl);
 	    }
 	  }
 
@@ -599,15 +477,11 @@ public:
     while (expected > 0) {
       // Receive the next message from any node with the current read tag
       int node = COMM_ANY_TAG;
-      DFDBG(dbgmsg << "Waiting for DF data, still expecting " << expected);
-      DFDBG(dbgmsg << " elements ..." << endl);
       Message *msg = Ippl::Comm->receive_block(node, tag);
 
       // Extract the domain from the message
       NDIndex<Dim> ro;
       ro.getMessage(*msg);
-      DFDBG(dbgmsg << "Received DF data from node " << node << " with tag ");
-      DFDBG(dbgmsg << tag << ", with domain = " << ro << endl);
 
       // Extract the data from the message
       T rhs_compressed_data;
@@ -625,8 +499,6 @@ public:
 	// See if it contains the domain of the recently received block.
 	// If so, assign the block to this LField
 	if (lo.contains(ro)) {
-	  DFDBG(dbgmsg << "Found local lfield with domain " << lo);
-	  DFDBG(dbgmsg << " that contains received domain " << ro << endl);
 
 	  // Check and see if we really have to do this.
 	  if ( !(rhs_i.IsCompressed() && lf.IsCompressed() &&
@@ -638,19 +510,12 @@ public:
 	    // if the received block size is smaller than the LField's.
 	    lf.Uncompress(!ro.contains(lo));
 
-	    DFDBG(dbgmsg << "Assigning value: lhs compressed = ");
-	    DFDBG(dbgmsg << lf.IsCompressed() << ", rhs compressed = ");
-	    DFDBG(dbgmsg << rhs_i.IsCompressed() << endl);
-
 	    // Make an iterator over the received block's portion of the
 	    // LField
 	    LFI lhs_i = lf.begin(ro);
 
 	    // Do the assignment.
 	    Expr_t(lhs_i,rhs_i).apply();
-	  } else {
-	    DFDBG(dbgmsg << "Local LField is compressed and has same value ");
-	    DFDBG(dbgmsg << "as received data." << endl);
 	  }
 
 	  // Update our expected value
@@ -681,7 +546,6 @@ public:
     // This is just like an assign, so set dirty flags, fill guard cells,
     // and try to compress the result.
 
-    DFDBG(dbgmsg << "Finished with read.  Updating field GC's." << endl);
     f.setDirtyFlag();
     f.fillGuardCellsIfNotDirty();
     f.Compress();
@@ -776,11 +640,6 @@ public:
       return false;
     }
 
-    DFDBG(std::string dbgmsgname("DF:write:"));
-    DFDBG(dbgmsgname += Config->getConfigFile());
-    DFDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-    DFDBG(dbgmsg << "At start of write: Field layout=" << f.getLayout()<<endl);
-
     //    INCIPPLSTAT(incDiscWrites);
 
     // useful typedefs for later
@@ -828,7 +687,6 @@ public:
       if ((unsigned int) Ippl::myNode() == myBox0()) {
 	// Update the meta information ... this can be changed to be only
 	// written out during destruction.
-	DFDBG(dbgmsg << "Writing meta file ..." << endl);
 	if (!write_meta()) {
 	  ERRORMSG("Could not write .meta file on node " << Ippl::myNode());
 	  ERRORMSG(endl);
@@ -838,7 +696,6 @@ public:
 
 	// write out the NDIndex objects from the FieldLayout to the
 	// .layout file
-	DFDBG(dbgmsg << "Writing layout file ..." << endl);
 	if (!write_layout()) {
 	  ERRORMSG("Could not update .layout file on node "<<Ippl::myNode());
 	  ERRORMSG(endl);
@@ -860,8 +717,6 @@ public:
       FILE *outputOffset = open_df_file(Config->getFilename(0),
 					".offset", std::string("a"));
       int wVarID = (int)varID;
-      DFDBG(dbgmsg << "Writing Field ID = " << wVarID<<" to offset file ...");
-      DFDBG(dbgmsg << endl);
       if (fwrite(&wVarID, sizeof(int), 1, outputOffset) != 1) {
 	ERRORMSG("DiscField::write - cannot write field number to .offset ");
 	ERRORMSG("file" << endl);
@@ -872,17 +727,11 @@ public:
 
       // Initialize output file handle ... we might never write anything to
       // it if the field is completely compressed.
-      DFDBG(dbgmsg << "Trying to open output data file ..." << endl);
       int outputDatafd = open_df_file_fd(Config->getFilename(0), ".data",
 					 O_RDWR|O_CREAT);
-      DFDBG(dbgmsg << "Opened out file, fd=" << outputDatafd << endl);
-
       // Later we will receive message from other nodes.  This is the
       // number of blocks we should receive.  We'll decrease this by
       // the number of vnodes we already have on this processor, however.
-      DFDBG(dbgmsg << "This box0 expected to receive " << globalID.size());
-      DFDBG(dbgmsg << " blocks from other nodes, minus the ");
-      DFDBG(dbgmsg << layout.size_iv() << " local blocks." << endl);
       int unreceived = globalID.size();
       int fromothers = unreceived - layout.size_iv();
 
@@ -906,9 +755,6 @@ public:
 	    // Extract the domain from the message
 	    NDIndex<Dim> ro;
 	    ro.getMessage(*msg);
-	    DFDBG(dbgmsg << "Received an LField msg from node ");
-	    DFDBG(dbgmsg << any_node << " with tag " << tag << ", domain = ");
-	    DFDBG(dbgmsg << ro << endl);
 	    
 	    // Extract the data from the message
 	    T rhs_compressed_data;
@@ -970,8 +816,6 @@ public:
 
 	// Send this message to the box0 node.
 	int node = myBox0();
-	DFDBG(dbgmsg << "Sending local block " << ro << " to node " << node);
-	DFDBG(dbgmsg << " with tag " << tag << endl);
 	Ippl::Comm->send(msg, node, tag);
       }
     }
@@ -1071,12 +915,6 @@ private:
   // can change from record to record).
   // key: local NDIndex, value: node
   GlobalIDList_t globalID;
-
-  // Direct-IO info, required if we are using the DIRECTIO option
-#ifdef IPPL_DIRECTIO
-  struct dioattr dioinfo;
-  bool openedDirectIO;
-#endif
 
   //
   // functions used to build/query information about the processors, etc.
@@ -1205,9 +1043,6 @@ private:
 			     CompressedBrickIterator<T,Dim> &cbi,
 			     const NDIndex<Dim> &owned) {
 
-    DFDBG(std::string dbgmsgname("DF:write_offset_and_data"));
-    DFDBG(Inform dbgmsg(dbgmsgname.c_str(), INFORM_ALL_NODES));
-
     // Create an offset output file struct, and initialize what we can.
     // We must take care to first zero out the offset struct.
     DFOffsetData<Dim,T> offset;
@@ -1222,9 +1057,6 @@ private:
       // For compressed data, we just need to write out the entry to the
       // offset file ... that will contain the single compressed value.
       offset.compressedVal = *cbi;
-      DFDBG(dbgmsg << "   Writing compressed vnode " << owned <<" w/value = ");
-      DFDBG(dbgmsg << offset.compressedVal << endl);
-
     } else {
       // This is not compressed, so we must write to the data file.  The
       // main question now is whether we can use existing buffers, or write
@@ -1237,27 +1069,9 @@ private:
 
       long elems = owned.size();
       long chunkbytes = Ippl::chunkSize();
-#ifdef IPPL_DIRECTIO
-      if (openedDirectIO) {
-	// For direct-io, make sure we write out blocks with size that is
-	// a multipple of the minimum io size
-	PAssert_EQ(dioinfo.d_miniosz % sizeof(T), 0);
-	if (chunkbytes == 0 || chunkbytes > dioinfo.d_maxiosz)
-	  chunkbytes = dioinfo.d_maxiosz;
-	else if (chunkbytes < dioinfo.d_miniosz)
-	  chunkbytes = dioinfo.d_miniosz;
-	else if (chunkbytes % dioinfo.d_miniosz > 0)
-	  chunkbytes -= (chunkbytes % dioinfo.d_miniosz);
-      }
-#endif
       long chunksize = chunkbytes / sizeof(T);
       if (chunksize < 1 || chunksize > elems)
 	chunksize = elems;
-
-      DFDBG(dbgmsg << "Total elems = " << elems << endl);
-      DFDBG(dbgmsg << "Bytes in each chunk = " << chunkbytes);
-      DFDBG(dbgmsg << " (orig chunkbytes = " << Ippl::chunkSize()<<")"<<endl);
-      DFDBG(dbgmsg << "Elems in each chunk = " << chunksize << endl);
 
       // If cbi is iterating over its whole domain, we can just use the block
       // there as-is to write out data.  So if cbiptr is set to an non-zero
@@ -1269,11 +1083,6 @@ private:
 	cbiptr = &(*cbi);
 
       // Loop through the data, writing out chunks.
-
-      DFDBG(dbgmsg << "  Writing vnode " << owned << " in ");
-      DFDBG(dbgmsg << "chunks of " << chunksize << " elements for ");
-      DFDBG(dbgmsg << elems << " total elements ..." << endl);
-
       int needwrite = elems;
       while (needwrite > 0) {
 	// Find out how many elements we'll write this time.
@@ -1286,16 +1095,6 @@ private:
 	// where data must be written out in blocks with sizes that
 	// match the device block size.
 	size_t nbytes = amount*sizeof(T);
-#ifdef IPPL_DIRECTIO
-	if (openedDirectIO) {
-	  size_t ndiff = nbytes % dioinfo.d_miniosz;
-	  if (ndiff > 0)
-	    nbytes += (dioinfo.d_miniosz - ndiff);
-	}
-#endif
-	DFDBG(dbgmsg << "    Will write total nbytes = " << nbytes);
-	DFDBG(dbgmsg << ", this has extra " << (nbytes - amount*sizeof(T)));
-	DFDBG(dbgmsg << " bytes." << endl);
 
 	// Get a pointer to the next data, or copy more data into a buffer
 	// Initially start with the vnode pointer
@@ -1303,12 +1102,9 @@ private:
 
 	// If necessary, make a copy of the data
 	if (buffer == 0) {
-	  DFDBG(dbgmsg << "    Getting copy buffer of total size ");
-	  DFDBG(dbgmsg << nbytes << " bytes ..." << endl);
 	  buffer = static_cast<T *>(DiscBuffer::resize(nbytes));
 
 	  // Copy data into this buffer from the iterator.
-	  DFDBG(dbgmsg << "    Copying data into buffer ..." << endl);
 	  T *bufptr = buffer;
 	  T *bufend = buffer + amount;
 	  for ( ; bufptr != bufend; ++bufptr, ++cbi)
@@ -1316,18 +1112,12 @@ private:
 	}
 
 	// Write the data now
-	DFDBG(dbgmsg << "    About to write " << nbytes << " to fd = ");
-	DFDBG(dbgmsg << outputDatafd << endl);
-
 	off_t seekoffset = CurrentOffset * sizeof(T);
 	bool seekok = true;
 	Timer wtimer;
 	wtimer.clear();
 	wtimer.start();
 
-#ifdef IPPL_DIRECTIO
-	size_t nout = ::pwrite(outputDatafd, buffer, nbytes, seekoffset);
-#else
 	size_t nout = 0;
 	if (::lseek(outputDatafd, seekoffset, SEEK_SET) == seekoffset) {
           char *wbuf = (char *)buffer;
@@ -1335,7 +1125,6 @@ private:
 	} else {
           seekok = false;
         }
- #endif
 
 	wtimer.stop();
 	DiscBuffer::writetime += wtimer.clock_time();
@@ -1353,9 +1142,6 @@ private:
 	  Ippl::abort("Exiting due to DiscField error.");
 	}
 
-	DFDBG(dbgmsg << "    Finished writing " << nout << " bytes in ");
-	DFDBG(dbgmsg << wtimer.clock_time() << " seconds." << endl);
-
 	// Update pointers and counts
 	needwrite -= amount;
 	if (cbiptr != 0)
@@ -1364,17 +1150,10 @@ private:
 	// update the offset and stats
 
 	CurrentOffset += (nbytes / sizeof(T));
-	//	ADDIPPLSTAT(incDiscBytesWritten, nbytes);
-
-	DFDBG(dbgmsg << "    Finishing writing chunk, still " << needwrite);
-	DFDBG(dbgmsg << " elements to write out from this block." << endl);
       }
     }
 
     // write to offset file now
-    DFDBG(dbgmsg << "Writing offset data to file, iscompressed = ");
-    DFDBG(dbgmsg << offset.isCompressed);
-    DFDBG(dbgmsg << ", offset = " << offset.offset << endl);
     if (fwrite(&offset, sizeof(DFOffsetData<Dim,T>), 1, outputOffset) != 1) {
       ERRORMSG("Write error in DiscField::write_offset_and_data" << endl);
       Ippl::abort("Exiting due to DiscField error.");
@@ -1478,17 +1257,12 @@ private:
 			  int &vnodes, int &maxsize,
 			  const NDIndex<Dim> &readDomain) {
 
-    DFDBG(Inform dbgmsg("DiscField::distribute_offsets", INFORM_ALL_NODES));
-
     // Initialize the vnode and maxsize values.
     vnodes = 0;
     maxsize = 0;
 
     // If parallel reads are turned off, just box0 nodes will read
     if (!Ippl::perSMPParallelIO()) {
-      DFDBG(dbgmsg << "Per-SMP parallel IO is disabled, so only box0 nodes ");
-      DFDBG(dbgmsg << "will read data." << endl);
-
       if ((unsigned int) Ippl::myNode() == myBox0())
 	vnodes = offdata.size();
 
@@ -1500,9 +1274,6 @@ private:
       // Nodes that do not have their box0 process on the same SMP should
       // not receive anything
       if (Config->getNodeSMPIndex(myBox0()) != mySMP()) {
-	DFDBG(dbgmsg << "Node " << Ippl::myNode() << " has box0 = ");
-	DFDBG(dbgmsg << myBox0() << " on a different SMP.  Return from ");
-	DFDBG(dbgmsg << "distribute_offsets with zero vnodes." << endl);
 	return;
       }
 
@@ -1515,9 +1286,6 @@ private:
 	// Extra vnodes we might have to give to others
 	int extra = offdata.size() % pNodesPerSMP(myBox0());
 
-	DFDBG(dbgmsg << "Assigning " << pernode << " vnodes to each node, ");
-	DFDBG(dbgmsg << "with " << extra << " extra." << endl);
-
 	// The next vnode to assign; box0 will always get an extra one if
 	// necessary.
 	int nextvnode = pernode;
@@ -1525,8 +1293,6 @@ private:
 	  nextvnode += 1;
 	  extra -= 1;
 	}
-	DFDBG(dbgmsg << "This box0 node will get the first " << nextvnode);
-	DFDBG(dbgmsg << " vnodes." << endl);
 
 	// box0 nodes get the first 'nextvnode' vnodes.
 	vnodes = nextvnode;
@@ -1557,9 +1323,6 @@ private:
 	    }
 
 	    // Send this message to the other node
-	    DFDBG(dbgmsg << "Sending offset info for " << numvnodes);
-	    DFDBG(dbgmsg << " vnodes to node " << node << " with tag " << tag);
-	    DFDBG(dbgmsg << ", starting from box0 " << nextvnode << endl);
 	    Ippl::Comm->send(msg, node, tag);
 
 	    // Update what the next vnode info to send is
@@ -1574,13 +1337,10 @@ private:
       } else {
 	// On non-box0 nodes, receive offset info
 	int node = myBox0();
-	DFDBG(dbgmsg << "Waiting for offset data from node " << node << endl);
 	Message *msg = Ippl::Comm->receive_block(node, tag);
 
 	// Get the number of vnodes to store here
 	msg->get(vnodes);
-	DFDBG(dbgmsg << "Received offset info for " << vnodes << " vnodes ");
-	DFDBG(dbgmsg << "from node " << node << endl);
 
 	// If this is > 0, copy out vnode info
 	if (vnodes > 0) {
@@ -1598,7 +1358,6 @@ private:
 
     // Now, finally, on all nodes we scan the vnodes to find out the maximum
     // size of the buffer needed to read this data in.
-    DFDBG(dbgmsg << "Scanning offset data for maxsize value ..." << endl);
     for (int v=0; v < vnodes; ++v) {
       // Convert data to NDIndex
       NDIndex<Dim> dom;
@@ -1610,21 +1369,11 @@ private:
 	NDIndex<Dim> chunkblock = chunk_domain(dom, chunkelems, msdim,
 					       offdata[v].isCompressed);
 
-	DFDBG(dbgmsg << "Checking size of vnode " << v << " on node ");
-	DFDBG(dbgmsg << Ippl::myNode() << " with domain " << dom);
-	DFDBG(dbgmsg << ", compressed = " << offdata[v].isCompressed);
-	DFDBG(dbgmsg << ", chunkblock = " << chunkblock << endl);
-
 	// Now compare the size
 	int dsize = chunkblock.size();
 	if (dsize > maxsize) {
 	  maxsize = dsize;
-	  DFDBG(dbgmsg << "  New maxsize = " << maxsize << endl);
 	}
-      } else {
-	DFDBG(dbgmsg << "Skipping vnode " << v << " since it does not ");
-	DFDBG(dbgmsg << "intersect with readDomain = " << readDomain);
-	DFDBG(dbgmsg << "; keeping maxsize = " << maxsize << endl);
       }
     }
   }
@@ -1637,22 +1386,11 @@ private:
   bool read_data(int outputDatafd, T* buffer, Offset_t readsize,
 		 Offset_t seekpos) {
 
-    DFDBG(Inform dbgmsg("DiscField::read_data", INFORM_ALL_NODES));
-    DFDBG(dbgmsg << "readsize=" << readsize << ", seekpos=" << seekpos);
-    DFDBG(dbgmsg <<", sizeof(T)=" << sizeof(T) << endl);
-
     PAssert_GE(seekpos, 0);
     PAssert_GT(readsize, 0);
     PAssert(buffer);
     PAssert_GE(outputDatafd, 0);
     PAssert_EQ(readsize % sizeof(T), 0);
-
-#ifdef IPPL_DIRECTIO
-    if (openedDirectIO) {
-      PAssert_EQ(readsize % dioinfo.d_miniosz, 0);
-      PAssert_EQ(seekpos  % dioinfo.d_miniosz, 0);
-    }
-#endif
 
     // Now read the block of data
     off_t seekoffset = seekpos;
@@ -1663,9 +1401,6 @@ private:
     rtimer.clear();
     rtimer.start();
 
-#ifdef IPPL_DIRECTIO
-    size_t nout = ::pread(outputDatafd, buffer, nbytes, seekoffset);
-#else
     size_t nout = 0;
     if (::lseek(outputDatafd, seekoffset, SEEK_SET) == seekoffset) {
       char *rbuf = (char *)buffer;
@@ -1673,7 +1408,6 @@ private:
     } else {
       seekok = false;
     }
-#endif
 
     rtimer.stop();
     DiscBuffer::readtime += rtimer.clock_time();
@@ -1691,13 +1425,6 @@ private:
       Ippl::abort("Exiting due to DiscField error.");
     }
 
-    DFDBG(size_t nelem = readsize / sizeof(T));
-    DFDBG(dbgmsg << "Read in block of " << nelem << " elements in ");
-    DFDBG(dbgmsg << rtimer.clock_time() << " second:" << endl);
-    DFDBG(for (unsigned int i=0; i < nelem && i < 10; ++i))
-      DFDBG(  dbgmsg << "  buffer[" << i << "] = " << buffer[i] << endl);
-      
-    //    ADDIPPLSTAT(incDiscBytesRead, readsize);
     return true;
   }
 

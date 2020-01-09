@@ -40,7 +40,6 @@ class BeamStripping;
 class CCollimator;
 class Corrector;
 class Cyclotron;
-class CyclotronValley;
 class Degrader;
 class Diagnostic;
 class Drift;
@@ -250,9 +249,6 @@ public:
 
     /// Apply the algorithm to an ParallelPlate.
     virtual void visitParallelPlate(const ParallelPlate &) = 0;
-
-    /// Apply the algorithm to a CyclotronValley.
-    virtual void visitCyclotronValley(const CyclotronValley &) = 0;
 
     /// Apply the algorithm to a particle stripper.
     virtual void visitStripper(const Stripper &) = 0;

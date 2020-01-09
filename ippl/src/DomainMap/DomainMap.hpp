@@ -25,7 +25,6 @@
 
 // include files
 #include "Index/NDIndex.h"
-#include "Utility/RefCounted.h"
 #include "Field/LField.h"
 #include "FieldLayout/Vnode.h"
 
