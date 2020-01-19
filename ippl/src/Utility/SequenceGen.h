@@ -60,7 +60,7 @@ RNG_OPERATOR_WITH_SCALAR(GEN,int,OP,APP)			        \
 RNG_OPERATOR_WITH_SCALAR(GEN,long,OP,APP)			        \
 RNG_OPERATOR_WITH_SCALAR(GEN,float,OP,APP)			        \
 RNG_OPERATOR_WITH_SCALAR(GEN,double,OP,APP)			        \
-RNG_OPERATOR_WITH_SCALAR(GEN,dcomplex,OP,APP)
+RNG_OPERATOR_WITH_SCALAR(GEN,std::complex<double>,OP,APP)
 
 #define RNG_BASIC_MATH(GEN)                                             \
                                                                         \

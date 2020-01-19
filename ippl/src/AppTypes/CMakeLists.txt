@@ -4,7 +4,6 @@ set (_SRCS
 set (_HDRS
   AntiSymTenzor.h
   AppTypeTraits.h
-  dcomplex.h
   GenVektor.h
   SymTenzor.h
   Tenzor.h

@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
   double realDiff;
 
   // Various counters, constants, etc:
-  int d;
+  unsigned int d;
   double pi = acos(-1.0);
   double twopi = 2.0*pi;
   

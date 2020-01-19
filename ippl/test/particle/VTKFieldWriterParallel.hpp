@@ -88,7 +88,7 @@ void dumpVTKScalar( FieldType & f, const ParticleType & p,int iteration = 0, std
 	for (int z=lDom[2].first(); z<=lDom[2].last(); z++) {
 		for (int y=lDom[1].first(); y<=lDom[1].last(); y++) {
 			for (int x=lDom[0].first(); x<=lDom[0].last(); x++) {
-				dcomplex tmp = f[x][y][z].get();
+				std::complex<double> tmp = f[x][y][z].get();
 				vtkout << real(tmp) << std::endl;
 			}
 		}

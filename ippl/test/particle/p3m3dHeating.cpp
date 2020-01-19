@@ -50,7 +50,7 @@ typedef CenteredFieldLayout<Dim, Mesh_t, Center_t>                    FieldLayou
 typedef Field<double, Dim, Mesh_t, Center_t>                          Field_t;
 typedef Field<int, Dim, Mesh_t, Center_t>                             IField_t;
 typedef Field<Vector_t, Dim, Mesh_t, Center_t>                        VField_t;
-typedef Field<dcomplex, Dim, Mesh_t, Center_t>                        CxField_t;
+typedef Field<std::complex<double>, Dim, Mesh_t, Center_t>                        CxField_t;
 typedef FFT<CCTransform, Dim, double>                                 FFT_t;
 
 typedef IntCIC                                                        IntrplCIC_t;
@@ -85,11 +85,11 @@ struct SpecializedGreensFunction<3> {
                     elem[2]=Index(k,k);
                     r = real(sqrt(grn.localElement(elem)));
                     if(elem==elem0) {
-                        //grn.localElement(elem) = ke*dcomplex(2*alpha/sqrt(M_PI)) ;
+                        //grn.localElement(elem) = ke*std::complex<double>(2*alpha/sqrt(M_PI)) ;
                         grn.localElement(elem) = 0 ;
                     }
                     else
-                        grn.localElement(elem) = ke*dcomplex(erf(alpha*r)/(r+eps));
+                        grn.localElement(elem) = ke*std::complex<double>(erf(alpha*r)/(r+eps));
                 }
             }
         }

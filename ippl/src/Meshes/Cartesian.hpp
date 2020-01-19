@@ -54,7 +54,7 @@ template <unsigned Dim, class MFLOAT>
 Cartesian<Dim,MFLOAT>::
 Cartesian(const NDIndex<Dim>& ndi)
 {
-  int d,i;
+  unsigned int d,i;
   for (d=0; d<Dim; d++)
     gridSizes[d] = ndi[d].length(); // Number of vertices along this dimension.
   setup();                          // Setup chores, such as array allocations
@@ -134,7 +134,7 @@ Cartesian(const Index& I)
   gridSizes[0] = I.length();  // Number of vertices along this dimension.
   setup();                    // Setup chores, such as array allocations
   origin(0) = I.first();      // Default origin at I.first()
-  int i;
+  unsigned int i;
   // Default mesh spacing from stride()
   for (i=0; i < gridSizes[0]-1; i++) {
     (meshSpacing[0])[i] = I.stride();
@@ -206,7 +206,7 @@ Cartesian(const Index& I, const Index& J)
   setup();                    // Setup chores, such as array allocations
   origin(0) = I.first();      // Default origin at I.first(),J.first()
   origin(1) = J.first();
-  int i;
+  unsigned int i;
   // Default mesh spacing from stride()
   for (i=0; i < gridSizes[0]-1; i++) {
     (meshSpacing[0])[i] = I.stride();
@@ -290,7 +290,7 @@ Cartesian(const Index& I, const Index& J, const Index& K)
   origin(0) = I.first();    // Default origin at I.first(),J.first(),K.first()
   origin(1) = J.first();
   origin(2) = K.first();
-  int i;
+  unsigned int i;
   // Default mesh spacing from stride()
   for (i=0; i < gridSizes[0]-1; i++) {
     (meshSpacing[0])[i] = I.stride();
@@ -380,7 +380,7 @@ void
 Cartesian<Dim,MFLOAT>::
 initialize(const NDIndex<Dim>& ndi)
 {
-  int d,i;
+  unsigned int d,i;
   for (d=0; d<Dim; d++)
     gridSizes[d] = ndi[d].length(); // Number of vertices along this dimension.
   setup();                          // Setup chores, such as array allocations
@@ -464,7 +464,7 @@ initialize(const Index& I)
   gridSizes[0] = I.length();  // Number of vertices along this dimension.
   setup();                    // Setup chores, such as array allocations
   origin(0) = I.first();      // Default origin at I.first()
-  int i;
+  unsigned int i;
   // Default mesh spacing from stride()
   for (i=0; i < gridSizes[0]-1; i++) {
     (meshSpacing[0])[i] = I.stride();
@@ -540,7 +540,7 @@ initialize(const Index& I, const Index& J)
   setup();                    // Setup chores, such as array allocations
   origin(0) = I.first();      // Default origin at I.first(),J.first()
   origin(1) = J.first();
-  int i;
+  unsigned int i;
   // Default mesh spacing from stride()
   for (i=0; i < gridSizes[0]-1; i++) {
     (meshSpacing[0])[i] = I.stride();
@@ -786,7 +786,7 @@ void Cartesian<Dim,MFLOAT>::
 get_meshSpacing(unsigned d, MFLOAT* spacings) const
 {
   PAssert_LT(d, Dim);
-  for (int cell=0; cell < gridSizes[d]-1; cell++)
+  for (unsigned int cell=0; cell < gridSizes[d]-1; cell++)
     spacings[cell] = (*(meshSpacing[d].find(cell))).second;
   return;
 }
@@ -880,7 +880,7 @@ template<unsigned Dim, class MFLOAT>
 void Cartesian<Dim,MFLOAT>::
 storeSpacingFields(e_dim_tag* et, int vnodes)
 {
-  int d;
+  unsigned int d;
   int currentLocation[Dim];
   NDIndex<Dim> cells, verts;
   for (d=0; d<Dim; d++) {
@@ -935,14 +935,13 @@ storeSpacingFields(e_dim_tag* et, int vnodes)
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   // Temporaries used in loop over faces
   Vektor<MFLOAT,Dim> v0,v1; v0 = 0.0; v1 = 1.0; // Used for Reflective mesh BC
-  int face;
   typedef Vektor<MFLOAT,Dim> T;          // Used multipple places in loop below
   typename BareField<T,Dim>::iterator_if cfill_i; // Iterator used below
   typename BareField<T,Dim>::iterator_if vfill_i; // Iterator used below
   int coffset, voffset; // Pointer offsets used with LField::iterator below
   MeshBC_E bct;         // Scalar value of mesh BC used for each face in loop
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  for (face=0; face < 2*Dim; face++) {
+  for (unsigned int face=0; face < 2*Dim; face++) {
     // NDIndex's spanning elements and guard elements:
     NDIndex<Dim> cSlab = AddGuardCells(verts,cellSpacings.getGuardCellSizes());
     NDIndex<Dim> vSlab = AddGuardCells(cells,vertSpacings.getGuardCellSizes());
@@ -954,45 +953,45 @@ storeSpacingFields(e_dim_tag* et, int vnodes)
     // the numbering convention):
     if ( face & 1 ) {
       cSlab[d] = Index(verts[d].max() + 1,
-		       verts[d].max() + cellSpacings.rightGuard(d));
+                       verts[d].max() + cellSpacings.rightGuard(d));
       vSlab[d] = Index(cells[d].max() + 1,
-		       cells[d].max() + vertSpacings.rightGuard(d));
+                       cells[d].max() + vertSpacings.rightGuard(d));
     } else {
       cSlab[d] = Index(verts[d].min() - cellSpacings.leftGuard(d),
-		       verts[d].min() - 1);
+                       verts[d].min() - 1);
       vSlab[d] = Index(cells[d].min() - vertSpacings.leftGuard(d),
-		       cells[d].min() - 1);
+                       cells[d].min() - 1);
     }
     // Compute pointer offsets used with LField::iterator below:
     switch (MeshBC[face]) {
     case Periodic:
       bct = Periodic;
       if ( face & 1 ) {
-	coffset = -verts[d].length();
-	voffset = -cells[d].length();
+        coffset = -verts[d].length();
+        voffset = -cells[d].length();
       } else {
-	coffset = verts[d].length();
-	voffset = cells[d].length();
+        coffset = verts[d].length();
+        voffset = cells[d].length();
       }
       break;
     case Reflective:
       bct = Reflective;
       if ( face & 1 ) {
-	coffset = 2*verts[d].max() + 1;
-	voffset = 2*cells[d].max() + 1 - 1;
+        coffset = 2*verts[d].max() + 1;
+        voffset = 2*cells[d].max() + 1 - 1;
       } else {
-	coffset = 2*verts[d].min() - 1;
-	voffset = 2*cells[d].min() - 1 + 1;
+        coffset = 2*verts[d].min() - 1;
+        voffset = 2*cells[d].min() - 1 + 1;
       }
       break;
     case NoBC:
       bct = NoBC;
       if ( face & 1 ) {
-	coffset = 2*verts[d].max() + 1;
-	voffset = 2*cells[d].max() + 1 - 1;
+        coffset = 2*verts[d].max() + 1;
+        voffset = 2*cells[d].max() + 1 - 1;
       } else {
-	coffset = 2*verts[d].min() - 1;
-	voffset = 2*cells[d].min() - 1 + 1;
+        coffset = 2*verts[d].min() - 1;
+        voffset = 2*cells[d].min() - 1 + 1;
       }
       break;
     default:
@@ -1003,135 +1002,135 @@ storeSpacingFields(e_dim_tag* et, int vnodes)
     // Loop over all the LField's in the BareField's:
     // +++++++++++++++cellSpacings++++++++++++++
     for (cfill_i=cellSpacings.begin_if();
-	 cfill_i!=cellSpacings.end_if(); ++cfill_i)
+         cfill_i!=cellSpacings.end_if(); ++cfill_i)
       {
-	// Cache some things we will use often below.
-	// Pointer to the data for the current LField (right????):
-	LField<T,Dim> &fill = *(*cfill_i).second;
-	// NDIndex spanning all elements in the LField, including the guards:
-	const NDIndex<Dim> &fill_alloc = fill.getAllocated();
-	// If the previously-created boundary guard-layer NDIndex "cSlab"
-	// contains any of the elements in this LField (they will be guard
-	// elements if it does), assign the values into them here by applying
-	// the boundary condition:
-	if ( cSlab.touches( fill_alloc ) )
-	  {
-	    // Find what it touches in this LField.
-	    NDIndex<Dim> dest = cSlab.intersect( fill_alloc );
+        // Cache some things we will use often below.
+        // Pointer to the data for the current LField (right????):
+        LField<T,Dim> &fill = *(*cfill_i).second;
+        // NDIndex spanning all elements in the LField, including the guards:
+        const NDIndex<Dim> &fill_alloc = fill.getAllocated();
+        // If the previously-created boundary guard-layer NDIndex "cSlab"
+        // contains any of the elements in this LField (they will be guard
+        // elements if it does), assign the values into them here by applying
+        // the boundary condition:
+        if ( cSlab.touches( fill_alloc ) )
+          {
+            // Find what it touches in this LField.
+            NDIndex<Dim> dest = cSlab.intersect( fill_alloc );
 
-	    // For exrapolation boundary conditions, the boundary guard-layer
-	    // elements are typically copied from interior values; the "src"
-	    // NDIndex specifies the interior elements to be copied into the
-	    // "dest" boundary guard-layer elements (possibly after some
-	    // mathematical operations like multipplying by minus 1 later):
-	    NDIndex<Dim> src = dest; // Create dest equal to src
-	    // Now calculate the interior elements; the coffset variable
-	    // computed above makes this right for "low" or "high" face cases:
-	    src[d] = coffset - src[d];
+            // For exrapolation boundary conditions, the boundary guard-layer
+            // elements are typically copied from interior values; the "src"
+            // NDIndex specifies the interior elements to be copied into the
+            // "dest" boundary guard-layer elements (possibly after some
+            // mathematical operations like multipplying by minus 1 later):
+            NDIndex<Dim> src = dest; // Create dest equal to src
+            // Now calculate the interior elements; the coffset variable
+            // computed above makes this right for "low" or "high" face cases:
+            src[d] = coffset - src[d];
 
-	    // TJW: Why is there another loop over LField's here??????????
-	    // Loop over the ones that src touches.
-	    typename BareField<T,Dim>::iterator_if from_i;
-	    for (from_i=cellSpacings.begin_if();
-		 from_i!=cellSpacings.end_if(); ++from_i)
-	      {
-		// Cache a few things.
-		LField<T,Dim> &from = *(*from_i).second;
-		const NDIndex<Dim> &from_owned = from.getOwned();
-		const NDIndex<Dim> &from_alloc = from.getAllocated();
-		// If src touches this LField...
-		if ( src.touches( from_owned ) )
-		  {
-		    NDIndex<Dim> from_it = src.intersect( from_alloc );
-		    NDIndex<Dim> cfill_it = dest.plugBase( from_it );
-		    // Build iterators for the copy...
-		    typedef typename LField<T,Dim>::iterator LFI;
-		    LFI lhs = fill.begin(cfill_it);
-		    LFI rhs = from.begin(from_it);
-		    // And do the assignment.
-		    if (bct == Periodic) {
-		      BrickExpression<Dim,LFI,LFI,OpMeshPeriodic<T> >
-			(lhs,rhs,OpMeshPeriodic<T>()).apply();
-		    } else {
-		      if (bct == Reflective) {
-			BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
-			  (lhs,rhs,OpMeshExtrapolate<T>(v0,v1)).apply();
-		      } else {
-			if (bct == NoBC) {
-			  BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
-			    (lhs,rhs,OpMeshExtrapolate<T>(v0,v0)).apply();
-			}
-		      }
-		    }
-		  }
-	      }
-	  }
+            // TJW: Why is there another loop over LField's here??????????
+            // Loop over the ones that src touches.
+            typename BareField<T,Dim>::iterator_if from_i;
+            for (from_i=cellSpacings.begin_if();
+                 from_i!=cellSpacings.end_if(); ++from_i)
+              {
+                // Cache a few things.
+                LField<T,Dim> &from = *(*from_i).second;
+                const NDIndex<Dim> &from_owned = from.getOwned();
+                const NDIndex<Dim> &from_alloc = from.getAllocated();
+                // If src touches this LField...
+                if ( src.touches( from_owned ) )
+                  {
+                    NDIndex<Dim> from_it = src.intersect( from_alloc );
+                    NDIndex<Dim> cfill_it = dest.plugBase( from_it );
+                    // Build iterators for the copy...
+                    typedef typename LField<T,Dim>::iterator LFI;
+                    LFI lhs = fill.begin(cfill_it);
+                    LFI rhs = from.begin(from_it);
+                    // And do the assignment.
+                    if (bct == Periodic) {
+                      BrickExpression<Dim,LFI,LFI,OpMeshPeriodic<T> >
+                        (lhs,rhs,OpMeshPeriodic<T>()).apply();
+                    } else {
+                      if (bct == Reflective) {
+                        BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
+                          (lhs,rhs,OpMeshExtrapolate<T>(v0,v1)).apply();
+                      } else {
+                        if (bct == NoBC) {
+                          BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
+                            (lhs,rhs,OpMeshExtrapolate<T>(v0,v0)).apply();
+                        }
+                      }
+                    }
+                  }
+              }
+          }
       }
     // +++++++++++++++vertSpacings++++++++++++++
     for (vfill_i=vertSpacings.begin_if();
-	 vfill_i!=vertSpacings.end_if(); ++vfill_i)
+         vfill_i!=vertSpacings.end_if(); ++vfill_i)
       {
-	// Cache some things we will use often below.
-	// Pointer to the data for the current LField (right????):
-	LField<T,Dim> &fill = *(*vfill_i).second;
-	// NDIndex spanning all elements in the LField, including the guards:
-	const NDIndex<Dim> &fill_alloc = fill.getAllocated();
-	// If the previously-created boundary guard-layer NDIndex "cSlab"
-	// contains any of the elements in this LField (they will be guard
-	// elements if it does), assign the values into them here by applying
-	// the boundary condition:
-	if ( vSlab.touches( fill_alloc ) )
-	  {
-	    // Find what it touches in this LField.
-	    NDIndex<Dim> dest = vSlab.intersect( fill_alloc );
+        // Cache some things we will use often below.
+        // Pointer to the data for the current LField (right????):
+        LField<T,Dim> &fill = *(*vfill_i).second;
+        // NDIndex spanning all elements in the LField, including the guards:
+        const NDIndex<Dim> &fill_alloc = fill.getAllocated();
+        // If the previously-created boundary guard-layer NDIndex "cSlab"
+        // contains any of the elements in this LField (they will be guard
+        // elements if it does), assign the values into them here by applying
+        // the boundary condition:
+        if ( vSlab.touches( fill_alloc ) )
+          {
+            // Find what it touches in this LField.
+            NDIndex<Dim> dest = vSlab.intersect( fill_alloc );
 
-	    // For exrapolation boundary conditions, the boundary guard-layer
-	    // elements are typically copied from interior values; the "src"
-	    // NDIndex specifies the interior elements to be copied into the
-	    // "dest" boundary guard-layer elements (possibly after some
-	    // mathematical operations like multipplying by minus 1 later):
-	    NDIndex<Dim> src = dest; // Create dest equal to src
-	    // Now calculate the interior elements; the voffset variable
-	    // computed above makes this right for "low" or "high" face cases:
-	    src[d] = voffset - src[d];
+            // For exrapolation boundary conditions, the boundary guard-layer
+            // elements are typically copied from interior values; the "src"
+            // NDIndex specifies the interior elements to be copied into the
+            // "dest" boundary guard-layer elements (possibly after some
+            // mathematical operations like multipplying by minus 1 later):
+            NDIndex<Dim> src = dest; // Create dest equal to src
+            // Now calculate the interior elements; the voffset variable
+            // computed above makes this right for "low" or "high" face cases:
+            src[d] = voffset - src[d];
 
-	    // TJW: Why is there another loop over LField's here??????????
-	    // Loop over the ones that src touches.
-	    typename BareField<T,Dim>::iterator_if from_i;
-	    for (from_i=vertSpacings.begin_if();
-		 from_i!=vertSpacings.end_if(); ++from_i)
-	      {
-		// Cache a few things.
-		LField<T,Dim> &from = *(*from_i).second;
-		const NDIndex<Dim> &from_owned = from.getOwned();
-		const NDIndex<Dim> &from_alloc = from.getAllocated();
-		// If src touches this LField...
-		if ( src.touches( from_owned ) )
-		  {
-		    NDIndex<Dim> from_it = src.intersect( from_alloc );
-		    NDIndex<Dim> vfill_it = dest.plugBase( from_it );
-		    // Build iterators for the copy...
-		    typedef typename LField<T,Dim>::iterator LFI;
-		    LFI lhs = fill.begin(vfill_it);
-		    LFI rhs = from.begin(from_it);
-		    // And do the assignment.
-		    if (bct == Periodic) {
-		      BrickExpression<Dim,LFI,LFI,OpMeshPeriodic<T> >
-			(lhs,rhs,OpMeshPeriodic<T>()).apply();
-		    } else {
-		      if (bct == Reflective) {
-			BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
-			  (lhs,rhs,OpMeshExtrapolate<T>(v0,v1)).apply();
-		      } else {
-			if (bct == NoBC) {
-			  BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
-			    (lhs,rhs,OpMeshExtrapolate<T>(v0,v0)).apply();
-			}
-		      }
-		    }
-		  }
-	      }
-	  }
+            // TJW: Why is there another loop over LField's here??????????
+            // Loop over the ones that src touches.
+            typename BareField<T,Dim>::iterator_if from_i;
+            for (from_i=vertSpacings.begin_if();
+                 from_i!=vertSpacings.end_if(); ++from_i)
+              {
+                // Cache a few things.
+                LField<T,Dim> &from = *(*from_i).second;
+                const NDIndex<Dim> &from_owned = from.getOwned();
+                const NDIndex<Dim> &from_alloc = from.getAllocated();
+                // If src touches this LField...
+                if ( src.touches( from_owned ) )
+                  {
+                    NDIndex<Dim> from_it = src.intersect( from_alloc );
+                    NDIndex<Dim> vfill_it = dest.plugBase( from_it );
+                    // Build iterators for the copy...
+                    typedef typename LField<T,Dim>::iterator LFI;
+                    LFI lhs = fill.begin(vfill_it);
+                    LFI rhs = from.begin(from_it);
+                    // And do the assignment.
+                    if (bct == Periodic) {
+                      BrickExpression<Dim,LFI,LFI,OpMeshPeriodic<T> >
+                        (lhs,rhs,OpMeshPeriodic<T>()).apply();
+                    } else {
+                      if (bct == Reflective) {
+                        BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
+                          (lhs,rhs,OpMeshExtrapolate<T>(v0,v1)).apply();
+                      } else {
+                        if (bct == NoBC) {
+                          BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
+                            (lhs,rhs,OpMeshExtrapolate<T>(v0,v0)).apply();
+                        }
+                      }
+                    }
+                  }
+              }
+          }
       }
 
   }
@@ -1151,9 +1150,9 @@ storeSpacingFields(e_dim_tag* et, int vnodes)
 template<unsigned Dim, class MFLOAT>
 void Cartesian<Dim,MFLOAT>::
 storeSpacingFields(e_dim_tag p1,
-			unsigned vnodes1,
-			bool recurse,
-			int vnodes) {
+                        unsigned vnodes1,
+                        bool recurse,
+                        int vnodes) {
   e_dim_tag et[1];
   et[0] = p1;
   unsigned vnodesPerDirection[Dim];
@@ -1164,8 +1163,8 @@ storeSpacingFields(e_dim_tag p1,
 template<unsigned Dim, class MFLOAT>
 void Cartesian<Dim,MFLOAT>::
 storeSpacingFields(e_dim_tag p1, e_dim_tag p2,
-			unsigned vnodes1, unsigned vnodes2,
-			bool recurse,int vnodes) {
+                        unsigned vnodes1, unsigned vnodes2,
+                        bool recurse,int vnodes) {
   e_dim_tag et[2];
   et[0] = p1;
   et[1] = p2;
@@ -1178,8 +1177,8 @@ storeSpacingFields(e_dim_tag p1, e_dim_tag p2,
 template<unsigned Dim, class MFLOAT>
 void Cartesian<Dim,MFLOAT>::
 storeSpacingFields(e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-		   unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-		   bool recurse, int vnodes) {
+                   unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
+                   bool recurse, int vnodes) {
   e_dim_tag et[3];
   et[0] = p1;
   et[1] = p2;
@@ -1198,9 +1197,9 @@ storeSpacingFields(e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
 template<unsigned Dim, class MFLOAT>
 void Cartesian<Dim,MFLOAT>::
 storeSpacingFields(e_dim_tag *p,
-		   unsigned* vnodesPerDirection,
-		   bool recurse, int vnodes) {
-  int d;
+                   unsigned* vnodesPerDirection,
+                   bool recurse, int vnodes) {
+  unsigned int d;
   int currentLocation[Dim];
   NDIndex<Dim> cells, verts;
   for (d=0; d<Dim; d++) {
@@ -1257,7 +1256,7 @@ storeSpacingFields(e_dim_tag *p,
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   // Temporaries used in loop over faces
   Vektor<MFLOAT,Dim> v0,v1; v0 = 0.0; v1 = 1.0; // Used for Reflective mesh BC
-  int face;
+  unsigned int face;
   typedef Vektor<MFLOAT,Dim> T;          // Used multipple places in loop below
   typename BareField<T,Dim>::iterator_if cfill_i; // Iterator used below
   typename BareField<T,Dim>::iterator_if vfill_i; // Iterator used below
@@ -1276,45 +1275,45 @@ storeSpacingFields(e_dim_tag *p,
     // the numbering convention):
     if ( face & 1 ) {
       cSlab[d] = Index(verts[d].max() + 1,
-		       verts[d].max() + cellSpacings.rightGuard(d));
+                       verts[d].max() + cellSpacings.rightGuard(d));
       vSlab[d] = Index(cells[d].max() + 1,
-		       cells[d].max() + vertSpacings.rightGuard(d));
+                       cells[d].max() + vertSpacings.rightGuard(d));
     } else {
       cSlab[d] = Index(verts[d].min() - cellSpacings.leftGuard(d),
-		       verts[d].min() - 1);
+                       verts[d].min() - 1);
       vSlab[d] = Index(cells[d].min() - vertSpacings.leftGuard(d),
-		       cells[d].min() - 1);
+                       cells[d].min() - 1);
     }
     // Compute pointer offsets used with LField::iterator below:
     switch (MeshBC[face]) {
     case Periodic:
       bct = Periodic;
       if ( face & 1 ) {
-	coffset = -verts[d].length();
-	voffset = -cells[d].length();
+        coffset = -verts[d].length();
+        voffset = -cells[d].length();
       } else {
-	coffset = verts[d].length();
-	voffset = cells[d].length();
+        coffset = verts[d].length();
+        voffset = cells[d].length();
       }
       break;
     case Reflective:
       bct = Reflective;
       if ( face & 1 ) {
-	coffset = 2*verts[d].max() + 1;
-	voffset = 2*cells[d].max() + 1 - 1;
+        coffset = 2*verts[d].max() + 1;
+        voffset = 2*cells[d].max() + 1 - 1;
       } else {
-	coffset = 2*verts[d].min() - 1;
-	voffset = 2*cells[d].min() - 1 + 1;
+        coffset = 2*verts[d].min() - 1;
+        voffset = 2*cells[d].min() - 1 + 1;
       }
       break;
     case NoBC:
       bct = NoBC;
       if ( face & 1 ) {
-	coffset = 2*verts[d].max() + 1;
-	voffset = 2*cells[d].max() + 1 - 1;
+        coffset = 2*verts[d].max() + 1;
+        voffset = 2*cells[d].max() + 1 - 1;
       } else {
-	coffset = 2*verts[d].min() - 1;
-	voffset = 2*cells[d].min() - 1 + 1;
+        coffset = 2*verts[d].min() - 1;
+        voffset = 2*cells[d].min() - 1 + 1;
       }
       break;
     default:
@@ -1325,135 +1324,135 @@ storeSpacingFields(e_dim_tag *p,
     // Loop over all the LField's in the BareField's:
     // +++++++++++++++cellSpacings++++++++++++++
     for (cfill_i=cellSpacings.begin_if();
-	 cfill_i!=cellSpacings.end_if(); ++cfill_i)
+         cfill_i!=cellSpacings.end_if(); ++cfill_i)
       {
-	// Cache some things we will use often below.
-	// Pointer to the data for the current LField (right????):
-	LField<T,Dim> &fill = *(*cfill_i).second;
-	// NDIndex spanning all elements in the LField, including the guards:
-	const NDIndex<Dim> &fill_alloc = fill.getAllocated();
-	// If the previously-created boundary guard-layer NDIndex "cSlab"
-	// contains any of the elements in this LField (they will be guard
-	// elements if it does), assign the values into them here by applying
-	// the boundary condition:
-	if ( cSlab.touches( fill_alloc ) )
-	  {
-	    // Find what it touches in this LField.
-	    NDIndex<Dim> dest = cSlab.intersect( fill_alloc );
+        // Cache some things we will use often below.
+        // Pointer to the data for the current LField (right????):
+        LField<T,Dim> &fill = *(*cfill_i).second;
+        // NDIndex spanning all elements in the LField, including the guards:
+        const NDIndex<Dim> &fill_alloc = fill.getAllocated();
+        // If the previously-created boundary guard-layer NDIndex "cSlab"
+        // contains any of the elements in this LField (they will be guard
+        // elements if it does), assign the values into them here by applying
+        // the boundary condition:
+        if ( cSlab.touches( fill_alloc ) )
+          {
+            // Find what it touches in this LField.
+            NDIndex<Dim> dest = cSlab.intersect( fill_alloc );
 
-	    // For exrapolation boundary conditions, the boundary guard-layer
-	    // elements are typically copied from interior values; the "src"
-	    // NDIndex specifies the interior elements to be copied into the
-	    // "dest" boundary guard-layer elements (possibly after some
-	    // mathematical operations like multipplying by minus 1 later):
-	    NDIndex<Dim> src = dest; // Create dest equal to src
-	    // Now calculate the interior elements; the coffset variable
-	    // computed above makes this right for "low" or "high" face cases:
-	    src[d] = coffset - src[d];
+            // For exrapolation boundary conditions, the boundary guard-layer
+            // elements are typically copied from interior values; the "src"
+            // NDIndex specifies the interior elements to be copied into the
+            // "dest" boundary guard-layer elements (possibly after some
+            // mathematical operations like multipplying by minus 1 later):
+            NDIndex<Dim> src = dest; // Create dest equal to src
+            // Now calculate the interior elements; the coffset variable
+            // computed above makes this right for "low" or "high" face cases:
+            src[d] = coffset - src[d];
 
-	    // TJW: Why is there another loop over LField's here??????????
-	    // Loop over the ones that src touches.
-	    typename BareField<T,Dim>::iterator_if from_i;
-	    for (from_i=cellSpacings.begin_if();
-		 from_i!=cellSpacings.end_if(); ++from_i)
-	      {
-		// Cache a few things.
-		LField<T,Dim> &from = *(*from_i).second;
-		const NDIndex<Dim> &from_owned = from.getOwned();
-		const NDIndex<Dim> &from_alloc = from.getAllocated();
-		// If src touches this LField...
-		if ( src.touches( from_owned ) )
-		  {
-		    NDIndex<Dim> from_it = src.intersect( from_alloc );
-		    NDIndex<Dim> cfill_it = dest.plugBase( from_it );
-		    // Build iterators for the copy...
-		    typedef typename LField<T,Dim>::iterator LFI;
-		    LFI lhs = fill.begin(cfill_it);
-		    LFI rhs = from.begin(from_it);
-		    // And do the assignment.
-		    if (bct == Periodic) {
-		      BrickExpression<Dim,LFI,LFI,OpMeshPeriodic<T> >
-			(lhs,rhs,OpMeshPeriodic<T>()).apply();
-		    } else {
-		      if (bct == Reflective) {
-			BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
-			  (lhs,rhs,OpMeshExtrapolate<T>(v0,v1)).apply();
-		      } else {
-			if (bct == NoBC) {
-			  BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
-			    (lhs,rhs,OpMeshExtrapolate<T>(v0,v0)).apply();
-			}
-		      }
-		    }
-		  }
-	      }
-	  }
+            // TJW: Why is there another loop over LField's here??????????
+            // Loop over the ones that src touches.
+            typename BareField<T,Dim>::iterator_if from_i;
+            for (from_i=cellSpacings.begin_if();
+                 from_i!=cellSpacings.end_if(); ++from_i)
+              {
+                // Cache a few things.
+                LField<T,Dim> &from = *(*from_i).second;
+                const NDIndex<Dim> &from_owned = from.getOwned();
+                const NDIndex<Dim> &from_alloc = from.getAllocated();
+                // If src touches this LField...
+                if ( src.touches( from_owned ) )
+                  {
+                    NDIndex<Dim> from_it = src.intersect( from_alloc );
+                    NDIndex<Dim> cfill_it = dest.plugBase( from_it );
+                    // Build iterators for the copy...
+                    typedef typename LField<T,Dim>::iterator LFI;
+                    LFI lhs = fill.begin(cfill_it);
+                    LFI rhs = from.begin(from_it);
+                    // And do the assignment.
+                    if (bct == Periodic) {
+                      BrickExpression<Dim,LFI,LFI,OpMeshPeriodic<T> >
+                        (lhs,rhs,OpMeshPeriodic<T>()).apply();
+                    } else {
+                      if (bct == Reflective) {
+                        BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
+                          (lhs,rhs,OpMeshExtrapolate<T>(v0,v1)).apply();
+                      } else {
+                        if (bct == NoBC) {
+                          BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
+                            (lhs,rhs,OpMeshExtrapolate<T>(v0,v0)).apply();
+                        }
+                      }
+                    }
+                  }
+              }
+          }
       }
     // +++++++++++++++vertSpacings++++++++++++++
     for (vfill_i=vertSpacings.begin_if();
-	 vfill_i!=vertSpacings.end_if(); ++vfill_i)
+         vfill_i!=vertSpacings.end_if(); ++vfill_i)
       {
-	// Cache some things we will use often below.
-	// Pointer to the data for the current LField (right????):
-	LField<T,Dim> &fill = *(*vfill_i).second;
-	// NDIndex spanning all elements in the LField, including the guards:
-	const NDIndex<Dim> &fill_alloc = fill.getAllocated();
-	// If the previously-created boundary guard-layer NDIndex "cSlab"
-	// contains any of the elements in this LField (they will be guard
-	// elements if it does), assign the values into them here by applying
-	// the boundary condition:
-	if ( vSlab.touches( fill_alloc ) )
-	  {
-	    // Find what it touches in this LField.
-	    NDIndex<Dim> dest = vSlab.intersect( fill_alloc );
+        // Cache some things we will use often below.
+        // Pointer to the data for the current LField (right????):
+        LField<T,Dim> &fill = *(*vfill_i).second;
+        // NDIndex spanning all elements in the LField, including the guards:
+        const NDIndex<Dim> &fill_alloc = fill.getAllocated();
+        // If the previously-created boundary guard-layer NDIndex "cSlab"
+        // contains any of the elements in this LField (they will be guard
+        // elements if it does), assign the values into them here by applying
+        // the boundary condition:
+        if ( vSlab.touches( fill_alloc ) )
+          {
+            // Find what it touches in this LField.
+            NDIndex<Dim> dest = vSlab.intersect( fill_alloc );
 
-	    // For exrapolation boundary conditions, the boundary guard-layer
-	    // elements are typically copied from interior values; the "src"
-	    // NDIndex specifies the interior elements to be copied into the
-	    // "dest" boundary guard-layer elements (possibly after some
-	    // mathematical operations like multipplying by minus 1 later):
-	    NDIndex<Dim> src = dest; // Create dest equal to src
-	    // Now calculate the interior elements; the voffset variable
-	    // computed above makes this right for "low" or "high" face cases:
-	    src[d] = voffset - src[d];
+            // For exrapolation boundary conditions, the boundary guard-layer
+            // elements are typically copied from interior values; the "src"
+            // NDIndex specifies the interior elements to be copied into the
+            // "dest" boundary guard-layer elements (possibly after some
+            // mathematical operations like multipplying by minus 1 later):
+            NDIndex<Dim> src = dest; // Create dest equal to src
+            // Now calculate the interior elements; the voffset variable
+            // computed above makes this right for "low" or "high" face cases:
+            src[d] = voffset - src[d];
 
-	    // TJW: Why is there another loop over LField's here??????????
-	    // Loop over the ones that src touches.
-	    typename BareField<T,Dim>::iterator_if from_i;
-	    for (from_i=vertSpacings.begin_if();
-		 from_i!=vertSpacings.end_if(); ++from_i)
-	      {
-		// Cache a few things.
-		LField<T,Dim> &from = *(*from_i).second;
-		const NDIndex<Dim> &from_owned = from.getOwned();
-		const NDIndex<Dim> &from_alloc = from.getAllocated();
-		// If src touches this LField...
-		if ( src.touches( from_owned ) )
-		  {
-		    NDIndex<Dim> from_it = src.intersect( from_alloc );
-		    NDIndex<Dim> vfill_it = dest.plugBase( from_it );
-		    // Build iterators for the copy...
-		    typedef typename LField<T,Dim>::iterator LFI;
-		    LFI lhs = fill.begin(vfill_it);
-		    LFI rhs = from.begin(from_it);
-		    // And do the assignment.
-		    if (bct == Periodic) {
-		      BrickExpression<Dim,LFI,LFI,OpMeshPeriodic<T> >
-			(lhs,rhs,OpMeshPeriodic<T>()).apply();
-		    } else {
-		      if (bct == Reflective) {
-			BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
-			  (lhs,rhs,OpMeshExtrapolate<T>(v0,v1)).apply();
-		      } else {
-			if (bct == NoBC) {
-			  BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
-			    (lhs,rhs,OpMeshExtrapolate<T>(v0,v0)).apply();
-			}
-		      }
-		    }
-		  }
-	      }
-	  }
+            // TJW: Why is there another loop over LField's here??????????
+            // Loop over the ones that src touches.
+            typename BareField<T,Dim>::iterator_if from_i;
+            for (from_i=vertSpacings.begin_if();
+                 from_i!=vertSpacings.end_if(); ++from_i)
+              {
+                // Cache a few things.
+                LField<T,Dim> &from = *(*from_i).second;
+                const NDIndex<Dim> &from_owned = from.getOwned();
+                const NDIndex<Dim> &from_alloc = from.getAllocated();
+                // If src touches this LField...
+                if ( src.touches( from_owned ) )
+                  {
+                    NDIndex<Dim> from_it = src.intersect( from_alloc );
+                    NDIndex<Dim> vfill_it = dest.plugBase( from_it );
+                    // Build iterators for the copy...
+                    typedef typename LField<T,Dim>::iterator LFI;
+                    LFI lhs = fill.begin(vfill_it);
+                    LFI rhs = from.begin(from_it);
+                    // And do the assignment.
+                    if (bct == Periodic) {
+                      BrickExpression<Dim,LFI,LFI,OpMeshPeriodic<T> >
+                        (lhs,rhs,OpMeshPeriodic<T>()).apply();
+                    } else {
+                      if (bct == Reflective) {
+                        BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
+                          (lhs,rhs,OpMeshExtrapolate<T>(v0,v1)).apply();
+                      } else {
+                        if (bct == NoBC) {
+                          BrickExpression<Dim,LFI,LFI,OpMeshExtrapolate<T> >
+                            (lhs,rhs,OpMeshExtrapolate<T>(v0,v0)).apply();
+                        }
+                      }
+                    }
+                  }
+              }
+          }
       }
 
   }
@@ -1481,15 +1480,15 @@ print(std::ostream& out)
     typename std::map<int,MFLOAT>::iterator mi;
     for (mi=meshSpacing[d].begin(); mi != meshSpacing[d].end(); ++mi) {
       out << "meshSpacing[" << d << "][" << (*mi).first << "] = "
-	  << (*mi).second << std::endl;
+          << (*mi).second << std::endl;
     }
   }
   for (unsigned b=0; b < (1<<Dim); b++)
     out << "Dvc[" << b << "] = " << Dvc[b] << std::endl;
   for (d=0; d < Dim; d++)
     out << "MeshBC[" << 2*d << "] = " << Mesh<Dim>::MeshBC_E_Names[MeshBC[2*d]]
-	<< " ; MeshBC[" << 2*d+1 << "] = " << Mesh<Dim>::MeshBC_E_Names[MeshBC[2*d+1]]
-	<< std::endl;
+        << " ; MeshBC[" << 2*d+1 << "] = " << Mesh<Dim>::MeshBC_E_Names[MeshBC[2*d+1]]
+        << std::endl;
   out << "======Cartesian<" << Dim << ",MFLOAT>==end========" << std::endl;
 }
 
@@ -1504,11 +1503,10 @@ Cartesian<Dim,MFLOAT>::
 getCellVolume(const NDIndex<Dim>& ndi) const
 {
   MFLOAT volume = 1.0;
-  int d;
-  for (d=0; d<Dim; d++)
+  for (unsigned int d=0; d<Dim; d++)
     if (ndi[d].length() != 1) {
       ERRORMSG("Cartesian::getCellVolume() error: arg is not a NDIndex"
-	       << "specifying a single element" << endl);
+               << "specifying a single element" << endl);
     }
     else {
       volume *= (*(meshSpacing[d].find(ndi[d].first()))).second;
@@ -1525,7 +1523,6 @@ getCellVolumeField(Field<MFLOAT,Dim,Cartesian<Dim,MFLOAT>,Cell>& volumes) const
   // have check on domain of input Field& to make sure it's big enough to hold
   // all the values for this mesh object.
   volumes = 1.0;
-  int d;
   int currentLocation[Dim];
   volumes.Uncompress();
   // Iterate through all cells:
@@ -1533,7 +1530,7 @@ getCellVolumeField(Field<MFLOAT,Dim,Cartesian<Dim,MFLOAT>,Cell>& volumes) const
     fi_end=volumes.end();
   for (fi = volumes.begin(); fi != fi_end; ++fi) {
     fi.GetCurrentLocation(currentLocation);
-    for (d=0; d<Dim; d++)
+    for (unsigned int d=0; d<Dim; d++)
       *fi *= (*(meshSpacing[d].find(currentLocation[d]))).second;
   }
   return volumes;
@@ -1546,20 +1543,21 @@ getVertRangeVolume(const NDIndex<Dim>& ndi) const
 {
   // Get vertex positions of extremal cells:
   Vektor<MFLOAT,Dim> v0, v1;
-  int d, i0, i1;
+  unsigned int d;
+  int i0, i1;
   for (d=0; d<Dim; d++) {
     i0 = ndi[d].first();
     if ( (i0 < -(int(gridSizes[d])-1)/2) ||
          (i0 > 3*(int(gridSizes[d])-1)/2) )
       ERRORMSG("Cartesian::getVertRangeVolume() error: " << ndi
-	       << " is an NDIndex ranging outside the mesh and guard layers;"
+               << " is an NDIndex ranging outside the mesh and guard layers;"
                << " not allowed." << endl);
     v0(d) = (*(meshPosition[d].find(i0))).second;
     i1 = ndi[d].last();
     if ( (i1 < -(int(gridSizes[d])-1)/2) ||
          (i1 > 3*(int(gridSizes[d])-1)/2) )
       ERRORMSG("Cartesian::getVertRangeVolume() error: " << ndi
-	       << " is an NDIndex ranging outside the mesh and guard layers;"
+               << " is an NDIndex ranging outside the mesh and guard layers;"
                << " not allowed." << endl);
     v1(d) = (*(meshPosition[d].find(i1))).second;
   }
@@ -1576,26 +1574,26 @@ getCellRangeVolume(const NDIndex<Dim>& ndi) const
 {
   // Get vertex positions bounding extremal cells:
   Vektor<MFLOAT,Dim> v0, v1;
-  int d, i0, i1;
-  for (d=0; d<Dim; d++) {
+  int i0, i1;
+  for (unsigned int d=0; d<Dim; d++) {
     i0 = ndi[d].first();
     if ( (i0 < -(int(gridSizes[d])-1)/2) ||
          (i0 > 3*(int(gridSizes[d])-1)/2) )
       ERRORMSG("Cartesian::getCellRangeVolume() error: " << ndi
-	       << " is an NDIndex ranging outside the mesh and guard layers;"
+               << " is an NDIndex ranging outside the mesh and guard layers;"
                << " not allowed." << endl);
     v0(d) = (*(meshPosition[d].find(i0))).second;
     i1 = ndi[d].last()+1;
     if ( (i1 < -(int(gridSizes[d])-1)/2) ||
          (i1 > 3*(int(gridSizes[d])-1)/2) )
       ERRORMSG("Cartesian::getCellRangeVolume() error: " << ndi
-	       << " is an NDIndex ranging outside the mesh and guard layers;"
+               << " is an NDIndex ranging outside the mesh and guard layers;"
                << " not allowed." << endl);
     v1(d) = (*(meshPosition[d].find(i1))).second;
   }
   // Compute volume of rectangular solid beweeen these extremal vertices:
   MFLOAT volume = 1.0;
-  for (d=0; d<Dim; d++) volume *= abs(v1(d) - v0(d));
+  for (unsigned int d=0; d<Dim; d++) volume *= abs(v1(d) - v0(d));
   return volume;
 }
 
@@ -1605,7 +1603,7 @@ NDIndex<Dim>
 Cartesian<Dim,MFLOAT>::
 getNearestVertex(const Vektor<MFLOAT,Dim>& x) const
 {
-  int d;
+  unsigned int d;
   Vektor<MFLOAT,Dim> boxMin, boxMax;
   for (d=0; d<Dim; d++) {
     int gs = (int(gridSizes[d])-1)/2;
@@ -1615,7 +1613,7 @@ getNearestVertex(const Vektor<MFLOAT,Dim>& x) const
   for (d=0; d<Dim; d++)
     if ( (x(d) < boxMin(d)) || (x(d) > boxMax(d)) )
       ERRORMSG("Cartesian::getNearestVertex() - input point is outside"
-	       << " mesh boundary and guard layers; not allowed." << endl);
+               << " mesh boundary and guard layers; not allowed." << endl);
 
   // Find coordinate vectors of the vertices just above and just below the
   // input point (extremal vertices on cell containing point);
@@ -1672,7 +1670,7 @@ NDIndex<Dim>
 Cartesian<Dim,MFLOAT>::
 getVertexBelow(const Vektor<MFLOAT,Dim>& x) const
 {
-  int d;
+  unsigned int d;
   Vektor<MFLOAT,Dim> boxMin, boxMax;
   for (d=0; d<Dim; d++) {
     int gs = (int(gridSizes[d]) - 1)/2;
@@ -1682,7 +1680,7 @@ getVertexBelow(const Vektor<MFLOAT,Dim>& x) const
   for (d=0; d<Dim; d++)
     if ( (x(d) < boxMin(d)) || (x(d) > boxMax(d)) )
       ERRORMSG("Cartesian::getVertexBelow() - input point is outside"
-	       << " mesh boundary and guard layers; not allowed." << endl);
+               << " mesh boundary and guard layers; not allowed." << endl);
 
   // Find coordinate vectors of the vertices just below the input point;
   MFLOAT xVertexBelow, xVertexAbove, xVertex;
@@ -1733,17 +1731,18 @@ Vektor<MFLOAT,Dim>
 Cartesian<Dim,MFLOAT>::
 getVertexPosition(const NDIndex<Dim>& ndi) const
 {
-  int d, i;
+  unsigned int d;
+  int i;
   Vektor<MFLOAT,Dim> vertexPosition;
   for (d=0; d<Dim; d++) {
     if (ndi[d].length() != 1)
       ERRORMSG("Cartesian::getVertexPosition() error: " << ndi
-	       << " is not an NDIndex specifying a single element" << endl);
+               << " is not an NDIndex specifying a single element" << endl);
     i = ndi[d].first();
     if ( (i < -(int(gridSizes[d])-1)/2) ||
          (i > 3*(int(gridSizes[d])-1)/2) )
       ERRORMSG("Cartesian::getVertexPosition() error: " << ndi
-	       << " is an NDIndex outside the mesh and guard layers;"
+               << " is an NDIndex outside the mesh and guard layers;"
                << " not allowed." << endl);
     vertexPosition(d) = (*(meshPosition[d].find(i))).second;
   }
@@ -1754,9 +1753,8 @@ template <unsigned Dim, class MFLOAT>
 Field<Vektor<MFLOAT,Dim>,Dim,Cartesian<Dim,MFLOAT>,Vert>&
 Cartesian<Dim,MFLOAT>::
 getVertexPositionField(Field<Vektor<MFLOAT,Dim>,Dim,
-		       Cartesian<Dim,MFLOAT>,Vert>& vertexPositions) const
+                       Cartesian<Dim,MFLOAT>,Vert>& vertexPositions) const
 {
-  int d;
   int currentLocation[Dim];
   Vektor<MFLOAT,Dim> vertexPosition;
   vertexPositions.Uncompress();
@@ -1765,7 +1763,7 @@ getVertexPositionField(Field<Vektor<MFLOAT,Dim>,Dim,
   for (fi = vertexPositions.begin(); fi != fi_end; ++fi) {
     // Construct a NDIndex for each field element:
     fi.GetCurrentLocation(currentLocation);
-    for (d=0; d<Dim; d++) {
+    for (unsigned int d=0; d<Dim; d++) {
       vertexPosition(d) = (*(meshPosition[d].find(currentLocation[d]))).second;
     }
     *fi = vertexPosition;
@@ -1779,17 +1777,18 @@ Vektor<MFLOAT,Dim>
 Cartesian<Dim,MFLOAT>::
 getCellPosition(const NDIndex<Dim>& ndi) const
 {
-  int d, i;
+  unsigned int d;
+  int i;
   Vektor<MFLOAT,Dim> cellPosition;
   for (d=0; d<Dim; d++) {
     if (ndi[d].length() != 1)
       ERRORMSG("Cartesian::getCellPosition() error: " << ndi
-	       << " is not an NDIndex specifying a single element" << endl);
+               << " is not an NDIndex specifying a single element" << endl);
     i = ndi[d].first();
     if ( (i < -(int(gridSizes[d])-1)/2) ||
          (i >= 3*(int(gridSizes[d])-1)/2) )
       ERRORMSG("Cartesian::getCellPosition() error: " << ndi
-	       << " is an NDIndex outside the mesh and guard layers;"
+               << " is an NDIndex outside the mesh and guard layers;"
                << " not allowed." << endl);
     cellPosition(d) = 0.5 * ( (*(meshPosition[d].find(i))).second +
                               (*(meshPosition[d].find(i+1))).second );
@@ -1801,9 +1800,8 @@ template <unsigned Dim, class MFLOAT>
 Field<Vektor<MFLOAT,Dim>,Dim,Cartesian<Dim,MFLOAT>,Cell>&
 Cartesian<Dim,MFLOAT>::
 getCellPositionField(Field<Vektor<MFLOAT,Dim>,Dim,
-		     Cartesian<Dim,MFLOAT>,Cell>& cellPositions) const
+                     Cartesian<Dim,MFLOAT>,Cell>& cellPositions) const
 {
-  int d;
   int currentLocation[Dim];
   Vektor<MFLOAT,Dim> cellPosition;
   cellPositions.Uncompress();
@@ -1812,7 +1810,7 @@ getCellPositionField(Field<Vektor<MFLOAT,Dim>,Dim,
   for (fi = cellPositions.begin(); fi != fi_end; ++fi) {
     // Construct a NDIndex for each field element:
     fi.GetCurrentLocation(currentLocation);
-    for (d=0; d<Dim; d++) {
+    for (unsigned int d=0; d<Dim; d++) {
       cellPosition(d) =
         0.5 * ( (*(meshPosition[d].find(currentLocation[d]))).second +
                 (*(meshPosition[d].find(currentLocation[d]+1))).second );
@@ -1861,7 +1859,7 @@ template <unsigned Dim, class MFLOAT>
 Field<Vektor<MFLOAT,Dim>,Dim,Cartesian<Dim,MFLOAT>,Cell>&
 Cartesian<Dim,MFLOAT>::
 getDeltaVertexField(Field<Vektor<MFLOAT,Dim>,Dim,
-		    Cartesian<Dim,MFLOAT>,Cell>& vertexSpacings) const
+                    Cartesian<Dim,MFLOAT>,Cell>& vertexSpacings) const
 {
   int currentLocation[Dim];
   Vektor<MFLOAT,Dim> vertexVertexSpacing;
@@ -1905,7 +1903,7 @@ getDeltaCell(const NDIndex<Dim>& ndi) const
     // add up the contributions along the interval ...
     while (a <= b) {
       cellCellSpacing[d] += ((*(meshSpacing[d].find(a))).second +
-			     (*(meshSpacing[d].find(a-1))).second) * 0.5;
+                             (*(meshSpacing[d].find(a-1))).second) * 0.5;
       a++;
     }
   }
@@ -1917,7 +1915,7 @@ template <unsigned Dim, class MFLOAT>
 Field<Vektor<MFLOAT,Dim>,Dim,Cartesian<Dim,MFLOAT>,Vert>&
 Cartesian<Dim,MFLOAT>::
 getDeltaCellField(Field<Vektor<MFLOAT,Dim>,Dim,
-		  Cartesian<Dim,MFLOAT>,Vert>& cellSpacings) const
+                  Cartesian<Dim,MFLOAT>,Vert>& cellSpacings) const
 {
   int currentLocation[Dim];
   Vektor<MFLOAT,Dim> cellCellSpacing;
@@ -1928,7 +1926,7 @@ getDeltaCellField(Field<Vektor<MFLOAT,Dim>,Dim,
     fi.GetCurrentLocation(currentLocation);
     for (unsigned int d=0; d<Dim; d++)
       cellCellSpacing[d]+=((*(meshSpacing[d].find(currentLocation[d]))).second +
-		   (*(meshSpacing[d].find(currentLocation[d]-1))).second) * 0.5;
+                   (*(meshSpacing[d].find(currentLocation[d]-1))).second) * 0.5;
     *fi = cellCellSpacing;
   }
   return cellSpacings;
@@ -1940,7 +1938,7 @@ Cartesian<Dim,MFLOAT>::
 getSurfaceNormals(const NDIndex<Dim>& ndi) const
 {
   Vektor<MFLOAT,Dim>* surfaceNormals = new Vektor<MFLOAT,Dim>[2*Dim];
-  int d, i;
+  unsigned int d, i;
   for (d=0; d<Dim; d++) {
     for (i=0; i<Dim; i++) {
       surfaceNormals[2*d](i)   = 0.0;
@@ -1956,11 +1954,11 @@ template <unsigned Dim, class MFLOAT>
 void
 Cartesian<Dim,MFLOAT>::
 getSurfaceNormalFields(Field<Vektor<MFLOAT,Dim>, Dim,
-		       Cartesian<Dim,MFLOAT>,Cell>**
-		       surfaceNormalsFields ) const
+                       Cartesian<Dim,MFLOAT>,Cell>**
+                       surfaceNormalsFields ) const
 {
   Vektor<MFLOAT,Dim>* surfaceNormals = new Vektor<MFLOAT,Dim>[2*Dim];
-  int d, i;
+  unsigned int d, i;
   for (d=0; d<Dim; d++) {
     for (i=0; i<Dim; i++) {
       surfaceNormals[2*d](i)   = 0.0;
@@ -1970,7 +1968,7 @@ getSurfaceNormalFields(Field<Vektor<MFLOAT,Dim>, Dim,
     surfaceNormals[2*d+1](d) =  1.0;
   }
   for (d=0; d<2*Dim; d++) assign((*(surfaceNormalsFields[d])),
-				 surfaceNormals[d]);
+                                 surfaceNormals[d]);
   //  return surfaceNormalsFields;
 }
 // Similar functions, but specify the surface normal to a single face, using
@@ -1992,17 +1990,17 @@ getSurfaceNormal(const NDIndex<Dim>& ndi, unsigned face) const
   if ( face & 1 ) {
     for (d=0; d<Dim; d++) {
       if ((face/2) == d) {
-	surfaceNormal(face) = -1.0;
+        surfaceNormal(face) = -1.0;
       } else {
-	surfaceNormal(face) =  0.0;
+        surfaceNormal(face) =  0.0;
       }
     }
   } else {
     for (d=0; d<Dim; d++) {
       if ((face/2) == d) {
-	surfaceNormal(face) =  1.0;
+        surfaceNormal(face) =  1.0;
       } else {
-	surfaceNormal(face) =  0.0;
+        surfaceNormal(face) =  0.0;
       }
     }
   }
@@ -2013,8 +2011,8 @@ template <unsigned Dim, class MFLOAT>
 Field<Vektor<MFLOAT,Dim>,Dim,Cartesian<Dim,MFLOAT>,Cell>&
 Cartesian<Dim,MFLOAT>::
 getSurfaceNormalField(Field<Vektor<MFLOAT,Dim>, Dim,
-		      Cartesian<Dim,MFLOAT>,Cell>& surfaceNormalField,
-		      unsigned face) const
+                      Cartesian<Dim,MFLOAT>,Cell>& surfaceNormalField,
+                      unsigned face) const
 {
   Vektor<MFLOAT,Dim> surfaceNormal;
   unsigned int d;
@@ -2025,17 +2023,17 @@ getSurfaceNormalField(Field<Vektor<MFLOAT,Dim>, Dim,
   if ( face & 1 ) {
     for (d=0; d<Dim; d++) {
       if ((face/2) == d) {
-	surfaceNormal(face) = -1.0;
+        surfaceNormal(face) = -1.0;
       } else {
-	surfaceNormal(face) =  0.0;
+        surfaceNormal(face) =  0.0;
       }
     }
   } else {
     for (d=0; d<Dim; d++) {
       if ((face/2) == d) {
-	surfaceNormal(face) =  1.0;
+        surfaceNormal(face) =  1.0;
       } else {
-	surfaceNormal(face) =  0.0;
+        surfaceNormal(face) =  0.0;
       }
     }
   }
@@ -2080,7 +2078,7 @@ updateMeshSpacingGuards(int face)
   // Assume worst case of needing ngridpts/2 guard layers (for periodic, most
   // likely):
   int d = face/2;
-  int cell, guardLayer;
+  unsigned int cell, guardLayer;
   // The following bitwise AND logical test returns true if face is odd
   // (meaning the "high" or "right" face in the numbering convention) and
   // returns false if face is even (meaning the "low" or "left" face in
@@ -2090,31 +2088,31 @@ updateMeshSpacingGuards(int face)
     switch (MeshBC[d*2]) {
     case Periodic:
       for (guardLayer = 0; guardLayer <= (gridSizes[d]-1)/2; guardLayer++) {
-	cell = gridSizes[d] - 1 + guardLayer;
-	(meshSpacing[d])[cell] = (meshSpacing[d])[guardLayer];
-	(meshPosition[d])[cell+1] = (meshPosition[d])[cell] +
-	                            (meshSpacing[d])[cell];
+        cell = gridSizes[d] - 1 + guardLayer;
+        (meshSpacing[d])[cell] = (meshSpacing[d])[guardLayer];
+        (meshPosition[d])[cell+1] = (meshPosition[d])[cell] +
+                                    (meshSpacing[d])[cell];
       }
       break;
     case Reflective:
       for (guardLayer = 0; guardLayer <= (gridSizes[d]-1)/2; guardLayer++) {
-	cell = gridSizes[d] - 1 + guardLayer;
-	(meshSpacing[d])[cell] = (meshSpacing[d])[cell - guardLayer - 1];
-	(meshPosition[d])[cell+1] = (meshPosition[d])[cell] +
-	                            (meshSpacing[d])[cell];
+        cell = gridSizes[d] - 1 + guardLayer;
+        (meshSpacing[d])[cell] = (meshSpacing[d])[cell - guardLayer - 1];
+        (meshPosition[d])[cell+1] = (meshPosition[d])[cell] +
+                                    (meshSpacing[d])[cell];
       }
       break;
     case NoBC:
       for (guardLayer = 0; guardLayer <= (gridSizes[d]-1)/2; guardLayer++) {
-	cell = gridSizes[d] - 1 + guardLayer;
-	(meshSpacing[d])[cell] = 0;
-	(meshPosition[d])[cell+1] = (meshPosition[d])[cell] +
-	                            (meshSpacing[d])[cell];
+        cell = gridSizes[d] - 1 + guardLayer;
+        (meshSpacing[d])[cell] = 0;
+        (meshPosition[d])[cell+1] = (meshPosition[d])[cell] +
+                                    (meshSpacing[d])[cell];
       }
       break;
     default:
       ERRORMSG("Cartesian::updateMeshSpacingGuards(): unknown MeshBC type"
-	       << endl);
+               << endl);
       break;
     }
   }
@@ -2123,31 +2121,31 @@ updateMeshSpacingGuards(int face)
     switch (MeshBC[d]) {
     case Periodic:
       for (guardLayer = 0; guardLayer <= (gridSizes[d]-1)/2; guardLayer++) {
-	cell = -1 - guardLayer;
-	(meshSpacing[d])[cell] = (meshSpacing[d])[gridSizes[d] + cell];
-	(meshPosition[d])[cell] = (meshPosition[d])[cell+1] -
-	                          (meshSpacing[d])[cell];
+        cell = -1 - guardLayer;
+        (meshSpacing[d])[cell] = (meshSpacing[d])[gridSizes[d] + cell];
+        (meshPosition[d])[cell] = (meshPosition[d])[cell+1] -
+                                  (meshSpacing[d])[cell];
       }
       break;
     case Reflective:
       for (guardLayer = 0; guardLayer <= (gridSizes[d]-1)/2; guardLayer++) {
-	cell = -1 - guardLayer;
-	(meshSpacing[d])[cell] = (meshSpacing[d])[-cell - 1];
-	(meshPosition[d])[cell] = (meshPosition[d])[cell+1] -
-	                          (meshSpacing[d])[cell];
+        cell = -1 - guardLayer;
+        (meshSpacing[d])[cell] = (meshSpacing[d])[-cell - 1];
+        (meshPosition[d])[cell] = (meshPosition[d])[cell+1] -
+                                  (meshSpacing[d])[cell];
       }
       break;
     case NoBC:
       for (guardLayer = 0; guardLayer <= (gridSizes[d]-1)/2; guardLayer++) {
-	cell = -1 - guardLayer;
-	(meshSpacing[d])[cell] = 0;
-	(meshPosition[d])[cell] = (meshPosition[d])[cell+1] -
-	                          (meshSpacing[d])[cell];
+        cell = -1 - guardLayer;
+        (meshSpacing[d])[cell] = 0;
+        (meshPosition[d])[cell] = (meshPosition[d])[cell+1] -
+                                  (meshSpacing[d])[cell];
       }
       break;
     default:
       ERRORMSG("Cartesian::updateMeshSpacingGuards(): unknown MeshBC type"
-	       << endl);
+               << endl);
       break;
     }
   }
@@ -2379,11 +2377,11 @@ Div(Field<Vektor<T,3U>,3U,Cartesian<3U,MFLOAT>,Vert>& x,
   idz[2] = 1.0;
   r[I][J][K] =
     dot(idx, ((x[I+1][J  ][K  ] - x[I-1][J  ][K  ])/
-	      (vS[I  ][J  ][K  ] + vS[I-1][J  ][K  ]))) +
+              (vS[I  ][J  ][K  ] + vS[I-1][J  ][K  ]))) +
     dot(idy, ((x[I  ][J+1][K  ] - x[I  ][J-1][K  ])/
-	      (vS[I  ][J  ][K  ] + vS[I  ][J-1][K  ]))) +
+              (vS[I  ][J  ][K  ] + vS[I  ][J-1][K  ]))) +
     dot(idz, ((x[I  ][J  ][K+1] - x[I  ][J  ][K-1])/
-	      (vS[I  ][J  ][K  ] + vS[I  ][J  ][K-1])));
+              (vS[I  ][J  ][K  ] + vS[I  ][J  ][K-1])));
   return r;
 }
 //----------------------------------------------------------------------
@@ -2452,11 +2450,11 @@ Div(Field<Vektor<T,3U>,3U,Cartesian<3U,MFLOAT>,Cell>& x,
   idz[2] = 1.0;
   r[I][J][K] =
     dot(idx, ((x[I+1][J  ][K  ] - x[I-1][J  ][K  ])/
-	      (cS[I  ][J  ][K  ] + cS[I-1][J  ][K  ]))) +
+              (cS[I  ][J  ][K  ] + cS[I-1][J  ][K  ]))) +
     dot(idy, ((x[I  ][J+1][K  ] - x[I  ][J-1][K  ])/
-	      (cS[I  ][J  ][K  ] + cS[I  ][J-1][K  ]))) +
+              (cS[I  ][J  ][K  ] + cS[I  ][J-1][K  ]))) +
     dot(idz, ((x[I  ][J  ][K+1] - x[I  ][J  ][K-1])/
-	      (cS[I  ][J  ][K  ] + cS[I  ][J  ][K-1])));
+              (cS[I  ][J  ][K  ] + cS[I  ][J  ][K-1])));
   return r;
 }
 //----------------------------------------------------------------------
@@ -2709,7 +2707,7 @@ Grad(Field<T,1U,Cartesian<1U,MFLOAT>,Vert>& x,
   const NDIndex<1U>& domain = r.getDomain();
   Index I = domain[0];
   r[I] = (x[I  ]*x.get_mesh().Dvc[0] +
-	  x[I+1]*x.get_mesh().Dvc[1])/vertSpacings[I];
+          x[I+1]*x.get_mesh().Dvc[1])/vertSpacings[I];
   return r;
 }
 //----------------------------------------------------------------------
@@ -2724,9 +2722,9 @@ Grad(Field<T,2U,Cartesian<2U,MFLOAT>,Vert>& x,
   Index I = domain[0];
   Index J = domain[1];
   r[I][J] = (x[I  ][J  ]*x.get_mesh().Dvc[0] +
-	     x[I+1][J  ]*x.get_mesh().Dvc[1] +
-	     x[I  ][J+1]*x.get_mesh().Dvc[2] +
-	     x[I+1][J+1]*x.get_mesh().Dvc[3])/vertSpacings[I][J];
+             x[I+1][J  ]*x.get_mesh().Dvc[1] +
+             x[I  ][J+1]*x.get_mesh().Dvc[2] +
+             x[I+1][J+1]*x.get_mesh().Dvc[3])/vertSpacings[I][J];
   return r;
 }
 //----------------------------------------------------------------------
@@ -2742,13 +2740,13 @@ Grad(Field<T,3U,Cartesian<3U,MFLOAT>,Vert>& x,
   Index J = domain[1];
   Index K = domain[2];
   r[I][J][K] = (x[I  ][J  ][K  ]*x.get_mesh().Dvc[0] +
-		x[I+1][J  ][K  ]*x.get_mesh().Dvc[1] +
-		x[I  ][J+1][K  ]*x.get_mesh().Dvc[2] +
-		x[I+1][J+1][K  ]*x.get_mesh().Dvc[3] +
-		x[I  ][J  ][K+1]*x.get_mesh().Dvc[4] +
-		x[I+1][J  ][K+1]*x.get_mesh().Dvc[5] +
-		x[I  ][J+1][K+1]*x.get_mesh().Dvc[6] +
-		x[I+1][J+1][K+1]*x.get_mesh().Dvc[7])/vertSpacings[I][J][K];
+                x[I+1][J  ][K  ]*x.get_mesh().Dvc[1] +
+                x[I  ][J+1][K  ]*x.get_mesh().Dvc[2] +
+                x[I+1][J+1][K  ]*x.get_mesh().Dvc[3] +
+                x[I  ][J  ][K+1]*x.get_mesh().Dvc[4] +
+                x[I+1][J  ][K+1]*x.get_mesh().Dvc[5] +
+                x[I  ][J+1][K+1]*x.get_mesh().Dvc[6] +
+                x[I+1][J+1][K+1]*x.get_mesh().Dvc[7])/vertSpacings[I][J][K];
   return r;
 }
 //----------------------------------------------------------------------
@@ -2766,7 +2764,7 @@ Grad(Field<T,1U,Cartesian<1U,MFLOAT>,Cell>& x,
   const NDIndex<1U>& domain = r.getDomain();
   Index I = domain[0];
   r[I] = (x[I-1]*x.get_mesh().Dvc[0] +
-	  x[I  ]*x.get_mesh().Dvc[1])/cellSpacings[I];
+          x[I  ]*x.get_mesh().Dvc[1])/cellSpacings[I];
   return r;
 }
 //----------------------------------------------------------------------
@@ -2781,9 +2779,9 @@ Grad(Field<T,2U,Cartesian<2U,MFLOAT>,Cell>& x,
   Index I = domain[0];
   Index J = domain[1];
   r[I][J] = (x[I-1][J-1]*x.get_mesh().Dvc[0] +
-	     x[I  ][J-1]*x.get_mesh().Dvc[1] +
-	     x[I-1][J  ]*x.get_mesh().Dvc[2] +
-	     x[I  ][J  ]*x.get_mesh().Dvc[3])/cellSpacings[I][J];
+             x[I  ][J-1]*x.get_mesh().Dvc[1] +
+             x[I-1][J  ]*x.get_mesh().Dvc[2] +
+             x[I  ][J  ]*x.get_mesh().Dvc[3])/cellSpacings[I][J];
   return r;
 }
 //----------------------------------------------------------------------
@@ -2801,13 +2799,13 @@ Grad(Field<T,3U,Cartesian<3U,MFLOAT>,Cell>& x,
   Vektor<MFLOAT,3U> dvc[1<<3U];
   for (unsigned int d=0; d < 1<<3U; d++) dvc[d] = x.get_mesh().Dvc[d];
   r[I][J][K] = (x[I-1][J-1][K-1]*dvc[0] +
-		x[I  ][J-1][K-1]*dvc[1] +
-		x[I-1][J  ][K-1]*dvc[2] +
-		x[I  ][J  ][K-1]*dvc[3] +
-		x[I-1][J-1][K  ]*dvc[4] +
-		x[I  ][J-1][K  ]*dvc[5] +
-		x[I-1][J  ][K  ]*dvc[6] +
-		x[I  ][J  ][K  ]*dvc[7])/
+                x[I  ][J-1][K-1]*dvc[1] +
+                x[I-1][J  ][K-1]*dvc[2] +
+                x[I  ][J  ][K-1]*dvc[3] +
+                x[I-1][J-1][K  ]*dvc[4] +
+                x[I  ][J-1][K  ]*dvc[5] +
+                x[I-1][J  ][K  ]*dvc[6] +
+                x[I  ][J  ][K  ]*dvc[7])/
     cellSpacings[I][J][K];
   return r;
 }
@@ -2865,9 +2863,9 @@ Grad(Field<T,2U,Cartesian<2U,MFLOAT>,Vert>& x,
 
   r[I][J] =
     idx*((x[I+1][J  ] - x[I-1][J  ])/
-	 (vertSpacings[I][J] + vertSpacings[I-1][J])) +
+         (vertSpacings[I][J] + vertSpacings[I-1][J])) +
     idy*((x[I  ][J+1] - x[I  ][J-1])/
-	 (vertSpacings[I][J] + vertSpacings[I][J-1]));
+         (vertSpacings[I][J] + vertSpacings[I][J-1]));
   return r;
 }
 //----------------------------------------------------------------------
@@ -2897,11 +2895,11 @@ Grad(Field<T,3U,Cartesian<3U,MFLOAT>,Vert>& x,
 
   r[I][J][K] =
     idx*((x[I+1][J  ][K  ] - x[I-1][J  ][K  ])/
-	 (vertSpacings[I][J][K] + vertSpacings[I-1][J][K])) +
+         (vertSpacings[I][J][K] + vertSpacings[I-1][J][K])) +
     idy*((x[I  ][J+1][K  ] - x[I  ][J-1][K  ])/
-	 (vertSpacings[I][J][K] + vertSpacings[I][J-1][K])) +
+         (vertSpacings[I][J][K] + vertSpacings[I][J-1][K])) +
     idz*((x[I  ][J  ][K+1] - x[I  ][J  ][K-1])/
-	 (vertSpacings[I][J][K] + vertSpacings[I][J][K-1]));
+         (vertSpacings[I][J][K] + vertSpacings[I][J][K-1]));
   return r;
 }
 //----------------------------------------------------------------------
@@ -2945,9 +2943,9 @@ Grad(Field<T,2U,Cartesian<2U,MFLOAT>,Cell>& x,
 
   r[I][J] =
     idx*((x[I+1][J  ] - x[I-1][J  ])/
-	 (cellSpacings[I][J] + cellSpacings[I+1][J])) +
+         (cellSpacings[I][J] + cellSpacings[I+1][J])) +
     idy*((x[I  ][J+1] - x[I  ][J-1])/
-	 (cellSpacings[I][J] + cellSpacings[I][J+1]));
+         (cellSpacings[I][J] + cellSpacings[I][J+1]));
   return r;
 }
 //----------------------------------------------------------------------
@@ -2977,11 +2975,11 @@ Grad(Field<T,3U,Cartesian<3U,MFLOAT>,Cell>& x,
 
   r[I][J][K] =
     idx*((x[I+1][J  ][K  ] - x[I-1][J  ][K  ])/
-	 (cellSpacings[I][J][K] + cellSpacings[I+1][J][K])) +
+         (cellSpacings[I][J][K] + cellSpacings[I+1][J][K])) +
     idy*((x[I  ][J+1][K  ] - x[I  ][J-1][K  ])/
-	 (cellSpacings[I][J][K] + cellSpacings[I][J+1][K])) +
+         (cellSpacings[I][J][K] + cellSpacings[I][J+1][K])) +
     idz*((x[I  ][J  ][K+1] - x[I  ][J  ][K-1])/
-	 (cellSpacings[I][J][K] + cellSpacings[I][J][K+1]));
+         (cellSpacings[I][J][K] + cellSpacings[I][J][K+1]));
   return r;
 }
 //----------------------------------------------------------------------
@@ -3113,8 +3111,8 @@ namespace IPPL {
 template < class T1, class T2, class MFLOAT >
 Field<T1,1U,Cartesian<1U,MFLOAT>,Vert>&
 Average(Field<T1,1U,Cartesian<1U,MFLOAT>,Cell>& x,
-	Field<T2,1U,Cartesian<1U,MFLOAT>,Cell>& w,
-	Field<T1,1U,Cartesian<1U,MFLOAT>,Vert>& r)
+        Field<T2,1U,Cartesian<1U,MFLOAT>,Cell>& w,
+        Field<T1,1U,Cartesian<1U,MFLOAT>,Vert>& r)
 {
   const NDIndex<1U>& domain = r.getDomain();
   Index I = domain[0];
@@ -3125,17 +3123,17 @@ Average(Field<T1,1U,Cartesian<1U,MFLOAT>,Cell>& x,
 template < class T1, class T2, class MFLOAT >
 Field<T1,2U,Cartesian<2U,MFLOAT>,Vert>&
 Average(Field<T1,2U,Cartesian<2U,MFLOAT>,Cell>& x,
-	Field<T2,2U,Cartesian<2U,MFLOAT>,Cell>& w,
-	Field<T1,2U,Cartesian<2U,MFLOAT>,Vert>& r)
+        Field<T2,2U,Cartesian<2U,MFLOAT>,Cell>& w,
+        Field<T1,2U,Cartesian<2U,MFLOAT>,Vert>& r)
 {
   const NDIndex<2U>& domain = r.getDomain();
   Index I = domain[0];
   Index J = domain[1];
 
   r[I][J] = (x[I-1][J-1] * w[I-1][J-1] +
-	     x[I  ][J-1] * w[I  ][J-1] +
-	     x[I-1][J  ] * w[I-1][J  ] +
-	     x[I  ][J  ] * w[I  ][J  ])/
+             x[I  ][J-1] * w[I  ][J-1] +
+             x[I-1][J  ] * w[I-1][J  ] +
+             x[I  ][J  ] * w[I  ][J  ])/
     (w[I-1][J-1] +
      w[I  ][J-1] +
      w[I-1][J  ] +
@@ -3146,8 +3144,8 @@ Average(Field<T1,2U,Cartesian<2U,MFLOAT>,Cell>& x,
 template < class T1, class T2, class MFLOAT >
 Field<T1,3U,Cartesian<3U,MFLOAT>,Vert>&
 Average(Field<T1,3U,Cartesian<3U,MFLOAT>,Cell>& x,
-	Field<T2,3U,Cartesian<3U,MFLOAT>,Cell>& w,
-	Field<T1,3U,Cartesian<3U,MFLOAT>,Vert>& r)
+        Field<T2,3U,Cartesian<3U,MFLOAT>,Cell>& w,
+        Field<T1,3U,Cartesian<3U,MFLOAT>,Vert>& r)
 {
   const NDIndex<3U>& domain = r.getDomain();
   Index I = domain[0];
@@ -3155,13 +3153,13 @@ Average(Field<T1,3U,Cartesian<3U,MFLOAT>,Cell>& x,
   Index K = domain[2];
 
   r[I][J][K] = (x[I-1][J-1][K-1] * w[I-1][J-1][K-1] +
-		x[I  ][J-1][K-1] * w[I  ][J-1][K-1] +
-		x[I-1][J  ][K-1] * w[I-1][J  ][K-1] +
-		x[I  ][J  ][K-1] * w[I  ][J  ][K-1] +
-		x[I-1][J-1][K  ] * w[I-1][J-1][K  ] +
-		x[I  ][J-1][K  ] * w[I  ][J-1][K  ] +
-		x[I-1][J  ][K  ] * w[I-1][J  ][K  ] +
-		x[I  ][J  ][K  ] * w[I  ][J  ][K  ] )/
+                x[I  ][J-1][K-1] * w[I  ][J-1][K-1] +
+                x[I-1][J  ][K-1] * w[I-1][J  ][K-1] +
+                x[I  ][J  ][K-1] * w[I  ][J  ][K-1] +
+                x[I-1][J-1][K  ] * w[I-1][J-1][K  ] +
+                x[I  ][J-1][K  ] * w[I  ][J-1][K  ] +
+                x[I-1][J  ][K  ] * w[I-1][J  ][K  ] +
+                x[I  ][J  ][K  ] * w[I  ][J  ][K  ] )/
     (w[I-1][J-1][K-1] +
      w[I  ][J-1][K-1] +
      w[I-1][J  ][K-1] +
@@ -3179,8 +3177,8 @@ Average(Field<T1,3U,Cartesian<3U,MFLOAT>,Cell>& x,
 template < class T1, class T2, class MFLOAT >
 Field<T1,1U,Cartesian<1U,MFLOAT>,Cell>&
 Average(Field<T1,1U,Cartesian<1U,MFLOAT>,Vert>& x,
-	Field<T2,1U,Cartesian<1U,MFLOAT>,Vert>& w,
-	Field<T1,1U,Cartesian<1U,MFLOAT>,Cell>& r)
+        Field<T2,1U,Cartesian<1U,MFLOAT>,Vert>& w,
+        Field<T1,1U,Cartesian<1U,MFLOAT>,Cell>& r)
 {
   const NDIndex<1U>& domain = r.getDomain();
   Index I = domain[0];
@@ -3191,17 +3189,17 @@ Average(Field<T1,1U,Cartesian<1U,MFLOAT>,Vert>& x,
 template < class T1, class T2, class MFLOAT >
 Field<T1,2U,Cartesian<2U,MFLOAT>,Cell>&
 Average(Field<T1,2U,Cartesian<2U,MFLOAT>,Vert>& x,
-	Field<T2,2U,Cartesian<2U,MFLOAT>,Vert>& w,
-	Field<T1,2U,Cartesian<2U,MFLOAT>,Cell>& r)
+        Field<T2,2U,Cartesian<2U,MFLOAT>,Vert>& w,
+        Field<T1,2U,Cartesian<2U,MFLOAT>,Cell>& r)
 {
   const NDIndex<2U>& domain = r.getDomain();
   Index I = domain[0];
   Index J = domain[1];
 
   r[I][J] = (x[I+1][J+1] * w[I+1][J+1] +
-	     x[I  ][J+1] * w[I  ][J+1] +
-	     x[I+1][J  ] * w[I+1][J  ] +
-	     x[I  ][J  ] * w[I  ][J  ])/
+             x[I  ][J+1] * w[I  ][J+1] +
+             x[I+1][J  ] * w[I+1][J  ] +
+             x[I  ][J  ] * w[I  ][J  ])/
     (w[I+1][J+1] +
      w[I  ][J+1] +
      w[I+1][J  ] +
@@ -3212,8 +3210,8 @@ Average(Field<T1,2U,Cartesian<2U,MFLOAT>,Vert>& x,
 template < class T1, class T2, class MFLOAT >
 Field<T1,3U,Cartesian<3U,MFLOAT>,Cell>&
 Average(Field<T1,3U,Cartesian<3U,MFLOAT>,Vert>& x,
-	Field<T2,3U,Cartesian<3U,MFLOAT>,Vert>& w,
-	Field<T1,3U,Cartesian<3U,MFLOAT>,Cell>& r)
+        Field<T2,3U,Cartesian<3U,MFLOAT>,Vert>& w,
+        Field<T1,3U,Cartesian<3U,MFLOAT>,Cell>& r)
 {
   const NDIndex<3U>& domain = r.getDomain();
   Index I = domain[0];
@@ -3221,13 +3219,13 @@ Average(Field<T1,3U,Cartesian<3U,MFLOAT>,Vert>& x,
   Index K = domain[2];
 
   r[I][J][K] = (x[I+1][J+1][K+1] * w[I+1][J+1][K+1] +
-		x[I  ][J+1][K+1] * w[I  ][J+1][K+1] +
-		x[I+1][J  ][K+1] * w[I+1][J  ][K+1] +
-		x[I  ][J  ][K+1] * w[I  ][J  ][K+1] +
-		x[I+1][J+1][K  ] * w[I+1][J+1][K  ] +
-		x[I  ][J+1][K  ] * w[I  ][J+1][K  ] +
-		x[I+1][J  ][K  ] * w[I+1][J  ][K  ] +
-		x[I  ][J  ][K  ] * w[I  ][J  ][K  ])/
+                x[I  ][J+1][K+1] * w[I  ][J+1][K+1] +
+                x[I+1][J  ][K+1] * w[I+1][J  ][K+1] +
+                x[I  ][J  ][K+1] * w[I  ][J  ][K+1] +
+                x[I+1][J+1][K  ] * w[I+1][J+1][K  ] +
+                x[I  ][J+1][K  ] * w[I  ][J+1][K  ] +
+                x[I+1][J  ][K  ] * w[I+1][J  ][K  ] +
+                x[I  ][J  ][K  ] * w[I  ][J  ][K  ])/
     (w[I+1][J+1][K+1] +
      w[I  ][J+1][K+1] +
      w[I+1][J  ][K+1] +
@@ -3245,7 +3243,7 @@ Average(Field<T1,3U,Cartesian<3U,MFLOAT>,Vert>& x,
 template < class T1, class MFLOAT >
 Field<T1,1U,Cartesian<1U,MFLOAT>,Vert>&
 Average(Field<T1,1U,Cartesian<1U,MFLOAT>,Cell>& x,
-	Field<T1,1U,Cartesian<1U,MFLOAT>,Vert>& r)
+        Field<T1,1U,Cartesian<1U,MFLOAT>,Vert>& r)
 {
   const NDIndex<1U>& domain = r.getDomain();
   Index I = domain[0];
@@ -3256,7 +3254,7 @@ Average(Field<T1,1U,Cartesian<1U,MFLOAT>,Cell>& x,
 template < class T1, class MFLOAT >
 Field<T1,2U,Cartesian<2U,MFLOAT>,Vert>&
 Average(Field<T1,2U,Cartesian<2U,MFLOAT>,Cell>& x,
-	Field<T1,2U,Cartesian<2U,MFLOAT>,Vert>& r)
+        Field<T1,2U,Cartesian<2U,MFLOAT>,Vert>& r)
 {
   const NDIndex<2U>& domain = r.getDomain();
   Index I = domain[0];
@@ -3268,15 +3266,15 @@ Average(Field<T1,2U,Cartesian<2U,MFLOAT>,Cell>& x,
 template < class T1, class MFLOAT >
 Field<T1,3U,Cartesian<3U,MFLOAT>,Vert>&
 Average(Field<T1,3U,Cartesian<3U,MFLOAT>,Cell>& x,
-	Field<T1,3U,Cartesian<3U,MFLOAT>,Vert>& r)
+        Field<T1,3U,Cartesian<3U,MFLOAT>,Vert>& r)
 {
   const NDIndex<3U>& domain = r.getDomain();
   Index I = domain[0];
   Index J = domain[1];
   Index K = domain[2];
   r[I][J][K] = 0.125*(x[I-1][J-1][K-1] + x[I  ][J-1][K-1] + x[I-1][J  ][K-1] +
-		      x[I  ][J  ][K-1] + x[I-1][J-1][K  ] + x[I  ][J-1][K  ] +
-		      x[I-1][J  ][K  ] + x[I  ][J  ][K  ]);
+                      x[I  ][J  ][K-1] + x[I-1][J-1][K  ] + x[I  ][J-1][K  ] +
+                      x[I-1][J  ][K  ] + x[I  ][J  ][K  ]);
   return r;
 }
 //----------------------------------------------------------------------
@@ -3286,7 +3284,7 @@ Average(Field<T1,3U,Cartesian<3U,MFLOAT>,Cell>& x,
 template < class T1, class MFLOAT >
 Field<T1,1U,Cartesian<1U,MFLOAT>,Cell>&
 Average(Field<T1,1U,Cartesian<1U,MFLOAT>,Vert>& x,
-	Field<T1,1U,Cartesian<1U,MFLOAT>,Cell>& r)
+        Field<T1,1U,Cartesian<1U,MFLOAT>,Cell>& r)
 {
   const NDIndex<1U>& domain = r.getDomain();
   Index I = domain[0];
@@ -3297,7 +3295,7 @@ Average(Field<T1,1U,Cartesian<1U,MFLOAT>,Vert>& x,
 template < class T1, class MFLOAT >
 Field<T1,2U,Cartesian<2U,MFLOAT>,Cell>&
 Average(Field<T1,2U,Cartesian<2U,MFLOAT>,Vert>& x,
-	Field<T1,2U,Cartesian<2U,MFLOAT>,Cell>& r)
+        Field<T1,2U,Cartesian<2U,MFLOAT>,Cell>& r)
 {
   const NDIndex<2U>& domain = r.getDomain();
   Index I = domain[0];
@@ -3309,15 +3307,15 @@ Average(Field<T1,2U,Cartesian<2U,MFLOAT>,Vert>& x,
 template < class T1, class MFLOAT >
 Field<T1,3U,Cartesian<3U,MFLOAT>,Cell>&
 Average(Field<T1,3U,Cartesian<3U,MFLOAT>,Vert>& x,
-	Field<T1,3U,Cartesian<3U,MFLOAT>,Cell>& r)
+        Field<T1,3U,Cartesian<3U,MFLOAT>,Cell>& r)
 {
   const NDIndex<3U>& domain = r.getDomain();
   Index I = domain[0];
   Index J = domain[1];
   Index K = domain[2];
   r[I][J][K] = 0.125*(x[I+1][J+1][K+1] + x[I  ][J+1][K+1] + x[I+1][J  ][K+1] +
-		      x[I  ][J  ][K+1] + x[I+1][J+1][K  ] + x[I  ][J+1][K  ] +
-		      x[I+1][J  ][K  ] + x[I  ][J  ][K  ]);
+                      x[I  ][J  ][K+1] + x[I+1][J+1][K  ] + x[I  ][J+1][K  ] +
+                      x[I+1][J  ][K  ] + x[I  ][J  ][K  ]);
   return r;
 }
 

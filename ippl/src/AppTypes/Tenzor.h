@@ -210,12 +210,12 @@ public:
   }
 
   Element_t operator()(const std::pair<int,int> i) const {
-    PAssert ( (i.first>=0) && (i.second>=0) && (i.first<D) && (i.second<D) );
+    PAssert ( (i.first>=0) && (i.second>=0) && (i.first<(int)D) && (i.second<(int)D) );
     return (*this)(i.first,i.second);
   }
 
   Element_t& operator()(const std::pair<int,int> i) {
-    PAssert ( (i.first>=0) && (i.second>=0) && (i.first<D) && (i.second<D) );
+    PAssert ( (i.first>=0) && (i.second>=0) && (i.first<(int)D) && (i.second<(int)D) );
     return (*this)(i.first,i.second);
   }
 

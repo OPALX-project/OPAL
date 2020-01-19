@@ -1,5 +1,0 @@
-rm -r data
-mkdir data
-$MYMPIRUN -np 4 ./twostream-2 constfoc-1.inp driftsc-2.inp --processes 4 --commlib mpi | tee data/out.dat
-# gnuplot anal.gpl
-# gv data.ps

@@ -84,22 +84,11 @@ std::stack<StaticIpplInfo> IpplInfo::stashedStaticMembers;
 //dks base member of IpplInfo initialized to default values
 bool IpplInfo::DKSEnabled = false;
 
-#ifdef IPPL_DKS
-
-#ifdef IPPL_DKS_CUDA
+#if defined(IPPL_DKS) && defined(IPPL_DKS_CUDA)
 DKSOPAL *IpplInfo::DKS = new DKSOPAL("Cuda", "-gpu");
-#endif
-
-#ifdef IPPL_DKS_OPENCL
+#elseif defined(IPPL_DKS) && defined(IPPL_DKS_OPENCL)
 DKSOPAL *IpplInfo::DKS = new DKSOPAL("OpenCL", "-gpu");
 #endif
-
-#ifdef IPPL_DKS_MIC
-DKSOPAL *IpplInfo::DKS = new DKSOPAL("OpenMP", "-mic");
-#endif
-
-#endif
-
 
 // should we use the optimization of deferring guard cell fills until
 // absolutely needed?  Can be changed to true by specifying the

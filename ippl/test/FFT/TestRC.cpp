@@ -260,20 +260,20 @@ int main(int argc, char *argv[])
     
 
   // create test Fields for complex-to-complex FFT
-  BareField<dcomplex,D> CFieldPPStan(layoutPPStan);
+  BareField<std::complex<double>,D> CFieldPPStan(layoutPPStan);
   
-  BareField<dcomplex,D> CFieldSPStan(layoutSPStan);
+  BareField<std::complex<double>,D> CFieldSPStan(layoutSPStan);
   
   BareField<double,D> diffFieldSPStan(layoutSPStan);
   
   // create test Fields for real-to-complex FFT
   BareField<double,D> RFieldSPStan(layoutSPStan);
   BareField<double,D> RFieldSPStan_save(layoutSPStan);
-  BareField<dcomplex,D> CFieldSPStan0h(layoutSPStan0h);
+  BareField<std::complex<double>,D> CFieldSPStan0h(layoutSPStan0h);
   
   // Rather more complete test functions (sine or cosine mode):
-  dcomplex sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
-  dcomplex cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
+  std::complex<double> sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
+  std::complex<double> cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
   
   double xfact, kx, yfact, ky, zfact, kz;
   xfact = pi/(ngrid[0] + 1.0);
@@ -298,7 +298,7 @@ int main(int argc, char *argv[])
 
   RFieldSPStan = real(CFieldPPStan);
 
-  CFieldSPStan0h = dcomplex(0.0,0.0);
+  CFieldSPStan0h = std::complex<double>(0.0,0.0);
   IpplTimings::stopTimer(fInitTimer);
 
   // create RC FFT object

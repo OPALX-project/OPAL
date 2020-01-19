@@ -48,7 +48,7 @@ typedef CenteredFieldLayout<Dim, Mesh_t, Center_t>                    FieldLayou
 typedef Field<double, Dim, Mesh_t, Center_t>                          Field_t;
 typedef Field<int, Dim, Mesh_t, Center_t>                             IField_t;
 typedef Field<Vector_t, Dim, Mesh_t, Center_t>                        VField_t;
-typedef Field<dcomplex, Dim, Mesh_t, Center_t>                        CxField_t;
+typedef Field<std::complex<double>, Dim, Mesh_t, Center_t>                        CxField_t;
 typedef FFT<CCTransform, Dim, double>                                 FFT_t;
 
 typedef IntCIC                                                        IntrplCIC_t;
@@ -85,10 +85,10 @@ struct SpecializedGreensFunction<3> {
 						r = real(sqrt(grn.localElement(elem)));
 						if (elem==elem0)
 							//grn.localElement(elem) = 0 ;
-							//grn.localElement(elem) = ke*dcomplex(2*alpha/sqrt(M_PI)) ;
-							grn.localElement(elem) = ke*dcomplex(erf(alpha*r)/(r+eps));
+							//grn.localElement(elem) = ke*std::complex<double>(2*alpha/sqrt(M_PI)) ;
+							grn.localElement(elem) = ke*std::complex<double>(erf(alpha*r)/(r+eps));
 						else
-							grn.localElement(elem) = ke*dcomplex(erf(alpha*r)/(r));
+							grn.localElement(elem) = ke*std::complex<double>(erf(alpha*r)/(r));
 					}
 				}
 			}
@@ -114,7 +114,7 @@ struct SpecializedGreensFunction<3> {
 					for (int k=lDomain_m[2].min(); k<=lDomain_m[2].max(); ++k) {
 						elem[2]=Index(k,k);
 						r = real(sqrt(grn.localElement(elem)));
-						grn.localElement(elem) = 1./(4.*M_PI)*dcomplex(erf(alpha*r)/(r+eps));
+						grn.localElement(elem) = 1./(4.*M_PI)*std::complex<double>(erf(alpha*r)/(r+eps));
 					}
 				}
 			}
@@ -349,38 +349,38 @@ class ChargedParticles : public IpplParticleBase<PL> {
 						val = 1./(4.*M_PI)*erf(alpha*r)/(r+eps);
 
 						elem_all=elem;
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
 						//mirror on x axis
 						elem_all[0]=elem_mirr[0];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
 						//mirror on y axis
 						elem_all[0]=elem[0];
 						elem_all[1]=elem_mirr[1];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
 						//mirror on z axis
 						elem_all[1]=elem[1];
 						elem_all[2]=elem_mirr[2];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
 						//mirror on x,y axis
 						elem_all[0]=elem_mirr[0];
 						elem_all[1]=elem_mirr[1];
 						elem_all[2]=elem[2];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
 						//mirror on y,z axis
 						elem_all[0]=elem[0];
 						elem_all[1]=elem_mirr[1];
 						elem_all[2]=elem_mirr[2];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
 						//mirror on z,x axis
 						elem_all[0]=elem_mirr[0];
 						elem_all[1]=elem[1];
 						elem_all[2]=elem_mirr[2];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
 						//mirror on x,y,z axis
 						elem_all[0]=elem_mirr[0];
 						elem_all[1]=elem_mirr[1];
 						elem_all[2]=elem_mirr[2];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
 					}
 				}
 			}

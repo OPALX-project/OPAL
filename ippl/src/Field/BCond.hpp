@@ -186,7 +186,7 @@ void ConstantFace<T,D,M,C>::write(std::ostream& out) const
   out << "ConstantFace"
       << ", Face=" << BCondBase<T,D,M,C>::m_face
       << ", Constant=" << this->Offset
-      << endl;
+      << std::endl;
 }
 
 template<class T, unsigned int D, class M, class C>
@@ -393,7 +393,7 @@ COMPONENT_APPLY_BUILTIN(OpPeriodicComponent,short)
 COMPONENT_APPLY_BUILTIN(OpPeriodicComponent,long)
 COMPONENT_APPLY_BUILTIN(OpPeriodicComponent,float)
 COMPONENT_APPLY_BUILTIN(OpPeriodicComponent,double)
-COMPONENT_APPLY_BUILTIN(OpPeriodicComponent,dcomplex)
+COMPONENT_APPLY_BUILTIN(OpPeriodicComponent,std::complex<double>)
 
 
 //////////////////////////////////////////////////////////////////////
@@ -452,7 +452,7 @@ COMPONENT_APPLY_BUILTIN(OpInterpolationComponent,short)
 COMPONENT_APPLY_BUILTIN(OpInterpolationComponent,long)
 COMPONENT_APPLY_BUILTIN(OpInterpolationComponent,float)
 COMPONENT_APPLY_BUILTIN(OpInterpolationComponent,double)
-COMPONENT_APPLY_BUILTIN(OpInterpolationComponent,dcomplex)
+COMPONENT_APPLY_BUILTIN(OpInterpolationComponent,std::complex<double>)
 //////////////////////////////////////////////////////////////////////
 
 //----------------------------------------------------------------------------
@@ -915,7 +915,7 @@ void PeriodicFaceBCApply(PeriodicFace<T,D,M,
 	  allComponents) {
 	// Make sure all components are really centered the same, as assumed:
 	CenteringEnum centering0 = CE[0 + d*NC]; // 1st component along dir d
-	for (int c=1; c<NC; c++) { // Compare other components with 1st
+	for (unsigned int c=1; c<NC; c++) { // Compare other components with 1st
 	  if (CE[c + d*NC] != centering0)
 	    ERRORMSG("PeriodicFaceBCApply: BCond thinks all components have"
 		     << " same centering along direction " << d
@@ -950,7 +950,7 @@ void PeriodicFaceBCApply(PeriodicFace<T,D,M,
 	  allComponents) {
 	// Make sure all components are really centered the same, as assumed:
 	CenteringEnum centering0 = CE[0 + d*NC]; // 1st component along dir d
-	for (int c=1; c<NC; c++) { // Compare other components with 1st
+	for (unsigned int c=1; c<NC; c++) { // Compare other components with 1st
 	  if (CE[c + d*NC] != centering0)
 	    ERRORMSG("PeriodicFaceBCApply: BCond thinks all components have"
 		     << " same centering along direction " << d
@@ -1222,7 +1222,7 @@ CalcParallelPeriodicDomain(const Field<T,D,M,CartesianCentering<CE,D,NC> >& A,
 
 	  CenteringEnum centering0 = CE[0 + d*NC]; // 1st component
 	                                           // along dir d
-	  for (int c = 1; c < NC; c++)
+	  for (unsigned int c = 1; c < NC; c++)
 	    {
 	      // Compare other components with 1st
 	      if (CE[c + d*NC] != centering0)
@@ -1279,7 +1279,7 @@ CalcParallelPeriodicDomain(const Field<T,D,M,CartesianCentering<CE,D,NC> >& A,
 
 	  CenteringEnum centering0 = CE[0 + d*NC]; // 1st component
 	                                           // along dir d
-	  for (int c = 1; c < NC; c++)
+	  for (unsigned int c = 1; c < NC; c++)
 	    { // Compare other components with 1st
 	      if (CE[c + d*NC] != centering0)
 		ERRORMSG("ParallelPeriodicFaceBCApply:"
@@ -2773,7 +2773,7 @@ COMPONENT_APPLY_BUILTIN(OpExtrapolateComponent,short)
 COMPONENT_APPLY_BUILTIN(OpExtrapolateComponent,long)
 COMPONENT_APPLY_BUILTIN(OpExtrapolateComponent,float)
 COMPONENT_APPLY_BUILTIN(OpExtrapolateComponent,double)
-COMPONENT_APPLY_BUILTIN(OpExtrapolateComponent,dcomplex)
+COMPONENT_APPLY_BUILTIN(OpExtrapolateComponent,std::complex<double>)
 
 //////////////////////////////////////////////////////////////////////
 
@@ -3320,7 +3320,7 @@ void ExtrapolateFaceBCApply(ExtrapolateFace<T,D,M,
 	  // Make sure all components are really centered the same, as assumed:
 
 	  CenteringEnum centering0 = CE[0 + d*NC]; // 1st component along dir d
-	  for (int c=1; c<NC; c++)
+	  for (unsigned int c=1; c<NC; c++)
 	    {
 	      // Compare other components with 1st
 	      if (CE[c + d*NC] != centering0)
@@ -3394,7 +3394,7 @@ void ExtrapolateFaceBCApply(ExtrapolateFace<T,D,M,
 	  // Make sure all components are really centered the same, as assumed:
 
 	  CenteringEnum centering0 = CE[0 + d*NC]; // 1st component along dir d
-	  for (int c=1; c<NC; c++)
+	  for (unsigned int c=1; c<NC; c++)
 	    {
 	      // Compare other components with 1st
 
@@ -3564,7 +3564,7 @@ COMPONENT_APPLY_BUILTIN(OpExtrapolateAndZeroComponent,short)
 COMPONENT_APPLY_BUILTIN(OpExtrapolateAndZeroComponent,long)
 COMPONENT_APPLY_BUILTIN(OpExtrapolateAndZeroComponent,float)
 COMPONENT_APPLY_BUILTIN(OpExtrapolateAndZeroComponent,double)
-COMPONENT_APPLY_BUILTIN(OpExtrapolateAndZeroComponent,dcomplex)
+COMPONENT_APPLY_BUILTIN(OpExtrapolateAndZeroComponent,std::complex<double>)
 
 // Special, for assigning to single component of multicomponent elemental type:
 template<class T>
@@ -3589,7 +3589,7 @@ COMPONENT_APPLY_BUILTIN(OpAssignComponent,short)
 COMPONENT_APPLY_BUILTIN(OpAssignComponent,long)
 COMPONENT_APPLY_BUILTIN(OpAssignComponent,float)
 COMPONENT_APPLY_BUILTIN(OpAssignComponent,double)
-COMPONENT_APPLY_BUILTIN(OpAssignComponent,dcomplex)
+COMPONENT_APPLY_BUILTIN(OpAssignComponent,std::complex<double>)
 
 //////////////////////////////////////////////////////////////////////
 
@@ -4262,7 +4262,7 @@ void ExtrapolateAndZeroFaceBCApply(ExtrapolateAndZeroFace<T,D,M,
 	  // Make sure all components are really centered the same, as assumed:
 
 	  CenteringEnum centering0 = CE[0 + d*NC]; // 1st component along dir d
-	  for (int c=1; c<NC; c++)
+	  for (unsigned int c=1; c<NC; c++)
 	    {
 	      // Compare other components with 1st
 	      if (CE[c + d*NC] != centering0)
@@ -4349,7 +4349,7 @@ void ExtrapolateAndZeroFaceBCApply(ExtrapolateAndZeroFace<T,D,M,
 	  // Make sure all components are really centered the same, as assumed:
 
 	  CenteringEnum centering0 = CE[0 + d*NC]; // 1st component along dir d
-	  for (int c=1; c<NC; c++)
+	  for (unsigned int c=1; c<NC; c++)
 	    {
 	      // Compare other components with 1st
 
@@ -4968,7 +4968,7 @@ COMPONENT_APPLY_BUILTIN(OpBCFunctionEqComponent,short)
 COMPONENT_APPLY_BUILTIN(OpBCFunctionEqComponent,long)
 COMPONENT_APPLY_BUILTIN(OpBCFunctionEqComponent,float)
 COMPONENT_APPLY_BUILTIN(OpBCFunctionEqComponent,double)
-COMPONENT_APPLY_BUILTIN(OpBCFunctionEqComponent,dcomplex)
+COMPONENT_APPLY_BUILTIN(OpBCFunctionEqComponent,std::complex<double>)
 
 
 //////////////////////////////////////////////////////////////////////

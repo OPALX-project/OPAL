@@ -33,12 +33,7 @@
 #include "Field/BCond.h"
 #include "Meshes/UniformCartesian.h"
 
-#ifdef IPPL_USE_STANDARD_HEADERS
 #include <iostream>
-using namespace std;
-#else
-#include <iostream>
-#endif
 
 //
 // Print out an array including the guard cells.

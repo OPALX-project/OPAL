@@ -101,29 +101,17 @@ FFT(const Domain_t& cdomain, const bool& compressTemps=false)
             transformTypes[d] = FFTBase<Dim,T>::ccFFT;  // all transforms are complex-to-complex
             normFact /= lengths[d];
         }
-    
-#ifdef IPPL_DKS
-#ifdef IPPL_DKS_OPENCL
-        INFOMSG("Init DKS base opencl" << endl);
-        base.setAPI("OpenCL", 6);
-        base.setDevice("-gpu", 4);
-        base.initDevice();
-    		
-#endif
-    	
-#ifdef IPPL_DKS_CUDA
+
+#if defined(IPPL_DKS) && defined(IPPL_DKS_CUDA)
         INFOMSG("Init DKS base cuda" << endl);
         base.setAPI("Cuda", 4);
         base.setDevice("-gpu", 4);
         base.initDevice();
-#endif
-    	
-#ifdef IPPL_DKS_MIC
-        INFOMSG("Init DKS base MIC" << endl);
-        base.setAPI("OpenMP", 6);
-        base.setDevice("-mic", 4);
+#elseif defined(IPPL_DKS) && defined(IPPL_DKS_OPENCL)
+        INFOMSG("Init DKS base opencl" << endl);
+        base.setAPI("OpenCL", 6);
+        base.setDevice("-gpu", 4);
         base.initDevice();
-#endif
 #endif
     
         // set up FFT Engine

@@ -9,82 +9,17 @@
  * makes any warranty, express or implied, or assumes any liability or
  * responsibility for the use of this software
  *
- * Visit www.amas.web.psi for more details
- *
  ***************************************************************************/
 
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
-// include files
 #include "Message/Message.h"
 #include "Utility/Inform.h"
 #include "Utility/IpplInfo.h"
 
-
 #include <iterator>
-// Rogue Wave STL for PGI compiler doesn't have iterator_traits!!
-
-// By now they have 2002 andreas
-#ifdef OLD_IPPL_PGI
-namespace std
-{
-
-template <class _Iterator>
-struct iterator_traits
-{
-    typedef typename _Iterator::iterator_category iterator_category;
-    typedef typename _Iterator::value_type        value_type;
-    typedef typename _Iterator::difference_type   difference_type;
-    typedef typename _Iterator::pointer           pointer;
-    typedef typename _Iterator::reference         reference;
-};
-
-template <class _Tp>
-struct iterator_traits<_Tp*>
-{
-    typedef random_access_iterator_tag iterator_category;
-    typedef _Tp                         value_type;
-    typedef ptrdiff_t                   difference_type;
-    typedef _Tp*                        pointer;
-    typedef _Tp&                        reference;
-};
-
-template <class _Tp>
-struct iterator_traits<const _Tp*>
-{
-    typedef random_access_iterator_tag iterator_category;
-    typedef _Tp                         value_type;
-    typedef ptrdiff_t                   difference_type;
-    typedef const _Tp*                  pointer;
-    typedef const _Tp&                  reference;
-};
-
-}
-#endif // IPPL_PGI
-
-
-
 #include <new>
 #include <memory>
 #include <cstdlib>
 #include <cstddef>
-
-// MWERKS: moved macro definitions for MessageTypeIntrinsic to Message.h
-
-// MWERKS: moved PutSingleItem definitions to Message.h
-
-// definitions for non-templated static member functions of PutSingleItem
-// can remain here.  JCC
-
-// specialization to a non-built-in type, which is never assumed to be a ptr
 
 template <class T>
 Message&

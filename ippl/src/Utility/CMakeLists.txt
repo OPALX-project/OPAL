@@ -13,8 +13,6 @@ set (_SRCS
     IpplTimings.cpp
     PAssert.cpp
     ParticleDebugFunctions.cpp
-    RNGSimple.cpp
-    RNGXCI.cpp
     RNGXDiv.cpp
     RandomNumberGen.cpp
     StaticIpplInfo.cpp
@@ -57,9 +55,6 @@ set (_HDRS
     RNGAssignDefs.h
     RNGBitReverse.h
     RNGLattice.h
-    RNGRand.h
-    RNGSimple.h
-    RNGXCI.h
     RNGXDiv.h
     RandomNumberGen.h
     RefBlock.h

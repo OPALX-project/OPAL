@@ -188,7 +188,7 @@ template<class T, class S, class C, unsigned int D>
 inline bool
 for_each(SubFieldIter<T,D,S> &p, SameFieldID s, C)
 {
-  return p.getBareField().get_Id() == s.fID;
+  return (int)p.getBareField().get_Id() == s.fID;
 }
 
 //////////////////////////////////////////////////////////////////////

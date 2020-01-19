@@ -198,22 +198,14 @@ public:
     T d[2];
     d[0] = First;
     d[1] = Last;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
     m.put(d, d + 2);
-#else
-    putMessage(m,d,d+2);
-#endif
     return m;
   }
 
   // get data out from a message
   Message& getMessage(Message& m) {
     T d[2];
-#ifdef IPPL_USE_MEMBER_TEMPLATES
     m.get_iter(d);
-#else
-    getMessage_iter(m,d);
-#endif
     *this = PRegion<T>(d[0], d[1]);
     return m;
   }

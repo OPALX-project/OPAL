@@ -60,6 +60,8 @@ const double pi = acos(-1.0);
 const double qmmax = 1.0;       // maximum value for particle q/m
 const double dt = 1.0;          // size of timestep
 
+using namespace std;
+
 template<class PL>
 class ChargedParticles : public IpplParticleBase<PL> {
 public:
@@ -70,8 +72,8 @@ public:
 
   ChargedParticles(PL* pl, InterPol_t interpol, Vector_t hr, e_dim_tag decomp[Dim], Vector_t mesh_org) :
     IpplParticleBase<PL>(pl),
-    interpol_m(interpol),
     hr_m(hr),
+    interpol_m(interpol),
     fieldNotInitialized_m(true),
     doRepart_m(true)
   {
@@ -80,14 +82,14 @@ public:
 
     NDIndex<Dim> domain = getFieldLayout().getDomain();
 
-    for(int i=0; i<Dim; i++)
+    for(unsigned int i=0; i<Dim; i++)
       nr_m[i] = domain[i].length();
 
     hr_m = hr;
     getMesh().set_meshSpacing(&(hr_m[0]));
     getMesh().set_origin(mesh_org);
 
-    for(int i=0; i<Dim; i++)
+    for(unsigned int i=0; i<Dim; i++)
       decomp_m[i]=decomp[i];
 
     setBCAllPeriodic();
@@ -107,7 +109,7 @@ public:
 
   void scatter() {
     Inform m("scatter ");
-    double initialQ = sum(qm);
+    //double initialQ = sum(qm);
     if (interpol_m==CIC)
       scatterCIC();
     else
@@ -179,14 +181,14 @@ public:
   }
 
   inline void setBCAllPeriodic() {
-    for (int i=0; i < 2*Dim; i++) {
+    for (unsigned int i=0; i < 2*Dim; i++) {
       this->getBConds()[i] = ParticlePeriodicBCond;
       bc_m[i]  = new PeriodicFace<double  ,Dim,Mesh_t,Center_t>(i);
       vbc_m[i] = new PeriodicFace<Vector_t,Dim,Mesh_t,Center_t>(i);
     }
   }
 
-  void printField(Inform& m, Field<double,Dim>& f)
+  void printField(Inform& m, Field_t& f)
   {
     NDIndex<Dim> domain = getFieldLayout().getDomain();
     NDIndex<Dim> loop;
@@ -208,7 +210,7 @@ public:
     m << endl;
   }
 
-  Field<double,Dim> rho_m;
+  Field_t rho_m;
 
 private:
 
@@ -277,7 +279,7 @@ int main(int argc, char *argv[]){
   msg << "BC: periodic in all dimensions" << endl;
 
   e_dim_tag decomp[Dim];
-  int serialDim = Dim-1;
+  unsigned int serialDim = Dim-1;
 
   msg << "Serial dimension is " << serialDim  << endl;
 
@@ -286,7 +288,7 @@ int main(int argc, char *argv[]){
   ChargedParticles<playout_t>  *P;
 
   NDIndex<Dim> domain;
-  for(int i=0; i<Dim; i++) {
+  for(unsigned int i=0; i<Dim; i++) {
     domain[i] = domain[i] = Index(nr[i] + domplus);
     decomp[i] = (i == serialDim) ? SERIAL : PARALLEL;
   }
@@ -301,8 +303,8 @@ int main(int argc, char *argv[]){
   P->create(totalP);
 
   size_t k = 0;
-  for (int i=0; i<nx; i++)
-    for (int j=0; j<ny; j++) {
+  for (unsigned int i=0; i<nx; i++)
+    for (unsigned int j=0; j<ny; j++) {
       P->R[k]  = Vector_t(i,j);
       k++;
     }
@@ -326,15 +328,15 @@ int main(int argc, char *argv[]){
   P->myUpdate();
 
 
-  for (int n=0; n<steps; n++) {
+  for (unsigned int n=0; n<steps; n++) {
     P->rho_m= 0.0;
     P->R[loc] += Vector_t(0.0,0.1);
     P->update();
 
     k = 0;
-    for (int i=0; i<nx; i++) {
+    for (unsigned int i=0; i<nx; i++) {
       msg << endl;
-      for (int j=0; j<ny; j++) {
+      for (unsigned int j=0; j<ny; j++) {
 	msg << P->R[k] << " ";
 	k++;
       }
@@ -349,41 +351,3 @@ int main(int argc, char *argv[]){
   msg << "test  End." << endl;
   return 0;
 }
-
-/***************************************************************************
- * $RCSfile: addheaderfooter,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:17 $
- * IPPL_VERSION_ID: $Id: addheaderfooter,v 1.1.1.1 2003/01/23 07:40:17 adelmann Exp $
- ***************************************************************************/
-
-
-  /*  for (unsigned long int i = 0; i< nloc; i++) {
-      for (int d = 0; d<Dim; d++)
-      P->R[i](d) =  IpplRandom() * nr[d];
-      }
-
-
-  msg << "Particle at " << xi << " beign pushed by dL= " << hr[0] << endl;
-
-  P->R[0]  = xi;
-  Vector_t xf = xi;
-
-  for (unsigned int it=0; it<10; it++) {
-    P->R[0] = xf;
-    P->update();
-    xf += dx;
-    msg << "i= " << it << " r= " << P->R[0] << " next move is to: " << xf << endl;
-  }
-  msg << "End particle push test" << endl;
-
-
-
-
-
-
-
-
-
-
-
-  */

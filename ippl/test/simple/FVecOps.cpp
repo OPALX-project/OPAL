@@ -82,192 +82,70 @@ int main(int argc, char *argv[])
 
   // test Vektor Field operations
 
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   V3 = V2 + V1;
-#else
-  V3 << V2 + V1;
-#endif
   testmsg << " V3 " << endl << V3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   V3 = V2 - V1;
-#else
-  V3 << V2 - V1;
-#endif
   testmsg << " V3 " << endl << V3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   V3 = F1 * V1;
-#else
-  V3 << F1 * V1;
-#endif
   testmsg << " V3 " << endl << V3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   V3 = V1 * F1;
-#else
-  V3 << V1 * F1;
-#endif
   testmsg << " V3 " << endl << V3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   F3 = dot(V1,V2);
-#else
-  F3 << dot(V1,V2);
-#endif
   testmsg << " F3 " << endl << F3 << endl;
 
   // test Tenzor Field operations
 
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   T3 = T2 + T1;
-#else
-  T3 << T2 + T1;
-#endif
   testmsg << " T3 " << endl << T3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   T3 = T2 - T1;
-#else
-  T3 << T2 - T1;
-#endif
   testmsg << " T3 " << endl << T3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   T3 = dot(T1,T2);
-#else
-  T3 << dot(T1,T2);
-#endif
   testmsg << " T3 " << endl << T3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   F3 = dotdot(T1,T2);
-#else
-  F3 << dotdot(T1,T2);
-#endif
   testmsg << " F3 " << endl << F3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   V3 = dot(V1,T2);
-#else
-  V3 << dot(V1,T2);
-#endif
   testmsg << " V3 " << endl << V3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   V3 = dot(T2,V1);
-#else
-  V3 << dot(T2,V1);
-#endif
   testmsg << " V3 " << endl << V3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   T3 = F1 * T2;
-#else
-  T3 << F1 * T2;
-#endif
   testmsg << " T3 " << endl << T3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   T3 = T2 * F1;
-#else
-  T3 << T2 * F1;
-#endif
   testmsg << " T3 " << endl << T3 << endl;
 
   // test SymTenzor Field operations
 
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   S3 = S1 + S2;
-#else
-  S3 << S1 + S2;
-#endif
   testmsg << " S3 " << endl << S3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   S3 = S1 - S2;
-#else
-  S3 << S1 - S2;
-#endif
   testmsg << " S3 " << endl << S3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   S3 = dot(S1,S2);
-#else
-  S3 << dot(S1,S2);
-#endif
   testmsg << " S3 " << endl << S3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   F3 = dotdot(S1,S2);
-#else
-  F3 << dotdot(S1,S2);
-#endif
   testmsg << " F3 " << endl << F3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   V3 = dot(V1,S2);
-#else
-  V3 << dot(V1,S2);
-#endif
   testmsg << " V3 " << endl << V3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   V3 = dot(S2,V1);
-#else
-  V3 << dot(S2,V1);
-#endif
   testmsg << " V3 " << endl << V3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   T3 = T1 + S2;
-#else
-  T3 << T1 + S2;
-#endif
   testmsg << " T3 " << endl << T3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   T3 = T1 - S2;
-#else
-  T3 << T1 - S2;
-#endif
   testmsg << " T3 " << endl << T3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   T3 = dot(T1,S2);
-#else
-  T3 << dot(T1,S2);
-#endif
   testmsg << " T3 " << endl << T3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   F3 = dotdot(T1,S2);
-#else
-  F3 << dotdot(T1,S2);
-#endif
   testmsg << " F3 " << endl << F3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   T3 = S1 + T2;
-#else
-  T3 << S1 + T2;
-#endif
   testmsg << " T3 " << endl << T3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   T3 = S2 - T1;
-#else
-  T3 << S2 - T1;
-#endif
   testmsg << " T3 " << endl << T3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   T3 = dot(S1,T2);
-#else
-  T3 << dot(S1,T2);
-#endif
   testmsg << " T3 " << endl << T3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   F3 = dotdot(S1,T2);
-#else
-  F3 << dotdot(S1,T2);
-#endif
   testmsg << " F3 " << endl << F3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   S3 = F1 * S2;
-#else
-  S3 << F1 * S2;
-#endif
   testmsg << " S3 " << endl << S3 << endl;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   S3 = S2 * F1;
-#else
-  S3 << S2 * F1;
-#endif
   testmsg << " S3 " << endl << S3 << endl;
 
   return 0;
 }
-
-/***************************************************************************
- * $RCSfile: FVecOps.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:38 $
- * IPPL_VERSION_ID: $Id: FVecOps.cpp,v 1.1.1.1 2003/01/23 07:40:38 adelmann Exp $ 
- ***************************************************************************/

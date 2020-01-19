@@ -50,7 +50,7 @@ typedef Field<double, 3, Mesh_t, Center_t>       Field_t;
 typedef Field<Vector_t, 3, Mesh_t, Center_t>     VField_t;
 
 typedef Field<int, 3, Mesh_t, Center_t>          IField_t;
-typedef Field<dcomplex, 3, Mesh_t, Center_t>     CxField_t;
+typedef Field<std::complex<double>, 3, Mesh_t, Center_t>     CxField_t;
 typedef FFT<RCTransform, 3, double>              FFT_t;
 typedef FFT<SineTransform, 3, double>            SINE_t;
 typedef FFT<CCTransform, 3, double>              FFTC_t;

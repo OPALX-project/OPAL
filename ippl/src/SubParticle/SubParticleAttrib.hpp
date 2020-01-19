@@ -125,7 +125,7 @@ void SubParticleAttrib<PA,T,Dim>::write(std::ostream &o) const {
     // for each lfield, print out particles
     typename Index_t::const_iterator_indx lsi = (*lfi)->begin();
     for ( ; lsi != (*lfi)->end(); ++lsi)
-      o << *lsi + MyDomain.getOffset() << " ==> " << A[i++] << endl;
+      o << *lsi + MyDomain.getOffset() << " ==> " << A[i++] << std::endl;
   }
 
 }

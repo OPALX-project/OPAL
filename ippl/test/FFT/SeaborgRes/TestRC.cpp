@@ -147,32 +147,32 @@ int main(int argc, char *argv[])
 #endif
 
     // create test Fields for complex-to-complex FFT
-    BareField<dcomplex,D> CFieldPPStan(layoutPPStan);
-    BareField<dcomplex,D> CFieldPPStan_save(layoutPPStan);
+    BareField<std::complex<double>,D> CFieldPPStan(layoutPPStan);
+    BareField<std::complex<double>,D> CFieldPPStan_save(layoutPPStan);
     BareField<double,D> diffFieldPPStan(layoutPPStan);
 #ifndef ONED
-    BareField<dcomplex,D> CFieldSPStan(layoutSPStan);
-    BareField<dcomplex,D> CFieldSPStan_save(layoutSPStan);
+    BareField<std::complex<double>,D> CFieldSPStan(layoutSPStan);
+    BareField<std::complex<double>,D> CFieldSPStan_save(layoutSPStan);
     BareField<double,D> diffFieldSPStan(layoutSPStan);
-    BareField<dcomplex,D> CFieldSPPerm(layoutSPPerm);
+    BareField<std::complex<double>,D> CFieldSPPerm(layoutSPPerm);
 #endif
 
     // create test Fields for real-to-complex FFT
     BareField<double,D> RFieldPPStan(layoutPPStan);
     BareField<double,D> RFieldPPStan_save(layoutPPStan);
-    BareField<dcomplex,D> CFieldPPStan0h(layoutPPStan0h);
+    BareField<std::complex<double>,D> CFieldPPStan0h(layoutPPStan0h);
 #ifndef ONED
     BareField<double,D> RFieldSPStan(layoutSPStan);
     BareField<double,D> RFieldSPStan_save(layoutSPStan);
-    BareField<dcomplex,D> CFieldSPStan0h(layoutSPStan0h);
-    BareField<dcomplex,D> CFieldSPPerm0h(layoutSPPerm0h);
+    BareField<std::complex<double>,D> CFieldSPStan0h(layoutSPStan0h);
+    BareField<std::complex<double>,D> CFieldSPPerm0h(layoutSPPerm0h);
 #endif
 
     // create test Fields for sine transform and real-to-complex FFT
-    BareField<dcomplex,D> CFieldPPStan1h(layoutPPStan1h);
+    BareField<std::complex<double>,D> CFieldPPStan1h(layoutPPStan1h);
 #ifndef ONED
-    BareField<dcomplex,D> CFieldSPStan1h(layoutSPStan1h);
-    BareField<dcomplex,D> CFieldSPPerm1h(layoutSPPerm1h);
+    BareField<std::complex<double>,D> CFieldSPStan1h(layoutSPStan1h);
+    BareField<std::complex<double>,D> CFieldSPPerm1h(layoutSPPerm1h);
 #endif
 
 
@@ -180,8 +180,8 @@ int main(int argc, char *argv[])
     setFormat(4,3);
 
     // Rather more complete test functions (sine or cosine mode):
-    dcomplex sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
-    dcomplex cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
+    std::complex<double> sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
+    std::complex<double> cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
     
     double xfact, kx, yfact, ky, zfact, kz;
     xfact = pi/(ngrid[0] + 1.0);
@@ -205,7 +205,7 @@ int main(int argc, char *argv[])
     
     // RC FFT tests
     RFieldPPStan = real(CFieldPPStan_save);
-    CFieldPPStan0h = dcomplex(0.0,0.0);
+    CFieldPPStan0h = std::complex<double>(0.0,0.0);
 
     RFieldPPStan_save = RFieldPPStan;  // save input data for checking results
 

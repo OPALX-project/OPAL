@@ -52,7 +52,7 @@
 PETE_DefineUnary(Abs, (0 < a ? a : -a), FnAbs)
 
 inline double
-PETE_apply(FnAbs, dcomplex a)
+PETE_apply(FnAbs, std::complex<double> a)
 {
   return abs(a);
 }
@@ -138,9 +138,9 @@ PETE_DefineIPPLScalar(long)
 PETE_DefineIPPLScalar(float)
 PETE_DefineIPPLScalar(double)
 
-PETE_DefineScalar(dcomplex)
-PETE_DefineBinaryWithScalars(eq, OpEQ, dcomplex)
-PETE_DefineBinaryWithScalars(ne, OpNE, dcomplex)
+PETE_DefineScalar(std::complex<double>)
+PETE_DefineBinaryWithScalars(eq, OpEQ, std::complex<double>)
+PETE_DefineBinaryWithScalars(ne, OpNE, std::complex<double>)
 
 #undef PETE_DefineIPPLScalar
 

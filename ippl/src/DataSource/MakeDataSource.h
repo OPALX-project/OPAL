@@ -24,8 +24,6 @@
 template<class T, unsigned Dim, class M, class C> class Field;
 template<class T> class ParticleAttrib;
 template<class PLayout> class IpplParticleBase;
-template<class T> class ScalarDataSource;
-template<class T> class StringDataSource;
 class DataSourceObject;
 class DataConnect;
 
@@ -49,19 +47,6 @@ make_DataSourceObject(const char *, DataConnect *, int, ParticleAttrib<T>&);
 template<class PLayout>
 DataSourceObject *
 make_DataSourceObject(const char *,DataConnect *,int,IpplParticleBase<PLayout>&);
-
-// a version of make_DataSourceObject for Scalar's.
-// arguments: name, connection type, transfer method, ScalarDataSource
-template<class T>
-DataSourceObject *
-make_DataSourceObject(const char *,DataConnect *,int,ScalarDataSource<T>&);
-
-
-// a version of make_DataSourceObject for String's.
-// arguments: name, connection type, transfer method, StringDataSource
-template<class T>
-DataSourceObject *
-make_DataSourceObject(const char *,DataConnect *,int,StringDataSource<T>&);
 
 #include "DataSource/MakeDataSource.hpp"
 

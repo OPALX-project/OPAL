@@ -1,4 +1,0 @@
-awk -f ./swk/sk-Tint.swk diag.dat > TintPart2.dat
-awk -f ./swk/sk-Tint2.swk diag.dat > BPart1.dat
-awk -f ./swk/getPosVel.swk diag.dat > PosVel.dat
-gnuplot makePlot.glp

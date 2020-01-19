@@ -120,23 +120,6 @@ Index::intersect(const Index& rhs) const
     ret.Stride = 1;
     ret.BaseFirst = BaseFirst + f - lf;
     ret.Base = Base;
-
-#ifdef UNDEFINED
-    Index test = general_intersect(rhs);
-    cout << "inter:  First  Length  Stride  BaseFirst  Base " << endl;
-    cout << "*this= " << First << "," << Length << "," << Stride << "," << BaseFirst << "," << Base << endl;
-    cout << "rhs  = " << rhs.First << "," << rhs.Length << "," << rhs.Stride << "," << rhs.BaseFirst << "," << rhs.Base << endl;
-    cout << "ret  = " << ret.First << "," << ret.Length << "," << ret.Stride << "," << ret.BaseFirst << "," << ret.Base << endl;
-    cout << "test = " << test.First << "," << test.Length << "," << test.Stride << "," << test.BaseFirst << "," << test.Base << endl;
-    PAssert_EQ( ret.Length, test.Length );
-    if ( ret.Length > 0 ) {
-      PAssert_EQ( ret.First    , test.First );
-      PAssert_EQ( ret.Stride   , test.Stride );
-      PAssert_EQ( ret.BaseFirst, test.BaseFirst );
-      PAssert_EQ( ret.Base,      test.Base );
-    }
-#endif // UNDEFINED
-
   }
   else
     ret = general_intersect(rhs);

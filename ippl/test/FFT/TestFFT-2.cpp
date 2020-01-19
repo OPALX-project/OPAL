@@ -27,12 +27,10 @@
 
 #include "Ippl.h"
 
-#ifdef IPPL_USE_STANDARD_HEADERS
 #include <complex>
+#include <string>
+
 using namespace std;
-#else
-#include <complex.h>
-#endif
 
 enum TestCases {test1,test2};
 
@@ -95,8 +93,8 @@ int main(int argc, char *argv[])
   static IpplTimings::TimerRef fieldassTimer = IpplTimings::getTimer("field-assigment");
   static IpplTimings::TimerRef fieldcompTimer = IpplTimings::getTimer("field-computation");
 
-  bool res = Configure(argc, argv,  &nx, &ny, &nz, 
-		       &test2do, &serialDim, &nLoop); 
+  /*bool res = */ Configure(argc, argv,  &nx, &ny, &nz, 
+                            &test2do, &serialDim, &nLoop); 
 
 
   // The preceding cpp definition causes compile-time setting of D:
@@ -114,7 +112,7 @@ int main(int argc, char *argv[])
 
   // Layout information: 
   e_dim_tag allParallel[D];    // Specifies SERIAL, PARALLEL dims
-  for (int d=0; d<D; d++) 
+  for (unsigned int d=0; d<D; d++) 
    allParallel[d] = PARALLEL;
   
   if(serialDim == 0)
@@ -135,20 +133,20 @@ int main(int argc, char *argv[])
   // Complex test Fields
   // create standard domain
   NDIndex<D> ndiStandard;
-  for (int d=0; d<D; d++) 
-   ndiStandard[d] = Index(ngrid[d]);
+  for (unsigned int d=0; d<D; d++)
+    ndiStandard[d] = Index(ngrid[d]);
    
    // all parallel layout, standard domain, normal axis order
    FieldLayout<D> layoutPPStan(ndiStandard,allParallel,Ippl::getNodes());
         
    // create test Fields for complex-to-complex FFT
-   BareField<dcomplex,D> CFieldPPStan(layoutPPStan);
-   BareField<dcomplex,D> CFieldPPStan_save(layoutPPStan);
+   BareField<std::complex<double>,D> CFieldPPStan(layoutPPStan);
+   BareField<std::complex<double>,D> CFieldPPStan_save(layoutPPStan);
    BareField<double,D> diffFieldPPStan(layoutPPStan);
        
    // Rather more complete test functions (sine or cosine mode):
-   dcomplex sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
-   dcomplex cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
+   std::complex<double> sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
+   std::complex<double> cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
 
    double xfact, kx, yfact, ky, zfact, kz;
    xfact = pi/(ngrid[0] + 1.0);

@@ -72,8 +72,8 @@ public:
   // Construct from a Tenzor.
   // Extract the antisymmetric part.
   AntiSymTenzor( const Tenzor<T,D>& t ) {
-    for (int i=1; i<D; ++i) {
-      for (int j=0; j<i; ++j)
+    for (unsigned int i=1; i<D; ++i) {
+      for (unsigned int j=0; j<i; ++j)
 	(*this)[((i-1)*i/2)+j] = (t(i,j)-t(j,i))*0.5;
     }
   }
@@ -157,15 +157,15 @@ public:
       : elem_m(model.elem_m), where_m(model.where_m) { }
     const AssignProxy &operator=(const AssignProxy &a)
       {
-	PAssert_EQ(where_m != 0 || a.elem_m == -a.elem_m, true);
-	elem_m = where_m < 0 ? -a.elem_m : a.elem_m;
-	return *this;
+        PAssert_EQ(where_m != 0 || (a.elem_m == -a.elem_m), true);
+        elem_m = where_m < 0 ? -a.elem_m : a.elem_m;
+        return *this;
       }
     const AssignProxy &operator=(const Element_t &e)
       {
-	PAssert_EQ(where_m != 0 || e == -e, true);
-	elem_m = where_m < 0 ? -e : e;
-	return *this;
+        PAssert_EQ(where_m != 0 || (e == -e), true);
+        elem_m = where_m < 0 ? -e : e;
+        return *this;
       }
 
     operator Element_t() const
@@ -358,13 +358,13 @@ public:
       : elem_m(model.elem_m), where_m(model.where_m) {}
     const AssignProxy& operator=(const AssignProxy& a)
       {
-	PAssert_EQ(where_m != 0 || a.elem_m == -a.elem_m, true);
+        PAssert_EQ(where_m != 0 || (a.elem_m == -a.elem_m), true);
 	elem_m = where_m < 0 ? -a.elem_m : a.elem_m;
 	return *this;
       }
     const AssignProxy& operator=(const Element_t& e)
       {
-	PAssert_EQ(where_m != 0 || e == -e, true);
+        PAssert_EQ(where_m != 0 || (e == -e), true);
 	elem_m = where_m < 0 ? -e : e;
 	return *this;
       }
@@ -697,9 +697,9 @@ dotdot(const SymTenzor<T1,D> &lhs, const AntiSymTenzor<T2,D> &rhs)
 template<class T, unsigned D>
 inline std::ostream& operator<<(std::ostream& out, const AntiSymTenzor<T,D>& rhs) {
   if (D >= 1) {
-    for (int i=0; i<D; i++) {
+    for (unsigned int i=0; i<D; i++) {
       out << "(";
-      for (int j=0; j<D-1; j++) {
+      for (unsigned int j=0; j<D-1; j++) {
 	out << rhs(i,j) << " , ";
       }
       out << rhs(i,D-1) << ")";

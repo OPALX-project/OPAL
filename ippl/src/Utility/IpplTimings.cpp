@@ -3,27 +3,8 @@
  *
  * The IPPL Framework
  *
- * This program was prepared by PSI.
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit www.amas.web.psi for more details
- *
  ***************************************************************************/
 
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
-// include files
 #include "Utility/IpplTimings.h"
 #include "Utility/Inform.h"
 #include "Utility/IpplInfo.h"
@@ -35,7 +16,6 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
-// static data members of IpplTimings class
 
 Timing* IpplTimings::instance = new Timing();
 std::stack<Timing*> IpplTimings::stashedInstance;
@@ -105,62 +85,6 @@ void Timing::clearTimer(TimerRef t) {
     TimerList[t]->clear();
 }
 
-#ifdef IPPL_XT3
-//////////////////////////////////////////////////////////////////////
-// print out the timing results
-void Timing::print() {
-    int i,j;
-    if (TimerList.size() < 1)
-	return;
-
-    // report the average time for each timer
-    Inform msg("Timings");
-    msg << level1 << "-----------------------------------------------------------------\n";
-    msg << "     Timing (dclock) results for " << Ippl::getNodes() << " nodes:" << "\n";
-    msg << "-----------------------------------------------------------------";
-    msg << "\n";
-    for (i=0; i<1; ++i){
-	TimerInfo *tptr = TimerList[i].get();
-	double walltotal = 0.0;
-	reduce(tptr->wallTime, walltotal, OpMaxAssign());
-	msg << tptr->name.c_str() << " ";
-	for (j=strlen(tptr->name.c_str()); j < 10; ++j)
-	    msg << ".";
-	msg << " Wall tot = ";
-	msg.width(10);
-	msg << walltotal;
-	msg << "\n\n";
-    }
-
-    for (i=1; i < TimerList.size(); ++i) {
-	TimerInfo *tptr = TimerList[i].get();
-	double wallmax = 0.0, wallmin = 0.0;
-	double wallavg = 0.0 ;
-	reduce(tptr->wallTime, wallmax, OpMaxAssign());
-	reduce(tptr->wallTime, wallmin, OpMinAssign());
-	reduce(tptr->wallTime, wallavg, OpAddAssign());
-	msg << tptr->name.c_str() << " ";
-	for (j=strlen(tptr->name.c_str()); j < 10; ++j)
-	    msg << ".";
-	msg << " Wall max = ";
-	msg.width(10);
-	msg << wallmax << "\n";
-	for (j = 0; j < 21; ++j)
-	    msg << " ";
-	msg << " Wall avg = ";
-	msg.width(10);
-	msg << wallavg / Ippl::getNodes() << "\n";
-	for (j = 0; j < 21; ++j)
-	    msg << " ";
-	msg << " Wall min = ";
-	msg.width(10);
-	msg << wallmin << "\n\n";
-    }
-    msg << "-----------------------------------------------------------------";
-    msg << endl;
-}
-
-#else
 
 //////////////////////////////////////////////////////////////////////
 // print out the timing results
@@ -224,7 +148,6 @@ void Timing::print() {
     msg << "-----------------------------------------------------------------";
     msg << endl;
 }
-#endif
 
 //////////////////////////////////////////////////////////////////////
 // save the timing results into a file
@@ -342,15 +265,3 @@ void IpplTimings::pop() {
     instance = stashedInstance.top();
     stashedInstance.pop();
 }
-
-/***************************************************************************
- * $RCSfile: IpplTimings.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:33 $
- ***************************************************************************/
-
-
-/***************************************************************************
- * $RCSfile: addheaderfooter,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:17 $
- * IPPL_VERSION_ID: $Id: addheaderfooter,v 1.1.1.1 2003/01/23 07:40:17 adelmann Exp $
- ***************************************************************************/

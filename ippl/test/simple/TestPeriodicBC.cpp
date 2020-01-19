@@ -30,12 +30,7 @@
 #include "Ippl.h"
 #include "Utility/FieldDebug.h"
 
-#ifdef IPPL_USE_STANDARD_HEADERS
 #include <fstream>
-using namespace std;
-#else
-#include <fstream>
-#endif
 
 typedef ParticleSpatialLayout<double,3>::SingleParticlePos_t Vector_t;
 

@@ -44,26 +44,12 @@ int main(int argc, char *argv[])
   int i;
   A = -1.0 ;
   for (p=B.begin(), i=0; p!=B.end(); ++p, ++i) *p = i+1;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
-  B= B*2.0;
-#else
-  assign( B , B*2.0 );
-#endif
-
+  B = B*2.0;
   testmsg << A << endl;
   testmsg << B << endl;
 
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   A[I][J] = (B[I+1][J+1]+B[I+1][J-1]+B[I-1][J+1]+B[I-1][J-1])/8.0;
-#else
-  assign(A[I][J] , (B[I+1][J+1]+B[I+1][J-1]+B[I-1][J+1]+B[I-1][J-1])/8.0);
-#endif
   testmsg << A << endl;
 
   return 0;
 }
-/***************************************************************************
- * $RCSfile: t3.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:39 $
- * IPPL_VERSION_ID: $Id: t3.cpp,v 1.1.1.1 2003/01/23 07:40:39 adelmann Exp $ 
- ***************************************************************************/

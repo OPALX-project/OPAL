@@ -3,9 +3,6 @@
  *
  * The IPPL Framework
  * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
  ***************************************************************************/
 
 #ifndef RNG_LATTICE_H
@@ -113,11 +110,7 @@ private:
   bool IncludeEndpoints;
 };
 
-#ifdef IPPL_USE_SINGLE_PRECISION
-RNG_BASIC_MATH(RNGLattice<float>)
-#else
 RNG_BASIC_MATH(RNGLattice<double>)
-#endif
 
 // A version of RNGLattice with extra constructors to make using this
 // class easier.  This is the version that people should use to fill
@@ -158,10 +151,4 @@ public:
 
 
 #endif // RNG_LATTICE_H
-
-/***************************************************************************
- * $RCSfile: RNGLattice.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:33 $
- * IPPL_VERSION_ID: $Id: RNGLattice.h,v 1.1.1.1 2003/01/23 07:40:33 adelmann Exp $ 
- ***************************************************************************/
 

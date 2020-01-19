@@ -2,9 +2,6 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
  *
  ***************************************************************************/
 
@@ -33,8 +30,8 @@ public:
 
   // constructor: user-provided Layout object must be supplied
   GenArrayParticle(PLayout* L) : IpplParticleBase<PLayout>(L) {
-    for (int i = 0; i < N; i++)
-      addAttribute(data[i]);
+    for (unsigned int i = 0; i < N; i++)
+      this->addAttribute(data[i]);
   }
 
 private:
@@ -44,9 +41,3 @@ private:
 };
 
 #endif // GEN_ARRAY_PARTICLE_H
-
-/***************************************************************************
- * $RCSfile: GenArrayParticle.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:28 $
- * IPPL_VERSION_ID: $Id: GenArrayParticle.h,v 1.1.1.1 2003/01/23 07:40:28 adelmann Exp $ 
- ***************************************************************************/

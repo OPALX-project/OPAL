@@ -16,10 +16,13 @@ Example:
  *************************************************************************************************************************************/
 
 #include "Ippl.h"
+#include <iostream>
 #include <string>
 #include <vector>
 
 #include "mpi.h"
+
+using namespace std;
 
 // dimension of our positions
 const unsigned Dim = 2;
@@ -45,20 +48,20 @@ public:
 
     ChargedParticles(PL* pl, InterPol_t interpol, Vector_t nr, Vector_t hr, Vector_t rmin, Vector_t rmax, e_dim_tag decomp[Dim], bool gCells = true) :
         IpplParticleBase<PL>(pl),
-        interpol_m(interpol),
         nr_m(nr),
         hr_m(hr),
-        rmin_m(rmin),
         rmax_m(rmax),
+        rmin_m(rmin),
+        interpol_m(interpol),
         withGuardCells_m(gCells)
     {
         this->addAttribute(qm);
 
-        for (int i=0; i < 2*Dim; i++) {
+        for (unsigned int i=0; i < 2*Dim; i++) {
             bc_m[i]  = new ParallelPeriodicFace<double, Dim, Mesh_t, Center_t>(i);
             this->getBConds()[i] = ParticlePeriodicBCond;
         }
-        for(int i=0; i<Dim; i++)
+        for(unsigned int i=0; i<Dim; i++)
             decomp_m[i]=decomp[i];
 
         getMesh().set_meshSpacing(&(hr_m[0]));
@@ -119,7 +122,7 @@ private:
     bool withGuardCells_m;
     e_dim_tag decomp_m[Dim];
 };
-
+
 int main(int argc, char *argv[]){
     Ippl ippl(argc, argv);
     Inform msg(argv[0]);
@@ -144,10 +147,10 @@ int main(int argc, char *argv[]){
     ChargedParticles<playout_t>  *P;
 
     NDIndex<Dim> domain;
-    for(int i=0; i<Dim; i++)
+    for(unsigned int i=0; i<Dim; i++)
         domain[i] = domain[i] = Index(nr[i]);
 
-    for (int d=0; d < Dim; ++d)
+    for (unsigned int d=0; d < Dim; ++d)
         decomp[d] = PARALLEL;
 
     // create mesh and layout objects for this problem domain

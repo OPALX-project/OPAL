@@ -109,20 +109,11 @@ public:
   // Stuff for doing index mapping calculations.
   bool empty() const;
   NDIndex<Dim> intersect(const NDIndex<Dim>&) const;
-#ifdef IPPL_USE_MEMBER_TEMPLATES
+
   template<unsigned D>
   NDIndex<Dim> plugBase(const NDIndex<D>& i)const { 
       return ::plugBase(*this,i);
   }
-#else
-  NDIndex<Dim> plugBase(const NDIndex<1>& i)const{ return ::plugBase(*this,i);}
-  NDIndex<Dim> plugBase(const NDIndex<2>& i)const{ return ::plugBase(*this,i);}
-  NDIndex<Dim> plugBase(const NDIndex<3>& i)const{ return ::plugBase(*this,i);}
-  NDIndex<Dim> plugBase(const NDIndex<4>& i)const{ return ::plugBase(*this,i);}
-  NDIndex<Dim> plugBase(const NDIndex<5>& i)const{ return ::plugBase(*this,i);}
-  NDIndex<Dim> plugBase(const NDIndex<6>& i)const{ return ::plugBase(*this,i);}
-  NDIndex<Dim> plugBase(const NDIndex<7>& i)const{ return ::plugBase(*this,i);}
-#endif
 
   // useful functions with DomainMap.
   bool touches(const NDIndex<Dim>&) const;

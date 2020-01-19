@@ -86,16 +86,16 @@ public:
         }
 
         //loop over all buckets
-        for (unsigned bx=0; bx<buckets_per_dim[0]; ++bx) {
-            for (unsigned by=0; by<buckets_per_dim[1]; ++by) {
-                for (unsigned bz=0; bz<buckets_per_dim[2]; ++bz) {
+        for (int bx=0; bx<buckets_per_dim[0]; ++bx) {
+            for (int by=0; by<buckets_per_dim[1]; ++by) {
+                for (int bz=0; bz<buckets_per_dim[2]; ++bz) {
                     //dmsg << "bx = " << bx << "by = " << by << " bz = " << bz <<endl;
                     unsigned bucket_id_self = bz*buckets_per_dim[1]*buckets_per_dim[0]+by*buckets_per_dim[0]+bx;
                     //compute index of neighboring cell to interact with
                     for (int n=0; n<neigh;++n){
-                        unsigned bx_neigh = bx+offset[n][0];
-                        unsigned by_neigh = by+offset[n][1];
-                        unsigned bz_neigh = bz+offset[n][2];
+                        int bx_neigh = bx+offset[n][0];
+                        int by_neigh = by+offset[n][1];
+                        int bz_neigh = bz+offset[n][2];
                         //check if neighbor cell is within boundaries
                         //dmsg << " looking at neighbor n = " << n << endl;
                         if (bx_neigh >= 0 && bx_neigh<buckets_per_dim[0] &&

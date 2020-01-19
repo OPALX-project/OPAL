@@ -1,6 +1,5 @@
 set (_SRCS
   FieldLayoutUser.cpp
-  MultiBalancer.cpp
   VRB.cpp
   )
 
@@ -9,15 +8,10 @@ set (_HDRS
   BinaryBalancer.h
   CenteredFieldLayout.hpp
   CenteredFieldLayout.h
-  ConejoBalancer.hpp
-  ConejoBalancer.h
   FieldLayout.hpp
   FieldLayout.h
   FieldLayoutUser.h
-  MultiBalancer.h
   Vnode.h
-  VnodeMultiBalancer.hpp
-  VnodeMultiBalancer.h
   VRB.h
   )
 

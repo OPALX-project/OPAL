@@ -13,17 +13,14 @@
 
 #include "Ippl.h"
 
-
-#ifdef IPPL_USE_STANDARD_HEADERS
 #include <complex>
-using namespace std;
-#else
-#include <complex.h>
-#endif
+#include <string>
 
 #ifdef IPPL_DKS
 #include "DKSOPAL.h"
 #endif
+
+using namespace std;
 
 bool Configure(int argc, char *argv[],
 	       unsigned int *nx, unsigned int *ny, unsigned int *nz,
@@ -68,7 +65,7 @@ bool Configure(int argc, char *argv[],
 }
 
 
-dcomplex printComplex(dcomplex in) {
+std::complex<double> printComplex(std::complex<double> in) {
   double r = 0.0;
   double i = 0.0;
   if (in.real() > 0.00001 || in.real() < -0.00001)
@@ -76,7 +73,7 @@ dcomplex printComplex(dcomplex in) {
   if (in.imag() > 0.00001 || in.imag() < -0.00001)
     i = in.imag();
 		
-  return dcomplex(r, i);
+  return std::complex<double>(r, i);
 }
 
 
@@ -163,16 +160,16 @@ int main(int argc, char *argv[])
   //FieldLayout<D> layoutSPStan0h(ndiStandard0h,serialParallel,ndiVNodes);
     
   // create test Fields for complex-to-complex FFT
-  BareField<dcomplex,D> CFieldPPStan(layoutPPStan);
+  BareField<std::complex<double>,D> CFieldPPStan(layoutPPStan);
 
-  BareField<dcomplex,D> CFieldSPStan(layoutSPStan);
+  BareField<std::complex<double>,D> CFieldSPStan(layoutSPStan);
   
   BareField<double,D> diffFieldSPStan(layoutSPStan);
   
   // create test Fields for real-to-complex FFT
   BareField<double,D>   RFieldSPStan(layoutSPStan);
   BareField<double,D>   RFieldSPStan_save(layoutSPStan);
-  BareField<dcomplex,D> CFieldSPStan0h(layoutSPStan0h);
+  BareField<std::complex<double>,D> CFieldSPStan0h(layoutSPStan0h);
   
   INFOMSG("RFieldSPStan   layout= " << layoutSPStan << endl;);
   INFOMSG("CFieldSPStan0h layout= " << layoutSPStan0h << endl;);
@@ -181,8 +178,8 @@ int main(int argc, char *argv[])
   setFormat(4,3);
 
   // Rather more complete test functions (sine or cosine mode):
-  dcomplex sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
-  dcomplex cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
+  std::complex<double> sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
+  std::complex<double> cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
 
   double xfact, kx, yfact, ky, zfact, kz;
   xfact = pi/(ngrid[0] + 1.0);
@@ -221,7 +218,7 @@ int main(int argc, char *argv[])
 		  ndiStandard[2]    * kz * zfact ) );
 
   //RFieldSPStan = real(CFieldPPStan);
-  CFieldSPStan0h = dcomplex(0.0,0.0);
+  CFieldSPStan0h = std::complex<double>(0.0,0.0);
    
   // create RC FFT object
   FFT<RCTransform,D,double> rcfft(ndiStandard, ndiStandard0h, compressTemps);

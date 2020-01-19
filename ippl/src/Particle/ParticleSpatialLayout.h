@@ -3,9 +3,6 @@
  *
  * The IPPL Framework
  *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
  ***************************************************************************/
 
 #ifndef PARTICLE_SPATIAL_LAYOUT_H
@@ -34,10 +31,11 @@
 
 #include <cstddef>
 
-#include <vector>
+#include <functional>
 #include <iostream>
 #include <map>
-#include <functional>
+#include <memory>
+#include <vector>
 
 #include "BoxParticleCachingPolicy.h"
 
@@ -169,18 +167,6 @@ public:
     // Tell this object that an object is being deleted
     virtual void notifyUserOfDelete(UserList *);
 
-    // Get the Neighbor Node for a given dimension
-    int getNeighborNode(unsigned int d, unsigned int n)
-    {
-        PAssert_LT(d, Dim);
-        PAssert_LT(n, (unsigned int) Ippl::getNodes());
-
-        if (SwapNodeList[d][n])
-            return n;
-        else
-            return -1;
-    }
-
     void enableCaching() { caching = true; }
     void disableCaching() { caching = false; }
 
@@ -205,11 +191,6 @@ protected:
 
     // perform common constructor tasks
     void setup();
-
-    // for each dimension, calculate where neighboring Vnodes and physical
-    // nodes are located, and create a list of this data.  This need only
-    // be updated when the FieldLayout changes.
-    void rebuild_neighbor_data();
 
     /////////////////////////////////////////////////////////////////////
     // Rebuild the RegionLayout entirely, by recalculating our min and max
@@ -418,7 +399,6 @@ protected:
             //   1. For each local Vnode, find the remote Vnodes which exist along
             //      same axis as the current axis (i.e. all Vnodes along the x-axis).
             //   2. From this list, determine which nodes we send messages to.
-            //      Steps 1 & 2 have been done already in rebuild_neighbor_data.
             //   3. Go through all the particles, finding those which have moved to
             //      an off-processor vnode, and store index in an array for that node
             //   4. Send off the particles to the nodes (if no particles are
@@ -477,31 +457,6 @@ protected:
                                 // see which Vnode this postion is in
                                 typename RegionLayout<T,Dim,Mesh>::touch_range_dv touchingVN =
                                     RLayout.touch_range_rdv(pLoc);
-
-#ifdef IPPL_USE_SINGLE_PRECISION
-                                //FIXME: why does FLT_EPSILON not work?
-                                float nudge = 1e-5;
-                                int nudgeDim = 0;
-
-                                //FIXME: it would be nice to remove the nudge if it has no effect
-                                while (nudgeDim <= d && touchingVN.first == touchingVN.second)
-                                {
-
-                                    T val = PData.R[ip][nudgeDim];
-
-                                    //ensure we nudge the particle back into LOCAL domain
-                                    float lastidx  = RLayout.getDomain()[d].last();
-                                    if (val >= lastidx)
-                                        val -= nudge;
-                                    else
-                                        val += nudge;
-
-                                    pLoc[nudgeDim] = PRegion<T>(val, val);
-                                    touchingVN = RLayout.touch_range_rdv(pLoc);
-
-                                    nudgeDim++;
-                                }
-#endif
 
                                 // make sure we have a vnode to send it to
                                 if (touchingVN.first == touchingVN.second)
@@ -889,7 +844,6 @@ protected:
             //   1. For each local Vnode, find the remote Vnodes which exist along
             //      same axis as the current axis (i.e. all Vnodes along the x-axis).
             //   2. From this list, determine which nodes we send messages to.
-            //      Steps 1 & 2 have been done already in rebuild_neighbor_data.
             //   3. Go through all the particles, finding those which have moved to
             //      an off-processor vnode, and store index in an array for that node
             //   4. Send off the particles to the nodes (if no particles are
@@ -1382,9 +1336,3 @@ protected:
 #include "Particle/ParticleSpatialLayout.hpp"
 
 #endif // PARTICLE_SPATIAL_LAYOUT_H
-
-/***************************************************************************
- * $RCSfile: ParticleSpatialLayout.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:29 $
- * IPPL_VERSION_ID: $Id: ParticleSpatialLayout.h,v 1.1.1.1 2003/01/23 07:40:29 adelmann Exp $
- ***************************************************************************/

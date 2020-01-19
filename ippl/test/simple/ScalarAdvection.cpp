@@ -44,12 +44,7 @@
 #include "Ippl.h"
 #include "Clock.h" // Borrowed from IPPL 2.
 
-#ifdef IPPL_USE_STANDARD_HEADERS
 #include <iostream>
-using namespace std;
-#else
-#include <iostream>
-#endif
 
 #include <stdio.h>
 

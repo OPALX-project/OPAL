@@ -33,12 +33,7 @@
 #include "Field/BCond.h"
 #include "Meshes/UniformCartesian.h"
 
-#ifdef IPPL_USE_STANDARD_HEADERS
 #include <iostream>
-using namespace std;
-#else
-#include <iostream>
-#endif
 
 // define helper print function
 void printout(Field<double,2>& A)

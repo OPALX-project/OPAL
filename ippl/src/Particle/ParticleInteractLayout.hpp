@@ -3,24 +3,6 @@
  *
  * The IPPL Framework
  *
- * This program was prepared by PSI.
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit www.amas.web.psi for more details
- *
- ***************************************************************************/
-
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
  ***************************************************************************/
 
 // include files
@@ -988,9 +970,6 @@ void ParticleInteractLayout<T,Dim,Mesh>::Repartition(UserList* userlist) {
   // perform actions to restructure our data due to a change in the
   // RegionLayout
   if (userlist->getUserListID() == this->RLayout.get_Id()) {
-    // recalculate which nodes are our neighbors in each dimension
-      this->rebuild_neighbor_data();
-
     // clear out current interaction node storage; if the next update
     // indicates we have a non-zero interaction radius, this info will be
     // rebuilt (by calling rebuild_interaction_data)
@@ -999,10 +978,3 @@ void ParticleInteractLayout<T,Dim,Mesh>::Repartition(UserList* userlist) {
     NeedGhostSwap = true;
   }
 }
-
-
-/***************************************************************************
- * $RCSfile: ParticleInteractLayout.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:29 $
- * IPPL_VERSION_ID: $Id: ParticleInteractLayout.cpp,v 1.1.1.1 2003/01/23 07:40:29 adelmann Exp $
- ***************************************************************************/

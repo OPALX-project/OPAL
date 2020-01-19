@@ -316,7 +316,6 @@ public:
   // 
 
   void write(std::ostream&);
-  void writeb(char*) const;
 
   //
   // PETE interface.

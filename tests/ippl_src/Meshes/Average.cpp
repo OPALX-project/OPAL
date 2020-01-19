@@ -85,11 +85,8 @@ TEST(Meshes, Average)
     // Test one of the unweighted (2-argument) Average() functions:
     // Average from Field<Vektor,Vert> to Field<Vektor,Cell>
     // Vector Field, Cell-centered
-    Field<Vektor<double,Dim3>,Dim3,UniformCartesian<Dim3>,Vert>
-        vVu(layoutVert,gc);
     Field<Vektor<double,Dim3>,Dim3,UniformCartesian<Dim3>,Cell>
         avgToCSu(layoutCell,gc);
-    vVu = ones;
     assign(avgToCSu, Average(vV, avgToCSu));
     // Check results:
     EXPECT_TRUE(sum(avgToCSu) == (nx-1)*(ny-1)*(nz-1));

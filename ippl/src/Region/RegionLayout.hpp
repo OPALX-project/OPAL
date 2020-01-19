@@ -598,12 +598,6 @@ RegionLayout<T,Dim,MeshType>::convert_region(const NDRegion<T,Dim>& nr) const {
   return index;
 }
 
-#ifdef IPPL_USE_MEMBER_TEMPLATES
-
-//mwerks Moved into class definition (.h file).
-
-#endif
-
 //////////////////////////////////////////////////////////////////////
 // Scan through the internal FieldLayout and construct Rnodes based on
 // the current FieldLayout and PRegion.  Put them into out local

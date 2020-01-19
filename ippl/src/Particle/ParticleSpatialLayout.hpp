@@ -3,24 +3,6 @@
  *
  * The IPPL Framework
  *
- * This program was prepared by PSI.
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit www.amas.web.psi for more details
- *
- ***************************************************************************/
-
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
  ***************************************************************************/
 
 // include files
@@ -109,10 +91,6 @@ void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::setup()
         NodeCount[i] = 0;
         EmptyNode[i] = false;
     }
-
-    // recalculate which nodes are our neighbors in each dimension
-    if (RLayout.initialized())
-        rebuild_neighbor_data();
 }
 
 
@@ -131,133 +109,6 @@ ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::~ParticleSpatialLayout()
 
     // check ourselves out as a user of the RegionLayout
     RLayout.checkout(*this);
-}
-
-
-
-
-/////////////////////////////////////////////////////////////////////
-// for each dimension, calculate where neighboring Vnodes and physical
-// nodes are located, and create a list of this data.  This need only
-// be updated when the layout changes.
-template < class T, unsigned Dim, class Mesh, class CachingPolicy >
-void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::rebuild_neighbor_data()
-{
-#ifdef OLD_SWAP_PARTICLES
-
-    int d, j;			// loop variables
-    unsigned N = Ippl::getNodes();
-    unsigned myN = Ippl::myNode();
-    Inform msg2all("rebuild_neighbor_data ", INFORM_ALL_NODES);
-
-    // initialize the message list and initial node count
-    for (d = 0; d < Dim; ++d)
-    {
-        NeighborNodes[d] = 0;
-        for (j = 0; j < N; j++)
-            SwapNodeList[d][j] = false;
-    }
-
-    // local Rnode iterators
-    typename RegionLayout<T,Dim,Mesh>::iterator_iv localVN, endLocalVN = RLayout.end_iv();
-
-    // check for no local Rnodes
-    if (RLayout.begin_iv() == endLocalVN)
-    {
-        EmptyNode[myN] = true;
-    }
-    else
-    {
-        // we need to consider each spatial dimension separately
-        for (d = 0; d < Dim; ++d)
-        {
-            // determine number of neighbor nodes in this spatial dimension
-            for (localVN = RLayout.begin_iv(); localVN != endLocalVN; ++localVN)
-            {
-                // for each local Vnode, the domain to check equals the local Vnode dom
-                // except for current dimension, which is the total Field domain size
-                NDRegion<T,Dim> chkDom((*localVN).second->getDomain());
-                chkDom[d] = (RLayout.getDomain())[d];
-                // use the RegionLayout to find all remote Vnodes which touch the
-                // domain being checked here
-                typename RegionLayout<T,Dim,Mesh>::touch_range_dv touchingVN =
-                    RLayout.touch_range_rdv(chkDom);
-                typename RegionLayout<T,Dim,Mesh>::touch_iterator_dv tVN = touchingVN.first;
-                for ( ; tVN != touchingVN.second; ++tVN)
-                {
-                    // note that we need to send a message to the node which contains
-                    // this remote Vnode
-                    unsigned vn = ((*tVN).second)->getNode();
-                    if ( ! SwapNodeList[d][vn] )
-                    {
-                        SwapNodeList[d][vn] = true;
-                        NeighborNodes[d]++;
-                    }
-                }
-            }
-        }
-    }
-
-    // there is extra work to do if there are multipple nodes, to distribute
-    // the particle layout data to all nodes
-    if (N > 1)
-    {
-        // At this point, we can send our domain status to node 0, and
-        // receive back the complete domain status.
-        int tag1 = Ippl::Comm->next_tag(P_SPATIAL_LAYOUT_TAG, P_LAYOUT_CYCLE);
-        int tag2 = Ippl::Comm->next_tag(P_SPATIAL_RETURN_TAG, P_LAYOUT_CYCLE);
-        Message *msg1, *msg2;
-        if (myN != 0)
-        {
-            msg1 = new Message;
-            // put local domain status in the message
-            msg1->put(EmptyNode[myN]);
-            // send this info to node 0
-            int node = 0;
-            Ippl::Comm->send(msg1, node, tag1);
-
-            // receive back the complete domain status
-            msg2 = Ippl::Comm->receive_block(node, tag2);
-            msg2->get(EmptyNode);
-            delete msg2;
-        }
-        else  			// do update tasks particular to node 0
-        {
-            // receive messages from other nodes describing their domain status
-            int notrecvd = N - 1;	// do not need to receive from node 0
-            while (notrecvd > 0)
-            {
-                // receive a message from another node.  After recv, node == sender.
-                int node = Communicate::COMM_ANY_NODE;
-                msg1 = Ippl::Comm->receive_block(node, tag1);
-                msg1->get(EmptyNode[node]);
-                delete msg1;
-                notrecvd--;
-            }
-
-            // send info back to all the client nodes
-            msg2 = new Message;
-            msg2->put(EmptyNode, EmptyNode+N);
-            Ippl::Comm->broadcast_others(msg2, tag2);
-        }
-    }
-
-    // fix-up for empty nodes
-    if (EmptyNode[myN])
-    {
-        // node with empty domain treats all non-empty nodes as neighbor
-        // nodes along dimension 0
-        for (j = 0; j < N; ++j)
-        {
-            if (!EmptyNode[j])
-            {
-                SwapNodeList[0][j] = true;
-                NeighborNodes[0]++;
-            }
-        }
-    }
-    return;
-#endif
 }
 
 
@@ -310,19 +161,11 @@ void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::update(
         swapCounter.begin();
 		//MPI_Pcontrol( 1,"swap_particles");
 
-#ifndef OLD_SWAP_PARTICLES
         if (canSwap==0)
             LocalNum = new_swap_particles(LocalNum, PData);
         else
             LocalNum = new_swap_particles(LocalNum, PData, *canSwap);
-#else
-        if (canSwap==0)
-            LocalNum = swap_particles(LocalNum, PData);
-        else
-            LocalNum = swap_particles(LocalNum, PData, *canSwap);
-#endif
 
-		//MPI_Pcontrol(-1,"swap_particles");
         swapCounter.end();
     }
 
@@ -429,16 +272,6 @@ void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::printDebug(Inform& o)
 template < class T, unsigned Dim, class Mesh, class CachingPolicy >
 void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::Repartition(UserList* userlist)
 {
-    // perform actions to restructure our data due to a change in the
-    // RegionLayout
-    if (userlist->getUserListID() == RLayout.get_Id())
-    {
-        //Inform dbgmsg("ParticleSpatialLayout::Repartition", INFORM_ALL_NODES);
-        //dbgmsg << "Repartitioning due to change in RegionLayout ..." << endl;
-
-        // recalculate which nodes are our neighbors in each dimension
-        rebuild_neighbor_data();
-    }
 }
 
 

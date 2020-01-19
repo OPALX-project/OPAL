@@ -36,12 +36,7 @@
 #include "Meshes/UniformCartesian.h"
 #include "AppTypes/Vektor.h"
 
-#ifdef IPPL_USE_STANDARD_HEADERS
 #include <iostream>
-using namespace std;
-#else
-#include <iostream>
-#endif
 
 // set dimensionality
 const unsigned Dim=2;

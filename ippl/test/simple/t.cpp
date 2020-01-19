@@ -47,19 +47,11 @@ int main(int argc, char *argv[])
   testmsg << A << endl;
   testmsg << B << endl;
 
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   A[I][J] = B[I-1][J+1] + B[I+1][J-1] ;
-#else
-  assign( A[I][J] , B[I-1][J+1] + B[I+1][J-1] );
-#endif
   testmsg << A << endl;
 
   B.fillGuardCells();
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   A[I][J] = B[I-1][J+1] + B[I+1][J-1];
-#else
-  assign( A[I][J] , B[I-1][J+1] + B[I+1][J-1] );
-#endif
   testmsg << A << endl;
 
   return 0;

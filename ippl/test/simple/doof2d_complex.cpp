@@ -77,11 +77,11 @@ int main(int argc, char *argv[]) {
   Index I(sizeX);
   Index J(sizeY);
   FieldLayout<Dim> layout(I,J,PARALLEL,PARALLEL, vnodes);
-  Field<dcomplex,Dim> A(layout,GuardCellSizes<Dim>(1));
-  Field<dcomplex,Dim> B(layout);
+  Field<std::complex<double>,Dim> A(layout,GuardCellSizes<Dim>(1));
+  Field<std::complex<double>,Dim> B(layout);
 
   A = 0.0;
-  A[centerX][centerY] = dcomplex(1.0*iterations,0.0);
+  A[centerX][centerY] = std::complex<double>(1.0*iterations,0.0);
 
   double fact = 1.0/9.0;
   for(int iter = 0 ; iter < iterations ; iter++ ) 

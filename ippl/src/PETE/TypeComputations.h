@@ -89,69 +89,6 @@ template<> struct PETE_Type2Index<double>
 ///////////////////////////////////////////////////////////////////////////
 //
 // CLASS NAME
-//    PETE_Index2Type<Index>
-//
-// DESCRIPTION
-//    This template describes a set of trait classes that associate an
-//    a type with an index. Each concrete class---a type that is designed
-//    to be used like a built-in type---must have a specialization
-//    of this class that provides a type given its unique index.
-//
-// NOTE
-//    It is good form to provide these, but they are really only necessary
-//    if your compiler (and all compilers you will ever want to port
-//    your code to) support partial specialization.
-//
-///////////////////////////////////////////////////////////////////////////
-
-#if !defined(IPPL_USE_PARTIAL_SPECIALIZATION)
-
-template<int Index>
-struct PETE_Index2Type
-{
-};
-
-template<> struct PETE_Index2Type<1>
-{
-  typedef bool type;
-};
-
-template<> struct PETE_Index2Type<2>
-{
-  typedef char type;
-};
-
-template<> struct PETE_Index2Type<3>
-{
-  typedef short type;
-};
-
-template<> struct PETE_Index2Type<4>
-{
-  typedef int type;
-};
-
-template<> struct PETE_Index2Type<5>
-{
-  typedef long type;
-};
-
-template<> struct PETE_Index2Type<6>
-{
-  typedef float type;
-};
-
-template<> struct PETE_Index2Type<7>
-{
-  typedef double type;
-};
-
-#endif
-
-
-///////////////////////////////////////////////////////////////////////////
-//
-// CLASS NAME
 //    PETEUnaryReturn<T, Op>
 //
 // DESCRIPTION
@@ -192,8 +129,6 @@ template<> struct PETE_Index2Type<7>
 
 const int PETE_UnaryPassThruTag = 0;
 
-#if defined(IPPL_USE_PARTIAL_SPECIALIZATION)
-
 template<class T, class Op, int OpTag>
 struct PETE_ComputeUnaryType
 {
@@ -211,24 +146,6 @@ struct PETEUnaryReturn
 {
   typedef typename PETE_ComputeUnaryType<T, Op, Op::tag>::type type;
 };
-
-#else
-
-template<int t, int op>
-struct PETE_ComputeUnaryType
-{
-  typedef typename 
-    PETE_Index2Type<(op == PETE_UnaryPassThruTag ? t : op)>::type type;
-};
-
-template<class T, class Op>
-struct PETEUnaryReturn
-{
-  typedef typename
-    PETE_ComputeUnaryType<PETE_Type2Index<T>::val, Op::tag>::type type;
-};
-
-#endif
 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -272,8 +189,6 @@ struct PETEUnaryReturn
 const int PETE_BinaryPromoteTag = -2;
 const int PETE_BinaryUseLeftTag = -1;
 const int PETE_BinaryUseRightTag = 0;
-
-#if defined(IPPL_USE_PARTIAL_SPECIALIZATION)
 
 // This is still harder than it has to be. There are bugs in
 // the EDG front end.
@@ -333,27 +248,6 @@ struct PETEBinaryReturn
   typedef typename PETE_ComputeBinaryType<T1, T2, Op, Op::tag>::type type;
 };
 
-#else
-
-template<int t1, int t2, int op>
-struct PETE_ComputeBinaryType
-{
-  typedef typename PETE_Index2Type
-    <(op == PETE_BinaryPromoteTag ? 
-     (t1 >= t2 ? t1 : t2) : 
-     (op == PETE_BinaryUseLeftTag ? t1 : 
-     (op == PETE_BinaryUseRightTag ? t2 : op)))>::type type;
-};
-
-template<class T1, class T2, class Op>
-struct PETEBinaryReturn
-{
-  typedef typename PETE_ComputeBinaryType
-    <PETE_Type2Index<T1>::val, PETE_Type2Index<T2>::val, Op::tag>::type type;
-};
-
-#endif
-
 
 ///////////////////////////////////////////////////////////////////////////
 //
@@ -372,24 +266,11 @@ struct PETEBinaryReturn
 //
 ///////////////////////////////////////////////////////////////////////////
 
-#if defined(IPPL_USE_PARTIAL_SPECIALIZATION)
-
 template<class T1, class T2, class T3, class Op>
 struct PETETrinaryReturn
 {
   typedef typename PETE_ComputeBinaryType<T2, T3, Op, Op::tag>::type type;
 };
-
-#else
-
-template<class T1, class T2, class T3, class Op>
-struct PETETrinaryReturn
-{
-  typedef typename PETE_ComputeBinaryType
-  <PETE_Type2Index<T2>::val, PETE_Type2Index<T3>::val, Op::tag>::type type;
-};
-
-#endif
 
 
 ///////////////////////////////////////////////////////////////////////////

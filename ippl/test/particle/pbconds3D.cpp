@@ -2,8 +2,8 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- * This program was prepared by PSI. 
+ *
+ * This program was prepared by PSI.
  * All rights in the program are reserved by PSI.
  * Neither PSI nor the author(s)
  * makes any warranty, express or implied, or assumes any liability or
@@ -32,8 +32,8 @@ typedef ParticleSpatialLayout<Real,Dim> playout_t;
 
 int main(int argc, char *argv[])
 {
-  
-  int i, j;
+
+  unsigned int i, j;
   Ippl ippl(argc, argv);
   Inform testmsg(argv[0]);
 
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
   testmsg << "Start of initialization ..." << endl;
   if (P.singleInitNode()) {
-    P.create(20);	// makes new particles at end of current array
+    P.create(20); // makes new particles at end of current array
     // put ten particles near right edge, and ten near left edge
     for (j=0; j < 10; j++) { // initialize new values
       P.R[j] = Vektor<Real,Dim>(5, j * 10,j * 10);
@@ -87,13 +87,13 @@ int main(int argc, char *argv[])
   }
 
   //
-  // test 1: 
+  // test 1:
   // add offset to R positions, moving particles beyond the border
   // bconds: all open
   //
 
   testmsg << "Testing open boundary conditions ... moving by (5,-1,10):" << endl;
-  for (int i=0; i < 2*Dim; ++i)
+  for (i=0; i < 2*Dim; ++i)
     P.getBConds()[i] = ParticleNoBCond;
 
   Vektor<Real,Dim> offset1(5,-1,10);
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
   }
 
   //
-  // test 2: 
+  // test 2:
   // add offset to X Y & Z positions
   // BC: open X, Y
   //     periodc Z
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
   testmsg << endl;
   P.getBConds()[4] = ParticlePeriodicBCond;
   P.getBConds()[5] = ParticlePeriodicBCond;
-  
+
   Vektor<Real,Dim> offset2(5,-1,10);
   assign(P.R, P.R + offset2);
   P.update();
@@ -129,9 +129,3 @@ int main(int argc, char *argv[])
   testmsg << "Particle test: Spatial layout: End." << endl;
   return 0;
 }
-
-/***************************************************************************
- * $RCSfile: pbconds3D.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:38 $
- * IPPL_VERSION_ID: $Id: pbconds3D.cpp,v 1.1.1.1 2003/01/23 07:40:38 adelmann Exp $ 
- ***************************************************************************/

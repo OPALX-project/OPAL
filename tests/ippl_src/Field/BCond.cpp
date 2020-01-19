@@ -106,7 +106,6 @@ TEST(Field, BC)
     Field<Vektor<double,Dim>,Dim,M,Cell> vcB(layout);
     // Assign reference values:
     counter=0;
-    value=0.0;
     for (j=0; j<5; j++) {
         for (i=0; i<5; i++) {
             value = counter++;
@@ -154,9 +153,6 @@ TEST(Field, BC)
     // Assign red-flag values for to make inaccessible vector components visible:
     vfA = 9.99;
     vfB = 9.99;
-    // Assign reference values:
-    counter=0;
-    value=0.0;
     Index Iverts(5);
     Index Jverts(5);
     Index Icells(4);
@@ -246,7 +242,6 @@ TEST(Field, BC)
         vfzC(layout,GuardCellSizes<Dim>(2),vfbcz);
     // Assign reference values:
     counter=0;
-    value=0.0;
     for (j=0; j<5; j++) {
         for (i=0; i<5; i++) {
             value = counter++;
@@ -281,7 +276,6 @@ TEST(Field, BC)
     Field<Vektor<double,Dim>,Dim,M,Vert> vzC(layout,GuardCellSizes<Dim>(2),vbcz);
     // Assign reference values:
     counter=0;
-    value=0.0;
     for (j=0; j<5; j++) {
         for (i=0; i<5; i++) {
             value = counter++;

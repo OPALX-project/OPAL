@@ -54,11 +54,10 @@ struct SpecializedGreensFunction<3> {
                     elem[2]=Index(k,k);
                     r = real(sqrt(grn.localElement(elem)));
                     if(elem==elem0) {
-                        //grn.localElement(elem) = ke*dcomplex(2*alpha/sqrt(M_PI)) ;
                         grn.localElement(elem) = 0 ;
                     }
                     else
-                        grn.localElement(elem) = ke*dcomplex(erf(alpha*r)/(r+eps));
+                        grn.localElement(elem) = ke*std::complex<double>(erf(alpha*r)/(r+eps));
                 }
             }
         }

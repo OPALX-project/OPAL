@@ -481,7 +481,7 @@ inline NDIndex<L>
 operator+(const SOffset<L>& a, const NDIndex<L>& b)
 {
   NDIndex<L> retval;
-  for (int d=0; d < L; ++d)
+  for (unsigned int d=0; d < L; ++d)
     retval[d] = b[d] + a[d];
   return retval;
 }
@@ -491,7 +491,7 @@ inline NDIndex<L>
 operator+(const NDIndex<L>& b, const SOffset<L>& a)
 {
   NDIndex<L> retval;
-  for (int d=0; d < L; ++d)
+  for (unsigned int d=0; d < L; ++d)
     retval[d] = b[d] + a[d];
   return retval;
 }
@@ -569,7 +569,7 @@ inline NDIndex<L>
 operator*(const SOffset<L>& a, const NDIndex<L>& b)
 {
   NDIndex<L> retval;
-  for (int d=0; d < L; ++d)
+  for (unsigned int d=0; d < L; ++d)
     retval[d] = b[d] * a[d];
   return retval;
 }
@@ -579,7 +579,7 @@ inline NDIndex<L>
 operator*(const NDIndex<L>& b, const SOffset<L>& a)
 {
   NDIndex<L> retval;
-  for (int d=0; d < L; ++d)
+  for (unsigned int d=0; d < L; ++d)
     retval[d] = b[d] * a[d];
   return retval;
 }

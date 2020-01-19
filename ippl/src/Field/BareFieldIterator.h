@@ -28,7 +28,6 @@
 #include "Field/LField.h"
 #include "Field/FieldLoc.h"
 #include "Field/CompressedBrickIterator.h"
-#include "Field/BrickIterator.h"
 #include "Utility/IpplInfo.h"
 #include "Utility/PAssert.h"
 
@@ -144,7 +143,7 @@ public:
 
       // set the position in the current LField
       beginLField();
-      moveBy(offloc);
+      this->moveBy(offloc);
     } else {
       IpplInfo::abort("Inconsistent FieldLoc in SetCurrentLocation.");
     }

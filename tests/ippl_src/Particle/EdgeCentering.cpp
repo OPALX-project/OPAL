@@ -4,7 +4,6 @@
 // #include "Algorithms/PartData.h"
 #include "Particle/IntCIC.h"
 #include "Particle/ParticleSpatialLayout.h"
-#include "Particle/ParticleUniformLayout.h"
 #include "Particle/ParticleAttrib.h"
 #include "Meshes/UniformCartesian.h"
 #include "Meshes/Centering.h"

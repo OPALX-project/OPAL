@@ -89,16 +89,6 @@
 #define IPPL_MAKE_HOST_MAP_TAG    60000
 #define IPPL_TAG_CYCLE             1000
 
-// Tags for Conejo load balancer
-#define F_CONEJO_BALANCER_TAG      70000
-#define F_CB_BCAST_TAG             71000
-#define F_CB_DOMAIN_TAG            72000
-
-// Tags for VnodeMultiBalancer
-#define VNMB_PARTIAL_TAG           80000
-#define VNMB_COMPLETE_TAG          81000
-#define VNMB_TAG_CYCLE              1000
-
 // Tags for Ippl application codes
 #define IPPL_APP_TAG0    90000
 #define IPPL_APP_TAG1    91000

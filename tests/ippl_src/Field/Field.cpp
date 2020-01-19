@@ -213,7 +213,6 @@ TEST(Field, Compressed)
     }
     assign(A[3][3] , 1 );
     count = 0;
-    int reduced_count = 0;
     if (IpplInfo::noFieldCompression) {
         if (A.CompressedFraction() != 0) {
             std::cout << "FAILED: Compressed somewhere after assigning single" << std::endl;
@@ -224,7 +223,7 @@ TEST(Field, Compressed)
             if ( (*lf).second->IsCompressed() )
                 ++count;
         }
-        reduced_count = 0;
+        int reduced_count = 0;
         reduce(&count,&count+1,&reduced_count,OpAddAssign());
         EXPECT_EQ(reduced_count, 3);
     }
@@ -254,7 +253,7 @@ TEST(Field, Compressed)
             if ( (*lf).second->IsCompressed() )
                 ++count;
         }
-        reduced_count = 0;
+        int reduced_count = 0;
         reduce(&count,&count+1,&reduced_count,OpAddAssign());
         if (Ippl::deferGuardCellFills) {
             EXPECT_EQ(reduced_count,3);
@@ -282,7 +281,7 @@ TEST(Field, Compressed)
             if ( (*lf).second->IsCompressed() )
                 ++count;
         }
-        reduced_count = 0;
+        int reduced_count = 0;
         reduce(&count,&count+1,&reduced_count,OpAddAssign());
         if (Ippl::deferGuardCellFills) {
             EXPECT_EQ(reduced_count,3);
@@ -314,7 +313,7 @@ TEST(Field, Compressed)
             if ( (*lb).second->IsCompressed() )
                 ++count;
         }
-        reduced_count = 0;
+        int reduced_count = 0;
         reduce(&count,&count+1,&reduced_count,OpAddAssign());
         EXPECT_EQ(reduced_count, 3);
     }
@@ -535,9 +534,6 @@ TEST(Field, Reduceloc)
 {
     Index I(5);
     Index J(5);
-    NDIndex<Dim> domain;
-    domain[0] = I;
-    domain[1] = J;
     FieldLayout<Dim> layout(I,J);
     Field<double,Dim> A(layout);
     Field<double,Dim> B(layout);

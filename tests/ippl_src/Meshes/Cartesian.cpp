@@ -19,7 +19,7 @@ TEST(Meshes, Cartesian)
 
     // Sizes:
     unsigned nverts[D], ncells[D];
-    unsigned totverts=1, totcells=1;
+    unsigned totverts, totcells=1;
     unsigned int d;
 
     for (d=0; d<D; d++) {
@@ -246,7 +246,7 @@ TEST(Meshes, Cartesian)
             magDiffTensorCell += diffTensorCell(d,d2)*diffTensorCell(d,d2);
         }
     }
-    EXPECT_NEAR(abs(magDiffVectorCell), 0, roundOffError);
+    EXPECT_NEAR(abs(magDiffTensorCell), 0, roundOffError);
     //---------------------------------------------------------------------------
 
     //---------------------------------------------------------------------------

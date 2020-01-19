@@ -22,8 +22,6 @@
 #include "AppTypes/Tenzor.h"
 #include "AppTypes/SymTenzor.h"
 #include "AppTypes/AntiSymTenzor.h"
-#include "AppTypes/dcomplex.h"
-
 
 ////////////////////////////////////////////////////////////////////////////
 // a base class for all DiscType's, that provides common routines to

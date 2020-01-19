@@ -25,10 +25,6 @@ set (_HDRS
   MakeDataSource.h
   PtclAttribDataSource.h
   PtclBaseDataSource.h
-  ScalarDataSource.hpp
-  ScalarDataSource.h
-  StringDataSource.hpp
-  StringDataSource.h
   )
 
 include_directories (

@@ -3,9 +3,6 @@
  *
  * The IPPL Framework
  *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
  ***************************************************************************/
 
 #ifndef MESSAGE_H
@@ -34,15 +31,11 @@
  * of resolving who needs to free up the storage used for the Message elements.
  ***************************************************************************/
 
-// include files
 #include "Utility/Inform.h"
-#include "AppTypes/dcomplex.h"
+#include <complex>
 #include <cstddef>
-
 #include <vector>
-
 #include <iostream>
-
 #include <cstring>
 #include <cstdlib>
 
@@ -96,7 +89,7 @@ DEFINE_ALL_BUILTIN_TRAIT_CLASS(unsigned long)
 DEFINE_ALL_BUILTIN_TRAIT_CLASS(long long)
 DEFINE_ALL_BUILTIN_TRAIT_CLASS(float)
 DEFINE_ALL_BUILTIN_TRAIT_CLASS(double)
-DEFINE_ALL_BUILTIN_TRAIT_CLASS(dcomplex)
+DEFINE_ALL_BUILTIN_TRAIT_CLASS(std::complex<double>)
 
 /////////////////////////////////////////////////////////////////////
 // a class to put single items into a Message, which can be specialized

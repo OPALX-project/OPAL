@@ -39,18 +39,8 @@ int main(int argc, char *argv[])
   FieldLayout<Dim> layout(domain);
   Field<double,Dim> A(layout);
 
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   A[I][J]= (I-2.5)*(I-1.5) + (J-1.5)*(J-2.5) ;
-#else
-  assign( A[I][J] , (I-2.5)*(I-1.5) + (J-1.5)*(J-2.5) );
-#endif
-
   testmsg << A << endl;
 
   return 0;
 }
-/***************************************************************************
- * $RCSfile: t4.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:39 $
- * IPPL_VERSION_ID: $Id: t4.cpp,v 1.1.1.1 2003/01/23 07:40:39 adelmann Exp $ 
- ***************************************************************************/

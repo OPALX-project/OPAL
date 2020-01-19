@@ -280,38 +280,38 @@ int main(int argc, char *argv[])
 
 
   // create test Fields for complex-to-complex FFT
-  BareField<dcomplex,D> CFieldPPStan(layoutPPStan);
-  BareField<dcomplex,D> CFieldPPStan_save(layoutPPStan);
+  BareField<std::complex<double>,D> CFieldPPStan(layoutPPStan);
+  BareField<std::complex<double>,D> CFieldPPStan_save(layoutPPStan);
   BareField<double,D> diffFieldPPStan(layoutPPStan);
 
-  BareField<dcomplex,D> CFieldSPStan(layoutSPStan);
-  BareField<dcomplex,D> CFieldSPStan_save(layoutSPStan);
+  BareField<std::complex<double>,D> CFieldSPStan(layoutSPStan);
+  BareField<std::complex<double>,D> CFieldSPStan_save(layoutSPStan);
   BareField<double,D> diffFieldSPStan(layoutSPStan);
-  BareField<dcomplex,D> CFieldSPPerm(layoutSPPerm);
+  BareField<std::complex<double>,D> CFieldSPPerm(layoutSPPerm);
 
   // create test Fields for real-to-complex FFT
   BareField<double,D> RFieldPPStan(layoutPPStan);
   BareField<double,D> RFieldPPStan_save(layoutPPStan);
-  BareField<dcomplex,D> CFieldPPStan0h(layoutPPStan0h);
+  BareField<std::complex<double>,D> CFieldPPStan0h(layoutPPStan0h);
 
   BareField<double,D> RFieldSPStan(layoutSPStan);
   BareField<double,D> RFieldSPStan_save(layoutSPStan);
-  BareField<dcomplex,D> CFieldSPStan0h(layoutSPStan0h);
-  BareField<dcomplex,D> CFieldSPPerm0h(layoutSPPerm0h);
+  BareField<std::complex<double>,D> CFieldSPStan0h(layoutSPStan0h);
+  BareField<std::complex<double>,D> CFieldSPPerm0h(layoutSPPerm0h);
 
   // create test Fields for sine transform and real-to-complex FFT
-  BareField<dcomplex,D> CFieldPPStan1h(layoutPPStan1h);
+  BareField<std::complex<double>,D> CFieldPPStan1h(layoutPPStan1h);
 
-  BareField<dcomplex,D> CFieldSPStan1h(layoutSPStan1h);
-  BareField<dcomplex,D> CFieldSPPerm1h(layoutSPPerm1h);
+  BareField<std::complex<double>,D> CFieldSPStan1h(layoutSPStan1h);
+  BareField<std::complex<double>,D> CFieldSPPerm1h(layoutSPPerm1h);
 
   testmsg << "Initialize fields ..." << endl;
   IpplTimings::stopTimer(fsetupTimer);
 
   IpplTimings::startTimer(fInitTimer);
   // Rather more complete test functions (sine or cosine mode):
-  dcomplex sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
-  dcomplex cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
+  std::complex<double> sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
+  std::complex<double> cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
 
  /*
   double xfact, kx, yfact, ky, zfact, kz;
@@ -334,9 +334,9 @@ int main(int argc, char *argv[])
 		  ndiStandard[1]    * ky * yfact -
 		  ndiStandard[2]    * kz * zfact ) );
   */
-  CFieldPPStan = dcomplex(0.0,0.0);// 
-  CFieldSPStan = dcomplex(0.0,0.0); //CFieldPPStan;
-  CFieldSPPerm = dcomplex(0.0,0.0);
+  CFieldPPStan = std::complex<double>(0.0,0.0);// 
+  CFieldSPStan = std::complex<double>(0.0,0.0); //CFieldPPStan;
+  CFieldSPPerm = std::complex<double>(0.0,0.0);
 
   CFieldPPStan_save = CFieldPPStan; // Save values for checking later
   CFieldSPStan_save = CFieldSPStan;
@@ -415,10 +415,10 @@ int main(int argc, char *argv[])
 
     // RC FFT tests
     RFieldPPStan = real(CFieldPPStan_save);
-    CFieldPPStan0h = dcomplex(0.0,0.0);
+    CFieldPPStan0h = std::complex<double>(0.0,0.0);
     RFieldSPStan = real(CFieldSPStan_save);
-    CFieldSPStan0h = dcomplex(0.0,0.0);
-    CFieldSPPerm0h = dcomplex(0.0,0.0);
+    CFieldSPStan0h = std::complex<double>(0.0,0.0);
+    CFieldSPPerm0h = std::complex<double>(0.0,0.0);
 
     RFieldPPStan_save = RFieldPPStan;  // save input data for checking results
     RFieldSPStan_save = RFieldSPStan;
@@ -501,10 +501,10 @@ int main(int argc, char *argv[])
     // Sine and RC transform tests
 
     RFieldPPStan = RFieldPPStan_save;
-    CFieldPPStan1h = dcomplex(0.0,0.0);
+    CFieldPPStan1h = std::complex<double>(0.0,0.0);
     RFieldSPStan = RFieldSPStan_save;
-    CFieldSPStan1h = dcomplex(0.0,0.0);
-    CFieldSPPerm1h = dcomplex(0.0,0.0);
+    CFieldSPStan1h = std::complex<double>(0.0,0.0);
+    CFieldSPPerm1h = std::complex<double>(0.0,0.0);
 
     // create Sine FFT object
     FFT<SineTransform,D,double> sinefft(ndiStandard, ndiStandard1h,

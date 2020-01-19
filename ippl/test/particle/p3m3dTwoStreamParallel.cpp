@@ -25,7 +25,6 @@
 #include <iomanip>
 #include "Particle/BoxParticleCachingPolicy.h"
 #include "Particle/PairBuilder/HashPairBuilderPeriodicParallel.h"
-#include "Particle/PairBuilder/SortingPairBuilder.h"
 #include "Particle/PairBuilder/PairConditions.h"
 #include "math.h"
 
@@ -61,7 +60,7 @@ typedef CenteredFieldLayout<Dim, Mesh_t, Center_t>                    FieldLayou
 typedef Field<double, Dim, Mesh_t, Center_t>                          Field_t;
 typedef Field<int, Dim, Mesh_t, Center_t>                             IField_t;
 typedef Field<Vector_t, Dim, Mesh_t, Center_t>                        VField_t;
-typedef Field<dcomplex, Dim, Mesh_t, Center_t>                        CxField_t;
+typedef Field<std::complex<double>, Dim, Mesh_t, Center_t>            CxField_t;
 //typedef FFT<RCTransform, Dim, double>                               FFT_t;
 typedef FFT<CCTransform, Dim, double>                                 FFT_t;
 
@@ -96,7 +95,7 @@ struct SpecializedGreensFunction<3> {
 						elem[2]=Index(k,k);
 
 						r = real(sqrt(grn.localElement(elem)));
-						grn.localElement(elem) = 1./(4.*M_PI)*dcomplex(erf(alpha*r)/(r+eps));
+						grn.localElement(elem) = 1./(4.*M_PI)*std::complex<double>(erf(alpha*r)/(r+eps));
 					}
 				}
 			}
@@ -309,46 +308,46 @@ class ChargedParticles : public IpplParticleBase<PL> {
 						val = 1./(4.*M_PI)*erf(alpha*r)/(r+eps);
 
 						elem_all=elem;
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
-						//rhocmpl_m.localElement(elem_all) *= dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
+						//rhocmpl_m.localElement(elem_all) *= std::complex<double>(val);
 						//mirror on x axis
 						elem_all[0]=elem_mirr[0];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
-						//rhocmpl_m.localElement(elem_all) *= dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
+						//rhocmpl_m.localElement(elem_all) *= std::complex<double>(val);
 						//mirror on y axis
 						elem_all[0]=elem[0];
 						elem_all[1]=elem_mirr[1];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
-						//rhocmpl_m.localElement(elem_all) *= dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
+						//rhocmpl_m.localElement(elem_all) *= std::complex<double>(val);
 						//mirror on z axis
 						elem_all[1]=elem[1];
 						elem_all[2]=elem_mirr[2];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
-						//rhocmpl_m.localElement(elem_all) *= dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
+						//rhocmpl_m.localElement(elem_all) *= std::complex<double>(val);
 						//mirror on x,y axis
 						elem_all[0]=elem_mirr[0];
 						elem_all[1]=elem_mirr[1];
 						elem_all[2]=elem[2];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
-						//rhocmpl_m.localElement(elem_all) *= dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
+						//rhocmpl_m.localElement(elem_all) *= std::complex<double>(val);
 						//mirror on y,z axis
 						elem_all[0]=elem[0];
 						elem_all[1]=elem_mirr[1];
 						elem_all[2]=elem_mirr[2];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
-						//rhocmpl_m.localElement(elem_all) *= dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
+						//rhocmpl_m.localElement(elem_all) *= std::complex<double>(val);
 						//mirror on z,x axis
 						elem_all[0]=elem_mirr[0];
 						elem_all[1]=elem[1];
 						elem_all[2]=elem_mirr[2];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
-						//rhocmpl_m.localElement(elem_all) *= dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
+						//rhocmpl_m.localElement(elem_all) *= std::complex<double>(val);
 						//mirror on x,y,z axis
 						elem_all[0]=elem_mirr[0];
 						elem_all[1]=elem_mirr[1];
 						elem_all[2]=elem_mirr[2];
-						grncmpl_m.localElement(elem_all) = dcomplex(val);
-						//rhocmpl_m.localElement(elem_all) *= dcomplex(val);
+						grncmpl_m.localElement(elem_all) = std::complex<double>(val);
+						//rhocmpl_m.localElement(elem_all) *= std::complex<double>(val);
 
 					}
 				}
@@ -420,7 +419,7 @@ class ChargedParticles : public IpplParticleBase<PL> {
 				
 				//transform G -> Ghat and store in grncmpl_m
 				fft_m->transform("inverse", grncmpl_m);
-				//grncmpl_m[0][0][0]=dcomplex(0);
+				//grncmpl_m[0][0][0]=std::complex<double>(0);
 				//multiply in fourier space and obtain PhiHat in rhocmpl_m
 				rhocmpl_m *= grncmpl_m;
 			}

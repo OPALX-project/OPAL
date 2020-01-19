@@ -47,14 +47,8 @@
 #include "Utility/ParticleDebug.h"
 #include "Utility/FieldDebug.h"
 
-#ifdef IPPL_USE_STANDARD_HEADERS
 #include <iostream>
 #include <fstream>
-using namespace std;
-#else
-#include <iostream>
-#include <fstream>
-#endif
 
 //-----------------------------------------------------------------------------
 // Simple user Particles class definition

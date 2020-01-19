@@ -39,13 +39,8 @@ int main(int argc, char *argv[])
   Field<int,Dim> A1(layout1);
   Field<int,Dim> A2(layout1);
 
-#ifdef IPPL_USE_MEMBER_TEMPLATES
   A1[I][J] = I + 10*J;
   A2[I][J] = J + 10*I;
-#else
-  assign(A1[I][J], I + 10*J);
-  assign(A2[I][J], J + 10*I);
-#endif
 
 #ifdef PRINT_DETAILS
   out << "My portion of Field A1 = " << A1 << endl;

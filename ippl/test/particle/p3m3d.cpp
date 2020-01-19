@@ -46,7 +46,7 @@ typedef CenteredFieldLayout<Dim, Mesh_t, Center_t>                    FieldLayou
 typedef Field<double, Dim, Mesh_t, Center_t>                          Field_t;
 typedef Field<int, Dim, Mesh_t, Center_t>                             IField_t;
 typedef Field<Vector_t, Dim, Mesh_t, Center_t>                        VField_t;
-typedef Field<dcomplex, Dim, Mesh_t, Center_t>                        CxField_t;
+typedef Field<std::complex<double>, Dim, Mesh_t, Center_t>            CxField_t;
 typedef FFT<RCTransform, Dim, double>                                 FFT_t;
 typedef IntCIC                                                        IntrplCIC_t;
 typedef IntNGP                                                        IntrplNGP_t;
@@ -435,7 +435,7 @@ struct ApplyField {
 };
 
 int main(int argc, char *argv[]){
-    Ippl ippl(argc, argv);
+    Ippl ippl(argc, argv);
     Inform msg(argv[0]);
     Inform msg2all(argv[0],INFORM_ALL_NODES);
 

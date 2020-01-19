@@ -2,8 +2,8 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- * This program was prepared by PSI. 
+ *
+ * This program was prepared by PSI.
  * All rights in the program are reserved by PSI.
  * Neither PSI nor the author(s)
  * makes any warranty, express or implied, or assumes any liability or
@@ -17,7 +17,7 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
+ *
  *
  * Visit http://people.web.psi.ch/adelmann/ for more details
  *
@@ -37,13 +37,21 @@
 #include "DataSource/FilePtclBaseDataSource.h"
 #include "DataSource/FilePtclAttribDataSource.h"
 
+// forward declaration to avoid possible recursive inclusion
+template<class T, unsigned Dim, class M, class C>
+class FileFieldDataSource;
+template<class T>
+class FileParticleAttribDataSource;
+template<class T>
+class FileIpplParticleBaseDataSource;
+
 ////////////////////////////////////////////////////////////////////////////
 // a version of make_DataSourceObject for Field's.
-// arguments: name, connection type, transfer metohd, Field
+// arguments: name, connection type, transfer method, Field
 template<class T, unsigned Dim, class M, class C>
 DataSourceObject *
 make_DataSourceObject(const char *nm, DataConnect *dc, int t,
-		      Field<T,Dim,M,C>& F) {
+                      Field<T,Dim,M,C>& F) {
 
   // get the connection method name, and make a string out of it
   std::string method(dc->DSID());
@@ -68,7 +76,7 @@ make_DataSourceObject(const char *nm, DataConnect *dc, int t,
 template<class T>
 DataSourceObject *
 make_DataSourceObject(const char *nm, DataConnect *dc, int t,
-		      ParticleAttrib<T>& P) {
+                      ParticleAttrib<T>& P) {
 
   // get the connection method name, and make a string out of it
   std::string method(dc->DSID());
@@ -93,7 +101,7 @@ make_DataSourceObject(const char *nm, DataConnect *dc, int t,
 template<class PLayout>
 DataSourceObject *
 make_DataSourceObject(const char *nm, DataConnect *dc, int t,
-		      IpplParticleBase<PLayout>& P) {
+                      IpplParticleBase<PLayout>& P) {
 
   // get the connection method name, and make a string out of it
   std::string method(dc->DSID());
@@ -111,56 +119,3 @@ make_DataSourceObject(const char *nm, DataConnect *dc, int t,
 
   return dso;
 }
-
-////////////////////////////////////////////////////////////////////////////
-// a version of make_DataSourceObject for ScalarDataSource's
-template<class T>
-DataSourceObject *
-make_DataSourceObject(const char *nm, DataConnect *dc, int t,
-                      ScalarDataSource<T>& S) {
-
-  // get the connection method name, and make a string out of it
-  std::string method(dc->DSID());
-
-  DataSourceObject *dso = 0;
-  if (method == "file") {
-    // create a DataSourceObject for this FILE which will connect to
-    // a file
-  }
-
-  // make a default connection is nothing has been found
-  if (dso == 0)
-    dso = new DataSourceObject;
-
-  return dso;
-}
-
-
-////////////////////////////////////////////////////////////////////////////
-// a version of make_DataSourceObject for StringDataSource's
-template<class T>
-DataSourceObject *
-make_DataSourceObject(const char *nm, DataConnect *dc, int t,
-                      StringDataSource<T>& S) {
-  
-  // get the connection method name, and make a string out of it
-  std::string method(dc->DSID());
-
-  DataSourceObject *dso = 0;
-  if (method == "file") {
-    // create a DataSourceObject for this FILE which will connect to
-    // a file
-  }
-
-  // make a default connection is nothing has been found
-  if (dso == 0)
-    dso = new DataSourceObject;
-
-  return dso;
-}
-
-/***************************************************************************
- * $RCSfile: MakeDataSource.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:25 $
- * IPPL_VERSION_ID: $Id: MakeDataSource.cpp,v 1.1.1.1 2003/01/23 07:40:25 adelmann Exp $ 
- ***************************************************************************/
