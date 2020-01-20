@@ -5,7 +5,7 @@
 # MITHRA_INCLUDE_DIR
 # MITHRA_FOUND
 
-find_path (MITHRA_INCLUDE_DIR source/classes.hh)
+find_path (MITHRA_INCLUDE_DIR src/classes.h)
 
 if (MITHRA_INCLUDE_DIR)
     set (MITHRA_FOUND "YES")
