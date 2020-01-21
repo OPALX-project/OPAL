@@ -93,6 +93,8 @@ public:
     virtual unsigned int getTruncationOrder() const;
     virtual void setSpaceCharge(bool sc);
     virtual bool getSpaceCharge() const;
+    virtual void setEmitParticles(bool ep);
+    virtual bool getEmitParticles() const;
     virtual void setTimeStepRatio(double m);
     virtual unsigned int getTimeStepRatio() const;
     virtual void setTotalTime(double tt);
@@ -146,6 +148,9 @@ private:
 
     /// Whether or not to consider space-charge effects
     bool spaceCharge_m;
+
+    /// Emit particles or inject them all at once
+    bool emitParticles_m;
 
     /// Ratio between mesh time-step and bunch time-step (both computed by mithra)
     unsigned int m_m;

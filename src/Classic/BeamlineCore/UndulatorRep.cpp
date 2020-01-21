@@ -57,6 +57,7 @@ UndulatorRep::UndulatorRep():
     radiationDirectory_m(""),
     truncationOrder_m(2),
     spaceCharge_m(1),
+    emitParticles_m(1),
     m_m(5),
     totalTime_m(0.0),
     lFringe_m(1.0),
@@ -78,6 +79,7 @@ UndulatorRep::UndulatorRep(const UndulatorRep &right):
     meshResolution_m(right.meshResolution_m),
     truncationOrder_m(right.truncationOrder_m),
     spaceCharge_m(right.spaceCharge_m),
+    emitParticles_m(right.emitParticles_m),
     m_m(right.m_m),
     totalTime_m(right.totalTime_m),
     lFringe_m(right.lFringe_m),
@@ -95,6 +97,7 @@ UndulatorRep::UndulatorRep(const std::string &name):
     radiationDirectory_m(""),
     truncationOrder_m(2),
     spaceCharge_m(1),
+    emitParticles_m(1),
     m_m(5),
     totalTime_m(0.0),
     lFringe_m(1.0),
@@ -182,6 +185,9 @@ unsigned int UndulatorRep::getTruncationOrder() const { return truncationOrder_m
 
 void UndulatorRep::setSpaceCharge(bool sc) { spaceCharge_m = sc; }
 bool UndulatorRep::getSpaceCharge() const { return spaceCharge_m;  }
+
+void UndulatorRep::setEmitParticles(bool ep) { emitParticles_m = ep; }
+bool UndulatorRep::getEmitParticles() const { return emitParticles_m;  }
 
 void UndulatorRep::setTimeStepRatio(double m) { m_m = m; }
 unsigned int UndulatorRep::getTimeStepRatio() const { return m_m; }

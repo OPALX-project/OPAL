@@ -81,6 +81,9 @@ OpalUndulator::OpalUndulator():
     itsAttr[SPACECHARGE] = Attributes::makeReal
                           ("SPACECHARGE",
                           "Whether to consider space-charge effects or not", 1);
+    itsAttr[EMITPARTICLES] = Attributes::makeReal
+                          ("EMITPARTICLES",
+                          "Emit particles or inject the whole bunch at once", 1);
     itsAttr[TIMESTEPRATIO] = Attributes::makeReal
                           ("TIMESTEPRATIO",
                           "Ratio between mesh time-step and bunch time-step", 1);
@@ -100,6 +103,7 @@ OpalUndulator::OpalUndulator():
     registerStringAttribute("RADDIRECTORY");
     registerRealAttribute("TRUNORDER");
     registerRealAttribute("SPACECHARGE");
+    registerRealAttribute("EMITPARTICLES");
     registerRealAttribute("TIMESTEPRATIO");
     registerRealAttribute("TOTALTIME");
     registerRealAttribute("LFRINGE");
@@ -174,6 +178,7 @@ void OpalUndulator::update() {
     ur->setMeshResolution(Attributes::getRealArray(itsAttr[MESHRESOLUTION]));
     ur->setTruncationOrder(Attributes::getReal(itsAttr[TRUNORDER]));
     ur->setSpaceCharge(Attributes::getReal(itsAttr[SPACECHARGE]));
+    ur->setEmitParticles(Attributes::getReal(itsAttr[EMITPARTICLES]));
     ur->setTimeStepRatio(Attributes::getReal(itsAttr[TIMESTEPRATIO]));
     ur->setTotalTime(Attributes::getReal(itsAttr[TOTALTIME]));
     ur->setLFringe(Attributes::getReal(itsAttr[LFRINGE]));

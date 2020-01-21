@@ -42,16 +42,16 @@
 
 
 /** Include header files for Mithra full-wave solver.  */
-#include "source/fieldvector.hh"
-#include "source/stdinclude.hh"
-#include "source/readdata.hh"
-#include "source/database.hh"
-#include "source/classes.hh"
-#include "source/datainput.hh"
-#include "source/readdata.hh"
-#include "source/solver.hh"
-#include "source/fdtd.hh"
-#include "source/fdtdSC.hh"
+#include "src/fieldvector.h"
+#include "src/stdinclude.h"
+#include "src/readdata.h"
+#include "src/database.h"
+#include "src/classes.h"
+#include "src/datainput.h"
+#include "src/readdata.h"
+#include "src/solver.h"
+#include "src/fdtd.h"
+#include "src/fdtdSC.h"
 
 #include "BeamlineCore/UndulatorRep.h"
 
@@ -749,27 +749,10 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     /* Parameters to initialize bunch                                                                     */
     Darius::BunchInitialize bunchInit;
     Darius::FieldVector<double> fv (0.0);
-    bunchInit.bunchType_ = "charge-vector";
+    bunchInit.bunchType_ = "OPAL";
     bunchInit.numberOfParticles_ = totalNum;
     bunchInit.cloudCharge_ = charge.q * totalNum;    
-    bunchInit.initialGamma_ = itsBunch_m->get_gamma(); 
-    bunchInit.initialBeta_ = sqrt(1.0 - 1.0 / (bunchInit.initialGamma_ * bunchInit.initialGamma_));    
-    for (unsigned int d = 0; d < 3; ++d) 
-        fv[d] = ( itsBunch_m->get_pmean() )[d];
-    double norm = sqrt( fv.norm() );
-    fv /= norm;
-    bunchInit.initialDirection_	= fv;
-    for (unsigned int d = 0; d < 3; ++d)
-        fv[d] = itsBunch_m->get_rmean()[d];
-    bunchInit.position_.push_back(fv);
-    for (unsigned int d = 0; d < 3; ++d) 
-        fv[d] = itsBunch_m->get_rrms()(d);
-    bunchInit.sigmaPosition_ = fv;
-    for (unsigned int d = 0; d < 3; ++d) 
-        fv[d] = itsBunch_m->get_prms()(d);
-    bunchInit.sigmaGammaBeta_ = fv;
     bunchInit.inputVector_ = qv;
-    bunchInit.longTrun_ = itsBunch_m->get_maxExtent()[2];
     bunchInit.bF_ = ur->getBF();
     msg << "Done getting bunch parameters" << endl;
 
@@ -777,21 +760,10 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     Darius::Undulator uParam;
     uParam.k_ = ur->getK();
     uParam.lu_ = ur->getLambda();
-    uParam.rb_ = ur->getLFringe() - zmean;
+    uParam.dist_ = ur->getLFringe() - zmean;
     double uLength =  ur->getElementLength() - ur->getLFringe();
     uParam.length_ = uLength / uParam.lu_;  // In units of lu
-    double gamma_ = bunchInit.initialGamma_ / sqrt(1 + .5 * uParam.k_ * uParam.k_);
-    double beta_ = sqrt(1.0 - 1.0 / (gamma_ * gamma_));    
     msg << "Done passing undulator parameters to Mithra" << endl;
-
-    /* Radiation output parameters         */
-    // Darius::FreeElectronLaser FELParam;
-    // FELParam.radiationPower_.sampling_ = 1;
-    // FELParam.radiationPower_.samplingType("at-point");
-    // FELParam.radiationPower_.z_ = ur->getRadiationZ();
-    // FELParam.radiationPower_.lambda_ = ur->getRadiationLambda();
-    // FELParam.radiationPower_.directory_ = ur->getRadiationDirectory();
-    // msg << "Done passing radiation output parameters to Mithra" << endl;
 
     /* Create the solver database                     */
     Darius::Mesh                               mesh;
@@ -808,18 +780,14 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         fv[d] = ur->getMeshResolution()[d];
     mesh.meshResolution_ = fv;
     mesh.totalTime_ = ur->getTotalTime();
-    if (mesh.totalTime_ == 0.0)
-        mesh.totalTime_ = 2 * uParam.rb_ / bunchInit.initialBeta_ / Darius::C0 + uLength / beta_ / Darius::C0;
     mesh.truncationOrder_ = ur->getTruncationOrder();
     mesh.spaceCharge_ = ur->getSpaceCharge();
+    mesh.emitParticles_ = ur->getEmitParticles();
     msg << "Done passing mesh parameters to Mithra" << endl;
 
     /* Create the bunch database.                                                                         */
     Darius::Bunch                              bunch;
     bunch.bunchInit_.push_back(bunchInit);
-    bunch.timeStart_ = 0.0;
-    bunch.ratioTS_ = ur->getTimeStepRatio();  // dt = m * dt_bunch
-    msg << "Done passing timestep parameters to Mithra" << endl;
 
     /* Create the seed database.                                                                          */
     Darius::Seed                               seed;
