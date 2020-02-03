@@ -139,7 +139,7 @@ for_each(SubParticleAttribIter<PA,T,D> &p, const EvalFunctor_0 &)
 
 template<class PA, class T, unsigned D, class C>
 inline bool
-for_each(SubParticleAttribIter<PA,T,D> &p, HasUnitStride, C)
+for_each(SubParticleAttribIter<PA,T,D> &/*p*/, HasUnitStride, C)
 {
   return true;
 }

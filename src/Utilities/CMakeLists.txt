@@ -5,7 +5,6 @@ set (_SRCS
     RegularExpression.cpp
     Round.cpp
     Timer.cpp
-    TpsWerrf.cpp
     Truncate.cpp
     )
 
@@ -23,7 +22,6 @@ set (HDRS
     RegularExpression.h
     Round.h
     Timer.h
-    TpsWerrf.h
     Truncate.h
     )
 

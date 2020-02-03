@@ -812,7 +812,7 @@ struct OpMeshPeriodic
 {
 };
 template<class T>
-inline void PETE_apply(OpMeshPeriodic<T> e, T& a, T b) { a = b; }
+inline void PETE_apply(OpMeshPeriodic<T> /*e*/, T& a, T b) { a = b; }
 
 // Reflective/None:
 template<class T>
@@ -1935,7 +1935,7 @@ getDeltaCellField(Field<Vektor<MFLOAT,Dim>,Dim,
 template <unsigned Dim, class MFLOAT>
 Vektor<MFLOAT,Dim>*
 Cartesian<Dim,MFLOAT>::
-getSurfaceNormals(const NDIndex<Dim>& ndi) const
+getSurfaceNormals(const NDIndex<Dim>& /*ndi*/) const
 {
   Vektor<MFLOAT,Dim>* surfaceNormals = new Vektor<MFLOAT,Dim>[2*Dim];
   unsigned int d, i;
@@ -1979,7 +1979,7 @@ getSurfaceNormalFields(Field<Vektor<MFLOAT,Dim>, Dim,
 template <unsigned Dim, class MFLOAT>
 Vektor<MFLOAT,Dim>
 Cartesian<Dim,MFLOAT>::
-getSurfaceNormal(const NDIndex<Dim>& ndi, unsigned face) const
+getSurfaceNormal(const NDIndex<Dim>& /*ndi*/, unsigned face) const
 {
   Vektor<MFLOAT,Dim> surfaceNormal;
   unsigned int d;

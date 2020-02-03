@@ -300,7 +300,7 @@ void ParticleUniformLayout<T, Dim>::update(
 // print it out
 template<class T, unsigned Dim>
 inline
-std::ostream& operator<<(std::ostream& out, const ParticleUniformLayout<T,Dim>& L) {
+std::ostream& operator<<(std::ostream& out, const ParticleUniformLayout<T,Dim>& /*L*/) {
 
   out << "ParticleUniformLayout" << std::endl;
   return out;

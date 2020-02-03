@@ -141,15 +141,9 @@ BinaryRepartition(IpplParticleBase<ParticleSpatialLayout<T,Dim,Mesh,CachingPolic
 // the same, but taking a uniform layout (this will not actually do anything)
 template<class T, unsigned Dim>
 bool
-BinaryRepartition(IpplParticleBase<ParticleUniformLayout<T,Dim> >&, double offset) {
+BinaryRepartition(IpplParticleBase<ParticleUniformLayout<T,Dim> >& /*PB*/, double /*offset*/) {
   // for a uniform layout, this repartition method does nothing, so just
   // exit
   return true;
 }
 
-
-/***************************************************************************
- * $RCSfile: ParticleBalancer.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:28 $
- * IPPL_VERSION_ID: $Id: ParticleBalancer.cpp,v 1.1.1.1 2003/01/23 07:40:28 adelmann Exp $
- ***************************************************************************/

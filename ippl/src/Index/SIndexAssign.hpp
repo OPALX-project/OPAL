@@ -53,7 +53,7 @@ public:
 
   // S = exp means we cleared out all the points previously, so we know
   // we do not need to worry about repeated points
-  static void apply(SIndex<Dim>& SI,
+  static void apply(SIndex<Dim>& /*SI*/,
 		    typename SIndex<Dim>::iterator_iv& LSI,
 		    const SOffset<Dim>& SO,
 		    bool result) {
@@ -280,7 +280,7 @@ struct AssignActions { };
 template<unsigned Dim>
 struct AssignActions<Dim, SIExprTag<true> > {
   template<class RHS>
-  static void fillgc(RHS &bb, const NDIndex<Dim> &domain) {
+  static void fillgc(RHS &bb, const NDIndex<Dim> & /*domain*/) {
     // ask each field on the RHS to fill its guard cells, if necessary
     //tjw3/3/99    for_each(bb, FillGCIfNecessary(domain), PETE_NullCombiner());
     for_each(bb, FillGCIfNecessary(FGCINTag<Dim,double>()), PETE_NullCombiner());
@@ -331,8 +331,8 @@ struct AssignActions<Dim, SIExprTag<false> > {
 // the given domain, find where it evaluates to true, and store the
 // value of that index point.
 template<unsigned Dim, class RHS, class Op, bool IsExpr>
-void assign(SIndex<Dim>& a, RHS b, Op, const NDIndex<Dim> &domain,
-	    SIExprTag<IsExpr> isexpr) {
+void assign(SIndex<Dim>& a, RHS b, Op, const NDIndex<Dim> &domain, 
+	    SIExprTag<IsExpr> /*isexpr*/) {
   
    
   

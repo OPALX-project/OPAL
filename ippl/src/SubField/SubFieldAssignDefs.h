@@ -78,7 +78,7 @@ for_each(SubFieldIter<T,D,S> &p, SameSubsetType s, C)
 
 template<class T, class C, unsigned int D>
 inline bool
-for_each(typename BareField<T,D>::iterator&, SameSubsetType s, C)
+for_each(typename BareField<T,D>::iterator&, SameSubsetType /*s*/, C)
 {
   return false;
 }
@@ -118,7 +118,7 @@ for_each(SubFieldIter<T,D,S> &p, SubsetInit, C)
 
 template<class T, class C, unsigned int D>
 inline int
-for_each(typename BareField<T,D>::iterator &p, SubsetInit, C)
+for_each(typename BareField<T,D>::iterator &/*p*/, SubsetInit, C)
 {
   return 0;
 }
@@ -310,7 +310,7 @@ for_each(SubFieldIter<T,D,S> &p, RewindFunctor s, C)
 
 template<class T, unsigned int D, class S, class C>
 inline bool
-for_each(SubFieldIter<T,D,S> &p, HasUnitStride, C)
+for_each(SubFieldIter<T,D,S> &/*p*/, HasUnitStride, C)
 {
   return false;
 }
@@ -323,7 +323,7 @@ for_each(SubFieldIter<T,D,S> &p, HasUnitStride, C)
 
 template<class T, unsigned int D, class S, class C, class T1>
 inline int
-for_each(SubFieldIter<T,D,S> &p, const FillGCIfNecessaryTag<D,T1> &f, C)
+for_each(SubFieldIter<T,D,S> &p, const FillGCIfNecessaryTag<D,T1> &/*f*/, C)
 {
   //tjw3/3/99  p.FillGCIfNecessary(f.I, f.I);
   p.FillGCIfNecessary();

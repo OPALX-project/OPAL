@@ -260,7 +260,7 @@ int main(int argc, char *argv[]) {
                 } else if (argStr == std::string("-version") ||
                            argStr == std::string("--version")) {
                     INFOMSG("OPAL Version " << OPAL_PROJECT_VERSION << ", git rev. " << Util::getGitRevision() << endl);
-                    IpplInfo::printVersion(true);
+                    IpplInfo::printVersion();
                     std::string options = (IpplInfo::compileOptions() +
                                            std::string(" ") +
                                            std::string(OPAL_COMPILE_OPTIONS) +

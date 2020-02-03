@@ -392,7 +392,7 @@ template<class T1, class T2, class OP>
 struct TSV_MetaAssign< AntiSymTenzor<T1,1> , AntiSymTenzor<T2,1> , OP >
 {
   inline static void
-  apply( AntiSymTenzor<T1,1>& lhs, const AntiSymTenzor<T2,1>& rhs) {
+  apply( AntiSymTenzor<T1,1>& /*lhs*/, const AntiSymTenzor<T2,1>& /*rhs*/) {
   }
 };
 
@@ -400,7 +400,7 @@ template<class T1, class T2, class OP>
 struct TSV_MetaAssignScalar< AntiSymTenzor<T1,1> , T2 , OP >
 {
   inline static void
-  apply( AntiSymTenzor<T1,1>& lhs, T2 rhs ) {
+  apply( AntiSymTenzor<T1,1>& /*lhs*/, T2 /*rhs*/) {
   }
 };
 

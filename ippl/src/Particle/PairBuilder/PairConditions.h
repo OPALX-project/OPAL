@@ -11,12 +11,12 @@ class TrueCondition
 public:
     TrueCondition() { }
     template<class V>
-    bool operator()(const V &a, const V &b) const
+    bool operator()(const V &/*a*/, const V &/*b*/) const
     {
         return true;
     }
 
-    T getRange(unsigned dim) const { return std::numeric_limits<T>::max(); }
+    T getRange(unsigned) const { return std::numeric_limits<T>::max(); }
 };
 
 template<class T, unsigned Dim>
@@ -39,7 +39,7 @@ public:
 
     //periodic version of radius condition
     template<class V, class Vec>
-    bool operator()(const V &a, const V &b, const Vec &period) const
+    bool operator()(const V &a, const V &b, const Vec &/*period*/) const
     {
         T sqr = 0;
         //std::cout << "checking radius condition for " << a << " and " << b << std::endl;
@@ -58,7 +58,7 @@ public:
     }
 
 
-    T getRange(unsigned d) const { return radius; }
+    T getRange(unsigned /*d*/) const { return radius; }
 private:
     T sqradius, radius;
 };

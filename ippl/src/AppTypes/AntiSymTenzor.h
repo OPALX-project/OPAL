@@ -1,11 +1,7 @@
-// -*- C++ -*-
 /***************************************************************************
  *
  * The IPPL Framework
  * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
  ***************************************************************************/
 
 #ifndef	ANTI_SYM_TENZOR_H
@@ -300,7 +296,7 @@ public:
   AntiSymTenzor(DontInitialize) {}
 
   // Construct from a Tenzor: still a no-op here:
-  AntiSymTenzor( const Tenzor<T,1>& t ) { }
+  AntiSymTenzor( const Tenzor<T,1>& /*t*/) { }
 
   ~AntiSymTenzor() {}
 
@@ -418,7 +414,7 @@ public:
 
   //----------------------------------------------------------------------
   // Comparison operators.
-  bool operator==(const AntiSymTenzor<T,1>& that) const {
+  bool operator==(const AntiSymTenzor<T,1>& /*that*/) const {
     return true;
   }
   bool operator!=(const AntiSymTenzor<T,1>& that) const {
@@ -480,7 +476,7 @@ inline AntiSymTenzor<T,D> transpose(const AntiSymTenzor<T,D>& rhs) {
 // For D=3, det is zero, because diagonal elements are zero:
 template<class T>
 inline T
-det(const AntiSymTenzor<T,3>& t)
+det(const AntiSymTenzor<T,3>& /*t*/)
 {
   return T(0.0);
 }
@@ -496,7 +492,7 @@ det(const AntiSymTenzor<T,2>& t)
 // For D=1, det is zero, because diagonal elements are zero:
 template<class T>
 inline T
-det(const AntiSymTenzor<T,1>& t)
+det(const AntiSymTenzor<T,1>& /*t*/)
 {
   return T(0.0);
 }
@@ -508,7 +504,7 @@ det(const AntiSymTenzor<T,1>& t)
 // Only implement for 1D, 2D, 3D:
 
 template <class T, unsigned D>
-inline Tenzor<T,D> cofactors(const AntiSymTenzor<T,D>& rhs) {
+inline Tenzor<T,D> cofactors(const AntiSymTenzor<T,D>& /*rhs*/) {
   PInsist(D<4, "AntiSymTenzor cofactors() function not implemented for D>3!");
   return Tenzor<T,D>(-999999.999999);
 }
@@ -545,7 +541,7 @@ inline Tenzor<T,2> cofactors(const AntiSymTenzor<T,2>& rhs) {
 // For D=1, cofactor is the unit tensor, because det = single tensor element
 // value:
 template <class T>
-inline Tenzor<T,1> cofactors(const AntiSymTenzor<T,1>& rhs) {
+inline Tenzor<T,1> cofactors(const AntiSymTenzor<T,1>& /*rhs*/) {
   Tenzor<T,1> result = Tenzor<T,1>(1);
   return result;
 }
@@ -715,9 +711,9 @@ inline std::ostream& operator<<(std::ostream& out, const AntiSymTenzor<T,D>& rhs
 
 #endif // ANTI_SYM_TENZOR_H
 
-/***************************************************************************
- * $RCSfile: AntiSymTenzor.h,v $
- * $Revision: 1.1.1.1 $
- * IPPL_VERSION_ID: $Id: AntiSymTenzor.h,v 1.1.1.1 2003/01/23 07:40:24 adelmann Exp $
- ***************************************************************************/
-
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode:nil
+// End:

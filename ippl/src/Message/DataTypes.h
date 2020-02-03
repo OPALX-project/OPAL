@@ -9,7 +9,7 @@
 
 template<typename> struct is_ippl_mpi_datatype: std::false_type {};
 
-template <typename T> MPI_Datatype get_mpi_datatype(const T& x)
+template <typename T> MPI_Datatype get_mpi_datatype(const T& /*x*/)
 {
     static_assert(is_ippl_mpi_datatype<T>::value,
                   "type isn't an MPI type");

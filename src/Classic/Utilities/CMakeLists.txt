@@ -12,7 +12,6 @@ set (_SRCS
     EigenvalueError.cpp
     FormatError.cpp
     GeneralClassicException.cpp
-    InverseGauss.cpp
     LogicalError.cpp
     Mesher.cpp
     MSLang.cpp
@@ -33,7 +32,6 @@ set (_SRCS
     MSLang/Translation.cpp
     MSLang/Triangle.cpp
     MSLang/Union.cpp
-    NormalFormError.cpp
     Options.cpp
     OverflowError.cpp
     ParseError.cpp
@@ -66,7 +64,6 @@ set (HDRS
     EigenvalueError.h
     FormatError.h
     GeneralClassicException.h
-    InverseGauss.h
     LogicalError.h
     Mesher.h
     MSLang.h
@@ -89,7 +86,6 @@ set (HDRS
     MSLang/Translation.h
     MSLang/Triangle.h
     MSLang/Union.h
-    NormalFormError.h
     OptionTypes.h
     Options.h
     OverflowError.h

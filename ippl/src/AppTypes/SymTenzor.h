@@ -298,7 +298,7 @@ inline SymTenzor<T,D> transpose(const SymTenzor<T,D> &rhs) {
 
 // Determinant: only implement for 1D, 2D, 3D:
 template <class T, unsigned D>
-inline T det(const SymTenzor<T,D>& rhs) {
+inline T det(const SymTenzor<T,D>& /*rhs*/) {
   PInsist(D<3, "Tenzor det() function not implemented for D>3!");
   return T(-999999.999999);
 }
@@ -333,7 +333,7 @@ inline T det(const SymTenzor<T,1>& rhs) {
 // Only implement for 1D, 2D, 3D:
 
 template <class T, unsigned D>
-inline Tenzor<T,D> cofactors(const SymTenzor<T,D>& rhs) {
+inline Tenzor<T,D> cofactors(const SymTenzor<T,D>& /*rhs*/) {
   PInsist(D<4, "SymTenzor cofactors() function not implemented for D>3!");
   return Tenzor<T,D>(-999999.999999);
 }
@@ -368,7 +368,7 @@ inline Tenzor<T,2> cofactors(const SymTenzor<T,2>& rhs) {
 // For D=1, cofactor is the unit tensor, because det = single tensor element
 // value:
 template <class T>
-inline Tenzor<T,1> cofactors(const SymTenzor<T,1>& rhs) {
+inline Tenzor<T,1> cofactors(const SymTenzor<T,1>& /*rhs*/) {
   Tenzor<T,1> result = Tenzor<T,1>(1);
   return result;
 }

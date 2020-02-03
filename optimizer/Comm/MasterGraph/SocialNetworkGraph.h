@@ -32,7 +32,7 @@ class SocialNetworkGraph : public TopoDiscoveryStrategy_t {
 public:
 
     std::set<size_t> execute(size_t numMasters, size_t dimensions, size_t id,
-                             int island_id) {
+                             int /*island_id*/) {
 
         numMasters_ = numMasters;
         dim_        = dimensions;

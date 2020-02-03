@@ -183,7 +183,7 @@ struct SubFieldTraits<T, Dim, SIndex<Dim>, SIndex<Dim> > {
   typedef SIndex<Dim> Return_t;
   enum { Brackets_u = 0 };
   static void combine(const SIndex<Dim>& s1, const SIndex<Dim>& s2,
-		      Return_t& out, unsigned int, BareField<T,Dim>& A) {
+		      Return_t& out, unsigned int, BareField<T,Dim>& /*A*/) {
     out  = s1;
     out &= s2;
   }
@@ -204,7 +204,7 @@ struct SubFieldTraits<T, Dim, SIndex<Dim>, NDIndex<Dim> > {
   typedef SIndex<Dim> Return_t;
   enum { Brackets_u = 0 };
   static void combine(const SIndex<Dim>& s1, const NDIndex<Dim>& s2,
-		      Return_t& out, unsigned int, BareField<T,Dim>& A) {
+		      Return_t& out, unsigned int, BareField<T,Dim>& /*A*/) {
     out  = s1;
     out &= s2;
   }
@@ -225,7 +225,7 @@ struct SubFieldTraits<T, Dim, SIndex<Dim>, SOffset<Dim> > {
   typedef SIndex<Dim> Return_t;
   enum { Brackets_u = 0 };
   static void combine(const SIndex<Dim>& s1, const SOffset<Dim>& s2,
-		      Return_t& out, unsigned int, BareField<T,Dim>& A) {
+		      Return_t& out, unsigned int, BareField<T,Dim>& /*A*/) {
     out  = s1;
     out &= s2;
   }

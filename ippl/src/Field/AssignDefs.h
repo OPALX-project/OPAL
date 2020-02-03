@@ -581,7 +581,7 @@ for_each(const IndexedBareFieldIterator<T,D>& p,
 
 template<class T, class C, unsigned int D, unsigned int D1, class T1>
 inline int
-for_each(const BareFieldIterator<T,D>& p, 
+for_each(const BareFieldIterator<T,D>& /*p*/, 
   const FillGCIfNecessaryTag<D1,T1> &, C)
 {
   return 0;

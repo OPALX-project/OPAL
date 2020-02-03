@@ -1,8 +1,5 @@
 set (_SRCS
-    ComplexEigen.cpp
-    DoubleEigen.cpp
     DynamicFixedPoint.cpp
-    NormalForm.cpp
     StaticFixedPoint.cpp
     TpsComplex.cpp
     TpsData.cpp
@@ -20,13 +17,10 @@ add_opal_sources (${_SRCS})
 set (HDRS
     Array1D.h
     Array2D.h
-    ComplexEigen.h
-    DoubleEigen.h
     DynamicFixedPoint.h
     LieMap.h
     LUMatrix.h
     Matrix.h
-    NormalForm.h
     SliceIterator.h
     StaticFixedPoint.h
     TpsData.h

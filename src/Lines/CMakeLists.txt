@@ -1,5 +1,4 @@
 set (_SRCS
-    FlatWriter.cpp
     Line.cpp
     LineTemplate.cpp
     Replacer.cpp
@@ -16,7 +15,6 @@ include_directories (
 add_opal_sources(${_SRCS})
 
 set (HDRS
-    FlatWriter.h
     Line.h
     LineTemplate.h
     Replacer.h

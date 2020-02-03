@@ -5,7 +5,7 @@
 template <class T> struct NaiveUniformCrossover
 {
     void crossover(boost::shared_ptr<T> ind1, boost::shared_ptr<T> ind2,
-                   CmdArguments_t args) {
+                   CmdArguments_t /*args*/) {
 
         Individual::genes_t genes_ind2 = ind2->genes_m;
 

@@ -39,7 +39,6 @@ set (_HDRS
     FieldPrint.h
     FieldPrint.hpp
     Inform.h
-    IplCounter.h
     IpplCounter.h
     IpplException.h
     IpplInfo.h
@@ -53,8 +52,6 @@ set (_HDRS
     ParticleDebug.hpp
     ParticleDebugFunctions.h
     RNGAssignDefs.h
-    RNGBitReverse.h
-    RNGLattice.h
     RNGXDiv.h
     RandomNumberGen.h
     RefBlock.h

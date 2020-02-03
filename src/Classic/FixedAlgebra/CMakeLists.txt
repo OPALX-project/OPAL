@@ -13,7 +13,6 @@ set (HDRS
     DragtFinnNormalForm.h
     FArray1D.h
     FArray2D.h
-    FComplexEigen.h
     FDoubleEigen.h
     FDynamicFP.h
     FLieGenerator.h

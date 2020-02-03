@@ -43,7 +43,7 @@ public:
   // scatter particle data into Field using particle position and mesh
   template <class FT, class M, class C, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,Dim,M,C>& f,
+  void scatter(const FT& /*pdata*/, Field<FT,Dim,M,C>& f,
 	       const Vektor<PT,Dim>& ppos, const M& mesh) {
     CenteringTag<C> ctag;
     Vektor<PT,Dim> gpos, dpos, delta;
@@ -69,7 +69,7 @@ public:
   // and cache mesh information for reuse
   template <class FT, class M, class C, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,Dim,M,C>& f,
+  void scatter(const FT& /*pdata*/, Field<FT,Dim,M,C>& f,
 	       const Vektor<PT,Dim>& ppos, const M& mesh,
                NDIndex<Dim>& ngp, Vektor<PT,Dim>& dpos) {
     CenteringTag<C> ctag;
@@ -95,8 +95,8 @@ public:
   // scatter particle data into Field using cached mesh information
   template <class FT, class M, class C, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,Dim,M,C>& f,
-	       const NDIndex<Dim>& ngp, const Vektor<PT,Dim>& dpos) {
+  void scatter(const FT& /*pdata*/, Field<FT,Dim,M,C>& f,
+	       const NDIndex<Dim>& ngp, const Vektor<PT,Dim>&) {
     // Try to find ngp in local fields and get iterator
     CompressedBrickIterator<FT,Dim> fiter = getFieldIter(f,ngp);
     // accumulate into local elements
@@ -107,7 +107,7 @@ public:
   // gather particle data from Field using particle position and mesh
   template <class FT, class M, class C, class PT>
   static
-  void gather(FT& pdata, const Field<FT,Dim,M,C>& f,
+  void gather(FT& /*pdata*/, const Field<FT,Dim,M,C>& f,
 	      const Vektor<PT,Dim>& ppos, const M& mesh) {
     CenteringTag<C> ctag;
     Vektor<PT,Dim> gpos, dpos, delta;
@@ -133,7 +133,7 @@ public:
   // and cache mesh information for reuse
   template <class FT, class M, class C, class PT>
   static
-  void gather(FT& pdata, const Field<FT,Dim,M,C>& f,
+  void gather(FT& /*pdata*/, const Field<FT,Dim,M,C>& f,
 	      const Vektor<PT,Dim>& ppos, const M& mesh,
               NDIndex<Dim>& ngp, Vektor<PT,Dim>& dpos) {
     CenteringTag<C> ctag;
@@ -159,8 +159,8 @@ public:
   // gather particle data from Field using cached mesh information
   template <class FT, class M, class C, class PT>
   static
-  void gather(FT& pdata, const Field<FT,Dim,M,C>& f,
-	      const NDIndex<Dim>& ngp, const Vektor<PT,Dim>& dpos) {
+  void gather(FT& /*pdata*/, const Field<FT,Dim,M,C>& f,
+	      const NDIndex<Dim>& ngp, const Vektor<PT,Dim>&) {
     // Try to find ngp in local fields and get iterator
     CompressedBrickIterator<FT,Dim> fiter = getFieldIter(f,ngp);
     // accumulate into particle attrib

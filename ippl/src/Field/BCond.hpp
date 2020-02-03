@@ -3,21 +3,6 @@
  *
  * The IPPL Framework
  *
- * This program was prepared by PSI.
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit www.amas.web.psi for more details
- *
- ***************************************************************************/
-
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
  *
  * Visit http://people.web.psi.ch/adelmann/ for more details
  *
@@ -365,7 +350,7 @@ struct OpPeriodic
 {
 };
 template<class T>
-inline void PETE_apply(const OpPeriodic<T>& e, T& a, const T& b) {a = b; }
+inline void PETE_apply(const OpPeriodic<T>& /*e*/, T& a, const T& b) {a = b; }
 
 // Special, for applying to single component of multicomponent elemental type:
 template<class T>
@@ -422,7 +407,7 @@ struct OpInterpolation
 {
 };
 template<class T>
-inline void PETE_apply(const OpInterpolation<T>& e, T& a, const T& b) {a = a + b; }
+inline void PETE_apply(const OpInterpolation<T>& /*e*/, T& a, const T& b) {a = a + b; }
 
 // Special, for applying to single component of multicomponent elemental type:
 template<class T>
@@ -5775,7 +5760,7 @@ LinearExtrapolateFaceBCApply2(const NDIndex<D> &dest,
 				   const NDIndex<D> &src1,
 				   const NDIndex<D> &src2,
 				   LField<T,D> &fill,
-				   LinearExtrapolateFace<T,D,M,C> &ef,
+                                   LinearExtrapolateFace<T,D,M,C> &/*ef*/,
 				   int slopeMultipplier)
 {
   // If 'fill' is compressed and applying the boundary condition on the
@@ -6213,8 +6198,3 @@ void PatchBC<T,D,M,C>::apply( Field<T,D,M,C>& A )
 
 #undef COMPONENT_APPLY_BUILTIN
 
-/***************************************************************************
- * $RCSfile: BCond.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:26 $
- * IPPL_VERSION_ID: $Id: BCond.cpp,v 1.1.1.1 2003/01/23 07:40:26 adelmann Exp $
- ***************************************************************************/

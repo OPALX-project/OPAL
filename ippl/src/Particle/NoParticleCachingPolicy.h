@@ -15,15 +15,15 @@ class NoParticleCachingPolicy {
 public:
 template<class C>
 	void updateCacheInformation(
-		ParticleSpatialLayout<T, Dim, Mesh, C > &PLayout
+		ParticleSpatialLayout<T, Dim, Mesh, C > &/*PLayout*/
 		)
 	{
 		//don't do anything...
 	}
 template<class C>
 	void updateGhostParticles(
-		IpplParticleBase< ParticleSpatialLayout<T,Dim,Mesh,C > > &PData,
-		ParticleSpatialLayout<T, Dim, Mesh, C > &PLayout
+		IpplParticleBase< ParticleSpatialLayout<T,Dim,Mesh,C > > &/*PData*/,
+		ParticleSpatialLayout<T, Dim, Mesh, C > &/*PLayout*/
 		)
 	{
 		//don't do anything...

@@ -46,7 +46,7 @@ public:
   // scatter particle data into Field using particle position and mesh
   template <class FT, class M, class C, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,Dim,M,C>& f,
+  void scatter(const FT& /*pdata*/, Field<FT,Dim,M,C>& f,
 	       const Vektor<PT,Dim>& ppos, const M& mesh) {
     CenteringTag<C> ctag;
     Vektor<PT,Dim> gpos, dpos, delta;
@@ -87,7 +87,7 @@ public:
   // and cache mesh information for reuse
   template <class FT, class M, class C, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,Dim,M,C>& f,
+  void scatter(const FT& /*pdata*/, Field<FT,Dim,M,C>& f,
 	       const Vektor<PT,Dim>& ppos, const M& mesh,
                NDIndex<Dim>& ngp, int lgpoff[Dim], Vektor<PT,Dim>& dpos) {
     CenteringTag<C> ctag;
@@ -126,9 +126,9 @@ public:
   // scatter particle data into Field using cached mesh information
   template <class FT, class M, class C, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,Dim,M,C>& f,
+  void scatter(const FT& /*pdata*/, Field<FT,Dim,M,C>& f,
 	       const NDIndex<Dim>& ngp, const int lgpoff[Dim],
-               const Vektor<PT,Dim>& dpos) {
+               const Vektor<PT,Dim>& /*dpos*/) {
     CompressedBrickIterator<FT,Dim> fiter;
     // Try to find ngp in local fields and get iterator
     fiter = getFieldIter(f,ngp);
@@ -142,7 +142,7 @@ public:
   // gather particle data from Field using particle position and mesh
   template <class FT, class M, class C, class PT>
   static
-  void gather(FT& pdata, const Field<FT,Dim,M,C>& f,
+  void gather(FT& /*pdata*/, const Field<FT,Dim,M,C>& f,
 	      const Vektor<PT,Dim>& ppos, const M& mesh) {
     CenteringTag<C> ctag;
     Vektor<PT,Dim> gpos, dpos, delta;
@@ -183,7 +183,7 @@ public:
   // and cache mesh information for reuse
   template <class FT, class M, class C, class PT>
   static
-  void gather(FT& pdata, const Field<FT,Dim,M,C>& f,
+  void gather(FT& /*pdata*/, const Field<FT,Dim,M,C>& f,
 	      const Vektor<PT,Dim>& ppos, const M& mesh,
               NDIndex<Dim>& ngp, int lgpoff[Dim], Vektor<PT,Dim>& dpos) {
     CenteringTag<C> ctag;
@@ -222,9 +222,9 @@ public:
   // gather particle data from Field using cached mesh information
   template <class FT, class M, class C, class PT>
   static
-  void gather(FT& pdata, const Field<FT,Dim,M,C>& f,
+  void gather(FT& /*pdata*/, const Field<FT,Dim,M,C>& f,
 	      const NDIndex<Dim>& ngp, const int lgpoff[Dim],
-              const Vektor<PT,Dim>& dpos) {
+              const Vektor<PT,Dim>&) {
     CompressedBrickIterator<FT,Dim> fiter;
     // Try to find ngp in local fields and get iterator
     fiter = getFieldIter(f,ngp);
@@ -709,8 +709,8 @@ public:
 
   template <class FT, class M, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,2U,M,Edge>& f,
-	       const Vektor<PT,2U>& ppos, const M& mesh) {
+  void scatter(const FT& /*pdata*/, Field<FT,2U,M,Edge>& /*f*/,
+	       const Vektor<PT,2U>& /*ppos*/, const M& /*mesh*/) {
     ERRORMSG("IntCIC::scatter on Edge based field: not implemented for non-vectors!!"<<endl);
     return;
   }
@@ -718,18 +718,18 @@ public:
   // and cache mesh information for reuse
   template <class FT, class M, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,2U,M,Edge>& f,
-	       const Vektor<PT,2U>& ppos, const M& mesh,
-               NDIndex<2U>& ngp, int lgpoff[2U], Vektor<PT,2U>& dpos) {
+  void scatter(const FT& /*pdata*/, Field<FT,2U,M,Edge>& /*f*/,
+	       const Vektor<PT,2U>& /*ppos*/, const M& /*mesh*/,
+               NDIndex<2U>& /*ngp*/, int /*lgpoff*/ [2U], Vektor<PT,2U>& /*dpos*/) {
     ERRORMSG("IntCIC::scatter on Edge based field with cache: not implemented!!"<<endl);
     return;
   }
 
   template <class FT, class M, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,2U,M,Edge>& f,
-	       const NDIndex<2U>& ngp, const int lgpoff[2U],
-               const Vektor<PT,2U>& dpos) {
+  void scatter(const FT&, Field<FT,2U,M,Edge>&,
+	       const NDIndex<2U>&, const int [2U],
+               const Vektor<PT,2U>&) {
     ERRORMSG("IntCIC::scatter on Edge based field with cache: not implemented!!"<<endl);
     return;
   }
@@ -773,8 +773,8 @@ public:
 
   template <class FT, class M, class PT>
   static
-  void gather(FT& pdata, const Field<FT,2U,M,Edge>& f,
-	      const Vektor<PT,2U>& ppos, const M& mesh) {
+  void gather(FT& /*pdata*/, const Field<FT,2U,M,Edge>& /*f*/,
+	      const Vektor<PT,2U>& /*ppos*/, const M& /*mesh*/) {
     ERRORMSG("IntCIC::gather on Edge based field: not implemented for non-vectors!!"<<endl);
     return;
   }
@@ -783,9 +783,9 @@ public:
   // and cache mesh information for reuse
   template <class FT, class M, class PT>
   static
-  void gather(FT& pdata, const Field<FT,2U,M,Edge>& f,
-	      const Vektor<PT,2U>& ppos, const M& mesh,
-              NDIndex<2U>& ngp, int lgpoff[2U], Vektor<PT,2U>& dpos) {
+  void gather(FT& /*pdata*/, const Field<FT,2U,M,Edge>& /*f*/,
+	      const Vektor<PT,2U>& /*ppos*/, const M& /*mesh*/,
+              NDIndex<2U>& /*ngp*/, int /*lgpoff*/[2U], Vektor<PT,2U>& /*dpos*/) {
     ERRORMSG("IntCIC::gather on Edge based field with cache: not implemented!!"<<endl);
     return;
   }
@@ -793,9 +793,9 @@ public:
   // gather particle data from Field using cached mesh information
   template <class FT, class M, class PT>
   static
-  void gather(FT& pdata, const Field<FT,2U,M,Edge>& f,
-	      const NDIndex<2U>& ngp, const int lgpoff[2U],
-              const Vektor<PT,2U>& dpos) {
+  void gather(FT& /*pdata*/, const Field<FT,2U,M,Edge>& /*f*/,
+	      const NDIndex<2U>& /*ngp*/, const int /*lgpoff*/[2U],
+              const Vektor<PT,2U>& /*dpos*/) {
     ERRORMSG("IntCIC::gather on Edge based field with cache: not implemented!!"<<endl);
     return;
   }
@@ -1090,8 +1090,8 @@ public:
 
   template <class FT, class M, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,3U,M,Edge>& f,
-	       const Vektor<PT,3U>& ppos, const M& mesh) {
+  void scatter(const FT& /*pdata*/, Field<FT,3U,M,Edge>& /*f*/,
+	       const Vektor<PT,3U>& /*ppos*/, const M& /*mesh*/) {
     ERRORMSG("IntCIC::scatter on Edge based field: not implemented for non-vectors!!"<<endl);
     return;
   }
@@ -1099,18 +1099,18 @@ public:
   // and cache mesh information for reuse
   template <class FT, class M, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,3U,M,Edge>& f,
-	       const Vektor<PT,3U>& ppos, const M& mesh,
-               NDIndex<3U>& ngp, int lgpoff[3U], Vektor<PT,3U>& dpos) {
+  void scatter(const FT& /*pdata*/, Field<FT,3U,M,Edge>& /*f*/,
+	       const Vektor<PT,3U>& /*ppos*/, const M& /*mesh*/,
+               NDIndex<3U>& /*ngp*/, int /*lgpoff*/[3U], Vektor<PT,3U>& /*dpos*/) {
     ERRORMSG("IntCIC::scatter on Edge based field with cache: not implemented!!"<<endl);
     return;
   }
 
   template <class FT, class M, class PT>
   static
-  void scatter(const FT& pdata, Field<FT,3U,M,Edge>& f,
-	       const NDIndex<3U>& ngp, const int lgpoff[3U],
-               const Vektor<PT,3U>& dpos) {
+  void scatter(const FT& /*pdata*/, Field<FT,3U,M,Edge>& /*f*/,
+	       const NDIndex<3U>& /*ngp*/, const int /*lgpoff*/[3U],
+               const Vektor<PT,3U>& /*dpos*/) {
     ERRORMSG("IntCIC::scatter on Edge based field with cache: not implemented!!"<<endl);
     return;
   }
@@ -1158,8 +1158,8 @@ public:
 
   template <class FT, class M, class PT>
   static
-  void gather(FT& pdata, const Field<FT,3U,M,Edge>& f,
-	      const Vektor<PT,3U>& ppos, const M& mesh) {
+  void gather(FT& /*pdata*/, const Field<FT,3U,M,Edge>& /*f*/,
+	      const Vektor<PT,3U>& /*ppos*/, const M& /*mesh*/) {
     ERRORMSG("IntCIC::gather on Edge based field: not implemented for non-vectors!!"<<endl);
     return;
   }
@@ -1168,9 +1168,9 @@ public:
   // and cache mesh information for reuse
   template <class FT, class M, class PT>
   static
-  void gather(FT& pdata, const Field<FT,3U,M,Edge>& f,
-	      const Vektor<PT,3U>& ppos, const M& mesh,
-              NDIndex<3U>& ngp, int lgpoff[3U], Vektor<PT,3U>& dpos) {
+  void gather(FT& /*pdata*/, const Field<FT,3U,M,Edge>& /*f*/,
+	      const Vektor<PT,3U>& /*ppos*/, const M& /*mesh*/,
+              NDIndex<3U>& /*ngp*/, int /*lgpoff*/[3U], Vektor<PT,3U>& /*dpos*/) {
     ERRORMSG("IntCIC::gather on Edge based field with cache: not implemented!!"<<endl);
     return;
   }
@@ -1178,9 +1178,9 @@ public:
   // gather particle data from Field using cached mesh information
   template <class FT, class M, class PT>
   static
-  void gather(FT& pdata, const Field<FT,3U,M,Edge>& f,
-	      const NDIndex<3U>& ngp, const int lgpoff[3U],
-              const Vektor<PT,3U>& dpos) {
+  void gather(FT& /*pdata*/, const Field<FT,3U,M,Edge>& /*f*/,
+	      const NDIndex<3U>& /*ngp*/, const int /*lgpoff*/[3U],
+              const Vektor<PT,3U>& /*dpos*/) {
     ERRORMSG("IntCIC::gather on Edge based field with cache: not implemented!!"<<endl);
     return;
   }
@@ -1257,8 +1257,3 @@ public:
 
 #endif // INT_CIC_H
 
-/***************************************************************************
- * $RCSfile: IntCIC.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:28 $
- * IPPL_VERSION_ID: $Id: IntCIC.h,v 1.1.1.1 2003/01/23 07:40:28 adelmann Exp $
- ***************************************************************************/

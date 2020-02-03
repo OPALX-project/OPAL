@@ -205,7 +205,7 @@ private:
 
     //returns the bucket id of particle i
     template<class Pred>
-    int get_bucket_id(int i, const Pred& pred)
+    int get_bucket_id(int i, const Pred& /*pred*/)
     {
         // Inform dmsg("debug_msg:");
 

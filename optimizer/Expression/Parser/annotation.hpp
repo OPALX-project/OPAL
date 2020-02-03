@@ -52,7 +52,7 @@ namespace client
             }
 
             template <typename T>
-            void operator()(T& x) const
+            void operator()(T& /*x*/) const
             {
                 // no-op
             }

@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
     msg << "  <size> is the number of grid points in each dimension." << endl;
     msg << "  <iters> is the number of iterations to run." << endl;
     msg << endl;
-    Ippl::abort(0, 0);
+    Ippl::abort(0);
   }
 
   if (argc > 3) {

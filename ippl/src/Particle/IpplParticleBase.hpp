@@ -688,7 +688,7 @@ IpplParticleBase<PLayout>::ghostPutMessage(Message &msg,
 // retrieve particles from the given message and sending node and store them
 template<class PLayout>
 size_t
-IpplParticleBase<PLayout>::ghostGetMessage(Message& msg, int node) {
+IpplParticleBase<PLayout>::ghostGetMessage(Message& msg, int /*node*/) {
 
 
 

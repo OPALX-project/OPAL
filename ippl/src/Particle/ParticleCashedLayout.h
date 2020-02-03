@@ -112,7 +112,7 @@ public:
   T getMaxInteractionRadius() { return MaxGlobalInterRadius; }
 
   // Return the interaction radius of atom i.
-  T getInteractionRadius(unsigned i) {
+    T getInteractionRadius(unsigned /*i*/) {
     return InterRadius;
   }
 

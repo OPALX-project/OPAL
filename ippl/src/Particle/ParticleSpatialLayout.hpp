@@ -270,7 +270,7 @@ void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::printDebug(Inform& o)
 // virtual function called by a UserList, as opposed to the RepartitionLayout
 // function used by the particle load balancing mechanism.
 template < class T, unsigned Dim, class Mesh, class CachingPolicy >
-void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::Repartition(UserList* userlist)
+void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::Repartition(UserList* /*userlist*/)
 {
 }
 
@@ -279,17 +279,10 @@ void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::Repartition(UserList* user
 // Tell the subclass that the FieldLayoutBase is being deleted, so
 // don't use it anymore
 template < class T, unsigned Dim, class Mesh, class CachingPolicy >
-void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::notifyUserOfDelete(UserList*)
+void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::notifyUserOfDelete(UserList* /*userlist*/)
 {
 
     // really, nothing to do, since the RegionLayout we use only gets
     // deleted when we are deleted ourselves.
     return;
 }
-
-
-/***************************************************************************
- * $RCSfile: ParticleSpatialLayout.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:29 $
- * IPPL_VERSION_ID: $Id: ParticleSpatialLayout.cpp,v 1.1.1.1 2003/01/23 07:40:29 adelmann Exp $
- ***************************************************************************/

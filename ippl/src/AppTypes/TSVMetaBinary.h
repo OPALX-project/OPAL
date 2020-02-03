@@ -638,7 +638,7 @@ struct TSV_MetaBinary< AntiSymTenzor<T1,1> , AntiSymTenzor<T2,1> , OP >
 {
   typedef typename PETEBinaryReturn<T1,T2,OP>::type T0;
   inline static AntiSymTenzor<T0,1>
-  apply(const AntiSymTenzor<T1,1>& lhs, const AntiSymTenzor<T2,1>& rhs) {
+  apply(const AntiSymTenzor<T1,1>& /*lhs*/, const AntiSymTenzor<T2,1>& /*rhs*/) {
     typedef typename AntiSymTenzor<T0,1>::DontInitialize T;
     return AntiSymTenzor<T0,1>( T() );
   }
@@ -649,7 +649,7 @@ struct TSV_MetaBinaryScalar< AntiSymTenzor<T1,1> , T2 , OP >
 {
   typedef typename PETEBinaryReturn<T1,T2,OP>::type T0;
   inline static AntiSymTenzor<T0,1>
-  apply(const AntiSymTenzor<T1,1>& lhs, T2 rhs) {
+  apply(const AntiSymTenzor<T1,1>& /*lhs*/, T2 /*rhs*/) {
     typedef typename AntiSymTenzor<T0,1>::DontInitialize T;
     return AntiSymTenzor<T0,1>( T() );
   }
@@ -660,7 +660,7 @@ struct TSV_MetaBinaryScalar< T1, AntiSymTenzor<T2,1> , OP >
 {
   typedef typename PETEBinaryReturn<T1,T2,OP>::type T0;
   inline static AntiSymTenzor<T0,1>
-  apply(T1 lhs, const AntiSymTenzor<T2,1>& rhs) {
+  apply(T1 /*lhs*/, const AntiSymTenzor<T2,1>& /*rhs*/) {
     typedef typename AntiSymTenzor<T0,1>::DontInitialize T;
     return AntiSymTenzor<T0,1>( T() );
   }

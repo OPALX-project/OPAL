@@ -4,7 +4,7 @@
 template <class T> struct NaiveOnePointCrossover
 {
     void crossover(boost::shared_ptr<T> ind1, boost::shared_ptr<T> ind2,
-                   CmdArguments_t args) {
+                   CmdArguments_t /*args*/) {
 
         typedef typename T::genes_t genes_t;
         genes_t genes_ind2;

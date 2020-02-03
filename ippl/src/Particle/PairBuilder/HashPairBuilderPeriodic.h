@@ -154,7 +154,7 @@ private:
 
     //returns the bucket id of particle i
     template<class Pred>
-    int get_bucket_id(int i, const Pred& pred)
+    int get_bucket_id(int i, const Pred& /*pred*/)
     {
         Vektor<int,3> loc;
         for (unsigned d=0; d<3; ++d)

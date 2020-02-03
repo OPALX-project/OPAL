@@ -77,8 +77,6 @@ assertion& assertion::operator=( const assertion& a )
 
 void toss_cookies( const char *cond, const char *file, int line )
 {
-  // inform other nodes they should quit
-  // Ippl::exitAllNodes(cond, false);
     std::string what = "Assertion '" + std::string(cond) + "' failed. \n";
     what += "in \n";
     what += std::string(file) + ", line  " + std::to_string(line);
@@ -92,9 +90,6 @@ void toss_cookies( const char *cond, const char *file, int line )
 
 void insist( const char *cond, const char *msg, const char *file, int line )
 {
-  // inform other nodes they should quit
-    // Ippl::exitAllNodes(msg, false);
-
     char* fullmsg = new char[ strlen(cond) + strlen(msg) + strlen(file) + 500 ];
     sprintf( fullmsg, "%s\nAssertion '%s' failed in \n%s on line %8d.",
 	     msg, cond, file, line );

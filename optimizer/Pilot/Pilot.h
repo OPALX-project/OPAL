@@ -216,7 +216,7 @@ private:
 
 protected:
 
-    void parseInputFile(functionDictionary_t known_expr_funcs, bool isOptimizationRun) {
+    void parseInputFile(functionDictionary_t /*known_expr_funcs*/, bool isOptimizationRun) {
 
         try {
             input_file_ = cmd_args_->getArg<std::string>("inputfile", true);

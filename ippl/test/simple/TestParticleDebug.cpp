@@ -43,7 +43,6 @@
 #include "Particle/ParticleSpatialLayout.h"
 #include "Particle/IpplParticleBase.h"
 #include "Particle/PAssign.h"
-#include "Utility/RNGLattice.h"
 #include "Utility/ParticleDebug.h"
 #include "Utility/FieldDebug.h"
 

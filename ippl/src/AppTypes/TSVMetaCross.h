@@ -25,7 +25,7 @@ struct TSV_MetaCross< Vektor<T1,D> , Vektor<T2,D> >
 {
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,D>
-  apply(const Vektor<T1,D>& a, const Vektor<T2,D>& b) {
+  apply(const Vektor<T1,D>& /*a*/, const Vektor<T2,D>& /*b*/) {
     ERRORMSG("Cross-product *only* implemented for 3D; you're trying to"
 	     << " do it for " << D << "D." << endl);
     Ippl::abortAllNodes("...aborting from cross()");

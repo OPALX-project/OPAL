@@ -157,11 +157,10 @@ for_each(const SequenceGen<GT>& p, const EvalFunctor_3&)
 
 template<class GT, class C>
 inline bool
-for_each(const SequenceGen<GT>& p, HasUnitStride, C)
+for_each(const SequenceGen<GT>& /*p*/, HasUnitStride, C)
 {
   return true;
 }
-
 
 //
 // RNG ignores step functor

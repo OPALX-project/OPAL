@@ -28,7 +28,7 @@ public:
         pipeline_.push_back(component);
     }
 
-    void unregisterComponent(std::string name) {
+    void unregisterComponent(std::string /*name*/) {
         //TODO: set null @ idx
     }
 

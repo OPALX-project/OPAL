@@ -77,7 +77,7 @@ public:
 
     /// serialization of structure
     template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) {
+    void serialize(Archive & ar, const unsigned int /*version*/) {
         ar & genes_m;
         ar & objectives_m;
         ar & id_m;
@@ -158,3 +158,4 @@ private:
 };
 
 #endif
+

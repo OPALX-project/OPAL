@@ -35,10 +35,10 @@ namespace client { namespace code_gen
         }
 
         bool operator()(ast::nil) { BOOST_ASSERT(0); return false; }
-        bool operator()(unsigned int x) { return true; }
-        bool operator()(double x) { return true; }
-        bool operator()(bool x) { return true; }
-        bool operator()(ast::quoted_string const &x) { return true; }
+        bool operator()(unsigned int /*x*/) { return true; }
+        bool operator()(double /*x*/) { return true; }
+        bool operator()(bool /*x*/) { return true; }
+        bool operator()(ast::quoted_string const & /*x*/) { return true; }
 
         bool operator()(ast::operation const& x) {
             if (!boost::apply_visitor(*this, x.operand_))
@@ -98,3 +98,4 @@ namespace client { namespace code_gen
 }}
 
 #endif
+

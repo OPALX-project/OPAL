@@ -143,24 +143,11 @@ public:
   // Standard IPPL action methods (such as abort, etc)
   //
 
-  // Kill the communication and exit the program, in an emergency.  This
-  // will exit with an error code.  If the given exit code is < 0, the
-  // program will call the system abort().  If the exit code is >= 0,
-  // the program will call the system exit() with the given error code.
-  static void abort(const char * = 0, int exitcode = (-1));
+  // Kill the communication and throw runtime error exception.
+  static void abort(const char * = 0);
 
-  // Signal to ALL the nodes that we should exit or abort.  If we abort,
-  // a core file will be produced.  If we exit, no core file will be made.
-  // The node which calls abortAllNodes will print out the given message;
-  // the other nodes will print out that they are aborting due to a message
-  // from this node.  The final boolean argument indicates whether the
-  // calling node should abort or exit just as the other nodes are being
-  // asked to do; if this is false, then only the other nodes will be
-  // instructed to quit, and it will be up to the caller to abort or exit
-  // the current node.  This makes it possible to ask all other nodes to
-  // exit, but have your own node abort.
-  static void abortAllNodes(const char * = 0, bool thisnode = true);
-  static void exitAllNodes(const char * = 0, bool thisnode = true);
+  // Signal to ALL the nodes to abort and throw runtime error exception
+  static void abortAllNodes(const char * = 0);
 
   //
   // Functions which return information about the current Ippl application.
@@ -233,7 +220,7 @@ public:
 
   // printVersion: print out a version summary.  If the argument is true,
   // print out a detailed listing, otherwise a summary.
-  static void printVersion(bool = false);
+  static void printVersion(void);
 
   static void printHelp(char** argv);
 

@@ -4,7 +4,6 @@ set (_SRCS
 set (_HDRS
   AntiSymTenzor.h
   AppTypeTraits.h
-  GenVektor.h
   SymTenzor.h
   Tenzor.h
   TSVMetaAssign.h
@@ -28,10 +27,9 @@ add_ippl_headers (${_HDRS})
 install (FILES ${_HDRS} DESTINATION include/AppTypes)
 
 # vi: set et ts=4 sw=4 sts=4:
-  
+
 # Local Variables:
 # mode: cmake
 # cmake-tab-width: 4
 # indent-tabs-mode: nil
 # End:
-

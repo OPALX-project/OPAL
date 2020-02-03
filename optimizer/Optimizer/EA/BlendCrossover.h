@@ -16,7 +16,7 @@
 template <class T> struct BlendCrossover
 {
     void crossover(boost::shared_ptr<T> ind1, boost::shared_ptr<T> ind2,
-                   CmdArguments_t args) {
+                   CmdArguments_t /*args*/) {
 
         // BLX-0.5 performs better than BLX operators with any other \alpha
         // value
@@ -35,3 +35,4 @@ template <class T> struct BlendCrossover
         }
     }
 };
+

@@ -596,8 +596,7 @@ public:
     return (SingleValPtr == 0 ? SingleValStore : *SingleValPtr);
   }
   T& unit_offset(int)            { return offset(0); }
-  int Stride(int d)              { return 0; }
-
+  int Stride(int /*d*/)          { return 0; }
   // Compression interface
   bool CanCompress() const      { return false; }
   void Compress(T)              { }

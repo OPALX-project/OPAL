@@ -202,7 +202,7 @@ public:
     void
     scatter(Field<T,Dim,M,C>& f,
             const ParticleAttrib< Vektor<PT,Dim> >& pp,
-            const IntOp& intop) const {
+            const IntOp& /*intop*/) const {
 
 
         // make sure field is uncompressed and guard cells are zeroed
@@ -231,7 +231,7 @@ public:
     void
     scatter(Field<T,Dim,M,C>& f,
             const ParticleAttrib< Vektor<PT,Dim> >& pp,
-            const IntOp& intop,
+            const IntOp& /*intop*/,
             ParticleAttrib<CacheData>& cache) const {
 
 

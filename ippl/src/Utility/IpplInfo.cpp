@@ -312,7 +312,7 @@ IpplInfo::IpplInfo(int& argc, char**& argv, int removeargs, MPI_Comm mpicomm) {
                 printsummary = true;
 
             } else if ( ( strcmp(argv[i], "--ipplversion") == 0 ) ) {
-                printVersion(false);
+                printVersion();
                 std::string options = compileOptions();
                 std::string header("Compile-time options: ");
                 while (options.length() > 58) {
@@ -335,7 +335,7 @@ IpplInfo::IpplInfo(int& argc, char**& argv, int removeargs, MPI_Comm mpicomm) {
 
             } else if ( ( strcmp(argv[i], "--ipplversionall") == 0 ) ||
                         ( strcmp(argv[i], "-vall") == 0 ) ) {
-                printVersion(true);
+                printVersion();
                 std::string options = compileOptions();
                 std::string header("Compile-time options: ");
                 while (options.length() > 58) {
@@ -639,13 +639,7 @@ IpplInfo& IpplInfo::operator=(const IpplInfo&) {
     return *this;
 }
 
-
-/////////////////////////////////////////////////////////////////////
-// abort: kill the comm and exit the program, in an emergency.  This
-// will exit with an error code.  If the given exit code is < 0, the
-// program will call the system abort().  If the exit code is >= 0,
-// the program will call the system exit() with the given error code.
-void IpplInfo::abort(const char *msg, int exitcode) {
+void IpplInfo::abort(const char *msg) {
     // print out message, if one was provided
     if (msg != 0) {
         ERRORMSG(msg << endl);
@@ -676,7 +670,7 @@ void IpplInfo::abort(const char *msg, int exitcode) {
 // The node which calls abortAllNodes will print out the given message;
 // the other nodes will print out that they are aborting due to a message
 // from this node.
-void IpplInfo::abortAllNodes(const char *msg, bool abortThisNode) {
+void IpplInfo::abortAllNodes(const char *msg) {
     // print out message, if one was provided
     if (msg != 0) {
         ERRORMSG(msg << endl);
@@ -696,29 +690,6 @@ void IpplInfo::abortAllNodes(const char *msg, bool abortThisNode) {
     throw std::runtime_error("Error form IpplInfo::abortAllNodes");
 
 }
-
-void IpplInfo::exitAllNodes(const char *msg, bool exitThisNode) {
-    // print out message, if one was provided
-    if (msg != 0) {
-        ERRORMSG(msg << endl);
-    }
-
-    // print out final stats, if necessary
-    if (PrintStats) {
-        Inform statsmsg("Stats", INFORM_ALL_NODES);
-        statsmsg << IpplInfo();
-        printStatistics(statsmsg);
-    }
-
-    // broadcast out the kill message, if necessary
-    if (getNodes() > 1)
-        Comm->broadcast_others(new Message, IPPL_EXIT_TAG);
-
-    // Now quit ourselves
-    if (exitThisNode)
-        exit(1);
-}
-
 
 /////////////////////////////////////////////////////////////////////
 // getNodes: return the number of 'Nodes' in use for the computation
@@ -788,7 +759,7 @@ int IpplInfo::mySMPNode() {
 /////////////////////////////////////////////////////////////////////
 // printVersion: print out a version summary.  If the argument is true,
 // print out a detailed listing, otherwise a summary.
-void IpplInfo::printVersion(bool printFull) {
+void IpplInfo::printVersion(void) {
 #ifdef OPAL_DKS
     INFOMSG("DKS Version " << IPPL_DKS_VERSION << endl);
 #endif
@@ -919,7 +890,7 @@ void IpplInfo::param_error(const char *param, const char *msg,
     if ( msg != 0 )
         ERRORMSG(": " << msg);
     ERRORMSG(endl);
-    IpplInfo::abort(0, 0);
+    IpplInfo::abort(0);
 }
 
 void IpplInfo::param_error(const char *param, const char *msg1,
@@ -933,7 +904,7 @@ void IpplInfo::param_error(const char *param, const char *msg1,
     if ( msg2 != 0 )
         ERRORMSG(msg2);
     ERRORMSG(endl);
-    IpplInfo::abort(0, 0);
+    IpplInfo::abort(0);
 }
 
 

@@ -77,12 +77,9 @@ public:
 //---------------------------------------------------------------------------//
 
 // These are the functions that will be called in the assert macros.
-
 void toss_cookies( const char *cond, const char *file, int line );
 template <class S, class T>
 void toss_cookies( const char *cond, const char *astr, const char *bstr, S a, T b, const char *file, int line) {
-
-    //Ippl::exitAllNodes(cond, false);
 
     std::string what = "Assertion '" + std::string(cond) + "' failed. \n";
     what += std::string(astr) + " = " + std::to_string(a) + ", ";
@@ -92,7 +89,6 @@ void toss_cookies( const char *cond, const char *astr, const char *bstr, S a, T 
 
     throw std::runtime_error(what);
 }
-
 
 void insist( const char *cond, const char *msg, const char *file, int line );
 
