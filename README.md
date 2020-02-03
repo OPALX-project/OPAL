@@ -45,7 +45,7 @@ Example to instantiate an undulator/wiggler
 ```
 
 ## Output of full wave simulation
-The details of the output produced from the full-wave simulation can be found in the manual ([Manual](https://github.com/arnaualba/mithra/tree/master/doc).
+The details of the output produced from the full-wave simulation can be found in the manual [Manual](https://github.com/arnaualba/mithra/tree/master/doc).
 Here we provide an example of the output_parametes.job file:
 ```
 BUNCH
