@@ -17,9 +17,16 @@ export MITHRA_INCLUDE_DIR=$HOME/data/githubMithra/mithra
 export PATH=$MITHRA_INCLUDE_DIR:$PATH
 ```
 
-* Build the MITHRA library with `make lib`
+* Build the MITHRA library with 
+```
+make lib
+```
 
-* Build OPAL with `cmake -DENABLE_OPAL_FEL=yes ..`
+* Build OPAL with 
+```
+cmake -DENABLE_OPAL_FEL=yes ..
+make
+```
 
 ## To use UNDULATOR element
 Example to instantiate an undulator/wiggler
@@ -45,7 +52,7 @@ Example to instantiate an undulator/wiggler
 ```
 
 ## Output of full wave simulation
-The details of the output produced from the full-wave simulation can be found in the manual [Manual](https://github.com/arnaualba/mithra/tree/master/doc).
+The details of the output produced from the full-wave simulation can be found in the manual [Manual](https://github.com/arnaualba/mithra/tree/master/doc), and can be viewd with the Python functions [plotMithraPy](https://github.com/arnaualba/plotMithraPy).
 Here we provide an example of the output_parametes.job file:
 ```
 BUNCH
@@ -135,7 +142,7 @@ FEL-OUTPUT
   {
     sample							= true
     directory						= ./
-    base-name						= bunch-screen/bunch
+    base-name						= screen-profile/bunch
     position						= -.4
     position						= .88
   }
