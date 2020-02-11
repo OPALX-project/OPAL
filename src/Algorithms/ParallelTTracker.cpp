@@ -782,7 +782,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.totalTime_ = ur->getTotalTime();
     mesh.truncationOrder_ = ur->getTruncationOrder();
     mesh.spaceCharge_ = ur->getSpaceCharge();
-    mesh.emitParticles_ = ur->getEmitParticles();
     msg << "Done passing mesh parameters to Mithra" << endl;
 
     /* Create the bunch database.                                                                         */
