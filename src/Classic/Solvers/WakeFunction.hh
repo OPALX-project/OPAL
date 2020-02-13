@@ -11,12 +11,12 @@ class PartBunchBase;
 
 class WakeFunction {
 public:
-    WakeFunction(std::string name, ElementBase *elref, unsigned int n):
+    WakeFunction(std::string name, ElementBase */*elref*/, unsigned int n):
         nBins_m(n),
         name_m(name) { };
 
     virtual ~WakeFunction(){ };
-    virtual void initialize(const ElementBase *ref){ };
+    virtual void initialize(const ElementBase */*elref*/){ };
     virtual void apply(PartBunchBase<double, 3> *bunch) = 0;
     virtual const std::string getType() const = 0;
     const std::string & getName() const {

@@ -284,7 +284,7 @@ bool FM3DMagnetoStaticH5Block::getFieldstrength(const Vector_t &R, Vector_t &E, 
 
 }
 
-bool FM3DMagnetoStaticH5Block::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool FM3DMagnetoStaticH5Block::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
@@ -294,7 +294,7 @@ void FM3DMagnetoStaticH5Block::getFieldDimensions(double &zBegin, double &zEnd, 
     rBegin = xbegin_m;
     rEnd = xend_m;
 }
-void FM3DMagnetoStaticH5Block::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {}
+void FM3DMagnetoStaticH5Block::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FM3DMagnetoStaticH5Block::swap() {}
 
@@ -306,7 +306,7 @@ double FM3DMagnetoStaticH5Block::getFrequency() const {
     return 0.0;
 }
 
-void FM3DMagnetoStaticH5Block::setFrequency(double freq)
+void FM3DMagnetoStaticH5Block::setFrequency(double /*freq*/)
 { ;}
 
 // vi: set et ts=4 sw=4 sts=4:

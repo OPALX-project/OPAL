@@ -79,9 +79,9 @@ bool FM1DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &E,
 }
 
 bool FM1DMagnetoStatic::getFieldDerivative(const Vector_t &R,
-        Vector_t &E,
+        Vector_t &/*E*/,
         Vector_t &B,
-        const DiffDirection &dir) const {
+        const DiffDirection &/*dir*/) const {
 
     double kz = Physics::two_pi * R(2) / length_m + Physics::pi;
     double bZPrime = 0.0;
@@ -108,9 +108,9 @@ void FM1DMagnetoStatic::getFieldDimensions(double &zBegin, double &zEnd,
     rBegin = rBegin_m;
     rEnd = rEnd_m;
 }
-void FM1DMagnetoStatic::getFieldDimensions(double &xIni, double &xFinal,
-        double &yIni, double &yFinal,
-        double &zIni, double &zFinal) const {
+void FM1DMagnetoStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
+                                           double &/*yIni*/, double &/*yFinal*/,
+                                           double &/*zIni*/, double &/*zFinal*/) const {
 }
 
 void FM1DMagnetoStatic::swap()
@@ -127,7 +127,7 @@ double FM1DMagnetoStatic::getFrequency() const {
     return 0.0;
 }
 
-void FM1DMagnetoStatic::setFrequency(double freq)
+void FM1DMagnetoStatic::setFrequency(double /*freq*/)
 { }
 
 bool FM1DMagnetoStatic::checkFileData(std::ifstream &fieldFile,
@@ -143,7 +143,7 @@ bool FM1DMagnetoStatic::checkFileData(std::ifstream &fieldFile,
 }
 
 void FM1DMagnetoStatic::computeFieldOffAxis(const Vector_t &R,
-        Vector_t &E,
+                                            Vector_t &/*E*/,
         Vector_t &B,
         std::vector<double> fieldComponents) const {
 
@@ -295,3 +295,4 @@ void FM1DMagnetoStatic::stripFileHeader(std::ifstream &fieldFile) {
     getLine(fieldFile, tempString);
     getLine(fieldFile, tempString);
 }
+

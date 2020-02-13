@@ -160,7 +160,7 @@ class Offset : public Component {
     void initialise(PartBunchBase<double, 3> *bunch, double &startField,
                             double &endField) override;
     void finalise() override;
-    void getDimensions(double &zBegin, double &zEnd) const override {}
+    void getDimensions(double &/*zBegin*/, double &/*zEnd*/) const override {}
 
     void setEndPosition(Vector_t position);
     Vector_t getEndPosition() const;

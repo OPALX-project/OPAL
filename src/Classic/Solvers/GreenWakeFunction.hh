@@ -12,12 +12,12 @@
 #include <string>
 #include <complex>
 
-//#define USE_FFTW
+#ifdef WITH_UNIT_TESTS
+#include <gtest/gtest_prod.h>
+#endif
 
 enum { TRANSVERSAL, LONGITUDINAL };
 typedef std::map<std::string, int> FilterOptions;
-
-class SavitzkyGolayFilter;
 
 class GreenWakeFunction: public WakeFunction {
 public:
@@ -44,6 +44,10 @@ public:
     virtual const std::string getType() const;
 
 private:
+#ifdef WITH_UNIT_TESTS
+    FRIEND_TEST(GreenWakeFunctionTest, TestApply);
+#endif
+
     class Wake {
 
     public:
@@ -164,7 +168,6 @@ private:
 
     std::vector<Filter *> filters_m;
 
-    void testApply(PartBunchBase<double, 3> *bunch);
     void compEnergy(const double K, const double charge, const double *lambda, double *OutEnergy);
     void compEnergy(const double K, const double charge, std::vector<double> lambda, double *OutEnergy);
     void CalcWakeFFT(double spacing);

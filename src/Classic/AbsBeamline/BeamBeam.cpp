@@ -40,30 +40,30 @@ BeamBeam::BeamBeam(const std::string &name):
 {}
 
 
-BeamBeam::~BeamBeam()
-{}
+BeamBeam::~BeamBeam() {
+}
 
 
 void BeamBeam::accept(BeamlineVisitor &visitor) const {
     visitor.visitBeamBeam(*this);
 }
 
-void BeamBeam::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void BeamBeam::initialise(PartBunchBase<double, 3> *bunch, double & /*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
 }
 
-void BeamBeam::finalise()
-{}
+void BeamBeam::finalise() {
+}
 
 bool BeamBeam::bends() const {
     return false;
 }
 
-void BeamBeam::getDimensions(double &zBegin, double &zEnd) const {
-
+void BeamBeam::getDimensions(double & /*zBegin*/, double & /*zEnd*/) const {
 }
 
 
 ElementBase::ElementType BeamBeam::getType() const {
     return BEAMBEAM;
 }
+

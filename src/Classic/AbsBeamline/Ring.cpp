@@ -114,7 +114,7 @@ bool Ring::apply(const size_t &id, const double &t, Vector_t &E,
     return flagNeedUpdate;
 }
 
-bool Ring::apply(const Vector_t &R, const Vector_t &P,
+bool Ring::apply(const Vector_t &R, const Vector_t &/*P*/,
                  const double &t, Vector_t &E, Vector_t &B) {
     B = Vector_t(0.0, 0.0, 0.0);
     E = Vector_t(0.0, 0.0, 0.0);
@@ -145,7 +145,7 @@ void Ring::setLossDataSink(LossDataSink* sink) {
     lossDS_m = sink;
 }
 
-void Ring::getDimensions(double &zBegin, double &zEnd) const {
+void Ring::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {
     throw GeneralClassicException("Ring::getDimensions",
                                   "Cannot get s-dimension of a ring");
 }
@@ -156,8 +156,8 @@ void Ring::initialise(PartBunchBase<double, 3> *bunch) {
     setLossDataSink(new LossDataSink(getName(), false));
 }
 
-void Ring::initialise(PartBunchBase<double, 3> * bunch, double &startField,
-                      double &endField) {
+void Ring::initialise(PartBunchBase<double, 3> * bunch, double &/*startField*/,
+                      double &/*endField*/) {
     initialise(bunch);
 }
 
@@ -172,7 +172,7 @@ void Ring::setRefPartBunch(PartBunchBase<double, 3>* bunch) {
     refPartBunch_m = bunch; // private data (obeys style guide)
 }
 
-std::vector<RingSection*> Ring::getSectionsAt(const Vector_t& r) {
+std::vector<RingSection*> Ring::getSectionsAt(const Vector_t& /*r*/) {
     return section_list_m;
 }
 

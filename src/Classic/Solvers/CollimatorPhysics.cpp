@@ -40,7 +40,7 @@ namespace {
             deg_m = static_cast<Degrader*>(el);
         }
         virtual
-        bool checkHit(const Vector_t &R, const Vector_t &P, double dt) override {
+        bool checkHit(const Vector_t &R, const Vector_t &/*P*/, double /*dt*/) override {
             return deg_m->isInMaterial(R(2));
         }
 
@@ -53,7 +53,7 @@ namespace {
             col_m = static_cast<CCollimator*>(el);
         }
         virtual
-        bool checkHit(const Vector_t &R, const Vector_t &P, double dt)  override {
+        bool checkHit(const Vector_t &R, const Vector_t &/*P*/, double /*dt*/)  override {
             return col_m->checkPoint(R(0), R(1));
         }
 
@@ -234,7 +234,7 @@ void CollimatorPhysics::apply(PartBunchBase<double, 3> *bunch,
 
 void CollimatorPhysics::applyNonDKS(PartBunchBase<double, 3> *bunch,
                                     const std::pair<Vector_t, double> &boundingSphere,
-                                    size_t numParticlesInSimulation) {
+                                    size_t /*numParticlesInSimulation*/) {
     bool onlyOneLoopOverParticles = ! (allParticleInMat_m);
 
     do {

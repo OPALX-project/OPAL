@@ -179,8 +179,7 @@ private:
     // Not implemented.
     void operator=(const RBend &);
 
-    virtual bool findChordLength(Inform &msg,
-                                 double &chordLength) override;
+    virtual bool findChordLength(double &chordLength) override;
 };
 
 #endif // CLASSIC_RBend_HH

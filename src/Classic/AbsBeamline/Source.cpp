@@ -52,7 +52,7 @@ void Source::accept(BeamlineVisitor &visitor) const {
  * Calculates the transverse envelope component for the
  * solenoid element and adds it to the K vector
 */
-void Source::addKR(int i, double t, Vector_t &K) {
+void Source::addKR(int /*i*/, double /*t*/, Vector_t &/*K*/) {
 }
 
 /**
@@ -60,10 +60,10 @@ void Source::addKR(int i, double t, Vector_t &K) {
  * Calculates the transverse kick component for the solenoid element and adds it to
  * the K vector, only important for off track tracking. Otherwise KT = 0.
 */
-void Source::addKT(int i, double t, Vector_t &K) {
+void Source::addKT(int /*i*/, double /*t*/, Vector_t &/*K*/) {
 }
 
-bool Source::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) {
+bool Source::apply(const size_t &i, const double &t, Vector_t &/*E*/, Vector_t &/*B*/) {
     const Vector_t &R = RefPartBunch_m->R[i];
     const Vector_t &P = RefPartBunch_m->P[i];
     const double &dt = RefPartBunch_m->dt[i];
@@ -122,3 +122,4 @@ void Source::getDimensions(double &zBegin, double &zEnd) const {
 ElementBase::ElementType Source::getType() const {
     return SOURCE;
 }
+

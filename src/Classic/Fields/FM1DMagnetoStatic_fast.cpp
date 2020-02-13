@@ -107,9 +107,9 @@ bool FM1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
 }
 
 bool FM1DMagnetoStatic_fast::getFieldDerivative(const Vector_t &R,
-                                                Vector_t &E,
+                                                Vector_t &/*E*/,
                                                 Vector_t &B,
-                                                const DiffDirection &dir) const {
+                                                const DiffDirection &/*dir*/) const {
 
     B(2) += gsl_spline_eval(onAxisFieldPInterpolants_m, R(2),
                             onAxisFieldPAccel_m);
@@ -126,9 +126,9 @@ void FM1DMagnetoStatic_fast::getFieldDimensions(double &zBegin, double &zEnd,
     rEnd = rEnd_m;
 }
 
-void FM1DMagnetoStatic_fast::getFieldDimensions(double &xIni, double &xFinal,
-                                                double &yIni, double &yFinal,
-                                                double &zIni, double &zFinal) const {}
+void FM1DMagnetoStatic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
+                                                double &/*yIni*/, double &/*yFinal*/,
+                                                double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FM1DMagnetoStatic_fast::swap()
 { }
@@ -144,7 +144,7 @@ double FM1DMagnetoStatic_fast::getFrequency() const {
     return 0.0;
 }
 
-void FM1DMagnetoStatic_fast::setFrequency(double freq)
+void FM1DMagnetoStatic_fast::setFrequency(double /*freq*/)
 { }
 
 bool FM1DMagnetoStatic_fast::checkFileData(std::ifstream &fieldFile,
@@ -195,7 +195,7 @@ void FM1DMagnetoStatic_fast::computeFieldDerivatives(std::vector<double> fourier
 }
 
 void FM1DMagnetoStatic_fast::computeFieldOffAxis(const Vector_t &R,
-                                                 Vector_t &E,
+                                                 Vector_t &/*E*/,
                                                  Vector_t &B,
                                                  std::vector<double> fieldComponents) const {
 
@@ -388,3 +388,4 @@ void FM1DMagnetoStatic_fast::prepareForMapCheck(std::vector<double> &fourierCoef
              onAxisFieldInterpolants_m,
              onAxisFieldAccel_m);
 }
+

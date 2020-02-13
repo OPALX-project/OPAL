@@ -97,13 +97,17 @@ public:
 
     virtual void getOnaxisEz(std::vector<std::pair<double, double> > & onaxis);
 
-    virtual bool isInside(const Vector_t &r) const;
+    virtual bool isInside(const Vector_t &/*r*/) const { return true; }
 
     virtual void readMap() = 0;
     virtual void freeMap() = 0;
 
 protected:
-    Fieldmap(const std::string &aFilename);
+    Fieldmap(const std::string& aFilename)
+        : Filename_m(aFilename),
+        lines_read_m(0),
+        normalize_m(true) { };
+
     virtual ~Fieldmap() { ;};
     MapType Type;
 
@@ -111,8 +115,12 @@ protected:
     int lines_read_m;
 
     bool normalize_m;
-    void getLine(std::ifstream &in, std::string &buffer);
+    void getLine(std::ifstream & in, std::string & buffer) {
+        getLine(in, lines_read_m, buffer);
+    }
+
     static void getLine(std::ifstream &in, int &lines_read, std::string &buffer);
+    
     template<class S>
     bool interpreteLine(std::ifstream &in, S &value, const bool &file_length_known = true);
     template<class S, class T>
@@ -188,21 +196,11 @@ private:
 
 };
 
-inline Fieldmap::Fieldmap(const std::string & aFilename) :
-    Filename_m(aFilename),
-    lines_read_m(0),
-    normalize_m(true)
-{ }
-
-
-inline void Fieldmap::getLine(std::ifstream & in, std::string & buffer)
-{
-    getLine(in, lines_read_m, buffer);
-}
-
-inline bool Fieldmap::isInside(const Vector_t &r) const
-{
-    return true;
-}
-
 #endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode:nil
+// End:

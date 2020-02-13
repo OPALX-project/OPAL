@@ -190,8 +190,8 @@ std::string SectorMagneticFieldMap::SymmetryToString
           ));
 }
 
-bool SectorMagneticFieldMap::getFieldstrengthPolar
-                    (const Vector_t &R_p, Vector_t &E_p, Vector_t &B_p) const {
+bool SectorMagneticFieldMap::getFieldstrengthPolar (
+        const Vector_t &R_p, Vector_t &/*E_p*/, Vector_t &B_p) const {
     // vector_t::operator[i] const returns by value, not by const reference
     // so we need to make an array here
     double R_temp[3] = {R_p[0], R_p[1], R_p[2]};
@@ -204,8 +204,8 @@ bool SectorMagneticFieldMap::getFieldstrengthPolar
     return false;
 }
 
-bool SectorMagneticFieldMap::getFieldstrength
-                    (const Vector_t &R_c, Vector_t &E_c, Vector_t &B_c) const {
+bool SectorMagneticFieldMap::getFieldstrength (
+        const Vector_t &R_c, Vector_t &/*E_c*/, Vector_t &B_c) const {
     // coordinate transform; field is in the x-z plane but OPAL-CYCL assumes
     // x-y plane; rotate to the start of the bend and into polar coordinates;
     // apply mirror symmetry about the midplane
@@ -274,8 +274,8 @@ void SectorMagneticFieldMap::print(std::ostream& out) {
        << std::endl;
 }
 
-bool SectorMagneticFieldMap::getFieldDerivative(const Vector_t &R, Vector_t &E,
-                               Vector_t &B, const DiffDirection &dir) const {
+bool SectorMagneticFieldMap::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/,
+                                                Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     throw(LogicalError("SectorMagneticFieldMap::getFieldDerivative",
                        "Field map derivatives not implemented"));
 }
@@ -374,7 +374,7 @@ const std::string SectorMagneticFieldMap::IO::errMsg1 =
 VectorMap* SectorMagneticFieldMap::IO::getInterpolator
                         (const std::vector< std::vector<double> > field_points,
                          ThreeDGrid* grid,
-                         SectorMagneticFieldMap::symmetry sym) {
+                         SectorMagneticFieldMap::symmetry /*sym*/) {
     // build field arrays
     double *** Bx, *** By, *** Bz;
     int index = 0;
@@ -484,7 +484,7 @@ bool SectorMagneticFieldMap::IO::floatGreaterEqual(double in1, double in2) {
 
 ThreeDGrid* SectorMagneticFieldMap::IO::generateGrid
                        (const std::vector< std::vector<double> > field_points,
-                        SectorMagneticFieldMap::symmetry sym) {
+                        SectorMagneticFieldMap::symmetry /*sym*/) {
     std::vector<double>   r_grid(1, field_points[0][0]);
     std::vector<double>   y_grid(1, field_points[0][1]);
     std::vector<double> phi_grid(1, field_points[0][2]);

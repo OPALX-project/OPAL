@@ -161,23 +161,23 @@ bool BeamStripping::getStop() const {
     return stop_m;
 }
 
-bool BeamStripping::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) {
+bool BeamStripping::apply(const size_t &/*i*/, const double &/*t*/, Vector_t &/*E*/, Vector_t &/*B*/) {
     return false;
 }
 
-bool BeamStripping::apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) {
+bool BeamStripping::apply(const Vector_t &/*R*/, const Vector_t &/*P*/, const double &/*t*/, Vector_t &/*E*/, Vector_t &/*B*/) {
     return false;
 }
 
 
-bool BeamStripping::checkBeamStripping(Vector_t r, Vector_t rmin, Vector_t rmax) {
+bool BeamStripping::checkBeamStripping(Vector_t r, Vector_t /*rmin*/, Vector_t /*rmax*/) {
     int pflag = checkPoint(r(0), r(1), r(2));
     bool isDead = (pflag != 0);
     return isDead;
 }
 
 bool BeamStripping::checkBeamStripping(PartBunchBase<double, 3> *bunch, Cyclotron* cycl,
-                                       const int turnnumber, const double t, const double tstep) {
+                                       const int /*turnnumber*/, const double /*t*/, const double /*tstep*/) {
 
     bool flagNeedUpdate = false;
 
@@ -254,7 +254,7 @@ bool BeamStripping::bends() const {
     return false;
 }
 
-void BeamStripping::getDimensions(double &zBegin, double &zEnd) const {}
+void BeamStripping::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {}
 
 ElementBase::ElementType BeamStripping::getType() const {
     return BEAMSTRIPPING;
@@ -413,3 +413,4 @@ void BeamStripping::getPressureFromFile(const double &scaleFactor) {
 }
 
 #undef CHECK_BSTP_FSCANF_EOF
+

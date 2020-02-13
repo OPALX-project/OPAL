@@ -321,7 +321,7 @@ bool FM3DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) 
     return false;
 }
 
-bool FM3DDynamic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool FM3DDynamic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
@@ -331,7 +331,7 @@ void FM3DDynamic::getFieldDimensions(double &zBegin, double &zEnd, double &rBegi
     rBegin = xbegin_m;
     rEnd = xend_m;
 }
-void FM3DDynamic::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {}
+void FM3DDynamic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FM3DDynamic::swap() {}
 

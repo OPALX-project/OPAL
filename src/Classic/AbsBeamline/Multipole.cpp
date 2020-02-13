@@ -168,7 +168,7 @@ std::size_t Multipole::getNSlices() const {
 
 //ff
 // radial focussing term
-void Multipole::addKR(int i, double t, Vector_t &K) {
+void Multipole::addKR(int i, double /*t*/, Vector_t &K) {
     Inform msg("Multipole::addK()");
 
     double b = RefPartBunch_m->getBeta(i);
@@ -192,7 +192,7 @@ void Multipole::addKR(int i, double t, Vector_t &K) {
 
 //ff
 //transverse kick
-void Multipole::addKT(int i, double t, Vector_t &K) {
+void Multipole::addKT(int i, double /*t*/, Vector_t &K) {
     Inform msg("Multipole::addK()");
 
     Vector_t tmpE(0.0, 0.0, 0.0);
@@ -218,7 +218,7 @@ void Multipole::addKT(int i, double t, Vector_t &K) {
     K += Vector_t(cf * dx, -cf * dy, 0.0);
 }
 
-void Multipole::computeField(Vector_t R, Vector_t &E, Vector_t &B) {
+void Multipole::computeField(Vector_t R, Vector_t &/*E*/, Vector_t &B) {
     {
         std::vector<Vector_t> Rn(max_NormalComponent_m + 1);
         std::vector<double> fact(max_NormalComponent_m + 1);

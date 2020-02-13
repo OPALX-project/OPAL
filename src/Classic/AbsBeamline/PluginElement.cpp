@@ -59,7 +59,7 @@ bool PluginElement::bends() const {
     return false;
 }
 
-bool PluginElement::apply(const size_t &i, const double &, Vector_t &, Vector_t &) {
+bool PluginElement::apply(const size_t &/*i*/, const double &, Vector_t &, Vector_t &) {
     return false;
 }
 
@@ -229,3 +229,4 @@ void PluginElement::save() {
     lossDs_m->save(1, openMode);
     numPassages_m++;
 }
+

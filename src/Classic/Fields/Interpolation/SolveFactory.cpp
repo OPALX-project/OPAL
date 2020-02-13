@@ -34,7 +34,7 @@
 
 namespace interpolation {
 
-SolveFactory::SolveFactory(int polynomial_order,
+    SolveFactory::SolveFactory(int /*polynomial_order*/,
                            int smoothing_order,
                            int point_dim,
                            int value_dim,

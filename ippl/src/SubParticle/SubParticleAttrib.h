@@ -78,8 +78,10 @@ public:
 
   // copy constructor
   SubParticleAttribIter(const SubParticleAttribIter<PA,T,Dim> &i)
-    : attrib(const_cast<PA *>(i.attrib)),
-      dom(i.dom), lfield(i.lfield), attribOffset(i.attribOffset) { }
+    : dom(i.dom),
+      attrib(const_cast<PA *>(i.attrib)),
+      lfield(i.lfield),
+      attribOffset(i.attribOffset) { }
 
   // default constructor
   SubParticleAttribIter() : dom(0), attrib(0), attribOffset(0) { }

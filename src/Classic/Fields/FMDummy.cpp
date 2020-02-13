@@ -32,24 +32,24 @@ void FMDummy::readMap()
 void FMDummy::freeMap()
 { }
 
-bool FMDummy::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool FMDummy::getFieldstrength(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/) const {
     return false;
 }
 
-bool FMDummy::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool FMDummy::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void FMDummy::getFieldDimensions(double &zBegin, double &zEnd, double &rBegin, double &rEnd) const {
+void FMDummy::getFieldDimensions(double &zBegin, double &zEnd, double &/*rBegin*/, double &/*rEnd*/) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
-void FMDummy::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {}
+void FMDummy::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FMDummy::swap()
 { }
 
-void FMDummy::getInfo(Inform *msg)
+void FMDummy::getInfo(Inform */*msg*/)
 { }
 
 double FMDummy::getFrequency() const {
@@ -57,5 +57,5 @@ double FMDummy::getFrequency() const {
     return dummy;
 }
 
-void FMDummy::setFrequency(double freq)
+void FMDummy::setFrequency(double /*freq*/)
 { }

@@ -41,6 +41,8 @@ target_link_libraries (TestFFT-XT3 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer
 target_link_libraries (TestRC      ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
 target_link_libraries (TestRCMIC   ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
 
+add_subdirectory (SeaborgRes)
+
 # vi: set et ts=4 sw=4 sts=4:
   
 # Local Variables:

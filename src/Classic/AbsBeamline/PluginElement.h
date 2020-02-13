@@ -82,7 +82,7 @@ private:
     /// Finalise call after check
     bool finaliseCheck(PartBunchBase<double, 3> *bunch, bool flagNeedUpdate) {return doFinaliseCheck(bunch, flagNeedUpdate);}
     /// Pure virtual hook for initialise
-    virtual void doInitialise(PartBunchBase<double, 3> *bunch) {}
+    virtual void doInitialise(PartBunchBase<double, 3>* /*bunch*/) {}
     /// Pure virtual hook for check
     virtual bool doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double tstep) = 0;
     /// Virtual hook for setGeom

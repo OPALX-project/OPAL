@@ -37,7 +37,7 @@ BVector ConstBzField::Bfield(const Point3D &) const {
 }
 
 
-BVector ConstBzField::Bfield(const Point3D &X, double) const {
+BVector ConstBzField::Bfield(const Point3D &/*X*/, double) const {
     return BVector(0.0, 0.0, Bz);
 }
 

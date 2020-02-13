@@ -234,7 +234,7 @@ bool FM3DH5Block::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) 
     return false;
 }
 
-bool FM3DH5Block::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool FM3DH5Block::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 

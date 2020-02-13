@@ -231,7 +231,7 @@ bool Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &
     return false;
 }
 
-bool Astra1DDynamic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool Astra1DDynamic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     const double kz = two_pi * R(2) / length_m + Physics::pi;
     double ezp = 0.0;
 
@@ -244,12 +244,12 @@ bool Astra1DDynamic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t
     return false;
 }
 
-void Astra1DDynamic::getFieldDimensions(double &zBegin, double &zEnd, double &rBegin, double &rEnd) const {
+void Astra1DDynamic::getFieldDimensions(double &zBegin, double &zEnd, double &/*rBegin*/, double &/*rEnd*/) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
 
-void Astra1DDynamic::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {}
+void Astra1DDynamic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
 void Astra1DDynamic::swap()
 { }
@@ -289,3 +289,4 @@ void Astra1DDynamic::getOnaxisEz(vector<pair<double, double> > & F) {
         F[i].second /= Ez_max;
     }
 }
+

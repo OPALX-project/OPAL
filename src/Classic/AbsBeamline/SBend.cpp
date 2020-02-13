@@ -91,8 +91,7 @@ ElementBase::ElementType SBend::getType() const {
 }
 
 
-bool SBend::findChordLength(Inform &msg,
-                            double &chordLength) {
+bool SBend::findChordLength(double &chordLength) {
 
     /*
      * Find bend chord length. If this was not set by the user using the
@@ -101,3 +100,4 @@ bool SBend::findChordLength(Inform &msg,
     chordLength = getLength();
     return true;
 }
+

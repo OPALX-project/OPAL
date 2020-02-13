@@ -37,7 +37,7 @@ EVector ConstEzField::Efield(const Point3D &) const {
 }
 
 
-EVector ConstEzField::Efield(const Point3D &P, double) const {
+EVector ConstEzField::Efield(const Point3D &/*P*/, double) const {
     return EVector(0.0, 0.0, Ez);
 }
 

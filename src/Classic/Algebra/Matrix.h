@@ -160,7 +160,7 @@ Matrix<T>::Matrix(int rows, int cols):
 
 
 template<class T>
-Matrix<T>::Matrix(int rows, int cols, const T &val):
+Matrix<T>::Matrix(int rows, int cols, const T &/*val*/):
     Array2D<T>(rows, cols, T(0)) {
     for(int i = std::min(rows, cols); i-- > 0;) {
         this->data[i * (cols + 1)] = T(1);

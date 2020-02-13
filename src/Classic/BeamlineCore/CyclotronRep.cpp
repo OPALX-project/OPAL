@@ -36,8 +36,8 @@ namespace {
     static const Entry entries[] = {
         {
             "RINIT",
-            //      &CyclotronRep::getRadius,
-            //&CyclotronRep::setRadius
+            0, // :FIXME: Why commented out? &CyclotronRep::getRadius, 
+            0  // :FIXME: &CyclotronRep::setRadius
         },
         { 0, 0, 0 }
     };
@@ -144,3 +144,4 @@ ElementBase *CyclotronRep::makeFieldWrapper() {
     wrap->setName(getName());
     return wrap;
 }
+

@@ -103,7 +103,7 @@ bool Astra1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E, Vecto
     return false;
 }
 
-bool Astra1DDynamic_fast::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool Astra1DDynamic_fast::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     double ezp = gsl_spline_eval(onAxisInterpolants_m[1], R(2), onAxisAccel_m[1]);
 
     E(2) +=  ezp;
@@ -111,11 +111,11 @@ bool Astra1DDynamic_fast::getFieldDerivative(const Vector_t &R, Vector_t &E, Vec
     return false;
 }
 
-void Astra1DDynamic_fast::getFieldDimensions(double &zBegin, double &zEnd, double &rBegin, double &rEnd) const {
+void Astra1DDynamic_fast::getFieldDimensions(double &zBegin, double &zEnd, double &/*rBegin*/, double &/*rEnd*/) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
-void Astra1DDynamic_fast::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {}
+void Astra1DDynamic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
 void Astra1DDynamic_fast::swap()
 { }
@@ -206,3 +206,4 @@ int Astra1DDynamic_fast::stripFileHeader(std::ifstream &file) {
 
     return accuracy;
 }
+

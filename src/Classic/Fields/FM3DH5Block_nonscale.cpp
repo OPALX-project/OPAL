@@ -283,7 +283,7 @@ bool FM3DH5Block_nonscale::getFieldstrength(const Vector_t &R, Vector_t &E, Vect
     return false;
 }
 
-bool FM3DH5Block_nonscale::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool FM3DH5Block_nonscale::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
@@ -293,7 +293,7 @@ void FM3DH5Block_nonscale::getFieldDimensions(double &zBegin, double &zEnd, doub
     rBegin = xbegin_m;
     rEnd = xend_m;
 }
-void FM3DH5Block_nonscale::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {}
+void FM3DH5Block_nonscale::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FM3DH5Block_nonscale::swap() { }
 

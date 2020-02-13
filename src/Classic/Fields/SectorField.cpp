@@ -38,7 +38,7 @@
 // note I don't use exactly max() as the bounding box because I don't want to
 // accidentally wrap around due to some unforeseen floating point precision
 // issue
-SectorField::SectorField(const std::string& file_name)
+SectorField::SectorField(const std::string& /*file_name*/)
     : bbMin_m(3, -std::numeric_limits<double>::max()/10.),
       bbMax_m(3, std::numeric_limits<double>::max()/10.),
       polarBBMin_m(3, 0),  polarBBMax_m(3, 0) {

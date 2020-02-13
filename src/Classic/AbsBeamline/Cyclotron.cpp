@@ -375,7 +375,7 @@ bool Cyclotron::apply(const size_t &id, const double &t, Vector_t &E, Vector_t &
     return flagNeedUpdate;
 }
 
-bool Cyclotron::apply(const Vector_t &R, const Vector_t &P,
+bool Cyclotron::apply(const Vector_t &R, const Vector_t &/*P*/,
                       const double &t, Vector_t &E, Vector_t &B) {
 
     const double rad   = std::hypot(R[0],R[1]);
@@ -1020,7 +1020,7 @@ void Cyclotron::initR(double rmin, double dr, int nrad) {
     BP.delr = dr;
 }
 
-void Cyclotron::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void Cyclotron::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
     online_m = true;
 }
@@ -1033,7 +1033,7 @@ void Cyclotron::initialise(PartBunchBase<double, 3> *bunch, const int &fieldflag
 }
 
 
-void Cyclotron::getFieldFromFile_FFA(const double &scaleFactor) {
+void Cyclotron::getFieldFromFile_FFA(const double &/*scaleFactor*/) {
 
     /*
       Field is read in from ascii file (COSY output) in the order:
@@ -1520,7 +1520,7 @@ void Cyclotron::getFieldFromFile_Synchrocyclotron(const double &scaleFactor) {
     getFieldFromFile_Carbon(scaleFactor);
 }
 
-void Cyclotron::getDimensions(double &zBegin, double &zEnd) const
+void Cyclotron::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const
 { }
 
 #undef CHECK_CYC_FSCANF_EOF

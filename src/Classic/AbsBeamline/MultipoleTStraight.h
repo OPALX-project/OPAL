@@ -154,15 +154,15 @@ inline
         visitor.visitMultipoleTStraight(*this);
 }
 inline
-    void MultipoleTStraight::transformBField(Vector_t &B, const Vector_t &R) {
+    void MultipoleTStraight::transformBField(Vector_t &/*B*/, const Vector_t &/*R*/) {
 }
 inline
-    double MultipoleTStraight::getRadius(const double &s) {
+    double MultipoleTStraight::getRadius(const double &/*s*/) {
         return 1e300;
 }
 inline
-    double MultipoleTStraight::getScaleFactor(const double &x,
-                                              const double &s) {
+    double MultipoleTStraight::getScaleFactor(const double &/*x*/,
+                                              const double &/*s*/) {
     return 1.0;
 }
 inline
@@ -175,8 +175,8 @@ inline
 }
 inline
     void MultipoleTStraight::initialise(PartBunchBase<double, 3>* bunch,
-                            double &startField,
-                            double &endField) {
+                                        double &/*startField*/,
+                                        double &/*endField*/) {
         RefPartBunch_m = bunch;
         straightGeometry_m.setElementLength(2 * getBoundingBoxLength());
 }

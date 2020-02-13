@@ -70,13 +70,13 @@ bool SBend3D::apply(const size_t &i, const double &t,
     return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
 }
 
-bool SBend3D::apply(const Vector_t &R, const Vector_t &P,
-                    const double &t, Vector_t &E, Vector_t &B) {
+bool SBend3D::apply(const Vector_t &R, const Vector_t &/*P*/,
+                    const double &/*t*/, Vector_t &E, Vector_t &B) {
     //std::cerr << "ROGERS SBend3D::apply " << R << " " << B << std::endl;
     return map_m->getFieldstrength(R, E, B);
 }
 
-void SBend3D::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void SBend3D::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
 }
 

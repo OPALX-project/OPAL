@@ -1,25 +1,3 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- * This program was prepared by PSI. 
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
 #include "Ippl.h"
 #include <iostream>
 
@@ -28,16 +6,16 @@
 
 
 T smpintd(int nstep, Field<T,1> &integ, T dv) {
-   
-    Index I(nstep); 
-    Index I2(1,2,nstep); 
+
+    Index I(nstep);
+    Index I2(1,2,nstep);
 
     FieldLayout<1> layout1(I,PARALLEL);
     Field<T,1> smp(layout1,GuardCellSizes<1>(1));
 
     assign(smp[I] ,4.0/3.0);
     assign(smp[I2],2.0/3.0);
-	
+
     smp[1]=1.0/3.0;
     smp[nstep]=1.0/3.0;
 
@@ -46,14 +24,13 @@ T smpintd(int nstep, Field<T,1> &integ, T dv) {
 
 void cumul(Field<T,Dim> &vTherm1, Field<T,Dim> &vTherm2, int nmax,int nvdint,T hubble,T zin,T omeganu) {
 
-  T ans = 0.;
   T pmax = 300000.0;
   T dv = pmax / (nvdint-1);
   T vv0 = (1.0+zin)*0.536/(omeganu*hubble*hubble);
 
   Index I1(nmax);
 
-  Index I2(nvdint); 
+  Index I2(nvdint);
 
   FieldLayout<1> layout1(I1,PARALLEL);
   Field<T,1> parray(layout1,GuardCellSizes<1>(1));
@@ -71,26 +48,26 @@ void cumul(Field<T,Dim> &vTherm1, Field<T,Dim> &vTherm2, int nmax,int nvdint,T h
   vv = 0.0;
   fermd = 0.0;
 
-  // forall(ii=1:nvdint) vv(ii)=(ii-1)*dv   ! velocities 
+  // forall(ii=1:nvdint) vv(ii)=(ii-1)*dv   ! velocities
   assign (vv[I2], (I2-1)*dv);
 
   // fermd=vv*vv/(dexp(vv/vv0)+1.d0)
   fermd = vv*vv /(exp(vv/vv0)+1);
- 
+
   // call smpintd(nvdint,fermd,dv,norm)
-  T norm = smpintd(nvdint,fermd,dv);
+  /*T norm = */ smpintd(nvdint,fermd,dv);
 
   Index I(2,1,nmax);
   assign (parray[I], (I-1)*pmax/(1.0*nmax));
   dv = pmax/nmax/(nvdint-1);
 
   int i,j;
-  
+
   fit2=parray.begin();
-  fit2++;
+  ++fit2;
   for (j=2; fit2!=carray.end(); ++fit2,++j) {
       for (fit1=vv.begin(),i=1; fit1!=vv.end(); ++fit1,++i) {
-	  *fit1 = ((i-1)*dv * (*fit2));
+          *fit1 = ((i-1)*dv * (*fit2));
       }
   }
 
@@ -100,10 +77,10 @@ void vel(int np,int nmax,int nvdint,T hubble,T zin,T omeganu, Field<T,Dim> &vThe
 
   INFOMSG("entering vel routine" << endl);
 
-  T tpi=8.0*atan(1.0);
-      
+  //T tpi=8.0*atan(1.0);
+
   cumul(vTherm,vTherm,nmax,nvdint,hubble,zin,omeganu);
-      
+
   INFOMSG("cumulative array generated" << endl);
 
   // call momentum(pp,np,carray,parray,iseed,nmax,cran)
@@ -113,7 +90,7 @@ void vel(int np,int nmax,int nvdint,T hubble,T zin,T omeganu, Field<T,Dim> &vThe
   /*
   mu=2.d0*(aran-0.5d0)
   phi=tpi*bran
-      
+
   vx=pp*dsqrt(1.d0-mu**2)*dcos(phi)
   vy=pp*dsqrt(1.d0-mu**2)*dsin(phi)
   vz=pp*mu
@@ -128,9 +105,6 @@ void vel(int np,int nmax,int nvdint,T hubble,T zin,T omeganu, Field<T,Dim> &vThe
 
 }
 
-
-
-
 int main(int argc, char *argv[]) {
 
   Ippl ippl(argc,argv);
@@ -140,10 +114,9 @@ int main(int argc, char *argv[]) {
   np=np*np*np;             // number of particles
   int nmax=1000;           // size of velocity array (check this!)
   int nvdint=1001;         // number of integration points
-  T hubble=0.7;       
+  T hubble=0.7;
   T zin=50.0;
   T omeganu=0.02;
-  int frm=1;
 
   Index I(np);
   Index J(np);
@@ -158,9 +131,3 @@ int main(int argc, char *argv[]) {
 
   return 0;
 }
-
-/***************************************************************************
- * $RCSfile: doof3d_file.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:39 $
- * IPPL_VERSION_ID: $Id: doof3d_file.cpp,v 1.1.1.1 2003/01/23 07:40:39 adelmann Exp $ 
- ***************************************************************************/

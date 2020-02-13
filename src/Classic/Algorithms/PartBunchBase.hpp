@@ -843,31 +843,31 @@ size_t PartBunchBase<T, Dim>::destroyT() {
 }
 
 template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getPx(int i) {
+double PartBunchBase<T, Dim>::getPx(int /*i*/) {
     return 0.0;
 }
 
 
 template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getPy(int i) {
+double PartBunchBase<T, Dim>::getPy(int) {
     return 0.0;
 }
 
 
 template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getPz(int i) {
+double PartBunchBase<T, Dim>::getPz(int) {
     return 0.0;
 }
 
 
 template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getPx0(int i) {
+double PartBunchBase<T, Dim>::getPx0(int) {
     return 0.0;
 }
 
 
 template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getPy0(int i) {
+double PartBunchBase<T, Dim>::getPy0(int) {
     return 0;
 }
 
@@ -895,22 +895,20 @@ double PartBunchBase<T, Dim>::getZ(int i) {
 
 //ff
 template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getX0(int i) {
+double PartBunchBase<T, Dim>::getX0(int /*i*/) {
     return 0.0;
 }
 
 
 //ff
 template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getY0(int i) {
+double PartBunchBase<T, Dim>::getY0(int /*i*/) {
     return 0.0;
 }
 
 
 template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::setZ(int i, double zcoo)
-{
-    // nothing done here
+void PartBunchBase<T, Dim>::setZ(int /*i*/, double /*zcoo*/) {
 };
 
 
@@ -1826,13 +1824,13 @@ double PartBunchBase<T, Dim>::getInitialGamma() const {
 
 
 template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getGamma(int i) {
+double PartBunchBase<T, Dim>::getGamma(int /*i*/) {
     return 0;
 }
 
 
 template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getBeta(int i) {
+double PartBunchBase<T, Dim>::getBeta(int /*i*/) {
     return 0;
 }
 
@@ -2122,7 +2120,7 @@ void PartBunchBase<T, Dim>::runTests() {
 
 
 template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::resetInterpolationCache(bool clearCache) {
+void PartBunchBase<T, Dim>::resetInterpolationCache(bool /*clearCache*/) {
 
 }
 
@@ -2166,9 +2164,7 @@ void PartBunchBase<T, Dim>::setBCForDCBeam() {
 
 
 template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::updateFields(const Vector_t& hr, const Vector_t& origin)
-{
-
+void PartBunchBase<T, Dim>::updateFields(const Vector_t &/*hr*/, const Vector_t &/*origin*/) {
 }
 
 

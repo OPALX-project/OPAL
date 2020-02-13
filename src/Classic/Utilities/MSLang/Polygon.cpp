@@ -37,7 +37,7 @@ namespace mslang {
         return true;
     }
 
-    void Polygon::print(int ident) {
+    void Polygon::print(int /*ident*/) {
         // for (auto pix: pixels_m) pix.print(ident);
     }
 

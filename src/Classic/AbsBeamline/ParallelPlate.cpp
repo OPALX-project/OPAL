@@ -117,7 +117,7 @@ bool ParallelPlate::apply(const Vector_t &R, const Vector_t &P, const double &t,
     return applyToReferenceParticle(R, P, t, E, B);
 }
 
-bool ParallelPlate::applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) {
+bool ParallelPlate::applyToReferenceParticle(const Vector_t &R, const Vector_t &/*P*/, const double &t, Vector_t &E, Vector_t &B) {
     const double phase = frequency_m * t + phase_m;
     Vector_t tmpE(0.0, 0.0, -1.0), tmpB(0.0, 0.0, 0.0);
     ptime_m = t;

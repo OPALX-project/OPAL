@@ -93,7 +93,7 @@ bool RingSection::isPastEndPlane(const Vector_t& pos) const {
 }
 
 bool RingSection::getFieldValue(const Vector_t& pos,
-                                const Vector_t& centroid, const double& t,
+                                const Vector_t& /*centroid*/, const double& t,
                                 Vector_t& E, Vector_t& B) const {
     // transform position into local coordinate system
     Vector_t pos_local = pos-componentPosition_m;

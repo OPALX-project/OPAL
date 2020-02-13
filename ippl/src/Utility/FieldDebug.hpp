@@ -502,7 +502,7 @@ inline void FieldDebugWriteb(BareField<T,Dim>& F)
 		    << endl;
     (*FldDbgInform) << "****************************************"
 		    << "***************************************" << endl;
-    std::cout << "Owned = " << endl << Owned << endl;
+    (*FldDbgInform) << "Owned = " << endl << Owned << endl;
     typename LField<T,Dim>::iterator lf_bi = ldf->begin();
     if ( Dim==1 ) {
       int n0 = ldf->size(0);

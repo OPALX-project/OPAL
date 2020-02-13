@@ -109,8 +109,8 @@ bool FM1DElectroStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
 
 bool FM1DElectroStatic_fast::getFieldDerivative(const Vector_t &R,
                                                 Vector_t &E,
-                                                Vector_t &B,
-                                                const DiffDirection &dir) const {
+                                                Vector_t &/*B*/,
+                                                const DiffDirection &/*dir*/) const {
 
     E(2) += gsl_spline_eval(onAxisFieldPInterpolants_m, R(2),
                             onAxisFieldPAccel_m);
@@ -126,9 +126,9 @@ void FM1DElectroStatic_fast::getFieldDimensions(double &zBegin, double &zEnd,
     rBegin = rBegin_m;
     rEnd = rEnd_m;
 }
-void FM1DElectroStatic_fast::getFieldDimensions(double &xIni, double &xFinal,
-                                                double &yIni, double &yFinal,
-                                                double &zIni, double &zFinal) const {}
+void FM1DElectroStatic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
+                                                double &/*yIni*/, double &/*yFinal*/,
+                                                double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FM1DElectroStatic_fast::swap()
 { }
@@ -144,7 +144,7 @@ double FM1DElectroStatic_fast::getFrequency() const {
     return 0.0;
 }
 
-void FM1DElectroStatic_fast::setFrequency(double freq)
+void FM1DElectroStatic_fast::setFrequency(double /*freq*/)
 { }
 
 bool FM1DElectroStatic_fast::checkFileData(std::ifstream &fieldFile,
@@ -194,7 +194,7 @@ void FM1DElectroStatic_fast::computeFieldDerivatives(std::vector<double> fourier
     }
 }
 
-void FM1DElectroStatic_fast::computeFieldOffAxis(const Vector_t &R, Vector_t &E, Vector_t &B,
+void FM1DElectroStatic_fast::computeFieldOffAxis(const Vector_t &R, Vector_t &E, Vector_t &/*B*/,
                                                  std::vector<double> fieldComponents) const {
 
     double radiusSq = pow(R(0), 2.0) + pow(R(1), 2.0);
@@ -386,3 +386,4 @@ void FM1DElectroStatic_fast::prepareForMapCheck(std::vector<double> &fourierCoef
              onAxisFieldInterpolants_m,
              onAxisFieldAccel_m);
 }
+

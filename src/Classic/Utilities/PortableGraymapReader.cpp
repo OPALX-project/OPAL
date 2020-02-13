@@ -113,7 +113,7 @@ void PortableGraymapReader::readImageBinary(std::istream &in) {
     }
 }
 
-void PortableGraymapReader::print(std::ostream &out) const {
+void PortableGraymapReader::print(std::ostream &/*out*/) const {
     const unsigned int printWidth = 5;
     for (unsigned int i = 0; i < height_m; ++ i) {
         for (unsigned int j = 0; j < width_m; ++ j) {

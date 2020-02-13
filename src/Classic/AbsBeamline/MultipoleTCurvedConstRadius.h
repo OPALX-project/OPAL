@@ -188,8 +188,8 @@ inline
 }
 inline
     void MultipoleTCurvedConstRadius::initialise(PartBunchBase<double, 3>* bunch,
-                            double &startField,
-                            double &endField) {
+                                                 double &/*startField*/,
+                                                 double &/*endField*/) {
         RefPartBunch_m = bunch;
         planarArcGeometry_m.setElementLength(2 * getBoundingBoxLength());
         planarArcGeometry_m.setCurvature(angle_m / getLength());

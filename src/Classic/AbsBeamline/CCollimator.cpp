@@ -93,7 +93,7 @@ bool CCollimator::doFinaliseCheck(PartBunchBase<double, 3> *bunch, bool flagNeed
     return flagNeedUpdate;
 }
 
-void CCollimator::doInitialise(PartBunchBase<double, 3> *bunch) {
+void CCollimator::doInitialise(PartBunchBase<double, 3> */*bunch*/) {
     parmatint_m = getParticleMatterInteraction();
 }
 
@@ -167,3 +167,4 @@ void CCollimator::doSetGeom() {
     // }
     // *gmsg << "rmin " << rmin_m << " rmax " << rmax_m << endl;
 }
+

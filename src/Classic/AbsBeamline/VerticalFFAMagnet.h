@@ -97,7 +97,7 @@ class VerticalFFAMagnet : public Component {
     inline bool bends() const {return false;}
 
     /** Not implemented */
-    void getDimensions(double &zBegin, double &zEnd) const {}
+    void getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {}
 
     /** Return the cell geometry */
     BGeometryBase& getGeometry();
@@ -216,12 +216,12 @@ void VerticalFFAMagnet::setPositiveVerticalExtent(double positiveExtent) {
 }
 
 bool VerticalFFAMagnet::apply(const size_t &i, const double &t,
-                    Vector_t &E, Vector_t &B) {
+                              Vector_t &E, Vector_t &B) {
     return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
 }
 
-bool VerticalFFAMagnet::apply(const Vector_t &R, const Vector_t &P,
-                    const double &t, Vector_t &E, Vector_t &B) {
+bool VerticalFFAMagnet::apply(const Vector_t &R, const Vector_t &/*P*/,
+                              const double &, Vector_t &/*E*/, Vector_t &B) {
     return getFieldValue(R, B);
 }
 

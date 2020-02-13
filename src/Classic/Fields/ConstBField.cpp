@@ -45,13 +45,13 @@ double ConstBField::getBz() const {
 }
 
 
-void ConstBField::setBx(double B)
+void ConstBField::setBx(double /*B*/)
 {}
 
 
-void ConstBField::setBy(double B)
+void ConstBField::setBy(double /*B*/)
 {}
 
 
-void ConstBField::setBz(double B)
+void ConstBField::setBz(double /*B*/)
 {}

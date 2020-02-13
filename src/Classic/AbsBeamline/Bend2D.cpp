@@ -161,10 +161,10 @@ bool Bend2D::apply(const size_t &i,
 }
 
 bool Bend2D::apply(const Vector_t &R,
-                 const Vector_t &P,
-                 const double &t,
-                 Vector_t &E,
-                 Vector_t &B) {
+                   const Vector_t &/*P*/,
+                   const double &/*t*/,
+                   Vector_t &/*E*/,
+                   Vector_t &B) {
 
     if(designRadius_m > 0.0) {
 
@@ -239,7 +239,7 @@ void Bend2D::initialise(PartBunchBase<double, 3> *bunch,
 }
 
 void Bend2D::adjustFringeFields(double ratio) {
-    findChordLength(*gmsg, chordLength_m);
+    findChordLength(chordLength_m);
 
     double delta = std::abs(entranceParameter1_m - entranceParameter2_m);
     entranceParameter1_m = entranceParameter2_m - delta * ratio;
@@ -362,8 +362,8 @@ void Bend2D::calcEngeFunction(double zNormalized,
     }
 }
 
-Vector_t Bend2D::calcCentralField(const Vector_t &R,
-                                double deltaX) {
+// :FIXME: is this correct?
+Vector_t Bend2D::calcCentralField(const Vector_t &/*R*/, double /*deltaX*/) {
 
     Vector_t B(0, 0, 0);
     //double nOverRho = fieldIndex_m / designRadius_m;
@@ -382,7 +382,7 @@ Vector_t Bend2D::calcCentralField(const Vector_t &R,
 }
 
 Vector_t Bend2D::calcEntranceFringeField(const Vector_t &R,
-                                       double deltaX) {
+                                         double /*deltaX*/) {
 
     const CoordinateSystemTrafo toEntranceRegion(Vector_t(0, 0, entranceParameter2_m),
                                                  Quaternion(0, 0, 1, 0));
@@ -419,7 +419,7 @@ Vector_t Bend2D::calcEntranceFringeField(const Vector_t &R,
 }
 
 Vector_t Bend2D::calcExitFringeField(const Vector_t &R,
-                                   double deltaX) {
+                                     double /*deltaX*/) {
 
     const CoordinateSystemTrafo fromEndToExitRegion(Vector_t(0, 0, exitParameter2_m),
                                                     Quaternion(1, 0, 0, 0));
@@ -517,7 +517,7 @@ bool Bend2D::calculateMapField(const Vector_t &R, Vector_t &B) {
     return hitMaterial;
 }
 
-void Bend2D::calculateRefTrajectory(double &angleX, double &angleY) {
+void Bend2D::calculateRefTrajectory(double &angleX, double &/*angleY*/) {
 
     const double mass = RefPartBunch_m->getM();
     const double gamma = designEnergy_m / mass + 1.;
@@ -693,9 +693,9 @@ void Bend2D::findBendEffectiveLength(double startField, double endField) {
 }
 
 void Bend2D::findBendStrength(double mass,
-                            double gamma,
-                            double betaGamma,
-                            double charge) {
+                              double /*gamma*/,
+                              double betaGamma,
+                              double /*charge*/) {
 
     /*
      * Use an iterative procedure to set the magnet field amplitude
@@ -1094,7 +1094,7 @@ void Bend2D::setEngeOriginDelta(double delta) {
      * and exit points in the magnet. A positive delta shifts them towards
      * the center of the magnet.
      */
-    findChordLength(*gmsg, chordLength_m);
+    findChordLength(chordLength_m);
 
     entranceParameter1_m = delta - std::abs(entranceParameter1_m
                                             - entranceParameter2_m);
@@ -1213,7 +1213,7 @@ void Bend2D::setGapFromFieldMap() {
 bool Bend2D::setupBendGeometry(Inform &msg, double &startField, double &endField) {
 
     chordLength_m = 0.0;
-    if(!findChordLength(msg, chordLength_m))
+    if(!findChordLength(chordLength_m))
         return false;
 
     if(treatAsDrift(msg, chordLength_m)) {
@@ -1261,7 +1261,7 @@ bool Bend2D::setupBendGeometry(Inform &msg, double &startField, double &endField
 
 }
 
-bool Bend2D::setupDefaultFieldMap(Inform &msg) {
+bool Bend2D::setupDefaultFieldMap(Inform &/*msg*/) {
 
     if(length_m <= 0.0) {
         ERRORMSG("If using \"1DPROFILE1-DEFAULT\" field map you must set the "
@@ -1277,7 +1277,7 @@ bool Bend2D::setupDefaultFieldMap(Inform &msg) {
 
 }
 
-void Bend2D::setFieldBoundaries(double startField, double endField) {
+void Bend2D::setFieldBoundaries(double startField, double /*endField*/) {
 
     startField_m = startField - deltaBeginEntry_m / cos(entranceAngle_m);
     endField_m = (startField + angle_m * designRadius_m +
@@ -1292,7 +1292,7 @@ void Bend2D::setupPusher(PartBunchBase<double, 3> *bunch) {
 
 }
 
-bool Bend2D::treatAsDrift(Inform &msg, double chordLength) {
+bool Bend2D::treatAsDrift(Inform &/*msg*/, double chordLength) {
     if(designEnergy_m <= 0.0) {
         WARNMSG("Warning: bend design energy is zero. Treating as drift."
                 << endl);
@@ -1729,3 +1729,4 @@ std::array<double,2> Bend2D::getExitFringeFieldLength() const {
 
     return extFFL;
 }
+

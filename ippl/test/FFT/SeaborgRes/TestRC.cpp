@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
   bool correct = true;
 
   // Various counters, constants, etc:
-  int d;
+  unsigned int d;
   int Parent = 0;
   int tag = Ippl::Comm->next_tag(IPPL_APP_TAG0);
   double pi = acos(-1.0);
@@ -61,9 +61,11 @@ int main(int argc, char *argv[])
 
   // Layout information:
   unsigned vnodes = 1;             // number of vnodes; input at cmd line
-  e_dim_tag allParallel[D];    // Specifies SERIAL, PARALLEL dims
-  for (d=0; d<D; d++) 
-    allParallel[d] = PARALLEL;
+  e_dim_tag allParallel[D], serialParallel[D];       // Specifies SERIAL, PARALLEL dims
+  for (d=0; d<D; d++) {
+    allParallel[d]    = PARALLEL;
+    serialParallel[d] = SERIAL;
+  }
 
   // Compression of temporaries:
   bool compressTemps;
@@ -108,30 +110,44 @@ int main(int argc, char *argv[])
     
     // create standard domain
     NDIndex<D> ndiStandard;
-    for (d=0; d<D; d++) 
+    for (d=0; d<D; d++)
       ndiStandard[d] = Index(ngrid[d]);
-    
+
+    // create new domain with axes permuted to match FFT output
+    NDIndex<D> ndiPermuted;
+    ndiPermuted[0] = ndiStandard[D-1];
+    for (d=1; d<D; d++)
+      ndiPermuted[d] = ndiStandard[d-1];
+
     // create half-size domain for RC transform along zeroth axis
     NDIndex<D> ndiStandard0h = ndiStandard;
     ndiStandard0h[0] = Index(ngrid[0]/2+1);
-    
+    // create new domain with axes permuted to match FFT output
+    NDIndex<D> ndiPermuted0h;
+    ndiPermuted0h[0] = ndiStandard0h[D-1];
+    for (d=1; d<D; d++)
+      ndiPermuted0h[d] = ndiStandard0h[d-1];
+
+    // create half-size domain for sine transform along zeroth axis
+    // and RC transform along first axis
+    NDIndex<D> ndiStandard1h = ndiStandard;
+    ndiStandard1h[1] = Index(ngrid[1]/2+1);
+    // create new domain with axes permuted to match FFT output
+    NDIndex<D> ndiPermuted1h;
+    ndiPermuted1h[0] = ndiStandard1h[D-1];
+    for (d=1; d<D; d++)
+      ndiPermuted1h[d] = ndiStandard1h[d-1];
+
     // all parallel layout, standard domain, normal axis order
     FieldLayout<D> layoutPPStan(ndiStandard,allParallel,vnodes);
     // all parallel layout, zeroth axis half-size domain, normal axis order
     FieldLayout<D> layoutPPStan0h(ndiStandard0h,allParallel,vnodes);
 
-
-    // all parallel layout, standard domain, normal axis order
-    FieldLayout<D> layoutPPStan(ndiStandard,allParallel,vnodes);
 #ifndef ONED
     // zeroth axis serial, standard domain, normal axis order
     FieldLayout<D> layoutSPStan(ndiStandard,serialParallel,vnodes);
     // zeroth axis serial, standard domain, permuted axis order
     FieldLayout<D> layoutSPPerm(ndiPermuted,serialParallel,vnodes);
-#endif
-    // all parallel layout, zeroth axis half-size domain, normal axis order
-    FieldLayout<D> layoutPPStan0h(ndiStandard0h,allParallel,vnodes);
-#ifndef ONED
     // zeroth axis serial, zeroth axis half-size domain, normal axis order
     FieldLayout<D> layoutSPStan0h(ndiStandard0h,serialParallel,vnodes);
     // zeroth axis serial, zeroth axis half-size domain, permuted axis order

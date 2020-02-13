@@ -337,8 +337,7 @@ inline
         return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
 }
 inline
-    void MultipoleTBase::setBendAngle(const double &angle) {
-}
+void MultipoleTBase::setBendAngle(const double &/*angle*/) {}
 inline
     double MultipoleTBase::getBendAngle() const {
         return 0.0;
@@ -446,9 +445,9 @@ inline
         return temp;
 }
 inline
-    void MultipoleTBase::initialise(PartBunchBase<double, 3>* bunch,
-                            double &startField,
-                            double &endField) {
+void MultipoleTBase::initialise(PartBunchBase<double, 3>* /*bunch*/,
+                                double &/*startField*/,
+                                double &/*endField*/) {
 }
 inline
     bool MultipoleTBase::bends() const {
@@ -463,7 +462,7 @@ inline
         return dummy;
 }
 inline
-    void MultipoleTBase::getDimensions(double &zBegin, double &zEnd) const {
+    void MultipoleTBase::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {
 }
 
 #endif

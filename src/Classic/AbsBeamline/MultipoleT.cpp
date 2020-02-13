@@ -91,8 +91,8 @@ void MultipoleT::finalise() {
     RefPartBunch_m = NULL;
 }
 
-bool MultipoleT::apply(const Vector_t &R, const Vector_t &P,
-               const double &t,Vector_t &E, Vector_t &B) {
+bool MultipoleT::apply(const Vector_t &R, const Vector_t &/*P*/,
+                       const double &/*t*/,Vector_t &/*E*/, Vector_t &B) {
     /** Rotate coordinates around the central axis of the magnet */
     Vector_t R_prime = rotateFrame(R);
     /** If magnet is not straight go to local Frenet-Serret coordinates */
@@ -404,7 +404,7 @@ void MultipoleT::accept(BeamlineVisitor& visitor) const {
     visitor.visitMultipoleT(*this);
 }
 
-void MultipoleT::getDimensions(double &zBegin, double &zEnd) const {
+void MultipoleT::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {
 }
 
 void MultipoleT::setAperture(double vertAp, double horizAp) {
@@ -535,8 +535,8 @@ void MultipoleT::initialise() {
 }
 
 void MultipoleT::initialise(PartBunchBase<double, 3>* bunch, 
-                double &startField, 
-                double &endField) {
+                            double &/*startField*/, 
+                            double &/*endField*/) {
     RefPartBunch_m = bunch;
     initialise();
 }

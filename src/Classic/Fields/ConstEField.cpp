@@ -47,13 +47,13 @@ double ConstEField::getEz() const {
 }
 
 
-void ConstEField::setEx(double E)
+void ConstEField::setEx(double /*E*/)
 {}
 
 
-void ConstEField::setEy(double E)
+void ConstEField::setEy(double /*E*/)
 {}
 
 
-void ConstEField::setEz(double E)
+void ConstEField::setEz(double /*E*/)
 {}

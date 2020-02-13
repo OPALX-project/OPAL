@@ -209,7 +209,7 @@ bool RFCavity::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B)
 }
 
 bool RFCavity::apply(const Vector_t &R,
-                     const Vector_t &P,
+                     const Vector_t &/*P*/,
                      const double &t,
                      Vector_t &E,
                      Vector_t &B) {
@@ -229,7 +229,7 @@ bool RFCavity::apply(const Vector_t &R,
 }
 
 bool RFCavity::applyToReferenceParticle(const Vector_t &R,
-                                        const Vector_t &P,
+                                        const Vector_t &/*P*/,
                                         const double &t,
                                         Vector_t &E,
                                         Vector_t &B) {
@@ -761,7 +761,7 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
 pair<double, double> RFCavity::trackOnAxisParticle(const double &p0,
                                                    const double &t0,
                                                    const double &dt,
-                                                   const double &q,
+                                                   const double &/*q*/,
                                                    const double &mass,
                                                    std::ofstream *out) {
     Vector_t p(0, 0, p0);

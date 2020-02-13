@@ -233,7 +233,7 @@ bool FM2DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) 
     return false;
 }
 
-bool FM2DDynamic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool FM2DDynamic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
@@ -243,7 +243,7 @@ void FM2DDynamic::getFieldDimensions(double &zBegin, double &zEnd, double &rBegi
     rBegin = rbegin_m;
     rEnd = rend_m;
 }
-void FM2DDynamic::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {}
+void FM2DDynamic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FM2DDynamic::swap() {
     if(swap_m) swap_m = false;

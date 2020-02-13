@@ -37,7 +37,7 @@ EVector EDipoleField::Efield(const Point3D &) const {
 }
 
 
-EVector EDipoleField::Efield(const Point3D &P, double) const {
+EVector EDipoleField::Efield(const Point3D &/*P*/, double) const {
     return EVector(Ex, Ey, 0.0);
 }
 

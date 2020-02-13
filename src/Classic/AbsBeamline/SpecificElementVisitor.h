@@ -519,18 +519,15 @@ void SpecificElementVisitor<ELEM>::visitSBendWrapper(const SBendWrapper &element
 }
 
 template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitIntegrator(const Integrator &element) {
-
+void SpecificElementVisitor<ELEM>::visitIntegrator(const Integrator & /*elem*/) {
 }
 
 template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitMapIntegrator(const MapIntegrator &element) {
-
+void SpecificElementVisitor<ELEM>::visitMapIntegrator(const MapIntegrator &/*element*/) {
 }
 
 template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitTrackIntegrator(const TrackIntegrator &element) {
-
+void SpecificElementVisitor<ELEM>::visitTrackIntegrator(const TrackIntegrator &/*element*/) {
 }
 
 template<class ELEM>

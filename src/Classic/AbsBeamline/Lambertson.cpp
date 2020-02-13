@@ -48,7 +48,7 @@ void Lambertson::accept(BeamlineVisitor &visitor) const {
     visitor.visitLambertson(*this);
 }
 
-void Lambertson::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void Lambertson::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
 }
 
@@ -59,8 +59,7 @@ bool Lambertson::bends() const {
     return false;
 }
 
-void Lambertson::getDimensions(double &zBegin, double &zEnd) const {
-
+void Lambertson::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {
 }
 
 ElementBase::ElementType Lambertson::getType() const {

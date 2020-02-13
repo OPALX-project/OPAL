@@ -16,7 +16,7 @@ TrimCoilMirrored::TrimCoilMirrored(double bmax,
     bslope_m = bslope / mm2m;
 }
 
-void TrimCoilMirrored::doApplyField(const double r, const double z, const double phi_rad, double *br, double *bz)
+void TrimCoilMirrored::doApplyField(const double r, const double z, const double /*phi_rad*/, double *br, double *bz)
 {
     /// update bz and br with trim coil contributions
     // for some discussion on the formulas see

@@ -63,6 +63,9 @@ TEST(Field, FieldDebug)
     Field<double,Dim3> A3(layout3,sbc,gc);
     assign(A3[I][J][K], I + J + K);
 
+    fdi << endl << "--------setFormat(8,3)-------" << endl;
+    setFormat(8,3);
+
     fdi << endl << "--------fp3(A3)-------" << endl;
     fp3(A3,docomm);
 
@@ -120,6 +123,8 @@ namespace {
     {
         std::ofstream of(filename);
         of << std::endl
+           << "--------setFormat(8,3)-------" << std::endl
+           << "" << std::endl
            << "--------fp3(A3)-------" << std::endl
            << "~~~~~~~~ field slice (0:3:1, 0:3:1, 0:3:1) ~~~~~~~~" << std::endl
            << "==================================================K = 0" << std::endl

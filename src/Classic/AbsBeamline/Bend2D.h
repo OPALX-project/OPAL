@@ -65,8 +65,8 @@ public:
     /*
      * Methods for OPAL-SLICE.
      */
-    virtual void addKR(int i, double t, Vector_t &K) { };
-    virtual void addKT(int i, double t, Vector_t &K) { };
+    virtual void addKR(int /*i*/, double /*t*/, Vector_t &/*K*/) {};
+    virtual void addKT(int /*i*/, double /*t*/, Vector_t &/*K*/) {};
 
 
     /*
@@ -180,8 +180,7 @@ private:
                           double gamma,
                           double betaGamma,
                           double charge);
-    virtual bool findChordLength(Inform &msg,
-                                 double &chordLength) = 0;
+    virtual bool findChordLength(double &chordLength) = 0;
     bool findIdealBendParameters(double chordLength);
     bool initializeFieldMap(Inform &msg);
     bool inMagnetCentralRegion(const Vector_t &R) const;
@@ -405,3 +404,4 @@ Vector_t Bend2D::transformToExitRegion(const Vector_t &R) const {
 }
 
 #endif // CLASSIC_BEND_H
+

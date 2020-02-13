@@ -165,7 +165,7 @@ void FM2DElectroStatic::freeMap() {
     }
 }
 
-bool FM2DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool FM2DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &/*B*/) const {
     // do bi-linear interpolation
     const double RR = sqrt(R(0) * R(0) + R(1) * R(1));
 
@@ -200,7 +200,7 @@ bool FM2DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_
     return false;
 }
 
-bool FM2DElectroStatic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool FM2DElectroStatic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
@@ -210,7 +210,7 @@ void FM2DElectroStatic::getFieldDimensions(double &zBegin, double &zEnd, double 
     rBegin = rbegin_m;
     rEnd = rend_m;
 }
-void FM2DElectroStatic::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {}
+void FM2DElectroStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FM2DElectroStatic::swap() {
     if (swap_m) swap_m = false;
@@ -225,5 +225,5 @@ double FM2DElectroStatic::getFrequency() const {
     return 0.0;
 }
 
-void FM2DElectroStatic::setFrequency(double freq)
+void FM2DElectroStatic::setFrequency(double /*freq*/)
 { ;}

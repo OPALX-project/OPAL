@@ -1087,7 +1087,7 @@ void PartBunch::updateDomainLength(Vektor<int, 3>& grid) {
 }
 
 
-void PartBunch::updateFields(const Vector_t& hr, const Vector_t& origin) {
+void PartBunch::updateFields(const Vector_t& /*hr*/, const Vector_t& origin) {
     getMesh().set_meshSpacing(&(hr_m[0]));
     getMesh().set_origin(origin);
     rho_m.initialize(getMesh(),
@@ -1166,3 +1166,4 @@ void PartBunch::swap(unsigned int i, unsigned int j) {
 Inform &PartBunch::print(Inform &os) {
     return PartBunchBase<double, 3>::print(os);
 }
+

@@ -83,17 +83,17 @@ bool RBend3D::getFast() const {
     return fast_m;
 }
 
-void RBend3D::addKR(int i, double t, Vector_t &K) {
+void RBend3D::addKR(int /*i*/, double /*t*/, Vector_t &/*K*/) {
 }
 
-void RBend3D::addKT(int i, double t, Vector_t &K) {
+void RBend3D::addKT(int /*i*/, double /*t*/, Vector_t &/*K*/) {
 }
 
 bool RBend3D::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) {
     return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
 }
 
-bool RBend3D::apply(const Vector_t &R, const Vector_t &P, const  double &t, Vector_t &E, Vector_t &B) {
+bool RBend3D::apply(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
     const Vector_t tmpR(R(0), R(1), R(2) - startField_m);
     Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
@@ -104,7 +104,7 @@ bool RBend3D::apply(const Vector_t &R, const Vector_t &P, const  double &t, Vect
     return false;
 }
 
-bool RBend3D::applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const  double &t, Vector_t &E, Vector_t &B) {
+bool RBend3D::applyToReferenceParticle(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
     const Vector_t tmpR(R(0), R(1), R(2) - startField_m);
     Vector_t tmpE(0.0), tmpB(0.0);
 

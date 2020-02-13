@@ -208,7 +208,7 @@ void FM1DProfile1::readMap() {
 void FM1DProfile1::freeMap() {
 }
 
-bool FM1DProfile1::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool FM1DProfile1::getFieldstrength(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/) const {
 
     /*
      * For this type of field map, the elements who use it calculate the field
@@ -218,26 +218,26 @@ bool FM1DProfile1::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B)
 
 }
 
-bool FM1DProfile1::getFieldDerivative(const Vector_t &R,
-                                      Vector_t &E,
-                                      Vector_t &B,
-                                      const DiffDirection &dir) const {
+bool FM1DProfile1::getFieldDerivative(const Vector_t &/*R*/,
+                                      Vector_t &/*E*/,
+                                      Vector_t &/*B*/,
+                                      const DiffDirection &/*dir*/) const {
     return false;
 }
 
 void FM1DProfile1::getFieldDimensions(double &sBegin,
                                       double &sEnd,
-                                      double &rBegin,
-                                      double &rEnd) const {
+                                      double &/*rBegin*/,
+                                      double &/*rEnd*/) const {
     sBegin = sBegin_m;
     sEnd = sEnd_m;
 }
-void FM1DProfile1::getFieldDimensions(double &xIni,
-                                      double &xFinal,
-                                      double &yIni,
-                                      double &yFinal,
-                                      double &zIni,
-                                      double &zFinal) const {
+void FM1DProfile1::getFieldDimensions(double &/*xIni*/,
+                                      double &/*xFinal*/,
+                                      double &/*yIni*/,
+                                      double &/*yFinal*/,
+                                      double &/*zIni*/,
+                                      double &/*zFinal*/) const {
 
 }
 
@@ -254,7 +254,7 @@ double FM1DProfile1::getFrequency() const {
     return 0.0;
 }
 
-void FM1DProfile1::setFrequency(double freq)
+void FM1DProfile1::setFrequency(double /*freq*/)
 {}
 
 void FM1DProfile1::get1DProfile1EngeCoeffs(std::vector<double> &engeCoeffsEntry,

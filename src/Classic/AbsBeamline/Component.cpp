@@ -97,9 +97,9 @@ ElementBase::ElementType Component::getType() const {
 }
 
 bool Component::apply(const size_t &i,
-                      const double &t,
-                      Vector_t &E,
-                      Vector_t &B) {
+                      const double &/*t*/,
+                      Vector_t &/*E*/,
+                      Vector_t &/*B*/) {
     const Vector_t &R = RefPartBunch_m->R[i];
     if (R(2) >= 0.0 && R(2) < getElementLength()) {
         if (!isInsideTransverse(R)) return true;
@@ -108,10 +108,10 @@ bool Component::apply(const size_t &i,
 }
 
 bool Component::apply(const Vector_t &R,
-                      const Vector_t &P,
-                      const double &t,
-                      Vector_t &E,
-                      Vector_t &B) {
+                      const Vector_t &/*P*/,
+                      const double &/*t*/,
+                      Vector_t &/*E*/,
+                      Vector_t &/*B*/) {
     if (R(2) >= 0.0 && R(2) < getElementLength()) {
         if (!isInsideTransverse(R)) return true;
     }
@@ -119,10 +119,10 @@ bool Component::apply(const Vector_t &R,
 }
 
 bool Component::applyToReferenceParticle(const Vector_t &R,
-                                         const Vector_t &P,
-                                         const double &t,
-                                         Vector_t &E,
-                                         Vector_t &B) {
+                                         const Vector_t &/*P*/,
+                                         const double &/*t*/,
+                                         Vector_t &/*E*/,
+                                         Vector_t &/*B*/) {
     if (R(2) >= 0.0 && R(2) < getElementLength()) {
         if (!isInsideTransverse(R)) return true;
     }

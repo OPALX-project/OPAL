@@ -52,7 +52,7 @@ ElementBase* MultipoleTStraight::clone() const {
     return new MultipoleTStraight(*this);
 }
 
-void MultipoleTStraight::transformCoords(Vector_t &R) {
+void MultipoleTStraight::transformCoords(Vector_t &/*R*/) {
     //R[2] += getBoundingBoxLength();
 }
 

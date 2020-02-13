@@ -74,8 +74,8 @@ bool Corrector::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B
 
 bool Corrector::apply(const Vector_t &R,
                       const Vector_t &P,
-                      const double &t,
-                      Vector_t &E,
+                      const double &/*t*/,
+                      Vector_t &/*E*/,
                       Vector_t &B) {
 
     if (R(2) >= 0.0 && R(2) < getElementLength()) {
@@ -152,3 +152,4 @@ void Corrector::getDimensions(double &zBegin, double &zEnd) const
 ElementBase::ElementType Corrector::getType() const {
     return CORRECTOR;
 }
+

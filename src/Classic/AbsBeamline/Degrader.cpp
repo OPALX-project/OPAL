@@ -87,7 +87,7 @@ inline bool Degrader::isInMaterial(double z ) {
     return ((z > 0.0) && (z <= getElementLength()));
 }
 
-bool Degrader::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) {
+bool Degrader::apply(const size_t &i, const double &t, Vector_t &/*E*/, Vector_t &/*B*/) {
 
     const Vector_t &R = RefPartBunch_m->R[i];
     const Vector_t &P = RefPartBunch_m->P[i];
@@ -117,9 +117,9 @@ bool Degrader::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B)
 
 bool Degrader::applyToReferenceParticle(const Vector_t &R,
                                         const Vector_t &P,
-                                        const double &t,
+                                        const double &/*t*/,
                                         Vector_t &E,
-                                        Vector_t &B) {
+                                        Vector_t &/*B*/) {
     if (!isInMaterial(R(2))) return false;
 
     Vector_t updatedP = P;
@@ -204,3 +204,4 @@ string Degrader::getDegraderShape() {
     return "DEGRADER";
 
 }
+

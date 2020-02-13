@@ -38,7 +38,7 @@ SplineTimeDependence::SplineTimeDependence(size_t splineOrder,
     setSpline(splineOrder, times, values);
 }
 
-SplineTimeDependence::SplineTimeDependence(const SplineTimeDependence& rhs)
+SplineTimeDependence::SplineTimeDependence(const SplineTimeDependence& /*rhs*/)
     : spline_m(NULL), acc_m(NULL) {
     setSpline(splineOrder_m, times_m, values_m);
 }

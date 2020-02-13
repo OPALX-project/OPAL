@@ -1,4 +1,6 @@
 set (_SRCS
+    Chsr-2.cpp
+    Operators.cpp
     Tensor.cpp
     Vektor.cpp
     VektorTz.cpp

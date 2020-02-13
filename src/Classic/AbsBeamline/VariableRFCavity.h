@@ -124,7 +124,7 @@ class VariableRFCavity: public Component {
     virtual bool bends() const override {return false;}
 
     /** Not used (does nothing) */
-    virtual void getDimensions(double &zBegin, double &zEnd) const override {}
+    virtual void getDimensions(double &/*zBegin*/, double &/*zEnd*/) const override {}
 
     /** Get the amplitude at a given time
      *

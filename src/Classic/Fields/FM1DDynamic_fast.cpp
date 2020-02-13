@@ -108,8 +108,8 @@ bool FM1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
 
 bool FM1DDynamic_fast::getFieldDerivative(const Vector_t &R,
                                           Vector_t &E,
-                                          Vector_t &B,
-                                          const DiffDirection &dir) const {
+                                          Vector_t &/*B*/,
+                                          const DiffDirection &/*dir*/) const {
 
     E(2) += gsl_spline_eval(onAxisFieldPInterpolants_m, R(2),
                             onAxisFieldPAccel_m);
@@ -125,9 +125,9 @@ void FM1DDynamic_fast::getFieldDimensions(double &zBegin, double &zEnd,
     rEnd = rEnd_m;
 }
 
-void FM1DDynamic_fast::getFieldDimensions(double &xIni, double &xFinal,
-                                          double &yIni, double &yFinal,
-                                          double &zIni, double &zFinal) const {}
+void FM1DDynamic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
+                                          double &/*yIni*/, double &/*yFinal*/,
+                                          double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FM1DDynamic_fast::swap()
 { }
@@ -445,3 +445,4 @@ void FM1DDynamic_fast::prepareForMapCheck(std::vector<double> &fourierCoefs) {
              onAxisFieldInterpolants_m,
              onAxisFieldAccel_m);
 }
+

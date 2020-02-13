@@ -49,7 +49,7 @@ void Marker::accept(BeamlineVisitor &visitor) const {
     visitor.visitMarker(*this);
 }
 
-void Marker::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void Marker::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
 }
 
@@ -61,10 +61,10 @@ bool Marker::bends() const {
 }
 
 
-void Marker::getDimensions(double &zBegin, double &zEnd) const {
-
+void Marker::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {
 }
 
 ElementBase::ElementType Marker::getType() const {
     return MARKER;
 }
+

@@ -72,7 +72,7 @@ void Astra1DMagnetoStatic_fast::readMap() {
     }
 }
 
-bool Astra1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool Astra1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
@@ -90,16 +90,16 @@ bool Astra1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
     return false;
 }
 
-bool Astra1DMagnetoStatic_fast::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool Astra1DMagnetoStatic_fast::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void Astra1DMagnetoStatic_fast::getFieldDimensions(double &zBegin, double &zEnd, double &rBegin, double &rEnd) const {
+void Astra1DMagnetoStatic_fast::getFieldDimensions(double &zBegin, double &zEnd, double &/*rBegin*/, double &/*rEnd*/) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
 
-void Astra1DMagnetoStatic_fast::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {}
+void Astra1DMagnetoStatic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
 void Astra1DMagnetoStatic_fast::swap()
 { }
@@ -112,7 +112,7 @@ double Astra1DMagnetoStatic_fast::getFrequency() const {
     return 0.0;
 }
 
-void Astra1DMagnetoStatic_fast::setFrequency(double freq)
+void Astra1DMagnetoStatic_fast::setFrequency(double /*freq*/)
 { }
 
 bool Astra1DMagnetoStatic_fast::readFileHeader(std::ifstream &file) {
@@ -150,3 +150,4 @@ int Astra1DMagnetoStatic_fast::stripFileHeader(std::ifstream &file) {
 
     return accuracy;
 }
+

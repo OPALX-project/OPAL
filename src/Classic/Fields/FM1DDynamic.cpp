@@ -80,8 +80,8 @@ bool FM1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E,
 
 bool FM1DDynamic::getFieldDerivative(const Vector_t &R,
                                      Vector_t &E,
-                                     Vector_t &B,
-                                     const DiffDirection &dir) const {
+                                     Vector_t &/*B*/,
+                                     const DiffDirection &/*dir*/) const {
 
     double kz = Physics::two_pi * R(2) / length_m + Physics::pi;
     double eZPrime = 0.0;
@@ -109,9 +109,9 @@ void FM1DDynamic::getFieldDimensions(double &zBegin, double &zEnd,
     rEnd = rEnd_m;
 }
 
-void FM1DDynamic::getFieldDimensions(double &xIni, double &xFinal,
-                                     double &yIni, double &yFinal,
-                                     double &zIni, double &zFinal) const {
+void FM1DDynamic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
+                                     double &/*yIni*/, double &/*yFinal*/,
+                                     double &/*zIni*/, double &/*zFinal*/) const {
 }
 
 void FM1DDynamic::swap()
@@ -350,3 +350,4 @@ void FM1DDynamic::stripFileHeader(std::ifstream &fieldFile) {
     getLine(fieldFile, tempString);
     getLine(fieldFile, tempString);
 }
+

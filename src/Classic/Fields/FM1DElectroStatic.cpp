@@ -80,8 +80,8 @@ bool FM1DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E,
 
 bool FM1DElectroStatic::getFieldDerivative(const Vector_t &R,
                                            Vector_t &E,
-                                           Vector_t &B,
-                                           const DiffDirection &dir) const {
+                                           Vector_t &/*B*/,
+                                           const DiffDirection &/*dir*/) const {
 
     double kz = Physics::two_pi * R(2) / length_m + Physics::pi;
     double eZPrime = 0.0;
@@ -108,9 +108,9 @@ void FM1DElectroStatic::getFieldDimensions(double &zBegin, double &zEnd,
     rBegin = rBegin_m;
     rEnd = rEnd_m;
 }
-void FM1DElectroStatic::getFieldDimensions(double &xIni, double &xFinal,
-                                           double &yIni, double &yFinal,
-                                           double &zIni, double &zFinal) const {}
+void FM1DElectroStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
+                                           double &/*yIni*/, double &/*yFinal*/,
+                                           double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FM1DElectroStatic::swap()
 { }
@@ -126,7 +126,7 @@ double FM1DElectroStatic::getFrequency() const {
     return 0.0;
 }
 
-void FM1DElectroStatic::setFrequency(double freq)
+void FM1DElectroStatic::setFrequency(double /*freq*/)
 { }
 
 bool FM1DElectroStatic::checkFileData(std::ifstream &fieldFile,
@@ -143,7 +143,7 @@ bool FM1DElectroStatic::checkFileData(std::ifstream &fieldFile,
 
 void FM1DElectroStatic::computeFieldOffAxis(const Vector_t &R,
                                             Vector_t &E,
-                                            Vector_t &B,
+                                            Vector_t &/*B*/,
                                             std::vector<double> fieldComponents) const {
 
     double radiusSq = pow(R(0), 2.0) + pow(R(1), 2.0);
@@ -296,3 +296,4 @@ void FM1DElectroStatic::stripFileHeader(std::ifstream &fieldFile) {
     getLine(fieldFile, tempString);
     getLine(fieldFile, tempString);
 }
+

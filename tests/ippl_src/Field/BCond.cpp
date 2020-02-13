@@ -25,6 +25,287 @@ constexpr double   roundOffError = 1e-10;
 // template definition
 CenteringEnum CCCEnums<2U,2U,0U>::vectorFace[2U*2U];
 
+TEST(Field, Left)
+{
+    OpalTestUtilities::SilenceTest silencer;
+
+    bool b1=true; bool b2=false;
+    std::cout << "bool output key: true = " << b1 << " ; false = " << b2 << std::endl;
+
+    // Sizes
+    const unsigned D = 1;
+    int ncells = 7, nverts = 8;
+    int vnodes = 2;
+
+    // Mesh
+    NDIndex<1U> verts;
+    for (unsigned int d=0; d<D; d++) verts[d] = Index(nverts);
+    typedef UniformCartesian<1U> M1;
+    M1 mesh(verts);
+
+    // Layouts
+    CenteredFieldLayout<1U,M1,Cell> layoutCell(mesh,PARALLEL,vnodes);
+    CenteredFieldLayout<1U,M1,Vert> layoutVert(mesh,PARALLEL,vnodes);
+
+    // Guard cells
+    GuardCellSizes<1U> gc(1);
+
+    // Boundary conditions
+    BConds<double,1U,M1,Cell> cbc;
+    BConds<double,1U,M1,Vert> vbc;
+    for (unsigned int face=0; face<2*1U; face++) {
+        cbc[face] = new NegReflectFace<double,1U,M1,Cell>(face);
+        vbc[face] = new NegReflectFace<double,1U,M1,Vert>(face);
+    }
+
+    // Fields
+    Field<double,1U,M1,Cell> A(layoutCell,gc,cbc);
+    Field<double,1U,M1,Vert> B(layoutVert,gc,vbc);
+    Field<double,1U,M1,Cell> A0(layoutCell,gc,cbc);
+    Field<double,1U,M1,Vert> B0(layoutVert,gc,vbc);
+
+    // Initial values (duplicate in A0,B0 for FieldDebug output w/o changing
+    // dirty_m of actual A and B Fields):
+    Index I(ncells);
+    Index Iv(nverts);
+    A[I] = I;
+    A0[I] = I;
+    B[Iv] = Iv;
+    B0[Iv] = Iv;
+
+    // Output State of dirty flags prior to "stencil" assignment:
+    std::cout << "!!!!!!!!!!!!! BEFORE !!!!!!!!!!!!!" << std::endl;
+    std::cout << "B.isDirty() = " << B.isDirty() << " ; "
+         << "A.isDirty() = " << A.isDirty() << std::endl;
+    EXPECT_FALSE(A.isDirty());
+    EXPECT_FALSE(B.isDirty());
+
+    // Output (copies of) initial values):
+    std::cout << "[[[[[[[ A ]]]]]]]" << std::endl;
+    fp1(A0);
+    EXPECT_NEAR(sum(A),21,roundOffError);
+    std::cout << "[[[[[[[ B ]]]]]]]" << std::endl;
+    fp1(B0);
+    EXPECT_NEAR(sum(B),28,roundOffError);
+
+    // "Stencil" assignment:
+    B[I + 1] = B[I + 1] + A[I + 1];
+
+    // Output State of dirty flags after to "stencil" assignment:
+    std::cout << "!!!!!!!!!!!!! AFTER !!!!!!!!!!!!!" << std::endl;
+    std::cout << "B.isDirty() = " << B.isDirty() << " ; "
+         << "A.isDirty() = " << A.isDirty() << std::endl;
+    EXPECT_FALSE(A.isDirty());
+    EXPECT_FALSE(B.isDirty());
+
+    // Output resulting value of B:
+    std::cout << "[[[[[[[ B ]]]]]]]" << std::endl;
+    fp1(B);
+    EXPECT_NEAR(sum(B),43,roundOffError);
+}
+
+TEST(Field, BCSimple)
+{
+    OpalTestUtilities::SilenceTest silencer;
+
+    Index I(5);
+    Index J(5);
+    NDIndex<Dim> domain;
+    domain[0] = I;
+    domain[1] = J;
+    FieldLayout<Dim> layout(domain);
+    typedef UniformCartesian<Dim> M;
+    typedef Cell C;
+    Field<double,Dim,M,C> B(layout);
+
+    // Set initial boundary conditions.
+    BConds<double,Dim,M,C> bc;
+    if (Ippl::getNodes() == 1) {
+        bc[0] = new PeriodicFace<double,Dim,M,C>(2);
+        bc[1] = new PeriodicFace<double,Dim,M,C>(3);
+    }
+    else {
+        bc[0] = new ParallelPeriodicFace<double,Dim,M,C>(2);
+        bc[1] = new ParallelPeriodicFace<double,Dim,M,C>(3);
+    }
+    bc[2] = new PosReflectFace<double,Dim,M,C>(0);
+    bc[3] = new ZeroFace<double,Dim,M,C>(1);
+
+    // An array for testing.
+    Field<double,Dim,M,C> A(layout,GuardCellSizes<Dim>(2),bc);
+
+    // Override one.
+    A.getBConds()[2] = new NegReflectFace<double,Dim,M,C>(0);
+
+    A = 0.0;
+    A[I][J] += I*10 + J;
+    std::cout << "A = " << A << std::endl;
+    std::cout << "sum A = " << sum(A) << std::endl;
+    EXPECT_NEAR(sum(A),550,roundOffError);
+    B[I][J] = A[I-2][J-2];
+    std::cout << "B = " << B << std::endl;
+    std::cout << "sum B = " << sum(B) << std::endl;
+    EXPECT_NEAR(sum(B),110,roundOffError);
+    B[I][J] = A[I+2][J+2];
+    std::cout << "B = " << B << std::endl;
+    std::cout << "sum B = " << sum(B) << std::endl;
+    EXPECT_NEAR(sum(B),480,roundOffError);
+    B[I][J] = A[I+2][J-2];
+    std::cout << "B = " << B << std::endl;
+    std::cout << "sum B = " << sum(B) << std::endl;
+    EXPECT_NEAR(sum(B),480,roundOffError);
+    B[I][J] = A[I-2][J+2];
+    std::cout << "B = " << B << std::endl;
+    std::cout << "sum B = " << sum(B) << std::endl;
+    EXPECT_NEAR(sum(B),110,roundOffError);
+}
+
+namespace {
+    // define some helper functions for computing projections
+    Vektor<double,Dim> proj1(const Vektor<double,Dim> &v) {
+        Vektor<double,Dim> vtmp = v;
+        vtmp[1] = -vtmp[1];
+        return vtmp;
+    }
+
+    Vektor<double,Dim> proj2(const Vektor<double,Dim> &v) {
+        Vektor<double,Dim> vtmp = v;
+        vtmp[0] = -vtmp[0];
+        return vtmp;
+    }
+
+    double componentProj1(double vc) {
+        vc = - vc;
+        return vc;
+    }
+
+    double componentProj2(double vc) {
+        vc = - vc;
+        return vc;
+    }
+}
+
+TEST(Field, BCSimple2)
+{
+    OpalTestUtilities::SilenceTest silencer;
+
+    Index I(5),J(5);
+    FieldLayout<Dim> layout(I,J);
+    typedef UniformCartesian<Dim> M;
+    typedef Cell C;
+    Field< Vektor<double,Dim>, Dim, M, C > B(layout);
+
+    // Set initial boundary conditions.
+    BConds< Vektor<double,Dim>, Dim, M, C > bc;
+    if (Ippl::getNodes() == 1) {
+        bc[0] = new PeriodicFace< Vektor<double,Dim>, Dim, M, C >(0);
+        bc[1] = new PeriodicFace< Vektor<double,Dim>, Dim, M, C >(1);
+    }
+    else {
+        bc[0] = new ParallelPeriodicFace< Vektor<double,Dim>, Dim, M, C >(0);
+        bc[1] = new ParallelPeriodicFace< Vektor<double,Dim>, Dim, M, C >(1);
+    }
+    bc[2] = new FunctionFace< Vektor<double,Dim>, Dim, M, C >(proj1,2);
+    bc[3] = new FunctionFace< Vektor<double,Dim>, Dim, M, C >(proj2,3);
+
+    // construct a FieldSpec object
+    FieldSpec< Vektor<double,Dim>, Dim, M, C >
+        Spec(layout,GuardCellSizes<Dim>(1),bc);
+    FieldSpec< Vektor<double,Dim>, Dim, M, C > Sp1(Spec);
+    FieldSpec< Vektor<double,Dim>, Dim, M, C > Sp2(layout);
+    Sp2.set_BC(bc);
+    Sp2.set_GC(GuardCellSizes<Dim>(1));
+    Sp2 = Sp1;
+
+    // An array for testing.
+    Field< Vektor<double,Dim>, Dim, M, C > A(Spec);
+
+    Field< Vektor<double,Dim>, Dim, M, C>::iterator ip;
+
+    int i = 0, j = 0;
+
+    A.Uncompress(); // Needed because of bug in using iterator (TJW 3/31/1997)
+    for( ip = A.begin() ; ip != A.end() ; ++ip ) {
+        *ip = i + j*10;
+        i++;
+        if( (i % 5) == 0 ) {
+            i = 0;
+            j++;
+        }
+    }
+    A.fillGuardCells();
+    std::cout << A << std::endl;
+    std::cout << "sum A = " << sum(A) << std::endl;
+    EXPECT_NEAR(sum(A)[0],550,roundOffError);
+    EXPECT_NEAR(sum(A)[1],550,roundOffError);
+    // A.writeb("atest");
+    assign(B[I][J], A[I-1][J-1]);
+    std::cout << B << std::endl;
+    std::cout << "sum B = " << sum(B) << std::endl;
+    EXPECT_NEAR(sum(B)[0],350,roundOffError);
+    EXPECT_NEAR(sum(B)[1],330,roundOffError);
+    // B.writeb("btest1");
+    assign(B[I][J], A[I+1][J+1]);
+    std::cout << B << std::endl;
+    std::cout << "sum B = " << sum(B) << std::endl;
+    EXPECT_NEAR(sum(B)[0],330,roundOffError);
+    EXPECT_NEAR(sum(B)[1],750,roundOffError);
+    // B.writeb("btest2");
+
+    // Now try same using componentwise specification of y BC:
+    // Set initial boundary conditions.
+    BConds< Vektor<double,Dim>, Dim, M, C > bc2;
+    if (Ippl::getNodes() == 1) {
+        bc2[0] = new PeriodicFace< Vektor<double,Dim>, Dim, M, C >(0);
+        bc2[1] = new PeriodicFace< Vektor<double,Dim>, Dim, M, C >(1);
+    }
+    else {
+        bc2[0] = new ParallelPeriodicFace< Vektor<double,Dim>, Dim, M, C >(0);
+        bc2[1] = new ParallelPeriodicFace< Vektor<double,Dim>, Dim, M, C >(1);
+    }
+    bc2[2] = new ComponentFunctionFace< Vektor<double,Dim>, Dim, M, C >
+        (componentProj1,2,0);
+    bc2[3] = new ComponentFunctionFace< Vektor<double,Dim>, Dim, M, C >
+        (componentProj2,3,1);
+    bc2[2] = new ComponentFunctionFace< Vektor<double,Dim>, Dim, M, C >
+        (componentProj1,2,0);
+    bc2[3] = new ComponentFunctionFace< Vektor<double,Dim>, Dim, M, C >
+        (componentProj2,3,1);
+    // Construct a FieldSpec object:
+    FieldSpec< Vektor<double,Dim>, Dim, M, C >
+        Spec2(layout,GuardCellSizes<Dim>(1),bc2);
+    // Another Field for testing:
+    Field< Vektor<double,Dim>, Dim, M, C > A2(Spec2);
+    i = 0; j = 0;
+    A2.Uncompress(); // Needed because of bug in using iterator (TJW 3/31/1997)
+    for( ip = A2.begin() ; ip != A2.end() ; ++ip ) {
+        *ip = i + j*10;
+        i++;
+        if( (i % 5) == 0 ) {
+            i = 0;
+            j++;
+        }
+    }
+    A2.fillGuardCells();
+    std::cout << A2 << std::endl;
+    std::cout << "sum A2 = " << sum(A2) << std::endl;
+    EXPECT_NEAR(sum(A2)[0],550,roundOffError);
+    EXPECT_NEAR(sum(A2)[1],550,roundOffError);
+    // A.writeb("a2test");
+    assign(B[I][J], A[I-1][J-1]);
+    std::cout << B << std::endl;
+    std::cout << "sum B = " << sum(B) << std::endl;
+    EXPECT_NEAR(sum(B)[0],350,roundOffError);
+    EXPECT_NEAR(sum(B)[1],330,roundOffError);
+    // B.writeb("b2test1");
+    assign(B[I][J], A[I+1][J+1]);
+    std::cout << B << std::endl;
+    std::cout << "sum B = " << sum(B) << std::endl;
+    EXPECT_NEAR(sum(B)[0],330,roundOffError);
+    EXPECT_NEAR(sum(B)[1],750,roundOffError);
+    // B.writeb("b2test2");
+}
+
 TEST(Field, BC)
 {
     // For writing file output to compare against hardcoded correct file output:

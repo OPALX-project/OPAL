@@ -164,7 +164,7 @@ void FM3DMagnetoStatic::freeMap() {
     }
 }
 
-bool FM3DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool FM3DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
     if (isInside(R))
         B += interpolateTrilinearly(R);
 
@@ -216,7 +216,7 @@ double FM3DMagnetoStatic::getWeightedData(double *data, const IndexTriplet &idx,
     return factorX * factorY * factorZ * data[getIndex(i, j, k)];
 }
 
-bool FM3DMagnetoStatic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool FM3DMagnetoStatic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
@@ -226,7 +226,7 @@ void FM3DMagnetoStatic::getFieldDimensions(double &zBegin, double &zEnd, double 
     rBegin = xbegin_m;
     rEnd = xend_m;
 }
-void FM3DMagnetoStatic::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {}
+void FM3DMagnetoStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FM3DMagnetoStatic::swap() {}
 

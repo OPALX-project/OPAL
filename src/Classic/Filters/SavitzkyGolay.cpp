@@ -22,7 +22,7 @@ void SavitzkyGolayFilter::apply(vector<double> &LineDensity) {
     LineDensity.assign(temp.begin(), temp.end());
 }
 
-void SavitzkyGolayFilter::calc_derivative(vector<double> &LineDensity, const double &h) {
+void SavitzkyGolayFilter::calc_derivative(vector<double> &LineDensity, const double &/*h*/) {
     vector<double> temp(LineDensity.size(), 0.0);
     convlv(LineDensity, CoefsDeriv_m, 1, temp);
     LineDensity.assign(temp.begin(), temp.end());

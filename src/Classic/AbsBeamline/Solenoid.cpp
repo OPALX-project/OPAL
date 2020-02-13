@@ -90,7 +90,7 @@ bool Solenoid::getFast() const {
  * Calculates the transverse envelope component for the
  * solenoid element and adds it to the K vector
 */
-void Solenoid::addKR(int i, double t, Vector_t &K) {
+void Solenoid::addKR(int i, double /*t*/, Vector_t &K) {
     Inform msg("Solenoid::addKR()");
 
     double pz = RefPartBunch_m->getZ(i) - startField_m;
@@ -112,7 +112,7 @@ void Solenoid::addKR(int i, double t, Vector_t &K) {
  * Calculates the transverse kick component for the solenoid element and adds it to
  * the K vector, only important for off track tracking. Otherwise KT = 0.
 */
-void Solenoid::addKT(int i, double t, Vector_t &K) {
+void Solenoid::addKT(int i, double /*t*/, Vector_t &K) {
     Inform msg("Solenoid::addKT()");
     double dbdz, emg;
 
@@ -162,7 +162,7 @@ bool Solenoid::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B)
     return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
 }
 
-bool Solenoid::apply(const Vector_t &R, const Vector_t &P, const  double &t, Vector_t &E, Vector_t &B) {
+bool Solenoid::apply(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
     const Vector_t tmpR(R(0), R(1), R(2) - startField_m);
     Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
@@ -176,7 +176,7 @@ bool Solenoid::apply(const Vector_t &R, const Vector_t &P, const  double &t, Vec
     return false;
 }
 
-bool Solenoid::applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const  double &t, Vector_t &E, Vector_t &B) {
+bool Solenoid::applyToReferenceParticle(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
     const Vector_t tmpR(R(0), R(1), R(2) - startField_m);
     Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
@@ -262,3 +262,4 @@ void Solenoid::getElementDimensions(double &begin,
     begin = startField_m;
     end = begin + length_m;
 }
+

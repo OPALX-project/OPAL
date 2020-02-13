@@ -49,7 +49,7 @@ void RFQuadrupole::accept(BeamlineVisitor &visitor) const {
     visitor.visitRFQuadrupole(*this);
 }
 
-void RFQuadrupole::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void RFQuadrupole::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
 }
 
@@ -61,7 +61,7 @@ bool RFQuadrupole::bends() const {
 }
 
 
-void RFQuadrupole::getDimensions(double &zBegin, double &zEnd) const {
+void RFQuadrupole::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {
 
 }
 

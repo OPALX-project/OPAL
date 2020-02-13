@@ -48,7 +48,7 @@ void Separator::accept(BeamlineVisitor &visitor) const {
     visitor.visitSeparator(*this);
 }
 
-void Separator::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void Separator::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
 }
 
@@ -59,7 +59,7 @@ bool Separator::bends() const {
     return false;
 }
 
-void Separator::getDimensions(double &zBegin, double &zEnd) const {
+void Separator::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {
 
 }
 

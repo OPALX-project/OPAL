@@ -78,7 +78,7 @@ void RBend::setSkewComponent(int n, double v) {
 /*
  * BET methods.
  */
-void RBend::addKR(int i, double t, Vector_t &K) {
+void RBend::addKR(int i, double /*t*/, Vector_t &K) {
     Inform msg("RBend::addK()");
 
     Vector_t tmpE(0.0, 0.0, 0.0);
@@ -100,7 +100,7 @@ void RBend::addKR(int i, double t, Vector_t &K) {
     }
 }
 
-void RBend::addKT(int i, double t, Vector_t &K) {
+void RBend::addKT(int i, double /*t*/, Vector_t &/*K*/) {
     Inform msg("RBend::addK()");
 
     Vector_t tmpE(0.0, 0.0, 0.0);
@@ -143,8 +143,7 @@ void RBend::setEntranceAngle(double entranceAngle) {
     setExitAngle(getBendAngle() - entranceAngle);
 }
 
-bool RBend::findChordLength(Inform &msg,
-                            double &chordLength) {
+bool RBend::findChordLength(double &chordLength) {
 
     /*
      * Find bend chord length. If this was not set by the user using the
@@ -168,3 +167,4 @@ bool RBend::findChordLength(Inform &msg,
 
     return true;
 }
+

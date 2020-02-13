@@ -87,7 +87,7 @@ double FM3DMagnetoStatic::getFrequency() const {
 }
 
 inline
-void FM3DMagnetoStatic::setFrequency(double freq) { }
+void FM3DMagnetoStatic::setFrequency(double /*freq*/) { }
 
 inline
 unsigned long FM3DMagnetoStatic::getIndex(unsigned int i, unsigned int j, unsigned int k) const

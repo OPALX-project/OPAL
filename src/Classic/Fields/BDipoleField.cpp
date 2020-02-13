@@ -37,7 +37,7 @@ BVector BDipoleField::Bfield(const Point3D &) const {
 }
 
 
-BVector BDipoleField::Bfield(const Point3D &X, double) const {
+BVector BDipoleField::Bfield(const Point3D &/*X*/, double) const {
     return BVector(Bx, By, 0.0);
 }
 

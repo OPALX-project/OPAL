@@ -219,7 +219,7 @@ bool TravelingWave::apply(const size_t &i, const double &t, Vector_t &E, Vector_
     return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
 }
 
-bool TravelingWave::apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) {
+bool TravelingWave::apply(const Vector_t &R, const Vector_t &/*P*/, const double &t, Vector_t &E, Vector_t &B) {
     if (R(2) < -0.5 * PeriodLength_m || R(2) + 0.5 * PeriodLength_m >= length_m) return false;
 
     Vector_t tmpR = Vector_t(R(0), R(1), R(2) + 0.5 * PeriodLength_m);
@@ -271,7 +271,7 @@ bool TravelingWave::apply(const Vector_t &R, const Vector_t &P, const double &t,
     return false;
 }
 
-bool TravelingWave::applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) {
+bool TravelingWave::applyToReferenceParticle(const Vector_t &R, const Vector_t &/*P*/, const double &t, Vector_t &E, Vector_t &B) {
 
     if (R(2) < -0.5 * PeriodLength_m || R(2) + 0.5 * PeriodLength_m >= length_m) return false;
 

@@ -75,9 +75,9 @@ private:
     void transformToHminus(PartBunchBase<double, 3> *bunch, size_t &i);
     void transformToH3plus(PartBunchBase<double, 3> *bunch, size_t &i);
 
-    bool computeEnergyLoss(Vector_t &P,
-                           const double deltat,
-                           bool includeFluctuations = true) const { return false;}
+    bool computeEnergyLoss(Vector_t &/*P*/, const double /*deltat*/, bool /*includeFluctuations*/) const {
+        return false;
+    }
 
     Cyclotron *cycl_m;
     BeamStripping *bstp_m;

@@ -101,7 +101,7 @@ class SBend3D : public Component {
     inline bool bends() const override;
 
     /** Not implemented */
-    void getDimensions(double &zBegin, double &zEnd) const override {}
+    void getDimensions(double &/*zBegin*/, double &/*zEnd*/) const override {}
 
     /** Return the cell geometry */
     BGeometryBase& getGeometry() override;

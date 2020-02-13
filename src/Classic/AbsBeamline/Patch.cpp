@@ -48,7 +48,7 @@ void Patch::accept(BeamlineVisitor &visitor) const {
     visitor.visitPatch(*this);
 }
 
-void Patch::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void Patch::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
 }
 
@@ -59,7 +59,7 @@ bool Patch::bends() const {
     return false;
 }
 
-void Patch::getDimensions(double &zBegin, double &zEnd) const {
+void Patch::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {
 
 }
 

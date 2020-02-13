@@ -81,7 +81,7 @@ void VariableRFCavityFringeField::accept(BeamlineVisitor& visitor) const {
     visitor.visitVariableRFCavity(*this);
 }
 
-bool VariableRFCavityFringeField::apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) {
+bool VariableRFCavityFringeField::apply(const Vector_t &R, const Vector_t &/*P*/, const double &t, Vector_t &E, Vector_t &B) {
     if (R[2] > _length || R[2] < 0.) {
         return true;
     }

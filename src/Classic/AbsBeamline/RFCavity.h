@@ -430,7 +430,7 @@ double RFCavity::getPhaseError() const {
 }
 
 inline
-void RFCavity::setCavityType(std::string type) {
+void RFCavity::setCavityType(std::string /*type*/) {
 
 }
 
@@ -525,3 +525,4 @@ CoordinateSystemTrafo RFCavity::getEdgeToEnd() const
 
 
 #endif // CLASSIC_RFCavity_HH
+

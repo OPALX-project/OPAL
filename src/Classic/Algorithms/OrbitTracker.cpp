@@ -105,7 +105,7 @@ void OrbitTracker::visitDegrader(const Degrader &deg) {
     applyDrift(flip_s * deg.getElementLength());
 }
 
-void OrbitTracker::visitParallelPlate(const ParallelPlate &pplate) {
+void OrbitTracker::visitParallelPlate(const ParallelPlate &/*pplate*/) {
     //do nothing in orbittracker.
 }
 
@@ -197,7 +197,7 @@ void OrbitTracker::visitPatch(const Patch &patch) {
     applyTransform(transform, 0.0);
 }
 
-void OrbitTracker::visitProbe(const Probe &prob) {
+void OrbitTracker::visitProbe(const Probe &/*prob*/) {
     // Do nothing.
 }
 

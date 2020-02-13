@@ -97,7 +97,7 @@ namespace Util {
 #undef erfinv_d1
 #undef erfinv_d0
 
-    Vector_t getTaitBryantAngles(Quaternion rotation, const std::string &elementName) {
+        Vector_t getTaitBryantAngles(Quaternion rotation, const std::string &/*elementName*/) {
         Quaternion rotationBAK = rotation;
 
         // y axis

@@ -1,40 +1,6 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- * This program was prepared by PSI. 
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit http://www.acl.lanl.gov/POOMS for more details
- *
- ***************************************************************************/
-
-// -*- C++ -*-
-// ACL:license
-// ----------------------------------------------------------------------
-// This software and ancillary information (herein called "SOFTWARE")
-// called IPPL (Parallel Object-Oriented Methods and Applications) is
-// without charge, provided that this Notice and any statement of
-// authorship are reproduced on all copies.  Neither the Government nor
-// the University makes any warranty, express or implied, or assumes any
-// liability or responsibility for the use of this SOFTWARE.
-//
-// If SOFTWARE is modified to produce derivative works, such modified
-// SOFTWARE should be clearly marked, so as not to confuse it with the
-// version available from LANL.
-//
-// For more information about IPPL, send e-mail to ippl@acl.lanl.gov,
-// or visit the IPPL web page at http://www.acl.lanl.gov/ippl/.
-// ----------------------------------------------------------------------
-// ACL:license
-
 // ----------------------------------------------------------------------------
 // Scalar advection example.
-// 
+//
 // This is here for comparison with IPPL 2.x, where the equivalent test is in
 // r2/src/Field/tests.
 // ----------------------------------------------------------------------------
@@ -68,6 +34,12 @@ void usage(const std::string &name, OStr &out);
 template <int D, class OStr>
 void print(const SAOptions<D> &opts, OStr &out);
 
+template <class OStr>
+void badOption(OStr &out, const char *str, const std::string &option);
+
+template <class OStr>
+void badValue(OStr &out, const std::string &option);
+
 template <int D>
 class SAOptions
 {
@@ -88,45 +60,45 @@ public:
   int pulseHalfWidthCells;  // Half-width (in cells) of (symmetrical) loaded
                             // pulse
   std::string progname;     // Name of program.
-  
+
   // Default constructor, sets the default options.
-  
+
   SAOptions();
-  
+
   // Set options from argc, argv.
-  
+
   SAOptions(int argc, char *argv[]);
-  
+
   // Prints a summary of the options.
-  
+
   template <class OStr>
   void print(OStr &out) { ::print(*this, out); }
-  
+
   // Prints a usage message.
-  
+
   template <class OStr>
   void usage(OStr &out) { ::usage(progname, out); }
 
 private:
 
   // Helper functions used in parsing options with int and double arguments:
-  
+
   static bool intArgument(int argc, char **argv, int pos, int &val);
   static bool doubleArgument(int argc, char **argv, int pos, double &val);
-  
+
   // Report bad option value
   // (These are forwarded to globals as I don't want to put the
   // bodies inline here. Fix when CW is fixed.)
-  
+
   template <class OStr>
-  static void 
+  static void
   badValue(OStr &out, const std::string &option) { ::badValue(out,option); }
-  
+
   template <class OStr>
-  static void 
-  badOption(OStr &out, const char *str, const std::string &option) 
+  static void
+  badOption(OStr &out, const char *str, const std::string &option)
   { ::badOption(out,str,option); }
-  
+
 };
 
 int main(int argc, char *argv[])
@@ -135,12 +107,12 @@ int main(int argc, char *argv[])
   Inform pout(NULL, 0);   // Output, via process 0 only
 
   const int Dim = 2; // Set the dimensionality
-  
+
   // The SAOptions object sets the default option values
   // and parses argv for options that override the defaults.
-  
+
   SAOptions<Dim> opts(argc, argv);
-  
+
   opts.print(pout);
 
   // Create the physical domains:
@@ -160,7 +132,7 @@ int main(int argc, char *argv[])
   // Create the layouts
   e_dim_tag edt[Dim];
   unsigned nVnodes[Dim];
-  for (int d = 0; d < Dim; d++) { 
+  for (int d = 0; d < Dim; d++) {
     nVnodes[d] = opts.nPatches[d];
     edt[d] = PARALLEL;
   }
@@ -258,7 +230,7 @@ int main(int argc, char *argv[])
       }
     }
     if ((timestep % opts.outputIncrement) == 0) {
-      pout << "t = " << timestep*dt 
+      pout << "t = " << timestep*dt
            << " ; u.CompressedFraction() = " << u.CompressedFraction()
            << endl;
       if (opts.doSumOut) pout << "sum(u) = " << sum(u) << endl;
@@ -290,7 +262,7 @@ void textOut(Field<T,3,M,C> &f) {
 }
 
 // Non-inline function definitions for SAOptions.
-  
+
 template <int D>
 SAOptions<D>::
 SAOptions()
@@ -312,27 +284,27 @@ SAOptions()
     }
   pulseHalfWidthCells = nCells[0]/8.0;
 }
-  
+
 template <int D>
 SAOptions<D>::
 SAOptions(int argc, char *argv[])
 {
     // Set the defaults (default copy constructor OK)
-    
+
     *this = SAOptions();
     progname = argv[0];
-    
+
     // Parse the argument list...
-    
+
     int i = 1;
     while (i < argc)
       {
         using std::string;
-    
+
         bool hasarg = false;
-        
+
         string arg(argv[i]);
-        
+
         if (arg == "-help")
           {
             usage(std::cerr);
@@ -341,11 +313,11 @@ SAOptions(int argc, char *argv[])
         else if (arg == "-purge")
           {
             purge = true;
-            
+
             // Check for optional argument:
-            
-	    hasarg = intArgument(argc, argv, i+1, purgeIncrement);
-	    if (hasarg) ++i;	    
+
+            hasarg = intArgument(argc, argv, i+1, purgeIncrement);
+            if (hasarg) ++i;
           }
         else if (arg == "-text")
           {
@@ -361,35 +333,35 @@ SAOptions(int argc, char *argv[])
           }
         else if (arg == "-steps")
           {
-            if (i+1 == argc) badOption(std::cerr, 
+            if (i+1 == argc) badOption(std::cerr,
                                        "No value specified for: ", arg);
-            
-	    hasarg = intArgument(argc, argv, i+1, lastTimeStep);
-	    
-	    if (!hasarg) badOption(std::cerr, 
+
+            hasarg = intArgument(argc, argv, i+1, lastTimeStep);
+
+            if (!hasarg) badOption(std::cerr,
                                    "No value specified for: ", arg);
-	    
-	    ++i;
+
+            ++i;
           }
         else if (arg == "-out")
           {
-            if (i+1 == argc) badOption(std::cerr, 
+            if (i+1 == argc) badOption(std::cerr,
                                        "No value specified for: ", arg);
-            
-      	    hasarg = intArgument(argc, argv, i+1, outputIncrement);
-	    
-	    if (!hasarg) badOption(std::cerr, "No value specified for: ", arg);
-	    
-	    ++i;
+
+            hasarg = intArgument(argc, argv, i+1, outputIncrement);
+
+            if (!hasarg) badOption(std::cerr, "No value specified for: ", arg);
+
+            ++i;
           }
         else if (arg == "-cells")
           {
             // This can be followed by either 1 int or D ints.
-            
+
             bool hasarg = intArgument(argc, argv, i+1, nCells[0]);
-            
-            if (hasarg) 
-              { 
+
+            if (hasarg)
+              {
                 ++i;
                 if (D > 1)
                   {
@@ -399,8 +371,8 @@ SAOptions(int argc, char *argv[])
                         for (int d = 1; d < D; ++d)
                           {
                             hasarg = intArgument(argc, argv, i+1, nCells[d]);
-                            if (!hasarg) 
-                              badOption(std::cerr, 
+                            if (!hasarg)
+                              badOption(std::cerr,
                                         "Not enough arguments for: ", arg);
                             ++i;
                           }
@@ -417,17 +389,17 @@ SAOptions(int argc, char *argv[])
             else
               {
                 badOption(std::cerr, "No argument specified for: ", arg);
-              } 
+              }
             pulseHalfWidthCells = nCells[0]/8.0;
           }
         else if (arg == "-patches")
           {
             // This can be followed by either 1 int or D ints.
-            
+
             bool hasarg = intArgument(argc, argv, i+1, nPatches[0]);
-            
-            if (hasarg) 
-              { 
+
+            if (hasarg)
+              {
                 ++i;
                 if (D > 1)
                   {
@@ -437,8 +409,8 @@ SAOptions(int argc, char *argv[])
                         for (int d = 1; d < D; ++d)
                           {
                             hasarg = intArgument(argc, argv, i+1, nPatches[d]);
-                            if (!hasarg) 
-                              badOption(std::cerr, 
+                            if (!hasarg)
+                              badOption(std::cerr,
                                         "Not enough arguments for: ", arg);
                             ++i;
                           }
@@ -455,64 +427,64 @@ SAOptions(int argc, char *argv[])
             else
               {
                 badOption(std::cerr, "No argument specified for: ", arg);
-              }            
+              }
           }
         else if (arg == "-epsilon")
           {
-            if (i+1 == argc) badOption(std::cerr, 
+            if (i+1 == argc) badOption(std::cerr,
                                        "No value specified for: ", arg);
-            
-	    hasarg = doubleArgument(argc, argv, i+1, epsilon);
-	    
-	    if (!hasarg) badOption(std::cerr, "No value specified for: ", arg);
-	    
-	    ++i;
+
+            hasarg = doubleArgument(argc, argv, i+1, epsilon);
+
+            if (!hasarg) badOption(std::cerr, "No value specified for: ", arg);
+
+            ++i;
           }
         else if (arg == "-dt")
           {
-            if (i+1 == argc) badOption(std::cerr, 
+            if (i+1 == argc) badOption(std::cerr,
                                        "No value specified for: ", arg);
-            
-	    hasarg = doubleArgument(argc, argv, i+1, dt);
-	    
-	    if (!hasarg) badOption(std::cerr, "No value specified for: ", arg);
-	    
-	    ++i;
+
+            hasarg = doubleArgument(argc, argv, i+1, dt);
+
+            if (!hasarg) badOption(std::cerr, "No value specified for: ", arg);
+
+            ++i;
           }
         else if (arg == "-pulseHalfWidthCells")
           {
-            if (i+1 == argc) badOption(std::cerr, 
+            if (i+1 == argc) badOption(std::cerr,
                                        "No value specified for: ", arg);
-            
-	    hasarg = intArgument(argc, argv, i+1, pulseHalfWidthCells);
-	    
-	    if (!hasarg) badOption(std::cerr, "No value specified for: ", arg);
-	    
-	    ++i;
+
+            hasarg = intArgument(argc, argv, i+1, pulseHalfWidthCells);
+
+            if (!hasarg) badOption(std::cerr, "No value specified for: ", arg);
+
+            ++i;
           }
         else
           {
-            std::cerr << "No such flag: " << arg << endl;
+            std::cerr << "No such flag: " << arg << std::endl;
             usage(std::cerr);
             exit(0);
           }
-                    
+
         ++i; // next arg
       }
-      
+
     // Do some sanity checks:
-    
-    if (lastTimeStep < 1)   
+
+    if (lastTimeStep < 1)
       badValue(std::cerr, "-steps");
-    if (outputIncrement < 1 || outputIncrement > lastTimeStep) 
+    if (outputIncrement < 1 || outputIncrement > lastTimeStep)
       badValue(std::cerr, "-out");
-    if (purgeIncrement < 1 || purgeIncrement > lastTimeStep) 
+    if (purgeIncrement < 1 || purgeIncrement > lastTimeStep)
       badValue(std::cerr, "-purge");
 
     // Finally, initialize nVerts.
-    
+
     for (int d = 0; d < D; ++d) nVerts[d] = nCells[d] + 1;
-                
+
 }
 
 template <int D>
@@ -533,8 +505,8 @@ intArgument(int argc, char **argv, int pos, int &val)
         // first char is not a number.  Is the second, with the first a '-/+'?
 
         if ((firstchar != '-' && firstchar != '+') || argv[pos][1] == 0 ||
-	    (argv[pos][1] < '0' || argv[pos][1] > '9'))
-	  return false;
+            (argv[pos][1] < '0' || argv[pos][1] > '9'))
+          return false;
       }
 
     // Get the value and return it in the last argument
@@ -561,8 +533,8 @@ doubleArgument(int argc, char **argv, int pos, double &val)
         // first char is not a number.  Is the second, with the first a '-/+'?
 
         if ((firstchar != '-' && firstchar != '+') || argv[pos][1] == 0 ||
-	    (argv[pos][1] < '0' || argv[pos][1] > '9'))
-	  return false;
+            (argv[pos][1] < '0' || argv[pos][1] > '9'))
+          return false;
       }
 
     // Get the value and return it in the last argument
@@ -573,8 +545,8 @@ doubleArgument(int argc, char **argv, int pos, double &val)
 
 //
 // Helper functions: print, usage, badOption, badValue
-// 
-// To avoid having to put these functions in the class body, I've written 
+//
+// To avoid having to put these functions in the class body, I've written
 // them as global template functions. The corresponding member functions
 // simply call these.
 //
@@ -583,96 +555,82 @@ template <int D, class OStr>
 void print(const SAOptions<D> &opts, OStr &pout)
 {
 //     using std::endl;
-    
+
     int d;
-    
+
     pout << "Program name: " << opts.progname << endl;
     pout << "Option values: " << endl;
     pout << "=====================================================" << endl;
-    
-    pout << "text                = " 
+
+    pout << "text                = "
          << (opts.doTextOut ? "true ; " : "false ; ") << endl;
-    pout << "sum                 = " 
+    pout << "sum                 = "
          << (opts.doSumOut ? "true ; " : "false ; ") << endl;
-    pout << "ensight             = " 
+    pout << "ensight             = "
          << (opts.doEnsightOut ? "true ; " : "false ; ") << endl;
-    pout << "purge               = " 
+    pout << "purge               = "
          << (opts.purge ? "true ; " : "false ; ") << endl;
 
     pout << "time step           = " << opts.dt << endl;
     pout << "steps               = " << opts.lastTimeStep << endl;
     pout << "outSteps            = " << opts.outputIncrement << endl;
     pout << "purgeSteps          = " << opts.purgeIncrement << endl;
-    
+
     pout << "nCells              = " << opts.nCells[0];
-    for (d = 1; d < D; ++d) 
+    for (d = 1; d < D; ++d)
       pout << ", " << opts.nCells[d];
     pout << endl;
-    
+
     pout << "nVerts              = " << opts.nVerts[0];
-    for (d = 1; d < D; ++d) 
+    for (d = 1; d < D; ++d)
       pout << ", " << opts.nVerts[d];
     pout << endl;
 
     pout << "nPatches            = " << opts.nPatches[0];
-    for (d = 1; d < D; ++d) 
+    for (d = 1; d < D; ++d)
       pout << ", " << opts.nPatches[d];
     pout << endl;
-    
+
     pout << "epsilon             = " << opts.epsilon << endl;
     pout << "pulseHalfWidthCells = " << opts.pulseHalfWidthCells << endl;
-    pout << "=====================================================" << endl 
+    pout << "=====================================================" << endl
          << endl;
 }
-  
+
 template <class OStr>
 void usage(const std::string &name, OStr &out)
 {
     out << "Usage: " << name << std::endl
-        << " [-cells <nCellsX> [<nCellsY> <nCellsZ>]]" 
+        << " [-cells <nCellsX> [<nCellsY> <nCellsZ>]]"
         << std::endl
-        << " [-patches <nPatchesX> [<nPatchesY> <nPatchesZ>]]" 
+        << " [-patches <nPatchesX> [<nPatchesY> <nPatchesZ>]]"
         << std::endl
         << " [-dt <timestep>]"
         << " [-steps <lastTimeStep>]"
         << std::endl
-        << " [-pulseHalfWidthCells <pulseHalfWidthCells>]" 
+        << " [-pulseHalfWidthCells <pulseHalfWidthCells>]"
         << std::endl
         << " [-out <outputIncrement>]"
-        << " [-sum]" 
-        << " [-text]" 
+        << " [-sum]"
+        << " [-text]"
         << " [-ensight]"
         << std::endl
         << " [-purge [<purgeIncrement>]]"
-        << " [-epsilon <epsilon>]" 
-        << " [-block]" 
+        << " [-epsilon <epsilon>]"
+        << " [-block]"
         << std::endl;
 }
 
 template <class OStr>
-void badOption(OStr &out, const char *str, const std::string &option) 
-{ 
+void badOption(OStr &out, const char *str, const std::string &option)
+{
   out << "Bad option: " << str << option << std::endl;
   exit(1);
 }
 
 template <class OStr>
-void badValue(OStr &out, const std::string &option) 
-{ 
+void badValue(OStr &out, const std::string &option)
+{
   out << "Bad input value for option: " << option << std::endl;
   exit(1);
 }
-
-// ACL:rcsinfo
-// ----------------------------------------------------------------------
-// $RCSfile: ScalarAdvection.cpp,v $   $Author: adelmann $
-// $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:38 $
-// ----------------------------------------------------------------------
-// ACL:rcsinfo
-
-/***************************************************************************
- * $RCSfile: addheaderfooter,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:17 $
- * IPPL_VERSION_ID: $Id: addheaderfooter,v 1.1.1.1 2003/01/23 07:40:17 adelmann Exp $ 
- ***************************************************************************/
-

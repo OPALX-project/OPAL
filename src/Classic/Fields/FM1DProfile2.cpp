@@ -327,15 +327,15 @@ bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vecto
 
 }
 
-bool FM1DProfile2::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool FM1DProfile2::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void FM1DProfile2::getFieldDimensions(double &zBegin, double &zEnd, double &rBegin, double &rEnd) const {
+void FM1DProfile2::getFieldDimensions(double &zBegin, double &zEnd, double &/*rBegin*/, double &/*rEnd*/) const {
     zBegin = zbegin_entry_m;
     zEnd = zend_exit_m;
 }
-void FM1DProfile2::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {}
+void FM1DProfile2::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
 void FM1DProfile2::swap()
 {}
@@ -348,7 +348,7 @@ double FM1DProfile2::getFrequency() const {
     return 0.0;
 }
 
-void FM1DProfile2::setFrequency(double freq)
+void FM1DProfile2::setFrequency(double /*freq*/)
 {}
 
 void FM1DProfile2::setExitFaceSlope(const double &m) {

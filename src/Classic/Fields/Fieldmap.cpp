@@ -515,7 +515,7 @@ void Fieldmap::checkMap(unsigned int accuracy,
     }
 }
 
-void Fieldmap::setEdgeConstants(const double &bendAngle, const double &entranceAngle, const double &exitAngle)
+void Fieldmap::setEdgeConstants(const double &/*bendAngle*/, const double &/*entranceAngle*/, const double &/*exitAngle*/)
 {};
 
 void Fieldmap::setFieldLength(const double &)
@@ -560,7 +560,8 @@ bool Fieldmap::interpreteEOF(std::ifstream &in) {
     return true;
 }
 
-void Fieldmap::interpreteWarning(const std::string &error_msg,
+ // :FIXME: make it sense to ignore 'error_msg'?
+void Fieldmap::interpreteWarning(const std::string &/*error_msg*/,
                                  const std::string &expecting,
                                  const std::string &found) {
     std::stringstream errormsg;
@@ -701,23 +702,23 @@ std::string Fieldmap::typeset_msg(const std::string &msg, const std::string &tit
     return return_string;
 }
 
-void Fieldmap::getOnaxisEz(std::vector<std::pair<double, double> > &onaxis)
+void Fieldmap::getOnaxisEz(std::vector<std::pair<double, double> > &/*onaxis*/)
 { }
 
-void Fieldmap::get1DProfile1EngeCoeffs(std::vector<double> &engeCoeffsEntry,
-                                       std::vector<double> &engeCoeffsExit) {
+void Fieldmap::get1DProfile1EngeCoeffs(std::vector<double> &/*engeCoeffsEntry*/,
+                                       std::vector<double> &/*engeCoeffsExit*/) {
 
 }
 
-void Fieldmap::get1DProfile1EntranceParam(double &entranceParameter1,
-        double &entranceParameter2,
-        double &entranceParameter3) {
+void Fieldmap::get1DProfile1EntranceParam(double &/*entranceParameter1*/,
+                                          double &/*entranceParameter2*/,
+                                          double &/*entranceParameter3*/) {
 
 }
 
-void Fieldmap::get1DProfile1ExitParam(double &exitParameter1,
-                                      double &exitParameter2,
-                                      double &exitParameter3) {
+void Fieldmap::get1DProfile1ExitParam(double &/*exitParameter1*/,
+                                      double &/*exitParameter2*/,
+                                      double &/*exitParameter3*/) {
 
 }
 
@@ -725,7 +726,7 @@ double Fieldmap::getFieldGap() {
     return 0.0;
 }
 
-void Fieldmap::setFieldGap(double gap) {
+void Fieldmap::setFieldGap(double /*gap*/) {
 
 }
 

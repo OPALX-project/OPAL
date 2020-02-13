@@ -107,7 +107,7 @@ void PortableBitmapReader::readImageBinary(std::istream &in) {
     }
 }
 
-void PortableBitmapReader::print(std::ostream &out) const {
+void PortableBitmapReader::print(std::ostream &/*out*/) const {
     for (unsigned int i = 0; i < height_m; ++ i) {
         for (unsigned int j = 0; j < width_m; ++ j) {
             if (j % 8 == 0) {

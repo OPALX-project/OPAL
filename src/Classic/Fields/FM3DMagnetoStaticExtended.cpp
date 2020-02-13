@@ -683,7 +683,7 @@ double FM3DMagnetoStaticExtended::getWeightedData(double *data, const IndexTripl
     return factorX * factorY * factorZ * data[getIndex(i, j, k)];
 }
 
-bool FM3DMagnetoStaticExtended::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool FM3DMagnetoStaticExtended::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
     if (isInside(R)) {
         Vector_t suppB = interpolateTrilinearly(R);
         suppB(0) *= copysign(1, R(1));
@@ -695,7 +695,7 @@ bool FM3DMagnetoStaticExtended::getFieldstrength(const Vector_t &R, Vector_t &E,
     return false;
 }
 
-bool FM3DMagnetoStaticExtended::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const {
+bool FM3DMagnetoStaticExtended::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
@@ -726,5 +726,5 @@ double FM3DMagnetoStaticExtended::getFrequency() const {
     return 0.0;
 }
 
-void FM3DMagnetoStaticExtended::setFrequency(double freq)
+void FM3DMagnetoStaticExtended::setFrequency(double /*freq*/)
 { ;}

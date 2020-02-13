@@ -61,7 +61,7 @@ void Euclid3DGeometry::setElementLength(double length) {
     transformation_m.setDisplacement(newVector);
 }
 
-Euclid3D Euclid3DGeometry::getTransform(double fromS, double toS) const {
+Euclid3D Euclid3DGeometry::getTransform(double /*fromS*/, double /*toS*/) const {
     throw GeneralClassicException("Euclid3DGeometry::getTransform", "Not implemented");
 }
 

@@ -83,7 +83,7 @@ void ScalingFFAMagnet::initialise() {
     planarArcGeometry_m.setCurvature(1./r0_m);
 }
 
-void ScalingFFAMagnet::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void ScalingFFAMagnet::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
     initialise();
 }
@@ -169,8 +169,8 @@ bool ScalingFFAMagnet::getFieldValueCylindrical(const Vector_t &pos, Vector_t &B
 }
 
 
-bool ScalingFFAMagnet::apply(const Vector_t &R, const Vector_t &P,
-                    const double &t, Vector_t &E, Vector_t &B) {
+bool ScalingFFAMagnet::apply(const Vector_t &R, const Vector_t &/*P*/,
+                             const double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
     return getFieldValue(R, B);
 }
 

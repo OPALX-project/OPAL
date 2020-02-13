@@ -161,7 +161,7 @@ void CSRIGFWakeFunction::calculateGreenFunction(PartBunchBase<double, 3> *bunch,
     }
 }
 
-void CSRIGFWakeFunction::calculateContributionInside(size_t sliceNumber, double angleOfSlice, double meshSpacing)
+void CSRIGFWakeFunction::calculateContributionInside(size_t sliceNumber, double angleOfSlice, double /*meshSpacing*/)
 {
     if(angleOfSlice > totalBendAngle_m || angleOfSlice < 0.0) return;
     int startSliceNum = 0;

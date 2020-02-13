@@ -1,9 +1,6 @@
 #include "Solvers/GreenWakeFunction.hh"
 #include "Algorithms/PartBunchBase.h"
 #include "Utilities/GeneralClassicException.h"
-#ifdef ENABLE_WAKE_TESTS
-#include "Solvers/TestLambda.h" // used for tests
-#endif
 
 #include <fstream>
 #include <string>
@@ -19,10 +16,7 @@ using namespace std;
 //IFF: TEST
 //#define ENABLE_WAKE_DEBUG
 //#define ENABLE_WAKE_DUMP
-//#define ENABLE_WAKE_TESTS
 //#define ENABLE_WAKE_TESTS_FFT_OUT
-//#define readWakeFromFile
-//#define WakeFile "test.sdds"
 
 
 /**
@@ -108,10 +102,6 @@ pair<int, int> GreenWakeFunction::distrIndices(int vectLen) {
 }
 
 void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
-#ifdef ENABLE_WAKE_TESTS
-    // overwrite the line density
-    testApply(bunch);
-#else
 
     Vector_t rmin, rmax;
     double charge = bunch->getChargePerParticle();
@@ -227,48 +217,6 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
        << "# tau = " << tau << "\n"
        << "# direction = " << direction << "\n"
        << "# spacing = " << spacing << "\n"
-       << "# Lbunch = " << NBin_m << "\n";
-    for(int i = 0; i < NBin_m; i++) {
-        f2 << i + 1 << " " << OutEnergy[i] << "\n";
-    }
-    f2.flush();
-    f2.close();
-#endif
-
-#endif //ENABLE_WAKE_TESTS
-}
-
-/**
- * @brief   Just a test function
- */
-void GreenWakeFunction::testApply(PartBunchBase<double, 3> *bunch) {
-#ifdef ENABLE_WAKE_TESTS
-    double spacing;
-    // determine K and charge
-    double charge = 0.8e-9; // nC
-    double K = 0.20536314319923724e-9; //K normalizes nC data in lambda.h?
-    spacing = 1e-6; //IFF: charge in testLambda.h in 1um spacings
-    NBin_m = 294;
-    std::vector<double> OutEnergy(NBin_m);
-
-    if(FftWField_m.empty()) {
-        FftWField_m.resize(2*NBin_m - 1);
-        CalcWakeFFT(spacing);
-    } else if(!constLength_m) {
-        CalcWakeFFT(spacing);
-    }
-
-    compEnergy(K, charge, testLambda, OutEnergy.data());
-
-    ofstream  f2("OutEnergy.dat");
-    f2 << "# Energy of the Wake calculated in Opal\n"
-       << "# Z0 = " << Z0_m << "\n"
-       << "# radius = " << radius_m << "\n"
-       << "# sigma = " << sigma_m << "\n"
-       << "# acMode = " << acMode_m << "\n"
-       << "# tau = " << tau_m << "\n"
-       << "# direction = " << direction_m << "\n"
-       << "# spacing = " << spacing_m << "\n"
        << "# Lbunch = " << NBin_m << "\n";
     for(int i = 0; i < NBin_m; i++) {
         f2 << i + 1 << " " << OutEnergy[i] << "\n";
@@ -417,23 +365,6 @@ void GreenWakeFunction::CalcWakeFFT(double spacing) {
     const int lowIndex = myDist.first;
     const int hiIndex  = myDist.second;
 
-#ifdef ENABLE_WAKE_TESTS
-    ofstream file;
-
-    if(Ippl::myNode() == 0) {
-        file.open("wake.dat");
-        file << "# Wake calculated in Opal" << "\n"
-             << "# Z0 = " << Z0_m << "\n"
-             << "# radius = " << radius_m << "\n"
-             << "# sigma = " << sigma_m << "\n"
-             << "# mode = " << acMode_m << "\n"
-             << "# tau = " << tau_m << "\n"
-             << "# direction = " << direction_m << "\n"
-             << "# spacing = " << spacing << "\n"
-             << "# Lbunch = " << NBin_m << "\n";
-    }
-#endif
-
     for(int i = 0; i < M; i ++) {
         FftWField_m[i] = 0.0;
     }
@@ -459,17 +390,6 @@ void GreenWakeFunction::CalcWakeFFT(double spacing) {
       Reduce the results
       */
     reduce(&(FftWField_m[0]), &(FftWField_m[0]) + NBin_m, &(FftWField_m[0]), OpAddAssign());
-
-
-#ifdef ENABLE_WAKE_TESTS
-    if(Ippl::myNode() == 0) {
-        for(int i = 0; i < NBin_m; i++) {
-            file << i + 1 << "   " << FftWField_m[i] << "\n";
-        }
-        file.flush();
-        file.close();
-    }
-#endif
 
 #ifdef ENABLE_WAKE_TESTS_FFT_OUT
     std::vector<double> wf(2*NBin_m-1);

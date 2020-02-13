@@ -71,7 +71,7 @@ void Monitor::accept(BeamlineVisitor &visitor) const {
     visitor.visitMonitor(*this);
 }
 
-bool Monitor::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) {
+bool Monitor::apply(const size_t &i, const double &t, Vector_t &/*E*/, Vector_t &/*B*/) {
     const Vector_t &R = RefPartBunch_m->R[i];
     const Vector_t &P = RefPartBunch_m->P[i];
     const double &dt = RefPartBunch_m->dt[i];
@@ -226,3 +226,4 @@ void Monitor::writeStatistics() {
 
     statFileEntries_sm.clear();
 }
+

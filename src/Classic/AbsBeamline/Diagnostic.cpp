@@ -48,7 +48,7 @@ void Diagnostic::accept(BeamlineVisitor &visitor) const {
     visitor.visitDiagnostic(*this);
 }
 
-void Diagnostic::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void Diagnostic::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
 }
 
@@ -63,5 +63,5 @@ ElementBase::ElementType Diagnostic::getType() const {
     return DIAGNOSTIC;
 }
 
-void Diagnostic::getDimensions(double &zBegin, double &zEnd) const
+void Diagnostic::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const
 { }

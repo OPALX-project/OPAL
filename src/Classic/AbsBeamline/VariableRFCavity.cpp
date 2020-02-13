@@ -139,8 +139,8 @@ bool VariableRFCavity::apply(const size_t &i, const double &t,
 //
 // Do I need bound checking here? I have no "radius" parameter, but I do have a
 // "length".
-bool VariableRFCavity::apply(const Vector_t &R, const Vector_t &P,
-                             const double &t, Vector_t &E, Vector_t &B) {
+bool VariableRFCavity::apply(const Vector_t &R, const Vector_t &/*P*/,
+                             const double &t, Vector_t &E, Vector_t &/*B*/) {
     if (R[2] >= 0. && R[2] < _length) {
         if (std::abs(R[0]) > halfWidth_m || std::abs(R[1]) > halfHeight_m) {
             return true;
@@ -160,7 +160,7 @@ bool VariableRFCavity::applyToReferenceParticle(const Vector_t &R, const Vector_
     return apply(R, P, t, E, B);
 }
 
-void VariableRFCavity::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void VariableRFCavity::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
 }
 

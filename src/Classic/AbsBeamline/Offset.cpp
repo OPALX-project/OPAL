@@ -97,7 +97,7 @@ const EMField &Offset::getField() const {
                         "No field defined for Offset");
 }
 
-void Offset::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
+void Offset::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
 }
 
@@ -182,7 +182,7 @@ void Offset::updateGeometry() {
     geometry_m = new Euclid3DGeometry(euclid3D);
 }
 
-void Offset::updateGeometry(Vector_t startPosition, Vector_t startDirection) {
+void Offset::updateGeometry(Vector_t /*startPosition*/, Vector_t startDirection) {
     if (!_is_local) {
         Vector_t translationGlobal = _end_position;
         double theta_g2l = getTheta(startDirection, Vector_t(1, 0, 0));
@@ -304,3 +304,4 @@ Offset Offset::globalCartesianOffset(std::string name,
     off.setIsLocal(false);
     return off;
 }
+

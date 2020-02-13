@@ -89,7 +89,7 @@ void MultipoleTCurvedConstRadius::setMaxOrder(const std::size_t &maxOrder) {
     }
 }
 
-double MultipoleTCurvedConstRadius::getRadius(const double &s) {
+double MultipoleTCurvedConstRadius::getRadius(const double &/*s*/) {
     if (angle_m == 0.0) {
         return -1.0;
     } else {
@@ -98,7 +98,7 @@ double MultipoleTCurvedConstRadius::getRadius(const double &s) {
 }
 
 double MultipoleTCurvedConstRadius::getScaleFactor(const double &x,
-                                                   const double &s) {
+                                                   const double &/*s*/) {
     return (1 + x * angle_m / getLength());
 }
 

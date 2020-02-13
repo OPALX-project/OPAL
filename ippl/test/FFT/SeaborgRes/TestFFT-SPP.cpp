@@ -105,9 +105,9 @@ int main(int argc, char *argv[])
   unsigned int nLoop;
   InterPolT interPol;
 
-  bool res = Configure(argc, argv, &interPol, &nx, &ny, &nz, 
-		       &test2do, &serialDim, &processes, &nLoop); 
-
+  /*bool res = */
+  Configure(argc, argv, &interPol, &nx, &ny, &nz,
+            &test2do, &serialDim, &processes, &nLoop);
 
   // The preceding cpp definition causes compile-time setting of D:
   const unsigned D=3U;
@@ -120,9 +120,9 @@ int main(int argc, char *argv[])
   double realDiff;
   
   // Various counters, constants, etc:
-  int d;
+  unsigned int d;
   
-  int tag = Ippl::Comm->next_tag(IPPL_APP_TAG0);
+  /*int tag = */ Ippl::Comm->next_tag(IPPL_APP_TAG0);
   double pi = acos(-1.0);
   double twopi = 2.0*pi;
   // Timer:

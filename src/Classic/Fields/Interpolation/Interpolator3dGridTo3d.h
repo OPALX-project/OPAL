@@ -208,7 +208,7 @@ void Interpolator3dGridTo3d::setZ(int nCoords, double* z) {
 
 inline Interpolator3dGridTo3d::Interpolator3dGridTo3d(ThreeDGrid* grid,
                        double ***Bx, double ***By, double ***Bz,
-                       interpolationAlgorithm algo)
+                       interpolationAlgorithm /*algo*/)
       : coordinates_m(NULL) {
     for (int i = 0; i < 3; i++)
         interpolator_m[i] = NULL;

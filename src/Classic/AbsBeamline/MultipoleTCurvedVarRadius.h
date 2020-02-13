@@ -190,8 +190,8 @@ inline
 }
 inline
     void MultipoleTCurvedVarRadius::initialise(PartBunchBase<double, 3>* bunch,
-                            double &startField,
-                            double &endField) {
+                                               double &/*startField*/,
+                                               double &/*endField*/) {
         RefPartBunch_m = bunch;
         double length = getLength();
         varRadiusGeometry_m.setElementLength(2 * getBoundingBoxLength());

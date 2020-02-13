@@ -40,7 +40,7 @@ public:
 
 };
 
-FVps<double, 6> RbendMap::getEntranceFringeMap(double angle, double curve,
+FVps<double, 6> RbendMap::getEntranceFringeMap(double angle, double /*curve*/,
         const BMultipoleField &field,
         double scale, FVps<double, 6> map) {
     // *** MISSING *** Higher order terms for entrance fringe.
@@ -52,7 +52,7 @@ FVps<double, 6> RbendMap::getEntranceFringeMap(double angle, double curve,
     return map;
 }
 
-FVps<double, 6> RbendMap::getExitFringeMap(double angle, double curve,
+FVps<double, 6> RbendMap::getExitFringeMap(double angle, double /*curve*/,
         const BMultipoleField &field,
         double scale, FVps<double, 6> map) {
     // *** MISSING *** Higher order terms for exit fringe.
@@ -165,7 +165,7 @@ FVps<double, 6> RbendMap::getThinMultipoleMap(const BMultipoleField &field,  dou
 
 
 FVps<double, 6> RbendMap::getTransformMap(const Euclid3D &euclid, double refLength,
-        double beta, double scale, double p,
+                                          double beta, double /*scale*/, double p,
         double mass, FVps<double, 6> map) {
     if(! euclid.isIdentity()) {
         double kin = mass / p;

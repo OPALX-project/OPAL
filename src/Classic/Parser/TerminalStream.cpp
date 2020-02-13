@@ -41,8 +41,14 @@ extern "C"
 // Class TerminalStream
 // ------------------------------------------------------------------------
 
-TerminalStream::TerminalStream(const char program[]):
-    AbsFileStream("standard input") {
+// :FIXME: can READLINE support be removed? Why is it not used?
+TerminalStream::TerminalStream(
+#ifdef READLINE
+    const char program[]
+#else
+    const char[]
+#endif
+    ): AbsFileStream("standard input") {
 #ifdef READLINE
     // Set up the readline() function.
     rl_readline_name = new char[strlen(program) + 1];

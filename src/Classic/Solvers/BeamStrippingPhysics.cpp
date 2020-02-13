@@ -108,8 +108,8 @@ const std::string BeamStrippingPhysics::getType() const {
 }
 
 void BeamStrippingPhysics::apply(PartBunchBase<double, 3> *bunch,
-                                 const std::pair<Vector_t, double> &boundingSphere,
-                                 size_t numParticlesInSimulation) {
+                                 const std::pair<Vector_t, double> &/*boundingSphere*/,
+                                 size_t /*numParticlesInSimulation*/) {
 
     dT_m = bunch->getdT();
 
@@ -201,7 +201,7 @@ void BeamStrippingPhysics::doPhysics(PartBunchBase<double, 3> *bunch) {
 }
 
 
-void BeamStrippingPhysics::crossSection(const Vector_t &R, double Eng){
+void BeamStrippingPhysics::crossSection(const Vector_t &/*R*/, double Eng){
 
     const double temperature = bstp_m->getTemperature();    // K
 
@@ -642,14 +642,14 @@ void BeamStrippingPhysics::transformToH3plus(PartBunchBase<double, 3> *bunch, si
     bunch->Q[i] = q_e;
 }
 
-void BeamStrippingPhysics::print(Inform& msg) {
+void BeamStrippingPhysics::print(Inform& /*msg*/) {
 }
 
 bool BeamStrippingPhysics::stillActive() {
     return locPartsInMat_m != 0;
 }
 
-bool BeamStrippingPhysics::stillAlive(PartBunchBase<double, 3> *bunch) {
+bool BeamStrippingPhysics::stillAlive(PartBunchBase<double, 3> */*bunch*/) {
     bool beamstrippingAlive = true;
     return beamstrippingAlive;
 }

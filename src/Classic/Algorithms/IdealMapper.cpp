@@ -70,7 +70,7 @@ void IdealMapper::visitCorrector(const Corrector &corr) {
 }
 
 
-void IdealMapper::visitPatch(const Patch &patch) {
+void IdealMapper::visitPatch(const Patch &/*patch*/) {
     // Ignore patch for ideal orbit.
 }
 
@@ -183,7 +183,7 @@ void IdealMapper::applyLinearMap
 
 
 void IdealMapper::applyMultipoleBody
-(double length, double refLength, const BMultipoleField &field, double scale) {
+(double length, double /*refLength*/, const BMultipoleField &field, double /*scale*/) {
     double kx = field.normal(2);
     double ky = - field.normal(2);
     double ks = field.skew(2);
@@ -192,8 +192,8 @@ void IdealMapper::applyMultipoleBody
 
 
 void IdealMapper::applySBendBody
-(double length, double refLength, double h,
- const BMultipoleField &field, double scale) {
+(double length, double /*refLength*/, double h,
+ const BMultipoleField &field, double /*scale*/) {
     double kx = (h * field.normal(1) + field.normal(2));
     double ky = - field.normal(2);
     double ks = field.skew(2);
@@ -213,7 +213,7 @@ void IdealMapper::applyThinMultipole
 
 
 void IdealMapper::applyThinSBend
-(const BMultipoleField &field, double scale, double h) {
+(const BMultipoleField &field, double /*scale*/, double h) {
     double kx = (h * field.normal(1) + field.normal(2));
     double ky = - field.normal(2);
     double ks = field.skew(2);
@@ -222,7 +222,7 @@ void IdealMapper::applyThinSBend
 }
 
 
-void IdealMapper::applyTransform(const Euclid3D &euclid, double refLength) {
+void IdealMapper::applyTransform(const Euclid3D &euclid, double /*refLength*/) {
     applyDrift(- euclid.getZ());
     itsMap[PX] += euclid.M(2, 0);
     itsMap[PY] += euclid.M(2, 1);

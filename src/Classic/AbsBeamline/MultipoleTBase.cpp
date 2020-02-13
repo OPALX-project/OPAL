@@ -71,8 +71,8 @@ MultipoleTBase::MultipoleTBase(const MultipoleTBase &right):
 MultipoleTBase::~MultipoleTBase() {
 }
 
-bool MultipoleTBase::apply(const Vector_t &R, const Vector_t &P,
-                           const double &t,Vector_t &E, Vector_t &B) {
+bool MultipoleTBase::apply(const Vector_t &R, const Vector_t &/*P*/,
+                           const double &/*t*/,Vector_t &/*E*/, Vector_t &B) {
     /** Rotate coordinates around the central axis of the magnet */
     Vector_t R_prime = rotateFrame(R);
     /** Go to local Frenet-Serret coordinates */

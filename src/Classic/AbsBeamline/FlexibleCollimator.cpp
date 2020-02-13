@@ -67,7 +67,8 @@ void FlexibleCollimator::accept(BeamlineVisitor &visitor) const {
 }
 
 
-bool FlexibleCollimator::isStopped(const Vector_t &R, const Vector_t &P, double recpgamma) {
+bool FlexibleCollimator::isStopped(const Vector_t &R, const Vector_t &, double /*recpgamma*/) {
+    // :FIXME: why commented out?
     const double z = R(2);// + P(2) * recpgamma;
 
     if ((z < 0.0) ||
@@ -85,7 +86,7 @@ bool FlexibleCollimator::isStopped(const Vector_t &R, const Vector_t &P, double 
     return  false;
 }
 
-bool FlexibleCollimator::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) {
+bool FlexibleCollimator::apply(const size_t &i, const double &t, Vector_t &/*E*/, Vector_t &/*B*/) {
     const Vector_t &R = RefPartBunch_m->R[i];
     const Vector_t &P = RefPartBunch_m->P[i];
     const double &dt = RefPartBunch_m->dt[i];
@@ -105,14 +106,22 @@ bool FlexibleCollimator::apply(const size_t &i, const double &t, Vector_t &E, Ve
     return pdead;
 }
 
-bool FlexibleCollimator::applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) {
+bool FlexibleCollimator::applyToReferenceParticle(
+        const Vector_t &/*R*/,
+        const Vector_t &/*P*/,
+        const double &/*t*/,
+        Vector_t &/*E*/,
+        Vector_t &/*B*/) {
     return false;
 }
 
 // rectangle collimators in cyclotron cyclindral coordinates
 // without particlematterinteraction, the particle hitting collimator is deleted directly
-bool FlexibleCollimator::checkCollimator(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double tstep) {
-
+bool FlexibleCollimator::checkCollimator(
+        PartBunchBase<double, 3> */*bunch*/,
+        const int /*turnnumber*/,
+        const double /*t*/,
+        const double /*tstep*/) {
     return false;
 }
 
@@ -262,3 +271,4 @@ void FlexibleCollimator::writeHolesAndQuadtree(const std::string &baseFilename) 
 
 
 }
+
