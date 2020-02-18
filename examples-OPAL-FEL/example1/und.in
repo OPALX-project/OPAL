@@ -33,7 +33,7 @@ DR1: DRIFT, L = .01, ELEMEDGE = 0.0;
 UND: UNDULATOR, L = 1.35, LFRINGE = .5, ELEMEDGE = .01, K = 11.1, LAMBDA = 8.5e-2,
      MESHLENGTH = { 5e-3, 5e-3, 18e-3 }, MESHRESOLUTION = { .1e-3, .1e-3, 2e-6},
      TRUNORDER = 2, SPACECHARGE = 1, TOTALTIME = 8.1e-9,
-     FNAME = "undulator_output.job", TIMESTEPRATIO = 1;
+     FNAME = "undulator_output.job", EMITPARTICLES = 1;
 
 DRIVE: Line = (DR1, UND);
 
