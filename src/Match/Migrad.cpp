@@ -301,7 +301,7 @@ void Migrad::hessenberg(Vector<double> &x, Vector<double> &f,
 }
 
 
-void Migrad::derivatives(Vector<double> &x, Vector<double> &f,
+void Migrad::derivatives(Vector<double> &x, Vector<double> &/*f*/,
                          Vector<double> &g, Vector<double> &g2) {
     int n = Match::block->countVariables();
     int m = Match::block->countFunctions();

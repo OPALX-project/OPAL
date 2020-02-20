@@ -52,7 +52,7 @@ namespace Expressions {
     }
 
 
-    void SHash::print(std::ostream &os, int precedence) const {
+    void SHash::print(std::ostream &os, int /*precedence*/) const {
         os << '#';
     }
 

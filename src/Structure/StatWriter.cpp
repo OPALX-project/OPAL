@@ -241,7 +241,7 @@ void StatWriter::write(PartBunchBase<double, 3> *beam, Vector_t FDext[],
 
 
 void StatWriter::write(EnvelopeBunch &beam, Vector_t FDext[],
-                       double sposHead, double sposRef, double sposTail)
+                       double /*sposHead*/, double sposRef, double /*sposTail*/)
 {
     //FIXME https://gitlab.psi.ch/OPAL/src/issues/245
 

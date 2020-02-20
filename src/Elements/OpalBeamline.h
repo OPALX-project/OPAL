@@ -143,7 +143,7 @@ void OpalBeamline::visit<Lambertson>(const Lambertson &element, BeamlineVisitor 
 }
 
 template<> inline
-void OpalBeamline::visit<Marker>(const Marker &element, BeamlineVisitor &, PartBunchBase<double, 3> *) {
+void OpalBeamline::visit<Marker>(const Marker &/*element*/, BeamlineVisitor &, PartBunchBase<double, 3> *) {
 }
 
 template<> inline

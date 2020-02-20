@@ -46,7 +46,7 @@ std::set<std::shared_ptr<Component>> OpalBeamline::getElements(const Vector_t &x
     return elementSet;
 }
 
-unsigned long OpalBeamline::getFieldAt(const unsigned int &index, const Vector_t &pos, const long &sindex, const double &t, Vector_t &E, Vector_t &B) {
+unsigned long OpalBeamline::getFieldAt(const unsigned int &/*index*/, const Vector_t &/*pos*/, const long &/*sindex*/, const double &/*t*/, Vector_t &/*E*/, Vector_t &/*B*/) {
 
     unsigned long rtv = 0x00;
 
@@ -156,7 +156,7 @@ void OpalBeamline::prepareSections() {
     prepared_m = true;
 }
 
-void OpalBeamline::print(Inform &msg) const {
+void OpalBeamline::print(Inform &/*msg*/) const {
 }
 
 void OpalBeamline::swap(OpalBeamline & rhs) {

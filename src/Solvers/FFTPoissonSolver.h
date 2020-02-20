@@ -77,13 +77,13 @@ public:
     /// compute the shifted integrated Green function as described in <A HREF="http://prst-ab.aps.org/abstract/PRSTAB/v9/i4/e044204">Three-dimensional quasistatic model for high brightness beam dynamics simulation</A> by Qiang et al.
     void shiftedIntGreensFunction(double zshift);
 
-    double getXRangeMin(unsigned short level) {return 1.0;}
-    double getXRangeMax(unsigned short level) {return 1.0;}
-    double getYRangeMin(unsigned short level) {return 1.0;}
-    double getYRangeMax(unsigned short level) {return 1.0;}
-    double getZRangeMin(unsigned short level) {return 1.0;}
-    double getZRangeMax(unsigned short level) {return 1.0;}
-    void test(PartBunchBase<double, 3> *bunch) { }
+    double getXRangeMin(unsigned short /*level*/) {return 1.0;}
+    double getXRangeMax(unsigned short /*level*/) {return 1.0;}
+    double getYRangeMin(unsigned short /*level*/) {return 1.0;}
+    double getYRangeMax(unsigned short /*level*/) {return 1.0;}
+    double getZRangeMin(unsigned short /*level*/) {return 1.0;}
+    double getZRangeMax(unsigned short /*level*/) {return 1.0;}
+    void test(PartBunchBase<double, 3> */*bunch*/) { }
 
     Inform &print(Inform &os) const;
 private:
@@ -192,8 +192,3 @@ inline Inform &operator<<(Inform &os, const FFTPoissonSolver &fs) {
 
 
 #endif
-
-/***************************************************************************
- * $RCSfile: FFTPoissonSolver.hh,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2001/08/08 11:21:48 $
- ***************************************************************************/

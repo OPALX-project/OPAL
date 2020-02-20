@@ -33,4 +33,5 @@ install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Utilities")
 # mode: cmake
 # cmake-tab-width: 4
 # indent-tabs-mode: nil
+# require-final-newline: nil
 # End:

@@ -168,7 +168,7 @@ void BeamStrippingPhysics::doPhysics(PartBunchBase<double, 3> *bunch) {
             beta = sqrt(1.0 - 1.0 / (gamma * gamma));
             deltas = dT_m * beta * c;
 
-            crossSection(bunch->R[i], Eng);
+            crossSection(Eng);
             pdead_GS = gasStripping(deltas);
 
             if(abs(mass_m-m_hm) < 1E-6 && charge_m == -q_e) {
@@ -201,7 +201,7 @@ void BeamStrippingPhysics::doPhysics(PartBunchBase<double, 3> *bunch) {
 }
 
 
-void BeamStrippingPhysics::crossSection(const Vector_t &/*R*/, double Eng){
+void BeamStrippingPhysics::crossSection(double Eng){
 
     const double temperature = bstp_m->getTemperature();    // K
 
@@ -327,14 +327,12 @@ void BeamStrippingPhysics::crossSection(const Vector_t &/*R*/, double Eng){
             CS_c = csAnalyticFunctionTabata(Eng, Eth, a1, a2, a3, a4, a5, a6);
         }
         CS_total = CS_a + CS_b + CS_c;
-        //*gmsg << "* CS_total = " << CS_total << " cm2" << endl;
     
         NCS_a = CS_a * 1E-4 * molecularDensity[0];
         NCS_b = CS_b * 1E-4 * molecularDensity[0];
         NCS_c = CS_c * 1E-4 * molecularDensity[0];
         NCS_total = CS_total * 1E-4 * molecularDensity[0];
     }
-
 
     else if (gas_m == "AIR") {
 
@@ -389,9 +387,8 @@ void BeamStrippingPhysics::crossSection(const Vector_t &/*R*/, double Eng){
                     CS_double[i] = csAnalyticFunctionNakai(Eng, Eth, i) +
                         b_m[i][6] * csAnalyticFunctionNakai(Eng/b_m[i][7], Eth/b_m[i][7], i);
                 }
-                else {
+                else
                     CS_double[i] = csAnalyticFunctionNakai(Eng, Eth, i);
-                }
             }
             else if(abs(mass_m-m_h) < 1E-6 && charge_m == 0.0) {
                 // Single-electron detachment - Proton Production
@@ -408,9 +405,8 @@ void BeamStrippingPhysics::crossSection(const Vector_t &/*R*/, double Eng){
                     CS_double[i] = csAnalyticFunctionNakai(Eng, Eth, i) +
                         b_m[i][6] * csAnalyticFunctionNakai(Eng/b_m[i][7], Eth/b_m[i][7], i);
                 }
-                else {
+                else
                     CS_double[i] = csAnalyticFunctionNakai(Eng, Eth, i);
-                }
             }
             else {
                 CS_single[i] = {0.0};
@@ -430,10 +426,7 @@ void BeamStrippingPhysics::crossSection(const Vector_t &/*R*/, double Eng){
         NCS_b = NCS_double_all;
         NCS_total = NCS_total_all;
     }
-    else {
-        throw GeneralClassicException("BeamStrippingPhysics::crossSection",
-                                      "Residual gas not found ...");
-    }
+
 }
 
 
@@ -531,9 +524,8 @@ void BeamStrippingPhysics::secondaryParticles(PartBunchBase<double, 3> *bunch, s
 
     // change the mass_m and charge_m
     if(abs(mass_m-m_hm) < 1E-6 && charge_m == -q_e) {
-        if (pdead_LS == true) {
+        if (pdead_LS == true)
             transformToHydrogen(bunch, i);
-        }
         else {
             if(r > NCS_b/NCS_total)
                 transformToHydrogen(bunch, i);
@@ -720,6 +712,5 @@ const double BeamStrippingPhysics::csCoefDouble_Hplus_Chebyshev[11] = {
 const double BeamStrippingPhysics::csCoefHydrogenProduction_H2plus_Chebyshev[11] = {
     2.00E+03, 1.00E+05, -70.670173645, -0.632612288, -0.6065212488, -0.0915143117, -0.0121710282, 0.0168179292, 0.0104796877, 0, 0
 };
-
 double BeamStrippingPhysics::a_m[9] = {};
 double BeamStrippingPhysics::b_m[3][9] = {};

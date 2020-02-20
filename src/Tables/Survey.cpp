@@ -589,7 +589,7 @@ void Survey::printTable(std::ostream &os, const CellArray &cells) const {
 }
 
 
-double Survey::getS(const Survey::Row &row, int, int) const {
+double Survey::getS(const Survey::Row &/*row*/, int, int) const {
     return current->getS();
 }
 

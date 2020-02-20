@@ -110,7 +110,7 @@ namespace Expressions {
 
 
     template <class T> inline
-    void Indexer<T>::print(std::ostream &os, int precedence) const {
+    void Indexer<T>::print(std::ostream &os, int /*precedence*/) const {
         lft->print(os, 0);
         os << '[';
         rgt->print(os, 0);

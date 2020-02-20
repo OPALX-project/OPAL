@@ -70,13 +70,7 @@ public:
     /// Apply visitor to BeamStripping.
     virtual void accept(BeamlineVisitor &) const;
 
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
-
-    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B);
-
     virtual bool checkBeamStripping(PartBunchBase<double, 3> *bunch, Cyclotron* cycl, const int turnnumber, const double t, const double tstep);
-
-    virtual bool checkBeamStripping(Vector_t r, Vector_t rmin, Vector_t rmax);
 
     virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
 

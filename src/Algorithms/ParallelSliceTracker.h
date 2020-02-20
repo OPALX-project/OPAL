@@ -90,7 +90,6 @@ public:
     virtual void visitSolenoid(const Solenoid &);
     virtual void visitSource(const Source &);
     virtual void visitParallelPlate(const ParallelPlate &);
-
     virtual void execute();
 
     /// Apply the algorithm to a beam line.
@@ -141,10 +140,10 @@ private:
     CoordinateSystemTrafo referenceToLabCSTrafo_m;
 
     // Fringe fields for entrance and exit of magnetic elements.
-    void applyEntranceFringe(double edge, double curve,
-                             const BMultipoleField &field, double scale);
-    void applyExitFringe(double edge, double curve,
-                         const BMultipoleField &field, double scale);
+    void applyEntranceFringe(double /*edge*/, double /*curve*/,
+                             const BMultipoleField &/*field*/, double /*scale*/) {};
+    void applyExitFringe(double /*edge*/, double /*curve*/,
+                         const BMultipoleField &/*field*/, double /*scale*/) {};
 
     void FieldsOutput(double z, double Ex, double Ey, double Ez,
                       double Bx, double By, double Bz);
@@ -188,11 +187,11 @@ inline void ParallelSliceTracker::visitBeamBeam(const BeamBeam &bb) {
     itsOpalBeamline_m.visit(bb, *this, itsBunch_m);
 }
 
-inline void ParallelSliceTracker::visitCCollimator(const CCollimator &coll) {
+inline void ParallelSliceTracker::visitCCollimator(const CCollimator &/*coll*/) {
     // itsOpalBeamline_m.visit(coll, *this, itsBunch_m);
 }
 
-inline void ParallelSliceTracker::visitFlexibleCollimator(const FlexibleCollimator &coll) {
+inline void ParallelSliceTracker::visitFlexibleCollimator(const FlexibleCollimator &/*coll*/) {
     // itsOpalBeamline_m.visit(coll, *this, itsBunch_m);
 }
 
@@ -239,7 +238,7 @@ inline void ParallelSliceTracker::visitProbe(const Probe &prob) {
 }
 
 
-inline void ParallelSliceTracker::visitRBend(const RBend &bend) {
+inline void ParallelSliceTracker::visitRBend(const RBend &/*bend*/) {
     // itsOpalBeamline_m.visit(bend, *this, itsBunch_m);
 }
 
@@ -257,7 +256,7 @@ inline void ParallelSliceTracker::visitRFQuadrupole(const RFQuadrupole &rfq) {
     itsOpalBeamline_m.visit(rfq, *this, itsBunch_m);
 }
 
-inline void ParallelSliceTracker::visitSBend(const SBend &bend) {
+inline void ParallelSliceTracker::visitSBend(const SBend &/*bend*/) {
     // itsOpalBeamline_m.visit(bend, *this, itsBunch_m);
 }
 
@@ -280,18 +279,18 @@ inline void ParallelSliceTracker::visitSource(const Source &source) {
     itsOpalBeamline_m.visit(source, *this, itsBunch_m);
 }
 
-inline void ParallelSliceTracker::visitParallelPlate(const ParallelPlate &pplate) {
+inline void ParallelSliceTracker::visitParallelPlate(const ParallelPlate &/*pplate*/) {
     //do nothing.
 }
 
 inline void ParallelSliceTracker::kickParticles() {
 }
 
-inline void ParallelSliceTracker::updateSpaceOrientation(const bool &move) {
+inline void ParallelSliceTracker::updateSpaceOrientation(const bool &/*move*/) {
     itsBunch_m->calcBeamParameters();
 }
 
-inline void ParallelSliceTracker::kickReferenceParticle(const Vector_t &externalE, const Vector_t &externalB) {
+inline void ParallelSliceTracker::kickReferenceParticle(const Vector_t &/*externalE*/, const Vector_t &/*externalB*/) {
 }
 
 inline void ParallelSliceTracker::writePhaseSpace(const long long step, const double &sposRef) {
@@ -334,7 +333,7 @@ inline void ParallelSliceTracker::writePhaseSpace(const long long step, const do
     }
 }
 
-inline void ParallelSliceTracker::writeLastStepPhaseSpace(const long long step, const double &sposRef) {
+inline void ParallelSliceTracker::writeLastStepPhaseSpace(const long long /*step*/, const double &sposRef) {
     Inform msg("ParallelSliceTracker");
     if(itsBunch_m->isValid_m) {
         Vector_t externalE, externalB;
@@ -370,5 +369,12 @@ inline unsigned long long ParallelSliceTracker::getMaxSteps(std::queue<unsigned 
     return totalNumSteps;
 }
 
-
 #endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

@@ -115,7 +115,7 @@ TEST_F(VerticalFFAMagnetTest, BoundingBoxTest) {
 }
 
 TEST_F(VerticalFFAMagnetTest, MaxwellTest) {
-    // check the field is maxwellian. This is key test for the field model 
+    // check the field is maxwellian. This is key test for the field model
     double x = length_m*0.1;
     double y = length_m*0.05;
     double z = length_m*0.8;
@@ -134,7 +134,7 @@ TEST_F(VerticalFFAMagnetTest, MaxwellTest) {
         double curl = euclidean_norm(maxTest.curlB(pos, 0.));
         EXPECT_LT(abs(div), abs(divOld)) << i;
         EXPECT_LT(curl, 1e-11);
-        std::cerr << "Max Order: " << i << " |curlB|: " << curl 
+        std::cerr << "Max Order: " << i << " |curlB|: " << curl
                   << " DivB: " << div << std::endl;
         if ((i/2)*2 != i) { // div only improves on even orders
             divOld = div;
@@ -148,13 +148,13 @@ TEST_F(VerticalFFAMagnetTest, CoefficientsTest) {
     magnet_m->setMaxOrder(10);
     magnet_m->initialise();
     std::vector< std::vector<double> > coeffs = magnet_m->getDfCoefficients();
-    EXPECT_EQ(coeffs.size(), 11);
+    EXPECT_EQ(coeffs.size(), 11u);
     for (size_t i = 0; i < coeffs.size(); i++) {
         std::vector<double> cv = coeffs[i];
         if ((i/2)*2 == i) { // even
-            EXPECT_EQ(cv.size(), i+1);
+            EXPECT_EQ(cv.size(), i+1u);
         } else { // odd
-            EXPECT_EQ(cv.size(), 0);
+            EXPECT_EQ(cv.size(), 0u);
         }
     }
 }

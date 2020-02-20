@@ -306,5 +306,6 @@ void FM3DH5Block::getOnaxisEz(vector<pair<double, double> > & F) {
 // Local Variables:
 // mode:c
 // c-basic-offset: 4
-// indent-tabs-mode:nil
+// indent-tabs-mode: nil
+// require-final-newline: nil
 // End:

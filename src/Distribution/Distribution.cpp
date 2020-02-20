@@ -57,6 +57,12 @@ extern Inform *gmsg;
 
 constexpr double SMALLESTCUTOFF = 1e-12;
 
+/* Increase tEmission_m by twice this percentage
+ * to ensure that no particles fall on the leading edge of
+ * the first emission time step or the trailing edge of the last
+ * emission time step. */
+const double Distribution::percentTEmission_m = 0.0005;
+
 namespace {
     SymTenzor<double, 6> getUnit6x6() {
         SymTenzor<double, 6> unit6x6;
@@ -103,6 +109,8 @@ Distribution::Distribution():
     sigmaTFall_m(0.0),
     tPulseLengthFWHM_m(0.0),
     correlationMatrix_m(getUnit6x6()),
+    sepPeaks_m(0.0),
+    nPeaks_m(1),
     laserProfileFileName_m(""),
     laserImageName_m(""),
     laserIntensityCut_m(0.0),
@@ -198,6 +206,8 @@ Distribution::Distribution(const std::string &name, Distribution *parent):
     cutoffR_m(parent->cutoffR_m),
     cutoffP_m(parent->cutoffP_m),
     correlationMatrix_m(parent->correlationMatrix_m),
+    sepPeaks_m(parent->sepPeaks_m),
+    nPeaks_m(parent->nPeaks_m),
     laserProfileFileName_m(parent->laserProfileFileName_m),
     laserImageName_m(parent->laserImageName_m),
     laserIntensityCut_m(parent->laserIntensityCut_m),
@@ -337,6 +347,9 @@ void Distribution::create(size_t &numberOfParticles, double massIneV) {
     case DistrTypeT::GUNGAUSSFLATTOPTH:
     case DistrTypeT::ASTRAFLATTOPTH:
         createDistributionFlattop(numberOfLocalParticles, massIneV);
+        break;
+    case DistrTypeT::MULTIGAUSS:
+        createDistributionMultiGauss(numberOfLocalParticles, massIneV);
         break;
     default:
         INFOMSG("Distribution unknown." << endl;);
@@ -513,7 +526,7 @@ void  Distribution::createPriPart(PartBunchBase<double, 3> *beam, BoundaryGeomet
     *gmsg << *beam << endl;
 }
 
-void Distribution::doRestartOpalT(PartBunchBase<double, 3> *beam, size_t Np, int restartStep, H5PartWrapper *dataSource) {
+void Distribution::doRestartOpalT(PartBunchBase<double, 3> *beam, size_t /*Np*/, int restartStep, H5PartWrapper *dataSource) {
 
     IpplTimings::startTimer(beam->distrReload_m);
 
@@ -549,8 +562,8 @@ void Distribution::doRestartOpalT(PartBunchBase<double, 3> *beam, size_t Np, int
 }
 
 void Distribution::doRestartOpalCycl(PartBunchBase<double, 3> *beam,
-                                     size_t Np,
-                                     int restartStep,
+                                     size_t /*Np*/,
+                                     int /*restartStep*/,
                                      const int specifiedNumBunch,
                                      H5PartWrapper *dataSource) {
 
@@ -629,7 +642,7 @@ void Distribution::doRestartOpalCycl(PartBunchBase<double, 3> *beam,
     IpplTimings::stopTimer(beam->distrReload_m);
 }
 
-void Distribution::doRestartOpalE(EnvelopeBunch *beam, size_t Np, int restartStep,
+void Distribution::doRestartOpalE(EnvelopeBunch *beam, size_t /*Np*/, int /*restartStep*/,
                                   H5PartWrapper *dataSource) {
     IpplTimings::startTimer(beam->distrReload_m);
     int N = dataSource->getNumParticles();
@@ -884,11 +897,11 @@ void Distribution::applyEmissModelNonEquil(double lowEnergyLimit,
 
     // Compute emission momenta.
     double betaGammaExternal
-        = sqrt(pow(energyExternal / (Physics::m_e * 1.0e9) + 1.0, 2.0) - 1.0);
+        = sqrt(std::pow(energyExternal / (Physics::m_e * 1.0e9) + 1.0, 2.0) - 1.0);
 
     bgx = betaGammaExternal * sinThetaOut * cos(phi);
     bgy = betaGammaExternal * sinThetaOut * sin(phi);
-    bgz = betaGammaExternal * sqrt(1.0 - pow(sinThetaOut, 2.0));
+    bgz = betaGammaExternal * sqrt(1.0 - std::pow(sinThetaOut, 2.0));
 
 }
 
@@ -1040,7 +1053,7 @@ void Distribution::chooseInputMomentumUnits(InputMomentumUnitsT::InputMomentumUn
 }
 
 double Distribution::converteVToBetaGamma(double valueIneV, double massIneV) {
-    double value = std::copysign(sqrt(pow(std::abs(valueIneV) / massIneV + 1.0, 2.0) - 1.0), valueIneV);
+    double value = std::copysign(sqrt(std::pow(std::abs(valueIneV) / massIneV + 1.0, 2.0) - 1.0), valueIneV);
     if (std::abs(value) < std::numeric_limits<double>::epsilon())
         value = std::copysign(sqrt(2 * std::abs(valueIneV) / massIneV), valueIneV);
 
@@ -1064,6 +1077,83 @@ void Distribution::createDistributionFlattop(size_t numberOfParticles, double ma
             generateFlattopLaserProfile(numberOfParticles);
     } else
         generateFlattopZ(numberOfParticles);
+}
+
+void Distribution::createDistributionMultiGauss(size_t numberOfParticles, double massIneV) {
+
+    gsl_qrng *quasiRandGen2D = selectRandomGenerator(Options::rngtype,2);
+    
+    setDistParametersMultiGauss(massIneV);
+
+    // Generate the distribution 
+    int saveProcessor = -1;
+    const int myNode = Ippl::myNode();
+    const int numNodes = Ippl::getNodes();
+    const bool scalable = Attributes::getBool(itsAttr[Attrib::Distribution::SCALABLE]);
+
+    double L = (nPeaks_m - 1) * sepPeaks_m;
+    
+    for (size_t partIndex = 0; partIndex < numberOfParticles; partIndex++) {     
+        double x = 0.0, y = 0.0, tOrZ = 0.0;
+        double px = 0.0, py = 0.0, pz  = 0.0;
+        double r;
+        
+        // Transverse coordinates
+        sampleUniformDisk(quasiRandGen2D, x, y);
+        x *= sigmaR_m[0];
+        y *= sigmaR_m[1];
+
+        // Longitudinal coordinates
+        bool allow = false;
+        double randNums[2] = {0.0, 0.0};
+        while (!allow) {
+            if (quasiRandGen2D != NULL) {
+                gsl_qrng_get(quasiRandGen2D, randNums);
+            } else {
+                randNums[0] = gsl_rng_uniform(randGen_m);
+                randNums[1] = gsl_rng_uniform(randGen_m);
+            }
+            r = randNums[1] * nPeaks_m;
+            tOrZ = (2 * randNums[0] - 1) * (L/2 + sigmaR_m[2] * cutoffR_m[2]);
+
+            double proba = 0.0;
+            for (unsigned i = 0; i < nPeaks_m; i++)
+                proba += exp( - .5 * std::pow( (tOrZ + L/2 - i * sepPeaks_m) / sigmaR_m[2], 2) );
+            allow = (r <= proba);
+        }
+
+        if (!emitting_m) {
+            // Momentum has non-zero spread only if bunch is being emitted
+            allow = false;
+            while (!allow) {
+                px = gsl_ran_gaussian(randGen_m, 1.0);
+                py = gsl_ran_gaussian(randGen_m, 1.0);
+                pz = gsl_ran_gaussian(randGen_m, 1.0);
+                allow = ( (std::pow( x / cutoffP_m[0], 2.0) + std::pow( y / cutoffP_m[1], 2.0) <= 1.0)
+                    && (std::abs(pz) <= cutoffP_m[2]) );
+            }
+            px *= sigmaP_m[0];
+            py *= sigmaP_m[1];
+            pz *= sigmaP_m[2];
+            pz += avrgpz_m;
+        }
+
+        // Save to each processor in turn.
+        saveProcessor++;
+        if (saveProcessor >= numNodes)
+            saveProcessor = 0;
+
+        if (scalable || myNode == saveProcessor) {
+            xDist_m.push_back(x);
+            pxDist_m.push_back(px);
+            yDist_m.push_back(y);
+            pyDist_m.push_back(py);
+            tOrZDist_m.push_back(tOrZ);
+            pzDist_m.push_back(pz);
+        }    
+    }
+
+    gsl_qrng_free(quasiRandGen2D);
 }
 
 size_t Distribution::getNumberOfParticlesInFile(std::ifstream &inputFile) {
@@ -1096,7 +1186,7 @@ size_t Distribution::getNumberOfParticlesInFile(std::ifstream &inputFile) {
     return numberOfParticlesRead;
 }
 
-void Distribution::createDistributionFromFile(size_t numberOfParticles, double massIneV) {
+void Distribution::createDistributionFromFile(size_t /*numberOfParticles*/, double massIneV) {
 
     *gmsg << level3 << "\n"
           << "------------------------------------------------------------------------------------\n";
@@ -1516,7 +1606,7 @@ void  Distribution::createBoundaryGeometry(PartBunchBase<double, 3> *beam, Bound
 
 void Distribution::createOpalCycl(PartBunchBase<double, 3> *beam,
                                   size_t numberOfParticles,
-                                  double current, const Beamline &bl) {
+                                  double current, const Beamline &/*bl*/) {
 
     /*
      *  setup data for matched distribution generation
@@ -1583,9 +1673,9 @@ void Distribution::createOpalCycl(PartBunchBase<double, 3> *beam,
 }
 
 void Distribution::createOpalE(Beam *beam,
-                               std::vector<Distribution *> addedDistributions,
+                               std::vector<Distribution *> /*addedDistributions*/,
                                EnvelopeBunch *envelopeBunch,
-                               double distCenter,
+                               double /*distCenter*/,
                                double Bz0) {
 
     IpplTimings::startTimer(envelopeBunch->distrCreate_m);
@@ -1627,7 +1717,7 @@ void Distribution::createOpalE(Beam *beam,
 
     tEmission_m = tPulseLengthFWHM_m + (cutoffR_m[2] - sqrt(2.0 * log(2.0)))
         * (sigmaTRise_m + sigmaTFall_m);
-    double beamWidth = tEmission_m * Physics::c * sqrt(1.0 - (1.0 / pow(beam->getGamma(), 2)));
+    double beamWidth = tEmission_m * Physics::c * sqrt(1.0 - (1.0 / std::pow(beam->getGamma(), 2)));
     double beamCenter = -1.0 * beamWidth / 2.0;
 
     envelopeBunch->initialize(beam->getNumberOfSlices(),
@@ -2005,6 +2095,24 @@ void Distribution::eraseBGzDist() {
     pzDist_m.erase(pzDist_m.begin(), pzDist_m.end());
 }
 
+void Distribution::sampleUniformDisk(gsl_qrng* quasiRandGen2D, double& x1, double& x2)
+{
+    bool allow = false;
+    double randNums[2] = {0.0, 0.0};
+    while (!allow) {
+        if (quasiRandGen2D != NULL)
+            gsl_qrng_get(quasiRandGen2D, randNums);
+        else {
+            randNums[0] = gsl_rng_uniform(randGen_m);
+            randNums[1] = gsl_rng_uniform(randGen_m);
+        }
+        
+        x1 = 2 * randNums[0] - 1;
+        x2 = 2 * randNums[1] - 1;
+        allow = (std::pow(x1, 2) + std::pow(x2, 2) <= 1);
+    }
+}
+
 void Distribution::fillEBinHistogram() {
     double upper = 0.0;
     double lower = 0.0;
@@ -2198,8 +2306,8 @@ void Distribution::generateBinomial(size_t numberOfParticles) {
             * cos(asin(correlationMatrix_m(2 * index + 1, 2 * index)));
 
         if (std::abs(emittance(index)) > std::numeric_limits<double>::epsilon()) {
-            beta(index)  = pow(sigmaR_m[index], 2.0) / emittance(index);
-            gamma(index) = pow(sigmaP_m[index], 2.0) / emittance(index);
+            beta(index)  = std::pow(sigmaR_m[index], 2.0) / emittance(index);
+            gamma(index) = std::pow(sigmaP_m[index], 2.0) / emittance(index);
         } else {
             beta(index)  = sqrt(std::numeric_limits<double>::max());
             gamma(index) = sqrt(std::numeric_limits<double>::max());
@@ -2215,7 +2323,7 @@ void Distribution::generateBinomial(size_t numberOfParticles) {
     for (unsigned int index = 0; index < 3; index++) {
         // gamma(index) *= cutoffR_m[index];
         // beta(index)  *= cutoffP_m[index];
-        COSCHI[index] =  sqrt(1.0 / (1.0 + pow(alpha(index), 2.0)));
+        COSCHI[index] =  sqrt(1.0 / (1.0 + std::pow(alpha(index), 2.0)));
         SINCHI[index] = -alpha(index) * COSCHI[index];
         CHI[index]    =  atan2(SINCHI[index], COSCHI[index]);
         AMI[index]    =  1.0 / mBinomial_m[index];
@@ -2355,22 +2463,7 @@ void Distribution::generateFlattopT(size_t numberOfParticles) {
         double y = 0.0;
         double py = 0.0;
 
-        bool allow = false;
-        while (!allow) {
-
-            if (quasiRandGen2D != NULL) {
-                double randNums[2];
-                gsl_qrng_get(quasiRandGen2D, randNums);
-                x = -1.0 + 2.0 * randNums[0];
-                y = -1.0 + 2.0 * randNums[1];
-            } else {
-                x = -1.0 + 2.0 * gsl_rng_uniform(randGen_m);
-                y = -1.0 + 2.0 * gsl_rng_uniform(randGen_m);
-            }
-
-            allow = (pow(x, 2.0) + pow(y, 2.0) <= 1.0);
-
-        }
+        sampleUniformDisk(quasiRandGen2D, x, y);
         x *= sigmaR_m[0];
         y *= sigmaR_m[1];
 
@@ -2416,22 +2509,7 @@ void Distribution::generateFlattopZ(size_t numberOfParticles) {
         double z = 0.0;
         double pz = 0.0;
 
-        bool allow = false;
-        while (!allow) {
-
-            if (quasiRandGen2D != NULL) {
-                double randNums[2];
-                gsl_qrng_get(quasiRandGen2D, randNums);
-                x = -1.0 + 2.0 * randNums[0];
-                y = -1.0 + 2.0 * randNums[1];
-            } else {
-                x = -1.0 + 2.0 * gsl_rng_uniform(randGen_m);
-                y = -1.0 + 2.0 * gsl_rng_uniform(randGen_m);
-            }
-
-            allow = (pow(x, 2.0) + pow(y, 2.0) <= 1.0);
-
-        }
+        sampleUniformDisk(quasiRandGen2D, x, y);
         x *= sigmaR_m[0];
         y *= sigmaR_m[1];
 
@@ -2579,8 +2657,8 @@ void Distribution::generateGaussZ(size_t numberOfParticles) {
             z  = gsl_vector_get(ry, 4);
             pz = gsl_vector_get(ry, 5);
 
-            bool xAndYOk   = (pow( x / cutoffR_m[0], 2.0) + pow( y / cutoffR_m[1], 2.0) <= 1.0);
-            bool pxAndPyOk = (pow(px / cutoffP_m[0], 2.0) + pow(py / cutoffP_m[1], 2.0) <= 1.0);
+            bool xAndYOk   = (std::pow( x / cutoffR_m[0], 2.0) + std::pow( y / cutoffR_m[1], 2.0) <= 1.0);
+            bool pxAndPyOk = (std::pow(px / cutoffP_m[0], 2.0) + std::pow(py / cutoffP_m[1], 2.0) <= 1.0);
 
             bool zOk  = (std::abs(z)  <= cutoffR_m[2]);
             bool pzOk = (std::abs(pz) <= cutoffP_m[2]);
@@ -2695,25 +2773,22 @@ void Distribution::generateLongFlattopT(size_t numberOfParticles) {
 
         } else {
 
-            double funcAmp = 0.0;
             bool allow = false;
+            double randNums[2] = {0.0, 0.0};
             while (!allow) {
                 if (quasiRandGen2D != NULL) {
-                    double randNums[2] = {0.0, 0.0};
                     gsl_qrng_get(quasiRandGen2D, randNums);
-                    t = randNums[0] * flattopTime;
-                    funcAmp = randNums[1];
                 } else {
-                    t = gsl_rng_uniform(randGen_m)*flattopTime;
-                    funcAmp = gsl_rng_uniform(randGen_m);
+                    randNums[0]= gsl_rng_uniform(randGen_m);
+                    randNums[1]= gsl_rng_uniform(randGen_m);
                 }
+                t = randNums[0] * flattopTime;
 
                 double funcValue = (1.0 + modulationAmp
                                     * sin(Physics::two_pi * t / modulationPeriod))
                     / (1.0 + std::abs(modulationAmp));
 
-                allow = (funcAmp <= funcValue);
-
+                allow = (randNums[1] <= funcValue);
             }
         }
         // Shift the uniform part of distribution behind the fall
@@ -2814,8 +2889,8 @@ void Distribution::generateTransverseGauss(size_t numberOfParticles) {
             y = gsl_vector_get(ry, 2);
             py = gsl_vector_get(ry, 3);
 
-            bool xAndYOk   = (pow( x / cutoffR_m[0], 2.0) + pow( y / cutoffR_m[1], 2.0) <= 1.0);
-            bool pxAndPyOk = (pow(px / cutoffP_m[0], 2.0) + pow(py / cutoffP_m[1], 2.0) <= 1.0);
+            bool xAndYOk   = (std::pow( x / cutoffR_m[0], 2.0) + std::pow( y / cutoffR_m[1], 2.0) <= 1.0);
+            bool pxAndPyOk = (std::pow(px / cutoffP_m[0], 2.0) + std::pow(py / cutoffP_m[1], 2.0) <= 1.0);
 
             allow = (xAndYOk && pxAndPyOk);
 
@@ -3033,6 +3108,9 @@ void Distribution::printDist(Inform &os, size_t numberOfParticles) const {
     case DistrTypeT::ASTRAFLATTOPTH:
         printDistFlattop(os);
         break;
+    case DistrTypeT::MULTIGAUSS:
+        printDistMultiGauss(os);
+        break;
     case DistrTypeT::MATCHEDGAUSS:
         printDistMatchedGauss(os);
         break;
@@ -3134,6 +3212,36 @@ void Distribution::printDistFlattop(Inform &os) const {
     } else
         os << "* SIGMAZ                        = " << sigmaR_m[2]
            << " [m]" << endl;
+}
+
+void Distribution::printDistMultiGauss(Inform &os) const {
+
+    os << "* Distribution type: MULTIGAUSS" << endl;
+    os << "* " << endl;
+
+
+    os << "* SIGMAX                        = " << sigmaR_m[0] << " [m]" << endl;
+    os << "* SIGMAY                        = " << sigmaR_m[1] << " [m]" << endl;
+
+    std::string longUnits;
+    if (emitting_m)
+        longUnits = " [sec]";
+    else
+        longUnits = " [m]";
+
+    os << "* SIGMAZ                        = " << sigmaR_m[2] << longUnits << endl;
+    os << "* CUTOFFLONG                    = " << cutoffR_m[2] << " [units of SIGMAZ]" << endl;
+    os << "* SEPPEAKS			   = " << sepPeaks_m << longUnits << endl;
+    os << "* NPEAKS			   = " << nPeaks_m << endl;
+
+    if (!emitting_m) {
+        os << "* SIGMAPX                        = " << sigmaP_m[0] << " [Beta Gamma]" << endl;
+        os << "* SIGMAPY                        = " << sigmaP_m[1] << " [Beta Gamma]" << endl;
+        os << "* SIGMAPZ                        = " << sigmaP_m[2] << " [Beta Gamma]" << endl;
+        os << "* CUTOFFPX                       = " << cutoffP_m[0] << " [units of SIGMAPX]" << endl;
+        os << "* CUTOFFPY                       = " << cutoffP_m[1] << " [units of SIGMAPY]" << endl;
+        os << "* CUTOFFPZ                       = " << cutoffP_m[2] << " [units of SIGMAPZ]" << endl;
+    }
 }
 
 void Distribution::printDistFromFile(Inform &os) const {
@@ -3453,6 +3561,7 @@ void Distribution::setAttributes() {
                                  "GAUSS, "
                                  "BINOMIAL, "
                                  "FLATTOP, "
+                                 "MULTIGAUSS, "
                                  "SURFACEEMISSION, "
                                  "SURFACERANDCREATE, "
                                  "GUNGAUSSFLATTOPTH, "
@@ -3585,7 +3694,12 @@ void Distribution::setAttributes() {
     itsAttr[Attrib::Distribution::SIGMAPX] = Attributes::makeReal("SIGMAPX", "SIGMApx", 0.0);
     itsAttr[Attrib::Distribution::SIGMAPY] = Attributes::makeReal("SIGMAPY", "SIGMApy", 0.0);
     itsAttr[Attrib::Distribution::SIGMAPZ] = Attributes::makeReal("SIGMAPZ", "SIGMApz", 0.0);
-
+    itsAttr[Attrib::Distribution::SEPPEAKS] = Attributes::makeReal("SEPPEAKS", "Separation between "
+                                                                   "Gaussian peaks in MultiGauss "
+                                                                   "distribution.", 0.0);
+    itsAttr[Attrib::Distribution::NPEAKS] = Attributes::makeReal("NPEAKS", "Number of Gaussian "
+                                                                 " pulses in MultiGauss "
+                                                                 "distribution.", 0.0);
     itsAttr[Attrib::Distribution::MX]
         = Attributes::makeReal("MX", "Defines the binomial distribution in x, "
                                "0.0 ... infinity.", 10001.0);
@@ -3862,6 +3976,8 @@ void Distribution::setDistType() {
         distrTypeT_m = DistrTypeT::BINOMIAL;
     else if (distT_m == "FLATTOP")
         distrTypeT_m = DistrTypeT::FLATTOP;
+    else if (distT_m == "MULTIGAUSS")
+        distrTypeT_m = DistrTypeT::MULTIGAUSS;
     else if (distT_m == "GUNGAUSSFLATTOPTH")
         distrTypeT_m = DistrTypeT::GUNGAUSSFLATTOPTH;
     else if (distT_m == "ASTRAFLATTOPTH")
@@ -3880,11 +3996,46 @@ void Distribution::setDistType() {
                             "GAUSS\n"
                             "BINOMIAL\n"
                             "FLATTOP\n"
+                            "MULTIGAUSS\n"
                             "GUNGAUSSFLATTOPTH\n"
                             "ASTRAFLATTTOPTH\n"
                             "SURFACEEMISSION\n"
                             "SURFACERANDCREATE\n"
                             "GAUSSMATCHED");
+    }
+}
+
+void Distribution::setSigmaR_m() {
+    sigmaR_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAX])),
+                        std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAY])),
+                        std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAT])));
+    // SIGMAZ overrides SIGMAT
+    if (std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAZ])) != 0)
+        sigmaR_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAZ]));    
+    // SIGMAR overrides SIGMAX/Y
+    if (std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR])) > 0.0) {
+        sigmaR_m[0] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR]));
+        sigmaR_m[1] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR]));
+    }
+}
+
+void Distribution::setSigmaP_m(double massIneV) {
+    sigmaP_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPX])),
+                        std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPY])),
+                        std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPZ])));
+
+    // SIGMAPZ overrides SIGMAPT. SIGMAPT is left for legacy compatibility.
+    if ((sigmaP_m[2] == 0.0) && (Attributes::getReal(itsAttr[Attrib::Legacy::Distribution::SIGMAPT]) != 0.0)) {
+        sigmaP_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Legacy::Distribution::SIGMAPT]));
+        WARNMSG("The attribute SIGMAPT may be removed in a future version\n"
+                << "use  SIGMAPZ instead" << endl);
+    }
+    
+    // Check what input units we are using for momentum.
+    if (inputMoUnits_m == InputMomentumUnitsT::EV) {
+        sigmaP_m[0] = converteVToBetaGamma(sigmaP_m[0], massIneV);
+        sigmaP_m[1] = converteVToBetaGamma(sigmaP_m[1], massIneV);
+        sigmaP_m[2] = converteVToBetaGamma(sigmaP_m[2], massIneV);
     }
 }
 
@@ -3900,7 +4051,6 @@ void Distribution::setEmissionTime(double &maxT, double &minT) {
             tEmission_m = tPulseLengthFWHM_m + (cutoffR_m[2] - sqrt(2.0 * log(2.0)))
                 * (sigmaTRise_m + sigmaTFall_m);
             break;
-
         case DistrTypeT::ASTRAFLATTOPTH:
             /*
              * Don't do anything. Emission time is set during the distribution
@@ -3908,31 +4058,30 @@ void Distribution::setEmissionTime(double &maxT, double &minT) {
              * a legacy feature.
              */
             break;
-
         default:
             /*
-             * Increase maxT and decrease minT by 0.05% of total time
-             * to ensure that no particles fall on the leading edge of
+             * Increase maxT and decrease minT by percentTEmission_m of total
+             * time to ensure that no particles fall on the leading edge of
              * the first emission time step or the trailing edge of the last
              * emission time step.
              */
             double deltaT = maxT - minT;
-            maxT += deltaT * 0.0005;
-            minT -= deltaT * 0.0005;
+            maxT += deltaT * percentTEmission_m;
+            minT -= deltaT * percentTEmission_m;
             tEmission_m = (maxT - minT);
             break;
         }
 
     } else {
         /*
-         * Increase maxT and decrease minT by 0.05% of total time
-         * to ensure that no particles fall on the leading edge of
+         * Increase maxT and decrease minT by percentTEmission_m of total
+         * time to ensure that no particles fall on the leading edge of
          * the first emission time step or the trailing edge of the last
          * emission time step.
          */
         double deltaT = maxT - minT;
-        maxT += deltaT * 0.0005;
-        minT -= deltaT * 0.0005;
+        maxT += deltaT * percentTEmission_m;
+        minT -= deltaT * percentTEmission_m;
         tEmission_m = (maxT - minT);
     }
     tBin_m = tEmission_m / numberOfEnergyBins_m;
@@ -3964,30 +4113,8 @@ void Distribution::setDistParametersBinomial(double massIneV) {
     if (!itsAttr[Attrib::Distribution::CORRZ].defaultUsed())
         correlationMatrix_m(5, 4) = Attributes::getReal(itsAttr[Attrib::Distribution::CORRZ]);
 
-    sigmaR_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAX])),
-                        std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAY])),
-                        std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAT])));
-
-    // SIGMAZ overrides SIGMAT. We initially use SIGMAT for legacy compatibility.
-    if (Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAZ]) != 0.0)
-        sigmaR_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAZ]));
-
-    sigmaP_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPX])),
-                        std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPY])),
-                        std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPZ])));
-
-    // SIGMAPZ overrides SIGMAPT.
-    if (!itsAttr[Attrib::Legacy::Distribution::SIGMAPT].defaultUsed()) {
-        WARNMSG("The attribute SIGMAPT may be removed in a future version\n"
-                << "use  SIGMAPZ instead" << endl;)
-        sigmaP_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Legacy::Distribution::SIGMAPT]));
-    }
-    // Check what input units we are using for momentum.
-    if (inputMoUnits_m == InputMomentumUnitsT::EV) {
-        sigmaP_m[0] = converteVToBetaGamma(sigmaP_m[0], massIneV);
-        sigmaP_m[1] = converteVToBetaGamma(sigmaP_m[1], massIneV);
-        sigmaP_m[2] = converteVToBetaGamma(sigmaP_m[2], massIneV);
-    }
+    setSigmaR_m();
+    setSigmaP_m(massIneV);
 
     mBinomial_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::MX])),
                            std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::MY])),
@@ -4006,7 +4133,6 @@ void Distribution::setDistParametersBinomial(double massIneV) {
         mBinomial_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::MZ]));
 
     if (emitting_m) {
-        sigmaR_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAT]));
         mBinomial_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::MT]));
         correlationMatrix_m(5, 4) = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::CORRT]));
     }
@@ -4018,16 +4144,7 @@ void Distribution::setDistParametersFlattop(double massIneV) {
      * Set distribution parameters. Do all the necessary checks depending
      * on the input attributes.
      */
-    sigmaP_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPX])),
-                        std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPY])),
-                        std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPZ])));
-
-    // Check what input units we are using for momentum.
-    if (inputMoUnits_m == InputMomentumUnitsT::EV) {
-        sigmaP_m[0] = converteVToBetaGamma(sigmaP_m[0], massIneV);
-        sigmaP_m[1] = converteVToBetaGamma(sigmaP_m[1], massIneV);
-        sigmaP_m[2] = converteVToBetaGamma(sigmaP_m[2], massIneV);
-    }
+    setSigmaP_m(massIneV);
 
     cutoffR_m = Vector_t(Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFX]),
                          Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFY]),
@@ -4041,11 +4158,9 @@ void Distribution::setDistParametersFlattop(double massIneV) {
     if (Attributes::getReal(itsAttr[Attrib::Distribution::CORRZ]) != 0.0)
         correlationMatrix_m(5, 4) = Attributes::getReal(itsAttr[Attrib::Distribution::CORRZ]);
 
-
+    setSigmaR_m();
     if (emitting_m) {
-        sigmaR_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAX])),
-                            std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAY])),
-                            0.0);
+        sigmaR_m[2] = 0.0;
 
         sigmaTRise_m = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAT]));
         sigmaTFall_m = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAT]));
@@ -4073,18 +4188,6 @@ void Distribution::setDistParametersFlattop(double massIneV) {
 
         // For an emitted beam, the longitudinal cutoff >= 0.
         cutoffR_m[2] = std::abs(cutoffR_m[2]);
-
-    } else {
-
-        sigmaR_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAX])),
-                            std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAY])),
-                            std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAZ])));
-
-    }
-
-    if (std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR])) > 0.0) {
-        sigmaR_m[0] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR]));
-        sigmaR_m[1] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR]));
     }
 
     // Set laser profile/
@@ -4111,6 +4214,22 @@ void Distribution::setDistParametersFlattop(double massIneV) {
 
 }
 
+void Distribution::setDistParametersMultiGauss(double massIneV) {
+
+    setSigmaR_m();
+    cutoffR_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFLONG]));
+    
+    if (!emitting_m)
+        setSigmaP_m(massIneV);
+
+    cutoffP_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFPX])),
+                         std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFPY])),
+                         std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFPZ])));
+
+    sepPeaks_m = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SEPPEAKS]));
+    nPeaks_m = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::NPEAKS]));
+}
+
 void Distribution::setDistParametersGauss(double massIneV) {
 
     /*
@@ -4129,21 +4248,13 @@ void Distribution::setDistParametersGauss(double massIneV) {
                          Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFY]),
                          Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFLONG]));
 
+    if (std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR])) > 0.0) {
+        cutoffR_m[0] = Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFR]);
+        cutoffR_m[1] = Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFR]);
+    }
+
     if  (distrTypeT_m != DistrTypeT::MATCHEDGAUSS) {
-        sigmaP_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPX])),
-                            std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPY])),
-                            std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPZ])));
-
-        // SIGMAPZ overrides SIGMAPT. We initially use SIGMAPT for legacy compatibility.
-        if (Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPZ]) != 0.0)
-            sigmaP_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAPZ]));
-
-        // Check what input units we are using for momentum.
-        if (inputMoUnits_m == InputMomentumUnitsT::EV) {
-            sigmaP_m[0] = converteVToBetaGamma(sigmaP_m[0], massIneV);
-            sigmaP_m[1] = converteVToBetaGamma(sigmaP_m[1], massIneV);
-            sigmaP_m[2] = converteVToBetaGamma(sigmaP_m[2], massIneV);
-        }
+        setSigmaP_m(massIneV);
 
         std::vector<double> cr = Attributes::getRealArray(itsAttr[Attrib::Distribution::R]);
 
@@ -4178,12 +4289,12 @@ void Distribution::setDistParametersGauss(double massIneV) {
         }
     }
 
+    if (distrTypeT_m != DistrTypeT::MATCHEDGAUSS)
+        setSigmaR_m();
+    
     if (emitting_m) {
-
-        sigmaR_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAX])),
-                            std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAY])),
-                            0.0);
-
+        sigmaR_m[2] = 0.0;
+        
         sigmaTRise_m = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAT]));
         sigmaTFall_m = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAT]));
 
@@ -4211,24 +4322,6 @@ void Distribution::setDistParametersGauss(double massIneV) {
         // For and emitted beam, the longitudinal cutoff >= 0.
         cutoffR_m[2] = std::abs(cutoffR_m[2]);
 
-    } else {
-        if  (distrTypeT_m != DistrTypeT::MATCHEDGAUSS) {
-            sigmaR_m = Vector_t(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAX])),
-                                std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAY])),
-                                std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAT])));
-
-            // SIGMAZ overrides SIGMAT. We initially use SIGMAT for legacy compatibility.
-            if (Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAZ]) != 0.0)
-                sigmaR_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAZ]));
-
-        }
-    }
-
-    if (std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR])) > 0.0) {
-        sigmaR_m[0] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR]));
-        sigmaR_m[1] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR]));
-        cutoffR_m[0] = Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFR]);
-        cutoffR_m[1] = Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFR]);
     }
 
     // if cutoff 0 then infinite cutoff (except for CUTOFFLONG)
@@ -4307,7 +4400,7 @@ void Distribution::setupEmissionModelNonEquil() {
         + cathodeTemp_m * log(1.0e9 - 1.0);
 
     // TODO: get better estimate of pmean
-    pmean_m = Vector_t(0, 0, sqrt(pow(0.5 * emitEnergyUpperLimit_m / (Physics::m_e * 1e9) + 1.0, 2) - 1.0));
+    pmean_m = Vector_t(0, 0, sqrt(std::pow(0.5 * emitEnergyUpperLimit_m / (Physics::m_e * 1e9) + 1.0, 2) - 1.0));
 }
 
 void Distribution::setupEnergyBins(double maxTOrZ, double minTOrZ) {
@@ -4321,7 +4414,7 @@ void Distribution::setupEnergyBins(double maxTOrZ, double minTOrZ) {
 
 }
 
-void Distribution::setupParticleBins(double massIneV, PartBunchBase<double, 3> *beam) {
+void Distribution::setupParticleBins(double /*massIneV*/, PartBunchBase<double, 3> *beam) {
 
     numberOfEnergyBins_m
         = static_cast<int>(std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::NBIN])));
@@ -4338,7 +4431,7 @@ void Distribution::setupParticleBins(double massIneV, PartBunchBase<double, 3> *
 
         // we get gamma from PC of the beam
         const double pz    = beam->getP()/beam->getM();
-        double gamma = sqrt(pow(pz, 2.0) + 1.0);
+        double gamma = sqrt(std::pow(pz, 2.0) + 1.0);
         energyBins_m->setGamma(gamma);
 
     } else {
@@ -4691,7 +4784,7 @@ void Distribution::writeOutFileInjection() {
 }
 
 double Distribution::MDependentBehavior::get(double rand) {
-    return 2.0 * sqrt(1.0 - pow(rand, ami_m));
+    return 2.0 * sqrt(1.0 - std::pow(rand, ami_m));
 }
 
 double Distribution::GaussianLikeBehavior::get(double rand) {
@@ -4743,5 +4836,6 @@ void Distribution::adjustPhaseSpace(double massIneV) {
 // Local Variables:
 // mode:c++
 // c-basic-offset: 4
-// indent-tabs-mode:nil
+// indent-tabs-mode: nil
+// require-final-newline: nil
 // End:

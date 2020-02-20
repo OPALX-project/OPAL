@@ -304,5 +304,6 @@ FFTBase<Dim,T>::checkDomain(const FFTBase<Dim,T>::Domain_t& dom1,
 // Local Variables:
 // mode:c
 // c-basic-offset: 4
-// indent-tabs-mode:nil
+// indent-tabs-mode: nil
+// require-final-newline: nil
 // End:

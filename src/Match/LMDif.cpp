@@ -215,7 +215,7 @@ void LMDif::execute() {
 
 
 void LMDif::lmpar(QRSolver &solver, const Array1D<double> &D,
-                  const Vector<double> &f, Vector<double> &h) {
+                  const Vector<double> &/*f*/, Vector<double> &h) {
     // The iteration limit.
     static const int limit = 10;
 

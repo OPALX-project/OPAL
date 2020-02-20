@@ -6,4 +6,5 @@ add_library(wfgHypervolume hypervolume.cpp avl.cpp read.cpp)
 # mode: cmake
 # cmake-tab-width: 4
 # indent-tabs-mode: nil
+# require-final-newline: nil
 # End:

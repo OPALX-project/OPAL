@@ -44,7 +44,7 @@ TUNE_class::~TUNE_class(void)
 
 }
 
-int TUNE_class::lombAnalysis(std::vector<double> &x, std::vector<double> &y, int nhis, double Norm)
+int TUNE_class::lombAnalysis(std::vector<double> &x, std::vector<double> &y, int /*nhis*/, double Norm)
 /*-----------------------------------------------------------------------------
  *  Launch Lomb analysis and plot results
  *  =======================================
@@ -143,7 +143,7 @@ int TUNE_class::lombAnalysis(std::vector<double> &x, std::vector<double> &y, int
 }
 
 
-int TUNE_class::lombAnalysis(double *x, double *y, int Ndat, int nhis)
+int TUNE_class::lombAnalysis(double *x, double *y, int Ndat, int /*nhis*/)
 /*-----------------------------------------------------------------------------
  *  Launch Lomb analysis and plot results
  *  =======================================

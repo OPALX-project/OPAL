@@ -531,5 +531,6 @@ size_t H5PartWrapper::getNumParticles() const {
 // Local Variables:
 // mode:c++
 // c-basic-offset: 4
-// indent-tabs-mode:nil
+// indent-tabs-mode: nil
+// require-final-newline: nil
 // End:

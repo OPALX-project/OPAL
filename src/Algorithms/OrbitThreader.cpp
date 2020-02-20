@@ -142,7 +142,7 @@ void OrbitThreader::execute() {
     processElementRegister();
 }
 
-void OrbitThreader::integrate(const IndexMap::value_t &activeSet, size_t maxSteps, double maxDrift) {
+void OrbitThreader::integrate(const IndexMap::value_t &activeSet, size_t /*maxSteps*/, double maxDrift) {
     static size_t step = 0;
     CoordinateSystemTrafo labToBeamline = itsOpalBeamline_m.getCSTrafoLab2Local();
     const double oldPathLength = pathLength_m;

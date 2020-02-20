@@ -91,7 +91,7 @@ Object *Object::makeTemplate
 }
 
 
-Object *Object::makeInstance(const string &name, Statement &, const Parser *) {
+Object *Object::makeInstance(const string &/*name*/, Statement &, const Parser *) {
     throw ParseError("Object::makeInstance()", "Object \"" + getOpalName() +
                      "\" cannot be called as a macro.");
 }

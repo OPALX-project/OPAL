@@ -692,7 +692,7 @@ void SecondaryEmissionPhysics::calcEmiNum(const double incEnergy,
 
 }
 
-void SecondaryEmissionPhysics::calcEmiNum(const double incEnergy, const double cosTheta, const double *prob, int &seNum) {// For Furman-Pivi's model
+void SecondaryEmissionPhysics::calcEmiNum(const double /*incEnergy*/, const double /*cosTheta*/, const double *prob, int &seNum) {// For Furman-Pivi's model
 
     double prob_max = 0.0;
     // Acceptance-rejection methods to generate random number with specified distribution.

@@ -83,8 +83,8 @@ Inform *gmsg;
 namespace {
     void errorHandlerGSL(const char *reason,
                          const char *file,
-                         int line,
-                         int gsl_errno) {
+                         int /*line*/,
+                         int /*gsl_errno*/) {
         throw OpalException(file, reason);
     }
 }

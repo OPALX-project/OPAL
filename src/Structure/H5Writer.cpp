@@ -27,10 +27,10 @@ void H5Writer::writePhaseSpace(PartBunchBase<double, 3> *beam, Vector_t FDext[])
 }
 
 
-int H5Writer::writePhaseSpace(PartBunchBase<double, 3> *beam, Vector_t FDext[], double meanEnergy,
+int H5Writer::writePhaseSpace(PartBunchBase<double, 3> *beam, Vector_t FDext[], double /*meanEnergy*/,
                               double refPr, double refPt, double refPz,
                               double refR, double refTheta, double refZ,
-                              double azimuth, double elevation, bool local) {
+                              double azimuth, double elevation, bool /*local*/) {
 
     if (beam->getTotalNum() < 3) return -1; // in single particle mode and tune calculation (2 particles) we do not need h5 data
 
@@ -71,7 +71,7 @@ int H5Writer::writePhaseSpace(PartBunchBase<double, 3> *beam, Vector_t FDext[], 
 }
 
 
-void H5Writer::writePhaseSpace(EnvelopeBunch &beam, Vector_t FDext[],
+void H5Writer::writePhaseSpace(EnvelopeBunch &/*beam*/, Vector_t FDext[],
                                double sposHead, double sposRef,
                                double sposTail)
 {

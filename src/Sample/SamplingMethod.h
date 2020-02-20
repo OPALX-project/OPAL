@@ -13,7 +13,7 @@ class SamplingMethod
 {
 
 public:
-        virtual ~SamplingMethod() {};
+    virtual ~SamplingMethod() {};
     virtual void create(boost::shared_ptr<SampleIndividual>& ind, size_t i) = 0;
     
     /*!
@@ -26,7 +26,7 @@ public:
      * @param args samler arguments
      * @param comm sampler communicator
      */
-    virtual void allocate(const CmdArguments_t& args, const Comm::Bundle_t& comm) {
+    virtual void allocate(const CmdArguments_t& /*args*/, const Comm::Bundle_t& /*comm*/) {
         /* Some sampling methods require a container.
          * In order to reduce memory only samplers should allocate
          * the memory

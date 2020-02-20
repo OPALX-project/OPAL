@@ -60,8 +60,7 @@ public:
 
 };
 
-inline Inform &operator<<(Inform &os, const PoissonSolver &fs) {
+inline Inform &operator<<(Inform &os, const PoissonSolver &/*fs*/) {
     return os << "";
 }
-
 #endif

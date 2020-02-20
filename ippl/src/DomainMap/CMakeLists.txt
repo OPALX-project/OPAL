@@ -21,4 +21,5 @@ install (FILES ${_HDRS} DESTINATION include/DomainMap)
 # mode: cmake
 # cmake-tab-width: 4
 # indent-tabs-mode: nil
+# require-final-newline: nil
 # End:

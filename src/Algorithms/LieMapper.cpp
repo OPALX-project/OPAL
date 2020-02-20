@@ -103,11 +103,11 @@ void LieMapper::setMap(const DragtFinnMap<3> &map) {
 }
 
 
-void LieMapper::visitBeamBeam(const BeamBeam &map) {
+void LieMapper::visitBeamBeam(const BeamBeam &/*map*/) {
     // *** MISSING *** Map for beam-beam.
 }
 
-void LieMapper::visitBeamStripping(const BeamStripping &map) {
+void LieMapper::visitBeamStripping(const BeamStripping &/*map*/) {
     // *** MISSING *** Map for beam stripping.
 }
 
@@ -116,7 +116,7 @@ void LieMapper::visitCCollimator(const CCollimator &coll) {
 }
 
 
-void LieMapper::visitComponent(const Component &comp) {
+void LieMapper::visitComponent(const Component &/*comp*/) {
     // *** MISSING *** Map for arbitrary component.
 }
 
@@ -170,7 +170,7 @@ void LieMapper::visitLambertson(const Lambertson &lamb) {
 }
 
 
-void LieMapper::visitMarker(const Marker &marker) {
+void LieMapper::visitMarker(const Marker &/*marker*/) {
     // Do nothing.
 }
 
@@ -222,7 +222,7 @@ void LieMapper::visitPatch(const Patch &patch) {
     applyTransform(patch.getPatch());
 }
 
-void LieMapper::visitProbe(const Probe &prob) {
+void LieMapper::visitProbe(const Probe &/*prob*/) {
     // Do nothing.
 }
 
@@ -298,7 +298,7 @@ void LieMapper::visitRBend(const RBend &bend) {
 }
 
 
-void LieMapper::visitParallelPlate(const ParallelPlate &pplate) {
+void LieMapper::visitParallelPlate(const ParallelPlate &/*pplate*/) {
     // Do nothing.
 }
 
@@ -456,9 +456,9 @@ void LieMapper::applyDrift(double length)
 }
 
 
-void LieMapper::applyEntranceFringe(double angle, double curve,
-                                    const BMultipoleField &field,
-                                    double scale) {
+void LieMapper::applyEntranceFringe(double /*angle*/, double /*curve*/,
+                                    const BMultipoleField &/*field*/,
+                                    double /*scale*/) {
     // *** MISSING *** map terms for entrance fringe.
     //  double hx = scale * field.normal(1);
     //  double ex = hx * tan(angle);
@@ -466,9 +466,9 @@ void LieMapper::applyEntranceFringe(double angle, double curve,
 }
 
 
-void LieMapper::applyExitFringe(double angle, double curve,
-                                const BMultipoleField &field,
-                                double scale) {
+void LieMapper::applyExitFringe(double /*angle*/, double /*curve*/,
+                                const BMultipoleField &/*field*/,
+                                double /*scale*/) {
     // *** MISSING *** map terms for exit fringe.
     //  double hx = scale * field.normal(1);
     //  double ex = hx * tan(angle);
@@ -476,7 +476,7 @@ void LieMapper::applyExitFringe(double angle, double curve,
 }
 
 
-void LieMapper::applyTransform(const Euclid3D &euclid, double refLength) {
+void LieMapper::applyTransform(const Euclid3D &euclid, double /*refLength*/) {
     if(! euclid.isIdentity()) {
         // build rotation matrix and compute additional drift length.
         double s2 = (euclid.M(0, 2) * euclid.getX() +

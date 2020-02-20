@@ -1085,12 +1085,8 @@ void ParallelCyclotronTracker::visitSolenoid(const Solenoid &solenoid) {
  *
  * @param pplate
  */
-void ParallelCyclotronTracker::visitParallelPlate(const ParallelPlate &pplate) {//do nothing
-
-    //*gmsg << "ParallelPlate: not in use in ParallelCyclotronTracker!" << endl;
-
-    //buildupFieldList(startField, endField, elptr);
-
+void ParallelCyclotronTracker::visitParallelPlate(const ParallelPlate &/*pplate*/) {
+    //do nothing
 }
 
 /**
@@ -1607,7 +1603,7 @@ struct adder : public std::unary_function<double, void> {
  * @return
  */
 bool ParallelCyclotronTracker::getTunes(dvector_t &t, dvector_t &r, dvector_t &z,
-                                        int lastTurn, double &nur, double &nuz) {
+                                        int lastTurn, double &/*nur*/, double &/*nuz*/) {
     TUNE_class *tune;
 
     int Ndat = t.size();
@@ -3053,7 +3049,7 @@ void ParallelCyclotronTracker::finalizeTracking_m(dvector_t& Ttime,
 }
 
 
-void ParallelCyclotronTracker::seoMode_m(double& t, const double dt, bool& finishedTurn,
+void ParallelCyclotronTracker::seoMode_m(double& t, const double dt, bool& /*finishedTurn*/,
                                          dvector_t& Ttime, dvector_t& Tdeltr,
                                          dvector_t& Tdeltz, ivector_t& TturnNumber)
 {

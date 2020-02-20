@@ -15,7 +15,7 @@ LBalWriter::LBalWriter(const std::string& fname, bool restart)
 { }
 
 
-void LBalWriter::fillHeader(PartBunchBase<double, 3> *beam) {
+void LBalWriter::fillHeader(PartBunchBase<double, 3> */*beam*/) {
 
     if (this->hasColumns()) {
         return;

@@ -313,5 +313,6 @@ void FM3DMagnetoStaticH5Block::setFrequency(double /*freq*/)
 // Local Variables:
 // mode:c
 // c-basic-offset: 4
-// indent-tabs-mode:nil
+// indent-tabs-mode: nil
+// require-final-newline: nil
 // End:

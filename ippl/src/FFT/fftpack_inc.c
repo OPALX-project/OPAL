@@ -319,5 +319,6 @@ static void X(g)(size_t ido, size_t ip, size_t l1, const cmplx *cc, cmplx *ch,
 // Local Variables:
 // mode:c
 // c-basic-offset: 4
-// indent-tabs-mode:nil
+// indent-tabs-mode: nil
+// require-final-newline: nil
 // End:

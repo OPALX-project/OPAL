@@ -56,7 +56,7 @@ public:
 
 private:
 
-    void crossSection(const Vector_t &R, double Eng);
+    void crossSection(double Eng);
 
     double csAnalyticFunctionNakai(double Eng, double Eth, int &i);
     

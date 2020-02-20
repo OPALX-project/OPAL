@@ -65,7 +65,7 @@ public:
         ind->genes[i] = getNext(ind->id);
     }
 
-    void allocate(const CmdArguments_t& args, const Comm::Bundle_t& /*comm*/) {
+    void allocate(const CmdArguments_t& /*args*/, const Comm::Bundle_t& /*comm*/) {
         std::ifstream in(filename_m);
 
         if ( !in.is_open() ) {

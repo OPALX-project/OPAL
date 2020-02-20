@@ -33,7 +33,7 @@ Table::~Table() {
 }
 
 
-bool Table::canReplaceBy(Object *newObject) {
+bool Table::canReplaceBy(Object */*newObject*/) {
     return false;
 }
 

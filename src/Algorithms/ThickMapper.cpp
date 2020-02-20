@@ -141,7 +141,7 @@ void ThickMapper::visitLambertson(const Lambertson &lamb) {
 }
 
 
-void ThickMapper::visitMarker(const Marker &marker) {
+void ThickMapper::visitMarker(const Marker &/*marker*/) {
     // Do nothing.
 }
 
@@ -213,7 +213,7 @@ void ThickMapper::visitMultipole(const Multipole &mult) {
     //std::cerr << "==> Leaving ThickMapper::visitMultipole(...)" << std::endl;
 }
 
-void ThickMapper::visitProbe(const Probe &prob) {
+void ThickMapper::visitProbe(const Probe &/*prob*/) {
     // Do nothing.
 }
 
@@ -516,7 +516,7 @@ void ThickMapper::visitSolenoid(const Solenoid &solenoid) {
 }
 
 
-void ThickMapper::visitParallelPlate(const ParallelPlate &pplate) {
+void ThickMapper::visitParallelPlate(const ParallelPlate &/*pplate*/) {
     // Do nothing.
 }
 
@@ -567,7 +567,7 @@ void ThickMapper::applyDrift(double length) {
 }
 
 
-void ThickMapper::applyEntranceFringe(double angle, double curve,
+void ThickMapper::applyEntranceFringe(double angle, double /*curve*/,
                                       const BMultipoleField &field, double scale) {
     // *** MISSING *** Higher order terms for entrance fringe.
     double ca = cos(angle);
@@ -603,7 +603,7 @@ void ThickMapper::applyEntranceFringe(double angle, double curve,
 }
 
 
-void ThickMapper::applyExitFringe(double angle, double curve,
+void ThickMapper::applyExitFringe(double angle, double /*curve*/,
                                   const BMultipoleField &field, double scale) {
     // *** MISSING *** Higher order terms for exit fringe.
     double ca = cos(angle);

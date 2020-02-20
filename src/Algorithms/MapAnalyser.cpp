@@ -134,6 +134,7 @@ void MapAnalyser::linTAnalyze(const fMatrix_t& tMatrix){
         }
     }
 
+    // :FIXME: why commented out? To be removed?
     cfMatrix_t tempM = eigenVecM ;
     //cfMatrix_t tempInvM = eigenVecM ;
     cfMatrix_t tempValM = eigenValM ;
@@ -151,16 +152,10 @@ void MapAnalyser::linTAnalyze(const fMatrix_t& tMatrix){
     invEigenVecM= invertMatrix_m(eigenVecM);
     cfMatrix_t cblocktMatrix = getBlockDiagonal_m(tMatrix, eigenVecM, invEigenVecM);
 
-
-
-    for (int i=0; i<6; i++){
-
-    }
-
     FVector<std::complex<double>, 3> betaTunes, betaTunes2;
     FVector<double, 3> betaTunes3;
 
-
+    // :FIXME: why commented out
     //rearrangeEigen(eigenValM, eigenVecM);
 
     for (int i = 0; i < 3; i++){
@@ -185,6 +180,7 @@ void MapAnalyser::linTAnalyze(const fMatrix_t& tMatrix){
 
         IpplTimings::stopTimer(mapAnalysis_m);
         //TODO: do something with the tunes etc
+        //:FIXME: are there some plans what to do?
     }
 
 }
@@ -515,10 +511,10 @@ MapAnalyser::cfMatrix_t MapAnalyser::invertMatrix_m(const cfMatrix_t& M){
 
 }
 
-
+#if 0
 //TODO Work in progress
 void MapAnalyser::rearrangeEigen_m(cfMatrix_t& eigenVal, cfMatrix_t& EigenVec){
-/*#ifdef PHIL_WRITE
+#ifdef PHIL_WRITE
     std::ofstream out;
     out.open("OUT.txt", std::ios::app);
 #endif
@@ -559,6 +555,6 @@ void MapAnalyser::rearrangeEigen_m(cfMatrix_t& eigenVal, cfMatrix_t& EigenVec){
             }
 
          }
-
-    }*/
+    }
 }
+#endif

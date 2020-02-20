@@ -173,7 +173,7 @@ void TransportMapper::visitLambertson(const Lambertson &lamb) {
 }
 
 
-void TransportMapper::visitMarker(const Marker &marker) {
+void TransportMapper::visitMarker(const Marker &/*marker*/) {
     // Do nothing.
 }
 
@@ -204,7 +204,7 @@ void TransportMapper::visitPatch(const Patch &patch) {
     if(back_path) transform = Inverse(transform);
     applyTransform(transform, 0.0);
 }
-void TransportMapper::visitProbe(const Probe &prob) {
+void TransportMapper::visitProbe(const Probe &/*prob*/) {
     // Do nothing.
 }
 
@@ -393,7 +393,7 @@ void TransportMapper::visitSolenoid(const Solenoid &solenoid) {
 }
 
 
-void TransportMapper::visitParallelPlate(const ParallelPlate &pplate) {
+void TransportMapper::visitParallelPlate(const ParallelPlate &/*pplate*/) {
     // Do nothing.
 }
 

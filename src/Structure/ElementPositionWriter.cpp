@@ -35,37 +35,37 @@ void ElementPositionWriter::fillHeader() {
                         "1",
                         "quadrupole field present",
                         std::ios_base::fixed,
-                        4);
+                        0);
     columns_m.addColumn("sextupole",
                         "float",
                         "1",
                         "sextupole field present",
                         std::ios_base::fixed,
-                        4);
+                        1);
     columns_m.addColumn("octupole",
                         "float",
                         "1",
                         "octupole field present",
                         std::ios_base::fixed,
-                        4);
+                        2);
     columns_m.addColumn("decapole",
                         "float",
                         "1",
                         "decapole field present",
                         std::ios_base::fixed,
-                        4);
+                        0);
     columns_m.addColumn("multipole",
                         "float",
                         "1",
                         "higher multipole field present",
                         std::ios_base::fixed,
-                        4);
+                        0);
     columns_m.addColumn("solenoid",
                         "float",
                         "1",
                         "solenoid field present",
                         std::ios_base::fixed,
-                        4);
+                        0);
     columns_m.addColumn("rfcavity",
                         "float",
                         "1",
@@ -77,13 +77,13 @@ void ElementPositionWriter::fillHeader() {
                         "1",
                         "monitor present",
                         std::ios_base::fixed,
-                        4);
+                        0);
     columns_m.addColumn("other",
                         "float",
                         "1",
                         "other element present",
                         std::ios_base::fixed,
-                        4);
+                        0);
     columns_m.addColumn("element_names",
                         "string",
                         "",

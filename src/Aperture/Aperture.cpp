@@ -251,7 +251,7 @@ Aperture::A_Tline::const_iterator Aperture::end() const {
     return itsTable.end();
 }
 
-double Aperture::getBETXMAX(const A_row &row, int i1, int i2) const {
+double Aperture::getBETXMAX(const A_row &row, int /*i1*/, int /*i2*/) const {
     double max;
     double nslice = Attributes::getReal(itsAttr[NSLICE]);
     max = row.Interpol[0].Beta_x;
@@ -261,7 +261,7 @@ double Aperture::getBETXMAX(const A_row &row, int i1, int i2) const {
     return max;
 }
 
-double Aperture::getBETYMAX(const A_row &row, int i1, int i2) const {
+double Aperture::getBETYMAX(const A_row &row, int /*i1*/, int /*i2*/) const {
     double max;
     double nslice = Attributes::getReal(itsAttr[NSLICE]);
     max = row.Interpol[0].Beta_y;
@@ -272,7 +272,7 @@ double Aperture::getBETYMAX(const A_row &row, int i1, int i2) const {
     return max;
 }
 
-double Aperture::getAPERTMIN(const A_row &row, int i1, int i2) const {
+double Aperture::getAPERTMIN(const A_row &row, int /*i1*/, int /*i2*/) const {
     double min;
     double nslice = Attributes::getReal(itsAttr[NSLICE]);
     min = row.Interpol[0].apert;
@@ -321,7 +321,7 @@ void Aperture::visitRBend(const RBend &rb) {
     }
 }
 
-void Aperture::visitCyclotron(const Cyclotron &cy) {
+void Aperture::visitCyclotron(const Cyclotron &/*cy*/) {
     ERRORMSG("MSplit::visitCyclotron(const Cyclotron &cy) not implemented");
 }
 
@@ -1012,7 +1012,7 @@ bool Aperture::isDependent(const std::string &name) const {
     // Otherwise replacement is not required.
     return false;
 }
-bool Aperture::matches(Table *rhs) const { return false; }
+bool Aperture::matches(Table */*rhs*/) const { return false; }
 Expressions::PtrToScalar<double> Aperture::makeColumnExpression(const std::string &colname) const {
     const ColDesc *col = findCol(*this, colname);
     return new Column(*this, colname, *col);

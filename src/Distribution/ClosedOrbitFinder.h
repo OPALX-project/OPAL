@@ -589,7 +589,7 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbitOfEnergy_m(
     // index for reaching next element of the arrays r and pr (no nicer way found yet)
     size_type idx = 0;
     // observer for storing the current value after each ODE step (e.g. Runge-Kutta step) into the containers of r and pr
-    auto store = [&](state_type& y, const value_type t)
+    auto store = [&](state_type& y, const value_type /*t*/)
     {
         r_m[idx]   = y[0];
         pr_m[idx]  = y[1];

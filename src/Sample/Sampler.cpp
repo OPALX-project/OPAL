@@ -14,13 +14,13 @@
 
 #include <boost/filesystem.hpp>
 
-Sampler::Sampler(Expressions::Named_t objectives,
-                 Expressions::Named_t constraints,
-                 DVarContainer_t dvars,
-                 size_t dim, Comm::Bundle_t comms,
-                 CmdArguments_t args,
-                 std::vector<double> hypervolRef,
-                 int nrWorkerGroups)
+Sampler::Sampler(Expressions::Named_t /*objectives*/,
+                 Expressions::Named_t /*constraints*/,
+                 DVarContainer_t /*dvars*/,
+                 size_t /*dim*/, Comm::Bundle_t comms,
+                 CmdArguments_t /*args*/,
+                 std::vector<double> /*hypervolRef*/,
+                 int /*nrWorkerGroups*/)
     : Optimizer(comms.opt)
 {
     throw OptPilotException("Sampler::Sampler",

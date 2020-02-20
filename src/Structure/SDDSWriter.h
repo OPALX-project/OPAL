@@ -46,7 +46,7 @@ public:
 
     virtual ~SDDSWriter() { };
 
-    virtual void write(PartBunchBase<double, 3>* beam) { };
+    virtual void write(PartBunchBase<double, 3>* /*beam*/) { };
 
     /** \brief
      *  delete the last 'numberOfLines' lines of the file 'fileName'

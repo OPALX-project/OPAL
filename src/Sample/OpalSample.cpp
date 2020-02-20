@@ -91,7 +91,7 @@ void OpalSample::initialize(const std::string &dvarName,
                             double lower,
                             double upper,
                             size_t modulo,
-                            bool sequence) {
+                            bool /*sequence*/) {
 
     if ( lower >= upper )
         throw OpalException("OpalSample::initialize()",

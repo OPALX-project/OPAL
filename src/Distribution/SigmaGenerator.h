@@ -1038,7 +1038,7 @@ void SigmaGenerator<Value_type, Size_type>::initialize(value_type nuz,
 
 template<typename Value_type, typename Size_type>
 typename SigmaGenerator<Value_type, Size_type>::matrix_type
-SigmaGenerator<Value_type, Size_type>::updateInitialSigma(const matrix_type& M,
+SigmaGenerator<Value_type, Size_type>::updateInitialSigma(const matrix_type& /*M*/,
                                                           sparse_matrix_type& R,
                                                           sparse_matrix_type& invR)
 {

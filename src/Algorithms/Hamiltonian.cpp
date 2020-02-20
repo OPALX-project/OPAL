@@ -27,7 +27,7 @@ Hamiltonian::series_t Hamiltonian::drift(const double& gamma0)
 
 Hamiltonian::series_t Hamiltonian::rbend(double& beta0,
                             double& gamma0,
-                            double& q,
+                            double& /*q*/,
                             double& h,
                             double& k0)
 {
@@ -77,8 +77,8 @@ Hamiltonian::series_t Hamiltonian::sbend(const double& gamma0,
 Hamiltonian::series_t Hamiltonian::bendFringe(
                 double& beta0,
                 double& gamma0,
-                double& h,
-                double& k0,
+                double& /*h*/,
+                double& /*k0*/,
                 series_t& ax,
                 series_t& az)
 {
@@ -114,7 +114,7 @@ Hamiltonian::series_t Hamiltonian::bendFringe(
 
 
 Hamiltonian::series_t Hamiltonian::quadrupole(const double& gamma0,
-                                              const double& q,
+                                              const double& /*q*/,
                                               const double& k1)
 {
     double beta0 = this->getBeta_m(gamma0);

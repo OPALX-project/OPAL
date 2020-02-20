@@ -53,7 +53,7 @@ inline void BorisPusher::kick(const Vector_t &R, Vector_t &P,
 }
 
 
-inline void BorisPusher::kick(const Vector_t &R, Vector_t &P,
+inline void BorisPusher::kick(const Vector_t &/*R*/, Vector_t &P,
                               const Vector_t &Ef, const Vector_t &Bf,
                               const double &dt, const double &mass,
                               const double &charge) const

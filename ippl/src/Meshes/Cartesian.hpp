@@ -28,6 +28,7 @@
 
 // include files
 #include "Utility/PAssert.h"
+#include "Utility/IpplException.h"
 #include "Utility/IpplInfo.h"
 #include "Field/BareField.h"
 #include "Field/BrickExpression.h"
@@ -995,8 +996,7 @@ storeSpacingFields(e_dim_tag* et, int vnodes)
       }
       break;
     default:
-      ERRORMSG("Cartesian::storeSpacingFields(): unknown MeshBC type" << endl);
-      break;
+        throw IpplException("Cartesian::storeSpacingFields", "unknown MeshBC type");
     }
 
     // Loop over all the LField's in the BareField's:

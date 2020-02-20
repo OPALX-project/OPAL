@@ -47,7 +47,7 @@ SequenceTemplate::~SequenceTemplate()
 {}
 
 
-SequenceTemplate *SequenceTemplate::clone(const std::string &name) {
+SequenceTemplate *SequenceTemplate::clone(const std::string &/*name*/) {
     throw ParseError("SequenceTemplate::clone()",
                      "You cannot use this object without attributes.");
 }

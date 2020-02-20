@@ -44,7 +44,7 @@ LineTemplate::~LineTemplate()
 {}
 
 
-LineTemplate *LineTemplate::clone(const std::string &name) {
+LineTemplate *LineTemplate::clone(const std::string &/*name*/) {
     throw ParseError("LineTemplate::clone()",
                      "You cannot use this object without attributes.");
 }

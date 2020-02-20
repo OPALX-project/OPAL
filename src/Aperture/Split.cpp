@@ -233,7 +233,7 @@ MSplit::A_Tline::const_iterator MSplit::end() const {
     return itsTable.end();
 }
 
-double MSplit::getBETXMAX(const A_row &row, int i1, int i2) const {
+double MSplit::getBETXMAX(const A_row &row, int /*i1*/, int /*i2*/) const {
     double max;
     double nslice = Attributes::getReal(itsAttr[NSLICE]);
     max = row.Interpol[0].Beta_x;
@@ -243,7 +243,7 @@ double MSplit::getBETXMAX(const A_row &row, int i1, int i2) const {
     return max;
 }
 
-double MSplit::getBETYMAX(const A_row &row, int i1, int i2) const {
+double MSplit::getBETYMAX(const A_row &row, int /*i1*/, int /*i2*/) const {
     double max;
     double nslice = Attributes::getReal(itsAttr[NSLICE]);
     max = row.Interpol[0].Beta_y;
@@ -294,7 +294,7 @@ void MSplit::visitRBend(const RBend &rb) {
     }
 }
 
-void MSplit::visitCyclotron(const Cyclotron &cy) {
+void MSplit::visitCyclotron(const Cyclotron &/*cy*/) {
     ERRORMSG("MSplit::visitCyclotron(const Cyclotron &cy) not implemented");
 }
 
@@ -748,7 +748,7 @@ bool MSplit::isDependent(const std::string &name) const {
     // Otherwise replacement is not required.
     return false;
 }
-bool MSplit::matches(Table *rhs) const { return false; }
+bool MSplit::matches(Table */*rhs*/) const { return false; }
 Expressions::PtrToScalar<double> MSplit::makeColumnExpression(const std::string &colname) const {
     const ColDesc *col = findCol(*this, colname);
     return new Column(*this, colname, *col);

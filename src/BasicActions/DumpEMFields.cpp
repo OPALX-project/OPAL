@@ -94,7 +94,7 @@ DumpEMFields::~DumpEMFields() {
     dumpsSet_m.erase(this);
 }
 
-DumpEMFields* DumpEMFields::clone(const std::string &name) {
+DumpEMFields* DumpEMFields::clone(const std::string &/*name*/) {
     DumpEMFields* dumper = new DumpEMFields();
     if (grid_m != NULL) {
         dumper->grid_m = grid_m->clone();

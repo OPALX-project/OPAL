@@ -261,8 +261,8 @@ std::pair<double, double> CavityAutophaser::optimizeCavityPhase(double initialPh
     return status;
 }
 
-double CavityAutophaser::track(Vector_t R,
-                               Vector_t P,
+double CavityAutophaser::track(Vector_t /*R*/,
+                               Vector_t /*P*/,
                                double t,
                                const double dt,
                                const double phase,

@@ -170,16 +170,6 @@ void ParallelSliceTracker::printRFPhases() {
         << endl;
 }
 
-void ParallelSliceTracker::applyEntranceFringe(double angle, double curve,
-        const BMultipoleField &field, double scale) {
-}
-
-
-void ParallelSliceTracker::applyExitFringe(double angle, double curve,
-        const BMultipoleField &field, double scale) {
-}
-
-
 void ParallelSliceTracker::execute() {
 
     Inform msg("ParallelSliceTracker", *gmsg);
@@ -473,7 +463,7 @@ void ParallelSliceTracker::dumpStats(long long step) {
 }
 
 
-void ParallelSliceTracker::switchElements(double scaleMargin) {
+void ParallelSliceTracker::switchElements(double /*scaleMargin*/) {
 
     double margin = 1.0;
 

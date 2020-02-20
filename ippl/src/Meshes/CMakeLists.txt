@@ -30,4 +30,5 @@ install (FILES ${_HDRS} DESTINATION include/Meshes)
 # mode: cmake
 # cmake-tab-width: 4
 # indent-tabs-mode: nil
+# require-final-newline: nil
 # End:

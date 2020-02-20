@@ -58,6 +58,7 @@ namespace DistrTypeT
                      GAUSS,
                      BINOMIAL,
                      FLATTOP,
+		     MULTIGAUSS,
                      SURFACEEMISSION,
                      SURFACERANDCREATE,
                      GUNGAUSSFLATTOPTH,
@@ -139,6 +140,8 @@ namespace Attrib
             CUTOFFPZ,
             FTOSCAMPLITUDE,
             FTOSCPERIODS,
+	    SEPPEAKS,
+	    NPEAKS,
             R,                          // the correlation matrix (a la transport)
             CORRX,
             CORRY,
@@ -334,6 +337,8 @@ public:
     bool Rebin();
     void setDistToEmitted(bool emitted);
     void setDistType();
+    void setSigmaR_m();
+    void setSigmaP_m(double massIneV);
     void shiftBeam(double &maxTOrZ, double &minTOrZ);
     double getEmissionTimeShift() const;
 
@@ -400,9 +405,11 @@ private:
 
     void createDistributionBinomial(size_t numberOfParticles, double massIneV);
     void createDistributionFlattop(size_t numberOfParticles, double massIneV);
+    void createDistributionMultiGauss(size_t numberOfParticles, double massIneV);
     void createDistributionFromFile(size_t numberOfParticles, double massIneV);
     void createDistributionGauss(size_t numberOfParticles, double massIneV);
     void createMatchedGaussDistribution(size_t numberOfParticles, double massIneV);
+    void sampleUniformDisk(gsl_qrng* quasiRandGen2D, double& x1, double& x2);
     void fillEBinHistogram();
     void fillParticleBins();
     size_t findEBin(double tOrZ);
@@ -419,6 +426,7 @@ private:
     void printDist(Inform &os, size_t numberOfParticles) const;
     void printDistBinomial(Inform &os) const;
     void printDistFlattop(Inform &os) const;
+    void printDistMultiGauss(Inform &os) const;
     void printDistFromFile(Inform &os) const;
     void printDistGauss(Inform &os) const;
     void printDistMatchedGauss(Inform &os) const;
@@ -437,6 +445,7 @@ private:
     void setAttributes();
     void setDistParametersBinomial(double massIneV);
     void setDistParametersFlattop(double massIneV);
+    void setDistParametersMultiGauss(double massIneV);
     void setDistParametersGauss(double massIneV);
     void setEmissionTime(double &maxT, double &minT);
     void setFieldEmissionParameters();
@@ -470,7 +479,11 @@ private:
     EmissionModelT::EmissionModelT emissionModel_m;
 
     /// Emission parameters.
-    double tEmission_m;
+    double tEmission_m;  
+    static const double percentTEmission_m; /// Increase tEmission_m by twice this percentage
+                                            /// to ensure that no particles fall on the leading edge of
+                                            /// the first emission time step or the trailing edge of the last
+                                            /// emission time step.
     double tBin_m;
     double currentEmissionTime_m;
     int currentEnergyBin_m;
@@ -535,6 +548,10 @@ private:
     Vector_t mBinomial_m;
     SymTenzor<double, 6> correlationMatrix_m;
 
+    // Parameters multiGauss distribution.
+    double sepPeaks_m;
+    unsigned nPeaks_m;
+  
     // Laser profile.
     std::string laserProfileFileName_m;
     std::string laserImageName_m;

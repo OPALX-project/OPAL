@@ -381,7 +381,7 @@ void FFTPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
     IpplTimings::stopTimer(ComputePotential_m);
 }
 
-void FFTPoissonSolver::computePotentialDKS(Field_t &rho) {
+void FFTPoissonSolver::computePotentialDKS(Field_t &/*rho*/) {
 #ifdef OPAL_DKS
     dksbase.syncDevice();
     MPI_Barrier(Ippl::getComm());

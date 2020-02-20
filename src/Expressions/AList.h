@@ -115,7 +115,7 @@ namespace Expressions {
 
 
     template <class T>
-    void AList<T>::print(std::ostream &os, int precedence) const {
+    void AList<T>::print(std::ostream &os, int /*precedence*/) const {
         os << '{';
         typename ArrayOfPtrs<T>::const_iterator i = itsValue.begin();
 

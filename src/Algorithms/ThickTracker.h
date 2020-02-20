@@ -378,12 +378,12 @@ private:
     IpplTimings::TimerRef mapTracking_m;    ///< track particles trough maps of elements_m
 };
 
-inline void ThickTracker::visitAlignWrapper(const AlignWrapper &wrap) {
+inline void ThickTracker::visitAlignWrapper(const AlignWrapper &/*wrap*/) {
 //     itsOpalBeamline_m.visit(wrap, *this, itsBunch_m);
     this->throwElementError_m("AlignWrapper");
 }
 
-inline void ThickTracker::visitBeamBeam(const BeamBeam &bb) {
+inline void ThickTracker::visitBeamBeam(const BeamBeam &/*bb*/) {
 //     itsOpalBeamline_m.visit(bb, *this, itsBunch_m);
     this->throwElementError_m("BeamBeam");
 }
@@ -392,25 +392,25 @@ inline void ThickTracker::visitBeamStripping(const BeamStripping &bstp) {
     itsOpalBeamline_m.visit(bstp, *this, itsBunch_m);
 }
 
-inline void ThickTracker::visitCCollimator(const CCollimator &coll) {
+inline void ThickTracker::visitCCollimator(const CCollimator &/*coll*/) {
 //     itsOpalBeamline_m.visit(coll, *this, itsBunch_m);
     this->throwElementError_m("CCollimator");
 }
 
 
-inline void ThickTracker::visitCorrector(const Corrector &corr) {
+inline void ThickTracker::visitCorrector(const Corrector &/*coll*/) {
 //     itsOpalBeamline_m.visit(corr, *this, itsBunch_m);
     this->throwElementError_m("Corrector");
 }
 
 
-inline void ThickTracker::visitDegrader(const Degrader &deg) {
+inline void ThickTracker::visitDegrader(const Degrader &/*deg*/) {
 //     itsOpalBeamline_m.visit(deg, *this, itsBunch_m);
     this->throwElementError_m("Degrader");
 }
 
 
-inline void ThickTracker::visitDiagnostic(const Diagnostic &diag) {
+inline void ThickTracker::visitDiagnostic(const Diagnostic &/*diag*/) {
 //     itsOpalBeamline_m.visit(diag, *this, itsBunch_m);
     this->throwElementError_m("Diagnostic");
 }
@@ -430,25 +430,25 @@ inline void ThickTracker::visitDrift(const Drift &drift) {
 }
 
 
-inline void ThickTracker::visitFlexibleCollimator(const FlexibleCollimator &coll) {
+inline void ThickTracker::visitFlexibleCollimator(const FlexibleCollimator &/*coll*/) {
 //     itsOpalBeamline_m.visit(coll, *this, itsBunch_m);
     this->throwElementError_m("FlexibleCollimator");
 }
 
 
-inline void ThickTracker::visitLambertson(const Lambertson &lamb) {
+inline void ThickTracker::visitLambertson(const Lambertson &/*lamb*/) {
 //     itsOpalBeamline_m.visit(lamb, *this, itsBunch_m);
     this->throwElementError_m("Lambertson");
 }
 
 
-inline void ThickTracker::visitMarker(const Marker &marker) {
+inline void ThickTracker::visitMarker(const Marker &/*marker*/) {
 //     itsOpalBeamline_m.visit(marker, *this, itsBunch_m);
 //     this->throwElementError_m("Marker");
 }
 
 
-inline void ThickTracker::visitMonitor(const Monitor &mon) {
+inline void ThickTracker::visitMonitor(const Monitor &/*mon*/) {
 //     itsOpalBeamline_m.visit(mon, *this, itsBunch_m);
     this->throwElementError_m("Monitor");
 }
@@ -473,30 +473,30 @@ inline void ThickTracker::visitMultipole(const Multipole &mult) {
                                          length));
 }
 
-inline void ThickTracker::visitProbe(const Probe &prob) {
+inline void ThickTracker::visitProbe(const Probe &/*probe*/) {
 //     itsOpalBeamline_m.visit(prob, *this, itsBunch_m);
     this->throwElementError_m("Probe");
 }
 
 
-inline void ThickTracker::visitRBend(const RBend &bend) {
+inline void ThickTracker::visitRBend(const RBend &/*bend*/) {
 //     itsOpalBeamline_m.visit(bend, *this, itsBunch_m);
     this->throwElementError_m("RBend");
 }
 
 
-inline void ThickTracker::visitRFCavity(const RFCavity &as) {
+inline void ThickTracker::visitRFCavity(const RFCavity &/*as*/) {
 //     itsOpalBeamline_m.visit(as, *this, itsBunch_m);
     this->throwElementError_m("RFCavity");
 }
 
-inline void ThickTracker::visitTravelingWave(const TravelingWave &as) {
+inline void ThickTracker::visitTravelingWave(const TravelingWave &/*as*/) {
 //     itsOpalBeamline_m.visit(as, *this, itsBunch_m);
     this->throwElementError_m("TravelingWave");
 }
 
 
-inline void ThickTracker::visitRFQuadrupole(const RFQuadrupole &rfq) {
+inline void ThickTracker::visitRFQuadrupole(const RFQuadrupole &/*rfq*/) {
 //     itsOpalBeamline_m.visit(rfq, *this, itsBunch_m);
     this->throwElementError_m("RFQuadrupole");
 }
@@ -554,25 +554,25 @@ inline void ThickTracker::visitSBend(const SBend &bend) {
 }
 
 
-inline void ThickTracker::visitSeparator(const Separator &sep) {
+inline void ThickTracker::visitSeparator(const Separator &/*sep*/) {
 //     itsOpalBeamline_m.visit(sep, *this, itsBunch_m);
     this->throwElementError_m("Separator");
 }
 
 
-inline void ThickTracker::visitSeptum(const Septum &sept) {
+inline void ThickTracker::visitSeptum(const Septum &/*sept*/) {
 //     itsOpalBeamline_m.visit(sept, *this, itsBunch_m);
     this->throwElementError_m("Septum");
 }
 
 
-inline void ThickTracker::visitSolenoid(const Solenoid &solenoid) {
+inline void ThickTracker::visitSolenoid(const Solenoid &/*solenoid*/) {
 //     itsOpalBeamline_m.visit(solenoid, *this, itsBunch_m);
     this->throwElementError_m("Solenoid");
 }
 
 
-inline void ThickTracker::visitParallelPlate(const ParallelPlate &pplate) {
+inline void ThickTracker::visitParallelPlate(const ParallelPlate &/*pplate*/) {
 //     itsOpalBeamline_m.visit(pplate, *this, itsBunch_m);
     this->throwElementError_m("ParallelPlate");
 }

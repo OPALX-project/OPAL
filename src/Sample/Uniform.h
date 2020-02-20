@@ -38,7 +38,7 @@ public:
         ind->genes[i] = RNGInstance_m->getNext(dist_m);
     }
     
-    void allocate(const CmdArguments_t& args, const Comm::Bundle_t& comm) {
+    void allocate(const CmdArguments_t& /*args*/, const Comm::Bundle_t& comm) {
         if ( !RNGInstance_m )
             RNGInstance_m = RNGStream::getInstance(seed_m + comm.island_id);
     }

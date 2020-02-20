@@ -100,4 +100,5 @@ target_link_libraries (test-scatter-1 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_ti
 # mode: cmake
 # cmake-tab-width: 4
 # indent-tabs-mode: nil
+# require-final-newline: nil
 # End:

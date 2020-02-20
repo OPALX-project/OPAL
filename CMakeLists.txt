@@ -44,12 +44,17 @@ set (CMAKE_CXX_EXTENSIONS OFF)
 add_definitions (-DNOCTAssert)
 
 add_compile_options (-Wall)
-add_compile_options (-funroll-loops -fstrict-aliasing)
+add_compile_options (-Wunused)
+add_compile_options (-Wextra)
+#add_compile_options (-Werror)
+
+add_compile_options (-funroll-loops)
+add_compile_options (-fstrict-aliasing)
 
 option (USE_STATIC_LIBRARIES "Link with static libraries if available" ON)
 if (NOT ${USE_STATIC_LIBRARIES})
     add_compile_options (-fPIE -fPIC)
-    set (CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} -pie")
+    add_link_options (-pie)
 endif ()
 
 # compiler dependent flags
@@ -62,7 +67,6 @@ if ( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel" )
     endif ()
 
 elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
-    add_compile_options (-Werror)
     add_compile_options (-Wsign-compare)
     add_compile_options (-Wunused-variable)
     add_compile_options (-Warray-bounds)
@@ -290,4 +294,5 @@ install (
 # mode: cmake
 # cmake-tab-width: 4
 # indent-tabs-mode: nil
+# require-final-newline: nil
 # End:

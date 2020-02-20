@@ -262,7 +262,7 @@ void P3MPoissonSolver::calculatePairForces(PartBunchBase<double, 3> *bunch, doub
 
 }
 
-void P3MPoissonSolver::calculateGridForces(PartBunchBase<double, 3> *bunch, double interaction_radius, double alpha, double eps){
+void P3MPoissonSolver::calculateGridForces(PartBunchBase<double, 3> *bunch, double /*interaction_radius*/, double alpha, double eps){
 
     Inform msg ("calculateGridForces ");
     Vector_t l,h;
@@ -319,7 +319,7 @@ void P3MPoissonSolver::calculateGridForces(PartBunchBase<double, 3> *bunch, doub
 // compute the electric potential from the image charge by solving
 // the Poisson's equation
 
-void P3MPoissonSolver::computePotential(Field_t &rho, Vector_t hr, double zshift) {
+void P3MPoissonSolver::computePotential(Field_t &/*rho*/, Vector_t /*hr*/, double /*zshift*/) {
 
 
 }
@@ -361,7 +361,7 @@ void P3MPoissonSolver::applyConstantFocusing(PartBunchBase<double, 3> *bunch, do
 
 // given a charge-density field rho and a set of mesh spacings hr,
 // compute the scalar potential in open space
-void P3MPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
+void P3MPoissonSolver::computePotential(Field_t &/*rho*/, Vector_t /*hr*/) {
 
 
 }

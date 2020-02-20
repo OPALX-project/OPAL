@@ -60,14 +60,14 @@ ThickTracker::ThickTracker(const Beamline &beamline,
 
 ThickTracker::ThickTracker(const Beamline &beamline,
                            PartBunchBase<double, 3> *bunch,
-                           Beam &beam,
+                           Beam &/*beam*/,
                            DataSink &ds,
                            const PartData &reference,
                            bool revBeam, bool revTrack,
-                           const std::vector<unsigned long long> &maxSteps,
+                           const std::vector<unsigned long long> &/*maxSteps*/,
                            double zstart,
                            const std::vector<double> &zstop,
-                           const std::vector<double> &dt,
+                           const std::vector<double> &/*dt*/,
                            const int& truncOrder)
     : Tracker(beamline, bunch, reference, revBeam, revTrack)
     , hamiltonian_m(truncOrder)

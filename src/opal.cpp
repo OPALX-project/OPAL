@@ -19,15 +19,10 @@ extern Inform *gmsg;
 #endif
 
 
-int run_opal(char *arg[], std::string inputfile, int restartStep,
+int run_opal(char */*args*/[], std::string inputfile, int restartStep,
              int infoLevel, int warnLevel, MPI_Comm comm)
 {
     std::string::size_type startExtension    = inputfile.find_last_of('.');
-    // std::string::size_type startRelativePath = inputfile.find_last_of('/');
-    // std::string relativePath("");
-    // if (startRelativePath != std::string::npos) {
-    //     relativePath = inputfile.substr(0, startRelativePath + 1);
-    // }
     std::string outputFileName = inputfile.substr(0,startExtension) + ".out";
     std::ofstream output(outputFileName.c_str());
 
