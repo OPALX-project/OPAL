@@ -6,7 +6,7 @@
 class FM1DDynamic_fast: public Fieldmap {
 
 public:
-    virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
+    virtual bool getFieldstrength(const Vector_t &R, ComplexVector_t &E, ComplexVector_t &B) const;
     virtual bool getFieldDerivative(const Vector_t &R, Vector_t &E,
                                     Vector_t &B, const DiffDirection &dir) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
@@ -17,7 +17,6 @@ public:
     virtual void getInfo(Inform *);
     virtual double getFrequency() const;
     virtual void setFrequency(double freq);
-    virtual void getOnaxisEz(std::vector<std::pair<double, double>> &eZ);
 
     virtual bool isInside(const Vector_t &r) const;
 private:
@@ -41,11 +40,8 @@ private:
     void convertHeaderData();
     void normalizeField(double maxEz, std::vector<double> &fourierCoefs);
     double readFileData(std::ifstream &fieldFile, double fieldData[]);
-    double readFileData(std::ifstream &fieldFile,
-                        std::vector<std::pair<double, double>> &eZ);
     bool readFileHeader(std::ifstream &fieldFile);
-    void scaleField(double maxEz, std::vector<std::pair<double, double>> &eZ);
-    void stripFileHeader(std::ifstream &fieldFile);
+    void stripFileHeader(std::ifstream &fieldFile) const;
 
     void prepareForMapCheck(std::vector<double> &fourierCoefs);
 

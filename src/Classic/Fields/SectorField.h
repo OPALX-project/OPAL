@@ -1,27 +1,27 @@
-/* 
+/*
  *  Copyright (c) 2012, Chris Rogers
  *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without 
- *  modification, are permitted provided that the following conditions are met: 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
  *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer. 
- *  2. Redistributions in binary form must reproduce the above copyright notice, 
- *     this list of conditions and the following disclaimer in the documentation 
+ *     this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *  3. Neither the name of STFC nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
  *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -100,7 +100,7 @@ class SectorField {
      *  \returns true if any field value is non-zero
      */
     virtual bool getFieldstrength
-                  (const Vector_t &R_c, Vector_t &E_c, Vector_t &B_c) const = 0;
+                  (const Vector_t &R_c, ComplexVector_t &E_c, ComplexVector_t &B_c) const = 0;
 
     /** Convert a position from cartesian to polar coordinates
      *
@@ -144,13 +144,13 @@ class SectorField {
 
     /** Get the minimum bounding box in polar coordinates
      *
-     *  \returns bounding box minimum as a 3-vector like (r_min, y_min, phi_min) 
+     *  \returns bounding box minimum as a 3-vector like (r_min, y_min, phi_min)
      */
     virtual std::vector<double> getPolarBoundingBoxMin() const;
 
     /** Get the maximum bounding box in polar coordinates
      *
-     *  \returns bounding box maximum as a 3-vector like (r_max, y_max, phi_max) 
+     *  \returns bounding box maximum as a 3-vector like (r_max, y_max, phi_max)
      */
     virtual std::vector<double> getPolarBoundingBoxMax() const;
 
@@ -167,7 +167,7 @@ class SectorField {
                             double &rBegin, double &rEnd) const;
 
     /** Fill inputs with the bounding box in Cartesian coordinates
-     *  
+     *
      *  \param xIni lower bound on field x-position (horizontal)
      *  \param xFinal upper bound on field x-position (horizontal)
      *  \param yIni lower bound on field y-position (vertical)
@@ -215,7 +215,7 @@ class SectorField {
     std::vector<double> polarBBMax_m;
     /** Keep the filename */
     std::string Filename_m;
-   
+
   private:
     std::vector< std::vector<double> > getCorners
                (double bbMinR, double bbMinPhi, double bbMaxR, double bbMaxPhi);
@@ -235,4 +235,3 @@ bool SectorField::isInBoundingBox(const double R_p[]) const {
 }
 
 #endif
-

@@ -182,7 +182,7 @@ void Astra1DDynamic::freeMap() {
     }
 }
 
-bool Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool Astra1DDynamic::getFieldstrength(const Vector_t &R, ComplexVector_t &E, ComplexVector_t &B) const {
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
@@ -214,11 +214,11 @@ bool Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &
     const double EfieldR = -(ezp / 2. + fp * RR2);
     const double BfieldT = (ez / 2. + f * RR2) * xlrep_m / Physics::c;
 
-    E(0) +=  EfieldR * R(0);
-    E(1) +=  EfieldR * R(1);
-    E(2) +=  ez + 4. * f * RR2;
-    B(0) += -BfieldT * R(1);
-    B(1) +=  BfieldT * R(0);
+    E.real()(0) +=  EfieldR * R(0);
+    E.real()(1) +=  EfieldR * R(1);
+    E.real()(2) +=  ez + 4. * f * RR2;
+    B.imag()(0) += -BfieldT * R(1);
+    B.imag()(1) +=  BfieldT * R(0);
 
     return false;
 }
@@ -256,28 +256,4 @@ double Astra1DDynamic::getFrequency() const {
 
 void Astra1DDynamic::setFrequency(double freq) {
     frequency_m = freq;
-}
-
-void Astra1DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
-    double Ez_max = 0.0;
-    double tmpDouble;
-    int tmpInt;
-    std::string tmpString;
-    F.resize(num_gridpz_m);
-
-    std::ifstream in(Filename_m.c_str());
-    interpretLine<std::string, int>(in, tmpString, tmpInt);
-    interpretLine<double>(in, tmpDouble);
-
-    for (int i = 0; i < num_gridpz_m; ++ i) {
-        interpretLine<double, double>(in, F[i].first, F[i].second);
-        if (std::abs(F[i].second) > Ez_max) {
-            Ez_max = std::abs(F[i].second);
-        }
-    }
-    in.close();
-
-    for (int i = 0; i < num_gridpz_m; ++ i) {
-        F[i].second /= Ez_max;
-    }
 }

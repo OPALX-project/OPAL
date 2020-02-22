@@ -69,12 +69,12 @@ void FM1DMagnetoStatic::freeMap() {
     }
 }
 
-bool FM1DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &E,
-        Vector_t &B) const {
+bool FM1DMagnetoStatic::getFieldstrength(const Vector_t &R, ComplexVector_t &E,
+        ComplexVector_t &B) const {
 
     std::vector<double> fieldComponents;
     computeFieldOnAxis(R(2) - zBegin_m, fieldComponents);
-    computeFieldOffAxis(R, E, B, fieldComponents);
+    computeFieldOffAxis(R, E.real(), B.imag(), fieldComponents);
 
     return false;
 }

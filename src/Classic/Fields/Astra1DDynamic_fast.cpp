@@ -101,7 +101,7 @@ void Astra1DDynamic_fast::readMap() {
     }
 }
 
-bool Astra1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool Astra1DDynamic_fast::getFieldstrength(const Vector_t &R, ComplexVector_t &E, ComplexVector_t &B) const {
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
@@ -122,11 +122,11 @@ bool Astra1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E, Vecto
     const double EfieldR = -(ezp / 2. + fp * RR2);
     const double BfieldT = (ez / 2. + f * RR2) * xlrep_m / Physics::c;
 
-    E(0) +=  EfieldR * R(0);
-    E(1) +=  EfieldR * R(1);
-    E(2) +=  ez + 4. * f * RR2;
-    B(0) += -BfieldT * R(1);
-    B(1) +=  BfieldT * R(0);
+    E.real()(0) +=  EfieldR * R(0);
+    E.real()(1) +=  EfieldR * R(1);
+    E.real()(2) +=  ez + 4. * f * RR2;
+    B.real()(0) += -BfieldT * R(1);
+    B.real()(1) +=  BfieldT * R(0);
 
     return false;
 }
@@ -159,40 +159,6 @@ double Astra1DDynamic_fast::getFrequency() const {
 
 void Astra1DDynamic_fast::setFrequency(double freq) {
     frequency_m = freq;
-}
-
-void Astra1DDynamic_fast::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
-    F.resize(num_gridpz_m);
-    if(onAxisField_m == nullptr) {
-        double Ez_max = 0.0;
-        double tmpDouble;
-        int tmpInt;
-        std::string tmpString;
-
-        std::ifstream in(Filename_m.c_str());
-        interpretLine<std::string, int>(in, tmpString, tmpInt);
-        interpretLine<double, double, int>(in, tmpDouble, tmpDouble, tmpInt);
-        interpretLine<double>(in, tmpDouble);
-        interpretLine<double, double, int>(in, tmpDouble, tmpDouble, tmpInt);
-
-        for(int i = 0; i < num_gridpz_m; ++ i) {
-            F[i].first = hz_m * i;
-            interpretLine<double>(in, F[i].second);
-            if(std::abs(F[i].second) > Ez_max) {
-                Ez_max = std::abs(F[i].second);
-            }
-        }
-        in.close();
-
-        for(int i = 0; i < num_gridpz_m; ++ i) {
-            F[i].second /= Ez_max;
-        }
-    } else {
-        for(int i = 0; i < num_gridpz_m; ++ i) {
-            F[i].first = zvals_m[i];
-            F[i].second = onAxisField_m[i] / 1e6;
-        }
-    }
 }
 
 bool Astra1DDynamic_fast::readFileHeader(std::ifstream &file) {

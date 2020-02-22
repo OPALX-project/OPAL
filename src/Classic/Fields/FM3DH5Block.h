@@ -26,21 +26,16 @@
 class FM3DH5Block: public FM3DH5BlockBase {
 
 public:
-    virtual bool getFieldstrength (
-        const Vector_t &R, Vector_t &E, Vector_t &B) const;
-    
+    virtual bool getFieldstrength (const Vector_t &R, ComplexVector_t &E, ComplexVector_t &B) const;
+
 private:
-    FM3DH5Block (
-        std::string aFilename);
+    FM3DH5Block (std::string aFilename);
 
-    virtual ~FM3DH5Block (
-        );
+    virtual ~FM3DH5Block ();
 
-    virtual void readMap (
-        );
+    virtual void readMap ();
 
-    virtual void freeMap (
-        );
+    virtual void freeMap ();
 
     std::vector<double> FieldstrengthHz_m;    /**< 3D array with Hz */
     std::vector<double> FieldstrengthHx_m;    /**< 3D array with Hx */

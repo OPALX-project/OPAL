@@ -6,7 +6,7 @@
 class Astra1DDynamic: public Fieldmap {
 
 public:
-    virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
+    virtual bool getFieldstrength(const Vector_t &R, ComplexVector_t &E, ComplexVector_t &B) const;
     virtual bool getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
     virtual void getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const;
@@ -14,7 +14,6 @@ public:
     virtual void getInfo(Inform *);
     virtual double getFrequency() const;
     virtual void setFrequency(double freq);
-    virtual void getOnaxisEz(std::vector<std::pair<double, double> > & F);
 
     virtual bool isInside(const Vector_t &r) const;
 private:

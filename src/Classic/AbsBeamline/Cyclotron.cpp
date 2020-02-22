@@ -500,7 +500,7 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
             temp_R(1) < yBegin || temp_R(1) > yEnd ||
             temp_R(2) < zBegin || temp_R(2) > zEnd) continue;
 
-        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+        ComplexVector_t tmpE, tmpB;
         // out of bounds?
         if ((*fi)->getFieldstrength(temp_R, tmpE, tmpB)) continue;
 
@@ -524,8 +524,8 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
 
         double phase = Physics::two_pi * Units::MHz2Hz * frequency * t * Units::ns2s + (*rfphii);
 
-        E += ebscale * std::cos(phase) * tmpE;
-        B -= ebscale * std::sin(phase) * tmpB;
+        E += ebscale * std::cos(phase) * tmpE.real();
+        B -= ebscale * std::sin(phase) * tmpB.imag();
 
         if (fieldType_m != BFieldType::SYNCHRO)
             continue;
@@ -1522,15 +1522,15 @@ void Cyclotron::writeOutputFieldFiles() {
         for (int i = 0; i < Bfield_m.nrad_m; i++) {
             for (int k = 0; k < Bfield_m.ntet_m; k++) {
                 Vector_t tmpR = Vector_t (BP_m.rmin_m + (i * BP_m.delr_m), 0.0, k * (BP_m.tetmin_m + BP_m.dtet_m));
-                Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+                ComplexVector_t tmpE, tmpB;
                 for (auto& fi: RFfields_m) {
-                    Vector_t E(0.0, 0.0, 0.0), B(0.0, 0.0, 0.0);
-                    if (!fi->getFieldstrength(tmpR, tmpE, tmpB)) {
+                    ComplexVector_t E, B;
+                    if (!fi->getFieldstrength(tmpR, E, B)) {
                         tmpE += E;
                         tmpB -= B;
                     }
                 }
-                fp2 << tmpR << " \t E= " << tmpE << "\t B= " << tmpB << std::endl;
+                fp2 << tmpR << " \t E= " << tmpE.real() << "\t B= " << tmpB.imag() << std::endl;
             }
         }
         *gmsg << "\n* Writing 'gnu.out' and 'eb.out' files of cyclotron field maps\n" << endl;
@@ -1541,3 +1541,11 @@ void Cyclotron::writeOutputFieldFiles() {
 }
 
 #undef CHECK_CYC_FSCANF_EOF
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

@@ -35,8 +35,8 @@ public:
                                     double &zIni,
                                     double &zFinal) const;
     virtual bool getFieldstrength(const Vector_t &X,
-                                  Vector_t &strength,
-                                  Vector_t &info) const;
+                                  ComplexVector_t &strength,
+                                  ComplexVector_t &info) const;
     virtual double getFrequency() const;
     virtual void getInfo(Inform *);
     virtual void setFrequency(double freq);

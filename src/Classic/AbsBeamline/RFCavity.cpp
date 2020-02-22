@@ -132,13 +132,15 @@ bool RFCavity::apply(const Vector_t& R,
 
     if (R(2) >= startField_m &&
         R(2) < startField_m + getElementLength()) {
-        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+        ComplexVector_t tmpE, tmpB;
 
         bool outOfBounds = fieldmap_m->getFieldstrength(R, tmpE, tmpB);
         if (outOfBounds) return getFlagDeleteOnTransverseExit();
 
-        E += (scale_m + scaleError_m) * std::cos(frequency_m * t + phase_m + phaseError_m) * tmpE;
-        B -= (scale_m + scaleError_m) * std::sin(frequency_m * t + phase_m + phaseError_m) * tmpB;
+        const double scale = scale_m + scaleError_m;
+        const double phase = frequency_m * t + phase_m + phaseError_m;
+        E += scale * (std::complex<double>(std::cos(phase), std::sin(phase)) * tmpE).real();
+        B -= scale * (std::complex<double>(std::cos(phase), std::sin(phase)) * tmpB).real();
 
     }
     return false;
@@ -152,13 +154,14 @@ bool RFCavity::applyToReferenceParticle(const Vector_t& R,
 
     if (R(2) >= startField_m &&
         R(2) < startField_m + getElementLength()) {
-        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+        ComplexVector_t tmpE, tmpB;
 
         bool outOfBounds = fieldmap_m->getFieldstrength(R, tmpE, tmpB);
         if (outOfBounds) return true;
 
-        E += scale_m * std::cos(frequency_m * t + phase_m) * tmpE;
-        B -= scale_m * std::sin(frequency_m * t + phase_m) * tmpB;
+        const double phase = frequency_m * t + phase_m;
+        E += scale_m * (std::complex<double>(std::cos(phase), std::sin(phase)) * tmpE).real();
+        B -= scale_m * (std::complex<double>(std::cos(phase), std::sin(phase)) * tmpB).real();
 
     }
     return false;
@@ -491,12 +494,13 @@ ElementType RFCavity::getType() const {
     return ElementType::RFCAVITY;
 }
 
-double RFCavity::getAutoPhaseEstimateFallback(double E0, double t0, double q, double mass) {
+double RFCavity::getAutoPhaseEstimate(double E0, double t0, double q, double mass) {
 
     const double dt = 1e-13;
     const double p0 = Util::getBetaGamma(E0, mass);
-    const double origPhase =getPhasem();
-    double dphi = Physics::pi / 18;
+    const double origPhase = getPhasem();
+    const unsigned int numSamples = 36;
+    double dphi = Physics::pi / numSamples;
 
     double phi = 0.0;
     setPhasem(phi);
@@ -505,19 +509,14 @@ double RFCavity::getAutoPhaseEstimateFallback(double E0, double t0, double q, do
     double Emax = Util::getKineticEnergy(Vector_t(0.0, 0.0, ret.first), mass);
     phi += dphi;
 
-    for (unsigned int j = 0; j < 2; ++ j) {
-        for (unsigned int i = 0; i < 36; ++ i, phi += dphi) {
-            setPhasem(phi);
-            ret = trackOnAxisParticle(p0, t0, dt, q, mass);
-            double Ekin = Util::getKineticEnergy(Vector_t(0.0, 0.0, ret.first), mass);
-            if (Ekin > Emax) {
-                Emax = Ekin;
-                phimax = phi;
-            }
+    for (unsigned int i = 0; i < numSamples; ++ i, phi += dphi) {
+        setPhasem(phi);
+        ret = trackOnAxisParticle(p0, t0, dt, q, mass);
+        double Ekin = Util::getKineticEnergy(Vector_t(0.0, 0.0, ret.first), mass);
+        if (Ekin > Emax) {
+            Emax = Ekin;
+            phimax = phi;
         }
-
-        phi = phimax - dphi;
-        dphi = dphi / 17.5;
     }
 
     phimax = phimax - std::round(phimax / Physics::two_pi) * Physics::two_pi;
@@ -531,136 +530,6 @@ double RFCavity::getAutoPhaseEstimateFallback(double E0, double t0, double q, do
 
     setPhasem(origPhase);
     return phimax;
-}
-
-double RFCavity::getAutoPhaseEstimate(const double& E0, const double& t0,
-                                      const double& q, const double& mass) {
-    std::vector<double> t, E, t2, E2;
-    std::vector<double> F;
-    std::vector< std::pair< double, double > > G;
-    gsl_spline *onAxisInterpolants;
-    gsl_interp_accel *onAxisAccel;
-
-    double phi = 0.0, tmp_phi, dphi = 0.5 * Units::deg2rad;
-    double dz = 1.0, length = 0.0;
-    fieldmap_m->getOnaxisEz(G);
-    if (G.size() == 0) return 0.0;
-    double begin = (G.front()).first;
-    double end   = (G.back()).first;
-    std::unique_ptr<double[]> zvals(      new double[G.size()]);
-    std::unique_ptr<double[]> onAxisField(new double[G.size()]);
-
-    for (size_t j = 0; j < G.size(); ++ j) {
-        zvals[j] = G[j].first;
-        onAxisField[j] = G[j].second;
-    }
-    onAxisInterpolants = gsl_spline_alloc(gsl_interp_cspline, G.size());
-    onAxisAccel = gsl_interp_accel_alloc();
-    gsl_spline_init(onAxisInterpolants, zvals.get(), onAxisField.get(), G.size());
-
-    length = end - begin;
-    dz = length / G.size();
-
-    G.clear();
-
-    unsigned int N = (int)std::floor(length / dz + 1);
-    dz = length / N;
-
-    F.resize(N);
-    double z = begin;
-    for (size_t j = 0; j < N; ++ j, z += dz) {
-        F[j] = gsl_spline_eval(onAxisInterpolants, z, onAxisAccel);
-    }
-    gsl_spline_free(onAxisInterpolants);
-    gsl_interp_accel_free(onAxisAccel);
-
-    t.resize(N, t0);
-    t2.resize(N, t0);
-    E.resize(N, E0);
-    E2.resize(N, E0);
-
-    z = begin + dz;
-    for (unsigned int i = 1; i < N; ++ i, z += dz) {
-        E[i] = E[i - 1] + dz * scale_m / mass;
-        E2[i] = E[i];
-    }
-
-    for (int iter = 0; iter < 10; ++ iter) {
-        double A = 0.0;
-        double B = 0.0;
-        for (unsigned int i = 1; i < N; ++ i) {
-            t[i] = t[i - 1] + getdT(i, E, dz, mass);
-            t2[i] = t2[i - 1] + getdT(i, E2, dz, mass);
-            A += scale_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * getdA(i, t, dz, frequency_m, F);
-            B += scale_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * getdB(i, t, dz, frequency_m, F);
-        }
-
-        if (std::abs(B) > 0.0000001) {
-            tmp_phi = std::atan(A / B);
-        } else {
-            tmp_phi = Physics::pi / 2;
-        }
-        if (q * (A * std::sin(tmp_phi) + B * std::cos(tmp_phi)) < 0) {
-            tmp_phi += Physics::pi;
-        }
-
-        if (std::abs (phi - tmp_phi) < frequency_m * (t[N - 1] - t[0]) / (10 * N)) {
-            for (unsigned int i = 1; i < N; ++ i) {
-                E[i] = E[i - 1];
-                E[i] += q * scale_m * getdE(i, t, dz, phi, frequency_m, F) ;
-            }
-            const int prevPrecision = Ippl::Info->precision(8);
-            INFOMSG(level2 << "estimated phase= " << tmp_phi << " rad = "
-                    << tmp_phi * Units::rad2deg << " deg \n"
-                    << "Ekin= " << E[N - 1] << " MeV" << std::setprecision(prevPrecision) << "\n" << endl);
-
-            return tmp_phi;
-        }
-        phi = tmp_phi - std::round(tmp_phi / Physics::two_pi) * Physics::two_pi;
-
-        for (unsigned int i = 1; i < N; ++ i) {
-            E[i] = E[i - 1];
-            E2[i] = E2[i - 1];
-            E[i] += q * scale_m * getdE(i, t, dz, phi, frequency_m, F) ;
-            E2[i] += q * scale_m * getdE(i, t2, dz, phi + dphi, frequency_m, F);
-            double a = E[i], b = E2[i];
-            if (std::isnan(a) || std::isnan(b)) {
-                return getAutoPhaseEstimateFallback(E0, t0, q, mass);
-            }
-            t[i] = t[i - 1] + getdT(i, E, dz, mass);
-            t2[i] = t2[i - 1] + getdT(i, E2, dz, mass);
-
-            E[i]  = E [i - 1];
-            E2[i] = E2[i - 1];
-            E[i]  += q * scale_m * getdE(i, t, dz, phi, frequency_m, F) ;
-            E2[i] += q * scale_m * getdE(i, t2, dz, phi + dphi, frequency_m, F);
-        }
-
-        double cosine_part = 0.0, sine_part = 0.0;
-        double p0 = Util::getBetaGamma(E0, mass);
-        cosine_part += scale_m * std::cos(frequency_m * t0) * F[0];
-        sine_part += scale_m * std::sin(frequency_m * t0) * F[0];
-
-        double totalEz0 = std::cos(phi) * cosine_part - std::sin(phi) * sine_part;
-
-        if (p0 + q * totalEz0 * (t[1] - t[0]) * Physics::c / mass < 0) {
-            // make totalEz0 = 0
-            tmp_phi = std::atan(cosine_part / sine_part);
-            if (std::abs (tmp_phi - phi) > Physics::pi) {
-                phi = tmp_phi + Physics::pi;
-            } else {
-                phi = tmp_phi;
-            }
-        }
-    }
-
-    const int prevPrecision = Ippl::Info->precision(8);
-    INFOMSG(level2
-            << "estimated phase= " << tmp_phi << " rad = "
-            << tmp_phi * Units::rad2deg << " deg \n"
-            << "Ekin= " << E[N - 1] << " MeV" << std::setprecision(prevPrecision) << "\n" << endl);
-
-    return phi;
 }
 
 std::pair<double, double> RFCavity::trackOnAxisParticle(const double& p0,

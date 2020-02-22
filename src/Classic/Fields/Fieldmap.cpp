@@ -27,6 +27,7 @@
 #include "Fields/FM1DProfile1.h"
 #include "Fields/FM1DProfile2.h"
 #include "Fields/FMDummy.h"
+#include "Fields/GeneralFieldMap.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
@@ -252,7 +253,14 @@ Fieldmap *Fieldmap::getFieldmap(std::string Filename, bool fast) {
             }
             return (*position.first).second.Map;
             break;
+        case T1GeneralFieldMap:
+            position = FieldmapDictionary.insert(
+                std::make_pair(
+                    Filename,
+                    FieldmapDescription(
+                        T1GeneralFieldMap, new GeneralFieldMap(Filename))));
 
+            return (*position.first).second.Map;
         default:
             throw GeneralClassicException("Fieldmap::getFieldmap()",
                                           "Couldn't determine type of fieldmap in file \"" + Filename + "\"");
@@ -417,6 +425,9 @@ MapType Fieldmap::readHeader(std::string Filename) {
         }
     }
 
+    if (strcmp(magicnumber, "1DGe") == 0) {
+        return T1GeneralFieldMap;
+    }
 
     return UNKNOWN;
 }
@@ -555,9 +566,9 @@ void Fieldmap::getLine(std::ifstream &in, int &lines_read, std::string &buffer) 
     }
 }
 
-bool Fieldmap::interpreteEOF(std::ifstream &in) {
+bool Fieldmap::interpreteEOF(std::ifstream &in) const {
     while(!in.eof()) {
-        ++lines_read_m;
+        ++const_cast<int&>(lines_read_m);
         in.getline(buffer_m, READ_BUFFER_LENGTH);
         std::string buffer(buffer_m);
         size_t comment = buffer.find_first_of("#");
@@ -574,7 +585,7 @@ bool Fieldmap::interpreteEOF(std::ifstream &in) {
 void Fieldmap::interpretWarning(const std::ios_base::iostate &state,
                                  const bool &read_all,
                                  const std::string &expecting,
-                                 const std::string &found) {
+                                 const std::string &found) const {
     std::stringstream errormsg;
     errormsg << "THERE SEEMS TO BE SOMETHING WRONG WITH YOUR FIELD MAP '" << Filename_m << "'.\n";
     if (!read_all) {
@@ -590,7 +601,7 @@ void Fieldmap::interpretWarning(const std::ios_base::iostate &state,
                                   errormsg.str());
 }
 
-void Fieldmap::missingValuesWarning() {
+void Fieldmap::missingValuesWarning() const {
     std::stringstream errormsg;
     errormsg << "THERE SEEMS TO BE SOMETHING WRONG WITH YOUR FIELD MAP '" << Filename_m << "'.\n"
              << "There are only " << lines_read_m - 1 << " lines in the file, expecting more.\n"
@@ -600,7 +611,7 @@ void Fieldmap::missingValuesWarning() {
                                   errormsg.str());
 }
 
-void Fieldmap::exceedingValuesWarning() {
+void Fieldmap::exceedingValuesWarning() const {
     std::stringstream errormsg;
     errormsg << "THERE SEEMS TO BE SOMETHING WRONG WITH YOUR FIELD MAP '" << Filename_m << "'.\n"
              << "There are too many lines in the file, expecting only " << lines_read_m << " lines.\n"
@@ -610,7 +621,7 @@ void Fieldmap::exceedingValuesWarning() {
                                   errormsg.str());
 }
 
-void Fieldmap::disableFieldmapWarning() {
+void Fieldmap::disableFieldmapWarning() const {
     std::stringstream errormsg;
     errormsg << "DISABLING FIELD MAP '" + Filename_m + "' DUE TO PARSING ERRORS." ;
 
@@ -618,7 +629,7 @@ void Fieldmap::disableFieldmapWarning() {
                                   errormsg.str());
 }
 
-void Fieldmap::noFieldmapWarning() {
+void Fieldmap::noFieldmapWarning() const {
     std::stringstream errormsg;
     errormsg << "DISABLING FIELD MAP '" << Filename_m << "' SINCE FILE COULDN'T BE FOUND!";
 
@@ -626,7 +637,7 @@ void Fieldmap::noFieldmapWarning() {
                                   errormsg.str());
 }
 
-void Fieldmap::lowResolutionWarning(double squareError, double maxError) {
+void Fieldmap::lowResolutionWarning(double squareError, double maxError) const {
     std::stringstream errormsg;
     errormsg << "IT SEEMS THAT YOU USE TOO FEW FOURIER COMPONENTS TO SUFFICIENTLY WELL\n"
              << "RESOLVE THE FIELD MAP '" << Filename_m << "'.\n"
@@ -705,9 +716,6 @@ std::string Fieldmap::typeset_msg(const std::string &msg, const std::string &tit
 
     return return_string;
 }
-
-void Fieldmap::getOnaxisEz(std::vector<std::pair<double, double> > &/*onaxis*/)
-{ }
 
 void Fieldmap::get1DProfile1EngeCoeffs(std::vector<double> &/*engeCoeffsEntry*/,
                                        std::vector<double> &/*engeCoeffsExit*/) {

@@ -71,21 +71,21 @@ bool RBend3D::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) 
 
 bool RBend3D::apply(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
     const Vector_t tmpR(R(0), R(1), R(2) - startField_m);
-    Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+    ComplexVector_t tmpE, tmpB;
 
     fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
 
-    B += (fieldAmplitude_m + fieldAmplitudeError_m) * tmpB;
+    B += (fieldAmplitude_m + fieldAmplitudeError_m) * tmpB.imag();
 
     return false;
 }
 
 bool RBend3D::applyToReferenceParticle(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
     const Vector_t tmpR(R(0), R(1), R(2) - startField_m);
-    Vector_t tmpE(0.0), tmpB(0.0);
+    ComplexVector_t tmpE, tmpB;
 
     fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
-    B += fieldAmplitude_m * tmpB;
+    B += fieldAmplitude_m * tmpB.imag();
 
     return false;
 }
@@ -108,15 +108,15 @@ void RBend3D::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
             chordLength_m = 0.0;
             double fieldLength = zEnd - zBegin;
             double z = 0.0, dz = fieldLength / 1000;
-            Vector_t E(0.0), B(0.0);
-            while (z < fieldLength && B(1) < 0.5) {
+            ComplexVector_t E, B;
+            while (z < fieldLength && B.imag()(1) < 0.5) {
                 fieldmap_m->getFieldstrength(Vector_t(0.0, 0.0, z), E, B);
                 z += dz;
             }
             double zEntryEdge = z;
             z = fieldLength;
-            B(1) = 0.0;
-            while (z > 0.0 && B(1) < 0.5) {
+            B.imag()(1) = 0.0;
+            while (z > 0.0 && B.imag()(1) < 0.5) {
                 fieldmap_m->getFieldstrength(Vector_t(0.0, 0.0, z), E, B);
                 z -= dz;
             }
@@ -138,20 +138,20 @@ void RBend3D::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
                 rotationZAxis_m += Physics::pi;
             }
 
-            Vector_t B(0.0), E(0.0);
+            ComplexVector_t B, E;
             double z = 0.0, dz = lengthField_m / 999;
             double integratedBy = 0.0;
 
             fieldmap_m->getFieldstrength(Vector_t(0.0, 0.0, z), E, B);
-            integratedBy += 0.5 * B(1);
+            integratedBy += 0.5 * B.imag()(1);
             z = dz;
             while (z < lengthField_m) {
                 B = 0.0; E = 0.0;
                 fieldmap_m->getFieldstrength(Vector_t(0.0, 0.0, z), E, B);
-                integratedBy += B(1);
+                integratedBy += B.imag()(1);
                 z += dz;
             }
-            integratedBy -= 0.5 * B(1);
+            integratedBy -= 0.5 * B.imag()(1);
             integratedBy *= lengthField_m / 1000;
 
             // estimate magnitude of field

@@ -209,7 +209,7 @@ void FM1DProfile1::readMap() {
 void FM1DProfile1::freeMap() {
 }
 
-bool FM1DProfile1::getFieldstrength(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/) const {
+bool FM1DProfile1::getFieldstrength(const Vector_t &/*R*/, ComplexVector_t &/*E*/, ComplexVector_t &/*B*/) const {
 
     /*
      * For this type of field map, the elements who use it calculate the field

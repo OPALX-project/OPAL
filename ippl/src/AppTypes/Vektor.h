@@ -182,12 +182,23 @@ public:
     return m;
   }
 
+  double euclidean_norm() const {
+    return sqrt(dot(*this, *this));
+  }
+
 private:
 
   // Just store D elements of type T.
   T X[D];
 
 };
+
+/// comment: this should go to AppTypes/Vektor.h
+
+template<class T, unsigned D>
+double euclidean_norm(Vektor<T, D> const& v) {
+    return v.euclidean_norm();
+}
 
 template<class T, unsigned D>
 typename Vektor<T,D>::Element_t& Vektor<T,D>::operator[](unsigned int i)
@@ -277,17 +288,6 @@ cross(const Vektor<T1,D> &lhs, const Vektor<T2,D> &rhs)
 {
   return TSV_MetaCross< Vektor<T1,D> , Vektor<T2,D> > :: apply(lhs,rhs);
 }
-
-//----------------------------------------------------------------------
-// euclidean norm
-//----------------------------------------------------------------------
-template < class T, unsigned D >
-inline double
-euclidean_norm(const Vektor<T, D> &a)
-{
-  return std::sqrt(dot(a, a));
-}
-
 
 //----------------------------------------------------------------------
 // I/O

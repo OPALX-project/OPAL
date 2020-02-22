@@ -37,9 +37,6 @@ public:
     virtual void freeMap (
         ) {};
 
-    virtual bool getFieldstrength (
-        const Vector_t& /*R*/, Vector_t& /*E*/, Vector_t& /*B*/) const = 0;
-
     virtual void getFieldDimensions (
         double &zBegin, double &zEnd
         ) const {
@@ -71,7 +68,7 @@ public:
 
     virtual void swap(
         ) {};
-    
+
     virtual void getInfo (
         Inform *msg);
 
@@ -80,9 +77,6 @@ public:
 
     virtual void setFrequency (
         double freq);
-
-    virtual void getOnaxisEz (
-        std::vector<std::pair<double, double> >& F);
 
 protected:
     FM3DH5BlockBase (
@@ -115,7 +109,7 @@ protected:
 
     void closeFile (
         void);
-    
+
     virtual bool isInside (
         const Vector_t &r
         ) const {
@@ -151,7 +145,7 @@ protected:
         ) const {
         unsigned long result = j + k * num_gridpy_m;
         result = i + result * num_gridpx_m;
-        
+
         return result;
     }
 
@@ -194,7 +188,7 @@ protected:
     std::vector<double> FieldstrengthEz_m;    /**< 3D array with Ez */
     std::vector<double> FieldstrengthEx_m;    /**< 3D array with Ex */
     std::vector<double> FieldstrengthEy_m;    /**< 3D array with Ey */
-    
+
     double xbegin_m;
     double xend_m;
 

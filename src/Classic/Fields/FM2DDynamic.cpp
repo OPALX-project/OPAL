@@ -186,7 +186,7 @@ void FM2DDynamic::freeMap() {
     }
 }
 
-bool FM2DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool FM2DDynamic::getFieldstrength(const Vector_t &R, ComplexVector_t &E, ComplexVector_t &B) const {
     // do bi-linear interpolation
     const double RR = std::sqrt(R(0) * R(0) + R(1) * R(1));
 
@@ -220,12 +220,12 @@ bool FM2DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) 
                      + leverz         * leverr         * FieldstrengthBt_m[index2 + 1];
 
     if(RR > 1e-10) {
-        E(0) += EfieldR * R(0) / RR;
-        E(1) += EfieldR * R(1) / RR;
-        B(0) -= BfieldT * R(1) / RR;
-        B(1) += BfieldT * R(0) / RR;
+        E.real()(0) += EfieldR * R(0) / RR;
+        E.real()(1) += EfieldR * R(1) / RR;
+        B.imag()(0) -= BfieldT * R(1) / RR;
+        B.imag()(1) += BfieldT * R(0) / RR;
     }
-    E(2) += EfieldZ;
+    E.real()(2) += EfieldZ;
 
     return false;
 }
@@ -255,15 +255,4 @@ double FM2DDynamic::getFrequency() const {
 
 void FM2DDynamic::setFrequency(double freq) {
     frequency_m = freq;
-}
-
-void FM2DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
-    double dz = (zend_m - zbegin_m) / (num_gridpz_m - 1);
-    F.resize(num_gridpz_m);
-
-    for(int i = 0; i < num_gridpz_m; ++ i) {
-        F[i].first = dz * i;
-        F[i].second = FieldstrengthEz_m[i] / 1e6;
-
-    }
 }

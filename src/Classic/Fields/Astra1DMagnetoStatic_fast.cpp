@@ -72,7 +72,7 @@ void Astra1DMagnetoStatic_fast::readMap() {
     }
 }
 
-bool Astra1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
+bool Astra1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, ComplexVector_t &/*E*/, ComplexVector_t &B) const {
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
@@ -84,9 +84,9 @@ bool Astra1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &/*
     // expand to off-axis
     const double BfieldR = -bzp / 2. + bzppp / 16. * RR2;
 
-    B(0) += BfieldR * R(0);
-    B(1) += BfieldR * R(1);
-    B(2) += bz - bzpp * RR2 / 4.;
+    B.imag()(0) += BfieldR * R(0);
+    B.imag()(1) += BfieldR * R(1);
+    B.imag()(2) += bz - bzpp * RR2 / 4.;
     return false;
 }
 
@@ -150,4 +150,3 @@ int Astra1DMagnetoStatic_fast::stripFileHeader(std::ifstream &file) {
 
     return accuracy;
 }
-

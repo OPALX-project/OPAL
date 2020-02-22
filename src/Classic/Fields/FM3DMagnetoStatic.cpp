@@ -159,12 +159,12 @@ void FM3DMagnetoStatic::freeMap() {
     }
 }
 
-bool FM3DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
+bool FM3DMagnetoStatic::getFieldstrength(const Vector_t &R, ComplexVector_t &/*E*/, ComplexVector_t &B) const {
     if (!isInside(R)) {
         return true;
     }
 
-    B += interpolateTrilinearly(R);
+    B.imag() += interpolateTrilinearly(R);
 
     return false;
 }

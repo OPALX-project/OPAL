@@ -71,7 +71,11 @@ bool SBend3D::apply(const size_t &i, const double &t,
 bool SBend3D::apply(const Vector_t &R, const Vector_t &/*P*/,
                     const double &/*t*/, Vector_t &E, Vector_t &B) {
     //std::cerr << "ROGERS SBend3D::apply " << R << " " << B << std::endl;
-    return map_m->getFieldstrength(R, E, B);
+    ComplexVector_t tmpE, tmpB;
+    bool outside = map_m->getFieldstrength(R, tmpE, tmpB);
+    E = tmpE.real();
+    B = tmpB.imag();
+    return outside;
 }
 
 void SBend3D::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
@@ -97,7 +101,7 @@ const BGeometryBase& SBend3D::getGeometry() const {
 void SBend3D::setFieldMapFileName(const std::string& name) {
     delete map_m;
     map_m = nullptr;
-    
+
     if (!name.empty()) {
         map_m = new SectorMagneticFieldMap(
                         name,

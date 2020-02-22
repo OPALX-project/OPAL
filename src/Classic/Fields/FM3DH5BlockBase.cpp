@@ -64,7 +64,7 @@ void FM3DH5BlockBase::setStep (long long step) {
             " in file '" + Filename_m + "'!");
     }
 }
-    
+
 void FM3DH5BlockBase::getFieldInfo (const char* name) {
     long long last_step = getNumSteps () - 1;
     setStep (last_step);
@@ -95,7 +95,7 @@ void FM3DH5BlockBase::getFieldInfo (const char* name) {
             " in time-step " + std::to_string (last_step) +
             " in file '" + Filename_m + "' failed!");
     }
-    
+
     if (H5Block3dGetFieldOrigin(
             file_m, "Efield", &xbegin_m, &ybegin_m, &zbegin_m) == H5_ERR) {
         throw GeneralClassicException (
@@ -228,35 +228,4 @@ double FM3DH5BlockBase::getFrequency () const {
 
 void FM3DH5BlockBase::setFrequency (double freq) {
     frequency_m = freq;
-}
-
-void FM3DH5BlockBase::getOnaxisEz (
-    std::vector<std::pair<double, double>>& F
-    ) {
-    F.resize(num_gridpz_m);
-
-    double Ez_max = 0.0;
-    const double dz = (zend_m - zbegin_m) / (num_gridpz_m - 1);
-    const int index_x = -static_cast<int>(std::floor(xbegin_m / hx_m));
-    const double lever_x = -xbegin_m / hx_m - index_x;
-
-    const int index_y = -static_cast<int>(std::floor(ybegin_m / hy_m));
-    const double lever_y = -ybegin_m / hy_m - index_y;
-    long idx = index_x + index_y*num_gridpx_m + num_gridpx_m*num_gridpy_m;
-    for (int i = 0;
-         i < num_gridpz_m;
-         i++, idx += num_gridpy_m * num_gridpx_m
-        ) {
-        F[i].first = dz * i;
-        F[i].second =
-            (1.0 - lever_x)   * (1.0 - lever_y) * FieldstrengthEz_m[idx]
-            + lever_x         * (1.0 - lever_y) * FieldstrengthEz_m[idx + 1]
-            + (1.0 - lever_x) * lever_y         * FieldstrengthEz_m[idx + num_gridpx_m]
-            + lever_x         * lever_y         * FieldstrengthEz_m[idx + num_gridpx_m + 1];
-
-        if(std::abs(F[i].second) > Ez_max) {
-            Ez_max = std::abs(F[i].second);
-        }
-        F[i].second /= Ez_max;
-    }
 }

@@ -89,21 +89,24 @@ void FM3DMagnetoStaticH5Block::freeMap (
 
 bool FM3DMagnetoStaticH5Block::getFieldstrength (
     const Vector_t& R,
-    Vector_t& E,
-    Vector_t& B
+    ComplexVector_t& E,
+    ComplexVector_t& B
     ) const {
     if (!isInside(R)) {
         return true;
     }
-    E += interpolateTrilinearly (
+    E.real() += interpolateTrilinearly (
         FieldstrengthEx_m, FieldstrengthEy_m, FieldstrengthEz_m, R);
-    B += interpolateTrilinearly (
+    B.imag() += interpolateTrilinearly (
         FieldstrengthBx_m, FieldstrengthBy_m, FieldstrengthBz_m, R);
 
     return false;
 }
 
-double FM3DMagnetoStaticH5Block::getFrequency (
-    ) const {
-    return 0.0;
-}
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

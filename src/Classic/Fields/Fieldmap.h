@@ -32,7 +32,8 @@ enum MapType {
     T3DMagnetoStatic,
     T3DMagnetoStatic_Extended,
     T3DMagnetoStaticH5Block,
-    T3DDynamicH5Block
+    T3DDynamicH5Block,
+    T1GeneralFieldMap
 };
 
 enum SwapType {
@@ -72,11 +73,11 @@ public:
     static std::string typeset_msg(const std::string &msg, const std::string &title);
 
     // Note: getFieldstrength() returns true if R is outside of the field!
-    virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const = 0;
+    virtual bool getFieldstrength(const Vector_t &R, ComplexVector_t &E, ComplexVector_t &B) const = 0;
     virtual bool getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const = 0;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const = 0;
     virtual void getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const = 0;
-    virtual void swap() = 0;
+    /* virtual void swap() = 0; */
     virtual void getInfo(Inform *msg) = 0;
     virtual double getFrequency() const = 0;
     virtual void setFrequency(double freq) = 0;
@@ -95,8 +96,6 @@ public:
     virtual void setFieldGap(double gap);
 
     MapType getType() { return Type;}
-
-    virtual void getOnaxisEz(std::vector<std::pair<double, double> > & onaxis);
 
     virtual bool isInside(const Vector_t &/*r*/) const { return true; }
 
@@ -118,36 +117,36 @@ protected:
     int lines_read_m;
 
     bool normalize_m;
-    void getLine(std::ifstream & in, std::string & buffer) {
-        getLine(in, lines_read_m, buffer);
+    void getLine(std::ifstream & in, std::string & buffer) const {
+        getLine(in, const_cast<int&>(lines_read_m), buffer);
     }
 
     static void getLine(std::ifstream &in, int &lines_read, std::string &buffer);
 
     template<class S>
-    bool interpretLine(std::ifstream &in, S &value, const bool &file_length_known = true);
+    bool interpretLine(std::ifstream &in, S &value, const bool &file_length_known = true) const;
     template<class S, class T>
-    bool interpretLine(std::ifstream &in, S &value1, T &value2, const bool &file_length_known = true);
+    bool interpretLine(std::ifstream &in, S &value1, T &value2, const bool &file_length_known = true) const;
     template<class S, class T, class U>
-    bool interpretLine(std::ifstream &in, S &value1, T &value2, U &value3, const bool &file_length_known = true);
+    bool interpretLine(std::ifstream &in, S &value1, T &value2, U &value3, const bool &file_length_known = true) const;
     template<class S, class T, class U, class V>
-    bool interpretLine(std::ifstream &in, S &value1, T &value2, U &value3, V &value4, const bool &file_length_known = true);
+    bool interpretLine(std::ifstream &in, S &value1, T &value2, U &value3, V &value4, const bool &file_length_known = true) const;
     template<class S>
-    bool interpretLine(std::ifstream &in, S &value1, S &value2, S &value3, S &value4, S &value5, S &value6, const bool &file_length_known = true);
+    bool interpretLine(std::ifstream &in, S &value1, S &value2, S &value3, S &value4, S &value5, S &value6, const bool &file_length_known = true) const;
 
-    bool interpreteEOF(std::ifstream &in);
+    bool interpreteEOF(std::ifstream &in) const;
 
     void interpretWarning(const std::ios_base::iostate &state,
                           const bool &read_all,
                           const std::string &error_msg,
-                          const std::string &found);
-    void missingValuesWarning();
-    void exceedingValuesWarning();
+                          const std::string &found) const;
+    void missingValuesWarning() const;
+    void exceedingValuesWarning() const;
 
-    void disableFieldmapWarning();
-    void noFieldmapWarning();
+    void disableFieldmapWarning() const;
+    void noFieldmapWarning() const;
 
-    void lowResolutionWarning(double squareError, double maxError);
+    void lowResolutionWarning(double squareError, double maxError) const;
 
     void checkMap(unsigned int accuracy,
                   std::pair<double, double> fieldDimensions,
@@ -199,3 +198,11 @@ private:
 };
 
 #endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

@@ -31,7 +31,7 @@ void FMDummy::readMap()
 void FMDummy::freeMap()
 { }
 
-bool FMDummy::getFieldstrength(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/) const {
+bool FMDummy::getFieldstrength(const Vector_t &/*R*/, ComplexVector_t &/*E*/, ComplexVector_t &/*B*/) const {
     return false;
 }
 

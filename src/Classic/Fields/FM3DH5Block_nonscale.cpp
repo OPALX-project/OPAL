@@ -102,16 +102,22 @@ void FM3DH5Block_nonscale::freeMap (
 
 bool FM3DH5Block_nonscale::getFieldstrength (
     const Vector_t& R,
-    Vector_t& E,
-    Vector_t& B
+    ComplexVector_t& E,
+    ComplexVector_t& B
     ) const {
     if (!isInside(R)) {
         return true;
     }
-    E += interpolateTrilinearly (
-        FieldstrengthEx_m, FieldstrengthEy_m, FieldstrengthEz_m, R);
-    B += interpolateTrilinearly (
-        FieldstrengthHx_m, FieldstrengthHy_m, FieldstrengthHz_m, R);
+    E.real() += interpolateTrilinearly (FieldstrengthEx_m, FieldstrengthEy_m, FieldstrengthEz_m, R);
+    B.imag() += interpolateTrilinearly (FieldstrengthHx_m, FieldstrengthHy_m, FieldstrengthHz_m, R);
 
     return false;
 }
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

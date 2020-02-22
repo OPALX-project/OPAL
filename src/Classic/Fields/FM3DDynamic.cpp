@@ -238,7 +238,7 @@ void FM3DDynamic::freeMap() {
     }
 }
 
-bool FM3DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool FM3DDynamic::getFieldstrength(const Vector_t &R, ComplexVector_t &E, ComplexVector_t &B) const {
     const unsigned int index_x = static_cast<int>(std::floor((R(0) - xbegin_m) / hx_m));
     const double lever_x = (R(0) - xbegin_m) / hx_m - index_x;
 
@@ -261,59 +261,59 @@ bool FM3DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) 
 
     const unsigned long index1 = index_x * deltaX + index_y * deltaY + index_z * deltaZ;
 
-    E(0) += (1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEx_m[index1                           ]
-        + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEx_m[index1 + deltaX                  ]
-        + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthEx_m[index1 +          deltaY         ]
-        + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthEx_m[index1 + deltaX + deltaY         ]
-        + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthEx_m[index1 +                   deltaZ]
-        + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthEx_m[index1 + deltaX +          deltaZ]
-        + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthEx_m[index1 +          deltaY + deltaZ]
-        + lever_x           * lever_y         * lever_z         * FieldstrengthEx_m[index1 + deltaX + deltaY + deltaZ];
+    E.real()(0) += ((1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEx_m[index1                           ]
+                    + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEx_m[index1 + deltaX                  ]
+                    + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthEx_m[index1 +          deltaY         ]
+                    + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthEx_m[index1 + deltaX + deltaY         ]
+                    + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthEx_m[index1 +                   deltaZ]
+                    + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthEx_m[index1 + deltaX +          deltaZ]
+                    + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthEx_m[index1 +          deltaY + deltaZ]
+                    + lever_x           * lever_y         * lever_z         * FieldstrengthEx_m[index1 + deltaX + deltaY + deltaZ]);
 
-    E(1) += (1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEy_m[index1                           ]
-        + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEy_m[index1 + deltaX                  ]
-        + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthEy_m[index1 +          deltaY         ]
-        + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthEy_m[index1 + deltaX + deltaY         ]
-        + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthEy_m[index1 +                   deltaZ]
-        + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthEy_m[index1 + deltaX +          deltaZ]
-        + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthEy_m[index1 +          deltaY + deltaZ]
-        + lever_x           * lever_y         * lever_z         * FieldstrengthEy_m[index1 + deltaX + deltaY + deltaZ];
+    E.real()(1) += ((1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEy_m[index1                           ]
+                    + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEy_m[index1 + deltaX                  ]
+                    + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthEy_m[index1 +          deltaY         ]
+                    + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthEy_m[index1 + deltaX + deltaY         ]
+                    + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthEy_m[index1 +                   deltaZ]
+                    + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthEy_m[index1 + deltaX +          deltaZ]
+                    + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthEy_m[index1 +          deltaY + deltaZ]
+                    + lever_x           * lever_y         * lever_z         * FieldstrengthEy_m[index1 + deltaX + deltaY + deltaZ]);
 
-    E(2) += (1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEz_m[index1                           ]
-        + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEz_m[index1 + deltaX                  ]
-        + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthEz_m[index1 +          deltaY         ]
-        + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthEz_m[index1 + deltaX + deltaY         ]
-        + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthEz_m[index1 +                   deltaZ]
-        + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthEz_m[index1 + deltaX +          deltaZ]
-        + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthEz_m[index1 +          deltaY + deltaZ]
-        + lever_x           * lever_y         * lever_z         * FieldstrengthEz_m[index1 + deltaX + deltaY + deltaZ];
+    E.real()(2) += ((1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEz_m[index1                           ]
+                    + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthEz_m[index1 + deltaX                  ]
+                    + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthEz_m[index1 +          deltaY         ]
+                    + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthEz_m[index1 + deltaX + deltaY         ]
+                    + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthEz_m[index1 +                   deltaZ]
+                    + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthEz_m[index1 + deltaX +          deltaZ]
+                    + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthEz_m[index1 +          deltaY + deltaZ]
+                    + lever_x           * lever_y         * lever_z         * FieldstrengthEz_m[index1 + deltaX + deltaY + deltaZ]);
 
-    B(0) += (1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBx_m[index1                           ]
-        + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBx_m[index1 + deltaX                  ]
-        + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthBx_m[index1 +          deltaY         ]
-        + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthBx_m[index1 + deltaX + deltaY         ]
-        + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthBx_m[index1 +                   deltaZ]
-        + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthBx_m[index1 + deltaX +          deltaZ]
-        + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthBx_m[index1 +          deltaY + deltaZ]
-        + lever_x           * lever_y         * lever_z         * FieldstrengthBx_m[index1 + deltaX + deltaY + deltaZ];
+    B.imag()(0) += ((1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBx_m[index1                           ]
+                    + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBx_m[index1 + deltaX                  ]
+                    + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthBx_m[index1 +          deltaY         ]
+                    + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthBx_m[index1 + deltaX + deltaY         ]
+                    + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthBx_m[index1 +                   deltaZ]
+                    + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthBx_m[index1 + deltaX +          deltaZ]
+                    + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthBx_m[index1 +          deltaY + deltaZ]
+                    + lever_x           * lever_y         * lever_z         * FieldstrengthBx_m[index1 + deltaX + deltaY + deltaZ]);
 
-    B(1) += (1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBy_m[index1                           ]
-        + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBy_m[index1 + deltaX                  ]
-        + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthBy_m[index1 +          deltaY         ]
-        + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthBy_m[index1 + deltaX + deltaY         ]
-        + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthBy_m[index1 +                   deltaZ]
-        + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthBy_m[index1 + deltaX +          deltaZ]
-        + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthBy_m[index1 +          deltaY + deltaZ]
-        + lever_x           * lever_y         * lever_z         * FieldstrengthBy_m[index1 + deltaX + deltaY + deltaZ];
+    B.imag()(1) += ((1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBy_m[index1                           ]
+                    + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBy_m[index1 + deltaX                  ]
+                    + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthBy_m[index1 +          deltaY         ]
+                    + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthBy_m[index1 + deltaX + deltaY         ]
+                    + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthBy_m[index1 +                   deltaZ]
+                    + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthBy_m[index1 + deltaX +          deltaZ]
+                    + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthBy_m[index1 +          deltaY + deltaZ]
+                    + lever_x           * lever_y         * lever_z         * FieldstrengthBy_m[index1 + deltaX + deltaY + deltaZ]);
 
-    B(2) += (1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBz_m[index1                           ]
-        + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBz_m[index1 + deltaX                  ]
-        + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthBz_m[index1 +          deltaY         ]
-        + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthBz_m[index1 + deltaX + deltaY         ]
-        + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthBz_m[index1 +                   deltaZ]
-        + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthBz_m[index1 + deltaX +          deltaZ]
-        + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthBz_m[index1 +          deltaY + deltaZ]
-        + lever_x           * lever_y         * lever_z         * FieldstrengthBz_m[index1 + deltaX + deltaY + deltaZ];
+    B.imag()(2) += ((1.0 - lever_x) * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBz_m[index1                           ]
+                    + lever_x           * (1.0 - lever_y) * (1.0 - lever_z) * FieldstrengthBz_m[index1 + deltaX                  ]
+                    + (1.0 - lever_x)   * lever_y         * (1.0 - lever_z) * FieldstrengthBz_m[index1 +          deltaY         ]
+                    + lever_x           * lever_y         * (1.0 - lever_z) * FieldstrengthBz_m[index1 + deltaX + deltaY         ]
+                    + (1.0 - lever_x)   * (1.0 - lever_y) * lever_z         * FieldstrengthBz_m[index1 +                   deltaZ]
+                    + lever_x           * (1.0 - lever_y) * lever_z         * FieldstrengthBz_m[index1 + deltaX +          deltaZ]
+                    + (1.0 - lever_x)   * lever_y         * lever_z         * FieldstrengthBz_m[index1 +          deltaY + deltaZ]
+                    + lever_x           * lever_y         * lever_z         * FieldstrengthBz_m[index1 + deltaX + deltaY + deltaZ]);
 
     return false;
 }
@@ -343,47 +343,4 @@ double FM3DDynamic::getFrequency() const {
 
 void FM3DDynamic::setFrequency(double freq) {
     frequency_m = freq;
-}
-
-void FM3DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
-    F.resize(num_gridpz_m);
-
-    int index_x = static_cast<int>(ceil(-xbegin_m / hx_m));
-    double lever_x = index_x * hx_m + xbegin_m;
-    if(lever_x > 0.5) {
-        -- index_x;
-    }
-
-    int index_y = static_cast<int>(ceil(-ybegin_m / hy_m));
-    double lever_y = index_y * hy_m + ybegin_m;
-    if(lever_y > 0.5) {
-        -- index_y;
-    }
-
-    unsigned int ii = (index_y + index_x * num_gridpy_m) * num_gridpz_m;
-    for(unsigned int i = 0; i < num_gridpz_m; ++ i) {
-        F[i].first = hz_m * i;
-        F[i].second = FieldstrengthEz_m[ii ++] / 1e6;
-    }
-
-    auto opal = OpalData::getInstance();
-    if (opal->isOptimizerRun()) return;
-
-    std::string fname = Util::combineFilePath({
-        opal->getAuxiliaryOutputDirectory(),
-        Filename_m
-    });
-    std::ofstream out(fname);
-    for(unsigned int i = 0; i < num_gridpz_m; ++ i) {
-        Vector_t R(0,0,zbegin_m + F[i].first), B(0.0), E(0.0);
-        getFieldstrength(R, E, B);
-        out << std::setw(16) << std::setprecision(8) << F[i].first
-            << std::setw(16) << std::setprecision(8) << E(0)
-            << std::setw(16) << std::setprecision(8) << E(1)
-            << std::setw(16) << std::setprecision(8) << E(2)
-            << std::setw(16) << std::setprecision(8) << B(0)
-            << std::setw(16) << std::setprecision(8) << B(1)
-            << std::setw(16) << std::setprecision(8) << B(2) << "\n";
-    }
-    out.close();
 }

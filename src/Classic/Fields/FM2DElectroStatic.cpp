@@ -165,7 +165,7 @@ void FM2DElectroStatic::freeMap() {
     }
 }
 
-bool FM2DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &/*B*/) const {
+bool FM2DElectroStatic::getFieldstrength(const Vector_t &R, ComplexVector_t &E, ComplexVector_t &/*B*/) const {
     // do bi-linear interpolation
     const double RR = std::sqrt(R(0) * R(0) + R(1) * R(1));
 
@@ -193,10 +193,10 @@ bool FM2DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_
                            + leverz         * leverr         * FieldstrengthEz_m[index2 + 1];
 
     if (RR > 1e-10) {
-        E(0) += EfieldR * R(0) / RR;
-        E(1) += EfieldR * R(1) / RR;
+        E.real()(0) += EfieldR * R(0) / RR;
+        E.real()(1) += EfieldR * R(1) / RR;
     }
-    E(2) += EfieldZ;
+    E.real()(2) += EfieldZ;
     return false;
 }
 

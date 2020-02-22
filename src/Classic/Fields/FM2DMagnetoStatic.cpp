@@ -165,7 +165,7 @@ void FM2DMagnetoStatic::freeMap() {
     }
 }
 
-bool FM2DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
+bool FM2DMagnetoStatic::getFieldstrength(const Vector_t &R, ComplexVector_t &/*E*/, ComplexVector_t &B) const {
     // do bi-linear interpolation
     const double RR = std::sqrt(R(0) * R(0) + R(1) * R(1));
 
@@ -194,10 +194,10 @@ bool FM2DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vec
                            + leverz         * leverr         * FieldstrengthBz_m[index2 + 1];
 
     if(RR != 0) {
-        B(0) += BfieldR * R(0) / RR;
-        B(1) += BfieldR * R(1) / RR;
+        B.imag()(0) += BfieldR * R(0) / RR;
+        B.imag()(1) += BfieldR * R(1) / RR;
     }
-    B(2) += BfieldZ;
+    B.imag()(2) += BfieldZ;
     return false;
 }
 

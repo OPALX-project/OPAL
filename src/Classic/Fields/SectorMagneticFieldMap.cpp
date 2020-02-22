@@ -206,11 +206,12 @@ bool SectorMagneticFieldMap::getFieldstrengthPolar
 */
 
 bool SectorMagneticFieldMap::getFieldstrength (
-        const Vector_t &R_c, Vector_t &/*E_c*/, Vector_t &B_c) const {
+        const Vector_t &R_c, ComplexVector_t &/*E_c*/, ComplexVector_t &B) const {
     // coordinate transform; field is in the x-z plane but OPAL-CYCL assumes
     // x-y plane; rotate to the start of the bend and into polar coordinates;
     // apply mirror symmetry about the midplane
-    double radius   = (getPolarBoundingBoxMin()[0]+getPolarBoundingBoxMax()[0])/2;
+    Vector_t & B_c = B.imag();
+    double radius = (getPolarBoundingBoxMin()[0]+getPolarBoundingBoxMax()[0])/2;
     double midplane = (getPolarBoundingBoxMin()[1]+getPolarBoundingBoxMax()[1])/2;
     double R_temp[3] = {R_c(0)+radius, R_c(1), R_c(2)};
     double B_temp[3] = {0., 0., 0.};
@@ -500,7 +501,7 @@ ThreeDGrid* SectorMagneticFieldMap::IO::generateGrid
             phi_grid.push_back(field_points[i][2]);
         }
     }
-    
+
     // reflect about y if symmetry is dipole
     *gmsg << "* Grid size (r, y, phi) = ("
           << r_grid.size() << ", " << y_grid.size() << ", " << phi_grid.size()

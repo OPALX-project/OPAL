@@ -27,8 +27,8 @@ class FM3DMagnetoStaticH5Block: public FM3DH5BlockBase {
 
 public:
     virtual bool getFieldstrength (
-        const Vector_t &R, Vector_t &E, Vector_t &B) const;
-    
+        const Vector_t &R, ComplexVector_t &E, ComplexVector_t &B) const;
+
 private:
     FM3DMagnetoStaticH5Block (
         std::string aFilename);
@@ -42,8 +42,7 @@ private:
     virtual void freeMap (
         );
 
-    virtual double getFrequency (
-        ) const;
+    virtual double getFrequency () const { return 0; }
 
     std::vector<double> FieldstrengthBz_m;    /**< 3D array with Bz */
     std::vector<double> FieldstrengthBx_m;    /**< 3D array with Bx */

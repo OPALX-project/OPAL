@@ -54,8 +54,6 @@ public:
 
     void setMode(double mode);
 
-    virtual double getAutoPhaseEstimate(const double& E0, const double& t0, const double& q, const double& m) override;
-
     virtual bool apply(const size_t& i, const double& t, Vector_t& E, Vector_t& B) override;
 
     virtual bool apply(const Vector_t& R, const Vector_t& P, const double& t, Vector_t& E, Vector_t& B) override;
@@ -101,33 +99,34 @@ private:
     double cellLength_m;
     double mode_m;
 
-    inline double getdE(const int& i,
-                        const int& I,
-                        const std::vector<double>& t,
-                        const double& phi,
-                        const std::vector<std::pair<double, double> >& F) const;
+    double getdE(const int& i,
+                 const int& I,
+                 const std::vector<double>& t,
+                 const double& phi,
+                 const std::vector<std::pair<double, double>>& F) const;
 
-    inline double getdT(const int& i,
-                        const int& I,
-                        const std::vector<double>& E,
-                        const std::vector<std::pair<double, double> >& F,
-                        const double mass) const;
+    double getdT(const int& i,
+                 const int& I,
+                 const std::vector<double>& E,
+                 const std::vector<std::pair<double, double>>& F,
+                 const double mass) const;
 
-    inline double getdA(const int& i,
-                        const int& I,
-                        const std::vector<double>& t,
-                        const double& phi,
-                        const std::vector<std::pair<double, double> >& F) const;
+    double getdA(const int& i,
+                 const int& I,
+                 const std::vector<double>& t,
+                 const double& phi,
+                 const std::vector<std::pair<double, double>>& F) const;
 
-    inline double getdB(const int& i,
-                        const int& I,
-                        const std::vector<double>& t,
-                        const double& phi,
-                        const std::vector<std::pair<double, double> >& F) const;
+    double getdB(const int& i,
+                 const int& I,
+                 const std::vector<double>& t,
+                 const double& phi,
+                 const std::vector<std::pair<double, double>>& F) const;
     // Not implemented.
     void operator=(const TravelingWave&);
 };
 
+inline
 double TravelingWave::getdE(const int& i,
                             const int& I,
                             const std::vector<double>& t,
@@ -138,6 +137,7 @@ double TravelingWave::getdE(const int& i,
          (F[I].second - F[I-1].second) * (std::cos(frequency_m * t[i] + phi) - std::cos(frequency_m * t[i-1] + phi)));
 }
 
+inline
 double TravelingWave::getdT(const int& i,
                             const int& I,
                             const std::vector<double>& E,
@@ -166,6 +166,7 @@ double TravelingWave::getdT(const int& i,
          1. / std::sqrt(1. - 1. / (gamma10 * gamma10))) / (10. * Physics::c);
 }
 
+inline
 double TravelingWave::getdA(const int& i,
                             const int& I,
                             const std::vector<double>& t,
@@ -177,6 +178,7 @@ double TravelingWave::getdA(const int& i,
          (F[I].second - F[I-1].second) * (std::sin(frequency_m * t[i] + phi) - std::sin(frequency_m * t[i-1] + phi)));
 }
 
+inline
 double TravelingWave::getdB(const int& i,
                             const int& I,
                             const std::vector<double>& t,

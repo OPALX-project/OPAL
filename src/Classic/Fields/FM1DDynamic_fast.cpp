@@ -97,12 +97,12 @@ void FM1DDynamic_fast::freeMap() {
     }
 }
 
-bool FM1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
-                                        Vector_t &B) const {
+bool FM1DDynamic_fast::getFieldstrength(const Vector_t &R, ComplexVector_t &E,
+                                        ComplexVector_t &B) const {
 
     std::vector<double> fieldComponents;
     computeFieldOnAxis(R(2) - zBegin_m, fieldComponents);
-    computeFieldOffAxis(R, E, B, fieldComponents);
+    computeFieldOffAxis(R, E.real(), B.imag(), fieldComponents);
 
     return false;
 }
@@ -143,17 +143,6 @@ double FM1DDynamic_fast::getFrequency() const {
 
 void FM1DDynamic_fast::setFrequency(double freq) {
     frequency_m = freq;
-}
-
-void FM1DDynamic_fast::getOnaxisEz(std::vector<std::pair<double, double>> &eZ) {
-
-    eZ.resize(numberOfGridPoints_m);
-    std::ifstream fieldFile(Filename_m.c_str());
-    stripFileHeader(fieldFile);
-    double maxEz = readFileData(fieldFile, eZ);
-    fieldFile.close();
-    scaleField(maxEz, eZ);
-
 }
 
 bool FM1DDynamic_fast::checkFileData(std::ifstream &fieldFile,
@@ -349,24 +338,6 @@ double FM1DDynamic_fast::readFileData(std::ifstream &fieldFile,
     return maxEz;
 }
 
-double FM1DDynamic_fast::readFileData(std::ifstream &fieldFile,
-                                      std::vector<std::pair<double, double>> &eZ) {
-
-    double maxEz = 0.0;
-    double deltaZ = (zEnd_m - zBegin_m) / (numberOfGridPoints_m - 1);
-    for (unsigned int dataIndex = 0; dataIndex < numberOfGridPoints_m; ++ dataIndex) {
-        eZ.at(dataIndex).first = deltaZ * dataIndex;
-        interpretLine<double>(fieldFile, eZ.at(dataIndex).second);
-        if (std::abs(eZ.at(dataIndex).second) > maxEz)
-            maxEz = std::abs(eZ.at(dataIndex).second);
-    }
-
-    if (!normalize_m)
-        maxEz = 1.0;
-
-    return maxEz;
-}
-
 bool FM1DDynamic_fast::readFileHeader(std::ifstream &fieldFile) {
 
     std::string tempString;
@@ -413,15 +384,7 @@ bool FM1DDynamic_fast::readFileHeader(std::ifstream &fieldFile) {
     return parsingPassed;
 }
 
-void FM1DDynamic_fast::scaleField(double maxEz,
-                                  std::vector<std::pair<double, double>> &eZ) {
-    if (!normalize_m) return;
-
-    for (unsigned int dataIndex = 0; dataIndex < numberOfGridPoints_m; ++ dataIndex)
-        eZ.at(dataIndex).second /= maxEz;
-}
-
-void FM1DDynamic_fast::stripFileHeader(std::ifstream &fieldFile) {
+void FM1DDynamic_fast::stripFileHeader(std::ifstream &fieldFile) const {
 
     std::string tempString;
 

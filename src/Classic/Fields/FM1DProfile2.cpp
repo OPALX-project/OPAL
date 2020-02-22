@@ -204,9 +204,9 @@ void FM1DProfile2::freeMap() {
     }
 }
 
-bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vector_t &info) const {
+bool FM1DProfile2::getFieldstrength(const Vector_t &R, ComplexVector_t &strength, ComplexVector_t &info) const {
 
-    info = Vector_t(0.0);
+    info.real() = Vector_t(0.0);
 
     // Find coordinates in the entrance frame.
     Vector_t REntrance(R(0), 0.0, R(2) + zbegin_entry_m);
@@ -219,13 +219,13 @@ bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vecto
 
 
     if (REntrance(2) >= zend_entry_m && RExit(2) <= zbegin_exit_m) {
-        strength = Vector_t(1.0, 0.0, 0.0);
+        strength.real() = Vector_t(1.0, 0.0, 0.0);
     } else {
         double d2Sdz2 = 0.0;
         double z;
         double *EngeCoefs;
         int polynomialOrder;
-        info(0) = 1.0;
+        info.real()(0) = 1.0;
         if (REntrance(2) >= zbegin_entry_m && REntrance(2) < zend_entry_m) {
             z = -(REntrance(2) - polynomialOrigin_entry_m) / gapHeight_m;
             EngeCoefs = EngeCoefs_entry_m;
@@ -234,7 +234,7 @@ bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vecto
             z = (RExit(2) - polynomialOrigin_exit_m) / gapHeight_m;
             EngeCoefs = EngeCoefs_exit_m;
             polynomialOrder = polynomialOrder_exit_m;
-            info(1) = 1.0;
+            info.real()(1) = 1.0;
         } else {
             return true;
         }
@@ -257,70 +257,17 @@ bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vecto
             // Second derivative of Enge functioin, f.
             double d2fdz2 = ((-d2Sdz2 - dSdz * dSdz * (1. - 2. * (expS * f))) * (f * expS) * f) / (gapHeight_m * gapHeight_m);
 
-            strength(0) = f;
-            strength(1) = dfdz / gapHeight_m;
-            strength(2) = d2fdz2;
+            strength.real()(0) = f;
+            strength.real()(1) = dfdz / gapHeight_m;
+            strength.real()(2) = d2fdz2;
         } else {
-            strength = Vector_t(0.0);
+            strength.real() = Vector_t(0.0);
         }
 
     }
-    info(2) = exit_slope_m;
+    info.real()(2) = exit_slope_m;
 
     return true;
-
-    //    info = Vector_t(0.0);
-    //    const Vector_t tmpR(R(0), R(1), R(2) + zbegin_entry_m);
-    //
-    //    if (tmpR(2) >= zend_entry_m && tmpR(2) <= exit_slope_m * tmpR(0) + zbegin_exit_m) {
-    //        strength = Vector_t(1.0, 0.0, 0.0);
-    //        info(0) = 3.0;
-    //    } else {
-    //        double S, dSdz, d2Sdz2 = 0.0;
-    //        double expS, f, dfdz, d2fdz2;
-    //        double z;
-    //        double *EngeCoefs;
-    //        int polynomialOrder;
-    //        if (tmpR(2) >= zbegin_entry_m && tmpR(2) < zend_entry_m) {
-    //            z = -(tmpR(2) - polynomialOrigin_entry_m) / gapHeight_m;
-    //            EngeCoefs = EngeCoefs_entry_m;
-    //            polynomialOrder = polynomialOrder_entry_m;
-    //            info(0) = 1.0;
-    //        } else if (tmpR(2) > exit_slope_m * tmpR(0) + zbegin_exit_m && tmpR(2) <= exit_slope_m * tmpR(0) + zend_exit_m) {
-    //            z = (tmpR(2) - exit_slope_m * tmpR(0) - polynomialOrigin_exit_m) / sqrt(exit_slope_m * exit_slope_m + 1) / gapHeight_m;
-    //            EngeCoefs = EngeCoefs_exit_m;
-    //            polynomialOrder = polynomialOrder_exit_m;
-    //            info(0) = 2.0;
-    //        } else {
-    //            return true;
-    //        }
-    //
-    //        S = EngeCoefs[polynomialOrder] * z;
-    //        S += EngeCoefs[polynomialOrder - 1];
-    //        dSdz = polynomialOrder * EngeCoefs[polynomialOrder];
-    //
-    //        for (int i = polynomialOrder - 2; i >= 0; i--) {
-    //            S = S * z + EngeCoefs[i];
-    //            dSdz = dSdz * z + (i + 1) * EngeCoefs[i+1];
-    //            d2Sdz2 = d2Sdz2 * z + (i + 2) * (i + 1) * EngeCoefs[i+2];
-    //        }
-    //        expS = exp(S);
-    //        f = 1.0 / (1.0 + expS);
-    //        if (f > 1.e-30) {
-    //            dfdz = - f * ((f * expS) * dSdz); // first derivative of f
-    //            d2fdz2 = ((-d2Sdz2 - dSdz * dSdz * (1. - 2. * (expS * f))) * (f * expS) * f) / (gapHeight_m * gapHeight_m);  // second derivative of f
-    //
-    //            strength(0) = f;
-    //            strength(1) = dfdz / gapHeight_m;
-    //            strength(2) = d2fdz2;
-    //        } else {
-    //            strength = Vector_t(0.0);
-    //        }
-    //
-    //    }
-    //    info(1) = exit_slope_m;
-    //    return true;
-
 }
 
 bool FM1DProfile2::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {

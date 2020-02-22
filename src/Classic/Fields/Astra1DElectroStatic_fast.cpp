@@ -73,7 +73,7 @@ void Astra1DElectroStatic_fast::readMap() {
     }
 }
 
-bool Astra1DElectroStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &/*B*/) const {
+bool Astra1DElectroStatic_fast::getFieldstrength(const Vector_t &R, ComplexVector_t &E, ComplexVector_t &/*B*/) const {
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
@@ -85,9 +85,9 @@ bool Astra1DElectroStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
     // expand to off-axis
     const double EfieldR = -ezp / 2. + ezppp / 16. * RR2;
 
-    E(0) += EfieldR * R(0);
-    E(1) += EfieldR * R(1);
-    E(2) += ez - ezpp * RR2 / 4.;
+    E.real()(0) += EfieldR * R(0);
+    E.real()(1) += EfieldR * R(1);
+    E.real()(2) += ez - ezpp * RR2 / 4.;
     return false;
 }
 
@@ -150,4 +150,3 @@ int Astra1DElectroStatic_fast::stripFileHeader(std::ifstream &file) {
 
     return accuracy;
 }
-

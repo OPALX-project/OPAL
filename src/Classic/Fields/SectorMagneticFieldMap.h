@@ -40,7 +40,7 @@ namespace interpolation {
     class ThreeDGrid;
 }
 
-/** \class[SectorMagneticFieldMap] 
+/** \class[SectorMagneticFieldMap]
  *
  *  \brief handles field map grids with sector geometry
  *
@@ -129,7 +129,7 @@ class SectorMagneticFieldMap : public SectorField {
      *  \returns false if R_c is inside the bounding box
      */
     bool getFieldstrength
-                  (const Vector_t &R_c, Vector_t &E_c, Vector_t &B_c) const;
+                  (const Vector_t &R_c, ComplexVector_t &E_c, ComplexVector_t &B_c) const;
 
     /** Get a pointer to the interpolator or nullptr if it is not set
      *
@@ -203,7 +203,7 @@ class SectorMagneticFieldMap : public SectorField {
   private:
     enum symmetry {none, dipole};
 
-    /** Reflect R_temp about y if below bbmin 
+    /** Reflect R_temp about y if below bbmin
      *  \returns true if symmetry transformation was applied
      */
     bool applySymmetry(double* R_temp) const;

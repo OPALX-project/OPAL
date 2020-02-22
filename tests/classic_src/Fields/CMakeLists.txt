@@ -1,3 +1,18 @@
+set (_SRCS
+    GeneralFieldMapTest.cpp
+    )
+
+add_sources(${_SRCS})
+
 add_subdirectory (Interpolation)
 
 set (TEST_SRCS_LOCAL ${TEST_SRCS_LOCAL} PARENT_SCOPE)
+
+# vi: set et ts=4 sw=4 sts=4:
+
+# Local Variables:
+# mode: cmake
+# cmake-tab-width: 4
+# indent-tabs-mode: nil
+# require-final-newline: nil
+# End:

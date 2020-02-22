@@ -90,27 +90,35 @@ bool TravelingWave::apply(const Vector_t& R,
 
     Vector_t tmpR = Vector_t(R(0), R(1), R(2) + 0.5 * periodLength_m);
     double tmpcos, tmpsin;
-    Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+    ComplexVector_t tmpE, tmpB;
 
     if (tmpR(2) < startCoreField_m) {
         if (!fieldmap_m->isInside(tmpR)) return getFlagDeleteOnTransverseExit();
 
-        tmpcos =  (scale_m + scaleError_m) * std::cos(frequency_m * t + phase_m + phaseError_m);
-        tmpsin = -(scale_m + scaleError_m) * std::sin(frequency_m * t + phase_m + phaseError_m);
+        double scale = scaleCore_m + scaleCoreError_m;
+        tmpcos = scale * std::cos(frequency_m * t + phase_m + phaseError_m);
+        tmpsin = scale * std::sin(frequency_m * t + phase_m + phaseError_m);
 
+        fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
+
+        E += (std::complex<double>(tmpcos, tmpsin) * tmpE).real();
+        B += (std::complex<double>(tmpcos, tmpsin) * tmpB).real();
     } else if (tmpR(2) < startExitField_m) {
-        Vector_t tmpE2(0.0, 0.0, 0.0), tmpB2(0.0, 0.0, 0.0);
         tmpR(2) -= startCoreField_m;
         const double z = tmpR(2);
         tmpR(2) = tmpR(2) - periodLength_m * std::floor(tmpR(2) / periodLength_m);
         tmpR(2) += startCoreField_m;
         if (!fieldmap_m->isInside(tmpR)) return getFlagDeleteOnTransverseExit();
 
-        tmpcos =  (scaleCore_m + scaleCoreError_m) * std::cos(frequency_m * t + phaseCore1_m + phaseError_m);
-        tmpsin = -(scaleCore_m + scaleCoreError_m) * std::sin(frequency_m * t + phaseCore1_m + phaseError_m);
         fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
-        E += tmpcos * tmpE;
-        B += tmpsin * tmpB;
+
+        double scale = scaleCore_m + scaleCoreError_m;
+        double phase1 = frequency_m * t + phaseCore1_m + phaseError_m;
+        tmpcos = scale * std::cos(phase1);
+        tmpsin = scale * std::sin(phase1);
+
+        E += (std::complex<double>(tmpcos, tmpsin) * tmpE).real();
+        B += (std::complex<double>(tmpcos, tmpsin) * tmpB).real();
 
         tmpE = 0.0;
         tmpB = 0.0;
@@ -119,20 +127,29 @@ bool TravelingWave::apply(const Vector_t& R,
         tmpR(2) = tmpR(2) - periodLength_m * std::floor(tmpR(2) / periodLength_m);
         tmpR(2) += startCoreField_m;
 
-        tmpcos =  (scaleCore_m + scaleCoreError_m) * std::cos(frequency_m * t + phaseCore2_m + phaseError_m);
-        tmpsin = -(scaleCore_m + scaleCoreError_m) * std::sin(frequency_m * t + phaseCore2_m + phaseError_m);
+        fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
+
+        const double phase2 = frequency_m * t + phaseCore2_m + phaseError_m;
+        tmpcos = scale * std::cos(phase2);
+        tmpsin = scale * std::sin(phase2);
+        E += (std::complex<double>(tmpcos, tmpsin) * tmpE).real();
+        B += (std::complex<double>(tmpcos, tmpsin) * tmpB).real();
 
     } else {
         tmpR(2) -= mappedStartExitField_m;
-        if (!fieldmap_m->isInside(tmpR)) return getFlagDeleteOnTransverseExit();
-        tmpcos =  (scale_m + scaleError_m) * std::cos(frequency_m * t + phaseExit_m + phaseError_m);
-        tmpsin = -(scale_m + scaleError_m) * std::sin(frequency_m * t + phaseExit_m + phaseError_m);
+        if (!fieldmap_m->isInside(tmpR))
+            return true;
+
+        ComplexVector_t tmpE, tmpB;
+        fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
+
+        const double phase = frequency_m * t + phaseExit_m + phaseError_m;
+        const double scale = scale_m + scaleError_m;
+        tmpcos = scale * std::cos(phase);
+        tmpsin = scale * std::sin(phase);
+        E += (std::complex<double>(tmpcos, tmpsin) * tmpE).real();
+        B += (std::complex<double>(tmpcos, tmpsin) * tmpB).real();
     }
-
-    fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
-
-    E += tmpcos * tmpE;
-    B += tmpsin * tmpB;
 
     return false;
 }
@@ -146,48 +163,67 @@ bool TravelingWave::applyToReferenceParticle(const Vector_t& R,
 
     Vector_t tmpR = Vector_t(R(0), R(1), R(2) + 0.5 * periodLength_m);
     double tmpcos, tmpsin;
-    Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
     if (tmpR(2) < startCoreField_m) {
         if (!fieldmap_m->isInside(tmpR)) return true;
-        tmpcos =  scale_m * std::cos(frequency_m * t + phase_m);
-        tmpsin = -scale_m * std::sin(frequency_m * t + phase_m);
+
+        ComplexVector_t tmpE, tmpB;
+        const double phase = frequency_m * t + phase_m;
+        double tmpcos = scale_m * std::cos(phase);
+        double tmpsin = scale_m * std::sin(phase);
+
+        fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
+
+        E += (std::complex<double>(tmpcos, tmpsin) * tmpE).real();
+        B += (std::complex<double>(tmpcos, tmpsin) * tmpB).real();
 
     } else if (tmpR(2) < startExitField_m) {
-        Vector_t tmpE2(0.0, 0.0, 0.0), tmpB2(0.0, 0.0, 0.0);
         tmpR(2) -= startCoreField_m;
         const double z = tmpR(2);
         tmpR(2) = tmpR(2) - periodLength_m * std::floor(tmpR(2) / periodLength_m);
         tmpR(2) += startCoreField_m;
         if (!fieldmap_m->isInside(tmpR)) return true;
 
-        tmpcos =  scaleCore_m * std::cos(frequency_m * t + phaseCore1_m);
-        tmpsin = -scaleCore_m * std::sin(frequency_m * t + phaseCore1_m);
-        fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
-        E += tmpcos * tmpE;
-        B += tmpsin * tmpB;
+        ComplexVector_t tmpE, tmpB;
+        const double phase1 = frequency_m * t * phaseCore1_m;
+        double tmpcos = scaleCore_m * std::cos(phase1);
+        double tmpsin = scaleCore_m * std::sin(phase1);
 
-        tmpE = 0.0;
-        tmpB = 0.0;
+        fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
+
+        E += (std::complex<double>(tmpcos, tmpsin) * tmpE).real();
+        B += (std::complex<double>(tmpcos, tmpsin) * tmpB).real();
 
         tmpR(2) = z + cellLength_m;
         tmpR(2) = tmpR(2) - periodLength_m * std::floor(tmpR(2) / periodLength_m);
         tmpR(2) += startCoreField_m;
 
-        tmpcos =  scaleCore_m * std::cos(frequency_m * t + phaseCore2_m);
-        tmpsin = -scaleCore_m * std::sin(frequency_m * t + phaseCore2_m);
+        const double phase2 = frequency_m * t * phaseCore2_m;
+        tmpcos = scaleCore_m * std::cos(phase2);
+        tmpsin = scaleCore_m * std::sin(phase2);
+
+        tmpE = 0.0;
+        tmpB = 0.0;
+
+        fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
+
+        E += (std::complex<double>(tmpcos, tmpsin) * tmpE).real();
+        B += (std::complex<double>(tmpcos, tmpsin) * tmpB).real();
 
     } else {
         tmpR(2) -= mappedStartExitField_m;
         if (!fieldmap_m->isInside(tmpR)) return true;
 
-        tmpcos =  scale_m * std::cos(frequency_m * t + phaseExit_m);
-        tmpsin = -scale_m * std::sin(frequency_m * t + phaseExit_m);
-    }
+        ComplexVector_t tmpE, tmpB;
+        const double phase = frequency_m * t + phaseExit_m;
+        tmpcos = scale_m * std::cos(phase);
+        tmpsin = scale_m * std::sin(phase);
 
-    fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
-    E += tmpcos * tmpE;
-    B += tmpsin * tmpB;
+        fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
+
+        E += (std::complex<double>(tmpcos, tmpsin) * tmpE).real();
+        B += (std::complex<double>(tmpcos, tmpsin) * tmpB).real();
+    }
 
     return false;
 }
@@ -258,143 +294,6 @@ void TravelingWave::getElementDimensions(double& begin, double& end) const {
 
 ElementType TravelingWave::getType() const {
     return ElementType::TRAVELINGWAVE;
-}
-
-double TravelingWave::getAutoPhaseEstimate(const double& E0,
-                                           const double& t0,
-                                           const double& q,
-                                           const double& mass) {
-    std::vector<double> t, E, t2, E2;
-    std::vector<std::pair<double, double> > F;
-    double phi = 0.0, tmp_phi, dphi = 0.5 * Units::deg2rad;
-    double phaseC1 = phaseCore1_m - phase_m;
-    double phaseC2 = phaseCore2_m - phase_m;
-    double phaseE = phaseExit_m - phase_m;
-
-    fieldmap_m->getOnaxisEz(F);
-    if (F.size() == 0) return 0.0;
-
-    int N1 = static_cast<int>(std::floor(F.size() / 4.)) + 1;
-    int N2 = F.size() - 2 * N1 + 1;
-    int N3 = 2 * N1 + static_cast<int>(std::floor((numCells_m - 1) * N2 * mode_m)) - 1;
-    int N4 = static_cast<int>(std::round(N2 * mode_m));
-    double Dz = F[N1 + N2].first - F[N1].first;
-
-    t.resize(N3, t0);
-    t2.resize(N3, t0);
-    E.resize(N3, E0);
-    E2.resize(N3, E0);
-    for (int i = 1; i < N1; ++ i) {
-        E[i] = E0 + (F[i].first + F[i - 1].first) / 2. * scale_m / mass;
-        E2[i] = E[i];
-    }
-    for (int i = N1; i < N3 - N1 + 1; ++ i) {
-        int I = (i - N1) % N2 + N1;
-        double Z = (F[I].first + F[I - 1].first) / 2. + std::floor((i - N1) / N2) * Dz;
-        E[i] = E0 + Z * scaleCore_m / mass;
-        E2[i] = E[i];
-    }
-    for (int i = N3 - N1 + 1; i < N3; ++ i) {
-        int I = i - N3 - 1 + 2 * N1 + N2;
-        double Z = (F[I].first + F[I - 1].first) / 2. + ((numCells_m - 1) * mode_m - 1) * Dz;
-        E[i] = E0 + Z * scale_m / mass;
-        E2[i] = E[i];
-    }
-
-    for (int iter = 0; iter < 10; ++ iter) {
-        double A = 0.0;
-        double B = 0.0;
-        for (int i = 1; i < N1; ++ i) {
-            t[i] = t[i - 1] + getdT(i, i, E, F, mass);
-            t2[i] = t2[i - 1] + getdT(i, i, E2, F, mass);
-            A += scale_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * getdA(i, i, t, 0.0, F);
-            B += scale_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * getdB(i, i, t, 0.0, F);
-        }
-        for (int i = N1; i < N3 - N1 + 1; ++ i) {
-            int I = (i - N1) % N2 + N1;
-            int J = (i - N1 + N4) % N2 + N1;
-            t[i] = t[i - 1] + getdT(i, I, E, F, mass);
-            t2[i] = t2[i - 1] + getdT(i, I, E2, F, mass);
-            A += scaleCore_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * (getdA(i, I, t, phaseC1, F) + getdA(i, J, t, phaseC2, F));
-            B += scaleCore_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * (getdB(i, I, t, phaseC1, F) + getdB(i, J, t, phaseC2, F));
-        }
-        for (int i = N3 - N1 + 1; i < N3; ++ i) {
-            int I = i - N3 - 1 + 2 * N1 + N2;
-            t[i] = t[i - 1] + getdT(i, I, E, F, mass);
-            t2[i] = t2[i - 1] + getdT(i, I, E2, F, mass);
-            A += scale_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * getdA(i, I, t, phaseE, F);
-            B += scale_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * getdB(i, I, t, phaseE, F);
-        }
-
-        if (std::abs(B) > 0.0000001) {
-            tmp_phi = std::atan(A / B);
-        } else {
-            tmp_phi = Physics::pi / 2;
-        }
-        if (q * (A * std::sin(tmp_phi) + B * std::cos(tmp_phi)) < 0) {
-            tmp_phi += Physics::pi;
-        }
-
-        if (std::abs(phi - tmp_phi) < frequency_m * (t[N3 - 1] - t[0]) / N3) {
-            for (int i = 1; i < N1; ++ i) {
-                E[i] = E[i - 1] + q * scale_m * getdE(i, i, t, phi, F);
-            }
-            for (int i = N1; i < N3 - N1 + 1; ++ i) {
-                int I = (i - N1) % N2 + N1;
-                int J = (i - N1 + N4) % N2 + N1;
-                E[i] = E[i - 1] + q * scaleCore_m * (getdE(i, I, t, phi + phaseC1, F) + getdE(i, J, t, phi + phaseC2, F));
-            }
-            for (int i = N3 - N1 + 1; i < N3; ++ i) {
-                int I = i - N3 - 1 + 2 * N1 + N2;
-                E[i] = E[i - 1] + q * scale_m * getdE(i, I, t, phi + phaseE, F);
-            }
-
-            const int prevPrecision = Ippl::Info->precision(8);
-            INFOMSG(level2 << "estimated phase= " << tmp_phi << " rad = "
-                    << tmp_phi * Units::rad2deg << " deg,\n"
-                    << "Ekin= " << E[N3 - 1] << " MeV" << std::setprecision(prevPrecision) << "\n" << endl);
-            return tmp_phi;
-        }
-        phi = tmp_phi - std::round(tmp_phi / Physics::two_pi) * Physics::two_pi;
-
-
-        for (int i = 1; i < N1; ++ i) {
-            E[i] = E[i - 1] + q * scale_m * getdE(i, i, t, phi, F);
-            E2[i] = E2[i - 1] + q * scale_m * getdE(i, i, t, phi + dphi, F); // should I use here t or t2?
-            t[i] = t[i - 1] + getdT(i, i, E, F, mass);
-            t2[i] = t2[i - 1] + getdT(i, i, E2, F, mass);
-            E[i] = E[i - 1] + q * scale_m * getdE(i, i, t, phi, F);
-            E2[i] = E2[i - 1] + q * scale_m * getdE(i, i, t2, phi + dphi, F);
-        }
-        for (int i = N1; i < N3 - N1 + 1; ++ i) {
-            int I = (i - N1) % N2 + N1;
-            int J = (i - N1 + N4) % N2 + N1;
-            E[i] = E[i - 1] + q * scaleCore_m * (getdE(i, I, t, phi + phaseC1, F) + getdE(i, J, t, phi + phaseC2, F));
-            E2[i] = E2[i - 1] + q * scaleCore_m * (getdE(i, I, t, phi + phaseC1 + dphi, F) + getdE(i, J, t, phi + phaseC2 + dphi, F)); //concerning t: see above
-            t[i] = t[i - 1] + getdT(i, I, E, F, mass);
-            t2[i] = t2[i - 1] + getdT(i, I, E2, F, mass);
-            E[i] = E[i - 1] + q * scaleCore_m * (getdE(i, I, t, phi + phaseC1, F) + getdE(i, J, t, phi + phaseC2, F));
-            E2[i] = E2[i - 1] + q * scaleCore_m * (getdE(i, I, t2, phi + phaseC1 + dphi, F) + getdE(i, J, t2, phi + phaseC2 + dphi, F));
-        }
-        for (int i = N3 - N1 + 1; i < N3; ++ i) {
-            int I = i - N3 - 1 + 2 * N1 + N2;
-            E[i] = E[i - 1] + q * scale_m * getdE(i, I, t, phi + phaseE, F);
-            E2[i] = E2[i - 1] + q * scale_m * getdE(i, I, t, phi + phaseE + dphi, F); //concerning t: see above
-            t[i] = t[i - 1] + getdT(i, I, E, F, mass);
-            t2[i] = t2[i - 1] + getdT(i, I, E2, F, mass);
-            E[i] = E[i - 1] + q * scale_m * getdE(i, I, t, phi + phaseE, F);
-            E2[i] = E2[i - 1] + q * scale_m * getdE(i, I, t2, phi + phaseE + dphi, F);
-        }
-        //             msg << ", Ekin= " << E[N3-1] << " MeV" << endl;
-    }
-
-
-    const int prevPrecision = Ippl::Info->precision(8);
-    INFOMSG(level2 << "estimated phase= " << tmp_phi << " rad = "
-            << tmp_phi * Units::rad2deg << " deg,\n"
-            << "Ekin= " << E[N3 - 1] << " MeV" << std::setprecision(prevPrecision) << "\n" << endl);
-
-    return phi;
 }
 
 bool TravelingWave::isInside(const Vector_t& r) const {

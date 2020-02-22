@@ -34,9 +34,6 @@ void Astra1D_fast::freeMap() {
     }
 }
 
-void Astra1D_fast::getOnaxisEz(std::vector<std::pair<double, double> > & /*F*/)
-{ }
-
 bool Astra1D_fast::determineNumSamplingPoints(std::ifstream &file) {
     double tmpDouble, tmpDouble2;
     unsigned int skippedValues = 0;
@@ -182,4 +179,3 @@ void Astra1D_fast::computeFieldDerivatives(std::vector<double> & fourierComponen
         gsl_spline_init(onAxisInterpolants_m[i], &zvals[0], &higherDerivatives[i - 1][0], num_gridpz_m);
     }
 }
-
