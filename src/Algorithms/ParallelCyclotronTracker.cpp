@@ -505,7 +505,7 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron &cycl) {
     *gmsg << "* " << sym << "-fold field symmetry " << endl;
 
     // ckr: this just returned the default value as defined in Component.h
-    // double rff = cycl_m->getRfFrequ();
+    // double rff = cycl_m->getRfFrequ(0);
     // *gmsg << "* Rf frequency= " << rff << " [MHz]" << endl;
 
     std::string fmfn = cycl_m->getFieldMapFN();
@@ -525,6 +525,15 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron &cycl) {
     double h = cycl_m->getCyclHarm();
     *gmsg << "* Number of trimcoils = " << cycl_m->getNumberOfTrimcoils() << endl;
     *gmsg << "* Harmonic number h = " << h << " " << endl;
+
+    if (type == std::string("BANDRF")) {
+        double escale = cycl_m->getEScale(0);
+        *gmsg << "* RF field scale factor = " << escale << endl;
+        double rfphi= cycl_m->getRfPhi(0);
+        *gmsg << "* RF inital phase = " << rfphi * Physics::rad2deg << " [deg]" << endl;
+        bool superpose = cycl_m->getSuperpose(0);
+        *gmsg << std::boolalpha << "* Superpose electric field maps -> " << superpose << endl;
+    }
 
     /**
      * To ease the initialise() function, set a integral parameter fieldflag internally.

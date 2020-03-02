@@ -438,6 +438,8 @@ void SampleCmd::execute() {
     }
     *gmsg << endl;
 
+    std::map<std::string, std::string> userVariables = opal->getVariableData();
+
     Inform *origGmsg = gmsg;
     gmsg = 0;
     try {
@@ -457,7 +459,7 @@ void SampleCmd::execute() {
 
         boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm, funcs, dvars,
                                                   objectives, sampleMethods,
-                                                  storeobjstr, filesToKeep));
+                                                  storeobjstr, filesToKeep, userVariables));
         if (comm->isWorker())
             popEnvironment();
 

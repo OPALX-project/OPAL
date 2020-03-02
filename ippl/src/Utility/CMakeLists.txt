@@ -54,7 +54,6 @@ set (_HDRS
     RNGAssignDefs.h
     RNGXDiv.h
     RandomNumberGen.h
-    RefBlock.h
     RefCounted.h
     SequenceGen.h
     StaticIpplInfo.h

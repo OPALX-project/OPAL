@@ -46,7 +46,8 @@ public:
                                 std::shared_ptr<SamplingMethod>
                               >& sampleMethods,
                 const std::vector<std::string> &storeobjstr,
-                const std::vector<std::string> &filesToKeep)
+                const std::vector<std::string> &filesToKeep,
+                const std::map<std::string, std::string> &userVariables)
         : Pilot<Opt_t,
                 Sim_t,
                 SolPropagationGraph_t,
@@ -57,7 +58,8 @@ public:
                         obj,
                         Expressions::Named_t(),
                         {},
-                        false)
+                        false,
+                        {})
         , sampleMethods_m(sampleMethods)
     {
         if (obj.size() == 0) {
@@ -67,7 +69,7 @@ public:
             };
         }
 
-        this->setup(known_expr_funcs, storeobjstr, filesToKeep);
+        this->setup(known_expr_funcs, storeobjstr, filesToKeep, userVariables);
     }
 
     virtual ~SamplePilot()
@@ -86,7 +88,8 @@ protected:
     virtual
     void setup(functionDictionary_t known_expr_funcs,
                const std::vector<std::string> &storeobjstr,
-               const std::vector<std::string> &filesToKeep)
+               const std::vector<std::string> &filesToKeep,
+               const std::map<std::string, std::string> &userVariables)
     {
         this->global_rank_ = this->comm_->globalRank();
 
@@ -96,7 +99,7 @@ protected:
 
         // here the control flow starts to diverge
         if      ( this->comm_->isOptimizer() ) { startSampler(); }
-        else if ( this->comm_->isWorker()    ) { startWorker(storeobjstr, filesToKeep); }
+        else if ( this->comm_->isWorker()    ) { startWorker(storeobjstr, filesToKeep, userVariables); }
         else if ( this->comm_->isPilot()     ) { this->startPilot();     }
     }
 
@@ -118,7 +121,8 @@ protected:
 
     using  Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t>::startWorker;
     void startWorker(const std::vector<std::string> &storeobjstr,
-                     const std::vector<std::string> &filesToKeep)
+                     const std::vector<std::string> &filesToKeep,
+                     const std::map<std::string, std::string> &userVariables)
     {
         std::ostringstream os;
         os << "\033[01;35m" << "  " << this->global_rank_ << " (PID: " << getpid() << ") ▶ Worker"
@@ -135,7 +139,7 @@ protected:
         boost::scoped_ptr< SampleWorker<Sim_t> > w(
                                                    new SampleWorker<Sim_t>(this->objectives_, this->constraints_, simName,
                                                                            this->comm_->getBundle(), this->cmd_args_,
-                                                                           storeobjstr, filesToKeep));
+                                                                           storeobjstr, filesToKeep, userVariables));
 
         std::cout << "Stop Worker.." << std::endl;
     }

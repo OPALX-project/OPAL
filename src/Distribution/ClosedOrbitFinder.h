@@ -249,7 +249,7 @@ ClosedOrbitFinder<Value_type,
     : nxcross_m(0)
     , nzcross_m(0)
     , E0_m(E0)
-    , wo_m(cycl->getRfFrequ()*1E6/cycl->getCyclHarm()*2.0*Physics::pi)
+    , wo_m(cycl->getRfFrequ(0)*1E6/cycl->getCyclHarm()*2.0*Physics::pi)
     , N_m(N)
     , dtheta_m(Physics::two_pi/value_type(N))
     , ravg_m(0)

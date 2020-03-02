@@ -1,20 +1,15 @@
-/* root.h
-   root finding functions
-
+/*
    Project: Beam Envelope Tracker (BET)
+   Author:  Rene Bakker et al.
+   Created: 09-03-2006
 
-   Revision history
-   Date          Description                                     Programmer
-   ------------  --------------------------------------------    --------------
-   09-03-06      Created                                         Rene Bakker
+   root finding routines
 
-   Last Revision:
-   $Id: root.h 29 2007-04-14 17:03:18Z l_bakker $
+   NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING (ISBN 0-521-43108-5)
 */
 
-
-#ifndef _ROOT_DEF
-#define _ROOT_DEF
+#ifndef _BET_ROOT_H
+#define _BET_ROOT_H
 
 /* findRoot()
    Originally rtsafe()
@@ -30,3 +25,11 @@ double findRoot
     double);                                   // accuracy
 
 #endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

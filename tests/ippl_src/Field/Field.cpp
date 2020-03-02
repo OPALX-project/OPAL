@@ -1482,7 +1482,7 @@ TEST(Field, Transpose)
 }
 
 namespace {
-    void check( Field<int,D3>& f, int s1, int s2, int s3, int test)
+    void check( Field<int,D3>& f, int s1, int s2, int s3, int /*test*/)
     {
         Index I = f.getIndex(0);
         Index J = f.getIndex(1);

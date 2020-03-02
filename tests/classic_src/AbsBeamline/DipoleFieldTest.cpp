@@ -14,7 +14,7 @@
 #include <fstream>
 using namespace std;
 
-vector< vector<double> > partialsDerivB(const Vector_t &R,const Vector_t B, double stepSize, SBendRep* dummyField)
+vector< vector<double> > partialsDerivB(const Vector_t &R,const Vector_t /*B*/, double stepSize, SBendRep* dummyField)
 {
     // builds a matrix of all partial derivatives of B -> dx_i B_j
     vector< vector<double> > allPartials(3, vector<double>(3));
@@ -35,7 +35,7 @@ vector< vector<double> > partialsDerivB(const Vector_t &R,const Vector_t B, doub
      return allPartials;
 }
 
-vector< vector<double> > partialsDerivB_5(const Vector_t &R,const Vector_t B, double stepSize, SBendRep* dummyField)
+vector< vector<double> > partialsDerivB_5(const Vector_t &R,const Vector_t /*B*/, double stepSize, SBendRep* dummyField)
 {
     // builds a matrix of all partial derivatives of B -> dx_i B_j
     vector< vector<double> > allPartials(3, vector<double>(3));

@@ -113,7 +113,8 @@ public:
           const Expressions::Named_t &obj,
           const Expressions::Named_t &cons,
           std::vector<double> hypervolRef = {},
-          bool isOptimizerRun = true)
+          bool isOptimizerRun = true,
+          const std::map<std::string, std::string> &userVariables = {})
         : Poller(comm->mpiComm())
         , comm_(comm)
         , cmd_args_(args)
@@ -123,7 +124,7 @@ public:
         , hypervolRef_(hypervolRef)
     {
         if (isOptimizerRun)
-            setup(known_expr_funcs);
+            setup(known_expr_funcs, userVariables);
     }
 
     virtual ~Pilot()
@@ -185,7 +186,8 @@ protected:
     boost::scoped_ptr<Trace> job_trace_;
 
 private:
-    void setup(functionDictionary_t known_expr_funcs) {
+    void setup(functionDictionary_t known_expr_funcs,
+               const std::map<std::string, std::string> &userVariables) {
         global_rank_ = comm_->globalRank();
 
         if(global_rank_ == 0) {
@@ -210,7 +212,7 @@ private:
 
         // here the control flow starts to diverge
         if      ( comm_->isOptimizer() ) { startOptimizer(); }
-        else if ( comm_->isWorker()    ) { startWorker();    }
+        else if ( comm_->isWorker()    ) { startWorker(userVariables); }
         else if ( comm_->isPilot()     ) { startPilot();     }
     }
 
@@ -267,7 +269,7 @@ protected:
     }
 
     virtual
-    void startWorker() {
+    void startWorker(const std::map<std::string, std::string> &userVariables) {
 
         std::ostringstream os;
         os << "\033[01;35m" << "  " << global_rank_ << " (PID: " << getpid() << ") ▶ Worker"
@@ -283,7 +285,7 @@ protected:
 
         boost::scoped_ptr< Worker<Sim_t> > w(
                 new Worker<Sim_t>(objectives_, constraints_, simName,
-                    comm_->getBundle(), cmd_args_));
+                    comm_->getBundle(), cmd_args_, userVariables));
 
         std::cout << "Stop Worker.." << std::endl;
     }

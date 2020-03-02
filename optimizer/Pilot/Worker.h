@@ -51,9 +51,11 @@ public:
            std::string simName,
            Comm::Bundle_t comms,
            CmdArguments_t args,
+           const std::map<std::string, std::string> &userVariables,
            bool isOptimizer = true)
         : Poller(comms.worker)
         , cmd_args_(args)
+        , userVariables_(userVariables)
     {
         objectives_      = objectives;
         constraints_     = constraints;
@@ -121,8 +123,8 @@ protected:
 
                         try {
                             SimPtr_t sim(new Sim_t(objectives_, constraints_,
-                                    params, simulation_name_, coworker_comm_,
-                                    cmd_args_));
+                                                   params, simulation_name_, coworker_comm_,
+                                                   cmd_args_, userVariables_));
 
                             sim->run();
                         } catch(OptPilotException &ex) {
@@ -150,6 +152,8 @@ protected:
     int pilot_rank_;
     std::string simulation_name_;
     CmdArguments_t cmd_args_;
+
+    const std::map<std::string, std::string> userVariables_;
 
     /// notify coworkers of incoming broadcast
     void notifyCoWorkers(int tag) {
@@ -203,7 +207,8 @@ protected:
             reqVarContainer_t requested_results;
             try {
                 SimPtr_t sim(new Sim_t(objectives_, constraints_,
-                        params, simulation_name_, coworker_comm_, cmd_args_));
+                                       params, simulation_name_, coworker_comm_, cmd_args_,
+                                       userVariables_));
 
                 // run simulation in a "blocking" fashion
                 sim->run();

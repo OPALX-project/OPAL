@@ -46,6 +46,7 @@
 #include "AbsBeamline/ParallelPlate.h"
 #include "AbsBeamline/Stripper.h"
 
+#include "Beamlines/Beamline.h"
 #include "Beamlines/FlaggedElmPtr.h"
 
 #include "ComponentWrappers/CorrectorWrapper.h"

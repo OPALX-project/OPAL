@@ -9,7 +9,7 @@
  * makes any warranty, express or implied, or assumes any liability or
  * responsibility for the use of this software
  *
- *	mpirun -n 32 ./p3m3dMicrobunching ${Nx} ${Ny} ${Nz} ${r_cut} ${alpha} ${epsilon} ${Nsteps} $SeedID} ${printSteps}
+ *      mpirun -n 32 ./p3m3dMicrobunching ${Nx} ${Ny} ${Nz} ${r_cut} ${alpha} ${epsilon} ${Nsteps} $SeedID} ${printSteps}
  *      Nx,Ny,Nx is the poisson solver grid size, r_cut is the cutoff for pp interaction, alpha is the splitting parameter,
  *      epsilon is the softening parameter, printSteps=10 prints every tenth step
  *
@@ -119,10 +119,10 @@ class ChargedParticles : public IpplParticleBase<PL> {
                 ParticleAttrib<double>          m; //rest mass [MeV/c^2]
                 ParticleAttrib<double>          Phi; //electrostatic potential
                 ParticleAttrib<Vector_t>        EF; // Electric field [MeV/(sec)]
-                ParticleAttrib<Vector_t>	p; //momentum [MeV/c]
-                ParticleAttrib<int>	ID; //unique ID for debugging reasons => remove for production
+                ParticleAttrib<Vector_t>        p; //momentum [MeV/c]
+                ParticleAttrib<int>             ID; //unique ID for debugging reasons => remove for production
 
-                ChargedParticles(PL* pl, Vektor<double,3> nr, e_dim_tag decomp[Dim], unsigned seedID_=0) :
+                ChargedParticles(PL* pl, Vektor<double,3> nr, e_dim_tag /*decomp*/[Dim], unsigned seedID_=0) :
                         IpplParticleBase<PL>(pl),
                         nr_m(nr),
                         seedID(seedID_)
@@ -399,7 +399,7 @@ class ChargedParticles : public IpplParticleBase<PL> {
                         }
                 }
 
-                void calculateGridForces(double interaction_radius, double alpha, double eps, int it=0) {
+                void calculateGridForces(double /*interaction_radius*/, double alpha, double eps, int /*it*/=0) {
                         // (1) scatter charge to charge density grid and transform to fourier space
                         //this->Q.scatter(this->rho_m, this->R, IntrplTSC_t());
                         rho_m[domain_m]=0; //!!!!!! there has to be a better way than setting rho to 0 every time

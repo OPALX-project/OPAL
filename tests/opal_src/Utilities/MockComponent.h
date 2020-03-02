@@ -57,7 +57,7 @@ public:
     bool apply(const size_t&, const double&, Vector_t&, Vector_t&) {
         return true;
     }
-    bool apply(const Vector_t& r, const Vector_t& P, const double& t,
+    bool apply(const Vector_t& r, const Vector_t& /*P*/, const double& /*t*/,
                Vector_t& E, Vector_t& B) {
         if (r(0) < 0. || r(0) > 1. ||
             r(1) < -1. || r(1) > 0. ||
@@ -103,7 +103,7 @@ public:
     bool apply(const size_t&, const double&, Vector_t&, Vector_t&) {
         return true;
     }
-    bool apply(const Vector_t& r, const Vector_t& P, const double& t,
+    bool apply(const Vector_t& r, const Vector_t& /*P*/, const double& /*t*/,
                Vector_t& E, Vector_t& B) {
         lastPos = r;
         if (r(0) < -1. || r(0) > 1. ||
@@ -133,4 +133,3 @@ private:
 
 
 #endif
-

@@ -27,8 +27,9 @@ public:
                  Comm::Bundle_t comms,
                  CmdArguments_t args,
                  const std::vector<std::string> &storeobjstr,
-                 const std::vector<std::string> &filesToKeep)
-        : Worker<Sim_t>(objectives, constraints, simName, comms, args, false)
+                 const std::vector<std::string> &filesToKeep,
+                 const std::map<std::string, std::string> &userVariables)
+        : Worker<Sim_t>(objectives, constraints, simName, comms, args, userVariables, false)
         , statVariablesToStore_m(storeobjstr)
         , filesToKeep_m(filesToKeep)
     {
@@ -94,9 +95,10 @@ protected:
                         MPI_Bcast_params(params, this->leader_pid_, this->coworker_comm_);
 
                         try {
-                            typename Worker<Sim_t>::SimPtr_t sim(new Sim_t(this->objectives_, this->constraints_,
-                                    params, this->simulation_name_, this->coworker_comm_,
-                                    this->cmd_args_));
+                            typename Worker<Sim_t>::SimPtr_t sim(
+                                new Sim_t(this->objectives_, this->constraints_,
+                                          params, this->simulation_name_, this->coworker_comm_,
+                                          this->cmd_args_, this->userVariables_));
 
                             sim->setFilename(job_id);
 
@@ -138,11 +140,12 @@ protected:
             reqVarContainer_t requested_results;
             try {
                 typename Worker<Sim_t>::SimPtr_t sim(new Sim_t(this->objectives_,
-                                       this->constraints_,
-                                       params,
-                                       this->simulation_name_,
-                                       this->coworker_comm_,
-                                       this->cmd_args_));
+                                                               this->constraints_,
+                                                               params,
+                                                               this->simulation_name_,
+                                                               this->coworker_comm_,
+                                                               this->cmd_args_,
+                                                               this->userVariables_));
 
                 sim->setFilename(job_id);
 

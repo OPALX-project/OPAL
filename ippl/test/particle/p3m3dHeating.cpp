@@ -9,8 +9,8 @@
  * makes any warranty, express or implied, or assumes any liability or
  * responsibility for the use of this software
  *
- *	mpirun -np 4 ./p3m3dEquiPart Nx Ny Nz l_beam l_box particleDensity r_cut alpha dt eps iterations charge_per_part m_part printEvery
- * 	alpha is the splitting parameter for pm and pp, eps is the smoothing factor and Si are the coordinates of the charged sphere center
+ *      mpirun -np 4 ./p3m3dEquiPart Nx Ny Nz l_beam l_box particleDensity r_cut alpha dt eps iterations charge_per_part m_part printEvery
+ *      alpha is the splitting parameter for pm and pp, eps is the smoothing factor and Si are the coordinates of the charged sphere center
  *
  *
  *************************************************************************************************************************************/
@@ -101,14 +101,14 @@ struct SpecializedGreensFunction<3> {
 template<class PL>
 class ChargedParticles : public IpplParticleBase<PL> {
 public:
-    ParticleAttrib<double>     	Q;
-    ParticleAttrib<double>     	m;
-    ParticleAttrib<double>     	Phi; //electrostatic potential
-    ParticleAttrib<Vector_t> 	EF;
-    ParticleAttrib<Vector_t>	v; //velocity of the particles
-    ParticleAttrib<int>	ID; //velocity of the particles
+    ParticleAttrib<double>      Q;
+    ParticleAttrib<double>      m;
+    ParticleAttrib<double>      Phi; //electrostatic potential
+    ParticleAttrib<Vector_t>    EF;
+    ParticleAttrib<Vector_t>    v; //velocity of the particles
+    ParticleAttrib<int> ID; //velocity of the particles
 
-    ChargedParticles(PL* pl, Vektor<double,3> nr, e_dim_tag decomp[Dim],Vektor<double,3> extend_l_, Vektor<double,3> extend_r_) :
+    ChargedParticles(PL* pl, Vektor<double,3> nr, e_dim_tag /*decomp*/[Dim],Vektor<double,3> extend_l_, Vektor<double,3> extend_r_) :
     IpplParticleBase<PL>(pl),
     nr_m(nr),
     extend_l(extend_l_),
@@ -198,9 +198,9 @@ public:
         double loc_avg_vel[Dim]={0.0,0.0,0.0};
 
         for(unsigned long k = 0; k < this->getLocalNum(); ++k) {
-	  for(unsigned i = 0; i < Dim; i++) {
-	    loc_avg_vel[i]   += this->v[k](i);
-	  }
+          for(unsigned i = 0; i < Dim; i++) {
+            loc_avg_vel[i]   += this->v[k](i);
+          }
         }
         reduce(&(loc_avg_vel[0]), &(loc_avg_vel[0]) + Dim,
                &(avg_vel[0]), OpAddAssign());
@@ -213,9 +213,9 @@ public:
         m << "avg_vel[0]= " << avg_vel[0] << " avg_vel[1]= " << avg_vel[1] << " avg_vel[2]= " << avg_vel[2] <<  endl;
 
         for(unsigned long k = 0; k < this->getLocalNum(); ++k) {
-	  for(unsigned i = 0; i < Dim; i++) {
-	    loc_temp[i]   += (this->v[k](i)-avg_vel[i])*(this->v[k](i)-avg_vel[i]);
-	  }
+          for(unsigned i = 0; i < Dim; i++) {
+            loc_temp[i]   += (this->v[k](i)-avg_vel[i])*(this->v[k](i)-avg_vel[i]);
+          }
         }
         reduce(&(loc_temp[0]), &(loc_temp[0]) + Dim,
                &(temperature[0]), OpAddAssign());
@@ -386,7 +386,7 @@ public:
         }
     }
 
-    void calculateGridForces(double interaction_radius, double alpha, double eps, int it=0, bool normalizeSphere=0) {
+    void calculateGridForces(double /*interaction_radius*/, double alpha, double eps, int /*it*/=0, bool /*normalizeSphere*/=0) {
         // (1) scatter charge to charge density grid and transform to fourier space
         //this->Q.scatter(this->rho_m, this->R, IntrplTSC_t());
         rho_m[domain_m]=0; //!!!!!! there has to be a better way than setting rho to 0 every time

@@ -151,7 +151,8 @@ public:
         virtual void operator()(Object *) const;
     };
 
-    std::vector<std::string> getAllNames();
+    std::map<std::string, std::string> getVariableData();
+    std::vector<std::string> getVariableNames();
 
     bool isInOPALCyclMode();
     bool isInOPALTMode();

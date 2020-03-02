@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <boost/algorithm/string.hpp>
+#include "boost/filesystem.hpp"
 
 #include "Util/OptPilotException.h"
 
@@ -125,6 +126,12 @@ private:
      *    ' ', \t
     */
     void fillDictionary() {
+
+        namespace fs = boost::filesystem;
+
+        fs::path pwd = fs::current_path();
+        if (!fs::exists(varDictionary_) || fs::is_empty(varDictionary_))
+            return;
 
         std::ifstream infile;
         infile.open(varDictionary_.c_str(), std::ifstream::in);

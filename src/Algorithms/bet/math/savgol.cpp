@@ -1,96 +1,34 @@
-/* savgol.C
+/*
+   Project: Beam Envelope Tracker (BET)
+   Author:  Rene Bakker et al.
+   Created: 23-11-2006
+
    Savitzky-Golay Smoothing Filters
 
    NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING (ISBN 0-521-43108-5)
-
-   Revision history
-   Date          Description                                     Programmer
-   ------------  --------------------------------------------    ------------
-   23/11/2006    Copied from "numerical recipies"                Rene Bakker
-
-   Last Revision:
-   $Id: savgol.C 29 2007-04-14 17:03:18Z l_bakker $
 */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
+#include <algorithm>
+#include <cmath>
+#include <cstring>
 
-#include "Algorithms/bet/BetError.h"
+#include "Utilities/OpalException.h"
 #include "Algorithms/bet/math/savgol.h"
+
+// see: https://en.cppreference.com/w/cpp/types/numeric_limits/epsilon
+template<class T>
+typename std::enable_if<!std::numeric_limits<T>::is_integer, bool>::type
+    almost_equal(T x, T y, int ulp)
+{
+    // the machine epsilon has to be scaled to the magnitude of the values used
+    // and multiplied by the desired precision in ULPs (units in the last place)
+    return std::abs(x-y) <= std::numeric_limits<T>::epsilon() * std::abs(x+y) * ulp
+        // unless the result is subnormal
+        || std::abs(x-y) < std::numeric_limits<T>::min();
+}
 
 /* internal functions
    ====================================================================== */
-
-static double *vector(long n)
-/* allocate a double vector with subscript range v[0..n] */
-{
-    double *v;
-
-    v = (double *)malloc((size_t)((n + 1) * sizeof(double)));
-    if(!v) {
-        //writeBetError(errModeAll,errFatal,
-        //       "savgol.C allocation failure in vector()");
-        writeBetError("savgol.C allocation failure in vector()");
-    }
-    return v;
-}
-
-int *ivector(long n)
-/* allocate an int vector with subscript range v[nl..n] */
-{
-    int *v;
-
-    v = (int *)malloc((size_t)((n + 1) * sizeof(int)));
-    if(!v) {
-        //writeBetError(errModeAll,errFatal,
-        //       "savgol.C allocation failure in ivector()");
-        writeBetError("savgol.C allocation failure in ivector()");
-    }
-    return v;
-}
-
-static double **matrix(long nr, long nc)
-/* allocate a double matrix with subscript range m[0..nr][0..nc] */
-{
-    long
-    i,
-    nrow = nr + 1,
-    ncol = nc + 1;
-    double
-    **m;
-
-    /* allocate pointers to rows */
-    m = (double **) malloc((size_t)((nrow + 1) * sizeof(double *)));
-    if(!m) {
-        //writeBetError(errModeAll,errFatal,
-        //       "savgol.C allocation failure 1 in matrix()");
-        writeBetError("savgol.C allocation failure 1 in matrix()");
-    }
-    /* allocate rows and set pointers to them */
-    m[0] = (double *) malloc((size_t)((nrow * ncol + 1) * sizeof(double)));
-    if(!m[0]) {
-        //writeBetError(errModeAll,errFatal,
-        //        "savgol.C allocation failure 2 in matrix()");
-        writeBetError("savgol.C allocation failure 2 in matrix()");
-    }
-    for(i = 1; i <= nr; i++) m[i] = m[i-1] + ncol;
-
-    /* return pointer to array of pointers to rows */
-    return m;
-}
-
-static void free_matrix(double **a) {
-    if(a) {
-        if(a[0]) free(a[0]);
-        free(a);
-    }
-}
-
-static int minarg1, minarg2;
-#define FMIN(a,b) (minarg1=(a),minarg2=(b),(minarg1) < (minarg2) ?\
-        (minarg1) : (minarg2))
 
 /* lubksb()
    Solves the set of n linear equations A·X = B.
@@ -103,22 +41,24 @@ static int minarg1, minarg2;
    into account the possibility that b will begin with many zero elements,
    so it is efficient for use in matrix inversion.
 */
-static void lubksb(double **a, int n, int *indx, double b[]) {
-    int i, ii = 0, ip, j;
-    double sum;
+static void lubksb(double **a, int n, int indx[], double b[]) {
 
-    for(i = 1; i <= n; i++) {
-        ip = indx[i];
-        sum = b[ip];
+    for(auto i = 1; i <= n; i++) {
+        auto ip = indx[i];
+        auto sum = b[ip];
+        auto ii = 0;
         b[ip] = b[i];
         if(ii)
-            for(j = ii; j <= i - 1; j++) sum -= a[i][j] * b[j];
-        else if(sum) ii = i;
+            for(auto j = ii; j <= i - 1; j++)
+                sum -= a[i][j] * b[j];
+        else if(sum)
+            ii = i;
         b[i] = sum;
     }
-    for(i = n; i >= 1; i--) {
-        sum = b[i];
-        for(j = i + 1; j <= n; j++) sum -= a[i][j] * b[j];
+    for(auto i = n; i >= 1; i--) {
+        auto sum = b[i];
+        for(auto j = i + 1; j <= n; j++)
+            sum -= a[i][j] * b[j];
         b[i] = sum / a[i][i];
     }
 }
@@ -134,61 +74,63 @@ static void lubksb(double **a, int n, int *indx, double b[]) {
    of row interchanges was even or odd, respectively. This routine is used
    in combination with lubksb to solve linear equations or invert a matrix.
 */
-static void ludcmp(double **a, int n, int *indx, double *d) {
-    int i, imax = -1, j, k;
-    double big, dum, sum, temp;
-    double *vv;
+static void ludcmp(double **a, int n, int indx[], double &d) {
 
-    vv = vector(n);
-    *d = 1.0;
-    for(i = 1; i <= n; i++) {
-        big = 0.0;
-        for(j = 1; j <= n; j++)
-            if((temp = fabs(a[i][j])) > big) big = temp;
-        if(big == 0.0) {
-            //writeBetError(errModeAll,errFatal,
-            //     "Singular matrix in routine ludcmp (savgol)");
-            writeBetError("Singular matrix in routine ludcmp (savgol)");
+    double vv[n];
+    d = 1.0;
+    for(auto i = 1; i <= n; i++) {
+        double big = 0.0;
+        for(auto j = 1; j <= n; j++) {
+            auto temp = std::abs(a[i][j]);
+            if(temp > big)
+                big = temp;
         }
-
+        if (!almost_equal (big, 0.0, 4)) {
+            throw OpalException (
+                "BetMath_savgol()",
+                "Singular matrix.");
+        }
         vv[i] = 1.0 / big;
     }
-    for(j = 1; j <= n; j++) {
-        for(i = 1; i < j; i++) {
-            sum = a[i][j];
-            for(k = 1; k < i; k++) sum -= a[i][k] * a[k][j];
-            a[i][j] = sum;
-        }
-        big = 0.0;
-        for(i = j; i <= n; i++) {
-            sum = a[i][j];
-            for(k = 1; k < j; k++)
+    for(auto j = 1; j <= n; j++) {
+        for(auto i = 1; i < j; i++) {
+            auto sum = a[i][j];
+            for(auto k = 1; k < i; k++)
                 sum -= a[i][k] * a[k][j];
             a[i][j] = sum;
-            if((dum = vv[i] * fabs(sum)) >= big) {
-                big = dum;
+        }
+        double big = 0.0;
+        int imax = -1;
+        for(auto i = j; i <= n; i++) {
+            auto sum = a[i][j];
+            for(auto k = 1; k < j; k++)
+                sum -= a[i][k] * a[k][j];
+            a[i][j] = sum;
+            auto temp = vv[i] * std::abs(sum);
+            if(temp >= big) {
+                big = temp;
                 imax = i;
             }
         }
         if(j != imax) {
-            for(k = 1; k <= n; k++) {
-                dum = a[imax][k];
+            for(auto k = 1; k <= n; k++) {
+                auto temp = a[imax][k];
                 a[imax][k] = a[j][k];
-                a[j][k] = dum;
+                a[j][k] = temp;
             }
-            *d = -(*d);
+            d = -d;
             vv[imax] = vv[j];
         }
         indx[j] = imax;
-        if(a[j][j] == 0.0) a[j][j] = TINY;
+        if(a[j][j] <= std::numeric_limits<double>::epsilon())
+            a[j][j] = TINY;
         if(j != n) {
-            dum = 1.0 / (a[j][j]);
-            for(i = j + 1; i <= n; i++) a[i][j] *= dum;
+            double temp = 1.0 / (a[j][j]);
+            for(auto i = j + 1; i <= n; i++)
+                a[i][j] *= temp;
         }
     }
-    free(vv);
 }
-#undef TINY
 
 /* savgol()
    Returns in c[1..np], in wrap-around order (N.B.!)
@@ -203,45 +145,53 @@ static void ludcmp(double **a, int n, int *indx, double *d) {
       also equal to the highest conserved moment;
       usual values are m = 2 or m = 4.
 */
-void savgol(double c[], int np, int nl, int nr, int ld, int m) {
-    int imj, ipj, j, k, kk, mm, *indx;
-    double d, fac, sum, **a, *b;
+static void savgol(double c[], int np, int nl, int nr, int ld, int m) {
 
-    if(np < nl + nr + 1 || nl < 0 || nr < 0 || ld > m || nl + nr < m) {
-        //writeBetError(errModeAll,errFatal,"bad args in savgol");
-        writeBetError("bad args in savgol");
+    if (np >= nl + nr + 1 && nl >= 0 && nr >= 0 && ld <= m && nl + nr >= m) {
+        throw OpalException(
+            "BetMath_savgol()",
+            "Bad arguments.");
+    }
+    int indx[m + 1];
+
+    // allocate matrix on the stack. Since the matrix is small, this is ok.
+    auto nrow = m + 2;
+    auto ncol = nrow;
+    double* a[nrow+1];
+    double matrix[nrow * ncol + 1];
+    a[0] = matrix;
+    for (auto i = 1; i <= m+1; i++) {
+         a[i] = a[i-1] + ncol;
     }
 
-    indx = ivector(m + 1);
-    a = matrix(m + 1, m + 1);
-    b = vector(m + 1);
-    for(ipj = 0; ipj <= (m << 1); ipj++) {
-        sum = (ipj ? 0.0 : 1.0);
-        for(k = 1; k <= nr; k++) sum += pow((double)k, ipj);
-        for(k = 1; k <= nl; k++) sum += pow((double) - k, ipj);
-        mm = FMIN(ipj, 2 * m - ipj);
-        for(imj = -mm; imj <= mm; imj += 2) a[1+(ipj+imj)/2][1+(ipj-imj)/2] = sum;
+    double b[m + 1];
+    for(int ipj = 0; ipj <= (m << 1); ipj++) {
+        auto sum = (ipj ? 0.0 : 1.0);
+        for(auto k = 1; k <= nr; k++)
+            sum += std::pow((double)k, ipj);
+        for(auto k = 1; k <= nl; k++)
+            sum += std::pow((double) -k, ipj);
+        auto mm = std::min(ipj, 2 * m - ipj);
+        for(auto imj = -mm; imj <= mm; imj += 2)
+            a[1+(ipj+imj)/2][1+(ipj-imj)/2] = sum;
     }
-    ludcmp(a, m + 1, indx, &d);
-    for(j = 1; j <= m + 1; j++) b[j] = 0.0;
+    double d = 1.0;
+    ludcmp(a, m + 1, indx, d);
+    for(auto j = 1; j <= m + 1; j++)
+        b[j] = 0.0;
     b[ld+1] = 1.0;
     lubksb(a, m + 1, indx, b);
-    for(kk = 1; kk <= np; kk++) c[kk] = 0.0;
-    for(k = -nl; k <= nr; k++) {
-        sum = b[1];
-        fac = 1.0;
-        for(mm = 1; mm <= m; mm++) sum += b[mm+1] * (fac *= k);
-        kk = ((np - k) % np) + 1;
+    for(auto kk = 1; kk <= np; kk++)
+        c[kk] = 0.0;
+    for(auto k = -nl; k <= nr; k++) {
+        auto sum = b[1];
+        double fac = 1.0;
+        for(auto mm = 1; mm <= m; mm++)
+            sum += b[mm+1] * (fac *= k);
+        auto kk = ((np - k) % np) + 1;
         c[kk] = sum;
     }
-    free(b);
-    free_matrix(a);
-    free(indx);
 }
-
-#undef FMIN
-
-#define SWAP(a,b) tempr=(a);(a)=(b);(b)=tempr
 
 /* four1()
    Replaces data[1..2*nn] by its discrete Fourier transform, if isign
@@ -250,39 +200,37 @@ void savgol(double c[], int np, int nl, int nr, int ld, int m) {
    complex array of length nn or, equivalently, a real array of length
    2*nn. nn MUST be an integer power of 2 (this is not checked for!).
 */
-void four1(double data[], int nn, int isign) {
-    int n, mmax, m, j, istep, i;
-    double wtemp, wr, wpr, wpi, wi, theta;
-    double tempr, tempi;
+static void four1(double data[], int nn, int isign) {
 
-    n = nn << 1;
-    j = 1;
-    for(i = 1; i < n; i += 2) {
+    auto n = nn << 1;
+    auto j = 1;
+    for(auto i = 1; i < n; i += 2) {
         if(j > i) {
-            SWAP(data[j], data[i]);
-            SWAP(data[j+1], data[i+1]);
+            std::swap(data[j], data[i]);
+            std::swap(data[j+1], data[i+1]);
         }
-        m = n >> 1;
+        auto m = n >> 1;
         while(m >= 2 && j > m) {
             j -= m;
             m >>= 1;
         }
         j += m;
     }
-    mmax = 2;
+
+    auto mmax = 2;
     while(n > mmax) {
-        istep = mmax << 1;
-        theta = isign * (6.28318530717959 / mmax);
-        wtemp = sin(0.5 * theta);
-        wpr = -2.0 * wtemp * wtemp;
-        wpi = sin(theta);
-        wr = 1.0;
-        wi = 0.0;
-        for(m = 1; m < mmax; m += 2) {
-            for(i = m; i <= n; i += istep) {
+        auto istep = mmax << 1;
+        auto theta = isign * (6.28318530717959 / mmax);
+        auto wtemp = sin(0.5 * theta);
+        auto wpr = -2.0 * wtemp * wtemp;
+        auto wpi = sin(theta);
+        auto wr = 1.0;
+        auto wi = 0.0;
+        for(auto m = 1; m < mmax; m += 2) {
+            for(auto i = m; i <= n; i += istep) {
                 j = i + mmax;
-                tempr = wr * data[j] - wi * data[j+1];
-                tempi = wr * data[j+1] + wi * data[j];
+                auto tempr = wr * data[j] - wi * data[j+1];
+                auto tempi = wr * data[j+1] + wi * data[j];
                 data[j] = data[i] - tempr;
                 data[j+1] = data[i+1] - tempi;
                 data[i] += tempr;
@@ -294,7 +242,6 @@ void four1(double data[], int nn, int isign) {
         mmax = istep;
     }
 }
-#undef SWAP
 
 /* realft()
    Calculates the Fourier transform of a set of n real-valued data points.
@@ -307,12 +254,10 @@ void four1(double data[], int nn, int isign) {
    by 2/n.)static
 */
 static void realft(double data[], int n, int isign) {
-    void four1(double data[], int nn, int isign);
-    int i, i1, i2, i3, i4, np3;
-    double c1 = 0.5, c2, h1r, h1i, h2r, h2i;
-    double wr, wi, wpr, wpi, wtemp, theta;
+    const double c1 = 0.5;
+    double c2;
 
-    theta = 3.141592653589793 / (double)(n >> 1);
+    auto theta = 3.141592653589793 / (double)(n >> 1);
     if(isign == 1) {
         c2 = -0.5;
         four1(data, n >> 1, 1);
@@ -320,18 +265,22 @@ static void realft(double data[], int n, int isign) {
         c2 = 0.5;
         theta = -theta;
     }
-    wtemp = sin(0.5 * theta);
-    wpr = -2.0 * wtemp * wtemp;
-    wpi = sin(theta);
-    wr = 1.0 + wpr;
-    wi = wpi;
-    np3 = n + 3;
-    for(i = 2; i <= (n >> 2); i++) {
-        i4 = 1 + (i3 = np3 - (i2 = 1 + (i1 = i + i - 1)));
+    auto wtemp = sin(0.5 * theta);
+    auto wpr = -2.0 * wtemp * wtemp;
+    auto wpi = sin(theta);
+    auto wr = 1.0 + wpr;
+    auto wi = wpi;
+    auto np3 = n + 3;
+    double h1r;
+    for(auto i = 2; i <= (n >> 2); i++) {
+        auto i1 = 2 * i - 1;
+        auto i2 = 2 * i;
+        auto i3 = np3 - i2;
+        auto i4 = 1 + i3;
         h1r = c1 * (data[i1] + data[i3]);
-        h1i = c1 * (data[i2] - data[i4]);
-        h2r = -c2 * (data[i2] + data[i4]);
-        h2i = c2 * (data[i1] - data[i3]);
+        auto h1i = c1 * (data[i2] - data[i4]);
+        auto h2r = -c2 * (data[i2] + data[i4]);
+        auto h2i = c2 * (data[i1] - data[i3]);
         data[i1] = h1r + wr * h2r - wi * h2i;
         data[i2] = h1i + wr * h2i + wi * h2r;
         data[i3] = h1r - wr * h2r + wi * h2i;
@@ -358,23 +307,21 @@ static void realft(double data[], int n, int isign) {
 */
 static void twofft(double data1[], double data2[], double fft1[], double fft2[],
                    int n) {
-    void four1(double data[], int nn, int isign);
-    int nn3, nn2, jj, j;
-    double rep, rem, aip, aim;
 
-    nn3 = 1 + (nn2 = 2 + n + n);
-    for(j = 1, jj = 2; j <= n; j++, jj += 2) {
+    auto nn2 = 2 + n + n;
+    auto nn3 = 1 + nn2;
+    for(auto j = 1, jj = 2; j <= n; j++, jj += 2) {
         fft1[jj-1] = data1[j];
         fft1[jj] = data2[j];
     }
     four1(fft1, n, 1);
     fft2[1] = fft1[2];
     fft1[2] = fft2[2] = 0.0;
-    for(j = 3; j <= n + 1; j += 2) {
-        rep = 0.5 * (fft1[j] + fft1[nn2-j]);
-        rem = 0.5 * (fft1[j] - fft1[nn2-j]);
-        aip = 0.5 * (fft1[j+1] + fft1[nn3-j]);
-        aim = 0.5 * (fft1[j+1] - fft1[nn3-j]);
+    for(auto j = 3; j <= n + 1; j += 2) {
+        auto rep = 0.5 * (fft1[j] + fft1[nn2-j]);
+        auto rem = 0.5 * (fft1[j] - fft1[nn2-j]);
+        auto aip = 0.5 * (fft1[j+1] + fft1[nn3-j]);
+        auto aim = 0.5 * (fft1[j+1] - fft1[nn3-j]);
         fft1[j] = rep;
         fft1[j+1] = aim;
         fft1[nn2-j] = rep;
@@ -385,9 +332,6 @@ static void twofft(double data1[], double data2[], double fft1[], double fft2[],
         fft2[nn3-j] = rem;
     }
 }
-
-// static double sqrarg;
-#define SQR(a) (a == 0.0 ? 0.0 : a*a)//sqrarg*sqrarg)
 
 /* convlv()
    Convolves or deconvolves a real data set data[1..n] (including any
@@ -403,45 +347,36 @@ static void twofft(double data1[], double data2[], double fft1[], double fft2[],
    supplied in the calling program with dimensions [1..2*n], for
    consistency with twofft. n MUST be an integer power of two.
 */
-void convlv(double data[], int n, double respns[], int m,
+static void convlv(double data[], int n, double respns[], int m,
             int isign, double ans[]) {
-    int i, no2;
-    double dum, mag2, *fft;
 
-    fft = vector(n << 1);
+    double fft[n << 1];
 
-    for(i = 1; i <= (m - 1) / 2; i++)
+    for(auto i = 1; i <= (m - 1) / 2; i++)
         respns[n+1-i] = respns[m+1-i];
-    for(i = (m + 3) / 2; i <= n - (m - 1) / 2; i++)
+    for(auto i = (m + 3) / 2; i <= n - (m - 1) / 2; i++)
         respns[i] = 0.0;
     twofft(data, respns, fft, ans, n);
-    no2 = n >> 1;
-    for(i = 2; i <= n + 2; i += 2) {
+    auto no2 = n >> 1;
+    for(auto i = 2; i <= n + 2; i += 2) {
+        auto dum = ans[i-1];
         if(isign == 1) {
-            ans[i-1] = (fft[i-1] * (dum = ans[i-1]) - fft[i] * ans[i]) / no2;
+            ans[i-1] = (fft[i-1] * dum - fft[i] * ans[i]) / no2;
             ans[i] = (fft[i] * dum + fft[i-1] * ans[i]) / no2;
-        } else if(isign == -1) {
-            if((mag2 = SQR(ans[i-1]) + SQR(ans[i])) == 0.0) {
-                //  writeBetError(errModeAll,errFatal,
-                //   "savgol.C Deconvolving at response zero in convlv");
-                writeBetError("savgol.C Deconvoloving at repsonse zero in convlv");
+        } else {
+            auto mag2 = std::pow(ans[i-1], 2) + std::pow(ans[i], 2);
+            if(!almost_equal (mag2, 0.0, 4)) {
+                throw OpalException(
+                    "BetMath_savgol::convlv()",
+                    "Deconvoloving at repsonse zero.");
             }
-
-            ans[i-1] = (fft[i-1] * (dum = ans[i-1]) + fft[i] * ans[i]) / mag2 / no2;
+            ans[i-1] = (fft[i-1] * dum + fft[i] * ans[i]) / mag2 / no2;
             ans[i] = (fft[i] * dum - fft[i-1] * ans[i]) / mag2 / no2;
-        } else writeBetError("No meaning for isign in convlv");
-
-        //writeBetError(errModeAll,errFatal,
-        //        "No meaning for isign in convlv");
+        }
     }
     ans[2] = ans[n+1];
     realft(ans, n, -1);
-
-    free(fft);
 }
-
-#undef SQR
-
 
 /* sgSmooth()
    Smoothes c[0..n-1] with a Savitzky-Golay filter.
@@ -454,42 +389,43 @@ void convlv(double data[], int n, double respns[], int m,
       also equal to the highest conserved moment;
       usual values are m = 2 or m = 4.
 */
-void sgSmooth(double *c, int n, int nl, int nr, int ld, int m) {
-    double
-    *cIn, *cOut,
-    *cf;
-    int
-    isign,
-    nn, np, i;
+void sgSmooth(double c[], int n, int nl, int nr, int ld, int m) {
 
     // make dimension 2^m with m integer
-    nn = (int) pow(2.0, (int)(log(1.0 * n) / log(2.0)) + 1);
-
+    auto temp = n;
+    auto log2_of_n = 0;
+    while (temp >>= 1) ++log2_of_n;
+    auto nn = int(std::pow(2, log2_of_n + 1));
 
     // memory allocation
-    cf   = vector(nn);
-    cIn  = vector(nn);
-    cOut = vector(nn * 2);
+    double cf[nn];
+    double cIn[nn];
+    double cOut[nn * 2];
 
     // fill data array
     cIn[0] = 0.0;
     memcpy(&cIn[1], c, sizeof(double)*n);
-    for(i = n + 1; i <= nn; i++) cIn[i] = 0.0;
+    for(auto i = n + 1; i <= nn; i++) {
+        cIn[i] = 0.0;
+    }
 
     // create filter coefficients
-    np = nl + nr + 1;
+    auto np = nl + nr + 1;
     if((np % 2) == 0) ++np;
     savgol(cf, np, nl, nr, ld, m);
 
     // filter
-    isign = 1;
+    int isign = 1;
     convlv(cIn, nn, cf, np, isign, cOut);
 
     // move data back
     memcpy(c, &cOut[1], sizeof(double)*n);
-
-    free(cIn);
-    free(cOut);
-    free(cf);
-    //  writeBetError(errModeMaster,errMessage,"SG n = %d, nn = %d, np = %d",n,nn,np);
 }
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

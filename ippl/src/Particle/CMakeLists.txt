@@ -33,7 +33,6 @@ set (_HDRS
     ParticleInteractLayout.hpp
     ParticleInteractLayout.h
     ParticleLayout.hpp
-    ParticleLayoutFromGrid.h
     ParticleLayout.h
     ParticleSpatialLayout.hpp
     ParticleSpatialLayout.h

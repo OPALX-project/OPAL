@@ -1,15 +1,10 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Distribution.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.3.4.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
+// Distribution class
 //
-// Class: Distribution
-//   The class for the OPAL Distribution command.
+// Copyright (c) 2008-2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
 //
-// ------------------------------------------------------------------------
+// OPAL is licensed under GNU GPL version 3.
 
 #include "Distribution/Distribution.h"
 #include "Distribution/SigmaGenerator.h"
@@ -24,6 +19,10 @@
 #include <numeric>
 #include <limits>
 
+// IPPL
+#include "DataSource/DataConnect.h"
+#include "Utility/IpplTimings.h"
+
 #include "AbstractObjects/Expressions.h"
 #include "Utilities/Options.h"
 #include "AbstractObjects/OpalData.h"
@@ -31,7 +30,6 @@
 #include "Algorithms/PartBunchBase.h"
 #include "Algorithms/bet/EnvelopeBunch.h"
 #include "Structure/Beam.h"
-#include "Structure/BoundaryGeometry.h"
 #include "Algorithms/PartBinsCyc.h"
 #include "BasicActions/Option.h"
 #include "Distribution/LaserProfile.h"
@@ -42,11 +40,11 @@
 #include "Utilities/Util.h"
 #include "Utilities/EarlyLeaveException.h"
 
-#include <gsl/gsl_cdf.h>
-#include <gsl/gsl_randist.h>
-#include <gsl/gsl_sf_erf.h>
+#include <gsl/gsl_histogram.h>
 #include <gsl/gsl_linalg.h>
-#include <gsl/gsl_blas.h>
+#include <gsl/gsl_randist.h>
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_sf_erf.h>
 
 #include <sys/time.h>
 
@@ -115,21 +113,6 @@ Distribution::Distribution():
     laserImageName_m(""),
     laserIntensityCut_m(0.0),
     laserProfile_m(NULL),
-    darkCurrentParts_m(0),
-    darkInwardMargin_m(0.0),
-    eInitThreshold_m(0.0),
-    workFunction_m(0.0),
-    fieldEnhancement_m(0.0),
-    fieldThrFN_m(0.0),
-    maxFN_m(0),
-    paraFNA_m(0.0),
-    paraFNB_m(0.0),
-    paraFNY_m(0.0),
-    paraFNVYSe_m(0.0),
-    paraFNVYZe_m(0.0),
-    secondaryFlag_m(0),
-    ppVw_m(0.0),
-    vVThermal_m(0.0),
     I_m(0.0),
     E_m(0.0)
 {
@@ -143,8 +126,6 @@ Distribution::Distribution():
     } catch(...) {
         delete defaultDistribution;
     }
-
-    // setFieldEmissionParameters();
 
     gsl_rng_env_setup();
     randGen_m = gsl_rng_alloc(gsl_rng_default);
@@ -168,7 +149,7 @@ Distribution::Distribution(const std::string &name, Distribution *parent):
     tEmission_m(parent->tEmission_m),
     tBin_m(parent->tBin_m),
     currentEmissionTime_m(parent->currentEmissionTime_m),
-    currentEnergyBin_m(parent->currentEmissionTime_m),
+    currentEnergyBin_m(parent->currentEnergyBin_m),
     currentSampleBin_m(parent->currentSampleBin_m),
     numberOfEnergyBins_m(parent->numberOfEnergyBins_m),
     numberOfSampleBins_m(parent->numberOfSampleBins_m),
@@ -212,21 +193,6 @@ Distribution::Distribution(const std::string &name, Distribution *parent):
     laserImageName_m(parent->laserImageName_m),
     laserIntensityCut_m(parent->laserIntensityCut_m),
     laserProfile_m(NULL),
-    darkCurrentParts_m(parent->darkCurrentParts_m),
-    darkInwardMargin_m(parent->darkInwardMargin_m),
-    eInitThreshold_m(parent->eInitThreshold_m),
-    workFunction_m(parent->workFunction_m),
-    fieldEnhancement_m(parent->fieldEnhancement_m),
-    fieldThrFN_m(parent->fieldThrFN_m),
-    maxFN_m(parent->maxFN_m),
-    paraFNA_m(parent-> paraFNA_m),
-    paraFNB_m(parent-> paraFNB_m),
-    paraFNY_m(parent-> paraFNY_m),
-    paraFNVYSe_m(parent-> paraFNVYSe_m),
-    paraFNVYZe_m(parent-> paraFNVYZe_m),
-    secondaryFlag_m(parent->secondaryFlag_m),
-    ppVw_m(parent->ppVw_m),
-    vVThermal_m(parent->vVThermal_m),
     I_m(parent->I_m),
     E_m(parent->E_m),
     tRise_m(parent->tRise_m),
@@ -327,8 +293,6 @@ void Distribution::create(size_t &numberOfParticles, double massIneV) {
 
     gsl_rng_set(randGen_m, mySeed);
 
-    setFieldEmissionParameters();
-
     switch (distrTypeT_m) {
 
     case DistrTypeT::MATCHEDGAUSS:
@@ -417,115 +381,6 @@ void Distribution::create(size_t &numberOfParticles, double massIneV) {
     }
 }
 
-void  Distribution::createPriPart(PartBunchBase<double, 3> *beam, BoundaryGeometry &bg) {
-
-    if (Options::ppdebug) {  // This is Parallel Plate Benchmark.
-        int pc = 0;
-        size_t lowMark = beam->getLocalNum();
-        double vw = this->getVw();
-        double vt = this->getvVThermal();
-        double f_max = vw / vt * exp(-0.5);
-        double test_a = vt / vw;
-        double test_asq = test_a * test_a;
-        size_t count = 0;
-        size_t N_mean = static_cast<size_t>(floor(bg.getN() / Ippl::getNodes()));
-        size_t N_extra = static_cast<size_t>(bg.getN() - N_mean * Ippl::getNodes());
-        if (Ippl::myNode() == 0)
-            N_mean += N_extra;
-        if (bg.getN() != 0) {
-            for (size_t i = 0; i < bg.getN(); i++) {
-                if (pc == Ippl::myNode()) {
-                    if (count < N_mean) {
-                        /*==============Parallel Plate Benchmark=====================================*/
-                        double test_s = 1;
-                        double f_x = 0;
-                        double test_x = 0;
-                        while(test_s > f_x) {
-                            test_s = gsl_rng_uniform(randGen_m);
-                            test_s *= f_max;
-                            test_x = gsl_rng_uniform(randGen_m);
-                            test_x *= 10 * test_a; //range for normalized emission speed(0,10*test_a);
-                            f_x = test_x / test_asq * exp(-test_x * test_x / 2 / test_asq);
-                        }
-                        double v_emi = test_x * vw;
-
-                        double betaemit = v_emi / Physics::c;
-                        double betagamma = betaemit / sqrt(1 - betaemit * betaemit);
-                        /*============================================================================ */
-                        beam->create(1);
-                        if (pc != 0) {
-                            beam->R[lowMark + count] = bg.getCooridinate(Ippl::myNode() * N_mean + count + N_extra);
-                            beam->P[lowMark + count] = betagamma * bg.getMomenta(Ippl::myNode() * N_mean + count);
-                        } else {
-                            beam->R[lowMark + count] = bg.getCooridinate(count);
-                            beam->P[lowMark + count] = betagamma * bg.getMomenta(count);
-                        }
-                        beam->Bin[lowMark + count] = 0;
-                        beam->PType[lowMark + count] = ParticleType::REGULAR;
-                        beam->TriID[lowMark + count] = 0;
-                        beam->Q[lowMark + count] = beam->getChargePerParticle();
-                        beam->Ef[lowMark + count] = Vector_t(0.0);
-                        beam->Bf[lowMark + count] = Vector_t(0.0);
-                        beam->dt[lowMark + count] = beam->getdT();
-                        count ++;
-                    }
-                }
-                pc++;
-                if (pc == Ippl::getNodes())
-                    pc = 0;
-            }
-            bg.clearCooridinateArray();
-            bg.clearMomentaArray();
-            beam->boundp();
-        }
-        *gmsg << *beam << endl;
-
-    } else {// Normal procedure to create primary particles
-
-        int pc = 0;
-        size_t lowMark = beam->getLocalNum();
-        size_t count = 0;
-        size_t N_mean = static_cast<size_t>(floor(bg.getN() / Ippl::getNodes()));
-        size_t N_extra = static_cast<size_t>(bg.getN() - N_mean * Ippl::getNodes());
-
-        if (Ippl::myNode() == 0)
-            N_mean += N_extra;
-        if (bg.getN() != 0) {
-            for (size_t i = 0; i < bg.getN(); i++) {
-
-                if (pc == Ippl::myNode()) {
-                    if (count < N_mean) {
-                        beam->create(1);
-                        if (pc != 0)
-                            beam->R[lowMark + count] = bg.getCooridinate(Ippl::myNode() * N_mean + count + N_extra); // node 0 will emit the particle with coordinate ID from 0 to N_mean+N_extra, so other nodes should shift to node_number*N_mean+N_extra
-                        else
-                            beam->R[lowMark + count] = bg.getCooridinate(count); // for node0 the particle number N_mean =  N_mean + N_extra
-                        beam->P[lowMark + count] = Vector_t(0.0);
-                        beam->Bin[lowMark + count] = 0;
-                        beam->PType[lowMark + count] = ParticleType::REGULAR;
-                        beam->TriID[lowMark + count] = 0;
-                        beam->Q[lowMark + count] = beam->getChargePerParticle();
-                        beam->Ef[lowMark + count] = Vector_t(0.0);
-                        beam->Bf[lowMark + count] = Vector_t(0.0);
-                        beam->dt[lowMark + count] = beam->getdT();
-                        count++;
-
-                    }
-
-                }
-                pc++;
-                if (pc == Ippl::getNodes())
-                    pc = 0;
-
-            }
-
-        }
-        bg.clearCooridinateArray();
-        beam->boundp();//fixme if bg.getN()==0?
-    }
-    *gmsg << *beam << endl;
-}
-
 void Distribution::doRestartOpalT(PartBunchBase<double, 3> *beam, size_t /*Np*/, int restartStep, H5PartWrapper *dataSource) {
 
     IpplTimings::startTimer(beam->distrReload_m);
@@ -602,7 +457,7 @@ void Distribution::doRestartOpalCycl(PartBunchBase<double, 3> *beam,
     INFOMSG(beam->getNumBunch() << " Bunches(bins) exist in this file" << endl);
 
     double gamma = 1 + meanE / beam->getM() * 1.0e6;
-    double beta = sqrt(1.0 - (1.0 / std::pow(gamma, 2.0)));
+    double beta = std::sqrt(1.0 - (1.0 / std::pow(gamma, 2)));
 
     INFOMSG("* Gamma = " << gamma << ", Beta = " << beta << endl);
 
@@ -681,7 +536,7 @@ double Distribution::getTEmission() {
     cutoff_m = Attributes::getReal(itsAttr[Attrib::Legacy::Distribution::CUTOFF]);
     tRise_m = Attributes::getReal(itsAttr[Attrib::Distribution::TRISE]);
     tFall_m = Attributes::getReal(itsAttr[Attrib::Distribution::TFALL]);
-    double tratio = sqrt(2.0 * log(10.0)) - sqrt(2.0 * log(10.0 / 9.0));
+    double tratio = std::sqrt(2.0 * std::log(10.0)) - std::sqrt(2.0 * std::log(10.0 / 9.0));
     sigmaRise_m = tRise_m / tratio;
     sigmaFall_m = tFall_m / tratio;
 
@@ -690,7 +545,7 @@ double Distribution::getTEmission() {
         double a = tPulseLengthFWHM_m / 2;
         double sig = tRise_m / 2;
         double inv_erf08 = 0.906193802436823; // erfinv(0.8)
-        double sqr2 = sqrt(2.);
+        double sqr2 = std::sqrt(2.);
         double t = a - sqr2 * sig * inv_erf08;
         double tmps = sig;
         double tmpt = t;
@@ -705,7 +560,7 @@ double Distribution::getTEmission() {
         break;
     }
     case DistrTypeT::GUNGAUSSFLATTOPTH: {
-        tEmission_m = tPulseLengthFWHM_m + (cutoff_m - sqrt(2.0 * log(2.0))) * (sigmaRise_m + sigmaFall_m);
+        tEmission_m = tPulseLengthFWHM_m + (cutoff_m - std::sqrt(2.0 * std::log(2.0))) * (sigmaRise_m + sigmaFall_m);
         break;
     }
     default:
@@ -763,12 +618,6 @@ Inform &Distribution::printInfo(Inform &os) const {
     os << "* **********************************************************************************" << endl;
 
     return os;
-}
-
-const PartData &Distribution::getReference() const {
-    // Cast away const, to allow logically constant Distribution to update.
-    const_cast<Distribution *>(this)->update();
-    return particleRefData_m;
 }
 
 void Distribution::addDistributions() {
@@ -835,12 +684,12 @@ void Distribution::applyEmissionModel(double lowEnergyLimit, double &px, double 
 
 void Distribution::applyEmissModelAstra(double &px, double &py, double &pz, std::vector<double> &additionalRNs) {
 
-    double phi = 2.0 * acos(sqrt(additionalRNs[0]));
+    double phi = 2.0 * std::acos(std::sqrt(additionalRNs[0]));
     double theta = 2.0 * Physics::pi * additionalRNs[1];
 
-    px = pTotThermal_m * sin(phi) * cos(theta);
-    py = pTotThermal_m * sin(phi) * sin(theta);
-    pz = pTotThermal_m * std::abs(cos(phi));
+    px = pTotThermal_m * std::sin(phi) * std::cos(theta);
+    py = pTotThermal_m * std::sin(phi) * std::sin(theta);
+    pz = pTotThermal_m * std::abs(std::cos(phi));
 
 }
 
@@ -890,18 +739,18 @@ void Distribution::applyEmissModelNonEquil(double lowEnergyLimit,
     double energyInternal = energy + laserEnergy_m;
     double energyExternal = energy - lowEnergyLimit; // uniformly distributed (?) value between 0 and emitEnergyUpperLimit_m
 
-    double thetaInMax = acos(sqrt((lowEnergyLimit + laserEnergy_m) / (energyInternal)));
+    double thetaInMax = std::acos(std::sqrt((lowEnergyLimit + laserEnergy_m) / (energyInternal)));
     double thetaIn = additionalRNs[counter++] * thetaInMax;
-    double sinThetaOut = sin(thetaIn) * sqrt(energyInternal / energyExternal);
+    double sinThetaOut = std::sin(thetaIn) * std::sqrt(energyInternal / energyExternal);
     double phi = Physics::two_pi * additionalRNs[counter];
 
     // Compute emission momenta.
     double betaGammaExternal
-        = sqrt(std::pow(energyExternal / (Physics::m_e * 1.0e9) + 1.0, 2.0) - 1.0);
+        = std::sqrt(std::pow(energyExternal / (Physics::m_e * 1.0e9) + 1.0, 2) - 1.0);
 
-    bgx = betaGammaExternal * sinThetaOut * cos(phi);
-    bgy = betaGammaExternal * sinThetaOut * sin(phi);
-    bgz = betaGammaExternal * sqrt(1.0 - std::pow(sinThetaOut, 2.0));
+    bgx = betaGammaExternal * sinThetaOut * std::cos(phi);
+    bgy = betaGammaExternal * sinThetaOut * std::sin(phi);
+    bgz = betaGammaExternal * std::sqrt(1.0 - std::pow(sinThetaOut, 2));
 
 }
 
@@ -1053,9 +902,9 @@ void Distribution::chooseInputMomentumUnits(InputMomentumUnitsT::InputMomentumUn
 }
 
 double Distribution::converteVToBetaGamma(double valueIneV, double massIneV) {
-    double value = std::copysign(sqrt(std::pow(std::abs(valueIneV) / massIneV + 1.0, 2.0) - 1.0), valueIneV);
+    double value = std::copysign(std::sqrt(std::pow(std::abs(valueIneV) / massIneV + 1.0, 2) - 1.0), valueIneV);
     if (std::abs(value) < std::numeric_limits<double>::epsilon())
-        value = std::copysign(sqrt(2 * std::abs(valueIneV) / massIneV), valueIneV);
+        value = std::copysign(std::sqrt(2 * std::abs(valueIneV) / massIneV), valueIneV);
 
     return value;
 }
@@ -1082,22 +931,22 @@ void Distribution::createDistributionFlattop(size_t numberOfParticles, double ma
 void Distribution::createDistributionMultiGauss(size_t numberOfParticles, double massIneV) {
 
     gsl_qrng *quasiRandGen2D = selectRandomGenerator(Options::rngtype,2);
-    
+
     setDistParametersMultiGauss(massIneV);
 
-    // Generate the distribution 
+    // Generate the distribution
     int saveProcessor = -1;
     const int myNode = Ippl::myNode();
     const int numNodes = Ippl::getNodes();
     const bool scalable = Attributes::getBool(itsAttr[Attrib::Distribution::SCALABLE]);
 
     double L = (nPeaks_m - 1) * sepPeaks_m;
-    
-    for (size_t partIndex = 0; partIndex < numberOfParticles; partIndex++) {     
+
+    for (size_t partIndex = 0; partIndex < numberOfParticles; partIndex++) {
         double x = 0.0, y = 0.0, tOrZ = 0.0;
         double px = 0.0, py = 0.0, pz  = 0.0;
         double r;
-        
+
         // Transverse coordinates
         sampleUniformDisk(quasiRandGen2D, x, y);
         x *= sigmaR_m[0];
@@ -1129,7 +978,7 @@ void Distribution::createDistributionMultiGauss(size_t numberOfParticles, double
                 px = gsl_ran_gaussian(randGen_m, 1.0);
                 py = gsl_ran_gaussian(randGen_m, 1.0);
                 pz = gsl_ran_gaussian(randGen_m, 1.0);
-                allow = ( (std::pow( x / cutoffP_m[0], 2.0) + std::pow( y / cutoffP_m[1], 2.0) <= 1.0)
+                allow = ( (std::pow( x / cutoffP_m[0], 2) + std::pow( y / cutoffP_m[1], 2) <= 1.0)
                     && (std::abs(pz) <= cutoffP_m[2]) );
             }
             px *= sigmaP_m[0];
@@ -1150,7 +999,7 @@ void Distribution::createDistributionMultiGauss(size_t numberOfParticles, double
             pyDist_m.push_back(py);
             tOrZDist_m.push_back(tOrZ);
             pzDist_m.push_back(pz);
-        }    
+        }
     }
 
     gsl_qrng_free(quasiRandGen2D);
@@ -1436,7 +1285,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
         typedef boost::numeric::odeint::runge_kutta4<container_t> rk4_t;
         typedef ClosedOrbitFinder<double,unsigned int, rk4_t> cof_t;
 
-        cof_t cof(massIneV*1E-6, Nint, CyclotronElement, false, Nsectors);
+        cof_t cof(massIneV*1E-6, Nint, CyclotronElement, full, Nsectors);
         cof.findOrbit(accuracy, maxitCOF, E_m*1E-6, denergy, rguess, true);
 
         throw EarlyLeaveException("Distribution::CreateMatchedGaussDistribution()",
@@ -1526,13 +1375,13 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
         double pl = std::sqrt(pl2);
         sigmaP_m[1] = gamma*(pl - beta*gamma);
 
-        correlationMatrix_m(1, 0) = sigma(0, 1) / (sqrt(sigma(0, 0) * sigma(1, 1)));
-        correlationMatrix_m(3, 2) = sigma(2, 3) / (sqrt(sigma(2, 2) * sigma(3, 3)));
-        correlationMatrix_m(5, 4) = sigma(4, 5) / (sqrt(sigma(4, 4) * sigma(5, 5)));
-        correlationMatrix_m(4, 0) = sigma(0, 4) / (sqrt(sigma(0, 0) * sigma(4, 4)));
-        correlationMatrix_m(4, 1) = sigma(1, 4) / (sqrt(sigma(1, 1) * sigma(4, 4)));
-        correlationMatrix_m(5, 0) = sigma(0, 5) / (sqrt(sigma(0, 0) * sigma(5, 5)));
-        correlationMatrix_m(5, 1) = sigma(1, 5) / (sqrt(sigma(1, 1) * sigma(5, 5)));
+        correlationMatrix_m(1, 0) = sigma(0, 1) / (std::sqrt(sigma(0, 0) * sigma(1, 1)));
+        correlationMatrix_m(3, 2) = sigma(2, 3) / (std::sqrt(sigma(2, 2) * sigma(3, 3)));
+        correlationMatrix_m(5, 4) = sigma(4, 5) / (std::sqrt(sigma(4, 4) * sigma(5, 5)));
+        correlationMatrix_m(4, 0) = sigma(0, 4) / (std::sqrt(sigma(0, 0) * sigma(4, 4)));
+        correlationMatrix_m(4, 1) = sigma(1, 4) / (std::sqrt(sigma(1, 1) * sigma(4, 4)));
+        correlationMatrix_m(5, 0) = sigma(0, 5) / (std::sqrt(sigma(0, 0) * sigma(5, 5)));
+        correlationMatrix_m(5, 1) = sigma(1, 5) / (std::sqrt(sigma(1, 1) * sigma(5, 5)));
 
         createDistributionGauss(numberOfParticles, massIneV);
 
@@ -1562,46 +1411,6 @@ void Distribution::createDistributionGauss(size_t numberOfParticles, double mass
     } else {
         generateGaussZ(numberOfParticles);
     }
-}
-
-void  Distribution::createBoundaryGeometry(PartBunchBase<double, 3> *beam, BoundaryGeometry &bg) {
-
-    int pc = 0;
-    size_t N_mean = static_cast<size_t>(floor(bg.getN() / Ippl::getNodes()));
-    size_t N_extra = static_cast<size_t>(bg.getN() - N_mean * Ippl::getNodes());
-    if (Ippl::myNode() == 0)
-        N_mean += N_extra;
-    size_t count = 0;
-    size_t lowMark = beam->getLocalNum();
-    if (bg.getN() != 0) {
-
-        for (size_t i = 0; i < bg.getN(); i++) {
-            if (pc == Ippl::myNode()) {
-                if (count < N_mean) {
-                    beam->create(1);
-                    if (pc != 0)
-                        beam->R[lowMark + count] = bg.getCooridinate(Ippl::myNode() * N_mean + count + N_extra);
-                    else
-                        beam->R[lowMark + count] = bg.getCooridinate(count);
-                    beam->P[lowMark + count] = Vector_t(0.0);
-                    beam->Bin[lowMark + count] = 0;
-                    beam->PType[lowMark + count] = ParticleType::FIELDEMISSION;
-                    beam->TriID[lowMark + count] = 0;
-                    beam->Q[lowMark + count] = beam->getChargePerParticle();
-                    beam->Ef[lowMark + count] = Vector_t(0.0);
-                    beam->Bf[lowMark + count] = Vector_t(0.0);
-                    beam->dt[lowMark + count] = beam->getdT();
-                    count ++;
-                }
-            }
-            pc++;
-            if (pc == Ippl::getNodes())
-                pc = 0;
-        }
-    }
-    bg.clearCooridinateArray();
-    beam->boundp();
-    *gmsg << &beam << endl;
 }
 
 void Distribution::createOpalCycl(PartBunchBase<double, 3> *beam,
@@ -1715,9 +1524,9 @@ void Distribution::createOpalE(Beam *beam,
         break;
     }
 
-    tEmission_m = tPulseLengthFWHM_m + (cutoffR_m[2] - sqrt(2.0 * log(2.0)))
+    tEmission_m = tPulseLengthFWHM_m + (cutoffR_m[2] - std::sqrt(2.0 * std::log(2.0)))
         * (sigmaTRise_m + sigmaTFall_m);
-    double beamWidth = tEmission_m * Physics::c * sqrt(1.0 - (1.0 / std::pow(beam->getGamma(), 2)));
+    double beamWidth = tEmission_m * Physics::c * std::sqrt(1.0 - (1.0 / std::pow(beam->getGamma(), 2)));
     double beamCenter = -1.0 * beamWidth / 2.0;
 
     envelopeBunch->initialize(beam->getNumberOfSlices(),
@@ -1925,8 +1734,8 @@ size_t Distribution::emitParticles(PartBunchBase<double, 3> *beam, double eZ) {
          */
         std::vector<size_t> particlesToBeErased;
         double phiEffective = (cathodeWorkFunc_m
-                                     - sqrt(std::max(0.0, (Physics::q_e * beam->getQ() * eZ) /
-                                                     (4.0 * Physics::pi * Physics::epsilon_0))));
+                               - std::sqrt(std::max(0.0, (Physics::q_e * beam->getQ() * eZ) /
+                                                    (4.0 * Physics::pi * Physics::epsilon_0))));
         double lowEnergyLimit = cathodeFermiEnergy_m + phiEffective - laserEnergy_m;
 
         for (size_t particleIndex = 0; particleIndex < tOrZDist_m.size(); particleIndex++) {
@@ -1959,9 +1768,9 @@ size_t Distribution::emitParticles(PartBunchBase<double, 3> *beam, double eZ) {
 
                 double particleGamma
                     = std::sqrt(1.0
-                                + std::pow(px, 2.0)
-                                + std::pow(py, 2.0)
-                                + std::pow(pz, 2.0));
+                                + std::pow(px, 2)
+                                + std::pow(py, 2)
+                                + std::pow(pz, 2));
 
                 beam->R[numberOfEmittedParticles]
                     = Vector_t(oneOverCDt * (xDist_m.at(particleIndex)
@@ -2106,7 +1915,7 @@ void Distribution::sampleUniformDisk(gsl_qrng* quasiRandGen2D, double& x1, doubl
             randNums[0] = gsl_rng_uniform(randGen_m);
             randNums[1] = gsl_rng_uniform(randGen_m);
         }
-        
+
         x1 = 2 * randNums[0] - 1;
         x2 = 2 * randNums[1] - 1;
         allow = (std::pow(x1, 2) + std::pow(x2, 2) <= 1);
@@ -2188,7 +1997,7 @@ void Distribution::generateAstraFlattopT(size_t numberOfParticles) {
     double a = tPulseLengthFWHM_m / 2.;
     double sig = tRise_m / 2.;
     double inv_erf08 = 0.906193802436823; // erfinv(0.8)
-    double sqr2 = sqrt(2.0);
+    double sqr2 = std::sqrt(2.0);
     double t = a - sqr2 * sig * inv_erf08;
     double tmps = sig;
     double tmpt = t;
@@ -2217,7 +2026,7 @@ void Distribution::generateAstraFlattopT(size_t numberOfParticles) {
 
     // sample the function that describes the histogram of the requested distribution
     for (int i = 0; i < binTotal + 1; ++ i, x += dx, weight = 6. - weight) {
-        distributionTable[i] = gsl_sf_erf((x + a) / (sqrt(2) * sig)) - gsl_sf_erf((x - a) / (sqrt(2) * sig));
+        distributionTable[i] = gsl_sf_erf((x + a) / (sqr2 * sig)) - gsl_sf_erf((x - a) / (sqr2 * sig));
         tot += distributionTable[i] * weight;
     }
     tot -= distributionTable[binTotal] * (5. - weight);
@@ -2303,17 +2112,17 @@ void Distribution::generateBinomial(size_t numberOfParticles) {
     Vector_t alpha, beta, gamma;
     for (unsigned int index = 0; index < 3; index++) {
         emittance(index) = sigmaR_m[index] * sigmaP_m[index]
-            * cos(asin(correlationMatrix_m(2 * index + 1, 2 * index)));
+            * std::cos(std::asin(correlationMatrix_m(2 * index + 1, 2 * index)));
 
         if (std::abs(emittance(index)) > std::numeric_limits<double>::epsilon()) {
-            beta(index)  = std::pow(sigmaR_m[index], 2.0) / emittance(index);
-            gamma(index) = std::pow(sigmaP_m[index], 2.0) / emittance(index);
+            beta(index)  = std::pow(sigmaR_m[index], 2) / emittance(index);
+            gamma(index) = std::pow(sigmaP_m[index], 2) / emittance(index);
         } else {
-            beta(index)  = sqrt(std::numeric_limits<double>::max());
-            gamma(index) = sqrt(std::numeric_limits<double>::max());
+            beta(index)  = std::sqrt(std::numeric_limits<double>::max());
+            gamma(index) = std::sqrt(std::numeric_limits<double>::max());
         }
         alpha(index) = -correlationMatrix_m(2 * index + 1, 2 * index)
-                        * sqrt(beta(index) * gamma(index));
+                        * std::sqrt(beta(index) * gamma(index));
     }
 
     Vector_t M, PM, L, PL, X, PX;
@@ -2323,14 +2132,14 @@ void Distribution::generateBinomial(size_t numberOfParticles) {
     for (unsigned int index = 0; index < 3; index++) {
         // gamma(index) *= cutoffR_m[index];
         // beta(index)  *= cutoffP_m[index];
-        COSCHI[index] =  sqrt(1.0 / (1.0 + std::pow(alpha(index), 2.0)));
+        COSCHI[index] =  std::sqrt(1.0 / (1.0 + std::pow(alpha(index), 2)));
         SINCHI[index] = -alpha(index) * COSCHI[index];
-        CHI[index]    =  atan2(SINCHI[index], COSCHI[index]);
+        CHI[index]    =  std::atan2(SINCHI[index], COSCHI[index]);
         AMI[index]    =  1.0 / mBinomial_m[index];
-        M[index]      =  sqrt(emittance(index) * beta(index));
-        PM[index]     =  sqrt(emittance(index) * gamma(index));
-        L[index]      =  sqrt((mBinomial_m[index] + 1.0) / 2.0) * M[index];
-        PL[index]     =  sqrt((mBinomial_m[index] + 1.0) / 2.0) * PM[index];
+        M[index]      =  std::sqrt(emittance(index) * beta(index));
+        PM[index]     =  std::sqrt(emittance(index) * gamma(index));
+        L[index]      =  std::sqrt((mBinomial_m[index] + 1.0) / 2.0) * M[index];
+        PL[index]     =  std::sqrt((mBinomial_m[index] + 1.0) / 2.0) * PM[index];
 
         if (mBinomial_m[index] < 10000) {
             X[index] =  L[index];
@@ -2348,19 +2157,19 @@ void Distribution::generateBinomial(size_t numberOfParticles) {
     const int numNodes = Ippl::getNodes();
     const bool scalable = Attributes::getBool(itsAttr[Attrib::Distribution::SCALABLE]);
 
-    double temp = 1.0 - std::pow(correlationMatrix_m(1, 0), 2.0);
-    const double tempa = copysign(sqrt(std::abs(temp)), temp);
+    double temp = 1.0 - std::pow(correlationMatrix_m(1, 0), 2);
+    const double tempa = std::copysign(std::sqrt(std::abs(temp)), temp);
     const double l32 = (correlationMatrix_m(4, 1) -
                         correlationMatrix_m(1, 0) * correlationMatrix_m(4, 0)) / tempa;
-    temp = 1 - std::pow(correlationMatrix_m(4, 0), 2.0) - l32 * l32;
-    const double l33 = copysign(sqrt(std::abs(temp)), temp);
+    temp = 1 - std::pow(correlationMatrix_m(4, 0), 2) - l32 * l32;
+    const double l33 = std::copysign(std::sqrt(std::abs(temp)), temp);
 
     const double l42 = (correlationMatrix_m(5, 1) -
                         correlationMatrix_m(1, 0) * correlationMatrix_m(5, 0)) / tempa;
     const double l43 = (correlationMatrix_m(5, 4) -
                         correlationMatrix_m(4, 0) * correlationMatrix_m(5, 0) - l42 * l32) / l33;
-    temp = 1 - std::pow(correlationMatrix_m(5, 0), 2.0) - l42 * l42 - l43 * l43;
-    const double l44 = copysign(sqrt(std::abs(temp)), temp);
+    temp = 1 - std::pow(correlationMatrix_m(5, 0), 2) - l42 * l42 - l43 * l43;
+    const double l44 = std::copysign(std::sqrt(std::abs(temp)), temp);
 
     Vector_t x = Vector_t(0.0);
     Vector_t p = Vector_t(0.0);
@@ -2373,22 +2182,22 @@ void Distribution::generateBinomial(size_t numberOfParticles) {
 
         A = splitter[0]->get(gsl_rng_uniform(randGen_m));
         AL = Physics::two_pi * gsl_rng_uniform(randGen_m);
-        Ux = A * cos(AL);
-        Vx = A * sin(AL);
+        Ux = A * std::cos(AL);
+        Vx = A * std::sin(AL);
         x[0] = X[0] * Ux;
         p[0] = PX[0] * (Ux * SINCHI[0] + Vx * COSCHI[0]);
 
         A = splitter[1]->get(gsl_rng_uniform(randGen_m));
         AL = Physics::two_pi * gsl_rng_uniform(randGen_m);
-        U = A * cos(AL);
-        V = A * sin(AL);
+        U = A * std::cos(AL);
+        V = A * std::sin(AL);
         x[1] = X[1] * U;
         p[1] = PX[1] * (U * SINCHI[1] + V * COSCHI[1]);
 
         A = splitter[2]->get(gsl_rng_uniform(randGen_m));
         AL = Physics::two_pi * gsl_rng_uniform(randGen_m);
-        U = A * cos(AL);
-        V = A * sin(AL);
+        U = A * std::cos(AL);
+        V = A * std::sin(AL);
         x[2] = X[2] *  (Ux * correlationMatrix_m(4, 0) + Vx * l32 + U * l33);
         p[2] = PX[2] * (Ux * correlationMatrix_m(5, 0) + Vx * l42 + U * l43 + V * l44);
 
@@ -2657,8 +2466,8 @@ void Distribution::generateGaussZ(size_t numberOfParticles) {
             z  = gsl_vector_get(ry, 4);
             pz = gsl_vector_get(ry, 5);
 
-            bool xAndYOk   = (std::pow( x / cutoffR_m[0], 2.0) + std::pow( y / cutoffR_m[1], 2.0) <= 1.0);
-            bool pxAndPyOk = (std::pow(px / cutoffP_m[0], 2.0) + std::pow(py / cutoffP_m[1], 2.0) <= 1.0);
+            bool xAndYOk   = (std::pow( x / cutoffR_m[0], 2) + std::pow( y / cutoffR_m[1], 2) <= 1.0);
+            bool pxAndPyOk = (std::pow(px / cutoffP_m[0], 2) + std::pow(py / cutoffP_m[1], 2) <= 1.0);
 
             bool zOk  = (std::abs(z)  <= cutoffR_m[2]);
             bool pzOk = (std::abs(pz) <= cutoffP_m[2]);
@@ -2685,6 +2494,8 @@ void Distribution::generateGaussZ(size_t numberOfParticles) {
             pyDist_m.push_back(py);
             tOrZDist_m.push_back(z);
             pzDist_m.push_back(avrgpz_m + pz);
+
+            //*gmsg << "x,y,z,px,py,pz " << std::setw(11) << x << std::setw(11) << y << std::setw(11) << z << std::setw(11) << px << std::setw(11) << py << std::setw(11) << avrgpz_m + pz << endl;
         }
     }
 
@@ -2696,12 +2507,12 @@ void Distribution::generateGaussZ(size_t numberOfParticles) {
 void Distribution::generateLongFlattopT(size_t numberOfParticles) {
 
     double flattopTime = tPulseLengthFWHM_m
-        - sqrt(2.0 * log(2.0)) * (sigmaTRise_m + sigmaTFall_m);
+        - std::sqrt(2.0 * std::log(2.0)) * (sigmaTRise_m + sigmaTFall_m);
 
     if (flattopTime < 0.0)
         flattopTime = 0.0;
 
-    double normalizedFlankArea = 0.5 * sqrt(2.0 * Physics::pi) * gsl_sf_erf(cutoffR_m[2] / sqrt(2.0));
+    double normalizedFlankArea = 0.5 * std::sqrt(2.0 * Physics::pi) * gsl_sf_erf(cutoffR_m[2] / std::sqrt(2.0));
     double distArea = flattopTime
         + (sigmaTRise_m + sigmaTFall_m) * normalizedFlankArea;
 
@@ -2785,7 +2596,7 @@ void Distribution::generateLongFlattopT(size_t numberOfParticles) {
                 t = randNums[0] * flattopTime;
 
                 double funcValue = (1.0 + modulationAmp
-                                    * sin(Physics::two_pi * t / modulationPeriod))
+                                    * std::sin(Physics::two_pi * t / modulationPeriod))
                     / (1.0 + std::abs(modulationAmp));
 
                 allow = (randNums[1] <= funcValue);
@@ -2889,8 +2700,8 @@ void Distribution::generateTransverseGauss(size_t numberOfParticles) {
             y = gsl_vector_get(ry, 2);
             py = gsl_vector_get(ry, 3);
 
-            bool xAndYOk   = (std::pow( x / cutoffR_m[0], 2.0) + std::pow( y / cutoffR_m[1], 2.0) <= 1.0);
-            bool pxAndPyOk = (std::pow(px / cutoffP_m[0], 2.0) + std::pow(py / cutoffP_m[1], 2.0) <= 1.0);
+            bool xAndYOk   = (std::pow( x / cutoffR_m[0], 2) + std::pow( y / cutoffR_m[1], 2) <= 1.0);
+            bool pxAndPyOk = (std::pow(px / cutoffP_m[0], 2) + std::pow(py / cutoffP_m[1], 2) <= 1.0);
 
             allow = (xAndYOk && pxAndPyOk);
 
@@ -3097,12 +2908,6 @@ void Distribution::printDist(Inform &os, size_t numberOfParticles) const {
     case DistrTypeT::BINOMIAL:
         printDistBinomial(os);
         break;
-    case DistrTypeT::SURFACEEMISSION:
-        printDistSurfEmission(os);
-        break;
-    case DistrTypeT::SURFACERANDCREATE:
-        printDistSurfAndCreate(os);
-        break;
     case DistrTypeT::FLATTOP:
     case DistrTypeT::GUNGAUSSFLATTOPTH:
     case DistrTypeT::ASTRAFLATTOPTH:
@@ -3231,8 +3036,8 @@ void Distribution::printDistMultiGauss(Inform &os) const {
 
     os << "* SIGMAZ                        = " << sigmaR_m[2] << longUnits << endl;
     os << "* CUTOFFLONG                    = " << cutoffR_m[2] << " [units of SIGMAZ]" << endl;
-    os << "* SEPPEAKS			   = " << sepPeaks_m << longUnits << endl;
-    os << "* NPEAKS			   = " << nPeaks_m << endl;
+    os << "* SEPPEAKS                      = " << sepPeaks_m << longUnits << endl;
+    os << "* NPEAKS                        = " << nPeaks_m << endl;
 
     if (!emitting_m) {
         os << "* SIGMAPX                        = " << sigmaP_m[0] << " [Beta Gamma]" << endl;
@@ -3334,80 +3139,6 @@ void Distribution::printDistGauss(Inform &os) const {
         os << "* CUTOFFPY   = " << cutoffP_m[1] << " [units of SIGMAPY]" << endl;
         os << "* CUTOFFPZ   = " << cutoffP_m[2] << " [units of SIGMAPY]" << endl;
     }
-}
-
-void Distribution::printDistSurfEmission(Inform &os) const {
-
-    os << "* Distribution type: SURFACEEMISION" << endl;
-    os << "* " << endl;
-    os << "* * Number of electrons for surface emission  "
-       << Attributes::getReal(itsAttr[Attrib::Distribution::NPDARKCUR]) << endl;
-    os << "* * Initialized electrons inward margin for surface emission  "
-       << Attributes::getReal(itsAttr[Attrib::Distribution::INWARDMARGIN]) << endl;
-    os << "* * E field threshold (MV), only in position r with E(r)>EINITHR that "
-       << "particles will be initialized   "
-       << Attributes::getReal(itsAttr[Attrib::Distribution::EINITHR]) << endl;
-    os << "* * Field enhancement for surface emission  "
-       << Attributes::getReal(itsAttr[Attrib::Distribution::FNBETA]) << endl;
-    os << "* * Maximum number of electrons emitted from a single triangle for "
-       << "Fowler-Nordheim emission  "
-       << Attributes::getReal(itsAttr[Attrib::Distribution::FNMAXEMI]) << endl;
-    os << "* * Field Threshold for Fowler-Nordheim emission (MV/m)  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::FNFIELDTHR]) << endl;
-    os << "* * Empirical constant A for Fowler-Nordheim emission model  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::FNA]) << endl;
-    os << "* * Empirical constant B for Fowler-Nordheim emission model  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::FNB]) << endl;
-    os << "* * Constant for image charge effect parameter y(E) in Fowler-Nordheim "
-       << "emission model  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::FNY]) << endl;
-    os << "* * Zero order constant for image charge effect parameter v(y) in "
-       << "Fowler-Nordheim emission model  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::FNVYZERO]) << endl;
-    os << "* * Second order constant for image charge effect parameter v(y) in "
-       << "Fowler-Nordheim emission model  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::FNVYSECOND]) << endl;
-    os << "* * Select secondary model type(0:no secondary emission; 1:Furman-Pivi; "
-       << "2 or larger: Vaughan's model  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::SECONDARYFLAG]) << endl;
-    os << "* * Secondary emission mode type(true: emit n true secondaries; false: "
-       << "emit one particle with n times charge  "
-       << Attributes::getBool(itsAttr[Attrib::Distribution::NEMISSIONMODE]) << endl;
-    os << "* * Sey_0 in Vaughan's model "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::VSEYZERO]) << endl;
-    os << "* * Energy related to sey_0 in Vaughan's model in eV  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::VEZERO]) << endl;
-    os << "* * Sey max in Vaughan's model  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::VSEYMAX]) << endl;
-    os << "* * Emax in Vaughan's model in eV  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::VEMAX]) << endl;
-    os << "* * Fitting parameter denotes the roughness of surface for impact "
-       << "energy in Vaughan's model  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::VKENERGY]) << endl;
-    os << "* * Fitting parameter denotes the roughness of surface for impact angle "
-       << "in Vaughan's model  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::VKTHETA]) << endl;
-    os << "* * Thermal velocity of Maxwellian distribution of secondaries in "
-       << "Vaughan's model  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::VVTHERMAL]) << endl;
-    os << "* * VW denote the velocity scalar for Parallel plate benchmark  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::VW]) << endl;
-    os << "* * Material type number of the cavity surface for Furman-Pivi's model, "
-       << "0 for copper, 1 for stainless steel  "
-       <<  Attributes::getReal(itsAttr[Attrib::Distribution::SURFMATERIAL]) << endl;
-}
-
-void Distribution::printDistSurfAndCreate(Inform &os) const {
-
-    os << "* Distribution type: SURFACERANDCREATE" << endl;
-    os << "* " << endl;
-    os << "* * Number of electrons initialized on the surface as primaries  "
-       << Attributes::getReal(itsAttr[Attrib::Distribution::NPDARKCUR]) << endl;
-    os << "* * Initialized electrons inward margin for surface emission  "
-       << Attributes::getReal(itsAttr[Attrib::Distribution::INWARDMARGIN]) << endl;
-    os << "* * E field threshold (MV), only in position r with E(r)>EINITHR that "
-       << "particles will be initialized   "
-       << Attributes::getReal(itsAttr[Attrib::Distribution::EINITHR]) << endl;
 }
 
 void Distribution::printEmissionModel(Inform &os) const {
@@ -3562,8 +3293,6 @@ void Distribution::setAttributes() {
                                  "BINOMIAL, "
                                  "FLATTOP, "
                                  "MULTIGAUSS, "
-                                 "SURFACEEMISSION, "
-                                 "SURFACERANDCREATE, "
                                  "GUNGAUSSFLATTOPTH, "
                                  "ASTRAFLATTOPTH, "
                                  "GAUSSMATCHED");
@@ -3794,80 +3523,6 @@ void Distribution::setAttributes() {
     itsAttr[Attrib::Distribution::ROTATE270]
         = Attributes::makeBool("ROTATE270", "Rotate laser profile 270 degrees counter clockwise", false);
 
-    // Dark current and field emission model parameters.
-    itsAttr[Attrib::Distribution::NPDARKCUR]
-        = Attributes::makeReal("NPDARKCUR", "Number of dark current particles.", 1000.0);
-    itsAttr[Attrib::Distribution::INWARDMARGIN]
-        = Attributes::makeReal("INWARDMARGIN", "Inward margin of initialized dark "
-                               "current particle positions.", 0.001);
-    itsAttr[Attrib::Distribution::EINITHR]
-        = Attributes::makeReal("EINITHR", "E field threshold (MV/m), only in position r "
-                               "with E(r)>EINITHR that particles will be "
-                               "initialized.", 0.0);
-    itsAttr[Attrib::Distribution::FNA]
-        = Attributes::makeReal("FNA", "Empirical constant A for Fowler-Nordheim "
-                               "emission model.", 1.54e-6);
-    itsAttr[Attrib::Distribution::FNB]
-        = Attributes::makeReal("FNB", "Empirical constant B for Fowler-Nordheim "
-                               "emission model.", 6.83e9);
-    itsAttr[Attrib::Distribution::FNY]
-        = Attributes::makeReal("FNY", "Constant for image charge effect parameter y(E) "
-                               "in Fowler-Nordheim emission model.", 3.795e-5);
-    itsAttr[Attrib::Distribution::FNVYZERO]
-        = Attributes::makeReal("FNVYZERO", "Zero order constant for v(y) function in "
-                               "Fowler-Nordheim emission model.", 0.9632);
-    itsAttr[Attrib::Distribution::FNVYSECOND]
-        = Attributes::makeReal("FNVYSECOND", "Second order constant for v(y) function "
-                               "in Fowler-Nordheim emission model.", 1.065);
-    itsAttr[Attrib::Distribution::FNPHIW]
-        = Attributes::makeReal("FNPHIW", "Work function of gun surface material (eV).",
-                               4.65);
-    itsAttr[Attrib::Distribution::FNBETA]
-        = Attributes::makeReal("FNBETA", "Field enhancement factor for Fowler-Nordheim "
-                               "emission.", 50.0);
-    itsAttr[Attrib::Distribution::FNFIELDTHR]
-        = Attributes::makeReal("FNFIELDTHR", "Field threshold for Fowler-Nordheim "
-                               "emission (MV/m).", 30.0);
-    itsAttr[Attrib::Distribution::FNMAXEMI]
-        = Attributes::makeReal("FNMAXEMI", "Maximum number of electrons emitted from a "
-                               "single triangle for Fowler-Nordheim "
-                               "emission.", 20.0);
-    itsAttr[Attrib::Distribution::SECONDARYFLAG]
-        = Attributes::makeReal("SECONDARYFLAG", "Select the secondary model type 0:no "
-                               "secondary emission; 1:Furman-Pivi; "
-                               "2 or larger: Vaughan's model.", 0.0);
-    itsAttr[Attrib::Distribution::NEMISSIONMODE]
-        = Attributes::makeBool("NEMISSIONMODE", "Secondary emission mode type true: "
-                               "emit n true secondaries; false: emit "
-                               "one particle with n times charge.", true);
-    itsAttr[Attrib::Distribution::VSEYZERO]
-        = Attributes::makeReal("VSEYZERO", "Sey_0 in Vaughan's model.", 0.5);
-    itsAttr[Attrib::Distribution::VEZERO]
-        = Attributes::makeReal("VEZERO", "Energy related to sey_0 in Vaughan's model "
-                               "in eV.", 12.5);
-    itsAttr[Attrib::Distribution::VSEYMAX]
-        = Attributes::makeReal("VSEYMAX", "Sey max in Vaughan's model.", 2.22);
-    itsAttr[Attrib::Distribution::VEMAX]
-        = Attributes::makeReal("VEMAX", "Emax in Vaughan's model in eV.", 165.0);
-    itsAttr[Attrib::Distribution::VKENERGY]
-        = Attributes::makeReal("VKENERGY", "Fitting parameter denotes the roughness of "
-                               "surface for impact energy in Vaughan's "
-                               "model.", 1.0);
-    itsAttr[Attrib::Distribution::VKTHETA]
-        = Attributes::makeReal("VKTHETA", "Fitting parameter denotes the roughness of "
-                               "surface for impact angle in Vaughan's "
-                               "model.", 1.0);
-    itsAttr[Attrib::Distribution::VVTHERMAL]
-        = Attributes::makeReal("VVTHERMAL", "Thermal velocity of Maxwellian distribution "
-                               "of secondaries in Vaughan's model.", 7.268929821 * 1e5);
-    itsAttr[Attrib::Distribution::VW]
-        = Attributes::makeReal("VW", "VW denote the velocity scalar for parallel plate "
-                               "benchmark.", 1.0);
-    itsAttr[Attrib::Distribution::SURFMATERIAL]
-        = Attributes::makeReal("SURFMATERIAL", "Material type number of the cavity "
-                               "surface for Furman-Pivi's model, 0 "
-                               "for copper, 1 for stainless steel.", 0.0);
-
     /*
      *   Feature request Issue #14
      */
@@ -3937,26 +3592,6 @@ void Distribution::setAttributes() {
     registerOwnership(AttributeHandler::STATEMENT);
 }
 
-void Distribution::setFieldEmissionParameters() {
-
-    darkCurrentParts_m = static_cast<size_t> (Attributes::getReal(itsAttr[Attrib::Distribution::NPDARKCUR]));
-    darkInwardMargin_m = Attributes::getReal(itsAttr[Attrib::Distribution::INWARDMARGIN]);
-    eInitThreshold_m   = Attributes::getReal(itsAttr[Attrib::Distribution::EINITHR]);
-    workFunction_m     = Attributes::getReal(itsAttr[Attrib::Distribution::FNPHIW]);
-    fieldEnhancement_m = Attributes::getReal(itsAttr[Attrib::Distribution::FNBETA]);
-    maxFN_m            = static_cast<size_t> (Attributes::getReal(itsAttr[Attrib::Distribution::FNMAXEMI]));
-    fieldThrFN_m       = Attributes::getReal(itsAttr[Attrib::Distribution::FNFIELDTHR]);
-    paraFNA_m          = Attributes::getReal(itsAttr[Attrib::Distribution::FNA]);
-    paraFNB_m          = Attributes::getReal(itsAttr[Attrib::Distribution::FNB]);
-    paraFNY_m          = Attributes::getReal(itsAttr[Attrib::Distribution::FNY]);
-    paraFNVYZe_m       = Attributes::getReal(itsAttr[Attrib::Distribution::FNVYZERO]);
-    paraFNVYSe_m       = Attributes::getReal(itsAttr[Attrib::Distribution::FNVYSECOND]);
-    secondaryFlag_m    = Attributes::getReal(itsAttr[Attrib::Distribution::SECONDARYFLAG]);
-    ppVw_m             = Attributes::getReal(itsAttr[Attrib::Distribution::VW]);
-    vVThermal_m        = Attributes::getReal(itsAttr[Attrib::Distribution::VVTHERMAL]);
-
-}
-
 void Distribution::setDistToEmitted(bool emitted) {
     emitting_m = emitted;
 }
@@ -3982,10 +3617,6 @@ void Distribution::setDistType() {
         distrTypeT_m = DistrTypeT::GUNGAUSSFLATTOPTH;
     else if (distT_m == "ASTRAFLATTOPTH")
         distrTypeT_m = DistrTypeT::ASTRAFLATTOPTH;
-    else if (distT_m == "SURFACEEMISSION")
-        distrTypeT_m = DistrTypeT::SURFACEEMISSION;
-    else if (distT_m == "SURFACERANDCREATE")
-        distrTypeT_m = DistrTypeT::SURFACERANDCREATE;
     else if (distT_m == "GAUSSMATCHED")
         distrTypeT_m = DistrTypeT::MATCHEDGAUSS;
     else {
@@ -3999,8 +3630,6 @@ void Distribution::setDistType() {
                             "MULTIGAUSS\n"
                             "GUNGAUSSFLATTOPTH\n"
                             "ASTRAFLATTTOPTH\n"
-                            "SURFACEEMISSION\n"
-                            "SURFACERANDCREATE\n"
                             "GAUSSMATCHED");
     }
 }
@@ -4011,7 +3640,7 @@ void Distribution::setSigmaR_m() {
                         std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAT])));
     // SIGMAZ overrides SIGMAT
     if (std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAZ])) != 0)
-        sigmaR_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAZ]));    
+        sigmaR_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAZ]));
     // SIGMAR overrides SIGMAX/Y
     if (std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR])) > 0.0) {
         sigmaR_m[0] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAR]));
@@ -4030,7 +3659,7 @@ void Distribution::setSigmaP_m(double massIneV) {
         WARNMSG("The attribute SIGMAPT may be removed in a future version\n"
                 << "use  SIGMAPZ instead" << endl);
     }
-    
+
     // Check what input units we are using for momentum.
     if (inputMoUnits_m == InputMomentumUnitsT::EV) {
         sigmaP_m[0] = converteVToBetaGamma(sigmaP_m[0], massIneV);
@@ -4048,7 +3677,7 @@ void Distribution::setEmissionTime(double &maxT, double &minT) {
         case DistrTypeT::FLATTOP:
         case DistrTypeT::GAUSS:
         case DistrTypeT::GUNGAUSSFLATTOPTH:
-            tEmission_m = tPulseLengthFWHM_m + (cutoffR_m[2] - sqrt(2.0 * log(2.0)))
+            tEmission_m = tPulseLengthFWHM_m + (cutoffR_m[2] - std::sqrt(2.0 * std::log(2.0)))
                 * (sigmaTRise_m + sigmaTFall_m);
             break;
         case DistrTypeT::ASTRAFLATTOPTH:
@@ -4174,7 +3803,7 @@ void Distribution::setDistParametersFlattop(double massIneV) {
         if (std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::TRISE])) > 0.0
             || std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::TFALL])) > 0.0) {
 
-            double timeRatio = sqrt(2.0 * log(10.0)) - sqrt(2.0 * log(10.0 / 9.0));
+            double timeRatio = std::sqrt(2.0 * std::log(10.0)) - std::sqrt(2.0 * std::log(10.0 / 9.0));
 
             if (std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::TRISE])) > 0.0)
                 sigmaTRise_m = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::TRISE]))
@@ -4218,7 +3847,7 @@ void Distribution::setDistParametersMultiGauss(double massIneV) {
 
     setSigmaR_m();
     cutoffR_m[2] = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFLONG]));
-    
+
     if (!emitting_m)
         setSigmaP_m(massIneV);
 
@@ -4291,10 +3920,10 @@ void Distribution::setDistParametersGauss(double massIneV) {
 
     if (distrTypeT_m != DistrTypeT::MATCHEDGAUSS)
         setSigmaR_m();
-    
+
     if (emitting_m) {
         sigmaR_m[2] = 0.0;
-        
+
         sigmaTRise_m = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAT]));
         sigmaTFall_m = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::SIGMAT]));
 
@@ -4307,7 +3936,7 @@ void Distribution::setDistParametersGauss(double massIneV) {
         if (std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::TRISE])) > 0.0
             || std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::TFALL])) > 0.0) {
 
-            double timeRatio = sqrt(2.0 * log(10.0)) - sqrt(2.0 * log(10.0 / 9.0));
+            double timeRatio = std::sqrt(2.0 * std::log(10.0)) - std::sqrt(2.0 * std::log(10.0 / 9.0));
 
             if (std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::TRISE])) > 0.0)
                 sigmaTRise_m = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::TRISE]))
@@ -4397,10 +4026,10 @@ void Distribution::setupEmissionModelNonEquil() {
      * Practically we limit to a probability of 1 part in a billion.
      */
     emitEnergyUpperLimit_m = cathodeFermiEnergy_m
-        + cathodeTemp_m * log(1.0e9 - 1.0);
+        + cathodeTemp_m * std::log(1.0e9 - 1.0);
 
     // TODO: get better estimate of pmean
-    pmean_m = Vector_t(0, 0, sqrt(std::pow(0.5 * emitEnergyUpperLimit_m / (Physics::m_e * 1e9) + 1.0, 2) - 1.0));
+    pmean_m = Vector_t(0, 0, std::sqrt(std::pow(0.5 * emitEnergyUpperLimit_m / (Physics::m_e * 1e9) + 1.0, 2) - 1.0));
 }
 
 void Distribution::setupEnergyBins(double maxTOrZ, double minTOrZ) {
@@ -4431,7 +4060,7 @@ void Distribution::setupParticleBins(double /*massIneV*/, PartBunchBase<double, 
 
         // we get gamma from PC of the beam
         const double pz    = beam->getP()/beam->getM();
-        double gamma = sqrt(std::pow(pz, 2.0) + 1.0);
+        double gamma = std::hypot(pz, 1.0);
         energyBins_m->setGamma(gamma);
 
     } else {
@@ -4784,11 +4413,11 @@ void Distribution::writeOutFileInjection() {
 }
 
 double Distribution::MDependentBehavior::get(double rand) {
-    return 2.0 * sqrt(1.0 - std::pow(rand, ami_m));
+    return 2.0 * std::sqrt(1.0 - std::pow(rand, ami_m));
 }
 
 double Distribution::GaussianLikeBehavior::get(double rand) {
-    return sqrt(-2.0 * log(rand));
+    return std::sqrt(-2.0 * std::log(rand));
 }
 
 void Distribution::adjustPhaseSpace(double massIneV) {

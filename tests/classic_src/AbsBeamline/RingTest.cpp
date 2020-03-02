@@ -395,7 +395,7 @@ TEST(RingTest, TestApply2) {
 }
 
 void testField(double s, double r, double y, double phi,
-               double bx, double by, double bz, double tol) {
+               double bx, double by, double bz, double /*tol*/) {
     double radius = 2.;
     Ring ring("test");
     PartData data;

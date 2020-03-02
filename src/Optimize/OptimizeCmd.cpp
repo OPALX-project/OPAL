@@ -577,6 +577,9 @@ void OptimizeCmd::run(const CmdArguments_t& args,
     CrossOver crossover = this->crossoverSelection(Attributes::getString(itsAttr[CROSSOVER]));
     Mutation mutation = this->mutationSelection(Attributes::getString(itsAttr[MUTATION]));
 
+
+    std::map<std::string, std::string> userVariables = OpalData::getInstance()->getVariableData();
+
     switch ( crossover + mutation ) {
         case CrossOver::Blend + Mutation::IndependentBit:
         {
@@ -586,7 +589,8 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE])));
+                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                                              true, userVariables));
             break;
         }
         case CrossOver::Blend + Mutation::OneBit:
@@ -597,7 +601,8 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE])));
+                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                                              true, userVariables));
             break;
         }
         case CrossOver::NaiveOnePoint + Mutation::IndependentBit:
@@ -608,7 +613,8 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE])));
+                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                                              true, userVariables));
             break;
         }
         case CrossOver::NaiveOnePoint + Mutation::OneBit:
@@ -619,7 +625,8 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE])));
+                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                                              true, userVariables));
             break;
         }
         case CrossOver::NaiveUniform + Mutation::IndependentBit:
@@ -630,7 +637,8 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE])));
+                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                                              true, userVariables));
             break;
         }
         case CrossOver::NaiveUniform + Mutation::OneBit:
@@ -641,7 +649,8 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE])));
+                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                                              true, userVariables));
             break;
         }
         case CrossOver::SimulatedBinary + Mutation::IndependentBit:
@@ -652,7 +661,8 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE])));
+                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                                              true, userVariables));
             break;
         }
         case CrossOver::SimulatedBinary + Mutation::OneBit:
@@ -663,7 +673,8 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE])));
+                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                                              true, userVariables));
             break;
         }
         default:

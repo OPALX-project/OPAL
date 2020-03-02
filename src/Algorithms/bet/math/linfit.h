@@ -1,20 +1,15 @@
-/* linfit.h
+/*
+   Project: Beam Envelope Tracker (BET)
+   Author:  Rene Bakker et al.
+   Created: 09-03-2006
+
    linear fitting routine
 
-   Project: Beam Envelope Tracker (BET)
-
-   Revision history
-   Date          Description                                     Programmer
-   ------------  --------------------------------------------    --------------
-   09-03-06      Created                                         Rene Bakker
-
-   Last Revision:
-   $Id: root.h 29 2007-04-14 17:03:18Z l_bakker $
+   NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING (ISBN 0-521-43108-5)
 */
 
-
-#ifndef _LINFIT_DEF
-#define _LINFIT_DEF
+#ifndef _BET_LINFIT_H
+#define _BET_LINFIT_H
 
 
 /* linfit() Given a set of data points x[0..ndata-1],y[0..ndata-1] with
@@ -29,8 +24,8 @@
 */
 
 void linfit(double x[], double y[], int ndata,
-            double sig[], int mwt, double *a, double *b, double *siga,
-            double *sigb, double *chi2, double *q);
+            double sig[], int mwt, double &a, double &b, double &siga,
+            double &sigb, double &chi2, double &q);
 
 
 /* linfit()
@@ -40,7 +35,15 @@ void linfit(double x[], double y[], int ndata,
    chi-square chi2.
 */
 void linfit(double x[], double y[], int ndata,
-            double *a, double *b, double *siga,
-            double *sigb, double *chi2);
+            double &a, double &b, double &siga,
+            double &sigb, double &chi2);
 
 #endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

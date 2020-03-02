@@ -1,13 +1,11 @@
-
-Here a fre comments from Daniel and Hui:
-
+Here a few comments from Daniel and Hui:
 
 Daniel:
 
 Here is a .cpp file I adapted from something that Achim or Jianjun wrote to
 generate h5part field files from OPERA 3D field data (*.table text files).
 
-Note that the field data comes without the coordinates, the limits of the
+Note that the field data often comes without the coordinates, the limits of the
 mesh and the step size in OPERA have to be manually set in this file, and it
 is rigged for electric fields or magnetic fields only. So this file is a
 total hack, but you should be able to understand what format OPAL needs for
@@ -15,7 +13,13 @@ the 3D field maps used with BANDRF. If you want electric and magnetic fields
 in one h5 file that’s not a problem, just contract the two loops into one
 writing both E and H values into the h5 file.
 
-Hui: 
+My main problem in the past has been that different programs ANSYS, OPERA, COMSOL, ...
+all use slightly different default styles for ascii file output,
+then you have to recompile ascii2h5block every time, and also for limits of the field,
+which are hard-coded in the cpp.
+Doing it in python is slower, but not too bad, and removes the need to recompile.
+
+Hui:
 
 Please notice that the 2D mid-plane map is in cylindrical coordinate, while
 the 3D map must be in Cartesian coordinate, and be transformed into

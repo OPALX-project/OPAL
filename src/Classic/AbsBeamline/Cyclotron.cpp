@@ -216,13 +216,22 @@ void Cyclotron::setRfPhi(std::vector<double> f) {
     rfphi_m = f;
 }
 
+double Cyclotron::getRfPhi(unsigned int i) const {
+    if (i < rfphi_m.size())
+        return rfphi_m[i];
+    else {
+        throw GeneralClassicException("Cyclotron::getRfPhi",
+                                      "RFPHI not defined for CYCLOTRON!");
+    }
+}
+
 void Cyclotron::setRfFrequ(std::vector<double> f) {
     rffrequ_m = f;
 }
 
-double Cyclotron::getRfFrequ() const {
-    if (rffrequ_m.empty() == false)
-        return rffrequ_m[0];
+double Cyclotron::getRfFrequ(unsigned int i) const {
+    if (i < rffrequ_m.size())
+        return rffrequ_m[i];
     else {
         throw GeneralClassicException("Cyclotron::getRfFrequ",
                                       "RFFREQ not defined for CYCLOTRON!");
@@ -233,9 +242,14 @@ void Cyclotron::setSuperpose(std::vector<bool> flag) {
   superpose_m = flag;
 }
 
-//bool Cyclotron::getSuperpose() const {
-//    return superpose_m;
-//}
+bool Cyclotron::getSuperpose(unsigned int i) const {
+    if (i < superpose_m.size())
+        return superpose_m[i];
+    else {
+        throw GeneralClassicException("Cyclotron::getSuperpose",
+                                      "SUPERPOSE not defined for CYCLOTRON!");
+    }
+}
 
 void Cyclotron::setSymmetry(double s) {
     symmetry_m = s;
@@ -272,6 +286,15 @@ double Cyclotron::getBScale() const {
 
 void Cyclotron::setEScale(std::vector<double> s) {
     escale_m = s;
+}
+
+double Cyclotron::getEScale(unsigned int i) const {
+    if (i < escale_m.size())
+        return escale_m[i];
+    else {
+        throw GeneralClassicException("Cyclotron::EScale",
+                                      "EScale not defined for CYCLOTRON!");
+    }
 }
 
 unsigned int Cyclotron::getNumberOfTrimcoils() const {
@@ -760,7 +783,7 @@ void Cyclotron::read(const int &fieldflag, const double &scaleFactor) {
         getFieldFromFile_FFA(scaleFactor);
 
     } else if(fieldflag == 6) {
-        *gmsg << "* Read both median plane B field map and 3D E field map of RF cavity for compact cyclotron" << getBScale() << endl;
+        *gmsg << "* Read both median plane B field map and 3D E field map of RF cavity for compact cyclotron" << endl;
         myBFieldType_m = BANDRF;
         getFieldFromFile_BandRF(scaleFactor);
 
@@ -977,7 +1000,7 @@ void Cyclotron::getFieldFromFile(const double &scaleFactor) {
     Bfield.dbttt.resize(Bfield.ntot);
 
     *gmsg << "* Read-in loop one block per radius" << endl;
-    *gmsg << "* Rescaling of the fields with factor: " << BP.Bfact << endl;
+    *gmsg << "* Rescaling of the magnetic fields with factor: " << BP.Bfact << endl;
     for(int i = 0; i < Bfield.nrad; i++) {
 
         if(i > 0) {
@@ -1122,7 +1145,7 @@ void Cyclotron::getFieldFromFile_FFA(const double &/*scaleFactor*/) {
     Bfield.dbtt.resize(Bfield.ntot);
     Bfield.dbttt.resize(Bfield.ntot);
 
-    *gmsg << "* Rescaling of the fields with factor: " << BP.Bfact << endl;
+    *gmsg << "* Rescaling of the magnetic fields with factor: " << BP.Bfact << endl;
 
     int count = 0;
     if((Ippl::getNodes()) == 1 && Options::info) {
@@ -1215,7 +1238,7 @@ void Cyclotron::getFieldFromFile_AVFEQ(const double &scaleFactor) {
     Bfield.dbtt.resize(Bfield.ntot);
     Bfield.dbttt.resize(Bfield.ntot);
 
-    *gmsg << "* rescaling of the fields with factor: " << BP.Bfact << endl;
+    *gmsg << "* Rescaling of the magnetic fields with factor: " << BP.Bfact << endl;
 
     std::fstream fp;
     if((Ippl::getNodes()) == 1 && Options::info)
@@ -1296,7 +1319,7 @@ void Cyclotron::getFieldFromFile_Carbon(const double &scaleFactor) {
     Bfield.dbtt.resize(Bfield.ntot);
     Bfield.dbttt.resize(Bfield.ntot);
 
-    *gmsg << "* rescaling of the fields with factor: " << BP.Bfact << endl;
+    *gmsg << "* Rescaling of the magnetic fields with factor: " << BP.Bfact << endl;
 
     for(int i = 0; i < Bfield.nrad; i++) {
         for(int k = 0; k < Bfield.ntet; k++) {
@@ -1389,7 +1412,7 @@ void Cyclotron::getFieldFromFile_CYCIAE(const double &scaleFactor) {
     Bfield.dbtt.resize(Bfield.ntot);
     Bfield.dbttt.resize(Bfield.ntot);
 
-    *gmsg << "* rescaling of the fields with factor: " << BP.Bfact << endl;
+    *gmsg << "* Rescaling of the magnetic fields with factor: " << BP.Bfact << endl;
 
     int nHalfPoints = Bfield.ntet / 2.0 + 1;
 
@@ -1420,16 +1443,15 @@ void Cyclotron::getFieldFromFile_CYCIAE(const double &scaleFactor) {
 void Cyclotron::getFieldFromFile_BandRF(const double &scaleFactor) {
 
     // read 3D E&B field data file
-
     // loop over all field maps and superpose fields
     for(auto& fm: RFfilename_m) {
-        *gmsg << "* Reading " << fm << endl;
         Fieldmap *f = Fieldmap::getFieldmap(fm, false);
         if(f == NULL) {
             throw GeneralClassicException(
                 "Cyclotron::getFieldFromFile_BandRF",
                 "failed to open file '" + fm + "', please check if it exists");
         }
+        *gmsg << "* Reading " << fm << endl;
         f->readMap();
         RFfields_m.push_back(f);
     }

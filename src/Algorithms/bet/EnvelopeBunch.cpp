@@ -53,11 +53,11 @@ static double rootValue = 0.0;
 
 // used in setLShape for Gaussian
 static void erfRoot(double x, double *fn, double *df) {
-    double v = erfc(fabs(x));
+    double v = std::erfc(std::abs(x));
     double eps = 1.0e-05;
 
     *fn = v - rootValue;
-    *df = (erfc(fabs(x) + eps) - v) / eps;
+    *df = (std::erfc(std::abs(x) + eps) - v) / eps;
 }
 
 
@@ -73,7 +73,7 @@ EnvelopeBunch::EnvelopeBunch(const PartData *ref):
 }
 
 
-EnvelopeBunch::EnvelopeBunch(const std::vector<OpalParticle> &rhs,
+EnvelopeBunch::EnvelopeBunch(const std::vector<OpalParticle> &/*rhs*/,
                              const PartData *ref):
     PartBunch(ref),
     numSlices_m(0),
@@ -370,7 +370,7 @@ void EnvelopeBunch::calcEmittance(double *emtnx, double *emtny, double *emtx, do
     }
 }
 
-void EnvelopeBunch::calcEnergyChirp(double *g0, double *dgdt, double *gInc, int *nValid) {
+void EnvelopeBunch::calcEnergyChirp(double *g0, double *dgdt, double *gInc, int */*nValid*/) {
     std::vector<double> dtl(numMySlices_m, 0.0);
     std::vector<double> b(numMySlices_m, 0.0);
     std::vector<double> g(numMySlices_m, 0.0);
@@ -448,12 +448,12 @@ void EnvelopeBunch::calcEnergyChirp(double *g0, double *dgdt, double *gInc, int 
         }
 
         // chrip and uncorrelated energy sread
-        linfit(&dtG[0], &gG[0], nVTot, &gZero, &gt, &dum2, &dum3, &dum4);
+        linfit(&dtG[0], &gG[0], nVTot, gZero, gt, dum2, dum3, dum4);
         *dgdt = gt;
 
         rms = 0.0;
         for(int i = 0; i < nVTot; i++) {
-            rms += pow(gG[i] - gZero - gt * dtG[i], 2);
+            rms += std::pow(gG[i] - gZero - gt * dtG[i], 2);
         }
 
         *gInc = sqrt(rms / nVTot);
@@ -580,7 +580,7 @@ void EnvelopeBunch::setBinnedLShape(EnvelopeBunchShape shape, double z0, double 
             for(int i = 0; i < numMySlices_m; i++) {
                 slices_m[i]->p[SLI_z] = -(((numSlices_m - 1) - (mySliceStartOffset_m + i)) * bunch_width) / numSlices_m;
             }
-            I0avg_m = Q_m * Physics::c / fabs(2.0 * emission_time_s);
+            I0avg_m = Q_m * Physics::c / std::abs(2.0 * emission_time_s);
             break;
 
         case bsGauss:
@@ -589,7 +589,7 @@ void EnvelopeBunch::setBinnedLShape(EnvelopeBunchShape shape, double z0, double 
 
             for(int i = 1; i <= numSlices_m / 2; i++) {
                 rootValue = 1.0 - 2.0 * i * frac / (numSlices_m + 1);
-                v = fabs(emission_time_s) * sqr2 * findRoot(erfRoot, 0.0, 5.0, 1.0e-5) * (emission_time_s < 0.0 ? Physics::c : 1.0);
+                v = std::abs(emission_time_s) * sqr2 * findRoot(erfRoot, 0.0, 5.0, 1.0e-5) * (emission_time_s < 0.0 ? Physics::c : 1.0);
 
                 if((n2 + i) >= mySliceStartOffset_m && (n2 + i) <= mySliceEndOffset_m)
                     slices_m[n2+i-mySliceStartOffset_m]->p[SLI_z] = z0 + v * slices_m[n2+i-mySliceStartOffset_m]->p[SLI_beta];
@@ -648,7 +648,7 @@ void EnvelopeBunch::setBinnedLShape(EnvelopeBunchShape shape, double z0, double 
     backup();
 }
 
-void EnvelopeBunch::setTShape(double enx, double eny, double rx, double ry, double b0) {
+void EnvelopeBunch::setTShape(double enx, double eny, double rx, double ry, double /*b0*/) {
   /*
     Inform msg("setTshape");
     msg << "set SLI_x to " << rx / 2.0 << endl;
@@ -685,7 +685,7 @@ void EnvelopeBunch::setTOffset(double x0, double px0, double y0, double py0) {
 
 void EnvelopeBunch::setEnergy(double E0, double dE) {
     double g0    = 1.0 + (Physics::q_e * E0 / (Physics::EMASS * Physics::c * Physics::c));
-    double dg    = fabs(dE) * Physics::q_e / (Physics::EMASS * Physics::c * Physics::c);
+    double dg    = std::abs(dE) * Physics::q_e / (Physics::EMASS * Physics::c * Physics::c);
     double z0    = zAvg();
 
     for(int i = 0; i < numMySlices_m; i++) {
@@ -794,7 +794,7 @@ void EnvelopeBunch::calcI() {
     for(i = my_start; i <= vend; i++) {
         j = 1;
         do {
-            dz = fabs(z1[i+j] - z1[i-j]);
+            dz = std::abs(z1[i+j] - z1[i-j]);
             j++;
         } while((dz < dzMin * (j - 1)) && ((i + j) < n1) && ((i - j) >= 0));
 
@@ -942,8 +942,8 @@ void EnvelopeBunch::cSpaceCharge() {
             double R = 2 * sigma_av;
             double A = R / L / getGamma(i);
 
-            double H1 = sqrt((1 - zeta / L) * (1 - zeta / L) + A * A) - sqrt((zeta / L) * (zeta / L) + A * A) - fabs(1 - zeta / L) + fabs(zeta / L);
-            double H2 = sqrt((1 - xi / L) * (1 - xi / L) + A * A) - sqrt((xi / L) * (xi / L) + A * A) - fabs(1 - xi / L) + fabs(xi / L);
+            double H1 = sqrt((1 - zeta / L) * (1 - zeta / L) + A * A) - sqrt((zeta / L) * (zeta / L) + A * A) - std::abs(1 - zeta / L) + std::abs(zeta / L);
+            double H2 = sqrt((1 - xi / L) * (1 - xi / L) + A * A) - sqrt((xi / L) * (xi / L) + A * A) - std::abs(1 - xi / L) + std::abs(xi / L);
 
             //FIXME: Q_act or Q?
             //double Q = activeSlices_m * Q_m / numSlices_m;
@@ -1005,7 +1005,7 @@ void EnvelopeBunch::cSpaceCharge() {
 
             for(int j = 0; j < numSlices_m; j++) {
                 double zj = z_m[j];
-                double dz = fabs(zj - z0);
+                double dz = std::abs(zj - z0);
                 if((dz > dzMin) && (zj > zCat)) {
                     double Aj = xi[j] / (dz * dz);
                     double v  = 1.0 - (1.0 / sqrt(1.0 + Aj));
@@ -1089,7 +1089,7 @@ ALT: SLI_z (commented by Rene)
     // dYdt[SLI_z] = Y[SLI_beta]*c*cos(Y[SLI_px0]/Y[SLI_beta]/c)*cos(Y[SLI_py0]/Y[SLI_beta]/c);
 
  */
-void EnvelopeBunch::derivs(double tc, double Y[], double dYdt[]) {
+void EnvelopeBunch::derivs(double /*tc*/, double Y[], double dYdt[]) {
     double g2 = 1.0 / (1.0 - Y[SLI_beta] * Y[SLI_beta]);
     double g  = sqrt(g2);
     double g3 = g2 * g;
@@ -1110,8 +1110,8 @@ void EnvelopeBunch::derivs(double tc, double Y[], double dYdt[]) {
     if(solver_m & sv_radial) {
         /// minimum spot-size due to emittance
         /// \f[ \left(\frac{\epsilon_n c}{\gamma}\right)^2 \f]
-        double enxc2 = pow((emtnx0_m + emtbx0_m) * Physics::c / (Y[SLI_beta] * g), 2);
-        double enyc2 = pow((emtny0_m + emtby0_m) * Physics::c / (Y[SLI_beta] * g), 2);
+        double enxc2 = std::pow((emtnx0_m + emtbx0_m) * Physics::c / (Y[SLI_beta] * g), 2);
+        double enyc2 = std::pow((emtny0_m + emtby0_m) * Physics::c / (Y[SLI_beta] * g), 2);
 
 
 #ifdef USE_HOMDYN_SC_MODEL
@@ -1266,27 +1266,27 @@ void EnvelopeBunch::timeStep(double tStep, double _zCat) {
             // set default allowed error for integration
             double epsLocal = eps;
             // mark that the integration was not successful yet
-            int ode_result = 1;
+            bool ode_result = false;
 
-            while(ode_result == 1) {
+            while(ode_result == false) {
 
                 if(solver_m & sv_fixedStep) {
                     rk4(&(sp->p[SLI_z]), SLNPAR, t_m, time_step_s, Gderivs);
-                    ode_result = 0;
+                    ode_result = true;
                 } else {
                     int nok, nbad;
                     activeSlice_m = i;
-                    ode_result = odeint(&(sp->p[SLI_z]), SLNPAR, t_m, t_m + time_step_s, epsLocal, 0.1 * time_step_s, 0.0, &nok, &nbad, Gderivs);
+                    ode_result = odeint(&(sp->p[SLI_z]), SLNPAR, t_m, t_m + time_step_s, epsLocal, 0.1 * time_step_s, 0.0, nok, nbad, Gderivs);
                 }
 
-                if(ode_result != 0) {
+                if(ode_result == false) {
                     // restore the backup
                     sp->restore();
                     epsLocal *= 10.0;
                 }
             }
-
-            if(ode_result == 1) {
+            // :FIXME: the above loop cannot exit with ode_result == false
+            if(ode_result == false) {
                 // use fixed step integration if dynamic fails
                 rk4(&(sp->p[SLI_z]), SLNPAR, t_m, time_step_s, Gderivs);
 
@@ -1351,7 +1351,7 @@ void EnvelopeBunch::timeStep(double tStep, double _zCat) {
         } else {
             msg << "EnvelopeBunch::run() No valid slices to subtract average" << endl;
         }
-        beta = sqrt(1.0 - (1.0 / pow(ga, 2)));
+        beta = sqrt(1.0 - (1.0 / std::pow(ga, 2)));
         fi_x = px0a / Physics::c / beta;
         fi_y = py0a / Physics::c / beta;
 
@@ -1371,7 +1371,10 @@ void EnvelopeBunch::timeStep(double tStep, double _zCat) {
     }
 }
 
-void EnvelopeBunch::initialize(int num_slices, double Q, double energy, double width, double emission_time, double frac, double current, double bunch_center, double bX, double bY, double mX, double mY, double Bz0, int nbin) {
+void EnvelopeBunch::initialize(int num_slices, double Q, double energy, double /*width*/,
+                               double emission_time, double frac, double /*current*/,
+                               double bunch_center, double bX, double bY, double mX,
+                               double mY, double Bz0, int nbin) {
 
 #ifdef USE_HOMDYN_SC_MODEL
     *gmsg << "* Using HOMDYN space-charge model" << endl;
@@ -1561,3 +1564,11 @@ Inform &EnvelopeBunch::slprint(Inform &os) {
     }
     return os;
 }
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

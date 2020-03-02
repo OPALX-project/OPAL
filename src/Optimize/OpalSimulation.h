@@ -40,11 +40,13 @@ public:
      *  @param[in] name of the simulation
      *  @param[in] comm MPI communicator used for running the simulation
      *  @param[in] args command line arguments passed to the framework
+     *  @param[in] uvars defined in the input file (e.g. REAL a = 1.0)
      */
     OpalSimulation(Expressions::Named_t objectives,
                    Expressions::Named_t constraints,
                    Param_t params, std::string name, MPI_Comm comm,
-                   CmdArguments_t args);
+                   CmdArguments_t args,
+                   std::map<std::string, std::string> uvars);
 
     virtual ~OpalSimulation();
 

@@ -313,7 +313,7 @@ void plot(int n_points, std::vector<double> start, std::vector<double> end, Poly
     test_index++;
 }
 #else // PolynomialPatchTest_MakePlots
-void plot(int n_points, std::vector<double> start, std::vector<double> end, PolynomialPatch* patch, int n_grid_points, std::string title) {
+    void plot(int /*n_points*/, std::vector<double> /*start*/, std::vector<double> /*end*/, PolynomialPatch* /*patch*/, int /*n_grid_points*/, std::string /*title*/) {
 }
 #endif // PolynomialPatchTest_MakePlots
 }

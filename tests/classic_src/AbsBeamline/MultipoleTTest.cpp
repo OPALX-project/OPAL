@@ -36,7 +36,7 @@ using namespace std;
      return allPartials;
 }*/
 
-vector< vector<double> > partialsDerivB(const Vector_t &R,const Vector_t B, double stepSize, Component* dummyField)
+vector< vector<double> > partialsDerivB(const Vector_t &R,const Vector_t /*B*/, double stepSize, Component* dummyField)
 {
     // builds a matrix of all partial derivatives of B -> dx_i B_j
     vector< vector<double> > allPartials(3, vector<double>(3));
@@ -123,7 +123,7 @@ TEST(MultipoleTTest, Maxwell) {
 
 TEST(MultipoleTTest, CurvedMagnet) {
     OpalTestUtilities::SilenceTest silencer;
-    
+
     MultipoleT* myMagnet = new MultipoleT("Combined function");
     myMagnet->setLength(4.4);
     myMagnet->setBoundingBoxLength(0.0);
@@ -176,7 +176,7 @@ TEST(MultipoleTTest, CurvedMagnet) {
 TEST(MultipoleTTest, Straight) {
     // failing
     OpalTestUtilities::SilenceTest silencer;
-    
+
     MultipoleTStraight* myMagnet = new MultipoleTStraight("Combined function");
     myMagnet->setLength(4.4);
     myMagnet->setAperture(3.5, 3.5);
@@ -220,7 +220,7 @@ TEST(MultipoleTTest, Straight) {
 
 TEST(MultipoleTTest, CurvedConstRadius) {
     OpalTestUtilities::SilenceTest silencer;
-    
+
     MultipoleTCurvedConstRadius* myMagnet = new MultipoleTCurvedConstRadius("Combined function");
     myMagnet->setLength(4.4);
     myMagnet->setBendAngle(0.628);
@@ -270,7 +270,7 @@ TEST(MultipoleTTest, CurvedConstRadius) {
 
 TEST(MultipoleTTest, CurvedVarRadius) {
     OpalTestUtilities::SilenceTest silencer;
-    
+
     MultipoleTCurvedVarRadius* myMagnet = new MultipoleTCurvedVarRadius("Combined function");
     myMagnet->setLength(4.4);
     myMagnet->setBendAngle(0.628);
@@ -313,4 +313,3 @@ TEST(MultipoleTTest, CurvedVarRadius) {
     }
     delete myMagnet;
 }
-

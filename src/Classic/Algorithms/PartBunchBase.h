@@ -264,15 +264,6 @@ public:
     // set the mass per simulation particle
     void setMass(double mass);
 
-    /// \brief Need Ek for the Schottky effect calculation (eV)
-    double getEkin() const;
-
-    /// Need the work function for the Schottky effect calculation (eV)
-    double getWorkFunctionRf() const;
-
-    /// Need the laser energy for the Schottky effect calculation (eV)
-    double getLaserEnergy() const;
-
     /// get the total charge per simulation particle
     double getCharge() const;
 
@@ -361,8 +352,6 @@ public:
     void iterateEmittedBin(int binNumber);
 
     void calcEMean();
-
-    void correctEnergy(double avrgp);
 
     Inform &print(Inform &os);
 

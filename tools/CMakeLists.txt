@@ -7,14 +7,19 @@ if (ENABLE_SDDSTOOLS)
 endif ()
 
 #add_subdirectory (SDDSReader)
-option (ENABLE_MSLANG "Compile MSLang stand-alone compiler" OFF)
 
+option (ENABLE_MSLANG "Compile MSLang stand-alone compiler" OFF)
 if (ENABLE_MSLANG)
     add_subdirectory (mslang)
 endif ()
 
+option (ENABLE_BANDRF "Compile BANDRF field conversion scripts" OFF)
+if (ENABLE_BANDRF)
+    add_subdirectory (BandRF)
+endif  ()
+
 # vi: set et ts=4 sw=4 sts=4:
-  
+
 # Local Variables:
 # mode: cmake
 # cmake-tab-width: 4

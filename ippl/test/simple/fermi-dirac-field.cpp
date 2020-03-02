@@ -22,7 +22,7 @@ T smpintd(int nstep, Field<T,1> &integ, T dv) {
     return dv*sum(smp*integ);
 }
 
-void cumul(Field<T,Dim> &vTherm1, Field<T,Dim> &vTherm2, int nmax,int nvdint,T hubble,T zin,T omeganu) {
+void cumul(Field<T,Dim> &/*vTherm1*/, Field<T,Dim> &/*vTherm2*/, int nmax,int nvdint,T hubble,T zin,T omeganu) {
 
   T pmax = 300000.0;
   T dv = pmax / (nvdint-1);
@@ -73,7 +73,7 @@ void cumul(Field<T,Dim> &vTherm1, Field<T,Dim> &vTherm2, int nmax,int nvdint,T h
 
 }
 
-void vel(int np,int nmax,int nvdint,T hubble,T zin,T omeganu, Field<T,Dim> &vTherm) {
+void vel(int /*np*/,int nmax,int nvdint,T hubble,T zin,T omeganu, Field<T,Dim> &vTherm) {
 
   INFOMSG("entering vel routine" << endl);
 

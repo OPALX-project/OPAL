@@ -1,28 +1,3 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- * This program was prepared by PSI. 
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit http://www.acl.lanl.gov/POOMS for more details
- *
- ***************************************************************************/
-
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
 // TestFFT.cpp , Tim Williams 1/27/1997
 // Updated by Julian Cummings, 3/31/98
 
@@ -35,13 +10,13 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-  
+
   Ippl ippl(argc,argv);
   Inform testmsg(NULL,0);
 
   const unsigned D=3U;
   testmsg << "%%%%%%% Dimensionality: D = " << D << " %%%%%%%" << endl;
-  
+
   unsigned ngrid[D];   // grid sizes
 
   // Used in evaluating correctness of results:
@@ -76,21 +51,21 @@ int main(int argc, char *argv[])
     if( Ippl::Comm->myNode() == Parent ) {
       bool vnodesOK = false;
       while (!vnodesOK) {
-	compressTemps = false;
-	constInput = false;
-	for (d=0; d<D; d++) 
-	  ngrid[d] = 32;
-	
-	// now broadcast data to other nodes
-	Message *mess = new Message();
-	putMessage( *mess, vnodes );
-	if (vnodes > 0) {
-	  putMessage(*mess, compressTemps);
-	  putMessage(*mess, constInput);
-	  for (d=0; d<D; d++) 
-	    putMessage( *mess, ngrid[d] );
-	}
-	Ippl::Comm->broadcast_all(mess, tag);
+        compressTemps = false;
+        constInput = false;
+        for (d=0; d<D; d++)
+          ngrid[d] = 32;
+
+        // now broadcast data to other nodes
+        Message *mess = new Message();
+        putMessage( *mess, vnodes );
+        if (vnodes > 0) {
+          putMessage(*mess, compressTemps);
+          putMessage(*mess, constInput);
+          for (d=0; d<D; d++)
+            putMessage( *mess, ngrid[d] );
+        }
+        Ippl::Comm->broadcast_all(mess, tag);
       }
     }
     // now each node recieves the data
@@ -101,13 +76,13 @@ int main(int argc, char *argv[])
     if (vnodes <= 0) break;
     getMessage(*mess, compressTemps);
     getMessage(*mess, constInput);
-    for (d=0; d<D; d++) 
+    for (d=0; d<D; d++)
       getMessage( *mess, ngrid[d] );
     delete mess;
-    
+
     //------------------------complex<-->complex-------------------------------
     // Complex test Fields
-    
+
     // create standard domain
     NDIndex<D> ndiStandard;
     for (d=0; d<D; d++)
@@ -198,27 +173,27 @@ int main(int argc, char *argv[])
     // Rather more complete test functions (sine or cosine mode):
     std::complex<double> sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
     std::complex<double> cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
-    
+
     double xfact, kx, yfact, ky, zfact, kz;
     xfact = pi/(ngrid[0] + 1.0);
     yfact = 2.0*twopi/(ngrid[1]);
     zfact = 2.0*twopi/(ngrid[2]);
     kx = 1.0; ky = 2.0; kz = 3.0; // wavenumbers
-    CFieldPPStan[ndiStandard[0]][ndiStandard[1]][ndiStandard[2]] = 
+    CFieldPPStan[ndiStandard[0]][ndiStandard[1]][ndiStandard[2]] =
       sfact * ( sin( (ndiStandard[0]+1) * kx * xfact +
-		     ndiStandard[1]    * ky * yfact +
-		     ndiStandard[2]    * kz * zfact ) +
-		sin( (ndiStandard[0]+1) * kx * xfact -
-		     ndiStandard[1]    * ky * yfact -
-		     ndiStandard[2]    * kz * zfact ) ) + 
+                     ndiStandard[1]    * ky * yfact +
+                     ndiStandard[2]    * kz * zfact ) +
+                sin( (ndiStandard[0]+1) * kx * xfact -
+                     ndiStandard[1]    * ky * yfact -
+                     ndiStandard[2]    * kz * zfact ) ) +
       cfact * (-cos( (ndiStandard[0]+1) * kx * xfact +
                       ndiStandard[1]    * ky * yfact +
-		     ndiStandard[2]    * kz * zfact ) + 
-	       cos( (ndiStandard[0]+1) * kx * xfact -
-		    ndiStandard[1]    * ky * yfact -
-		    ndiStandard[2]    * kz * zfact ) );
+                     ndiStandard[2]    * kz * zfact ) +
+               cos( (ndiStandard[0]+1) * kx * xfact -
+                    ndiStandard[1]    * ky * yfact -
+                    ndiStandard[2]    * kz * zfact ) );
     CFieldPPStan_save = CFieldPPStan; // Save values for checking later
-    
+
     // RC FFT tests
     RFieldPPStan = real(CFieldPPStan_save);
     CFieldPPStan0h = std::complex<double>(0.0,0.0);
@@ -236,7 +211,7 @@ int main(int argc, char *argv[])
     timer.start();
     // Test real<-->complex transform (simple test: forward then inverse
     // transform, see if we get back original values.
-  
+
     cout << "PE " << pe << " about to invoke forward FFT::transform()" << endl;
     testmsg << "Forward transform ..." << endl;
     rcfft.transform("forward", RFieldPPStan, CFieldPPStan0h, constInput);
@@ -260,14 +235,14 @@ int main(int argc, char *argv[])
     timer.start();
     // Test real<-->complex transform (simple test: forward then inverse
     // transform, see if we get back original values.
-    
+
     testmsg << "Forward transform ..." << endl;
     rcfft.transform("forward", RFieldSPStan, CFieldSPStan0h, constInput);
-    
-    
+
+
     testmsg << "Inverse transform ..." << endl;
     rcfft.transform("inverse", CFieldSPStan0h, RFieldSPStan, constInput);
-    
+
     timer.stop();
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
@@ -286,13 +261,13 @@ int main(int argc, char *argv[])
     timer.start();
     // Test real<-->complex transform (simple test: forward then inverse
     // transform, see if we get back original values.
-    
+
     testmsg << "Forward transform ..." << endl;
     rcfft.transform("forward", RFieldSPStan, CFieldSPPerm0h, constInput);
 
     testmsg << "Inverse transform ..." << endl;
     rcfft.transform("inverse", CFieldSPPerm0h, RFieldSPStan, constInput);
-    
+
     timer.stop();
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
@@ -303,17 +278,7 @@ int main(int argc, char *argv[])
     }
     testmsg << "CPU time used = " << timer.cpu_time() << " secs." << endl;
     timer.clear();
-  }    
+  }
+  testmsg << "test is correct: " << correct << endl;
   return 0;
 }
-/***************************************************************************
- * $RCSfile: TestRC.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:36 $
- ***************************************************************************/
-
-/***************************************************************************
- * $RCSfile: addheaderfooter,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:17 $
- * IPPL_VERSION_ID: $Id: addheaderfooter,v 1.1.1.1 2003/01/23 07:40:17 adelmann Exp $ 
- ***************************************************************************/
-

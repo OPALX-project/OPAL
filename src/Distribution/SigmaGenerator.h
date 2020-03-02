@@ -332,7 +332,7 @@ SigmaGenerator<Value_type, Size_type>::SigmaGenerator(value_type I,
                                                       size_type truncOrder,
                                                       bool write)
     : I_m(I)
-    , wo_m(cycl->getRfFrequ()*1E6/cycl->getCyclHarm()*2.0*Physics::pi)
+    , wo_m(cycl->getRfFrequ(0)*1E6/cycl->getCyclHarm()*2.0*Physics::pi)
     , E_m(E)
     , gamma_m(E/m+1.0)
     , gamma2_m(gamma_m*gamma_m)

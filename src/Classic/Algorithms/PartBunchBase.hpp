@@ -1423,33 +1423,6 @@ void PartBunchBase<T, Dim>::setMass(double mass) {
 }
 
 
-/// \brief Need Ek for the Schottky effect calculation (eV)
-template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getEkin() const {
-    if(dist_m)
-        return dist_m->getEkin();
-    else
-        return 0.0;
-}
-
-/// \brief Need the work function for the Schottky effect calculation (eV)
-template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getWorkFunctionRf() const {
-    if(dist_m)
-        return dist_m->getWorkFunctionRf();
-    else
-        return 0.0;
-}
-/// \brief Need the laser energy for the Schottky effect calculation (eV)
-template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::getLaserEnergy() const {
-    if(dist_m)
-        return dist_m->getLaserEnergy();
-    else
-        return 0.0;
-}
-
-
 template <class T, unsigned Dim>
 double PartBunchBase<T, Dim>::getCharge() const {
     return sum(Q);
@@ -1879,25 +1852,6 @@ void PartBunchBase<T, Dim>::calcEMean() {
 
     eKin_m /= totalNp;
 }
-
-
-template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::correctEnergy(double avrgp_m) {
-
-    const double totalNp = static_cast<double>(getTotalNum());
-    const double locNp = static_cast<double>(getLocalNum());
-
-    double avrgp = 0.0;
-    for(unsigned int k = 0; k < locNp; k++)
-        avrgp += sqrt(dot(P[k], P[k]));
-
-    reduce(avrgp, avrgp, OpAddAssign());
-    avrgp /= totalNp;
-
-    for(unsigned int k = 0; k < locNp; k++)
-        P[k](2) =  P[k](2) - avrgp + avrgp_m;
-}
-
 
 template <class T, unsigned Dim>
 Inform &PartBunchBase<T, Dim>::print(Inform &os) {

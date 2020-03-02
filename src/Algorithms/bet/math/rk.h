@@ -1,24 +1,16 @@
-/* rk.h
-   Runge-Kutta integration implementation
-
+/*
    Project: Beam Envelope Tracker (BET)
+   Author:  Rene Bakker et al.
+   Created: 07-03-2006
 
-   Revision history
-   Date          Description                                     Programmer
-   ------------  --------------------------------------------    --------------
-   07-03-06      Created                                         Rene Bakker
-
-   Last Revision:
-   $Id: rk.h 29 2007-04-14 17:03:18Z l_bakker $
+   Runge-Kutta with adaptive stepsize control
+   NUMERICAL RECIPES IN C: THE ART OF SCIENTIFIC COMPUTING (ISBN 0-521-43108-5)
 */
 
+#ifndef _BET_RK_H
+#define _BET_RK_H
 
-#ifndef _RK_DEF
-#define _RK_DEF
-
-#include <stdio.h>
-
-/* rk4()
+/*
    Given values for the variables y[0..n-1] use the fourth-order Runge-Kutta
    method to advance the solution over an interval h and return the
    incremented variables in y[0..n-1]. The user supplies the routine
@@ -31,7 +23,7 @@ void rk4(
     double h,      // interval
     void (*derivs)(double, double [], double []));
 
-/* odeint
+/*
    Runge-Kutta driver with adaptive stepsize control.
 
    Integrate starting values ystart[0..nvar-1]
@@ -52,7 +44,7 @@ void rk4(
 
    rkqs is the name of the stepper routine (see above).
 */
-int odeint(
+bool odeint(
     double ystart[],  // initial condition
     int    nvar,      // number of equations
     double x1,        // start
@@ -60,11 +52,16 @@ int odeint(
     double eps,       // accuracy
     double h1,        // guessed first step-size
     double hmin,      // minimum step-size
-    int    *nok,      // number of good steps
-    int    *nbad,     // number of bad steps
+    int    &nok,      // number of good steps
+    int    &nbad,     // number of bad steps
     void (*derivs)(double, double [], double []));
 
-void rkActivateBuffer(int);             // > 0, 0 - deactivates
-void rkPrintBuffer(FILE *f = stdout);
-
 #endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

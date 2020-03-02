@@ -22,7 +22,7 @@ class TestElement : public ElementBase {
 
     ElementBase* clone() const {return NULL;}
 
-    void accept(BeamlineVisitor& visitor) const {}
+    void accept(BeamlineVisitor& /*visitor*/) const {}
 
   private:
     BGeometryBase* base;
