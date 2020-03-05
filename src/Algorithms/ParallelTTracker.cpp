@@ -833,6 +833,9 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
         fdtd.solve();
 
     /* Here bunch needs to be transferred back to OPAL                                                   */
+    itsOpalBeamline_m.switchElementsOff();
+    Monitor::writeStatistics();
+    std::exit(1);
 }
 
 
