@@ -46,7 +46,7 @@ add_definitions (-DNOCTAssert)
 add_compile_options (-Wall)
 add_compile_options (-Wunused)
 add_compile_options (-Wextra)
-#add_compile_options (-Werror)
+add_compile_options (-Werror)
 
 add_compile_options (-funroll-loops)
 add_compile_options (-fstrict-aliasing)
@@ -67,9 +67,7 @@ if ( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel" )
     endif ()
 
 elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
-    add_compile_options (-Wsign-compare)
-    add_compile_options (-Wunused-variable)
-    add_compile_options (-Warray-bounds)
+    add_compile_options (-Warray-bounds-pointer-arithmetic)
     # Increase template depth for boost
     add_compile_options (-ftemplate-depth=1024)
     # get rid of linking warning with boost. Looks like that boost

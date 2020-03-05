@@ -11,6 +11,7 @@ include_directories (
 link_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src
+    ${Boost_LIBRARY_DIRS}
 )
 
 set (IPPL_LIBS ippl)

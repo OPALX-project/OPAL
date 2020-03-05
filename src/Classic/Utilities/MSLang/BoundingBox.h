@@ -31,6 +31,7 @@ namespace mslang {
             height_m(urc[1] - llc[1])
         { }
 
+        BoundingBox& operator=(const BoundingBox&) = default;
         bool doesIntersect(const BoundingBox &bb) const;
         bool isInside(const Vector_t &X) const;
         bool isInside(const BoundingBox &b) const;

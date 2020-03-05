@@ -1,5 +1,4 @@
-// -*- C++ -*-
-/**************************************************************************************************************************************
+/******************************************************************************
  *
  * The IPPL Framework
  *
@@ -14,7 +13,7 @@
  *      epsilon is the softening parameter, printSteps=10 prints every tenth step
  *
  *
- *************************************************************************************************************************************/
+ ******************************************************************************/
 #include "Ippl.h"
 #include <cassert>
 #include <string>
@@ -473,10 +472,6 @@ class ChargedParticles : public IpplParticleBase<PL> {
                     H5f_m = H5OpenFile(fn.c_str(), H5_O_WRONLY, props);
                 }
 
-                inline double getEFDMag(int x, int y, int z) {
-                        return eg_m[x][y][z].get();
-                }
-
         const Vector_t get_hr() { return hr_m; }
 
 
@@ -784,3 +779,11 @@ int main(int argc, char *argv[]){
 
         return 0;
 }
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

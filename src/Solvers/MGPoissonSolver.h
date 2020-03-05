@@ -1,9 +1,13 @@
-////////////////////////////////////////////////////////////////////////////
+//
 // This class contains methods for solving Poisson's equation for the
 // space charge portion of the calculation.
-////////////////////////////////////////////////////////////////////////////
-
-#ifdef HAVE_SAAMG_SOLVER
+//
+// Copyright (c) 2008-2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// OPAL is licensed under GNU GPL version 3.
+//
 
 #ifndef MG_POISSON_SOLVER_H_
 #define MG_POISSON_SOLVER_H_
@@ -14,26 +18,26 @@
 //////////////////////////////////////////////////////////////
 #include "ml_include.h"
 
-#ifdef HAVE_MPI
 #include "mpi.h"
-#include "Epetra_MpiComm.h"
-#else
-#include "Epetra_SerialComm.h"
+
+#if !defined(HAVE_ML_EPETRA)
+#error Epetra support missing in Trilinos installation!
 #endif
 
-#if defined(HAVE_ML_EPETRA) && defined(HAVE_ML_TEUCHOS) && defined(HAVE_ML_AZTECOO)
+#if !defined(HAVE_ML_TEUCHOS)
+#error Teuchos support missing in Trilinos installation!
+#endif
 
+#if !defined(HAVE_ML_AZTECOO)
+#error Aztecoo support missing in Trilinos installation!
+#endif
+
+#include "Epetra_MpiComm.h"
 #include "Epetra_Map.h"
 #include "Epetra_Vector.h"
 #include "Epetra_CrsMatrix.h"
-#include "Epetra_MpiComm.h"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #include "Teuchos_ParameterList.hpp"
-// #include "BelosLinearProblem.hpp"
-// #include "BelosRCGSolMgr.hpp"
-
 #include "Algorithms/PartBunch.h"
 
 #include "BelosTypes.hpp"
@@ -64,13 +68,6 @@ namespace ML_Epetra {
                     int * options, double * params, const bool OverWrite);
 }
 
-#pragma GCC diagnostic pop
-
-// using Teuchos::RCP;
-// using Teuchos::rcp;
-// using namespace ML_Epetra;
-// using namespace Isorropia;
-//////////////////////////////////////////////////////////////
 
 typedef UniformCartesian<3, double> Mesh_t;
 typedef ParticleSpatialLayout<double, 3>::SingleParticlePos_t Vector_t;
@@ -114,13 +111,13 @@ public:
     /// force Solver to recompute Epetra_Map
     void recomputeMap() { hasParallelDecompositionChanged_m = true; }
 
-    double getXRangeMin(unsigned short level) { return bp->getXRangeMin(); }
-    double getXRangeMax(unsigned short level) { return bp->getXRangeMax(); }
-    double getYRangeMin(unsigned short level) { return bp->getYRangeMin(); }
-    double getYRangeMax(unsigned short level) { return bp->getYRangeMax(); }
-    double getZRangeMin(unsigned short level) { return bp->getZRangeMin(); }
-    double getZRangeMax(unsigned short level) { return bp->getZRangeMax(); }
-    void test(PartBunchBase<double, 3> *bunch) { }
+    double getXRangeMin(unsigned short /*level*/) { return bp->getXRangeMin(); }
+    double getXRangeMax(unsigned short /*level*/) { return bp->getXRangeMax(); }
+    double getYRangeMin(unsigned short /*level*/) { return bp->getYRangeMin(); }
+    double getYRangeMax(unsigned short /*level*/) { return bp->getYRangeMax(); }
+    double getZRangeMin(unsigned short /*level*/) { return bp->getZRangeMin(); }
+    double getZRangeMax(unsigned short /*level*/) { return bp->getZRangeMax(); }
+    void test(PartBunchBase<double, 3>* /*bunch*/) { }
     /// useful load balance information
     void printLoadBalanceStats();
 
@@ -326,39 +323,17 @@ protected:
 
 };
 
-
-
 inline Inform &operator<<(Inform &os, const MGPoissonSolver &fs) {
     return fs.print(os);
 }
 
-#else
-
-#include <stdlib.h>
-#include <stdio.h>
-#ifdef HAVE_MPI
-#include "mpi.h"
 #endif
 
-int main(int argc, char *argv[]) {
-#ifdef HAVE_MPI
-    MPI_Init(&argc, &argv);
-#endif
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:
 
-    puts("Please configure ML with:");
-    puts("--enable-epetra");
-    puts("--enable-teuchos");
-    puts("--enable-aztecoo");
-
-#ifdef HAVE_MPI
-    MPI_Finalize();
-#endif
-
-    return(EXIT_SUCCESS);
-}
-
-#endif /* #if defined(HAVE_ML_EPETRA) && defined(HAVE_ML_TEUCHOS) && defined(HAVE_ML_AZTECOO) */
-
-#endif /* #ifndef MG_POISSON_SOLVER_H_ */
-
-#endif /* #ifdef HAVE_SAAMG_SOLVER */

@@ -1,10 +1,6 @@
-// -*- C++ -*-
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
  *
  ***************************************************************************/
 
@@ -70,6 +66,8 @@ public:
 
   //# public enumerations
   enum { Dim_u = Dim };
+
+  constexpr SubBareField(const SubBareField<T, Dim, S>&) = default;
 
   // Return the beginning and end iterators for this class.
   iterator begin() const;
@@ -237,10 +235,12 @@ std::ostream& operator<<(std::ostream& o, const SubBareField<T,Dim,S>& s) {
 
 #include "SubField/SubBareField.hpp"
 
-#endif // SUB_BARE_FIELD_H
+#endif
 
-/***************************************************************************
- * $RCSfile: SubBareField.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:33 $
- * IPPL_VERSION_ID: $Id: SubBareField.h,v 1.1.1.1 2003/01/23 07:40:33 adelmann Exp $ 
- ***************************************************************************/
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

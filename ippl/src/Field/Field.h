@@ -1,10 +1,6 @@
-// -*- C++ -*-
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
  *
  ***************************************************************************/
 
@@ -67,6 +63,7 @@ public:
   Field(Layout_t &,const GuardCellSizes<Dim>&,const BConds<T,Dim,M,C>&);
   Field(Layout_t &,const BConds<T,Dim,M,C>&,const GuardCellSizes<Dim>&);
   Field(FieldSpec<T,Dim,M,C>&);
+  constexpr Field(Field<T,Dim,M,C>&) = default;
 
   // Constructors including a Mesh object as argument:
   Field(Mesh_t&, Layout_t &);
@@ -187,10 +184,12 @@ private:
 
 #include "Field/Field.hpp"
 
-#endif // FIELD_H
+#endif
 
-/***************************************************************************
- * $RCSfile: Field.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:26 $
- * IPPL_VERSION_ID: $Id: Field.h,v 1.1.1.1 2003/01/23 07:40:26 adelmann Exp $ 
- ***************************************************************************/
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

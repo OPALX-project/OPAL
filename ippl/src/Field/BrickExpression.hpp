@@ -1,4 +1,3 @@
-// -*- C++ -*-
 /***************************************************************************
  *
  * The IPPL Framework
@@ -8,18 +7,6 @@
  * Neither PSI nor the author(s)
  * makes any warranty, express or implied, or assumes any liability or
  * responsibility for the use of this software
- *
- * Visit www.amas.web.psi for more details
- *
- ***************************************************************************/
-
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
  *
  ***************************************************************************/
 
@@ -54,12 +41,10 @@ public:
 	      for (d=3; d<Dim; ++d)
 		{
 		  Lhs.step(d);
-		  // #pragma inline here
 		  for_each(Rhs,StepFunctor(d),PETE_NullCombiner());
 		  if ( ! Lhs.done(d) ) 
 		    break;
 		  Lhs.rewind(d);
-		  // #pragma inline here
 		  for_each(Rhs,RewindFunctor(d),PETE_NullCombiner());
 		} 
 	    } while (d<Dim);
@@ -128,15 +113,14 @@ public:
 template<unsigned Dim, class LHS, class RHS, class OP>
  void BrickExpression<Dim,LHS,RHS,OP>::apply()
 {
-  
-  
-  
-  // #pragma inline here
+
   BrickExpLoop<LHS,RHS,OP,Dim>::apply(Lhs,Rhs,Op);
 }
 
-/***************************************************************************
- * $RCSfile: BrickExpression.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:26 $
- * IPPL_VERSION_ID: $Id: BrickExpression.cpp,v 1.1.1.1 2003/01/23 07:40:26 adelmann Exp $ 
- ***************************************************************************/
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

@@ -1,10 +1,6 @@
-// -*- C++ -*-
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
  *
  ***************************************************************************/
 
@@ -207,6 +203,7 @@ public:
   enum { Dim_u = Dim };
   typedef IndexedBareFieldIterator<T,Dim> iterator;
 
+  constexpr IndexedBareField (const IndexedBareField<T, Dim, Brackets>&) = default;
   IndexedBareField<T,Dim,Brackets+1> operator[](const Index& idx)
   {
     CTAssert(Brackets<Dim);
@@ -340,8 +337,10 @@ std::ostream& operator<<(std::ostream& out, const IndexedBareField<T,Dim,Bracket
 
 #endif // INDEXED_BARE_FIELD_H
 
-/***************************************************************************
- * $RCSfile: IndexedBareField.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:26 $
- * IPPL_VERSION_ID: $Id: IndexedBareField.h,v 1.1.1.1 2003/01/23 07:40:26 adelmann Exp $ 
- ***************************************************************************/
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

@@ -1,4 +1,4 @@
-#ifdef HAVE_SAAMG_SOLVER
+
 //#define DBG_STENCIL
 
 #include "Solvers/MGPoissonSolver.h"
@@ -7,7 +7,6 @@
 #include "ArbitraryDomain.h"
 #include "EllipticDomain.h"
 #include "BoxCornerDomain.h"
-//#include "RectangularDomain.h"
 
 #include "Track/Track.h"
 #include "Physics/Physics.h"
@@ -17,8 +16,6 @@
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/Options.h"
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-local-typedefs"
 #include "Epetra_Map.h"
 #include "Epetra_Vector.h"
 #include "Epetra_CrsMatrix.h"
@@ -41,8 +38,6 @@
 #include "Isorropia_Epetra.hpp"
 #include "Isorropia_EpetraRedistributor.hpp"
 #include "Isorropia_EpetraPartitioner.hpp"
-
-#pragma GCC diagnostic pop
 
 #include <algorithm>
 
@@ -172,7 +167,7 @@ MGPoissonSolver::~MGPoissonSolver() {
     problem_ptr = Teuchos::null;
 }
 
-void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr, double zshift) {
+void MGPoissonSolver::computePotential(Field_t& /*rho*/, Vector_t /*hr*/, double /*zshift*/) {
     throw OpalException("MGPoissonSolver", "not implemented yet");
 }
 
@@ -496,7 +491,7 @@ void MGPoissonSolver::IPPLToMap3D(NDIndex<3> localId) {
     Map = new Epetra_Map(-1, NumMyElements, &MyGlobalElements[0], 0, Comm);
 }
 
-void MGPoissonSolver::ComputeStencil(Vector_t hr, Teuchos::RCP<Epetra_Vector> RHS) {
+void MGPoissonSolver::ComputeStencil(Vector_t /*hr*/, Teuchos::RCP<Epetra_Vector> RHS) {
 
     A->PutScalar(0.0);
 
@@ -594,4 +589,10 @@ Inform &MGPoissonSolver::print(Inform &os) const {
     return os;
 }
 
-#endif /* HAVE_SAAMG_SOLVER */
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

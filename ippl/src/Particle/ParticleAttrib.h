@@ -715,6 +715,9 @@ public:
 
     T const * operator->() const { return getP(); }
 
+    ParticleAttribConstIterator<T>& operator=(const ParticleAttribConstIterator<T>&) = default;
+
+
     ParticleAttribConstIterator<T>& operator++(void) {
         ++curr;
         return *this;

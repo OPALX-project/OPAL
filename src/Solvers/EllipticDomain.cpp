@@ -1,4 +1,12 @@
-#ifdef HAVE_SAAMG_SOLVER
+//
+// Header file for elliptic domain
+//
+// Copyright (c) 2008-2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// OPAL is licensed under GNU GPL version 3.
+//
 
 #include "Solvers/EllipticDomain.h"
 
@@ -660,5 +668,10 @@ void EllipticDomain::quadraticInterpolation(int x, int y, int z, double &W, doub
     }
 }
 
-
-#endif //#ifdef HAVE_SAAMG_SOLVER
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

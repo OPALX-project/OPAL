@@ -1,6 +1,5 @@
 #ifndef RECTANGULAR_DOMAIN_H
 #define RECTANGULAR_DOMAIN_H
-#ifdef HAVE_SAAMG_SOLVER
 
 #include <vector>
 #include <string>
@@ -32,7 +31,7 @@ public:
     /// returns type of boundary condition
     std::string getType() {return "Rectangular";}
     /// queries if a given (x,y,z) coordinate lies inside the domain
-    inline bool isInside(int x, int y, int z) {
+    inline bool isInside(int x, int y, int /*z*/) {
         double xx = (x - (nr[0] - 1) / 2.0) * hr[0];
         double yy = (y - (nr[1] - 1) / 2.0) * hr[1];
         return (xx <= a_m && yy < b_m);
@@ -78,5 +77,13 @@ private:
 
 };
 
-#endif //#ifdef HAVE_SAAMG_SOLVER
-#endif //#ifdef RECTANGULAR_DOMAIN_H
+#endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:
+

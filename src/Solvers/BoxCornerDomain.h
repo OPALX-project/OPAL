@@ -1,17 +1,22 @@
+//
+// Class BoxCornerDomain
+//   :FIXME: add brief description
+//
+// Copyright (c) 2008-2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// OPAL is licensed under GNU GPL version 3.
+//
+
 #ifndef BOXCORNER_DOMAIN_H
 #define BOXCORNER_DOMAIN_H
-#ifdef HAVE_SAAMG_SOLVER
 
-//#include <vector>
 #include <map>
-//#include <multimap>
 #include <string>
 #include <cmath>
 #include <iostream>  // Neeeded for stream I/O
 #include <fstream>   // Needed for file I/O
-//#include <iomanip>   // Needed for I/O manipulators
-
-//#include "Ippl.h"
 #include "IrregularDomain.h"
 
 
@@ -75,7 +80,7 @@ public:
 
 
     /// we do not need this
-    int getNumXY(int z) { return -1;}
+    int getNumXY(int /*z*/) { return -1;}
 
 
     /// as a function of z, determine the hight (B) of the geometry
@@ -179,7 +184,7 @@ private:
 
 
 
-    inline double getXIntersection(double cx, int z) {
+    inline double getXIntersection(double cx, int /*z*/) {
         if(cx < 0)
             return -A_m;
         else
@@ -227,5 +232,12 @@ private:
 
 };
 
-#endif //#ifdef HAVE_SAAMG_SOLVER
-#endif //#ifdef BOXCORNER_DOMAIN_H
+#endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

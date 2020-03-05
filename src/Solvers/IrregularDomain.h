@@ -1,6 +1,16 @@
+//
+// class IrregularDomain
+//   defines a common abstract interface for different types of boundaries
+//
+// Copyright (c) 2008-2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// OPAL is licensed under GNU GPL version 3.
+//
+
 #ifndef IRREGULAR_DOMAIN_H
 #define IRREGULAR_DOMAIN_H
-#ifdef HAVE_SAAMG_SOLVER
 
 #include <vector>
 #include <string>
@@ -14,7 +24,7 @@ enum {
     QUADRATIC
 };
 
-/// this class defines a common abstract interface for different types of boundaries
+
 class IrregularDomain {
 
 public:
@@ -121,5 +131,12 @@ protected:
     Quaternion_t globalToLocalQuaternion_m;
 };
 
-#endif //#ifdef HAVE_SAAMG_SOLVER
-#endif //#ifndef IRREGULAR_DOMAIN_H
+#endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

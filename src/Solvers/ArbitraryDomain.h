@@ -1,7 +1,17 @@
+//
+// Class ArbitraryDomain
+//   Interface to iterative solver and boundary geometry
+//   for space charge calculation
+//
+// Copyright (c) 2008-2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// OPAL is licensed under GNU GPL version 3.
+//
+
 #ifndef ARBITRARY_DOMAIN_H
 #define ARBITRARY_DOMAIN_H
-
-#ifdef HAVE_SAAMG_SOLVER
 
 #include <mpi.h>
 #include <hdf5.h>
@@ -137,5 +147,12 @@ private:
     inline void rotateZAxisWithQuaternion(Vector_t &v, Quaternion_t const quaternion);
 };
 
-#endif //#ifdef HAVE_SAAMG_SOLVER
-#endif //#ifdef ARBITRARY_DOMAIN
+#endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

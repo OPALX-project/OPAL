@@ -1,13 +1,3 @@
-#ifndef OPAL_Expressions_HH
-#define OPAL_Expressions_HH 1
-
-// ------------------------------------------------------------------------
-// $RCSfile: Expressions.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
 // Namespace Expressions
 //   This namespace contains the representations for all OPAL expressions
@@ -43,12 +33,16 @@
 // Declared functions:
 //   A collection of functions implementing a recursive descent parser.
 //
-// ------------------------------------------------------------------------
 //
-// $Date: 2000/03/27 09:33:34 $
-// $Author: Andreas Adelmann $
+// Copyright (c) 2008-2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
 //
-// ------------------------------------------------------------------------
+// OPAL is licensed under GNU GPL version 3.
+//
+
+#ifndef OPAL_Expressions_HH
+#define OPAL_Expressions_HH 1
 
 #include "MemoryManagement/OwnPtr.h"
 #include "Parser/Token.h"
@@ -64,8 +58,6 @@ class Statement;
 class Table;
 class TableRowRep;
 
-
-// Begin namespace Expression.
 // ========================================================================
 /// Representation objects and parsers for attribute expressions.
 
@@ -124,6 +116,7 @@ namespace Expressions {
         PtrToScalar();
         PtrToScalar(const PtrToScalar &rhs);
         ~PtrToScalar();
+        PtrToScalar& operator=(const PtrToScalar&) = default;
     };
 
 
@@ -194,6 +187,7 @@ namespace Expressions {
         PtrToArray();
         PtrToArray(const PtrToArray &rhs);
         ~PtrToArray();
+        PtrToArray& operator=(const PtrToArray<T>&) = default;
     };
 
 
@@ -399,3 +393,11 @@ namespace Expressions {
 };
 
 #endif // OPAL_Expressions_HH
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

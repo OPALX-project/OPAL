@@ -18,6 +18,7 @@ public:
 
     Quaternion operator*(const double &) const;
     Quaternion operator*(const Quaternion &) const;
+    Quaternion& operator=(const Quaternion &) = default;
     Quaternion& operator*=(const Quaternion &);
     Quaternion operator/(const double &) const;
 

@@ -1207,6 +1207,12 @@ move_g_1(DragtFinnMap<N> &f, DragtFinnMap<N> &g) {
     DragtFinnMap<N> h;
     FLieGenerator<double, N> g_neg = - g_1;
 
+    /*
+      :FIXME: Is there a better solution for C++ < C++17
+      C++17 provides a fallthrough attribute
+     */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
     switch(order) {
 
         case 6:
@@ -1348,7 +1354,7 @@ move_g_1(DragtFinnMap<N> &f, DragtFinnMap<N> &g) {
             // for order > 6 the method is not implemented.
             break;
     }
-
+#pragma GCC diagnostic pop
     // Move first-order terms in g_1 across h_2 and combine with f_1.
     f.assign(f_1 + g_1.transform(f_mat));
 }

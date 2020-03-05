@@ -80,6 +80,8 @@ class SquarePolynomialVector {
      */
     SquarePolynomialVector (const SquarePolynomialVector& pv);
 
+    SquarePolynomialVector& operator=(const SquarePolynomialVector&) = default;
+
     /** Construct polynomial vector passing polynomial coefficients as a matrix.
      */
     SquarePolynomialVector (int pointDimension,

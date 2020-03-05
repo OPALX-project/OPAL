@@ -256,6 +256,9 @@ FFTPACK<T>::callFFT(unsigned transformDim, int direction, T* data) {
 
     // check transform dimension and direction arguments
     PAssert_LT(transformDim, numTransformDims_m);
+    // avoid unused variable warning if we compile with Release
+    // :FIXME: remove direction
+    (void)direction;
     PAssert_EQ(std::abs(direction), 1);
 
     // branch on transform type for this dimension

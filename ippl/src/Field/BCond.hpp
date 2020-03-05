@@ -2795,8 +2795,6 @@ void ExtrapolateFace<T,D,M,C>::apply( Field<T,D,M,C>& A )
 }
 
 
-//#pragma GCC push_options
-//#pragma GCC optimize "no-tree-vrp"
 template<class T, unsigned D, class M, class C>
 inline void
 ExtrapolateFaceBCApply2(const NDIndex<D> &dest, const NDIndex<D> &src,
@@ -2862,7 +2860,6 @@ ExtrapolateFaceBCApply2(const NDIndex<D> &dest, const NDIndex<D> &src,
 	 (ef.getOffset(),ef.getSlope(),ef.getComponent())).apply();
     }
 }
-//#pragma GCC pop_options
 
 
 //-----------------------------------------------------------------------------

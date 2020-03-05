@@ -14,14 +14,6 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 #pragma once
 
-#if defined __clang__
-#  pragma clang diagnostic push
-#  pragma clang diagnostic ignored "-Wunsequenced"
-#elif defined __GNUC__
-#  pragma GCC diagnostic push
-#  pragma GCC diagnostic ignored "-Wsequence-point"
-#endif
-
 #include <algorithm>
 #include <cmath>
 #include <functional>
@@ -653,8 +645,10 @@ namespace matheval {
 
 } // namespace matheval
 
-#if defined __clang__
-#  pragma clang diagnostic pop
-#elif defined __GNUC__
-#  pragma GCC diagnostic pop
-#endif
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

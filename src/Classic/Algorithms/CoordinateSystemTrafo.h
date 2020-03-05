@@ -23,6 +23,7 @@ public:
     void invert();
     CoordinateSystemTrafo inverted() const;
 
+    CoordinateSystemTrafo& operator=(const CoordinateSystemTrafo& right) = default;
     CoordinateSystemTrafo operator*(const CoordinateSystemTrafo &right) const;
     void operator*=(const CoordinateSystemTrafo &right);
 

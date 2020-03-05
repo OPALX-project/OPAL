@@ -1,6 +1,5 @@
 #ifndef ELLIPTICAL_DOMAIN_H
 #define ELLIPTICAL_DOMAIN_H
-#ifdef HAVE_SAAMG_SOLVER
 
 #include <vector>
 #include <map>
@@ -37,7 +36,7 @@ public:
         return ((xx * xx / (SemiMajor * SemiMajor) + yy * yy / (SemiMinor * SemiMinor) < 1) && z != 0 && z != nr[2] - 1);
     }
 
-    int getNumXY(int z) { return nxy_m; }
+    int getNumXY(int /*z*/) { return nxy_m; }
     /// set semi-minor
     void setSemiMinor(double sm) {SemiMinor = sm;}
     /// set semi-major
@@ -115,5 +114,12 @@ private:
 
 };
 
-#endif //#ifdef HAVE_SAAMG_SOLVER
 #endif //#ifdef ELLIPTICAL_DOMAIN_H
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

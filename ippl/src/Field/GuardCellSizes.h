@@ -31,7 +31,7 @@ public:
   GuardCellSizes(unsigned *s);
   GuardCellSizes(unsigned l, unsigned r);
   GuardCellSizes(unsigned *l, unsigned *r);
-
+  constexpr GuardCellSizes<Dim>(const GuardCellSizes<Dim>&) = default;
   GuardCellSizes<Dim>& operator=(const GuardCellSizes<Dim>& gc)
   {
     for (unsigned d=0; d<Dim; ++d) {

@@ -24,7 +24,7 @@ void RectangularDomain::compute(Vector_t hr){
     nxy_m = nr[0] * nr[1];
 }
 
-int RectangularDomain::getNumXY(int z) {
+int RectangularDomain::getNumXY(int /*z*/) {
     return nxy_m;
 }
 

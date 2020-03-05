@@ -1,19 +1,17 @@
-// ------------------------------------------------------------------------
-// $Version: 1.2.1 $
-// ------------------------------------------------------------------------
-// Copyright & License: See Copyright.readme in src directory
-// ------------------------------------------------------------------------
+//
 // Class ArbitraryDomain
 //   Interface to iterative solver and boundary geometry
 //   for space charge calculation
 //
-// ------------------------------------------------------------------------
-// $Author: kaman $
-// $Date: 2014 $
-// ------------------------------------------------------------------------
+// Copyright (c) 2008-2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// OPAL is licensed under GNU GPL version 3.
+//
+
 //#define DEBUG_INTERSECT_RAY_BOUNDARY
 
-#ifdef HAVE_SAAMG_SOLVER
 #include "Solvers/ArbitraryDomain.h"
 #include "Structure/BoundaryGeometry.h"
 
@@ -26,7 +24,7 @@
 
 ArbitraryDomain::ArbitraryDomain( BoundaryGeometry * bgeom,
                                   Vector_t nr,
-                                  Vector_t hr,
+                                  Vector_t /*hr*/,
                                   std::string interpl){
     bgeom_m  = bgeom;
     minCoords_m = bgeom->getmincoords();
@@ -517,7 +515,7 @@ void ArbitraryDomain::getBoundaryStencil(int idx, int idy, int idz, double &W, d
     assert(C > 0);
 }
 
-void ArbitraryDomain::constantInterpolation(int idx, int idy, int idz, double& W, double& E, double& S, double& N, double& F, double& B, double& C, double &scaleFactor) {
+void ArbitraryDomain::constantInterpolation(int idx, int idy, int idz, double& W, double& E, double& S, double& N, double& F, double& B, double& C, double& /*scaleFactor*/) {
 
     W = -1/(hr[0]*hr[0]);
     E = -1/(hr[0]*hr[0]);
@@ -726,4 +724,11 @@ inline void ArbitraryDomain::rotateZAxisWithQuaternion(Vector_t & v, Quaternion_
             + quaternion(3) * quaternion(3));
 
 }
-#endif //#ifdef HAVE_SAAMG_SOLVER
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

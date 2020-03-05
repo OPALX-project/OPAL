@@ -1,5 +1,4 @@
 set (_SRCS
-  FieldLayoutUser.cpp
   VRB.cpp
   )
 

@@ -230,7 +230,7 @@ bool odeint(
         }
         if((x + h - x2) * (x + h - x1) > 0.0)
             h = x2 - x;
-        double hdid, hnext;
+        double hdid = 0.0, hnext = 0.0;
         rkqs(y, dydx, nvar, x, h, eps, yscal, hdid, hnext, derivs);
         if(hdid == h)
             ++nok;

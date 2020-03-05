@@ -1,25 +1,6 @@
-// -*- C++ -*-
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- * This program was prepared by PSI. 
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit www.amas.web.psi for more details
- *
- ***************************************************************************/
-
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
  *
  ***************************************************************************/
 
@@ -113,7 +94,7 @@ TryCompressLHS(LField<T,Dim>& lf, A& rhs, Op op, const NDIndex<Dim>& domain)
   // is for assignment.
   if (c1 && c3 && c4)
     {
-      T tmpval;
+      T tmpval{};
       PETE_apply(op, tmpval, for_each(rhs, EvalFunctor_0()));
       if (*lf.begin() == tmpval)
 	{
@@ -676,9 +657,10 @@ assign(const BareField<T1,Dim>& ca, RHS b, OP op, ExprTag<true>)
   //INCIPPLSTAT(incBFEqualsExpression);
 }
 
-
-/***************************************************************************
- * $RCSfile: Assign.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:26 $
- * IPPL_VERSION_ID: $Id: Assign.cpp,v 1.1.1.1 2003/01/23 07:40:26 adelmann Exp $ 
- ***************************************************************************/
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

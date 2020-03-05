@@ -1,4 +1,14 @@
-#ifdef HAVE_SAAMG_SOLVER
+//
+// Class BoxCornerDomain
+//   :FIXME: add brief description
+//
+// Copyright (c) 2008-2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// OPAL is licensed under GNU GPL version 3.
+//
+
 #include "Solvers/BoxCornerDomain.h"
 
 #include <map>
@@ -130,7 +140,7 @@ void BoxCornerDomain::compute(Vector_t hr){
     */
 }
 
-void BoxCornerDomain::compute(Vector_t hr, NDIndex<3> localId){
+void BoxCornerDomain::compute(Vector_t /*hr*/, NDIndex<3> /*localId*/){
 }
 
 void BoxCornerDomain::getBoundaryStencil(int x, int y, int z, double &W, double &E, double &S, double &N, double &F, double &B, double &C, double &scaleFactor) {
@@ -589,5 +599,10 @@ void BoxCornerDomain::quadraticInterpolation(int x, int y, int z, double &W, dou
     }
 }
 
-
-#endif //#ifdef HAVE_SAAMG_SOLVER
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

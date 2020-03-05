@@ -23,7 +23,6 @@ int main(int argc, char *argv[]) {
   const unsigned D=3U;
   double hightail;
   unsigned int d;
-  int tag = Ippl::Comm->next_tag(tag);
   unsigned ngrid[D];   // grid sizes sizes
   unsigned int iters = 100;
 

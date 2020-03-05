@@ -16,6 +16,7 @@ include_directories (
 link_directories (
     ${IPPL_LIBRARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
+    ${Boost_LIBRARY_DIRS}
 )
 
 set (MSLANG_LIBS
