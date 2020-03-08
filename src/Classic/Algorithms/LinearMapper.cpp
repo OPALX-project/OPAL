@@ -139,7 +139,7 @@ void LinearMapper::visitDrift(const Drift &drift) {
     applyDrift(flip_s * drift.getElementLength());
 }
 
-void LinearMapper::visitUndulator(const Undulator &u) {
+void LinearMapper::visitUndulator(/* const Undulator &u */) {
     INFOMSG("Undulator not implemented");
 }
 

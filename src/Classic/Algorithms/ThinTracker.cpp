@@ -213,7 +213,7 @@ void ThinTracker::visitDrift(const Drift &drift) {
     applyDrift(flip_s * drift.getElementLength());
 }
 
-void ThinTracker::visitUndulator(const Undulator &u) {
+void ThinTracker::visitUndulator(/* const Undulator &u */) {
     INFOMSG("Undulator not implemented");
 }
 

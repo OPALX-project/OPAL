@@ -150,7 +150,7 @@ void OrbitTracker::visitDrift(const Drift &drift) {
     applyDrift(flip_s * drift.getElementLength());
 }
 
-void OrbitTracker::visitUndulator(const Undulator &u) {
+void OrbitTracker::visitUndulator(/* const Undulator &u */) {
   INFOMSG("Undulator not implemented");
   // ada    applyDrift(flip_s * drift.getElementLength());
 }
