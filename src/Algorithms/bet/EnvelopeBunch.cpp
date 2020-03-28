@@ -1455,7 +1455,7 @@ double EnvelopeBunch::get_sPos() {
         }
     }
 
-    MPI_Allreduce(MPI_IN_PLACE, &count, 1, MPI_LONG, MPI_SUM, Ippl::getComm());
+    MPI_Allreduce(MPI_IN_PLACE, &count, 1, MPI_UNSIGNED_LONG, MPI_SUM, Ippl::getComm());
     MPI_Allreduce(MPI_IN_PLACE, &refpos, 1, MPI_DOUBLE, MPI_SUM, Ippl::getComm());
     return refpos / count;
 }

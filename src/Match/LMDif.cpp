@@ -23,7 +23,6 @@
 #include "Algebra/Vector.h"
 #include "Attributes/Attributes.h"
 #include "Match/Match.h"
-#include "Utilities/Round.h"
 #include <algorithm>
 #include <cmath>
 #include <cfloat>
@@ -80,7 +79,7 @@ void LMDif::execute() {
 
     // Fetch command attributes.
     double tol = max(DBL_EPSILON, Attributes::getReal(itsAttr[TOLERANCE]));
-    int nfcnmax = int(Round(Attributes::getReal(itsAttr[CALLS])));
+    int nfcnmax = int(std::round(Attributes::getReal(itsAttr[CALLS])));
 
     // Initialize.
     double fnorm = 0.0;

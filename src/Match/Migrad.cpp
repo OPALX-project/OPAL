@@ -24,7 +24,6 @@
 #include "Algebra/Vector.h"
 #include "Attributes/Attributes.h"
 #include "Match/Match.h"
-#include "Utilities/Round.h"
 #include <algorithm>
 #include <cmath>
 #include <cfloat>
@@ -79,7 +78,7 @@ void Migrad::execute() {
 
     // fetch command attributes.
     double tol = max(Attributes::getReal(itsAttr[TOLERANCE]), DBL_EPSILON);
-    int nfcnmax = int(Round(Attributes::getReal(itsAttr[CALLS])));
+    int nfcnmax = int(std::round(Attributes::getReal(itsAttr[CALLS])));
 
     // Working vectors.
     int n = Match::block->countVariables();

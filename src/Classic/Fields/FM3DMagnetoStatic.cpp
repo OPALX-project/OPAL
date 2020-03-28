@@ -127,8 +127,8 @@ void FM3DMagnetoStatic::readMap() {
         if (normalize_m) {
             double Bymax = 0.0;
             // find maximum field
-            unsigned int centerX = static_cast<unsigned int>(std::floor(-xbegin_m / hx_m + 0.5));
-            unsigned int centerY = static_cast<unsigned int>(std::floor(-ybegin_m / hy_m + 0.5));
+            unsigned int centerX = static_cast<unsigned int>(std::round(-xbegin_m / hx_m));
+            unsigned int centerY = static_cast<unsigned int>(std::round(-ybegin_m / hy_m));
             for(unsigned int k = 0; k < num_gridpz_m; ++ k) {
                 double By = FieldstrengthBy_m[getIndex(centerX, centerY, k)];
                 if(std::abs(By) > Bymax) {

@@ -3,6 +3,7 @@
 #include "H5hut.h"
 #include "Physics/Physics.h"
 
+#include <cmath>
 #include <fstream>
 #include <ios>
 
@@ -97,7 +98,7 @@ void FM3DH5Block_nonscale::readMap() {
 
     long field_size = 0;
     int Nnodes = Ippl::getNodes();//min(20, Ippl::getNodes());
-    int Nz_avrg = static_cast<int>(floor(0.5 + num_gridpz_m / Nnodes));
+    int Nz_avrg = static_cast<int>(std::round((double)num_gridpz_m / Nnodes));
     int Nz_diff = Nz_avrg * Nnodes - num_gridpz_m;
     int signNz = Nz_diff > 0 ? 1 : -1;
     int *Nz_read_start = new int[Ippl::getNodes() + 1];

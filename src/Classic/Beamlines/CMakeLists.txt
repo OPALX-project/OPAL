@@ -4,7 +4,6 @@ set (_SRCS
     ElmPtr.cpp
     FlaggedBeamline.cpp
     FlaggedElmPtr.cpp
-    SimpleBeamline.cpp
     )
 
 include_directories (
@@ -19,7 +18,6 @@ set (HDRS
     ElmPtr.h
     FlaggedBeamline.h
     FlaggedElmPtr.h
-    SimpleBeamline.h
     TBeamline.h
     )
 

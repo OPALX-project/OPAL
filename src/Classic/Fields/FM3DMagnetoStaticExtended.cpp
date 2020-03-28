@@ -3,6 +3,7 @@
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
+#include <cmath>
 #include <fstream>
 #include <ios>
 #include <algorithm>
@@ -121,7 +122,7 @@ void FM3DMagnetoStaticExtended::readMap() {
             double Bymax = 0.0;
 
             // find maximum field
-            unsigned int centerX = static_cast<unsigned int>(std::floor(-xbegin_m / hx_m + 0.5));
+            unsigned int centerX = static_cast<unsigned int>(std::round(-xbegin_m / hx_m));
             for(unsigned int k = 0; k < num_gridpz_m; ++ k) {
                 double By = FieldstrengthBy_m[getIndex(centerX, 0, k)];
                 if(std::abs(By) > std::abs(Bymax)) {

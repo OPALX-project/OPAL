@@ -51,9 +51,6 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 #include "Utilities/ParseError.h"
-#include "Utilities/CLRangeError.h"
-#include "Utilities/Round.h"
-#include "Utilities/Truncate.h"
 #include "ValueDefinitions/BoolConstant.h"
 #include <algorithm>
 #include <cassert>
@@ -183,8 +180,8 @@ namespace Expressions {
     // ----------------------------------------------------------------------
 
     static const TFunction1<double, double> table1[] = {
-        { "TRUNC",  -1, Truncate   },
-        { "ROUND",  -1, Round      },
+        { "TRUNC",  -1, std::trunc },
+        { "ROUND",  -1, std::round },
         { "FLOOR",  -1, std::floor },
         { "CEIL",   -1, std::ceil  },
         { "SIGN",   -1, Sign       },
@@ -448,7 +445,6 @@ namespace Expressions {
         return new AList<bool>(array);
     }
 
-
     PtrToArray<double> parseRealArray(Statement &stat) {
         PtrToArray<double> result;
         PtrToArray<double> second;
@@ -549,7 +545,7 @@ namespace Expressions {
                     std::string name = parseString(stat, "Expected <name> or '#'.");
                     int occurrence = 1;
                     if(stat.delimiter('[')) {
-                        occurrence = int(Round(parseRealConst(stat)));
+                        occurrence = int(std::round(parseRealConst(stat)));
                         parseDelimiter(stat, ']');
 
                         if(occurrence <= 0) {
@@ -593,7 +589,7 @@ namespace Expressions {
         int index = 0;
 
         if(stat.delimiter('[')) {
-            index = int(Round(parseRealConst(stat)));
+            index = int(std::round(parseRealConst(stat)));
             parseDelimiter(stat, ']');
 
             if(index <= 0) {
@@ -1051,7 +1047,7 @@ namespace Expressions {
         parseDelimiter(stat, '(');
 
         // Read the array index set.
-        int frst = int(Round(parseRealConst(stat)));
+        int frst = int(std::round(parseRealConst(stat)));
         int last = 1;
         int step = 1;
 
@@ -1059,9 +1055,9 @@ namespace Expressions {
             last = frst;
             frst = 1;
         } else if(stat.delimiter(':')) {
-            last = int(Round(parseRealConst(stat)));
+            last = int(std::round(parseRealConst(stat)));
             if(stat.delimiter(':')) {
-                step = int(Round(parseRealConst(stat)));
+                step = int(std::round(parseRealConst(stat)));
             }
             parseDelimiter(stat, ',');
         } else {

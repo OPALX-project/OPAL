@@ -2,8 +2,8 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- * This program was prepared by PSI. 
+ *
+ * This program was prepared by PSI.
  * All rights in the program are reserved by PSI.
  * Neither PSI nor the author(s)
  * makes any warranty, express or implied, or assumes any liability or
@@ -40,8 +40,7 @@
 //----------------------------------------------------------------------
 template<class T>
 void pap(ParticleAttrib<T>& pattr, bool docomm) {
-  
-  
+
   // Set Inform ptr if not set:
   if (!PtclDbgInformIsSet) {
     if (!FldDbgInformIsSet) {
@@ -61,12 +60,12 @@ void pap(ParticleAttrib<T>& pattr, bool docomm) {
     int tag2 = Ippl::Comm->next_tag(IPPL_APP_TAG0, IPPL_APP_CYCLE);
     Message *msg, *msg2;
     if (mype == 0) {
-      int otherNumPtcles;
+      int otherNumPtcles = 0;
       for (int pe = 1; pe < npes; pe++) {
-	msg = IpplInfo::Comm->receive_block(pe, tag);
-	msg->get(otherNumPtcles);
+        msg = IpplInfo::Comm->receive_block(pe, tag);
+        msg->get(otherNumPtcles);
         delete msg;
-	numPtcles += otherNumPtcles;
+        numPtcles += otherNumPtcles;
       }
       msg2 = new Message;
       msg2->put(numPtcles);
@@ -83,10 +82,10 @@ void pap(ParticleAttrib<T>& pattr, bool docomm) {
     }
     IpplInfo::Comm->barrier();
     spap(pattr, 0, numPtcles - 1, 1, docomm);
-    
+
   }
   else {
-      
+
     spap(pattr, 0, pattr.size() - 1, 1, docomm);
 
   }
@@ -97,8 +96,8 @@ void pap(ParticleAttrib<T>& pattr, bool docomm) {
 //----------------------------------------------------------------------
 template<class T>
 void epap(ParticleAttrib<T>& pattr, int i, bool docomm) {
-  
-  
+
+
   // Set Inform ptr if not set:
   if (!PtclDbgInformIsSet) {
     if (!FldDbgInformIsSet) {
@@ -115,10 +114,10 @@ void epap(ParticleAttrib<T>& pattr, int i, bool docomm) {
 // Print a strided subrange of a ParticleAttrib
 //----------------------------------------------------------------------
 template<class T>
-void spap(ParticleAttrib<T>& pattr, 
-	  int ibase, int ibound, int istride, bool docomm) {
-  
-  
+void spap(ParticleAttrib<T>& pattr,
+          int ibase, int ibound, int istride, bool docomm) {
+
+
 
   // Set Inform ptr if not set:
   if (!PtclDbgInformIsSet) {
@@ -134,35 +133,35 @@ void spap(ParticleAttrib<T>& pattr,
   bool okParameters = true;
   if (ibase < -1) {
     (*PtclDbgInform) << "spap() error: ibase (= " << ibase
-		    << ") < lowest index value (= " << 0 << ")" << endl;
+                    << ") < lowest index value (= " << 0 << ")" << endl;
     okParameters = false;
   }
   //tjw??? Can't check if i greater than total num ptcles, because this number
   //isn't available in ParticleAttrib
   if (istride < 0) {
-    (*PtclDbgInform) << "spap() error: istride < 0 not implemented yet." 
-		     << endl;
+    (*PtclDbgInform) << "spap() error: istride < 0 not implemented yet."
+                     << endl;
     okParameters = false;
   }
   else {
     if ((ibound < ibase) && !((ibase == 0) && (ibound == -1))) {
       (*PtclDbgInform) << "spap() error: ibase (= " << ibase
-		       << ") > ibound (=  " << ibound 
-		       << ") not implemented yet." << endl;
+                       << ") > ibound (=  " << ibound
+                       << ") not implemented yet." << endl;
       okParameters = false;
     }
   }
   if (istride == 0) {
     if (((ibound - ibase) != 0) && !((ibase == 0) && (ibound == -1))) {
-      (*PtclDbgInform) << "spap() error: istride = 0 but (ibound - ibase) = " 
-		       << (ibound - ibase) << endl;
+      (*PtclDbgInform) << "spap() error: istride = 0 but (ibound - ibase) = "
+                       << (ibound - ibase) << endl;
       okParameters = false;
     }
     else {
-      istride = 1; // Allow specifying stride 0 for 1-element range; set=1 
+      istride = 1; // Allow specifying stride 0 for 1-element range; set=1
     }
   }
-  
+
   if (!okParameters) return; // Exit if problem with input parameters
 
   if (docomm) {
@@ -181,12 +180,12 @@ void spap(ParticleAttrib<T>& pattr,
     int tag2 = Ippl::Comm->next_tag(IPPL_APP_TAG0, IPPL_APP_CYCLE);
     Message *msg, *msg2;
     if (mype == 0) {
-      int otherNumPtcles;
+      int otherNumPtcles = 0;
       for (int pe=1; pe<npes; pe++) {
-	msg = IpplInfo::Comm->receive_block(pe, tag);
-	msg->get(otherNumPtcles);
+        msg = IpplInfo::Comm->receive_block(pe, tag);
+        msg->get(otherNumPtcles);
         delete msg;
-	numsPtcles[pe] = numsPtcles[pe - 1] + otherNumPtcles;
+        numsPtcles[pe] = numsPtcles[pe - 1] + otherNumPtcles;
       }
       msg2 = new Message;
       msg2->putmsg((void *)numsPtcles, sizeof(int), npes);
@@ -216,39 +215,39 @@ void spap(ParticleAttrib<T>& pattr,
     Index requestedRange(ibase, ibound, istride);
     for (int pe=0; pe < npes; pe++) {
       if (mype == pe) {
-	if (myNumPtcles > 0) {
-	  if (myRange.touches(requestedRange)) {
-	    Index myRequestedRange = requestedRange.intersect(myRange);
-	    int mybase = myRequestedRange.first();
-	    int mybound = myRequestedRange.last();
-	    *PtclDbgInform << "....PE = " << mype 
-			  << " GLOBAL ptcle index subrange (" << mybase
-			  << " : " << mybound << " : " << istride 
-			  << ")...." << endl;
-	    for (int p = mybase; p <= mybound; p += istride*elementsPerLine) {
-	      for (int item = 0; ((item < elementsPerLine) &&
-				  ((p+item*istride) <= mybound)); item++) {
-// 				  (item < mylength)); item++) {
-		*PtclDbgInform << std::setprecision(digitsPastDecimal) 
-			       << std::setw(widthOfElements)
-			       << pattr[p + item*istride] << " ";
-	      }
+        if (myNumPtcles > 0) {
+          if (myRange.touches(requestedRange)) {
+            Index myRequestedRange = requestedRange.intersect(myRange);
+            int mybase = myRequestedRange.first();
+            int mybound = myRequestedRange.last();
+            *PtclDbgInform << "....PE = " << mype
+                          << " GLOBAL ptcle index subrange (" << mybase
+                          << " : " << mybound << " : " << istride
+                          << ")...." << endl;
+            for (int p = mybase; p <= mybound; p += istride*elementsPerLine) {
+              for (int item = 0; ((item < elementsPerLine) &&
+                                  ((p+item*istride) <= mybound)); item++) {
+//                                (item < mylength)); item++) {
+                *PtclDbgInform << std::setprecision(digitsPastDecimal)
+                               << std::setw(widthOfElements)
+                               << pattr[p + item*istride] << " ";
+              }
 
-	      *PtclDbgInform << endl;
-	    }
-	  }	    
-	}
+              *PtclDbgInform << endl;
+            }
+          }
+        }
         else {
-	  //don't	  *PtclDbgInform << "....PE = " << mype 
-	  //don't			<< " has no particles ...." << endl;
-	}
+          //don't         *PtclDbgInform << "....PE = " << mype
+          //don't			<< " has no particles ...." << endl;
+        }
       }
       IpplInfo::Comm->barrier();
     }
     if (mype == 0) *PtclDbgInform << endl;
     delete [] numsPtcles;
   }
-  else { 
+  else {
 
     // No communication; assume calling pe(s) print data for their particle
     // data values having LOCAL index range (ibase,ibound,istride):
@@ -256,45 +255,35 @@ void spap(ParticleAttrib<T>& pattr,
     int myNumPtcles = pattr.size();
     if (PtclDbgInform->getPrintNode() != INFORM_ALL_NODES) {
       WARNMSG(endl << "spap(): Currently, if docomm=false you must specify "
-	      << "an Inform object having INFORM_ALL_NODES as its "
-	      << "printing-node specifier if you want to see output from "
-	      << "any processor calling [e,s]pap(); the Inform object "
-	      << "you're trying to use has " 
-	      << PtclDbgInform->getPrintNode() << " specified. " 
-	      << "N.B.: If you called setInform() and didn't also call "
-	      << "setPtclDbgInform() you are getting the FldDbgInform object "
-	      << "you set with setInform, which you may not have constructed "
-	      << "with INFORM_ALL_NODES." << endl << endl);
+              << "an Inform object having INFORM_ALL_NODES as its "
+              << "printing-node specifier if you want to see output from "
+              << "any processor calling [e,s]pap(); the Inform object "
+              << "you're trying to use has "
+              << PtclDbgInform->getPrintNode() << " specified. "
+              << "N.B.: If you called setInform() and didn't also call "
+              << "setPtclDbgInform() you are getting the FldDbgInform object "
+              << "you set with setInform, which you may not have constructed "
+              << "with INFORM_ALL_NODES." << endl << endl);
     }
 
     if (myNumPtcles > 0) {
-      *PtclDbgInform << "....PE = " << mype 
-		    << " LOCAL ptcle index range (" << ibase
-		    << " : " << ibound << " : " << istride << ")...." << endl;
+      *PtclDbgInform << "....PE = " << mype
+                    << " LOCAL ptcle index range (" << ibase
+                    << " : " << ibound << " : " << istride << ")...." << endl;
       int length = (ibound - ibase)/istride + 1;
       for (int p = ibase; p <= ibound; p += istride*elementsPerLine) {
-	for (int item = 0; ((item < elementsPerLine) &&
-			    (item < length)); item++) {
-	  *PtclDbgInform << std::setprecision(digitsPastDecimal) 
+        for (int item = 0; ((item < elementsPerLine) &&
+                            (item < length)); item++) {
+          *PtclDbgInform << std::setprecision(digitsPastDecimal)
                          << pattr[p + item*istride] << " ";
-	}
-	*PtclDbgInform << endl;
+        }
+        *PtclDbgInform << endl;
       }
       *PtclDbgInform << endl;
     } else {
-      *PtclDbgInform << "....PE = " << mype 
-		    << " has no particles ...." << endl;
+      *PtclDbgInform << "....PE = " << mype
+                    << " has no particles ...." << endl;
     }
 
   }
-
 }
-
-// $Id: ParticleDebug.cpp,v 1.1.1.1 2003/01/23 07:40:33 adelmann Exp $
-
-/***************************************************************************
- * $RCSfile: addheaderfooter,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:17 $
- * IPPL_VERSION_ID: $Id: addheaderfooter,v 1.1.1.1 2003/01/23 07:40:17 adelmann Exp $ 
- ***************************************************************************/
-

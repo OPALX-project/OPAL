@@ -23,7 +23,6 @@
 #include "Attributes/Attributes.h"
 #include "Match/Match.h"
 #include "Utilities/OpalException.h"
-#include "Utilities/Round.h"
 #include <cfloat>
 #include <cmath>
 #include <numeric>
@@ -115,7 +114,7 @@ void Simplex::execute() {
         state = CONVERGED;
     } else {
         // Fetch command attributes.
-        int nfcnmax = int(Round(Attributes::getReal(itsAttr[CALLS])));
+        int nfcnmax = int(std::round(Attributes::getReal(itsAttr[CALLS])));
 
         // Set up the simplex.
         Fsim = Array1D<double>(n + 1);

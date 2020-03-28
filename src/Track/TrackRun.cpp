@@ -39,7 +39,6 @@
 #include "Distribution/Distribution.h"
 #include "Track/Track.h"
 #include "Utilities/OpalException.h"
-#include "Utilities/Round.h"
 #include "Utilities/Util.h"
 #include "Structure/Beam.h"
 #include "Structure/BoundaryGeometry.h"
@@ -57,6 +56,7 @@
 #include <boost/regex.hpp>
 #include <boost/filesystem.hpp>
 
+#include <cmath>
 #include <fstream>
 #include <iomanip>
 
@@ -203,7 +203,7 @@ void TrackRun::execute() {
     }
 
     if(method == "THIN" || method == "THICK") {
-        int turns = int(Round(Attributes::getReal(itsAttr[TURNS])));
+        int turns = int(std::round(Attributes::getReal(itsAttr[TURNS])));
 
         // Track for the all but last turn.
         for(int turn = 1; turn < turns; ++turn) {
@@ -602,7 +602,7 @@ void TrackRun::setupCyclotronTracker(){
     double macrocharge = 0.0;
 
     // multi-bunch parameters
-    const int specifiedNumBunch = int(std::abs(Round(Attributes::getReal(itsAttr[TURNS]))));
+    const int specifiedNumBunch = int(std::abs(std::round(Attributes::getReal(itsAttr[TURNS]))));
     const double mbPara         = Attributes::getReal(itsAttr[PARAMB]);
     const std::string mbMode    = Util::toUpper(Attributes::getString(itsAttr[MBMODE]));
     const double mbEta          = Attributes::getReal(itsAttr[MB_ETA]);
@@ -633,7 +633,7 @@ void TrackRun::setupCyclotronTracker(){
     } else {
 
         /**
-           getFrequency() gets RF frequency [MHz], NOT isochronous  revolution frequency of particle!
+           getFrequency() gets RF frequency [MHz], NOT isochronous revolution frequency of particle!
            getCurrent() gets beamcurrent [A]
 
         */

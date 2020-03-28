@@ -30,7 +30,6 @@
 #include "Utilities/DomainError.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
-#include "Utilities/Round.h"
 #include <iomanip>
 #include <iostream>
 

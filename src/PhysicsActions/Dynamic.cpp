@@ -28,7 +28,6 @@
 #include "Physics/Physics.h"
 #include "Structure/Beam.h"
 #include "Utilities/OpalException.h"
-#include "Utilities/Round.h"
 #include <cmath>
 #include <fstream>
 #include <iomanip>
@@ -99,7 +98,7 @@ void Dynamic::execute() {
     const PartData &reference = beam->getReference();
 
     // Compute transfer map.
-    int order = std::max(int(Round(Attributes::getReal(itsAttr[ORDER]))), 1);
+    int order = std::max(int(std::round(Attributes::getReal(itsAttr[ORDER]))), 1);
     FTps<double, 6>::setGlobalTruncOrder(order);
     LieMapper mapper(*use->fetchLine(), reference, false, false, order);
     mapper.execute();

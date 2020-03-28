@@ -15,8 +15,6 @@ namespace {
     bool thediff(std::string filename1, std::string filename2);
 }
 
-constexpr double roundOffError = 1e-10;
-
 TEST(Field, FieldDebug)
 {
     bool docomm = true; // Should try the test both ways, really....

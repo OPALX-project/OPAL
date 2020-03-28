@@ -19,17 +19,17 @@ TEST(Meshes, Cartesian)
 
     // Sizes:
     unsigned nverts[D], ncells[D];
-    unsigned totverts, totcells=1;
+    unsigned totverts = 1, totcells = 1;
     unsigned int d;
 
-    for (d=0; d<D; d++) {
+    for (d = 0; d < D; d++) {
         ncells[d] = nv - 1;
         nverts[d] = nv;
         totcells *= ncells[d];
         totverts *= nverts[d];
     }
     NDIndex<D> verts, cells;
-    for (d=0; d<D; d++) {
+    for (d = 0; d < D; d++) {
         verts[d] = Index(nverts[d]);
         cells[d] = Index(ncells[d]);
     }
@@ -42,24 +42,24 @@ TEST(Meshes, Cartesian)
 
     double* delX[D];
 
-    for (d=0; d<D; d++)
+    for (d = 0; d < D; d++)
         delX[d] = new double[nverts[d]];
 
     Vektor<double,D> origin;
-    for (d=0; d<D; d++)
+    for (d = 0; d < D; d++)
         origin(d) = d + 1.0;
 
     // Assign nonuniform mesh-spacing values to each component (linear ramps):
-    for (d=0; d<D; d++) {
+    for (d = 0; d < D; d++) {
         double multipplier = (d + 1)*1.0;
-        for (unsigned int vert=0; vert < nverts[d]; vert++) {
+        for (unsigned int vert = 0; vert < nverts[d]; vert++) {
             (delX[d])[vert] = multipplier*(1 + vert);
         }
     }
 
     // Mesh boundary conditions:
     MeshBC_E mbc[2*D];
-    for (unsigned b=0; b < (2*D); b++)
+    for (unsigned b = 0; b < (2*D); b++)
         mbc[b] = Reflective;
 
     // Test constructing mesh, and then setting spacing, origin, BC's
@@ -69,7 +69,7 @@ TEST(Meshes, Cartesian)
     mesh.set_MeshBC(mbc);
 
     // Clean up mesh spacing arrays
-    for (d=0; d<D; d++)
+    for (d = 0; d < D; d++)
         delete [] delX[d];
 
     // ada have to cross check Div() fails without this
@@ -77,8 +77,7 @@ TEST(Meshes, Cartesian)
 
     // Construct CenteredFieldLayout's using this for Vert and Cell centering:
     e_dim_tag edt[D];
-    for (d=0; d<D; d++)
-        edt[d] = PARALLEL;
+    for (d = 0; d < D; d++) edt[d] = PARALLEL;
     CenteredFieldLayout<D,M,Cell> cl(mesh, edt, vnodes);
     CenteredFieldLayout<D,M,Vert> vl(mesh, edt, vnodes);
 
@@ -99,7 +98,7 @@ TEST(Meshes, Cartesian)
     BConds<Tenzor<double,D>,D,M,Cell> tcbc;
 
     // Use linear negative reflecting conditions:
-    for (unsigned int face=0; face<2*D; face++) {
+    for (unsigned int face = 0; face < 2*D; face++) {
         vvbc[face]  = new NegReflectFace<Vektor<double,D>,D,M,Vert>(face);
         vcbc[face]  = new NegReflectFace<Vektor<double,D>,D,M,Cell>(face);
         scbc[face]  = new NegReflectFace<double,D,M,Cell>(face);
@@ -134,30 +133,32 @@ TEST(Meshes, Cartesian)
     // Assign positive-sloping linear ramp values into the cell-centered
     // Field<scalar>:
     scalarCell = 0.0;
-    for (d=0; d<D; d++) scalarCell[cells] += vectorCell[cells](d);
+    for (d = 0; d < D; d++) scalarCell[cells] += vectorCell[cells](d);
     // Now take the gradient:
     vectorVert = Grad(scalarCell, vectorVert);
     // The value should be (1.0,1.0,1.0) for all elements one at least one
     // removed from the last-physical-layer elements. Last-physical-layer
     // elements will be different because the BC available in IPPL don't really
     // do the kind of linear extrapolation appropriate for the needs here:
-    Vektor<double,D> unit; for (d=0; d<D; d++) unit[d] = 1.0;
+    Vektor<double,D> unit;
+    for (d = 0; d < D; d++) unit[d] = 1.0;
     Vektor<double,D> sumVectorVert;
     // Use temporary, smaller BareField as a reduced-by-two vector Field to hold
     // only the boundary-exclusive elements (needed because of limitations of
     // IPPL reductions ops):
     NDIndex<D> bev;
-    for (d=0; d<D; d++) bev[d] = Index(1,nverts[d]-2,1);
+    for (d = 0; d < D; d++) bev[d] = Index(1,nverts[d]-2,1);
     FieldLayout<D> templayout(bev);
     BareField<Vektor<double,D>,D> temp(templayout);
     temp[bev] = vectorVert[bev];
     sumVectorVert = sum(temp);
-    unsigned totred=1; for (d=0; d<D; d++) totred *= nverts[d] - 2;
+    unsigned totred=1;
+    for (d = 0; d < D; d++) totred *= nverts[d] - 2;
     sumVectorVert /= totred;
     Vektor<double,D> diffVectorVert;
     diffVectorVert = sumVectorVert - unit;
     double magDiffVectorVert = 0.0;
-    for (d=0; d<D; d++) magDiffVectorVert += diffVectorVert(d)*diffVectorVert(d);
+    for (d = 0; d < D; d++) magDiffVectorVert += diffVectorVert(d)*diffVectorVert(d);
     magDiffVectorVert = sqrt(magDiffVectorVert);
     EXPECT_NEAR(abs(magDiffVectorVert), 0, roundOffError);
     //---------------------------------------------------------------------------
@@ -171,30 +172,31 @@ TEST(Meshes, Cartesian)
     // Assign positive-sloping linear ramp values into the cell-centered
     // Field<scalar>:
     scalarCell = 0.0;
-    for (d=0; d<D; d++) scalarCell[cells] += vectorCell[cells](d);
+    for (d = 0; d < D; d++) scalarCell[cells] += vectorCell[cells](d);
     // Now take the gradient:
     vectorCell = Grad(scalarCell, vectorCell);
     // The value should be (1.0,1.0,1.0) for all elements one at least one
     // removed from the last-physical-layer elements. Last-physical-layer
     // elements will be different because the BC available in IPPL don't really
     // do the kind of linear extrapolation appropriate for the needs here:
-    for (d=0; d<D; d++) unit[d] = 1.0;
+    for (d = 0; d < D; d++) unit[d] = 1.0;
     Vektor<double,D> sumVectorCell;
     // Use temporary, smaller BareField as a reduced-by-two vector Field to hold
     // only the boundary-exclusive elements (needed because of limitations of
     // IPPL reductions ops):
     NDIndex<D> bec;
-    for (d=0; d<D; d++) bec[d] = Index(1,ncells[d]-2,1);
+    for (d = 0; d < D; d++) bec[d] = Index(1,ncells[d]-2,1);
     FieldLayout<D> templayout2(bec);
     BareField<Vektor<double,D>,D> temp2(templayout);
     temp2[bec] = vectorCell[bec];
     sumVectorCell = sum(temp2);
-    unsigned totredc=1; for (d=0; d<D; d++) totredc *= ncells[d] - 2;
+    unsigned totredc=1;
+    for (d = 0; d < D; d++) totredc *= ncells[d] - 2;
     sumVectorCell /= totredc;
     Vektor<double,D> diffVectorCell;
     diffVectorCell = sumVectorCell - unit;
     double magDiffVectorCell = 0.0;
-    for (d=0; d<D; d++) magDiffVectorCell += diffVectorCell(d)*diffVectorCell(d);
+    for (d = 0; d < D; d++) magDiffVectorCell += diffVectorCell(d)*diffVectorCell(d);
     magDiffVectorCell = sqrt(magDiffVectorCell);
     EXPECT_NEAR(abs(magDiffVectorCell), 0, roundOffError);
     //---------------------------------------------------------------------------
@@ -216,10 +218,11 @@ TEST(Meshes, Cartesian)
     temp[bev] = vectorVert[bev];
     sumVectorVert = sum(temp);
     sumVectorVert /= totred;
-    Vektor<double,D> deesVector; for (d=0; d<D; d++) deesVector(d) = 1.0*D;
+    Vektor<double,D> deesVector;
+    for (d = 0; d < D; d++) deesVector(d) = 1.0*D;
     diffVectorVert = sumVectorVert - deesVector;
     magDiffVectorVert = 0.0;
-    for (d=0; d<D; d++) magDiffVectorVert += diffVectorVert(d)*diffVectorVert(d);
+    for (d = 0; d < D; d++) magDiffVectorVert += diffVectorVert(d)*diffVectorVert(d);
     magDiffVectorVert = sqrt(magDiffVectorVert);
     EXPECT_NEAR(abs(magDiffVectorCell), 0, roundOffError);
     //---------------------------------------------------------------------------
@@ -235,14 +238,14 @@ TEST(Meshes, Cartesian)
     // z*z_hat), the result should be the identity tensor (NRL Plasma Formulary
     // Vector Identities section):
     Tenzor<double,D> identityTensor = 0.0;
-    for (d=0; d<D; d++) identityTensor(d,d) = 1.0;
+    for (d = 0; d < D; d++) identityTensor(d,d) = 1.0;
     Tenzor<double,D> sumTensorCell = sum(tensorCell);
     sumTensorCell /= totcells;
     Tenzor<double,D> diffTensorCell;
     diffTensorCell = sumTensorCell - identityTensor;
     double magDiffTensorCell = 0.0;
-    for (d=0; d<D; d++) {
-        for (unsigned int d2=0; d2<D; d2++) {
+    for (d = 0; d < D; d++) {
+        for (unsigned int d2 = 0; d2 < D; d2++) {
             magDiffTensorCell += diffTensorCell(d,d2)*diffTensorCell(d,d2);
         }
     }
@@ -325,7 +328,7 @@ TEST(Meshes, Cartesian)
     v(0) = 1.5; v(1) = 4.5; v(2) = 9.5;
     ndi = mesh.getNearestVertex(v);
     // nearest vertex should be (1,1,1)
-    for (unsigned int i=0; i<D; i++) {
+    for (unsigned int i = 0; i < D; i++) {
         EXPECT_EQ((int)ndi[0].first(),  1);
         EXPECT_EQ((int)ndi[0].length(), 1);
     }
@@ -333,7 +336,7 @@ TEST(Meshes, Cartesian)
     Vektor<double,D> v1;
     v1 = mesh.getVertexPosition(ndi);
     v(0) = 2.0; v(1) = 4.0; v(2) = 12.0; // Correct value
-    for (unsigned int i=0; i<D; i++) {
+    for (unsigned int i = 0; i < D; i++) {
         EXPECT_NEAR(v1(i), v(i), roundOffError);
     }
     //---------------------------------------------------------------------------
@@ -346,7 +349,7 @@ TEST(Meshes, Cartesian)
     v = mesh.getDeltaVertex(ndi);
     Vektor<double,D> vcorrect;
     vcorrect(0) = 2.0; vcorrect(1) = 4.0; vcorrect(2) = 9.0;
-    for (unsigned int i=0; i<D; i++) {
+    for (unsigned int i = 0; i < D; i++) {
         EXPECT_NEAR(vcorrect(i), v(i), roundOffError);
     }
 }

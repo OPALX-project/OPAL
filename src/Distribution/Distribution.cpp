@@ -868,6 +868,12 @@ void Distribution::checkParticleNumber(size_t &numberOfParticles) {
     size_t numberOfDistParticles = tOrZDist_m.size();
     reduce(numberOfDistParticles, numberOfDistParticles, OpAddAssign());
 
+    if (numberOfDistParticles == 0) {
+        throw OpalException("Distribution::checkParticleNumber",
+                            "Zero particles in the distribution! "
+                            "The number of particles needs to be specified.");
+    }
+
     if (numberOfDistParticles != numberOfParticles) {
         *gmsg << "\n--------------------------------------------------" << endl
               << "Warning!! The number of particles in the initial" << endl
@@ -1110,7 +1116,7 @@ void Distribution::createDistributionFromFile(size_t /*numberOfParticles*/, doub
                 ++ numPartsToSend;
 
                 if (numPartsToSend % distributeFrequency == 0) {
-                    MPI_Bcast(&dataSize, 1, MPI_INT, 0, Ippl::getComm());
+                    MPI_Bcast(&dataSize, 1, MPI_UNSIGNED, 0, Ippl::getComm());
                     MPI_Bcast(&data[0], dataSize, MPI_CHAR, 0, Ippl::getComm());
                     numPartsToSend = 0;
 
@@ -1131,7 +1137,7 @@ void Distribution::createDistributionFromFile(size_t /*numberOfParticles*/, doub
         }
 
         dataSize = (numberOfParticlesRead == numParts? data.size(): std::numeric_limits<unsigned int>::max());
-        MPI_Bcast(&dataSize, 1, MPI_INT, 0, Ippl::getComm());
+        MPI_Bcast(&dataSize, 1, MPI_UNSIGNED, 0, Ippl::getComm());
         if (numberOfParticlesRead != numParts) {
             throw OpalException("Distribution::createDistributionFromFile",
                                 "Found " +
@@ -1145,7 +1151,7 @@ void Distribution::createDistributionFromFile(size_t /*numberOfParticles*/, doub
 
     } else {
         do {
-            MPI_Bcast(&dataSize, 1, MPI_INT, 0, Ippl::getComm());
+            MPI_Bcast(&dataSize, 1, MPI_UNSIGNED, 0, Ippl::getComm());
             if (dataSize == std::numeric_limits<unsigned int>::max()) {
                 throw OpalException("Distribution::createDistributionFromFile",
                                     "Couldn't find " +
@@ -2051,7 +2057,7 @@ void Distribution::generateAstraFlattopT(size_t numberOfParticles) {
         }
         loc_fraction -= distributionTable[numberOfSampleBins * (k + 1)]
             * (5. - weight) / tot;
-        numParticlesInBin[k] = static_cast<int>(std::floor(loc_fraction * numberOfParticles + 0.5));
+        numParticlesInBin[k] = static_cast<int>(std::round(loc_fraction * numberOfParticles));
         effectiveNumParticles += numParticlesInBin[k];
         if (numParticlesInBin[k] > numParticlesInBin[largestBin]) largestBin = k;
     }
@@ -2816,11 +2822,10 @@ int Distribution::getLastEmittedEnergyBin() {
 
 double Distribution::getMaxTOrZ() {
 
-    std::vector<double>::iterator longIt = tOrZDist_m.begin();
-    double maxTOrZ = *longIt;
-    for (++longIt; longIt != tOrZDist_m.end(); ++longIt) {
-        if (maxTOrZ < *longIt)
-            maxTOrZ = *longIt;
+    double maxTOrZ = std::numeric_limits<int>::min();
+    for (auto tOrZ : tOrZDist_m) {
+        if (maxTOrZ < tOrZ)
+            maxTOrZ = tOrZ;
     }
 
     reduce(maxTOrZ, maxTOrZ, OpMaxAssign());
@@ -2830,11 +2835,10 @@ double Distribution::getMaxTOrZ() {
 
 double Distribution::getMinTOrZ() {
 
-    std::vector<double>::iterator longIt = tOrZDist_m.begin();
-    double minTOrZ = *longIt;
-    for (++longIt; longIt != tOrZDist_m.end(); ++longIt) {
-        if (minTOrZ > *longIt)
-            minTOrZ = *longIt;
+    double minTOrZ = std::numeric_limits<int>::max();
+    for (auto tOrZ : tOrZDist_m) {
+        if (minTOrZ > tOrZ)
+            minTOrZ = tOrZ;
     }
 
     reduce(minTOrZ, minTOrZ, OpMinAssign());
@@ -4252,7 +4256,7 @@ void Distribution::writeOutFileEmission() {
     const size_t bitsPerParticle = (6 * sizeof(double) + sizeof(size_t));
     size_t totalSendBits = xWrite_m.size() * bitsPerParticle;
 
-    std::vector<long> numberOfBits(Ippl::getNodes(), 0);
+    std::vector<unsigned long> numberOfBits(Ippl::getNodes(), 0);
     numberOfBits[Ippl::myNode()] = totalSendBits;
 
     if (Ippl::myNode() == 0) {

@@ -3,9 +3,7 @@ set (_SRCS
     OpalException.cpp
     OpalFilter.cpp
     RegularExpression.cpp
-    Round.cpp
     Timer.cpp
-    Truncate.cpp
     )
 
 include_directories (
@@ -16,13 +14,10 @@ add_opal_sources(${_SRCS})
 
 set (HDRS
     EarlyLeaveException.h
-    NumToStr.h
     OpalException.h
     OpalFilter.h
     RegularExpression.h
-    Round.h
     Timer.h
-    Truncate.h
     )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Utilities")

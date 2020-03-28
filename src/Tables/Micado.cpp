@@ -31,7 +31,7 @@
 #include "Tables/Flatten.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
-#include "Utilities/Round.h"
+#include <cmath>
 #include <iomanip>
 #include <iostream>
 #include <string>
@@ -96,7 +96,7 @@ void Micado::execute() {
 
     // Get the data for correction.
     RangeRep range = Attributes::getRange(itsAttr[RANGE]);
-    int iterations = int(Round(Attributes::getReal(itsAttr[ITERATIONS])));
+    int iterations = int(std::round(Attributes::getReal(itsAttr[ITERATIONS])));
     bool listm1 = Attributes::getBool(itsAttr[LISTM1]);
     bool listm2 = Attributes::getBool(itsAttr[LISTM2]);
     bool listc1 = Attributes::getBool(itsAttr[LISTC1]);
@@ -339,7 +339,7 @@ void Micado::solve(int plane, Matrix<double> &A, Vector<double> &B) {
 
     // Begin of iteration loop.
     double tol = Attributes::getReal(itsAttr[TOL]);
-    int correctors = int(Round(Attributes::getReal(itsAttr[CORRECTORS])));
+    int correctors = int(std::round(Attributes::getReal(itsAttr[CORRECTORS])));
     if(correctors > n  ||  correctors == 0)  correctors = n;
     int corr = 0;
     while(true) {

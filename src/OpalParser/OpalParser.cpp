@@ -34,8 +34,8 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/ParseError.h"
 #include "Utilities/Options.h"
-#include "Utilities/Round.h"
 #include <cassert>
+#include <cmath>
 #include <ctime>
 #include <exception>
 #include <iostream>
@@ -286,7 +286,7 @@ void OpalParser::parseAssign(Statement &stat) const {
     int index = 0;
 
     if(stat.delimiter('[')) {
-        index = int(Round(parseRealConst(stat)));
+        index = int(std::round(parseRealConst(stat)));
         parseDelimiter(stat, ']');
 
         if(index <= 0) {

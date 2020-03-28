@@ -1,5 +1,5 @@
 In order to compile the tools sdds2opal and opal2sdds you have to download the source code of SDDS version 3.4
-at http://www.aps.anl.gov/Accelerator_Systems_Division/Accelerator_Operations_Physics/software.shtml#SDDSSource .
+at https://www.aps.anl.gov/Accelerator-Operations-Physics/Software#SDDS%20Source .
 Unpack the sources, change to the directory epics/extensions/src/ and then upack the archive SDDSCMakeLists.tar.gz
 in this directory. Finally apply the patch SDDS.patch with the command
 $ patch -p1 < /path/to/patch/SDDS.patch

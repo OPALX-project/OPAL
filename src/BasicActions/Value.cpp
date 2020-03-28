@@ -17,9 +17,12 @@
 // ------------------------------------------------------------------------
 
 #include "BasicActions/Value.h"
+
 #include "Attributes/Attributes.h"
-#include <iomanip>
-#include <iostream>
+#include "Parser/Statement.h"
+#include "Utility/Inform.h"
+
+#include <string>
 #include <vector>
 
 
@@ -54,7 +57,7 @@ Value *Value::clone(const std::string &name) {
 
 
 void Value::execute() {
-    *gmsg << "\nvalue: " << itsAttr[0] << "={";
+    *gmsg << "\nvalue: " << itsAttr[0] << " = {";
     //  std::streamsize old_prec = *gmsg.precision(12);
     const std::vector<double> array = Attributes::getRealArray(itsAttr[0]);
     std::vector<double>::const_iterator i = array.begin();
@@ -62,14 +65,14 @@ void Value::execute() {
     while(i != array.end()) {
         *gmsg << *i++;
         if(i == array.end()) break;
-        *gmsg << ",";
+        *gmsg << ", ";
     }
 
     *gmsg << "}\n" << endl;
     //  *gmsg.precision(old_prec);
 }
 
-
 void Value::parse(Statement &statement) {
-    parseShortcut(statement);
+    // parse, but don't evaluate (for printing mainly)
+    parseShortcut(statement, false);
 }

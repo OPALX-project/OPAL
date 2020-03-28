@@ -15,7 +15,7 @@ namespace {
     void hardCodedOutput(std::string filename); // Prototype of function defined below.
     bool thediff(std::string filename1, std::string filename2);
 
-    extern const CenteringEnum zz[2] = {CELL, VERTEX};
+    CenteringEnum zz[2] = {CELL, VERTEX};
 }
 
 // template definitions

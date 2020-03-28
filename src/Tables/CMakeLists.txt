@@ -12,7 +12,6 @@ set (_SRCS
     RangeSelector.cpp
     Selector.cpp
     Survey.cpp
-    TableTester.cpp
     ThreadAll.cpp
     ThreadBpm.cpp
     Twiss.cpp
@@ -40,7 +39,6 @@ set (HDRS
     RangeSelector.h
     Selector.h
     Survey.h
-    TableTester.h
     ThreadAll.h
     ThreadBpm.h
     Twiss3.h

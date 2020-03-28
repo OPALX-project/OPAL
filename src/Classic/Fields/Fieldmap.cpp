@@ -32,6 +32,7 @@
 
 #include <boost/filesystem.hpp>
 
+#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <ios>
@@ -447,7 +448,7 @@ void Fieldmap::checkMap(unsigned int accuracy,
                         gsl_spline *splineCoefficients,
                         gsl_interp_accel *splineAccelerator) {
     double length = fieldDimensions.second - fieldDimensions.first;
-    unsigned int sizeSampling = std::floor(length / deltaZ + 0.5);
+    unsigned int sizeSampling = std::round(length / deltaZ);
     std::vector<double> zSampling(sizeSampling);
     zSampling[0] = fieldDimensions.first;
     for (unsigned int i = 1; i < sizeSampling; ++ i) {

@@ -10,8 +10,6 @@
 
 #include <iostream>
 
-constexpr double roundOffError = 1e-10;
-
 TEST(Field, DataConnect2D)
 {
     OpalTestUtilities::SilenceTest silencer;

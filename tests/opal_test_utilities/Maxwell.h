@@ -5,7 +5,7 @@
 class Component;
 
 /** MaxwellTest is a small utility for testing field objects
- * 
+ *
  *  Calculated numerical derivatives for calculating maxwell's equations and
  *  checking that field maps are physical.
  */
@@ -19,7 +19,7 @@ class MaxwellTest {
 
     Vector_t getDR() const {return dR_m;}
     void setDR(Vector_t dR) {dR_m = dR;}
-    
+
     std::vector< std::vector<double> > partialsDerivB(const Vector_t &R, double t) const;
     std::vector< std::vector<double> > partialsDerivA(const Vector_t &R, double t) const;
     double divB(const Vector_t &R, double t) const;
@@ -32,5 +32,5 @@ class MaxwellTest {
   private:
     std::unique_ptr<Component> field_m;
     Vector_t dR_m;
-    double dt_m;
+    //double dt_m;
 };

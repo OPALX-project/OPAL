@@ -25,13 +25,10 @@
 #include "Parser/Statement.h"
 #include "Utilities/Options.h"
 #include "Utilities/ParseError.h"
-#include "Utilities/Round.h"
 
+#include <cmath>
 #include <iostream>
-//using std::cerr;
-//using std::endl;
-using std::vector;
-using namespace std;
+#include <vector>
 
 extern Inform *gmsg;
 
@@ -41,7 +38,7 @@ extern Inform *gmsg;
 
 Object::~Object() {
     // Invalidate all references to this object.
-    for(set<Invalidator *>::iterator i = references.begin();
+    for(std::set<Invalidator *>::iterator i = references.begin();
         i != references.end(); ++i) {
         (*i)->invalidate();
     }
@@ -64,8 +61,8 @@ void Object::execute() {
 }
 
 
-Attribute *Object::findAttribute(const string &name) {
-    for(vector<Attribute>::iterator i = itsAttr.begin();
+Attribute *Object::findAttribute(const std::string &name) {
+    for(std::vector<Attribute>::iterator i = itsAttr.begin();
         i != itsAttr.end(); ++i) {
         if(i->getName() == name) return &(*i);
     }
@@ -74,8 +71,8 @@ Attribute *Object::findAttribute(const string &name) {
 }
 
 
-const Attribute *Object::findAttribute(const string &name) const {
-    for(vector<Attribute>::const_iterator i = itsAttr.begin();
+const Attribute *Object::findAttribute(const std::string &name) const {
+    for(std::vector<Attribute>::const_iterator i = itsAttr.begin();
         i != itsAttr.end(); ++i) {
         if(i->getName() == name) return &(*i);
     }
@@ -85,13 +82,13 @@ const Attribute *Object::findAttribute(const string &name) const {
 
 
 Object *Object::makeTemplate
-(const string &name, TokenStream &, Statement &) {
+(const std::string &name, TokenStream &, Statement &) {
     throw ParseError("Object::makeTemplate()", "Object \"" + name +
                      "\" cannot be used to define a macro.");
 }
 
 
-Object *Object::makeInstance(const string &/*name*/, Statement &, const Parser *) {
+Object *Object::makeInstance(const std::string &/*name*/, Statement &, const Parser *) {
     throw ParseError("Object::makeInstance()", "Object \"" + getOpalName() +
                      "\" cannot be called as a macro.");
 }
@@ -99,11 +96,11 @@ Object *Object::makeInstance(const string &/*name*/, Statement &, const Parser *
 
 void Object::parse(Statement &stat) {
     while(stat.delimiter(',')) {
-        string name = Expressions::parseString(stat, "Attribute name expected.");
+        std::string name = Expressions::parseString(stat, "Attribute name expected.");
 
         if(Attribute *attr = findAttribute(name)) {
             if(stat.delimiter('[')) {
-                int index = int(Round(Expressions::parseRealConst(stat)));
+                int index = int(std::round(Expressions::parseRealConst(stat)));
                 Expressions::parseDelimiter(stat, ']');
 
                 if(stat.delimiter('=')) {
@@ -129,19 +126,19 @@ void Object::parse(Statement &stat) {
 }
 
 
-void Object::parseShortcut(Statement &stat) {
+void Object::parseShortcut(Statement &stat, bool eval) {
     // Only one attribute.
     if(stat.delimiter(',')) {
         stat.mark();
-        string name;
+        std::string name;
 
         if(stat.word(name)) {
             if(stat.delimiter('=')) {
                 if(Attribute *attr = findAttribute(name)) {
-                    attr->parse(stat, true);
+                    attr->parse(stat, eval);
                     return;
                 } else {
-                    throw ParseError("Object::parse()", "Object \"" + getOpalName() +
+                    throw ParseError("Object::parseShortcut()", "Object \"" + getOpalName() +
                                      "\" has no attribute \"" + name + "\".");
                 }
             } else if(stat.delimiter(":=")) {
@@ -149,7 +146,7 @@ void Object::parseShortcut(Statement &stat) {
                     attr->parse(stat, false);
                     return;
                 } else {
-                    throw ParseError("Object::parse()", "Object \"" + getOpalName() +
+                    throw ParseError("Object::parseShortcut()", "Object \"" + getOpalName() +
                                      "\" has no attribute \"" + name + "\".");
                 }
             }
@@ -162,7 +159,7 @@ void Object::parseShortcut(Statement &stat) {
 
 
 void Object::print(std::ostream & msg) const {
-    string head = getOpalName();
+    std::string head = getOpalName();
     Object *parent = getParent();
     if(parent != 0  &&  ! parent->getOpalName().empty()) {
         if(! getOpalName().empty()) head += ':';
@@ -172,12 +169,12 @@ void Object::print(std::ostream & msg) const {
     msg << head;
     int pos = head.length();
 
-    for(vector<Attribute>::const_iterator i = itsAttr.begin();
+    for(std::vector<Attribute>::const_iterator i = itsAttr.begin();
         i != itsAttr.end(); ++i) {
         if(*i) i->print(pos);
     }
     msg << ';';
-    msg << endl;
+    msg << std::endl;
     return;
 }
 
@@ -208,17 +205,17 @@ void Object::printHelp(std::ostream &/*os*/) const {
         *gmsg << "Attributes:" << endl;
 
         size_t maxLength = 16;
-        vector<Attribute>::const_iterator it;
+        std::vector<Attribute>::const_iterator it;
         for (it = itsAttr.begin(); it != itsAttr.end(); ++ it) {
-            string name = it->getName();
+            std::string name = it->getName();
             maxLength = std::max(maxLength, name.length() + 1);
         }
 
         for (it = itsAttr.begin(); it != itsAttr.end(); ++ it) {
-            string type = it->getType();
-            string name = it->getName();
-            *gmsg << '\t' << type << string(16 - type.length(), ' ');
-            *gmsg << name << string(maxLength - name.length(), ' ');
+            std::string type = it->getType();
+            std::string name = it->getName();
+            *gmsg << '\t' << type << std::string(16 - type.length(), ' ');
+            *gmsg << name << std::string(maxLength - name.length(), ' ');
             *gmsg << it->getHelp();
             if(it->isReadOnly()) *gmsg << " (read only)";
             *gmsg << endl;
@@ -281,7 +278,7 @@ const Object *Object::getBaseObject() const {
 }
 
 
-const string &Object::getOpalName() const {
+const std::string &Object::getOpalName() const {
     return itsName;
 }
 
@@ -302,7 +299,7 @@ bool Object::isTreeMember(const Object *classObject) const {
 }
 
 
-void Object::setOpalName(const string &name) {
+void Object::setOpalName(const std::string &name) {
     itsName = name;
 }
 
@@ -339,7 +336,7 @@ Object::Object(int size, const char *name, const char *help):
 }
 
 
-Object::Object(const string &name, Object *parent):
+Object::Object(const std::string &name, Object *parent):
     RCObject(), itsAttr(parent->itsAttr), itsParent(parent),
     itsName(name), itsHelp(parent->itsHelp), occurrence(0), sharedFlag(false) {
     // The object is now different from the data base.

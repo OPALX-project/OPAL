@@ -288,7 +288,7 @@ void ParallelSliceTracker::execute() {
 
             //reduce(&globalEOL_m, &globalEOL_m, OpBitwiseOrAssign());
             //reduce(&globalEOL_m, &globalEOL_m + 1, &globalEOL_m, OpBitwiseAndAssign());
-            MPI_Allreduce(MPI_IN_PLACE, &globalEOL_m, 1, MPI_INT, MPI_LAND, Ippl::getComm());
+            MPI_Allreduce(MPI_IN_PLACE, &globalEOL_m, 1, MPI_CXX_BOOL, MPI_LAND, Ippl::getComm());
 
             computeSpaceChargeFields();
             timeIntegration();

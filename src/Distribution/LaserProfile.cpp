@@ -249,7 +249,7 @@ void LaserProfile::normalizeProfileData(double intensityCut, unsigned short *ima
             double val = (double(image[pixel]) / profileMax - intensityCut) / (1.0 - intensityCut);
 
             val = std::max(0.0, val);
-            image[pixel] = std::floor(val * profileMax + 0.5);
+            image[pixel] = std::round(val * profileMax);
         }
     }
 }

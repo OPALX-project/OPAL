@@ -15,6 +15,7 @@
 
 #include <boost/filesystem.hpp>
 
+#include <cmath>
 #include <iostream>
 #include <limits>
 
@@ -72,7 +73,7 @@ OrbitThreader::OrbitThreader(const PartData &ref,
             logger_m.open(fileName, std::ios_base::app);
         }
 
-        loggingFrequency_m = std::max(1.0, floor(1e-11 / std::abs(dt_m) + 0.5));
+        loggingFrequency_m = std::max(1.0, std::round(1e-11 / std::abs(dt_m)));
     } else {
         loggingFrequency_m = std::numeric_limits<size_t>::max();
     }

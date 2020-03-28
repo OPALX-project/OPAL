@@ -1,6 +1,5 @@
 set (_SRCS
     ArithmeticError.cpp
-    AttributeError.cpp
     CLRangeError.cpp
     ClassicException.cpp
     ClassicField.cpp
@@ -52,7 +51,6 @@ add_opal_sources (${_SRCS})
 
 set (HDRS
     ArithmeticError.h
-    AttributeError.h
     CLRangeError.h
     ClassicException.h
     ClassicField.h

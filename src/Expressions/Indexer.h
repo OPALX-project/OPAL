@@ -21,8 +21,8 @@
 #include "AbstractObjects/Expressions.h"
 #include "Utilities/CLRangeError.h"
 #include "Utilities/OpalException.h"
-#include "Utilities/Round.h"
 #include <cerrno>
+#include <cmath>
 #include <iosfwd>
 #include <vector>
 
@@ -99,7 +99,7 @@ namespace Expressions {
     template <class T> inline
     T Indexer<T>::evaluate() const {
         std::vector<T> op1 = lft->evaluate();
-        int op2 = int(Round(rgt->evaluate()));
+        int op2 = int(std::round(rgt->evaluate()));
 
         if(op2 <= 0 || static_cast<unsigned>(op2) > op1.size()) {
             throw CLRangeError("Expressions::Indexer()", "Index out of range.");

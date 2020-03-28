@@ -19,8 +19,7 @@
 #include "Match/MatchOption.h"
 #include "Attributes/Attributes.h"
 #include "Match/Match.h"
-#include "Utilities/Round.h"
-
+#include <cmath>
 
 // Class MatchOption
 // ------------------------------------------------------------------------
@@ -50,6 +49,6 @@ MatchOption *MatchOption::clone(const std::string &name) {
 
 
 void MatchOption::execute() {
-    int level = int(Round(Attributes::getReal(itsAttr[0])));
+    int level = int(std::round(Attributes::getReal(itsAttr[0])));
     Match::block->setPrintLevel(level);
 }

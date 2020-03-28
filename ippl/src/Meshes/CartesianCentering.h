@@ -32,14 +32,14 @@
 enum CenteringEnum {CELL=0, VERTEX=1, VERT=1};
 
 // Primary class for canned and user-defined cartesian centerings:
-template<const CenteringEnum* CE, unsigned Dim, unsigned NComponents=1U>
+template<CenteringEnum* CE, unsigned Dim, unsigned NComponents=1U>
 class CartesianCentering
 {
 public:
   static void print_Centerings(std::ostream&);  // Print function
   static std::string CenteringName;
 };
-template <const CenteringEnum* CE, unsigned Dim, unsigned NComponents>
+template <CenteringEnum* CE, unsigned Dim, unsigned NComponents>
 void CartesianCentering<CE,Dim,NComponents>::
 print_Centerings(std::ostream& out)
 {

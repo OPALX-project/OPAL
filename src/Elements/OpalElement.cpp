@@ -31,7 +31,6 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 #include "Utilities/ParseError.h"
-#include "Utilities/Round.h"
 #include "Utilities/Util.h"
 
 #include <cmath>
@@ -404,7 +403,7 @@ void OpalElement::parse(Statement &stat) {
         }
 
         if(stat.delimiter('[')) {
-            int index = int(Round(Expressions::parseRealConst(stat)));
+            int index = int(std::round(Expressions::parseRealConst(stat)));
             Expressions::parseDelimiter(stat, ']');
 
             if(stat.delimiter('=')) {

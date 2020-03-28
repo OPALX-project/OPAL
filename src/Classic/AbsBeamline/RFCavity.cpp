@@ -28,6 +28,8 @@
 
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_spline.h"
+
+#include <cmath>
 #include <iostream>
 #include <fstream>
 
@@ -616,7 +618,7 @@ double RFCavity::getAutoPhaseEstimateFallback(double E0, double t0, double q, do
         dphi = dphi / 17.5;
     }
 
-    phimax = phimax - floor(phimax / Physics::two_pi + 0.5) * Physics::two_pi;
+    phimax = phimax - std::round(phimax / Physics::two_pi) * Physics::two_pi;
     phimax = fmod(phimax, Physics::two_pi);
 
     const int prevPrecision = Ippl::Info->precision(8);
@@ -711,7 +713,7 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
 
             return tmp_phi;
         }
-        phi = tmp_phi - floor(tmp_phi / Physics::two_pi + 0.5) * Physics::two_pi;
+        phi = tmp_phi - std::round(tmp_phi / Physics::two_pi) * Physics::two_pi;
 
         for(unsigned int i = 1; i < N; ++ i) {
             E[i] = E[i - 1];

@@ -29,12 +29,10 @@
 #include "Physics/Physics.h"
 #include "Structure/Beam.h"
 #include "Utilities/OpalException.h"
-#include "Utilities/Round.h"
+#include <cmath>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-
-using std::complex;
 
 
 // Class Static
@@ -100,7 +98,7 @@ void Static::execute() {
 
     // Compute transfer map.
     // JMJ comment: minimum sensible order is 2
-    int order = std::max(int(Round(Attributes::getReal(itsAttr[ORDER]))), 2);
+    int order = std::max(int(std::round(Attributes::getReal(itsAttr[ORDER]))), 2);
     LieMapper mapper(*use->fetchLine(), reference, false, false, order);
     FTps<double, 6>::setGlobalTruncOrder(order);
     std::cout << "mapper.execute(); start " << std::endl;
@@ -129,11 +127,11 @@ void Static::execute() {
 
     // Print normal form.
     // const DragtFinnNormalForm<3> normal(map);
-    // const FVector<complex<double>,6> &lambda = normal.eigenValues();
+    // const FVector<std::complex<double>,6> &lambda = normal.eigenValues();
 
     // 21-06-2000, remove const
     DragtFinnNormalForm<3> normal(map);
-    const FVector<complex<double>, 6> &lambda = normal.eigenValues();
+    const FVector<std::complex<double>, 6> &lambda = normal.eigenValues();
     os << "\nEigenvalues of the linear map:\n";
 
     for(int i = 0; i < 4; i++) {

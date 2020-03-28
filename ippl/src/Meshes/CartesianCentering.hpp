@@ -26,7 +26,7 @@
 // include files
 #include "Meshes/CartesianCentering.h"
 
-template <const CenteringEnum* CE, unsigned Dim, unsigned NComponents>
+template <CenteringEnum* CE, unsigned Dim, unsigned NComponents>
 std::string CartesianCentering<CE,Dim,NComponents>::CenteringName = 
 "CartesianCentering: no specialized name (yet) for this case";
 

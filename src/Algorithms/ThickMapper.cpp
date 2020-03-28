@@ -53,8 +53,6 @@
 
 #include "Physics/Physics.h"
 
-#include "Utilities/NumToStr.h"
-
 class Beamline;
 class PartData;
 using Physics::c;
@@ -678,7 +676,7 @@ namespace {
                 zt = ::implicitIntStep(zt, f, gradf, ya * dsc, nx);
             } catch(ConvergenceError &cnverr) {
                 if(++ci > cx) {
-                    std::string msg = "Convergence not achieved within " + NumToStr<int>(cx) + " cuts of step-size!";
+                    std::string msg = "Convergence not achieved within " + std::to_string(cx) + " cuts of step-size!";
                     throw ConvergenceError("ThickMapper::implicitInt4()", msg);
                 }
                 //std::cerr << "  cutting step size in half" << std::endl;
@@ -722,7 +720,7 @@ namespace {
         int ni = 0;
         while(bcount < PSdim) {
             if(ni == nx) {
-                std::string msg = "Convergence not achieved within " + NumToStr<int>(nx) + " iterations!";
+                std::string msg = "Convergence not achieved within " + std::to_string(nx) + " iterations!";
                 throw ConvergenceError("ThickMapper::implicitIntStep()", msg);
             }
 

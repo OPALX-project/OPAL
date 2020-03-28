@@ -12,6 +12,8 @@
 
 #include "AbsBeamline/VerticalFFAMagnet.h"
 
+#include <cmath>
+
 VerticalFFAMagnet::VerticalFFAMagnet(const std::string &name)
         : Component(name), straightGeometry_m(1.) {
     setElType(isDrift);
@@ -79,7 +81,7 @@ void VerticalFFAMagnet::accept(BeamlineVisitor& visitor) const {
 
 
 bool VerticalFFAMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
-    if (abs(R[0]) > halfWidth_m ||
+    if (std::abs(R[0]) > halfWidth_m ||
         R[2] < 0. || R[2] > bbLength_m ||
         R[1] < -zNegExtent_m || R[1] > zPosExtent_m) {
         return true;

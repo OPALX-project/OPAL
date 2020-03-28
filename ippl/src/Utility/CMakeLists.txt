@@ -29,7 +29,6 @@ set (_HDRS
     DiscField.hpp
     DiscMeta.h
     DiscParticle.h
-    DiscParticle.hpp
     DiscType.h
     FieldDebug.h
     FieldDebug.hpp

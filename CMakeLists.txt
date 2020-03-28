@@ -136,7 +136,7 @@ find_package (Boost 1.60.0
 message ("Found Boost include dir: ${Boost_INCLUDE_DIR}")
 message ("Found Boost library dir: ${Boost_LIBRARY_DIR}")
 message ("Found Boost libraries: ${Boost_LIBRARIES}")
-include_directories (${Boost_INCLUDE_DIRS})
+include_directories (SYSTEM ${Boost_INCLUDE_DIRS})
 
 option (ENABLE_DKS "Enable DKS" OFF)
 if (ENABLE_DKS)

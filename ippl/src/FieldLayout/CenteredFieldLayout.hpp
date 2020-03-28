@@ -87,7 +87,7 @@ centeredInitialize(CenteredFieldLayout<Dim,Mesh,Edge> & cfl,
 }
 
 //------------------CartesianCentering centering-------------------------------
-template<const CenteringEnum* CE, unsigned Dim, class Mesh,
+template<CenteringEnum* CE, unsigned Dim, class Mesh,
          unsigned NComponents>
 inline void
 centeredInitialize(CenteredFieldLayout<Dim,Mesh,
@@ -172,7 +172,7 @@ centeredInitialize(CenteredFieldLayout<Dim,Mesh,Edge> & cfl,
 }
 
 //------------------CartesianCentering centering-------------------------------
-template<const CenteringEnum* CE, unsigned Dim, class Mesh,
+template<CenteringEnum* CE, unsigned Dim, class Mesh,
          unsigned NComponents>
 inline void
 centeredInitialize(CenteredFieldLayout<Dim,Mesh,
@@ -254,7 +254,7 @@ centeredInitialize(CenteredFieldLayout<Dim,Mesh,Edge> & cfl,
 }
 
 //------------------CartesianCentering centering-------------------------------
-template<const CenteringEnum* CE, unsigned Dim, class Mesh,
+template<CenteringEnum* CE, unsigned Dim, class Mesh,
          unsigned NComponents>
 inline void
 centeredInitialize(CenteredFieldLayout<Dim,Mesh,

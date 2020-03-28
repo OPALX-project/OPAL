@@ -465,7 +465,7 @@ void PeriodicFaceBCApply(PeriodicFace<T,D,M,Vert>& pf,
 template<class T, unsigned D, class M>
 void PeriodicFaceBCApply(PeriodicFace<T,D,M,Edge>& pf,
 			 Field<T,D,M,Edge>& A );
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 void PeriodicFaceBCApply(PeriodicFace<T,D,M,
 			 CartesianCentering<CE,D,NC> >& pf,
 			 Field<T,D,M,CartesianCentering<CE,D,NC> >& A );
@@ -876,7 +876,7 @@ void PeriodicFaceBCApply(PeriodicFace<T,D,M,Edge>& pf,
 // Specialization of PeriodicFace::apply() for CartesianCentering centering.
 // Rather, indirectly-called specialized global function PeriodicFaceBCApply
 //-----------------------------------------------------------------------------
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 void PeriodicFaceBCApply(PeriodicFace<T,D,M,
 			 CartesianCentering<CE,D,NC> >& pf,
 			 Field<T,D,M,CartesianCentering<CE,D,NC> >& A )
@@ -1175,7 +1175,7 @@ CalcParallelPeriodicDomain(const Field<T,D,M,Edge> &A,
 
 // See comments above - vert centering wrong, I think.
 
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 inline void
 CalcParallelPeriodicDomain(const Field<T,D,M,CartesianCentering<CE,D,NC> >& A,
 			   const ParallelPeriodicFace<T,D,M,
@@ -2783,7 +2783,7 @@ void ExtrapolateFaceBCApply(ExtrapolateFace<T,D,M,Vert>& ef,
 template<class T, unsigned D, class M>
 void ExtrapolateFaceBCApply(ExtrapolateFace<T,D,M,Edge>& ef,
 			    Field<T,D,M,Edge>& A );
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 void ExtrapolateFaceBCApply(ExtrapolateFace<T,D,M,
 			    CartesianCentering<CE,D,NC> >& ef,
 			    Field<T,D,M,CartesianCentering<CE,D,NC> >& A );
@@ -3262,7 +3262,7 @@ void ExtrapolateFaceBCApply(ExtrapolateFace<T,D,M,Edge>& ef,
 // Specialization of ExtrapolateFace::apply() for CartesianCentering centering.
 // Rather,indirectly-called specialized global function ExtrapolateFaceBCApply:
 //-----------------------------------------------------------------------------
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 void ExtrapolateFaceBCApply(ExtrapolateFace<T,D,M,
 			    CartesianCentering<CE,D,NC> >& ef,
 			    Field<T,D,M,CartesianCentering<CE,D,NC> >& A )
@@ -3596,7 +3596,7 @@ void ExtrapolateAndZeroFaceBCApply(ExtrapolateAndZeroFace<T,D,M,Vert>& ef,
 template<class T, unsigned D, class M>
 void ExtrapolateAndZeroFaceBCApply(ExtrapolateAndZeroFace<T,D,M,Edge>& ef,
 			    Field<T,D,M,Edge>& A );
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 void ExtrapolateAndZeroFaceBCApply(ExtrapolateAndZeroFace<T,D,M,
 			    CartesianCentering<CE,D,NC> >& ef,
 			    Field<T,D,M,CartesianCentering<CE,D,NC> >& A );
@@ -4203,7 +4203,7 @@ void ExtrapolateAndZeroFaceBCApply(ExtrapolateAndZeroFace<T,D,M,Edge>& ef,
 // centering.  Rather,indirectly-called specialized global function
 // ExtrapolateAndZeroFaceBCApply:
 //-----------------------------------------------------------------------------
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 void ExtrapolateAndZeroFaceBCApply(ExtrapolateAndZeroFace<T,D,M,
 			    CartesianCentering<CE,D,NC> >& ef,
 			    Field<T,D,M,CartesianCentering<CE,D,NC> >& A )
@@ -4525,7 +4525,7 @@ void FunctionFaceBCApply(FunctionFace<T,D,M,Vert>& ff,
 template<class T, unsigned D, class M>
 void FunctionFaceBCApply(FunctionFace<T,D,M,Edge>& ff,
 			 Field<T,D,M,Edge>& A );
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 void FunctionFaceBCApply(FunctionFace<T,D,M,
 			 CartesianCentering<CE,D,NC> >& ff,
 			 Field<T,D,M,CartesianCentering<CE,D,NC> >& A );
@@ -4802,7 +4802,7 @@ void FunctionFaceBCApply(FunctionFace<T,D,M,Edge>& ff,
 // Specialization of FunctionFace::apply() for CartesianCentering centering.
 // Rather, indirectly-called specialized global function FunctionFaceBCApply:
 //-----------------------------------------------------------------------------
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 void FunctionFaceBCApply(FunctionFace<T,D,M,
 			 CartesianCentering<CE,D,NC> >& ff,
 			 Field<T,D,M,CartesianCentering<CE,D,NC> >& A )
@@ -4976,7 +4976,7 @@ void ComponentFunctionFaceBCApply(ComponentFunctionFace<T,D,M,Vert>& ff,
 template<class T, unsigned D, class M>
 void ComponentFunctionFaceBCApply(ComponentFunctionFace<T,D,M,Edge>& ff,
 				  Field<T,D,M,Edge>& A );
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 void ComponentFunctionFaceBCApply(ComponentFunctionFace<T,D,M,
 				  CartesianCentering<CE,D,NC> >& ff,
 				  Field<T,D,M,
@@ -5259,7 +5259,7 @@ void ComponentFunctionFaceBCApply(ComponentFunctionFace<T,D,M,Edge>& ff,
 //CartesianCentering centering.  Rather, indirectly-called specialized
 //global function ComponentFunctionFaceBCApply:
 //-----------------------------------------------------------------------------
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 void ComponentFunctionFaceBCApply(ComponentFunctionFace<T,D,M,
 			 CartesianCentering<CE,D,NC> >& ff,
 			 Field<T,D,M,CartesianCentering<CE,D,NC> >& A )
@@ -5650,7 +5650,7 @@ calcEurekaSlabToFill(const Field<T,D,M,Edge>& field, int face,int)
 //   If that component is cell, the number of guard cells.
 //
 
-template<class T, unsigned D, class M, const CenteringEnum* CE, unsigned NC>
+template<class T, unsigned D, class M, CenteringEnum* CE, unsigned NC>
 static NDIndex<D>
 calcEurekaSlabToFill(const Field<T,D,M,CartesianCentering<CE,D,NC> >& field,
                      int face,

@@ -10,6 +10,7 @@
 #include "OPALconfig.h"
 
 #include <cassert>
+#include <cmath>
 
 #define ADD_ATTACHMENT( fname ) {             \
     h5_int64_t h5err = H5AddAttachment (H5file_m, fname); \
@@ -644,7 +645,7 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
     stat.refTime_m = refTime_m[setIdx];
     stat.RefPartR_m = RefPartR_m[setIdx];
     stat.RefPartP_m = RefPartP_m[setIdx];
-    stat.nTotal_m = (unsigned long)floor(plainData[0] + 0.5);
+    stat.nTotal_m = (unsigned long)std::round(plainData[0]);
 
     for(unsigned int i = 0 ; i < 3u; i++) {
         stat.rmean_m(i) = centroid[2 * i] / stat.nTotal_m;

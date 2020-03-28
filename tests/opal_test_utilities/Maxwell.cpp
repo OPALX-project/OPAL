@@ -12,9 +12,9 @@
 #include "AbsBeamline/Component.h"
 #include "opal_test_utilities/Maxwell.h"
 
-MaxwellTest::MaxwellTest(Vector_t dR, double dt, Component* field) :
+MaxwellTest::MaxwellTest(Vector_t dR, double /*dt*/, Component* field) :
     field_m(field),
-    dR_m(dR), dt_m(dt) {
+    dR_m(dR) /*, dt_m(dt)*/ {
 }
 
 
@@ -41,7 +41,7 @@ std::vector< std::vector<double> > MaxwellTest::partialsDerivB(const Vector_t &R
         field_m->apply(R_pprev, P, t, E, B_pprev);
         field_m->apply(R_nnext, P, t, E, B_nnext);
         for(int j = 0; j < 3; j++) {
-              allPartials[i][j] = 
+              allPartials[i][j] =
                    (B_pprev[j]-8*B_prev[j]+8*B_next[j]-B_nnext[j])/(12*dR_m(i));
         }
     }

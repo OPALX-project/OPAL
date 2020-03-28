@@ -132,7 +132,7 @@ TEST_F(VerticalFFAMagnetTest, MaxwellTest) {
         //maxTest.printLine(std::cerr, pos, 0.);
         double div = maxTest.divB(pos, 0.);
         double curl = euclidean_norm(maxTest.curlB(pos, 0.));
-        EXPECT_LT(abs(div), abs(divOld)) << i;
+        EXPECT_LT(std::abs(div), std::abs(divOld)) << i;
         EXPECT_LT(curl, 1e-11);
         std::cerr << "Max Order: " << i << " |curlB|: " << curl
                   << " DivB: " << div << std::endl;

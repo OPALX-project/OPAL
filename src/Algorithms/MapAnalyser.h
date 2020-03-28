@@ -1,13 +1,37 @@
+//
+// MapAnalyser class, analyses linear maps from OPAL-map.
+//
+// Copyright (c) 2008-2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// OPAL is licensed under GNU GPL version 3.
+
 #ifndef MAP_ANALYSER_H
 #define MAP_ANALYSER_H
 
 #include "Classic/FixedAlgebra/FMatrix.h"
 
+#include "Utility/IpplTimings.h"
+
 #include <array>
 #include <complex>
 
-#include <Ippl.h>
-
+/*!
+// ------------------------------------------------------------------------
+//
+// Class: MapAnalyser
+//   Organizes the function for a linear map analysis from
+//   ThickTracker.
+//   Transfer map -> tunes, symplecticity and stability
+//   Sigma Matrix -> (not projected) beam emittance
+//
+// ------------------------------------------------------------------------
+//
+// $Author: ganz $
+//
+// ------------------------------------------------------------------------
+*/
 class MapAnalyser
 {
 public:
@@ -17,11 +41,11 @@ public:
     MapAnalyser();
 
     /*!
-     * Analyzes the transfer matrix
+     * Analyzes the transfer matrix for tunes, symplecticity and stability
      *
      * @param tMatrix Transfer matrix
      */
-    void linTAnalyze(const fMatrix_t& tMatrix);
+    void linTAnalyze(const fMatrix_t& /*tMatrix*/) {};
 
 
     /*!
@@ -29,7 +53,7 @@ public:
      *
      * @ param sigMatrix Sigma Matrix
      */
-    void linSigAnalyze(fMatrix_t& sigMatrix);
+    void linSigAnalyze(fMatrix_t& /*sigMatrix*/) {};
 private:
 
     /*!
@@ -72,7 +96,6 @@ private:
      */
     cfMatrix_t getBlockDiagonal_m(const fMatrix_t& M, cfMatrix_t& eigenVecM, cfMatrix_t& invEigenVecM);
 
-
     /*!
      * :TODO: WIP Prints phase shift
      *
@@ -81,8 +104,6 @@ private:
      * @param oldN \f$\mathbf{N}\f$ matrix
      */
     void printPhaseShift_m(fMatrix_t& Sigma, fMatrix_t tM, cfMatrix_t& oldN);
-
-
 
     /*!
     * sets a symplectic \f$ \mathbf{N} \f$ matrix. \n
@@ -93,8 +114,6 @@ private:
     * @param invN inverted symplectic \f$\mathbf{N}^{-1}\f$ matrix
     */
     void setNMatrix_m(fMatrix_t& M, cfMatrix_t& N, cfMatrix_t& invN);
-
-
 
 
     fMatrix_t createRotMatrix_m(std::array<double, 3> phi);
@@ -109,7 +128,9 @@ private:
 
     cfMatrix_t invertMatrix_m(const cfMatrix_t &M);
 
-    void rearrangeEigen_m(cfMatrix_t& EigenVal, cfMatrix_t& EigenVec);
+    void rearrangeEigen_m(cfMatrix_t& /*EigenVal*/, cfMatrix_t& /*EigenVec*/) {};
+
+    void normalizeEigen_m(cfMatrix_t& eigenVec, cfMatrix_t& invEigenVec);
 
 private:
     IpplTimings::TimerRef mapAnalysis_m;

@@ -35,7 +35,6 @@
 #include "Tables/Flatten.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
-#include "Utilities/Round.h"
 
 #include <cmath>
 #include <iomanip>
@@ -597,7 +596,7 @@ void Twiss::execute() {
     revBeam  = Attributes::getBool(itsAttr[REVBEAM]);
     revTrack = Attributes::getBool(itsAttr[REVTRACK]);
     revPath  = ( revBeam && !revTrack ) || ( !revBeam && revTrack );
-    order = int(Round(Attributes::getReal(itsAttr[ORDER])));
+    order = int(std::round(Attributes::getReal(itsAttr[ORDER])));
 
     if(method == "THICK") {
         //std::cerr << "  method == \"THICK\"" << std::endl;
