@@ -56,19 +56,15 @@ enum BC_t {OOO,OOP,PPP};
 enum InterPol_t {NGP,CIC};
 
 const double pi = acos(-1.0);
-const double qmmax = 1.0;       // maximum value for particle q/m
-const double dt = 1.0;          // size of timestep
 
 class ChargedParticles : public IpplParticleBase<playout_t> {
 public:
 
-    ChargedParticles(playout_t* pl, BC_t bc, Vector_t hr, Vector_t rmin, Vector_t rmax, e_dim_tag decomp[Dim], bool gCells) :
+    ChargedParticles(playout_t* pl, BC_t /*bc*/, Vector_t hr, Vector_t rmin, Vector_t rmax, e_dim_tag decomp[Dim], bool /*gCells*/) :
         IpplParticleBase<playout_t>(pl),
         hr_m(hr),
         rmin_m(rmin),
-        rmax_m(rmax),
-        bco_m(bc),
-        withGuardCells_m(gCells)
+        rmax_m(rmax)
     {
         setupBCs();
         for(unsigned int i=0; i<Dim; i++)
@@ -170,9 +166,6 @@ private:
     Vector_t rmin_m;
     Vector_t rmax_m;
 
-    BC_t bco_m;
-
-    bool withGuardCells_m;
     e_dim_tag decomp_m[Dim];
 
 public:

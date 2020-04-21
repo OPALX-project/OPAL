@@ -1,12 +1,22 @@
-/**
- * @file Harmonics.h
- * This class computes the cyclotron map based on harmonics.
- * All functions are copied and translated to C++ from the original program inj2_ana.c of Dr. C. Baumgarten.
- *
- * @author Matthias Frey
- * @version 1.0
- */
-
+//
+// Class Harmonics
+//   This class computes the cyclotron map based on harmonics.
+//   All functions are copied and translated to C++ from the original program inj2_ana.c of Dr. C. Baumgarten.
+//
+// Copyright (c) 2014 - 2015, Christian Baumgarten, Paul Scherrer Institut, Villigen PSI, Switzerland
+//                            Matthias Frey, ETH Zürich
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef HARMONICS_H
 #define HARMONICS_H
 

@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 3.1)
-project (OPAL VERSION 2.1.0)
+project (OPAL VERSION 2.3.0)
 set (PROJECT_BUGREPORT opal@lists.psi.ch)
 
 string (REGEX REPLACE "\\.([0-9])\\." ".0\\1." PACKAGE_VERSION ${PROJECT_VERSION})
@@ -12,7 +12,7 @@ if (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
     set (CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
         "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
         FORCE
-	)
+        )
 endif ()
 
 cmake_host_system_information (RESULT HOSTNAME QUERY HOSTNAME)
@@ -63,7 +63,8 @@ if ( ${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel" )
     add_compile_options ("-diag-disable 383")
     add_compile_options ("-diag-disable 981")
     if (ENABLE_OpenMP)
-	add_compile_options (-openmp)
+        add_compile_options (-openmp)
+        add_link_options (-openmp)
     endif ()
 
 elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
@@ -77,7 +78,8 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     # Allow overloaded virtual functions (instances to be fixed in OPAL)
     #add_compile_options (-Wno-overloaded-virtual)
     if (ENABLE_OpenMP)
-	add_compile_options (-fopenmp)
+        add_compile_options (-fopenmp)
+        add_link_options (-fopenmp)
     endif ()
     # Not 100% clear why we need this. But without we get warning while
     # linking with HDF5
@@ -87,11 +89,11 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
     if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "4.7.3")
         message (FATAL_ERROR "To build OPAL you need GCC version 4.7.3 or greater")
     endif ()
-    # Warning flags, -Wno-unused-local-typedefs is needed for boost versions below 1.59
-    add_compile_options (-Wno-unused-local-typedefs -Werror=unused-variable)
+    # Warning flags
 
     if (ENABLE_OpenMP)
         add_compile_options (-fopenmp)
+        add_link_options (-fopenmp)
     endif ()
 
 else ()
@@ -110,7 +112,7 @@ if (CMAKE_Fortran_COMPILER)
 else ()
     message ("No Fortran compiler found (optional)")
     if (ENABLE_AMR)
-	message (FATAL_ERROR "AMR is enabled but no Fortran compiler found!")
+        message (FATAL_ERROR "AMR is enabled but no Fortran compiler found!")
     endif ()
 endif ()
 
@@ -131,7 +133,7 @@ if (USE_STATIC_LIBRARIES)
 endif ()
 set (Boost_USE_MULTITHREADED OFF)
 set (Boost_USE_STATIC_RUNTIME OFF)
-find_package (Boost 1.60.0
+find_package (Boost 1.66.0
     REQUIRED COMPONENTS chrono filesystem iostreams regex serialization system timer)
 message ("Found Boost include dir: ${Boost_INCLUDE_DIR}")
 message ("Found Boost library dir: ${Boost_LIBRARY_DIR}")
@@ -285,9 +287,9 @@ install (
     DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/${PROJECT_NAME}"
     RENAME ${PROJECT_NAME}Config.cmake
     )
-  
+
 # vi: set et ts=4 sw=4 sts=4:
-  
+
 # Local Variables:
 # mode: cmake
 # cmake-tab-width: 4

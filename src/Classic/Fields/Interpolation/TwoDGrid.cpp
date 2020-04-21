@@ -130,10 +130,10 @@ void TwoDGrid::SetConstantSpacing()
 {
     _constantSpacing = true;
     for (unsigned int i = 0; i < _x.size()-1; i++)
-        if (fabs(1-(_x[i+1]-_x[i])/(_x[1]-_x[0])) > 1e-9)
+        if (std::abs(1-(_x[i+1]-_x[i])/(_x[1]-_x[0])) > 1e-9)
             _constantSpacing = false;
     for (unsigned int i = 0; i < _y.size()-1; i++)
-        if (fabs(1-(_y[i+1]-_y[i])/(_y[1]-_y[0])) > 1e-9)
+        if (std::abs(1-(_y[i+1]-_y[i])/(_y[1]-_y[0])) > 1e-9)
             _constantSpacing = false;
 }
 
@@ -290,7 +290,7 @@ void NDGrid::SetConstantSpacing()
     _constantSpacing = true;
     for(unsigned int i=0; i<_coord.size(); i++)
         for(unsigned int j=0; j<_coord[i].size()-1; j++) 
-            if( fabs(1-(_coord[i][j+1]-_coord[i][j])/(_coord[i][1]-_coord[i][0])) > 1e-9 ) 
+            if( std::abs(1-(_coord[i][j+1]-_coord[i][j])/(_coord[i][1]-_coord[i][0])) > 1e-9 ) 
             {_constantSpacing = false; return;}
 }
 

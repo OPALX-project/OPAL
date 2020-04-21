@@ -60,7 +60,6 @@ private:
 
     double zbegin_m;
     double zend_m;
-    double length_m;
 
     double hx_m;                   /**< length between points in grid, x-direction */
     double hy_m;                   /**< length between points in grid, y-direction */
@@ -75,10 +74,9 @@ private:
 inline
 bool FM3DMagnetoStatic::isInside(const Vector_t &r) const
 {
-    return ((r(0) >= xbegin_m && r(0) < xend_m) &&
-            (r(1) >= ybegin_m && r(1) < yend_m) &&
-            (r(2) >= 0.0 && r(2) < length_m));
-            // (r(2) >= zbegin_m && r(2) < zend_m));
+    return ((r(0) >= xbegin_m && r(0) < xend_m)
+            && (r(1) >= ybegin_m && r(1) < yend_m)
+            && (r(2) >= zbegin_m && r(2) < zend_m));
 }
 
 inline
@@ -103,8 +101,10 @@ FM3DMagnetoStatic::IndexTriplet FM3DMagnetoStatic::getIndex(const Vector_t &X) c
     IndexTriplet idx;
     idx.i = std::floor((X(0) - xbegin_m) / hx_m);
     idx.j = std::floor((X(1) - ybegin_m) / hy_m);
-    idx.k = std::floor(X(2) / hz_m);
-    // idx.k = std::floor((X(2) - zbegin_m) / hz_m);
+    idx.k = std::floor((X(2) - zbegin_m)/ hz_m);
+    PAssert_LT(idx.i, num_gridpx_m - 1);
+    PAssert_LT(idx.j, num_gridpy_m - 1);
+    PAssert_LT(idx.k, num_gridpz_m - 1);
 
     idx.weight(0) = (X(0) - xbegin_m) / hx_m - idx.i;
     idx.weight(1) = (X(1) - ybegin_m) / hy_m - idx.j;

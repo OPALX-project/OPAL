@@ -1,3 +1,29 @@
+//
+// Struct SumErrSq
+//  A simple expression computing the sum of all measurement errors (given as
+//  first and third argument) for a variable (second argument) according to
+//
+//  \f[
+//     result = \frac{1}{n} * \sqrt{\sum_{i=0}^n (measurement_i - value_i)^2}
+//  \f]
+//
+// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Toward massively parallel multi-objective optimization with application to
+// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __SUMERRSQ_H__
 #define __SUMERRSQ_H__
 
@@ -23,15 +49,7 @@ public:
     friend std::istream & operator>>(std::istream & stream, Measurement & measurement);
 };
 
-/**
- *  A simple expression computing the sum of all measurement errors (given as
- *  first and third argument) for a variable (second argument) according to
- *
- *  \f[
- *    result = \frac{1}{n} * \sqrt{\sum_{i=0}^n (measurement_i - value_i)^2}
- *  \f]
- *
- */
+
 struct SumErrSq {
 
     static const std::string name;

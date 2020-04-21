@@ -34,9 +34,9 @@ FM3DDynamic::FM3DDynamic(std::string aFilename):
     if(file.good()) {
         bool parsing_passed = true;
         try {
-            parsing_passed = interpreteLine<std::string>(file, tmpString);
+            parsing_passed = interpretLine<std::string>(file, tmpString);
         } catch (GeneralClassicException &e) {
-            parsing_passed = interpreteLine<std::string, std::string>(file, tmpString, tmpString);
+            parsing_passed = interpretLine<std::string, std::string>(file, tmpString, tmpString);
 
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
@@ -49,17 +49,17 @@ FM3DDynamic::FM3DDynamic(std::string aFilename):
         }
 
         parsing_passed = parsing_passed &&
-                         interpreteLine<double>(file, frequency_m);
+                         interpretLine<double>(file, frequency_m);
         parsing_passed = parsing_passed &&
-                         interpreteLine<double, double, unsigned int>(file, xbegin_m, xend_m, num_gridpx_m);
+                         interpretLine<double, double, unsigned int>(file, xbegin_m, xend_m, num_gridpx_m);
         parsing_passed = parsing_passed &&
-                         interpreteLine<double, double, unsigned int>(file, ybegin_m, yend_m, num_gridpy_m);
+                         interpretLine<double, double, unsigned int>(file, ybegin_m, yend_m, num_gridpy_m);
         parsing_passed = parsing_passed &&
-                         interpreteLine<double, double, unsigned int>(file, zbegin_m, zend_m, num_gridpz_m);
+                         interpretLine<double, double, unsigned int>(file, zbegin_m, zend_m, num_gridpz_m);
 
         for(unsigned long i = 0; (i < (num_gridpz_m + 1) * (num_gridpx_m + 1) * (num_gridpy_m + 1)) && parsing_passed; ++ i) {
             parsing_passed = parsing_passed &&
-                             interpreteLine<double>(file,
+                             interpretLine<double>(file,
                                                     tmpDouble,
                                                     tmpDouble,
                                                     tmpDouble,
@@ -133,7 +133,7 @@ void FM3DDynamic::readMap() {
         for(unsigned int i = 0; i < num_gridpx_m; ++ i) {
             for(unsigned int j = 0; j < num_gridpy_m; ++ j) {
                 for(unsigned int k = 0; k < num_gridpz_m; ++ k) {
-                    interpreteLine<double>(in,
+                    interpretLine<double>(in,
                                            FieldstrengthEx_m[ii],
                                            FieldstrengthEy_m[ii],
                                            FieldstrengthEz_m[ii],
@@ -242,14 +242,14 @@ void FM3DDynamic::freeMap() {
 }
 
 bool FM3DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
-    const unsigned int index_x = static_cast<int>(floor((R(0) - xbegin_m) / hx_m));
+    const unsigned int index_x = static_cast<int>(std::floor((R(0) - xbegin_m) / hx_m));
     const double lever_x = (R(0) - xbegin_m) / hx_m - index_x;
 
-    const unsigned int index_y = static_cast<int>(floor((R(1) - ybegin_m) / hy_m));
+    const unsigned int index_y = static_cast<int>(std::floor((R(1) - ybegin_m) / hy_m));
     const double lever_y = (R(1) - ybegin_m) / hy_m - index_y;
 
-    const unsigned int index_z = (int)floor(R(2) / hz_m);
-    const double lever_z = R(2) / hz_m - index_z;
+    const unsigned int index_z = (int)std::floor((R(2) - zbegin_m)/ hz_m);
+    const double lever_z = (R(2) - zbegin_m) / hz_m - index_z;
 
     if(index_z >= num_gridpz_m - 2) {
         return false;

@@ -1,3 +1,35 @@
+//
+// Class SamplePilot
+//   The sample Pilot (Master): Coordinates requests by sampler to workers.
+//   Every worker thread notifies the master here if idle or not. When
+//   available the master dispatches one of the pending simulations to the
+//   worker who will run the specified simulation and report results back to
+//   the master.
+//   @see SampleWorker
+//   @see Sampler
+//   @tparam Opt_t type of the sampler
+//   @tparam Sim_t type of the simulation
+//   @tparam SolPropagationGraph_t strategy to distribute solution between
+//           master islands
+//   @tparam Comm_t comm splitter strategy
+//
+// Copyright (c) 2018, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
+//                     Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __SAMPLE_PILOT_H__
 #define __SAMPLE_PILOT_H__
 
@@ -5,25 +37,6 @@
 #include "Sample/SampleWorker.h"
 #include "Expression/Parser/function.hpp"
 
-/**
- *  \class SamplePilot
- *  \brief The sample Pilot (Master): Coordinates requests by sampler
- *  to workers.
- *
- *  Every worker thread notifies the master here if idle or not. When
- *  available the master dispatches one of the pending simulations to the
- *  worker who will run the specified simulation and report results back to
- *  the master.
- *
- *  @see SampleWorker
- *  @see Sampler
- *
- *  @tparam Opt_t type of the sampler
- *  @tparam Sim_t type of the simulation
- *  @tparam SolPropagationGraph_t strategy to distribute solution between
- *          master islands
- *  @tparam Comm_t comm splitter strategy
- */
 template <
       class Opt_t
     , class Sim_t

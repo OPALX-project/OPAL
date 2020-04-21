@@ -121,7 +121,7 @@ TEST(Meshes, Cartesian)
     assign(vectorVert, mesh.getVertexPositionField(vectorVert));
     scalarCell = Div(vectorVert, scalarCell);
     // The value should be 3.0 for all elements; test this:
-    EXPECT_NEAR(abs(sum(scalarCell)/totcells), 1.0*D, roundOffError);
+    EXPECT_NEAR(std::abs(sum(scalarCell)/totcells), 1.0*D, roundOffError);
     //---------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------
@@ -160,7 +160,7 @@ TEST(Meshes, Cartesian)
     double magDiffVectorVert = 0.0;
     for (d = 0; d < D; d++) magDiffVectorVert += diffVectorVert(d)*diffVectorVert(d);
     magDiffVectorVert = sqrt(magDiffVectorVert);
-    EXPECT_NEAR(abs(magDiffVectorVert), 0, roundOffError);
+    EXPECT_NEAR(std::abs(magDiffVectorVert), 0, roundOffError);
     //---------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------
@@ -198,7 +198,7 @@ TEST(Meshes, Cartesian)
     double magDiffVectorCell = 0.0;
     for (d = 0; d < D; d++) magDiffVectorCell += diffVectorCell(d)*diffVectorCell(d);
     magDiffVectorCell = sqrt(magDiffVectorCell);
-    EXPECT_NEAR(abs(magDiffVectorCell), 0, roundOffError);
+    EXPECT_NEAR(std::abs(magDiffVectorCell), 0, roundOffError);
     //---------------------------------------------------------------------------
 
     //---------------------------------------------------------------------------
@@ -224,7 +224,7 @@ TEST(Meshes, Cartesian)
     magDiffVectorVert = 0.0;
     for (d = 0; d < D; d++) magDiffVectorVert += diffVectorVert(d)*diffVectorVert(d);
     magDiffVectorVert = sqrt(magDiffVectorVert);
-    EXPECT_NEAR(abs(magDiffVectorCell), 0, roundOffError);
+    EXPECT_NEAR(std::abs(magDiffVectorCell), 0, roundOffError);
     //---------------------------------------------------------------------------
 
     // --------------------------------------------------------------------------
@@ -249,7 +249,7 @@ TEST(Meshes, Cartesian)
             magDiffTensorCell += diffTensorCell(d,d2)*diffTensorCell(d,d2);
         }
     }
-    EXPECT_NEAR(abs(magDiffTensorCell), 0, roundOffError);
+    EXPECT_NEAR(std::abs(magDiffTensorCell), 0, roundOffError);
     //---------------------------------------------------------------------------
 
     //---------------------------------------------------------------------------

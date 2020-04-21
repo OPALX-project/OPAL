@@ -418,10 +418,10 @@ VectorMap* SectorMagneticFieldMap::IO::getInterpolator
 bool SectorMagneticFieldMap::IO::comparator(std::vector<double> field_item1,
                      std::vector<double> field_item2) {
     const int* order = sortOrder_m;
-    if (fabs(field_item1[order[0]] - field_item2[order[0]]) > floatTolerance_m) {
+    if (std::abs(field_item1[order[0]] - field_item2[order[0]]) > floatTolerance_m) {
         return field_item1[order[0]] < field_item2[order[0]];
     }
-    if (fabs(field_item1[order[1]] - field_item2[order[1]]) > floatTolerance_m) {
+    if (std::abs(field_item1[order[1]] - field_item2[order[1]]) > floatTolerance_m) {
         return field_item1[order[1]] < field_item2[order[1]];
     }
     return field_item1[order[2]] < field_item2[order[2]];

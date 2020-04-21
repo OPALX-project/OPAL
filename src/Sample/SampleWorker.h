@@ -1,21 +1,37 @@
+//
+// Class SampleWorker
+//   A worker MPI entity consists of a processor group that runs a
+//   simulation of type Sim_t. The main loop in run() accepts new jobs from the
+//   master process runs the simulation and reports back the results.
+//
+//   @see SamplePilot
+//   @see Worker
+//   @see MPIHelper.h
+//
+//   @tparam Sim_T type of simulation to run
+//
+// Copyright (c) 2018, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
+//                     Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __SAMPLE_WORKER_H__
 #define __SAMPLE_WORKER_H__
 
 #include "Pilot/Worker.h"
 
-
-/**
- *  \class SampleWorker
- *  \brief A worker MPI entity consists of a processor group that runs a
- *  simulation of type Sim_t. The main loop in run() accepts new jobs from the
- *  master process runs the simulation and reports back the results.
- *
- *  @see SamplePilot
- *  @see Worker
- *  @see MPIHelper.h
- *
- *  @tparam Sim_T type of simulation to run
- */
 template <class Sim_t>
 class SampleWorker : protected Worker<Sim_t> {
 

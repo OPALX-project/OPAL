@@ -13,21 +13,6 @@
  *
  ***************************************************************************/
 
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- * This program was prepared by PSI. 
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit http://www.acl.lanl.gov/POOMS for more details
- *
- ***************************************************************************/
-
 /***************************************************************************
 
  Hi Court and Rui I follow up on discussions at the AAC 2002
@@ -62,7 +47,6 @@ typedef ParticleSpatialLayout<T,Dim> playout_t;
 
 int n;
 
-const T pi = acos(-1.0);
 const T fMax = 1.0;       // maximum value for f
 
 
@@ -131,32 +115,3 @@ int main(int argc, char *argv[]){
   msg << "done ...." << endl;
   return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/***************************************************************************
- * $RCSfile: addheaderfooter,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:17 $
- * IPPL_VERSION_ID: $Id: addheaderfooter,v 1.1.1.1 2003/01/23 07:40:17 adelmann Exp $ 
- ***************************************************************************/
-

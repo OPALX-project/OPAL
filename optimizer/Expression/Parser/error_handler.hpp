@@ -19,11 +19,7 @@ namespace client
     template <typename Iterator>
     struct error_handler
     {
-#if BOOST_VERSION >= 106200
         template <typename>
-#else
-        template <typename, typename, typename>
-#endif
         struct result { typedef void type; };
 
         error_handler(Iterator first, Iterator last)

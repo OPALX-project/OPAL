@@ -1,3 +1,35 @@
+//
+// Class GenerateOpalSimulation
+//   Generates an OPAL input file from data and template file.
+//
+//   When running the optimizer with the OPAL forward solvers this utility
+//   class helps generating OPAL input files corresponding to the design
+//   variable values of the requested evaluation.
+//   Using the data file we start by generating the dictionary of known
+//   templates.
+//   When the input file is requested, all template variables in the template
+//   input file are replaced with values found in the dictionary.
+//
+//   TODO:
+//     - pass stream directly to opal (detour over file not necessary)
+//
+// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Toward massively parallel multi-objective optimization with application to
+// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __GENERATE_SIMULATION_H__
 #define __GENERATE_SIMULATION_H__
 
@@ -14,21 +46,6 @@
 
 #include "Util/OptPilotException.h"
 
-/**
- *  \class GenerateOpalSimulation
- *  \brief Generates an OPAL input file from data and template file.
- *
- *  When running the optimizer with the OPAL forward solvers this utility
- *  class helps generating OPAL input files corresponding to the design
- *  variable values of the requested evaluation.
- *  Using the data file we start by generating the dictionary of known
- *  templates.
- *  When the input file is requested, all template variables in the template
- *  input file are replaced with values found in the dictionary.
- *
- *  TODO:
- *    - pass stream directly to opal (detour over file not necessary)
- */
 class GenerateOpalSimulation {
 
 public:

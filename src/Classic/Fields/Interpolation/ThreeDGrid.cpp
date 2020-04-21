@@ -265,17 +265,17 @@ void ThreeDGrid::add(VectorMap* map) {
 void ThreeDGrid::setConstantSpacing() {
     constantSpacing_m = true;
     for (unsigned int i = 0; i < x_m.size()-1; i++)
-        if (fabs(1-(x_m[i+1]-x_m[i])/(x_m[1]-x_m[0])) > 1e-9) {
+        if (std::abs(1-(x_m[i+1]-x_m[i])/(x_m[1]-x_m[0])) > 1e-9) {
             constantSpacing_m = false;
             return;
         }
     for (unsigned int i = 0; i < y_m.size()-1; i++)
-        if (fabs(1-(y_m[i+1]-y_m[i])/(y_m[1]-y_m[0])) > 1e-9) {
+        if (std::abs(1-(y_m[i+1]-y_m[i])/(y_m[1]-y_m[0])) > 1e-9) {
             constantSpacing_m = false;
             return;
         }
     for (unsigned int i = 0; i < z_m.size()-1; i++)
-        if (fabs(1-(z_m[i+1]-z_m[i])/(z_m[1]-z_m[0])) > 1e-9) {
+        if (std::abs(1-(z_m[i+1]-z_m[i])/(z_m[1]-z_m[0])) > 1e-9) {
             constantSpacing_m = false;
             return;
         }

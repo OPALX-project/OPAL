@@ -1,43 +1,46 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
+//
+// Class IpplMemoryUsage
+//   A simple singleton class which lets the user watch the memory consumption of a program.
+//   ATTENTION: We use following memory convention
+//
+//              8 bit = 1 byte = 1e-3 kB = 1e-6 MB
+//                             = 1e-3 / 1.024 KiB (KibiByte)
+//                             = 1e-3 / 1.024 / 1.024 MiB (MebiByte)
+//
+//              instead of the usually taken but wrong relation 1024 kB = 1 MB.
+//
+//   General usage
+//   1) create the instance using IpplMemoryUsage::getInstance(unit, reset).
+//      The reset boolean indicates wether the memory at creation should be
+//      subtracted from the measurements later on.
+//      The class is based on t getrusage() that returns the memory
+//      consumption in kB (KiloByte). You can specify the return value of
+//      IpplMemoryUsage by the first argument.
+//      Although one can use those input parameters they are only applied
+//      at the first call. Additional calls with different input do NOT
+//      modify the instance.
+//   2) At any point in the program you can call IpplMemoryUsage::sample()
+//      to collect the data.
+//
+// Copyright (c) 2017 - 2018, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef IPPL_MEMPRYUSAGE_H
 #define IPPL_MEMPRYUSAGE_H
 
-/*************************************************************************
- * IpplMemoryUsage - a simple singleton class which lets the user watch the
- * memory consumption of a program.
- * 
- * ATTENTION: We use following memory convention
- * 
- *            8 bit = 1 byte = 1e-3 kB = 1e-6 MB
- *                           = 1e-3 / 1.024 KiB (KibiByte)
- *                           = 1e-3 / 1.024 / 1.024 MiB (MebiByte)
- * 
- *           instead of the usually taken but wrong relation 1024 kB = 1 MB.
- *
- * General usage
- *  1) create the instance using IpplMemoryUsage::getInstance(unit, reset).
- *     The reset boolean indicates wether the memory at creation should be
- *     subtracted from the measurements later on.
- *     The class is based on t getrusage() that returns the memory
- *     consumption in kB (KiloByte). You can specify the return value of
- *     IpplMemoryUsage by the first argument.
- *     Although one can use those input parameters they are only applied
- *     at the first call. Additional calls with different input do NOT
- *     modify the instance.
- *  2) At any point in the program you can call IpplMemoryUsage::sample()
- *     to collect the data.
- *************************************************************************/
-
-// include files
 #include "Ippl.h"
 #include <memory>
 

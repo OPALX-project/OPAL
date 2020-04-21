@@ -1,19 +1,26 @@
-/******************************************************************************
- *
- * The IPPL Framework
- *
- * This program was prepared by PSI.
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- *      mpirun -n 32 ./p3m3dMicrobunching ${Nx} ${Ny} ${Nz} ${r_cut} ${alpha} ${epsilon} ${Nsteps} $SeedID} ${printSteps}
- *      Nx,Ny,Nx is the poisson solver grid size, r_cut is the cutoff for pp interaction, alpha is the splitting parameter,
- *      epsilon is the softening parameter, printSteps=10 prints every tenth step
- *
- *
- ******************************************************************************/
+//
+// Application p3m3dMicrobunching
+//   mpirun -n 32 ./p3m3dMicrobunching ${Nx} ${Ny} ${Nz} ${r_cut} ${alpha} ${epsilon} ${Nsteps} $SeedID} ${printSteps}
+//   Nx,Ny,Nx is the poisson solver grid size, r_cut is the cutoff for pp interaction, alpha is the splitting parameter,
+//   epsilon is the softening parameter, printSteps=10 prints every tenth step
+//
+// Copyright (c) 2016, Benjamin Ulmer, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the Master thesis
+// "The P3M Model on Emerging Computer Architectures With Application to Microbunching"
+// (http://amas.web.psi.ch/people/aadelmann/ETH-Accel-Lecture-1/projectscompleted/cse/thesisBUlmer.pdf)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Ippl.h"
 #include <cassert>
 #include <string>
@@ -385,18 +392,7 @@ class ChargedParticles : public IpplParticleBase<PL> {
                         eps6x6_normalized_m = eps6x6_m*actual_gamma*beta0;
                 }
 
-                void calculatePairForces(double interaction_radius, double eps, double alpha) {
-                        if (interaction_radius>0){
-                                if (Ippl::getNodes() > 1) {
-                                        HashPairBuilderPeriodicParallel< ChargedParticles<playout_t> > HPB(*this);
-                                        HPB.for_each(RadiusCondition<double, Dim>(interaction_radius), ApplyField<double>(-1,interaction_radius,eps,alpha,ke),extend_l, extend_r);
-                                }
-                                else {
-                                        HashPairBuilderPeriodic< ChargedParticles<playout_t> > HPB(*this);
-                                        HPB.for_each(RadiusCondition<double, Dim>(interaction_radius), ApplyField<double>(-1,interaction_radius,eps,alpha,ke),extend_l, extend_r);
-                                }
-                        }
-                }
+                void calculatePairForces(double interaction_radius, double eps, double alpha);
 
                 void calculateGridForces(double /*interaction_radius*/, double alpha, double eps, int /*it*/=0) {
                         // (1) scatter charge to charge density grid and transform to fourier space
@@ -596,6 +592,23 @@ struct ApplyField {
         double a;
         double ke;
 };
+
+
+template<class PL>
+void ChargedParticles<PL>::calculatePairForces(double interaction_radius, double eps, double alpha)
+{
+    if (interaction_radius>0){
+        if (Ippl::getNodes() > 1) {
+            HashPairBuilderPeriodicParallel< ChargedParticles<playout_t> > HPB(*this);
+            HPB.for_each(RadiusCondition<double, Dim>(interaction_radius), ApplyField<double>(-1,interaction_radius,eps,alpha,ke),extend_l, extend_r);
+        }
+        else {
+            HashPairBuilderPeriodic< ChargedParticles<playout_t> > HPB(*this);
+            HPB.for_each(RadiusCondition<double, Dim>(interaction_radius), ApplyField<double>(-1,interaction_radius,eps,alpha,ke),extend_l, extend_r);
+        }
+    }
+}
+
 
 int main(int argc, char *argv[]){
         Ippl ippl(argc, argv);

@@ -1141,7 +1141,7 @@ protected:
         }
 
         //reduce message count so every node knows how many messages to receive
-        MPI_Allreduce(&(msgsend[0]), &(msgrecv[0]), N, MPI_INT, MPI_SUM, Ippl::getComm());
+        allreduce(msgsend.data(), msgrecv.data(), N, std::plus<int>());
 
         int tag = Ippl::Comm->next_tag(P_SPATIAL_TRANSFER_TAG,P_LAYOUT_CYCLE);
 
@@ -1273,7 +1273,7 @@ protected:
         }
 
         //reduce message count so every node knows how many messages to receive
-        MPI_Allreduce(&(msgsend[0]), &(msgrecv[0]), N, MPI_INT, MPI_SUM, Ippl::getComm());
+        allreduce(msgsend.data(), msgrecv.data(), N, std::plus<int>());
 
         int tag = Ippl::Comm->next_tag(P_SPATIAL_TRANSFER_TAG,P_LAYOUT_CYCLE);
 

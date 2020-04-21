@@ -81,7 +81,6 @@ inline
 bool FM3DMagnetoStaticExtended::isInside(const Vector_t &r) const
 {
     return r(2) >= 0.0 && r(2) < length_m && r(0) >= xbegin_m && r(0) < xend_m && std::abs(r(1)) < yend_m;
-    // return r(2) >= zbegin_m && r(2) < zend_m && r(0) >= xbegin_m && r(0) < xend_m && std::abs(r(1)) < yend_m;
 }
 
 inline
@@ -98,12 +97,14 @@ FM3DMagnetoStaticExtended::IndexTriplet FM3DMagnetoStaticExtended::getIndex(cons
     IndexTriplet idx;
     idx.i = std::floor((X(0) - xbegin_m) / hx_m);
     idx.j = std::floor(std::abs(X(1)) / hy_m);
-    idx.k = std::floor((X(2)) / hz_m);
-    // idx.k = std::floor((X(2) - zbegin_m) / hz_m);
+    idx.k = std::floor((X(2) - zbegin_m) / hz_m);
+    PAssert_LT(idx.i, num_gridpx_m - 1);
+    PAssert_LT(idx.j, num_gridpy_m - 1);
+    PAssert_LT(idx.k, num_gridpz_m - 1);
 
     idx.weight(0) = (X(0) - xbegin_m) / hx_m - idx.i;
     idx.weight(1) = std::abs(X(1)) / hy_m - idx.j;
-    idx.weight(2) = X(2) / hz_m - idx.k;
+    idx.weight(2) = (X(2) - zbegin_m) / hz_m - idx.k;
 
     return idx;
 }

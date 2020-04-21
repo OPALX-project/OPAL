@@ -25,6 +25,7 @@ Example:
 using namespace std;
 
 // dimension of our positions
+#define DIM 2
 const unsigned Dim = 2;
 
 // some typedefs
@@ -38,8 +39,6 @@ typedef IntCIC                                                      IntrplCIC_t;
 typedef IntNGP                                                      IntrplNGP_t;
 
 enum InterPol_t {NGP,CIC};
-const double qmmax = 1.0;       // maximum value for particle q/m
-const double dt = 1.0;          // size of timestep
 
 template<class PL>
 class ChargedParticles : public IpplParticleBase<PL> {
@@ -131,15 +130,16 @@ int main(int argc, char *argv[]){
     Vektor<int,Dim> nr;
     InterPol_t myInterpol;
 
-    if(Dim == 3) {
-        nr = Vektor<int,Dim>(atoi(argv[1]),atoi(argv[2]),atoi(argv[3]));
-        if (string(argv[4])==string("CIC")) myInterpol = CIC;
-        else myInterpol = NGP;
-    } else {
-        nr = Vektor<int,Dim>(atoi(argv[1]),atoi(argv[2]));
-        if (string(argv[3])==string("CIC")) myInterpol = CIC;
-        else myInterpol = NGP;
-    }
+    // need to use preprocessor to prevent clang compiler error
+#if DIM == 3
+    nr = Vektor<int,Dim>(atoi(argv[1]),atoi(argv[2]),atoi(argv[3]));
+    if (string(argv[4])==string("CIC")) myInterpol = CIC;
+    else myInterpol = NGP;
+#else
+    nr = Vektor<int,Dim>(atoi(argv[1]),atoi(argv[2]));
+    if (string(argv[3])==string("CIC")) myInterpol = CIC;
+    else myInterpol = NGP;
+#endif
 
     e_dim_tag decomp[Dim];
     Mesh_t *mesh;

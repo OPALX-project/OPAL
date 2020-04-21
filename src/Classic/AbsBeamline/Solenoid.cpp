@@ -163,12 +163,12 @@ bool Solenoid::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B)
 }
 
 bool Solenoid::apply(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
-    const Vector_t tmpR(R(0), R(1), R(2) - startField_m);
-    Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+    if (R(2) >= startField_m
+        && R(2) < startField_m + length_m) {
+        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
-    if (tmpR(2) >= 0.0 && tmpR(2) < length_m) {
-        const bool out_of_bounds = myFieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
-        if (out_of_bounds) return true;
+        const bool outOfBounds = myFieldmap_m->getFieldstrength(R, tmpE, tmpB);
+        if (outOfBounds) return true;
 
         B += (scale_m + scaleError_m) * tmpB;
     }
@@ -177,12 +177,13 @@ bool Solenoid::apply(const Vector_t &R, const Vector_t &/*P*/, const  double &/*
 }
 
 bool Solenoid::applyToReferenceParticle(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
-    const Vector_t tmpR(R(0), R(1), R(2) - startField_m);
-    Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
-    if (tmpR(2) >= 0.0 && tmpR(2) < length_m) {
-        const bool out_of_bounds = myFieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
-        if (out_of_bounds) return true;
+    if (R(2) >= startField_m
+        && R(2) < startField_m + length_m) {
+        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+
+        const bool outOfBounds = myFieldmap_m->getFieldstrength(R, tmpE, tmpB);
+        if (outOfBounds) return true;
 
         B += scale_m * tmpB;
     }
@@ -249,7 +250,8 @@ ElementBase::ElementType Solenoid::getType() const {
 }
 
 bool Solenoid::isInside(const Vector_t &r) const {
-    return (r(2) >= startField_m && r(2) < startField_m + length_m && isInsideTransverse(r) && myFieldmap_m->isInside(r));
+    return isInsideTransverse(r)
+        && myFieldmap_m->isInside(r);
 }
 
 
@@ -262,4 +264,3 @@ void Solenoid::getElementDimensions(double &begin,
     begin = startField_m;
     end = begin + length_m;
 }
-

@@ -1,3 +1,30 @@
+//
+// Class CmdArguments
+//   Parsing command line arguments
+//
+//   In order to have a flexible framework, each component implementation gets
+//   access to all command line arguments.
+//   All command line options have the form:
+//       --name=value
+//   Spaces before and after the "=" will be trimmed.
+//
+// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Toward massively parallel multi-objective optimization with application to
+// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __CMD_ARGUMENTS__
 #define __CMD_ARGUMENTS__
 
@@ -13,16 +40,6 @@
 
 #include "Util/OptPilotException.h"
 
-/**
- *  \class CmdArguments
- *  \brief Parsing command line arguments
- *
- *  In order to have a flexible framework, each component implementation gets
- *  access to all command line arguments.
- *  All command line options have the form:
- *      --name=value
- *  Spaces before and after the "=" will be trimmed.
- */
 class CmdArguments {
 
 public:
@@ -153,19 +170,33 @@ private:
     /// tries to retrieve command line parameter.
     /// @throws OptPilotException if parameter was not found.
     template<class T>
-    T arg(const std::string name) {
-        T t;
-        std::map<std::string, std::string>::iterator it = arguments_.find(name);
-        if(it != arguments_.end()) {
-            std::istringstream iss(arguments_[name]);
-            iss >> t;
-            return t;
-        } else {
-            throw OptPilotException("CmdArguments::getArg", "argument not found!");
-        }
-    }
+    T arg(const std::string name);
+
 };
 
 typedef boost::shared_ptr<CmdArguments> CmdArguments_t;
+
+template<class T>
+inline T CmdArguments::arg(const std::string name) {
+    T t;
+    std::map<std::string, std::string>::iterator it = arguments_.find(name);
+    if(it != arguments_.end()) {
+        std::istringstream iss(arguments_[name]);
+        iss >> t;
+        return t;
+    } else {
+        throw OptPilotException("CmdArguments::getArg", "argument not found!");
+    }
+}
+
+template<>
+inline std::string CmdArguments::arg<std::string>(const std::string name) {
+    std::map<std::string, std::string>::iterator it = arguments_.find(name);
+    if(it != arguments_.end()) {
+        return arguments_[name];
+    } else {
+        throw OptPilotException("CmdArguments::getArg", "argument not found!");
+    }
+}
 
 #endif

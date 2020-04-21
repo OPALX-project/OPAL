@@ -1,3 +1,23 @@
+//
+// Class Amesos2BottomSolver
+//   Interface to Amesos2 solvers of the Trilinos package.
+//
+// Copyright (c) 2017 - 2020, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef AMESOS2_SOLVER_H
 #define AMESOS2_SOLVER_H
 
@@ -9,7 +29,6 @@
 
 extern Inform* gmsg;
 
-/// Interface to Amesos2 solvers of the Trilinos package
 template <class Level>
 class Amesos2BottomSolver : public BottomSolver<Teuchos::RCP<amr::matrix_t>,
                                                 Teuchos::RCP<amr::multivector_t>,

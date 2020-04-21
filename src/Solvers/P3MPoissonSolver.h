@@ -1,23 +1,25 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- *
- * P3MPoissonSolver.hh
- *
- * Open BC in x,y and z.
- *
- *
- *
- *
- *
- *
- ***************************************************************************/
-
-////////////////////////////////////////////////////////////////////////////
-// This class contains methods for solving Poisson's equation for the
-// space charge portion of the calculation.
-////////////////////////////////////////////////////////////////////////////
-
+//
+// Class P3MPoissonSolver
+//   This class contains methods for solving Poisson's equation for the
+//   space charge portion of the calculation.
+//
+// Copyright (c) 2016, Benjamin Ulmer, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the Master thesis
+// "The P3M Model on Emerging Computer Architectures With Application to Microbunching"
+// (http://amas.web.psi.ch/people/aadelmann/ETH-Accel-Lecture-1/projectscompleted/cse/thesisBUlmer.pdf)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef P3M_POISSON_SOLVER_H_
 #define P3M_POISSON_SOLVER_H_
 const unsigned Dim = 3;
@@ -145,8 +147,3 @@ inline Inform &operator<<(Inform &os, const P3MPoissonSolver &fs) {
 
 
 #endif
-
-/***************************************************************************
- * $RCSfile: P3MPoissonSolver.hh,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2001/08/08 11:21:48 $
- ***************************************************************************/

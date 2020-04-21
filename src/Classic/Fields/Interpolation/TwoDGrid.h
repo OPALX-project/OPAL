@@ -42,9 +42,9 @@ public:
     //if you are sure the grid has constant spacing ConstSpacing is quicker; VarSpacing in either case
     //return lower bound on x for insertion i.e. 0 if x < x[1], 1 if  x[1] < x < x[2], ... , x.size()-1 if x > x.back()
     inline void xLowerBound            (const double& x, int& xIndex) const 
-    {if(_constantSpacing) xIndex = static_cast<int>(floor( (x - _x[0])/(_x[1]-_x[0]) )); else xIndex = std::lower_bound(_x.begin(), _x.end(), x)-_x.begin()-1;}
+    {if(_constantSpacing) xIndex = static_cast<int>(std::floor( (x - _x[0])/(_x[1]-_x[0]) )); else xIndex = std::lower_bound(_x.begin(), _x.end(), x)-_x.begin()-1;}
     inline void yLowerBound            (const double& y, int& yIndex) const
-    {if(_constantSpacing) yIndex = static_cast<int>(floor( (y - _y[0])/(_y[1]-_y[0]) )); else yIndex = std::lower_bound(_y.begin(), _y.end(), y)-_y.begin()-1;}
+    {if(_constantSpacing) yIndex = static_cast<int>(std::floor( (y - _y[0])/(_y[1]-_y[0]) )); else yIndex = std::lower_bound(_y.begin(), _y.end(), y)-_y.begin()-1;}
     inline void LowerBound             (const double& x, int& xIndex, const double& y, int& yIndex) const
     {xLowerBound(x, xIndex); yLowerBound(y, yIndex);}
 
@@ -143,7 +143,7 @@ public:
     //indexing starts at 0 and goes to nCoords+1
     inline void    coordLowerBound (const double& x, const int& dimension, int& xIndex)       const
     {
-        if(_constantSpacing) xIndex = static_cast<int>(floor( (x - _coord[dimension][0])/(_coord[dimension][1]-_coord[dimension][0]) )); 
+        if(_constantSpacing) xIndex = static_cast<int>(std::floor( (x - _coord[dimension][0])/(_coord[dimension][1]-_coord[dimension][0]) )); 
         else xIndex = std::lower_bound(_coord[dimension].begin(), _coord[dimension].end(), x)-_coord[dimension].begin()-1;
     }
 

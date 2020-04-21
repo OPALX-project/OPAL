@@ -1,3 +1,26 @@
+//
+// Class ParticleMatterInteraction
+//   The class for the OPAL PARTICLEMATTERINTERACTION command.
+//
+// Copyright (c) 2012-2019, Andreas Adelmann, Paul Scherrer Institut, Villigen PSI, Switzerland
+//                          Christof Metzger-Kraus, Helmholtz-Zentrum Berlin
+//                          Pedro Calvo, CIEMAT, Spain
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Optimizing the radioisotope production of the novel AMIT
+// superconducting weak focusing cyclotron"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_PARTICLEMATTERINTERACTION_HH
 #define OPAL_PARTICLEMATTERINTERACTION_HH
 

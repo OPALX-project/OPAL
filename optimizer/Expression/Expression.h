@@ -1,3 +1,32 @@
+//
+// Class Expression
+//   Expression to be evaluated in the framework.
+//
+//   @see GlobalFunctions.h
+//
+//   This class uses the Boost Spirit parser to parse and evaluate string
+//   expressions (objectives or constraints).
+//   Custom functions called in the expression should be registered by the
+//   driver. A collection of C math default functions is always included.
+//   For constraints the operator type can be queried.
+//
+// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Toward massively parallel multi-objective optimization with application to
+// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __EXPRESSION_H__
 #define __EXPRESSION_H__
 
@@ -62,16 +91,6 @@ namespace Expressions {
 
 #include "Expression/GlobalFunctions.h"
 
-/**
- *  \brief Expression to be evaluated in the framework.
- *  @see GlobalFunctions.h
- *
- *  This class uses the Boost Spirit parser to parse and evaluate string
- *  expressions (objectives or constraints).
- *  Custom functions called in the expression should be registered by the
- *  driver. A collection of C math default functions is always included.
- *  For constraints the operator type can be queried.
- */
 class Expression {
 
 public:

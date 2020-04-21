@@ -1,15 +1,29 @@
-/**
- * @file ClosedOrbitFinder.h
- * The algorithm is based on the paper of M. M. Gordon: "Computation of closed orbits and basic focusing properties for
- * sector-focused cyclotrons and the design of 'cyclops'" (1983)
- * As template arguments one chooses the type of the variables and the integrator for the ODEs. The supported steppers can
- * be found on
- * http://www.boost.org/ where it is part of the library Odeint.
- *
- * @author Matthias Frey
- * @version 1.0
- */
-
+//
+// Class ClosedOrbitFinder
+//   This class finds a closed orbit of a cyclotron for a given energy.
+//   The algorithm is based on the paper of M. M. Gordon: "Computation of
+//   closed orbits and basic focusing properties for sector-focused cyclotrons
+//   and the design of 'cyclops'" (1983)
+//   As template arguments one chooses the type of the variables and the
+//   integrator for the ODEs. The supported steppers can be found on
+//   http://www.boost.org/ where it is part of the library Odeint.
+//
+// Copyright (c) 2014, Matthias Frey, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the Semester thesis by Matthias Frey
+// "Matched Distributions in Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLOSEDORBITFINDER_H
 #define CLOSEDORBITFINDER_H
 
@@ -37,7 +51,6 @@
 
 extern Inform *gmsg;
 
-/// Finds a closed orbit of a cyclotron for a given energy
 template<typename Value_type, typename Size_type, class Stepper>
 class ClosedOrbitFinder
 {

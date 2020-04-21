@@ -1,3 +1,37 @@
+//
+// Class CommSplitter
+//   Role assignment according to strategy (that might use hardware
+//   network information).
+//
+//   The CommSplitter splits the passed (usually MPI_COMM_WORLD) communicator
+//   into several comm groups using the colors provided by the splitting
+//   strategy.
+//   After construction each processor has an assigned role (optimizer, worker
+//   or pilot) and a set of communicators to send and receive tasks.
+//   The expected colors have the following meaning:
+//     - color[0] is shared by all my co-workers
+//     - color[1] is shared by the optimizer leader and the pilot
+//     - color[2] is shared by the worker leader and the pilot
+//     - color[3] is shared by all processors with the same role (used for
+//       broadcasts)
+//
+// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Toward massively parallel multi-objective optimization with application to
+// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __COMM_SPLITTER__
 #define __COMM_SPLITTER__
 
@@ -10,24 +44,6 @@
 
 //TODO: what is the performance difference between using MPI_COMM_WORLD and
 //      p2p communication vs. communicator groups??
-/**
- *  \brief Role assignment according to strategy (that might use hardware
- *         network information).
- *
- *  The CommSplitter splits the passed (usually MPI_COMM_WORLD) communicator
- *  into several comm groups using the colors provided by the splitting
- *  strategy.
- *  After construction each processor has an assigned role (optimizer, worker
- *  or pilot) and a set of communicators to send and receive tasks.
- *  The expected colors have the following meaning:
- *
- *    - color[0] is shared by all my co-workers
- *    - color[1] is shared by the optimizer leader and the pilot
- *    - color[2] is shared by the worker leader and the pilot
- *    - color[3] is shared by all processors with the same role (used for
- *      broadcasts)
- *
- */
 template< class Strategy_t >
 class CommSplitter : public Strategy_t {
 

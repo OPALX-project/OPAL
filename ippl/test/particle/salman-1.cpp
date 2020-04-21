@@ -56,10 +56,6 @@ typedef IntNGP IntrplNGP_t;
 enum BC_t {OOO,OOP,PPP};
 enum InterPol_t {NGP,CIC};
 
-const double pi = acos(-1.0);
-const double qmmax = 1.0;       // maximum value for particle q/m
-const double dt = 1.0;          // size of timestep
-
 using namespace std;
 
 template<class PL>
@@ -177,8 +173,7 @@ public:
   void setRMin(Vector_t x) { rmin_m = x; }
   void setHr(Vector_t x) { hr_m = x; }
 
-  void savePhaseSpace(string fn, int idx) {
-  }
+  void savePhaseSpace(string /*fn*/, int /*idx*/) {}
 
   inline void setBCAllPeriodic() {
     for (unsigned int i=0; i < 2*Dim; i++) {

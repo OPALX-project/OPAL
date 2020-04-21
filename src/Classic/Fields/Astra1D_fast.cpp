@@ -40,11 +40,11 @@ void Astra1D_fast::getOnaxisEz(std::vector<std::pair<double, double> > & /*F*/)
 bool Astra1D_fast::determineNumSamplingPoints(std::ifstream &file) {
     double tmpDouble, tmpDouble2;
     unsigned int skippedValues = 0;
-    bool passed = interpreteLine<double, double>(file, zbegin_m, tmpDouble);
+    bool passed = interpretLine<double, double>(file, zbegin_m, tmpDouble);
 
     tmpDouble2 = zbegin_m;
     while (!file.eof() && passed) {
-        passed = interpreteLine<double, double>(file, zend_m, tmpDouble, false);
+        passed = interpretLine<double, double>(file, zend_m, tmpDouble, false);
         if (zend_m - tmpDouble2 > 1e-10) {
             tmpDouble2 = zend_m;
         } else if (passed) {
@@ -64,7 +64,7 @@ double Astra1D_fast::readFieldData(std::ifstream &file) {
     int nsp;
 
     for (nsp = 0; nsp < num_gridpz_m; ) {
-        interpreteLine<double, double>(file, zvals_m[nsp], onAxisField_m[nsp]);
+        interpretLine<double, double>(file, zvals_m[nsp], onAxisField_m[nsp]);
 
         if(zvals_m[nsp] - tmpDouble > 1e-10) {
             if(std::abs(onAxisField_m[nsp]) > maxValue) {

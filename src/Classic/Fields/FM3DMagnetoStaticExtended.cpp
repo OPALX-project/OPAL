@@ -26,9 +26,9 @@ FM3DMagnetoStaticExtended::FM3DMagnetoStaticExtended(std::string aFilename):
     if(file.good()) {
         bool parsing_passed = true;
         try {
-            parsing_passed = interpreteLine<std::string>(file, tmpString);
+            parsing_passed = interpretLine<std::string>(file, tmpString);
         } catch (GeneralClassicException &e) {
-            parsing_passed = interpreteLine<std::string, std::string>(file, tmpString, tmpString);
+            parsing_passed = interpretLine<std::string, std::string>(file, tmpString, tmpString);
 
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
@@ -40,14 +40,14 @@ FM3DMagnetoStaticExtended::FM3DMagnetoStaticExtended(std::string aFilename):
             normalize_m = (tmpString == "TRUE");
         }
         parsing_passed = (parsing_passed &&
-                          interpreteLine<double, double, unsigned int>(file, xbegin_m, xend_m, num_gridpx_m));
+                          interpretLine<double, double, unsigned int>(file, xbegin_m, xend_m, num_gridpx_m));
         parsing_passed = (parsing_passed &&
-                          interpreteLine<double, double, unsigned int>(file, ybegin_m, yend_m, num_gridpy_m));
+                          interpretLine<double, double, unsigned int>(file, ybegin_m, yend_m, num_gridpy_m));
         parsing_passed = (parsing_passed &&
-                          interpreteLine<double, double, unsigned int>(file, zbegin_m, zend_m, num_gridpz_m));
+                          interpretLine<double, double, unsigned int>(file, zbegin_m, zend_m, num_gridpz_m));
 
         for(unsigned long i = 0; (i < (num_gridpz_m + 1) * (num_gridpx_m + 1)) && parsing_passed; ++ i) {
-            parsing_passed = parsing_passed && interpreteLine<double>(file, tmpDouble);
+            parsing_passed = parsing_passed && interpretLine<double>(file, tmpDouble);
         }
 
         parsing_passed = parsing_passed &&
@@ -110,7 +110,7 @@ void FM3DMagnetoStaticExtended::readMap() {
         for(unsigned int i = 0; i < num_gridpx_m; i++) {
             for(unsigned int k = 0; k < num_gridpz_m; k++) {
                 unsigned long index = getIndex(i,0,k);
-                interpreteLine<double>(in, FieldstrengthBy_m[index]);
+                interpretLine<double>(in, FieldstrengthBy_m[index]);
             }
         }
         in.close();

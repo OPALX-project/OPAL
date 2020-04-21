@@ -1,31 +1,30 @@
+//
+// Class BeamStrippingRep
+//   Defines a concrete representation for beam stripping.
+//
+// Copyright (c) 2018-2019, Pedro Calvo, CIEMAT, Spain
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Optimizing the radioisotope production of the novel AMIT
+// superconducting weak focusing cyclotron"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_BeamStrippingRep_HH
 #define CLASSIC_BeamStrippingRep_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: BeamStrippingRep.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: BeamStrippingRep
-//
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
-// $Date: 2018/11 $
-// $Author: PedroCalvo$
-// ------------------------------------------------------------------------
 
 #include "AbsBeamline/BeamStripping.h"
 #include "BeamlineGeometry/PlanarArcGeometry.h"
 #include "Fields/NullField.h"
-
-
-// Class BeamStrippingRep
-// ------------------------------------------------------------------------
-/// Representation for a beam stripping.
 
 class BeamStrippingRep: public BeamStripping {
 

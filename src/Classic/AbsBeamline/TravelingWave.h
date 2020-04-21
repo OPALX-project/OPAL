@@ -66,13 +66,6 @@ public:
 
     virtual double getAutoPhaseEstimate(const double & E0, const double & t0, const double & q, const double & m) override;
 
-    virtual std::pair<double, double> trackOnAxisParticle(const double & p0,
-                                                          const double & t0,
-                                                          const double & dt,
-                                                          const double & q,
-                                                          const double & mass,
-                                                          std::ofstream *out = NULL) override;
-
     virtual void addKR(int i, double t, Vector_t &K) override;
 
     virtual void addKT(int i, double t, Vector_t &K) override;
@@ -107,10 +100,6 @@ public:
     virtual CoordinateSystemTrafo getEdgeToEnd() const override;
 
 private:
-    Fieldmap *CoreFieldmap_m;
-    /*   Fieldmap *EntryFringeField_m; */
-    /*   Fieldmap *ExitFringeField_m; */
-
     double scaleCore_m;
     double scaleCoreError_m;
 
@@ -118,7 +107,6 @@ private:
     double phaseCore2_m;
     double phaseExit_m;
 
-    double length_m;
     double startCoreField_m;         /**< starting point of field(m)*/
     double startExitField_m;
     double mappedStartExitField_m;
@@ -127,11 +115,6 @@ private:
     int NumCells_m;
     double CellLength_m;
     double Mode_m;
-
-    bool fast_m;
-
-    bool autophaseVeto_m;
-    double designEnergy_m;
 
     inline double getdE(const int & i,
                         const int & I,

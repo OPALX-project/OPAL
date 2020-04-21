@@ -1202,9 +1202,9 @@ TEST(Field, SimpleTest8)
 
     Vektor<double,D3> p1(8,9,10);
 
-    Vektor<unsigned,D3> N(static_cast<unsigned> (ceil( (abs(boxMin[0])+boxMax[0])/h[0])),
-                           static_cast<unsigned> (ceil( (abs(boxMin[1])+boxMax[1])/h[1])),
-                           static_cast<unsigned> (ceil( (abs(boxMin[2])+boxMax[2])/h[2])));
+    Vektor<unsigned,D3> N(static_cast<unsigned> (std::ceil( (std::abs(boxMin[0])+boxMax[0])/h[0])),
+                          static_cast<unsigned> (std::ceil( (std::abs(boxMin[1])+boxMax[1])/h[1])),
+                          static_cast<unsigned> (std::ceil( (std::abs(boxMin[2])+boxMax[2])/h[2])));
 
     std::cout << "orig= " << boxMin << " maxext= " << boxMax << std::endl;
     std::cout << "h=  " << h << " N= " << N << std::endl;

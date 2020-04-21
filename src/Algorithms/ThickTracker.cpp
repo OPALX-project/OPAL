@@ -1,18 +1,11 @@
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: ThickTracker
-//   The visitor class for building a map of given order for a beamline
-//   using a finite-length lenses for all elements.
-//   Multipole-like elements are done by expanding the Lie series.
+// Source file of the ThickTracker class
+//   Tracks using thick-lens algorithm.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 2018, Philippe Ganz, ETH Zürich
+// All rights reserved
 //
-// $Author: ganz_p $
-//
-// ------------------------------------------------------------------------
-
+// OPAL is licensed under GNU GPL version 3.
 
 #include <cfloat>
 #include <fstream>

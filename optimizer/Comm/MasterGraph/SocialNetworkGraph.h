@@ -1,3 +1,40 @@
+//
+// Class SocialNetworkGraph
+//   Modeling social graph (Cartesian neighbors plus additional random
+//   link) as underlaying master network.
+//
+//   @see MasterNode
+//
+//   Due to its nice rumor spreading properties this master network is mimicking
+//   a social network graph (augmented grid) and solution states are distributed
+//   in a rumor fashion.
+//
+//   Here, we use a simple mapping from processor ID's to 2D grid
+//   (determining neigborhood) assuming the total number of masters:
+//
+//      n_m = n_g * n_g
+//
+//   This is fine, because if we have topology info the masters are numbered
+//   in ascending order (done in comm splitter) and we can map them from 1D to
+//   2D by index calculations.
+//
+// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Toward massively parallel multi-objective optimization with application to
+// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __SOCIAL_NETWORK_GRAPH__
 #define __SOCIAL_NETWORK_GRAPH__
 
@@ -7,25 +44,6 @@
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/discrete_distribution.hpp>
 
-// Here, we use a simple mapping from processor ID's to 2D grid
-// (determining neigborhood) assuming the total number of masters:
-//
-//    n_m = n_g * n_g
-//
-// This is fine, because if we have topology info the masters are numbered
-// in ascending order (done in comm splitter) and we can map them from 1D to
-// 2D by index calculations.
-
-/**
- * \brief Modeling social graph (Cartesian neighbors plus additional random
- *        link) as underlaying master network.
- *
- * @see MasterNode
- *
- * Due to its nice rumor spreading properties this master network is mimicking
- * a social network graph (augmented grid) and solution states are distributed
- * in a rumor fashion.
- */
 template < class TopoDiscoveryStrategy_t >
 class SocialNetworkGraph : public TopoDiscoveryStrategy_t {
 

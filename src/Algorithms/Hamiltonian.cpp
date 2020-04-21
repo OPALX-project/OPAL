@@ -1,3 +1,12 @@
+//
+// Source file of the Hamiltonian class,
+//   Constructs thick lens Hamiltonians up to arbitrary order.
+//
+// Copyright (c) 2018, Philippe Ganz, ETH Zürich
+// All rights reserved
+//
+// OPAL is licensed under GNU GPL version 3.
+
 #include "Hamiltonian.h"
 
 Hamiltonian::Hamiltonian(int truncOrder) : truncOrder_m(truncOrder)

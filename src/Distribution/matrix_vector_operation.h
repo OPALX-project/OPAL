@@ -1,11 +1,24 @@
-/**
- * @file matrix_vector_operation.h
- * This file provides additional functions for the matrix classes of uBLAS that is part of the
- * BOOST library (http://www.boost.org/).
- *
- * @author Matthias Frey
- * @version 1.0
- */
+//
+// File with Boost uBLAS extensions
+//   This file provides additional functions for the matrix classes
+//   of uBLAS that is part of the Boost library (http://www.boost.org/).
+//
+// Copyright (c) 2014, Matthias Frey, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the Semester thesis by Matthias Frey
+// "Matched Distributions in Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 
 #ifndef MATRIX_OPERATION_H
 #define MATRIX_OPERATION_H
@@ -23,7 +36,6 @@
  *  @{
  */
 
-/// @brief Expands the existing functions of the boost library uBLAS (http://www.boost.org/).
 namespace matt_boost {
     namespace ublas = boost::numeric::ublas;
 

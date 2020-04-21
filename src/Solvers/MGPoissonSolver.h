@@ -1,14 +1,30 @@
 //
-// This class contains methods for solving Poisson's equation for the
-// space charge portion of the calculation.
+// Class MGPoissonSolver
+//   This class contains methods for solving Poisson's equation for the
+//   space charge portion of the calculation.
 //
-// Copyright (c) 2008-2020
-// Paul Scherrer Institut, Villigen PSI, Switzerland
-// All rights reserved.
+//   A smoothed aggregation based AMG preconditioned iterative solver for space charge
+//   \see FFTPoissonSolver
+//   \warning This solver is in an EXPERIMENTAL STAGE. For reliable simulations use the FFTPoissonSolver
 //
-// OPAL is licensed under GNU GPL version 3.
+// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich,
+//               2013 - 2015, Tülin Kaman, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-
+// Implemented as part of the PhD thesis
+// "Toward massively parallel multi-objective optimization with application to
+// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef MG_POISSON_SOLVER_H_
 #define MG_POISSON_SOLVER_H_
 
@@ -83,13 +99,6 @@ enum {
     REUSE_HIERARCHY
 };
 
-/**
- * \class MGPoissonSolver
- * \brief A smoothed aggregation based AMG preconditioned iterative solver for space charge
- * \see FFTPoissonSolver
- * \warning This solver is in an EXPERIMENTAL STAGE. For reliable simulations use the FFTPoissonSolver
- *
- */
 class BoundaryGeometry;
 
 class MGPoissonSolver : public PoissonSolver {

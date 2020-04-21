@@ -1,18 +1,25 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- *
- * P3MPoissonSolver.cc
- *
- *
- *
- *
- *
- *
- *
- ***************************************************************************/
-
-// include files
+//
+// Class P3MPoissonSolver
+//   This class contains methods for solving Poisson's equation for the
+//   space charge portion of the calculation.
+//
+// Copyright (c) 2016, Benjamin Ulmer, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the Master thesis
+// "The P3M Model on Emerging Computer Architectures With Application to Microbunching"
+// (http://amas.web.psi.ch/people/aadelmann/ETH-Accel-Lecture-1/projectscompleted/cse/thesisBUlmer.pdf)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Solvers/P3MPoissonSolver.h"
 #include "Algorithms/PartBunch.h"
 #include "Particle/BoxParticleCachingPolicy.h"
@@ -478,8 +485,3 @@ Inform &P3MPoissonSolver::print(Inform &os) const {
     os << "* *************************************************************** " << endl;
     return os;
 }
-
-/***************************************************************************
- * $RCSfile: P3MPoissonSolver.cc,v $   $Author: adelmann $
- * $Revision: 1.6 $   $Date: 2001/08/16 09:36:08 $
- ***************************************************************************/

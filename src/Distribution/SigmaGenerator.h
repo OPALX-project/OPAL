@@ -1,16 +1,33 @@
-/**
- * @file SigmaGenerator.h
- * The SigmaGenerator class uses the class <b>ClosedOrbitFinder</b> to get the parameters (inverse bending radius, path length
- * field index and tunes) to initialize the sigma matrix.
- * The main function of this class is <b>match(value_type, size_type)</b>, where it iteratively tries to find a matched distribution for given
- * emittances, energy and current. The computation stops when the L2-norm is smaller than a user-defined tolerance. \n
- * In default mode it prints all space charge maps, cyclotron maps and second moment matrices. The orbit properties, i.e.
- * tunes, average radius, orbit radius, inverse bending radius, path length, field index and frequency error, are printed
- * as well.
- *
- * @author Matthias Frey, Cristopher Cortes
- * @version 1.1
- */
+//
+// Class: SigmaGenerator.h
+// The SigmaGenerator class uses the class <b>ClosedOrbitFinder</b> to get the parameters (inverse bending radius, path length
+// field index and tunes) to initialize the sigma matrix.
+// The main function of this class is <b>match(value_type, size_type)</b>, where it iteratively tries to find a matched distribution for given
+// emittances, energy and current. The computation stops when the L2-norm is smaller than a user-defined tolerance. \n
+// In default mode it prints all space charge maps, cyclotron maps and second moment matrices. The orbit properties, i.e.
+// tunes, average radius, orbit radius, inverse bending radius, path length, field index and frequency error, are printed
+// as well.
+//
+// Copyright (c) 2014, 2018, Matthias Frey, Cristopher Cortes, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the Semester thesis by Matthias Frey
+// "Matched Distributions in Cyclotrons"
+//
+// Some adaptations done as part of the Bachelor thesis by Cristopher Cortes
+// "Limitations of a linear transfer map method for finding matched distributions in high intensity cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+
 #ifndef SIGMAGENERATOR_H
 #define SIGMAGENERATOR_H
 
@@ -33,6 +50,8 @@
 #include "Utilities/Options.h"
 #include "Utilities/OpalException.h"
 
+#include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
+
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/matrix_sparse.hpp>
 #include <boost/numeric/ublas/vector.hpp>
@@ -46,16 +65,10 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_eigen.h>
 
-#include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
-#if BOOST_VERSION >= 106000
-#include <boost/numeric/odeint/integrate/check_adapter.hpp>
-#endif
-
 #include "matrix_vector_operation.h"
 #include "ClosedOrbitFinder.h"
 #include "MapGenerator.h"
 #include "Harmonics.h"
-
 
 extern Inform *gmsg;
 

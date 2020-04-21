@@ -1,9 +1,8 @@
 //
 // Source file of the MapAnalyser class, analyses linear maps from OPAL-map.
 //
-// Copyright (c) 2008-2020
-// Paul Scherrer Institut, Villigen PSI, Switzerland
-// All rights reserved.
+// Copyright (c) 2018, Philippe Ganz, ETH Zürich
+// All rights reserved
 //
 // OPAL is licensed under GNU GPL version 3.
 

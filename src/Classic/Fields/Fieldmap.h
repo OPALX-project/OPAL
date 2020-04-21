@@ -120,25 +120,24 @@ protected:
     }
 
     static void getLine(std::ifstream &in, int &lines_read, std::string &buffer);
-    
+
     template<class S>
-    bool interpreteLine(std::ifstream &in, S &value, const bool &file_length_known = true);
+    bool interpretLine(std::ifstream &in, S &value, const bool &file_length_known = true);
     template<class S, class T>
-    bool interpreteLine(std::ifstream &in, S &value1, T &value2, const bool &file_length_known = true);
+    bool interpretLine(std::ifstream &in, S &value1, T &value2, const bool &file_length_known = true);
     template<class S, class T, class U>
-    bool interpreteLine(std::ifstream &in, S &value1, T &value2, U &value3, const bool &file_length_known = true);
+    bool interpretLine(std::ifstream &in, S &value1, T &value2, U &value3, const bool &file_length_known = true);
     template<class S, class T, class U, class V>
-    bool interpreteLine(std::ifstream &in, S &value1, T &value2, U &value3, V &value4, const bool &file_length_known = true);
+    bool interpretLine(std::ifstream &in, S &value1, T &value2, U &value3, V &value4, const bool &file_length_known = true);
     template<class S>
-    bool interpreteLine(std::ifstream &in, S &value1, S &value2, S &value3, S &value4, S &value5, S &value6, const bool &file_length_known = true);
+    bool interpretLine(std::ifstream &in, S &value1, S &value2, S &value3, S &value4, S &value5, S &value6, const bool &file_length_known = true);
 
     bool interpreteEOF(std::ifstream &in);
 
-    void interpreteWarning(const std::string &error_msg, const std::string &expecting, const std::string &found);
-    void interpreteWarning(const std::ios_base::iostate &state,
-                           const bool &read_all,
-                           const std::string &error_msg,
-                           const std::string &found);
+    void interpretWarning(const std::ios_base::iostate &state,
+                          const bool &read_all,
+                          const std::string &error_msg,
+                          const std::string &found);
     void missingValuesWarning();
     void exceedingValuesWarning();
 
@@ -200,7 +199,7 @@ private:
 
 // vi: set et ts=4 sw=4 sts=4:
 // Local Variables:
-// mode:c
+// mode:c++
 // c-basic-offset: 4
 // indent-tabs-mode: nil
 // require-final-newline: nil

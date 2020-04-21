@@ -26,14 +26,20 @@ if (ENABLE_DKS)
 
 endif ()
 
-set_source_files_properties(SOURCE PIC3d.cpp p3m3d.cpp
-    PROPERTY COMPILE_FLAGS
-    -fno-tree-vrp)
-
 add_executable (PIC3d PIC3d.cpp)
 target_link_libraries (
     PIC3d
     ${IPPL_LIBS}
+    ${MPI_CXX_LIBRARIES}
+    boost_timer
+)
+
+add_executable (CacheTest CacheTest.cpp)
+target_link_libraries (
+    CacheTest
+    ${IPPL_LIBS}
+    ${H5Hut_LIBRARY}
+    ${HDF5_LIBRARIES}
     ${MPI_CXX_LIBRARIES}
     boost_timer
 )

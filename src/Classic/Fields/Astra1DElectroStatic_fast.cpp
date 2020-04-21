@@ -76,10 +76,10 @@ bool Astra1DElectroStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
-    double ez = gsl_spline_eval(onAxisInterpolants_m[0], R(2), onAxisAccel_m[0]);
-    double ezp = gsl_spline_eval(onAxisInterpolants_m[1], R(2), onAxisAccel_m[1]);
-    double ezpp = gsl_spline_eval(onAxisInterpolants_m[2], R(2), onAxisAccel_m[2]);
-    double ezppp = gsl_spline_eval(onAxisInterpolants_m[3], R(2), onAxisAccel_m[3]);
+    double ez = gsl_spline_eval(onAxisInterpolants_m[0], R(2) - zbegin_m, onAxisAccel_m[0]);
+    double ezp = gsl_spline_eval(onAxisInterpolants_m[1], R(2) - zbegin_m, onAxisAccel_m[1]);
+    double ezpp = gsl_spline_eval(onAxisInterpolants_m[2], R(2) - zbegin_m, onAxisAccel_m[2]);
+    double ezppp = gsl_spline_eval(onAxisInterpolants_m[3], R(2) - zbegin_m, onAxisAccel_m[3]);
 
     // expand to off-axis
     const double EfieldR = -ezp / 2. + ezppp / 16. * RR2;
@@ -120,9 +120,9 @@ bool Astra1DElectroStatic_fast::readFileHeader(std::ifstream &file) {
 
     bool passed;
     try {
-        passed = interpreteLine<std::string, int>(file, tmpString, tmpInt);
+        passed = interpretLine<std::string, int>(file, tmpString, tmpInt);
     } catch (GeneralClassicException &e) {
-        passed = interpreteLine<std::string, int, std::string>(file, tmpString, tmpInt, tmpString);
+        passed = interpretLine<std::string, int, std::string>(file, tmpString, tmpInt, tmpString);
 
         tmpString = Util::toUpper(tmpString);
         if (tmpString != "TRUE" &&
@@ -142,9 +142,9 @@ int Astra1DElectroStatic_fast::stripFileHeader(std::ifstream &file) {
     int accuracy;
 
     try {
-        interpreteLine<std::string, int>(file, tmpString, accuracy);
+        interpretLine<std::string, int>(file, tmpString, accuracy);
     } catch (GeneralClassicException &e) {
-        interpreteLine<std::string, int, std::string>(file, tmpString, accuracy, tmpString);
+        interpretLine<std::string, int, std::string>(file, tmpString, accuracy, tmpString);
     }
 
     return accuracy;

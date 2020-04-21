@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
   Message *msg;
   int mynode = ippl.myNode();
   char recbuf[128];
-  int recint;
+  int recint = 0;
   int sendtag = 80;
 
   if (mynode == 0) {

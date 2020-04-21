@@ -399,7 +399,7 @@ void ThreeDGrid::lowerBound(const double& x,
 
 void ThreeDGrid::xLowerBound(const double& x, int& xIndex) const {
     if (constantSpacing_m)
-        xIndex = static_cast<int>(floor((x - x_m[0])/(x_m[1]-x_m[0]) ));
+        xIndex = static_cast<int>(std::floor((x - x_m[0])/(x_m[1]-x_m[0]) ));
     else {
         vectorLowerBound(x_m, x, xIndex);
     }
@@ -408,14 +408,14 @@ void ThreeDGrid::xLowerBound(const double& x, int& xIndex) const {
 
 void ThreeDGrid::yLowerBound(const double& y, int& yIndex) const {
     if (constantSpacing_m)
-        yIndex = static_cast<int>(floor((y - y_m[0])/(y_m[1]-y_m[0])));
+        yIndex = static_cast<int>(std::floor((y - y_m[0])/(y_m[1]-y_m[0])));
     else
         vectorLowerBound(y_m, y, yIndex);
 }
 
 void ThreeDGrid::zLowerBound(const double& z, int& zIndex) const {
     if (constantSpacing_m)
-        zIndex = static_cast<int>(floor((z - z_m[0])/(z_m[1]-z_m[0])));
+        zIndex = static_cast<int>(std::floor((z - z_m[0])/(z_m[1]-z_m[0])));
     else
         vectorLowerBound(z_m, z, zIndex);
 }

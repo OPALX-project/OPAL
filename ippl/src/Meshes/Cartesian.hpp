@@ -1563,7 +1563,7 @@ getVertRangeVolume(const NDIndex<Dim>& ndi) const
   }
   // Compute volume of rectangular solid beweeen these extremal vertices:
   MFLOAT volume = 1.0;
-  for (d=0; d<Dim; d++) volume *= abs(v1(d) - v0(d));
+  for (d=0; d<Dim; d++) volume *= std::abs(v1(d) - v0(d));
   return volume;
 }
 // Volume of range of cells spanned by input NDIndex (index of cells):
@@ -1593,7 +1593,7 @@ getCellRangeVolume(const NDIndex<Dim>& ndi) const
   }
   // Compute volume of rectangular solid beweeen these extremal vertices:
   MFLOAT volume = 1.0;
-  for (unsigned int d=0; d<Dim; d++) volume *= abs(v1(d) - v0(d));
+  for (unsigned int d=0; d<Dim; d++) volume *= std::abs(v1(d) - v0(d));
   return volume;
 }
 

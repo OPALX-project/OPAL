@@ -173,7 +173,7 @@ void NDGrid::setConstantSpacing(double tolerance_m) {
             double coord_j0 = coord_m[i][j];
             double coord_1 = coord_m[i][1];
             double coord_0 = coord_m[i][0];
-            if (fabs(1-(coord_j1-coord_j0)/(coord_1-coord_0)) > tolerance_m) {
+            if (std::abs(1-(coord_j1-coord_j0)/(coord_1-coord_0)) > tolerance_m) {
                 constantSpacing_m = false;
                 return;
             }

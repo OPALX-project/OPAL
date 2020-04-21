@@ -27,6 +27,7 @@ Example:
 #include "mpi.h"
 
 // dimension of our positions
+#define DIM 2
 const unsigned Dim = 2;
 
 // some typedefs
@@ -37,9 +38,6 @@ typedef playout_t::SingleParticlePos_t                              Vector_t;
 typedef Cell                                                        Center_t;
 typedef CenteredFieldLayout<Dim, Mesh_t, Center_t>                  FieldLayout_t;
 typedef Field<double, Dim, Mesh_t, Center_t>                        Field_t;
-
-const double qmmax = 1.0;       // maximum value for particle q/m
-const double dt = 1.0;          // size of timestep
 
 template<class PL>
 class ChargedParticles : public IpplParticleBase<PL> {
@@ -54,11 +52,11 @@ public:
         withGuardCells_m(gCells) {
         this->addAttribute(qm);
 
-        for(int i = 0; i < 2 * Dim; i++) {
+        for(unsigned int i = 0; i < 2 * Dim; i++) {
             bc_m[i]  = new ParallelPeriodicFace<double, Dim, Mesh_t, Center_t>(i);
             this->getBConds()[i] =  ParticlePeriodicBCond;//ParticleNoBCond;//
         }
-        for(int i = 0; i < Dim; i++)
+        for(unsigned int i = 0; i < Dim; i++)
             decomp_m[i] = decomp[i];
 
         getMesh().set_meshSpacing(&(hr_m[0]));
@@ -82,11 +80,11 @@ public:
     bool checkParticles() {
         Inform msg("CheckParticles", INFORM_ALL_NODES);
         bool ok = true;
-        int i = 0;
+        unsigned int i = 0;
         NDRegion<double, Dim> region = getLocalRegion();
         for(; i < this->getLocalNum(); ++i) {
             NDRegion<double, Dim> ppos;
-            for(int d = 0; d < Dim; ++d)
+            for(unsigned int d = 0; d < Dim; ++d)
                 ppos[d] = PRegion<double>(this->R[i][d], this->R[i][d]);
 
             if(!region.contains(ppos)) {
@@ -97,7 +95,7 @@ public:
         }
         for(; i < this->getLocalNum() + this->getGhostNum(); ++i) {
             NDRegion<double, Dim> ppos;
-            for(int d = 0; d < Dim; ++d)
+            for(unsigned int d = 0; d < Dim; ++d)
                 ppos[d] = PRegion<double>(this->R[i][d], this->R[i][d]);
 
             if(region.contains(ppos)) {
@@ -148,14 +146,12 @@ int main(int argc, char *argv[]) {
 
     Vektor<int, Dim> nr;
 
-    unsigned param = 1;
-
-    if(Dim == 3) {
-        nr = Vektor<int, Dim>(atoi(argv[param++]), atoi(argv[param++]), atoi(argv[param++]));
-    } else {
-        nr = Vektor<int, Dim>(atoi(argv[param++]), atoi(argv[param++]));
-
-    }
+    // need to use preprocessor to prevent clang compiler error
+#if DIM == 3
+    nr = Vektor<int, Dim>(atoi(argv[1]), atoi(argv[2]), atoi(argv[3]));
+#else
+    nr = Vektor<int, Dim>(atoi(argv[1]), atoi(argv[2]));
+#endif
 
     e_dim_tag decomp[Dim];
     Mesh_t *mesh;
@@ -163,10 +159,10 @@ int main(int argc, char *argv[]) {
     ChargedParticles<playout_t>  *P;
 
     NDIndex<Dim> domain;
-    for(int i = 0; i < Dim; i++)
+    for(unsigned int i = 0; i < Dim; i++)
         domain[i] = domain[i] = Index(nr[i]);
 
-    for(int d = 0; d < Dim; ++d)
+    for(unsigned int d = 0; d < Dim; ++d)
         decomp[d] = PARALLEL;
 
     // create mesh and layout objects for this problem domain
@@ -206,7 +202,7 @@ int main(int argc, char *argv[]) {
 
     unsigned expected_particles = P->getLocalRegion().volume();
     unsigned expected_ghosts = 16;
-    for(int d = 0; d < Dim; ++d) {
+    for(unsigned int d = 0; d < Dim; ++d) {
         expected_ghosts += P->getLocalRegion()[d].length() * 4;
     }
 

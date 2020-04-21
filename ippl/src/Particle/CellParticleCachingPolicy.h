@@ -33,7 +33,7 @@ public:
 		ParticleSpatialLayout<T, Dim, Mesh, C > &PLayout
 		)
 	{
-		for(int d = 0;d<Dim;++d)
+		for(unsigned int d = 0;d<Dim;++d)
 			BoxParticleCachingPolicy<T,Dim,Mesh>::setCacheDimension(d, cells[d]*PLayout.getLayout().getMesh().get_meshSpacing(d));
 
 		BoxParticleCachingPolicy<T,Dim,Mesh>:: updateCacheInformation(PLayout);
@@ -45,7 +45,7 @@ public:
 		ParticleSpatialLayout<T, Dim, Mesh, C > &PLayout
 		)
 	{
-		for(int d = 0;d<Dim;++d)
+		for(unsigned int d = 0;d<Dim;++d)
 			BoxParticleCachingPolicy<T,Dim,Mesh>::setCacheDimension(d, cells[d]*PLayout.getLayout().getMesh().get_meshSpacing(d));
 
 		BoxParticleCachingPolicy<T,Dim,Mesh>::updateGhostParticles(PData, PLayout);

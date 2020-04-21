@@ -1,3 +1,38 @@
+//
+// Class AmrParticleBase
+//   Ippl interface for AMR particles.
+//   The derived classes need to extend the base class by subsequent methods.
+//
+//   template <class FT, unsigned Dim, class PT>
+//   void scatter(const ParticleAttrib<FT>& attrib, AmrField_t& f,
+//                const ParticleAttrib<Vektor<PT, Dim> >& pp,
+//                int lbase = 0, int lfine = -1) const;
+//
+//
+//   gather the data from the given Field into the given attribute, using
+//   the given Position attribute
+//
+//   template <class FT, unsigned Dim, class PT>
+//   void gather(ParticleAttrib<FT>& attrib, const AmrField_t& f,
+//               const ParticleAttrib<Vektor<PT, Dim> >& pp,
+//               int lbase = 0, int lfine = -1) const;
+//
+// Copyright (c) 2016 - 2020, Matthias Frey, Uldis Locans, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef AMR_PARTICLE_BASE_H
 #define AMR_PARTICLE_BASE_H
 
@@ -6,27 +41,6 @@
 #include "Particle/IpplParticleBase.h"
 
 #include "AmrParticleLevelCounter.h"
-
-/* The derived classes need to extend the base class by subsequent methods.
- * 
- * scatter the data from the given attribute onto the given Field, using
- * the given Position attribute
- * 
- * template <class FT, unsigned Dim, class PT>
- * void scatter(const ParticleAttrib<FT>& attrib, AmrField_t& f,
- *              const ParticleAttrib<Vektor<PT, Dim> >& pp,
- *              int lbase = 0, int lfine = -1) const;
- * 
- * 
- * gather the data from the given Field into the given attribute, using
- * the given Position attribute
- * 
- * template <class FT, unsigned Dim, class PT>
- * void gather(ParticleAttrib<FT>& attrib, const AmrField_t& f,
- *             const ParticleAttrib<Vektor<PT, Dim> >& pp,
- *             int lbase = 0, int lfine = -1) const;
- */
-
 
 template<class PLayout>
 class AmrParticleBase : public IpplParticleBase<PLayout> {

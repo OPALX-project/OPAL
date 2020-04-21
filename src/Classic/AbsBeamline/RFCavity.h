@@ -228,12 +228,12 @@ protected:
     bool autophaseVeto_m;
 
     double designEnergy_m;
-private:
-    Fieldmap* fieldmap_m;
-    double startField_m;         /**< starting point of field(m)*/
-    double endField_m;
-    double length_m;
 
+    Fieldmap* fieldmap_m;
+    double length_m;
+    double startField_m;         /**< starting point of field(m)*/
+
+private:
     CavityType type_m;
 
     double rmin_m;
@@ -517,7 +517,7 @@ CoordinateSystemTrafo RFCavity::getEdgeToBegin() const
 inline
 CoordinateSystemTrafo RFCavity::getEdgeToEnd() const
 {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, endField_m),
+    CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m + length_m),
                               Quaternion(1, 0, 0, 0));
 
     return ret;
@@ -525,4 +525,3 @@ CoordinateSystemTrafo RFCavity::getEdgeToEnd() const
 
 
 #endif // CLASSIC_RFCavity_HH
-

@@ -1,3 +1,35 @@
+//
+// Class FixedPisaNsga2
+//   Implementing the Variator for the PISA state machine.
+//
+//   @see http://www.tik.ee.ethz.ch/pisa/
+//
+//   The convergence behavior of the optimizer can be steered in 3 ways,
+//   corresponding command line arguments are given in brackets:
+//     - limit the number of generations (maxGenerations),
+//     - specify a target hypervolume (expected-hypervol) and tolerance
+//       (epsilon)
+//     - specify a minimal hypervolume progress (conv-hvol-prog), relative to
+//       the last generation, ((prev - new)/prev) that has to be attained to
+//       continue optimizing.
+//
+// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Toward massively parallel multi-objective optimization with application to
+// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __FIXED_PISA_NSGA2_H__
 #define __FIXED_PISA_NSGA2_H__
 
@@ -29,21 +61,7 @@
 
 #include "Util/Trace/Trace.h"
 
-/**
- *  \class FixedPisaNsga2
- *  \brief Implementing the Variator for the PISA state machine.
- *
- *  @see http://www.tik.ee.ethz.ch/pisa/
- *
- *  The convergence behavior of the optimizer can be steered in 3 ways,
- *  corresponding command line arguments are given in brackets:
- *    - limit the number of generations (maxGenerations),
- *    - specify a target hypervolume (expected-hypervol) and tolerance
- *      (epsilon)
- *    - specify a minimal hypervolume progress (conv-hvol-prog), relative to
- *      the last generation, ((prev - new)/prev) that has to be attained to
- *      continue optimizing.
- */
+
 template<
       template <class> class CrossoverOperator
     , template <class> class MutationOperator

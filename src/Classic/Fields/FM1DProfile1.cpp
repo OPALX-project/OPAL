@@ -56,7 +56,7 @@ FM1DProfile1::FM1DProfile1(std::string aFilename):
             std::string tempString = "";
             double tempDouble = 0.0;
 
-            bool parsingPassed = interpreteLine<std::string, int, int, double>
+            bool parsingPassed = interpretLine<std::string, int, int, double>
                                  (inputFile,
                                   tempString,
                                   polyOrderEntry_m,
@@ -64,7 +64,7 @@ FM1DProfile1::FM1DProfile1(std::string aFilename):
                                   gapHeight_m);
 
             parsingPassed = parsingPassed &&
-                            interpreteLine<double, double, double, int>
+                            interpretLine<double, double, double, int>
                             (inputFile,
                              entranceParameter1_m,
                              entranceParameter2_m,
@@ -73,7 +73,7 @@ FM1DProfile1::FM1DProfile1(std::string aFilename):
                              false);
 
             parsingPassed = parsingPassed &&
-                            interpreteLine<double, double, double, int>
+                            interpretLine<double, double, double, int>
                             (inputFile,
                              exitParameter1_m,
                              exitParameter2_m,
@@ -84,7 +84,7 @@ FM1DProfile1::FM1DProfile1(std::string aFilename):
                 (index < polyOrderEntry_m + polyOrderExit_m + 2) && parsingPassed;
                 index++)
                 parsingPassed = parsingPassed &&
-                                interpreteLine<double>(inputFile, tempDouble);
+                                interpretLine<double>(inputFile, tempDouble);
 
             parsingPassed = parsingPassed && interpreteEOF(inputFile);
 
@@ -157,29 +157,29 @@ void FM1DProfile1::readMap() {
         std::string tempString;
         double tempDouble;
 
-        interpreteLine<std::string, int, int, double>(inputFile,
+        interpretLine<std::string, int, int, double>(inputFile,
                 tempString,
                 tempInt,
                 tempInt,
                 tempDouble);
-        interpreteLine<double, double, double, int>(inputFile,
+        interpretLine<double, double, double, int>(inputFile,
                 tempDouble,
                 tempDouble,
                 tempDouble,
                 tempInt);
-        interpreteLine<double, double, double, int>(inputFile,
+        interpretLine<double, double, double, int>(inputFile,
                 tempDouble,
                 tempDouble,
                 tempDouble,
                 tempInt);
 
         for(int index = 0; index < polyOrderEntry_m + 1; index++) {
-            interpreteLine<double>(inputFile,  tempDouble);
+            interpretLine<double>(inputFile,  tempDouble);
             engeCoeffsEntry_m.push_back(tempDouble);
         }
 
         for(int index = 0; index < polyOrderExit_m + 1; index++) {
-            interpreteLine<double>(inputFile, tempDouble);
+            interpretLine<double>(inputFile, tempDouble);
             engeCoeffsExit_m.push_back(tempDouble);
         }
 

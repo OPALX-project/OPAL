@@ -310,8 +310,8 @@ int main(int argc, char *argv[])
 
   IpplTimings::startTimer(fInitTimer);
   // Rather more complete test functions (sine or cosine mode):
-  std::complex<double> sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
-  std::complex<double> cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
+  // std::complex<double> sfact(1.0,0.0);      // (1,0) for sine mode; (0,0) for cosine mode
+  // std::complex<double> cfact(0.0,0.0);      // (0,0) for sine mode; (1,0) for cosine mode
 
  /*
   double xfact, kx, yfact, ky, zfact, kz;

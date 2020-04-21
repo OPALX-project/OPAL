@@ -5777,7 +5777,7 @@ LinearExtrapolateFaceBCApply2(const NDIndex<D> &dest,
   // Couldn't figure out how to use BrickExpression here. Just iterate through
   // all the elements in all 3 LField iterators (which are BrickIterators) and
   // do the calculation one element at a time:
-  for ( ; lhs != endi, rhs1 != endi, rhs2 != endi;
+  for ( ; lhs != endi && rhs1 != endi && rhs2 != endi;
 	++lhs, ++rhs1, ++rhs2) {
     *lhs = (*rhs2 - *rhs1)*slopeMultipplier + *rhs1;
   }

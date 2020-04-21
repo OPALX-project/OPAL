@@ -28,9 +28,9 @@ FM2DDynamic::FM2DDynamic(std::string aFilename)
     if(file.good()) {
         bool parsing_passed = true;
         try {
-            parsing_passed = interpreteLine<std::string, std::string>(file, tmpString, tmpString);
+            parsing_passed = interpretLine<std::string, std::string>(file, tmpString, tmpString);
         } catch (GeneralClassicException &e) {
-            parsing_passed = interpreteLine<std::string, std::string, std::string>(file, tmpString, tmpString, tmpString);
+            parsing_passed = interpretLine<std::string, std::string, std::string>(file, tmpString, tmpString, tmpString);
 
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
@@ -45,19 +45,19 @@ FM2DDynamic::FM2DDynamic(std::string aFilename)
         if(tmpString == "ZX") {
             swap_m = true;
             parsing_passed = parsing_passed &&
-                             interpreteLine<double, double, int>(file, rbegin_m, rend_m, num_gridpr_m);
+                             interpretLine<double, double, int>(file, rbegin_m, rend_m, num_gridpr_m);
             parsing_passed = parsing_passed &&
-                             interpreteLine<double>(file, frequency_m);
+                             interpretLine<double>(file, frequency_m);
             parsing_passed = parsing_passed &&
-                             interpreteLine<double, double, int>(file, zbegin_m, zend_m, num_gridpz_m);
+                             interpretLine<double, double, int>(file, zbegin_m, zend_m, num_gridpz_m);
         } else if(tmpString == "XZ") {
             swap_m = false;
             parsing_passed = parsing_passed &&
-                             interpreteLine<double, double, int>(file, zbegin_m, zend_m, num_gridpz_m);
+                             interpretLine<double, double, int>(file, zbegin_m, zend_m, num_gridpz_m);
             parsing_passed = parsing_passed &&
-                             interpreteLine<double>(file, frequency_m);
+                             interpretLine<double>(file, frequency_m);
             parsing_passed = parsing_passed &&
-                             interpreteLine<double, double, int>(file, rbegin_m, rend_m, num_gridpr_m);
+                             interpretLine<double, double, int>(file, rbegin_m, rend_m, num_gridpr_m);
         } else {
             std::cerr << "unknown orientation of 2D dynamic fieldmap" << std::endl;
             parsing_passed = false;
@@ -66,7 +66,7 @@ FM2DDynamic::FM2DDynamic(std::string aFilename)
         }
 
         for(long i = 0; (i < (num_gridpz_m + 1) * (num_gridpr_m + 1)) && parsing_passed; ++ i) {
-            parsing_passed = parsing_passed && interpreteLine<double, double, double, double>(file, tmpDouble, tmpDouble, tmpDouble, tmpDouble);
+            parsing_passed = parsing_passed && interpretLine<double, double, double, double>(file, tmpDouble, tmpDouble, tmpDouble, tmpDouble);
         }
 
         parsing_passed = parsing_passed &&
@@ -130,7 +130,7 @@ void FM2DDynamic::readMap() {
         if(swap_m) {
             for(int i = 0; i < num_gridpz_m; i++) {
                 for(int j = 0; j < num_gridpr_m; j++) {
-                    interpreteLine<double, double, double, double>(in,
+                    interpretLine<double, double, double, double>(in,
                             FieldstrengthEr_m[i + j * num_gridpz_m],
                             FieldstrengthEz_m[i + j * num_gridpz_m],
                             FieldstrengthBt_m[i + j * num_gridpz_m],
@@ -140,7 +140,7 @@ void FM2DDynamic::readMap() {
         } else {
             for(int j = 0; j < num_gridpr_m; j++) {
                 for(int i = 0; i < num_gridpz_m; i++) {
-                    interpreteLine<double, double, double, double>(in,
+                    interpretLine<double, double, double, double>(in,
                             FieldstrengthEz_m[i + j * num_gridpz_m],
                             FieldstrengthEr_m[i + j * num_gridpz_m],
                             tmpDouble,
@@ -193,11 +193,11 @@ bool FM2DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) 
     // do bi-linear interpolation
     const double RR = sqrt(R(0) * R(0) + R(1) * R(1));
 
-    const int indexr = (int)floor(RR / hr_m);
+    const int indexr = (int)std::floor(RR / hr_m);
     const double leverr = RR / hr_m - indexr;
 
-    const int indexz = (int)floor(R(2) / hz_m);
-    const double leverz = R(2) / hz_m - indexz;
+    const int indexz = (int)std::floor((R(2) - zbegin_m) / hz_m);
+    const double leverz = (R(2) - zbegin_m) / hz_m - indexz;
 
     if((indexz < 0) || (indexz + 2 > num_gridpz_m))
         return false;

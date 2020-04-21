@@ -1,3 +1,25 @@
+//
+// File ChargedParticleFactory
+//   These functions are used in the P3M applications to generate the initial
+//   particle distribution.
+//
+// Copyright (c) 2016, Benjamin Ulmer, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the Master thesis
+// "The P3M Model on Emerging Computer Architectures With Application to Microbunching"
+// (http://amas.web.psi.ch/people/aadelmann/ETH-Accel-Lecture-1/projectscompleted/cse/thesisBUlmer.pdf)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CHARGED_PARTICLE_FACTORY_
 #define CHARGED_PARTICLE_FACTORY_
 
@@ -539,7 +561,7 @@ std::cout<< P->beta0 << std::endl;
 
 
 template<typename Particles>
-void createParticleDistributionEquiPart(Particles & P, Vektor<double,3> extend_l, Vektor<double,3> extend_r, double beam_length, double part_density,double qi, double mi, int seed=0) {
+void createParticleDistributionEquiPart(Particles & P, Vektor<double,3> /*extend_l*/, Vektor<double,3> /*extend_r*/, double beam_length, double part_density,double qi, double mi, int seed=0) {
         std::cout << "Initializing Equipartitioning" << std::endl;
         P->total_charge=0;
         const double c = 299792458000;
@@ -573,7 +595,7 @@ void createParticleDistributionEquiPart(Particles & P, Vektor<double,3> extend_l
 }
 
 template<typename Particles>
-void createParticleDistributionEquiPartSphere(Particles & P, Vektor<double,3> extend_l, Vektor<double,3> extend_r, double beam_length, unsigned Nparts,double qi, double mi, int seed=0) {
+void createParticleDistributionEquiPartSphere(Particles & P, Vektor<double,3> /*extend_l*/, Vektor<double,3> /*extend_r*/, double beam_length, unsigned Nparts,double qi, double mi, int seed=0) {
         std::cout << "Initializing Equipartitioning Sphere" << std::endl;
         P->total_charge=0;
         const double c = 299792458000;

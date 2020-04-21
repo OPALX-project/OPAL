@@ -30,26 +30,26 @@ FM1DProfile2::FM1DProfile2(std::string aFilename)
 
     if(file.good()) {
         bool parsing_passed =                               \
-                interpreteLine<std::string, int, int, double>(file,
+                interpretLine<std::string, int, int, double>(file,
                         tmpString,
                         polynomialOrder_entry_m,
                         polynomialOrder_exit_m,
                         gapHeight_m);
         parsing_passed = parsing_passed &&
-                         interpreteLine<double, double, double, int>(file,
+                         interpretLine<double, double, double, int>(file,
                                  zbegin_entry_m,
                                  polynomialOrigin_entry_m,
                                  zend_entry_m,
                                  num_gridpz);
         parsing_passed = parsing_passed &&
-                         interpreteLine<double, double, double, int>(file,
+                         interpretLine<double, double, double, int>(file,
                                  zbegin_exit_m,
                                  polynomialOrigin_exit_m,
                                  zend_exit_m,
                                  tmpInt);
         for(int i = 0; (i < num_gridpz + 1) && parsing_passed; ++ i) {
             parsing_passed = parsing_passed &&
-                             interpreteLine<double>(file, tmpDouble);
+                             interpretLine<double>(file, tmpDouble);
         }
 
         parsing_passed = parsing_passed &&
@@ -109,9 +109,9 @@ void FM1DProfile2::readMap() {
         double *leastSquareMatrix;
         double dZ;
 
-        interpreteLine<std::string, int, int, double>(in, tmpString, tmpInt, tmpInt, tmpDouble);
-        interpreteLine<double, double, double, int>(in, tmpDouble, tmpDouble, tmpDouble, num_gridpz);
-        interpreteLine<double, double, double, int>(in, tmpDouble, tmpDouble, tmpDouble, tmpInt);
+        interpretLine<std::string, int, int, double>(in, tmpString, tmpInt, tmpInt, tmpDouble);
+        interpretLine<double, double, double, int>(in, tmpDouble, tmpDouble, tmpDouble, num_gridpz);
+        interpretLine<double, double, double, int>(in, tmpDouble, tmpDouble, tmpDouble, tmpInt);
 
         dZ = length_m / num_gridpz;
 
@@ -121,7 +121,7 @@ void FM1DProfile2::readMap() {
         RealValues = new double[num_gridpz + 1];
 
         for(int i = 0; i < num_gridpz + 1; ++i) {
-            interpreteLine<double>(in, RealValues[i]);
+            interpretLine<double>(in, RealValues[i]);
             if(RealValues[i] > maxValue) maxValue = RealValues[i];
             else if(RealValues[i] < minValue) minValue = RealValues[i];
         }

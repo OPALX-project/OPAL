@@ -100,7 +100,7 @@ bool FM1DElectroStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
                                               Vector_t &B) const {
 
     std::vector<double> fieldComponents;
-    computeFieldOnAxis(R(2), fieldComponents);
+    computeFieldOnAxis(R(2) - zBegin_m, fieldComponents);
     computeFieldOffAxis(R, E, B, fieldComponents);
 
     return false;
@@ -112,7 +112,7 @@ bool FM1DElectroStatic_fast::getFieldDerivative(const Vector_t &R,
                                                 Vector_t &/*B*/,
                                                 const DiffDirection &/*dir*/) const {
 
-    E(2) += gsl_spline_eval(onAxisFieldPInterpolants_m, R(2),
+    E(2) += gsl_spline_eval(onAxisFieldPInterpolants_m, R(2) - zBegin_m,
                             onAxisFieldPAccel_m);
 
     return false;
@@ -153,7 +153,7 @@ bool FM1DElectroStatic_fast::checkFileData(std::ifstream &fieldFile,
     double tempDouble;
     for (unsigned int dataIndex = 0; dataIndex < numberOfGridPoints_m; ++ dataIndex)
         parsingPassed = parsingPassed
-            && interpreteLine<double>(fieldFile, tempDouble);
+            && interpretLine<double>(fieldFile, tempDouble);
 
     return parsingPassed && interpreteEOF(fieldFile);
 
@@ -311,7 +311,7 @@ double FM1DElectroStatic_fast::readFileData(std::ifstream &fieldFile,
 
     double maxEz = 0.0;
     for (unsigned int dataIndex = 0; dataIndex < numberOfGridPoints_m; ++ dataIndex) {
-        interpreteLine<double>(fieldFile, fieldData[dataIndex]);
+        interpretLine<double>(fieldFile, fieldData[dataIndex]);
         if (std::abs(fieldData[dataIndex]) > maxEz)
             maxEz = std::abs(fieldData[dataIndex]);
     }
@@ -329,11 +329,11 @@ bool FM1DElectroStatic_fast::readFileHeader(std::ifstream &fieldFile) {
 
     bool parsingPassed = true;
     try {
-        parsingPassed = interpreteLine<std::string, unsigned int>(fieldFile,
+        parsingPassed = interpretLine<std::string, unsigned int>(fieldFile,
                                                                   tempString,
                                                                   accuracy_m);
     } catch (GeneralClassicException &e) {
-        parsingPassed = interpreteLine<std::string, unsigned int, std::string>(fieldFile,
+        parsingPassed = interpretLine<std::string, unsigned int, std::string>(fieldFile,
                                                                                tempString,
                                                                                accuracy_m,
                                                                                tempString);
@@ -348,12 +348,12 @@ bool FM1DElectroStatic_fast::readFileHeader(std::ifstream &fieldFile) {
         normalize_m = (tempString == "TRUE");
     }
     parsingPassed = parsingPassed &&
-        interpreteLine<double, double, unsigned int>(fieldFile,
+        interpretLine<double, double, unsigned int>(fieldFile,
                                                      zBegin_m,
                                                      zEnd_m,
                                                      numberOfGridPoints_m);
     parsingPassed = parsingPassed &&
-        interpreteLine<double, double, int>(fieldFile,
+        interpretLine<double, double, int>(fieldFile,
                                             rBegin_m,
                                             rEnd_m,
                                             tempInt);
@@ -386,4 +386,3 @@ void FM1DElectroStatic_fast::prepareForMapCheck(std::vector<double> &fourierCoef
              onAxisFieldInterpolants_m,
              onAxisFieldAccel_m);
 }
-

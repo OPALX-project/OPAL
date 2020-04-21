@@ -32,9 +32,9 @@ Astra1DMagnetoStatic::Astra1DMagnetoStatic(std::string aFilename)
     if(file.good()) {
         bool parsing_passed = true;
         try {
-            parsing_passed = interpreteLine<std::string, int>(file, tmpString, accuracy_m);
+            parsing_passed = interpretLine<std::string, int>(file, tmpString, accuracy_m);
         } catch (GeneralClassicException &e) {
-            parsing_passed = interpreteLine<std::string, int, std::string>(file, tmpString, accuracy_m, tmpString);
+            parsing_passed = interpretLine<std::string, int, std::string>(file, tmpString, accuracy_m, tmpString);
 
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
@@ -46,11 +46,11 @@ Astra1DMagnetoStatic::Astra1DMagnetoStatic(std::string aFilename)
             normalize_m = (tmpString == "TRUE");
         }
         parsing_passed = parsing_passed &&
-                         interpreteLine<double, double>(file, zbegin_m, tmpDouble);
+                         interpretLine<double, double>(file, zbegin_m, tmpDouble);
 
         tmpDouble2 = zbegin_m;
         while(!file.eof() && parsing_passed) {
-            parsing_passed = interpreteLine<double, double>(file, zend_m, tmpDouble, false);
+            parsing_passed = interpretLine<double, double>(file, zend_m, tmpDouble, false);
             if(zend_m - tmpDouble2 > 1e-10) {
                 tmpDouble2 = zend_m;
             } else if(parsing_passed) {
@@ -109,12 +109,12 @@ void Astra1DMagnetoStatic::readMap() {
         getLine(in, tmpString);
 
         for(int i = 0; i < num_gridpz_m && parsing_passed;/* skip increment on i here */) {
-            parsing_passed = interpreteLine<double, double>(in, zvals[i], RealValues[i]);
+            parsing_passed = interpretLine<double, double>(in, zvals[i], RealValues[i]);
             // the sequence of z-position should be strictly increasing
             // drop sampling points that don't comply to this
             if(zvals[i] - tmpDouble > 1e-10) {
-                if(fabs(RealValues[i]) > Bz_max) {
-                    Bz_max = fabs(RealValues[i]);
+                if(std::abs(RealValues[i]) > Bz_max) {
+                    Bz_max = std::abs(RealValues[i]);
                 }
                 tmpDouble = zvals[i];
                 ++ i; // increment i only if sampling point is accepted
@@ -176,7 +176,7 @@ bool Astra1DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, 
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
-    const double kz = two_pi * R(2) / length_m + Physics::pi;
+    const double kz = two_pi * (R(2) - zbegin_m) / length_m + Physics::pi;
 
     double ez = FourCoefs_m[0];
     double ezp = 0.0;

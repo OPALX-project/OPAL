@@ -1,18 +1,25 @@
-// ------------------------------------------------------------------------
-// $RCSfile: BeamStripping.cpp,v $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: BeamStripping
-//   Defines the abstract interface for a beam stripping for cyclotrons.
+// Class BeamStripping
+//   Defines the abstract interface environment for
+//   beam stripping physics.
 //
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
-// $Date: 2018/11 $
-// $Author: PedroCalvo$
-// ------------------------------------------------------------------------
+// Copyright (c) 2018-2019, Pedro Calvo, CIEMAT, Spain
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Optimizing the radioisotope production of the novel AMIT
+// superconducting weak focusing cyclotron"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "AbsBeamline/BeamStripping.h"
@@ -39,7 +46,6 @@
 #include "gsl/gsl_spline.h"
 #include "gsl/gsl_interp.h"
 
-using Physics::q_e;
 using Physics::pi;
 
 #define CHECK_BSTP_FSCANF_EOF(arg) if(arg == EOF)\
@@ -47,8 +53,6 @@ throw GeneralClassicException("BeamStripping::getPressureFromFile",\
                               "fscanf returned EOF at " #arg);
 
 extern Inform *gmsg;
-
-using namespace std;
 
 // Class BeamStripping
 // ------------------------------------------------------------------------
@@ -128,7 +132,7 @@ void BeamStripping::setPressureMapFN(std::string p) {
     pmapfn_m = p;
 }
 
-string BeamStripping::getPressureMapFN() const {
+std::string BeamStripping::getPressureMapFN() const {
     return pmapfn_m;
 }
 
@@ -144,7 +148,7 @@ void BeamStripping::setResidualGas(std::string gas) {
     gas_m = gas;
 }
 
-string BeamStripping::getResidualGas() const {
+std::string BeamStripping::getResidualGas() const {
     if(gas_m == "H2" || gas_m == "AIR")
         return gas_m;
     else {
@@ -217,7 +221,7 @@ void BeamStripping::initialise(PartBunchBase<double, 3> *bunch, const double &sc
     //*gmsg << "* Mass and charge have been reseted for beam stripping " <<  endl;
     for (size_t i = 0; i < bunch->getLocalNum(); ++i) {
         bunch->M[i] = bunch->getM()*1E-9;
-        bunch->Q[i] = bunch->getQ() * q_e;
+        bunch->Q[i] = bunch->getQ() * Physics::q_e;
         if(bunch->weHaveBins())
             bunch->Bin[bunch->getLocalNum()-1] = bunch->Bin[i];
     }
@@ -277,8 +281,7 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
         const double wr2 = 1.0 - wr1;
 
         const double tempv = atan(y / x);
-        double tet = tempv, tet_map, xit;
-
+        double tet = tempv;
         if((x < 0) && (y >= 0)) tet = pi + tempv;
         else if((x < 0) && (y <= 0)) tet = pi + tempv;
         else if((x > 0) && (y <= 0)) tet = 2.0 * pi + tempv;
@@ -290,22 +293,20 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
 
         // the corresponding angle on the field map
         // Note: this does not work if the start point of field map does not equal zero.
-        double symmetry = 1.0;
-        tet_map = fmod(tet, 360.0 / symmetry);
-        xit = tet_map / PP.dtet;
+        double xit = tet / PP.dtet;
         int it = (int) xit;
         const double wt1 = xit - (double)it;
         const double wt2 = 1.0 - wt1;
-
         // it : the number of point on the inner path whose angle is less than the particle' corresponding angle.
         // include zero degree point
-        it = it + 1;
+        it++;
+        double epsilon = 0.06;
+        if  (tet > 360 - epsilon && tet < 360 + epsilon) it = 0;
 
         int r1t1, r2t1, r1t2, r2t2;
         // r1t1 : the index of the "min angle, min radius" point in the 2D field array.
         // considering  the array start with index of zero, minus 1.
 
-        //With this we have P-field AND this is far more intuitive for me ....
         r1t1 = idx(ir, it);
         r2t1 = idx(ir + 1, it);
         r1t2 = idx(ir, it + 1);
@@ -313,24 +314,34 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
 
         if((it >= 0) && (ir >= 0) && (it < PField.ntetS) && (ir < PField.nrad)) {
             pressure = (PField.pfld[r1t1] * wr2 * wt2 +
-                   PField.pfld[r2t1] * wr1 * wt2 +
-                   PField.pfld[r1t2] * wr2 * wt1 +
-                   PField.pfld[r2t2] * wr1 * wt1);
+                        PField.pfld[r2t1] * wr1 * wt2 +
+                        PField.pfld[r1t2] * wr2 * wt1 +
+                        PField.pfld[r2t2] * wr1 * wt1);
+        }
+        else if (ir >= PField.nrad) {
+            *gmsg << level4 << getName() << ": Particle out of maximum radial position of pressure field map." << endl;
+            *gmsg << level4 << getName() << ": Take constant value through BeamStripping::getPressure" << endl;
+            pressure = getPressure();
+        }
+        else {
+            throw GeneralClassicException("BeamStripping::checkPressure",
+                                          "Pressure data not found");
+        }
+
+        if(pressure <= 0.0) {
+            *gmsg << level4 << getName() << ": Pressure data from file zero." << endl;
+            *gmsg << level4 << getName() << ": Take constant value through BeamStripping::getPressure" << endl;
+            pressure = getPressure();
         }
     }
     else {
         pressure = getPressure();
     }
 
-    if(pressure > 0.0)
-        return pressure;
-    else {
-        throw LogicalError("BeamStripping::checkPressure",
-                           "Pressure must not be zero");
-    }
+    return pressure;
 }
 
-// Calculates Radiae of initial grid (dimensions in [m]!)
+// Calculates radius of initial grid (dimensions in [m]!)
 void BeamStripping::initR(double rmin, double dr, int nrad) {
     PP.rarr.resize(nrad);
     for(int i = 0; i < nrad; i++)
@@ -356,13 +367,11 @@ void BeamStripping::getPressureFromFile(const double &scaleFactor) {
 
     CHECK_BSTP_FSCANF_EOF(fscanf(f, "%lf", &PP.rmin));
     *gmsg << "* --- Minimal radius of measured pressure map: " << PP.rmin << " [mm]" << endl;
-    PP.rmin *= 0.001;  // mm --> m
 
     CHECK_BSTP_FSCANF_EOF(fscanf(f, "%lf", &PP.delr));
     //if the value is negative, the actual value is its reciprocal.
     if(PP.delr < 0.0) PP.delr = 1.0 / (-PP.delr);
     *gmsg << "* --- Stepsize in radial direction: " << PP.delr << " [mm]" << endl;
-    PP.delr *= 0.001;  // mm --> m
 
     CHECK_BSTP_FSCANF_EOF(fscanf(f, "%lf", &PP.tetmin));
     *gmsg << "* --- Minimal angle of measured pressure map: " << PP.tetmin << " [deg]" << endl;
@@ -377,13 +386,16 @@ void BeamStripping::getPressureFromFile(const double &scaleFactor) {
 
     CHECK_BSTP_FSCANF_EOF(fscanf(f, "%d", &PField.nrad));
     *gmsg << "* --- Grid points along radius (nrad): " << PField.nrad << endl;
+    *gmsg << "* --- Maximum radial position: " << PP.rmin + (PField.nrad-1)*PP.delr << " [mm]" << endl;
+    PP.rmin *= 0.001;  // mm --> m
+    PP.delr *= 0.001;  // mm --> m
 
     PField.ntetS = PField.ntet + 1;
+    *gmsg << "* --- Adding a guard cell along azimuth" << endl;
+
     PField.ntot = PField.nrad * PField.ntetS;
-
-    *gmsg << "* --- Total stored grid point number: " << PField.ntot << endl; //((ntet+1) * nrad) 
     PField.pfld.resize(PField.ntot);
-
+    *gmsg << "* --- Total stored grid point number ((ntet+1) * nrad) : " << PField.ntot << endl;
     *gmsg << "* --- Escale factor: " << PP.Pfact << endl;
 
     for(int i = 0; i < PField.nrad; i++) {

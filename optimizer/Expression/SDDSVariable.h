@@ -1,3 +1,29 @@
+//
+// Struct SDDSVariable
+//   A simple expression to get SDDS (filename) value near a
+//   specific position (ref_val, default: spos) of a reference
+//   variable (ref_name) for a variable (var_name). Possible
+//   argument orders:
+//       args = [var_name, ref_val, filename]
+//       args = [var_name, ref_name, ref_val, filename]
+//
+// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Toward massively parallel multi-objective optimization with application to
+// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __SDDSVARIABLE_H__
 #define __SDDSVARIABLE_H__
 
@@ -13,14 +39,6 @@
 #include "Expression/Parser/function.hpp"
 
 
-/**
- *  A simple expression to get SDDS (filename) value near a
- *  specific position (ref_val, default: spos) of a reference
- *  variable (ref_name) for a variable (var_name). Possible
- *  argument orders:
- *      args = [var_name, ref_val, filename]
- *      args = [var_name, ref_name, ref_val, filename]
- */
 struct SDDSVariable {
 
     static const std::string name;

@@ -1,3 +1,29 @@
+//
+// Class Population
+//   Managing a population of individuals. We maintain two sets: a set of all
+//   (evaluated) individuals in the population and a set of new potential
+//   individuals (the selector decides which individuals join the population),
+//   called 'stagingArea'.
+//   Most operations work on the 'stagingArea', population is kept for
+//   visualization purposes.
+//
+// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Toward massively parallel multi-objective optimization with application to
+// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __POPULATION_H__
 #define __POPULATION_H__
 
@@ -15,16 +41,6 @@
 #include "extlib/wfgHypervolume/hypervolume.h"
 
 
-/**
- *  \class Population
- *
- *  Managing a population of individuals. We maintain two sets: a set of all
- *  (evaluated) individuals in the population and a set of new potential
- *  individuals (the selector decides which individuals join the population),
- *  called 'stagingArea'.
- *  Most operations work on the 'stagingArea', population is kept for
- *  visualization purposes.
- */
 template< class Individual_t >
 class Population {
 

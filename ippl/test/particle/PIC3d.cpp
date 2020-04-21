@@ -52,7 +52,6 @@ enum BC_t {OOO,OOP,PPP};
 enum InterPol_t {NGP,CIC};
 
 const double pi = acos(-1.0);
-const double qmmax = 1.0;       // maximum value for particle q/m
 const double dt = 1.0;          // size of timestep
 
 

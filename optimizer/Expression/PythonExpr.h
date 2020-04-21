@@ -1,3 +1,37 @@
+//
+// Struct PythonExpression
+//   Execute a python script using all given arguments (except for the first
+//   being the script name) and return the value of the "result" variable in
+//   the python script.
+//   Expression arguments can be accessed in the Python script using the vector
+//   variable "arguments", like i.e. in file "test.py":
+//   \verbatim
+//      result = 2.0 * arguments[0]
+//    \endverbatim
+//   to double the value passed as second argument to the Python expression.
+//   For example the expression
+//   \verbatim
+//      EXPR="python("test.py", 15.0)";
+//    \endverbatim
+//   evaluates to a value of 30.0 (test.py contains the line shown above).
+//
+// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Toward massively parallel multi-objective optimization with application to
+// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __PYTHON_EXPR_H__
 #define __PYTHON_EXPR_H__
 
@@ -15,22 +49,6 @@
 
 using namespace boost::python;
 
-/**
- *  Execute a python script using all given arguments (except for the first
- *  being the script name) and return the value of the "result" variable in
- *  the python script.
- *  Expression arguments can be accessed in the Python script using the vector
- *  variable "arguments", like i.e. in file "test.py":
- *  \verbatim
-      result = 2.0 * arguments[0]
-    \endverbatim
- *  to double the value passed as second argument to the Python expression.
- *  For example the expression
- *  \verbatim
-      EXPR="python("test.py", 15.0)";
-    \endverbatim
- *  evaluates to a value of 30.0 (test.py contains the line shown above).
- */
 struct PythonExpression {
 
     Expressions::Result_t operator()(client::function::arguments_t args) {

@@ -1,3 +1,27 @@
+//
+// Class SampleGaussianSequence
+//   This class provides a sequence of sampling points that have a Gaussian distribution
+//   with
+//         mean = 0.5 * (upper + lower)
+//         sigma = (upper - lower) / 10
+//   This can be achieved if the integral of the Gaussian between the sampling
+//   points are all equal. The sampling points are therefore computed using
+//   the inverse error function at equally distributed arguments between
+//   -1 and 1.
+//
+// Copyright (c) 2018, Christof Metzger-Kraus, Open Sourcerer
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_SAMPLE_GAUSSIAN_SEQUENCE_H
 #define OPAL_SAMPLE_GAUSSIAN_SEQUENCE_H
 
@@ -10,14 +34,6 @@
 
 class SampleGaussianSequence : public SamplingMethod
 {
-    // provides a sequence of sampling points that have a Gaussian distribution
-    // with
-    //      mean = 0.5 * (upper + lower)
-    //      sigma = (upper - lower) / 10
-    // This can be achieved if the integral of the Gaussian between the sampling
-    // points are all equal. The sampling points are therefore computed using
-    // the inverse error function at equally distributed arguments between
-    // -1 and 1.
 
 public:
 

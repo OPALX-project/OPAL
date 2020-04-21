@@ -1,12 +1,26 @@
+//
+// Class: Hamiltonian
+//   Constructs thick lens Hamiltonian up to arbitrary order for beamline elements
+//
+// Copyright (c) 2018, Philippe Ganz, ETH Zürich
+// All rights reserved
+//
+// Implemented as part of the Master thesis
+// "s-based maps from TPS & Lie-Series applied to Proton-Therapy Gantries"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+
 #ifndef HAMILTONIAN_H
 #define HAMILTONIAN_H
-
-/*
- * setHamiltonian.cpp
- *
- *  Created on: Jul 24, 2018
- *      Author: ganz_p
- */
 
 #include "Classic/FixedAlgebra/FTps.h"
 #include "Classic/FixedAlgebra/FVps.h"
@@ -14,7 +28,6 @@
 #define PSdim 6
 
 #include <functional>
-
 
 class Hamiltonian
 {

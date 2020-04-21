@@ -234,7 +234,7 @@ void BoxLibLayout<T, Dim>::update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
     }
 
     //reduce message count so every node knows how many messages to receive
-    MPI_Allreduce(msgsend, msgrecv, N, MPI_INT, MPI_SUM, Ippl::getComm());
+    allreduce(msgsend.data(), msgrecv.data(), N, std::plus<int>());
 
     int tag = Ippl::Comm->next_tag(P_SPATIAL_TRANSFER_TAG,P_LAYOUT_CYCLE);
 
@@ -331,7 +331,7 @@ void BoxLibLayout<T, Dim>::update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
 
     //save how many total particles we have
     size_t TotalNum = 0;
-    MPI_Allreduce(&LocalNum, &TotalNum, 1, MPI_INT, MPI_SUM, Ippl::getComm());
+    allreduce(&LocalNum, &TotalNum, 1, std::plus<size_t>());
 
     // update our particle number counts
     PData.setTotalNum(TotalNum);    // set the total atom count
