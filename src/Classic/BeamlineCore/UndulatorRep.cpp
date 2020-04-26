@@ -52,16 +52,10 @@ UndulatorRep::UndulatorRep():
     geometry(0.0),
     k_m(0.0),
     lambda_m(0.0),
+    numPeriods_m(0.0),
     fname_m(""),
-    bf_m(0.0),
-    radiationDirectory_m(""),
     truncationOrder_m(2),
-    spaceCharge_m(1),
-    emitParticles_m(1),
-    m_m(5),
-    totalTime_m(0.0),
-    lFringe_m(1.0),
-    is_done_m(false)
+    totalTime_m(0.0)
 {}
 
 
@@ -70,20 +64,12 @@ UndulatorRep::UndulatorRep(const UndulatorRep &right):
     geometry(right.geometry),
     k_m(right.k_m),
     lambda_m(right.lambda_m),
+    numPeriods_m(right.numPeriods_m),
     fname_m(right.fname_m),
-    bf_m(right.bf_m),
-    radiationZ_m(right.radiationZ_m),
-    radiationLambda_m(right.radiationLambda_m),
-    radiationDirectory_m(right.radiationDirectory_m),
     meshLength_m(right.meshLength_m),
     meshResolution_m(right.meshResolution_m),
     truncationOrder_m(right.truncationOrder_m),
-    spaceCharge_m(right.spaceCharge_m),
-    emitParticles_m(right.emitParticles_m),
-    m_m(right.m_m),
-    totalTime_m(right.totalTime_m),
-    lFringe_m(right.lFringe_m),
-    is_done_m(right.is_done_m)
+    totalTime_m(right.totalTime_m)
 {}
 
 
@@ -92,16 +78,10 @@ UndulatorRep::UndulatorRep(const std::string &name):
     geometry(0.0),
     k_m(0.0),
     lambda_m(0.0),
+    numPeriods_m(0.0),
     fname_m(""),
-    bf_m(0.0),
-    radiationDirectory_m(""),
     truncationOrder_m(2),
-    spaceCharge_m(1),
-    emitParticles_m(1),
-    m_m(5),
-    totalTime_m(0.0),
-    lFringe_m(1.0),
-    is_done_m(false)
+    totalTime_m(0.0)
 {}
 
 
@@ -159,20 +139,11 @@ double UndulatorRep::getK() const { return k_m; }
 void UndulatorRep::setLambda(double lambda) { lambda_m = lambda; }
 double UndulatorRep::getLambda() const { return lambda_m; }
 
+void UndulatorRep::setNumPeriods(int np) { numPeriods_m = np; }
+int UndulatorRep::getNumPeriods() const { return numPeriods_m; }
+
 void UndulatorRep::setFilename(const std::string&fname) { fname_m = fname; }
 const std::string& UndulatorRep::getFilename() const { return fname_m;}
-
-void UndulatorRep::setBF(double bf) { bf_m = bf; }
-double UndulatorRep::getBF() const { return bf_m; };
-
-void UndulatorRep::setRadiationZ(std::vector<double> rz) { radiationZ_m = rz; }
-std::vector<double> UndulatorRep::getRadiationZ() const { return radiationZ_m; }
-
-void UndulatorRep::setRadiationLambda(std::vector<double> rl) { radiationLambda_m = rl; }
-std::vector<double> UndulatorRep::getRadiationLambda() const { return radiationLambda_m; }
-
-void UndulatorRep::setRadiationDirectory(const std::string& rd) { radiationDirectory_m = rd; }
-const std::string& UndulatorRep::getRadiationDirectory() const { return radiationDirectory_m; }
 
 void UndulatorRep::setMeshLength(std::vector<double> ml) { meshLength_m = ml; }
 std::vector<double> UndulatorRep::getMeshLength() const { return meshLength_m; }
@@ -183,20 +154,5 @@ std::vector<double> UndulatorRep::getMeshResolution() const { return meshResolut
 void UndulatorRep::setTruncationOrder(unsigned int trunOrder) { truncationOrder_m = trunOrder; } 
 unsigned int UndulatorRep::getTruncationOrder() const { return truncationOrder_m; }
 
-void UndulatorRep::setSpaceCharge(bool sc) { spaceCharge_m = sc; }
-bool UndulatorRep::getSpaceCharge() const { return spaceCharge_m;  }
-
-void UndulatorRep::setEmitParticles(bool ep) { emitParticles_m = ep; }
-bool UndulatorRep::getEmitParticles() const { return emitParticles_m;  }
-
-void UndulatorRep::setTimeStepRatio(double m) { m_m = m; }
-unsigned int UndulatorRep::getTimeStepRatio() const { return m_m; }
-
 void UndulatorRep::setTotalTime(double tt) { totalTime_m = tt; }
 double UndulatorRep::getTotalTime() const { return totalTime_m; }
-
-void UndulatorRep::setLFringe(double lf) { lFringe_m = lf; }
-double UndulatorRep::getLFringe() const { return lFringe_m; }
-
-void UndulatorRep::setIsDone() { is_done_m = true; }
-bool UndulatorRep::getIsDone() const { return is_done_m; }

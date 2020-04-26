@@ -38,19 +38,12 @@ public:
 		 NSLICES,	  // The number of slices / steps per element for map tracking
 	 K,                       // The undulator parameter
 	 LAMBDA,                  // The undulator period
+	 NUMPERIODS,
 	 FNAME,
-	 BF,
-	 RADZ,
-	 RADLAMBDA,
-	 RADDIRECTORY,
 	 MESHLENGTH,
 	 MESHRESOLUTION,
 	 TRUNORDER,
-	 SPACECHARGE,
-	 EMITPARTICLES,
-	 TIMESTEPRATIO,
 	 TOTALTIME,
-	 LFRINGE,
 	 SIZE
     };
     /// Exemplar constructor.
@@ -61,7 +54,7 @@ public:
     /// Make clone.
     virtual OpalUndulator *clone(const std::string &name);
 
-    /// Test for drift.
+    /// Test if undulator.
     //  Return true.
     virtual bool isUndulator() const;
 

@@ -53,22 +53,13 @@ OpalUndulator::OpalUndulator():
     itsAttr[LAMBDA] = Attributes::makeReal
                           ("LAMBDA",
                           "The undulator period", 0.0);
-
+    
+    itsAttr[NUM] = Attributes::makeReal
+                          ("NUMPERIODS",
+                          "Number of undulator period", 0.0);
+    
     itsAttr[FNAME] = Attributes::makeString
-      ("FNAME", "jobfile with desired output data from the undulator", "");
-
-    itsAttr[BF] = Attributes::makeReal
-                          ("BF",
-                          "Desired initial bunching factor. If zero, the bunch's density modulation is not modified", 0.0);
-    itsAttr[RADZ] = Attributes::makeRealArray
-                          ("RADZ",
-			   "Distances from bunch in which to measure radiation");
-    itsAttr[RADLAMBDA] = Attributes::makeRealArray
-                          ("RADLAMBDA",
-			   "Normalized wavelengths to measure");
-    itsAttr[RADDIRECTORY] = Attributes::makeString
-                          ("RADDIRECTORY",
-                          "Directory to store radiation power", "");
+      ("FNAME", "jobfile specifying the output data from the undulator", "");
     itsAttr[MESHLENGTH] = Attributes::makeRealArray
                           ("MESHLENGTH",
 			   "Size of computational mesh");
@@ -78,35 +69,19 @@ OpalUndulator::OpalUndulator():
     itsAttr[TRUNORDER] = Attributes::makeReal
                           ("TRUNORDER",
                           "Order of boundary absorbing conditions", 2);
-    itsAttr[SPACECHARGE] = Attributes::makeReal
-                          ("SPACECHARGE",
-                          "Whether to consider space-charge effects or not", 1);
-    itsAttr[EMITPARTICLES] = Attributes::makeReal
-                          ("EMITPARTICLES",
-                          "Emit particles or inject the whole bunch at once", 1);
-    itsAttr[TIMESTEPRATIO] = Attributes::makeReal
-                          ("TIMESTEPRATIO",
-                          "Ratio between mesh time-step and bunch time-step", 1);
     itsAttr[TOTALTIME] = Attributes::makeReal
                           ("TOTALTIME",
                           "Total time of undulator simulation", 0.0);
-    itsAttr[LFRINGE] = Attributes::makeReal("LFRINGE", 
-					    "Distance from the undulator where the bunch starts to feel the undulator fields", 1.0);
 
 
     registerStringAttribute("GEOMETRY");
     registerRealAttribute("NSLICES");
     registerRealAttribute("K");
     registerRealAttribute("LAMBDA");
+    registerRealAttribute("NUMPERIODS");
     registerStringAttribute("FNAME");
-    registerRealAttribute("BF");
-    registerStringAttribute("RADDIRECTORY");
     registerRealAttribute("TRUNORDER");
-    registerRealAttribute("SPACECHARGE");
-    registerRealAttribute("EMITPARTICLES");
-    registerRealAttribute("TIMESTEPRATIO");
     registerRealAttribute("TOTALTIME");
-    registerRealAttribute("LFRINGE");
     registerOwnership();
 
     setElement(new UndulatorRep("UNDULATOR"));
@@ -169,19 +144,13 @@ void OpalUndulator::update() {
 
     ur->setK(Attributes::getReal(itsAttr[K]));
     ur->setLambda(Attributes::getReal(itsAttr[LAMBDA]));
+    ur->setLambda(Attributes::getReal(itsAttr[NUMPERIODS]));
     ur->setFilename(Attributes::getString(itsAttr[FNAME]));
-    ur->setBF(Attributes::getReal(itsAttr[BF]));
-    ur->setRadiationZ(Attributes::getRealArray(itsAttr[RADZ]));
-    ur->setRadiationLambda(Attributes::getRealArray(itsAttr[RADLAMBDA]));
-    ur->setRadiationDirectory(Attributes::getString(itsAttr[RADDIRECTORY]));
+
     ur->setMeshLength(Attributes::getRealArray(itsAttr[MESHLENGTH]));
     ur->setMeshResolution(Attributes::getRealArray(itsAttr[MESHRESOLUTION]));
     ur->setTruncationOrder(Attributes::getReal(itsAttr[TRUNORDER]));
-    ur->setSpaceCharge(Attributes::getReal(itsAttr[SPACECHARGE]));
-    ur->setEmitParticles(Attributes::getReal(itsAttr[EMITPARTICLES]));
-    ur->setTimeStepRatio(Attributes::getReal(itsAttr[TIMESTEPRATIO]));
     ur->setTotalTime(Attributes::getReal(itsAttr[TOTALTIME]));
-    ur->setLFringe(Attributes::getReal(itsAttr[LFRINGE]));
 
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(ur);
