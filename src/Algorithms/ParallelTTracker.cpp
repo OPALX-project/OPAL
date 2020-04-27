@@ -679,39 +679,16 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
 void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     
     Inform msg("Undulator: ", *gmsg);
-    bool inUndulator = false;
-    UndulatorRep* ur;
-    const unsigned int localNum = itsBunch_m->getLocalNum();    
-    const unsigned int totalNum = itsBunch_m->getTotalNum();
-    double leftEdge, rightEdge;
-
-    /* Check if in Undulator                                                                               */
-    IndexMap::value_t::const_iterator it = elements.begin();
-    const IndexMap::value_t::const_iterator end = elements.end();
-    for (; it != end; ++ it) {
-        inUndulator = (*it)->getType() == ElementBase::UNDULATOR;
-        if ( inUndulator ){
-            /* Check if bunch center has entered the undulator's fringe field                     */
-            ur = dynamic_cast<UndulatorRep*>((*it).get());
-            ur->getDimensions( leftEdge, rightEdge );
-            if ( (itsBunch_m->get_sPos() < leftEdge) || (itsBunch_m->get_sPos() >= rightEdge))
-                return;           
-            break;
-        }
-    }
-    if (!inUndulator)
-        return;
-
-    /* Check if Mithra has already been run                                                                 */
-    if (ur->getIsDone())
-        return;
-    ur->setIsDone();
     
-    /* Transform to local coordinates  */
+    UndulatorRep* ur;    
+    for (IndexMap::value_t::const_iterator it = elements.begin(); it != elements.end(); ++ it)
+        if ((*it)->getType() == ElementBase::UNDULATOR)
+            ur = dynamic_cast<UndulatorRep*>((*it).get());
+    
+    // Transform to local coordinates.
     CoordinateSystemTrafo refToLocalCSTrafo = (itsOpalBeamline_m.getMisalignment((*it)) *
                                                (itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * itsBunch_m->toLabTrafo_m));
-    CoordinateSystemTrafo localToRefCSTrafo = refToLocalCSTrafo.inverted();    
-    for (unsigned int i = 0; i < localNum; ++i){
+    for (unsigned int i = 0; i < localNum; ++i) {
         itsBunch_m->R[i] = refToLocalCSTrafo.transformTo(itsBunch_m->R[i]);
         itsBunch_m->P[i] = refToLocalCSTrafo.rotateTo(itsBunch_m->P[i]);
     }
@@ -719,59 +696,40 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     itsBunch_m->calcBeamParameters();
     msg << "Bunch before undulator in local coordinate system: " << endl;
     itsBunch_m->print(msg);    
-    
-    /* Center bunch around z = 0                                                                */
-    double zmean = itsBunch_m->get_rmean()[2];
-    for (unsigned int i = 0; i < localNum; ++i)
-        itsBunch_m->R[i](2) = itsBunch_m->R[i](2) - zmean;   
-    itsBunch_m->calcBeamParameters();
       
-    /* Start MITHRA                                                                                        */
+    // Start MITHRA full-wave solver.
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " Version 2.0, Copyright 2019, Arya Fallahi" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " Written by Arya Fallahi, IT'IS Foundation, Zurich, Switzerland" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " ---- in computeUndulator :::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-    
-    std::list<Darius::Charge>	qv;
-    Darius::Charge charge;
-    charge.q = itsBunch_m->getChargePerParticle() / (-1.602e-19);  // In elementary charges
-    for (unsigned int i = 0; i < localNum; ++i) {
-        for (unsigned int d = 0; d < 3; ++d) {
-            charge.rnp[d] = (itsBunch_m->R[i])[d];
-            charge.gbnp[d] = (itsBunch_m->P[i])[d];
-        }
-        qv.push_back(charge);
-    }
-    msg << "Done passing particles to Mithra" << endl;
 
-    /* Parameters to initialize bunch                                                                     */
-    Darius::BunchInitialize bunchInit;
-    Darius::FieldVector<double> fv (0.0);
-    bunchInit.bunchType_ = "OPAL";
+    const unsigned int totalNum = itsBunch_m->getTotalNum();
+    MITHRA::BunchInitialize bunchInit;
+    bunchInit.bunchType_ = "other";
     bunchInit.numberOfParticles_ = totalNum;
-    bunchInit.cloudCharge_ = charge.q * totalNum;    
-    bunchInit.inputVector_ = qv;
-    bunchInit.bF_ = ur->getBF();
-    msg << "Done getting bunch parameters" << endl;
+    bunchInit.cloudCharge_ = totalNum * itsBunch_m->getChargePerParticle() / (-1.602e-19);
+    MITHRA::Bunch bunch;
+    bunch.bunchInit_.push_back(bunchInit);
+    msg << "Bunch parameters have been transferred to the full-wave solver." << endl;
 
-    /* Undulator parameters                 */
-    Darius::Undulator uParam;
+    MITHRA::Undulator uParam;
     uParam.k_ = ur->getK();
     uParam.lu_ = ur->getLambda();
-    uParam.dist_ = ur->getLFringe() - zmean;
-    double uLength =  ur->getElementLength() - ur->getLFringe();
-    uParam.length_ = uLength / uParam.lu_;  // In units of lu
-    msg << "Done passing undulator parameters to Mithra" << endl;
+    uParam.length_ = ur->getNumPeriods();
+    double fringe = 2 * uParam.lu_;  // Default fringe field length.
+    uParam.dist_ = fringe - itsBunch_m->get_maxExtent();  // Bunch-head to undulator distance.
+    std::vector<MITHRA::Undulator> undulator;
+    undulator.clear();
+    undulator.push_back(uParam);
+    msg << "Undulator parameters have been transferred to the full-wave solver." << endl;
 
-    /* Create the solver database                     */
-    Darius::Mesh                               mesh;
+    MITHRA::Mesh                               mesh;
     mesh.initialize();
-    mesh.lengthScale_ = 1.0; 
-    mesh.timeScale_ = 1.0;
-    for (unsigned int d = 0; d < 3; ++d)
-        fv[d] = 0.0;
+    mesh.lengthScale_ = 1.0;  // OPAL uses metres
+    mesh.timeScale_ = 1.0;  // OPAL uses seconds
+    MITHRA::FieldVector<double> fv (0.0);
     mesh.meshCenter_ = fv;
     for (unsigned int d = 0; d < 3; ++d)
         fv[d] = ur->getMeshLength()[d];
@@ -781,58 +739,51 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.meshResolution_ = fv;
     mesh.totalTime_ = ur->getTotalTime();
     mesh.truncationOrder_ = ur->getTruncationOrder();
-    mesh.spaceCharge_ = ur->getSpaceCharge();
-    mesh.emitParticles_ = ur->getEmitParticles();
-    msg << "Done passing mesh parameters to Mithra" << endl;
+    mesh.spaceCharge_ = 1;
+    mesh.optimizePosition_ = 1;
+    msg << "Mesh parameters have been transferred to the full-wave solver." << endl;
 
-    /* Create the bunch database.                                                                         */
-    Darius::Bunch                              bunch;
-    bunch.bunchInit_.push_back(bunchInit);
-
-    /* Create the seed database.                                                                          */
-    Darius::Seed                               seed;
-
-    /* Create the undulator database.                                                                     */
-    std::vector<Darius::Undulator>             undulator;
-    undulator.clear();
-    undulator.push_back(uParam);
-
-    /* Create the external field database.                                                                */
-    std::vector<Darius::ExtField>              extField;
+    MITHRA::Seed seed;
+    std::vector<MITHRA::ExtField> extField;
     extField.clear();
-
-    /* Create the free electron laser database.                                                           */
-    std::vector<Darius::FreeElectronLaser>     FEL;
+    std::vector<MITHRA::FreeElectronLaser> FEL;
     FEL.clear();
-    // FEL.push_back(FELParam);
     
-    /* Get filename with desired output data */
+    // Get filename with desired output data.
     std::string fname = ur->getFilename();
     const char *cfname = fname.c_str();
-    std::list<std::string> jobFile = Darius::read_file(cfname);
-    Darius::cleanJobFile(jobFile);
-    Darius::ParseDarius parser (jobFile, mesh, bunch, seed, undulator, extField, FEL);
+    std::list<std::string> jobFile = MITHRA::read_file(cfname);
+    MITHRA::cleanJobFile(jobFile);
+    MITHRA::ParseDarius parser (jobFile, mesh, bunch, seed, undulator, extField, FEL);
     parser.setJobParameters();
+    
+    MITHRA::FdTdSC   fdtdsc   (mesh, bunch, seed, undulator, extField, FEL);
 
-    /* Show the parameters for the simulation.                                                            */
+    // Transfer particles to MITHRA full-wave solver.
+    const unsigned int localNum = itsBunch_m->getLocalNum();
+    MITHRA::Charge charge;
+    charge.q = itsBunch_m->getChargePerParticle() / (-1.602e-19);
+    for (unsigned int i = 0; i < localNum; ++i) {
+        for (unsigned int d = 0; d < 3; ++d) {
+            charge.rnp[d] = (itsBunch_m->R[i])[d];
+            charge.gbnp[d] = (itsBunch_m->P[i])[d];
+        }
+        fdtdsc.chargeVectorn_.push_back(charge);
+    }
+    msg << "Particles have been transferred to the full-wave solver." << endl;
+
+    // Print the parameters for the simulation.
     mesh.show();
     bunch.show();
     seed.show();
     for (unsigned int i = 0; i < undulator.size(); i++) 	undulator[i].show();
     for (unsigned int i = 0; i < extField.size();  i++) 	extField[i] .show();
-
-    /* Initialize the class for the FDTD computations.                                                    */
-    Darius::FdTd   fdtd   (mesh, bunch, seed, undulator, extField, FEL);
-    Darius::FdTdSC fdtdsc (mesh, bunch, seed, undulator, extField, FEL);
     
-    /* Solve for the fields and the bunch distribution over the specified time.                           */
-    qv.clear();
-    if ( mesh.spaceCharge_ )
-        fdtdsc.solve();
-    else
-        fdtd.solve();
+    // Run the full-wave solver
+    fdtdsc.solve();
 
-    /* Here bunch needs to be transferred back to OPAL                                                   */
+    // At the moment OPAL exits after the full-wave solver.
+    // In the future the bunch should be transferred back to OPAL
     itsOpalBeamline_m.switchElementsOff();
     Monitor::writeStatistics();
     std::exit(1);
