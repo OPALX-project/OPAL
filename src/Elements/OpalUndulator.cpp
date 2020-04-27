@@ -32,13 +32,6 @@ OpalUndulator::OpalUndulator():
     owk_m(NULL),
     parmatint_m(NULL),
     obgeo_m(NULL) {
-    // CKR: the following 3 lines are redundant: OpalElement does this already!
-    //      they prevent drift from working properly
-    //
-    //     itsAttr[LENGTH] = Attributes::makeReal
-    //         ("LENGTH", "Undulator length");
-
-    //     registerRealAttribute("LENGTH");
     itsAttr[GEOMETRY] = Attributes::makeString
                         ("GEOMETRY", "BoundaryGeometry for Undulators");
 
@@ -54,18 +47,18 @@ OpalUndulator::OpalUndulator():
                           ("LAMBDA",
                           "The undulator period", 0.0);
     
-    itsAttr[NUM] = Attributes::makeReal
+    itsAttr[NUMPERIODS] = Attributes::makeReal
                           ("NUMPERIODS",
                           "Number of undulator period", 0.0);
     
     itsAttr[FNAME] = Attributes::makeString
-      ("FNAME", "jobfile specifying the output data from the undulator", "");
+      ("FNAME", "Jobfile specifying the output data from the undulator", "");
     itsAttr[MESHLENGTH] = Attributes::makeRealArray
                           ("MESHLENGTH",
 			   "Size of computational mesh");
     itsAttr[MESHRESOLUTION] = Attributes::makeRealArray
                           ("MESHRESOLUTION",
-			   "dx, dy, dz of the mesh");
+                           "dx, dy, dz of the mesh");
     itsAttr[TRUNORDER] = Attributes::makeReal
                           ("TRUNORDER",
                           "Order of boundary absorbing conditions", 2);
@@ -144,7 +137,7 @@ void OpalUndulator::update() {
 
     ur->setK(Attributes::getReal(itsAttr[K]));
     ur->setLambda(Attributes::getReal(itsAttr[LAMBDA]));
-    ur->setLambda(Attributes::getReal(itsAttr[NUMPERIODS]));
+    ur->setNumPeriods(Attributes::getReal(itsAttr[NUMPERIODS]));
     ur->setFilename(Attributes::getString(itsAttr[FNAME]));
 
     ur->setMeshLength(Attributes::getRealArray(itsAttr[MESHLENGTH]));
