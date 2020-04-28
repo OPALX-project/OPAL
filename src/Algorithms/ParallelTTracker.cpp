@@ -705,11 +705,14 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     msg << __FILE__ << " L: " << __LINE__ << " ---- in computeUndulator :::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
     msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
 
-    const unsigned int totalNum = itsBunch_m->getTotalNum();
     MITHRA::BunchInitialize bunchInit;
     bunchInit.bunchType_ = "other";
-    bunchInit.numberOfParticles_ = totalNum;
-    bunchInit.cloudCharge_ = totalNum * itsBunch_m->getChargePerParticle() / (-1.602e-19);
+    bunchInit.numberOfParticles_ = itsBunch_m->getTotalNum();
+    bunchInit.cloudCharge_ = itsBunch_m->getTotalNum() * itsBunch_m->getChargePerParticle() / (-1.602e-19);
+    bunchInit.initialGamma_ = itsBunch_m->get_gamma();
+    for (unsigned int d = 0; d < 3; ++d)
+        bunchInit.initialDirection_[d] = itsBunch_m->get_pmean()[d];
+    bunchInit.initialDirection_ /= std::sqrt(dot(itsBunch_m->get_pmean(), itsBunch_m->get_pmean()));
     MITHRA::Bunch bunch;
     bunch.bunchInit_.push_back(bunchInit);
     msg << "Bunch parameters have been transferred to the full-wave solver." << endl;
@@ -719,7 +722,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     uParam.lu_ = ur->getLambda();
     uParam.length_ = ur->getNumPeriods();
     double fringe = 2 * uParam.lu_;  // Default fringe field length.
-    uParam.dist_ = fringe - itsBunch_m->get_maxExtent();  // Bunch-head to undulator distance.
+    uParam.dist_ = fringe - itsBunch_m->get_maxExtent()[2];  // Bunch-head to undulator distance.
     std::vector<MITHRA::Undulator> undulator;
     undulator.clear();
     undulator.push_back(uParam);
@@ -729,15 +732,12 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.initialize();
     mesh.lengthScale_ = 1.0;  // OPAL uses metres
     mesh.timeScale_ = 1.0;  // OPAL uses seconds
-    MITHRA::FieldVector<double> fv (0.0);
-    mesh.meshCenter_ = fv;
+    mesh.meshCenter_ = *new FieldVector<Double> (0.0);
     for (unsigned int d = 0; d < 3; ++d)
-        fv[d] = ur->getMeshLength()[d];
-    mesh.meshLength_ = fv;
+        mesh.meshLength_[d] = ur->getMeshLength()[d];
     for (unsigned int d = 0; d < 3; ++d)
-        fv[d] = ur->getMeshResolution()[d];
-    mesh.meshResolution_ = fv;
-    mesh.totalTime_ = ur->getTotalTime();
+        mesh.meshResolution_[d] = ur->getMeshResolution()[d];
+    mesh.totalTime_ = ur->getTotalTime();  // MITHRA should automatically compute this in the future
     mesh.truncationOrder_ = ur->getTruncationOrder();
     mesh.spaceCharge_ = 1;
     mesh.optimizePosition_ = 1;
@@ -758,7 +758,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     parser.setJobParameters();
     
     MITHRA::FdTdSC   fdtdsc   (mesh, bunch, seed, undulator, extField, FEL);
-
     // Transfer particles to MITHRA full-wave solver.
     const unsigned int localNum = itsBunch_m->getLocalNum();
     MITHRA::Charge charge;
