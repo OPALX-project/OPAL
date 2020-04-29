@@ -76,7 +76,7 @@ public:
     virtual void setLambda(double lambda);
     virtual double getLambda() const;
     virtual void setNumPeriods(int np);
-    virtual double getNumPeriods() const;
+    virtual int getNumPeriods() const;
     virtual void setFilename(const std::string& fname);
     virtual const std::string& getFilename() const;
     virtual void setMeshLength(std::vector<double> ml);

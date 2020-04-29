@@ -680,14 +680,20 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     
     Inform msg("Undulator: ", *gmsg);
     
-    UndulatorRep* ur;    
-    for (IndexMap::value_t::const_iterator it = elements.begin(); it != elements.end(); ++ it)
-        if ((*it)->getType() == ElementBase::UNDULATOR)
+    UndulatorRep* ur;
+    IndexMap::value_t::const_iterator it = elements.begin();
+    for (; it != elements.end(); ++ it)
+        if ((*it)->getType() == ElementBase::UNDULATOR) {
             ur = dynamic_cast<UndulatorRep*>((*it).get());
+            break;
+        }
+    if (it == elements.end())
+        return;
     
-    // Transform to local coordinates.
+    // Transform bunch to local coordinates.
     CoordinateSystemTrafo refToLocalCSTrafo = (itsOpalBeamline_m.getMisalignment((*it)) *
                                                (itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * itsBunch_m->toLabTrafo_m));
+    const unsigned int localNum = itsBunch_m->getLocalNum();
     for (unsigned int i = 0; i < localNum; ++i) {
         itsBunch_m->R[i] = refToLocalCSTrafo.transformTo(itsBunch_m->R[i]);
         itsBunch_m->P[i] = refToLocalCSTrafo.rotateTo(itsBunch_m->P[i]);
@@ -712,7 +718,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.initialGamma_ = itsBunch_m->get_gamma();
     for (unsigned int d = 0; d < 3; ++d)
         bunchInit.initialDirection_[d] = itsBunch_m->get_pmean()[d];
-    bunchInit.initialDirection_ /= std::sqrt(dot(itsBunch_m->get_pmean(), itsBunch_m->get_pmean()));
+    bunchInit.initialDirection_ /= *new double (std::sqrt(dot(itsBunch_m->get_pmean(), itsBunch_m->get_pmean())));
     MITHRA::Bunch bunch;
     bunch.bunchInit_.push_back(bunchInit);
     msg << "Bunch parameters have been transferred to the full-wave solver." << endl;
@@ -732,7 +738,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.initialize();
     mesh.lengthScale_ = 1.0;  // OPAL uses metres
     mesh.timeScale_ = 1.0;  // OPAL uses seconds
-    mesh.meshCenter_ = *new FieldVector<Double> (0.0);
+    mesh.meshCenter_ = *new MITHRA::FieldVector<double> (0.0);
     for (unsigned int d = 0; d < 3; ++d)
         mesh.meshLength_[d] = ur->getMeshLength()[d];
     for (unsigned int d = 0; d < 3; ++d)
@@ -759,7 +765,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     
     MITHRA::FdTdSC   fdtdsc   (mesh, bunch, seed, undulator, extField, FEL);
     // Transfer particles to MITHRA full-wave solver.
-    const unsigned int localNum = itsBunch_m->getLocalNum();
     MITHRA::Charge charge;
     charge.q = itsBunch_m->getChargePerParticle() / (-1.602e-19);
     for (unsigned int i = 0; i < localNum; ++i) {
