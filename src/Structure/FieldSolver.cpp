@@ -30,7 +30,6 @@
 #include "Expressions/SRefExpr.h"
 #include "Physics/Physics.h"
 #include "Utilities/OpalException.h"
-#include "Utilities/Util.h"
 #include "BoundaryGeometry.h"
 #include "AbstractObjects/Element.h"
 #include "Algorithms/PartBunchBase.h"
@@ -120,6 +119,7 @@ namespace {
         AMR_MG_VERBOSE,     // AMR, enable solver info writing (SDDS file)
         AMR_MG_REBALANCE,   // AMR, rebalance smoothed aggregation (SA) preconditioner
         AMR_MG_REUSE,       // AMR, reuse type of SA (none, RP, RAP, S or full)
+        AMR_MG_TOL,         // AMR, tolerance of solver
 #endif
         // FOR XXX BASED SOLVER
         SIZE
@@ -131,8 +131,12 @@ FieldSolver::FieldSolver():
     Definition(SIZE, "FIELDSOLVER",
                "The \"FIELDSOLVER\" statement defines data for a the field solver ") {
 
-    itsAttr[FSTYPE] = Attributes::makeString("FSTYPE",
-                                             "Name of the attached field solver: FFT, FFTPERIODIC, SAAMG, AMR, and NONE ");
+    itsAttr[FSTYPE] = Attributes::makeUpperCaseString("FSTYPE", "Name of the attached field solver: "
+                                                      "FFT, "
+                                                      "FFTPERIODIC, "
+                                                      "SAAMG, "
+                                                      "AMR, "
+                                                      "NONE ");
 
     itsAttr[MX] = Attributes::makeReal("MX", "Meshsize in x");
     itsAttr[MY] = Attributes::makeReal("MY", "Meshsize in y");
@@ -151,21 +155,25 @@ FieldSolver::FieldSolver():
                                             true);
 
     //FFT ONLY:
-    itsAttr[BCFFTX] = Attributes::makeString("BCFFTX",
-                                             "Boundary conditions in x: open, dirichlet (box), periodic", "OPEN");
+    itsAttr[BCFFTX] = Attributes::makeUpperCaseString("BCFFTX",
+                                                      "Boundary conditions in x: open, dirichlet (box), periodic",
+                                                      "OPEN");
 
-    itsAttr[BCFFTY] = Attributes::makeString("BCFFTY",
-                                             "Boundary conditions in y: open, dirichlet (box), periodic", "OPEN");
+    itsAttr[BCFFTY] = Attributes::makeUpperCaseString("BCFFTY",
+                                                      "Boundary conditions in y: open, dirichlet (box), periodic",
+                                                      "OPEN");
 
-    itsAttr[BCFFTZ] = Attributes::makeString("BCFFTZ",
-                                             "Boundary conditions in z(t): open, periodic", "OPEN");
+    itsAttr[BCFFTZ] = Attributes::makeUpperCaseString("BCFFTZ",
+                                                      "Boundary conditions in z(t): open, periodic",
+                                                      "OPEN");
 
-    itsAttr[deprecated::BCFFTT] = Attributes::makeString("BCFFTT",
-                                             "Boundary conditions in z(t): open, periodic", "OPEN");
+    itsAttr[deprecated::BCFFTT] = Attributes::makeUpperCaseString("BCFFTT",
+                                                                  "Boundary conditions in z(t): open, periodic",
+                                                                  "OPEN");
 
-    itsAttr[GREENSF]  = Attributes::makeString("GREENSF",
-                                               "Which Greensfunction to be used [STANDARD | INTEGRATED]",
-                                               "INTEGRATED");
+    itsAttr[GREENSF]  = Attributes::makeUpperCaseString("GREENSF",
+                                                        "Which Greensfunction to be used [STANDARD | INTEGRATED]",
+                                                        "INTEGRATED");
 
     itsAttr[BBOXINCR] = Attributes::makeReal("BBOXINCR",
                                              "Increase of bounding box in % ",
@@ -185,17 +193,17 @@ FieldSolver::FieldSolver():
                                             0.0);
 
     //SAAMG and in case of FFT with dirichlet BC in x and y
-    itsAttr[GEOMETRY] = Attributes::makeString("GEOMETRY",
-                                               "GEOMETRY to be used as domain boundary",
-                                               "");
+    itsAttr[GEOMETRY] = Attributes::makeUpperCaseString("GEOMETRY",
+                                                        "GEOMETRY to be used as domain boundary",
+                                                        "");
 
-    itsAttr[ITSOLVER] = Attributes::makeString("ITSOLVER",
-                                               "Type of iterative solver [CG | BiCGSTAB | GMRES]",
-                                               "CG");
+    itsAttr[ITSOLVER] = Attributes::makeUpperCaseString("ITSOLVER",
+                                                        "Type of iterative solver [CG | BiCGSTAB | GMRES]",
+                                                        "CG");
 
-    itsAttr[INTERPL] = Attributes::makeString("INTERPL",
-                                              "interpolation used for boundary points [CONSTANT | LINEAR | QUADRATIC]",
-                                              "LINEAR");
+    itsAttr[INTERPL] = Attributes::makeUpperCaseString("INTERPL",
+                                                        "interpolation used for boundary points [CONSTANT | LINEAR | QUADRATIC]",
+                                                        "LINEAR");
 
     itsAttr[TOL] = Attributes::makeReal("TOL",
                                         "Tolerance for iterative solver",
@@ -205,9 +213,9 @@ FieldSolver::FieldSolver():
                                              "Maximum number of iterations of iterative solver",
                                              100);
 
-    itsAttr[PRECMODE] = Attributes::makeString("PRECMODE",
-                                               "Preconditioner Mode [STD | HIERARCHY | REUSE]",
-                                               "HIERARCHY");
+    itsAttr[PRECMODE] = Attributes::makeUpperCaseString("PRECMODE",
+                                                        "Preconditioner Mode [STD | HIERARCHY | REUSE]",
+                                                        "HIERARCHY");
 
     // AMR
 #ifdef ENABLE_AMR
@@ -251,9 +259,9 @@ FieldSolver::FieldSolver():
                                             "Blocking factor in y for AMR (AMR_MAXGRIDZ needs to be a multiple",
                                             8);
 
-    itsAttr[AMR_TAGGING] = Attributes::makeString("AMR_TAGGING",
-                                                  "Refinement criteria [CHARGE_DENSITY | POTENTIAL | EFIELD]",
-                                                  "CHARGE_DENSITY");
+    itsAttr[AMR_TAGGING] = Attributes::makeUpperCaseString("AMR_TAGGING",
+                                                           "Refinement criteria [CHARGE_DENSITY | POTENTIAL | EFIELD]",
+                                                           "CHARGE_DENSITY");
 
     itsAttr[AMR_DENSITY] = Attributes::makeReal("AMR_DENSITY",
                                                "Tagging value for charge density refinement [C / cell volume]",
@@ -280,24 +288,24 @@ FieldSolver::FieldSolver():
 #endif
 
 #ifdef HAVE_AMR_MG_SOLVER
-    itsAttr[AMR_MG_SMOOTHER] = Attributes::makeString("AMR_MG_SMOOTHER",
-                                                      "Smoothing of level solution", "GS");
+    itsAttr[AMR_MG_SMOOTHER] = Attributes::makeUpperCaseString("AMR_MG_SMOOTHER",
+                                                               "Smoothing of level solution", "GS");
 
     itsAttr[AMR_MG_NSWEEPS] = Attributes::makeReal("AMR_MG_NSWEEPS",
                                                    "Number of relaxation steps",
                                                    8);
 
-    itsAttr[AMR_MG_PREC] = Attributes::makeString("AMR_MG_PREC",
-                                                  "Preconditioner of bottom solver",
-                                                  "NONE");
+    itsAttr[AMR_MG_PREC] = Attributes::makeUpperCaseString("AMR_MG_PREC",
+                                                           "Preconditioner of bottom solver",
+                                                           "NONE");
 
-    itsAttr[AMR_MG_INTERP] = Attributes::makeString("AMR_MG_INTERP",
-                                                    "Interpolater between levels",
-                                                    "PC");
+    itsAttr[AMR_MG_INTERP] = Attributes::makeUpperCaseString("AMR_MG_INTERP",
+                                                             "Interpolater between levels",
+                                                             "PC");
 
-    itsAttr[AMR_MG_NORM] = Attributes::makeString("AMR_MG_NORM",
-                                                  "Norm for convergence criteria",
-                                                  "LINF");
+    itsAttr[AMR_MG_NORM] = Attributes::makeUpperCaseString("AMR_MG_NORM",
+                                                           "Norm for convergence criteria",
+                                                           "LINF");
 
     itsAttr[AMR_MG_VERBOSE] = Attributes::makeBool("AMR_MG_VERBOSE",
                                                    "Write solver info in SDDS format (*.solver)",
@@ -308,9 +316,13 @@ FieldSolver::FieldSolver():
                                                      "Preconditioner",
                                                      false);
 
-    itsAttr[AMR_MG_REUSE] = Attributes::makeString("AMR_MG_REUSE",
-                                                   "Reuse type of Smoothed Aggregation",
-                                                   "RAP");
+    itsAttr[AMR_MG_REUSE] = Attributes::makeUpperCaseString("AMR_MG_REUSE",
+                                                            "Reuse type of Smoothed Aggregation",
+                                                            "RAP");
+
+    itsAttr[AMR_MG_TOL] = Attributes::makeReal("AMR_MG_TOL",
+                                               "AMR MG solver tolerance (default: 1.0e-10)",
+                                               1.0e-10);
 #endif
 
     mesh_m = 0;
@@ -366,7 +378,7 @@ FieldSolver *FieldSolver::find(const std::string &name) {
 }
 
 std::string FieldSolver::getType() {
-    return Util::toUpper(Attributes::getString(itsAttr[FSTYPE]));
+    return Attributes::getString(itsAttr[FSTYPE]);
 }
 
 double FieldSolver::getMX() const {
@@ -413,7 +425,7 @@ void FieldSolver::initCartesianFields() {
     if(Attributes::getBool(itsAttr[PARFFTT]))
         decomp[2] = PARALLEL;
 
-    if(Util::toUpper(Attributes::getString(itsAttr[FSTYPE])) == "FFTPERIODIC") {
+    if(Attributes::getString(itsAttr[FSTYPE]) == "FFTPERIODIC") {
         decomp[0] = decomp[1] = SERIAL;
         decomp[2] = PARALLEL;
     }
@@ -435,9 +447,9 @@ void FieldSolver::initCartesianFields() {
 
 bool FieldSolver::hasPeriodicZ() {
     if (itsAttr[deprecated::BCFFTT])
-        return (Util::toUpper(Attributes::getString(itsAttr[deprecated::BCFFTT])) == "PERIODIC");
+        return (Attributes::getString(itsAttr[deprecated::BCFFTT]) == "PERIODIC");
 
-    return (Util::toUpper(Attributes::getString(itsAttr[BCFFTZ])) == "PERIODIC");
+    return (Attributes::getString(itsAttr[BCFFTZ]) == "PERIODIC");
 }
 
 #ifdef ENABLE_AMR
@@ -448,13 +460,13 @@ inline bool FieldSolver::isAmrSolverType() const {
 
 void FieldSolver::initSolver(PartBunchBase<double, 3> *b) {
     itsBunch_m = b;
-    fsType_m = Util::toUpper(Attributes::getString(itsAttr[FSTYPE]));
-    std::string greens = Util::toUpper(Attributes::getString(itsAttr[GREENSF]));
-    std::string bcx = Util::toUpper(Attributes::getString(itsAttr[BCFFTX]));
-    std::string bcy = Util::toUpper(Attributes::getString(itsAttr[BCFFTY]));
-    std::string bcz = Util::toUpper(Attributes::getString(itsAttr[deprecated::BCFFTT]));
+    fsType_m = Attributes::getString(itsAttr[FSTYPE]);
+    std::string greens = Attributes::getString(itsAttr[GREENSF]);
+    std::string bcx = Attributes::getString(itsAttr[BCFFTX]);
+    std::string bcy = Attributes::getString(itsAttr[BCFFTY]);
+    std::string bcz = Attributes::getString(itsAttr[deprecated::BCFFTT]);
     if (bcz == "") {
-        bcz = Util::toUpper(Attributes::getString(itsAttr[BCFFTZ]));
+        bcz = Attributes::getString(itsAttr[BCFFTZ]);
     }
 
 #ifdef ENABLE_AMR
@@ -474,7 +486,7 @@ void FieldSolver::initSolver(PartBunchBase<double, 3> *b) {
         if(sinTrafo) {
             std::cout << "FFTBOX ACTIVE" << std::endl;
             //we go over all geometries and add the Geometry Elements to the geometry list
-            std::string geoms = Util::toUpper(Attributes::getString(itsAttr[GEOMETRY]));
+            std::string geoms = Attributes::getString(itsAttr[GEOMETRY]);
             std::string tmp = "";
             //split and add all to list
             std::vector<BoundaryGeometry *> geometries;
@@ -508,7 +520,7 @@ void FieldSolver::initSolver(PartBunchBase<double, 3> *b) {
     } else if(fsType_m == "SAAMG") {
 #ifdef HAVE_SAAMG_SOLVER
         //we go over all geometries and add the Geometry Elements to the geometry list
-        std::string geoms = Util::toUpper(Attributes::getString(itsAttr[GEOMETRY]));
+        std::string geoms = Attributes::getString(itsAttr[GEOMETRY]);
         std::string tmp = "";
         //split and add all to list
         std::vector<BoundaryGeometry *> geometries;
@@ -524,11 +536,11 @@ void FieldSolver::initSolver(PartBunchBase<double, 3> *b) {
         }
         solver_m = new MGPoissonSolver(dynamic_cast<PartBunch*>(itsBunch_m), mesh_m, FL_m,
                                        geometries,
-                                       Util::toUpper(Attributes::getString(itsAttr[ITSOLVER])),
-                                       Util::toUpper(Attributes::getString(itsAttr[INTERPL])),
+                                       Attributes::getString(itsAttr[ITSOLVER]),
+                                       Attributes::getString(itsAttr[INTERPL]),
                                        Attributes::getReal(itsAttr[TOL]),
                                        Attributes::getReal(itsAttr[MAXITERS]),
-                                       Util::toUpper(Attributes::getString(itsAttr[PRECMODE])));
+                                       Attributes::getString(itsAttr[PRECMODE]));
         itsBunch_m->set_meshEnlargement(Attributes::getReal(itsAttr[BBOXINCR]) / 100.0);
 #else
         throw OpalException("FieldSolver::initSolver",
@@ -545,7 +557,7 @@ bool FieldSolver::hasValidSolver() {
 }
 
 Inform &FieldSolver::printInfo(Inform &os) const {
-    std::string fsType = Util::toUpper(Attributes::getString(itsAttr[FSTYPE]));
+    std::string fsType = Attributes::getString(itsAttr[FSTYPE]);
 
     os << "* ************* F I E L D S O L V E R ********************************************** " << endl;
     os << "* FIELDSOLVER  " << getOpalName() << '\n'
@@ -563,14 +575,14 @@ Inform &FieldSolver::printInfo(Inform &os) const {
 
 
     if(fsType == "FFT") {
-        os << "* GRRENSF      " << Util::toUpper(Attributes::getString(itsAttr[GREENSF])) << endl;
+        os << "* GRRENSF      " << Attributes::getString(itsAttr[GREENSF]) << endl;
     } else if (fsType == "SAAMG") {
         os << "* GEOMETRY     " << Attributes::getString(itsAttr[GEOMETRY]) << '\n'
-           << "* ITSOLVER     " << Util::toUpper(Attributes::getString(itsAttr[ITSOLVER]))   << '\n'
-           << "* INTERPL      " << Util::toUpper(Attributes::getString(itsAttr[INTERPL]))  << '\n'
+           << "* ITSOLVER     " << Attributes::getString(itsAttr[ITSOLVER])   << '\n'
+           << "* INTERPL      " << Attributes::getString(itsAttr[INTERPL])  << '\n'
            << "* TOL          " << Attributes::getReal(itsAttr[TOL])        << '\n'
            << "* MAXITERS     " << Attributes::getReal(itsAttr[MAXITERS]) << '\n'
-           << "* PRECMODE     " << Util::toUpper(Attributes::getString(itsAttr[PRECMODE]))   << endl;
+           << "* PRECMODE     " << Attributes::getString(itsAttr[PRECMODE])   << endl;
     }
 #ifdef ENABLE_AMR
     else if (fsType == "AMR" || Options::amr) {
@@ -602,33 +614,35 @@ Inform &FieldSolver::printInfo(Inform &os) const {
 #ifdef HAVE_AMR_MG_SOLVER
     if (fsType == "AMR_MG") {
         os << "* ITSOLVER (AMR_MG)    "
-           << Util::toUpper(Attributes::getString(itsAttr[ITSOLVER])) << '\n'
+           << Attributes::getString(itsAttr[ITSOLVER]) << '\n'
            << "* AMR_MG_PREC          "
-           << Util::toUpper(Attributes::getString(itsAttr[AMR_MG_PREC])) << '\n'
+           << Attributes::getString(itsAttr[AMR_MG_PREC]) << '\n'
            << "* AMR_MG_REBALANCE     "
            << Attributes::getBool(itsAttr[AMR_MG_REBALANCE]) << '\n'
            << "* AMR_MG_REUSE         "
-           << Util::toUpper(Attributes::getString(itsAttr[AMR_MG_REUSE])) << '\n'
+           << Attributes::getString(itsAttr[AMR_MG_REUSE]) << '\n'
            << "* AMR_MG_SMOOTHER      "
-           << Util::toUpper(Attributes::getString(itsAttr[AMR_MG_SMOOTHER])) << '\n'
+           << Attributes::getString(itsAttr[AMR_MG_SMOOTHER]) << '\n'
            << "* AMR_MG_NSWEEPS       "
            << Attributes::getReal(itsAttr[AMR_MG_NSWEEPS]) << '\n'
            << "* AMR_MG_INTERP        "
-           << Util::toUpper(Attributes::getString(itsAttr[AMR_MG_INTERP])) << '\n'
+           << Attributes::getString(itsAttr[AMR_MG_INTERP]) << '\n'
            << "* AMR_MG_NORM          "
-           << Util::toUpper(Attributes::getString(itsAttr[AMR_MG_NORM])) << '\n'
+           << Attributes::getString(itsAttr[AMR_MG_NORM]) << '\n'
+           << "* AMR_MG_TOL           "
+           << Attributes::getReal(itsAttr[AMR_MG_TOL]) << '\n'
            << "* AMR_MG_VERBOSE       "
            << Attributes::getBool(itsAttr[AMR_MG_VERBOSE]) << '\n'
            << "* BCFFTX               "
-           << Util::toUpper(Attributes::getString(itsAttr[BCFFTX])) << '\n'
+           << Attributes::getString(itsAttr[BCFFTX]) << '\n'
            << "* BCFFTY               "
-           << Util::toUpper(Attributes::getString(itsAttr[BCFFTY])) << '\n';
+           << Attributes::getString(itsAttr[BCFFTY]) << '\n';
         if (itsAttr[deprecated::BCFFTT]) {
             os << "* BCFFTT (deprec.) "
-               << Util::toUpper(Attributes::getString(itsAttr[deprecated::BCFFTT])) << endl;
+               << Attributes::getString(itsAttr[deprecated::BCFFTT]) << endl;
         } else {
             os << "* BCFFTZ           "
-               << Util::toUpper(Attributes::getString(itsAttr[BCFFTZ])) << endl;
+               << Attributes::getString(itsAttr[BCFFTZ]) << endl;
         }
     }
 #endif
@@ -723,7 +737,7 @@ void FieldSolver::initAmrObject_m() {
 
 
 void FieldSolver::initAmrSolver_m() {
-    std::string fsType = Util::toUpper(Attributes::getString(itsAttr[FSTYPE]));
+    std::string fsType = Attributes::getString(itsAttr[FSTYPE]);
 
     if ( fsType == "ML" ) {
         if ( dynamic_cast<AmrBoxLib*>( itsAmrObject_mp.get() ) == 0 )
@@ -770,6 +784,9 @@ void FieldSolver::initAmrSolver_m() {
 
         dynamic_cast<AmrMultiGrid*>(solver_m)->setVerbose(
             Attributes::getBool(itsAttr[AMR_MG_VERBOSE]));
+
+        dynamic_cast<AmrMultiGrid*>(solver_m)->setTolerance(
+            Attributes::getReal(itsAttr[AMR_MG_TOL]));
 #else
         throw OpalException("FieldSolver::initAmrSolver_m()",
                             "Multigrid solver not enabled! "

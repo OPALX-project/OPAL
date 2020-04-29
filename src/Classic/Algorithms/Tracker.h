@@ -131,10 +131,10 @@ public:
     virtual void visitMapIntegrator(const MapIntegrator &);
 
     /// set total number of tracked bunches
-    virtual void setNumBunch(int) {};
+    virtual void setNumBunch(short) {};
 
     /// get total number of tracked bunches
-    virtual int  getNumBunch() { return 0; }
+    virtual short getNumBunch() { return 0; }
 
     // standing wave structures
     FieldList cavities_m;

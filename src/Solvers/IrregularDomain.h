@@ -124,6 +124,7 @@ public:
 
     virtual int getIdx(int x, int y, int z) = 0;
     virtual bool hasGeometryChanged() = 0;
+    virtual ~IrregularDomain() {};
 
 protected:
 

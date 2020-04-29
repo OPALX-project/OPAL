@@ -24,7 +24,6 @@
 #include "Utilities/OpalException.h"
 #include "AbsBeamline/ElementBase.h"
 #include "Utilities/OpalFilter.h"
-#include "Utilities/Util.h"
 
 extern Inform *gmsg;
 
@@ -43,7 +42,6 @@ namespace {
         CONST_LENGTH,// True if the length of the Bunch is considered as constant
         CONDUCT,    // Conductivity, either AC or DC
         Z0,     //
-        FORM,   // From of the tube
         RADIUS, // Radius of the tube
         SIGMA,
         TAU,
@@ -58,7 +56,7 @@ OpalWake::OpalWake():
                "The \"WAKE\" statement defines data for the wakefuction "
                "on an element."),
     wf_m(0) {
-    itsAttr[TYPE] = Attributes::makeString
+    itsAttr[TYPE] = Attributes::makeUpperCaseString
         ("TYPE", "Specifies the wake function: 1D-CSR, 1D-CSR-IGF, LONG-SHORT-RANGE, TRANSV-SHORT-RANGE, LONG-TRANSV-SHORT-RANGE");
 
     itsAttr[NBIN] = Attributes::makeReal
@@ -67,14 +65,11 @@ OpalWake::OpalWake():
     itsAttr[CONST_LENGTH] = Attributes::makeBool
         ("CONST_LENGTH", "True if the length of the Bunch is considered as constant");
 
-    itsAttr[CONDUCT] = Attributes::makeString
+    itsAttr[CONDUCT] = Attributes::makeUpperCaseString
         ("CONDUCT", "Conductivity: DC, AC");
 
     itsAttr[Z0] = Attributes::makeReal
         ("Z0", "Impedance of the beam pipe ");
-
-    itsAttr[FORM] = Attributes::makeString
-        ("FORM", "The form of the  beam pipe: ROUND");
 
     itsAttr[RADIUS] = Attributes::makeReal
         ("RADIUS", "The radius of the beam pipe [m]");
@@ -174,7 +169,7 @@ void OpalWake::initWakefunction(ElementBase &element) {
         }
     }
 
-    if (Util::toUpper(Attributes::getString(itsAttr[TYPE])) == "1D-CSR") {
+    if (Attributes::getString(itsAttr[TYPE]) == "1D-CSR") {
 
         if (filters.size() == 0 && Attributes::getReal(itsAttr[NBIN]) <= 7) {
             throw OpalException("OpalWake::initWakeFunction",
@@ -186,7 +181,7 @@ void OpalWake::initWakefunction(ElementBase &element) {
                                    filters,
                                    (int)(Attributes::getReal(itsAttr[NBIN])));
 
-    } else if (Util::toUpper(Attributes::getString(itsAttr[TYPE])) == "1D-CSR-IGF") {
+    } else if (Attributes::getString(itsAttr[TYPE]) == "1D-CSR-IGF") {
 
         if (filters.size() == 0 && Attributes::getReal(itsAttr[NBIN]) <= 7) {
             throw OpalException("OpalWake::initWakeFunction",
@@ -198,8 +193,8 @@ void OpalWake::initWakefunction(ElementBase &element) {
                                       filters,
                                       (int)(Attributes::getReal(itsAttr[NBIN])));
 
-    } else if (Util::toUpper(Attributes::getString(itsAttr[TYPE])) == "LONG-SHORT-RANGE") {
-        int acMode = Util::toUpper(Attributes::getString(itsAttr[CONDUCT])) == "DC"? 2: 1;
+    } else if (Attributes::getString(itsAttr[TYPE]) == "LONG-SHORT-RANGE") {
+        int acMode = Attributes::getString(itsAttr[CONDUCT]) == "DC"? 2: 1;
 
         wf_m = new GreenWakeFunction(getOpalName(),
                                      itsElement_m,
@@ -214,8 +209,8 @@ void OpalWake::initWakefunction(ElementBase &element) {
                                      Attributes::getBool(itsAttr[CONST_LENGTH]),
                                      Attributes::getString(itsAttr[FNAME]));
 
-    } else if (Util::toUpper(Attributes::getString(itsAttr[TYPE])) == "TRANSV-SHORT-RANGE") {
-        int acMode = Util::toUpper(Attributes::getString(itsAttr[CONDUCT])) == "DC"? 2: 1;
+    } else if (Attributes::getString(itsAttr[TYPE]) == "TRANSV-SHORT-RANGE") {
+        int acMode = Attributes::getString(itsAttr[CONDUCT]) == "DC"? 2: 1;
 
         wf_m = new GreenWakeFunction(getOpalName(),
                                      itsElement_m,
@@ -245,7 +240,6 @@ void OpalWake::print(std::ostream &os) const {
        << "* CONST_LENGTH " << Attributes::getReal(itsAttr[CONST_LENGTH]) << '\n'
        << "* CONDUCT      " << Attributes::getReal(itsAttr[CONDUCT]) << '\n'
        << "* Z0           " << Attributes::getReal(itsAttr[Z0]) << '\n'
-       << "* FORM         " << Attributes::getReal(itsAttr[FORM]) << '\n'
        << "* RADIUS       " << Attributes::getReal(itsAttr[RADIUS]) << '\n'
        << "* SIGMA        " << Attributes::getReal(itsAttr[SIGMA]) << '\n'
        << "* TAU          " << Attributes::getReal(itsAttr[TAU]) << '\n';

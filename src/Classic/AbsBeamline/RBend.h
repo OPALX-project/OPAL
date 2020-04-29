@@ -1,74 +1,59 @@
+//
+// Class RBend
+//   Interface for a rectangular bend magnet.
+//
+//   A rectangular bend magnet physically has a rectangular shape.
+//
+//   The standard rectangular magnet, for purposes of definitions, has a field in
+//   the y direction. This produces a bend in the horizontal (x) plane. Bends in
+//   other planes can be accomplished by rotating the magnet about the axes.
+//
+//   A positive bend angle is defined as one that bends a beam to the right when
+//   looking down (in the negative y direction) so that the beam is bent in the
+//   negative x direction. (This definition of a positive bend is the same whether
+//   the charge is positive or negative.)
+//
+//   A zero degree entrance edge angle is parallel to the x direction in an x/y/s
+//   coordinate system. A positive entrance edge angle is defined as one that
+//   rotates the positive edge (in x) of the angle toward the positive s axis.
+//
+//   Since the magnet geometry is a fixed rectangle, the exit edge angle is
+//   defined by the bend angle of the magnet and the entrance edge angle. In
+//   general, the exit edge angle is equal to the bend angle minus the entrance
+//   edge angle.
+//
+//   ------------------------------------------------------------------------
+//
+//   This class defines two interfaces:
+//
+//   1) Interface for rectangular magnets for OPAL-MAP.
+//
+//    Here we specify multipole components about the curved magnet trajectory.
+//
+//   2) Interface for rectangular magnets for OPAL-T.
+//
+//   Here we defined the magnet as a field map.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+
 #ifndef CLASSIC_RBend_HH
 #define CLASSIC_RBend_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: RBend.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1.2.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: RBend
-//   Defines the abstract interface for a rectangular bend magnet.
-//
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
-//
-// $Date: 2004/11/12 18:57:53 $
-// $Author: adelmann $
-//
-// ------------------------------------------------------------------------
 
 #include "AbsBeamline/Bend2D.h"
 #include "BeamlineGeometry/RBendGeometry.h"
 #include "Fields/BMultipoleField.h"
-
-/*
- * Class RBend
- *
- * Interface for a rectangular bend magnet.
- *
- * A rectangular bend magnet physically has a rectangular shape.
- *
- * The standard rectangular magnet, for purposes of definitions, has a field in
- * the y direction. This produces a bend in the horizontal (x) plane. Bends in
- * other planes can be accomplished by rotating the magnet about the axes.
- *
- * A positive bend angle is defined as one that bends a beam to the right when
- * looking down (in the negative y direction) so that the beam is bent in the
- * negative x direction. (This definition of a positive bend is the same whether
- * the charge is positive or negative.)
- *
- * A zero degree entrance edge angle is parallel to the x direction in an x/y/s
- * coordinate system. A positive entrance edge angle is defined as one that
- * rotates the positive edge (in x) of the angle toward the positive s axis.
- *
- * Since the magnet geometry is a fixed rectangle, the exit edge angle is
- * defined by the bend angle of the magnet and the entrance edge angle. In
- * general, the exit edge angle is equal to the bend angle minus the entrance
- * edge angle.
- *
- * ------------------------------------------------------------------------
- *
- * This class defines three interfaces:
- *
- * 1) Interface for rectangular magnets for OPAL-MAP.
- *
- *  Here we specify multipole components about the curved magnet trajectory.
- *
- *
- * 2) Interface for rectangular magnets in OPAL-SLICE.
- *
- * Here we define a rectangular magnet for use in the OPAL
- * slice model.
- *
- *
- * 3) Interface for rectangular magnets for OPAL-T.
- *
- * Here we defined the magnet as a field map.
- */
 
 class RBend: public Bend2D {
 
@@ -157,14 +142,6 @@ public:
     /// Get stepsize.
     //  Slices and stepsize used to determine integration step.
     virtual double getStepsize() const = 0;
-
-
-    /*
-     * Methods for OPAL-SLICE.
-     */
-    virtual void addKR(int i, double t, Vector_t &K) override;
-    virtual void addKT(int i, double t, Vector_t &K) override;
-
 
     /*
      * Methods for OPAL-T.

@@ -1,3 +1,26 @@
+//
+// Class BoxLibParticle
+//   Particle class for AMReX. It works together with BoxLibLayout.
+//   The class does the scatter and gather operations of attributes
+//   to and from the grid. Ippl implements the same functionality in the
+//   attribute class.
+//
+// Copyright (c) 2016 - 2020, Matthias Frey, Uldis Locans, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef BOXLIB_PARTICLE_H
 #define BOXLIB_PARTICLE_H
 
@@ -10,15 +33,7 @@
 #include <AMReX_Geometry.H>
 #include <AMReX_RealBox.H>
 
-/*!
- * Particle class for AMReX. It works together with BoxLibLayout.
- * 
- * Particle class that does the scatter and gather operations of attributes
- * to and from grid. In contrast to Ippl where it is implemented in the
- * attribute class, i.e. src/ippl/src/Particle/ParticleAttrib.h we do it in
- * the particle class. This way Ippl does not need to be modified if another
- * AMR framework is used.
- */
+
 template<class PLayout>
 class BoxLibParticle : public virtual AmrParticleBase<PLayout>
 {

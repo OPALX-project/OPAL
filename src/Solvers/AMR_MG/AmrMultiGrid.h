@@ -220,6 +220,12 @@ public:
      * Enable solver info dumping into SDDS file
      */
     void setVerbose(bool verbose);
+
+
+    /*!
+     * Change accuracy of solver
+     */
+    void setTolerance(const scalar_t& eps);
     
     double getXRangeMin(unsigned short level = 0);
     double getXRangeMax(unsigned short level = 0);
@@ -695,7 +701,7 @@ private:
     Norm norm_m;            ///< norm for convergence criteria (l1, l2, linf)
     std::string snorm_m;    ///< norm for convergence criteria
     
-    const scalar_t eps_m;   ///< rhs scale for convergence
+    scalar_t eps_m;         ///< rhs scale for convergence
     
     bool verbose_m;                 ///< If true, a SDDS file is written
     std::string fname_m;            ///< SDDS filename

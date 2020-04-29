@@ -2,7 +2,7 @@
 #include "Interface/Mesh.hh"
 #include "Utils/Exception.hh"
 #include <iomanip>
-#include <math.h>
+#include <cmath>
 
 /////// TwoDGrid ///////
 TwoDGrid::TwoDGrid() : _x(2,0), _y(2,0), _xSize(2), _ySize(2), _maps(), _constantSpacing(false)

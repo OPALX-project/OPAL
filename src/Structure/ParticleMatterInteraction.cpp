@@ -55,10 +55,10 @@ ParticleMatterInteraction::ParticleMatterInteraction():
                "The \"SURFACE_PHYSICS\" statement defines data for the particle mater interaction handler "
                "on an element."),
     handler_m(0) {
-    itsAttr[TYPE] = Attributes::makeString
+    itsAttr[TYPE] = Attributes::makeUpperCaseString
                     ("TYPE", "Specifies the particle mater interaction handler: Collimator");
 
-    itsAttr[MATERIAL] = Attributes::makeString
+    itsAttr[MATERIAL] = Attributes::makeUpperCaseString
                         ("MATERIAL", "The material of the surface");
 
     itsAttr[ENABLERUTHERFORD] = Attributes::makeBool("ENABLERUTHERFORD",
@@ -124,10 +124,10 @@ void ParticleMatterInteraction::update() {
 
 void ParticleMatterInteraction::initParticleMatterInteractionHandler(ElementBase &element) {
 
-    std::string material = Util::toUpper(Attributes::getString(itsAttr[MATERIAL]));
+    std::string material = Attributes::getString(itsAttr[MATERIAL]);
     bool enableRutherford = Attributes::getBool(itsAttr[ENABLERUTHERFORD]);
 
-    const std::string type = Util::toUpper(Attributes::getString(itsAttr[TYPE]));
+    const std::string type = Attributes::getString(itsAttr[TYPE]);
     if(type == "CCOLLIMATOR" ||
        type == "COLLIMATOR" ||
        type == "DEGRADER") {

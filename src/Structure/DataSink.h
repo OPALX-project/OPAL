@@ -1,23 +1,30 @@
 //
-//  Copyright & License: See Copyright.readme in src directory
+// Class DataSink
+//   This class acts as an observer during the calculation. It generates diagnostic
+//   output of the accelerated beam such as statistical beam descriptors of particle
+//   positions, momenta, beam phase space (emittance) etc. These are written to file
+//   at periodic time steps during the calculation.
 //
+//   This class also writes the full beam phase space to an H5 file at periodic time
+//   steps in the calculation (this period is different from that of the statistical
+//   numbers).
 
-/**
-   \brief Class: DataSink
-
-   This class acts as an observer during the calculation. It generates diagnostic
-   output of the accelerated beam such as statistical beam descriptors of particle
-   positions, momenta, beam phase space (emittance) etc. These are written to file
-   at periodic time steps during the calculation.
-
-   This class also writes the full beam phase space to an H5 file at periodic time
-   steps in the calculation (this period is different from that of the statistical
-   numbers).
-
-   Class also writes processor load balancing data to file to track parallel
-   calculation efficiency.
-*/
-
+//   Class also writes processor load balancing data to file to track parallel
+//   calculation efficiency.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef _OPAL_DATA_SINK_H
 #define _OPAL_DATA_SINK_H
 
@@ -57,22 +64,12 @@ public:
                double refR, double refTheta, double refZ,
                double azimuth, double elevation, bool local) const;
     
-    //FIXME https://gitlab.psi.ch/OPAL/src/issues/245
-    void dumpH5(EnvelopeBunch &beam, Vector_t FDext[],
-                double sposHead, double sposRef,
-                double sposTail) const;
-    
-    
     void dumpSDDS(PartBunchBase<double, 3> *beam, Vector_t FDext[],
                   const double& azimuth = -1) const;
     
     void dumpSDDS(PartBunchBase<double, 3> *beam, Vector_t FDext[],
                   const losses_t &losses = losses_t(), const double& azimuth = -1) const;
     
-    //FIXME https://gitlab.psi.ch/OPAL/src/issues/245
-    void dumpSDDS(EnvelopeBunch &beam, Vector_t FDext[],
-                  double sposHead, double sposRef, double sposTail) const;
-
     /** \brief Write cavity information from  H5 file
      */
     void storeCavityInformation();
@@ -85,7 +82,7 @@ public:
      * @param fn specifies the name of ASCII file
      * @param beam
      */
-    void writePartlossZASCII(PartBunchBase<double, 3> *beam, BoundaryGeometry &bg, std::string fn);
+    void writePartlossZASCII(const PartBunchBase<double, 3> *beam, BoundaryGeometry &bg, std::string fn);
     
     /**
      * Write geometry points and surface triangles to vtk file
@@ -103,7 +100,7 @@ public:
      * @param fn specifies the name of vtk file contains the geometry
      *
      */
-    void writeImpactStatistics(PartBunchBase<double, 3> *beam,
+    void writeImpactStatistics(const PartBunchBase<double, 3> *beam,
                                long long int &step,
                                size_t &impact,
                                double &sey_num,

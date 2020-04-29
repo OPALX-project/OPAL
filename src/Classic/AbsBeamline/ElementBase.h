@@ -36,26 +36,12 @@
 #include <queue>
 
 class BeamlineVisitor;
+class BoundaryGeometry;
 class Channel;
 class ConstChannel;
 class ElementImage;
-
-enum ElemType {
-    isDrift,
-    isUndulator,
-    isSolenoid,
-    isSource,
-    isRF,
-    isDipole,
-    isMultipole,
-    isOther
-};
-
-
-
-class WakeFunction;
 class ParticleMatterInteractionHandler;
-class BoundaryGeometry;
+class WakeFunction;
 
 // Class ElementBase
 // ------------------------------------------------------------------------
@@ -423,12 +409,6 @@ public:
 
     virtual bool hasParticleMatterInteraction() const;
 
-    /// returns element type as enumeration needed in the envelope tracker
-    ElemType getElType() const;
-
-    /// set the element type as enumeration needed in the envelope tracker
-    void setElType(ElemType elt);
-
     void setCSTrafoGlobal2Local(const CoordinateSystemTrafo &ori);
     CoordinateSystemTrafo getCSTrafoGlobal2Local() const;
     void releasePosition();
@@ -488,8 +468,6 @@ private:
     BoundaryGeometry *bgeometry_m;
 
     ParticleMatterInteractionHandler *parmatint_m;
-
-    ElemType elType_m;
 
     bool positionIsFixed;
     ///@{ ELEMEDGE attribute
@@ -582,14 +560,6 @@ ParticleMatterInteractionHandler *ElementBase::getParticleMatterInteraction() co
 inline
 bool ElementBase::hasParticleMatterInteraction() const
 { return parmatint_m != NULL; }
-
-inline
-ElemType ElementBase::getElType() const
-{ return elType_m;}
-
-inline
-void ElementBase::setElType(ElemType elt)
-{ elType_m = elt;}
 
 inline
 void ElementBase::setCSTrafoGlobal2Local(const CoordinateSystemTrafo &trafo)

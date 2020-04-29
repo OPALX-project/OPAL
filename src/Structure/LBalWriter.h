@@ -26,10 +26,18 @@ class LBalWriter : public SDDSWriter {
 public:
     LBalWriter(const std::string& fname, bool restart);
 
-    void write(PartBunchBase<double, 3> *beam) override;
+#ifdef ENABLE_AMR
+    void write(PartBunchBase<double, 3> *beam);
+#else
+    void write(const PartBunchBase<double, 3> *beam) override;
+#endif
 
 private:
+#ifdef ENABLE_AMR
     void fillHeader(PartBunchBase<double, 3> *beam);
+#else
+    void fillHeader();
+#endif
 };
 
 

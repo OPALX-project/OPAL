@@ -76,7 +76,7 @@ void MemoryWriter::fillHeader() {
 }
 
 
-void MemoryWriter::write(PartBunchBase<double, 3> *beam)
+void MemoryWriter::write(const PartBunchBase<double, 3> *beam)
 {
     IpplMemoryUsage::IpplMemory_p memory = IpplMemoryUsage::getInstance();
     memory->sample();

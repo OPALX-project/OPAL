@@ -29,12 +29,12 @@ public:
      * @param finestLevel for solve
      * @param prevAsGuess use of previous solution as initial guess
      */
-    virtual void solve(AmrScalarFieldContainer_t &rho,
-                       AmrScalarFieldContainer_t &phi,
-                       AmrVectorFieldContainer_t &efield,
-                       unsigned short baseLevel,
-                       unsigned short finestLevel,
-                       bool prevAsGuess = true)
+    virtual void solve(AmrScalarFieldContainer_t &/*rho*/,
+                       AmrScalarFieldContainer_t &/*phi*/,
+                       AmrVectorFieldContainer_t &/*efield*/,
+                       unsigned short /*baseLevel*/,
+                       unsigned short /*finestLevel*/,
+                       bool /*prevAsGuess*/ = true)
     {
         throw OpalException("PoissonSolver::solve()", "Not supported for non-AMR code.");
     };

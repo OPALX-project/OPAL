@@ -30,7 +30,6 @@
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Timer.h"
-#include "Utilities/Util.h"
 #include <AMReX_ParallelDescriptor.H>
 
 #include <boost/filesystem.hpp>
@@ -62,6 +61,7 @@ AmrMultiGrid::AmrMultiGrid(AmrBoxLib* itsAmrObject_p,
     , lfine_m(0)
     , nlevel_m(1)
     , nBcPoints_m(0)
+    , snorm_m(norm)
     , eps_m(1.0e-10)
     , verbose_m(false)
     , fname_m(OpalData::getInstance()->getInputBasename() + std::string(".solver"))
@@ -193,6 +193,11 @@ AmrMultiGrid::scalar_t AmrMultiGrid::getLevelResidualNorm(lo_t level) {
 
 void AmrMultiGrid::setVerbose(bool verbose) {
     verbose_m = verbose;
+}
+
+
+void AmrMultiGrid::setTolerance(const scalar_t& eps) {
+    eps_m = eps;
 }
 
 
@@ -2017,7 +2022,7 @@ AmrMultiGrid::convertToEnumBoundary_m(const std::string& bc) {
     map["OPEN"]         = Boundary::OPEN;
     map["PERIODIC"]     = Boundary::PERIODIC;
 
-    auto boundary = map.find(Util::toUpper(bc));
+    auto boundary = map.find(bc);
 
     if ( boundary == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumBoundary_m()",
@@ -2033,7 +2038,7 @@ AmrMultiGrid::convertToEnumInterpolater_m(const std::string& interp) {
     map["LAGRANGE"]     = Interpolater::LAGRANGE;
     map["PC"]           = Interpolater::PIECEWISE_CONST;
 
-    auto interpolater = map.find(Util::toUpper(interp));
+    auto interpolater = map.find(interp);
 
     if ( interpolater == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumInterpolater_m()",
@@ -2074,7 +2079,7 @@ AmrMultiGrid::convertToEnumBaseSolver_m(const std::string& bsolver) {
 #endif
     map["SA"]               = BaseSolver::SA;
 
-    auto solver = map.find(Util::toUpper(bsolver));
+    auto solver = map.find(bsolver);
 
     if ( solver == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumBaseSolver_m()",
@@ -2093,7 +2098,7 @@ AmrMultiGrid::convertToEnumPreconditioner_m(const std::string& prec) {
 
     MueLuPreconditioner_t::fillMap(map);
 
-    auto precond = map.find(Util::toUpper(prec));
+    auto precond = map.find(prec);
 
     if ( precond == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumPreconditioner_m()",
@@ -2116,9 +2121,7 @@ AmrMultiGrid::convertToEnumNorm_m(const std::string& norm) {
     map["L2"]   = Norm::L2;
     map["LINF"] = Norm::LINF;
 
-    snorm_m = Util::toUpper(norm);
-
-    auto n = map.find(snorm_m);
+    auto n = map.find(norm);
 
     if ( n == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumNorm_m()",
@@ -2192,7 +2195,7 @@ void AmrMultiGrid::writeSDDSHeader_m(std::ofstream& outfile) {
             << comm_mp->getSize() << '\n'
             << OPAL_PROJECT_NAME << " " << OPAL_PROJECT_VERSION << " git rev. #" << Util::getGitRevision() << '\n'
             << (OpalData::getInstance()->isInOPALTMode()? "opal-t":
-                (OpalData::getInstance()->isInOPALCyclMode()? "opal-cycl": "opal-env")) << std::endl;
+                (OpalData::getInstance()->isInOPALCyclMode()? "opal-cycl": "opal-map")) << std::endl;
 }
 
 

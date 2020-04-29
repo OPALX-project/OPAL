@@ -83,9 +83,6 @@ Bend2D::Bend2D(const Bend2D &right):
     computeAngleTrafo_m(right.computeAngleTrafo_m),
     maxAngle_m(right.maxAngle_m),
     nSlices_m(right.nSlices_m){
-
-    setElType(isDipole);
-
 }
 
 Bend2D::Bend2D(const std::string &name):
@@ -123,9 +120,6 @@ Bend2D::Bend2D(const std::string &name):
     tanExitAngle_m(0.0),
     maxAngle_m(0.0),
     nSlices_m(1){
-
-    setElType(isDipole);
-
 }
 
 Bend2D::~Bend2D() {

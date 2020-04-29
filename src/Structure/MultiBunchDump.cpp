@@ -93,7 +93,7 @@ void MultiBunchDump::fillHeader() {
 }
 
 
-void MultiBunchDump::write(PartBunchBase<double, 3>* /*beam*/,
+void MultiBunchDump::write(const PartBunchBase<double, 3>* /*beam*/,
                            const beaminfo_t& binfo) {
 
     if ( Ippl::myNode() > 0)

@@ -55,7 +55,6 @@ namespace {
 
         // DESCRIPTION OF BUNCHES:
         NPART,      // Number of particles per bunch
-        NSLICE,     // Number of slices per bunch
         SIZE
     };
 }
@@ -103,8 +102,6 @@ Beam::Beam():
     // DESCRIPTION OF BUNCHES:
     itsAttr[NPART] = Attributes::makeReal
                      ("NPART", "Number of particles in bunch");
-    itsAttr[NSLICE] = Attributes::makeReal
-                      ("NSLICE", "Number of slices in bunch");
 
     // Set up default beam.
     Beam *defBeam = clone("UNNAMED_BEAM");
@@ -159,10 +156,6 @@ Beam *Beam::find(const std::string &name) {
 
 size_t Beam::getNumberOfParticles() {
     return (size_t)Attributes::getReal(itsAttr[NPART]);
-}
-
-size_t Beam::getNumberOfSlices() {
-    return (size_t)Attributes::getReal(itsAttr[NSLICE]);
 }
 
 double Beam::getEX() const {
@@ -287,7 +280,7 @@ void Beam::update() {
             throw OpalException("Beam::update()",
                                 "\"PC\" should be greater than 0.");
         }
-    };
+    }
 
     // Set default name.
     if(getOpalName().empty()) setOpalName("UNNAMED_BEAM");

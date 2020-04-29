@@ -21,7 +21,6 @@
 #include "Attributes/Attributes.h"
 #include "Physics/Physics.h"
 #include "Utilities/OpalException.h"
-#include "Utilities/Util.h"
 #include "AbsBeamline/ElementBase.h"
 
 #include "Utility/IpplInfo.h"
@@ -60,7 +59,7 @@ OpalFilter::OpalFilter():
                "The \"FILTER\" statement defines a 1 dimensional filter to be "
                "applied on histogram."),
     filter_m(0) {
-    itsAttr[TYPE] = Attributes::makeString
+    itsAttr[TYPE] = Attributes::makeUpperCaseString
                     ("TYPE", "Specifies the type of filter: SavitzkyGolay, fixedFFTLowPass, relativeFFTLowPass, Stencil");
 
     itsAttr[NFREQ] = Attributes::makeReal
@@ -145,7 +144,7 @@ void OpalFilter::initOpalFilter() {
         *gmsg << "OpalFilter::initOpalFilterfunction " << endl;
         *gmsg << "* **********************************************************************************" << endl;
 
-        std::string type = Util::toUpper(Attributes::getString(itsAttr[TYPE]));
+        std::string type = Attributes::getString(itsAttr[TYPE]);
         if (type == "SAVITZKY-GOLAY") {
             int num_points = (int)(Attributes::getReal(itsAttr[NPOINTS]));
             int num_points_left = (int)(Attributes::getReal(itsAttr[NLEFT]));

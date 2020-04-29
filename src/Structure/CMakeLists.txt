@@ -9,7 +9,6 @@ set (_SRCS
   ElementPositionWriter.cpp
   H5PartWrapper.cpp
   H5PartWrapperForPC.cpp
-  H5PartWrapperForPS.cpp
   H5PartWrapperForPT.cpp
   MonitorStatisticsWriter.cpp
   MultiBunchDump.cpp
@@ -35,7 +34,6 @@ set (HDRS
     ElementPositionWriter.h
     FieldSolver.h
     H5PartWrapperForPC.h
-    H5PartWrapperForPS.h
     H5PartWrapperForPT.h
     H5PartWrapper.h
     IpplInfoWrapper.h

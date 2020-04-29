@@ -1,3 +1,27 @@
+//
+// Class AmrBoxLib
+//   Concrete AMR object. It is based on the AMReX library
+//   (cf. https://amrex-codes.github.io/ or https://ccse.lbl.gov/AMReX/).
+//   AMReX is the successor of BoxLib. This class represents the interface
+//   to AMReX and the AMR framework in OPAL. It implements the functions of
+//   the AmrObject class.
+//
+// Copyright (c) 2016 - 2020, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AmrBoxLib.h"
 
 #include "Algorithms/AmrPartBunch.h"
@@ -82,6 +106,8 @@ void AmrBoxLib::regrid(double time) {
     *gmsg << "* Start regriding:" << endl
           << "*     Old finest level: "
           << finest_level << endl;
+
+    this->preRegrid_m();
 
     /* ATTENTION: The bunch might be updated during
      * the regrid process!
@@ -189,7 +215,7 @@ AmrBoxLib::VectorPair_t AmrBoxLib::getEExtrema() {
 }
 
 
-double AmrBoxLib::getRho(int x, int y, int z) {
+double AmrBoxLib::getRho(int /*x*/, int /*y*/, int /*z*/) {
     //TODO
     throw OpalException("AmrBoxLib::getRho(x, y, z)", "Not yet Implemented.");
     return 0.0;
@@ -202,7 +228,7 @@ void AmrBoxLib::computeSelfFields() {
 }
 
 
-void AmrBoxLib::computeSelfFields(int bin) {
+void AmrBoxLib::computeSelfFields(int /*bin*/) {
     //TODO
     throw OpalException("AmrBoxLib::computeSelfFields(int bin)", "Not yet Implemented.");
 }
@@ -232,51 +258,11 @@ void AmrBoxLib::computeSelfFields_cycl(double gamma) {
     amrpbase_p->update();
     amrpbase_p->setForbidTransform(false);
     
-    /// from charge (C) to charge density (C/m^3).
-    amrpbase_p->scatter(bunch_mp->Q, this->rho_m, bunch_mp->R, 0, finest_level, bunch_mp->Bin);
-    
-    int baseLevel = 0;
-    int nLevel = finest_level + 1;
     double invGamma = 1.0 / gamma;
-    
-    
-    // mesh scaling for solver
-    meshScaling_m = Vector_t(1.0, 1.0, 1.0);
-    
-    // charge density is in rho_m
-    // calculate Possion equation (with coefficient: -1/(eps))
-    for (int i = 0; i <= finest_level; ++i) {
-        if ( this->rho_m[i]->contains_nan(false) )
-            throw OpalException("AmrBoxLib::computeSelfFields_cycl(double gamma) ",
-                                "NANs at level " + std::to_string(i) + ".");
-        this->rho_m[i]->mult(-1.0 / Physics::epsilon_0, 0, 1);
-    }
-    
-    // find maximum and normalize each level (faster convergence)
-    double l0norm = 1.0;
-    for (int i = 0; i <= finest_level; ++i)
-        l0norm = std::max(l0norm, this->rho_m[i]->norm0(0));
-    
-    for (int i = 0; i <= finest_level; ++i) {
-        this->rho_m[i]->mult(1.0 / l0norm, 0, 1);
-    }
+    int nLevel = finest_level + 1;
 
-    PoissonSolver *solver = bunch_mp->getFieldSolver();
+    double l0norm = this->solvePoisson_m();
 
-    IpplTimings::startTimer(this->amrSolveTimer_m);
-    solver->solve(rho_m, phi_m, efield_m, baseLevel, finest_level);
-    IpplTimings::stopTimer(this->amrSolveTimer_m);
-    
-    // make sure ghost cells are filled
-    for (int i = 0; i <= finest_level; ++i) {
-        phi_m[i]->FillBoundary(geom[i].periodicity());
-        for (int j = 0; j < AMREX_SPACEDIM; ++j) {
-            efield_m[i][j]->FillBoundary(geom[i].periodicity());
-        }
-    }
-    
-    this->fillPhysbc_m(*(this->phi_m[0]), 0);
-    
     /* apply scale of electric-field in order to undo the transformation
      * + undo normalization
      */
@@ -286,7 +272,7 @@ void AmrBoxLib::computeSelfFields_cycl(double gamma) {
             this->efield_m[i][j]->mult(scalefactor * scalefactor * l0norm, 0, 1);
         }
     }
-    
+
     for (int i = 0; i <= finest_level; ++i) {
         for (int j = 0; j < AMREX_SPACEDIM; ++j) {
             if ( this->efield_m[i][j]->contains_nan(false) )
@@ -294,8 +280,7 @@ void AmrBoxLib::computeSelfFields_cycl(double gamma) {
                                     "Ef: NANs at level " + std::to_string(i) + ".");
         }
     }
-    
-    
+
     amrpbase_p->gather(bunch_mp->Ef, this->efield_m, bunch_mp->R, 0, finest_level);
     
     // undo domain change + undo Lorentz transform
@@ -539,7 +524,7 @@ inline double AmrBoxLib::getT() const {
 }
 
 
-void AmrBoxLib::redistributeGrids(int how) {
+void AmrBoxLib::redistributeGrids(int /*how*/) {
 //
 //    // copied + modified version of AMReX_Amr.cpp
 //    AmrProcMap_t::InitProximityMap();
@@ -600,7 +585,7 @@ void AmrBoxLib::redistributeGrids(int how) {
 }
 
 
-void AmrBoxLib::RemakeLevel (int lev, AmrReal_t time,
+void AmrBoxLib::RemakeLevel (int lev, AmrReal_t /*time*/,
                              const AmrGrid_t& new_grids,
                              const AmrProcMap_t& new_dmap)
 {
@@ -633,7 +618,7 @@ void AmrBoxLib::RemakeLevel (int lev, AmrReal_t time,
 }
 
 
-void AmrBoxLib::MakeNewLevel (int lev, AmrReal_t time,
+void AmrBoxLib::MakeNewLevel (int lev, AmrReal_t /*time*/,
                               const AmrGrid_t& new_grids,
                               const AmrProcMap_t& new_dmap)
 {
@@ -714,17 +699,17 @@ void AmrBoxLib::ErrorEst(int lev, TagBoxArray_t& tags,
 }
 
 
-void AmrBoxLib::MakeNewLevelFromScratch(int lev, AmrReal_t time,
-                                  const AmrGrid_t& ba,
-                                  const AmrProcMap_t& dm)
+void AmrBoxLib::MakeNewLevelFromScratch(int /*lev*/, AmrReal_t /*time*/,
+                                  const AmrGrid_t& /*ba*/,
+                                  const AmrProcMap_t& /*dm*/)
 {
     throw OpalException("AmrBoxLib::MakeNewLevelFromScratch()", "Shouldn't be called.");
 }
 
 
-void AmrBoxLib::MakeNewLevelFromCoarse (int lev, AmrReal_t time,
-                                        const AmrGrid_t& ba,
-                                        const AmrProcMap_t& dm)
+void AmrBoxLib::MakeNewLevelFromCoarse (int /*lev*/, AmrReal_t /*time*/,
+                                        const AmrGrid_t& /*ba*/,
+                                        const AmrProcMap_t& /*dm*/)
 {
     throw OpalException("AmrBoxLib::MakeNewLevelFromCoarse()", "Shouldn't be called.");
 }
@@ -763,6 +748,22 @@ void AmrBoxLib::doRegrid_m(int lbase, double time) {
     }
     
     finest_level = new_finest;
+}
+
+
+void AmrBoxLib::preRegrid_m() {
+    /* In case of E-field or potential tagging
+     * in combination of binning we need to make
+     * sure we do not lose accuracy when tagging since
+     * the grid data of the potential or e-field are only
+     * non-zero for the last bin causing the tagging to refine
+     * only there.
+     * So, we need to solve the Poisson problem first assuming
+     * a single bin only
+     */
+    if ( tagging_m == POTENTIAL || tagging_m == EFIELD ) {
+        this->solvePoisson_m();
+    }
 }
 
 
@@ -805,8 +806,57 @@ void AmrBoxLib::postRegrid_m(int old_finest) {
 }
 
 
+double AmrBoxLib::solvePoisson_m() {
+    AmrPartBunch::pbase_t* amrpbase_p = bunch_mp->getAmrParticleBase();
+
+    /// from charge (C) to charge density (C/m^3).
+    amrpbase_p->scatter(bunch_mp->Q, this->rho_m, bunch_mp->R, 0, finest_level, bunch_mp->Bin);
+
+    int baseLevel = 0;
+
+    // mesh scaling for solver
+    meshScaling_m = Vector_t(1.0, 1.0, 1.0);
+
+    // charge density is in rho_m
+    // calculate Possion equation (with coefficient: -1/(eps))
+    for (int i = 0; i <= finest_level; ++i) {
+        if ( this->rho_m[i]->contains_nan(false) )
+            throw OpalException("AmrBoxLib::solvePoisson_m() ",
+                                "NANs at level " + std::to_string(i) + ".");
+        this->rho_m[i]->mult(-1.0 / Physics::epsilon_0, 0, 1);
+    }
+
+    // find maximum and normalize each level (faster convergence)
+    double l0norm = 1.0;
+    for (int i = 0; i <= finest_level; ++i)
+        l0norm = std::max(l0norm, this->rho_m[i]->norm0(0));
+
+    for (int i = 0; i <= finest_level; ++i) {
+        this->rho_m[i]->mult(1.0 / l0norm, 0, 1);
+    }
+
+    PoissonSolver *solver = bunch_mp->getFieldSolver();
+
+    IpplTimings::startTimer(this->amrSolveTimer_m);
+    solver->solve(rho_m, phi_m, efield_m, baseLevel, finest_level);
+    IpplTimings::stopTimer(this->amrSolveTimer_m);
+
+    // make sure ghost cells are filled
+    for (int i = 0; i <= finest_level; ++i) {
+        phi_m[i]->FillBoundary(geom[i].periodicity());
+        for (int j = 0; j < AMREX_SPACEDIM; ++j) {
+            efield_m[i][j]->FillBoundary(geom[i].periodicity());
+        }
+    }
+
+    this->fillPhysbc_m(*(this->phi_m[0]), 0);
+
+    return l0norm;
+}
+
+
 void AmrBoxLib::tagForChargeDensity_m(int lev, TagBoxArray_t& tags,
-                                      AmrReal_t time, int ngrow)
+                                      AmrReal_t /*time*/, int /*ngrow*/)
 {
     // we need to update first
     AmrPartBunch::pbase_t* amrpbase_p = bunch_mp->getAmrParticleBase();
@@ -978,7 +1028,7 @@ void AmrBoxLib::tagForEfield_m(int lev, TagBoxArray_t& tags,
 
 
 void AmrBoxLib::tagForMomenta_m(int lev, TagBoxArray_t& tags,
-                                AmrReal_t time, int ngrow)
+                                AmrReal_t /*time*/, int /*ngrow*/)
 {
     AmrPartBunch::pbase_t* amrpbase_p = bunch_mp->getAmrParticleBase();
     // we need to update first
@@ -1037,7 +1087,7 @@ void AmrBoxLib::tagForMomenta_m(int lev, TagBoxArray_t& tags,
 
 
 void AmrBoxLib::tagForMaxNumParticles_m(int lev, TagBoxArray_t& tags,
-                                        AmrReal_t time, int ngrow)
+                                        AmrReal_t /*time*/, int /*ngrow*/)
 {
     AmrPartBunch::pbase_t* amrpbase_p = bunch_mp->getAmrParticleBase();
     // we need to update first
@@ -1087,7 +1137,7 @@ void AmrBoxLib::tagForMaxNumParticles_m(int lev, TagBoxArray_t& tags,
 
 
 void AmrBoxLib::tagForMinNumParticles_m(int lev, TagBoxArray_t& tags,
-                                        AmrReal_t time, int ngrow)
+                                        AmrReal_t /*time*/, int /*ngrow*/)
 {
     AmrPartBunch::pbase_t* amrpbase_p = bunch_mp->getAmrParticleBase();
     // we need to update first

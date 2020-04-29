@@ -1,54 +1,47 @@
+//
+// Class Track
+//   Hold data for tracking.
+//   Acts as a communication area between the various tracking commands.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+
 #ifndef OPAL_Track_HH
 #define OPAL_Track_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: Track.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Struct: Track
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:33:46 $
-// $Author: Andreas Adelmann $
-//
-// ------------------------------------------------------------------------
 
 #include "Algorithms/PartData.h"
 #include "Track/TrackParser.h"
 #include <stack>
+#include <vector>
 
 class BeamSequence;
-class TrackParser;
 
 template <class T, unsigned Dim>
 class PartBunchBase;
 
-class EnvelopeBunch;
-
-// Class Track
-// ------------------------------------------------------------------------
-/// Hold data for tracking.
-//  Acts as a communication area between the various tracking commands.
-
 class Track {
-    
+
 public:
 
     Track(BeamSequence *, const PartData &, const std::vector<double> & dt,
           const std::vector<unsigned long long> & maxtsteps, int stepsperturn,
           double zStart, const std::vector<double> & zStop, int timeintegrator,
-          int nslices, double t0, double dtScInit, double deltaTau);
+          double t0, double dtScInit, double deltaTau);
     ~Track();
 
     /// The particle bunch to be tracked.
     PartBunchBase<double, 3> *bunch;
-
-    EnvelopeBunch *slbunch;
 
     /// The reference data.
     PartData reference;

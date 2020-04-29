@@ -46,7 +46,6 @@ Solenoid::Solenoid(const Solenoid &right):
     startField_m(right.startField_m),
     length_m(right.length_m),
     fast_m(right.fast_m) {
-    setElType(isSolenoid);
 }
 
 
@@ -59,7 +58,6 @@ Solenoid::Solenoid(const std::string &name):
     startField_m(0.0),
     length_m(0.0),
     fast_m(true) {
-    setElType(isSolenoid);
 }
 
 
@@ -83,79 +81,6 @@ void Solenoid::setFast(bool fast) {
 
 bool Solenoid::getFast() const {
     return fast_m;
-}
-
-/**
- * \brief ENVELOPE COMPONENT for radial focussing of the beam
- * Calculates the transverse envelope component for the
- * solenoid element and adds it to the K vector
-*/
-void Solenoid::addKR(int i, double /*t*/, Vector_t &K) {
-    Inform msg("Solenoid::addKR()");
-
-    double pz = RefPartBunch_m->getZ(i) - startField_m;
-    if (pz < 0.0 ||
-        pz >= length_m) return;
-
-    Vector_t tmpE(0.0, 0.0, 0.0);
-    Vector_t tmpB(0.0, 0.0, 0.0);
-    const Vector_t tmpA(RefPartBunch_m->getX(i), RefPartBunch_m->getY(i), pz);
-
-    myFieldmap_m->getFieldstrength(tmpA, tmpE, tmpB);
-    double k = Physics::q_e * scale_m * tmpB(2) / (2.0 * Physics::EMASS * RefPartBunch_m->getGamma(i));
-    k *= k;
-    K += Vector_t(k, k, 0.0);
-}
-
-/**
- * ENVELOPE COMPONENT for transverse kick (only important for x0, y0)
- * Calculates the transverse kick component for the solenoid element and adds it to
- * the K vector, only important for off track tracking. Otherwise KT = 0.
-*/
-void Solenoid::addKT(int i, double /*t*/, Vector_t &K) {
-    Inform msg("Solenoid::addKT()");
-    double dbdz, emg;
-
-    double pz = RefPartBunch_m->getZ(i) - startField_m;
-    if (pz < 0.0 ||
-        pz >= length_m) return;
-
-    Vector_t tmpE(0.0, 0.0, 0.0);
-    Vector_t tmpB(0.0, 0.0, 0.0);
-    Vector_t tmpE_diff(0.0, 0.0, 0.0);
-    Vector_t tmpB_diff(0.0, 0.0, 0.0);
-    const Vector_t tmpA(RefPartBunch_m->getX(i), RefPartBunch_m->getY(i), pz);
-
-    // define z direction:
-    DiffDirection zdir(DZ);
-
-    myFieldmap_m->getFieldstrength(tmpA, tmpE, tmpB);
-
-    // get derivation of B in z-direction
-    myFieldmap_m->getFieldDerivative(tmpA, tmpE_diff, tmpB_diff, zdir);
-
-    double bz = scale_m * tmpB(2);
-    double g = RefPartBunch_m->getGamma(i);
-
-    //FIXME?: BET: dz   = z - z0,
-    dbdz = scale_m * tmpB_diff(2) * RefPartBunch_m->getBeta(i) * Physics::c;
-    emg  = Physics::q_e / (g * Physics::EMASS);
-
-    /** BET:
-     * Vector_t temp(emg*(bz*(Cxy*tempBunch->getPy(i) + Sy) + Cxy*dbdz*(y-y0)),
-     *              -emg*(bz*(Cxy*tempBunch->getPx(i) + Sx) + Cxy*dbdz*(x-x0)),
-     *              0.0);
-    */
-
-    double dx = RefPartBunch_m->getX0(i);
-    double dy = RefPartBunch_m->getY0(i);
-
-    //FIXME: Py0, Px0?
-    Vector_t temp(emg * (bz * (RefPartBunch_m->getPy0(i)) + dbdz * dy),
-                  -emg * (bz * (RefPartBunch_m->getPx0(i)) + dbdz * dx),
-                  0.0);
-
-    K += temp;
 }
 
 bool Solenoid::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) {

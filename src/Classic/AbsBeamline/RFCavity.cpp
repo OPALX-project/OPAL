@@ -78,9 +78,7 @@ RFCavity::RFCavity(const RFCavity &right):
     VrNormal_m(nullptr),
     DvDr_m(nullptr),
     num_points_m(right.num_points_m)
-{
-    setElType(isRF);
-}
+{}
 
 
 RFCavity::RFCavity(const std::string &name):
@@ -113,9 +111,7 @@ RFCavity::RFCavity(const std::string &name):
     VrNormal_m(nullptr),
     DvDr_m(nullptr),
     num_points_m(0)
-{
-    setElType(isRF);
-}
+{}
 
 
 RFCavity::~RFCavity() {
@@ -124,75 +120,6 @@ RFCavity::~RFCavity() {
 void RFCavity::accept(BeamlineVisitor &visitor) const {
     visitor.visitRFCavity(*this);
 }
-
-/**
- * ENVELOPE COMPONENT for radial focussing of the beam
- * Calculates the transverse envelope component for the RF cavity
- * element and adds it to the K vector
-*/
-void RFCavity::addKR(int i, double t, Vector_t &K) {
-
-    double pz = RefPartBunch_m->getZ(i) - startField_m;
-    if (pz < 0.0 ||
-        pz >= length_m) return;
-
-    const Vector_t tmpR(RefPartBunch_m->getX(i), RefPartBunch_m->getY(i), pz);
-    double k = -Physics::q_e / (2.0 * RefPartBunch_m->getGamma(i) * Physics::EMASS);
-
-    Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
-    fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
-    double Ez = tmpE(2);
-
-    tmpE = Vector_t(0.0);
-    fieldmap_m->getFieldDerivative(tmpR, tmpE, tmpB, DZ);
-
-    double wtf = frequency_m * t + phase_m;
-    double kj = k * scale_m * (tmpE(2) * cos(wtf) - RefPartBunch_m->getBeta(i) * frequency_m * Ez * sin(wtf) / Physics::c);
-
-    K += Vector_t(kj, kj, 0.0);
-}
-
-
-/**
- * ENVELOPE COMPONENT for transverse kick (only has an impact if x0, y0 != 0)
- * Calculates the transverse kick component for the RF cavity element and adds it to
- * the K vector. Only important for off track tracking, otherwise KT = 0.
-*/
-void RFCavity::addKT(int i, double t, Vector_t &K) {
-
-    RefPartBunch_m->actT();
-
-    double pz = RefPartBunch_m->getZ(i) - startField_m;
-    if (pz < 0.0 ||
-        pz >= length_m) return;
-
-    //XXX: BET parameter, default is 1.
-    //If cxy != 1, then cxy = true
-    bool cxy = false; // default
-    double kx = 0.0, ky = 0.0;
-    if(cxy) {
-        const Vector_t tmpA(RefPartBunch_m->getX(i), RefPartBunch_m->getY(i), pz);
-
-        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
-        fieldmap_m->getFieldstrength(tmpA, tmpE, tmpB);
-
-        double cwtf = cos(frequency_m * t + phase_m);
-        double cf = -Physics::q_e / (RefPartBunch_m->getGamma(i) * Physics::m_e);
-        kx += -cf * scale_m * tmpE(0) * cwtf;
-        ky += -cf * scale_m * tmpE(1) * cwtf;
-    }
-
-    double dx = RefPartBunch_m->getX0(i);
-    double dy = RefPartBunch_m->getY0(i);
-
-    Vector_t KR(0.0, 0.0, 0.0);
-    addKR(i, t, KR);
-    //FIXME ?? different in bet src
-    K += Vector_t(KR(1) * dx + kx, KR(1) * dy + ky, 0.0);
-    //
-    //K += Vector_t(kx - KR(1) * dx, ky - KR(1) * dy, 0.0);
-}
-
 
 bool RFCavity::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) {
     return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
@@ -401,7 +328,6 @@ double RFCavity::getPhi0() const {
 }
 
 void RFCavity::setComponentType(std::string name) {
-    name = Util::toUpper(name);
     if(name == "STANDING") {
         type_m = SW;
     } else if(name == "SINGLEGAP") {

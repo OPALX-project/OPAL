@@ -25,7 +25,7 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <math.h>
+#include <cmath>
 #include <iomanip>
 #include "Utilities/OpalException.h"
 #include "Fields/Interpolation/Mesh.h"

@@ -27,11 +27,11 @@
 
 #include "Fields/SectorField.h"
 
-#include <math.h>
-
-#include <limits>
-#include <vector>
 #include <algorithm>
+#include <cmath>
+#include <limits>
+#include <string>
+#include <vector>
 
 #include "Utilities/LogicalError.h"
 

@@ -63,13 +63,6 @@ public:
     virtual void accept(BeamlineVisitor &) const = 0;
 
     /*
-     * Methods for OPAL-SLICE.
-     */
-    virtual void addKR(int /*i*/, double /*t*/, Vector_t &/*K*/) {};
-    virtual void addKT(int /*i*/, double /*t*/, Vector_t &/*K*/) {};
-
-
-    /*
      * Methods for OPAL-T.
      * ===================
      */

@@ -8,6 +8,7 @@ SET (_EXPR_SRCS
     SumErrSqRadialPeak.cpp
     Parser/expression.cpp
     Parser/evaluator.cpp
+    SeptumExpr.h
 )
 
 add_sources(${_EXPR_SRCS})

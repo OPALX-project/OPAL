@@ -1,5 +1,29 @@
 //
-//  Copyright & License: See Copyright.readme in src directory
+// Class DataSink
+//   This class acts as an observer during the calculation. It generates diagnostic
+//   output of the accelerated beam such as statistical beam descriptors of particle
+//   positions, momenta, beam phase space (emittance) etc. These are written to file
+//   at periodic time steps during the calculation.
+//
+//   This class also writes the full beam phase space to an H5 file at periodic time
+//   steps in the calculation (this period is different from that of the statistical
+//   numbers).
+
+//   Class also writes processor load balancing data to file to track parallel
+//   calculation efficiency.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 
 #include "Structure/DataSink.h"
@@ -11,7 +35,6 @@
 #include "Fields/Fieldmap.h"
 #include "Structure/BoundaryGeometry.h"
 #include "Structure/H5PartWrapper.h"
-#include "Structure/H5PartWrapperForPS.h"
 #include "Utilities/Timer.h"
 
 #ifdef __linux__
@@ -85,17 +108,6 @@ int DataSink::dumpH5(PartBunchBase<double, 3> *beam, Vector_t FDext[], double me
 }
 
 
-void DataSink::dumpH5(EnvelopeBunch &beam, Vector_t FDext[],
-                      double sposHead, double sposRef,
-                      double sposTail) const
-{
-    //FIXME https://gitlab.psi.ch/OPAL/src/issues/245
-    if (!Options::enableHDF5) return;
-    
-    h5Writer_m->writePhaseSpace(beam, FDext, sposHead, sposRef, sposTail);
-}
-
-
 void DataSink::dumpSDDS(PartBunchBase<double, 3> *beam, Vector_t FDext[],
                         const double& azimuth) const
 {
@@ -106,23 +118,20 @@ void DataSink::dumpSDDS(PartBunchBase<double, 3> *beam, Vector_t FDext[],
 void DataSink::dumpSDDS(PartBunchBase<double, 3> *beam, Vector_t FDext[],
                         const losses_t &losses, const double& azimuth) const
 {
+    beam->calcBeamParameters();
+
+    size_t npOutside = 0;
+    if (Options::beamHaloBoundary > 0)
+        npOutside = beam->calcNumPartsOutside(Options::beamHaloBoundary*beam->get_rrms());
+
     IpplTimings::startTimer(StatMarkerTimer_m);
 
-    statWriter_m->write(beam, FDext, losses, azimuth);
+    statWriter_m->write(beam, FDext, losses, azimuth, npOutside);
+
+    beam->gatherLoadBalanceStatistics();
 
     for (size_t i = 0; i < sddsWriter_m.size(); ++i)
         sddsWriter_m[i]->write(beam);
-
-    IpplTimings::stopTimer(StatMarkerTimer_m);
-}
-
-
-void DataSink::dumpSDDS(EnvelopeBunch &beam, Vector_t FDext[],
-                        double sposHead, double sposRef, double sposTail) const
-{
-    IpplTimings::startTimer(StatMarkerTimer_m);
-
-    statWriter_m->write(beam, FDext, sposHead, sposRef, sposTail);
 
     IpplTimings::stopTimer(StatMarkerTimer_m);
 }
@@ -142,7 +151,7 @@ void DataSink::changeH5Wrapper(H5PartWrapper *h5wrapper) {
 }
 
 
-void DataSink::writePartlossZASCII(PartBunchBase<double, 3> *beam, BoundaryGeometry &bg, std::string fn) {
+void DataSink::writePartlossZASCII(const PartBunchBase<double, 3> *beam, BoundaryGeometry &bg, std::string fn) {
 
     size_t temp = lossWrCounter_m ;
 
@@ -232,7 +241,7 @@ void DataSink::writeGeomToVtk(BoundaryGeometry &bg, std::string fn) {
 }
 
 
-void DataSink::writeImpactStatistics(PartBunchBase<double, 3> *beam, long long &step, size_t &impact, double &sey_num,
+void DataSink::writeImpactStatistics(const PartBunchBase<double, 3> *beam, long long &step, size_t &impact, double &sey_num,
                                      size_t numberOfFieldEmittedParticles, bool nEmissionMode, std::string fn) {
 
     double charge = 0.0;
@@ -300,7 +309,13 @@ void DataSink::writeMultiBunchStatistics(PartBunchBase<double, 3> *beam,
 void DataSink::setMultiBunchInitialPathLengh(MultiBunchHandler* mbhandler_p) {
     for (short b = 0; b < mbhandler_p->getNumBunch(); ++b) {
         MultiBunchHandler::beaminfo_t& binfo = mbhandler_p->getBunchInfo(b);
-        binfo.pathlength = mbWriter_m[b]->getLastValue("s");
+        if (mbWriter_m[b]->exists()) {
+            binfo.pathlength = mbWriter_m[b]->getLastValue("s");
+        } else if (statWriter_m->exists()) {
+            binfo.pathlength = statWriter_m->getLastValue("s");
+        } else {
+            binfo.pathlength = 0.0;
+        }
     }
 }
 

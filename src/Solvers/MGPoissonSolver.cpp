@@ -8,12 +8,16 @@
 //   \warning This solver is in an EXPERIMENTAL STAGE. For reliable simulations use the FFTPoissonSolver
 //
 // Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich,
-//               2013 - 2015, Tülin Kaman, Paul Scherrer Institut, Villigen PSI, Switzerland
+//               2013 - 2015, Tülin Kaman, Paul Scherrer Institut, Villigen PSI, Switzerland,
+//                      2020, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // Implemented as part of the PhD thesis
 // "Toward massively parallel multi-objective optimization with application to
 // particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+//
+// In 2020, the code was ported to the second generation Trilinos packages,
+// i.e., Epetra --> Tpetra, ML --> MueLu. See also issue #507.
 //
 // This file is part of OPAL.
 //
@@ -43,28 +47,23 @@
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/Options.h"
 
-#include "Epetra_Map.h"
-#include "Epetra_Vector.h"
-#include "Epetra_CrsMatrix.h"
-#include "Epetra_Operator.h"
-#include "EpetraExt_RowMatrixOut.h"
-#include "Epetra_Import.h"
+#include <Tpetra_Import.hpp>
+#include <BelosTpetraAdapter.hpp>
+
+#ifdef DBG_STENCIL
+    #include "TpetraExt_MatrixMatrix.hpp"
+#endif
 
 #include "Teuchos_CommandLineProcessor.hpp"
 
 #include "BelosLinearProblem.hpp"
 #include "BelosRCGSolMgr.hpp"
-#include "BelosEpetraAdapter.hpp"
 #include "BelosBlockCGSolMgr.hpp"
+#include "BelosBiCGStabSolMgr.hpp"
+#include "BelosBlockGmresSolMgr.hpp"
+#include "BelosGCRODRSolMgr.hpp"
 
-#include "ml_MultiLevelPreconditioner.h"
-#include "ml_MultiLevelOperator.h"
-#include "ml_epetra_utils.h"
-
-#include "Isorropia_Exception.hpp"
-#include "Isorropia_Epetra.hpp"
-#include "Isorropia_EpetraRedistributor.hpp"
-#include "Isorropia_EpetraPartitioner.hpp"
+#include <MueLu_CreateTpetraPreconditioner.hpp>
 
 #include <algorithm>
 
@@ -80,14 +79,17 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
                                    std::string interpl,
                                    double tol,
                                    int maxiters,
-                                   std::string precmode):
-    geometries_m(geometries),
-    tol_m(tol),
-    maxiters_m(maxiters),
-    Comm(Ippl::getComm()),
-    itsBunch_m(beam),
-    mesh_m(mesh),
-    layout_m(fl) {
+                                   std::string precmode)
+    : isMatrixfilled_m(false)
+    , useLeftPrec_m(true)
+    , geometries_m(geometries)
+    , tol_m(tol)
+    , maxiters_m(maxiters)
+    , comm_mp(new Comm_t(Ippl::getComm()))
+    , itsBunch_m(beam)
+    , mesh_m(mesh)
+    , layout_m(fl)
+{
 
     domain_m = layout_m->getDomain();
 
@@ -96,37 +98,33 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
         orig_nr_m[i] = domain_m[i].length();
     }
 
-    if(itsolver == "CG") itsolver_m = AZ_cg;
-    else if(itsolver == "BICGSTAB") itsolver_m = AZ_bicgstab;
-    else if(itsolver == "GMRES") itsolver_m = AZ_gmres;
-    else throw OpalException("MGPoissonSolver", "No valid iterative solver selected!");
-
     precmode_m = STD_PREC;
-    if(precmode == "STD") precmode_m = STD_PREC;
-    else if(precmode == "HIERARCHY") precmode_m = REUSE_HIERARCHY;
-    else if(precmode == "REUSE") precmode_m = REUSE_PREC;
-    else if(precmode == "NO") precmode_m = NO;
+    if (precmode == "HIERARCHY") precmode_m = REUSE_HIERARCHY;
+    else if (precmode == "REUSE") precmode_m = REUSE_PREC;
 
-    tolerableIterationsCount_m = 2;
-    numIter_m = -1;
-    forcePreconditionerRecomputation_m = false;
-
-    hasParallelDecompositionChanged_m = true;
     repartFreq_m = 1000;
-    useRCB_m = false;
-    if(Ippl::Info->getOutputLevel() > 3)
+    if (Ippl::Info->getOutputLevel() > 3)
         verbose_m = true;
     else
         verbose_m = false;
 
     // Find CURRENT geometry
     currentGeometry = geometries_m[0];
-    if(currentGeometry->getFilename() == "") {
-        if(currentGeometry->getTopology() == "ELLIPTIC"){
-            bp = new EllipticDomain(currentGeometry, orig_nr_m, hr_m, interpl);
+    if (currentGeometry->getFilename() == "") {
+        if (currentGeometry->getTopology() == "ELLIPTIC"){
+            bp_m = std::unique_ptr<IrregularDomain>(
+                new EllipticDomain(currentGeometry, orig_nr_m, hr_m, interpl));
+
         } else if (currentGeometry->getTopology() == "BOXCORNER") {
-            bp = new BoxCornerDomain(currentGeometry->getA(), currentGeometry->getB(), currentGeometry->getC(), currentGeometry->getLength(),currentGeometry->getL1(), currentGeometry->getL2(), orig_nr_m, hr_m, interpl);
-            bp->compute(itsBunch_m->get_hr());
+            bp_m = std::unique_ptr<IrregularDomain>(
+                new BoxCornerDomain(currentGeometry->getA(),
+                                    currentGeometry->getB(),
+                                    currentGeometry->getC(),
+                                    currentGeometry->getLength(),
+                                    currentGeometry->getL1(),
+                                    currentGeometry->getL2(),
+                                    orig_nr_m, hr_m, interpl));
+            bp_m->compute(itsBunch_m->get_hr());
         } else {
             throw OpalException("MGPoissonSolver::MGPoissonSolver",
                                 "Geometry not known");
@@ -141,57 +139,80 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
                                 "Please set PARFFTX=FALSE, PARFFTY=FALSE, PARFFTT=TRUE in \n"
                                 "the definition of the field solver in the input file.\n");
         }
-        bp = new ArbitraryDomain(currentGeometry, orig_nr_m, hr_m, interpl);
+        bp_m = std::unique_ptr<IrregularDomain>(
+            new ArbitraryDomain(currentGeometry, orig_nr_m, hr_m, interpl));
     }
 
-    Map = 0;
+    map_p = Teuchos::null;
     A = Teuchos::null;
     LHS = Teuchos::null;
     RHS = Teuchos::null;
-    MLPrec = 0;
-    prec_m = Teuchos::null;
+    prec_mp = Teuchos::null;
 
     numBlocks_m = Options::numBlocks;
     recycleBlocks_m = Options::recycleBlocks;
     nLHS_m = Options::nLHS;
-    SetupMLList();
-    SetupBelosList();
-    problem_ptr = rcp(new Belos::LinearProblem<ST, MV, OP>);
+    setupMueLuList();
+    setupBelosList();
+    problem_mp = rcp(new Belos::LinearProblem<TpetraScalar_t,
+                                              TpetraMultiVector_t,
+                                              TpetraOperator_t>);
     // setup Belos solver
-    if(numBlocks_m == 0 || recycleBlocks_m == 0)
-        solver_ptr = rcp(new Belos::BlockCGSolMgr<double, MV, OP>());
-    else
-        solver_ptr = rcp(new Belos::RCGSolMgr<double, MV, OP>());
-    solver_ptr->setParameters(rcp(&belosList, false));
-    convStatusTest = rcp(new Belos::StatusTestGenResNorm<ST, MV, OP> (tol));
-    convStatusTest->defineScaleForm(Belos::NormOfRHS, Belos::TwoNorm);
+    if (itsolver == "CG") {
+        if (numBlocks_m == 0 || recycleBlocks_m == 0) {
+            solver_mp = rcp(new Belos::BlockCGSolMgr<TpetraScalar_t,
+                                                     TpetraMultiVector_t,
+                                                     TpetraOperator_t>());
+        } else {
+            solver_mp = rcp(new Belos::RCGSolMgr<TpetraScalar_t,
+                                                 TpetraMultiVector_t,
+                                                 TpetraOperator_t>());
+        }
+    } else if (itsolver == "BICGSTAB") {
+        useLeftPrec_m = false;
+        solver_mp = rcp(new Belos::BiCGStabSolMgr<TpetraScalar_t,
+                                                  TpetraMultiVector_t,
+                                                  TpetraOperator_t>());
+    } else if (itsolver == "GMRES") {
+        if (numBlocks_m == 0 || recycleBlocks_m == 0) {
+            solver_mp = rcp(new Belos::BlockGmresSolMgr<TpetraScalar_t,
+                                                        TpetraMultiVector_t,
+                                                        TpetraOperator_t>());
+        } else {
+            solver_mp = rcp(new Belos::GCRODRSolMgr<TpetraScalar_t,
+                                                    TpetraMultiVector_t,
+                                                    TpetraOperator_t>());
+        }
+    } else {
+        throw OpalException("MGPoissonSolver", "No valid iterative solver selected!");
+    }
+
+    solver_mp->setParameters(rcp(&belosList, false));
+
 
     //all timers used here
     FunctionTimer1_m = IpplTimings::getTimer("BGF-IndexCoordMap");
     FunctionTimer2_m = IpplTimings::getTimer("computeMap");
     FunctionTimer3_m = IpplTimings::getTimer("IPPL to RHS");
     FunctionTimer4_m = IpplTimings::getTimer("ComputeStencil");
-    FunctionTimer5_m = IpplTimings::getTimer("ML");
+    FunctionTimer5_m = IpplTimings::getTimer("MueLu");
     FunctionTimer6_m = IpplTimings::getTimer("Setup");
     FunctionTimer7_m = IpplTimings::getTimer("CG");
     FunctionTimer8_m = IpplTimings::getTimer("LHS to IPPL");
 }
 
 void MGPoissonSolver::deletePtr() {
-    delete Map;
-    Map = nullptr;
-    delete MLPrec;
-    MLPrec = nullptr;
+    map_p  = Teuchos::null;
     A      = Teuchos::null;
     LHS    = Teuchos::null;
     RHS    = Teuchos::null;
-    prec_m = Teuchos::null;
+    prec_mp = Teuchos::null;
 }
 
 MGPoissonSolver::~MGPoissonSolver() {
     deletePtr ();
-    solver_ptr = Teuchos::null;
-    problem_ptr = Teuchos::null;
+    solver_mp = Teuchos::null;
+    problem_mp = Teuchos::null;
 }
 
 void MGPoissonSolver::computePotential(Field_t& /*rho*/, Vector_t /*hr*/, double /*zshift*/) {
@@ -201,10 +222,7 @@ void MGPoissonSolver::computePotential(Field_t& /*rho*/, Vector_t /*hr*/, double
 void MGPoissonSolver::computeMap(NDIndex<3> localId) {
     if (itsBunch_m->getLocalTrackStep()%repartFreq_m == 0){
         deletePtr();
-        if(useRCB_m)
-            redistributeWithRCB(localId);
-        else
-            IPPLToMap3D(localId);
+        IPPLToMap3D(localId);
 
         extrapolateLHS();
     }
@@ -218,23 +236,23 @@ void MGPoissonSolver::extrapolateLHS() {
     //we also have to redistribute LHS
 
     if (Teuchos::is_null(LHS)){
-        LHS = rcp(new Epetra_Vector(*Map));
-        LHS->PutScalar(1.0);
+        LHS = rcp(new TpetraVector_t(map_p));
+        LHS->putScalar(1.0);
     } else {
-        RCP<Epetra_Vector> tmplhs = rcp(new Epetra_Vector(*Map));
-        Epetra_Import importer(*Map, LHS->Map());
-        tmplhs->Import(*LHS, importer, Add);
+        RCP<TpetraVector_t> tmplhs = rcp(new TpetraVector_t(map_p));
+        Tpetra::Import<> importer(map_p, LHS->getMap());
+        tmplhs->doImport(*LHS, importer, Tpetra::CombineMode::ADD);
         LHS = tmplhs;
     }
 
     //...and all previously saved LHS
-    std::deque< Epetra_Vector >::iterator it = OldLHS.begin();
-    if(OldLHS.size() > 0) {
+    std::deque< TpetraVector_t >::iterator it = OldLHS.begin();
+    if (OldLHS.size() > 0) {
         int n = OldLHS.size();
-        for(int i = 0; i < n; ++i) {
-            Epetra_Vector tmplhs = Epetra_Vector(*Map);
-            Epetra_Import importer(*Map, it->Map());
-            tmplhs.Import(*it, importer, Add);
+        for (int i = 0; i < n; ++i) {
+            TpetraVector_t tmplhs = TpetraVector_t(map_p);
+            Tpetra::Import<> importer(map_p, it->getMap());
+            tmplhs.doImport(*it, importer, Tpetra::CombineMode::ADD);
             *it = tmplhs;
             ++it;
         }
@@ -242,32 +260,33 @@ void MGPoissonSolver::extrapolateLHS() {
 
     // extrapolate last OldLHS.size LHS to get a new start vector
     it = OldLHS.begin();
-    if(nLHS_m == 0 || OldLHS.size()==0)
-        LHS->PutScalar(1.0);
-    else if(OldLHS.size() == 1)
+    if (nLHS_m == 0 || OldLHS.size()==0)
+        LHS->putScalar(1.0);
+    else if (OldLHS.size() == 1)
         *LHS = *it;
-    else if(OldLHS.size() == 2)
-        LHS->Update(2.0, *it++, -1.0, *it, 0.0);
-    else if(OldLHS.size() > 2) {
+    else if (OldLHS.size() == 2)
+        LHS->update(2.0, *it++, -1.0, *it, 0.0);
+    else if (OldLHS.size() > 2) {
         int n = OldLHS.size();
-        P = rcp(new Epetra_MultiVector(*Map, nLHS_m, false));
-        for(int i = 0; i < n; ++i) {
-           *(*P)(i) = *it++;
+        P_mp = rcp(new TpetraMultiVector_t(map_p, nLHS_m, false));
+        for (int i = 0; i < n; ++i) {
+           *(P_mp->getVectorNonConst(i)) = *it++;
         }
-        for(int k = 1; k < n; ++k) {
-           for(int i = 0; i < n - k; ++i) {
-              (*P)(i)->Update(-(i + 1) / (float)k, *(*P)(i + 1), (i + k + 1) / (float)k);
+        for (int k = 1; k < n; ++k) {
+           for (int i = 0; i < n - k; ++i) {
+              P_mp->getVectorNonConst(i)->update(-(i + 1) / (float)k, *(P_mp->getVector(i + 1)), (i + k + 1) / (float)k);
            }
         }
-        *LHS = *(*P)(0);
+        *LHS = *(P_mp->getVector(0));
      } else
-        throw OpalException("MGPoissonSolver", "Invalid number of old LHS: " + std::to_string(OldLHS.size()));
+        throw OpalException("MGPoissonSolver",
+                            "Invalid number of old LHS: " + std::to_string(OldLHS.size()));
 }
 
 
 // given a charge-density field rho and a set of mesh spacings hr,
 // compute the electric field and put in eg by solving the Poisson's equation
-// XXX: use matrix stencil in computation directly (no Epetra, define operators
+// XXX: use matrix stencil in computation directly (no Tpetra, define operators
 // on IPPL GRID)
 void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
 
@@ -276,16 +295,16 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
     nr_m[1] = orig_nr_m[1];
     nr_m[2] = orig_nr_m[2];
 
-    bp->setGlobalMeanR(itsBunch_m->getGlobalMeanR());
-    bp->setGlobalToLocalQuaternion(itsBunch_m->getGlobalToLocalQuaternion());
-    bp->setNr(nr_m);
+    bp_m->setGlobalMeanR(itsBunch_m->getGlobalMeanR());
+    bp_m->setGlobalToLocalQuaternion(itsBunch_m->getGlobalToLocalQuaternion());
+    bp_m->setNr(nr_m);
 
     NDIndex<3> localId = layout_m->getLocalNDIndex();
 
     IpplTimings::startTimer(FunctionTimer1_m);
     // Compute boundary intersections (only do on the first step)
-    if(!itsBunch_m->getLocalTrackStep())
-        bp->compute(hr, localId);
+    if (!itsBunch_m->getLocalTrackStep())
+        bp_m->compute(hr, localId);
     IpplTimings::stopTimer(FunctionTimer1_m);
 
     // Define the Map
@@ -295,12 +314,12 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
     IpplTimings::stopTimer(FunctionTimer2_m);
     INFOMSG(level3 << "* Done." << endl);
 
-    // Allocate the RHS with the new Epetra Map
+    // Allocate the RHS with the new Tpetra Map
     if (Teuchos::is_null(RHS))
-        RHS = rcp(new Epetra_Vector(*Map));
-    RHS->PutScalar(0.0);
+        RHS = rcp(new TpetraVector_t(map_p));
+    RHS->putScalar(0.0);
 
-    // // get charge densities from IPPL field and store in Epetra vector (RHS)
+    // get charge densities from IPPL field and store in Tpetra vector (RHS)
     if (verbose_m) {
         Ippl::Comm->barrier();
         msg << "* Node:" << Ippl::myNode() << ", Filling RHS..." << endl;
@@ -312,19 +331,27 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
 
 
     if (verbose_m) {
-        msg << "* Node:" << Ippl::myNode() << ", Rho for final element: " << rho[localId[0].last()][localId[1].last()][localId[2].last()].get() << endl;
+        msg << "* Node:" << Ippl::myNode() << ", Rho for final element: "
+            << rho[localId[0].last()][localId[1].last()][localId[2].last()].get()
+            << endl;
 
         Ippl::Comm->barrier();
-        msg << "* Node:" << Ippl::myNode() << ", Local nx*ny*nz = " <<  localId[2].last() *  localId[0].last() *  localId[1].last() << endl;
-        msg << "* Node:" << Ippl::myNode() << ", Number of reserved local elements in RHS: " << RHS->MyLength() << endl;
-        msg << "* Node:" << Ippl::myNode() << ", Number of reserved global elements in RHS: " << RHS->GlobalLength() << endl;
+        msg << "* Node:" << Ippl::myNode() << ", Local nx*ny*nz = "
+            <<  localId[2].last() *  localId[0].last() *  localId[1].last()
+            << endl;
+        msg << "* Node:" << Ippl::myNode()
+            << ", Number of reserved local elements in RHS: "
+            << RHS->getLocalLength() << endl;
+        msg << "* Node:" << Ippl::myNode()
+            << ", Number of reserved global elements in RHS: "
+            << RHS->getGlobalLength() << endl;
         Ippl::Comm->barrier();
     }
     for (int idz = localId[2].first(); idz <= localId[2].last(); idz++) {
         for (int idy = localId[1].first(); idy <= localId[1].last(); idy++) {
             for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
-                if (bp->isInside(idx, idy, idz))
-                        RHS->Values()[id++] = 4*M_PI*rho[idx][idy][idz].get()/scaleFactor;
+                if (bp_m->isInside(idx, idy, idz))
+                        RHS->getDataNonConst()[id++] = 4*M_PI*rho[idx][idy][idz].get()/scaleFactor;
             }
         }
     }
@@ -332,30 +359,44 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
     IpplTimings::stopTimer(FunctionTimer3_m);
     if (verbose_m) {
         Ippl::Comm->barrier();
-        msg << "* Node:" << Ippl::myNode() << ", Number of Local Inside Points " << id << endl;
+        msg << "* Node:" << Ippl::myNode()
+            << ", Number of Local Inside Points " << id << endl;
         msg << "* Node:" << Ippl::myNode() << ", Done." << endl;
         Ippl::Comm->barrier();
     }
     // build discretization matrix
     INFOMSG(level3 << "* Building Discretization Matrix..." << endl);
     IpplTimings::startTimer(FunctionTimer4_m);
-    if(Teuchos::is_null(A))
-        A = rcp(new Epetra_CrsMatrix(Copy, *Map,  7, true));
+    if (Teuchos::is_null(A))
+        A = rcp(new TpetraCrsMatrix_t(map_p,  7, Tpetra::StaticProfile));
     ComputeStencil(hr, RHS);
     IpplTimings::stopTimer(FunctionTimer4_m);
     INFOMSG(level3 << "* Done." << endl);
 
 #ifdef DBG_STENCIL
-    EpetraExt::RowMatrixToMatlabFile("DiscrStencil.dat", *A);
+    Tpetra::MatrixMarket::Writer<TpetraCrsMatrix_t>::writeSparseFile(
+        "DiscrStencil.dat", A);
 #endif
 
     INFOMSG(level3 << "* Computing Preconditioner..." << endl);
     IpplTimings::startTimer(FunctionTimer5_m);
-    if(!MLPrec) {
-        MLPrec = new ML_Epetra::MultiLevelPreconditioner(*A, MLList_m);
-    } else if (precmode_m == REUSE_HIERARCHY) {
-        MLPrec->ReComputePreconditioner();
-    } else if (precmode_m == REUSE_PREC){
+    if (Teuchos::is_null(prec_mp)) {
+        Teuchos::RCP<TpetraOperator_t> At = Teuchos::rcp_dynamic_cast<TpetraOperator_t>(A);
+        prec_mp = MueLu::CreateTpetraPreconditioner(At, MueLuList_m);
+    }
+
+    switch (precmode_m) {
+        case REUSE_PREC:
+        case REUSE_HIERARCHY: {
+            MueLu::ReuseTpetraPreconditioner(A, *prec_mp);
+            break;
+        }
+        case STD_PREC:
+        default: {
+            Teuchos::RCP<TpetraOperator_t> At = Teuchos::rcp_dynamic_cast<TpetraOperator_t>(A);
+            prec_mp = MueLu::CreateTpetraPreconditioner(At, MueLuList_m);
+            break;
+        }
     }
     IpplTimings::stopTimer(FunctionTimer5_m);
     INFOMSG(level3 << "* Done." << endl);
@@ -364,15 +405,18 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
     // use old LHS solution as initial guess
     INFOMSG(level3 << "* Final Setup of Solver..." << endl);
     IpplTimings::startTimer(FunctionTimer6_m);
-    problem_ptr->setOperator(A);
-    problem_ptr->setLHS(LHS);
-    problem_ptr->setRHS(RHS);
-    if(Teuchos::is_null(prec_m))
-        prec_m = Teuchos::rcp ( new Belos::EpetraPrecOp ( rcp(MLPrec,false)));
-    problem_ptr->setLeftPrec(prec_m);
-    solver_ptr->setProblem( problem_ptr);
-    if (!problem_ptr->isProblemSet()) {
-        if (problem_ptr->setProblem() == false) {
+    problem_mp->setOperator(A);
+    problem_mp->setLHS(LHS);
+    problem_mp->setRHS(RHS);
+
+    if (useLeftPrec_m)
+        problem_mp->setLeftPrec(prec_mp);
+    else
+        problem_mp->setRightPrec(prec_mp);
+
+    solver_mp->setProblem( problem_mp);
+    if (!problem_mp->isProblemSet()) {
+        if (problem_mp->setProblem() == false) {
             ERRORMSG("Belos::LinearProblem failed to set up correctly!" << endl);
         }
     }
@@ -383,23 +427,26 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
 
     INFOMSG(level3 << "* Solving for Space Charge..." << endl);
     IpplTimings::startTimer(FunctionTimer7_m);
-    solver_ptr->solve();
+    solver_mp->solve();
     IpplTimings::stopTimer(FunctionTimer7_m);
     INFOMSG(level3 << "* Done." << endl);
 
     std::ofstream timings;
     if (true || verbose_m) {
         time = MPI_Wtime() - time;
-        double minTime, maxTime, avgTime;
-        Comm.MinAll(&time, &minTime, 1);
-        Comm.MaxAll(&time, &maxTime, 1);
-        Comm.SumAll(&time, &avgTime, 1);
-        avgTime /= Comm.NumProc();
-        if(Comm.MyPID() == 0) {
+        double minTime = 0, maxTime = 0, avgTime = 0;
+        reduce(time, minTime, 1, std::less<double>());
+        reduce(time, maxTime, 1, std::greater<double>());
+        reduce(time, avgTime, 1, std::plus<double>());
+        avgTime /= comm_mp->getSize();
+        if (comm_mp->getRank() == 0) {
             char filename[50];
-            sprintf(filename, "timing_MX%d_MY%d_MZ%d_nProc%d_recB%d_numB%d_nLHS%d", orig_nr_m[0], orig_nr_m[1], orig_nr_m[2], Comm.NumProc(), recycleBlocks_m, numBlocks_m, nLHS_m);
+            sprintf(filename, "timing_MX%d_MY%d_MZ%d_nProc%d_recB%d_numB%d_nLHS%d",
+                    orig_nr_m[0], orig_nr_m[1], orig_nr_m[2],
+                    comm_mp->getSize(), recycleBlocks_m, numBlocks_m, nLHS_m);
+
             timings.open(filename, std::ios::app);
-            timings << solver_ptr->getNumIters() << "\t"
+            timings << solver_mp->getNumIters() << "\t"
                     //<< time <<" "<<
                     << minTime << "\t"
                     << maxTime << "\t"
@@ -415,8 +462,8 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
 
     }
     // Store new LHS in OldLHS
-    if(nLHS_m > 1) OldLHS.push_front(*(LHS.get()));
-    if(OldLHS.size() > nLHS_m) OldLHS.pop_back();
+    if (nLHS_m > 1) OldLHS.push_front(*(LHS.get()));
+    if (OldLHS.size() > nLHS_m) OldLHS.pop_back();
 
     //now transfer solution back to IPPL grid
     IpplTimings::startTimer(FunctionTimer8_m);
@@ -426,187 +473,208 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
         for (int idy = localId[1].first(); idy <= localId[1].last(); idy++) {
             for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
                   NDIndex<3> l(Index(idx, idx), Index(idy, idy), Index(idz, idz));
-                  if (bp->isInside(idx, idy, idz))
-                     rho.localElement(l) = LHS->Values()[id++]*scaleFactor;
+                  if (bp_m->isInside(idx, idy, idz))
+                     rho.localElement(l) = LHS->getData()[id++] * scaleFactor;
             }
         }
     }
     IpplTimings::stopTimer(FunctionTimer8_m);
 
-    if(itsBunch_m->getLocalTrackStep()+1 == (long long)Track::block->localTimeSteps.front()) {
+    if (itsBunch_m->getLocalTrackStep()+1 == (long long)Track::block->localTimeSteps.front()) {
         A = Teuchos::null;
         LHS = Teuchos::null;
         RHS = Teuchos::null;
-        prec_m = Teuchos::null;
+        prec_mp = Teuchos::null;
     }
 }
 
-
-void MGPoissonSolver::redistributeWithRCB(NDIndex<3> localId) {
-
-    int numMyGridPoints = 0;
-
-    for (int idz = localId[2].first(); idz <= localId[2].last(); idz++) {
-        for (int idy = localId[1].first(); idy <= localId[1].last(); idy++) {
-            for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
-                if (bp->isInside(idx, idy, idz))
-                    numMyGridPoints++;
-             }
-        }
-     }
-
-    Epetra_BlockMap bmap(-1, numMyGridPoints, 1, 0, Comm);
-    Teuchos::RCP<const Epetra_MultiVector> coords = Teuchos::rcp(new Epetra_MultiVector(bmap, 3, false));
-
-    double *v;
-    int stride, stride2;
-
-    coords->ExtractView(&v, &stride);
-    stride2 = 2 * stride;
-
-    for (int idz = localId[2].first(); idz <= localId[2].last(); idz++) {
-        for (int idy = localId[1].first(); idy <= localId[1].last(); idy++) {
-            for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
-                if (bp->isInside(idx, idy, idz)) {
-                    v[0] = (double)idx;
-                    v[stride] = (double)idy;
-                    v[stride2] = (double)idz;
-                    v++;
-                }
-            }
-        }
-    }
-
-    Teuchos::ParameterList paramlist;
-    paramlist.set("Partitioning Method", "RCB");
-    Teuchos::ParameterList &sublist = paramlist.sublist("ZOLTAN");
-    sublist.set("RCB_RECTILINEAR_BLOCKS", "1");
-    sublist.set("DEBUG_LEVEL", "1");
-
-    Teuchos::RCP<Isorropia::Epetra::Partitioner> part = Teuchos::rcp(new Isorropia::Epetra::Partitioner(coords, paramlist));
-    Isorropia::Epetra::Redistributor rd(part);
-    Teuchos::RCP<Epetra_MultiVector> newcoords = rd.redistribute(*coords);
-
-    newcoords->ExtractView(&v, &stride);
-    stride2 = 2 * stride;
-    numMyGridPoints = 0;
-    std::vector<int> MyGlobalElements;
-    for(int i = 0; i < newcoords->MyLength(); i++) {
-        MyGlobalElements.push_back(bp->getIdx(v[0], v[stride], v[stride2]));
-        v++;
-        numMyGridPoints++;
-    }
-
-    Map = new Epetra_Map(-1, numMyGridPoints, &MyGlobalElements[0], 0, Comm);
-}
 
 void MGPoissonSolver::IPPLToMap3D(NDIndex<3> localId) {
 
     int NumMyElements = 0;
-    std::vector<int> MyGlobalElements;
+    std::vector<TpetraGlobalOrdinal_t> MyGlobalElements;
 
     for (int idz = localId[2].first(); idz <= localId[2].last(); idz++) {
         for (int idy = localId[1].first(); idy <= localId[1].last(); idy++) {
             for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
-                if (bp->isInside(idx, idy, idz)) {
-                    MyGlobalElements.push_back(bp->getIdx(idx, idy, idz));
+                if (bp_m->isInside(idx, idy, idz)) {
+                    MyGlobalElements.push_back(bp_m->getIdx(idx, idy, idz));
                     NumMyElements++;
                 }
             }
         }
     }
-    Map = new Epetra_Map(-1, NumMyElements, &MyGlobalElements[0], 0, Comm);
+    int indexbase = 0;
+    map_p = Teuchos::rcp(new TpetraMap_t(Teuchos::OrdinalTraits<Tpetra::global_size_t>::invalid(),
+                                         &MyGlobalElements[0], NumMyElements, indexbase, comm_mp));
 }
 
-void MGPoissonSolver::ComputeStencil(Vector_t /*hr*/, Teuchos::RCP<Epetra_Vector> RHS) {
+void MGPoissonSolver::ComputeStencil(Vector_t /*hr*/, Teuchos::RCP<TpetraVector_t> RHS) {
 
-    A->PutScalar(0.0);
+    A->resumeFill();
+    A->setAllToScalar(0.0);
 
-    int NumMyElements = Map->NumMyElements();
-    int *MyGlobalElements = Map->MyGlobalElements();
+    int NumMyElements = map_p->getNodeNumElements();
+    auto MyGlobalElements = map_p->getMyGlobalIndices();
 
-    std::vector<double> Values(6);
-    std::vector<int> Indices(6);
+    std::vector<TpetraScalar_t> Values(6);
+    std::vector<TpetraGlobalOrdinal_t> Indices(6);
 
-    for(int i = 0 ; i < NumMyElements ; i++) {
+    for (int i = 0 ; i < NumMyElements ; i++) {
 
         int NumEntries = 0;
 
         double WV, EV, SV, NV, FV, BV, CV, scaleFactor=1.0;
         int W, E, S, N, F, B;
 
-        bp->getBoundaryStencil(MyGlobalElements[i], WV, EV, SV, NV, FV, BV, CV, scaleFactor);
-        RHS->Values()[i] *= scaleFactor;
+        bp_m->getBoundaryStencil(MyGlobalElements[i], WV, EV, SV, NV, FV, BV, CV, scaleFactor);
+        RHS->scale(scaleFactor);
 
-        bp->getNeighbours(MyGlobalElements[i], W, E, S, N, F, B);
-        if(E != -1) {
+        bp_m->getNeighbours(MyGlobalElements[i], W, E, S, N, F, B);
+        if (E != -1) {
             Indices[NumEntries] = E;
             Values[NumEntries++] = EV;
         }
-        if(W != -1) {
+        if (W != -1) {
             Indices[NumEntries] = W;
             Values[NumEntries++] = WV;
         }
-        if(S != -1) {
+        if (S != -1) {
             Indices[NumEntries] = S;
             Values[NumEntries++] = SV;
         }
-        if(N != -1) {
+        if (N != -1) {
             Indices[NumEntries] = N;
             Values[NumEntries++] = NV;
         }
-        if(F != -1) {
+        if (F != -1) {
             Indices[NumEntries] = F;
             Values[NumEntries++] = FV;
         }
-        if(B != -1) {
+        if (B != -1) {
             Indices[NumEntries] = B;
             Values[NumEntries++] = BV;
         }
 
-        // if matrix has already been filled (FillComplete()) we can only
+        // if matrix has already been filled (fillComplete()) we can only
         // replace entries
 
-        if(A->Filled()) {
+        if (isMatrixfilled_m) {
             // off-diagonal entries
-            A->ReplaceGlobalValues(MyGlobalElements[i], NumEntries, &Values[0], &Indices[0]);
+            A->replaceGlobalValues(MyGlobalElements[i], NumEntries, &Values[0], &Indices[0]);
             // diagonal entry
-            A->ReplaceGlobalValues(MyGlobalElements[i], 1, &CV, MyGlobalElements + i);
+            A->replaceGlobalValues(MyGlobalElements[i], 1, &CV, &MyGlobalElements[i]);
         } else {
             // off-diagonal entries
-            A->InsertGlobalValues(MyGlobalElements[i], NumEntries, &Values[0], &Indices[0]);
+            A->insertGlobalValues(MyGlobalElements[i], NumEntries, &Values[0], &Indices[0]);
             // diagonal entry
-            A->InsertGlobalValues(MyGlobalElements[i], 1, &CV, MyGlobalElements + i);
+            A->insertGlobalValues(MyGlobalElements[i], 1, &CV, &MyGlobalElements[i]);
         }
     }
 
-    A->FillComplete();
-
-    A->OptimizeStorage();
+    RCP<ParameterList_t> params = Teuchos::parameterList();
+    params->set ("Optimize Storage", true);
+    A->fillComplete(params);
+    isMatrixfilled_m = true;
 }
 
 void MGPoissonSolver::printLoadBalanceStats() {
 
     //compute some load balance statistics
-    size_t myNumPart = Map->NumMyElements();
-    size_t NumPart = Map->NumGlobalElements() * 1.0 / Comm.NumProc();
+    size_t myNumPart = map_p->getNodeNumElements();
+    size_t NumPart = map_p->getGlobalNumElements() * 1.0 / comm_mp->getSize();
     double imbalance = 1.0;
-    if(myNumPart >= NumPart)
+    if (myNumPart >= NumPart)
         imbalance += (myNumPart - NumPart) / NumPart;
     else
         imbalance += (NumPart - myNumPart) / NumPart;
 
     double max = 0.0, min = 0.0, avg = 0.0;
-    int minn = 0, maxn = 0;
-    MPI_Reduce(&imbalance, &min, 1, MPI_DOUBLE, MPI_MIN, 0, Ippl::getComm());
-    MPI_Reduce(&imbalance, &max, 1, MPI_DOUBLE, MPI_MAX, 0, Ippl::getComm());
-    MPI_Reduce(&imbalance, &avg, 1, MPI_DOUBLE, MPI_SUM, 0, Ippl::getComm());
-    MPI_Reduce(&myNumPart, &minn, 1, MPI_INT, MPI_MIN, 0, Ippl::getComm());
-    MPI_Reduce(&myNumPart, &maxn, 1, MPI_INT, MPI_MAX, 0, Ippl::getComm());
+    size_t minn = 0, maxn = 0;
+    reduce(imbalance, min, 1, std::less<double>());
+    reduce(imbalance, max, 1, std::greater<double>());
+    reduce(imbalance, avg, 1, std::plus<double>());
+    reduce(myNumPart, minn, 1, std::less<size_t>());
+    reduce(myNumPart, maxn, 1, std::greater<size_t>());
 
-    avg /= Comm.NumProc();
+    avg /= comm_mp->getSize();
     *gmsg << "LBAL min = " << min << ", max = " << max << ", avg = " << avg << endl;
     *gmsg << "min nr gridpoints = " << minn << ", max nr gridpoints = " << maxn << endl;
+}
+
+void MGPoissonSolver::setupBelosList() {
+    belosList.set("Maximum Iterations", maxiters_m);
+    belosList.set("Convergence Tolerance", tol_m);
+
+    if (numBlocks_m != 0 && recycleBlocks_m != 0){//only set if solver==RCGSolMgr
+        belosList.set("Num Blocks", numBlocks_m);               // Maximum number of blocks in Krylov space
+        belosList.set("Num Recycled Blocks", recycleBlocks_m); // Number of vectors in recycle space
+    }
+    if (verbose_m) {
+        belosList.set("Verbosity", Belos::Errors + Belos::Warnings +
+                                   Belos::TimingDetails + Belos::FinalSummary +
+                                   Belos::StatusTestDetails);
+        belosList.set("Output Frequency", 1);
+    } else
+        belosList.set("Verbosity", Belos::Errors + Belos::Warnings);
+}
+
+
+void MGPoissonSolver::setupMueLuList() {
+    MueLuList_m.set("problem: type", "Poisson-3D");
+    MueLuList_m.set("verbosity", "none");
+    MueLuList_m.set("number of equations", 1);
+    MueLuList_m.set("max levels", 8);
+    MueLuList_m.set("cycle type", "V");
+
+    // heuristic for max coarse size depending on number of processors
+    int coarsest_size = std::max(comm_mp->getSize() * 10, 1024);
+    MueLuList_m.set("coarse: max size", coarsest_size);
+
+    MueLuList_m.set("multigrid algorithm", "sa");
+    MueLuList_m.set("sa: damping factor", 1.33);
+    MueLuList_m.set("sa: use filtered matrix", true);
+    MueLuList_m.set("filtered matrix: reuse eigenvalue", false);
+
+    MueLuList_m.set("repartition: enable", false);
+    MueLuList_m.set("repartition: rebalance P and R", false);
+    MueLuList_m.set("repartition: partitioner", "zoltan2");
+    MueLuList_m.set("repartition: min rows per proc", 800);
+    MueLuList_m.set("repartition: start level", 2);
+
+    MueLuList_m.set("smoother: type", "CHEBYSHEV");
+    MueLuList_m.set("smoother: pre or post", "both");
+    Teuchos::ParameterList smparms;
+    smparms.set("chebyshev: degree", 3);
+    smparms.set("chebyshev: assume matrix does not change", false);
+    smparms.set("chebyshev: zero starting solution", true);
+    smparms.set("relaxation: sweeps", 3);
+    MueLuList_m.set("smoother: params", smparms);
+
+    MueLuList_m.set("smoother: type", "CHEBYSHEV");
+    MueLuList_m.set("smoother: pre or post", "both");
+
+    MueLuList_m.set("coarse: type", "KLU2");
+
+    MueLuList_m.set("aggregation: type", "uncoupled");
+    MueLuList_m.set("aggregation: min agg size", 3);
+    MueLuList_m.set("aggregation: max agg size", 27);
+
+    MueLuList_m.set("transpose: use implicit", false);
+
+    switch (precmode_m) {
+        case REUSE_PREC:
+            MueLuList_m.set("reuse: type", "full");
+            break;
+        case REUSE_HIERARCHY:
+            MueLuList_m.set("sa: use filtered matrix", false);
+            MueLuList_m.set("reuse: type", "tP");
+            break;
+        case STD_PREC:
+        default:
+            MueLuList_m.set("reuse: type", "none");
+            break;
+    }
 }
 
 Inform &MGPoissonSolver::print(Inform &os) const {

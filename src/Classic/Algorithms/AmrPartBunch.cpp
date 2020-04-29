@@ -55,7 +55,7 @@ const AmrPartBunch::pbase_t *AmrPartBunch::getAmrParticleBase() const {
 }
 
 
-void AmrPartBunch::initialize(FieldLayout_t *fLayout) {
+void AmrPartBunch::initialize(FieldLayout_t */*fLayout*/) {
 //     Layout_t* layout = static_cast<Layout_t*>(&getLayout());
 }
 
@@ -298,7 +298,7 @@ void AmrPartBunch::updateDomainLength(Vektor<int, 3>& grid) {
 }
 
 
-void AmrPartBunch::updateFields(const Vector_t& hr, const Vector_t& origin) {
+void AmrPartBunch::updateFields(const Vector_t& /*hr*/, const Vector_t& /*origin*/) {
     //TODO regrid; called in boundp()
 //     amrobj_mp->updateMesh();
 }

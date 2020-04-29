@@ -24,9 +24,7 @@ Source::Source(const Source &right):
     ElementEdge_m(right.ElementEdge_m),
     startField_m(right.startField_m),
     endField_m(right.endField_m)
-{
-    setElType(isSource);
-}
+{}
 
 
 Source::Source(const std::string &name):
@@ -34,33 +32,14 @@ Source::Source(const std::string &name):
     ElementEdge_m(0.0),
     startField_m(0.0),
     endField_m(0.0)
-{
-    setElType(isSource);
-}
+{}
 
 Source::~Source() {
-
 }
 
 
 void Source::accept(BeamlineVisitor &visitor) const {
     visitor.visitSource(*this);
-}
-
-/**
- * \brief ENVELOPE COMPONENT for radial focussing of the beam
- * Calculates the transverse envelope component for the
- * solenoid element and adds it to the K vector
-*/
-void Source::addKR(int /*i*/, double /*t*/, Vector_t &/*K*/) {
-}
-
-/**
- * ENVELOPE COMPONENT for transverse kick (only important for x0, y0)
- * Calculates the transverse kick component for the solenoid element and adds it to
- * the K vector, only important for off track tracking. Otherwise KT = 0.
-*/
-void Source::addKT(int /*i*/, double /*t*/, Vector_t &/*K*/) {
 }
 
 bool Source::apply(const size_t &i, const double &t, Vector_t &/*E*/, Vector_t &/*B*/) {

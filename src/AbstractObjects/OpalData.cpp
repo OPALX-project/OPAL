@@ -42,7 +42,6 @@
 #include "Parser/FileStream.h"
 #include "Parser/StringStream.h"
 #include "Algorithms/PartBunchBase.h"
-#include "Algorithms/bet/EnvelopeBunch.h"
 // /DTA
 
 #define MAX_NUM_INSTANCES 10
@@ -117,10 +116,6 @@ struct OpalDataImpl {
 
     DataSink *dataSink_m;
 
-    bool hasSLBunchAllocated_m;
-    // The particle bunch to be tracked.
-    EnvelopeBunch *slbunch_m;
-
     // In units of seconds. This is half of tEmission
     double gPhaseShift_m;
 
@@ -143,7 +138,6 @@ struct OpalDataImpl {
 
     bool isInOPALCyclMode_m;
     bool isInOPALTMode_m;
-    bool isInOPALEnvMode_m;
     bool isOptimizerFlag_m;
     bool isInPrepState_m;
 
@@ -162,17 +156,14 @@ OpalDataImpl::OpalDataImpl():
     restart_dump_freq_m(1), last_step_m(0),
     hasBunchAllocated_m(false),
     hasDataSinkAllocated_m(false),
-    hasSLBunchAllocated_m(false),
     gPhaseShift_m(0.0),
     maxTrackSteps_m(0),
     isInOPALCyclMode_m(false),
     isInOPALTMode_m(false),
-    isInOPALEnvMode_m(false),
     isOptimizerFlag_m(false),
     isInPrepState_m(false)
 {
     bunch_m    = nullptr;
-    slbunch_m  = nullptr;
     dataSink_m = nullptr;
     bg_m       = nullptr;
     mesh_m     = nullptr;
@@ -188,7 +179,6 @@ OpalDataImpl::~OpalDataImpl() {
     //delete PL_m; //this gets deleted by FL_m
 
     delete bunch_m;
-    delete slbunch_m;
     delete bg_m;
     delete dataSink_m;
 
@@ -275,12 +265,10 @@ void OpalData::reset() {
     p->hasRestartFile_m = false;
     p->hasBunchAllocated_m = false;
     p->hasDataSinkAllocated_m = false;
-    p->hasSLBunchAllocated_m = false;
     p->gPhaseShift_m = 0.0;
     p->maxPhases_m.clear();
     p->isInOPALCyclMode_m = false;
     p->isInOPALTMode_m = false;
-    p->isInOPALEnvMode_m = false;
     p->isInPrepState_m = false;
     p->isOptimizerFlag_m = false;
 }
@@ -293,10 +281,6 @@ bool OpalData::isInOPALTMode() {
     return  p->isInOPALTMode_m;
 }
 
-bool OpalData::isInOPALEnvMode() {
-    return p->isInOPALEnvMode_m;
-}
-
 bool OpalData::isOptimizerRun() {
     return p->isOptimizerFlag_m;
 }
@@ -307,10 +291,6 @@ void OpalData::setInOPALCyclMode() {
 
 void OpalData::setInOPALTMode() {
     p->isInOPALTMode_m = true;
-}
-
-void OpalData::setInOPALEnvMode() {
-    p->isInOPALEnvMode_m = true;
 }
 
 void OpalData::setOptimizerFlag() {
@@ -388,22 +368,6 @@ void OpalData::setLastStep(const int &step) {
 
 int OpalData::getLastStep() const {
     return p->last_step_m;
-}
-
-bool OpalData::hasSLBunchAllocated() {
-    return p->hasSLBunchAllocated_m;
-}
-
-void OpalData::slbunchIsAllocated() {
-    p->hasSLBunchAllocated_m = true;
-}
-
-void OpalData::setSLPartBunch(EnvelopeBunch *b) {
-    p->slbunch_m = b;
-}
-
-EnvelopeBunch *OpalData::getSLPartBunch() {
-    return p->slbunch_m;
 }
 
 bool OpalData::hasBunchAllocated() {

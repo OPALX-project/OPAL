@@ -84,7 +84,7 @@ OpalCyclotron::OpalCyclotron():
     itsAttr[RFPHI]    = Attributes::makeRealArray
                         ("RFPHI", "Initial phase(s) of the electric field map(s) [deg]");
 
-    itsAttr[TYPE]     = Attributes::makeString
+    itsAttr[TYPE]     = Attributes::makeUpperCaseString
                         ("TYPE", "Used to identify special cyclotron types");
 
     itsAttr[MINZ]     = Attributes::makeReal

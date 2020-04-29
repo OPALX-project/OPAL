@@ -53,10 +53,6 @@ public:
     void setKS(double ks);
     void setDKS(double ks);
 
-    virtual void addKR(int i, double t, Vector_t &K) override;
-
-    virtual void addKT(int i, double t, Vector_t &K) override;
-
     virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
     virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;

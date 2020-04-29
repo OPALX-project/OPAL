@@ -34,7 +34,6 @@
 ScalingFFAMagnet::ScalingFFAMagnet(const std::string &name)
         : Component(name),
          planarArcGeometry_m(1., 1.), dummy(), endField_m(NULL) {
-    setElType(isDrift);
 }
 
 ScalingFFAMagnet::ScalingFFAMagnet(const ScalingFFAMagnet &right)
@@ -49,7 +48,6 @@ ScalingFFAMagnet::ScalingFFAMagnet(const ScalingFFAMagnet &right)
     delete endField_m;
     endField_m = right.endField_m->clone();
     RefPartBunch_m = right.RefPartBunch_m;
-    setElType(isDrift);
     Bz_m = right.Bz_m;
     r0_m = right.r0_m;
 }

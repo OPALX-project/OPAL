@@ -217,7 +217,7 @@ void SDDSWriter::addDefaultParameters() {
     } else if (OpalData::getInstance()->isInOPALCyclMode()) {
         flavor = "opal-cycl";
     } else {
-        flavor = "opal-env";
+        flavor = "opal-map";
     }
 
     addParameter("processors", "long", "Number of Cores used", Ippl::getNodes());

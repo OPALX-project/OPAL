@@ -1,21 +1,33 @@
+//
+// Class AmrObject
+//   The AMR interface to OPAL. A new AMR library needs
+//   to inherit from this class in order to work properly
+//   with OPAL. Among other things it specifies the refinement
+//   strategies.
+//
+// Copyright (c) 2016 - 2020, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef AMR_OBECT_H
 #define AMR_OBECT_H
 
 #include "Index/NDIndex.h"
 
 #include "Algorithms/PBunchDefs.h"
-#include "Utilities/Util.h"
 
-// #include "Algorithms/AmrPartBunch.h"
-
-// class AmrPartBunch;
-
-/**
- * The AMR interface to OPAL. A new AMR library needs
- * to inherit from this class in order to work properly
- * with OPAL. Among other things it specifies the refinement
- * strategies.
- */
 class AmrObject {
     
 public:
@@ -88,7 +100,7 @@ public:
      * Is used in src/Structure/FieldSolver.cpp
      * @param tagging strategy
      */
-    void setTagging(std::string tagging);
+    void setTagging(const std::string& tagging);
     
     /*!
      * Scaling factor for tagging.
@@ -148,7 +160,7 @@ public:
      * Rebalance the grids among the
      * cores
      */
-    virtual void redistributeGrids(int how) { }
+    virtual void redistributeGrids(int /*how*/) { }
     
     /*!
      * Used in AmrPartBunch to check if we need to refine

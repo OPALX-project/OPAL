@@ -105,7 +105,7 @@ MueLuPreconditioner<Level>::convertToMueLuReuseOption(const std::string& reuse) 
     map["S"]    = "S";
     map["FULL"] = "full";
     
-    auto muelu =  map.find(Util::toUpper(reuse));
+    auto muelu =  map.find(reuse);
     
     if ( muelu == map.end() )
         throw OpalException("MueLuPreconditioner::convertToMueLuReuseOption()",

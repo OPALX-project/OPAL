@@ -6,7 +6,6 @@
 #include "Attributes/Attributes.h"
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/OpalException.h"
-#include "Utilities/Util.h"
 
 //#include "Utility/Inform.h"
 #include "Utility/IpplInfo.h"
@@ -38,6 +37,7 @@
 #include "Expression/NumberOfPeaks.h"
 #include "Expression/SumErrSqRadialPeak.h"
 #include "Expression/ProbeVariable.h"
+#include "Expression/SeptumExpr.h"
 
 #include <boost/filesystem.hpp>
 
@@ -154,9 +154,9 @@ OptimizeCmd::OptimizeCmd():
         ("FIELDMAPDIR", "Directory where field maps are stored");
     itsAttr[DISTDIR] = Attributes::makeString
         ("DISTDIR", "Directory where distributions are stored", "");
-    itsAttr[CROSSOVER] = Attributes::makeString
+    itsAttr[CROSSOVER] = Attributes::makeUpperCaseString
         ("CROSSOVER", "Type of cross over (default: Blend)", "Blend");
-    itsAttr[MUTATION] = Attributes::makeString
+    itsAttr[MUTATION] = Attributes::makeUpperCaseString
         ("MUTATION", "Type of bit mutation (default: IndependentBit)", "IndependentBit");
     itsAttr[RESTART_FILE] = Attributes::makeString
         ("RESTART_FILE", "H5 file to restart the OPAL simulations from (optional)", "");
@@ -235,6 +235,10 @@ void OptimizeCmd::execute() {
     ff = sameSDDSVariable(fname);
     funcs.insert(std::pair<std::string, client::function::type>
                  ("statVariableAt", ff));
+
+    ff = SeptumExpr();
+    funcs.insert(std::pair<std::string, client::function::type>
+                 ("septum", ff));
 
     //////////////////////////////////////////////////////////////////////////
 
@@ -506,8 +510,6 @@ void OptimizeCmd::popEnvironment() {
 }
 
 OptimizeCmd::CrossOver OptimizeCmd::crossoverSelection(std::string crossover) {
-    crossover = Util::toUpper(crossover);
-
     std::map<std::string, CrossOver> map;
     map["BLEND"] = CrossOver::Blend;
     map["NAIVEONEPOINT"] = CrossOver::NaiveOnePoint;
@@ -537,8 +539,6 @@ OptimizeCmd::CrossOver OptimizeCmd::crossoverSelection(std::string crossover) {
 }
 
 OptimizeCmd::Mutation OptimizeCmd::mutationSelection(std::string mutation) {
-    mutation = Util::toUpper(mutation);
-
     std::map<std::string, Mutation> map;
     map["INDEPENDENTBIT"] = Mutation::IndependentBit;
     map["ONEBIT"] = Mutation::OneBit;

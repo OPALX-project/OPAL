@@ -99,10 +99,6 @@ public:
     //  and magnetic fields at point [b]P[/b] for time [b]t[/b].
     EBVectors EBfield(const Point3D &P, double t) const;
 
-    virtual void addKR(int, double, Vector_t &/*K*/) {};
-
-    virtual void addKT(int, double, Vector_t &/*K*/) {};
-
     virtual bool apply(const size_t &i,
                        const double &t,
                        Vector_t &E,

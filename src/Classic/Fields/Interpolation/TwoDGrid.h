@@ -2,10 +2,10 @@
 #ifndef Mesh_hh
 #define Mesh_hh
 
-#include <vector>
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 #include <ostream>
+#include <vector>
 
 #include "src/legacy/Interface/Meshing/Mesh.hh"
 #include "src/legacy/Interface/Meshing/ThreeDGrid.hh"

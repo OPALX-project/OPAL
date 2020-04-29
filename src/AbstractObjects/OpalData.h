@@ -28,7 +28,6 @@
 template <class T = double, unsigned Dim = 3>
 class PartBunchBase;
 
-class EnvelopeBunch;
 class AttributeBase;
 class Object;
 class Table;
@@ -156,12 +155,10 @@ public:
 
     bool isInOPALCyclMode();
     bool isInOPALTMode();
-    bool isInOPALEnvMode();
     bool isOptimizerRun();
 
     void setInOPALCyclMode();
     void setInOPALTMode();
-    void setInOPALEnvMode();
     void setOptimizerFlag();
 
     bool isInPrepState();
@@ -233,15 +230,6 @@ public:
     DataSink *getDataSink();
 
     void setDataSink(DataSink *s);
-
-    /// true if we already allocated a ParticleBunch object
-    bool hasSLBunchAllocated();
-
-    void slbunchIsAllocated();
-
-    EnvelopeBunch *getSLPartBunch();
-
-    void setSLPartBunch(EnvelopeBunch *p);
 
     /// units: (sec)
     void   setGlobalPhaseShift(double shift);

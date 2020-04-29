@@ -1,20 +1,21 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Track.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Struct: Track
-//   This structure holds all data for tracking.
+// Class Track
+//   Hold data for tracking.
+//   Acts as a communication area between the various tracking commands.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:46 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 
 #include "Track/Track.h"
 // #include "Algorithms/PartBunchBase.h"
@@ -22,17 +23,13 @@
 #ifdef ENABLE_AMR
     #include "Algorithms/AmrPartBunch.h"
 #endif
-#include "Algorithms/bet/EnvelopeBunch.h"
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/Options.h"
-// Class Track
-// ------------------------------------------------------------------------
 
 Track *Track::block = 0;
 std::stack<Track*> Track::stashedTrack;
 
 /**
-
 Track is asking the dictionary if already a
 particle bunch was allocated. If that is the
 case Track is using the already allocated bunch,
@@ -43,9 +40,8 @@ otherwise a new bunch is allocated in the dictionary.
 Track::Track(BeamSequence *u, const PartData &ref, const std::vector<double> & dt,
              const std::vector<unsigned long long> & maxtsteps, int stepsperturn,
              double zStart, const std::vector<double> & zStop, int timeintegrator,
-             int nslices, double t0, double dtScInit, double deltaTau):
+             double t0, double dtScInit, double deltaTau):
     bunch(nullptr),
-    slbunch(nullptr),
     reference(ref),
     use(u),
     parser(),
@@ -59,32 +55,16 @@ Track::Track(BeamSequence *u, const PartData &ref, const std::vector<double> & d
     zstop(zStop),
     timeIntegrator(timeintegrator),
     truncOrder(1)
-    {
-    if(nslices > 0) {
-        if(!OpalData::getInstance()->hasSLBunchAllocated())
-            OpalData::getInstance()->setSLPartBunch(new EnvelopeBunch(&ref));
-
-        if(!OpalData::getInstance()->hasBunchAllocated()) {           // we need this for Autophasing
+{
+    if(!OpalData::getInstance()->hasBunchAllocated()) {
 #ifdef ENABLE_AMR
-            if ( Options::amr )
-                OpalData::getInstance()->setPartBunch(new AmrPartBunch(&ref));
-            else
+        if ( Options::amr )
+            OpalData::getInstance()->setPartBunch(new AmrPartBunch(&ref));
+        else
 #endif
-                OpalData::getInstance()->setPartBunch(new PartBunch(&ref));
-        }
-
-        slbunch = OpalData::getInstance()->getSLPartBunch();
-    } else {
-        if(!OpalData::getInstance()->hasBunchAllocated()) {
-#ifdef ENABLE_AMR
-            if ( Options::amr )
-                OpalData::getInstance()->setPartBunch(new AmrPartBunch(&ref));
-            else
-#endif
-                OpalData::getInstance()->setPartBunch(new PartBunch(&ref));
-        }
-
+            OpalData::getInstance()->setPartBunch(new PartBunch(&ref));
     }
+
     bunch = OpalData::getInstance()->getPartBunch();
 }
 

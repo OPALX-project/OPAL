@@ -464,6 +464,7 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
         out << std::left
             << std::setw(15) << "# energy[MeV]"
             << std::setw(15) << "radius_ini[m]"
+            << std::setw(15) << "momentum_ini[Beta Gamma]"
             << std::setw(15) << "radius_avg[m]"
             << std::setw(15) << "nu_r"
             << std::setw(15) << "nu_z"
@@ -555,6 +556,7 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
             out << std::left
                 << std::setw(15) << E
                 << std::setw(15) << reo
+                << std::setw(15) << peo
                 << std::setw(15) << ravg_m
                 << std::setw(15) << tunes.first
                 << std::setw(15) << tunes.second << std::endl;

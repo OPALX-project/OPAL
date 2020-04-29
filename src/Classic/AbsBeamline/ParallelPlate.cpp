@@ -45,7 +45,6 @@ ParallelPlate::ParallelPlate(const ParallelPlate &right):
     frequency_m(right.frequency_m),
     length_m(right.length_m),
     ptime_m(0.0) {
-    setElType(isRF);
 }
 
 
@@ -57,7 +56,6 @@ ParallelPlate::ParallelPlate(const std::string &name):
     frequency_m(0.0),
     length_m(0.0),
     ptime_m(0.0) {
-    setElType(isRF);
 }
 
 

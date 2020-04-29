@@ -1,3 +1,26 @@
+//
+// Class BoxLibParticle
+//   Particle class for AMReX. It works together with BoxLibLayout.
+//   The class does the scatter and gather operations of attributes
+//   to and from the grid. Ippl implements the same functionality in the
+//   attribute class.
+//
+// Copyright (c) 2016 - 2020, Matthias Frey, Uldis Locans, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef BOXLIB_PARTICLE_HPP
 #define BOXLIB_PARTICLE_HPP
 
@@ -59,7 +82,7 @@ void BoxLibParticle<PLayout>::scatter(ParticleAttrib<FT>& attrib, AmrScalarField
 template<class PLayout>
 template <class FT, unsigned Dim, class PT>
 void BoxLibParticle<PLayout>::scatter(ParticleAttrib<FT>& attrib, AmrField_t& f,
-                                      ParticleAttrib<Vektor<PT, Dim> >& pp,
+                                      ParticleAttrib<Vektor<PT, Dim> >& /*pp*/,
                                       const ParticleAttrib<int>& pbin, int bin,
                                       int level)
 {
@@ -80,7 +103,7 @@ void BoxLibParticle<PLayout>::scatter(ParticleAttrib<FT>& attrib, AmrField_t& f,
 template<class PLayout>
 template<class FT, unsigned Dim, class PT>
 void BoxLibParticle<PLayout>::gather(ParticleAttrib<FT>& attrib, AmrVectorFieldContainer_t& f,
-                                     ParticleAttrib<Vektor<PT, Dim> >& pp,
+                                     ParticleAttrib<Vektor<PT, Dim> >& /*pp*/,
                                      int lbase, int lfine)
 {
     this->InterpolateFort(attrib, f, lbase, lfine);
@@ -159,7 +182,7 @@ void BoxLibParticle<PLayout>::AssignCellDensitySingleLevelFort(ParticleAttrib<AT
                                                                const     ParticleAttrib<int>& pbin,
                                                                int       bin,
                                                                int       ncomp,
-                                                               int       particle_lvl_offset) const
+                                                               int       /*particle_lvl_offset*/) const
 {
 //     BL_PROFILE("ParticleContainer<NStructReal, NStructInt, NArrayReal, NArrayInt>::AssignCellDensitySingleLevelFort()");
     

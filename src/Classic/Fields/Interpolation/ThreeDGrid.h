@@ -28,9 +28,8 @@
 #ifndef _CLASSIC_FIELDS_THREEDGRID_HH_
 #define _CLASSIC_FIELDS_THREEDGRID_HH_
 
-#include <math.h>
-
 #include <algorithm>
+#include <cmath>
 #include <vector>
 
 #include "Fields/Interpolation/Mesh.h"

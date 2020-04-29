@@ -1,3 +1,27 @@
+//
+// Class AmrYtWriter
+//   This concrete class writes output files that are readable by yt
+//   (cf. http://yt-project.org/). We have a fork of yt in
+//   the repository at https://gitlab.psi.ch/frey_m/yt.
+//   The functions of this class are copied from AMReX and modified to fit
+//   our needs.
+//
+// Copyright (c) 2016 - 2020, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef AMR_YT_WRITER_H
 #define AMR_YT_WRITER_H
 
@@ -7,16 +31,6 @@
 
 #include <vector>
 
-/*!
- * This concrete class writes output files
- * that are readable by
- * <a href="http://yt-project.org/">yt</a>.
- * The format can be read by the fork
- * <a href="https://Yavin_4@bitbucket.org/Yavin_4/opal-yt">opal-yt</a>
- * that uses accelerator units instead of astrophysics units.
- * The functions are copied from AMReX and modified to fit
- * our needs.
- */
 class AmrYtWriter : public AbstractAmrWriter {
     
 public:

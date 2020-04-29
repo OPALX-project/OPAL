@@ -54,7 +54,7 @@ OpalSample::OpalSample():
                "The \"SAMPLING\" statement defines methods used for the optimizer in sample mode.")
     , size_m(1)
 {
-    itsAttr[TYPE]       = Attributes::makeString
+    itsAttr[TYPE]       = Attributes::makeUpperCaseString
                           ("TYPE", "UNIFORM_INT, UNIFORM, GAUSSIAN, FROMFILE, LATIN_HYPERCUBE");
 
     itsAttr[VARIABLE]   = Attributes::makeString
@@ -115,7 +115,7 @@ void OpalSample::initialize(const std::string &dvarName,
         throw OpalException("OpalSample::initialize()",
                             "Lower bound >= upper bound.");
 
-    std::string type = Util::toUpper(Attributes::getString(itsAttr[TYPE]));
+    std::string type = Attributes::getString(itsAttr[TYPE]);
 
     int seed = Attributes::getReal(itsAttr[SEED]);
     size_m = Attributes::getReal(itsAttr[N]);

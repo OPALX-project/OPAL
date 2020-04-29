@@ -33,8 +33,6 @@
 #include <tuple>
 #include <assert.h>
 
-#include <math.h>
-
 ArbitraryDomain::ArbitraryDomain( BoundaryGeometry * bgeom,
                                   Vector_t nr,
                                   Vector_t /*hr*/,
@@ -386,7 +384,7 @@ void ArbitraryDomain::compute(Vector_t hr, NDIndex<3> localId){
     }
 
     int startIdx = 0;
-    MPI_Scan(&numtotal, &startIdx, 1, MPI_INTEGER, MPI_SUM, MPI_COMM_WORLD);
+    MPI_Scan(&numtotal, &startIdx, 1, MPI_INT, MPI_SUM, MPI_COMM_WORLD);
     startIdx -= numtotal;
 
     // Build up index and coord map

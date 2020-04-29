@@ -34,19 +34,16 @@
 #include "Utilities/Util.h"
 #include "Utilities/GeneralClassicException.h"
 
-#include <fstream>
 #include <memory>
 #include <fstream>
 #include <iostream>
-#include <fstream>
+#include <cmath>
 #include <algorithm>
 
 #include "Ippl.h"
 
 #include "gsl/gsl_spline.h"
 #include "gsl/gsl_interp.h"
-
-using Physics::pi;
 
 #define CHECK_BSTP_FSCANF_EOF(arg) if(arg == EOF)\
 throw GeneralClassicException("BeamStripping::getPressureFromFile",\
@@ -111,7 +108,7 @@ double BeamStripping::getPressure() const {
         return pressure_m;
     else {
         throw LogicalError("BeamStripping::getPressure",
-                          "Pressure must not be zero");
+                           "Pressure must not be zero");
     }
 }
 
@@ -141,7 +138,12 @@ void BeamStripping::setPScale(double ps) {
 }
 
 double BeamStripping::getPScale() const {
-    return pscale_m;
+    if(pscale_m > 0.0)
+        return pscale_m;
+    else {
+        throw LogicalError("BeamStripping::getPScale",
+                           "PScale must be positive");
+    }
 }
 
 void BeamStripping::setResidualGas(std::string gas) {
@@ -256,7 +258,7 @@ std::string BeamStripping::getBeamStrippingShape() {
 
 int BeamStripping::checkPoint(const double &x, const double &y, const double &z) {
     int cn;
-    double rpos = sqrt(x * x + y * y);
+    double rpos = std::sqrt(x * x + y * y);
     double zpos = z;
     if (zpos >= maxz_m || zpos <= minz_m || rpos >= maxr_m || rpos <= minr_m)
         cn = 0;
@@ -270,7 +272,7 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
     double pressure = 0.0;
 
     if(pmapfn_m != "") {
-        const double rad = sqrt(x * x + y * y);
+        const double rad = std::sqrt(x * x + y * y);
         const double xir = (rad - PP.rmin) / PP.delr;
 
         // ir : the number of path whose radius is less than the 4 points of cell which surround the particle.
@@ -282,14 +284,14 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
 
         const double tempv = atan(y / x);
         double tet = tempv;
-        if((x < 0) && (y >= 0)) tet = pi + tempv;
-        else if((x < 0) && (y <= 0)) tet = pi + tempv;
-        else if((x > 0) && (y <= 0)) tet = 2.0 * pi + tempv;
-        else if((x == 0) && (y > 0)) tet = pi / 2.0;
-        else if((x == 0) && (y < 0)) tet = 1.5 * pi;
+        if((x < 0) && (y >= 0)) tet = Physics::pi + tempv;
+        else if((x < 0) && (y <= 0)) tet = Physics::pi + tempv;
+        else if((x > 0) && (y <= 0)) tet = 2.0 * Physics::pi + tempv;
+        else if((x == 0) && (y > 0)) tet = Physics::pi / 2.0;
+        else if((x == 0) && (y < 0)) tet = 1.5 * Physics::pi;
 
         // the actual angle of particle
-        tet = tet / pi * 180.0;
+        tet = tet / Physics::pi * 180.0;
 
         // the corresponding angle on the field map
         // Note: this does not work if the start point of field map does not equal zero.
@@ -317,6 +319,11 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
                         PField.pfld[r2t1] * wr1 * wt2 +
                         PField.pfld[r1t2] * wr2 * wt1 +
                         PField.pfld[r2t2] * wr1 * wt1);
+            if(pressure <= 0.0) {
+                *gmsg << level4 << getName() << ": Pressure data from file zero." << endl;
+                *gmsg << level4 << getName() << ": Take constant value through BeamStripping::getPressure" << endl;
+                pressure = getPressure();
+            }
         }
         else if (ir >= PField.nrad) {
             *gmsg << level4 << getName() << ": Particle out of maximum radial position of pressure field map." << endl;
@@ -326,12 +333,6 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
         else {
             throw GeneralClassicException("BeamStripping::checkPressure",
                                           "Pressure data not found");
-        }
-
-        if(pressure <= 0.0) {
-            *gmsg << level4 << getName() << ": Pressure data from file zero." << endl;
-            *gmsg << level4 << getName() << ": Take constant value through BeamStripping::getPressure" << endl;
-            pressure = getPressure();
         }
     }
     else {

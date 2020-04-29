@@ -23,7 +23,6 @@
 #include "Utilities/OptionTypes.h"
 #include "Utilities/ClassicRandom.h"
 #include "Utility/IpplInfo.h"
-#include "Utilities/Util.h"
 
 #include "Utilities/OpalException.h"
 
@@ -148,7 +147,7 @@ Option::Option():
        "to the beam mass is larger than REMOTEPARTDEL times of the beam rms size, "
        "its default values is 0 (no delete) ",0.0);
 
-    itsAttr[PSDUMPFRAME] = Attributes::makeString
+    itsAttr[PSDUMPFRAME] = Attributes::makeUpperCaseString
                                 ("PSDUMPFRAME", "Controls the frame of phase space dump in "
                                  "stat file and h5 file. If 'GLOBAL' OPAL will dump in the "
                                  "lab (global) Cartesian frame; if 'BUNCH_MEAN' OPAL will "
@@ -211,7 +210,7 @@ Option::Option():
                       ("CZERO", "If set to true a symmetric distribution is "
                        "created -> centroid == 0.0 ", cZero);
 
-    itsAttr[RNGTYPE] =  Attributes::makeString
+    itsAttr[RNGTYPE] =  Attributes::makeUpperCaseString
                         ("RNGTYPE", "RANDOM (default), Quasi-random number "
                          "generators: HALTON, SOBOL, NIEDERREITER (Gsl ref manual 18.5)", rngtype);
 
@@ -290,7 +289,7 @@ Option::Option(const std::string &name, Option *parent):
     Attributes::setReal(itsAttr[PSDUMPFREQ], psDumpFreq);
     Attributes::setReal(itsAttr[STATDUMPFREQ], statDumpFreq);
     Attributes::setBool(itsAttr[PSDUMPEACHTURN], psDumpEachTurn);
-    Attributes::setString(itsAttr[PSDUMPFRAME], DumpFrameToString(psDumpFrame));
+    Attributes::setUpperCaseString(itsAttr[PSDUMPFRAME], DumpFrameToString(psDumpFrame));
     Attributes::setReal(itsAttr[SPTDUMPFREQ], sptDumpFreq);
     Attributes::setReal(itsAttr[SCSOLVEFREQ], scSolveFreq);
     Attributes::setReal(itsAttr[MTSSUBSTEPS], mtsSubsteps);
@@ -305,7 +304,7 @@ Option::Option(const std::string &name, Option *parent):
     Attributes::setReal(itsAttr[SURFDUMPFREQ], surfDumpFreq);
     Attributes::setBool(itsAttr[CZERO], cZero);
     Attributes::setBool(itsAttr[CLOTUNEONLY], cloTuneOnly);
-    Attributes::setString(itsAttr[RNGTYPE], std::string(rngtype));
+    Attributes::setUpperCaseString(itsAttr[RNGTYPE], std::string(rngtype));
     Attributes::setReal(itsAttr[NUMBLOCKS], numBlocks);
     Attributes::setReal(itsAttr[RECYCLEBLOCKS], recycleBlocks);
     Attributes::setReal(itsAttr[NLHS], nLHS);
@@ -384,7 +383,7 @@ void Option::execute() {
     IpplInfo::Info->on(info);
     IpplInfo::Warn->on(warn);
 
-    handlePsDumpFrame(Util::toUpper(Attributes::getString(itsAttr[PSDUMPFRAME])));
+    handlePsDumpFrame(Attributes::getString(itsAttr[PSDUMPFRAME]));
 
     if(itsAttr[ASCIIDUMP]) {
         asciidump = Attributes::getBool(itsAttr[ASCIIDUMP]);

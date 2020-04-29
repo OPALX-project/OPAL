@@ -81,9 +81,9 @@ public:
                          std::vector<Distribution *> addedDistributions,
                          size_t &np);
 
-    bool isGridFixed();
+    bool isGridFixed() const;
 
-    bool hasBinning();
+    bool hasBinning() const;
 
 
     /*
@@ -215,7 +215,7 @@ public:
      * @param none
      *
      */
-    double get_sPos();
+    double get_sPos() const;
 
     void set_sPos(double s);
 
@@ -309,7 +309,7 @@ public:
     Quaternion_t getGlobalToLocalQuaternion();
 
     void setSteptoLastInj(int n);
-    int getSteptoLastInj();
+    int getSteptoLastInj() const;
 
     /// calculate average angle of longitudinal direction of bins
     double calcMeanPhi();
@@ -333,7 +333,7 @@ public:
     void resetM(double m);
     void setPType(ParticleType::type);
     ///@}
-    double getdE();
+    double getdE() const;
     virtual double getGamma(int i);
     virtual double getBeta(int i);
     virtual void actT();

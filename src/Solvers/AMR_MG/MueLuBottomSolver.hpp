@@ -20,7 +20,6 @@
 //
 #include <AMReX.H>
 #include "Utilities/OpalException.h"
-#include "Utilities/Util.h"
 
 template <class Level>
 MueLuBottomSolver<Level>::MueLuBottomSolver(const bool& rebalance,
@@ -139,7 +138,7 @@ MueLuBottomSolver<Level>::convertToMueLuReuseOption(const std::string& reuse) {
     map["S"]    = "S";
     map["FULL"] = "full";
     
-    auto muelu =  map.find(Util::toUpper(reuse));
+    auto muelu =  map.find(reuse);
     
     if ( muelu == map.end() )
         throw OpalException("MueLuBottomSolver::convertToMueLuReuseOption()",

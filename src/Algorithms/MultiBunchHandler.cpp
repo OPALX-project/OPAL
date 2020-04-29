@@ -349,8 +349,6 @@ void MultiBunchHandler::setMode(const std::string& mbmode) {
 
 void MultiBunchHandler::setBinning(std::string binning) {
 
-    binning = Util::toUpper(binning);
-
     if ( binning.compare("BUNCH") == 0 ) {
         *gmsg << "Use 'BUNCH' injection for binnning." << endl;
         binning_m = MB_BINNING::BUNCH;

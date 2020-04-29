@@ -34,7 +34,6 @@ template <class T, unsigned Dim>
 class PartBunchBase;
 
 class PartBins;
-class EnvelopeBunch;
 class LaserProfile;
 class H5PartWrapper;
 
@@ -213,11 +212,6 @@ public:
     void createOpalCycl(PartBunchBase<double, 3> *beam,
                         size_t numberOfParticles,
                         double current, const Beamline &bl);
-    void createOpalE(Beam *beam,
-                     std::vector<Distribution *> addedDistributions,
-                     EnvelopeBunch *envelopeBunch,
-                     double distCenter,
-                     double Bz0);
     void createOpalT(PartBunchBase<double, 3> *beam,
                      std::vector<Distribution *> addedDistributions,
                      size_t &numberOfParticles);
@@ -225,7 +219,6 @@ public:
     void doRestartOpalT(PartBunchBase<double, 3> *p, size_t Np, int restartStep, H5PartWrapper *h5wrapper);
     void doRestartOpalCycl(PartBunchBase<double, 3> *p, size_t Np, int restartStep,
                         const int specifiedNumBunch, H5PartWrapper *h5wrapper);
-    void doRestartOpalE(EnvelopeBunch *p, size_t Np, int restartStep, H5PartWrapper *h5wrapper);
     size_t emitParticles(PartBunchBase<double, 3> *beam, double eZ);
     double getPercentageEmitted() const;
     static Distribution *find(const std::string &name);

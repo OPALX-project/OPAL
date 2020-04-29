@@ -31,7 +31,6 @@
 #include "TrimCoils/TrimCoilPhaseFit.h"
 #include "TrimCoils/TrimCoilMirrored.h"
 #include "Utilities/OpalException.h"
-#include "Utilities/Util.h"
 #include "Utility/IpplInfo.h"
 
 extern Inform *gmsg;
@@ -58,7 +57,7 @@ OpalTrimCoil::OpalTrimCoil():
     Definition(SIZE, "TRIMCOIL",
                "The \"TRIMCOIL\" statement defines a trim coil."),
     trimcoil_m(nullptr) {
-    itsAttr[TYPE]      = Attributes::makeString
+    itsAttr[TYPE]      = Attributes::makeUpperCaseString
                          ("TYPE", "Specifies the type of trim coil: PSI-BFIELD, PSI-PHASE, PSI-BFIELD-MIRRORED");
 
     itsAttr[COEFNUM]   = Attributes::makeRealArray
@@ -151,7 +150,7 @@ void OpalTrimCoil::update() {
 void OpalTrimCoil::initOpalTrimCoil() {
     if (trimcoil_m != nullptr) return;
 
-    std::string type = Util::toUpper(Attributes::getString(itsAttr[TYPE]));
+    std::string type = Attributes::getString(itsAttr[TYPE]);
 
     double bmax   = Attributes::getReal(itsAttr[BMAX]);
     double phimin = Attributes::getReal(itsAttr[PHIMIN]);
@@ -187,7 +186,7 @@ Inform& OpalTrimCoil::print(Inform &os) const {
        << "* TRIMCOIL       " << getOpalName() << '\n'
        << "* TYPE           " << Attributes::getString(itsAttr[TYPE]) << '\n';
 
-    std::string type = Util::toUpper(Attributes::getString(itsAttr[TYPE]));
+    std::string type = Attributes::getString(itsAttr[TYPE]);
     if (type == "PSI-BFIELD" || type == "PSI-PHASE") {
         printPolynom(os,itsAttr[COEFNUM]);
         printPolynom(os,itsAttr[COEFDENOM]);
@@ -199,7 +198,7 @@ Inform& OpalTrimCoil::print(Inform &os) const {
        << "* RMIN           " << Attributes::getReal(itsAttr[RMIN]) << '\n'
        << "* RMAX           " << Attributes::getReal(itsAttr[RMAX]) << '\n';
 
-    if (Util::toUpper(Attributes::getString(itsAttr[TYPE])) == "PSI-BFIELD-MIRRORED") {
+    if (Attributes::getString(itsAttr[TYPE]) == "PSI-BFIELD-MIRRORED") {
         os << "* SLPTC          " << Attributes::getReal(itsAttr[SLPTC]) << '\n';
     }
     os << "* *********************************************************************************" << endl;

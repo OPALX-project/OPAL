@@ -24,7 +24,6 @@
 #include <utility>
 
 #include "Utilities/OpalException.h"
-#include "Utilities/Util.h"
 
 AmrSmoother::AmrSmoother(const Teuchos::RCP<const matrix_t>& A,
                          const Smoother& smoother,
@@ -70,7 +69,7 @@ AmrSmoother::convertToEnumSmoother(const std::string& smoother) {
     map["SGS"]    = Smoother::SGS;
     map["JACOBI"] = Smoother::JACOBI;
     
-    auto sm = map.find(Util::toUpper(smoother));
+    auto sm = map.find(smoother);
     
     if ( sm == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumNorm_m()",

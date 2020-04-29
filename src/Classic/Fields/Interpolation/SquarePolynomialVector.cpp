@@ -25,11 +25,11 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <math.h>
 
+#include <algorithm>
+#include <cmath>
 #include <iomanip>
 #include <sstream>
-#include <algorithm>
 
 #include "gsl/gsl_sf_gamma.h"
 

@@ -11,6 +11,7 @@ extern Inform *gmsg;
 #include "Utilities/OpalException.h"
 #include "Fields/Fieldmap.h"
 #include "Structure/IpplInfoWrapper.h"
+#include "Utilities/Options.h"
 
 #include "OPALconfig.h"
 
@@ -35,7 +36,8 @@ int run_opal(char */*args*/[], std::string inputfile, int restartStep,
     IpplInfo::Warn->setDestination(output);
 
 #ifdef ENABLE_AMR
-    amrex::Initialize(comm);
+    if ( Options::amr )
+        amrex::Initialize(comm);
 #endif
 
     OpalData *opal = OpalData::getInstance();
@@ -77,7 +79,8 @@ int run_opal(char */*args*/[], std::string inputfile, int restartStep,
     delete gmsg;
 
 #ifdef ENABLE_AMR
-    amrex::Finalize(true);
+    if ( Options::amr )
+        amrex::Finalize(true);
 #endif
 
     //FIXME: strange side effects

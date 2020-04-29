@@ -53,7 +53,6 @@ Multipole::Multipole(const Multipole &right):
     max_SkewComponent_m(right.max_SkewComponent_m),
     max_NormalComponent_m(right.max_NormalComponent_m),
     nSlices_m(right.nSlices_m) {
-    setElType(isMultipole);
 }
 
 
@@ -66,7 +65,6 @@ Multipole::Multipole(const std::string &name):
     max_SkewComponent_m(1),
     max_NormalComponent_m(1),
     nSlices_m(1) {
-    setElType(isMultipole);
 }
 
 
@@ -164,58 +162,6 @@ void Multipole::setNSlices(const std::size_t& nSlices) {
 //get the number of slices for map tracking
 std::size_t Multipole::getNSlices() const {
     return nSlices_m;
-}
-
-//ff
-// radial focussing term
-void Multipole::addKR(int i, double /*t*/, Vector_t &K) {
-    Inform msg("Multipole::addK()");
-
-    double b = RefPartBunch_m->getBeta(i);
-    double g = RefPartBunch_m->getGamma(i); //1 / sqrt(1 - b * b);
-
-    // calculate the average of all normal components, to obtain the gradient
-    double l = NormalComponents.size();
-    double temp_n = 0;
-    for(int j = 0; j < l; j++)
-        temp_n += NormalComponents.at(j);
-
-    double Grad = temp_n / l;
-    double k = -Physics::q_e * b * Physics::c * Grad / (g * Physics::EMASS);
-    //FIXME: factor? k *= 5?
-
-    //FIXME: sign?
-    Vector_t temp(k, -k, 0.0);
-
-    K += temp;
-}
-
-//ff
-//transverse kick
-void Multipole::addKT(int i, double /*t*/, Vector_t &K) {
-    Inform msg("Multipole::addK()");
-
-    Vector_t tmpE(0.0, 0.0, 0.0);
-    Vector_t tmpB(0.0, 0.0, 0.0);
-    Vector_t tmpE_diff(0.0, 0.0, 0.0);
-    Vector_t tmpB_diff(0.0, 0.0, 0.0);
-
-    double b = RefPartBunch_m->getBeta(i);
-    double g = RefPartBunch_m->getGamma(i);
-
-    // calculate the average of all normal components, to obtain the gradient
-
-    double l = NormalComponents.size();
-    double temp_n = 0;
-    for(int j = 0; j < l; j++)
-        temp_n += NormalComponents.at(j);
-
-    double G = temp_n / l;
-    double cf = -Physics::q_e * b * Physics::c * G / (g * Physics::EMASS);
-    double dx = RefPartBunch_m->getX0(i);
-    double dy = RefPartBunch_m->getY0(i);
-
-    K += Vector_t(cf * dx, -cf * dy, 0.0);
 }
 
 void Multipole::computeField(Vector_t R, Vector_t &/*E*/, Vector_t &B) {

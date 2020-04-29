@@ -163,7 +163,7 @@ static void write_voxel_mesh (
 
  */
 
-#include <math.h>
+#include <cmath>
 
 
 #define LERP( A, B, C) ((B)+(A)*((C)-(B)))
@@ -742,14 +742,6 @@ BoundaryGeometry::BoundaryGeometry() :
         ("C",
          "In case of BOXCORNER Specifies hight of corner C [m]",
          0.01);
-
-    itsAttr[DISTR] = Attributes::makeString
-        ("DISTR",
-         "Distribution to be generated on the surface",
-         "");
-    itsAttr[DISTRS] = Attributes::makeStringArray
-        ("DISTRS",
-         "Distribution array to be generated on the surface");
 
     itsAttr[XYZSCALE] = Attributes::makeReal
         ("XYZSCALE",

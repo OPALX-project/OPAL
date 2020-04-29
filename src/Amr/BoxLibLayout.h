@@ -1,3 +1,38 @@
+//
+// Class BoxLibLayout
+//   In contrast to AMReX, OPAL is optimized for the
+//   distribution of particles to cores. In AMReX the ParGDB object
+//   is responsible for the particle to core distribution. This
+//   layout is derived from this object and does all important
+//   bunch updates. It is the interface for AMReX and Ippl.
+//
+//   In AMReX, the geometry, i.e. physical domain, is fixed
+//   during the whole computation. Particles leaving the domain
+//   would be deleted. In order to prevent this we map the particles
+//   onto the domain [-1, 1]^3. Furthermore, it makes sure
+//   that we have enougth grid points to represent the bunch
+//   when its charges are scattered on the grid for the self-field
+//   computation.
+//
+//   The self-field computation and the particle-to-core update
+//   are performed in the particle mapped domain.
+//
+// Copyright (c) 2016 - 2020, Matthias Frey, Uldis Locans, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef BOXLIB_LAYOUT_H
 #define BOXLIB_LAYOUT_H
 
@@ -8,24 +43,6 @@
 
 #include <AMReX_ParGDB.H>
 
-/*!
- * In contrast to AMReX, OPAL is optimized for
- * distribution particles to cores. In AMReX the ParGDB object
- * is responsible for the particle to core distribution. This
- * layout is derived from this object and does all important
- * bunch updates. It is the interface for AMReX and Ippl.
- * 
- * In AMReX the geometry, i.e. physical domain, is fixed
- * during the whole computation. Particles leaving the domain
- * would be deleted. In order to prevent this we map the particles
- * onto the domain \f$[-1, 1]^3\f$. Furthermore, it makes sure
- * that we have enougth grid points to represent the bunch
- * when its charges are scattered on the grid for the self-field
- * computation.
- * 
- * The self-field computation and the particle-to-core update
- * are performed in the particle mapped domain.
- */
 template<class T, unsigned Dim>
 class BoxLibLayout : public ParticleAmrLayout<T, Dim>,
                      public amrex::ParGDB

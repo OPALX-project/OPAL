@@ -45,7 +45,6 @@ RBend3D::RBend3D(const RBend3D &right):
     fast_m(right.fast_m),
     geometry_m(right.geometry_m),
     dummyField_m() {
-    setElType(isDipole);
 }
 
 
@@ -58,7 +57,6 @@ RBend3D::RBend3D(const std::string &name):
     fast_m(false),
     geometry_m(),
     dummyField_m() {
-    setElType(isDipole);
 }
 
 
@@ -81,12 +79,6 @@ void RBend3D::setFast(bool fast) {
 
 bool RBend3D::getFast() const {
     return fast_m;
-}
-
-void RBend3D::addKR(int /*i*/, double /*t*/, Vector_t &/*K*/) {
-}
-
-void RBend3D::addKT(int /*i*/, double /*t*/, Vector_t &/*K*/) {
 }
 
 bool RBend3D::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) {

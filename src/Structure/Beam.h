@@ -72,9 +72,6 @@ public:
     /// Return the number of (macro)particles
     size_t getNumberOfParticles();
 
-    /// Return the number of slices
-    size_t getNumberOfSlices();
-
     /// Return the embedded CLASSIC PartData.
     const PartData &getReference() const;
 

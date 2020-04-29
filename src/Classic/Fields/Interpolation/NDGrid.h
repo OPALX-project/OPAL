@@ -28,10 +28,10 @@
 #ifndef _CLASSIC_FIELDS_NDGRID_HH_
 #define _CLASSIC_FIELDS_NDGRID_HH_
 
-#include <vector>
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 #include <ostream>
+#include <vector>
 
 #include "Fields/Interpolation/Mesh.h"
 

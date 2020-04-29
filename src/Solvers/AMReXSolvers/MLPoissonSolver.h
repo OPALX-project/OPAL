@@ -1,3 +1,23 @@
+//
+// Class MLPoissonSolver
+//   Interface to the C++ based AMR Poisson multigrid solver of AMReX.
+//
+// Copyright (c) 2016 - 2020, Matthias Frey, Paul Scherrer Institute, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef ML_POISSON_SOLVER_H_
 #define ML_POISSON_SOLVER_H_
 

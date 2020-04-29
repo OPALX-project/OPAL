@@ -196,7 +196,7 @@ void MemoryProfiler::compute(vm_t& vmMin,
 }
 
 
-void MemoryProfiler::write(PartBunchBase<double, 3> *beam) {
+void MemoryProfiler::write(const PartBunchBase<double, 3> *beam) {
 
     this->update();
 

@@ -154,14 +154,6 @@ public:
     //  Slices and stepsize used to determine integration step.
     virtual double getStepsize() const = 0;
 
-
-    /*
-     * Methods for OPAL-SLICE.
-     */
-    virtual void addKR(int /* i */, double /* t */, Vector_t &/* K */) override { };
-    virtual void addKT(int /* i */, double /* t */, Vector_t &/* K */) override { };
-
-
     virtual ElementBase::ElementType getType() const override;
 
 private:

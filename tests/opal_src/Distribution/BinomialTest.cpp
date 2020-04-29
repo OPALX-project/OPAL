@@ -34,7 +34,7 @@ TEST(BinomialTest, FullSigmaTest1) {
 
     Distribution dist;
 
-    Attributes::setString(dist.itsAttr[Attrib::Distribution::TYPE], "BINOMIAL");
+    Attributes::setUpperCaseString(dist.itsAttr[Attrib::Distribution::TYPE], "BINOMIAL");
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::MX], 999999999.9);
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::MY], 999999999.9);
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::MZ], 999999999.9);
@@ -114,7 +114,7 @@ TEST(BinomialTest, FullSigmaTest2) {
 
     Distribution dist;
 
-    Attributes::setString(dist.itsAttr[Attrib::Distribution::TYPE], "BINOMIAL");
+    Attributes::setUpperCaseString(dist.itsAttr[Attrib::Distribution::TYPE], "BINOMIAL");
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::MX], 1.0);
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::MY], 1.0);
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::MZ], 1.0);

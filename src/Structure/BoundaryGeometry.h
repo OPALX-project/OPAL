@@ -31,6 +31,8 @@ class ElementBase;
 #include "Attributes/Attributes.h"
 #include "Structure/SecondaryEmissionPhysics.h"
 
+#include "Utilities/Util.h"
+
 #include <gsl/gsl_rng.h>
 
 extern Inform* gmsg;
@@ -114,20 +116,12 @@ public:
 
     void writeGeomToVtk (std::string fn);
 
-    inline std::string getFilename () const {
-        return (std::string) Attributes::getString (itsAttr[FGEOM]);
+    inline std::string getFilename() const {
+        return Attributes::getString(itsAttr[FGEOM]);
     }
 
-    inline std::string getTopology () const {
-        return (std::string) Attributes::getString (itsAttr[TOPO]);
-    }
-
-    inline std::string getDistribution () {
-        return (std::string) Attributes::getString (itsAttr[DISTR]);
-    }
-
-    inline std::vector<std::string> getDistributionArray () {
-        return Attributes::getStringArray (itsAttr[DISTRS]);
+    inline std::string getTopology() const {
+        return Util::toUpper(Attributes::getString(itsAttr[TOPO]));
     }
 
     inline size_t getN () {
@@ -504,8 +498,6 @@ private:
         B,        // minor semi-axis of ellitpic tube
         C,        // in case of BOXCORNER hight of corner
         TOPO,     // BOX, BOXCORNER, ELLIPTIC if FGEOM is selected topo is over-written
-        DISTR,    // Add distribution to generate physics model on the surface
-        DISTRS,   // Add distribution array to generate physics model on the surface
         ZSHIFT,   // Shift in z direction
         XYZSCALE, // Multiplicative scaling factor for coordinates
         XSCALE,   // Multiplicative scaling factor for x-coordinates

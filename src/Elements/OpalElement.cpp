@@ -47,7 +47,7 @@ std::map < std::string, OwnPtr<AttCell> > OpalElement::attributeRegistry;
 
 OpalElement::OpalElement(int size, const char *name, const char *help):
     Element(size, name, help), itsSize(size) {
-    itsAttr[TYPE]   = Attributes::makeString
+    itsAttr[TYPE]   = Attributes::makeUpperCaseString
                       ("TYPE", "The element design type (the project name)");
     itsAttr[LENGTH] = Attributes::makeReal
                       ("L", "The element length in m");

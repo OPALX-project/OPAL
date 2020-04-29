@@ -187,7 +187,6 @@ void TrackCmd::execute() {
     double zstart = getZSTART();
     std::vector<double> zstop = getZSTOP();
     int timeintegrator = getTIMEINTEGRATOR();
-    int nslices = beam->getNumberOfSlices();
 
     size_t numTracks = dt.size();
     numTracks = std::max(numTracks, maxsteps.size());
@@ -205,7 +204,7 @@ void TrackCmd::execute() {
    // Execute track block.
     Track::block = new Track(use, beam->getReference(), dt, maxsteps,
                              stepsperturn, zstart, zstop,
-                             timeintegrator, nslices, t0, getDTSCINIT(), getDTAU());
+                             timeintegrator, t0, getDTSCINIT(), getDTAU());
     
     Track::block->truncOrder = (int)Attributes::getReal(itsAttr[MAP_ORDER]);
     

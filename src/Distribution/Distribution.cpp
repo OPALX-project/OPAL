@@ -28,7 +28,6 @@
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBins.h"
 #include "Algorithms/PartBunchBase.h"
-#include "Algorithms/bet/EnvelopeBunch.h"
 #include "Structure/Beam.h"
 #include "Algorithms/PartBinsCyc.h"
 #include "BasicActions/Option.h"
@@ -37,7 +36,6 @@
 #include "AbstractObjects/BeamSequence.h"
 #include "Structure/H5PartWrapper.h"
 #include "Structure/H5PartWrapperForPC.h"
-#include "Utilities/Util.h"
 #include "Utilities/EarlyLeaveException.h"
 
 #include <gsl/gsl_histogram.h>
@@ -497,24 +495,6 @@ void Distribution::doRestartOpalCycl(PartBunchBase<double, 3> *beam,
     IpplTimings::stopTimer(beam->distrReload_m);
 }
 
-void Distribution::doRestartOpalE(EnvelopeBunch *beam, size_t /*Np*/, int /*restartStep*/,
-                                  H5PartWrapper *dataSource) {
-    IpplTimings::startTimer(beam->distrReload_m);
-    int N = dataSource->getNumParticles();
-    *gmsg << "total number of slices = " << N << endl;
-
-    beam->distributeSlices(N);
-    beam->createBunch();
-    long long starti = beam->mySliceStartOffset();
-    long long endi = beam->mySliceEndOffset();
-
-    dataSource->readHeader();
-    dataSource->readStep(beam, starti, endi);
-
-    beam->setCharge(beam->getChargePerParticle());
-    IpplTimings::stopTimer(beam->distrReload_m);
-}
-
 Distribution *Distribution::find(const std::string &name) {
     Distribution *dist = dynamic_cast<Distribution *>(OpalData::getInstance()->find(name));
 
@@ -897,7 +877,7 @@ void Distribution::chooseInputMomentumUnits(InputMomentumUnitsT::InputMomentumUn
     /*
      * Toggle what units to use for inputing momentum.
      */
-    std::string inputUnits = Util::toUpper(Attributes::getString(itsAttr[Attrib::Distribution::INPUTMOUNITS]));
+    std::string inputUnits = Attributes::getString(itsAttr[Attrib::Distribution::INPUTMOUNITS]);
     if (inputUnits == "NONE")
         inputMoUnits_m = InputMomentumUnitsT::NONE;
     else if (inputUnits == "EV")
@@ -1374,7 +1354,6 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
         sigmaR_m[1] = std::sqrt(sigma(4, 4));
 
         //p_l^2 = [(delta+1)*beta*gamma]^2 - px^2 - pz^2
-
         double pl2 = (std::sqrt(sigma(5,5)) + 1)*(std::sqrt(sigma(5,5)) + 1)*beta*gamma*beta*gamma -
                       sigmaP_m[0]*sigmaP_m[0] - sigmaP_m[2]*sigmaP_m[2];
 
@@ -1485,72 +1464,6 @@ void Distribution::createOpalCycl(PartBunchBase<double, 3> *beam,
     injectBeam(beam);
 
     OpalData::getInstance()->addProblemCharacteristicValue("NP", numberOfParticles);
-}
-
-void Distribution::createOpalE(Beam *beam,
-                               std::vector<Distribution *> /*addedDistributions*/,
-                               EnvelopeBunch *envelopeBunch,
-                               double /*distCenter*/,
-                               double Bz0) {
-
-    IpplTimings::startTimer(envelopeBunch->distrCreate_m);
-
-    double beamEnergy = beam->getMass() * (beam->getGamma() - 1.0) * 1.0e9;
-    numberOfEnergyBins_m = static_cast<int>(fabs(Attributes::getReal(itsAttr[Attrib::Distribution::NBIN])));
-
-    /*
-     * Set what units to use for input momentum units. Default is
-     * unitless (i.e. BetaXGamma, BetaYGamma, BetaZGamma).
-     */
-    chooseInputMomentumUnits(InputMomentumUnitsT::NONE);
-
-    setDistType();
-
-    // Check if this is to be an emitted beam->
-    checkIfEmitted();
-
-    switch (distrTypeT_m) {
-
-    case DistrTypeT::FLATTOP:
-        setDistParametersFlattop(beam->getMass());
-        beamEnergy = Attributes::getReal(itsAttr[Attrib::Distribution::EKIN]);
-        break;
-    case DistrTypeT::GAUSS:
-        setDistParametersGauss(beam->getMass());
-        break;
-    case DistrTypeT::GUNGAUSSFLATTOPTH:
-        setDistParametersFlattop(beam->getMass());
-        beamEnergy = Attributes::getReal(itsAttr[Attrib::Distribution::EKIN]);
-        break;
-    default:
-        *gmsg << "Only FLATTOP, GAUSS and GUNGAUSSFLATTOPTH distribution types supported " << endl
-              << "in envelope mode. Assuming FLATTOP." << endl;
-        distrTypeT_m = DistrTypeT::FLATTOP;
-        setDistParametersFlattop(beam->getMass());
-        break;
-    }
-
-    tEmission_m = tPulseLengthFWHM_m + (cutoffR_m[2] - std::sqrt(2.0 * std::log(2.0)))
-        * (sigmaTRise_m + sigmaTFall_m);
-    double beamWidth = tEmission_m * Physics::c * std::sqrt(1.0 - (1.0 / std::pow(beam->getGamma(), 2)));
-    double beamCenter = -1.0 * beamWidth / 2.0;
-
-    envelopeBunch->initialize(beam->getNumberOfSlices(),
-                              beam->getCharge(),
-                              beamEnergy,
-                              beamWidth,
-                              tEmission_m,
-                              0.9,
-                              beam->getCurrent(),
-                              beamCenter,
-                              sigmaR_m[0],
-                              sigmaR_m[1],
-                              0.0,
-                              0.0,
-                              Bz0,
-                              numberOfEnergyBins_m);
-
-    IpplTimings::stopTimer(envelopeBunch->distrCreate_m);
 }
 
 void Distribution::createOpalT(PartBunchBase<double, 3> *beam,
@@ -3291,15 +3204,15 @@ gsl_qrng* Distribution::selectRandomGenerator(std::string,unsigned int dimension
 
 void Distribution::setAttributes() {
     itsAttr[Attrib::Distribution::TYPE]
-        = Attributes::makeString("TYPE","Distribution type: "
-                                 "FROMFILE, "
-                                 "GAUSS, "
-                                 "BINOMIAL, "
-                                 "FLATTOP, "
-                                 "MULTIGAUSS, "
-                                 "GUNGAUSSFLATTOPTH, "
-                                 "ASTRAFLATTOPTH, "
-                                 "GAUSSMATCHED");
+        = Attributes::makeUpperCaseString("TYPE","Distribution type: "
+                                          "FROMFILE, "
+                                          "GAUSS, "
+                                          "BINOMIAL, "
+                                          "FLATTOP, "
+                                          "MULTIGAUSS, "
+                                          "GUNGAUSSFLATTOPTH, "
+                                          "ASTRAFLATTOPTH, "
+                                          "GAUSSMATCHED");
     itsAttr[Attrib::Legacy::Distribution::DISTRIBUTION]
         = Attributes::makeString("DISTRIBUTION","This attribute isn't supported any more. Use TYPE instead");
     itsAttr[Attrib::Distribution::LINE]
@@ -3351,8 +3264,8 @@ void Distribution::setAttributes() {
                                "distribution list.", 1.0);
 
     itsAttr[Attrib::Distribution::INPUTMOUNITS]
-        = Attributes::makeString("INPUTMOUNITS", "Tell OPAL what input units are for momentum."
-                                 " Currently \"NONE\" or \"EV\".", "");
+        = Attributes::makeUpperCaseString("INPUTMOUNITS", "Tell OPAL what input units are for momentum."
+                                          " Currently \"NONE\" or \"EV\".", "");
 
     // Attributes for beam emission.
     itsAttr[Attrib::Distribution::EMITTED]
@@ -3362,8 +3275,8 @@ void Distribution::setAttributes() {
         = Attributes::makeReal("EMISSIONSTEPS", "Number of time steps to use during emission.",
                                1);
     itsAttr[Attrib::Distribution::EMISSIONMODEL]
-        = Attributes::makeString("EMISSIONMODEL", "Model used to emit electrons from a "
-                                 "photocathode.", "None");
+        = Attributes::makeUpperCaseString("EMISSIONMODEL", "Model used to emit electrons from a "
+                                          "photocathode.", "None");
     itsAttr[Attrib::Distribution::EKIN]
         = Attributes::makeReal("EKIN", "Kinetic energy used in ASTRA thermal emittance "
                                "model (eV). (Thermal energy added in with random "
@@ -3606,7 +3519,7 @@ void Distribution::setDistType() {
                             "The attribute DISTRIBUTION isn't supported any more, use TYPE instead");
     }
 
-    distT_m = Util::toUpper(Attributes::getString(itsAttr[Attrib::Distribution::TYPE]));
+    distT_m = Attributes::getString(itsAttr[Attrib::Distribution::TYPE]);
     if (distT_m == "FROMFILE")
         distrTypeT_m = DistrTypeT::FROMFILE;
     else if (distT_m == "GAUSS")
@@ -3968,7 +3881,7 @@ void Distribution::setDistParametersGauss(double massIneV) {
 
 void Distribution::setupEmissionModel(PartBunchBase<double, 3> *beam) {
 
-    std::string model = Util::toUpper(Attributes::getString(itsAttr[Attrib::Distribution::EMISSIONMODEL]));
+    std::string model = Attributes::getString(itsAttr[Attrib::Distribution::EMISSIONMODEL]);
     if (model == "ASTRA")
         emissionModel_m = EmissionModelT::ASTRA;
     else if (model == "NONEQUIL")

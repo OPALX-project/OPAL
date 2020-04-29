@@ -1,22 +1,52 @@
-// ------------------------------------------------------------------------
-// $RCSfile: RBend.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: RBend
-//   Defines the abstract interface for a rectangular bend magnet.
+// Class RBend
+//   Interface for a rectangular bend magnet.
 //
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
+//   A rectangular bend magnet physically has a rectangular shape.
 //
-// $Date: 2000/03/27 09:32:31 $
-// $Author: fci $
+//   The standard rectangular magnet, for purposes of definitions, has a field in
+//   the y direction. This produces a bend in the horizontal (x) plane. Bends in
+//   other planes can be accomplished by rotating the magnet about the axes.
 //
-// ------------------------------------------------------------------------
+//   A positive bend angle is defined as one that bends a beam to the right when
+//   looking down (in the negative y direction) so that the beam is bent in the
+//   negative x direction. (This definition of a positive bend is the same whether
+//   the charge is positive or negative.)
+//
+//   A zero degree entrance edge angle is parallel to the x direction in an x/y/s
+//   coordinate system. A positive entrance edge angle is defined as one that
+//   rotates the positive edge (in x) of the angle toward the positive s axis.
+//
+//   Since the magnet geometry is a fixed rectangle, the exit edge angle is
+//   defined by the bend angle of the magnet and the entrance edge angle. In
+//   general, the exit edge angle is equal to the bend angle minus the entrance
+//   edge angle.
+//
+//   ------------------------------------------------------------------------
+//
+//   This class defines two interfaces:
+//
+//   1) Interface for rectangular magnets for OPAL-MAP.
+//
+//    Here we specify multipole components about the curved magnet trajectory.
+//
+//   2) Interface for rectangular magnets for OPAL-T.
+//
+//   Here we defined the magnet as a field map.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 
 #include "AbsBeamline/RBend.h"
 #include "Algorithms/PartBunchBase.h"
@@ -28,9 +58,6 @@
 #include <fstream>
 
 extern Inform *gmsg;
-
-// Class RBend
-// ------------------------------------------------------------------------
 
 RBend::RBend():
     RBend("")
@@ -74,50 +101,6 @@ void RBend::setNormalComponent(int n, double v) {
 void RBend::setSkewComponent(int n, double v) {
     getField().setSkewComponent(n, v);
 }
-
-/*
- * BET methods.
- */
-void RBend::addKR(int i, double /*t*/, Vector_t &K) {
-    Inform msg("RBend::addK()");
-
-    Vector_t tmpE(0.0, 0.0, 0.0);
-    Vector_t tmpB(0.0, 0.0, 0.0);
-    Vector_t tmpE_diff(0.0, 0.0, 0.0);
-    Vector_t tmpB_diff(0.0, 0.0, 0.0);
-    double pz = RefPartBunch_m->getZ(i) - getStartField();
-    const Vector_t tmpA(RefPartBunch_m->getX(i), RefPartBunch_m->getY(i), pz);
-
-    DiffDirection zdir(DZ);
-    getFieldmap()->getFieldstrength(tmpA, tmpE, tmpB);
-    getFieldmap()->getFieldDerivative(tmpA, tmpE_diff, tmpB_diff, zdir);
-
-    double g = RefPartBunch_m->getGamma(i);
-
-    if(std::abs(getFieldAmplitude() * tmpB_diff(2)) > 0.1) {
-        double cf = Physics::q_e * tmpB(2) / (g * Physics::EMASS);
-        K += Vector_t(-pow(cf * getFieldAmplitude() * tmpB(0), 2) / 3.0, -pow(cf * getFieldAmplitude() * tmpB(1), 2) / 3.0, 0.0);
-    }
-}
-
-void RBend::addKT(int i, double /*t*/, Vector_t &/*K*/) {
-    Inform msg("RBend::addK()");
-
-    Vector_t tmpE(0.0, 0.0, 0.0);
-    Vector_t tmpB(0.0, 0.0, 0.0);
-    double pz = RefPartBunch_m->getZ(i) - getStartField();
-    const Vector_t tmpA(RefPartBunch_m->getX(i), RefPartBunch_m->getY(i), pz);
-    getFieldmap()->getFieldstrength(tmpA, tmpE, tmpB);
-
-    double b = RefPartBunch_m->getBeta(i);
-    double g = 1 / sqrt(1 - b * b);
-
-    double cf = -Physics::q_e * Physics::c * b * tmpB(2) * getFieldAmplitude() / (g * Physics::EMASS);
-    Vector_t temp(cf * tmpB(1), cf * tmpB(0), 0.0);
-
-    //FIXME: K += ??
-}
-
 
 /*
  * OPAL-T Methods.
@@ -167,4 +150,3 @@ bool RBend::findChordLength(double &chordLength) {
 
     return true;
 }
-

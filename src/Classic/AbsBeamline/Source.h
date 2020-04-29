@@ -23,10 +23,6 @@ public:
     /// Apply visitor to Source.
     virtual void accept(BeamlineVisitor &) const override;
 
-    virtual void addKR(int i, double t, Vector_t &K) override;
-
-    virtual void addKT(int i, double t, Vector_t &K) override;
-
     virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
 
     virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;

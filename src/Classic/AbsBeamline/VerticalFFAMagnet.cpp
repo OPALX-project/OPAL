@@ -15,8 +15,7 @@
 #include <cmath>
 
 VerticalFFAMagnet::VerticalFFAMagnet(const std::string &name)
-        : Component(name), straightGeometry_m(1.) {
-    setElType(isDrift);
+    : Component(name), straightGeometry_m(1.) {
 }
 
 VerticalFFAMagnet::VerticalFFAMagnet(const VerticalFFAMagnet &right) 

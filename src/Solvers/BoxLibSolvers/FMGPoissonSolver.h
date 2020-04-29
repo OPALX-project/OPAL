@@ -1,3 +1,25 @@
+//
+// Class FMGPoissonSolver
+//   Interface to the Fortran based AMR Poisson multigrid solver of BoxLib.
+//   The Fortran solver is part of AMReX till version 18.07
+//   (Link: https://github.com/AMReX-Codes/amrex/archive/18.07.tar.gz)
+//
+// Copyright (c) 2016 - 2020, Matthias Frey, Paul Scherrer Institute, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef FMG_POISSON_SOLVER_H_
 #define FMG_POISSON_SOLVER_H_
 

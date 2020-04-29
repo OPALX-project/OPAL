@@ -31,7 +31,7 @@ GridLBalWriter::GridLBalWriter(const std::string& fname, bool restart)
 { }
 
 
-void GridLBalWriter::fillHeader(PartBunchBase<double, 3> *beam) {
+void GridLBalWriter::fillHeader(const PartBunchBase<double, 3> *beam) {
 
     if (this->hasColumns()) {
         return;
@@ -39,7 +39,7 @@ void GridLBalWriter::fillHeader(PartBunchBase<double, 3> *beam) {
 
     columns_m.addColumn("t", "double", "ns", "Time");
 
-    AmrPartBunch* amrbeam = dynamic_cast<AmrPartBunch*>(beam);
+    const AmrPartBunch* amrbeam = dynamic_cast<const AmrPartBunch*>(beam);
 
     if ( !amrbeam )
         throw OpalException("GridLBalWriter::fillHeader()",

@@ -18,6 +18,8 @@
 //
 #include "StatWriter.h"
 
+#include "AbstractObjects/OpalData.h"
+#include "Algorithms/PartBunchBase.h"
 #include "Utilities/Timer.h"
 
 #include <sstream>
@@ -134,17 +136,11 @@ void StatWriter::fillHeader(const losses_t &losses) {
 }
 
 
-void StatWriter::write(PartBunchBase<double, 3> *beam, Vector_t FDext[],
-                       const losses_t &losses, const double& azimuth)
+void StatWriter::write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
+                       const losses_t &losses, const double& azimuth,
+                       const size_t npOutside)
 {
-    /// Calculate beam statistics.
-    beam->calcBeamParameters();
-
     double Ekin = beam->get_meanKineticEnergy();
-
-    size_t npOutside = 0;
-    if (Options::beamHaloBoundary > 0)
-        npOutside = beam->calcNumPartsOutside(Options::beamHaloBoundary*beam->get_rrms());
 
     double  pathLength = beam->get_sPos();
 
@@ -251,93 +247,6 @@ void StatWriter::write(PartBunchBase<double, 3> *beam, Vector_t FDext[],
         long unsigned int loss = losses[i].second;
         columns_m.addColumnValue(losses[i].first, loss);
     }
-
-    this->writeRow();
-
-    this->close();
-}
-
-
-void StatWriter::write(EnvelopeBunch &beam, Vector_t FDext[],
-                       double /*sposHead*/, double sposRef, double /*sposTail*/)
-{
-    //FIXME https://gitlab.psi.ch/OPAL/src/issues/245
-
-    /// Calculate beam statistics and gather load balance statistics.
-    beam.calcBeamParameters();
-    beam.gatherLoadBalanceStatistics();
-
-    double en = beam.get_meanKineticEnergy() * 1e-6;
-    long unsigned int totalnum = beam.getTotalNum();
-    double Q  = totalnum * beam.getChargePerParticle();
-
-
-    if (Ippl::myNode() != 0) {
-        return;
-    }
-
-    fillHeader();
-
-    this->open();
-
-    this->writeHeader();
-
-    columns_m.addColumnValue("t", beam.getT() * 1e9);             // 1
-    columns_m.addColumnValue("s", sposRef);                       // 2
-    columns_m.addColumnValue("numParticles", totalnum);           // 3
-    columns_m.addColumnValue("charge", Q);                        // 4
-    columns_m.addColumnValue("energy", en);                       // 5
-
-    columns_m.addColumnValue("rms_x", beam.get_rrms()(0));        // 6
-    columns_m.addColumnValue("rms_y", beam.get_rrms()(1));        // 7
-    columns_m.addColumnValue("rms_s", beam.get_rrms()(2));        // 8
-
-    columns_m.addColumnValue("rms_px", beam.get_prms()(0));       // 9
-    columns_m.addColumnValue("rms_py", beam.get_prms()(1));       // 10
-    columns_m.addColumnValue("rms_ps", beam.get_prms()(2));       // 11
-
-    columns_m.addColumnValue("emit_x", beam.get_norm_emit()(0));  // 12
-    columns_m.addColumnValue("emit_y", beam.get_norm_emit()(1));  // 13
-    columns_m.addColumnValue("emit_s", beam.get_norm_emit()(2));  // 14
-
-    columns_m.addColumnValue("mean_x", beam.get_rmean()(0) );     // 15
-    columns_m.addColumnValue("mean_y", beam.get_rmean()(1) );     // 16
-    columns_m.addColumnValue("mean_s", beam.get_rmean()(2) );     // 17
-
-    columns_m.addColumnValue("ref_x", 0.0);                       // 18
-    columns_m.addColumnValue("ref_y", 0.0);                       // 19
-    columns_m.addColumnValue("ref_z", 0.0);                       // 20
-
-    columns_m.addColumnValue("ref_px", 0.0);                      // 21
-    columns_m.addColumnValue("ref_py", 0.0);                      // 22
-    columns_m.addColumnValue("ref_pz", 0.0);                      // 23
-
-    columns_m.addColumnValue("max_x", beam.get_maxExtent()(0));   // 24
-    columns_m.addColumnValue("max_y", beam.get_maxExtent()(1));   // 25
-    columns_m.addColumnValue("max_s", beam.get_maxExtent()(2));   // 26
-
-    columns_m.addColumnValue("xpx", 0.0);                         // 27
-    columns_m.addColumnValue("ypy", 0.0);                         // 28
-    columns_m.addColumnValue("zpz", 0.0);                         // 29
-
-    // Write out dispersion.
-    columns_m.addColumnValue("Dx",  beam.get_Dx());               // 30
-    columns_m.addColumnValue("DDx", beam.get_DDx());              // 31
-    columns_m.addColumnValue("Dy",  beam.get_Dy());               // 32
-    columns_m.addColumnValue("DDy", beam.get_DDy());              // 33
-
-    // Write head/reference particle/tail field information.
-    columns_m.addColumnValue("Bx_ref", FDext[0](0));              // 34 B-ref x
-    columns_m.addColumnValue("By_ref", FDext[0](1));              // 35 B-ref y
-    columns_m.addColumnValue("Bz_ref", FDext[0](2));              // 36 B-ref z
-
-    columns_m.addColumnValue("Ex_ref", FDext[1](0));              // 37 E-ref x
-    columns_m.addColumnValue("Ey_ref", FDext[1](1));              // 38 E-ref y
-    columns_m.addColumnValue("Ez_ref", FDext[1](2));              // 39 E-ref z
-
-    columns_m.addColumnValue("dE", beam.get_dEdt());              // 40 dE energy spread
-    columns_m.addColumnValue("dt", 0.0);                          // 41 dt time step size
-    columns_m.addColumnValue("partsOutside", 0.0);                // 42 number of particles outside n*sigma
 
     this->writeRow();
 

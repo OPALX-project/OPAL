@@ -65,7 +65,7 @@ void OpalMonitor::update() {
     mon->setElementLength(length);
     mon->setOutputFN(Attributes::getString(itsAttr[OUTFN]));
 
-    if (Util::toUpper(Attributes::getString(itsAttr[TYPE])) == "TEMPORAL") {
+    if (Attributes::getString(itsAttr[TYPE]) == "TEMPORAL") {
         mon->setType(Monitor::TEMPORAL);
     } else {
         mon->setType(Monitor::SPATIAL);

@@ -1,3 +1,38 @@
+//
+// Class BoxLibLayout
+//   In contrast to AMReX, OPAL is optimized for the
+//   distribution of particles to cores. In AMReX the ParGDB object
+//   is responsible for the particle to core distribution. This
+//   layout is derived from this object and does all important
+//   bunch updates. It is the interface for AMReX and Ippl.
+//
+//   In AMReX, the geometry, i.e. physical domain, is fixed
+//   during the whole computation. Particles leaving the domain
+//   would be deleted. In order to prevent this we map the particles
+//   onto the domain [-1, 1]^3. Furthermore, it makes sure
+//   that we have enougth grid points to represent the bunch
+//   when its charges are scattered on the grid for the self-field
+//   computation.
+//
+//   The self-field computation and the particle-to-core update
+//   are performed in the particle mapped domain.
+//
+// Copyright (c) 2016 - 2020, Matthias Frey, Uldis Locans, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef BoxLibLayout_HPP
 #define BoxLibLayout_HPP
 
@@ -128,8 +163,8 @@ void BoxLibLayout<T, Dim>::setDomainRatio(const std::vector<double>& ratio) {
 
 
 template<class T, unsigned Dim>
-void BoxLibLayout<T, Dim>::update(IpplParticleBase< BoxLibLayout<T,Dim> >& PData,
-                                  const ParticleAttrib<char>* canSwap)
+void BoxLibLayout<T, Dim>::update(IpplParticleBase< BoxLibLayout<T,Dim> >& /*PData*/,
+                                  const ParticleAttrib<char>* /*canSwap*/)
 {
     /* Exit since we need AmrParticleBase with grids and levels for particles for this layout
      * if IpplParticleBase is used something went wrong
@@ -179,10 +214,8 @@ void BoxLibLayout<T, Dim>::update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
 
     std::multimap<unsigned, unsigned> p2n; //node ID, particle
 
-    int *msgsend = new int[N];
-    std::fill(msgsend, msgsend+N, 0);
-    int *msgrecv = new int[N];
-    std::fill(msgrecv, msgrecv+N, 0);
+    std::vector<int> msgsend(N);
+    std::vector<int> msgrecv(N);
 
     unsigned sent = 0;
     size_t lBegin = LocalNumPerLevel.begin(lev_min);
@@ -321,8 +354,6 @@ void BoxLibLayout<T, Dim>::update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
         delete buffers[j];
     }
 
-    delete[] msgsend;
-    delete[] msgrecv;
     delete format;
 
     // there is extra work to do if there are multipple nodes, to distribute

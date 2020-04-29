@@ -39,13 +39,12 @@
 
 #include "Utilities/LogicalError.h"
 
-#include <math.h>
-
 #include <algorithm>
-#include <vector>
-#include <iostream>
+#include <cmath>
 #include <fstream>
+#include <iostream>
 #include <string>
+#include <vector>
 
 using namespace interpolation;
 

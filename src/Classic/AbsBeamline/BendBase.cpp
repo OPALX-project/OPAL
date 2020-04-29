@@ -18,9 +18,7 @@ BendBase::BendBase(const BendBase &right):
     bY_m(right.bY_m),
     fieldAmplitude_m(right.fieldAmplitude_m),
     fileName_m(right.fileName_m)
-{
-    setElType(isDipole);
-}
+{}
 
 BendBase::BendBase(const std::string &name):
     Component(name),
@@ -35,9 +33,7 @@ BendBase::BendBase(const std::string &name):
     bY_m(0.0),
     fieldAmplitude_m(0.0),
     fileName_m("")
-{
-    setElType(isDipole);
-}
+{}
 
 
 std::vector<Vector_t> BendBase::getDesignPath() const {

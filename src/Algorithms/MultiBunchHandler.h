@@ -154,7 +154,7 @@ private:
     double radiusLastTurn_m;
     double radiusThisTurn_m;
 
-    // record how many bunches has already been injected.
+    // record how many bunches have already been injected.
     short bunchCount_m;
 
     // each list entry belongs to a bunch

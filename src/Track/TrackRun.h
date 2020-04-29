@@ -60,7 +60,6 @@ private:
     // Clone constructor.
     TrackRun(const std::string &name, TrackRun *parent);
 
-    void setupSliceTracker();
     void setupTTracker();
     void setupCyclotronTracker();
     void setupThickTracker();

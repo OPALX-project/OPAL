@@ -40,7 +40,6 @@ double Offset::float_tolerance = 1e-12;
 Offset::Offset(const std::string& name)
     : Component(name), _is_local(false), geometry_m(NULL) {
     geometry_m = new Euclid3DGeometry(Euclid3D());
-    setElType(isDrift);
 }
 
 Offset::Offset()
@@ -79,7 +78,6 @@ Offset& Offset::operator=(const Offset& rhs) {
         geometry_m = new Euclid3DGeometry(rhs.geometry_m->getTotalTransform());
     }
     setAperture(rhs.getAperture().first, rhs.getAperture().second);
-    setElType(rhs.getElType());
     return *this;
 }
 

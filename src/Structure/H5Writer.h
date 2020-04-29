@@ -2,7 +2,7 @@
 // Class H5Writer
 //   Interface for H5 writers.
 //
-// Copyright (c) 2019, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2019-2020, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -70,27 +70,6 @@ public:
                         double refR, double refTheta, double refZ,
                         double azimuth, double elevation, bool local);
 
-    /**
-     * FIXME https://gitlab.psi.ch/OPAL/src/issues/245
-     * \brief Dumps Phase Space for Envelope trakcer to H5 file.
-     *
-     * \param beam The beam.
-     * \param FDext The external E and B field for the head, reference and tail particles. The vector array
-     * has the following layout:
-     *  - FDext[0] = B at head particle location (in x, y and z).
-     *  - FDext[1] = E at head particle location (in x, y and z).
-     *  - FDext[2] = B at reference particle location (in x, y and z).
-     *  - FDext[3] = E at reference particle location (in x, y and z).
-     *  - FDext[4] = B at tail particle location (in x, y, and z).
-     *  - FDext[5] = E at tail particle location (in x, y, and z).
-     *  \param sposHead Longitudinal position of the head particle.
-     *  \param sposRef Longitudinal position of the reference particle.
-     *  \param sposTail Longitudinal position of the tail particles.
-     */
-    void writePhaseSpace(EnvelopeBunch &beam, Vector_t FDext[], double sposHead, double sposRef, double sposTail);
-//     void stashPhaseSpaceEnvelope(EnvelopeBunch &beam, Vector_t FDext[], double sposHead, double sposRef, double sposTail);
-//     void dumpStashedPhaseSpaceEnvelope();
-    
 private:
     /// Timer to track particle data/H5 file write time.
     IpplTimings::TimerRef H5PartTimer_m;

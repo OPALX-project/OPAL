@@ -1,3 +1,27 @@
+//
+// Class AmrBoxLib
+//   Concrete AMR object. It is based on the AMReX library
+//   (cf. https://amrex-codes.github.io/ or https://ccse.lbl.gov/AMReX/).
+//   AMReX is the successor of BoxLib. This class represents the interface
+//   to AMReX and the AMR framework in OPAL. It implements the functions of
+//   the AmrObject class.
+//
+// Copyright (c) 2016 - 2020, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Precise Simulations of Multibunches in High Intensity Cyclotrons"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef AMR_BOXLIB_H
 #define AMR_BOXLIB_H
 
@@ -9,12 +33,6 @@ class AmrPartBunch;
 #include <AMReX_AmrMesh.H>
 #include <AMReX.H>
 
-/*!
- * Concrete AMR object. It is based on the
- * <a href="https://ccse.lbl.gov/AMReX/">AMReX</a> library
- * developed at LBNL. This library is the successor of
- * <a href="https://ccse.lbl.gov/BoxLib/">BoxLib</a>.
- */
 class AmrBoxLib : public AmrObject,
                   public amrex::AmrMesh
 {
@@ -200,12 +218,23 @@ private:
      */
     void doRegrid_m(int lbase, double time);
     
+
+    /*!
+     * Called within doRegrid_m(). Especially used
+     * for potential and e-field tagging in combination
+     * with binning.
+     */
+    void preRegrid_m();
+
     /*!
      * Called within doRegrid_m(). Redistribute
      * particles and delete levels on particle side.
      * @param old_finest level
      */
     void postRegrid_m(int old_finest);
+
+
+    double solvePoisson_m();
 
     
     /* ATTENTION

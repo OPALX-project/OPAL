@@ -72,8 +72,8 @@ public:
         this->amrobj_mp = fs->getAmrObject();
     }
     
-    virtual void setBinCharge(int bin, double q) { };
-    virtual void setBinCharge(int bin) { };
+    virtual void setBinCharge(int /*bin*/, double /*q*/) { };
+    virtual void setBinCharge(int /*bin*/) { };
     
     /*
      * AmrPartBunch only

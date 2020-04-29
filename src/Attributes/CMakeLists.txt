@@ -12,6 +12,8 @@ set (_SRCS
     TableRow.cpp
     TokenList.cpp
     TokenListArray.cpp
+    UpperCaseString.cpp
+    UpperCaseStringArray.cpp
     )
 
 include_directories (
@@ -34,6 +36,8 @@ set (HDRS
     TableRow.h
     TokenListArray.h
     TokenList.h
+    UpperCaseString.h
+    UpperCaseStringArray.h
     )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Attributes")
