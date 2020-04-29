@@ -114,7 +114,7 @@ void OpalUndulator::update() {
     OpalElement::update();
 
     UndulatorRep *ur = static_cast<UndulatorRep *>(getElement());
-    ur->setElementLength(Attributes::getReal(itsAttr[LENGTH]));
+    ur->setElementLength(Attributes::getReal(itsAttr[LAMBDA]) * (4 + Attributes::getReal(itsAttr[NUMPERIODS])));
     ur->setNSlices(Attributes::getReal(itsAttr[NSLICES]));
     if(itsAttr[WAKEF] && owk_m == NULL) {
         owk_m = (OpalWake::find(Attributes::getString(itsAttr[WAKEF])))->clone(getOpalName() + std::string("_wake"));
