@@ -31,28 +31,30 @@ make
 ## To use UNDULATOR element
 Example to instantiate an undulator/wiggler
 ```
-	// Parameters for full-wave simulation of an undulator/wiggler, based on MITHRA FEL solver by Arya Fallahi.
-   // The full-wave solver will start at ELEMEDGE, but the undulator will start at ELEMEDGE + LFRINGE
-   // L:  	    	   LFRINGE + undulator length
-   // LFRINGE:		   Distance in front of the undulator at which the full-wave solver starts
-   // LAMBDA:		   Undulator period
-   // K:	   	   Undulator parameter, ~93.37*B0*LAMBDA, with B0 maximum magnetic field
-   // MESHLENGTH:  	   Mesh size for full-wave simulation
-   // MESHRESOLUTION:	   Mesh discretisation
-   // TRUNORDER:	   Truncation order of absorbing boundaries. Can be 1 or 2
-   // SPACECHARGE:	   Boolean to include space-charge in undulator simulation
-   // EMITPARTICLES:   Boolean to emit particles as time passes, rather than injecting the whole bunch at once
-   // FNAME:		   File to indicate desired output from undulator simulation
-   // TOTALTIME:	   Total time of full-wave simulation
-   // Undulator of length 85cm + an entrance fringe of 50cm
-   UND: UNDULATOR, L = 1.35, LFRINGE = .5, ELEMEDGE = und_edge, K = 11.1, LAMBDA = 8.5e-2,
-	MESHLENGTH = { 5e-3, 5e-3, 18e-3 }, MESHRESOLUTION = { .1e-3, .1e-3, 2e-6},
-	TRUNORDER = 2, SPACECHARGE = 1, EMITPARTICLES = 1,
-	FNAME = "output_parameters.job", TOTALTIME = 8.1e-9;
+    // Parameters for full-wave simulation of an undulator/wiggler, based on MITHRA FEL solver by Arya Fallahi.
+    // The full-wave solver will start at ELEMEDGE.
+    //The full undulator length is LAMBDA * (NUMPERIODS + 4) because fringes measure 2*LAMBDA
+    // ELEMEDGE:        Start of undulator fringe, and transfer to FW solver
+    // LAMBDA:          Undulator period
+    // NUMPERIODS       Number of periods in the undulator
+    // K:               Undulator parameter, ~93.37*B0*LAMBDA, with B0 maximum magnetic field
+    // MESHLENGTH:      Mesh size for FW solver
+    // MESHRESOLUTION:  Mesh discretisation for FW solver
+    // TRUNORDER:       Truncation order of absorbing boundaries. Can be 1 or 2
+    // FNAME:          File to indicate desired output from undulator simulation
+    // TOTALTIME:      Total time of full-wave simulation
+    // Undulator of length 2.1m + 70cm fringe field
+    UND: UNDULATOR, ELEMEDGE = .01, K = 51.5, LAMBDA = .35, NUMPERIODS = 6,
+        MESHLENGTH = { 1.8e-3, 4e-3, .1e-3 }, MESHRESOLUTION = {10e-6, 10e-6, .07e-6},
+        TRUNORDER = 2, TOTALTIME = 1.4e-8, FNAME = "output.job";
+	
 ```
 
+NOTE: At the moment the simulation stops right after the FW simulation is done running.
+In the future the particles will be transferred back from the FW solver to the static solver, and the simulation will continue.
+
 ## Output of full wave simulation
-The details of the output produced from the full-wave simulation can be found in the manual [Manual](https://github.com/arnaualba/mithra/tree/master/doc), and can be viewd with the Python functions [plotMithraPy](https://github.com/arnaualba/plotMithraPy).
+The details of the output produced from the full-wave simulation can be found in the manual [Manual](https://github.com/arnaualba/mithra/tree/master/doc), and can be viewed with the Python functions [plotMithraPy](https://github.com/arnaualba/plotMithraPy).
 Here we provide an example of the output_parametes.job file:
 ```
 BUNCH
@@ -138,7 +140,7 @@ FEL-OUTPUT
     plane-position					= 4e-3
     normalized-frequency			= 1.00
   }
-  screen-profile
+  bunch-profile-lab-frame
   {
     sample							= true
     directory						= ./
