@@ -25,7 +25,6 @@
 #include "Structure/BoundaryGeometry.h"
 #include "Physics/Physics.h"
 
-extern Inform *gmsg;
 
 // Class OpalCavity
 // ------------------------------------------------------------------------
@@ -147,7 +146,6 @@ void OpalCavity::fillRegisteredAttributes(const ElementBase &base, ValueFlag fla
 void OpalCavity::update() {
     OpalElement::update();
 
-    using Physics::two_pi;
     RFCavityRep *rfc =
         dynamic_cast<RFCavityRep *>(getElement()->removeWrappers());
 
@@ -156,7 +154,7 @@ void OpalCavity::update() {
     double peakError  = Attributes::getReal(itsAttr[DVOLT]);
     double phase  = Attributes::getReal(itsAttr[LAG]);
     double phaseError  = Attributes::getReal(itsAttr[DLAG]);
-    double freq   = 1e6 * two_pi * Attributes::getReal(itsAttr[FREQ]);
+    double freq   = 1e6 * Physics::two_pi * Attributes::getReal(itsAttr[FREQ]);
     std::string fmapfn = Attributes::getString(itsAttr[FMAPFN]);
     std::string type = Attributes::getString(itsAttr[TYPE]);
     bool fast = Attributes::getBool(itsAttr[FAST]);

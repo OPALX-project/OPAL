@@ -52,33 +52,33 @@ SectorField::SectorField(const std::string& /*file_name*/)
 SectorField::~SectorField() {}
 
 void SectorField::convertToPolar(double* position) {
-    double x = ::sqrt(position[0]*position[0]+position[2]*position[2]);
-    double z = ::atan2(position[2], position[0]);
+    double x = std::sqrt(position[0]*position[0]+position[2]*position[2]);
+    double z = std::atan2(position[2], position[0]);
     position[0] = x;
     position[2] = z;
 }
 
 void SectorField::convertToPolar(const double* position, double* value) {
-    double x = +value[0]*::cos(position[2])
-               +value[2]*::sin(position[2]);
-    double z = +value[2]*::cos(position[2])
-               -value[0]*::sin(position[2]);
+    double x = +value[0]*std::cos(position[2])
+               +value[2]*std::sin(position[2]);
+    double z = +value[2]*std::cos(position[2])
+               -value[0]*std::sin(position[2]);
     value[0] = x;
     value[2] = z;
 }
 
 void SectorField::convertToCartesian(double* position) {
-    double x = position[0]*::cos(position[2]);  // r cos(phi)
-    double z = position[0]*::sin(position[2]);  // r sin(phi)
+    double x = position[0]*std::cos(position[2]);  // r cos(phi)
+    double z = position[0]*std::sin(position[2]);  // r sin(phi)
     position[0] = x;
     position[2] = z;
 }
 
 void SectorField::convertToCartesian(const double* position, double* value) {
-    double x = +value[0]*::cos(position[2])
-               -value[2]*::sin(position[2]);
-    double z = +value[2]*::cos(position[2])
-               +value[0]*::sin(position[2]);
+    double x = +value[0]*std::cos(position[2])
+               -value[2]*std::sin(position[2]);
+    double z = +value[2]*std::cos(position[2])
+               +value[0]*std::sin(position[2]);
     value[0] = x;
     value[2] = z;
 }

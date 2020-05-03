@@ -665,7 +665,7 @@ void Distribution::applyEmissionModel(double lowEnergyLimit, double &px, double 
 void Distribution::applyEmissModelAstra(double &px, double &py, double &pz, std::vector<double> &additionalRNs) {
 
     double phi = 2.0 * std::acos(std::sqrt(additionalRNs[0]));
-    double theta = 2.0 * Physics::pi * additionalRNs[1];
+    double theta = Physics::two_pi * additionalRNs[1];
 
     px = pTotThermal_m * std::sin(phi) * std::cos(theta);
     py = pTotThermal_m * std::sin(phi) * std::sin(theta);
@@ -2431,7 +2431,7 @@ void Distribution::generateLongFlattopT(size_t numberOfParticles) {
     if (flattopTime < 0.0)
         flattopTime = 0.0;
 
-    double normalizedFlankArea = 0.5 * std::sqrt(2.0 * Physics::pi) * gsl_sf_erf(cutoffR_m[2] / std::sqrt(2.0));
+    double normalizedFlankArea = 0.5 * std::sqrt(Physics::two_pi) * gsl_sf_erf(cutoffR_m[2] / std::sqrt(2.0));
     double distArea = flattopTime
         + (sigmaTRise_m + sigmaTFall_m) * normalizedFlankArea;
 

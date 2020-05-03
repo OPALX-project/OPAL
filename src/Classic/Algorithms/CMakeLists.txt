@@ -5,11 +5,9 @@ set (_SRCS
     CoordinateSystemTrafo.cpp
     DefaultVisitor.cpp
     Flagger.cpp
-    IdealMapper.cpp
     LinearMapper.cpp
     MapIntegrator.cpp
     Mapper.cpp
-    OrbitTracker.cpp
     PartBunch.cpp
     PartBins.cpp
     PartBinsCyc.cpp
@@ -42,12 +40,10 @@ set (HDRS
     CoordinateSystemTrafo.h
     DefaultVisitor.h
     Flagger.h
-    IdealMapper.h
     LinearMapper.h
     ListElem.h
     MapIntegrator.h
     Mapper.h
-    OrbitTracker.h
     PartBinsCyc.h
     PartBins.h
     PartBunch.h

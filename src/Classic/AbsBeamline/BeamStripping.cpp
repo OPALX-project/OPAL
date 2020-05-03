@@ -286,12 +286,12 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
         double tet = tempv;
         if((x < 0) && (y >= 0)) tet = Physics::pi + tempv;
         else if((x < 0) && (y <= 0)) tet = Physics::pi + tempv;
-        else if((x > 0) && (y <= 0)) tet = 2.0 * Physics::pi + tempv;
+        else if((x > 0) && (y <= 0)) tet = Physics::two_pi + tempv;
         else if((x == 0) && (y > 0)) tet = Physics::pi / 2.0;
         else if((x == 0) && (y < 0)) tet = 1.5 * Physics::pi;
 
         // the actual angle of particle
-        tet = tet / Physics::pi * 180.0;
+        tet = tet * Physics::rad2deg;
 
         // the corresponding angle on the field map
         // Note: this does not work if the start point of field map does not equal zero.

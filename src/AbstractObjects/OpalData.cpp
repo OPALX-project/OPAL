@@ -45,7 +45,7 @@
 // /DTA
 
 #define MAX_NUM_INSTANCES 10
-using namespace std;
+
 
 // Class OpalData::ClearReference
 // ------------------------------------------------------------------------
@@ -524,8 +524,8 @@ void OpalData::define(Object *newObject) {
 
                 if(table->isDependent(name)) {
                     if(Options::info) {
-                        cerr << endl << "Erasing dependent table \"" << tableName
-                             << "\"." << endl << endl;
+                    	std::cerr << std::endl << "Erasing dependent table \""
+                                  << tableName << "\"." << std::endl;
                     }
 
                     // Remove table from directory.
@@ -599,8 +599,8 @@ void OpalData::makeDirty(Object *obj) {
 void OpalData::printNames(std::ostream &os, const std::string &pattern) {
     int column = 0;
     RegularExpression regex(pattern);
-    os << endl << "Object names matching the pattern \""
-       << pattern << "\":" << endl;
+    os << std::endl << "Object names matching the pattern \""
+       << pattern << "\":" << std::endl;
 
     for(ObjectDir::const_iterator index = p->mainDirectory.begin();
         index != p->mainDirectory.end(); ++index) {
@@ -617,14 +617,14 @@ void OpalData::printNames(std::ostream &os, const std::string &pattern) {
                     column++;
                 } while((column % 20) != 0);
             } else {
-                os << endl;
+                os << std::endl;
                 column = 0;
             }
         }
     }
 
-    if(column) os << endl;
-    os << endl;
+    if(column) os << std::endl;
+    os << std::endl;
 }
 
 

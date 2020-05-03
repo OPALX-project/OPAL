@@ -254,14 +254,14 @@ double Bend2D::calculateBendAngle() {
 
     const double mass = RefPartBunch_m->getM();
     const double gamma = designEnergy_m / mass + 1.0;
-    const double betaGamma = sqrt(pow(gamma, 2.0) - 1.0);
+    const double betaGamma = std::sqrt(std::pow(gamma, 2.0) - 1.0);
     // const double beta = betaGamma / gamma;
     const double deltaT = RefPartBunch_m->getdT();
     const double cdt = Physics::c * deltaT;
     // Integrate through field for initial angle.
     Vector_t oldX;
-    Vector_t X = -deltaBeginEntry_m * Vector_t(tan(entranceAngle_m), 0.0, 1.0);
-    Vector_t P = betaGamma * Vector_t(sin(entranceAngle_m), 0.0, cos(entranceAngle_m));
+    Vector_t X = -deltaBeginEntry_m * Vector_t(std::tan(entranceAngle_m), 0.0, 1.0);
+    Vector_t P = betaGamma * Vector_t(std::sin(entranceAngle_m), 0.0, std::cos(entranceAngle_m));
     double deltaS = 0.0;
     double bendLength = endField_m - startField_m;
     const Vector_t eField(0.0);
@@ -286,7 +286,7 @@ double Bend2D::calculateBendAngle() {
 
     }
 
-    double angle =  -atan2(P(0), P(2)) + entranceAngle_m;
+    double angle =  -std::atan2(P(0), P(2)) + entranceAngle_m;
 
     return angle;
 
@@ -310,11 +310,11 @@ void Bend2D::calcEngeFunction(double zNormalized,
         expSumDeriv = engeCoeff.at(1);
 
         for(int index = 2; index <= polyOrder; index++) {
-            expSum += engeCoeff.at(index) * pow(zNormalized, index);
+            expSum += engeCoeff.at(index) * std::pow(zNormalized, index);
             expSumDeriv += index * engeCoeff.at(index)
-                * pow(zNormalized, index - 1);
+                * std::pow(zNormalized, index - 1);
             expSumSecDeriv += index * (index - 1) * engeCoeff.at(index)
-                * pow(zNormalized, index - 2);
+                * std::pow(zNormalized, index - 2);
         }
 
     } else if(polyOrder == 1) {
@@ -326,24 +326,24 @@ void Bend2D::calcEngeFunction(double zNormalized,
     } else
         expSum = engeCoeff.at(0);
 
-    double engeExp = exp(expSum);
+    double engeExp = std::exp(expSum);
     engeFunc = 1.0 / (1.0 + engeExp);
 
     if(!std::isnan(engeFunc)) {
 
         expSumDeriv /= gap_m;
-        expSumSecDeriv /= pow(gap_m, 2.0);
+        expSumSecDeriv /= std::pow(gap_m, 2.0);
         double engeExpDeriv = expSumDeriv * engeExp;
-        double engeExpSecDeriv = (expSumSecDeriv + pow(expSumDeriv, 2.0))
+        double engeExpSecDeriv = (expSumSecDeriv + std::pow(expSumDeriv, 2.0))
             * engeExp;
-        double engeFuncSq = pow(engeFunc, 2.0);
+        double engeFuncSq = std::pow(engeFunc, 2.0);
 
         engeFuncDeriv = -engeExpDeriv * engeFuncSq;
         if (std::isnan(engeFuncDeriv) || std::isinf(engeFuncDeriv))
             engeFuncDeriv = 0.0;
 
         engeFuncSecDerivNorm = -engeExpSecDeriv * engeFunc
-            + 2.0 * pow(engeExpDeriv, 2.0)
+            + 2.0 * std::pow(engeExpDeriv, 2.0)
             * engeFuncSq;
         if (std::isnan(engeFuncSecDerivNorm) || std::isinf(engeFuncSecDerivNorm))
             engeFuncSecDerivNorm = 0.0;
@@ -367,8 +367,8 @@ Vector_t Bend2D::calcCentralField(const Vector_t &/*R*/, double /*deltaX*/) {
     //double cosangle = dot(R - rotationCenter, Vector_t(1, 0, 0)) / euclidean_norm(R - rotationCenter);
 
     //B(0) = -bxBzFactor * cosangle;
-    //B(1) = expFactor * (1.0 - pow(nOverRho * R(1), 2.0) / 2.0);
-    //B(2) = -bxBzFactor * sqrt(1 - std::pow(cosangle, 2));
+    //B(1) = expFactor * (1.0 - std::pow(nOverRho * R(1), 2.0) / 2.0);
+    //B(2) = -bxBzFactor * std::sqrt(1 - std::pow(cosangle, 2));
 
     B(1) = 1.0;
 
@@ -404,7 +404,7 @@ Vector_t Bend2D::calcEntranceFringeField(const Vector_t &R,
         // B(1) = (engeFunc *
         //  (1.0 - 0.5 * engeFuncSecDerivNorm * pow(Rprime(1), 2.0)));
 
-        B(1) = (engeFunc - 0.5 * engeFuncSecDeriv * pow(Rprime(1), 2.0));
+        B(1) = (engeFunc - 0.5 * engeFuncSecDeriv * std::pow(Rprime(1), 2.0));
 
         B(2) = engeFuncDeriv * Rprime(1);
     }
@@ -441,7 +441,7 @@ Vector_t Bend2D::calcExitFringeField(const Vector_t &R,
 
         //B(1) = (engeFunc *
         //        (1.0 - 0.5 * engeFuncSecDerivNorm * pow(Rprime(1), 2.0)));
-        B(1) = (engeFunc - 0.5 * engeFuncSecDeriv * pow(Rprime(1), 2.0));
+        B(1) = (engeFunc - 0.5 * engeFuncSecDeriv * std::pow(Rprime(1), 2.0));
 
         B(2) = engeFuncDeriv * Rprime(1);
     }
@@ -515,7 +515,7 @@ void Bend2D::calculateRefTrajectory(double &angleX, double &/*angleY*/) {
 
     const double mass = RefPartBunch_m->getM();
     const double gamma = designEnergy_m / mass + 1.;
-    const double betaGamma = sqrt(gamma * gamma - 1.);
+    const double betaGamma = std::sqrt(gamma * gamma - 1.);
     const double dt = RefPartBunch_m->getdT();
 
     std::ofstream trajectoryOutput;
@@ -530,10 +530,10 @@ void Bend2D::calculateRefTrajectory(double &angleX, double &/*angleY*/) {
     }
 
     double zRotation = rotationZAxis_m;
-    Quaternion toStandard = Quaternion(cos(0.5 * zRotation), sin(0.5 * zRotation) * Vector_t(0, 0, -1));
+    Quaternion toStandard = Quaternion(std::cos(0.5 * zRotation), std::sin(0.5 * zRotation) * Vector_t(0, 0, -1));
 
-    Vector_t X = -deltaBeginEntry_m * Vector_t(tan(entranceAngle_m), 0.0, 1.0);
-    Vector_t P = betaGamma * Vector_t(sin(entranceAngle_m), 0.0, cos(entranceAngle_m));
+    Vector_t X = -deltaBeginEntry_m * Vector_t(std::tan(entranceAngle_m), 0.0, 1.0);
+    Vector_t P = betaGamma * Vector_t(std::sin(entranceAngle_m), 0.0, std::cos(entranceAngle_m));
 
     if(!refTrajMap_m.empty())
         refTrajMap_m.clear();
@@ -585,7 +585,7 @@ double Bend2D::estimateFieldAdjustmentStep(double actualBendAngle,
     // Estimate field adjustment step.
     double effectiveLength = angle_m * designRadius_m;
     double tmp1 = betaGamma * mass / (2.0 * effectiveLength * Physics::c);
-    double tmp2 = pow(fieldAmplitude_m / tmp1, 2.0);
+    double tmp2 = std::pow(fieldAmplitude_m / tmp1, 2.0);
     double fieldStep = (angle_m - actualBendAngle) * tmp1;
     if (tmp2 < 1.0) {
         fieldStep = (angle_m - actualBendAngle) * tmp1 * std::sqrt(1.0 - tmp2);
@@ -771,7 +771,7 @@ bool Bend2D::findIdealBendParameters(double chordLength) {
 
     double refMass = RefPartBunch_m->getM();
     double refGamma = designEnergy_m / refMass + 1.0;
-    double refBetaGamma = sqrt(pow(refGamma, 2.0) - 1.0);
+    double refBetaGamma = std::sqrt(std::pow(refGamma, 2.0) - 1.0);
     double refCharge = RefPartBunch_m->getQ();
     bool reinitialize = false;
 
@@ -779,8 +779,8 @@ bool Bend2D::findIdealBendParameters(double chordLength) {
 
         if(angle_m < 0.0) {
             // Negative angle is a positive bend rotated 180 degrees.
-            entranceAngle_m = copysign(1, angle_m) * entranceAngle_m;
-            setExitAngle(copysign(1, angle_m) * exitAngle_m);
+            entranceAngle_m = std::copysign(1, angle_m) * entranceAngle_m;
+            setExitAngle(std::copysign(1, angle_m) * exitAngle_m);
             angle_m = std::abs(angle_m);
             rotationZAxis_m += Physics::pi;
         }
@@ -798,7 +798,7 @@ bool Bend2D::findIdealBendParameters(double chordLength) {
         }
 
         fieldAmplitude_m = (refCharge *
-                            std::abs(sqrt(pow(bY_m, 2.0) + pow(bX_m, 2.0)) / refCharge));
+                            std::abs(std::sqrt(std::pow(bY_m, 2.0) + std::pow(bX_m, 2.0)) / refCharge));
         designRadius_m = std::abs(refBetaGamma * refMass / (Physics::c * fieldAmplitude_m));
         double bendAngle = 2.0 * std::asin(chordLength / (2.0 * designRadius_m));
 
@@ -831,7 +831,7 @@ bool Bend2D::inMagnetCentralRegion(const Vector_t &R) const {
     Vector_t Rprime = getBeginToEnd_local().transformTo(R);
     Vector_t Rpprime = computeAngleTrafo_m.transformTo(R);
 
-    double effectiveAngle = fmod(Physics::two_pi - atan2(Rpprime(0), Rpprime(2)), Physics::two_pi);
+    double effectiveAngle = std::fmod(Physics::two_pi - std::atan2(Rpprime(0), Rpprime(2)), Physics::two_pi);
 
     if (std::abs(distFromRotCenter - designRadius_m) < 0.5 * aperture_m.second[0] &&
         effectiveAngle >= 0.0 && effectiveAngle < maxAngle_m) {
@@ -895,19 +895,19 @@ void Bend2D::print(Inform &msg, double bendAngleX, double bendAngleY) {
     msg << "Bend angle magnitude:    "
         << angle_m
         << " rad ("
-        << angle_m * 180.0 / Physics::pi
+        << angle_m * Physics::rad2deg
         << " degrees)"
         << "\n";
     msg << "Entrance edge angle:     "
         << entranceAngle_m
         << " rad ("
-        << entranceAngle_m * 180.0 / Physics::pi
+        << entranceAngle_m * Physics::rad2deg
         << " degrees)"
         << "\n";
     msg << "Exit edge angle:         "
         << exitAngle_m
         << " rad ("
-        << exitAngle_m * 180.0 / Physics::pi
+        << exitAngle_m * Physics::rad2deg
         << " degrees)"
         << "\n";
     msg << "Bend design radius:      "
@@ -933,7 +933,7 @@ void Bend2D::print(Inform &msg, double bendAngleX, double bendAngleY) {
     msg << "Rotation about z axis:   "
         << rotationZAxis_m
         << " rad ("
-        << rotationZAxis_m * 180.0 / Physics::pi
+        << rotationZAxis_m * Physics::rad2deg
         << " degrees)"
         << "\n";
     msg << "\n"
@@ -944,13 +944,13 @@ void Bend2D::print(Inform &msg, double bendAngleX, double bendAngleY) {
     msg << "Reference particle is bent: "
         << bendAngleX
         << " rad ("
-        << bendAngleX * 180.0 / Physics::pi
+        << bendAngleX * Physics::rad2deg
         << " degrees) in x plane"
         << "\n";
     msg << "Reference particle is bent: "
         << bendAngleY
         << " rad ("
-        << bendAngleY * 180.0 / Physics::pi
+        << bendAngleY * Physics::rad2deg
         << " degrees) in y plane"
         << "\n";
 
@@ -1070,7 +1070,7 @@ void Bend2D::setBendStrength() {
     // Estimate bend field magnitude.
     double mass = RefPartBunch_m->getM();
     double gamma = designEnergy_m / mass + 1.0;
-    double betaGamma = sqrt(pow(gamma, 2.0) - 1.0);
+    double betaGamma = std::sqrt(std::pow(gamma, 2.0) - 1.0);
     double charge = RefPartBunch_m->getQ();
 
     fieldAmplitude_m = ((charge / std::abs(charge)) * betaGamma * mass /
@@ -1105,9 +1105,9 @@ void Bend2D::setEngeOriginDelta(double delta) {
 
 void Bend2D::setFieldCalcParam() {
 
-    cosEntranceAngle_m = cos(entranceAngle_m);
-    sinEntranceAngle_m = sin(entranceAngle_m);
-    tanEntranceAngle_m = tan(entranceAngle_m);
+    cosEntranceAngle_m = std::cos(entranceAngle_m);
+    sinEntranceAngle_m = std::sin(entranceAngle_m);
+    tanEntranceAngle_m = std::tan(entranceAngle_m);
 
     deltaBeginEntry_m = std::abs(entranceParameter1_m - entranceParameter2_m);
     deltaEndEntry_m   = std::abs(entranceParameter2_m - entranceParameter3_m);
@@ -1119,14 +1119,14 @@ void Bend2D::setFieldCalcParam() {
     double entranceAngle = getEntranceAngle();
 
     double rotationAngleAboutZ = getRotationAboutZ();
-    Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
-                                sin(0.5 * rotationAngleAboutZ) * Vector_t(0, 0, 1));
+    Quaternion_t rotationAboutZ(std::cos(0.5 * rotationAngleAboutZ),
+                                std::sin(0.5 * rotationAngleAboutZ) * Vector_t(0, 0, 1));
 
     Vector_t rotationAxis(0, -1, 0);
-    Quaternion_t halfRotationAboutAxis(cos(0.5 * (0.5 * bendAngle - entranceAngle)),
-                                       sin(0.5 * (0.5 * bendAngle - entranceAngle)) * rotationAxis);
-    Quaternion_t exitFaceRotation(cos(0.5 * (bendAngle - entranceAngle - exitAngle_m)),
-                                  sin(0.5 * (bendAngle - entranceAngle - exitAngle_m)) * rotationAxis);
+    Quaternion_t halfRotationAboutAxis(std::cos(0.5 * (0.5 * bendAngle - entranceAngle)),
+                                       std::sin(0.5 * (0.5 * bendAngle - entranceAngle)) * rotationAxis);
+    Quaternion_t exitFaceRotation(std::cos(0.5 * (bendAngle - entranceAngle - exitAngle_m)),
+                                  std::sin(0.5 * (bendAngle - entranceAngle - exitAngle_m)) * rotationAxis);
     Vector_t chord = getChordLength() * halfRotationAboutAxis.rotate(Vector_t(0, 0, 1));
     beginToEnd_lcs_m = CoordinateSystemTrafo(chord, exitFaceRotation.conjugate());
     beginToEnd_m = beginToEnd_lcs_m * CoordinateSystemTrafo(Vector_t(0.0), rotationAboutZ.conjugate());
@@ -1190,7 +1190,7 @@ void Bend2D::setFieldCalcParam() {
     computeAngleTrafo_m = CoordinateSystemTrafo(rotationCenter,
                                                 rotation);
     Vector_t tmp = computeAngleTrafo_m.transformTo(maxAngleExitAperture);
-    maxAngle_m = fmod(Physics::two_pi - atan2(tmp(0), tmp(2)), Physics::two_pi);
+    maxAngle_m = std::fmod(Physics::two_pi - std::atan2(tmp(0), tmp(2)), Physics::two_pi);
 
     maxAngleExitAperture -= rotationCenter;
 }
@@ -1273,10 +1273,9 @@ bool Bend2D::setupDefaultFieldMap(Inform &/*msg*/) {
 
 void Bend2D::setFieldBoundaries(double startField, double /*endField*/) {
 
-    startField_m = startField - deltaBeginEntry_m / cos(entranceAngle_m);
+    startField_m = startField - deltaBeginEntry_m / std::cos(entranceAngle_m);
     endField_m = (startField + angle_m * designRadius_m +
-                  deltaEndExit_m / cos(exitAngle_m));
-
+                  deltaEndExit_m / std::cos(exitAngle_m));
 }
 
 void Bend2D::setupPusher(PartBunchBase<double, 3> *bunch) {
@@ -1296,7 +1295,7 @@ bool Bend2D::treatAsDrift(Inform &/*msg*/, double chordLength) {
 
         double refMass = RefPartBunch_m->getM();
         double refGamma = designEnergy_m / refMass + 1.0;
-        double refBetaGamma = sqrt(pow(refGamma, 2.0) - 1.0);
+        double refBetaGamma = std::sqrt(std::pow(refGamma, 2.0) - 1.0);
 
         double amplitude = std::abs(fieldAmplitude_m);
         double radius = std::abs(refBetaGamma * refMass / (Physics::c * amplitude));
@@ -1312,7 +1311,7 @@ bool Bend2D::treatAsDrift(Inform &/*msg*/, double chordLength) {
             return false;
 
     } else if(angle_m == 0.0 &&
-              pow(bX_m, 2.0) + pow(bY_m, 2.0) == 0.0) {
+    		std::pow(bX_m, 2.0) + std::pow(bY_m, 2.0) == 0.0) {
 
         WARNMSG("Warning bend angle/strength is zero. Treating as drift."
                 << endl);
@@ -1356,14 +1355,14 @@ std::vector<Vector_t> Bend2D::getOutline() const {
 
         Quaternion rotation = getQuaternion(upperCornerAtEntry - rotationCenter, Vector_t(0,0,1));
         Vector_t tmp = CoordinateSystemTrafo(rotationCenter, rotation).transformTo(upperCornerAtExit);
-        double totalAngle = -fmod(Physics::two_pi - atan2(tmp(0), tmp(2)), Physics::two_pi);
+        double totalAngle = -std::fmod(Physics::two_pi - std::atan2(tmp(0), tmp(2)), Physics::two_pi);
         numSteps = std::max(2.0, std::ceil(-totalAngle / (5.0 * Physics::deg2rad)));
         double dAngle = 0.5 * totalAngle / (1.0 * numSteps - 1.0);
 
         outline.push_back(upperCornerAtEntry);
         double angle = 0.0;
         for (unsigned int i = 0; i < numSteps; ++ i, angle += dAngle) {
-            Quaternion rot(cos(angle), 0.0, sin(angle), 0.0);
+            Quaternion rot(std::cos(angle), 0.0, std::sin(angle), 0.0);
             outline.push_back(rot.rotate(upperCornerAtEntry - rotationCenter) + rotationCenter);
         }
         outline.push_back(upperCornerAtExit);
@@ -1397,13 +1396,13 @@ std::vector<Vector_t> Bend2D::getOutline() const {
 
         Quaternion rotation = getQuaternion(lowerCornerAtEntry - rotationCenter, Vector_t(0,0,1));
         Vector_t tmp = CoordinateSystemTrafo(rotationCenter, rotation).transformTo(lowerCornerAtExit);
-        double totalAngle = -fmod(Physics::two_pi - atan2(tmp(0), tmp(2)), Physics::two_pi);
+        double totalAngle = -std::fmod(Physics::two_pi - std::atan2(tmp(0), tmp(2)), Physics::two_pi);
         double dAngle = 0.5 * totalAngle / (1.0 * numSteps - 1.0);
 
         outline.push_back(lowerCornerAtExit);
         double angle = 0.5 * totalAngle;
         for (unsigned int i = 0; i < numSteps; ++ i, angle -= dAngle) {
-            Quaternion rot(cos(angle), 0.0, sin(angle), 0.0);
+            Quaternion rot(std::cos(angle), 0.0, std::sin(angle), 0.0);
             outline.push_back(rot.rotate(lowerCornerAtEntry - rotationCenter) + rotationCenter);
         }
         outline.push_back(lowerCornerAtEntry);
@@ -1571,8 +1570,8 @@ MeshData Bend2D::getSurfaceMesh() const {
             inv(2, 2) = dir1[0] / det;
             Vector_t Tau = dot(inv, P2 - P1);
             Vector_t crossPoint = P1 + Tau[0] * dir1;
-            double angle = asin(cross(dir1, dir2)[1]);
-            Quaternion halfRot(cos(0.25 * angle), sin(0.25 * angle) * Vector_t(0, 1, 0));
+            double angle = std::asin(cross(dir1, dir2)[1]);
+            Quaternion halfRot(std::cos(0.25 * angle), std::sin(0.25 * angle) * Vector_t(0, 1, 0));
             Vector_t P = halfRot.rotate(dir1);
             Vector_t R = crossPoint - rotationCenter;
 
@@ -1723,4 +1722,3 @@ std::array<double,2> Bend2D::getExitFringeFieldLength() const {
 
     return extFFL;
 }
-

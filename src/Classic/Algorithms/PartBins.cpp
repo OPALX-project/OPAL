@@ -4,8 +4,8 @@
 #include <cfloat>
 #include <limits>
 #include <vector>
+#include <cmath>
 
-extern Inform *gmsg;
 
 PartBins::PartBins(int bins, int sbins) :
     gamma_m(1.0),
@@ -150,7 +150,7 @@ void PartBins::sortArray() {
         In order that the method getBin(double x) works xmin_m has to be lowered a bit more.
     */
 
-    double sshift = sqrt(1. - (1. / (gamma_m * gamma_m))) * Physics::c * 1e-13;
+    double sshift = std::sqrt(1. - (1. / (gamma_m * gamma_m))) * Physics::c * 1e-13;
     std::sort(tmppart_m.begin(), tmppart_m.end(), DescendingLocationSort(2));
     xmax_m = tmppart_m[0][2];
     xmin_m = tmppart_m.back()[2];
@@ -164,7 +164,7 @@ void PartBins::sortArray() {
     reduce(xmin_m, xmin_m, OpMinAssign());
     reduce(xmax_m, xmax_m, OpMaxAssign());
 
-    hBin_m = (fabs(xmax_m - xmin_m)) / (bins_m);
+    hBin_m = (std::abs(xmax_m - xmin_m)) / (bins_m);
     calcHBins();
     for(int n = 0; n < bins_m; n++)
         if(nBin_m[n] == 0) setBinEmitted(n);
@@ -241,7 +241,7 @@ int PartBins::getBin(double x) {
        returns the index of the bin to which the particle with z = 'x' belongs.
        If getBin returns b < 0 || b >= bins_m, then is x out of range!
     */
-    int b = (int) floor(fabs(xmax_m - x) / hBin_m);
+    int b = (int) std::floor(std::abs(xmax_m - x) / hBin_m);
     nBin_m[b]++;
     return b;
 }

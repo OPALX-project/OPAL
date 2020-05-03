@@ -15,8 +15,7 @@ public:
     ParticleMatterInteractionHandler(std::string name, ElementBase *elref);
     virtual ~ParticleMatterInteractionHandler() { };
     virtual void apply(PartBunchBase<double, 3> *bunch,
-                       const std::pair<Vector_t, double> &boundingSphere,
-                       size_t numParticlesInSimulation = 0) = 0;
+                       const std::pair<Vector_t, double> &boundingSphere) = 0;
     virtual const std::string getType() const = 0;
     virtual void print(Inform& os) = 0;
     virtual bool stillActive() = 0;

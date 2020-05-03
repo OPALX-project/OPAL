@@ -241,7 +241,7 @@ Vector<T> operator*(const T &x, const Vector<T> &V1) {
 
 
 template<class T> T euclidean_norm(const Vector<T> &V) {
-    return sqrt(std::inner_product(V.begin(), V.end(), V.begin(), T(0)));
+    return std::sqrt(std::inner_product(V.begin(), V.end(), V.begin(), T(0)));
 }
 
 

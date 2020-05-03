@@ -28,7 +28,6 @@ throw GeneralClassicException("Cyclotron::getFieldFromFile",\
 
 extern Inform *gmsg;
 
-using Physics::pi;
 
 // Class Cyclotron
 // ------------------------------------------------------------------------
@@ -407,16 +406,16 @@ bool Cyclotron::apply(const Vector_t &R, const Vector_t &/*P*/,
 
     /* if((R[0] > 0) && (R[1] >= 0)) tet = tempv;
        else*/
-    if     ((R[0] < 0) && (R[1] >= 0)) tet = pi + tempv;
-    else if((R[0] < 0) && (R[1] <= 0)) tet = pi + tempv;
-    else if((R[0] > 0) && (R[1] <= 0)) tet = 2.0 * pi + tempv;
-    else if((R[0] == 0) && (R[1] > 0)) tet = pi / 2.0;
-    else if((R[0] == 0) && (R[1] < 0)) tet = 1.5 * pi;
+    if     ((R[0] < 0) && (R[1] >= 0)) tet = Physics::pi + tempv;
+    else if((R[0] < 0) && (R[1] <= 0)) tet = Physics::pi + tempv;
+    else if((R[0] > 0) && (R[1] <= 0)) tet = Physics::two_pi + tempv;
+    else if((R[0] == 0) && (R[1] > 0)) tet = Physics::pi / 2.0;
+    else if((R[0] == 0) && (R[1] < 0)) tet = 1.5 * Physics::pi;
 
     double tet_rad = tet;
 
     // the actual angle of particle in degree
-    tet = tet / pi * 180.0;
+    tet *= Physics::rad2deg;
 
     // Necessary for gap phase output -DW
     if (0 <= tet && tet <= 45) waiting_for_gap = 1;
@@ -438,8 +437,8 @@ bool Cyclotron::apply(const Vector_t &R, const Vector_t &/*P*/,
         this->applyTrimCoil(rad, R[2], tet_rad, br, bz);
         
         /* Br Btheta -> Bx By */
-        B[0] = br * cos(tet_rad) - bt * sin(tet_rad);
-        B[1] = br * sin(tet_rad) + bt * cos(tet_rad);
+        B[0] = br * std::cos(tet_rad) - bt * std::sin(tet_rad);
+        B[1] = br * std::sin(tet_rad) + bt * std::cos(tet_rad);
         B[2] = bz;
     } else {
         return true;
@@ -495,18 +494,18 @@ bool Cyclotron::apply(const Vector_t &R, const Vector_t &/*P*/,
             }
         }
 
-        double phase = 2.0 * pi * 1.0E-3 * frequency * t + (*rfphii);  // f in [MHz], t in [ns]
+        double phase = Physics::two_pi * 1.0E-3 * frequency * t + (*rfphii);  // f in [MHz], t in [ns]
 
-        E += ebscale * cos(phase) * tmpE;
-        B -= ebscale * sin(phase) * tmpB;
+        E += ebscale * std::cos(phase) * tmpE;
+        B -= ebscale * std::sin(phase) * tmpB;
 
         if(myBFieldType_m != SYNCHRO)
             continue;
 
         // Some phase output -DW
+        double phase_print = phase * Physics::rad2deg;
         if (tet >= 90.0 && waiting_for_gap == 1) {
-            double phase_print = 180.0 * phase / pi;
-            phase_print = fmod(phase_print, 360) - 360.0;
+            phase_print = std::fmod(phase_print, 360) - 360.0;
 
             *gmsg << endl << "Gap 1 phase = " << phase_print << " Deg" << endl;
             *gmsg << "Gap 1 E-Field = (" << E[0] << "/" << E[1] << "/" << E[2] << ")" << endl;
@@ -516,9 +515,7 @@ bool Cyclotron::apply(const Vector_t &R, const Vector_t &/*P*/,
             waiting_for_gap = 2;
         }
         else if (tet >= 270.0 && waiting_for_gap == 2) {
-
-            double phase_print = 180.0 * phase / pi;
-            phase_print = fmod(phase_print, 360) - 360.0;
+            phase_print = std::fmod(phase_print, 360) - 360.0;
 
             *gmsg << endl << "Gap 2 phase = " << phase_print << " Deg" << endl;
             *gmsg << "Gap 2 E-Field = (" << E[0] << "/" << E[1] << "/" << E[2] << ")" << endl;
@@ -684,7 +681,7 @@ bool Cyclotron::interpolate(const double& rad,
     
     // the corresponding angle on the field map
     // Note: this does not work if the start point of field map does not equal zero.
-    double tet_map = fmod(tet_rad / Physics::pi * 180.0, 360.0 / symmetry_m);
+    double tet_map = std::fmod(tet_rad * Physics::rad2deg, 360.0 / symmetry_m);
     
     double xit = tet_map / BP.dtet;
 
@@ -821,7 +818,7 @@ void Cyclotron::getdiffs() {
 
         for(int k = 0; k < Bfield.ntet; k++) {
 
-            double dtheta = pi / 180.0 * BP.dtet;
+            double dtheta = Physics::deg2rad * BP.dtet;
 
             int kEdge;
 
@@ -907,8 +904,8 @@ void Cyclotron::getdiffs() {
     for(int i = 0; i< Bfield.nrad; i++){
       for(int j = 0; j< Bfield.ntetS; j++){
     int index = idx(i,j);
-    double x = (BP.rmin+i*BP.delr) * sin(j*BP.dtet*pi/180.0);
-    double y = (BP.rmin+i*BP.delr) * cos(j*BP.dtet*pi/180.0);
+    double x = (BP.rmin+i*BP.delr) * std::sin(j*BP.dtet*pi/180.0);
+    double y = (BP.rmin+i*BP.delr) * std::cos(j*BP.dtet*pi/180.0);
     *gmsg<<"x= "<<x<<" y= "<<y<<" B= "<<Bfield.bfld[index]<<endl;
       }
     }

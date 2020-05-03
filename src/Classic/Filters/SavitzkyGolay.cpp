@@ -3,7 +3,7 @@
 #include "gsl/gsl_fft_halfcomplex.h"
 #include <iostream>
 
-using namespace std;
+#include <cmath>
 
 SavitzkyGolayFilter::SavitzkyGolayFilter(int np, int nl, int nr, int m):
     NumberPoints_m(np),
@@ -16,30 +16,30 @@ SavitzkyGolayFilter::SavitzkyGolayFilter(int np, int nl, int nr, int m):
     savgol(CoefsDeriv_m, NumberPoints_m, NumberPointsLeft_m, NumberPointsRight_m, 1, PolynomialOrder_m);
 }
 
-void SavitzkyGolayFilter::apply(vector<double> &LineDensity) {
-    vector<double> temp(LineDensity.size(), 0.0);
+void SavitzkyGolayFilter::apply(std::vector<double> &LineDensity) {
+    std::vector<double> temp(LineDensity.size(), 0.0);
     convlv(LineDensity, Coefs_m, 1, temp);
     LineDensity.assign(temp.begin(), temp.end());
 }
 
-void SavitzkyGolayFilter::calc_derivative(vector<double> &LineDensity, const double &/*h*/) {
-    vector<double> temp(LineDensity.size(), 0.0);
+void SavitzkyGolayFilter::calc_derivative(std::vector<double> &LineDensity, const double &/*h*/) {
+    std::vector<double> temp(LineDensity.size(), 0.0);
     convlv(LineDensity, CoefsDeriv_m, 1, temp);
     LineDensity.assign(temp.begin(), temp.end());
 }
 
 
-void savgol(vector<double> &c, const int &np, const int &nl, const int &nr, const int &ld, const int &m) {
+void savgol(std::vector<double> &c, const int &np, const int &nl, const int &nr, const int &ld, const int &m) {
     int j, k, imj, ipj, kk, mm;
     double d, fac, sum;
 
     if(np < nl + nr + 1 || nl < 0 || nr < 0 || ld > m || nl + nr < m) {
-        cerr << "bad args in savgol" << endl;
+        std::cerr << "bad args in savgol" << std::endl;
         return;
     }
-    vector<int> indx(m + 1, 0);
-    vector<double> a((m + 1) * (m + 1), 0.0);
-    vector<double> b(m + 1, 0.0);
+    std::vector<int> indx(m + 1, 0);
+    std::vector<double> a((m + 1) * (m + 1), 0.0);
+    std::vector<double> b(m + 1, 0.0);
 
     for(ipj = 0; ipj <= (m << 1); ++ipj) {
         sum = (ipj ? 0.0 : 1.0);
@@ -71,7 +71,7 @@ void savgol(vector<double> &c, const int &np, const int &nl, const int &nr, cons
 
 }
 
-void convlv(const vector<double> &data, const vector<double> &respns, const int &isign, vector<double> &ans) {
+void convlv(const std::vector<double> &data, const std::vector<double> &respns, const int &isign, std::vector<double> &ans) {
     int n = data.size();
     int m = respns.size();
 
@@ -125,22 +125,22 @@ void convlv(const vector<double> &data, const vector<double> &respns, const int 
     delete[] tempfd2;
 }
 
-void ludcmp(vector<double> &a, vector<int> &indx,  double &d) {
+void ludcmp(std::vector<double> &a, std::vector<int> &indx,  double &d) {
     const double TINY = 1.0e-20;
     int i, imax = -1, j, k;
     double big, dum, sum, temp;
 
     int n = indx.size();
-    vector<double> vv(n, 0.0);
+    std::vector<double> vv(n, 0.0);
 
     d = 1.0;
     for(i = 0; i < n; ++i) {
         big = 0.0;
         for(j = 0; j < n; ++j)
-            if((temp = fabs(a[i * n + j])) > big) big = temp;
+            if((temp = std::abs(a[i * n + j])) > big) big = temp;
 
         if(big == 0.0) {
-            cerr << "Singular matrix in routine ludcmp" << endl;
+            std::cerr << "Singular matrix in routine ludcmp" << std::endl;
             return;
         }
         vv[i] = 1. / big;
@@ -159,7 +159,7 @@ void ludcmp(vector<double> &a, vector<int> &indx,  double &d) {
             for(k = 0; k < j; ++k)
                 sum -= a[i * n + k] * a[k * n + j];
             a[i * n + j] = sum;
-            if((dum = vv[i] * fabs(sum)) >= big) {
+            if((dum = vv[i] * std::abs(sum)) >= big) {
                 big = dum;
                 imax = i;
             }
@@ -184,7 +184,7 @@ void ludcmp(vector<double> &a, vector<int> &indx,  double &d) {
     }
 }
 
-void lubksb(vector<double> &a, vector<int> &indx, vector<double> &b) {
+void lubksb(std::vector<double> &a, std::vector<int> &indx, std::vector<double> &b) {
     int i, ii = 0, ip, j;
     double sum;
     int n = indx.size();

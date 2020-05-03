@@ -298,10 +298,10 @@ class Ring : public Component {
     void setRingAperture(double minR, double maxR);
 
     /** Get the ring minimum */
-    double getRingMinR() const {return ::sqrt(minR2_m);}
+    double getRingMinR() const {return std::sqrt(minR2_m);}
 
     /** Get the ring maximum */
-    double getRingMaxR() const {return ::sqrt(maxR2_m);}
+    double getRingMaxR() const {return std::sqrt(maxR2_m);}
 
     /** Lock the ring
      *

@@ -1,11 +1,10 @@
 #include "Filters/Stencil.h"
 
-using namespace std;
 
-void StencilFilter::apply(vector<double> &LineDensity) {
+void StencilFilter::apply(std::vector<double> &LineDensity) {
     int size = LineDensity.size();
-    vector<double> temp1(size + 8, 0.0);
-    vector<double> temp2(5, 0.0);
+    std::vector<double> temp1(size + 8, 0.0);
+    std::vector<double> temp2(5, 0.0);
 
     for(int i = 0; i < size; ++i)
         temp1[i+4] = LineDensity[i];
@@ -29,8 +28,8 @@ void StencilFilter::apply(vector<double> &LineDensity) {
         LineDensity[i] = (7. * (temp1[i+2] + temp1[i+6]) + 24. * (temp1[i+3] + temp1[i+5]) + 34.*temp1[i+4]) / 96.;
 }
 
-void StencilFilter::calc_derivative(vector<double> &LineDensity, const double &h) {
-    vector<double> temp(LineDensity.begin(), LineDensity.end());
+void StencilFilter::calc_derivative(std::vector<double> &LineDensity, const double &h) {
+    std::vector<double> temp(LineDensity.begin(), LineDensity.end());
     const double N = LineDensity.size();
     LineDensity[0] = (-25.*temp[0] + 48.*temp[1] - 36.*temp[2] + 16.*temp[3] + temp[4]) / (12.*h);
     LineDensity[1] = (-3.*temp[0] - 10.*temp[1] + 18.*temp[2] - 6.*temp[3] + temp[4]) / (12.*h);

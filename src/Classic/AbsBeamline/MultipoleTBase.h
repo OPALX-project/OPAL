@@ -348,8 +348,8 @@ inline
 }
 inline
     bool MultipoleTBase::insideAperture(const Vector_t &R) {
-        return (fabs(R[1]) <= (verticalApert_m / 2.0) &&
-                fabs(R[0]) <= (horizontalApert_m / 2.0));
+        return (std::abs(R[1]) <= (verticalApert_m / 2.0) &&
+        		std::abs(R[0]) <= (horizontalApert_m / 2.0));
 }
 inline
     double MultipoleTBase::getEntranceAngle() const {

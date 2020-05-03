@@ -6,10 +6,6 @@
 class Communicate;
 class IpplStats;
 class Inform;
-//DKS include
-#ifdef IPPL_DKS
-class DKSOPAL;
-#endif
 
 class StaticIpplInfo {
 public:
@@ -31,10 +27,6 @@ public:
     Inform *Warn;
     Inform *Error;
     Inform *Debug;
-
-#ifdef IPPL_DKS
-    DKSOPAL *DKS;
-#endif
 
     // flag telling whether to use optimization for reducing
     // communication by deferring guard cell fills.

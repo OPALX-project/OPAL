@@ -58,7 +58,7 @@ Track::Track(BeamSequence *u, const PartData &ref, const std::vector<double> & d
 {
     if(!OpalData::getInstance()->hasBunchAllocated()) {
 #ifdef ENABLE_AMR
-        if ( Options::amr )
+        if (Options::amr)
             OpalData::getInstance()->setPartBunch(new AmrPartBunch(&ref));
         else
 #endif

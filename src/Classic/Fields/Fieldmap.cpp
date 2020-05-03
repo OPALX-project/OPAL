@@ -302,47 +302,47 @@ MapType Fieldmap::readHeader(std::string Filename) {
 
     interpreter.read(magicnumber, 4);
 
-    if(strcmp(magicnumber, "3DDy") == 0)
+    if(std::strcmp(magicnumber, "3DDy") == 0)
         return T3DDynamic;
 
-    if(strcmp(magicnumber, "3DMa") == 0) {
+    if(std::strcmp(magicnumber, "3DMa") == 0) {
         char tmpString[21] = "                    ";
         interpreter.read(tmpString, 20);
 
-        if(strcmp(tmpString, "gnetoStatic_Extended") == 0)
+        if(std::strcmp(tmpString, "gnetoStatic_Extended") == 0)
             return T3DMagnetoStatic_Extended;
         else
             return T3DMagnetoStatic;
     }
 
-    if(strcmp(magicnumber, "3DEl") == 0)
+    if(std::strcmp(magicnumber, "3DEl") == 0)
         return T3DElectroStatic;
 
-    if(strcmp(magicnumber, "2DDy") == 0) {
+    if(std::strcmp(magicnumber, "2DDy") == 0) {
         // char tmpString[14] = "             ";
         // interpreter.read(tmpString, 13);
         return T2DDynamic;
     }
 
-    if(strcmp(magicnumber, "2DMa") == 0) {
+    if(std::strcmp(magicnumber, "2DMa") == 0) {
         // char tmpString[20] = "                   ";
         // interpreter.read(tmpString, 19);
         return T2DMagnetoStatic;
     }
 
-    if(strcmp(magicnumber, "2DEl") == 0) {
+    if(std::strcmp(magicnumber, "2DEl") == 0) {
         // char tmpString[20] = "                   ";
         // interpreter.read(tmpString, 19);
         return T2DElectroStatic;
     }
 
-    if(strcmp(magicnumber, "1DDy") == 0)
+    if(std::strcmp(magicnumber, "1DDy") == 0)
         return T1DDynamic;
 
-    if(strcmp(magicnumber, "1DMa") == 0)
+    if(std::strcmp(magicnumber, "1DMa") == 0)
         return T1DMagnetoStatic;
 
-    if(strcmp(magicnumber, "1DPr") == 0) {
+    if(std::strcmp(magicnumber, "1DPr") == 0) {
         // char tmpString[7] = "      ";
         // interpreter.read(tmpString, 6);
         // if(strcmp(tmpString, "ofile1") == 0)
@@ -351,10 +351,10 @@ MapType Fieldmap::readHeader(std::string Filename) {
         //     return T1DProfile2;
     }
 
-    if(strcmp(magicnumber, "1DEl") == 0)
+    if(std::strcmp(magicnumber, "1DEl") == 0)
         return T1DElectroStatic;
 
-    if(strcmp(magicnumber, "\211HDF") == 0) {
+    if(std::strcmp(magicnumber, "\211HDF") == 0) {
         h5_err_t h5err = 0;
 #if defined (NDEBUG)
         // mark variable as unused
@@ -382,10 +382,10 @@ MapType Fieldmap::readHeader(std::string Filename) {
                 file, (h5_size_t)i, name, len_name, NULL, NULL, NULL, NULL);
             assert (h5err != H5_ERR);
             // using field name "Bfield" and "Hfield" to distinguish the type
-            if(strcmp(name, "Bfield") == 0) {
+            if(std::strcmp(name, "Bfield") == 0) {
                 maptype = T3DMagnetoStaticH5Block;
                 break;
-            } else if(strcmp(name, "Hfield") == 0) {
+            } else if(std::strcmp(name, "Hfield") == 0) {
                 maptype = T3DDynamicH5Block;
                 break;
             }
@@ -396,16 +396,16 @@ MapType Fieldmap::readHeader(std::string Filename) {
             return maptype;
     }
 
-    if(strcmp(magicnumber, "Astr") == 0) {
+    if(std::strcmp(magicnumber, "Astr") == 0) {
         char tmpString[3] = "  ";
         interpreter.read(tmpString, 2);
-        if(strcmp(tmpString, "aE") == 0) {
+        if(std::strcmp(tmpString, "aE") == 0) {
             return TAstraElectroStatic;
         }
-        if(strcmp(tmpString, "aM") == 0) {
+        if(std::strcmp(tmpString, "aM") == 0) {
             return TAstraMagnetoStatic;
         }
-        if(strcmp(tmpString, "aD") == 0) {
+        if(std::strcmp(tmpString, "aD") == 0) {
             return TAstraDynamic;
         }
     }
@@ -505,14 +505,14 @@ void Fieldmap::checkMap(unsigned int accuracy,
     }
     out.close();
 
-    if (sqrt(error / ezSquare) > 1e-1 || maxDiff > 1e-1 * ezMax) {
-        lowResolutionWarning(sqrt(error / ezSquare), maxDiff / ezMax);
+    if (std::sqrt(error / ezSquare) > 1e-1 || maxDiff > 1e-1 * ezMax) {
+        lowResolutionWarning(std::sqrt(error / ezSquare), maxDiff / ezMax);
 
         throw GeneralClassicException("Astra2DDynamic_fast::readMap()",
                                       "Field map can't be reproduced properly with the given number of fourier components");
     }
-    if (sqrt(error / ezSquare) > 1e-2 || maxDiff > 1e-2 * ezMax) {
-        lowResolutionWarning(sqrt(error / ezSquare), maxDiff / ezMax);
+    if (std::sqrt(error / ezSquare) > 1e-2 || maxDiff > 1e-2 * ezMax) {
+        lowResolutionWarning(std::sqrt(error / ezSquare), maxDiff / ezMax);
     }
 }
 
@@ -650,7 +650,7 @@ std::string Fieldmap::typeset_msg(const std::string &msg, const std::string &tit
     unsigned int ii = 0;
     for(; ii < title.length(); ++ ii) {
         char c = title[ii];
-        c = toupper(c);
+        c = std::toupper(c);
         return_string.replace(15 + 2 * ii, 1, " ");
         return_string.replace(16 + 2 * ii, 1, &c, 1);
     }

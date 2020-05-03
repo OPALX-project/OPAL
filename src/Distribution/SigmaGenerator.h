@@ -405,7 +405,7 @@ SigmaGenerator<Value_type, Size_type>::SigmaGenerator(value_type I,
         value_type m = m_m * 1.0e6 / (Physics::c * Physics::c);
 
         // formula (57)
-        value_type lam = 2.0 * Physics::pi*Physics::c / (wo_m * nh_m); // wavelength, [lam] = m
+        value_type lam = Physics::two_pi*Physics::c / (wo_m * nh_m); // wavelength, [lam] = m
         value_type K3 = 3.0 * /* physics::q0 */ 1.0 * I_m * lam / (20.0 * std::sqrt(5.0) * Physics::pi * Physics::epsilon_0 * m *
                         Physics::c * Physics::c * Physics::c * beta_m * beta_m * gamma_m * gamma2_m);            // [K3] = m
 
@@ -414,14 +414,14 @@ SigmaGenerator<Value_type, Size_type>::SigmaGenerator(value_type I,
         // formula (30), (31)
         // [sigma(0,0)] = mm^{2} --> [sx] = [sy] = [sz] = mm
         // multiply with 0.001 to get meter --> [sx] = [sy] = [sz] = m
-        value_type sx = std::sqrt(std::fabs(sigx)) * milli;
-        value_type sy = std::sqrt(std::fabs(sigy)) * milli;
-        value_type sz = std::sqrt(std::fabs(sigz)) * milli;
+        value_type sx = std::sqrt(std::abs(sigx)) * milli;
+        value_type sy = std::sqrt(std::abs(sigy)) * milli;
+        value_type sz = std::sqrt(std::abs(sigz)) * milli;
 
         value_type tmp = sx * sy;                                           // [tmp] = m^{2}
 
         value_type f = std::sqrt(tmp) / (3.0 * gamma_m * sz);               // [f] = 1
-        value_type kxy = K3 * std::fabs(1.0 - f) / ((sx + sy) * sz); // [kxy] = 1/m
+        value_type kxy = K3 * std::abs(1.0 - f) / ((sx + sy) * sz); // [kxy] = 1/m
 
         value_type Kx = kxy / sx;
         value_type Ky = kxy / sy;
@@ -950,7 +950,7 @@ void SigmaGenerator<Value_type, Size_type>::initialize(value_type nuz,
     value_type h = 1.0 / ravg;            // [h] = 1/m
 
     // formula (57)
-    value_type lam = 2.0 * Physics::pi * Physics::c / (wo_m * nh_m); // wavelength, [lam] = m
+    value_type lam = Physics::two_pi * Physics::c / (wo_m * nh_m); // wavelength, [lam] = m
     value_type K3 = 3.0 * /* physics::q0 */ 1.0 * I_m * lam / (20.0 * std::sqrt(5.0) * Physics::pi * Physics::epsilon_0 * m *
                     Physics::c * Physics::c * Physics::c * beta_m * beta_m * gamma2_m * gamma_m);               // [K3] = m
 

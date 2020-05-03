@@ -431,18 +431,14 @@ void FieldSolver::initCartesianFields() {
     }
     // create prototype mesh and layout objects for this problem domain
 
-#ifdef ENABLE_AMR
     if ( !isAmrSolverType() ) {
-#endif
         mesh_m   = new Mesh_t(domain);
         FL_m     = new FieldLayout_t(*mesh_m, decomp);
         PL_m.reset(new Layout_t(*FL_m, *mesh_m));
         // OpalData::getInstance()->setMesh(mesh_m);
         // OpalData::getInstance()->setFieldLayout(FL_m);
         // OpalData::getInstance()->setLayout(PL_m);
-#ifdef ENABLE_AMR
     }
-#endif
 }
 
 bool FieldSolver::hasPeriodicZ() {
@@ -452,11 +448,9 @@ bool FieldSolver::hasPeriodicZ() {
     return (Attributes::getString(itsAttr[BCFFTZ]) == "PERIODIC");
 }
 
-#ifdef ENABLE_AMR
 inline bool FieldSolver::isAmrSolverType() const {
     return Options::amr;
 }
-#endif
 
 void FieldSolver::initSolver(PartBunchBase<double, 3> *b) {
     itsBunch_m = b;
@@ -469,19 +463,16 @@ void FieldSolver::initSolver(PartBunchBase<double, 3> *b) {
         bcz = Attributes::getString(itsAttr[BCFFTZ]);
     }
 
-#ifdef ENABLE_AMR
     if ( isAmrSolverType() ) {
         Inform m("FieldSolver::initAmrSolver");
         fsType_m = "AMR";
 
+#ifdef ENABLE_AMR
         initAmrObject_m();
 
         initAmrSolver_m();
-
-    } else if(fsType_m == "FFT") {
-#else
-    if(fsType_m == "FFT") {
 #endif
+    } else if(fsType_m == "FFT") {
         bool sinTrafo = ((bcx == "DIRICHLET") && (bcy == "DIRICHLET") && (bcz == "DIRICHLET"));
         if(sinTrafo) {
             std::cout << "FFTBOX ACTIVE" << std::endl;
@@ -568,13 +559,13 @@ Inform &FieldSolver::printInfo(Inform &os) const {
        << "* MT           " << Attributes::getReal(itsAttr[MT])   << '\n'
        << "* BBOXINCR     " << Attributes::getReal(itsAttr[BBOXINCR]) << endl;
 
-    if(fsType == "P3M")
+    if (fsType == "P3M")
         os << "* RC           " << Attributes::getReal(itsAttr[RC]) << '\n'
            << "* ALPHA        " << Attributes::getReal(itsAttr[ALPHA]) << '\n'
            << "* EPSILON      " << Attributes::getReal(itsAttr[EPSILON]) << endl;
 
 
-    if(fsType == "FFT") {
+    if (fsType == "FFT") {
         os << "* GRRENSF      " << Attributes::getString(itsAttr[GREENSF]) << endl;
     } else if (fsType == "SAAMG") {
         os << "* GEOMETRY     " << Attributes::getString(itsAttr[GEOMETRY]) << '\n'
@@ -583,9 +574,8 @@ Inform &FieldSolver::printInfo(Inform &os) const {
            << "* TOL          " << Attributes::getReal(itsAttr[TOL])        << '\n'
            << "* MAXITERS     " << Attributes::getReal(itsAttr[MAXITERS]) << '\n'
            << "* PRECMODE     " << Attributes::getString(itsAttr[PRECMODE])   << endl;
-    }
+    } else if (Options::amr) {
 #ifdef ENABLE_AMR
-    else if (fsType == "AMR" || Options::amr) {
         os << "* AMR_MAXLEVEL     " << Attributes::getReal(itsAttr[AMR_MAXLEVEL]) << '\n'
            << "* AMR_REFX         " << Attributes::getReal(itsAttr[AMR_REFX]) << '\n'
            << "* AMR_REFY         " << Attributes::getReal(itsAttr[AMR_REFY]) << '\n'
@@ -608,8 +598,8 @@ Inform &FieldSolver::printInfo(Inform &os) const {
             os << l << " ";
         }
         os << ")" << endl;
-    }
 #endif
+    }
 
 #ifdef HAVE_AMR_MG_SOLVER
     if (fsType == "AMR_MG") {
@@ -662,14 +652,10 @@ Inform &FieldSolver::printInfo(Inform &os) const {
     else
         os << "* Z(T)DIM      serial  " << endl;
 
-#ifdef ENABLE_AMR
     if ( !isAmrSolverType() ) {
-#endif
         INFOMSG(level3 << *mesh_m << endl);
         INFOMSG(level3 << *PL_m << endl);
-#ifdef ENABLE_AMR
     }
-#endif
 
     if(solver_m)
         os << *solver_m << endl;

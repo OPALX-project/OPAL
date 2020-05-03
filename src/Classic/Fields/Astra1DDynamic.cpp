@@ -11,16 +11,12 @@
 #include <fstream>
 #include <ios>
 
-using namespace std;
-using Physics::mu_0;
-using Physics::c;
-using Physics::two_pi;
 
 Astra1DDynamic::Astra1DDynamic(std::string aFilename):
     Fieldmap(aFilename),
     FourCoefs_m(NULL) {
 
-    ifstream file;
+    std::ifstream file;
     int skippedValues = 0;
     std::string tmpString;
     double tmpDouble;
@@ -77,8 +73,8 @@ Astra1DDynamic::Astra1DDynamic(std::string aFilename):
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         } else {
             // conversion from MHz to Hz and from frequency to angular frequency
-            frequency_m *= two_pi * 1e6;
-            xlrep_m = frequency_m / c;
+            frequency_m *= Physics::two_pi * 1e6;
+            xlrep_m = frequency_m / Physics::c;
         }
         length_m = 2.0 * num_gridpz_m * (zend_m - zbegin_m) / (num_gridpz_m - 1);
         file.close();
@@ -96,7 +92,7 @@ Astra1DDynamic::~Astra1DDynamic() {
 void Astra1DDynamic::readMap() {
     if (FourCoefs_m == NULL) {
         // declare variables and allocate memory
-        ifstream in;
+    	std::ifstream in;
 
         bool parsing_passed = true;
 
@@ -191,7 +187,7 @@ bool Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
-    const double kz = two_pi * (R(2) - zbegin_m) / length_m + Physics::pi;
+    const double kz = Physics::two_pi * (R(2) - zbegin_m) / length_m + Physics::pi;
 
     double ez = FourCoefs_m[0];
     double ezp = 0.0;
@@ -203,7 +199,7 @@ bool Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &
 
     int n = 1;
     for (int l = 1; l < accuracy_m ; ++ l, n += 2) {
-        somefactor_base = two_pi / length_m * l;       // = \frac{d(kz*l)}{dz}
+        somefactor_base = Physics::two_pi / length_m * l;       // = \frac{d(kz*l)}{dz}
         somefactor = 1.0;
         coskzl = cos(kz * l);
         sinkzl = sin(kz * l);
@@ -220,7 +216,7 @@ bool Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &
     const double fp = -(ezppp + ezp * xlrep_m * xlrep_m) / 16.;
 
     const double EfieldR = -(ezp / 2. + fp * RR2);
-    const double BfieldT = (ez / 2. + f * RR2) * xlrep_m / c;
+    const double BfieldT = (ez / 2. + f * RR2) * xlrep_m / Physics::c;
 
     E(0) +=  EfieldR * R(0);
     E(1) +=  EfieldR * R(1);
@@ -232,12 +228,12 @@ bool Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &
 }
 
 bool Astra1DDynamic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
-    const double kz = two_pi * (R(2) - zbegin_m) / length_m + Physics::pi;
+    const double kz = Physics::two_pi * (R(2) - zbegin_m) / length_m + Physics::pi;
     double ezp = 0.0;
 
     int n = 1;
     for (int l = 1; l < accuracy_m; ++ l, n += 2)
-        ezp += two_pi / length_m * l * (-FourCoefs_m[n] * sin(kz * l) - FourCoefs_m[n + 1] * cos(kz * l));
+        ezp += Physics::two_pi / length_m * l * (-FourCoefs_m[n] * sin(kz * l) - FourCoefs_m[n + 1] * cos(kz * l));
 
     E(2) +=  ezp;
 
@@ -266,14 +262,14 @@ void Astra1DDynamic::setFrequency(double freq) {
     frequency_m = freq;
 }
 
-void Astra1DDynamic::getOnaxisEz(vector<pair<double, double> > & F) {
+void Astra1DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
     double Ez_max = 0.0;
     double tmpDouble;
     int tmpInt;
     std::string tmpString;
     F.resize(num_gridpz_m);
 
-    ifstream in(Filename_m.c_str());
+    std::ifstream in(Filename_m.c_str());
     interpretLine<std::string, int>(in, tmpString, tmpInt);
     interpretLine<double>(in, tmpDouble);
 
@@ -289,4 +285,3 @@ void Astra1DDynamic::getOnaxisEz(vector<pair<double, double> > & F) {
         F[i].second /= Ez_max;
     }
 }
-

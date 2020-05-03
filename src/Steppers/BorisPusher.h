@@ -84,10 +84,8 @@ inline void BorisPusher::kick(const Vector_t &/*R*/, Vector_t &P,
     //     mass = rest energy = rest mass * c * c
     //     charge
 
-    using Physics::c;
-
     // Half step E
-    P += 0.5 * dt * charge * c / mass * Ef;
+    P += 0.5 * dt * charge * Physics::c / mass * Ef;
 
     // Full step B
 
@@ -99,7 +97,7 @@ inline void BorisPusher::kick(const Vector_t &/*R*/, Vector_t &P,
     */
 
     double const gamma = sqrt(1.0 + dot(P, P));
-    Vector_t const t = 0.5 * dt * charge * c * c / (gamma * mass) * Bf;
+    Vector_t const t = 0.5 * dt * charge * Physics::c * Physics::c / (gamma * mass) * Bf;
     Vector_t const w = P + cross(P, t);
     Vector_t const s = 2.0 / (1.0 + dot(t, t)) * t;
     P += cross(w, s);
@@ -109,7 +107,7 @@ inline void BorisPusher::kick(const Vector_t &/*R*/, Vector_t &P,
     */
 
     // Half step E
-    P += 0.5 * dt * charge * c / mass * Ef;
+    P += 0.5 * dt * charge * Physics::c / mass * Ef;
 }
 
 

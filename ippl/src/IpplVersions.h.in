@@ -12,7 +12,4 @@ const char *ippl_compile_machine = ${IPPL_COMPILE_MACHINE};
 const char *ippl_compile_options = ${IPPL_COMPILE_OPTIONS};
 const char *ippl_compile_user = ${IPPL_COMPILE_USER};
 
-/* DKS version number */
-#define IPPL_DKS_VERSION ${DKS_VERSION_OPAL}
-
 #endif

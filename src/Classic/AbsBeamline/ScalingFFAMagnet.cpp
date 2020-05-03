@@ -109,15 +109,15 @@ void ScalingFFAMagnet::accept(BeamlineVisitor& visitor) const {
 
 bool ScalingFFAMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
     Vector_t pos = R - centre_m;
-    double r = sqrt(pos[0]*pos[0]+pos[2]*pos[2]);
-    double phi = -atan2(pos[0], pos[2]); // angle between y-axis and position vector in anticlockwise direction
+    double r = std::sqrt(pos[0]*pos[0]+pos[2]*pos[2]);
+    double phi = -std::atan2(pos[0], pos[2]); // angle between y-axis and position vector in anticlockwise direction
     Vector_t posCyl(r, pos[1], phi);
     Vector_t bCyl(0., 0., 0.); //br bz bphi
     bool outOfBounds = getFieldValueCylindrical(posCyl, bCyl);
     // this is cartesian coordinates
     B[1] += bCyl[1];
-    B[0] += -bCyl[2]*cos(phi) -bCyl[0]*sin(phi);
-    B[2] += +bCyl[0]*cos(phi) -bCyl[2]*sin(phi);
+    B[0] += -bCyl[2]*std::cos(phi) -bCyl[0]*std::sin(phi);
+    B[2] += +bCyl[0]*std::cos(phi) -bCyl[2]*std::sin(phi);
     return outOfBounds;
 
 }
@@ -133,9 +133,9 @@ bool ScalingFFAMagnet::getFieldValueCylindrical(const Vector_t &pos, Vector_t &B
     }
 
     double normRadius = r/r0_m;
-    double g = tanDelta_m*log(normRadius);
+    double g = tanDelta_m*std::log(normRadius);
     double phiSpiral = phi - g - phiStart_m;
-    double h = pow(normRadius, k_m)*Bz_m;
+    double h = std::pow(normRadius, k_m)*Bz_m;
     if (phiSpiral < -azimuthalExtent_m || phiSpiral > azimuthalExtent_m) {
         return true;
     }
@@ -152,14 +152,14 @@ bool ScalingFFAMagnet::getFieldValueCylindrical(const Vector_t &pos, Vector_t &B
         for (size_t i = 0; i < dfCoefficients_m[n].size(); ++i) {
             f2n += dfCoefficients_m[n][i]*fringeDerivatives[i];
         }
-        deltaB[1] = f2n*h*pow(z/r, n); // Bz = sum(f_2n * h * (z/r)^2n
+        deltaB[1] = f2n*h*std::pow(z/r, n); // Bz = sum(f_2n * h * (z/r)^2n
         if (maxOrder_m >= n+1) {
             double f2nplus1 = 0;
             for (size_t i = 0; i < dfCoefficients_m[n+1].size() && n+1 < dfCoefficients_m.size(); ++i) {
                 f2nplus1 += dfCoefficients_m[n+1][i]*fringeDerivatives[i];
             }
-            deltaB[0] = (f2n*(k_m-n)/(n+1) - tanDelta_m*f2nplus1)*h*pow(z/r, n+1); // Br
-            deltaB[2] = f2nplus1*h*pow(z/r, n+1); // Bphi = sum(f_2n+1 * h * (z/r)^2n+1
+            deltaB[0] = (f2n*(k_m-n)/(n+1) - tanDelta_m*f2nplus1)*h*std::pow(z/r, n+1); // Br
+            deltaB[2] = f2nplus1*h*std::pow(z/r, n+1); // Bphi = sum(f_2n+1 * h * (z/r)^2n+1
         }
         B += deltaB;
     }

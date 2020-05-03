@@ -4,11 +4,7 @@
 
 #include <fstream>
 #include <ios>
-
-using namespace std;
-using Physics::mu_0;
-using Physics::c;
-using Physics::two_pi;
+#include <cmath>
 
 FM1DProfile2::FM1DProfile2(std::string aFilename)
     : Fieldmap(aFilename),
@@ -26,7 +22,7 @@ FM1DProfile2::FM1DProfile2(std::string aFilename)
     int num_gridpz = -1;
 
     Type = T1DProfile2;
-    ifstream file(Filename_m.c_str());
+    std::ifstream file(Filename_m.c_str());
 
     if(file.good()) {
         bool parsing_passed =                               \
@@ -94,7 +90,7 @@ void FM1DProfile2::readMap() {
     if(EngeCoefs_entry_m == NULL) {
         double tolerance = 1e-8;
 
-        ifstream in(Filename_m.c_str());
+        std::ifstream in(Filename_m.c_str());
 
         int tmpInt;
         std::string tmpString;
@@ -149,8 +145,8 @@ void FM1DProfile2::readMap() {
 
         // set the origin of the polynomials
 
-        int num_gridp_fringe = max(num_gridp_fringe_entry, num_gridp_fringe_exit);
-        int polynomialOrder = max(polynomialOrder_entry_m, polynomialOrder_exit_m);
+        int num_gridp_fringe = std::max(num_gridp_fringe_entry, num_gridp_fringe_exit);
+        int polynomialOrder = std::max(polynomialOrder_entry_m, polynomialOrder_exit_m);
         leastSquareMatrix = new double[(polynomialOrder + 1) * num_gridp_fringe];
         rightHandSide = new double[num_gridp_fringe];
 
@@ -252,7 +248,7 @@ bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vecto
             dSdz = dSdz * z + (i + 1) * EngeCoefs[i + 1];
             d2Sdz2 = d2Sdz2 * z + (i + 2) * (i + 1) * EngeCoefs[i + 2];
         }
-        expS = exp(S);
+        expS = std::exp(S);
         f = 1.0 / (1.0 + expS);
         if(f > 1.e-30) {
             // First derivative of Enge function, f.
@@ -359,11 +355,11 @@ void FM1DProfile2::setEdgeConstants(const double &bendAngle, const double &entra
 
     double deltaZ = polynomialOrigin_exit_m - polynomialOrigin_entry_m;
 
-    zExit_m = polynomialOrigin_entry_m + deltaZ * cos(bendAngle / 2.0);
-    xExit_m = -deltaZ * sin(bendAngle / 2.0);
+    zExit_m = polynomialOrigin_entry_m + deltaZ * std::cos(bendAngle / 2.0);
+    xExit_m = -deltaZ * std::sin(bendAngle / 2.0);
 
-    cosExitRotation_m = cos(-bendAngle + entranceAngle + exitAngle);
-    sinExitRotation_m = sin(-bendAngle + entranceAngle + exitAngle);
+    cosExitRotation_m = std::cos(-bendAngle + entranceAngle + exitAngle);
+    sinExitRotation_m = std::sin(-bendAngle + entranceAngle + exitAngle);
 }
 
 namespace QRDecomposition {
@@ -385,7 +381,7 @@ namespace QRDecomposition {
         /* using Givens rotations */
         for(int i = 0; i < N; ++i) {
             for(int j = i + 1; j < M; ++j) {
-                len = sqrt(R[j * N + i] * R[j * N + i] + R[i * (N + 1)] * R[i * (N + 1)]);
+                len = std::sqrt(R[j * N + i] * R[j * N + i] + R[i * (N + 1)] * R[i * (N + 1)]);
                 sinphi = -R[j * N + i] / len;
                 cosphi = R[i * (N + 1)] / len;
 

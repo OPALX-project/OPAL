@@ -32,7 +32,6 @@
 #include <fstream>
 #include <memory>
 
-using namespace std;
 
 // Class Monitor
 // ------------------------------------------------------------------------
@@ -226,4 +225,3 @@ void Monitor::writeStatistics() {
 
     statFileEntries_sm.clear();
 }
-

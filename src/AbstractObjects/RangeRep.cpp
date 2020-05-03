@@ -19,7 +19,6 @@
 #include "AbstractObjects/RangeRep.h"
 #include "AbstractObjects/Element.h"
 #include <iostream>
-using namespace std;
 
 
 // Class RangeRep

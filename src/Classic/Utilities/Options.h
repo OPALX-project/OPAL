@@ -148,7 +148,6 @@ namespace Options {
     /// opal version of input file
     extern int version;
 
-#ifdef ENABLE_AMR
     /// Enable AMR if true
     extern bool amr;
 
@@ -157,7 +156,6 @@ namespace Options {
     
     /// After how many steps the AMR grid hierarchy is updated
     extern int amrRegridFreq;
-#endif
 
     extern bool memoryDump;
 

@@ -152,15 +152,6 @@ int main(int argc, char *argv[]) {
           << "The optimiser (former opt-Pilot) is integrated " << endl
           << endl;
 
-#ifdef OPAL_DKS
-    *gmsg << "OPAL compiled with DKS (Dynamic Kernel Scheduler) Version "
-          << DKS_VERSION;
-    if (IpplInfo::DKSEnabled)
-      *gmsg << " GPU present" << endl << endl;
-    else
-      *gmsg << " GPU not present" << endl << endl;
-#endif
-
     *gmsg << "Please send cookies, goodies or other motivations (wine and beer ... ) \nto the OPAL developers " << PACKAGE_BUGREPORT << "\n" << endl;
     *gmsg << "Time: " << timeStr << " date: " << dateStr << "\n" << endl;
 

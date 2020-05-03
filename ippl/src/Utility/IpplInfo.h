@@ -55,11 +55,6 @@
 //(without further increasing the number of defines).
 #include <mpi.h>
 
-//DKS include
-#ifdef IPPL_DKS
-#include "DKSOPAL.h"
-#endif
-
 // forward declarations
 class IpplStats;
 class IpplInfo;
@@ -86,10 +81,6 @@ public:
   // the statistics collection object
   static IpplStats *Stats;
 
-
-#ifdef IPPL_DKS
-  static DKSOPAL *DKS;
-#endif
 
   // Constructor 1: specify the argc, argv values from the cmd line.
   // The second argument controls whether the IPPL-specific command line
@@ -251,9 +242,6 @@ public:
   // compileUser: return the username of the user who compiled this
   // library (from IpplVersions.h)
   static const char *compileUser();
-
-  //Static flag telling wheteher to use DKS when runnign OPAL
-  static bool DKSEnabled;
 
   // stash all static members
   static void stash();

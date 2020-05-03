@@ -5,7 +5,6 @@
 #include "Structure/LossDataSink.h"
 #include "Utilities/Options.h"
 
-extern Inform *gmsg;
 
 PluginElement::PluginElement():PluginElement("")
 {}
@@ -116,7 +115,7 @@ void PluginElement::setGeom(const double dist) {
     else
       slope = (yend_m - ystart_m) / (xend_m - xstart_m);
 
-    double coeff2 = sqrt(1 + slope * slope);
+    double coeff2 = std::sqrt(1 + slope * slope);
     double coeff1 = slope / coeff2;
     double halfdist = dist / 2.0;
     geom_m[0].x = xstart_m - halfdist * coeff1;
@@ -141,7 +140,7 @@ void PluginElement::changeWidth(PartBunchBase<double, 3> *bunch, int i, const do
 
     constexpr double c_mmtns = Physics::c * 1.0e-6; // m/s --> mm/ns
     double lstep   = euclidean_norm(bunch->P[i]) / Util::getGamma(bunch->P[i]) * c_mmtns * tstep; // [mm]
-    double sWidth  = lstep / sqrt( 1 + 1/tangle/tangle );
+    double sWidth  = lstep / std::sqrt( 1 + 1/tangle/tangle );
     setGeom(sWidth);
 }
 
@@ -229,4 +228,3 @@ void PluginElement::save() {
     lossDs_m->save(1, openMode);
     numPassages_m++;
 }
-

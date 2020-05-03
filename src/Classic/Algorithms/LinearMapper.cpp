@@ -52,7 +52,7 @@
 #include "FixedAlgebra/LinearMath.h"
 #include "Physics/Physics.h"
 
-using Physics::c;
+#include <cmath>
 
 typedef FTps<double, 2> Series2;
 typedef LinearFun<double, 6> Linear;
@@ -117,7 +117,7 @@ void LinearMapper::visitCorrector(const Corrector &corr) {
     if(length) applyDrift(length / 2.0);
 
     // Apply kick.
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     const BDipoleField &field = corr.getField();
     itsMap[PX] -= field.getBy() * scale;
     itsMap[PY] += field.getBx() * scale;
@@ -165,7 +165,7 @@ void LinearMapper::visitMonitor(const Monitor &corr) {
 
 void LinearMapper::visitMultipole(const Multipole &multipole) {
     double length = flip_s * multipole.getElementLength();
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     const BMultipoleField &field = multipole.getField();
 
     if(length) {
@@ -200,7 +200,7 @@ void LinearMapper::visitRBend0(const RBend &bend) {
 
     const RBendGeometry &geometry = bend.getGeometry();
     double length = flip_s * geometry.getElementLength();
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     const BMultipoleField &field = bend.getField();
 
     if(length == 0.0) {
@@ -260,7 +260,7 @@ void LinearMapper::visitRFCavity(const RFCavity &as) {
     // Apply accelerating voltage.
     double freq = as.getFrequency();
     double peak = flip_s * as.getAmplitude() / itsReference.getP();
-    Linear phase = as.getPhase() + (freq / c) * itsMap[T];
+    Linear phase = as.getPhase() + (freq / Physics::c) * itsMap[T];
     itsMap[PT] += peak * sin(phase);
 
     // Drift through half length.
@@ -277,7 +277,7 @@ void LinearMapper::visitRFQuadrupole(const RFQuadrupole &rfq) {
 void LinearMapper::visitSBend(const SBend &bend) {
     const PlanarArcGeometry &geometry = bend.getGeometry();
     double length = flip_s * geometry.getElementLength();
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     const BMultipoleField &field = bend.getField();
 
     if(length == 0.0) {
@@ -347,12 +347,12 @@ void LinearMapper::visitSolenoid(const Solenoid &solenoid) {
     double length = flip_s * solenoid.getElementLength();
 
     if(length) {
-        double ks = (flip_B * itsReference.getQ() * solenoid.getBz() * c) /
+        double ks = (flip_B * itsReference.getQ() * solenoid.getBz() * Physics::c) /
                     (2.0 * itsReference.getP());
 
         if(ks) {
-            double C = cos(ks * length);
-            double S = sin(ks * length);
+            double C = std::cos(ks * length);
+            double S = std::sin(ks * length);
 
             Linear xt  = C * itsMap[X]  + S * itsMap[Y];
             Linear yt  = C * itsMap[Y]  - S * itsMap[X];
@@ -416,15 +416,15 @@ void LinearMapper::makeFocus
         d = L * L * (0.5 - t / 24.0);
         f = L * L * L * ((1.0 / 6.0) - t / 120.0);
     } else if(k > 0.0) {
-        double r = sqrt(k);
-        c = cos(r * L);
-        s = sin(r * L) / r;
+        double r = std::sqrt(k);
+        c = std::cos(r * L);
+        s = std::sin(r * L) / r;
         d = (1.0 - c) / k;
         f = (L - s) / k;
     } else {
-        double r = sqrt(- k);
-        c = cosh(r * L);
-        s = sinh(r * L) / r;
+        double r = std::sqrt(- k);
+        c = std::cosh(r * L);
+        s = std::sinh(r * L) / r;
         d = (1.0 - c) / k;
         f = (L - s) / k;
     }
@@ -507,7 +507,7 @@ void LinearMapper::applyLinearMap(double length, double refLength, double h,
         // Find transformation to principal axes.
         double s1 = (kx + ky) / 2.0;
         double d1 = (kx - ky) / 2.0;
-        double root = sqrt(d1 * d1 + ks * ks);
+        double root = std::sqrt(d1 * d1 + ks * ks);
         double c2 = d1 / root;
         double s2 = ks / root;
 

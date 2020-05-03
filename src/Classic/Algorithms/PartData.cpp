@@ -52,7 +52,7 @@ void PartData::setP(double p) {
                            "Particle momentum must not be zero.");
     }
 
-    double e = sqrt(p * p + mass * mass);
+    double e = std::sqrt(p * p + mass * mass);
     beta = p / e;
     gamma = e / mass;
 }
@@ -64,9 +64,9 @@ void PartData::setE(double energy) {
     }
 
     gamma = energy / mass;
-    //beta = sqrt(energy*energy - mass*mass) / energy;
+    //beta = std::sqrt(energy*energy - mass*mass) / energy;
     double ginv = 1.0 / gamma;
-    beta = sqrt((1.0 - ginv) * (1.0 + ginv));
+    beta = std::sqrt((1.0 - ginv) * (1.0 + ginv));
 }
 
 
@@ -76,7 +76,7 @@ void PartData::setBeta(double v) {
     }
 
     beta = v;
-    gamma = 1.0 / sqrt(1.0 - beta * beta);
+    gamma = 1.0 / std::sqrt(1.0 - beta * beta);
 }
 
 
@@ -86,5 +86,5 @@ void PartData::setGamma(double v) {
     }
 
     gamma = v;
-    beta = sqrt(gamma * gamma - 1.0) / gamma;
+    beta = std::sqrt(gamma * gamma - 1.0) / gamma;
 }

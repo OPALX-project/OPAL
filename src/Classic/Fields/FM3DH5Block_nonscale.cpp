@@ -9,8 +9,6 @@
 
 #include <assert.h>
 
-using namespace std;
-using Physics::mu_0;
 
 FM3DH5Block_nonscale::FM3DH5Block_nonscale(std::string aFilename):
     Fieldmap(aFilename) {
@@ -180,9 +178,9 @@ void FM3DH5Block_nonscale::readMap() {
         FieldstrengthEz_m[i] *= 1.0e6 ;
         FieldstrengthEx_m[i] *= 1.0e6 ;
         FieldstrengthEy_m[i] *= 1.0e6 ;
-        FieldstrengthHx_m[i] *= 1.0e6 * mu_0 ;
-        FieldstrengthHy_m[i] *= 1.0e6 * mu_0 ;
-        FieldstrengthHz_m[i] *= 1.0e6 * mu_0 ;
+        FieldstrengthHx_m[i] *= 1.0e6 * Physics::mu_0 ;
+        FieldstrengthHy_m[i] *= 1.0e6 * Physics::mu_0 ;
+        FieldstrengthHz_m[i] *= 1.0e6 * Physics::mu_0 ;
     }
     INFOMSG(level3 << typeset_msg("read in fieldmap '" + Filename_m  + "'", "info") << "\n"
             << endl);
@@ -310,7 +308,7 @@ void FM3DH5Block_nonscale::setFrequency(double freq) {
     frequency_m = freq;
 }
 
-void FM3DH5Block_nonscale::getOnaxisEz(vector<pair<double, double> > & F) {
+void FM3DH5Block_nonscale::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
     double Ez_max = 0.0, dz = (zend_m - zbegin_m) / (num_gridpz_m - 1);
     const int index_x = -static_cast<int>(std::floor(xbegin_m / hx_m));
     const double lever_x = -xbegin_m / hx_m - index_x;

@@ -31,6 +31,7 @@
 #include "AbstractObjects/OpalData.h"
 #include "Physics/Physics.h"
 #include <fstream>
+#include <cmath>
 //////////////////////////////////////////////////////////////////////////////
 // a little helper class to specialize the action of the Green's function
 // calculation.  This should be specialized for each dimension
@@ -59,12 +60,12 @@ struct SpecializedGreensFunction<3> {
                 elem[1]=Index(j,j);
                 for (int k=lDomain_m[2].min(); k<=lDomain_m[2].max(); ++k) {
                     elem[2]=Index(k,k);
-                    r = real(sqrt(grn.localElement(elem)));
+                    r = std::real(std::sqrt(grn.localElement(elem)));
                     if(elem==elem0) {
                         grn.localElement(elem) = 0 ;
                     }
                     else
-                        grn.localElement(elem) = ke*std::complex<double>(erf(alpha*r)/(r+eps));
+                        grn.localElement(elem) = ke*std::complex<double>(std::erf(alpha*r)/(r+eps));
                 }
             }
         }
@@ -88,10 +89,10 @@ struct ApplyField {
             //for order two transition
             if (P.Q[i]!=0 && P.Q[j]!=0) {
                 //compute potential energy
-                double phi =ke*(1.-erf(a*sqrt(sqr)))/r;
+                double phi =ke*(1.-std::erf(a*std::sqrt(sqr)))/r;
 
                 //compute force
-                Vector_t Fij = ke*C*(diff/sqrt(sqr))*((2.*a*exp(-a*a*sqr))/(sqrt(M_PI)*r)+(1.-erf(a*sqrt(sqr)))/(r*r));
+                Vector_t Fij = ke*C*(diff/std::sqrt(sqr))*((2.*a*std::exp(-a*a*sqr))/(std::sqrt(M_PI)*r)+(1.-std::erf(a*std::sqrt(sqr)))/(r*r));
 
                 //Actual Force is F_ij multiplied by Qi*Qj
                 //The electrical field on particle i is E=F/q_i and hence:
@@ -338,9 +339,9 @@ void P3MPoissonSolver::computeAvgSpaceChargeForces(PartBunchBase<double, 3> *bun
     const double N =  static_cast<double>(bunch->getTotalNum());
     double locAvgEf[Dim]={};
     for (unsigned i=0; i<bunch->getLocalNum(); ++i) {
-        locAvgEf[0]+=fabs(bunch->Ef[i](0));
-        locAvgEf[1]+=fabs(bunch->Ef[i](1));
-        locAvgEf[2]+=fabs(bunch->Ef[i](2));
+        locAvgEf[0]+=std::abs(bunch->Ef[i](0));
+        locAvgEf[1]+=std::abs(bunch->Ef[i](1));
+        locAvgEf[2]+=std::abs(bunch->Ef[i](2));
     }
 
     reduce(&(locAvgEf[0]), &(locAvgEf[0]) + Dim,
@@ -358,7 +359,7 @@ void P3MPoissonSolver::computeAvgSpaceChargeForces(PartBunchBase<double, 3> *bun
 void P3MPoissonSolver::applyConstantFocusing(PartBunchBase<double, 3> *bunch, double f, double r){
     Vektor<double,Dim> beam_center(0,0,0);
     Vector_t Rrel;
-    double scFoc = sqrt(dot(avgEF_m,avgEF_m));
+    double scFoc = std::sqrt(dot(avgEF_m,avgEF_m));
     for (unsigned i=0; i<bunch->getLocalNum(); ++i) {
         Rrel=bunch->R[i] - beam_center;
         bunch->Ef[i] += Rrel/r*f*scFoc;

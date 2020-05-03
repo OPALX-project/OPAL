@@ -86,21 +86,7 @@ include_directories (
 
 add_library ( ippl ${IPPL_SRCS} ${IPPL_SRCS_FORT} )
 
-if (ENABLE_DKS)
-    message ( "DKS include dirs: ${DKS_INCLUDE_DIR}")
-    include_directories (${DKS_INCLUDE_DIR})
-    link_directories (${DKS_LIBRARY_DIR})
-    target_link_libraries (
-        ${TARGET_LINK_LIBRARIES} 
-	ippl
-	dks
-        ${DKS_CUDA_LIBS}
-        )
-else()
-    target_link_libraries(
-        ippl
-    )
-endif ()
+target_link_libraries(ippl)
 
 install (TARGETS ippl DESTINATION lib)
 install (FILES ${IPPL_BASEDIR_HDRS} DESTINATION include)

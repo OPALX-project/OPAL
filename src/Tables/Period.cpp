@@ -17,12 +17,10 @@
 // ------------------------------------------------------------------------
 
 #include "Tables/Period.h"
-#include "Algorithms/IdealMapper.h"
 #include "Algorithms/Mapper.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineGeometry/Euclid3D.h"
 #include "FixedAlgebra/FNormalForm.h"
-#include "FixedAlgebra/FDynamicFP.h"
 #include "FixedAlgebra/FStaticFP.h"
 #include "FixedAlgebra/LinearFun.h"
 #include "FixedAlgebra/LinearMap.h"
@@ -35,7 +33,7 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
-using namespace std;
+
 using std::setw;
 
 
@@ -289,7 +287,7 @@ void Period::findClosedOrbit() {
             //std::cerr << "for static map ...\n" << std::endl;
             for(int i = 0; i < 4; i++) {
                 A(i, i) -= 1.0;
-                if(abs(Error(i)) > error) error = abs(Error(i));
+                if(std::abs(Error(i)) > error) error = std::abs(Error(i));
             }
             for(int i = 4; i < 6; i++) {
                 for(int j = 0; j < 6; j++) A(i, j) = A(j, i) = 0.0;
@@ -301,7 +299,7 @@ void Period::findClosedOrbit() {
             //std::cerr << "for dynamic map ...\n" << std::endl;
             for(int i = 0; i < 6; i++) {
                 A(i, i) -= 1.0;
-                if(abs(Error(i)) > error) error = abs(Error(i));
+                if(std::abs(Error(i)) > error) error = std::abs(Error(i));
             }
         }
 

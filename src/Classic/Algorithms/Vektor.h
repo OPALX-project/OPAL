@@ -9,7 +9,7 @@ typedef Vektor<double, 3> Vector_t;
 
 inline
 double euclidean_norm(Vector_t a) {
-    return sqrt(dot(a,a));
+    return std::sqrt(dot(a,a));
 }
 
 #endif

@@ -41,11 +41,11 @@
 
 Rotation3D::Rotation3D(double vx, double vy, double vz):
     R() {
-    double phi = sqrt(vx * vx + vy * vy + vz * vz);
+    double phi = std::sqrt(vx * vx + vy * vy + vz * vz);
 
     if(phi != 0.0) {
-        double factor = sin(phi / 2.0) / phi;
-        double S0 = cos(phi / 2.0);
+        double factor = std::sin(phi / 2.0) / phi;
+        double S0 = std::cos(phi / 2.0);
         double S1 = factor * vx;
         double S2 = factor * vy;
         double S3 = factor * vz;
@@ -70,15 +70,15 @@ void Rotation3D::getAxis(double &vx, double &vy, double &vz) const {
     vy = (R(0, 2) - R(2, 0)) / 2.0;
     vz = (R(1, 0) - R(0, 1)) / 2.0;
     double c = (R(0, 0) + R(1, 1) + R(2, 2) - 1.0) / 2.0;
-    double s = sqrt(vx * vx + vy * vy + vz * vz);
-    double phi = atan2(s, c);
+    double s = std::sqrt(vx * vx + vy * vy + vz * vz);
+    double phi = std::atan2(s, c);
 
     if(c < 0.0) {
         // NOTE: We must avoid negative arguments to sqrt(),
         // which may occur due to rounding errors.
-        vx = (vx > 0.0 ? phi : (-phi)) * sqrt(std::max(R(0, 0) - c, 0.0) / (1.0 - c));
-        vy = (vy > 0.0 ? phi : (-phi)) * sqrt(std::max(R(1, 1) - c, 0.0) / (1.0 - c));
-        vz = (vz > 0.0 ? phi : (-phi)) * sqrt(std::max(R(2, 2) - c, 0.0) / (1.0 - c));
+        vx = (vx > 0.0 ? phi : (-phi)) * std::sqrt(std::max(R(0, 0) - c, 0.0) / (1.0 - c));
+        vy = (vy > 0.0 ? phi : (-phi)) * std::sqrt(std::max(R(1, 1) - c, 0.0) / (1.0 - c));
+        vz = (vz > 0.0 ? phi : (-phi)) * std::sqrt(std::max(R(2, 2) - c, 0.0) / (1.0 - c));
     } else if(std::abs(s) > 1.0e-10) {
         double factor = phi / s;
         vx *= factor;
@@ -130,23 +130,23 @@ Rotation3D Rotation3D::Identity() {
 
 Rotation3D Rotation3D::XRotation(double angle) {
     Rotation3D result;
-    result.R(1, 1) =    result.R(2, 2) = cos(angle);
-    result.R(1, 2) = - (result.R(2, 1) = sin(angle));
+    result.R(1, 1) =    result.R(2, 2) = std::cos(angle);
+    result.R(1, 2) = - (result.R(2, 1) = std::sin(angle));
     return result;
 }
 
 
 Rotation3D Rotation3D::YRotation(double angle) {
     Rotation3D result;
-    result.R(2, 2) =    result.R(0, 0) = cos(angle);
-    result.R(2, 0) = - (result.R(0, 2) = sin(angle));
+    result.R(2, 2) =    result.R(0, 0) = std::cos(angle);
+    result.R(2, 0) = - (result.R(0, 2) = std::sin(angle));
     return result;
 }
 
 
 Rotation3D Rotation3D::ZRotation(double angle) {
     Rotation3D result;
-    result.R(0, 0) =    result.R(1, 1) = cos(angle);
-    result.R(0, 1) = - (result.R(1, 0) = sin(angle));
+    result.R(0, 0) =    result.R(1, 1) = std::cos(angle);
+    result.R(0, 1) = - (result.R(1, 0) = std::sin(angle));
     return result;
 }

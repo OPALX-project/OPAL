@@ -48,7 +48,7 @@ const Euclid3DGeometry &Euclid3DGeometry::operator=(const Euclid3DGeometry &rhs)
 }
 
 double Euclid3DGeometry::getArcLength() const {
-    return sqrt(dot(transformation_m.getVector(),
+    return std::sqrt(dot(transformation_m.getVector(),
                     transformation_m.getVector()));
 }
 

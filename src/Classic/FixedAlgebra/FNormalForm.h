@@ -307,7 +307,6 @@ int FNormalForm<N>::degreesOfFreedom() const {
 template <int N>
 FMatrix < double, N / 2, N / 2 > FNormalForm<N>::anharmonicity() const {
     FMatrix < double, N / 2, N / 2 > QQ;
-    using Physics::pi;
 
     for(int mode1 = 0; mode1 < freedom; mode1++) {
         {
@@ -317,7 +316,7 @@ FMatrix < double, N / 2, N / 2 > FNormalForm<N>::anharmonicity() const {
             QQ(mode1, mode1) =
                 - (3.0 * (N_Lie.getCoefficient(power1) +
                           N_Lie.getCoefficient(power3)) +
-                   N_Lie.getCoefficient(power2)) / (4.0 * pi);
+                   N_Lie.getCoefficient(power2)) / (4.0 * Physics::pi);
         }
 
         for(int mode2 = mode1 + 1; mode2 < freedom; mode2++) {
@@ -330,7 +329,7 @@ FMatrix < double, N / 2, N / 2 > FNormalForm<N>::anharmonicity() const {
                                    - (N_Lie.getCoefficient(power1) +
                                       N_Lie.getCoefficient(power2) +
                                       N_Lie.getCoefficient(power3) +
-                                      N_Lie.getCoefficient(power4)) / (4.0 * pi);
+                                      N_Lie.getCoefficient(power4)) / (4.0 * Physics::pi);
         }
     }
 
@@ -424,7 +423,7 @@ void FNormalForm<N>::orderModes(FVector<std::complex<double>, N> tlam,
             lambda[n_c]   = tlam[i1];
             lambda[n_c+1] = tlam[i2];
 
-            double fact = sqrt(std::abs(pb));
+            double fact = std::sqrt(std::abs(pb));
 
             for(int j = 0; j < N; j++) {
                 V(j, n_c)   = tmat(j, i1) / fact;
@@ -471,7 +470,7 @@ void FNormalForm<N>::orderModes(FVector<std::complex<double>, N> tlam,
         lambda[n_c]   = tlam[i1];
         lambda[n_c+1] = tlam[i2];
 
-        double fact = sqrt(std::abs(2.0 * pb));
+        double fact = std::sqrt(std::abs(2.0 * pb));
 
         for(int j = 0; j < N; ++j) {
             V(j, n_c)   = (tmat(j, i1) + tmat(j, i2)) / fact;
@@ -511,8 +510,8 @@ void FNormalForm<N>::orderModes(FVector<std::complex<double>, N> tlam,
 
         if(std::abs(std::imag(lambda[i])) > tol) {
             // Rotate complex eigenvectors to make their main components real.
-            double re = V(i, i)     / sqrt(V(i, i) * V(i, i) + V(i, i + 1) * V(i, i + 1));
-            double im = V(i, i + 1) / sqrt(V(i, i) * V(i, i) + V(i, i + 1) * V(i, i + 1));
+            double re = V(i, i)     / std::sqrt(V(i, i) * V(i, i) + V(i, i + 1) * V(i, i + 1));
+            double im = V(i, i + 1) / std::sqrt(V(i, i) * V(i, i) + V(i, i + 1) * V(i, i + 1));
 
             for(int j = 0; j < N; j++) {
                 double real_part = re * V(j, i)     + im * V(j, i + 1);

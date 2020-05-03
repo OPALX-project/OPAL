@@ -29,6 +29,7 @@
 
 #include <sstream>
 #include <limits>
+#include <cmath>
 
 #include "Utility/Inform.h" // ippl
 
@@ -182,15 +183,15 @@ Rotation3D Ring::getRotationStartToEnd(Euclid3D delta) const {
     // obscure technique to extract it.
     Vector3D rotationTest(1., 0., 0.);
     rotationTest = delta.getRotation()*rotationTest;
-    double deltaAngle = atan2(rotationTest(2), rotationTest(0));
+    double deltaAngle = std::atan2(rotationTest(2), rotationTest(0));
     Rotation3D elementRotation = Rotation3D::ZRotation(deltaAngle);
     return elementRotation;
 }
 
 void Ring::checkMidplane(Euclid3D delta) const {
-    if (fabs(delta.getVector()(2)) > lengthTolerance_m ||
-        fabs(delta.getRotation().getAxis()(0)) > angleTolerance_m ||
-        fabs(delta.getRotation().getAxis()(1)) > angleTolerance_m) {
+    if (std::abs(delta.getVector()(2)) > lengthTolerance_m ||
+        std::abs(delta.getRotation().getAxis()(0)) > angleTolerance_m ||
+	    std::abs(delta.getRotation().getAxis()(1)) > angleTolerance_m) {
         throw GeneralClassicException("Ring::checkMidplane",
                                       std::string("Placement of elements out of the ")+
                                       "midplane is not supported by Ring");
@@ -210,8 +211,8 @@ Vector_t Ring::getNextPosition() const {
     if (section_list_m.size() > 0) {
         return section_list_m.back()->getEndPosition();
     }
-    return Vector_t(latticeRInit_m*sin(latticePhiInit_m),
-                    latticeRInit_m*cos(latticePhiInit_m),
+    return Vector_t(latticeRInit_m*std::sin(latticePhiInit_m),
+                    latticeRInit_m*std::cos(latticePhiInit_m),
                     0.);
 }
 
@@ -219,8 +220,8 @@ Vector_t Ring::getNextNormal() const {
     if (section_list_m.size() > 0) {
         return section_list_m.back()->getEndNormal();
     }
-    return Vector_t(cos(latticePhiInit_m+latticeThetaInit_m),
-                    -sin(latticePhiInit_m+latticeThetaInit_m),
+    return Vector_t(std::cos(latticePhiInit_m+latticeThetaInit_m),
+                    -std::sin(latticePhiInit_m+latticeThetaInit_m),
                     0.);
 }
 
@@ -245,18 +246,18 @@ void Ring::appendElement(const Component &element) {
     section->setStartPosition(startPos);
     section->setStartNormal(startNorm);
 
-    double startF = atan2(startNorm(1), startNorm(0));
+    double startF = std::atan2(startNorm(1), startNorm(0));
     Vector_t endPos = Vector_t(
-                               +delta.getVector()(0)*cos(startF)-delta.getVector()(1)*sin(startF),
-                               +delta.getVector()(0)*sin(startF)+delta.getVector()(1)*cos(startF),
+                               +delta.getVector()(0)*std::cos(startF)-delta.getVector()(1)*std::sin(startF),
+                               +delta.getVector()(0)*std::sin(startF)+delta.getVector()(1)*std::cos(startF),
                                0)+startPos;
     section->setEndPosition(endPos);
 
     double endF = delta.getRotation().getAxis()(2);//+
     //atan2(delta.getVector()(1), delta.getVector()(0));
     Vector_t endNorm = Vector_t(
-                                +startNorm(0)*cos(endF) + startNorm(1)*sin(endF),
-                                -startNorm(0)*sin(endF) + startNorm(1)*cos(endF),
+                                +startNorm(0)*std::cos(endF) + startNorm(1)*std::sin(endF),
+                                -startNorm(0)*std::sin(endF) + startNorm(1)*std::cos(endF),
                                 0);
     section->setEndNormal(endNorm);
 
@@ -336,8 +337,8 @@ void Ring::checkAndClose() {
     Vector_t last_pos = section_list_m.back()->getEndPosition();
     Vector_t last_norm = section_list_m.back()->getEndNormal();
     for (int i = 0; i < 3; ++i) {
-        if (fabs(first_pos(i) - last_pos(i)) > lengthTolerance_m ||
-            fabs(first_norm(i) - last_norm(i)) > angleTolerance_m)
+        if (std::abs(first_pos(i) - last_pos(i)) > lengthTolerance_m ||
+            std::abs(first_norm(i) - last_norm(i)) > angleTolerance_m)
             throw GeneralClassicException("Ring::lockRing",
                                           "Ring is not closed");
     }
@@ -381,4 +382,3 @@ void Ring::setRingAperture(double minR, double maxR) {
     minR2_m = minR*minR;
     maxR2_m = maxR*maxR;
 }
-

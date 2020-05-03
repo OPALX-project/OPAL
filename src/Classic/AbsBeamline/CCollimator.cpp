@@ -167,4 +167,3 @@ void CCollimator::doSetGeom() {
     // }
     // *gmsg << "rmin " << rmin_m << " rmax " << rmax_m << endl;
 }
-

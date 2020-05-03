@@ -39,7 +39,7 @@
 #include <vector>
 #include <boost/regex.hpp>
 
-extern Inform *gmsg;
+
 // Class OpalElement
 // ------------------------------------------------------------------------
 
@@ -199,7 +199,7 @@ AttCell *OpalElement::findRegisteredAttribute(const std::string &name) {
 
         if(name[i] == 'K') {
             ++i;
-            while(isdigit(name[i])) ++i;
+            while(std::isdigit(name[i])) ++i;
             if(name[i] == 'S') ++i;
 
             if(name[i] == 'L'  &&  ++i == name.length()) {
@@ -516,7 +516,7 @@ void OpalElement::printMultipoleStrength
         {
             double sn = Attributes::getReal(sNorm);
             double ss = Attributes::getReal(sSkew);
-            double strength = sqrt(sn * sn + ss * ss);
+            double strength = std::sqrt(sn * sn + ss * ss);
             if(strength) {
                 std::ostringstream ts;
                 ts << strength;
@@ -525,7 +525,7 @@ void OpalElement::printMultipoleStrength
                     image = "(" + image + ")*(" + length.getImage() + ")";
                 }
                 printAttribute(os, sName, image, len);
-                double tilt = - atan2(ss, sn) / double(div);
+                double tilt = - std::atan2(ss, sn) / double(div);
                 if(tilt) printAttribute(os, tName, tilt, len);
             }
         }
@@ -573,9 +573,9 @@ void OpalElement::update() {
         Quaternion rotation;
 
         if (dir.size() == 3) {
-            Quaternion rotTheta(cos(0.5 * dir[0]), 0,                 sin(0.5 * dir[0]), 0);
-            Quaternion rotPhi(cos(0.5 * dir[1]),   sin(0.5 * dir[1]), 0,                 0);
-            Quaternion rotPsi(cos(0.5 * dir[2]),   0,                 0,                 sin(0.5 * dir[2]));
+            Quaternion rotTheta(std::cos(0.5 * dir[0]), 0,                 std::sin(0.5 * dir[0]), 0);
+            Quaternion rotPhi(std::cos(0.5 * dir[1]),   std::sin(0.5 * dir[1]), 0,                 0);
+            Quaternion rotPsi(std::cos(0.5 * dir[2]),   0,                 0,                 std::sin(0.5 * dir[2]));
             rotation = rotTheta * (rotPhi * rotPsi);
         } else {
             if (itsAttr[ORIENTATION]) {
@@ -619,9 +619,9 @@ void OpalElement::update() {
         const double phi = Attributes::getReal(itsAttr[PHI]);
         const double psi = Attributes::getReal(itsAttr[PSI]);
 
-        Quaternion rotTheta(cos(0.5 * theta), 0,              sin(0.5 * theta), 0);
-        Quaternion rotPhi(cos(0.5 * phi),     sin(0.5 * phi), 0,                0);
-        Quaternion rotPsi(cos(0.5 * psi),     0,              0,                sin(0.5 * psi));
+        Quaternion rotTheta(std::cos(0.5 * theta), 0,              std::sin(0.5 * theta), 0);
+        Quaternion rotPhi(std::cos(0.5 * phi),     std::sin(0.5 * phi), 0,                0);
+        Quaternion rotPsi(std::cos(0.5 * psi),     0,              0,                std::sin(0.5 * psi));
         Quaternion rotation = rotTheta * (rotPhi * rotPsi);
 
         CoordinateSystemTrafo global2local(origin,
@@ -637,9 +637,9 @@ void OpalElement::update() {
     double dtheta = Attributes::getReal(itsAttr[DTHETA]);
     double dphi = Attributes::getReal(itsAttr[DPHI]);
     double dpsi = Attributes::getReal(itsAttr[DPSI]);
-    Quaternion rotationY(cos(0.5 * dtheta), 0,               sin(0.5 * dtheta), 0);
-    Quaternion rotationX(cos(0.5 * dphi),   sin(0.5 * dphi), 0,                 0);
-    Quaternion rotationZ(cos(0.5 * dpsi),   0,               0,                 sin(0.5 * dpsi));
+    Quaternion rotationY(std::cos(0.5 * dtheta), 0,               std::sin(0.5 * dtheta), 0);
+    Quaternion rotationX(std::cos(0.5 * dphi),   std::sin(0.5 * dphi), 0,                 0);
+    Quaternion rotationZ(std::cos(0.5 * dpsi),   0,               0,                 std::sin(0.5 * dpsi));
     Quaternion misalignmentRotation = rotationY * rotationX * rotationZ;
     CoordinateSystemTrafo misalignment(misalignmentShift,
                                        misalignmentRotation.conjugate());

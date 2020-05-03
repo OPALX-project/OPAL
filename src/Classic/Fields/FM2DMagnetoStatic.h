@@ -41,7 +41,7 @@ private:
 
 inline bool FM2DMagnetoStatic::isInside(const Vector_t &r) const
 {
-    return r(2) >= zbegin_m && r(2) < zend_m && sqrt(r(0)*r(0) + r(1)*r(1)) < rend_m;
+    return r(2) >= zbegin_m && r(2) < zend_m && std::sqrt(r(0)*r(0) + r(1)*r(1)) < rend_m;
 }
 
 #endif

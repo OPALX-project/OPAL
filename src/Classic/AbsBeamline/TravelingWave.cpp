@@ -191,8 +191,6 @@ bool TravelingWave::applyToReferenceParticle(const Vector_t &R, const Vector_t &
 }
 
 void TravelingWave::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
-    using Physics::pi;
-    using Physics::two_pi;
 
     if (bunch == NULL) {
         startField = - 0.5 * PeriodLength_m;
@@ -223,11 +221,11 @@ void TravelingWave::initialise(PartBunchBase<double, 3> *bunch, double &startFie
     endField = startField + startExitField_m + PeriodLength_m / 2.0;
     length_m = endField - startField;
 
-    scaleCore_m = scale_m / std::sin(2.0 * pi * Mode_m);
-    scaleCoreError_m = scaleError_m / std::sin(2.0 * pi * Mode_m);
-    phaseCore1_m = phase_m + pi * Mode_m / 2.0;
-    phaseCore2_m = phase_m + pi * Mode_m * 1.5;
-    phaseExit_m = phase_m - 2.0 * pi * ((NumCells_m - 1) * Mode_m - std::floor((NumCells_m - 1) * Mode_m));
+    scaleCore_m = scale_m / std::sin(Physics::two_pi * Mode_m);
+    scaleCoreError_m = scaleError_m / std::sin(Physics::two_pi * Mode_m);
+    phaseCore1_m = phase_m + Physics::pi * Mode_m / 2.0;
+    phaseCore2_m = phase_m + Physics::pi * Mode_m * 1.5;
+    phaseExit_m = phase_m - Physics::two_pi * ((NumCells_m - 1) * Mode_m - std::floor((NumCells_m - 1) * Mode_m));
 }
 
 void TravelingWave::finalise()

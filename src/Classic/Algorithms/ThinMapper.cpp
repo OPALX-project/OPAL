@@ -51,8 +51,6 @@
 #include "FixedAlgebra/FTpsMath.h"
 #include "Physics/Physics.h"
 
-using Physics::c;
-
 typedef FTps<double, 6> Series;
 
 
@@ -92,7 +90,7 @@ void ThinMapper::visitCorrector(const Corrector &corr) {
     if(length) applyDrift(length / 2.0);
 
     // Apply kick.
-    double scale = (flip_s * flip_B * itsReference.getQ() * c) /
+    double scale = (flip_s * flip_B * itsReference.getQ() * Physics::c) /
                    itsReference.getP();
     const BDipoleField &field = corr.getField();
     itsMap[PX] -= field.getBy() * scale;
@@ -140,7 +138,7 @@ void ThinMapper::visitMonitor(const Monitor &corr) {
 void ThinMapper::visitMultipole(const Multipole &mult) {
     double length = flip_s * mult.getElementLength();
     const BMultipoleField &field = mult.getField();
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
 
     if(length) {
         // Drift through first half of the length.
@@ -177,7 +175,7 @@ void ThinMapper::visitRBend(const RBend &bend) {
     applyDrift(length / 2.0);
 
     // Apply multipole kick and linear approximation to geometric bend.
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     if(length) scale *= length;
     int order = field.order();
 
@@ -215,7 +213,7 @@ void ThinMapper::visitRFCavity(const RFCavity &as) {
     double peak = flip_s * as.getAmplitude() / itsReference.getP();
 
     Series pt = itsMap[PT] + 1.0;
-    Series speed = (c * pt) / sqrt(pt * pt + kin * kin);
+    Series speed = (Physics::c * pt) / sqrt(pt * pt + kin * kin);
     Series phase = as.getPhase() + freq * itsMap[T] / speed;
     itsMap[PT] += peak * sin(phase) / pt;
 
@@ -242,7 +240,7 @@ void ThinMapper::visitSBend(const SBend &bend) {
     applyDrift(length / 2.0);
 
     // Apply multipole kick and linear approximation to geometric bend.
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     if(length) scale *= length;
     int order = field.order();
 
@@ -298,7 +296,7 @@ void ThinMapper::visitSolenoid(const Solenoid &solenoid) {
     double length = flip_s * solenoid.getElementLength();
 
     if(length) {
-        double ks = (flip_B * itsReference.getQ() * solenoid.getBz() * c) /
+        double ks = (flip_B * itsReference.getQ() * solenoid.getBz() * Physics::c) /
                     (2.0 * itsReference.getP());
 
         if(ks) {

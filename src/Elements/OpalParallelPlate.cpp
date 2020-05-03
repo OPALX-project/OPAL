@@ -92,8 +92,6 @@ void OpalParallelPlate::fillRegisteredAttributes(const ElementBase &base, ValueF
 
 
 void OpalParallelPlate::update() {
-    using Physics::two_pi;
-
     OpalElement::update();
 
     ParallelPlateRep *pplate =
@@ -102,7 +100,7 @@ void OpalParallelPlate::update() {
     double vPeak  = Attributes::getReal(itsAttr[VOLT]);
     //    double phase  = two_pi * Attributes::getReal(itsAttr[LAG]);
     double phase  = Attributes::getReal(itsAttr[LAG]);
-    double freq   = (1.0e6 * two_pi) * Attributes::getReal(itsAttr[FREQ]);
+    double freq   = (1.0e6 * Physics::two_pi) * Attributes::getReal(itsAttr[FREQ]);
     double length = Attributes::getReal(itsAttr[PLENGTH]);
 
     if(itsAttr[GEOMETRY] && obgeo_m == NULL) {

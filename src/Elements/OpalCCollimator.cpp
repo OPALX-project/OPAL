@@ -22,7 +22,6 @@
 #include "Structure/ParticleMatterInteraction.h"
 #include "Physics/Physics.h"
 
-using Physics::pi;
 
 // Class OpalCCollimator
 // ------------------------------------------------------------------------

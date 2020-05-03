@@ -6,11 +6,8 @@
 
 #include <fstream>
 #include <ios>
+#include <cmath>
 
-extern Inform *gmsg;
-
-// using namespace std;
-using Physics::mu_0;
 
 FM2DDynamic::FM2DDynamic(std::string aFilename)
     : Fieldmap(aFilename),
@@ -166,12 +163,11 @@ void FM2DDynamic::readMap() {
         for(int i = 0; i < num_gridpr_m * num_gridpz_m; i++) {
             FieldstrengthEz_m[i] *= 1.e6 / Ezmax; // conversion MV/m to V/m and normalization
             FieldstrengthEr_m[i] *= 1.e6 / Ezmax;
-            FieldstrengthBt_m[i] *= mu_0 / Ezmax; // H -> B
+            FieldstrengthBt_m[i] *= Physics::mu_0 / Ezmax; // H -> B
         }
 
         INFOMSG(level3 << typeset_msg("read in fieldmap '" + Filename_m  + "'", "info") << "\n"
                 << endl);
-
     }
 }
 
@@ -191,7 +187,7 @@ void FM2DDynamic::freeMap() {
 
 bool FM2DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
     // do bi-linear interpolation
-    const double RR = sqrt(R(0) * R(0) + R(1) * R(1));
+    const double RR = std::sqrt(R(0) * R(0) + R(1) * R(1));
 
     const int indexr = (int)std::floor(RR / hr_m);
     const double leverr = RR / hr_m - indexr;

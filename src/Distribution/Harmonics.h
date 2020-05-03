@@ -265,12 +265,12 @@ std::vector<typename Harmonics<Value_type, Size_type>::matrix_type> Harmonics<Va
 
             if (k[i] >= 0.0) {
                 pm = 1.0;
-                ky = std::sqrt(std::fabs(k[i]));
+                ky = std::sqrt(std::abs(k[i]));
                 Cy = std::cosh(tpiN * ky);
                 Sy = std::sinh(tpiN * ky);
             } else {
                 pm = -1.0;
-                ky = std::sqrt(std::fabs(k[i]));
+                ky = std::sqrt(std::abs(k[i]));
                 Cy = std::cos(tpiN * ky);
                 Sy = std::sin(tpiN * ky);
             }
@@ -520,7 +520,7 @@ typename Harmonics<Value_type, Size_type>::matrix_type Harmonics<Value_type, Siz
     if (k == 0.0) return __Mb6(phi,r,gam2);
 
     value_type fx = std::sqrt(1.0 + k);
-    value_type fy = std::sqrt(std::fabs(k));
+    value_type fy = std::sqrt(std::abs(k));
     value_type c  = std::cos(phi * fx);
     value_type s  = std::sin(phi * fx);
     value_type l  = r * phi;

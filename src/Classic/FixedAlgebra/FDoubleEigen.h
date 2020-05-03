@@ -631,7 +631,7 @@ int FDoubleEigen<N>::hqr(FMatrix<double, N, N> &h, int low, int upp)
                     r /= x;
                 }
 
-                s = sqrt(p * p + q * q + r * r);
+                s = std::sqrt(p * p + q * q + r * r);
                 if(p < 0.0) s = - s;
 
                 if(k != m)
@@ -678,7 +678,7 @@ one_root:
 two_roots:
         p = (y - x) / 2.0;
         q = p * p + w;
-        z = sqrt(std::abs(q));
+        z = std::sqrt(std::abs(q));
         x += t;
 
         if(q >= 0.0) {
@@ -840,7 +840,7 @@ int FDoubleEigen<N>::hqr2(FMatrix<double, N, N> &h, int low, int upp)
                     r /= x;
                 }
 
-                s = sqrt(p * p + q * q + r * r);
+                s = std::sqrt(p * p + q * q + r * r);
                 if(p < 0.0) s = - s;
 
                 if(k != m)
@@ -898,7 +898,7 @@ one_root:
 two_roots:
         p = (y - x) / 2.0;
         q = p * p + w;
-        z = sqrt(std::abs(q));
+        z = std::sqrt(std::abs(q));
         h[en][en]     = x = x + t;
         h[en-1][en-1] = y + t;
 
@@ -911,7 +911,7 @@ two_roots:
             s = std::abs(x) + std::abs(z);
             p = x / s;
             q = z / s;
-            r = sqrt(p * p + q * q);
+            r = std::sqrt(p * p + q * q);
             p /= r;
             q /= r;
 

@@ -698,8 +698,6 @@ LField<T,Dim>::swapData( LField<T,Dim>& a )
 //
 //////////////////////////////////////////////////////////////////////
 
-// allocate memory for LField and if DKS is used and page-locked (pl) is +1 allocate
-// page-locked memory for storage
 template<class T, unsigned Dim>
 void
 LField<T,Dim>::allocateStorage(int newsize)

@@ -27,7 +27,7 @@
 
 
 #include <fstream>
-
+#include <cmath>
 #include "Fields/Interpolation/NDGrid.h"  // classic
 #include "AbsBeamline/Component.h"  // classic
 #include "Utilities/OpalException.h"
@@ -114,7 +114,7 @@ void DumpEMFields::parseCoordinateSystem() {
     }
     std::string coordStr = Attributes::getString(itsAttr[13]);
     for (size_t i = 0; i < coordStr.size(); ++i) {
-        coordStr[i] = tolower(coordStr[i]);
+        coordStr[i] = std::tolower(coordStr[i]);
     }
     if (coordStr == "cylindrical") {
         coordinates_m = CYLINDRICAL;
@@ -197,12 +197,12 @@ void DumpEMFields::writeFields(Component* field) {
 
 void DumpEMFields::checkInt(double real, std::string name, double tolerance) {
     real += tolerance; // prevent rounding error
-    if (fabs(floor(real) - real) > 2*tolerance) {
+    if (std::abs(std::floor(real) - real) > 2*tolerance) {
         throw OpalException("DumpEMFields::checkInt",
                             "Value for "+name+
                             " should be an integer but a real value was found");
     }
-    if (floor(real) < 0.5) {
+    if (std::floor(real) < 0.5) {
         throw OpalException("DumpEMFields::checkInt",
                             "Value for "+name+" should be 1 or more");
     }
@@ -247,8 +247,8 @@ void DumpEMFields::writeFieldLine(Component* field,
     Vector_t point = pointIn;
     if (coordinates_m == CYLINDRICAL) {
         // pointIn is r, phi, z 
-        point[0] = cos(pointIn[1])*pointIn[0]; 
-        point[1] = sin(pointIn[1])*pointIn[0];
+        point[0] = std::cos(pointIn[1])*pointIn[0];
+        point[1] = std::sin(pointIn[1])*pointIn[0];
     }
 
     field->apply(point, centroid, time, E, B);
@@ -256,10 +256,10 @@ void DumpEMFields::writeFieldLine(Component* field,
     Vector_t Eout = E;
     if (coordinates_m == CYLINDRICAL) {
         // pointIn is r, phi, z 
-        Bout[0] = B[0]*cos(pointIn[1])+B[1]*sin(pointIn[1]); 
-        Bout[1] = -B[0]*sin(pointIn[1])+B[1]*cos(pointIn[1]); 
-        Eout[0] = E[0]*cos(pointIn[1])+E[1]*sin(pointIn[1]); 
-        Eout[1] = -E[0]*sin(pointIn[1])+E[1]*cos(pointIn[1]);
+        Bout[0] = B[0]*std::cos(pointIn[1])+B[1]*std::sin(pointIn[1]);
+        Bout[1] = -B[0]*std::sin(pointIn[1])+B[1]*std::cos(pointIn[1]);
+        Eout[0] = E[0]*std::cos(pointIn[1])+E[1]*std::sin(pointIn[1]);
+        Eout[1] = -E[0]*std::sin(pointIn[1])+E[1]*std::cos(pointIn[1]);
         fout << pointIn[0] << " " << pointIn[1]*DEGREE << " " << pointIn[2] << " " << time << " ";
     } else {
         fout << pointIn[0] << " " << pointIn[1] << " " << pointIn[2] << " " << time << " ";
@@ -310,4 +310,3 @@ void DumpEMFields::writeFieldThis(Component* field) {
     }
     fout.close();
 }
-

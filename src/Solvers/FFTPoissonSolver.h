@@ -32,10 +32,6 @@
 //////////////////////////////////////////////////////////////
 #include "PoissonSolver.h"
 
-#ifdef OPAL_DKS
-#include "DKSOPAL.h"
-#endif
-
 class PartBunch;
 
 //////////////////////////////////////////////////////////////
@@ -49,10 +45,6 @@ public:
 
     ~FFTPoissonSolver();
 
-#ifdef OPAL_DKS
-    DKSOPAL dksbase;
-#endif
-
     // given a charge-density field rho and a set of mesh spacings hr,
     // compute the scalar potential with image charges at  -z
     void computePotential(Field_t &rho, Vector_t hr, double zshift);
@@ -61,7 +53,6 @@ public:
     // compute the scalar potential in open space
     void computePotential(Field_t &rho, Vector_t hr);
 
-    void computePotentialDKS(Field_t &rho);
     // compute the green's function for a Poisson problem and put it in in grntm_m
     // uses grnIField_m to eliminate excess calculation in greenFunction()
     // given mesh information in nr and hr
@@ -69,10 +60,6 @@ public:
 
     /// compute the integrated Green function as described in <A HREF="http://prst-ab.aps.org/abstract/PRSTAB/v9/i4/e044204">Three-dimensional quasistatic model for high brightness beam dynamics simulation</A> by Qiang et al.
     void integratedGreensFunction();
-
-    /// Uses DKS to offload the computation of Greens function on the GPU
-    //compute the integrated Green function as described in <A HREF="http://prst-ab.aps.org/abstract/PRSTAB/v9/i4/e044204">Three-dimensional quasistatic model for high brightness beam dynamics simulation</A> by Qiang et al.
-    void integratedGreensFunctionDKS();
 
     /// compute the shifted integrated Green function as described in <A HREF="http://prst-ab.aps.org/abstract/PRSTAB/v9/i4/e044204">Three-dimensional quasistatic model for high brightness beam dynamics simulation</A> by Qiang et al.
     void shiftedIntGreensFunction(double zshift);
@@ -105,20 +92,6 @@ private:
     // grntr_m is the Fourier transformed Green's function
     // domain3_m and mesh3_ are used
     CxField_t grntr_m;
-
-#ifdef OPAL_DKS
-    //pointer for Fourier transformed Green's function on GPU
-    void * grntr_m_ptr;
-    void * rho2_m_ptr;
-    void * tmpgreen_ptr;
-    void *rho2real_m_ptr;
-    void *rho2tr_m_ptr;
-
-    //stream id for calculating greens function
-    int streamGreens;
-    int streamFFT;
-
-#endif
 
     // Fields used to eliminate excess calculation in greensFunction()
     // mesh2_m and layout2_m are used

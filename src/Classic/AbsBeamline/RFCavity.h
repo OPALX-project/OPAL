@@ -282,8 +282,8 @@ double RFCavity::getdE(const int & i,
                        const double & frequency,
                        const std::vector<double> & F) const {
     return dz / (frequency * frequency * (t[i] - t[i-1]) * (t[i] - t[i-1])) *
-        (frequency * (t[i] - t[i-1]) * (F[i] * sin(frequency * t[i] + phi) - F[i-1] * sin(frequency * t[i-1] + phi)) +
-         (F[i] - F[i-1]) * (cos(frequency * t[i] + phi) - cos(frequency * t[i-1] + phi)));
+        (frequency * (t[i] - t[i-1]) * (F[i] * std::sin(frequency * t[i] + phi) - F[i-1] * std::sin(frequency * t[i-1] + phi)) +
+         (F[i] - F[i-1]) * (std::cos(frequency * t[i] + phi) - std::cos(frequency * t[i-1] + phi)));
 }
 
 inline
@@ -302,16 +302,16 @@ double RFCavity::getdT(const int & i,
     double gamma9  = 1. + (3. * E[i-1] + 17. * E[i]) / (20. * mass);
     double gamma10 = 1. + (1. * E[i-1] + 19. * E[i]) / (20. * mass);
     return dz *
-        (1. / sqrt(1. - 1. / (gamma1 * gamma1)) +
-         1. / sqrt(1. - 1. / (gamma2 * gamma2)) +
-         1. / sqrt(1. - 1. / (gamma3 * gamma3)) +
-         1. / sqrt(1. - 1. / (gamma4 * gamma4)) +
-         1. / sqrt(1. - 1. / (gamma5 * gamma5)) +
-         1. / sqrt(1. - 1. / (gamma6 * gamma6)) +
-         1. / sqrt(1. - 1. / (gamma7 * gamma7)) +
-         1. / sqrt(1. - 1. / (gamma8 * gamma8)) +
-         1. / sqrt(1. - 1. / (gamma9 * gamma9)) +
-         1. / sqrt(1. - 1. / (gamma10 * gamma10))) / (10. * Physics::c);
+        (1. / std::sqrt(1. - 1. / (gamma1 * gamma1)) +
+         1. / std::sqrt(1. - 1. / (gamma2 * gamma2)) +
+         1. / std::sqrt(1. - 1. / (gamma3 * gamma3)) +
+         1. / std::sqrt(1. - 1. / (gamma4 * gamma4)) +
+         1. / std::sqrt(1. - 1. / (gamma5 * gamma5)) +
+         1. / std::sqrt(1. - 1. / (gamma6 * gamma6)) +
+         1. / std::sqrt(1. - 1. / (gamma7 * gamma7)) +
+         1. / std::sqrt(1. - 1. / (gamma8 * gamma8)) +
+         1. / std::sqrt(1. - 1. / (gamma9 * gamma9)) +
+         1. / std::sqrt(1. - 1. / (gamma10 * gamma10))) / (10. * Physics::c);
 }
 
 inline
@@ -322,8 +322,8 @@ double RFCavity::getdA(const int & i,
                        const std::vector<double> & F) const {
     double dt = t[i] - t[i-1];
     return dz / (frequency * frequency * dt * dt) *
-        (frequency * dt * (F[i] * cos(frequency * t[i]) - F[i-1] * cos(frequency * t[i-1])) -
-         (F[i] - F[i-1]) * (sin(frequency * t[i]) - sin(frequency * t[i-1])));
+        (frequency * dt * (F[i] * std::cos(frequency * t[i]) - F[i-1] * std::cos(frequency * t[i-1])) -
+         (F[i] - F[i-1]) * (std::sin(frequency * t[i]) - std::sin(frequency * t[i-1])));
 }
 
 inline
@@ -334,19 +334,17 @@ double RFCavity::getdB(const int & i,
                        const std::vector<double> & F) const {
     double dt = t[i] - t[i-1];
     return dz / (frequency * frequency * dt * dt) *
-        (frequency * dt * (F[i] * sin(frequency * t[i]) - F[i-1] * sin(frequency * t[i-1])) +
-         (F[i] - F[i-1]) * (cos(frequency * t[i]) - cos(frequency * t[i-1])));
+        (frequency * dt * (F[i] * std::sin(frequency * t[i]) - F[i-1] * std::sin(frequency * t[i-1])) +
+         (F[i] - F[i-1]) * (std::cos(frequency * t[i]) - std::cos(frequency * t[i-1])));
 }
 
 inline
-void RFCavity::setDesignEnergy(const double& ekin, bool)
-{
+void RFCavity::setDesignEnergy(const double& ekin, bool) {
     designEnergy_m = ekin;
 }
 
 inline
-double RFCavity::getDesignEnergy() const
-{
+double RFCavity::getDesignEnergy() const {
     return designEnergy_m;
 }
 
@@ -502,22 +500,17 @@ std::string RFCavity::getFrequencyModelName() {
 
 
 inline
-CoordinateSystemTrafo RFCavity::getEdgeToBegin() const
-{
+CoordinateSystemTrafo RFCavity::getEdgeToBegin() const {
     CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m),
                               Quaternion(1, 0, 0, 0));
-
     return ret;
 }
 
 inline
-CoordinateSystemTrafo RFCavity::getEdgeToEnd() const
-{
+CoordinateSystemTrafo RFCavity::getEdgeToEnd() const {
     CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m + length_m),
                               Quaternion(1, 0, 0, 0));
-
     return ret;
 }
-
 
 #endif // CLASSIC_RFCavity_HH

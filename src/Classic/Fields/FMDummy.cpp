@@ -1,7 +1,6 @@
 #include "Fields/FMDummy.h"
 #include "Fields/Fieldmap.hpp"
 
-using namespace std;
 
 FMDummy::FMDummy(std::string aFilename):
     Fieldmap(aFilename),
@@ -16,8 +15,8 @@ FMDummy::FMDummy(std::string aFilename):
     WARNMSG(errormsg_str << "\n" << endl);
 
     if(Ippl::myNode() == 0) {
-        ofstream omsg("errormsg.txt", ios_base::app);
-        omsg << errormsg_str << endl;
+    	std::ofstream omsg("errormsg.txt", std::ios_base::app);
+        omsg << errormsg_str << std::endl;
         omsg.close();
     }
     disableFieldmapWarning();

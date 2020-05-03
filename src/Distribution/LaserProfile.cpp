@@ -23,8 +23,6 @@
 
 //#define TESTLASEREMISSION
 
-extern Inform *gmsg;
-
 LaserProfile::LaserProfile(const std::string &fileName,
                            const std::string &imageName,
                            double intensityCut,
@@ -273,9 +271,9 @@ void LaserProfile::computeProfileStatistics(unsigned short *image) {
     }
 
     centerMass_m /= totalMass;
-    standardDeviation_m(0) = sqrt(standardDeviation_m(0) / totalMass -
+    standardDeviation_m(0) = std::sqrt(standardDeviation_m(0) / totalMass -
                                   centerMass_m(0)*centerMass_m(0));
-    standardDeviation_m(1) = sqrt(standardDeviation_m(1) / totalMass -
+    standardDeviation_m(1) = std::sqrt(standardDeviation_m(1) / totalMass -
                                   centerMass_m(1)*centerMass_m(1));
 }
 

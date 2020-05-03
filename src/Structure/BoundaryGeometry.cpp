@@ -9,6 +9,7 @@
 #include "Structure/BoundaryGeometry.h"
 
 #include <fstream>
+#include <cmath>
 
 #include "H5hut.h"
 
@@ -499,28 +500,28 @@ triangle_intersects_cube (
      intersect the plane
    */
    double denom;
-   if(fabs(denom=(norm[0] + norm[1] + norm[2]))>EPS) {
+   if(std::abs(denom=(norm[0] + norm[1] + norm[2]))>EPS) {
        /* skip parallel diagonals to the plane; division by 0 can occure */
        Vector_t hitpp = d / denom;
-       if (fabs(hitpp[0]) <= 0.5)
+       if (std::abs(hitpp[0]) <= 0.5)
            if (point_triangle_intersection(hitpp,t) == INSIDE) return(INSIDE);
    }
-   if(fabs(denom=(norm[0] + norm[1] - norm[2]))>EPS) {
+   if(std::abs(denom=(norm[0] + norm[1] - norm[2]))>EPS) {
        Vector_t hitpn;
        hitpn[2] = -(hitpn[0] = hitpn[1] = d / denom);
-       if (fabs(hitpn[0]) <= 0.5)
+       if (std::abs(hitpn[0]) <= 0.5)
            if (point_triangle_intersection(hitpn,t) == INSIDE) return(INSIDE);
    }
-   if(fabs(denom=(norm[0] - norm[1] + norm[2]))>EPS) {
+   if(std::abs(denom=(norm[0] - norm[1] + norm[2]))>EPS) {
        Vector_t hitnp;
        hitnp[1] = -(hitnp[0] = hitnp[2] = d / denom);
-       if (fabs(hitnp[0]) <= 0.5)
+       if (std::abs(hitnp[0]) <= 0.5)
            if (point_triangle_intersection(hitnp,t) == INSIDE) return(INSIDE);
    }
-   if(fabs(denom=(norm[0] - norm[1] - norm[2]))>EPS) {
+   if(std::abs(denom=(norm[0] - norm[1] - norm[2]))>EPS) {
        Vector_t hitnn;
        hitnn[1] = hitnn[2] = -(hitnn[0] = d / denom);
-       if (fabs(hitnn[0]) <= 0.5)
+       if (std::abs(hitnn[0]) <= 0.5)
            if (point_triangle_intersection(hitnn,t) == INSIDE) return(INSIDE);
    }
 
@@ -668,7 +669,7 @@ static inline Vector_t normalVector (
     const Vector_t& C
     ) {
     const Vector_t N = cross (B - A, C - A);
-    const double magnitude = sqrt (SQR (N (0)) + SQR (N (1)) + SQR (N (2)));
+    const double magnitude = std::sqrt (SQR (N (0)) + SQR (N (1)) + SQR (N (2)));
     assert (gsl_fcmp (magnitude, 0.0, EPS) > 0); // in case we have degenerted triangles
     return N / magnitude;
 }
@@ -681,7 +682,7 @@ static inline double computeArea (
     ) {
     const Vector_t AB = A - B;
     const Vector_t AC = C - A;
-    return(0.5 * sqrt (dot (AB, AB) * dot (AC, AC) - dot (AB, AC) * dot (AB, AC)));
+    return(0.5 * std::sqrt (dot (AB, AB) * dot (AC, AC) - dot (AB, AC) * dot (AB, AC)));
 }
 
 
@@ -998,7 +999,7 @@ BoundaryGeometry::intersectLineTriangle (
 static inline double magnitude (
     const Vector_t& v
     ) {
-    return sqrt (dot (v,v));
+    return std::sqrt (dot (v,v));
 }
 
 /*
@@ -1028,7 +1029,7 @@ BoundaryGeometry::fastIsInside (
     }
 #endif
     const Vector_t v = reference_pt - P;
-    const int N = ceil (magnitude (v) / MIN3 (voxelMesh_m.sizeOfVoxel [0],
+    const int N = std::ceil (magnitude (v) / MIN3 (voxelMesh_m.sizeOfVoxel [0],
                                               voxelMesh_m.sizeOfVoxel [1],
                                               voxelMesh_m.sizeOfVoxel [2]));
     const Vector_t v_ = v / N;
@@ -1160,9 +1161,9 @@ inline Vector_t
 BoundaryGeometry::mapPoint2Voxel (
     const Vector_t& pt
     ) {
-    const int i = floor ((pt[0] - voxelMesh_m.minExtent [0]) / voxelMesh_m.sizeOfVoxel [0]);
-    const int j = floor ((pt[1] - voxelMesh_m.minExtent [1]) / voxelMesh_m.sizeOfVoxel [1]);
-    const int k = floor ((pt[2] - voxelMesh_m.minExtent [2]) / voxelMesh_m.sizeOfVoxel [2]);
+    const int i = std::floor ((pt[0] - voxelMesh_m.minExtent [0]) / voxelMesh_m.sizeOfVoxel [0]);
+    const int j = std::floor ((pt[1] - voxelMesh_m.minExtent [1]) / voxelMesh_m.sizeOfVoxel [1]);
+    const int k = std::floor ((pt[2] - voxelMesh_m.minExtent [2]) / voxelMesh_m.sizeOfVoxel [2]);
 
     return mapIndices2Voxel (i, j, k);
 }
@@ -1263,9 +1264,9 @@ void BoundaryGeometry::initialize () {
               flexible manner and could be adjusted in input file.
             */
             Vector_t extent = bg->maxExtent_m - bg->minExtent_m;
-            bg->voxelMesh_m.nr_m (0) = 16 * (int)floor (extent [0] / longest_edge_max_m);
-            bg->voxelMesh_m.nr_m (1) = 16 * (int)floor (extent [1] / longest_edge_max_m);
-            bg->voxelMesh_m.nr_m (2) = 16 * (int)floor (extent [2] / longest_edge_max_m);
+            bg->voxelMesh_m.nr_m (0) = 16 * (int)std::floor (extent [0] / longest_edge_max_m);
+            bg->voxelMesh_m.nr_m (1) = 16 * (int)std::floor (extent [1] / longest_edge_max_m);
+            bg->voxelMesh_m.nr_m (2) = 16 * (int)std::floor (extent [2] / longest_edge_max_m);
 
             bg->voxelMesh_m.sizeOfVoxel = extent / bg->voxelMesh_m.nr_m;
             bg->voxelMesh_m.minExtent = bg->minExtent_m - 0.5 * bg->voxelMesh_m.sizeOfVoxel;
@@ -2246,9 +2247,9 @@ void BoundaryGeometry::createParticlesOnSurface (
                     !(BGtag & BGphysics::FNEmission) &&
                     !(BGtag & BGphysics::SecondaryEmission))
                    ||
-                   (fabs (E (0)) < eInitThreshold_m &&
-                    fabs (E (1)) < eInitThreshold_m &&
-                    fabs (E (2)) < eInitThreshold_m)) {
+                   (std::abs (E (0)) < eInitThreshold_m &&
+                    std::abs (E (1)) < eInitThreshold_m &&
+                    std::abs (E (2)) < eInitThreshold_m)) {
                 E = Vector_t (0.0);
                 B = Vector_t (0.0);
                 const auto tmp = (size_t)(IpplRandom () * Triangles_m.size());
@@ -2404,9 +2405,9 @@ void BoundaryGeometry::createPriPart (
                         !(BGtag & BGphysics::FNEmission) &&
                         !(BGtag & BGphysics::SecondaryEmission))
                        ||
-                       (fabs (E (0)) < eInitThreshold_m &&
-                        fabs (E (1)) < eInitThreshold_m &&
-                        fabs (E (2)) < eInitThreshold_m)) {
+                       (std::abs (E (0)) < eInitThreshold_m &&
+                        std::abs (E (1)) < eInitThreshold_m &&
+                        std::abs (E (2)) < eInitThreshold_m)) {
                     Vector_t centroid (0.0);
                     E = Vector_t (0.0);
                     B = Vector_t (0.0);

@@ -3,11 +3,9 @@ set (_SRCS
     Ctunes.cpp
     IndexMap.cpp
     Hamiltonian.cpp
-    LieMapper.cpp
     lomb.cpp
     NilTracker.cpp
     MapAnalyser.cpp
-    MPSplitIntegrator.cpp
     MultiBunchHandler.cpp
     OrbitThreader.cpp
     ParallelCyclotronTracker.cpp
@@ -15,7 +13,6 @@ set (_SRCS
     StepSizeConfig.cpp
     ThickMapper.cpp
     ThickTracker.cpp
-    TransportMapper.cpp
     )
 
 include_directories (
@@ -29,10 +26,8 @@ set (HDRS
     Ctunes.h
     Hamiltonian.h
     IndexMap.h
-    LieMapper.h
     lomb.h
     MapAnalyser.h
-    MPSplitIntegrator.h
     MultiBunchHandler.h
     NilTracker.h
     OrbitThreader.h
@@ -41,7 +36,6 @@ set (HDRS
     StepSizeConfig.h
     ThickMapper.h
     ThickTracker.h
-    TransportMapper.h
     )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Algorithms")

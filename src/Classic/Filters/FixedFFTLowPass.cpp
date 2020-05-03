@@ -3,13 +3,12 @@
 #include "gsl/gsl_fft_real.h"
 #include "gsl/gsl_fft_halfcomplex.h"
 
-using namespace std;
 
 FixedFFTLowPassFilter::FixedFFTLowPassFilter(const int &N):
     number_frequencies_m(N)
 { }
 
-void FixedFFTLowPassFilter::apply(vector<double> &LineDensity) {
+void FixedFFTLowPassFilter::apply(std::vector<double> &LineDensity) {
     const int M = LineDensity.size();
     gsl_fft_halfcomplex_wavetable *hc;
     gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(M);
@@ -38,7 +37,7 @@ void FixedFFTLowPassFilter::apply(vector<double> &LineDensity) {
     delete[] LD;
 }
 
-void FixedFFTLowPassFilter::calc_derivative(vector<double> &LineDensity, const double &h) {
+void FixedFFTLowPassFilter::calc_derivative(std::vector<double> &LineDensity, const double &h) {
     const int M = LineDensity.size();
     const double gff = 2. * Physics::pi / (h * (M - 1));
     double temp;

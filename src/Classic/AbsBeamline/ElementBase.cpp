@@ -31,7 +31,6 @@
 #include "Solvers/WakeFunction.hh"
 #include "Solvers/ParticleMatterInteractionHandler.hh"
 
-using namespace std;
 
 // Class ElementBase
 // ------------------------------------------------------------------------
@@ -139,7 +138,7 @@ void ElementBase::setAttribute(const std::string &aKey, double val) {
         *aChannel = val;
         delete aChannel;
     } else
-        cout << "Channel NULL or not Settable" << endl;
+        std::cout << "Channel NULL or not Settable" << std::endl;
 }
 
 

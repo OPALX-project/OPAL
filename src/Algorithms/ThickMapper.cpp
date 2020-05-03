@@ -55,7 +55,6 @@
 
 class Beamline;
 class PartData;
-using Physics::c;
 
 #define PSdim 6
 typedef FVector<double, PSdim> Vector;
@@ -106,7 +105,7 @@ void ThickMapper::visitCorrector(const Corrector &corr) {
 
     // Apply kick.
     double scale =
-        (flip_s * flip_B * itsReference.getQ() * c) / itsReference.getP();
+        (flip_s * flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     const BDipoleField &field = corr.getField();
     itsMap[PX] -= field.getBy() * scale;
     itsMap[PY] += field.getBx() * scale;
@@ -153,7 +152,7 @@ void ThickMapper::visitMultipole(const Multipole &mult) {
     //std::cerr << "==> In ThickMapper::visitMultipole(const Multipole &mult)" << std::endl;
     // Geometry and Field
     double length = flip_s * mult.getElementLength();
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     const BMultipoleField &field = mult.getField();
     int order = field.order();
 
@@ -220,7 +219,7 @@ void ThickMapper::visitRBend(const RBend &bend) {
     // Geometry and Field.
     const RBendGeometry &geometry = bend.getGeometry();
     double length = flip_s * geometry.getElementLength();
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     const BMultipoleField &field = bend.getField();
     int order = field.order();
     double beta_inv = 1.0 / itsReference.getBeta();
@@ -336,7 +335,7 @@ void ThickMapper::visitRFCavity(const RFCavity &as) {
     double peak = flip_s * as.getAmplitude() / itsReference.getP();
 
     Series pt = itsMap[PT] + 1.0;
-    Series speed = (c * pt) / sqrt(pt * pt + kin * kin);
+    Series speed = (Physics::c * pt) / sqrt(pt * pt + kin * kin);
     Series phase = as.getPhase() + freq * itsMap[T] / speed;
     itsMap[PT] += peak * sin(phase) / pt;
 
@@ -356,7 +355,7 @@ void ThickMapper::visitSBend(const SBend &bend) {
     // Geometry and Field.
     const PlanarArcGeometry &geometry = bend.getGeometry();
     double length = flip_s * geometry.getElementLength();
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     const BMultipoleField &field = bend.getField();
     int order = field.order();
     double beta_inv = 1.0 / itsReference.getBeta();
@@ -480,7 +479,7 @@ void ThickMapper::visitSolenoid(const Solenoid &solenoid) {
     double length = flip_s * solenoid.getElementLength();
 
     if(length != 0.0) {
-        double ks = (flip_B * itsReference.getQ() * solenoid.getBz() * c) /
+        double ks = (flip_B * itsReference.getQ() * solenoid.getBz() * Physics::c) /
                     (2.0 * itsReference.getP());
 
         if(ks) {

@@ -44,15 +44,7 @@
 // Macro command.
 #include "OpalParser/MacroCmd.h"
 
-// Physics action commands.
-#include "PhysicsActions/Dynamic.h"
-#include "PhysicsActions/MakeSequence.h"
-#include "PhysicsActions/SetIntegrator.h"
-#include "PhysicsActions/Static.h"
-
 // Commands introducing a special mode.
-#include "Editor/EditCmd.h"
-#include "Match/MatchCmd.h"
 #include "Track/TrackCmd.h"
 
 // Table-related commands.
@@ -64,20 +56,10 @@
 #include "Utilities/OpalFilter.h"
 #include "TrimCoils/OpalTrimCoil.h"
 #include "Tables/AttList.h"
-#include "Tables/Eigen.h"
-#include "Tables/Envelope.h"
 #include "Tables/Insertion.h"
 #include "Tables/List.h"
-#include "Tables/MatrixCmd.h"
-#include "Tables/Micado.h"
 #include "Tables/Period.h"
 #include "Tables/Survey.h"
-#include "Tables/ThreadAll.h"
-#include "Tables/ThreadBpm.h"
-#include "Tables/Twiss3.h"
-#include "Aperture/Aperture.h"
-#include "Aperture/Split.h"
-
 
 // Value definitions commands.
 #include "ValueDefinitions/BoolConstant.h"
@@ -170,35 +152,20 @@ namespace {
         opal->create(new DumpFields());
         opal->create(new DumpEMFields());
         opal->create(new Echo());
-        opal->create(new Dynamic());
-        opal->create(new Eigen());
-        opal->create(new Envelope());
         opal->create(new Help());
-        opal->create(new EditCmd());
         opal->create(new List());
-        opal->create(new MakeSequence());
-        opal->create(new MatchCmd());
-        opal->create(new MatrixCmd());
-        opal->create(new Micado());
         opal->create(new Option());
         opal->create(new OptimizeCmd());
         opal->create(new SampleCmd());
         opal->create(new Save());
         opal->create(new Select());
         opal->create(new Show());
-        opal->create(new SetIntegrator());
-        opal->create(new Static());
         opal->create(new Stop());
         opal->create(new Quit());
         opal->create(new PSystem());
         opal->create(new System());
-        opal->create(new ThreadAll());
-        opal->create(new ThreadBpm());
         opal->create(new Title());
         opal->create(new TrackCmd());
-        opal->create(new Twiss3());
-        opal->create(new Aperture());
-        opal->create(new MSplit());
         opal->create(new Value());
         opal->create(new What());
     }

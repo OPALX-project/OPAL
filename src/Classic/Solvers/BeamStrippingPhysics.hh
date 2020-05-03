@@ -48,9 +48,8 @@ public:
 
     void setCyclotron(Cyclotron* cycl) { cycl_m = cycl; };
 
-    void apply(PartBunchBase<double, 3> *bunch,
-               const std::pair<Vector_t, double> &boundingSphere,
-               size_t numParticlesInSimulation = 0);
+    virtual void apply(PartBunchBase<double, 3> *bunch,
+                       const std::pair<Vector_t, double> &boundingSphere);
 
     virtual const std::string getType() const;
     void print(Inform& msg);

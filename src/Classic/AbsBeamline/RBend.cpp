@@ -54,10 +54,10 @@
 #include "Utilities/Options.h"
 #include "Fields/Fieldmap.h"
 #include "AbstractObjects/OpalData.h"
+
 #include <iostream>
 #include <fstream>
-
-extern Inform *gmsg;
+#include <cmath>
 
 RBend::RBend():
     RBend("")
@@ -135,17 +135,17 @@ bool RBend::findChordLength(double &chordLength) {
     const double angle = getBendAngle();
     if (std::abs(angle) > 0.0) {
         double E1 = std::copysign(1.0, angle) * getEntranceAngle();
-        chordLength = 2 * getLength() * sin(0.5 * std::abs(angle)) /
-            (sin(E1) + sin(std::abs(angle) - E1));
+        chordLength = 2 * getLength() * std::sin(0.5 * std::abs(angle)) /
+            (std::sin(E1) + std::sin(std::abs(angle) - E1));
     } else {
         double refMass  = RefPartBunch_m->getM();
         double refGamma = designEnergy_m / refMass + 1.0;
-        double refBetaGamma = sqrt(pow(refGamma, 2.0) - 1.0);
+        double refBetaGamma = std::sqrt(std::pow(refGamma, 2.0) - 1.0);
         double refCharge = RefPartBunch_m->getQ();
         double amplitude = (std::abs(bY_m) > 0.0? bY_m: bX_m);
         double fieldAmplitude = refCharge * std::abs(amplitude / refCharge);
         double designRadius = std::abs(refBetaGamma * refMass / (Physics::c * fieldAmplitude));
-        chordLength = sin(0.5 * (asin(getLength() / designRadius - sin(getEntranceAngle())) + getEntranceAngle())) * 2 * designRadius;
+        chordLength = std::sin(0.5 * (std::asin(getLength() / designRadius - std::sin(getEntranceAngle())) + getEntranceAngle())) * 2 * designRadius;
     }
 
     return true;

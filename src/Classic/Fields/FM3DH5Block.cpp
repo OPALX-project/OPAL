@@ -8,8 +8,6 @@
 
 #include <assert.h>
 
-using namespace std;
-using Physics::mu_0;
 
 FM3DH5Block::FM3DH5Block(std::string aFilename):Fieldmap(aFilename) {
     h5_err_t h5err;
@@ -271,7 +269,7 @@ void FM3DH5Block::setFrequency(double freq) {
     frequency_m = freq;
 }
 
-void FM3DH5Block::getOnaxisEz(vector<pair<double, double> > & F) {
+void FM3DH5Block::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
     double Ez_max = 0.0, dz = (zend_m - zbegin_m) / (num_gridpz_m - 1);
     const int index_x = -static_cast<int>(std::floor(xbegin_m / hx_m));
     const double lever_x = -xbegin_m / hx_m - index_x;

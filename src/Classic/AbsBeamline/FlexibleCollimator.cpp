@@ -90,7 +90,7 @@ bool FlexibleCollimator::apply(const size_t &i, const double &t, Vector_t &/*E*/
     const Vector_t &R = RefPartBunch_m->R[i];
     const Vector_t &P = RefPartBunch_m->P[i];
     const double &dt = RefPartBunch_m->dt[i];
-    const double recpgamma = Physics::c * dt / sqrt(1.0 + dot(P, P));
+    const double recpgamma = Physics::c * dt / std::sqrt(1.0 + dot(P, P));
     bool pdead = isStopped(R, P, recpgamma);
 
     if (pdead) {
@@ -269,6 +269,4 @@ void FlexibleCollimator::writeHolesAndQuadtree(const std::string &baseFilename) 
         out.close();
     }
 
-
 }
-

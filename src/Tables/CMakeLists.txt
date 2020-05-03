@@ -1,21 +1,13 @@
 set (_SRCS
     AttList.cpp
     AttWriter.cpp
-    CorrectionBase.cpp
-    Eigen.cpp
-    Envelope.cpp
     Insertion.cpp
     List.cpp
-    MatrixCmd.cpp
-    Micado.cpp
     Period.cpp
     RangeSelector.cpp
     Selector.cpp
     Survey.cpp
-    ThreadAll.cpp
-    ThreadBpm.cpp
     Twiss.cpp
-    Twiss3.cpp
     )
 
 include_directories (
@@ -27,21 +19,13 @@ add_opal_sources(${_SRCS})
 set (HDRS
     AttList.h
     AttWriter.h
-    CorrectionBase.h
-    Eigen.h
-    Envelope.h
     Flatten.h
     Insertion.h
     List.h
-    MatrixCmd.h
-    Micado.h
     Period.h
     RangeSelector.h
     Selector.h
     Survey.h
-    ThreadAll.h
-    ThreadBpm.h
-    Twiss3.h
     Twiss.h
     )
 

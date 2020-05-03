@@ -131,12 +131,12 @@ void DumpFields::writeFields(Component* field) {
 }
 
 void DumpFields::checkInt(double real, std::string name, double tolerance) {
-    if (fabs(floor(real) - real) > tolerance) {
+    if (std::abs(std::floor(real) - real) > tolerance) {
         throw OpalException("DumpFields::checkInt",
                             "Value for "+name+
                             " should be an integer but a real value was found");
     }
-    if (floor(real) < 0.5) {
+    if (std::floor(real) < 0.5) {
         throw OpalException("DumpFields::checkInt",
                             "Value for "+name+" should be 1 or more");
     }

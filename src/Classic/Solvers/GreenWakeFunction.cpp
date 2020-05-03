@@ -11,7 +11,6 @@
 #include "gsl/gsl_fft_real.h"
 #include "gsl/gsl_fft_halfcomplex.h"
 
-using namespace std;
 
 //IFF: TEST
 //#define ENABLE_WAKE_DEBUG
@@ -39,7 +38,7 @@ using namespace std;
  */
 GreenWakeFunction::GreenWakeFunction(const std::string &name,
                                      ElementBase *element,
-                                     vector<Filter *> filters,
+                                     std::vector<Filter *> filters,
                                      int NBIN,
                                      double Z0,
                                      double radius,
@@ -86,9 +85,9 @@ GreenWakeFunction::~GreenWakeFunction() {
  * @param[in]   length of vector
  * @param[out]  first: lowIndex, second: hiIndex
  */
-pair<int, int> GreenWakeFunction::distrIndices(int vectLen) {
+std::pair<int, int> GreenWakeFunction::distrIndices(int vectLen) {
 
-    pair<int, int> dist;
+    std::pair<int, int> dist;
 
     //IFF: properly distribute remainder
     int rem = vectLen - (vectLen / Ippl::getNodes()) * Ippl::getNodes();
@@ -119,7 +118,7 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
     mindist = rmin(2);
     switch(direction_m) {
         case LONGITUDINAL:
-            spacing = abs(rmax(2) - rmin(2));
+            spacing = std::abs(rmax(2) - rmin(2));
             break; //FIXME: Kann mann das Spacing immer ändern?
         case TRANSVERSAL:
             spacing = rmax(0) * rmax(0) + rmax(1) * rmax(1);
@@ -153,7 +152,7 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
 #endif
 
     // smooth the line density of the particle bunch
-    for(vector<Filter *>::const_iterator fit = filters_m.begin(); fit != filters_m.end(); ++fit) {
+    for(std::vector<Filter *>::const_iterator fit = filters_m.begin(); fit != filters_m.end(); ++fit) {
         (*fit)->apply(lineDensity_m);
     }
 
@@ -297,7 +296,7 @@ void GreenWakeFunction::compEnergy(const double K,
  */
 void GreenWakeFunction::compEnergy(const double K,
                                    const double charge,
-                                   vector<double> lambda,
+                                   std::vector<double> lambda,
                                    double *OutEnergy) {
     int N = 2 * NBin_m - 1;
     // Allocate Space for the zero padded lambda and its Fourier Transformed
@@ -361,7 +360,7 @@ void GreenWakeFunction::CalcWakeFFT(double spacing) {
     gsl_fft_real_wavetable *real = gsl_fft_real_wavetable_alloc(M);
     gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(M);
 
-    const pair<int, int> myDist = distrIndices(NBin_m);
+    const std::pair<int, int> myDist = distrIndices(NBin_m);
     const int lowIndex = myDist.first;
     const int hiIndex  = myDist.second;
 

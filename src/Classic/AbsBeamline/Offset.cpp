@@ -145,19 +145,19 @@ const Euclid3DGeometry &Offset::getGeometry() const {
 // }
 
 double Offset::getTheta(Vector_t vec1, Vector_t vec2) {
-    if (fabs(vec1(2)) > 1e-9 || fabs(vec2(2)) > 1e-9)
+    if (std::abs(vec1(2)) > 1e-9 || std::abs(vec2(2)) > 1e-9)
         throw GeneralClassicException("Offset::getTheta(...)",
                             "Rotations out of midplane are not implemented");
     // probably not the most efficient, but only called at set up
-    double theta = atan2(vec2(1), vec2(0))-atan2(vec1(1), vec1(0));
+    double theta = std::atan2(vec2(1), vec2(0))-std::atan2(vec1(1), vec1(0));
     if (theta < -Physics::pi)
         theta += 2.*Physics::pi; // force into domain -pi < theta < pi
     return theta;
 }
 
 Vector_t Offset::rotate(Vector_t vec, double theta) {
-    double s = sin(theta);
-    double c = cos(theta);
+    double s = std::sin(theta);
+    double c = std::cos(theta);
     return Vector_t(+vec(0)*c-vec(1)*s,
                     +vec(0)*s+vec(1)*c,
                     0.);
@@ -168,12 +168,12 @@ void Offset::updateGeometry() {
         throw GeneralClassicException("Offset::updateGeometry(...)",
                             "Global offset needs a local coordinate system");
     Vector_t translation = getEndPosition();
-    double length = sqrt(translation(0)*translation(0)+
+    double length = std::sqrt(translation(0)*translation(0)+
                          translation(1)*translation(1)+
                          translation(2)*translation(2));
     double theta_in = getTheta(Vector_t(1., 0., 0.), translation);
     double theta_out = getTheta(Vector_t(1., 0., 0.), getEndDirection());
-    Euclid3D euclid3D(-sin(theta_in)*length, 0., cos(theta_in)*length,
+    Euclid3D euclid3D(-std::sin(theta_in)*length, 0., std::cos(theta_in)*length,
                       0., -theta_out, 0.);
     if (geometry_m != NULL)
         delete geometry_m;
@@ -202,8 +202,8 @@ bool operator==(const Offset& off1, const Offset& off2) {
         return false;
     }
     for (int i = 0; i < 3; ++i) {
-      if ( (fabs(off1.getEndPosition()(i)-off2.getEndPosition()(i)) > tol) ||
-           (fabs(off1.getEndDirection()(i)-off2.getEndDirection()(i)) > tol))
+      if ( (std::abs(off1.getEndPosition()(i)-off2.getEndPosition()(i)) > tol) ||
+           (std::abs(off1.getEndDirection()(i)-off2.getEndDirection()(i)) > tol))
             return false;
     }
     if ( (!off1.isGeometryAllocated() && off2.isGeometryAllocated()) ||
@@ -215,7 +215,7 @@ bool operator==(const Offset& off1, const Offset& off2) {
     Vector3D dRotation = transform1.getRotation().getAxis() -
                          transform2.getRotation().getAxis();
     for (size_t i = 0; i < 3; ++i)
-        if (fabs(dTranslation(i)) > tol || fabs(dRotation(i)) > tol)
+        if (std::abs(dTranslation(i)) > tol || std::abs(dRotation(i)) > tol)
             return false;
     return true;
 }
@@ -238,11 +238,11 @@ bool Offset::bends() const {
     }
     Rotation3D rotation = geometry_m->getTotalTransform().getRotation();
     for (size_t i = 0; i < 3; ++i)
-        if (fabs(rotation.getAxis()(i)) > float_tolerance) {
+        if (std::abs(rotation.getAxis()(i)) > float_tolerance) {
             return true;
     }
     Vector3D vector = geometry_m->getTotalTransform().getVector();
-    if (fabs(vector(0)) > float_tolerance || fabs(vector(1)) > float_tolerance) {
+    if (std::abs(vector(0)) > float_tolerance || std::abs(vector(1)) > float_tolerance) {
         return true;
     }
     return false;
@@ -255,10 +255,10 @@ Offset Offset::localCylindricalOffset(std::string name,
                                       double displacement) {
     Offset off(name);
     displacement *= lengthUnits_m;
-    off.setEndPosition(Vector_t(cos(phi_in)*displacement,
-                                sin(phi_in)*displacement,
+    off.setEndPosition(Vector_t(std::cos(phi_in)*displacement,
+                                std::sin(phi_in)*displacement,
                                 0.));
-    off.setEndDirection(Vector_t(cos(phi_in+phi_out), sin(phi_in+phi_out), 0.));
+    off.setEndDirection(Vector_t(std::cos(phi_in+phi_out), std::sin(phi_in+phi_out), 0.));
     off.setIsLocal(true);
     off.updateGeometry();
     return off;
@@ -270,11 +270,11 @@ Offset Offset::globalCylindricalOffset(std::string name,
                                        double theta_out) {
     Offset off(name);
     radius_out *= lengthUnits_m;
-    off.setEndPosition(Vector_t(cos(phi_out)*radius_out,
-                                sin(phi_out)*radius_out,
+    off.setEndPosition(Vector_t(std::cos(phi_out)*radius_out,
+                                std::sin(phi_out)*radius_out,
                                 0.));
-    off.setEndDirection(Vector_t(sin(phi_out+theta_out),
-                                 cos(phi_out+theta_out),
+    off.setEndDirection(Vector_t(std::sin(phi_out+theta_out),
+                                 std::cos(phi_out+theta_out),
                                  0.));
     off.setIsLocal(false);
     return off;

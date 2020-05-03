@@ -787,7 +787,7 @@ Value_type ClosedOrbitFinder<Value_type, Size_type, Stepper>::computeTune(const 
 
     bool uneven = (ncross % 2);
 
-    value_type abscos = std::fabs(cos);
+    value_type abscos = std::abs(cos);
     value_type muPrime;
     if (abscos > 1.0) {
         // store the number of crossings

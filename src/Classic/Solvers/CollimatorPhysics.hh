@@ -19,10 +19,6 @@
 
 #include "Utility/IpplTimings.h"
 
-#ifdef OPAL_DKS
-#include "DKSOPAL.h"
-#endif
-
 class ElementBase;
 
 template <class T, unsigned Dim>
@@ -31,28 +27,6 @@ class PartBunchBase;
 class LossDataSink;
 class Inform;
 
-#ifdef OPAL_DKS
-typedef struct __align__(16) {
-    int label;
-    unsigned localID;
-    Vector_t Rincol;
-    Vector_t Pincol;
-    long IDincol;
-    int Binincol;
-    double DTincol;
-    double Qincol;
-    Vector_t Bfincol;
-    Vector_t Efincol;
-} PART;
-
-typedef struct {
-    int label;
-    unsigned localID;
-    Vector_t Rincol;
-    Vector_t Pincol;
-} PART_DKS;
-
-#else
 typedef struct {             // struct for description of particle in material
     int label;               // the status of the particle (0 = in material / -1 = move back to bunch
     unsigned localID;        // not so unique identifier of the particle
@@ -65,7 +39,6 @@ typedef struct {             // struct for description of particle in material
     Vector_t Bfincol;        // magnetic field
     Vector_t Efincol;        // electric field
 } PART;
-#endif
 
 struct InsideTester {
     virtual ~InsideTester()
@@ -84,9 +57,8 @@ public:
                       bool enableRutherford);
     ~CollimatorPhysics();
 
-    void apply(PartBunchBase<double, 3> *bunch,
-               const std::pair<Vector_t, double> &boundingSphere,
-               size_t numParticlesInSimulation = 0);
+    virtual void apply(PartBunchBase<double, 3> *bunch,
+                       const std::pair<Vector_t, double> &boundingSphere);
 
     virtual const std::string getType() const;
 
@@ -122,24 +94,6 @@ private:
                        const std::pair<Vector_t, double> &boundingSphere);
     void addBackToBunch(PartBunchBase<double, 3> *bunch);
 
-    void applyNonDKS(PartBunchBase<double, 3> *bunch,
-                     const std::pair<Vector_t, double> &boundingSphere,
-                     size_t numParticlesInSimulation);
-#ifdef OPAL_DKS
-    void applyDKS(PartBunchBase<double, 3> *bunch,
-                  const std::pair<Vector_t, double> &boundingSphere,
-                  size_t numParticlesInSimulation);
-    void copyFromBunchDKS(PartBunchBase<double, 3> *bunch,
-                        const std::pair<Vector_t, double> &boundingSphere);
-    void addBackToBunchDKS(PartBunchBase<double, 3> *bunch, unsigned int i);
-
-    void setupCollimatorDKS(PartBunchBase<double, 3> *bunch, size_t numParticlesInSimulation);
-    void clearCollimatorDKS();
-
-    void applyDKS();
-    void deleteParticleFromLocalVectorDKS();
-
-#endif
     void deleteParticleFromLocalVector();
 
     void calcStat(double Eng);
@@ -190,21 +144,6 @@ private:
     std::unique_ptr<LossDataSink> lossDs_m;
 
     bool enableRutherford_m;
-#ifdef OPAL_DKS
-    DKSOPAL dksbase_m;
-    int curandInitSet_m;
-
-    int ierr_m;
-    int maxparticles_m;
-    int numparticles_m;
-    int numlocalparts_m;
-    void *par_ptr;
-    void *mem_ptr;
-
-    std::vector<PART_DKS> dksParts_m;
-
-    static const int numpar_m;
-#endif
 
     IpplTimings::TimerRef DegraderApplyTimer_m;
     IpplTimings::TimerRef DegraderLoopTimer_m;

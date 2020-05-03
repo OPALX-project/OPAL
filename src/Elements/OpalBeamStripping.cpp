@@ -26,7 +26,6 @@
 #include "Physics/Physics.h"
 #include "Structure/ParticleMatterInteraction.h"
 
-using Physics::pi;
 
 // Class OpalBeamStripping
 // ------------------------------------------------------------------------

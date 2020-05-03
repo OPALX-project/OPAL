@@ -12,6 +12,3 @@
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "${PROJECT_BUGREPORT}"
-
-/* Define DKS version used in this package. */
-#define DKS_VERSION ${DKS_VERSION_OPAL}

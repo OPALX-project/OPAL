@@ -98,9 +98,9 @@ public:
 
     bool hasPeriodicZ();
 
-#ifdef ENABLE_AMR
     bool isAmrSolverType() const;
-    
+
+#ifdef ENABLE_AMR
     AmrObject *getAmrObject() {
         return itsAmrObject_mp.get();
     }

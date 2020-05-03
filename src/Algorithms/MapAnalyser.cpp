@@ -306,7 +306,7 @@ void MapAnalyser::normalizeEigen_m(cfMatrix_t& eigenVecM, cfMatrix_t& invEigenVe
         for (int j = 0; j < 6; j += 2){
             temp += 2 * (eigenVecM[j][i] * std::conj(eigenVecM[j+1][i])).imag();
         }
-        temp = std::fabs(temp);
+        temp = std::abs(temp);
 
         if (temp > 1e-10){
             for (int j = 0; j < 6; j++){

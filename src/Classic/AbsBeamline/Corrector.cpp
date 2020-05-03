@@ -25,7 +25,6 @@
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
-extern Inform *gmsg;
 
 // Class Corrector
 // ------------------------------------------------------------------------
@@ -116,7 +115,7 @@ void Corrector::goOnline(const double &) {
     }
 
     if (!kickFieldSet_m) {
-        const double momentum = sqrt(std::pow(designEnergy_m, 2.0) + 2.0 * designEnergy_m * RefPartBunch_m->getM());
+        const double momentum = std::sqrt(std::pow(designEnergy_m, 2.0) + 2.0 * designEnergy_m * RefPartBunch_m->getM());
         const double magnitude = momentum / (Physics::c * pathLength);
         kickField_m = magnitude * RefPartBunch_m->getQ() * Vector_t(kickY_m, -kickX_m, 0.0);
     }
@@ -132,7 +131,7 @@ void Corrector::setDesignEnergy(const double& ekin, bool changeable) {
     if (RefPartBunch_m) {
         if (!kickFieldSet_m) {
             const double pathLength = getGeometry().getElementLength();
-            const double momentum = sqrt(std::pow(designEnergy_m, 2.0) + 2.0 * designEnergy_m * RefPartBunch_m->getM());
+            const double momentum = std::sqrt(std::pow(designEnergy_m, 2.0) + 2.0 * designEnergy_m * RefPartBunch_m->getM());
             const double magnitude = momentum / (Physics::c * pathLength);
             kickField_m = magnitude * RefPartBunch_m->getQ() * Vector_t(kickY_m, -kickX_m, 0.0);
         }

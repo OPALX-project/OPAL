@@ -119,8 +119,6 @@ fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
 
 
 void OpalTravelingWave::update() {
-    using Physics::two_pi;
-
     OpalElement::update();
 
     TravelingWaveRep *rfc =
@@ -131,7 +129,7 @@ void OpalTravelingWave::update() {
     double vPeakError  = Attributes::getReal(itsAttr[DVOLT]);
     double phase  = Attributes::getReal(itsAttr[LAG]);
     double phaseError  = Attributes::getReal(itsAttr[DLAG]);
-    double freq   = (1.0e6 * two_pi) * Attributes::getReal(itsAttr[FREQ]);
+    double freq   = (1.0e6 * Physics::two_pi) * Attributes::getReal(itsAttr[FREQ]);
     std::string fmapfm = Attributes::getString(itsAttr[FMAPFN]);
     bool fast = Attributes::getBool(itsAttr[FAST]);
     bool apVeto = Attributes::getBool(itsAttr[APVETO]);

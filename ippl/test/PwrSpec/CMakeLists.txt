@@ -17,13 +17,6 @@ set (COMPILE_FLAGS ${OPAL_CXX_FLAGS})
 
 set (IPPL_LIBS ippl)
 
-if (ENABLE_DKS)
-   include_directories (${DKS_INCLUDE_DIR})
-   link_directories (${DKS_LIBRARY_DIR})
-   #SET (IPPL_LIBS ${IPPL_LIBS} dks)
-   SET (IPPL_LIBS ${IPPL_LIBS} ${DKS_LIBRARY_DIR}/libdks.a)
-endif ()
-
 add_executable (testPwrSpec testPwrSpec.cpp)
 target_link_libraries (
     testPwrSpec

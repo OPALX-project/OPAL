@@ -5,8 +5,7 @@
 
 #include <fstream>
 #include <ios>
-
-extern Inform *gmsg;
+#include <cmath>
 
 FM2DMagnetoStatic::FM2DMagnetoStatic(std::string aFilename):
     Fieldmap(aFilename),
@@ -167,7 +166,7 @@ void FM2DMagnetoStatic::freeMap() {
 
 bool FM2DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
     // do bi-linear interpolation
-    const double RR = sqrt(R(0) * R(0) + R(1) * R(1));
+    const double RR = std::sqrt(R(0) * R(0) + R(1) * R(1));
 
     const int indexr = std::abs((int)std::floor(RR / hr_m));
     const double leverr = (RR / hr_m) - indexr;
@@ -205,7 +204,7 @@ bool FM2DMagnetoStatic::getFieldDerivative(const Vector_t &R, Vector_t &/*E*/, V
 
     double BfieldR, BfieldZ;
 
-    const double RR = sqrt(R(0) * R(0) + R(1) * R(1));
+    const double RR = std::sqrt(R(0) * R(0) + R(1) * R(1));
 
     const int indexr = (int)std::floor(RR / hr_m);
     const double leverr = (RR / hr_m) - indexr;

@@ -11,15 +11,11 @@
 #include <fstream>
 #include <ios>
 
-using namespace std;
-using Physics::mu_0;
-using Physics::c;
-using Physics::two_pi;
 
 Astra1DMagnetoStatic::Astra1DMagnetoStatic(std::string aFilename)
     : Fieldmap(aFilename),
       FourCoefs_m(NULL) {
-    ifstream file;
+    std::ifstream file;
     int skippedValues = 0;
     std::string tmpString;
     double tmpDouble;
@@ -83,7 +79,7 @@ Astra1DMagnetoStatic::~Astra1DMagnetoStatic() {
 void Astra1DMagnetoStatic::readMap() {
     if(FourCoefs_m == NULL) {
         // declare variables and allocate memory
-        ifstream in;
+    	std::ifstream in;
 
         bool parsing_passed = true;
 
@@ -176,7 +172,7 @@ bool Astra1DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, 
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
-    const double kz = two_pi * (R(2) - zbegin_m) / length_m + Physics::pi;
+    const double kz = Physics::two_pi * (R(2) - zbegin_m) / length_m + Physics::pi;
 
     double ez = FourCoefs_m[0];
     double ezp = 0.0;
@@ -188,7 +184,7 @@ bool Astra1DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, 
 
     int n = 1;
     for(int l = 1; l < accuracy_m ; l++, n += 2) {
-        somefactor_base =  two_pi / length_m * l;    // = \frac{d(kz*l)}{dz}
+        somefactor_base =  Physics::two_pi / length_m * l;    // = \frac{d(kz*l)}{dz}
         somefactor = 1.0;
         coskzl = cos(kz * l);
         sinkzl = sin(kz * l);

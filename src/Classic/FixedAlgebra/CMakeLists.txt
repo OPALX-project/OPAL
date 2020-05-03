@@ -1,5 +1,4 @@
 set (_SRCS
-    DragtFinnMap.cpp
     )
 
 include_directories (
@@ -9,12 +8,9 @@ include_directories (
 add_opal_sources (${_SRCS})
 
 set (HDRS
-    DragtFinnMap.h
-    DragtFinnNormalForm.h
     FArray1D.h
     FArray2D.h
     FDoubleEigen.h
-    FDynamicFP.h
     FLieGenerator.h
     FLieGenerator.hpp
     FLUMatrix.h

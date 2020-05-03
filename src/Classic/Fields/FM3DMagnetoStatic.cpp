@@ -7,10 +7,6 @@
 #include <fstream>
 #include <ios>
 
-extern Inform *gmsg;
-
-using namespace std;
-using Physics::mu_0;
 
 FM3DMagnetoStatic::FM3DMagnetoStatic(std::string aFilename):
     Fieldmap(aFilename),
@@ -22,7 +18,7 @@ FM3DMagnetoStatic::FM3DMagnetoStatic(std::string aFilename):
     double tmpDouble;
 
     Type = T3DMagnetoStatic;
-    ifstream file(Filename_m.c_str());
+    std::ifstream file(Filename_m.c_str());
 
     if(file.good()) {
         bool parsing_passed = true;
@@ -95,7 +91,7 @@ FM3DMagnetoStatic::~FM3DMagnetoStatic() {
 void FM3DMagnetoStatic::readMap() {
     if(FieldstrengthBz_m == NULL) {
 
-        ifstream in(Filename_m.c_str());
+    	std::ifstream in(Filename_m.c_str());
         std::string tmpString;
         const size_t totalSize = num_gridpx_m * num_gridpy_m * num_gridpz_m;
 

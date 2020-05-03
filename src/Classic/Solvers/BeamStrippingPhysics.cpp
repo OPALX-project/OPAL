@@ -41,15 +41,12 @@
 #include <sys/time.h>
 #include <boost/math/special_functions/chebyshev.hpp>
 
-using Physics::kB;
 using Physics::q_e;
 using Physics::m_e;
-using Physics::c;
 using Physics::m_hm;
 using Physics::m_p;
 using Physics::m_h;
 using Physics::m_h2p;
-using Physics::E_ryd;
 
 namespace {
     struct InsideTester {
@@ -117,8 +114,7 @@ const std::string BeamStrippingPhysics::getType() const {
 }
 
 void BeamStrippingPhysics::apply(PartBunchBase<double, 3> *bunch,
-                                 const std::pair<Vector_t, double> &/*boundingSphere*/,
-                                 size_t /*numParticlesInSimulation*/) {
+                                 const std::pair<Vector_t, double> &/*boundingSphere*/) {
 
     dT_m = bunch->getdT();
 
@@ -175,7 +171,7 @@ void BeamStrippingPhysics::doPhysics(PartBunchBase<double, 3> *bunch) {
             Eng = (std::sqrt(1.0  + dot(bunch->P[i], bunch->P[i])) - 1) * mass_m; //GeV
             gamma = (Eng + mass_m) / mass_m;
             beta = std::sqrt(1.0 - 1.0 / (gamma * gamma));
-            deltas = dT_m * beta * c;
+            deltas = dT_m * beta * Physics::c;
 
             crossSection(Eng);
             pdead_GS = gasStripping(deltas);
@@ -183,7 +179,7 @@ void BeamStrippingPhysics::doPhysics(PartBunchBase<double, 3> *bunch) {
             if(std::abs(mass_m-m_hm) < 1E-6 && charge_m == -q_e) {
                 cycl_m->apply(bunch->R[i]*0.001, bunch->P[i], T_m, extE, extB);
                 B = 0.1 * std::sqrt(extB[0]*extB[0] + extB[1]*extB[1] + extB[2]*extB[2]); //T
-                E = gamma * beta * c * B;
+                E = gamma * beta * Physics::c * B;
                 pdead_LS = lorentzStripping(gamma, E);
             }
 
@@ -235,7 +231,7 @@ void BeamStrippingPhysics::crossSection(double Eng){
 
     if (gas_m == "H2") {
 
-        molecularDensity[0] = 100 * pressure_m / (kB * q_e * temperature);
+        molecularDensity[0] = 100 * pressure_m / (Physics::kB * q_e * temperature);
 
         double CS_a = 0.0;
         double CS_b = 0.0;
@@ -365,7 +361,7 @@ void BeamStrippingPhysics::crossSection(double Eng){
 
         for (int i = 0; i < 3; ++i) {
 
-            molecularDensity[i] = 100 * pressure_m * fMolarFraction[i] / (kB * q_e * temperature);
+            molecularDensity[i] = 100 * pressure_m * fMolarFraction[i] / (Physics::kB * q_e * temperature);
 
             if(std::abs(mass_m-m_hm) < 1E-6 && charge_m == -q_e) {
                 // Single-electron detachment - Hydrogen Production
@@ -441,7 +437,7 @@ void BeamStrippingPhysics::crossSection(double Eng){
 
 double BeamStrippingPhysics::csAnalyticFunctionNakai(double Eng, double Eth, int &i) {
 
-    const double E_R = E_ryd*1e6 * m_h / m_e; //keV
+    const double E_R = Physics::E_ryd*1e6 * m_h / m_e; //keV
     const double sigma_0 = 1E-16;
     double E1 = 0.0;
     double f1 = 0.0;
@@ -466,7 +462,7 @@ double BeamStrippingPhysics::csAnalyticFunctionTabata(double Eng, double Eth,
     double sigma = 0.0; //cm2
     if(Eng > Eth) {
         E1 = (Eng-Eth);
-        f1 = sigma_0 * a1 * std::pow((E1/(E_ryd*1e6)),a2);
+        f1 = sigma_0 * a1 * std::pow((E1/(Physics::E_ryd*1e6)),a2);
         if(a3 != 0.0 && a4 != 0.0)
             sigma = f1 / (1 + std::pow((E1/a3),(a2+a4)) + std::pow((E1/a5),(a2+a6)));
         else
@@ -514,7 +510,7 @@ bool BeamStrippingPhysics::lorentzStripping(double &gamma, double &E) {
     //Theoretical
     const double eps0 = 0.75419 * q_e;
     const double hbar = Physics::h_bar*1E9*q_e;
-    const double me = m_e*1E9*q_e/(c*c);
+    const double me = m_e*1E9*q_e/(Physics::c*Physics::c);
     const double p = 0.0126;
     const double S0 = 0.783;
     const double a = 2.01407/Physics::a0;

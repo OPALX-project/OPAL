@@ -5,14 +5,13 @@
 
 #include <fstream>
 #include <ios>
-
-using namespace std;
+#include <cmath>
 
 FM2DElectroStatic::FM2DElectroStatic(std::string aFilename)
     : Fieldmap(aFilename),
       FieldstrengthEz_m(NULL),
       FieldstrengthEr_m(NULL) {
-    ifstream file;
+    std::ifstream file;
     std::string tmpString;
     double tmpDouble;
 
@@ -53,7 +52,7 @@ FM2DElectroStatic::FM2DElectroStatic(std::string aFilename)
             parsing_passed = parsing_passed &&
                              interpretLine<double, double, int>(file, rbegin_m, rend_m, num_gridpr_m);
         } else {
-            cerr << "unknown orientation of 2D electrostatic fieldmap" << endl;
+            std::cerr << "unknown orientation of 2D electrostatic fieldmap" << std::endl;
             parsing_passed = false;
         }
 
@@ -100,7 +99,7 @@ FM2DElectroStatic::~FM2DElectroStatic() {
 void FM2DElectroStatic::readMap() {
     if (FieldstrengthEz_m == NULL) {
         // declare variables and allocate memory
-        ifstream in;
+    	std::ifstream in;
         std::string tmpString;
         double Ezmax = 0.0;
 
@@ -167,7 +166,7 @@ void FM2DElectroStatic::freeMap() {
 
 bool FM2DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &/*B*/) const {
     // do bi-linear interpolation
-    const double RR = sqrt(R(0) * R(0) + R(1) * R(1));
+    const double RR = std::sqrt(R(0) * R(0) + R(1) * R(1));
 
     const int indexr = (int)std::floor(RR / hr_m);
     const double leverr = (RR / hr_m) - indexr;

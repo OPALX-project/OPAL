@@ -36,7 +36,7 @@ int run_opal(char */*args*/[], std::string inputfile, int restartStep,
     IpplInfo::Warn->setDestination(output);
 
 #ifdef ENABLE_AMR
-    if ( Options::amr )
+    if (Options::amr)
         amrex::Initialize(comm);
 #endif
 
@@ -79,7 +79,7 @@ int run_opal(char */*args*/[], std::string inputfile, int restartStep,
     delete gmsg;
 
 #ifdef ENABLE_AMR
-    if ( Options::amr )
+    if (Options::amr)
         amrex::Finalize(true);
 #endif
 

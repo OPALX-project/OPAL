@@ -101,8 +101,8 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
 
         // dist1 > 0, right hand, dt > 0; dist1 < 0, left hand, dt < 0
         double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m * 1.0e-3; // [m]
-        double dist2 = dist1 * sqrt(1.0 + 1.0 / tangle / tangle);
-        double dt = dist2 / (sqrt(1.0 - 1.0 / (1.0 + dot(bunch->P[i], bunch->P[i]))) * Physics::c) * 1.0e9; // [ns]
+        double dist2 = dist1 * std::sqrt(1.0 + 1.0 / tangle / tangle);
+        double dt = dist2 / (std::sqrt(1.0 - 1.0 / (1.0 + dot(bunch->P[i], bunch->P[i]))) * Physics::c) * 1.0e9; // [ns]
         strippoint(0) = (B_m * B_m * bunch->R[i](0) - A_m * B_m* bunch->R[i](1) - A_m * C_m) / (R_m * R_m);
         strippoint(1) = (A_m * A_m * bunch->R[i](1) - A_m * B_m* bunch->R[i](0) - B_m * C_m) / (R_m * R_m);
         strippoint(2) = bunch->R[i](2);

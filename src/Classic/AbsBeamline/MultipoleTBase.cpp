@@ -26,10 +26,10 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-
 #include "MultipoleTBase.h"
 #include <gsl/gsl_sf_gamma.h>
 #include "AbsBeamline/MultipoleTFunctions/tanhDeriv.h"
+#include <cmath>
 
 using namespace endfieldmodel;
 
@@ -102,15 +102,15 @@ Vector_t MultipoleTBase::rotateFrame(const Vector_t &R) {
       * Rotate azymuthaly => entrance angle
       */
     // 1st rotation
-    R_prime[0] = R[0] * cos(rotation_m) + R[1] * sin(rotation_m);
-    R_prime[1] = - R[0] * sin(rotation_m) + R[1] * cos(rotation_m);
+    R_prime[0] = R[0] * std::cos(rotation_m) + R[1] * std::sin(rotation_m);
+    R_prime[1] = - R[0] * std::sin(rotation_m) + R[1] * std::cos(rotation_m);
     R_prime[2] = R[2];
     // 2nd rotation
-    R_pprime[0] = R_prime[2] * sin(entranceAngle_m) + 
-                  R_prime[0] * cos(entranceAngle_m);
+    R_pprime[0] = R_prime[2] * std::sin(entranceAngle_m) +
+                  R_prime[0] * std::cos(entranceAngle_m);
     R_pprime[1] = R_prime[1];
-    R_pprime[2] = R_prime[2] * cos(entranceAngle_m) - 
-                  R_prime[0] * sin(entranceAngle_m);
+    R_pprime[2] = R_prime[2] * std::cos(entranceAngle_m) -
+                  R_prime[0] * std::sin(entranceAngle_m);
     return R_pprime;
 
 }
@@ -140,7 +140,7 @@ bool MultipoleTBase::setFringeField(const double &s0,
 }
 
 double MultipoleTBase::getBz(const Vector_t &R) {
-    if (fabs(getFringeDeriv(0, R[2])) < 1.0e-12) {
+    if (std::abs(getFringeDeriv(0, R[2])) < 1.0e-12) {
         return 0.0; 
     }
     double Bz = 0.0;
@@ -154,7 +154,7 @@ double MultipoleTBase::getBz(const Vector_t &R) {
 } 
 
 double MultipoleTBase::getBx(const Vector_t &R) {
-    if (fabs(getFringeDeriv(0, R[2])) < 1.0e-12) {
+    if (std::abs(getFringeDeriv(0, R[2])) < 1.0e-12) {
         return 0.0; 
     }
     double Bx = 0.0;
@@ -169,7 +169,7 @@ double MultipoleTBase::getBx(const Vector_t &R) {
 } 
 
 double MultipoleTBase::getBs(const Vector_t &R) {
-    if (fabs(getFringeDeriv(0, R[2])) < 1.0e-12) {
+    if (std::abs(getFringeDeriv(0, R[2])) < 1.0e-12) {
         return 0.0; 
     }
     double Bs = 0.0;

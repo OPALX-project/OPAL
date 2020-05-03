@@ -81,15 +81,6 @@ void IpplInfo::deleteGlobals() {
 
 std::stack<StaticIpplInfo> IpplInfo::stashedStaticMembers;
 
-//dks base member of IpplInfo initialized to default values
-bool IpplInfo::DKSEnabled = false;
-
-#if defined(IPPL_DKS) && defined(IPPL_DKS_CUDA)
-DKSOPAL *IpplInfo::DKS = new DKSOPAL("Cuda", "-gpu");
-#elseif defined(IPPL_DKS) && defined(IPPL_DKS_OPENCL)
-DKSOPAL *IpplInfo::DKS = new DKSOPAL("OpenCL", "-gpu");
-#endif
-
 // should we use the optimization of deferring guard cell fills until
 // absolutely needed?  Can be changed to true by specifying the
 // flag --defergcfill
@@ -364,27 +355,6 @@ IpplInfo::IpplInfo(int& argc, char**& argv, int removeargs, MPI_Comm mpicomm) {
                 else
                     param_error(argv[i],
                             "Please specify an output level from 0 to 5", 0);
-
-            } else if ( ( strcmp(argv[i], "--use-dks") == 0 ) ) {
-                // Set DKSEnabled to true if OPAL is compiled with DKS.
-	      #ifdef IPPL_DKS
-	      int ndev = 0;
-	      DKS->getDeviceCount(ndev);
-	      if (ndev > 0) {
-		DKSEnabled = true;
-		INFOMSG("DKS enabled OPAL will use GPU where possible");
-		INFOMSG(endl);
-	      } else {
-		DKSEnabled = false;
-		INFOMSG("No GPU device detected! --use-dks flag will have no effect");
-		INFOMSG(endl);
-	      }
-	      //TODO: check if any device is available and disable DKS if there isn't
-	      #else
-	      DKSEnabled = false;
-	      INFOMSG("OPAL compiled without DKS, " << argv[i] << " flag has no effect");
-	      INFOMSG(endl);
-	      #endif
 
             } else if ( ( strcmp(argv[i], "--warn") == 0 ) ) {
                 // Set the output level for warning messages.
@@ -760,9 +730,6 @@ int IpplInfo::mySMPNode() {
 // printVersion: print out a version summary.  If the argument is true,
 // print out a detailed listing, otherwise a summary.
 void IpplInfo::printVersion(void) {
-#ifdef OPAL_DKS
-    INFOMSG("DKS Version " << IPPL_DKS_VERSION << endl);
-#endif
     INFOMSG("IPPL Framework version " << version() << endl);
     INFOMSG("Last build date: " << compileDate() << " by user ");
     INFOMSG(compileUser() << endl);

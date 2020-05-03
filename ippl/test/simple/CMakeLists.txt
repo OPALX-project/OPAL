@@ -13,12 +13,6 @@ link_directories (
 set (IPPL_LIBS ippl)
 set (COMPILE_FLAGS ${OPAL_CXX_FLAGS})
 
-if (ENABLE_DKS)
-   include_directories (${DKS_INCLUDE_DIR})
-   link_directories (${DKS_LIBRARY_DIR})
-   SET (IPPL_LIBS ${IPPL_LIBS} ${DKS_LIBRARY_DIR}/libdks.a)
-endif ()
-
 add_executable (ScalarAdvection ScalarAdvection.cpp)
 target_link_libraries (
     ScalarAdvection

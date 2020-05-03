@@ -7,7 +7,7 @@
 namespace {
     Vector_t normalize(const Vector_t & vec)
     {
-        double length = sqrt(dot(vec, vec));
+        double length = std::sqrt(dot(vec, vec));
 
 #ifndef NOPAssert
         if (length < 1e-12)
@@ -22,13 +22,13 @@ namespace {
 Quaternion::Quaternion(const Tenzor<double, 3> &M):
     Vektor<double, 4>(0.0)
 {
-    (*this)(0) = sqrt(std::max(0.0, 1 + M(0, 0) + M(1, 1) + M(2, 2))) / 2;
-    (*this)(1) = sqrt(std::max(0.0, 1 + M(0, 0) - M(1, 1) - M(2, 2))) / 2;
-    (*this)(2) = sqrt(std::max(0.0, 1 - M(0, 0) + M(1, 1) - M(2, 2))) / 2;
-    (*this)(3) = sqrt(std::max(0.0, 1 - M(0, 0) - M(1, 1) + M(2, 2))) / 2;
-    (*this)(1) = std::abs(M(2, 1) - M(1, 2)) > 0? copysign((*this)(1), M(2, 1) - M(1, 2)): 0.0;
-    (*this)(2) = std::abs(M(0, 2) - M(2, 0)) > 0? copysign((*this)(2), M(0, 2) - M(2, 0)): 0.0;
-    (*this)(3) = std::abs(M(1, 0) - M(0, 1)) > 0? copysign((*this)(3), M(1, 0) - M(0, 1)): 0.0;
+    (*this)(0) = std::sqrt(std::max(0.0, 1 + M(0, 0) + M(1, 1) + M(2, 2))) / 2;
+    (*this)(1) = std::sqrt(std::max(0.0, 1 + M(0, 0) - M(1, 1) - M(2, 2))) / 2;
+    (*this)(2) = std::sqrt(std::max(0.0, 1 - M(0, 0) + M(1, 1) - M(2, 2))) / 2;
+    (*this)(3) = std::sqrt(std::max(0.0, 1 - M(0, 0) - M(1, 1) + M(2, 2))) / 2;
+    (*this)(1) = std::abs(M(2, 1) - M(1, 2)) > 0? std::copysign((*this)(1), M(2, 1) - M(1, 2)): 0.0;
+    (*this)(2) = std::abs(M(0, 2) - M(2, 0)) > 0? std::copysign((*this)(2), M(0, 2) - M(2, 0)): 0.0;
+    (*this)(3) = std::abs(M(1, 0) - M(0, 1)) > 0? std::copysign((*this)(3), M(1, 0) - M(0, 1)): 0.0;
 }
 
 Quaternion getQuaternion(Vector_t u, Vector_t ref)
@@ -39,7 +39,7 @@ Quaternion getQuaternion(Vector_t u, Vector_t ref)
     ref = normalize(ref);
 
     Vector_t axis = cross(u, ref);
-    double normAxis = sqrt(dot(axis,axis));
+    double normAxis = std::sqrt(dot(axis,axis));
 
     if (normAxis < tol) {
         if (std::abs(dot(u, ref) - 1.0) < tol) {
@@ -49,8 +49,8 @@ Quaternion getQuaternion(Vector_t u, Vector_t ref)
         do { // find any vector in plane with ref as normal
             double u = IpplRandom();
             double v = 2 * Physics::pi * IpplRandom();
-            axis(0) = sqrt(1 - u*u) * cos(v);
-            axis(1) = sqrt(1 - u*u) * sin(v);
+            axis(0) = std::sqrt(1 - u*u) * std::cos(v);
+            axis(1) = std::sqrt(1 - u*u) * std::sin(v);
             axis(2) = u;
         } while(std::abs(dot(axis, ref)) > 0.9);
 

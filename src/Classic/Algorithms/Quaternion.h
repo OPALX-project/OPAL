@@ -80,7 +80,7 @@ double Quaternion::Norm() const
 inline
 double Quaternion::length() const
 {
-    return sqrt(this->Norm());
+    return std::sqrt(this->Norm());
 }
 
 inline

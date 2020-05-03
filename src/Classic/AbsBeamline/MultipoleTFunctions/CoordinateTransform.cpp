@@ -93,13 +93,13 @@ std::vector<double> CoordinateTransform::getTransformation() const {
 std::vector<double> CoordinateTransform::getUnitTangentVector(
                                          const double &s) const {
     std::vector<double> result;
-    double prefactor = rho_m * (tanh(s_0_m / lambdaleft_m) -
-                       tanh(-s_0_m / lambdaright_m));
-    result.push_back(-sin((lambdaleft_m * log(cosh((s + s_0_m) / lambdaleft_m))
-                     - lambdaright_m * log(cosh((s - s_0_m) / lambdaright_m)))
+    double prefactor = rho_m * (std::tanh(s_0_m / lambdaleft_m) -
+                       std::tanh(-s_0_m / lambdaright_m));
+    result.push_back(-std::sin((lambdaleft_m * std::log(std::cosh((s + s_0_m) / lambdaleft_m))
+                     - lambdaright_m * std::log(std::cosh((s - s_0_m) / lambdaright_m)))
                      / prefactor));
-    result.push_back(cos((lambdaleft_m * log(cosh((s + s_0_m) / lambdaleft_m))
-                     - lambdaright_m * log(cosh((s - s_0_m) / lambdaright_m)))
+    result.push_back(std::cos((lambdaleft_m * std::log(std::cosh((s + s_0_m) / lambdaleft_m))
+                     - lambdaright_m * std::log(std::cosh((s - s_0_m) / lambdaright_m)))
                      / prefactor));
     return result;
 }
@@ -150,7 +150,7 @@ void CoordinateTransform::calcSCoordinate(const double &xlab,
     //     std::swap(eqn1, eqn2)
     // }
     int n = 0;
-    while (n < 10000 && fabs(s1 - s2) > 1e-12) {
+    while (n < 10000 && std::abs(s1 - s2) > 1e-12) {
         double stemp = (s2 + s1) / 2;
         std::vector<double> r_temp = calcReferenceTrajectory(stemp);
         std::vector<double> shattemp = getUnitTangentVector(stemp);
@@ -194,21 +194,20 @@ void CoordinateTransform::transformFromEntranceCoordinates(
 
 double getUnitTangentVectorX(double s, void *p) {
     struct myParams *params = (struct myParams *)p;
-    double prefactor = params->rho * (tanh(params->s_0 / params->lambdaleft) -
-                       tanh(-params->s_0 / params->lambdaright));
-    return -sin((params->lambdaleft * log(cosh((s + params->s_0)
+    double prefactor = params->rho * (std::tanh(params->s_0 / params->lambdaleft) -
+                       std::tanh(-params->s_0 / params->lambdaright));
+    return -std::sin((params->lambdaleft * std::log(std::cosh((s + params->s_0)
            / params->lambdaleft)) - params->lambdaright
-           * log(cosh((s - params->s_0) / params->lambdaright))) / prefactor);
+           * std::log(std::cosh((s - params->s_0) / params->lambdaright))) / prefactor);
 }
 
 double getUnitTangentVectorY(double s, void *p) {
     struct myParams *params = (struct myParams *)p;
-    double prefactor = params->rho * (tanh(params->s_0 / params->lambdaleft) -
-                       tanh(-params->s_0 / params->lambdaright));
-    return cos((params->lambdaleft * log(cosh((s + params->s_0)
+    double prefactor = params->rho * (std::tanh(params->s_0 / params->lambdaleft) -
+                       std::tanh(-params->s_0 / params->lambdaright));
+    return std::cos((params->lambdaleft * std::log(std::cosh((s + params->s_0)
            / params->lambdaleft)) - params->lambdaright
-           * log(cosh((s - params->s_0) / params->lambdaright))) / prefactor);
+           * std::log(std::cosh((s - params->s_0) / params->lambdaright))) / prefactor);
 }
 
 }
-

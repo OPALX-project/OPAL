@@ -35,8 +35,6 @@
 
 extern Inform *gmsg;
 
-using namespace std;
-
 // Class RFCavity
 // ------------------------------------------------------------------------
 
@@ -137,8 +135,8 @@ bool RFCavity::apply(const Vector_t &R,
         bool outOfBounds = fieldmap_m->getFieldstrength(R, tmpE, tmpB);
         if (outOfBounds) return true;
 
-        E += (scale_m + scaleError_m) * cos(frequency_m * t + phase_m + phaseError_m) * tmpE;
-        B -= (scale_m + scaleError_m) * sin(frequency_m * t + phase_m + phaseError_m) * tmpB;
+        E += (scale_m + scaleError_m) * std::cos(frequency_m * t + phase_m + phaseError_m) * tmpE;
+        B -= (scale_m + scaleError_m) * std::sin(frequency_m * t + phase_m + phaseError_m) * tmpB;
 
     }
     return false;
@@ -157,15 +155,14 @@ bool RFCavity::applyToReferenceParticle(const Vector_t &R,
         bool outOfBounds = fieldmap_m->getFieldstrength(R, tmpE, tmpB);
         if (outOfBounds) return true;
 
-        E += scale_m * cos(frequency_m * t + phase_m) * tmpE;
-        B -= scale_m * sin(frequency_m * t + phase_m) * tmpB;
+        E += scale_m * std::cos(frequency_m * t + phase_m) * tmpE;
+        B -= scale_m * std::sin(frequency_m * t + phase_m) * tmpB;
 
     }
     return false;
 }
 
 void RFCavity::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
-    using Physics::two_pi;
 
     startField_m = 0.0;
     if (bunch == NULL) {
@@ -189,13 +186,13 @@ void RFCavity::initialise(PartBunchBase<double, 3> *bunch, double &startField, d
 
     msg << level2 << getName() << " using file ";
     fieldmap_m->getInfo(&msg);
-    if(std::abs((frequency_m - fieldmap_m->getFrequency()) / frequency_m) > 0.01) {
+    if (std::abs((frequency_m - fieldmap_m->getFrequency()) / frequency_m) > 0.01) {
         errormsg << "FREQUENCY IN INPUT FILE DIFFERENT THAN IN FIELD MAP '" << filename_m << "';\n"
-                 << frequency_m / two_pi * 1e-6 << " MHz <> "
-                 << fieldmap_m->getFrequency() / two_pi * 1e-6 << " MHz; TAKE ON THE LATTER";
+                 << frequency_m / Physics::two_pi * 1e-6 << " MHz <> "
+                 << fieldmap_m->getFrequency() / Physics::two_pi * 1e-6 << " MHz; TAKE ON THE LATTER";
         std::string errormsg_str = Fieldmap::typeset_msg(errormsg.str(), "warning");
         ERRORMSG(errormsg_str << "\n" << endl);
-        if(Ippl::myNode() == 0) {
+        if (Ippl::myNode() == 0) {
             std::ofstream omsg("errormsg.txt", std::ios_base::app);
             omsg << errormsg_str << std::endl;
             omsg.close();
@@ -210,7 +207,6 @@ void RFCavity::initialise(PartBunchBase<double, 3> *bunch,
                           std::shared_ptr<AbstractTimeDependence> freq_atd,
                           std::shared_ptr<AbstractTimeDependence> ampl_atd,
                           std::shared_ptr<AbstractTimeDependence> phase_atd) {
-    using Physics::pi;
 
     RefPartBunch_m = bunch;
 
@@ -219,8 +215,8 @@ void RFCavity::initialise(PartBunchBase<double, 3> *bunch,
     setPhaseModel(phase_atd);
     setFrequencyModel(freq_atd);
 
-    ifstream in(filename_m.c_str());
-    if(!in.good()) {
+    std::ifstream in(filename_m.c_str());
+    if (!in.good()) {
         throw GeneralClassicException("RFCavity::initialise",
                                       "failed to open file '" + filename_m + "', please check if it exists");
     }
@@ -232,8 +228,8 @@ void RFCavity::initialise(PartBunchBase<double, 3> *bunch,
     VrNormal_m = std::unique_ptr<double[]>(new double[num_points_m]);
     DvDr_m     = std::unique_ptr<double[]>(new double[num_points_m]);
 
-    for(int i = 0; i < num_points_m; i++) {
-        if(in.eof()) {
+    for (int i = 0; i < num_points_m; i++) {
+        if (in.eof()) {
             throw GeneralClassicException("RFCavity::initialise",
                                           "not enough data in file '" + filename_m + "', please check the data format");
         }
@@ -242,8 +238,8 @@ void RFCavity::initialise(PartBunchBase<double, 3> *bunch,
         VrNormal_m[i] *= RefPartBunch_m->getQ();
         DvDr_m[i]     *= RefPartBunch_m->getQ();
     }
-    sinAngle_m = sin(angle_m / 180.0 * pi);
-    cosAngle_m = cos(angle_m / 180.0 * pi);
+    sinAngle_m = std::sin(angle_m * Physics::deg2rad);
+    cosAngle_m = std::cos(angle_m * Physics::deg2rad);
 
     if (frequency_name_m != "")
       *gmsg << "* Timedependent frequency model " << frequency_name_m << endl;
@@ -328,18 +324,18 @@ double RFCavity::getPhi0() const {
 }
 
 void RFCavity::setComponentType(std::string name) {
-    if(name == "STANDING") {
+    if (name == "STANDING") {
         type_m = SW;
-    } else if(name == "SINGLEGAP") {
+    } else if (name == "SINGLEGAP") {
         type_m = SGSW;
-    } else if(name != "") {
+    } else if (name != "") {
         std::stringstream errormsg;
         errormsg << getName() << ": CAVITY TYPE " << name << " DOES NOT EXIST;";
         std::string errormsg_str = Fieldmap::typeset_msg(errormsg.str(), "warning");
         ERRORMSG(errormsg_str << "\n" << endl);
-        if(Ippl::myNode() == 0) {
-            ofstream omsg("errormsg.txt", ios_base::app);
-            omsg << errormsg_str << endl;
+        if (Ippl::myNode() == 0) {
+            std::ofstream omsg("errormsg.txt", std::ios_base::app);
+            omsg << errormsg_str << std::endl;
             omsg.close();
         }
         throw GeneralClassicException("RFCavity::setComponentType", errormsg_str);
@@ -349,8 +345,8 @@ void RFCavity::setComponentType(std::string name) {
 
 }
 
-string RFCavity::getComponentType()const {
-    if(type_m == SGSW)
+std::string RFCavity::getComponentType()const {
+    if (type_m == SGSW)
         return std::string("SINGLEGAP");
     else
         return std::string("STANDING");
@@ -371,16 +367,14 @@ double RFCavity::getCycFrequency()const {
 
  */
 void RFCavity::getMomentaKick(const double normalRadius, double momentum[], const double t, const double dtCorrt, const int PID, const double restMass, const int chargenumber) {
-    using Physics::two_pi;
-    using Physics::pi;
-    using Physics::c;
+
     double derivate;
     double Voltage;
 
     double momentum2  = momentum[0] * momentum[0] + momentum[1] * momentum[1] + momentum[2] * momentum[2];
-    double betgam = sqrt(momentum2);
+    double betgam = std::sqrt(momentum2);
 
-    double gamma = sqrt(1.0 + momentum2);
+    double gamma = std::sqrt(1.0 + momentum2);
     double beta = betgam / gamma;
 
     Voltage = spline(normalRadius, &derivate) * scale_m * 1.0e6; // V
@@ -390,35 +384,35 @@ void RFCavity::getMomentaKick(const double normalRadius, double momentum[], cons
 
     double frequency = frequency_m * frequency_td_m->getValue(t);
 
-    if(gapwidth_m > 0.0) {
-        transit_factor = 0.5 * frequency * gapwidth_m * 1.0e-3 / (c * beta);
-        Ufactor = sin(transit_factor) / transit_factor;
+    if (gapwidth_m > 0.0) {
+        transit_factor = 0.5 * frequency * gapwidth_m * 1.0e-3 / (Physics::c * beta);
+        Ufactor = std::sin(transit_factor) / transit_factor;
     }
 
     Voltage *= Ufactor;
+    // rad/s, ns --> rad
+    double nphase = (frequency * (t + dtCorrt) * 1.0e-9) - phi0_m / 180.0 * Physics::pi ;
+    double dgam = Voltage * std::cos(nphase) / (restMass);
 
-    double nphase = (frequency * (t + dtCorrt) * 1.0e-9) - phi0_m / 180.0 * pi ; // rad/s, ns --> rad
-    double dgam = Voltage * cos(nphase) / (restMass);
-
-    double tempdegree = fmod(nphase * 360.0 / two_pi, 360.0);
-    if(tempdegree > 270.0) tempdegree -= 360.0;
+    double tempdegree = std::fmod(nphase * 360.0 / Physics::two_pi, 360.0);
+    if (tempdegree > 270.0) tempdegree -= 360.0;
 
     gamma += dgam;
 
-    double newmomentum2 = pow(gamma, 2) - 1.0;
+    double newmomentum2 = std::pow(gamma, 2) - 1.0;
 
     double pr = momentum[0] * cosAngle_m + momentum[1] * sinAngle_m;
-    double ptheta = sqrt(newmomentum2 - pow(pr, 2));
+    double ptheta = std::sqrt(newmomentum2 - std::pow(pr, 2));
     double px = pr * cosAngle_m - ptheta * sinAngle_m ; // x
     double py = pr * sinAngle_m + ptheta * cosAngle_m; // y
 
-    double rotate = -derivate * (scale_m * 1.0e6) / ((rmax_m - rmin_m) / 1000.0) * sin(nphase) / (frequency * two_pi) / (betgam * restMass / c / chargenumber); // radian
+    double rotate = -derivate * (scale_m * 1.0e6) / ((rmax_m - rmin_m) / 1000.0) * std::sin(nphase) / (frequency * Physics::two_pi) / (betgam * restMass / Physics::c / chargenumber); // radian
 
     /// B field effects
-    momentum[0] =  cos(rotate) * px + sin(rotate) * py;
-    momentum[1] = -sin(rotate) * px + cos(rotate) * py;
+    momentum[0] =  std::cos(rotate) * px + std::sin(rotate) * py;
+    momentum[1] = -std::sin(rotate) * px + std::cos(rotate) * py;
 
-    if(PID == 0) {
+    if (PID == 0) {
 
         Inform  m("OPAL", *gmsg, Ippl::myNode());
 
@@ -434,11 +428,11 @@ double RFCavity::spline(double z, double *za) {
     double splint;
 
     // domain-test and handling of case "1-support-point"
-    if(num_points_m < 1) {
+    if (num_points_m < 1) {
         throw GeneralClassicException("RFCavity::spline",
                                       "no support points!");
     }
-    if(num_points_m == 1) {
+    if (num_points_m == 1) {
         splint = RNormal_m[0];
         *za = 0.0;
         return splint;
@@ -448,13 +442,13 @@ double RFCavity::spline(double z, double *za) {
     int il, ih;
     il = 0;
     ih = num_points_m - 1;
-    while((ih - il) > 1) {
+    while ((ih - il) > 1) {
         int i = (int)((il + ih) / 2.0);
-        if(z < RNormal_m[i]) {
+        if (z < RNormal_m[i]) {
             ih = i;
-        } else if(z > RNormal_m[i]) {
+        } else if (z > RNormal_m[i]) {
             il = i;
-        } else if(z == RNormal_m[i]) {
+        } else if (z == RNormal_m[i]) {
             il = i;
             ih = i + 1;
             break;
@@ -501,12 +495,11 @@ ElementBase::ElementType RFCavity::getType() const {
 }
 
 double RFCavity::getAutoPhaseEstimateFallback(double E0, double t0, double q, double mass) {
-    using Physics::pi;
+
     const double dt = 1e-13;
     const double p0 = Util::getP(E0, mass);
     const double origPhase =getPhasem();
-
-    double dphi = pi / 18;
+    double dphi = Physics::pi / 18;
 
     double phi = 0.0;
     setPhasem(phi);
@@ -531,21 +524,21 @@ double RFCavity::getAutoPhaseEstimateFallback(double E0, double t0, double q, do
     }
 
     phimax = phimax - std::round(phimax / Physics::two_pi) * Physics::two_pi;
-    phimax = fmod(phimax, Physics::two_pi);
+    phimax = std::fmod(phimax, Physics::two_pi);
 
     const int prevPrecision = Ippl::Info->precision(8);
     INFOMSG(level2
             << "estimated phase= " << phimax << " rad = "
             << phimax * Physics::rad2deg << " deg \n"
-            << "Ekin= " << Emax << " MeV" << setprecision(prevPrecision) << "\n" << endl);
+            << "Ekin= " << Emax << " MeV" << std::setprecision(prevPrecision) << "\n" << endl);
 
     setPhasem(origPhase);
     return phimax;
 }
 
 double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const double &q, const double &mass) {
-    vector<double> t, E, t2, E2;
-    std::vector< double > F;
+	std::vector<double> t, E, t2, E2;
+    std::vector<double> F;
     std::vector< std::pair< double, double > > G;
     gsl_spline *onAxisInterpolants;
     gsl_interp_accel *onAxisAccel;
@@ -556,11 +549,11 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
     double dz = 1.0, length = 0.0;
     fieldmap_m->getOnaxisEz(G);
     double begin = (G.front()).first;
-    double end = (G.back()).first;
-    std::unique_ptr<double[]> zvals(new double[G.size()]);
+    double end   = (G.back()).first;
+    std::unique_ptr<double[]> zvals(      new double[G.size()]);
     std::unique_ptr<double[]> onAxisField(new double[G.size()]);
 
-    for(size_t j = 0; j < G.size(); ++ j) {
+    for (size_t j = 0; j < G.size(); ++ j) {
         zvals[j] = G[j].first;
         onAxisField[j] = G[j].second;
     }
@@ -578,7 +571,7 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
 
     F.resize(N);
     double z = begin;
-    for(size_t j = 0; j < N; ++ j, z += dz) {
+    for (size_t j = 0; j < N; ++ j, z += dz) {
         F[j] = gsl_spline_eval(onAxisInterpolants, z, onAxisAccel);
     }
     gsl_spline_free(onAxisInterpolants);
@@ -590,44 +583,44 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
     E2.resize(N, E0);
 
     z = begin + dz;
-    for(unsigned int i = 1; i < N; ++ i, z += dz) {
+    for (unsigned int i = 1; i < N; ++ i, z += dz) {
         E[i] = E[i - 1] + dz * scale_m / mass;
         E2[i] = E[i];
     }
 
-    for(int iter = 0; iter < 10; ++ iter) {
+    for (int iter = 0; iter < 10; ++ iter) {
         A = B = 0.0;
-        for(unsigned int i = 1; i < N; ++ i) {
+        for (unsigned int i = 1; i < N; ++ i) {
             t[i] = t[i - 1] + getdT(i, E, dz, mass);
             t2[i] = t2[i - 1] + getdT(i, E2, dz, mass);
             A += scale_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * getdA(i, t, dz, frequency_m, F);
             B += scale_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * getdB(i, t, dz, frequency_m, F);
         }
 
-        if(std::abs(B) > 0.0000001) {
+        if (std::abs(B) > 0.0000001) {
             tmp_phi = atan(A / B);
         } else {
             tmp_phi = Physics::pi / 2;
         }
-        if(q * (A * sin(tmp_phi) + B * cos(tmp_phi)) < 0) {
+        if (q * (A * sin(tmp_phi) + B * cos(tmp_phi)) < 0) {
             tmp_phi += Physics::pi;
         }
 
-        if(std::abs(phi - tmp_phi) < frequency_m * (t[N - 1] - t[0]) / (10 * N)) {
-            for(unsigned int i = 1; i < N; ++ i) {
+        if (std::abs (phi - tmp_phi) < frequency_m * (t[N - 1] - t[0]) / (10 * N)) {
+            for (unsigned int i = 1; i < N; ++ i) {
                 E[i] = E[i - 1];
                 E[i] += q * scale_m * getdE(i, t, dz, phi, frequency_m, F) ;
             }
             const int prevPrecision = Ippl::Info->precision(8);
             INFOMSG(level2 << "estimated phase= " << tmp_phi << " rad = "
                     << tmp_phi * Physics::rad2deg << " deg \n"
-                    << "Ekin= " << E[N - 1] << " MeV" << setprecision(prevPrecision) << "\n" << endl);
+                    << "Ekin= " << E[N - 1] << " MeV" << std::setprecision(prevPrecision) << "\n" << endl);
 
             return tmp_phi;
         }
         phi = tmp_phi - std::round(tmp_phi / Physics::two_pi) * Physics::two_pi;
 
-        for(unsigned int i = 1; i < N; ++ i) {
+        for (unsigned int i = 1; i < N; ++ i) {
             E[i] = E[i - 1];
             E2[i] = E2[i - 1];
             E[i] += q * scale_m * getdE(i, t, dz, phi, frequency_m, F) ;
@@ -646,16 +639,16 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
         }
 
         double cosine_part = 0.0, sine_part = 0.0;
-        double p0 = sqrt((E0 / mass + 1) * (E0 / mass + 1) - 1);
-        cosine_part += scale_m * cos(frequency_m * t0) * F[0];
-        sine_part += scale_m * sin(frequency_m * t0) * F[0];
+        double p0 = std::sqrt((E0 / mass + 1) * (E0 / mass + 1) - 1);
+        cosine_part += scale_m * std::cos(frequency_m * t0) * F[0];
+        sine_part += scale_m * std::sin(frequency_m * t0) * F[0];
 
-        double totalEz0 = cos(phi) * cosine_part - sin(phi) * sine_part;
+        double totalEz0 = std::cos(phi) * cosine_part - sin(phi) * sine_part;
 
-        if(p0 + q * totalEz0 * (t[1] - t[0]) * Physics::c / mass < 0) {
+        if (p0 + q * totalEz0 * (t[1] - t[0]) * Physics::c / mass < 0) {
             // make totalEz0 = 0
-            tmp_phi = atan(cosine_part / sine_part);
-            if(abs(tmp_phi - phi) > Physics::pi) {
+            tmp_phi = std::atan(cosine_part / sine_part);
+            if (std::abs (tmp_phi - phi) > Physics::pi) {
                 phi = tmp_phi + Physics::pi;
             } else {
                 phi = tmp_phi;
@@ -667,17 +660,17 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
     INFOMSG(level2
             << "estimated phase= " << tmp_phi << " rad = "
             << tmp_phi * Physics::rad2deg << " deg \n"
-            << "Ekin= " << E[N - 1] << " MeV" << setprecision(prevPrecision) << "\n" << endl);
+            << "Ekin= " << E[N - 1] << " MeV" << std::setprecision(prevPrecision) << "\n" << endl);
 
     return phi;
 }
 
-pair<double, double> RFCavity::trackOnAxisParticle(const double &p0,
-                                                   const double &t0,
-                                                   const double &dt,
-                                                   const double &/*q*/,
-                                                   const double &mass,
-                                                   std::ofstream *out) {
+std::pair<double, double> RFCavity::trackOnAxisParticle(const double &p0,
+                                                        const double &t0,
+                                                        const double &dt,
+                                                        const double &/*q*/,
+                                                        const double &mass,
+                                                        std::ofstream *out) {
     Vector_t p(0, 0, p0);
     double t = t0;
     BorisPusher integrator(*RefPartBunch_m->getReference());
@@ -686,25 +679,25 @@ pair<double, double> RFCavity::trackOnAxisParticle(const double &p0,
     const double zend = length_m + startField_m;
 
     Vector_t z(0.0, 0.0, zbegin);
-    double dz = 0.5 * p(2) / sqrt(1.0 + dot(p, p)) * cdt;
+    double dz = 0.5 * p(2) / std::sqrt(1.0 + dot(p, p)) * cdt;
     Vector_t Ef(0.0), Bf(0.0);
 
     if (out) *out << std::setw(18) << z[2]
                   << std::setw(18) << Util::getEnergy(p, mass)
                   << std::endl;
-    while(z(2) + dz < zend && z(2) + dz > zbegin) {
+    while (z(2) + dz < zend && z(2) + dz > zbegin) {
         z /= cdt;
         integrator.push(z, p, dt);
         z *= cdt;
 
         Ef = 0.0;
         Bf = 0.0;
-        if(z(2) >= zbegin && z(2) <= zend) {
+        if (z(2) >= zbegin && z(2) <= zend) {
             applyToReferenceParticle(z, p, t + 0.5 * dt, Ef, Bf);
         }
         integrator.kick(z, p, Ef, Bf, dt);
 
-        dz = 0.5 * p(2) / sqrt(1.0 + dot(p, p)) * cdt;
+        dz = 0.5 * p(2) / std::sqrt(1.0 + dot(p, p)) * cdt;
         z /= cdt;
         integrator.push(z, p, dt);
         z *= cdt;
@@ -715,10 +708,10 @@ pair<double, double> RFCavity::trackOnAxisParticle(const double &p0,
                       << std::endl;
     }
 
-    const double beta = sqrt(1. - 1 / (dot(p, p) + 1.));
-    const double tErr  = (z(2) - zend) / (Physics::c * beta);
+    const double beta = std::sqrt(1. - 1 / (dot(p, p) + 1.));
+    const double tErr = (z(2) - zend) / (Physics::c * beta);
 
-    return pair<double, double>(p(2), t - tErr);
+    return std::pair<double, double>(p(2), t - tErr);
 }
 
 bool RFCavity::isInside(const Vector_t &r) const {

@@ -47,14 +47,7 @@ Tracker::Tracker(const Beamline &beamline, const PartData &reference,
     AbstractTracker(beamline, reference, backBeam, backTrack),
     itsBeamline_m(beamline),
     itsBunch_m(nullptr)
-{
-// #ifdef ENABLE_AMR
-//     if ( Options::amr )
-//         itsBunch = new AmrPartBunch(&reference);
-//     else
-// #endif
-//         itsBunch = new PartBunch(&reference);
-}
+{ }
 
 
 Tracker::Tracker(const Beamline &beamline,
@@ -140,10 +133,10 @@ void Tracker::applyDrift(double length) {
             double px = part.px();
             double py = part.py();
             double pt = part.pt() + 1.0;
-            double lByPz = length / sqrt(pt * pt - px * px - py * py);
+            double lByPz = length / std::sqrt(pt * pt - px * px - py * py);
             part.x() += px * lByPz;
             part.y() += py * lByPz;
-            part.t() += pt * (refTime / sqrt(pt * pt + kin * kin) - lByPz);
+            part.t() += pt * (refTime / std::sqrt(pt * pt + kin * kin) - lByPz);
         }
         itsBunch_m->set_part(part, i);
     }
@@ -209,7 +202,7 @@ void Tracker::applyTransform(const Euclid3D &euclid, double refLength) {
             double px = part.px();
             double py = part.py();
             double pt = part.pt() + 1.0;
-            double pz = sqrt(pt * pt - px * px - py * py);
+            double pz = std::sqrt(pt * pt - px * px - py * py);
 
             part.px() = euclid.M(0, 0) * px + euclid.M(1, 0) * py + euclid.M(2, 0) * pz;
             part.py() = euclid.M(0, 1) * px + euclid.M(1, 1) * py + euclid.M(2, 1) * pz;
@@ -225,7 +218,7 @@ void Tracker::applyTransform(const Euclid3D &euclid, double refLength) {
                 euclid.M(0, 2) * x + euclid.M(1, 2) * y - euclid.M(2, 2) * euclid.getZ();
             double sByPz = s2 / pz;
 
-            double E = sqrt(pt * pt + kin * kin);
+            double E = std::sqrt(pt * pt + kin * kin);
             part.x() = x2 - sByPz * part.px();
             part.y() = y2 - sByPz * part.py();
             part.t() += pt * (refTime / E + sByPz);

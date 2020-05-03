@@ -34,7 +34,6 @@
 #include "AbsBeamline/VariableRFCavityFringeField.h"
 #include "Elements/OpalVariableRFCavityFringeField.h"
 
-extern Inform *gmsg;
 
 const std::string OpalVariableRFCavityFringeField::doc_string =
       std::string("The \"VARIABLE_RF_CAVITY_FRINGE_FIELD\" element defines an RF cavity ")+
@@ -174,15 +173,15 @@ void OpalVariableRFCavityFringeField::update() {
 size_t OpalVariableRFCavityFringeField::convertToUnsigned(double value,
                                                           std::string name) {
     value += unsignedTolerance; // prevent rounding error
-    if (fabs(floor(value) - value) > 2*unsignedTolerance) {
+    if (std::abs(std::floor(value) - value) > 2*unsignedTolerance) {
         throw OpalException("OpalVariableRFCavityFringeField::convertToUnsigned",
                     "Value for "+name+
                     " should be an unsigned int but a real value was found");
     }
-    if (floor(value) < -0.5) {
+    if (std::floor(value) < -0.5) {
         throw OpalException("OpalVariableRFCavityFringeField::convertToUnsigned",
                             "Value for "+name+" should be 0 or more");
     }
-    size_t ret(floor(value));
+    size_t ret(std::floor(value));
     return ret;
 }

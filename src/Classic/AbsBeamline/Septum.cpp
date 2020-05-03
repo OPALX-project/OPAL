@@ -77,11 +77,11 @@ bool Septum::doCheck(PartBunchBase<double, 3> *bunch, const int /*turnnumber*/, 
     for(unsigned int i = 0; i < bunch->getLocalNum(); ++i) {
         const Vector_t& R = bunch->R[i];
 
-        double line1 = fabs(slope * R(0) + intcept1);
-        double line2 = fabs(slope * R(0) + intcept2);
+        double line1 = std::abs(slope * R(0) + intcept1);
+        double line2 = std::abs(slope * R(0) + intcept2);
 
-        if(fabs(R(1)) > line2 &&
-           fabs(R(1)) < line1 &&
+        if(std::abs(R(1)) > line2 &&
+           std::abs(R(1)) < line1 &&
            R(0) > xstart_m    &&
            R(0) < xend_m      &&
            R(1) > ystart_m    &&

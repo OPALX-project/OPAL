@@ -57,8 +57,6 @@
 #include <cmath>
 #include <complex>
 
-using namespace Physics;
-
 
 // Class ThinTracker
 // ------------------------------------------------------------------------
@@ -104,14 +102,14 @@ void ThinTracker::visitBeamBeam(const BeamBeam &bb) {
         //
         // and p_r = (gamma m_0) / q_e is the momentum in eV.
         //
-        const double fk = q_e * NN /
-                          (epsilon_0 * two_pi * itsReference.getP());
+        const double fk = Physics::q_e * NN /
+                          (Physics::epsilon_0 * Physics::two_pi * itsReference.getP());
         const double dx = displacement(0);
         const double dy = displacement(1);
         const double sx2 = std::abs(sigma(0, 0));
         const double sy2 = std::abs(sigma(1, 1));
-        const double sx = sqrt(sx2);
-        const double sy = sqrt(sy2);
+        const double sx = std::sqrt(sx2);
+        const double sy = std::sqrt(sy2);
 
         if(sx2 == sy2) {
             // Limit for sigma(x)^2 = sigma(y)^2.
@@ -128,7 +126,7 @@ void ThinTracker::visitBeamBeam(const BeamBeam &bb) {
                 if(tk > explim) {
                     phi = fk / rho2;
                 } else if(tk != 0.0) {
-                    phi = fk * (1.0 - exp(- tk)) / rho2;
+                    phi = fk * (1.0 - std::exp(- tk)) / rho2;
                 }
 
                 part.px() += xs * phi;
@@ -138,8 +136,8 @@ void ThinTracker::visitBeamBeam(const BeamBeam &bb) {
             }
         } else {
             // Case sigma(x)^2 != sigma(y)^2.
-            const double r = sqrt(2.0 * std::abs(sx2 - sy2));
-            double rk = flip_s * flip_B * fk * sqrt(pi) / r;
+            const double r = std::sqrt(2.0 * std::abs(sx2 - sy2));
+            double rk = flip_s * flip_B * fk * std::sqrt(Physics::pi) / r;
 
             for(unsigned int i = 0; i < itsBunch_m->getLocalNum(); i++) {
                 OpalParticle part = itsBunch_m->get_part(i);
@@ -152,7 +150,7 @@ void ThinTracker::visitBeamBeam(const BeamBeam &bb) {
 
                 double tk = (xs * xs / sx2 + ys * ys / sy2) / 2.0;
                 if(tk <= explim) {
-                    W -= exp(- tk) * Werrf(std::complex<double>(xr * sy / sx, yr * sx / sy));
+                    W -= std::exp(- tk) * Werrf(std::complex<double>(xr * sy / sx, yr * sx / sy));
                 }
 
                 part.px() += rk * ((xs > 0.0) ? std::imag(W) : - std::imag(W));
@@ -188,7 +186,7 @@ void ThinTracker::visitCorrector(const Corrector &corr) {
 
     // Apply kick.
     double scale = (flip_s * flip_B * corr.getElementLength() *
-                    itsReference.getQ() * c) / itsReference.getP();
+                    itsReference.getQ() * Physics::c) / itsReference.getP();
     const BDipoleField &field = corr.getField();
 
     for(unsigned int i = 0; i < itsBunch_m->getLocalNum(); i++) {
@@ -240,7 +238,7 @@ void ThinTracker::visitMonitor(const Monitor &corr) {
 void ThinTracker::visitMultipole(const Multipole &mult) {
     double length = flip_s * mult.getElementLength();
     const BMultipoleField &field = mult.getField();
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
 
     if(length) {
         // Drift through first half of the length.
@@ -278,7 +276,7 @@ void ThinTracker::visitRBend(const RBend &bend) {
     applyDrift(length / 2.0);
 
     // Apply multipole kick and linear approximation to geometric bend.
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     if(length) scale *= length;
 
     for(unsigned int i = 0; i < itsBunch_m->getLocalNum(); i++) {
@@ -323,9 +321,9 @@ void ThinTracker::visitRFCavity(const RFCavity &as) {
     for(unsigned int i = 0; i < itsBunch_m->getLocalNum(); i++) {
         OpalParticle part = itsBunch_m->get_part(i);
         double pt    = (part.pt() + 1.0);
-        double speed = (c * pt) / sqrt(pt * pt + kin * kin);
+        double speed = (Physics::c * pt) / std::sqrt(pt * pt + kin * kin);
         double phase = as.getPhase() + (freq * part.t()) / speed;
-        part.pt() += peak * sin(phase) / pt;
+        part.pt() += peak * std::sin(phase) / pt;
         itsBunch_m->set_part(part, i);
     }
 
@@ -351,7 +349,7 @@ void ThinTracker::visitSBend(const SBend &bend) {
     applyDrift(length / 2.0);
 
     // Apply multipole kick and linear approximation to geometric bend.
-    double scale = (flip_B * itsReference.getQ() * c) / itsReference.getP();
+    double scale = (flip_B * itsReference.getQ() * Physics::c) / itsReference.getP();
     if(length) scale *= length;
 
     for(unsigned int i = 0; i < itsBunch_m->getLocalNum(); i++) {
@@ -416,7 +414,7 @@ void ThinTracker::visitSolenoid(const Solenoid &solenoid) {
     double length = flip_s * solenoid.getElementLength();
 
     if(length) {
-        double ks = (flip_B * itsReference.getQ() * solenoid.getBz() * c) /
+        double ks = (flip_B * itsReference.getQ() * solenoid.getBz() * Physics::c) /
                     (2.0 * itsReference.getP());
 
         if(ks) {
@@ -429,11 +427,11 @@ void ThinTracker::visitSolenoid(const Solenoid &solenoid) {
                 double pt = part.pt() + 1.0;
                 double px = part.px() + ks * part.y();
                 double py = part.py() - ks * part.x();
-                double pz = sqrt(pt * pt - px * px - py * py);
+                double pz = std::sqrt(pt * pt - px * px - py * py);
 
                 double k = ks / pz;
-                double C = cos(k * length);
-                double S = sin(k * length);
+                double C = std::cos(k * length);
+                double S = std::sin(k * length);
 
                 double xt  = C * part.x()  + S * part.y();
                 double yt  = C * part.y()  - S * part.x();

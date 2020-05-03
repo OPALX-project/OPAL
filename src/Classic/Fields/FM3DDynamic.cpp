@@ -10,10 +10,6 @@
 #include <fstream>
 #include <ios>
 
-extern Inform *gmsg;
-
-using namespace std;
-using Physics::mu_0;
 
 FM3DDynamic::FM3DDynamic(std::string aFilename):
     Fieldmap(aFilename),
@@ -29,7 +25,7 @@ FM3DDynamic::FM3DDynamic(std::string aFilename):
     double tmpDouble;
 
     Type = T3DDynamic;
-    ifstream file(Filename_m.c_str());
+    std::ifstream file(Filename_m.c_str());
 
     if(file.good()) {
         bool parsing_passed = true;
@@ -112,7 +108,7 @@ FM3DDynamic::~FM3DDynamic() {
 void FM3DDynamic::readMap() {
     if(FieldstrengthEz_m == NULL) {
 
-        ifstream in(Filename_m.c_str());
+    	std::ifstream in(Filename_m.c_str());
         std::string tmpString;
         const size_t totalSize = num_gridpx_m * num_gridpy_m * num_gridpz_m;
 

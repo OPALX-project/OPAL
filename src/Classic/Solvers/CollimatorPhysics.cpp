@@ -30,10 +30,6 @@
 #include <fstream>
 #include <algorithm>
 
-#ifdef OPAL_DKS
-const int CollimatorPhysics::numpar_m = 13;
-#endif
-
 namespace {
     struct DegraderInsideTester: public InsideTester {
         explicit DegraderInsideTester(ElementBase * el) {
@@ -101,15 +97,6 @@ CollimatorPhysics::CollimatorPhysics(const std::string &name,
     Emax_m(0.0),
     Emin_m(0.0),
     enableRutherford_m(enableRutherford)
-#ifdef OPAL_DKS
-    , curandInitSet_m(0)
-    , ierr_m(0)
-    , maxparticles_m(0)
-    , numparticles_m(0)
-    , numlocalparts_m(0)
-    , par_ptr(NULL)
-    , mem_ptr(NULL)
-#endif
 {
 
     gsl_rng_env_setup();
@@ -145,16 +132,6 @@ CollimatorPhysics::CollimatorPhysics(const std::string &name,
 
     lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getName(), !Options::asciidump));
 
-#ifdef OPAL_DKS
-    if (IpplInfo::DKSEnabled) {
-        dksbase_m.setAPI("Cuda", 4);
-        dksbase_m.setDevice("-gpu", 4);
-        dksbase_m.initDevice();
-        curandInitSet_m = -1;
-    }
-
-#endif
-
     DegraderApplyTimer_m = IpplTimings::getTimer("DegraderApply");
     DegraderLoopTimer_m = IpplTimings::getTimer("DegraderLoop");
     DegraderDestroyTimer_m = IpplTimings::getTimer("DegraderDestroy");
@@ -165,12 +142,6 @@ CollimatorPhysics::~CollimatorPhysics() {
     lossDs_m->save();
     if (rGen_m)
         gsl_rng_free(rGen_m);
-
-#ifdef OPAL_DKS
-    if (IpplInfo::DKSEnabled)
-        clearCollimatorDKS();
-#endif
-
 }
 
 std::string CollimatorPhysics::getName() {
@@ -194,8 +165,7 @@ void  CollimatorPhysics::configureMaterialParameters() {
 }
 
 void CollimatorPhysics::apply(PartBunchBase<double, 3> *bunch,
-                              const std::pair<Vector_t, double> &boundingSphere,
-                              size_t numParticlesInSimulation) {
+                              const std::pair<Vector_t, double> &boundingSphere) {
     IpplTimings::startTimer(DegraderApplyTimer_m);
 
     /*
@@ -219,22 +189,6 @@ void CollimatorPhysics::apply(PartBunchBase<double, 3> *bunch,
     dT_m = bunch->getdT();
     T_m  = bunch->getT();
 
-#ifdef OPAL_DKS
-    if (collshape_m == ElementBase::DEGRADER && IpplInfo::DKSEnabled) {
-        applyDKS(bunch, boundingSphere, numParticlesInSimulation);
-    } else {
-        applyNonDKS(bunch, boundingSphere, numParticlesInSimulation);
-    }
-#else
-    applyNonDKS(bunch, boundingSphere, numParticlesInSimulation);
-#endif
-
-    IpplTimings::stopTimer(DegraderApplyTimer_m);
-}
-
-void CollimatorPhysics::applyNonDKS(PartBunchBase<double, 3> *bunch,
-                                    const std::pair<Vector_t, double> &boundingSphere,
-                                    size_t /*numParticlesInSimulation*/) {
     bool onlyOneLoopOverParticles = ! (allParticleInMat_m);
 
     do {
@@ -267,6 +221,8 @@ void CollimatorPhysics::applyNonDKS(PartBunchBase<double, 3> *bunch,
             onlyOneLoopOverParticles = true;
         }
     } while (onlyOneLoopOverParticles == false);
+
+    IpplTimings::stopTimer(DegraderApplyTimer_m);
 }
 
 void CollimatorPhysics::computeInteraction() {
@@ -621,10 +577,6 @@ bool CollimatorPhysics::stillAlive(PartBunchBase<double, 3> *bunch) {
         //if bunch has moved past degrader free GPU memory
         if (bunchOrigin[2] > zBegin) {
             degraderAlive = false;
-#ifdef OPAL_DKS
-            if (IpplInfo::DKSEnabled)
-                clearCollimatorDKS();
-#endif
         }
     }
 
@@ -715,14 +667,7 @@ void CollimatorPhysics::resetTimeStep() {
 void CollimatorPhysics::gatherStatistics() {
 
     unsigned int locPartsInMat;
-#ifdef OPAL_DKS
-    if (collshape_m == ElementBase::DEGRADER && IpplInfo::DKSEnabled)
-        locPartsInMat = numparticles_m + dksParts_m.size();
-    else
-        locPartsInMat = locParts_m.size();
-#else
     locPartsInMat = locParts_m.size();
-#endif
 
     constexpr unsigned short numItems = 4;
     unsigned int partStatistics[numItems] = {locPartsInMat,
@@ -737,256 +682,3 @@ void CollimatorPhysics::gatherStatistics() {
     rediffusedStat_m = partStatistics[2];
     stoppedPartStat_m = partStatistics[3];
 }
-
-
-#ifdef OPAL_DKS
-
-namespace {
-    bool myCompFDKS(PART_DKS x, PART_DKS y) {
-        return x.label > y.label;
-    }
-}
-
-void CollimatorPhysics::applyDKS(PartBunchBase<double, 3> *bunch,
-                                 const std::pair<Vector_t, double> &boundingSphere,
-                                 size_t numParticlesInSimulation) {
-    bool onlyOneLoopOverParticles = ! (allParticleInMat_m);
-
-    //if firs call to apply setup needed accelerator resources
-    setupCollimatorDKS(bunch, numParticlesInSimulation);
-
-    do {
-        IpplTimings::startTimer(DegraderLoopTimer_m);
-
-        //write particles to GPU if there are any to write
-        if (dksParts_m.size() > 0) {
-            //wrtie data from dksParts_m to the end of mem_ptr (offset = numparticles_m)
-            dksbase_m.writeDataAsync<PART_DKS>(mem_ptr, &dksParts_m[0],
-                                               dksParts_m.size(), -1, numparticles_m);
-
-            //update number of particles on Device
-            numparticles_m += dksParts_m.size();
-
-            //free locParts_m vector
-            dksParts_m.erase(dksParts_m.begin(), dksParts_m.end());
-        }
-
-        //execute CollimatorPhysics kernels on GPU if any particles are there
-        if (numparticles_m > 0) {
-            dksbase_m.callCollimatorPhysics2(mem_ptr, par_ptr, numparticles_m);
-        }
-
-        //sort device particles and get number of particles comming back to bunch
-        int numaddback = 0;
-        if (numparticles_m > 0) {
-            dksbase_m.callCollimatorPhysicsSort(mem_ptr, numparticles_m, numaddback);
-        }
-
-        //read particles from GPU if any are comming out of material
-        if (numaddback > 0) {
-
-            //resize dksParts_m to hold particles that need to go back to bunch
-            dksParts_m.resize(numaddback);
-
-            //read particles that need to be added back to bunch
-            //particles that need to be added back are at the end of Device array
-            dksbase_m.readData<PART_DKS>(mem_ptr, &dksParts_m[0], numaddback,
-                                         numparticles_m - numaddback);
-
-            //add particles back to the bunch
-            for (unsigned int i = 0; i < dksParts_m.size(); ++i) {
-                if (dksParts_m[i].label == -2) {
-                    addBackToBunchDKS(bunch, i);
-                    rediffusedStat_m++;
-                } else {
-                    stoppedPartStat_m++;
-                    lossDs_m->addParticle(dksParts_m[i].Rincol, dksParts_m[i].Pincol,
-                                          -locParts_m[dksParts_m[i].localID].IDincol);
-                }
-            }
-
-            //erase particles that came from device from host array
-            dksParts_m.erase(dksParts_m.begin(), dksParts_m.end());
-
-            //update number of particles on Device
-            numparticles_m -= numaddback;
-        }
-
-        IpplTimings::stopTimer(DegraderLoopTimer_m);
-
-        if (onlyOneLoopOverParticles)
-            copyFromBunchDKS(bunch, boundingSphere);
-
-        T_m += dT_m;
-
-        gatherStatistics();
-
-        //more than one loop only if all the particles are in this degrader
-        if (allParticleInMat_m) {
-            onlyOneLoopOverParticles = (totalPartsInMat_m <= 0);
-        } else {
-            onlyOneLoopOverParticles = true;
-        }
-
-    } while (onlyOneLoopOverParticles == false);
-}
-
-void CollimatorPhysics::addBackToBunchDKS(PartBunchBase<double, 3> *bunch, unsigned i) {
-
-    int id = dksParts_m[i].localID;
-
-    bunch->createWithID(locParts_m[id].IDincol);
-
-    /*
-      Binincol is still <0, but now the particle is rediffused
-      from the material and hence this is not a "lost" particle anymore
-    */
-    unsigned int last = bunch->getLocalNum() - 1;
-    bunch->Bin[last] = 1;
-
-    bunch->R[last]   = dksParts_m[i].Rincol;
-    bunch->P[last]   = dksParts_m[i].Pincol;
-
-    bunch->Q[last]   = locParts_m[id].Qincol;
-    bunch->Bf[last]  = locParts_m[id].Bfincol;
-    bunch->Ef[last]  = locParts_m[id].Efincol;
-    bunch->dt[last]  = locParts_m[id].DTincol;
-
-    dksParts_m[i].label = -1.0;
-
-    ++ rediffusedStat_m;
-
-}
-
-void CollimatorPhysics::copyFromBunchDKS(PartBunchBase<double, 3> *bunch,
-                                         const std::pair<Vector_t, double> &boundingSphere)
-{
-    const size_t nL = bunch->getLocalNum();
-    if (nL == 0) return;
-
-    IpplTimings::startTimer(DegraderDestroyTimer_m);
-    double zmax = boundingSphere.first(2) + boundingSphere.second;
-    double zmin = boundingSphere.first(2) - boundingSphere.second;
-    if (zmax < 0.0 || zmin > element_ref_m->getElementLength()) {
-        IpplTimings::stopTimer(DegraderDestroyTimer_m);
-        return;
-    }
-
-    size_t ne = 0;
-    const unsigned int minNumOfParticlesPerCore = bunch->getMinimumNumberOfParticlesPerCore();
-
-    for (unsigned int i = 0; i < nL; ++i) {
-        if ((bunch->Bin[i] == -1 || bunch->Bin[i] == 1) &&
-            ((nL - ne) > minNumOfParticlesPerCore) &&
-            hitTester_m->checkHit(bunch->R[i], bunch->P[i], dT_m))
-        {
-
-            PART x;
-            x.localID      = numlocalparts_m; //unique id for each particle
-            x.DTincol      = bunch->dt[i];
-            x.IDincol      = bunch->ID[i];
-            x.Binincol     = bunch->Bin[i];
-            x.Rincol       = bunch->R[i];
-            x.Pincol       = bunch->P[i];
-            x.Qincol       = bunch->Q[i];
-            x.Bfincol      = bunch->Bf[i];
-            x.Efincol      = bunch->Ef[i];
-            x.label        = 0;            // alive in matter
-
-            PART_DKS x_gpu;
-            x_gpu.label = x.label;
-            x_gpu.localID = x.localID;
-            x_gpu.Rincol = x.Rincol;
-            x_gpu.Pincol = x.Pincol;
-
-            locParts_m.push_back(x);
-            dksParts_m.push_back(x_gpu);
-
-            ne++;
-            bunchToMatStat_m++;
-            numlocalparts_m++;
-
-            //mark particle to be deleted from bunch as soon as it enters the material
-            bunch->destroy(1, i);
-        }
-    }
-    if (ne > 0) {
-      bunch->performDestroy(true);
-    }
-    IpplTimings::stopTimer(DegraderDestroyTimer_m);
-
-}
-
-void CollimatorPhysics::setupCollimatorDKS(PartBunchBase<double, 3> *bunch,
-                                           size_t numParticlesInSimulation)
-{
-
-    if (curandInitSet_m == -1) {
-
-        //int size = bunch->getLocalNum() + 0.5 * bunch->getLocalNum();
-        //int size = bunch->getTotalNum() + 0.5 * bunch->getTotalNum();
-        int size = numParticlesInSimulation;
-
-        //allocate memory for parameters
-        par_ptr = dksbase_m.allocateMemory<double>(numpar_m, ierr_m);
-
-        //allocate memory for particles
-        mem_ptr = dksbase_m.allocateMemory<PART_DKS>((int)size, ierr_m);
-
-        maxparticles_m = (int)size;
-        numparticles_m = 0;
-        numlocalparts_m = 0;
-
-        //reserve space for locParts_m vector
-        locParts_m.reserve(size);
-
-        //init curand
-        dksbase_m.callInitRandoms(size, Options::seed);
-        curandInitSet_m = 1;
-
-        //create and transfer parameter array
-        Degrader *deg = static_cast<Degrader *>(element_ref_m);
-        double zBegin, zEnd;
-        deg->getDimensions(zBegin, zEnd);
-
-        double params[numpar_m] = {zBegin, zEnd, rho_m, Z_m,
-                                   A_m, A2_c, A3_c, A4_c, A5_c, X0_m, I_m, dT_m, 1e-4
-                                  };
-        dksbase_m.writeDataAsync<double>(par_ptr, params, numpar_m);
-
-    }
-
-}
-
-void CollimatorPhysics::clearCollimatorDKS() {
-    if (curandInitSet_m == 1) {
-        dksbase_m.freeMemory<double>(par_ptr, numpar_m);
-        dksbase_m.freeMemory<PART_DKS>(mem_ptr, maxparticles_m);
-        curandInitSet_m = -1;
-    }
-
-}
-
-void CollimatorPhysics::deleteParticleFromLocalVectorDKS() {
-
-    /*
-      the particle to be deleted (label < 0) are all at the end of
-      the vector.
-    */
-    sort(dksParts_m.begin(), dksParts_m.end(), myCompFDKS);
-
-    // find start of particles to delete
-    std::vector<PART_DKS>::iterator inv = dksParts_m.begin() + stoppedPartStat_m + rediffusedStat_m;
-
-    /*
-      for (; inv != dksParts_m.end(); inv++) {
-      if ((*inv).label == -1)
-      break;
-      }
-    */
-
-    dksParts_m.erase(inv, dksParts_m.end());
-
-}
-
-#endif

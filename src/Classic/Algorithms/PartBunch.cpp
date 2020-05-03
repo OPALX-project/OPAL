@@ -228,7 +228,7 @@ void PartBunch::computeSelfFields(int binNumber) {
          *  \f[ B_z = B_z^{'} = 0 \f]
          *
          */
-        double betaC = sqrt(gammaz * gammaz - 1.0) / gammaz / Physics::c;
+        double betaC = std::sqrt(gammaz * gammaz - 1.0) / gammaz / Physics::c;
 
         Bf(0) = Bf(0) - betaC * Eftmp(1);
         Bf(1) = Bf(1) + betaC * Eftmp(0);
@@ -479,7 +479,7 @@ void PartBunch::computeSelfFields() {
         //calculating mesh-scale factor
         double gammaz = sum(this->P)[2] / getTotalNum();
         gammaz *= gammaz;
-        gammaz = sqrt(gammaz + 1.0);
+        gammaz = std::sqrt(gammaz + 1.0);
         double scaleFactor = 1;
         // double scaleFactor = Physics::c * getdT();
         //and get meshspacings in real units [m]
@@ -619,7 +619,7 @@ void PartBunch::computeSelfFields() {
          *  \f[ B_z = B_z^{'} = 0 \f]
          *
          */
-        double betaC = sqrt(gammaz * gammaz - 1.0) / gammaz / Physics::c;
+        double betaC = std::sqrt(gammaz * gammaz - 1.0) / gammaz / Physics::c;
 
         Bf(0) = Bf(0) - betaC * Ef(1);
         Bf(1) = Bf(1) + betaC * Ef(0);
@@ -795,7 +795,7 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
         // Relativistic E&M says gamma*v/c^2 = gamma*beta/c = sqrt(gamma*gamma-1)/c
         // but because we already transformed E_trans into the moving frame we have to
         // add 1/gamma so we are using the E_trans from the rest frame -DW
-        double betaC = sqrt(gamma * gamma - 1.0) / gamma / Physics::c;
+        double betaC = std::sqrt(gamma * gamma - 1.0) / gamma / Physics::c;
 
         /// calculate B field from E field
         Bf(0) =  betaC * Ef(2);
@@ -988,7 +988,7 @@ void PartBunch::computeSelfFields_cycl(int bin) {
         Eftmp.gather(eg_m, this->R,  IntrplCIC_t());
 
         /// Calculate coefficient
-        double betaC = sqrt(gamma * gamma - 1.0) / gamma / Physics::c;
+        double betaC = std::sqrt(gamma * gamma - 1.0) / gamma / Physics::c;
 
         /// Calculate B_bin field from E_bin field accumulate B and E field
         Bf(0) = Bf(0) + betaC * Eftmp(2);
@@ -1132,9 +1132,6 @@ void PartBunch::updateFields(const Vector_t& /*hr*/, const Vector_t& origin) {
   */
 
 
-
-
-
 inline
 PartBunch::VectorPair_t PartBunch::getEExtrema() {
     const Vector_t maxE = max(eg_m);
@@ -1166,4 +1163,3 @@ void PartBunch::swap(unsigned int i, unsigned int j) {
 Inform &PartBunch::print(Inform &os) {
     return PartBunchBase<double, 3>::print(os);
 }
-

@@ -603,11 +603,7 @@ void TrackRun::setupFieldsolver() {
 
         if (!opal->inRestartRun() && numParticles < numGridPoints
             && fs->getType() != std::string("SAAMG") // in SPIRAL/SAAMG we're meshing the whole domain -DW
-#ifdef ENABLE_AMR
             && !Options::amr)
-#else
-            )
-#endif
         {
             throw OpalException("TrackRun::setupFieldsolver()",
                                 "The number of simulation particles (" + std::to_string(numParticles) + ") \n" +
