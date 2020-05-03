@@ -29,7 +29,8 @@ make
 ```
 
 ## To use UNDULATOR element
-Example to instantiate an undulator/wiggler
+An example to run and test can be found in the folder `src/examples-OPAL-FEL/`
+Here is an example on ho to instantiate an undulator/wiggler
 ```
     // Parameters for full-wave simulation of an undulator/wiggler, based on MITHRA FEL solver by Arya Fallahi.
     // The full-wave solver will start at ELEMEDGE.
