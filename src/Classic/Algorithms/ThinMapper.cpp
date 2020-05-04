@@ -111,8 +111,8 @@ void ThinMapper::visitDrift(const Drift &drift) {
     applyDrift(flip_s * drift.getElementLength());
 }
 
-void ThinMapper::visitUndulator(/* const Undulator &u */) {
-     INFOMSG("Undulator not implemented");
+void ThinMapper::visitUndulator(const Undulator &u) {
+  INFOMSG("Undulator not implemented" << u.getTypeString());
 }
 
 void ThinMapper::visitFlexibleCollimator(const FlexibleCollimator &coll) {

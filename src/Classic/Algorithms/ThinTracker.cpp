@@ -211,8 +211,8 @@ void ThinTracker::visitDrift(const Drift &drift) {
     applyDrift(flip_s * drift.getElementLength());
 }
 
-void ThinTracker::visitUndulator(/* const Undulator &u */) {
-    INFOMSG("Undulator not implemented");
+void ThinTracker::visitUndulator(const Undulator &u ) {
+  INFOMSG("Undulator not implemented" << u.getTypeString());
 }
 
 void ThinTracker::visitFlexibleCollimator(const FlexibleCollimator &coll) {
