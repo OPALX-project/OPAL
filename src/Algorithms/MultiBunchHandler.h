@@ -1,3 +1,30 @@
+//
+// Class MultiBunchHandler
+//   Helper class that stores bunch injection
+//   information like azimuth, radius etc. of first
+//   bunch in multi-bunch mode of ParallelCyclotronTracker.
+//
+// Copyright (c) 2007 - 2014, Jianjun Yang, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2012 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Beam dynamics in high intensity cyclotrons including neighboring bunch effects"
+// and the paper
+// "Beam dynamics in high intensity cyclotrons including neighboring bunch effects:
+// Model, implementation, and application"
+// (https://journals.aps.org/prab/pdf/10.1103/PhysRevSTAB.13.064201)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_MULTI_BUNCH_HANDLER_H
 #define OPAL_MULTI_BUNCH_HANDLER_H
 
@@ -5,10 +32,6 @@
 
 #include <vector>
 
-/* Helper class that stores bunch injection
- * information like azimuth, radius etc. of first
- * bunch in multi-bunch mode of ParallelCyclotronTracker.
- */
 class MultiBunchHandler {
 public:
     struct injection_t {
@@ -132,7 +155,7 @@ private:
     // new bunch for multibunch filename
     std::string onebunch_m;
 
-    /// The number of bunches specified in TURNS of RUN commond
+    /// The number of bunches specified in TURNS of RUN command
     short numBunch_m;
 
     // parameter for reset bin in multi-bunch run

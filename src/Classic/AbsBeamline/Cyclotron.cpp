@@ -1,15 +1,28 @@
 //
-// Definitions for class: Cyclotron
-// Defines the abstract interface for a cyclotron.
-// Class category: AbsBeamline
+// Class Cyclotron
+//   Defines the abstract interface for a cyclotron.
 //
-// Copyright (c) 2008-2019
-// Paul Scherrer Institut, Villigen PSI, Switzerland
-// All rights reserved.
+// Copyright (c) 2007 - 2012, Jianjun Yang and Andreas Adelmann, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2013 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// OPAL is licensed under GNU GPL version 3.
+// Implemented as part of the PhD thesis
+// "Beam dynamics in high intensity cyclotrons including neighboring bunch effects"
+// and the paper
+// "Beam dynamics in high intensity cyclotrons including neighboring bunch effects:
+// Model, implementation, and application"
+// (https://journals.aps.org/prab/pdf/10.1103/PhysRevSTAB.13.064201)
 //
-
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbsBeamline/Cyclotron.h"
 
 #include "AbsBeamline/BeamlineVisitor.h"

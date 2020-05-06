@@ -1,3 +1,29 @@
+//
+// Class PartBinsCyc
+//   Defines a structure to hold energy bins and their
+//   associated data for multi-bunch tracking in cyclotrons
+//
+// Copyright (c) 2010, Jianjun Yang, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2017-2019, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// Implemented as part of the PhD thesis
+// "Beam dynamics in high intensity cyclotrons including neighboring bunch effects"
+// and the paper
+// "Beam dynamics in high intensity cyclotrons including neighboring bunch effects:
+// Model, implementation, and application"
+// (https://journals.aps.org/prab/pdf/10.1103/PhysRevSTAB.13.064201)
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Algorithms/PartBinsCyc.h"
 #include "Physics/Physics.h"
 #include <cfloat>

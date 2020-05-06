@@ -1,11 +1,24 @@
 //
-// Source file of the ThickTracker class
+// Class: ThickTracker
 //   Tracks using thick-lens algorithm.
+// ------------------------------------------------------------------------
 //
 // Copyright (c) 2018, Philippe Ganz, ETH Zürich
 // All rights reserved
 //
-// OPAL is licensed under GNU GPL version 3.
+// Implemented as part of the Master thesis
+// "s-based maps from TPS & Lie-Series applied to Proton-Therapy Gantries"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 
 #include <cfloat>
 #include <fstream>
@@ -18,6 +31,7 @@
 
 #include "Classic/Algorithms/PartData.h"
 
+#include "Structure/DataSink.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 #include "Utilities/Timer.h"

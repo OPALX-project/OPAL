@@ -1,21 +1,30 @@
-// ------------------------------------------------------------------------
-// $RCSfile: ParallelCyclotronTracker.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1 $initialLocalNum_m
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: ParallelCyclotronTracker
-//   The class for tracking particles with 3D space charge in Cyclotrons and FFAs
+// Class ParallelCyclotronTracker
+//   Tracker for OPAL-Cycl
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 2007 - 2014, Jianjun Yang, Andreas Adelmann and Matthias Toggweiler,
+//                            Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2014,        Daniel Winklehner, MIT, Cambridge, MA, USA
+// Copyright (c) 2012 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2007/10/17 04:00:08 $
-// $Author: adelmann, yang, winklehner $
+// Implemented as part of the PhD thesis
+// "Beam dynamics in high intensity cyclotrons including neighboring bunch effects"
+// and the paper
+// "Beam dynamics in high intensity cyclotrons including neighboring bunch effects:
+// Model, implementation, and application"
+// (https://journals.aps.org/prab/pdf/10.1103/PhysRevSTAB.13.064201)
 //
-// ------------------------------------------------------------------------
-
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Algorithms/ParallelCyclotronTracker.h"
 
 #include <fstream>

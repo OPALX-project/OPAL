@@ -1,25 +1,30 @@
-#ifndef CLASSIC_Cyclotron_HH
-#define CLASSIC_Cyclotron_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: Cyclotron.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1.2.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Definitions for class: Cyclotron
+// Class Cyclotron
 //   Defines the abstract interface for a cyclotron.
 //
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
+// Copyright (c) 2007 - 2012, Jianjun Yang and Andreas Adelmann, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2013 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2007/08/01 $
-// $Author: Yang, Adelmann $
+// Implemented as part of the PhD thesis
+// "Beam dynamics in high intensity cyclotrons including neighboring bunch effects"
+// and the paper
+// "Beam dynamics in high intensity cyclotrons including neighboring bunch effects:
+// Model, implementation, and application"
+// (https://journals.aps.org/prab/pdf/10.1103/PhysRevSTAB.13.064201)
 //
-// ------------------------------------------------------------------------
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#ifndef CLASSIC_Cyclotron_HH
+#define CLASSIC_Cyclotron_HH
 
 #include "AbsBeamline/Component.h"
 
