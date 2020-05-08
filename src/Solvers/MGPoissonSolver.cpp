@@ -133,7 +133,7 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
         NDIndex<3> localId = layout_m->getLocalNDIndex();
         if (localId[0].length() != domain_m[0].length() ||
             localId[1].length() != domain_m[1].length()) {
-            throw OpalException("ArbitraryDomain::compute",
+            throw OpalException("MGPoissonSolver::MGPoissonSolver",
                                 "The class ArbitraryDomain only works with parallelization\n"
                                 "in z-direction.\n"
                                 "Please set PARFFTX=FALSE, PARFFTY=FALSE, PARFFTT=TRUE in \n"
