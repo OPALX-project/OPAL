@@ -685,7 +685,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     double fringe = 2 * uParam.lu_;  // Default fringe field length.
     uParam.dist_ = fringe - itsBunch_m->get_maxExtent()[2];  // Bunch-head to undulator distance.
     std::vector<MITHRA::Undulator> undulator;
-    undulator.clear();
     undulator.push_back(uParam);
     msg << "Undulator parameters have been transferred to the full-wave solver." << endl;
 
@@ -706,9 +705,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
 
     MITHRA::Seed seed;
     std::vector<MITHRA::ExtField> extField;
-    extField.clear();
     std::vector<MITHRA::FreeElectronLaser> FEL;
-    FEL.clear();
     
     // Get filename with desired output data.
     std::list<std::string> jobFile = MITHRA::read_file((ur->getFilename()).c_str());
