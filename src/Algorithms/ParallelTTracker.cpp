@@ -688,7 +688,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     undulator.push_back(uParam);
     msg << "Undulator parameters have been transferred to the full-wave solver." << endl;
 
-    MITHRA::Mesh                               mesh;
+    MITHRA::Mesh mesh;
     mesh.initialize();
     mesh.lengthScale_ = 1.0;  // OPAL uses metres
     mesh.timeScale_ = 1.0;  // OPAL uses seconds
