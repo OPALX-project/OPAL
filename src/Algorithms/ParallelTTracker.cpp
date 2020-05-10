@@ -671,8 +671,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     uParam.length_ = ur->getNumPeriods();
     double fringe = 2 * uParam.lu_;  // Default fringe field length.
     uParam.dist_ = fringe - itsBunch_m->get_maxExtent()[2];  // Bunch-head to undulator distance.
-    std::vector<MITHRA::Undulator> undulator;
-    undulator.push_back(uParam);
+    std::vector<MITHRA::Undulator> undulators;
+    undulators.push_back(uParam);
     msg << "Undulator parameters have been transferred to the full-wave solver." << endl;
 
     MITHRA::Mesh mesh;
@@ -689,16 +689,16 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     msg << "Mesh parameters have been transferred to the full-wave solver." << endl;
 
     MITHRA::Seed seed;
-    std::vector<MITHRA::ExtField> extField;
-    std::vector<MITHRA::FreeElectronLaser> FEL;
+    std::vector<MITHRA::ExtField> externalFields;
+    std::vector<MITHRA::FreeElectronLaser> FELs;
     
     // Get filename with desired output data.
     std::list<std::string> jobFile = MITHRA::read_file((ur->getFilename()).c_str());
     MITHRA::cleanJobFile(jobFile);
-    MITHRA::ParseDarius parser (jobFile, mesh, bunch, seed, undulator, extField, FEL);
+    MITHRA::ParseDarius parser (jobFile, mesh, bunch, seed, undulators, externalFields, FELs);
     parser.setJobParameters();
     
-    MITHRA::FdTdSC   fdtdsc   (mesh, bunch, seed, undulator, extField, FEL);
+    MITHRA::FdTdSC   fdtdsc   (mesh, bunch, seed, undulators, externalFields, FELs);
     // Transfer particles to MITHRA full-wave solver.
     MITHRA::Charge charge;
     charge.q = itsBunch_m->getChargePerParticle() / (-Physics::q_e);
@@ -715,8 +715,12 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.show();
     bunch.show();
     seed.show();
-    for (unsigned int i = 0; i < undulator.size(); i++) 	undulator[i].show();
-    for (unsigned int i = 0; i < extField.size();  i++) 	extField[i] .show();
+    for (unsigned int i = 0; i < undulators.size(); i++) {
+        undulators[i].show();
+    }
+    for (unsigned int i = 0; i < externalFields.size();  i++) {
+        externalFields[i].show();
+    }
     
     // Run the full-wave solver
     fdtdsc.solve();
