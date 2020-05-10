@@ -19,18 +19,6 @@
 
 #include "Algorithms/ParallelTTracker.h"
 
-#include <vector>
-#include <iterator>
-#include <stdio.h>
-#include <map>
-#include <sys/time.h>
-#include <complex>
-#include <algorithm>
-#include <utility>
-#include <list>
-#include <mpi.h>
-#include <algorithm>
-#include <sys/stat.h>
 #include <cfloat>
 #include <iostream>
 #include <fstream>
