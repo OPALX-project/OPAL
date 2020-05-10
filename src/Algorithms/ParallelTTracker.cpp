@@ -669,7 +669,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     MITHRA::BunchInitialize bunchInit;
     bunchInit.bunchType_ = "other";
     bunchInit.numberOfParticles_ = itsBunch_m->getTotalNum();
-    bunchInit.cloudCharge_ = itsBunch_m->getTotalNum() * itsBunch_m->getChargePerParticle() / (-1.602e-19);
+    bunchInit.cloudCharge_ = itsBunch_m->getTotalNum() * itsBunch_m->getChargePerParticle() / (-Physics::q_e);
     bunchInit.initialGamma_ = itsBunch_m->get_gamma();
     for (unsigned int d = 0; d < 3; ++d)
         bunchInit.initialDirection_[d] = itsBunch_m->get_pmean()[d];
@@ -719,7 +719,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     MITHRA::FdTdSC   fdtdsc   (mesh, bunch, seed, undulator, extField, FEL);
     // Transfer particles to MITHRA full-wave solver.
     MITHRA::Charge charge;
-    charge.q = itsBunch_m->getChargePerParticle() / (-1.602e-19);
+    charge.q = itsBunch_m->getChargePerParticle() / (-Physics::q_e);
     for (unsigned int i = 0; i < localNum; ++i) {
         for (unsigned int d = 0; d < 3; ++d) {
             charge.rnp[d] = (itsBunch_m->R[i])[d];
