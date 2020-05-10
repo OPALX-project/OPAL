@@ -19,7 +19,6 @@
 
 #include "Algorithms/ParallelTTracker.h"
 
-#include <cfloat>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
