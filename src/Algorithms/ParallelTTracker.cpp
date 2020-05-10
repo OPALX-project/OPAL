@@ -711,9 +711,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     FEL.clear();
     
     // Get filename with desired output data.
-    std::string fname = ur->getFilename();
-    const char *cfname = fname.c_str();
-    std::list<std::string> jobFile = MITHRA::read_file(cfname);
+    std::list<std::string> jobFile = MITHRA::read_file((ur->getFilename()).c_str());
     MITHRA::cleanJobFile(jobFile);
     MITHRA::ParseDarius parser (jobFile, mesh, bunch, seed, undulator, extField, FEL);
     parser.setJobParameters();
