@@ -673,7 +673,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.initialGamma_ = itsBunch_m->get_gamma();
     for (unsigned int d = 0; d < 3; ++d)
         bunchInit.initialDirection_[d] = itsBunch_m->get_pmean()[d];
-    bunchInit.initialDirection_ /= *new double (std::sqrt(dot(itsBunch_m->get_pmean(), itsBunch_m->get_pmean())));
+    bunchInit.initialDirection_ /= euclidean_norm(itsBunch_m->get_pmean());
     MITHRA::Bunch bunch;
     bunch.bunchInit_.push_back(bunchInit);
     msg << "Bunch parameters have been transferred to the full-wave solver." << endl;
@@ -693,12 +693,12 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.initialize();
     mesh.lengthScale_ = 1.0;  // OPAL uses metres
     mesh.timeScale_ = 1.0;  // OPAL uses seconds
-    mesh.meshCenter_ = *new MITHRA::FieldVector<double> (0.0);
+    mesh.meshCenter_ = MITHRA::FieldVector<double> (0.0);
     for (unsigned int d = 0; d < 3; ++d)
         mesh.meshLength_[d] = ur->getMeshLength()[d];
     for (unsigned int d = 0; d < 3; ++d)
         mesh.meshResolution_[d] = ur->getMeshResolution()[d];
-    mesh.totalTime_ = ur->getTotalTime();  // MITHRA should automatically compute this in the future
+    mesh.totalTime_ = ur->getTotalTime();
     mesh.truncationOrder_ = ur->getTruncationOrder();
     mesh.spaceCharge_ = 1;
     mesh.optimizePosition_ = 1;
