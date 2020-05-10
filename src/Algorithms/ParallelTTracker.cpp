@@ -743,9 +743,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
 
     // At the moment OPAL exits after the full-wave solver.
     // In the future the bunch should be transferred back to OPAL
-    itsOpalBeamline_m.switchElementsOff();
-    Monitor::writeStatistics();
-    std::exit(1);
+    globalEOL_m = true;
 }
 
 
