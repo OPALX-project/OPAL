@@ -671,7 +671,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.numberOfParticles_ = itsBunch_m->getTotalNum();
     bunchInit.cloudCharge_ = itsBunch_m->getTotalNum() * itsBunch_m->getChargePerParticle() / (-Physics::q_e);
     bunchInit.initialGamma_ = itsBunch_m->get_gamma();
-    for (unsigned int d = 0; d < 3; ++d)
+    for (unsigned int d = 0; d < 3; ++d) 
         bunchInit.initialDirection_[d] = itsBunch_m->get_pmean()[d];
     bunchInit.initialDirection_ /= euclidean_norm(itsBunch_m->get_pmean());
     MITHRA::Bunch bunch;
@@ -693,10 +693,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     mesh.lengthScale_ = 1.0;  // OPAL uses metres
     mesh.timeScale_ = 1.0;  // OPAL uses seconds
     mesh.meshCenter_ = MITHRA::FieldVector<double> (0.0);
-    for (unsigned int d = 0; d < 3; ++d)
-        mesh.meshLength_[d] = ur->getMeshLength()[d];
-    for (unsigned int d = 0; d < 3; ++d)
-        mesh.meshResolution_[d] = ur->getMeshResolution()[d];
+    mesh.meshLength_ = ur->getMeshLength();
+    mesh.meshResolution_ = ur->getMeshResolution();
     mesh.totalTime_ = ur->getTotalTime();
     mesh.truncationOrder_ = ur->getTruncationOrder();
     mesh.spaceCharge_ = 1;
@@ -719,8 +717,8 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     charge.q = itsBunch_m->getChargePerParticle() / (-Physics::q_e);
     for (unsigned int i = 0; i < localNum; ++i) {
         for (unsigned int d = 0; d < 3; ++d) {
-            charge.rnp[d] = (itsBunch_m->R[i])[d];
-            charge.gbnp[d] = (itsBunch_m->P[i])[d];
+            charge.rnp[d] = itsBunch_m->R[i][d];
+            charge.gbnp[d] = itsBunch_m->P[i][d];
         }
         fdtdsc.chargeVectorn_.push_back(charge);
     }
