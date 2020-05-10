@@ -659,12 +659,11 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     itsBunch_m->print(msg);    
       
     // Start MITHRA full-wave solver.
-    msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-    msg << __FILE__ << " L: " << __LINE__ << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;
-    msg << __FILE__ << " L: " << __LINE__ << " Version 2.0, Copyright 2019, Arya Fallahi" << endl;
-    msg << __FILE__ << " L: " << __LINE__ << " Written by Arya Fallahi, IT'IS Foundation, Zurich, Switzerland" << endl;
-    msg << __FILE__ << " L: " << __LINE__ << " ---- in computeUndulator :::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-    msg << __FILE__ << " L: " << __LINE__ << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
+    msg << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
+    msg << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;
+    msg << " Version 2.0, Copyright 2019, Arya Fallahi" << endl;
+    msg << " Written by Arya Fallahi, IT'IS Foundation, Zurich, Switzerland" << endl;
+    msg << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
 
     MITHRA::BunchInitialize bunchInit;
     bunchInit.bunchType_ = "other";
