@@ -9,6 +9,7 @@
 #include <sstream>
 #include <type_traits>
 #include <functional>
+#include <cmath>
 
 // ------- DON'T DELETE: start --------
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
@@ -22,7 +23,7 @@ namespace Util {
 
     inline
     double getGamma(Vector_t p) {
-        return sqrt(dot(p, p) + 1.0);
+        return std::sqrt(dot(p, p) + 1.0);
     }
 
     inline
@@ -33,7 +34,7 @@ namespace Util {
     inline
     double getP(double E, double mass) {
         double gamma = E / mass + 1;
-        return sqrt(std::pow(gamma, 2.0) - 1.0);
+        return std::sqrt(std::pow(gamma, 2.0) - 1.0);
     }
 
     inline

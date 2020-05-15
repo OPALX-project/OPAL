@@ -103,10 +103,10 @@ OpalCyclotron::OpalCyclotron():
                         ("GEOMETRY", "Boundary Geometry for the Cyclotron");
 
     itsAttr[FMLOWE]     = Attributes::makeReal
-                        ("FMLOWE", "Minimal Energy [MeV] the fieldmap can accept. Used in GAUSSMATCHED", -1.0);
+                        ("FMLOWE", "Minimal Energy [GeV] the fieldmap can accept. Used in GAUSSMATCHED", -1.0);
 
     itsAttr[FMHIGHE]     = Attributes::makeReal
-                        ("FMHIGHE","Maximal Energy [MeV] the fieldmap can accept. Used in GAUSSMATCHED", -1.0);
+                        ("FMHIGHE","Maximal Energy [GeV] the fieldmap can accept. Used in GAUSSMATCHED", -1.0);
 
     itsAttr[SPIRAL]     = Attributes::makeBool
                         ("SPIRAL","Flag whether or not this is a spiral inflector simulation", false);
@@ -217,8 +217,8 @@ void OpalCyclotron::update() {
     cycl->setMinZ(minz);
     cycl->setMaxZ(maxz);
 
-    cycl->setFMLowE(fmLowE);
-    cycl->setFMHighE(fmHighE);
+    cycl->setFMLowE(fmLowE * 1.0e3);    // convert GeV to MeV
+    cycl->setFMHighE(fmHighE * 1.0e3);  // convert GeV to MeV
 
     cycl->setSpiralFlag(spiral_flag);
     cycl->setTrimCoilThreshold(trimCoilThreshold);

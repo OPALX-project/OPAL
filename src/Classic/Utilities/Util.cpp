@@ -10,6 +10,7 @@
 #include <fstream>
 #include <algorithm>
 #include <cctype>
+#include <cmath>
 
 namespace Util {
     std::string getGitRevision() {
@@ -38,7 +39,7 @@ namespace Util {
 
     double erfinv (double x) // inverse error function
     {
-        double x2, r, y;
+        double r;
         int  sign_x;
 
         if (x < -1 || x > 1)
@@ -55,15 +56,14 @@ namespace Util {
         }
 
         if (x <= 0.7) {
-
-            x2 = x * x;
+            double x2 = x * x;
             r =
                 x * (((erfinv_a3 * x2 + erfinv_a2) * x2 + erfinv_a1) * x2 + erfinv_a0);
             r /= (((erfinv_b4 * x2 + erfinv_b3) * x2 + erfinv_b2) * x2 +
                   erfinv_b1) * x2 + erfinv_b0;
         }
         else {
-            y = sqrt (-log ((1 - x) / 2));
+            double y = std::sqrt (-std::log ((1 - x) / 2));
             r = (((erfinv_c3 * y + erfinv_c2) * y + erfinv_c1) * y + erfinv_c0);
             r /= ((erfinv_d2 * y + erfinv_d1) * y + erfinv_d0);
         }
@@ -71,8 +71,8 @@ namespace Util {
         r = r * sign_x;
         x = x * sign_x;
 
-        r -= (erf (r) - x) / (2 / sqrt (M_PI) * exp (-r * r));
-        r -= (erf (r) - x) / (2 / sqrt (M_PI) * exp (-r * r));
+        r -= (std::erf (r) - x) / (2 / std::sqrt (M_PI) * std::exp (-r * r));
+        r -= (std::erf (r) - x) / (2 / std::sqrt (M_PI) * std::exp (-r * r));
 
         return r;
     }
@@ -104,25 +104,25 @@ namespace Util {
         Vector_t tmp = rotation.rotate(Vector_t(0, 0, 1));
         tmp(1) = 0.0;
         // tmp /= euclidean_norm(tmp);
-        double theta = fmod(atan2(tmp(0), tmp(2)) + Physics::two_pi, Physics::two_pi);
+        double theta = std::fmod(std::atan2(tmp(0), tmp(2)) + Physics::two_pi, Physics::two_pi);
 
-        Quaternion rotTheta(cos(0.5 * theta), 0, sin(0.5 * theta), 0);
+        Quaternion rotTheta(std::cos(0.5 * theta), 0, std::sin(0.5 * theta), 0);
         rotation = rotTheta.conjugate() * rotation;
 
         // x axis
         tmp = rotation.rotate(Vector_t(0, 0, 1));
         tmp(0) = 0.0;
         tmp /= euclidean_norm(tmp);
-        double phi = fmod(atan2(-tmp(1), tmp(2)) + Physics::two_pi, Physics::two_pi);
+        double phi = std::fmod(std::atan2(-tmp(1), tmp(2)) + Physics::two_pi, Physics::two_pi);
 
-        Quaternion rotPhi(cos(0.5 * phi), sin(0.5 * phi), 0, 0);
+        Quaternion rotPhi(std::cos(0.5 * phi), std::sin(0.5 * phi), 0, 0);
         rotation = rotPhi.conjugate() * rotation;
 
         // z axis
         tmp = rotation.rotate(Vector_t(1, 0, 0));
         tmp(2) = 0.0;
         tmp /= euclidean_norm(tmp);
-        double psi = fmod(atan2(tmp(1), tmp(0)) + Physics::two_pi, Physics::two_pi);
+        double psi = std::fmod(std::atan2(tmp(1), tmp(0)) + Physics::two_pi, Physics::two_pi);
 
         return Vector_t(theta, phi, psi);
     }
@@ -314,7 +314,7 @@ namespace Util {
                 char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
                 char_array_4[3] = char_array_3[2] & 0x3f;
 
-                for(i = 0; (i <4) ; i++)
+                for (i = 0; (i <4) ; i++)
                     ret += base64_chars[char_array_4[i]];
                 i = 0;
             }
@@ -322,7 +322,7 @@ namespace Util {
 
         if (i)
             {
-                for(j = i; j < 3; j++)
+                for (j = i; j < 3; j++)
                     char_array_3[j] = '\0';
 
                 char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;

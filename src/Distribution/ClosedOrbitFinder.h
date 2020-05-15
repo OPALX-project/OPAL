@@ -442,15 +442,12 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
      *
      */
 
-    value_type E;     // starting energy
-    value_type E_fin; // final    energy
+    value_type E         = cycl_m->getFMLowE(); // starting energy
+    value_type E_fin     = ekin;                // final    energy
+    const value_type eps = dE * 1.0e-1;         // articial constant for stopping criteria
 
-    if ( isTuneMode ) {
-        E     = cycl_m->getFMLowE();
+    if (isTuneMode) {
         E_fin = cycl_m->getFMHighE();
-    } else {
-        E     = ekin;
-        E_fin = ekin;
     }
 
     namespace fs = boost::filesystem;
@@ -474,12 +471,16 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
     container_type init;
     enum Guess {NONE, FIRST, SECOND};
     Guess guess = NONE;
-    value_type rn1, pn1; // normalised r, pr value of previous closed orbit
-    value_type rn2, pn2; // normalised r, pr value of second to previous closed orbit
+    value_type rn1 = 0.0, pn1 = 0.0; // normalised r, pr value of previous closed orbit
+    value_type rn2 = 0.0, pn2 = 0.0; // normalised r, pr value of second to previous closed orbit
 
     // iterate until suggested energy (start with minimum energy)
     // increase energy by dE
-    for (; E <= E_fin ; E+=dE) {
+    *gmsg << level3 << "Start iteration to find closed orbit of energy " << E_fin << " MeV "
+          << "in steps of " << dE << " MeV." << endl;
+
+    for (; E <= E_fin + eps; E += dE) {
+
         error = std::numeric_limits<value_type>::max();
 
         // energy dependent values
@@ -521,11 +522,16 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
         vz_m[0]  = init[2];
         vpz_m[0] = init[3];
 
+        *gmsg << level3 << "    Try to find orbit for " << E << " MeV ... ";
+
         if ( !this->findOrbitOfEnergy_m(E, init, error, accuracy, maxit) ) {
-            *gmsg << "ClosedOrbitFinder didn't converge for energy " + std::to_string(E) + " MeV." << endl;
+            *gmsg << endl << "ClosedOrbitFinder didn't converge for energy " + std::to_string(E) + " MeV." << endl;
             guess = NONE;
             continue;
         }
+
+        *gmsg << level3 << "Successfully found." << endl;
+
         // store for next initial guess
         rn2 = rn1;
         pn2 = pn1;
@@ -563,6 +569,8 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
             out.close();
         }
     }
+
+    *gmsg << level3 << "Finished closed orbit finder successfully." << endl;
 
     /* store last entry, since it is needed in computeVerticalOscillations(), because we have to do the same
      * number of integrations steps there.

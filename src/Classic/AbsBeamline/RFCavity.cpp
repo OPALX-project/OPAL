@@ -369,7 +369,6 @@ double RFCavity::getCycFrequency()const {
 void RFCavity::getMomentaKick(const double normalRadius, double momentum[], const double t, const double dtCorrt, const int PID, const double restMass, const int chargenumber) {
 
     double derivate;
-    double Voltage;
 
     double momentum2  = momentum[0] * momentum[0] + momentum[1] * momentum[1] + momentum[2] * momentum[2];
     double betgam = std::sqrt(momentum2);
@@ -377,15 +376,14 @@ void RFCavity::getMomentaKick(const double normalRadius, double momentum[], cons
     double gamma = std::sqrt(1.0 + momentum2);
     double beta = betgam / gamma;
 
-    Voltage = spline(normalRadius, &derivate) * scale_m * 1.0e6; // V
+    double Voltage = spline(normalRadius, &derivate) * scale_m * 1.0e6; // V
 
-    double transit_factor = 0.0;
     double Ufactor = 1.0;
 
     double frequency = frequency_m * frequency_td_m->getValue(t);
 
     if (gapwidth_m > 0.0) {
-        transit_factor = 0.5 * frequency * gapwidth_m * 1.0e-3 / (Physics::c * beta);
+    	double transit_factor = 0.5 * frequency * gapwidth_m * 1.0e-3 / (Physics::c * beta);
         Ufactor = std::sin(transit_factor) / transit_factor;
     }
 
@@ -543,8 +541,6 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
     gsl_spline *onAxisInterpolants;
     gsl_interp_accel *onAxisAccel;
 
-    unsigned int N;
-    double A, B;
     double phi = 0.0, tmp_phi, dphi = 0.5 * Physics::pi / 180.;
     double dz = 1.0, length = 0.0;
     fieldmap_m->getOnaxisEz(G);
@@ -566,7 +562,7 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
 
     G.clear();
 
-    N = (int)floor(length / dz + 1);
+    unsigned int N = (int)floor(length / dz + 1);
     dz = length / N;
 
     F.resize(N);
@@ -589,7 +585,8 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
     }
 
     for (int iter = 0; iter < 10; ++ iter) {
-        A = B = 0.0;
+        double A = 0.0;
+        double B = 0.0;
         for (unsigned int i = 1; i < N; ++ i) {
             t[i] = t[i - 1] + getdT(i, E, dz, mass);
             t2[i] = t2[i - 1] + getdT(i, E2, dz, mass);

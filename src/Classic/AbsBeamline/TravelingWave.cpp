@@ -268,53 +268,51 @@ ElementBase::ElementType TravelingWave::getType() const {
 double TravelingWave::getAutoPhaseEstimate(const double &E0, const double &t0, const double &q, const double &mass) {
     std::vector<double> t, E, t2, E2;
     std::vector<std::pair<double, double> > F;
-    double Dz;
-    int N1, N2, N3, N4;
-    double A, B;
     double phi = 0.0, tmp_phi, dphi = 0.5 * Physics::pi / 180.;
     double phaseC1 = phaseCore1_m - phase_m;
     double phaseC2 = phaseCore2_m - phase_m;
     double phaseE = phaseExit_m - phase_m;
 
     fieldmap_m->getOnaxisEz(F);
-    if(F.size() == 0) return 0.0;
+    if (F.size() == 0) return 0.0;
 
-    N1 = static_cast<int>(std::floor(F.size() / 4.)) + 1;
-    N2 = F.size() - 2 * N1 + 1;
-    N3 = 2 * N1 + static_cast<int>(std::floor((NumCells_m - 1) * N2 * Mode_m)) - 1;
-    N4 = static_cast<int>(std::round(N2 * Mode_m));
-    Dz = F[N1 + N2].first - F[N1].first;
+    int N1 = static_cast<int>(std::floor(F.size() / 4.)) + 1;
+    int N2 = F.size() - 2 * N1 + 1;
+    int N3 = 2 * N1 + static_cast<int>(std::floor((NumCells_m - 1) * N2 * Mode_m)) - 1;
+    int N4 = static_cast<int>(std::round(N2 * Mode_m));
+    double Dz = F[N1 + N2].first - F[N1].first;
 
     t.resize(N3, t0);
     t2.resize(N3, t0);
     E.resize(N3, E0);
     E2.resize(N3, E0);
-    for(int i = 1; i < N1; ++ i) {
+    for (int i = 1; i < N1; ++ i) {
         E[i] = E0 + (F[i].first + F[i - 1].first) / 2. * scale_m / mass;
         E2[i] = E[i];
     }
-    for(int i = N1; i < N3 - N1 + 1; ++ i) {
+    for (int i = N1; i < N3 - N1 + 1; ++ i) {
         int I = (i - N1) % N2 + N1;
         double Z = (F[I].first + F[I - 1].first) / 2. + std::floor((i - N1) / N2) * Dz;
         E[i] = E0 + Z * scaleCore_m / mass;
         E2[i] = E[i];
     }
-    for(int i = N3 - N1 + 1; i < N3; ++ i) {
+    for (int i = N3 - N1 + 1; i < N3; ++ i) {
         int I = i - N3 - 1 + 2 * N1 + N2;
         double Z = (F[I].first + F[I - 1].first) / 2. + ((NumCells_m - 1) * Mode_m - 1) * Dz;
         E[i] = E0 + Z * scale_m / mass;
         E2[i] = E[i];
     }
 
-    for(int iter = 0; iter < 10; ++ iter) {
-        A = B = 0.0;
-        for(int i = 1; i < N1; ++ i) {
+    for (int iter = 0; iter < 10; ++ iter) {
+        double A = 0.0;
+        double B = 0.0;
+        for (int i = 1; i < N1; ++ i) {
             t[i] = t[i - 1] + getdT(i, i, E, F, mass);
             t2[i] = t2[i - 1] + getdT(i, i, E2, F, mass);
             A += scale_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * getdA(i, i, t, 0.0, F);
             B += scale_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * getdB(i, i, t, 0.0, F);
         }
-        for(int i = N1; i < N3 - N1 + 1; ++ i) {
+        for (int i = N1; i < N3 - N1 + 1; ++ i) {
             int I = (i - N1) % N2 + N1;
             int J = (i - N1 + N4) % N2 + N1;
             t[i] = t[i - 1] + getdT(i, I, E, F, mass);
@@ -322,7 +320,7 @@ double TravelingWave::getAutoPhaseEstimate(const double &E0, const double &t0, c
             A += scaleCore_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * (getdA(i, I, t, phaseC1, F) + getdA(i, J, t, phaseC2, F));
             B += scaleCore_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * (getdB(i, I, t, phaseC1, F) + getdB(i, J, t, phaseC2, F));
         }
-        for(int i = N3 - N1 + 1; i < N3; ++ i) {
+        for (int i = N3 - N1 + 1; i < N3; ++ i) {
             int I = i - N3 - 1 + 2 * N1 + N2;
             t[i] = t[i - 1] + getdT(i, I, E, F, mass);
             t2[i] = t2[i - 1] + getdT(i, I, E2, F, mass);
@@ -330,25 +328,25 @@ double TravelingWave::getAutoPhaseEstimate(const double &E0, const double &t0, c
             B += scale_m * (1. + frequency_m * (t2[i] - t[i]) / dphi) * getdB(i, I, t, phaseE, F);
         }
 
-        if(std::abs(B) > 0.0000001) {
+        if (std::abs(B) > 0.0000001) {
             tmp_phi = std::atan(A / B);
         } else {
             tmp_phi = Physics::pi / 2;
         }
-        if(q * (A * std::sin(tmp_phi) + B * std::cos(tmp_phi)) < 0) {
+        if (q * (A * std::sin(tmp_phi) + B * std::cos(tmp_phi)) < 0) {
             tmp_phi += Physics::pi;
         }
 
-        if(std::abs(phi - tmp_phi) < frequency_m * (t[N3 - 1] - t[0]) / N3) {
-            for(int i = 1; i < N1; ++ i) {
+        if (std::abs(phi - tmp_phi) < frequency_m * (t[N3 - 1] - t[0]) / N3) {
+            for (int i = 1; i < N1; ++ i) {
                 E[i] = E[i - 1] + q * scale_m * getdE(i, i, t, phi, F);
             }
-            for(int i = N1; i < N3 - N1 + 1; ++ i) {
+            for (int i = N1; i < N3 - N1 + 1; ++ i) {
                 int I = (i - N1) % N2 + N1;
                 int J = (i - N1 + N4) % N2 + N1;
                 E[i] = E[i - 1] + q * scaleCore_m * (getdE(i, I, t, phi + phaseC1, F) + getdE(i, J, t, phi + phaseC2, F));
             }
-            for(int i = N3 - N1 + 1; i < N3; ++ i) {
+            for (int i = N3 - N1 + 1; i < N3; ++ i) {
                 int I = i - N3 - 1 + 2 * N1 + N2;
                 E[i] = E[i - 1] + q * scale_m * getdE(i, I, t, phi + phaseE, F);
             }
@@ -362,7 +360,7 @@ double TravelingWave::getAutoPhaseEstimate(const double &E0, const double &t0, c
         phi = tmp_phi - std::round(tmp_phi / Physics::two_pi) * Physics::two_pi;
 
 
-        for(int i = 1; i < N1; ++ i) {
+        for (int i = 1; i < N1; ++ i) {
             E[i] = E[i - 1] + q * scale_m * getdE(i, i, t, phi, F);
             E2[i] = E2[i - 1] + q * scale_m * getdE(i, i, t, phi + dphi, F); // should I use here t or t2?
             t[i] = t[i - 1] + getdT(i, i, E, F, mass);
@@ -370,7 +368,7 @@ double TravelingWave::getAutoPhaseEstimate(const double &E0, const double &t0, c
             E[i] = E[i - 1] + q * scale_m * getdE(i, i, t, phi, F);
             E2[i] = E2[i - 1] + q * scale_m * getdE(i, i, t2, phi + dphi, F);
         }
-        for(int i = N1; i < N3 - N1 + 1; ++ i) {
+        for (int i = N1; i < N3 - N1 + 1; ++ i) {
             int I = (i - N1) % N2 + N1;
             int J = (i - N1 + N4) % N2 + N1;
             E[i] = E[i - 1] + q * scaleCore_m * (getdE(i, I, t, phi + phaseC1, F) + getdE(i, J, t, phi + phaseC2, F));
@@ -380,7 +378,7 @@ double TravelingWave::getAutoPhaseEstimate(const double &E0, const double &t0, c
             E[i] = E[i - 1] + q * scaleCore_m * (getdE(i, I, t, phi + phaseC1, F) + getdE(i, J, t, phi + phaseC2, F));
             E2[i] = E2[i - 1] + q * scaleCore_m * (getdE(i, I, t2, phi + phaseC1 + dphi, F) + getdE(i, J, t2, phi + phaseC2 + dphi, F));
         }
-        for(int i = N3 - N1 + 1; i < N3; ++ i) {
+        for (int i = N3 - N1 + 1; i < N3; ++ i) {
             int I = i - N3 - 1 + 2 * N1 + N2;
             E[i] = E[i - 1] + q * scale_m * getdE(i, I, t, phi + phaseE, F);
             E2[i] = E2[i - 1] + q * scale_m * getdE(i, I, t, phi + phaseE + dphi, F); //concerning t: see above

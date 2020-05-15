@@ -24,7 +24,7 @@ FM1DProfile2::FM1DProfile2(std::string aFilename)
     Type = T1DProfile2;
     std::ifstream file(Filename_m.c_str());
 
-    if(file.good()) {
+    if (file.good()) {
         bool parsing_passed =                               \
                 interpretLine<std::string, int, int, double>(file,
                         tmpString,
@@ -43,7 +43,7 @@ FM1DProfile2::FM1DProfile2(std::string aFilename)
                                  polynomialOrigin_exit_m,
                                  zend_exit_m,
                                  tmpInt);
-        for(int i = 0; (i < num_gridpz + 1) && parsing_passed; ++ i) {
+        for (int i = 0; (i < num_gridpz + 1) && parsing_passed; ++ i) {
             parsing_passed = parsing_passed &&
                              interpretLine<double>(file, tmpDouble);
         }
@@ -54,7 +54,7 @@ FM1DProfile2::FM1DProfile2(std::string aFilename)
         file.close();
         lines_read_m = 0;
 
-        if(!parsing_passed) {
+        if (!parsing_passed) {
             disableFieldmapWarning();
             zend_exit_m = zbegin_entry_m - 1e-3;
             zend_entry_m = zbegin_entry_m - 1e-3;
@@ -80,14 +80,14 @@ FM1DProfile2::FM1DProfile2(std::string aFilename)
 }
 
 FM1DProfile2::~FM1DProfile2() {
-    if(EngeCoefs_entry_m != NULL) {
+    if (EngeCoefs_entry_m != NULL) {
         delete[] EngeCoefs_entry_m;
         delete[] EngeCoefs_exit_m;
     }
 }
 
 void FM1DProfile2::readMap() {
-    if(EngeCoefs_entry_m == NULL) {
+    if (EngeCoefs_entry_m == NULL) {
         double tolerance = 1e-8;
 
         std::ifstream in(Filename_m.c_str());
@@ -116,15 +116,15 @@ void FM1DProfile2::readMap() {
 
         RealValues = new double[num_gridpz + 1];
 
-        for(int i = 0; i < num_gridpz + 1; ++i) {
+        for (int i = 0; i < num_gridpz + 1; ++i) {
             interpretLine<double>(in, RealValues[i]);
-            if(RealValues[i] > maxValue) maxValue = RealValues[i];
-            else if(RealValues[i] < minValue) minValue = RealValues[i];
+            if (RealValues[i] > maxValue) maxValue = RealValues[i];
+            else if (RealValues[i] < minValue) minValue = RealValues[i];
         }
         in.close();
 
         // normalise the values //
-        for(int i = 0; i < num_gridpz + 1; ++i)
+        for (int i = 0; i < num_gridpz + 1; ++i)
             RealValues[i] = (RealValues[i] - minValue) / (maxValue - minValue);
 
         // find begin of entry fringe field //
@@ -152,11 +152,11 @@ void FM1DProfile2::readMap() {
 
 
         double first = polynomialOrigin_entry_m - zbegin_entry_m - dZ * (num_gridp_before_fringe_entry + 1);
-        for(int i = 0; i < num_gridp_fringe_entry; ++i) {
+        for (int i = 0; i < num_gridp_fringe_entry; ++i) {
             double powerOfZ = 1.;
             double Z = (first - dZ * i) / gapHeight_m;
             rightHandSide[i] = log(1. / RealValues[num_gridp_before_fringe_entry + i + 1] - 1.);
-            for(int j = 0; j < polynomialOrder_entry_m + 1; ++j) {
+            for (int j = 0; j < polynomialOrder_entry_m + 1; ++j) {
                 leastSquareMatrix[i * (polynomialOrder_entry_m + 1) + j] = powerOfZ;
                 powerOfZ *= Z;
             }
@@ -165,11 +165,11 @@ void FM1DProfile2::readMap() {
         QRDecomposition::solve(leastSquareMatrix, EngeCoefs_entry_m, rightHandSide, num_gridp_fringe_entry, polynomialOrder_entry_m + 1);
 
         first = polynomialOrigin_exit_m - zbegin_entry_m - dZ * (num_gridp_before_fringe_exit + 1);
-        for(int i = 0; i < num_gridp_fringe_exit; ++i) {
+        for (int i = 0; i < num_gridp_fringe_exit; ++i) {
             double powerOfZ = 1.;
             double Z = (dZ * i - first) / gapHeight_m;
             rightHandSide[i] = log(1. / RealValues[num_gridp_before_fringe_exit + i + 1] - 1.);
-            for(int j = 0; j < polynomialOrder_exit_m + 1; ++j) {
+            for (int j = 0; j < polynomialOrder_exit_m + 1; ++j) {
                 leastSquareMatrix[i * (polynomialOrder_exit_m + 1) + j] = powerOfZ;
                 powerOfZ *= Z;
             }
@@ -192,7 +192,7 @@ void FM1DProfile2::readMap() {
 }
 
 void FM1DProfile2::freeMap() {
-    if(EngeCoefs_entry_m != NULL) {
+    if (EngeCoefs_entry_m != NULL) {
 
         delete[] EngeCoefs_entry_m;
         delete[] EngeCoefs_exit_m;
@@ -217,20 +217,19 @@ bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vecto
     RExit(2) = (R(0) - xExit_m) * sinExitRotation_m + (R(2) + zbegin_entry_m - zExit_m) * cosExitRotation_m + polynomialOrigin_exit_m;
 
 
-    if(REntrance(2) >= zend_entry_m && RExit(2) <= zbegin_exit_m) {
+    if (REntrance(2) >= zend_entry_m && RExit(2) <= zbegin_exit_m) {
         strength = Vector_t(1.0, 0.0, 0.0);
     } else {
-        double S, dSdz, d2Sdz2 = 0.0;
-        double expS, f, dfdz, d2fdz2;
+        double d2Sdz2 = 0.0;
         double z;
         double *EngeCoefs;
         int polynomialOrder;
         info(0) = 1.0;
-        if(REntrance(2) >= zbegin_entry_m && REntrance(2) < zend_entry_m) {
+        if (REntrance(2) >= zbegin_entry_m && REntrance(2) < zend_entry_m) {
             z = -(REntrance(2) - polynomialOrigin_entry_m) / gapHeight_m;
             EngeCoefs = EngeCoefs_entry_m;
             polynomialOrder = polynomialOrder_entry_m;
-        } else if(RExit(2) > zbegin_exit_m && RExit(2) <= zend_exit_m) {
+        } else if (RExit(2) > zbegin_exit_m && RExit(2) <= zend_exit_m) {
             z = (RExit(2) - polynomialOrigin_exit_m) / gapHeight_m;
             EngeCoefs = EngeCoefs_exit_m;
             polynomialOrder = polynomialOrder_exit_m;
@@ -239,23 +238,23 @@ bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vecto
             return true;
         }
 
-        S = EngeCoefs[polynomialOrder] * z;
+        double S = EngeCoefs[polynomialOrder] * z;
         S += EngeCoefs[polynomialOrder - 1];
-        dSdz = polynomialOrder * EngeCoefs[polynomialOrder];
+        double dSdz = polynomialOrder * EngeCoefs[polynomialOrder];
 
-        for(int i = polynomialOrder - 2; i >= 0; i--) {
+        for (int i = polynomialOrder - 2; i >= 0; i--) {
             S = S * z + EngeCoefs[i];
             dSdz = dSdz * z + (i + 1) * EngeCoefs[i + 1];
             d2Sdz2 = d2Sdz2 * z + (i + 2) * (i + 1) * EngeCoefs[i + 2];
         }
-        expS = std::exp(S);
-        f = 1.0 / (1.0 + expS);
-        if(f > 1.e-30) {
+        double expS = std::exp(S);
+        double f = 1.0 / (1.0 + expS);
+        if (f > 1.e-30) {
             // First derivative of Enge function, f.
-            dfdz = - f * ((f * expS) * dSdz);
+            double dfdz = - f * ((f * expS) * dSdz);
 
             // Second derivative of Enge functioin, f.
-            d2fdz2 = ((-d2Sdz2 - dSdz * dSdz * (1. - 2. * (expS * f))) * (f * expS) * f) / (gapHeight_m * gapHeight_m);
+            double d2fdz2 = ((-d2Sdz2 - dSdz * dSdz * (1. - 2. * (expS * f))) * (f * expS) * f) / (gapHeight_m * gapHeight_m);
 
             strength(0) = f;
             strength(1) = dfdz / gapHeight_m;
@@ -272,7 +271,7 @@ bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vecto
     //    info = Vector_t(0.0);
     //    const Vector_t tmpR(R(0), R(1), R(2) + zbegin_entry_m);
     //
-    //    if(tmpR(2) >= zend_entry_m && tmpR(2) <= exit_slope_m * tmpR(0) + zbegin_exit_m) {
+    //    if (tmpR(2) >= zend_entry_m && tmpR(2) <= exit_slope_m * tmpR(0) + zbegin_exit_m) {
     //        strength = Vector_t(1.0, 0.0, 0.0);
     //        info(0) = 3.0;
     //    } else {
@@ -281,12 +280,12 @@ bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vecto
     //        double z;
     //        double *EngeCoefs;
     //        int polynomialOrder;
-    //        if(tmpR(2) >= zbegin_entry_m && tmpR(2) < zend_entry_m) {
+    //        if (tmpR(2) >= zbegin_entry_m && tmpR(2) < zend_entry_m) {
     //            z = -(tmpR(2) - polynomialOrigin_entry_m) / gapHeight_m;
     //            EngeCoefs = EngeCoefs_entry_m;
     //            polynomialOrder = polynomialOrder_entry_m;
     //            info(0) = 1.0;
-    //        } else if(tmpR(2) > exit_slope_m * tmpR(0) + zbegin_exit_m && tmpR(2) <= exit_slope_m * tmpR(0) + zend_exit_m) {
+    //        } else if (tmpR(2) > exit_slope_m * tmpR(0) + zbegin_exit_m && tmpR(2) <= exit_slope_m * tmpR(0) + zend_exit_m) {
     //            z = (tmpR(2) - exit_slope_m * tmpR(0) - polynomialOrigin_exit_m) / sqrt(exit_slope_m * exit_slope_m + 1) / gapHeight_m;
     //            EngeCoefs = EngeCoefs_exit_m;
     //            polynomialOrder = polynomialOrder_exit_m;
@@ -299,14 +298,14 @@ bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vecto
     //        S += EngeCoefs[polynomialOrder - 1];
     //        dSdz = polynomialOrder * EngeCoefs[polynomialOrder];
     //
-    //        for(int i = polynomialOrder - 2; i >= 0; i--) {
+    //        for (int i = polynomialOrder - 2; i >= 0; i--) {
     //            S = S * z + EngeCoefs[i];
     //            dSdz = dSdz * z + (i + 1) * EngeCoefs[i+1];
     //            d2Sdz2 = d2Sdz2 * z + (i + 2) * (i + 1) * EngeCoefs[i+2];
     //        }
     //        expS = exp(S);
     //        f = 1.0 / (1.0 + expS);
-    //        if(f > 1.e-30) {
+    //        if (f > 1.e-30) {
     //            dfdz = - f * ((f * expS) * dSdz); // first derivative of f
     //            d2fdz2 = ((-d2Sdz2 - dSdz * dSdz * (1. - 2. * (expS * f))) * (f * expS) * f) / (gapHeight_m * gapHeight_m);  // second derivative of f
     //
@@ -372,20 +371,20 @@ namespace QRDecomposition {
         double *tempVector = new double[M];
         double *residuum = new double[M];
 
-        for(int i = 0; i < M; ++i) {
-            for(int j = 0; j < N; ++j)
+        for (int i = 0; i < M; ++i) {
+            for (int j = 0; j < N; ++j)
                 R[i * N + j] = Matrix[i * N + j];
             tempVector[i] = rightHandSide[i];
         }
 
         /* using Givens rotations */
-        for(int i = 0; i < N; ++i) {
-            for(int j = i + 1; j < M; ++j) {
+        for (int i = 0; i < N; ++i) {
+            for (int j = i + 1; j < M; ++j) {
                 len = std::sqrt(R[j * N + i] * R[j * N + i] + R[i * (N + 1)] * R[i * (N + 1)]);
                 sinphi = -R[j * N + i] / len;
                 cosphi = R[i * (N + 1)] / len;
 
-                for(int k = 0; k < N; ++k) {
+                for (int k = 0; k < N; ++k) {
                     tempValue = cosphi * R[ i * N + k] - sinphi * R[ j * N + k];
                     R[j * N + k] = sinphi * R[ i * N + k] + cosphi * R[ j * N + k];
                     R[i * N + k] = tempValue;
@@ -396,52 +395,52 @@ namespace QRDecomposition {
         /* one step of iterative refinement */
 
         //     cout << "A^T*b" << endl;
-        for(int i = 0; i < N; ++i) {     /* A^T*b */
+        for (int i = 0; i < N; ++i) {     /* A^T*b */
             tempValue = 0.0;
-            for(int j = 0; j < M; ++j) {
+            for (int j = 0; j < M; ++j) {
                 tempValue += Matrix[j * N + i] * rightHandSide[j];
             }
             Solution[i] = tempValue;
         }
         //     cout << "R^-TA^T*b" << endl;
-        for(int i = 0; i < N; ++i) {    /* R^-T*A^T*b */
+        for (int i = 0; i < N; ++i) {    /* R^-T*A^T*b */
             tempValue = 0.0;
-            for(int j = 0; j < i; ++j)
+            for (int j = 0; j < i; ++j)
                 tempValue += R[j * N + i] * residuum[j];
             residuum[i] = (Solution[i] - tempValue) / R[i * (N + 1)];
         }
         //     cout << "R^-1R^-TA^T*b" << endl;
-        for(int i = N - 1; i >= 0; --i) { /* R^-1*R^-T*A^T*b */
+        for (int i = N - 1; i >= 0; --i) { /* R^-1*R^-T*A^T*b */
             tempValue = 0.0;
-            for(int j = N - 1; j > i; --j)
+            for (int j = N - 1; j > i; --j)
                 tempValue += R[i * N + j] * Solution[j];
             Solution[i] = (residuum[i] - tempValue) / R[i * (N + 1)];
         }
         //     cout << "b - A*x" << endl;
-        for(int i = 0; i < M; ++i) {
+        for (int i = 0; i < M; ++i) {
             tempValue = 0.0;
-            for(int j = 0; j < N; ++j)
+            for (int j = 0; j < N; ++j)
                 tempValue += Matrix[i * N + j] * Solution[j];
             residuum[i] = rightHandSide[i] - tempValue;
         }
         //     cout << "A^T*r" << endl;
-        for(int i = 0; i < N; ++i) {
+        for (int i = 0; i < N; ++i) {
             tempValue = 0.0;
-            for(int j = 0; j < M; ++j)
+            for (int j = 0; j < M; ++j)
                 tempValue += Matrix[j * N + i] * residuum[j];
             tempVector[i] = tempValue;
         }
         //     cout << "R^-TA^T*r" << endl;
-        for(int i = 0; i < N; ++i) {
+        for (int i = 0; i < N; ++i) {
             tempValue = 0.0;
-            for(int j = 0; j < i; ++j)
+            for (int j = 0; j < i; ++j)
                 tempValue += R[j * N + i] * residuum[j];
             residuum[i] = (tempVector[i] - tempValue) / R[i * (N + 1)];
         }
         //     cout << "R^-1R^-TA^T*r" << endl;
-        for(int i = N - 1; i >= 0; --i) {
+        for (int i = N - 1; i >= 0; --i) {
             tempValue = 0.0;
-            for(int j = N - 1; j > i; --j)
+            for (int j = N - 1; j > i; --j)
                 tempValue += R[i * N + j] * tempVector[j];
             tempVector[i] = (residuum[i] - tempValue) / R[i * (N + 1)];
             Solution[i] += tempVector[i];

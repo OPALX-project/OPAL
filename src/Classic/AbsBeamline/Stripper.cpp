@@ -101,7 +101,7 @@ bool Stripper::doPreCheck(PartBunchBase<double, 3> *bunch) {
     double ymax = std::max(std::abs(rmin(1)), std::abs(rmax(1)));
     double rbunch_max = std::hypot(xmax, ymax);
 
-    if(rbunch_max > rmin_m - 10.0) {
+    if (rbunch_max > rmin_m - 10.0) {
         return true;
     }
     return false;
@@ -116,13 +116,13 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
     size_t tempnum = bunch->getLocalNum();
 
     Inform gmsgALL("OPAL", INFORM_ALL_NODES);
-    for(unsigned int i = 0; i < tempnum; ++i) {
-        if(bunch->PType[i] != ParticleType::REGULAR) continue;
+    for (unsigned int i = 0; i < tempnum; ++i) {
+        if (bunch->PType[i] != ParticleType::REGULAR) continue;
 
         double tangle = calculateIncidentAngle(bunch->P[i](0), bunch->P[i](1));
         changeWidth(bunch, i, tstep, tangle);
         int pflag = checkPoint(bunch->R[i](0), bunch->R[i](1));
-        if(pflag == 0) continue;
+        if (pflag == 0) continue;
 
         // dist1 > 0, right hand, dt > 0; dist1 < 0, left hand, dt < 0
         double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m * 1.0e-3; // [m]
@@ -142,7 +142,7 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
         } else {
             gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i] << " collide in stripper " << getName() << endl;
             // change charge and mass of PartData when the reference particle hits the stripper.
-            if(bunch->ID[i] == 0)
+            if (bunch->ID[i] == 0)
                 bunch->setPType(ParticleType::STRIPPED);
 
             // change the mass and charge
@@ -161,7 +161,7 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
                 bunch->M[index] = bunch->M[i];
                 // once the particle is stripped, change PType from 0 to 1 as a flag so as to avoid repetitive stripping.
                 bunch->PType[index] = ParticleType::STRIPPED;
-                if(bunch->weHaveBins())
+                if (bunch->weHaveBins())
                     bunch->Bin[index] = bunch->Bin[i];
 
                 count++;
@@ -175,7 +175,7 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
 bool Stripper::doFinaliseCheck(PartBunchBase<double, 3> *bunch, bool flagNeedUpdate) {
     reduce(&flagNeedUpdate, &flagNeedUpdate + 1, &flagNeedUpdate, OpBitwiseOrAssign());
 
-    if(!stop_m){
+    if (!stop_m){
         // change charge and mass of PartData when the reference particle hits the stripper.
         if (bunch->getPType() == ParticleType::STRIPPED) {
             bunch->resetM(opmass_m * 1.0e9); // GeV -> eV

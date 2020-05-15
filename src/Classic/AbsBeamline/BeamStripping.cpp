@@ -21,8 +21,9 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 
-#include "AbsBeamline/BeamlineVisitor.h"
 #include "AbsBeamline/BeamStripping.h"
+
+#include "AbsBeamline/BeamlineVisitor.h"
 #include "AbsBeamline/Cyclotron.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Fields/Fieldmap.h"
@@ -30,22 +31,19 @@
 #include "Solvers/BeamStrippingPhysics.hh"
 #include "Solvers/ParticleMatterInteractionHandler.hh"
 #include "Utilities/LogicalError.h"
-#include "Utilities/Options.h"
-#include "Utilities/Util.h"
 #include "Utilities/GeneralClassicException.h"
 
-#include <memory>
 #include <fstream>
 #include <iostream>
 #include <cmath>
-#include <algorithm>
+#include <cstdio>
 
 #include "Ippl.h"
 
 #include "gsl/gsl_spline.h"
 #include "gsl/gsl_interp.h"
 
-#define CHECK_BSTP_FSCANF_EOF(arg) if(arg == EOF)\
+#define CHECK_BSTP_FSCANF_EOF(arg) if (arg == EOF)\
 throw GeneralClassicException("BeamStripping::getPressureFromFile",\
                               "fscanf returned EOF at " #arg);
 
@@ -104,7 +102,7 @@ void BeamStripping::setPressure(double pressure) {
 }
 
 double BeamStripping::getPressure() const {
-    if(pressure_m > 0.0)
+    if (pressure_m > 0.0)
         return pressure_m;
     else {
         throw LogicalError("BeamStripping::getPressure",
@@ -117,7 +115,7 @@ void BeamStripping::setTemperature(double temperature) {
 }
 
 double BeamStripping::getTemperature() const {
-    if(temperature_m > 0.0)
+    if (temperature_m > 0.0)
         return temperature_m;
     else {
         throw LogicalError("BeamStripping::getTemperature",
@@ -138,7 +136,7 @@ void BeamStripping::setPScale(double ps) {
 }
 
 double BeamStripping::getPScale() const {
-    if(pscale_m > 0.0)
+    if (pscale_m > 0.0)
         return pscale_m;
     else {
         throw LogicalError("BeamStripping::getPScale",
@@ -151,7 +149,7 @@ void BeamStripping::setResidualGas(std::string gas) {
 }
 
 std::string BeamStripping::getResidualGas() const {
-    if(gas_m == "H2" || gas_m == "AIR")
+    if (gas_m == "H2" || gas_m == "AIR")
         return gas_m;
     else {
         throw GeneralClassicException("BeamStripping::getResidualGas",
@@ -184,10 +182,9 @@ bool BeamStripping::checkBeamStripping(PartBunchBase<double, 3> *bunch, Cyclotro
     maxz_m = 1000 * cycl->getMaxZ();
     minz_m = 1000 * cycl->getMinZ();
 
-    int pflag = 0;
     size_t tempnum = bunch->getLocalNum();
     for (unsigned int i = 0; i < tempnum; ++i) {
-        pflag = checkPoint(bunch->R[i](0), bunch->R[i](1), bunch->R[i](2));
+        int pflag = checkPoint(bunch->R[i](0), bunch->R[i](1), bunch->R[i](2));
         if ( (pflag != 0) && (bunch->Bin[i] != -1) )
             flagNeedUpdate = true;
     }
@@ -224,7 +221,7 @@ void BeamStripping::initialise(PartBunchBase<double, 3> *bunch, const double &sc
     for (size_t i = 0; i < bunch->getLocalNum(); ++i) {
         bunch->M[i] = bunch->getM()*1E-9;
         bunch->Q[i] = bunch->getQ() * Physics::q_e;
-        if(bunch->weHaveBins())
+        if (bunch->weHaveBins())
             bunch->Bin[bunch->getLocalNum()-1] = bunch->Bin[i];
     }
 }
@@ -271,7 +268,7 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
 
     double pressure = 0.0;
 
-    if(pmapfn_m != "") {
+    if (pmapfn_m != "") {
         const double rad = std::sqrt(x * x + y * y);
         const double xir = (rad - PP.rmin) / PP.delr;
 
@@ -282,13 +279,13 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
         // wr2 : the relative distance to the outer path radius
         const double wr2 = 1.0 - wr1;
 
-        const double tempv = atan(y / x);
+        const double tempv = std::atan(y / x);
         double tet = tempv;
-        if((x < 0) && (y >= 0)) tet = Physics::pi + tempv;
-        else if((x < 0) && (y <= 0)) tet = Physics::pi + tempv;
-        else if((x > 0) && (y <= 0)) tet = Physics::two_pi + tempv;
-        else if((x == 0) && (y > 0)) tet = Physics::pi / 2.0;
-        else if((x == 0) && (y < 0)) tet = 1.5 * Physics::pi;
+        if      ((x < 0) && (y >= 0)) tet = Physics::pi + tempv;
+        else if ((x < 0) && (y <= 0)) tet = Physics::pi + tempv;
+        else if ((x > 0) && (y <= 0)) tet = Physics::two_pi + tempv;
+        else if ((x == 0) && (y > 0)) tet = Physics::pi / 2.0;
+        else if ((x == 0) && (y < 0)) tet = 1.5 * Physics::pi;
 
         // the actual angle of particle
         tet = tet * Physics::rad2deg;
@@ -314,12 +311,12 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
         r1t2 = idx(ir, it + 1);
         r2t2 = idx(ir + 1, it + 1);
 
-        if((it >= 0) && (ir >= 0) && (it < PField.ntetS) && (ir < PField.nrad)) {
+        if ((it >= 0) && (ir >= 0) && (it < PField.ntetS) && (ir < PField.nrad)) {
             pressure = (PField.pfld[r1t1] * wr2 * wt2 +
                         PField.pfld[r2t1] * wr1 * wt2 +
                         PField.pfld[r1t2] * wr2 * wt1 +
                         PField.pfld[r2t2] * wr1 * wt1);
-            if(pressure <= 0.0) {
+            if (pressure <= 0.0) {
                 *gmsg << level4 << getName() << ": Pressure data from file zero." << endl;
                 *gmsg << level4 << getName() << ": Take constant value through BeamStripping::getPressure" << endl;
                 pressure = getPressure();
@@ -345,7 +342,7 @@ double BeamStripping::checkPressure(const double &x, const double &y) {
 // Calculates radius of initial grid (dimensions in [m]!)
 void BeamStripping::initR(double rmin, double dr, int nrad) {
     PP.rarr.resize(nrad);
-    for(int i = 0; i < nrad; i++)
+    for (int i = 0; i < nrad; i++)
         PP.rarr[i] = rmin + i * dr;
 
     PP.delr = dr;
@@ -361,31 +358,31 @@ void BeamStripping::getPressureFromFile(const double &scaleFactor) {
 
     PP.Pfact = scaleFactor;
 
-    if((f = fopen(pmapfn_m.c_str(), "r")) == NULL) {
+    if ((f = std::fopen(pmapfn_m.c_str(), "r")) == NULL) {
         throw GeneralClassicException("BeamStripping::getPressureFromFile",
                                       "failed to open file '" + pmapfn_m + "', please check if it exists");
     }
 
-    CHECK_BSTP_FSCANF_EOF(fscanf(f, "%lf", &PP.rmin));
+    CHECK_BSTP_FSCANF_EOF(std::fscanf(f, "%lf", &PP.rmin));
     *gmsg << "* --- Minimal radius of measured pressure map: " << PP.rmin << " [mm]" << endl;
 
-    CHECK_BSTP_FSCANF_EOF(fscanf(f, "%lf", &PP.delr));
+    CHECK_BSTP_FSCANF_EOF(std::fscanf(f, "%lf", &PP.delr));
     //if the value is negative, the actual value is its reciprocal.
-    if(PP.delr < 0.0) PP.delr = 1.0 / (-PP.delr);
+    if (PP.delr < 0.0) PP.delr = 1.0 / (-PP.delr);
     *gmsg << "* --- Stepsize in radial direction: " << PP.delr << " [mm]" << endl;
 
-    CHECK_BSTP_FSCANF_EOF(fscanf(f, "%lf", &PP.tetmin));
+    CHECK_BSTP_FSCANF_EOF(std::fscanf(f, "%lf", &PP.tetmin));
     *gmsg << "* --- Minimal angle of measured pressure map: " << PP.tetmin << " [deg]" << endl;
 
-    CHECK_BSTP_FSCANF_EOF(fscanf(f, "%lf", &PP.dtet));
+    CHECK_BSTP_FSCANF_EOF(std::fscanf(f, "%lf", &PP.dtet));
     //if the value is negative, the actual value is its reciprocal.
-    if(PP.dtet < 0.0) PP.dtet = 1.0 / (-PP.dtet);
+    if (PP.dtet < 0.0) PP.dtet = 1.0 / (-PP.dtet);
     *gmsg << "* --- Stepsize in azimuthal direction: " << PP.dtet << " [deg]" << endl;
 
-    CHECK_BSTP_FSCANF_EOF(fscanf(f, "%d", &PField.ntet));
+    CHECK_BSTP_FSCANF_EOF(std::fscanf(f, "%d", &PField.ntet));
     *gmsg << "* --- Grid points along azimuth (ntet): " << PField.ntet << endl;
 
-    CHECK_BSTP_FSCANF_EOF(fscanf(f, "%d", &PField.nrad));
+    CHECK_BSTP_FSCANF_EOF(std::fscanf(f, "%d", &PField.nrad));
     *gmsg << "* --- Grid points along radius (nrad): " << PField.nrad << endl;
     *gmsg << "* --- Maximum radial position: " << PP.rmin + (PField.nrad-1)*PP.delr << " [mm]" << endl;
     PP.rmin *= 0.001;  // mm --> m
@@ -399,15 +396,15 @@ void BeamStripping::getPressureFromFile(const double &scaleFactor) {
     *gmsg << "* --- Total stored grid point number ((ntet+1) * nrad) : " << PField.ntot << endl;
     *gmsg << "* --- Escale factor: " << PP.Pfact << endl;
 
-    for(int i = 0; i < PField.nrad; i++) {
-        for(int k = 0; k < PField.ntet; k++) {
-            CHECK_BSTP_FSCANF_EOF(fscanf(f, "%16lE", &(PField.pfld[idx(i, k)])));
+    for (int i = 0; i < PField.nrad; i++) {
+        for (int k = 0; k < PField.ntet; k++) {
+            CHECK_BSTP_FSCANF_EOF(std::fscanf(f, "%16lE", &(PField.pfld[idx(i, k)])));
             PField.pfld[idx(i, k)] *= PP.Pfact;
         }
     }
     *gmsg << "*" << endl;
 
-    fclose(f);
+    std::fclose(f);
 }
 
 #undef CHECK_BSTP_FSCANF_EOF

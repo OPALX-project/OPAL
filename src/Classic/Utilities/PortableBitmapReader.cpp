@@ -19,9 +19,8 @@ PortableBitmapReader::PortableBitmapReader(const std::string &input) {
 }
 
 std::string PortableBitmapReader::getNextPart(std::istream &in) {
-    char c;
     do {
-        c = in.get();
+        char c = in.get();
         if (c == '#') {
             do {
                 c = in.get();

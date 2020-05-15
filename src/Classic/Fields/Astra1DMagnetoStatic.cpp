@@ -19,13 +19,12 @@ Astra1DMagnetoStatic::Astra1DMagnetoStatic(std::string aFilename)
     int skippedValues = 0;
     std::string tmpString;
     double tmpDouble;
-    double tmpDouble2;
 
     Type = TAstraMagnetoStatic;
 
     // open field map, parse it and disable element on error
     file.open(Filename_m.c_str());
-    if(file.good()) {
+    if (file.good()) {
         bool parsing_passed = true;
         try {
             parsing_passed = interpretLine<std::string, int>(file, tmpString, accuracy_m);
@@ -44,12 +43,12 @@ Astra1DMagnetoStatic::Astra1DMagnetoStatic(std::string aFilename)
         parsing_passed = parsing_passed &&
                          interpretLine<double, double>(file, zbegin_m, tmpDouble);
 
-        tmpDouble2 = zbegin_m;
+        double tmpDouble2 = zbegin_m;
         while(!file.eof() && parsing_passed) {
             parsing_passed = interpretLine<double, double>(file, zend_m, tmpDouble, false);
-            if(zend_m - tmpDouble2 > 1e-10) {
+            if (zend_m - tmpDouble2 > 1e-10) {
                 tmpDouble2 = zend_m;
-            } else if(parsing_passed) {
+            } else if (parsing_passed) {
                 ++ skippedValues;
             }
         }
@@ -58,7 +57,7 @@ Astra1DMagnetoStatic::Astra1DMagnetoStatic(std::string aFilename)
         num_gridpz_m = lines_read_m - 2 - skippedValues;
         lines_read_m = 0;
 
-        if(!parsing_passed && !file.eof()) {
+        if (!parsing_passed && !file.eof()) {
             disableFieldmapWarning();
             zend_m = zbegin_m - 1e-3;
             throw GeneralClassicException("Astra1DMagnetoStatic::Astra1DMagnetoStatic",
@@ -77,7 +76,7 @@ Astra1DMagnetoStatic::~Astra1DMagnetoStatic() {
 }
 
 void Astra1DMagnetoStatic::readMap() {
-    if(FourCoefs_m == NULL) {
+    if (FourCoefs_m == NULL) {
         // declare variables and allocate memory
     	std::ifstream in;
 
@@ -104,12 +103,12 @@ void Astra1DMagnetoStatic::readMap() {
         in.open(Filename_m.c_str());
         getLine(in, tmpString);
 
-        for(int i = 0; i < num_gridpz_m && parsing_passed;/* skip increment on i here */) {
+        for (int i = 0; i < num_gridpz_m && parsing_passed;/* skip increment on i here */) {
             parsing_passed = interpretLine<double, double>(in, zvals[i], RealValues[i]);
             // the sequence of z-position should be strictly increasing
             // drop sampling points that don't comply to this
-            if(zvals[i] - tmpDouble > 1e-10) {
-                if(std::abs(RealValues[i]) > Bz_max) {
+            if (zvals[i] - tmpDouble > 1e-10) {
+                if (std::abs(RealValues[i]) > Bz_max) {
                     Bz_max = std::abs(RealValues[i]);
                 }
                 tmpDouble = zvals[i];
@@ -123,14 +122,14 @@ void Astra1DMagnetoStatic::readMap() {
         // get equidistant sampling from the, possibly, non-equidistant sampling
         // using cubic spline for this
         int ii = num_gridpz_m;
-        for(int i = 0; i < num_gridpz_m - 1; ++ i, ++ ii) {
+        for (int i = 0; i < num_gridpz_m - 1; ++ i, ++ ii) {
             double z = zbegin_m + dz * i;
             RealValues[ii] = gsl_spline_eval(Bz_interpolant, z, Bz_accel);
         }
         RealValues[ii ++] = RealValues[num_gridpz_m - 1];
         // prepend mirror sampling points such that field values are periodic for sure
         -- ii; // ii == 2*num_gridpz_m at the moment
-        for(int i = 0; i < num_gridpz_m; ++ i, -- ii) {
+        for (int i = 0; i < num_gridpz_m; ++ i, -- ii) {
             RealValues[i] = RealValues[ii];
         }
 
@@ -141,7 +140,7 @@ void Astra1DMagnetoStatic::readMap() {
         }
         // normalize to Bz_max = 1 A/m
         FourCoefs_m[0] = RealValues[0] / (Bz_max * 2. * num_gridpz_m);
-        for(int i = 1; i < 2 * accuracy_m - 1; i++) {
+        for (int i = 1; i < 2 * accuracy_m - 1; i++) {
             FourCoefs_m[i] = RealValues[i] / (Bz_max * num_gridpz_m);
         }
 
@@ -159,7 +158,7 @@ void Astra1DMagnetoStatic::readMap() {
 }
 
 void Astra1DMagnetoStatic::freeMap() {
-    if(FourCoefs_m != NULL) {
+    if (FourCoefs_m != NULL) {
 
         delete[] FourCoefs_m;
         FourCoefs_m = NULL;
@@ -178,16 +177,13 @@ bool Astra1DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, 
     double ezp = 0.0;
     double ezpp = 0.0;
     double ezppp = 0.0;
-    double somefactor_base, somefactor;
-    double coskzl;
-    double sinkzl;
 
     int n = 1;
-    for(int l = 1; l < accuracy_m ; l++, n += 2) {
-        somefactor_base =  Physics::two_pi / length_m * l;    // = \frac{d(kz*l)}{dz}
-        somefactor = 1.0;
-        coskzl = cos(kz * l);
-        sinkzl = sin(kz * l);
+    for (int l = 1; l < accuracy_m ; l++, n += 2) {
+        double somefactor_base =  Physics::two_pi / length_m * l;    // = \frac{d(kz*l)}{dz}
+    	double somefactor = 1.0;
+        double coskzl = cos(kz * l);
+        double sinkzl = sin(kz * l);
         ez    += (FourCoefs_m[n] * coskzl - FourCoefs_m[n + 1] * sinkzl);
         somefactor *= somefactor_base;
         ezp   += somefactor * (-FourCoefs_m[n] * sinkzl - FourCoefs_m[n + 1] * coskzl);

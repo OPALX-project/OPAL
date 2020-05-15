@@ -135,7 +135,7 @@ private:
     std::string pmapfn_m; /// stores the filename of the pressure map
     double pscale_m;      /// a scale factor for the P-field
     double temperature_m; /// K
-    double stop_m;
+    bool stop_m;          /// Flag if particles should be stripped or stopped
     ///@}
 
     ///@{ size limits took from cyclotron

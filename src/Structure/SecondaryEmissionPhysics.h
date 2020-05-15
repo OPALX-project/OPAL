@@ -2,10 +2,8 @@
 #define OPAL_SECONDARY_EMISSION_PHYSICS_HH
 
 #include <hdf5.h>
-#include <cmath>
 #include <limits>
-#include <sys/stat.h>
-#include "Physics/Physics.h"
+
 #include "Algorithms/PBunchDefs.h"
 #include "Algorithms/PartBunchBase.h"
 
@@ -16,22 +14,12 @@ namespace myeps {
     const double FPMIN = std::numeric_limits<double>::min() / EPS;
 }
 
-class SecondaryEmissionPhysics
+class SecondaryEmissionPhysics {
 
-{
 public:
-
-    /**
-     * Exemplar Constructor
-     */
 
     SecondaryEmissionPhysics();
 
-    /**
-     * Destructor.
-     *
-     * Delete the previous defined member arrays
-     */
     ~SecondaryEmissionPhysics();
 
     void nSec(const double &incEnergy,
@@ -86,12 +74,9 @@ public:
      */
     double seAlpha_m;
 
-
     /*==============================================================================================
       parameters for backscattered electrons
       ==============================================================================================*/
-
-
 
     /**
      * @param sePScat_m is the 2nd parameter in the TABLE I of Phys. Rev. ST Accel. Beams 5, 124404 (2002)
@@ -127,12 +112,9 @@ public:
     double seETwo_m;
 
 
-
     /*==============================================================================================
       parameters for rediffused electrons
       ==============================================================================================*/
-
-
 
     /**
      * @param sePRed_m is the 10th parameter in the TABLE I of Phys. Rev. ST Accel. Beams 5, 124404 (2002)
@@ -249,20 +231,17 @@ public:
     double min_Gamma(double x, double y);
     double max_Gamma(double x, double y);
 
-
     double betai(const double x, const double a, const double b);
     double betacf(const double a, const double b, const double x);
     double betaiapprox(double a, double b, double x);
     double invbetai(double p, double a, double b);
     void coordConverter (const Vector_t &/*TriNormal*/, Vector_t &/*x*/) {  }
 
-
-
 };
 
 inline
 double SecondaryEmissionPhysics::min_Gamma(double x, double y) {
-    if(x > y)
+    if (x > y)
         return y;
     else
         return x;
@@ -270,19 +249,12 @@ double SecondaryEmissionPhysics::min_Gamma(double x, double y) {
 
 inline
 double SecondaryEmissionPhysics::max_Gamma(double x, double y) {
-    if(x < y)
+    if (x < y)
         return y;
     else
         return x;
 }
 
-
 /*  ==========================================================================*/
-
-
-
-
-
-
 
 #endif //OPAL_SECONDARY_EMISSION_PHYSICS_HH

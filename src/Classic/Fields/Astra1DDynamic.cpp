@@ -20,7 +20,6 @@ Astra1DDynamic::Astra1DDynamic(std::string aFilename):
     int skippedValues = 0;
     std::string tmpString;
     double tmpDouble;
-    double tmpDouble2;
 
     Type = TAstraDynamic;
 
@@ -53,7 +52,7 @@ Astra1DDynamic::Astra1DDynamic(std::string aFilename):
         parsing_passed = parsing_passed &&
                          interpretLine<double, double>(file, zbegin_m, tmpDouble);
 
-        tmpDouble2 = zbegin_m;
+        double tmpDouble2 = zbegin_m;
         while(!file.eof() && parsing_passed) {
             parsing_passed = interpretLine<double, double>(file, zend_m, tmpDouble, false);
             if (zend_m - tmpDouble2 > 1e-10) {
@@ -193,16 +192,13 @@ bool Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &
     double ezp = 0.0;
     double ezpp = 0.0;
     double ezppp = 0.0;
-    double somefactor_base, somefactor;
-    double coskzl;
-    double sinkzl;
 
     int n = 1;
     for (int l = 1; l < accuracy_m ; ++ l, n += 2) {
-        somefactor_base = Physics::two_pi / length_m * l;       // = \frac{d(kz*l)}{dz}
-        somefactor = 1.0;
-        coskzl = cos(kz * l);
-        sinkzl = sin(kz * l);
+        double somefactor_base = Physics::two_pi / length_m * l;       // = \frac{d(kz*l)}{dz}
+        double somefactor = 1.0;
+        double coskzl = cos(kz * l);
+        double sinkzl = sin(kz * l);
         ez    += (FourCoefs_m[n] * coskzl - FourCoefs_m[n + 1] * sinkzl);
         somefactor *= somefactor_base;
         ezp   += somefactor * (-FourCoefs_m[n] * sinkzl - FourCoefs_m[n + 1] * coskzl);
