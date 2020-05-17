@@ -29,16 +29,16 @@
 
 
 /** Include header files for Mithra full-wave solver.  */
-#include "src/fieldvector.h"
-#include "src/stdinclude.h"
-#include "src/readdata.h"
-#include "src/database.h"
-#include "src/classes.h"
-#include "src/datainput.h"
-#include "src/readdata.h"
-#include "src/solver.h"
-#include "src/fdtd.h"
-#include "src/fdtdSC.h"
+#include "mithra/fieldvector.h"
+#include "mithra/stdinclude.h"
+#include "mithra/readdata.h"
+#include "mithra/database.h"
+#include "mithra/classes.h"
+#include "mithra/datainput.h"
+#include "mithra/readdata.h"
+#include "mithra/solver.h"
+#include "mithra/fdtd.h"
+#include "mithra/fdtdSC.h"
 
 #include "BeamlineCore/UndulatorRep.h"
 
