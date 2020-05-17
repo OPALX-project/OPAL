@@ -26,7 +26,7 @@
 #include <string>
 #include <cmath>
 #include <iostream>
-#include <assert.h>
+#include <cassert>
 
 //FIXME: ORDER HOW TO TRAVERSE NODES IS FIXED, THIS SHOULD BE MORE GENERIC! (PLACES MARKED)
 

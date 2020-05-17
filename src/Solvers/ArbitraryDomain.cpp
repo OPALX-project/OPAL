@@ -31,7 +31,7 @@
 #include <cmath>
 #include <iostream>
 #include <tuple>
-#include <assert.h>
+#include <cassert>
 
 ArbitraryDomain::ArbitraryDomain( BoundaryGeometry * bgeom,
                                   Vector_t nr,

@@ -6,8 +6,7 @@
 #include <cmath>
 #include <fstream>
 #include <ios>
-
-#include <assert.h>
+#include <cassert>
 
 
 FM3DMagnetoStaticH5Block::FM3DMagnetoStaticH5Block(std::string aFilename):

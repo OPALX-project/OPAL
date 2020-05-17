@@ -36,8 +36,7 @@
 #include <iostream>
 #include <fstream>
 #include <ios>
-
-#include <assert.h>
+#include <cassert>
 
 namespace fs = boost::filesystem;
 

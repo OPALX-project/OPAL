@@ -5,8 +5,7 @@
 
 #include <fstream>
 #include <ios>
-
-#include <assert.h>
+#include <cassert>
 
 
 FM3DH5Block::FM3DH5Block(std::string aFilename):Fieldmap(aFilename) {

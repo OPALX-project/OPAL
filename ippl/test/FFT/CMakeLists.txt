@@ -1,7 +1,5 @@
 file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-message ("Adding test FFT found in ${_relPath}")
-message ("MPI CXX compiler: ${MPI_CXX_COMPILER}")
-message ("CXX compiler: ${CMAKE_CXX_COMPILER}")
+message (STATUS "Adding test FFT found in ${_relPath}")
 
 include_directories (
     ${CMAKE_SOURCE_DIR}/src

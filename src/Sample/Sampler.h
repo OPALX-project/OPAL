@@ -22,10 +22,9 @@
 #ifndef __OPAL_SAMPLER_H__
 #define __OPAL_SAMPLER_H__
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
 #include <string>
 #include <sstream>
 #include <vector>
@@ -33,6 +32,8 @@
 #include <utility>
 #include <fstream>
 #include <list>
+#include <memory>
+#include <queue>
 
 #include "Comm/types.h"
 #include "Util/Types.h"
@@ -44,11 +45,6 @@
 
 #include <boost/smart_ptr.hpp>
 #include <boost/chrono.hpp>
-
-#include <memory>
-
-#include <queue>
-
 #include <boost/property_tree/ptree.hpp>
 
 

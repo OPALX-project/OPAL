@@ -1,5 +1,5 @@
 file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-message ("Adding test ippltoyfdtd found in ${_relPath}")
+message (STATUS "Adding test ippltoyfdtd found in ${_relPath}")
 
 set (IPPLTOYFDTD_SRCS
     ToyFDTD-DataSink/DataSink.cpp

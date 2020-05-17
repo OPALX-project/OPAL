@@ -1,4 +1,4 @@
-message ("configure: make IpplInfo.h")
+message (STATUS "configure: make IpplInfo.h")
 execute_process (
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     COMMAND date

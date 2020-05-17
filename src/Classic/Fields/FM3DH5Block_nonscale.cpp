@@ -6,8 +6,7 @@
 #include <cmath>
 #include <fstream>
 #include <ios>
-
-#include <assert.h>
+#include <cassert>
 
 
 FM3DH5Block_nonscale::FM3DH5Block_nonscale(std::string aFilename):

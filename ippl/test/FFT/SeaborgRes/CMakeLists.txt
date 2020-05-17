@@ -1,5 +1,5 @@
 file (RELATIVE_PATH _relPath "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-message ("Adding more FFT tests found in ${_relPath}")
+message (STATUS "Adding more FFT tests found in ${_relPath}")
 
 add_executable (Seaborgfftspeed    fftspeed.cpp)
 add_executable (SeaborgTestFFT     TestFFT.cpp)

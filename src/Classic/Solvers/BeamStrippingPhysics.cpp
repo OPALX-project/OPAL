@@ -37,6 +37,7 @@
 #include <fstream>
 #include <algorithm>
 #include <cmath>
+#include <sys/time.h>
 #include <boost/math/special_functions/chebyshev.hpp>
 
 using Physics::q_e;
