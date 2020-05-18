@@ -116,7 +116,6 @@ set (HDRS
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/AbsBeamline")
 
-
 # vi: set et ts=4 sw=4 sts=4:
 
 # Local Variables:
