@@ -16,7 +16,6 @@ set (_SRCS
     Degrader.cpp
     Diagnostic.cpp
     Drift.cpp
-    Undulator.cpp
     ElementBase.cpp
     ElementImage.cpp
     FlexibleCollimator.cpp
@@ -49,6 +48,7 @@ set (_SRCS
     Source.cpp
     Stripper.cpp
     TravelingWave.cpp
+    Undulator.cpp
     VariableRFCavity.cpp
     VariableRFCavityFringeField.cpp
     VerticalFFAMagnet.cpp
@@ -75,7 +75,6 @@ set (HDRS
     Degrader.h
     Diagnostic.h
     Drift.h
-    Undulator.h
     ElementBase.h
     ElementImage.h
     FlexibleCollimator.h
@@ -109,6 +108,7 @@ set (HDRS
     SpecificElementVisitor.h
     Stripper.h
     TravelingWave.h
+    Undulator.h
     VariableRFCavity.h
     VariableRFCavityFringeField.h
     VerticalFFAMagnet.h

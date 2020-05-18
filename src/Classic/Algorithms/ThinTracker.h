@@ -89,9 +89,6 @@ public:
     /// Apply algorithm to Drift.
     virtual void visitDrift(const Drift &);
 
-    /// Apply the algorithm to a undulator.
-    virtual void visitUndulator(const Undulator & );
-
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &);
 
@@ -130,6 +127,9 @@ public:
 
     /// Apply algorithm to Solenoid.
     virtual void visitSolenoid(const Solenoid &);
+
+    /// Apply the algorithm to a undulator.
+    virtual void visitUndulator(const Undulator & );
 
     /// Apply algorithm to Solenoid.
     virtual void visitParallelPlate(const ParallelPlate &);

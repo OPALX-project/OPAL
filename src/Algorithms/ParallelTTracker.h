@@ -38,7 +38,6 @@
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/Drift.h"
-#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/FlexibleCollimator.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/Lambertson.h"
@@ -51,6 +50,7 @@
 #include "AbsBeamline/RBend3D.h"
 #include "AbsBeamline/RFCavity.h"
 #include "AbsBeamline/TravelingWave.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/RFQuadrupole.h"
 #include "AbsBeamline/SBend.h"
 #include "AbsBeamline/Separator.h"
@@ -125,9 +125,6 @@ public:
     /// Apply the algorithm to a Drift.
     virtual void visitDrift(const Drift &);
 
-    /// Apply the algorithm to a Undulator.
-    virtual void visitUndulator(const Undulator &);
-
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &);
 
@@ -160,6 +157,9 @@ public:
 
     /// Apply the algorithm to a RFCavity.
     virtual void visitTravelingWave(const TravelingWave &);
+
+    /// Apply the algorithm to a Undulator.
+    virtual void visitUndulator(const Undulator &);
 
     /// Apply the algorithm to a RFQuadrupole.
     virtual void visitRFQuadrupole(const RFQuadrupole &);
@@ -330,10 +330,6 @@ inline void ParallelTTracker::visitDiagnostic(const Diagnostic &diag) {
 }
 
 
-inline void ParallelTTracker::visitUndulator(const Undulator &u) {
-    itsOpalBeamline_m.visit(u, *this, itsBunch_m);
-}
-
 inline void ParallelTTracker::visitDrift(const Drift &drift) {
     itsOpalBeamline_m.visit(drift, *this, itsBunch_m);
 }
@@ -389,6 +385,9 @@ inline void ParallelTTracker::visitTravelingWave(const TravelingWave &as) {
     itsOpalBeamline_m.visit(as, *this, itsBunch_m);
 }
 
+inline void ParallelTTracker::visitUndulator(const Undulator &u) {
+    itsOpalBeamline_m.visit(u, *this, itsBunch_m);
+}
 
 inline void ParallelTTracker::visitRFQuadrupole(const RFQuadrupole &rfq) {
     itsOpalBeamline_m.visit(rfq, *this, itsBunch_m);

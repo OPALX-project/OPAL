@@ -74,7 +74,6 @@
 #include "Elements/OpalCCollimator.h"
 #include "Elements/OpalCyclotron.h"
 #include "Elements/OpalDrift.h"
-#include "Elements/OpalUndulator.h"
 #include "Elements/OpalECollimator.h"
 #include "Elements/OpalFlexibleCollimator.h"
 #include "Elements/OpalDegrader.h"
@@ -113,6 +112,7 @@
 #include "Elements/OpalSource.h"
 #include "Elements/OpalSRot.h"
 #include "Elements/OpalTravelingWave.h"
+#include "Elements/OpalUndulator.h"
 #include "Elements/OpalVKicker.h"
 #include "Elements/OpalVMonitor.h"
 //#include "Elements/OpalWire.h"
@@ -212,7 +212,6 @@ namespace {
         opal->create(new OpalCCollimator());
         opal->create(new OpalCyclotron());
         opal->create(new OpalDrift());
-        opal->create(new OpalUndulator());
         opal->create(new OpalECollimator());
         opal->create(new OpalFlexibleCollimator());
         opal->create(new OpalDegrader());
@@ -251,6 +250,7 @@ namespace {
         opal->create(new OpalSource());
         opal->create(new OpalSRot());
         opal->create(new OpalTravelingWave());
+        opal->create(new OpalUndulator());
         opal->create(new OpalVariableRFCavity());
         opal->create(new OpalVariableRFCavityFringeField());
         opal->create(new OpalVerticalFFAMagnet());

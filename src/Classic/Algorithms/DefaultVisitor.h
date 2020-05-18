@@ -82,9 +82,6 @@ public:
     /// Apply the algorithm to a drift.
     virtual void visitDrift(const Drift &);
 
-    /// Apply the algorithm to a drift.
-    virtual void visitUndulator(const Undulator &);
-
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &);
 
@@ -138,6 +135,9 @@ public:
 
     /// Apply the algorithm to a RF cavity.
     virtual void visitTravelingWave(const TravelingWave &);
+
+    /// Apply the algorithm to a drift.
+    virtual void visitUndulator(const Undulator &);
 
     /// Apply the algorithm to a RF quadrupole.
     virtual void visitRFQuadrupole(const RFQuadrupole &);

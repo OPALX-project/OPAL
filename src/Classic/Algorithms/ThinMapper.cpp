@@ -24,7 +24,6 @@
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
-#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/FlexibleCollimator.h"
@@ -40,6 +39,7 @@
 #include "AbsBeamline/Separator.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/ParallelPlate.h"
 
 #include "Algorithms/MapIntegrator.h"
@@ -111,13 +111,11 @@ void ThinMapper::visitDrift(const Drift &drift) {
     applyDrift(flip_s * drift.getElementLength());
 }
 
-void ThinMapper::visitUndulator(const Undulator &u) {
-  INFOMSG("Undulator not implemented" << u.getTypeString());
-}
 
 void ThinMapper::visitFlexibleCollimator(const FlexibleCollimator &coll) {
     applyDrift(flip_s * coll.getElementLength());
 }
+
 
 void ThinMapper::visitLambertson(const Lambertson &lamb) {
     // Assume that the reference orbit is in the magnet's window.
@@ -325,6 +323,11 @@ void ThinMapper::visitSolenoid(const Solenoid &solenoid) {
             applyDrift(length);
         }
     }
+}
+
+
+void ThinMapper::visitUndulator(const Undulator &u) {
+  INFOMSG("Undulator not implemented" << u.getTypeString());
 }
 
 

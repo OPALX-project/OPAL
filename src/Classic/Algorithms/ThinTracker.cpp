@@ -26,7 +26,6 @@
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
-#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/FlexibleCollimator.h"
@@ -42,6 +41,7 @@
 #include "AbsBeamline/Separator.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/ParallelPlate.h"
 
 #include "Algorithms/MapIntegrator.h"
@@ -209,10 +209,6 @@ void ThinTracker::visitDiagnostic(const Diagnostic &diag) {
 
 void ThinTracker::visitDrift(const Drift &drift) {
     applyDrift(flip_s * drift.getElementLength());
-}
-
-void ThinTracker::visitUndulator(const Undulator &u ) {
-  INFOMSG("Undulator not implemented" << u.getTypeString());
 }
 
 void ThinTracker::visitFlexibleCollimator(const FlexibleCollimator &coll) {
@@ -451,6 +447,9 @@ void ThinTracker::visitSolenoid(const Solenoid &solenoid) {
     }
 }
 
+void ThinTracker::visitUndulator(const Undulator &u ) {
+  INFOMSG("Undulator not implemented" << u.getTypeString());
+}
 
 void ThinTracker::applyDrift(double length) {
     double   kin  = itsReference.getM() / itsReference.getP();

@@ -7,7 +7,6 @@ set (_SRCS
     OpalCCollimator.cpp
     OpalCyclotron.cpp
     OpalDrift.cpp
-    OpalUndulator.cpp
     OpalECollimator.cpp
     OpalFlexibleCollimator.cpp
     OpalDegrader.cpp
@@ -48,6 +47,7 @@ set (_SRCS
     OpalSource.cpp
     OpalSplineTimeDependence.cpp
     OpalSRot.cpp
+    OpalUndulator.cpp
     OpalVariableRFCavity.cpp
     OpalVariableRFCavityFringeField.cpp
     OpalVerticalFFAMagnet.cpp
@@ -75,7 +75,6 @@ set (HDRS
     OpalCyclotron.h
     OpalDegrader.h
     OpalDrift.h
-    OpalUndulator.h
     OpalECollimator.h
     OpalElement.h
     OpalHKicker.h
@@ -113,6 +112,7 @@ set (HDRS
     OpalSRot.h
     OpalStripper.h
     OpalTravelingWave.h
+    OpalUndulator.h
     OpalVariableRFCavity.h
     OpalVariableRFCavityFringeField.h
     OpalVerticalFFAMagnet.h

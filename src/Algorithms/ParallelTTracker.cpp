@@ -37,7 +37,6 @@
 #include "mithra/datainput.h"
 #include "mithra/readdata.h"
 #include "mithra/solver.h"
-#include "mithra/fdtd.h"
 #include "mithra/fdtdSC.h"
 
 #include "BeamlineCore/UndulatorRep.h"

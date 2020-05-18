@@ -43,7 +43,6 @@ class Cyclotron;
 class Degrader;
 class Diagnostic;
 class Drift;
-class Undulator;
 class FlexibleCollimator;
 class Lambertson;
 class Marker;
@@ -71,6 +70,7 @@ class Solenoid;
 class Source;
 class Stripper;
 class TravelingWave;
+class Undulator;
 class VariableRFCavity;
 class VariableRFCavityFringeField;
 class VerticalFFAMagnet;
@@ -135,9 +135,6 @@ public:
     /// Apply the algorithm to a drift space.
     virtual void visitDrift(const Drift &) = 0;
 
-    /// Apply the algorithm to a undulator space.
-    virtual void visitUndulator(const Undulator &) = 0;
-
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &) = 0;
 
@@ -198,6 +195,9 @@ public:
 
     /// Apply the algorithm to a RF cavity.
     virtual void visitTravelingWave(const TravelingWave &) = 0;
+
+    /// Apply the algorithm to a undulator space.
+    virtual void visitUndulator(const Undulator &) = 0;
 
     /// Apply the algorithm to a RF quadrupole.
     virtual void visitRFQuadrupole(const RFQuadrupole &) = 0;

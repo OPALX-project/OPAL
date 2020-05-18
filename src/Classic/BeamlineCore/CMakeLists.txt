@@ -6,7 +6,6 @@ set (_SRCS
     CyclotronRep.cpp
     DegraderRep.cpp
     DriftRep.cpp
-    UndulatorRep.cpp
     FlexibleCollimatorRep.cpp
     MarkerRep.cpp
     MonitorRep.cpp
@@ -29,6 +28,7 @@ set (_SRCS
     SourceRep.cpp
     StripperRep.cpp
     TravelingWaveRep.cpp
+    UndulatorRep.cpp
     XCorrectorRep.cpp
     XMonitorRep.cpp
     YCorrectorRep.cpp
@@ -49,7 +49,6 @@ set (HDRS
     CyclotronRep.h
     DegraderRep.h
     DriftRep.h
-    UndulatorRep.h	
     FlexibleCollimatorRep.h
     MarkerRep.h
     MonitorRep.h
@@ -73,6 +72,7 @@ set (HDRS
     SourceRep.h
     StripperRep.h
     TravelingWaveRep.h
+    UndulatorRep.h
     XCorrectorRep.h
     XMonitorRep.h
     YCorrectorRep.h

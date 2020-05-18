@@ -28,7 +28,6 @@
 #include "AbsBeamline/Cyclotron.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
-#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/FlexibleCollimator.h"
@@ -49,6 +48,7 @@
 #include "AbsBeamline/VariableRFCavity.h"
 #include "AbsBeamline/VariableRFCavityFringeField.h"
 #include "AbsBeamline/TravelingWave.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/RFQuadrupole.h"
 #include "AbsBeamline/SBend.h"
 #include "AbsBeamline/SBend3D.h"
@@ -134,11 +134,6 @@ void DefaultVisitor::visitDrift(const Drift &drf) {
     applyDefault(drf);
 }
 
-void DefaultVisitor::visitUndulator(const Undulator &u) {
-    applyDefault(u);
-}
-
-
 void DefaultVisitor::visitFlexibleCollimator(const FlexibleCollimator &coll) {
     applyDefault(coll);
 }
@@ -218,6 +213,9 @@ void DefaultVisitor::visitTravelingWave(const TravelingWave &trw) {
     applyDefault(trw);
 }
 
+void DefaultVisitor::visitUndulator(const Undulator &u) {
+    applyDefault(u);
+}
 
 void DefaultVisitor::visitRFQuadrupole(const RFQuadrupole &quad) {
     applyDefault(quad);
