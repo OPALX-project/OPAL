@@ -147,7 +147,6 @@ public:
                     , DEGRADER
                     , DIAGNOSTIC
 		    , DRIFT
-		    , UNDULATOR   
                     , FLEXIBLECOLLIMATOR
                     , INTEGRATOR
                     , LAMBERTSON
@@ -176,6 +175,7 @@ public:
                     , SOURCE
                     , STRIPPER
                     , TRAVELINGWAVE
+                    , UNDULATOR
                     , VARIABLERFCAVITY
                     , ANY};
 
