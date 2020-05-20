@@ -65,7 +65,9 @@ OpalUndulator::OpalUndulator():
     itsAttr[TOTALTIME] = Attributes::makeReal
                           ("TOTALTIME",
                           "Total time of undulator simulation", 0.0);
-
+    itsAttr[DTBUNCH] = Attributes::makeReal
+                          ("DTBUNCH",
+                          "Time step for the bunch position update can be smaller than field update step", 0.0);
 
     registerStringAttribute("GEOMETRY");
     registerRealAttribute("NSLICES");
@@ -75,6 +77,7 @@ OpalUndulator::OpalUndulator():
     registerStringAttribute("FNAME");
     registerRealAttribute("TRUNORDER");
     registerRealAttribute("TOTALTIME");
+    registerRealAttribute("DTBUNCH");
     registerOwnership();
 
     setElement(new UndulatorRep("UNDULATOR"));
@@ -144,6 +147,7 @@ void OpalUndulator::update() {
     ur->setMeshResolution(Attributes::getRealArray(itsAttr[MESHRESOLUTION]));
     ur->setTruncationOrder(Attributes::getReal(itsAttr[TRUNORDER]));
     ur->setTotalTime(Attributes::getReal(itsAttr[TOTALTIME]));
+    ur->setDtBunch(Attributes::getReal(itsAttr[DTBUNCH]));
 
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(ur);

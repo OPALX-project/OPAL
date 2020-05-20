@@ -661,6 +661,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     bunchInit.initialDirection_ /= euclidean_norm(itsBunch_m->get_pmean());
     MITHRA::Bunch bunch;
     bunch.bunchInit_.push_back(bunchInit);
+    bunch.timeStep_ = ur->getDtBunch();
     msg << "Bunch parameters have been transferred to the full-wave solver." << endl;
 
     MITHRA::Undulator uParam;

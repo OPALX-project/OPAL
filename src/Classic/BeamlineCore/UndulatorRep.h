@@ -87,6 +87,8 @@ public:
     virtual unsigned int getTruncationOrder() const;
     virtual void setTotalTime(double tt);
     virtual double getTotalTime() const;
+    virtual void setDtBunch(double dtb);
+    virtual double getDtBunch() const;
 
 
 private:
@@ -123,6 +125,9 @@ private:
     
     /// Total time to run undulator
     double totalTime_m;
+
+    /// Time step for the bunch position update
+    double dtBunch_m;
 };
 
 #endif // CLASSIC_UndulatorRep_HH

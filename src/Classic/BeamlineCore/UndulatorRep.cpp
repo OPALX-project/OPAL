@@ -55,7 +55,8 @@ UndulatorRep::UndulatorRep():
     numPeriods_m(0.0),
     fname_m(""),
     truncationOrder_m(2),
-    totalTime_m(0.0)
+    totalTime_m(0.0),
+    dtBunch_m(0.0)
 {}
 
 
@@ -69,7 +70,8 @@ UndulatorRep::UndulatorRep(const UndulatorRep &right):
     meshLength_m(right.meshLength_m),
     meshResolution_m(right.meshResolution_m),
     truncationOrder_m(right.truncationOrder_m),
-    totalTime_m(right.totalTime_m)
+    totalTime_m(right.totalTime_m),
+    dtBunch_m(right.dtBunch_m)
 {}
 
 
@@ -81,7 +83,8 @@ UndulatorRep::UndulatorRep(const std::string &name):
     numPeriods_m(0.0),
     fname_m(""),
     truncationOrder_m(2),
-    totalTime_m(0.0)
+    totalTime_m(0.0),
+    dtBunch_m(0.0)
 {}
 
 
@@ -156,3 +159,6 @@ unsigned int UndulatorRep::getTruncationOrder() const { return truncationOrder_m
 
 void UndulatorRep::setTotalTime(double tt) { totalTime_m = tt; }
 double UndulatorRep::getTotalTime() const { return totalTime_m; }
+
+void UndulatorRep::setDtBunch(double dtb) { dtBunch_m = dtb; }
+double UndulatorRep::getDtBunch() const { return dtBunch_m; }

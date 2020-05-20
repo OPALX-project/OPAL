@@ -44,6 +44,7 @@ public:
 	 MESHRESOLUTION,
 	 TRUNORDER,
 	 TOTALTIME,
+	 DTBUNCH,
 	 SIZE
     };
     /// Exemplar constructor.
