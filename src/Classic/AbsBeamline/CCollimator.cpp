@@ -1,3 +1,20 @@
+//
+// Class CCollimator
+//   Interface for cyclotron collimator
+//
+// Copyright (c) 2018-2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbsBeamline/CCollimator.h"
 
 #include "AbsBeamline/BeamlineVisitor.h"
@@ -99,14 +116,6 @@ void CCollimator::doInitialise(PartBunchBase<double, 3> */*bunch*/) {
 
 void CCollimator::goOnline(const double &) {
     print();
-    // PosX_m.reserve((int)(1.1 * RefPartBunch_m->getLocalNum()));
-    // PosY_m.reserve((int)(1.1 * RefPartBunch_m->getLocalNum()));
-    // PosZ_m.reserve((int)(1.1 * RefPartBunch_m->getLocalNum()));
-    // MomentumX_m.reserve((int)(1.1 * RefPartBunch_m->getLocalNum()));
-    // MomentumY_m.reserve((int)(1.1 * RefPartBunch_m->getLocalNum()));
-    // MomentumZ_m.reserve((int)(1.1 * RefPartBunch_m->getLocalNum()));
-    // time_m.reserve((int)(1.1 * RefPartBunch_m->getLocalNum()));
-    // id_m.reserve((int)(1.1 * RefPartBunch_m->getLocalNum()));
     online_m = true;
 }
 
@@ -128,9 +137,6 @@ void CCollimator::print() {
         }
         return;
     }
-
-    *gmsg << "* CCollimator angle start " << xstart_m << " (Deg) angle end " << ystart_m << " (Deg) "
-          << "R start " << xend_m << " (mm) R rend " << yend_m << " (mm)" << endl;
 }
 
 void CCollimator::setDimensions(double xstart, double xend, double ystart, double yend, double zstart, double zend, double width) {

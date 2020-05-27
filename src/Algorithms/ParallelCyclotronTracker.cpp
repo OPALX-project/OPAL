@@ -621,35 +621,35 @@ void ParallelCyclotronTracker::visitCCollimator(const CCollimator &coll) {
     myElements.push_back(elptr);
 
     double xstart = elptr->getXStart();
-    *gmsg << "* Xstart  = " << xstart << " [mm]" << endl;
+    *gmsg << "* Xstart  = " << xstart << " [m]" << endl;
 
     double xend = elptr->getXEnd();
-    *gmsg << "* Xend    = " << xend << " [mm]" << endl;
+    *gmsg << "* Xend    = " << xend << " [m]" << endl;
 
     double ystart = elptr->getYStart();
-    *gmsg << "* Ystart  = " << ystart << " [mm]" << endl;
+    *gmsg << "* Ystart  = " << ystart << " [m]" << endl;
 
     double yend = elptr->getYEnd();
-    *gmsg << "* Yend    = " << yend << " [mm]" << endl;
+    *gmsg << "* Yend    = " << yend << " [m]" << endl;
 
     double zstart = elptr->getZStart();
-    *gmsg << "* Zstart  = " << zstart << " [mm]" << endl;
+    *gmsg << "* Zstart  = " << zstart << " [m]" << endl;
 
     double zend = elptr->getZEnd();
-    *gmsg << "* Zend    = " << zend << " [mm]" << endl;
+    *gmsg << "* Zend    = " << zend << " [m]" << endl;
 
     double width = elptr->getWidth();
-    *gmsg << "* Width   = " << width << " [mm]" << endl;
+    *gmsg << "* Width   = " << width << " [m]" << endl;
 
     elptr->initialise(itsBunch_m);
 
     double BcParameter[8] = {};
 
-    BcParameter[0] = 0.001 * xstart ;
-    BcParameter[1] = 0.001 * xend;
-    BcParameter[2] = 0.001 * ystart ;
-    BcParameter[3] = 0.001 * yend;
-    BcParameter[4] = 0.001 * width ;
+    BcParameter[0] = xstart;
+    BcParameter[1] = xend;
+    BcParameter[2] = ystart;
+    BcParameter[3] = yend;
+    BcParameter[4] = width;
 
     buildupFieldList(BcParameter, ElementBase::CCOLLIMATOR, elptr);
 }
@@ -835,27 +835,27 @@ void ParallelCyclotronTracker::visitProbe(const Probe &prob) {
     *gmsg << "* Name    = " << elptr->getName() << endl;
 
     double xstart = elptr->getXStart();
-    *gmsg << "* XStart  = " << xstart << " [mm]" << endl;
+    *gmsg << "* XStart  = " << xstart << " [m]" << endl;
 
     double xend = elptr->getXEnd();
-    *gmsg << "* XEnd    = " << xend << " [mm]" << endl;
+    *gmsg << "* XEnd    = " << xend << " [m]" << endl;
 
     double ystart = elptr->getYStart();
-    *gmsg << "* YStart  = " << ystart << " [mm]" << endl;
+    *gmsg << "* YStart  = " << ystart << " [m]" << endl;
 
     double yend = elptr->getYEnd();
-    *gmsg << "* YEnd    = " << yend << " [mm]" << endl;
+    *gmsg << "* YEnd    = " << yend << " [m]" << endl;
 
     // initialise, do nothing
     elptr->initialise(itsBunch_m);
 
     double BcParameter[8] = {};
 
-    BcParameter[0] = 0.001 * xstart ;
-    BcParameter[1] = 0.001 * xend;
-    BcParameter[2] = 0.001 * ystart ;
-    BcParameter[3] = 0.001 * yend;
-    BcParameter[4] = 0.001 ; // width
+    BcParameter[0] = xstart;
+    BcParameter[1] = xend;
+    BcParameter[2] = ystart;
+    BcParameter[3] = yend;
+    BcParameter[4] = 1 ; // width
 
     // store probe parameters in the list
     buildupFieldList(BcParameter, ElementBase::PROBE, elptr);
@@ -1052,19 +1052,19 @@ void ParallelCyclotronTracker::visitSeptum(const Septum &sept) {
     myElements.push_back(elptr);
 
     double xstart = elptr->getXStart();
-    *gmsg << "* XStart  = " << xstart << " [mm]" << endl;
+    *gmsg << "* XStart  = " << xstart << " [m]" << endl;
 
     double xend = elptr->getXEnd();
-    *gmsg << "* XEnd    = " << xend << " [mm]" << endl;
+    *gmsg << "* XEnd    = " << xend << " [m]" << endl;
 
     double ystart = elptr->getYStart();
-    *gmsg << "* YStart  = " << ystart << " [mm]" << endl;
+    *gmsg << "* YStart  = " << ystart << " [m]" << endl;
 
     double yend = elptr->getYEnd();
-    *gmsg << "* YEnd    = " << yend << " [mm]" << endl;
+    *gmsg << "* YEnd    = " << yend << " [m]" << endl;
 
     double width = elptr->getWidth();
-    *gmsg << "* Width   = " << width << " [mm]" << endl;
+    *gmsg << "* Width   = " << width << " [m]" << endl;
 
 
     // initialise, do nothing
@@ -1072,11 +1072,11 @@ void ParallelCyclotronTracker::visitSeptum(const Septum &sept) {
 
     double BcParameter[8] = {};
 
-    BcParameter[0] = 0.001 * xstart ;
-    BcParameter[1] = 0.001 * xend;
-    BcParameter[2] = 0.001 * ystart ;
-    BcParameter[3] = 0.001 * yend;
-    BcParameter[4] = 0.001 * width ;
+    BcParameter[0] = xstart;
+    BcParameter[1] = xend;
+    BcParameter[2] = ystart;
+    BcParameter[3] = yend;
+    BcParameter[4] = width;
 
     // store septum parameters in the list
     buildupFieldList(BcParameter, ElementBase::SEPTUM, elptr);
@@ -1119,18 +1119,18 @@ void ParallelCyclotronTracker::visitStripper(const Stripper &stripper) {
     myElements.push_back(elptr);
 
     *gmsg << "* Name    = " << elptr->getName() << endl;
-    
+
     double xstart = elptr->getXStart();
-    *gmsg << "* XStart  = " << xstart << " [mm]" << endl;
+    *gmsg << "* XStart  = " << xstart << " [m]" << endl;
 
     double xend = elptr->getXEnd();
-    *gmsg << "* XEnd    = " << xend << " [mm]" << endl;
+    *gmsg << "* XEnd    = " << xend << " [m]" << endl;
 
     double ystart = elptr->getYStart();
-    *gmsg << "* YStart  = " << ystart << " [mm]" << endl;
+    *gmsg << "* YStart  = " << ystart << " [m]" << endl;
 
     double yend = elptr->getYEnd();
-    *gmsg << "* YEnd    = " << yend << " [mm]" << endl;
+    *gmsg << "* YEnd    = " << yend << " [m]" << endl;
 
     double opcharge = elptr->getOPCharge();
     *gmsg << "* Charge of outcoming particle = +e * " << opcharge << endl;
@@ -1140,16 +1140,16 @@ void ParallelCyclotronTracker::visitStripper(const Stripper &stripper) {
 
     bool stop = elptr->getStop();
     *gmsg << std::boolalpha << "* Particles stripped will be deleted after interaction -> " << stop << endl;
-    
+
     elptr->initialise(itsBunch_m);
 
     double BcParameter[8] = {};
 
-    BcParameter[0] = 0.001 * xstart ;
-    BcParameter[1] = 0.001 * xend;
-    BcParameter[2] = 0.001 * ystart ;
-    BcParameter[3] = 0.001 * yend;
-    BcParameter[4] = 0.001; // width
+    BcParameter[0] = xstart;
+    BcParameter[1] = xend;
+    BcParameter[2] = ystart;
+    BcParameter[3] = yend;
+    BcParameter[4] = 1; // width
     BcParameter[5] = opcharge;
     BcParameter[6] = opmass;
 
@@ -2120,8 +2120,6 @@ void ParallelCyclotronTracker::borisExternalFields(double h) {
 
 bool ParallelCyclotronTracker::applyPluginElements(const double dt) {
     IpplTimings::startTimer(PluginElemTimer_m);
-    // Plugin Elements are all defined in mm, change beam to mm before applying
-    itsBunch_m->R *= Vector_t(1000.0);
 
     for(beamline_list::iterator sindex = ++(FieldDimensions.begin()); sindex != FieldDimensions.end(); ++sindex) {
         if(((*sindex)->first) == ElementBase::BEAMSTRIPPING) {
@@ -2146,7 +2144,6 @@ bool ParallelCyclotronTracker::applyPluginElements(const double dt) {
         }
     }
 
-    itsBunch_m->R *= Vector_t(0.001);
     IpplTimings::stopTimer(PluginElemTimer_m);
     return flag;
 }
@@ -3061,7 +3058,7 @@ void ParallelCyclotronTracker::seoMode_m(double& t, const double dt, bool& /*fin
 
     // 2 particles: Trigger SEO mode
     // (Switch off cavity and calculate betatron oscillation tuning)
-    double r_tuning[2], z_tuning[2] ;
+    double r_tuning[2], z_tuning[2];
 
     IpplTimings::startTimer(IntegrationTimer_m);
     for(size_t i = 0; i < (itsBunch_m->getLocalNum()); i++) {

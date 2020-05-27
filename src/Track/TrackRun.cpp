@@ -53,8 +53,6 @@
 
 extern Inform *gmsg;
 
-using namespace Physics;
-
 // ------------------------------------------------------------------------
 
 namespace {
@@ -271,7 +269,7 @@ void TrackRun::setupThickTracker()
       Track::block->bunch->setCharge(charge);
     }
     // set coupling constant
-    double coefE = 1.0 / (4 * pi * epsilon_0);
+    double coefE = 1.0 / (4 * Physics::pi * Physics::epsilon_0);
     Track::block->bunch->setCouplingConstant(coefE);
 
 
@@ -377,7 +375,7 @@ void TrackRun::setupTTracker(){
         Track::block->bunch->setCharge(charge);
     }
     // set coupling constant
-    double coefE = 1.0 / (4 * pi * epsilon_0);
+    double coefE = 1.0 / (4 * Physics::pi * Physics::epsilon_0);
     Track::block->bunch->setCouplingConstant(coefE);
 
     // statistical data are calculated (rms, eps etc.)
@@ -484,7 +482,7 @@ void TrackRun::setupCyclotronTracker(){
     }
 
     if(beam->getNumberOfParticles() < 3 || beam->getCurrent() == 0.0) {
-        macrocharge = beam->getCharge() * q_e;
+        macrocharge = beam->getCharge() * Physics::q_e;
         macromass = beam->getMass();
         dist->createOpalCycl(Track::block->bunch,
                              beam->getNumberOfParticles(),
@@ -497,12 +495,11 @@ void TrackRun::setupCyclotronTracker(){
            getCurrent() gets beamcurrent [A]
 
         */
-        macrocharge = beam->getCurrent() / (beam->getFrequency() * 1.0e6); // [MHz]-->[Hz]
+        macrocharge = beam->getChargePerParticle();
+        macromass   = beam->getMassPerParticle();
 
         if(!opal->hasBunchAllocated()) {
             if(!opal->inRestartRun()) {
-                macrocharge /= beam->getNumberOfParticles();
-                macromass = beam->getMass() * macrocharge / (beam->getCharge() * q_e);
                 dist->createOpalCycl(Track::block->bunch,
                                      beam->getNumberOfParticles(),
                                      beam->getCurrent(),
@@ -514,8 +511,6 @@ void TrackRun::setupCyclotronTracker(){
                                         opal->getRestartStep(),
                                         specifiedNumBunch,
                                         phaseSpaceSink_m);
-                macrocharge /= beam->getNumberOfParticles();
-                macromass = beam->getMass() * macrocharge / (beam->getCharge() * q_e);
             }
         }
     }
@@ -529,7 +524,7 @@ void TrackRun::setupCyclotronTracker(){
     Track::block->bunch->setStepsPerTurn(Track::block->stepsPerTurn);
 
     // set coupling constant
-    double coefE = 1.0 / (4 * pi * epsilon_0);
+    double coefE = 1.0 / (4 * Physics::pi * Physics::epsilon_0);
     Track::block->bunch->setCouplingConstant(coefE);
 
     // statistical data are calculated (rms, eps etc.)
@@ -711,6 +706,6 @@ double TrackRun::setDistributionParallelT(Beam *beam) {
     }
 
     // Return charge per macroparticle.
-    return beam->getCharge() * beam->getCurrent() / (beam->getFrequency()*1.0e6) / numberOfParticles;
+    return beam->getChargePerParticle();
 
 }

@@ -85,14 +85,16 @@ void OpalSeptum::fillRegisteredAttributes(const ElementBase &base, ValueFlag fla
 void OpalSeptum::update() {
     OpalElement::update();
 
-    SeptumRep *sept =
-        dynamic_cast<SeptumRep *>(getElement()->removeWrappers());
+    SeptumRep *sept = dynamic_cast<SeptumRep *>(getElement()->removeWrappers());
+
+    const double mm2m = 0.001;
+    double xstart = mm2m * Attributes::getReal(itsAttr[XSTART]);
+    double xend   = mm2m * Attributes::getReal(itsAttr[XEND]);
+    double ystart = mm2m * Attributes::getReal(itsAttr[YSTART]);
+    double yend   = mm2m * Attributes::getReal(itsAttr[YEND]);
+    double width  = mm2m * Attributes::getReal(itsAttr[WIDTH]);
+
     double length = Attributes::getReal(itsAttr[LENGTH]);
-    double xstart = Attributes::getReal(itsAttr[XSTART]);
-    double xend = Attributes::getReal(itsAttr[XEND]);
-    double ystart = Attributes::getReal(itsAttr[YSTART]);
-    double yend = Attributes::getReal(itsAttr[YEND]);
-    double width = Attributes::getReal(itsAttr[WIDTH]);
 
     if(itsAttr[WAKEF] && owk_m == NULL) {
         owk_m = (OpalWake::find(Attributes::getString(itsAttr[WAKEF])))->clone(getOpalName() + std::string("_wake"));

@@ -154,7 +154,7 @@ Beam *Beam::find(const std::string &name) {
     return beam;
 }
 
-size_t Beam::getNumberOfParticles() {
+size_t Beam::getNumberOfParticles() const {
     return (size_t)Attributes::getReal(itsAttr[NPART]);
 }
 
@@ -197,6 +197,16 @@ std::string Beam::getParticleName() const {
 
 double Beam::getFrequency() const {
     return Attributes::getReal(itsAttr[BFREQ]);
+}
+
+double Beam::getChargePerParticle() const {
+    return std::copysign(1.0, getCharge()) * getCurrent()
+        / (getFrequency() * 1.0e6)
+        / getNumberOfParticles();
+}
+
+double Beam::getMassPerParticle() const {
+    return getMass() * getChargePerParticle() / (getCharge() * Physics::q_e);
 }
 
 void Beam::setEX(double value) {

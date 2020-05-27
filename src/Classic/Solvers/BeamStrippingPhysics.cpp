@@ -62,7 +62,7 @@ namespace {
             return bstp_m->checkPoint(R(0), R(1), R(2));
         }
         double getPressure(const Vector_t &R) {
-            return bstp_m->checkPressure(R(0)*0.001, R(1)*0.001);
+            return bstp_m->checkPressure(R(0), R(1));
         }
     private:
         BeamStripping *bstp_m;
@@ -171,14 +171,14 @@ void BeamStrippingPhysics::doPhysics(PartBunchBase<double, 3> *bunch) {
             pdead_GS = gasStripping(deltas);
 
             if (std::abs(mass_m-m_hm) < 1E-6 && charge_m == -q_e) {
-                cycl_m->apply(bunch->R[i]*0.001, bunch->P[i], T_m, extE, extB);
+                cycl_m->apply(bunch->R[i], bunch->P[i], T_m, extE, extB);
                 double B = 0.1 * std::sqrt(extB[0]*extB[0] + extB[1]*extB[1] + extB[2]*extB[2]); //T
                 double E = gamma * beta * Physics::c * B;
                 pdead_LS = lorentzStripping(gamma, E);
             }
 
             if (pdead_GS == true || pdead_LS == true) {
-                lossDs_m->addParticle(bunch->R[i]*0.001, bunch->P[i], bunch->ID[i],
+                lossDs_m->addParticle(bunch->R[i], bunch->P[i], bunch->ID[i],
                                       bunch->getT()*1e9, 0, bunch->bunchNum[i]);
                 if (stop) {
                     bunch->Bin[i] = -1;

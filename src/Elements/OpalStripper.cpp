@@ -95,16 +95,19 @@ void OpalStripper::fillRegisteredAttributes(const ElementBase &base, ValueFlag f
 void OpalStripper::update() {
     OpalElement::update();
 
-    StripperRep *strp =dynamic_cast<StripperRep *>(getElement()->removeWrappers());
-    double length = Attributes::getReal(itsAttr[LENGTH]);
-    double xstart = Attributes::getReal(itsAttr[XSTART]);
-    double xend = Attributes::getReal(itsAttr[XEND]);
-    double ystart = Attributes::getReal(itsAttr[YSTART]);
-    double yend = Attributes::getReal(itsAttr[YEND]);
+    StripperRep *strp = dynamic_cast<StripperRep *>(getElement()->removeWrappers());
+
+    const double mm2m = 0.001;
+    double xstart   = mm2m * Attributes::getReal(itsAttr[XSTART]);
+    double xend     = mm2m * Attributes::getReal(itsAttr[XEND]);
+    double ystart   = mm2m * Attributes::getReal(itsAttr[YSTART]);
+    double yend     = mm2m * Attributes::getReal(itsAttr[YEND]);
+
+    double length   = Attributes::getReal(itsAttr[LENGTH]);
     double opcharge = Attributes::getReal(itsAttr[OPCHARGE]);
-    double opmass = Attributes::getReal(itsAttr[OPMASS]);
-    double opyield = Attributes::getReal(itsAttr[OPYIELD]);
-    bool   stop = Attributes::getBool(itsAttr[STOP]);
+    double opmass   = Attributes::getReal(itsAttr[OPMASS]);
+    double opyield  = Attributes::getReal(itsAttr[OPYIELD]);
+    bool   stop     = Attributes::getBool(itsAttr[STOP]);
 
     strp->setElementLength(length);
     strp->setDimensions(xstart, xend, ystart, yend);

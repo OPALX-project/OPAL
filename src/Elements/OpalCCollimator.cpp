@@ -90,14 +90,17 @@ void OpalCCollimator::update() {
 
     CCollimatorRep *coll =
         dynamic_cast<CCollimatorRep *>(getElement()->removeWrappers());
+    const double mm2m = 1e-3;
+    double xstart = mm2m * Attributes::getReal(itsAttr[XSTART]);
+    double xend   = mm2m * Attributes::getReal(itsAttr[XEND]);
+    double ystart = mm2m * Attributes::getReal(itsAttr[YSTART]);
+    double yend   = mm2m * Attributes::getReal(itsAttr[YEND]);
+    double zstart = mm2m * Attributes::getReal(itsAttr[ZSTART]);
+    double zend   = mm2m * Attributes::getReal(itsAttr[ZEND]);
+    double width  = mm2m * Attributes::getReal(itsAttr[WIDTH]);
+
     double length = Attributes::getReal(itsAttr[LENGTH]);
-    double xstart = Attributes::getReal(itsAttr[XSTART]);
-    double xend = Attributes::getReal(itsAttr[XEND]);
-    double ystart = Attributes::getReal(itsAttr[YSTART]);
-    double yend = Attributes::getReal(itsAttr[YEND]);
-    double zstart = Attributes::getReal(itsAttr[ZSTART]);
-    double zend = Attributes::getReal(itsAttr[ZEND]);
-    double width = Attributes::getReal(itsAttr[WIDTH]);
+
     coll->setElementLength(length);
     coll->setDimensions(xstart, xend, ystart, yend, zstart, zend, width);
     coll->setOutputFN(Attributes::getString(itsAttr[OUTFN]));

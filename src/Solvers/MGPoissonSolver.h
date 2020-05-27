@@ -7,14 +7,16 @@
 //   \see FFTPoissonSolver
 //   \warning This solver is in an EXPERIMENTAL STAGE. For reliable simulations use the FFTPoissonSolver
 //
-// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich,
-//               2013 - 2015, Tülin Kaman, Paul Scherrer Institut, Villigen PSI, Switzerland,
-//                      2020, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2008,        Yves Ineichen, ETH Zürich,
+//               2013 - 2015, Tülin Kaman, Paul Scherrer Institut, Villigen PSI, Switzerland
+//               2017 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
-// Implemented as part of the PhD thesis
-// "Toward massively parallel multi-objective optimization with application to
-// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+// Implemented as part of the master thesis
+// "A Parallel Multigrid Solver for Beam Dynamics"
+// and the paper
+// "A fast parallel Poisson solver on irregular domains applied to beam dynamics simulations"
+// (https://doi.org/10.1016/j.jcp.2010.02.022)
 //
 // In 2020, the code was ported to the second generation Trilinos packages,
 // i.e., Epetra --> Tpetra, ML --> MueLu. See also issue #507.

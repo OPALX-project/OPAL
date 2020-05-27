@@ -3,7 +3,7 @@
 //   The Stripper element defines the interface for a stripping foil
 //
 // Copyright (c) 2011, Jianjun Yang, Paul Scherrer Institut, Villigen PSI, Switzerland
-// Copyright (c) 2017-2019, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2017-2020, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // Implemented as part of the PhD thesis
@@ -101,7 +101,7 @@ bool Stripper::doPreCheck(PartBunchBase<double, 3> *bunch) {
     double ymax = std::max(std::abs(rmin(1)), std::abs(rmax(1)));
     double rbunch_max = std::hypot(xmax, ymax);
 
-    if (rbunch_max > rmin_m - 10.0) {
+    if (rbunch_max > rmin_m - 1e-2) {
         return true;
     }
     return false;
@@ -125,13 +125,12 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
         if (pflag == 0) continue;
 
         // dist1 > 0, right hand, dt > 0; dist1 < 0, left hand, dt < 0
-        double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m * 1.0e-3; // [m]
+        double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m; // [m]
         double dist2 = dist1 * std::sqrt(1.0 + 1.0 / tangle / tangle);
         double dt = dist2 / (std::sqrt(1.0 - 1.0 / (1.0 + dot(bunch->P[i], bunch->P[i]))) * Physics::c) * 1.0e9; // [ns]
         strippoint(0) = (B_m * B_m * bunch->R[i](0) - A_m * B_m* bunch->R[i](1) - A_m * C_m) / (R_m * R_m);
         strippoint(1) = (A_m * A_m * bunch->R[i](1) - A_m * B_m* bunch->R[i](0) - B_m * C_m) / (R_m * R_m);
         strippoint(2) = bunch->R[i](2);
-        strippoint = strippoint*0.001; // mm->m
         lossDs_m->addParticle(strippoint, bunch->P[i], bunch->ID[i], t+dt,
                               turnnumber, bunch->bunchNum[i]);
 

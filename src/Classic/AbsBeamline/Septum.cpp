@@ -1,3 +1,20 @@
+//
+// Class Septum
+//   Interface for a septum magnet
+//
+// Copyright (c) 2016-2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbsBeamline/Septum.h"
 
 #include "AbsBeamline/BeamlineVisitor.h"
@@ -6,9 +23,6 @@
 #include "Structure/LossDataSink.h"
 
 extern Inform *gmsg;
-
-// Class Septum
-// ------------------------------------------------------------------------
 
 Septum::Septum():Septum("")
 {}
@@ -31,9 +45,8 @@ void Septum::accept(BeamlineVisitor &visitor) const {
 }
 
 void Septum::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
-    position_m = startField;
+    endField = startField + 0.005;
     startField -= 0.005;
-    endField = position_m + 0.005;
     initialise(bunch);
 }
 
@@ -59,7 +72,7 @@ bool Septum::doPreCheck(PartBunchBase<double, 3> *bunch) {
     double ymax = std::max(std::abs(rmin(1)), std::abs(rmax(1)));
     double rbunch_max = std::hypot(xmax, ymax);
 
-    if(rbunch_max > rstart_m - 100)  {
+    if (rbunch_max > rstart_m - 0.1)  {
         return true;
     }
     return false;
@@ -74,20 +87,20 @@ bool Septum::doCheck(PartBunchBase<double, 3> *bunch, const int /*turnnumber*/, 
     const double intcept1 = intcept - halfLength;
     const double intcept2 = intcept + halfLength;
 
-    for(unsigned int i = 0; i < bunch->getLocalNum(); ++i) {
+    for (unsigned int i = 0; i < bunch->getLocalNum(); ++i) {
         const Vector_t& R = bunch->R[i];
 
         double line1 = std::abs(slope * R(0) + intcept1);
         double line2 = std::abs(slope * R(0) + intcept2);
 
-        if(std::abs(R(1)) > line2 &&
+        if (std::abs(R(1)) > line2 &&
            std::abs(R(1)) < line1 &&
            R(0) > xstart_m    &&
            R(0) < xend_m      &&
            R(1) > ystart_m    &&
            R(1) < yend_m) {
 
-            bunch->lossDs_m->addParticle(R, bunch->P[i], bunch->ID[i]);
+            lossDs_m->addParticle(R, bunch->P[i], bunch->ID[i]);
             bunch->Bin[i] = -1;
             flag = true;
         }

@@ -177,10 +177,10 @@ bool BeamStripping::checkBeamStripping(PartBunchBase<double, 3> *bunch, Cyclotro
     boundingSphere.first = 0.5 * (rmax + rmin);
     boundingSphere.second = euclidean_norm(rmax - boundingSphere.first);
 
-    maxr_m = 1000 * cycl->getMaxR();
-    minr_m = 1000 * cycl->getMinR();
-    maxz_m = 1000 * cycl->getMaxZ();
-    minz_m = 1000 * cycl->getMinZ();
+    maxr_m = cycl->getMaxR();
+    minr_m = cycl->getMinR();
+    maxz_m = cycl->getMaxZ();
+    minz_m = cycl->getMinZ();
 
     size_t tempnum = bunch->getLocalNum();
     for (unsigned int i = 0; i < tempnum; ++i) {
@@ -256,8 +256,7 @@ std::string BeamStripping::getBeamStrippingShape() {
 int BeamStripping::checkPoint(const double &x, const double &y, const double &z) {
     int cn;
     double rpos = std::sqrt(x * x + y * y);
-    double zpos = z;
-    if (zpos >= maxz_m || zpos <= minz_m || rpos >= maxr_m || rpos <= minr_m)
+    if (z >= maxz_m || z <= minz_m || rpos >= maxr_m || rpos <= minr_m)
         cn = 0;
     else
         cn = 1;

@@ -88,12 +88,14 @@ void OpalProbe::update() {
 
     ProbeRep *prob =
         dynamic_cast<ProbeRep *>(getElement()->removeWrappers());
+    const double mm2m = 0.001;
+    double xstart = mm2m * Attributes::getReal(itsAttr[XSTART]);
+    double xend   = mm2m * Attributes::getReal(itsAttr[XEND]);
+    double ystart = mm2m * Attributes::getReal(itsAttr[YSTART]);
+    double yend   = mm2m * Attributes::getReal(itsAttr[YEND]);
+    double step   = mm2m * Attributes::getReal(itsAttr[STEP]);
+
     double length = Attributes::getReal(itsAttr[LENGTH]);
-    double xstart = Attributes::getReal(itsAttr[XSTART]);
-    double xend   = Attributes::getReal(itsAttr[XEND]);
-    double ystart = Attributes::getReal(itsAttr[YSTART]);
-    double yend   = Attributes::getReal(itsAttr[YEND]);
-    double step   = Attributes::getReal(itsAttr[STEP]);
 
     if(itsAttr[WAKEF] && owk_m == nullptr) {
         owk_m = (OpalWake::find(Attributes::getString(itsAttr[WAKEF])))->clone(getOpalName() + std::string("_wake"));

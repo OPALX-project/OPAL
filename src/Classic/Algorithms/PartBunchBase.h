@@ -13,10 +13,10 @@
 #include "Algorithms/PartData.h"
 #include "Algorithms/Quaternion.h"
 
-#include <iosfwd>
+#include <memory>
+#include <utility>
 #include <vector>
 
-#include "Structure/LossDataSink.h"
 #include "Structure/FieldSolver.h"
 #include "Algorithms/ListElem.h"
 
@@ -111,8 +111,6 @@ public:
     void updateNumTotal();
 
     void rebin();
-
-    int getNumBins();
 
     int getLastemittedBin();
 
@@ -493,24 +491,8 @@ public:
     ParticleType::type refPType_m;
     CoordinateSystemTrafo toLabTrafo_m;
 
-
-    /// avoid calls to Ippl::myNode()
-    int myNode_m;
-
-    /// avoid calls to Ippl::getNodes()
-    int nodes_m;
-
-    /// if the grid does not have to adapt
-    bool fixed_grid;
-
     // The structure for particle binning
     PartBins *pbin_m;
-
-    std::unique_ptr<LossDataSink> lossDs_m;
-
-    // save particles in case of one core
-    std::unique_ptr<Inform> pmsg_m;
-    std::unique_ptr<std::ofstream> f_stream;
 
     /// timer for IC, can not be in Distribution.h
     IpplTimings::TimerRef distrReload_m;
@@ -522,11 +504,15 @@ public:
     /// if a local node has less than 2 particles  lowParticleCount_m == true
     bool lowParticleCount_m;
 
-    /// timer for selfField calculation
-    IpplTimings::TimerRef selfFieldTimer_m;
-
     // get 2nd order momentum matrix
     FMatrix<double, 2 * Dim, 2 * Dim> getSigmaMatrix();
+
+private:
+    // save particles in case of one core
+    std::unique_ptr<Inform> pmsg_m;
+    std::unique_ptr<std::ofstream> f_stream;
+    /// if the grid does not have to adapt
+    bool fixed_grid;
 
 protected:
     IpplTimings::TimerRef boundpTimer_m;
@@ -535,6 +521,8 @@ protected:
     IpplTimings::TimerRef statParamTimer_m;
 
     IpplTimings::TimerRef histoTimer_m;
+    /// timer for selfField calculation
+    IpplTimings::TimerRef selfFieldTimer_m;
 
 
     const PartData *reference;

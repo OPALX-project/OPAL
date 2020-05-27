@@ -1,3 +1,20 @@
+//
+// Class Probe
+//   Interface for a probe
+//
+// Copyright (c) 2016-2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbsBeamline/Probe.h"
 
 #include "AbsBeamline/BeamlineVisitor.h"
@@ -59,7 +76,7 @@ bool Probe::doPreCheck(PartBunchBase<double, 3> *bunch) {
     double rbunch_min = std::hypot(xmin, ymin);
     double rbunch_max = std::hypot(xmax, ymax);
 
-    if( rbunch_max > rmin_m - 10.0 && rbunch_min < rend_m + 10.0 ) {
+    if (rbunch_max > rmin_m - 0.01 && rbunch_min < rend_m + 0.01 ) {
         return true;
     }
     return false;
@@ -69,11 +86,11 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
     Vector_t probepoint;
     size_t tempnum = bunch->getLocalNum();
 
-    for(unsigned int i = 0; i < tempnum; ++i) {
+    for (unsigned int i = 0; i < tempnum; ++i) {
         double tangle = calculateIncidentAngle(bunch->P[i](0), bunch->P[i](1));
         changeWidth(bunch, i, tstep, tangle);
         int pflag = checkPoint(bunch->R[i](0), bunch->R[i](1));
-        if(pflag == 0) continue;
+        if (pflag == 0) continue;
         // calculate closest point at probe -> better to use momentum direction
         // probe: y = -A/B * x - C/B or A*X + B*Y + C = 0
         // perpendicular line through R: y = B/A * x + R(1) - B/A * R(0)
@@ -82,19 +99,14 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
         // probepoint(2) = bunch->R[i](2);
         // calculate time correction for probepoint
         // dist1 > 0, right hand, dt > 0; dist1 < 0, left hand, dt < 0
-        double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m * 1.0e-3; // [m]
+        double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m; // [m]
         double dist2 = dist1 * std::sqrt(1.0 + 1.0 / tangle / tangle);
         double dt = dist2 / (std::sqrt(1.0 - 1.0 / (1.0 + dot(bunch->P[i], bunch->P[i]))) * Physics::c) * 1.0e9;
 
-        probepoint = bunch->R[i] + dist2 * 1000.0 * bunch->P[i] / euclidean_norm(bunch->P[i]);
+        probepoint = bunch->R[i] + dist2 * bunch->P[i] / euclidean_norm(bunch->P[i]);
 
         // peak finder uses millimetre not metre
-        peakfinder_m->addParticle(probepoint);
-
-        /*FIXME Issue #45: mm --> m (when OPAL-Cycl uses metre instead of millimetre,
-         * this can be removed.
-         */
-        probepoint *= 0.001;
+        peakfinder_m->addParticle(probepoint * 1e3);
 
         lossDs_m->addParticle(probepoint, bunch->P[i], bunch->ID[i], t+dt,
                               turnnumber, bunch->bunchNum[i]);

@@ -3,14 +3,17 @@
 //   Interface to iterative solver and boundary geometry
 //   for space charge calculation
 //
-// Copyright (c) 2010 - 2013, Yves Ineichen, ETH Zürich,
+// Copyright (c) 2008,        Yves Ineichen, ETH Zürich,
 //               2013 - 2015, Tülin Kaman, Paul Scherrer Institut, Villigen PSI, Switzerland
 //                      2016, Daniel Winklehner, Massachusetts Institute of Technology
+//               2017 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
-// Implemented as part of the PhD thesis
-// "Toward massively parallel multi-objective optimization with application to
-// particle accelerators" (https://doi.org/10.3929/ethz-a-009792359)
+// Implemented as part of the master thesis
+// "A Parallel Multigrid Solver for Beam Dynamics"
+// and the paper
+// "A fast parallel Poisson solver on irregular domains applied to beam dynamics simulations"
+// (https://doi.org/10.1016/j.jcp.2010.02.022)
 //
 // This file is part of OPAL.
 //
