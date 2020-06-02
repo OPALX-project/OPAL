@@ -22,7 +22,6 @@
 #include "Algorithms/Tracker.h"
 #include "AbsBeamline/AlignWrapper.h"
 #include "AbsBeamline/Patch.h"
-#include "Algorithms/MapIntegrator.h"
 #include "Fields/BMultipoleField.h"
 
 //FIXME Remove headers and dynamic_cast in readOneBunchFromFile
@@ -110,16 +109,6 @@ void Tracker::visitAlignWrapper(const AlignWrapper &wrap) {
             applyTransform(e2);
         }
     }
-}
-
-
-void Tracker::visitTrackIntegrator(const TrackIntegrator &i) {
-    i.trackBunch(itsBunch_m, itsReference, back_beam, back_track);
-}
-
-
-void Tracker::visitMapIntegrator(const MapIntegrator &i) {
-    i.trackBunch(itsBunch_m, itsReference, back_beam, back_track);
 }
 
 

@@ -75,18 +75,9 @@ public:
 
     virtual void finalise() override;
 
-    virtual bool bends() const override;
-
     virtual void goOnline(const double &kineticEnergy) override;
 
     virtual void goOffline() override;
-
-    //  Assign the field filename.
-    void setFieldMapFN(std::string fn);
-
-    void setFast(bool fast);
-
-    bool getFast() const;
 
     virtual ElementBase::ElementType getType() const override;
 
@@ -100,14 +91,10 @@ public:
 private:
     double trackRefParticleThrough(double dt, bool print = false);
 
-    //  std::string name;                 /**< The name of the object*/
-    Fieldmap *myFieldmap_m;
     double fieldAmplitudeError_m;         /**< scale multiplier error*/
 
     double startField_m;                  /**< startingpoint of field, m*/
     double lengthField_m;
-
-    bool fast_m;
 
     StraightGeometry geometry_m;
 

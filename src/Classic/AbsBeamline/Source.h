@@ -41,7 +41,6 @@ public:
 
 private:
 
-    double ElementEdge_m;
     double startField_m;           /**< startingpoint of field, m*/
     double endField_m;
 

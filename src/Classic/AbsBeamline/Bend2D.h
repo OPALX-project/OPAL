@@ -33,10 +33,10 @@
 #endif
 
 #include <array>
+#include <cmath>
 #include <string>
 #include <vector>
 
-class Fieldmap;
 class MeshData;
 
 /*
@@ -60,7 +60,7 @@ public:
     virtual ~Bend2D();
 
     /// Apply visitor to Bend2D.
-    virtual void accept(BeamlineVisitor &) const = 0;
+    virtual void accept(BeamlineVisitor &) const override = 0;
 
     /*
      * Methods for OPAL-T.
@@ -71,51 +71,48 @@ public:
     virtual bool apply(const size_t &i,
                        const double &t,
                        Vector_t &E,
-                       Vector_t &B);
+                       Vector_t &B) override;
 
     /// Apply field to particles in beam frame.
     virtual bool apply(const Vector_t &R,
                        const Vector_t &P,
                        const double &t,
                        Vector_t &E,
-                       Vector_t &B);
+                       Vector_t &B) override;
 
     virtual bool applyToReferenceParticle(const Vector_t &R,
                                           const Vector_t &P,
                                           const double &t,
                                           Vector_t &E,
-                                          Vector_t &B);
+                                          Vector_t &B) override;
 
-    virtual void goOnline(const double &kineticEnergy);
+    virtual void goOnline(const double &kineticEnergy) override;
 
-    virtual void finalise();
-    virtual void getDimensions(double &sBegin, double &sEnd) const;
-    virtual ElementBase::ElementType getType() const = 0;
+    virtual void finalise() override;
+    virtual void getDimensions(double &sBegin, double &sEnd) const override;
+    virtual ElementBase::ElementType getType() const override = 0;
     virtual void initialise(PartBunchBase<double, 3> *bunch,
                             double &startField,
-                            double &endField);
+                            double &endField) override;
 
     double getBendRadius() const;
     double getEffectiveCenter() const;
     double getEffectiveLength() const;
 
-    double getStartElement() const;
-
     /// Set quadrupole field component.
     void setK1(double k1);
 
+    virtual void setEntranceAngle(double entranceAngle) override;
     void setExitAngle(double exitAngle);
-    virtual double getExitAngle() const;
-
-    double getMapLength() const;
+    virtual double getExitAngle() const override;
 
     std::vector<Vector_t> getOutline() const;
     MeshData getSurfaceMesh() const;
 
-    virtual CoordinateSystemTrafo getEdgeToEnd() const;
+    virtual CoordinateSystemTrafo getEdgeToEnd() const override;
     CoordinateSystemTrafo getBeginToEnd_local() const;
 
-    virtual bool isInside(const Vector_t &r) const;
+    virtual bool isInside(const Vector_t &r) const override;
 
 
     //set number of slices for map tracking
@@ -135,7 +132,6 @@ public:
 protected:
     void setMessageHeader(const std::string & header);
     double getStartField() const;
-    Fieldmap* getFieldmap();
 
 private:
 
@@ -164,18 +160,13 @@ private:
                            Vector_t &B);
     void calculateRefTrajectory(double &angleX,
                                 double &angleY);
-    double estimateFieldAdjustmentStep(double actualBendAngle,
-                                       double mass,
-                                       double betaGamma);
+    double estimateFieldAdjustmentStep(double actualBendAngle);
     void findBendEffectiveLength(double startField,
                                  double endField);
-    void findBendStrength(double mass,
-                          double gamma,
-                          double betaGamma,
-                          double charge);
+    void findBendStrength();
     virtual bool findChordLength(double &chordLength) = 0;
     bool findIdealBendParameters(double chordLength);
-    bool initializeFieldMap(Inform &msg);
+    bool initializeFieldMap();
     bool inMagnetCentralRegion(const Vector_t &R) const;
     bool inMagnetEntranceRegion(const Vector_t &R) const;
     bool inMagnetExitRegion(const Vector_t &R) const;
@@ -188,11 +179,11 @@ private:
     void setEngeOriginDelta(double delta);
     void setFieldCalcParam();
     void setGapFromFieldMap();
-    bool setupBendGeometry(Inform &msg, double &startField, double &endField);
-    bool setupDefaultFieldMap(Inform &msg);
+    bool setupBendGeometry(double &startField, double &endField);
+    bool setupDefaultFieldMap();
     void setFieldBoundaries(double startField, double endField);
     void setupPusher(PartBunchBase<double, 3> *bunch);
-    bool treatAsDrift(Inform &msg, double chordlength);
+    bool isFieldZero();
 
     void setCSTrafoToEntranceRegion(const CoordinateSystemTrafo &trafo);
     void setCSTrafoToExitRegion(const CoordinateSystemTrafo &trafo);
@@ -204,12 +195,8 @@ private:
     BorisPusher pusher_m;       /// Pusher used to integrate reference particle
     /// through the bend.
 
-    Fieldmap *fieldmap_m;       /// Magnet field map.
-    const bool fast_m = false;  /// Flag to turn on fast field calculation.
-
     double designRadius_m;      /// Bend design radius (m).
 
-    /// and the entrance face of the magnet (radians).
     double exitAngle_m;         /// Angle between outgoing reference trajectory
     /// and the exit face of the magnet (radians).
     double fieldIndex_m;        /// Dipole field index.
@@ -314,11 +301,6 @@ double Bend2D::getEffectiveLength() const {
 }
 
 inline
-double Bend2D::getStartElement() const {
-    return elementEdge_m;
-}
-
-inline
 void Bend2D::setK1(double k1) {
     if (std::abs(k1) > 0.0) {
         throw GeneralClassicException("Bend2D::setK1",
@@ -340,28 +322,25 @@ double Bend2D::getStartField() const
 }
 
 inline
-Fieldmap* Bend2D::getFieldmap()
-{
-    return fieldmap_m;
-}
-
-inline
 double Bend2D::getExitAngle() const
 {
     return exitAngle_m;
 }
 
 inline
-void Bend2D::setExitAngle(double angle)
+void Bend2D::setEntranceAngle(double angle)
 {
-    exitAngle_m = angle;
-    tanExitAngle_m = tan(exitAngle_m);
+    BendBase::setEntranceAngle(angle);
+    cosEntranceAngle_m = std::cos(entranceAngle_m);
+    sinEntranceAngle_m = std::sin(entranceAngle_m);
+    tanEntranceAngle_m = std::tan(entranceAngle_m);
 }
 
 inline
-double Bend2D::getMapLength() const
+void Bend2D::setExitAngle(double angle)
 {
-    return exitParameter2_m - entranceParameter2_m;
+    exitAngle_m = angle;
+    tanExitAngle_m = std::tan(exitAngle_m);
 }
 
 inline

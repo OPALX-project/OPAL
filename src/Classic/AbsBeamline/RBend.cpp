@@ -138,13 +138,10 @@ bool RBend::findChordLength(double &chordLength) {
         chordLength = 2 * getLength() * std::sin(0.5 * std::abs(angle)) /
             (std::sin(E1) + std::sin(std::abs(angle) - E1));
     } else {
-        double refMass  = RefPartBunch_m->getM();
-        double refGamma = designEnergy_m / refMass + 1.0;
-        double refBetaGamma = std::sqrt(std::pow(refGamma, 2.0) - 1.0);
         double refCharge = RefPartBunch_m->getQ();
-        double amplitude = (std::abs(bY_m) > 0.0? bY_m: bX_m);
-        double fieldAmplitude = refCharge * std::abs(amplitude / refCharge);
-        double designRadius = std::abs(refBetaGamma * refMass / (Physics::c * fieldAmplitude));
+        double amplitude = (fieldAmplitudeY_m != 0.0) ? fieldAmplitudeY_m : fieldAmplitudeX_m;
+        double fieldAmplitude = std::copysign(1.0, refCharge) * std::abs(amplitude);
+        double designRadius = calcDesignRadius(fieldAmplitude);
         chordLength = std::sin(0.5 * (std::asin(getLength() / designRadius - std::sin(getEntranceAngle())) + getEntranceAngle())) * 2 * designRadius;
     }
 

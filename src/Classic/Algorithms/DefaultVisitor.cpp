@@ -26,43 +26,41 @@
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Cyclotron.h"
+#include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
-#include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/FlexibleCollimator.h"
+#include "AbsBeamline/Integrator.h"
 #include "AbsBeamline/Lambertson.h"
-#include "AbsBeamline/Offset.h"
 #include "AbsBeamline/Marker.h"
 #include "AbsBeamline/Monitor.h"
 #include "AbsBeamline/Multipole.h"
 #include "AbsBeamline/MultipoleT.h"
-#include "AbsBeamline/MultipoleTStraight.h"
 #include "AbsBeamline/MultipoleTCurvedConstRadius.h"
 #include "AbsBeamline/MultipoleTCurvedVarRadius.h"
+#include "AbsBeamline/MultipoleTStraight.h"
+#include "AbsBeamline/Offset.h"
+#include "AbsBeamline/ParallelPlate.h"
 #include "AbsBeamline/Patch.h"
 #include "AbsBeamline/Probe.h"
 #include "AbsBeamline/RBend.h"
 #include "AbsBeamline/RBend3D.h"
 #include "AbsBeamline/RFCavity.h"
-#include "AbsBeamline/VariableRFCavity.h"
-#include "AbsBeamline/VariableRFCavityFringeField.h"
-#include "AbsBeamline/TravelingWave.h"
-#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/RFQuadrupole.h"
 #include "AbsBeamline/SBend.h"
 #include "AbsBeamline/SBend3D.h"
 #include "AbsBeamline/ScalingFFAMagnet.h"
-#include "AbsBeamline/VerticalFFAMagnet.h"
 #include "AbsBeamline/Separator.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/Source.h"
-#include "AbsBeamline/ParallelPlate.h"
 #include "AbsBeamline/Stripper.h"
-
-#include "Algorithms/MapIntegrator.h"
-#include "Algorithms/TrackIntegrator.h"
+#include "AbsBeamline/TravelingWave.h"
+#include "AbsBeamline/Undulator.h"
+#include "AbsBeamline/VariableRFCavity.h"
+#include "AbsBeamline/VariableRFCavityFringeField.h"
+#include "AbsBeamline/VerticalFFAMagnet.h"
 
 #include "Beamlines/Beamline.h"
 #include "Beamlines/FlaggedElmPtr.h"
@@ -316,18 +314,6 @@ void DefaultVisitor::visitSBendWrapper(const SBendWrapper &wrap) {
 
 
 void DefaultVisitor::visitIntegrator(const Integrator &i) {
-    // Default: cannot use integrator.
-    i.getElement()->accept(*this);
-}
-
-
-void DefaultVisitor::visitMapIntegrator(const MapIntegrator &i) {
-    // Default: cannot use integrator.
-    i.getElement()->accept(*this);
-}
-
-
-void DefaultVisitor::visitTrackIntegrator(const TrackIntegrator &i) {
     // Default: cannot use integrator.
     i.getElement()->accept(*this);
 }

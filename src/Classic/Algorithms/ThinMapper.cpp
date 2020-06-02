@@ -42,7 +42,6 @@
 #include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/ParallelPlate.h"
 
-#include "Algorithms/MapIntegrator.h"
 #include "BeamlineGeometry/Euclid3D.h"
 #include "BeamlineGeometry/Geometry.h"
 #include "Beamlines/Beamline.h"

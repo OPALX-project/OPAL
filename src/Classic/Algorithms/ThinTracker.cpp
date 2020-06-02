@@ -44,7 +44,6 @@
 #include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/ParallelPlate.h"
 
-#include "Algorithms/MapIntegrator.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Algorithms/PartData.h"
 #include "Algorithms/OpalParticle.h"

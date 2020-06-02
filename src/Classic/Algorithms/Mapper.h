@@ -126,10 +126,6 @@ public:
     /// Apply the algorithm to an align wrapper.
     virtual void visitAlignWrapper(const AlignWrapper &);
 
-
-    /// Apply the algorithm to an integrator capable of mapping.
-    virtual void visitMapIntegrator(const MapIntegrator &);
-
 protected:
 
     /// Apply drift length.

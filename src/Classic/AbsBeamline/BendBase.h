@@ -6,6 +6,8 @@
 #include <vector>
 #include <string>
 
+class Fieldmap;
+
 class BendBase: public Component {
 public:
     BendBase();
@@ -37,21 +39,40 @@ public:
     std::string getFieldMapFN() const;
 
 protected:
+    /// Calculate design radius from design energy and field amplitude
+    double calcDesignRadius(double fieldAmplitude) const;
+    /// Calculate field amplitude from design energy and radius
+    double calcFieldAmplitude(double radius) const;
+    /// Calculate bend angle from chord length and design radius
+    double calcBendAngle(double chordLength, double radius) const;
+    /// Calculate design radius from chord length and bend angle
+    double calcDesignRadius(double chordLength, double angle) const;
+    /// Calculate gamma from design energy
+    double calcGamma() const;
+    /// Calculate beta*gamma from design energy
+    double calcBetaGamma() const;
+
     double length_m;
     double chordLength_m;
-    double angle_m;
-    double entranceAngle_m;     /// Angle between incoming reference trajectory
+    double angle_m;         ///< Bend angle
+    double entranceAngle_m; ///< Angle between incoming reference trajectory
+                            ///< and the entrance face of the magnet (radians).
+    Fieldmap *fieldmap_m;      ///< Magnet field map.
+    const bool fast_m = false; ///< Flag to turn on fast field calculation.
 
-    double gap_m;
+    double gap_m; ///< Full vertical gap of the magnets.
 
-    double designEnergy_m;      /// Bend design energy (eV).
+    double designEnergy_m; ///< Bend design energy (eV).
     bool designEnergyChangeable_m;
     /// Map of reference particle trajectory.
     std::vector<Vector_t> refTrajMap_m;
 
-    double bX_m;
-    double bY_m;
-    double fieldAmplitude_m;
+    double fieldAmplitudeX_m; ///< Field amplitude in x direction.
+                              ///< Value not updated if user defines strength with angle
+    double fieldAmplitudeY_m; ///< Field amplitude in y direction.
+                              ///< Value not updated if user defines strength with angle
+
+    double fieldAmplitude_m;  ///< Field amplitude.
 
     std::string fileName_m;
 };
@@ -119,12 +140,6 @@ void BendBase::setDesignEnergy(const double& energy, bool changeable) {
 inline
 double BendBase::getDesignEnergy() const {
     return designEnergy_m;
-}
-
-inline
-void BendBase::setFieldAmplitude(double k0, double k0s) {
-    bY_m = k0;
-    bX_m = k0s;
 }
 
 inline

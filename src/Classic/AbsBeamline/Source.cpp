@@ -21,7 +21,6 @@ Source::Source():
 
 Source::Source(const Source &right):
     Component(right),
-    ElementEdge_m(right.ElementEdge_m),
     startField_m(right.startField_m),
     endField_m(right.endField_m)
 {}
@@ -29,7 +28,6 @@ Source::Source(const Source &right):
 
 Source::Source(const std::string &name):
     Component(name),
-    ElementEdge_m(0.0),
     startField_m(0.0),
     endField_m(0.0)
 {}

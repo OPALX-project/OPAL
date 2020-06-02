@@ -21,7 +21,6 @@
 
 #include "Algorithms/Mapper.h"
 #include "AbsBeamline/AlignWrapper.h"
-#include "Algorithms/MapIntegrator.h"
 #include "Fields/BMultipoleField.h"
 #include "FixedAlgebra/FTpsMath.h"
 #include "FixedAlgebra/LinearMap.h"
@@ -107,11 +106,6 @@ void Mapper::visitAlignWrapper(const AlignWrapper &wrap) {
             applyTransform(e2);
         }
     }
-}
-
-
-void Mapper::visitMapIntegrator(const MapIntegrator &i) {
-    i.trackMap(itsMap, itsReference, back_beam, back_track);
 }
 
 

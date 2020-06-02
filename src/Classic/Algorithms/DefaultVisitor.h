@@ -201,12 +201,6 @@ public:
     /// Apply the algorithm to a generic integrator.
     virtual void visitIntegrator(const Integrator &);
 
-    /// Apply the algorithm to an integrator capable of mapping.
-    virtual void visitMapIntegrator(const MapIntegrator &);
-
-    /// Apply the algorithm to an integrator capable of tracking.
-    virtual void visitTrackIntegrator(const TrackIntegrator &);
-
 protected:
 
     // The top level beamline.

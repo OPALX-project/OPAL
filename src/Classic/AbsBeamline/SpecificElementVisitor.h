@@ -55,9 +55,6 @@
 #include "ComponentWrappers/RBendWrapper.h"
 #include "ComponentWrappers/SBendWrapper.h"
 
-#include "Algorithms/MapIntegrator.h"
-#include "Algorithms/TrackIntegrator.h"
-
 template <class ELEM1, class ELEM2>
 struct CastsTrait {
     typedef std::list<const ELEM1*> ElementList_t;
@@ -232,12 +229,6 @@ public:
 
     /// Apply the algorithm to a generic integrator.
     virtual void visitIntegrator(const Integrator &);
-
-    /// Apply the algorithm to an integrator capable of mapping.
-    virtual void visitMapIntegrator(const MapIntegrator &);
-
-    /// Apply the algorithm to an integrator capable of tracking.
-    virtual void visitTrackIntegrator(const TrackIntegrator &);
 
     size_t size() const;
 
@@ -520,14 +511,6 @@ void SpecificElementVisitor<ELEM>::visitSBendWrapper(const SBendWrapper &element
 
 template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitIntegrator(const Integrator & /*elem*/) {
-}
-
-template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitMapIntegrator(const MapIntegrator &/*element*/) {
-}
-
-template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitTrackIntegrator(const TrackIntegrator &/*element*/) {
 }
 
 template<class ELEM>
