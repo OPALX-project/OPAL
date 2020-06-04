@@ -609,9 +609,6 @@ protected:
     /// counter to store the distribution dump
     int distDump_m;
 
-    ///
-    int fieldDBGStep_m;
-
     /// Mesh enlargement
     double dh_m; /// in % how much the mesh is enlarged
 

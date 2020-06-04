@@ -56,7 +56,6 @@ PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb)
       couplingConstant_m(0.0),
       qi_m(0.0),
       distDump_m(0),
-      fieldDBGStep_m(0),
       dh_m(1e-12),
       tEmission_m(0.0),
       bingamma_m(nullptr),
