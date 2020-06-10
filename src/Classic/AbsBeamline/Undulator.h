@@ -46,6 +46,8 @@ public:
 
     virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
 
+    virtual void apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo const& refToLocalCSTrafo);
+
     virtual void finalise();
 
     virtual bool bends() const;
@@ -60,10 +62,56 @@ public:
     //set number of slices for map tracking
     std::size_t getNSlices() const; // Philippe was here
 
+    virtual void setK(double k);
+    virtual double getK() const;
+    virtual void setLambda(double lambda);
+    virtual double getLambda() const;
+    virtual void setNumPeriods(int np);
+    virtual int getNumPeriods() const;
+    virtual void setFilename(const std::string& fname);
+    virtual const std::string& getFilename() const;
+    virtual void setMeshLength(std::vector<double> ml);
+    virtual std::vector<double> getMeshLength() const;
+    virtual void setMeshResolution(std::vector<double> mr);
+    virtual std::vector<double> getMeshResolution() const;
+    virtual void setTruncationOrder(unsigned int trunOrder);
+    virtual unsigned int getTruncationOrder() const;
+    virtual void setTotalTime(double tt);
+    virtual double getTotalTime() const;
+    virtual void setDtBunch(double dtb);
+    virtual double getDtBunch() const;
+
 private:
 
     double startField_m;
     std::size_t nSlices_m;
+  
+    /// The undulator parameter
+    double k_m;
+
+    /// Undulator period
+    double lambda_m;
+
+    /// Number of periods
+    double numPeriods_m;    
+
+    /// Mithra file
+    std::string fname_m;
+
+    /// Mesh size
+    std::vector<double> meshLength_m;
+
+    /// Mesh dx, dy, dz
+    std::vector<double> meshResolution_m;    
+
+    /// First or second order absorbing boundary conditions
+    unsigned int truncationOrder_m;
+    
+    /// Total time to run undulator
+    double totalTime_m;
+
+    /// Time step for the bunch position update
+    double dtBunch_m;
 
     // Not implemented.
     void operator=(const Undulator &);

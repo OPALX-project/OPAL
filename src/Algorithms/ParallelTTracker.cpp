@@ -27,18 +27,6 @@
 #include <limits>
 #include <cmath>
 
-
-/** Include header files for Mithra full-wave solver.  */
-#include "mithra/fieldvector.h"
-#include "mithra/stdinclude.h"
-#include "mithra/readdata.h"
-#include "mithra/database.h"
-#include "mithra/classes.h"
-#include "mithra/datainput.h"
-#include "mithra/readdata.h"
-#include "mithra/solver.h"
-#include "mithra/fdtdSC.h"
-
 #include "BeamlineCore/UndulatorRep.h"
 
 #include "Algorithms/OrbitThreader.h"
@@ -619,111 +607,21 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
 
 void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     
-    Inform msg("Undulator: ", *gmsg);
-    
-    UndulatorRep* ur;
+    UndulatorRep* und;
     IndexMap::value_t::const_iterator it = elements.begin();
     for (; it != elements.end(); ++ it)
         if ((*it)->getType() == ElementBase::UNDULATOR) {
-            ur = dynamic_cast<UndulatorRep*>((*it).get());
+            und = dynamic_cast<UndulatorRep*>(it->get());
             break;
         }
     if (it == elements.end())
         return;
     
-    // Transform bunch to local coordinates.
     CoordinateSystemTrafo refToLocalCSTrafo = (itsOpalBeamline_m.getMisalignment((*it)) *
                                                (itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * itsBunch_m->toLabTrafo_m));
-    const unsigned int localNum = itsBunch_m->getLocalNum();
-    for (unsigned int i = 0; i < localNum; ++i) {
-        itsBunch_m->R[i] = refToLocalCSTrafo.transformTo(itsBunch_m->R[i]);
-        itsBunch_m->P[i] = refToLocalCSTrafo.rotateTo(itsBunch_m->P[i]);
-    }
-
-    itsBunch_m->calcBeamParameters();
-    msg << "Bunch before undulator in local coordinate system: " << endl;
-    itsBunch_m->print(msg);    
-      
-    // Start MITHRA full-wave solver.
-    msg << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-    msg << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;
-    msg << " Version 2.0, Copyright 2019, Arya Fallahi" << endl;
-    msg << " Written by Arya Fallahi, IT'IS Foundation, Zurich, Switzerland" << endl;
-    msg << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-
-    MITHRA::BunchInitialize bunchInit;
-    bunchInit.bunchType_ = "other";
-    bunchInit.numberOfParticles_ = itsBunch_m->getTotalNum();
-    bunchInit.cloudCharge_ = itsBunch_m->getTotalNum() * itsBunch_m->getChargePerParticle() / (-Physics::q_e);
-    bunchInit.initialGamma_ = itsBunch_m->get_gamma();
-    for (unsigned int d = 0; d < 3; ++d) 
-        bunchInit.initialDirection_[d] = itsBunch_m->get_pmean()[d];
-    bunchInit.initialDirection_ /= euclidean_norm(itsBunch_m->get_pmean());
-    MITHRA::Bunch bunch;
-    bunch.bunchInit_.push_back(bunchInit);
-    bunch.timeStep_ = ur->getDtBunch();
-    msg << "Bunch parameters have been transferred to the full-wave solver." << endl;
-
-    MITHRA::Undulator uParam;
-    uParam.k_ = ur->getK();
-    uParam.lu_ = ur->getLambda();
-    uParam.length_ = ur->getNumPeriods();
-    double fringe = 2 * uParam.lu_;  // Default fringe field length.
-    uParam.dist_ = fringe - itsBunch_m->get_maxExtent()[2];  // Bunch-head to undulator distance.
-    std::vector<MITHRA::Undulator> undulators;
-    undulators.push_back(uParam);
-    msg << "Undulator parameters have been transferred to the full-wave solver." << endl;
-
-    MITHRA::Mesh mesh;
-    mesh.initialize();
-    mesh.lengthScale_ = 1.0;  // OPAL uses metres
-    mesh.timeScale_ = 1.0;  // OPAL uses seconds
-    mesh.meshCenter_ = MITHRA::FieldVector<double> (0.0);
-    mesh.meshLength_ = ur->getMeshLength();
-    mesh.meshResolution_ = ur->getMeshResolution();
-    mesh.totalTime_ = ur->getTotalTime();
-    mesh.truncationOrder_ = ur->getTruncationOrder();
-    mesh.spaceCharge_ = 1;
-    mesh.optimizePosition_ = 1;
-    msg << "Mesh parameters have been transferred to the full-wave solver." << endl;
-
-    MITHRA::Seed seed;
-    std::vector<MITHRA::ExtField> externalFields;
-    std::vector<MITHRA::FreeElectronLaser> FELs;
     
-    // Get filename with desired output data.
-    std::list<std::string> jobFile = MITHRA::read_file((ur->getFilename()).c_str());
-    MITHRA::cleanJobFile(jobFile);
-    MITHRA::ParseDarius parser (jobFile, mesh, bunch, seed, undulators, externalFields, FELs);
-    parser.setJobParameters();
+    und->apply(itsBunch_m, refToLocalCSTrafo);
     
-    MITHRA::FdTdSC   fdtdsc   (mesh, bunch, seed, undulators, externalFields, FELs);
-    // Transfer particles to MITHRA full-wave solver.
-    MITHRA::Charge charge;
-    charge.q = itsBunch_m->getChargePerParticle() / (-Physics::q_e);
-    for (unsigned int i = 0; i < localNum; ++i) {
-        for (unsigned int d = 0; d < 3; ++d) {
-            charge.rnp[d] = itsBunch_m->R[i][d];
-            charge.gbnp[d] = itsBunch_m->P[i][d];
-        }
-        fdtdsc.chargeVectorn_.push_back(charge);
-    }
-    msg << "Particles have been transferred to the full-wave solver." << endl;
-
-    // Print the parameters for the simulation.
-    mesh.show();
-    bunch.show();
-    seed.show();
-    for (unsigned int i = 0; i < undulators.size(); i++) {
-        undulators[i].show();
-    }
-    for (unsigned int i = 0; i < externalFields.size();  i++) {
-        externalFields[i].show();
-    }
-    
-    // Run the full-wave solver
-    fdtdsc.solve();
-
     // At the moment OPAL exits after the full-wave solver.
     // In the future the bunch should be transferred back to OPAL
     globalEOL_m = true;
