@@ -45,10 +45,12 @@
 #include <utility>
 #include <vector>
 
+#include "AbstractObjects/OpalData.h"
 #include "Physics/Physics.h"
 #include "Utilities/Options.h"
 #include "Utilities/Options.h"
 #include "Utilities/OpalException.h"
+#include "Utilities/Util.h"
 
 #include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
 
@@ -532,9 +534,26 @@ template<typename Value_type, typename Size_type>
 
             std::string energy = float2string(E_m);
 
-            writeMturn.open("data/OneTurnMapForEnergy"+energy+"MeV.dat",std::ios::app);
-            writeMsc.open("data/SpaceChargeMapPerAngleForEnergy"+energy+"MeV.dat",std::ios::app);
-            writeMcyc.open("data/CyclotronMapPerAngleForEnergy"+energy+"MeV.dat",std::ios::app);
+            std::string fname = Util::combineFilePath({
+                OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+                "OneTurnMapForEnergy" + energy + "MeV.dat"
+            });
+
+            writeMturn.open(fname, std::ios::app);
+
+            fname = Util::combineFilePath({
+                OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+                "SpaceChargeMapPerAngleForEnergy" + energy + "MeV.dat"
+            });
+
+            writeMsc.open(fname, std::ios::app);
+
+            fname = Util::combineFilePath({
+                OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+                "CyclotronMapPerAngleForEnergy" + energy + "MeV.dat"
+            });
+
+            writeMcyc.open(fname, std::ios::app);
 
             writeMturn << "--------------------------------" << std::endl;
             writeMturn << "Iteration: 0 " << std::endl;
@@ -663,7 +682,12 @@ template<typename Value_type, typename Size_type>
 
     if ( converged_m && write_m ) {
         // write tunes
-        std::ofstream writeSigmaMatched("data/MatchedDistributions.dat", std::ios::app);
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "MatchedDistributions.dat"
+        });
+
+        std::ofstream writeSigmaMatched(fname, std::ios::app);
 
         std::array<double,3> emit = this->getEmittances();
 
@@ -1041,8 +1065,14 @@ void SigmaGenerator<Value_type, Size_type>::initialize(value_type nuz,
 
     if (write_m) {
         std::string energy = float2string(E_m);
-        std::ofstream writeInit("data/maps/InitialSigmaPerAngleForEnergy" +
-                                energy + "MeV.dat", std::ios::app);
+
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "maps",
+            "InitialSigmaPerAngleForEnergy" + energy + "MeV.dat"
+        });
+
+        std::ofstream writeInit(fname, std::ios::app);
         writeInit << sigma << std::endl;
         writeInit.close();
     }
@@ -1106,8 +1136,14 @@ SigmaGenerator<Value_type, Size_type>::updateInitialSigma(const matrix_type& /*M
 
     if (write_m) {
         std::string energy = float2string(E_m);
-        std::ofstream writeSigma("data/maps/SigmaPerAngleForEnergy" +
-                                 energy + "MeV.dat", std::ios::app);
+
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "maps",
+            "SigmaPerAngleForEnergy" + energy + "MeV.dat"
+        });
+
+        std::ofstream writeSigma(fname, std::ios::app);
 
         writeSigma << "--------------------------------" << std::endl;
         writeSigma << "Iteration: " << niterations_m + 1 << std::endl;
@@ -1130,7 +1166,14 @@ void SigmaGenerator<Value_type, Size_type>::updateSigma(const std::vector<matrix
 
     if (write_m) {
         std::string energy = float2string(E_m);
-        writeSigma.open("data/maps/SigmaPerAngleForEnergy"+energy+"MeV.dat",std::ios::app);
+
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "maps",
+            "SigmaPerAngleForEnergy" + energy + "MeV.dat"
+        });
+
+        writeSigma.open(fname,std::ios::app);
     }
 
     // initial sigma is already computed
@@ -1203,8 +1246,13 @@ void SigmaGenerator<Value_type, Size_type>::writeOrbitOutput_m(
     const container_type&  fidx_turn,
     const container_type&  ds_turn)
 {
+    std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "Tunes.dat"
+    });
+
     // write tunes
-    std::ofstream writeTunes("data/Tunes.dat", std::ios::app);
+    std::ofstream writeTunes(fname, std::ios::app);
 
     if(writeTunes.tellp() == 0) // if nothing yet written --> write description
         writeTunes << "energy [MeV]" << std::setw(15)
@@ -1216,7 +1264,11 @@ void SigmaGenerator<Value_type, Size_type>::writeOrbitOutput_m(
                << tunes.second << std::endl;
 
     // write average radius
-    std::ofstream writeAvgRadius("data/AverageValues.dat", std::ios::app);
+    fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "AverageValues.dat"
+    });
+    std::ofstream writeAvgRadius(fname, std::ios::app);
 
     if (writeAvgRadius.tellp() == 0) // if nothing yet written --> write description
         writeAvgRadius << "energy [MeV]" << std::setw(15)
@@ -1230,7 +1282,11 @@ void SigmaGenerator<Value_type, Size_type>::writeOrbitOutput_m(
                    << peo[0] << std::endl;
 
     // write frequency error
-    std::ofstream writePhase("data/FrequencyError.dat",std::ios::app);
+    fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "FrequencyError.dat"
+    });
+    std::ofstream writePhase(fname, std::ios::app);
 
     if(writePhase.tellp() == 0) // if nothing yet written --> write description
         writePhase << "energy [MeV]" << std::setw(15)
@@ -1241,7 +1297,11 @@ void SigmaGenerator<Value_type, Size_type>::writeOrbitOutput_m(
 
     // write other properties
     std::string energy = float2string(E_m);
-    std::ofstream writeProperties("data/PropertiesForEnergy"+energy+"MeV.dat", std::ios::out);
+    fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "PropertiesForEnergy" + energy + "MeV.dat"
+    });
+    std::ofstream writeProperties(fname, std::ios::out);
     writeProperties << std::left
                     << std::setw(25) << "orbit radius"
                     << std::setw(25) << "orbit momentum"

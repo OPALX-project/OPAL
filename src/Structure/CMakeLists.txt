@@ -2,7 +2,6 @@ set (_SRCS
   Beam.cpp
   OpalWake.cpp
   ParticleMatterInteraction.cpp
-  SecondaryEmissionPhysics.cpp
   BoundaryGeometry.cpp
   DataSink.cpp
   ElementPositionWriter.cpp
@@ -42,7 +41,6 @@ set (HDRS
     MonitorStatisticsWriter.h
     MultiBunchDump.h
     OpalWake.h
-    SecondaryEmissionPhysics.h
     ParticleMatterInteraction.h
     H5Writer.h
     MemoryWriter.h

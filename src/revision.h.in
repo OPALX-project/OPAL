@@ -1,1 +1,0 @@
-#define GIT_VERSION ${OPAL_WC_REVISION} 

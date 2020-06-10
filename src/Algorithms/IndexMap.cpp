@@ -10,6 +10,7 @@
 #include "AbsBeamline/Bend2D.h"
 #include "Physics/Physics.h"
 #include "Structure/ElementPositionWriter.h"
+#include "Utilities/Util.h"
 
 extern Inform *gmsg;
 
@@ -275,7 +276,10 @@ void IndexMap::saveSDDS(double initialPathLength) const {
         sectors.insert(sectors.end(), tmp.begin(), tmp.end());
     }
 
-    std::string fileName("data/" + OpalData::getInstance()->getInputBasename() + "_ElementPositions.sdds");
+    std::string fileName = Util::combineFilePath({
+        OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+        OpalData::getInstance()->getInputBasename() + "_ElementPositions.sdds"
+    });
     ElementPositionWriter writer(fileName);
 
     for (auto sector: sectors) {

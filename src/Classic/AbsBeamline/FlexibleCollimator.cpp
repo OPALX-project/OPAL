@@ -1,4 +1,5 @@
 #include "AbsBeamline/FlexibleCollimator.h"
+#include "AbstractObjects/OpalData.h"
 #include "Physics/Physics.h"
 #include "Algorithms/PartBunchBase.h"
 #include "AbsBeamline/BeamlineVisitor.h"
@@ -258,11 +259,16 @@ void FlexibleCollimator::setDescription(const std::string &desc) {
 
 void FlexibleCollimator::writeHolesAndQuadtree(const std::string &baseFilename) const {
     if (Ippl::myNode() == 0) {
-        std::ofstream out("data/" + baseFilename + "_quadtree.gpl");
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            baseFilename
+        });
+
+        std::ofstream out(fname + "_quadtree.gpl");
         tree_m.writeGnuplot(out);
         out.close();
 
-        out.open("data/" + baseFilename + "_holes.gpl");
+        out.open(fname + "_holes.gpl");
         for (const std::shared_ptr<mslang::Base> &obj: holes_m) {
             obj->writeGnuplot(out);
         }

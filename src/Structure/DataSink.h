@@ -76,14 +76,6 @@ public:
     
     void changeH5Wrapper(H5PartWrapper *h5wrapper);
     
-    
-    /**
-     * Write particle loss data to an ASCII fille for histogram
-     * @param fn specifies the name of ASCII file
-     * @param beam
-     */
-    void writePartlossZASCII(const PartBunchBase<double, 3> *beam, BoundaryGeometry &bg, std::string fn);
-    
     /**
      * Write geometry points and surface triangles to vtk file
      *

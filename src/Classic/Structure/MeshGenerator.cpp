@@ -4,6 +4,7 @@
 #include "AbsBeamline/Bend2D.h"
 #include "AbsBeamline/RBend3D.h"
 #include "AbsBeamline/Multipole.h"
+#include "AbstractObjects/OpalData.h"
 
 #include <iostream>
 #include <fstream>
@@ -100,7 +101,11 @@ void MeshGenerator::add(const ElementBase &element) {
 #include <boost/iostreams/filter/zlib.hpp>
 
 void MeshGenerator::write(const std::string &fname) {
-    std::ofstream out("data/" + fname + "_ElementPositions.py");
+    std::string filename = Util::combineFilePath({
+        OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+        fname + "_ElementPositions.py"
+    });
+    std::ofstream out(filename);
     const char *buffer;
     const std::string indent("    ");
 

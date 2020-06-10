@@ -45,6 +45,38 @@
 
 using namespace Expressions;
 
+namespace {
+    std::string stringifyVariable(Object *obj) {
+        ValueDefinition *value = dynamic_cast<ValueDefinition*>(obj);
+
+        if (value) {
+            std::ostringstream valueStream;
+            try {
+                double real = value->getReal();
+                valueStream << real;
+                return valueStream.str();
+            } catch (OpalException const& e) {
+            }
+            try {
+                std::string str = value->getString();
+                valueStream << str;
+                return valueStream.str();
+            } catch (OpalException const& e) {
+            }
+
+            try {
+                bool boolean = value->getBool();
+                valueStream << std::boolalpha << boolean;
+                return Util::toUpper(valueStream.str());
+            } catch (OpalException const&) {
+            }
+        }
+
+        throw OpalException("Attributes::stringifyVariable",
+                            "The variable '" + obj->getOpalName() + "' isn't of type REAL, STRING or BOOL");
+        return "";
+    }
+}
 
 // Namespace Attributes.
 // ------------------------------------------------------------------------
@@ -337,13 +369,10 @@ namespace Attributes {
                 std::string variable = Util::toUpper(std::string(what[1].first, what[1].second));
 
                 if (Object *obj = opal->find(variable)) {
-                    std::ostringstream value;
-
-                    RealVariable *real = static_cast<RealVariable*>(obj);
-                    real->printValue(value);
-                    exprDeref += value.str();
+                    exprDeref += ::stringifyVariable(obj);
                 } else {
-                    exprDeref += std::string(what[0].first, what[0].second);
+                    throw OpalException("Attributes::getString",
+                                        "Can't find variable '" + variable + "' in string \"" + expr + "\"");
                 }
 
                 start = what[0].second;

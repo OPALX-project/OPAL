@@ -1,3 +1,20 @@
+//
+// Class PartBunchBase
+//   Base class for representing particle bunches.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef PART_BUNCH_BASE_HPP
 #define PART_BUNCH_BASE_HPP
 
@@ -2118,14 +2135,6 @@ void PartBunchBase<T, Dim>::setup(AbstractParticle<T, Dim>* pb) {
     globalPartPerNode_m = std::unique_ptr<size_t[]>(new size_t[Ippl::getNodes()]);
 
     pmsg_m.release();
-    //    f_stream.release();
-    /*
-      if(Ippl::getNodes() == 1) {
-          f_stream = std::unique_ptr<ofstream>(new ofstream);
-          f_stream->open("data/dist.dat", ios::out);
-          pmsg_m = std::unique_ptr<Inform>(new Inform(0, *f_stream, 0));
-      }
-    */
 
     // set the default IPPL behaviour
     setMinimumNumberOfParticlesPerCore(0);

@@ -1,9 +1,21 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- ***************************************************************************/
+//
+// Class ParticleInteractLayout
+//   Please note: for the time being this class is *not* used! But since it
+//   might be used in future projects, we keep this file.
+//
+// Copyright (c) 2003 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 
 #ifndef PARTICLE_INTERACT_LAYOUT_H
 #define PARTICLE_INTERACT_LAYOUT_H
@@ -205,10 +217,12 @@ private:
 
 #include "Particle/ParticleInteractLayout.hpp"
 
-#endif  // PARTICLE_INTERACT_LAYOUT_H
+#endif
 
-/***************************************************************************
- * $RCSfile: ParticleInteractLayout.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:29 $
- * IPPL_VERSION_ID: $Id: ParticleInteractLayout.h,v 1.1.1.1 2003/01/23 07:40:29 adelmann Exp $ 
- ***************************************************************************/
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

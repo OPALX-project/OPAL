@@ -150,8 +150,6 @@ void FM3DMagnetoStaticExtended::readMap() {
             smoothData(FieldstrengthBy_m, j);
         }
 
-        // saveField("data/" + Filename_m + ".ext", num_gridpy_m - 1);
-
         INFOMSG(level3 << typeset_msg("read in fieldmap '" + Filename_m  + "'", "info")  << endl);
     }
 }

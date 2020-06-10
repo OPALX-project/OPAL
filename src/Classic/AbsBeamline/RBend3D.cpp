@@ -22,6 +22,7 @@
 #include "Utilities/Options.h"
 #include "Structure/MeshGenerator.h"
 #include "Physics/Physics.h"
+#include "Utilities/Util.h"
 
 #include <iostream>
 #include <fstream>
@@ -273,7 +274,11 @@ double RBend3D::trackRefParticleThrough(double dt, bool print) {
 
     std::ofstream trajectoryOutput;
     if (print) {
-        trajectoryOutput.open("data/" + OpalData::getInstance()->getInputBasename() + "_" + getName() + "_traj.dat");
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            OpalData::getInstance()->getInputBasename() + "_" + getName() + "_traj.dat"
+        });
+        trajectoryOutput.open(fname);
         trajectoryOutput.precision(12);
         trajectoryOutput << "# " << std::setw(18) << "s"
                          << std::setw(20) << "x"

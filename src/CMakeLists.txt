@@ -30,7 +30,6 @@ else ()
 endif ()
 
 configure_file(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/OPALconfig.h)
-configure_file(revision.h.in ${CMAKE_CURRENT_SOURCE_DIR}/OPALrevision.h)
 
 set (OPAL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set (OPAL_SRCS )

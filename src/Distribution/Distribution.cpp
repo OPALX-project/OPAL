@@ -37,6 +37,7 @@
 #include "Structure/H5PartWrapper.h"
 #include "Structure/H5PartWrapperForPC.h"
 #include "Utilities/EarlyLeaveException.h"
+#include "Utilities/Util.h"
 
 #include <gsl/gsl_histogram.h>
 #include <gsl/gsl_linalg.h>
@@ -4104,7 +4105,11 @@ void Distribution::writeOutFileHeader() {
     if (Ippl::myNode() != 0)
         return;
 
-    std::string fname = "data/" + OpalData::getInstance()->getInputBasename() + "_" + getOpalName() + ".dat";
+    std::string fname = Util::combineFilePath({
+        OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+        OpalData::getInstance()->getInputBasename() + "_" + getOpalName() + ".dat"
+    });
+
     *gmsg << "\n"
           << std::left << std::setw(84) << std::setfill('*') << "* " << "\n"
           << "* Write initial distribution to file \"" << fname << "\"\n"
@@ -4204,7 +4209,13 @@ void Distribution::writeOutFileEmission() {
             Ippl::Comm->raw_send(&(msgbuf[0]), totalSendBits, 0, tag);
         }
     } else {
-        std::string fname = "data/" + OpalData::getInstance()->getInputBasename() + "_" + getOpalName() + ".dat";
+
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            OpalData::getInstance()->getInputBasename() + "_" + getOpalName() + ".dat"
+        });
+
+
         std::ofstream outputFile(fname, std::fstream::app);
         if (outputFile.bad()) {
             ERRORMSG(level1 << "Unable to write to file \"" << fname << "\"" << endl);
@@ -4280,7 +4291,10 @@ void Distribution::writeOutFileInjection() {
     if (Attributes::getBool(itsAttr[Attrib::Distribution::WRITETOFILE]) == false)
         return;
 
-    std::string fname = "data/" + OpalData::getInstance()->getInputBasename() + "_" + getOpalName() + ".dat";
+    std::string fname = Util::combineFilePath({
+        OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+        OpalData::getInstance()->getInputBasename() + "_" + getOpalName() + ".dat"
+    });
     // Nodes take turn writing particles to file.
     for (int nodeIndex = 0; nodeIndex < Ippl::getNodes(); nodeIndex++) {
 

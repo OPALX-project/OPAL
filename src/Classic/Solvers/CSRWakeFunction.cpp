@@ -1,6 +1,7 @@
 #include "Solvers/CSRWakeFunction.hh"
 #include "Solvers/RootFinderForCSR.h"
 
+#include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Filters/Filter.h"
 #include "Filters/SavitzkyGolay.h"
@@ -91,9 +92,13 @@ void CSRWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
             if (counter == 0) file_number = 0;
             if (Ippl::myNode() == 0) {
                 std::stringstream filename_str;
-                filename_str << "data/" << bendName_m << "-CSRWake" << std::setw(5) << std::setfill('0') << file_number << ".txt";
+                filename_str << bendName_m << "-CSRWake" << std::setw(5) << std::setfill('0') << file_number << ".txt";
+                std::string fname = Util::combineFilePath({
+                    OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+                    filename_str.str()
+                });
 
-                std::ofstream csr(filename_str.str().c_str());
+                std::ofstream csr(fname);
                 csr << std::setprecision(8);
                 csr << "# " << sPos + smin(2) - FieldBegin_m << "\t" << sPos + smax(2) - FieldBegin_m << std::endl;
                 for (unsigned int i = 0; i < lineDensity_m.size(); ++ i) {
@@ -103,7 +108,7 @@ void CSRWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
                       << dlineDensitydz_m[i] << std::endl;
                 }
                 csr.close();
-                msg << "** wrote " << filename_str.str() << endl;
+                msg << "** wrote " << fname << endl;
             }
             ++ file_number;
         }

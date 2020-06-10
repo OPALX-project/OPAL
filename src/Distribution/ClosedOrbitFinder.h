@@ -452,7 +452,7 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
 
     namespace fs = boost::filesystem;
     fs::path dir = OpalData::getInstance()->getInputBasename();
-    dir = dir.parent_path() / "data";
+    dir = dir.parent_path() / OpalData::getInstance()->getAuxiliaryOutputDirectory();
     std::string tunefile = (dir / "tunes.dat").string();
 
     if ( isTuneMode ) {

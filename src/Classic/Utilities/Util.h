@@ -10,6 +10,7 @@
 #include <type_traits>
 #include <functional>
 #include <cmath>
+#include <initializer_list>
 
 // ------- DON'T DELETE: start --------
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
@@ -163,6 +164,8 @@ namespace Util {
     Vector_t getTaitBryantAngles(Quaternion rotation, const std::string &elementName = "");
 
     std::string toUpper(const std::string &str);
+
+    std::string combineFilePath(std::initializer_list<std::string>);
 
     template <typename T>
     std::string toStringWithThousandSep(T value, char sep = '\'');

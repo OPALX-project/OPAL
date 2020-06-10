@@ -361,7 +361,10 @@ void OpalBeamline::save3DLattice() {
     FieldList::iterator end = elements_m.end();
 
     std::ofstream pos;
-    std::string fileName = "data/" + OpalData::getInstance()->getInputBasename() + "_ElementPositions.txt";
+    std::string fileName = Util::combineFilePath({
+        OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+        OpalData::getInstance()->getInputBasename() + "_ElementPositions.txt"
+    });
     if (OpalData::getInstance()->getOpenMode() == OpalData::OPENMODE::APPEND &&
         boost::filesystem::exists(fileName)) {
         pos.open(fileName, std::ios_base::app);
@@ -516,7 +519,11 @@ void OpalBeamline::save3DInput() {
     FieldList::iterator end = elements_m.end();
 
     std::string input = parseInput();
-    std::ofstream pos("data/" + OpalData::getInstance()->getInputBasename() + "_3D.opal");
+    std::string fname = Util::combineFilePath({
+        OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+        OpalData::getInstance()->getInputBasename() + "_3D.opal"
+    });
+    std::ofstream pos(fname);
 
     for (; it != end; ++ it) {
         std::string element = (*it).getElement()->getName();

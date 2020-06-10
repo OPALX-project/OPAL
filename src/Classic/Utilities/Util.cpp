@@ -4,6 +4,8 @@
 
 #include <boost/regex.hpp>
 
+#include <boost/filesystem.hpp>
+
 #include <queue>
 #include <string>
 #include <iostream>
@@ -132,6 +134,14 @@ namespace Util {
         std::transform(output.begin(), output.end(), output.begin(), [](const char c) { return toupper(c);});
 
         return output;
+    }
+
+    std::string combineFilePath(std::initializer_list<std::string> ilist) {
+        boost::filesystem::path path;
+        for (auto entry : ilist) {
+            path /= entry;
+        }
+        return path.string();
     }
 
     KahanAccumulation::KahanAccumulation():

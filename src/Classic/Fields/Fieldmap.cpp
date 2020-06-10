@@ -25,6 +25,7 @@
 #include "Fields/FMDummy.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Options.h"
+#include "Utilities/Util.h"
 #include "AbstractObjects/OpalData.h"
 #include "Physics/Physics.h"
 
@@ -473,7 +474,11 @@ void Fieldmap::checkMap(unsigned int accuracy,
     auto opal = OpalData::getInstance();
     std::ofstream out;
     if (Ippl::myNode() == 0 && !opal->isOptimizerRun()) {
-        out.open("data/" + Filename_m.substr(lastSlash, lastDot) + ".check");
+        std::string fname = Util::combineFilePath({
+            opal->getAuxiliaryOutputDirectory(),
+            Filename_m.substr(lastSlash, lastDot) + ".check"
+        });
+        out.open(fname);
         out << "# z  original reproduced\n";
     }
     auto it = zSampling.begin();
@@ -623,7 +628,9 @@ void Fieldmap::lowResolutionWarning(double squareError, double maxError) {
              << "the ratio (max_i(|e_i - E_i|) / max_i(|E_i|) is " << std::to_string(maxError) << ".\n"
              << "Here E_i is the field as in the field map and e_i is the reconstructed field.\n"
              << "The lower limit for the two ratios is 1e-2\n"
-             << "Have a look into the directory data/ for a reconstruction of the field map.\n";
+             << "Have a look into the directory "
+             << OpalData::getInstance()->getAuxiliaryOutputDirectory()
+             << " for a reconstruction of the field map.\n";
     std::string errormsg_str = typeset_msg(errormsg.str(), "warning");
 
     ERRORMSG(errormsg_str << "\n" << endl);
@@ -733,8 +740,12 @@ void Fieldmap::write3DField(unsigned int nx,
         (ef.size() != numpoints && bf.size() != numpoints)) return;
 
     size_t extensionStart = Filename_m.find_last_of('.');
+    std::string fname = Util::combineFilePath({
+        OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+        Filename_m.substr(0,extensionStart) + ".vtk"
+    });
     std::ofstream of;
-    of.open (std::string ("data/" + Filename_m.substr(0,extensionStart) + ".vtk").c_str ());
+    of.open (fname);
     assert (of.is_open ());
     of.precision (6);
 

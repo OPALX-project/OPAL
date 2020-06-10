@@ -1,3 +1,4 @@
+#include "AbstractObjects/OpalData.h"
 #include "Solvers/CSRIGFWakeFunction.hh"
 #include "Solvers/RootFinderForCSR.h"
 #include "Algorithms/PartBunchBase.h"
@@ -88,8 +89,14 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
             double spos = bunch->get_sPos();
             if (Ippl::myNode() == 0) {
                 std::stringstream filename_str;
-                filename_str << "data/" << bendName_m << "-CSRWake" << std::setw(5) << std::setfill('0') << file_number << ".txt";
-                std::ofstream csr(filename_str.str().c_str());
+                filename_str << bendName_m << "-CSRWake" << std::setw(5) << std::setfill('0') << file_number << ".txt";
+
+                std::string fname = Util::combineFilePath({
+                    OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+                    filename_str.str()
+                });
+
+                std::ofstream csr(fname);
                 csr << spos << ", " << FieldBegin_m << ", " << smin(2) << ", " << smax(2) << ", " << meshSpacing*64 << std::endl;
                 for (unsigned int i = 0; i < lineDensity_m.size(); ++ i) {
                     csr << i *meshSpacing << "\t"
@@ -97,7 +104,7 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
                         << lineDensity_m[i] << std::endl;
                 }
                 csr.close();
-                msg << "** wrote " << filename_str.str() << endl;
+                msg << "** wrote " << fname << endl;
             }
             ++ file_number;
         }

@@ -25,6 +25,7 @@
 //
 #include "AbsBeamline/Cyclotron.h"
 
+#include "AbstractObjects/OpalData.h"
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Fields/Fieldmap.h"
@@ -33,6 +34,7 @@
 #include "TrimCoils/TrimCoil.h"
 #include "Utilities/Options.h"
 #include "Utilities/GeneralClassicException.h"
+#include "Utilities/Util.h"
 
 #include <fstream>
 #include <cstring>
@@ -1164,7 +1166,11 @@ void Cyclotron::getFieldFromFile_FFA(const double &/*scaleFactor*/) {
     int count = 0;
     if ((Ippl::getNodes()) == 1 && Options::info) {
         std::fstream fp;
-        fp.open("data/gnu.out", std::ios::out);
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "gnu.out"
+        });
+        fp.open(fname, std::ios::out);
 
         for (int r = 0; r < Bfield.nrad; r++) {
             for (int k = 0; k < Bfield.ntet; k++) {
@@ -1255,8 +1261,13 @@ void Cyclotron::getFieldFromFile_AVFEQ(const double &scaleFactor) {
     *gmsg << "* Rescaling of the magnetic fields with factor: " << BP.Bfact << endl;
 
     std::fstream fp;
-    if ((Ippl::getNodes()) == 1 && Options::info)
-        fp.open("data/gnu.out", std::ios::out);
+    if ((Ippl::getNodes()) == 1 && Options::info) {
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "gnu.out"
+        });
+        fp.open(fname, std::ios::out);
+    }
 
     double tmp;
     int count = 0;
@@ -1344,8 +1355,16 @@ void Cyclotron::getFieldFromFile_Carbon(const double &scaleFactor) {
 
     if ((Ippl::getNodes()) == 1 && Options::info) {
         std::fstream fp1, fp2;
-        fp1.open("data/gnu.out", std::ios::out);
-        fp2.open("data/eb.out", std::ios::out);
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "gnu.out"
+        });
+        fp1.open(fname, std::ios::out);
+        fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            "eb.out"
+        });
+        fp2.open(fname, std::ios::out);
         for (int i = 0; i < Bfield.nrad; i++) {
             for (int k = 0; k < Bfield.ntet; k++) {
                 fp1 << BP.rmin + (i * BP.delr) << " \t "

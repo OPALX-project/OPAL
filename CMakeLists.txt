@@ -222,19 +222,18 @@ endif ()
 
 option (ENABLE_DOXYDOC "compile Doxygen documentation" OFF)
 
-include (FindGit)
-if (GIT_FOUND)
-    set (OPAL_WC_REVISION 0)
-    execute_PROCESS(
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        COMMAND git rev-parse HEAD
-        OUTPUT_VARIABLE GIT_OUT OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-    set (OPAL_WC_REVISION \"${GIT_OUT}\")
-else ()
-    message (STATUS "could not find git")
-    set (OPAL_WC_REVISION \"\")
-endif ()
+add_custom_target(always_rebuild ALL
+    DEPENDS
+    src/OPALrevision.h
+    )
+
+add_custom_command(
+    OUTPUT src/OPALrevision.h
+    COMMAND ./gen_OPALrevision
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    DEPENDS
+    always_rebuild
+    )
 
 add_subdirectory (ippl)
 add_subdirectory (optimizer)

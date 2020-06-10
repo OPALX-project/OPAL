@@ -510,7 +510,11 @@ void Bend2D::calculateRefTrajectory(double &angleX, double &/*angleY*/) {
 
     std::ofstream trajectoryOutput;
     if (Options::writeBendTrajectories && Ippl::myNode() == 0) {
-        trajectoryOutput.open("data/" + OpalData::getInstance()->getInputBasename() + "_" + getName() + "_traj.dat");
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            OpalData::getInstance()->getInputBasename() + "_" + getName() + "_traj.dat"
+        });
+        trajectoryOutput.open(fname);
         trajectoryOutput.precision(12);
         trajectoryOutput << "# " << std::setw(18) << "s"
                          << std::setw(20) << "x"
@@ -1370,7 +1374,11 @@ std::vector<Vector_t> Bend2D::getOutline() const {
 
     std::ofstream outlineOutput;
     if (Options::writeBendTrajectories && Ippl::myNode() == 0) {
-        outlineOutput.open("data/" + OpalData::getInstance()->getInputBasename() + "_" + getName() + "_outline.dat");
+        std::string fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            OpalData::getInstance()->getInputBasename() + "_" + getName() + "_outline.dat"
+        });
+        outlineOutput.open(fname);
         outlineOutput.precision(8);
 
         for (auto a: outline) {

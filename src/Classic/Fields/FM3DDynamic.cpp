@@ -370,7 +370,11 @@ void FM3DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
     auto opal = OpalData::getInstance();
     if (opal->isOptimizerRun()) return;
 
-    std::ofstream out("data/" + Filename_m);
+    std::string fname = Util::combineFilePath({
+        opal->getAuxiliaryOutputDirectory(),
+        Filename_m
+    });
+    std::ofstream out(fname);
     for(unsigned int i = 0; i < num_gridpz_m; ++ i) {
         Vector_t R(0,0,zbegin_m + F[i].first), B(0.0), E(0.0);
         getFieldstrength(R, E, B);

@@ -10,16 +10,19 @@
 //
 // ------------------------------------------------------------------------
 
+#include "AbstractObjects/OpalData.h"
 #include "Distribution/LaserProfile.h"
 #include "Utility/Inform.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/PortableGraymapReader.h"
+#include "Utilities/Util.h"
 
 #include <boost/filesystem.hpp>
 
 #include <fstream>
 #include <iostream>
 #include <cmath>
+#include <cstdio>
 
 //#define TESTLASEREMISSION
 
@@ -332,7 +335,12 @@ void LaserProfile::printInfo() {
 }
 
 void LaserProfile::saveData(const std::string &fname, unsigned short *image) {
-    std::ofstream out("data/" + fname + ".pgm");
+    std::ofstream out(
+        Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            fname + ".pgm"}
+    ));
+
     out << "P2" << std::endl;
     out << sizeX_m << " " << sizeY_m << std::endl;
     out << getProfileMax(image) << std::endl;
@@ -346,13 +354,22 @@ void LaserProfile::saveData(const std::string &fname, unsigned short *image) {
 }
 
 void LaserProfile::saveHistogram() {
-    FILE  *fh = fopen("data/LaserHistogram.dat", "w");
+    std::string fname = Util::combineFilePath({
+        OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+        "LaserHistogram.dat"
+    });
+    FILE  *fh = std::fopen(fname.c_str(), "w");
     gsl_histogram2d_fprintf(fh, hist2d_m, "%g", "%g");
-    fclose(fh);
+    std::fclose(fh);
 }
 
 void LaserProfile::sampleDist() {
-    std::ofstream fh("data/LaserEmissionSampled.dat");
+    std::string fname = Util::combineFilePath({
+        OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+        "LaserEmissionSampled.dat"
+    });
+
+    std::ofstream fh(fname);
     double x, y;
 
     for(int i = 0; i < 1000000; i++) {

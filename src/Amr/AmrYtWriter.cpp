@@ -71,7 +71,8 @@ AmrYtWriter::AmrYtWriter(int step, int bin)
     namespace fs = boost::filesystem;
     
     fs::path dir = OpalData::getInstance()->getInputBasename();
-    boost::filesystem::path path = dir.parent_path() / "data" / "amr" / "yt";
+    std::string dataDir = OpalData::getInstance()->getAuxiliaryOutputDirectory();
+    boost::filesystem::path path = dir.parent_path() / dataDir / "amr" / "yt";
     dir_m = amrex::Concatenate((path / "plt").string(), step, 10);
     dir_m += "-";
     dir_m = amrex::Concatenate(dir_m, bin, 3);
