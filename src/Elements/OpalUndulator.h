@@ -55,10 +55,6 @@ public:
     /// Make clone.
     virtual OpalUndulator *clone(const std::string &name);
 
-    /// Test if undulator.
-    //  Return true.
-    virtual bool isUndulator() const;
-
     /// Update the embedded CLASSIC drift.
     virtual void update();
 

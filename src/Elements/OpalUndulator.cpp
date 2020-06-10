@@ -108,11 +108,6 @@ OpalUndulator *OpalUndulator::clone(const std::string &name) {
 }
 
 
-bool OpalUndulator::isUndulator() const {
-    return true;
-}
-
-
 void OpalUndulator::update() {
     OpalElement::update();
 
