@@ -22,6 +22,7 @@
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Algorithms/PartBunchBase.h"
 
+#ifdef OPAL_FEL
 /** Include header files for Mithra full-wave solver.  */
 #include "mithra/fieldvector.h"
 #include "mithra/stdinclude.h"
@@ -32,6 +33,8 @@
 #include "mithra/readdata.h"
 #include "mithra/solver.h"
 #include "mithra/fdtdSC.h"
+
+#endif
 
 extern Inform *gmsg;
 
@@ -97,6 +100,7 @@ void Undulator::initialise(PartBunchBase<double, 3> *bunch, double &startField, 
     startField_m = startField;
 }
 
+#ifdef OPAL_FEL
 void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo const& refToLocalCSTrafo) {
     // Get local coordinates w.r.t. undulator.
     const unsigned int localNum = itsBunch->getLocalNum();
@@ -187,7 +191,9 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     
     // Run the full-wave solver
     fdtdsc.solve();
+
 }
+#endif
 
 //set the number of slices for map tracking
 void Undulator::setNSlices(const std::size_t& nSlices) { 

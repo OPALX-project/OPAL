@@ -577,7 +577,9 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
     IpplTimings::stopTimer(fieldEvaluationTimer_m);
 
     computeWakefield(elements);
+#ifdef OPAL_FEL
     computeUndulator(elements);
+#endif
     computeParticleMatterInteraction(elements, oth);
 
     reduce(locPartOutOfBounds, globPartOutOfBounds, OpOrAssign());
@@ -605,8 +607,8 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
     }
 }
 
+#ifdef OPAL_FEL
 void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
-    
     UndulatorRep* und;
     IndexMap::value_t::const_iterator it = elements.begin();
     for (; it != elements.end(); ++ it)
@@ -626,7 +628,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     // In the future the bunch should be transferred back to OPAL
     globalEOL_m = true;
 }
-
+#endif
 
 void ParallelTTracker::computeWakefield(IndexMap::value_t &elements) {
     bool hasWake = false;
