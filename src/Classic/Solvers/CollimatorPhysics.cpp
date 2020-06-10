@@ -1,11 +1,23 @@
-// Class:CollimatorPhysics
+//
+// Class CollimatorPhysics
+//
 // Defines the collimator physics models
-// ------------------------------------------------------------------------
-// Class category:
-// ------------------------------------------------------------------------
-// $Date: 2009/07/20 09:32:31 $
-// $Author: Bi, Yang Stachel, Adelmann$
-//-------------------------------------------------------------------------
+//
+// Copyright (c) 2009 - 2020, Bi, Yang, Stachel, Adelmann
+//                            Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
+
 #include "Solvers/CollimatorPhysics.hh"
 #include "Physics/Physics.h"
 #include "Physics/Material.h"
@@ -36,7 +48,7 @@ namespace {
             deg_m = static_cast<Degrader*>(el);
         }
         virtual
-        bool checkHit(const Vector_t &R, const Vector_t &/*P*/, double /*dt*/) override {
+        bool checkHit(const Vector_t &R) override {
             return deg_m->isInMaterial(R(2));
         }
 
@@ -49,7 +61,7 @@ namespace {
             col_m = static_cast<CCollimator*>(el);
         }
         virtual
-        bool checkHit(const Vector_t &R, const Vector_t &/*P*/, double /*dt*/)  override {
+        bool checkHit(const Vector_t &R)  override {
             return col_m->checkPoint(R(0), R(1));
         }
 
@@ -61,9 +73,10 @@ namespace {
         explicit FlexCollimatorInsideTester(ElementBase * el) {
             col_m = static_cast<FlexibleCollimator*>(el);
         }
+
         virtual
-        bool checkHit(const Vector_t &R, const Vector_t &P, double dt)  override {
-            return col_m->isStopped(R, P, Physics::c * dt / sqrt(1.0  + dot(P, P)));
+        bool checkHit(const Vector_t &R)  override {
+            return col_m->isStopped(R);
         }
 
     private:
@@ -239,7 +252,7 @@ void CollimatorPhysics::computeInteraction() {
             Vector_t &P = locParts_m[i].Pincol;
             double &dt  = locParts_m[i].DTincol;
 
-            if (hitTester_m->checkHit(R, P, dt)) {
+            if (hitTester_m->checkHit(R)) {
                 bool pdead = computeEnergyLoss(P, dt);
                 if (!pdead) {
                     /*
@@ -485,7 +498,7 @@ void CollimatorPhysics::copyFromBunch(PartBunchBase<double, 3> *bunch,
     for (size_t i = 0; i < nL; ++ i) {
         if ((bunch->Bin[i] == -1 || bunch->Bin[i] == 1) &&
             ((nL - ne) > minNumOfParticlesPerCore) &&
-            hitTester_m->checkHit(bunch->R[i], bunch->P[i], dT_m))
+            hitTester_m->checkHit(bunch->R[i]))
         {
             // adjust the time step for those particles that enter the material
             // such that it corresponds to the time needed to reach the curren
@@ -682,3 +695,11 @@ void CollimatorPhysics::gatherStatistics() {
     rediffusedStat_m = partStatistics[2];
     stoppedPartStat_m = partStatistics[3];
 }
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

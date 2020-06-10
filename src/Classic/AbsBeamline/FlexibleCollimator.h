@@ -1,3 +1,23 @@
+//
+// Class FlexibleCollimator
+//
+// Abstract collimator.
+// Class FlexibleCollimator defines the abstract interface for a collimator.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
+
 #ifndef CLASSIC_FlexibleCollimator_HH
 #define CLASSIC_FlexibleCollimator_HH
 
@@ -9,10 +29,6 @@
 
 class BeamlineVisitor;
 class LossDataSink;
-// Class FlexibleCollimator
-// ------------------------------------------------------------------------
-/// Abstract collimator.
-//  Class FlexibleCollimator defines the abstract interface for a collimator.
 
 class FlexibleCollimator: public Component {
 
@@ -60,7 +76,7 @@ public:
     void setDescription(const std::string &desc);
     std::string getDescription() const;
 
-    bool isStopped(const Vector_t &R, const Vector_t &P, double recpgamma);
+    bool isStopped(const Vector_t &R);
 
     void writeHolesAndQuadtree(const std::string &baseFilename) const;
 
@@ -109,3 +125,11 @@ std::string FlexibleCollimator::getDescription() const {
 }
 
 #endif // CLASSIC_FlexibleCollimator_HH
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

@@ -1,3 +1,23 @@
+//
+// Class FlexibleCollimator
+//
+// Abstract collimator.
+// Class FlexibleCollimator defines the abstract interface for a collimator.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
+
 #include "AbsBeamline/FlexibleCollimator.h"
 #include "AbstractObjects/OpalData.h"
 #include "Physics/Physics.h"
@@ -12,9 +32,6 @@
 #include <memory>
 
 extern Inform *gmsg;
-
-// Class FlexibleCollimator
-// ------------------------------------------------------------------------
 
 FlexibleCollimator::FlexibleCollimator():
     FlexibleCollimator("")
@@ -68,9 +85,8 @@ void FlexibleCollimator::accept(BeamlineVisitor &visitor) const {
 }
 
 
-bool FlexibleCollimator::isStopped(const Vector_t &R, const Vector_t &, double /*recpgamma*/) {
-    // :FIXME: why commented out?
-    const double z = R(2);// + P(2) * recpgamma;
+bool FlexibleCollimator::isStopped(const Vector_t &R) {
+    const double z = R(2);
 
     if ((z < 0.0) ||
         (z > getElementLength()) ||
@@ -92,7 +108,7 @@ bool FlexibleCollimator::apply(const size_t &i, const double &t, Vector_t &/*E*/
     const Vector_t &P = RefPartBunch_m->P[i];
     const double &dt = RefPartBunch_m->dt[i];
     const double recpgamma = Physics::c * dt / std::sqrt(1.0 + dot(P, P));
-    bool pdead = isStopped(R, P, recpgamma);
+    bool pdead = isStopped(R);
 
     if (pdead) {
         if (lossDs_m) {
@@ -276,3 +292,11 @@ void FlexibleCollimator::writeHolesAndQuadtree(const std::string &baseFilename) 
     }
 
 }
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

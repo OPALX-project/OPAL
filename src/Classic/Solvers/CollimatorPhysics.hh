@@ -1,13 +1,26 @@
+//
+// Class CollimatorPhysics
+//
+// Defines the collimator physics models
+//
+// Copyright (c) 2009 - 2020, Bi, Yang, Stachel, Adelmann
+//                            Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
+
 #ifndef COLLIMATORPHYSICS_HH
 #define COLLIMATORPHYSICS_HH
-//Class:CollimatorPhysics
-//  Defines the collimator physics models
-// ------------------------------------------------------------------------
-// Class category:
-// ------------------------------------------------------------------------
-// $Date: 2009/07/20 09:32:31 $
-// $Author: Bi, Yang, Stachel, Adelmann$
-//-------------------------------------------------------------------------
+
 #include <vector>
 #include "Solvers/ParticleMatterInteractionHandler.hh"
 #include "Algorithms/Vektor.h"
@@ -45,7 +58,7 @@ struct InsideTester {
     { }
 
     virtual
-    bool checkHit(const Vector_t &R, const Vector_t &P, double dt) = 0;
+    bool checkHit(const Vector_t &R) = 0;
 };
 
 
