@@ -23,7 +23,6 @@
 #include "Algorithms/PartBunchBase.h"
 
 #ifdef OPAL_FEL
-/** Include header files for Mithra full-wave solver.  */
 #include "mithra/fieldvector.h"
 #include "mithra/stdinclude.h"
 #include "mithra/readdata.h"
@@ -33,7 +32,8 @@
 #include "mithra/readdata.h"
 #include "mithra/solver.h"
 #include "mithra/fdtdSC.h"
-
+#include <ctime>
+#include <cmath>
 #endif
 
 extern Inform *gmsg;
@@ -52,7 +52,8 @@ Undulator::Undulator():
     meshResolution_m(3, 0.0),
     truncationOrder_m(2),
     totalTime_m(0.0),
-    dtBunch_m(0.0)
+    dtBunch_m(0.0),
+    hasBeenSimulated_m(0)
 { }
 
 
@@ -67,7 +68,8 @@ Undulator::Undulator(const Undulator &right):
     meshResolution_m(right.meshResolution_m),
     truncationOrder_m(right.truncationOrder_m),
     totalTime_m(right.totalTime_m),
-    dtBunch_m(right.dtBunch_m)
+    dtBunch_m(right.dtBunch_m),
+    hasBeenSimulated_m(right.hasBeenSimulated_m)
 { }
 
 
@@ -82,7 +84,8 @@ Undulator::Undulator(const std::string &name):
     meshResolution_m(3, 0.0),
     truncationOrder_m(2),
     totalTime_m(0.0),
-    dtBunch_m(0.0)
+    dtBunch_m(0.0),
+    hasBeenSimulated_m(0)
 { }
 
 
@@ -102,6 +105,8 @@ void Undulator::initialise(PartBunchBase<double, 3> *bunch, double &startField, 
 
 #ifdef OPAL_FEL
 void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo const& refToLocalCSTrafo) {
+    Inform msg("MITHRA FW solver ", *gmsg);
+    
     // Get local coordinates w.r.t. undulator.
     const unsigned int localNum = itsBunch->getLocalNum();
     for (unsigned int i = 0; i < localNum; ++i) {
@@ -110,15 +115,17 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     }
 
     itsBunch->calcBeamParameters();
-    *gmsg << "Bunch before undulator in local coordinate system: " << endl;
-    itsBunch->print(*gmsg);    
+    msg << "Bunch before undulator in local coordinate system: " << endl;
+    itsBunch->print(msg);
 
-    *gmsg << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-    *gmsg << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;
-    *gmsg << " Version 2.0, Copyright 2019, Arya Fallahi" << endl;
-    *gmsg << " Written by Arya Fallahi, IT'IS Foundation, Zurich, Switzerland" << endl;
-    *gmsg << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
+    // Mithra full wave solver initial message.
+    msg << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
+    msg << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;
+    msg << " Version 2.0, Copyright 2019, Arya Fallahi" << endl;
+    msg << " Written by Arya Fallahi, IT'IS Foundation, Zurich, Switzerland" << endl;
+    msg << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
 
+    // Prepare parameters for full wave solver.
     MITHRA::BunchInitialize bunchInit;
     bunchInit.bunchType_ = "other";
     bunchInit.numberOfParticles_ = itsBunch->getTotalNum();
@@ -130,22 +137,22 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     MITHRA::Bunch bunch;
     bunch.bunchInit_.push_back(bunchInit);
     bunch.timeStep_ = getDtBunch();
-    *gmsg << "Bunch parameters have been transferred to the full-wave solver." << endl;
+    msg << "Bunch parameters have been transferred to the full-wave solver." << endl;
 
     MITHRA::Undulator undulator;
     undulator.k_ = getK();
     undulator.lu_ = getLambda();
     undulator.length_ = getNumPeriods();
-    double fringe = 2 * undulator.lu_;  // Default fringe field length.
+    double fringe = 2 * undulator.lu_;  // Default fringe field length is 2*lu.
     undulator.dist_ = fringe - itsBunch->get_maxExtent()[2];  // Bunch-head to undulator distance.
     std::vector<MITHRA::Undulator> undulators;
     undulators.push_back(undulator);
-    *gmsg << "Undulator parameters have been transferred to the full-wave solver." << endl;
+    msg << "Undulator parameters have been transferred to the full-wave solver." << endl;
 
     MITHRA::Mesh mesh;
     mesh.initialize();
-    mesh.lengthScale_ = 1.0;  // OPAL uses metres
-    mesh.timeScale_ = 1.0;  // OPAL uses seconds
+    mesh.lengthScale_ = 1.0;  // OPAL uses metres.
+    mesh.timeScale_ = 1.0;  // OPAL uses seconds.
     mesh.meshCenter_ = MITHRA::FieldVector<double> (0.0);
     mesh.meshLength_ = getMeshLength();
     mesh.meshResolution_ = getMeshResolution();
@@ -153,7 +160,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     mesh.truncationOrder_ = getTruncationOrder();
     mesh.spaceCharge_ = true;
     mesh.optimizePosition_ = true;
-    *gmsg << "Mesh parameters have been transferred to the full-wave solver." << endl;
+    msg << "Mesh parameters have been transferred to the full-wave solver." << endl;
 
     MITHRA::Seed seed;
     std::vector<MITHRA::ExtField> externalFields;
@@ -165,8 +172,9 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     MITHRA::ParseDarius parser (jobFile, mesh, bunch, seed, undulators, externalFields, FELs);
     parser.setJobParameters();
     
-    MITHRA::FdTdSC   fdtdsc   (mesh, bunch, seed, undulators, externalFields, FELs);
-    // Transfer particles to MITHRA full-wave solver.
+    MITHRA::FdTdSC solver (mesh, bunch, seed, undulators, externalFields, FELs);
+    
+    // Transfer particles to full wave solver and destroy them from itsBunch.
     MITHRA::Charge charge;
     charge.q = itsBunch->getChargePerParticle() / (-Physics::q_e);
     for (unsigned int i = 0; i < localNum; ++i) {
@@ -174,9 +182,10 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
             charge.rnp[d] = itsBunch->R[i][d];
             charge.gbnp[d] = itsBunch->P[i][d];
         }
-        fdtdsc.chargeVectorn_.push_back(charge);
+        solver.chargeVectorn_.push_back(charge);
     }
-    *gmsg << "Particles have been transferred to the full-wave solver." << endl;
+    itsBunch->destroy(localNum, 0, true);
+    msg << "Particles have been transferred to the full-wave solver." << endl;
 
     // Print the parameters for the simulation.
     mesh.show();
@@ -188,11 +197,190 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     for (unsigned int i = 0; i < externalFields.size();  i++) {
         externalFields[i].show();
     }
-    
-    // Run the full-wave solver
-    fdtdsc.solve();
 
+    // Run the full-wave solver.
+    solve(solver, mesh, bunch, seed);
+
+    msg << "Transferring particles back to OPAL bunch." << endl;
+    // Return particles to itsBunch in local coordinates.
+    itsBunch->create(solver.chargeVectorn_.size());
+    const unsigned int newLocalNum = itsBunch->getLocalNum();
+    std::list<MITHRA::Charge>::iterator iter = solver.chargeVectorn_.begin();
+    for (unsigned int i = 0; i < newLocalNum; ++i) {
+        for (unsigned int d = 0; d < 3; ++d) {
+            itsBunch->R[i][d] = iter->rnp[d];
+            itsBunch->P[i][d] = iter->gbnp[d];
+        }
+        itsBunch->Q = iter->q * (-Physics::q_e);
+        itsBunch->M = iter->q * Physics::m_e;
+        iter++;
+    }
+
+    // Transfrom back to reference coordinate system.
+    CoordinateSystemTrafo localToRefCSTrafo = refToLocalCSTrafo.inverted();
+    for (unsigned int i = 0; i < newLocalNum; ++i) {
+        itsBunch->R[i] = localToRefCSTrafo.transformTo(itsBunch->R[i]);
+        itsBunch->P[i] = localToRefCSTrafo.rotateTo(itsBunch->P[i]);
+    }
+    
+    itsBunch->setT(itsBunch->getT() + mesh.totalTime_);
+    itsBunch->calcBeamParameters();
+    
+    // Update reference particle.
+    // At the moment the reference particle becomes the bunch-centroid after the undulator.
+    // This should be fixed in the future such that the reference particle evolves on its own as in ParallelTTracker.
+    itsBunch->RefPartR_m = itsBunch->toLabTrafo_m.transformTo(itsBunch->get_centroid());
+    itsBunch->RefPartP_m = itsBunch->toLabTrafo_m.rotateTo(itsBunch->get_pmean());
+
+    setHasBeenSimlated(true);
 }
+
+void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch& bunch, MITHRA::Seed& seed) {
+    Inform msg("MITHRA FW solver ", *gmsg); 
+
+    // Remark: This function is almost entirely copied from mithra/src/solver.cpp, but is adapted for OPAL.
+
+    solver.initialize();
+
+    timeval simulationStart;
+    gettimeofday(&simulationStart, NULL);
+
+    msg << std::fixed << std::setprecision(3);
+    msg << "-> Run the time domain simulation ..." << endl;
+    double percentTime = 0.0;
+    while (solver.time_ < mesh.totalTime_) {
+        // Advance the fields for one time step using the FDTD algorithm.
+        solver.fieldUpdate();
+
+        /* If sampling of the field is enabled and the rhythm for sampling is achieved. Sample the
+         * field at the given position and save them into the file.	*/
+        if ( seed.sampling_ && fmod(solver.time_, seed.samplingRhythm_) < mesh.timeStep_ && solver.time_ > 0.0 )
+            solver.fieldSample();
+
+        /* If visualization of the field is enabled and the rhythm for visualization is achieved,
+         * visualize the fields and save the vtk data in the given file name. */
+        for (unsigned int i = 0; i < seed.vtk_.size(); i++) {
+            if ( seed.vtk_[i].sample_ && fmod(solver.time_, seed.vtk_[i].rhythm_) < mesh.timeStep_ && solver.time_ > 0.0 ) {
+                if ( seed.vtk_[i].type_ == MITHRA::ALLDOMAIN )
+                    solver.fieldVisualizeAllDomain(i);
+                else if (seed.vtk_[i].type_ == MITHRA::INPLANE)
+                    solver.fieldVisualizeInPlane(i);
+	        }
+        }
+
+        /* If profiling of the field is enabled and the time for profiling is achieved, write the
+         * field profile and save the data in the given file name. */
+        if (seed.profile_) {
+            for (unsigned int i = 0; i < seed.profileTime_.size(); i++)
+                if ( solver.time_ - seed.profileTime_[i] < mesh.timeStep_ && solver.time_ > seed.profileTime_[i] )
+                    solver.fieldProfile();
+            if ( fmod(solver.time_, seed.profileRhythm_) < mesh.timeStep_ && solver.time_ > 0.0 && seed.profileRhythm_ != 0 )
+                solver.fieldProfile();
+        }
+
+        // Reset the charge and current values to zero.
+        solver.currentReset();
+
+        // Update the position and velocity parameters.
+        for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
+            iter->rnm  = iter->rnp;
+            iter->gbnm = iter->gbnp;
+        }
+
+        /* Advance the particles till the time of the bunch properties reaches the time instant of the
+         * field. */
+        for (double t = 0.0; t < solver.nUpdateBunch_; t += 1.0) {
+            solver.bunchUpdate();
+            solver.timeBunch_ += bunch.timeStep_;
+            ++solver.nTimeBunch_;
+        }
+
+        // Get particles going through a monitor.
+        solver.screenProfile();
+
+        // Deposit current and charge density on grid.
+        solver.currentUpdate();
+        solver.currentCommunicate();
+
+        /* If sampling of the bunch is enabled and the rhythm for sampling is achieved. Sample the
+         * bunch and save them into the file. */
+        if ( bunch.sampling_ && fmod(solver.time_, bunch.rhythm_) < mesh.timeStep_ && solver.time_ > 0.0 )
+            solver.bunchSample();
+
+        /* If visualization of the bunch is enabled and the rhythm for visualization is achieved,
+         * visualize the bunch and save the vtk data in the given file name. */
+        if ( bunch.bunchVTK_ && fmod(solver.time_, bunch.bunchVTKRhythm_) < mesh.timeStep_ && solver.time_ > 0.0 )
+            solver.bunchVisualize();
+
+        /* If profiling of the bunch is enabled and the time for profiling is achieved, write the bunch
+         * profile and save the data in the given file name. */
+        if (bunch.bunchProfile_ > 0) {
+            for (unsigned int i = 0; i < (bunch.bunchProfileTime_).size(); i++)
+                if ( solver.time_ - bunch.bunchProfileTime_[i] < mesh.timeStep_ && solver.time_ > bunch.bunchProfileTime_[i] )
+                    solver.bunchProfile();
+            if ( fmod(solver.time_, bunch.bunchProfileRhythm_) < mesh.timeStep_ && solver.time_ > 0.0 && bunch.bunchProfileRhythm_ != 0.0 )
+                solver.bunchProfile();
+        }
+
+        /* If radiation power of the FEL output is enabled and the rhythm for sampling is achieved.
+         * Sample the radiation power at the given position and save them into the file. */
+        solver.powerSample();
+        solver.powerVisualize();
+
+        /* If radiation energy of the FEL output is enabled and the rhythm for sampling is achieved.
+         * Sample the radiation energy at the given position and save them into the file. */
+        solver.energySample();
+
+        /* Shift the computed fields and the time points for the fields. */
+        solver.fieldShift();
+
+        solver.timem1_ += mesh.timeStep_;
+        solver.time_   += mesh.timeStep_;
+        solver.timep1_ += mesh.timeStep_;
+        ++solver.nTime_;
+
+        timeval simulationEnd;
+        gettimeofday(&simulationEnd, NULL);
+        double deltaTime  = ( simulationEnd.tv_usec - simulationStart.tv_usec ) / 1.0e6;
+        deltaTime += ( simulationEnd.tv_sec - simulationStart.tv_sec );
+
+        if ( solver.rank_ == 0 && solver.time_ / mesh.totalTime_ * 1000.0 > percentTime ) {
+            msg << " Percentage of the simulation completed (%)      = "
+                  << solver.time_ / mesh.totalTime_ * 100.0 << endl;
+            msg << " Average calculation time for each time step (s) = "
+                  << deltaTime / (double)(solver.nTime_) << endl;
+            msg << " Estimated remaining time (min)                  = "
+                  << (mesh.totalTime_ / solver.time_ - 1) * deltaTime / 60 << endl;
+            percentTime += 1.0;
+        }
+    }
+
+    solver.finalize();
+
+    // Lorentz Transformation back to undulator local coordinates.
+    // (this is a simplified Lorentz Trans. that only works in a drift with no SC.
+    // It is a temporary implementation to check if particle destruction/creation works)
+    double zmin = 1e100;
+    for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++)
+      zmin = std::min(zmin, iter->rnp[2]);
+    reduce(zmin, zmin, OpMinAssign());
+
+    // Get total time ellapsed in laboratory frame.
+    mesh.totalTime_ = solver.gamma_ * (solver.time_ + solver.beta_ / solver.c0_ * (zmin - bunch.zu_));
+
+    for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
+        double dist = zmin - iter->rnp[2];
+        // Lorentz transform.
+        iter->rnp[2] = solver.gamma_ * (iter->rnp[2] + solver.beta_ * solver.c0_ * ( solver.timeBunch_ + solver.dt_ ) );
+        iter->gbnp[2] = solver.gamma_ * (iter->gbnp[2] + solver.beta_ * std::sqrt(1 + iter->gbnp.norm2()));
+        // Shift to bring all particles to same time.
+        double g = std::sqrt(1 + iter->gbnp.norm2());
+        iter->rnp[0] += iter->gbnp[0] / g * dist * solver.beta_ * solver.gamma_;
+        iter->rnp[1] += iter->gbnp[1] / g * dist * solver.beta_ * solver.gamma_;
+        iter->rnp[2] += iter->gbnp[2] / g * dist * solver.beta_ * solver.gamma_;
+    }
+}
+
 #endif
 
 //set the number of slices for map tracking
@@ -247,3 +435,6 @@ double Undulator::getTotalTime() const { return totalTime_m; }
 
 void Undulator::setDtBunch(double dtb) { dtBunch_m = dtb; }
 double Undulator::getDtBunch() const { return dtBunch_m; }
+
+void Undulator::setHasBeenSimlated(bool hbs) { hasBeenSimulated_m = hbs; }
+bool Undulator::getHasBeenSimulated() const { return hasBeenSimulated_m; }

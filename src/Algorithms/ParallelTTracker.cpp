@@ -609,24 +609,25 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
 
 #ifdef OPAL_FEL
 void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
+    // Check if bunch has entered undulator field
     UndulatorRep* und;
     IndexMap::value_t::const_iterator it = elements.begin();
     for (; it != elements.end(); ++ it)
         if ((*it)->getType() == ElementBase::UNDULATOR) {
             und = dynamic_cast<UndulatorRep*>(it->get());
-            break;
+            if (!und->getHasBeenSimulated())
+                break;
         }
     if (it == elements.end())
         return;
-    
+
+    // Apply MITHRA full wave solver for undulator
     CoordinateSystemTrafo refToLocalCSTrafo = (itsOpalBeamline_m.getMisalignment((*it)) *
                                                (itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * itsBunch_m->toLabTrafo_m));
     
     und->apply(itsBunch_m, refToLocalCSTrafo);
-    
-    // At the moment OPAL exits after the full-wave solver.
-    // In the future the bunch should be transferred back to OPAL
-    globalEOL_m = true;
+
+    evenlyDistributeParticles();
 }
 #endif
 

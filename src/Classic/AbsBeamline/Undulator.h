@@ -23,6 +23,10 @@
 
 #include "AbsBeamline/Component.h"
 
+#ifdef OPAL_FEL
+#include "mithra/fdtdSC.h"
+#include "mithra/classes.h"
+#endif
 
 
 // Class Undulator
@@ -48,6 +52,7 @@ public:
 
 #ifdef OPAL_FEL
     virtual void apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo const& refToLocalCSTrafo);
+    virtual void solve(MITHRA::FdTdSC& solver, MITHRA::Mesh& mesh, MITHRA::Bunch& bunch, MITHRA::Seed& seed);
 #endif
   
     virtual void finalise();
@@ -82,6 +87,8 @@ public:
     virtual double getTotalTime() const;
     virtual void setDtBunch(double dtb);
     virtual double getDtBunch() const;
+    virtual void setHasBeenSimlated(bool hbs);
+    virtual bool getHasBeenSimulated() const;
 
 private:
 
@@ -114,6 +121,9 @@ private:
 
     /// Time step for the bunch position update
     double dtBunch_m;
+
+    /// Boolean to indicate whether this undulator has already been simulated
+    bool hasBeenSimulated_m;
 
     // Not implemented.
     void operator=(const Undulator &);
