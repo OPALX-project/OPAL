@@ -201,9 +201,10 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     // Run the full-wave solver.
     solve(solver, mesh, bunch, seed);
 
-    msg << "Transferring particles back to OPAL bunch." << endl;
     // Return particles to itsBunch in local coordinates.
+    msg << "Transferring particles back to OPAL bunch." << endl;
     itsBunch->create(solver.chargeVectorn_.size());
+    const double dt = itsBunch->getdT();
     const unsigned int newLocalNum = itsBunch->getLocalNum();
     std::list<MITHRA::Charge>::iterator iter = solver.chargeVectorn_.begin();
     for (unsigned int i = 0; i < newLocalNum; ++i) {
@@ -211,10 +212,11 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
             itsBunch->R[i][d] = iter->rnp[d];
             itsBunch->P[i][d] = iter->gbnp[d];
         }
-        itsBunch->Q = iter->q * (-Physics::q_e);
-        itsBunch->M = iter->q * Physics::m_e;
+        itsBunch->Q[i] = iter->q * (-Physics::q_e);
+        itsBunch->dt[i] = dt;
         iter++;
     }
+    itsBunch->setT(itsBunch->getT() + mesh.totalTime_);
 
     // Transfrom back to reference coordinate system.
     CoordinateSystemTrafo localToRefCSTrafo = refToLocalCSTrafo.inverted();
@@ -222,8 +224,6 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
         itsBunch->R[i] = localToRefCSTrafo.transformTo(itsBunch->R[i]);
         itsBunch->P[i] = localToRefCSTrafo.rotateTo(itsBunch->P[i]);
     }
-    
-    itsBunch->setT(itsBunch->getT() + mesh.totalTime_);
     itsBunch->calcBeamParameters();
     
     // Update reference particle.
@@ -231,6 +231,9 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     // This should be fixed in the future such that the reference particle evolves on its own as in ParallelTTracker.
     itsBunch->RefPartR_m = itsBunch->toLabTrafo_m.transformTo(itsBunch->get_centroid());
     itsBunch->RefPartP_m = itsBunch->toLabTrafo_m.rotateTo(itsBunch->get_pmean());
+    
+    msg << "Bunch after undulator in reference coordinate system: " << endl;
+    itsBunch->print(msg);
 
     setHasBeenSimlated(true);
 }
