@@ -374,7 +374,7 @@ void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch
     for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
         double dist = zmin - iter->rnp[2];
         // Lorentz transform.
-        iter->rnp[2] = solver.gamma_ * (iter->rnp[2] + solver.beta_ * solver.c0_ * ( solver.timeBunch_ + solver.dt_ ) );
+        iter->rnp[2] = solver.gamma_ * (iter->rnp[2] + solver.beta_ * solver.c0_ * ( solver.timeBunch_ + solver.dt_ ) ) + 2 * solver.undulator_[0].lu_;
         iter->gbnp[2] = solver.gamma_ * (iter->gbnp[2] + solver.beta_ * std::sqrt(1 + iter->gbnp.norm2()));
         // Shift to bring all particles to same time.
         double g = std::sqrt(1 + iter->gbnp.norm2());
