@@ -360,6 +360,13 @@ void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch
 
     solver.finalize();
 
+    // Get total full wave simulation time.
+    timeval simulationEnd;
+    gettimeofday(&simulationEnd, NULL);
+    double deltaTime = ( simulationEnd.tv_usec - simulationStart.tv_usec ) / 1.0e6;
+    deltaTime += ( simulationEnd.tv_sec - simulationStart.tv_sec );
+    msg << "::: Total full wave simulation time [seconds] = " << deltaTime << endl;
+    
     // Lorentz Transformation back to undulator local coordinates.
     // (this is a simplified Lorentz Trans. that only works in a drift with no SC.
     // It is a temporary implementation to check if particle destruction/creation works)
