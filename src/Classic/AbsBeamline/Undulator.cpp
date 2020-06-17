@@ -47,6 +47,7 @@ Undulator::Undulator():
     k_m(0.0),
     lambda_m(0.0),
     numPeriods_m(0.0),
+    angle_m(0.0),
     fname_m(""),
     meshLength_m(3, 0.0),
     meshResolution_m(3, 0.0),
@@ -63,6 +64,7 @@ Undulator::Undulator(const Undulator &right):
     k_m(right.k_m),
     lambda_m(right.lambda_m),
     numPeriods_m(right.numPeriods_m),
+    angle_m(right.angle_m),
     fname_m(right.fname_m),
     meshLength_m(right.meshLength_m),
     meshResolution_m(right.meshResolution_m),
@@ -79,6 +81,7 @@ Undulator::Undulator(const std::string &name):
     k_m(0.0),
     lambda_m(0.0),
     numPeriods_m(0.0),
+    angle_m(0.0),
     fname_m(""),
     meshLength_m(3, 0.0),
     meshResolution_m(3, 0.0),
@@ -143,6 +146,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     undulator.k_ = getK();
     undulator.lu_ = getLambda();
     undulator.length_ = getNumPeriods();
+    undulator.theta_ = getAngle() * Physics::pi / 180.0;
     double fringe = 2 * undulator.lu_;  // Default fringe field length is 2*lu.
     undulator.dist_ = fringe - itsBunch->get_maxExtent()[2];  // Bunch-head to undulator distance.
     std::vector<MITHRA::Undulator> undulators;
@@ -427,6 +431,9 @@ double Undulator::getLambda() const { return lambda_m; }
 
 void Undulator::setNumPeriods(int np) { numPeriods_m = np; }
 int Undulator::getNumPeriods() const { return numPeriods_m; }
+
+void Undulator::setAngle(double theta) { angle_m = theta; }
+double Undulator::getAngle() const { return angle_m; }
 
 void Undulator::setFilename(const std::string&fname) { fname_m = fname; }
 const std::string& Undulator::getFilename() const { return fname_m;}

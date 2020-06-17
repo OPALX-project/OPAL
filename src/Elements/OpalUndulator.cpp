@@ -50,6 +50,10 @@ OpalUndulator::OpalUndulator():
     itsAttr[NUMPERIODS] = Attributes::makeReal
                           ("NUMPERIODS",
                           "Number of undulator period", 0.0);
+
+    itsAttr[ANGLE] = Attributes::makeReal
+                          ("ANGLE",
+                          "Polarisation angle of the undulator magnetic field.", 0.0);
     
     itsAttr[FNAME] = Attributes::makeString
       ("FNAME", "Jobfile specifying the output data from the undulator", "");
@@ -74,6 +78,7 @@ OpalUndulator::OpalUndulator():
     registerRealAttribute("K");
     registerRealAttribute("LAMBDA");
     registerRealAttribute("NUMPERIODS");
+    registerRealAttribute("ANGLE");
     registerStringAttribute("FNAME");
     registerRealAttribute("TRUNORDER");
     registerRealAttribute("TOTALTIME");
@@ -136,6 +141,7 @@ void OpalUndulator::update() {
     ur->setK(Attributes::getReal(itsAttr[K]));
     ur->setLambda(Attributes::getReal(itsAttr[LAMBDA]));
     ur->setNumPeriods(Attributes::getReal(itsAttr[NUMPERIODS]));
+    ur->setAngle(Attributes::getReal(itsAttr[ANGLE]));
     ur->setFilename(Attributes::getString(itsAttr[FNAME]));
 
     ur->setMeshLength(Attributes::getRealArray(itsAttr[MESHLENGTH]));

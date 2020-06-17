@@ -39,6 +39,7 @@ public:
 	 K,                       // The undulator parameter
 	 LAMBDA,                  // The undulator period
 	 NUMPERIODS,
+     ANGLE,
 	 FNAME,
 	 MESHLENGTH,
 	 MESHRESOLUTION,

@@ -75,6 +75,8 @@ public:
     virtual double getLambda() const;
     virtual void setNumPeriods(int np);
     virtual int getNumPeriods() const;
+    virtual void setAngle(double theta);
+    virtual double getAngle() const;
     virtual void setFilename(const std::string& fname);
     virtual const std::string& getFilename() const;
     virtual void setMeshLength(std::vector<double> ml);
@@ -102,7 +104,10 @@ private:
     double lambda_m;
 
     /// Number of periods
-    double numPeriods_m;    
+    double numPeriods_m;
+
+    /// Polarisation angle of the undulator field
+    double angle_m;
 
     /// Mithra file
     std::string fname_m;
