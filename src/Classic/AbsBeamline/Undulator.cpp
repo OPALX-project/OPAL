@@ -170,11 +170,13 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     std::vector<MITHRA::ExtField> externalFields;
     std::vector<MITHRA::FreeElectronLaser> FELs;
     
-    // Get filename with desired output data.
-    std::list<std::string> jobFile = MITHRA::read_file((getFilename()).c_str());
-    MITHRA::cleanJobFile(jobFile);
-    MITHRA::ParseDarius parser (jobFile, mesh, bunch, seed, undulators, externalFields, FELs);
-    parser.setJobParameters();
+    // Get filename with desired output data.    
+    if (!fname_m.empty()) {
+        std::list<std::string> jobFile = MITHRA::read_file(fname_m.c_str());
+        MITHRA::cleanJobFile(jobFile);
+        MITHRA::ParseDarius parser (jobFile, mesh, bunch, seed, undulators, externalFields, FELs);
+        parser.setJobParameters();
+    }
     
     MITHRA::FdTdSC solver (mesh, bunch, seed, undulators, externalFields, FELs);
     
