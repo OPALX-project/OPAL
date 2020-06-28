@@ -34,6 +34,7 @@ class OpalUndulator: public OpalElement {
 public:
 
     enum {
+        GEOMETRY = COMMON,       // geometry of boundary, one more enum member besides the common ones in OpalElement.
         NSLICES,	  // The number of slices / steps per element for map tracking
         K,                       // The undulator parameter
         LAMBDA,                  // The undulator period
@@ -66,6 +67,10 @@ private:
 
     // Clone constructor.
     OpalUndulator(const std::string &name, OpalUndulator *parent);
+
+    OpalWake *owk_m;
+    ParticleMatterInteraction *parmatint_m;
+    BoundaryGeometry *obgeo_m;
 };
 
 #endif // OPAL_OpalUndulator_HH
