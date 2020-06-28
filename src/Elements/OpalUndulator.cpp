@@ -17,63 +17,60 @@
 // ------------------------------------------------------------------------
 
 #include "Elements/OpalUndulator.h"
-#include "Structure/BoundaryGeometry.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/UndulatorRep.h"
-#include "Structure/OpalWake.h"
-#include "Structure/ParticleMatterInteraction.h"
 
 // Class OpalUndulator
 // ------------------------------------------------------------------------
 
 OpalUndulator::OpalUndulator():
     OpalElement(SIZE, "UNDULATOR",
-                "The \"UNDULATOR\" element defines a undulator."),
-    owk_m(NULL),
-    parmatint_m(NULL),
-    obgeo_m(NULL) {
-    itsAttr[GEOMETRY] = Attributes::makeString
-                        ("GEOMETRY", "BoundaryGeometry for Undulators");
+                "The \"UNDULATOR\" element defines a undulator.") {
 
     itsAttr[NSLICES] = Attributes::makeReal
                           ("NSLICES",
-                          "The number of slices/ steps for this element in Map Tracking", 1);
+                          "The number of slices/ steps for this element in Map Tracking.", 1);
 
     itsAttr[K] = Attributes::makeReal
                           ("K",
-                          "The undulator parameter", 1);
+                          "The undulator parameter.", 1);
 
     itsAttr[LAMBDA] = Attributes::makeReal
                           ("LAMBDA",
-                          "The undulator period", 0.0);
+                          "The undulator period.", 0.0);
     
     itsAttr[NUMPERIODS] = Attributes::makeReal
                           ("NUMPERIODS",
-                          "Number of undulator period", 0.0);
+                          "Number of undulator period.", 0.0);
 
     itsAttr[ANGLE] = Attributes::makeReal
                           ("ANGLE",
                           "Polarisation angle of the undulator magnetic field.", 0.0);
     
     itsAttr[FNAME] = Attributes::makeString
-      ("FNAME", "Jobfile specifying the output data from the undulator", "");
+                          ("FNAME",
+                           "Jobfile specifying the output data from the undulator.", "");
+    
     itsAttr[MESHLENGTH] = Attributes::makeRealArray
                           ("MESHLENGTH",
-			   "Size of computational mesh");
+                           "Size of computational mesh.");
+    
     itsAttr[MESHRESOLUTION] = Attributes::makeRealArray
                           ("MESHRESOLUTION",
-                           "dx, dy, dz of the mesh");
+                           "dx, dy, dz of the mesh.");
+    
     itsAttr[TRUNORDER] = Attributes::makeReal
                           ("TRUNORDER",
-                          "Order of boundary absorbing conditions", 2);
+                          "Order of boundary absorbing conditions.", 2);
+    
     itsAttr[TOTALTIME] = Attributes::makeReal
                           ("TOTALTIME",
-                          "Total time of undulator simulation", 0.0);
+                          "Total time of undulator simulation.", 0.0);
+    
     itsAttr[DTBUNCH] = Attributes::makeReal
                           ("DTBUNCH",
-                          "Time step for the bunch position update can be smaller than field update step", 0.0);
+                          "Time step for the bunch position update can be smaller than field update step.", 0.0);
 
-    registerStringAttribute("GEOMETRY");
     registerRealAttribute("NSLICES");
     registerRealAttribute("K");
     registerRealAttribute("LAMBDA");
@@ -90,22 +87,13 @@ OpalUndulator::OpalUndulator():
 
 
 OpalUndulator::OpalUndulator(const std::string &name, OpalUndulator *parent):
-    OpalElement(name, parent),
-    owk_m(NULL),
-    parmatint_m(NULL),
-    obgeo_m(NULL) {
+    OpalElement(name, parent) {
     setElement(new UndulatorRep(name));
 }
 
 
-OpalUndulator::~OpalUndulator() {
-    if(owk_m)
-        delete owk_m;
-    if(parmatint_m)
-        delete parmatint_m;
-    if(obgeo_m)
-	delete obgeo_m;
-}
+OpalUndulator::~OpalUndulator()
+{}
 
 
 OpalUndulator *OpalUndulator::clone(const std::string &name) {
@@ -119,31 +107,11 @@ void OpalUndulator::update() {
     UndulatorRep *ur = static_cast<UndulatorRep *>(getElement());
     ur->setElementLength(Attributes::getReal(itsAttr[LAMBDA]) * (4 + Attributes::getReal(itsAttr[NUMPERIODS])));
     ur->setNSlices(Attributes::getReal(itsAttr[NSLICES]));
-    if(itsAttr[WAKEF] && owk_m == NULL) {
-        owk_m = (OpalWake::find(Attributes::getString(itsAttr[WAKEF])))->clone(getOpalName() + std::string("_wake"));
-        owk_m->initWakefunction(*ur);
-        ur->setWake(owk_m->wf_m);
-    }
-
-    if(itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == NULL) {
-        parmatint_m = (ParticleMatterInteraction::find(Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION])))->clone(getOpalName() + std::string("_parmatint"));
-        parmatint_m->initParticleMatterInteractionHandler(*ur);
-        ur->setParticleMatterInteraction(parmatint_m->handler_m);
-    }
-    if(itsAttr[GEOMETRY] && obgeo_m == NULL) {
-        obgeo_m = (BoundaryGeometry::find(Attributes::getString(itsAttr[GEOMETRY])))->clone(getOpalName() + std::string("_geometry"));
-        if(obgeo_m) {
-	    ur->setBoundaryGeometry(obgeo_m);
-        }
-    }
-
-
     ur->setK(Attributes::getReal(itsAttr[K]));
     ur->setLambda(Attributes::getReal(itsAttr[LAMBDA]));
     ur->setNumPeriods(Attributes::getReal(itsAttr[NUMPERIODS]));
     ur->setAngle(Attributes::getReal(itsAttr[ANGLE]));
     ur->setFilename(Attributes::getString(itsAttr[FNAME]));
-
     ur->setMeshLength(Attributes::getRealArray(itsAttr[MESHLENGTH]));
     ur->setMeshResolution(Attributes::getRealArray(itsAttr[MESHRESOLUTION]));
     ur->setTruncationOrder(Attributes::getReal(itsAttr[TRUNORDER]));
