@@ -36,6 +36,7 @@
 #include "Utilities/LogicalError.h"
 #include "Structure/BoundaryGeometry.h"
 #include "AbsBeamline/SBend3D.h"
+#include "Physics/Physics.h"
 
 #include "opal_test_utilities/SilenceTest.h"
 
