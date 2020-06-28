@@ -147,8 +147,8 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     undulator.lu_ = getLambda();
     undulator.length_ = getNumPeriods();
     undulator.theta_ = getAngle() * Physics::pi / 180.0;
-    double fringe = 2 * undulator.lu_;  // Default fringe field length is 2*lu.
-    undulator.dist_ = fringe - itsBunch->get_maxExtent()[2];  // Bunch-head to undulator distance.
+    lFringe_m = 2 * undulator.lu_;  // Default fringe field length is 2*lu.
+    undulator.dist_ = lFringe_m - itsBunch->get_maxExtent()[2];  // Bunch-head to undulator distance.
     std::vector<MITHRA::Undulator> undulators;
     undulators.push_back(undulator);
     msg << "Undulator parameters have been transferred to the full-wave solver." << endl;
@@ -161,6 +161,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     mesh.meshLength_ = getMeshLength();
     mesh.meshResolution_ = getMeshResolution();
     mesh.totalTime_ = getTotalTime();
+    mesh.totalDist_ = lFringe_m + undulator.lu_ * undulator.length_;
     mesh.truncationOrder_ = getTruncationOrder();
     mesh.spaceCharge_ = true;
     mesh.optimizePosition_ = true;
@@ -205,8 +206,42 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     }
 
     // Run the full-wave solver.
+    timeval simulationStart;
+    gettimeofday(&simulationStart, NULL);
     solve(solver, mesh, bunch, seed);
 
+    // Get total computational time of the full wave simulation.
+    timeval simulationEnd;
+    gettimeofday(&simulationEnd, NULL);
+    double deltaTime = ( simulationEnd.tv_usec - simulationStart.tv_usec ) / 1.0e6;
+    deltaTime += ( simulationEnd.tv_sec - simulationStart.tv_sec );
+    msg << "::: Total full wave simulation time [seconds] = " << deltaTime << endl;
+    
+    // Lorentz Transformation back to undulator local coordinates.
+    double zMin = 1e100;
+    for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
+        zMin = std::min(zMin, iter->rnp[2]);
+    }
+    allreduce(&zMin, 1, std::less<double>());
+
+    const double gb = solver.gamma_ * solver.beta_;
+    const double factor = solver.gamma_ * (solver.beta_ * solver.c0_ * (solver.timeBunch_ + solver.dt_)) + lFringe_m;
+    for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
+        double dist = zMin - iter->rnp[2];
+        // Lorentz transform.
+        iter->rnp[2] = solver.gamma_ * iter->rnp[2] + factor;
+        iter->gbnp[2] = solver.gamma_ * iter->gbnp[2] + gb * std::sqrt(1 + iter->gbnp.norm2());
+        // Shift to bring all particles to same time in lab frame.
+        double g = std::sqrt(1 + iter->gbnp.norm2());
+        iter->rnp[0] += iter->gbnp[0] / g * dist * gb;
+        iter->rnp[1] += iter->gbnp[1] / g * dist * gb;
+        iter->rnp[2] += iter->gbnp[2] / g * dist * gb;
+    }
+    
+    // Get total time ellapsed in laboratory frame.
+    mesh.totalTime_ = solver.gamma_ * (solver.time_ + solver.beta_ / solver.c0_ * (zMin - bunch.zu_));
+
+    
     // Return particles to itsBunch in local coordinates.
     msg << "Transferring particles back to OPAL bunch." << endl;
     itsBunch->create(solver.chargeVectorn_.size());
@@ -233,8 +268,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     itsBunch->calcBeamParameters();
     
     // Update reference particle.
-    // At the moment the reference particle becomes the bunch-centroid after the undulator.
-    // This should be fixed in the future such that the reference particle evolves on its own as in ParallelTTracker.
+    // The reference particle becomes the bunch-centroid after the undulator.
     itsBunch->RefPartR_m = itsBunch->toLabTrafo_m.transformTo(itsBunch->get_centroid());
     itsBunch->RefPartP_m = itsBunch->toLabTrafo_m.rotateTo(itsBunch->get_pmean());
     
@@ -244,12 +278,34 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     setHasBeenSimlated(true);
 }
 
-void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch& bunch, MITHRA::Seed& seed) {
+void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch& bunch, MITHRA::Seed& seed) const {
     Inform msg("MITHRA FW solver ", *gmsg); 
 
     // Remark: This function is almost entirely copied from mithra/src/solver.cpp, but is adapted for OPAL.
 
     solver.initialize();
+
+    
+    // New total time try
+    double Lu = solver.undulator_[0].lu_ * solver.undulator_[0].length_ / solver.gamma_;
+    double zEnd = Lu + lFringe_m / solver.gamma_;
+    double zMin = 1e100;
+    double bz = 0;
+    for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
+        zMin = std::min(zMin, iter->rnp[2]);
+        bz += iter->gbnp[2] / std::sqrt(1 + iter->gbnp.norm2());
+    }
+    allreduce(&zMin, 1, std::less<double>());
+    allreduce(&bz, 1, std::plus<double>());
+    unsigned int Nq = solver.chargeVectorn_.size();
+    allreduce(&Nq, 1, std::plus<double>());
+    bz /= Nq;
+
+    if (mesh.totalTime_ == 0) {
+        mesh.totalTime_ = 1 / (solver.c0_ * (bz + solver.beta_)) * (zEnd - solver.beta_ * solver.c0_ * solver.dt_ - zMin + bz / solver.beta_* Lu);
+        msg << "Total time of the full wave simulation has been set to " << mesh.totalTime_ * solver.gamma_ << endl;
+    }
+    
 
     timeval simulationStart;
     gettimeofday(&simulationStart, NULL);
@@ -257,6 +313,7 @@ void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch
     msg << std::fixed << std::setprecision(3);
     msg << "-> Run the time domain simulation ..." << endl;
     double percentTime = 0.0;
+    
     while (solver.time_ < mesh.totalTime_) {
         // Advance the fields for one time step using the FDTD algorithm.
         solver.fieldUpdate();
@@ -365,36 +422,6 @@ void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch
     }
 
     solver.finalize();
-
-    // Get total full wave simulation time.
-    timeval simulationEnd;
-    gettimeofday(&simulationEnd, NULL);
-    double deltaTime = ( simulationEnd.tv_usec - simulationStart.tv_usec ) / 1.0e6;
-    deltaTime += ( simulationEnd.tv_sec - simulationStart.tv_sec );
-    msg << "::: Total full wave simulation time [seconds] = " << deltaTime << endl;
-    
-    // Lorentz Transformation back to undulator local coordinates.
-    // (this is a simplified Lorentz Trans. that only works in a drift with no SC.
-    // It is a temporary implementation to check if particle destruction/creation works)
-    double zmin = 1e100;
-    for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++)
-      zmin = std::min(zmin, iter->rnp[2]);
-    reduce(zmin, zmin, OpMinAssign());
-
-    // Get total time ellapsed in laboratory frame.
-    mesh.totalTime_ = solver.gamma_ * (solver.time_ + solver.beta_ / solver.c0_ * (zmin - bunch.zu_));
-
-    for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
-        double dist = zmin - iter->rnp[2];
-        // Lorentz transform.
-        iter->rnp[2] = solver.gamma_ * (iter->rnp[2] + solver.beta_ * solver.c0_ * ( solver.timeBunch_ + solver.dt_ ) ) + 2 * solver.undulator_[0].lu_;
-        iter->gbnp[2] = solver.gamma_ * (iter->gbnp[2] + solver.beta_ * std::sqrt(1 + iter->gbnp.norm2()));
-        // Shift to bring all particles to same time.
-        double g = std::sqrt(1 + iter->gbnp.norm2());
-        iter->rnp[0] += iter->gbnp[0] / g * dist * solver.beta_ * solver.gamma_;
-        iter->rnp[1] += iter->gbnp[1] / g * dist * solver.beta_ * solver.gamma_;
-        iter->rnp[2] += iter->gbnp[2] / g * dist * solver.beta_ * solver.gamma_;
-    }
 }
 
 #endif
