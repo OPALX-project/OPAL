@@ -286,7 +286,7 @@ void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch
     solver.initialize();
 
     
-    // New total time try
+    // Compute total time. This will be eventually moved to MITHRA.
     double Lu = solver.undulator_[0].lu_ * solver.undulator_[0].length_ / solver.gamma_;
     double zEnd = Lu + lFringe_m / solver.gamma_;
     double zMin = 1e100;
@@ -304,8 +304,7 @@ void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch
     if (mesh.totalTime_ == 0) {
         mesh.totalTime_ = 1 / (solver.c0_ * (bz + solver.beta_)) * (zEnd - solver.beta_ * solver.c0_ * solver.dt_ - zMin + bz / solver.beta_* Lu);
         msg << "Total time of the full wave simulation has been set to " << mesh.totalTime_ * solver.gamma_ << endl;
-    }
-    
+    }   
 
     timeval simulationStart;
     gettimeofday(&simulationStart, NULL);
