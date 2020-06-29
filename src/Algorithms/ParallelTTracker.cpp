@@ -16,7 +16,6 @@
 // $Author: adelmann $
 //
 // ------------------------------------------------------------------------
-
 #include "Algorithms/ParallelTTracker.h"
 
 #include <iostream>
@@ -26,8 +25,6 @@
 #include <string>
 #include <limits>
 #include <cmath>
-
-#include "BeamlineCore/UndulatorRep.h"
 
 #include "Algorithms/OrbitThreader.h"
 #include "Algorithms/CavityAutophaser.h"
@@ -50,6 +47,10 @@
 #include "Solvers/ParticleMatterInteractionHandler.hh"
 #include "Structure/BoundaryGeometry.h"
 #include "AbsBeamline/Monitor.h"
+
+#ifdef OPAL_FEL
+#include "BeamlineCore/UndulatorRep.h"
+#endif
 
 class PartData;
 
