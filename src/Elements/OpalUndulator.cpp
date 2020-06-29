@@ -29,41 +29,47 @@ OpalUndulator::OpalUndulator():
 
     itsAttr[NSLICES] = Attributes::makeReal
                           ("NSLICES",
-                          "The number of slices/ steps for this element in Map Tracking", 1);
+                          "The number of slices/ steps for this element in Map Tracking.", 1);
 
     itsAttr[K] = Attributes::makeReal
                           ("K",
-                          "The undulator parameter", 1);
+                          "The undulator parameter.", 1);
 
     itsAttr[LAMBDA] = Attributes::makeReal
                           ("LAMBDA",
-                          "The undulator period", 0.0);
+                          "The undulator period.", 0.0);
     
     itsAttr[NUMPERIODS] = Attributes::makeReal
                           ("NUMPERIODS",
-                          "Number of undulator period", 0.0);
+                          "Number of undulator period.", 0.0);
 
     itsAttr[ANGLE] = Attributes::makeReal
                           ("ANGLE",
                           "Polarisation angle of the undulator magnetic field.", 0.0);
     
     itsAttr[FNAME] = Attributes::makeString
-      ("FNAME", "Jobfile specifying the output data from the undulator", "");
+                          ("FNAME",
+                           "Jobfile specifying the output data from the undulator.", "");
+    
     itsAttr[MESHLENGTH] = Attributes::makeRealArray
                           ("MESHLENGTH",
-			   "Size of computational mesh");
+                           "Size of computational mesh.");
+    
     itsAttr[MESHRESOLUTION] = Attributes::makeRealArray
                           ("MESHRESOLUTION",
-                           "dx, dy, dz of the mesh");
+                           "dx, dy, dz of the mesh.");
+    
     itsAttr[TRUNORDER] = Attributes::makeReal
                           ("TRUNORDER",
-                          "Order of boundary absorbing conditions", 2);
+                          "Order of boundary absorbing conditions. 1st or 2nd.", 2);
+    
     itsAttr[TOTALTIME] = Attributes::makeReal
                           ("TOTALTIME",
-                          "Total time of undulator simulation", 0.0);
+                          "Total time of undulator simulation.", 0.0);
+    
     itsAttr[DTBUNCH] = Attributes::makeReal
                           ("DTBUNCH",
-                          "Time step for the bunch position update can be smaller than field update step", 0.0);
+                          "Time step for the bunch position update can be smaller than field update step.", 0.0);
 
     registerRealAttribute("NSLICES");
     registerRealAttribute("K");
