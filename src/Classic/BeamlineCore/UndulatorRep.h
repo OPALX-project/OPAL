@@ -1,33 +1,30 @@
+//
+// Class Undulator
+// Defines a concrete undulator/wiggler representation.
+//
+// Copyright (c) 2020, Arnau Albà, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// Implemented as part of the MSc thesis
+// "Start-to-End Modelling of the AWA Micro-Bunched Electron Cooling POP-Experiment"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_UndulatorRep_HH
 #define CLASSIC_UndulatorRep_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: UndulatorRep.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: UndulatorRep
-//
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:33 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
-
 #include "AbsBeamline/Undulator.h"
+
 #include "BeamlineGeometry/StraightGeometry.h"
 #include "Fields/NullField.h"
-
-
-// Class UndulatorRep
-// ------------------------------------------------------------------------
-/// Representation for a drift space.
 
 class UndulatorRep: public Undulator {
 

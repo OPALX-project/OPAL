@@ -1,31 +1,30 @@
-// ------------------------------------------------------------------------
-// $RCSfile: UndulatorRep.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: UndulatorRep
-//   Defines a concrete drift space representation.
+// Class Undulator
+// Defines a concrete undulator/wiggler representation.
 //
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
+// Copyright (c) 2020, Arnau Albà, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
 //
-// $Date: 2000/03/27 09:32:33 $
-// $Author: fci $
+// Implemented as part of the MSc thesis
+// "Start-to-End Modelling of the AWA Micro-Bunched Electron Cooling POP-Experiment"
 //
-// ------------------------------------------------------------------------
-
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "BeamlineCore/UndulatorRep.h"
+
 #include "AbsBeamline/ElementImage.h"
 #include "Channels/IndirectChannel.h"
 
 
 // Attribute access table.
-// ------------------------------------------------------------------------
-
 namespace {
     struct Entry {
         const char *name;
@@ -43,9 +42,6 @@ namespace {
     };
 }
 
-
-// Class UndulatorRep
-// ------------------------------------------------------------------------
 
 UndulatorRep::UndulatorRep():
     Undulator(),
