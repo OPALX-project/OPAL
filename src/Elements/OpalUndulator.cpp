@@ -25,7 +25,7 @@
 
 OpalUndulator::OpalUndulator():
     OpalElement(SIZE, "UNDULATOR",
-                "The \"UNDULATOR\" element defines a undulator.") {
+                "The \"UNDULATOR\" element defines a undulator or wiggler.") {
 
     itsAttr[NSLICES] = Attributes::makeReal
                           ("NSLICES",

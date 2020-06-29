@@ -1,24 +1,27 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Undulator.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: Undulator
-//   Defines the abstract interface for a drift space.
+// Class Undulator
+// Defines all the methods used by the Undulator element.
+// The Undulator element uses a full wave solver from the
+// the MITHRA library, see <https://github.com/aryafallahi/mithra/>.
 //
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
+// Copyright (c) 2020, Arnau Albà, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
 //
-// $Date: 2000/03/27 09:32:31 $
-// $Author: fci $
+// Implemented as part of the MSc thesis
+// "Start-to-End Modelling of the AWA Micro-Bunched Electron Cooling POP-Experiment"
 //
-// ------------------------------------------------------------------------
-
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbsBeamline/Undulator.h"
+
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Algorithms/PartBunchBase.h"
 
@@ -37,9 +40,6 @@
 #endif
 
 extern Inform *gmsg;
-
-// Class Undulator
-// ------------------------------------------------------------------------
 
 Undulator::Undulator():
     Component(),
@@ -100,11 +100,13 @@ void Undulator::accept(BeamlineVisitor &visitor) const {
     visitor.visitUndulator(*this);
 }
 
+
 void Undulator::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
     endField = startField + getElementLength();
     RefPartBunch_m = bunch;
     startField_m = startField;
 }
+
 
 #ifdef OPAL_FEL
 void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo const& refToLocalCSTrafo) {
@@ -278,6 +280,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     setHasBeenSimlated(true);
 }
 
+
 void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch& bunch, MITHRA::Seed& seed) const {
     Inform msg("MITHRA FW solver ", *gmsg); 
     
@@ -422,34 +425,40 @@ void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch
 
     solver.finalize();
 }
-
 #endif
+
 
 //set the number of slices for map tracking
 void Undulator::setNSlices(const std::size_t& nSlices) { 
     nSlices_m = nSlices;
 }
 
+
 //get the number of slices for map tracking
 std::size_t Undulator::getNSlices() const {
     return nSlices_m;
 }
 
+
 void Undulator::finalise() {
 }
+
 
 bool Undulator::bends() const {
     return false;
 }
+
 
 void Undulator::getDimensions(double &zBegin, double &zEnd) const {
     zBegin = startField_m;
     zEnd = startField_m + getElementLength();
 }
 
+
 ElementBase::ElementType Undulator::getType() const {
     return UNDULATOR;
 }
+
 
 void Undulator::setK(double k) { k_m = k; }
 double Undulator::getK() const { return k_m; }

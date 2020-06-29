@@ -1,25 +1,27 @@
+//
+// Class Undulator
+// Defines all the methods used by the Undulator element.
+// The Undulator element uses a full wave solver from the
+// the MITHRA library, see <https://github.com/aryafallahi/mithra/>.
+//
+// Copyright (c) 2020, Arnau Albà, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// Implemented as part of the MSc thesis
+// "Start-to-End Modelling of the AWA Micro-Bunched Electron Cooling POP-Experiment"
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_Undulator_HH
 #define CLASSIC_Undulator_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: Undulator.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: Undulator
-//   Defines the abstract interface for a drift space.
-//
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:31 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
 
 #include "AbsBeamline/Component.h"
 
@@ -28,16 +30,9 @@
 #include "mithra/classes.h"
 #endif
 
-
-// Class Undulator
-// ------------------------------------------------------------------------
-/// Interface for drift space.
-//  Class Undulator defines the abstract interface for a drift space.
-
 class Undulator: public Component {
 
 public:
-
     /// Constructor with given name.
     explicit Undulator(const std::string &name);
 
@@ -112,10 +107,10 @@ private:
     /// Length of the undulator's fringe field.
     double lFringe_m;
 
-    /// Mithra file
+    /// Mithra file with output information
     std::string fname_m;
 
-    /// Mesh size
+    /// Size of computational domain
     std::vector<double> meshLength_m;
 
     /// Mesh dx, dy, dz
