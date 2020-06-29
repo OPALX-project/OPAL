@@ -161,7 +161,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     mesh.meshLength_ = getMeshLength();
     mesh.meshResolution_ = getMeshResolution();
     mesh.totalTime_ = getTotalTime();
-    mesh.totalDist_ = lFringe_m + undulator.lu_ * undulator.length_;
+    // mesh.totalDist_ = lFringe_m + undulator.lu_ * undulator.length_;  Will be used when the solve() function is removed
     mesh.truncationOrder_ = getTruncationOrder();
     mesh.spaceCharge_ = true;
     mesh.optimizePosition_ = true;
@@ -280,7 +280,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
 
 void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch& bunch, MITHRA::Seed& seed) const {
     Inform msg("MITHRA FW solver ", *gmsg); 
-
+    
     // Remark: This function is almost entirely copied from mithra/src/solver.cpp, but is adapted for OPAL.
 
     solver.initialize();
@@ -308,7 +308,7 @@ void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch
 
     timeval simulationStart;
     gettimeofday(&simulationStart, NULL);
-
+    
     msg << std::fixed << std::setprecision(3);
     msg << "-> Run the time domain simulation ..." << endl;
     double percentTime = 0.0;
