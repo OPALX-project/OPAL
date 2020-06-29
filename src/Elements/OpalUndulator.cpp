@@ -1,27 +1,27 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalUndulator.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalUndulator
-//   The class of OPAL drift spaces.
+// Class OpalUndulator
+// Defines the Undulator/Wiggler element and its attributes.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 2020, Arnau Albà, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
 //
-// $Date: 2000/03/27 09:33:39 $
-// $Author: Andreas Adelmann $
+// Implemented as part of the MSc thesis
+// "Start-to-End Modelling of the AWA Micro-Bunched Electron Cooling POP-Experiment"
 //
-// ------------------------------------------------------------------------
-
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalUndulator.h"
+
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/UndulatorRep.h"
-
-// Class OpalUndulator
-// ------------------------------------------------------------------------
 
 OpalUndulator::OpalUndulator():
     OpalElement(SIZE, "UNDULATOR",
