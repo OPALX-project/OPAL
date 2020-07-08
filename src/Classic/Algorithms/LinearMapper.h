@@ -1,22 +1,54 @@
+//
+// Class LinearMapper
+//   Build a map using a linear map for each element.
+//   Phase space coordinates numbering:
+//   [tab 3 b]
+//   [row]number [&]name        [&]unit  [/row]
+//   [row]0      [&]x           [&]metres [/row]
+//   [row]1      [&]p_x/p_r     [&]1      [/row]
+//   [row]2      [&]y           [&]metres [/row]
+//   [row]3      [&]p_y/p_r     [&]1      [/row]
+//   [row]4      [&]v*delta_t   [&]metres [/row]
+//   [row]5      [&]delta_p/p_r [&]1      [/row]
+//   [/tab][p]
+//   Where $p_r$ is the constant reference momentum defining the reference
+//   frame velocity, $m$ is the rest mass of the particles, and $v$ is the
+//   instantaneous velocity of the particle.
+//   [p]
+//   Other units used:
+//   [tab 2 b]
+//   [row]quantity             [&]unit           [/row]
+//   [row]reference momentum   [&]electron-volts [/row]
+//   [row]velocity             [&]metres/second  [/row]
+//   [row]accelerating voltage [&]volts          [/row]
+//   [row]separator voltage    [&]volts          [/row]
+//   [row]frequencies          [&]hertz          [/row]
+//   [row]phase lags           [&]$2*pi$         [/row]
+//   [/tab][p]
+//   Approximations used:
+//   [ul]
+//   [li] All elements are represented by maps for finite-length elements.
+//   [li] Geometric transformations ignore rotations about transverse axes and
+//        translations along the design orbit and truncate after second order.
+//   [li] Beam-beam elements are two-dimensional, and the second moment <x,y>
+//     of the opposite bunches vanish.
+//   [/ul]
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef MAD_LinearMapper_HH
 #define MAD_LinearMapper_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: LinearMapper.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.3 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: LinearMapper
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/12/31 07:12:38 $
-// $Author: mad $
-//
-// ------------------------------------------------------------------------
 
 #include "Algorithms/AbstractMapper.h"
 #include "FixedAlgebra/LinearMap.h"
@@ -28,42 +60,6 @@ class Euclid3D;
 template <class T, int N> class FTps;
 template <class T, int N> class FVps;
 
-
-// Class LinearMapper
-// ------------------------------------------------------------------------
-/// Build a map using a linear map for each element.
-// Phase space coordinates numbering:
-// [tab 3 b]
-// [row]number [&]name        [&]unit  [/row]
-// [row]0      [&]x           [&]metres [/row]
-// [row]1      [&]p_x/p_r     [&]1      [/row]
-// [row]2      [&]y           [&]metres [/row]
-// [row]3      [&]p_y/p_r     [&]1      [/row]
-// [row]4      [&]v*delta_t   [&]metres [/row]
-// [row]5      [&]delta_p/p_r [&]1      [/row]
-// [/tab][p]
-// Where $p_r$ is the constant reference momentum defining the reference
-// frame velocity, $m$ is the rest mass of the particles, and $v$ is the
-// instantaneous velocity of the particle.
-// [p]
-// Other units used:
-// [tab 2 b]
-// [row]quantity             [&]unit           [/row]
-// [row]reference momentum   [&]electron-volts [/row]
-// [row]velocity             [&]metres/second  [/row]
-// [row]accelerating voltage [&]volts          [/row]
-// [row]separator voltage    [&]volts          [/row]
-// [row]frequencies          [&]hertz          [/row]
-// [row]phase lags           [&]$2*pi$         [/row]
-// [/tab][p]
-// Approximations used:
-// [ul]
-// [li] All elements are represented by maps for finite-length elements.
-// [li] Geometric transformations ignore rotations about transverse axes and
-//   translations along the design orbit and truncate after second order.
-// [li] Beam-beam elements are two-dimensional, and the second moment <x,y>
-//   of the opposite bunches vanish.
-// [/ul]
 
 class LinearMapper: public AbstractMapper {
 
@@ -161,9 +157,6 @@ public:
 
     /// Apply the algorithm to a undulator.
     virtual void visitUndulator(const Undulator & );
-
-    /// Apply the algorithm to an offset beamline object wrapper.
-    virtual void visitAlignWrapper(const AlignWrapper &);
 
     /// Apply the algorithm to a ParallelPlate.
     virtual void visitParallelPlate(const ParallelPlate &);

@@ -698,11 +698,9 @@ bool FM3DMagnetoStaticExtended::getFieldDerivative(const Vector_t &/*R*/, Vector
     return false;
 }
 
-void FM3DMagnetoStaticExtended::getFieldDimensions(double &zBegin, double &zEnd, double &xbegin, double &xend) const {
+void FM3DMagnetoStaticExtended::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
-    xbegin = xbegin_m;
-    xend = xend_m;
 }
 
 void FM3DMagnetoStaticExtended::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {

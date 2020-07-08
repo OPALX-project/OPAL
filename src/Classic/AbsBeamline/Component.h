@@ -166,8 +166,7 @@ public:
     virtual std::string getComponentType() const { return ""; };
 
     /// Return design element.
-    //  If a component is a wrapper, this method returns a pointer to
-    //  its underlying design element, otherwise a pointer to this component.
+    //  If this method returns a pointer to this component.
     //  The default version returns ``this''.
     virtual const ElementBase &getDesign() const;
 

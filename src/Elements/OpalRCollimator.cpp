@@ -1,21 +1,20 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalRCollimator.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalRCollimator
-//   The class of OPAL rectangular collimators.
+// Class OpalRCollimator
+//   The RCOLLIMATOR element.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:40 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalRCollimator.h"
 #include "AbstractObjects/Attribute.h"
 #include "Attributes/Attributes.h"
@@ -24,9 +23,6 @@
 
 #include <boost/regex.hpp>
 #include <cstdlib>
-
-// Class OpalRCollimator
-// ------------------------------------------------------------------------
 
 OpalRCollimator::OpalRCollimator():
     OpalElement(SIZE, "RCOLLIMATOR",
@@ -45,14 +41,14 @@ OpalRCollimator::OpalRCollimator():
 
     registerOwnership();
 
-    setElement((new FlexibleCollimatorRep("RCOLLIMATOR"))->makeAlignWrapper());
+    setElement(new FlexibleCollimatorRep("RCOLLIMATOR"));
 }
 
 
 OpalRCollimator::OpalRCollimator(const std::string &name, OpalRCollimator *parent):
     OpalElement(name, parent),
     parmatint_m(NULL) {
-    setElement((new FlexibleCollimatorRep(name))->makeAlignWrapper());
+    setElement(new FlexibleCollimatorRep(name));
 }
 
 
@@ -67,11 +63,11 @@ OpalRCollimator *OpalRCollimator::clone(const std::string &name) {
 
 
 void OpalRCollimator::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 
     const FlexibleCollimatorRep *coll =
-        dynamic_cast<const FlexibleCollimatorRep *>(base.removeWrappers());
+        dynamic_cast<const FlexibleCollimatorRep *>(&base);
 
     std::string Double("(-?[0-9]+\\.?[0-9]*([Ee][+-]?[0-9]+)?)");
     std::string desc = coll->getDescription();
@@ -92,7 +88,7 @@ void OpalRCollimator::update() {
     OpalElement::update();
 
     FlexibleCollimatorRep *coll =
-        dynamic_cast<FlexibleCollimatorRep *>(getElement()->removeWrappers());
+        dynamic_cast<FlexibleCollimatorRep *>(getElement());
     coll->setElementLength(Attributes::getReal(itsAttr[LENGTH]));
 
     if (getOpalName() != "RCOLLIMATOR") {

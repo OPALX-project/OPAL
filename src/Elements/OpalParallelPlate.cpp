@@ -1,21 +1,20 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalParallelPlate.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalParallelPlate
-//   The class of OPAL  cavities.
+// Class OpalParallelPlate
+//   The ParallelPlate element.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:39 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalParallelPlate.h"
 #include "Structure/BoundaryGeometry.h"
 #include "AbstractObjects/Attribute.h"
@@ -24,9 +23,6 @@
 #include "Physics/Physics.h"
 
 extern Inform *gmsg;
-
-// Class OpalParallelPlate
-// ------------------------------------------------------------------------
 
 OpalParallelPlate::OpalParallelPlate():
     OpalElement(SIZE, "PARALLELPLATE",
@@ -55,7 +51,7 @@ OpalParallelPlate::OpalParallelPlate():
 
     registerOwnership();
 
-    setElement((new ParallelPlateRep("ParallelPlate"))->makeAlignWrapper());
+    setElement(new ParallelPlateRep("ParallelPlate"));
 }
 
 
@@ -63,7 +59,7 @@ OpalParallelPlate::OpalParallelPlate(const std::string &name, OpalParallelPlate 
     OpalElement(name, parent),
     obgeo_m(NULL)
 {
-    setElement((new ParallelPlateRep(name))->makeAlignWrapper());
+    setElement(new ParallelPlateRep(name));
 }
 
 
@@ -77,17 +73,15 @@ OpalParallelPlate *OpalParallelPlate::clone(const std::string &name) {
 }
 
 
-void OpalParallelPlate::fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+void OpalParallelPlate::fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 
-    if(flag != ERROR_FLAG) {
-        const ParallelPlateRep *pplate =
-            dynamic_cast<const ParallelPlateRep *>(base.removeWrappers());
-        attributeRegistry["VOLT"]->setReal(pplate->getAmplitude());
-        attributeRegistry["FREQ"]->setReal(pplate->getFrequency());
-        attributeRegistry["LAG"]->setReal(pplate->getPhase());
-        attributeRegistry["PLENGTH"]->setReal(pplate->getElementLength());
-    }
+    const ParallelPlateRep *pplate =
+        dynamic_cast<const ParallelPlateRep *>(&base);
+    attributeRegistry["VOLT"]->setReal(pplate->getAmplitude());
+    attributeRegistry["FREQ"]->setReal(pplate->getFrequency());
+    attributeRegistry["LAG"]->setReal(pplate->getPhase());
+    attributeRegistry["PLENGTH"]->setReal(pplate->getElementLength());
 }
 
 
@@ -95,7 +89,7 @@ void OpalParallelPlate::update() {
     OpalElement::update();
 
     ParallelPlateRep *pplate =
-        dynamic_cast<ParallelPlateRep *>(getElement()->removeWrappers());
+        dynamic_cast<ParallelPlateRep *>(getElement());
 
     double vPeak  = Attributes::getReal(itsAttr[VOLT]);
     //    double phase  = two_pi * Attributes::getReal(itsAttr[LAG]);

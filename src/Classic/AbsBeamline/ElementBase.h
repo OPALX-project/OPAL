@@ -1,28 +1,67 @@
-#ifndef CLASSIC_ElementBase_HH
-#define CLASSIC_ElementBase_HH 1
-
-// ------------------------------------------------------------------------
-// $RCSfile: ElementBase.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: ElementBase
+// Class ElementBase
 //   The very base class for beam line representation objects.  A beam line
 //   is modelled as a composite structure having a single root object
 //   (the top level beam line), which contains both ``single'' leaf-type
 //   elements (Components), as well as sub-lines (composites).
 //
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
+//   Interface for basic beam line object.
+//   This class defines the abstract interface for all objects which can be
+//   contained in a beam line. ElementBase forms the base class for two distinct
+//   but related hierarchies of objects:
+//   [OL]
+//   [LI]
+//   A set of concrete accelerator element classes, which compose the standard
+//   accelerator component library (SACL).
+//   [LI]
+//   [/OL]
+//   Instances of the concrete classes for single elements are by default
+//   sharable. Instances of beam lines and integrators are by
+//   default non-sharable, but they may be made sharable by a call to
+//   [b]makeSharable()[/b].
+//   [p]
+//   An ElementBase object can return two lengths, which may be different:
+//   [OL]
+//   [LI]
+//   The arc length along the geometry.
+//   [LI]
+//   The design length, often measured along a straight line.
+//   [/OL]
+//   Class ElementBase contains a map of name versus value for user-defined
+//   attributes (see file AbsBeamline/AttributeSet.hh). The map is primarily
+//   intended for processes that require algorithm-specific data in the
+//   accelerator model.
+//   [P]
+//   The class ElementBase has as base class the abstract class RCObject.
+//   Virtual derivation is used to make multiple inheritance possible for
+//   derived concrete classes. ElementBase implements three copy modes:
+//   [OL]
+//   [LI]
+//   Copy by reference: Call RCObject::addReference() and use [b]this[/b].
+//   [LI]
+//   Copy structure: use ElementBase::copyStructure().
+//   During copying of the structure, all sharable items are re-used, while
+//   all non-sharable ones are cloned.
+//   [LI]
+//   Copy by cloning: use ElementBase::clone().
+//   This returns a full deep copy.
+//   [/OL]
 //
-// $Date: 2000/12/16 16:26:43 $
-// $Author: mad $
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// ------------------------------------------------------------------------
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#ifndef CLASSIC_ElementBase_HH
+#define CLASSIC_ElementBase_HH
 
 #include "AbsBeamline/AttributeSet.h"
 #include "BeamlineGeometry/Geometry.h"
@@ -42,75 +81,6 @@ class ConstChannel;
 class ElementImage;
 class ParticleMatterInteractionHandler;
 class WakeFunction;
-
-// Class ElementBase
-// ------------------------------------------------------------------------
-/// Interface for basic beam line object.
-//  This class defines the abstract interface for all objects which can be
-//  contained in a beam line. ElementBase forms the base class for two distinct
-//  but related hierarchies of objects:
-//  [OL]
-//  [LI]
-//  A set of concrete accelerator element classes, which compose the standard
-//  accelerator component library (SACL).
-//  [LI]
-//  A second hierarchy which parallels the SACL, acting as container or
-//  wrapper-like objects.  These latter classes are used to construct
-//  beam-lines composed of referenced ``design'' components, together with
-//  beam-line position dependent extrinsic state (e. g. errors). These wrapper
-//  objects are by default unique.
-//  [/OL]
-//  Also derived from ElementBase there is a class AlignWrapper, which can
-//  be used to store misalignment errors or deliberate displacements.
-//  Any element can have only one AlignWrapper and one FieldWrapper.  To be
-//  processed in the correct order, the AlignWrapper must be the outermost.
-//  [pre]
-//    AlignWrapper --> FieldWrapper --> Element
-//  [/pre]
-//  To ensure this structure, wrapper elements cannot be constructed directly,
-//  one should rather call one of:
-//  [dl]
-//  [dt]makeAlignWrapper()  [dd]make an align wrapper.
-//  [dt]makeFieldWrapper()  [dd]make a field wrapper.
-//  [dt]makeWrappers()      [dd]make both wrappers.
-//  [/dl]
-//  An existing wrapper can be removed by
-//  [dl]
-//  [dt]removeAlignWrapper()[dd]remove align wrapper.
-//  [dt]removeFieldWrapper()[dd]remove field wrapper.
-//  [/dl]
-//  Instances of the concrete classes for single elements are by default
-//  sharable.  Instances of beam lines, wrappers and integrators are by
-//  default non-sharable, but they may be made sharable by a call to
-//  [b]makeSharable()[/b].
-//  [p]
-//  An ElementBase object can return two lengths, which may be different:
-//  [OL]
-//  [LI]
-//  The arc length along the geometry.
-//  [LI]
-//  The design length, often measured along a straight line.
-//  [/OL]
-//  Class ElementBase contains a map of name versus value for user-defined
-//  attributes (see file AbsBeamline/AttributeSet.hh).  The map is primarily
-//  intended for processes that require algorithm-specific data in the
-//  accelerator model.
-//  [P]
-//  The class ElementBase has as base class the abstract class RCObject.
-//  Virtual derivation is used to make multiple inheritance possible for
-//  derived concrete classes. ElementBase implements three copy modes:
-//  [OL]
-//  [LI]
-//  Copy by reference: Call RCObject::addReference() and use [b]this[/b].
-//  [LI]
-//  Copy structure: use ElementBase::copyStructure().
-//  During copying of the structure, all sharable items are re-used, while
-//  all non-sharable ones are cloned.
-//  [LI]
-//  Copy by cloning: use ElementBase::clone().
-//  This returns a full deep copy.
-//  [/OL]
-
 
 class ElementBase: public RCObject {
 
@@ -135,15 +105,12 @@ public:
                      , CONIC_ELLIPTICAL
     };
 
-    enum ElementType {ALIGNWRAPPER
-                    , BEAMBEAM
+    enum ElementType {BEAMBEAM
                     , BEAMLINE
                     , BEAMSTRIPPING
                     , CCOLLIMATOR
                     , CORRECTOR
-                    , CORRECTORWRAPPER
                     , CYCLOTRON
-                    , CYCLOTRONWRAPPER
                     , DEGRADER
                     , DIAGNOSTIC
 		    , DRIFT
@@ -155,20 +122,17 @@ public:
                     , MPSPLITINTEGRATOR
                     , MULTIPOLE
                     , MULTIPOLET
-                    , MULTIPOLEWRAPPER
                     , OFFSET
                     , PARALLELPLATE
                     , PATCH
                     , PROBE
                     , RBEND
                     , RBEND3D
-                    , RBENDWRAPPER
                     , RFCAVITY
                     , RFQUADRUPOLE
                     , RING
                     , SBEND3D
                     , SBEND
-                    , SBENDWRAPPER
                     , SEPARATOR
                     , SEPTUM
                     , SOLENOID
@@ -329,52 +293,6 @@ public:
     //  The whole structure depending on [b]this[/b] is marked as sharable.
     //  After this call a [b]copyStructure()[/b] call reuses the element.
     virtual void makeSharable();
-
-    /// Allow misalignment.
-    //  Build an AlignWrapper pointing to the element and return a pointer to
-    //  that wrapper.  If the element cannot be misaligned, or already has an
-    //  AlignWrapper, return a pointer to the element.
-    //  Wrappers are non-sharable, unless otherwise defined.
-    virtual ElementBase *makeAlignWrapper();
-
-    /// Allow field errors.
-    //  Build a FieldWrapper pointing to the element and return a pointer to
-    //  that wrapper.  If the element cannot have field errors, or already has
-    //  a FieldWrapper, return a pointer to the element.
-    //  Wrappers are non-sharable, unless otherwise defined.
-    virtual ElementBase *makeFieldWrapper();
-
-    /// Allow errors.
-    //  Equivalent to the calls
-    //  [pre]
-    //    makeFieldWrapper()->makeAlignWrapper()
-    //  [/pre].
-    //  Wrappers are non-sharable, unless otherwise defined.
-    virtual ElementBase *makeWrappers();
-
-    /// Remove align wrapper.
-    //  Remove the align wrapper.
-    virtual ElementBase *removeAlignWrapper();
-
-    /// Remove align wrapper.
-    //  Remove the align wrapper.
-    virtual const ElementBase *removeAlignWrapper() const ;
-
-    /// Remove field wrapper.
-    //  Remove the field wrapper.
-    virtual ElementBase *removeFieldWrapper();
-
-    /// Remove field wrapper.
-    //  Remove the field wrapper for constant object.
-    virtual const ElementBase *removeFieldWrapper() const;
-
-    /// Return the design element.
-    //  Return [b]this[/b], if the element is not wrapped.
-    virtual ElementBase *removeWrappers();
-
-    /// Return the design element.
-    //  Return [b]this[/b], if the element is not wrapped.
-    virtual const  ElementBase *removeWrappers() const ;
 
     /// Update element.
     //  This method stores all attributes contained in the AttributeSet to

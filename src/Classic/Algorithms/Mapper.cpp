@@ -1,26 +1,67 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Mapper.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.3 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: Mapper
-//   The visitor class for building a VpsMap for a beamline
+// Class Mapper
+//   Build transfer map. The visitor class for building a VpsMap for a beamline
 //   using a thin-lens approximation for all elements.
+//   A visitor class implementing the default behaviour for all
+//   visitors capable of tracking a transfer map through a beam line.
+//   It implements some default behaviour for such visitors.
+//   [P]
+//   Phase space coordinates (in this order):
+//   [DL]
+//   [DT]x:[DD]
+//     horizontal displacement (metres).
+//   [DT]p_x/p_r:[DD]
+//     horizontal canonical momentum (no dimension).
+//   [DT]y:[DD]
+//     vertical displacement (metres).
+//   [DT]p_y/p_r:[DD]
+//     vertical canonical momentum (no dimension).
+//   [DT]delta_p/p_r:[DD]
+//     relative momentum error (no dimension).
+//   [DT]v*delta_t:[DD]
+//     time difference delta_t w.r.t. the reference frame which moves with
+//     uniform velocity
+//   [P]
+//     v_r = c*beta_r = p_r/m
+//   [P]
+//     along the design orbit, multiplied by the instantaneous velocity v of
+//     the particle (metres).
+//   [/DL]
+//   Where
+//   [DL]
+//   [DT]p_r:[DD]
+//     is the constant reference momentum defining the reference frame velocity.
+//   [DT]m:[DD]
+//     is the rest mass of the particles.
+//   [/DL]
+//   Other units used:
+//   [DL]
+//   [DT]reference momentum:[DD]
+//     electron-volts.
+//   [DT]accelerating voltage:[DD]
+//     volts.
+//   [DT]separator voltage:[DD]
+//     volts.
+//   [DT]frequencies:[DD]
+//     hertz.
+//   [DT]phase lags:[DD]
+//     multiples of (2*pi).
+//   [/DL]
 //
-// ------------------------------------------------------------------------
-// Class category: Algorithms
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/05/03 08:16:05 $
-// $Author: mad $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Algorithms/Mapper.h"
-#include "AbsBeamline/AlignWrapper.h"
 #include "Fields/BMultipoleField.h"
 #include "FixedAlgebra/FTpsMath.h"
 #include "FixedAlgebra/LinearMap.h"
@@ -30,9 +71,6 @@
 typedef FTps<double, 6> Series;
 typedef FVps<double, 6> Map;
 
-
-// Class Mapper
-// ------------------------------------------------------------------------
 
 Mapper::Mapper(const Beamline &beamline, const PartData &reference,
                bool backBeam, bool backTrack):
@@ -84,28 +122,6 @@ void Mapper::visitPatch(const Patch &patch) {
     Euclid3D transform = patch.getPatch();
     if(back_path) transform = Inverse(transform);
     applyTransform(transform);
-}
-
-
-void Mapper::visitAlignWrapper(const AlignWrapper &wrap) {
-    if(wrap.offset().isIdentity()) {
-        wrap.getElement()->accept(*this);
-    } else {
-        Euclid3D e1 = wrap.getEntranceTransform();
-        Euclid3D e2 = wrap.getExitTransform();
-
-        if(back_path) {
-            // Tracking right to left.
-            applyTransform(Inverse(e2));
-            wrap.getElement()->accept(*this);
-            applyTransform(Inverse(e1));
-        } else {
-            // Tracking left to right.
-            applyTransform(e1);
-            wrap.getElement()->accept(*this);
-            applyTransform(e2);
-        }
-    }
 }
 
 

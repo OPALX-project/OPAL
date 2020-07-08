@@ -11,6 +11,7 @@ set (_SRCS
     StaticElectricField.cpp
     StaticMagneticField.cpp
     Fieldmap.cpp
+    FM3DH5BlockBase.cpp
     FM3DH5Block.cpp
     FM3DH5Block_nonscale.cpp
     FM3DMagnetoStaticH5Block.cpp
@@ -81,6 +82,7 @@ set (HDRS
     FM2DElectroStatic.h
     FM2DMagnetoStatic.h
     FM3DDynamic.h
+    FM3DH5BlockBase.h
     FM3DH5Block.h
     FM3DH5Block_nonscale.h
     FM3DMagnetoStaticH5Block.h

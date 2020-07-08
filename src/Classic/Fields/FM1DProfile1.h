@@ -27,9 +27,7 @@ public:
                                        double &exitParameter3);
     virtual double getFieldGap();
     virtual void getFieldDimensions(double &zBegin,
-                                    double &zEnd,
-                                    double &rBegin,
-                                    double &rEnd) const;
+                                    double &zEnd) const;
     virtual void getFieldDimensions(double &xIni,
                                     double &xFinal,
                                     double &yIni,

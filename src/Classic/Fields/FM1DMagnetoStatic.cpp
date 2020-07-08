@@ -101,12 +101,9 @@ bool FM1DMagnetoStatic::getFieldDerivative(const Vector_t &R,
     return false;
 }
 
-void FM1DMagnetoStatic::getFieldDimensions(double &zBegin, double &zEnd,
-        double &rBegin, double &rEnd) const {
+void FM1DMagnetoStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zBegin_m;
     zEnd = zEnd_m;
-    rBegin = rBegin_m;
-    rEnd = rEnd_m;
 }
 void FM1DMagnetoStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
                                            double &/*yIni*/, double &/*yFinal*/,

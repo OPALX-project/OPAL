@@ -56,7 +56,7 @@ class Tanh : public EndFieldModel {
     Tanh(double x0, double lambda, int max_index);
 
     /** Default constructor (initialises x0 and lambda to 0) */
-    Tanh() : _x0(0.), _lambda(0.) {setTanhDiffIndices(10);}
+    Tanh() : _x0(0.), _lambda(0.) {setTanhDiffIndices(12);}
 
     /** Copy constructor */
     Tanh(const Tanh& rhs) : _x0(rhs._x0), _lambda(rhs._lambda) {}

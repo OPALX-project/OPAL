@@ -32,7 +32,6 @@
 #include "AbstractObjects/Expressions.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
-#include "ComponentWrappers/MultipoleWrapper.h"
 #include "Expressions/SValue.h"
 #include "Expressions/SRefExpr.h"
 #include "Physics/Physics.h"
@@ -78,14 +77,14 @@ OpalMultipoleTCurvedConstRadius::OpalMultipoleTCurvedConstRadius():
     registerOwnership();
 
 
-    setElement((new MultipoleTCurvedConstRadius("MULTIPOLETCURVEDCONSTRADIUS"))->makeWrappers());
+    setElement(new MultipoleTCurvedConstRadius("MULTIPOLETCURVEDCONSTRADIUS"));
 }
 
 
 OpalMultipoleTCurvedConstRadius::OpalMultipoleTCurvedConstRadius(const std::string &name,
                                                                  OpalMultipoleTCurvedConstRadius *parent):
     OpalElement(name, parent) {
-    setElement((new MultipoleTCurvedConstRadius(name))->makeWrappers());
+    setElement(new MultipoleTCurvedConstRadius(name));
 }
 
 
@@ -104,10 +103,10 @@ void OpalMultipoleTCurvedConstRadius::print(std::ostream &os) const {
 
 
 void OpalMultipoleTCurvedConstRadius::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
     const MultipoleTCurvedConstRadius *multT =
-        dynamic_cast<const MultipoleTCurvedConstRadius*>(base.removeAlignWrapper());
+        dynamic_cast<const MultipoleTCurvedConstRadius*>(&base);
 
     for(unsigned int order = 1; order <= multT->getTransMaxOrder(); order++) {
         std::ostringstream ss;
@@ -136,7 +135,7 @@ void OpalMultipoleTCurvedConstRadius::update() {
 
     // Magnet length.
     MultipoleTCurvedConstRadius *multT =
-    dynamic_cast<MultipoleTCurvedConstRadius*>(getElement()->removeWrappers());
+    dynamic_cast<MultipoleTCurvedConstRadius*>(getElement());
     double length = Attributes::getReal(itsAttr[LENGTH]);
     double angle = Attributes::getReal(itsAttr[ANGLE]);
     double boundingBoxLength = Attributes::getReal(itsAttr[BBLENGTH]);
@@ -178,5 +177,5 @@ void OpalMultipoleTCurvedConstRadius::update() {
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(multT);
 
-    setElement(multT->makeWrappers());
+    setElement(multT);
 }

@@ -1,28 +1,24 @@
-// ------------------------------------------------------------------------
-// $RCSfile: CorrectorRep.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: CorrectorRep
-//   Defines a concrete representation for an orbit corrector acting on
-//   both planes.
+// Class CorrectorRep
+//   Representation of a closed orbit corrector.
+//   The base class acts on both planes.
 //
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:32:33 $
-// $Author: fci $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "BeamlineCore/CorrectorRep.h"
 #include "AbsBeamline/ElementImage.h"
 #include "Channels/IndirectChannel.h"
-#include "ComponentWrappers/CorrectorWrapper.h"
 
 
 // Attribute access table.
@@ -55,9 +51,6 @@ namespace {
     };
 }
 
-
-// Class CorrectorRep
-// ------------------------------------------------------------------------
 
 CorrectorRep::CorrectorRep():
     Corrector(), geometry(), field(), active(true)
@@ -148,14 +141,6 @@ void CorrectorRep::setBx(double Bx) {
 void CorrectorRep::setBy(double By) {
     field.setBy(By);
 }
-
-
-ElementBase *CorrectorRep::makeFieldWrapper() {
-    ElementBase *wrap = new CorrectorWrapper(this);
-    wrap->setName(getName());
-    return wrap;
-}
-
 
 void CorrectorRep::setActive(bool flag) {
     active = flag;

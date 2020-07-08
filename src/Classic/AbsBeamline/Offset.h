@@ -209,7 +209,7 @@ class Offset : public Component {
     Vector_t _end_direction;
     bool     _is_local;
     // The offset's geometry.
-    Euclid3DGeometry* geometry_m;
+    Euclid3DGeometry* geometry_m = nullptr;
     static const double lengthUnits_m;
 };
 

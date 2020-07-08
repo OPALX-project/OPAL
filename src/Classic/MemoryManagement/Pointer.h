@@ -135,9 +135,11 @@ inline Pointer<Object> &Pointer<Object>::operator=(const Pointer &rhs) {
 
 template < class Object >
 inline Pointer<Object> &Pointer<Object>::operator=(Object *obj) {
-    if(object  &&  object->removeReference() <= 0) delete object;
-    object = obj;
-    if(object) object->addReference();
+    if(object != obj) {
+        if(object  &&  object->removeReference() <= 0) delete object;
+        object = obj;
+        if(object) object->addReference();
+    }
     return *this;
 }
 

@@ -101,12 +101,9 @@ bool FM1DElectroStatic::getFieldDerivative(const Vector_t &R,
     return false;
 }
 
-void FM1DElectroStatic::getFieldDimensions(double &zBegin, double &zEnd,
-                                           double &rBegin, double &rEnd) const {
+void FM1DElectroStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zBegin_m;
     zEnd = zEnd_m;
-    rBegin = rBegin_m;
-    rEnd = rEnd_m;
 }
 void FM1DElectroStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
                                            double &/*yIni*/, double &/*yFinal*/,

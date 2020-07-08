@@ -74,6 +74,7 @@ double Tanh::function(double x, int n) const {
 }
 
 void Tanh::setTanhDiffIndices(size_t n) {
+  _tdi.reserve(n+1);
   if (_tdi.size() == 0) {
     _tdi.push_back(std::vector< std::vector<int> >(1, std::vector<int>(2)));
     _tdi[0][0][0] = 1;  // 1*tanh(x) - third index is redundant
@@ -82,17 +83,16 @@ void Tanh::setTanhDiffIndices(size_t n) {
   for (size_t i = _tdi.size(); i < n+1; ++i) {
     _tdi.push_back(std::vector< std::vector<int> >());
     for (size_t j = 0; j < _tdi[i-1].size(); ++j) {
-      if (_tdi[i-1][j][1] != 0) {
+      int value = _tdi[i-1][j][1];
+      if (value != 0) {
         std::vector<int> new_vec(_tdi[i-1][j]);
-        new_vec[0] *= _tdi[i-1][j][1];
+        new_vec[0] *= value;
         new_vec[1] -= 1;
         _tdi[i].push_back(new_vec);
-      }
-      if (_tdi[i-1][j][1] != 0) {
-        std::vector<int> new_vec(_tdi[i-1][j]);
-        new_vec[0] *= -_tdi[i-1][j][1];
-        new_vec[1] += 1;
-        _tdi[i].push_back(new_vec);
+        std::vector<int> new_vec2(_tdi[i-1][j]);
+        new_vec2[0] *= -value;
+        new_vec2[1] += 1;
+        _tdi[i].push_back(new_vec2);
       }
     }
     _tdi[i] = CompactVector(_tdi[i]);

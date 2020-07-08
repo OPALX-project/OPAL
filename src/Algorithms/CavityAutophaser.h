@@ -28,8 +28,6 @@ private:
                  const double dt,
                  const double phase,
                  std::ofstream *out = NULL) const;
-    double getEnergyMeV(const Vector_t &P);
-    double getMomentum(double kineticEnergyMeV);
 
     const PartData &itsReference_m;
     std::shared_ptr<Component> itsCavity_m;
@@ -38,15 +36,5 @@ private:
     Vector_t initialP_m;
 
 };
-
-inline
-double CavityAutophaser::getEnergyMeV(const Vector_t &P) {
-    return itsReference_m.getM() * 1e-6 * (sqrt(dot(P,P) + 1) - 1);
-}
-
-inline
-double CavityAutophaser::getMomentum(double kineticEnergyMeV) {
-    return sqrt(std::pow(kineticEnergyMeV / (itsReference_m.getM() * 1e-6) + 1, 2) - 1);
-}
 
 #endif

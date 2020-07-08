@@ -101,8 +101,8 @@ void RBend3D::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
         fieldmap_m->getInfo(&msg);
         goOnline(0.0);
 
-        double zBegin = 0.0, zEnd = 0.0, rBegin = 0.0, rEnd = 0.0;
-        fieldmap_m->getFieldDimensions(zBegin, zEnd, rBegin, rEnd);
+        double zBegin = 0.0, zEnd = 0.0;
+        fieldmap_m->getFieldDimensions(zBegin, zEnd);
 
         if (length_m == 0.0) {
             chordLength_m = 0.0;

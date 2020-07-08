@@ -1,35 +1,29 @@
+//
+// Class SBendRep
+//   Representation for a sector bend magnet.
+//   A sector bend magnet has a planar arc geometry about which its
+//   multipole components are specified.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_SBendRep_HH
 #define CLASSIC_SBendRep_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: SBendRep.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1.2.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: SBendRep
-//
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
-//
-// $Date: 2004/11/12 18:57:54 $
-// $Author: adelmann $
-//
-// ------------------------------------------------------------------------
 
 #include "AbsBeamline/SBend.h"
 #include "BeamlineGeometry/PlanarArcGeometry.h"
 #include "Fields/BMultipoleField.h"
 
-
-// Class SBendRep
-// ------------------------------------------------------------------------
-/// Representation for a sector bend magnet.
-//  A sector bend magnet has a planar arc geometry about which its
-//  multipole components are specified.
 
 class SBendRep: public SBend {
 
@@ -84,11 +78,6 @@ public:
     /// Set field.
     //  Assign the multipole expansion.
     virtual void setField(const BMultipoleField &field);
-
-    /// Allow field errors.
-    //  Build a FieldWrapper pointing to the bend and return a pointer to
-    //  that wrapper.
-    virtual ElementBase *makeFieldWrapper();
 
     /// Get pole entry face rotation.
     //  Return the rotation of the entry pole face with respect to the x-axis.

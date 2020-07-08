@@ -9,8 +9,7 @@ public:
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
     virtual bool getFieldDerivative(const Vector_t &R, Vector_t &E,
                                     Vector_t &B, const DiffDirection &dir) const;
-    virtual void getFieldDimensions(double &zBegin, double &zEnd,
-                                    double &rBegin, double &rEnd) const;
+    virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
     virtual void getFieldDimensions(double &xIni, double &xFinal,
                                     double &yIni, double &yFinal,
                                     double &zIni, double &zFinal) const;
@@ -83,3 +82,11 @@ inline bool FM1DDynamic_fast::isInside(const Vector_t &r) const
 }
 
 #endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c++
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

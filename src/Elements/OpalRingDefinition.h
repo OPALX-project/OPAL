@@ -68,7 +68,7 @@ class OpalRingDefinition: public OpalElement {
     virtual OpalRingDefinition *clone(const std::string &name);
 
     /** Calls fillRegisteredAttributes on the OpalElement */
-    void fillRegisteredAttributes(const ElementBase &base, ValueFlag flag);
+    void fillRegisteredAttributes(const ElementBase &base);
 
     /** Receive parameters from the parser and hand them off to the Ring */
     void update();

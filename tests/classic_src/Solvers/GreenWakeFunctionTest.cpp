@@ -25,10 +25,10 @@ TEST(GreenWakeFunctionTest, TestApply)
     bool const_length = true;
     std::string fname = "";
 
-    std::vector<double> finalWakeValues   = {1.61757e+10,  2.78525e+19};
-    std::vector<double> finalEnergyValues = {-0.00125303, -2.15739e+06};
+    std::vector<double> finalWakeValues   = { 1.61757e+10,  2.78525e+19};
+    std::vector<double> finalEnergyValues = {-2.446072e-5, -42118.09};
     std::vector<double> relativeErrorWake   = {1e+6, 1e+15};
-    std::vector<double> relativeErrorEnergy = {1e-7, 1e+2};
+    std::vector<double> relativeErrorEnergy = {1e-9, 1};
 
     for (int acmode : acmodes) {
         GreenWakeFunction gwf("opal", nullptr, filters, nbin, Z0, radius, sigma, acmode, tau, 0, const_length, fname);
@@ -37,7 +37,7 @@ TEST(GreenWakeFunctionTest, TestApply)
         // determine K and charge
         double charge = 0.8e-9; // nC
         double K = 0.20536314319923724e-9; //K normalizes nC data in lambda.h?
-        gwf.NBin_m = 294;
+        gwf.NBin_m = 10;
 
         std::cout << "# Z0 = "        << gwf.Z0_m        << std::endl
                   << "# radius = "    << gwf.radius_m    << std::endl

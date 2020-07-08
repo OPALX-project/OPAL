@@ -1,22 +1,25 @@
+//
+// Class Sequence
+//   The SEQUENCE definition.
+//   A Sequence contains a CLASSIC TBeamline<SequenceMember> which represents
+//   the sequence of elements in the line and their positions.  The sequence
+//   definition is parsed in collaboration with a SequenceParser.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_Sequence_HH
 #define OPAL_Sequence_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: Sequence.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: Sequence
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:33:43 $
-// $Author: Andreas Adelmann $
-//
-// ------------------------------------------------------------------------
 
 #include "AbstractObjects/BeamSequence.h"
 #include "AbsBeamline/ElementBase.h"
@@ -26,14 +29,6 @@
 #include <list>
 
 class TokenStream;
-
-
-// Class Sequence
-// ------------------------------------------------------------------------
-/// The SEQUENCE definition.
-//  A Sequence contains a CLASSIC TBeamline<SequenceMember> which represents
-//  the sequence of elements in the line and their positions.  The sequence
-//  definition is parsed in collaboration with a SequenceParser.
 
 class Sequence: public BeamSequence {
 

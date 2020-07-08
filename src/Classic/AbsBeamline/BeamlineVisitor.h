@@ -1,38 +1,44 @@
+//
+// Class BeamlineVisitor
+//   The abstract class BeamlineVisitor is the base class for all visitors
+//   (algorithms) that can iterator over a beam line representation.
+//   A BeamlineVisitor applies itself to the representation via the
+//   ``Visitor'' pattern, see
+//   [p]
+//   E. Gamma, R. Helm, R. Johnson, and J. Vlissides,
+//   [BR]
+//   Design Patterns, Elements of Reusable Object-Oriented Software.
+//   [p]
+//   By using only pure abstract classes as an interface between the
+//   BeamlineVisitor and the beam line representation,
+//   we decouple the former from the implementation details of the latter.
+//   [p]
+//   The interface is defined in such a way that a visitor cannot modify the
+//   structure of a beam line, but it can assign special data like misalignments
+//   or integrators without problems.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_BeamlineVisitor_HH
 #define CLASSIC_BeamlineVisitor_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: BeamlineVisitor.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: BeamlineVisitor
-//   Defines the abstract interface for a BeamlineVisitor.
-//
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:31 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
 
 // Generic element classes interacting with a BeamlineVisitor.
 class Component;
 
 // Beam line structure classes.
 class Beamline;
-class AlignWrapper;
-class CorrectorWrapper;
 class FlaggedElmPtr;
-class MultipoleWrapper;
-class RBendWrapper;
-class SBendWrapper;
-class CyclotronWrapper;
 
 // Specific element classes interacting with a BeamlineVisitor
 class BeamBeam;
@@ -77,26 +83,6 @@ class VerticalFFAMagnet;
 
 // Integrators.
 class Integrator;
-
-// Class BeamlineVisitor
-// ------------------------------------------------------------------------
-/// Abstract algorithm.
-//  The abstract class BeamlineVisitor is the base class for all visitors
-//  (algorithms) that can iterator over a beam line representation.
-//  A BeamlineVisitor applies itself to the representation via the
-//  ``Visitor'' pattern, see
-//  [p]
-//  E. Gamma, R. Helm, R. Johnson, and J. Vlissides,
-//  [BR]
-//  Design Patterns, Elements of Reusable Object-Oriented Software.
-//  [p]
-//  By using only pure abstract classes as an interface between the
-//  BeamlineVisitor and the beam line representation,
-//  we decouple the former from the implementation details of the latter.
-//  [p]
-//  The interface is defined in such a way that a visitor cannot modify the
-//  structure of a beam line, but it can assign special data like misalignments
-//  or integrators without problems.
 
 class BeamlineVisitor {
 
@@ -225,24 +211,6 @@ public:
 
     /// Apply the algorithm to a FlaggedElmPtr.
     virtual void visitFlaggedElmPtr(const FlaggedElmPtr &) = 0;
-
-    /// Apply the algorithm to an align wrapper.
-    virtual void visitAlignWrapper(const AlignWrapper &) = 0;
-
-    /// Apply the algorithm to an corrector wrapper.
-    virtual void visitCorrectorWrapper(const CorrectorWrapper &) = 0;
-
-    /// Apply the algorithm to an corrector wrapper.
-    virtual void visitCyclotronWrapper(const CyclotronWrapper &) = 0;
-
-    /// Apply the algorithm to an multipole wrapper.
-    virtual void visitMultipoleWrapper(const MultipoleWrapper &) = 0;
-
-    /// Apply the algorithm to an RBend wrapper.
-    virtual void visitRBendWrapper(const RBendWrapper &) = 0;
-
-    /// Apply the algorithm to an SBend wrapper.
-    virtual void visitSBendWrapper(const SBendWrapper &) = 0;
 
     /// Apply the algorithm to an ParallelPlate.
     virtual void visitParallelPlate(const ParallelPlate &) = 0;

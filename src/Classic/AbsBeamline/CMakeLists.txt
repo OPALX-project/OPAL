@@ -2,7 +2,6 @@ add_subdirectory(EndFieldModel)
 add_subdirectory(MultipoleTFunctions)
 
 set (_SRCS
-    AlignWrapper.cpp
     AttributeSet.cpp
     BeamBeam.cpp
     BeamlineVisitor.cpp
@@ -61,7 +60,6 @@ include_directories (
 add_opal_sources (${_SRCS})
 
 set (HDRS
-    AlignWrapper.h
     AttributeSet.h
     BeamBeam.h
     BeamlineVisitor.h

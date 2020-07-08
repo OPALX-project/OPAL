@@ -1,21 +1,20 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalSeptum.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalSeptum
-//   The class of OPAL Septums.
+// Class OpalSeptum
+//   The Septum element.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2009/09/21 10:06:06 $
-// $Author: bi $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalSeptum.h"
 #include "AbstractObjects/Attribute.h"
 #include "Attributes/Attributes.h"
@@ -23,9 +22,6 @@
 #include "Structure/OpalWake.h"
 #include "Physics/Physics.h"
 
-
-// Class OpalSeptum
-// ------------------------------------------------------------------------
 
 OpalSeptum::OpalSeptum():
     OpalElement(SIZE, "SEPTUM",
@@ -54,14 +50,14 @@ OpalSeptum::OpalSeptum():
 
     registerOwnership();
 
-    setElement((new SeptumRep("SEPTUM"))->makeAlignWrapper());
+    setElement(new SeptumRep("SEPTUM"));
 }
 
 
 OpalSeptum::OpalSeptum(const std::string &name, OpalSeptum *parent):
     OpalElement(name, parent),
     owk_m(NULL) {
-    setElement((new SeptumRep(name))->makeAlignWrapper());
+    setElement(new SeptumRep(name));
 }
 
 
@@ -76,8 +72,8 @@ OpalSeptum *OpalSeptum::clone(const std::string &name) {
 }
 
 
-void OpalSeptum::fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+void OpalSeptum::fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 
 }
 
@@ -85,7 +81,7 @@ void OpalSeptum::fillRegisteredAttributes(const ElementBase &base, ValueFlag fla
 void OpalSeptum::update() {
     OpalElement::update();
 
-    SeptumRep *sept = dynamic_cast<SeptumRep *>(getElement()->removeWrappers());
+    SeptumRep *sept = dynamic_cast<SeptumRep *>(getElement());
 
     const double mm2m = 0.001;
     double xstart = mm2m * Attributes::getReal(itsAttr[XSTART]);

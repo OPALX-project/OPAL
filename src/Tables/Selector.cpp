@@ -1,23 +1,21 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Selector.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: Selector
-//   This class sets selected selection flags in a USE object.
+// Class Selector
+//   Set selection flags for a given range in a beam line.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2001/08/13 15:25:22 $
-// $Author: jowett $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Tables/Selector.h"
-#include "AbsBeamline/AlignWrapper.h"
 #include "AbstractObjects/Attribute.h"
 #include "AbstractObjects/OpalData.h"
 #include "AbstractObjects/Object.h"
@@ -28,9 +26,6 @@
 #include "Utilities/RegularExpression.h"
 #include <iostream>
 
-
-// Class Selector
-// ------------------------------------------------------------------------
 
 Selector::Selector(const Beamline &bl, const RangeRep &range,
                    const std::string &clsName, const std::string &typName,

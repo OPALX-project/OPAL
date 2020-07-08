@@ -67,13 +67,13 @@ OpalStripper::OpalStripper():
 
     registerOwnership();
 
-    setElement((new StripperRep("STRIPPER"))->makeAlignWrapper());
+    setElement(new StripperRep("STRIPPER"));
 }
 
 
 OpalStripper::OpalStripper(const std::string &name, OpalStripper *parent):
     OpalElement(name, parent) {
-    setElement((new StripperRep(name))->makeAlignWrapper());
+    setElement(new StripperRep(name));
 }
 
 
@@ -86,8 +86,8 @@ OpalStripper *OpalStripper::clone(const std::string &name) {
 }
 
 
-void OpalStripper::fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+void OpalStripper::fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 
 }
 
@@ -95,7 +95,7 @@ void OpalStripper::fillRegisteredAttributes(const ElementBase &base, ValueFlag f
 void OpalStripper::update() {
     OpalElement::update();
 
-    StripperRep *strp = dynamic_cast<StripperRep *>(getElement()->removeWrappers());
+    StripperRep *strp = dynamic_cast<StripperRep *>(getElement());
 
     const double mm2m = 0.001;
     double xstart   = mm2m * Attributes::getReal(itsAttr[XSTART]);

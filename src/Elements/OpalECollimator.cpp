@@ -1,21 +1,20 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalCollimator.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalECollimator
-//   The class of OPAL elliptic collimators.
+// Class OpalECollimator
+//   The ECOLLIMATOR element.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:39 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalECollimator.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/FlexibleCollimatorRep.h"
@@ -23,9 +22,6 @@
 
 #include <boost/regex.hpp>
 #include <cstdlib>
-
-// Class OpalECollimator
-// ------------------------------------------------------------------------
 
 OpalECollimator::OpalECollimator():
     OpalElement(SIZE, "ECOLLIMATOR",
@@ -45,14 +41,14 @@ OpalECollimator::OpalECollimator():
 
     registerOwnership();
 
-    setElement((new FlexibleCollimatorRep("ECOLLIMATOR"))->makeAlignWrapper());
+    setElement(new FlexibleCollimatorRep("ECOLLIMATOR"));
 }
 
 
 OpalECollimator::OpalECollimator(const std::string &name, OpalECollimator *parent):
     OpalElement(name, parent),
     parmatint_m(NULL) {
-    setElement((new FlexibleCollimatorRep(name))->makeAlignWrapper());
+    setElement(new FlexibleCollimatorRep(name));
 }
 
 
@@ -67,11 +63,11 @@ OpalECollimator *OpalECollimator::clone(const std::string &name) {
 }
 
 
-void OpalECollimator::fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+void OpalECollimator::fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 
     const FlexibleCollimatorRep *coll =
-        dynamic_cast<const FlexibleCollimatorRep *>(base.removeWrappers());
+        dynamic_cast<const FlexibleCollimatorRep *>(&base);
     std::string Double("(-?[0-9]+\\.?[0-9]*([Ee][+-]?[0-9]+)?)");
     std::string desc = coll->getDescription();
 
@@ -91,7 +87,7 @@ void OpalECollimator::update() {
     OpalElement::update();
 
     FlexibleCollimatorRep *coll =
-        dynamic_cast<FlexibleCollimatorRep *>(getElement()->removeWrappers());
+        dynamic_cast<FlexibleCollimatorRep *>(getElement());
     double length = Attributes::getReal(itsAttr[LENGTH]);
     coll->setElementLength(length);
 

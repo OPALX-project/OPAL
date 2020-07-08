@@ -291,7 +291,6 @@ private:
     void checkIfEmitted();
     void checkParticleNumber(size_t &numberOfParticles);
     void chooseInputMomentumUnits(InputMomentumUnitsT::InputMomentumUnitsT inputMoUnits);
-    double converteVToBetaGamma(double valueIneV, double massIneV);
     size_t getNumberOfParticlesInFile(std::ifstream &inputFile);
 
     class BinomialBehaviorSplitter {

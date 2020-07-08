@@ -1,28 +1,24 @@
-// ------------------------------------------------------------------------
-// $RCSfile: MultipoleRep.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: MultipoleRep
-//   Defines a concrete representation for a general multipole.
+// Class MultipoleRep
+//   Representation for a general multipole.
 //
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2001/08/24 19:31:20 $
-// $Author: jsberg $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "BeamlineCore/MultipoleRep.h"
 #include "AbsBeamline/ElementImage.h"
 #include "Channels/IndexedChannel.h"
 #include "Channels/IndirectChannel.h"
-#include "ComponentWrappers/MultipoleWrapper.h"
 #include <cctype>
 
 // Attribute access table.
@@ -45,9 +41,6 @@ namespace {
     };
 }
 
-
-// Class MultipoleRep
-// ------------------------------------------------------------------------
 
 MultipoleRep::MultipoleRep():
     Multipole(),
@@ -171,11 +164,4 @@ const BMultipoleField &MultipoleRep::getField() const {
 
 void MultipoleRep::setField(const BMultipoleField &aField) {
     field = aField;
-}
-
-
-ElementBase *MultipoleRep::makeFieldWrapper() {
-    ElementBase *wrap = new MultipoleWrapper(this);
-    wrap->setName(getName());
-    return wrap;
 }

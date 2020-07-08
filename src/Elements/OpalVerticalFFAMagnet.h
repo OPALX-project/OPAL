@@ -1,18 +1,25 @@
 //
-// Header file for OpalVerticalFFAMagnet Element
+// Class OpalVerticalFFAMagnet
+//   The class provides the user interface for the VERTICALFFA object
 //
 // Copyright (c) 2019 Chris Rogers
-// All rights reserved.
+// All rights reserved
 //
-// OPAL is licensed under GNU GPL version 3.
-
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_OPALVERTICALFFAMAGNET_H
 #define OPAL_OPALVERTICALFFAMAGNET_H
 
 #include "Elements/OpalElement.h"
 
-/** OpalVerticalFFAMagnet provides the user interface for the VERTICALFFA object
- */
 class OpalVerticalFFAMagnet : public OpalElement {
   public:
     /** enum maps string to integer value for UI definitions */
@@ -42,7 +49,7 @@ class OpalVerticalFFAMagnet : public OpalElement {
      *
      *  Just calls fillRegisteredAttributes on the base class
      */
-    virtual void fillRegisteredAttributes(const ElementBase &, ValueFlag);
+    virtual void fillRegisteredAttributes(const ElementBase &);
 
     /** Update the VerticalFFA with new parameters from UI parser */
     virtual void update();

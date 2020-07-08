@@ -1,24 +1,68 @@
+//
+// Class Mapper
+//   Build transfer map. The visitor class for building a VpsMap for a beamline
+//   using a thin-lens approximation for all elements.
+//   A visitor class implementing the default behaviour for all
+//   visitors capable of tracking a transfer map through a beam line.
+//   It implements some default behaviour for such visitors.
+//   [P]
+//   Phase space coordinates (in this order):
+//   [DL]
+//   [DT]x:[DD]
+//     horizontal displacement (metres).
+//   [DT]p_x/p_r:[DD]
+//     horizontal canonical momentum (no dimension).
+//   [DT]y:[DD]
+//     vertical displacement (metres).
+//   [DT]p_y/p_r:[DD]
+//     vertical canonical momentum (no dimension).
+//   [DT]delta_p/p_r:[DD]
+//     relative momentum error (no dimension).
+//   [DT]v*delta_t:[DD]
+//     time difference delta_t w.r.t. the reference frame which moves with
+//     uniform velocity
+//   [P]
+//     v_r = c*beta_r = p_r/m
+//   [P]
+//     along the design orbit, multiplied by the instantaneous velocity v of
+//     the particle (metres).
+//   [/DL]
+//   Where
+//   [DL]
+//   [DT]p_r:[DD]
+//     is the constant reference momentum defining the reference frame velocity.
+//   [DT]m:[DD]
+//     is the rest mass of the particles.
+//   [/DL]
+//   Other units used:
+//   [DL]
+//   [DT]reference momentum:[DD]
+//     electron-volts.
+//   [DT]accelerating voltage:[DD]
+//     volts.
+//   [DT]separator voltage:[DD]
+//     volts.
+//   [DT]frequencies:[DD]
+//     hertz.
+//   [DT]phase lags:[DD]
+//     multiples of (2*pi).
+//   [/DL]
+//
+// Copyright (c) 200x - 2020 Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_Mapper_HH
 #define CLASSIC_Mapper_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: Mapper.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: Mapper
-//
-// ------------------------------------------------------------------------
-// Class category: Algorithms
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:33 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
 
 #include "Algorithms/AbstractMapper.h"
 #include "AbsBeamline/Patch.h"
@@ -26,61 +70,10 @@
 #include "FixedAlgebra/FVps.h"
 #include "Algorithms/PartData.h"
 
-class AlignWrapper;
 class BMultipoleField;
 class Euclid3D;
 template <class T, int N> class LinearMap;
 template <class T, int N> class TransportMap;
-
-
-// Class Mapper
-// ------------------------------------------------------------------------
-/// Build transfer map.
-//  An abstract visitor class implementing the default behaviour for all
-//  visitors capable of tracking a transfer map through a beam line.
-//  It implements some default behaviour for such visitors.
-//  [P]
-//  Phase space coordinates (in this order):
-//  [DL]
-//  [DT]x:[DD]
-//    horizontal displacement (metres).
-//  [DT]p_x/p_r:[DD]
-//    horizontal canonical momentum (no dimension).
-//  [DT]y:[DD]
-//    vertical displacement (metres).
-//  [DT]p_y/p_r:[DD]
-//    vertical canonical momentum (no dimension).
-//  [DT]delta_p/p_r:[DD]
-//    relative momentum error (no dimension).
-//  [DT]v*delta_t:[DD]
-//    time difference delta_t w.r.t. the reference frame which moves with
-//    uniform velocity
-//    [P]
-//    v_r = c*beta_r = p_r/m
-//    [P]
-//    along the design orbit, multiplied by the instantaneous velocity v of
-//    the particle (metres).
-//  [/DL]
-//  Where
-//  [DL]
-//  [DT]p_r:[DD]
-//    is the constant reference momentum defining the reference frame velocity.
-//  [DT]m:[DD]
-//    is the rest mass of the particles.
-//  [/DL]
-//  Other units used:
-//  [DL]
-//  [DT]reference momentum:[DD]
-//    electron-volts.
-//  [DT]accelerating voltage:[DD]
-//    volts.
-//  [DT]separator voltage:[DD]
-//    volts.
-//  [DT]frequencies:[DD]
-//    hertz.
-//  [DT]phase lags:[DD]
-//    multiples of (2*pi).
-//  [/DL]
 
 class Mapper: public AbstractMapper {
 
@@ -121,10 +114,6 @@ public:
 
     /// Apply the algorithm to a patch.
     virtual void visitPatch(const Patch &pat);
-
-
-    /// Apply the algorithm to an align wrapper.
-    virtual void visitAlignWrapper(const AlignWrapper &);
 
 protected:
 

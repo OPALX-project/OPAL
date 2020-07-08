@@ -1,34 +1,27 @@
+//
+// Class CorrectorRep
+//   Representation of a closed orbit corrector.
+//   The base class acts on both planes.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_CorrectorRep_HH
 #define CLASSIC_CorrectorRep_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: CorrectorRep.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: CorrectorRep
-//
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:33 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
 
 #include "AbsBeamline/Corrector.h"
 #include "BeamlineGeometry/StraightGeometry.h"
 #include "Fields/BDipoleField.h"
-
-
-// Class CorrectorRep
-// ------------------------------------------------------------------------
-/// Representation of a closed orbit corrector.
-//  The base class acts on both planes.
 
 class CorrectorRep: public Corrector {
 
@@ -86,11 +79,6 @@ public:
 
     /// Set vertical field component in Teslas.
     virtual void setBy(double);
-
-    /// Allow field errors.
-    //  Build a FieldWrapper pointing to the corrector and return a pointer to
-    //  that wrapper.
-    virtual ElementBase *makeFieldWrapper();
 
     /// Set active flag.
     //  If [b]flag[/b] is true, the corrector is activated,

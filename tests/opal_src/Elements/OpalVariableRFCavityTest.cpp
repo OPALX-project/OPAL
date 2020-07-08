@@ -72,7 +72,7 @@ TEST(OpalVariableRFCavityTest, TestFillRegisteredAttributes) {
     OpalVariableRFCavity opal_cav;
     OpalVariableRFCavity parent;  // dummy parent to prevent segv
     opal_cav.setParent(&parent);
-    opal_cav.fillRegisteredAttributes(cav, OpalElement::IDEAL_FLAG);
+    opal_cav.fillRegisteredAttributes(cav);
 
     Attribute* null_att = NULL;
     EXPECT_EQ(opal_cav.findAttribute("NONSENSE ATTRIBUTE ASDASDA"), null_att);
@@ -91,8 +91,7 @@ TEST(OpalVariableRFCavityTest, TestFillRegisteredAttributes) {
     // try to fill a VariableRFCavity using an ElementBase that is not a
     // VariableRFCavity - should throw
     DriftRep drift("test");
-    EXPECT_THROW(opal_cav.fillRegisteredAttributes(drift,
-                                                   OpalElement::IDEAL_FLAG),
+    EXPECT_THROW(opal_cav.fillRegisteredAttributes(drift),
                  OpalException);
 */
 }

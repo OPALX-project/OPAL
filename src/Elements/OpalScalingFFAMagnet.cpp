@@ -79,7 +79,7 @@ OpalScalingFFAMagnet::OpalScalingFFAMagnet() :
 
     ScalingFFAMagnet* magnet = new ScalingFFAMagnet("ScalingFFAMagnet");
     magnet->setEndField(new endfieldmodel::Tanh(1., 1., 1));
-    setElement(magnet->makeAlignWrapper());
+    setElement(magnet);
 }
 
 
@@ -88,7 +88,7 @@ OpalScalingFFAMagnet::OpalScalingFFAMagnet(const std::string &name,
     OpalElement(name, parent) {
     ScalingFFAMagnet* magnet = new ScalingFFAMagnet(name);
     magnet->setEndField(new endfieldmodel::Tanh(1., 1., 1));
-    setElement(magnet->makeAlignWrapper());
+    setElement(magnet);
 }
 
 
@@ -102,13 +102,13 @@ OpalScalingFFAMagnet *OpalScalingFFAMagnet::clone(const std::string &name) {
 
 
 void OpalScalingFFAMagnet::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 }
 
 
 void OpalScalingFFAMagnet::update() {
-    ScalingFFAMagnet *magnet = dynamic_cast<ScalingFFAMagnet*>(getElement()->removeWrappers());
+    ScalingFFAMagnet *magnet = dynamic_cast<ScalingFFAMagnet*>(getElement());
 
     // use L = r0*theta; we define the magnet ito length for UI but ito angles
     // internally; and use m as external default unit and mm internally
@@ -175,6 +175,6 @@ void OpalScalingFFAMagnet::update() {
         magnet->setAzimuthalExtent(defaultExtent);
     }
     magnet->initialise();
-    setElement(magnet->makeAlignWrapper());
+    setElement(magnet);
 
 }

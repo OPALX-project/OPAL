@@ -1,31 +1,27 @@
+//
+// Class OpalSBend
+//   The SBEND element.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_OpalSBend_HH
 #define OPAL_OpalSBend_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: OpalSBend.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: OpalSBend
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:33:40 $
-// $Author: Andreas Adelmann $
-//
-// ------------------------------------------------------------------------
 
 #include "Elements/OpalBend.h"
 
 class OpalWake;
 class ParticleMatterInteraction;
-
-// Class OpalSBend
-// ------------------------------------------------------------------------
-/// The SBEND element.
 
 class OpalSBend: public OpalBend {
 
@@ -40,7 +36,7 @@ public:
     virtual OpalSBend *clone(const std::string &name);
 
     /// Fill in all registered attributes.
-    virtual void fillRegisteredAttributes(const ElementBase &, ValueFlag);
+    virtual void fillRegisteredAttributes(const ElementBase &);
 
     /// Update the embedded CLASSIC bend.
     virtual void update();

@@ -6,6 +6,7 @@
 
 #include <string>
 #include <cstring>
+#include <limits>
 #include <sstream>
 #include <type_traits>
 #include <functional>
@@ -28,16 +29,23 @@ namespace Util {
     }
 
     inline
-    double getEnergy(Vector_t p, double mass) {
+    double getKineticEnergy(Vector_t p, double mass) {
         return (getGamma(p) - 1.0) * mass;
     }
 
     inline
-    double getP(double E, double mass) {
-        double gamma = E / mass + 1;
-        return std::sqrt(std::pow(gamma, 2.0) - 1.0);
+    double getBetaGamma(double Ekin, double mass) {
+        double value = std::sqrt(std::pow(Ekin / mass + 1.0, 2) - 1.0);
+        if (value < std::numeric_limits<double>::epsilon())
+            value = std::sqrt(2 * Ekin / mass);
+        return value;
     }
 
+    inline
+    double convertMomentumeVToBetaGamma(double p, double mass) {
+        return p / mass;
+    }
+  
     inline
     std::string getTimeString(double time, unsigned int precision = 3) {
         std::string timeUnit(" [ps]");
@@ -162,7 +170,7 @@ namespace Util {
     }
 
     Vector_t getTaitBryantAngles(Quaternion rotation, const std::string &elementName = "");
-
+  
     std::string toUpper(const std::string &str);
 
     std::string combineFilePath(std::initializer_list<std::string>);

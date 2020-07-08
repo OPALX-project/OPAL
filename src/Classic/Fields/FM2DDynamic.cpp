@@ -233,11 +233,9 @@ bool FM2DDynamic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vec
     return false;
 }
 
-void FM2DDynamic::getFieldDimensions(double &zBegin, double &zEnd, double &rBegin, double &rEnd) const {
+void FM2DDynamic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
-    rBegin = rbegin_m;
-    rEnd = rend_m;
 }
 void FM2DDynamic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 

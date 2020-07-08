@@ -117,12 +117,9 @@ bool FM1DDynamic_fast::getFieldDerivative(const Vector_t &R,
     return false;
 }
 
-void FM1DDynamic_fast::getFieldDimensions(double &zBegin, double &zEnd,
-                                          double &rBegin, double &rEnd) const {
+void FM1DDynamic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zBegin_m;
     zEnd = zEnd_m;
-    rBegin = rBegin_m;
-    rEnd = rEnd_m;
 }
 
 void FM1DDynamic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,

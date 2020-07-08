@@ -1,35 +1,30 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalRBend.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2.4.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalRBend
-//   The class of OPAL rectangular bend magnets.
+// Class OpalRBend
+//   The RBEND element.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2004/11/12 20:10:11 $
-// $Author: adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalRBend.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/RBendRep.h"
 #include "Fields/BMultipoleField.h"
-#include "ComponentWrappers/RBendWrapper.h"
 #include "Physics/Physics.h"
 #include "Structure/OpalWake.h"
 #include "Structure/ParticleMatterInteraction.h"
 #include "Utilities/OpalException.h"
 #include <cmath>
-
-// Class OpalRBend
-// ------------------------------------------------------------------------
 
 OpalRBend::OpalRBend():
     OpalBend("RBEND",
@@ -39,7 +34,7 @@ OpalRBend::OpalRBend():
 
     registerOwnership();
 
-    setElement((new RBendRep("RBEND"))->makeWrappers());
+    setElement(new RBendRep("RBEND"));
 }
 
 
@@ -47,7 +42,7 @@ OpalRBend::OpalRBend(const std::string &name, OpalRBend *parent):
     OpalBend(name, parent),
     owk_m(0),
     parmatint_m(NULL) {
-    setElement((new RBendRep(name))->makeWrappers());
+    setElement(new RBendRep(name));
 }
 
 
@@ -65,22 +60,11 @@ OpalRBend *OpalRBend::clone(const std::string &name) {
 
 
 void OpalRBend::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 
-    // Get the desired field.
-    const RBendWrapper *bend =
-        dynamic_cast<const RBendWrapper *>(base.removeAlignWrapper());
-    BMultipoleField field;
-
-    // Get the desired field.
-    if(flag == ERROR_FLAG) {
-        field = bend->errorField();
-    } else if(flag == ACTUAL_FLAG) {
-        field = bend->getField();
-    } else if(flag == IDEAL_FLAG) {
-        field = bend->getDesign().getField();
-    }
+    const RBendRep *bend = dynamic_cast<const RBendRep *>(&base);
+    BMultipoleField field = bend->getField();
 
     double length = getLength();
     double scale = Physics::c / OpalData::getInstance()->getP0();
@@ -114,7 +98,7 @@ void OpalRBend::update() {
 
     // Define geometry.
     RBendRep *bend =
-        dynamic_cast<RBendRep *>(getElement()->removeWrappers());
+        dynamic_cast<RBendRep *>(getElement());
     double length = Attributes::getReal(itsAttr[LENGTH]);
     double angle  = Attributes::getReal(itsAttr[ANGLE]);
     double e1     = Attributes::getReal(itsAttr[E1]);

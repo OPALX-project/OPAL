@@ -73,8 +73,8 @@ OpalGlobalCylindricalOffset::OpalGlobalCylindricalOffset(const std::string &name
 OpalGlobalCylindricalOffset::~OpalGlobalCylindricalOffset() {}
 
 void OpalGlobalCylindricalOffset::fillRegisteredAttributes
-                                     (const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+                                     (const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 }
 
 void OpalGlobalCylindricalOffset::update() {
@@ -88,6 +88,6 @@ void OpalGlobalCylindricalOffset::update() {
                                                             phi,
                                                             theta));
     // is this a memory leak?
-    setElement(off->makeAlignWrapper());
+    setElement(off);
 }
 }

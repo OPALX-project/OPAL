@@ -86,7 +86,7 @@ BeamStrippingPhysics::BeamStrippingPhysics(const std::string &name, ElementBase 
     rediffusedStat_m(0),
     locPartsInMat_m(0)
 {
-    bstp_m = dynamic_cast<BeamStripping *>(getElement()->removeWrappers());    
+    bstp_m = dynamic_cast<BeamStripping *>(getElement());
     bstpshape_m = element_ref_m->getType();
     lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(element_ref_m->getName(), !Options::asciidump));
 

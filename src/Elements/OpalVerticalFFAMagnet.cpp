@@ -1,12 +1,20 @@
 //
-// Source file for OpalVerticalFFAMagnet Element
+// Class OpalVerticalFFAMagnet
+//   The class provides the user interface for the VERTICALFFA object
 //
 // Copyright (c) 2019 Chris Rogers
-// All rights reserved.
+// All rights reserved
 //
-// OPAL is licensed under GNU GPL version 3.
-
-
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Attributes/Attributes.h"
 
 #include "AbsBeamline/EndFieldModel/Tanh.h" // classic
@@ -50,7 +58,7 @@ OpalVerticalFFAMagnet::OpalVerticalFFAMagnet() :
 
     VerticalFFAMagnet* magnet = new VerticalFFAMagnet("VerticalFFAMagnet");
     magnet->setEndField(new endfieldmodel::Tanh(1., 1., 1));
-    setElement(magnet->makeAlignWrapper());
+    setElement(magnet);
 }
 
 
@@ -59,7 +67,7 @@ OpalVerticalFFAMagnet::OpalVerticalFFAMagnet(const std::string &name,
     OpalElement(name, parent) {
     VerticalFFAMagnet* magnet = new VerticalFFAMagnet(name);
     magnet->setEndField(new endfieldmodel::Tanh(1., 1., 1));
-    setElement(magnet->makeAlignWrapper());
+    setElement(magnet);
 }
 
 
@@ -73,14 +81,14 @@ OpalVerticalFFAMagnet *OpalVerticalFFAMagnet::clone(const std::string &name) {
 
 
 void OpalVerticalFFAMagnet::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 }
 
 
 void OpalVerticalFFAMagnet::update() {
     VerticalFFAMagnet *magnet = 
-              dynamic_cast<VerticalFFAMagnet*>(getElement()->removeWrappers());
+              dynamic_cast<VerticalFFAMagnet*>(getElement());
     magnet->setB0(Attributes::getReal(itsAttr[B0]));
     int maxOrder = floor(Attributes::getReal(itsAttr[MAX_HORIZONTAL_POWER]));
     magnet->setMaxOrder(maxOrder);
@@ -100,5 +108,5 @@ void OpalVerticalFFAMagnet::update() {
     endField->setX0(centre_length/2.);
     endField->setTanhDiffIndices(maxOrder+2);
     magnet->initialise();
-    setElement(magnet->makeAlignWrapper());
+    setElement(magnet);
 }

@@ -31,7 +31,6 @@
 #include "AbstractObjects/Expressions.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
-#include "ComponentWrappers/MultipoleWrapper.h"
 #include "Expressions/SValue.h"
 #include "Expressions/SRefExpr.h"
 #include "Physics/Physics.h"
@@ -79,14 +78,14 @@ OpalMultipoleT::OpalMultipoleT():
 
     registerOwnership();
 
-    setElement((new MultipoleT("MULTIPOLET"))->makeWrappers());
+    setElement(new MultipoleT("MULTIPOLET"));
 }
 
 
 OpalMultipoleT::OpalMultipoleT(const std::string &name, 
                                OpalMultipoleT *parent):
     OpalElement(name, parent) {
-    setElement((new MultipoleT(name))->makeWrappers());
+    setElement(new MultipoleT(name));
 }
 
 
@@ -105,10 +104,10 @@ void OpalMultipoleT::print(std::ostream &os) const {
 
 
 void OpalMultipoleT::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);   
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);   
     const MultipoleT *multT = 
-        dynamic_cast<const MultipoleT*>(base.removeAlignWrapper());
+        dynamic_cast<const MultipoleT*>(&base);
     for(unsigned int order = 1; order <= multT->getTransMaxOrder(); order++) {
         std::ostringstream ss;
         ss << order;
@@ -136,7 +135,7 @@ void OpalMultipoleT::update() {
     // Magnet length.
     double mm = 1000.;
     MultipoleT *multT =
-    dynamic_cast<MultipoleT*>(getElement()->removeWrappers());
+    dynamic_cast<MultipoleT*>(getElement());
     double length = Attributes::getReal(itsAttr[LENGTH])*mm;
     double angle = Attributes::getReal(itsAttr[ANGLE]);
     multT->setElementLength(length);
@@ -173,5 +172,5 @@ void OpalMultipoleT::update() {
     OpalElement::updateUnknown(multT);
     multT->initialise();
 
-    setElement(multT->makeWrappers());
+    setElement(multT);
 }

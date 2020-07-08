@@ -1,22 +1,30 @@
+//
+// Class OpalElement
+//   Base class for all beam line elements.
+//
+//   It defines a registry for attribute cells, used in the ATTLIST command
+//   only.  The exemplar constructors for all OPAL element commands store all
+//   defined attribute names in this registry.  The ATTLIST command can walk
+//   through a beam line or sequence, and call the fillRegisteredAttributes()
+//   method for each element.  This method will fill in the values for all
+//   attributes which exist for this element, and the ATTLIST command can
+//   look them up with findRegisteredAttribute() to build up a print line.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_OpalElement_HH
 #define OPAL_OpalElement_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: OpalElement.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: OpalElement
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2001/08/13 15:32:23 $
-// $Author: jowett $
-//
-// ------------------------------------------------------------------------
 
 #include "AbstractObjects/Element.h"
 #include "Elements/AttCell.h"
@@ -25,18 +33,6 @@
 
 class Statement;
 
-
-// Class OpalElement
-// ------------------------------------------------------------------------
-/// Base class for all beam line elements.
-//
-//  It defines a registry for attribute cells, used in the ATTLIST command
-//  only.  The exemplar constructors for all OPAL element commands store all
-//  defined attribute names in this registry.  The ATTLIST command can walk
-//  through a beam line or sequence, and call the fillRegisteredAttributes()
-//  method for each element.  This method will fill in the values for all
-//  attributes which exist for this element, and the ATTLIST command can
-//  look them up with findRegisteredAttribute() to build up a print line.
 
 class OpalElement: public Element {
 
@@ -67,17 +63,10 @@ public:
         COMMON
     };
 
-    /// Switch for value desired on ATTLIST command.
-    enum ValueFlag {
-        ACTUAL_FLAG,      // Actual field values (design + error).
-        IDEAL_FLAG,       // Ideal field values (design only).
-        ERROR_FLAG        // Field errors.
-    };
-
     virtual ~OpalElement();
 
     /// Fill in all registered attributes.
-    virtual void fillRegisteredAttributes(const ElementBase &, ValueFlag);
+    virtual void fillRegisteredAttributes(const ElementBase &);
 
     /// Find a registered attribute.
     //  Return a pointer to the AttCell for a named attribute.

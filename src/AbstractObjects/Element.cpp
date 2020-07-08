@@ -1,29 +1,37 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Element.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: Element
-//   The base class for all OPAL beamline elements.
+// Class Element
+//   The base class for all OPAL elements.
+//   It implements the common behaviour of elements, it can also be used via
+//   dynamic casting to determine whether an object represents an element.
 //
-// ------------------------------------------------------------------------
+//   Each Element object contains a pointer to a CLASSIC beam line element,
+//   known as the ``ideal'' element.
 //
-// $Date: 2000/03/27 09:33:34 $
-// $Author: Andreas Adelmann $
+//   If sharable flag is set, all occurrences of the element are supposed to
+//   have the same imperfections.  Thus the assembly is shared when it is used
+//   more than once in beam lines or sequences.
 //
-// ------------------------------------------------------------------------
-
+//   If the sharable flag is not set, each occurrence of the element is supposed
+//   to have its own imperfections, but the same ideal representation.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbstractObjects/Element.h"
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 
-
-// Class Element
-// ------------------------------------------------------------------------
 
 Element::~Element()
 {}

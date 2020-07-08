@@ -44,7 +44,7 @@ public:
     virtual OpalSRot *clone(const std::string &name);
 
     /// Fill in all registered attributes.
-    virtual void fillRegisteredAttributes(const ElementBase &, ValueFlag);
+    virtual void fillRegisteredAttributes(const ElementBase &);
 
     /// Update the embedded CLASSIC patch.
     virtual void update();

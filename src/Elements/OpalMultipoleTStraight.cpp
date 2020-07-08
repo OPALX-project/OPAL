@@ -32,7 +32,6 @@
 #include "AbstractObjects/Expressions.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
-#include "ComponentWrappers/MultipoleWrapper.h"
 #include "Expressions/SValue.h"
 #include "Expressions/SRefExpr.h"
 #include "Physics/Physics.h"
@@ -72,14 +71,14 @@ OpalMultipoleTStraight::OpalMultipoleTStraight():
 
     registerOwnership();
 
-    setElement((new MultipoleTStraight("MULTIPOLETSTRAIGHT"))->makeWrappers());
+    setElement(new MultipoleTStraight("MULTIPOLETSTRAIGHT"));
 }
 
 
 OpalMultipoleTStraight::OpalMultipoleTStraight(const std::string &name,
                                                OpalMultipoleTStraight *parent):
     OpalElement(name, parent) {
-    setElement((new MultipoleTStraight(name))->makeWrappers());
+    setElement(new MultipoleTStraight(name));
 }
 
 
@@ -98,10 +97,10 @@ void OpalMultipoleTStraight::print(std::ostream &os) const {
 
 
 void OpalMultipoleTStraight::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
     const MultipoleTStraight *multT =
-        dynamic_cast<const MultipoleTStraight*>(base.removeAlignWrapper());
+        dynamic_cast<const MultipoleTStraight*>(&base);
 
     for(unsigned int order = 1; order <= multT->getTransMaxOrder(); order++) {
         std::ostringstream ss;
@@ -128,7 +127,7 @@ void OpalMultipoleTStraight::update() {
 
     // Magnet length.
     MultipoleTStraight *multT =
-    dynamic_cast<MultipoleTStraight*>(getElement()->removeWrappers());
+    dynamic_cast<MultipoleTStraight*>(getElement());
     double length = Attributes::getReal(itsAttr[LENGTH]);
     double boundingBoxLength = Attributes::getReal(itsAttr[BBLENGTH]);
     multT->setElementLength(length);
@@ -159,5 +158,5 @@ void OpalMultipoleTStraight::update() {
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(multT);
 
-    setElement(multT->makeWrappers());
+    setElement(multT);
 }

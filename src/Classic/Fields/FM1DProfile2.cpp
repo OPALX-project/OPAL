@@ -326,7 +326,7 @@ bool FM1DProfile2::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Ve
     return false;
 }
 
-void FM1DProfile2::getFieldDimensions(double &zBegin, double &zEnd, double &/*rBegin*/, double &/*rEnd*/) const {
+void FM1DProfile2::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_entry_m;
     zEnd = zend_exit_m;
 }

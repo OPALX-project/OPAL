@@ -76,8 +76,8 @@ OpalGlobalCartesianOffset::OpalGlobalCartesianOffset(const std::string &name, Op
 OpalGlobalCartesianOffset::~OpalGlobalCartesianOffset() {}
 
 void OpalGlobalCartesianOffset::fillRegisteredAttributes
-                                     (const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+                                     (const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 }
 
 void OpalGlobalCartesianOffset::update() {
@@ -89,6 +89,6 @@ void OpalGlobalCartesianOffset::update() {
                   Attributes::getReal(itsAttr[END_NORMAL_Y]), 0.);
     Offset* off = new Offset(Offset::globalCartesianOffset(name, pos, norm));
     // is this a memory leak?
-    setElement(off->makeAlignWrapper());
+    setElement(off);
 }
 }

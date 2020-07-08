@@ -1,38 +1,31 @@
+//
+// Class DefaultVisitor
+//   The default interface for a BeamlineVisitor.
+//   A default implementation for all visitors that can iterate over a
+//   beam line representation.
+//   This abstract base class implements the default behaviour for the
+//   structural classes Beamline and FlaggedElmPtr.
+//   It also holds the data required for all visitors in a protected area.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_DefaultVisitor_HH
 #define CLASSIC_DefaultVisitor_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: DefaultVisitor.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.3 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: DefaultVisitor
-//   The default interface for a BeamlineVisitor.
-//
-// ------------------------------------------------------------------------
-// Class category: Algorithms
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/05/03 08:16:04 $
-// $Author: mad $
-//
-// ------------------------------------------------------------------------
 
 #include "AbsBeamline/BeamlineVisitor.h"
 
 class ElementBase;
-
-// Class DefaultVisitor
-// ------------------------------------------------------------------------
-/// Default algorithms.
-//  A default implementation for all visitors that can iterate over a
-//  beam line representation.
-//  This abstract base class implements the default behaviour for the
-//  structural classes Beamline and FlaggedElmPtr, and for all wrappers.
-//  It also holds the data required for all visitors in a protected area.
 
 class DefaultVisitor: public BeamlineVisitor {
 
@@ -177,26 +170,6 @@ public:
 
     /// Apply the algorithm to a FlaggedElmPtr.
     virtual void visitFlaggedElmPtr(const FlaggedElmPtr &);
-
-
-    /// Apply the algorithm to an align wrapper..
-    virtual void visitAlignWrapper(const AlignWrapper &);
-
-    /// Apply the algorithm to an corrector wrapper..
-    virtual void visitCorrectorWrapper(const CorrectorWrapper &);
-
-    /// Apply the algorithm to an cyclotron wrapper..
-    virtual void visitCyclotronWrapper(const CyclotronWrapper &);
-
-    /// Apply the algorithm to an multipole wrapper..
-    virtual void visitMultipoleWrapper(const MultipoleWrapper &);
-
-    /// Apply the algorithm to an RBend wrapper..
-    virtual void visitRBendWrapper(const RBendWrapper &);
-
-    /// Apply the algorithm to an SBend wrapper..
-    virtual void visitSBendWrapper(const SBendWrapper &);
-
 
     /// Apply the algorithm to a generic integrator.
     virtual void visitIntegrator(const Integrator &);

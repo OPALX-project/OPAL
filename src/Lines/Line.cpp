@@ -1,22 +1,23 @@
-
-// ------------------------------------------------------------------------
-// $RCSfile: Line.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.3.4.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: Line
-//   The class for OPAL beam lines.
+// Class Line
+//   The LINE definition.
+//   A Line contains a CLASSIC TBeamline<FlaggedElmPtr> which represents the
+//   sequence of elements in the line.  The line is always flat in the sense
+//   that nested anonymous lines are flattened.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2002/12/09 15:06:08 $
-// $Author: jsberg $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Lines/Line.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/BeamSequence.h"
@@ -38,9 +39,6 @@
 #include <iostream>
 
 using namespace Expressions;
-
-// Class Line
-// ------------------------------------------------------------------------
 
 // The attributes of class Line.
 namespace {
@@ -99,7 +97,7 @@ Line::Line():
     itsAttr[PSI] = Attributes::makeReal
         ("PSI", "The rotation about the z-axis of the particle source", 0);
 
-    setElement((new FlaggedBeamline("LINE"))->makeAlignWrapper());
+    setElement(new FlaggedBeamline("LINE"));
 
     registerOwnership(AttributeHandler::STATEMENT);
 }
@@ -108,7 +106,7 @@ Line::Line():
 Line::Line(const std::string &name, Line *parent):
     // Do not copy list members; they will be filled at parse time.
     BeamSequence(name, parent) {
-    setElement((new FlaggedBeamline(name))->makeAlignWrapper());
+    setElement(new FlaggedBeamline(name));
 }
 
 
@@ -289,7 +287,7 @@ void Line::print(std::ostream &os) const {
 
 
 FlaggedBeamline *Line::fetchLine() const {
-    return dynamic_cast<FlaggedBeamline *>(getElement()->removeWrappers());
+    return dynamic_cast<FlaggedBeamline *>(getElement());
 }
 
 

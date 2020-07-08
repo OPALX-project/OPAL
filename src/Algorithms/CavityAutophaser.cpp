@@ -72,7 +72,7 @@ double CavityAutophaser::getPhaseAtMaxEnergy(const Vector_t &R,
                    << std::left << std::setw(68) << std::setfill('*') << ss.str()
                    << std::setfill(' ') << endl);
     if (!apVeto) {
-        double initialEnergy = Util::getEnergy(P, itsReference_m.getM()) * 1e-6;
+        double initialEnergy = Util::getKineticEnergy(P, itsReference_m.getM()) * 1e-6;
         double AstraPhase    = 0.0;
         double designEnergy  = element->getDesignEnergy();
 
@@ -191,7 +191,7 @@ double CavityAutophaser::guessCavityPhase(double t) {
         return orig_phi;
     }
 
-    Phimax = element->getAutoPhaseEstimate(getEnergyMeV(refP),
+    Phimax = element->getAutoPhaseEstimate(Util::getKineticEnergy(refP, itsReference_m.getM()) * 1e-6,
                                            t,
                                            itsReference_m.getQ(),
                                            itsReference_m.getM() * 1e-6);
@@ -288,7 +288,7 @@ double CavityAutophaser::track(Vector_t /*R*/,
                                                             out);
     rfc->setPhasem(initialPhase);
 
-    double finalKineticEnergy = Util::getEnergy(Vector_t(0.0, 0.0, pe.first), itsReference_m.getM() * 1e-6);
+    double finalKineticEnergy = Util::getKineticEnergy(Vector_t(0.0, 0.0, pe.first), itsReference_m.getM() * 1e-6);
 
     return finalKineticEnergy;
 }

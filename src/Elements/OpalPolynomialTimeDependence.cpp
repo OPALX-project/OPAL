@@ -76,8 +76,8 @@ OpalPolynomialTimeDependence::OpalPolynomialTimeDependence(const std::string &na
 OpalPolynomialTimeDependence::~OpalPolynomialTimeDependence() {}
 
 void OpalPolynomialTimeDependence::fillRegisteredAttributes
-                                     (const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+                                     (const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 }
 
 void OpalPolynomialTimeDependence::update() {

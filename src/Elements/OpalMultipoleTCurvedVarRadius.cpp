@@ -32,7 +32,6 @@
 #include "AbstractObjects/Expressions.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
-#include "ComponentWrappers/MultipoleWrapper.h"
 #include "Expressions/SValue.h"
 #include "Expressions/SRefExpr.h"
 #include "Physics/Physics.h"
@@ -77,14 +76,14 @@ OpalMultipoleTCurvedVarRadius::OpalMultipoleTCurvedVarRadius():
 
     registerOwnership();
 
-    setElement((new MultipoleTCurvedVarRadius("MULTIPOLETCURVEDVARRADIUS"))->makeWrappers());
+    setElement(new MultipoleTCurvedVarRadius("MULTIPOLETCURVEDVARRADIUS"));
 }
 
 
 OpalMultipoleTCurvedVarRadius::OpalMultipoleTCurvedVarRadius(const std::string &name,
                                                              OpalMultipoleTCurvedVarRadius *parent):
     OpalElement(name, parent) {
-    setElement((new MultipoleTCurvedVarRadius(name))->makeWrappers());
+    setElement(new MultipoleTCurvedVarRadius(name));
 }
 
 
@@ -103,10 +102,10 @@ void OpalMultipoleTCurvedVarRadius::print(std::ostream &os) const {
 
 
 void OpalMultipoleTCurvedVarRadius::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
     const MultipoleTCurvedVarRadius *multT =
-        dynamic_cast<const MultipoleTCurvedVarRadius*>(base.removeAlignWrapper());
+        dynamic_cast<const MultipoleTCurvedVarRadius*>(&base);
 
     for(unsigned int order = 1; order <= multT->getTransMaxOrder(); order++) {
         std::ostringstream ss;
@@ -134,7 +133,7 @@ void OpalMultipoleTCurvedVarRadius::update() {
 
     // Magnet length.
     MultipoleTCurvedVarRadius *multT =
-    dynamic_cast<MultipoleTCurvedVarRadius*>(getElement()->removeWrappers());
+    dynamic_cast<MultipoleTCurvedVarRadius*>(getElement());
     double length = Attributes::getReal(itsAttr[LENGTH]);
     double angle = Attributes::getReal(itsAttr[ANGLE]);
     double boundingBoxLength = Attributes::getReal(itsAttr[BBLENGTH]);
@@ -176,5 +175,5 @@ void OpalMultipoleTCurvedVarRadius::update() {
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(multT);
 
-    setElement(multT->makeWrappers());
+    setElement(multT);
 }

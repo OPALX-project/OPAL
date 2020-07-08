@@ -1,29 +1,25 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalMonitor.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalMonitor
-//   The class of OPAL monitors for both planes.
+// Class OpalMonitor
+//   The MONITOR element.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:39 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalMonitor.h"
 #include "AbstractObjects/Attribute.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/MonitorRep.h"
 #include "Utilities/Util.h"
-
-// Class OpalMonitor
-// ------------------------------------------------------------------------
 
 extern Inform *gmsg;
 
@@ -37,13 +33,13 @@ OpalMonitor::OpalMonitor():
 
     registerOwnership();
 
-    setElement((new MonitorRep("MONITOR"))->makeAlignWrapper());
+    setElement(new MonitorRep("MONITOR"));
 }
 
 
 OpalMonitor::OpalMonitor(const std::string &name, OpalMonitor *parent):
     OpalElement(name, parent) {
-    setElement((new MonitorRep(name))->makeAlignWrapper());
+    setElement(new MonitorRep(name));
 }
 
 
@@ -60,7 +56,7 @@ void OpalMonitor::update() {
     OpalElement::update();
 
     MonitorRep *mon =
-        dynamic_cast<MonitorRep *>(getElement()->removeWrappers());
+        dynamic_cast<MonitorRep *>(getElement());
     double length = std::max(0.01, Attributes::getReal(itsAttr[LENGTH]));
     mon->setElementLength(length);
     mon->setOutputFN(Attributes::getString(itsAttr[OUTFN]));

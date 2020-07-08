@@ -206,7 +206,7 @@ bool Astra1DMagnetoStatic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/
     return false;
 }
 
-void Astra1DMagnetoStatic::getFieldDimensions(double &zBegin, double &zEnd, double &/*rBegin*/, double &/*rEnd*/) const {
+void Astra1DMagnetoStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }

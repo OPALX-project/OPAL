@@ -1,30 +1,26 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalSolenoid.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalSolenoid
-//   The class of OPAL solenoids.
+// Class OpalSolenoid
+//   The SOLENOID element.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:40 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalSolenoid.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/SolenoidRep.h"
 #include "Physics/Physics.h"
 
-
-// Class OpalSolenoid
-// ------------------------------------------------------------------------
 
 OpalSolenoid::OpalSolenoid():
     OpalElement(SIZE, "SOLENOID",
@@ -44,13 +40,13 @@ OpalSolenoid::OpalSolenoid():
 
     registerOwnership();
 
-    setElement((new SolenoidRep("SOLENOID"))->makeAlignWrapper());
+    setElement(new SolenoidRep("SOLENOID"));
 }
 
 
 OpalSolenoid::OpalSolenoid(const std::string &name, OpalSolenoid *parent):
     OpalElement(name, parent) {
-    setElement((new SolenoidRep(name))->makeAlignWrapper());
+    setElement(new SolenoidRep(name));
 }
 
 
@@ -64,16 +60,14 @@ OpalSolenoid *OpalSolenoid::clone(const std::string &name) {
 
 
 void OpalSolenoid::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 
-    if(flag != ERROR_FLAG) {
-        const SolenoidRep *sol =
-            dynamic_cast<const SolenoidRep *>(base.removeWrappers());
-        double length = sol->getElementLength();
-        double ks = length * sol->getBz() * Physics::c / OpalData::getInstance()->getP0();
-        attributeRegistry["KS"]->setReal(ks);
-    }
+    const SolenoidRep *sol =
+        dynamic_cast<const SolenoidRep *>(&base);
+    double length = sol->getElementLength();
+    double ks = length * sol->getBz() * Physics::c / OpalData::getInstance()->getP0();
+    attributeRegistry["KS"]->setReal(ks);
 }
 
 
@@ -81,7 +75,7 @@ void OpalSolenoid::update() {
     OpalElement::update();
 
     SolenoidRep *sol =
-        dynamic_cast<SolenoidRep *>(getElement()->removeWrappers());
+        dynamic_cast<SolenoidRep *>(getElement());
     double length = Attributes::getReal(itsAttr[LENGTH]);
     double Bz = Attributes::getReal(itsAttr[KS]) * OpalData::getInstance()->getP0() / Physics::c;
     bool fast = Attributes::getBool(itsAttr[FAST]);

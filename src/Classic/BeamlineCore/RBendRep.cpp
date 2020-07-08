@@ -1,28 +1,26 @@
-// ------------------------------------------------------------------------
-// $RCSfile: RBendRep.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2.2.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: RBendRep
-//   Defines a concrete representation for rectangular (straight) bend.
+// Class RBendRep
+//   Representation for a rectangular bend magnet.
+//   A rectangular bend magnet has a rectilinear geometry about which its
+//   multipole components are specified.
 //
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2004/11/12 18:57:53 $
-// $Author: adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "BeamlineCore/RBendRep.h"
 #include "AbsBeamline/ElementImage.h"
 #include "Channels/IndexedChannel.h"
 #include "Channels/IndirectChannel.h"
-#include "ComponentWrappers/RBendWrapper.h"
 #include <cctype>
 
 // Attribute access table.
@@ -45,9 +43,6 @@ namespace {
     };
 }
 
-
-// Class RBendRep
-// ------------------------------------------------------------------------
 
 RBendRep::RBendRep():
     RBend(),
@@ -181,11 +176,4 @@ void RBendRep::setStepsize(double ds) {
 
 void RBendRep::setField(const BMultipoleField &f) {
     field = f;
-}
-
-
-ElementBase *RBendRep::makeFieldWrapper() {
-    ElementBase *wrap = new RBendWrapper(this);
-    wrap->setName(getName());
-    return wrap;
 }

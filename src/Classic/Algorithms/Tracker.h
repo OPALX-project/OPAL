@@ -1,40 +1,6 @@
-#ifndef CLASSIC_Tracker_HH
-#define CLASSIC_Tracker_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: Tracker.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1.2.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: Tracker
-//
-// ------------------------------------------------------------------------
-// Class category: Algorithms
-// ------------------------------------------------------------------------
-//
-// $Date: 2004/11/12 18:57:53 $
-// $Author: adelmann $
-//
-// ------------------------------------------------------------------------
-
-#include "Algorithms/AbstractTracker.h"
-#include "Algorithms/PartBunchBase.h"
-#include "Algorithms/PartData.h"
-#include "FixedAlgebra/FTps.h"
-
-#include "Utilities/ClassicField.h"
-
-class BMultipoleField;
-class Euclid3D;
-class OpalParticle;
-
-
 // Class Tracker
-// ------------------------------------------------------------------------
-/// Track particles or bunches.
+//  Track particles or bunches.
 //  An abstract base class for all visitors capable of tracking particles
 //  through a beam element.
 //  [P]
@@ -79,7 +45,33 @@ class OpalParticle;
 //  [DT]phase lags:[DD]
 //    multiples of (2*pi).
 //  [/DL]
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#ifndef CLASSIC_Tracker_HH
+#define CLASSIC_Tracker_HH
 
+#include "Algorithms/AbstractTracker.h"
+#include "Algorithms/PartBunchBase.h"
+#include "Algorithms/PartData.h"
+#include "FixedAlgebra/FTps.h"
+
+#include "Utilities/ClassicField.h"
+
+class BMultipoleField;
+class Euclid3D;
+class OpalParticle;
 
 class Tracker: public AbstractTracker {
 
@@ -120,9 +112,6 @@ public:
 
     /// Apply the algorithm to a patch.
     virtual void visitPatch(const Patch &pat);
-
-    /// Apply the algorithm to an align wrapper.
-    virtual void visitAlignWrapper(const AlignWrapper &);
 
     /// set total number of tracked bunches
     virtual void setNumBunch(short) {};

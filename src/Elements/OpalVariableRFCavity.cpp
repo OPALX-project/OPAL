@@ -59,15 +59,15 @@ OpalVariableRFCavity::OpalVariableRFCavity():
 
     registerOwnership();
 
-    setElement((new VariableRFCavity("VARIABLE_RF_CAVITY"))->makeAlignWrapper());
+    setElement(new VariableRFCavity("VARIABLE_RF_CAVITY"));
 }
 
 OpalVariableRFCavity::OpalVariableRFCavity(const std::string &name,
                                            OpalVariableRFCavity *parent) :
           OpalElement(name, parent) {
     VariableRFCavity *cavity = dynamic_cast<VariableRFCavity*>(
-                                        parent->getElement()->removeWrappers());
-    setElement((new VariableRFCavity(*cavity))->makeAlignWrapper());
+                                        parent->getElement());
+    setElement(new VariableRFCavity(*cavity));
 }
 
 OpalVariableRFCavity::~OpalVariableRFCavity() {
@@ -82,8 +82,8 @@ OpalVariableRFCavity *OpalVariableRFCavity::clone() {
 }
 
 void OpalVariableRFCavity::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
     const VariableRFCavity* cavity = dynamic_cast<const VariableRFCavity*>(&base);
     if (cavity == NULL) {
         throw OpalException("OpalVariableRFCavity::fillRegisteredAttributes",
@@ -108,7 +108,7 @@ void OpalVariableRFCavity::update() {
     OpalElement::update();
 
     VariableRFCavity *cavity = dynamic_cast<VariableRFCavity*>(
-                                                getElement()->removeWrappers());
+                                                getElement());
     double length = Attributes::getReal(itsAttr[LENGTH]);
     cavity->setLength(length);
     std::string phaseName = Attributes::getString(itsAttr[PHASE_MODEL]);
@@ -121,5 +121,5 @@ void OpalVariableRFCavity::update() {
     cavity->setWidth(width);
     double height = Attributes::getReal(itsAttr[HEIGHT]);
     cavity->setHeight(height);
-    setElement(cavity->makeAlignWrapper());
+    setElement(cavity);
 }

@@ -1,31 +1,26 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalTravelingWave.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalTravelingWave
-//   The class of OPAL RF cavities.
+// Class OpalTravelingWave
+//   The TRAVELINGWAVE element.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:39 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalTravelingWave.h"
 #include "AbstractObjects/Attribute.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/TravelingWaveRep.h"
 #include "Structure/OpalWake.h"
 #include "Physics/Physics.h"
-
-
-// Class OpalTravelingWave
-// ------------------------------------------------------------------------
 
 OpalTravelingWave::OpalTravelingWave():
     OpalElement(SIZE, "TRAVELINGWAVE",
@@ -79,14 +74,14 @@ OpalTravelingWave::OpalTravelingWave():
 
     registerOwnership();
 
-    setElement((new TravelingWaveRep("TRAVELINGWAVE"))->makeAlignWrapper());
+    setElement(new TravelingWaveRep("TRAVELINGWAVE"));
 }
 
 
 OpalTravelingWave::OpalTravelingWave(const std::string &name, OpalTravelingWave *parent):
     OpalElement(name, parent),
     owk_m(NULL) {
-    setElement((new TravelingWaveRep(name))->makeAlignWrapper());
+    setElement(new TravelingWaveRep(name));
 }
 
 
@@ -102,19 +97,17 @@ OpalTravelingWave *OpalTravelingWave::clone(const std::string &name) {
 
 
 void OpalTravelingWave::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 
-    if(flag != ERROR_FLAG) {
-        const TravelingWaveRep *rfc =
-            dynamic_cast<const TravelingWaveRep *>(base.removeWrappers());
-        attributeRegistry["VOLT"]->setReal(rfc->getAmplitude());
-        attributeRegistry["DVOLT"]->setReal(rfc->getAmplitudeError());
-        attributeRegistry["FREQ"]->setReal(rfc->getFrequency());
-        attributeRegistry["LAG"]->setReal(rfc->getPhase());
-        attributeRegistry["DLAG"]->setReal(rfc->getPhaseError());
-        attributeRegistry["FMAPFN"]->setString(rfc->getFieldMapFN());
-    }
+    const TravelingWaveRep *rfc =
+        dynamic_cast<const TravelingWaveRep *>(&base);
+    attributeRegistry["VOLT"]->setReal(rfc->getAmplitude());
+    attributeRegistry["DVOLT"]->setReal(rfc->getAmplitudeError());
+    attributeRegistry["FREQ"]->setReal(rfc->getFrequency());
+    attributeRegistry["LAG"]->setReal(rfc->getPhase());
+    attributeRegistry["DLAG"]->setReal(rfc->getPhaseError());
+    attributeRegistry["FMAPFN"]->setString(rfc->getFieldMapFN());
 }
 
 
@@ -122,7 +115,7 @@ void OpalTravelingWave::update() {
     OpalElement::update();
 
     TravelingWaveRep *rfc =
-        dynamic_cast<TravelingWaveRep *>(getElement()->removeWrappers());
+        dynamic_cast<TravelingWaveRep *>(getElement());
 
     double length = Attributes::getReal(itsAttr[LENGTH]);
     double vPeak  = Attributes::getReal(itsAttr[VOLT]);

@@ -1,21 +1,22 @@
-// ------------------------------------------------------------------------
-// $RCSfile: ParallelTTracker.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.2.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: ParallelTTracker
+// Class ParallelTTracker
+//   OPAL-T tracker.
 //   The visitor class for tracking particles with time as independent
 //   variable.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2004/11/12 20:10:11 $
-// $Author: adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Algorithms/ParallelTTracker.h"
 
 #include <iostream>
@@ -1191,7 +1192,7 @@ void ParallelTTracker::findStartPosition(const BorisPusher &pusher) {
     selectDT();
 
     if ((back_track && itsOpalBeamline_m.containsSource()) ||
-        Util::getEnergy(itsBunch_m->RefPartP_m, itsBunch_m->getM()) < 1e-3) {
+        Util::getKineticEnergy(itsBunch_m->RefPartP_m, itsBunch_m->getM()) < 1e-3) {
         double gamma = 0.1 / itsBunch_m->getM() + 1.0;
         double beta = sqrt(1.0 - 1.0 / std::pow(gamma, 2));
         itsBunch_m->RefPartP_m = itsBunch_m->toLabTrafo_m.rotateTo(beta * gamma * Vector_t(0, 0, 1));

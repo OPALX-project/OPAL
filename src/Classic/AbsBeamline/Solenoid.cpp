@@ -127,8 +127,8 @@ void Solenoid::initialise(PartBunchBase<double, 3> *bunch, double &startField, d
         msg << level2 << getName() << " using file ";
         myFieldmap_m->getInfo(&msg);
 
-        double zBegin = 0.0, zEnd = 0.0, rBegin = 0.0, rEnd = 0.0;
-        myFieldmap_m->getFieldDimensions(zBegin, zEnd, rBegin, rEnd);
+        double zBegin = 0.0, zEnd = 0.0;
+        myFieldmap_m->getFieldDimensions(zBegin, zEnd);
 
         startField_m = zBegin;
         length_m = zEnd - zBegin;

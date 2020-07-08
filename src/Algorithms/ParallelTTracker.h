@@ -1,22 +1,25 @@
+//
+// Class ParallelTTracker
+//   OPAL-T tracker.
+//   The visitor class for tracking particles with time as independent
+//   variable.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_ParallelTTracker_HH
 #define OPAL_ParallelTTracker_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: ParallelTTracker.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.2.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: ParallelTTracker
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2004/11/12 20:10:11 $
-// $Author: adelmann $
-//
-// ------------------------------------------------------------------------
 #include "Algorithms/Tracker.h"
 #include "Steppers/BorisPusher.h"
 #include "Structure/DataSink.h"
@@ -29,7 +32,6 @@
 
 #include "Algorithms/OrbitThreader.h"
 #include "Algorithms/IndexMap.h"
-#include "AbsBeamline/AlignWrapper.h"
 #include "AbsBeamline/BeamBeam.h"
 #include "AbsBeamline/BeamStripping.h"
 #include "AbsBeamline/CCollimator.h"
@@ -99,8 +101,6 @@ public:
 
 
     virtual ~ParallelTTracker();
-
-    virtual void visitAlignWrapper(const AlignWrapper &);
 
     /// Apply the algorithm to a BeamBeam.
     virtual void visitBeamBeam(const BeamBeam &);
@@ -298,10 +298,6 @@ private:
 
     void evenlyDistributeParticles();
 };
-
-inline void ParallelTTracker::visitAlignWrapper(const AlignWrapper &wrap) {
-    itsOpalBeamline_m.visit(wrap, *this, itsBunch_m);
-}
 
 inline void ParallelTTracker::visitBeamBeam(const BeamBeam &bb) {
     itsOpalBeamline_m.visit(bb, *this, itsBunch_m);

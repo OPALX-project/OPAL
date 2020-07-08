@@ -1,26 +1,27 @@
-// ------------------------------------------------------------------------
-// $RCSfile: DefaultVisitor.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: DefaultVisitor
-//   Defines the default interface for a BeamlineVisitor.
+// Class DefaultVisitor
+//   The default interface for a BeamlineVisitor.
+//   A default implementation for all visitors that can iterate over a
+//   beam line representation.
+//   This abstract base class implements the default behaviour for the
+//   structural classes Beamline and FlaggedElmPtr.
+//   It also holds the data required for all visitors in a protected area.
 //
-// ------------------------------------------------------------------------
-// Class category: Algorithms
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/05/03 08:16:04 $
-// $Author: mad $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Algorithms/DefaultVisitor.h"
 
-#include "AbsBeamline/AlignWrapper.h"
 #include "AbsBeamline/BeamBeam.h"
 #include "AbsBeamline/BeamStripping.h"
 #include "AbsBeamline/CCollimator.h"
@@ -64,12 +65,6 @@
 
 #include "Beamlines/Beamline.h"
 #include "Beamlines/FlaggedElmPtr.h"
-
-#include "ComponentWrappers/CorrectorWrapper.h"
-#include "ComponentWrappers/MultipoleWrapper.h"
-#include "ComponentWrappers/RBendWrapper.h"
-#include "ComponentWrappers/SBendWrapper.h"
-#include "ComponentWrappers/CyclotronWrapper.h"
 
 #include "AbsBeamline/Ring.h" // OPAL file
 
@@ -280,36 +275,6 @@ void DefaultVisitor::visitFlaggedElmPtr(const FlaggedElmPtr &fep) {
     } else {
         fep.getElement()->accept(*this);
     }
-}
-
-
-void DefaultVisitor::visitAlignWrapper(const AlignWrapper &wrap) {
-    // Default behaviour: Apply algorithm to the non-offset element.
-    wrap.getElement()->accept(*this);
-}
-
-
-void DefaultVisitor::visitCorrectorWrapper(const CorrectorWrapper &wrap) {
-    visitCorrector(wrap);
-}
-
-void DefaultVisitor::visitCyclotronWrapper(const CyclotronWrapper &wrap) {
-    visitCyclotron(wrap);
-}
-
-
-void DefaultVisitor::visitMultipoleWrapper(const MultipoleWrapper &wrap) {
-    visitMultipole(wrap);
-}
-
-
-void DefaultVisitor::visitRBendWrapper(const RBendWrapper &wrap) {
-    visitRBend(wrap);
-}
-
-
-void DefaultVisitor::visitSBendWrapper(const SBendWrapper &wrap) {
-    visitSBend(wrap);
 }
 
 

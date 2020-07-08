@@ -1,66 +1,64 @@
-#ifndef CLASSIC_FIELDMAP3DMAGNETOSTATICH5BLOCK_HH
-#define CLASSIC_FIELDMAP3DMAGNETOSTATICH5BLOCK_HH
+//
+// Class FM3DMagnetoStaticH5Block
+//   Class for magneto-static 3D field-maps stored in H5hut files.
+//
+// Copyright (c) 2020, Achim Gsell, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
 
-#include "Fields/Fieldmap.h"
-#include "hdf5.h"
-#include "H5hut.h"
+#ifndef CLASSIC_FIELDMAP3DMAGNETOSTATICH5BLOCK_H
+#define CLASSIC_FIELDMAP3DMAGNETOSTATICH5BLOCK_H
 
-class FM3DMagnetoStaticH5Block: public Fieldmap {
+#include "Fields/FM3DH5BlockBase.h"
+
+#include <vector>
+
+class FM3DMagnetoStaticH5Block: public FM3DH5BlockBase {
 
 public:
-    virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
-    virtual void getFieldDimensions(double &zBegin, double &zEnd, double &rBegin, double &rEnd) const;
-    virtual void getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const;
-    virtual bool getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const;
-    virtual void swap();
-    virtual void getInfo(Inform *msg);
-    virtual double getFrequency() const;
-    virtual void setFrequency(double freq);
-
-    virtual bool isInside(const Vector_t &r) const;
+    virtual bool getFieldstrength (
+        const Vector_t &R, Vector_t &E, Vector_t &B) const;
+    
 private:
-    FM3DMagnetoStaticH5Block(std::string aFilename);
-    ~FM3DMagnetoStaticH5Block();
+    FM3DMagnetoStaticH5Block (
+        std::string aFilename);
 
-    virtual void readMap();
-    virtual void freeMap();
+    virtual ~FM3DMagnetoStaticH5Block (
+        );
 
-    std::vector<h5_float64_t> FieldstrengthEz_m;    /**< 3D array with Ez */
-    std::vector<h5_float64_t> FieldstrengthEx_m;    /**< 3D array with Ex */
-    std::vector<h5_float64_t> FieldstrengthEy_m;    /**< 3D array with Ey */
-    std::vector<h5_float64_t> FieldstrengthBz_m;    /**< 3D array with Bz */
-    std::vector<h5_float64_t> FieldstrengthBx_m;    /**< 3D array with Bx */
-    std::vector<h5_float64_t> FieldstrengthBy_m;    /**< 3D array with By */
+    virtual void readMap (
+        );
 
-    h5_float64_t frequency_m;
+    virtual void freeMap (
+        );
 
-    h5_float64_t xbegin_m;
-    h5_float64_t xend_m;
-    //     int xcentral_idx_m;
+    virtual double getFrequency (
+        ) const;
 
-    h5_float64_t ybegin_m;
-    h5_float64_t yend_m;
-    //     int ycentral_idx_m;
+    std::vector<double> FieldstrengthBz_m;    /**< 3D array with Bz */
+    std::vector<double> FieldstrengthBx_m;    /**< 3D array with Bx */
+    std::vector<double> FieldstrengthBy_m;    /**< 3D array with By */
 
-    h5_float64_t zbegin_m;
-    h5_float64_t zend_m;
-
-    h5_float64_t hx_m;                   /**< length between points in grid, x-direction */
-    h5_float64_t hy_m;                   /**< length between points in grid, y-direction */
-    h5_float64_t hz_m;                   /**< length between points in grid, z-direction */
-    h5_int64_t num_gridpx_m;              /**< Read in number of points after 0(not counted here) in grid, r-direction*/
-    h5_int64_t num_gridpy_m;              /**< Read in number of points after 0(not counted here) in grid, r-direction*/
-    h5_int64_t num_gridpz_m;              /**< Read in number of points after 0(not counted here) in grid, z-direction*/
-
-    bool swap_m;
     friend class Fieldmap;
+    friend class FM3DH5BlockBase;
 };
 
-inline bool FM3DMagnetoStaticH5Block::isInside(const Vector_t &r) const
-{
-    return ((r(0) >= xbegin_m && r(0) < xend_m) &&
-            (r(1) >= ybegin_m && r(1) < yend_m) &&
-            (r(2) >= zbegin_m && r(2) < zend_m));
-}
-
 #endif
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c++
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

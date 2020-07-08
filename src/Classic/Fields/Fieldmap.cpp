@@ -1,5 +1,6 @@
 #include "Fields/Fieldmap.h"
 #include "Fields/FM3DDynamic.h"
+#include "Fields/FM3DH5BlockBase.h"
 #include "Fields/FM3DH5Block.h"
 #include "Fields/FM3DH5Block_nonscale.h"
 #include "Fields/FM3DMagnetoStaticH5Block.h"

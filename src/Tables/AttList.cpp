@@ -1,20 +1,20 @@
-// ------------------------------------------------------------------------
-// $RCSfile: AttList.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: AttList
+// Class AttList
+//   The ATTLIST command.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2001/08/13 15:25:21 $
-// $Author: jowett $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Tables/AttList.h"
 #include "AbstractObjects/BeamSequence.h"
 #include "AbstractObjects/Table.h"
@@ -32,9 +32,6 @@
 using std::vector;
 
 
-// Class AttList
-// ------------------------------------------------------------------------
-
 namespace {
 
     // The attributes of class AttList.
@@ -42,7 +39,6 @@ namespace {
         LINE,        // The name of the line to be listed.
         FNAME,       // The name of the file to be written.
         ALL,         // If true, list all columns.
-        VALUE,       // Which value is desired: "ACTUAL", "IDEAL", "ERROR".
         COLUMN,      // The columns to be written.
         SIZE
     };
@@ -59,8 +55,6 @@ AttList::AttList():
                      ("FILE", "Name of file to receive output", "ATTLIST");
     itsAttr[ALL] = Attributes::makeBool
                    ("ALL", "Are all columns desired?");
-    itsAttr[VALUE] = Attributes::makeString
-                     ("VALUE", "Which value is desired: ACTUAL, IDEAL, or ERROR.", "ACTUAL");
     itsAttr[COLUMN] = Attributes::makeStringArray
                       ("COLUMN", "The columns to be written");
 
@@ -121,20 +115,6 @@ void AttList::execute() {
 
 
 void AttList::writeTable(const Beamline &line, std::ostream &os) {
-    // Type of values desired.
-    const std::string &value = Attributes::getString(itsAttr[VALUE]);
-    OpalElement::ValueFlag flag = OpalElement::ACTUAL_FLAG;
-    if(value == "ACTUAL") {
-        flag = OpalElement::ACTUAL_FLAG;
-    } else if(value == "IDEAL") {
-        flag = OpalElement::IDEAL_FLAG;
-    } else if(value == "ERROR") {
-        flag = OpalElement::ERROR_FLAG;
-    } else {
-        throw OpalException("AttList::writeTable()",
-                            "Unknown \"VALUE\" type \"" + value + "\".");
-    }
-
     // Construct column access table.
     // This may throw, if a column is unknown.
     vector<std::string> header = Attributes::getStringArray(itsAttr[COLUMN]);
@@ -151,8 +131,7 @@ void AttList::writeTable(const Beamline &line, std::ostream &os) {
        << "@ DATE     %s  " << timer.date() << "\n"
        << "@ TIME     %s  " << timer.time() << "\n"
        << "@ ORIGIN   %s  OPAL_9.5/4\n"
-       << "@ COMMENT  %s  \""
-       << "@ VALUE    %s  " << value << "\n";
+       << "@ COMMENT  %s  \"\n";
     OpalData::getInstance()->printTitle(os);
     os << "\"\n";
 
@@ -173,6 +152,6 @@ void AttList::writeTable(const Beamline &line, std::ostream &os) {
     os << '\n';
 
     // List the table body.
-    AttWriter writer(line, os, flag, buffer);
+    AttWriter writer(line, os, buffer);
     writer.execute();
 }

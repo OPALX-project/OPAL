@@ -1,32 +1,27 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalHKicker.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalHKicker
-//   The class of OPAL horizontal orbit correctors.
+// Class OpalHKicker
+//   The HKICKER element.
+//   Note the sign convention:  A positive kick bend particles to positive x.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:39 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalHKicker.h"
 #include "AbstractObjects/AttributeHandler.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/XCorrectorRep.h"
-#include "ComponentWrappers/CorrectorWrapper.h"
 #include "Physics/Physics.h"
-
-
-// Class OpalHKicker
-// ------------------------------------------------------------------------
 
 OpalHKicker::OpalHKicker():
     OpalElement(SIZE, "HKICKER",
@@ -45,13 +40,13 @@ OpalHKicker::OpalHKicker():
 
     registerOwnership();
 
-    setElement((new XCorrectorRep("HKICKER"))->makeWrappers());
+    setElement(new XCorrectorRep("HKICKER"));
 }
 
 
 OpalHKicker::OpalHKicker(const std::string &name, OpalHKicker *parent):
     OpalElement(name, parent) {
-    setElement((new XCorrectorRep(name))->makeWrappers());
+    setElement(new XCorrectorRep(name));
 }
 
 
@@ -65,19 +60,11 @@ OpalHKicker *OpalHKicker::clone(const std::string &name) {
 
 
 void OpalHKicker::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
-    const CorrectorWrapper *corr =
-        dynamic_cast<const CorrectorWrapper *>(base.removeAlignWrapper());
-    BDipoleField field;
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 
-    if(flag == ERROR_FLAG) {
-        field = corr->errorField();
-    } else if(flag == ACTUAL_FLAG) {
-        field = corr->getField();
-    } else if(flag == IDEAL_FLAG) {
-        field = corr->getDesign().getField();
-    }
+    const XCorrectorRep *corr = dynamic_cast<const XCorrectorRep *>(&base);
+    BDipoleField field = corr->getField();
 
     double scale = Physics::c / OpalData::getInstance()->getP0();
     attributeRegistry["HKICK"]->setReal(- field.getBy() * scale);
@@ -89,7 +76,7 @@ void OpalHKicker::update() {
     OpalElement::update();
 
     XCorrectorRep *corr =
-        dynamic_cast<XCorrectorRep *>(getElement()->removeWrappers());
+        dynamic_cast<XCorrectorRep *>(getElement());
     double length = Attributes::getReal(itsAttr[LENGTH]);
     double factor = OpalData::getInstance()->getP0() / Physics::c;
     double kick = Attributes::getReal(itsAttr[KICK]);

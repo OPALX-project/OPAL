@@ -57,7 +57,6 @@ public:
     /// Constructor.
     AttWriter(const Beamline &,
               std::ostream &,
-              OpalElement::ValueFlag valueFlag,
               const std::vector<AttCell *> &);
 
     virtual ~AttWriter();
@@ -78,9 +77,6 @@ private:
 
     // The current output line representation.
     const std::vector<AttCell *> &itsBuffer;
-
-    // The flag for the type of value desired.
-    OpalElement::ValueFlag itsValueFlag;
 };
 
 #endif // OPAL_AttWriter_HH

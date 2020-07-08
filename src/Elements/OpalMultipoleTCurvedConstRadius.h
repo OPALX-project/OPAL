@@ -70,7 +70,7 @@ public:
      *
      *  Just calls fillRegisteredAttributes on the base class
      */
-    virtual void fillRegisteredAttributes(const ElementBase &, ValueFlag);
+    virtual void fillRegisteredAttributes(const ElementBase &);
 
     /** Update the MultipoleTCurvedConstRadius with new parameters from UI parser */
     virtual void update();

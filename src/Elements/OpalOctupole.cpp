@@ -1,26 +1,24 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalOctupole.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1.4.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalOctupole
-//   The class of OPAL Octupoles.
+// Class OpalOctupole
+//   The OCTUPOLE element.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2002/12/09 15:06:07 $
-// $Author: jsberg $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalOctupole.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/MultipoleRep.h"
-#include "ComponentWrappers/MultipoleWrapper.h"
 #include "Fields/BMultipoleField.h"
 #include "Physics/Physics.h"
 #include "Utilities/Options.h"
@@ -28,8 +26,6 @@
 #include <iostream>
 #include <sstream>
 
-// Class OpalOctupole
-// ------------------------------------------------------------------------
 
 OpalOctupole::OpalOctupole():
     OpalElement(SIZE, "OCTUPOLE",
@@ -45,13 +41,13 @@ OpalOctupole::OpalOctupole():
 
     registerOwnership();
 
-    setElement((new MultipoleRep("OCTUPOLE"))->makeWrappers());
+    setElement(new MultipoleRep("OCTUPOLE"));
 }
 
 
 OpalOctupole::OpalOctupole(const std::string &name, OpalOctupole *parent):
     OpalElement(name, parent) {
-    setElement((new MultipoleRep(name))->makeWrappers());
+    setElement(new MultipoleRep(name));
 }
 
 
@@ -70,22 +66,11 @@ void OpalOctupole::print(std::ostream &os) const {
 
 
 void OpalOctupole::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 
-    // Get the desired field.
-    const MultipoleWrapper *mult =
-        dynamic_cast<const MultipoleWrapper *>(base.removeAlignWrapper());
-    BMultipoleField field;
-
-    // Get the desired field.
-    if(flag == ERROR_FLAG) {
-        field = mult->errorField();
-    } else if(flag == ACTUAL_FLAG) {
-        field = mult->getField();
-    } else if(flag == IDEAL_FLAG) {
-        field = mult->getDesign().getField();
-    }
+    const MultipoleRep *oct = dynamic_cast<const MultipoleRep *>(&base);
+    BMultipoleField field = oct->getField();
 
     double length = getLength();
     double scale = Physics::c / OpalData::getInstance()->getP0();
@@ -111,7 +96,7 @@ void OpalOctupole::update() {
     OpalElement::update();
 
     MultipoleRep *oct =
-        dynamic_cast<MultipoleRep *>(getElement()->removeWrappers());
+        dynamic_cast<MultipoleRep *>(getElement());
     oct->setElementLength(Attributes::getReal(itsAttr[LENGTH]));
     double factor = OpalData::getInstance()->getP0() / (Physics::c * 6.0);
     BMultipoleField field;

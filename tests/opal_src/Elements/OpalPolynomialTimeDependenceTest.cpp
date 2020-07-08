@@ -57,7 +57,7 @@ TEST(OpalPolynomialTimeDependenceTest, UpdateTest) {
     OpalPolynomialTimeDependence dependence;
     // std::cerr << "FILL" << std::endl;
     // makes a segmentation fault...
-    // dependence.fillRegisteredAttributes(element, OpalElement::IDEAL_FLAG);
+    // dependence.fillRegisteredAttributes(element);
     // std::cerr << "DONE" << std::endl;
 
 }

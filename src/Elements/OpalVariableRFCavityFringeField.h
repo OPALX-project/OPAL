@@ -74,7 +74,7 @@ class OpalVariableRFCavityFringeField : public OpalElement {
      *
      *  This updates the registered attributed with values from the ElementBase
      */
-    virtual void fillRegisteredAttributes(const ElementBase &, ValueFlag);
+    virtual void fillRegisteredAttributes(const ElementBase &);
 
     /** Update the OpalVariableRFCavity with new parameters from UI parser */
     virtual void update();

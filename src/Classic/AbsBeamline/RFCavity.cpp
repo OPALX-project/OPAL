@@ -172,13 +172,12 @@ void RFCavity::initialise(PartBunchBase<double, 3> *bunch, double &startField, d
         return;
     }
 
-    double rBegin = 0.0, rEnd = 0.0;
     Inform msg("RFCavity ", *gmsg);
     std::stringstream errormsg;
     RefPartBunch_m = bunch;
 
     fieldmap_m = Fieldmap::getFieldmap(filename_m, fast_m);
-    fieldmap_m->getFieldDimensions(startField_m, endField, rBegin, rEnd);
+    fieldmap_m->getFieldDimensions(startField_m, endField);
     if (endField <= startField_m) {
         throw GeneralClassicException("RFCavity::initialise",
                                       "The length of the field map '" + filename_m + "' is zero or negativ");
@@ -495,22 +494,22 @@ ElementBase::ElementType RFCavity::getType() const {
 double RFCavity::getAutoPhaseEstimateFallback(double E0, double t0, double q, double mass) {
 
     const double dt = 1e-13;
-    const double p0 = Util::getP(E0, mass);
+    const double p0 = Util::getBetaGamma(E0, mass);
     const double origPhase =getPhasem();
     double dphi = Physics::pi / 18;
 
     double phi = 0.0;
     setPhasem(phi);
-    std::pair<double, double> ret = trackOnAxisParticle(E0 / mass, t0, dt, q, mass);
+    std::pair<double, double> ret = trackOnAxisParticle(p0, t0, dt, q, mass);
     double phimax = 0.0;
-    double Emax = Util::getEnergy(Vector_t(0.0, 0.0, ret.first), mass);
+    double Emax = Util::getKineticEnergy(Vector_t(0.0, 0.0, ret.first), mass);
     phi += dphi;
 
     for (unsigned int j = 0; j < 2; ++ j) {
         for (unsigned int i = 0; i < 36; ++ i, phi += dphi) {
             setPhasem(phi);
             ret = trackOnAxisParticle(p0, t0, dt, q, mass);
-            double Ekin = Util::getEnergy(Vector_t(0.0, 0.0, ret.first), mass);
+            double Ekin = Util::getKineticEnergy(Vector_t(0.0, 0.0, ret.first), mass);
             if (Ekin > Emax) {
                 Emax = Ekin;
                 phimax = phi;
@@ -636,7 +635,7 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
         }
 
         double cosine_part = 0.0, sine_part = 0.0;
-        double p0 = std::sqrt((E0 / mass + 1) * (E0 / mass + 1) - 1);
+        double p0 = Util::getBetaGamma(E0, mass);
         cosine_part += scale_m * std::cos(frequency_m * t0) * F[0];
         sine_part += scale_m * std::sin(frequency_m * t0) * F[0];
 
@@ -676,11 +675,11 @@ std::pair<double, double> RFCavity::trackOnAxisParticle(const double &p0,
     const double zend = length_m + startField_m;
 
     Vector_t z(0.0, 0.0, zbegin);
-    double dz = 0.5 * p(2) / std::sqrt(1.0 + dot(p, p)) * cdt;
+    double dz = 0.5 * p(2) / Util::getGamma(p) * cdt;
     Vector_t Ef(0.0), Bf(0.0);
 
     if (out) *out << std::setw(18) << z[2]
-                  << std::setw(18) << Util::getEnergy(p, mass)
+                  << std::setw(18) << Util::getKineticEnergy(p, mass)
                   << std::endl;
     while (z(2) + dz < zend && z(2) + dz > zbegin) {
         z /= cdt;
@@ -701,7 +700,7 @@ std::pair<double, double> RFCavity::trackOnAxisParticle(const double &p0,
         t += dt;
 
         if (out) *out << std::setw(18) << z[2]
-                      << std::setw(18) << Util::getEnergy(p, mass)
+                      << std::setw(18) << Util::getKineticEnergy(p, mass)
                       << std::endl;
     }
 
@@ -722,8 +721,8 @@ bool RFCavity::isInside(const Vector_t &r) const {
 double RFCavity::getElementLength() const {
     double length = ElementBase::getElementLength();
     if (length < 1e-10 && fieldmap_m != NULL) {
-        double start, end, tmp;
-        fieldmap_m->getFieldDimensions(start, end, tmp, tmp);
+        double start, end;
+        fieldmap_m->getFieldDimensions(start, end);
         length = end - start;
     }
 
@@ -732,6 +731,13 @@ double RFCavity::getElementLength() const {
 
 void RFCavity::getElementDimensions(double &begin,
                                     double &end) const {
-    double tmp;
-    fieldmap_m->getFieldDimensions(begin, end, tmp, tmp);
+    fieldmap_m->getFieldDimensions(begin, end);
 }
+
+// vi: set et ts=4 sw=4 sts=4:
+// Local Variables:
+// mode:c++
+// c-basic-offset: 4
+// indent-tabs-mode: nil
+// require-final-newline: nil
+// End:

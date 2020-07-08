@@ -1,22 +1,25 @@
+//
+// Class Line
+//   The LINE definition.
+//   A Line contains a CLASSIC TBeamline<FlaggedElmPtr> which represents the
+//   sequence of elements in the line.  The line is always flat in the sense
+//   that nested anonymous lines are flattened.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_Line_HH
 #define OPAL_Line_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile Line.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: Line
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:33:42 $
-// $Author: Andreas Adelmann $
-//
-// ------------------------------------------------------------------------
 
 #include "AbstractObjects/BeamSequence.h"
 #include "AbsBeamline/ElementBase.h"
@@ -25,13 +28,6 @@
 
 class TokenStream;
 
-
-// Class Line
-// ------------------------------------------------------------------------
-/// The LINE definition.
-//  A Line contains a CLASSIC TBeamline<FlaggedElmPtr> which represents the
-//  sequence of elements in the line.  The line is always flat in the sense
-//  that nested anonymous lines are flattened.
 
 class Line: public BeamSequence {
 

@@ -226,9 +226,7 @@ bool FM1DProfile1::getFieldDerivative(const Vector_t &/*R*/,
 }
 
 void FM1DProfile1::getFieldDimensions(double &sBegin,
-                                      double &sEnd,
-                                      double &/*rBegin*/,
-                                      double &/*rEnd*/) const {
+                                      double &sEnd) const {
     sBegin = sBegin_m;
     sEnd = sEnd_m;
 }

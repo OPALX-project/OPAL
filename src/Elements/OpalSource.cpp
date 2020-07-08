@@ -1,13 +1,26 @@
-
+//
+// Class OpalSource
+//   The SOURCE element.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalSource.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/SourceRep.h"
 #include "Physics/Physics.h"
 
-
-// Class OpalSource
-// ------------------------------------------------------------------------
 
 OpalSource::OpalSource():
     OpalElement(SIZE, "SOURCE",
@@ -19,13 +32,13 @@ OpalSource::OpalSource():
 
     registerOwnership();
 
-    setElement((new SourceRep("SOURCE"))->makeAlignWrapper());
+    setElement(new SourceRep("SOURCE"));
 }
 
 
 OpalSource::OpalSource(const std::string &name, OpalSource *parent):
     OpalElement(name, parent) {
-    setElement((new SourceRep(name))->makeAlignWrapper());
+    setElement(new SourceRep(name));
 }
 
 
@@ -39,8 +52,8 @@ OpalSource *OpalSource::clone(const std::string &name) {
 
 
 void OpalSource::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 }
 
 
@@ -48,7 +61,7 @@ void OpalSource::update() {
     OpalElement::update();
 
     SourceRep *sol =
-        dynamic_cast<SourceRep *>(getElement()->removeWrappers());
+        dynamic_cast<SourceRep *>(getElement());
     double length = 0.05;
 
     sol->setElementLength(length);

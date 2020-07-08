@@ -1,21 +1,22 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalKicker.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalKicker
-//   The class of OPAL horizontal orbit correctors.
+// Class OpalKicker
+//   The KICKER element.
+//   Note the sign convention:  Positive kicks bend particles to positive x or
+//   y respectively.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2001/08/13 15:32:23 $
-// $Author: jowett $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalKicker.h"
 #include "AbstractObjects/AttributeHandler.h"
 #include "AbstractObjects/OpalData.h"
@@ -23,12 +24,8 @@
 // JMJ 18/12/2000 no longer need this, see code commented out below.
 //#include "Utilities/Options.h"
 #include "BeamlineCore/CorrectorRep.h"
-#include "ComponentWrappers/CorrectorWrapper.h"
 #include "Physics/Physics.h"
 
-
-// Class OpalKicker
-// ------------------------------------------------------------------------
 
 OpalKicker::OpalKicker():
     OpalElement(SIZE, "KICKER",
@@ -53,13 +50,13 @@ OpalKicker::OpalKicker():
 
     registerOwnership();
 
-    setElement((new CorrectorRep("KICKER"))->makeWrappers());
+    setElement(new CorrectorRep("KICKER"));
 }
 
 
 OpalKicker::OpalKicker(const std::string &name, OpalKicker *parent):
     OpalElement(name, parent) {
-    setElement((new CorrectorRep(name))->makeWrappers());
+    setElement(new CorrectorRep(name));
 }
 
 
@@ -73,21 +70,14 @@ OpalKicker *OpalKicker::clone(const std::string &name) {
 
 
 void OpalKicker::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
+fillRegisteredAttributes(const ElementBase &base) {
     Inform m("fillRegisteredAttributes ");
 
-    OpalElement::fillRegisteredAttributes(base, flag);
-    const CorrectorWrapper *corr =
-        dynamic_cast<const CorrectorWrapper *>(base.removeAlignWrapper());
-    BDipoleField field;
+    OpalElement::fillRegisteredAttributes(base);
 
-    if(flag == ERROR_FLAG) {
-        field = corr->errorField();
-    } else if(flag == ACTUAL_FLAG) {
-        field = corr->getField();
-    } else if(flag == IDEAL_FLAG) {
-        field = corr->getDesign().getField();
-    }
+    const CorrectorRep *corr = dynamic_cast<const CorrectorRep *>(&base);
+
+    BDipoleField field = corr->getField();
 
     double scale = Physics::c / OpalData::getInstance()->getP0();
     attributeRegistry["HKICK"]->setReal(- field.getBy() * scale);
@@ -103,7 +93,7 @@ void OpalKicker::update() {
     OpalElement::update();
 
     CorrectorRep *corr =
-        dynamic_cast<CorrectorRep *>(getElement()->removeWrappers());
+        dynamic_cast<CorrectorRep *>(getElement());
     double length = Attributes::getReal(itsAttr[LENGTH]);
     double factor = OpalData::getInstance()->getP0() / Physics::c;
     double hKick = Attributes::getReal(itsAttr[HKICK]);

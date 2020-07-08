@@ -1,28 +1,30 @@
+//
+// Class Flatten
+//   Flatten a beamline.
+//   The type of beam line members in the flat line is given as a template
+//   parameter.  It may be any class derived from ElmPtr.  Execution of
+//   this visitor yields a flat line of the type defined by the template
+//   parameter Member.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_Flatten_HH
 #define OPAL_Flatten_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: Flatten.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Template class: Flatten<T>
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2001/08/13 15:25:22 $
-// $Author: jowett $
-//
-// ------------------------------------------------------------------------
-
 #include "Tables/RangeSelector.h"
-#include "AbsBeamline/AlignWrapper.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/Element.h"
-//#include "AbstractObjects/OpalData.h"
 #include "BeamlineCore/PatchRep.h"
 #include "BeamlineGeometry/Euclid3D.h"
 #include "Beamlines/TBeamline.h"
@@ -30,14 +32,6 @@
 
 class RangeRep;
 
-
-// Template class Flatten
-// ------------------------------------------------------------------------
-/// Flatten a beamline.
-//  The type of beam line members in the flat line is given as a template
-//  parameter.  It may be any class derived from ElmPtr.  Execution of
-//  this visitor yields a flat line of the type defined by the template
-//  parameter Member.
 
 template <class Member> class Flatten: public RangeSelector {
 
@@ -97,30 +91,30 @@ void Flatten<Member>::execute() {
 
 
 template <class Member> inline void
-Flatten<Member>::handleBeamline(const FlaggedElmPtr &fep) {
-    AlignWrapper &wrap =
-        dynamic_cast<AlignWrapper &>(*fep.getElement()->makeAlignWrapper());
-
-    if(itsRange.isActive()) {
-        // Append the entrance misalignment patch.
-        Euclid3D transform = wrap.getEntranceTransform();
-        PatchRep *patch = new PatchRep("[BEGIN]" + wrap.getName());
-        patch->setPatch(transform);
-        Member member(patch, 0);
-        itsTable.push_back(member);
-    }
-
-    // Delegate algorithm to the beamline.
-    RangeSelector::handleBeamline(fep);
-
-    if(itsRange.isActive()) {
-        // Append the exit misalignment patch.
-        Euclid3D transform = wrap.getExitTransform();
-        PatchRep *patch = new PatchRep("[END]" + wrap.getName());
-        patch->setPatch(transform);
-        Member member(patch, 0);
-        itsTable.push_back(member);
-    }
+Flatten<Member>::handleBeamline(const FlaggedElmPtr &/*fep*/) {
+//     AlignWrapper &wrap =
+//         dynamic_cast<AlignWrapper &>(*fep.getElement()->makeAlignWrapper());
+//
+//     if(itsRange.isActive()) {
+//         // Append the entrance misalignment patch.
+//         Euclid3D transform = wrap.getEntranceTransform();
+//         PatchRep *patch = new PatchRep("[BEGIN]" + wrap.getName());
+//         patch->setPatch(transform);
+//         Member member(patch, 0);
+//         itsTable.push_back(member);
+//     }
+//
+//     // Delegate algorithm to the beamline.
+//     RangeSelector::handleBeamline(fep);
+//
+//     if(itsRange.isActive()) {
+//         // Append the exit misalignment patch.
+//         Euclid3D transform = wrap.getExitTransform();
+//         PatchRep *patch = new PatchRep("[END]" + wrap.getName());
+//         patch->setPatch(transform);
+//         Member member(patch, 0);
+//         itsTable.push_back(member);
+//     }
 }
 
 

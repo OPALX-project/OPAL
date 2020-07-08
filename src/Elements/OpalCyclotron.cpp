@@ -1,21 +1,20 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalCyclotron.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalCyclotron
-//   The class of OPAL cyclotron.
+// Class OpalCyclotron
+//   The OpalCyclotron element.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:39 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include <numeric>
 
 #include "Elements/OpalCyclotron.h"
@@ -28,9 +27,6 @@
 
 #include "TrimCoils/OpalTrimCoil.h"
 #include "TrimCoils/TrimCoil.h"
-
-// Class OpalCyclotron
-// ------------------------------------------------------------------------
 
 OpalCyclotron::OpalCyclotron():
     OpalElement(SIZE, "CYCLOTRON",
@@ -145,13 +141,13 @@ OpalCyclotron::OpalCyclotron():
 
     registerOwnership();
 
-    setElement((new CyclotronRep("CYCLOTRON"))->makeAlignWrapper());
+    setElement(new CyclotronRep("CYCLOTRON"));
 }
 
 OpalCyclotron::OpalCyclotron(const std::string &name, OpalCyclotron *parent):
     OpalElement(name, parent),
     obgeo_m(nullptr) {
-    setElement((new CyclotronRep(name))->makeAlignWrapper());
+    setElement(new CyclotronRep(name));
 }
 
 
@@ -165,14 +161,14 @@ OpalCyclotron *OpalCyclotron::clone(const std::string &name) {
 
 
 void OpalCyclotron::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 }
 
 
 void OpalCyclotron::update() {
     CyclotronRep *cycl =
-        dynamic_cast<CyclotronRep *>(getElement()->removeWrappers());
+        dynamic_cast<CyclotronRep *>(getElement());
 
     std::string fmapfm = Attributes::getString(itsAttr[FMAPFN]);
 

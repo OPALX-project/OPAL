@@ -55,8 +55,8 @@ OpalYRot *OpalYRot::clone(const std::string &name) {
 
 
 void OpalYRot::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
     double angle = Attributes::getReal(itsAttr[ANGLE]);
     attributeRegistry["SANGLE"]->setReal(angle);
 }

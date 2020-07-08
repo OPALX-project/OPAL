@@ -1,25 +1,29 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalElement.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2.4.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalElement
-//   The base class for all OPAL beamline elements.
-
-//   and for printing in OPAL-8 format.
+// Class OpalElement
+//   Base class for all beam line elements.
 //
-// ------------------------------------------------------------------------
+//   It defines a registry for attribute cells, used in the ATTLIST command
+//   only.  The exemplar constructors for all OPAL element commands store all
+//   defined attribute names in this registry.  The ATTLIST command can walk
+//   through a beam line or sequence, and call the fillRegisteredAttributes()
+//   method for each element.  This method will fill in the values for all
+//   attributes which exist for this element, and the ATTLIST command can
+//   look them up with findRegisteredAttribute() to build up a print line.
 //
-// $Date: 2002/12/09 15:06:07 $
-// $Author: jsberg $
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// ------------------------------------------------------------------------
-
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalElement.h"
-#include "AbsBeamline/AlignWrapper.h"
 #include "AbsBeamline/ElementImage.h"
 #include "AbsBeamline/Bend2D.h"
 #include "AbstractObjects/Attribute.h"
@@ -39,9 +43,6 @@
 #include <vector>
 #include <boost/regex.hpp>
 
-
-// Class OpalElement
-// ------------------------------------------------------------------------
 
 std::map < std::string, OwnPtr<AttCell> > OpalElement::attributeRegistry;
 
@@ -139,7 +140,7 @@ OpalElement::~OpalElement()
 
 
 void OpalElement::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag) {
+fillRegisteredAttributes(const ElementBase &base) {
     // Fill in the common data for all elements.
     attributeRegistry["NAME"]->setString(getOpalName());
     attributeRegistry["TYPE"]->setString(getTypeName());
@@ -158,18 +159,6 @@ fillRegisteredAttributes(const ElementBase &base, ValueFlag) {
     attributeRegistry["PSI"]->setReal(orientation[2]);
 
     // Misalignments.
-    const AlignWrapper *wrap = dynamic_cast<const AlignWrapper *>(&base);
-    if(wrap) {
-        double dx, dy, dz, dphi, dtheta, dpsi;
-        wrap->offset().getAll(dx, dy, dz, dtheta, dphi, dpsi);
-        attributeRegistry["DX"]->setReal(dx);
-        attributeRegistry["DY"]->setReal(dy);
-        attributeRegistry["DZ"]->setReal(dz);
-        attributeRegistry["DTHETA"]->setReal(dtheta);
-        attributeRegistry["DPHI"]->setReal(dphi);
-        attributeRegistry["DPSI"]->setReal(dpsi);
-    }
-
     CoordinateSystemTrafo misalignment = base.getMisalignment();
     Vector_t misalignmentShift = misalignment.getOrigin();
     Vector_t misalignmentAngles = Util::getTaitBryantAngles(misalignment.getRotation().conjugate());
@@ -561,7 +550,7 @@ void OpalElement::printMultipoleStrength
 }
 
 void OpalElement::update() {
-    ElementBase *base = getElement()->removeWrappers();
+    ElementBase *base = getElement();
 
     auto apert = getApert();
     base->setAperture(apert.first, apert.second);

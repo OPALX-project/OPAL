@@ -4,7 +4,12 @@
 #
 
 print () {
-    echo '#define GIT_VERSION '\"$1\" > src/OPALrevision.h
+    echo '#define GIT_VERSION '\"$1\" > src/OPALrevision-new.h
+    if [[ -e  src/OPALrevision.h ]] && cmp -s src/OPALrevision.h src/OPALrevision-new.h; then
+        rm src/OPALrevision-new.h
+    else
+        mv src/OPALrevision-new.h src/OPALrevision.h
+    fi
 }
 
 # if git(1) is not in $PATH

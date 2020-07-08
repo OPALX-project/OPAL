@@ -111,7 +111,7 @@ bool Astra1DDynamic_fast::getFieldDerivative(const Vector_t &R, Vector_t &E, Vec
     return false;
 }
 
-void Astra1DDynamic_fast::getFieldDimensions(double &zBegin, double &zEnd, double &/*rBegin*/, double &/*rEnd*/) const {
+void Astra1DDynamic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }

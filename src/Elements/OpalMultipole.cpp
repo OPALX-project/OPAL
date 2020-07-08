@@ -1,28 +1,26 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalMultipole.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.3.4.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalMultipole
-//   The class of OPAL general multipoles.
+// Class OpalMultipole
+//   The MULTIPOLE element.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2002/12/09 15:06:07 $
-// $Author: jsberg $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalMultipole.h"
 #include "AbstractObjects/AttributeHandler.h"
 #include "AbstractObjects/Expressions.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/MultipoleRep.h"
-#include "ComponentWrappers/MultipoleWrapper.h"
 #include "Expressions/SValue.h"
 #include "Expressions/SRefExpr.h"
 #include "Physics/Physics.h"
@@ -30,10 +28,6 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
-
-
-// Class OpalMultipole
-// ------------------------------------------------------------------------
 
 OpalMultipole::OpalMultipole():
     OpalElement(SIZE, "MULTIPOLE",
@@ -53,13 +47,13 @@ OpalMultipole::OpalMultipole():
 
     registerOwnership();
 
-    setElement((new MultipoleRep("MULTIPOLE"))->makeWrappers());
+    setElement(new MultipoleRep("MULTIPOLE"));
 }
 
 
 OpalMultipole::OpalMultipole(const std::string &name, OpalMultipole *parent):
     OpalElement(name, parent) {
-    setElement((new MultipoleRep(name))->makeWrappers());
+    setElement(new MultipoleRep(name));
 }
 
 
@@ -78,20 +72,12 @@ void OpalMultipole::print(std::ostream &os) const {
 
 
 void OpalMultipole::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
-    OpalElement::fillRegisteredAttributes(base, flag);
-    const MultipoleWrapper *mult =
-        dynamic_cast<const MultipoleWrapper *>(base.removeAlignWrapper());
-    BMultipoleField field;
+fillRegisteredAttributes(const ElementBase &base) {
+    OpalElement::fillRegisteredAttributes(base);
 
-    // Get the desired field.
-    if(flag == ERROR_FLAG) {
-        field = mult->errorField();
-    } else if(flag == ACTUAL_FLAG) {
-        field = mult->getField();
-    } else if(flag == IDEAL_FLAG) {
-        field = mult->getDesign().getField();
-    }
+    const MultipoleRep *mult = dynamic_cast<const MultipoleRep *>(&base);
+
+    BMultipoleField field = mult->getField();
 
     double length = getLength();
     double scale = Physics::c / OpalData::getInstance()->getP0();
@@ -118,7 +104,7 @@ void OpalMultipole::update() {
 
     // Magnet length.
     MultipoleRep *mult =
-        dynamic_cast<MultipoleRep *>(getElement()->removeWrappers());
+        dynamic_cast<MultipoleRep *>(getElement());
     double length = getLength();
     mult->setElementLength(length);
 

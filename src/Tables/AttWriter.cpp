@@ -51,12 +51,10 @@
 
 AttWriter::AttWriter(const Beamline &line,
                      std::ostream &os,
-                     OpalElement::ValueFlag flag,
                      const std::vector<AttCell *> &buffer):
     DefaultVisitor(line, false, false),
     itsStream(os),
-    itsBuffer(buffer),
-    itsValueFlag(flag)
+    itsBuffer(buffer)
 {}
 
 
@@ -65,7 +63,7 @@ AttWriter::~AttWriter()
 
 
 void AttWriter::visitFlaggedElmPtr(const FlaggedElmPtr &fep) {
-    ElementBase *base = fep.getElement()->removeWrappers();
+    ElementBase *base = fep.getElement();
     const std::string &nam = base->getName();
     if(dynamic_cast<Beamline *>(base)) {
         DefaultVisitor::visitFlaggedElmPtr(fep);
@@ -76,7 +74,7 @@ void AttWriter::visitFlaggedElmPtr(const FlaggedElmPtr &fep) {
             OpalElement::setRegisteredAttribute("KEYWORD", "DRIFT");
         } else {
             OpalElement *elem = dynamic_cast<OpalElement *>(OpalData::getInstance()->find(nam));
-            elem->fillRegisteredAttributes(*fep.getElement(), itsValueFlag);
+            elem->fillRegisteredAttributes(*fep.getElement());
         }
 
         // Write the current output line and clear it.

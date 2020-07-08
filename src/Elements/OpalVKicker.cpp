@@ -1,32 +1,28 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalVKicker.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalVKicker
-//   The class of OPAL vertical orbit correctors.
+// Class OpalVKicker
+//   The VKICKER element.
+//   Note the sign convention:  A positive kick bend particles to positive y.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2001/08/13 15:32:24 $
-// $Author: jowett $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Elements/OpalVKicker.h"
 #include "AbstractObjects/AttributeHandler.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/YCorrectorRep.h"
-#include "ComponentWrappers/CorrectorWrapper.h"
 #include "Physics/Physics.h"
 
-
-// Class OpalVKicker
-// ------------------------------------------------------------------------
 
 OpalVKicker::OpalVKicker():
     OpalElement(SIZE, "VKICKER",
@@ -45,13 +41,13 @@ OpalVKicker::OpalVKicker():
 
     registerOwnership();
 
-    setElement((new YCorrectorRep("VKICKER"))->makeWrappers());
+    setElement(new YCorrectorRep("VKICKER"));
 }
 
 
 OpalVKicker::OpalVKicker(const std::string &name, OpalVKicker *parent):
     OpalElement(name, parent) {
-    setElement((new YCorrectorRep(name))->makeWrappers());
+    setElement(new YCorrectorRep(name));
 }
 
 
@@ -65,21 +61,12 @@ OpalVKicker *OpalVKicker::clone(const std::string &name) {
 
 
 void OpalVKicker::
-fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
+fillRegisteredAttributes(const ElementBase &base) {
     Inform m("fillRegisteredAttributes ");
-    OpalElement::fillRegisteredAttributes(base, flag);
+    OpalElement::fillRegisteredAttributes(base);
 
-    const CorrectorWrapper *corr =
-    dynamic_cast<const CorrectorWrapper *>(base.removeAlignWrapper());
-    BDipoleField field;
-
-    if(flag == ERROR_FLAG) {
-        field = corr->errorField();
-    } else if(flag == ACTUAL_FLAG) {
-        field = corr->getField();
-    } else if(flag == IDEAL_FLAG) {
-        field = corr->getDesign().getField();
-    }
+    const YCorrectorRep *corr = dynamic_cast<const YCorrectorRep *>(&base);
+    BDipoleField field = corr->getField();
 
     double scale = Physics::c / OpalData::getInstance()->getP0();
     attributeRegistry["HKICK"]->setReal(- field.getBy() * scale);
@@ -95,7 +82,7 @@ fillRegisteredAttributes(const ElementBase &base, ValueFlag flag) {
 void OpalVKicker::update() {
     OpalElement::update();
 
-    YCorrectorRep *corr = dynamic_cast<YCorrectorRep *>(getElement()->removeWrappers());
+    YCorrectorRep *corr = dynamic_cast<YCorrectorRep *>(getElement());
 
     double length = Attributes::getReal(itsAttr[LENGTH]);
     double factor = OpalData::getInstance()->getP0() / Physics::c;

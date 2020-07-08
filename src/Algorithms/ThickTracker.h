@@ -148,9 +148,6 @@ public:
 
     virtual ~ThickTracker();
 
-
-    virtual void visitAlignWrapper(const AlignWrapper &);
-
     /// Apply the algorithm to a BeamBeam.
     virtual void visitBeamBeam(const BeamBeam &);
 
@@ -383,11 +380,6 @@ private:
     IpplTimings::TimerRef mapCombination_m; ///< map accumulation along elements_m -> Transfermap
     IpplTimings::TimerRef mapTracking_m;    ///< track particles trough maps of elements_m
 };
-
-inline void ThickTracker::visitAlignWrapper(const AlignWrapper &/*wrap*/) {
-//     itsOpalBeamline_m.visit(wrap, *this, itsBunch_m);
-    this->throwElementError_m("AlignWrapper");
-}
 
 inline void ThickTracker::visitBeamBeam(const BeamBeam &/*bb*/) {
 //     itsOpalBeamline_m.visit(bb, *this, itsBunch_m);

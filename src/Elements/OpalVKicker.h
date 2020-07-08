@@ -1,30 +1,26 @@
+//
+// Class OpalVKicker
+//   The VKICKER element.
+//   Note the sign convention:  A positive kick bend particles to positive y.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_OpalVKicker_HH
 #define OPAL_OpalVKicker_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: OpalVKicker.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: OpalVKicker
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2001/08/13 15:32:24 $
-// $Author: jowett $
-//
-// ------------------------------------------------------------------------
-
 #include "Elements/OpalElement.h"
 
-
-// Class OpalVKicker
-// ------------------------------------------------------------------------
-/// The VKICKER element.
-//  Note the sign convention:  A positive kick bend particles to positive y.
 
 class OpalVKicker: public OpalElement {
 
@@ -55,7 +51,7 @@ public:
     //END   JMJ 15/12/2000, adding missing print method
 
     /// Fill in all registered attributes.
-    virtual void fillRegisteredAttributes(const ElementBase &, ValueFlag);
+    virtual void fillRegisteredAttributes(const ElementBase &);
 
     /// Update the embedded CLASSIC corrector.
     virtual void update();

@@ -39,7 +39,7 @@ bool FMDummy::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_
     return false;
 }
 
-void FMDummy::getFieldDimensions(double &zBegin, double &zEnd, double &/*rBegin*/, double &/*rEnd*/) const {
+void FMDummy::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }

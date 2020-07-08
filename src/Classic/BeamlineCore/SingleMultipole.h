@@ -1,55 +1,48 @@
+//
+// Class SingleMultipole
+//   Representation for single multipoles.
+//   Template for representation of single multipoles.
+//   Represents all the basic (design) multipole magnets found in an
+//   accelerator.  A single multipole has only one multipole component,
+//   the pole-number of which cannot be changed (once a quadrupole, always
+//   a quadrupole).  This differs from a MultipoleRep object which can
+//   have an arbitrary number of multipole components.
+//   [P]
+//   This template class can be used to instantiate classes like:
+//   [UL]
+//   [LI]Quadrupole (order = 2),
+//   [LI]Sextupole (order = 3),
+//   [LI]Octupole (order = 4),
+//   [LI]SkewQuadrupole (order = -2),
+//   [LI]SkewSextupole (order = -3),
+//   [LI]SkewOctupole (order = -4).
+//   [/UL]
+//   The order and the skew flag are encoded in the template parameter.
+//   A positive [b]order[/b] implies a normal multipole,
+//   A negative [b]order[/b] implies a skew multipole.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_SingleMultipole_HH
 #define CLASSIC_SingleMultipole_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: SingleMultipole.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Template class: SingleMultipole
-//
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:34 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
 
 #include "AbsBeamline/Multipole.h"
 #include "AbsBeamline/ElementImage.h"
 #include "BeamlineGeometry/StraightGeometry.h"
 #include "Channels/IndirectChannel.h"
-#include "ComponentWrappers/MultipoleWrapper.h"
 #include "Fields/BSingleMultipoleField.h"
 
-
-// Template class SingleMultipole
-// ------------------------------------------------------------------------
-/// Representation for single multipoles.
-//  Template for representation of single multipoles.
-//  Represents all the basic (design) multipole magnets found in an
-//  accelerator.  A single multipole has only one multipole component,
-//  the pole-number of which cannot be changed (once a quadrupole, always
-//  a quadrupole).  This differs from a MultipoleRep object which can
-//  have an arbitrary number of multipole components.
-//  [P]
-//  This template class can be used to instantiate classes like:
-//  [UL]
-//  [LI]Quadrupole (order = 2),
-//  [LI]Sextupole (order = 3),
-//  [LI]Octupole (order = 4),
-//  [LI]SkewQuadrupole (order = -2),
-//  [LI]SkewSextupole (order = -3),
-//  [LI]SkewOctupole (order = -4).
-//  [/UL]
-//  The order and the skew flag are encoded in the template parameter.
-//  A positive [b]order[/b] implies a normal multipole,
-//  A negative [b]order[/b] implies a skew multipole.
 
 template <int order>
 class SingleMultipole: public Multipole {
