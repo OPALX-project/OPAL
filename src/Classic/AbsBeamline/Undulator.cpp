@@ -163,7 +163,8 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     mesh.meshLength_ = getMeshLength();
     mesh.meshResolution_ = getMeshResolution();
     mesh.totalTime_ = getTotalTime();
-    // mesh.totalDist_ = lFringe_m + undulator.lu_ * undulator.length_;  Will be used when the solve() function is removed
+    if (mesh.totalTime_ == 0)
+        mesh.totalDist_ = lFringe_m + undulator.lu_ * undulator.length_;
     mesh.truncationOrder_ = getTruncationOrder();
     mesh.spaceCharge_ = true;
     mesh.optimizePosition_ = true;
@@ -210,7 +211,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     // Run the full-wave solver.
     timeval simulationStart;
     gettimeofday(&simulationStart, NULL);
-    solve(solver, mesh, bunch, seed);
+    solver.solve();
 
     // Get total computational time of the full wave simulation.
     timeval simulationEnd;
@@ -220,6 +221,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     msg << "::: Total full wave simulation time [seconds] = " << deltaTime << endl;
     
     // Lorentz Transformation back to undulator local coordinates.
+    // First you need to get the position of the bunch tail.
     double zMin = 1e100;
     for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
         zMin = std::min(zMin, iter->rnp[2]);
@@ -243,7 +245,6 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     // Get total time ellapsed in laboratory frame.
     mesh.totalTime_ = solver.gamma_ * (solver.time_ + solver.beta_ / solver.c0_ * (zMin - bunch.zu_));
 
-    
     // Return particles to itsBunch in local coordinates.
     msg << "Transferring particles back to OPAL bunch." << endl;
     itsBunch->create(solver.chargeVectorn_.size());
@@ -278,152 +279,6 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     itsBunch->print(msg);
 
     setHasBeenSimlated(true);
-}
-
-
-void Undulator::solve(MITHRA::FdTdSC & solver, MITHRA::Mesh& mesh, MITHRA::Bunch& bunch, MITHRA::Seed& seed) const {
-    Inform msg("MITHRA FW solver ", *gmsg); 
-    
-    // Remark: This function is almost entirely copied from mithra/src/solver.cpp, but is adapted for OPAL.
-
-    solver.initialize();
-
-    
-    // Compute total time. This will be eventually moved to MITHRA.
-    double Lu = solver.undulator_[0].lu_ * solver.undulator_[0].length_ / solver.gamma_;
-    double zEnd = Lu + lFringe_m / solver.gamma_;
-    double zMin = 1e100;
-    double bz = 0;
-    for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
-        zMin = std::min(zMin, iter->rnp[2]);
-        bz += iter->gbnp[2] / std::sqrt(1 + iter->gbnp.norm2());
-    }
-    allreduce(&zMin, 1, std::less<double>());
-    allreduce(&bz, 1, std::plus<double>());
-    unsigned int Nq = solver.chargeVectorn_.size();
-    allreduce(&Nq, 1, std::plus<double>());
-    bz /= Nq;
-
-    if (mesh.totalTime_ == 0) {
-        mesh.totalTime_ = 1 / (solver.c0_ * (bz + solver.beta_)) * (zEnd - solver.beta_ * solver.c0_ * solver.dt_ - zMin + bz / solver.beta_* Lu);
-        msg << "Total time of the full wave simulation has been set to " << mesh.totalTime_ * solver.gamma_ << endl;
-    }   
-
-    timeval simulationStart;
-    gettimeofday(&simulationStart, NULL);
-    
-    msg << std::fixed << std::setprecision(3);
-    msg << "-> Run the time domain simulation ..." << endl;
-    double percentTime = 0.0;
-    
-    while (solver.time_ < mesh.totalTime_) {
-        // Advance the fields for one time step using the FDTD algorithm.
-        solver.fieldUpdate();
-
-        /* If sampling of the field is enabled and the rhythm for sampling is achieved. Sample the
-         * field at the given position and save them into the file.	*/
-        if ( seed.sampling_ && fmod(solver.time_, seed.samplingRhythm_) < mesh.timeStep_ && solver.time_ > 0.0 )
-            solver.fieldSample();
-
-        /* If visualization of the field is enabled and the rhythm for visualization is achieved,
-         * visualize the fields and save the vtk data in the given file name. */
-        for (unsigned int i = 0; i < seed.vtk_.size(); i++) {
-            if ( seed.vtk_[i].sample_ && fmod(solver.time_, seed.vtk_[i].rhythm_) < mesh.timeStep_ && solver.time_ > 0.0 ) {
-                if ( seed.vtk_[i].type_ == MITHRA::ALLDOMAIN )
-                    solver.fieldVisualizeAllDomain(i);
-                else if (seed.vtk_[i].type_ == MITHRA::INPLANE)
-                    solver.fieldVisualizeInPlane(i);
-	        }
-        }
-
-        /* If profiling of the field is enabled and the time for profiling is achieved, write the
-         * field profile and save the data in the given file name. */
-        if (seed.profile_) {
-            for (unsigned int i = 0; i < seed.profileTime_.size(); i++)
-                if ( solver.time_ - seed.profileTime_[i] < mesh.timeStep_ && solver.time_ > seed.profileTime_[i] )
-                    solver.fieldProfile();
-            if ( fmod(solver.time_, seed.profileRhythm_) < mesh.timeStep_ && solver.time_ > 0.0 && seed.profileRhythm_ != 0 )
-                solver.fieldProfile();
-        }
-
-        // Reset the charge and current values to zero.
-        solver.currentReset();
-
-        // Update the position and velocity parameters.
-        for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
-            iter->rnm  = iter->rnp;
-            iter->gbnm = iter->gbnp;
-        }
-
-        /* Advance the particles till the time of the bunch properties reaches the time instant of the
-         * field. */
-        for (double t = 0.0; t < solver.nUpdateBunch_; t += 1.0) {
-            solver.bunchUpdate();
-            solver.timeBunch_ += bunch.timeStep_;
-            ++solver.nTimeBunch_;
-        }
-
-        // Get particles going through a monitor.
-        solver.screenProfile();
-
-        // Deposit current and charge density on grid.
-        solver.currentUpdate();
-        solver.currentCommunicate();
-
-        /* If sampling of the bunch is enabled and the rhythm for sampling is achieved. Sample the
-         * bunch and save them into the file. */
-        if ( bunch.sampling_ && fmod(solver.time_, bunch.rhythm_) < mesh.timeStep_ && solver.time_ > 0.0 )
-            solver.bunchSample();
-
-        /* If visualization of the bunch is enabled and the rhythm for visualization is achieved,
-         * visualize the bunch and save the vtk data in the given file name. */
-        if ( bunch.bunchVTK_ && fmod(solver.time_, bunch.bunchVTKRhythm_) < mesh.timeStep_ && solver.time_ > 0.0 )
-            solver.bunchVisualize();
-
-        /* If profiling of the bunch is enabled and the time for profiling is achieved, write the bunch
-         * profile and save the data in the given file name. */
-        if (bunch.bunchProfile_ > 0) {
-            for (unsigned int i = 0; i < (bunch.bunchProfileTime_).size(); i++)
-                if ( solver.time_ - bunch.bunchProfileTime_[i] < mesh.timeStep_ && solver.time_ > bunch.bunchProfileTime_[i] )
-                    solver.bunchProfile();
-            if ( fmod(solver.time_, bunch.bunchProfileRhythm_) < mesh.timeStep_ && solver.time_ > 0.0 && bunch.bunchProfileRhythm_ != 0.0 )
-                solver.bunchProfile();
-        }
-
-        /* If radiation power of the FEL output is enabled and the rhythm for sampling is achieved.
-         * Sample the radiation power at the given position and save them into the file. */
-        solver.powerSample();
-        solver.powerVisualize();
-
-        /* If radiation energy of the FEL output is enabled and the rhythm for sampling is achieved.
-         * Sample the radiation energy at the given position and save them into the file. */
-        solver.energySample();
-
-        /* Shift the computed fields and the time points for the fields. */
-        solver.fieldShift();
-
-        solver.timem1_ += mesh.timeStep_;
-        solver.time_   += mesh.timeStep_;
-        solver.timep1_ += mesh.timeStep_;
-        ++solver.nTime_;
-
-        timeval simulationEnd;
-        gettimeofday(&simulationEnd, NULL);
-        double deltaTime  = ( simulationEnd.tv_usec - simulationStart.tv_usec ) / 1.0e6;
-        deltaTime += ( simulationEnd.tv_sec - simulationStart.tv_sec );
-
-        if ( solver.rank_ == 0 && solver.time_ / mesh.totalTime_ * 1000.0 > percentTime ) {
-            msg << " Percentage of the simulation completed (%)      = "
-                  << solver.time_ / mesh.totalTime_ * 100.0 << endl;
-            msg << " Average calculation time for each time step (s) = "
-                  << deltaTime / (double)(solver.nTime_) << endl;
-            msg << " Estimated remaining time (min)                  = "
-                  << (mesh.totalTime_ / solver.time_ - 1) * deltaTime / 60 << endl;
-            percentTime += 1.0;
-        }
-    }
-
-    solver.finalize();
 }
 #endif
 

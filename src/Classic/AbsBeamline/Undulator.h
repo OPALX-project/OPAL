@@ -47,7 +47,6 @@ public:
 
 #ifdef OPAL_FEL
     virtual void apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo const& refToLocalCSTrafo);
-    virtual void solve(MITHRA::FdTdSC& solver, MITHRA::Mesh& mesh, MITHRA::Bunch& bunch, MITHRA::Seed& seed) const;
 #endif
   
     virtual void finalise();
