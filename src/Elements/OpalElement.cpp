@@ -568,7 +568,8 @@ void OpalElement::update() {
             rotation = rotTheta * (rotPhi * rotPsi);
         } else {
             if (itsAttr[ORIENTATION]) {
-                throw OpalException("Line::parse","Parameter orientation is array of 3 values (theta, phi, psi);\n" +
+                throw OpalException("OpalElement::update",
+                                    "Parameter orientation is array of 3 values (theta, phi, psi);\n" +
                                     std::to_string(dir.size()) + " values provided");
             }
         }
@@ -577,7 +578,8 @@ void OpalElement::update() {
             origin = Vector_t(ori[0], ori[1], ori[2]);
         } else {
             if (itsAttr[ORIGIN]) {
-                throw OpalException("Line::parse","Parameter origin is array of 3 values (x, y, z);\n" +
+                throw OpalException("OpalElement::update",
+                                    "Parameter origin is array of 3 values (x, y, z);\n" +
                                     std::to_string(ori.size()) + " values provided");
             }
         }

@@ -24,7 +24,6 @@
 #include "Structure/OpalWake.h"
 #include "Structure/ParticleMatterInteraction.h"
 #include "Utilities/OpalException.h"
-#include <cmath>
 
 OpalSBend::OpalSBend():
     OpalBend("SBEND",
@@ -47,10 +46,8 @@ OpalSBend::OpalSBend(const std::string &name, OpalSBend *parent):
 
 
 OpalSBend::~OpalSBend() {
-    if(owk_m)
-        delete owk_m;
-    if(parmatint_m)
-        delete parmatint_m;
+    delete owk_m;
+    delete parmatint_m;
 }
 
 
@@ -131,7 +128,7 @@ void OpalSBend::update() {
     double k0s = itsAttr[K0S] ? Attributes::getReal(itsAttr[K0S]) : 0.0;
     //JMJ 4/10/2000: above line replaced
     //    length ? angle / length : angle;
-    // to avoid closed orbit created by SBEND with defalt K0.
+    // to avoid closed orbit created by SBEND with default K0.
     field.setNormalComponent(1, factor * k0);
     field.setSkewComponent(1, factor * Attributes::getReal(itsAttr[K0S]));
     field.setNormalComponent(2, factor * Attributes::getReal(itsAttr[K1]));
@@ -163,11 +160,11 @@ void OpalSBend::update() {
 
     if(itsAttr[GREATERTHANPI])
         throw OpalException("OpalSBend::update",
-                            "GREATERTHANPI not supportet any more");
+                            "GREATERTHANPI not supported anymore");
 
     if(itsAttr[ROTATION])
         throw OpalException("OpalSBend::update",
-                            "ROTATION not supportet any more; use PSI instead");
+                            "ROTATION not supported anymore; use PSI instead");
 
     if(itsAttr[FMAPFN])
         bend->setFieldMapFN(Attributes::getString(itsAttr[FMAPFN]));
@@ -183,15 +180,18 @@ void OpalSBend::update() {
     bend->setExitAngle(e2);
 
     // Units are eV.
-    if(itsAttr[DESIGNENERGY]) {
+    if(itsAttr[DESIGNENERGY] && Attributes::getReal(itsAttr[DESIGNENERGY]) != 0.0) {
         bend->setDesignEnergy(Attributes::getReal(itsAttr[DESIGNENERGY]), false);
+    } else if (bend->getName() != "SBEND") {
+        throw OpalException("OpalSBend::update",
+                            "SBend requires non-zero DESIGNENERGY");
     }
 
     bend->setFullGap(Attributes::getReal(itsAttr[GAP]));
 
     if(itsAttr[APERT])
-        throw OpalException("OpalRBend::fillRegisteredAttributes",
-                            "APERTURE in RBEND not supported; use GAP and HAPERT instead");
+        throw OpalException("OpalSBend::update",
+                            "APERTURE in SBEND not supported; use GAP and HAPERT instead");
 
     if(itsAttr[HAPERT]) {
         double hapert = Attributes::getReal(itsAttr[HAPERT]);

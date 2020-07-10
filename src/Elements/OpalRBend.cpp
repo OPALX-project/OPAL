@@ -24,7 +24,6 @@
 #include "Structure/OpalWake.h"
 #include "Structure/ParticleMatterInteraction.h"
 #include "Utilities/OpalException.h"
-#include <cmath>
 
 OpalRBend::OpalRBend():
     OpalBend("RBEND",
@@ -47,10 +46,8 @@ OpalRBend::OpalRBend(const std::string &name, OpalRBend *parent):
 
 
 OpalRBend::~OpalRBend() {
-    if(owk_m)
-        delete owk_m;
-    if(parmatint_m)
-        delete parmatint_m;
+    delete owk_m;
+    delete parmatint_m;
 }
 
 
@@ -131,7 +128,7 @@ void OpalRBend::update() {
     double k0s = itsAttr[K0S] ? Attributes::getReal(itsAttr[K0S]) : 0.0;
     //JMJ 4/10/2000: above line replaced
     //    length ? angle / length : angle;
-    // to avoid closed orbit created by RBEND with defalt K0.
+    // to avoid closed orbit created by RBEND with default K0.
     field.setNormalComponent(1, factor * k0);
     field.setSkewComponent(1, factor * Attributes::getReal(itsAttr[K0S]));
     field.setNormalComponent(2, factor * Attributes::getReal(itsAttr[K1]));
@@ -177,8 +174,11 @@ void OpalRBend::update() {
     }
 
     // Energy in eV.
-    if(itsAttr[DESIGNENERGY]) {
+    if(itsAttr[DESIGNENERGY] && Attributes::getReal(itsAttr[DESIGNENERGY]) != 0.0) {
         bend->setDesignEnergy(Attributes::getReal(itsAttr[DESIGNENERGY]), false);
+    } else if (bend->getName() != "RBEND") {
+        throw OpalException("OpalRBend::update",
+                            "RBend requires non-zero DESIGNENERGY");
     }
 
     bend->setFullGap(Attributes::getReal(itsAttr[GAP]));
