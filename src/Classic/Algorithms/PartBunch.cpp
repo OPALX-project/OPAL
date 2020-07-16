@@ -123,8 +123,7 @@ void PartBunch::computeSelfFields(int binNumber) {
 
     if(fs_m->hasValidSolver()) {
         /// Mesh the whole domain
-        if(fs_m->getFieldSolverType() == "SAAMG")
-            resizeMesh();
+        resizeMesh();
 
         /// Scatter charge onto space charge grid.
         this->Q *= this->dt;
@@ -328,12 +327,14 @@ void PartBunch::computeSelfFields(int binNumber) {
 }
 
 void PartBunch::resizeMesh() {
+    if (fs_m->getFieldSolverType() != "SAAMG") {
+        return;
+    }
+
     double xmin = fs_m->solver_m->getXRangeMin();
     double xmax = fs_m->solver_m->getXRangeMax();
     double ymin = fs_m->solver_m->getYRangeMin();
     double ymax = fs_m->solver_m->getYRangeMax();
-    double zmin = fs_m->solver_m->getZRangeMin();
-    double zmax = fs_m->solver_m->getZRangeMax();
 
     if(xmin > rmin_m[0] || xmax < rmax_m[0] ||
        ymin > rmin_m[1] || ymax < rmax_m[1]) {
@@ -354,14 +355,14 @@ void PartBunch::resizeMesh() {
         boundp();
         get_bounds(rmin_m, rmax_m);
     }
-    Vector_t mymin = Vector_t(xmin, ymin , zmin);
-    Vector_t mymax = Vector_t(xmax, ymax , zmax);
 
-    for (int i = 0; i < 3; i++)
-        hr_m[i]   = (mymax[i] - mymin[i])/nr_m[i];
+    Vector_t origin = Vector_t(0.0, 0.0, 0.0);
+
+    // update the mesh origin and mesh spacing hr_m
+    fs_m->solver_m->resizeMesh(origin, hr_m, rmin_m, rmax_m, dh_m);
 
     getMesh().set_meshSpacing(&(hr_m[0]));
-    getMesh().set_origin(mymin);
+    getMesh().set_origin(origin);
 
     rho_m.initialize(getMesh(),
                      getFieldLayout(),
@@ -384,8 +385,7 @@ void PartBunch::computeSelfFields() {
 
     if(fs_m->hasValidSolver()) {
         //mesh the whole domain
-        if(fs_m->getFieldSolverType() == "SAAMG")
-            resizeMesh();
+        resizeMesh();
 
         //scatter charges onto grid
         this->Q *= this->dt;
@@ -510,8 +510,7 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
 
     if(fs_m->hasValidSolver()) {
         /// mesh the whole domain
-        if(fs_m->getFieldSolverType() == "SAAMG")
-            resizeMesh();
+        resizeMesh();
 
         /// scatter particles charge onto grid.
         this->Q.scatter(this->rho_m, this->R, IntrplCIC_t());
@@ -639,8 +638,7 @@ void PartBunch::computeSelfFields_cycl(int bin) {
 
     if(fs_m->hasValidSolver()) {
         /// mesh the whole domain
-        if(fs_m->getFieldSolverType() == "SAAMG")
-            resizeMesh();
+        resizeMesh();
 
         /// scatter particles charge onto grid.
         this->Q.scatter(this->rho_m, this->R, IntrplCIC_t());

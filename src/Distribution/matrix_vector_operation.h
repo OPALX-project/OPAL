@@ -55,10 +55,10 @@ namespace matt_boost {
         }
 
     /// Computes the cross product \f$ v_{1}\times v_{2}\f$ of two vectors in \f$ \mathbb{R}^{3} \f$
-    template<class V>
+    template<class V, class A>
         BOOST_UBLAS_INLINE
-        ublas::vector<V> cross_prod(ublas::vector<V>& v1, ublas::vector<V>& v2) {
-            ublas::vector<V> v(v1.size());
+        ublas::vector<V, A> cross_prod(ublas::vector<V, A>& v1, ublas::vector<V, A>& v2) {
+            ublas::vector<V, A> v(v1.size());
             if (v1.size() == v2.size() && v1.size() == 3) {
                 v(0) = v1(1) * v2(2) - v1(2) * v2(1);
                 v(1) = v1(2) * v2(0) - v1(0) * v2(2);

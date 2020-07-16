@@ -7,7 +7,7 @@
 // OPAL is licensed under GNU GPL version 3.
 
 #include "Distribution/Distribution.h"
-#include "Distribution/SigmaGenerator.h"
+#include "Distribution/ClosedOrbitFinder.h"
 #include "AbsBeamline/SpecificElementVisitor.h"
 
 #include <cmath>
@@ -211,16 +211,6 @@ Distribution::~Distribution() {
     delete laserProfile_m;
 }
 
-/*
-  void Distribution::printSigma(SigmaGenerator<double,unsigned int>::matrix_type& M, Inform& out) {
-  for (int i=0; i<M.size1(); ++i) {
-  for (int j=0; j<M.size2(); ++j) {
-  *gmsg  << M(i,j) << " ";
-  }
-  *gmsg << endl;
-  }
-  }
-*/
 
 /**
  * Calculate the local number of particles evenly and adjust node 0
@@ -1269,18 +1259,18 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
 
     bool writeMap = true;
 
-    typedef SigmaGenerator<double, unsigned int> sGenerator_t;
-    sGenerator_t *siggen = new sGenerator_t(I_m,
-                                            Attributes::getReal(itsAttr[Attrib::Distribution::EX])*1E6,
-                                            Attributes::getReal(itsAttr[Attrib::Distribution::EY])*1E6,
-                                            Attributes::getReal(itsAttr[Attrib::Distribution::ET])*1E6,
-                                            E_m*1E-6,
-                                            massIneV*1E-6,
-                                            CyclotronElement,
-                                            Nint,
-                                            Nsectors,
-                                            Attributes::getReal(itsAttr[Attrib::Distribution::ORDERMAPS]),
-                                            writeMap);
+    std::unique_ptr<SigmaGenerator> siggen = std::unique_ptr<SigmaGenerator>(
+        new SigmaGenerator(I_m,
+                           Attributes::getReal(itsAttr[Attrib::Distribution::EX])*1E6,
+                           Attributes::getReal(itsAttr[Attrib::Distribution::EY])*1E6,
+                           Attributes::getReal(itsAttr[Attrib::Distribution::ET])*1E6,
+                           E_m*1E-6,
+                           massIneV*1E-6,
+                           CyclotronElement,
+                           Nint,
+                           Nsectors,
+                           Attributes::getReal(itsAttr[Attrib::Distribution::ORDERMAPS]),
+                           writeMap));
 
     if (siggen->match(accuracy,
                       Attributes::getReal(itsAttr[Attrib::Distribution::MAXSTEPSSI]),
@@ -1288,7 +1278,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
                       CyclotronElement,
                       denergy,
                       rguess,
-                      false, full))  {
+                      full))  {
 
         std::array<double,3> Emit = siggen->getEmittances();
 
@@ -1302,62 +1292,18 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
         for (unsigned int i = 0; i < siggen->getSigma().size1(); ++ i) {
             *gmsg << std::setprecision(4)  << std::setw(11) << siggen->getSigma()(i,0);
             for (unsigned int j = 1; j < siggen->getSigma().size2(); ++ j) {
-                if (siggen->getSigma()(i,j) < 10e-12){
+                if (std::abs(siggen->getSigma()(i,j)) < 1.0e-15) {
                     *gmsg << " & " <<  std::setprecision(4)  << std::setw(11) << 0.0;
                 }
                 else{
-                   *gmsg << " & " <<  std::setprecision(4)  << std::setw(11) << siggen->getSigma()(i,j);
+                    *gmsg << " & " <<  std::setprecision(4)  << std::setw(11) << siggen->getSigma()(i,j);
                 }
 
             }
             *gmsg << " \\\\" << endl;
         }
 
-        /*
-
-          Now setup the distribution generator
-          Units of the Sigma Matrix:
-
-          spatial: mm
-          moment:  rad
-
-        */
-        double gamma = E_m / massIneV + 1.0;
-        double beta = std::sqrt(1.0 - 1.0 / (gamma * gamma));
-
-        auto sigma = siggen->getSigma();
-        // change units from mm to m
-        for (unsigned int i = 0; i < 6; ++ i)
-            for (unsigned int j = 0; j < 6; ++ j) sigma(i, j) *= 1e-6;
-
-        for (unsigned int i = 0; i < 3; ++ i) {
-            if ( sigma(2 * i, 2 * i) < 0 || sigma(2 * i + 1, 2 * i + 1) < 0 )
-                throw OpalException("Distribution::CreateMatchedGaussDistribution()",
-                                    "Negative value on the diagonal of the sigma matrix.");
-        }
-
-        sigmaR_m[0] = std::sqrt(sigma(0, 0));
-        sigmaP_m[0] = std::sqrt(sigma(1, 1))*beta*gamma;
-        sigmaR_m[2] = std::sqrt(sigma(2, 2));
-        sigmaP_m[2] = std::sqrt(sigma(3, 3))*beta*gamma;
-        sigmaR_m[1] = std::sqrt(sigma(4, 4));
-
-        //p_l^2 = [(delta+1)*beta*gamma]^2 - px^2 - pz^2
-        double pl2 = (std::sqrt(sigma(5,5)) + 1)*(std::sqrt(sigma(5,5)) + 1)*beta*gamma*beta*gamma -
-                      sigmaP_m[0]*sigmaP_m[0] - sigmaP_m[2]*sigmaP_m[2];
-
-        double pl = std::sqrt(pl2);
-        sigmaP_m[1] = gamma*(pl - beta*gamma);
-
-        correlationMatrix_m(1, 0) = sigma(0, 1) / (std::sqrt(sigma(0, 0) * sigma(1, 1)));
-        correlationMatrix_m(3, 2) = sigma(2, 3) / (std::sqrt(sigma(2, 2) * sigma(3, 3)));
-        correlationMatrix_m(5, 4) = sigma(4, 5) / (std::sqrt(sigma(4, 4) * sigma(5, 5)));
-        correlationMatrix_m(4, 0) = sigma(0, 4) / (std::sqrt(sigma(0, 0) * sigma(4, 4)));
-        correlationMatrix_m(4, 1) = sigma(1, 4) / (std::sqrt(sigma(1, 1) * sigma(4, 4)));
-        correlationMatrix_m(5, 0) = sigma(0, 5) / (std::sqrt(sigma(0, 0) * sigma(5, 5)));
-        correlationMatrix_m(5, 1) = sigma(1, 5) / (std::sqrt(sigma(1, 1) * sigma(5, 5)));
-
-        createDistributionGauss(numberOfParticles, massIneV);
+        generateMatchedGauss(siggen->getSigma(), numberOfParticles, massIneV);
 
         // update injection radius and radial momentum
         CyclotronElement->setRinit(siggen->getInjectionRadius() * 1.0e3);
@@ -1366,13 +1312,9 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
     else {
         *gmsg << "* Not converged for " << E_m*1E-6 << " MeV" << endl;
 
-        delete siggen;
-
         throw OpalException("Distribution::CreateMatchedGaussDistribution",
                             "didn't find any matched distribution.");
     }
-
-    delete siggen;
 }
 
 void Distribution::createDistributionGauss(size_t numberOfParticles, double massIneV) {
@@ -2412,6 +2354,136 @@ void Distribution::generateGaussZ(size_t numberOfParticles) {
     gsl_matrix_free(corMat);
 }
 
+void Distribution::generateMatchedGauss(const SigmaGenerator::matrix_t& sigma,
+                                        size_t numberOfParticles, double massIneV)
+{
+    /* This particle distribution generation is based on a
+     * symplectic method described in
+     * https://arxiv.org/abs/1205.3601
+     */
+
+    /* Units of the Sigma Matrix:
+     *  spatial: m
+     *  moment:  rad
+     *
+     * Attention: The vertical and longitudinal direction must be interchanged!
+     */
+    for (unsigned int i = 0; i < 3; ++ i) {
+        if ( sigma(2 * i, 2 * i) < 0 || sigma(2 * i + 1, 2 * i + 1) < 0 )
+            throw OpalException("Distribution::generateMatchedGauss()",
+                                "Negative value on the diagonal of the sigma matrix.");
+    }
+
+    double bgam = Util::getBetaGamma(E_m, massIneV);
+
+    /*
+     * only used for printing
+     */
+
+    // horizontal
+    sigmaR_m[0] = std::sqrt(sigma(0, 0));
+    sigmaP_m[0] = std::sqrt(sigma(1, 1)) * bgam;
+
+    // longitudinal
+    sigmaR_m[1] = std::sqrt(sigma(4, 4));
+    sigmaP_m[1] = std::sqrt(sigma(5, 5)) * bgam;
+
+    // vertical
+    sigmaR_m[2] = std::sqrt(sigma(2, 2));
+    sigmaP_m[2] = std::sqrt(sigma(3, 3)) * bgam;
+
+    correlationMatrix_m(1, 0) = sigma(0, 1) / (std::sqrt(sigma(0, 0) * sigma(1, 1)));
+    correlationMatrix_m(3, 2) = sigma(2, 3) / (std::sqrt(sigma(2, 2) * sigma(3, 3)));
+    correlationMatrix_m(5, 4) = sigma(4, 5) / (std::sqrt(sigma(4, 4) * sigma(5, 5)));
+    correlationMatrix_m(4, 0) = sigma(0, 4) / (std::sqrt(sigma(0, 0) * sigma(4, 4)));
+    correlationMatrix_m(4, 1) = sigma(1, 4) / (std::sqrt(sigma(1, 1) * sigma(4, 4)));
+    correlationMatrix_m(5, 0) = sigma(0, 5) / (std::sqrt(sigma(0, 0) * sigma(5, 5)));
+    correlationMatrix_m(5, 1) = sigma(1, 5) / (std::sqrt(sigma(1, 1) * sigma(5, 5)));
+
+    inputMoUnits_m = InputMomentumUnitsT::NONE;
+
+    /*
+     * decouple horizontal and longitudinal direction
+     */
+
+    // extract horizontal and longitudinal directions
+    RealDiracMatrix::matrix_t A(4, 4);
+    A(0, 0) = sigma(0, 0);
+    A(1, 1) = sigma(1, 1);
+    A(2, 2) = sigma(4, 4);
+    A(3, 3) = sigma(5, 5);
+
+    A(0, 1) = sigma(0, 1);
+    A(0, 2) = sigma(0, 4);
+    A(0, 3) = sigma(0, 5);
+    A(1, 0) = sigma(1, 0);
+    A(2, 0) = sigma(4, 0);
+    A(3, 0) = sigma(5, 0);
+
+    A(1, 2) = sigma(1, 4);
+    A(2, 1) = sigma(4, 1);
+    A(1, 3) = sigma(1, 5);
+    A(3, 1) = sigma(5, 1);
+    A(2, 3) = sigma(4, 5);
+    A(3, 2) = sigma(5, 4);
+
+
+    RealDiracMatrix rdm;
+    RealDiracMatrix::sparse_matrix_t R1 = rdm.diagonalize(A);
+
+    RealDiracMatrix::vector_t variances(8);
+    for (int i = 0; i < 4; ++i) {
+        variances(i) = std::sqrt(A(i, i));
+    }
+
+    /*
+     * decouple vertical direction
+     */
+    A *= 0.0;
+    A(0, 0) = 1;
+    A(1, 1) = 1;
+    A(2, 2) = sigma(2, 2);
+    A(3, 3) = sigma(3, 3);
+    A(2, 3) = sigma(2, 3);
+    A(3, 2) = sigma(3, 2);
+
+    RealDiracMatrix::sparse_matrix_t R2 = rdm.diagonalize(A);
+
+    for (int i = 0; i < 4; ++i) {
+        variances(4 + i) = std::sqrt(A(i, i));
+    }
+
+    int saveProcessor = -1;
+    const int myNode = Ippl::myNode();
+    const int numNodes = Ippl::getNodes();
+    const bool scalable = Attributes::getBool(itsAttr[Attrib::Distribution::SCALABLE]);
+
+    RealDiracMatrix::vector_t p1(4), p2(4);
+    for (size_t i = 0; i < numberOfParticles; i++) {
+        for (int j = 0; j < 4; j++) {
+            p1(j) = gsl_ran_gaussian(randGen_m, 1.0) * variances(j);
+            p2(j) = gsl_ran_gaussian(randGen_m, 1.0) * variances(4 + j);
+        }
+
+        p1 = boost::numeric::ublas::prod(R1, p1);
+        p2 = boost::numeric::ublas::prod(R2, p2);
+
+        // Save to each processor in turn.
+        saveProcessor++;
+        if (saveProcessor >= numNodes)
+            saveProcessor = 0;
+
+        if (scalable || myNode == saveProcessor) {
+            xDist_m.push_back(p1(0));
+            pxDist_m.push_back(p1(1) * bgam);
+            yDist_m.push_back(p1(2));
+            pyDist_m.push_back(p1(3) * bgam);
+            tOrZDist_m.push_back(p2(2));
+            pzDist_m.push_back(p2(3) * bgam);
+        }
+    }
+}
+
 void Distribution::generateLongFlattopT(size_t numberOfParticles) {
 
     double flattopTime = tPulseLengthFWHM_m
@@ -2971,7 +3043,7 @@ void Distribution::printDistMatchedGauss(Inform &os) const {
     os << "* SIGMAPX    = " << sigmaP_m[0] << " [Beta Gamma]" << endl;
     os << "* SIGMAPY    = " << sigmaP_m[1] << " [Beta Gamma]" << endl;
     os << "* SIGMAPZ    = " << sigmaP_m[2] << " [Beta Gamma]" << endl;
-    os << "* AVRGPZ     = " << avrgpz_m <<    " [Beta Gamma]" << endl;
+//     os << "* AVRGPZ     = " << avrgpz_m <<    " [Beta Gamma]" << endl;
 
     os << "* CORRX      = " << correlationMatrix_m(1, 0) << endl;
     os << "* CORRY      = " << correlationMatrix_m(3, 2) << endl;
@@ -2980,12 +3052,12 @@ void Distribution::printDistMatchedGauss(Inform &os) const {
     os << "* R62        = " << correlationMatrix_m(5, 1) << endl;
     os << "* R51        = " << correlationMatrix_m(4, 0) << endl;
     os << "* R52        = " << correlationMatrix_m(4, 1) << endl;
-    os << "* CUTOFFX    = " << cutoffR_m[0] << " [units of SIGMAX]" << endl;
-    os << "* CUTOFFY    = " << cutoffR_m[1] << " [units of SIGMAY]" << endl;
-    os << "* CUTOFFLONG = " << cutoffR_m[2] << " [units of SIGMAZ]" << endl;
-    os << "* CUTOFFPX   = " << cutoffP_m[0] << " [units of SIGMAPX]" << endl;
-    os << "* CUTOFFPY   = " << cutoffP_m[1] << " [units of SIGMAPY]" << endl;
-    os << "* CUTOFFPZ   = " << cutoffP_m[2] << " [units of SIGMAPY]" << endl;
+//     os << "* CUTOFFX    = " << cutoffR_m[0] << " [units of SIGMAX]" << endl;
+//     os << "* CUTOFFY    = " << cutoffR_m[1] << " [units of SIGMAY]" << endl;
+//     os << "* CUTOFFLONG = " << cutoffR_m[2] << " [units of SIGMAZ]" << endl;
+//     os << "* CUTOFFPX   = " << cutoffP_m[0] << " [units of SIGMAPX]" << endl;
+//     os << "* CUTOFFPY   = " << cutoffP_m[1] << " [units of SIGMAPY]" << endl;
+//     os << "* CUTOFFPZ   = " << cutoffP_m[2] << " [units of SIGMAPY]" << endl;
 }
 
 void Distribution::printDistGauss(Inform &os) const {

@@ -19,6 +19,8 @@
 #include "AppTypes/SymTenzor.h"
 #include "Attributes/Attributes.h"
 
+#include "Distribution/SigmaGenerator.h"
+
 #include <gsl/gsl_histogram.h>
 #include <gsl/gsl_qrng.h>
 #include <gsl/gsl_rng.h>
@@ -279,7 +281,6 @@ private:
     void eraseTOrZDist();
     void eraseBGzDist();
 
-    //    void printSigma(SigmaGenerator<double,unsigned int>::matrix_type& M, Inform& out);
     void addDistributions();
     void applyEmissionModel(double lowEnergyLimit, double &px, double &py, double &pz, std::vector<double> &additionalRNs);
     void applyEmissModelAstra(double &px, double &py, double &pz, std::vector<double> &additionalRNs);
@@ -336,6 +337,8 @@ private:
     void generateFlattopT(size_t numberOfParticles);
     void generateFlattopZ(size_t numberOfParticles);
     void generateGaussZ(size_t numberOfParticles);
+    void generateMatchedGauss(const SigmaGenerator::matrix_t&,
+                              size_t numberOfParticles, double massIneV);
     void generateLongFlattopT(size_t numberOfParticles);
     void generateTransverseGauss(size_t numberOfParticles);
     void initializeBeam(PartBunchBase<double, 3> *beam);

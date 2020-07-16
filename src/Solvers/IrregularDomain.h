@@ -129,6 +129,22 @@ public:
     virtual bool hasGeometryChanged() = 0;
     virtual ~IrregularDomain() {};
 
+    virtual void resizeMesh(Vector_t& origin, Vector_t& hr,
+                            const Vector_t& /*rmin*/, const Vector_t& /*rmax*/, double /*dh*/) {
+        double xmin = getXRangeMin();
+        double xmax = getXRangeMax();
+        double ymin = getYRangeMin();
+        double ymax = getYRangeMax();
+        double zmin = getZRangeMin();
+        double zmax = getZRangeMax();
+
+        origin = Vector_t(xmin, ymin , zmin);
+        Vector_t mymax = Vector_t(xmax, ymax , zmax);
+
+        for (int i = 0; i < 3; i++)
+            hr[i] = (mymax[i] - origin[i]) / nr[i];
+    };
+
 protected:
 
     // a irregular domain is always defined on a grid

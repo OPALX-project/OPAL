@@ -411,6 +411,8 @@ public:
 //     virtual void setFieldLayout(FieldLayout_t* fLayout) = 0;
     virtual FieldLayout_t &getFieldLayout() = 0;
 
+    virtual void resizeMesh() { };
+
     /*
      * Wrapped member functions of IpplParticleBase
      */

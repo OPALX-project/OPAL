@@ -353,8 +353,10 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
     for (int idz = localId[2].first(); idz <= localId[2].last(); idz++) {
         for (int idy = localId[1].first(); idy <= localId[1].last(); idy++) {
             for (int idx = localId[0].first(); idx <= localId[0].last(); idx++) {
+                NDIndex<3> l(Index(idx, idx), Index(idy, idy), Index(idz, idz));
                 if (bp_m->isInside(idx, idy, idz))
-                        RHS->getDataNonConst()[id++] = 4*M_PI*rho[idx][idy][idz].get()/scaleFactor;
+                        RHS->replaceGlobalValue(bp_m->getIdx(idx, idy, idz),
+                                                4.0 * M_PI * rho.localElement(l) / scaleFactor);
             }
         }
     }
@@ -508,6 +510,7 @@ void MGPoissonSolver::IPPLToMap3D(NDIndex<3> localId) {
             }
         }
     }
+
     int indexbase = 0;
     map_p = Teuchos::rcp(new TpetraMap_t(Teuchos::OrdinalTraits<Tpetra::global_size_t>::invalid(),
                                          &MyGlobalElements[0], NumMyElements, indexbase, comm_mp));

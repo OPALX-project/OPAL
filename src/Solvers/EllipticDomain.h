@@ -1,6 +1,8 @@
 //
 // Class EllipticDomain
-//   :FIXME: add brief description
+//   This class provides an elliptic beam pipe. The mesh adapts to the bunch size
+//   in the longitudinal direction. At the intersection of the mesh with the
+//   beam pipe, three stencil interpolation methods are available.
 //
 // Copyright (c) 2008,        Yves Ineichen, ETH Zürich,
 //               2013 - 2015, Tülin Kaman, Paul Scherrer Institut, Villigen PSI, Switzerland
@@ -32,100 +34,127 @@
 #include <cmath>
 #include "IrregularDomain.h"
 #include "Structure/BoundaryGeometry.h"
+#include "Utilities/OpalException.h"
 
 class EllipticDomain : public IrregularDomain {
 
 public:
 
     EllipticDomain(Vector_t nr, Vector_t hr);
-    EllipticDomain(double semimajor, double semiminor, Vector_t nr, Vector_t hr, std::string interpl);
-    EllipticDomain(BoundaryGeometry *bgeom, Vector_t nr, Vector_t hr, std::string interpl);
+
+    EllipticDomain(double semimajor, double semiminor, Vector_t nr,
+                   Vector_t hr, std::string interpl);
+
+    EllipticDomain(BoundaryGeometry *bgeom, Vector_t nr,
+                   Vector_t hr, std::string interpl);
+
     EllipticDomain(BoundaryGeometry *bgeom, Vector_t nr, std::string interpl);
 
     ~EllipticDomain();
 
     /// returns discretization at (x,y,z)
-    void getBoundaryStencil(int x, int y, int z, double &W, double &E, double &S, double &N, double &F, double &B, double &C, double &scaleFactor);
+    void getBoundaryStencil(int x, int y, int z,
+                            double &W, double &E, double &S,
+                            double &N, double &F, double &B,
+                            double &C, double &scaleFactor);
+
     /// returns discretization at 3D index
-    void getBoundaryStencil(int idx, double &W, double &E, double &S, double &N, double &F, double &B, double &C, double &scaleFactor);
+    void getBoundaryStencil(int idx, double &W, double &E,
+                            double &S, double &N, double &F,
+                            double &B, double &C, double &scaleFactor);
+
     /// returns index of neighbours at (x,y,z)
-    void getNeighbours(int x, int y, int z, int &W, int &E, int &S, int &N, int &F, int &B);
+    void getNeighbours(int x, int y, int z, int &W, int &E,
+                       int &S, int &N, int &F, int &B);
+
     /// returns index of neighbours at 3D index
     void getNeighbours(int idx, int &W, int &E, int &S, int &N, int &F, int &B);
+
     /// returns type of boundary condition
     std::string getType() {return "Elliptic";}
+
     /// queries if a given (x,y,z) coordinate lies inside the domain
     inline bool isInside(int x, int y, int z) {
-        double xx = (x - (nr[0] - 1) / 2.0) * hr[0];
-        double yy = (y - (nr[1] - 1) / 2.0) * hr[1];
-        return ((xx * xx / (SemiMajor * SemiMajor) + yy * yy / (SemiMinor * SemiMinor) < 1) && z != 0 && z != nr[2] - 1);
+        double xx = - semiMajor_m + hr[0] * (x + 0.5);
+        double yy = - semiMinor_m + hr[1] * (y + 0.5);
+
+        bool isInsideEllipse = (xx * xx / (semiMajor_m * semiMajor_m) +
+                                yy * yy / (semiMinor_m * semiMinor_m) < 1);
+
+        return (isInsideEllipse && z > 0 && z < nr[2] - 1);
     }
 
     int getNumXY(int /*z*/) { return nxy_m; }
-    /// set semi-minor
-    void setSemiMinor(double sm) {SemiMinor = sm;}
-    /// set semi-major
-    void setSemiMajor(double sm) {SemiMajor = sm;}
 
-    /// calculates intersection 
-    void compute(Vector_t hr);
+
+    /// calculates intersection
+    void compute(Vector_t /*hr*/) {
+        throw OpalException("EllipticDomain::compute()", "This function is not available.");
+    }
+
     void compute(Vector_t hr, NDIndex<3> localId);
 
-    double getXRangeMin() { return -SemiMajor; }
-    double getXRangeMax() { return SemiMajor;  }
-    double getYRangeMin() { return -SemiMinor; }
-    double getYRangeMax() { return SemiMinor;  }
+    double getXRangeMin() { return -semiMajor_m; }
+    double getXRangeMax() { return semiMajor_m;  }
+    double getYRangeMin() { return -semiMinor_m; }
+    double getYRangeMax() { return semiMinor_m;  }
     double getZRangeMin() { return zMin_m; }
     double getZRangeMax() { return zMax_m; }
 
-
-    //TODO: ?
-    int getStartIdx() {return 0;}
-
     bool hasGeometryChanged() { return hasGeometryChanged_m; }
+
+
+    void resizeMesh(Vector_t& origin, Vector_t& hr, const Vector_t& rmin,
+                    const Vector_t& rmax, double dh);
 
 private:
 
     /// Map from a single coordinate (x or y) to a list of intersection values with
     /// boundary.
-    typedef std::multimap<int, double> EllipticPointList;
+    typedef std::multimap<int, double> EllipticPointList_t;
 
     /// all intersection points with grid lines in X direction
-    EllipticPointList IntersectXDir;
+    EllipticPointList_t intersectXDir_m;
 
     /// all intersection points with grid lines in Y direction
-    EllipticPointList IntersectYDir;
+    EllipticPointList_t intersectYDir_m;
 
     /// mapping (x,y,z) -> idx
-    std::map<int, int> IdxMap;
+    std::map<int, int> idxMap_m;
 
     /// mapping idx -> (x,y,z)
-    std::map<int, int> CoordMap;
+    std::map<int, int> coordMap_m;
 
     /// semi-major of the ellipse
-    double SemiMajor;
+    double semiMajor_m;
+
     /// semi-minor of the ellipse
-    double SemiMinor;
+    double semiMinor_m;
+
     /// number of nodes in the xy plane (for this case: independent of the z coordinate)
     int nxy_m;
+
     /// interpolation type
-    int interpolationMethod;
+    int interpolationMethod_m;
+
     /// flag indicating if geometry has changed for the current time-step
     bool hasGeometryChanged_m;
 
     /// conversion from (x,y) to index in xy plane
     inline int toCoordIdx(int x, int y) { return y * nr[0] + x; }
+
     /// conversion from (x,y,z) to index on the 3D grid
     inline int getIdx(int x, int y, int z) {
-        if(isInside(x, y, z) && x >= 0 && y >= 0 && z >= 0)
-            return IdxMap[toCoordIdx(x, y)] + (z - 1) * nxy_m;
+        if (isInside(x, y, z))
+            return idxMap_m[toCoordIdx(x, y)] + (z - 1) * nxy_m;
         else
             return -1;
     }
+
     /// conversion from a 3D index to (x,y,z)
     inline void getCoord(int idx, int &x, int &y, int &z) {
         int ixy = idx % nxy_m;
-        int xy = CoordMap[ixy];
+        int xy = coordMap_m[ixy];
         int inr = (int)nr[0];
         x = xy % inr;
         y = (xy - x) / nr[0];
@@ -133,10 +162,23 @@ private:
     }
 
     /// different interpolation methods for boundary points
-    void constantInterpolation(int x, int y, int z, double &W, double &E, double &S, double &N, double &F, double &B, double &C, double &scaleFactor);
-    void linearInterpolation(int x, int y, int z, double &W, double &E, double &S, double &N, double &F, double &B, double &C, double &scaleFactor);
-    void quadraticInterpolation(int x, int y, int z, double &W, double &E, double &S, double &N, double &F, double &B, double &C, double &scaleFactor);
+    void constantInterpolation(int x, int y, int z,
+                               double &W, double &E, double &S,
+                               double &N, double &F, double &B,
+                               double &C, double &scaleFactor);
 
+    void linearInterpolation(int x, int y, int z, double &W,
+                             double &E, double &S, double &N,
+                             double &F, double &B, double &C,
+                             double &scaleFactor);
+
+    void quadraticInterpolation(int x, int y, int z, double &W,
+                                double &E, double &S, double &N,
+                                double &F, double &B, double &C,
+                                double &scaleFactor);
+
+    /// function to handle the open boundary condition in longitudinal direction
+    void robinBoundaryStencil(int z, double &F, double &B, double &C);
 };
 
 #endif //#ifdef ELLIPTICAL_DOMAIN_H
