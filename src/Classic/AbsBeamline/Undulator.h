@@ -25,11 +25,6 @@
 
 #include "AbsBeamline/Component.h"
 
-#ifdef OPAL_FEL
-#include "mithra/fdtdSC.h"
-#include "mithra/classes.h"
-#endif
-
 class Undulator: public Component {
 
 public:

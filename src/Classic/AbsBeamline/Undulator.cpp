@@ -33,7 +33,6 @@
 #include "mithra/classes.h"
 #include "mithra/datainput.h"
 #include "mithra/readdata.h"
-#include "mithra/solver.h"
 #include "mithra/fdtdSC.h"
 #include <ctime>
 #include <cmath>
