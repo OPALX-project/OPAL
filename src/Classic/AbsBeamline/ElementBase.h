@@ -113,7 +113,7 @@ public:
                     , CYCLOTRON
                     , DEGRADER
                     , DIAGNOSTIC
-		    , DRIFT
+                    , DRIFT
                     , FLEXIBLECOLLIMATOR
                     , INTEGRATOR
                     , LAMBERTSON
