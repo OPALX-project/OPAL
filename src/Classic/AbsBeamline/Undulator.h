@@ -53,10 +53,10 @@ public:
     virtual void getDimensions(double &zBegin, double &zEnd) const;
 
     //set number of slices for map tracking
-    void setNSlices(const std::size_t& nSlices); // Philippe was here
+    void setNSlices(const std::size_t& nSlices);
 
     //set number of slices for map tracking
-    std::size_t getNSlices() const; // Philippe was here
+    std::size_t getNSlices() const;
 
     virtual void setK(double k);
     virtual double getK() const;
