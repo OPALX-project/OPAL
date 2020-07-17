@@ -22,9 +22,7 @@ private:
                                                   double t,
                                                   double dt);
 
-    double track(Vector_t R,
-                 Vector_t P,
-                 double t,
+    double track(double t,
                  const double dt,
                  const double phase,
                  std::ofstream *out = NULL) const;

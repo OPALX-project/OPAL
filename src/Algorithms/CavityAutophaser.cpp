@@ -19,8 +19,7 @@ CavityAutophaser::CavityAutophaser(const PartData &ref,
     itsCavity_m(cavity)
 {
     double zbegin = 0.0, zend = 0.0;
-    PartBunchBase<double, 3> *fakeBunch = NULL;
-    cavity->initialise(fakeBunch, zbegin, zend);
+    cavity->getDimensions(zbegin, zend);
     initialR_m = Vector_t(0, 0, zbegin);
 }
 
@@ -138,10 +137,10 @@ double CavityAutophaser::getPhaseAtMaxEnergy(const Vector_t &R,
                 itsCavity_m->getName() + "_AP.dat"
             });
             std::ofstream out(fname);
-            track(initialR_m, initialP_m, t + tErr, dt, newPhase, &out);
+            track(t + tErr, dt, newPhase, &out);
             out.close();
         } else {
-            track(initialR_m, initialP_m, t + tErr, dt, newPhase, NULL);
+            track(t + tErr, dt, newPhase, NULL);
         }
 
         INFOMSG(level1 << std::fixed << std::setprecision(4)
@@ -209,7 +208,7 @@ std::pair<double, double> CavityAutophaser::optimizeCavityPhase(double initialPh
     if (element->getAutophaseVeto()) {
         double basePhase = std::fmod(element->getFrequencym() * t, Physics::two_pi);
         double phase = std::fmod(originalPhase - basePhase + Physics::two_pi, Physics::two_pi);
-        double E = track(initialR_m, initialP_m, t, dt, phase);
+        double E = track(t, dt, phase);
         std::pair<double, double> status(originalPhase, E);//-basePhase, E);
         return status;
     }
@@ -220,7 +219,7 @@ std::pair<double, double> CavityAutophaser::optimizeCavityPhase(double initialPh
     const int numRefinements = Options::autoPhase;
 
     int j = -1;
-    double E = track(initialR_m, initialP_m, t, dt, phi);
+    double E = track(t, dt, phi);
     double Emax = E;
 
     do {
@@ -228,7 +227,7 @@ std::pair<double, double> CavityAutophaser::optimizeCavityPhase(double initialPh
         Emax = E;
         initialPhase = phi;
         phi -= dphi;
-        E = track(initialR_m, initialP_m, t, dt, phi);
+        E = track(t, dt, phi);
     } while(E > Emax);
 
     if(j == 0) {
@@ -240,20 +239,20 @@ std::pair<double, double> CavityAutophaser::optimizeCavityPhase(double initialPh
             Emax = E;
             initialPhase = phi;
             phi += dphi;
-            E = track(initialR_m, initialP_m, t, dt, phi);
+            E = track(t, dt, phi);
         } while(E > Emax);
     }
 
     for(int rl = 0; rl < numRefinements; ++ rl) {
         dphi /= 2.;
         phi = initialPhase - dphi;
-        E = track(initialR_m, initialP_m, t, dt, phi);
+        E = track(t, dt, phi);
         if(E > Emax) {
             initialPhase = phi;
             Emax = E;
         } else {
             phi = initialPhase + dphi;
-            E = track(initialR_m, initialP_m, t, dt, phi);
+            E = track(t, dt, phi);
             if(E > Emax) {
                 initialPhase = phi;
                 Emax = E;
@@ -262,15 +261,13 @@ std::pair<double, double> CavityAutophaser::optimizeCavityPhase(double initialPh
     }
     Phimax = std::fmod(initialPhase + Physics::two_pi, Physics::two_pi);
 
-    E = track(initialR_m, initialP_m, t, dt, Phimax + originalPhase);
+    E = track(t, dt, Phimax + originalPhase);
     std::pair<double, double> status(Phimax, E);
 
     return status;
 }
 
-double CavityAutophaser::track(Vector_t /*R*/,
-                               Vector_t /*P*/,
-                               double t,
+double CavityAutophaser::track(double t,
                                const double dt,
                                const double phase,
                                std::ofstream *out) const {
