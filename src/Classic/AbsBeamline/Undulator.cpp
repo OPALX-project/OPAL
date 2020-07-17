@@ -163,6 +163,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     mesh.meshLength_ = getMeshLength();
     mesh.meshResolution_ = getMeshResolution();
     mesh.totalTime_ = getTotalTime();
+    // If simulation time is not given, run the full-wave solver until the end of the undulator.
     if (mesh.totalTime_ == 0)
         mesh.totalDist_ = lFringe_m + undulator.lu_ * undulator.length_;
     mesh.truncationOrder_ = getTruncationOrder();
