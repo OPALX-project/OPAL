@@ -122,12 +122,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     msg << "Bunch before undulator in local coordinate system: " << endl;
     itsBunch->print(msg);
 
-    // Mithra full wave solver initial message.
-    msg << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
-    msg << " MITHRA-2.0: Completely Numerical Calculation of Free Electron Laser Radiation" << endl;
-    msg << " Version 2.0, Copyright 2019, Arya Fallahi" << endl;
-    msg << " Written by Arya Fallahi, IT'IS Foundation, Zurich, Switzerland" << endl;
-    msg << " :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::" << endl;
+    MITHRA::helloMessage();
 
     // Prepare parameters for full wave solver.
     MITHRA::BunchInitialize bunchInit;
