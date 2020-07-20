@@ -1,4 +1,5 @@
-#
+
+    #
 # Find MITHRA package
 # https://github.com/aryafallahi/mithra
 #
@@ -25,6 +26,24 @@ if (MITHRA_FOUND)
     endif ()
 else (MITHRA_FOUND)
     if (MITHRA_FIND_REQUIRED)
+        if (NOT MITHRA_INCLUDE_DIR)
+            message (
+                "MITHRA include directory was not found!\n"
+                "Make sure that MITHRA is compiled and that\n"
+                "the directory mithra/include/mithra has been automatically created.\n"
+                "Also make sure that at least one of the following\n"
+                "environment variables is set: \n"
+                "MITHRA_INCLUDE_DIR, MITHRA_INCLUDE_PATH, MITHRA_PREFIX, or MITHRA.\n")
+        endif ()
+        if (NOT MITHRA_LIBRARY_DIR)
+            message (
+                "MITHRA library was not found!\n"
+                "Make sure that MITHRA is compiled and that\n"
+                "the directory mithra/lib has been automatically created.\n"
+                "Also make sure that at least one of the following\n"
+                "environment variables is set: \n"
+                "MITHRA_LIBRARY_DIR, MITHRA_LIBRARY_PATH, MITHRA_PREFIX, or MITHRA.\n")
+        endif ()
         message (FATAL_ERROR "Could not find MITHRA!")
     endif (MITHRA_FIND_REQUIRED)
 endif (MITHRA_FOUND)
