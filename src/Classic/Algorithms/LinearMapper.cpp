@@ -397,7 +397,7 @@ void LinearMapper::visitSolenoid(const Solenoid &solenoid) {
 }
 
 void LinearMapper::visitUndulator(const Undulator &u) {
-  INFOMSG("Undulator not implemented" << u.getTypeString());
+    INFOMSG("Undulator not implemented" << u.getTypeString());
 }
 
 void LinearMapper::visitParallelPlate(const ParallelPlate &/*pplate*/) {

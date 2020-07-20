@@ -28,7 +28,7 @@ class OpalUndulator: public OpalElement {
 public:
 
     enum {
-        K = COMMON,                       // The undulator parameter
+        K = COMMON,              // The undulator parameter
         LAMBDA,                  // The undulator period
         NUMPERIODS,              // Number of undulator periods
         ANGLE,                   // Polarisation angle of the undulator
