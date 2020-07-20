@@ -62,9 +62,9 @@ public:
     virtual double getAngle() const;
     virtual void setFilename(const std::string& fname);
     virtual const std::string& getFilename() const;
-    virtual void setMeshLength(std::vector<double> ml);
+    virtual void setMeshLength(const std::vector<double>& ml);
     virtual std::vector<double> getMeshLength() const;
-    virtual void setMeshResolution(std::vector<double> mr);
+    virtual void setMeshResolution(const std::vector<double>& mr);
     virtual std::vector<double> getMeshResolution() const;
     virtual void setTruncationOrder(unsigned int trunOrder);
     virtual unsigned int getTruncationOrder() const;

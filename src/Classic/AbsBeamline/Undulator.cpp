@@ -295,10 +295,10 @@ double Undulator::getAngle() const { return angle_m; }
 void Undulator::setFilename(const std::string&fname) { fname_m = fname; }
 const std::string& Undulator::getFilename() const { return fname_m;}
 
-void Undulator::setMeshLength(std::vector<double> ml) { meshLength_m = ml; }
+void Undulator::setMeshLength(const std::vector<double>& ml) { meshLength_m = ml; }
 std::vector<double> Undulator::getMeshLength() const { return meshLength_m; }
 
-void Undulator::setMeshResolution(std::vector<double> mr) { meshResolution_m = mr; }
+void Undulator::setMeshResolution(const std::vector<double>& mr) { meshResolution_m = mr; }
 std::vector<double> Undulator::getMeshResolution() const { return meshResolution_m; }
 
 void Undulator::setTruncationOrder(unsigned int trunOrder) { truncationOrder_m = trunOrder; } 
