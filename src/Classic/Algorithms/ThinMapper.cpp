@@ -326,7 +326,7 @@ void ThinMapper::visitSolenoid(const Solenoid &solenoid) {
 
 
 void ThinMapper::visitUndulator(const Undulator &u) {
-  INFOMSG("Undulator not implemented" << u.getTypeString());
+    INFOMSG("Undulator not implemented" << u.getTypeString());
 }
 
 

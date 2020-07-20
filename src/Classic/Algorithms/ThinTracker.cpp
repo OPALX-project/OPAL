@@ -447,7 +447,7 @@ void ThinTracker::visitSolenoid(const Solenoid &solenoid) {
 }
 
 void ThinTracker::visitUndulator(const Undulator &u ) {
-  INFOMSG("Undulator not implemented" << u.getTypeString());
+    INFOMSG("Undulator not implemented" << u.getTypeString());
 }
 
 void ThinTracker::applyDrift(double length) {
