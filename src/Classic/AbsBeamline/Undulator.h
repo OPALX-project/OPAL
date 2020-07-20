@@ -52,12 +52,6 @@ public:
 
     virtual void getDimensions(double &zBegin, double &zEnd) const;
 
-    //set number of slices for map tracking
-    void setNSlices(const std::size_t& nSlices);
-
-    //set number of slices for map tracking
-    std::size_t getNSlices() const;
-
     virtual void setK(double k);
     virtual double getK() const;
     virtual void setLambda(double lambda);
@@ -84,7 +78,6 @@ public:
 private:
 
     double startField_m;
-    std::size_t nSlices_m;
   
     /// The undulator parameter
     double k_m;
@@ -97,9 +90,6 @@ private:
 
     /// Polarisation angle of the undulator field
     double angle_m;
-
-    /// Length of the undulator's fringe field.
-    double lFringe_m;
 
     /// Mithra file with output information
     std::string fname_m;

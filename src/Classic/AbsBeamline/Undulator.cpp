@@ -42,7 +42,6 @@ extern Inform *gmsg;
 
 Undulator::Undulator():
     Component(),
-    nSlices_m(1),
     k_m(0.0),
     lambda_m(0.0),
     numPeriods_m(0.0),
@@ -59,7 +58,6 @@ Undulator::Undulator():
 
 Undulator::Undulator(const Undulator &right):
     Component(right),
-    nSlices_m(right.nSlices_m),
     k_m(right.k_m),
     lambda_m(right.lambda_m),
     numPeriods_m(right.numPeriods_m),
@@ -76,7 +74,6 @@ Undulator::Undulator(const Undulator &right):
 
 Undulator::Undulator(const std::string &name):
     Component(name),
-    nSlices_m(1),
     k_m(0.0),
     lambda_m(0.0),
     numPeriods_m(0.0),
@@ -276,18 +273,6 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     setHasBeenSimlated(true);
 }
 #endif
-
-
-//set the number of slices for map tracking
-void Undulator::setNSlices(const std::size_t& nSlices) { 
-    nSlices_m = nSlices;
-}
-
-
-//get the number of slices for map tracking
-std::size_t Undulator::getNSlices() const {
-    return nSlices_m;
-}
 
 
 void Undulator::finalise() {

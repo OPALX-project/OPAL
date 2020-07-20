@@ -27,10 +27,6 @@ OpalUndulator::OpalUndulator():
     OpalElement(SIZE, "UNDULATOR",
                 "The \"UNDULATOR\" element defines a undulator or wiggler.") {
 
-    itsAttr[NSLICES] = Attributes::makeReal
-                          ("NSLICES",
-                          "The number of slices/ steps for this element in Map Tracking.", 1);
-
     itsAttr[K] = Attributes::makeReal
                           ("K",
                           "The undulator parameter.", 1);
@@ -71,7 +67,6 @@ OpalUndulator::OpalUndulator():
                           ("DTBUNCH",
                           "Time step for the bunch position update can be smaller than field update step.", 0.0);
 
-    registerRealAttribute("NSLICES");
     registerRealAttribute("K");
     registerRealAttribute("LAMBDA");
     registerRealAttribute("NUMPERIODS");
@@ -106,7 +101,6 @@ void OpalUndulator::update() {
 
     UndulatorRep *ur = static_cast<UndulatorRep *>(getElement());
     ur->setElementLength(Attributes::getReal(itsAttr[LAMBDA]) * (4 + Attributes::getReal(itsAttr[NUMPERIODS])));
-    ur->setNSlices(Attributes::getReal(itsAttr[NSLICES]));
     ur->setK(Attributes::getReal(itsAttr[K]));
     ur->setLambda(Attributes::getReal(itsAttr[LAMBDA]));
     ur->setNumPeriods(Attributes::getReal(itsAttr[NUMPERIODS]));

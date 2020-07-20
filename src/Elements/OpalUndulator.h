@@ -28,8 +28,7 @@ class OpalUndulator: public OpalElement {
 public:
 
     enum {
-        NSLICES = COMMON,	     // The number of slices / steps per element for map tracking
-        K,                       // The undulator parameter
+        K = COMMON,                       // The undulator parameter
         LAMBDA,                  // The undulator period
         NUMPERIODS,              // Number of undulator periods
         ANGLE,                   // Polarisation angle of the undulator
