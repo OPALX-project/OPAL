@@ -76,8 +76,6 @@ public:
     virtual bool getHasBeenSimulated() const;
 
 private:
-
-    double startField_m;
   
     /// The undulator parameter
     double k_m;

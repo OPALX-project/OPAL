@@ -86,10 +86,8 @@ void Undulator::accept(BeamlineVisitor &visitor) const {
 }
 
 
-void Undulator::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
-    endField = startField + getElementLength();
+void Undulator::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
-    startField_m = startField;
 }
 
 
@@ -273,9 +271,7 @@ bool Undulator::bends() const {
 }
 
 
-void Undulator::getDimensions(double &zBegin, double &zEnd) const {
-    zBegin = startField_m;
-    zEnd = startField_m + getElementLength();
+void Undulator::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {
 }
 
 
