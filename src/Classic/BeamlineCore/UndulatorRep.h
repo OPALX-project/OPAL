@@ -1,5 +1,5 @@
 //
-// Class Undulator
+// Class UndulatorRep
 // Defines a concrete undulator/wiggler representation.
 //
 // Copyright (c) 2020, Arnau Albà, Paul Scherrer Institut, Villigen PSI, Switzerland
