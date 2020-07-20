@@ -127,7 +127,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     undulator.lu_ = getLambda();
     undulator.length_ = getNumPeriods();
     undulator.theta_ = getAngle() * Physics::pi / 180.0;
-    double lFringe = 2 * undulator.lu_;  // Default fringe field length is 2*lu.
+    double lFringe = 2 * undulator.lu_;  // Fringe field length is 2*lu.
     undulator.dist_ = lFringe - itsBunch->get_maxExtent()[2];  // Bunch-head to undulator distance.
     std::vector<MITHRA::Undulator> undulators;
     undulators.push_back(undulator);
@@ -208,7 +208,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     allreduce(&zMin, 1, std::less<double>());
 
     const double gammaBeta = solver.gamma_ * solver.beta_;
-    const double factor = solver.gamma_ * (solver.beta_ * solver.c0_ * (solver.timeBunch_ + solver.dt_)) + lFringe;
+    const double factor = gammaBeta * solver.c0_ * (solver.timeBunch_ + solver.dt_) + lFringe;
     for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
         double dist = zMin - iter->rnp[2];
         // Lorentz transform.
