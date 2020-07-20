@@ -129,7 +129,7 @@ public:
     /// Apply the algorithm to a RF cavity.
     virtual void visitTravelingWave(const TravelingWave &);
 
-    /// Apply the algorithm to a drift.
+    /// Apply the algorithm to an undulator.
     virtual void visitUndulator(const Undulator &);
 
     /// Apply the algorithm to a RF quadrupole.
