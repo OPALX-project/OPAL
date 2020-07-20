@@ -220,18 +220,18 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     }
     allreduce(&zMin, 1, std::less<double>());
 
-    const double gb = solver.gamma_ * solver.beta_;
+    const double gammaBeta = solver.gamma_ * solver.beta_;
     const double factor = solver.gamma_ * (solver.beta_ * solver.c0_ * (solver.timeBunch_ + solver.dt_)) + lFringe;
     for (auto iter = solver.chargeVectorn_.begin(); iter != solver.chargeVectorn_.end(); iter++) {
         double dist = zMin - iter->rnp[2];
         // Lorentz transform.
         iter->rnp[2] = solver.gamma_ * iter->rnp[2] + factor;
-        iter->gbnp[2] = solver.gamma_ * iter->gbnp[2] + gb * std::sqrt(1 + iter->gbnp.norm2());
+        iter->gbnp[2] = solver.gamma_ * iter->gbnp[2] + gammaBeta * std::sqrt(1 + iter->gbnp.norm2());
         // Shift to bring all particles to same time in lab frame.
-        double g = std::sqrt(1 + iter->gbnp.norm2());
-        iter->rnp[0] += iter->gbnp[0] / g * dist * gb;
-        iter->rnp[1] += iter->gbnp[1] / g * dist * gb;
-        iter->rnp[2] += iter->gbnp[2] / g * dist * gb;
+        double gammaParticle = std::sqrt(1 + iter->gbnp.norm2());
+        iter->rnp[0] += iter->gbnp[0] / gammaParticle * dist * gammaBeta;
+        iter->rnp[1] += iter->gbnp[1] / gammaParticle * dist * gammaBeta;
+        iter->rnp[2] += iter->gbnp[2] / gammaParticle * dist * gammaBeta;
     }
     
     // Get total time elapsed in laboratory frame.
