@@ -234,7 +234,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
         iter->rnp[2] += iter->gbnp[2] / g * dist * gb;
     }
     
-    // Get total time ellapsed in laboratory frame.
+    // Get total time elapsed in laboratory frame.
     mesh.totalTime_ = solver.gamma_ * (solver.time_ + solver.beta_ / solver.c0_ * (zMin - bunch.zu_));
 
     // Return particles to itsBunch in local coordinates.
@@ -254,7 +254,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     }
     itsBunch->setT(itsBunch->getT() + mesh.totalTime_);
 
-    // Transfrom back to reference coordinate system.
+    // Transform back to reference coordinate system.
     CoordinateSystemTrafo localToRefCSTrafo = refToLocalCSTrafo.inverted();
     for (unsigned int i = 0; i < newLocalNum; ++i) {
         itsBunch->R[i] = localToRefCSTrafo.transformTo(itsBunch->R[i]);
