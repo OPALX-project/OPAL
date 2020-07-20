@@ -73,7 +73,7 @@ Undulator::Undulator(const std::string &name):
     truncationOrder_m(2),
     totalTime_m(0.0),
     dtBunch_m(0.0),
-    hasBeenSimulated_m(0)
+    hasBeenSimulated_m(false)
 { }
 
 
