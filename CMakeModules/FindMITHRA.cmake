@@ -44,6 +44,7 @@ else (MITHRA_FOUND)
                 "environment variables is set: \n"
                 "MITHRA_LIBRARY_DIR, MITHRA_LIBRARY_PATH, MITHRA_PREFIX, or MITHRA.\n")
         endif ()
+        message ("MITHRA can be downloaded and compiled from https://github.com/aryafallahi/mithra.git")
         message (FATAL_ERROR "Could not find MITHRA!")
     endif (MITHRA_FIND_REQUIRED)
 endif (MITHRA_FOUND)
