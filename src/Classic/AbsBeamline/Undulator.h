@@ -41,7 +41,7 @@ public:
     virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
 
 #ifdef OPAL_FEL
-    virtual void apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo const& refToLocalCSTrafo);
+    void apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo const& refToLocalCSTrafo);
 #endif
   
     virtual void finalise();
@@ -52,28 +52,28 @@ public:
 
     virtual void getDimensions(double &zBegin, double &zEnd) const;
 
-    virtual void setK(double k);
-    virtual double getK() const;
-    virtual void setLambda(double lambda);
-    virtual double getLambda() const;
-    virtual void setNumPeriods(int np);
-    virtual int getNumPeriods() const;
-    virtual void setAngle(double theta);
-    virtual double getAngle() const;
-    virtual void setFilename(const std::string& fname);
-    virtual const std::string& getFilename() const;
-    virtual void setMeshLength(const std::vector<double>& ml);
-    virtual std::vector<double> getMeshLength() const;
-    virtual void setMeshResolution(const std::vector<double>& mr);
-    virtual std::vector<double> getMeshResolution() const;
-    virtual void setTruncationOrder(unsigned int trunOrder);
-    virtual unsigned int getTruncationOrder() const;
-    virtual void setTotalTime(double tt);
-    virtual double getTotalTime() const;
-    virtual void setDtBunch(double dtb);
-    virtual double getDtBunch() const;
-    virtual void setHasBeenSimulated(bool hbs);
-    virtual bool getHasBeenSimulated() const;
+    void setK(double k);
+    double getK() const;
+    void setLambda(double lambda);
+    double getLambda() const;
+    void setNumPeriods(int np);
+    int getNumPeriods() const;
+    void setAngle(double theta);
+    double getAngle() const;
+    void setFilename(const std::string& fname);
+    const std::string& getFilename() const;
+    void setMeshLength(const std::vector<double>& ml);
+    std::vector<double> getMeshLength() const;
+    void setMeshResolution(const std::vector<double>& mr);
+    std::vector<double> getMeshResolution() const;
+    void setTruncationOrder(unsigned int trunOrder);
+    unsigned int getTruncationOrder() const;
+    void setTotalTime(double tt);
+    double getTotalTime() const;
+    void setDtBunch(double dtb);
+    double getDtBunch() const;
+    void setHasBeenSimulated(bool hbs);
+    bool getHasBeenSimulated() const;
 
 private:
   
