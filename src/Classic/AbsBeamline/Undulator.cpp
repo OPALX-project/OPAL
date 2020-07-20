@@ -41,18 +41,7 @@
 extern Inform *gmsg;
 
 Undulator::Undulator():
-    Component(),
-    k_m(0.0),
-    lambda_m(0.0),
-    numPeriods_m(0.0),
-    angle_m(0.0),
-    fname_m(""),
-    meshLength_m(3, 0.0),
-    meshResolution_m(3, 0.0),
-    truncationOrder_m(2),
-    totalTime_m(0.0),
-    dtBunch_m(0.0),
-    hasBeenSimulated_m(0)
+    Undulator("")
 { }
 
 
@@ -270,7 +259,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     msg << "Bunch after undulator in reference coordinate system: " << endl;
     itsBunch->print(msg);
 
-    setHasBeenSimlated(true);
+    setHasBeenSimulated(true);
 }
 #endif
 
@@ -325,5 +314,5 @@ double Undulator::getTotalTime() const { return totalTime_m; }
 void Undulator::setDtBunch(double dtb) { dtBunch_m = dtb; }
 double Undulator::getDtBunch() const { return dtBunch_m; }
 
-void Undulator::setHasBeenSimlated(bool hbs) { hasBeenSimulated_m = hbs; }
+void Undulator::setHasBeenSimulated(bool hbs) { hasBeenSimulated_m = hbs; }
 bool Undulator::getHasBeenSimulated() const { return hasBeenSimulated_m; }

@@ -72,7 +72,7 @@ public:
     virtual double getTotalTime() const;
     virtual void setDtBunch(double dtb);
     virtual double getDtBunch() const;
-    virtual void setHasBeenSimlated(bool hbs);
+    virtual void setHasBeenSimulated(bool hbs);
     virtual bool getHasBeenSimulated() const;
 
 private:
