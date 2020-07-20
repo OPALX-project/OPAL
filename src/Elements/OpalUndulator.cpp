@@ -100,6 +100,8 @@ void OpalUndulator::update() {
     OpalElement::update();
 
     UndulatorRep *ur = static_cast<UndulatorRep *>(getElement());
+    /* The element length is given by the number and length of the undulator periods, plus the
+     * length of the two fringe fields, each measuring 2 * lambda. */
     ur->setElementLength(Attributes::getReal(itsAttr[LAMBDA]) * (4 + Attributes::getReal(itsAttr[NUMPERIODS])));
     ur->setK(Attributes::getReal(itsAttr[K]));
     ur->setLambda(Attributes::getReal(itsAttr[LAMBDA]));
