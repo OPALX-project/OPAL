@@ -55,7 +55,7 @@ UndulatorRep::UndulatorRep(const UndulatorRep &right):
 {}
 
 
-UndulatorRep::UndulatorRep(const std::string &name):
+UndulatorRep::UndulatorRep(const std::string& name):
     Undulator(name),
     geometry(0.0)
 {}
@@ -70,8 +70,8 @@ ElementBase *UndulatorRep::clone() const {
 }
 
 
-Channel *UndulatorRep::getChannel(const std::string &aKey, bool create) {
-    for(const Entry *entry = entries; entry->name != 0; ++entry) {
+Channel *UndulatorRep::getChannel(const std::string& aKey, bool create) {
+    for(const Entry* entry = entries; entry->name != 0; ++entry) {
         if(aKey == entry->name) {
             return new IndirectChannel<UndulatorRep>(*this, entry->get, entry->set);
         }
