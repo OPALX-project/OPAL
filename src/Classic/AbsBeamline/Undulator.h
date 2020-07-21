@@ -1,8 +1,8 @@
 //
 // Class Undulator
-// Defines all the methods used by the Undulator element.
-// The Undulator element uses a full wave solver from the
-// the MITHRA library, see <https://github.com/aryafallahi/mithra/>.
+//   Defines all the methods used by the Undulator element.
+//   The Undulator element uses a full wave solver from the
+//   MITHRA library, see <https://github.com/aryafallahi/mithra/>.
 //
 // Copyright (c) 2020, Arnau Albà, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved.

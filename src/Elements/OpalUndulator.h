@@ -1,6 +1,6 @@
 //
 // Class OpalUndulator
-// Defines the Undulator/Wiggler element and its attributes.
+//   Defines the Undulator/Wiggler element and its attributes.
 //
 // Copyright (c) 2020, Arnau Albà, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved.
