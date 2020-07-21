@@ -1,28 +1,23 @@
+//
+// Namespace Options
+//   The global OPAL option flags.
+//   This namespace contains the global option flags.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPTIONS_HH
 #define OPTIONS_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: Options.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Struct: Options
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:33:48 $
-// $Author: Andreas Adelmann $
-//
-// ------------------------------------------------------------------------
-
-
-// Namespace Options.
-// ------------------------------------------------------------------------
-/// The global OPAL option flags.
-//  This namespace contains the global option flags.
 
 #include "OptionTypes.h"
 #include "Utilities/ClassicRandom.h"
@@ -45,10 +40,6 @@ namespace Options {
     extern int warnLevel;
 
     extern bool csrDump;
-
-    /// ppdebug flag.
-    //  If true, use special initial velocity distribution for parallel plate and print special debug output .
-    extern bool ppdebug;
 
     /// if true create symmetric distribution
     extern bool cZero;

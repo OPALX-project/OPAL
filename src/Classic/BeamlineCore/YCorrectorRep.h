@@ -1,32 +1,26 @@
+//
+// Class YCorrectorRep
+//   Representation for an orbit corrector.
+//   Acts on the vertical plane.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_YCorrectorRep_HH
 #define CLASSIC_YCorrectorRep_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: YCorrectorRep.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: YCorrectorRep
-//
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:34 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
-
 #include "BeamlineCore/CorrectorRep.h"
 
-
-// Class YCorrectorRep
-// ------------------------------------------------------------------------
-/// Representation for an orbit corrector.
-//  Acts on the vertical plane.
 
 class YCorrectorRep: public CorrectorRep {
 
@@ -48,11 +42,6 @@ public:
     //  the attribute [b]aKey[/b] and returns it.
     //  If the attribute does not exist, it returns NULL.
     virtual Channel *getChannel(const std::string &aKey, bool = false);
-
-    /// Construct an image.
-    //  Return the image of the element, containing the name and type string
-    //  of the element, and a copy of the user-defined attributes.
-    virtual ElementImage *getImage() const;
 
     /// Get plane.
     //  Return the y-plane for this class.

@@ -22,14 +22,9 @@
 #include <string>
 
 #include "Beamlines/Beamline.h"
-#include "AbsBeamline/BeamBeam.h"
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Degrader.h"
-#include "AbsBeamline/Diagnostic.h"
-#include "AbsBeamline/Lambertson.h"
 #include "AbsBeamline/Marker.h"
-#include "AbsBeamline/RFQuadrupole.h"
-#include "AbsBeamline/Separator.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Source.h"
 
@@ -136,32 +131,7 @@ void OpalBeamline::visit<Source>(const Source &element, BeamlineVisitor &, PartB
 }
 
 template<> inline
-void OpalBeamline::visit<BeamBeam>(const BeamBeam &element, BeamlineVisitor &, PartBunchBase<double, 3> *) {
-    WARNMSG(element.getTypeString() << " not implemented yet!" << endl);
-}
-
-template<> inline
-void OpalBeamline::visit<Diagnostic>(const Diagnostic &element, BeamlineVisitor &, PartBunchBase<double, 3> *) {
-    WARNMSG(element.getTypeString() << " not implemented yet!" << endl);
-}
-
-template<> inline
-void OpalBeamline::visit<Lambertson>(const Lambertson &element, BeamlineVisitor &, PartBunchBase<double, 3> *) {
-    WARNMSG(element.getTypeString() << " not implemented yet!" << endl);
-}
-
-template<> inline
 void OpalBeamline::visit<Marker>(const Marker &/*element*/, BeamlineVisitor &, PartBunchBase<double, 3> *) {
-}
-
-template<> inline
-void OpalBeamline::visit<RFQuadrupole>(const RFQuadrupole &element, BeamlineVisitor &, PartBunchBase<double, 3> *) {
-    WARNMSG(element.getTypeString() << " not implemented yet!" << endl);
-}
-
-template<> inline
-void OpalBeamline::visit<Separator>(const Separator &element, BeamlineVisitor &, PartBunchBase<double, 3> *) {
-    WARNMSG(element.getTypeString() << " not implemented yet!" << endl);
 }
 
 template<> inline

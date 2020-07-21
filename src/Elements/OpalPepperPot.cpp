@@ -39,13 +39,6 @@ OpalPepperPot::OpalPepperPot():
     itsAttr[R] = Attributes::makeReal
                  ("R", "Radios of a holes in m");
 
-    registerStringAttribute("OUTFN");
-    registerRealAttribute("XSIZE");
-    registerRealAttribute("YSIZE");
-    registerRealAttribute("R");
-    registerRealAttribute("NHOLX");
-    registerRealAttribute("NHOLY");
-
     registerOwnership();
 
     setElement(new FlexibleCollimatorRep("PEPPERPOT"));
@@ -69,17 +62,6 @@ OpalPepperPot *OpalPepperPot::clone(const std::string &name) {
     return new OpalPepperPot(name, this);
 }
 
-
-void OpalPepperPot::fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
-
-    // const FlexibleCollimatorRep *ppo =
-    //     dynamic_cast<const FlexibleCollimatorRep *>(&base);
-    // attributeRegistry["XSIZE"]->setReal(ppo->getXsize());
-    // attributeRegistry["YSIZE"]->setReal(ppo->getYsize());
-
-}
 
 void OpalPepperPot::update() {
     OpalElement::update();

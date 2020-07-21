@@ -55,16 +55,6 @@ OpalStripper::OpalStripper():
     itsAttr[OUTFN] = Attributes::makeString
                      ("OUTFN", "Output filename");
 
-    registerRealAttribute("XSTART");
-    registerRealAttribute("XEND");
-    registerRealAttribute("YSTART");
-    registerRealAttribute("YEND");
-    registerRealAttribute("WIDTH");
-    registerRealAttribute("OPCHARGE");
-    registerRealAttribute("OPMASS");
-    registerRealAttribute("OPYIELD");
-    registerStringAttribute("OUTFN");
-
     registerOwnership();
 
     setElement(new StripperRep("STRIPPER"));
@@ -83,12 +73,6 @@ OpalStripper::~OpalStripper()
 
 OpalStripper *OpalStripper::clone(const std::string &name) {
     return new OpalStripper(name, this);
-}
-
-
-void OpalStripper::fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
 }
 
 

@@ -1,32 +1,26 @@
+//
+// Class ProbeRep
+//   Representation for Probe.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_ProbeRep_HH
 #define CLASSIC_ProbeRep_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: ProbeRep.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: ProbeRep
-//
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
-//
-// $Date: 2009/10/07 10:21:06 $
-// $Author: bi $
-//
-// ------------------------------------------------------------------------
 
 #include "AbsBeamline/Probe.h"
 #include "BeamlineGeometry/StraightGeometry.h"
 #include "Fields/NullField.h"
-
-// Class ProbeRep
-// ------------------------------------------------------------------------
-/// Representation for Probe.
 
 class ProbeRep: public Probe {
 
@@ -69,11 +63,6 @@ public:
     //  Return the element geometry
     //  Version for constant object.
     virtual const StraightGeometry &getGeometry() const;
-
-    /// Construct an image.
-    //  Return the image of the element, containing the name and type string
-    //  of the element, and a copy of the user-defined attributes.
-    virtual ElementImage *getImage() const;
 
     /// Set active flag.
     virtual void setActive(bool = true);

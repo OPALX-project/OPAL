@@ -20,7 +20,6 @@
 //
 #include "BeamlineCore/UndulatorRep.h"
 
-#include "AbsBeamline/ElementImage.h"
 #include "Channels/IndirectChannel.h"
 
 
@@ -96,15 +95,4 @@ StraightGeometry &UndulatorRep::getGeometry() {
 
 const StraightGeometry &UndulatorRep::getGeometry() const {
     return geometry;
-}
-
-
-ElementImage *UndulatorRep::getImage() const {
-    ElementImage *image = ElementBase::getImage();
-
-    for(const Entry *entry = entries; entry->name != 0; ++entry) {
-        image->setAttribute(entry->name, (this->*(entry->get))());
-    }
-
-    return image;
 }

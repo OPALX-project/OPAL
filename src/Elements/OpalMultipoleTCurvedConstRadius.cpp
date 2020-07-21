@@ -102,34 +102,6 @@ void OpalMultipoleTCurvedConstRadius::print(std::ostream &os) const {
 }
 
 
-void OpalMultipoleTCurvedConstRadius::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-    const MultipoleTCurvedConstRadius *multT =
-        dynamic_cast<const MultipoleTCurvedConstRadius*>(&base);
-
-    for(unsigned int order = 1; order <= multT->getTransMaxOrder(); order++) {
-        std::ostringstream ss;
-        ss << order;
-        std::string orderString = ss.str();
-        std::string attrName = "TP" + orderString;
-        registerRealAttribute(attrName)->setReal(multT->getTransProfile(order));
-    }
-
-    registerRealAttribute("LFRINGE")->setReal(multT->getFringeLength().at(0));
-    registerRealAttribute("RFRINGE")->setReal(multT->getFringeLength().at(1));
-    registerRealAttribute("VAPERT")->setReal(multT->getAperture()[0]);
-    registerRealAttribute("HAPERT")->setReal(multT->getAperture()[1]);
-    registerRealAttribute("MAXFORDER")->setReal(multT->getMaxOrder());
-    registerRealAttribute("MAXXORDER")->setReal(multT->getMaxXOrder());
-    registerRealAttribute("ROTATION")->setReal(multT->getRotation());
-    registerRealAttribute("ANGLE")->setReal(multT->getBendAngle());
-    registerRealAttribute("EANGLE")->setReal(multT->getEntranceAngle());
-    registerRealAttribute("BBLENGTH")->setReal(multT->getBoundingBoxLength());
-
-}
-
-
 void OpalMultipoleTCurvedConstRadius::update() {
     OpalElement::update();
 

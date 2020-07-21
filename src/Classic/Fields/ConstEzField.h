@@ -1,31 +1,24 @@
+//
+// Class ConstEzField
+//   A homogeneous electrostatic field in z-direction.
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_ConstEzField_HH
 #define CLASSIC_ConstEzField_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: ConstEzField.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: ConstEzField
-//
-// ------------------------------------------------------------------------
-// Class category: Fields
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:35 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
-
-#include "Fields/ConstEField.h"
-
-
-// Class ConstEzField
-// ------------------------------------------------------------------------
-/// A homogeneous electrostatic field in z-direction.
+#include "Fields/StaticElectricField.h"
 
 class ConstEzField: public StaticElectricField {
 

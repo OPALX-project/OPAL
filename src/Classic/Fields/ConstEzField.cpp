@@ -1,28 +1,22 @@
-// ------------------------------------------------------------------------
-// $RCSfile: ConstEzField.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: ConstEzField
-//   A static electric field of constant value in z-direction.
+// Class ConstEzField
+//   A homogeneous electrostatic field in z-direction.
 //
-// ------------------------------------------------------------------------
-// Class category: Fields
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:32:35 $
-// $Author: fci $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Fields/ConstEzField.h"
 
-
-// Class ConstEzField
-// ------------------------------------------------------------------------
 
 ConstEzField::ConstEzField()
 {}

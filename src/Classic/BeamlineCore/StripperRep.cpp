@@ -24,7 +24,6 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "BeamlineCore/StripperRep.h"
-#include "AbsBeamline/ElementImage.h"
 #include "Channels/IndirectChannel.h"
 
 
@@ -100,17 +99,6 @@ StraightGeometry &StripperRep::getGeometry() {
 
 const StraightGeometry &StripperRep::getGeometry() const {
     return geometry;
-}
-
-
-ElementImage *StripperRep::getImage() const {
-    ElementImage *image = ElementBase::getImage();
-
-    for(const Entry *entry = entries; entry->name != 0; ++entry) {
-        image->setAttribute(entry->name, (this->*(entry->get))());
-    }
-
-    return image;
 }
 
 void StripperRep::setActive(bool flag) {

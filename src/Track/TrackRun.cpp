@@ -1,32 +1,29 @@
-// -----------------------------------------------------------------------
-// /*$RCSfile*/: TrackRun.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1.4.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: TrackRun
-//   The class for the OPAL RUN command.
+// Class TrackRun
+//   The RUN command.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2004/11/12 20:10:11 $
-// $Author: adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Track/TrackRun.h"
 #include "AbstractObjects/BeamSequence.h"
 #include "AbstractObjects/OpalData.h"
 #include "AbstractObjects/ObjectFunction.h"
 #include "Algorithms/Tracker.h"
-#include "Algorithms/ThinTracker.h"
 #include "Algorithms/ThickTracker.h"
 
 #include "Algorithms/ParallelTTracker.h"
 #include "Algorithms/ParallelCyclotronTracker.h"
-#include "Algorithms/NilTracker.h"
 
 #include "Attributes/Attributes.h"
 #include "Beamlines/TBeamline.h"
@@ -52,8 +49,6 @@
 #include <iomanip>
 
 extern Inform *gmsg;
-
-// ------------------------------------------------------------------------
 
 namespace {
 
@@ -173,12 +168,7 @@ void TrackRun::execute() {
 
     // Get algorithm to use.
     std::string method = Attributes::getString(itsAttr[METHOD]);
-    if(method == "THIN") {
-        *gmsg << "  Method == \"THIN\"" << endl;
-        itsTracker = new ThinTracker(*Track::block->use->fetchLine(),
-                                     Track::block->bunch, Track::block->reference,
-                                     false, false);
-    } else if(method == "THICK") {
+    if (method == "THICK") {
         setupThickTracker();
     } else if(method == "PARALLEL-T" || method == "OPAL-T") {
         setupTTracker();

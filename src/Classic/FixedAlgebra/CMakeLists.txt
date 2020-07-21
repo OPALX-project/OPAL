@@ -16,9 +16,7 @@ set (HDRS
     FLUMatrix.h
     FMatrix.h
     FMonomial.h
-    FNormalForm.h
     FSlice.h
-    FStaticFP.h
     FTpsData.h
     FTps.h
     FTps.hpp
@@ -30,14 +28,12 @@ set (HDRS
     LinearFun.hpp
     LinearMap.h
     LinearMap.hpp
-    LinearMath.h
     Taylor.h
     Taylor.hpp
     TransportFun.h
     TransportFun.hpp
     TransportMap.h
     TransportMap.hpp
-    TransportMath.h
     )
 
 install (FILES ${HDRS}  DESTINATION "${CMAKE_INSTALL_PREFIX}/include/FixedAlgebra")

@@ -62,11 +62,6 @@ public:
     //  Version for constant object.
     virtual const PlanarArcGeometry &getGeometry() const;
 
-    /// Construct an image.
-    //  Return the image of the element, containing the name and type string
-    //  of the element, and a copy of the user-defined attributes.
-    virtual ElementImage *getImage() const;
-
     /// Get field.
     //  Return the vertical component of the field in Teslas.
     virtual double getB() const;

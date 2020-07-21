@@ -22,18 +22,14 @@
 //
 #include "Algorithms/DefaultVisitor.h"
 
-#include "AbsBeamline/BeamBeam.h"
 #include "AbsBeamline/BeamStripping.h"
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Cyclotron.h"
 #include "AbsBeamline/Degrader.h"
-#include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/FlexibleCollimator.h"
-#include "AbsBeamline/Integrator.h"
-#include "AbsBeamline/Lambertson.h"
 #include "AbsBeamline/Marker.h"
 #include "AbsBeamline/Monitor.h"
 #include "AbsBeamline/Multipole.h"
@@ -42,17 +38,13 @@
 #include "AbsBeamline/MultipoleTCurvedVarRadius.h"
 #include "AbsBeamline/MultipoleTStraight.h"
 #include "AbsBeamline/Offset.h"
-#include "AbsBeamline/ParallelPlate.h"
-#include "AbsBeamline/Patch.h"
 #include "AbsBeamline/Probe.h"
 #include "AbsBeamline/RBend.h"
 #include "AbsBeamline/RBend3D.h"
 #include "AbsBeamline/RFCavity.h"
-#include "AbsBeamline/RFQuadrupole.h"
 #include "AbsBeamline/SBend.h"
 #include "AbsBeamline/SBend3D.h"
 #include "AbsBeamline/ScalingFFAMagnet.h"
-#include "AbsBeamline/Separator.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/Source.h"
@@ -90,11 +82,6 @@ void DefaultVisitor::execute() {
     itsLine.accept(*this);
 }
 
-
-void DefaultVisitor::visitBeamBeam(const BeamBeam &bb) {
-    applyDefault(bb);
-}
-
 void DefaultVisitor::visitBeamStripping(const BeamStripping &bstp) {
     applyDefault(bstp);
 }
@@ -119,20 +106,12 @@ void DefaultVisitor::visitDegrader(const Degrader &deg) {
     applyDefault(deg);
 }
 
-void DefaultVisitor::visitDiagnostic(const Diagnostic &diag) {
-    applyDefault(diag);
-}
-
 void DefaultVisitor::visitDrift(const Drift &drf) {
     applyDefault(drf);
 }
 
 void DefaultVisitor::visitFlexibleCollimator(const FlexibleCollimator &coll) {
     applyDefault(coll);
-}
-
-void DefaultVisitor::visitLambertson(const Lambertson &lamb) {
-    applyDefault(lamb);
 }
 
 void DefaultVisitor::visitMarker(const Marker &mark) {
@@ -172,10 +151,6 @@ void DefaultVisitor::visitRing(const Ring &ring) {
 }
 
 
-void DefaultVisitor::visitPatch(const Patch &patch) {
-    applyDefault(patch);
-}
-
 void DefaultVisitor::visitProbe(const Probe &probe) {
     applyDefault(probe);
 }
@@ -210,11 +185,6 @@ void DefaultVisitor::visitUndulator(const Undulator &u) {
     applyDefault(u);
 }
 
-void DefaultVisitor::visitRFQuadrupole(const RFQuadrupole &quad) {
-    applyDefault(quad);
-}
-
-
 void DefaultVisitor::visitSBend(const SBend &bend) {
     applyDefault(bend);
 }
@@ -233,11 +203,6 @@ void DefaultVisitor::visitVerticalFFAMagnet(const VerticalFFAMagnet &mag) {
     applyDefault(mag);
 }
 
-void DefaultVisitor::visitSeparator(const Separator &sep) {
-    applyDefault(sep);
-}
-
-
 void DefaultVisitor::visitSeptum(const Septum &sept) {
     applyDefault(sept);
 }
@@ -251,10 +216,6 @@ void DefaultVisitor::visitSource(const Source &sou) {
     applyDefault(sou);
 }
 
-
-void DefaultVisitor::visitParallelPlate(const ParallelPlate &pplate) {
-    applyDefault(pplate);
-}
 
 void DefaultVisitor::visitStripper(const Stripper &stripper) {
     applyDefault(stripper);
@@ -275,12 +236,6 @@ void DefaultVisitor::visitFlaggedElmPtr(const FlaggedElmPtr &fep) {
     } else {
         fep.getElement()->accept(*this);
     }
-}
-
-
-void DefaultVisitor::visitIntegrator(const Integrator &i) {
-    // Default: cannot use integrator.
-    i.getElement()->accept(*this);
 }
 
 

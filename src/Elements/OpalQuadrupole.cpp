@@ -47,12 +47,6 @@ OpalQuadrupole::OpalQuadrupole():
                       ("NSLICES",
                       "The number of slices/ steps for this element in Map Tracking", 1);
 
-    registerRealAttribute("K1");
-    registerRealAttribute("DK1");
-    registerRealAttribute("K1S");
-    registerRealAttribute("DK1S");
-    registerRealAttribute("NSLICES");
-
     registerOwnership();
 
     setElement((new MultipoleRep("QUADRUPOLE")));
@@ -79,33 +73,6 @@ OpalQuadrupole *OpalQuadrupole::clone(const std::string &name) {
 
 void OpalQuadrupole::print(std::ostream &os) const {
     OpalElement::print(os);
-}
-
-
-void OpalQuadrupole::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
-    const MultipoleRep *quad = dynamic_cast<const MultipoleRep *>(&base);
-    BMultipoleField field = quad->getField();
-
-    double length = getLength();
-    double scale = Physics::c / OpalData::getInstance()->getP0();
-    if(length != 0.0) scale *= length;
-
-    for(int order = 1; order <= field.order(); ++order) {
-        std::ostringstream ss;
-        ss << (order - 1) << std::ends;
-        std::string orderString = ss.str();
-
-        std::string normName = "K" + orderString + "L";
-        registerRealAttribute(normName)->setReal(scale * field.normal(order));
-
-        std::string skewName = "K" + orderString + "SL";
-        registerRealAttribute(skewName)->setReal(scale * field.skew(order));
-
-        scale *= double(order);
-    }
 }
 
 

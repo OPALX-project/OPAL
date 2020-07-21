@@ -65,12 +65,6 @@ class OpalVariableRFCavity: public OpalElement {
     /** Destructor does nothing */
     virtual ~OpalVariableRFCavity();
 
-    /** Fill in all registered attributes
-     *
-     *  This updates the registered attributed with values from the ElementBase
-     */
-    virtual void fillRegisteredAttributes(const ElementBase &);
-
     /** Update the OpalVariableRFCavity with new parameters from UI parser */
     virtual void update();
 

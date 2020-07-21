@@ -31,27 +31,21 @@
 #include "MapAnalyser.h"
 
 #include "Algorithms/IndexMap.h"
-#include "AbsBeamline/BeamBeam.h"
 #include "AbsBeamline/BeamStripping.h"
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
-#include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/Drift.h"
 #include "AbsBeamline/FlexibleCollimator.h"
 #include "AbsBeamline/ElementBase.h"
-#include "AbsBeamline/Lambertson.h"
 #include "AbsBeamline/Marker.h"
 #include "AbsBeamline/Monitor.h"
 #include "AbsBeamline/Multipole.h"
-#include "AbsBeamline/ParallelPlate.h"
 #include "AbsBeamline/Probe.h"
 #include "AbsBeamline/RFCavity.h"
-#include "AbsBeamline/RFQuadrupole.h"
 #include "AbsBeamline/RBend.h"
 #include "AbsBeamline/RBend3D.h"
 #include "AbsBeamline/SBend.h"
-#include "AbsBeamline/Separator.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/TravelingWave.h"
@@ -92,7 +86,6 @@ class PartBunchBase;
 // [row]reference momentum   [&]electron-volts [/row]
 // [row]velocity             [&]metres/second  [/row]
 // [row]accelerating voltage [&]volts          [/row]
-// [row]separator voltage    [&]volts          [/row]
 // [row]frequencies          [&]hertz          [/row]
 // [row]phase lags           [&]$2*pi$         [/row]
 // [/tab][p]
@@ -148,9 +141,6 @@ public:
 
     virtual ~ThickTracker();
 
-    /// Apply the algorithm to a BeamBeam.
-    virtual void visitBeamBeam(const BeamBeam &);
-
     /// Apply the algorithm to a BeamStripping.
     virtual void visitBeamStripping(const BeamStripping &);
 
@@ -163,17 +153,11 @@ public:
     /// Apply the algorithm to a Degrader.
     virtual void visitDegrader(const Degrader &);
 
-    /// Apply the algorithm to a Diagnostic.
-    virtual void visitDiagnostic(const Diagnostic &);
-
     /// Apply the algorithm to a Drift.
     virtual void visitDrift(const Drift &);
 
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &);
-
-    /// Apply the algorithm to a Lambertson.
-    virtual void visitLambertson(const Lambertson &);
 
     /// Apply the algorithm to a Marker.
     virtual void visitMarker(const Marker &);
@@ -195,23 +179,14 @@ public:
     /// Apply the algorithm to a RFCavity.
     virtual void visitTravelingWave(const TravelingWave &);
 
-    /// Apply the algorithm to a RFQuadrupole.
-    virtual void visitRFQuadrupole(const RFQuadrupole &);
-
     /// Apply the algorithm to a SBend.
     virtual void visitSBend(const SBend &);
-
-    /// Apply the algorithm to a Separator.
-    virtual void visitSeparator(const Separator &);
 
     /// Apply the algorithm to a Septum.
     virtual void visitSeptum(const Septum &);
 
     /// Apply the algorithm to a Solenoid.
     virtual void visitSolenoid(const Solenoid &);
-
-    /// Apply the algorithm to a ParallelPlate.
-    virtual void visitParallelPlate(const ParallelPlate &);
 
     /// Apply the algorithm to a beam line.
     //  overwrite the execute-methode from DefaultVisitor
@@ -381,10 +356,6 @@ private:
     IpplTimings::TimerRef mapTracking_m;    ///< track particles trough maps of elements_m
 };
 
-inline void ThickTracker::visitBeamBeam(const BeamBeam &/*bb*/) {
-//     itsOpalBeamline_m.visit(bb, *this, itsBunch_m);
-    this->throwElementError_m("BeamBeam");
-}
 
 inline void ThickTracker::visitBeamStripping(const BeamStripping &bstp) {
     itsOpalBeamline_m.visit(bstp, *this, itsBunch_m);
@@ -408,12 +379,6 @@ inline void ThickTracker::visitDegrader(const Degrader &/*deg*/) {
 }
 
 
-inline void ThickTracker::visitDiagnostic(const Diagnostic &/*diag*/) {
-//     itsOpalBeamline_m.visit(diag, *this, itsBunch_m);
-    this->throwElementError_m("Diagnostic");
-}
-
-
 inline void ThickTracker::visitDrift(const Drift &drift) {
     itsOpalBeamline_m.visit(drift, *this, itsBunch_m);
 
@@ -433,11 +398,6 @@ inline void ThickTracker::visitFlexibleCollimator(const FlexibleCollimator &/*co
     this->throwElementError_m("FlexibleCollimator");
 }
 
-
-inline void ThickTracker::visitLambertson(const Lambertson &/*lamb*/) {
-//     itsOpalBeamline_m.visit(lamb, *this, itsBunch_m);
-    this->throwElementError_m("Lambertson");
-}
 
 
 inline void ThickTracker::visitMarker(const Marker &/*marker*/) {
@@ -494,11 +454,6 @@ inline void ThickTracker::visitTravelingWave(const TravelingWave &/*as*/) {
 }
 
 
-inline void ThickTracker::visitRFQuadrupole(const RFQuadrupole &/*rfq*/) {
-//     itsOpalBeamline_m.visit(rfq, *this, itsBunch_m);
-    this->throwElementError_m("RFQuadrupole");
-}
-
 inline void ThickTracker::visitSBend(const SBend &bend) {
     itsOpalBeamline_m.visit(bend, *this, itsBunch_m);
 
@@ -552,12 +507,6 @@ inline void ThickTracker::visitSBend(const SBend &bend) {
 }
 
 
-inline void ThickTracker::visitSeparator(const Separator &/*sep*/) {
-//     itsOpalBeamline_m.visit(sep, *this, itsBunch_m);
-    this->throwElementError_m("Separator");
-}
-
-
 inline void ThickTracker::visitSeptum(const Septum &/*sept*/) {
 //     itsOpalBeamline_m.visit(sept, *this, itsBunch_m);
     this->throwElementError_m("Septum");
@@ -569,10 +518,5 @@ inline void ThickTracker::visitSolenoid(const Solenoid &/*solenoid*/) {
     this->throwElementError_m("Solenoid");
 }
 
-
-inline void ThickTracker::visitParallelPlate(const ParallelPlate &/*pplate*/) {
-//     itsOpalBeamline_m.visit(pplate, *this, itsBunch_m);
-    this->throwElementError_m("ParallelPlate");
-}
 
 #endif // OPAL_ThickTracker_HH

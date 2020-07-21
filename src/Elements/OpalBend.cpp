@@ -79,30 +79,6 @@ OpalBend::OpalBend(const char *name, const char *help):
     itsAttr[NSLICES] = Attributes::makeReal
                           ("NSLICES",
                           "The number of slices/ steps for this element in Map Tracking", 1);
-
-    registerRealAttribute("ANGLE");
-    registerRealAttribute("K0L");
-    registerRealAttribute("K0SL");
-    registerRealAttribute("K1L");
-    registerRealAttribute("K1SL");
-    registerRealAttribute("K2L");
-    registerRealAttribute("K2SL");
-    registerRealAttribute("K3L");
-    registerRealAttribute("K3SL");
-    registerRealAttribute("E1");
-    registerRealAttribute("E2");
-    registerRealAttribute("H1");
-    registerRealAttribute("H2");
-    registerRealAttribute("HGAP");
-    registerRealAttribute("FINT");
-    registerRealAttribute("SLICES");
-    registerRealAttribute("STEPSIZE");
-    registerStringAttribute("FMAPFN");
-    registerRealAttribute("GAP");
-    registerRealAttribute("HAPERT");
-    registerRealAttribute("ROTATION");
-    registerRealAttribute("DESIGNENERGY");
-    registerRealAttribute("NSLICES");
 }
 
 

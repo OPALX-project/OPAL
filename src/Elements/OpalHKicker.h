@@ -41,9 +41,6 @@ public:
     /// Make clone.
     virtual OpalHKicker *clone(const std::string &name);
 
-    /// Fill in all registered attributes.
-    virtual void fillRegisteredAttributes(const ElementBase &);
-
     /// Update the embedded CLASSIC corrector.
     virtual void update();
 

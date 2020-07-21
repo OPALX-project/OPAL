@@ -52,9 +52,6 @@ public:
     /// Make clone.
     virtual OpalBeamStripping *clone(const std::string &name);
 
-    /// Fill in all registered attributes.
-    virtual void fillRegisteredAttributes(const ElementBase &);
-
     /// Update the embedded CLASSIC beam stripping.
     virtual void update();
 

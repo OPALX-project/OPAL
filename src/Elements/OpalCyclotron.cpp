@@ -113,32 +113,6 @@ OpalCyclotron::OpalCyclotron():
     itsAttr[TRIMCOIL]   = Attributes::makeStringArray
                         ("TRIMCOIL", "List of trim coils");
 
-
-    registerStringAttribute("FMAPFN");
-    registerStringAttribute("GEOMETRY");
-    registerStringAttribute("RFMAPFN");
-    registerStringAttribute("RFFCFN");
-    registerStringAttribute("RFVCFN");
-    registerStringAttribute("TYPE");
-    registerRealAttribute("CYHARMON");
-    registerRealAttribute("RINIT");
-    registerRealAttribute("PRINIT");
-    registerRealAttribute("PHIINIT");
-    registerRealAttribute("ZINIT");
-    registerRealAttribute("PZINIT");
-    registerRealAttribute("SYMMETRY");
-    registerRealAttribute("RFFREQ");
-    registerRealAttribute("BSCALE");
-    registerRealAttribute("ESCALE");
-    registerRealAttribute("RFPHI");
-    registerRealAttribute("MINZ");
-    registerRealAttribute("MAXZ");
-    registerRealAttribute("MINR");
-    registerRealAttribute("MAXR");
-    registerRealAttribute("FMLOWE");
-    registerRealAttribute("FMHIGHE");
-    registerRealAttribute("TRIMCOILTHRESHOLD");
-
     registerOwnership();
 
     setElement(new CyclotronRep("CYCLOTRON"));
@@ -157,12 +131,6 @@ OpalCyclotron::~OpalCyclotron()
 
 OpalCyclotron *OpalCyclotron::clone(const std::string &name) {
     return new OpalCyclotron(name, this);
-}
-
-
-void OpalCyclotron::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
 }
 
 

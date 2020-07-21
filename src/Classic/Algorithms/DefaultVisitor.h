@@ -45,9 +45,6 @@ public:
     /// Apply the algorithm to the top-level beamline.
     virtual void execute();
 
-    /// Apply the algorithm to a beam-beam.
-    virtual void visitBeamBeam(const BeamBeam &);
-
     /// Apply the algorithm to a beam stripping.
     virtual void visitBeamStripping(const BeamStripping &);
 
@@ -69,17 +66,11 @@ public:
     /// Apply the algorithm to a drift.
     virtual void visitDegrader(const Degrader &);
 
-    /// Apply the algorithm to a diagnostic.
-    virtual void visitDiagnostic(const Diagnostic &);
-
     /// Apply the algorithm to a drift.
     virtual void visitDrift(const Drift &);
 
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &);
-
-    /// Apply the algorithm to a Lambertson.
-    virtual void visitLambertson(const Lambertson &);
 
     /// Apply the algorithm to a marker.
     virtual void visitMarker(const Marker &);
@@ -105,9 +96,6 @@ public:
     /// Apply the algorithm to an Offset.
     virtual void visitOffset(const Offset &);
 
-    /// Apply the algorithm to a patch.
-    virtual void visitPatch(const Patch &pat);
-
     /// Apply the algorithm to a probe.
     virtual void visitProbe(const Probe &prob);
 
@@ -132,9 +120,6 @@ public:
     /// Apply the algorithm to an undulator.
     virtual void visitUndulator(const Undulator &);
 
-    /// Apply the algorithm to a RF quadrupole.
-    virtual void visitRFQuadrupole(const RFQuadrupole &);
-
     /// Apply the algorithm to a sector bend.
     virtual void visitSBend(const SBend &);
 
@@ -147,9 +132,6 @@ public:
     /// Apply the algorithm to a RF cavity.
     virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet &);
 
-    /// Apply the algorithm to a separator.
-    virtual void visitSeparator(const Separator &);
-
     /// Apply the algorithm to a septum.
     virtual void visitSeptum(const Septum &);
 
@@ -159,9 +141,6 @@ public:
     /// Apply the algorithm to a source.
     virtual void visitSource(const Source &);
 
-    /// Apply the algorithm to a ParallelPlate.
-    virtual void visitParallelPlate(const ParallelPlate &);
-
     /// Apply the algorithm to a charge stripper.
     virtual void visitStripper(const Stripper &);
 
@@ -170,9 +149,6 @@ public:
 
     /// Apply the algorithm to a FlaggedElmPtr.
     virtual void visitFlaggedElmPtr(const FlaggedElmPtr &);
-
-    /// Apply the algorithm to a generic integrator.
-    virtual void visitIntegrator(const Integrator &);
 
 protected:
 

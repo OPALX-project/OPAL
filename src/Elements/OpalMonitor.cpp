@@ -29,8 +29,6 @@ OpalMonitor::OpalMonitor():
     itsAttr[OUTFN] = Attributes::makeString
                      ("OUTFN", "Monitor output filename");
 
-    registerStringAttribute("OUTFN");
-
     registerOwnership();
 
     setElement(new MonitorRep("MONITOR"));

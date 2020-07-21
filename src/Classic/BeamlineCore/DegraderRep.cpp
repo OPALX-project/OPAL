@@ -1,30 +1,23 @@
-// ------------------------------------------------------------------------
-// $RCSfile: DegraderRep.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: DegraderRep
-//   Defines a concrete collimator representation.
+// Class DegraderRep
+//   Representation for a degrader.
 //
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:32:33 $
-// $Author: fci $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "BeamlineCore/DegraderRep.h"
-#include "AbsBeamline/ElementImage.h"
 #include "Channels/IndirectChannel.h"
 
-
-// Attribute access table.
-// ------------------------------------------------------------------------
 
 namespace {
     struct Entry {
@@ -43,9 +36,6 @@ namespace {
     };
 }
 
-
-// Class DegraderRep
-// ------------------------------------------------------------------------
 
 DegraderRep::DegraderRep():
     Degrader(),
@@ -100,15 +90,4 @@ StraightGeometry &DegraderRep::getGeometry() {
 
 const StraightGeometry &DegraderRep::getGeometry() const {
     return geometry;
-}
-
-
-ElementImage *DegraderRep::getImage() const {
-    ElementImage *image = ElementBase::getImage();
-
-    for(const Entry *entry = entries; entry->name != 0; ++entry) {
-        image->setAttribute(entry->name, (this->*(entry->get))());
-    }
-
-    return image;
 }

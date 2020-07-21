@@ -38,7 +38,6 @@
 #define CLASSIC_SingleMultipole_HH
 
 #include "AbsBeamline/Multipole.h"
-#include "AbsBeamline/ElementImage.h"
 #include "BeamlineGeometry/StraightGeometry.h"
 #include "Channels/IndirectChannel.h"
 #include "Fields/BSingleMultipoleField.h"
@@ -89,11 +88,6 @@ public:
     //  the attribute [b]aKey[/b] and returns it.
     //  If the attribute does not exist, it returns NULL.
     virtual Channel *getChannel(const std::string &aKey, bool = false);
-
-    /// Construct an image.
-    //  Return the image of the element, containing the name and type string
-    //  of the element, and a copy of the user-defined attributes.
-    ElementImage *getImage() const;
 
 private:
 
@@ -210,18 +204,5 @@ Channel *SingleMultipole<order>::getChannel(const std::string &aKey, bool) {
 
     return ElementBase::getChannel(aKey);
 }
-
-
-template <int order> inline
-ElementImage *SingleMultipole<order>::getImage() const {
-    ElementImage *image = ElementBase::getImage();
-
-    for(const Entry *entry = entries; entry->name != 0; ++entry) {
-        image->setAttribute(entry->name, (this->*(entry->get))());
-    }
-
-    return image;
-}
-
 
 #endif // __SingleMultipole_HH

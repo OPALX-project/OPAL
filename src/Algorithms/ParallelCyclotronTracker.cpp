@@ -42,10 +42,8 @@
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Cyclotron.h"
 #include "AbsBeamline/Degrader.h"
-#include "AbsBeamline/Diagnostic.h"
 #include "AbsBeamline/Drift.h"
 #include "AbsBeamline/ElementBase.h"
-#include "AbsBeamline/Lambertson.h"
 #include "AbsBeamline/Offset.h"
 #include "AbsBeamline/Marker.h"
 #include "AbsBeamline/Monitor.h"
@@ -60,11 +58,9 @@
 #include "AbsBeamline/RBend.h"
 #include "AbsBeamline/Ring.h"
 #include "AbsBeamline/RFCavity.h"
-#include "AbsBeamline/RFQuadrupole.h"
 #include "AbsBeamline/SBend.h"
 #include "AbsBeamline/SBend3D.h"
 #include "AbsBeamline/ScalingFFAMagnet.h"
-#include "AbsBeamline/Separator.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/Stripper.h"
@@ -568,14 +564,6 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron &cycl) {
     buildupFieldList(BcParameter, ElementBase::CYCLOTRON, cycl_m);
 }
 
-/**
- * Not implemented and most probable never used
- *
- */
-void ParallelCyclotronTracker::visitBeamBeam(const BeamBeam &) {
-    *gmsg << "In BeamBeam tracker is missing " << endl;
-}
-
 
 void ParallelCyclotronTracker::visitBeamStripping(const BeamStripping &bstp) {
     *gmsg << "* ------------------------------ Beam Stripping ------------------------------" << endl;
@@ -680,16 +668,6 @@ void ParallelCyclotronTracker::visitDegrader(const Degrader &deg) {
 /**
  *
  *
- * @param diag
- */
-void ParallelCyclotronTracker::visitDiagnostic(const Diagnostic &diag) {
-    *gmsg << "In Diagnostic; L= " << diag.getElementLength() << endl;
-    myElements.push_back(dynamic_cast<Diagnostic *>(diag.clone()));
-}
-
-/**
- *
- *
  * @param drift
  */
 void ParallelCyclotronTracker::visitDrift(const Drift &drift) {
@@ -704,16 +682,6 @@ void ParallelCyclotronTracker::visitDrift(const Drift &drift) {
  */
 void ParallelCyclotronTracker::visitFlexibleCollimator(const FlexibleCollimator &) {
 
-}
-
-/**
- *
- *
- * @param lamb
- */
-void ParallelCyclotronTracker::visitLambertson(const Lambertson &lamb) {
-    *gmsg << "In Lambertson; L= " << lamb.getElementLength() << endl;
-    myElements.push_back(dynamic_cast<Lambertson *>(lamb.clone()));
 }
 
 void ParallelCyclotronTracker::visitOffset(const Offset & off) {
@@ -1013,31 +981,11 @@ void ParallelCyclotronTracker::visitRFCavity(const RFCavity &as) {
 /**
  *
  *
- * @param rfq
- */
-void ParallelCyclotronTracker::visitRFQuadrupole(const RFQuadrupole &rfq) {
-    *gmsg << "In RFQuadrupole; L = " << rfq.getElementLength() << " however the element is missing " << endl;
-    myElements.push_back(dynamic_cast<RFQuadrupole *>(rfq.clone()));
-}
-
-/**
- *
- *
  * @param bend
  */
 void ParallelCyclotronTracker::visitSBend(const SBend &bend) {
     *gmsg << "In SBend; L = " << bend.getElementLength() << " however the element is missing " << endl;
     myElements.push_back(dynamic_cast<SBend *>(bend.clone()));
-}
-
-/**
- *
- *
- * @param sep
- */
-void ParallelCyclotronTracker::visitSeparator(const Separator &sep) {
-    *gmsg << "In Separator L= " << sep.getElementLength() << " however the element is missing " << endl;
-    myElements.push_back(dynamic_cast<Separator *>(sep.clone()));
 }
 
 /**
@@ -1095,15 +1043,6 @@ void ParallelCyclotronTracker::visitSolenoid(const Solenoid &solenoid) {
         *gmsg << "Solenoid: no position of the element given!" << endl;
         return;
     }
-}
-
-/**
- *
- *
- * @param pplate
- */
-void ParallelCyclotronTracker::visitParallelPlate(const ParallelPlate &/*pplate*/) {
-    //do nothing
 }
 
 /**

@@ -94,9 +94,6 @@ public:
     /// Apply the algorithm to a RFCavity.
     virtual void visitRFCavity(const RFCavity &);
 
-    /// Apply the algorithm to a BeamBeam.
-    virtual void visitBeamBeam(const BeamBeam &);
-
     /// Apply the algorithm to a Beam Stripping.
     virtual void visitBeamStripping(const BeamStripping &);
 
@@ -109,17 +106,11 @@ public:
     /// Apply the algorithm to a Degrader
     virtual void visitDegrader(const Degrader &);
 
-    /// Apply the algorithm to a Diagnostic.
-    virtual void visitDiagnostic(const Diagnostic &);
-
     /// Apply the algorithm to a Drift.
     virtual void visitDrift(const Drift &);
 
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &);
-
-    /// Apply the algorithm to a Lambertson.
-    virtual void visitLambertson(const Lambertson &);
 
     /// Apply the algorithm to a Marker.
     virtual void visitMarker(const Marker &);
@@ -151,9 +142,6 @@ public:
     /// Apply the algorithm to a RBend.
     virtual void visitRBend(const RBend &);
 
-    /// Apply the algorithm to a RFQuadrupole.
-    virtual void visitRFQuadrupole(const RFQuadrupole &);
-
     /// Apply the algorithm to a SBend.
     virtual void visitSBend(const SBend &);
 
@@ -163,9 +151,6 @@ public:
     /// Apply the algorithm to a ScalingFFAMagnet.
     virtual void visitScalingFFAMagnet(const ScalingFFAMagnet &bend);
 
-    /// Apply the algorithm to a Separator.
-    virtual void visitSeparator(const Separator &);
-
     /// Apply the algorithm to a Septum.
     virtual void visitSeptum(const Septum &);
 
@@ -174,9 +159,6 @@ public:
 
     /// Apply the algorithm to a charge stripper.
     virtual void visitStripper(const Stripper &);
-
-    /// Apply the algorithm to a ParallelPlate, it is empty for cyclotrontracker .
-    virtual void visitParallelPlate(const ParallelPlate &);
 
     /// Apply the algorithm to a VariabelRFCavity.
     virtual void visitVariableRFCavity(const VariableRFCavity &cav);

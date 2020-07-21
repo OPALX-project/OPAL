@@ -56,41 +56,6 @@ OpalSBend *OpalSBend::clone(const std::string &name) {
 }
 
 
-void OpalSBend::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
-    const SBendRep *bend = dynamic_cast<const SBendRep *>(&base);
-    BMultipoleField field = bend->getField();
-
-    double length = getLength();
-    double scale = Physics::c / OpalData::getInstance()->getP0();
-    if(length != 0.0) scale *= length;
-
-    for(int i = 1; i <= field.order(); ++i) {
-        std::string normName("K0L");
-        normName[1] += (i - 1);
-        attributeRegistry[normName]->setReal(scale * field.normal(i));
-
-        std::string skewName("K0SL");
-        skewName[1] += (i - 1);
-        attributeRegistry[skewName]->setReal(scale * field.skew(i));
-        scale *= double(i);
-    }
-
-    // Store pole face information.
-    attributeRegistry["E1"]->setReal(bend->getEntryFaceRotation());
-    attributeRegistry["E2"]->setReal(bend->getExitFaceRotation());
-    attributeRegistry["H1"]->setReal(bend->getEntryFaceCurvature());
-    attributeRegistry["H2"]->setReal(bend->getExitFaceCurvature());
-
-    // Store integration parameters.
-    attributeRegistry["SLICES"]->setReal(bend->getSlices());
-    attributeRegistry["STEPSIZE"]->setReal(bend->getStepsize());
-    //attributeRegistry["FMAPFN"]->setString(bend->getFieldMapFN());
-}
-
-
 void OpalSBend::update() {
     OpalElement::update();
 

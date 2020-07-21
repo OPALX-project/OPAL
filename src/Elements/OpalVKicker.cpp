@@ -35,10 +35,6 @@ OpalVKicker::OpalVKicker():
     itsAttr[K0] = Attributes::makeReal
                   ("K0", "Normal dipole field in T");
 
-    registerRealAttribute("KICK");
-    registerRealAttribute("DESIGNENERGY");
-    registerRealAttribute("K0");
-
     registerOwnership();
 
     setElement(new YCorrectorRep("VKICKER"));
@@ -57,25 +53,6 @@ OpalVKicker::~OpalVKicker()
 
 OpalVKicker *OpalVKicker::clone(const std::string &name) {
     return new OpalVKicker(name, this);
-}
-
-
-void OpalVKicker::
-fillRegisteredAttributes(const ElementBase &base) {
-    Inform m("fillRegisteredAttributes ");
-    OpalElement::fillRegisteredAttributes(base);
-
-    const YCorrectorRep *corr = dynamic_cast<const YCorrectorRep *>(&base);
-    BDipoleField field = corr->getField();
-
-    double scale = Physics::c / OpalData::getInstance()->getP0();
-    attributeRegistry["HKICK"]->setReal(- field.getBy() * scale);
-    attributeRegistry["VKICK"]->setReal(+ field.getBx() * scale);
-
-    m << "P= " << OpalData::getInstance()->getP0()
-      << " Bx= " << field.getBx()
-      << " By= " << field.getBy() << endl;
-
 }
 
 

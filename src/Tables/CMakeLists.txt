@@ -1,13 +1,7 @@
 set (_SRCS
-    AttList.cpp
-    AttWriter.cpp
-    Insertion.cpp
     List.cpp
-    Period.cpp
     RangeSelector.cpp
     Selector.cpp
-    Survey.cpp
-    Twiss.cpp
     )
 
 include_directories (
@@ -17,16 +11,9 @@ include_directories (
 add_opal_sources(${_SRCS})
 
 set (HDRS
-    AttList.h
-    AttWriter.h
-    Flatten.h
-    Insertion.h
     List.h
-    Period.h
     RangeSelector.h
     Selector.h
-    Survey.h
-    Twiss.h
     )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Tables")

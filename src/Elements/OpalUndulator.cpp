@@ -67,14 +67,6 @@ OpalUndulator::OpalUndulator():
                           ("DTBUNCH",
                           "Time step for the particle update can be smaller than the field update step [s].", 0.0);
 
-    registerRealAttribute("K");
-    registerRealAttribute("LAMBDA");
-    registerRealAttribute("NUMPERIODS");
-    registerRealAttribute("ANGLE");
-    registerStringAttribute("FNAME");
-    registerRealAttribute("TRUNORDER");
-    registerRealAttribute("TOTALTIME");
-    registerRealAttribute("DTBUNCH");
     registerOwnership();
 
     setElement(new UndulatorRep("UNDULATOR"));

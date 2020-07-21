@@ -1,5 +1,4 @@
 set (_SRCS
-    BeamBeamRep.cpp
     BeamStrippingRep.cpp
     CCollimatorRep.cpp
     CorrectorRep.cpp
@@ -11,14 +10,11 @@ set (_SRCS
     MonitorRep.cpp
     MultipoleRep.cpp
     Octupole.cpp
-    ParallelPlateRep.cpp
-    PatchRep.cpp
     ProbeRep.cpp
     Quadrupole.cpp
     RBendRep.cpp
     RFCavityRep.cpp
     SBendRep.cpp
-    SeparatorRep.cpp
     SeptumRep.cpp
     Sextupole.cpp
     SkewOctupole.cpp
@@ -30,9 +26,7 @@ set (_SRCS
     TravelingWaveRep.cpp
     UndulatorRep.cpp
     XCorrectorRep.cpp
-    XMonitorRep.cpp
     YCorrectorRep.cpp
-    YMonitorRep.cpp
     )
 
 include_directories (
@@ -42,7 +36,6 @@ include_directories (
 add_opal_sources (${_SRCS})
 
 set (HDRS
-    BeamBeamRep.h
     BeamStrippingRep.h
     CCollimatorRep.h
     CorrectorRep.h
@@ -54,14 +47,11 @@ set (HDRS
     MonitorRep.h
     MultipoleRep.h
     Octupole.h
-    ParallelPlateRep.h
-    PatchRep.h
     ProbeRep.h
     Quadrupole.h
     RBendRep.h
     RFCavityRep.h
     SBendRep.h
-    SeparatorRep.h
     SeptumRep.h
     Sextupole.h
     SingleMultipole.h
@@ -74,9 +64,7 @@ set (HDRS
     TravelingWaveRep.h
     UndulatorRep.h
     XCorrectorRep.h
-    XMonitorRep.h
     YCorrectorRep.h
-    YMonitorRep.h
     )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/BeamlineCore")

@@ -28,8 +28,6 @@ OpalSource::OpalSource():
     itsAttr[DISTRIBUTION] = Attributes::makeStringArray
                              ("DISTRIBUTION", "List of particle distributions to be used ");
 
-    registerStringAttribute("DISTRIBUTION");
-
     registerOwnership();
 
     setElement(new SourceRep("SOURCE"));
@@ -48,12 +46,6 @@ OpalSource::~OpalSource()
 
 OpalSource *OpalSource::clone(const std::string &name) {
     return new OpalSource(name, this);
-}
-
-
-void OpalSource::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
 }
 
 

@@ -46,15 +46,6 @@ OpalCCollimator::OpalCCollimator():
     itsAttr[OUTFN] = Attributes::makeString
                      ("OUTFN", "Output filename");
 
-    registerRealAttribute("XSTART");
-    registerRealAttribute("XEND");
-    registerRealAttribute("YSTART");
-    registerRealAttribute("YEND");
-    registerRealAttribute("ZSTART");
-    registerRealAttribute("ZEND");
-    registerRealAttribute("WIDTH");
-    registerStringAttribute("OUTFN");
-
     registerOwnership();
 
     setElement(new CCollimatorRep("CCOLLIMATOR"));
@@ -76,11 +67,6 @@ OpalCCollimator::~OpalCCollimator() {
 
 OpalCCollimator *OpalCCollimator::clone(const std::string &name) {
     return new OpalCCollimator(name, this);
-}
-
-
-void OpalCCollimator::fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
 }
 
 

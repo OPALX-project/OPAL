@@ -60,7 +60,6 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Algorithms/Tracker.h"
-#include "AbsBeamline/Patch.h"
 #include "Fields/BMultipoleField.h"
 
 //FIXME Remove headers and dynamic_cast in readOneBunchFromFile
@@ -119,13 +118,6 @@ void Tracker::addToBunch(const OpalParticle &part) {
 
 void Tracker::visitComponent(const Component &comp) {
     comp.trackBunch(itsBunch_m, itsReference, back_beam, back_track);
-}
-
-
-void Tracker::visitPatch(const Patch &patch) {
-    Euclid3D transform = patch.getPatch();
-    if(back_path) transform = Inverse(transform);
-    applyTransform(transform);
 }
 
 

@@ -34,10 +34,6 @@ OpalHKicker::OpalHKicker():
     itsAttr[K0] = Attributes::makeReal
                   ("K0", "Normal dipole field in T");
 
-    registerRealAttribute("HKICK");
-    registerRealAttribute("DESIGNENERGY");
-    registerRealAttribute("K0");
-
     registerOwnership();
 
     setElement(new XCorrectorRep("HKICKER"));
@@ -56,19 +52,6 @@ OpalHKicker::~OpalHKicker()
 
 OpalHKicker *OpalHKicker::clone(const std::string &name) {
     return new OpalHKicker(name, this);
-}
-
-
-void OpalHKicker::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
-    const XCorrectorRep *corr = dynamic_cast<const XCorrectorRep *>(&base);
-    BDipoleField field = corr->getField();
-
-    double scale = Physics::c / OpalData::getInstance()->getP0();
-    attributeRegistry["HKICK"]->setReal(- field.getBy() * scale);
-    attributeRegistry["VKICK"]->setReal(+ field.getBx() * scale);
 }
 
 

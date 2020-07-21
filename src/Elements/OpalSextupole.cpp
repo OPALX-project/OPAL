@@ -66,33 +66,6 @@ void OpalSextupole::print(std::ostream &os) const {
 }
 
 
-void OpalSextupole::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
-    const MultipoleRep *sext = dynamic_cast<const MultipoleRep *>(&base);
-    BMultipoleField field = sext->getField();
-
-    double length = getLength();
-    double scale = Physics::c / OpalData::getInstance()->getP0();
-    if(length != 0.0) scale *= length;
-
-    for(int order = 1; order <= field.order(); ++order) {
-        std::ostringstream ss;
-        ss << (order - 1) << std::ends;
-        std::string orderString = ss.str();
-
-        std::string normName = "K" + orderString + "L";
-        registerRealAttribute(normName)->setReal(scale * field.normal(order));
-
-        std::string skewName = "K" + orderString + "SL";
-        registerRealAttribute(skewName)->setReal(scale * field.skew(order));
-
-        scale *= double(order);
-    }
-}
-
-
 void OpalSextupole::update() {
     OpalElement::update();
 

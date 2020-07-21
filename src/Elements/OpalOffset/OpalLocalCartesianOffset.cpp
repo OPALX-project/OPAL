@@ -54,10 +54,6 @@ OpalLocalCartesianOffset::OpalLocalCartesianOffset()
              "x component of normal of end of the offset in coordinate system of the end of the upstream element [m].");
     itsAttr[END_NORMAL_Y] = Attributes::makeReal("END_NORMAL_Y",
              "y component of normal of end of the offset in coordinate system of the end of the upstream element [m].");
-    registerRealAttribute("END_POSITION_X");
-    registerRealAttribute("END_POSITION_Y");
-    registerRealAttribute("END_NORMAL_X");
-    registerRealAttribute("END_NORMAL_Y");
 
     registerOwnership();
 
@@ -83,23 +79,6 @@ OpalLocalCartesianOffset::OpalLocalCartesianOffset(const std::string &name, Opal
 }
 
 OpalLocalCartesianOffset::~OpalLocalCartesianOffset() {}
-
-void OpalLocalCartesianOffset::fillRegisteredAttributes
-                                     (const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-    const Offset* offset = dynamic_cast<const Offset*>(&base);
-    if (offset == NULL) {
-        throw OpalException("OpalLocalCartesianOffset::fillRegisteredAttributes",
-                            "Failed to cast ElementBase to a OpalLocalCartesianOffset");
-    }
-
-    Euclid3D trans = offset->getGeometry().getTotalTransform();
-    double rot = trans.getRotation().getAxis()(1);
-    attributeRegistry["END_POSITION_X"]->setReal(trans.getVector()(2));
-    attributeRegistry["END_POSITION_Y"]->setReal(trans.getVector()(0));
-    attributeRegistry["END_NORMAL_X"]->setReal(cos(rot));
-    attributeRegistry["END_NORMAL_Y"]->setReal(sin(rot));
-}
 
 void OpalLocalCartesianOffset::update() {
     // getOpalName() comes from AbstractObjects/Object.h

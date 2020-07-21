@@ -20,7 +20,6 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 
-#include "AbsBeamline/ElementImage.h"
 #include "BeamlineCore/BeamStrippingRep.h"
 #include "Channels/IndirectChannel.h"
 
@@ -96,15 +95,4 @@ PlanarArcGeometry &BeamStrippingRep::getGeometry() {
 
 const PlanarArcGeometry &BeamStrippingRep::getGeometry() const {
     return geometry;
-}
-
-
-ElementImage *BeamStrippingRep::getImage() const {
-    ElementImage *image = ElementBase::getImage();
-
-    for(const Entry *entry = entries; entry->name != 0; ++entry) {
-        image->setAttribute(entry->name, (this->*(entry->get))());
-    }
-
-    return image;
 }

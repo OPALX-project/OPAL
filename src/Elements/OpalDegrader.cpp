@@ -32,8 +32,6 @@ OpalDegrader::OpalDegrader():
     itsAttr[OUTFN] = Attributes::makeString
         ("OUTFN", "Degrader output filename");
 
-    registerStringAttribute("OUTFN");
-
     registerOwnership();
 
     setElement(new DegraderRep("DEGRADER"));
@@ -55,11 +53,6 @@ OpalDegrader::~OpalDegrader() {
 
 OpalDegrader *OpalDegrader::clone(const std::string &name) {
     return new OpalDegrader(name, this);
-}
-
-
-void OpalDegrader::fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
 }
 
 

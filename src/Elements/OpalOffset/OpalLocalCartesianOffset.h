@@ -63,9 +63,6 @@ class OpalLocalCartesianOffset : public OpalElement {
     /** Inherited copy constructor */
     virtual OpalLocalCartesianOffset *clone(const std::string &name);
 
-    /** Calls fillRegisteredAttributes on the OpalElement */
-    void fillRegisteredAttributes(const ElementBase &base);
-
     /** Receive parameters from the parser and hand them off to the
      *  OpalCylindricalOffset
      */

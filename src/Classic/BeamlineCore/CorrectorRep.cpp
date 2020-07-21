@@ -17,7 +17,6 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "BeamlineCore/CorrectorRep.h"
-#include "AbsBeamline/ElementImage.h"
 #include "Channels/IndirectChannel.h"
 
 
@@ -94,17 +93,6 @@ StraightGeometry &CorrectorRep::getGeometry() {
 
 const StraightGeometry &CorrectorRep::getGeometry() const {
     return geometry;
-}
-
-
-ElementImage *CorrectorRep::getImage() const {
-    ElementImage *image = ElementBase::getImage();
-
-    for(const Entry *table = entries; table->name != 0; ++table) {
-        image->setAttribute(table->name, (this->*(table->get))());
-    }
-
-    return image;
 }
 
 

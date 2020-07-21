@@ -41,13 +41,6 @@ OpalSeptum::OpalSeptum():
     itsAttr[OUTFN] = Attributes::makeString
                      ("OUTFN", "Output filename");
 
-    registerRealAttribute("XSTART");
-    registerRealAttribute("XEND");
-    registerRealAttribute("YSTART");
-    registerRealAttribute("YEND");
-    registerRealAttribute("WIDTH");
-    registerStringAttribute("OUTFN");
-
     registerOwnership();
 
     setElement(new SeptumRep("SEPTUM"));
@@ -69,12 +62,6 @@ OpalSeptum::~OpalSeptum() {
 
 OpalSeptum *OpalSeptum::clone(const std::string &name) {
     return new OpalSeptum(name, this);
-}
-
-
-void OpalSeptum::fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
 }
 
 

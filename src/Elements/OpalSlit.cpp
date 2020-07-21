@@ -34,11 +34,6 @@ OpalSlit::OpalSlit():
     itsAttr[OUTFN] = Attributes::makeString
                      ("OUTFN", "Monitor output filename");
 
-
-    registerStringAttribute("OUTFN");
-    registerRealAttribute("XSIZE");
-    registerRealAttribute("YSIZE");
-
     registerOwnership();
 
     setElement(new FlexibleCollimatorRep("SLIT"));
@@ -60,27 +55,6 @@ OpalSlit::~OpalSlit() {
 
 OpalSlit *OpalSlit::clone(const std::string &name) {
     return new OpalSlit(name, this);
-}
-
-
-void OpalSlit::fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
-    const FlexibleCollimatorRep *coll =
-        dynamic_cast<const FlexibleCollimatorRep *>(&base);
-
-    std::string Double("(-?[0-9]+\\.?[0-9]*([Ee][+-]?[0-9]+)?)");
-    std::string desc = coll->getDescription();
-
-    boost::regex parser("rectangle\\(" + Double + "," + Double + "\\)");
-    boost::smatch what;
-    if (!boost::regex_match(desc, what, parser)) return;
-
-    double width = atof(std::string(what[1]).c_str());
-    double height = atof(std::string(what[3]).c_str());
-
-    attributeRegistry["XSIZE"]->setReal(0.5 * width);
-    attributeRegistry["YSIZE"]->setReal(0.5 * height);
 }
 
 

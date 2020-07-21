@@ -20,7 +20,6 @@ set (HDRS
     AColumn.h
     ADeferred.h
     AList.h
-    ARefAttr.h
     ARefExpr.h
     ARow.h
     ASUnary.h

@@ -4,8 +4,6 @@ set (_SRCS
     TrackEnd.cpp
     TrackParser.cpp
     TrackRun.cpp
-    TrackSave.cpp
-    TrackStart.cpp
     )
 
 include_directories (
@@ -20,8 +18,6 @@ set (HDRS
     Track.h
     TrackParser.h
     TrackRun.h
-    TrackSave.h
-    TrackStart.h
     )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Track")

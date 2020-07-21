@@ -54,11 +54,6 @@ public:
     //  Version for constant object.
     virtual const StraightGeometry &getGeometry() const;
 
-    /// Construct an image.
-    //  Return the image of the element, containing the name and type string
-    //  of the element, and a copy of the user-defined attributes.
-    virtual ElementImage *getImage() const;
-
     /// Get plane(s) of action.
     virtual Plane getPlane() const;
 

@@ -1,33 +1,23 @@
-// ------------------------------------------------------------------------
-// $RCSfile: XCorrectorRep.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: XCorrectorRep
-//   Defines a concrete representation for a horizontal orbit corrector.
+// Class XCorrectorRep
+//   Representation for an orbit corrector.
+//   This derived class acts on the horizontal plane.
 //
-// ------------------------------------------------------------------------
-// 02-Nov-98, Chris Iselin, CERN
-//   Original release.
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// Revision History:
-// $Date: 2000/03/27 09:32:34 $
-// $Author: fci $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "BeamlineCore/XCorrectorRep.h"
-#include "AbsBeamline/ElementImage.h"
 #include "Channels/IndirectChannel.h"
-
-
-// Attribute access table.
-// ------------------------------------------------------------------------
 
 namespace {
     struct Entry {
@@ -51,9 +41,6 @@ namespace {
     };
 }
 
-
-// Class XCorrectorRep
-// ------------------------------------------------------------------------
 
 XCorrectorRep::XCorrectorRep():
     CorrectorRep()
@@ -88,18 +75,6 @@ Channel *XCorrectorRep::getChannel(const std::string &aKey, bool create) {
 
     return ElementBase::getChannel(aKey, create);
 }
-
-
-ElementImage *XCorrectorRep::getImage() const {
-    ElementImage *image = ElementBase::getImage();
-
-    for(const Entry *entry = entries; entry->name != 0; ++entry) {
-        image->setAttribute(entry->name, (this->*(entry->get))());
-    }
-
-    return image;
-}
-
 
 Corrector::Plane XCorrectorRep::getPlane() const {
     return active ? X : OFF;

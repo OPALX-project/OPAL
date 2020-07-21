@@ -110,9 +110,6 @@ public:
     //  This override calls the component to track the bunch.
     virtual void visitComponent(const Component &);
 
-    /// Apply the algorithm to a patch.
-    virtual void visitPatch(const Patch &pat);
-
     /// set total number of tracked bunches
     virtual void setNumBunch(short) {};
 

@@ -1,22 +1,27 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Configure.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.3 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Namespace: Configure
-//   Contains methods for configuring the OPAL-9 program.
+// Namespace Configure
+//   The OPAL configurator.
+//   This class must be modified to configure the commands to be contained
+//   in an executable OPAL program. For each command an exemplar object
+//   is constructed and linked to the main directory. This exemplar is then
+//   available to the OPAL parser for cloning.
+//   This class could be part of the class OpalData.  It is separated from
+//   that class and opale into a special module in order to reduce
+//   dependencies between modules.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/05/03 12:40:49 $
-// $Author: opal $
+// This file is part of OPAL.
 //
-// JMJ & JP adding Aperture and Split 18/4/2000
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "OpalConfigure/Configure.h"
 #include "AbstractObjects/OpalData.h"
 
@@ -24,18 +29,14 @@
 
 // Basic action commands.
 #include "BasicActions/Call.h"
-#include "BasicActions/Dump.h"
 #include "BasicActions/DumpFields.h"
 #include "BasicActions/DumpEMFields.h"
 #include "BasicActions/Echo.h"
 #include "BasicActions/Help.h"
 #include "BasicActions/Option.h"
-#include "BasicActions/Save.h"
 #include "BasicActions/Select.h"
-#include "BasicActions/Show.h"
 #include "BasicActions/Stop.h"
 #include "BasicActions/Quit.h"
-#include "BasicActions/What.h"
 #include "BasicActions/System.h"
 #include "BasicActions/PSystem.h"
 #include "BasicActions/Title.h"
@@ -55,11 +56,7 @@
 #include "Structure/ParticleMatterInteraction.h"
 #include "Utilities/OpalFilter.h"
 #include "TrimCoils/OpalTrimCoil.h"
-#include "Tables/AttList.h"
-#include "Tables/Insertion.h"
 #include "Tables/List.h"
-#include "Tables/Period.h"
-#include "Tables/Survey.h"
 
 // Value definitions commands.
 #include "ValueDefinitions/BoolConstant.h"
@@ -78,8 +75,6 @@
 #include "Elements/OpalFlexibleCollimator.h"
 #include "Elements/OpalDegrader.h"
 #include "Elements/OpalHKicker.h"
-#include "Elements/OpalHMonitor.h"
-#include "Elements/OpalInstrument.h"
 #include "Elements/OpalKicker.h"
 #include "Elements/OpalMarker.h"
 #include "Elements/OpalMonitor.h"
@@ -94,7 +89,6 @@
 #include "Elements/OpalOffset/OpalGlobalCartesianOffset.h"
 #include "Elements/OpalOffset/OpalGlobalCylindricalOffset.h"
 #include "Elements/OpalPepperPot.h"
-#include "Elements/OpalPatch.h"
 #include "Elements/OpalProbe.h"
 #include "Elements/OpalQuadrupole.h"
 #include "Elements/OpalPolynomialTimeDependence.h"
@@ -104,20 +98,15 @@
 #include "Elements/OpalSBend.h"
 #include "Elements/OpalSBend3D.h"
 #include "Elements/OpalScalingFFAMagnet.h"
-#include "Elements/OpalSeparator.h"
 #include "Elements/OpalSeptum.h"
 #include "Elements/OpalSextupole.h"
 #include "Elements/OpalSlit.h"
 #include "Elements/OpalSolenoid.h"
 #include "Elements/OpalSource.h"
-#include "Elements/OpalSRot.h"
 #include "Elements/OpalTravelingWave.h"
 #include "Elements/OpalUndulator.h"
 #include "Elements/OpalVKicker.h"
-#include "Elements/OpalVMonitor.h"
 //#include "Elements/OpalWire.h"
-#include "Elements/OpalYRot.h"
-#include "Elements/OpalParallelPlate.h"
 #include "Elements/OpalStripper.h"
 #include "Elements/OpalRingDefinition.h"
 #include "Elements/OpalVariableRFCavity.h"
@@ -148,7 +137,6 @@ namespace {
     void makeActions() {
         OpalData *opal = OpalData::getInstance();
         opal->create(new Call());
-        opal->create(new Dump());
         opal->create(new DumpFields());
         opal->create(new DumpEMFields());
         opal->create(new Echo());
@@ -157,9 +145,7 @@ namespace {
         opal->create(new Option());
         opal->create(new OptimizeCmd());
         opal->create(new SampleCmd());
-        opal->create(new Save());
         opal->create(new Select());
-        opal->create(new Show());
         opal->create(new Stop());
         opal->create(new Quit());
         opal->create(new PSystem());
@@ -167,7 +153,6 @@ namespace {
         opal->create(new Title());
         opal->create(new TrackCmd());
         opal->create(new Value());
-        opal->create(new What());
     }
 
 
@@ -180,7 +165,6 @@ namespace {
         opal->create(new RealVector());
         opal->create(new StringConstant());
 
-        opal->create(new AttList());
         opal->create(new Beam());
         opal->create(new FieldSolver());
         opal->create(new BoundaryGeometry());
@@ -193,9 +177,6 @@ namespace {
         opal->create(new Distribution());
 
         opal->create(new MacroCmd());
-        opal->create(new Period());
-        opal->create(new Insertion());
-        opal->create(new Survey());
 
         opal->create(new DVar());
         opal->create(new Objective());
@@ -216,8 +197,6 @@ namespace {
         opal->create(new OpalFlexibleCollimator());
         opal->create(new OpalDegrader());
         opal->create(new OpalHKicker());
-        opal->create(new OpalHMonitor());
-        opal->create(new OpalInstrument());
         opal->create(new OpalKicker());
         opal->create(new OpalMarker());
         opal->create(new OpalMonitor());
@@ -231,7 +210,6 @@ namespace {
 //        opal->create(new OpalOffset::OpalLocalCylindricalOffset());
 //        opal->create(new OpalOffset::OpalGlobalCartesianOffset());
 //        opal->create(new OpalOffset::OpalGlobalCylindricalOffset());
-        opal->create(new OpalPatch());
         opal->create(new OpalProbe());
         opal->create(new OpalPepperPot());
         opal->create(new OpalPolynomialTimeDependence());
@@ -242,23 +220,18 @@ namespace {
         opal->create(new OpalSBend());
         opal->create(new OpalSBend3D());
         opal->create(new OpalScalingFFAMagnet());
-        opal->create(new OpalSeparator());
         opal->create(new OpalSeptum());
         opal->create(new OpalSextupole());
         opal->create(new OpalSlit());
         opal->create(new OpalSolenoid());
         opal->create(new OpalSource());
-        opal->create(new OpalSRot());
         opal->create(new OpalTravelingWave());
         opal->create(new OpalUndulator());
         opal->create(new OpalVariableRFCavity());
         opal->create(new OpalVariableRFCavityFringeField());
         opal->create(new OpalVerticalFFAMagnet());
         opal->create(new OpalVKicker());
-        opal->create(new OpalVMonitor());
         // opal->create(new OpalWire());
-        opal->create(new OpalYRot());
-        opal->create(new OpalParallelPlate());
         opal->create(new OpalStripper());
         opal->create(new Line());
         opal->create(new Sequence());

@@ -35,11 +35,6 @@ OpalFlexibleCollimator::OpalFlexibleCollimator():
                     ("OUTFN", "File name of log file for deleted particles");
     itsAttr[DUMP] = Attributes::makeBool
                     ("DUMP", "Save quadtree and holes of collimator", false);
-
-    registerStringAttribute("OUTFN");
-    registerStringAttribute("DESC");
-    registerStringAttribute("FNAME");
-
     registerOwnership();
 
     setElement(new FlexibleCollimatorRep("FLEXIBLECOLLIMATOR"));
@@ -61,15 +56,6 @@ OpalFlexibleCollimator::~OpalFlexibleCollimator() {
 
 OpalFlexibleCollimator *OpalFlexibleCollimator::clone(const std::string &name) {
     return new OpalFlexibleCollimator(name, this);
-}
-
-
-void OpalFlexibleCollimator::fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
-    const FlexibleCollimatorRep *coll =
-        dynamic_cast<const FlexibleCollimatorRep *>(&base);
-    attributeRegistry["DESCRIPTION"]->setString(coll->getDescription());
 }
 
 

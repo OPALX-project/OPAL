@@ -1,12 +1,9 @@
 set (_SRCS
-    AbstractMapper.cpp
     AbstractTimeDependence.cpp
     AbstractTracker.cpp
     CoordinateSystemTrafo.cpp
     DefaultVisitor.cpp
     Flagger.cpp
-    LinearMapper.cpp
-    Mapper.cpp
     PartBunch.cpp
     PartBins.cpp
     PartBinsCyc.cpp
@@ -14,9 +11,6 @@ set (_SRCS
     OpalParticle.cpp
     PolynomialTimeDependence.cpp
     SplineTimeDependence.cpp
-    Surveyor.cpp
-    ThinMapper.cpp
-    ThinTracker.cpp
     Tracker.cpp
     Quaternion.cpp
     )
@@ -32,15 +26,12 @@ include_directories (
 add_opal_sources (${_SRCS})
 
 set (HDRS
-    AbstractMapper.h
     AbstractTimeDependence.h
     AbstractTracker.h
     CoordinateSystemTrafo.h
     DefaultVisitor.h
     Flagger.h
-    LinearMapper.h
     ListElem.h
-    Mapper.h
     PartBinsCyc.h
     PartBins.h
     PartBunch.h
@@ -50,11 +41,7 @@ set (HDRS
     PBunchDefs.h
     PolynomialTimeDependence.h
     Quaternion.h
-    rbendmap.h
     SplineTimeDependence.h
-    Surveyor.h
-    ThinMapper.h
-    ThinTracker.h
     Tracker.h
     Vektor.h
     )

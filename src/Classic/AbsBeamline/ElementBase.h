@@ -80,8 +80,6 @@ class BeamlineVisitor;
 class BoundaryGeometry;
 class Channel;
 class ConstChannel;
-class ElementImage;
-
 class ParticleMatterInteractionHandler;
 class WakeFunction;
 
@@ -108,35 +106,27 @@ public:
                      , CONIC_ELLIPTICAL
     };
 
-    enum ElementType {BEAMBEAM
-                    , BEAMLINE
+    enum ElementType {BEAMLINE
                     , BEAMSTRIPPING
                     , CCOLLIMATOR
                     , CORRECTOR
                     , CYCLOTRON
                     , DEGRADER
-                    , DIAGNOSTIC
                     , DRIFT
                     , FLEXIBLECOLLIMATOR
-                    , INTEGRATOR
-                    , LAMBERTSON
                     , MARKER
                     , MONITOR
                     , MPSPLITINTEGRATOR
                     , MULTIPOLE
                     , MULTIPOLET
                     , OFFSET
-                    , PARALLELPLATE
-                    , PATCH
                     , PROBE
                     , RBEND
                     , RBEND3D
                     , RFCAVITY
-                    , RFQUADRUPOLE
                     , RING
                     , SBEND3D
                     , SBEND
-                    , SEPARATOR
                     , SEPTUM
                     , SOLENOID
                     , SOURCE
@@ -267,11 +257,6 @@ public:
     //  the attribute [b]aKey[/b] and returns it.
     //  If the attribute does not exist, it returns NULL.
     virtual const ConstChannel *getConstChannel(const std::string &aKey) const;
-
-    /// Construct an image.
-    //  Return the image of the element, containing the name and type std::string
-    //  of the element, and a copy of the user-defined attributes.
-    virtual ElementImage *getImage() const;
 
     /// Apply visitor.
     //  This method must be overridden by derived classes. It should call the

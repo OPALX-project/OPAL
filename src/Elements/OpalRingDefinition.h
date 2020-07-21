@@ -67,9 +67,6 @@ class OpalRingDefinition: public OpalElement {
     /** Inherited copy constructor */
     virtual OpalRingDefinition *clone(const std::string &name);
 
-    /** Calls fillRegisteredAttributes on the OpalElement */
-    void fillRegisteredAttributes(const ElementBase &base);
-
     /** Receive parameters from the parser and hand them off to the Ring */
     void update();
 

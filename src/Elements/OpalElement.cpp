@@ -2,14 +2,6 @@
 // Class OpalElement
 //   Base class for all beam line elements.
 //
-//   It defines a registry for attribute cells, used in the ATTLIST command
-//   only.  The exemplar constructors for all OPAL element commands store all
-//   defined attribute names in this registry.  The ATTLIST command can walk
-//   through a beam line or sequence, and call the fillRegisteredAttributes()
-//   method for each element.  This method will fill in the values for all
-//   attributes which exist for this element, and the ATTLIST command can
-//   look them up with findRegisteredAttribute() to build up a print line.
-//
 // Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
@@ -24,7 +16,6 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Elements/OpalElement.h"
-#include "AbsBeamline/ElementImage.h"
 #include "AbsBeamline/Bend2D.h"
 #include "AbstractObjects/Attribute.h"
 #include "AbstractObjects/Expressions.h"
@@ -43,8 +34,6 @@
 #include <vector>
 #include <boost/regex.hpp>
 
-
-std::map < std::string, OwnPtr<AttCell> > OpalElement::attributeRegistry;
 
 OpalElement::OpalElement(int size, const char *name, const char *help):
     Element(size, name, help), itsSize(size) {
@@ -101,32 +90,6 @@ OpalElement::OpalElement(int size, const char *name, const char *help):
     for (unsigned int i = 0; i < end; ++ i) {
         AttributeHandler::addAttributeOwner("Any", AttributeHandler::ELEMENT, itsAttr[i].getName());
     }
-
-    static bool first = true;
-    if(first) {
-        registerStringAttribute("NAME");
-        registerStringAttribute("TYPE");
-        registerStringAttribute("CLASS");
-        registerStringAttribute("KEYWORD");
-        registerRealAttribute("L");
-        registerStringAttribute("WAKEF");
-        registerStringAttribute("PARTICLEMATTERINTERACTION");
-        registerStringAttribute("APERT");
-        registerRealAttribute("X");
-        registerRealAttribute("Y");
-        registerRealAttribute("Z");
-        registerRealAttribute("THETA");
-        registerRealAttribute("PHI");
-        registerRealAttribute("PSI");
-        registerRealAttribute("DX");
-        registerRealAttribute("DY");
-        registerRealAttribute("DZ");
-        registerRealAttribute("DTHETA");
-        registerRealAttribute("DPHI");
-        registerRealAttribute("DPSI");
-        first = false;
-    }
-
 }
 
 
@@ -138,71 +101,6 @@ OpalElement::OpalElement(const std::string &name, OpalElement *parent):
 OpalElement::~OpalElement()
 {}
 
-
-void OpalElement::
-fillRegisteredAttributes(const ElementBase &base) {
-    // Fill in the common data for all elements.
-    attributeRegistry["NAME"]->setString(getOpalName());
-    attributeRegistry["TYPE"]->setString(getTypeName());
-    attributeRegistry["CLASS"]->setString(getParent()->getOpalName());
-    attributeRegistry["KEYWORD"]->setString(getBaseObject()->getOpalName());
-    attributeRegistry["L"]->setReal(base.getElementLength());
-
-    CoordinateSystemTrafo global2local = base.getCSTrafoGlobal2Local();
-    Vector_t origin = global2local.getOrigin();
-    Vector_t orientation = Util::getTaitBryantAngles(global2local.getRotation().conjugate());
-    attributeRegistry["X"]->setReal(origin[0]);
-    attributeRegistry["Y"]->setReal(origin[1]);
-    attributeRegistry["Z"]->setReal(origin[2]);
-    attributeRegistry["THETA"]->setReal(orientation[0]);
-    attributeRegistry["PHI"]->setReal(orientation[1]);
-    attributeRegistry["PSI"]->setReal(orientation[2]);
-
-    // Misalignments.
-    CoordinateSystemTrafo misalignment = base.getMisalignment();
-    Vector_t misalignmentShift = misalignment.getOrigin();
-    Vector_t misalignmentAngles = Util::getTaitBryantAngles(misalignment.getRotation().conjugate());
-
-    attributeRegistry["DX"]->setReal(misalignmentShift(0));
-    attributeRegistry["DY"]->setReal(misalignmentShift(1));
-    attributeRegistry["DZ"]->setReal(misalignmentShift(2));
-    attributeRegistry["DTHETA"]->setReal(misalignmentAngles[0]);
-    attributeRegistry["DPHI"]->setReal(misalignmentAngles[1]);
-    attributeRegistry["DPSI"]->setReal(misalignmentAngles[2]);
-
-    // Fill in the "unknown" attributes.
-    ElementImage *image = base.ElementBase::getImage();
-    AttributeSet::const_iterator cur = image->begin();
-    AttributeSet::const_iterator end = image->end();
-    for(; cur != end; ++cur) {
-        attributeRegistry[cur->first]->setReal(cur->second);
-    }
-}
-
-
-AttCell *OpalElement::findRegisteredAttribute(const std::string &name) {
-    AttCell *cell = &*attributeRegistry[name];
-
-    if(cell == 0) {
-        std::string::size_type i = 0;
-
-        if(name[i] == 'K') {
-            ++i;
-            while(std::isdigit(name[i])) ++i;
-            if(name[i] == 'S') ++i;
-
-            if(name[i] == 'L'  &&  ++i == name.length()) {
-                attributeRegistry[name] = cell = new AttReal();
-            } else {
-                throw OpalException("OpalElement::findRegisteredAttribute()",
-                                    "There is no element which has an attribute "
-                                    "called \"" + name + "\".");
-            }
-        }
-    }
-
-    return cell;
-}
 
 std::pair<ElementBase::ApertureType, std::vector<double> > OpalElement::getApert() const {
 
@@ -428,18 +326,6 @@ void OpalElement::print(std::ostream &os) const {
     os << head;
     os << ';'; // << "JMJdebug OPALElement.cc" ;
     os << std::endl;
-}
-
-
-void OpalElement::setRegisteredAttribute
-(const std::string &name, double value) {
-    attributeRegistry[name]->setReal(value);
-}
-
-
-void OpalElement::setRegisteredAttribute
-(const std::string &name, const std::string &value) {
-    attributeRegistry[name]->setString(value);
 }
 
 
@@ -670,23 +556,6 @@ void OpalElement::printAttribute
     printAttribute(os, name, ss.str(), len);
 }
 
-
-AttCell *OpalElement::registerRealAttribute(const std::string &name) {
-    OwnPtr<AttCell> &cell = attributeRegistry[name];
-    if(! cell.isValid()) {
-        cell = new AttReal();
-    }
-    return &*cell;
-}
-
-
-AttCell *OpalElement::registerStringAttribute(const std::string &name) {
-    OwnPtr<AttCell> &cell = attributeRegistry[name];
-    if(! cell.isValid()) {
-        cell = new AttString();
-    }
-    return &*cell;
-}
 
 void OpalElement::registerOwnership() const {
     if (getParent() != 0) return;

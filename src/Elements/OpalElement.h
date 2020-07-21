@@ -2,14 +2,6 @@
 // Class OpalElement
 //   Base class for all beam line elements.
 //
-//   It defines a registry for attribute cells, used in the ATTLIST command
-//   only.  The exemplar constructors for all OPAL element commands store all
-//   defined attribute names in this registry.  The ATTLIST command can walk
-//   through a beam line or sequence, and call the fillRegisteredAttributes()
-//   method for each element.  This method will fill in the values for all
-//   attributes which exist for this element, and the ATTLIST command can
-//   look them up with findRegisteredAttribute() to build up a print line.
-//
 // Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
@@ -27,7 +19,6 @@
 #define OPAL_OpalElement_HH
 
 #include "AbstractObjects/Element.h"
-#include "Elements/AttCell.h"
 #include "MemoryManagement/OwnPtr.h"
 #include <map>
 
@@ -65,14 +56,6 @@ public:
 
     virtual ~OpalElement();
 
-    /// Fill in all registered attributes.
-    virtual void fillRegisteredAttributes(const ElementBase &);
-
-    /// Find a registered attribute.
-    //  Return a pointer to the AttCell for a named attribute.
-    static AttCell *findRegisteredAttribute(const std::string &name);
-
-
     /// Return element length.
     virtual double getLength() const;
 
@@ -104,12 +87,6 @@ public:
     /// Print the object.
     //  This special version handles special printing in OPAL-8 format.
     virtual void print(std::ostream &) const;
-
-    /// Store a registered real attribute.
-    static void setRegisteredAttribute(const std::string &, double);
-
-    /// Store a registered string attribute.
-    static void setRegisteredAttribute(const std::string &, const std::string &);
 
     /// Update the embedded CLASSIC element.
     virtual void update();
@@ -148,17 +125,6 @@ protected:
                                const std::string &name,
                                double value,
                                int &len);
-
-    /// Register a ``real'' element attribute.
-    //  A registered attribute can be listed by the ATTLIST command.
-    static AttCell *registerRealAttribute(const std::string &name);
-
-    /// Register a ``string'' element attribute.
-    //  A registered attribute can be listed by the ATTLIST command.
-    static AttCell *registerStringAttribute(const std::string &name);
-
-    /// The registry for named attributes.
-    static std::map < std::string, OwnPtr<AttCell> > attributeRegistry;
 
     void registerOwnership() const;
 private:

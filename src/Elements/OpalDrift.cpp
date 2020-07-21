@@ -38,7 +38,6 @@ OpalDrift::OpalDrift():
     //     itsAttr[LENGTH] = Attributes::makeReal
     //         ("LENGTH", "Drift length");
 
-    //     registerRealAttribute("LENGTH");
     itsAttr[GEOMETRY] = Attributes::makeString
                         ("GEOMETRY", "BoundaryGeometry for Drifts");
 
@@ -46,9 +45,6 @@ OpalDrift::OpalDrift():
                           ("NSLICES",
                           "The number of slices/ steps for this element in Map Tracking", 1);
 
-
-    registerStringAttribute("GEOMETRY");
-    registerRealAttribute("NSLICES");
     registerOwnership();
 
     setElement(new DriftRep("DRIFT"));

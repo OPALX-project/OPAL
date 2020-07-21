@@ -51,9 +51,6 @@ OpalGlobalCylindricalOffset::OpalGlobalCylindricalOffset()
              "Angle between the displacement vector and the next element.");
     itsAttr[TANGENTIAL_OFFSET] = Attributes::makeReal("TANGENTIAL_OFFSET",
              "Length of the offset.");
-    registerRealAttribute("RADIUS");
-    registerRealAttribute("AZIMUTHAL_ANGLE");
-    registerRealAttribute("TANGENTIAL_OFFSET");
 
     registerOwnership();
 }
@@ -71,11 +68,6 @@ OpalGlobalCylindricalOffset::OpalGlobalCylindricalOffset(const std::string &name
 }
 
 OpalGlobalCylindricalOffset::~OpalGlobalCylindricalOffset() {}
-
-void OpalGlobalCylindricalOffset::fillRegisteredAttributes
-                                     (const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-}
 
 void OpalGlobalCylindricalOffset::update() {
     // getOpalName() comes from AbstractObjects/Object.h

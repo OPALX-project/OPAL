@@ -18,7 +18,6 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "BeamlineCore/RBendRep.h"
-#include "AbsBeamline/ElementImage.h"
 #include "Channels/IndexedChannel.h"
 #include "Channels/IndirectChannel.h"
 #include <cctype>
@@ -100,17 +99,6 @@ RBendGeometry &RBendRep::getGeometry() {
 
 const RBendGeometry &RBendRep::getGeometry() const {
     return geometry;
-}
-
-
-ElementImage *RBendRep::getImage() const {
-    ElementImage *image = ElementBase::getImage();
-
-    for(const Entry *entry = entries; entry->name != 0; ++entry) {
-        image->setAttribute(entry->name, (this->*(entry->get))());
-    }
-
-    return image;
 }
 
 

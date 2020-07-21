@@ -64,12 +64,6 @@ public:
     /** Inherited copy constructor */
     virtual OpalMultipoleTStraight *clone(const std::string &name);
 
-    /** Fill in all registered attributes
-     *
-     *  Just calls fillRegisteredAttributes on the base class
-     */
-    virtual void fillRegisteredAttributes(const ElementBase &);
-
     /** Update the MultipoleT with new parameters from UI parser */
     virtual void update();
 

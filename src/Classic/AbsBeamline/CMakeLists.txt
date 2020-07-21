@@ -3,7 +3,6 @@ add_subdirectory(MultipoleTFunctions)
 
 set (_SRCS
     AttributeSet.cpp
-    BeamBeam.cpp
     BeamlineVisitor.cpp
     BeamStripping.cpp
     Bend2D.cpp
@@ -13,13 +12,9 @@ set (_SRCS
     Corrector.cpp
     Cyclotron.cpp
     Degrader.cpp
-    Diagnostic.cpp
     Drift.cpp
     ElementBase.cpp
-    ElementImage.cpp
     FlexibleCollimator.cpp
-    Integrator.cpp
-    Lambertson.cpp
     Marker.cpp
     Monitor.cpp
     Multipole.cpp
@@ -29,19 +24,15 @@ set (_SRCS
     MultipoleTCurvedConstRadius.cpp
     MultipoleTCurvedVarRadius.cpp
     Offset.cpp
-    ParallelPlate.cpp
-    Patch.cpp
     PluginElement.cpp
     Probe.cpp
     RBend.cpp
     RBend3D.cpp
     RFCavity.cpp
-    RFQuadrupole.cpp
     Ring.cpp
     SBend.cpp
     SBend3D.cpp
     ScalingFFAMagnet.cpp
-    Separator.cpp
     Septum.cpp
     Solenoid.cpp
     Source.cpp
@@ -61,7 +52,6 @@ add_opal_sources (${_SRCS})
 
 set (HDRS
     AttributeSet.h
-    BeamBeam.h
     BeamlineVisitor.h
     BeamStripping.h
     Bend2D.h
@@ -71,13 +61,9 @@ set (HDRS
     Corrector.h
     Cyclotron.h
     Degrader.h
-    Diagnostic.h
     Drift.h
     ElementBase.h
-    ElementImage.h
     FlexibleCollimator.h
-    Integrator.h
-    Lambertson.h
     Marker.h
     Monitor.h
     Multipole.h
@@ -87,19 +73,15 @@ set (HDRS
     MultipoleTCurvedConstRadius.h
     MultipoleTCurvedVarRadius.h
     Offset.h
-    ParallelPlate.h
-    Patch.h
     PluginElement.h
     Probe.h
     RBend.h
     RBend3D.h
     RFCavity.h
-    RFQuadrupole.h
     Ring.h
     SBend3D.h
     SBend.h
     ScalingFFAMagnet.h
-    Separator.h
     Septum.h
     Solenoid.h
     Source.h

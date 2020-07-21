@@ -16,7 +16,6 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "BeamlineCore/MultipoleRep.h"
-#include "AbsBeamline/ElementImage.h"
 #include "Channels/IndexedChannel.h"
 #include "Channels/IndirectChannel.h"
 #include <cctype>
@@ -112,43 +111,6 @@ StraightGeometry &MultipoleRep::getGeometry() {
 
 const StraightGeometry &MultipoleRep::getGeometry() const {
     return geometry;
-}
-
-
-ElementImage *MultipoleRep::getImage() const {
-    ElementImage *image = ElementBase::getImage();
-
-    for(const Entry *entry = entries; entry->name != 0; ++entry) {
-        image->setAttribute(entry->name, (this->*(entry->get))());
-    }
-
-    for(int n = 1; n <= field.order(); n++) {
-        char buffer[20];
-        char *p = buffer;
-        int k = n;
-
-        while(k != 0) {
-            *p++ = k % 10 + '0';
-            k /= 10;
-        }
-
-        std::string name(" ");
-        while(p > buffer) name += *--p;
-
-        double b = getNormalComponent(n);
-        if(b != 0.0) {
-            name[0] = 'b';
-            image->setAttribute(name, b);
-        }
-
-        double a = getSkewComponent(n);
-        if(a != 0.0) {
-            name[0] = 'a';
-            image->setAttribute(name, a);
-        }
-    }
-
-    return image;
 }
 
 

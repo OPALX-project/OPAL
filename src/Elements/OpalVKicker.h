@@ -50,9 +50,6 @@ public:
     //  virtual void print(std::ostream &) const;
     //END   JMJ 15/12/2000, adding missing print method
 
-    /// Fill in all registered attributes.
-    virtual void fillRegisteredAttributes(const ElementBase &);
-
     /// Update the embedded CLASSIC corrector.
     virtual void update();
 

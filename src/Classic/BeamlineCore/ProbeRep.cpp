@@ -1,30 +1,23 @@
-// ------------------------------------------------------------------------
-// $RCSfile: ProbeRep.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: ProbeRep
-//   Defines a representation for a septa.
+// Class ProbeRep
+//   Representation for Probe.
 //
-// ------------------------------------------------------------------------
-// Class category: BeamlineCore
-// ------------------------------------------------------------------------
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2009/10/07 10:26:06 $
-// $Author: bi $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "BeamlineCore/ProbeRep.h"
-#include "AbsBeamline/ElementImage.h"
 #include "Channels/IndirectChannel.h"
 
-
-// Attribute access table.
-// ------------------------------------------------------------------------
 
 namespace {
     struct Entry {
@@ -43,9 +36,6 @@ namespace {
     };
 }
 
-
-// Class ProbeRep
-// ------------------------------------------------------------------------
 
 ProbeRep::ProbeRep():
     Probe(), field(), geometry(), active(true)
@@ -97,16 +87,6 @@ const StraightGeometry &ProbeRep::getGeometry() const {
     return geometry;
 }
 
-
-ElementImage *ProbeRep::getImage() const {
-    ElementImage *image = ElementBase::getImage();
-
-    for(const Entry *entry = entries; entry->name != 0; ++entry) {
-        image->setAttribute(entry->name, (this->*(entry->get))());
-    }
-
-    return image;
-}
 
 void ProbeRep::setActive(bool flag) {
     active = flag;

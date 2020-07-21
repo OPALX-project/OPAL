@@ -80,26 +80,6 @@ OpalCavity::OpalCavity():
     itsAttr[FREQUENCY_MODEL] = Attributes::makeString("FREQUENCY_MODEL",
                                                       "The name of the frequency time dependence model.");
 
-    registerRealAttribute("VOLT");
-    registerRealAttribute("DVOLT");
-    registerRealAttribute("FREQ");
-    registerRealAttribute("LAG");
-    registerRealAttribute("DLAG");
-    registerStringAttribute("FMAPFN");
-    registerStringAttribute("GEOMETRY");
-    registerRealAttribute("RMIN");
-    registerRealAttribute("RMAX");
-    registerRealAttribute("ANGLE");
-    registerRealAttribute("PDIS");
-    registerRealAttribute("GAPWIDTH");
-    registerRealAttribute("PHI0");
-    registerRealAttribute("DESIGNENERGY");
-
-    // attibutes for timedependent values
-    registerStringAttribute("PHASE_MODEL");
-    registerStringAttribute("AMPLITUDE_MODEL");
-    registerStringAttribute("FREQUENCY_MODEL");
-
     registerOwnership();
 
     setElement(new RFCavityRep("RFCAVITY"));
@@ -122,18 +102,6 @@ OpalCavity::~OpalCavity() {
 
 OpalCavity *OpalCavity::clone(const std::string &name) {
     return new OpalCavity(name, this);
-}
-
-
-void OpalCavity::fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
-    const RFCavityRep *rfc =
-        dynamic_cast<const RFCavityRep *>(&base);
-    attributeRegistry["VOLT"]->setReal(rfc->getAmplitude());
-    attributeRegistry["FREQ"]->setReal(rfc->getFrequency());
-    attributeRegistry["LAG"]->setReal(rfc->getPhase());
-    attributeRegistry["FMAPFN"]->setString(rfc->getFieldMapFN());
 }
 
 

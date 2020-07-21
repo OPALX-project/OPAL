@@ -48,16 +48,6 @@ OpalRBend3D::OpalRBend3D():
     itsAttr[DESIGNENERGY] = Attributes::makeReal
                             ("DESIGNENERGY", "the mean energy of the particles in MeV");
 
-    registerRealAttribute("ANGLE");
-    registerRealAttribute("K0L");
-    registerRealAttribute("K0SL");
-    registerRealAttribute("E1");
-    registerRealAttribute("E2");
-    registerStringAttribute("FMAPFN");
-    registerRealAttribute("GAP");
-    registerRealAttribute("HAPERT");
-    registerRealAttribute("DESIGNENERGY");
-
     registerOwnership();
 
     setElement(new RBend3D("RBEND3D"));
@@ -80,11 +70,6 @@ OpalRBend3D *OpalRBend3D::clone(const std::string &name) {
     return new OpalRBend3D(name, this);
 }
 
-
-void OpalRBend3D::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-}
 
 void OpalRBend3D::update() {
     OpalElement::update();

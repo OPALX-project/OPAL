@@ -6,7 +6,6 @@ set (_SRCS
   BeamSequence.cpp
   Definition.cpp
   Directory.cpp
-  Editor.cpp
   Element.cpp
   Invalidator.cpp
   OpalData.cpp
@@ -33,7 +32,6 @@ set (HDRS
     BeamSequence.h
     Definition.h
     Directory.h
-    Editor.h
     Element.h
     Expressions.h
     Invalidator.h

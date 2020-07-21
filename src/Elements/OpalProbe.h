@@ -45,9 +45,6 @@ public:
     /// Make clone.
     virtual OpalProbe *clone(const std::string &name);
 
-    /// Fill in all registered attributes.
-    virtual void fillRegisteredAttributes(const ElementBase &);
-
     /// Update the embedded CLASSIC probe.
     virtual void update();
 

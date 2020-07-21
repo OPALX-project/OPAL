@@ -50,9 +50,6 @@ OpalLocalCylindricalOffset::OpalLocalCylindricalOffset()
     itsAttr[THETA_OUT] = Attributes::makeReal("THETA_OUT",
              "Angle between the displacement vector and the next element [rad].");
     itsAttr[LENGTH] = Attributes::makeReal("LENGTH", "Length of the offset [m].");
-    registerRealAttribute("THETA_IN");
-    registerRealAttribute("THETA_OUT");
-    registerRealAttribute("LENGTH");
 
     registerOwnership();
 }
@@ -70,11 +67,6 @@ OpalLocalCylindricalOffset::OpalLocalCylindricalOffset(const std::string &name, 
 }
 
 OpalLocalCylindricalOffset::~OpalLocalCylindricalOffset() {}
-
-void OpalLocalCylindricalOffset::fillRegisteredAttributes
-                                     (const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-}
 
 void OpalLocalCylindricalOffset::update() {
     // getOpalName() comes from AbstractObjects/Object.h

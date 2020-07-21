@@ -60,16 +60,6 @@ OpalVariableRFCavityFringeField::OpalVariableRFCavityFringeField():
     itsAttr[MAX_ORDER] = Attributes::makeReal("MAX_ORDER",
                 "Maximum power of y that will be evaluated in field calculations.");
 
-    registerStringAttribute("PHASE_MODEL");
-    registerStringAttribute("AMPLITUDE_MODEL");
-    registerStringAttribute("FREQUENCY_MODEL");
-    registerRealAttribute("WIDTH");
-    registerRealAttribute("HEIGHT");
-    registerRealAttribute("CENTRE_LENGTH");
-    registerRealAttribute("END_LENGTH");
-    registerRealAttribute("CAVITY_CENTRE");
-    registerRealAttribute("MAX_ORDER");
-
     registerOwnership();
 
     setElement(new VariableRFCavityFringeField("VARIABLE_RF_CAVITY_FRINGE_FIELD"));
@@ -95,44 +85,6 @@ OpalVariableRFCavityFringeField *OpalVariableRFCavityFringeField::clone(
 OpalVariableRFCavityFringeField *OpalVariableRFCavityFringeField::clone() {
     return new OpalVariableRFCavityFringeField(this->getOpalName(), this);
 }
-
-void OpalVariableRFCavityFringeField::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-    const VariableRFCavityFringeField* cavity =
-                        dynamic_cast<const VariableRFCavityFringeField*>(&base);
-    if (cavity == NULL) {
-        throw OpalException("OpalVariableRFCavityFringeField::fillRegisteredAttributes",
-                            "Failed to cast ElementBase to a VariableRFCavityFringeField");
-    }
-    std::shared_ptr<endfieldmodel::EndFieldModel> model = cavity->getEndField();
-    endfieldmodel::Tanh* tanh = dynamic_cast<endfieldmodel::Tanh*>(model.get());
-    if (tanh == NULL) {
-        throw OpalException("OpalVariableRFCavityFringeField::fillRegisteredAttributes",
-                            "Failed to cast EndField to a Tanh model");
-    }
-
-    
-    attributeRegistry["L"]->setReal(cavity->getLength());
-    std::shared_ptr<AbstractTimeDependence> phase_model = cavity->getPhaseModel();
-    std::shared_ptr<AbstractTimeDependence> freq_model = cavity->getFrequencyModel();
-    std::shared_ptr<AbstractTimeDependence> amp_model = cavity->getAmplitudeModel();
-    std::string phase_name = AbstractTimeDependence::getName(phase_model);
-    std::string amp_name = AbstractTimeDependence::getName(amp_model);
-    std::string freq_name = AbstractTimeDependence::getName(freq_model);
-    attributeRegistry["PHASE_MODEL"]->setString(phase_name);
-    attributeRegistry["AMPLITUDE_MODEL"]->setString(amp_name);
-    attributeRegistry["FREQUENCY_MODEL"]->setString(freq_name);
-    attributeRegistry["WIDTH"]->setReal(cavity->getWidth());
-    attributeRegistry["HEIGHT"]->setReal(cavity->getHeight());
-    // flat top length is 2*x0
-    attributeRegistry["CENTRE_LENGTH"]->setReal(tanh->getX0()/2.);
-    attributeRegistry["END_LENGTH"]->setReal(tanh->getLambda());
-    attributeRegistry["CAVITY_CENTRE"]->setReal(cavity->getCavityCentre());
-    attributeRegistry["MAX_ORDER"]->setReal(cavity->getMaxOrder());
-}
-
-
 
 void OpalVariableRFCavityFringeField::update() {
     OpalElement::update();

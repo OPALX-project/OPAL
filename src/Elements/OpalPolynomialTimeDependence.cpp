@@ -53,10 +53,6 @@ OpalPolynomialTimeDependence::OpalPolynomialTimeDependence()
       "Second order (quadratic) term in the polynomial expansion.");
     itsAttr[P3] = Attributes::makeReal("P3",
       "Third order (cubic) term in the polynomial expansion.");
-    registerRealAttribute("P0");
-    registerRealAttribute("P1");
-    registerRealAttribute("P2");
-    registerRealAttribute("P3");
 
     registerOwnership();
 }
@@ -74,11 +70,6 @@ OpalPolynomialTimeDependence::OpalPolynomialTimeDependence(const std::string &na
 }
 
 OpalPolynomialTimeDependence::~OpalPolynomialTimeDependence() {}
-
-void OpalPolynomialTimeDependence::fillRegisteredAttributes
-                                     (const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-}
 
 void OpalPolynomialTimeDependence::update() {
     // getOpalName() comes from AbstractObjects/Object.h

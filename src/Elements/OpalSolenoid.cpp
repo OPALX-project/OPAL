@@ -34,10 +34,6 @@ OpalSolenoid::OpalSolenoid():
     itsAttr[FAST] = Attributes::makeBool
                     ("FAST", "Faster but less accurate", true);
 
-    registerRealAttribute("KS");
-    registerRealAttribute("DKS");
-    registerStringAttribute("FMAPFN");
-
     registerOwnership();
 
     setElement(new SolenoidRep("SOLENOID"));
@@ -56,18 +52,6 @@ OpalSolenoid::~OpalSolenoid()
 
 OpalSolenoid *OpalSolenoid::clone(const std::string &name) {
     return new OpalSolenoid(name, this);
-}
-
-
-void OpalSolenoid::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
-    const SolenoidRep *sol =
-        dynamic_cast<const SolenoidRep *>(&base);
-    double length = sol->getElementLength();
-    double ks = length * sol->getBz() * Physics::c / OpalData::getInstance()->getP0();
-    attributeRegistry["KS"]->setReal(ks);
 }
 
 

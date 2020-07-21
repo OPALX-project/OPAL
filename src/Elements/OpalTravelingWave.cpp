@@ -61,17 +61,6 @@ OpalTravelingWave::OpalTravelingWave():
     itsAttr[MODE] = Attributes::makeReal
                      ("MODE", "The phase shift between neighboring cells in 2*pi", 1.0/3.0);
 
-    registerRealAttribute("VOLT");
-    registerRealAttribute("DVOLT");
-    registerRealAttribute("FREQ");
-    registerRealAttribute("LAG");
-    registerRealAttribute("DLAG");
-    registerStringAttribute("FMAPFN");
-    registerStringAttribute("CAVITYTYPE");
-    registerRealAttribute("NUMCELLS");
-    registerRealAttribute("DESIGNENERGY");
-    registerRealAttribute("MODE");
-
     registerOwnership();
 
     setElement(new TravelingWaveRep("TRAVELINGWAVE"));
@@ -93,21 +82,6 @@ OpalTravelingWave::~OpalTravelingWave() {
 
 OpalTravelingWave *OpalTravelingWave::clone(const std::string &name) {
     return new OpalTravelingWave(name, this);
-}
-
-
-void OpalTravelingWave::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
-
-    const TravelingWaveRep *rfc =
-        dynamic_cast<const TravelingWaveRep *>(&base);
-    attributeRegistry["VOLT"]->setReal(rfc->getAmplitude());
-    attributeRegistry["DVOLT"]->setReal(rfc->getAmplitudeError());
-    attributeRegistry["FREQ"]->setReal(rfc->getFrequency());
-    attributeRegistry["LAG"]->setReal(rfc->getPhase());
-    attributeRegistry["DLAG"]->setReal(rfc->getPhaseError());
-    attributeRegistry["FMAPFN"]->setString(rfc->getFieldMapFN());
 }
 
 

@@ -43,14 +43,6 @@ OpalProbe::OpalProbe():
     itsAttr[OUTFN] = Attributes::makeString
                      ("OUTFN", "Output filename");
 
-    registerRealAttribute("XSTART");
-    registerRealAttribute("XEND");
-    registerRealAttribute("YSTART");
-    registerRealAttribute("YEND");
-    registerRealAttribute("WIDTH");
-    registerRealAttribute("STEP");
-    registerStringAttribute("OUTFN");
-
     registerOwnership();
 
     setElement(new ProbeRep("PROBE"));
@@ -71,11 +63,6 @@ OpalProbe::~OpalProbe() {
 
 OpalProbe *OpalProbe::clone(const std::string &name) {
     return new OpalProbe(name, this);
-}
-
-
-void OpalProbe::fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
 }
 
 

@@ -62,19 +62,6 @@ OpalScalingFFAMagnet::OpalScalingFFAMagnet() :
                                        "Offset to the end of the magnet, i.e. placement of the next element. Default is centre_length + 4*end_length.");
     itsAttr[AZIMUTHAL_EXTENT] = Attributes::makeReal("AZIMUTHAL_EXTENT",
                                        "The field will be assumed zero if particles are more than AZIMUTHAL_EXTENT from the magnet centre (psi=0). Default is CENTRE_LENGTH/2.+5.*END_LENGTH [m].");
-    registerRealAttribute("B0");
-    registerRealAttribute("R0");
-    registerRealAttribute("FIELD_INDEX");
-    registerRealAttribute("TAN_DELTA");
-    registerRealAttribute("MAX_Y_POWER");
-    registerRealAttribute("END_LENGTH");
-    registerRealAttribute("CENTRE_LENGTH");
-    registerRealAttribute("RADIAL_NEG_EXTENT");
-    registerRealAttribute("RADIAL_POS_EXTENT");
-    registerRealAttribute("HEIGHT");
-    registerRealAttribute("MAGNET_START");
-    registerRealAttribute("MAGNET_END");
-    registerRealAttribute("AZIMUTHAL_EXTENT");
     registerOwnership();
 
     ScalingFFAMagnet* magnet = new ScalingFFAMagnet("ScalingFFAMagnet");
@@ -98,12 +85,6 @@ OpalScalingFFAMagnet::~OpalScalingFFAMagnet() {
 
 OpalScalingFFAMagnet *OpalScalingFFAMagnet::clone(const std::string &name) {
     return new OpalScalingFFAMagnet(name, this);
-}
-
-
-void OpalScalingFFAMagnet::
-fillRegisteredAttributes(const ElementBase &base) {
-    OpalElement::fillRegisteredAttributes(base);
 }
 
 

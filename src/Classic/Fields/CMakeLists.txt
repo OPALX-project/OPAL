@@ -3,9 +3,7 @@ set (_SRCS
     BMultipoleField.cpp
     ConstBField.cpp
     ConstBzField.cpp
-    ConstEField.cpp
     ConstEzField.cpp
-    EDipoleField.cpp
     EMField.cpp
     NullField.cpp
     StaticElectricField.cpp
@@ -64,9 +62,7 @@ set (HDRS
     BSingleMultipoleField.h
     ConstBField.h
     ConstBzField.h
-    ConstEField.h
     ConstEzField.h
-    EDipoleField.h
     EMField.h
     Fieldmap.h
     Fieldmap.hpp

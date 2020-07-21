@@ -47,9 +47,6 @@ public:
     //  Handle printing in OPAL-8 format.
     virtual void print(std::ostream &) const;
 
-    /// Fill in all registered attributes.
-    virtual void fillRegisteredAttributes(const ElementBase &);
-
     /// Update the embedded CLASSIC multipole.
     virtual void update();
 
