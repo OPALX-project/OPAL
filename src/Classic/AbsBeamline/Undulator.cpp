@@ -126,7 +126,7 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     undulator.k_ = getK();
     undulator.lu_ = getLambda();
     undulator.length_ = getNumPeriods();
-    undulator.theta_ = getAngle() * Physics::pi / 180.0;
+    undulator.theta_ = getAngle();
     double lFringe = 2 * undulator.lu_;  // Fringe field length is 2*lu.
     undulator.dist_ = lFringe - itsBunch->get_maxExtent()[2];  // Bunch-head to undulator distance.
     std::vector<MITHRA::Undulator> undulators;
