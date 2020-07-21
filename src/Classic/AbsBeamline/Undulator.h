@@ -23,6 +23,9 @@
 #ifndef CLASSIC_Undulator_HH
 #define CLASSIC_Undulator_HH
 
+#include <string>
+#include <vector>
+
 #include "AbsBeamline/Component.h"
 
 class Undulator: public Component {
