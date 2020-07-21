@@ -4,7 +4,9 @@
 //   The visitor class for tracking particles with time as independent
 //   variable.
 //
-// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 200x - 2014, Christof Kraus, Paul Scherrer Institut, Villigen PSI, Switzerland
+//               2015 - 2016, Christof Metzger-Kraus, Helmholtz-Zentrum Berlin, Germany
+//               2017 - 2020, Christof Metzger-Kraus
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -247,8 +249,6 @@ private:
 
     std::set<ParticleMatterInteractionHandler*> activeParticleMatterInteractionHandlers_m;
     bool particleMatterStatus_m;
-
-    unsigned long totalParticlesInSimulation_m;
 
     /********************** END VARIABLES ***********************************/
 

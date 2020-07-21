@@ -45,17 +45,13 @@ bool Source::apply(const size_t &i, const double &t, Vector_t &/*E*/, Vector_t &
     const Vector_t &P = RefPartBunch_m->P[i];
     const double &dt = RefPartBunch_m->dt[i];
     const double recpgamma = Physics::c * dt / Util::getGamma(P);
-    const double end = getElementLength();
-    if (online_m && dt < 0.0) {
-        if (R(2) > end &&
-            (R(2) + P(2) * recpgamma) < end) {
-            double frac = (end - R(2)) / (P(2) * recpgamma);
+    if (online_m && R(2) <= 0.0 && P(2) < 0.0) {
+        double frac = -R(2) / (P(2) * recpgamma);
 
-            lossDs_m->addParticle(R + frac * recpgamma * P,
-                                  P, RefPartBunch_m->ID[i], t + frac * dt, 0);
+        lossDs_m->addParticle(R + frac * recpgamma * P,
+                              P, RefPartBunch_m->ID[i], t + frac * dt, 0);
 
-            return true;
-        }
+        return true;
     }
 
     return false;
@@ -99,4 +95,3 @@ void Source::getDimensions(double &zBegin, double &zEnd) const {
 ElementBase::ElementType Source::getType() const {
     return SOURCE;
 }
-

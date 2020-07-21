@@ -295,6 +295,8 @@ Option::Option(const std::string &name, Option *parent):
     Attributes::setReal(itsAttr[MTSSUBSTEPS], mtsSubsteps);
     Attributes::setReal(itsAttr[REMOTEPARTDEL], remotePartDel);
     Attributes::setReal(itsAttr[REPARTFREQ], repartFreq);
+    Attributes::setReal(itsAttr[MINBINEMITTED], minBinEmitted);
+    Attributes::setReal(itsAttr[MINSTEPFORREBIN], minStepForRebin);
     Attributes::setReal(itsAttr[REBINFREQ], rebinFreq);
     Attributes::setBool(itsAttr[RHODUMP], rhoDump);
     Attributes::setBool(itsAttr[EBDUMP], ebDump);
@@ -435,6 +437,14 @@ void Option::execute() {
 
     if(itsAttr[REPARTFREQ]) {
         repartFreq = int(Attributes::getReal(itsAttr[REPARTFREQ]));
+    }
+
+    if (itsAttr[MINBINEMITTED]) {
+        minBinEmitted = int(Attributes::getReal(itsAttr[MINBINEMITTED]));
+    }
+
+    if (itsAttr[MINSTEPFORREBIN]) {
+        minStepForRebin = int(Attributes::getReal(itsAttr[MINSTEPFORREBIN]));
     }
 
     if(itsAttr[REBINFREQ]) {

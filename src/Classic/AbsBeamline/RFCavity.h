@@ -230,6 +230,8 @@ protected:
     double startField_m;         /**< starting point of field(m)*/
 
 private:
+    double endField_m;
+
     CavityType type_m;
 
     double rmin_m;

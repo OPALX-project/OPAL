@@ -129,6 +129,7 @@ public:
    //  Used to create fringe fields in ThickTracker, (before edge[m], after edge[m])
    std::array<double,2> getExitFringeFieldLength() const;
 
+    BoundingBox getBoundingBoxInLabCoords() const override;
 protected:
     void setMessageHeader(const std::string & header);
     double getStartField() const;
@@ -376,4 +377,3 @@ Vector_t Bend2D::transformToExitRegion(const Vector_t &R) const {
 }
 
 #endif // CLASSIC_BEND_H
-

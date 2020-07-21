@@ -4,7 +4,9 @@
 //   The visitor class for tracking particles with time as independent
 //   variable.
 //
-// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 200x - 2014, Christof Kraus, Paul Scherrer Institut, Villigen PSI, Switzerland
+//               2015 - 2016, Christof Metzger-Kraus, Helmholtz-Zentrum Berlin, Germany
+//               2017 - 2020, Christof Metzger-Kraus
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -78,8 +80,7 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     fieldEvaluationTimer_m(IpplTimings::getTimer("External field eval")),
     BinRepartTimer_m(IpplTimings::getTimer("Binaryrepart")),
     WakeFieldTimer_m(IpplTimings::getTimer("WakeField")),
-    particleMatterStatus_m(false),
-    totalParticlesInSimulation_m(0)
+    particleMatterStatus_m(false)
 {}
 
 ParallelTTracker::ParallelTTracker(const Beamline &beamline,
@@ -111,8 +112,7 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     fieldEvaluationTimer_m(IpplTimings::getTimer("External field eval")),
     BinRepartTimer_m(IpplTimings::getTimer("Binaryrepart")),
     WakeFieldTimer_m(IpplTimings::getTimer("WakeField")),
-    particleMatterStatus_m(false),
-    totalParticlesInSimulation_m(0)
+    particleMatterStatus_m(false)
 {
     for (unsigned int i = 0; i < zstop.size(); ++ i) {
         stepSizes_m.push_back(dt[i], zstop[i], maxSteps[i]);
@@ -196,7 +196,6 @@ void ParallelTTracker::execute() {
     prepareSections();
 
     double minTimeStep = stepSizes_m.getMinTimeStep();
-    unsigned long long totalNumSteps = stepSizes_m.getNumStepsFinestResolution();
 
     itsOpalBeamline_m.activateElements();
 
@@ -251,7 +250,6 @@ void ParallelTTracker::execute() {
                       -rmin(2),
                       itsBunch_m->getT(),
                       (back_track? -minTimeStep: minTimeStep),
-                      totalNumSteps,
                       stepSizes_m.getFinalZStop() + 2 * rmax(2),
                       itsOpalBeamline_m);
 
@@ -260,7 +258,6 @@ void ParallelTTracker::execute() {
     saveCavityPhases();
 
     numParticlesInSimulation_m = itsBunch_m->getTotalNum();
-    totalParticlesInSimulation_m = itsBunch_m->getTotalNum();
 
     setTime();
 
@@ -594,7 +591,6 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
             ne = itsBunch_m->destroyT();
         }
         numParticlesInSimulation_m  = itsBunch_m->getTotalNum();
-        totalParticlesInSimulation_m -= ne;
         deletedParticles_m = true;
     }
 
@@ -605,7 +601,7 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
 
     if (ne > 0) {
         msg << level1 << "* Deleted " << ne << " particles, "
-            << "remaining " << totalParticlesInSimulation_m << " particles" << endl;
+            << "remaining " << numParticlesInSimulation_m << " particles" << endl;
     }
 }
 

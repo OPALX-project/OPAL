@@ -63,6 +63,7 @@ RFCavity::RFCavity(const RFCavity &right):
     fieldmap_m(right.fieldmap_m),
     length_m(right.length_m),
     startField_m(right.startField_m),
+    endField_m(right.endField_m),
     type_m(right.type_m),
     rmin_m(right.rmin_m),
     rmax_m(right.rmax_m),
@@ -96,6 +97,7 @@ RFCavity::RFCavity(const std::string &name):
     fieldmap_m(nullptr),
     length_m(0.0),
     startField_m(0.0),
+    endField_m(0.0),
     type_m(SW),
     rmin_m(0.0),
     rmax_m(0.0),
@@ -164,10 +166,10 @@ bool RFCavity::applyToReferenceParticle(const Vector_t &R,
 
 void RFCavity::initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) {
 
-    startField_m = 0.0;
+    startField_m = endField_m = 0.0;
     if (bunch == NULL) {
         startField = startField_m;
-        endField = startField_m;
+        endField = endField_m;
 
         return;
     }
@@ -483,7 +485,7 @@ double RFCavity::spline(double z, double *za) {
 
 void RFCavity::getDimensions(double &zBegin, double &zEnd) const {
     zBegin = startField_m;
-    zEnd = startField_m + length_m;
+    zEnd = endField_m;
 }
 
 

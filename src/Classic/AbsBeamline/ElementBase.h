@@ -71,6 +71,8 @@
 #include "Algorithms/CoordinateSystemTrafo.h"
 #include "Utilities/GeneralClassicException.h"
 
+#include <boost/optional.hpp>
+
 #include <string>
 #include <queue>
 
@@ -79,6 +81,7 @@ class BoundaryGeometry;
 class Channel;
 class ConstChannel;
 class ElementImage;
+
 class ParticleMatterInteractionHandler;
 class WakeFunction;
 
@@ -354,8 +357,35 @@ public:
     void setRotationAboutZ(double rotation);
     double getRotationAboutZ() const;
 
+    struct BoundingBox {
+        Vector_t lowerLeftCorner;
+        Vector_t upperRightCorner;
+
+        void getCombinedBoundingBox(const BoundingBox & other) {
+            for (unsigned int d = 0; d < 3; ++ d) {
+                lowerLeftCorner[d] = std::min(lowerLeftCorner[d], other.lowerLeftCorner[d]);
+                upperRightCorner[d] = std::max(upperRightCorner[d], other.upperRightCorner[d]);
+            }
+        }
+
+        bool isInside(const Vector_t &) const;
+
+        /*! Computes the intersection point between a bounding box and the ray which
+         *  has the direction 'direction' and starts at the position 'position'. If
+         *  the position is inside the box then the algorithm should find an inter-
+         *  section point.
+         *
+         *  @param position the position where the ray starts
+         *  @param direction the direction of the ray
+         */
+        boost::optional<Vector_t> getPointOfIntersection(const Vector_t & position,
+                                                         const Vector_t & direction) const;
+    };
+
+    virtual BoundingBox getBoundingBoxInLabCoords() const;
+
 protected:
-    bool isInsideTransverse(const Vector_t &r, double f = 1) const;
+    bool isInsideTransverse(const Vector_t &r) const;
 
     // Sharable flag.
     // If this flag is true, the element is always shared.
@@ -526,24 +556,7 @@ inline
 bool ElementBase::isInside(const Vector_t &r) const
 {
     const double length = getElementLength();
-    return isInsideTransverse(r, r(2) / length * aperture_m.second[2]) && r(2) >= 0.0 && r(2) < length;
-}
-
-inline
-bool ElementBase::isInsideTransverse(const Vector_t &r, double f) const
-{
-    switch(aperture_m.first) {
-    case RECTANGULAR:
-        return (std::abs(r[0]) < aperture_m.second[0] && std::abs(r[1]) < aperture_m.second[1]);
-    case ELLIPTICAL:
-        return (std::pow(r[0] / aperture_m.second[0], 2) + std::pow(r[1] / aperture_m.second[1], 2) < 1.0);
-    case CONIC_RECTANGULAR:
-        return (std::abs(r[0]) < f * aperture_m.second[0] && std::abs(r[1]) < f * aperture_m.second[1]);
-    case CONIC_ELLIPTICAL:
-        return (std::pow(r[0] / (f * aperture_m.second[0]), 2) + std::pow(r[1] / (f * aperture_m.second[1]), 2) < 1.0);
-    default:
-        return false;
-    }
+    return r(2) >= 0.0 && r(2) < length && isInsideTransverse(r);
 }
 
 inline
@@ -611,6 +624,5 @@ double ElementBase::getElementPosition() const {
 inline
 bool ElementBase::isElementPositionSet() const
 { return elemedgeSet_m; }
-
 
 #endif // CLASSIC_ElementBase_HH

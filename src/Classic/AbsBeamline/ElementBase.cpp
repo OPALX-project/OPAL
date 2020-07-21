@@ -307,3 +307,114 @@ void ElementBase::setCurrentSCoordinate(double s) {
         }
     }
 }
+
+bool ElementBase::isInsideTransverse(const Vector_t &r) const
+{
+    const double &xLimit = aperture_m.second[0];
+    const double &yLimit = aperture_m.second[1];
+    double factor = 1.0;
+    if (aperture_m.first == CONIC_RECTANGULAR ||
+        aperture_m.first == CONIC_ELLIPTICAL) {
+        Vector_t rRelativeToBegin = getEdgeToBegin().transformTo(r);
+        double fractionLength = rRelativeToBegin(2) / getElementLength();
+        factor = fractionLength * aperture_m.second[2];
+    }
+
+    switch(aperture_m.first) {
+    case RECTANGULAR:
+        return (std::abs(r[0]) < xLimit && std::abs(r[1]) < yLimit);
+    case ELLIPTICAL:
+        return (std::pow(r[0] / xLimit, 2) + std::pow(r[1] / yLimit, 2) < 1.0);
+    case CONIC_RECTANGULAR:
+        return (std::abs(r[0]) < factor * xLimit && std::abs(r[1]) < factor * yLimit);
+    case CONIC_ELLIPTICAL:
+        return (std::pow(r[0] / (factor * xLimit), 2) + std::pow(r[1] / (factor * yLimit), 2) < 1.0);
+    default:
+        return false;
+    }
+}
+
+bool ElementBase::BoundingBox::isInside(const Vector_t & position) const {
+    Vector_t relativePosition = position - lowerLeftCorner;
+    Vector_t diagonal = upperRightCorner - lowerLeftCorner;
+
+    for (unsigned int d = 0; d < 3; ++ d) {
+        if (relativePosition[d] < 0.0 ||
+            relativePosition[d] > diagonal[d]) {
+            return false;
+         }
+    }
+
+    return true;
+}
+
+boost::optional<Vector_t>
+ElementBase::BoundingBox::getPointOfIntersection(const Vector_t & position,
+                                                 const Vector_t & direction) const {
+    Vector_t relativePosition = lowerLeftCorner - position;
+    Vector_t diagonal = upperRightCorner - lowerLeftCorner;
+    Vector_t normalizedDirection = direction / euclidean_norm(direction);
+
+    for (int i : {-1, 1}) {
+        for (unsigned int d = 0; d < 3; ++ d) {
+            double projectedDirection = normalizedDirection[d];
+            if (std::abs(projectedDirection) < 1e-10) {
+                continue;
+            }
+
+            double distanceNearestPoint = relativePosition[d];
+            double tau = distanceNearestPoint / projectedDirection;
+            if (tau < 0) {
+                continue;
+            }
+            Vector_t delta = tau * normalizedDirection;
+            Vector_t relativeIntersectionPoint = i * (relativePosition - delta);
+
+            if (relativeIntersectionPoint[(d + 1) % 3] < 0.0 ||
+                relativeIntersectionPoint[(d + 1) % 3] > diagonal[(d + 1) % 3] ||
+                relativeIntersectionPoint[(d + 2) % 3] < 0.0 ||
+                relativeIntersectionPoint[(d + 2) % 3] > diagonal[(d + 2) % 3]) {
+                continue;
+            }
+
+            return position + delta;
+        }
+        relativePosition = upperRightCorner - position;
+    }
+
+    return boost::none;
+}
+
+ElementBase::BoundingBox ElementBase::getBoundingBoxInLabCoords() const {
+    CoordinateSystemTrafo toBegin = getEdgeToBegin() * csTrafoGlobal2Local_m;
+    CoordinateSystemTrafo toEnd = getEdgeToEnd() * csTrafoGlobal2Local_m;
+
+    const double &x = aperture_m.second[0];
+    const double &y = aperture_m.second[1];
+    const double &f = aperture_m.second[2];
+
+    std::vector<Vector_t> corners(8);
+    for (int i = -1; i < 2; i += 2) {
+        for (int j = -1; j < 2; j += 2) {
+            unsigned int idx = (i + 1)/2 + (j + 1);
+            corners[idx] = toBegin.transformFrom(Vector_t(i * x, j * y, 0.0));
+            corners[idx + 4] = toEnd.transformFrom(Vector_t(i * f * x, j * f * y, 0.0));
+        }
+    }
+
+    BoundingBox bb;
+    bb.lowerLeftCorner = bb.upperRightCorner = corners[0];
+
+    for (unsigned int i = 1; i < 8u; ++ i) {
+        for (unsigned int d = 0; d < 3u; ++ d) {
+            if (bb.lowerLeftCorner(d) > corners[i](d)) {
+                bb.lowerLeftCorner(d) = corners[i](d);
+            }
+            if (bb.upperRightCorner(d) < corners[i](d)) {
+                bb.upperRightCorner(d) = corners[i](d);
+            }
+        }
+    }
+
+    return bb;
+}

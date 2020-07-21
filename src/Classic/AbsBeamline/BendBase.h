@@ -37,7 +37,6 @@ public:
 
     void setFieldMapFN(std::string fileName);
     std::string getFieldMapFN() const;
-
 protected:
     /// Calculate design radius from design energy and field amplitude
     double calcDesignRadius(double fieldAmplitude) const;

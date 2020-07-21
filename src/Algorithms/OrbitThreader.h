@@ -1,3 +1,24 @@
+//
+// Class OrbitThreader
+//
+// This class determines the design path by tracking the reference particle through
+// the 3D lattice.
+//
+// Copyright (c) 2016,       Christof Metzger-Kraus, Helmholtz-Zentrum Berlin, Germany
+//               2017 - 2020 Christof Metzger-Kraus
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_ORBITTHREADER_H
 #define OPAL_ORBITTHREADER_H
 
@@ -20,7 +41,6 @@ public:
                   double maxDiffZBunch,
                   double t,
                   double dT,
-                  size_t maxIntegSteps,
                   double zstop,
                   OpalBeamline &bl);
 
@@ -48,8 +68,6 @@ private:
     /// the time step
     double dt_m;
 
-    /// the number of time steps to track
-    const size_t maxIntegSteps_m;
     /// final position in path length
     const double zstop_m;
 
@@ -63,6 +81,8 @@ private:
 
     std::ofstream logger_m;
     size_t loggingFrequency_m;
+
+    ElementBase::BoundingBox globalBoundingBox_m;
 
     struct elementPosition {
         double startField_m;
@@ -78,8 +98,8 @@ private:
 
     std::multimap<std::string, elementPosition> elementRegistry_m;
 
-    void trackBack(double maxDrift);
-    void integrate(const IndexMap::value_t &activeSet, size_t maxSteps, double maxDrift = 10.0);
+    void trackBack();
+    void integrate(const IndexMap::value_t &activeSet, double maxDrift = 10.0);
     bool containsCavity(const IndexMap::value_t &activeSet);
     void autophaseCavities(const IndexMap::value_t &activeSet, const std::set<std::string> &visitedElements);
     double getMaxDesignEnergy(const IndexMap::value_t &elementSet) const;
@@ -87,7 +107,11 @@ private:
     void registerElement(const IndexMap::value_t &elementSet, double, const Vector_t &r, const Vector_t &p);
     void processElementRegister();
     void setDesignEnergy(FieldList &allElements, const std::set<std::string> &visitedElements);
-    double computeMaximalImplicitDrift();
+    void computeBoundingBox();
+    // double computeMaximalImplicitDrift();
+    double computeDriftLengthToBoundingBox(const std::set<std::shared_ptr<Component>> & elements,
+                                           const Vector_t & position,
+                                           const Vector_t & direction) const;
 };
 
 inline

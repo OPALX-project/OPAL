@@ -513,7 +513,7 @@ void Fieldmap::checkMap(unsigned int accuracy,
     if (std::sqrt(error / ezSquare) > 1e-1 || maxDiff > 1e-1 * ezMax) {
         lowResolutionWarning(std::sqrt(error / ezSquare), maxDiff / ezMax);
 
-        throw GeneralClassicException("Astra2DDynamic_fast::readMap()",
+        throw GeneralClassicException("Fieldmap::checkMap",
                                       "Field map can't be reproduced properly with the given number of fourier components");
     }
     if (std::sqrt(error / ezSquare) > 1e-2 || maxDiff > 1e-2 * ezMax) {
