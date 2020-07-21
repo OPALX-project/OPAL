@@ -115,7 +115,7 @@ public:
     /// Apply the algorithm to a solenoid.
     virtual void visitSolenoid(const Solenoid &);
 
-    /// Apply the algorithm to a drift.
+    /// Apply the algorithm to a undulator.
     virtual void visitUndulator(const Undulator & );
 
     /// Apply the algorithm to a ParallelPlate.
