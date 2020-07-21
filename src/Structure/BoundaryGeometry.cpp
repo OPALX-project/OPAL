@@ -721,7 +721,7 @@ BoundaryGeometry::BoundaryGeometry() :
 
     itsAttr[TOPO] = Attributes::makeString
         ("TOPO",
-         "BOX, BOXCORNER, ELLIPTIC if FGEOM is selected topo is over-written ",
+         "RECTANGULAR, BOXCORNER, ELLIPTIC if FGEOM is selected topo is over-written ",
          "ELLIPTIC");
 
     itsAttr[LENGTH] = Attributes::makeReal

@@ -1,6 +1,7 @@
 //
 // Class RectangularDomain
-//   :FIXME: add brief description
+//   This class provides a rectangular beam pipe. The mesh adapts to the bunch
+//   in longitudinal direction.
 //
 // Copyright (c) 2008,        Yves Ineichen, ETH Zürich,
 //               2013 - 2015, Tülin Kaman, Paul Scherrer Institut, Villigen PSI, Switzerland
@@ -36,44 +37,64 @@ public:
 
     /// constructor
     RectangularDomain(Vector_t nr, Vector_t hr);
+
     /// constructor
     RectangularDomain(double a, double b, Vector_t nr, Vector_t hr);
 
     /// calculates intersection with the beam pipe
     void compute(Vector_t hr);
 
+    void compute(Vector_t hr, NDIndex<3> /*localId*/);
+
     /// returns number of nodes in xy plane (here independent of z coordinate)
     int getNumXY(int z);
+
     /// returns discretization at (x,y,z)
-    void getBoundaryStencil(int x, int y, int z, double &W, double &E, double &S, double &N, double &F, double &B, double &C, double &scaleFactor);
+    void getBoundaryStencil(int x, int y, int z, double &W, double &E,
+                            double &S, double &N, double &F, double &B,
+                            double &C, double &scaleFactor);
+
     /// returns discretization at 3D index
-    void getBoundaryStencil(int idx, double &W, double &E, double &S, double &N, double &F, double &B, double &C, double &scaleFactor);
+    void getBoundaryStencil(int idx, double &W, double &E, double &S,
+                            double &N, double &F, double &B, double &C,
+                            double &scaleFactor);
+
     /// returns index of neighbours at (x,y,z)
     using IrregularDomain::getNeighbours;
-    void getNeighbours(int x, int y, int z, double &W, double &E, double &S, double &N, double &F, double &B);
+
+    void getNeighbours(int x, int y, int z, int &W, int &E,
+                       int &S, int &N, int &F, int &B);
+
     /// returns index of neighbours at 3D index
-    void getNeighbours(int idx, double &W, double &E, double &S, double &N, double &F, double &B);
+    void getNeighbours(int idx, int &W, int &E, int &S,
+                       int &N, int &F, int &B);
+
+    bool hasGeometryChanged() { return false; }
+
+    void resizeMesh(Vector_t& origin, Vector_t& hr, const Vector_t& rmin,
+                    const Vector_t& rmax, double dh);
+
     /// returns type of boundary condition
     std::string getType() {return "Rectangular";}
+
     /// queries if a given (x,y,z) coordinate lies inside the domain
     inline bool isInside(int x, int y, int /*z*/) {
-        double xx = (x - (nr[0] - 1) / 2.0) * hr[0];
-        double yy = (y - (nr[1] - 1) / 2.0) * hr[1];
-        return (xx <= a_m && yy < b_m);
+        double xx = std::abs(-a_m + hr[0] * (x + 0.5));
+        double yy = std::abs(-b_m + hr[1] * (y + 0.5));
+        return (xx < a_m && yy < b_m);
     }
 
     void setB_m(double b) {b_m = b;}
     void setA_m(double a) {a_m = a;}
 
     double getXRangeMin() { return -a_m; }
-    double getXRangeMax() { return a_m; }
+    double getXRangeMax() { return  a_m; }
     double getYRangeMin() { return -b_m; }
-    double getYRangeMax() { return b_m; }
+    double getYRangeMax() { return  b_m; }
     double getZRangeMin() { return getMinZ(); }
     double getZRangeMax() { return getMaxZ(); }
 
 
-    int getStartIdx() {return 0;}
 
 private:
 
@@ -86,7 +107,7 @@ private:
 
     /// conversion from (x,y,z) to index on the 3D grid
     inline int getIdx(int x, int y, int z) {
-        if(isInside(x, y, z) && x >= 0 && y >= 0 && z >= 0)
+        if (isInside(x, y, z) && x >= 0 && y >= 0 && z >= 0)
             return y * nr[0] + x + z * nxy_m;
         else
             return -1;

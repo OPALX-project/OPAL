@@ -317,7 +317,7 @@ private:
         A,        // major semi-axis of elliptic tube
         B,        // minor semi-axis of ellitpic tube
         C,        // in case of BOXCORNER hight of corner
-        TOPO,     // BOX, BOXCORNER, ELLIPTIC if FGEOM is selected topo is over-written
+        TOPO,     // RECTANGULAR, BOXCORNER, ELLIPTIC if FGEOM is selected topo is over-written
         ZSHIFT,   // Shift in z direction
         XYZSCALE, // Multiplicative scaling factor for coordinates
         XSCALE,   // Multiplicative scaling factor for x-coordinates
