@@ -24,6 +24,7 @@
 
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Algorithms/PartBunchBase.h"
+#include "Physics/Physics.h"
 
 #ifdef OPAL_FEL
 #include "mithra/fieldvector.h"
