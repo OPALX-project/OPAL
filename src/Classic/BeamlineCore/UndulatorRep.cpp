@@ -71,8 +71,8 @@ ElementBase *UndulatorRep::clone() const {
 
 
 Channel *UndulatorRep::getChannel(const std::string& aKey, bool create) {
-    for(const Entry* entry = entries; entry->name != 0; ++entry) {
-        if(aKey == entry->name) {
+    for (const Entry* entry = entries; entry->name != 0; ++entry) {
+        if (aKey == entry->name) {
             return new IndirectChannel<UndulatorRep>(*this, entry->get, entry->set);
         }
     }
