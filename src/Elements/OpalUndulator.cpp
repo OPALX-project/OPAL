@@ -25,15 +25,15 @@
 
 OpalUndulator::OpalUndulator():
     OpalElement(SIZE, "UNDULATOR",
-                "The \"UNDULATOR\" element defines a undulator or wiggler.") {
+                "The \"UNDULATOR\" element defines an undulator or wiggler.") {
 
     itsAttr[K] = Attributes::makeReal
                           ("K",
-                          "The undulator parameter (unitless).", 1);
+                          "Undulator strength parameter [unitless].", 1);
 
     itsAttr[LAMBDA] = Attributes::makeReal
                           ("LAMBDA",
-                          "The undulator period in m.", 0.0);
+                          "Undulator period [m].", 0.0);
     
     itsAttr[NUMPERIODS] = Attributes::makeReal
                           ("NUMPERIODS",
@@ -41,7 +41,7 @@ OpalUndulator::OpalUndulator():
 
     itsAttr[ANGLE] = Attributes::makeReal
                           ("ANGLE",
-                          "Polarisation angle of the undulator magnetic field in radians.", 0.0);
+                          "Polarisation angle of the undulator magnetic field [rad].", 0.0);
     
     itsAttr[FNAME] = Attributes::makeString
                           ("FNAME",
@@ -49,23 +49,23 @@ OpalUndulator::OpalUndulator():
     
     itsAttr[MESHLENGTH] = Attributes::makeRealArray
                           ("MESHLENGTH",
-                           "Size of computational mesh in m.");
+                           "Size of computational mesh [m].");
     
     itsAttr[MESHRESOLUTION] = Attributes::makeRealArray
                           ("MESHRESOLUTION",
-                           "{dx, dy, dz} of the mesh in m.");
+                           "{dx, dy, dz} of the mesh [m].");
     
     itsAttr[TRUNORDER] = Attributes::makeReal
                           ("TRUNORDER",
-                          "Order of boundary absorbing conditions. 1st or 2nd.", 2);
+                          "Order of absorbing boundary conditions. 1st or 2nd.", 2);
     
     itsAttr[TOTALTIME] = Attributes::makeReal
                           ("TOTALTIME",
-                          "Total time of the full-wave simulation in s.", 0.0);
+                          "Total time of the full-wave simulation [s].", 0.0);
     
     itsAttr[DTBUNCH] = Attributes::makeReal
                           ("DTBUNCH",
-                          "Time step for the particle update can be smaller than field update step, in s.", 0.0);
+                          "Time step for the particle update can be smaller than the field update step [s].", 0.0);
 
     registerRealAttribute("K");
     registerRealAttribute("LAMBDA");
