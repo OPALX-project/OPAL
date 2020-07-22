@@ -148,7 +148,7 @@ TEST_F(NDGridTest, CoordVectorTest) {  // and newCoordArray
             EXPECT_NEAR(coords_v[j], gridCoordinates[i][j], 1e-12);
             EXPECT_NEAR(coords_a[j], gridCoordinates[i][j], 1e-12);
         }
-        delete coords_a;
+        delete[] coords_a;
     }
 }
 

@@ -1,29 +1,20 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- * This program was prepared by PSI.
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit www.amas.web.psi for more details
- *
- ***************************************************************************/
-
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
-// include files
+//
+// Class LField
+//   Local Field class
+//
+// Copyright (c) 2003 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Field/LField.h"
 
 #include "Utility/PAssert.h"
@@ -92,8 +83,8 @@ MAKE_INITIALIZER(long long)
 
 template<class T, unsigned Dim>
 LField<T,Dim>::LField(const NDIndex<Dim>& owned,
-		      const NDIndex<Dim>& allocated,
-		      int vnode)
+                      const NDIndex<Dim>& allocated,
+                      int vnode)
 : vnode_m(vnode),
   P(0),
   Pinned(false),
@@ -121,8 +112,8 @@ LField<T,Dim>::LField(const NDIndex<Dim>& owned,
 //UL: for pinned mempory allocation
 template<class T, unsigned Dim>
 LField<T,Dim>::LField(const NDIndex<Dim>& owned,
-		      const NDIndex<Dim>& allocated,
-		      int vnode, bool p)
+                      const NDIndex<Dim>& allocated,
+                      int vnode, bool p)
   : vnode_m(vnode),
     P(0),
     Pinned(p),
@@ -235,18 +226,18 @@ LField<T,Dim>::TryCompress(bool baseOnPhysicalCells)
   if (baseOnPhysicalCells)
     {
       if (CanCompressBasedOnPhysicalCells())
-	{
-	  CompressBasedOnPhysicalCells();
-	  return true;
-	}
+        {
+          CompressBasedOnPhysicalCells();
+          return true;
+        }
     }
   else
     {
       if (CanCompress() )
-	{
-	  Compress();
-	  return true;
-	}
+        {
+          Compress();
+          return true;
+        }
     }
 
   return false;
@@ -304,16 +295,16 @@ LField<T,Dim>::CanCompress(T val) const
       ADDIPPLSTAT(incCompressionCompares, 1);
 
       if (!(*mid1 == val))
-	{
-	  LFIELDMSG(dbgmsg << "Short-cut check determined we cannot ");
-	  LFIELDMSG(dbgmsg << "compress, by comparing " << *mid1<<" to ");
-	  LFIELDMSG(dbgmsg << val << " at last-alloc-domain-failed index");
-	  LFIELDMSG(dbgmsg << " of " << allocCompressIndex << endl);
+        {
+          LFIELDMSG(dbgmsg << "Short-cut check determined we cannot ");
+          LFIELDMSG(dbgmsg << "compress, by comparing " << *mid1<<" to ");
+          LFIELDMSG(dbgmsg << val << " at last-alloc-domain-failed index");
+          LFIELDMSG(dbgmsg << " of " << allocCompressIndex << endl);
 
-	  // It failed the test, so we can just keep the same index to
-	  // check next time, and return.
-	  return false;
-	}
+          // It failed the test, so we can just keep the same index to
+          // check next time, and return.
+          return false;
+        }
     }
 
   // Check from the beginning to the last-checked-index
@@ -328,52 +319,52 @@ LField<T,Dim>::CanCompress(T val) const
       // in cache
       T *checkptr = mid1 + 1;
       while (checkptr != end1)
-	{
-	  if (!(*checkptr++ == val))
-	    {
-	      LFIELDMSG(dbgmsg << "Found that we cannot compress, after ");
-	      LFIELDMSG(dbgmsg << (checkptr - mid1) << " compares (");
-	      LFIELDMSG(dbgmsg << *(checkptr-1) << " != " << val << ")");
-	      LFIELDMSG(dbgmsg << endl);
-	      ADDIPPLSTAT(incCompressionCompares, (checkptr - mid1));
-	      allocCompressIndex = (checkptr - ptr1) - 1;
-	      return false;
-	    }
-	}
+        {
+          if (!(*checkptr++ == val))
+            {
+              LFIELDMSG(dbgmsg << "Found that we cannot compress, after ");
+              LFIELDMSG(dbgmsg << (checkptr - mid1) << " compares (");
+              LFIELDMSG(dbgmsg << *(checkptr-1) << " != " << val << ")");
+              LFIELDMSG(dbgmsg << endl);
+              ADDIPPLSTAT(incCompressionCompares, (checkptr - mid1));
+              allocCompressIndex = (checkptr - ptr1) - 1;
+              return false;
+            }
+        }
 
       // Next, check from the first position to the last-failed-position.
       checkptr = ptr1;
       while (checkptr != mid1)
-	{
-	  if (!(*checkptr++ == val))
-	    {
-	      LFIELDMSG(dbgmsg << "Found that we cannot compress, after ");
-	      LFIELDMSG(dbgmsg << (checkptr - ptr1) + (end1 - mid1));
-	      LFIELDMSG(dbgmsg << " compares (");
-	      LFIELDMSG(dbgmsg << *(checkptr-1) << " != " << val << ")");
-	      LFIELDMSG(dbgmsg << endl);
-	      ADDIPPLSTAT(incCompressionCompares,
-			   (checkptr - ptr1) + (end1 - mid1));
-	      allocCompressIndex = (checkptr - ptr1) - 1;
-	      return false;
-	    }
-	}
+        {
+          if (!(*checkptr++ == val))
+            {
+              LFIELDMSG(dbgmsg << "Found that we cannot compress, after ");
+              LFIELDMSG(dbgmsg << (checkptr - ptr1) + (end1 - mid1));
+              LFIELDMSG(dbgmsg << " compares (");
+              LFIELDMSG(dbgmsg << *(checkptr-1) << " != " << val << ")");
+              LFIELDMSG(dbgmsg << endl);
+              ADDIPPLSTAT(incCompressionCompares,
+                           (checkptr - ptr1) + (end1 - mid1));
+              allocCompressIndex = (checkptr - ptr1) - 1;
+              return false;
+            }
+        }
     }
   else
     {
       while (ptr1 != end1)
-	{
-	  if (!(*ptr1++ == val))
-	    {
-	      LFIELDMSG(dbgmsg << "Found that we cannot compress, after ");
-	      LFIELDMSG(dbgmsg << (ptr1 - P) << " compares (");
-	      LFIELDMSG(dbgmsg << *(ptr1-1) << " != " << val << ")");
-	      LFIELDMSG(dbgmsg << endl);
-	      ADDIPPLSTAT(incCompressionCompares, (ptr1 - P));
-	      allocCompressIndex = (ptr1 - P) - 1;
-	      return false;
-	    }
-	}
+        {
+          if (!(*ptr1++ == val))
+            {
+              LFIELDMSG(dbgmsg << "Found that we cannot compress, after ");
+              LFIELDMSG(dbgmsg << (ptr1 - P) << " compares (");
+              LFIELDMSG(dbgmsg << *(ptr1-1) << " != " << val << ")");
+              LFIELDMSG(dbgmsg << endl);
+              ADDIPPLSTAT(incCompressionCompares, (ptr1 - P));
+              allocCompressIndex = (ptr1 - P) - 1;
+              return false;
+            }
+        }
     }
 
   // If we are at this point, we did not find anything that did not
@@ -403,7 +394,7 @@ bool LField<T,Dim>::CanCompressBasedOnPhysicalCells() const
   // Debugging macro
 
   LFIELDMSG(Inform dbgmsg("LField::CanCompressBasedOnPhysicalCells",
-			  INFORM_ALL_NODES));
+                          INFORM_ALL_NODES));
 
   // We definitely can't do this if compression is disabled.
   if (IpplInfo::noFieldCompression)
@@ -450,15 +441,15 @@ bool LField<T,Dim>::CanCompressBasedOnPhysicalCells() const
   for (int i=0; i < sz; ++i, ++p)
     {
       if (!(*p == val))
-	{
-	  LFIELDMSG(dbgmsg << "Found that we cannot compress, after ");
-	  LFIELDMSG(dbgmsg << i + 1 << " compares." << endl);
-	  ADDIPPLSTAT(incCompressionCompares, i + 1);
-	  ownedCompressIndex = (&(*p)) - P;
-	  LFIELDMSG(dbgmsg << "changed ownedCompressIndex to ");
-	  LFIELDMSG(dbgmsg << ownedCompressIndex << endl);
-	  return false;
-	}
+        {
+          LFIELDMSG(dbgmsg << "Found that we cannot compress, after ");
+          LFIELDMSG(dbgmsg << i + 1 << " compares." << endl);
+          ADDIPPLSTAT(incCompressionCompares, i + 1);
+          ownedCompressIndex = (&(*p)) - P;
+          LFIELDMSG(dbgmsg << "changed ownedCompressIndex to ");
+          LFIELDMSG(dbgmsg << ownedCompressIndex << endl);
+          return false;
+        }
     }
 
   // Since we made it here, we can compress.
@@ -500,7 +491,7 @@ LField<T,Dim>::Compress(const T& val)
   if (IpplInfo::noFieldCompression)
     {
       for (iterator lit = begin(); lit != end(); ++lit)
-	*lit = val;
+        *lit = val;
 
       return;
     }
@@ -586,7 +577,7 @@ void LField<T,Dim>::ReallyUncompress(bool fill_domain)
     {
       T val = *Begin;
       for (int i=0; i<n; i++)
-	P[i] = val;
+        P[i] = val;
     }
 
   // Make the Begin iterator point to the new data.
@@ -714,7 +705,7 @@ LField<T,Dim>::allocateStorage(int newsize)
 
   // Allocate the storage, creating some extra to account for offset, and
   // then add in the offset.
-  P = new T[newsize + extra];
+  P = new T[newsize + extra]();
   P += extra;
 
   ADDIPPLSTAT(incLFieldBytes, (newsize+extra)*sizeof(T));
@@ -737,7 +728,7 @@ LField<T,Dim>::deallocateStorage()
       // If so, move the P pointer back.
 
       if (IpplInfo::offsetStorage)
-	P -= (offsetBlocks*IPPL_CACHE_LINE_SIZE / sizeof(T));
+        P -= (offsetBlocks*IPPL_CACHE_LINE_SIZE / sizeof(T));
 
       delete [] P;
       P = 0;
@@ -759,10 +750,3 @@ void LField<T,Dim>::write(std::ostream& out) const
   for (iterator p = begin(); p!=end(); ++p)
     out << *p << " ";
 }
-
-
-/***************************************************************************
- * $RCSfile: LField.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:26 $
- * IPPL_VERSION_ID: $Id: LField.cpp,v 1.1.1.1 2003/01/23 07:40:26 adelmann Exp $
- ***************************************************************************/

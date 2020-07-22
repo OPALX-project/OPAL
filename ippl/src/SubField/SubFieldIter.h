@@ -1,13 +1,20 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
+//
+// Class SubFieldIter
+//   Iterator for a subset of a BareField
+//
+// Copyright (c) 2003 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef SUB_FIELD_ITER_H
 #define SUB_FIELD_ITER_H
 
@@ -31,8 +38,8 @@
 
        - two construction options, one with needed iterator args, the other
          a default constructor (this is needed by PETE).  You can also
-	 define a copy constructor, or else make sure that element-wise
-	 copying will suffice for your iterator class.
+         define a copy constructor, or else make sure that element-wise
+         copying will suffice for your iterator class.
 
        - override the versions of all the functions in the base class which
          need to be overridden, to supply the special functionality for that
@@ -42,7 +49,7 @@
 
        - add specialization in SubFieldTraits to indicate how this subset
          object can be constructed from other subset objects, and what kind
-	 of combinations of subset objects will work.
+         of combinations of subset objects will work.
 
        - static bool matchType(int t) { return (t == Type_u); } ... return
          whether the type of subset object matches the given type.  Some
@@ -56,12 +63,12 @@
        - bool findIntersection() { } ... find the intersection between a
          the current component and a given NDIndex, and return the intersection
          as an NDIndex.  Also return a boolean flag indicating if this
-	 intersection did indeed contain some points (true).  This is then used
+         intersection did indeed contain some points (true).  This is then used
          in a BrickExpression to take data from the RHS and store it into the
          LHS.  findIntersection is only called for an iterator which occurs
-	 on the LHS; if something is on the RHS, then plugBase will be called
-	 instead, with an argument of the domain as calculated by
-	 findIntersection.
+         on the LHS; if something is on the RHS, then plugBase will be called
+         instead, with an argument of the domain as calculated by
+         findIntersection.
 
        - void nextLField() { } ... for subsets which must keep track of their
          current vnode (e.g., SIndex), this increments a vnode iterator.
@@ -71,7 +78,7 @@
          in to the RHS.  This results in each SubBareField on the RHS setting
          internal iterators to point to the proper section of data
          based on any offsets it may have and on the subset from the LHS.
-	 For some subset objects, this will not depend on the given subdomain.
+         For some subset objects, this will not depend on the given subdomain.
 
        - setLFieldData(LField<T,Dim>*, NDIndex<Dim>&) ... for iterators
          which occur on the LHS of an expression, the LField referred to by
@@ -84,9 +91,9 @@
 
        - bool CanTryCompress() ... Some subset objects cannot easily be
          used on the LHS with compressed LFields.  If the new one can not
-	 (for example, if it is not possible to determine if all the points
-	 referred to by the subset have the same value), this should return
-	 false, and all the other compression routines can just be no-ops.
+         (for example, if it is not possible to determine if all the points
+         referred to by the subset have the same value), this should return
+         false, and all the other compression routines can just be no-ops.
 
  ***************************************************************************/
 
@@ -96,6 +103,7 @@
 #include "Index/SIndex.h"
 #include "Field/BareField.h"
 #include "Field/LField.h"
+#include "Utility/IpplException.h"
 #include "Utility/PAssert.h"
 #include "PETE/IpplExpressions.h"
 
@@ -120,14 +128,18 @@ public:
 
   // Construct with a SubField and the domain to use
   SubFieldIterBase(const BareField<T,Dim>& df,
-		   const typename BareField<T,Dim>::iterator_if& ldf,
-		   const S& s,
-		   unsigned int B)
+                   const typename BareField<T,Dim>::iterator_if& ldf,
+                   const S& s,
+                   unsigned int B)
     : MyBareField(&(const_cast<BareField<T,Dim> &>(df))),
       MyDomain(&(const_cast<S&>(s))),
       CurrentLField(ldf),
       MyBrackets(B) {
-	LFPtr = (*CurrentLField).second.get();
+      if (CurrentLField != getBareField().end_if()) {
+          LFPtr = (*CurrentLField).second.get();
+      } else {
+          LFPtr = nullptr;
+      }
   }
 
   // Default constructor
@@ -156,9 +168,17 @@ public:
 
   // Go to the next LField.
   typename BareField<T,Dim>::iterator_if nextLField() {
-    ++CurrentLField;
-    LFPtr = (*CurrentLField).second.get();
-    return CurrentLField;
+      if (CurrentLField != getBareField().end_if()) {
+          ++CurrentLField;
+      } else {
+          throw IpplException("SubFieldIterBase::nextLField()", "Reached the container end, no next LField!");
+      }
+      if (CurrentLField != getBareField().end_if()) {
+          LFPtr = (*CurrentLField).second.get();
+      } else {
+          LFPtr = nullptr;
+      }
+      return CurrentLField;
   }
 
   // Return the LField pointed to by LFPtr
@@ -171,7 +191,7 @@ public:
   // Use a new LField, where we use data on the given NDIndex region
   void setLFieldData(LField<T,Dim>* p, NDIndex<Dim>&)  { LFPtr = p; }
 
-  /* tjw 3/3/99: try to mimic changes made in 
+  /* tjw 3/3/99: try to mimic changes made in
      IndexedBareFieldIterator::FillGCIfNecessary:
 
   // Fill the guard cells for our field, if necessary.  We punt on
@@ -249,8 +269,8 @@ public:
 
   // Construct with a SubField and the domain to use
   SubFieldIter(const BareField<T,Dim>& df,
-	       const typename BareField<T,Dim>::iterator_if& ldf,
-	       const NDIndex<Dim>& s, unsigned int B)
+               const typename BareField<T,Dim>::iterator_if& ldf,
+               const NDIndex<Dim>& s, unsigned int B)
     : SubFieldIterBase<T,Dim,Subset_t,Dim>(df, ldf, s, B) { }
 
   // Default constructor
@@ -308,9 +328,9 @@ public:
     for ( ; lf_i != lf_e; ++lf_i) {
       // is the search domain completely within the LField we're examining?
       if ((*lf_i).second->getAllocated().contains(plugged)) {
-	// Found it.  Make this one current and go.
-	setLFieldData((*lf_i).second.get(), plugged);
-	return true;
+        // Found it.  Make this one current and go.
+        setLFieldData((*lf_i).second.get(), plugged);
+        return true;
       }
     }
 
@@ -382,8 +402,8 @@ public:
 
   // Construct with a SubField and the domain to use
   SubFieldIter(const BareField<T,Dim>& df,
-	       const typename BareField<T,Dim>::iterator_if& ldf,
-	       const SIndex<Dim>& s, unsigned int B)
+               const typename BareField<T,Dim>::iterator_if& ldf,
+               const SIndex<Dim>& s, unsigned int B)
     : SubFieldIterBase<T,Dim,Subset_t,1U>(df, ldf, s, B) {
     ComponentLF = this->getDomain().begin_iv();
     computeLSOffset();
@@ -492,7 +512,7 @@ private:
     if (this->getLFieldIter() != this->getBareField().end_if()) {
       NDIndex<Dim> owned = this->getLField()->getOwned();
       for (unsigned int d=0; d < Dim; ++d)
-	LFOffset[d] = (owned[d].first() - this->getDomain().getOffset()[d]);
+        LFOffset[d] = (owned[d].first() - this->getDomain().getOffset()[d]);
     }
   }
 };
@@ -502,7 +522,7 @@ private:
 // A specialized versions of the SubFieldIter class for an SOffset, which
 // is used to act as a single-value
 // subset object.  This overrides certain functions from the base class,
-// and provides definitions of needed functions not available in the base. 
+// and provides definitions of needed functions not available in the base.
 template<class T, unsigned int Dim>
 class SubFieldIter<T, Dim, SOffset<Dim> >
   : public SubFieldIterBase<T, Dim, SOffset<Dim>, 1U>,
@@ -516,8 +536,8 @@ public:
 
   // Construct with a SubField and the domain to use
   SubFieldIter(const BareField<T,Dim>& df,
-	       const typename BareField<T,Dim>::iterator_if& ldf,
-	       const SOffset<Dim>& s, unsigned int B)
+               const typename BareField<T,Dim>::iterator_if& ldf,
+               const SOffset<Dim>& s, unsigned int B)
     : SubFieldIterBase<T,Dim,Subset_t,1U>(df, ldf, s, B), SingleValPtr(0) { }
 
   // Default constructor
@@ -540,7 +560,7 @@ public:
       SOffset<Dim> s = this->getDomain();
       NDIndex<Dim> owned = p->getOwned();
       for (unsigned int d=0; d < Dim; ++d)
-	s[d] -= owned[d].first();
+        s[d] -= owned[d].first();
       SingleValPtr = &(p->begin().offset(s.begin()));
     }
   }
@@ -620,11 +640,4 @@ private:
   NDIndex<Dim> Component;
 };
 
-
 #endif // SUB_FIELD_ITER_H
-
-/***************************************************************************
- * $RCSfile: SubFieldIter.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:33 $
- * IPPL_VERSION_ID: $Id: SubFieldIter.h,v 1.1.1.1 2003/01/23 07:40:33 adelmann Exp $ 
- ***************************************************************************/

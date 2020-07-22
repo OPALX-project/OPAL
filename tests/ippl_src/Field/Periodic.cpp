@@ -62,7 +62,7 @@ TEST(Field, PeriodicBC)
     int i,j,k;
     for (j=0; j<3; j++) {
         for (i=0; i<3; i++) {
-            for(k=0; k<3; k++) {
+            for (k=0; k<3; k++) {
                 if (i==1 && j==1 && k==1)
                     assign(cA[i][j][k], 1.0);
                 else
@@ -71,7 +71,11 @@ TEST(Field, PeriodicBC)
         }
     }
     // Print reference values, then assign values ofsetting across boundaries
-    // and print results, Cell-centered case:
+    // and print results.
+    // For printing we need to reset the output stream (needed when running multiple tests)
+    setInform(*IpplInfo::Info);
+
+    // Cell-centered case:
 
     std::cout << "++++++++++cA+++++++++++" << std::endl ;
     fp3(cA);

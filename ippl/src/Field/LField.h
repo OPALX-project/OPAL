@@ -1,10 +1,20 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- ***************************************************************************/
-
+//
+// Class LField
+//   Local Field class
+//
+// Copyright (c) 2003 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef LFIELD_H
 #define LFIELD_H
 
@@ -47,7 +57,7 @@ template<class T, unsigned Dim>
 class LField
 {
 
-public: 
+public:
   // An iterator for the contents of this LField.
   typedef CompressedBrickIterator<T,Dim> iterator;
 
@@ -63,14 +73,14 @@ public:
   //     allocated = domain of "allocated" region, which includes guards
   //     vnode = global vnode ID number (see below)
   LField(const NDIndex<Dim>& owned,
-	 const NDIndex<Dim>& allocated,
-	 int vnode = -1);
+         const NDIndex<Dim>& allocated,
+         int vnode = -1);
 
   //UL: for pinned memory allocation
   LField(const NDIndex<Dim>& owned,
-	 const NDIndex<Dim>& allocated,
-	 int vnode,
-	 bool p);
+         const NDIndex<Dim>& allocated,
+         int vnode,
+         bool p);
 
   // Copy constructor.
   LField(const LField<T,Dim>&);
@@ -177,7 +187,7 @@ public:
 
   void AddToOverlapCache(LField<T, Dim> *newCacheItem)
     {
-      if (overlap.size() == 0) 
+      if (overlap.size() == 0)
         overlap.reserve(ToTheDim<Dim>::calc(3)-1);
       overlap.push_back(newCacheItem);
       overlapCacheInited = true;
@@ -283,8 +293,8 @@ template<class T, unsigned Dim>
 inline
 std::ostream& operator<<(std::ostream& out, const LField<T,Dim>& a)
 {
-  
-  
+
+
   a.write(out);
   return out;
 }
