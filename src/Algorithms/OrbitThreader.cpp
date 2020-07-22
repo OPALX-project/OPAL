@@ -112,6 +112,7 @@ void OrbitThreader::execute() {
     std::set<std::string> visitedElements;
 
     trackBack();
+    updateBoundingBoxWithCurrentPosition();
 
     Vector_t nextR = r_m / (Physics::c * dt_m);
     integrator_m.push(nextR, p_m, dt_m);
@@ -414,6 +415,7 @@ void OrbitThreader::computeBoundingBox() {
     FieldList allElements = itsOpalBeamline_m.getElementByType(ElementBase::ANY);
     FieldList::iterator it = allElements.begin();
     const FieldList::iterator end = allElements.end();
+
     globalBoundingBox_m.lowerLeftCorner = Vector_t(std::numeric_limits<double>::max());
     globalBoundingBox_m.upperRightCorner = Vector_t(-std::numeric_limits<double>::max());
 
@@ -424,6 +426,15 @@ void OrbitThreader::computeBoundingBox() {
         ElementBase::BoundingBox other = it->getBoundingBoxInLabCoords();
         globalBoundingBox_m.getCombinedBoundingBox(other);
     }
+
+    updateBoundingBoxWithCurrentPosition();
+}
+
+
+void OrbitThreader::updateBoundingBoxWithCurrentPosition() {
+    Vector_t dR = Physics::c * dt_m * p_m / Util::getGamma(p_m);
+    ElementBase::BoundingBox pos = ElementBase::BoundingBox::getBoundingBox({r_m - 10 * dR, r_m + 10 * dR});
+    globalBoundingBox_m.getCombinedBoundingBox(pos);
 }
 
 double OrbitThreader::computeDriftLengthToBoundingBox(const std::set<std::shared_ptr<Component>> & elements,

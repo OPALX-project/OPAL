@@ -108,7 +108,7 @@ private:
     void processElementRegister();
     void setDesignEnergy(FieldList &allElements, const std::set<std::string> &visitedElements);
     void computeBoundingBox();
-    // double computeMaximalImplicitDrift();
+    void updateBoundingBoxWithCurrentPosition();
     double computeDriftLengthToBoundingBox(const std::set<std::shared_ptr<Component>> & elements,
                                            const Vector_t & position,
                                            const Vector_t & direction) const;

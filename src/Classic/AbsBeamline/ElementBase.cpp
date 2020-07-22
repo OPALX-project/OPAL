@@ -311,6 +311,17 @@ bool ElementBase::isInsideTransverse(const Vector_t &r) const
     }
 }
 
+ElementBase::BoundingBox ElementBase::BoundingBox::getBoundingBox(const std::vector<Vector_t> & points) {
+    const Vector_t & point = points.front();
+    BoundingBox result{point, point};
+    for (const Vector_t & point: points) {
+        BoundingBox tmp{point, point};
+        result.getCombinedBoundingBox(tmp);
+    }
+
+    return result;
+}
+
 bool ElementBase::BoundingBox::isInside(const Vector_t & position) const {
     Vector_t relativePosition = position - lowerLeftCorner;
     Vector_t diagonal = upperRightCorner - lowerLeftCorner;
@@ -394,4 +405,26 @@ ElementBase::BoundingBox ElementBase::getBoundingBoxInLabCoords() const {
     }
 
     return bb;
+}
+
+void ElementBase::BoundingBox::print(std::ostream & out) const {
+    const Vector_t & ll = lowerLeftCorner;
+    const Vector_t & ur = upperRightCorner;
+    Vector_t diagonal = ur - ll;
+    Vector_t dX(diagonal(0), 0, 0), dY(0, diagonal(1), 0), dZ(0, 0, diagonal(2));
+
+    std::vector<Vector_t> corners{ll, ll + dX, ll + dX + dY, ll + dY, ur, ur - dX, ur - dX - dY, ur - dY};
+    std::vector<std::vector<unsigned int>> paths{{0, 1, 2, 3}, {0, 1, 7, 6}, {1, 2, 4, 7}, {2, 3, 5, 4}, {3, 0, 6, 5}, {4, 5, 6, 7}};
+
+    out << std::setprecision(8);
+    for (const std::vector<unsigned int> path: paths) {
+        for (unsigned int i : {0, 1, 2, 3, 0}) {
+            const Vector_t & corner = corners[path[i]];
+            out << std::setw(16) << corner(0)
+                << std::setw(16) << corner(1)
+                << std::setw(16) << corner(2)
+                << std::endl;
+        }
+        out << std::endl;
+    }
 }

@@ -346,6 +346,8 @@ public:
         Vector_t lowerLeftCorner;
         Vector_t upperRightCorner;
 
+        static BoundingBox getBoundingBox(const std::vector<Vector_t> & points);
+
         void getCombinedBoundingBox(const BoundingBox & other) {
             for (unsigned int d = 0; d < 3; ++ d) {
                 lowerLeftCorner[d] = std::min(lowerLeftCorner[d], other.lowerLeftCorner[d]);
@@ -354,6 +356,8 @@ public:
         }
 
         bool isInside(const Vector_t &) const;
+
+        void print(std::ostream &) const;
 
         /*! Computes the intersection point between a bounding box and the ray which
          *  has the direction 'direction' and starts at the position 'position'. If

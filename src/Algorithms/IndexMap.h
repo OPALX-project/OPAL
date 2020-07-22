@@ -1,3 +1,25 @@
+//
+// Class IndexMap
+//
+// This class stores and prints the sequence of elements that the referenc particle passes.
+// Each time the reference particle enters or leaves an element an entry is added to the map.
+// With help of this map one can determine which element can be found at a given position.
+//
+// Copyright (c) 2016,       Christof Metzger-Kraus, Helmholtz-Zentrum Berlin, Germany
+//               2017 - 2020 Christof Metzger-Kraus
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_INDEXMAP_H
 #define OPAL_INDEXMAP_H
 
