@@ -59,8 +59,8 @@ public:
     double getK() const;
     void setLambda(double lambda);
     double getLambda() const;
-    void setNumPeriods(int np);
-    int getNumPeriods() const;
+    void setNumPeriods(unsigned int np);
+    unsigned int getNumPeriods() const;
     void setAngle(double theta);
     double getAngle() const;
     void setFilename(const std::string& fname);
@@ -87,7 +87,7 @@ private:
     double lambda_m;
 
     /// Number of periods
-    double numPeriods_m;
+    unsigned int numPeriods_m;
 
     /// Polarisation angle of the undulator field
     double angle_m;

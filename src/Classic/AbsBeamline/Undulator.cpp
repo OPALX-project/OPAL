@@ -66,7 +66,7 @@ Undulator::Undulator(const std::string &name):
     Component(name),
     k_m(0.0),
     lambda_m(0.0),
-    numPeriods_m(0.0),
+    numPeriods_m(0),
     angle_m(0.0),
     fname_m(""),
     meshLength_m(3, 0.0),
@@ -287,8 +287,8 @@ double Undulator::getK() const { return k_m; }
 void Undulator::setLambda(double lambda) { lambda_m = lambda; }
 double Undulator::getLambda() const { return lambda_m; }
 
-void Undulator::setNumPeriods(int np) { numPeriods_m = np; }
-int Undulator::getNumPeriods() const { return numPeriods_m; }
+void Undulator::setNumPeriods(unsigned int np) { numPeriods_m = np; }
+unsigned int Undulator::getNumPeriods() const { return numPeriods_m; }
 
 void Undulator::setAngle(double theta) { angle_m = theta; }
 double Undulator::getAngle() const { return angle_m; }
