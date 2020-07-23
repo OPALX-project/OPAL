@@ -50,6 +50,9 @@ public:
 
     /// queries if a given (x,y,z) coordinate lies inside the domain
     bool isInside(int idx, int idy, int idz) const {
+        if (isInsideMap_m.find(toCoordIdx(idx, idy, idz)) == isInsideMap_m.end()) {
+            return false;
+        }
         return isInsideMap_m.at(toCoordIdx(idx, idy, idz));
     }
 

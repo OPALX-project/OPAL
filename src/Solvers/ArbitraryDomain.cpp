@@ -42,21 +42,17 @@ ArbitraryDomain::ArbitraryDomain( BoundaryGeometry * bgeom,
                                   Vector_t hr,
                                   std::string interpl)
     : IrregularDomain(nr, hr, interpl)
+    , bgeom_m(bgeom)
 {
-    bgeom_m  = bgeom;
-
     setRangeMin(bgeom->getmincoords());
     setRangeMax(bgeom->getmaxcoords());
 
     bool have_inside_pt = bgeom->getInsidePoint(globalInsideP0_m);
-    if (have_inside_pt == false) {
+    if (!have_inside_pt) {
         throw OpalException(
             "ArbitraryDomain::ArbitraryDomain()",
             "No point inside geometry found/set!");
     }
-
-    throw OpalException("ArbitraryDomain::ArbitraryDomain()",
-                        "This domain is currently not available.");
 }
 
 ArbitraryDomain::~ArbitraryDomain() {
