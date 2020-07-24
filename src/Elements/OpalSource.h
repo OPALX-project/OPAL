@@ -28,6 +28,7 @@ public:
     /// The attributes of class OpalSource.
     enum {
         DISTRIBUTION = COMMON,  // The longitudinal magnetic field.
+        TRANSPARENT,
         SIZE
     };
 

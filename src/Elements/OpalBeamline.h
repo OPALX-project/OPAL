@@ -83,6 +83,7 @@ public:
     void visit(const T &, BeamlineVisitor &, PartBunchBase<double, 3> *);
 
     void prepareSections();
+    void positionElementRelative(std::shared_ptr<ElementBase>);
     void compute3DLattice();
     void save3DLattice();
     void save3DInput();
@@ -109,6 +110,8 @@ void OpalBeamline::visit(const T &element, BeamlineVisitor &, PartBunchBase<doub
     double endField = 0.0;
     std::shared_ptr<T> elptr(dynamic_cast<T *>(element.clone()));
 
+    positionElementRelative(elptr);
+
     if (elptr->isElementPositionSet())
         startField = elptr->getElementPosition();
 
@@ -122,6 +125,8 @@ void OpalBeamline::visit<Source>(const Source &element, BeamlineVisitor &, PartB
     double startField = 0.0;
     double endField = 0.0;
     std::shared_ptr<Source> elptr(dynamic_cast<Source *>(element.clone()));
+
+    positionElementRelative(elptr);
 
     if (elptr->isElementPositionSet())
         startField = elptr->getElementPosition();

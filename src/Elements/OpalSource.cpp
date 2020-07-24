@@ -26,8 +26,10 @@ OpalSource::OpalSource():
     OpalElement(SIZE, "SOURCE",
                 "The \"SOURCE\" element defines a Source.") {
     itsAttr[DISTRIBUTION] = Attributes::makeStringArray
-                             ("DISTRIBUTION", "List of particle distributions to be used ");
+                            ("DISTRIBUTION", "List of particle distributions to be used ");
 
+    itsAttr[TRANSPARENT] = Attributes::makeBool
+                           ("TRANSPARENT", "Make the source element transparent to impacting elements; Default value is FALSE", false);
     registerOwnership();
 
     setElement(new SourceRep("SOURCE"));
@@ -57,6 +59,10 @@ void OpalSource::update() {
     double length = 0.05;
 
     sol->setElementLength(length);
+
+    if (Attributes::getBool(itsAttr[TRANSPARENT])) {
+        sol->setTransparent();
+    }
 
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(sol);

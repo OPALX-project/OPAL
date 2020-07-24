@@ -7,7 +7,6 @@ set (_SRCS
 set (HDRS
     FFTBoxPoissonSolver.h
     FFTPoissonSolver.h
-    IrregularDomain.h
     P3MPoissonSolver.h
     PoissonSolver.h
     )
@@ -17,16 +16,20 @@ if (ENABLE_SAAMG_SOLVER)
         ArbitraryDomain.cpp
         BoxCornerDomain.cpp
         EllipticDomain.cpp
+        IrregularDomain.cpp
         MGPoissonSolver.cpp
         RectangularDomain.cpp
+        RegularDomain.cpp
         )
 
     list (APPEND HDRS
         ArbitraryDomain.h
         BoxCornerDomain.h
         EllipticDomain.h
+        IrregularDomain.h
         MGPoissonSolver.h
         RectangularDomain.h
+        RegularDomain.h
         )
 
 endif ()

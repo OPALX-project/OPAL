@@ -1,3 +1,19 @@
+//
+// Class GreenWakeFunction
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Solvers/GreenWakeFunction.hh"
 #include "Algorithms/PartBunchBase.h"
 #include "Utilities/GeneralClassicException.h"
@@ -19,13 +35,10 @@
 
 
 /**
- * @brief   just a Testfunction!  Calculate the energy of the Wakefunction with the lambda
- *
  *
  * @todo        In this code one can only apply either the longitudinal wakefield or the transversal wakefield. One should implement that both wakefields can be applied to the particle beam
  * @todo        NBins must be set equal to MT of the fieldsolver. This should be changed. (the length of lineDensity_m must be NBins and not to MT)
  *
- * @param[in]   ref
  * @param[in]   NBIN number of Bins
  * @param[in]   Z0 impedance of the tube
  * @param[in]   radius radius of the tube
@@ -37,7 +50,6 @@
  * @param[in]   fname read wake from file
  */
 GreenWakeFunction::GreenWakeFunction(const std::string &name,
-                                     ElementBase *element,
                                      std::vector<Filter *> filters,
                                      int NBIN,
                                      double Z0,
@@ -48,7 +60,7 @@ GreenWakeFunction::GreenWakeFunction(const std::string &name,
                                      int direction,
                                      bool constLength,
                                      std::string fname):
-    WakeFunction(name, element, NBIN),
+    WakeFunction(name, NBIN),
     lineDensity_m(),
     //~ FftWField_m(0),
     NBin_m(NBIN),

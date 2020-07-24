@@ -204,9 +204,23 @@ FieldList OpalBeamline::getElementByType(ElementBase::ElementType type) {
     return elements_of_requested_type;
 }
 
+void OpalBeamline::positionElementRelative(std::shared_ptr<ElementBase> element) {
+    if (!element->isPositioned()) {
+        return;
+    }
+
+    element->releasePosition();
+    CoordinateSystemTrafo toElement = element->getCSTrafoGlobal2Local();
+    toElement *= coordTransformationTo_m;
+
+    element->setCSTrafoGlobal2Local(toElement);
+    element->fixPosition();
+}
+
 void OpalBeamline::compute3DLattice() {
     static unsigned int order = 0;
     const FieldList::iterator end = elements_m.end();
+
 
     unsigned int minOrder = order;
     {
@@ -499,6 +513,13 @@ namespace {
 
         source = boost::regex_replace(source, cCommentExpr, commentFormat);
         source = boost::regex_replace(source, lineEnd, lineEndFormat, boost::match_default | boost::format_all);
+
+        // Since the positions of the elements are absolute in the laboratory coordinate system we have to make
+        // sure that the line command doesn't provide an origin and orientation. Everything after the sequence of
+        // elements can be deleted and only "LINE = (...);", the first sub-expression (denoted by '\1'), should be kept.
+        const boost::regex lineCommand("(LINE[ \t]*=[ \t]*\\([^\\)]*\\))[ \t]*,[^;]*;", boost::regex::icase);
+        const std::string firstSubExpression("\\1;");
+        source = boost::regex_replace(source, lineCommand, firstSubExpression);
 
         return source;
     }

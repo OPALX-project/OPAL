@@ -39,10 +39,13 @@ public:
 
     virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
+    void setTransparent();
 private:
 
     double startField_m;           /**< startingpoint of field, m*/
     double endField_m;
+
+    bool isTransparent_m;
 
     std::unique_ptr<LossDataSink> lossDs_m;
 

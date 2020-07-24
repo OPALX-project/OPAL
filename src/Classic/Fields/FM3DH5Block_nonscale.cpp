@@ -77,7 +77,9 @@ void FM3DH5Block_nonscale::readMap (
         FieldstrengthHy_m[i] *= 1.0e6 * Physics::mu_0 ;
         FieldstrengthHz_m[i] *= 1.0e6 * Physics::mu_0 ;
     }
-    INFOMSG (level3 << typeset_msg("fieldmap '" + Filename_m  + "' read", "info")
+    INFOMSG (level3
+             << typeset_msg("3d dynamic (non-scaled) fieldmap '"
+                            + Filename_m  + "' (H5hut format) read", "info")
              << endl);
 }
 

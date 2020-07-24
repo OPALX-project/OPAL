@@ -1,35 +1,27 @@
+//
+// Class OpalWake
+//   The class for the OPAL WAKE command.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_Wake_HH
 #define OPAL_Wake_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: OpalWake.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: OpalWake
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:33:44 $
-// $Author: Andreas Adelmann $
-//
-// ------------------------------------------------------------------------
-
 #include "AbstractObjects/Definition.h"
-#include "Algorithms/PartData.h"
 
 class ElementBase;
 class WakeFunction;
-
-// Class OpalWake
-// ------------------------------------------------------------------------
-/// The WAKE definition.
-//  A WAKE definition is used by most physics commands to define the
-//  particle charge and the reference momentum, together with some other
-//  data.
 
 class OpalWake: public Definition {
 
@@ -60,7 +52,7 @@ public:
 
     int getNumberOfBins();
 
-    void initWakefunction(ElementBase &element);
+    void initWakefunction(const ElementBase &element);
 
     WakeFunction *wf_m;
 
@@ -72,16 +64,6 @@ private:
 
     // Clone constructor.
     OpalWake(const std::string &name, OpalWake *parent);
-
-    // The particle reference data.
-    PartData reference;
-
-    // The conversion from GeV to eV.
-    static const double energy_scale;
-
-    // the element the wake is attached to
-    ElementBase *itsElement_m;
-
 };
 
 inline std::ostream &operator<<(std::ostream &os, const OpalWake &b) {

@@ -150,8 +150,6 @@ private:
     /// container for multiple geometries
     std::vector<BoundaryGeometry *> geometries_m;
 
-    /// flag notifying us that the geometry (discretization) has changed
-    bool hasGeometryChanged_m;
     int repartFreq_m;
     /// flag specifying if we are verbose
     bool verbose_m;

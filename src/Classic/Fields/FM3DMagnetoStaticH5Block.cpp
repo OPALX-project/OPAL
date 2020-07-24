@@ -67,7 +67,9 @@ void FM3DMagnetoStaticH5Block::readMap (
         &(FieldstrengthBz_m[0]));
 
     closeFile ();
-    INFOMSG (level3 << typeset_msg("fieldmap '" + Filename_m  + "' read", "info")
+    INFOMSG (level3
+             << typeset_msg("3d magneto static fieldmap '"
+                            + Filename_m  + "' (H5hut format) read", "info")
              << endl);
 }
 void FM3DMagnetoStaticH5Block::freeMap (

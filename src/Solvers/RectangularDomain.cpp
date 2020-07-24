@@ -29,136 +29,15 @@
 #include "Solvers/RectangularDomain.h"
 #include "Utilities/OpalException.h"
 
-RectangularDomain::RectangularDomain(Vector_t nr, Vector_t hr)
-    : RectangularDomain(0.1, 0.1, nr, hr)
-{}
-
-RectangularDomain::RectangularDomain(double a, double b, Vector_t nr, Vector_t hr)
-    : a_m(a)
-    , b_m(b)
-    , nxy_m(nr[0] * nr[1])
+RectangularDomain::RectangularDomain(double a, double b, IntVector_t nr, Vector_t hr)
+    : RegularDomain(nr, hr, "CONSTANT")
 {
-    setNr(nr);
+    setRangeMin(Vector_t(-a, -b, getMinZ()));
+    setRangeMax(Vector_t( a,  b, getMaxZ()));
+}
+
+void RectangularDomain::compute(Vector_t hr, NDIndex<3> /*localId*/){
     setHr(hr);
-}
-
-void RectangularDomain::compute(Vector_t hr){
-    setHr(hr);
-    nxy_m = nr[0] * nr[1];
-}
-
-void RectangularDomain::compute(Vector_t hr, NDIndex<3> /*localId*/) {
-    compute(hr);
-}
-
-int RectangularDomain::getNumXY(int /*z*/) {
-    return nxy_m;
-}
-
-void RectangularDomain::getBoundaryStencil(int x, int y, int z, double &W,
-                                           double &E, double &S, double &N,
-                                           double &F, double &B, double &C,
-                                           double &scaleFactor)
-{
-    scaleFactor = 1.0;
-    W = -1.0 / (hr[0] * hr[0]);
-    E = -1.0 / (hr[0] * hr[0]);
-    N = -1.0 / (hr[1] * hr[1]);
-    S = -1.0 / (hr[1] * hr[1]);
-    F = -1.0 / (hr[2] * hr[2]);
-    B = -1.0 / (hr[2] * hr[2]);
-
-    C = 2.0 / (hr[0] * hr[0])
-      + 2.0 / (hr[1] * hr[1])
-      + 2.0 / (hr[2] * hr[2]);
-
-    if (!isInside(x + 1, y, z))
-        E = 0.0; //we are a right boundary point
-
-    if (!isInside(x - 1, y, z))
-        W = 0.0; //we are a left boundary point
-
-    if (!isInside(x, y + 1, z))
-        N = 0.0; //we are a upper boundary point
-
-    if (!isInside(x, y - 1, z))
-        S = 0.0; //we are a lower boundary point
-
-    //dirichlet
-    if (z == 0)
-        F = 0.0;
-
-    if (z == nr[2] - 1)
-        B = 0.0;
-}
-
-void RectangularDomain::getBoundaryStencil(int idx, double &W, double &E,
-                                           double &S, double &N, double &F,
-                                           double &B, double &C, double &scaleFactor)
-{
-    int x = 0, y = 0, z = 0;
-
-    getCoord(idx, x, y, z);
-    getBoundaryStencil(x, y, z, W, E, S, N, F, B, C, scaleFactor);
-
-}
-
-void RectangularDomain::getNeighbours(int idx, int &W, int &E, int &S,
-                                      int &N, int &F, int &B)
-{
-    int x = 0, y = 0, z = 0;
-
-    getCoord(idx, x, y, z);
-    getNeighbours(x, y, z, W, E, S, N, F, B);
-
-}
-
-void RectangularDomain::getNeighbours(int x, int y, int z, int &W, int &E,
-                                      int &S, int &N, int &F, int &B)
-{
-    if (x > 0)
-        W = getIdx(x - 1, y, z);
-    else
-        W = -1;
-    if (x < nr[0] - 1)
-        E = getIdx(x + 1, y, z);
-    else
-        E = -1;
-
-    if (y < nr[1] - 1)
-        N = getIdx(x, y + 1, z);
-    else
-        N = -1;
-    if (y > 0)
-        S = getIdx(x, y - 1, z);
-    else
-        S = -1;
-
-    if (z > 0)
-        F = getIdx(x, y, z - 1);
-    else
-        F = -1;
-    if (z < nr[2] - 1)
-        B = getIdx(x, y, z + 1);
-    else
-        B = -1;
-}
-
-void RectangularDomain::resizeMesh(Vector_t& origin, Vector_t& hr, const Vector_t& rmin,
-                                const Vector_t& rmax, double dh)
-{
-    // apply bounding box increment, i.e., "BBOXINCR" input argument
-    double zsize = rmax[2] - rmin[2];
-
-    setMinMaxZ(rmin[2] - zsize * (1.0 + dh),
-               rmax[2] + zsize * (1.0 + dh));
-
-    origin = Vector_t(-a_m, -b_m, getMinZ());
-
-    Vector_t mymax = Vector_t(a_m, b_m, getMaxZ());
-
-    for (int i = 0; i < 3; ++i)
-        hr[i]   = (mymax[i] - origin[i]) / nr[i];
 }
 
 #endif //#ifdef HAVE_SAAMG_SOLVER

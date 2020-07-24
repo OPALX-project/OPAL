@@ -127,7 +127,7 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
                                     currentGeometry->getL1(),
                                     currentGeometry->getL2(),
                                     orig_nr_m, hr_m, interpl));
-            bp_m->compute(itsBunch_m->get_hr());
+            bp_m->compute(itsBunch_m->get_hr(), layout_m->getLocalNDIndex());
         } else if (currentGeometry->getTopology() == "RECTANGULAR") {
             bp_m = std::unique_ptr<IrregularDomain>(
                 new RectangularDomain(currentGeometry->getA(),
@@ -147,8 +147,10 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
                                 "Please set PARFFTX=FALSE, PARFFTY=FALSE, PARFFTT=TRUE in \n"
                                 "the definition of the field solver in the input file.\n");
         }
+        Vector_t hr = (currentGeometry->getmaxcoords() -
+                       currentGeometry->getmincoords()) / orig_nr_m;
         bp_m = std::unique_ptr<IrregularDomain>(
-            new ArbitraryDomain(currentGeometry, orig_nr_m, hr_m, interpl));
+            new ArbitraryDomain(currentGeometry, orig_nr_m, hr, interpl));
     }
 
     map_p = Teuchos::null;
@@ -304,8 +306,6 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
     nr_m[1] = orig_nr_m[1];
     nr_m[2] = orig_nr_m[2];
 
-    bp_m->setGlobalMeanR(itsBunch_m->getGlobalMeanR());
-    bp_m->setGlobalToLocalQuaternion(itsBunch_m->getGlobalToLocalQuaternion());
     bp_m->setNr(nr_m);
 
     NDIndex<3> localId = layout_m->getLocalNDIndex();
@@ -533,40 +533,42 @@ void MGPoissonSolver::ComputeStencil(Vector_t /*hr*/, Teuchos::RCP<TpetraVector_
     std::vector<TpetraScalar_t> Values(6);
     std::vector<TpetraGlobalOrdinal_t> Indices(6);
 
+    IrregularDomain::StencilValue_t value;
+    IrregularDomain::StencilIndex_t index;
+
     for (int i = 0 ; i < NumMyElements ; i++) {
 
         int NumEntries = 0;
 
-        double WV, EV, SV, NV, FV, BV, CV, scaleFactor=1.0;
-        int W, E, S, N, F, B;
+        double scaleFactor=1.0;
 
-        bp_m->getBoundaryStencil(MyGlobalElements[i], WV, EV, SV, NV, FV, BV, CV, scaleFactor);
+        bp_m->getBoundaryStencil(MyGlobalElements[i], value, scaleFactor);
         RHS->scale(scaleFactor);
 
-        bp_m->getNeighbours(MyGlobalElements[i], W, E, S, N, F, B);
-        if (E != -1) {
-            Indices[NumEntries] = E;
-            Values[NumEntries++] = EV;
+        bp_m->getNeighbours(MyGlobalElements[i], index);
+        if (index.east != -1) {
+            Indices[NumEntries]  = index.east;
+            Values[NumEntries++] = value.east;
         }
-        if (W != -1) {
-            Indices[NumEntries] = W;
-            Values[NumEntries++] = WV;
+        if (index.west != -1) {
+            Indices[NumEntries]  = index.west;
+            Values[NumEntries++] = value.west;
         }
-        if (S != -1) {
-            Indices[NumEntries] = S;
-            Values[NumEntries++] = SV;
+        if (index.south != -1) {
+            Indices[NumEntries]  = index.south;
+            Values[NumEntries++] = value.south;
         }
-        if (N != -1) {
-            Indices[NumEntries] = N;
-            Values[NumEntries++] = NV;
+        if (index.north != -1) {
+            Indices[NumEntries]  = index.north;
+            Values[NumEntries++] = value.north;
         }
-        if (F != -1) {
-            Indices[NumEntries] = F;
-            Values[NumEntries++] = FV;
+        if (index.front != -1) {
+            Indices[NumEntries]  = index.front;
+            Values[NumEntries++] = value.front;
         }
-        if (B != -1) {
-            Indices[NumEntries] = B;
-            Values[NumEntries++] = BV;
+        if (index.back != -1) {
+            Indices[NumEntries]  = index.back;
+            Values[NumEntries++] = value.back;
         }
 
         // if matrix has already been filled (fillComplete()) we can only
@@ -576,12 +578,12 @@ void MGPoissonSolver::ComputeStencil(Vector_t /*hr*/, Teuchos::RCP<TpetraVector_
             // off-diagonal entries
             A->replaceGlobalValues(MyGlobalElements[i], NumEntries, &Values[0], &Indices[0]);
             // diagonal entry
-            A->replaceGlobalValues(MyGlobalElements[i], 1, &CV, &MyGlobalElements[i]);
+            A->replaceGlobalValues(MyGlobalElements[i], 1, &value.center, &MyGlobalElements[i]);
         } else {
             // off-diagonal entries
             A->insertGlobalValues(MyGlobalElements[i], NumEntries, &Values[0], &Indices[0]);
             // diagonal entry
-            A->insertGlobalValues(MyGlobalElements[i], 1, &CV, &MyGlobalElements[i]);
+            A->insertGlobalValues(MyGlobalElements[i], 1, &value.center, &MyGlobalElements[i]);
         }
     }
 

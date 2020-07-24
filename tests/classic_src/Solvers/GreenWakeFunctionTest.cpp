@@ -31,7 +31,7 @@ TEST(GreenWakeFunctionTest, TestApply)
     std::vector<double> relativeErrorEnergy = {1e-9, 1};
 
     for (int acmode : acmodes) {
-        GreenWakeFunction gwf("opal", nullptr, filters, nbin, Z0, radius, sigma, acmode, tau, 0, const_length, fname);
+        GreenWakeFunction gwf("opal", filters, nbin, Z0, radius, sigma, acmode, tau, 0, const_length, fname);
 
         double spacing = 1e-6; //IFF: charge in testLambda.h in 1um spacings
         // determine K and charge
