@@ -53,7 +53,6 @@
 #include "Utilities/ParseError.h"
 #include "ValueDefinitions/BoolConstant.h"
 #include <algorithm>
-#include <cassert>
 #include <cerrno>
 #include <cmath>
 #include <list>

@@ -1,22 +1,31 @@
-// ------------------------------------------------------------------------
-// $RCSfile: SequenceTemplate.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: SequenceTemplate
-//   The class for storage of OPAL beam sequences with arguments.
+// Class SequenceTemplate
 //
-// ------------------------------------------------------------------------
+//   An ``archetype'' for a SEQUENCE with arguments.
+//   The model is stored in form of a MacroStream.  A call to the macro
+//   sequence is expanded by first replacing the arguments, and then parsing
+//   the resulting stream as a SEQUENCE definition.
 //
-// $Date: 2000/03/29 10:41:41 $
-// $Author: opal $
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
 //
-// ------------------------------------------------------------------------
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+
 
 #include "Lines/SequenceTemplate.h"
+
+#include "Utility/PAssert.h"
+
 #include "AbstractObjects/OpalData.h"
 #include "Lines/Sequence.h"
 #include "Lines/SequenceParser.h"
@@ -25,7 +34,6 @@
 #include "Parser/SimpleStatement.h"
 #include "Utilities/ParseError.h"
 #include <vector>
-#include <cassert>
 
 // Class SequenceTemplate
 // ------------------------------------------------------------------------
@@ -117,7 +125,8 @@ Object *SequenceTemplate::makeTemplate
 void SequenceTemplate::parseTemplate(TokenStream &is, Statement &statement) {
     // Save the formals.
     parseFormals(statement);
-    assert(statement.keyword("SEQUENCE"));
+    bool isSequence = statement.keyword("SEQUENCE");
+    PAssert(isSequence);
 
     // Parse the sequence header.
     Object::parse(statement);

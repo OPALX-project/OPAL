@@ -21,9 +21,9 @@
 #include "Solvers/WakeFunction.hh"
 #include "Physics/Physics.h"
 #include "Utility/IpplInfo.h"
+#include "Utility/PAssert.h"
 
 #include <vector>
-#include <cassert>
 #include <map>
 #include <string>
 #include <complex>
@@ -138,8 +138,8 @@ private:
      *
      */
     template<class F> double simpson(F &f, double a, double b, unsigned int N) {
-        assert(b > a);
-        assert(N > 0);
+        PAssert(b > a);
+        PAssert(N > 0);
 
         double result = 0;
         double h = (b - a) / N;

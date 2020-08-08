@@ -43,7 +43,7 @@ public:
                umap_t& map,
                const scalar_t& value,
                Level* mglevel,
-               const go_t* nr);
+               const go_t* /*nr*/);
 };
 
 
@@ -53,7 +53,7 @@ void AmrDirichletBoundary<Level>::apply(const AmrIntVect_t& iv,
                                         umap_t& map,
                                         const scalar_t& value,
                                         Level* mglevel,
-                                        const go_t* nr)
+                                        const go_t* /*nr*/)
 {
     // find interior neighbour cell
     AmrIntVect_t niv = iv;

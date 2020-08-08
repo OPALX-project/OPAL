@@ -51,6 +51,11 @@ add_compile_options (-Werror)
 add_compile_options (-funroll-loops)
 add_compile_options (-fstrict-aliasing)
 
+# An error in Trilinos/12.18.1 causes
+# -Waggressive-loop-optimizations with -O3 optimization.
+# See issue 587 and corresponding merge request 415.
+add_compile_options (-fno-aggressive-loop-optimizations)
+
 option (USE_STATIC_LIBRARIES "Link with static libraries if available" ON)
 if (NOT ${USE_STATIC_LIBRARIES})
     add_compile_options (-fPIE -fPIC)
@@ -106,6 +111,9 @@ if (CMAKE_Fortran_COMPILER)
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
         set (Fortran_LIBS "-lgfortran")
     endif ()
+    # CMake issue. Missing library libmpi_mpifh in MPI_Fortran_LINRARIES.
+    # See issue 587 and corresponding merge request 415.
+    set (Fortran_LIBS "${Fortran_LIBS} -lmpi_mpifh")
 else ()
     message (STATUS "No Fortran compiler found (optional)")
     if (ENABLE_AMR)

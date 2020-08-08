@@ -22,12 +22,12 @@
 //
 #include "FMGPoissonSolver.h"
 
+#include "Utility/PAssert.h"
+
 #include "Utilities/OpalException.h"
 
 #include <AMReX_ParmParse.H>
 #include <AMReX_Interpolater.H>
-
-#include <cassert>
 
 FMGPoissonSolver::FMGPoissonSolver(AmrBoxLib* itsAmrObject_p)
     : AmrPoissonSolver<AmrBoxLib>(itsAmrObject_p),
@@ -70,14 +70,14 @@ void FMGPoissonSolver::solve(AmrScalarFieldContainer_t& rho,
 
     amrex::Vector< AmrField_t > tmp(rho.size());
 
-    assert(baseLevel <= finestLevel);
-    assert(finestLevel < (int)rho.size());
+    PAssert(baseLevel <= finestLevel);
+    PAssert(finestLevel < (int)rho.size());
 
     for (int lev = baseLevel; lev <= finestLevel ; ++lev) {
         const AmrProcMap_t& dmap = rho[lev]->DistributionMap();
         grad_phi_edge[lev].resize(AMREX_SPACEDIM);
         tmp[lev].define(rho[lev]->boxArray(), dmap, AMREX_SPACEDIM, 1);
-        
+
         for (int n = 0; n < AMREX_SPACEDIM; ++n) {
             AmrGrid_t ba = rho[lev]->boxArray();
             grad_phi_edge[lev][n].reset(new AmrField_t(ba.surroundingNodes(n), dmap, 1, 1));

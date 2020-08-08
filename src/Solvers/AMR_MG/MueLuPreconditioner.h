@@ -52,8 +52,7 @@ public:
     
 public:
     
-    MueLuPreconditioner(const bool& rebalance,
-                        const std::string& reuse);
+    explicit MueLuPreconditioner(const std::string& reuse);
     
     void create(const Teuchos::RCP<amr::matrix_t>& A, Level* level_p =  nullptr);
     
@@ -70,10 +69,6 @@ private:
     Teuchos::ParameterList params_m;
     
     Teuchos::RCP<precond_t> prec_mp;
-
-    Teuchos::RCP<amr::multivector_t> coords_mp;
-    
-    const bool rebalance_m;
 };
 
 #include "MueLuPreconditioner.hpp"

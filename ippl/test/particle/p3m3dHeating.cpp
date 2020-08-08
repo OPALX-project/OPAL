@@ -36,10 +36,10 @@
 #include "Particle/PairBuilder/HashPairBuilderPeriodic.h"
 #include "Particle/PairBuilder/HashPairBuilderPeriodicParallel.h"
 #include "Particle/PairBuilder/PairConditions.h"
+#include "Utility/PAssert.h"
 #include "math.h"
 
 #include <random>
-#include <cassert>
 
 #include "VTKFieldWriterParallel.hpp"
 #include "ChargedParticleFactory.hpp"
@@ -477,9 +477,9 @@ public:
 #if defined (NDEBUG)
         (void)h5err;
 #endif
-        assert (h5err != H5_ERR);
+        PAssert (h5err != H5_ERR);
         H5f_m = H5OpenFile (fn.c_str(), H5_O_RDONLY, props);
-        assert (H5f_m != (h5_file_t)H5_ERR);
+        PAssert (H5f_m != (h5_file_t)H5_ERR);
         H5CloseProp (props);
     }
 

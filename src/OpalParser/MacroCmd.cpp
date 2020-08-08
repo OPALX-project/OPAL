@@ -1,30 +1,35 @@
-// ------------------------------------------------------------------------
-// $RCSfile: MacroCmd.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: MacroCmd
+// Class MacroCmd
 //
-// ------------------------------------------------------------------------
+//   This class parses the MACRO command.
+//   Encapsulate the buffer for the ``archetypes'' of all macros.
+//   The macro is stored as a MacroStream.  For execution, first the
+//   parameters are replaced, then the resulting stream is sent to the parser.
 //
-// $Date: 2000/03/27 09:33:43 $
-// $Author: Andreas Adelmann $
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
 //
-// ------------------------------------------------------------------------
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 
 #include "OpalParser/MacroCmd.h"
+
+#include "Utility/PAssert.h"
+
 #include "AbstractObjects/OpalData.h"
 #include "OpalParser/OpalParser.h"
 #include "Parser/Statement.h"
 #include "Utilities/ParseError.h"
 #include <vector>
-#include <cassert>
-
-// Class MacroCmd
-// ------------------------------------------------------------------------
 
 MacroCmd::MacroCmd():
     Macro(0u, "MACRO",
@@ -99,7 +104,8 @@ Object *MacroCmd::makeTemplate
     macro->parseFormals(statement);
 
     // Parse macro body->
-    assert(statement.keyword("MACRO"));
+    bool isMacro = statement.keyword("MACRO");
+    PAssert(isMacro);
     Token token;
 
     if(statement.delimiter('{')) {

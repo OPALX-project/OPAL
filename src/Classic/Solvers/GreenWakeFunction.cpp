@@ -136,9 +136,9 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
             spacing = rmax(0) * rmax(0) + rmax(1) * rmax(1);
             break;
         default:
-            throw GeneralClassicException("GreenWakeFunction", "invalid direction specified");
+            throw GeneralClassicException("GreenWakeFunction::apply", "invalid direction specified");
     }
-    assert(NBin_m > 0);
+    PAssert(NBin_m > 0);
     spacing /= (NBin_m - 1); //FIXME: why -1? CKR: because grid spacings = grid points - 1
 
     // Calculate the Wakefield if needed
@@ -187,7 +187,7 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
                 int idx = (int)(floor((bunch->R[i](2) - mindist) / spacing));
                 //IFF: should be ok
                 if(idx == NBin_m) idx--;
-                assert(idx >= 0 && idx < NBin_m);
+                PAssert(idx >= 0 && idx < NBin_m);
                 double dE = OutEnergy[idx];
                 bunch->Ef[i](2) += dE;
 
@@ -201,12 +201,12 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
                 int idx = (int)(floor((bunch->R[i](2) - mindist) / spacing));
                 //IFF: should be ok
                 if(idx == NBin_m) idx--;
-                assert(idx >= 0 && idx < NBin_m);
+                PAssert(idx >= 0 && idx < NBin_m);
                 double dE = OutEnergy[idx];
 
                 // ACHTUNG spacing auch in transversal richtung
                 double dist = sqrt(bunch->R[i](0) * bunch->R[i](0) + bunch->R[i](1) * bunch->R[i](1));
-                assert(dist > 0);
+                PAssert(dist > 0);
                 bunch->Ef[i](0) += dE * bunch->R[i](0) / dist;
                 bunch->Ef[i](1) += dE * bunch->R[i](1) / dist;
 
@@ -214,7 +214,7 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
             break;
 
         default:
-            throw GeneralClassicException("GreenWakeFunction", "invalid direction specified");
+            throw GeneralClassicException("GreenWakeFunction::apply", "invalid direction specified");
     }
 
 #ifdef ENABLE_WAKE_DUMP

@@ -13,15 +13,16 @@
 // (at your option) any later version.
 //
 // You should have received a copy of the GNU General Public License
-// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 
 //#define   ENABLE_DEBUG
 
 #include "Structure/BoundaryGeometry.h"
 
-#include <fstream>
 #include <cmath>
+#include <fstream>
+#include <string>
 
 #include "H5hut.h"
 
@@ -685,7 +686,7 @@ static inline Vector_t normalVector (
     ) {
     const Vector_t N = cross (B - A, C - A);
     const double magnitude = std::sqrt (SQR (N (0)) + SQR (N (1)) + SQR (N (2)));
-    assert (gsl_fcmp (magnitude, 0.0, EPS) > 0); // in case we have degenerted triangles
+    PAssert (gsl_fcmp (magnitude, 0.0, EPS) > 0); // in case we have degenerated triangles
     return N / magnitude;
 }
 
@@ -746,17 +747,17 @@ BoundaryGeometry::BoundaryGeometry() :
 
     itsAttr[L1] = Attributes::makeReal
         ("L1",
-         "In case of BOXCORNER Specifies first part with hight == B [m]",
+         "In case of BOXCORNER Specifies first part with height == B [m]",
          0.5);
 
     itsAttr[L2] = Attributes::makeReal
         ("L2",
-         "In case of BOXCORNER Specifies first second with hight == B-C [m]",
+         "In case of BOXCORNER Specifies first second with height == B-C [m]",
          0.2);
 
     itsAttr[C] = Attributes::makeReal
         ("C",
-         "In case of BOXCORNER Specifies hight of corner C [m]",
+         "In case of BOXCORNER Specifies height of corner C [m]",
          0.01);
 
     itsAttr[XYZSCALE] = Attributes::makeReal
@@ -1589,7 +1590,7 @@ Change orientation if diff is:
             for (unsigned int triangle_id = 0; triangle_id < bg->Triangles_m.size(); triangle_id++) {
                 for (unsigned int j = 1; j <= 3; j++) {
                     auto pt_id = bg->PointID (triangle_id, j);
-                    assert (pt_id < bg->Points_m.size ());
+                    PAssert (pt_id < bg->Points_m.size ());
                     adjacencies_to_pt [pt_id].insert (triangle_id);
                 }
             }
@@ -1708,7 +1709,7 @@ Change orientation if diff is:
                     }
                 }
             }
-            assert (n == 2);
+            PAssert (n == 2);
         edge_found:
             int diff = id[1] - id[0];
             if ((((ic[1] - ic[0]) == 1) && ((diff == 1) || (diff == -2))) ||
@@ -1798,7 +1799,7 @@ Change orientation if diff is:
     (void)rc;
 #endif
     rc = H5SetErrorHandler (H5AbortErrorhandler);
-    assert (rc != H5_ERR);
+    PAssert (rc != H5_ERR);
     H5SetVerbosityLevel (1);
 
     h5_prop_t props = H5CreateFileProp ();
@@ -2052,7 +2053,7 @@ BoundaryGeometry::intersectTinyLineSegmentBoundary (
             }
             break;
         case -1:                    // triangle is degenerated
-            assert (tmp_intersect_result != -1);
+            PAssert (tmp_intersect_result != -1);
             exit (42);              // terminate even if NDEBUG is set
         }
     }                   // end for all triangles
@@ -2192,7 +2193,7 @@ void
 BoundaryGeometry::writeGeomToVtk (std::string fn) {
     std::ofstream of;
     of.open (fn.c_str ());
-    assert (of.is_open ());
+    PAssert (of.is_open ());
     of.precision (6);
     of << "# vtk DataFile Version 2.0" << std::endl;
     of << "generated using DataSink::writeGeoToVtk" << std::endl;

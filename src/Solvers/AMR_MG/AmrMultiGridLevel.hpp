@@ -30,8 +30,7 @@ AmrMultiGridLevel<MatrixType,
                                                  const AmrGeometry_t& _geom,
                                                  const AmrIntVect_t& rr,
                                                  const boundary_t* bc,
-                                                 const Teuchos::RCP<comm_t>& comm,
-                                                 const Teuchos::RCP<node_t>& node)
+                                                 const Teuchos::RCP<comm_t>& comm)
     : grids(_grids),
       dmap(_dmap),
       geom(_geom),
@@ -71,7 +70,7 @@ AmrMultiGridLevel<MatrixType,
     
     this->buildLevelMask();
     
-    this->buildMap(comm, node);
+    this->buildMap(comm);
     
     
     residual_p = Teuchos::rcp( new vector_t(map_p, false) );
@@ -216,8 +215,7 @@ bool AmrMultiGridLevel<MatrixType, VectorType>::isValid(const AmrIntVect_t& iv) 
 
 
 template <class MatrixType, class VectorType>
-void AmrMultiGridLevel<MatrixType, VectorType>::buildMap(const Teuchos::RCP<comm_t>& comm,
-                                                         const Teuchos::RCP<node_t>& node)
+void AmrMultiGridLevel<MatrixType, VectorType>::buildMap(const Teuchos::RCP<comm_t>& comm)
 {
     
     go_t localNumElements = 0;
@@ -263,5 +261,5 @@ void AmrMultiGridLevel<MatrixType, VectorType>::buildMap(const Teuchos::RCP<comm
     // numGlobalElements == N
     go_t N = grids.numPts();
     
-    map_p = Teuchos::rcp( new dmap_t(N, globalindices, baseIndex, comm, node) );
+    map_p = Teuchos::rcp( new dmap_t(N, globalindices, baseIndex, comm) );
 }

@@ -9,7 +9,9 @@
 #include <boost/filesystem.hpp>
 #include "OPALconfig.h"
 
-#include <cassert>
+#include "Message/GlobalComm.h"
+#include "Utility/IpplInfo.h"
+
 #include <cmath>
 
 #define ADD_ATTACHMENT( fname ) {             \
@@ -479,7 +481,7 @@ void LossDataSink::saveASCII() {
         }
         bool res = Ippl::Comm->send(smsg, 0, tag);
         if(! res)
-            ERRORMSG("LossDataSink Ippl::Comm->send(smsg, 0, tag) failed " << endl;);
+            ERRORMSG("LossDataSink Ippl::Comm->send(smsg, 0, tag) failed " << endl);
     }
 }
 

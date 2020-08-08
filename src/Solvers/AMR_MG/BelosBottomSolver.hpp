@@ -72,7 +72,7 @@ void BelosBottomSolver<Level>::setOperator(const Teuchos::RCP<matrix_t>& A,
                                            Level* level_p)
 {
     // make positive definite --> rhs has to change sign as well
-    A_mp = A->clone(A->getNode());
+    A_mp = Teuchos::rcp(new matrix_t(*A, Teuchos::Copy));
     A_mp->resumeFill();
     A_mp->scale(-1.0);
     A_mp->fillComplete();

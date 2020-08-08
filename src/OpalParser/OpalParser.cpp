@@ -34,7 +34,6 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/ParseError.h"
 #include "Utilities/Options.h"
-#include <cassert>
 #include <cmath>
 #include <ctime>
 #include <exception>
@@ -178,7 +177,7 @@ void OpalParser::parseAction(Statement &stat) const {
     } else {
         std::string hint = getHint(cmdName, "command");
         if (hint != "") {
-            throw ParseError("OpalParser::parse()",
+            throw ParseError("OpalParser::parseAction()",
                              "Syntax error, " + hint);
         }
 

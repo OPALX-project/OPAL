@@ -36,19 +36,18 @@
 class OpalBeamline;
 class ElementBase;
 
-#include <cassert>
 #include <unordered_map>
 #include <unordered_set>
 #include <array>
+#include <vector>
 
 #include "AbstractObjects/Definition.h"
 #include "Attributes/Attributes.h"
 #include "Utilities/Util.h"
 #include "Utility/IpplTimings.h"
+#include "Utility/PAssert.h"
 
 #include <gsl/gsl_rng.h>
-
-extern Inform* gmsg;
 
 class BoundaryGeometry : public Definition {
 
@@ -286,7 +285,7 @@ private:
     }
 
     inline const Vector_t& getPoint (const int triangle_id, const int vertex_id) {
-        assert (1 <= vertex_id && vertex_id <=3);
+        PAssert (1 <= vertex_id && vertex_id <=3);
         return Points_m[Triangles_m[triangle_id][vertex_id]];
     }
 
@@ -312,12 +311,12 @@ private:
         FGEOM,    // file holding the geometry
         LENGTH,   // length of elliptic tube or boxcorner
         S,        // start of the geometry
-        L1,       // in case of BOXCORNER first part of geometry with hight B
-        L2,       // in case of BOXCORNER second part of geometry with hight B-C
+        L1,       // in case of BOXCORNER first part of geometry with height B
+        L2,       // in case of BOXCORNER second part of geometry with height B-C
         A,        // major semi-axis of elliptic tube
         B,        // minor semi-axis of ellitpic tube
-        C,        // in case of BOXCORNER hight of corner
-        TOPO,     // RECTANGULAR, BOXCORNER, ELLIPTIC if FGEOM is selected topo is over-written
+        C,        // in case of BOXCORNER height of corner
+        TOPO,     // RECTANGULAR, BOXCORNER, ELLIPTIC if FGEOM is selected TOPO is over-written
         ZSHIFT,   // Shift in z direction
         XYZSCALE, // Multiplicative scaling factor for coordinates
         XSCALE,   // Multiplicative scaling factor for x-coordinates

@@ -27,9 +27,10 @@
 #include "Algorithms/AmrPartBunch.h"
 #include "Structure/FieldSolver.h"
 #include "Solvers/PoissonSolver.h"
+#include "Utility/PAssert.h"
 
 #include "Amr/AmrYtWriter.h"
-    
+
 #include <AMReX_MultiFabUtil.H>
 
 #include <AMReX_ParmParse.H> // used in initialize function
@@ -721,7 +722,7 @@ void AmrBoxLib::doRegrid_m(int lbase, double time) {
     
     MakeNewGrids(lbase, time, new_finest, new_grids);
 
-    BL_ASSERT(new_finest <= finest_level+1);
+    PAssert(new_finest <= finest_level+1);
     
     for (int lev = lbase+1; lev <= new_finest; ++lev)
     {

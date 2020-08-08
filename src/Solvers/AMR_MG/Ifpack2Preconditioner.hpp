@@ -30,7 +30,7 @@ Ifpack2Preconditioner<Level>::Ifpack2Preconditioner(Preconditioner prec)
 
 template <class Level>
 void Ifpack2Preconditioner<Level>::create(const Teuchos::RCP<amr::matrix_t>& A,
-                                          Level* level_p)
+                                          Level* /*level_p*/)
 {
     Ifpack2::Factory factory;
     

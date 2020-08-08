@@ -52,7 +52,6 @@ AmrSmoother::~AmrSmoother() {
 
 
 void AmrSmoother::smooth(const Teuchos::RCP<vector_t>& x,
-                         const Teuchos::RCP<matrix_t>& A,
                          const Teuchos::RCP<vector_t>& b)
 {
     prec_mp->apply(*b, *x, Teuchos::NO_TRANS,

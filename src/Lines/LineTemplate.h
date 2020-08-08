@@ -1,22 +1,28 @@
+//
+// Class LineTemplate
+//
+//   An ``archetype'' for a OPAL beam line with arguments.
+//   The model is stored in form of a MacroStream.  A call to the macro line
+//   is expanded by first replacing the arguments, and then parsing the
+//   resulting stream as a LINE definition.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+
 #ifndef OPAL_LineTemplate_HH
 #define OPAL_LineTemplate_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: LineTemplate.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: LineTemplate
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/29 10:41:40 $
-// $Author: opal $
-//
-// ------------------------------------------------------------------------
 
 #include "OpalParser/Macro.h"
 #include "OpalParser/MacroStream.h"
@@ -24,14 +30,6 @@
 class Line;
 class Statement;
 class TokenStream;
-
-
-// Class LineTemplate
-// ------------------------------------------------------------------------
-/// An ``archetype'' for a OPAL beam line with arguments.
-//  The model is stored in form of a MacroStream.  A call to the macro line
-//  is expanded by first replacing the arguments, and then parsing the
-//  resulting stream as a LINE definition.
 
 class LineTemplate: public Macro {
 

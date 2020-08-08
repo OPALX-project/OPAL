@@ -75,11 +75,11 @@
   )
   "Highlighting expressions for OPAL mode (programflow).")
 
-;(concat "\\<" (regexp-opt '("CALL" "CONST" "ESAVE" "EXIT" "HELP" "OPTION" "PRINT" "QUIT" "REAL" "SAVE" "SELECT" "SHOW" "STOP" "SYSTEM" "TITLE" "VALUE") t) "\\>")
+;(concat "\\<" (regexp-opt '("CALL" "CONST" "EXIT" "HELP" "OPTION" "PRINT" "QUIT" "REAL" "SELECT" "STOP" "SYSTEM" "TITLE" "VALUE") t) "\\>")
 
 (defconst opal-font-lock-keywords-controlstm
   (list
-  '("\\<\\(C\\(?:ALL\\|ONST\\)\\|E\\(?:SAVE\\|XIT\\)\\|HELP\\|OPTION\\|PRINT\\|QUIT\\|REAL\\|S\\(?:AVE\\|ELECT\\|HOW\\|TOP\\|YSTEM\\)\\|\\(?:TITL\\|VALU\\)E\\)\\>"
+  '("\\<\\(C\\(?:ALL\\|ONST\\)\\|EXIT\\|HELP\\|OPTION\\|PRINT\\|QUIT\\|REAL\\|S\\(?:ELECT\\|TOP\\|YSTEM\\)\\|\\(?:TITL\\|VALU\\)E\\)\\>"
   . font-lock-builtin-face)
   )
   "Highlighting expressions for OPAL mode (controlstm).")
@@ -102,20 +102,11 @@
   )
   "Highlighting expressions for OPAL mode (beamspec).")
 
-;(concat "\\<" (regexp-opt '("LMDIF" "MIGRAD" "SIMPLEX") t) "\\>")
-
-(defconst opal-font-lock-keywords-matchingmet
-  (list
-  '("\\<\\(LMDIF\\|MIGRAD\\|SIMPLEX\\)\\>"
-  . font-lock-builtin-face)
-  )
-  "Highlighting expressions for OPAL mode (matchingmet).")
-
-;(concat "\\<" (regexp-opt '("ENDTRACK" "SURVEY" "TRACK") t) "\\>")
+;(concat "\\<" (regexp-opt '("ENDTRACK" "TRACK") t) "\\>")
 
 (defconst opal-font-lock-keywords-orbit_corr
   (list
-  '("\\<\\(ENDTRACK\\|SURVEY\\|TRACK\\)\\>"
+  '("\\<\\(ENDTRACK\\|TRACK\\)\\>"
   . font-lock-builtin-face)
   )
   "Highlighting expressions for OPAL mode (orbit_corr).")
@@ -129,11 +120,16 @@
   )
   "Highlighting expressions for OPAL mode (plot).")
 
-;(concat "\\<" (regexp-opt '("A" "ADD" "AMPLITUDE_MODEL" "ANGLE" "APERTURE" "APVETO" "AT" "AUTOPHASE" "B" "BBOXINCR" "BCFFTZ" "BCFFTT" "BCFFTX" "BCFFTY" "BCURRENT" "BEAM_PHIINIT" "BEAM_PRINIT" "BEAM_RINIT" "BFREQ" "BIRTH_CONTROL" "BMAX" "BOUNDPDESTROYFQ" "BSCALE" "BY" "CALLS" "CATHTEMP" "CENTRE" "CHARGE" "CLASS" "CLEAR" "CMD" "COEFDENOM" "COEFDENOMPHI" "COEFNUM" "COEFNUMPHI" "COLUMN" "CONDUCT" "CONSTRAINTS" "CONST_LENGTH" "CONV_HVOL_PROG" "CORRX" "CORRY" "CORRZ" "CSRDUMP" "CROSSOVER" "CUTOFFLONG" "CUTOFFPX" "CUTOFFPY" "CUTOFFPZ" "CUTOFFR" "CUTOFFX" "CUTOFFY" "CYHARMON" "CZERO" "DELPARTFREQ" "DESIGNENERGY" "DK1" "DK1S" "DK2" "DK2S" "DKN" "DKNR" "DKS" "DKSR" "DLAG" "DPHI" "DPSI" "DS" "DT" "DTHETA" "DUMP" "DUMP_DAT" "DUMP_FREQ" "DUMP_OFFSPRING" "DVARS" "DVOLT" "DX" "DY" "DZ" "E1" "E2" "EBDUMP" "ECHO" "EKIN" "ELASER" "ELEMEDGE" "ELEMENT" "EMISSIONMODEL" "EMISSIONSTEPS" "EMITTED" "ENABLEHDF5" "ENABLERUTHERFORD" "ENERGY" "ENDSEQUENCE" "END_NORMAL_X" "END_NORMAL_Y" "END_POSITION_X" "END_POSITION_Y" "EPSILON" "ESCALE" "ET" "EVERYSTEP" "EX" "EXPECTED_HYPERVOL" "EXPR" "EY" "FE" "FGEOM" "FIELDMAPDIR" "FIELDMAPDIR" "FILE" "FINT" "FMAPFN" "FNAME" "FORM" "FREQ" "FREQUENCY_MODEL" "FROM" "FSTYPE" "FTOSCAMPLITUDE" "FTOSCPERIODS" "FULL" "GAMMA" "GAP" "GAPWIDTH" "GENE_MUTATION_PROBABILITY" "GEOMETRY" "GREENSF" "H1" "H2" "HAPERT" "HARMON" "HARMONIC_NUMBER" "HGAP" "HKICK" "HYPERVOLREFERENCE" "IDEALIZED" "INITIAL_OPTIMIZATION" "IMAGENAME" "INFO" "INITIALPOPULATION" "INPUT" "INPUTMOUNITS" "INTENSITYCUT" "INTERPL" "IS_CLOSED" "ITSOLVER" "K0" "K0S" "K1" "K1S" "K2" "K2S" "K3" "K3S" "KEYWORD" "KICK" "KN" "KS" "L" "LAG" "LASERPROFFN" "LATTICE_PHIINIT" "LATTICE_RINIT" "LATTICE_THETAINIT" "LENGTH" "LEVEL" "LOGBENDTRAJECTORY" "LOWER" "LOWERBOUND" "MASS" "MATERIAL" "MAXGENERATIONS" "MAXITERS" "MAXR" "MAXSTEPS" "MAXZ" "METHOD" "MINR" "MINZ" "MODE" "MREX" "MREY" "MSCALX" "MSCALY" "MT" "MUTATION_PROBABILITY" "MX" "MY" "NBIN" "NFREQ" "NLEFT" "NO" "NPART" "NPOINTS" "NRIGHT" "NUMCELLS" "NUM_COWORKERS" "NUM_IND_GEN" "NUM_MASTERS" "OBJECTIVES" "OFFSETPX" "OFFSETPY" "OFFSETPZ" "OFFSETT" "OFFSETX" "OFFSETY" "OFFSETZ" "ONE_PILOT_CONVERGE" "OPCHARGE" "OPMASS" "OPYIELD" "ORDER" "ORIENTATION" "ORIGIN" "OUTDIR" "OUTFN" "OUTPUT" "P1" "P2" "P3" "P4" "PARFFTT" "PARFFTX" "PARFFTY" "PARTICLE" "PARTICLEMATTERINTERACTION" "PATTERN" "PC" "PDIS" "PHI" "PHI0" "PHIINIT" "PHIMAX" "PHIMIN" "PLANE" "POLYORDER" "PRECMODE" "PRINIT" "PSDUMPEACHTURN" "PSDUMPFRAME" "PSDUMPFREQ" "PSI" "PTC" "PYMULT" "PZINIT" "PZMULT" "R51" "R52" "R61" "R62" "RADIUS" "RANDOM" "RANGE" "RASTER" "RECOMBINATION_PROBABILITY" "REFER" "REFPOS" "REPARTFREQ" "RESET" "RFFREQ" "RFMAPFN" "RFPHI" "RINIT" "RMAX" "RMIN" "ROTATION" "ROW" "S" "SAMPLINGS" "SCALABLE" "SEED" "SELECTED" "SEQUENCE" "SIGMA" "SIGMAPX" "SIGMAPY" "SIGMAPZ" "SIGMAR" "SIGMAT" "SIGMAX" "SIGMAY" "SIGMAZ" "SIGX" "SIGY" "SIMBIN_CROSSOVER_NU" "SIMTMPDIR" "SLPTC" "SOL_SYNCH" "SPLIT" "SPTDUMPFREQ" "STARTPOPULATION" "STATDUMPFREQ" "STEP" "STEPSPERTURN" "STOP" "STRING" "SUPERPOSE" "SYMMETRY" "T0" "TABLE" "TAU" "TELL" "TEMPLATEDIR" "TFALL" "THETA" "THIN" "THRESHOLD" "TIME" "TIMEINTEGRATOR" "TMULT" "TO" "TOL" "TOLERANCE" "TPULSEFWHM" "TRACE" "TRACKBACK" "TRIMCOILTHRESHOLD" "TRISE" "TURNS" "TYPE" "UPPER" "UPPERBOUND" "VARIABLE" "VERIFY" "VERSION" "VKICK" "VMAX" "VMIN" "VOLT" "W" "WAKEF" "WARN" "WARP" "WEIGHT" "WIDTH" "WRITETOFILE" "X" "XEND" "XMA" "XMULT" "XSIZE" "XSTART" "Y" "YEND" "YMA" "YMULT" "YSIZE" "YSTART" "Z" "Z0" "ZEND" "ZINIT" "ZSTART" "ZSTOP") t) "\\>")
+;; attribute list can be generated in terminal with:
+;ack -h '^\s*\("[A-Z0-9_]+"' src/ |sed 's/\s*("\([^"]\+\)".*/"\1"/' |sort|uniq >attributes.txt
+;ack -h 'Attributes::make.*\("[A-Z0-9_]+"' |sed 's/.*Attributes::make.*("\([^"]\+\)".*$/"\1"/' |sort|uniq >> attributes.txt
+;cat attributes.txt |sort|uniq >attributes2.txt
+
+;(concat "\\<" (regexp-opt '("A" "ALL" "ALPHA" "ALPHAX" "ALPHAY" "AMPLITUDE_MODEL" "AMR" "AMR_BFX" "AMR_BFY" "AMR_BFZ" "AMR_DENSITY" "AMR_DOMAIN_RATIO" "AMR_MAXGRIDX" "AMR_MAXGRIDY" "AMR_MAXGRIDZ" "AMR_MAXLEVEL" "AMR_MAX_NUM_PART" "AMR_MG_INTERP" "AMR_MG_NORM" "AMR_MG_NSWEEPS" "AMR_MG_PREC" "AMR_MG_REBALANCE" "AMR_MG_REUSE" "AMR_MG_SMOOTHER" "AMR_MG_TOL" "AMR_MG_VERBOSE" "AMR_MIN_NUM_PART" "AMR_REFX" "AMR_REFY" "AMR_REFZ" "AMR_REGRID_FREQ" "AMR_SCALING" "AMR_TAGGING" "AMR_YT_DUMP_FREQ" "ANGLE" "APERTURE" "APVETO" "ASCIIDUMP" "AUTOPHASE" "AZIMUTHAL_ANGLE" "AZIMUTHAL_EXTENT" "B" "B0" "BB_LENGTH" "BBLENGTH" "BBOXINCR" "BCFFTT" "BCFFTX" "BCFFTY" "BCFFTZ" "BCURRENT" "BEAM" "BEAMHALOBOUNDARY" "BEAM_PHIINIT" "BEAM_PRINIT" "BEAM_RINIT" "BETAX" "BETAY" "BFREQ" "BIRTH_CONTROL" "BMAX" "BOUNDARYGEOMETRY" "BOUNDPDESTROYFQ" "BSCALE" "C" "CATHTEMP" "CAVITY_CENTRE" "CENTRE_LENGTH" "CHARGE" "CLASS" "CLEAR" "CLOTUNEONLY" "CMD" "COEFDENOM" "COEFDENOMPHI" "COEFNUM" "COEFNUMPHI" "COLUMN" "CONDUCT" "CONST_LENGTH" "CONSTRAINTS" "CONV_HVOL_PROG" "COORDINATE_SYSTEM" "CORRT" "CORRX" "CORRY" "CORRZ" "CROSSOVER" "CSRDUMP" "CUTOFF" "CUTOFFLONG" "CUTOFFPX" "CUTOFFPY" "CUTOFFPZ" "CUTOFFR" "CUTOFFX" "CUTOFFY" "CYHARMON" "CZERO" "DDX" "DDY" "DEBIN" "DELPARTFREQ" "DENERGY" "DESCRIPTION" "DESIGNENERGY" "DISTDIR" "DISTRIBUTION" "DK1" "DK1S" "DK2" "DK2S" "DK3" "DK3S" "DKN" "DKS" "DLAG" "DPHI" "DPSI" "DR" "DT" "DTAU" "DTHETA" "DTSCINIT" "DUMP" "DUMP_DAT" "DUMP_FREQ" "DUMP_OFFSPRING" "DVARS" "DVOLT" "DX" "DY" "DZ" "E1" "E2" "EANGLE" "EBDUMP" "ECHO" "EKIN" "ELASER" "ELEMEDGE" "EMISSIONMODEL" "EMISSIONSTEPS" "EMITTED" "ENABLEHDF5" "ENABLERUTHERFORD" "END_LENGTH" "END_NORMAL_X" "END_NORMAL_Y" "END_POSITION_X" "END_POSITION_Y" "ENERGY" "EPSILON" "ESCALE" "ET" "EX" "EXPECTED_HYPERVOL" "EXPR" "EY" "FAST" "FE" "FGEOM" "FIELD_INDEX" "FIELDMAPDIR" "FIELDSOLVER" "FIELD_UNITS" "FILE" "FILE_NAME" "FILTERS" "FINT" "FLIPX" "FLIPY" "FMAPFN" "FMHIGHE" "FMLOWE" "FNAME" "FREQ" "FREQUENCY_MODEL" "FSTYPE" "FTOSCAMPLITUDE" "FTOSCPERIODS" "FULL" "GAMMA" "GAP" "GAPWIDTH" "GAS" "GENE_MUTATION_PROBABILITY" "GEOMETRY" "GREATERTHANPI" "GREENSF" "H1" "H2" "HALOSHIFT" "HAPERT" "HARMONIC_NUMBER" "HEIGHT" "HEIGHT_NEG_EXTENT" "HEIGHT_POS_EXTENT" "HGAP" "HKICK" "HYPERVOLREFERENCE" "ID1" "ID2" "IDEALIZED" "IMAGENAME" "INFO" "INITIAL_OPTIMIZATION" "INITIALPOPULATION" "INPUT" "INPUTMOUNITS" "INSIDEPOINT" "INTENSITYCUT" "INTERPL" "IS_CLOSED" "ITSOLVER" "JSON_DUMP_FREQ" "K0" "K0S" "K1" "K1S" "K2" "K2S" "K3" "K3S" "KEEP" "KICK" "KN" "KS" "L" "L1" "L2" "LAG" "LASERPROFFN" "LAT_PHIINIT" "LAT_RINIT" "LAT_THETAINIT" "LENGTH" "LENGTH_UNITS" "LFRINGE" "LINE" "LOGBENDTRAJECTORY" "LOWERBOUND" "MAGNET_END" "MAGNET_START" "MAP_ORDER" "MASS" "MATERIAL" "MAXFORDER" "MAXGENERATIONS" "MAX_HORIZONTAL_POWER" "MAXITERS" "MAX_ORDER" "MAX_R" "MAXR" "MAXSTEPS" "MAXSTEPSCO" "MAXSTEPSSI" "MAXXORDER" "MAX_Y_POWER" "MAXZ" "MB_BINNING" "MB_ETA" "MBMODE" "MEMORYDUMP" "MESSAGE" "METHOD" "MINBINEMITTED" "MIN_R" "MINR" "MINSTEPFORREBIN" "MINZ" "MODE" "MT" "MTSSUBSTEPS" "MUTATION" "MUTATION_PROBABILITY" "MX" "MY" "MZ" "N" "NAME" "NBIN" "NFREQ" "NHOLX" "NHOLY" "NLEFT" "NLHS" "NPART" "NPEAKS" "NPOINTS" "NRIGHT" "NSECTORS" "NSLICES" "NSTEPS" "NUMBLOCKS" "NUMCELLS" "NUM_COWORKERS" "NUM_IND_GEN" "NUM_MASTERS" "OBJECTIVES" "OFFSETP" "OFFSETPX" "OFFSETPY" "OFFSETPZ" "OFFSETT" "OFFSETX" "OFFSETY" "OFFSETZ" "ONE_PILOT_CONVERGE" "OPCHARGE" "OPMASS" "OPYIELD" "ORDER" "ORDERMAPS" "ORIENTATION" "ORIGIN" "OUTDIR" "OUTFN" "OUTPUT" "P0" "P1" "P2" "P3" "PARAMB" "PARFFTT" "PARFFTX" "PARFFTY" "PARTICLE" "PARTICLEMATTERINTERACTION" "PATTERN" "PC" "PDIS" "PHASE_MODEL" "PHI" "PHI0" "PHIINIT" "PHIMAX" "PHIMIN" "PHI_START" "PHI_STEPS" "PMAPFN" "POLYORDER" "PRECMODE" "PRESSURE" "PRINIT" "PSCALE" "PSDUMPEACHTURN" "PSDUMPFRAME" "PSDUMPFREQ" "PSI" "PT" "PXMULT" "PYMULT" "PZINIT" "PZMULT" "R" "R0" "R51" "R52" "R61" "R62" "RADIAL_NEG_EXTENT" "RADIAL_POS_EXTENT" "RADIUS" "RANDOM" "RANGE" "RASTER" "RC" "REBINFREQ" "RECOMBINATION_PROBABILITY" "RECYCLEBLOCKS" "REFER" "REFPOS" "REMOTEPARTDEL" "REPARTFREQ" "RESIDUUM" "RESTART_FILE" "RESTART_STEP" "RFFCFN" "RFFREQ" "RFMAPFN" "RFPHI" "RFRINGE" "RFVCFN" "RGUESS" "RHODUMP" "RINIT" "RMAX" "RMIN" "RNGTYPE" "ROTATE180" "ROTATE270" "ROTATE90" "ROTATION" "R_START" "R_STEPS" "S" "SAMPLINGS" "SBIN" "SCALABLE" "SCALE" "SCSOLVEFREQ" "SECTOR" "SEED" "SEPPEAKS" "SIGMA" "SIGMAPT" "SIGMAPX" "SIGMAPY" "SIGMAPZ" "SIGMAR" "SIGMAT" "SIGMAX" "SIGMAY" "SIGMAZ" "SIMBIN_CROSSOVER_NU" "SIMTMPDIR" "SLICES" "SLPTC" "SOL_SYNCH" "SPIRAL" "SPTDUMPFREQ" "STARTPOPULATION" "STATDUMPFREQ" "STEP" "STEPSIZE" "STEPSPERTURN" "STOP" "STOREOBJECTIVES" "STRING" "SUPERPOSE" "SURFDUMPFREQ" "SYMMETRY" "T" "T0" "TABLE" "TAN_DELTA" "TANGENTIAL_OFFSET" "TAU" "TELL" "TEMPERATURE" "TEMPLATEDIR" "TFALL" "THETA" "THETA_IN" "THETA_OUT" "THRESHOLD" "TIMEINTEGRATOR" "TIMES" "TMULT" "TOL" "TOPO" "TP" "TPULSEFWHM" "TRACE" "TRACKBACK" "TRIMCOIL" "TRIMCOILTHRESHOLD" "TRISE" "T_START" "T_STEPS" "TURNS" "TYPE" "UPPERBOUND" "VALUE" "VALUES" "VAPERT" "VARIABLE" "VARRADIUS" "VERSION" "VKICK" "VOLT" "W" "WAKEF" "WARN" "WEIGHT" "WIDTH" "WRITETOFILE" "X" "XEND" "XMULT" "XSCALE" "XSIZE" "X_START" "XSTART" "X_STEPS" "XYZSCALE" "Y" "YEND" "YMULT" "YSCALE" "YSIZE" "Y_START" "YSTART" "Y_STEPS" "Z" "Z0" "ZEND" "ZINIT" "ZSCALE" "ZSHIFT" "Z_START" "ZSTART" "Z_STEPS" "ZSTOP") t) "\\>")
 
 (defconst opal-font-lock-keywords-parameters
   (list
- '("\\<\\(A\\(?:DD\\|MPLITUDE_MODEL\\|NGLE\\|P\\(?:ERTURE\\|VETO\\)\\|T\\|UTOPHASE\\)\\|B\\(?:BOXINCR\\|C\\(?:FFT[TXYZ]\\|URRENT\\)\\|EAM_\\(?:\\(?:P\\(?:HI\\|R\\)\\|R\\)INIT\\)\\|FREQ\\|IRTH_CONTROL\\|MAX\\|OUNDPDESTROYFQ\\|SCALE\\|Y\\)\\|C\\(?:A\\(?:LLS\\|THTEMP\\)\\|ENTRE\\|HARGE\\|L\\(?:ASS\\|EAR\\)\\|MD\\|O\\(?:EF\\(?:DENOM\\(?:PHI\\)?\\|NUM\\(?:PHI\\)?\\)\\|LUMN\\|N\\(?:DUCT\\|ST\\(?:RAINTS\\|_LENGTH\\)\\|V_HVOL_PROG\\)\\|RR[XYZ]\\)\\|ROSSOVER\\|SRDUMP\\|UTOFF\\(?:LONG\\|P[XYZ]\\|[RXY]\\)\\|YHARMON\\|ZERO\\)\\|D\\(?:E\\(?:LPARTFREQ\\|SIGNENERGY\\)\\|K\\(?:1S\\|2S\\|[NS]R\\|[12NS]\\)\\|LAG\\|P\\(?:[HS]I\\)\\|THETA\\|UMP\\(?:_\\(?:DAT\\|FREQ\\|OFFSPRING\\)\\)?\\|V\\(?:ARS\\|OLT\\)\\|[STXYZ]\\)\\|E\\(?:BDUMP\\|CHO\\|KIN\\|L\\(?:ASER\\|EME\\(?:DGE\\|NT\\)\\)\\|MI\\(?:SSION\\(?:MODEL\\|STEPS\\)\\|TTED\\)\\|N\\(?:ABLE\\(?:HDF5\\|RUTHERFORD\\)\\|D\\(?:SEQUENCE\\|_\\(?:NORMAL_[XY]\\|POSITION_[XY]\\)\\)\\|ERGY\\)\\|PSILON\\|SCALE\\|VERYSTEP\\|XP\\(?:ECTED_HYPERVOL\\|R\\)\\|[12TXY]\\)\\|F\\(?:E\\|GEOM\\|I\\(?:ELDMAPDIR\\|LE\\|NT\\)\\|MAPFN\\|NAME\\|ORM\\|R\\(?:EQ\\(?:UENCY_MODEL\\)?\\|OM\\)\\|STYPE\\|TOSC\\(?:AMPLITUDE\\|PERIODS\\)\\|ULL\\)\\|G\\(?:A\\(?:MMA\\|P\\(?:WIDTH\\)?\\)\\|E\\(?:\\(?:NE_MUTATION_PROBABILIT\\|OMETR\\)Y\\)\\|REENSF\\)\\|H\\(?:A\\(?:PERT\\|RMON\\(?:IC_NUMBER\\)?\\)\\|GAP\\|KICK\\|YPERVOLREFERENCE\\|[12]\\)\\|I\\(?:DEALIZED\\|MAGENAME\\|N\\(?:FO\\|ITIAL\\(?:\\(?:POPUL\\|_OPTIMIZ\\)ATION\\)\\|PUT\\(?:MOUNITS\\)?\\|TE\\(?:NSITYCUT\\|RPL\\)\\)\\|S_CLOSED\\|TSOLVER\\)\\|K\\(?:0S\\|1S\\|2S\\|3S\\|EYWORD\\|ICK\\|[0-3NS]\\)\\|L\\(?:A\\(?:G\\|SERPROFFN\\|TTICE_\\(?:\\(?:PHI\\|R\\|THETA\\)INIT\\)\\)\\|E\\(?:NGTH\\|VEL\\)\\|O\\(?:GBENDTRAJECTORY\\|WER\\(?:BOUND\\)?\\)\\)\\|M\\(?:A\\(?:SS\\|TERIAL\\|X\\(?:GENERATIONS\\|ITERS\\|STEPS\\|[RZ]\\)\\)\\|ETHOD\\|IN[RZ]\\|ODE\\|RE[XY]\\|SCAL[XY]\\|UTATION_PROBABILITY\\|[TXY]\\)\\|N\\(?:BIN\\|FREQ\\|LEFT\\|O\\|P\\(?:ART\\|OINTS\\)\\|RIGHT\\|UM\\(?:CELLS\\|_\\(?:COWORKERS\\|IND_GEN\\|MASTERS\\)\\)\\)\\|O\\(?:BJECTIVES\\|FFSET\\(?:P[XYZ]\\|[TXYZ]\\)\\|NE_PILOT_CONVERGE\\|P\\(?:CHARGE\\|MASS\\|YIELD\\)\\|R\\(?:DER\\|I\\(?:\\(?:ENTATIO\\|GI\\)N\\)\\)\\|UT\\(?:DIR\\|FN\\|PUT\\)\\)\\|P\\(?:A\\(?:R\\(?:FFT[TXY]\\|TICLE\\(?:MATTERINTERACTION\\)?\\)\\|TTERN\\)\\|DIS\\|HI\\(?:0\\|INIT\\|M\\(?:AX\\|IN\\)\\)?\\|LANE\\|OLYORDER\\|R\\(?:ECMODE\\|INIT\\)\\|S\\(?:DUMP\\(?:EACHTURN\\|FR\\(?:AME\\|EQ\\)\\)\\|I\\)\\|TC\\|\\(?:YMUL\\|Z\\(?:INI\\|MUL\\)\\)T\\|[1-4C]\\)\\|R\\(?:5[12]\\|6[12]\\|A\\(?:DIUS\\|N\\(?:DOM\\|GE\\)\\|STER\\)\\|E\\(?:COMBINATION_PROBABILITY\\|F\\(?:ER\\|POS\\)\\|PARTFREQ\\|SET\\)\\|F\\(?:FREQ\\|MAPFN\\|PHI\\)\\|INIT\\|M\\(?:AX\\|IN\\)\\|O\\(?:TATION\\|W\\)\\)\\|S\\(?:AMPLINGS\\|CALABLE\\|E\\(?:ED\\|LECTED\\|QUENCE\\)\\|I\\(?:G\\(?:MA\\(?:P[XYZ]\\|[RTXYZ]\\)?\\|[XY]\\)\\|M\\(?:BIN_CROSSOVER_NU\\|TMPDIR\\)\\)\\|LPTC\\|OL_SYNCH\\|P\\(?:LIT\\|TDUMPFREQ\\)\\|T\\(?:A\\(?:RTPOPULATION\\|TDUMPFREQ\\)\\|EP\\(?:SPERTURN\\)?\\|OP\\|RING\\)\\|UPERPOSE\\|YMMETRY\\)\\|T\\(?:A\\(?:BLE\\|U\\)\\|E\\(?:LL\\|MPLATEDIR\\)\\|FALL\\|H\\(?:ETA\\|IN\\|RESHOLD\\)\\|IME\\(?:INTEGRATOR\\)?\\|MULT\\|OL\\(?:ERANCE\\)?\\|PULSEFWHM\\|R\\(?:AC\\(?:E\\|KBACK\\)\\|I\\(?:MCOILTHRESHOLD\\|SE\\)\\)\\|URNS\\|YPE\\|[0O]\\)\\|UPPER\\(?:BOUND\\)?\\|V\\(?:ARIABLE\\|ER\\(?:IFY\\|SION\\)\\|KICK\\|M\\(?:AX\\|IN\\)\\|OLT\\)\\|W\\(?:A\\(?:KEF\\|R[NP]\\)\\|EIGHT\\|IDTH\\|RITETOFILE\\)\\|X\\(?:END\\|M\\(?:A\\|ULT\\)\\|S\\(?:IZE\\|TART\\)\\)\\|Y\\(?:END\\|M\\(?:A\\|ULT\\)\\|S\\(?:IZE\\|TART\\)\\)\\|Z\\(?:0\\|END\\|INIT\\|ST\\(?:ART\\|OP\\)\\)\\|[ABLSW-Z]\\)\\>"
+ '("\\<\\(A\\(?:L\\(?:L\\|PHA[XY]?\\)\\|M\\(?:PLITUDE_MODEL\\|R\\(?:_\\(?:BF[XYZ]\\|D\\(?:ENSITY\\|OMAIN_RATIO\\)\\|M\\(?:AX\\(?:GRID[XYZ]\\|LEVEL\\|_NUM_PART\\)\\|G_\\(?:INTERP\\|N\\(?:ORM\\|SWEEPS\\)\\|PREC\\|RE\\(?:\\(?:BALANC\\|US\\)E\\)\\|SMOOTHER\\|TOL\\|VERBOSE\\)\\|IN_NUM_PART\\)\\|RE\\(?:F[XYZ]\\|GRID_FREQ\\)\\|SCALING\\|TAGGING\\|YT_DUMP_FREQ\\)\\)?\\)\\|NGLE\\|P\\(?:ERTURE\\|VETO\\)\\|SCIIDUMP\\|UTOPHASE\\|ZIMUTHAL_\\(?:ANGLE\\|EXTENT\\)\\)\\|B\\(?:0\\|B\\(?:LENGTH\\|OXINCR\\|_LENGTH\\)\\|C\\(?:FFT[TXYZ]\\|URRENT\\)\\|E\\(?:AM\\(?:HALOBOUNDARY\\|_\\(?:\\(?:P\\(?:HI\\|R\\)\\|R\\)INIT\\)\\)?\\|TA[XY]\\)\\|FREQ\\|IRTH_CONTROL\\|MAX\\|OUND\\(?:ARYGEOMETRY\\|PDESTROYFQ\\)\\|SCALE\\)\\|C\\(?:A\\(?:THTEMP\\|VITY_CENTRE\\)\\|ENTRE_LENGTH\\|HARGE\\|L\\(?:ASS\\|EAR\\|OTUNEONLY\\)\\|MD\\|O\\(?:EF\\(?:DENOM\\(?:PHI\\)?\\|NUM\\(?:PHI\\)?\\)\\|LUMN\\|N\\(?:DUCT\\|ST\\(?:RAINTS\\|_LENGTH\\)\\|V_HVOL_PROG\\)\\|ORDINATE_SYSTEM\\|RR[TXYZ]\\)\\|ROSSOVER\\|SRDUMP\\|UTOFF\\(?:LONG\\|P[XYZ]\\|[RXY]\\)?\\|YHARMON\\|ZERO\\)\\|D\\(?:D[XY]\\|E\\(?:BIN\\|LPARTFREQ\\|NERGY\\|S\\(?:CRIPTION\\|IGNENERGY\\)\\)\\|IST\\(?:DIR\\|RIBUTION\\)\\|K\\(?:[123]S\\|[123NS]\\)\\|LAG\\|P\\(?:[HS]I\\)\\|T\\(?:AU\\|HETA\\|SCINIT\\)\\|UMP\\(?:_\\(?:DAT\\|FREQ\\|OFFSPRING\\)\\)?\\|V\\(?:ARS\\|OLT\\)\\|[RTXYZ]\\)\\|E\\(?:ANGLE\\|BDUMP\\|CHO\\|KIN\\|L\\(?:ASER\\|EMEDGE\\)\\|MI\\(?:SSION\\(?:MODEL\\|STEPS\\)\\|TTED\\)\\|N\\(?:ABLE\\(?:HDF5\\|RUTHERFORD\\)\\|D_\\(?:LENGTH\\|NORMAL_[XY]\\|POSITION_[XY]\\)\\|ERGY\\)\\|PSILON\\|SCALE\\|XP\\(?:ECTED_HYPERVOL\\|R\\)\\|[12TXY]\\)\\|F\\(?:AST\\|E\\|GEOM\\|I\\(?:ELD\\(?:MAPDIR\\|SOLVER\\|_\\(?:INDEX\\|UNITS\\)\\)\\|L\\(?:E\\(?:_NAME\\)?\\|TERS\\)\\|NT\\)\\|LIP[XY]\\|M\\(?:APFN\\|\\(?:HIGH\\|LOW\\)E\\)\\|NAME\\|REQ\\(?:UENCY_MODEL\\)?\\|STYPE\\|TOSC\\(?:AMPLITUDE\\|PERIODS\\)\\|ULL\\)\\|G\\(?:A\\(?:MMA\\|PWIDTH\\|[PS]\\)\\|E\\(?:\\(?:NE_MUTATION_PROBABILIT\\|OMETR\\)Y\\)\\|RE\\(?:ATERTHANPI\\|ENSF\\)\\)\\|H\\(?:A\\(?:LOSHIFT\\|PERT\\|RMONIC_NUMBER\\)\\|EIGHT\\(?:_\\(?:\\(?:NEG\\|POS\\)_EXTENT\\)\\)?\\|GAP\\|KICK\\|YPERVOLREFERENCE\\|[12]\\)\\|I\\(?:D\\(?:EALIZED\\|[12]\\)\\|MAGENAME\\|N\\(?:FO\\|ITIAL\\(?:\\(?:POPUL\\|_OPTIMIZ\\)ATION\\)\\|PUT\\(?:MOUNITS\\)?\\|SIDEPOINT\\|TE\\(?:NSITYCUT\\|RPL\\)\\)\\|S_CLOSED\\|TSOLVER\\)\\|JSON_DUMP_FREQ\\|K\\(?:0S\\|1S\\|2S\\|3S\\|EEP\\|ICK\\|[0-3NS]\\)\\|L\\(?:A\\(?:G\\|SERPROFFN\\|T_\\(?:\\(?:PHI\\|R\\|THETA\\)INIT\\)\\)\\|ENGTH\\(?:_UNITS\\)?\\|FRINGE\\|INE\\|O\\(?:GBENDTRAJECTORY\\|WERBOUND\\)\\|[12]\\)\\|M\\(?:A\\(?:GNET_\\(?:END\\|START\\)\\|P_ORDER\\|SS\\|TERIAL\\|X\\(?:FORDER\\|GENERATIONS\\|ITERS\\|STEPS\\(?:CO\\|SI\\)?\\|\\(?:XORDE\\|_\\(?:\\(?:HORIZONTAL_POW\\|ORD\\|Y_POW\\)E\\)?\\)R\\|[RZ]\\)\\)\\|B\\(?:MODE\\|_\\(?:BINNING\\|ETA\\)\\)\\|E\\(?:MORYDUMP\\|SSAGE\\|THOD\\)\\|IN\\(?:BINEMITTED\\|STEPFORREBIN\\|_R\\|[RZ]\\)\\|ODE\\|TSSUBSTEPS\\|UTATION\\(?:_PROBABILITY\\)?\\|[TXYZ]\\)\\|N\\(?:AME\\|BIN\\|FREQ\\|HOL[XY]\\|L\\(?:EFT\\|HS\\)\\|P\\(?:ART\\|\\(?:EAK\\|OINT\\)S\\)\\|RIGHT\\|S\\(?:\\(?:ECTOR\\|LICE\\|TEP\\)S\\)\\|UM\\(?:BLOCKS\\|CELLS\\|_\\(?:COWORKERS\\|IND_GEN\\|MASTERS\\)\\)\\)\\|O\\(?:BJECTIVES\\|FFSET\\(?:P[XYZ]\\|[PTXYZ]\\)\\|NE_PILOT_CONVERGE\\|P\\(?:CHARGE\\|MASS\\|YIELD\\)\\|R\\(?:DER\\(?:MAPS\\)?\\|I\\(?:\\(?:ENTATIO\\|GI\\)N\\)\\)\\|UT\\(?:DIR\\|FN\\|PUT\\)\\)\\|P\\(?:A\\(?:R\\(?:AMB\\|FFT[TXY]\\|TICLE\\(?:MATTERINTERACTION\\)?\\)\\|TTERN\\)\\|DIS\\|H\\(?:ASE_MODEL\\|I\\(?:0\\|INIT\\|M\\(?:AX\\|IN\\)\\|_ST\\(?:ART\\|EPS\\)\\)?\\)\\|MAPFN\\|OLYORDER\\|R\\(?:E\\(?:\\(?:CMOD\\|SSUR\\)E\\)\\|INIT\\)\\|S\\(?:CALE\\|DUMP\\(?:EACHTURN\\|FR\\(?:AME\\|EQ\\)\\)\\|I\\)\\|\\(?:XMUL\\|YMUL\\|Z\\(?:INI\\|MUL\\)\\)T\\|[0-3CT]\\)\\|R\\(?:5[12]\\|6[12]\\|A\\(?:DI\\(?:AL_\\(?:\\(?:NEG\\|POS\\)_EXTENT\\)\\|US\\)\\|N\\(?:DOM\\|GE\\)\\|STER\\)\\|E\\(?:BINFREQ\\|C\\(?:OMBINATION_PROBABILITY\\|YCLEBLOCKS\\)\\|F\\(?:ER\\|POS\\)\\|MOTEPARTDEL\\|PARTFREQ\\|S\\(?:IDUUM\\|TART_\\(?:FILE\\|STEP\\)\\)\\)\\|F\\(?:F\\(?:CFN\\|REQ\\)\\|MAPFN\\|PHI\\|RINGE\\|VCFN\\)\\|GUESS\\|HODUMP\\|INIT\\|M\\(?:AX\\|IN\\)\\|NGTYPE\\|OTAT\\(?:E\\(?:\\(?:18\\|27\\|9\\)0\\)\\|ION\\)\\|_ST\\(?:ART\\|EPS\\)\\|[0C]\\)\\|S\\(?:AMPLINGS\\|BIN\\|C\\(?:AL\\(?:\\(?:ABL\\)?E\\)\\|SOLVEFREQ\\)\\|E\\(?:CTOR\\|ED\\|PPEAKS\\)\\|I\\(?:GMA\\(?:P[TXYZ]\\|[RTXYZ]\\)?\\|M\\(?:BIN_CROSSOVER_NU\\|TMPDIR\\)\\)\\|L\\(?:ICES\\|PTC\\)\\|OL_SYNCH\\|P\\(?:IRAL\\|TDUMPFREQ\\)\\|T\\(?:A\\(?:RTPOPULATION\\|TDUMPFREQ\\)\\|EP\\(?:S\\(?:IZE\\|PERTURN\\)\\)?\\|O\\(?:P\\|REOBJECTIVES\\)\\|RING\\)\\|U\\(?:PERPOSE\\|RFDUMPFREQ\\)\\|YMMETRY\\)\\|T\\(?:A\\(?:BLE\\|N\\(?:GENTIAL_OFFSET\\|_DELTA\\)\\|U\\)\\|E\\(?:LL\\|MP\\(?:ERATURE\\|LATEDIR\\)\\)\\|FALL\\|H\\(?:ETA\\(?:_\\(?:IN\\|OUT\\)\\)?\\|RESHOLD\\)\\|IME\\(?:INTEGRATOR\\|S\\)\\|MULT\\|O\\(?:L\\|PO\\)\\|PULSEFWHM\\|R\\(?:AC\\(?:E\\|KBACK\\)\\|I\\(?:MCOIL\\(?:THRESHOLD\\)?\\|SE\\)\\)\\|URNS\\|YPE\\|_ST\\(?:ART\\|EPS\\)\\|[0P]\\)\\|UPPERBOUND\\|V\\(?:A\\(?:LUES?\\|PERT\\|R\\(?:IABLE\\|RADIUS\\)\\)\\|ERSION\\|KICK\\|OLT\\)\\|W\\(?:A\\(?:KEF\\|RN\\)\\|EIGHT\\|IDTH\\|RITETOFILE\\)\\|X\\(?:END\\|MULT\\|S\\(?:CALE\\|IZE\\|TART\\)\\|YZSCALE\\|_ST\\(?:ART\\|EPS\\)\\)\\|Y\\(?:END\\|MULT\\|S\\(?:CALE\\|IZE\\|TART\\)\\|_ST\\(?:ART\\|EPS\\)\\)\\|Z\\(?:0\\|END\\|INIT\\|S\\(?:CALE\\|HIFT\\|T\\(?:ART\\|OP\\)\\)\\|_ST\\(?:ART\\|EPS\\)\\)\\|[ABCLNRSTW-Z]\\)\\>"
   . font-lock-variable-name-face)
   )
   "Highlighting expressions for OPAL mode (parameters).")
@@ -165,11 +161,11 @@
   )
   "Highlighting expressions for OPAL mode (stringatt).")
 
-;(concat "\\<" (regexp-opt '("ABS" "ACOS" "ASIN" "ATAN" "COS" "COSH" "EXP" "GAUSS" "LOG" "LOG10" "RANF" "SIN" "SINH" "SQRT" "TAN" "TANH" "TGAUSS") t) "\\>")
+;(concat "\\<" (regexp-opt '("ABS" "ACOS" "ASIN" "ATAN" "ATAN2" "COS" "COSH" "EXP" "GAUSS" "LOG" "LOG10" "RANF" "SIN" "SINH" "SQRT" "TAN" "TANH" "TGAUSS") t) "\\>")
 
 (defconst opal-font-lock-keywords-functions
   (list
-  '("\\<\\(A\\(?:BS\\|COS\\|\\(?:SI\\|TA\\)N\\)\\|COSH?\\|EXP\\|GAUSS\\|LOG\\(?:10\\)?\\|RANF\\|S\\(?:INH?\\|QRT\\)\\|T\\(?:ANH?\\|GAUSS\\)\\)\\>"
+  '("\\<\\(A\\(?:BS\\|COS\\|SIN\\|TAN2?\\)\\|COSH?\\|EXP\\|GAUSS\\|LOG\\(?:10\\)?\\|RANF\\|S\\(?:INH?\\|QRT\\)\\|T\\(?:ANH?\\|GAUSS\\)\\)\\>"
   . font-lock-function-name-face)
   )
   "Highlighting expressions for OPAL mode (functions).")
@@ -192,14 +188,11 @@
 (defconst opal-font-lock-keywords-3
   (append
      opal-font-lock-keywords-optimise
-     opal-font-lock-special_operators
-     opal-font-lock-special_constants
      opal-font-lock-keywords-programflow
      opal-font-lock-keywords-simul
      opal-font-lock-keywords-controlstm
      opal-font-lock-keywords-elements
      opal-font-lock-keywords-beamspec
-     opal-font-lock-keywords-matchingmet
      opal-font-lock-keywords-orbit_corr
      opal-font-lock-keywords-plot
      opal-font-lock-keywords-parameters
@@ -218,17 +211,17 @@
 (defvar opal-mode-syntax-table
   (let ((opal-mode-syntax-table (make-syntax-table c-mode-syntax-table)))
 
-    ; This is added so entity names with unde rscores can be more easily parsed
-	(modify-syntax-entry ?_ "w" opal-mode-syntax-table)
-	(modify-syntax-entry ?. "w" opal-mode-syntax-table)
+    ; This is added so entity names with underscores can be more easily parsed
+        (modify-syntax-entry ?_ "w" opal-mode-syntax-table)
+        (modify-syntax-entry ?. "w" opal-mode-syntax-table)
 
-	;  Comment styles are same as C++
-	(modify-syntax-entry ?/ ". 124 b" opal-mode-syntax-table)
-	(modify-syntax-entry ?* ". 23" opal-mode-syntax-table)
-	(modify-syntax-entry ?\n "> b" opal-mode-syntax-table)
-	(modify-syntax-entry ?! "< b" opal-mode-syntax-table)
-	(modify-syntax-entry ?' "|" opal-mode-syntax-table)
-	opal-mode-syntax-table)
+        ;  Comment styles are same as C++
+        (modify-syntax-entry ?/ ". 124 b" opal-mode-syntax-table)
+        (modify-syntax-entry ?* ". 23" opal-mode-syntax-table)
+        (modify-syntax-entry ?\n "> b" opal-mode-syntax-table)
+        (modify-syntax-entry ?! "< b" opal-mode-syntax-table)
+        (modify-syntax-entry ?' "|" opal-mode-syntax-table)
+        opal-mode-syntax-table)
   "Syntax table for opal-mode")
 
 ;;; ### autoload

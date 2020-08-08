@@ -410,7 +410,6 @@ private:
                                        const AmrIntVect_t& iv,
                                        const basefab_t& mfab,
                                        const basefab_t& rfab,
-                                       const basefab_t& cfab,
                                        const scalar_t* invdx2);
     
     /*!
@@ -473,18 +472,17 @@ private:
      *      x^{(l)} = B_{fine}\cdot x^{(l+1)}
      * \f]
      * Dirichlet boundary condition. Flux matching.
-     * @param iv is the current cell
-     * @param cells all coarse cells that are at the crse-fine interface but are
-     * not refined
-     * @param crse_fine_ba coarse cells that got refined
      * @param level the finest level is omitted
+     * @param gidx the global index
+     * @param iv is the current cell
+     * @param mfab is the mask (internal cell, boundary cell, ...) of that level
+     * @param rfab is the mask between levels
      */
     void buildFineBoundaryMatrix_m(const lo_t& level,
                                    const go_t& gidx,
                                    const AmrIntVect_t& iv,
                                    const basefab_t& mfab,
-                                   const basefab_t& rfab,
-                                   const basefab_t& cfab);
+                                   const basefab_t& rfab);
     
     /*!
      * Copy data from AMReX to Trilinos
@@ -601,11 +599,9 @@ private:
     /*!
      * Instantiate a preconditioner for the bottom solver
      * @param precond type
-     * @param rebalance preconditioner (SA only)
      * @param reuse types of SA hierarchy
      */
     void initPrec_m(const Preconditioner& prec,
-                    const bool& rebalance,
                     const std::string& reuse);
     
     /*!
@@ -665,7 +661,6 @@ private:
     
 private:
     Teuchos::RCP<comm_t> comm_mp;       ///< communicator
-    Teuchos::RCP<amr::node_t> node_mp;  ///< kokkos node
     
     /// interpolater without coarse-fine interface
     std::unique_ptr<AmrInterpolater<AmrMultiGridLevel_t> > interp_mp;

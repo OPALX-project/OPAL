@@ -93,11 +93,11 @@ AmrLagrangeInterpolater<Level>::AmrLagrangeInterpolater(Order order)
 
 template <class Level>
 void AmrLagrangeInterpolater<Level>::stencil(
-    const AmrIntVect_t& iv,
-    const basefab_t& fab,
-    typename Level::umap_t& map,
-    const typename Level::scalar_t& scale,
-    Level* mglevel)
+    const AmrIntVect_t& /*iv*/,
+    const basefab_t& /*fab*/,
+    typename Level::umap_t& /*map*/,
+    const typename Level::scalar_t& /*scale*/,
+    Level* /*mglevel*/)
 {
     
 }
@@ -198,7 +198,7 @@ void AmrLagrangeInterpolater<Level>::crseLinear_m(
     const AmrIntVect_t& iv,
     typename Level::umap_t& map,
     const typename Level::scalar_t& scale,
-    lo_t dir, lo_t shift, const basefab_t& rfab,
+    lo_t dir, lo_t /*shift*/, const basefab_t& rfab,
     const AmrIntVect_t& riv,
     Level* mglevel)
 {
