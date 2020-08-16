@@ -71,6 +71,7 @@ public:
      * @param ez is the emittance in z-direction (vertical), \f$ \left[\varepsilon_{z}\right] = \pi\ mm\ mrad  \f$
      * @param E is the energy, \f$ \left[E\right] = MeV \f$
      * @param m is the mass of the particles \f$ \left[m\right] = \frac{MeV}{c^{2}} \f$
+     * @param q is the particle charge [e]
      * @param cycl is the cyclotron element
      * @param N is the number of integration steps (closed orbit computation). That's why its also the number
      *    of maps (for each integration step a map)
@@ -79,7 +80,7 @@ public:
      * @param write is a boolean (default: true). If true all maps of all iterations are stored, otherwise not.
      */
     SigmaGenerator(double I, double ex, double ey, double ez,
-                   double E, double m, const Cyclotron* cycl,
+                   double E, double m, double q, const Cyclotron* cycl,
                    unsigned int N, unsigned int Nsectors, unsigned int truncOrder, bool write = true);
 
     /// Searches for a matched distribution.
@@ -160,6 +161,8 @@ private:
     double beta_m;
     /// Is the mass of the particles, \f$ \left[m\right] = \frac{MeV}{c^{2}} \f$
     double m_m;
+    /// Is the particle charge [e]
+    double q_m;
     /// Is the number of iterations needed for convergence
     unsigned int niterations_m;
     /// Is true if converged, false otherwise

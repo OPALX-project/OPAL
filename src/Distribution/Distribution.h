@@ -286,7 +286,13 @@ private:
     void applyEmissModelAstra(double &px, double &py, double &pz, std::vector<double> &additionalRNs);
     void applyEmissModelNone(double &pz);
     void applyEmissModelNonEquil(double eZ, double &px, double &py, double &pz, std::vector<double> &additionalRNs);
-    void create(size_t &numberOfParticles, double massIneV);
+    /*!
+     * Create the particle distribution.
+     * @param numberOfParticles to create
+     * @param massIneV particle charge in eV
+     * @param charge of the particle type in elementary charge
+     */
+    void create(size_t &numberOfParticles, double massIneV, double charge);
     void calcPartPerDist(size_t numberOfParticles);
     void checkEmissionParameters();
     void checkIfEmitted();
@@ -326,7 +332,8 @@ private:
     void createDistributionMultiGauss(size_t numberOfParticles, double massIneV);
     void createDistributionFromFile(size_t numberOfParticles, double massIneV);
     void createDistributionGauss(size_t numberOfParticles, double massIneV);
-    void createMatchedGaussDistribution(size_t numberOfParticles, double massIneV);
+    void createMatchedGaussDistribution(size_t numberOfParticles,
+                                        double massIneV, double charge);
     void sampleUniformDisk(gsl_qrng* quasiRandGen2D, double& x1, double& x2);
     void fillEBinHistogram();
     void fillParticleBins();

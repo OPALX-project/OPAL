@@ -69,6 +69,7 @@ SigmaGenerator::SigmaGenerator(double I,
                                double ez,
                                double E,
                                double m,
+                               double q,
                                const Cyclotron* cycl,
                                unsigned int N,
                                unsigned int Nsectors,
@@ -82,6 +83,7 @@ SigmaGenerator::SigmaGenerator(double I,
     , nh_m(cycl->getCyclHarm())
     , beta_m(std::sqrt(1.0-1.0/gamma2_m))
     , m_m(m)
+    , q_m(q)
     , niterations_m(0)
     , converged_m(false)
     , Emin_m(cycl->getFMLowE())
@@ -131,7 +133,7 @@ SigmaGenerator::SigmaGenerator(double I,
         // formula (57)
         double lam = Physics::two_pi*Physics::c / (wo_m * nh_m); // wavelength, [lam] = m
         // [K3] = m
-        double K3 = 3.0 * I_m * lam
+        double K3 = 3.0 * std::abs(q_m) * I_m * lam
                   / (20.0 * std::sqrt(5.0) * Physics::pi * Physics::epsilon_0 * m
                           * Physics::c * beta_m * beta_m * gamma_m * gamma2_m);
 
@@ -193,7 +195,7 @@ bool SigmaGenerator::match(double accuracy,
         std::vector<matrix_t> Mcycs(nSteps_m), Mscs(nSteps_m);
 
         ClosedOrbitFinder<double, unsigned int,
-            boost::numeric::odeint::runge_kutta4<container_t> > cof(m_m, N_m, cycl, false, nSectors_m);
+            boost::numeric::odeint::runge_kutta4<container_t> > cof(m_m, q_m, N_m, cycl, false, nSectors_m);
 
         if ( !cof.findOrbit(accuracy, maxitOrbit, E_m, denergy, rguess) ) {
             throw OpalException("SigmaGenerator::match()",
@@ -519,13 +521,13 @@ void SigmaGenerator::initialize(double nuz, double ravg)
     double lam = Physics::two_pi * Physics::c / (wo_m * nh_m); // wavelength, [lam] = m
 
     // m * c^3 --> c^2 in [m] = eV / c^2 cancel --> m * c in denominator
-    double K3 = 3.0 *  I_m * lam
+    double K3 = 3.0 *  std::abs(q_m) * I_m * lam
               / (20.0 * std::sqrt(5.0) * Physics::pi * Physics::epsilon_0 * m
                       * Physics::c * beta_m * beta_m * gamma2_m * gamma_m);    // [K3] = m
 
     // c in denominator cancels with unit of [m] = eV / c^2 --> we need to multiply
     // with c in order to get dimensionless quantity
-    double alpha =  Physics::mu_0 * I_m * Physics::c / (5.0 * std::sqrt(10.0) * m
+    double alpha =  std::abs(q_m) * Physics::mu_0 * I_m * Physics::c / (5.0 * std::sqrt(10.0) * m
                  * gamma_m * nh_m) * std::sqrt(rcyc * rcyc * rcyc / (e * e * e));   // [alpha] = 1/rad --> [alpha] = 1
 
     double sig0 = std::sqrt(2.0 * rcyc * e) / gamma_m;                              // [sig0] = m*sqrt(rad) --> [sig0] = m
