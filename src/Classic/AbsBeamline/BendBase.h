@@ -17,8 +17,6 @@ public:
     /// Indicates that element bends the beam.
     virtual bool bends() const;
 
-    void setLength(double length);
-    double getLength() const;
     double getChordLength() const;
     virtual void setBendAngle(double angle);
     double getBendAngle() const;
@@ -51,7 +49,6 @@ protected:
     /// Calculate beta*gamma from design energy
     double calcBetaGamma() const;
 
-    double length_m;
     double chordLength_m;
     double angle_m;         ///< Bend angle
     double entranceAngle_m; ///< Angle between incoming reference trajectory
@@ -79,17 +76,6 @@ protected:
 inline
 bool BendBase::bends() const {
     return true;
-}
-
-inline
-void BendBase::setLength(double length) {
-    length_m = std::abs(length);
-}
-
-inline
-double BendBase::getLength() const
-{
-    return length_m;
 }
 
 inline

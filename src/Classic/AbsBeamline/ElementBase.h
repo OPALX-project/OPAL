@@ -373,6 +373,8 @@ public:
 
     virtual BoundingBox getBoundingBoxInLabCoords() const;
 
+    virtual int getRequiredNumberOfTimeSteps() const;
+
 protected:
     bool isInsideTransverse(const Vector_t &r) const;
 
@@ -613,5 +615,11 @@ double ElementBase::getElementPosition() const {
 inline
 bool ElementBase::isElementPositionSet() const
 { return elemedgeSet_m; }
+
+inline
+int ElementBase::getRequiredNumberOfTimeSteps() const
+{
+    return 10;
+}
 
 #endif // CLASSIC_ElementBase_HH

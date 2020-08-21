@@ -33,7 +33,7 @@ RBendGeometry::RBendGeometry(double length, double angle):
 
 
 RBendGeometry::RBendGeometry(const RBendGeometry &rhs):
-    StraightGeometry(*this), half_angle(rhs.half_angle)
+    StraightGeometry(rhs), half_angle(rhs.half_angle)
 {}
 
 
@@ -44,11 +44,6 @@ RBendGeometry::~RBendGeometry()
 double RBendGeometry::getArcLength() const {
     double length = StraightGeometry::getElementLength();
     return (half_angle == 0.0) ? length : length * half_angle / sin(half_angle);
-}
-
-
-double RBendGeometry::getElementLength() const {
-    return StraightGeometry::getElementLength();
 }
 
 

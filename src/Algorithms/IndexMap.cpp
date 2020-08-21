@@ -393,9 +393,9 @@ std::pair<double, double> IndexMap::getRange(const IndexMap::value_t::value_type
     return range;
 }
 
-IndexMap::value_t IndexMap::getTouchingElements(const std::pair<double, double> &range) {
-    map_t::iterator it = mapRange2Element_m.begin();
-    const map_t::iterator end = mapRange2Element_m.end();
+IndexMap::value_t IndexMap::getTouchingElements(const std::pair<double, double> &range) const {
+    map_t::const_iterator it = mapRange2Element_m.begin();
+    const map_t::const_iterator end = mapRange2Element_m.end();
     IndexMap::value_t touchingElements;
 
     for (; it != end; ++ it) {

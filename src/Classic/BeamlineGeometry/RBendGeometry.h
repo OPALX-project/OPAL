@@ -55,10 +55,6 @@ public:
     //  design orbit.
     virtual double getArcLength() const;
 
-    /// Get element length.
-    //  Return the straight length of the geometry.
-    virtual double getElementLength() const;
-
     /// Get angle.
     //  Return the total bend angle.
     virtual double getBendAngle() const;
@@ -101,4 +97,3 @@ private:
 };
 
 #endif // CLASSIC_RBendGeometry_HH
-

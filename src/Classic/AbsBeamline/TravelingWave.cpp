@@ -87,7 +87,7 @@ bool TravelingWave::apply(const size_t &i, const double &t, Vector_t &E, Vector_
 }
 
 bool TravelingWave::apply(const Vector_t &R, const Vector_t &/*P*/, const double &t, Vector_t &E, Vector_t &B) {
-    if (R(2) < -0.5 * PeriodLength_m || R(2) + 0.5 * PeriodLength_m >= length_m) return false;
+    if (R(2) < -0.5 * PeriodLength_m || R(2) + 0.5 * PeriodLength_m >= getElementLength()) return false;
 
     Vector_t tmpR = Vector_t(R(0), R(1), R(2) + 0.5 * PeriodLength_m);
     double tmpcos, tmpsin;
@@ -140,7 +140,7 @@ bool TravelingWave::apply(const Vector_t &R, const Vector_t &/*P*/, const double
 
 bool TravelingWave::applyToReferenceParticle(const Vector_t &R, const Vector_t &/*P*/, const double &t, Vector_t &E, Vector_t &B) {
 
-    if (R(2) < -0.5 * PeriodLength_m || R(2) + 0.5 * PeriodLength_m >= length_m) return false;
+    if (R(2) < -0.5 * PeriodLength_m || R(2) + 0.5 * PeriodLength_m >= getElementLength()) return false;
 
     Vector_t tmpR = Vector_t(R(0), R(1), R(2) + 0.5 * PeriodLength_m);
     double tmpcos, tmpsin;
@@ -209,7 +209,7 @@ void TravelingWave::initialise(PartBunchBase<double, 3> *bunch, double &startFie
                                       "The field map of a traveling wave structure has to begin at 0.0");
     }
 
-    PeriodLength_m = length_m / 2.0;
+    PeriodLength_m = (zEnd - zBegin) / 2.0;
     CellLength_m = PeriodLength_m * Mode_m;
     startField_m = -0.5 * PeriodLength_m;
 
@@ -219,7 +219,7 @@ void TravelingWave::initialise(PartBunchBase<double, 3> *bunch, double &startFie
 
     startField = -PeriodLength_m / 2.0;
     endField = startField + startExitField_m + PeriodLength_m / 2.0;
-    length_m = endField - startField;
+    setElementLength(endField - startField);
 
     scaleCore_m = scale_m / std::sin(Physics::two_pi * Mode_m);
     scaleCoreError_m = scaleError_m / std::sin(Physics::two_pi * Mode_m);
@@ -247,18 +247,14 @@ void TravelingWave::goOffline() {
 
 void TravelingWave::getDimensions(double &zBegin, double &zEnd) const {
     zBegin = -0.5 * PeriodLength_m;
-    zEnd = zBegin + length_m;
+    zEnd = zBegin + getElementLength();
 }
 
-
-double TravelingWave::getElementLength() const {
-    return length_m;
-}
 
 void TravelingWave::getElementDimensions(double &begin,
                                          double &end) const {
     begin = -0.5 * PeriodLength_m;
-    end = begin + length_m;
+    end = begin + getElementLength();
 }
 
 ElementBase::ElementType TravelingWave::getType() const {

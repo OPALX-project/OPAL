@@ -21,17 +21,17 @@ vector< vector<double> > partialsDerivB(const Vector_t &R,const Vector_t /*B*/, 
     double t = 0 ;
     Vector_t P, E;
     for(int i = 0; i < 3; i++)
-	{
-	  // B at the previous and next grid points R_prev,  R_next
-	  Vector_t R_prev = R, R_next = R;
-	  R_prev[i] -= stepSize;
-	  R_next[i] += stepSize;
-	  Vector_t B_prev, B_next;
-	  dummyField->apply(R_prev, P, t, E, B_prev);
-	  dummyField->apply(R_next, P, t, E, B_next);
-	  for(int j = 0; j < 3; j++)
-	    allPartials[i][j] = (B_next[j] - B_prev[j]) / (2 * stepSize);
-	}
+        {
+          // B at the previous and next grid points R_prev,  R_next
+          Vector_t R_prev = R, R_next = R;
+          R_prev[i] -= stepSize;
+          R_next[i] += stepSize;
+          Vector_t B_prev, B_next;
+          dummyField->apply(R_prev, P, t, E, B_prev);
+          dummyField->apply(R_next, P, t, E, B_next);
+          for(int j = 0; j < 3; j++)
+            allPartials[i][j] = (B_next[j] - B_prev[j]) / (2 * stepSize);
+        }
      return allPartials;
 }
 
@@ -42,21 +42,21 @@ vector< vector<double> > partialsDerivB_5(const Vector_t &R,const Vector_t /*B*/
     double t = 0 ;
     Vector_t P, E;
     for(int i = 0; i < 3; i++)
-	{
-	  // B at the previous and next grid points R_prev,  R_next
-	  Vector_t R_pprev = R, R_prev = R, R_next = R, R_nnext = R;
-	  R_pprev(i) -= 2 * stepSize;
-	  R_nnext(i) += 2 * stepSize;
-	  R_prev(i) -= stepSize;
-	  R_next(i) += stepSize;
-	  Vector_t B_prev, B_next, B_pprev, B_nnext;
-	  dummyField->apply(R_prev, P, t, E, B_prev);
-	  dummyField->apply(R_next, P, t, E, B_next);
-	  dummyField->apply(R_pprev, P, t, E, B_pprev);
-	  dummyField->apply(R_nnext, P, t, E, B_nnext);
-	  for(int j = 0; j < 3; j++)
-	    allPartials[i][j] = (B_pprev[j] - 8 * B_prev[j] + 8 * B_next[j] - B_nnext[j]) / (12 * stepSize);
-	}
+        {
+          // B at the previous and next grid points R_prev,  R_next
+          Vector_t R_pprev = R, R_prev = R, R_next = R, R_nnext = R;
+          R_pprev(i) -= 2 * stepSize;
+          R_nnext(i) += 2 * stepSize;
+          R_prev(i) -= stepSize;
+          R_next(i) += stepSize;
+          Vector_t B_prev, B_next, B_pprev, B_nnext;
+          dummyField->apply(R_prev, P, t, E, B_prev);
+          dummyField->apply(R_next, P, t, E, B_next);
+          dummyField->apply(R_pprev, P, t, E, B_pprev);
+          dummyField->apply(R_nnext, P, t, E, B_nnext);
+          for(int j = 0; j < 3; j++)
+            allPartials[i][j] = (B_pprev[j] - 8 * B_prev[j] + 8 * B_next[j] - B_nnext[j]) / (12 * stepSize);
+        }
      return allPartials;
 }
 
@@ -88,7 +88,7 @@ TEST(Maxwell, Zeros)
 
     SBendRep* myMagnet = new SBendRep("myMagnet");
     myMagnet->BendBase::setFieldMapFN("1DPROFILE1-DEFAULT");
-    myMagnet->BendBase::setLength(0.2);
+    myMagnet->BendBase::setElementLength(0.2);
     myMagnet->BendBase::setDesignEnergy(10.0e6);
     myMagnet->BendBase::setBendAngle(0.523599);//30 degrees
     myMagnet->BendBase::setFullGap(0.04);
@@ -114,38 +114,38 @@ TEST(Maxwell, Zeros)
     //ofstream fout("some_data");
     for(z = 0.0; z <0.0015; z+= 0.0015)
         for(x = 0.; x<0.04; x += 0.04)
-	  for(double phi = -Physics::pi / 7.1 ; phi < 2/3. * Physics::pi; phi += Physics::pi/2000.)
+          for(double phi = -Physics::pi / 7.1 ; phi < 2/3. * Physics::pi; phi += Physics::pi/2000.)
                 {
-		  // step = phi/(Physics::pi/20);
-		  //std::cout<<"Step #"<<step<<endl;
-		  counter ++;
-		  Vector_t B(0.0);
-		  R(0) = (myMagnet->Bend2D::designRadius_m + x) * cos(phi);
-		  R(1) = z;
-		  R(2) = (myMagnet->Bend2D::designRadius_m + x) * sin(phi);
-		  double t = 0;
-		  myMagnet->apply(R, P, t , E, B);
-		  //B /= myMagnet->fieldAmplitude_m; //normalisation
-		  //fout<<phi<<' '<<B[1] / myMagnet->fieldAmplitude_m<<endl;
-		  //myMagnet.Bend::calculateMapField(R, B);
-		  //std::cout<< "Position: " <<"phi="<<phi<<" x="<<x<<" z="<<z<<endl;
-		  //std::cout<< "Field:" <<' '<<B[0]<<' ' <<B[1]<<' '<<B[2]<<endl;
-		  double div = 0;
-		  div = calcDivB(R, B, stepSize, myMagnet);
-		  //fout<<phi<<' '<<z<<' '<<div<<' '<<endl;
-		  vector<double> curl;
-		  EXPECT_NEAR(div, 0.0, 0.15);
-		  curl = calcCurlB(R, B, stepSize, myMagnet);
-		  for(int k=0; k<3; k++) curl[k] /= myMagnet->fieldAmplitude_m;
-		  //fout<<phi<<' '<<z<<' '<<sqrt(pow(curl[0], 2) + pow(curl[1], 2) + pow(curl[2], 2))<<endl;
-		  //fout<<phi<<' '<<z<<' '<<curl[0]<<' '<<curl[1]<<' '<<curl[2]<<endl;
-		  //std::cout<< "DIV B: "<<div<<endl;
-		  //std::cout<< "CURL B: "<<curl[0]<<' '<<curl[1]<<' '<<curl[2]<<endl;
-		  EXPECT_NEAR(curl[0], 0, 0.15);
-		  EXPECT_NEAR(curl[1], 0, 0.15);
-		  EXPECT_NEAR(curl[2], 0, 0.15);
+                  // step = phi/(Physics::pi/20);
+                  //std::cout<<"Step #"<<step<<endl;
+                  counter ++;
+                  Vector_t B(0.0);
+                  R(0) = (myMagnet->Bend2D::designRadius_m + x) * cos(phi);
+                  R(1) = z;
+                  R(2) = (myMagnet->Bend2D::designRadius_m + x) * sin(phi);
+                  double t = 0;
+                  myMagnet->apply(R, P, t , E, B);
+                  //B /= myMagnet->fieldAmplitude_m; //normalisation
+                  //fout<<phi<<' '<<B[1] / myMagnet->fieldAmplitude_m<<endl;
+                  //myMagnet.Bend::calculateMapField(R, B);
+                  //std::cout<< "Position: " <<"phi="<<phi<<" x="<<x<<" z="<<z<<endl;
+                  //std::cout<< "Field:" <<' '<<B[0]<<' ' <<B[1]<<' '<<B[2]<<endl;
+                  double div = 0;
+                  div = calcDivB(R, B, stepSize, myMagnet);
+                  //fout<<phi<<' '<<z<<' '<<div<<' '<<endl;
+                  vector<double> curl;
+                  EXPECT_NEAR(div, 0.0, 0.15);
+                  curl = calcCurlB(R, B, stepSize, myMagnet);
+                  for(int k=0; k<3; k++) curl[k] /= myMagnet->fieldAmplitude_m;
+                  //fout<<phi<<' '<<z<<' '<<sqrt(pow(curl[0], 2) + pow(curl[1], 2) + pow(curl[2], 2))<<endl;
+                  //fout<<phi<<' '<<z<<' '<<curl[0]<<' '<<curl[1]<<' '<<curl[2]<<endl;
+                  //std::cout<< "DIV B: "<<div<<endl;
+                  //std::cout<< "CURL B: "<<curl[0]<<' '<<curl[1]<<' '<<curl[2]<<endl;
+                  EXPECT_NEAR(curl[0], 0, 0.15);
+                  EXPECT_NEAR(curl[1], 0, 0.15);
+                  EXPECT_NEAR(curl[2], 0, 0.15);
 
-	        }
+                }
     //fout.close();
     cout<<"bending radius: "<<myMagnet->Bend2D::designRadius_m<<endl;
     cout<<"field amplitude: "<<myMagnet->fieldAmplitude_m<<endl;
@@ -195,14 +195,14 @@ TEST(Quad, Quadrupole)
     for(double x = -2; x <= 2; x += 0.01)
       for(double y = -10.0; y <= 10.; y += 1.)
         {
-	  Vector_t B(0.0);
-	  R(2) = z;
-	  R(1) = y;
-	  R(0) = x;
-	  quad->apply(R, P, 0., E, B);
-	  gout<<z<<' '<<x<<' '<<B[0]<<' '<<B[1]<<' '<<B[2]<<endl;
-	  //gout<<x<<' '<<y<<' '<<sqrt(pow(B[0], 2.) + pow(B[1], 2.) + pow(B[2], 2.))<<endl;
-	}
+          Vector_t B(0.0);
+          R(2) = z;
+          R(1) = y;
+          R(0) = x;
+          quad->apply(R, P, 0., E, B);
+          gout<<z<<' '<<x<<' '<<B[0]<<' '<<B[1]<<' '<<B[2]<<endl;
+          //gout<<x<<' '<<y<<' '<<sqrt(pow(B[0], 2.) + pow(B[1], 2.) + pow(B[2], 2.))<<endl;
+        }
     gout.close();
     cout<<"length: "<<quad->getElementLength()<<endl;
 

@@ -208,7 +208,7 @@ void Bend2D::initialise(PartBunchBase<double, 3> *bunch,
         double bendAngleY = 0.0;
         calculateRefTrajectory(bendAngleX, bendAngleY);
         print(msg, bendAngleX, bendAngleY);
-
+        setElementLength(endField_m - startField_m);
         // Pass start and end of field to calling function.
         startField = startField_m;
         endField = endField_m;
@@ -1217,7 +1217,7 @@ bool Bend2D::setupBendGeometry(double &startField, double &endField) {
 
 bool Bend2D::setupDefaultFieldMap() {
 
-    if (length_m <= 0.0) {
+    if (getElementLength() <= 0.0) {
         ERRORMSG("If using \"1DPROFILE1-DEFAULT\" field map you must set the "
                  "chord length of the bend using the L attribute in the OPAL "
                  "input file."

@@ -51,10 +51,12 @@
   */
 
 #include "BeamlineGeometry/Geometry.h"
+#include "Utilities/GeneralClassicException.h"
+#include <algorithm>
 
 class VarRadiusGeometry: public BGeometryBase {
 public:
-    /** Build VarRadiusGeometry with given length, centre radius of curvature 
+    /** Build VarRadiusGeometry with given length, centre radius of curvature
      *  and fringe field
      *  \param length -> Length of geometry
      *  \param rho -> Centre radius of curvature of geometry
@@ -171,7 +173,11 @@ inline
 }
 inline
     void VarRadiusGeometry::setElementLength(double length) {
-        length_m = length;
+        if (length < 0.0) {
+            throw GeneralClassicException("VarRadiusGeometry::setElementLength",
+                                          "The length of an element has to be positive");
+        }
+        length_m = std::max(0.0, length);
 }
 inline
     double VarRadiusGeometry::getRadius() const {
@@ -215,4 +221,3 @@ inline
 }
 
 #endif
-

@@ -88,7 +88,6 @@ public:
 
     virtual bool isInside(const Vector_t &r) const override;
 
-    virtual double getElementLength() const override;
     virtual void getElementDimensions(double &begin,
                                       double &end) const override;
 
@@ -226,7 +225,7 @@ CoordinateSystemTrafo TravelingWave::getEdgeToBegin() const {
 
 inline
 CoordinateSystemTrafo TravelingWave::getEdgeToEnd() const {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, -0.5 * PeriodLength_m + length_m),
+    CoordinateSystemTrafo ret(Vector_t(0, 0, -0.5 * PeriodLength_m + getElementLength()),
                               Quaternion(1, 0, 0, 0));
     return ret;
 }

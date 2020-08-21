@@ -23,7 +23,7 @@
 #include "Structure/Beam.h"
 #include "Track/Track.h"
 #include "Track/TrackParser.h"
-
+#include "Utilities/OpalException.h"
 
 // Class Track
 // ------------------------------------------------------------------------
@@ -78,7 +78,7 @@ TrackCmd::TrackCmd():
                      ("ZSTOP", "Defines a z-location [m], after which the simulation stops when the last particles passes");
     itsAttr[TIMEINTEGRATOR] = Attributes::makeString
                               ("TIMEINTEGRATOR", "Name of time integrator to be used", "RK-4");
-    
+
     itsAttr[MAP_ORDER] = Attributes::makeReal
                      ("MAP_ORDER", "Truncation order of maps for ThickTracker (default: 1, i.e. linear)", 1);
 
@@ -103,11 +103,17 @@ TrackCmd *TrackCmd::clone(const std::string &name) {
 }
 
 std::vector<double> TrackCmd::getDT() const {
-    std::vector<double> dt = Attributes::getRealArray(itsAttr[DT]);
-    if (dt.size() == 0) {
-        dt.push_back(1e-12);
+    std::vector<double> dTs = Attributes::getRealArray(itsAttr[DT]);
+    if (dTs.size() == 0) {
+        dTs.push_back(1e-12);
     }
-    return dt;
+    for (double dt : dTs) {
+        if (dt < 0.0) {
+            throw OpalException("TrackCmd::getDT",
+                                "The time steps provided with DT have to be positive");
+        }
+    }
+    return dTs;
 }
 
 double TrackCmd::getDTSCINIT() const {
@@ -141,11 +147,12 @@ std::vector<unsigned long long> TrackCmd::getMAXSTEPS() const {
     if (maxsteps_d.size() == 0) {
         maxsteps_i.push_back(10ul);
     }
-    for (auto it = maxsteps_d.begin(); it != maxsteps_d.end(); ++ it) {
-        if (*it < 0) {
-            maxsteps_i.push_back(10);
+    for (double numSteps : maxsteps_d) {
+        if (numSteps < 0) {
+            throw OpalException("TrackCmd::getMAXSTEPS",
+                                "The number of steps provided with MAXSTEPS has to be positive");
         } else {
-            unsigned long long value = *it;
+            unsigned long long value = numSteps;
             maxsteps_i.push_back(value);
         }
     }
@@ -205,9 +212,9 @@ void TrackCmd::execute() {
     Track::block = new Track(use, beam->getReference(), dt, maxsteps,
                              stepsperturn, zstart, zstop,
                              timeintegrator, t0, getDTSCINIT(), getDTAU());
-    
+
     Track::block->truncOrder = (int)Attributes::getReal(itsAttr[MAP_ORDER]);
-    
+
     Track::block->parser.run();
 
     // Clean up.

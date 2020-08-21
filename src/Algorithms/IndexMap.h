@@ -54,7 +54,7 @@ public:
     size_t numElements() const;
     std::pair<double, double> getRange(const IndexMap::value_t::value_type &element,
                                        double position) const;
-    IndexMap::value_t getTouchingElements(const std::pair<double, double> &range);
+    IndexMap::value_t getTouchingElements(const std::pair<double, double> &range) const;
 
     class OutOfBounds: public OpalException {
     public:

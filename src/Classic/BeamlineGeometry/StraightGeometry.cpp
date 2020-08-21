@@ -21,7 +21,9 @@
 
 #include "BeamlineGeometry/StraightGeometry.h"
 #include "BeamlineGeometry/Euclid3D.h"
+#include "Utilities/GeneralClassicException.h"
 
+#include <algorithm>
 
 // Class StraightGeometry.
 // ------------------------------------------------------------------------
@@ -41,7 +43,11 @@ double StraightGeometry::getElementLength() const {
 
 
 void StraightGeometry::setElementLength(double l) {
-    len = l;
+    if (l < 0.0) {
+        throw GeneralClassicException("StraightGeometry::setElementLength",
+                                      "The length of an element has to be positive");
+    }
+    len = std::max(0.0, l);
 }
 
 
@@ -83,7 +89,3 @@ Euclid3D StraightGeometry::getEntranceFrame() const {
 Euclid3D StraightGeometry::getExitFrame() const {
     return Euclid3D::translation(0, 0, len / 2.0);
 }
-
-
-
-

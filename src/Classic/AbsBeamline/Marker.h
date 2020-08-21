@@ -53,10 +53,18 @@ public:
 
     virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
+    virtual int getRequiredNumberOfTimeSteps() const override;
+
 private:
 
     // Not implemented.
     void operator=(const Marker &);
 };
+
+inline
+int Marker::getRequiredNumberOfTimeSteps() const
+{
+    return 1;
+}
 
 #endif // CLASSIC_Marker_HH

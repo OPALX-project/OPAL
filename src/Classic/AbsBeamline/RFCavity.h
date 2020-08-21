@@ -226,7 +226,6 @@ protected:
     double designEnergy_m;
 
     Fieldmap* fieldmap_m;
-    double length_m;
     double startField_m;         /**< starting point of field(m)*/
 
 private:
@@ -510,7 +509,7 @@ CoordinateSystemTrafo RFCavity::getEdgeToBegin() const {
 
 inline
 CoordinateSystemTrafo RFCavity::getEdgeToEnd() const {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m + length_m),
+    CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m + getElementLength()),
                               Quaternion(1, 0, 0, 0));
     return ret;
 }

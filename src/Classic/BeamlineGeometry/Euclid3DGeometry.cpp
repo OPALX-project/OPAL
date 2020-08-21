@@ -29,6 +29,7 @@
 
 #include "Utilities/GeneralClassicException.h"
 #include <cmath>
+#include <algorithm>
 
 Euclid3DGeometry::Euclid3DGeometry(Euclid3D transformation)
     : BGeometryBase(), transformation_m(transformation) {
@@ -57,6 +58,10 @@ double Euclid3DGeometry::getElementLength() const {
 }
 
 void Euclid3DGeometry::setElementLength(double length) {
+    if (length < 0.0) {
+        throw GeneralClassicException("Euclid3DGeometry::setElementLength",
+                                      "The length of an element has to be positive");
+    }
     Vector3D newVector = transformation_m.getVector()*(length/getArcLength());
     transformation_m.setDisplacement(newVector);
 }

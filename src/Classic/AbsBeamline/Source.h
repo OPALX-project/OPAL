@@ -39,6 +39,8 @@ public:
 
     virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
+    virtual int getRequiredNumberOfTimeSteps() const override;
+
     void setTransparent();
 private:
 
@@ -52,4 +54,10 @@ private:
     // Not implemented.
     void operator=(const Source &);
 };
+
+inline
+int Source::getRequiredNumberOfTimeSteps() const
+{
+    return 0;
+}
 #endif // CLASSIC_SOURCE_HH
