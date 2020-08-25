@@ -7,6 +7,7 @@ set (_SRCS
     SBend3DTest.cpp
     ScalingFFAMagnetTest.cpp
     TrimCoilTest.cpp
+    UndulatorTest.cpp
     VariableRFCavityTest.cpp
     VariableRFCavityFringeFieldTest.cpp
     VerticalFFAMagnetTest.cpp
