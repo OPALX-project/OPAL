@@ -90,9 +90,9 @@ void Undulator::accept(BeamlineVisitor &visitor) const {
 void Undulator::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
     #ifndef OPAL_FEL
-    Inform msg("Undulator ", *gmsg);
-    msg << "Warning! You have defined an Undulator element but it will be" << endl;
-    msg << "interpreted as a Drift since OPAL was compiled without the OPAL_FEL option." << endl;
+    throw GeneralClassicException("Undulator::initialise", 
+                                  "You have defined an Undulator element but OPAL was compiled\n"
+                                  "without the OPAL_FEL option");
     #endif
 }
 
