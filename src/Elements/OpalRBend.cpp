@@ -67,9 +67,6 @@ void OpalRBend::update() {
     double e1     = Attributes::getReal(itsAttr[E1]);
     RBendGeometry &geometry = bend->getGeometry();
     geometry.setElementLength(length);
-    if (angle < 0) {
-
-    }
     geometry.setBendAngle(angle);
 
     // Define number of slices for map tracking
@@ -106,7 +103,7 @@ void OpalRBend::update() {
     bend->setField(field);
 
     // Set field amplitude or bend angle.
-    if(itsAttr[ANGLE]) {
+    if (itsAttr[ANGLE]) {
         if (bend->isPositioned() && angle < 0.0) {
             e1 = -e1;
             angle = -angle;
@@ -124,14 +121,14 @@ void OpalRBend::update() {
     }
         bend->setEntranceAngle(e1);
 
-    if(itsAttr[ROTATION])
+    if (itsAttr[ROTATION])
         throw OpalException("OpalRBend::update",
                             "ROTATION not supported any more; use PSI instead");
 
 
-    if(itsAttr[FMAPFN])
+    if (itsAttr[FMAPFN])
         bend->setFieldMapFN(Attributes::getString(itsAttr[FMAPFN]));
-    else if(bend->getName() != "RBEND") {
+    else if (bend->getName() != "RBEND") {
         ERRORMSG(bend->getName() << ": No filename for a field map given. "
                  "Will assume the default map "
                  "\"1DPROFILE1-DEFAULT\"."
@@ -140,7 +137,7 @@ void OpalRBend::update() {
     }
 
     // Energy in eV.
-    if(itsAttr[DESIGNENERGY] && Attributes::getReal(itsAttr[DESIGNENERGY]) != 0.0) {
+    if (itsAttr[DESIGNENERGY] && Attributes::getReal(itsAttr[DESIGNENERGY]) != 0.0) {
         bend->setDesignEnergy(Attributes::getReal(itsAttr[DESIGNENERGY]), false);
     } else if (bend->getName() != "RBEND") {
         throw OpalException("OpalRBend::update",
@@ -150,34 +147,29 @@ void OpalRBend::update() {
     double gap = Attributes::getReal(itsAttr[GAP]);
     bend->setFullGap(gap);
 
-    if(itsAttr[APERT])
+    if (itsAttr[APERT])
         throw OpalException("OpalRBend::update",
                             "APERTURE in RBEND not supported; use GAP and HAPERT instead");
 
-    if(itsAttr[HAPERT]) {
+    if (itsAttr[HAPERT]) {
         double hapert = Attributes::getReal(itsAttr[HAPERT]);
         bend->setAperture(ElementBase::RECTANGULAR, std::vector<double>({hapert, gap, 1.0}));
     } else {
         bend->setAperture(ElementBase::RECTANGULAR, std::vector<double>({0.5, gap, 1.0}));
     }
 
-    if(itsAttr[LENGTH])
-        bend->setLength(Attributes::getReal(itsAttr[LENGTH]));
-    else
-        bend->setLength(0.0);
-
-    if(itsAttr[WAKEF] && itsAttr[DESIGNENERGY] && owk_m == NULL) {
+    if (itsAttr[WAKEF] && itsAttr[DESIGNENERGY] && owk_m == NULL) {
         owk_m = (OpalWake::find(Attributes::getString(itsAttr[WAKEF])))->clone(getOpalName() + std::string("_wake"));
         owk_m->initWakefunction(*bend);
         bend->setWake(owk_m->wf_m);
     }
 
-    if(itsAttr[K1])
+    if (itsAttr[K1])
         bend->setK1(Attributes::getReal(itsAttr[K1]));
     else
         bend->setK1(0.0);
 
-    if(itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == NULL) {
+    if (itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == NULL) {
         parmatint_m = (ParticleMatterInteraction::find(Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION])))->clone(getOpalName() + std::string("_parmatint"));
         parmatint_m->initParticleMatterInteractionHandler(*bend);
         bend->setParticleMatterInteraction(parmatint_m->handler_m);

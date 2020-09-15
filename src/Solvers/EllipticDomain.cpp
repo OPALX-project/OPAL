@@ -30,7 +30,6 @@
 #include <map>
 #include <cmath>
 #include <iostream>
-#include <cassert>
 
 //FIXME: ORDER HOW TO TRAVERSE NODES IS FIXED, THIS SHOULD BE MORE GENERIC! (PLACES MARKED)
 

@@ -39,14 +39,25 @@ public:
 
     virtual void getDimensions(double &zBegin, double &zEnd) const override;
 
+    virtual int getRequiredNumberOfTimeSteps() const override;
+
+    void setTransparent();
 private:
 
     double startField_m;           /**< startingpoint of field, m*/
     double endField_m;
+
+    bool isTransparent_m;
 
     std::unique_ptr<LossDataSink> lossDs_m;
 
     // Not implemented.
     void operator=(const Source &);
 };
+
+inline
+int Source::getRequiredNumberOfTimeSteps() const
+{
+    return 0;
+}
 #endif // CLASSIC_SOURCE_HH

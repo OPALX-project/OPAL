@@ -10,7 +10,6 @@ BendBase::BendBase():
 
 BendBase::BendBase(const BendBase &right):
     Component(right),
-    length_m(right.length_m),
     chordLength_m(right.chordLength_m),
     angle_m(right.angle_m),
     entranceAngle_m(right.entranceAngle_m),
@@ -27,7 +26,6 @@ BendBase::BendBase(const BendBase &right):
 
 BendBase::BendBase(const std::string &name):
     Component(name),
-    length_m(0.0),
     chordLength_m(0.0),
     angle_m(0.0),
     entranceAngle_m(0.0),

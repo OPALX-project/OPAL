@@ -53,14 +53,15 @@ OrbitThreader::OrbitThreader(const PartData &ref,
                              double maxDiffZBunch,
                              double t,
                              double dt,
-                             double zstop,
+                             StepSizeConfig stepSizes,
                              OpalBeamline &bl) :
     r_m(r),
     p_m(p),
     pathLength_m(s),
     time_m(t),
     dt_m(dt),
-    zstop_m(zstop),
+    stepSizes_m(stepSizes),
+    zstop_m(stepSizes.getFinalZStop() + std::copysign(1.0, dt) * 2 * maxDiffZBunch),
     itsOpalBeamline_m(bl),
     errorFlag_m(0),
     integrator_m(ref),
@@ -105,6 +106,29 @@ OrbitThreader::OrbitThreader(const PartData &ref,
     computeBoundingBox();
 }
 
+void OrbitThreader::checkElementLengths(const std::set<std::shared_ptr<Component>>& fields) {
+    while (!stepSizes_m.reachedEnd() && pathLength_m > stepSizes_m.getZStop()) {
+        ++ stepSizes_m;
+    }
+    if (stepSizes_m.reachedEnd()) {
+        return;
+    }
+    double driftLength = Physics::c * std::abs(stepSizes_m.getdT()) * euclidean_norm(p_m) / Util::getGamma(p_m);
+    for (const std::shared_ptr<Component> field : fields) {
+        double length = field->getElementLength();
+        int numSteps = field->getRequiredNumberOfTimeSteps();
+
+        if (length < numSteps * driftLength) {
+            throw OpalException("OrbitThreader::checkElementLengths",
+                                "The time step is too long compared to the length of the\n"
+                                "element '" + field->getName() + "'\n" +
+                                "The length of the element is: " + std::to_string(length) + "\n"
+                                "The distance the particles drift in " + std::to_string(numSteps) +
+                                " time step(s) is: " + std::to_string(numSteps * driftLength));
+        }
+    }
+}
+
 void OrbitThreader::execute() {
     double initialPathLength = pathLength_m;
 
@@ -123,6 +147,7 @@ void OrbitThreader::execute() {
     auto elementSet = itsOpalBeamline_m.getElements(nextR);
     errorFlag_m = EVERYTHINGFINE;
     do {
+        checkElementLengths(elementSet);
         if (containsCavity(elementSet)) {
             autophaseCavities(elementSet, visitedElements);
         }

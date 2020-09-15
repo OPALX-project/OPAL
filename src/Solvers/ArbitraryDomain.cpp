@@ -34,7 +34,6 @@
 #include <cmath>
 #include <iostream>
 #include <tuple>
-#include <cassert>
 #include "Utilities/OpalException.h"
 
 ArbitraryDomain::ArbitraryDomain( BoundaryGeometry * bgeom,

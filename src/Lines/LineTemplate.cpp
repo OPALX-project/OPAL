@@ -1,31 +1,35 @@
-// ------------------------------------------------------------------------
-// $RCSfile: LineTemplate.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: LineTemplate
-//   The class for storage of OPAL beam lines with arguments.
+// Class LineTemplate
 //
-// ------------------------------------------------------------------------
+//   An ``archetype'' for a OPAL beam line with arguments.
+//   The model is stored in form of a MacroStream.  A call to the macro line
+//   is expanded by first replacing the arguments, and then parsing the
+//   resulting stream as a LINE definition.
 //
-// $Date: 2000/03/29 10:41:39 $
-// $Author: opal $
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
 //
-// ------------------------------------------------------------------------
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 
 #include "Lines/LineTemplate.h"
+
+#include "Utility/PAssert.h"
+
 #include "AbstractObjects/OpalData.h"
 #include "Lines/Line.h"
 #include "Parser/SimpleStatement.h"
 #include "Utilities/ParseError.h"
 #include <vector>
-#include <cassert>
-
-// Class LineTemplate
-// ------------------------------------------------------------------------
 
 LineTemplate::LineTemplate():
     Macro(0, "LINE",
@@ -110,7 +114,8 @@ Object *LineTemplate::makeTemplate(const std::string &, TokenStream &, Statement
 
 void LineTemplate::parseTemplate(TokenStream &, Statement &statement) {
     parseFormals(statement);
-    assert(statement.keyword("LINE"));
+    bool isLine = statement.keyword("LINE");
+    PAssert(isLine);
 
     // Store the template list.
     Token token = statement.getCurrent();
@@ -128,8 +133,7 @@ void LineTemplate::parseTemplate(TokenStream &, Statement &statement) {
             body.append(token);
         }
     } else {
-        throw ParseError("Line::makeTemplate()",
+        throw ParseError("LineTemplate::parseTemplate()",
                          "Equals sign '=' expected.");
     }
-
 }

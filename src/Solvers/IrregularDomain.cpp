@@ -25,9 +25,9 @@
 //
 
 #include "Solvers/IrregularDomain.h"
-#include "Utilities/OpalException.h"
 
-#include <cassert>
+#include "Utility/PAssert.h"
+#include "Utilities/OpalException.h"
 
 IrregularDomain::IrregularDomain(const IntVector_t& nr, const Vector_t& hr,
                                  const std::string& interpl)
@@ -114,7 +114,7 @@ void IrregularDomain::getBoundaryStencil(int x, int y, int z, StencilValue_t& va
     }
 
     // stencil center value has to be positive!
-    assert(value.center > 0);
+    PAssert(value.center > 0);
 }
 
 

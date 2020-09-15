@@ -65,11 +65,9 @@ public:
     /*!
      * Perform one smoothing step
      * @param x right-hand side
-     * @param A system matrix
      * @param b right-hand side
      */
     void smooth(const Teuchos::RCP<vector_t>& x,
-                const Teuchos::RCP<matrix_t>& A,
                 const Teuchos::RCP<vector_t>& b);
     
     /*!

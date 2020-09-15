@@ -104,7 +104,7 @@ void RBend3D::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
         double zBegin = 0.0, zEnd = 0.0;
         fieldmap_m->getFieldDimensions(zBegin, zEnd);
 
-        if (length_m == 0.0) {
+        if (getElementLength() == 0.0) {
             chordLength_m = 0.0;
             double fieldLength = zEnd - zBegin;
             double z = 0.0, dz = fieldLength / 1000;
@@ -121,9 +121,9 @@ void RBend3D::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
                 z -= dz;
             }
             chordLength_m = z - zEntryEdge;
-            length_m = chordLength_m;
+            setElementLength(chordLength_m);
         } else {
-            chordLength_m = length_m;
+            chordLength_m = getElementLength();
         }
 
         startField_m = zBegin;
@@ -200,7 +200,7 @@ void RBend3D::goOffline() {
 
 void RBend3D::getDimensions(double &zBegin, double &zEnd) const {
     zBegin = startField_m;
-    zEnd = startField_m + length_m;
+    zEnd = startField_m + getElementLength();
 }
 
 

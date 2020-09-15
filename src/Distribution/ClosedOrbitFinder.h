@@ -70,6 +70,7 @@ class ClosedOrbitFinder
         /// Sets the initial values for the integration and calls findOrbit().
         /*!
          * @param E0 is the potential energy (particle energy at rest) [MeV].
+         * @param q is the particle charge [e]
          * @param N specifies the number of splits (2pi/N), i.e number of integration steps
          * @param cycl is the cyclotron element
          * @param domain is a boolean (default: true). If "true" the closed orbit is computed over a single sector,
@@ -77,7 +78,7 @@ class ClosedOrbitFinder
          * @param Nsectors is an int (default: 1). Number of sectors that the field map is averaged over
          * in order to avoid first harmonic. Only valid if domain is false
          */
-        ClosedOrbitFinder(value_type E0, size_type N,
+        ClosedOrbitFinder(value_type E0, value_type q, size_type N,
                           Cyclotron* cycl, bool domain = true, int Nsectors = 1);
 
         /// Returns the inverse bending radius (size of container N+1)
@@ -154,7 +155,7 @@ class ClosedOrbitFinder
 //         void computeVerticalOscillations();
 
         /// This function rotates the calculated closed orbit finder properties to the initial angle
-        container_type rotate(value_type angle, container_type& orbitProperty);
+        container_type rotate(value_type angle, const container_type& orbitProperty);
 
         /// Stores current position in horizontal direction for the solutions of the ODE with different initial values
         std::array<value_type,2> x_m; // x_m = [x1, x2]
@@ -187,6 +188,9 @@ class ClosedOrbitFinder
 
         /// Is the rest mass [MeV / c**2]
         value_type E0_m;
+
+        // Is the particle charge [e]
+        value_type q_m;
 
         /// Is the nominal orbital frequency
         /* (see paper of Dr. C. Baumgarten: "Transverse-Longitudinal
@@ -243,8 +247,8 @@ class ClosedOrbitFinder
         /*!
          * The lambda function takes the orbital frequency \f$ \omega_{o} \f$ as input argument.
          */
-        std::function<double(double, double)> bcon_m = [](double e0, double wo) {
-            return e0 * 1.0e7 / (/* physics::q0 */ 1.0 * Physics::c * Physics::c / wo);
+        std::function<double(double, double)> bcon_m = [this](double e0, double wo) {
+            return e0 * 1.0e7 / (q_m * Physics::c * Physics::c / wo);
         };
 
         Cyclotron* cycl_m;
@@ -258,11 +262,13 @@ template<typename Value_type, typename Size_type, class Stepper>
 ClosedOrbitFinder<Value_type,
                   Size_type,
                   Stepper>::ClosedOrbitFinder(value_type E0,
+                                              value_type q,
                                               size_type N, Cyclotron* cycl,
                                               bool domain, int nSectors)
     : nxcross_m(0)
     , nzcross_m(0)
     , E0_m(E0)
+    , q_m(q)
     , wo_m(cycl->getRfFrequ(0)*1E6/cycl->getCyclHarm()*2.0*Physics::pi)
     , N_m(N)
     , dtheta_m(Physics::two_pi/value_type(N))
@@ -894,15 +900,21 @@ void ClosedOrbitFinder<Value_type, Size_type, Stepper>::computeOrbitProperties(c
 
 template<typename Value_type, typename Size_type, class Stepper>
 inline typename ClosedOrbitFinder<Value_type, Size_type, Stepper>::container_type
-ClosedOrbitFinder<Value_type, Size_type, Stepper>::rotate(value_type angle, container_type &orbitProperty) {
+ClosedOrbitFinder<Value_type, Size_type, Stepper>::rotate(value_type angle, const container_type &orbitProperty) {
 
     container_type orbitPropertyCopy = orbitProperty;
 
     // compute the number of steps per degree
     value_type deg_step = N_m / 360.0;
 
+    if (angle < 0.0) {
+        angle = 360.0 + angle;
+    }
+
     // compute starting point
-    size_type start = deg_step * angle;
+    unsigned int start = deg_step * angle;
+
+    start %= orbitProperty.size();
 
     // copy end to start
     std::copy(orbitProperty.begin() + start, orbitProperty.end(), orbitPropertyCopy.begin());

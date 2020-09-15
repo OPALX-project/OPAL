@@ -248,7 +248,7 @@ void Distribution::execute() {
 void Distribution::update() {
 }
 
-void Distribution::create(size_t &numberOfParticles, double massIneV) {
+void Distribution::create(size_t &numberOfParticles, double massIneV, double charge) {
 
     /*
      * If Options::cZero is true than we reflect generated distribution
@@ -284,7 +284,7 @@ void Distribution::create(size_t &numberOfParticles, double massIneV) {
     switch (distrTypeT_m) {
 
     case DistrTypeT::MATCHEDGAUSS:
-        createMatchedGaussDistribution(numberOfLocalParticles, massIneV);
+        createMatchedGaussDistribution(numberOfLocalParticles, massIneV, charge);
         break;
     case DistrTypeT::FROMFILE:
         createDistributionFromFile(numberOfParticles, massIneV);
@@ -1152,7 +1152,10 @@ void Distribution::createDistributionFromFile(size_t /*numberOfParticles*/, doub
 }
 
 
-void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, double massIneV) {
+void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
+                                                  double massIneV,
+                                                  double charge)
+{
 
     /*
       ToDo:
@@ -1250,7 +1253,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
         typedef boost::numeric::odeint::runge_kutta4<container_t> rk4_t;
         typedef ClosedOrbitFinder<double,unsigned int, rk4_t> cof_t;
 
-        cof_t cof(massIneV*1E-6, Nint, CyclotronElement, full, Nsectors);
+        cof_t cof(massIneV*1E-6, charge, Nint, CyclotronElement, full, Nsectors);
         cof.findOrbit(accuracy, maxitCOF, E_m*1E-6, denergy, rguess, true);
 
         throw EarlyLeaveException("Distribution::CreateMatchedGaussDistribution()",
@@ -1266,6 +1269,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles, doub
                            Attributes::getReal(itsAttr[Attrib::Distribution::ET])*1E6,
                            E_m*1E-6,
                            massIneV*1E-6,
+                           charge,
                            CyclotronElement,
                            Nint,
                            Nsectors,
@@ -1373,7 +1377,7 @@ void Distribution::createOpalCycl(PartBunchBase<double, 3> *beam,
     emitting_m = false;
 
     // Create distribution.
-    create(numberOfPartToCreate, beam->getM());
+    create(numberOfPartToCreate, beam->getM(), beam->getQ());
 
     // this variable is needed to be compatible with OPAL-T
     particlesPerDist_m.push_back(tOrZDist_m.size());
@@ -1453,11 +1457,11 @@ void Distribution::createOpalT(PartBunchBase<double, 3> *beam,
         setupEmissionModel(beam);
 
     // Create distributions.
-    create(particlesPerDist_m.at(0), beam->getM());
+    create(particlesPerDist_m.at(0), beam->getM(), beam->getQ());
 
     size_t distCount = 1;
     for (Distribution* addedDist : addedDistributions_m) {
-        addedDist->create(particlesPerDist_m.at(distCount), beam->getM());
+        addedDist->create(particlesPerDist_m.at(distCount), beam->getM(), beam->getQ());
         distCount++;
     }
 

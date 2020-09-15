@@ -105,6 +105,8 @@ public:
     void setType(Type type);
 
     static void writeStatistics();
+
+    virtual int getRequiredNumberOfTimeSteps() const override;
 private:
 
     // Not implemented.
@@ -123,6 +125,12 @@ private:
 inline
 void Monitor::setType(Monitor::Type type) {
     type_m = type;
+}
+
+inline
+int Monitor::getRequiredNumberOfTimeSteps() const
+{
+    return 1;
 }
 
 #endif // CLASSIC_Monitor_HH

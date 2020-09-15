@@ -1,34 +1,36 @@
+//
+// Class MacroCmd
+//
+//   This class parses the MACRO command.
+//   Encapsulate the buffer for the ``archetypes'' of all macros.
+//   The macro is stored as a MacroStream.  For execution, first the
+//   parameters are replaced, then the resulting stream is sent to the parser.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_MacroCmd_HH
 #define CLASSIC_MacroCmd_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: MacroCmd.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: MacroCmd
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:33:43 $
-// $Author: Andreas Adelmann $
-//
-// ------------------------------------------------------------------------
 
 #include "OpalParser/Macro.h"
 #include "OpalParser/MacroStream.h"
 #include "MemoryManagement/Pointer.h"
 #include <iosfwd>
-
+#include <string>
 
 // Class MacroCmd
 // ------------------------------------------------------------------------
-/// Encapsulate the buffer for the ``archetypes'' of all macros.
-//  The macro is stored as a MacroStream.  For execution, first the
-//  parameters are replaced, then the resulting stream is sent to the parser.
 
 class MacroCmd: public Macro {
 

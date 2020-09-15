@@ -1,3 +1,19 @@
+//
+// Class CSRIGFWakeFunction
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbstractObjects/OpalData.h"
 #include "Solvers/CSRIGFWakeFunction.hh"
 #include "Solvers/RootFinderForCSR.h"
@@ -14,8 +30,8 @@
 #include <fstream>
 #include <cmath>
 
-CSRIGFWakeFunction::CSRIGFWakeFunction(const std::string &name, ElementBase *element, std::vector<Filter *> filters, const unsigned int &N):
-    WakeFunction(name, element, N),
+CSRIGFWakeFunction::CSRIGFWakeFunction(const std::string &name, std::vector<Filter *> filters, const unsigned int &N):
+    WakeFunction(name, N),
     filters_m(filters.begin(), filters.end()),
     lineDensity_m(),
     dlineDensitydz_m(),

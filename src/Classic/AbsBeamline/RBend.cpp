@@ -135,14 +135,14 @@ bool RBend::findChordLength(double &chordLength) {
     const double angle = getBendAngle();
     if (std::abs(angle) > 0.0) {
         double E1 = std::copysign(1.0, angle) * getEntranceAngle();
-        chordLength = 2 * getLength() * std::sin(0.5 * std::abs(angle)) /
+        chordLength = 2 * getElementLength() * std::sin(0.5 * std::abs(angle)) /
             (std::sin(E1) + std::sin(std::abs(angle) - E1));
     } else {
         double refCharge = RefPartBunch_m->getQ();
         double amplitude = (fieldAmplitudeY_m != 0.0) ? fieldAmplitudeY_m : fieldAmplitudeX_m;
         double fieldAmplitude = std::copysign(1.0, refCharge) * std::abs(amplitude);
         double designRadius = calcDesignRadius(fieldAmplitude);
-        chordLength = std::sin(0.5 * (std::asin(getLength() / designRadius - std::sin(getEntranceAngle())) + getEntranceAngle())) * 2 * designRadius;
+        chordLength = std::sin(0.5 * (std::asin(getElementLength() / designRadius - std::sin(getEntranceAngle())) + getEntranceAngle())) * 2 * designRadius;
     }
 
     return true;

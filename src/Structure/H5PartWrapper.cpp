@@ -6,8 +6,13 @@
 
 #include "OPALconfig.h"
 #include "AbstractObjects/OpalData.h"
-#include "Utilities/Options.h"
 #include "Physics/Physics.h"
+#include "Utilities/Options.h"
+#include "Utilities/OpalException.h"
+
+#include "Message/Communicate.h"
+#include "Message/Message.h"
+#include "Utility/PAssert.h"
 
 #include <boost/filesystem.hpp>
 
@@ -40,8 +45,6 @@ H5PartWrapper::H5PartWrapper(const std::string &fileName, int restartStep, std::
     numSteps_m(0),
     startedFromExistingFile_m(true)
 {
-    namespace fs = boost::filesystem;
-
     if (sourceFile == "") sourceFile = fileName_m;
 
     copyFile(sourceFile, restartStep, flags);
@@ -72,9 +75,9 @@ void H5PartWrapper::open(h5_int32_t flags) {
 #if defined (NDEBUG)
     (void)h5err;
 #endif
-    assert (h5err != H5_ERR);
+    PAssert (h5err != H5_ERR);
     file_m = H5OpenFile (fileName_m.c_str(), flags, props);
-    assert (file_m != (h5_file_t)H5_ERR);
+    PAssert (file_m != (h5_file_t)H5_ERR);
     H5CloseProp (props);
 }
 
@@ -135,9 +138,9 @@ void H5PartWrapper::copyFile(const std::string &sourceFile, int lastStep, h5_int
 #if defined (NDEBUG)
         (void)h5err;
 #endif
-        assert (h5err != H5_ERR);
+        PAssert (h5err != H5_ERR);
         h5_file_t source = H5OpenFile (sourceFile.c_str(), H5_O_RDONLY, props);
-        assert (source != (h5_file_t)H5_ERR);
+        PAssert (source != (h5_file_t)H5_ERR);
         H5CloseProp (props);
         h5_ssize_t numStepsInSource = H5GetNumSteps(source);
 
@@ -169,9 +172,9 @@ void H5PartWrapper::copyFile(const std::string &sourceFile, int lastStep, h5_int
         props = H5CreateFileProp ();
         comm = Ippl::getComm();
         h5err = H5SetPropFileMPIOCollective (props, &comm);
-        assert (h5err != H5_ERR);
+        PAssert (h5err != H5_ERR);
         source = H5OpenFile (sourceFileName.c_str(), H5_O_RDONLY, props);
-        assert (source != (h5_file_t)H5_ERR);
+        PAssert (source != (h5_file_t)H5_ERR);
         H5CloseProp (props);
         copyHeader(source);
 
@@ -204,9 +207,9 @@ void H5PartWrapper::copyFile(const std::string &sourceFile, int lastStep, h5_int
 #if defined (NDEBUG)
         (void)h5err;
 #endif
-        assert (h5err != H5_ERR);
+        PAssert (h5err != H5_ERR);
         h5_file_t source = H5OpenFile (sourceFile.c_str(), H5_O_RDONLY, props);
-        assert (source != (h5_file_t)H5_ERR);
+        PAssert (source != (h5_file_t)H5_ERR);
         H5CloseProp (props);
         h5_ssize_t numStepsInSource = H5GetNumSteps(source);
 

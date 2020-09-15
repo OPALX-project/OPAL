@@ -37,6 +37,8 @@
 
 #include "Ippl.h"
 
+#include <gsl/gsl_randist.h>
+
 #include <cmath>
 #include <iostream>
 #include <fstream>

@@ -1,4 +1,7 @@
 #include "Fields/Fieldmap.h"
+
+#include "Utility/PAssert.h"
+
 #include "Fields/FM3DDynamic.h"
 #include "Fields/FM3DH5BlockBase.h"
 #include "Fields/FM3DH5Block.h"
@@ -38,7 +41,6 @@
 #include <iostream>
 #include <fstream>
 #include <ios>
-#include <cassert>
 
 namespace fs = boost::filesystem;
 
@@ -366,22 +368,22 @@ MapType Fieldmap::readHeader(std::string Filename) {
         h5_prop_t props = H5CreateFileProp ();
         MPI_Comm comm = Ippl::getComm();
         h5err = H5SetPropFileMPIOCollective (props, &comm);
-        assert (h5err != H5_ERR);
+        PAssert (h5err != H5_ERR);
         h5_file_t file = H5OpenFile (Filename.c_str(), H5_O_RDONLY, props);
-        assert (file != (h5_file_t)H5_ERR);
+        PAssert (file != (h5_file_t)H5_ERR);
         H5CloseProp (props);
 
         h5err = H5SetStep(file, 0);
-        assert (h5err != H5_ERR);
+        PAssert (h5err != H5_ERR);
 
         h5_int64_t num_fields = H5BlockGetNumFields(file);
-        assert (num_fields != H5_ERR);
+        PAssert (num_fields != H5_ERR);
         MapType maptype = UNKNOWN;
 
         for (h5_ssize_t i = 0; i < num_fields; ++ i) {
             h5err = H5BlockGetFieldInfo(
                 file, (h5_size_t)i, name, len_name, NULL, NULL, NULL, NULL);
-            assert (h5err != H5_ERR);
+            PAssert (h5err != H5_ERR);
             // using field name "Bfield" and "Hfield" to distinguish the type
             if (std::strcmp(name, "Bfield") == 0) {
                 maptype = T3DMagnetoStaticH5Block;
@@ -392,7 +394,7 @@ MapType Fieldmap::readHeader(std::string Filename) {
             }
         }
         h5err = H5CloseFile(file);
-        assert (h5err != H5_ERR);
+        PAssert (h5err != H5_ERR);
         if (maptype != UNKNOWN)
             return maptype;
     }
@@ -740,14 +742,14 @@ void Fieldmap::write3DField(unsigned int nx,
     if (Ippl::myNode() != 0 ||
         (ef.size() != numpoints && bf.size() != numpoints)) return;
 
-    size_t extensionStart = Filename_m.find_last_of('.');
+    boost::filesystem::path p(Filename_m);
     std::string fname = Util::combineFilePath({
         OpalData::getInstance()->getAuxiliaryOutputDirectory(),
-        Filename_m.substr(0,extensionStart) + ".vtk"
+        p.stem().string() + ".vtk"
     });
     std::ofstream of;
     of.open (fname);
-    assert (of.is_open ());
+    PAssert (of.is_open ());
     of.precision (6);
 
     const double hx = (xrange.second - xrange.first) / (nx - 1);

@@ -247,7 +247,7 @@ void ParallelTTracker::execute() {
                       -rmin(2),
                       itsBunch_m->getT(),
                       (back_track? -minTimeStep: minTimeStep),
-                      stepSizes_m.getFinalZStop() + 2 * rmax(2),
+                      stepSizes_m,
                       itsOpalBeamline_m);
 
     oth.execute();

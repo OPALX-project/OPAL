@@ -23,6 +23,7 @@
 #define OPAL_ORBITTHREADER_H
 
 #include "Algorithms/IndexMap.h"
+#include "Algorithms/StepSizeConfig.h"
 #include "Algorithms/Vektor.h"
 #include "Elements/OpalBeamline.h"
 #include "Steppers/BorisPusher.h"
@@ -41,7 +42,7 @@ public:
                   double maxDiffZBunch,
                   double t,
                   double dT,
-                  double zstop,
+                  StepSizeConfig stepSizes,
                   OpalBeamline &bl);
 
     void execute();
@@ -51,7 +52,7 @@ public:
 
     std::pair<double, double> getRange(const IndexMap::value_t::value_type &element,
                                        double position) const;
-    IndexMap::value_t getTouchingElements(const std::pair<double, double> &range);
+    IndexMap::value_t getTouchingElements(const std::pair<double, double> &range) const;
 
 private:
     /// position of reference particle in lab coordinates
@@ -69,6 +70,7 @@ private:
     double dt_m;
 
     /// final position in path length
+    StepSizeConfig stepSizes_m;
     const double zstop_m;
 
     OpalBeamline &itsOpalBeamline_m;
@@ -112,6 +114,8 @@ private:
     double computeDriftLengthToBoundingBox(const std::set<std::shared_ptr<Component>> & elements,
                                            const Vector_t & position,
                                            const Vector_t & direction) const;
+
+    void checkElementLengths(const std::set<std::shared_ptr<Component>>& elements);
 };
 
 inline
@@ -127,7 +131,7 @@ std::pair<double, double> OrbitThreader::getRange(const IndexMap::value_t::value
 }
 
 inline
-IndexMap::value_t OrbitThreader::getTouchingElements(const std::pair<double, double> &range) {
+IndexMap::value_t OrbitThreader::getTouchingElements(const std::pair<double, double> &range) const {
     return imap_m.getTouchingElements(range);
 }
 

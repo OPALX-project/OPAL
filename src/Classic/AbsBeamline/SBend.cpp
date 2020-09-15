@@ -97,7 +97,6 @@ bool SBend::findChordLength(double &chordLength) {
      * Find bend chord length. If this was not set by the user using the
      * L (length) attribute, infer it from the field map.
      */
-    chordLength = getLength();
+    chordLength = getElementLength();
     return true;
 }
-

@@ -26,6 +26,7 @@
 //
 #include "Algorithms/PartBinsCyc.h"
 #include "Physics/Physics.h"
+#include "Utility/Inform.h"
 #include <cfloat>
 #include <vector>
 extern Inform *gmsg;
@@ -36,7 +37,7 @@ PartBinsCyc::PartBinsCyc(int specifiedNumBins, int bins, size_t  partInBin[])
 
     bins_m = specifiedNumBins;        // max bin number
     nemittedBins_m = bins;            // the bin number with particles
-    
+
     for(int i = 0; i < nemittedBins_m; i++) {
         nBin_m[i] = partInBin[i];
 
@@ -51,7 +52,7 @@ PartBinsCyc::PartBinsCyc(int specifiedNumBins, int bins)
 
     bins_m = specifiedNumBins;        // max bin number
     nemittedBins_m = bins;            // the bin number with particles
-    
+
     for(int i = 0; i < nemittedBins_m; i++) {
       binsEmitted_m[i] = true;
     }

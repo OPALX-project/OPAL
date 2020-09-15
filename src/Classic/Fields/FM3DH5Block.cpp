@@ -65,7 +65,9 @@ void FM3DH5Block::readMap (
         &(FieldstrengthHz_m[0]));
 
     closeFile ();
-    INFOMSG (level3 << typeset_msg("fieldmap '" + Filename_m  + "' read", "info")
+    INFOMSG (level3
+             << typeset_msg("3d dynamic fieldmap '"
+                            + Filename_m  + "' (H5hut format) read", "info")
              << endl);
 }
 
@@ -81,8 +83,9 @@ void FM3DH5Block::freeMap (
     FieldstrengthHy_m.clear ();
     FieldstrengthHz_m.clear ();
 
-    INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m + "'", "info")
-            << endl);
+    INFOMSG (level3
+             << typeset_msg ("freed fieldmap '" + Filename_m + "'", "info")
+             << endl);
 }
 
 bool FM3DH5Block::getFieldstrength (
@@ -93,11 +96,8 @@ bool FM3DH5Block::getFieldstrength (
     if (!isInside(R)) {
         return true;
     }
-    E += interpolateTrilinearly (
-        FieldstrengthEx_m, FieldstrengthEy_m, FieldstrengthEz_m, R);
-    B += interpolateTrilinearly (
-        FieldstrengthHx_m, FieldstrengthHy_m, FieldstrengthHz_m, R);
-
+    E += interpolateTrilinearly (FieldstrengthEx_m, FieldstrengthEy_m, FieldstrengthEz_m, R);
+    B += interpolateTrilinearly (FieldstrengthHx_m, FieldstrengthHy_m, FieldstrengthHz_m, R);
     return false;
 }
 

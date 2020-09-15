@@ -56,6 +56,8 @@ public:
     bool   getStop() const;
     ///@}
 
+    virtual int getRequiredNumberOfTimeSteps() const override;
+
 private:
     /// Record hits when bunch particles pass
     virtual bool doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double tstep) override;
@@ -71,5 +73,11 @@ private:
     double opyield_m;  ///< Yield of the out-coming particle
     bool   stop_m;     ///< Flag if particles should be stripped or stopped
 };
+
+inline
+int Stripper::getRequiredNumberOfTimeSteps() const
+{
+    return 1;
+}
 
 #endif // CLASSIC_Stripper_HH

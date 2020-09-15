@@ -41,7 +41,7 @@ void Amesos2BottomSolver<Level>::solve(const Teuchos::RCP<mv_t>& x,
 
 template <class Level>
 void Amesos2BottomSolver<Level>::setOperator(const Teuchos::RCP<matrix_t>& A,
-                                             Level* level_p)
+                                             Level* /*level_p*/)
 {
     try {
         solver_mp = Amesos2::create<matrix_t, mv_t>(solvertype_m, A);

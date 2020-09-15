@@ -1,3 +1,19 @@
+//
+// Class GreenWakeFunction
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef GREENWAKEFUNCTION_HH
 #define GREENWAKEFUNCTION_HH
 
@@ -5,9 +21,9 @@
 #include "Solvers/WakeFunction.hh"
 #include "Physics/Physics.h"
 #include "Utility/IpplInfo.h"
+#include "Utility/PAssert.h"
 
 #include <vector>
-#include <cassert>
 #include <map>
 #include <string>
 #include <complex>
@@ -25,7 +41,6 @@ public:
     //IFF: changed direction to int (was double)
     //IFF: changed acMode to int (was double)
     GreenWakeFunction(const std::string &name,
-                      ElementBase *element,
                       std::vector<Filter *> filters,
                       int NBIN,
                       double Z0,
@@ -123,8 +138,8 @@ private:
      *
      */
     template<class F> double simpson(F &f, double a, double b, unsigned int N) {
-        assert(b > a);
-        assert(N > 0);
+        PAssert(b > a);
+        PAssert(N > 0);
 
         double result = 0;
         double h = (b - a) / N;

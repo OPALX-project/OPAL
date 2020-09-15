@@ -1,32 +1,31 @@
 /*! \mainpage
 <P>
 <B>
-OPAL is a tool for charged-particle optics in accelerator structures and beam lines. Using the MAD
-language with extensions. IPPL (Independent Parallel Particle Layer)
-is the framework which provides parallel particles and fields using data parallel ansatz. OPAL is
-built from the ground up as a parallel application exemplifying the fact that HPC (High Performance
-Computing) is the third leg of science, complementing theory and the experiment. HPC is made
-possible now through the increasingly sophisticated mathematical models and evolving computer
-power available on the desktop and in super computer centres. OPAL runs on your laptop as well as
-on the largest HPC clusters available today.
-The OPAL framework makes it easy to add new features in the form of new C++ classes. It comes
-in the following flavours:
-OPAL-CYCL tracks particles with 3D space charge including neighbouring turns in cyclotrons and
-FFAs with time as the independent variable.
-OPAL-T can be used to model beam lines, linacs, rf-photo injectors and complete XFEL’s excluding
-the undulator.
+OPAL is a parallel open source tool for charged-particle optics in linear
+accelerators and rings, including 3D space charge. Using the MAD language
+with extensions, OPAL can run on a laptop as well as on the largest high
+performance computing systems. OPAL is built from the ground up as a
+parallel application.
+
+The OPAL framework makes it easy to add new features in the form of new
+C++ classes.
 </B>
 </P>
 
 <P>
 <B>
-Developed by
-Andreas Adelmann, Achim Gsell, Valeria Rizzoglio (PSI),
-Christof Metzger-Kraus (HZB),
-Yves Ineichen (IBM),
-Xiaoying Pang, Steve Russell (LANL),
-Chuan Wang, Jianjun Yang (CIAE),
-Suzanne Sheehy, Chris Rogers (RAL) and
+Authors
+Andreas Adelmann (PSI);
+Pedro Calvo (CIEMAT);
+Matthias Frey (PSI);
+Achim Gsell (PSI);
+Uldis Locans (PSI);
+Christof Metzger-Kraus;
+Nicole Neveu (SLAC);
+Chris Rogers (RAL);
+Steve Russell (LANL);
+Suzanne Sheehy (Oxford);
+Jochem Snuverink (PSI);
 Daniel Winklehner (MIT)
 </B>
 <P>

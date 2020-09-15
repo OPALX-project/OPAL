@@ -128,9 +128,9 @@ void OpalRBend3D::update() {
     }
 
     if(itsAttr[LENGTH]) {
-        bend->setLength(Attributes::getReal(itsAttr[LENGTH]));
+        bend->setElementLength(Attributes::getReal(itsAttr[LENGTH]));
     } else
-        bend->setLength(0.0);
+        bend->setElementLength(0.0);
 
     if(itsAttr[WAKEF] && itsAttr[DESIGNENERGY] && owk_m == NULL) {
         owk_m = (OpalWake::find(Attributes::getString(itsAttr[WAKEF])))->clone(getOpalName() + std::string("_wake"));

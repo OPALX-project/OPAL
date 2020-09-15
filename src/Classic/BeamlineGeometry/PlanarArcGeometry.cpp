@@ -20,8 +20,10 @@
 
 #include "BeamlineGeometry/PlanarArcGeometry.h"
 #include "BeamlineGeometry/Euclid3D.h"
-#include <cmath>
+#include "Utilities/GeneralClassicException.h"
 
+#include <cmath>
+#include <algorithm>
 
 // File scope function for calculating general transformations around arcs.
 namespace {
@@ -81,6 +83,10 @@ void PlanarArcGeometry::setCurvature(double hh) {
 
 
 void PlanarArcGeometry::setElementLength(double l) {
+    if (l < 0.0) {
+        throw GeneralClassicException("PlanarArcGeometry::setElementLength",
+                                      "The length of an element has to be positive");
+    }
     len = l;
     if(len != 0.0) angle = h * len;
 }

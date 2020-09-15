@@ -44,7 +44,6 @@ Solenoid::Solenoid(const Solenoid &right):
     scale_m(right.scale_m),
     scaleError_m(right.scaleError_m),
     startField_m(right.startField_m),
-    length_m(right.length_m),
     fast_m(right.fast_m) {
 }
 
@@ -56,7 +55,6 @@ Solenoid::Solenoid(const std::string &name):
     scale_m(1.0),
     scaleError_m(0.0),
     startField_m(0.0),
-    length_m(0.0),
     fast_m(true) {
 }
 
@@ -89,7 +87,7 @@ bool Solenoid::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B)
 
 bool Solenoid::apply(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
     if (R(2) >= startField_m
-        && R(2) < startField_m + length_m) {
+        && R(2) < startField_m + getElementLength()) {
         Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
         const bool outOfBounds = myFieldmap_m->getFieldstrength(R, tmpE, tmpB);
@@ -104,7 +102,7 @@ bool Solenoid::apply(const Vector_t &R, const Vector_t &/*P*/, const  double &/*
 bool Solenoid::applyToReferenceParticle(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
 
     if (R(2) >= startField_m
-        && R(2) < startField_m + length_m) {
+        && R(2) < startField_m + getElementLength()) {
         Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
         const bool outOfBounds = myFieldmap_m->getFieldstrength(R, tmpE, tmpB);
@@ -131,8 +129,8 @@ void Solenoid::initialise(PartBunchBase<double, 3> *bunch, double &startField, d
         myFieldmap_m->getFieldDimensions(zBegin, zEnd);
 
         startField_m = zBegin;
-        length_m = zEnd - zBegin;
-        endField = startField + length_m;
+        setElementLength(zEnd - zBegin);
+        endField = startField + getElementLength();
     } else {
         endField = startField;
     }
@@ -166,7 +164,7 @@ void Solenoid::setDKS(double ks) {
 
 void Solenoid::getDimensions(double &zBegin, double &zEnd) const {
     zBegin = startField_m;
-    zEnd = startField_m + length_m;
+    zEnd = startField_m + getElementLength();
 }
 
 
@@ -179,13 +177,8 @@ bool Solenoid::isInside(const Vector_t &r) const {
         && myFieldmap_m->isInside(r);
 }
 
-
-double Solenoid::getElementLength() const {
-    return length_m;
-}
-
 void Solenoid::getElementDimensions(double &begin,
                                          double &end) const {
     begin = startField_m;
-    end = begin + length_m;
+    end = begin + getElementLength();
 }

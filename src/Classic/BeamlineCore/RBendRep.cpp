@@ -22,26 +22,6 @@
 #include "Channels/IndirectChannel.h"
 #include <cctype>
 
-// Attribute access table.
-// ------------------------------------------------------------------------
-
-namespace {
-    struct Entry {
-        const char *name;
-        double(RBendRep::*get)() const;
-        void (RBendRep::*set)(double);
-    };
-
-    const Entry entries[] = {
-        {
-            "L",
-            &RBendRep::getElementLength,
-            &RBendRep::setElementLength
-        },
-        { 0, 0, 0 }
-    };
-}
-
 
 RBendRep::RBendRep():
     RBend(),

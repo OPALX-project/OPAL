@@ -53,7 +53,6 @@ public:
     
     typedef amr::comm_t comm_t;
     typedef amr::dmap_t dmap_t;
-    typedef amr::node_t node_t;
     typedef amr::global_ordinal_t go_t;
     typedef amr::scalar_t scalar_t;
     typedef amr::local_ordinal_t lo_t;
@@ -96,7 +95,6 @@ public:
      * @param rr refinement ratio
      * @param bc physical boundaries (x, y, z)
      * @param comm MPI communicator
-     * @param node Kokkos node type (Serial, OpenMP, CUDA)
      */
     AmrMultiGridLevel(const Vector_t& meshScaling,
                       const amrex::BoxArray& _grids,
@@ -104,8 +102,7 @@ public:
                       const AmrGeometry_t& _geom,
                       const AmrIntVect_t& rr,
                       const boundary_t* bc,
-                      const Teuchos::RCP<comm_t>& comm,
-                      const Teuchos::RCP<node_t>& node);
+                      const Teuchos::RCP<comm_t>& comm);
     
     ~AmrMultiGridLevel();
     
@@ -198,10 +195,8 @@ private:
     /*!
      * Build Tpetra::Map of this level
      * @param comm MPI communicator
-     * @param node Kokkos node type
      */
-    void buildMap(const Teuchos::RCP<comm_t>& comm,
-                  const Teuchos::RCP<node_t>& node);
+    void buildMap(const Teuchos::RCP<comm_t>& comm);
     
 public:
     const amrex::BoxArray& grids;           ///< boxes of this level

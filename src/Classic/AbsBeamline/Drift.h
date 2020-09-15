@@ -60,6 +60,7 @@ public:
     //set number of slices for map tracking
     std::size_t getNSlices() const; // Philippe was here
 
+    virtual int getRequiredNumberOfTimeSteps() const override;
 private:
 
     double startField_m;
@@ -68,5 +69,11 @@ private:
     // Not implemented.
     void operator=(const Drift &);
 };
+
+inline
+int Drift::getRequiredNumberOfTimeSteps() const
+{
+    return 1;
+}
 
 #endif // CLASSIC_Drift_HH

@@ -55,7 +55,7 @@ TEST(GaussTest, FullSigmaTest1) {
     dist.checkIfEmitted();
     size_t numParticles = 1000000;
     dist.totalNumberParticles_m = numParticles;
-    dist.create(numParticles, Physics::m_p);
+    dist.create(numParticles, Physics::m_p, Physics::z_p);
 
     double R11 = sqrt(gsl_stats_variance(&(dist.xDist_m[0]), 1, dist.xDist_m.size())) * 1e3;
     double R22 = sqrt(gsl_stats_variance(&(dist.pxDist_m[0]), 1, dist.pxDist_m.size()));
@@ -140,7 +140,7 @@ TEST(GaussTest, FullSigmaTest2) {
 
     size_t numParticles = 1000000;
     dist.totalNumberParticles_m = numParticles;
-    dist.create(numParticles, Physics::m_p);
+    dist.create(numParticles, Physics::m_p, Physics::z_p);
 
     double R11 = sqrt(gsl_stats_variance(&(dist.xDist_m[0]), 1, dist.xDist_m.size())) * 1e3;
     double R22 = sqrt(gsl_stats_variance(&(dist.pxDist_m[0]), 1, dist.pxDist_m.size()));

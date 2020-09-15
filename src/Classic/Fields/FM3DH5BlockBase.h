@@ -137,13 +137,20 @@ protected:
         {}
     };
 
+    /*
+      The 3-dimensional fieldmaps are stored in a 1-dimensional arrays.
+      Please note that the FORTRAN indexing scheme is used in H5hut!
+
+      This functions maps the 3-dimensional index (i, j, k) to the
+      corresponding index in the 1-dimensional array.
+     */
     unsigned long getIndex (
         unsigned int i,
         unsigned int j,
         unsigned int k
         ) const {
-        unsigned long result = i + j * num_gridpx_m;
-        result = k + result * num_gridpz_m;
+        unsigned long result = j + k * num_gridpy_m;
+        result = i + result * num_gridpx_m;
         
         return result;
     }

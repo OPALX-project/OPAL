@@ -61,7 +61,6 @@ RFCavity::RFCavity(const RFCavity &right):
     autophaseVeto_m(right.autophaseVeto_m),
     designEnergy_m(right.designEnergy_m),
     fieldmap_m(right.fieldmap_m),
-    length_m(right.length_m),
     startField_m(right.startField_m),
     endField_m(right.endField_m),
     type_m(right.type_m),
@@ -95,7 +94,6 @@ RFCavity::RFCavity(const std::string &name):
     autophaseVeto_m(false),
     designEnergy_m(-1.0),
     fieldmap_m(nullptr),
-    length_m(0.0),
     startField_m(0.0),
     endField_m(0.0),
     type_m(SW),
@@ -131,7 +129,7 @@ bool RFCavity::apply(const Vector_t &R,
                      Vector_t &E,
                      Vector_t &B) {
     if (R(2) >= startField_m &&
-        R(2) < startField_m + length_m) {
+        R(2) < startField_m + getElementLength()) {
         Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
         bool outOfBounds = fieldmap_m->getFieldstrength(R, tmpE, tmpB);
@@ -151,7 +149,7 @@ bool RFCavity::applyToReferenceParticle(const Vector_t &R,
                                         Vector_t &B) {
 
     if (R(2) >= startField_m &&
-        R(2) < startField_m + length_m) {
+        R(2) < startField_m + getElementLength()) {
         Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
         bool outOfBounds = fieldmap_m->getFieldstrength(R, tmpE, tmpB);
@@ -200,7 +198,7 @@ void RFCavity::initialise(PartBunchBase<double, 3> *bunch, double &startField, d
         }
         frequency_m = fieldmap_m->getFrequency();
     }
-    length_m = endField - startField_m;
+    setElementLength(endField - startField_m);
 }
 
 // In current version ,this function reads in the cavity voltage profile data from file.
@@ -674,7 +672,7 @@ std::pair<double, double> RFCavity::trackOnAxisParticle(const double &p0,
     BorisPusher integrator(*RefPartBunch_m->getReference());
     const double cdt = Physics::c * dt;
     const double zbegin = startField_m;
-    const double zend = length_m + startField_m;
+    const double zend = getElementLength() + startField_m;
 
     Vector_t z(0.0, 0.0, zbegin);
     double dz = 0.5 * p(2) / Util::getGamma(p) * cdt;

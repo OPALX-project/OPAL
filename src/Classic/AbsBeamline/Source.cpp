@@ -22,14 +22,16 @@ Source::Source():
 Source::Source(const Source &right):
     Component(right),
     startField_m(right.startField_m),
-    endField_m(right.endField_m)
+    endField_m(right.endField_m),
+    isTransparent_m(right.isTransparent_m)
 {}
 
 
 Source::Source(const std::string &name):
     Component(name),
     startField_m(0.0),
-    endField_m(0.0)
+    endField_m(0.0),
+    isTransparent_m(false)
 {}
 
 Source::~Source() {
@@ -41,6 +43,10 @@ void Source::accept(BeamlineVisitor &visitor) const {
 }
 
 bool Source::apply(const size_t &i, const double &t, Vector_t &/*E*/, Vector_t &/*B*/) {
+    if (isTransparent_m) {
+        return false;
+    }
+
     const Vector_t &R = RefPartBunch_m->R[i];
     const Vector_t &P = RefPartBunch_m->P[i];
     const double &dt = RefPartBunch_m->dt[i];
@@ -94,4 +100,8 @@ void Source::getDimensions(double &zBegin, double &zEnd) const {
 
 ElementBase::ElementType Source::getType() const {
     return SOURCE;
+}
+
+void Source::setTransparent() {
+    isTransparent_m = true;
 }

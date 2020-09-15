@@ -116,12 +116,12 @@ void AmrTrilinearInterpolater<Level>::stencil(
 
 template <class Level>
 void AmrTrilinearInterpolater<Level>::coarse(
-    const AmrIntVect_t& iv,
-    umap_t& map,
-    const scalar_t& scale,
-    lo_t dir, lo_t shift, const basefab_t& rfab,
-    const AmrIntVect_t& riv,
-    Level* mglevel)
+    const AmrIntVect_t& /*iv*/,
+    umap_t& /*map*/,
+    const scalar_t& /*scale*/,
+    lo_t /*dir*/, lo_t /*shift*/, const basefab_t& /*rfab*/,
+    const AmrIntVect_t& /*riv*/,
+    Level* /*mglevel*/)
 {
     // do nothing
 }
@@ -132,7 +132,7 @@ void AmrTrilinearInterpolater<Level>::fine(
     const AmrIntVect_t& iv,
     umap_t& map,
     const scalar_t& scale,
-    lo_t dir, lo_t shift, const basefab_t& fab,
+    lo_t /*dir*/, lo_t /*shift*/, const basefab_t& fab,
     Level* mglevel)
 {
     /*
