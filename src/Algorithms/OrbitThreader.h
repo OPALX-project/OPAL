@@ -50,9 +50,9 @@ public:
     IndexMap::value_t query(IndexMap::key_t::first_type step,
                             IndexMap::key_t::second_type length);
 
-    std::pair<double, double> getRange(const IndexMap::value_t::value_type &element,
-                                       double position) const;
-    IndexMap::value_t getTouchingElements(const std::pair<double, double> &range) const;
+    IndexMap::key_t getRange(const IndexMap::value_t::value_type &element,
+                             double position) const;
+    IndexMap::value_t getTouchingElements(const IndexMap::key_t &range) const;
 
 private:
     /// position of reference particle in lab coordinates
@@ -125,13 +125,13 @@ IndexMap::value_t OrbitThreader::query(IndexMap::key_t::first_type pathLength,
 }
 
 inline
-std::pair<double, double> OrbitThreader::getRange(const IndexMap::value_t::value_type &element,
-                                                  double position) const {
+IndexMap::key_t OrbitThreader::getRange(const IndexMap::value_t::value_type &element,
+                                        double position) const {
     return imap_m.getRange(element, position);
 }
 
 inline
-IndexMap::value_t OrbitThreader::getTouchingElements(const std::pair<double, double> &range) const {
+IndexMap::value_t OrbitThreader::getTouchingElements(const IndexMap::key_t &range) const {
     return imap_m.getTouchingElements(range);
 }
 

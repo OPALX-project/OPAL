@@ -36,7 +36,14 @@
 class IndexMap
 {
 public:
-    typedef std::pair<double, double> key_t;
+    struct Range
+    {
+        typedef double first_type;
+        typedef double second_type;
+        first_type begin;
+        second_type end;
+    };
+    typedef Range key_t;
     typedef std::set<std::shared_ptr<Component> > value_t;
 
     IndexMap();
@@ -52,9 +59,8 @@ public:
     size_t size() const;
 
     size_t numElements() const;
-    std::pair<double, double> getRange(const IndexMap::value_t::value_type &element,
-                                       double position) const;
-    IndexMap::value_t getTouchingElements(const std::pair<double, double> &range) const;
+    key_t getRange(const IndexMap::value_t::value_type &element, double position) const;
+    value_t getTouchingElements(const key_t &range) const;
 
     class OutOfBounds: public OpalException {
     public:
@@ -75,10 +81,10 @@ private:
     public:
         bool operator()(const key_t x , const key_t y) const
         {
-            if (x.first < y.first) return true;
+            if (x.begin < y.begin) return true;
 
-            if (x.first == y.first) {
-                if (x.second < y.second) return true;
+            if (x.begin == y.begin) {
+                if (x.end < y.end) return true;
             }
 
             return false;

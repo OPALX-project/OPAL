@@ -24,7 +24,8 @@ public:
     void setOff();
 
     static bool SortAsc(const ClassicField &fle1, const ClassicField &fle2) {
-        return (fle1.start_m < fle2.start_m);
+        return (fle1.start_m < fle2.start_m
+                || (fle1.start_m == fle2.start_m && fle1.element_m->getName() < fle2.element_m->getName()));
     }
 
     static bool ZeroLength(const ClassicField &fle) {

@@ -142,23 +142,6 @@ void OpalBeamline::switchElements(const double &min, const double &max, const do
     }
 }
 
-void OpalBeamline::switchElementsOff(const double &min, ElementBase::ElementType eltype) {
-    if(eltype == ElementBase::ANY) {
-        for(FieldList::iterator flit = elements_m.begin(); flit != elements_m.end(); ++ flit) {
-            if((*flit).isOn() && min >= (*flit).getEnd()) {
-                (*flit).setOff();
-            }
-
-        }
-    } else {
-        for(FieldList::iterator flit = elements_m.begin(); flit != elements_m.end(); ++ flit) {
-            if((*flit).isOn() && min >= (*flit).getEnd() && (*flit).getElement()->getType() == eltype) {
-                (*flit).setOff();
-            }
-        }
-    }
-}
-
 void OpalBeamline::switchElementsOff() {
     for(FieldList::iterator flit = elements_m.begin(); flit != elements_m.end(); ++ flit)
         (*flit).setOff();
@@ -169,6 +152,7 @@ void OpalBeamline::prepareSections() {
         prepared_m = true;
         return;
     }
+    elements_m.sort(ClassicField::SortAsc);
     prepared_m = true;
 }
 
@@ -221,22 +205,11 @@ void OpalBeamline::compute3DLattice() {
     static unsigned int order = 0;
     const FieldList::iterator end = elements_m.end();
 
-
     unsigned int minOrder = order;
     {
         double endPriorPathLength = 0.0;
         CoordinateSystemTrafo currentCoordTrafo = coordTransformationTo_m;
 
-        elements_m.sort([](const ClassicField& a, const ClassicField& b) {
-                double edgeA = 0.0, edgeB = 0.0;
-                if (a.getElement()->isElementPositionSet())
-                    edgeA = a.getElement()->getElementPosition();
-
-                if (b.getElement()->isElementPositionSet())
-                    edgeB = b.getElement()->getElementPosition();
-
-                return edgeA < edgeB;
-            });
         FieldList::iterator it = elements_m.begin();
         for (; it != end; ++ it) {
             if ((*it).isPositioned()) {
@@ -376,8 +349,6 @@ void OpalBeamline::compute3DLattice() {
 
         (*it).fixPosition();
     }
-
-    elements_m.sort(ClassicField::SortAsc);
 }
 
 void OpalBeamline::save3DLattice() {
