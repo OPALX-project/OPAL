@@ -39,8 +39,8 @@
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/Drift.h"
-#include "AbsBeamline/FlexibleCollimator.h"
 #include "AbsBeamline/ElementBase.h"
+#include "AbsBeamline/FlexibleCollimator.h"
 #include "AbsBeamline/Marker.h"
 #include "AbsBeamline/Monitor.h"
 #include "AbsBeamline/Multipole.h"
@@ -49,10 +49,11 @@
 #include "AbsBeamline/RBend.h"
 #include "AbsBeamline/RBend3D.h"
 #include "AbsBeamline/RFCavity.h"
-#include "AbsBeamline/TravelingWave.h"
 #include "AbsBeamline/SBend.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
+#include "AbsBeamline/TravelingWave.h"
+#include "AbsBeamline/Undulator.h"
 
 #include "Beamlines/Beamline.h"
 #include "Elements/OpalBeamline.h"
@@ -142,6 +143,9 @@ public:
 
     /// Apply the algorithm to a RFCavity.
     virtual void visitTravelingWave(const TravelingWave &);
+  
+    /// Apply the algorithm to a Undulator.
+    virtual void visitUndulator(const Undulator &);
 
     /// Apply the algorithm to a SBend.
     virtual void visitSBend(const SBend &);
@@ -151,7 +155,7 @@ public:
 
     /// Apply the algorithm to a Solenoid.
     virtual void visitSolenoid(const Solenoid &);
-
+  
     /// Apply the algorithm to a Solenoid.
     virtual void visitSource(const Source &);
 
@@ -247,6 +251,9 @@ private:
     void computeExternalFields(OrbitThreader &oth);
     void computeWakefield(IndexMap::value_t &elements);
     void computeParticleMatterInteraction(IndexMap::value_t elements, OrbitThreader &oth);
+#ifdef OPAL_FEL
+    void computeUndulator(IndexMap::value_t &elements);
+#endif
     void computeSpaceChargeFields(unsigned long long step);
     // void prepareOpalBeamlineSections();
     void dumpStats(long long step, bool psDump, bool statDump);
@@ -338,6 +345,9 @@ inline void ParallelTTracker::visitTravelingWave(const TravelingWave &as) {
     itsOpalBeamline_m.visit(as, *this, itsBunch_m);
 }
 
+inline void ParallelTTracker::visitUndulator(const Undulator &u) {
+    itsOpalBeamline_m.visit(u, *this, itsBunch_m);
+}
 
 inline void ParallelTTracker::visitSBend(const SBend &bend) {
     itsOpalBeamline_m.visit(bend, *this, itsBunch_m);

@@ -41,6 +41,7 @@ set (_SRCS
     OpalSolenoid.cpp
     OpalSource.cpp
     OpalSplineTimeDependence.cpp
+    OpalUndulator.cpp
     OpalVariableRFCavity.cpp
     OpalVariableRFCavityFringeField.cpp
     OpalVerticalFFAMagnet.cpp
@@ -95,6 +96,7 @@ set (HDRS
     OpalSplineTimeDependence.h
     OpalStripper.h
     OpalTravelingWave.h
+    OpalUndulator.h
     OpalVariableRFCavity.h
     OpalVariableRFCavityFringeField.h
     OpalVerticalFFAMagnet.h

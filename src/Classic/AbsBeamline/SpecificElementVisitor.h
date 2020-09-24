@@ -45,6 +45,7 @@
 #include "AbsBeamline/VariableRFCavity.h"
 #include "AbsBeamline/VariableRFCavityFringeField.h"
 #include "AbsBeamline/TravelingWave.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/SBend.h"
 #include "AbsBeamline/SBend3D.h"
 #include "AbsBeamline/ScalingFFAMagnet.h"
@@ -154,6 +155,9 @@ public:
 
     /// Apply the algorithm to a RF cavity.
     virtual void visitTravelingWave(const TravelingWave &);
+
+    /// Apply the algorithm to a undulator.
+    virtual void visitUndulator(const Undulator &);
 
     /// Apply the algorithm to a sector bend.
     virtual void visitSBend(const SBend &);
@@ -340,6 +344,11 @@ void SpecificElementVisitor<ELEM>::visitRFCavity(const RFCavity &element) {
 template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitTravelingWave(const TravelingWave &element) {
     CastsTrait<ELEM, TravelingWave>::apply(allElementsOfTypeE, element);
+}
+
+template<class ELEM>
+void SpecificElementVisitor<ELEM>::visitUndulator(const Undulator &element) {
+    CastsTrait<ELEM, Undulator>::apply(allElementsOfTypeE, element);
 }
 
 template<class ELEM>

@@ -38,6 +38,7 @@ set (_SRCS
     Source.cpp
     Stripper.cpp
     TravelingWave.cpp
+    Undulator.cpp
     VariableRFCavity.cpp
     VariableRFCavityFringeField.cpp
     VerticalFFAMagnet.cpp
@@ -87,6 +88,7 @@ set (HDRS
     SpecificElementVisitor.h
     Stripper.h
     TravelingWave.h
+    Undulator.h
     VariableRFCavity.h
     VariableRFCavityFringeField.h
     VerticalFFAMagnet.h

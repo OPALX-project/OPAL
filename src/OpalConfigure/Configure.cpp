@@ -104,6 +104,7 @@
 #include "Elements/OpalSolenoid.h"
 #include "Elements/OpalSource.h"
 #include "Elements/OpalTravelingWave.h"
+#include "Elements/OpalUndulator.h"
 #include "Elements/OpalVKicker.h"
 //#include "Elements/OpalWire.h"
 #include "Elements/OpalStripper.h"
@@ -225,6 +226,7 @@ namespace {
         opal->create(new OpalSolenoid());
         opal->create(new OpalSource());
         opal->create(new OpalTravelingWave());
+        opal->create(new OpalUndulator());
         opal->create(new OpalVariableRFCavity());
         opal->create(new OpalVariableRFCavityFringeField());
         opal->create(new OpalVerticalFFAMagnet());

@@ -50,6 +50,7 @@
 #include "AbsBeamline/Source.h"
 #include "AbsBeamline/Stripper.h"
 #include "AbsBeamline/TravelingWave.h"
+#include "AbsBeamline/Undulator.h"
 #include "AbsBeamline/VariableRFCavity.h"
 #include "AbsBeamline/VariableRFCavityFringeField.h"
 #include "AbsBeamline/VerticalFFAMagnet.h"
@@ -180,6 +181,9 @@ void DefaultVisitor::visitTravelingWave(const TravelingWave &trw) {
     applyDefault(trw);
 }
 
+void DefaultVisitor::visitUndulator(const Undulator &u) {
+    applyDefault(u);
+}
 
 void DefaultVisitor::visitSBend(const SBend &bend) {
     applyDefault(bend);

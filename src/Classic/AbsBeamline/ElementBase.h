@@ -132,6 +132,7 @@ public:
                     , SOURCE
                     , STRIPPER
                     , TRAVELINGWAVE
+                    , UNDULATOR
                     , VARIABLERFCAVITY
                     , ANY};
 

@@ -24,6 +24,7 @@ set (_SRCS
     SourceRep.cpp
     StripperRep.cpp
     TravelingWaveRep.cpp
+    UndulatorRep.cpp
     XCorrectorRep.cpp
     YCorrectorRep.cpp
     )
@@ -61,6 +62,7 @@ set (HDRS
     SourceRep.h
     StripperRep.h
     TravelingWaveRep.h
+    UndulatorRep.h
     XCorrectorRep.h
     YCorrectorRep.h
     )

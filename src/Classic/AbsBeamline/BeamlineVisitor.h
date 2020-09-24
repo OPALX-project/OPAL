@@ -69,6 +69,7 @@ class Solenoid;
 class Source;
 class Stripper;
 class TravelingWave;
+class Undulator;
 class VariableRFCavity;
 class VariableRFCavityFringeField;
 class VerticalFFAMagnet;
@@ -155,6 +156,9 @@ public:
 
     /// Apply the algorithm to a RF cavity.
     virtual void visitTravelingWave(const TravelingWave &) = 0;
+
+    /// Apply the algorithm to a undulator space.
+    virtual void visitUndulator(const Undulator &) = 0;
 
     /// Apply the algorithm to a sector bend.
     virtual void visitSBend(const SBend &) = 0;

@@ -21,7 +21,6 @@
 //
 #include "Algorithms/ParallelTTracker.h"
 
-#include <cfloat>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -51,6 +50,10 @@
 #include "Solvers/ParticleMatterInteractionHandler.hh"
 #include "Structure/BoundaryGeometry.h"
 #include "AbsBeamline/Monitor.h"
+
+#ifdef OPAL_FEL
+#include "BeamlineCore/UndulatorRep.h"
+#endif
 
 class PartData;
 
@@ -573,6 +576,9 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
     IpplTimings::stopTimer(fieldEvaluationTimer_m);
 
     computeWakefield(elements);
+#ifdef OPAL_FEL
+    computeUndulator(elements);
+#endif
     computeParticleMatterInteraction(elements, oth);
 
     reduce(locPartOutOfBounds, globPartOutOfBounds, OpOrAssign());
@@ -598,6 +604,30 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
             << "remaining " << numParticlesInSimulation_m << " particles" << endl;
     }
 }
+
+#ifdef OPAL_FEL
+void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
+    // Check if bunch has entered undulator field.
+    UndulatorRep* und;
+    IndexMap::value_t::const_iterator it = elements.begin();
+    for (; it != elements.end(); ++ it)
+        if ((*it)->getType() == ElementBase::UNDULATOR) {
+            und = dynamic_cast<UndulatorRep*>(it->get());
+            if (!und->getHasBeenSimulated())
+                break;
+        }
+    if (it == elements.end())
+        return;
+
+    // Apply MITHRA full wave solver for undulator.
+    CoordinateSystemTrafo refToLocalCSTrafo = (itsOpalBeamline_m.getMisalignment((*it)) *
+                                               (itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * itsBunch_m->toLabTrafo_m));
+    
+    und->apply(itsBunch_m, refToLocalCSTrafo);
+
+    evenlyDistributeParticles();
+}
+#endif
 
 void ParallelTTracker::computeWakefield(IndexMap::value_t &elements) {
     bool hasWake = false;
