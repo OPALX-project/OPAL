@@ -31,7 +31,7 @@
 #include "TrimCoils/TrimCoilPhaseFit.h"
 #include "TrimCoils/TrimCoilMirrored.h"
 #include "Utilities/OpalException.h"
-#include "Utility/IpplInfo.h"
+#include "Utility/Inform.h"
 
 extern Inform *gmsg;
 

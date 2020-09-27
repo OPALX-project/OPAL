@@ -11,8 +11,6 @@
 #include "Utilities/Util.h"
 #include "Physics/Physics.h"
 
-#include <boost/filesystem.hpp>
-
 #include <sstream>
 #include <set>
 

@@ -21,8 +21,6 @@
 #ifndef __COMM_TYPES__
 #define __COMM_TYPES__
 
-#include <vector>
-
 #include "mpi.h"
 
 namespace Comm {

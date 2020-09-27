@@ -49,10 +49,6 @@ bool Configure(int argc, char *argv[], InterPolT *interPol,
   Inform msg("Configure ");
   Inform errmsg("Error ");
 
-  string bc_str;
-  string interPol_str;
-  string dist_str;
-
   for (int i=1; i < argc; ++i) {
     string s(argv[i]);
     if (s == "-grid") {

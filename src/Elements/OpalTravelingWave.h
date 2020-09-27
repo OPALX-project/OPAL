@@ -33,15 +33,9 @@ public:
         FREQ,           // The RF frequency.
         LAG,            // The phase lag.
         DLAG,           // The phase lag error
-        HARMON,         // The harmonic number.
-        BETARF,         // The beta_RF.
-        PG,             // The RF power.
-        ZSHUNT,         // The shunt impedance.
-        TFILL,          // The filling time.
         FMAPFN,         // The filename of the fieldmap
         APVETO,         // Do not use this cavity in the Autophase procedure
         FAST,           // Faster but less accurate
-        CAVITYTYPE,     // STANDING or TRAVELING wave structure
         NUMCELLS,       // Number of cells in a TW structure
         DESIGNENERGY,   // The mean kinetic energy at exit
         MODE,           // The phase shift between cells

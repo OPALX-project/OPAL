@@ -15,7 +15,7 @@
 #include "FFT/FFT.h"
 #include "FieldLayout/FieldLayout.h"
 #include "Field/BareField.h"
-#include "Utility/IpplStats.h"
+//#include "Utility/IpplStats.h"
 
 //=============================================================================
 // FFT CCTransform Constructors

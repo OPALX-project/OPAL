@@ -27,6 +27,8 @@
 
 #include "Algorithms/PolynomialTimeDependence.h"
 
+#include "Utility/Inform.h"
+
 Inform &PolynomialTimeDependence::print(Inform &os) {
   Inform::FmtFlags_t ff = os.flags();
   os << std::scientific;

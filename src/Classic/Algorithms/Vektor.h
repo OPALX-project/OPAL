@@ -5,11 +5,4 @@
 
 typedef Vektor<double, 3> Vector_t;
 
-/// comment: this should go to AppTypes/Vektor.h
-
-inline
-double euclidean_norm(Vector_t a) {
-    return std::sqrt(dot(a,a));
-}
-
 #endif

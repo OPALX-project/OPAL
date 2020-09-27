@@ -38,7 +38,6 @@
 #include <vector>
 
 #include "Utilities/Options.h"
-#include "Utilities/Options.h"
 #include "Utilities/OpalException.h"
 #include "Physics/Physics.h"
 

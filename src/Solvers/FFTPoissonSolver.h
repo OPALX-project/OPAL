@@ -32,12 +32,16 @@
 //////////////////////////////////////////////////////////////
 #include "PoissonSolver.h"
 
+#include "FFT/FFT.h"
+
 class PartBunch;
 
 //////////////////////////////////////////////////////////////
 
 class FFTPoissonSolver : public PoissonSolver {
 public:
+    typedef FFT<RCTransform, 3, double>              FFT_t;
+
     // constructor and destructor
     FFTPoissonSolver(PartBunch &bunch, std::string greensFuntion);
 

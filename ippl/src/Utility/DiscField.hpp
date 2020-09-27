@@ -27,7 +27,6 @@
 #include "Utility/DiscField.h"
 #include "Utility/DiscConfig.h"
 #include "Utility/DiscMeta.h"
-#include "Field/BrickIterator.h"
 #include "Message/Tags.h"
 
 #include "Utility/PAssert.h"

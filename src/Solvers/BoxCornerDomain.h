@@ -28,14 +28,13 @@
 
 #include <map>
 #include <string>
-#include <cmath>
-#include "Solvers/RegularDomain.h"
+#include <utility>
 
+#include "Solvers/RegularDomain.h"
 
 /*
 
-    A and B are the half apperture of the box
-
+    A and B are the half aperture of the box
 
                                      / (A,B)
                                     /
@@ -85,7 +84,7 @@ public:
                     std::string interpl);
     ~BoxCornerDomain();
 
-    /// as a function of z, determine the hight (B) of the geometry
+    /// as a function of z, determine the height (B) of the geometry
     inline double getB(double z) const {
       if((z < getZRangeMin()) || (z > getZRangeMax()))
             return getYRangeMax();
@@ -123,13 +122,8 @@ private:
 
     double actBMax_m;
 
-    /// length of the structure
-    double length_m;
-
     /// height of the corner
     double C_m;
-
-
 
     inline double getXIntersection(double cx, int /*z*/) const {
         return (cx < 0) ? getXRangeMin() : getXRangeMax();

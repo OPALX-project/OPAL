@@ -35,7 +35,7 @@
 #include "Utilities/Util.h"
 #include "Utilities/Timer.h"
 
-#include "Ippl.h"
+#include "Utility/Inform.h"
 
 #include <gsl/gsl_randist.h>
 
@@ -43,6 +43,8 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+
+#include <sys/time.h>
 
 namespace {
     struct DegraderInsideTester: public InsideTester {
@@ -301,7 +303,7 @@ bool CollimatorPhysics::computeEnergyLoss(Vector_t &P,
     double gamma = Util::getGamma(P);
     const double gammaSqr = std::pow(gamma, 2);
     const double betaSqr = 1.0 - 1.0 / gammaSqr;
-    double beta = sqrt(betaSqr);
+    double beta = std::sqrt(betaSqr);
     double Ekin = (gamma - 1) * massProton_keV;
     double dEdx = 0.0;
 
@@ -329,12 +331,12 @@ bool CollimatorPhysics::computeEnergyLoss(Vector_t &P,
     }
 
     if (includeFluctuations) {
-        double sigma_E = sqrt(K * massElectron_keV * rho_m * (Z_m / A_m) * deltas * m2cm);
+        double sigma_E = std::sqrt(K * massElectron_keV * rho_m * (Z_m / A_m) * deltas * m2cm);
         Ekin += gsl_ran_gaussian(rGen_m, sigma_E);
     }
 
     gamma = Ekin / massProton_keV + 1.0;
-    beta = sqrt(1.0 - 1.0 / std::pow(gamma, 2));
+    beta = std::sqrt(1.0 - 1.0 / std::pow(gamma, 2));
     P = gamma * beta * P / euclidean_norm(P);
 
     bool stopped = (Ekin < 10 || dEdx > 0);
@@ -364,10 +366,10 @@ void  CollimatorPhysics::applyRotation(Vector_t &P,
 
 void CollimatorPhysics::applyRandomRotation(Vector_t &P, double theta0) {
 
-    double thetaru = 2.5 / sqrt(gsl_rng_uniform(rGen_m)) * 2.0 * theta0;
+    double thetaru = 2.5 / std::sqrt(gsl_rng_uniform(rGen_m)) * 2.0 * theta0;
     double phiru = Physics::two_pi * gsl_rng_uniform(rGen_m);
 
-    double normPtrans = sqrt(P(0) * P(0) + P(1) * P(1));
+    double normPtrans = std::sqrt(P(0) * P(0) + P(1) * P(1));
     double Theta = std::atan(normPtrans / std::abs(P(2)));
     double CosT = cos(Theta);
     double SinT = sin(Theta);
@@ -397,10 +399,10 @@ void  CollimatorPhysics::computeCoulombScattering(Vector_t &R,
     constexpr double sqrtThreeInv = 0.57735026918962576451; // sqrt(1.0 / 3.0)
     const double normP = euclidean_norm(P);
     const double gammaSqr = std::pow(normP, 2) + 1.0;
-    const double beta = sqrt(1.0 - 1.0 / gammaSqr);
+    const double beta = std::sqrt(1.0 - 1.0 / gammaSqr);
     const double deltas = dt * beta * Physics::c;
     const double theta0 = (13.6e6 / (beta * normP * massProton_eV) *
-                           chargeProton * sqrt(deltas / X0_m) *
+                           chargeProton * std::sqrt(deltas / X0_m) *
                            (1.0 + 0.038 * log(deltas / X0_m)));
 
     double phi = Physics::two_pi * gsl_rng_uniform(rGen_m);
@@ -503,7 +505,7 @@ void CollimatorPhysics::copyFromBunch(PartBunchBase<double, 3> *bunch,
             hitTester_m->checkHit(bunch->R[i]))
         {
             // adjust the time step for those particles that enter the material
-            // such that it corresponds to the time needed to reach the curren
+            // such that it corresponds to the time needed to reach the current
             // location form the edge of the material. Only use this time step
             // for the computation of the interaction with the material, not for
             // the integration of the particles. This will ensure that the momenta
@@ -572,31 +574,6 @@ void CollimatorPhysics::print(Inform &msg) {
 
 bool CollimatorPhysics::stillActive() {
     return totalPartsInMat_m != 0;
-}
-
-bool CollimatorPhysics::stillAlive(PartBunchBase<double, 3> *bunch) {
-
-    bool degraderAlive = true;
-
-    //free GPU memory in case element is degrader, it is empty and bunch has moved past it
-    if (collshape_m == ElementBase::DEGRADER && totalPartsInMat_m == 0) {
-        Degrader *deg = static_cast<Degrader *>(element_ref_m);
-
-        //get the size of the degrader
-        double zBegin, zEnd;
-        deg->getDimensions(zBegin, zEnd);
-
-        //get the average Z position of the bunch
-        Vector_t bunchOrigin = bunch->get_origin();
-
-        //if bunch has moved past degrader free GPU memory
-        if (bunchOrigin[2] > zBegin) {
-            degraderAlive = false;
-        }
-    }
-
-    return degraderAlive;
-
 }
 
 namespace {

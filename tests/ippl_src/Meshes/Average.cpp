@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 
+#include "Field/Field.h"
 #include "Meshes/UniformCartesian.h"
 
 // set dimensionality and problem size

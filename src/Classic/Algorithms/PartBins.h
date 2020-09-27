@@ -25,8 +25,6 @@
 #include <memory>
 #include <vector>
 
-#include "Algorithms/PBunchDefs.h"
-
 class Inform;
 
 class PartBins {

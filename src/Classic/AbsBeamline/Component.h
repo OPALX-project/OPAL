@@ -25,7 +25,6 @@
 
 #include "AbsBeamline/ElementBase.h"
 #include "Fields/EMField.h"
-#include "Algorithms/Vektor.h"
 
 class PartData;
 

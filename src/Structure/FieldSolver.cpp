@@ -73,10 +73,10 @@ namespace {
         // FOR FFT BASED SOLVER
         MX,         // mesh sixe in x
         MY,         // mesh sixe in y
-        MT,         //  mesh sixe in z
-        PARFFTX,    // parallelized grind in x
-        PARFFTY,    // parallelized grind in y
-        PARFFTT,    // parallelized grind in z
+        MT,         // mesh sixe in z
+        PARFFTX,    // parallelized grid in x
+        PARFFTY,    // parallelized grid in y
+        PARFFTT,    // parallelized grid in z
         BCFFTX,     // boundary condition in x [FFT + AMR_MG only]
         BCFFTY,     // boundary condition in y [FFT + AMR_MG only]
         BCFFTZ,     // boundary condition in z [FFT + AMR_MG only]
@@ -135,7 +135,6 @@ FieldSolver::FieldSolver():
                                                       "FFT, "
                                                       "FFTPERIODIC, "
                                                       "SAAMG, "
-                                                      "AMR, "
                                                       "NONE ");
 
     itsAttr[MX] = Attributes::makeReal("MX", "Meshsize in x");
@@ -248,15 +247,15 @@ FieldSolver::FieldSolver():
                                                  16);
 
     itsAttr[AMR_BFX] = Attributes::makeReal("AMR_BFX",
-                                            "Blocking factor in x for AMR (AMR_MAXGRIDX needs to be a multiple",
+                                            "Blocking factor in x for AMR (AMR_MAXGRIDX needs to be a multiple)",
                                             8);
 
     itsAttr[AMR_BFY] = Attributes::makeReal("AMR_BFY",
-                                            "Blocking factor in y for AMR (AMR_MAXGRIDY needs to be a multiple",
+                                            "Blocking factor in y for AMR (AMR_MAXGRIDY needs to be a multiple)",
                                             8);
 
     itsAttr[AMR_BFZ] = Attributes::makeReal("AMR_BFZ",
-                                            "Blocking factor in y for AMR (AMR_MAXGRIDZ needs to be a multiple",
+                                            "Blocking factor in y for AMR (AMR_MAXGRIDZ needs to be a multiple)",
                                             8);
 
     itsAttr[AMR_TAGGING] = Attributes::makeUpperCaseString("AMR_TAGGING",
@@ -278,7 +277,7 @@ FieldSolver::FieldSolver():
     itsAttr[AMR_SCALING] = Attributes::makeReal("AMR_SCALING",
                                                 "Scaling value for maximum value tagging "
                                                 "(only POTENTIAL / CHARGE_DENSITY / "
-                                                "MOMENTA", 0.75);
+                                                "MOMENTA)", 0.75);
 
     itsAttr[AMR_DOMAIN_RATIO] = Attributes::makeRealArray("AMR_DOMAIN_RATIO",
                                                          "Box ratio of AMR computation domain. Default: [-1, 1]^3");

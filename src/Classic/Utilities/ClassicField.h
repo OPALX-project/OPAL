@@ -1,12 +1,9 @@
 #ifndef CLASSIC_FIELD_H
 #define CLASSIC_FIELD_H
 
-#include <vector>
 #include <list>
 #include <memory>
 #include "AbsBeamline/Component.h"
-#include "Algorithms/Quaternion.h"
-#include "Algorithms/CoordinateSystemTrafo.h"
 
 class ClassicField {
 public:
@@ -34,10 +31,6 @@ public:
 
     ElementBase::BoundingBox getBoundingBoxInLabCoords() const;
 
-    CoordinateSystemTrafo getCoordTransformationTo() const ;
-    void setCoordTransformationTo(const CoordinateSystemTrafo &trafo);
-    bool isPositioned() const;
-    void fixPosition();
     unsigned int order_m;
 private:
     std::shared_ptr<Component> element_m;
@@ -78,26 +71,6 @@ inline void ClassicField::setStart(const double & z) {
 
 inline void ClassicField::setEnd(const double & z) {
     end_m = z;
-}
-
-inline
-CoordinateSystemTrafo ClassicField::getCoordTransformationTo() const {
-    return element_m->getCSTrafoGlobal2Local();
-}
-
-inline
-void ClassicField::setCoordTransformationTo(const CoordinateSystemTrafo &trafo) {
-    element_m->setCSTrafoGlobal2Local(trafo);
-}
-
-inline
-bool ClassicField::isPositioned() const {
-    return element_m->isPositioned();
-}
-
-inline
-void ClassicField::fixPosition() {
-    element_m->fixPosition();
 }
 
 inline

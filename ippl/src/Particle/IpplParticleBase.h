@@ -95,15 +95,18 @@
 
 // include files
 #include "Particle/AbstractParticle.h"
+#include "Particle/ParticleAttribBase.h"
+#include "Particle/ParticleLayout.h"
 #include "AppTypes/Vektor.h"
 #include "DataSource/DataSource.h"
 #include "DataSource/MakeDataSource.h"
 #include "Message/Formatter.h"
 #include <vector>
-#include <algorithm>  // Include algorithms
 #include <utility>
 #include <iostream>
 
+template <class T, unsigned Dim>
+using PLayout = ParticleLayout<T, Dim>;
 
 // forward declarations
 class Inform;
@@ -120,7 +123,6 @@ template <class T, unsigned D> class ParticleBConds;
 template<class PLayout>
 class IpplParticleBase : public DataSource,
                          public AbstractParticle<typename PLayout::Position_t, PLayout::Dimension> {
-
 public:
     // useful enums
     enum { Dim = PLayout::Dimension };

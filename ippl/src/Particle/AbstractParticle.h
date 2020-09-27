@@ -22,7 +22,9 @@
 #define ABSTRACT_PARTICLE_H
 
 #include "Particle/ParticleLayout.h"
-#include "Particle/ParticleAttrib.h"
+
+template<class T> class ParticleAttrib;
+class ParticleAttribBase;
 
 template <class T, unsigned Dim>
 class AbstractParticle {

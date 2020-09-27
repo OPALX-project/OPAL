@@ -18,29 +18,36 @@
 #ifndef PART_BUNCH_BASE_H
 #define PART_BUNCH_BASE_H
 
-#include "Ippl.h"
-#include "Particle/AbstractParticle.h" //TODO should be in Ippl.h
-#include "Algorithms/PBunchDefs.h"
-#include "Algorithms/OpalParticle.h"
+#include "Utility/IpplTimings.h"
+#include "Particle/AbstractParticle.h"
+#include "Particle/ParticleAttrib.h"
+
 #include "Algorithms/CoordinateSystemTrafo.h"
+#include "Algorithms/OpalParticle.h"
+#include "Algorithms/PBunchDefs.h"
+#include "Algorithms/Quaternion.h"
+#include "Algorithms/Vektor.h"
+
 #include "FixedAlgebra/FMatrix.h"
 #include "FixedAlgebra/FVector.h"
-#include "Algorithms/PartBins.h"
-#include "Algorithms/PartBinsCyc.h"
-#include "Algorithms/PartData.h"
-#include "Algorithms/Quaternion.h"
 
 #include <memory>
 #include <utility>
 #include <vector>
 
-#include "Structure/FieldSolver.h"
-#include "Algorithms/ListElem.h"
-
 class Distribution;
+class FieldSolver;
+class PartBins;
+class PartBinsCyc;
+class PartData;
 
-template <class T, int, int> class FMatrix;
-template <class T, int> class FVector;
+namespace ParticleType {
+    enum type { REGULAR,
+                FIELDEMISSION,
+                SECONDARY,
+                NEWSECONDARY,
+                STRIPPED};
+}
 
 template <class T, unsigned Dim>
 class PartBunchBase
@@ -58,8 +65,6 @@ public:
     enum UnitState_t { units = 0, unitless = 1 };
 
 public:
-
-    explicit PartBunchBase(AbstractParticle<T, Dim>* pb);
 
     virtual ~PartBunchBase() { }
 
@@ -629,7 +634,7 @@ protected:
     int distDump_m;
 
     /// Mesh enlargement
-    double dh_m; /// in % how much the mesh is enlarged
+    double dh_m; /// relative enlargement of the mesh
 
     /// if larger than 0, emitt particles for tEmission_m [s]
     double tEmission_m;

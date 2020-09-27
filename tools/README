@@ -4,3 +4,6 @@ Unpack the sources, change to the directory epics/extensions/src/ and then upack
 in this directory. Finally apply the patch SDDS.patch with the command
 $ patch -p1 < /path/to/patch/SDDS.patch
 Now you can use cmake to compile and install the SDDS library.
+
+Comment from Christof:
+These two programs (not scripts) export particle positions and momenta from HDF5 files to SDDS and from SDDS to ASCII (which then can be used to as FROMFILE distribution)

@@ -26,6 +26,7 @@
 #include "Parser/TokenStream.h"
 #include "Utilities/ParseError.h"
 
+#include "Utility/IpplInfo.h"
 
 // class IfStatement
 //   Statement of the form "IF ( <condition> ) <statement>".

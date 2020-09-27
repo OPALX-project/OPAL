@@ -31,7 +31,6 @@
  * of resolving who needs to free up the storage used for the Message elements.
  ***************************************************************************/
 
-#include "Utility/Inform.h"
 #include <complex>
 #include <cstddef>
 #include <vector>

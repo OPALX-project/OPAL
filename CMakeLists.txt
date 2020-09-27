@@ -41,6 +41,7 @@ set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS OFF)
 
+# Disable compile time assert (used by IPPL)
 add_definitions (-DNOCTAssert)
 
 add_compile_options (-Wall)
@@ -171,7 +172,7 @@ if (ENABLE_AMR)
 endif ()
 
 option (ENABLE_AMR_MG_SOLVER "Enable AMR MG solver" OFF)
-option (ENABLE_SAAMG_SOLVER "Enable iteartive SA-AMG-PCG self field solver" OFF)
+option (ENABLE_SAAMG_SOLVER "Enable iterative SA-AMG-PCG self field solver" OFF)
 if (ENABLE_SAAMG_SOLVER OR ENABLE_AMR_MG_SOLVER)
     #
     # :FIXME: We have to add checks whether the required Trilinos modules

@@ -18,8 +18,9 @@
 
 #include "BasicActions/PSystem.h"
 
-#include "Ippl.h"
 #include "Attributes/Attributes.h"
+
+#include "Utility/IpplInfo.h"
 
 #include <cstdlib>
 // Class PSystem

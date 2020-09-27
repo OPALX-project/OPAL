@@ -25,8 +25,6 @@
 #include "FixedAlgebra/FArray1D.h"
 #include "FixedAlgebra/FMonomial.h"
 
-#define DEBUG_FTpsData_H
-
 // Template class FTpsData<N>
 // ------------------------------------------------------------------------
 /// Internal utility class for FTps<T,N> class.

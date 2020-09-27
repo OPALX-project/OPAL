@@ -49,10 +49,6 @@ bool Configure(int argc, char *argv[], InterPolT *interPol,
   Inform msg("Configure ");
   Inform errmsg("Error ");
 
-  string bc_str;
-  string interPol_str;
-  string dist_str;
-
   for (int i=1; i < argc; ++i) {
     string s(argv[i]);
     if (s == "-grid") {
@@ -248,15 +244,3 @@ int main(int argc, char *argv[])
     testmsg << " ||d||= " << fabs(realDiff) << endl;
     return 0;
 }
-
-/***************************************************************************
- * $RCSfile: TestFFT-SSP.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:36 $
- ***************************************************************************/
-
-/***************************************************************************
- * $RCSfile: addheaderfooter,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:17 $
- * IPPL_VERSION_ID: $Id: addheaderfooter,v 1.1.1.1 2003/01/23 07:40:17 adelmann Exp $ 
- ***************************************************************************/
-

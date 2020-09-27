@@ -17,31 +17,23 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Algorithms/PartBunch.h"
-#include "FixedAlgebra/FMatrix.h"
-#include "FixedAlgebra/FVector.h"
+
 #include <cfloat>
 #include <memory>
 #include <utility>
 
-
-#include "Distribution/Distribution.h"  // OPAL file
-#include "Structure/FieldSolver.h"      // OPAL file
-#include "Utilities/GeneralClassicException.h"
+#include "FixedAlgebra/FMatrix.h"
+#include "FixedAlgebra/FVector.h"
+#include "Particle/ParticleBalancer.h"
 
 #include "Algorithms/ListElem.h"
-
-#include <gsl/gsl_rng.h>
-#include <gsl/gsl_histogram.h>
-#include <gsl/gsl_cdf.h>
-#include <gsl/gsl_randist.h>
-#include <gsl/gsl_sf_erf.h>
-#include <gsl/gsl_qrng.h>
+#include "Distribution/Distribution.h"
+#include "Structure/FieldSolver.h"
+#include "Utilities/GeneralClassicException.h"
 
 #ifdef DBG_SCALARFIELD
     #include "Structure/FieldWriter.h"
 #endif
-
-
 
 //#define FIELDSTDOUT
 
@@ -345,7 +337,7 @@ void PartBunch::resizeMesh() {
                R[n](1) < ymin || R[n](1) > ymax) {
 
                 // delete the particle
-                INFOMSG(level2 << "destroyed particle with id=" << ID[n] << endl;);
+                INFOMSG(level2 << "destroyed particle with id=" << ID[n] << endl);
                 destroy(1, n);
             }
 
@@ -830,38 +822,6 @@ void PartBunch::updateFields(const Vector_t& /*hr*/, const Vector_t& origin) {
                     GuardCellSizes<Dimension>(1),
                     vbc_m);
 }
-
-
-/**
- * Here we emit particles from the cathode. All particles in a new simulation (not a restart) initially reside in the bin
- container "pbin_m" and are not part of the beam bunch (so they cannot "see" fields, space charge etc.). In pbin_m, particles
- are sorted into the bins of a time histogram that describes the longitudinal time distribution of the beam, where the number
- of bins is given by \f$NBIN \times SBIN\f$. \f$NBIN\f$ and \f$SBIN\f$ are parameters given when defining the initial beam
- distribution. During emission, the time step of the simulation is set so that an integral number of these bins are emitted each step.
- Once all of the particles have been emitted, the simulation time step is reset to the value defined in the input file.
-
- A typical integration time step, \f$\Delta t\f$, is broken down into 3 sub-steps:
-
- 1) Drift particles for \f$\frac{\Delta t}{2}\f$.
-
- 2) Calculate fields and advance momentum.
-
- 3) Drift particles for \f$\frac{\Delta t}{2}\f$ at the new momentum to complete the
- full time step.
-
- The difficulty for emission is that at the cathode position there is a step function discontinuity in the  fields. If we
- apply the typical integration time step across this boundary, we get an artificial numerical bunching of the beam, especially
- at very high accelerating fields. This function takes the cathode position boundary into account in order to achieve
- smoother particle emission.
-
- During an emission step, an integral number of time bins from the distribution histogram are emitted. However, each particle
- contained in those time bins will actually be emitted from the cathode at a different time, so will only spend some fraction
- of the total time step, \f$\Delta t_{full-timestep}\f$, in the simulation. The trick to emission is to give each particle
- a unique time step, \f$Delta t_{temp}\f$, that is equal to the actual time during the emission step that the particle
- exists in the simulation. For the next integration time step, the particle's time step is set back to the global time step,
- \f$\Delta t_{full-timestep}\f$.
-  */
-
 
 inline
 PartBunch::VectorPair_t PartBunch::getEExtrema() {

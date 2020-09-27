@@ -7,6 +7,7 @@ set (_HDRS
     FFTBase.h
     FFT.hpp
     FFT.h
+    fftpack.h
     fftpack_FFT.h
     )
 

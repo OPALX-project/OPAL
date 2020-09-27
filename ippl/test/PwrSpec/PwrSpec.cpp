@@ -195,7 +195,7 @@ void PwrSpec<T,Dim>::CICforward(ChargedParticles<T,Dim> *univ)
 
     rho_m[gDomainL_m]  = rhocic_m[gDomainL_m];
 
-    INFOMSG("rhocic_m= " << sum(rhocic_m) << " sum(M)= " << sum(univ->M) << " rho_m= " << sum(rho_m) << endl;);
+    INFOMSG("rhocic_m= " << sum(rhocic_m) << " sum(M)= " << sum(univ->M) << " rho_m= " << sum(rho_m) << endl);
 }
 
 /***************************************************************************

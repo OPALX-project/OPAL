@@ -26,9 +26,10 @@
 #ifndef IRREGULAR_DOMAIN_H
 #define IRREGULAR_DOMAIN_H
 
-#include <vector>
+#include <map>
 #include <string>
-#include "Algorithms/PBunchDefs.h"
+#include "Algorithms/Vektor.h"
+#include "Algorithms/Quaternion.h"
 
 /// enumeration corresponding to different interpolation methods at the boundary
 enum {

@@ -11,9 +11,6 @@
 
 #include "Structure/H5PartWrapper.h"
 
-#include "Algorithms/PBunchDefs.h"
-#include "Utilities/OpalException.h"
-
 #include "H5hut.h"
 
 class H5PartWrapperForPT: public H5PartWrapper {

@@ -3,10 +3,10 @@ set (_SRCS
 
 set (_HDRS
     Assign.hpp
+    Assign.h
     AssignDefs.h
     AssignGeneralBF.hpp
     AssignGeneralIBF.hpp
-    Assign.h
     AssignTags.h
     BareField.hpp
     BareField.h

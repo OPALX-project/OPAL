@@ -31,6 +31,8 @@
 #include "Utilities/GeneralClassicException.h"
 #include "Algorithms/SplineTimeDependence.h"
 
+#include "Utility/Inform.h"
+
 SplineTimeDependence::SplineTimeDependence(size_t splineOrder,
                                            std::vector<double> times,
                                            std::vector<double> values)

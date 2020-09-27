@@ -29,6 +29,8 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include <memory>
+#include <queue>
 #include <utility>
 #include <fstream>
 #include <list>
@@ -44,9 +46,6 @@
 #include "Sample/SamplingMethod.h"
 
 #include <boost/smart_ptr.hpp>
-#include <boost/chrono.hpp>
-#include <boost/property_tree/ptree.hpp>
-
 
 class Sampler : public Optimizer {
 

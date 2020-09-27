@@ -1,8 +1,7 @@
 #ifndef __OPAL_H__
 #define __OPAL_H__
 
-#include "Ippl.h"
-
+#include "Utility/IpplInfo.h"
 
 int run_opal(char *arg[],
              std::string inputfile,

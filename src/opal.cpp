@@ -3,7 +3,6 @@
 extern Ippl *ippl;
 extern Inform *gmsg;
 
-
 #include "AbstractObjects/OpalData.h"
 #include "OpalConfigure/Configure.h"
 #include "OpalParser/OpalParser.h"
@@ -19,6 +18,12 @@ extern Inform *gmsg;
     #include <AMReX.H>
 #endif
 
+#include "Message/Communicate.h"
+
+#include <fstream>
+#include <iostream>
+#include <limits>
+#include <string>
 
 int run_opal(char */*args*/[], std::string inputfile, int restartStep,
              int infoLevel, int warnLevel, MPI_Comm comm)

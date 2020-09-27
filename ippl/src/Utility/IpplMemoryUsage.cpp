@@ -40,6 +40,9 @@
 //
 #include "Utility/IpplMemoryUsage.h"
 
+#include "Message/GlobalComm.h"
+#include "Utility/IpplInfo.h"
+
 //////////////////////////////////////////////////////////////////////
 IpplMemoryUsage::IpplMemoryUsage()
 { }

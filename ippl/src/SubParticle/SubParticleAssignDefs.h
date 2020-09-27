@@ -13,7 +13,7 @@
 
 // include files
 #include "SubField/SubFieldAssignDefs.h"
-#include "SubParticle/SubParticleAssign.h"
+#include "SubParticle/SubParticleAttrib.h"
 
 //////////////////////////////////////////////////////////////////////
 //

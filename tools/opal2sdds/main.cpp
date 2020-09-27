@@ -260,7 +260,6 @@ void writeSDDSFile(const std::string &fname, const data_t &data, const attribute
                                                         {"p", "p"}};
     SDDS_DATASET SDDS_dataset;
     const long rows = data.at("x").size();
-    std::vector<std::vector<double> > fileData;
 
     char buffer0[256];
     char buffer1[64];

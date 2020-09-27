@@ -114,8 +114,8 @@ class SectorMagneticFieldMap : public SectorField {
      *         Overwrites any existing data
      *  \returns false if R_p is inside the bounding box
      */
-    bool getFieldstrengthPolar
-                  (const Vector_t &R_p, Vector_t &E_p, Vector_t &B_p) const;
+    /* bool getFieldstrengthPolar */
+    /*               (const Vector_t &R_p, Vector_t &E_p, Vector_t &B_p) const; */
 
     /** Get the field value in cartesian coordinates
      *

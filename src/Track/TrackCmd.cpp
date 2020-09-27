@@ -84,8 +84,6 @@ TrackCmd::TrackCmd():
 
     registerOwnership(AttributeHandler::COMMAND);
     AttributeHandler::addAttributeOwner("TRACK", AttributeHandler::COMMAND, "RUN");
-    AttributeHandler::addAttributeOwner("TRACK", AttributeHandler::COMMAND, "START");
-    AttributeHandler::addAttributeOwner("TRACK", AttributeHandler::COMMAND, "TSAVE");
     AttributeHandler::addAttributeOwner("TRACK", AttributeHandler::COMMAND, "ENDTRACK");
 }
 

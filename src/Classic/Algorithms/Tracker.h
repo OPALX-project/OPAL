@@ -81,8 +81,8 @@ public:
     //  The beam line to be tracked is [b]bl[/b].
     //  The particle reference data are taken from [b]data[/b].
     //  The particle bunch is initially empty.
-    //  If [b]revBeam[/b] is true, the beam runs from s = C to s = 0.
-    //  If [b]revTrack[/b] is true, we track against the beam.
+    //  If [b]backBeam[/b] is true, the beam runs from s = C to s = 0.
+    //  If [b]backTrack[/b] is true, we track against the beam.
     Tracker(const Beamline &, const PartData &,
             bool backBeam, bool backTrack);
 
@@ -90,8 +90,8 @@ public:
     //  The beam line to be tracked is [b]bl[/b].
     //  The particle reference data are taken from [b]data[/b].
     //  The particle bunch is taken from [b]bunch[/b].
-    //  If [b]revBeam[/b] is true, the beam runs from s = C to s = 0.
-    //  If [b]revTrack[/b] is true, we track against the beam.
+    //  If [b]backBeam[/b] is true, the beam runs from s = C to s = 0.
+    //  If [b]backTrack[/b] is true, we track against the beam.
     Tracker(const Beamline &, PartBunchBase<double, 3> *bunch,
             const PartData &, bool backBeam, bool backTrack);
 

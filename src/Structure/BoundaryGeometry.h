@@ -167,19 +167,6 @@ public:
 
     bool findInsidePoint (void);
 
-    inline bool isOutsideApperture(Vector_t x) {
-        if (hasApperture()) {
-            for (size_t i = 0; i < apert_m.size(); i += 3) {
-                if ((apert_m[i] <= x(2)) && (x(2) < apert_m[i+1])) {
-                    // yes we are inside the interval
-                    const double r = apert_m[i+2] * apert_m[i+2];
-                    return ((x(0)*x(0)) + (x(1)*x(1))) > r;
-                }
-            }
-        }
-        return false;
-    }
-
     int intersectRayBoundary (
         const Vector_t& P,
         const Vector_t& v,
@@ -259,13 +246,6 @@ private:
     bool haveInsidePoint_m;
     Vector_t insidePoint_m;             // attribute INSIDEPOINT
 
-    /*
-       An additional structure to hold apperture information
-       to prevent that particles go past the geometry. The user
-       can specify n trippel with the form: (zmin, zmax, r)
-    */
-    std::vector<double> apert_m;
-
     gsl_rng *randGen_m;         //
 
     IpplTimings::TimerRef Tinitialize_m; // initialize geometry
@@ -279,10 +259,6 @@ private:
 
     // Clone constructor.
     BoundaryGeometry(const std::string& name, BoundaryGeometry* parent);
-
-    inline bool hasApperture() {
-        return (apert_m.size() != 0);
-    }
 
     inline const Vector_t& getPoint (const int triangle_id, const int vertex_id) {
         PAssert (1 <= vertex_id && vertex_id <=3);
@@ -322,7 +298,6 @@ private:
         XSCALE,   // Multiplicative scaling factor for x-coordinates
         YSCALE,   // Multiplicative scaling factor for y-coordinates
         ZSCALE,   // Multiplicative scaling factor for z-coordinates
-        APERTURE,    // in addition to the geometry
         INSIDEPOINT,
         SIZE
     };

@@ -65,8 +65,8 @@
 
 #include "AbsBeamline/AttributeSet.h"
 #include "BeamlineGeometry/Geometry.h"
+#include "BeamlineGeometry/Euclid3D.h"
 #include "MemoryManagement/RCObject.h"
-#include "Algorithms/Vektor.h"
 #include "Algorithms/Quaternion.h"
 #include "Algorithms/CoordinateSystemTrafo.h"
 #include "Utilities/GeneralClassicException.h"
@@ -329,7 +329,6 @@ public:
 
     virtual bool isInside(const Vector_t &r) const;
 
-    void setMisalignment(double x, double y, double s);
     void setMisalignment(const CoordinateSystemTrafo &cst);
 
     void getMisalignment(double &x, double &y, double &s) const;
