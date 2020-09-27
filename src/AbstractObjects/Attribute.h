@@ -24,9 +24,6 @@
 #include <iosfwd>
 #include <string>
 
-// #include <Ippl.h>
-#include <Utility/Inform.h>
-
 class Statement;
 
 // Class Attribute

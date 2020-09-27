@@ -33,7 +33,10 @@ const unsigned Dim = 3;
 #include <memory>
 //////////////////////////////////////////////////////////////
 #include "PoissonSolver.h"
-#include "Algorithms/PartBunchBase.h"
+
+#include "FFT/FFT.h"
+
+//#include "Algorithms/PartBunchBase.h"
 
 template <class T, unsigned Dim>
 class PartBunchBase;
@@ -42,6 +45,9 @@ class PartBunchBase;
 
 class P3MPoissonSolver : public PoissonSolver {
 public:
+
+    typedef FFT<CCTransform, 3, double>              FFTC_t;
+
     // constructor and destructor
     P3MPoissonSolver(Mesh_t *mesh, FieldLayout_t *fl, double interaction_radius, double alpha, double eps);
 

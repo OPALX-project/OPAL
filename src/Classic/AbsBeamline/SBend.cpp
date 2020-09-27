@@ -19,13 +19,10 @@
 // ------------------------------------------------------------------------
 
 #include "AbsBeamline/SBend.h"
-#include "Algorithms/PartBunchBase.h"
 #include "AbsBeamline/BeamlineVisitor.h"
-#include "Utilities/Options.h"
 #include "Fields/Fieldmap.h"
-#include "AbstractObjects/OpalData.h"
-#include <iostream>
-#include <fstream>
+
+#include <string>
 
 extern Inform *gmsg;
 

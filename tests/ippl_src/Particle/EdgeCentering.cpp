@@ -2,7 +2,7 @@
 // #include "Algorithms/PBunchDefs.h"
 // #include "Algorithms/PartBunch.h"
 // #include "Algorithms/PartData.h"
-#include "Particle/IntCIC.h"
+//#include "Particle/IntCIC.h"
 #include "Particle/ParticleSpatialLayout.h"
 #include "Particle/ParticleAttrib.h"
 #include "Meshes/UniformCartesian.h"
@@ -16,13 +16,10 @@
 #define GUARDCELLSIZE 1
 #define DIM 3
 
-typedef IntCIC                                                IntrplCIC_t;
-
 typedef Vektor<double, DIM>                                   Vector_t;
 typedef ParticleSpatialLayout<double, DIM>::ParticlePos_t     Ppos_t;
 typedef ParticleSpatialLayout<double, DIM>::ParticleIndex_t   PID_t;
 typedef ParticleAttrib<double>                                Pscalar_t;
-typedef InterpolatorTraits<double, DIM, IntrplCIC_t>::Cache_t Pcache_t;
 
 typedef UniformCartesian<DIM>                                 Mesh_t;
 typedef ParticleSpatialLayout< double, DIM, Mesh_t>           PLayout_t;

@@ -474,7 +474,7 @@ public:
                 smsg->put(tmp[i]);
             bool res = Ippl::Comm->send(smsg, 0, tag);
             if (! res)
-                ERRORMSG("Ippl::Comm->send(smsg, 0, tag) failed " << endl;);
+                ERRORMSG("Ippl::Comm->send(smsg, 0, tag) failed " << endl);
         }
     }
 

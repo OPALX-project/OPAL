@@ -81,10 +81,8 @@ typedef FTps<double, 6> Series;
 
 Tracker::Tracker(const Beamline &beamline, const PartData &reference,
                  bool backBeam, bool backTrack):
-    AbstractTracker(beamline, reference, backBeam, backTrack),
-    itsBeamline_m(beamline),
-    itsBunch_m(nullptr)
-{ }
+    Tracker(beamline, nullptr, reference, backBeam, backTrack)
+{}
 
 
 Tracker::Tracker(const Beamline &beamline,

@@ -6,14 +6,18 @@
 //
 
 /*!
-  H5PartWrapper: a class that manages a calls to H5Part
+  H5PartWrapper: a class that manages calls to H5Part
 */
 
-#include "Algorithms/PBunchDefs.h"
-#include "Algorithms/PartBunchBase.h"
-#include "Utilities/OpalException.h"
+template <class T, unsigned Dim>
+class PartBunchBase;
+
+#include "Utility/IpplInfo.h"
 
 #include "H5hut.h"
+
+#include <map>
+#include <string>
 
 #define REPORTONERROR(rc) H5PartWrapper::reportOnError(rc, __FILE__, __LINE__)
 #define READFILEATTRIB(type, file, name, value) REPORTONERROR(H5ReadFileAttrib##type(file, name, value));

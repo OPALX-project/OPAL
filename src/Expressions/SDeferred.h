@@ -125,12 +125,12 @@ namespace Expressions {
                                    this->getImage() + "\": " + ex.what());
             } catch(std::exception &ex) {
                 in_evaluation = false;
-                throw LogicalError("ADeferred::evaluate()",
+                throw LogicalError("SDeferred::evaluate()",
                                    "Standard C++ exception while evaluating \"" +
                                    this->getImage() + "\": " + ex.what());
             } catch(...) {
                 in_evaluation = false;
-                throw LogicalError("ADeferred::evaluate()",
+                throw LogicalError("SDeferred::evaluate()",
                                    "Unknown exception while evaluating \"" +
                                    this->getImage() + "\": ");
             }

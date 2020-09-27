@@ -25,6 +25,8 @@
 #include "AbsBeamline/Component.h"
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "BeamlineGeometry/StraightGeometry.h"
+
+#include <string>
 #include <vector>
 
 class LossDataSink;

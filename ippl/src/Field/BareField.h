@@ -31,6 +31,7 @@
 #include "Index/SIndex.h"
 #include "SubField/SubBareField.h"
 #include "Utility/IpplInfo.h"
+#include "Utility/IpplStats.h"
 #include "Utility/PAssert.h"
 #include "Utility/Unique.h"
 #include "Utility/my_auto_ptr.h"

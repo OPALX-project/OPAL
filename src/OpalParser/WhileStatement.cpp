@@ -17,6 +17,7 @@
 // ------------------------------------------------------------------------
 
 #include "OpalParser/WhileStatement.h"
+
 #include "AbstractObjects/OpalData.h"
 #include "AbstractObjects/Attribute.h"
 #include "Attributes/Attributes.h"
@@ -25,6 +26,8 @@
 #include "Parser/Token.h"
 #include "Parser/TokenStream.h"
 #include "Utilities/ParseError.h"
+
+#include "Utility/IpplInfo.h"
 
 // class WhileStatement
 //   Statement of the form "WHILE ( <condition> ) <statement>".

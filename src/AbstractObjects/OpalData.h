@@ -38,9 +38,6 @@ class BoundaryGeometry;
 // store element name, max phase
 typedef std::pair<std::string, double > MaxPhasesT;
 typedef std::map<double, double> energyEvolution_t;
-typedef energyEvolution_t::value_type energyEvData_t;
-
-
 
 // Class OpalData
 // ------------------------------------------------------------------------

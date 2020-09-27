@@ -52,8 +52,6 @@ int LOMB_class::period(std::vector<LOMB_TYPE> *indata, std::vector<LOMB_TYPE> *o
     LOMB_TYPE pt;
 
     CI_lt p, q;
-    CI_vd ai;
-
     /*---------------------------------------------------------------------------*/
 
     wi.erase(wi.begin(), wi.end());
@@ -266,10 +264,7 @@ int LOMB_class::moment(std::vector<LOMB_TYPE> *indata, double *ave, double *adev
     int      n;
     double  pnr, s, ep;
 
-    std::vector<double> xvec;
-
     CI_lt p, q;
-    CI_vd xp;
     /*---------------------------------------------------------------------------*/
 
     p = indata->begin();

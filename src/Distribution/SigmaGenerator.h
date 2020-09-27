@@ -33,15 +33,18 @@
 #define SIGMAGENERATOR_H
 
 #include <array>
+#include <fstream>
+#include <functional>
 #include <string>
 #include <vector>
+
+#include <boost/numeric/ublas/matrix.hpp>
 
 #include "AbsBeamline/Cyclotron.h"
 #include "FixedAlgebra/FTps.h"
 #include "Physics/Physics.h"
 
 #include "Distribution/RealDiracMatrix.h"
-
 
 class SigmaGenerator
 {
@@ -54,7 +57,7 @@ public:
     typedef RealDiracMatrix::vector_t vector_t;
     /// Container for storing the properties for each angle
     typedef std::vector<double> container_t;
-    /// Type of the truncated powere series
+    /// Type of the truncated power series
     typedef FTps<double,2*3> Series;
     /// Type of a map
     typedef FVps<double,2*3> Map;

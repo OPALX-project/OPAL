@@ -1,6 +1,5 @@
 #include "Structure/LossDataSink.h"
 
-#include "Ippl.h"
 #include "Utilities/Options.h"
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/GeneralClassicException.h"

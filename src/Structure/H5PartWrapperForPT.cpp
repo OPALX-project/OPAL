@@ -6,12 +6,13 @@
 
 #include "OPALconfig.h"
 #include "AbstractObjects/OpalData.h"
+#include "Algorithms/PartBunchBase.h"
+#include "Algorithms/Vektor.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 #include "Physics/Physics.h"
 
 #include "h5core/h5_types.h"
-#include <boost/filesystem.hpp>
 
 #include <sstream>
 #include <set>

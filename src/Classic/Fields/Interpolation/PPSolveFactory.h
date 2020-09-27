@@ -122,7 +122,7 @@ class PPSolveFactory {
     void getDerivPoints();
     void getDerivs(Mesh::Iterator it);
 
-    // nothing calls this method but I don't quite field brave enought to remove
+    // nothing calls this method but I don't quite feel brave enough to remove
     // it...
     std::vector<double> outOfBoundsPosition(Mesh::Iterator outOfBoundsIt);
     static void nearbyPointsRecursive(

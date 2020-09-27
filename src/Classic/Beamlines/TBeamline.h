@@ -23,10 +23,10 @@
 #include "Beamlines/Beamline.h"
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Beamlines/BeamlineGeometry.h"
-#include "Utilities/CLRangeError.h"
 #include "Algorithms/Vektor.h"
 #include "Algorithms/Quaternion.h"
 #include <algorithm>
+#include <string>
 #include <list>
 
 template <class T>

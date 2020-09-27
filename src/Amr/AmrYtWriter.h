@@ -39,7 +39,7 @@ public:
      * @param step we write
      * @param bin energy bin we write (multi-bunch simulation)
      */
-    AmrYtWriter(int step, int bin = 0);
+    explicit AmrYtWriter(int step, int bin = 0);
     
     /*!
      * Write yt files to the simulation subdirectory

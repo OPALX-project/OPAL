@@ -28,13 +28,14 @@
 #ifndef _CLASSIC_SRC_ALGORITHMS_SPLINETIMEDEPENDENCE_H_
 #define _CLASSIC_SRC_ALGORITHMS_SPLINETIMEDEPENDENCE_H_
 
-#include <memory>
+#include <vector>
 
 #include <gsl/gsl_spline.h>
 
-#include "Ippl.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Algorithms/AbstractTimeDependence.h"
+
+class Inform;
 
 /** @class SplineTimeDependence
  * 

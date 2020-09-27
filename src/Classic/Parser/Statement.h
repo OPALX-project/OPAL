@@ -25,7 +25,7 @@
 #include <list>
 #include <string>
 
-#include <Ippl.h>
+#include "Utility/Inform.h"
 
 class Parser;
 

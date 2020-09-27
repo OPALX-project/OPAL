@@ -199,7 +199,6 @@ void TravelingWave::initialise(PartBunchBase<double, 3> *bunch, double &startFie
     }
 
     Inform msg("TravelingWave ", *gmsg);
-    std::stringstream errormsg;
 
     RefPartBunch_m = bunch;
     double zBegin = 0.0, zEnd = 0.0;

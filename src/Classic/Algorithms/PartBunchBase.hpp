@@ -24,7 +24,11 @@
 #include "Distribution/Distribution.h"
 
 #include "AbstractObjects/OpalData.h"   // OPAL file
+#include "Algorithms/PartBins.h"
+#include "Algorithms/PartBinsCyc.h"
+#include "Algorithms/PartData.h"
 #include "Physics/Physics.h"
+#include "Structure/FieldSolver.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
@@ -34,7 +38,7 @@
 extern Inform *gmsg;
 
 template <class T, unsigned Dim>
-PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb)
+PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb, const PartData *ref)
     : R(*(pb->R_p)),
       ID(*(pb->ID_p)),
       pbin_m(nullptr),
@@ -42,7 +46,7 @@ PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb)
       pmsg_m(nullptr),
       f_stream(nullptr),
       fixed_grid(false),
-//       reference(ref), //FIXME
+      reference(ref),
       unit_state_(units),
       stateOfLastBoundP_(unitless),
       moments_m(),
@@ -91,13 +95,6 @@ PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb)
       pbase(pb)
 {
     setup(pb);
-}
-
-template <class T, unsigned Dim>
-PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb, const PartData *ref)
-    : PartBunchBase(pb)
-{
-    reference = ref;
 }
 
 /*

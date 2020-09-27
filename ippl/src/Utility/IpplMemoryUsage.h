@@ -38,11 +38,11 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#ifndef IPPL_MEMPRYUSAGE_H
-#define IPPL_MEMPRYUSAGE_H
+#ifndef IPPL_MEMORYUSAGE_H
+#define IPPL_MEMORYUSAGE_H
 
-#include "Ippl.h"
 #include <memory>
+#include <string>
 
 #include <sys/resource.h>
 #include <sys/time.h> // not required but increases portability

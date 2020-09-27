@@ -25,6 +25,7 @@
 
 // include files
 #include "Utility/IpplInfo.h"
+#include "Utility/Inform.h"
 #include "Utility/IpplStats.h"
 #include "Utility/PAssert.h"
 #include "Utility/RandomNumberGen.h"

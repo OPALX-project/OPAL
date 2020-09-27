@@ -14,7 +14,6 @@
 // include files
 #include "Index/NDIndex.h"
 #include "Field/BrickExpression.h"
-#include "Field/Field.h"
 #include "Utility/DiscBuffer.h"
 #include "Utility/DiscConfig.h"
 #include "Utility/Inform.h"
@@ -24,8 +23,6 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
 
 #include <vector>
 #include <iostream>

@@ -21,6 +21,7 @@
 #include "AbstractObjects/Element.h"
 #include "MemoryManagement/OwnPtr.h"
 #include <map>
+#include <string>
 
 class Statement;
 

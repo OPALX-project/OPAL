@@ -79,8 +79,8 @@ class SectorField {
      *         Overwrites any existing data
      *  \returns true if any field value is non-zero
      */
-    virtual bool getFieldstrengthPolar
-                  (const Vector_t &R_p, Vector_t &E_p, Vector_t &B_p) const = 0;
+    /* virtual bool getFieldstrengthPolar */
+    /*               (const Vector_t &R_p, Vector_t &E_p, Vector_t &B_p) const = 0; */
 
     /** Return the field value in cartesian coordinates
      *

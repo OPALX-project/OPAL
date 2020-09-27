@@ -6,7 +6,7 @@
 class ElementPositionWriter : public SDDSWriter {
 
 public:
-    ElementPositionWriter(const std::string& fname);
+    explicit ElementPositionWriter(const std::string& fname);
 
     void addRow(double spos,
                 const std::vector<double>& row,

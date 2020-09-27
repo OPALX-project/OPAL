@@ -23,11 +23,16 @@
 
 //////////////////////////////////////////////////////////////
 #include "PoissonSolver.h"
+
+#include "FFT/FFT.h"
+
 class PartBunch;
 //////////////////////////////////////////////////////////////
 
 class FFTBoxPoissonSolver : public PoissonSolver {
 public:
+    typedef FFT<SineTransform, 3, double>            SINE_t;
+
     // constructor and destructor
     FFTBoxPoissonSolver(PartBunch &bunch, std::string greensFuntion);
 

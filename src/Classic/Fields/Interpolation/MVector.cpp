@@ -188,11 +188,6 @@ template <class Tmplt> std::istream& operator>>(std::istream& in, MVector<Tmplt>
   return in;
 }
 
-const gsl_vector*         MVector_to_gsl(const MVector<double>&      vd)
-{return vd.get_vector(vd);}
-const gsl_vector_complex* MVector_to_gsl(const MVector<gsl_complex>& vc)
-{return vc.get_vector(vc);}
-
 template <class Tmplt>
 MVector<Tmplt> MVector<Tmplt>::sub(size_t n1, size_t n2) const
 {

@@ -24,42 +24,27 @@
 #define OPAL_ThickTracker_HH
 
 #include "Algorithms/Tracker.h"
-#include "Structure/DataSink.h"
 
 #include "Hamiltonian.h"
 
-#include "MapAnalyser.h"
-
 #include "Algorithms/IndexMap.h"
 #include "AbsBeamline/BeamStripping.h"
-#include "AbsBeamline/CCollimator.h"
-#include "AbsBeamline/Corrector.h"
-#include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/Drift.h"
-#include "AbsBeamline/FlexibleCollimator.h"
 #include "AbsBeamline/ElementBase.h"
-#include "AbsBeamline/Marker.h"
-#include "AbsBeamline/Monitor.h"
 #include "AbsBeamline/Multipole.h"
-#include "AbsBeamline/Probe.h"
-#include "AbsBeamline/RFCavity.h"
-#include "AbsBeamline/RBend.h"
 #include "AbsBeamline/RBend3D.h"
 #include "AbsBeamline/SBend.h"
-#include "AbsBeamline/Septum.h"
-#include "AbsBeamline/Solenoid.h"
-#include "AbsBeamline/TravelingWave.h"
 
 #include "Elements/OpalBeamline.h"
 
-#include "Structure/Beam.h"
-
-//#include <array>
 #include <cmath>
-
+#include <list>
+#include <string>
 #include <tuple>
+#include <vector>
 
 class BMultipoleField;
+class DataSink;
 
 template <class T, unsigned Dim>
 class PartBunchBase;
@@ -101,14 +86,13 @@ class PartBunchBase;
 
 class ThickTracker: public Tracker {
 
-public:
+private:
     typedef Hamiltonian::series_t                       series_t;
-    typedef MapAnalyser::fMatrix_t                      fMatrix_t;
-    typedef MapAnalyser::cfMatrix_t                     cfMatrix_t;
     typedef FVps<double, 6>                             map_t;
     typedef FVector<double, 6>                          particle_t;
     typedef std::tuple<series_t, std::size_t, double>   tuple_t;
     typedef std::list<tuple_t>                          beamline_t;
+    typedef FMatrix<double, 6, 6>                       fMatrix_t;
 
 public:
 
@@ -331,7 +315,6 @@ private:
 
 
     Hamiltonian hamiltonian_m;
-    MapAnalyser mapAnalyser_m;
 
 
     Vector_t RefPartR_m;

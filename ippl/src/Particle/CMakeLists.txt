@@ -2,6 +2,7 @@ set (_SRCS
     )
 
 set (_HDRS
+    AbstractParticle.h
     BoxParticleCachingPolicy.h
     CellParticleCachingPolicy.h
     GenArrayParticle.h
@@ -9,8 +10,8 @@ set (_HDRS
     IntCIC.h
     Interpolator.h
     IntNGP.h
-    IntTSC.h
     IntSUDS.h
+    IntTSC.h
     NoParticleCachingPolicy.h
     PairBuilder/BasicPairBuilder.h
     PairBuilder/HashPairBuilder.h

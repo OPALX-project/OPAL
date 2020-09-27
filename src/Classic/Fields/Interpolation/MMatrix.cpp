@@ -374,17 +374,6 @@ template <class Tmplt> std::istream& operator>>(std::istream& in, MMatrix<Tmplt>
 
 
 ///////////////// INTERFACES
-const gsl_matrix*         MMatrix_to_gsl(const MMatrix<double>&    m)
-{
-  if(m._matrix == NULL) throw(GeneralClassicException("MMatrix_to_gsl", "Attempt to reference uninitialised matrix"));
-  return (gsl_matrix*)m._matrix;
-}
-
-const gsl_matrix_complex* MMatrix_to_gsl(const MMatrix<m_complex>& m)
-{
-  if(m._matrix == NULL) throw(GeneralClassicException("MMatrix_to_gsl", "Attempt to reference uninitialised matrix"));
-  return (gsl_matrix_complex*)m._matrix;
-}
 
 MMatrix<double>    re(MMatrix<m_complex> mc)
 {

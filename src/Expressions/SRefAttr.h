@@ -174,7 +174,7 @@ namespace Expressions {
 
     template <class T>
     double SRefAttr<T>::getReal() {
-        throw ParseError("SValue<T>::getReal()",
+        throw ParseError("SRefAttr<T>::getReal()",
                          "Attribute is not of real type.");
     }
 

@@ -36,8 +36,6 @@
 //  All constructors, the destructor, and the assignment operators are
 //  protected, since a stand-alone RCObject makes no sense.
 
-//#include <Ippl.h>
-
 
 class RCObject {
 

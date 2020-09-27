@@ -6,7 +6,6 @@
 
 #ifndef PASSERT_H
 #define PASSERT_H
-#include "Utility/IpplInfo.h"
 
 #include <exception>
 #include <stdexcept>

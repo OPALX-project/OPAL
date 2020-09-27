@@ -36,24 +36,12 @@ OpalTravelingWave::OpalTravelingWave():
                    ("LAG", "Phase lag in rad");
     itsAttr[DLAG] = Attributes::makeReal
                     ("DLAG", "Phase lag error in rad");
-    itsAttr[HARMON] = Attributes::makeReal
-                      ("HARMON", "Harmonic number");
-    itsAttr[BETARF] = Attributes::makeReal
-                      ("BETRF", "beta_RF");
-    itsAttr[PG] = Attributes::makeReal
-                  ("PG", "RF power in MW");
-    itsAttr[ZSHUNT] = Attributes::makeReal
-                      ("SHUNT", "Shunt impedance in MOhm");
-    itsAttr[TFILL] = Attributes::makeReal
-                     ("TFILL", "Fill time in microseconds");
     itsAttr[FMAPFN] = Attributes::makeString
                       ("FMAPFN", "Filename for the fieldmap");
     itsAttr[FAST] = Attributes::makeBool
                     ("FAST", "Faster but less accurate", true);
     itsAttr[APVETO] = Attributes::makeBool
                     ("APVETO", "Do not use this cavity in the Autophase procedure", false);
-    itsAttr[CAVITYTYPE] = Attributes::makeString
-                          ("CAVITYTYPE", "STANDING or TRAVELING wave cavity in photoinjector and LINAC; SINGLEGAP or DOUBLEGAP cavity in cyclotron");
     itsAttr[NUMCELLS] = Attributes::makeReal
                         ("NUMCELLS", "Number of cells in a TW structure");
     itsAttr[DESIGNENERGY] = Attributes::makeReal
@@ -75,8 +63,7 @@ OpalTravelingWave::OpalTravelingWave(const std::string &name, OpalTravelingWave 
 
 
 OpalTravelingWave::~OpalTravelingWave() {
-    if(owk_m)
-        delete owk_m;
+    delete owk_m;
 }
 
 

@@ -7,8 +7,7 @@
 
 #include "Structure/H5PartWrapper.h"
 
-#include "Algorithms/PBunchDefs.h"
-#include "Utilities/OpalException.h"
+#include "Algorithms/Vektor.h"
 
 #include "H5hut.h"
 

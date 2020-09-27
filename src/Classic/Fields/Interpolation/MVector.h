@@ -150,11 +150,6 @@ public:
   friend class MMatrix<Tmplt>;
   friend class MMatrix<double>;
 
-//  friend gsl_vector*         MVectorToGSL(MVector<double>&     );
-//  friend gsl_vector_complex* MVectorToGSL(MVector<gsl_complex>&);
-  friend const gsl_vector*         MVector_to_gsl(const MVector<double>&     );
-  friend const gsl_vector_complex* MVector_to_gsl(const MVector<gsl_complex>&);
-
 private:
   void build_vector ( size_t size ); //copy from data and put it in the vector
   void build_vector ( const Tmplt* data_start, const Tmplt* data_end ); //copy from data and put it in the vector
@@ -203,10 +198,6 @@ MVector<m_complex> complex(MVector<double> real, MVector<double> imaginary);
 //return vector of doubles filled with either real or imaginary part of mv
 MVector<double>    re     (MVector<m_complex> mv);
 MVector<double>    im     (MVector<m_complex> mv);
-
-//Interface to gsl
-const gsl_vector*         MVector_to_gsl(const MVector<double>&      vd);
-const gsl_vector_complex* MVector_to_gsl(const MVector<gsl_complex>& vc);
 
 ///////////////// MVector End ///////////////// Nb: some inlined functions below...
 

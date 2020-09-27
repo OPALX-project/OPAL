@@ -5,7 +5,9 @@
 #include <iterator>
 
 #include "AbstractObjects/OpalData.h"
-#include "Ippl.h"
+
+#include "Message/GlobalComm.h"
+#include "Utility/IpplInfo.h"
 
 PeakFinder::PeakFinder(std::string elem, double min,
                        double max, double binWidth, bool singlemode)

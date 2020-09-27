@@ -35,7 +35,6 @@
 #include <set>
 
 #include "boost/smart_ptr.hpp"
-#include "boost/algorithm/string.hpp"
 #include "boost/utility/value_init.hpp"
 
 #include "Util/OptPilotException.h"
