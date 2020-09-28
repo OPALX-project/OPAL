@@ -208,7 +208,7 @@ option (ENABLE_OPAL_FEL "Enable OPAL FEL" OFF)
 if (ENABLE_OPAL_FEL)
     message (STATUS "Enable OPAL FEL: " ${ENABLE_OPAL_FEL})
     find_package (MITHRA MODULE REQUIRED)
-    add_definitions (-DOPAL_FEL)
+    add_definitions (-DENABLE_OPAL_FEL)
 endif()
 
 option (DBG_SCALARFIELD "Enable dump of scalar field rho_m" OFF)

@@ -101,7 +101,6 @@ TEST(UndulatorTest, TestGetSet) {
     EXPECT_EQ(und1.getHasBeenSimulated(), true);
 }
 
-#ifdef OPAL_FEL
 TEST(UndulatorTest, TestApplyFullWaveSolver) {
     OpalTestUtilities::SilenceTest silencer;
 
@@ -111,6 +110,10 @@ TEST(UndulatorTest, TestApplyFullWaveSolver) {
     CoordinateSystemTrafo refToLocalCSTrafo;
     
     und.apply(bunch, refToLocalCSTrafo);
+#ifdef ENABLE_OPAL_FEL    
     EXPECT_EQ(und.getHasBeenSimulated(), true);
-}
+#else
+    // If OPAL_FEL is disabled, the apply funtion should do nothing
+    EXPECT_EQ(und.getHasBeenSimulated(), false);
 #endif
+}

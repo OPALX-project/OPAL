@@ -34,6 +34,7 @@
 #include "Algorithms/CavityAutophaser.h"
 #include "Beamlines/Beamline.h"
 #include "Beamlines/FlaggedBeamline.h"
+#include "BeamlineCore/UndulatorRep.h"
 
 #include "Solvers/CSRWakeFunction.hh"
 
@@ -51,9 +52,6 @@
 #include "Structure/BoundaryGeometry.h"
 #include "AbsBeamline/Monitor.h"
 
-#ifdef OPAL_FEL
-#include "BeamlineCore/UndulatorRep.h"
-#endif
 
 class PartData;
 
@@ -576,9 +574,7 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
     IpplTimings::stopTimer(fieldEvaluationTimer_m);
 
     computeWakefield(elements);
-#ifdef OPAL_FEL
     computeUndulator(elements);
-#endif
     computeParticleMatterInteraction(elements, oth);
 
     reduce(locPartOutOfBounds, globPartOutOfBounds, OpOrAssign());
@@ -605,7 +601,6 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
     }
 }
 
-#ifdef OPAL_FEL
 void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     // Check if bunch has entered undulator field.
     UndulatorRep* und;
@@ -627,7 +622,6 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
 
     evenlyDistributeParticles();
 }
-#endif
 
 void ParallelTTracker::computeWakefield(IndexMap::value_t &elements) {
     bool hasWake = false;

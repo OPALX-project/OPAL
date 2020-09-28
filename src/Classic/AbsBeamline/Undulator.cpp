@@ -26,7 +26,7 @@
 #include "Algorithms/PartBunchBase.h"
 #include "Physics/Physics.h"
 
-#ifdef OPAL_FEL
+#ifdef ENABLE_OPAL_FEL
 #include "mithra/fieldvector.h"
 #include "mithra/stdinclude.h"
 #include "mithra/readdata.h"
@@ -89,15 +89,15 @@ void Undulator::accept(BeamlineVisitor &visitor) const {
 
 void Undulator::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
     RefPartBunch_m = bunch;
-    #ifndef OPAL_FEL
+#ifndef ENABLE_OPAL_FEL
     throw GeneralClassicException("Undulator::initialise", 
                                   "You have defined an Undulator element but OPAL was compiled\n"
-                                  "without the OPAL_FEL option");
-    #endif
+                                  "without the ENABLE_OPAL_FEL option");
+#endif
 }
 
 
-#ifdef OPAL_FEL
+#ifdef ENABLE_OPAL_FEL
 void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo const& refToLocalCSTrafo) {
     Inform msg("MITHRA FW solver ", *gmsg);
     
@@ -264,6 +264,10 @@ void Undulator::apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo 
     itsBunch->print(msg);
 
     setHasBeenSimulated(true);
+}
+#else
+void Undulator::apply(PartBunchBase<double, 3> */*itsBunch*/, CoordinateSystemTrafo const& /*refToLocalCSTrafo*/) {
+  // Do nothing if OPAL_FEL disabled
 }
 #endif
 

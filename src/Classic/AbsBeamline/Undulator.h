@@ -43,9 +43,7 @@ public:
 
     virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
 
-#ifdef OPAL_FEL
-    void apply(PartBunchBase<double, 3> *itsBunch, CoordinateSystemTrafo const& refToLocalCSTrafo);
-#endif
+    void apply(PartBunchBase<double, 3> */*itsBunch*/, CoordinateSystemTrafo const& /*refToLocalCSTrafo*/);
   
     virtual void finalise();
 
