@@ -44,6 +44,81 @@ extern Inform* gmsg;
 
 #define EPS 10e-10
 
+/*
+  In the following namespaces various approximately floating point
+  comparisons are implemented. The used implementation is selected
+  via
+
+  namespaces cmp = IMPLEMENTATION;
+
+*/
+
+/*
+  First we define some macros for function common in all namespaces.
+*/
+#define FUNC_EQ(x, y) inline bool eq(double x, double y) { \
+        return almost_eq(x, y);                            \
+    }
+
+#define FUNC_EQ_ZERO(x) inline bool eq_zero(double x) { \
+        return almost_eq_zero(x);                       \
+    }
+
+#define FUNC_LE(x, y) inline bool le(double x, double y) { \
+        if (almost_eq(x, y)) {                             \
+            return true;                                   \
+        }                                                  \
+        return x < y;                                      \
+    }
+
+#define FUNC_LE_ZERO(x) inline bool le_zero(double x) { \
+        if (almost_eq_zero(x)) {                        \
+            return true;                                \
+        }                                               \
+        return x < 0.0;                                 \
+    }
+
+#define FUNC_LT(x, y) inline bool lt(double x, double y) { \
+        if (almost_eq(x, y)) {                             \
+            return false;                                  \
+        }                                                  \
+        return x < y;                                      \
+    }
+
+#define FUNC_LT_ZERO(x) inline bool lt_zero(double x) {      \
+        if (almost_eq_zero(x)) {                             \
+            return false;                                    \
+        }                                                    \
+        return x < 0.0;                                      \
+    }
+
+#define FUNC_GE(x, y) inline bool ge(double x, double y) {      \
+        if (almost_eq(x, y)) {                                  \
+            return true;                                        \
+        }                                                       \
+        return x > y;                                           \
+    }
+
+#define FUNC_GE_ZERO(x) inline bool ge_zero(double x) { \
+        if (almost_eq_zero(x)) {                        \
+            return true;                                \
+        }                                               \
+        return x > 0.0;                                 \
+    }
+
+#define FUNC_GT(x, y) inline bool gt(double x, double y) { \
+        if (almost_eq(x, y)) {                             \
+            return false;                                  \
+        }                                                  \
+        return x > y;                                      \
+    }
+
+#define FUNC_GT_ZERO(x) inline bool gt_zero(double x) { \
+        if (almost_eq_zero(x)) {                        \
+            return false;                               \
+        }                                               \
+        return x > 0.0;                                 \
+    }
 
 namespace cmp_diff {
 
