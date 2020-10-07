@@ -33,7 +33,7 @@
 
 //FIXME: ORDER HOW TO TRAVERSE NODES IS FIXED, THIS SHOULD BE MORE GENERIC! (PLACES MARKED)
 
-BoxCornerDomain::BoxCornerDomain(double A, double B, double C, double length,
+BoxCornerDomain::BoxCornerDomain(double A, double B, double C,
                                  double L1, double L2, IntVector_t nr, Vector_t hr,
                                  std::string interpl)
     : RegularDomain(nr, hr, interpl)
@@ -41,7 +41,6 @@ BoxCornerDomain::BoxCornerDomain(double A, double B, double C, double length,
     setRangeMin(Vector_t(-A, -B, L1));
     setRangeMax(Vector_t( A,  B, L1 + L2));
     C_m = C;
-    length_m = length;
 
     throw OpalException("BoxCornerDomain::BoxCornerDomain()",
                         "This domain is currently not supported!");

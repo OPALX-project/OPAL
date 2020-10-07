@@ -30,6 +30,7 @@
 #include <string>
 #include "Algorithms/Vektor.h"
 #include "Algorithms/Quaternion.h"
+#include "Index/NDIndex.h"
 
 /// enumeration corresponding to different interpolation methods at the boundary
 enum {

@@ -35,6 +35,7 @@
 #include <iostream>
 #include <tuple>
 #include "Utilities/OpalException.h"
+#include "Index/NDIndex.h"
 
 ArbitraryDomain::ArbitraryDomain( BoundaryGeometry * bgeom,
                                   IntVector_t nr,

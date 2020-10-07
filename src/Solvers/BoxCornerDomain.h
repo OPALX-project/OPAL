@@ -79,7 +79,7 @@ public:
      * \param L1 length of the first part of the structure
      * \param L2 length of the corner
      */
-    BoxCornerDomain(double A, double B, double C, double length,
+    BoxCornerDomain(double A, double B, double C,
                     double L1, double L2, IntVector_t nr, Vector_t hr,
                     std::string interpl);
     ~BoxCornerDomain();

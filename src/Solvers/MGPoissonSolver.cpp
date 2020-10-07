@@ -123,7 +123,6 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
                 new BoxCornerDomain(currentGeometry->getA(),
                                     currentGeometry->getB(),
                                     currentGeometry->getC(),
-                                    currentGeometry->getLength(),
                                     currentGeometry->getL1(),
                                     currentGeometry->getL2(),
                                     orig_nr_m, hr_m, interpl));
