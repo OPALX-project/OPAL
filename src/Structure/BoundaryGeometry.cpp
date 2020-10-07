@@ -23,8 +23,10 @@
 #include <cmath>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 #include "H5hut.h"
+#include <cfloat>
 
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
@@ -42,6 +44,135 @@ extern Inform* gmsg;
 
 #define EPS 10e-10
 
+
+namespace cmp_diff {
+
+    /*
+      Link:
+      https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/
+    */
+    inline bool cmp(double A, double B, double maxDiff = 1e-15, double maxRelDiff = DBL_EPSILON) {
+        // Check if the numbers are really close -- needed
+        // when comparing numbers near zero.
+        const double diff = std::fabs(A - B);
+        if (diff <= maxDiff)
+            return true;
+
+        A = std::fabs(A);
+        B = std::fabs(B);
+        const double largest = (B > A) ? B : A;
+
+        if (diff <= largest * maxRelDiff)
+            return true;
+        return false;
+    }
+    
+    bool eq(double x, double y) {
+        return cmp(x, y);
+    }
+
+    bool le(double x, double y) {
+        if (cmp(x, y)) {
+            return true;
+        }
+        return x < y;
+    }
+
+    bool lt(double x, double y) {
+        if (cmp(x, y)) {
+            return false;
+        }
+        return x < y;
+    }
+
+    bool ge(double x, double y) {
+        if (cmp(x, y)) {
+            return true;
+        }
+        return x > y;
+    }
+
+    bool gt(double x, double y) {
+        if (cmp(x, y)) {
+            return false;
+        }
+        return x > y;
+    }
+
+}
+
+namespace cmp_ulp {
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstrict-aliasing"
+    inline int cmp(double A, double B, double maxDiff = 1e-15, int maxUlps = 10000) {
+        // Make sure maxUlps is non-negative and small enough that the
+        // default NAN won't compare as equal to anything.
+        // assert(maxUlps > 0 && maxUlps < 4 * 1024 * 1024);
+
+        // handle NaN's
+        // Note: comparing something with a NaN is always false!
+        if (A != A || B != B) {
+            return false;
+        }
+
+        if (std::abs(A - B) <= maxDiff) {
+            return true;
+        }
+
+        auto aInt = *(int64_t*)&A;
+        // Make aInt lexicographically ordered as a twos-complement int
+        if (aInt < 0) {
+            aInt = 0x8000000000000000 - aInt;
+        }
+
+        auto bInt = *(int64_t*)&B;
+        // Make bInt lexicographically ordered as a twos-complement int
+        if (bInt < 0) {
+            bInt = 0x8000000000000000 - bInt;
+        }
+
+        if (std::abs(aInt - bInt) <= maxUlps) {
+            return true;
+        }
+        return false;
+    }
+#pragma GCC diagnostic pop
+
+    bool eq(double x, double y) {
+        return cmp(x, y);
+    }
+
+    bool le(double x, double y) {
+        if (cmp(x, y)) {
+            return true;
+        }
+        return x < y;
+    }
+
+    bool lt(double x, double y) {
+        if (cmp(x, y)) {
+            return false;
+        }
+        return x < y;
+    }
+
+    bool ge(double x, double y) {
+        if (cmp(x, y)) {
+            return true;
+        }
+        return x > y;
+    }
+
+    bool gt(double x, double y) {
+        if (cmp(x, y)) {
+            return false;
+        }
+        return x > y;
+    }
+}
+
+namespace cmp = cmp_ulp;
 /*
 
   Some
@@ -57,19 +188,19 @@ extern Inform* gmsg;
 namespace {
 struct VectorLessX {
     bool operator() (Vector_t x1, Vector_t x2) {
-        return x1 (0) < x2 (0);
+        return cmp::lt (x1(0), x2(0));
     }
 };
 
 struct VectorLessY {
     bool operator() (Vector_t x1, Vector_t x2) {
-        return x1 (1) < x2 (1);
+        return cmp::lt(x1(1), x2 (1));
     }
 };
 
 struct VectorLessZ {
     bool operator() (Vector_t x1, Vector_t x2) {
-        return x1 (2) < x2 (2);
+        return cmp::lt(x1(2), x2(2));
     }
 };
 
@@ -83,7 +214,7 @@ Vector_t get_max_extent (std::vector<Vector_t>& coords) {
         coords.begin (), coords.end (), VectorLessY ());
     const Vector_t z = *max_element (
         coords.begin (), coords.end (), VectorLessZ ());
-    return Vector_t (x (0), y (1), z (2));
+    return Vector_t (x(0), y(1), z(2));
 }
 
 
@@ -97,7 +228,7 @@ Vector_t get_min_extent (std::vector<Vector_t>& coords) {
         coords.begin (), coords.end (), VectorLessY ());
     const Vector_t z = *min_element (
         coords.begin (), coords.end (), VectorLessZ ());
-    return Vector_t (x (0), y (1), z (2));
+    return Vector_t (x(0), y(1), z(2));
 }
 
 /*
@@ -183,11 +314,6 @@ static void write_voxel_mesh (
  */
 
 
-#define LERP( A, B, C) ((B)+(A)*((C)-(B)))
-#define MIN2(a,b) (((a) < (b)) ? (a) : (b))
-#define MAX2(a,b) (((a) > (b)) ? (a) : (b))
-#define MIN3(a,b,c) ((((a)<(b))&&((a)<(c))) ? (a) : (((b)<(c)) ? (b) : (c)))
-#define MAX3(a,b,c) ((((a)>(b))&&((a)>(c))) ? (a) : (((b)>(c)) ? (b) : (c)))
 #define INSIDE 0
 #define OUTSIDE 1
 
@@ -252,12 +378,12 @@ face_plane (
     ) {
     int outcode_fcmp = 0;
 
-    if (gsl_fcmp (p[0], 0.5, EPS) > 0) outcode_fcmp |= 0x01;
-    if (gsl_fcmp (p[0],-0.5, EPS) < 0) outcode_fcmp |= 0x02;
-    if (gsl_fcmp (p[1], 0.5, EPS) > 0) outcode_fcmp |= 0x04;
-    if (gsl_fcmp (p[1],-0.5, EPS) < 0) outcode_fcmp |= 0x08;
-    if (gsl_fcmp (p[2], 0.5, EPS) > 0) outcode_fcmp |= 0x10;
-    if (gsl_fcmp (p[2],-0.5, EPS) < 0) outcode_fcmp |= 0x20;
+    if (cmp::gt(p[0],  0.5)) outcode_fcmp |= 0x01;
+    if (cmp::lt(p[0], -0.5)) outcode_fcmp |= 0x02;
+    if (cmp::gt(p[1],  0.5)) outcode_fcmp |= 0x04;
+    if (cmp::lt(p[1], -0.5)) outcode_fcmp |= 0x08;
+    if (cmp::gt(p[2],  0.5)) outcode_fcmp |= 0x10;
+    if (cmp::lt(p[2], -0.5)) outcode_fcmp |= 0x20;
 
     return(outcode_fcmp);
 }
@@ -272,18 +398,18 @@ bevel_2d (
     ) {
     int outcode_fcmp = 0;
 
-    if (gsl_fcmp( p[0] + p[1], 1.0, EPS) > 0) outcode_fcmp |= 0x001;
-    if (gsl_fcmp( p[0] - p[1], 1.0, EPS) > 0) outcode_fcmp |= 0x002;
-    if (gsl_fcmp(-p[0] + p[1], 1.0, EPS) > 0) outcode_fcmp |= 0x004;
-    if (gsl_fcmp(-p[0] - p[1], 1.0, EPS) > 0) outcode_fcmp |= 0x008;
-    if (gsl_fcmp( p[0] + p[2], 1.0, EPS) > 0) outcode_fcmp |= 0x010;
-    if (gsl_fcmp( p[0] - p[2], 1.0, EPS) > 0) outcode_fcmp |= 0x020;
-    if (gsl_fcmp(-p[0] + p[2], 1.0, EPS) > 0) outcode_fcmp |= 0x040;
-    if (gsl_fcmp(-p[0] - p[2], 1.0, EPS) > 0) outcode_fcmp |= 0x080;
-    if (gsl_fcmp( p[1] + p[2], 1.0, EPS) > 0) outcode_fcmp |= 0x100;
-    if (gsl_fcmp( p[1] - p[2], 1.0, EPS) > 0) outcode_fcmp |= 0x200;
-    if (gsl_fcmp(-p[1] + p[2], 1.0, EPS) > 0) outcode_fcmp |= 0x400;
-    if (gsl_fcmp(-p[1] - p[2], 1.0, EPS) > 0) outcode_fcmp |= 0x800;
+    if (cmp::gt( p[0] + p[1], 1.0)) outcode_fcmp |= 0x001;
+    if (cmp::gt( p[0] - p[1], 1.0)) outcode_fcmp |= 0x002;
+    if (cmp::gt(-p[0] + p[1], 1.0)) outcode_fcmp |= 0x004;
+    if (cmp::gt(-p[0] - p[1], 1.0)) outcode_fcmp |= 0x008;
+    if (cmp::gt( p[0] + p[2], 1.0)) outcode_fcmp |= 0x010;
+    if (cmp::gt( p[0] - p[2], 1.0)) outcode_fcmp |= 0x020;
+    if (cmp::gt(-p[0] + p[2], 1.0)) outcode_fcmp |= 0x040;
+    if (cmp::gt(-p[0] - p[2], 1.0)) outcode_fcmp |= 0x080;
+    if (cmp::gt( p[1] + p[2], 1.0)) outcode_fcmp |= 0x100;
+    if (cmp::gt( p[1] - p[2], 1.0)) outcode_fcmp |= 0x200;
+    if (cmp::gt(-p[1] + p[2], 1.0)) outcode_fcmp |= 0x400;
+    if (cmp::gt(-p[1] - p[2], 1.0)) outcode_fcmp |= 0x800;
 
     return(outcode_fcmp);
 }
@@ -298,14 +424,14 @@ bevel_3d (
     ) {
     int outcode_fcmp = 0;
 
-    if (gsl_fcmp( p[0] + p[1] + p[2], 1.5, EPS) > 0) outcode_fcmp |= 0x01;
-    if (gsl_fcmp( p[0] + p[1] - p[2], 1.5, EPS) > 0) outcode_fcmp |= 0x02;
-    if (gsl_fcmp( p[0] - p[1] + p[2], 1.5, EPS) > 0) outcode_fcmp |= 0x04;
-    if (gsl_fcmp( p[0] - p[1] - p[2], 1.5, EPS) > 0) outcode_fcmp |= 0x08;
-    if (gsl_fcmp(-p[0] + p[1] + p[2], 1.5, EPS) > 0) outcode_fcmp |= 0x10;
-    if (gsl_fcmp(-p[0] + p[1] - p[2], 1.5, EPS) > 0) outcode_fcmp |= 0x20;
-    if (gsl_fcmp(-p[0] - p[1] + p[2], 1.5, EPS) > 0) outcode_fcmp |= 0x40;
-    if (gsl_fcmp(-p[0] - p[1] - p[2], 1.5, EPS) > 0) outcode_fcmp |= 0x80;
+    if (cmp::gt( p[0] + p[1] + p[2], 1.5)) outcode_fcmp |= 0x01;
+    if (cmp::gt( p[0] + p[1] - p[2], 1.5)) outcode_fcmp |= 0x02;
+    if (cmp::gt( p[0] - p[1] + p[2], 1.5)) outcode_fcmp |= 0x04;
+    if (cmp::gt( p[0] - p[1] - p[2], 1.5)) outcode_fcmp |= 0x08;
+    if (cmp::gt(-p[0] + p[1] + p[2], 1.5)) outcode_fcmp |= 0x10;
+    if (cmp::gt(-p[0] + p[1] - p[2], 1.5)) outcode_fcmp |= 0x20;
+    if (cmp::gt(-p[0] - p[1] + p[2], 1.5)) outcode_fcmp |= 0x40;
+    if (cmp::gt(-p[0] - p[1] - p[2], 1.5)) outcode_fcmp |= 0x80;
 
     return(outcode_fcmp);
 }
@@ -326,9 +452,12 @@ check_point (
     ) {
     Vector_t plane_point;
 
-    plane_point[0] = LERP(alpha, p1[0], p2[0]);
-    plane_point[1] = LERP(alpha, p1[1], p2[1]);
-    plane_point[2] = LERP(alpha, p1[2], p2[2]);
+#define LERP(a, b, t) (a + t * (b - a))
+    // with C++20 we can use: std::lerp(a, b, t)
+    plane_point[0] = LERP(p1[0], p2[0], alpha);
+    plane_point[1] = LERP(p1[1], p2[1], alpha);
+    plane_point[2] = LERP(p1[2], p2[2], alpha);
+#undef LERP
     return(face_plane(plane_point) & mask);
 }
 
@@ -383,12 +512,12 @@ point_triangle_intersection (
       First, a quick bounding-box test:
       If P is outside triangle bbox, there cannot be an intersection.
     */
-    if (gsl_fcmp (p[0], MAX3(t.v1(0), t.v2(0), t.v3(0)), EPS) > 0) return(OUTSIDE);
-    if (gsl_fcmp (p[1], MAX3(t.v1(1), t.v2(1), t.v3(1)), EPS) > 0) return(OUTSIDE);
-    if (gsl_fcmp (p[2], MAX3(t.v1(2), t.v2(2), t.v3(2)), EPS) > 0) return(OUTSIDE);
-    if (gsl_fcmp (p[0], MIN3(t.v1(0), t.v2(0), t.v3(0)), EPS) < 0) return(OUTSIDE);
-    if (gsl_fcmp (p[1], MIN3(t.v1(1), t.v2(1), t.v3(1)), EPS) < 0) return(OUTSIDE);
-    if (gsl_fcmp (p[2], MIN3(t.v1(2), t.v2(2), t.v3(2)), EPS) < 0) return(OUTSIDE);
+    if (cmp::gt(p[0], std::max({t.v1(0), t.v2(0), t.v3(0)}))) return(OUTSIDE);
+    if (cmp::gt(p[1], std::max({t.v1(1), t.v2(1), t.v3(1)}))) return(OUTSIDE);
+    if (cmp::gt(p[2], std::max({t.v1(2), t.v2(2), t.v3(2)}))) return(OUTSIDE);
+    if (cmp::lt(p[0], std::min({t.v1(0), t.v2(0), t.v3(0)}))) return(OUTSIDE);
+    if (cmp::lt(p[1], std::min({t.v1(1), t.v2(1), t.v3(1)}))) return(OUTSIDE);
+    if (cmp::lt(p[2], std::min({t.v1(2), t.v2(2), t.v3(2)}))) return(OUTSIDE);
 
     /*
       For each triangle side, make a vector out of it by subtracting vertexes;
@@ -622,23 +751,23 @@ public:
         double tmax_ = (pts[1-r.sign[0]][0] - r.origin[0]) * r.inv_direction[0];
         const double tymin = (pts[r.sign[1]][1]   - r.origin[1]) * r.inv_direction[1];
         const double tymax = (pts[1-r.sign[1]][1] - r.origin[1]) * r.inv_direction[1];
-        if ( (tmin_ > tymax) || (tymin > tmax_) )
+        if ( cmp::gt(tmin_, tymax) || cmp::gt(tymin, tmax_) )
             return 0;       // no intersection
-        if (tymin > tmin_)
+        if (cmp::gt(tymin, tmin_))
             tmin_ = tymin;
-        if (tymax < tmax_)
+        if (cmp::lt(tymax, tmax_))
             tmax_ = tymax;
         const double tzmin = (pts[r.sign[2]][2]   - r.origin[2]) * r.inv_direction[2];
         const double tzmax = (pts[1-r.sign[2]][2] - r.origin[2]) * r.inv_direction[2];
-        if ( (tmin_ > tzmax) || (tzmin > tmax_) )
+        if ( cmp::gt(tmin_, tzmax) || cmp::gt(tzmin, tmax_) )
             return 0;       // no intersection
-        if (tzmin > tmin_)
+        if (cmp::gt(tzmin, tmin_))
             tmin_ = tzmin;
         tmin = tmin_;
-        if (tzmax < tmax_)
+        if (cmp::lt(tzmax, tmax_))
             tmax_ = tzmax;
         tmax = tmax_;
-        return (tmax >= 0);
+        return cmp::ge(tmax, 0.0);
     }
 
     inline bool intersect (
@@ -668,12 +797,12 @@ public:
         const Vector_t& P
         ) const {
         return (
-            P[0] >= pts[0][0] &&
-            P[1] >= pts[0][1] &&
-            P[2] >= pts[0][2] &&
-            P[0] <= pts[1][0] &&
-            P[1] <= pts[1][1] &&
-            P[2] <= pts[1][2]);
+                cmp::ge(P[0], pts[0][0])
+                && cmp::ge(P[1], pts[0][1])
+                && cmp::ge(P[2], pts[0][2])
+                && cmp::le(P[0], pts[1][0])
+                && cmp::le(P[1], pts[1][1])
+                && cmp::le(P[2], pts[1][2]));
     }
 
     Vector_t pts[2];
@@ -686,7 +815,7 @@ static inline Vector_t normalVector (
     ) {
     const Vector_t N = cross (B - A, C - A);
     const double magnitude = std::sqrt (SQR (N (0)) + SQR (N (1)) + SQR (N (2)));
-    PAssert (gsl_fcmp (magnitude, 0.0, EPS) > 0); // in case we have degenerated triangles
+    PAssert (cmp::gt(magnitude, 0.0)); // in case we have degenerated triangles
     return N / magnitude;
 }
 
@@ -958,8 +1087,8 @@ BoundaryGeometry::intersectLineTriangle (
     const Vector_t w0 = P0 - V0;
     const double a = -dot(n,w0);
     const double b = dot(n,dir);
-    if (gsl_fcmp (b, 0.0, EPS) == 0) {  // ray is  parallel to triangle plane
-        if (a == 0) {                   // ray lies in triangle plane
+    if (cmp::eq(b, 0.0)) {              // ray is  parallel to triangle plane
+        if (cmp::eq(a, 0.0)) {                   // ray lies in triangle plane
             return 1;
         } else {                        // ray disjoint from plane
             return 0;
@@ -970,12 +1099,12 @@ BoundaryGeometry::intersectLineTriangle (
     const double r = a / b;
     switch (kind) {
     case RAY:
-        if (r < 0.0) {                  // ray goes away from triangle
+        if (cmp::lt(r, 0.0)) {           // ray goes away from triangle
             return 0;                   // => no intersect
         }
         break;
     case SEGMENT:
-        if (r < 0 || 1.0 < r) {         // intersection on extended
+        if (cmp::lt(r, 0.0) || cmp::lt(1.0, r)) { // intersection on extended
             return 0;                   // segment
         }
         break;
@@ -995,17 +1124,17 @@ BoundaryGeometry::intersectLineTriangle (
 
     // get and test parametric coords
     const double s = (uv * wv - vv * wu) / D;
-    if (s < 0.0 || s > 1.0) {           // I is outside T
+    if (cmp::lt(s, 0.0) || cmp::gt(s, 1.0)) {           // I is outside T
         return 0;
     }
     const double t = (uv * wu - uu * wv) / D;
-    if (t < 0.0 || (s + t) > 1.0) {     // I is outside T
+    if (cmp::lt(t, 0.0) || cmp::gt((s + t), 1.0)) {     // I is outside T
         return 0;
     }
     // intersection point is in triangle
-    if (r < 0.0) {                      // in extended segment in opposite
+    if (cmp::lt(r, 0.0)) {              // in extended segment in opposite
         return 2;                       // direction of ray
-    } else if ((0.0 <= r) && (r <= 1.0)) { // in segment
+    } else if (cmp::le(0.0, r) && cmp::le(r, 1.0)) { // in segment
         return 3;
     } else {                            // in extended segment in
         return 4;                       // direction of ray
@@ -1033,33 +1162,33 @@ BoundaryGeometry::isInside (
     
     // left boundary of bounding box (x direction)
     x = maxExtent_m[0] + 0.01;
-    if (x - P[0] < distance) {
+    if (cmp::lt(x - P[0], distance)) {
         distance = x - P[0];
         ref_pt = {x, P[1], P[2]};
     }
     
     // lower boundary of bounding box (y direction)
     double y = minExtent_m[1] - 0.01;
-    if (P[1] - y < distance) {
+    if (cmp::lt(P[1] - y, distance)) {
         distance = P[1] -y;
         ref_pt = {P[0], y, P[1]};
     }
     
     // upper boundary of bounding box (y direction)
     y = maxExtent_m[1] + 0.01;
-    if (y - P[1] < distance) {
+    if (cmp::lt(y - P[1], distance)) {
         distance = y - P[1];
         ref_pt = {P[0], y, P[2]};
     }
     // front boundary of bounding box (z direction)
     double z = minExtent_m[2] - 0.01;
-    if (P[2] - z < distance) {
+    if (cmp::lt(P[2] - z, distance)) {
         distance = P[2] - z;
         ref_pt = {P[0], P[1], z};
     }
     // back boundary of bounding box (z direction)
     z = maxExtent_m[2] + 0.01;
-    if (z - P[2] < distance) {
+    if (cmp::lt(z - P[2], distance)) {
         ref_pt = {P[0], P[1], z};
     }
 
@@ -1206,9 +1335,9 @@ BoundaryGeometry::fastIsInside (
     }
 #endif
     const Vector_t v = reference_pt - P;
-    const int N = std::ceil (magnitude (v) / MIN3 (voxelMesh_m.sizeOfVoxel [0],
+    const int N = std::ceil (magnitude (v) / std::min ({voxelMesh_m.sizeOfVoxel [0],
                                               voxelMesh_m.sizeOfVoxel [1],
-                                              voxelMesh_m.sizeOfVoxel [2]));
+                                              voxelMesh_m.sizeOfVoxel [2]}));
     const Vector_t v_ = v / N;
     Vector_t P0 = P;
     Vector_t P1 = P + v_;
@@ -1354,13 +1483,13 @@ BoundaryGeometry::computeMeshVoxelization (void) {
         Vector_t v2 = getPoint (triangle_id, 2);
         Vector_t v3 = getPoint (triangle_id, 3);
         Vector_t bbox_min = {
-            MIN3 (v1[0], v2[0], v3[0]),
-            MIN3 (v1[1], v2[1], v3[1]),
-            MIN3 (v1[2], v2[2], v3[2]) };
+            std::min({v1[0], v2[0], v3[0]}),
+            std::min({v1[1], v2[1], v3[1]}),
+            std::min({v1[2], v2[2], v3[2]}) };
         Vector_t bbox_max = {
-            MAX3 (v1[0], v2[0], v3[0]),
-            MAX3 (v1[1], v2[1], v3[1]),
-            MAX3 (v1[2], v2[2], v3[2]) };
+            std::max({v1[0], v2[0], v3[0]}),
+            std::max({v1[1], v2[1], v3[1]}),
+            std::max({v1[2], v2[2], v3[2]}) };
         int i_min, j_min, k_min;
         int i_max, j_max, k_max;
         mapPoint2VoxelIndices (bbox_min, i_min, j_min, k_min);
@@ -1919,13 +2048,13 @@ BoundaryGeometry::intersectTinyLineSegmentBoundary (
     const Vector_t v_ = Q - P;
     const Ray r = Ray (P, v_);
     const Vector_t bbox_min = {
-        MIN2 (P[0], Q[0]),
-        MIN2 (P[1], Q[1]),
-        MIN2 (P[2], Q[2]) };
+        std::min(P[0], Q[0]),
+        std::min(P[1], Q[1]),
+        std::min(P[2], Q[2]) };
     const Vector_t bbox_max = {
-        MAX2 (P[0], Q[0]),
-        MAX2 (P[1], Q[1]),
-        MAX2 (P[2], Q[2]) };
+        std::max(P[0], Q[0]),
+        std::max(P[1], Q[1]),
+        std::max(P[2], Q[2]) };
     int i_min, i_max;
     int j_min, j_max;
     int k_min, k_max;
@@ -2019,9 +2148,9 @@ BoundaryGeometry::intersectTinyLineSegmentBoundary (
         case 1:                     // line and triangle are in same plane
         case 3:                     // unique intersection in segment
             double t;
-            if (gsl_fcmp (Q[0] - P[0], 0.0, EPS) != 0) {
+            if (cmp::eq(Q[0] - P[0], 0.0) == false) {
                 t = (tmp_intersect_pt[0] - P[0]) / (Q[0] - P[0]);
-            } else if (gsl_fcmp (Q[1] - P[1], 0.0, EPS) != 0) {
+            } else if (cmp::eq(Q[1] - P[1], 0.0) == false) {
                 t = (tmp_intersect_pt[1] - P[1]) / (Q[1] - P[1]);
             } else {
                 t = (tmp_intersect_pt[2] - P[2]) / (Q[2] - P[2]);
@@ -2081,13 +2210,13 @@ BoundaryGeometry::intersectLineSegmentBoundary (
         n++;
         Vector_t Q = P0 + v / n;
         Vector_t bbox_min = {
-            MIN2 (P0[0], Q[0]),
-            MIN2 (P0[1], Q[1]),
-            MIN2 (P0[2], Q[2]) };
+            std::min(P0[0], Q[0]),
+            std::min(P0[1], Q[1]),
+            std::min(P0[2], Q[2]) };
         Vector_t bbox_max = {
-            MAX2 (P0[0], Q[0]),
-            MAX2 (P0[1], Q[1]),
-            MAX2 (P0[2], Q[2]) };
+            std::max(P0[0], Q[0]),
+            std::max(P0[1], Q[1]),
+            std::max(P0[2], Q[2]) };
         mapPoint2VoxelIndices (bbox_min, i_min, j_min, k_min);
         mapPoint2VoxelIndices (bbox_max, i_max, j_max, k_max);
     } while (( (i_max-i_min+1) * (j_max-j_min+1) * (k_max-k_min+1)) > 27);
