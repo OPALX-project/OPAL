@@ -30,8 +30,8 @@ class Fieldmap;
 
 // Class TravelingWave
 // ------------------------------------------------------------------------
-/// Interface for RF cavity.
-//  Class TravelingWave defines the abstract interface for RF cavities.
+/// Interface for Traveling Wave.
+//  Class TravelingWave defines the abstract interface for Traveling Wave.
 
 
 class TravelingWave: public RFCavity {

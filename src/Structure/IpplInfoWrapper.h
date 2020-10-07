@@ -9,7 +9,7 @@
   Class documentation
 */
 
-#include "Ippl.h"
+#include "Utility/IpplInfo.h"
 
 class IpplInfoWrapper {
 public:

@@ -28,6 +28,8 @@
 
 #include "Structure/DataSink.h"
 
+#include "Utility/FieldDebugFunctions.h"
+
 #include "OPALconfig.h"
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/Options.h"
@@ -39,6 +41,8 @@
 
 #ifdef __linux__
     #include "MemoryProfiler.h"
+#else
+    #include "MemoryWriter.h"
 #endif
 
 
@@ -49,17 +53,11 @@
 
 
 #include "LBalWriter.h"
-#include "MemoryWriter.h"
 
 #ifdef ENABLE_AMR
     #include "GridLBalWriter.h"
 #endif
 
-
-#include <boost/filesystem.hpp>
-#include <boost/regex.hpp>
-
-#include <queue>
 #include <sstream>
 
 DataSink::DataSink()
@@ -176,8 +174,6 @@ void DataSink::writeImpactStatistics(const PartBunchBase<double, 3> *beam, long 
 
         std::unique_ptr<Inform> ofp(new Inform(NULL, ffn.c_str(), Inform::APPEND, 0));
         Inform &fid = *ofp;
-        setInform(fid);
-
         fid.precision(6);
         fid << std::setiosflags(std::ios::scientific);
         double t = beam->getT() * 1.0e9;
@@ -329,11 +325,3 @@ void DataSink::initMultiBunchDump(short numBunch) {
         ++bunch;
     }
 }
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c++
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

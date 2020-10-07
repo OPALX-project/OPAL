@@ -211,8 +211,6 @@ int main(int argc, char *argv[]){
     Inform msg(argv[0]);
     Inform msg2all(argv[0],INFORM_ALL_NODES);
 
-    // variable declarations
-    int i,j,k;
     // indices of the 3D array of cells
     int nx, ny, nz;
     // total number of cells along the x, y, and z axes, respectively

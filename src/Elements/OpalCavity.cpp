@@ -40,16 +40,6 @@ OpalCavity::OpalCavity():
                    ("LAG", "Phase lag (rad)");
     itsAttr[DLAG] = Attributes::makeReal
                     ("DLAG", "Phase lag error (rad)");
-    itsAttr[HARMON] = Attributes::makeReal
-                      ("HARMON", "Harmonic number");
-    itsAttr[BETARF] = Attributes::makeReal
-                      ("BETRF", "beta_RF");
-    itsAttr[PG] = Attributes::makeReal
-                  ("PG", "RF power in MW");
-    itsAttr[ZSHUNT] = Attributes::makeReal
-                      ("SHUNT", "Shunt impedance in MOhm");
-    itsAttr[TFILL] = Attributes::makeReal
-                     ("TFILL", "Fill time in microseconds");
     itsAttr[FMAPFN] = Attributes::makeString
                       ("FMAPFN", "Filename of the fieldmap");
     itsAttr[GEOMETRY] = Attributes::makeString
@@ -95,8 +85,7 @@ OpalCavity::OpalCavity(const std::string &name, OpalCavity *parent):
 
 
 OpalCavity::~OpalCavity() {
-    if(owk_m)
-        delete owk_m;
+    delete owk_m;
 }
 
 

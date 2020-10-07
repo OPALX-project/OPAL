@@ -14,7 +14,6 @@
 #include "Field/BareField.h"
 #include "Field/BrickExpression.h"
 #include "Field/LField.h"
-#include "Field/Field.h"
 #include "Field/Assign.h"
 #include "Field/AssignDefs.h"
 

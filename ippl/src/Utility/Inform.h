@@ -34,6 +34,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <string>
 
 #define INFORM_ALL_NODES        (-1)
 

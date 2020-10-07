@@ -31,6 +31,7 @@
 #include "AbstractObjects/Definition.h"
 
 class Attribute;
+class Inform;
 class TrimCoil;
 
 class OpalTrimCoil: public Definition {

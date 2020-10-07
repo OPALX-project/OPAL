@@ -157,8 +157,8 @@ TEST(MultipoleTTest, CurvedMagnet) {
         curlMag += gsl_sf_pow_int(curl[1], 2.0);
         curlMag += gsl_sf_pow_int(curl[2], 2.0);
         curlMag = sqrt(curlMag);
-        coordinatetransform::CoordinateTransform t(x[n], z, y[n], 2.2, 0.3, 0.3, 4.4 / 0.628);
-        std::vector<double> r = t.getTransformation();
+        coordinatetransform::CoordinateTransform ct(x[n], z, y[n], 2.2, 0.3, 0.3, 4.4 / 0.628);
+        std::vector<double> r = ct.getTransformation();
         EXPECT_NEAR(div, 0, 2e-2)
                      << "R: " << r[0] << " " << r[1] << " " << r[2] << std::endl
                      << "R: " << x[n] << " " << z << " " << y[n] << std::endl
@@ -237,7 +237,6 @@ TEST(MultipoleTTest, CurvedConstRadius) {
     double stepSize = 1e-3;
     double radius = 4.4 / 0.628;
     double z = 0.2;
-    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
     for (double theta = 0; theta <= 0.3001; theta += 0.2) {
         double x = radius * cos(theta) - radius;
         double y = radius * sin(theta);

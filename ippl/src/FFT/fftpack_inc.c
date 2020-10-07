@@ -314,11 +314,3 @@ static void X(g)(size_t ido, size_t ip, size_t l1, const cmplx *cc, cmplx *ch,
 #undef PSIGN
 #undef PMSIGNC
 #undef MULPMSIGNC
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

@@ -299,11 +299,3 @@ FFTBase<Dim,T>::checkDomain(const FFTBase<Dim,T>::Domain_t& dom1,
 #include "FFT/FFTBase.hpp"
 
 #endif // IPPL_FFT_FFTBASE_H
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

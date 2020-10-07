@@ -290,6 +290,10 @@ MapType Fieldmap::readHeader(std::string Filename) {
     if (Filename == "1DPROFILE1-DEFAULT")
         return T1DProfile1;
 
+    if (Filename.empty())
+        throw GeneralClassicException("Fieldmap::readHeader()",
+                                      "No field map file specified");
+
     if (!fs::exists(Filename))
         throw GeneralClassicException("Fieldmap::readHeader()",
                                       "File \"" + Filename + "\" doesn't exist");

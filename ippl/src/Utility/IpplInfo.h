@@ -43,9 +43,8 @@
  */
 
 // include files
-#include "Utility/Inform.h"
-#include "Message/Communicate.h"
 #include "Utility/StaticIpplInfo.h"
+#include "Utility/Inform.h"
 
 #include <iostream>
 #include <stack>
@@ -56,6 +55,7 @@
 #include <mpi.h>
 
 // forward declarations
+class Communicate;
 class IpplStats;
 class IpplInfo;
 std::ostream& operator<<(std::ostream&, const IpplInfo&);

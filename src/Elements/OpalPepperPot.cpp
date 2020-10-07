@@ -1,7 +1,7 @@
 //
 // Class OpalPepperPot
 //   The PEPPERPOT element.
-//   The class of OPAL elliptic collimators.
+//   The class of OPAL pepperpot collimators.
 //
 // Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
@@ -24,7 +24,7 @@
 
 OpalPepperPot::OpalPepperPot():
     OpalElement(SIZE, "PEPPERPOT",
-                "The \"PEPPERPOT\" element defines an elliptic collimator."),
+                "The \"PEPPERPOT\" element defines an pepperpot collimator."),
     parmatint_m(NULL) {
     itsAttr[XSIZE] = Attributes::makeReal
                      ("XSIZE", "Size in x of the pepperpot in m");

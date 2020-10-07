@@ -38,9 +38,10 @@
 // include files
 #include "Utility/IpplInfo.h"
 #include "Utility/Timer.h"
-#include "Utility/Inform.h"
 
 #include <vector>
+
+class Inform;
 
 class IpplStats {
 

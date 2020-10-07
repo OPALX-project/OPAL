@@ -28,26 +28,33 @@
 #ifndef _OPAL_DATA_SINK_H
 #define _OPAL_DATA_SINK_H
 
-#include "Algorithms/PBunchDefs.h"
+#include "Algorithms/Vektor.h"
 
+#include "SDDSWriter.h"
 #include "StatWriter.h"
 #include "H5Writer.h"
 #include "MultiBunchDump.h"
+
+#include <iomanip>
+#include <memory>
+#include <string>
+#include <vector>
 
 template <class T, unsigned Dim>
 class PartBunchBase;
 class BoundaryGeometry;
 class H5PartWrapper;
+class MultiBunchHandler;
 
 class DataSink {
-public:
+private:
     typedef StatWriter::losses_t            losses_t;
     typedef std::unique_ptr<StatWriter>     statWriter_t;
     typedef std::unique_ptr<SDDSWriter>     sddsWriter_t;
     typedef std::unique_ptr<H5Writer>       h5Writer_t;
     typedef std::unique_ptr<MultiBunchDump> mbWriter_t;
     
-    
+public:
     /** \brief Default constructor.
      *
      * The default constructor is called at the start of a new calculation (as
@@ -153,11 +160,3 @@ std::string DataSink::convertToString(int number, int setw) {
 
 
 #endif // DataSink_H_
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c++
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

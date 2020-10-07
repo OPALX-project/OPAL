@@ -26,9 +26,10 @@
 #ifndef IRREGULAR_DOMAIN_H
 #define IRREGULAR_DOMAIN_H
 
-#include <vector>
+#include <map>
 #include <string>
-#include "Algorithms/PBunchDefs.h"
+#include "Algorithms/Vektor.h"
+#include "Algorithms/Quaternion.h"
 
 /// enumeration corresponding to different interpolation methods at the boundary
 enum {
@@ -186,12 +187,3 @@ protected:
 };
 
 #endif
-
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

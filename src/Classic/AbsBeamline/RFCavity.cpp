@@ -180,7 +180,7 @@ void RFCavity::initialise(PartBunchBase<double, 3> *bunch, double &startField, d
     fieldmap_m->getFieldDimensions(startField_m, endField);
     if (endField <= startField_m) {
         throw GeneralClassicException("RFCavity::initialise",
-                                      "The length of the field map '" + filename_m + "' is zero or negativ");
+                                      "The length of the field map '" + filename_m + "' is zero or negative");
     }
 
     msg << level2 << getName() << " using file ";
@@ -534,7 +534,7 @@ double RFCavity::getAutoPhaseEstimateFallback(double E0, double t0, double q, do
 }
 
 double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const double &q, const double &mass) {
-	std::vector<double> t, E, t2, E2;
+    std::vector<double> t, E, t2, E2;
     std::vector<double> F;
     std::vector< std::pair< double, double > > G;
     gsl_spline *onAxisInterpolants;
@@ -543,6 +543,7 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
     double phi = 0.0, tmp_phi, dphi = 0.5 * Physics::pi / 180.;
     double dz = 1.0, length = 0.0;
     fieldmap_m->getOnaxisEz(G);
+    if (G.size() == 0) return 0.0;
     double begin = (G.front()).first;
     double end   = (G.back()).first;
     std::unique_ptr<double[]> zvals(      new double[G.size()]);
@@ -628,9 +629,9 @@ double RFCavity::getAutoPhaseEstimate(const double &E0, const double &t0, const 
             t[i] = t[i - 1] + getdT(i, E, dz, mass);
             t2[i] = t2[i - 1] + getdT(i, E2, dz, mass);
 
-            E[i] = E[i - 1];
+            E[i]  = E [i - 1];
             E2[i] = E2[i - 1];
-            E[i] += q * scale_m * getdE(i, t, dz, phi, frequency_m, F) ;
+            E[i]  += q * scale_m * getdE(i, t, dz, phi, frequency_m, F) ;
             E2[i] += q * scale_m * getdE(i, t2, dz, phi + dphi, frequency_m, F);
         }
 
@@ -733,11 +734,3 @@ void RFCavity::getElementDimensions(double &begin,
                                     double &end) const {
     fieldmap_m->getFieldDimensions(begin, end);
 }
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c++
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

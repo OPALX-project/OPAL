@@ -1,6 +1,5 @@
 #include "Structure/LossDataSink.h"
 
-#include "Ippl.h"
 #include "Utilities/Options.h"
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/GeneralClassicException.h"
@@ -682,12 +681,3 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
 
     return stat;
 }
-
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c++
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

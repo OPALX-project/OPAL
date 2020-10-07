@@ -357,11 +357,3 @@ void ArbitraryDomain::linearInterpolation(int idx, int idy, int idz,
     if(dy_n != 0 || dy_s != 0)
         value.center += (dz_f + dz_b) * (dx_w + dx_e) * (dy_n + dy_s) / m2;
 }
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

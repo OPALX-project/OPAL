@@ -656,11 +656,3 @@ assign(const BareField<T1,Dim>& ca, RHS b, OP op, ExprTag<true>)
   //INCIPPLSTAT(incExpressions);
   //INCIPPLSTAT(incBFEqualsExpression);
 }
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

@@ -25,7 +25,7 @@
 
 OpalFlexibleCollimator::OpalFlexibleCollimator():
     OpalElement(SIZE, "FLEXIBLECOLLIMATOR",
-                "The \"FLEXIBLECOLLIMATOR\" element defines a slit."),
+                "The \"FLEXIBLECOLLIMATOR\" element defines a flexible collimator."),
     partMatInt_m(NULL) {
     itsAttr[FNAME] = Attributes::makeString
                      ("FNAME", "File name containing description of holes");

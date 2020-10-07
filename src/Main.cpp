@@ -17,9 +17,6 @@
 
 #include "opal.h"
 
-Ippl *ippl;
-Inform *gmsg;
-
 #include "H5hut.h"
 
 #include "AbstractObjects/OpalData.h"
@@ -33,52 +30,37 @@ Inform *gmsg;
 
 #include "BasicActions/Option.h"
 #include "Utilities/Options.h"
-#include "Utilities/Options.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/EarlyLeaveException.h"
 #include "Utilities/Util.h"
+
+#include "Util/SDDSParser/SDDSParserException.h"
 
 #include "OPALconfig.h"
 
 #ifdef ENABLE_AMR
 #include <AMReX_ParallelDescriptor.H>
 #endif
-/*
-  Includes related to the optimizer
-*/
-#include "boost/smart_ptr.hpp"
 
-#include "Pilot/Pilot.h"
-#include "Util/CmdArguments.h"
-#include "Util/OptPilotException.h"
-
-#include "Optimizer/EA/FixedPisaNsga2.h"
-#include "Optimizer/EA/BlendCrossover.h"
-#include "Optimizer/EA/IndependentBitMutation.h"
-
-#include "Optimize/OpalSimulation.h"
-
-#include "Comm/CommSplitter.h"
-#include "Comm/Topology/NoCommTopology.h"
-#include "Comm/Splitter/ManyMasterSplit.h"
-#include "Comm/MasterGraph/SocialNetworkGraph.h"
-
-#include "Expression/Parser/function.hpp"
-#include "Expression/FromFile.h"
-#include "Expression/SumErrSq.h"
-#include "Expression/SDDSVariable.h"
-#include "Expression/RadialPeak.h"
-#include "Expression/SumErrSqRadialPeak.h"
-#include "Expression/ProbeVariable.h"
+// IPPL
+#include "Message/Communicate.h"
+#include "Utility/Inform.h"
+#include "Utility/IpplException.h"
+#include "Utility/IpplInfo.h"
+#include "Utility/IpplTimings.h"
 
 #include <gsl/gsl_errno.h>
 
 #include <boost/filesystem.hpp>
-#include <boost/algorithm/string/predicate.hpp>
+#include <boost/system/error_code.hpp>
 
 #include <cstring>
+#include <iomanip>
+#include <iostream>
 #include <set>
-#include <algorithm>
+
+Ippl *ippl;
+Inform *gmsg;
 
 namespace {
     void errorHandlerGSL(const char *reason,
@@ -416,7 +398,6 @@ int main(int argc, char *argv[]) {
     } catch(SDDSParserException &ex) {
         Inform errorMsg("Error", std::cerr, INFORM_ALL_NODES);
 
-        std::stringstream msg;
         errorMsg << "\n*** Error detected by function \""
                  << ex.where() << "\"\n";
         std::string what = ex.what();
@@ -432,7 +413,6 @@ int main(int argc, char *argv[]) {
     } catch(IpplException &ex) {
         Inform errorMsg("Error", std::cerr, INFORM_ALL_NODES);
 
-        std::stringstream msg;
         errorMsg << "\n*** Error detected by function \""
                  << ex.where() << "\"\n";
         std::string what = ex.what();

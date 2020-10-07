@@ -15,7 +15,7 @@
 #include "FFT/FFT.h"
 #include "FieldLayout/FieldLayout.h"
 #include "Field/BareField.h"
-#include "Utility/IpplStats.h"
+//#include "Utility/IpplStats.h"
 
 //=============================================================================
 // FFT CCTransform Constructors
@@ -3291,11 +3291,3 @@ FFT<SineTransform,1U,T>::transform(
 
     return;
 }
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

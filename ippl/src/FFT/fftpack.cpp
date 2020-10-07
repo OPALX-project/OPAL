@@ -972,11 +972,3 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

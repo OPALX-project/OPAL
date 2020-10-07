@@ -38,10 +38,7 @@
 #include <cmath>
 #include <cstdio>
 
-#include "Ippl.h"
-
-#include "gsl/gsl_spline.h"
-#include "gsl/gsl_interp.h"
+#include "Utility/Inform.h"
 
 #define CHECK_BSTP_FSCANF_EOF(arg) if (arg == EOF)\
 throw GeneralClassicException("BeamStripping::getPressureFromFile",\

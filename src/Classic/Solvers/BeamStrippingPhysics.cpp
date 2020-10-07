@@ -31,7 +31,7 @@
 #include "Structure/LossDataSink.h"
 #include "Utilities/Options.h"
 
-#include "Ippl.h"
+#include "Utility/Inform.h"
 
 #include <iostream>
 #include <fstream>
@@ -634,12 +634,6 @@ void BeamStrippingPhysics::print(Inform& /*msg*/) {
 bool BeamStrippingPhysics::stillActive() {
     return locPartsInMat_m != 0;
 }
-
-bool BeamStrippingPhysics::stillAlive(PartBunchBase<double, 3> */*bunch*/) {
-    bool beamstrippingAlive = true;
-    return beamstrippingAlive;
-}
-
 
 /*
     Cross sections parameters for interaction with air

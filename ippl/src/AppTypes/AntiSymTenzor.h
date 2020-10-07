@@ -710,11 +710,3 @@ inline std::ostream& operator<<(std::ostream& out, const AntiSymTenzor<T,D>& rhs
 //////////////////////////////////////////////////////////////////////
 
 #endif // ANTI_SYM_TENZOR_H
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

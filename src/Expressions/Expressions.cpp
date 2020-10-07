@@ -744,7 +744,7 @@ namespace Expressions {
                     array.push_back(SNull<double>::make(*fun));
                     result = new AList<double>(array);
                 } else if(const ArrayFun *fun = find(tablea, frstName)) {
-                    PtrToArray<double> arg1 = parseRealArray(stat);
+                    arg1 = parseRealArray(stat);
                     ArrayOfPtrs<double> array;
                     array.push_back(new ASUnary<double>(*fun, arg1));
                     result = new AList<double>(array);

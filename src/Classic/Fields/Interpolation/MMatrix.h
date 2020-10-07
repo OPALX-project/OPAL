@@ -172,10 +172,7 @@ public:
   friend MMatrix<m_complex>& operator +=(MMatrix<m_complex>& m1, const MMatrix<m_complex>& m2);
   friend MMatrix<double>&    operator +=(MMatrix<double>&    m1, const MMatrix<double>&    m2);
   template <class Tmplt2> friend MMatrix<Tmplt2>      operator + (MMatrix<Tmplt2>      m1, const MMatrix<Tmplt2>      m2);
- 
-  friend const gsl_matrix*         MMatrix_to_gsl(const MMatrix<double>& m);
-  friend const gsl_matrix_complex* MMatrix_to_gsl(const MMatrix<gsl_complex>& m);
- 
+
   friend class MMatrix<double>; //To do the eigenvector problem, MMatrix<double> needs to see MMatrix<complex>'s _matrix
 
 
@@ -232,10 +229,6 @@ MMatrix<double>    im(MMatrix<m_complex> m);
 //return matrix of m_complex filled with real and imaginary parts
 MMatrix<m_complex> complex(MMatrix<double> real);
 MMatrix<m_complex> complex(MMatrix<double> real, MMatrix<double> imaginary);
-
-//return pointer to gsl_matrix objects that store matrix data in m
-const gsl_matrix*         MMatrix_to_gsl(const MMatrix<double>&      m);
-const gsl_matrix_complex* MMatrix_to_gsl(const MMatrix<gsl_complex>& m);
 
 //////////////////////////// MMatrix declaration end ///////////////
 

@@ -30,9 +30,9 @@
 
 #include <vector>
 #include <iostream>
-#include "Ippl.h"
 #include "Algorithms/AbstractTimeDependence.h"
 
+class Inform;
 
 /** @class PolynomialTimeDependence
  * 
@@ -92,4 +92,3 @@ Inform &operator<<(Inform &os, PolynomialTimeDependence &p) {
 }
 
 #endif
-

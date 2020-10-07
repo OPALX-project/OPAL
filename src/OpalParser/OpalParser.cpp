@@ -41,7 +41,9 @@
 #include <new>
 #include <boost/algorithm/string.hpp>
 
-#include <Ippl.h>
+#include "Message/GlobalComm.h"
+#include "Utility/Inform.h"
+#include "Utility/IpplInfo.h"
 
 using namespace Expressions;
 

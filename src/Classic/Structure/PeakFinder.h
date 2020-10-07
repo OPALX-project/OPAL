@@ -14,7 +14,6 @@
  * used for the cyclotron probe element.
  */
 
-#include "Utility/IpplInfo.h"
 #include "Algorithms/Vektor.h"
 
 #include <fstream>

@@ -39,10 +39,9 @@ OpalQuadrupole::OpalQuadrupole():
                   ("DK1", "Normalised upright quadrupole coefficient error in m^(-2)");
     itsAttr[K1S] = Attributes::makeReal
                    ("K1S", "Normalised skew quadrupole coefficient in m^(-2)");
-
     itsAttr[DK1S] = Attributes::makeReal
                    ("DK1S", "Normalised skew quadrupole coefficient error in m^(-2)");
-                   
+
     itsAttr[NSLICES] = Attributes::makeReal
                       ("NSLICES",
                       "The number of slices/ steps for this element in Map Tracking", 1);
@@ -61,8 +60,7 @@ OpalQuadrupole::OpalQuadrupole(const std::string &name, OpalQuadrupole *parent):
 
 
 OpalQuadrupole::~OpalQuadrupole() {
-    if(parmatint_m)
-        delete parmatint_m;
+    delete parmatint_m;
 }
 
 

@@ -899,7 +899,7 @@ void ParallelCyclotronTracker::visitRFCavity(const RFCavity &as) {
     RFCavity *elptr = dynamic_cast<RFCavity *>(as.clone());
     myElements.push_back(elptr);
 
-    if((elptr->getComponentType() != "SINGLEGAP") && (elptr->getComponentType() != "DOUBLEGAP")) {
+    if ( elptr->getComponentType() != "SINGLEGAP" ) {
         *gmsg << (elptr->getComponentType()) << endl;
         throw OpalException("ParallelCyclotronTracker::visitRFCavity",
                             "The ParallelCyclotronTracker can only play with cyclotron type RF system currently ...");
@@ -1633,7 +1633,7 @@ double ParallelCyclotronTracker::getHarmonicNumber() const {
         return elcycl->getCyclHarm();
     throw OpalException("ParallelCyclotronTracker::getHarmonicNumber()",
                         std::string("The first item in the FieldDimensions list does not ")
-                        +std::string("seem to be an Ring or a Cyclotron element"));
+                        +std::string("seem to be a Ring or a Cyclotron element"));
 }
 
 

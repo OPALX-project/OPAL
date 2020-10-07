@@ -17,6 +17,7 @@
 #include "PETE/IpplExpressions.h"
 #include "AppTypes/TSVMeta.h"
 
+#include <cmath>
 #include <iostream>
 #include <iomanip>
 
@@ -278,6 +279,17 @@ cross(const Vektor<T1,D> &lhs, const Vektor<T2,D> &rhs)
 }
 
 //----------------------------------------------------------------------
+// euclidean norm
+//----------------------------------------------------------------------
+template < class T, unsigned D >
+inline double
+euclidean_norm(const Vektor<T, D> &a)
+{
+  return std::sqrt(dot(a, a));
+}
+
+
+//----------------------------------------------------------------------
 // I/O
 template<class T, unsigned D>
 inline std::ostream& operator<<(std::ostream& out, const Vektor<T,D>& rhs)
@@ -297,9 +309,3 @@ inline std::ostream& operator<<(std::ostream& out, const Vektor<T,D>& rhs)
 }
 
 #endif // VEKTOR_H
-
-/***************************************************************************
- * $RCSfile: Vektor.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:24 $
- * IPPL_VERSION_ID: $Id: Vektor.h,v 1.1.1.1 2003/01/23 07:40:24 adelmann Exp $
- ***************************************************************************/

@@ -73,6 +73,7 @@
 // include files
 #include "Particle/ParticleAttribBase.h"
 #include "Particle/ParticleAttribElem.h"
+#include "Particle/PAssign.h"
 #include "SubParticle/SubParticleAttrib.h"
 #include "DataSource/DataSource.h"
 #include "DataSource/MakeDataSource.h"

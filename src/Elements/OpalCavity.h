@@ -35,11 +35,6 @@ public:
         FREQ,           // The RF frequency.
         LAG,            // The phase lag.
         DLAG,           // The phase lag error.
-        HARMON,         // The harmonic number.
-        BETARF,         // The beta_RF.
-        PG,             // The RF power.
-        ZSHUNT,         // The shunt impedance.
-        TFILL,          // The filling time.
         FMAPFN,         // The filename of the fieldmap
         FAST,           // Faster but less accurate
         APVETO,         // Do not use this cavity in the Autophase procedure

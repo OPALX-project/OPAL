@@ -21,18 +21,18 @@
 #ifndef COLLIMATORPHYSICS_HH
 #define COLLIMATORPHYSICS_HH
 
-#include <vector>
 #include "Solvers/ParticleMatterInteractionHandler.hh"
+
+#include "AbsBeamline/ElementBase.h"
 #include "Algorithms/Vektor.h"
-#include "AbsBeamline/Component.h"
-#include "AbsBeamline/CCollimator.h"
-#include "AbsBeamline/FlexibleCollimator.h"
-#include "AbsBeamline/Degrader.h"
 #include <gsl/gsl_rng.h>
 
 #include "Utility/IpplTimings.h"
 
-class ElementBase;
+#include <memory>
+#include <utility>
+#include <string>
+#include <vector>
 
 template <class T, unsigned Dim>
 class PartBunchBase;
@@ -75,15 +75,14 @@ public:
 
     virtual const std::string getType() const;
 
-    void print(Inform& os);
-    bool stillActive();
-    bool stillAlive(PartBunchBase<double, 3> *bunch);
+    virtual void print(Inform& os);
+    virtual bool stillActive();
 
-    double getTime();
-    std::string getName();
-    size_t getParticlesInMat();
-    unsigned getRediffused();
-    unsigned int getNumEntered();
+    virtual double getTime();
+    virtual std::string getName();
+    virtual size_t getParticlesInMat();
+    virtual unsigned getRediffused();
+    virtual unsigned int getNumEntered();
     void computeInteraction();
 
     virtual bool computeEnergyLoss(Vector_t &P,
@@ -198,11 +197,3 @@ const std::string CollimatorPhysics::getType() const {
 }
 
 #endif //COLLIMATORPHYSICS_HH
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c++
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

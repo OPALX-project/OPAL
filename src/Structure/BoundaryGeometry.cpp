@@ -785,9 +785,6 @@ BoundaryGeometry::BoundaryGeometry() :
          "Shift in z direction",
          0.0);
 
-    itsAttr[APERTURE]  = Attributes::makeRealArray
-        ("APERTURE", "The element aperture");
-
     itsAttr[INSIDEPOINT] = Attributes::makeRealArray
         ("INSIDEPOINT", "A point inside the geometry");
 
@@ -1772,15 +1769,6 @@ Change orientation if diff is:
     *gmsg << "* Initializing Boundary Geometry..." << endl;
     IpplTimings::startTimer (Tinitialize_m);
 
-    apert_m = Attributes::getRealArray(itsAttr[APERTURE]);
-    if (hasApperture()) {
-        *gmsg << "* Found additional aperture." << endl;
-        for (unsigned int i=0; i<apert_m.size(); i=i+3)
-            *gmsg << "* zmin = " << apert_m[i]
-                  << " zmax = " << apert_m[i+1]
-                  << " r= " << apert_m[i+2] << endl;
-    }
-
     *gmsg << "* Filename: " << h5FileName_m.c_str() << endl;
 
     double xscale = Attributes::getReal(itsAttr[XSCALE]);
@@ -2253,11 +2241,3 @@ BoundaryGeometry::printInfo (Inform& os) const {
     os << "* ********************************************************************************** " << endl;
     return os;
 }
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

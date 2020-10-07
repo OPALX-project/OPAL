@@ -39,12 +39,3 @@ add_executable (mslang mslang.cpp)
 target_link_libraries (mslang ${MSLANG_LIBS})
 
 install (TARGETS mslang RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
-
-# vi: set et ts=4 sw=4 sts=4:
-  
-# Local Variables:
-# mode: cmake
-# cmake-tab-width: 4
-# indent-tabs-mode: nil
-# require-final-newline: nil
-# End:

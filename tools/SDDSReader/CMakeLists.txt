@@ -41,12 +41,3 @@ add_executable (SDDSReader main.cpp ${SRCS})
 target_link_libraries (SDDSReader ${LIBS})
 
 install (TARGETS SDDSReader RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
-
-# vi: set et ts=4 sw=4 sts=4:
-  
-# Local Variables:
-# mode: cmake
-# cmake-tab-width: 4
-# indent-tabs-mode: nil
-# require-final-newline: nil
-# End:

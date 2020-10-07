@@ -21,7 +21,6 @@
 #include "AbstractObjects/Action.h"
 
 class Sequence;
-class TrackParser;
 
 
 // Class TrackEnd

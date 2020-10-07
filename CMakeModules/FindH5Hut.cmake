@@ -43,10 +43,3 @@ IF (HAVE_API2_FUNCTIONS)
 ELSE (HAVE_API2_FUNCTIONS)
     MESSAGE (ERROR "H5hut >= 2 required")
 ENDIF (HAVE_API2_FUNCTIONS)
-
-# Local Variables:
-# mode:cmake
-# cmake-tab-width: 4
-# indent-tabs-mode:nil
-# require-final-newline: nil
-# End:

@@ -6,7 +6,6 @@
 
 #ifndef PASSERT_H
 #define PASSERT_H
-#include "Utility/IpplInfo.h"
 
 #include <exception>
 #include <stdexcept>
@@ -132,11 +131,3 @@ void insist( const char *cond, const char *msg, const char *file, int line );
 //---------------------------------------------------------------------------//
 
 #endif // PASSERT_H
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

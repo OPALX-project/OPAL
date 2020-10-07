@@ -116,10 +116,3 @@ void VectorMap::functionAppend
 }
 }
 #endif  // _CLASSIC_FIELDS_VECTORMAP_HH_
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c++
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

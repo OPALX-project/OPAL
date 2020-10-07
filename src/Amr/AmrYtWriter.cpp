@@ -496,9 +496,9 @@ void AmrYtWriter::writeBunch(const AmrPartBunch* bunch_p,
         std::string filePrefix(LevelDir);
         filePrefix += '/';
         filePrefix += "DATA_";
-        bool groupSets(false), setBuf(true);
 
         if (gotsome) {
+            bool groupSets(false), setBuf(true);
             for(amrex::NFilesIter nfi(nOutFiles, filePrefix, groupSets, setBuf); nfi.ReadyToWrite(); ++nfi) {
                 std::ofstream& myStream = (std::ofstream&) nfi.Stream();
                 //

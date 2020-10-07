@@ -92,12 +92,3 @@ target_link_libraries (salman-1 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
 
 add_executable (test-scatter-1 test-scatter-1.cpp)
 target_link_libraries (test-scatter-1 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
-
-# vi: set et ts=4 sw=4 sts=4:
-
-# Local Variables:
-# mode: cmake
-# cmake-tab-width: 4
-# indent-tabs-mode: nil
-# require-final-newline: nil
-# End:

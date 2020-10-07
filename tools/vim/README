@@ -1,0 +1,10 @@
+OPAL specific Vim plugin(s)
+==========================
+
+To install these plugins run from this directory:
+
+mkdir -p ~/.vim/pack/opal/
+cp -av start ~/.vim/pack/opal/
+
+and (re-)start Vim.
+

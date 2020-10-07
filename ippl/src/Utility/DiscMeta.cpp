@@ -30,6 +30,7 @@
 #include "Utility/IpplInfo.h"
 #include "Utility/Inform.h"
 
+#include <cstring>
 
 ///////////////////////////////////////////////////////////////////////////
 // Constructor: read and parse the given meta file

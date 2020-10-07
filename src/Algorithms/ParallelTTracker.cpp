@@ -22,19 +22,18 @@
 #include "Algorithms/ParallelTTracker.h"
 
 #include <cfloat>
-#include <iostream>
+#include <cmath>
 #include <fstream>
+#include <limits>
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 #include <string>
-#include <limits>
-#include <cmath>
 
 #include "Algorithms/OrbitThreader.h"
 #include "Algorithms/CavityAutophaser.h"
 #include "Beamlines/Beamline.h"
 #include "Beamlines/FlaggedBeamline.h"
-#include "Lines/Sequence.h"
 
 #include "Solvers/CSRWakeFunction.hh"
 
@@ -674,7 +673,7 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
     Inform msg("ParallelTTracker ", *gmsg);
     std::set<IndexMap::value_t::value_type> elementsWithParticleMatterInteraction;
     std::set<ParticleMatterInteractionHandler*> particleMatterinteractionHandlers;
-    std::pair<double, double> currentRange(0.0, 0.0);
+    IndexMap::key_t currentRange{0.0, 0.0};
 
     while (elements.size() > 0) {
         auto it = elements.begin();
@@ -682,9 +681,9 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
             elementsWithParticleMatterInteraction.insert(*it);
             particleMatterinteractionHandlers.insert((*it)->getParticleMatterInteraction());
 
-            std::pair<double, double> range = oth.getRange(*it, pathLength_m);
-            currentRange.first = std::min(currentRange.first, range.first);
-            currentRange.second = std::max(currentRange.second, range.second);
+            IndexMap::key_t range = oth.getRange(*it, pathLength_m);
+            currentRange.begin = std::min(currentRange.begin, range.begin);
+            currentRange.end = std::max(currentRange.end, range.end);
 
             IndexMap::value_t touching = oth.getTouchingElements(range);
             elements.insert(touching.begin(), touching.end());
@@ -1379,11 +1378,3 @@ void ParallelTTracker::evenlyDistributeParticles() {
         MPI_Waitall(requests.size(), &(requests[0]), MPI_STATUSES_IGNORE);
     }
 }
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c++
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

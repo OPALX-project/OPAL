@@ -66,7 +66,6 @@ private:
     void compute(vm_t& vmMin, vm_t& vmMax, vm_t& vmAvg);
     
 private:
-    std::string fname_m;
     std::map<std::string, int> procinfo_m;
     vm_t vmem_m;
     units_t unit_m;

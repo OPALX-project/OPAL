@@ -22,6 +22,7 @@
 #include "Algorithms/PartData.h"
 
 #include <ostream>
+#include <string>
 
 class Inform;
 
@@ -53,15 +54,6 @@ public:
 
     /// Find named BEAM.
     static Beam *find(const std::string &name);
-
-    /// Return emittance for mode 1.
-    double getEX() const;
-
-    /// Return emittance for mode 2.
-    double getEY() const;
-
-    /// Return emittance for mode 3.
-    double getET() const;
 
     //ff => get gamma value
     double getGamma() const;
@@ -95,15 +87,6 @@ public:
 
     /// Mass per macro particle in GeV/c^2
     double getMassPerParticle() const;
-
-    /// Store emittance for mode 1.
-    void setEX(double);
-
-    /// Store emittance for mode 2.
-    void setEY(double);
-
-    /// Store emittance for mode 3.
-    void setET(double);
 
     /// Update the BEAM data.
     virtual void update();

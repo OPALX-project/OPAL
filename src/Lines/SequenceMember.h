@@ -71,7 +71,7 @@ public:
     MemberType itsType;
 
     // ada 4.5 2000 to speed up matching, add a pointer to
-    // opal elements in order to avoid serching the opal elements
+    // opal elements in order to avoid searching the opal elements
     Pointer<Element> OpalElement;
 
 

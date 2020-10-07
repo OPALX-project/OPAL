@@ -15,9 +15,9 @@
 #include "Utility/DiscConfig.h"
 #include "Utility/IpplInfo.h"
 #include "Utility/PAssert.h"
+#include "Message/Communicate.h"
 #include "Message/Message.h"
-
-
+#include "Message/Tags.h"
 
 #include <vector>
 #include <iostream>
@@ -26,7 +26,6 @@
 // forward declarations
 template<class T> class IpplParticleBase;
 template<class T> class ParticleAttrib;
-class Message;
 
 class DiscParticle {
 

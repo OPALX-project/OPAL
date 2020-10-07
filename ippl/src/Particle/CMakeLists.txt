@@ -2,6 +2,7 @@ set (_SRCS
     )
 
 set (_HDRS
+    AbstractParticle.h
     BoxParticleCachingPolicy.h
     CellParticleCachingPolicy.h
     GenArrayParticle.h
@@ -9,8 +10,8 @@ set (_HDRS
     IntCIC.h
     Interpolator.h
     IntNGP.h
-    IntTSC.h
     IntSUDS.h
+    IntTSC.h
     NoParticleCachingPolicy.h
     PairBuilder/BasicPairBuilder.h
     PairBuilder/HashPairBuilder.h
@@ -53,13 +54,4 @@ add_ippl_headers (${_HDRS})
 install (FILES ${_HDRS} DESTINATION include/Particle)
 
 add_subdirectory (PairBuilder)
-
-# vi: set et ts=4 sw=4 sts=4:
-
-# Local Variables:
-# mode: cmake
-# cmake-tab-width: 4
-# indent-tabs-mode: nil
-# require-final-newline: nil
-# End:
 

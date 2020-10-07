@@ -52,15 +52,14 @@ public:
                        const std::pair<Vector_t, double> &boundingSphere);
 
     virtual const std::string getType() const;
-    void print(Inform& msg);
-    bool stillActive();
-    bool stillAlive(PartBunchBase<double, 3> *bunch);
+    virtual void print(Inform& msg);
+    virtual bool stillActive();
 
-    inline double getTime() {return T_m;}
-    std::string getName() {return element_ref_m->getName();}
-    size_t getParticlesInMat() {return locPartsInMat_m;}
-    unsigned getRediffused() {return rediffusedStat_m;}
-    unsigned int getNumEntered() {return bunchToMatStat_m;}
+    virtual inline double getTime() {return T_m;}
+    virtual std::string getName() {return element_ref_m->getName();}
+    virtual size_t getParticlesInMat() {return locPartsInMat_m;}
+    virtual unsigned getRediffused() {return rediffusedStat_m;}
+    virtual unsigned int getNumEntered() {return bunchToMatStat_m;}
     inline void doPhysics(PartBunchBase<double, 3> *bunch);
 
 private:

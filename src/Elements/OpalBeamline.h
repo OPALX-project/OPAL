@@ -68,8 +68,6 @@ public:
     double getEnd(const Vector_t &) const;
 
     void switchElements(const double &, const double &, const double &kineticEnergy, const bool &nomonitors = false);
-
-    void switchElementsOff(const double &, ElementBase::ElementType eltype = ElementBase::ANY);
     void switchElementsOff();
 
     ParticleMatterInteractionHandler *getParticleMatterInteractionHandler(const unsigned int &);

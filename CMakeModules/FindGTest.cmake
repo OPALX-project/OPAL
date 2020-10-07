@@ -1,10 +1,6 @@
 #
 # Find gtest Google Test includes and library
 #
-# gtest
-# It can be found at:
-#     http://amas.web.psi.ch/tools/GSL/index.html
-#
 # GTEST_INCLUDE_DIR - where to find gtest/gtest.h
 # GTEST_LIBRARY     - libgtest.a path
 # GTEST_MAIN_LIBRARY     - libgtest_main.a path

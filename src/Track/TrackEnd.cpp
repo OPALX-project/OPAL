@@ -7,7 +7,7 @@
 // ------------------------------------------------------------------------
 //
 // Class: TrackEnd
-//   The class fore the OPAL ENDTRACK command.
+//   The class for the OPAL ENDTRACK command.
 //
 // ------------------------------------------------------------------------
 //

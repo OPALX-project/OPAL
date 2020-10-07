@@ -2,6 +2,7 @@
 
 #include "opal_test_utilities/SilenceTest.h"
 
+#include "Field/Field.h"
 #include "Index/SOffset.h"
 
 #include <iostream>

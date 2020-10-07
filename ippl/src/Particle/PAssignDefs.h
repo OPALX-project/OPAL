@@ -18,7 +18,8 @@
 // forward declarations
 template<class T> class ParticleAttrib;
 template<class T, unsigned Dim> class ParticleAttribElem;
-
+template<class T> class ParticleAttribIterator;
+template <class T> class ParticleAttribConstIterator;
 
 //////////////////////////////////////////////////////////////////////
 //

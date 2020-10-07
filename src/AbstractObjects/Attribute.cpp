@@ -20,6 +20,8 @@
 #include "AbstractObjects/AttributeBase.h"
 #include "Utilities/Options.h"
 
+#include "Utility/Inform.h"
+
 #include <set>
 #include <iostream>
 

@@ -7,6 +7,7 @@ set (_HDRS
     FFTBase.h
     FFT.hpp
     FFT.h
+    fftpack.h
     fftpack_FFT.h
     )
 
@@ -16,12 +17,3 @@ include_directories (
 
 add_ippl_sources (${_SRCS})
 add_ippl_headers (${_HDRS})
-
-# vi: set et ts=4 sw=4 sts=4:
-
-# Local Variables:
-# mode: cmake
-# cmake-tab-width: 4
-# indent-tabs-mode: nil
-# require-final-newline: nil
-# End:

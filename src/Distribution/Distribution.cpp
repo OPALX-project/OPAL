@@ -27,7 +27,6 @@
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBins.h"
 #include "Algorithms/PartBunchBase.h"
-#include "Structure/Beam.h"
 #include "Algorithms/PartBinsCyc.h"
 #include "BasicActions/Option.h"
 #include "Distribution/LaserProfile.h"
@@ -304,7 +303,7 @@ void Distribution::create(size_t &numberOfParticles, double massIneV, double cha
         createDistributionMultiGauss(numberOfLocalParticles, massIneV);
         break;
     default:
-        INFOMSG("Distribution unknown." << endl;);
+        INFOMSG("Distribution unknown." << endl);
         break;
     }
 
@@ -1194,15 +1193,15 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
     int Nsectors = (int)Attributes::getReal(itsAttr[Attrib::Distribution::NSECTORS]);
 
     if ( Nint < 0 )
-        throw OpalException("Distribution::CreateMatchedGaussDistribution()",
+        throw OpalException("Distribution::createMatchedGaussDistribution()",
                             "Negative number of integration steps");
 
     if ( Nsectors < 0 )
-        throw OpalException("Distribution::CreateMatchedGaussDistribution()",
+        throw OpalException("Distribution::createMatchedGaussDistribution()",
                             "Negative number of sectors");
 
     if ( Nsectors > 1 && full == false )
-        throw OpalException("Distribution::CreateMatchedGaussDistribution()",
+        throw OpalException("Distribution::createMatchedGaussDistribution()",
                             "Averaging over sectors can only be done with SECTOR=FALSE");
 
     *gmsg << "* ----------------------------------------------------" << endl;
@@ -1226,7 +1225,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
     if ( CyclotronElement->getFMLowE()  < 0 ||
          CyclotronElement->getFMHighE() < 0 )
     {
-        throw OpalException("Distribution::CreateMatchedGaussDistribution()",
+        throw OpalException("Distribution::createMatchedGaussDistribution()",
                             "Missing attributes 'FMLOWE' and/or 'FMHIGHE' in "
                             "'CYCLOTRON' definition.");
     }
@@ -1241,7 +1240,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
         Attributes::getReal(itsAttr[Attrib::Distribution::DENERGY]);
 
     if ( denergy < 0.0 )
-        throw OpalException("Distribution:CreateMatchedGaussDistribution()",
+        throw OpalException("Distribution:createMatchedGaussDistribution()",
                             "DENERGY < 0");
 
     double accuracy =
@@ -1256,7 +1255,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
         cof_t cof(massIneV*1E-6, charge, Nint, CyclotronElement, full, Nsectors);
         cof.findOrbit(accuracy, maxitCOF, E_m*1E-6, denergy, rguess, true);
 
-        throw EarlyLeaveException("Distribution::CreateMatchedGaussDistribution()",
+        throw EarlyLeaveException("Distribution::createMatchedGaussDistribution()",
                                   "Do only tune calculation.");
     }
 
@@ -4455,11 +4454,3 @@ void Distribution::adjustPhaseSpace(double massIneV) {
         pzDist_m[i] += eps;
     }
 }
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c++
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

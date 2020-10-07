@@ -103,7 +103,7 @@ bool Monitor::applyToReferenceParticle(const Vector_t &R,
             dt * (R(2) + P(2) * recpgamma) > dt * middle) {
             double frac = (middle - R(2)) / (P(2) * recpgamma);
             double time = t + frac * dt;
-            Vector_t dR = (0.5 + frac) * P * recpgamma;
+            Vector_t dR = frac * P * recpgamma;
             double ds = euclidean_norm(dR);
             lossDs_m->addReferenceParticle(csTrafoGlobal2Local_m.transformFrom(R + dR),
                                            csTrafoGlobal2Local_m.rotateFrom(P),
@@ -116,9 +116,12 @@ bool Monitor::applyToReferenceParticle(const Vector_t &R,
 
                 for (unsigned int i = 0; i < localNum; ++ i) {
                     const double recpgamma = Physics::c * dt / Util::getGamma(RefPartBunch_m->P[i]);
-                    lossDs_m->addParticle(RefPartBunch_m->R[i] + frac * RefPartBunch_m->P[i] * recpgamma - halfLength_s,
-                                          RefPartBunch_m->P[i], RefPartBunch_m->ID[i],
-                                          time, 0);
+                    Vector_t shift = frac * recpgamma * RefPartBunch_m->P[i] - Vector_t(0, 0, middle);
+                    lossDs_m->addParticle(RefPartBunch_m->R[i] + shift,
+                                          RefPartBunch_m->P[i],
+                                          RefPartBunch_m->ID[i],
+                                          time,
+                                          0);
                 }
                 OpalData::OPENMODE openMode;
                 if (numPassages_m > 0) {

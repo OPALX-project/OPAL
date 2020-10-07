@@ -958,11 +958,3 @@ FFT<SineTransform,1U,T>::transform(
 }
 #include "FFT/FFT.hpp"
 #endif // IPPL_FFT_FFT_H
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

@@ -20,13 +20,13 @@
 #include "BasicActions/Option.h"
 #include "Attributes/Attributes.h"
 #include "Parser/FileStream.h"
+#include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 #include "Utilities/OptionTypes.h"
 #include "Utilities/ClassicRandom.h"
+
+#include "Utility/Inform.h"
 #include "Utility/IpplInfo.h"
-
-#include "Utilities/OpalException.h"
-
 #include "Utility/IpplMemoryUsage.h"
 
 #include <ctime>

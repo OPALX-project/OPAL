@@ -292,11 +292,3 @@ void EllipticDomain::quadraticInterpolation(int x, int y, int z,
     value.center += 2.0 / (hr_m[2] * hr_m[2]);
     robinBoundaryStencil(z, value.front, value.back, value.center);
 }
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

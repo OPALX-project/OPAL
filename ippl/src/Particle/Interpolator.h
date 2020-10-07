@@ -16,14 +16,13 @@
 #include "Field/LField.h"
 #include "Field/CompressedBrickIterator.h"
 #include "Index/NDIndex.h"
+#include "Meshes/Centering.h"
 #include "AppTypes/Vektor.h"
 #include "Utility/IpplInfo.h"
 #include "Utility/IpplException.h"
 
-#include <iostream>
+#include <ostream>
 #include <vector>
-#include <utility>
-#include <cmath>
 
 // Helper class and functions for finding nearest grid point given centering
 

@@ -2,11 +2,10 @@
 //  Copyright & License: See Copyright.readme in src directory
 //
 
-#ifndef OPAL_LOSSOUTPUT_H_
-#define OPAL_LOSSOUTPUT_H_
+#ifndef LOSSDATASINK_H_
+#define LOSSDATASINK_H_
 
 //////////////////////////////////////////////////////////////
-#include "Utility/IpplInfo.h"
 #include "Algorithms/Vektor.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/OpalData.h"
@@ -17,7 +16,6 @@
 #include <functional>
 #include <set>
 
-#include <hdf5.h>
 #include "H5hut.h"
 
 struct SetStatistics {
@@ -192,11 +190,3 @@ std::set<SetStatistics> LossDataSink::computeStatistics(unsigned int numStatisti
 }
 
 #endif
-
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c++
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:

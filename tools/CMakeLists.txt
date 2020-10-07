@@ -17,12 +17,3 @@ option (ENABLE_BANDRF "Compile BANDRF field conversion scripts" OFF)
 if (ENABLE_BANDRF)
     add_subdirectory (BandRF)
 endif  ()
-
-# vi: set et ts=4 sw=4 sts=4:
-
-# Local Variables:
-# mode: cmake
-# cmake-tab-width: 4
-# indent-tabs-mode: nil
-# require-final-newline: nil
-# End:

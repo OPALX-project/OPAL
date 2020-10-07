@@ -31,7 +31,6 @@
 #include <sstream>
 
 #include <boost/filesystem.hpp>
-#include <boost/variant.hpp>
 
 #include "Structure/SDDSColumn.h"
 #include "Structure/SDDSColumnSet.h"

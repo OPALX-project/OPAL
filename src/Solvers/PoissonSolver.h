@@ -4,6 +4,8 @@
 //////////////////////////////////////////////////////////////
 #include "Algorithms/PBunchDefs.h"
 
+#include "Field/Field.h"
+
 #ifdef ENABLE_AMR
     #include "Utilities/OpalException.h"
 #endif
@@ -12,6 +14,11 @@ template <class T, unsigned Dim>
 class PartBunchBase;
 
 class PoissonSolver {
+
+protected:
+    typedef Field<int, 3, Mesh_t, Center_t>                  IField_t;
+    typedef Field<std::complex<double>, 3, Mesh_t, Center_t> CxField_t;
+
 public:
 
     // given a charge-density field rho and a set of mesh spacings hr,

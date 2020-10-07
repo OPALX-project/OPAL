@@ -41,6 +41,7 @@ set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS OFF)
 
+# Disable compile time assert (used by IPPL)
 add_definitions (-DNOCTAssert)
 
 add_compile_options (-Wall)
@@ -171,7 +172,7 @@ if (ENABLE_AMR)
 endif ()
 
 option (ENABLE_AMR_MG_SOLVER "Enable AMR MG solver" OFF)
-option (ENABLE_SAAMG_SOLVER "Enable iteartive SA-AMG-PCG self field solver" OFF)
+option (ENABLE_SAAMG_SOLVER "Enable iterative SA-AMG-PCG self field solver" OFF)
 if (ENABLE_SAAMG_SOLVER OR ENABLE_AMR_MG_SOLVER)
     #
     # :FIXME: We have to add checks whether the required Trilinos modules
@@ -271,12 +272,3 @@ install (
     DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/${PROJECT_NAME}"
     RENAME ${PROJECT_NAME}Config.cmake
     )
-
-# vi: set et ts=4 sw=4 sts=4:
-
-# Local Variables:
-# mode: cmake
-# cmake-tab-width: 4
-# indent-tabs-mode: nil
-# require-final-newline: nil
-# End:

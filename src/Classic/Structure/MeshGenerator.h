@@ -1,4 +1,23 @@
-#include "AbsBeamline/ElementBase.h"
+//
+// Mesh Generator
+//
+// Copyright (c) 2008-2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// OPAL is licensed under GNU GPL version 3.
+//
+
+#ifndef MESHGENERATOR_H_
+#define MESHGENERATOR_H_
+
+#include "Algorithms/Vektor.h"
+
+#include <string>
+#include <utility>
+#include <vector>
+
+class ElementBase;
 
 class MeshData {
 public:
@@ -41,10 +60,4 @@ private:
     std::vector<MeshData> elements_m;
 };
 
-// vi: set et ts=4 sw=4 sts=4:
-// Local Variables:
-// mode:c
-// c-basic-offset: 4
-// indent-tabs-mode: nil
-// require-final-newline: nil
-// End:
+#endif

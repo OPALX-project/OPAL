@@ -24,9 +24,6 @@
 #include "Algorithms/Vektor.h"
 #include "Algorithms/Quaternion.h"
 
-class CLRangeError;
-
-
 // Class Beamline
 // ------------------------------------------------------------------------
 /// An abstract sequence of beam line components.

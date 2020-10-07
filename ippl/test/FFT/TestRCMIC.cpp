@@ -26,9 +26,6 @@ bool Configure(int argc, char *argv[],
   Inform msg("Configure ");
   Inform errmsg("Error ");
 
-  string bc_str;
-  string dist_str;
-
   for (int i=1; i < argc; ++i) {
     string s(argv[i]);
     if (s == "-grid") {
@@ -167,8 +164,8 @@ int main(int argc, char *argv[])
   BareField<double,D>   RFieldSPStan_save(layoutSPStan);
   BareField<std::complex<double>,D> CFieldSPStan0h(layoutSPStan0h);
 
-  INFOMSG("RFieldSPStan   layout= " << layoutSPStan << endl;);
-  INFOMSG("CFieldSPStan0h layout= " << layoutSPStan0h << endl;);
+  INFOMSG("RFieldSPStan   layout= " << layoutSPStan << endl);
+  INFOMSG("CFieldSPStan0h layout= " << layoutSPStan0h << endl);
 
   // For calling FieldDebug functions from debugger, set up output format:
   setFormat(4,3);

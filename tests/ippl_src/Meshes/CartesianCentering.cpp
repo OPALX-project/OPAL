@@ -14,9 +14,9 @@
 namespace {
     void hardCodedOutput(std::string filename); // Prototype of function defined below.
     bool thediff(std::string filename1, std::string filename2);
-
-    CenteringEnum zz[2] = {CELL, VERTEX};
 }
+
+CenteringEnum zz[2] = {CELL, VERTEX};
 
 // template definitions
 CenteringEnum CCCEnums<2U,1U,0U>::allCell[2U*1U];
