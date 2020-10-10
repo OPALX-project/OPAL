@@ -207,11 +207,11 @@ public:
        Compatibility function push_back
      */
 
-    void push_back(OpalParticle p);
+    void push_back(OpalParticle const& p);
 
     void set_part(FVector<double, 6> z, int ii);
 
-    void set_part(OpalParticle p, int ii);
+    void set_part(OpalParticle const& p, int ii);
 
     OpalParticle get_part(int ii);
 
@@ -441,11 +441,11 @@ public:
 
 
     ParticleBConds<Position_t, Dimension>& getBConds() {
-        return pbase->getBConds();
+        return pbase_m->getBConds();
     }
 
     void setBConds(const ParticleBConds<Position_t, Dimension>& bc) {
-        pbase->setBConds(bc);
+        pbase_m->setBConds(bc);
     }
 
     bool singleInitNode() const;
@@ -680,7 +680,7 @@ protected:
     // flag to tell if we are a DC-beam
     bool dcBeam_m;
     double periodLength_m;
-    std::shared_ptr<AbstractParticle<T, Dim> > pbase;
+    std::shared_ptr<AbstractParticle<T, Dim> > pbase_m;
 };
 
 #include "PartBunchBase.hpp"

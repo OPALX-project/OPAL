@@ -92,7 +92,7 @@ PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb, const PartDat
       dist_m(nullptr),
       dcBeam_m(false),
       periodLength_m(Physics::c / 1e9),
-      pbase(pb)
+      pbase_m(pb)
 {
     setup(pb);
 }
@@ -958,19 +958,14 @@ std::pair<Vector_t, double> PartBunchBase<T, Dim>::getLocalBoundingSphere() {
 
 
 template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::push_back(OpalParticle p) {
+void PartBunchBase<T, Dim>::push_back(OpalParticle const& particle) {
     Inform msg("PartBunch ");
 
+    size_t i = getLocalNum();
     create(1);
-    size_t i = getTotalNum();
 
-    R[i](0) = p[0];
-    R[i](1) = p[1];
-    R[i](2) = p[2];
-
-    P[i](0) = p[3];
-    P[i](1) = p[4];
-    P[i](2) = p[5];
+    R[i] = particle.R();
+    P[i] = particle.P();
 
     update();
     msg << "Created one particle i= " << i << endl;
@@ -989,26 +984,18 @@ void PartBunchBase<T, Dim>::set_part(FVector<double, 6> z, int ii) {
 
 
 template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::set_part(OpalParticle p, int ii) {
-    R[ii](0) = p[0];
-    P[ii](0) = p[1];
-    R[ii](1) = p[2];
-    P[ii](1) = p[3];
-    R[ii](2) = p[4];
-    P[ii](2) = p[5];
+void PartBunchBase<T, Dim>::set_part(OpalParticle const& particle, int ii) {
+    R[ii] = particle.R();
+    P[ii] = particle.P();
 }
 
 
 template <class T, unsigned Dim>
 OpalParticle PartBunchBase<T, Dim>::get_part(int ii) {
-    OpalParticle part;
-    part[0] = R[ii](0);
-    part[1] = P[ii](0);
-    part[2] = R[ii](1);
-    part[3] = P[ii](1);
-    part[4] = R[ii](2);
-    part[5] = P[ii](2);
-    return part;
+    OpalParticle particle;
+    particle.R() = R[ii];
+    particle.P() = P[ii];
+    return particle;
 }
 
 
@@ -2140,79 +2127,79 @@ void PartBunchBase<T, Dim>::setup(AbstractParticle<T, Dim>* pb) {
 
 template <class T, unsigned Dim>
 size_t PartBunchBase<T, Dim>::getTotalNum() const {
-    return pbase->getTotalNum();
+    return pbase_m->getTotalNum();
 }
 
 template <class T, unsigned Dim>
 size_t PartBunchBase<T, Dim>::getLocalNum() const {
-    return pbase->getLocalNum();
+    return pbase_m->getLocalNum();
 }
 
 
 template <class T, unsigned Dim>
 size_t PartBunchBase<T, Dim>::getDestroyNum() const {
-    return pbase->getDestroyNum();
+    return pbase_m->getDestroyNum();
 }
 
 template <class T, unsigned Dim>
 size_t PartBunchBase<T, Dim>::getGhostNum() const {
-    return pbase->getGhostNum();
+    return pbase_m->getGhostNum();
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::setTotalNum(size_t n) {
-    pbase->setTotalNum(n);
+    pbase_m->setTotalNum(n);
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::setLocalNum(size_t n) {
-    pbase->setLocalNum(n);
+    pbase_m->setLocalNum(n);
 }
 
 template <class T, unsigned Dim>
 unsigned int PartBunchBase<T, Dim>::getMinimumNumberOfParticlesPerCore() const {
-    return pbase->getMinimumNumberOfParticlesPerCore();
+    return pbase_m->getMinimumNumberOfParticlesPerCore();
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::setMinimumNumberOfParticlesPerCore(unsigned int n) {
-    pbase->setMinimumNumberOfParticlesPerCore(n);
+    pbase_m->setMinimumNumberOfParticlesPerCore(n);
 }
 
 template <class T, unsigned Dim>
 ParticleLayout<T, Dim> & PartBunchBase<T, Dim>::getLayout() {
-    return pbase->getLayout();
+    return pbase_m->getLayout();
 }
 
 template <class T, unsigned Dim>
 const ParticleLayout<T, Dim>& PartBunchBase<T, Dim>::getLayout() const {
-    return pbase->getLayout();
+    return pbase_m->getLayout();
 }
 
 template <class T, unsigned Dim>
 bool PartBunchBase<T, Dim>::getUpdateFlag(UpdateFlags_t f) const {
-    return pbase->getUpdateFlag(f);
+    return pbase_m->getUpdateFlag(f);
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::setUpdateFlag(UpdateFlags_t f, bool val) {
-    pbase->setUpdateFlag(f, val);
+    pbase_m->setUpdateFlag(f, val);
 }
 
 template <class T, unsigned Dim>
 bool PartBunchBase<T, Dim>::singleInitNode() const {
-    return pbase->singleInitNode();
+    return pbase_m->singleInitNode();
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::resetID() {
-    pbase->resetID();
+    pbase_m->resetID();
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::update() {
     try {
-        pbase->update();
+        pbase_m->update();
     } catch (const IpplException &ex) {
         throw OpalException(ex.where(), ex.what());
     }
@@ -2221,7 +2208,7 @@ void PartBunchBase<T, Dim>::update() {
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::update(const ParticleAttrib<char>& canSwap) {
     try {
-        pbase->update(canSwap);
+        pbase_m->update(canSwap);
     } catch (const IpplException &ex) {
         throw OpalException(ex.where(), ex.what());
     }
@@ -2229,32 +2216,32 @@ void PartBunchBase<T, Dim>::update(const ParticleAttrib<char>& canSwap) {
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::createWithID(unsigned id) {
-    pbase->createWithID(id);
+    pbase_m->createWithID(id);
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::create(size_t M) {
-    pbase->create(M);
+    pbase_m->create(M);
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::globalCreate(size_t np) {
-    pbase->globalCreate(np);
+    pbase_m->globalCreate(np);
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::destroy(size_t M, size_t I, bool doNow) {
-    pbase->destroy(M, I, doNow);
+    pbase_m->destroy(M, I, doNow);
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::performDestroy(bool updateLocalNum) {
-    pbase->performDestroy(updateLocalNum);
+    pbase_m->performDestroy(updateLocalNum);
 }
 
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::ghostDestroy(size_t M, size_t I) {
-    pbase->ghostDestroy(M, I);
+    pbase_m->ghostDestroy(M, I);
 }
 
 template <class T, unsigned Dim>

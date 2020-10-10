@@ -1,42 +1,33 @@
-// ------------------------------------------------------------------------
-// $RCSfile: OpalParticle.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: OpalParticle
-//   A OpalParticle represents the phase space coordinates of a particle.
-//   It can be propagated through a beamline.
+// Class OpalParticle
+//   This class represents the canonical coordinates of a particle.
 //
-// ------------------------------------------------------------------------
-// Class category: Algorithms
-// ------------------------------------------------------------------------
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:32:33 $
-// $Author: fci $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Algorithms/OpalParticle.h"
 
-
-// Class OpalParticle
-// ------------------------------------------------------------------------
 
 OpalParticle::OpalParticle()
 {}
 
 
-OpalParticle::OpalParticle
-(double x, double px, double y, double py, double t, double pt)
-
-{
-    phase[X]  = x;
-    phase[PX] = px;
-    phase[Y]  = y;
-    phase[PY] = py;
-    phase[T]  = t;
-    phase[PT] = pt;
-}
+OpalParticle::OpalParticle(double x, double px,
+                           double y, double py,
+                           double t, double pt,
+                           double q, double m):
+    R_m(x, y, t),
+    P_m(px, py, pt),
+    charge_m(q),
+    mass_m(m)
+{}

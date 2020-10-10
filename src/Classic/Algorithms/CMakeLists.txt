@@ -3,6 +3,7 @@ set (_SRCS
     AbstractTracker.cpp
     CoordinateSystemTrafo.cpp
     DefaultVisitor.cpp
+    DistributionMoments.cpp
     Flagger.cpp
     PartBunch.cpp
     PartBins.cpp
@@ -30,6 +31,7 @@ set (HDRS
     AbstractTracker.h
     CoordinateSystemTrafo.h
     DefaultVisitor.h
+    DistributionMoments.h
     Flagger.h
     ListElem.h
     PartBinsCyc.h

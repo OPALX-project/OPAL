@@ -219,7 +219,7 @@ void LossDataSink::writeHeaderH5() {
     WRITE_FILEATTRIB_STRING ("mpart", "GeV");
     WRITE_FILEATTRIB_STRING ("qi", "C");
 
-    ADD_ATTACHMENT (OpalData::getInstance()->getInputFn().c_str());
+    // ADD_ATTACHMENT (OpalData::getInstance()->getInputFn().c_str());
 }
 
 void LossDataSink::addReferenceParticle(const Vector_t &x,

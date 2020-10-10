@@ -93,7 +93,7 @@ void PartBunch::do_binaryRepart() {
     get_bounds(rmin_m, rmax_m);
 
     pbase_t* underlyingPbase =
-        dynamic_cast<pbase_t*>(pbase.get());
+        dynamic_cast<pbase_t*>(pbase_m.get());
 
     BinaryRepartition(*underlyingPbase);
     update();

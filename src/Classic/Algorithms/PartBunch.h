@@ -120,12 +120,12 @@ private:
 
     //FIXME
     ParticleLayout<double, 3> & getLayout() {
-        return pbase->getLayout();
+        return pbase_m->getLayout();
     }
 
     //FIXME
     const ParticleLayout<double, 3>& getLayout() const {
-        return pbase->getLayout();
+        return pbase_m->getLayout();
     }
 };
 
