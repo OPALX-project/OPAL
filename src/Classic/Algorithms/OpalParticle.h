@@ -25,7 +25,7 @@ class OpalParticle {
 public:
 
     // Particle coordinate numbers.
-    enum { X, PX, Y, PY, T, PT };
+    enum { X, Y, T, PX, PY, PT };
 
     /// Constructor.
     //  Construct particle with the given coordinates.

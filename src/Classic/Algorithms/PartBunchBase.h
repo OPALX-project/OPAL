@@ -18,10 +18,12 @@
 #ifndef PART_BUNCH_BASE_H
 #define PART_BUNCH_BASE_H
 
-#include "Utility/IpplTimings.h"
 #include "Particle/AbstractParticle.h"
 #include "Particle/ParticleAttrib.h"
+#include "Utility/IpplTimings.h"
+#include "Utilities/GeneralClassicException.h"
 
+#include "Algorithms/DistributionMoments.h"
 #include "Algorithms/CoordinateSystemTrafo.h"
 #include "Algorithms/OpalParticle.h"
 #include "Algorithms/PBunchDefs.h"
@@ -50,7 +52,7 @@ namespace ParticleType {
 }
 
 template <class T, unsigned Dim>
-class PartBunchBase
+class PartBunchBase : std::enable_shared_from_this<PartBunchBase<T, Dim>>
 {
 public:
     typedef typename AbstractParticle<T, Dim>::ParticlePos_t   ParticlePos_t;
@@ -214,6 +216,72 @@ public:
     void set_part(OpalParticle const& p, int ii);
 
     OpalParticle get_part(int ii);
+
+    class ConstIterator {
+        friend class PartBunchBase<T, Dim>;
+
+    public:
+        ConstIterator():
+            bunch_m(nullptr),
+            index_m(0)
+        {}
+        ConstIterator(PartBunchBase const* bunch, unsigned int i):
+            bunch_m(bunch),
+            index_m(i)
+        {}
+
+        ~ConstIterator()
+        {
+            bunch_m = nullptr;
+        }
+
+        bool operator == (ConstIterator const& rhs) const
+        {
+            return bunch_m == rhs.bunch_m && index_m == rhs.index_m;
+        }
+
+        bool operator != (ConstIterator const& rhs) const
+        {
+            return bunch_m != rhs.bunch_m || index_m != rhs.index_m;
+        }
+
+        OpalParticle operator*() const
+        {
+            if (index_m >= bunch_m->getLocalNum()) {
+                throw GeneralClassicException("PartBunchBase::ConstIterator::operator*", "out of bouds");
+            }
+
+            return OpalParticle(bunch_m->R[index_m](0), bunch_m->P[index_m](0),
+                                bunch_m->R[index_m](1), bunch_m->P[index_m](1),
+                                bunch_m->R[index_m](2), bunch_m->P[index_m](2),
+                                bunch_m->Q[index_m], bunch_m->M[index_m]);
+        }
+
+        ConstIterator operator++()
+        {
+            ++index_m;
+            return *this;
+        }
+
+        ConstIterator operator++(int)
+        {
+            ConstIterator it = *this;
+            ++index_m;
+
+            return it;
+        }
+    private:
+        PartBunchBase const* bunch_m;
+        unsigned int index_m;
+    };
+
+    ConstIterator begin() const {
+        return ConstIterator(this, 0);
+    }
+
+    ConstIterator end() const {
+        return ConstIterator(this, getLocalNum());
+    }
 
     /// Return maximum amplitudes.
     //  The matrix [b]D[/b] is used to normalise the first two modes.
@@ -570,10 +638,10 @@ protected:
     double dt_m;
     /// holds the actual time of the integration
     double t_m;
-    /// mean energy of the bunch (MeV)
-    double eKin_m;
+    // /// mean energy of the bunch (MeV)
+    // double eKin_m;
     /// energy spread of the beam in MeV
-    double dE_m;
+    // double dE_m;
     /// the position along design trajectory
     double spos_m;
 
@@ -590,33 +658,33 @@ protected:
     /// minimal extend of particles
     Vector_t rmin_m;
 
-    /// rms beam size (m)
-    Vector_t rrms_m;
-    /// rms momenta
-    Vector_t prms_m;
-    /// mean position (m)
-    Vector_t rmean_m;
-    /// mean momenta
-    Vector_t pmean_m;
+    // /// rms beam size (m)
+    // Vector_t rrms_m;
+    // /// rms momenta
+    // Vector_t prms_m;
+    // /// mean position (m)
+    // Vector_t rmean_m;
+    // /// mean momenta
+    // Vector_t pmean_m;
 
-    /// rms emittance (not normalized)
-    Vector_t eps_m;
+    // /// rms emittance (not normalized)
+    // Vector_t eps_m;
 
-    /// rms normalized emittance
-    Vector_t eps_norm_m;
+    // /// rms normalized emittance
+    // Vector_t eps_norm_m;
 
-    Vector_t halo_m;
+    // Vector_t halo_m;
 
-    /// rms correlation
-    Vector_t rprms_m;
+    // /// rms correlation
+    // Vector_t rprms_m;
 
-    /// dispersion x & y
-    double Dx_m;
-    double Dy_m;
+    // /// dispersion x & y
+    // double Dx_m;
+    // double Dy_m;
 
-    /// derivative of the dispersion
-    double DDx_m;
-    double DDy_m;
+    // /// derivative of the dispersion
+    // double DDx_m;
+    // double DDy_m;
 
     /// meshspacing of cartesian mesh
     Vector_t hr_m;
@@ -676,12 +744,23 @@ protected:
 
 
     Distribution *dist_m;
+    DistributionMoments momentsComputer_m;
 
     // flag to tell if we are a DC-beam
     bool dcBeam_m;
     double periodLength_m;
     std::shared_ptr<AbstractParticle<T, Dim> > pbase_m;
 };
+
+template<class T, unsigned Dim>
+typename PartBunchBase<T, Dim>::ConstIterator begin(PartBunchBase<T, Dim> const& bunch) {
+    return bunch.begin();
+}
+
+template<class T, unsigned Dim>
+typename PartBunchBase<T, Dim>::ConstIterator end(PartBunchBase<T, Dim> const& bunch) {
+    return bunch.end();
+}
 
 #include "PartBunchBase.hpp"
 

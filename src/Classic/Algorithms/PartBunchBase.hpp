@@ -52,25 +52,25 @@ PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb, const PartDat
       moments_m(),
       dt_m(0.0),
       t_m(0.0),
-      eKin_m(0.0),
-      dE_m(0.0),
+      // eKin_m(0.0),
+      // dE_m(0.0),
       spos_m(0.0),
       globalMeanR_m(Vector_t(0.0, 0.0, 0.0)),
       globalToLocalQuaternion_m(Quaternion_t(1.0, 0.0, 0.0, 0.0)),
       rmax_m(0.0),
       rmin_m(0.0),
-      rrms_m(0.0),
-      prms_m(0.0),
-      rmean_m(0.0),
-      pmean_m(0.0),
-      eps_m(0.0),
-      eps_norm_m(0.0),
-      halo_m(Vector_t(0.0, 0.0, 0.0)),
-      rprms_m(0.0),
-      Dx_m(0.0),
-      Dy_m(0.0),
-      DDx_m(0.0),
-      DDy_m(0.0),
+      // rrms_m(0.0),
+      // prms_m(0.0),
+      // rmean_m(0.0),
+      // pmean_m(0.0),
+      // eps_m(0.0),
+      // eps_norm_m(0.0),
+      // halo_m(Vector_t(0.0, 0.0, 0.0)),
+      // rprms_m(0.0),
+      // Dx_m(0.0),
+      // Dy_m(0.0),
+      // DDx_m(0.0),
+      // DDy_m(0.0),
       hr_m(-1.0),
       nr_m(0),
       fs_m(nullptr),
@@ -626,19 +626,21 @@ void PartBunchBase<T, Dim>::boundp_destroy() {
     if (checkfactor != 0) {
         //INFOMSG("checkfactor= " << checkfactor << endl);
         // check the bunch if its full size is larger than checkfactor times of its rms size
+        Vector_t rmean = momentsComputer_m.getMeanPosition();
+        Vector_t rrms = momentsComputer_m.getStandardDeviationPosition();
         if(checkfactor < 0) {
             checkfactor *= -1;
-            if (len[0] > checkfactor * rrms_m[0] ||
-                len[1] > checkfactor * rrms_m[1] ||
-                len[2] > checkfactor * rrms_m[2])
+            if (len[0] > checkfactor * rrms[0] ||
+                len[1] > checkfactor * rrms[1] ||
+                len[2] > checkfactor * rrms[2])
             {
                 for(unsigned int ii = 0; ii < this->getLocalNum(); ii++) {
                     /* delete the particle if the distance to the beam center
                      * is larger than 8 times of beam's rms size
                      */
-                    if (std::abs(R[ii](0) - rmean_m(0)) > checkfactor * rrms_m[0] ||
-                        std::abs(R[ii](1) - rmean_m(1)) > checkfactor * rrms_m[1] ||
-                        std::abs(R[ii](2) - rmean_m(2)) > checkfactor * rrms_m[2])
+                    if (std::abs(R[ii](0) - rmean(0)) > checkfactor * rrms[0] ||
+                        std::abs(R[ii](1) - rmean(1)) > checkfactor * rrms[1] ||
+                        std::abs(R[ii](2) - rmean(2)) > checkfactor * rrms[2])
                     {
                         // put particle onto deletion list
                         destroy(1, ii);
@@ -653,15 +655,15 @@ void PartBunchBase<T, Dim>::boundp_destroy() {
             }
         }
         else {
-            if (len[0] > checkfactor * rrms_m[0] ||
-                len[2] > checkfactor * rrms_m[2])
+            if (len[0] > checkfactor * rrms[0] ||
+                len[2] > checkfactor * rrms[2])
             {
                 for(unsigned int ii = 0; ii < this->getLocalNum(); ii++) {
                     /* delete the particle if the distance to the beam center
                      * is larger than 8 times of beam's rms size
                      */
-                    if (std::abs(R[ii](0) - rmean_m(0)) > checkfactor * rrms_m[0] ||
-                        std::abs(R[ii](2) - rmean_m(2)) > checkfactor * rrms_m[2])
+                    if (std::abs(R[ii](0) - rmean(0)) > checkfactor * rrms[0] ||
+                        std::abs(R[ii](2) - rmean(2)) > checkfactor * rrms[2])
                     {
                         // put particle onto deletion list
                         destroy(1, ii);
@@ -1072,13 +1074,13 @@ void PartBunchBase<T, Dim>::set_sPos(double s) {
 
 template <class T, unsigned Dim>
 double PartBunchBase<T, Dim>::get_gamma() const {
-    return eKin_m / (getM()*1e-6) + 1.0;
+    return momentsComputer_m.getMeanGamma();
 }
 
 
 template <class T, unsigned Dim>
 double PartBunchBase<T, Dim>::get_meanKineticEnergy() const {
-    return eKin_m;
+    return momentsComputer_m.getMeanKineticEnergy();
 }
 
 
@@ -1096,37 +1098,37 @@ Vector_t PartBunchBase<T, Dim>::get_maxExtent() const {
 
 template <class T, unsigned Dim>
 Vector_t PartBunchBase<T, Dim>::get_centroid() const {
-    return rmean_m;
+    return momentsComputer_m.getMeanPosition();
 }
 
 
 template <class T, unsigned Dim>
 Vector_t PartBunchBase<T, Dim>::get_rrms() const {
-    return rrms_m;
+    return momentsComputer_m.getStandardDeviationPosition();
 }
 
 
 template <class T, unsigned Dim>
 Vector_t PartBunchBase<T, Dim>::get_rprms() const {
-    return rprms_m;
+    return momentsComputer_m.getStandardDeviationRP();
 }
 
 
 template <class T, unsigned Dim>
 Vector_t PartBunchBase<T, Dim>::get_rmean() const {
-    return rmean_m;
+    return momentsComputer_m.getMeanPosition();
 }
 
 
 template <class T, unsigned Dim>
 Vector_t PartBunchBase<T, Dim>::get_prms() const {
-    return prms_m;
+    return momentsComputer_m.getStandardDeviationMomentum();
 }
 
 
 template <class T, unsigned Dim>
 Vector_t PartBunchBase<T, Dim>::get_pmean() const {
-    return pmean_m;
+    return momentsComputer_m.getMeanMomentum();
 }
 
 
@@ -1142,49 +1144,49 @@ Vector_t PartBunchBase<T, Dim>::get_pmean_Distribution() const {
 
 template <class T, unsigned Dim>
 Vector_t PartBunchBase<T, Dim>::get_emit() const {
-    return eps_m;
+    return momentsComputer_m.getGeometricEmittance();
 }
 
 
 template <class T, unsigned Dim>
 Vector_t PartBunchBase<T, Dim>::get_norm_emit() const {
-    return eps_norm_m;
+    return momentsComputer_m.getNormalizedEmittance();
 }
 
 
 template <class T, unsigned Dim>
 Vector_t PartBunchBase<T, Dim>::get_halo() const {
-    return halo_m;
+    return momentsComputer_m.getHalo();
+}
+
+
+template <class T, unsigned Dim>
+double PartBunchBase<T, Dim>::get_Dx() const {
+    return momentsComputer_m.getDx();
+}
+
+
+template <class T, unsigned Dim>
+double PartBunchBase<T, Dim>::get_Dy() const {
+    return momentsComputer_m.getDy();
+}
+
+
+template <class T, unsigned Dim>
+double PartBunchBase<T, Dim>::get_DDx() const {
+    return momentsComputer_m.getDDx();
+}
+
+
+template <class T, unsigned Dim>
+double PartBunchBase<T, Dim>::get_DDy() const {
+    return momentsComputer_m.getDDy();
 }
 
 
 template <class T, unsigned Dim>
 Vector_t PartBunchBase<T, Dim>::get_hr() const {
     return hr_m;
-}
-
-
-template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::get_Dx() const {
-    return Dx_m;
-}
-
-
-template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::get_Dy() const {
-    return Dy_m;
-}
-
-
-template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::get_DDx() const {
-    return DDx_m;
-}
-
-
-template <class T, unsigned Dim>
-double PartBunchBase<T, Dim>::get_DDy() const {
-    return DDy_m;
 }
 
 
@@ -1220,136 +1222,138 @@ void PartBunchBase<T, Dim>::get_PBounds(Vector_t &min, Vector_t &max) const {
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::calcBeamParameters() {
 
-    Vector_t eps2, fac, rsqsum, psqsum, rpsum;
-
     IpplTimings::startTimer(statParamTimer_m);
+    momentsComputer_m.compute(*this);
+    // Vector_t eps2, fac, rsqsum, psqsum, rpsum;
 
-    const size_t locNp = getLocalNum();
-    const size_t totalNum = getTotalNum();
-    const double zero = 0.0;
+    // IpplTimings::startTimer(statParamTimer_m);
 
-    get_bounds(rmin_m, rmax_m);
+    // const size_t locNp = getLocalNum();
+    // const size_t totalNum = getTotalNum();
+    // const double zero = 0.0;
 
-    if(totalNum == 0) {
-        for(unsigned int i = 0 ; i < Dim; i++) {
-            rmean_m(i) = 0.0;
-            pmean_m(i) = 0.0;
-            rrms_m(i) = 0.0;
-            prms_m(i) = 0.0;
-            eps_norm_m(i)  = 0.0;
-        }
-        rprms_m = 0.0;
-        eKin_m = 0.0;
-        eps_m = 0.0;
-        IpplTimings::stopTimer(statParamTimer_m);
-        return;
-    }
+    // get_bounds(rmin_m, rmax_m);
 
-    const size_t intN = calcMoments();
-    const double N = static_cast<double>(intN);
+    // if(totalNum == 0) {
+    //     for(unsigned int i = 0 ; i < Dim; i++) {
+    //         rmean_m(i) = 0.0;
+    //         pmean_m(i) = 0.0;
+    //         rrms_m(i) = 0.0;
+    //         prms_m(i) = 0.0;
+    //         eps_norm_m(i)  = 0.0;
+    //     }
+    //     rprms_m = 0.0;
+    //     eKin_m = 0.0;
+    //     eps_m = 0.0;
+    //     IpplTimings::stopTimer(statParamTimer_m);
+    //     return;
+    // }
 
-    for(unsigned int i = 0 ; i < Dim; i++) {
-        rmean_m(i) = centroid_m[2 * i] / N;
-        pmean_m(i) = centroid_m[(2 * i) + 1] / N;
-        rsqsum(i) = moments_m(2 * i, 2 * i) - N * rmean_m(i) * rmean_m(i);
-        psqsum(i) = moments_m((2 * i) + 1, (2 * i) + 1) - N * pmean_m(i) * pmean_m(i);
-        if(psqsum(i) < 0)
-            psqsum(i) = 0;
-        rpsum(i) = moments_m((2 * i), (2 * i) + 1) - N * rmean_m(i) * pmean_m(i);
-    }
-    eps2 = (rsqsum * psqsum - rpsum * rpsum) / (N * N);
-    rpsum /= N;
+    // const size_t intN = calcMoments();
+    // const double N = static_cast<double>(intN);
 
-    for(unsigned int i = 0 ; i < Dim; i++) {
-        rrms_m(i) = std::sqrt(rsqsum(i) / N);
-        prms_m(i) = std::sqrt(psqsum(i) / N);
-        eps_norm_m(i)  =  std::sqrt(std::max(eps2(i), zero));
-        double tmp = rrms_m(i) * prms_m(i);
-        fac(i) = (tmp == 0) ? zero : 1.0 / tmp;
-    }
+    // for(unsigned int i = 0 ; i < Dim; i++) {
+    //     rmean_m(i) = centroid_m[2 * i] / N;
+    //     pmean_m(i) = centroid_m[(2 * i) + 1] / N;
+    //     rsqsum(i) = moments_m(2 * i, 2 * i) - N * rmean_m(i) * rmean_m(i);
+    //     psqsum(i) = moments_m((2 * i) + 1, (2 * i) + 1) - N * pmean_m(i) * pmean_m(i);
+    //     if(psqsum(i) < 0)
+    //         psqsum(i) = 0;
+    //     rpsum(i) = moments_m((2 * i), (2 * i) + 1) - N * rmean_m(i) * pmean_m(i);
+    // }
+    // eps2 = (rsqsum * psqsum - rpsum * rpsum) / (N * N);
+    // rpsum /= N;
 
-    rprms_m = rpsum * fac;
+    // for(unsigned int i = 0 ; i < Dim; i++) {
+    //     rrms_m(i) = std::sqrt(rsqsum(i) / N);
+    //     prms_m(i) = std::sqrt(psqsum(i) / N);
+    //     eps_norm_m(i)  =  std::sqrt(std::max(eps2(i), zero));
+    //     double tmp = rrms_m(i) * prms_m(i);
+    //     fac(i) = (tmp == 0) ? zero : 1.0 / tmp;
+    // }
 
-    Dx_m  = moments_m(0, 5) / N;
-    DDx_m = moments_m(1, 5) / N;
+    // rprms_m = rpsum * fac;
 
-    Dy_m  = moments_m(2, 5) / N;
-    DDy_m = moments_m(3, 5) / N;
+    // Dx_m  = moments_m(0, 5) / N;
+    // DDx_m = moments_m(1, 5) / N;
 
-    // Find unnormalized emittance.
-    double gamma = 0.0;
-    for(size_t i = 0; i < locNp; i++)
-        gamma += std::sqrt(1.0 + dot(P[i], P[i]));
+    // Dy_m  = moments_m(2, 5) / N;
+    // DDy_m = moments_m(3, 5) / N;
 
-    allreduce(&gamma, 1, std::plus<double>());
-    gamma /= N;
+    // // Find unnormalized emittance.
+    // double gamma = 0.0;
+    // for(size_t i = 0; i < locNp; i++)
+    //     gamma += std::sqrt(1.0 + dot(P[i], P[i]));
 
-    calcEMean();
+    // allreduce(&gamma, 1, std::plus<double>());
+    // gamma /= N;
 
-    // The computation of the energy spread is an estimation
-    // based on the standard deviation of the longitudinal
-    // momentum:
-    // Var[f(P)] ~= (df/dP)(E[P])^2 Var[P]
-    const double m0 = getM() * 1.E-6;
-    double tmp = 1.0 / std::pow(eKin_m / m0 + 1., 2.0);
-    if (OpalData::getInstance()->isInOPALCyclMode()) {
-        dE_m = prms_m(1) * m0 * std::sqrt(1.0 - tmp);
-    } else {
-        dE_m = prms_m(2) * m0 * std::sqrt(1.0 - tmp);
-    }
+    // calcEMean();
 
-    eps_m = eps_norm_m / Vector_t(gamma * std::sqrt(1.0 - 1.0 / (gamma * gamma)));
+    // // The computation of the energy spread is an estimation
+    // // based on the standard deviation of the longitudinal
+    // // momentum:
+    // // Var[f(P)] ~= (df/dP)(E[P])^2 Var[P]
+    // const double m0 = getM() * 1.E-6;
+    // double tmp = 1.0 / std::pow(eKin_m / m0 + 1., 2.0);
+    // if (OpalData::getInstance()->isInOPALCyclMode()) {
+    //     dE_m = prms_m(1) * m0 * std::sqrt(1.0 - tmp);
+    // } else {
+    //     dE_m = prms_m(2) * m0 * std::sqrt(1.0 - tmp);
+    // }
+
+    // eps_m = eps_norm_m / Vector_t(gamma * std::sqrt(1.0 - 1.0 / (gamma * gamma)));
     IpplTimings::stopTimer(statParamTimer_m);
 
 }
 
 
-template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::calcBeamParametersInitial() {
+// template <class T, unsigned Dim>
+// void PartBunchBase<T, Dim>::calcBeamParametersInitial() {
 
-    const double N =  static_cast<double>(getTotalNum());
+//     const double N =  static_cast<double>(getTotalNum());
 
-    if(N == 0) {
-        rmean_m = Vector_t(0.0);
-        pmean_m = Vector_t(0.0);
-        rrms_m  = Vector_t(0.0);
-        prms_m  = Vector_t(0.0);
-        eps_m   = Vector_t(0.0);
-    } else {
-        if(Ippl::myNode() == 0) {
-            // fixme:  the following code is crap!
-            // Only use one node as this function will get called only once before
-            // particles have been emitted (at least in principle).
-            Vector_t eps2, fac, rsqsum, psqsum, rpsum;
+//     if(N == 0) {
+//         rmean_m = Vector_t(0.0);
+//         pmean_m = Vector_t(0.0);
+//         rrms_m  = Vector_t(0.0);
+//         prms_m  = Vector_t(0.0);
+//         eps_m   = Vector_t(0.0);
+//     } else {
+//         if(Ippl::myNode() == 0) {
+//             // fixme:  the following code is crap!
+//             // Only use one node as this function will get called only once before
+//             // particles have been emitted (at least in principle).
+//             Vector_t eps2, fac, rsqsum, psqsum, rpsum;
 
-            const double zero = 0.0;
-            const double  N =  static_cast<double>(pbin_m->getNp());
-            calcMomentsInitial();
+//             const double zero = 0.0;
+//             const double  N =  static_cast<double>(pbin_m->getNp());
+//             calcMomentsInitial();
 
-            for(unsigned int i = 0 ; i < Dim; i++) {
-                rmean_m(i) = centroid_m[2 * i] / N;
-                pmean_m(i) = centroid_m[(2 * i) + 1] / N;
-                rsqsum(i) = moments_m(2 * i, 2 * i) - N * rmean_m(i) * rmean_m(i);
-                psqsum(i) = moments_m((2 * i) + 1, (2 * i) + 1) - N * pmean_m(i) * pmean_m(i);
-                if(psqsum(i) < 0)
-                    psqsum(i) = 0;
-                rpsum(i) =  moments_m((2 * i), (2 * i) + 1) - N * rmean_m(i) * pmean_m(i);
-            }
-            eps2 = (rsqsum * psqsum - rpsum * rpsum) / (N * N);
-            rpsum /= N;
+//             for(unsigned int i = 0 ; i < Dim; i++) {
+//                 rmean_m(i) = centroid_m[2 * i] / N;
+//                 pmean_m(i) = centroid_m[(2 * i) + 1] / N;
+//                 rsqsum(i) = moments_m(2 * i, 2 * i) - N * rmean_m(i) * rmean_m(i);
+//                 psqsum(i) = moments_m((2 * i) + 1, (2 * i) + 1) - N * pmean_m(i) * pmean_m(i);
+//                 if(psqsum(i) < 0)
+//                     psqsum(i) = 0;
+//                 rpsum(i) =  moments_m((2 * i), (2 * i) + 1) - N * rmean_m(i) * pmean_m(i);
+//             }
+//             eps2 = (rsqsum * psqsum - rpsum * rpsum) / (N * N);
+//             rpsum /= N;
 
-            for(unsigned int i = 0 ; i < Dim; i++) {
+//             for(unsigned int i = 0 ; i < Dim; i++) {
 
-                rrms_m(i) = std::sqrt(rsqsum(i) / N);
-                prms_m(i) = std::sqrt(psqsum(i) / N);
-                eps_m(i)  = std::sqrt(std::max(eps2(i), zero));
-                double tmp = rrms_m(i) * prms_m(i);
-                fac(i) = (tmp == 0) ? zero : 1.0 / tmp;
-            }
-            rprms_m = rpsum * fac;
-        }
-    }
-}
+//                 rrms_m(i) = std::sqrt(rsqsum(i) / N);
+//                 prms_m(i) = std::sqrt(psqsum(i) / N);
+//                 eps_m(i)  = std::sqrt(std::max(eps2(i), zero));
+//                 double tmp = rrms_m(i) * prms_m(i);
+//                 fac(i) = (tmp == 0) ? zero : 1.0 / tmp;
+//             }
+//             rprms_m = rpsum * fac;
+//         }
+//     }
+// }
 
 
 template <class T, unsigned Dim>
@@ -1743,7 +1747,7 @@ void PartBunchBase<T, Dim>::resetM(double m)  {
 
 template <class T, unsigned Dim>
 double PartBunchBase<T, Dim>::getdE() const {
-    return dE_m;
+    return momentsComputer_m.getStandardDeviationKineticEnergy();
 }
 
 
@@ -1799,21 +1803,7 @@ void PartBunchBase<T, Dim>::iterateEmittedBin(int binNumber) {
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::calcEMean() {
 
-    const double totalNp = static_cast<double>(getTotalNum());
-    const double locNp   = static_cast<double>(getLocalNum());
-
-    eKin_m = 0.0;
-
-    for(unsigned int k = 0; k < locNp; k++) {
-        eKin_m += std::sqrt(dot(P[k], P[k]) + 1.0);
-    }
-
-    eKin_m -= locNp;
-    eKin_m *= getM() * 1.0e-6;
-
-    reduce(eKin_m, eKin_m, OpAddAssign());
-
-    eKin_m /= totalNp;
+    momentsComputer_m.computeMeanKineticEnergy(*this);
 }
 
 template <class T, unsigned Dim>
@@ -1830,17 +1820,17 @@ Inform &PartBunchBase<T, Dim>::print(Inform &os) {
         os << "* NP              = " << getTotalNum() << "\n";
         os << "* Qtot            = " << std::setw(17) << Util::getChargeString(std::abs(sum(Q))) << "         "
         << "Qi    = "             << std::setw(17) << Util::getChargeString(std::abs(qi_m)) << "\n";
-        os << "* Ekin            = " << std::setw(17) << Util::getEnergyString(eKin_m) << "         "
-           << "dEkin = "             << std::setw(17) << Util::getEnergyString(dE_m) << "\n";
+        os << "* Ekin            = " << std::setw(17) << Util::getEnergyString(get_meanKineticEnergy()) << "         "
+           << "dEkin = "             << std::setw(17) << Util::getEnergyString(getdE()) << "\n";
         os << "* rmax            = " << Util::getLengthString(rmax_m, 5) << "\n";
         os << "* rmin            = " << Util::getLengthString(rmin_m, 5) << "\n";
         if (getTotalNum() >= 2) { // to suppress Nans
-            os << "* rms beam size   = " << Util::getLengthString(rrms_m, 5) << "\n";
-            os << "* rms momenta     = " << std::setw(12) << std::setprecision(5) << prms_m << " [beta gamma]\n";
-            os << "* mean position   = " << Util::getLengthString(rmean_m, 5) << "\n";
-            os << "* mean momenta    = " << std::setw(12) << std::setprecision(5) << pmean_m << " [beta gamma]\n";
-            os << "* rms emittance   = " << std::setw(12) << std::setprecision(5) << eps_m << " (not normalized)\n";
-            os << "* rms correlation = " << std::setw(12) << std::setprecision(5) << rprms_m << "\n";
+            os << "* rms beam size   = " << Util::getLengthString(get_rrms(), 5) << "\n";
+            os << "* rms momenta     = " << std::setw(12) << std::setprecision(5) << get_prms() << " [beta gamma]\n";
+            os << "* mean position   = " << Util::getLengthString(get_rmean(), 5) << "\n";
+            os << "* mean momenta    = " << std::setw(12) << std::setprecision(5) << get_pmean() << " [beta gamma]\n";
+            os << "* rms emittance   = " << std::setw(12) << std::setprecision(5) << get_emit() << " (not normalized)\n";
+            os << "* rms correlation = " << std::setw(12) << std::setprecision(5) << get_rprms() << "\n";
         }
         os << "* hr              = " << Util::getLengthString(get_hr(), 5) << "\n";
         os << "* dh              = " << std::setw(13) << std::setprecision(5) << dh_m * 100 << " [%]\n";
@@ -1854,162 +1844,162 @@ Inform &PartBunchBase<T, Dim>::print(Inform &os) {
 }
 
 
-template <class T, unsigned Dim>
-size_t PartBunchBase<T, Dim>::calcMoments() {
+// template <class T, unsigned Dim>
+// size_t PartBunchBase<T, Dim>::calcMoments() {
 
-    double part[2 * Dim];
+//     double part[2 * Dim];
 
-    const unsigned long localNum = getLocalNum();
+//     const unsigned long localNum = getLocalNum();
 
-    /* 2 * Dim centroids + Dim * ( 2 * Dim + 1 ) 2nd moments + 2 * Dim (3rd and 4th order moments)
-     * --> 1st order moments: 0, ..., 2 * Dim - 1
-     * --> 2nd order moments: 2 * Dim, ..., Dim * ( 2 * Dim + 1 )
-     * --> 3rd order moments: Dim * ( 2 * Dim + 1 ) + 1, ..., Dim * ( 2 * Dim + 1 ) + Dim
-     * (only, <x^3>, <y^3> and <z^3>)
-     * --> 4th order moments: Dim * ( 2 * Dim + 1 ) + Dim + 1, ..., Dim * ( 2 * Dim + 1 ) + 2 * Dim
-     *
-     * For a 6x6 matrix we have each 2nd order moment (except diagonal
-     * entries) twice. We only store the upper half of the matrix.
-     */
-    std::vector<double> loc_moments(4 * Dim + Dim * ( 2 * Dim + 1 ));
+//     /* 2 * Dim centroids + Dim * ( 2 * Dim + 1 ) 2nd moments + 2 * Dim (3rd and 4th order moments)
+//      * --> 1st order moments: 0, ..., 2 * Dim - 1
+//      * --> 2nd order moments: 2 * Dim, ..., Dim * ( 2 * Dim + 1 )
+//      * --> 3rd order moments: Dim * ( 2 * Dim + 1 ) + 1, ..., Dim * ( 2 * Dim + 1 ) + Dim
+//      * (only, <x^3>, <y^3> and <z^3>)
+//      * --> 4th order moments: Dim * ( 2 * Dim + 1 ) + Dim + 1, ..., Dim * ( 2 * Dim + 1 ) + 2 * Dim
+//      *
+//      * For a 6x6 matrix we have each 2nd order moment (except diagonal
+//      * entries) twice. We only store the upper half of the matrix.
+//      */
+//     std::vector<double> loc_moments(4 * Dim + Dim * ( 2 * Dim + 1 ));
 
-    long int totalNum = this->getTotalNum();
-    if (!Options::amr && OpalData::getInstance()->isInOPALCyclMode())
-    {
-        /* FIXME After issue 287 is resolved this shouldn't be necessary
-         * anymore
-         */
-        for(unsigned long k = 0; k < localNum; ++ k) {
-            if (ID[k] == 0) {
-                part[1] = P[k](0);
-                part[3] = P[k](1);
-                part[5] = P[k](2);
-                part[0] = R[k](0);
-                part[2] = R[k](1);
-                part[4] = R[k](2);
+//     long int totalNum = this->getTotalNum();
+//     if (!Options::amr && OpalData::getInstance()->isInOPALCyclMode())
+//     {
+//         /* FIXME After issue 287 is resolved this shouldn't be necessary
+//          * anymore
+//          */
+//         for(unsigned long k = 0; k < localNum; ++ k) {
+//             if (ID[k] == 0) {
+//                 part[1] = P[k](0);
+//                 part[3] = P[k](1);
+//                 part[5] = P[k](2);
+//                 part[0] = R[k](0);
+//                 part[2] = R[k](1);
+//                 part[4] = R[k](2);
 
-                unsigned int l = 2 * Dim;
-                for (unsigned int i = 0; i < 2 * Dim; ++i) {
-                    loc_moments[i] -= part[i];
-                    for(unsigned int j = 0; j <= i; j++) {
-                        loc_moments[l++] -= part[i] * part[j];
-                    }
-                }
+//                 unsigned int l = 2 * Dim;
+//                 for (unsigned int i = 0; i < 2 * Dim; ++i) {
+//                     loc_moments[i] -= part[i];
+//                     for(unsigned int j = 0; j <= i; j++) {
+//                         loc_moments[l++] -= part[i] * part[j];
+//                     }
+//                 }
 
-                for (unsigned int i = 0; i < Dim; ++i) {
-                    double r2 = R[k](i) * R[k](i);
-                    loc_moments[l] -= r2 * R[k](i);
-                    loc_moments[Dim + l++] -= r2 * r2;
-                }
+//                 for (unsigned int i = 0; i < Dim; ++i) {
+//                     double r2 = R[k](i) * R[k](i);
+//                     loc_moments[l] -= r2 * R[k](i);
+//                     loc_moments[Dim + l++] -= r2 * r2;
+//                 }
 
-                --totalNum;
-                break;
-            }
-        }
-        allreduce(totalNum, 1, std::less<long int>());
-    }
+//                 --totalNum;
+//                 break;
+//             }
+//         }
+//         allreduce(totalNum, 1, std::less<long int>());
+//     }
 
-    for(unsigned long k = 0; k < localNum; ++ k) {
-        part[1] = P[k](0);
-        part[3] = P[k](1);
-        part[5] = P[k](2);
-        part[0] = R[k](0);
-        part[2] = R[k](1);
-        part[4] = R[k](2);
+//     for(unsigned long k = 0; k < localNum; ++ k) {
+//         part[1] = P[k](0);
+//         part[3] = P[k](1);
+//         part[5] = P[k](2);
+//         part[0] = R[k](0);
+//         part[2] = R[k](1);
+//         part[4] = R[k](2);
 
-        unsigned int l = 2 * Dim;
-        for (unsigned int i = 0; i < 2 * Dim; ++i) {
-            loc_moments[i] += part[i];
-            for(unsigned int j = 0; j <= i; j++) {
-                loc_moments[l++] += part[i] * part[j];
-            }
-        }
+//         unsigned int l = 2 * Dim;
+//         for (unsigned int i = 0; i < 2 * Dim; ++i) {
+//             loc_moments[i] += part[i];
+//             for(unsigned int j = 0; j <= i; j++) {
+//                 loc_moments[l++] += part[i] * part[j];
+//             }
+//         }
 
-        for (unsigned int i = 0; i < Dim; ++i) {
-            double r2 = R[k](i) * R[k](i);
-            loc_moments[l] += r2 * R[k](i);
-            loc_moments[Dim + l++] += r2 * r2;
-        }
-    }
+//         for (unsigned int i = 0; i < Dim; ++i) {
+//             double r2 = R[k](i) * R[k](i);
+//             loc_moments[l] += r2 * R[k](i);
+//             loc_moments[Dim + l++] += r2 * r2;
+//         }
+//     }
 
-    allreduce(loc_moments.data(), loc_moments.size(), std::plus<double>());
+//     allreduce(loc_moments.data(), loc_moments.size(), std::plus<double>());
 
-    // copy to member variables
-    for (unsigned int i = 0; i< 2 * Dim; ++i)
-        centroid_m[i] = loc_moments[i];
+//     // copy to member variables
+//     for (unsigned int i = 0; i< 2 * Dim; ++i)
+//         centroid_m[i] = loc_moments[i];
 
-    unsigned int l = 2 * Dim;
-    for (unsigned int i = 0; i < 2 * Dim; ++i) {
-        for(unsigned int j = 0; j <= i; j++) {
-            moments_m(i, j) = loc_moments[l++];
-            moments_m(j, i) = moments_m(i, j);
-        }
-    }
+//     unsigned int l = 2 * Dim;
+//     for (unsigned int i = 0; i < 2 * Dim; ++i) {
+//         for(unsigned int j = 0; j <= i; j++) {
+//             moments_m(i, j) = loc_moments[l++];
+//             moments_m(j, i) = moments_m(i, j);
+//         }
+//     }
 
-    /* 4th order central moment: <w^4> - 4<w><w^3> + 6<w>^2<w^2> - 3<w>^4
-     * 2nd order central moment: <w^2> - <w>^2
-     *
-     * with w = x, y, z.
-     */
-    int j = 2 * Dim + Dim * ( 2 * Dim + 1 );
-    double invN = 1.0 / double(totalNum);
-    for (unsigned int i = 0; i < Dim; ++i) {
-        double w1 = centroid_m[2 * i] * invN;
-        double w2 = moments_m(2 * i, 2 * i) * invN;
-        double w3 = loc_moments[j + i] * invN;
-        double w4 = loc_moments[j + Dim + i] * invN;
+//     /* 4th order central moment: <w^4> - 4<w><w^3> + 6<w>^2<w^2> - 3<w>^4
+//      * 2nd order central moment: <w^2> - <w>^2
+//      *
+//      * with w = x, y, z.
+//      */
+//     int j = 2 * Dim + Dim * ( 2 * Dim + 1 );
+//     double invN = 1.0 / double(totalNum);
+//     for (unsigned int i = 0; i < Dim; ++i) {
+//         double w1 = centroid_m[2 * i] * invN;
+//         double w2 = moments_m(2 * i, 2 * i) * invN;
+//         double w3 = loc_moments[j + i] * invN;
+//         double w4 = loc_moments[j + Dim + i] * invN;
 
-        halo_m(i)  =  w4 + w1 * (-4.0 * w3 + w1 * (6.0 * w2 - 3.0 * w1 * w1));
-        double tmp = w2 - w1 * w1;
-        halo_m(i) /= ( tmp * tmp );
-        halo_m(i) -= Options::haloShift;
-    }
+//         halo_m(i)  =  w4 + w1 * (-4.0 * w3 + w1 * (6.0 * w2 - 3.0 * w1 * w1));
+//         double tmp = w2 - w1 * w1;
+//         halo_m(i) /= ( tmp * tmp );
+//         halo_m(i) -= Options::haloShift;
+//     }
 
-    return totalNum;
-}
+//     return totalNum;
+// }
 
 
-template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::calcMomentsInitial() {
+// template <class T, unsigned Dim>
+// void PartBunchBase<T, Dim>::calcMomentsInitial() {
 
-    double part[2 * Dim];
+//     double part[2 * Dim];
 
-    for(unsigned int i = 0; i < 2 * Dim; ++i) {
-        centroid_m[i] = 0.0;
-        for(unsigned int j = 0; j <= i; ++j) {
-            moments_m(i, j) = 0.0;
-            moments_m(j, i) = moments_m(i, j);
-        }
-    }
+//     for(unsigned int i = 0; i < 2 * Dim; ++i) {
+//         centroid_m[i] = 0.0;
+//         for(unsigned int j = 0; j <= i; ++j) {
+//             moments_m(i, j) = 0.0;
+//             moments_m(j, i) = moments_m(i, j);
+//         }
+//     }
 
-    for(size_t k = 0; k < pbin_m->getNp(); k++) {
-        for(int binNumber = 0; binNumber < pbin_m->getNBins(); binNumber++) {
-            std::vector<double> p;
+//     for(size_t k = 0; k < pbin_m->getNp(); k++) {
+//         for(int binNumber = 0; binNumber < pbin_m->getNBins(); binNumber++) {
+//             std::vector<double> p;
 
-            if(pbin_m->getPart(k, binNumber, p)) {
-                part[0] = p.at(0);
-                part[1] = p.at(3);
-                part[2] = p.at(1);
-                part[3] = p.at(4);
-                part[4] = p.at(2);
-                part[5] = p.at(5);
+//             if(pbin_m->getPart(k, binNumber, p)) {
+//                 part[0] = p.at(0);
+//                 part[1] = p.at(3);
+//                 part[2] = p.at(1);
+//                 part[3] = p.at(4);
+//                 part[4] = p.at(2);
+//                 part[5] = p.at(5);
 
-                for(unsigned int i = 0; i < 2 * Dim; ++i) {
-                    centroid_m[i] += part[i];
-                    for(unsigned int j = 0; j <= i; ++j) {
-                        moments_m(i, j) += part[i] * part[j];
-                    }
-                }
-            }
-        }
-    }
+//                 for(unsigned int i = 0; i < 2 * Dim; ++i) {
+//                     centroid_m[i] += part[i];
+//                     for(unsigned int j = 0; j <= i; ++j) {
+//                         moments_m(i, j) += part[i] * part[j];
+//                     }
+//                 }
+//             }
+//         }
+//     }
 
-    for(unsigned int i = 0; i < 2 * Dim; ++i) {
-        for(unsigned int j = 0; j < i; ++j) {
-            moments_m(j, i) = moments_m(i, j);
-        }
-    }
-}
+//     for(unsigned int i = 0; i < 2 * Dim; ++i) {
+//         for(unsigned int j = 0; j < i; ++j) {
+//             moments_m(j, i) = moments_m(i, j);
+//         }
+//     }
+// }
 
 
 // angle range [0~2PI) degree
@@ -2255,8 +2245,8 @@ FMatrix<double, 2 * Dim, 2 * Dim> PartBunchBase<T, Dim>::getSigmaMatrix() {
 
     Vektor<double, 2*Dim> rpmean;
     for (unsigned int i = 0; i < Dim; i++) {
-        rpmean(2*i)= rmean_m(i);
-        rpmean((2*i)+1)= pmean_m(i);
+        rpmean(2*i)= get_rmean()(i);
+        rpmean((2*i)+1)= get_pmean()(i);
     }
 
     FMatrix<double, 2 * Dim, 2 * Dim> sigmaMatrix;// = moments_m / N;

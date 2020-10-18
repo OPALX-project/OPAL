@@ -4,19 +4,71 @@
 #include "Utilities/Util.h"
 
 #include "Message/GlobalComm.h"
+#include "Utility/Inform.h"
+
+#include "OpalParticle.h"
+#include "PartBunchBase.h"
+
+extern Inform* gmsg;
 
 DistributionMoments::DistributionMoments():
     meanR_m(0.0),
     meanP_m(0.0),
     stdR_m(0.0),
     stdP_m(0.0),
+    stdRP_m(0.0),
     normalizedEps_m(0.0),
     geometricEps_m(0.0),
     meanKineticEnergy_m(0.0),
+    stdKineticEnergy_m(0.0),
+    Dx_m(0.0),
+    DDx_m(0.0),
+    Dy_m(0.0),
+    DDy_m(0.0),
     moments_m(),
     totalNumParticles_m(0)
 {
     std::fill(std::begin(centroid_m), std::end(centroid_m), 0.0);
+}
+
+void DistributionMoments::compute(PartBunchBase<double, 3> const& bunch)
+{
+    reset();
+
+    totalNumParticles_m = bunch.getTotalNum();
+
+    if (totalNumParticles_m == 0) {
+        return;
+    }
+
+    computeMoments(bunch);
+
+    Vector_t squaredEps, fac, squaredSumR, squaredSumP, sumRP;
+    double perParticle = 1.0 / totalNumParticles_m;
+    for (unsigned int i = 0; i < 3; ++ i) {
+        meanR_m(i) = centroid_m[2 * i] * perParticle;
+        meanP_m(i) = centroid_m[2 * i + 1] * perParticle;
+        squaredSumR(i) = moments_m(2 * i, 2 * i) - totalNumParticles_m * std::pow(meanR_m(i), 2);
+        squaredSumP(i) = std::max(0.0,
+                                  moments_m(2 * i + 1, 2 * i + 1) - totalNumParticles_m * std::pow(meanP_m(i), 2));
+        sumRP(i) = moments_m(2 * i, 2 * i + 1) - totalNumParticles_m * meanR_m(i) * meanP_m(i);
+    }
+
+    squaredEps = (squaredSumR * squaredSumP - sumRP * sumRP) * std::pow(perParticle, 2);
+    sumRP *= perParticle;
+
+    for (unsigned int i = 0; i < 3; ++ i) {
+        stdR_m(i) = std::sqrt(squaredSumR(i) * perParticle);
+        stdP_m(i) = std::sqrt(squaredSumP(i) * perParticle);
+        normalizedEps_m(i) = std::sqrt(std::max(squaredEps(i), 0.0));
+        double tmp = stdR_m(i) * stdP_m(i);
+        fac(i) = (std::abs(tmp) < 1e-10) ? 0.0: 1.0 / tmp;
+    }
+
+    stdRP_m = sumRP * fac;
+
+    double betaGamma = std::sqrt(std::pow(meanGamma_m, 2) - 1.0);
+    geometricEps_m = normalizedEps_m / Vector_t(betaGamma);
 }
 
 void DistributionMoments::compute(std::vector<OpalParticle> const& particles)
@@ -44,7 +96,7 @@ void DistributionMoments::compute(std::vector<OpalParticle> const& particles)
     }
 
     squaredEps = (squaredSumR * squaredSumP - sumRP * sumRP) * std::pow(perParticle, 2);
-    // sumRP *= perParticle;
+    sumRP *= perParticle;
 
     for (unsigned int i = 0; i < 3; ++ i) {
         stdR_m(i) = std::sqrt(squaredSumR(i) * perParticle);
@@ -54,15 +106,28 @@ void DistributionMoments::compute(std::vector<OpalParticle> const& particles)
         fac(i) = (std::abs(tmp) < 1e-10) ? 0.0: 1.0 / tmp;
     }
 
-    // stdRP_m = sumRP * fac;
+    stdRP_m = sumRP * fac;
 
     double betaGamma = std::sqrt(std::pow(meanGamma_m, 2) - 1.0);
     geometricEps_m = normalizedEps_m / Vector_t(betaGamma);
 }
 
-void DistributionMoments::computeMoments(std::vector<OpalParticle> const& particles)
+void DistributionMoments::computeMeanKineticEnergy(PartBunchBase<double, 3> const& bunch)
 {
-    std::vector<double> localMoments(35);
+    double data[] = {0.0, 0.0};
+    for (OpalParticle const& particle: bunch) {
+        data[0] += Util::getKineticEnergy(particle.P(), particle.mass());
+    }
+    data[1] = bunch.getLocalNum();
+    allreduce(data, 2, std::plus<double>());
+
+    meanKineticEnergy_m = data[0] / data[1];
+}
+
+template<class Container>
+void DistributionMoments::computeMoments(Container const& particles)
+{
+    std::vector<double> localMoments(36);
 
     for (OpalParticle const& particle: particles) {
         unsigned int l = 6;
@@ -79,10 +144,11 @@ void DistributionMoments::computeMoments(std::vector<OpalParticle> const& partic
             localMoments[l + 3] += r2 * r2;
         }
         double gamma = Util::getGamma(particle.P());
-        localMoments[33] = (gamma - 1.0) * particle.mass();
-        localMoments[34] = gamma;
+        double eKin = (gamma - 1.0) * particle.mass();
+        localMoments[33] += eKin;
+        localMoments[34] += std::pow(eKin, 2);
+        localMoments[35] += gamma;
     }
-
 
     allreduce(localMoments.data(), localMoments.size(), std::plus<double>());
 
@@ -112,7 +178,8 @@ void DistributionMoments::computeMoments(std::vector<OpalParticle> const& partic
     }
 
     meanKineticEnergy_m = localMoments[33] * perParticle;
-    meanGamma_m = localMoments[34] * perParticle;
+    stdKineticEnergy_m = localMoments[34] * perParticle;
+    meanGamma_m = localMoments[35] * perParticle;
 }
 
 void DistributionMoments::reset()
@@ -121,11 +188,17 @@ void DistributionMoments::reset()
     meanP_m = 0.0;
     stdR_m = 0.0;
     stdP_m = 0.0;
+    stdRP_m = 0.0;
     normalizedEps_m = 0.0;
     geometricEps_m = 0.0;
     halo_m = 0.0;
 
     meanKineticEnergy_m = 0.0;
+    stdKineticEnergy_m = 0.0;
+    Dx_m = 0.0;
+    DDx_m = 0.0;
+    Dy_m = 0.0;
+    DDy_m = 0.0;
     std::fill(std::begin(centroid_m), std::end(centroid_m), 0.0);
     moments_m = FMatrix<double, 6, 6>(0.0);
 
