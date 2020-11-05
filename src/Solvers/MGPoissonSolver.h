@@ -182,7 +182,7 @@ private:
     Teuchos::RCP<const Comm_t> comm_mp;
 
     /// last N LHS's for extrapolating the new LHS as starting vector
-    uint nLHS_m;
+    unsigned int nLHS_m;
     Teuchos::RCP<TpetraMultiVector_t> P_mp;
     std::deque< TpetraVector_t > OldLHS;
 
