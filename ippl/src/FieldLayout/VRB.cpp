@@ -333,14 +333,14 @@ main(int argc, char *argv[])
   PAssert_GT(nprocs, 0);
 
   // Get the size of each dimension.
-  int *sizes = new int[dim];
+  int sizes[dim];
   int totalVnodes = 1;
   for ( int d = 0; d<dim; ++d )
     {
       sizes[d] = atoi(argv[d+2]);
       totalVnodes *= sizes[d];
     }
-  int *procs = new int[totalVnodes];
+  int procs[totalVnodes];
 
   // Do it.
   vnodeRecursiveBisection(dim,sizes,nprocs,procs);
