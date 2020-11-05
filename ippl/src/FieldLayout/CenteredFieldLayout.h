@@ -1,19 +1,25 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
+//
+// Class CenteredFieldLayout
+//
+// Copyright (c) 2003 - 2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 
 #ifndef CENTERED_FIELD_LAYOUT_H
 #define CENTERED_FIELD_LAYOUT_H
 
-// include files
 #include "FieldLayout/FieldLayout.h"
-
 
 template<unsigned Dim, class Mesh, class Centering>
 class CenteredFieldLayout : public FieldLayout<Dim>
@@ -40,29 +46,6 @@ public:
   // particular from expde
 
 
-  // Constructors for 1 ... 6 dimensions with parallel/serial specifiers:
-  CenteredFieldLayout(Mesh& mesh, 
-		      e_dim_tag p1, 
-		      int vnodes=-1);
-  CenteredFieldLayout(Mesh& mesh, 
-		      e_dim_tag p1, e_dim_tag p2, 
-		      int vnodes=-1);
-  CenteredFieldLayout(Mesh& mesh, 
-		      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, 
-		      int vnodes=-1);
-  CenteredFieldLayout(Mesh& mesh, 
-		      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, e_dim_tag p4,
-		      int vnodes=-1);
-  CenteredFieldLayout(Mesh& mesh, 
-		      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, e_dim_tag p4,
-		      e_dim_tag p5,
-		      int vnodes=-1);
-  CenteredFieldLayout(Mesh& mesh, 
-		      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, e_dim_tag p4,
-		      e_dim_tag p5, e_dim_tag p6,
-		      int vnodes=-1);
-  //---------------------------------------------------------------------------
-
   //---------------------------------------------------------------------------
   // These specify both the total number of vnodes and the numbers of vnodes
   // along each dimension for the partitioning of the index space. Obviously
@@ -74,45 +57,6 @@ public:
 		      unsigned* vnodesAlongDirection, 
 		      bool recurse=false,
 		      int vnodes=-1);
-  // Constructors for 1 ... 6 dimensions with parallel/serial specifiers:
-  CenteredFieldLayout(Mesh& mesh,
-		      e_dim_tag p1,
-		      unsigned vnodes1,
-		      bool recurse=false,
-		      int vnodes=-1);
-  CenteredFieldLayout(Mesh& mesh,
-		      e_dim_tag p1, e_dim_tag p2,
-		      unsigned vnodes1, unsigned vnodes2,
-		      bool recurse=false,
-		      int vnodes=-1);
-  CenteredFieldLayout(Mesh& mesh,
-		      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-		      unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-		      bool recurse=false,
-		      int vnodes=-1);
-  CenteredFieldLayout(Mesh& mesh,
-		      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, 
-		      e_dim_tag p4,
-		      unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-		      unsigned vnodes4,
-		      bool recurse=false,
-		      int vnodes=-1);
-  CenteredFieldLayout(Mesh& mesh,
-		      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, 
-		      e_dim_tag p4, e_dim_tag p5,
-		      unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-		      unsigned vnodes4, unsigned vnodes5,
-		      bool recurse=false,
-		      int vnodes=-1);
-  CenteredFieldLayout(Mesh& mesh,
-		      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, 
-		      e_dim_tag p4, e_dim_tag p5, e_dim_tag p6,
-		      unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-		      unsigned vnodes4, unsigned vnodes5, unsigned vnodes6,
-		      bool recurse=false,
-		      int vnodes=-1);
-  //---------------------------------------------------------------------------
-
   //---------------------------------------------------------------------------
   // A constructor a a completely user-specified partitioning of the
   // mesh space.
@@ -127,9 +71,3 @@ public:
 #include "FieldLayout/CenteredFieldLayout.hpp"
 
 #endif // CENTERED_FIELD_LAYOUT_H
-
-/***************************************************************************
- * $RCSfile: CenteredFieldLayout.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:27 $
- * IPPL_VERSION_ID: $Id: CenteredFieldLayout.h,v 1.1.1.1 2003/01/23 07:40:27 adelmann Exp $ 
- ***************************************************************************/

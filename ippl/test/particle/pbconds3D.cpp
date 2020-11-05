@@ -40,7 +40,10 @@ int main(int argc, char *argv[])
   testmsg << "Particle test: Boundary conditions: Begin." << endl;
 
   // create layout objects
-  FieldLayout<Dim> FL(Index(100), Index(100), Index(100), SERIAL, PARALLEL, PARALLEL, 8);
+  NDIndex<Dim> domain{Index(100), Index(100), Index(100)};
+  e_dim_tag decomp[Dim] = {SERIAL, PARALLEL, PARALLEL};
+
+  FieldLayout<Dim> FL(domain, decomp, 8);
 
   // create an empty particle object, with 2D position and 2
   // integer attributes, using a uniform layout

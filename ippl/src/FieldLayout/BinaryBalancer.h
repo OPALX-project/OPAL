@@ -1,17 +1,3 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
-#ifndef BINARY_BALANCER_H
-#define BINARY_BALANCER_H
-
-//////////////////////////////////////////////////////////////////////
 /*
 
   A fairly simple load balancer inspired by Dan Quinlan's MLB.
@@ -49,6 +35,26 @@
   (and all the Fields defined on it).
 
  */
+//
+// Copyright (c) 2003 - 2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+
+#ifndef BINARY_BALANCER_H
+#define BINARY_BALANCER_H
+
+//////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
 // forward declarations
@@ -75,9 +81,3 @@ BinaryRepartition(FieldLayout<Dim>& layout, BareField<double,Dim>& weights)
 #include "FieldLayout/BinaryBalancer.hpp"
 
 #endif // BINARY_BALANCER_H
-
-/***************************************************************************
- * $RCSfile: BinaryBalancer.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:27 $
- * IPPL_VERSION_ID: $Id: BinaryBalancer.h,v 1.1.1.1 2003/01/23 07:40:27 adelmann Exp $ 
- ***************************************************************************/

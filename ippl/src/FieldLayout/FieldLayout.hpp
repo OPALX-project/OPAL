@@ -1,29 +1,21 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- * This program was prepared by PSI.
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit www.amas.web.psi for more details
- *
- ***************************************************************************/
+//
+// FielLayout template class
+//
+// Copyright (c) 2003 - 2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
-// include files
 #include "FieldLayout/FieldLayout.h"
 #include "FieldLayout/VRB.h"
 #include "Message/Communicate.h"
@@ -113,129 +105,6 @@ FieldLayout<Dim>::initialize(const NDIndex<Dim>& domain,
     setup(domain, p, vnodes);
 }
 
-
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, e_dim_tag p1, int vnodes) {
-
-
-
-    PInsist(Dim==1,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    NDIndex<Dim> ndi(i1);
-    setup(ndi,&p1,vnodes);
-}
-
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, const Index& i2,
-			     e_dim_tag p1, e_dim_tag p2, int vnodes) {
-
-
-
-    PInsist(Dim==2,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    e_dim_tag par[Dim];
-    par[0] = p1;
-    par[1] = p2;
-    NDIndex<Dim> ndi;
-    ndi[0] = i1;
-    ndi[1] = i2;
-    setup(ndi,par,vnodes);
-}
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, const Index& i2, const Index& i3,
-			     e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			     int vnodes) {
-
-    PInsist(Dim==3,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    e_dim_tag par[Dim];
-    par[0] = p1;
-    par[1] = p2;
-    par[2] = p3;
-    NDIndex<Dim> ndi;
-    ndi[0] = i1;
-    ndi[1] = i2;
-    ndi[2] = i3;
-    setup(ndi,par,vnodes);
-}
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, const Index& i2, const Index& i3,
-			     const Index& i4,
-			     e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			     e_dim_tag p4,
-			     int vnodes) {
-
-
-    PInsist(Dim==4,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    e_dim_tag par[Dim];
-    par[0] = p1;
-    par[1] = p2;
-    par[2] = p3;
-    par[3] = p4;
-    NDIndex<Dim> ndi;
-    ndi[0] = i1;
-    ndi[1] = i2;
-    ndi[2] = i3;
-    ndi[3] = i4;
-    setup(ndi,par,vnodes);
-}
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, const Index& i2, const Index& i3,
-			     const Index& i4, const Index& i5,
-			     e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			     e_dim_tag p4, e_dim_tag p5,
-			     int vnodes) {
-
-    PInsist(Dim==5,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    e_dim_tag par[Dim];
-    par[0] = p1;
-    par[1] = p2;
-    par[2] = p3;
-    par[3] = p4;
-    par[4] = p5;
-    NDIndex<Dim> ndi;
-    ndi[0] = i1;
-    ndi[1] = i2;
-    ndi[2] = i3;
-    ndi[3] = i4;
-    ndi[4] = i5;
-    setup(ndi,par,vnodes);
-}
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, const Index& i2, const Index& i3,
-			     const Index& i4, const Index& i5, const Index& i6,
-			     e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			     e_dim_tag p4, e_dim_tag p5, e_dim_tag p6,
-			     int vnodes) {
-
-    PInsist(Dim==6,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    e_dim_tag par[Dim];
-    par[0] = p1;
-    par[1] = p2;
-    par[2] = p3;
-    par[3] = p4;
-    par[4] = p5;
-    par[5] = p6;
-    NDIndex<Dim> ndi;
-    ndi[0] = i1;
-    ndi[1] = i2;
-    ndi[2] = i3;
-    ndi[3] = i4;
-    ndi[4] = i5;
-    ndi[5] = i6;
-    setup(ndi,par,vnodes);
-}
-//-----------------------------------------------------------------------------
-
 //-----------------------------------------------------------------------------
 // These specify both the total number of vnodes and the numbers of vnodes
 // along each dimension for the partitioning of the index space. Obviously
@@ -264,164 +133,6 @@ FieldLayout<Dim>::initialize(const NDIndex<Dim>& domain,
     }
     setup(domain, p, vnodesPerDirection,recurse,vnodes);
 }
-
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, e_dim_tag p1,
-			     unsigned vnodes1, bool recurse, int vnodes) {
-
-
-
-    PInsist(Dim==1,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    NDIndex<Dim> ndi(i1);
-    setup(ndi,&p1,&vnodes1,recurse,vnodes);
-}
-
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, const Index& i2,
-			     e_dim_tag p1, e_dim_tag p2,
-			     unsigned vnodes1, unsigned vnodes2,
-			     bool recurse, int vnodes) {
-
-    PInsist(Dim==2,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    e_dim_tag par[Dim];
-    par[0] = p1;
-    par[1] = p2;
-    NDIndex<Dim> ndi;
-    ndi[0] = i1;
-    ndi[1] = i2;
-    unsigned vnodesPerDirection[Dim];
-    vnodesPerDirection[0] = vnodes1;
-    vnodesPerDirection[1] = vnodes2;
-    setup(ndi,par,vnodesPerDirection,recurse,vnodes);
-}
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, const Index& i2, const Index& i3,
-			     e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			     unsigned vnodes1, unsigned vnodes2,
-			     unsigned vnodes3,
-			     bool recurse, int vnodes) {
-
-    PInsist(Dim==3,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    e_dim_tag par[Dim];
-    par[0] = p1;
-    par[1] = p2;
-    par[2] = p3;
-    NDIndex<Dim> ndi;
-    ndi[0] = i1;
-    ndi[1] = i2;
-    ndi[2] = i3;
-    unsigned vnodesPerDirection[Dim];
-    vnodesPerDirection[0] = vnodes1;
-    vnodesPerDirection[1] = vnodes2;
-    vnodesPerDirection[2] = vnodes3;
-    setup(ndi,par,vnodesPerDirection,recurse,vnodes);
-}
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, const Index& i2, const Index& i3,
-			     const Index& i4,
-			     e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			     e_dim_tag p4,
-			     unsigned vnodes1, unsigned vnodes2,
-			     unsigned vnodes3, unsigned vnodes4,
-			     bool recurse, int vnodes) {
-
-    PInsist(Dim==4,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    e_dim_tag par[Dim];
-    par[0] = p1;
-    par[1] = p2;
-    par[2] = p3;
-    par[3] = p4;
-    NDIndex<Dim> ndi;
-    ndi[0] = i1;
-    ndi[1] = i2;
-    ndi[2] = i3;
-    ndi[3] = i4;
-    unsigned vnodesPerDirection[Dim];
-    vnodesPerDirection[0] = vnodes1;
-    vnodesPerDirection[1] = vnodes2;
-    vnodesPerDirection[2] = vnodes3;
-    vnodesPerDirection[3] = vnodes4;
-    setup(ndi,par,vnodesPerDirection,recurse,vnodes);
-}
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, const Index& i2, const Index& i3,
-			     const Index& i4, const Index& i5,
-			     e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			     e_dim_tag p4, e_dim_tag p5,
-			     unsigned vnodes1, unsigned vnodes2,
-			     unsigned vnodes3, unsigned vnodes4,
-			     unsigned vnodes5,
-			     bool recurse, int vnodes) {
-
-    PInsist(Dim==5,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    e_dim_tag par[Dim];
-    par[0] = p1;
-    par[1] = p2;
-    par[2] = p3;
-    par[3] = p4;
-    par[4] = p5;
-    NDIndex<Dim> ndi;
-    ndi[0] = i1;
-    ndi[1] = i2;
-    ndi[2] = i3;
-    ndi[3] = i4;
-    ndi[4] = i5;
-    unsigned vnodesPerDirection[Dim];
-    vnodesPerDirection[0] = vnodes1;
-    vnodesPerDirection[1] = vnodes2;
-    vnodesPerDirection[2] = vnodes3;
-    vnodesPerDirection[3] = vnodes4;
-    vnodesPerDirection[4] = vnodes5;
-    setup(ndi,par,vnodesPerDirection,recurse,vnodes);
-}
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const Index& i1, const Index& i2, const Index& i3,
-			     const Index& i4, const Index& i5, const Index& i6,
-			     e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			     e_dim_tag p4, e_dim_tag p5, e_dim_tag p6,
-			     unsigned vnodes1, unsigned vnodes2,
-			     unsigned vnodes3, unsigned vnodes4,
-			     unsigned vnodes5, unsigned vnodes6,
-			     bool recurse, int vnodes) {
-
-    PInsist(Dim==6,
-            "Number of arguments does not match dimension of FieldLayout!!");
-    e_dim_tag par[Dim];
-    par[0] = p1;
-    par[1] = p2;
-    par[2] = p3;
-    par[3] = p4;
-    par[4] = p5;
-    par[5] = p6;
-    NDIndex<Dim> ndi;
-    ndi[0] = i1;
-    ndi[1] = i2;
-    ndi[2] = i3;
-    ndi[3] = i4;
-    ndi[4] = i5;
-    ndi[5] = i6;
-    unsigned vnodesPerDirection[Dim];
-    vnodesPerDirection[0] = vnodes1;
-    vnodesPerDirection[1] = vnodes2;
-    vnodesPerDirection[2] = vnodes3;
-    vnodesPerDirection[3] = vnodes4;
-    vnodesPerDirection[4] = vnodes5;
-    vnodesPerDirection[5] = vnodes6;
-    setup(ndi,par,vnodesPerDirection,recurse,vnodes);
-}
-//-----------------------------------------------------------------------------
-
 
 //-----------------------------------------------------------------------------
 // A version of initialize that takes the total domain, and iterators
@@ -1628,10 +1339,3 @@ void FieldLayout<Dim>::write(std::ostream& out) const
     for (iterator_dv dv_i = v_ac->begin(); dv_i != v_ac->end(); ++ dv_i)
         out << " vnode " << icount++ << " : " << *((*dv_i).second) << std::endl;
 }
-
-
-/***************************************************************************
- * $RCSfile: FieldLayout.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:27 $
- * IPPL_VERSION_ID: $Id: FieldLayout.cpp,v 1.1.1.1 2003/01/23 07:40:27 adelmann Exp $
- ***************************************************************************/

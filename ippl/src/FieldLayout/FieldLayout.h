@@ -1,22 +1,12 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- * 
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
-#ifndef FIELD_LAYOUT_H
-#define FIELD_LAYOUT_H
-
+//
+// class FielLayout
+//
 // FieldLayout describes how a given index space (represented by an NDIndex
 // object) is partitioned into vnodes.  It performs the initial partitioning,
 // and stores a list of local and remote vnodes. The user may request that a
 // particular dimension not be partitioned by flagging that axis as 'SERIAL'
 // (instead of 'PARALLEL').
-
+//
 // For a power-of-two number of vnodes, using the basic constructor, the
 // partitioning is done using a recursive bisection method which makes cuts
 // along whole hyperplanes in the global index space. For non-power-of-two
@@ -27,8 +17,25 @@
 // directions. This last constructor obviously only works for numbers of vnodes
 // expressible as products of N numbers (in ND), though 1 is an allowable
 // number so it really allows any number of vnodes.
+//
+// Copyright (c) 2003 - 2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 
-// include files
+#ifndef FIELD_LAYOUT_H
+#define FIELD_LAYOUT_H
+
 #include "FieldLayout/FieldLayoutUser.h"
 #include "FieldLayout/Vnode.h"
 #include "DomainMap/DomainMap.h"
@@ -40,9 +47,6 @@
 #include "Utility/Unique.h"
 #include "Utility/my_auto_ptr.h"
 #include "Utility/RefCounted.h"
-
-// #include "source/grid/brick.h"
-
 
 #include <iostream>
 
@@ -99,74 +103,7 @@ public:
   // distributed in some other manner.
   FieldLayout(const char *filename);
 
-  // Constructors for 1 ... 6 dimensions
-  // These specify only a total number of vnodes, allowing the constructor
-  // complete control on how to do the vnode partitioning of the index space:
-  FieldLayout(const Index& i1,
-	      e_dim_tag p1=PARALLEL, int vnodes=-1);
-  FieldLayout(const Index& i1, const Index& i2,
-	      e_dim_tag p1=PARALLEL, e_dim_tag p2=PARALLEL, int vnodes=-1);
-  FieldLayout(const Index& i1, const Index& i2, const Index& i3,
-	      e_dim_tag p1=PARALLEL, e_dim_tag p2=PARALLEL,
-	      e_dim_tag p3=PARALLEL, int vnodes=-1);
-  FieldLayout(const Index& i1, const Index& i2, const Index& i3,
-              const Index& i4,
-	      e_dim_tag p1=PARALLEL, e_dim_tag p2=PARALLEL,
-	      e_dim_tag p3=PARALLEL, e_dim_tag p4=PARALLEL,
-              int vnodes=-1);
-  FieldLayout(const Index& i1, const Index& i2, const Index& i3,
-              const Index& i4, const Index& i5,
-	      e_dim_tag p1=PARALLEL, e_dim_tag p2=PARALLEL,
-	      e_dim_tag p3=PARALLEL, e_dim_tag p4=PARALLEL,
-	      e_dim_tag p5=PARALLEL,
-              int vnodes=-1);
-  FieldLayout(const Index& i1, const Index& i2, const Index& i3,
-              const Index& i4, const Index& i5, const Index& i6,
-	      e_dim_tag p1=PARALLEL, e_dim_tag p2=PARALLEL,
-	      e_dim_tag p3=PARALLEL, e_dim_tag p4=PARALLEL,
-	      e_dim_tag p5=PARALLEL, e_dim_tag p6=PARALLEL,
-              int vnodes=-1);
-
-  // These specify both the total number of vnodes and the numbers of vnodes
-  // along each dimension for the partitioning of the index space. Obviously
-  // this restricts the number of vnodes to be a product of the numbers along
-  // each dimension (the constructor implementation checks this):
-  FieldLayout(const Index& i1,
-	      e_dim_tag p1,
-	      unsigned vnodes1,
-	      bool recurse=false,
-              int vnodes=-1);
-  FieldLayout(const Index& i1, const Index& i2,
-	      e_dim_tag p1, e_dim_tag p2,
-	      unsigned vnodes1, unsigned vnodes2,
-	      bool recurse=false,int vnodes=-1);
-  FieldLayout(const Index& i1, const Index& i2, const Index& i3,
-	      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-	      unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-	      bool recurse=false, int vnodes=-1);
-  FieldLayout(const Index& i1, const Index& i2, const Index& i3,
-              const Index& i4,
-	      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, 
-	      e_dim_tag p4,
-	      unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-	      unsigned vnodes4,
-	      bool recurse=false, int vnodes=-1);
-  FieldLayout(const Index& i1, const Index& i2, const Index& i3,
-              const Index& i4, const Index& i5,
-	      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, 
-	      e_dim_tag p4, e_dim_tag p5,
-	      unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-	      unsigned vnodes4, unsigned vnodes5,
-              bool recurse=false, int vnodes=-1);
-  FieldLayout(const Index& i1, const Index& i2, const Index& i3,
-              const Index& i4, const Index& i5, const Index& i6,
-	      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, 
-	      e_dim_tag p4, e_dim_tag p5, e_dim_tag p6,
-	      unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-	      unsigned vnodes4, unsigned vnodes5, unsigned vnodes6,
-              bool recurse=false, int vnodes=-1);
-
-  // Next we have one for arbitrary dimension.
+  // Constructor for arbitrary dimension.
   // This one specifies only a total number of vnodes, allowing the constructor
   // complete control on how to do the vnode partitioning of the index space:
   FieldLayout(const NDIndex<Dim>& domain, e_dim_tag *p=0, int vnodes=-1) {
@@ -222,76 +159,12 @@ public:
   // class destructors inform all the FieldLayoutUser's we're going away.
   virtual ~FieldLayout();
 
-  // Initialization functions, only to be called by the user of FieldLayout
-  // objects when the FieldLayout was created using the default constructor;
-  // otherwise these are only called internally by the various non-default
-  // FieldLayout constructors:
-
-  // These specify only a total number of vnodes, allowing the constructor
-  // complete control on how to do the vnode partitioning of the index space:
-  void initialize(const Index& i1,
-		  e_dim_tag p1=PARALLEL, int vnodes=-1);
-  void initialize(const Index& i1, const Index& i2,
-		  e_dim_tag p1=PARALLEL, e_dim_tag p2=PARALLEL, int vnodes=-1);
-  void initialize(const Index& i1, const Index& i2, const Index& i3,
-		  e_dim_tag p1=PARALLEL, e_dim_tag p2=PARALLEL,
-		  e_dim_tag p3=PARALLEL, int vnodes=-1);
-  void initialize(const Index& i1, const Index& i2, const Index& i3,
-		  const Index& i4,
-		  e_dim_tag p1=PARALLEL, e_dim_tag p2=PARALLEL,
-		  e_dim_tag p3=PARALLEL, e_dim_tag p4=PARALLEL,
-		  int vnodes=-1);
-  void initialize(const Index& i1, const Index& i2, const Index& i3,
-		  const Index& i4, const Index& i5,
-		  e_dim_tag p1=PARALLEL, e_dim_tag p2=PARALLEL,
-		  e_dim_tag p3=PARALLEL, e_dim_tag p4=PARALLEL,
-		  e_dim_tag p5=PARALLEL,
-		  int vnodes=-1);
-  void initialize(const Index& i1, const Index& i2, const Index& i3,
-		  const Index& i4, const Index& i5, const Index& i6,
-		  e_dim_tag p1=PARALLEL, e_dim_tag p2=PARALLEL,
-		  e_dim_tag p3=PARALLEL, e_dim_tag p4=PARALLEL,
-		  e_dim_tag p5=PARALLEL, e_dim_tag p6=PARALLEL,
-		  int vnodes=-1);
   void initialize(const NDIndex<Dim>& domain, e_dim_tag *p=0, int vnodes=-1);
 
   // These specify both the total number of vnodes and the numbers of vnodes
   // along each dimension for the partitioning of the index space. Obviously
   // this restricts the number of vnodes to be a product of the numbers along
   // each dimension (the constructor implementation checks this):
-  void initialize(const Index& i1,
-		  e_dim_tag p1, 
-		  unsigned vnodes1, 
-		  bool recurse=false, int vnodes=-1);
-  void initialize(const Index& i1, const Index& i2,
-		  e_dim_tag p1, e_dim_tag p2, 
-		  unsigned vnodes1, unsigned vnodes2,
-		  bool recurse=false, int vnodes=-1);
-  void initialize(const Index& i1, const Index& i2, const Index& i3,
-		  e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, 
-		  unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-		  bool recurse=false, int vnodes=-1);
-  void initialize(const Index& i1, const Index& i2, const Index& i3,
-		  const Index& i4,
-		  e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, 
-		  e_dim_tag p4,
-		  unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-		  unsigned vnodes4,
-		  bool recurse=false, int vnodes=-1);
-  void initialize(const Index& i1, const Index& i2, const Index& i3,
-		  const Index& i4, const Index& i5,
-		  e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, 
-		  e_dim_tag p4, e_dim_tag p5,
-		  unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-		  unsigned vnodes4, unsigned vnodes5,
-		  bool recurse=false, int vnodes=-1);
-  void initialize(const Index& i1, const Index& i2, const Index& i3,
-		  const Index& i4, const Index& i5, const Index& i6,
-		  e_dim_tag p1, e_dim_tag p2, e_dim_tag p3, 
-		  e_dim_tag p4, e_dim_tag p5, e_dim_tag p6,
-		  unsigned vnodes1, unsigned vnodes2, unsigned vnodes3,
-		  unsigned vnodes4, unsigned vnodes5, unsigned vnodes6,
-		  bool recurse=false, int vnodes=-1);
   void initialize(const NDIndex<Dim>& domain, e_dim_tag *p, 
 		  unsigned* vnodesPerDirection, 
 		  bool recurse=false, int vnodes=-1);
@@ -324,10 +197,6 @@ public:
   // Return the domain.
   const NDIndex<Dim>& getDomain() const { return Domain; }
 
-//tjw   // Compare FieldLayouts to see if they represent the same domain.
-//tjw   bool operator==(const FieldLayout<Dim>& x) const {
-//tjw     return Domain == x.Domain;
-//tjw   }
 
   // Compare FieldLayouts to see if they represent the same domain; if
   // dimensionalities are different, the NDIndex operator==() will return
@@ -465,219 +334,11 @@ private:
 };
 
 
-//////////////////////////////////////////////////////////////////////
-
-// Definitions for the specialized constructors.
-// Just turn it into a call to the general ctor.
-
-//-----------------------------------------------------------------------------
-// These specify only a total number of vnodes, allowing the constructor
-// complete control on how to do the vnode partitioning of the index space:
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1, e_dim_tag p1, int vnodes)
-{
-  initialize(i1, p1, vnodes);
-}
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1,const Index& i2,
-			      e_dim_tag p1, e_dim_tag p2, int vnodes)
-{
-  initialize(i1, i2, p1, p2, vnodes);
-}
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1, const Index& i2, 
-			      const Index& i3,
-			      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			      int vnodes)
-{
-  initialize(i1, i2, i3, p1, p2, p3, vnodes);
-}
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1, const Index& i2, 
-			      const Index& i3, const Index& i4,
-			      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			      e_dim_tag p4,
-			      int vnodes)
-{
-  initialize(i1, i2, i3, i4, p1, p2, p3, p4, vnodes);
-}
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1, const Index& i2, 
-			      const Index& i3, const Index& i4, 
-			      const Index& i5,
-			      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			      e_dim_tag p4, e_dim_tag p5,
-			      int vnodes)
-{
-  initialize(i1, i2, i3, i4, i5, p1, p2, p3, p4, p5, vnodes);
-}
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1, const Index& i2, 
-			      const Index& i3, const Index& i4, 
-			      const Index& i5, const Index& i6,
-			      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			      e_dim_tag p4, e_dim_tag p5, e_dim_tag p6,
-			      int vnodes)
-{
-  initialize(i1, i2, i3, i4, i5, i6, p1, p2, p3, p4, p5, p6, vnodes);
-}
-//-----------------------------------------------------------------------------
-
 //-----------------------------------------------------------------------------
 // These specify both the total number of vnodes and the numbers of vnodes
 // along each dimension for the partitioning of the index space. Obviously
 // this restricts the number of vnodes to be a product of the numbers along
 // each dimension (the constructor implementation checks this):
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1, 
-			      e_dim_tag p1, 
-			      unsigned vnodes1,
-			      bool recurse, int vnodes)
-{
-  // Default to correct total vnodes:
-  if (vnodes == -1) vnodes = vnodes1;
-  // Verify than total vnodes is product of per-dimension vnode counts:
-  if ((unsigned int) vnodes != vnodes1) {
-    ERRORMSG("FieldLayout constructor: "
-	    << "(vnodes1 != vnodes)"
-	    << " ; vnodes1 = " << vnodes1 
-	    << " ; vnodes = " << vnodes << endl);
-  }
-  initialize(i1, p1, vnodes1, recurse,vnodes);
-}
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1,const Index& i2,
-			      e_dim_tag p1, e_dim_tag p2, 
-			      unsigned vnodes1, unsigned vnodes2,
-			      bool recurse, int vnodes)
-{
-  // Default to correct total vnodes:
-  if (vnodes == -1) vnodes = vnodes1*vnodes2;
-  // Verify than total vnodes is product of per-dimension vnode counts:
-  if ((unsigned int) vnodes != vnodes1*vnodes2) {
-    ERRORMSG("FieldLayout constructor: "
-	    << "(vnodes != vnodes1*vnodes2)"
-	    << " ; vnodes1 = " << vnodes1 << " ; vnodes2 = " << vnodes2 
-	    << " ; vnodes = " << vnodes << endl);
-  }
-  initialize(i1, i2, p1, p2, vnodes1, vnodes2, recurse, vnodes);
-}
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1, const Index& i2, 
-			      const Index& i3,
-			      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			      unsigned vnodes1, unsigned vnodes2, 
-			      unsigned vnodes3,
-			      bool recurse, int vnodes)
-{
-  // Default to correct total vnodes:
-  if (vnodes == -1) vnodes = vnodes1*vnodes2*vnodes3;
-  // Verify than total vnodes is product of per-dimension vnode counts:
-  if ((unsigned int) vnodes != vnodes1*vnodes2*vnodes3) {
-    ERRORMSG("FieldLayout constructor: "
-	    << "(vnodes != vnodes1*vnodes2*vnodes3)"
-	    << " ; vnodes1 = " << vnodes1 << " ; vnodes2 = " << vnodes2 
-	    << " ; vnodes3 = " << vnodes3 
-	    << " ; vnodes = " << vnodes << endl);
-  }
-  initialize(i1, i2, i3, p1, p2, p3, vnodes1, vnodes2, vnodes3, recurse, vnodes);
-}
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1, const Index& i2, 
-			      const Index& i3, const Index& i4,
-			      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			      e_dim_tag p4,
-			      unsigned vnodes1, unsigned vnodes2, 
-			      unsigned vnodes3, unsigned vnodes4,
-			      bool recurse, int vnodes)
-{
-  // Default to correct total vnodes:
-  if (vnodes == -1) vnodes = vnodes1*vnodes2*vnodes3*vnodes4;
-  // Verify than total vnodes is product of per-dimension vnode counts:
-  if ((unsigned int) vnodes != vnodes1*vnodes2*vnodes3*vnodes4) {
-    ERRORMSG("FieldLayout constructor: "
-	    << "(vnodes != vnodes1*vnodes2*vnodes3*vnodes4)"
-	    << " ; vnodes1 = " << vnodes1 << " ; vnodes2 = " << vnodes2 
-	    << " ; vnodes3 = " << vnodes3 << " ; vnodes4 = " << vnodes4 
-	    << " ; vnodes = " << vnodes << endl);
-  }
-  initialize(i1, i2, i3, i4, p1, p2, p3, p4, 
-	     vnodes1, vnodes2, vnodes3, recurse, vnodes);
-}
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1, const Index& i2, 
-			      const Index& i3, const Index& i4, 
-			      const Index& i5,
-			      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			      e_dim_tag p4, e_dim_tag p5,
-			      unsigned vnodes1, unsigned vnodes2, 
-			      unsigned vnodes3, unsigned vnodes4,
-			      unsigned vnodes5,
-			      bool recurse, int vnodes)
-{
-  // Default to correct total vnodes:
-  if (vnodes == -1) vnodes = vnodes1*vnodes2*vnodes3*vnodes4*vnodes5;
-  // Verify than total vnodes is product of per-dimension vnode counts:
-  if ((unsigned int) vnodes != vnodes1*vnodes2*vnodes3*vnodes4*vnodes5) {
-    ERRORMSG("FieldLayout constructor: "
-	    << "(vnodes != vnodes1*vnodes2*vnodes3*vnodes4*vnodes5)"
-	    << " ; vnodes1 = " << vnodes1 << " ; vnodes2 = " << vnodes2 
-	    << " ; vnodes3 = " << vnodes3 << " ; vnodes4 = " << vnodes4 
-	    << " ; vnodes5 = " << vnodes5 
-	    << " ; vnodes = " << vnodes << endl);
-  }
-  initialize(i1, i2, i3, i4, i5, p1, p2, p3, p4, p5, 
-	     vnodes1, vnodes2, vnodes3, vnodes4, vnodes5, recurse, vnodes);
-}
-
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const Index& i1, const Index& i2, 
-			      const Index& i3, const Index& i4, 
-			      const Index& i5, const Index& i6,
-			      e_dim_tag p1, e_dim_tag p2, e_dim_tag p3,
-			      e_dim_tag p4, e_dim_tag p5, e_dim_tag p6,
-			      unsigned vnodes1, unsigned vnodes2, 
-			      unsigned vnodes3, unsigned vnodes4,
-			      unsigned vnodes5, unsigned vnodes6,
-			      bool recurse, int vnodes)
-{
-  // Default to correct total vnodes:
-  if (vnodes == -1) vnodes = vnodes1*vnodes2*vnodes3*vnodes4*vnodes5*vnodes6;
-  // Verify than total vnodes is product of per-dimension vnode counts:
-  if ((unsigned int) vnodes != vnodes1*vnodes2*vnodes3*vnodes4*vnodes5*vnodes6) {
-    ERRORMSG("FieldLayout constructor: "
-	    << "(vnodes != vnodes1*vnodes2*vnodes3*vnodes4*vnodes5*vnodes6)"
-	    << " ; vnodes1 = " << vnodes1 << " ; vnodes2 = " << vnodes2 
-	    << " ; vnodes3 = " << vnodes3 << " ; vnodes4 = " << vnodes4 
-	    << " ; vnodes5 = " << vnodes5 << " ; vnodes6 = " << vnodes6 
-	    << " ; vnodes = " << vnodes << endl);
-  }
-  initialize(i1, i2, i3, i4, i5, i6, p1, p2, p3, p4, p5, p6, 
-	     vnodes1, vnodes2, vnodes3, vnodes4, vnodes5, vnodes6, recurse, vnodes);
-}
 
 template<unsigned Dim>
 inline
@@ -789,20 +450,10 @@ FieldLayout<Dim>::touch_range_rdv(const NDIndex<Dim>& domain,
 template<unsigned Dim>
 inline
 std::ostream& operator<<(std::ostream& out, const FieldLayout<Dim>& f) {
-  
-  
-
   f.write(out);
   return out;
 }
 
-
 #include "FieldLayout/FieldLayout.hpp"
 
 #endif // FIELD_LAYOUT_H
-
-/***************************************************************************
- * $RCSfile: FieldLayout.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:27 $
- * IPPL_VERSION_ID: $Id: FieldLayout.h,v 1.1.1.1 2003/01/23 07:40:27 adelmann Exp $ 
- ***************************************************************************/

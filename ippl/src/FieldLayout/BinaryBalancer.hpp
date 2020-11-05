@@ -1,37 +1,3 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- * This program was prepared by PSI.
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit www.amas.web.psi for more details
- *
- ***************************************************************************/
-
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
-// include files
-#include "FieldLayout/BinaryBalancer.h"
-#include "FieldLayout/FieldLayout.h"
-#include "Field/BareField.h"
-#include "Utility/PAssert.h"
-
-
-//////////////////////////////////////////////////////////////////////
-
 /*
 
   Implementation of BinaryBalancer.
@@ -70,6 +36,27 @@
   reduction do participate.
 
 */
+//
+// Copyright (c) 2003 - 2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+
+#include "FieldLayout/BinaryBalancer.h"
+#include "FieldLayout/FieldLayout.h"
+#include "Field/BareField.h"
+#include "Utility/PAssert.h"
+
 
 //////////////////////////////////////////////////////////////////////
 
@@ -81,9 +68,6 @@ template <unsigned Dim>
 static int
 FindCutAxis(const NDIndex<Dim> &domain, const FieldLayout<Dim> &layout)
 {
-
-
-
   // CutAxis will be the dimension to cut.
   int cutAxis=-1;
   // MaxLength will have the maximum length of any dimension.
@@ -644,12 +628,3 @@ CalcBinaryRepartition(FieldLayout<Dim>& layout, BareField<double,Dim>& weights)
 	}
 
 }
-
-//////////////////////////////////////////////////////////////////////
-
-
-/***************************************************************************
- * $RCSfile: BinaryBalancer.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:27 $
- * IPPL_VERSION_ID: $Id: BinaryBalancer.cpp,v 1.1.1.1 2003/01/23 07:40:27 adelmann Exp $
- ***************************************************************************/

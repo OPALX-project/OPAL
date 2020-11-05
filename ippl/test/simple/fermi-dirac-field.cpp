@@ -10,7 +10,10 @@ T smpintd(int nstep, Field<T,1> &integ, T dv) {
     Index I(nstep);
     Index I2(1,2,nstep);
 
-    FieldLayout<1> layout1(I,PARALLEL);
+    NDIndex<1> domain{I};
+    e_dim_tag decomp[1]{PARALLEL};
+
+    FieldLayout<1> layout1(domain, decomp);
     Field<T,1> smp(layout1,GuardCellSizes<1>(1));
 
     assign(smp[I] ,4.0/3.0);
@@ -28,15 +31,16 @@ void cumul(Field<T,Dim> &/*vTherm1*/, Field<T,Dim> &/*vTherm2*/, int nmax,int nv
   T dv = pmax / (nvdint-1);
   T vv0 = (1.0+zin)*0.536/(omeganu*hubble*hubble);
 
-  Index I1(nmax);
-
-  Index I2(nvdint);
-
-  FieldLayout<1> layout1(I1,PARALLEL);
+  NDIndex<1> domain1{Index(nmax)};
+  e_dim_tag decomp1[1]{PARALLEL};
+  FieldLayout<1> layout1(domain1, decomp1);
   Field<T,1> parray(layout1,GuardCellSizes<1>(1));
   Field<T,1> carray(layout1,GuardCellSizes<1>(1));
 
-  FieldLayout<1> layout2(I2,PARALLEL);
+  Index I2(nvdint);
+  NDIndex<1> domain2{I2};
+  e_dim_tag decomp2[1]{PARALLEL};
+  FieldLayout<1> layout2(domain2, decomp2);
   Field<T,1> vv(layout2,GuardCellSizes<1>(1));
   Field<T,1> fermd(layout2,GuardCellSizes<1>(1));
 
@@ -118,10 +122,9 @@ int main(int argc, char *argv[]) {
   T zin=50.0;
   T omeganu=0.02;
 
-  Index I(np);
-  Index J(np);
-  Index K(np);
-  FieldLayout<Dim> layout(I,J,K,PARALLEL,PARALLEL,PARALLEL);
+  NDIndex<Dim> domain{Index(np), Index(np), Index(np)};
+  e_dim_tag decomp[Dim]{PARALLEL, PARALLEL, PARALLEL};
+  FieldLayout<Dim> layout(domain, decomp);
   Field<T,Dim> vTherm(layout,GuardCellSizes<Dim>(1));
 
   vTherm = 0.0;

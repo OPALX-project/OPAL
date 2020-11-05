@@ -599,6 +599,7 @@ int main(int argc, char *argv[]){
         for (unsigned i=0; i<Dim; i++)
             domain[i] = domain[i] = Index(nr[i]);
     }
+    
 
     for (unsigned d=0; d < Dim; ++d)
         decomp[d] = (d == serialDim) ? SERIAL : PARALLEL;

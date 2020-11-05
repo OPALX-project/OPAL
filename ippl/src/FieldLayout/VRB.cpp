@@ -1,31 +1,25 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- * This program was prepared by PSI.
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit www.amas.web.psi for more details
- *
- ***************************************************************************/
+//
+// Function for Vnode Recursive Bisection
+//
+// Copyright (c) 200x - 2020
+// Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
 
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
-// include files
 #include "VRB.h"
 #include "Utility/PAssert.h"
+
+#include <memory>
 
 #ifdef __VRB_DIAGNOSTIC__
 #include <cstdio>
@@ -38,14 +32,11 @@
 
 static void
 recurseCoordinateVRB(int dim,
-                     const int *strides, const int* sizes, const int *offsets,
+                     const int *strides, const int *sizes, int *offsets,
                      int nprocs, int firstProc, int *procs );
 
 //////////////////////////////////////////////////////////////////////
 
-//
-// vnodeRecurseiveBisection
-//
 // This is the user visible function for decomposing along coordinate
 // directions.
 //
@@ -64,29 +55,24 @@ recurseCoordinateVRB(int dim,
 // strides: The strides to go from vnode to its neighbors in N dimensions.
 // offsets: The lower left corner of the block of vnodes.
 //
-
 void
 vnodeRecursiveBisection(int dim, const int *sizes, int nprocs, int *procs)
 {
   int i;
 
   // Initialize the lower left corner of the vnodes to the origin.
-  int *offsets = new int[dim];
+  int offsets[dim];
   for (i=0; i<dim; ++i)
     offsets[i] = 0;
 
   // Initialize the strides with C semantics (last index varies fastest).
-  int *strides = new int[dim];
+  int strides[dim];
   strides[dim-1] = 1;
   for (i=dim-2; i>=0; --i)
     strides[i] = strides[i+1]*sizes[i+1];
 
   // Dive into the recursion.
   recurseCoordinateVRB(dim,strides,sizes,offsets,nprocs,0,procs);
-
-  // Clean up after ourselves.
-  delete [] offsets;
-  delete [] strides;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -167,7 +153,7 @@ assign(int dim, const int *strides, const int *sizes, const int *offsets,
 
 static void
 recurseCoordinateVRB(int dim,
-                     const int* strides, const int* sizes, const int *offsets,
+                     const int* strides, const int* sizes, int* offsets,
                      int nprocs, int firstProc, int *procs )
 {
   // Make sure the input is sensible.
@@ -278,12 +264,12 @@ recurseCoordinateVRB(int dim,
       // that dimension to split.  Recurse.
 
       // Make a copy of the sizes array.
-      int *newSizes = new int[dim];
+      int newSizes[dim];
       for (d=0; d<dim; ++d)
         newSizes[d] = sizes[d];
 
       // Make a copy of the offsets array.
-      int *newOffsets = new int[dim];
+      int newOffsets[dim];
       for (d=0; d<dim; ++d)
         newOffsets[d] = offsets[d];
 
@@ -299,10 +285,6 @@ recurseCoordinateVRB(int dim,
 
       // Recurse for the right.
       recurseCoordinateVRB(dim,strides,newSizes,newOffsets,rightProcs,firstProc+leftProcs,procs);
-
-      // Delete the memory.
-      delete [] newSizes;
-      delete [] newOffsets;
     }
 }
 
@@ -370,9 +352,3 @@ main(int argc, char *argv[])
 }
 
 #endif
-
-/***************************************************************************
- * $RCSfile: VRB.cpp,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:27 $
- * IPPL_VERSION_ID: $Id: VRB.cpp,v 1.1.1.1 2003/01/23 07:40:27 adelmann Exp $
- ***************************************************************************/

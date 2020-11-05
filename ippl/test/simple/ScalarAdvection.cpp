@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
     nVnodes[d] = opts.nPatches[d];
     edt[d] = PARALLEL;
   }
-  CenteredFieldLayout<Dim,Mesh_t,Cell> layoutc(mesh, edt, nVnodes, true);
+  CenteredFieldLayout<Dim,Mesh_t,Cell> layoutc(mesh, edt, nVnodes, true); //<<<<<
 
   // Store the mesh spacing fields:
   mesh.storeSpacingFields(edt, nVnodes, true);
