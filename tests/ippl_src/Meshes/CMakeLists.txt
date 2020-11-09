@@ -1,5 +1,5 @@
 set (_SRCS
-    Average.cpp
+#    Average.cpp
     Cartesian.cpp
     CartesianCentering.cpp
 )

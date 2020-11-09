@@ -95,14 +95,7 @@ public:
   // Default constructor, which should only be used if you are going to
   // call 'initialize' soon after (before using in any context)
   FieldLayout();
-
-  // Constructor which reads in FieldLayout data from a file.  If the
-  // file contains data for an equal number of nodes as we are running on,
-  // then that vnode -> pnode mapping will be used.  If the file does not
-  // contain info for the same number of pnodes, the vnodes will be
-  // distributed in some other manner.
-  FieldLayout(const char *filename);
-
+    
   // Constructor for arbitrary dimension.
   // This one specifies only a total number of vnodes, allowing the constructor
   // complete control on how to do the vnode partitioning of the index space:
@@ -206,6 +199,7 @@ public:
     return Domain == x.getDomain();
   }
 
+#if 0
   // Read information from the given file on how to repartition the data.
   // This works just like it does when constructing a FieldLayout from a
   // file, in fact this routine is called by the FieldLayout(const char *)
@@ -215,7 +209,8 @@ public:
   // Write out info about this layout to the given file.  Only node 0 will
   // actually write a file.  Return success.
   bool write(const char *filename);
-
+#endif
+    
   //
   // local vnode, remote vnode, touch range, and FieldLayoutUser iterators
   //
@@ -330,7 +325,7 @@ private:
 
   // The routine which actually sets things up.
   void setup(const NDIndex<Dim>&, e_dim_tag *, int);
-  void setup(const NDIndex<Dim>&, e_dim_tag *, unsigned*, bool, int);
+  void setup(const NDIndex<Dim>&, e_dim_tag *, unsigned*, int);
 };
 
 

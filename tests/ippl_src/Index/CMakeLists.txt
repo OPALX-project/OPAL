@@ -1,5 +1,5 @@
 set (_SRCS
-    Index.cpp
+#    Index.cpp
 )
 
 include_directories (

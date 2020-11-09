@@ -1,6 +1,6 @@
 set (_SRCS
     EdgeCentering.cpp
-    ParticleDebug.cpp
+#    ParticleDebug.cpp
 )
 
 include_directories (

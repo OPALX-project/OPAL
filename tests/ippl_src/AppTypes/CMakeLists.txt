@@ -1,9 +1,9 @@
 set (_SRCS
     Chsr-2.cpp
-    Operators.cpp
+#    Operators.cpp
     Tensor.cpp
     Vektor.cpp
-    VektorTz.cpp
+#    VektorTz.cpp
 )
 
 include_directories (

@@ -1,12 +1,12 @@
 set (_SRCS
-    BCond.cpp
+#    BCond.cpp
     Cell.cpp
-    DataConnect.cpp
-    Eureka.cpp
-    Field.cpp
-    FieldDebug.cpp
+#    DataConnect.cpp
+#    Eureka.cpp
+#    Field.cpp
+#    FieldDebug.cpp
     FieldDebug2.cpp
-    FunctionFace.cpp
+#    FunctionFace.cpp
     Periodic.cpp
 )
 

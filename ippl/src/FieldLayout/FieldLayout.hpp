@@ -17,14 +17,11 @@
 //
 
 #include "FieldLayout/FieldLayout.h"
-#include "FieldLayout/VRB.h"
 #include "Message/Communicate.h"
 #include "Message/Message.h"
-#include "Utility/DiscMeta.h"
 #include "Utility/IpplInfo.h"
 #include "Utility/IpplStats.h"
 #include "Utility/PAssert.h"
-
 
 #include <cstdlib>
 #include <limits>
@@ -35,11 +32,6 @@
 template<unsigned Dim>
 FieldLayout<Dim>::FieldLayout() {
 
-
-
-    // we have one more FieldLayout, indicate this
-    //INCIPPLSTAT(incFieldLayouts);
-
     // just initialize basic things
     vnodesPerDirection_m = 0;
 
@@ -47,33 +39,6 @@ FieldLayout<Dim>::FieldLayout() {
     // requesting all parallel axes
     for (unsigned int dl=0; dl < Dim; ++dl) RequestedLayout[dl] = PARALLEL;
 }
-
-
-//////////////////////////////////////////////////////////////////////
-// Constructor which reads in FieldLayout data from a file.  If the
-// file contains data for an equal number of nodes as we are running on,
-// then that vnode -> pnode mapping will be used.  If the file does not
-// contain info for the same number of pnodes, the vnodes will be
-// distributed in some other manner.
-template<unsigned Dim>
-FieldLayout<Dim>::FieldLayout(const char *filename) {
-
-
-
-    // we have one more FieldLayout, indicate this
-    //INCIPPLSTAT(incFieldLayouts);
-
-    // try to initialize ourselves, by reading the info from the file.
-    vnodesPerDirection_m = 0;
-
-    // for this kind of construction, we just take it that the user is
-    // requesting all parallel axes
-    for (unsigned int dl=0; dl < Dim; ++dl) RequestedLayout[dl] = PARALLEL;
-
-    // read in data from file
-    read(filename);
-}
-
 
 //////////////////////////////////////////////////////////////////////
 // Destructor: Everything deletes itself automatically ... the base
@@ -83,7 +48,6 @@ FieldLayout<Dim>::~FieldLayout() {
     if (vnodesPerDirection_m != 0)
         delete [] vnodesPerDirection_m;
 }
-
 
 //////////////////////////////////////////////////////////////////////
 
@@ -100,124 +64,8 @@ template<unsigned Dim>
 void
 FieldLayout<Dim>::initialize(const NDIndex<Dim>& domain,
 			     e_dim_tag *p, int vnodes) {
-
-
     setup(domain, p, vnodes);
 }
-
-//-----------------------------------------------------------------------------
-// These specify both the total number of vnodes and the numbers of vnodes
-// along each dimension for the partitioning of the index space. Obviously
-// this restricts the number of vnodes to be a product of the numbers along
-// each dimension (the constructor implementation checks this):
-
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const NDIndex<Dim>& domain,
-			     e_dim_tag *p, unsigned* vnodesPerDirection,
-			     bool recurse, int vnodes) {
-
-
-    // Default to correct total vnodes:
-    unsigned vnodesProduct = 1;
-    for (unsigned int d=0; d<Dim; d++) vnodesProduct *= vnodesPerDirection[d];
-    if (vnodes == -1) vnodes = vnodesProduct;
-    // Verify than total vnodes is product of per-dimension vnode counts:
-    if ((unsigned int) vnodes != vnodesProduct) {
-        ERRORMSG("FieldLayout constructor: "
-                 << "(vnodes != vnodesPerDirection[0]*vnodesPerDirection[1]*"
-                 << "...*vnodesPerDirection[" << Dim-1 << "])"
-                 << " ; vnodesPerDirection[0]*vnodesPerDirection[1]*"
-                 << "...*vnodesPerDirection[" << Dim-1 << "] = "
-                 << vnodesProduct << " ; vnodes = " << vnodes << endl);
-    }
-    setup(domain, p, vnodesPerDirection,recurse,vnodes);
-}
-
-//-----------------------------------------------------------------------------
-// A version of initialize that takes the total domain, and iterators
-// over the subdomains the user wants along with iterators over the
-// node assignments.  No communication is done
-// so these lists must match on all nodes.  A bit of error checking
-// is done for overlapping blocks and illegal nodes, but not exhaustive
-// error checking.
-
-template<unsigned Dim>
-void
-FieldLayout<Dim>::initialize(const NDIndex<Dim> &domain,
-			     const NDIndex<Dim> *dombegin,
-			     const NDIndex<Dim> *domend,
-			     const int *nbegin, const int *nend)
-{
-
-    // Loop variables
-    int i, j;
-    unsigned int d;
-
-    // Save the total domain.
-    Domain = domain;
-
-    // Find the number of vnodes requested
-    int vnodes = (nend - nbegin);
-    PInsist(vnodes > 0,
-            "A user-specified FieldLayout must have at least one vnode.");
-    PInsist(vnodes == (domend - dombegin),
-            "A user-specified FieldLayout must have equal length node and domain lists");
-
-    // Since we don't know any differently, indicate the requested
-    // layout is all parallel
-    for (d = 0; d < Dim; ++d)
-        RequestedLayout[d] = PARALLEL;
-
-    // This is not a grid-like layout, so set the pointer for this to 0
-    vnodesPerDirection_m = 0;
-
-    // Create the empty remote vnode list
-    ac_domain_vnodes *remote_ac = new ac_domain_vnodes(domain);
-    typedef typename ac_gc_domain_vnodes::value_type vntype;
-    Remotes_ac.insert( vntype(gc0(), remote_ac) );
-
-    // Loop through the vnodes, and add them to our local or remote lists.
-    // Do a sanity check on the vnodes, making sure each one does not
-    // intersect any other.  Also, add up the size of each vnode, if it
-    // does not equal the size of the total domain, there are holes
-    // and it is an error.
-    size_t coverage = 0;
-    for (i = 0; i < vnodes; ++i) {
-        // Compare to other vnodes
-        for (j = (i+1); j < vnodes; ++j) {
-            PInsist(! (dombegin[i].touches(dombegin[j])),
-                    "A user-specified FieldLayout cannot have overlapping domains.");
-        }
-
-        // Make sure the processor ID is OK
-        PInsist(nbegin[i] >= 0 && nbegin[i] < Ippl::getNodes(),
-                "A user-specified FieldLayout must have legal node assignments.");
-
-        // Add in the volume of this domain
-        coverage += dombegin[i].size();
-
-        // Create a Vnode for this domain
-        Vnode<Dim> *vnode = new Vnode<Dim>(dombegin[i], nbegin[i], i);
-        typedef typename ac_id_vnodes::value_type v1;
-        typedef typename ac_domain_vnodes::value_type v2;
-        bool nosplit = (dombegin[i].size() < 2);
-
-        // Based on the assigned node, add to our local or remote lists
-        if (nbegin[i] == Ippl::myNode())
-            Local_ac.insert(v1(Unique::get(), vnode));
-        else
-            remote_ac->insert(v2(dombegin[i], vnode), nosplit);
-    }
-
-    // Check the coverage, make sure it is complete
-    PInsist(coverage == domain.size(),
-            "A user-specified FieldLayout must completely cover the domain.");
-
-    // At the end, calculate the widthds of all the vnodes
-    calcWidths();
-}
-
 
 //////////////////////////////////////////////////////////////////////
 
@@ -234,11 +82,6 @@ void
 FieldLayout<Dim>::setup(const NDIndex<Dim>& domain,
 			e_dim_tag *userflags, int vnodes)
 {
-
-
-    // we have one more FieldLayout, indicate this
-    //INCIPPLSTAT(incFieldLayouts);
-
     // Find the number processors.
     int nprocs = Ippl::getNodes();
     int myproc = Ippl::myNode();
@@ -401,201 +244,6 @@ FieldLayout<Dim>::setup(const NDIndex<Dim>& domain,
 }
 
 //-----------------------------------------------------------------------------
-
-//-----------------------------------------------------------------------------
-//
-// This setup() specifies both the total number of vnodes and the numbers of
-// vnodes along each dimension for the partitioning of the index space, where
-// the user wants this extra control over the partitioning of the index
-// space. Obviously this restricts the number of vnodes to be a product of the
-// numbers along each dimension (the constructor implementation checks this).
-//
-// The last argument is a bool for the algorithm to use for assigning
-// vnodes to processors.
-// If it is false, hand the vnodes to the processors in a very simple
-// but probably inefficient manner.
-// If it is true, use a binary recursive algorithm. This will usually be
-// more efficient because it will generate less communication, but
-// it will sometimes fail, particularly near the case of one vnode per
-// processor.
-//
-//-----------------------------------------------------------------------------
-
-template<unsigned Dim>
-void
-FieldLayout<Dim>::setup(const NDIndex<Dim>& domain,
-			e_dim_tag *userflags, unsigned* vnodesPerDirection,
-			bool recurse, int vnodes)
-{
-
-    // Find the number processors.
-    int nprocs = Ippl::getNodes();
-    int myproc = Ippl::myNode();
-
-    // The number of vnodes must have been specified or computed by now:
-    if (vnodes <= 0) ERRORMSG("FieldLayout::setup(): vnodes <= 0 "
-                              << "for a vnodes-per-direction product "
-                              << "specification; not allowed." << endl);
-
-    // Loop indices:
-    int v;
-    unsigned int d, d2, vl;
-
-    int parallel_count = 0;
-    unsigned int flagdim = 0;
-    for (flagdim=0; flagdim < Dim; ++flagdim) {
-        if (userflags == 0)
-            RequestedLayout[flagdim] = PARALLEL;
-        else
-            RequestedLayout[flagdim] = userflags[flagdim];
-
-        // keep track of the number of parallel dimensions; we need at least one
-        parallel_count += (RequestedLayout[flagdim] == PARALLEL);
-
-        // make sure any SERIAL dimensions request only one vnode along them:
-        if (RequestedLayout[flagdim] == SERIAL) {
-            bool chk = vnodesPerDirection[flagdim] == 1;
-            PInsist(chk,"SERIAL layout specified, yet vnodesPerDirection is not 1!");
-        }
-    }
-
-    // Make sure at least one of the parallel/serial flags is parallel
-    PInsist(parallel_count>0,"At least one dimension of a FieldLayout must be PARALLEL!");
-
-    // Allocate and store vnodesPerDirection_m data-member array:
-    vnodesPerDirection_m = new unsigned[Dim];
-    for (d=0; d<Dim; d++) vnodesPerDirection_m[d] = vnodesPerDirection[d];
-
-    // The domain of this FieldLayout object under construction:
-    Domain = domain;
-
-    // Set up a container of NDIndex's to store the index ranges for all vnodes:
-    NDIndex<Dim> *domains_c = new NDIndex<Dim>[vnodes];
-
-    // Divide the numbers of elements by the numbers of vnodes (along each
-    // dimension). All vnodes will have at least this many elements. Some will
-    // have one extra element:
-    unsigned elementsPerVnode[Dim];
-    unsigned nLargerVnodes[Dim];
-    for (d=0; d<Dim; d++) {
-        elementsPerVnode[d] = domain[d].length()/vnodesPerDirection[d];
-        nLargerVnodes[d] = domain[d].length() % vnodesPerDirection[d];
-    }
-
-    // Set up the base, bound, and stride for the index range of all
-    // vnodes. Organize by "vnode level." For this kind of partitioning we have a
-    // the equivalent of a Dim-dimensional array of vnodes, with the number of
-    // elements in dimension d being vnodesPerDirection[d]. By "vnode level" we
-    // mean the index along a dimension in the "vnode array" of a given vnode. We
-    // can store the vnode-index bases and bounds 2D arrays of arrays; we only
-    // need a 1D array to store the vnode strides because they are the same
-    // everywhere (and the same as the global strides for each dimension):
-    int stride[Dim];
-    for (d=0; d<Dim; d++) stride[d] = domain[d].stride();
-    int* base[Dim];
-    int* bound[Dim];
-    for (d=0; d<Dim; d++) {
-        base[d] = new int[vnodesPerDirection[d]];
-        bound[d] = new int[vnodesPerDirection[d]];
-    }
-    int length;
-    for (d=0; d<Dim; d++) {
-        // Start things off for the zeroth vnode level using the global index base:
-        length = elementsPerVnode[d];
-        if (nLargerVnodes[d] > 0) length += 1;
-        base[d][0] = domain[d].first();
-        bound[d][0] = base[d][0] + (length-1)*stride[d];
-        // Now go through all the other vnode levels
-        for (vl=1; vl < vnodesPerDirection[d]; vl++) {
-            base[d][vl] = bound[d][vl-1] + stride[d];
-            length = elementsPerVnode[d];
-            if (vl < nLargerVnodes[d]) length += 1;
-            bound[d][vl] = base[d][vl] +(length-1)*stride[d];
-        }
-    }
-
-    // Now actually initialize the values in the container of NDIndex's which
-    // represent each vnode's subdomain:
-    for (v=0; v<vnodes; v++) {
-        for (d=0; d<Dim; d++) {
-            // Compute this vnode's level in this direction:
-            unsigned denom = 1;
-            for (d2=0; d2<d; d2++) denom *= vnodesPerDirection[d2];
-            int vnodeLevel = (v/denom) % vnodesPerDirection[d];
-            // Now use the precomputed base, bound values to set the Index values:
-            domains_c[v][d] = Index(base[d][vnodeLevel],bound[d][vnodeLevel],
-                                    stride[d]);
-            denom = 1; // for debugging
-        }
-    }
-
-    // Now find what processor each vnode will end up on.
-    // This is done with a recursive bisection algorithm.
-    // This produces fairly squarish blocks -- and therefore
-    // less communication at the expense of each processor getting
-    // a less balanced load.
-    int *vnodeProcs = new int[vnodes];
-    int *sizes = new int[Dim];
-    for (v=0; (unsigned int) v<Dim; ++v)
-        sizes[v] = vnodesPerDirection[v];
-
-    // If we have been instructed to use recursive bisection, do that.
-    // if not, deal them out in a simple manner.
-    if ( recurse )
-        vnodeRecursiveBisection(Dim,sizes,nprocs,vnodeProcs);
-    else
-        for ( v=0; v<vnodes; ++v )
-            vnodeProcs[v] = (v*nprocs)/vnodes;
-
-
-    // Now make the vnodes, using the domains just generated.
-    // Some of them we store in the local list, others in the remote.
-    ac_domain_vnodes *remote_ac = new ac_domain_vnodes( domain );
-    typedef typename ac_gc_domain_vnodes::value_type v1;
-    Remotes_ac.insert(v1(gc0(),remote_ac) );
-    for (v=0; v<vnodes; ++v) {
-        int p = vnodeProcs[v];
-        // Add v arg to Vnode constructor 3/19/98 --tjw:
-        Vnode<Dim> *vnode = new Vnode<Dim>(domains_c[v], p, v);
-        typedef typename ac_id_vnodes::value_type v2;
-        if ( p==myproc )
-            Local_ac.insert(v2(Unique::get(),vnode) );
-        else
-            // For domains of extent 1 in all directions, must call
-            // DomainMap::insert() with the noSplit flag set to true, to avoid an
-            // assertion failure in Index::split. Also do this for domains of
-            // extent ZERO. These are not supposed to happen in IPPL, but when the
-            // do when something like BinaryRepartition creates them, accomodating
-            // them here will prevent subsequent code hangs or other errors and allow
-            // recovery such as rejection of the result of BinaryRepartition (discard
-            // the FieldLayout with zero-size domains and go on with the original
-            // layout unchanged). (tjw)
-            //      if (domains_c[v].size() == 1) {
-            if (domains_c[v].size() <= 1) {
-                typedef typename ac_domain_vnodes::value_type v1;
-                remote_ac->insert(v1(domains_c[v], vnode), true);
-            } else {
-                typedef typename ac_domain_vnodes::value_type v1;
-                remote_ac->insert(v1(domains_c[v], vnode), false);
-            }
-    }
-
-    // Delete the memory we allocated.
-    delete [] domains_c;
-    delete [] vnodeProcs;
-    delete [] sizes;
-    for (d=0; d<Dim; d++) {
-        delete [] base[d];
-        delete [] bound[d];
-    }
-
-    // Calculate the widths of all the vnodes
-    calcWidths();
-}
-//-----------------------------------------------------------------------------
-
-
-//-----------------------------------------------------------------------------
 // Return number of vnodes along a direction.
 template<unsigned Dim>
 unsigned FieldLayout<Dim>::
@@ -607,36 +255,6 @@ getVnodesPerDirection(unsigned dir) {
     PAssert(vnodesPerDirection_m);
 
     return(vnodesPerDirection_m[dir]);
-}
-//-----------------------------------------------------------------------------
-
-
-//---------------------------------------------------------------------
-
-template<unsigned Dim>
-void FieldLayout<Dim>::new_gc_layout(const GuardCellSizes<Dim>& gc)
-{
-
-
-
-    // Build the guarded domain.
-    NDIndex<Dim> guarded_domain( AddGuardCells(Domain,gc) );
-    // Build a container for vnodes in that domain.
-    ac_domain_vnodes *gr = new ac_domain_vnodes(guarded_domain);
-    // Record pointer to that container using gc as the key.
-    typedef typename ac_gc_domain_vnodes::value_type v1;
-    Remotes_ac.insert(v1(gc,gr) );
-    // Get the container of vnodes stored w/o guard cells.
-    ac_domain_vnodes &v0 = *Remotes_ac[ gc0() ];
-    // Loop over all the remote vnodes.
-    for (iterator_dv v_i = v0.begin(); v_i != v0.end(); ++v_i)
-        {
-            // Build the domain for this vnode with gc guard cells.
-            NDIndex<Dim> domain(AddGuardCells((*v_i).first,gc));
-            // Record pointer to this vnode with these guard cells.
-            typedef typename ac_domain_vnodes::value_type v2;
-            gr->insert(v2(domain,(*v_i).second) );
-        }
 }
 
 //----------------------------------------------------------------------
@@ -719,7 +337,6 @@ FieldLayout<Dim>::FieldLayout(const NDIndex<Dim>& domain,
     // Calculate the widths of all the vnodes
     calcWidths();
 }
-
 
 //----------------------------------------------------------------------
 // This differs from the previous ctor in that it allows preservation of
@@ -888,335 +505,6 @@ FieldLayout<Dim>::Repartition(const Vnode<Dim>* idxBegin,
     calcWidths();
 }
 
-
-//----------------------------------------------------------------------
-//
-// Write out a FieldLayout data to a file.  The file is in ascii format,
-// with keyword=value.  Return success.
-template<unsigned Dim>
-bool FieldLayout<Dim>::write(const char *filename) {
-
-
-
-    unsigned int d;
-
-    // only do the read on node 0
-    if (Ippl::myNode() == 0) {
-        // create the file, make sure the creation is OK
-        FILE *f = fopen(filename, "w");
-        if (f == 0) {
-            ERRORMSG("Could not create FieldLayout data file '" << filename);
-            ERRORMSG("'." << endl);
-            return false;
-        }
-
-        // write out FieldLayout information
-        fprintf(f, "dim    = %d\n", Dim);
-        fprintf(f, "vnodes = %d\n", numVnodes());
-        fprintf(f, "pnodes = %d\n", Ippl::getNodes());
-
-        fprintf(f, "domain =");
-        for (d=0; d < Dim; ++d)
-            fprintf(f, "  %d %d %d",
-                    Domain[d].first(), Domain[d].last(), Domain[d].stride());
-        fprintf(f, "\n");
-
-        if (vnodesPerDirection_m != 0) {
-            fprintf(f, "vnodesperdir =");
-            for (d=0; d < Dim; ++d)
-                fprintf(f, " %d", vnodesPerDirection_m[d]);
-            fprintf(f, "\n");
-        }
-
-        for (iterator_iv localv = begin_iv(); localv != end_iv(); ++localv) {
-            Vnode<Dim> *vn = (*localv).second.get();
-            fprintf(f, "block  = %d %d", vn->getVnode(), vn->getNode());
-            for (d=0; d < Dim; ++d)
-                fprintf(f, "  %d %d %d", vn->getDomain()[d].first(),
-                        vn->getDomain()[d].last(), vn->getDomain()[d].stride());
-            fprintf(f, "\n");
-        }
-
-        for (iterator_dv remotev = begin_rdv(); remotev != end_rdv(); ++remotev) {
-            Vnode<Dim> *vn = (*remotev).second;
-            fprintf(f, "block  = %d %d", vn->getVnode(), vn->getNode());
-            for (d=0; d < Dim; ++d)
-                fprintf(f, "  %d %d %d", vn->getDomain()[d].first(),
-                        vn->getDomain()[d].last(), vn->getDomain()[d].stride());
-            fprintf(f, "\n");
-        }
-
-        fclose(f);
-    }
-
-    return true;
-}
-
-
-//----------------------------------------------------------------------
-//
-// Read in FieldLayout data from a file.  If the
-// file contains data for an equal number of nodes as we are running on,
-// then that vnode -> pnode mapping will be used.  If the file does not
-// contain info for the same number of pnodes, the vnodes will be
-// distributed in some other manner.
-// Note that if this FieldLayout is initially empty (e.g., it has no
-// local or remote vnodes), the domain will be changed to that in the
-// file.  But if we already have some vnodes, we can only repartition
-// if the domain matches that in the file, or if we do not have any
-// users.  If an error occurs, return
-// false and leave our own layout unchanged.
-template<unsigned Dim>
-bool FieldLayout<Dim>::read(const char *filename) {
-
-
-
-    // generate a tag to use for communication
-    int tag = Ippl::Comm->next_tag(F_LAYOUT_IO_TAG, F_TAG_CYCLE);
-
-    // storage for data read from file
-    NDIndex<Dim> fdomain;
-    Vnode<Dim> *vnlist = 0;
-    unsigned *vnodesPerDir = 0;
-    int fdim = 0;
-    int fvnodes = 0;
-    int fpnodes = 0;
-    int vnodesread = 0;
-    int ok = 1;
-
-    // only do the read on node 0
-    if (Ippl::myNode() == 0) {
-        // read the file, make sure the read is OK
-        DiscMeta f(filename);
-
-        // make sure it is OK
-        DiscMeta::iterator metaline = f.begin();
-        for ( ; ok == 1 && metaline != f.end(); ++metaline) {
-            // get number of tokens and list of tokens in the line
-            int numtokens  = (*metaline).second.first;
-            std::string *tokens = (*metaline).second.second;
-
-            // check first word
-            if (tokens[0] == "dim") {
-                if (fdim != 0) {
-                    ERRORMSG("Repeated 'dim' line in FieldLayout data file '");
-                    ERRORMSG(filename << "'." << endl);
-                    ok = 0;
-                }
-                fdim = atoi(tokens[1].c_str());
-                if (fdim != Dim) {
-                    ERRORMSG("Mismatched dimension in FieldLayout data file '");
-                    ERRORMSG(filename << "'." << endl);
-                    ok = 0;
-                }
-            } else if (tokens[0] == "vnodes") {
-                if (fvnodes != 0 || vnlist != 0) {
-                    ERRORMSG("Repeated 'vnodes' line in FieldLayout data file '");
-                    ERRORMSG(filename << "'." << endl);
-                    ok = 0;
-                }
-                fvnodes = atoi(tokens[1].c_str());
-                if (fvnodes < 1) {
-                    ERRORMSG("Incorrect 'vnodes' line in FieldLayout data file '");
-                    ERRORMSG(filename << "'." << endl);
-                    ok = 0;
-                } else {
-                    vnlist = new Vnode<Dim>[fvnodes];
-                }
-            } else if (tokens[0] == "pnodes") {
-                if (fpnodes != 0) {
-                    ERRORMSG("Repeated 'pnodes' line in FieldLayout data file '");
-                    ERRORMSG(filename << "'." << endl);
-                    ok = 0;
-                }
-                fpnodes = atoi(tokens[1].c_str());
-                if (fpnodes < 1) {
-                    ERRORMSG("Incorrect 'pnodes' line in FieldLayout data file '");
-                    ERRORMSG(filename << "'." << endl);
-                    ok = 0;
-                }
-            } else if (tokens[0] == "vnodesperdir") {
-                if (vnodesPerDir != 0) {
-                    ERRORMSG("Repeated 'vnodesperdir' line in FieldLayout data file '");
-                    ERRORMSG(filename << "'." << endl);
-                    ok = 0;
-                }
-                if (numtokens - 1 != Dim) {
-                    ERRORMSG("Incorrect 'vnodesperdir' line in FieldLayout data file '");
-                    ERRORMSG(filename << "'." << endl);
-                    ok = 0;
-                }
-                vnodesPerDir = new unsigned[Dim];
-                for (unsigned int d=0; d < Dim; ++d) {
-                    vnodesPerDir[d] = atoi(tokens[d+1].c_str());
-                    if (vnodesPerDir[d] < 1) {
-                        ERRORMSG("Illegal vnode per direction value for dim=" << d);
-                        ERRORMSG(" in FieldLayout data file '" << filename << "'."<<endl);
-                        ok = 0;
-                    }
-                }
-            } else if (tokens[0] == "domain") {
-                // make sure we have (first,last,stride) for all dims
-                if ((numtokens-1) % 3 != 0 || (numtokens-1) / 3 != Dim) {
-                    ERRORMSG("Incorrect 'domain' line in FieldLayout data file '");
-                    ERRORMSG(filename << "'." << endl);
-                    ok = 0;
-                }
-                for (unsigned int d=0, dindx=1; d < Dim; ++d) {
-                    fdomain[d] = Index(atoi(tokens[dindx].c_str()),
-                                       atoi(tokens[dindx + 1].c_str()),
-                                       atoi(tokens[dindx + 2].c_str()));
-                    dindx += 3;
-                }
-            } else if (tokens[0] == "block") {
-                // this is vnode information; it should be of the form
-                // vnode# pnode# (domain, with 3 numbers/dimension)
-                // So, the number of tokens should be a multipple of three
-                if (numtokens % 3 != 0 || numtokens / 3 != (Dim+1)) {
-                    ERRORMSG("Incorrect 'block' line in FieldLayout data file '");
-                    ERRORMSG(filename << "'." << endl);
-                    ok = 0;
-                } else if (vnlist == 0) {
-                    ERRORMSG("In FieldLayout data file '" << filename << ": You must ");
-                    ERRORMSG("give the number vnodes before any block lines." << endl);
-                    ok = 0;
-                } else {
-                    int vnum = atoi(tokens[1].c_str());
-                    int pnum = atoi(tokens[2].c_str());
-                    if (pnum < 0 || pnum >= fpnodes) {
-                        ERRORMSG("Illegal pnode number in 'block' line ");
-                        ERRORMSG("of file '" << filename << "'." << endl);
-                        ok = 0;
-                    }
-                    NDIndex<Dim> vdom;
-                    for (unsigned int d=0, dindx=3; d < Dim; ++d) {
-                        vdom[d] = Index(atoi(tokens[dindx].c_str()),
-                                        atoi(tokens[dindx + 1].c_str()),
-                                        atoi(tokens[dindx + 2].c_str()));
-                        dindx += 3;
-                    }
-
-                    // construct a new vnode from this info, and store it at the
-                    // index given by the vnum value
-                    vnlist[vnodesread++] = Vnode<Dim>(vdom, pnum, vnum);
-                }
-            } else {
-                ERRORMSG("Unrecognized '" << tokens[0] << "' line in FieldLayout ");
-                ERRORMSG(" data file '" << filename << "'." << endl);
-                ok = 0;
-            }
-        }
-
-        // do some final sanity checks
-        if (ok != 0 && (fvnodes < 1 || fdim != Dim || vnodesread != fvnodes)) {
-            ERRORMSG("Inconsistent FieldLayout data in file '" << filename);
-            ERRORMSG("'." << endl);
-            ok = 0;
-        }
-
-        // if we have users, we cannot change the global domain any
-        if ( ok != 0 && getNumUsers() > 0 && !(fdomain == Domain) ) {
-            ERRORMSG("You cannot change the global domain of a FieldLayout which");
-            ERRORMSG(" has users." << endl);
-            ok = 0;
-        }
-
-        // Send out new layout info to other nodes
-        if (Ippl::getNodes() > 1) {
-            Message *msg = new Message;
-            msg->put(ok);
-            if (ok != 0) {
-                msg->put(fvnodes);
-                msg->put(fpnodes);
-                msg->put(fdomain);
-                int vnpdok = (vnodesPerDir != 0 ? 1 : 0);
-                msg->put(vnpdok);
-                if (vnpdok != 0)
-                    msg->put(vnodesPerDir, vnodesPerDir + Dim);
-                for (int v=0; v < fvnodes; ++v) {
-                    msg->put(vnlist[v]);
-                }
-            }
-
-            Ippl::Comm->broadcast_others(msg, tag);
-        }
-    } else {
-        // on the client nodes, get the info from node 0 and store it
-        // first receive the message
-        int node = 0;
-        Message *msg = Ippl::Comm->receive_block(node, tag);
-        PAssert(msg);
-
-        // then get data out of the message
-        msg->get(ok);
-        if (ok != 0) {
-            msg->get(fvnodes);
-            msg->get(fpnodes);
-            msg->get(fdomain);
-            int vnpdok;
-            msg->get(vnpdok);
-            if (vnpdok != 0) {
-                vnodesPerDir = new unsigned[Dim];
-                msg->get_iter(vnodesPerDir);
-            }
-            if ((vnodesread = fvnodes) > 0) {
-                vnlist = new Vnode<Dim>[fvnodes];
-                for (int v=0; v < fvnodes; ++v) {
-                    Vnode<Dim> vn;
-                    msg->get(vn);
-                    vnlist[v] = vn;
-                }
-            }
-        }
-
-        // done with the message, we can delete it
-        delete msg;
-    }
-
-    // now, on all nodes, figure out which vnodes are ours, and which are
-    // local.  But if an error occurred during reading, we just exit
-    // without changing anything.
-    if (ok != 1 || fvnodes < 1) {
-        if (vnodesPerDir != 0)
-            delete [] vnodesPerDir;
-        if (vnlist != 0)
-            delete [] vnlist;
-        return false;
-    }
-
-    // save the new domain
-    Domain = fdomain;
-
-    // for each vnode, figure out which physical node it belongs on, and
-    // sort those vnodes to the top of the list.
-    int localvnodes = 0;
-    for (int v=0; v < fvnodes; ++v) {
-        int node = vnlist[v].getNode() % Ippl::getNodes();
-        if (node == Ippl::myNode()) {
-            if (v > localvnodes) {
-                // move this vnode to the top
-                Vnode<Dim> tempv(vnlist[localvnodes]);
-                vnlist[localvnodes] = vnlist[v];
-                vnlist[v] = tempv;
-            }
-            localvnodes++;
-        }
-    }
-
-    // save the info on how many vnodes we have per direction
-    if (vnodesPerDirection_m != 0)
-        delete [] vnodesPerDirection_m;
-    vnodesPerDirection_m = vnodesPerDir;
-
-    // Repartition the system using our list of local vnodes
-    Repartition(vnlist, vnlist + localvnodes);
-
-    // success!
-    delete [] vnlist;
-    return true;
-}
-
-
 //----------------------------------------------------------------------
 //
 // calculate the minimum vnode sizes in each dimension
@@ -1257,39 +545,9 @@ void FieldLayout<Dim>::calcWidths() {
 }
 
 
-//----------------------------------------------------------------------
-//
-// Tell the FieldLayout that a FieldLayoutUser is using it
-template<unsigned Dim>
-void
-FieldLayout<Dim>::checkin(FieldLayoutUser& f,
-			  const GuardCellSizes<Dim>& gc)
-{
-
-
-
-    checkinUser(f);
-    iterator_gdv guarded = Remotes_ac.find(gc);
-    if ( guarded == Remotes_ac.end() )
-        new_gc_layout(gc);
-}
-
-//----------------------------------------------------------------------
-//
-// Tell the FieldLayout that a Field is no longer using it.
-template<unsigned Dim>
-void
-FieldLayout<Dim>::checkout(FieldLayoutUser& f)
-{
-
-
-    checkoutUser(f);
-}
-
 template<unsigned Dim>
 NDIndex<Dim> FieldLayout<Dim>::getLocalNDIndex()
 {
-
     NDIndex<Dim> theId;
     for (iterator_iv localv = begin_iv(); localv != end_iv(); ++localv) {
         Vnode<Dim> *vn = (*localv).second.get();
@@ -1298,7 +556,6 @@ NDIndex<Dim> FieldLayout<Dim>::getLocalNDIndex()
     }
     return theId;
 }
-
 
 //---------------------------------------------------------------------
 // output
@@ -1339,3 +596,53 @@ void FieldLayout<Dim>::write(std::ostream& out) const
     for (iterator_dv dv_i = v_ac->begin(); dv_i != v_ac->end(); ++ dv_i)
         out << " vnode " << icount++ << " : " << *((*dv_i).second) << std::endl;
 }
+
+// not in IPPL 2
+//---------------------------------------------------------------------
+template<unsigned Dim>
+void FieldLayout<Dim>::new_gc_layout(const GuardCellSizes<Dim>& gc)
+{
+    // Build the guarded domain.
+    NDIndex<Dim> guarded_domain( AddGuardCells(Domain,gc) );
+    // Build a container for vnodes in that domain.
+    ac_domain_vnodes *gr = new ac_domain_vnodes(guarded_domain);
+    // Record pointer to that container using gc as the key.
+    typedef typename ac_gc_domain_vnodes::value_type v1;
+    Remotes_ac.insert(v1(gc,gr) );
+    // Get the container of vnodes stored w/o guard cells.
+    ac_domain_vnodes &v0 = *Remotes_ac[ gc0() ];
+    // Loop over all the remote vnodes.
+    for (iterator_dv v_i = v0.begin(); v_i != v0.end(); ++v_i)
+        {
+            // Build the domain for this vnode with gc guard cells.
+            NDIndex<Dim> domain(AddGuardCells((*v_i).first,gc));
+            // Record pointer to this vnode with these guard cells.
+            typedef typename ac_domain_vnodes::value_type v2;
+            gr->insert(v2(domain,(*v_i).second) );
+        }
+}
+
+//----------------------------------------------------------------------
+//
+// Tell the FieldLayout that a FieldLayoutUser is using it
+template<unsigned Dim>
+void
+FieldLayout<Dim>::checkin(FieldLayoutUser& f,
+			  const GuardCellSizes<Dim>& gc)
+{
+    checkinUser(f);
+    iterator_gdv guarded = Remotes_ac.find(gc);
+    if ( guarded == Remotes_ac.end() )
+        new_gc_layout(gc);
+}
+
+//----------------------------------------------------------------------
+//
+// Tell the FieldLayout that a Field is no longer using it.
+template<unsigned Dim>
+void
+FieldLayout<Dim>::checkout(FieldLayoutUser& f)
+{
+    checkoutUser(f);
+}
+
