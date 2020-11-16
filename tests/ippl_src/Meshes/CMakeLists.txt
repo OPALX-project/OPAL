@@ -1,7 +1,7 @@
 set (_SRCS
 #    Average.cpp
     Cartesian.cpp
-    CartesianCentering.cpp
+#    CartesianCentering.cpp
 )
 
 include_directories (

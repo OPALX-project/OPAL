@@ -36,298 +36,293 @@
 #ifndef FIELD_LAYOUT_H
 #define FIELD_LAYOUT_H
 
+#include "DomainMap/DomainMap.h"
+#include "Field/GuardCellSizes.h"
 #include "FieldLayout/FieldLayoutUser.h"
 #include "FieldLayout/Vnode.h"
-#include "DomainMap/DomainMap.h"
 #include "Index/NDIndex.h"
-#include "Field/GuardCellSizes.h"
 #include "Utility/IpplInfo.h"
-#include "Utility/UserList.h"
-#include "Utility/vmap.h"
-#include "Utility/Unique.h"
-#include "Utility/my_auto_ptr.h"
 #include "Utility/RefCounted.h"
+#include "Utility/Unique.h"
+#include "Utility/UserList.h"
+#include "Utility/my_auto_ptr.h"
+#include "Utility/vmap.h"
 
 #include <iostream>
 
 // forward declarations
-template <unsigned Dim> class FieldLayout;
+template <unsigned Dim>
+class FieldLayout;
 template <unsigned Dim>
 std::ostream& operator<<(std::ostream&, const FieldLayout<Dim>&);
 
 // enumeration used to select serial or parallel axes
-enum e_dim_tag { SERIAL=0, PARALLEL=1 } ;
-
+enum e_dim_tag { SERIAL = 0, PARALLEL = 1 };
 
 // class definition ... inheritance is private, so that we hide the
 // UserList checkin routines and instead replace them with our own
-template<unsigned Dim>
-class FieldLayout : private UserList
-{
-
+template <unsigned Dim>
+class FieldLayout : private UserList {
 public:
-  // Typedefs for containers.
-  typedef vmap<Unique::type,my_auto_ptr<Vnode<Dim> > > ac_id_vnodes;
-  typedef DomainMap<NDIndex<Dim>,RefCountedP< Vnode<Dim> >,
-                    Touches<Dim>,Contains<Dim>,Split<Dim> > ac_domain_vnodes;
-  typedef vmap<GuardCellSizes<Dim>,my_auto_ptr<ac_domain_vnodes> >
-          ac_gc_domain_vnodes;
+    // Typedefs for containers.
+    typedef vmap<Unique::type, my_auto_ptr<Vnode<Dim> > > ac_id_vnodes;
+    typedef DomainMap<
+        NDIndex<Dim>, RefCountedP<Vnode<Dim> >, Touches<Dim>, Contains<Dim>, Split<Dim> >
+        ac_domain_vnodes;
+    typedef vmap<GuardCellSizes<Dim>, my_auto_ptr<ac_domain_vnodes> > ac_gc_domain_vnodes;
 
-  // Typedefs for iterators.
-  typedef typename ac_id_vnodes::iterator           iterator_iv;
-  typedef typename ac_id_vnodes::const_iterator     const_iterator_iv;
-  typedef typename ac_domain_vnodes::iterator       iterator_dv;
-  typedef typename ac_domain_vnodes::touch_iterator touch_iterator_dv;
-  typedef std::pair<touch_iterator_dv,touch_iterator_dv> touch_range_dv;
-  typedef typename ac_gc_domain_vnodes::iterator    iterator_gdv;
-  typedef iterator_user                             iterator_if;
-  typedef size_type_user                            size_type_if;
+    // Typedefs for iterators.
+    typedef typename ac_id_vnodes::iterator iterator_iv;
+    typedef typename ac_id_vnodes::const_iterator const_iterator_iv;
+    typedef typename ac_domain_vnodes::iterator iterator_dv;
+    typedef typename ac_domain_vnodes::touch_iterator touch_iterator_dv;
+    typedef std::pair<touch_iterator_dv, touch_iterator_dv> touch_range_dv;
+    typedef typename ac_gc_domain_vnodes::iterator iterator_gdv;
+    typedef iterator_user iterator_if;
+    typedef size_type_user size_type_if;
 
 private:
-  // utility to return a zero-guard cell structure.
-  static GuardCellSizes<Dim> gc0() { return GuardCellSizes<Dim>(0U); }
+    // utility to return a zero-guard cell structure.
+    static GuardCellSizes<Dim> gc0() {
+        return GuardCellSizes<Dim>(0U);
+    }
 
 public:
-  //
-  // constructors and destructors
-  //
+    //
+    // constructors and destructors
+    //
 
-  // Default constructor, which should only be used if you are going to
-  // call 'initialize' soon after (before using in any context)
-  FieldLayout();
-    
-  // Constructor for arbitrary dimension.
-  // This one specifies only a total number of vnodes, allowing the constructor
-  // complete control on how to do the vnode partitioning of the index space:
-  FieldLayout(const NDIndex<Dim>& domain, e_dim_tag *p=0, int vnodes=-1) {
-    initialize(domain,p,vnodes);
-  }
+    // Default constructor, which should only be used if you are going to
+    // call 'initialize' soon after (before using in any context)
+    FieldLayout();
 
-  // This one specifies both the total number of vnodes and the numbers of
-  // vnodes along each dimension for the partitioning of the index
-  // space. Obviously this restricts the number of vnodes to be a product of
-  // the numbers along each dimension (the constructor implementation checks
-  // this):
-  //
-  // The last argument is a bool for the algorithm to use for assigning vnodes
-  // to processors.  If it is false, hand the vnodes to the processors in a
-  // very simple but probably inefficient manner.  If it is true, use a binary
-  // recursive algorithm. This will usually be more efficient because it will
-  // generate less communication, but it will sometimes fail, particularly
-  // near the case of one vnode per processor. Because this can fail, it is
-  // not the default. This algorithm should only be used when you have 4 or
-  // more vnodes per processor.
+    // Constructor for arbitrary dimension.
+    // This one specifies only a total number of vnodes, allowing the constructor
+    // complete control on how to do the vnode partitioning of the index space:
+    FieldLayout(const NDIndex<Dim>& domain, e_dim_tag* p = 0, int vnodes = -1) {
+        initialize(domain, p, vnodes);
+    }
 
-  FieldLayout(const NDIndex<Dim>& domain, e_dim_tag *p, 
-	      unsigned* vnodesPerDirection, 
-	      bool recurse=false, int vnodes=-1 ) {
-    initialize(domain,p,vnodesPerDirection,recurse,vnodes);
-  }
+    // This one specifies both the total number of vnodes and the numbers of
+    // vnodes along each dimension for the partitioning of the index
+    // space. Obviously this restricts the number of vnodes to be a product of
+    // the numbers along each dimension (the constructor implementation checks
+    // this):
+    //
+    // The last argument is a bool for the algorithm to use for assigning vnodes
+    // to processors.  If it is false, hand the vnodes to the processors in a
+    // very simple but probably inefficient manner.  If it is true, use a binary
+    // recursive algorithm. This will usually be more efficient because it will
+    // generate less communication, but it will sometimes fail, particularly
+    // near the case of one vnode per processor. Because this can fail, it is
+    // not the default. This algorithm should only be used when you have 4 or
+    // more vnodes per processor.
 
-  // Build a FieldLayout given the whole domain and
-  // begin and end iterators for the set of domains for the local Vnodes.
-  // It does a collective computation to find the remote Vnodes.
-  FieldLayout(const NDIndex<Dim>& Domain,
-	      const NDIndex<Dim>* begin, const NDIndex<Dim>* end);
+    FieldLayout(
+        const NDIndex<Dim>& domain, e_dim_tag* p, unsigned* vnodesPerDirection,
+        bool recurse = false, int vnodes = -1) {
+        initialize(domain, p, vnodesPerDirection, recurse, vnodes);
+    }
 
-  // Build a FieldLayout given the whole domain and
-  // begin and end iterators for the set of Vnodes for the local Vnodes.
-  // It does a collective computation to find the remote Vnodes.
-  // This differs from the previous ctor in that it allows preservation of
-  // global Vnode integer ID numbers associated with the input Vnodes. --tjw
-  FieldLayout(const NDIndex<Dim>& Domain,
-	      const Vnode<Dim>* begin, const Vnode<Dim>* end);
+    // Build a FieldLayout given the whole domain and
+    // begin and end iterators for the set of domains for the local Vnodes.
+    // It does a collective computation to find the remote Vnodes.
+    FieldLayout(const NDIndex<Dim>& Domain, const NDIndex<Dim>* begin, const NDIndex<Dim>* end);
 
-  // Constructor that takes a whole domain, and a pair of iterators over
-  // a list of NDIndex's and nodes so that the user specifies the entire
-  // decomposition.  No communication is done
-  // so these lists must match on all nodes.  A bit of error checking
-  // is done for overlapping blocks and illegal nodes, but not exhaustive
-  // error checking.
-  FieldLayout(const NDIndex<Dim>& Domain,
-	      const NDIndex<Dim>* dombegin, const NDIndex<Dim>* domend,
-	      const int *nbegin, const int *nend);
+    // Build a FieldLayout given the whole domain and
+    // begin and end iterators for the set of Vnodes for the local Vnodes.
+    // It does a collective computation to find the remote Vnodes.
+    // This differs from the previous ctor in that it allows preservation of
+    // global Vnode integer ID numbers associated with the input Vnodes. --tjw
+    FieldLayout(const NDIndex<Dim>& Domain, const Vnode<Dim>* begin, const Vnode<Dim>* end);
 
-  // Destructor: Everything deletes itself automatically ... the base
-  // class destructors inform all the FieldLayoutUser's we're going away.
-  virtual ~FieldLayout();
+    // Constructor that takes a whole domain, and a pair of iterators over
+    // a list of NDIndex's and nodes so that the user specifies the entire
+    // decomposition.  No communication is done
+    // so these lists must match on all nodes.  A bit of error checking
+    // is done for overlapping blocks and illegal nodes, but not exhaustive
+    // error checking.
+    FieldLayout(
+        const NDIndex<Dim>& Domain, const NDIndex<Dim>* dombegin, const NDIndex<Dim>* domend,
+        const int* nbegin, const int* nend);
 
-  void initialize(const NDIndex<Dim>& domain, e_dim_tag *p=0, int vnodes=-1);
+    // Destructor: Everything deletes itself automatically ... the base
+    // class destructors inform all the FieldLayoutUser's we're going away.
+    virtual ~FieldLayout();
 
-  // These specify both the total number of vnodes and the numbers of vnodes
-  // along each dimension for the partitioning of the index space. Obviously
-  // this restricts the number of vnodes to be a product of the numbers along
-  // each dimension (the constructor implementation checks this):
-  void initialize(const NDIndex<Dim>& domain, e_dim_tag *p, 
-		  unsigned* vnodesPerDirection, 
-		  bool recurse=false, int vnodes=-1);
+    void initialize(const NDIndex<Dim>& domain, e_dim_tag* p = 0, int vnodes = -1);
 
-  // Initialize that takes a whole domain, and a pair of iterators over
-  // a list of NDIndex's and nodes so that the user specifies the entire
-  // decomposition.  No communication is done
-  // so these lists must match on all nodes.  A bit of error checking
-  // is done for overlapping blocks and illegal nodes, but not exhaustive
-  // error checking.
-  void initialize(const NDIndex<Dim>& Domain,
-		  const NDIndex<Dim>* dombegin, const NDIndex<Dim>* domend,
-		  const int *nbegin, const int *nend);
+    // These specify both the total number of vnodes and the numbers of vnodes
+    // along each dimension for the partitioning of the index space. Obviously
+    // this restricts the number of vnodes to be a product of the numbers along
+    // each dimension (the constructor implementation checks this):
+    void initialize(
+        const NDIndex<Dim>& domain, e_dim_tag* p, unsigned* vnodesPerDirection,
+        bool recurse = false, int vnodes = -1);
 
-  //
-  // FieldLayout operations and information
-  //
+    // Initialize that takes a whole domain, and a pair of iterators over
+    // a list of NDIndex's and nodes so that the user specifies the entire
+    // decomposition.  No communication is done
+    // so these lists must match on all nodes.  A bit of error checking
+    // is done for overlapping blocks and illegal nodes, but not exhaustive
+    // error checking.
+    void initialize(
+        const NDIndex<Dim>& Domain, const NDIndex<Dim>* dombegin, const NDIndex<Dim>* domend,
+        const int* nbegin, const int* nend);
 
-  // Let the user set the local vnodes.
-  // this does everything necessary to realign all the fields
-  // associated with this FieldLayout!
-  // It inputs begin and end iterators for the local vnodes.
-  void Repartition(const NDIndex<Dim>*, const NDIndex<Dim>*);
-  void Repartition(const NDIndex<Dim>& domain) { Repartition(&domain,(&domain)+1); }
+    //
+    // FieldLayout operations and information
+    //
 
-  // This differs from the previous prototype in that it allows preservation of
-  // global Vnode integer ID numbers associated with the input Vnodes. --tjw
-  void Repartition(const Vnode<Dim>*, const Vnode<Dim>*);
+    // Let the user set the local vnodes.
+    // this does everything necessary to realign all the fields
+    // associated with this FieldLayout!
+    // It inputs begin and end iterators for the local vnodes.
+    void Repartition(const NDIndex<Dim>*, const NDIndex<Dim>*);
+    void Repartition(const NDIndex<Dim>& domain) {
+        Repartition(&domain, (&domain) + 1);
+    }
 
-  // Return the domain.
-  const NDIndex<Dim>& getDomain() const { return Domain; }
+    // This differs from the previous prototype in that it allows preservation of
+    // global Vnode integer ID numbers associated with the input Vnodes. --tjw
+    void Repartition(const Vnode<Dim>*, const Vnode<Dim>*);
 
+    // Return the domain.
+    const NDIndex<Dim>& getDomain() const {
+        return Domain;
+    }
 
-  // Compare FieldLayouts to see if they represent the same domain; if
-  // dimensionalities are different, the NDIndex operator==() will return
-  // false:
-  template <unsigned Dim2>
-  bool operator==(const FieldLayout<Dim2>& x) const {
-    return Domain == x.getDomain();
-  }
+    // Compare FieldLayouts to see if they represent the same domain; if
+    // dimensionalities are different, the NDIndex operator==() will return
+    // false:
+    template <unsigned Dim2>
+    bool operator==(const FieldLayout<Dim2>& x) const {
+        return Domain == x.getDomain();
+    }
 
-#if 0
-  // Read information from the given file on how to repartition the data.
-  // This works just like it does when constructing a FieldLayout from a
-  // file, in fact this routine is called by the FieldLayout(const char *)
-  // constructor.  Only node 0 will actually read the file.  Return success.
-  bool read(const char *filename);
+    //
+    // local vnode, remote vnode, touch range, and FieldLayoutUser iterators
+    //
+    int numVnodes(void) const {
+        return (size_iv() + size_rdv());
+    }
 
-  // Write out info about this layout to the given file.  Only node 0 will
-  // actually write a file.  Return success.
-  bool write(const char *filename);
-#endif
-    
-  //
-  // local vnode, remote vnode, touch range, and FieldLayoutUser iterators
-  //
-  int numVnodes(void) const {
-    return (size_iv() + size_rdv());
-  }
+    // Accessors for the locals by Id.
+    typename ac_id_vnodes::size_type size_iv() const;
+    iterator_iv begin_iv();
+    iterator_iv end_iv();
+    const_iterator_iv begin_iv() const;
+    const_iterator_iv end_iv() const;
 
-  // Accessors for the locals by Id.
-  typename ac_id_vnodes::size_type size_iv() const;
-  iterator_iv                      begin_iv();
-  iterator_iv                      end_iv();
-  const_iterator_iv                begin_iv() const;
-  const_iterator_iv                end_iv() const;
+    // Accessors for the remote vnode containers.
+    typename ac_gc_domain_vnodes::size_type size_rgdv() const;
+    iterator_gdv begin_rgdv();
+    iterator_gdv end_rgdv();
 
-  // Accessors for the remote vnode containers.
-  typename ac_gc_domain_vnodes::size_type size_rgdv() const;
-  iterator_gdv                            begin_rgdv();
-  iterator_gdv                            end_rgdv();
+    // Accessors for the remote vnodes themselves.
+    typename ac_domain_vnodes::size_type size_rdv(const GuardCellSizes<Dim>& gc = gc0()) const;
+    iterator_dv begin_rdv(const GuardCellSizes<Dim>& gc = gc0());
+    iterator_dv end_rdv(const GuardCellSizes<Dim>& gc = gc0());
+    touch_range_dv touch_range_rdv(
+        const NDIndex<Dim>& domain, const GuardCellSizes<Dim>& gc = gc0()) const;
 
-  // Accessors for the remote vnodes themselves.
-  typename ac_domain_vnodes::size_type 
-    size_rdv(const GuardCellSizes<Dim>& gc = gc0()) const;
-  iterator_dv begin_rdv(const GuardCellSizes<Dim>& gc = gc0());
-  iterator_dv end_rdv(const GuardCellSizes<Dim>& gc = gc0());
-  touch_range_dv touch_range_rdv(const NDIndex<Dim>& domain,
-				 const GuardCellSizes<Dim>& gc = gc0()) const; 
+    // Accessors for the users accessing this FieldLayout
+    size_type_if size_if() const {
+        return getNumUsers();
+    }
+    iterator_if begin_if() {
+        return begin_user();
+    }
+    iterator_if end_if() {
+        return end_user();
+    }
 
-  // Accessors for the users accessing this FieldLayout
-  size_type_if      size_if() const { return getNumUsers(); }
-  iterator_if       begin_if() { return begin_user(); }
-  iterator_if       end_if() { return end_user(); }
+    //
+    // Query for information about the vnode sizes
+    //
 
-  //
-  // Query for information about the vnode sizes
-  //
+    // check if the vnode sizes are OK, to match the given GuardCellSizes
+    bool fitsGuardCells(const GuardCellSizes<Dim>& gc) const {
+        for (unsigned int d = 0; d < Dim; ++d)
+            if (MinWidth[d] < gc.left(d) || MinWidth[d] < gc.right(d))
+                return false;
+        return true;
+    }
 
-  // check if the vnode sizes are OK, to match the given GuardCellSizes
-  bool fitsGuardCells(const GuardCellSizes<Dim>& gc) const {
-    for (unsigned int d=0; d < Dim; ++d)
-      if (MinWidth[d] < gc.left(d) || MinWidth[d] < gc.right(d))
-        return false;
-    return true;
-  }
+    // for the requested dimension, report if the distribution is
+    // SERIAL or PARALLEL
+    e_dim_tag getDistribution(unsigned int d) const {
+        e_dim_tag retval = PARALLEL;
+        if (MinWidth[d] == (unsigned int)Domain[d].length())
+            retval = SERIAL;
+        return retval;
+    }
 
-  // for the requested dimension, report if the distribution is
-  // SERIAL or PARALLEL
-  e_dim_tag getDistribution(unsigned int d) const {
-    e_dim_tag retval = PARALLEL;
-    if (MinWidth[d] == (unsigned int) Domain[d].length())
-      retval = SERIAL;
-    return retval;
-  }
+    // for the requested dimension, report if the distribution was requested to
+    // be SERIAL or PARALLEL
+    e_dim_tag getRequestedDistribution(unsigned int d) const {
+        return RequestedLayout[d];
+    }
 
-  // for the requested dimension, report if the distribution was requested to
-  // be SERIAL or PARALLEL
-  e_dim_tag getRequestedDistribution(unsigned int d) const {
-    return RequestedLayout[d];
-  }
+    // When stored, return number of vnodes along a direction:
+    unsigned getVnodesPerDirection(unsigned dir);
 
-  // When stored, return number of vnodes along a direction:
-  unsigned getVnodesPerDirection(unsigned dir);
+    //
+    // UserList operations
+    //
 
-  //
-  // UserList operations
-  //
+    // Return our ID, as generated by UserList.
+    UserList::ID_t get_Id() const {
+        return getUserListID();
+    }
 
-  // Return our ID, as generated by UserList.
-  UserList::ID_t get_Id() const { return getUserListID(); }
+    // Tell the FieldLayout that a FieldLayoutUser has been declared on it.
+    // This is different than the checkinUser from UserList,
+    // since we have the GuardCellSizes argument.
+    void checkin(FieldLayoutUser& f, const GuardCellSizes<Dim>& gc = gc0());
 
-  // Tell the FieldLayout that a FieldLayoutUser has been declared on it.
-  // This is different than the checkinUser from UserList,
-  // since we have the GuardCellSizes argument.
-  void checkin(FieldLayoutUser& f, const GuardCellSizes<Dim>& gc = gc0());
+    // Tell the FieldLayout that a FieldLayoutUser is no longer using it.
+    // This is different than the checkoutUser from UserList,
+    // for symmetry with checkin
+    void checkout(FieldLayoutUser& f);
 
-  // Tell the FieldLayout that a FieldLayoutUser is no longer using it.
-  // This is different than the checkoutUser from UserList,
-  // for symmetry with checkin
-  void checkout(FieldLayoutUser& f);
+    NDIndex<Dim> getLocalNDIndex();
 
-  NDIndex<Dim> getLocalNDIndex();
+    //
+    // I/O
+    //
 
-  //
-  // I/O
-  //
-
-  // Print it out.
-  void write(std::ostream&) const;
+    // Print it out.
+    void write(std::ostream&) const;
 
 private:
-  // Container definitions.
-  ac_id_vnodes        Local_ac;
-  ac_gc_domain_vnodes Remotes_ac;
+    // Container definitions.
+    ac_id_vnodes Local_ac;
+    ac_gc_domain_vnodes Remotes_ac;
 
-  // Record the domain.
-  NDIndex<Dim> Domain;
+    // Record the domain.
+    NDIndex<Dim> Domain;
 
-  // The minimum width of vnodes in each dimension, and the type of
-  // layout that the user requested (this might not be the case anymore).
-  unsigned int MinWidth[Dim];
-  e_dim_tag RequestedLayout[Dim];
+    // The minimum width of vnodes in each dimension, and the type of
+    // layout that the user requested (this might not be the case anymore).
+    unsigned int MinWidth[Dim];
+    e_dim_tag RequestedLayout[Dim];
 
-  // Store the numbers of vnodes along each direction, when appropriate
-  // constructors were called; otherwise leave pointer unset for assertion
-  // checks.
-  unsigned* vnodesPerDirection_m;
+    // Store the numbers of vnodes along each direction, when appropriate
+    // constructors were called; otherwise leave pointer unset for assertion
+    // checks.
+    unsigned* vnodesPerDirection_m;
 
-  // calculate the minimum vnode sizes in each dimension
-  void calcWidths();
+    // calculate the minimum vnode sizes in each dimension
+    void calcWidths();
 
-  // utility to return a zero-guard cell structure.
-  void new_gc_layout(const GuardCellSizes<Dim>&);
+    // utility to return a zero-guard cell structure.
+    void new_gc_layout(const GuardCellSizes<Dim>&);
 
-  // The routine which actually sets things up.
-  void setup(const NDIndex<Dim>&, e_dim_tag *, int);
-  void setup(const NDIndex<Dim>&, e_dim_tag *, unsigned*, int);
+    // The routine which actually sets things up.
+    void setup(const NDIndex<Dim>&, e_dim_tag*, int);
+    void setup(const NDIndex<Dim>&, e_dim_tag*, unsigned*, int);
 };
-
 
 //-----------------------------------------------------------------------------
 // These specify both the total number of vnodes and the numbers of vnodes
@@ -335,120 +330,92 @@ private:
 // this restricts the number of vnodes to be a product of the numbers along
 // each dimension (the constructor implementation checks this):
 
-template<unsigned Dim>
-inline
-FieldLayout<Dim>::FieldLayout(const NDIndex<Dim> &Domain,
-			      const NDIndex<Dim> *dombegin,
-			      const NDIndex<Dim> *domend,
-			      const int *nbegin,
-			      const int *nend)
-{
-  initialize(Domain, dombegin, domend, nbegin, nend);
+template <unsigned Dim>
+inline FieldLayout<Dim>::FieldLayout(
+    const NDIndex<Dim>& Domain, const NDIndex<Dim>* dombegin, const NDIndex<Dim>* domend,
+    const int* nbegin, const int* nend) {
+    initialize(Domain, dombegin, domend, nbegin, nend);
 }
 
 //-----------------------------------------------------------------------------
-
 
 //////////////////////////////////////////////////////////////////////
 
 // Accessor definitions.
 
-template<unsigned Dim>
-inline typename FieldLayout<Dim>::ac_id_vnodes::size_type 
-FieldLayout<Dim>::size_iv() const
-{
-  return Local_ac.size();
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::ac_id_vnodes::size_type FieldLayout<Dim>::size_iv() const {
+    return Local_ac.size();
 }
 
-template<unsigned Dim>
-inline typename FieldLayout<Dim>::iterator_iv
-FieldLayout<Dim>::begin_iv()
-{
-  return Local_ac.begin();
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::iterator_iv FieldLayout<Dim>::begin_iv() {
+    return Local_ac.begin();
 }
 
-template<unsigned Dim>
-inline typename FieldLayout<Dim>::iterator_iv
-FieldLayout<Dim>::end_iv()
-{
-  return Local_ac.end();
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::iterator_iv FieldLayout<Dim>::end_iv() {
+    return Local_ac.end();
 }
 
-template<unsigned Dim>
-inline typename FieldLayout<Dim>::const_iterator_iv
-FieldLayout<Dim>::begin_iv() const
-{
-  return Local_ac.begin();
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::const_iterator_iv FieldLayout<Dim>::begin_iv() const {
+    return Local_ac.begin();
 }
 
-template<unsigned Dim>
-inline typename FieldLayout<Dim>::const_iterator_iv
-FieldLayout<Dim>::end_iv() const
-{
-  return Local_ac.end();
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::const_iterator_iv FieldLayout<Dim>::end_iv() const {
+    return Local_ac.end();
 }
 
-template<unsigned Dim>
-inline typename FieldLayout<Dim>::ac_gc_domain_vnodes::size_type
-FieldLayout<Dim>::size_rgdv() const
-{
-  return Remotes_ac.size();
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::ac_gc_domain_vnodes::size_type FieldLayout<Dim>::size_rgdv()
+    const {
+    return Remotes_ac.size();
 }
 
-template<unsigned Dim>
-inline typename FieldLayout<Dim>::iterator_gdv
-FieldLayout<Dim>::begin_rgdv()
-{
-  return Remotes_ac.begin();
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::iterator_gdv FieldLayout<Dim>::begin_rgdv() {
+    return Remotes_ac.begin();
 }
 
-template<unsigned Dim>
-inline typename FieldLayout<Dim>::iterator_gdv
-FieldLayout<Dim>::end_rgdv()
-{
-  return Remotes_ac.end();
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::iterator_gdv FieldLayout<Dim>::end_rgdv() {
+    return Remotes_ac.end();
 }
 
-template<unsigned Dim>
-inline typename FieldLayout<Dim>::ac_domain_vnodes::size_type
-FieldLayout<Dim>::size_rdv(const GuardCellSizes<Dim>& gc) const
-{
-  return Remotes_ac[gc]->size();
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::ac_domain_vnodes::size_type FieldLayout<Dim>::size_rdv(
+    const GuardCellSizes<Dim>& gc) const {
+    return Remotes_ac[gc]->size();
 }
 
-template<unsigned Dim>
-inline typename FieldLayout<Dim>::iterator_dv
-FieldLayout<Dim>::begin_rdv(const GuardCellSizes<Dim>& gc)
-{
-  return Remotes_ac[gc]->begin();
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::iterator_dv FieldLayout<Dim>::begin_rdv(
+    const GuardCellSizes<Dim>& gc) {
+    return Remotes_ac[gc]->begin();
 }
 
-template<unsigned Dim>
-inline typename FieldLayout<Dim>::iterator_dv
-FieldLayout<Dim>::end_rdv(const GuardCellSizes<Dim>& gc)
-{
-  return Remotes_ac[gc]->end();
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::iterator_dv FieldLayout<Dim>::end_rdv(
+    const GuardCellSizes<Dim>& gc) {
+    return Remotes_ac[gc]->end();
 }
 
-template<unsigned Dim>
-inline 
-typename FieldLayout<Dim>::touch_range_dv
-FieldLayout<Dim>::touch_range_rdv(const NDIndex<Dim>& domain,
-				  const GuardCellSizes<Dim>& gc) const
-{
-  return Remotes_ac[gc]->touch_range(domain);
+template <unsigned Dim>
+inline typename FieldLayout<Dim>::touch_range_dv FieldLayout<Dim>::touch_range_rdv(
+    const NDIndex<Dim>& domain, const GuardCellSizes<Dim>& gc) const {
+    return Remotes_ac[gc]->touch_range(domain);
 }
-
 
 // I/O
 
-template<unsigned Dim>
-inline
-std::ostream& operator<<(std::ostream& out, const FieldLayout<Dim>& f) {
-  f.write(out);
-  return out;
+template <unsigned Dim>
+inline std::ostream& operator<<(std::ostream& out, const FieldLayout<Dim>& f) {
+    f.write(out);
+    return out;
 }
 
 #include "FieldLayout/FieldLayout.hpp"
 
-#endif // FIELD_LAYOUT_H
+#endif

@@ -67,6 +67,7 @@ TEST(Field, FieldDebug2)
     agfp3(A);
     EXPECT_NEAR(sum(A),288,roundOffError);
 
+#if 0
     // Scalar Field Face(0)-Centered---------------------------------------------
     typedef CommonCartesianCenterings<D,1U,0U>::allFace FC;
     CenteredFieldLayout<D,M,FC> fl(mesh,sp,nvnodes);
@@ -97,7 +98,7 @@ TEST(Field, FieldDebug2)
     fdi << endl << "--------ggfp3(B)-----------------------------" << endl;
     ggfp3(B);
     EXPECT_NEAR(sum(B),288,roundOffError);
-
+ 
     // Vektor Field vectorFace-Centered------------------------------------------
     typedef CommonCartesianCenterings<D,D>::vectorFace VFC;
     CenteredFieldLayout<D,M,VFC> vfl(mesh,sp,nvnodes);
@@ -175,4 +176,5 @@ TEST(Field, FieldDebug2)
     EXPECT_NEAR(sum(C)[0],1016,roundOffError);
     EXPECT_NEAR(sum(C)[1], 904,roundOffError);
     EXPECT_NEAR(sum(C)[2], 456,roundOffError);
+#endif
 }

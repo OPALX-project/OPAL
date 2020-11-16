@@ -1,41 +1,38 @@
-/*
-
-  Implementation of BinaryBalancer.
-
-  The general strategy is that you do log(P) splits on the domain.  It
-  starts with the whole domain, does a reduction to find where to
-  split it, then does reductions on each of the resulting domains to
-  find where to split those, then reductions on those to split them,
-  and so on until it is done.
-
-  Suppose you're on the n'th split, so there are 2**n domains figured
-  out so far, and after the split there will be 2**(n+1) splits.  In
-  each of those 2**n domains you need to find
-
-  a) The axis to split on. This is done by just finding the longest
-     axis in that domain.
-
-  b) The location within that domain to make the split.  This is done
-     by reducing the weights on all dimensions except the axis to be
-     split and finding the location within that array that puts half
-     the weight on each side.
-
-  The reduction for b) is done is a scalable way.  It is a parallel
-  reduction, and if there are 2**n domains being split, the reductions
-  are accumulated onto processors 0..2**n-1.  Those processors
-  calculate the split locations and broadcast them to all the
-  processors.
-
-  At every stage of the process all the processors know all the
-  domains.  This is necessary because the weight array could be
-  distributed arbitrarily, so the reductions could involve any
-  processors.
-
-  Nevertheless, the reductions are performed efficiently.  Using
-  DomainMaps, only the processors that need to participate in a
-  reduction do participate.
-
-*/
+//
+// Implementation of BinaryBalancer.
+//
+// The general strategy is that you do log(P) splits on the domain.  It
+// starts with the whole domain, does a reduction to find where to
+// split it, then does reductions on each of the resulting domains to
+// find where to split those, then reductions on those to split them,
+// and so on until it is done.
+//
+// Suppose you're on the n'th split, so there are 2**n domains figured
+// out so far, and after the split there will be 2**(n+1) splits.  In
+// each of those 2**n domains you need to find
+//
+// a) The axis to split on. This is done by just finding the longest
+//    axis in that domain.
+//
+// b) The location within that domain to make the split.  This is done
+//    by reducing the weights on all dimensions except the axis to be
+//    split and finding the location within that array that puts half
+//    the weight on each side.
+//
+// The reduction for b) is done is a scalable way.  It is a parallel
+// reduction, and if there are 2**n domains being split, the reductions
+// are accumulated onto processors 0..2**n-1.  Those processors
+// calculate the split locations and broadcast them to all the
+// processors.
+//
+// At every stage of the process all the processors know all the
+// domains.  This is necessary because the weight array could be
+// distributed arbitrarily, so the reductions could involve any
+// processors.
+//
+// Nevertheless, the reductions are performed efficiently.  Using
+// DomainMaps, only the processors that need to participate in a
+// reduction do participate.
 //
 // Copyright (c) 2003 - 2020
 // Paul Scherrer Institut, Villigen PSI, Switzerland
