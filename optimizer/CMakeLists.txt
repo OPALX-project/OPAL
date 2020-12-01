@@ -47,6 +47,10 @@ set (OPTP_LIBS
     wfgHypervolume
     CACHE INTERNAL "" FORCE
 )
+if (BUILD_OPAL_PYTHON)
+    MESSAGE("ADDING PYTHON LIBRARIES")
+    set (OPTP_LIBS ${Python_LIBRARIES} ${OPTP_LIBS})
+endif()
 
 #-----------------------------------------------------------------------------
 # Testing

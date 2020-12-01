@@ -2,7 +2,9 @@
 *~
 *.o
 *.a
+*.so
 *.aux
+*.cmake
 optimizer/Tests/*.exe
 build
 CMakeCache.txt

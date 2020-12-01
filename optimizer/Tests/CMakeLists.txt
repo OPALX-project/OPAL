@@ -17,13 +17,18 @@ include_directories (
     ${GTEST_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}
-#    ${PYTHON_INCLUDE_DIRS}
 )
+if (BUILD_OPAL_PYTHON)
+    include_directories ( ${PYTHON_INCLUDE_DIRS} )
+endif()
 
 link_directories (
     ${GTEST_LIBRARY_DIRS}
-#    ${PYTHON_LIBRARIES}
 )
+
+if (BUILD_OPAL_PYTHON)
+    link_directories (${Python_LIBRARIES})
+endif()
 
 set (OPT_PILOT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/optimizer)
 set (SDDSPARSER_SRC
@@ -59,11 +64,12 @@ set (FromFileExpressionTest_SRC
     ${OPT_PILOT_SOURCE_DIR}/Expression/Parser/evaluator.cpp
 )
 
-#set (PythonExprTest_SRC
-#    ${OPT_PILOT_SOURCE_DIR}/Expression/Parser/expression.cpp
-#    ${OPT_PILOT_SOURCE_DIR}/Expression/Parser/evaluator.cpp
-#)
-
+if (BUILD_OPAL_PYTHON)
+    set (PythonExprTest_SRC
+        ${OPT_PILOT_SOURCE_DIR}/Expression/Parser/expression.cpp
+        ${OPT_PILOT_SOURCE_DIR}/Expression/Parser/evaluator.cpp
+    )
+endif()
 
 set (HashNameGeneratorTest_SRC
 )
@@ -102,10 +108,13 @@ set (PILOT_TESTS
     ExpressionTest
     SumErrSqExpressionTest
     FromFileExpressionTest
-#    PythonExprTest
     CmdArgumentsTest
     HashNameGeneratorTest
 )
+if (BUILD_OPAL_PYTHON)
+    set (PILOT_TESTS ${PILOT_TESTS} PythonExprTest)
+endif()
+
 
 set (TEST_LIBS
     ${GTEST_BOTH_LIBRARIES}
@@ -113,16 +122,16 @@ set (TEST_LIBS
     ${Boost_LIBRARIES}
     ${MPI_LIBRARIES}
 )
-
-#set (PYTHON_LIBS
-#    ${PYTHON_LIBRARIES}
-#    boost_python
-#)
+if (BUILD_OPAL_PYTHON)
+    set (TEST_LIBS ${TEST_LIBS} ${Python_LIBRARIES})
+    MESSAGE("Adding PYTHON ${Python_LIBRARIES}")
+endif()
+MESSAGE("TEST LIBS ${TEST_LIBS}")
 
 FOREACH(test ${PILOT_TESTS})
     SET( SRC ${${test}_SRC} )
     ADD_EXECUTABLE( ${test}.exe ${test}.cpp ${SRC} )
-    TARGET_LINK_LIBRARIES( ${test}.exe ${TEST_LIBS}) # ${PYTHON_LIBS})
+    TARGET_LINK_LIBRARIES( ${test}.exe ${TEST_LIBS})
     ADD_TEST(${test} ${test}.exe)
 ENDFOREACH(test ${PILOT_TESTS})
 

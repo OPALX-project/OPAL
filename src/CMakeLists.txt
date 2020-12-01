@@ -86,6 +86,29 @@ add_subdirectory (Tables)
 add_subdirectory (Track)
 add_subdirectory (Utilities)
 add_subdirectory (ValueDefinitions)
+if (BUILD_OPAL_PYTHON)
+    #add_subdirectory (PyOpal)
+    add_library(libOPALdynamic SHARED $<TARGET_OBJECTS:libOPALObj>)
+    set_target_properties (libOPALdynamic PROPERTIES OUTPUT_NAME OPAL)
+    target_compile_options(libOPALdynamic PRIVATE -fPIC)
+    target_link_libraries( libOPALdynamic
+        ${OPTP_LIBS}
+        ${OPTP_LIBRARY}
+        ${IPPL_LIBRARY}
+        ${GSL_LIBRARY}
+        ${GSL_CBLAS_LIBRARY}
+        ${H5Hut_LIBRARY}
+        ${HDF5_LIBRARIES}
+        ${Boost_LIBRARIES}
+        ${Python_LIBRARIES}
+        m
+        z
+        "-rdynamic"
+        )
+endif ()
+
+add_library(libOPALObj OBJECT ${OPAL_SRCS})
+set_property(TARGET libOPALObj PROPERTY POSITION_INDEPENDENT_CODE 1)
 
 if (ENABLE_AMR)
     add_subdirectory (Amr)
@@ -119,10 +142,10 @@ link_directories (
 # case-insensitive filesystems (like macOS) this conflicts with the
 # target 'opal' for the OPAL binary.
 #
-add_library (libOPAL ${OPAL_SRCS})
-set_target_properties (libOPAL PROPERTIES OUTPUT_NAME OPAL)
+add_library (libOPALstatic $<TARGET_OBJECTS:libOPALObj>)
+set_target_properties (libOPALstatic PROPERTIES OUTPUT_NAME OPAL)
 
-target_link_libraries (libOPAL
+target_link_libraries (libOPALstatic
     ${SAAMG_SOLVER_LIBS}
     ${AMR_MG_SOLVER_LIBS}
     ${AMR_LIBS}
@@ -131,7 +154,7 @@ target_link_libraries (libOPAL
 
 add_executable (opal Main.cpp)
 target_link_libraries( opal
-    libOPAL
+    libOPALstatic
     ${OPTP_LIBS}
     ${OPTP_LIBRARY}
     ${IPPL_LIBRARY}
@@ -145,14 +168,19 @@ target_link_libraries( opal
     ${CMAKE_DL_LIBS}
     )
 
+if (BUILD_OPAL_PYTHON)
+    target_link_libraries( opal ${Python_LIBRARIES} )
+endif()
+
 if (ENABLE_OPAL_FEL)
     include_directories (${MITHRA_INCLUDE_DIR})
-    target_link_libraries(libOPAL ${MITHRA_LIBRARY_DIR}/libmithra.a)
+    target_link_libraries(libOPALstatic ${MITHRA_LIBRARY_DIR}/libmithra.a)
 endif()
 
 install (TARGETS ${TEST_EXE} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
 install (TARGETS opal RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")
-install (TARGETS libOPAL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+install (TARGETS libOPALstatic DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+install (TARGETS libOPALdynamic DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
 
 set (HDRS
     OPALconfig.h
