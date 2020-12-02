@@ -39,15 +39,10 @@ function(python_module MODULE_NAME PYTHON_SRCS)
     install (TARGETS ${MODULE_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
 endfunction(python_module)
 
-set (PARSER_SRCS PyParser.cpp)
+# for Parser, we call OpalMain; so must not link to Globals.cpp as we get
+# multiple definitions of Opal global objects (i.e. ippl and gmsg)
+set (PARSER_SRCS PyParser.cpp ExceptionTranslation.cpp)
 python_module(parser "${PARSER_SRCS}")
 
 set (FIELD_SRCS PyField.cpp ${PYUTILS_SRCS})
 python_module(field "${FIELD_SRCS}")
-
-set (BOOSTFIELD_SRCS PyBoostField.cpp ${PYUTILS_SRCS})
-python_module(boost_field "${BOOSTFIELD_SRCS}")
-
-set (BINDFIELD_SRCS PyBindField.cpp ${PYUTILS_SRCS})
-python_module(bind_field "${BINDFIELD_SRCS}")
-

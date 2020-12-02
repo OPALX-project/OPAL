@@ -1,7 +1,9 @@
 #include <gsl/gsl_errno.h>
 
 #include "Utilities/OpalException.h"
-#define PYOPAL_GLOBALS_C
+
+#include "PyOpal/ExceptionTranslation.h"
+#define PYOPAL_GLOBALS_C // only Globals.cpp can instantiate ippl and gmsg
 #include "PyOpal/Globals.h"
 
 namespace {
@@ -20,9 +22,10 @@ void Initialise() {
         //ippl = new Ippl(argc, argv);
     }
     if (gmsg == NULL) {
-        gmsg = new  Inform("OPAL");
+        gmsg = new Inform("OPAL");
     }
     gsl_set_error_handler(&errorHandlerGSL);
+    ExceptionTranslation::registerExceptions();
 }
 }
 }

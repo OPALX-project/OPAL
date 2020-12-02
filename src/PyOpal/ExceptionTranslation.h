@@ -6,6 +6,9 @@
 
 #include <boost/python.hpp>
 
+#ifndef PYOPAL_EXCEPTIONTRANSLATION_H
+#define PYOPAL_EXCEPTIONTRANSLATION_H
+
 namespace PyOpal {
 namespace py = boost::python;
 
@@ -20,10 +23,14 @@ void translateException(T const& exception) {
 
 template <class T>
 void translateOpalException(T const& exception) {
-    std::string msg = exception.what()+" in C++ method "+exception.where();
+    std::string msg = exception.what()
+                      +"\nRaised from C++ method "+exception.where();
     PyErr_SetString(PyExc_RuntimeError, msg.c_str());
 } 
 
 
 }
 }
+
+#endif //#ifndef PYOPAL_EXCEPTIONTRANSLATION_H
+

@@ -1,3 +1,5 @@
+#include <boost/python.hpp>
+
 #include "opal.h"
 
 #ifndef PYOPAL_GLOBALS_H
@@ -34,6 +36,9 @@ namespace {
     Inform *gmsg = NULL;
 #endif
 namespace PyOpal {
+
+namespace py = boost::python;
+
 namespace Globals {
 
 void Initialise();
