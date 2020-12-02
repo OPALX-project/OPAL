@@ -42,6 +42,7 @@
 // user parameter?
 const double Ring::lengthTolerance_m = 1e-2;
 const double Ring::angleTolerance_m = 1e-2;
+const Ring* Ring::lastLockedRing_m = NULL;
 
 Ring::Ring(std::string ring)
     : Component(ring), planarArcGeometry_m(1, 1),
@@ -312,6 +313,7 @@ void Ring::lockRing() {
         checkAndClose();
     buildRingSections();
     isLocked_m = true;
+    lastLockedRing_m = this;
     for (size_t i = 0; i < section_list_m.size(); i++) {
     }
 }

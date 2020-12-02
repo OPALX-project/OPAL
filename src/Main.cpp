@@ -85,8 +85,15 @@ bool checkInitAmrFlag(int argc, char* argv[]) {
     return initAMR;
 }
 
+int opalMain(int argc, char *argv[]);
 
 int main(int argc, char *argv[]) {
+    // python has its own main function that can interfere with opal main;
+    // so when calling from python we call opalMain instead
+    return opalMain(argc, argv);
+}
+
+int opalMain(int argc, char *argv[]) {
     Ippl *ippl = new Ippl(argc, argv);
     gmsg = new  Inform("OPAL");
 

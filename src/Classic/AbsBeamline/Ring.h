@@ -326,6 +326,15 @@ class Ring : public Component {
     /** Convert from a Vector_t to a Vector3D */
     static inline Vector3D convert(const Vector_t& vec);
 
+    /** Get the last ring object that was locked or NULL if no ring has been 
+     *  locked. Also returns NULL if the ring was locked and then subsequently
+     *  deleted.
+     * 
+     *  Because there is only one Ring defined, this gives a static accessor
+     *  to the Ring object.
+     */
+    static inline const Ring* getLastLockedRing();
+ 
   private:
     // Force end to have azimuthal angle > start unless crossing phi = pi/-pi
     void resetAzimuths();
@@ -407,6 +416,8 @@ class Ring : public Component {
     // tolerance on checking for geometry consistency
     static const double lengthTolerance_m;
     static const double angleTolerance_m;
+    // pointer to the last ring that was locked
+    static const Ring* lastLockedRing_m;
 };
 
 Vector_t Ring::convert(const Vector3D& vec_3d) {
@@ -415,6 +426,10 @@ Vector_t Ring::convert(const Vector3D& vec_3d) {
 
 Vector3D Ring::convert(const Vector_t& vec_t) {
     return Vector3D(vec_t[0], vec_t[1], vec_t[2]);
+}
+
+const Ring* Ring::getLastLockedRing() {
+    return lastLockedRing_m;
 }
 
 #endif //#ifndef RING_H
