@@ -4,6 +4,9 @@
 
 namespace PyOpal {
 namespace Field {
+std::string field_docstring = 
+  "field module enables user to get the field at a point";
+
 std::string get_field_value_docstring =
   "Get the field value at a point in the field map.\n"
   "\n"

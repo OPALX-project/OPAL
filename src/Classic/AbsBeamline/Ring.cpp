@@ -63,6 +63,7 @@ void Ring::accept(BeamlineVisitor& visitor) const {
 }
 
 Ring::Ring(const Ring& ring)
+
     : Component(ring.getName()),
       planarArcGeometry_m(ring.planarArcGeometry_m),
       lossDS_m(NULL),
@@ -93,9 +94,13 @@ Ring::Ring(const Ring& ring)
 }
 
 Ring::~Ring() {
+    if (lastLockedRing_m == this) {
+        lastLockedRing_m = NULL;
+    }
     delete lossDS_m;
-    for (size_t i = 0; i < section_list_m.size(); ++i)
+    for (size_t i = 0; i < section_list_m.size(); ++i) {
         delete section_list_m[i];
+    }
 }
 
 bool Ring::apply(const size_t &id, const double &t, Vector_t &E,

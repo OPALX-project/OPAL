@@ -5,6 +5,7 @@
 #include <exception>
 
 #include <boost/python.hpp>
+#include <iostream>
 
 #ifndef PYOPAL_EXCEPTIONTRANSLATION_H
 #define PYOPAL_EXCEPTIONTRANSLATION_H
@@ -23,6 +24,7 @@ void translateException(T const& exception) {
 
 template <class T>
 void translateOpalException(T const& exception) {
+    std::cerr << "TRANSLATING OPAL EXCEPTION" << std::endl;
     std::string msg = exception.what()
                       +"\nRaised from C++ method "+exception.where();
     PyErr_SetString(PyExc_RuntimeError, msg.c_str());
