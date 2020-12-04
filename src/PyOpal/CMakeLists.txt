@@ -36,6 +36,8 @@ function(python_module MODULE_NAME PYTHON_SRCS)
         ${OPAL_SOURCE_DIR}/optimizer
     )
     target_link_directories(${MODULE_NAME} PUBLIC ${OPAL_SOURCE_DIR}/src)
+    # could do something using setuptools instead? e.g.
+    # https://stackoverflow.com/questions/42585210/extending-setuptools-extension-to-use-cmake-in-setup-py
     install (TARGETS ${MODULE_NAME} DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
 endfunction(python_module)
 
