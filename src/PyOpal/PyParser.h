@@ -42,5 +42,12 @@ std::string list_objects_docstring =
   "instantiated.\n";
 std::string list_objects(std::string regular_expression);
 
+
+std::string is_initialised_docstring = 
+  "is_initialised()\n"
+  "\n"
+  "Return true if OPAL has been initialised already. OPAL can only be\n"
+  "initialised once per python session.\n";
+bool is_initialised();
 }
 }

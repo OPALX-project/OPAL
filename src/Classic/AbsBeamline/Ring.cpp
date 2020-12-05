@@ -140,7 +140,7 @@ bool Ring::apply(const Vector_t &R, const Vector_t &/*P*/,
         Vector_t B_temp(0.0, 0.0, 0.0);
         Vector_t E_temp(0.0, 0.0, 0.0);
         // Super-TEMP! cyclotron tracker now uses m internally, have to change to mm here to match old field limits -DW
-        outOfBounds &= sections[i]->getFieldValue(R * Vector_t(1000.0), refPartBunch_m->get_centroid() * Vector_t(1000.0), t, E_temp, B_temp);
+        outOfBounds &= sections[i]->getFieldValue(R * Vector_t(1000.0), Vector_t(), t, E_temp, B_temp);
         B += (scale_m * B_temp);
         E += (scale_m * E_temp);
     }

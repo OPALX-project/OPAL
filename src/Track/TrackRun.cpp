@@ -64,6 +64,7 @@ namespace {
         FIELDSOLVER,  // The field solver attached
         BOUNDARYGEOMETRY, // The boundary geometry
         DISTRIBUTION, // The particle distribution
+        KEEPALIVE,    // Keep the track object alive after tracking ends
         TRACKBACK,
         SIZE
     };
@@ -107,6 +108,8 @@ TrackRun::TrackRun():
                            ("BOUNDARYGEOMETRY", "Boundary geometry to be used NONE (default)", "NONE");
     itsAttr[DISTRIBUTION] = Attributes::makeStringArray
                              ("DISTRIBUTION", "List of particle distributions to be used ");
+    itsAttr[KEEPALIVE] = Attributes::makeBool
+                             ("KEEPALIVE", "Keep the track object alive after tracking finishes", false);
     itsAttr[TRACKBACK] = Attributes::makeBool
         ("TRACKBACK", "Track in reverse direction, default: false", false);
     registerOwnership(AttributeHandler::SUB_COMMAND);
@@ -198,7 +201,9 @@ void TrackRun::execute() {
 
     opal->bunchIsAllocated();
 
-    delete itsTracker;
+    if (not Attributes::getBool(itsAttr[KEEPALIVE])) {
+        delete itsTracker;
+    }
 }
 
 

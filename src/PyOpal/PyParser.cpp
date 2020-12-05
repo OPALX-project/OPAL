@@ -19,7 +19,15 @@ namespace py = boost::python;
 
 namespace parser {
 
+bool initialised = false;
+
 py::object initialise_from_opal_file(std::string file_name) {
+    if (initialised) {
+        throw OpalException(
+            "PyParser::initialise_from_opal_file",
+            "PyOpal cannot reinitialise Opal process."
+        );
+    }
     char exe[] = {'p', 'a', 'r', 's', 'e', 'r', '\0'}; // surely not!
     std::vector<char> fname(file_name.size()+1);
     memcpy(&fname.front(), file_name.c_str(), file_name.size()+1); // urg
@@ -30,7 +38,12 @@ py::object initialise_from_opal_file(std::string file_name) {
     argvr[2] = NULL;
     strcpy(argvr[0], exe);
     opalMain(2, argvr);
+    initialised = true;
     return py::object(); //PyNone
+}
+
+bool is_initialised() {
+    return initialised;
 }
 
 std::string list_objects(std::string regular_expression) {
@@ -51,7 +64,12 @@ BOOST_PYTHON_MODULE(parser) {
     );
     py::def("list_objects",
             list_objects,
+            py::args("regular_expression"),
             list_objects_docstring.c_str()
+    );
+    py::def("is_initialised",
+            is_initialised,
+            is_initialised_docstring.c_str()
     );
 }
 }
