@@ -29,3 +29,12 @@ doc/user_guide/opal_user_guide.pdf
 doc/user_guide/opal_user_guide.run.xml
 doc/user_guide/opal_user_guide.synctex.gz
 doc/user_guide/opal_user_guide.toc
+
+tests/opal_src/PyOpal/dummy_lattice/RINGDEF.loss
+tests/opal_src/PyOpal/dummy_lattice/dummy_lattice-trackOrbit.dat
+tests/opal_src/PyOpal/dummy_lattice/dummy_lattice.h5
+tests/opal_src/PyOpal/dummy_lattice/dummy_lattice.lbal
+tests/opal_src/PyOpal/dummy_lattice/dummy_lattice.mem
+tests/opal_src/PyOpal/dummy_lattice/dummy_lattice.stat
+tests/opal_src/PyOpal/dummy_lattice/timing.dat
+tests/opal_src/PyOpal/test.log
