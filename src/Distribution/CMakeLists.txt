@@ -1,5 +1,6 @@
 set (_SRCS
     Distribution.cpp
+    FromFile.cpp
     LaserProfile.cpp
     RealDiracMatrix.cpp
     SigmaGenerator.cpp
@@ -14,6 +15,7 @@ add_opal_sources(${_SRCS})
 set (HDRS
     ClosedOrbitFinder.h
     Distribution.h
+    FromFile.h
     LaserProfile.h
     MapGenerator.h
     matrix_vector_operation.h

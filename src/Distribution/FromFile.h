@@ -3,6 +3,8 @@
 
 #include "DistributionBase.h"
 
+#include <fstream>
+
 class FromFile: public DistributionBase
 {
  public:
@@ -14,6 +16,10 @@ class FromFile: public DistributionBase
     Inform& print(Inform& os) const override;
     DistributionType getType() const override;
     double getEmissionTime() const override;
+
+private:
+    size_t getNumberOfParticlesInFile(std::ifstream &inputFile);
+
 };
 
 inline
