@@ -3,10 +3,24 @@
 
 #include "Algorithms/PBunchDefs.h"
 
+#include <vector>
+
 class DistributionBase
 {
  public:
     DistributionBase() {}
+{
+    enum class DistributionType {
+        NODIST,
+        FROMFILE,
+        GAUSS,
+        BINOMIAL,
+        FLATTOP,
+        MULTIGAUSS,
+        GUNGAUSSFLATTOPTH,
+        ASTRAFLATTOPTH,
+        MATCHEDGAUSS
+    };
 
     struct ParticlePhaseSpace
     {
@@ -17,7 +31,8 @@ class DistributionBase
     virtual std::vector<ParticlePhaseSpace> create(size_t numberOfParticles,
                                                    double massInEv,
                                                    double charge) = 0;
-    virtual void print(Inform &os) const = 0;
+    virtual Inform& void print(Inform& os) const = 0;
+    virtual DistributionType getType() const = 0;
     virtual double getEmissionTime() const = 0;
     
 };

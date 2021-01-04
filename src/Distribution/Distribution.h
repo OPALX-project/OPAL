@@ -48,34 +48,14 @@ class PartBins;
 class LaserProfile;
 class H5PartWrapper;
 
-namespace DistrTypeT
-{
-    enum DistrTypeT {NODIST,
-                     FROMFILE,
-                     GAUSS,
-                     BINOMIAL,
-                     FLATTOP,
-                     MULTIGAUSS,
-                     GUNGAUSSFLATTOPTH,
-                     ASTRAFLATTOPTH,
-                     MATCHEDGAUSS
-                    };
-}
+enum class EmissionModelT {NONE,
+                           ASTRA,
+                           NONEQUIL
+                           };
 
-namespace EmissionModelT
-{
-    enum EmissionModelT {NONE,
-                         ASTRA,
-                         NONEQUIL
-                        };
-}
-
-namespace InputMomentumUnitsT
-{
-    enum InputMomentumUnitsT {NONE,
-                              EV
-                              };
-}
+enum class InputMomentumUnitsT {NONE,
+                                EV
+                                };
 
 namespace Attrib
 {
