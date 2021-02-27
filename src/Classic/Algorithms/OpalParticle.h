@@ -25,191 +25,250 @@ class OpalParticle {
 public:
 
     // Particle coordinate numbers.
-    enum { X, Y, T, PX, PY, PT };
+    enum { X, Y, L, INVALID };
 
+    enum Type {
+               SPATIAL = 0,
+               TEMPORAL
+    };
     /// Constructor.
     //  Construct particle with the given coordinates.
-    OpalParticle(double x, double px,
+    OpalParticle(unsigned int id,
+                 double x, double px,
                  double y, double py,
-                 double t, double pt,
-                 double q, double m);
+                 double z, double pz,
+                 double time,
+                 double q, double m, Type type = TEMPORAL);
+
+    OpalParticle(unsigned int id,
+                 Vector_t const& R, Vector_t const& P,
+                 double time, double q, double m, Type type = TEMPORAL);
 
     OpalParticle();
 
-    /// Get coordinate.
-    //  Access coordinate by index.
-    //  Note above order of phase space coordinates!
-    double &operator[](int);
+    /// Set the horizontal position in m.
+    void setX(double) ;
 
-    /// Get reference to horizontal position in m.
-    double &x() ;
+    /// Set the horizontal momentum.
+    void setPx(double);
 
-    /// Get reference to horizontal momentum (no dimension).
-    double &px();
+    /// Set the vertical displacement in m.
+    void setY(double) ;
 
-    /// Get reference to vertical displacement in m.
-    double &y() ;
+    /// Set the vertical momentum.
+    void setPy(double);
 
-    /// Get reference to vertical momentum (no dimension).
-    double &py();
+    /// Set longitudinal position in m.
+    void setZ(double) ;
 
-    /// Get reference to longitudinal displacement c*t in m.
-    double &t() ;
+    /// Set the longitudinal momentum
+    void setPz(double);
 
-    /// Get reference to relative momentum error (no dimension).
-    double &pt();
+    /// Set position in m
+    void setR(Vector_t const&);
 
-    /// Get reference to position in m
-    Vector_t &R();
+    /// Set momentum
+    void setP(Vector_t const&);
 
-    /// Get reference to momentum
-    Vector_t &P();
+    /// Set the time
+    void setTime(double t);
+
+    /// Get the id of the particle
+    size_t getId() const;
 
     /// Get coordinate.
     //  Access coordinate by index for constant particle.
     double operator[](int) const;
 
     /// Get horizontal position in m.
-    double x() const;
+    double getX() const;
 
     /// Get horizontal momentum (no dimension).
-    double px() const;
+    double getPx() const;
 
     /// Get vertical displacement in m.
-    double y() const;
+    double getY() const;
 
     /// Get vertical momentum (no dimension).
-    double py() const;
+    double getPy() const;
 
     /// Get longitudinal displacement c*t in m.
-    double t() const;
+    double getZ() const;
 
     /// Get relative momentum error (no dimension).
-    double pt() const;
+    double getPz() const;
 
     /// Get position in m
-    Vector_t R() const;
+    const Vector_t& getR() const;
 
     /// Get momentum
-    Vector_t P() const;
+    const Vector_t& getP() const;
+
+    /// Get time
+    double getTime() const;
 
     /// Get charge in Coulomb
-    double charge() const;
+    double getCharge() const;
 
     /// Get mass in GeV/c^2
-    double mass() const;
+    double getMass() const;
+
+    Type getType() const;
 
 private:
-
-    // The particle's phase space coordinates:
+    size_t id_m;
     Vector_t R_m;
     Vector_t P_m;
+    double time_m;
     double charge_m;
     double mass_m;
+    Type type_m;
 };
 
 
-// Inline member functions.
-// ------------------------------------------------------------------------
+// inline
+// double &OpalParticle::operator[](int i)
+// {
+//     return i < INVALID? R_m[i] : P_m[i - INVALID];
+// }
 
-inline double &OpalParticle::operator[](int i)
+inline
+void OpalParticle::setX(double val)
 {
-    return i < PX? R_m[i] : P_m[i - PX];
+    R_m[X] = val;
 }
 
-inline double &OpalParticle::x()
+inline
+void OpalParticle::setY(double val)
+{
+    R_m[Y] = val;
+}
+
+inline
+void OpalParticle::setZ(double val)
+{
+    R_m[L] = val;
+}
+
+inline
+void OpalParticle::setPx(double val)
+{
+    P_m[X] = val;
+}
+
+inline
+void OpalParticle::setPy(double val)
+{
+    P_m[Y] = val;
+}
+
+inline
+void OpalParticle::setPz(double val)
+{
+    P_m[L]  = val;
+}
+
+inline
+void OpalParticle::setR(Vector_t const& R)
+{
+    R_m = R;
+}
+
+inline
+void OpalParticle::setP(Vector_t const& P)
+{
+    P_m = P;
+}
+
+inline
+void OpalParticle::setTime(double t)
+{
+    time_m = t;
+}
+
+inline
+size_t OpalParticle::getId() const
+{
+    return id_m;
+}
+
+inline
+double OpalParticle::operator[](int i) const
+{
+    PAssert_LT(i, 6);
+    return i < INVALID? R_m[i]: P_m[i - INVALID];
+}
+
+inline
+double OpalParticle::getX() const
 {
     return R_m[X];
 }
 
-inline double &OpalParticle::y()
+inline
+double OpalParticle::getY() const
 {
     return R_m[Y];
 }
 
-inline double &OpalParticle::t()
+inline
+double OpalParticle::getZ() const
 {
-    return R_m[T];
+    return R_m[L];
 }
 
-inline double &OpalParticle::px()
-{
-    return P_m[X];
-}
-
-inline double &OpalParticle::py()
-{
-    return P_m[Y];
-}
-
-inline double &OpalParticle::pt()
-{
-    return P_m[T];
-}
-
-inline Vector_t &OpalParticle::R()
-{
-    return R_m;
-}
-
-inline Vector_t &OpalParticle::P()
-{
-    return P_m;
-}
-
-inline double OpalParticle::operator[](int i) const
-{
-    return i < PX? R_m[i]: P_m[i - PX];
-}
-
-inline double OpalParticle::x() const
-{
-    return R_m[X];
-}
-
-inline double OpalParticle::y() const
-{
-    return R_m[Y];
-}
-
-inline double OpalParticle::t() const
-{
-    return R_m[T];
-}
-
-inline double OpalParticle::px() const
+inline
+double OpalParticle::getPx() const
 {
     return P_m[X];
 }
 
-inline double OpalParticle::py() const
+inline
+double OpalParticle::getPy() const
 {
     return P_m[Y];
 }
 
-inline double OpalParticle::pt() const
+inline
+double OpalParticle::getPz() const
 {
-    return P_m[T];
+    return P_m[L];
 }
 
-inline Vector_t OpalParticle::R() const
+inline
+const Vector_t& OpalParticle::getR() const
 {
     return R_m;
 }
 
-inline Vector_t OpalParticle::P() const
+inline
+const Vector_t& OpalParticle::getP() const
 {
     return P_m;
 }
 
-inline double OpalParticle::charge() const
+inline
+double OpalParticle::getTime() const
+{
+    return time_m;
+}
+
+inline
+double OpalParticle::getCharge() const
 {
     return charge_m;
 }
 
-inline double OpalParticle::mass() const
+inline
+double OpalParticle::getMass() const
 {
     return mass_m;
+}
+
+inline
+OpalParticle::Type OpalParticle::getType() const
+{
+    return type_m;
 }
 
 #endif // CLASSIC_OpalParticle_HH

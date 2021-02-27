@@ -78,7 +78,7 @@ bool Septum::doPreCheck(PartBunchBase<double, 3> *bunch) {
     return false;
 }
 
-bool Septum::doCheck(PartBunchBase<double, 3> *bunch, const int /*turnnumber*/, const double /*t*/, const double /*tstep*/) {
+bool Septum::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const double /*t*/, const double /*tstep*/) {
 
     bool flag = false;
     const double slope = (yend_m - ystart_m) / (xend_m - xstart_m);
@@ -100,7 +100,12 @@ bool Septum::doCheck(PartBunchBase<double, 3> *bunch, const int /*turnnumber*/, 
            R(1) > ystart_m    &&
            R(1) < yend_m) {
 
-            lossDs_m->addParticle(R, bunch->P[i], bunch->ID[i]);
+            lossDs_m->addParticle(OpalParticle(bunch->ID[i],
+                                               R, bunch->P[i],
+                                               bunch->getT(),
+                                               bunch->Q[i], bunch->M[i],
+                                               OpalParticle::SPATIAL),
+                                  std::make_pair(turnnumber, bunch->bunchNum[i]));
             bunch->Bin[i] = -1;
             flag = true;
         }

@@ -408,8 +408,9 @@ bool Cyclotron::apply(const size_t &id, const double &t, Vector_t &E, Vector_t &
     }
 
     if (flagNeedUpdate) {
-        lossDs_m->addParticle(RefPartBunch_m->R[id], RefPartBunch_m->P[id],
-                              id, t, 0, RefPartBunch_m->bunchNum[id]);
+        lossDs_m->addParticle(OpalParticle(id, RefPartBunch_m->R[id], RefPartBunch_m->P[id],
+                                           t, RefPartBunch_m->Q[id], RefPartBunch_m->M[id]),
+                              std::make_pair(0, RefPartBunch_m->bunchNum[id]));
         RefPartBunch_m->Bin[id] = -1;
     }
 
@@ -438,23 +439,23 @@ bool Cyclotron::apply(const Vector_t &R, const Vector_t &/*P*/,
 
     // Necessary for gap phase output -DW
     if (0 <= tet && tet <= 45) waiting_for_gap = 1;
-    
+
     // dB_{z}/dr, dB_{z}/dtheta, B_{z}
     double brint = 0.0, btint = 0.0, bzint = 0.0;
-    
+
     if ( this->interpolate(rad, tet_rad, brint, btint, bzint) ) {
-        
+
         /* Br */
         double br = - brint * R[2];
-        
+
         /* Btheta */
         double bt = - btint / rad * R[2];
-        
+
         /* Bz */
         double bz = - bzint;
 
         this->applyTrimCoil(rad, R[2], tet_rad, br, bz);
-        
+
         /* Br Btheta -> Bx By */
         B[0] = br * std::cos(tet_rad) - bt * std::sin(tet_rad);
         B[1] = br * std::sin(tet_rad) + bt * std::cos(tet_rad);
@@ -697,11 +698,11 @@ bool Cyclotron::interpolate(const double& rad,
     const double wr1 = xir - (double)ir;
     // wr2 : the relative distance to the outer path radius
     const double wr2 = 1.0 - wr1;
-    
+
     // the corresponding angle on the field map
     // Note: this does not work if the start point of field map does not equal zero.
     double tet_map = std::fmod(tet_rad * Physics::rad2deg, 360.0 / symmetry_m);
-    
+
     double xit = tet_map / BP.dtet;
 
     int it = (int) xit;

@@ -211,11 +211,11 @@ public:
 
     void push_back(OpalParticle const& p);
 
-    void set_part(FVector<double, 6> z, int ii);
+    void setParticle(FVector<double, 6> z, int ii);
 
-    void set_part(OpalParticle const& p, int ii);
+    void setParticle(OpalParticle const& p, int ii);
 
-    OpalParticle get_part(int ii);
+    OpalParticle getParticle(int ii);
 
     class ConstIterator {
         friend class PartBunchBase<T, Dim>;
@@ -251,9 +251,9 @@ public:
                 throw GeneralClassicException("PartBunchBase::ConstIterator::operator*", "out of bouds");
             }
 
-            return OpalParticle(bunch_m->R[index_m](0), bunch_m->P[index_m](0),
-                                bunch_m->R[index_m](1), bunch_m->P[index_m](1),
-                                bunch_m->R[index_m](2), bunch_m->P[index_m](2),
+            return OpalParticle(bunch_m->ID[index_m],
+                                bunch_m->R[index_m], bunch_m->P[index_m],
+                                bunch_m->getT(),
                                 bunch_m->Q[index_m], bunch_m->M[index_m]);
         }
 

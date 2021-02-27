@@ -15,7 +15,8 @@ class DistributionMoments {
 public:
     DistributionMoments();
 
-    void compute(std::vector<OpalParticle> const&);
+    void compute(const std::vector<OpalParticle>::const_iterator &,
+                 const std::vector<OpalParticle>::const_iterator &);
     void compute(PartBunchBase<double, 3> const&);
     void computeMeanKineticEnergy(PartBunchBase<double, 3> const&);
 
@@ -37,8 +38,9 @@ public:
 
 
 private:
-    template<class Container>
-    void computeMoments(Container const&);
+    template<class InputIt>
+    void computeMoments(const InputIt &, const InputIt &);
+    void fillMembers(std::vector<double> const&);
     void reset();
 
     Vector_t meanR_m;

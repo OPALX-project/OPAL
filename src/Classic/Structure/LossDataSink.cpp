@@ -1,26 +1,17 @@
 #include "Structure/LossDataSink.h"
 
-#include "Utilities/Options.h"
-#include "AbstractObjects/OpalData.h"
-#include "Utilities/GeneralClassicException.h"
-#include "Utilities/Util.h"
-
 #include <boost/filesystem.hpp>
-#include "OPALconfig.h"
-
-#include "Message/GlobalComm.h"
-#include "Utility/IpplInfo.h"
-
 #include <cmath>
 
-#define ADD_ATTACHMENT( fname ) {             \
-    h5_int64_t h5err = H5AddAttachment (H5file_m, fname); \
-    if (h5err <= H5_ERR) {                                              \
-        std::stringstream ss;                                               \
-        ss << "failed to add attachment " << fname << " to file " << fn_m; \
-        throw GeneralClassicException(std::string(__func__), ss.str()); \
-    }\
-}
+#include "AbstractObjects/OpalData.h"
+#include "Algorithms/DistributionMoments.h"
+#include "Message/GlobalComm.h"
+#include "OPALconfig.h"
+#include "Utilities/GeneralClassicException.h"
+#include "Utilities/Options.h"
+#include "Utilities/Util.h"
+#include "Utility/IpplInfo.h"
+
 #define WRITE_FILEATTRIB_STRING( attribute, value ) {             \
     h5_int64_t h5err = H5WriteFileAttribString (H5file_m, attribute, value); \
     if (h5err <= H5_ERR) {                                              \
@@ -103,6 +94,34 @@
     }\
 }
 
+namespace {
+    void f64transform(const std::vector<OpalParticle> &particles,
+                   unsigned int startIdx,
+                   unsigned int numParticles,
+                   h5_float64_t *buffer,
+                   std::function<h5_float64_t(const OpalParticle&)> select) {
+        std::transform(particles.begin() + startIdx,
+                       particles.begin() + startIdx + numParticles,
+                       buffer, select);
+    }
+    void i64transform(const std::vector<OpalParticle> &particles,
+                   unsigned int startIdx,
+                   unsigned int numParticles,
+                   h5_int64_t *buffer,
+                   std::function<h5_int64_t(const OpalParticle&)> select) {
+        std::transform(particles.begin() + startIdx,
+                       particles.begin() + startIdx + numParticles,
+                       buffer, select);
+    }
+
+    void cminmax(double &min, double &max, double val) {
+        if (-val > min) {
+            min = -val;
+        } else if (val > max) {
+            max = val;
+        }
+    }
+}
 
 SetStatistics::SetStatistics():
     element_m(""),
@@ -136,16 +155,9 @@ LossDataSink::LossDataSink(std::string elem, bool hdf5Save, ElementBase::Element
     H5call_m(0),
     type_m(type)
 {
-    x_m.clear();
-    y_m.clear();
-    z_m.clear();
-    px_m.clear();
-    py_m.clear();
-    pz_m.clear();
-    id_m.clear();
-    turn_m.clear();
-    bunchNum_m.clear();
-    time_m.clear();
+    particles_m.clear();
+    turnNumber_m.clear();
+    bunchNumber_m.clear();
 }
 
 LossDataSink::LossDataSink(const LossDataSink &rsh):
@@ -160,16 +172,9 @@ LossDataSink::LossDataSink(const LossDataSink &rsh):
     spos_m(rsh.spos_m),
     type_m(rsh.type_m)
 {
-    x_m.clear();
-    y_m.clear();
-    z_m.clear();
-    px_m.clear();
-    py_m.clear();
-    pz_m.clear();
-    id_m.clear();
-    turn_m.clear();
-    bunchNum_m.clear();
-    time_m.clear();
+    particles_m.clear();
+    turnNumber_m.clear();
+    bunchNumber_m.clear();
 }
 
 LossDataSink::LossDataSink() {
@@ -208,18 +213,14 @@ void LossDataSink::writeHeaderH5() {
     WRITE_FILEATTRIB_STRING ("pzUnit", "#beta#gamma");
     WRITE_FILEATTRIB_STRING ("idUnit", "1");
 
-    /// in case of circular machines
-    if (hasTimeAttribute()) {
-        WRITE_FILEATTRIB_STRING ("turnUnit", "1");
-        WRITE_FILEATTRIB_STRING ("timeUnit", "s");
-    }
+    WRITE_FILEATTRIB_STRING ("turnUnit", "1");
+    WRITE_FILEATTRIB_STRING ("timeUnit", "s");
+
     WRITE_FILEATTRIB_STRING ("SPOSUnit", "mm");
     WRITE_FILEATTRIB_STRING ("TIMEUnit", "s");
 
     WRITE_FILEATTRIB_STRING ("mpart", "GeV");
     WRITE_FILEATTRIB_STRING ("qi", "C");
-
-    // ADD_ATTACHMENT (OpalData::getInstance()->getInputFn().c_str());
 }
 
 void LossDataSink::addReferenceParticle(const Vector_t &x,
@@ -235,24 +236,12 @@ void LossDataSink::addReferenceParticle(const Vector_t &x,
     refTime_m.push_back(time);
 }
 
-void LossDataSink::addParticle(const Vector_t &x,const  Vector_t &p, const size_t  id) {
-    x_m.push_back(x(0));
-    y_m.push_back(x(1));
-    z_m.push_back(x(2));
-    px_m.push_back(p(0));
-    py_m.push_back(p(1));
-    pz_m.push_back(p(2));
-    id_m.push_back(id);
-}
-
-// For ring type simulation, dump the time and turn number
-void LossDataSink::addParticle(const Vector_t &x, const Vector_t &p, const size_t id,
-                               const double time, const size_t turn,
-                               const size_t& bunchNum) {
-    addParticle(x, p, id);
-    turn_m.push_back(turn);
-    time_m.push_back(time);
-    bunchNum_m.push_back(bunchNum);
+void LossDataSink::addParticle(const OpalParticle &particle, const boost::optional<std::pair<int, short>> &turnBunchNumPair) {
+    particles_m.push_back(particle);
+    if (turnBunchNumPair) {
+        turnNumber_m.push_back(turnBunchNumPair.get().first);
+        bunchNumber_m.push_back(turnBunchNumPair.get().second);
+    }
 }
 
 void LossDataSink::save(unsigned int numSets, OpalData::OPENMODE openMode) {
@@ -298,16 +287,9 @@ void LossDataSink::save(unsigned int numSets, OpalData::OPENMODE openMode) {
     }
     Ippl::Comm->barrier();
 
-    x_m.clear();
-    y_m.clear();
-    z_m.clear();
-    px_m.clear();
-    py_m.clear();
-    pz_m.clear();
-    id_m.clear();
-    turn_m.clear();
-    bunchNum_m.clear();
-    time_m.clear();
+    particles_m.clear();
+    turnNumber_m.clear();
+    bunchNumber_m.clear();
     spos_m.clear();
     refTime_m.clear();
     RefPartR_m.clear();
@@ -323,28 +305,20 @@ void LossDataSink::save(unsigned int numSets, OpalData::OPENMODE openMode) {
 // the nodes that didn't enter the saveH5 function. -DW
 bool LossDataSink::hasNoParticlesToDump() {
 
-    size_t nLoc = x_m.size();
+    size_t nLoc = particles_m.size();
 
     reduce(nLoc, nLoc, OpAddAssign());
 
     return nLoc == 0;
 }
 
-bool LossDataSink::hasTimeAttribute() {
-
-    size_t tLoc = time_m.size();
-
-    reduce(tLoc, tLoc, OpAddAssign());
-
-    return tLoc > 0;
-}
-
 void LossDataSink::saveH5(unsigned int setIdx) {
-    size_t startIdx = 0;
-    size_t nLoc = x_m.size();
+    size_t startIdx = 0, endIdx = 0;
+    size_t nLoc = particles_m.size();
     if (setIdx + 1 < startSet_m.size()) {
         startIdx = startSet_m[setIdx];
-        nLoc = startSet_m[setIdx + 1] - startSet_m[setIdx];
+        endIdx = startSet_m[setIdx + 1];
+        nLoc = endIdx - startIdx;
     }
 
     std::unique_ptr<size_t[]>  locN(new size_t[Ippl::getNodes()]);
@@ -357,6 +331,9 @@ void LossDataSink::saveH5(unsigned int setIdx) {
     locN[Ippl::myNode()] = nLoc;
     reduce(locN.get(), locN.get() + Ippl::getNodes(), globN.get(), OpAddAssign());
 
+    DistributionMoments engine;
+    engine.compute(particles_m.begin() + startIdx, particles_m.begin() + endIdx);
+
     /// Set current record/time step.
     SET_STEP ();
     SET_NUM_PARTICLES (nLoc);
@@ -368,24 +345,77 @@ void LossDataSink::saveH5(unsigned int setIdx) {
         WRITE_STEPATTRIB_FLOAT64 ("RefPartP", (h5_float64_t *)&(RefPartP_m[setIdx]), 3);
         WRITE_STEPATTRIB_INT64("GlobalTrackStep", &(globalTrackStep_m[setIdx]), 1);
     }
-    // Write all data
-    WRITE_DATA_FLOAT64 ("x", &x_m[startIdx]);
-    WRITE_DATA_FLOAT64 ("y", &y_m[startIdx]);
-    WRITE_DATA_FLOAT64 ("z", &z_m[startIdx]);
-    WRITE_DATA_FLOAT64 ("px", &px_m[startIdx]);
-    WRITE_DATA_FLOAT64 ("py", &py_m[startIdx]);
-    WRITE_DATA_FLOAT64 ("pz", &pz_m[startIdx]);
 
-    /// Write particle id numbers.
-    std::vector<h5_int64_t> larray(id_m.begin() + startIdx, id_m.end() );
-    WRITE_DATA_INT64 ("id", &larray[0]);
-    if (hasTimeAttribute()) {
-        WRITE_DATA_FLOAT64 ("time", &time_m[startIdx]);
-        larray.assign (turn_m.begin() + startIdx, turn_m.end() );
-        WRITE_DATA_INT64 ("turn", &larray[0]);
-        larray.assign (bunchNum_m.begin() + startIdx, bunchNum_m.end() );
-        WRITE_DATA_INT64 ("bunchNumber", &larray[0]);
+    Vector_t tmpVector;
+    double tmpDouble;
+    WRITE_STEPATTRIB_FLOAT64("centroid", (tmpVector = engine.getMeanPosition(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("RMSX", (tmpVector = engine.getStandardDeviationPosition(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("MEANP", (tmpVector = engine.getMeanMomentum(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("RMSP", (tmpVector = engine.getStandardDeviationMomentum(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("#varepsilon", (tmpVector = engine.getNormalizedEmittance(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("#varepsilon-geom", (tmpVector = engine.getGeometricEmittance(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("ENERGY", (tmpDouble = engine.getMeanKineticEnergy(), &tmpDouble), 1);
+    WRITE_STEPATTRIB_FLOAT64("dE", (tmpDouble = engine.getStandardDeviationKineticEnergy(), &tmpDouble), 1);
+
+    double totalCharge = 0;
+    std::for_each(particles_m.begin() + startIdx,
+                  particles_m.begin() + endIdx,
+                  [&totalCharge](const OpalParticle& particle) { totalCharge += particle.getCharge(); });
+    WRITE_STEPATTRIB_FLOAT64("TotalCharge", &totalCharge, 1);
+
+    double totalMass = 0;
+    std::for_each(particles_m.begin() + startIdx,
+                  particles_m.begin() + endIdx,
+                  [&totalMass](const OpalParticle& particle) { totalMass += particle.getMass(); });
+    WRITE_STEPATTRIB_FLOAT64("TotalMass", &totalMass, 1);
+
+    // Write all data
+    std::vector<char> buffer(nLoc * sizeof(h5_float64_t));
+    h5_float64_t *f64buffer = reinterpret_cast<h5_float64_t*>(&buffer[0]);
+    h5_int64_t *i64buffer = reinterpret_cast<h5_int64_t*>(&buffer[0]);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getX(); });
+    WRITE_DATA_FLOAT64 ("x", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getY(); });
+    WRITE_DATA_FLOAT64 ("y", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getZ(); });
+    WRITE_DATA_FLOAT64 ("z", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getPx(); });
+    WRITE_DATA_FLOAT64 ("px", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getPy(); });
+    WRITE_DATA_FLOAT64 ("py", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getPz(); });
+    WRITE_DATA_FLOAT64 ("pz", f64buffer);
+    ::i64transform(particles_m, startIdx, nLoc, i64buffer,
+                   [](const OpalParticle &particle) { return particle.getId(); });
+    WRITE_DATA_INT64 ("id", i64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getCharge(); });
+    WRITE_DATA_FLOAT64 ("q", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getMass(); });
+    WRITE_DATA_FLOAT64 ("m", f64buffer);
+
+    if (turnNumber_m.size() == particles_m.size()) {
+        std::copy(turnNumber_m.begin() + startIdx,
+                  turnNumber_m.begin() + startIdx + nLoc,
+                  i64buffer);
+        WRITE_DATA_INT64 ("turn", i64buffer);
+
+        std::copy(bunchNumber_m.begin() + startIdx,
+                  bunchNumber_m.begin() + startIdx + nLoc,
+                  i64buffer);
+        WRITE_DATA_INT64 ("bunchNumber", i64buffer);
     }
+
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getTime(); });
+    WRITE_DATA_FLOAT64 ("time", f64buffer);
 
     ++ H5call_m;
 }
@@ -396,25 +426,25 @@ void LossDataSink::saveASCII() {
       ASCII output
     */
     int tag = Ippl::Comm->next_tag(IPPL_APP_TAG3, IPPL_APP_CYCLE);
-    bool hasTime = hasTimeAttribute(); // reduce needed for the case when node 0 has no particles
+    bool hasTurn = turnNumber_m.size() == particles_m.size();
     if(Ippl::Comm->myNode() == 0) {
-        const unsigned partCount = x_m.size();
+        const unsigned partCount = particles_m.size();
 
         for(unsigned i = 0; i < partCount; i++) {
             os_m << element_m   << "   ";
-            os_m << x_m[i] << "   ";
-            os_m << y_m[i] << "   ";
-            os_m << z_m[i] << "   ";
-            os_m << px_m[i] << "   ";
-            os_m << py_m[i] << "   ";
-            os_m << pz_m[i] << "   ";
-            os_m << id_m[i]   << "   ";
-            if (hasTime) {
-                os_m << turn_m[i] << "   ";
-                os_m << bunchNum_m[i] << "   ";
-                os_m << time_m[i];
+            os_m << particles_m[i].getX() << "   ";
+            os_m << particles_m[i].getY() << "   ";
+            os_m << particles_m[i].getZ() << "   ";
+            os_m << particles_m[i].getPx() << "   ";
+            os_m << particles_m[i].getPy() << "   ";
+            os_m << particles_m[i].getPz() << "   ";
+            os_m << particles_m[i].getId() << "   ";
+            if (hasTurn) {
+                os_m << turnNumber_m[i] << "   ";
+                os_m << bunchNumber_m[i];
             }
-            os_m << std::endl;
+            os_m << particles_m[i].getTime() << "   "
+                 << std::endl;
         }
 
         int notReceived =  Ippl::getNodes() - 1;
@@ -427,56 +457,47 @@ void LossDataSink::saveASCII() {
             }
             notReceived--;
             rmsg->get(&dataBlocks);
+            rmsg->get(&hasTurn);
             for(unsigned i = 0; i < dataBlocks; i++) {
                 long id;
                 size_t bunchNum, turn;
                 double rx, ry, rz, px, py, pz, time;
-                rmsg->get(&id);
-                rmsg->get(&rx);
-                rmsg->get(&ry);
-                rmsg->get(&rz);
-                rmsg->get(&px);
-                rmsg->get(&py);
-                rmsg->get(&pz);
-                if (hasTime) {
-                    rmsg->get(&turn);
-                    rmsg->get(&bunchNum);
-                    rmsg->get(&time);
-                }
+
                 os_m << element_m << "   ";
-                os_m << rx << "   ";
-                os_m << ry << "   ";
-                os_m << rz << "   ";
-                os_m << px << "   ";
-                os_m << py << "   ";
-                os_m << pz << "   ";
-                os_m << id << "   ";
-                if (hasTime) {
-                    os_m << turn << "   ";
-                    os_m << bunchNum << "   ";
-                    os_m << time;
+                os_m << (rmsg->get(&rx), rx) << "   ";
+                os_m << (rmsg->get(&ry), rx) << "   ";
+                os_m << (rmsg->get(&rz), rz) << "   ";
+                os_m << (rmsg->get(&px), px) << "   ";
+                os_m << (rmsg->get(&py), py) << "   ";
+                os_m << (rmsg->get(&pz), pz) << "   ";
+                os_m << (rmsg->get(&id), id) << "   ";
+                if (hasTurn) {
+                    os_m << (rmsg->get(&turn), turn) << "   ";
+                    os_m << (rmsg->get(&bunchNum), bunchNum) << "   ";
                 }
-                os_m << std::endl;
+                os_m << (rmsg->get(&time), time)
+                     << std::endl;
             }
             delete rmsg;
         }
     } else {
         Message *smsg = new Message();
-        const unsigned msgsize = x_m.size();
+        const unsigned msgsize = particles_m.size();
         smsg->put(msgsize);
+        smsg->put(hasTurn);
         for(unsigned i = 0; i < msgsize; i++) {
-            smsg->put(id_m[i]);
-            smsg->put(x_m[i]);
-            smsg->put(y_m[i]);
-            smsg->put(z_m[i]);
-            smsg->put(px_m[i]);
-            smsg->put(py_m[i]);
-            smsg->put(pz_m[i]);
-            if (hasTime) {
-                smsg->put(turn_m[i]);
-                smsg->put(bunchNum_m[i]);
-                smsg->put(time_m[i]);
+            smsg->put(particles_m[i].getId());
+            smsg->put(particles_m[i].getX());
+            smsg->put(particles_m[i].getY());
+            smsg->put(particles_m[i].getZ());
+            smsg->put(particles_m[i].getPx());
+            smsg->put(particles_m[i].getPy());
+            smsg->put(particles_m[i].getPz());
+            if (hasTurn) {
+                smsg->put(turnNumber_m[i]);
+                smsg->put(bunchNumber_m[i]);
             }
+            smsg->put(particles_m[i].getTime());
         }
         bool res = Ippl::Comm->send(smsg, 0, tag);
         if(! res)
@@ -505,10 +526,9 @@ void LossDataSink::saveASCII() {
 */
 void LossDataSink::splitSets(unsigned int numSets) {
     if (numSets <= 1 ||
-        x_m.size() == 0 ||
-        time_m.size() != x_m.size()) return;
+        particles_m.size() == 0) return;
 
-    const size_t nLoc = x_m.size();
+    const size_t nLoc = particles_m.size();
     size_t avgNumPerSet = nLoc / numSets;
     std::vector<size_t> numPartsInSet(numSets, avgNumPerSet);
     for (unsigned int j = 0; j < (nLoc - numSets * avgNumPerSet); ++ j) {
@@ -520,7 +540,7 @@ void LossDataSink::splitSets(unsigned int numSets) {
     double* meanT = &data[0];
     double* numParticles = &data[numSets];
     std::vector<double> timeRange(numSets, 0.0);
-    double maxT = time_m[0];
+    double maxT = particles_m[0].getTime();
 
     for (unsigned int iteration = 0; iteration < 2; ++ iteration) {
         size_t partIdx = 0;
@@ -528,8 +548,8 @@ void LossDataSink::splitSets(unsigned int numSets) {
 
             const size_t &numThisSet = numPartsInSet[j];
             for (size_t k = 0; k < numThisSet; ++ k, ++ partIdx) {
-                meanT[j] += time_m[partIdx];
-                maxT = std::max(maxT, time_m[partIdx]);
+                meanT[j] += particles_m[partIdx].getTime();
+                maxT = std::max(maxT, particles_m[partIdx].getTime());
             }
             numParticles[j] = numThisSet;
         }
@@ -552,7 +572,7 @@ void LossDataSink::splitSets(unsigned int numSets) {
         size_t setNum = 0;
         size_t idxPrior = 0;
         for (size_t idx = 0; idx < nLoc; ++ idx) {
-            if (time_m[idx] > timeRange[setNum]) {
+            if (particles_m[idx].getTime() > timeRange[setNum]) {
                 numPartsInSet[setNum] = idx - idxPrior;
                 idxPrior = idx;
                 ++ setNum;
@@ -563,16 +583,6 @@ void LossDataSink::splitSets(unsigned int numSets) {
 
     for (unsigned int i = 0; i < numSets; ++ i) {
         startSet_m[i + 1] = startSet_m[i] + numPartsInSet[i];
-    }
-}
-
-namespace {
-    void cminmax(double &min, double &max, double val) {
-        if (-val > min) {
-            min = -val;
-        } else if (val > max) {
-            max = val;
-        }
     }
 }
 
@@ -590,7 +600,7 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
     Util::KahanAccumulation *localOthers = data + 43;
 
     size_t startIdx = 0;
-    size_t nLoc = x_m.size();
+    size_t nLoc = particles_m.size();
     if (setIdx + 1 < startSet_m.size()) {
         startIdx = startSet_m[setIdx];
         nLoc = startSet_m[setIdx + 1] - startSet_m[setIdx];
@@ -600,12 +610,12 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
 
     unsigned int idx = startIdx;
     for(unsigned long k = 0; k < nLoc; ++ k, ++ idx) {
-        part[1] = px_m[idx];
-        part[3] = py_m[idx];
-        part[5] = pz_m[idx];
-        part[0] = x_m[idx];
-        part[2] = y_m[idx];
-        part[4] = z_m[idx];
+        part[1] = particles_m[idx].getPx();
+        part[3] = particles_m[idx].getPy();
+        part[5] = particles_m[idx].getPz();
+        part[0] = particles_m[idx].getX();
+        part[2] = particles_m[idx].getY();
+        part[4] = particles_m[idx].getZ();
 
         for(int i = 0; i < 6; i++) {
             localCentroid[i] += part[i];
@@ -613,12 +623,12 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
                 localMoments[i * 6 + j] += part[i] * part[j];
             }
         }
-        localOthers[0] += time_m[idx];
-        localOthers[1] += std::pow(time_m[idx], 2);
+        localOthers[0] += particles_m[idx].getTime();
+        localOthers[1] += std::pow(particles_m[idx].getTime(), 2);
 
-        ::cminmax(rminmax[0], rminmax[1], x_m[idx]);
-        ::cminmax(rminmax[2], rminmax[3], y_m[idx]);
-        ::cminmax(rminmax[4], rminmax[5], z_m[idx]);
+        ::cminmax(rminmax[0], rminmax[1], particles_m[idx].getX());
+        ::cminmax(rminmax[2], rminmax[3], particles_m[idx].getY());
+        ::cminmax(rminmax[4], rminmax[5], particles_m[idx].getZ());
     }
 
     for(int i = 0; i < 6; i++) {

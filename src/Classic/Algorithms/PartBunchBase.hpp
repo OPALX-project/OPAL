@@ -966,8 +966,8 @@ void PartBunchBase<T, Dim>::push_back(OpalParticle const& particle) {
     size_t i = getLocalNum();
     create(1);
 
-    R[i] = particle.R();
-    P[i] = particle.P();
+    R[i] = particle.getR();
+    P[i] = particle.getP();
 
     update();
     msg << "Created one particle i= " << i << endl;
@@ -975,7 +975,7 @@ void PartBunchBase<T, Dim>::push_back(OpalParticle const& particle) {
 
 
 template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::set_part(FVector<double, 6> z, int ii) {
+void PartBunchBase<T, Dim>::setParticle(FVector<double, 6> z, int ii) {
     R[ii](0) = z[0];
     P[ii](0) = z[1];
     R[ii](1) = z[2];
@@ -986,17 +986,17 @@ void PartBunchBase<T, Dim>::set_part(FVector<double, 6> z, int ii) {
 
 
 template <class T, unsigned Dim>
-void PartBunchBase<T, Dim>::set_part(OpalParticle const& particle, int ii) {
-    R[ii] = particle.R();
-    P[ii] = particle.P();
+void PartBunchBase<T, Dim>::setParticle(OpalParticle const& particle, int ii) {
+    R[ii] = particle.getR();
+    P[ii] = particle.getP();
 }
 
 
 template <class T, unsigned Dim>
-OpalParticle PartBunchBase<T, Dim>::get_part(int ii) {
-    OpalParticle particle;
-    particle.R() = R[ii];
-    particle.P() = P[ii];
+OpalParticle PartBunchBase<T, Dim>::getParticle(int ii) {
+    OpalParticle particle(ID[ii],
+                          Vector_t(R[ii](0), R[ii](1), 0), P[ii],
+                          R[ii](2), Q[ii], M[ii], OpalParticle::SPATIAL);
     return particle;
 }
 
@@ -1005,27 +1005,31 @@ template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::maximumAmplitudes(const FMatrix<double, 6, 6> &D,
                                               double &axmax, double &aymax) {
     axmax = aymax = 0.0;
-    OpalParticle part;
+    OpalParticle particle;
 
     for(unsigned int ii = 0; ii < getLocalNum(); ii++) {
 
-        part = get_part(ii);
+        particle = getParticle(ii);
+        FVector<double, 6> vec({particle.getX(), particle.getPx(),
+                                particle.getY(), particle.getPy(),
+                                particle.getZ(), particle.getPz()});
+        FVector<double, 6> result;
+        result = D * vec;
+        // double xnor =
+        //     D(0, 0) * part.getX()  + D(0, 1) * part.getPx() + D(0, 2) * part.getY() +
+        //     D(0, 3) * part.getPy() + D(0, 4) * part.getL()  + D(0, 5) * part.getPLon();
+        // double pxnor =
+        //     D(1, 0) * part.getX()  + D(1, 1) * part.getPx() + D(1, 2) * part.getY() +
+        //     D(1, 3) * part.getPy() + D(1, 4) * part.getL()  + D(1, 5) * part.getPLon();
+        // double ynor =
+        //     D(2, 0) * part.getX()  + D(2, 1) * part.getPx() + D(2, 2) * part.getY() +
+        //     D(2, 3) * part.getPy() + D(2, 4) * part.getL()  + D(2, 5) * part.getPLon();
+        // double pynor =
+        //     D(3, 0) * part.getX()  + D(3, 1) * part.getPx() + D(3, 2) * part.getY() +
+        //     D(3, 3) * part.getPy() + D(3, 4) * part.getL()  + D(3, 5) * part.getPLon();
 
-        double xnor =
-            D(0, 0) * part.x()  + D(0, 1) * part.px() + D(0, 2) * part.y() +
-            D(0, 3) * part.py() + D(0, 4) * part.t()  + D(0, 5) * part.pt();
-        double pxnor =
-            D(1, 0) * part.x()  + D(1, 1) * part.px() + D(1, 2) * part.y() +
-            D(1, 3) * part.py() + D(1, 4) * part.t()  + D(1, 5) * part.pt();
-        double ynor =
-            D(2, 0) * part.x()  + D(2, 1) * part.px() + D(2, 2) * part.y() +
-            D(2, 3) * part.py() + D(2, 4) * part.t()  + D(2, 5) * part.pt();
-        double pynor =
-            D(3, 0) * part.x()  + D(3, 1) * part.px() + D(3, 2) * part.y() +
-            D(3, 3) * part.py() + D(3, 4) * part.t()  + D(3, 5) * part.pt();
-
-        axmax = std::max(axmax, (xnor * xnor + pxnor * pxnor));
-        aymax = std::max(aymax, (ynor * ynor + pynor * pynor));
+        axmax = std::max(axmax, (std::pow(result[0], 2) + std::pow(result[1], 2)));
+        aymax = std::max(aymax, (std::pow(result[2], 2) + std::pow(result[3], 2)));
     }
 }
 

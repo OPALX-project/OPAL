@@ -204,9 +204,11 @@ void ParallelCyclotronTracker::bgf_main_collision_test() {
         int res = bgf_m->partInside(itsBunch_m->R[i], itsBunch_m->P[i],
                                     dtime, intecoords, triId);
         if(res >= 0) {
-            lossDs_m->addParticle(itsBunch_m->R[i], itsBunch_m->P[i],
-                                  itsBunch_m->ID[i], itsBunch_m->getT()*1e9,
-                                  turnnumber_m, itsBunch_m->bunchNum[i]);
+            lossDs_m->addParticle(OpalParticle(itsBunch_m->ID[i],
+                                               itsBunch_m->R[i], itsBunch_m->P[i],
+                                               itsBunch_m->getT()*1e9,
+                                               itsBunch_m->Q[i], itsBunch_m->M[i]),
+                                  std::make_pair(turnnumber_m, itsBunch_m->bunchNum[i]));
             itsBunch_m->Bin[i] = -1;
             Inform gmsgALL("OPAL", INFORM_ALL_NODES);
             gmsgALL << level4 << "* Particle " << itsBunch_m->ID[i]
@@ -589,7 +591,7 @@ void ParallelCyclotronTracker::visitBeamStripping(const BeamStripping &bstp) {
     *gmsg << std::boolalpha << "* Particles stripped will be deleted after interaction -> " << stop << endl;
 
     elptr->initialise(itsBunch_m, elptr->getPScale());
-    
+
     BcParameter[1] = temperature;
     BcParameter[2] = stop;
 

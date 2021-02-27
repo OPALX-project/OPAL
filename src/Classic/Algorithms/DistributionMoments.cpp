@@ -37,99 +37,31 @@ void DistributionMoments::compute(PartBunchBase<double, 3> const& bunch)
 
     totalNumParticles_m = bunch.getTotalNum();
 
-    if (totalNumParticles_m == 0) {
-        return;
-    }
-
-    computeMoments(bunch);
-
-    Vector_t squaredEps, fac, squaredSumR, squaredSumP, sumRP;
-    double perParticle = 1.0 / totalNumParticles_m;
-    for (unsigned int i = 0; i < 3; ++ i) {
-        meanR_m(i) = centroid_m[2 * i] * perParticle;
-        meanP_m(i) = centroid_m[2 * i + 1] * perParticle;
-        squaredSumR(i) = moments_m(2 * i, 2 * i) - totalNumParticles_m * std::pow(meanR_m(i), 2);
-        squaredSumP(i) = std::max(0.0,
-                                  moments_m(2 * i + 1, 2 * i + 1) - totalNumParticles_m * std::pow(meanP_m(i), 2));
-        sumRP(i) = moments_m(2 * i, 2 * i + 1) - totalNumParticles_m * meanR_m(i) * meanP_m(i);
-    }
-
-    squaredEps = (squaredSumR * squaredSumP - sumRP * sumRP) * std::pow(perParticle, 2);
-    sumRP *= perParticle;
-
-    for (unsigned int i = 0; i < 3; ++ i) {
-        stdR_m(i) = std::sqrt(squaredSumR(i) * perParticle);
-        stdP_m(i) = std::sqrt(squaredSumP(i) * perParticle);
-        normalizedEps_m(i) = std::sqrt(std::max(squaredEps(i), 0.0));
-        double tmp = stdR_m(i) * stdP_m(i);
-        fac(i) = (std::abs(tmp) < 1e-10) ? 0.0: 1.0 / tmp;
-    }
-
-    stdRP_m = sumRP * fac;
-
-    double betaGamma = std::sqrt(std::pow(meanGamma_m, 2) - 1.0);
-    geometricEps_m = normalizedEps_m / Vector_t(betaGamma);
+    computeMoments(bunch.begin(), bunch.end());
 }
 
-void DistributionMoments::compute(std::vector<OpalParticle> const& particles)
+void DistributionMoments::compute(const std::vector<OpalParticle>::const_iterator &first,
+                                  const std::vector<OpalParticle>::const_iterator &last)
 {
     reset();
 
-    unsigned int localNumParticles = particles.size();
+    unsigned int localNumParticles = last - first;
     allreduce(&localNumParticles, &totalNumParticles_m, 1, std::plus<unsigned int>());
 
+    computeMoments(first, last);
+}
+
+template<class InputIt>
+void DistributionMoments::computeMoments(const InputIt &first, const InputIt &last)
+{
     if (totalNumParticles_m == 0) {
         return;
     }
 
-    computeMoments(particles);
-
-    Vector_t squaredEps, fac, squaredSumR, squaredSumP, sumRP;
-    double perParticle = 1.0 / totalNumParticles_m;
-    for (unsigned int i = 0; i < 3; ++ i) {
-        meanR_m(i) = centroid_m[2 * i] * perParticle;
-        meanP_m(i) = centroid_m[2 * i + 1] * perParticle;
-        squaredSumR(i) = moments_m(2 * i, 2 * i) - totalNumParticles_m * std::pow(meanR_m(i), 2);
-        squaredSumP(i) = std::max(0.0,
-                                  moments_m(2 * i + 1, 2 * i + 1) - totalNumParticles_m * std::pow(meanP_m(i), 2));
-        sumRP(i) = moments_m(2 * i, 2 * i + 1) - totalNumParticles_m * meanR_m(i) * meanP_m(i);
-    }
-
-    squaredEps = (squaredSumR * squaredSumP - sumRP * sumRP) * std::pow(perParticle, 2);
-    sumRP *= perParticle;
-
-    for (unsigned int i = 0; i < 3; ++ i) {
-        stdR_m(i) = std::sqrt(squaredSumR(i) * perParticle);
-        stdP_m(i) = std::sqrt(squaredSumP(i) * perParticle);
-        normalizedEps_m(i) = std::sqrt(std::max(squaredEps(i), 0.0));
-        double tmp = stdR_m(i) * stdP_m(i);
-        fac(i) = (std::abs(tmp) < 1e-10) ? 0.0: 1.0 / tmp;
-    }
-
-    stdRP_m = sumRP * fac;
-
-    double betaGamma = std::sqrt(std::pow(meanGamma_m, 2) - 1.0);
-    geometricEps_m = normalizedEps_m / Vector_t(betaGamma);
-}
-
-void DistributionMoments::computeMeanKineticEnergy(PartBunchBase<double, 3> const& bunch)
-{
-    double data[] = {0.0, 0.0};
-    for (OpalParticle const& particle: bunch) {
-        data[0] += Util::getKineticEnergy(particle.P(), particle.mass());
-    }
-    data[1] = bunch.getLocalNum();
-    allreduce(data, 2, std::plus<double>());
-
-    meanKineticEnergy_m = data[0] / data[1];
-}
-
-template<class Container>
-void DistributionMoments::computeMoments(Container const& particles)
-{
     std::vector<double> localMoments(36);
 
-    for (OpalParticle const& particle: particles) {
+    for (InputIt it = first; it != last; ++ it) {
+        OpalParticle const& particle = *it;
         unsigned int l = 6;
         for (unsigned int i = 0; i < 6; ++ i) {
             localMoments[i] += particle[i];
@@ -143,8 +75,8 @@ void DistributionMoments::computeMoments(Container const& particles)
             localMoments[l] += r2 * particle[i];
             localMoments[l + 3] += r2 * r2;
         }
-        double gamma = Util::getGamma(particle.P());
-        double eKin = (gamma - 1.0) * particle.mass();
+        double gamma = Util::getGamma(particle.getP());
+        double eKin = (gamma - 1.0) * particle.getMass();
         localMoments[33] += eKin;
         localMoments[34] += std::pow(eKin, 2);
         localMoments[35] += gamma;
@@ -152,11 +84,30 @@ void DistributionMoments::computeMoments(Container const& particles)
 
     allreduce(localMoments.data(), localMoments.size(), std::plus<double>());
 
-    for (unsigned int i = 0; i < 6; ++ i) {
-        centroid_m[i] = localMoments[i];
+    fillMembers(localMoments);
+}
+
+void DistributionMoments::computeMeanKineticEnergy(PartBunchBase<double, 3> const& bunch)
+{
+    double data[] = {0.0, 0.0};
+    for (OpalParticle const& particle: bunch) {
+        data[0] += Util::getKineticEnergy(particle.getP(), particle.getMass());
+    }
+    data[1] = bunch.getLocalNum();
+    allreduce(data, 2, std::plus<double>());
+
+    meanKineticEnergy_m = data[0] / data[1];
+}
+
+void DistributionMoments::fillMembers(std::vector<double> const& localMoments) {
+    Vector_t squaredEps, fac, squaredSumR, squaredSumP, sumRP;
+    double perParticle = 1.0 / totalNumParticles_m;
+
+    unsigned int l = 0;
+    for (; l < 6; ++ l) {
+        centroid_m[l] = localMoments[l];
     }
 
-    unsigned int l = 6;
     for (unsigned int i = 0; i < 6; ++ i) {
         for (unsigned int j = 0; j <= i; ++ j, ++ l) {
             moments_m(i, j) = localMoments[l];
@@ -164,13 +115,11 @@ void DistributionMoments::computeMoments(Container const& particles)
         }
     }
 
-    double perParticle = 1.0 / totalNumParticles_m;
-
-    for (unsigned int i = 0; i < 3; ++ i) {
+    for (unsigned int i = 0; i < 3; ++ i, ++ l) {
         double w1 = centroid_m[2 * i] * perParticle;
         double w2 = moments_m(2 * i , 2 * i) * perParticle;
-        double w3 = localMoments[i + l] * perParticle;
-        double w4 = localMoments[i + l + 3] * perParticle;
+        double w3 = localMoments[l] * perParticle;
+        double w4 = localMoments[l + 3] * perParticle;
         double tmp = w2 - std::pow(w1, 2);
 
         halo_m(i) = (w4 + w1 * (-4 * w3 + 3 * w1 * (tmp + w2))) / tmp;
@@ -180,6 +129,31 @@ void DistributionMoments::computeMoments(Container const& particles)
     meanKineticEnergy_m = localMoments[33] * perParticle;
     stdKineticEnergy_m = localMoments[34] * perParticle;
     meanGamma_m = localMoments[35] * perParticle;
+
+    for (unsigned int i = 0; i < 3; ++ i) {
+        meanR_m(i) = centroid_m[2 * i] * perParticle;
+        meanP_m(i) = centroid_m[2 * i + 1] * perParticle;
+        squaredSumR(i) = moments_m(2 * i, 2 * i) - totalNumParticles_m * std::pow(meanR_m(i), 2);
+        squaredSumP(i) = std::max(0.0,
+                                  moments_m(2 * i + 1, 2 * i + 1) - totalNumParticles_m * std::pow(meanP_m(i), 2));
+        sumRP(i) = moments_m(2 * i, 2 * i + 1) - totalNumParticles_m * meanR_m(i) * meanP_m(i);
+    }
+
+    squaredEps = (squaredSumR * squaredSumP - sumRP * sumRP) * std::pow(perParticle, 2);
+    sumRP *= perParticle;
+
+    for (unsigned int i = 0; i < 3; ++ i) {
+        stdR_m(i) = std::sqrt(squaredSumR(i) * perParticle);
+        stdP_m(i) = std::sqrt(squaredSumP(i) * perParticle);
+        normalizedEps_m(i) = std::sqrt(std::max(squaredEps(i), 0.0));
+        double tmp = stdR_m(i) * stdP_m(i);
+        fac(i) = (std::abs(tmp) < 1e-10) ? 0.0: 1.0 / tmp;
+    }
+
+    stdRP_m = sumRP * fac;
+
+    double betaGamma = std::sqrt(std::pow(meanGamma_m, 2) - 1.0);
+    geometricEps_m = normalizedEps_m / Vector_t(betaGamma);
 }
 
 void DistributionMoments::reset()

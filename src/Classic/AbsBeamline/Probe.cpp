@@ -108,8 +108,9 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
         // peak finder uses millimetre not metre
         peakfinder_m->addParticle(probepoint * 1e3);
 
-        lossDs_m->addParticle(probepoint, bunch->P[i], bunch->ID[i], t+dt,
-                              turnnumber, bunch->bunchNum[i]);
+        lossDs_m->addParticle(OpalParticle(bunch->ID[i], probepoint, bunch->P[i], t+dt,
+                                           bunch->Q[i], bunch->M[i]),
+                              std::make_pair(turnnumber, bunch->bunchNum[i]));
     }
 
     peakfinder_m->evaluate(turnnumber);

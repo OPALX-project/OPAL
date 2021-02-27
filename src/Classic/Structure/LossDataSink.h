@@ -7,8 +7,11 @@
 
 //////////////////////////////////////////////////////////////
 #include "Algorithms/Vektor.h"
+#include "Algorithms/OpalParticle.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/OpalData.h"
+
+#include <boost/optional.hpp>
 
 #include <string>
 #include <fstream>
@@ -76,10 +79,11 @@ class LossDataSink {
                               double spos,
                               long long globalTrackStep);
 
-    void addParticle(const Vector_t &x, const Vector_t &p, const size_t id);
+    void addParticle(const OpalParticle &, const boost::optional<std::pair<int, short int>> &turnBunchNumPair = boost::none);
+    // void addParticle(const Vector_t &x, const Vector_t &p, const size_t id);
 
-    void addParticle(const Vector_t &x, const Vector_t &p, const size_t  id,
-                     const double time, const size_t turn, const size_t& bunchNum = 0);
+    // void addParticle(const Vector_t &x, const Vector_t &p, const size_t  id,
+    //                  const double time, const size_t turn, const size_t& bunchNum = 0);
 
     size_t size() const;
 
@@ -103,10 +107,10 @@ private:
         if(Ippl::myNode() == 0) {
             //FIXME Issue #45 (Cyclotron units)
             os_m << "# Element " << element_m << " x (m),  y (m),  z (m),  px ( ),  py ( ),  pz ( ), id";
-            if (time_m.size() != 0) {
-                os_m << ",  turn, bunchNumber, time (ns) ";
+            if (particles_m.size() == turnNumber_m.size()) {
+                os_m << ",  turn ( ), bunchNumber ( )";
             }
-            os_m << std::endl;
+            os_m << ", time (ns)" << std::endl;
         }
     }
     void writeHeaderH5();
@@ -120,8 +124,6 @@ private:
     }
 
     bool hasNoParticlesToDump();
-
-    bool hasTimeAttribute();
 
     void reportOnError(h5_int64_t rc, const char* file, int line);
 
@@ -145,17 +147,9 @@ private:
     /// Current record, or time step, of H5 file.
     h5_int64_t H5call_m;
 
-    std::vector<long>   id_m;
-    std::vector<double>  x_m;
-    std::vector<double>  y_m;
-    std::vector<double>  z_m;
-    std::vector<double> px_m;
-    std::vector<double> py_m;
-    std::vector<double> pz_m;
-    std::vector<size_t> bunchNum_m;
-
-    std::vector<size_t> turn_m;
-    std::vector<double> time_m;
+    std::vector<OpalParticle> particles_m;
+    std::vector<size_t> bunchNumber_m;
+    std::vector<size_t> turnNumber_m;
 
     std::vector<Vector_t> RefPartR_m;
     std::vector<Vector_t> RefPartP_m;
@@ -170,7 +164,7 @@ private:
 
 inline
 size_t LossDataSink::size() const {
-    return x_m.size();
+    return particles_m.size();
 }
 
 inline

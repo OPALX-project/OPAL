@@ -49,6 +49,7 @@ typedef struct {             // struct for description of particle in material
     int Binincol;            // bin number
     double DTincol;          // time step size
     double Qincol;           // charge
+    double Mincol;           // mass
     Vector_t Bfincol;        // magnetic field
     Vector_t Efincol;        // electric field
 } PART;

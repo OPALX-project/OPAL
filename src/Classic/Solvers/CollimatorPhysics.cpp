@@ -270,7 +270,9 @@ void CollimatorPhysics::computeInteraction() {
                     // The particle is stopped in the material, set label to -1
                     locParts_m[i].label = -1.0;
                     ++ stoppedPartStat_m;
-                    lossDs_m->addParticle(R, P, -locParts_m[i].IDincol);
+                    lossDs_m->addParticle(OpalParticle(-locParts_m[i].IDincol,
+                                                       R, P, T_m,
+                                                       locParts_m[i].Qincol, locParts_m[i].Mincol));
                 }
             }
         }
@@ -460,6 +462,7 @@ void CollimatorPhysics::addBackToBunch(PartBunchBase<double, 3> *bunch) {
             bunch->R[numLocalParticles]   = R;
             bunch->P[numLocalParticles]   = locParts_m[i].Pincol;
             bunch->Q[numLocalParticles]   = locParts_m[i].Qincol;
+            bunch->M[numLocalParticles]   = locParts_m[i].Mincol;
             bunch->Bf[numLocalParticles]  = 0.0;
             bunch->Ef[numLocalParticles]  = 0.0;
             bunch->dt[numLocalParticles]  = dT_m;
@@ -526,6 +529,7 @@ void CollimatorPhysics::copyFromBunch(PartBunchBase<double, 3> *bunch,
             x.Rincol       = bunch->R[i];
             x.Pincol       = bunch->P[i];
             x.Qincol       = bunch->Q[i];
+            x.Mincol       = bunch->M[i];
             x.Bfincol      = bunch->Bf[i];
             x.Efincol      = bunch->Ef[i];
             x.label        = 0;            // alive in matter

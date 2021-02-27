@@ -22,12 +22,31 @@ OpalParticle::OpalParticle()
 {}
 
 
-OpalParticle::OpalParticle(double x, double px,
+OpalParticle::OpalParticle(unsigned int id,
+                           double x, double px,
                            double y, double py,
-                           double t, double pt,
-                           double q, double m):
-    R_m(x, y, t),
-    P_m(px, py, pt),
+                           double z, double pz,
+                           double t,
+                           double q, double m,
+                           OpalParticle::Type type):
+    id_m(id),
+    R_m(x, y, z),
+    P_m(px, py, pz),
+    time_m(t),
     charge_m(q),
-    mass_m(m)
+    mass_m(m),
+    type_m(type)
+{}
+
+OpalParticle::OpalParticle(unsigned int id,
+                           Vector_t const& R, Vector_t const& P,
+                           double t, double q, double m,
+                           OpalParticle::Type type):
+    id_m(id),
+    R_m(R),
+    P_m(P),
+    time_m(t),
+    charge_m(q),
+    mass_m(m),
+    type_m(type)
 {}

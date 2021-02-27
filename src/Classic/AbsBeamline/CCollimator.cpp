@@ -75,7 +75,7 @@ bool CCollimator::doPreCheck(PartBunchBase<double, 3> *bunch) {
 
 // rectangle collimators in cyclotron cylindrical coordinates
 // when there is no particlematterinteraction, the particle hitting collimator is deleted directly
-bool CCollimator::doCheck(PartBunchBase<double, 3> *bunch, const int /*turnnumber*/, const double /*t*/, const double /*tstep*/) {
+bool CCollimator::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const double /*t*/, const double /*tstep*/) {
 
     bool flagNeedUpdate = false;
     size_t tempnum = bunch->getLocalNum();
@@ -88,7 +88,10 @@ bool CCollimator::doCheck(PartBunchBase<double, 3> *bunch, const int /*turnnumbe
             /// bunch->Bin[i] != -1 makes sure the particle is not stored in more than one collimator
             if ((pflag != 0) && (bunch->Bin[i] != -1)) {
                 if (!parmatint_m)
-                    lossDs_m->addParticle(bunch->R[i], bunch->P[i], bunch->ID[i]);
+                    lossDs_m->addParticle(OpalParticle(bunch->ID[i],
+                                                       bunch->R[i], bunch->P[i],
+                                                       bunch->getT(), bunch->Q[i], bunch->M[i]),
+                                          std::make_pair(turnnumber, bunch->bunchNum[i]));
                 bunch->Bin[i] = -1;
                 flagNeedUpdate = true;
             }

@@ -178,8 +178,10 @@ void BeamStrippingPhysics::doPhysics(PartBunchBase<double, 3> *bunch) {
             }
 
             if (pdead_GS == true || pdead_LS == true) {
-                lossDs_m->addParticle(bunch->R[i], bunch->P[i], bunch->ID[i],
-                                      bunch->getT()*1e9, 0, bunch->bunchNum[i]);
+                lossDs_m->addParticle(OpalParticle(bunch->ID[i], bunch->R[i], bunch->P[i],
+                                                   bunch->getT() * 1e9,
+                                                   bunch->Q[i], bunch->M[i]),
+                                      std::make_pair(0, bunch->bunchNum[i]));
                 if (stop) {
                     bunch->Bin[i] = -1;
                     stoppedPartStat_m++;
@@ -240,7 +242,7 @@ void BeamStrippingPhysics::crossSection(double Eng){
             for (int i = 0; i < 9; ++i)
                 a_m[i] = {csCoefSingle_Hminus_Chebyshev[i+2]};
             CS_a = csChebyshevFitting(Eng*1E3, Emin, Emax);
-            
+
             // Double-electron detachment - Proton Production
             Emin = csCoefDouble_Hminus_Chebyshev[0];
             Emax = csCoefDouble_Hminus_Chebyshev[1];
@@ -255,7 +257,7 @@ void BeamStrippingPhysics::crossSection(double Eng){
             for (int i = 0; i < 9; ++i)
                 a_m[i] = {csCoefSingle_Hplus_Chebyshev[i+2]};
             CS_a = csChebyshevFitting(Eng*1E3, Emin, Emax);
-        
+
             // Double-electron capture - Hminus Production
             Emin = csCoefDouble_Hplus_Chebyshev[0];
             Emax = csCoefDouble_Hplus_Chebyshev[1];
@@ -274,7 +276,7 @@ void BeamStrippingPhysics::crossSection(double Eng){
             a6 = csCoefProtonProduction_H_Tabata[6];
             CS_a = csAnalyticFunctionTabata(Eng, Eth, a1, a2, 0.0, 0.0, a3, a4) +
                 a5 * csAnalyticFunctionTabata(Eng/a6, Eth/a6, a1, a2, 0.0, 0.0, a3, a4);
-            
+
             // Single-electron capture - Hminus Production
             Eth = csCoefHminusProduction_H_Tabata[0];
             a1 = csCoefHminusProduction_H_Tabata[1];
@@ -305,17 +307,17 @@ void BeamStrippingPhysics::crossSection(double Eng){
             a8 = csCoefProtonProduction_H2plus_Tabata[8];
             a9 = csCoefProtonProduction_H2plus_Tabata[9];
             a10 = csCoefProtonProduction_H2plus_Tabata[10];
-            CS_a = csAnalyticFunctionTabata(Eng, Eth, a1, a2, 0.0, 0.0, a3, a4) + 
+            CS_a = csAnalyticFunctionTabata(Eng, Eth, a1, a2, 0.0, 0.0, a3, a4) +
                 csAnalyticFunctionTabata(Eng, Eth, a5, a6, 0.0, 0.0, a7, a8) +
                 a9 * csAnalyticFunctionTabata(Eng/a10, Eth/a10, a5, a6, 0.0, 0.0, a7, a8);
-            
+
             // Hydrogen production
             Emin = csCoefHydrogenProduction_H2plus_Chebyshev[0];
             Emax = csCoefHydrogenProduction_H2plus_Chebyshev[1];
             for (int i = 0; i < 9; ++i)
                 a_m[i] = {csCoefHydrogenProduction_H2plus_Chebyshev[i+2]};
             CS_b = csChebyshevFitting(Eng*1E3, Emin, Emax);
-        
+
             // H3+, H
             Eth = csCoefH3plusProduction_H2plus_Tabata[0];
             a1 = csCoefH3plusProduction_H2plus_Tabata[1];
@@ -327,7 +329,7 @@ void BeamStrippingPhysics::crossSection(double Eng){
             CS_c = csAnalyticFunctionTabata(Eng, Eth, a1, a2, a3, a4, a5, a6);
         }
         CS_total = CS_a + CS_b + CS_c;
-    
+
         NCS_a = CS_a * 1E-4 * molecularDensity[0];
         NCS_b = CS_b * 1E-4 * molecularDensity[0];
         NCS_c = CS_c * 1E-4 * molecularDensity[0];
