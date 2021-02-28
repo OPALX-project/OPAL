@@ -26,6 +26,8 @@ DistributionMoments::DistributionMoments():
     Dy_m(0.0),
     DDy_m(0.0),
     moments_m(),
+    totalCharge_m(0.0),
+    totalMass_m(0.0),
     totalNumParticles_m(0)
 {
     std::fill(std::begin(centroid_m), std::end(centroid_m), 0.0);
@@ -58,7 +60,7 @@ void DistributionMoments::computeMoments(const InputIt &first, const InputIt &la
         return;
     }
 
-    std::vector<double> localMoments(36);
+    std::vector<double> localMoments(38);
 
     for (InputIt it = first; it != last; ++ it) {
         OpalParticle const& particle = *it;
@@ -80,6 +82,8 @@ void DistributionMoments::computeMoments(const InputIt &first, const InputIt &la
         localMoments[33] += eKin;
         localMoments[34] += std::pow(eKin, 2);
         localMoments[35] += gamma;
+        localMoments[36] += particle.getCharge();
+        localMoments[37] += particle.getMass();
     }
 
     allreduce(localMoments.data(), localMoments.size(), std::plus<double>());
@@ -129,6 +133,8 @@ void DistributionMoments::fillMembers(std::vector<double> const& localMoments) {
     meanKineticEnergy_m = localMoments[33] * perParticle;
     stdKineticEnergy_m = localMoments[34] * perParticle;
     meanGamma_m = localMoments[35] * perParticle;
+    totalCharge_m = localMoments[36];
+    totalMass_m = localMoments[37];
 
     for (unsigned int i = 0; i < 3; ++ i) {
         meanR_m(i) = centroid_m[2 * i] * perParticle;

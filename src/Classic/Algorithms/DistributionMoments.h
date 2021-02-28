@@ -35,7 +35,8 @@ public:
     double getDDx() const;
     double getDy() const;
     double getDDy() const;
-
+    double getTotalCharge() const;
+    double getTotalMass() const;
 
 private:
     template<class InputIt>
@@ -62,6 +63,8 @@ private:
     double centroid_m[6];
     FMatrix<double, 6, 6> moments_m;
 
+    double totalCharge_m;
+    double totalMass_m;
     unsigned int totalNumParticles_m;
 };
 
@@ -153,6 +156,18 @@ inline
 double DistributionMoments::getDDy() const
 {
     return DDy_m;
+}
+
+inline
+double DistributionMoments::getTotalCharge() const
+{
+    return totalCharge_m;
+}
+
+inline
+double DistributionMoments::getTotalMass() const
+{
+    return totalMass_m;
 }
 
 #endif

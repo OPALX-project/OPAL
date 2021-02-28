@@ -203,24 +203,39 @@ void LossDataSink::writeHeaderH5() {
     // Write file attributes to describe phase space to H5 file.
     std::stringstream OPAL_version;
     OPAL_version << OPAL_PROJECT_NAME << " " << OPAL_PROJECT_VERSION << " # git rev. " << Util::getGitRevision();
-    WRITE_FILEATTRIB_STRING ("OPAL_version", OPAL_version.str().c_str());
-    WRITE_FILEATTRIB_STRING ("tUnit", "s");
-    WRITE_FILEATTRIB_STRING ("xUnit", "m");
-    WRITE_FILEATTRIB_STRING ("yUnit", "m");
-    WRITE_FILEATTRIB_STRING ("zUnit", "m");
-    WRITE_FILEATTRIB_STRING ("pxUnit", "#beta#gamma");
-    WRITE_FILEATTRIB_STRING ("pyUnit", "#beta#gamma");
-    WRITE_FILEATTRIB_STRING ("pzUnit", "#beta#gamma");
-    WRITE_FILEATTRIB_STRING ("idUnit", "1");
+    WRITE_FILEATTRIB_STRING("OPAL_version", OPAL_version.str().c_str());
 
-    WRITE_FILEATTRIB_STRING ("turnUnit", "1");
-    WRITE_FILEATTRIB_STRING ("timeUnit", "s");
+    WRITE_FILEATTRIB_STRING("SPOSUnit", "m");
+    WRITE_FILEATTRIB_STRING("TIMEUnit", "s");
+    WRITE_FILEATTRIB_STRING("RefPartRUnit", "m");
+    WRITE_FILEATTRIB_STRING("RefPartPUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("GlobalTrackStepUnit", "1");
 
-    WRITE_FILEATTRIB_STRING ("SPOSUnit", "mm");
-    WRITE_FILEATTRIB_STRING ("TIMEUnit", "s");
+    WRITE_FILEATTRIB_STRING("centroidUnit", "m");
+    WRITE_FILEATTRIB_STRING("RMSXUnit", "m");
+    WRITE_FILEATTRIB_STRING("MEANPUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("RMSPUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("#varepsilonUnit", "m rad");
+    WRITE_FILEATTRIB_STRING("#varepsilon-geomUnit", "m rad");
+    WRITE_FILEATTRIB_STRING("ENERGYUnit", "MeV");
+    WRITE_FILEATTRIB_STRING("dEUnit", "MeV");
+    WRITE_FILEATTRIB_STRING("TotalChargeUnit", "C");
+    WRITE_FILEATTRIB_STRING("TotalMassUnit", "MeV");
 
-    WRITE_FILEATTRIB_STRING ("mpart", "GeV");
-    WRITE_FILEATTRIB_STRING ("qi", "C");
+    WRITE_FILEATTRIB_STRING("idUnit", "1");
+    WRITE_FILEATTRIB_STRING("xUnit", "m");
+    WRITE_FILEATTRIB_STRING("yUnit", "m");
+    WRITE_FILEATTRIB_STRING("zUnit", "m");
+    WRITE_FILEATTRIB_STRING("pxUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("pyUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("pzUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("qUnit", "C");
+    WRITE_FILEATTRIB_STRING("mUnit", "MeV");
+
+    WRITE_FILEATTRIB_STRING("turnUnit", "1");
+    WRITE_FILEATTRIB_STRING("bunchNumUnit", "1");
+
+    WRITE_FILEATTRIB_STRING("timeUnit", "s");
 }
 
 void LossDataSink::addReferenceParticle(const Vector_t &x,
@@ -356,23 +371,17 @@ void LossDataSink::saveH5(unsigned int setIdx) {
     WRITE_STEPATTRIB_FLOAT64("#varepsilon-geom", (tmpVector = engine.getGeometricEmittance(), &tmpVector[0]), 3);
     WRITE_STEPATTRIB_FLOAT64("ENERGY", (tmpDouble = engine.getMeanKineticEnergy(), &tmpDouble), 1);
     WRITE_STEPATTRIB_FLOAT64("dE", (tmpDouble = engine.getStandardDeviationKineticEnergy(), &tmpDouble), 1);
-
-    double totalCharge = 0;
-    std::for_each(particles_m.begin() + startIdx,
-                  particles_m.begin() + endIdx,
-                  [&totalCharge](const OpalParticle& particle) { totalCharge += particle.getCharge(); });
-    WRITE_STEPATTRIB_FLOAT64("TotalCharge", &totalCharge, 1);
-
-    double totalMass = 0;
-    std::for_each(particles_m.begin() + startIdx,
-                  particles_m.begin() + endIdx,
-                  [&totalMass](const OpalParticle& particle) { totalMass += particle.getMass(); });
-    WRITE_STEPATTRIB_FLOAT64("TotalMass", &totalMass, 1);
+    WRITE_STEPATTRIB_FLOAT64("TotalCharge", (tmpDouble = engine.getTotalCharge(), &tmpDouble), 1);
+    WRITE_STEPATTRIB_FLOAT64("TotalMass", (tmpDouble = engine.getTotalMass(), &tmpDouble), 1);
 
     // Write all data
     std::vector<char> buffer(nLoc * sizeof(h5_float64_t));
     h5_float64_t *f64buffer = reinterpret_cast<h5_float64_t*>(&buffer[0]);
     h5_int64_t *i64buffer = reinterpret_cast<h5_int64_t*>(&buffer[0]);
+
+    ::i64transform(particles_m, startIdx, nLoc, i64buffer,
+                   [](const OpalParticle &particle) { return particle.getId(); });
+    WRITE_DATA_INT64 ("id", i64buffer);
     ::f64transform(particles_m, startIdx, nLoc, f64buffer,
                    [](const OpalParticle &particle) { return particle.getX(); });
     WRITE_DATA_FLOAT64 ("x", f64buffer);
@@ -391,9 +400,6 @@ void LossDataSink::saveH5(unsigned int setIdx) {
     ::f64transform(particles_m, startIdx, nLoc, f64buffer,
                    [](const OpalParticle &particle) { return particle.getPz(); });
     WRITE_DATA_FLOAT64 ("pz", f64buffer);
-    ::i64transform(particles_m, startIdx, nLoc, i64buffer,
-                   [](const OpalParticle &particle) { return particle.getId(); });
-    WRITE_DATA_INT64 ("id", i64buffer);
     ::f64transform(particles_m, startIdx, nLoc, f64buffer,
                    [](const OpalParticle &particle) { return particle.getCharge(); });
     WRITE_DATA_FLOAT64 ("q", f64buffer);
