@@ -462,6 +462,10 @@ void FieldSolver::initSolver(PartBunchBase<double, 3> *b) {
         bcz = Attributes::getString(itsAttr[BCFFTZ]);
     }
 
+    if (bcz == "PERIODIC" || bcx == "PERIODIC" || bcy == "PERIODIC") {
+        throw OpalException("FieldSolver::init", "Periodic boundaries aren't supported at the moment");
+    }
+
     if ( isAmrSolverType() ) {
         Inform m("FieldSolver::initAmrSolver");
         fsType_m = "AMR";
