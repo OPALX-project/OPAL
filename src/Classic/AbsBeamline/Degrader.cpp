@@ -120,7 +120,7 @@ void Degrader::initialise(PartBunchBase<double, 3> *bunch, double &startField, d
 
 void Degrader::initialise(PartBunchBase<double, 3> *bunch) {
     RefPartBunch_m = bunch;
-    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getOutputFN(), !Options::asciidump));
+    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getOutputFN(), !Options::asciidump && Options::enableHDF5));
 }
 
 void Degrader::finalise() {

@@ -145,7 +145,7 @@ void FlexibleCollimator::initialise(PartBunchBase<double, 3> *bunch, double &sta
 
     parmatint_m = getParticleMatterInteraction();
 
-    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getOutputFN(), !Options::asciidump));
+    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getOutputFN(), !Options::asciidump && Options::enableHDF5));
 
     goOnline(-1e6);
 }
@@ -155,7 +155,7 @@ void FlexibleCollimator::initialise(PartBunchBase<double, 3> *bunch) {
 
     parmatint_m = getParticleMatterInteraction();
 
-    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getOutputFN(), !Options::asciidump));
+    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getOutputFN(), !Options::asciidump && Options::enableHDF5));
 
     goOnline(-1e6);
 }

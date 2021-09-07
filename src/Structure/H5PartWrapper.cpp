@@ -70,6 +70,9 @@ void H5PartWrapper::close() {
 void H5PartWrapper::open(h5_int32_t flags) {
     close();
 
+    if (!Options::enableHDF5) {
+        return;
+    }
     h5_prop_t props = H5CreateFileProp ();
     MPI_Comm comm = Ippl::getComm();
     h5_err_t h5err = H5SetPropFileMPIOCollective (props, &comm);

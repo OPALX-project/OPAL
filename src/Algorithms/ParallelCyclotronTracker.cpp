@@ -1199,7 +1199,7 @@ void ParallelCyclotronTracker::execute() {
     // Get BoundaryGeometry that is already initialized
     bgf_m = OpalData::getInstance()->getGlobalGeometry();
     if (bgf_m)
-        lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(bgf_m->getOpalName(),!Options::asciidump));
+        lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(bgf_m->getOpalName(),!Options::asciidump && Options::enableHDF5));
 
     // External field arrays for dumping
     for (int k = 0; k < 2; k++)

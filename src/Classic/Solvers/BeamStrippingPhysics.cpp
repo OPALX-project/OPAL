@@ -80,7 +80,7 @@ BeamStrippingPhysics::BeamStrippingPhysics(const std::string& name, ElementBase*
 {
     vac_m = dynamic_cast<Vacuum*>(getElement());
 
-    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getName(), !Options::asciidump));
+    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getName(), !Options::asciidump && Options::enableHDF5));
 
     const gsl_rng_type* T;
     gsl_rng_env_setup();
@@ -323,7 +323,7 @@ void BeamStrippingPhysics::computeCrossSection(PartBunchBase<double, 3>* bunch,
                     csA = computeCrossSectionChebyshev(energyChebyshevFit, energyMin, energyMax);
 
                 } else if (energy >= energyRangeH2plusinH2[1]) {
-                    int zTarget = 1; 
+                    int zTarget = 1;
                     double massInAmu = Physics::m_h2p / Physics::amu;
                     csA = computeCrossSectionBohr(energy, zTarget, massInAmu);
                 }

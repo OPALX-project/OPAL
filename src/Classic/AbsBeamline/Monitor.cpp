@@ -167,7 +167,7 @@ void Monitor::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
         }
     }
 
-    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(filename_m, !Options::asciidump, type_m));
+    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(filename_m, !Options::asciidump && Options::enableHDF5, type_m));
 }
 
 void Monitor::finalise() {

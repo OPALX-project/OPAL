@@ -50,7 +50,7 @@ void PluginElement::initialise(PartBunchBase<double, 3> *bunch, double &, double
 
 void PluginElement::initialise(PartBunchBase<double, 3> *bunch) {
     RefPartBunch_m = bunch;
-    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getOutputFN(), !Options::asciidump));
+    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getOutputFN(), !Options::asciidump && Options::enableHDF5));
     // virtual hook
     doInitialise(bunch);
     goOnline(-1e6);

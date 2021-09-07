@@ -84,7 +84,7 @@ void Source::initialise(PartBunchBase<double, 3> *bunch, double &startField, dou
     startField -= getElementLength();
 
     lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getOutputFN(),
-                                                              !Options::asciidump));
+                                                              !Options::asciidump && Options::enableHDF5));
 }
 
 void Source::finalise()

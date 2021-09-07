@@ -153,7 +153,7 @@ ScatteringPhysics::ScatteringPhysics(const std::string& name,
                                       "Unsupported element type");
     }
 
-    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getName(), !Options::asciidump));
+    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(getName(), !Options::asciidump && Options::enableHDF5));
 
     DegraderApplyTimer_m   = IpplTimings::getTimer("DegraderApply");
     DegraderLoopTimer_m    = IpplTimings::getTimer("DegraderLoop");

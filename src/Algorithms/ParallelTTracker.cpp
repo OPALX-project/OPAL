@@ -324,7 +324,8 @@ void ParallelTTracker::execute() {
 
             if (hasEndOfLineReached()) break;
 
-            bool const psDump = ((itsBunch_m->getGlobalTrackStep() % Options::psDumpFreq) + 1 == Options::psDumpFreq);
+            bool const psDump = (Options::enableHDF5 &&
+                                 ((itsBunch_m->getGlobalTrackStep() % Options::psDumpFreq) + 1 == Options::psDumpFreq));
             bool const statDump = ((itsBunch_m->getGlobalTrackStep() % Options::statDumpFreq) + 1 == Options::statDumpFreq);
             dumpStats(step, psDump, statDump);
 
