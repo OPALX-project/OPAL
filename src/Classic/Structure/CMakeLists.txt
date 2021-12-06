@@ -1,4 +1,5 @@
 set (_SRCS
+    BoundingBox.cpp
     LossDataSink.cpp
     MeshGenerator.cpp
     PeakFinder.cpp
@@ -11,6 +12,7 @@ include_directories (
 add_opal_sources (${_SRCS})
 
 set (HDRS
+    BoundingBox.h
     LossDataSink.h
     MeshGenerator.h
     PeakFinder.h

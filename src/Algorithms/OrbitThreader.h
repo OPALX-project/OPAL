@@ -27,6 +27,7 @@
 #include "Algorithms/Vektor.h"
 #include "Elements/OpalBeamline.h"
 #include "Steppers/BorisPusher.h"
+#include "Structure/BoundingBox.h"
 
 #include <string>
 #include <map>
@@ -84,7 +85,7 @@ private:
     std::ofstream logger_m;
     size_t loggingFrequency_m;
 
-    ElementBase::BoundingBox globalBoundingBox_m;
+    BoundingBox globalBoundingBox_m;
 
     struct elementPosition {
         double startField_m;

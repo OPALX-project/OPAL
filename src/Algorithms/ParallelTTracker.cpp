@@ -221,7 +221,9 @@ void ParallelTTracker::execute() {
             }
 
             if (zstart_m > pathLength_m) {
+    *gmsg << __DBGMSG__ << itsBunch_m->RefPartR_m << endl;
                 findStartPosition(pusher);
+    *gmsg << __DBGMSG__ << itsBunch_m->RefPartR_m << endl;
             }
 
             itsBunch_m->set_sPos(pathLength_m);
@@ -547,6 +549,18 @@ void ParallelTTracker::computeExternalFields(OrbitThreader &oth) {
                                                    (itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * itsBunch_m->toLabTrafo_m));
         CoordinateSystemTrafo localToRefCSTrafo = refToLocalCSTrafo.inverted();
 
+        if (true || (pathLength_m < 18.9 && pathLength_m > 18.0)) {
+            Vector_t tmp = itsBunch_m->toLabTrafo_m.transformTo(Vector_t(0.0));
+            *gmsg << __DBGMSG__;
+            for (unsigned int d = 0; d < 3; ++ d) {
+                *gmsg << std::setw(14) << tmp(d);
+            }
+            tmp = refToLocalCSTrafo.transformTo(Vector_t(0.0));
+            for (unsigned int d = 0; d < 3; ++ d) {
+                *gmsg << std::setw(14) << tmp(d);
+            }
+            *gmsg << std::setw(14) << (*it)->getName() << endl;
+        }
         (*it)->setCurrentSCoordinate(pathLength_m + rmin(2));
 
         for (unsigned int i = 0; i < localNum; ++ i) {

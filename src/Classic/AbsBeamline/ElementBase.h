@@ -68,6 +68,7 @@
 #include "Algorithms/Quaternion.h"
 #include "BeamlineGeometry/Euclid3D.h"
 #include "BeamlineGeometry/Geometry.h"
+#include "Structure/BoundingBox.h"
 #include "MemoryManagement/RCObject.h"
 #include "Utilities/GeneralClassicException.h"
 
@@ -341,35 +342,6 @@ public:
     /// Set rotation about z axis in bend frame.
     void setRotationAboutZ(double rotation);
     double getRotationAboutZ() const;
-
-    struct BoundingBox {
-        Vector_t lowerLeftCorner;
-        Vector_t upperRightCorner;
-
-        static BoundingBox getBoundingBox(const std::vector<Vector_t> & points);
-
-        void getCombinedBoundingBox(const BoundingBox & other) {
-            for (unsigned int d = 0; d < 3; ++ d) {
-                lowerLeftCorner[d] = std::min(lowerLeftCorner[d], other.lowerLeftCorner[d]);
-                upperRightCorner[d] = std::max(upperRightCorner[d], other.upperRightCorner[d]);
-            }
-        }
-
-        bool isInside(const Vector_t &) const;
-
-        void print(std::ostream &) const;
-
-        /*! Computes the intersection point between a bounding box and the ray which
-         *  has the direction 'direction' and starts at the position 'position'. If
-         *  the position is inside the box then the algorithm should find an inter-
-         *  section point.
-         *
-         *  @param position the position where the ray starts
-         *  @param direction the direction of the ray
-         */
-        boost::optional<Vector_t> getPointOfIntersection(const Vector_t & position,
-                                                         const Vector_t & direction) const;
-    };
 
     virtual BoundingBox getBoundingBoxInLabCoords() const;
 
