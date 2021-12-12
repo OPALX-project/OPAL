@@ -102,7 +102,6 @@ OrbitThreader::OrbitThreader(const PartData &ref,
     }
 
     distTrackBack_m = std::min(pathLength_m, std::max(0.0, maxDiffZBunch));
-    *gmsg << __DBGMSG__ << maxDiffZBunch << "\t" << pathLength_m << "\t" << r_m << endl;
     computeBoundingBox();
 }
 
@@ -263,11 +262,8 @@ void OrbitThreader::integrate(const IndexMap::value_t &activeSet, double maxDrif
         nextR *= Physics::c * dt_m;
 
         if ((activeSet.empty() && std::abs(pathLength_m - oldPathLength) > maxDrift && !globalBoundingBox_m.isInside(nextR)) ||
-            //(activeSet.size() > 0  && dt_m * pathLength_m > dt_m * zstop_m) ||
-            (pathLength_m < 0.0 && dt_m < 0.0)) {
+            (!activeSet.empty()  && (dt_m > 0 ? (pathLength_m > zstop_m) : (pathLength_m < 0)))) {
             errorFlag_m = EOL;
-
-            *gmsg << __DBGMSG__ << std::boolalpha << activeSet.empty() << "\t" << (std::abs(pathLength_m - oldPathLength) > maxDrift) << "\t" << globalBoundingBox_m.isInside(r_m) << endl;
             return;
         }
 
@@ -338,12 +334,11 @@ void OrbitThreader::trackBack() {
     integrator_m.push(nextR, p_m, dt_m);
     nextR *= Physics::c * dt_m;
 
-    *gmsg << __DBGMSG__ << distTrackBack_m << "\t" << r_m << endl;
     while (std::abs(initialPathLength - pathLength_m) < distTrackBack_m) {
         auto elementSet = itsOpalBeamline_m.getElements(nextR);
 
         double maxDrift = computeDriftLengthToBoundingBox(elementSet, r_m, -p_m);
-        // maxDrift = std::min(maxDrift, distTrackBack_m);
+        maxDrift = std::min(maxDrift, distTrackBack_m);
         integrate(elementSet, maxDrift);
 
         nextR = r_m / (Physics::c * dt_m);
@@ -468,13 +463,8 @@ double OrbitThreader::computeDriftLengthToBoundingBox(const std::set<std::shared
                                                       const Vector_t & direction) const {
     if (elements.empty() ||
         (elements.size() == 1 && (*elements.begin())->getType() == ElementType::DRIFT)) {
-        boost::optional<Vector_t> intersectionPoint = globalBoundingBox_m.getPointOfIntersection(position, direction);
-        globalBoundingBox_m.print(std::cout);
+        boost::optional<Vector_t> intersectionPoint = globalBoundingBox_m.getIntersectionPoint(position, direction);
 
-        if (intersectionPoint) {
-            *gmsg << __DBGMSG__ << position << "\t" << direction / euclidean_norm(direction) << "\t" << intersectionPoint.value() << endl;
-            *gmsg << __DBGMSG__ << euclidean_norm(intersectionPoint.get() - position) << endl;
-        }
         return intersectionPoint ? euclidean_norm(intersectionPoint.get() - position): 10.0;
     }
 

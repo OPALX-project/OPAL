@@ -55,6 +55,8 @@ public:
                              double position) const;
     IndexMap::value_t getTouchingElements(const IndexMap::key_t &range) const;
 
+    BoundingBox getBoundingBox() const;
+
 private:
     /// position of reference particle in lab coordinates
     Vector_t r_m;
@@ -136,4 +138,8 @@ IndexMap::value_t OrbitThreader::getTouchingElements(const IndexMap::key_t &rang
     return imap_m.getTouchingElements(range);
 }
 
+inline
+BoundingBox OrbitThreader::getBoundingBox() const {
+    return globalBoundingBox_m;
+}
 #endif

@@ -87,20 +87,8 @@ bool BoundingBox::isInside(const Vector_t& position) const
 
 void BoundingBox::print(std::ostream& output) const
 {
-    const Vector_t & ll = lowerLeftCorner_m;
-    const Vector_t & ur = upperRightCorner_m;
-    // Vector_t diagonal = ur - ll;
-    // Vector_t dX(diagonal(0), 0, 0), dY(0, diagonal(1), 0), dZ(0, 0, diagonal(2));
-
-    // std::vector<Vector_t> corners{ll, ll + dX, ll + dX + dY, ll + dY, ur, ur - dX, ur - dX - dY, ur - dY};
-    // std::vector<std::vector<unsigned int>> paths{{0, 1, 2, 3}, {0, 1, 7, 6}, {1, 2, 4, 7}, {2, 3, 5, 4}, {3, 0, 6, 5}, {4, 5, 6, 7}};
-
     output << std::setprecision(8);
-    output << ll << "\n" << ur << std::endl;
-    // for (const Vector_t& corner: corners) {
-    //     output << std::setw(16) << corner(0)
-    //            << std::setw(16) << corner(1)
-    //            << std::setw(16) << corner(2)
-    //            << std::endl;
-    // }
+    output << "Bounding box\n"
+           << "lower left corner: " << lowerLeftCorner_m << "\n"
+           << "upper right corner: " << upperRightCorner_m << std::endl;
 }

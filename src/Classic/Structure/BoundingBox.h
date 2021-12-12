@@ -22,6 +22,7 @@ public:
                                                    const Vector_t& direction) const;
 
     bool isInside(const Vector_t& position) const;
+    bool isOutside(const Vector_t& position) const;
     void print(std::ostream& output) const;
 
     std::pair<Vector_t, Vector_t> getCorners() const;
@@ -35,4 +36,8 @@ std::pair<Vector_t, Vector_t> BoundingBox::getCorners() const {
     return std::make_pair(lowerLeftCorner_m, upperRightCorner_m);
 }
 
+inline
+bool BoundingBox::isOutside(const Vector_t& position) const {
+    return !isInside(position);
+}
 #endif
