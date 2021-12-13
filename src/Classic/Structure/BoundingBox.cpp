@@ -80,7 +80,7 @@ bool BoundingBox::isInside(const Vector_t& position) const
     Vector_t relPosition = position - lowerLeftCorner_m;
     Vector_t dimensions = upperRightCorner_m - lowerLeftCorner_m;
     for (unsigned int d = 0; d < 3; ++ d) {
-        if (relPosition[d] > dimensions[d]) return false;
+        if (relPosition[d] < 0 || relPosition[d] > dimensions[d]) return false;
     }
     return true;
 }

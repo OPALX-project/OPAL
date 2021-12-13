@@ -103,7 +103,7 @@ public:
     /// Apply the algorithm to the top-level beamline.
     //  overwrite the execute-methode from DefaultVisitor
     virtual void execute();
-    
+
     /// Apply the algorithm to a beam line.
     //  overwrite the execute-methode from DefaultVisitor
     virtual void visitBeamline(const Beamline &);
@@ -155,13 +155,13 @@ public:
 
     /// Apply the algorithm to a solenoid.
     virtual void visitSolenoid(const Solenoid &);
-  
+
     /// Apply the algorithm to a source.
     virtual void visitSource(const Source &);
 
     /// Apply the algorithm to a traveling wave.
     virtual void visitTravelingWave(const TravelingWave &);
-  
+
 #ifdef ENABLE_OPAL_FEL
     /// Apply the algorithm to an undulator.
     virtual void visitUndulator(const Undulator &);
@@ -261,7 +261,7 @@ private:
     // void prepareOpalBeamlineSections();
     void dumpStats(long long step, bool psDump, bool statDump);
     void setOptionalVariables();
-    bool hasEndOfLineReached();
+    bool hasEndOfLineReached(const BoundingBox& globalBoundingBox);
     void handleRestartRun();
     void prepareEmission();
     void setTime();

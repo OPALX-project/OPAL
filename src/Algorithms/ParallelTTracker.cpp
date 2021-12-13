@@ -324,7 +324,7 @@ void ParallelTTracker::execute() {
             }
             itsBunch_m->set_sPos(pathLength_m);
 
-            if (hasEndOfLineReached() || globalBoundingBox.isOutside(itsBunch_m->RefPartR_m)) break;
+            if (hasEndOfLineReached(globalBoundingBox)) break;
 
             bool const psDump = ((itsBunch_m->getGlobalTrackStep() % Options::psDumpFreq) + 1 == Options::psDumpFreq);
             bool const statDump = ((itsBunch_m->getGlobalTrackStep() % Options::statDumpFreq) + 1 == Options::statDumpFreq);
@@ -964,8 +964,9 @@ void ParallelTTracker::setOptionalVariables() {
 }
 
 
-bool ParallelTTracker::hasEndOfLineReached() {
+bool ParallelTTracker::hasEndOfLineReached(const BoundingBox& globalBoundingBox) {
     reduce(&globalEOL_m, &globalEOL_m + 1, &globalEOL_m, OpBitwiseAndAssign());
+    globalEOL_m = globalEOL_m || globalBoundingBox.isOutside(itsBunch_m->RefPartR_m);
     return globalEOL_m;
 }
 
