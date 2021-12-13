@@ -1,3 +1,23 @@
+//
+// Class BoundingBox
+//
+// This class provides functionality to compute bounding boxes, to compute if a position
+// is inside the box and to compute the intersection point between a ray and the bounding box.
+//
+// Copyright (c) 201x - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "BoundingBox.h"
 
 #include <limits>
@@ -7,11 +27,11 @@ BoundingBox::BoundingBox():
     upperRightCorner_m(std::numeric_limits<double>::lowest())
 {}
 
-std::shared_ptr<BoundingBox> BoundingBox::getBoundingBox(const std::vector<Vector_t>& positions)
+BoundingBox BoundingBox::getBoundingBox(const std::vector<Vector_t>& positions)
 {
-    std::shared_ptr<BoundingBox> boundingBox = std::make_shared<BoundingBox>();
+    BoundingBox boundingBox;
     for (const Vector_t& position : positions) {
-        boundingBox->enlargeToContainPosition(position);
+        boundingBox.enlargeToContainPosition(position);
     }
 
     return boundingBox;

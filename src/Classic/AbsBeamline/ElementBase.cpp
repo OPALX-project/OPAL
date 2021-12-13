@@ -328,10 +328,5 @@ BoundingBox ElementBase::getBoundingBoxInLabCoords() const {
         }
     }
 
-    BoundingBox bb;
-    for (unsigned int i = 1; i < 8u; ++ i) {
-        bb.enlargeToContainPosition(corners[i]);
-    }
-
-    return bb;
+    return BoundingBox::getBoundingBox(corners);
 }

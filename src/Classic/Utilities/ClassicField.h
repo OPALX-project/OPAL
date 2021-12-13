@@ -4,6 +4,7 @@
 #include <list>
 #include <memory>
 #include "AbsBeamline/Component.h"
+#include "Structure/BoundingBox.h"
 
 class ClassicField {
 public:
