@@ -40,7 +40,7 @@ namespace mslang {
             else if (corners[i][1] > urc[1]) urc[1] = corners[i][1];
         }
 
-        bb_m = BoundingBox(llc, urc);
+        bb_m = BoundingBox2D(llc, urc);
 
         for (auto item: divisor_m) {
             item->computeBoundingBox();

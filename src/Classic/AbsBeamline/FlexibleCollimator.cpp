@@ -222,7 +222,7 @@ void FlexibleCollimator::setDescription(const std::string& desc) {
     }
 
     std::shared_ptr<mslang::Base>& first = holes_m.front();
-    const mslang::BoundingBox& bb = first->bb_m;
+    const mslang::BoundingBox2D& bb = first->bb_m;
 
     Vector_t llc(bb.center_m[0] - 0.5 * bb.width_m,
                  bb.center_m[1] - 0.5 * bb.height_m,
@@ -232,7 +232,7 @@ void FlexibleCollimator::setDescription(const std::string& desc) {
                  0.0);
 
     for (const std::shared_ptr<mslang::Base>& it: holes_m) {
-        const mslang::BoundingBox& bb = it->bb_m;
+        const mslang::BoundingBox2D& bb = it->bb_m;
         llc[0] = std::min(llc[0], bb.center_m[0] - 0.5 * bb.width_m);
         llc[1] = std::min(llc[1], bb.center_m[1] - 0.5 * bb.height_m);
         urc[0] = std::max(urc[0], bb.center_m[0] + 0.5 * bb.width_m);
@@ -247,7 +247,7 @@ void FlexibleCollimator::setDescription(const std::string& desc) {
     llc[1] -= 1e-3 * height;
     urc[1] += 1e-3 * height;
 
-    bb_m = mslang::BoundingBox(llc, urc);
+    bb_m = mslang::BoundingBox2D(llc, urc);
 
     tree_m.bb_m = bb_m;
     tree_m.objects_m.insert(tree_m.objects_m.end(), holes_m.begin(), holes_m.end());

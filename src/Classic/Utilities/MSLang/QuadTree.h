@@ -9,7 +9,7 @@ namespace mslang {
     struct QuadTree {
         int level_m;
         std::list<std::shared_ptr<Base> > objects_m;
-        BoundingBox bb_m;
+        BoundingBox2D bb_m;
         std::vector<std::shared_ptr<QuadTree> > nodes_m;
 
         QuadTree():
@@ -18,7 +18,7 @@ namespace mslang {
             nodes_m()
         { }
 
-        QuadTree(int l, const BoundingBox &b):
+        QuadTree(int l, const BoundingBox2D &b):
             level_m(l),
             bb_m(b),
             nodes_m()

@@ -46,6 +46,7 @@
 #include "Solvers/CSRWakeFunction.h"
 #include "Solvers/ParticleMatterInteractionHandler.h"
 #include "Structure/BoundaryGeometry.h"
+#include "Structure/BoundingBox.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 #include "Utilities/Timer.h"

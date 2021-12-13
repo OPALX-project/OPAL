@@ -20,7 +20,7 @@
 
 #include "AbsBeamline/Component.h"
 #include "Utilities/MSLang.h"
-#include "Utilities/MSLang/BoundingBox.h"
+#include "Utilities/MSLang/BoundingBox2D.h"
 #include "Utilities/MSLang/QuadTree.h"
 
 #include <memory>
@@ -82,7 +82,7 @@ private:
 
     std::string description_m;
     std::vector<std::shared_ptr<mslang::Base>> holes_m;
-    mslang::BoundingBox bb_m;
+    mslang::BoundingBox2D bb_m;
     mslang::QuadTree tree_m;
 
     bool informed_m;

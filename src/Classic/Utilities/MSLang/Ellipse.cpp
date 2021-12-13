@@ -94,7 +94,7 @@ namespace mslang {
         llc[1] = center[1] - std::abs(halfheight);
         urc[1] = center[1] + std::abs(halfheight);
 
-        bb_m = BoundingBox(llc, urc);
+        bb_m = BoundingBox2D(llc, urc);
 
         for (auto item: divisor_m) {
             item->computeBoundingBox();
