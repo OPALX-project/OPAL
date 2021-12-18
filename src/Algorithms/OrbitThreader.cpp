@@ -102,6 +102,8 @@ OrbitThreader::OrbitThreader(const PartData &ref,
     }
     pathLengthRange_m = stepSizes_m.getPathLengthRange();
     pathLengthRange_m.enlargeIfOutside(pathLength_m);
+    stepRange_m.enlargeIfOutside(0);
+    stepRange_m.enlargeIfOutside(stepSizes_m.getNumStepsFinestResolution());
 
     distTrackBack_m = std::min(pathLength_m, std::max(0.0, maxDiffZBunch));
     computeBoundingBox();
@@ -138,7 +140,8 @@ void OrbitThreader::execute() {
 
     trackBack();
     updateBoundingBoxWithCurrentPosition();
-
+    pathLengthRange_m.enlargeIfOutside(pathLength_m);
+    *gmsg << __DBGMSG__ << currentStep_m << endl;
     Vector_t nextR = r_m / (Physics::c * dt_m);
     integrator_m.push(nextR, p_m, dt_m);
     nextR *= Physics::c * dt_m;
@@ -185,7 +188,8 @@ void OrbitThreader::execute() {
             elementSet = itsOpalBeamline_m.getElements(nextR);
         }
     } while (errorFlag_m != HITMATERIAL &&
-             errorFlag_m != EOL);
+             errorFlag_m != EOL &&
+             stepRange_m.isInside(currentStep_m));
 
     imap_m.tidyUp(zstop_m);
     *gmsg << level1 << "\n" << imap_m << endl;
@@ -194,10 +198,9 @@ void OrbitThreader::execute() {
     processElementRegister();
 }
 
-void OrbitThreader::integrate(const IndexMap::value_t &activeSet, double maxDrift) {
-    static size_t step = 0;
+void OrbitThreader::integrate(const IndexMap::value_t &activeSet, double /*maxDrift*/) {
     CoordinateSystemTrafo labToBeamline = itsOpalBeamline_m.getCSTrafoLab2Local();
-    const double oldPathLength = pathLength_m;
+    // const double oldPathLength = pathLength_m;
     Vector_t nextR;
     do {
         errorFlag_m = EVERYTHINGFINE;
@@ -229,7 +232,7 @@ void OrbitThreader::integrate(const IndexMap::value_t &activeSet, double maxDrif
 
         if (((pathLength_m > 0.0 &&
               pathLength_m < zstop_m) || dt_m < 0.0) &&
-            step % loggingFrequency_m == 0 && Ippl::myNode() == 0 &&
+            currentStep_m % loggingFrequency_m == 0 && Ippl::myNode() == 0 &&
             !OpalData::getInstance()->isOptimizerRun()) {
             logger_m << std::setw(18) << std::setprecision(8) << pathLength_m + std::copysign(euclidean_norm(r_m - oldR), dt_m)
                      << std::setw(18) << std::setprecision(8) << r_m(0)
@@ -256,17 +259,14 @@ void OrbitThreader::integrate(const IndexMap::value_t &activeSet, double maxDrif
         r_m *= Physics::c * dt_m;
 
         pathLength_m += std::copysign(euclidean_norm(r_m - oldR), dt_m);
-        ++ step;
+        ++ currentStep_m;
         time_m += dt_m;
 
         nextR = r_m / (Physics::c * dt_m);
         integrator_m.push(nextR, p_m, dt_m);
         nextR *= Physics::c * dt_m;
 
-        if ((activeSet.empty()
-             && std::abs(pathLength_m - oldPathLength) > maxDrift
-             && (!globalBoundingBox_m.isInside(nextR) && pathLengthRange_m.isOutside(pathLength_m))) ||
-            (!activeSet.empty()  && (dt_m > 0 ? (pathLength_m > zstop_m) : (pathLength_m < 0)))) {
+        if (pathLengthRange_m.isOutside(pathLength_m) || stepRange_m.isOutside(currentStep_m)) {
             errorFlag_m = EOL;
             globalBoundingBox_m.enlargeToContainPosition(r_m);
             return;
@@ -333,6 +333,8 @@ double OrbitThreader::getMaxDesignEnergy(const IndexMap::value_t &elementSet) co
 
 void OrbitThreader::trackBack() {
     dt_m *= -1;
+    ValueRange<double> tmpRange;
+    std::swap(tmpRange, pathLengthRange_m);
     double initialPathLength = pathLength_m;
 
     Vector_t nextR = r_m / (Physics::c * dt_m);
@@ -350,6 +352,7 @@ void OrbitThreader::trackBack() {
         integrator_m.push(nextR, p_m, dt_m);
         nextR *= Physics::c * dt_m;
     }
+    std::swap(tmpRange, pathLengthRange_m);
 
     dt_m *= -1;
 }

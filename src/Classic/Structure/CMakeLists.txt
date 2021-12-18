@@ -3,7 +3,6 @@ set (_SRCS
     LossDataSink.cpp
     MeshGenerator.cpp
     PeakFinder.cpp
-    ValueRange.cpp
     )
 
 include_directories (

@@ -75,7 +75,7 @@ public:
 
     void print(Inform &out) const;
 
-    ValueRange getPathLengthRange() const;
+    ValueRange<double> getPathLengthRange() const;
 
 private:
     typedef std::tuple<double, double, unsigned long> entry_t;

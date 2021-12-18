@@ -20,25 +20,45 @@
 #ifndef VALUERANGE_H
 #define VALUERANGE_H
 
+#include "Utility/Inform.h"
+
+template<class T>
 class ValueRange {
 public:
-    ValueRange();
+    ValueRange():
+        minValue_m(std::numeric_limits<T>::max()),
+        maxValue_m(std::numeric_limits<T>::lowest())
+    {}
 
-    void enlargeIfOutside(double value);
-
-    bool isInside(double value) const
+    void enlargeIfOutside(T value)
+    {
+        minValue_m = std::min(minValue_m, value);
+        maxValue_m = std::max(maxValue_m, value);
+    }
+    bool isInside(T value) const
     {
         return minValue_m < value && value < maxValue_m;
     }
 
-    bool isOutside(double value) const
+    bool isOutside(T value) const
     {
         return !isInside(value);
     }
 
+    void print(Inform& out) const
+    {
+        out << "Value range between " << minValue_m << " and " << maxValue_m;
+    }
 private:
-    double minValue_m;
-    double maxValue_m;
+    T minValue_m;
+    T maxValue_m;
 };
+
+template<class T>
+Inform& operator<<(Inform& out, ValueRange<T> const& range)
+{
+    range.print(out);
+    return out;
+}
 
 #endif

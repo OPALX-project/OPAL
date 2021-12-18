@@ -21,14 +21,3 @@
 
 #include <limits>
 #include <algorithm>
-
-ValueRange::ValueRange():
-    minValue_m(std::numeric_limits<double>::max()),
-    maxValue_m(std::numeric_limits<double>::lowest())
-{}
-
-void ValueRange::enlargeIfOutside(double value)
-{
-    minValue_m = std::min(minValue_m, value);
-    maxValue_m = std::max(maxValue_m, value);
-}

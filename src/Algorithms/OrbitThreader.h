@@ -71,11 +71,13 @@ private:
     double time_m;
     /// the time step
     double dt_m;
+    ValueRange<unsigned int> stepRange_m;
+    unsigned int currentStep_m{0};
 
     /// final position in path length
     StepSizeConfig stepSizes_m;
     const double zstop_m;
-    ValueRange pathLengthRange_m;
+    ValueRange<double> pathLengthRange_m;
 
     OpalBeamline &itsOpalBeamline_m;
     IndexMap imap_m;

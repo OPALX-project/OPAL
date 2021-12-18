@@ -199,8 +199,8 @@ void StepSizeConfig::print(Inform &out) const {
     }
 }
 
-ValueRange StepSizeConfig::getPathLengthRange() const {
-    ValueRange result;
+ValueRange<double> StepSizeConfig::getPathLengthRange() const {
+    ValueRange<double> result;
     for (const entry_t& entry : configurations_m) {
         result.enlargeIfOutside(std::get<1>(entry));
     }
