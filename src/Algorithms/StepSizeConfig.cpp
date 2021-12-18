@@ -1,3 +1,22 @@
+//
+// Class StepSizeConfig
+//
+// This class stores tuples of time step sizes, path length range limits and limit of number of step sizes.
+//
+// Copyright (c) 2019 - 2021, Christof Metzger-Kraus
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Algorithms/StepSizeConfig.h"
 #include "Utilities/OpalException.h"
 
@@ -178,4 +197,12 @@ void StepSizeConfig::print(Inform &out) const {
             << std::setw(20) << std::get<2>(*it)
             << endl;
     }
+}
+
+ValueRange StepSizeConfig::getPathLengthRange() const {
+    ValueRange result;
+    for (const entry_t& entry : configurations_m) {
+        result.enlargeIfOutside(std::get<1>(entry));
+    }
+    return result;
 }

@@ -3,6 +3,7 @@ set (_SRCS
     LossDataSink.cpp
     MeshGenerator.cpp
     PeakFinder.cpp
+    ValueRange.cpp
     )
 
 include_directories (
@@ -16,6 +17,7 @@ set (HDRS
     LossDataSink.h
     MeshGenerator.h
     PeakFinder.h
+    ValueRange.h
     )
 
 install (FILES ${HDRS} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/Structure")

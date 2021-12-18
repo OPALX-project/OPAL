@@ -100,6 +100,8 @@ OrbitThreader::OrbitThreader(const PartData &ref,
     } else {
         loggingFrequency_m = std::numeric_limits<size_t>::max();
     }
+    pathLengthRange_m = stepSizes_m.getPathLengthRange();
+    pathLengthRange_m.enlargeIfOutside(pathLength_m);
 
     distTrackBack_m = std::min(pathLength_m, std::max(0.0, maxDiffZBunch));
     computeBoundingBox();
@@ -261,9 +263,12 @@ void OrbitThreader::integrate(const IndexMap::value_t &activeSet, double maxDrif
         integrator_m.push(nextR, p_m, dt_m);
         nextR *= Physics::c * dt_m;
 
-        if ((activeSet.empty() && std::abs(pathLength_m - oldPathLength) > maxDrift && !globalBoundingBox_m.isInside(nextR)) ||
+        if ((activeSet.empty()
+             && std::abs(pathLength_m - oldPathLength) > maxDrift
+             && (!globalBoundingBox_m.isInside(nextR) && pathLengthRange_m.isOutside(pathLength_m))) ||
             (!activeSet.empty()  && (dt_m > 0 ? (pathLength_m > zstop_m) : (pathLength_m < 0)))) {
             errorFlag_m = EOL;
+            globalBoundingBox_m.enlargeToContainPosition(r_m);
             return;
         }
 

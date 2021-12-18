@@ -75,6 +75,7 @@ private:
     /// final position in path length
     StepSizeConfig stepSizes_m;
     const double zstop_m;
+    ValueRange pathLengthRange_m;
 
     OpalBeamline &itsOpalBeamline_m;
     IndexMap imap_m;
