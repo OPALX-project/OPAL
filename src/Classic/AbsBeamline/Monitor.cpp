@@ -130,14 +130,16 @@ bool Monitor::applyToReferenceParticle(const Vector_t &R,
             if (type_m == CollectionType::TEMPORAL) {
                 driftToCorrectPositionAndSave(R, P);
                 auto stats = lossDs_m->computeStatistics(1);
-                statFileEntries_sm.insert(std::make_pair(stats.begin()->spos_m, *stats.begin()));
-                OpalData::OpenMode openMode;
-                if (numPassages_m > 0) {
-                    openMode = OpalData::OpenMode::APPEND;
-                } else {
-                    openMode = OpalData::getInstance()->getOpenMode();
+                if (!stats.empty()) {
+                    statFileEntries_sm.insert(std::make_pair(stats.begin()->spos_m, *stats.begin()));
+                    OpalData::OpenMode openMode;
+                    if (numPassages_m > 0) {
+                        openMode = OpalData::OpenMode::APPEND;
+                    } else {
+                        openMode = OpalData::getInstance()->getOpenMode();
+                    }
+                    lossDs_m->save(1, openMode);
                 }
-                lossDs_m->save(1, openMode);
             }
 
             ++ numPassages_m;

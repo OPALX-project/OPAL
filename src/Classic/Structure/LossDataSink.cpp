@@ -744,10 +744,9 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
         plainData[i] = data[i].sum;
     }
 
-    new_reduce(plainData, totalSize, std::plus<double>());
-    new_reduce(rminmax, 6, std::greater<double>());
+    allreduce(plainData, totalSize, std::plus<double>());
+    allreduce(rminmax, 6, std::greater<double>());
 
-    if (Ippl::myNode() != 0) return stat;
     if (plainData[0] == 0.0) return stat;
 
     double *centroid = plainData + 1;
