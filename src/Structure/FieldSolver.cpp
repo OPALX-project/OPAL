@@ -129,10 +129,9 @@ namespace {
 
 FieldSolver::FieldSolver():
     Definition(SIZE, "FIELDSOLVER",
-               "The \"FIELDSOLVER\" statement defines data for a the field solver ") {
-
+               "The \"FIELDSOLVER\" statement defines data for a the field solver") {
     itsAttr[FSTYPE] = Attributes::makePredefinedString("FSTYPE", "Name of the attached field solver.",
-                                                       {"FFT", "FFTPERIODIC", "SAAMG", "NONE"});
+                                                       {"FFT", "FFTPERIODIC", "SAAMG", "FMG", "ML", "AMR_MG", "NONE"});
 
     itsAttr[MX] = Attributes::makeReal("MX", "Meshsize in x");
     itsAttr[MY] = Attributes::makeReal("MY", "Meshsize in y");
@@ -199,14 +198,14 @@ FieldSolver::FieldSolver():
                                                         "");
 
     itsAttr[ITSOLVER] = Attributes::makePredefinedString("ITSOLVER",
-                                                        "Type of iterative solver.",
-                                                        {"CG", "BICGSTAB", "GMRES"},
-                                                        "CG");
+                                                         "Type of iterative solver.",
+                                                         {"CG", "BICGSTAB", "GMRES"},
+                                                         "CG");
 
     itsAttr[INTERPL] = Attributes::makePredefinedString("INTERPL",
                                                         "interpolation used for boundary points.",
                                                         {"CONSTANT", "LINEAR", "QUADRATIC"},
-                                                       "LINEAR");
+                                                        "LINEAR");
 
     itsAttr[TOL] = Attributes::makeReal("TOL",
                                         "Tolerance for iterative solver",
@@ -219,7 +218,7 @@ FieldSolver::FieldSolver():
     itsAttr[PRECMODE] = Attributes::makePredefinedString("PRECMODE",
                                                          "Preconditioner Mode.",
                                                          {"STD", "HIERARCHY", "REUSE"},
-                                                        "HIERARCHY");
+                                                         "HIERARCHY");
 
     // AMR
 #ifdef ENABLE_AMR
@@ -268,8 +267,8 @@ FieldSolver::FieldSolver():
                                                            "CHARGE_DENSITY");
 
     itsAttr[AMR_DENSITY] = Attributes::makeReal("AMR_DENSITY",
-                                               "Tagging value for charge density refinement [C / cell volume]",
-                                               1.0e-14);
+                                                "Tagging value for charge density refinement [C / cell volume]",
+                                                1.0e-14);
 
     itsAttr[AMR_MAX_NUM_PART] = Attributes::makeReal("AMR_MAX_NUM_PART",
                                                      "Tagging value for max. #particles",
@@ -285,7 +284,7 @@ FieldSolver::FieldSolver():
                                                 "MOMENTA)", 0.75);
 
     itsAttr[AMR_DOMAIN_RATIO] = Attributes::makeRealArray("AMR_DOMAIN_RATIO",
-                                                         "Box ratio of AMR computation domain. Default: [-1, 1]^3");
+                                                          "Box ratio of AMR computation domain. Default: [-1, 1]^3");
 
     // default
     Attributes::setRealArray(itsAttr[AMR_DOMAIN_RATIO], {1.0, 1.0, 1.0});
@@ -337,7 +336,6 @@ FieldSolver::FieldSolver():
     mesh_m = 0;
     FL_m = 0;
     PL_m.reset(nullptr);
-
     solver_m = 0;
 
     registerOwnership(AttributeHandler::STATEMENT);
