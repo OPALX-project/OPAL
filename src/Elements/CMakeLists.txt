@@ -23,6 +23,7 @@ set (_SRCS
     OpalOffset/OpalLocalCartesianOffset.cpp
     OpalOffset/OpalGlobalCylindricalOffset.cpp
     OpalOffset/OpalGlobalCartesianOffset.cpp
+    OpalOutputPlane.cpp
     OpalProbe.cpp
     OpalPepperPot.cpp
     OpalPolynomialTimeDependence.cpp
@@ -69,6 +70,7 @@ set (HDRS
     OpalMultipoleTCurvedConstRadius.h
     OpalMultipoleTCurvedVarRadius.h
     OpalOctupole.h
+    OpalOutputPlane.h
     OpalPepperPot.h
     OpalPolynomialTimeDependence.h
     OpalProbe.h

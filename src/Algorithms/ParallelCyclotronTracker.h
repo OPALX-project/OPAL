@@ -128,6 +128,9 @@ public:
     /// Apply the algorithm to a offset (placement).
     virtual void visitOffset(const Offset&);
 
+    /// Apply the algorithm to an OutputPlane.
+    virtual void visitOutputPlane(const OutputPlane&);
+
     /// Apply the algorithm to a probe.
     virtual void visitProbe(const Probe&);
 

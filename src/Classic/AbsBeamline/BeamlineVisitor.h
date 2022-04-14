@@ -55,6 +55,7 @@ class MultipoleTStraight;
 class MultipoleTCurvedConstRadius;
 class MultipoleTCurvedVarRadius;
 class Offset;
+class OutputPlane;
 class Probe;
 class RBend;
 class RBend3D;
@@ -136,7 +137,10 @@ public:
 
     /// Apply the algorithm to an offset (placement).
     virtual void visitOffset(const Offset &) = 0;
-    
+
+    /// Apply the algorithm to an OutputPlane
+    virtual void visitOutputPlane(const OutputPlane &) = 0;
+
     /// Apply the algorithm to a probe.
     virtual void visitProbe(const Probe &) = 0;
 

@@ -37,6 +37,7 @@
 #include "AbsBeamline/MultipoleTCurvedVarRadius.h"
 #include "AbsBeamline/MultipoleTStraight.h"
 #include "AbsBeamline/Offset.h"
+#include "AbsBeamline/OutputPlane.h"
 #include "AbsBeamline/Probe.h"
 #include "AbsBeamline/RBend.h"
 #include "AbsBeamline/RBend3D.h"
@@ -142,6 +143,10 @@ void DefaultVisitor::visitMultipoleTCurvedVarRadius(const MultipoleTCurvedVarRad
 
 void DefaultVisitor::visitOffset(const Offset& off) {
     applyDefault(off);
+}
+
+void DefaultVisitor::visitOutputPlane(const OutputPlane &outputplane) {
+    applyDefault(outputplane);
 }
 
 void DefaultVisitor::visitProbe(const Probe &probe) {

@@ -41,6 +41,7 @@
 #include "AbsBeamline/MultipoleTCurvedVarRadius.h"
 #include "AbsBeamline/MultipoleTStraight.h"
 #include "AbsBeamline/Offset.h"
+#include "AbsBeamline/OutputPlane.h"
 #include "AbsBeamline/PluginElement.h"
 #include "AbsBeamline/Probe.h"
 #include "AbsBeamline/RBend.h"
@@ -584,6 +585,30 @@ void ParallelCyclotronTracker::visitOffset(const Offset& off) {
     offNonConst->updateGeometry(opalRing_m->getNextPosition(),
                                 opalRing_m->getNextNormal());
     opalRing_m->appendElement(off);
+}
+
+/**
+ *
+ *
+ * @param plane
+ */
+void ParallelCyclotronTracker::visitOutputPlane(const OutputPlane& plane) {
+    OutputPlane *elptr = dynamic_cast<OutputPlane*>(plane.clone());
+    elptr->setGlobalFieldMap(opalRing_m);
+    myElements.push_back(elptr);
+    elptr->initialise(itsBunch_m);
+
+    double BcParameter[8] = {};
+
+    Vector_t centre = elptr->getCentre();
+    Vector_t norm = elptr->getNormal();
+    double width = elptr->getHorizontalExtent();
+    BcParameter[0] = centre[0]-width*norm[1];
+    BcParameter[1] = centre[0]+width*norm[1];
+    BcParameter[2] = centre[1]-width*norm[0];
+    BcParameter[3] = centre[1]+width*norm[0];
+    BcParameter[4] = 0.001; // thickness
+    buildupFieldList(BcParameter, ElementType::OUTPUTPLANE, elptr);
 }
 
 /**

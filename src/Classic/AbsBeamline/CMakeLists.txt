@@ -23,6 +23,7 @@ set (_SRCS
     MultipoleTCurvedConstRadius.cpp
     MultipoleTCurvedVarRadius.cpp
     Offset.cpp
+    OutputPlane.cpp
     PluginElement.cpp
     Probe.cpp
     RBend.cpp
@@ -65,6 +66,7 @@ set (HDRS
     MultipoleTCurvedConstRadius.h
     MultipoleTCurvedVarRadius.h
     Offset.h
+    OutputPlane.h
     PluginElement.h
     Probe.h
     RBend.h

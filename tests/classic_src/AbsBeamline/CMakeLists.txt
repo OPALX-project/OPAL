@@ -2,6 +2,7 @@ set (_SRCS
     DipoleFieldTest.cpp
     MultipoleTTest.cpp
     OffsetTest.cpp
+    OutputPlaneTest.cpp
     PolynomialTest.cpp
     RingTest.cpp
     SBend3DTest.cpp
@@ -19,5 +20,5 @@ endif ()
 include_directories (
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
-
+add_subdirectory(TrackingTest)
 add_sources(${_SRCS})
