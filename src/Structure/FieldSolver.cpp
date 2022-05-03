@@ -118,7 +118,7 @@ namespace {
         AMR_MG_NORM,        // AMR, norm convergence criteria
         AMR_MG_VERBOSE,     // AMR, enable solver info writing (SDDS file)
         AMR_MG_REBALANCE,   // AMR, rebalance smoothed aggregation (SA) preconditioner
-        AMR_MG_REUSE,       // AMR, reuse type of SA (none, RP, RAP, S or full)
+        AMR_MG_REUSE,       // AMR, reuse type of SA (NONE, RP, RAP, SYMBOLIC or FULL)
         AMR_MG_TOL,         // AMR, tolerance of solver
 #endif
         // FOR XXX BASED SOLVER
@@ -199,7 +199,21 @@ FieldSolver::FieldSolver():
 
     itsAttr[ITSOLVER] = Attributes::makePredefinedString("ITSOLVER",
                                                          "Type of iterative solver.",
-                                                         {"CG", "BICGSTAB", "GMRES"},
+                                                         {"CG",
+                                                          "BICGSTAB",
+                                                          "GMRES",
+                                                          "MINRES",
+                                                          "PCPG",
+                                                          "STOCHASTIC_CG",
+                                                          "RECYCLING_CG",
+                                                          "RECYCLING_GMRES",
+                                                          "KLU2",
+                                                          "SUPERLU",
+                                                          "UMFPACK",
+                                                          "PARDISO_MKL",
+                                                          "MUMPS",
+                                                          "LAPACK",
+                                                          "SA"},
                                                          "CG");
 
     itsAttr[INTERPL] = Attributes::makePredefinedString("INTERPL",
@@ -325,7 +339,7 @@ FieldSolver::FieldSolver():
 
     itsAttr[AMR_MG_REUSE] = Attributes::makePredefinedString("AMR_MG_REUSE",
                                                              "Reuse type of Smoothed Aggregation.",
-                                                             {"NONE", "RP", "RAP"},
+                                                             {"NONE", "RP", "RAP", "SYMBOLIC", "FULL"},
                                                              "RAP");
 
     itsAttr[AMR_MG_TOL] = Attributes::makeReal("AMR_MG_TOL",

@@ -109,7 +109,6 @@ void MueLuBottomSolver<Level>::setOperator(const Teuchos::RCP<matrix_t>& A,
     hierarchy_mp->IsPreconditioner(false);
     hierarchy_mp->GetLevel(0)->Set("A", A_mp);
 
-
     Teuchos::RCP<level_t> finest_p = hierarchy_mp->GetLevel(0);
     finest_p->Set("A", A_mp);
 
@@ -130,20 +129,20 @@ std::size_t MueLuBottomSolver<Level>::getNumIters() {
 template <class Level>
 std::string
 MueLuBottomSolver<Level>::convertToMueLuReuseOption(const std::string& reuse) {
-    
+
     std::map<std::string, std::string> map;
-    map["NONE"] = "none";
-    map["RP"]   = "RP";
-    map["RAP"]  = "RAP";
-    map["S"]    = "S";
-    map["FULL"] = "full";
-    
+    map["NONE"]     = "none";
+    map["RP"]       = "RP";
+    map["RAP"]      = "RAP";
+    map["SYMBOLIC"] = "S";
+    map["FULL"]     = "full";
+
     auto muelu =  map.find(reuse);
-    
+
     if ( muelu == map.end() )
         throw OpalException("MueLuBottomSolver::convertToMueLuReuseOption()",
                             "No MueLu reuse option '" + reuse + "'.");
-    
+
     return muelu->second;
 }
 
@@ -161,7 +160,7 @@ void MueLuBottomSolver<Level>::initMueLuList_m(const std::string& reuse) {
     mueluList_m.set("sa: damping factor", 1.33); // default: 1.33
     mueluList_m.set("sa: use filtered matrix", true);
     mueluList_m.set("filtered matrix: reuse eigenvalue", false); // false: more expensive
-    
+
     mueluList_m.set("repartition: enable", rebalance_m);
     mueluList_m.set("repartition: rebalance P and R", rebalance_m);
     mueluList_m.set("repartition: partitioner", "zoltan2");
@@ -173,7 +172,7 @@ void MueLuBottomSolver<Level>::initMueLuList_m(const std::string& reuse) {
     //    reparms.set("partitioning_approach", "partition");
 
     mueluList_m.set("repartition: params", reparms);
-    
+
     mueluList_m.set("smoother: type", "CHEBYSHEV");
     mueluList_m.set("smoother: pre or post", "both");
     Teuchos::ParameterList smparms;
@@ -181,7 +180,6 @@ void MueLuBottomSolver<Level>::initMueLuList_m(const std::string& reuse) {
     smparms.set("chebyshev: assume matrix does not change", false);
     smparms.set("chebyshev: zero starting solution", true);
     mueluList_m.set("smoother: params", smparms);
-
 
     mueluList_m.set("coarse: type", "RELAXATION");
     Teuchos::ParameterList cparms;
@@ -202,4 +200,3 @@ void MueLuBottomSolver<Level>::initMueLuList_m(const std::string& reuse) {
 
     mueluList_m.set("reuse: type", reuse);
 }
-

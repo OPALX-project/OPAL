@@ -56,20 +56,20 @@ void MueLuPreconditioner<Level>::fillMap(map_t& map) {
 template <class Level>
 std::string
 MueLuPreconditioner<Level>::convertToMueLuReuseOption(const std::string& reuse) {
-    
+
     std::map<std::string, std::string> map;
-    map["NONE"] = "none";
-    map["RP"]   = "RP";
-    map["RAP"]  = "RAP";
-    map["S"]    = "S";
-    map["FULL"] = "full";
-    
+    map["NONE"]     = "none";
+    map["RP"]       = "RP";
+    map["RAP"]      = "RAP";
+    map["SYMBOLIC"] = "S";
+    map["FULL"]     = "full";
+
     auto muelu =  map.find(reuse);
-    
+
     if ( muelu == map.end() )
         throw OpalException("MueLuPreconditioner::convertToMueLuReuseOption()",
                             "No MueLu reuse option '" + reuse + "'.");
-    
+
     return muelu->second;
 }
 
@@ -87,7 +87,7 @@ void MueLuPreconditioner<Level>::init_m(const std::string& reuse) {
     params_m.set("sa: damping factor", 1.33); // default: 1.33
     params_m.set("sa: use filtered matrix", true);
     params_m.set("filtered matrix: reuse eigenvalue", false); // false: more expensive
-    
+
     params_m.set("repartition: enable", false);
     params_m.set("repartition: rebalance P and R", false);
     params_m.set("repartition: partitioner", "zoltan2");
@@ -99,8 +99,7 @@ void MueLuPreconditioner<Level>::init_m(const std::string& reuse) {
     //    reparms.set("partitioning_approach", "partition");
 
     params_m.set("repartition: params", reparms);
-    
-    
+
     params_m.set("smoother: type", "CHEBYSHEV");
     params_m.set("smoother: pre or post", "both");
     Teuchos::ParameterList smparms;
@@ -108,7 +107,7 @@ void MueLuPreconditioner<Level>::init_m(const std::string& reuse) {
     smparms.set("chebyshev: assume matrix does not change", false);
     smparms.set("chebyshev: zero starting solution", true);
     params_m.set("smoother: params", smparms);
-    
+
     params_m.set("smoother: type", "CHEBYSHEV");
     params_m.set("smoother: pre or post", "both");
 
