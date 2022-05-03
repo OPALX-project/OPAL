@@ -21,7 +21,7 @@
 #ifndef MUELU_BOTTOM_SOLVER_H
 #define MUELU_BOTTOM_SOLVER_H
 
-#include "BottomSolver.h"
+#include "Solvers/AMR_MG/BottomSolver.h"
 
 #include "Amr/AmrDefs.h"
 
@@ -52,54 +52,51 @@ public:
     typedef amr::AmrIntVect_t AmrIntVect_t;
 
 //    typedef amr::AmrGeometry_t AmrGeometry_t;
-    
+
     typedef MueLu::Hierarchy<scalar_t, lo_t, go_t, node_t> hierarchy_t;
     typedef MueLu::Level level_t;
     typedef Xpetra::Matrix<scalar_t, lo_t, go_t, node_t> xmatrix_t;
     typedef Xpetra::MultiVector<scalar_t, lo_t, go_t, node_t> xmv_t;
     typedef MueLu::Utilities<scalar_t, lo_t, go_t, node_t> util_t;
-    
+
     typedef MueLu::ParameterListInterpreter<scalar_t, lo_t, go_t, node_t> pListInterpreter_t;
     typedef MueLu::HierarchyManager<scalar_t, lo_t, go_t, node_t> manager_t;
-        
+
 public:
-    
     MueLuBottomSolver(const bool& rebalance,
                       const std::string& reuse);
-    
+
     void solve(const Teuchos::RCP<mv_t>& x,
                const Teuchos::RCP<mv_t>& b);
-    
+
     void setOperator(const Teuchos::RCP<matrix_t>& A,
                      Level* level_p = nullptr);
-    
+
     std::size_t getNumIters();
-    
+
     /*
      * MueLu reuse option.
-     * Either none, RP, RAP or full
+     * Either NONE, RP, RAP, SYMBOLIC or FULL
      */
     static std::string convertToMueLuReuseOption(const std::string& reuse);
 
 private:
     void initMueLuList_m(const std::string& reuse);
-    
+
 private:
     Teuchos::RCP<hierarchy_t> hierarchy_mp;     ///< manages the multigrid hierarchy
-    
     Teuchos::RCP<manager_t> factory_mp;         ///< sets up hierarchy
-
     Teuchos::RCP<xmatrix_t> A_mp;               ///< MueLu requires Xpetra
 
     lo_t nSweeps_m;                             ///< the number of multigrid iterations
-    
+
     Teuchos::ParameterList mueluList_m;
-    
+
     bool rebalance_m;                           ///< use subcommunicators (less communication)
-    
+
     IpplTimings::TimerRef setupTimer_m;
 };
 
-#include "MueLuBottomSolver.hpp"
+#include "Solvers/AMR_MG/MueLuBottomSolver.hpp"
 
 #endif
