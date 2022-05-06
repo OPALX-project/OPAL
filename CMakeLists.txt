@@ -58,20 +58,26 @@ add_compile_options (-fstrict-aliasing)
 add_compile_options (-fno-aggressive-loop-optimizations)
 
 if (BUILD_OPAL_PYTHON)
-    option (USE_STATIC_LIBRARIES "Building python hooks - requires dynamic libs" OFF)
+    SET(USE_STATIC_LIBRARIES OFF)
     find_package (Python COMPONENTS Development REQUIRED)
     include_directories (SYSTEM ${Python_INCLUDE_DIRS})
     MESSAGE(STATUS "Python FOUND ${Python_FOUND}")
     MESSAGE(STATUS "Python LIBRARIES ${Python_LIBRARIES}")
     MESSAGE(STATUS "Python INCLUDE ${Python_INCLUDE_DIRS}")
 else ()
-    option (USE_STATIC_LIBRARIES "Link with static libraries if available" ON)
+    SET(USE_STATIC_LIBRARIES ON)
 endif ()
 
 
-if (NOT ${USE_STATIC_LIBRARIES})
+if (NOT USE_STATIC_LIBRARIES)
     add_compile_options (-fPIE -fPIC)
     add_link_options (-pie)
+else ()
+    add_link_options (--static)
+    ###########################################################################################################################
+    # ROGERS hack - remove before committing (somehow gcc has lost ld)
+    ###########################################################################################################################
+    add_link_options (-Wl,--dynamic-linker=/lib64/ld-linux-x86-64.so.2)
 endif ()
 
 # compiler dependent flags
@@ -137,6 +143,8 @@ find_package (H5Hut REQUIRED)
 
 if (USE_STATIC_LIBRARIES)
     set (HDF5_USE_STATIC_LIBRARIES ON)
+else ()
+    set (HDF5_USE_STATIC_LIBRARIES OFF)
 endif ()
 find_package (HDF5 REQUIRED)
 message (STATUS "Found HDF5 libraries: ${HDF5_C_LIBRARIES}")
