@@ -1,6 +1,6 @@
 //
 // Class OpalFlexibleCollimator
-//   The ECOLLIMATOR element.
+//   The Flexible Collimator element.
 //
 // Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
@@ -26,35 +26,33 @@
 OpalFlexibleCollimator::OpalFlexibleCollimator():
     OpalElement(SIZE, "FLEXIBLECOLLIMATOR",
                 "The \"FLEXIBLECOLLIMATOR\" element defines a flexible collimator."),
-    partMatInt_m(NULL) {
+    parmatint_m(nullptr) {
     itsAttr[FNAME] = Attributes::makeString
                      ("FNAME", "File name containing description of holes");
-    itsAttr[DESC] = Attributes::makeString
-                    ("DESCRIPTION", "String describing the distribution of holes");
-    itsAttr[OUTFN] = Attributes::makeString
-                    ("OUTFN", "File name of log file for deleted particles");
-    itsAttr[DUMP] = Attributes::makeBool
-                    ("DUMP", "Save quadtree and holes of collimator", false);
+    itsAttr[DESC]  = Attributes::makeString
+                     ("DESCRIPTION", "String describing the distribution of holes");
+    itsAttr[DUMP]  = Attributes::makeBool
+                     ("DUMP", "Save quadtree and holes of collimator", false);
     registerOwnership();
 
     setElement(new FlexibleCollimatorRep("FLEXIBLECOLLIMATOR"));
 }
 
 
-OpalFlexibleCollimator::OpalFlexibleCollimator(const std::string &name, OpalFlexibleCollimator *parent):
+OpalFlexibleCollimator::OpalFlexibleCollimator(const std::string& name, OpalFlexibleCollimator* parent):
     OpalElement(name, parent),
-    partMatInt_m(NULL) {
+    parmatint_m(nullptr) {
     setElement(new FlexibleCollimatorRep(name));
 }
 
 
 OpalFlexibleCollimator::~OpalFlexibleCollimator() {
-    if(partMatInt_m)
-        delete partMatInt_m;
+    if (parmatint_m)
+        delete parmatint_m;
 }
 
 
-OpalFlexibleCollimator *OpalFlexibleCollimator::clone(const std::string &name) {
+OpalFlexibleCollimator* OpalFlexibleCollimator::clone(const std::string& name) {
     return new OpalFlexibleCollimator(name, this);
 }
 
@@ -62,14 +60,15 @@ OpalFlexibleCollimator *OpalFlexibleCollimator::clone(const std::string &name) {
 void OpalFlexibleCollimator::update() {
     OpalElement::update();
 
-    FlexibleCollimatorRep *coll =
-        dynamic_cast<FlexibleCollimatorRep *>(getElement());
+    FlexibleCollimatorRep* coll =
+        dynamic_cast<FlexibleCollimatorRep*>(getElement());
+
     double length = Attributes::getReal(itsAttr[LENGTH]);
     coll->setElementLength(length);
 
     std::string fname = Attributes::getString(itsAttr[FNAME]);
     std::string desc = Attributes::getString(itsAttr[DESC]);
-    if (fname != "") {
+    if (!fname.empty()) {
         std::ifstream it(fname);
         std::string str((std::istreambuf_iterator<char>(it)),
                         std::istreambuf_iterator<char>());
@@ -78,7 +77,7 @@ void OpalFlexibleCollimator::update() {
         str = boost::regex_replace(str, boost::regex("\\s"), std::string(""), boost::match_default | boost::format_all);
 
         coll->setDescription(str);
-    } else if (desc != "") {
+    } else if (!desc.empty()) {
         desc = boost::regex_replace(desc, boost::regex("[\\t ]"), std::string(""), boost::match_default | boost::format_all);
         coll->setDescription(desc);
     } else if (getOpalName() != "FLEXIBLECOLLIMATOR") {
@@ -87,10 +86,12 @@ void OpalFlexibleCollimator::update() {
     }
     coll->setOutputFN(Attributes::getString(itsAttr[OUTFN]));
 
-    if(itsAttr[PARTICLEMATTERINTERACTION] && partMatInt_m == NULL) {
-        partMatInt_m = (ParticleMatterInteraction::find(Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION])))->clone(getOpalName() + std::string("_parmatint"));
-        partMatInt_m->initParticleMatterInteractionHandler(*coll);
-        coll->setParticleMatterInteraction(partMatInt_m->handler_m);
+    if (itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == nullptr) {
+        const std::string matterDescriptor = Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION]);
+        ParticleMatterInteraction* orig = ParticleMatterInteraction::find(matterDescriptor);
+        parmatint_m = orig->clone(matterDescriptor);
+        parmatint_m->initParticleMatterInteractionHandler(*coll);
+        coll->setParticleMatterInteraction(parmatint_m->handler_m);
     }
 
     if (Attributes::getBool(itsAttr[DUMP])) {

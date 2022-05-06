@@ -23,6 +23,7 @@
 #include "Utilities/Util.h"
 #include "Utilities/Timer.h"
 #include "Algorithms/PartBunchBase.h"
+#include "Physics/Units.h"
 
 #ifdef ENABLE_AMR
 #include "Algorithms/AmrPartBunch.h"
@@ -115,7 +116,7 @@ void LBalWriter::write(const PartBunchBase<double, 3> *beam) {
 
     this->writeHeader();
 
-    columns_m.addColumnValue("t", beam->getT() * 1e9); // 1
+    columns_m.addColumnValue("t", beam->getT() * Units::s2ns); // 1
 
     size_t nProcs = Ippl::getNodes();
     for (size_t p = 0; p < nProcs; ++ p) {

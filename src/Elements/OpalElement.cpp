@@ -16,6 +16,7 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Elements/OpalElement.h"
+
 #include "AbsBeamline/Bend2D.h"
 #include "AbstractObjects/Attribute.h"
 #include "AbstractObjects/Expressions.h"
@@ -28,32 +29,50 @@
 #include "Utilities/ParseError.h"
 #include "Utilities/Util.h"
 
+#include <boost/regex.hpp>
+
 #include <cmath>
 #include <cctype>
 #include <sstream>
 #include <vector>
-#include <boost/regex.hpp>
 
 
-OpalElement::OpalElement(int size, const char *name, const char *help):
+OpalElement::OpalElement(int size, const char* name, const char* help):
     Element(size, name, help), itsSize(size) {
-    itsAttr[TYPE]   = Attributes::makeUpperCaseString
-                      ("TYPE", "The element design type (the project name)");
+    itsAttr[TYPE]   = Attributes::makePredefinedString
+        ("TYPE", "The element design type.",
+         {"RING",
+          "CARBONCYCL",
+          "CYCIAE",
+          "AVFEQ",
+          "FFA",
+          "BANDRF",
+          "SYNCHROCYCLOTRON",
+          "SINGLEGAP",
+          "STANDING",
+          "TEMPORAL",
+          "SPATIAL"});
+
     itsAttr[LENGTH] = Attributes::makeReal
-                      ("L", "The element length in m");
+        ("L", "The element length in m");
+
     itsAttr[ELEMEDGE] = Attributes::makeReal
-                        ("ELEMEDGE", "The position of the element in path length (in m)");
-    itsAttr[APERT]  = Attributes::makeString
-                      ("APERTURE", "The element aperture");
-    itsAttr[WAKEF]   = Attributes::makeString
-                       ("WAKEF", "Defines the wake function");
-    itsAttr[PARTICLEMATTERINTERACTION]   = Attributes::makeString
-                                ("PARTICLEMATTERINTERACTION", "Defines the particle mater interaction handler");
+        ("ELEMEDGE", "The position of the element in path length (in m)");
+
+    itsAttr[APERT] = Attributes::makeString
+        ("APERTURE", "The element aperture");
+
+    itsAttr[WAKEF] = Attributes::makeString
+        ("WAKEF", "Defines the wake function");
+
+    itsAttr[PARTICLEMATTERINTERACTION] = Attributes::makeString
+        ("PARTICLEMATTERINTERACTION", "Defines the particle mater interaction handler");
+
     itsAttr[ORIGIN] = Attributes::makeRealArray
-                      ("ORIGIN", "The location of the element");
+        ("ORIGIN", "The location of the element");
 
     itsAttr[ORIENTATION] = Attributes::makeRealArray
-                           ("ORIENTATION", "The Tait-Bryan angles for the orientation of the element");
+        ("ORIENTATION", "The Tait-Bryan angles for the orientation of the element");
 
     itsAttr[X] = Attributes::makeReal
         ("X", "The x-coordinate of the location of the element", 0);
@@ -74,17 +93,29 @@ OpalElement::OpalElement(int size, const char *name, const char *help):
         ("PSI", "The rotation about the z-axis of the element", 0);
 
     itsAttr[DX] = Attributes::makeReal
-                  ("DX", "Misalignment in x direction",0.0);
+        ("DX", "Misalignment in x direction",0.0);
+
     itsAttr[DY] = Attributes::makeReal
-                  ("DY", "Misalignment in y direction",0.0);
+        ("DY", "Misalignment in y direction",0.0);
+
     itsAttr[DZ] = Attributes::makeReal
-                  ("DZ", "Misalignment in z direction",0.0);
+        ("DZ", "Misalignment in z direction",0.0);
+
     itsAttr[DTHETA] = Attributes::makeReal
-                  ("DTHETA", "Misalignment in theta (Tait-Bryan angles)",0.0);
+        ("DTHETA", "Misalignment in theta (Tait-Bryan angles)",0.0);
+
     itsAttr[DPHI] = Attributes::makeReal
-                  ("DPHI", "Misalignment in theta (Tait-Bryan angles)",0.0);
+        ("DPHI", "Misalignment in theta (Tait-Bryan angles)",0.0);
+
     itsAttr[DPSI] = Attributes::makeReal
-                  ("DPSI", "Misalignment in theta (Tait-Bryan angles)",0.0);
+        ("DPSI", "Misalignment in theta (Tait-Bryan angles)",0.0);
+
+    itsAttr[OUTFN] = Attributes::makeString
+        ("OUTFN", "Output filename");
+
+    itsAttr[DELETEONTRANSVERSEEXIT] = Attributes::makeBool
+        ("DELETEONTRANSVERSEEXIT", "Flag controlling if particles should be deleted if they exit "
+                                   "the element transversally", true);
 
     const unsigned int end = COMMON;
     for (unsigned int i = 0; i < end; ++ i) {
@@ -93,7 +124,7 @@ OpalElement::OpalElement(int size, const char *name, const char *help):
 }
 
 
-OpalElement::OpalElement(const std::string &name, OpalElement *parent):
+OpalElement::OpalElement(const std::string& name, OpalElement* parent):
     Element(name, parent), itsSize(parent->itsSize)
 {}
 
@@ -102,10 +133,10 @@ OpalElement::~OpalElement()
 {}
 
 
-std::pair<ElementBase::ApertureType, std::vector<double> > OpalElement::getApert() const {
+std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
 
-    std::pair<ElementBase::ApertureType, std::vector<double> > retvalue(ElementBase::ELLIPTICAL,
-                                                                        std::vector<double>({0.5, 0.5, 1.0}));
+    std::pair<ApertureType, std::vector<double> > retvalue(ApertureType::ELLIPTICAL,
+                                                           std::vector<double>({0.5, 0.5, 1.0}));
     if (!itsAttr[APERT]) return retvalue;
 
     std::string aperture = Attributes::getString(itsAttr[APERT]);
@@ -125,7 +156,7 @@ std::pair<ElementBase::ApertureType, std::vector<double> > OpalElement::getApert
     if (boost::regex_search(aperture, match, square)) {
         std::string arguments = match[1];
         if (!boost::regex_search(arguments, match, twoArguments)) {
-            retvalue.first = ElementBase::RECTANGULAR;
+            retvalue.first = ApertureType::RECTANGULAR;
 
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(arguments);
@@ -136,7 +167,7 @@ std::pair<ElementBase::ApertureType, std::vector<double> > OpalElement::getApert
             }
 
         } else {
-            retvalue.first = ElementBase::CONIC_RECTANGULAR;
+            retvalue.first = ApertureType::CONIC_RECTANGULAR;
 
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(match[1]);
@@ -155,7 +186,7 @@ std::pair<ElementBase::ApertureType, std::vector<double> > OpalElement::getApert
         std::string arguments = match[1];
 
         if (!boost::regex_search(arguments, match, threeArguments)) {
-            retvalue.first = ElementBase::RECTANGULAR;
+            retvalue.first = ApertureType::RECTANGULAR;
 
             try {
                 size_t sz = 0;
@@ -170,7 +201,7 @@ std::pair<ElementBase::ApertureType, std::vector<double> > OpalElement::getApert
             }
 
         } else {
-            retvalue.first = ElementBase::CONIC_RECTANGULAR;
+            retvalue.first = ApertureType::CONIC_RECTANGULAR;
 
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(match[1]);
@@ -188,7 +219,7 @@ std::pair<ElementBase::ApertureType, std::vector<double> > OpalElement::getApert
     if (boost::regex_search(aperture, match, circle)) {
         std::string arguments = match[1];
         if (!boost::regex_search(arguments, match, twoArguments)) {
-            retvalue.first = ElementBase::ELLIPTICAL;
+            retvalue.first = ApertureType::ELLIPTICAL;
 
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(arguments);
@@ -199,7 +230,7 @@ std::pair<ElementBase::ApertureType, std::vector<double> > OpalElement::getApert
             }
 
         } else {
-            retvalue.first = ElementBase::CONIC_ELLIPTICAL;
+            retvalue.first = ApertureType::CONIC_ELLIPTICAL;
 
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(match[1]);
@@ -218,7 +249,7 @@ std::pair<ElementBase::ApertureType, std::vector<double> > OpalElement::getApert
         std::string arguments = match[1];
 
         if (!boost::regex_search(arguments, match, threeArguments)) {
-            retvalue.first = ElementBase::ELLIPTICAL;
+            retvalue.first = ApertureType::ELLIPTICAL;
 
             try {
                 size_t sz = 0;
@@ -233,7 +264,7 @@ std::pair<ElementBase::ApertureType, std::vector<double> > OpalElement::getApert
             }
 
         } else {
-            retvalue.first = ElementBase::CONIC_ELLIPTICAL;
+            retvalue.first = ApertureType::CONIC_ELLIPTICAL;
 
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(match[1]);
@@ -248,9 +279,10 @@ std::pair<ElementBase::ApertureType, std::vector<double> > OpalElement::getApert
         return retvalue;
     }
 
-    if (aperture != "")
+    if (!aperture.empty()) {
         throw OpalException("OpalElement::getApert()",
                             "Unknown aperture type '" + aperture + "'.");
+    }
 
     return retvalue;
 }
@@ -261,50 +293,49 @@ double OpalElement::getLength() const {
 
 
 const std::string OpalElement::getTypeName() const {
-    const Attribute *attr = findAttribute("TYPE");
+    const Attribute* attr = findAttribute("TYPE");
     return attr ? Attributes::getString(*attr) : std::string();
 }
 
 /**
    Functions to get the wake field parametes
 */
-
 const std::string OpalElement::getWakeF() const {
-    const Attribute *attr = findAttribute("WAKEF");
+    const Attribute* attr = findAttribute("WAKEF");
     return attr ? Attributes::getString(*attr) : std::string();
 }
 
 const std::string OpalElement::getParticleMatterInteraction() const {
-    const Attribute *attr = findAttribute("PARTICLEMATTERINTERACTION");
+    const Attribute* attr = findAttribute("PARTICLEMATTERINTERACTION");
     return attr ? Attributes::getString(*attr) : std::string();
 }
 
-void OpalElement::parse(Statement &stat) {
-    while(stat.delimiter(',')) {
+void OpalElement::parse(Statement& stat) {
+    while (stat.delimiter(',')) {
         std::string name = Expressions::parseString(stat, "Attribute name expected.");
         Attribute *attr = findAttribute(name);
 
-        if(attr == 0) {
+        if (attr == 0) {
             throw OpalException("OpalElement::parse",
                                 "unknown attribute \"" + name + "\"");
         }
 
-        if(stat.delimiter('[')) {
+        if (stat.delimiter('[')) {
             int index = int(std::round(Expressions::parseRealConst(stat)));
             Expressions::parseDelimiter(stat, ']');
 
-            if(stat.delimiter('=')) {
+            if (stat.delimiter('=')) {
                 attr->parseComponent(stat, true, index);
-            } else if(stat.delimiter(":=")) {
+            } else if (stat.delimiter(":=")) {
                 attr->parseComponent(stat, false, index);
             } else {
                 throw ParseError("OpalElement::parse()",
                                  "Delimiter \"=\" or \":=\" expected.");
             }
         } else {
-            if(stat.delimiter('=')) {
+            if (stat.delimiter('=')) {
                 attr->parse(stat, true);
-            } else if(stat.delimiter(":=")) {
+            } else if (stat.delimiter(":=")) {
                 attr->parse(stat, false);
             } else {
                 attr->setDefault();
@@ -314,12 +345,12 @@ void OpalElement::parse(Statement &stat) {
 }
 
 
-void OpalElement::print(std::ostream &os) const {
+void OpalElement::print(std::ostream& os) const {
     std::string head = getOpalName();
 
-    Object *parent = getParent();
-    if(parent != 0  &&  ! parent->getOpalName().empty()) {
-        if(! getOpalName().empty()) head += ':';
+    Object* parent = getParent();
+    if (parent != 0  &&  ! parent->getOpalName().empty()) {
+        if (! getOpalName().empty()) head += ':';
         head += parent->getOpalName();
     }
 
@@ -329,24 +360,27 @@ void OpalElement::print(std::ostream &os) const {
 }
 
 
-void OpalElement::printMultipoleStrength
-(std::ostream &os, int order, int &len,
- const std::string &sName, const std::string &tName,
- const Attribute &length, const Attribute &sNorm, const Attribute &sSkew) {
+void OpalElement::printMultipoleStrength(std::ostream& os,
+                                         int order, int& len,
+                                         const std::string& sName,
+                                         const std::string& tName,
+                                         const Attribute& length,
+                                         const Attribute& sNorm,
+                                         const Attribute& sSkew) {
     // Find out which type of output is required.
     int flag = 0;
-    if(sNorm) {
-        if(sNorm.getBase().isExpression()) {
+    if (sNorm) {
+        if (sNorm.getBase().isExpression()) {
             flag += 2;
-        } else if(Attributes::getReal(sNorm) != 0.0) {
+        } else if (Attributes::getReal(sNorm) != 0.0) {
             flag += 1;
         }
     }
 
-    if(sSkew) {
-        if(sSkew.getBase().isExpression()) {
+    if (sSkew) {
+        if (sSkew.getBase().isExpression()) {
             flag += 6;
-        } else if(Attributes::getReal(sSkew) != 0.0) {
+        } else if (Attributes::getReal(sSkew) != 0.0) {
             flag += 3;
         }
     }
@@ -354,7 +388,7 @@ void OpalElement::printMultipoleStrength
     // Now do the output.
     int div = 2 * (order + 1);
 
-    switch(flag) {
+    switch (flag) {
 
         case 0:
             // No component at all.
@@ -365,7 +399,7 @@ void OpalElement::printMultipoleStrength
             // Pure normal component.
         {
             std::string normImage = sNorm.getImage();
-            if(length) {
+            if (length) {
                 normImage = "(" + normImage + ")*(" + length.getImage() + ")";
             }
             printAttribute(os, sName, normImage, len);
@@ -377,7 +411,7 @@ void OpalElement::printMultipoleStrength
             // Pure skew component.
         {
             std::string skewImage = sSkew.getImage();
-            if(length) {
+            if (length) {
                 skewImage = "(" + skewImage + ")*(" + length.getImage() + ")";
             }
             printAttribute(os, sName, skewImage, len);
@@ -392,16 +426,16 @@ void OpalElement::printMultipoleStrength
             double sn = Attributes::getReal(sNorm);
             double ss = Attributes::getReal(sSkew);
             double strength = std::sqrt(sn * sn + ss * ss);
-            if(strength) {
+            if (strength) {
                 std::ostringstream ts;
                 ts << strength;
                 std::string image = ts.str();
-                if(length) {
+                if (length) {
                     image = "(" + image + ")*(" + length.getImage() + ")";
                 }
                 printAttribute(os, sName, image, len);
                 double tilt = - std::atan2(ss, sn) / double(div);
-                if(tilt) printAttribute(os, tName, tilt, len);
+                if (tilt) printAttribute(os, tName, tilt, len);
             }
         }
         break;
@@ -416,11 +450,11 @@ void OpalElement::printMultipoleStrength
             std::string image =
                 "SQRT((" + normImage + ")^2+(" + skewImage + ")^2)";
             printAttribute(os, sName, image, len);
-            if(length) {
+            if (length) {
                 image = "(" + image + ")*(" + length.getImage() + ")";
             }
             std::string divisor;
-            if(div < 9) {
+            if (div < 9) {
                 divisor = "0";
                 divisor[0] += div;
             } else {
@@ -436,7 +470,7 @@ void OpalElement::printMultipoleStrength
 }
 
 void OpalElement::update() {
-    ElementBase *base = getElement();
+    ElementBase* base = getElement();
 
     auto apert = getApert();
     base->setAperture(apert.first, apert.second);
@@ -525,10 +559,12 @@ void OpalElement::update() {
 
     if (itsAttr[ELEMEDGE])
         base->setElementPosition(Attributes::getReal(itsAttr[ELEMEDGE]));
+
+    base->setFlagDeleteOnTransverseExit(Attributes::getBool(itsAttr[DELETEONTRANSVERSEEXIT]));
 }
 
-void OpalElement::updateUnknown(ElementBase *base) {
-    for(std::vector<Attribute>::size_type i = itsSize;
+void OpalElement::updateUnknown(ElementBase* base) {
+    for (std::vector<Attribute>::size_type i = itsSize;
         i < itsAttr.size(); ++i) {
         Attribute &attr = itsAttr[i];
         base->setAttribute(attr.getName(), Attributes::getReal(attr));
@@ -536,11 +572,10 @@ void OpalElement::updateUnknown(ElementBase *base) {
     }
 }
 
-
-void OpalElement::printAttribute
-(std::ostream &os, const std::string &name, const std::string &image, int &len) {
+void OpalElement::printAttribute(std::ostream& os, const std::string& name,
+                                 const std::string& image, int& len) {
     len += name.length() + image.length() + 2;
-    if(len > 74) {
+    if (len > 74) {
         os << ",&\n  ";
         len = name.length() + image.length() + 3;
     } else {

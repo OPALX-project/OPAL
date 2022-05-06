@@ -67,19 +67,19 @@ template MVector<m_complex> MVector<m_complex>::sub(size_t n1, size_t n2) const;
 
 
 template <typename Tmplt>
-MVector<Tmplt>::MVector( size_t i ) : _vector(NULL)
+MVector<Tmplt>::MVector( size_t i ) : _vector(nullptr)
 {
   build_vector(i);
 }
 
 
 template <typename Tmplt>
-MVector<Tmplt>::MVector( const MVector<Tmplt>& mv) : _vector(NULL)
+MVector<Tmplt>::MVector( const MVector<Tmplt>& mv) : _vector(nullptr)
 { *this = mv; }
 
 
 template <typename Tmplt>
-MVector<Tmplt>::MVector( size_t size, Tmplt  value ) : _vector(NULL)
+MVector<Tmplt>::MVector( size_t size, Tmplt  value ) : _vector(nullptr)
 {
   build_vector(size);
   for(size_t i=0; i<size; i++) operator()(i+1) = value;
@@ -89,14 +89,14 @@ MVector<Tmplt>::MVector( size_t size, Tmplt  value ) : _vector(NULL)
 template <>
 void MVector<double>::build_vector   ( size_t size )
 {
-  if(_vector != NULL) gsl_vector_free((gsl_vector*)_vector);
+  if(_vector != nullptr) gsl_vector_free((gsl_vector*)_vector);
   _vector = gsl_vector_alloc(size);
 }
 
 template <>
 void MVector<m_complex>::build_vector( size_t size )
 {
-  if(_vector != NULL) gsl_vector_complex_free((gsl_vector_complex*)_vector);
+  if(_vector != nullptr) gsl_vector_complex_free((gsl_vector_complex*)_vector);
   _vector = gsl_vector_complex_alloc(size);
 }
 
@@ -110,7 +110,7 @@ void MVector<Tmplt>::build_vector   ( const Tmplt* data_begin, const Tmplt* data
 
 template <class Tmplt>
 size_t MVector<Tmplt>::num_row() const
-{ if(_vector != NULL) return ((gsl_vector*)_vector)->size; else return 0;}
+{ if(_vector != nullptr) return ((gsl_vector*)_vector)->size; else return 0;}
 template size_t MVector<double>   ::num_row() const;
 template size_t MVector<m_complex>::num_row() const;
 
@@ -155,7 +155,7 @@ MVector<double>& MVector<double>::operator= (const MVector<double>& mv)
 {
   if (&mv == this) return *this;
   delete_vector();
-  if(!mv._vector) { _vector = NULL; return *this; }
+  if(!mv._vector) { _vector = nullptr; return *this; }
   _vector = gsl_vector_alloc( mv.num_row() );
   gsl_vector_memcpy((gsl_vector*)_vector, (const gsl_vector*)mv._vector);
   return *this;
@@ -166,7 +166,7 @@ MVector<m_complex>& MVector<m_complex>::operator= (const MVector<m_complex>& mv)
 {
   if (&mv == this) return *this;
   delete_vector();
-  if(!mv._vector) { _vector = NULL; return *this; }
+  if(!mv._vector) { _vector = nullptr; return *this; }
   _vector = gsl_vector_complex_alloc( mv.num_row() );
   gsl_vector_complex_memcpy((gsl_vector_complex*)_vector, (const gsl_vector_complex*)mv._vector);
   return *this;

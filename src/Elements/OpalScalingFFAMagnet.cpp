@@ -1,36 +1,36 @@
-/* 
+/*
  *  Copyright (c) 2017, Chris Rogers
  *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without 
- *  modification, are permitted provided that the following conditions are met: 
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are met:
  *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer. 
- *  2. Redistributions in binary form must reproduce the above copyright notice, 
- *     this list of conditions and the following disclaimer in the documentation 
+ *     this list of conditions and the following disclaimer.
+ *  2. Redistributions in binary form must reproduce the above copyright notice,
+ *     this list of conditions and the following disclaimer in the documentation
  *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to 
- *     endorse or promote products derived from this software without specific 
+ *  3. Neither the name of STFC nor the names of its contributors may be used to
+ *     endorse or promote products derived from this software without specific
  *     prior written permission.
  *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "Attributes/Attributes.h"  // used?
-#include "Utilities/OpalException.h"  // used?
-
-#include "AbsBeamline/EndFieldModel/Tanh.h" // classic
-#include "AbsBeamline/ScalingFFAMagnet.h" // classic
 #include "Elements/OpalScalingFFAMagnet.h"
+
+#include "AbsBeamline/EndFieldModel/Tanh.h"
+#include "AbsBeamline/ScalingFFAMagnet.h"
+#include "Attributes/Attributes.h"
+#include "Physics/Units.h"
 
 extern Inform *gmsg;
 
@@ -93,10 +93,9 @@ void OpalScalingFFAMagnet::update() {
 
     // use L = r0*theta; we define the magnet ito length for UI but ito angles
     // internally; and use m as external default unit and mm internally
-    double metres = 1e3;
     // get r0 in m
     double r0 = Attributes::getReal(itsAttr[R0]);
-    magnet->setR0(r0*metres);
+    magnet->setR0(r0*Units::m2mm);
     // get B0 in T
     magnet->setDipoleConstant(Attributes::getReal(itsAttr[B0]));
 
@@ -118,13 +117,13 @@ void OpalScalingFFAMagnet::update() {
     // get rmin and rmax bounding box edge in mm
     double rmin = r0-Attributes::getReal(itsAttr[RADIAL_NEG_EXTENT]);
     double rmax = r0+Attributes::getReal(itsAttr[RADIAL_POS_EXTENT]);
-    magnet->setRMin(rmin*metres);
-    magnet->setRMax(rmax*metres);
-    Vector_t centre(-r0*metres, 0, 0);
+    magnet->setRMin(rmin*Units::m2mm);
+    magnet->setRMax(rmax*Units::m2mm);
+    Vector_t centre(-r0*Units::m2mm, 0, 0);
     magnet->setCentre(centre);
 
     // we store maximum vertical displacement (which is half the height)
-    double height = Attributes::getReal(itsAttr[HEIGHT])*metres;
+    double height = Attributes::getReal(itsAttr[HEIGHT])*Units::m2mm;
     magnet->setVerticalExtent(height/2.);
 
     // get default length of the magnet element in radians

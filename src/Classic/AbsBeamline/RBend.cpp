@@ -112,8 +112,8 @@ void RBend::setSkewComponent(int n, double v) {
  *  the equivalent method but with the Vector_t data types.
  */
 
-ElementBase::ElementType RBend::getType() const {
-    return RBEND;
+ElementType RBend::getType() const {
+    return ElementType::RBEND;
 }
 
 void RBend::setBendAngle(double angle) {

@@ -106,19 +106,19 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
     else if (precmode == "REUSE") precmode_m = REUSE_PREC;
 
     repartFreq_m = 1000;
-    if (Ippl::Info->getOutputLevel() > 3)
+    if (Ippl::Info->getOutputLevel() > 3) {
         verbose_m = true;
-    else
+    } else {
         verbose_m = false;
-
+    }
     // Find CURRENT geometry
     currentGeometry = geometries_m[0];
-    if (currentGeometry->getFilename() == "") {
-        if (currentGeometry->getTopology() == "ELLIPTIC"){
+    if ( (currentGeometry->getFilename()).empty() ) {
+        if (currentGeometry->getTopology() == Topology::ELLIPTIC){
             bp_m = std::unique_ptr<IrregularDomain>(
                 new EllipticDomain(currentGeometry, orig_nr_m, hr_m, interpl));
 
-        } else if (currentGeometry->getTopology() == "BOXCORNER") {
+        } else if (currentGeometry->getTopology() == Topology::BOXCORNER) {
             bp_m = std::unique_ptr<IrregularDomain>(
                 new BoxCornerDomain(currentGeometry->getA(),
                                     currentGeometry->getB(),
@@ -127,14 +127,11 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
                                     currentGeometry->getL2(),
                                     orig_nr_m, hr_m, interpl));
             bp_m->compute(itsBunch_m->get_hr(), layout_m->getLocalNDIndex());
-        } else if (currentGeometry->getTopology() == "RECTANGULAR") {
+        } else if (currentGeometry->getTopology() == Topology::RECTANGULAR) {
             bp_m = std::unique_ptr<IrregularDomain>(
                 new RectangularDomain(currentGeometry->getA(),
                                       currentGeometry->getB(),
                                       orig_nr_m, hr_m));
-        } else {
-            throw OpalException("MGPoissonSolver::MGPoissonSolver",
-                                "Geometry not known");
         }
     } else {
         NDIndex<3> localId = layout_m->getLocalNDIndex();
@@ -192,8 +189,6 @@ MGPoissonSolver::MGPoissonSolver ( PartBunch *beam,
                                                     TpetraMultiVector_t,
                                                     TpetraOperator_t>());
         }
-    } else {
-        throw OpalException("MGPoissonSolver", "No valid iterative solver selected!");
     }
 
     solver_mp->setParameters(rcp(&belosList, false));
@@ -257,7 +252,7 @@ void MGPoissonSolver::extrapolateLHS() {
 
     //...and all previously saved LHS
     std::deque< TpetraVector_t >::iterator it = OldLHS.begin();
-    if (OldLHS.size() > 0) {
+    if (!OldLHS.empty()) {
         int n = OldLHS.size();
         for (int i = 0; i < n; ++i) {
             TpetraVector_t tmplhs = TpetraVector_t(map_p);

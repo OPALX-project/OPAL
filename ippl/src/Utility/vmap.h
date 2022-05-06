@@ -63,10 +63,8 @@ public:
   typedef Key key_type;
   typedef std::pair<Key, T> value_type;
   typedef Compare key_compare;
-    
-  class value_compare : public 
 
-std::binary_function<value_type, value_type, bool>
+  class value_compare
   {
   private:
     Compare comp;

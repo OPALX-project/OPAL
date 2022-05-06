@@ -4,7 +4,6 @@ set (_SRCS
     SimpleStatement.cpp
     Statement.cpp
     StringStream.cpp
-    TerminalStream.cpp
     Token.cpp
     TokenStream.cpp
     )
@@ -22,7 +21,6 @@ set (HDRS
     SimpleStatement.h
     Statement.h
     StringStream.h
-    TerminalStream.h
     Token.h
     TokenStream.h
     )

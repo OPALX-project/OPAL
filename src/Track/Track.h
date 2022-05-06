@@ -21,7 +21,10 @@
 #define OPAL_Track_HH
 
 #include "Algorithms/PartData.h"
+#include "Steppers/Steppers.h"
+#include "Track/TrackCmd.h"
 #include "Track/TrackParser.h"
+
 #include <stack>
 #include <vector>
 
@@ -33,27 +36,27 @@ class PartBunchBase;
 class Track {
 
 public:
-
-    Track(BeamSequence *, const PartData &, const std::vector<double> & dt,
-          const std::vector<unsigned long long> & maxtsteps, int stepsperturn,
-          double zStart, const std::vector<double> & zStop, int timeintegrator,
+    Track(BeamSequence*, const PartData&, const std::vector<double>& dt,
+          const std::vector<unsigned long long>& maxtsteps, int stepsperturn,
+          double zStart, const std::vector<double>& zStop,
+          Steppers::TimeIntegrator timeintegrator,
           double t0, double dtScInit, double deltaTau);
     ~Track();
 
     /// The particle bunch to be tracked.
-    PartBunchBase<double, 3> *bunch;
+    PartBunchBase<double, 3>* bunch;
 
     /// The reference data.
     PartData reference;
 
     /// The lattice to be tracked through.
-    BeamSequence *use;
+    BeamSequence* use;
 
     /// The parser used during tracking.
     TrackParser parser;
 
     /// The block of track data.
-    static Track *block;
+    static Track* block;
 
     static void stash();
     static Track* pop();
@@ -81,21 +84,16 @@ public:
     std::vector<double> zstop;
 
     /// The ID of time integrator
-    // 0 --- RK-4(default)
-    // 1 --- LF-2
-    // 2 --- MTS
-    // 3 --- AMTS
-    int timeIntegrator;
-    
+    Steppers::TimeIntegrator timeIntegrator;
+
     /// Trunction order for map tracking
     int truncOrder;
-    
-private:
 
+private:
     // Not implemented.
     Track();
-    Track(const Track &);
-    void operator=(const Track &);
+    Track(const Track&);
+    void operator=(const Track&);
 
     static std::stack<Track*> stashedTrack;
 };

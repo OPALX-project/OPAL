@@ -25,14 +25,16 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "Physics/Physics.h"
-#include "Utilities/OpalException.h"
-#include "Attributes/Attributes.h"
-#include "Algorithms/AbstractTimeDependence.h"
-#include "Utilities/OpalException.h"
+#include "Elements/OpalVariableRFCavityFringeField.h"
+
 #include "AbsBeamline/EndFieldModel/Tanh.h"
 #include "AbsBeamline/VariableRFCavityFringeField.h"
-#include "Elements/OpalVariableRFCavityFringeField.h"
+#include "Algorithms/AbstractTimeDependence.h"
+#include "Attributes/Attributes.h"
+#include "Physics/Physics.h"
+#include "Physics/Units.h"
+#include "Utilities/OpalException.h"
+#include "Utilities/OpalException.h"
 
 
 const std::string OpalVariableRFCavityFringeField::doc_string =
@@ -109,8 +111,8 @@ void OpalVariableRFCavityFringeField::update() {
     double cavity_centre = Attributes::getReal(itsAttr[CAVITY_CENTRE]);
     cavity->setCavityCentre(cavity_centre); // mm
     // convert to mm; x0 is double length of flat top so divide 2
-    double centreLength = Attributes::getReal(itsAttr[CENTRE_LENGTH])*1e3;
-    double endLength = Attributes::getReal(itsAttr[END_LENGTH])*1e3;
+    double centreLength = Attributes::getReal(itsAttr[CENTRE_LENGTH]) * Units::m2mm;
+    double endLength = Attributes::getReal(itsAttr[END_LENGTH]) * Units::m2mm;
     endfieldmodel::Tanh* tanh = new endfieldmodel::Tanh(centreLength/2.,
                                                         endLength,
                                                         maxOrder+1);

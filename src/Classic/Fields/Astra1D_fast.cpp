@@ -19,16 +19,16 @@ void Astra1D_fast::readMap()
 { }
 
 void Astra1D_fast::freeMap() {
-    if(onAxisField_m != NULL) {
+    if(onAxisField_m != nullptr) {
         for(int i = 0; i < 4; ++i) {
             gsl_spline_free(onAxisInterpolants_m[i]);
             gsl_interp_accel_free(onAxisAccel_m[i]);
         }
 
         delete[] onAxisField_m;
-        onAxisField_m = NULL;
+        onAxisField_m = nullptr;
         delete[] zvals_m;
-        zvals_m = NULL;
+        zvals_m = nullptr;
 
         INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }

@@ -1,74 +1,77 @@
-/*
- *  Copyright (c) 2016, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
+//
+// Class DumpFields
+//   DumpFields dumps the static magnetic field of a Ring in a user-defined grid
+//
+// Copyright (c) 2016, Chris Rogers
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#include "BasicActions/DumpFields.h"
 
+#include "AbstractObjects/OpalData.h"
+#include "AbsBeamline/Component.h"
+#include "Attributes/Attributes.h"
+#include "Fields/Interpolation/ThreeDGrid.h"
+#include "Utilities/OpalException.h"
+#include "Utilities/Util.h"
+
+#include <boost/filesystem.hpp>
 
 #include <fstream>
 
-#include "Fields/Interpolation/ThreeDGrid.h"  // classic
-#include "AbsBeamline/Component.h"  // classic
-#include "Utilities/OpalException.h"
-#include "Attributes/Attributes.h"
-#include "BasicActions/DumpFields.h"
+extern Inform* gmsg;
 
 std::unordered_set<DumpFields*> DumpFields::dumpsSet_m;
 
-std::string DumpFields::dumpfields_docstring =
-std::string("The \"DUMPFIELDS\" statement dumps a field map to a user-defined")+
-std::string(" field file, for checking that fields are read in correctly")+
-std::string(" from disk. The fields are written out on a Cartesian grid.");
-
 DumpFields::DumpFields() :
-                    Action(10, "DUMPFIELDS", dumpfields_docstring.c_str()) {
+    Action(SIZE, "DUMPFIELDS",
+           "The \"DUMPFIELDS\" statement dumps a field map to a user-defined "
+           "field file, for checking that fields are read in correctly "
+           "from disk. The fields are written out on a Cartesian grid.") {
     // would be nice if "steps" could be integer
-    itsAttr[0] = Attributes::makeReal
-                 ("X_START", "Start point in the grid in x [m]");
-    itsAttr[1] = Attributes::makeReal
-                 ("DX", "Grid step size in x [m]");
-    itsAttr[2] = Attributes::makeReal
-                 ("X_STEPS", "Number of steps in x");
-    itsAttr[3] = Attributes::makeReal
-                 ("Y_START", "Start point in the grid in y [m]");
-    itsAttr[4] = Attributes::makeReal
-                 ("DY", "Grid step size in y [m]");
-    itsAttr[5] = Attributes::makeReal
-                 ("Y_STEPS", "Number of steps in y");
-    itsAttr[6] = Attributes::makeReal
-                 ("Z_START", "Start point in the grid in z [m]");
-    itsAttr[7] = Attributes::makeReal
-                 ("DZ", "Grid step size in z [m]");
-    itsAttr[8] = Attributes::makeReal
-                 ("Z_STEPS", "Number of steps in z");
-    itsAttr[9] = Attributes::makeString
-                 ("FILE_NAME", "Name of the file to which field data is dumped");
+    itsAttr[FILE_NAME] = Attributes::makeString
+        ("FILE_NAME", "Name of the file to which field data is dumped");
+
+    itsAttr[X_START] = Attributes::makeReal
+        ("X_START", "Start point in the grid in x [m]");
+
+    itsAttr[DX] = Attributes::makeReal
+        ("DX", "Grid step size in x [m]");
+
+    itsAttr[X_STEPS] = Attributes::makeReal
+        ("X_STEPS", "Number of steps in x");
+
+    itsAttr[Y_START] = Attributes::makeReal
+        ("Y_START", "Start point in the grid in y [m]");
+
+    itsAttr[DY] = Attributes::makeReal
+        ("DY", "Grid step size in y [m]");
+
+    itsAttr[Y_STEPS] = Attributes::makeReal
+        ("Y_STEPS", "Number of steps in y");
+
+    itsAttr[Z_START] = Attributes::makeReal
+        ("Z_START", "Start point in the grid in z [m]");
+
+    itsAttr[DZ] = Attributes::makeReal
+        ("DZ", "Grid step size in z [m]");
+
+    itsAttr[Z_STEPS] = Attributes::makeReal
+        ("Z_STEPS", "Number of steps in z");
 
     registerOwnership(AttributeHandler::STATEMENT);
 }
 
-DumpFields::DumpFields(const std::string &name, DumpFields *parent):
+DumpFields::DumpFields(const std::string& name, DumpFields* parent):
     Action(name, parent)
 {}
 
@@ -77,9 +80,9 @@ DumpFields::~DumpFields() {
     dumpsSet_m.erase(this);
 }
 
-DumpFields* DumpFields::clone(const std::string &name) {
+DumpFields* DumpFields::clone(const std::string& name) {
     DumpFields* dumper = new DumpFields(name, this);
-    if (grid_m != NULL) {
+    if (grid_m != nullptr) {
         dumper->grid_m = grid_m->clone();
     }
     dumper->filename_m = filename_m;
@@ -99,17 +102,17 @@ void DumpFields::execute() {
 }
 
 void DumpFields::buildGrid() {
-    double x0 = Attributes::getReal(itsAttr[0]);
-    double dx = Attributes::getReal(itsAttr[1]);
-    double nx = Attributes::getReal(itsAttr[2]);
+    double x0 = Attributes::getReal(itsAttr[X_START]);
+    double dx = Attributes::getReal(itsAttr[DX]);
+    double nx = Attributes::getReal(itsAttr[X_STEPS]);
 
-    double y0 = Attributes::getReal(itsAttr[3]);
-    double dy = Attributes::getReal(itsAttr[4]);
-    double ny = Attributes::getReal(itsAttr[5]);
+    double y0 = Attributes::getReal(itsAttr[Y_START]);
+    double dy = Attributes::getReal(itsAttr[DY]);
+    double ny = Attributes::getReal(itsAttr[Y_STEPS]);
 
-    double z0 = Attributes::getReal(itsAttr[6]);
-    double dz = Attributes::getReal(itsAttr[7]);
-    double nz = Attributes::getReal(itsAttr[8]);
+    double z0 = Attributes::getReal(itsAttr[Z_START]);
+    double dz = Attributes::getReal(itsAttr[DZ]);
+    double nz = Attributes::getReal(itsAttr[Z_STEPS]);
 
     checkInt(nx, "X_STEPS");
     checkInt(ny, "Y_STEPS");
@@ -120,7 +123,7 @@ void DumpFields::buildGrid() {
                                            x0, y0, z0,
                                            nx, ny, nz);
 
-    filename_m = Attributes::getString(itsAttr[9]);
+    filename_m = Attributes::getString(itsAttr[FILE_NAME]);
 }
 
 void DumpFields::writeFields(Component* field) {
@@ -133,31 +136,44 @@ void DumpFields::writeFields(Component* field) {
 void DumpFields::checkInt(double real, std::string name, double tolerance) {
     if (std::abs(std::floor(real) - real) > tolerance) {
         throw OpalException("DumpFields::checkInt",
-                            "Value for "+name+
+                            "Value for " + name +
                             " should be an integer but a real value was found");
     }
     if (std::floor(real) < 0.5) {
         throw OpalException("DumpFields::checkInt",
-                            "Value for "+name+" should be 1 or more");
+                            "Value for " + name + " should be 1 or more");
     }
 }
 
 void DumpFields::writeFieldThis(Component* field) {
-    if (grid_m == NULL) {
+    if (grid_m == nullptr) {
         throw OpalException("DumpFields::writeFieldThis",
-                            "The grid was NULL; there was a problem with the DumpFields initialisation.");
+                            "The grid was nullptr; there was a problem with the DumpFields initialisation.");
     }
-    if (field == NULL) {
+    if (field == nullptr) {
         throw OpalException("DumpFields::writeFieldThis",
-                            "The field to be written was NULL.");
+                            "The field to be written was nullptr.");
     }
+
+    *gmsg << *this << endl;
+
+    std::string fname;
+    if (boost::filesystem::path(filename_m).is_absolute() == true) {
+        fname = filename_m;
+    } else {
+        fname = Util::combineFilePath({
+            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
+            filename_m
+        });
+    }
+
     double time = 0.;
     Vector_t point(0., 0., 0.);
     Vector_t centroid(0., 0., 0.);
-    std::ofstream fout(filename_m.c_str(), std::ofstream::out);
+    std::ofstream fout(fname.c_str(), std::ofstream::out);
     if (!fout.good()) {
         throw OpalException("DumpFields::writeFieldThis",
-                            "Failed to open DumpFields file "+filename_m);
+                            "Failed to open DumpFields file " + filename_m);
     }
     // set precision
     fout << grid_m->end().toInteger() << "\n";
@@ -180,7 +196,22 @@ void DumpFields::writeFieldThis(Component* field) {
     }
     if (!fout.good()) {
         throw OpalException("DumpFields::writeFieldThis",
-                            "Something went wrong during writing "+filename_m);
+                            "Something went wrong during writing " + filename_m);
     }
     fout.close();
+}
+
+void DumpFields::print(std::ostream& os) const {
+    os << "* ************* D U M P  F I E L D S *********************************************** " << std::endl;
+    os << "* File name: '" << filename_m << "'\n"
+       << "* X_START = "  << Attributes::getReal(itsAttr[X_START]) << " [m]\n"
+       << "* DX      = "  << Attributes::getReal(itsAttr[DX])      << " [m]\n"
+       << "* X_STEPS = "  << Attributes::getReal(itsAttr[X_STEPS]) << '\n'
+       << "* Y_START = "  << Attributes::getReal(itsAttr[Y_START]) << " [m]\n"
+       << "* DY      = "  << Attributes::getReal(itsAttr[DY])      << " [m]\n"
+       << "* Y_STEPS = "  << Attributes::getReal(itsAttr[Y_STEPS]) << '\n'
+       << "* Z_START = "  << Attributes::getReal(itsAttr[Z_START]) << " [m]\n"
+       << "* DZ      = "  << Attributes::getReal(itsAttr[DZ])      << " [m]\n"
+       << "* Z_STEPS = "  << Attributes::getReal(itsAttr[Z_STEPS]) << '\n';
+    os << "* ********************************************************************************** " << std::endl;
 }

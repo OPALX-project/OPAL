@@ -54,7 +54,7 @@ class Attribute {
 public:
 
     /// Default constructor.
-    //  Leaves both pointers [b]NULL[/b].
+    //  Leaves both pointers [b]nullptr[/b].
     //  An object constructed by the default constructor must be initialized
     //  using assignment before it can be used.
     //  Failing to do so may cause a program crash.

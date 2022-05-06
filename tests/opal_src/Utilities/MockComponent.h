@@ -39,7 +39,7 @@
  */
 class MockComponent : public Component {
 public:
-    MockComponent() : Component("MockComponent"), geom_m(NULL) {
+    MockComponent() : Component("MockComponent"), geom_m(nullptr) {
         // std::cout << "MOCK CONSTRUCTOR " << this << std::endl;
     }
     MockComponent(const MockComponent& rhs)
@@ -49,8 +49,8 @@ public:
     ~MockComponent() { };//std::cout << "MOCK DESTRUCTOR " << this << std::endl;}
     void accept(BeamlineVisitor&) const {}
     ElementBase* clone() const {return new MockComponent(*this);}
-    EMField& getField() {EMField* em = NULL; return *em;}
-    EMField& getField() const {EMField* em = NULL; return *em;}
+    EMField& getField() {EMField* em = nullptr; return *em;}
+    EMField& getField() const {EMField* em = nullptr; return *em;}
     bool apply(const double&, Vector_t&, Vector_t&) {
         return false;
     }
@@ -87,7 +87,7 @@ private:
 
 class MockComponent2 : public Component {
 public:
-    MockComponent2() : Component("MockComponent"), geom_m(NULL), refB(1,2,3) {
+    MockComponent2() : Component("MockComponent"), geom_m(nullptr), refB(1,2,3) {
     }
     MockComponent2(const MockComponent2& rhs)
         : Component("MockComponent"), geom_m(rhs.geom_m), refB(rhs.refB) {
@@ -95,8 +95,8 @@ public:
     ~MockComponent2() { };
     void accept(BeamlineVisitor&) const {}
     ElementBase* clone() const {return new MockComponent2(*this);}
-    EMField& getField() {EMField* em = NULL; return *em;}
-    EMField& getField() const {EMField* em = NULL; return *em;}
+    EMField& getField() {EMField* em = nullptr; return *em;}
+    EMField& getField() const {EMField* em = nullptr; return *em;}
     bool apply(const double&, Vector_t&, Vector_t&) {
         return false;
     }

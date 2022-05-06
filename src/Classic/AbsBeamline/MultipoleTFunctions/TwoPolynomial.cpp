@@ -42,7 +42,7 @@ TwoPolynomial::TwoPolynomial(): maxXorder_m(0), maxSorder_m(0) {
 TwoPolynomial::TwoPolynomial(const std::vector<std::vector<int>> &coefficients):
     maxXorder_m(coefficients.size() - 1),
     coefficients_m(coefficients) {
-    if (coefficients.size() == 0) {
+    if (coefficients.empty()) {
         maxXorder_m = 0;
         maxSorder_m = 0;
         std::vector<int> temp;
@@ -56,7 +56,7 @@ TwoPolynomial::TwoPolynomial(const std::vector<std::vector<int>> &coefficients):
         if (coefficients[i].size() != len) {
             throw std::length_error("2D vector not rectangular");
         }
-        if (coefficients[i].size() == 0) {
+        if (coefficients[i].empty()) {
             maxXorder_m = 0;
             maxSorder_m = 0;
             std::vector<int> temp;
@@ -119,7 +119,7 @@ void TwoPolynomial::differentiateS() {
         }
         coefficients_m[i].pop_back();
     }
-    if (dSfactors_m.size() != 0) {
+    if (!dSfactors_m.empty()) {
         dSfactors_m[0] = dSfactors_m[0] + 1;
     } else {
         dSfactors_m.push_back(1);
@@ -212,7 +212,7 @@ void TwoPolynomial::convolution(double *vec1,
         gsl_fft_complex_radix2_inverse(p1, ny, nx);
     }
 }
-    
+
 void TwoPolynomial::convert1Dto2Darray(double *vec1,
                                        const vectorLengths &nn) {
     coefficients_m.resize(nn.nx1 + nn.nx2 - 1);
@@ -313,7 +313,7 @@ void TwoPolynomial::setCoefficient(const int &coefficient,
     }
     coefficients_m[Xorder][Sorder] = coefficient;
 }
-    
+
 void TwoPolynomial::setMaxXorder(const std::size_t &maxXorder) {
     coefficients_m.resize(maxXorder + 1);
     for (std::size_t i = (maxXorder_m + 1); i <= maxXorder; i++) {

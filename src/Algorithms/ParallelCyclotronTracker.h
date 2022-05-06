@@ -5,7 +5,7 @@
 // Copyright (c) 2007 - 2014, Jianjun Yang, Andreas Adelmann and Matthias Toggweiler,
 //                            Paul Scherrer Institut, Villigen PSI, Switzerland
 // Copyright (c) 2014,        Daniel Winklehner, MIT, Cambridge, MA, USA
-// Copyright (c) 2012 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2012 - 2022, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // Implemented as part of the PhD thesis
@@ -28,14 +28,14 @@
 #ifndef OPAL_ParallelCyclotronTracker_HH
 #define OPAL_ParallelCyclotronTracker_HH
 
-#include "Algorithms/Tracker.h"
 #include "AbsBeamline/ElementBase.h"
-#include <vector>
-#include <tuple>
-#include <memory>
-
-#include "MultiBunchHandler.h"
+#include "Algorithms/MultiBunchHandler.h"
+#include "Algorithms/Tracker.h"
 #include "Steppers/Steppers.h"
+
+#include <memory>
+#include <tuple>
+#include <vector>
 
 class DataSink;
 class PluginElement;
@@ -45,7 +45,7 @@ template <class T, unsigned Dim>
 class PartBunchBase;
 
 struct CavityCrossData {
-    RFCavity * cavity;
+    RFCavity* cavity;
     double sinAzimuth;
     double cosAzimuth;
     double perpenDistance;
@@ -54,18 +54,11 @@ struct CavityCrossData {
 class ParallelCyclotronTracker: public Tracker {
 
 public:
-
-    enum class MODE {
-        UNDEFINED = -1,
-        SINGLE = 0,
-        SEO = 1,
-        BUNCH = 2
-    };
     typedef std::vector<double> dvector_t;
     typedef std::vector<int> ivector_t;
-    typedef std::pair<double[8], Component *>      element_pair;
-    typedef std::pair<ElementBase::ElementType, element_pair>        type_pair;
-    typedef std::list<type_pair *>                 beamline_list;
+    typedef std::pair<double[8], Component*>      element_pair;
+    typedef std::pair<ElementType, element_pair>        type_pair;
+    typedef std::list<type_pair*>                 beamline_list;
 
     /// Constructor.
     //  The beam line to be tracked is "bl".
@@ -73,10 +66,10 @@ public:
     //  The particle bunch tracked is taken from [b]bunch[/b].
     //  If [b]revBeam[/b] is true, the beam runs from s = C to s = 0.
     //  If [b]revTrack[/b] is true, we track against the beam.
-    ParallelCyclotronTracker(const Beamline &bl, PartBunchBase<double, 3> *bunch, DataSink &ds,
-                             const PartData &data, bool revBeam,
+    ParallelCyclotronTracker(const Beamline& bl, PartBunchBase<double, 3>* bunch, DataSink& ds,
+                             const PartData& data, bool revBeam,
                              bool revTrack, int maxSTEPS,
-                             int timeIntegrator,
+                             Steppers::TimeIntegrator timeintegrator,
                              const int& numBunch,
                              const double& mbEta,
                              const double& mbPara,
@@ -85,101 +78,100 @@ public:
 
     virtual ~ParallelCyclotronTracker();
 
-    /// Apply the algorithm to an Ring
-    virtual void visitRing(const Ring &ring);
-
-    /// Apply the algorithm to a Cyclotorn
-    virtual void visitCyclotron(const Cyclotron &cycl);
-
-    /// Apply the algorithm to a RFCavity.
-    virtual void visitRFCavity(const RFCavity &);
-
-    /// Apply the algorithm to a Beam Stripping.
-    virtual void visitBeamStripping(const BeamStripping &);
-
-    /// Apply the algorithm to a collimator.
-    virtual void visitCCollimator(const CCollimator &);
-
-    /// Apply the algorithm to a Corrector.
-    virtual void visitCorrector(const Corrector &);
-
-    /// Apply the algorithm to a Degrader
-    virtual void visitDegrader(const Degrader &);
-
-    /// Apply the algorithm to a Drift.
-    virtual void visitDrift(const Drift &);
-
-    /// Apply the algorithm to a flexible collimator
-    virtual void visitFlexibleCollimator(const FlexibleCollimator &);
-
-    /// Apply the algorithm to a Marker.
-    virtual void visitMarker(const Marker &);
-
-    /// Apply the algorithm to a Monitor.
-    virtual void visitMonitor(const Monitor &);
-
-    /// Apply the algorithm to a Multipole.
-    virtual void visitMultipole(const Multipole &);
-
-    /// Apply the algorithm to a MultipoleT
-    virtual void visitMultipoleT (const MultipoleT &);
-
-    /// Apply the algorithm to a MultipoleTStraight
-    virtual void visitMultipoleTStraight (const MultipoleTStraight &);
-
-    /// Apply the algorithm to a MultipoleTCurvedConstRadius
-    virtual void visitMultipoleTCurvedConstRadius (const MultipoleTCurvedConstRadius &);
-
-    /// Apply the algorithm to a MultipoleTCurvedVarRadius
-    virtual void visitMultipoleTCurvedVarRadius (const MultipoleTCurvedVarRadius &);
-
-    /// Apply the algorithm to a Offset.
-    virtual void visitOffset(const Offset &);
-
-    /// Apply the algorithm to a Probe.
-    virtual void visitProbe(const Probe &);
-
-    /// Apply the algorithm to a RBend.
-    virtual void visitRBend(const RBend &);
-
-    /// Apply the algorithm to a SBend.
-    virtual void visitSBend(const SBend &);
-
-    /// Apply the algorithm to a SBend3D.
-    virtual void visitSBend3D(const SBend3D &);
-
-    /// Apply the algorithm to a ScalingFFAMagnet.
-    virtual void visitScalingFFAMagnet(const ScalingFFAMagnet &bend);
-
-    /// Apply the algorithm to a Septum.
-    virtual void visitSeptum(const Septum &);
-
-    /// Apply the algorithm to a Solenoid.
-    virtual void visitSolenoid(const Solenoid &);
-
-    /// Apply the algorithm to a charge stripper.
-    virtual void visitStripper(const Stripper &);
-
-    /// Apply the algorithm to a VariabelRFCavity.
-    virtual void visitVariableRFCavity(const VariableRFCavity &cav);
-
-    /// Apply the algorithm to a VariabelRFCavity.
-    virtual void visitVariableRFCavityFringeField
-                                      (const VariableRFCavityFringeField &cav);
-
-    /// Apply the algorithm to a VerticalFFAMagnet.
-    virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet &bend);
-
     /// Apply the algorithm to the top-level beamline.
     //  overwrite the execute-methode from DefaultVisitor
     virtual void execute();
 
     /// Apply the algorithm to a beam line.
     //  overwrite the execute-methode from DefaultVisitor
-    virtual void visitBeamline(const Beamline &);
+    virtual void visitBeamline(const Beamline&);
+    
+    /// Apply the algorithm to a collimator.
+    virtual void visitCCollimator(const CCollimator&);
+
+    /// Apply the algorithm to a closed orbit corrector.
+    virtual void visitCorrector(const Corrector&);
+
+    /// Apply the algorithm to a cyclotron
+    virtual void visitCyclotron(const Cyclotron& cycl);
+
+    /// Apply the algorithm to a degrader
+    virtual void visitDegrader(const Degrader&);
+
+    /// Apply the algorithm to a drift space.
+    virtual void visitDrift(const Drift&);
+
+    /// Apply the algorithm to a flexible collimator
+    virtual void visitFlexibleCollimator(const FlexibleCollimator&);
+
+    /// Apply the algorithm to a marker.
+    virtual void visitMarker(const Marker&);
+
+    /// Apply the algorithm to a beam position monitor.
+    virtual void visitMonitor(const Monitor&);
+
+    /// Apply the algorithm to a multipole.
+    virtual void visitMultipole(const Multipole&);
+
+    /// Apply the algorithm to an arbitrary multipole.
+    virtual void visitMultipoleT(const MultipoleT&);
+
+    /// Apply the algorithm to an arbitrary straight multipole.
+    virtual void visitMultipoleTStraight(const MultipoleTStraight&);
+
+    /// Apply the algorithm to an arbitrary curved multipole of constant radius.
+    virtual void visitMultipoleTCurvedConstRadius(const MultipoleTCurvedConstRadius&);
+
+    /// Apply the algorithm to an arbitrary curved multipole of variable radius.
+    virtual void visitMultipoleTCurvedVarRadius(const MultipoleTCurvedVarRadius&);
+
+    /// Apply the algorithm to a offset (placement).
+    virtual void visitOffset(const Offset&);
+
+    /// Apply the algorithm to a probe.
+    virtual void visitProbe(const Probe&);
+
+    /// Apply the algorithm to a rectangular bend.
+    virtual void visitRBend(const RBend&);
+
+    /// Apply the algorithm to a RF cavity.
+    virtual void visitRFCavity(const RFCavity&);
+
+    /// Apply the algorithm to a ring
+    virtual void visitRing(const Ring& ring);
+    
+    /// Apply the algorithm to a sector bend.
+    virtual void visitSBend(const SBend&);
+
+    /// Apply the algorithm to a sector bend with 3D field map.
+    virtual void visitSBend3D(const SBend3D&);
+
+    /// Apply the algorithm to a scaling FFA magnet.
+    virtual void visitScalingFFAMagnet(const ScalingFFAMagnet& bend);
+
+    /// Apply the algorithm to a septum.
+    virtual void visitSeptum(const Septum&);
+
+    /// Apply the algorithm to a solenoid.
+    virtual void visitSolenoid(const Solenoid&);
+
+    /// Apply the algorithm to a particle stripper.
+    virtual void visitStripper(const Stripper&);
+
+    /// Apply the algorithm to a vacuum space.
+    virtual void visitVacuum(const Vacuum&);
+
+    /// Apply the algorithm to a variabel RF cavity.
+    virtual void visitVariableRFCavity(const VariableRFCavity& cav);
+
+    /// Apply the algorithm to a variable RF cavity with Fringe Field.
+    virtual void visitVariableRFCavityFringeField(const VariableRFCavityFringeField& cav);
+
+    /// Apply the algorithm to a vertical FFA magnet.
+    virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet& bend);
 
     /// set last dumped step
-    inline void setLastDumpedStep(const int para) {lastDumpedStep_m = para ; }
+    inline void setLastDumpedStep(const int para) { lastDumpedStep_m = para; }
 
     ///@{ Method for restart
     inline void setPr(double x) {referencePr = x;}
@@ -197,23 +189,29 @@ public:
     void initializeBoundaryGeometry();
 
 private:
+    enum class TrackingMode: unsigned short {
+        UNDEFINED,
+        SINGLE,
+        SEO,
+        BUNCH
+    };
 
     // Not implemented.
     ParallelCyclotronTracker();
-    ParallelCyclotronTracker(const ParallelCyclotronTracker &);
-    void operator=(const ParallelCyclotronTracker &);
+    ParallelCyclotronTracker(const ParallelCyclotronTracker&);
+    void operator=(const ParallelCyclotronTracker&);
 
     beamline_list FieldDimensions;
-    std::list<Component *> myElements;
-    Beamline *itsBeamline;
+    std::list<Component*> myElements;
+    Beamline* itsBeamline;
     std::vector<PluginElement*> pluginElements_m;
     std::vector<CavityCrossData> cavCrossDatas_m;
 
-    DataSink *itsDataSink;
+    DataSink* itsDataSink;
 
-    BoundaryGeometry *bgf_m;
+    BoundaryGeometry* bgf_m;
 
-    Cyclotron *cycl_m;
+    Cyclotron* cycl_m;
 
     /// The maximal number of steps the system is integrated
     int maxSteps_m;
@@ -257,7 +255,7 @@ private:
     void MtsTracker();
 
     void GenericTracker();
-    bool getFieldsAtPoint(const double &t, const size_t &Pindex, Vector_t &Efield, Vector_t &Bfield);
+    bool getFieldsAtPoint(const double& t, const size_t& Pindex, Vector_t& Efield, Vector_t& Bfield);
 
     /*
       Local Variables both used by the integration methods
@@ -305,17 +303,17 @@ private:
     /// output file for six dimensional phase space
     std::ofstream outfTrackOrbit_m;
 
-    void buildupFieldList(double BcParameter[], ElementBase::ElementType elementType, Component *elptr);
+    void buildupFieldList(double BcParameter[], ElementType elementType, Component* elptr);
 
     // angle range [0~2PI) degree
     double calculateAngle(double x, double y);
     // angle range [-PI~PI) degree
     double calculateAngle2(double x, double y);
 
-    bool checkGapCross(Vector_t Rold, Vector_t Rnew, RFCavity * rfcavity, double &DistOld);
-    bool RFkick(RFCavity * rfcavity, const double t, const double dt, const int Pindex);
+    bool checkGapCross(Vector_t Rold, Vector_t Rnew, RFCavity* rfcavity, double& DistOld);
+    bool RFkick(RFCavity* rfcavity, const double t, const double dt, const int Pindex);
 
-    bool getTunes(dvector_t &t,  dvector_t &r,  dvector_t &z, int lastTurn, double &nur, double &nuz);
+    bool getTunes(dvector_t& t, dvector_t& r, dvector_t& z, int lastTurn, double& nur, double& nuz);
 
     IpplTimings::TimerRef IntegrationTimer_m;
     IpplTimings::TimerRef DumpTimer_m ;
@@ -338,61 +336,61 @@ private:
     // global reference frame to the local reference frame.
 
     // phi is the angle of the bunch measured counter-clockwise from the positive x-axis.
-    void globalToLocal(ParticleAttrib<Vector_t> & vectorArray,
+    void globalToLocal(ParticleAttrib<Vector_t>& vectorArray,
                        double phi, Vector_t const translationToGlobal = 0);
 
     // Transform the x- and y-parts of a particle attribute (position, momentum, fields) from the
     // local reference frame to the global reference frame.
-    void localToGlobal(ParticleAttrib<Vector_t> & vectorArray,
+    void localToGlobal(ParticleAttrib<Vector_t>& vectorArray,
                        double phi, Vector_t const translationToGlobal = 0);
 
     // Overloaded version of globalToLocal using a quaternion for 3D rotation
-    inline void globalToLocal(ParticleAttrib<Vector_t> & vectorArray,
+    inline void globalToLocal(ParticleAttrib<Vector_t>& vectorArray,
                               Quaternion_t const quaternion,
                               Vector_t const meanR = Vector_t(0.0));
 
     // Overloaded version of localToGlobal using a quaternion for 3D rotation
-    inline void localToGlobal(ParticleAttrib<Vector_t> & vectorArray,
+    inline void localToGlobal(ParticleAttrib<Vector_t>& vectorArray,
                               Quaternion_t const quaternion,
                               Vector_t const meanR = Vector_t(0.0));
 
     // Overloaded version of globalToLocal using phi and theta for pseudo 3D rotation
-    inline void globalToLocal(ParticleAttrib<Vector_t> & particleVectors,
+    inline void globalToLocal(ParticleAttrib<Vector_t>& particleVectors,
                               double const phi, double const psi,
                               Vector_t const meanR = Vector_t(0.0));
 
     // Overloaded version of localToGlobal using phi and theta for pseudo 3D rotation
-    inline void localToGlobal(ParticleAttrib<Vector_t> & particleVectors,
+    inline void localToGlobal(ParticleAttrib<Vector_t>& particleVectors,
                               double const phi, double const psi,
                               Vector_t const meanR = Vector_t(0.0));
 
     // Overloaded version of globalToLocal using phi and theta for pseudo 3D rotation, single vector
-    inline void globalToLocal(Vector_t & myVector,
+    inline void globalToLocal(Vector_t& myVector,
                               double const phi, double const psi,
                               Vector_t const meanR = Vector_t(0.0));
 
     // Overloaded version of localToGlobal using phi and theta for pseudo 3D rotation, single vector
-    inline void localToGlobal(Vector_t & myVector,
+    inline void localToGlobal(Vector_t& myVector,
                               double const phi, double const psi,
                               Vector_t const meanR = Vector_t(0.0));
 
     // Rotate the particles by an angle and axis defined in the quaternion (4-vector w,x,y,z)
-    inline void rotateWithQuaternion(ParticleAttrib<Vector_t> & vectorArray, Quaternion_t const quaternion);
+    inline void rotateWithQuaternion(ParticleAttrib<Vector_t>& vectorArray, Quaternion_t const quaternion);
 
     // Returns the quaternion of the rotation from vector u to vector v
-    inline void getQuaternionTwoVectors(Vector_t u, Vector_t v, Quaternion_t & quaternion);
+    inline void getQuaternionTwoVectors(Vector_t u, Vector_t v, Quaternion_t& quaternion);
 
     // Normalization of a quaternion
-    inline void normalizeQuaternion(Quaternion_t & quaternion);
+    inline void normalizeQuaternion(Quaternion_t& quaternion);
 
     // Normalization of a quaternion
-    inline void normalizeVector(Vector_t & vector);
+    inline void normalizeVector(Vector_t& vector);
 
     // Some rotations
-    inline void rotateAroundZ(ParticleAttrib<Vector_t> & particleVectors, double const phi);
-    inline void rotateAroundX(ParticleAttrib<Vector_t> & particleVectors, double const psi);
-    inline void rotateAroundZ(Vector_t & myVector, double const phi);
-    inline void rotateAroundX(Vector_t & myVector, double const psi);
+    inline void rotateAroundZ(ParticleAttrib<Vector_t>& particleVectors, double const phi);
+    inline void rotateAroundX(ParticleAttrib<Vector_t>& particleVectors, double const psi);
+    inline void rotateAroundZ(Vector_t& myVector, double const phi);
+    inline void rotateAroundX(Vector_t& myVector, double const psi);
 
     // Push particles for time h.
     // Apply effects of RF Gap Crossings.
@@ -424,6 +422,8 @@ private:
 
     void initDistInGlobalFrame();
 
+    void checkFileMomentum();
+
     void checkNumPart(std::string s);
 
     // we store a pointer explicitly to the Ring
@@ -450,9 +450,9 @@ private:
         int stepsNextCheck;
     } setup_m;
 
-    MODE mode_m;
+    TrackingMode mode_m;
 
-    stepper::INTEGRATOR stepper_m;
+    Steppers::TimeIntegrator stepper_m;
 
     /// Check if turn done
     bool isTurnDone();
@@ -469,6 +469,8 @@ private:
                             dvector_t& Tdeltr,
                             dvector_t& Tdeltz,
                             ivector_t& TturnNumber);
+
+    void setTrackingMode();
 
     void seoMode_m(double& t, const double dt, bool& finishedTurn,
                    dvector_t& Ttime, dvector_t& Tdeltr,
@@ -539,7 +541,7 @@ private:
  */
 inline
 double ParallelCyclotronTracker::calculateAngle(double x, double y) {
-    double thetaXY = atan2(y, x);
+    double thetaXY = std::atan2(y, x);
 
     if (thetaXY < 0) return thetaXY + Physics::two_pi;
     return thetaXY;
@@ -552,9 +554,8 @@ double ParallelCyclotronTracker::calculateAngle(double x, double y) {
  * @return angle range [-PI~PI) degree
  */
 inline
-double ParallelCyclotronTracker::calculateAngle2(double x, double y)
-{
-    return atan2(y,x);
+double ParallelCyclotronTracker::calculateAngle2(double x, double y) {
+    return std::atan2(y,x);
 }
 
 

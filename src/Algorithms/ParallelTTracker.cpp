@@ -30,30 +30,30 @@
 #include <sstream>
 #include <string>
 
+#include "AbsBeamline/Monitor.h"
+#include "AbstractObjects/OpalData.h"
 #include "Algorithms/OrbitThreader.h"
 #include "Algorithms/CavityAutophaser.h"
-#include "Beamlines/Beamline.h"
-#include "Beamlines/FlaggedBeamline.h"
-
-#include "Solvers/CSRWakeFunction.hh"
-
-#include "AbstractObjects/OpalData.h"
-
 #include "BasicActions/Option.h"
-#include "Utilities/Options.h"
-#include "Utilities/Util.h"
-
-#include "Distribution/Distribution.h"
-#include "ValueDefinitions/RealVariable.h"
-#include "Utilities/Timer.h"
-#include "Utilities/OpalException.h"
-#include "Solvers/ParticleMatterInteractionHandler.hh"
-#include "Structure/BoundaryGeometry.h"
-#include "AbsBeamline/Monitor.h"
-
 #ifdef ENABLE_OPAL_FEL
 #include "BeamlineCore/UndulatorRep.h"
 #endif
+#include "Beamlines/Beamline.h"
+#include "Beamlines/FlaggedBeamline.h"
+#include "Distribution/Distribution.h"
+#include "Elements/OpalBeamline.h"
+#include "Physics/Units.h"
+#include "Solvers/CSRWakeFunction.h"
+#include "Solvers/ParticleMatterInteractionHandler.h"
+#include "Structure/BoundaryGeometry.h"
+#include "Structure/BoundingBox.h"
+#include "Utilities/OpalException.h"
+#include "Utilities/Options.h"
+#include "Utilities/Timer.h"
+#include "Utilities/Util.h"
+#include "ValueDefinitions/RealVariable.h"
+
+extern Inform* gmsg;
 
 class PartData;
 
@@ -62,11 +62,11 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
                                    bool revBeam,
                                    bool revTrack):
     Tracker(beamline, reference, revBeam, revTrack),
-    itsDataSink_m(NULL),
+    itsDataSink_m(nullptr),
     itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getInitialDirection()),
     globalEOL_m(false),
     wakeStatus_m(false),
-    wakeFunction_m(NULL),
+    wakeFunction_m(nullptr),
     pathLength_m(0.0),
     zstart_m(0.0),
     dtCurrentTrack_m(0.0),
@@ -98,7 +98,7 @@ ParallelTTracker::ParallelTTracker(const Beamline &beamline,
     itsOpalBeamline_m(beamline.getOrigin3D(), beamline.getInitialDirection()),
     globalEOL_m(false),
     wakeStatus_m(false),
-    wakeFunction_m(NULL),
+    wakeFunction_m(nullptr),
     pathLength_m(0.0),
     zstart_m(zstart),
     dtCurrentTrack_m(0.0),
@@ -140,8 +140,8 @@ void ParallelTTracker::visitBeamline(const Beamline &bl) {
 }
 
 void ParallelTTracker::updateRFElement(std::string elName, double maxPhase) {
-    FieldList cavities = itsOpalBeamline_m.getElementByType(ElementBase::RFCAVITY);
-    FieldList travelingwaves = itsOpalBeamline_m.getElementByType(ElementBase::TRAVELINGWAVE);
+    FieldList cavities = itsOpalBeamline_m.getElementByType(ElementType::RFCAVITY);
+    FieldList travelingwaves = itsOpalBeamline_m.getElementByType(ElementType::TRAVELINGWAVE);
     cavities.insert(cavities.end(), travelingwaves.begin(), travelingwaves.end());
 
     for (FieldList::iterator fit = cavities.begin(); fit != cavities.end(); ++ fit) {
@@ -190,7 +190,7 @@ void ParallelTTracker::execute() {
     evenlyDistributeParticles();
 
     if (OpalData::getInstance()->hasPriorTrack() || OpalData::getInstance()->inRestartRun()) {
-        OpalData::getInstance()->setOpenMode(OpalData::OPENMODE::APPEND);
+        OpalData::getInstance()->setOpenMode(OpalData::OpenMode::APPEND);
     }
 
     prepareSections();
@@ -254,6 +254,7 @@ void ParallelTTracker::execute() {
                       itsOpalBeamline_m);
 
     oth.execute();
+    BoundingBox globalBoundingBox = oth.getBoundingBox();
 
     saveCavityPhases();
 
@@ -268,15 +269,16 @@ void ParallelTTracker::execute() {
 
     unsigned long long step = itsBunch_m->getGlobalTrackStep();
     OPALTimer::Timer myt1;
-    *gmsg << "Track start at: " << myt1.time() << ", t= " << Util::getTimeString(time) << "; "
+    *gmsg << "* Track start at: " << myt1.time() << ", t= " << Util::getTimeString(time) << "; "
           << "zstart at: " << Util::getLengthString(pathLength_m)
           << endl;
 
     prepareEmission();
 
-    *gmsg << level1
-          << "Executing ParallelTTracker, initial dt= " << Util::getTimeString(itsBunch_m->getdT()) << ";\n"
-          << "max integration steps " << stepSizes_m.getMaxSteps() << ", next step= " << step << endl;
+    *gmsg << "* Executing ParallelTTracker\n"
+          << "* Initial dt = " << Util::getTimeString(itsBunch_m->getdT()) << "\n"
+          << "* Max integration steps = " << stepSizes_m.getMaxSteps()
+          << ", next step = " << step << endl << endl;
 
     setOptionalVariables();
 
@@ -323,7 +325,7 @@ void ParallelTTracker::execute() {
             }
             itsBunch_m->set_sPos(pathLength_m);
 
-            if (hasEndOfLineReached()) break;
+            if (hasEndOfLineReached(globalBoundingBox)) break;
 
             bool const psDump = ((itsBunch_m->getGlobalTrackStep() % Options::psDumpFreq) + 1 == Options::psDumpFreq);
             bool const statDump = ((itsBunch_m->getGlobalTrackStep() % Options::statDumpFreq) + 1 == Options::statDumpFreq);
@@ -359,7 +361,8 @@ void ParallelTTracker::execute() {
     itsOpalBeamline_m.switchElementsOff();
 
     OPALTimer::Timer myt3;
-    *gmsg << "done executing ParallelTTracker at " << myt3.time() << endl;
+    *gmsg << endl << "* Done executing ParallelTTracker at "
+          << myt3.time() << endl << endl;
 
     Monitor::writeStatistics();
 
@@ -369,6 +372,7 @@ void ParallelTTracker::execute() {
 void ParallelTTracker::prepareSections() {
 
     itsBeamline_m.accept(*this);
+
     itsOpalBeamline_m.prepareSections();
 
     itsOpalBeamline_m.compute3DLattice();
@@ -473,15 +477,14 @@ void ParallelTTracker::emitParticles(long long step) {
 
 
 void ParallelTTracker::computeSpaceChargeFields(unsigned long long step) {
-    if (numParticlesInSimulation_m <= minBinEmitted_m) return;
-
-    if (!itsBunch_m->hasFieldSolver()) return;
+    if (numParticlesInSimulation_m <= minBinEmitted_m || !itsBunch_m->hasFieldSolver()) {
+        return;
+    }
 
     itsBunch_m->calcBeamParameters();
     Quaternion alignment = getQuaternion(itsBunch_m->get_pmean(), Vector_t(0, 0, 1));
     CoordinateSystemTrafo beamToReferenceCSTrafo(Vector_t(0, 0, pathLength_m), alignment.conjugate());
     CoordinateSystemTrafo referenceToBeamCSTrafo = beamToReferenceCSTrafo.inverted();
-
     const unsigned int localNum1 = itsBunch_m->getLocalNum();
     for (unsigned int i = 0; i < localNum1; ++ i) {
         itsBunch_m->R[i] = referenceToBeamCSTrafo.transformTo(itsBunch_m->R[i]);
@@ -611,7 +614,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     UndulatorRep* und;
     IndexMap::value_t::const_iterator it = elements.begin();
     for (; it != elements.end(); ++ it)
-        if ((*it)->getType() == ElementBase::UNDULATOR) {
+        if ((*it)->getType() == ElementType::UNDULATOR) {
             und = dynamic_cast<UndulatorRep*>(it->get());
             if (!und->getHasBeenSimulated())
                 break;
@@ -622,7 +625,7 @@ void ParallelTTracker::computeUndulator(IndexMap::value_t &elements) {
     // Apply MITHRA full wave solver for undulator.
     CoordinateSystemTrafo refToLocalCSTrafo = (itsOpalBeamline_m.getMisalignment((*it)) *
                                                (itsOpalBeamline_m.getCSTrafoLab2Local((*it)) * itsBunch_m->toLabTrafo_m));
-    
+
     und->apply(itsBunch_m, refToLocalCSTrafo);
 
     evenlyDistributeParticles();
@@ -646,10 +649,10 @@ void ParallelTTracker::computeWakefield(IndexMap::value_t &elements) {
 
             hasWake = true;
 
-            if ((*it)->getWake()->getType() == "CSRWakeFunction" ||
-                (*it)->getWake()->getType() == "CSRIGFWakeFunction") {
-                if ((*it)->getType() == ElementBase::RBEND ||
-                    (*it)->getType() == ElementBase::SBEND) {
+            if ((*it)->getWake()->getType() == WakeType::CSRWakeFunction ||
+                (*it)->getWake()->getType() == WakeType::CSRIGFWakeFunction) {
+                if ((*it)->getType() == ElementType::RBEND ||
+                    (*it)->getType() == ElementType::SBEND) {
                     wfInstance = (*it)->getWake();
                     wakeFunction_m = wfInstance;
                 } else {
@@ -723,7 +726,7 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
         elements.erase(it);
     }
 
-    if (elementsWithParticleMatterInteraction.size() > 0) {
+    if (!elementsWithParticleMatterInteraction.empty()) {
         std::set<ParticleMatterInteractionHandler*> oldSPHandlers;
         std::vector<ParticleMatterInteractionHandler*> leftBehindSPHandlers, newSPHandlers;
         for (auto it: activeParticleMatterInteractionHandlers_m) {
@@ -758,13 +761,24 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
             msg << level2 << "============== START PARTICLE MATTER INTERACTION CALCULATION =============" << endl;
             particleMatterStatus_m = true;
         }
+    } else {
+        for (auto it = activeParticleMatterInteractionHandlers_m.begin();
+             it != activeParticleMatterInteractionHandlers_m.end();) {
+            if (!(*it)->stillActive()) {
+                auto next = std::next(it);
+                activeParticleMatterInteractionHandlers_m.erase(it);
+                it = next;
+            } else {
+                it = std::next(it);
+            }
+        }
     }
 
     if (particleMatterStatus_m) {
         do {
             ///all particles in material if max per node is 2 and other degraders have 0 particles
             //check if more than one degrader has particles
-            ParticleMatterInteractionHandler* onlyDegraderWithParticles = NULL;
+            ParticleMatterInteractionHandler* onlyDegraderWithParticles = nullptr;
             int degradersWithParticlesCount = 0;
             for (auto it: activeParticleMatterInteractionHandlers_m) {
                 it->setFlagAllParticlesIn(false);
@@ -852,7 +866,7 @@ void ParallelTTracker::computeParticleMatterInteraction(IndexMap::value_t elemen
         } while (itsBunch_m->getTotalNum() == 0);
 
 
-        if (activeParticleMatterInteractionHandlers_m.size() == 0) {
+        if (activeParticleMatterInteractionHandlers_m.empty()) {
             msg << level2 << "============== END PARTICLE MATTER INTERACTION CALCULATION =============" << endl;
             particleMatterStatus_m = false;
         }
@@ -951,8 +965,9 @@ void ParallelTTracker::setOptionalVariables() {
 }
 
 
-bool ParallelTTracker::hasEndOfLineReached() {
+bool ParallelTTracker::hasEndOfLineReached(const BoundingBox& globalBoundingBox) {
     reduce(&globalEOL_m, &globalEOL_m + 1, &globalEOL_m, OpBitwiseAndAssign());
+    globalEOL_m = globalEOL_m || globalBoundingBox.isOutside(itsBunch_m->RefPartR_m);
     return globalEOL_m;
 }
 
@@ -997,13 +1012,13 @@ void ParallelTTracker::writePhaseSpace(const long long /*step*/, bool psDump, bo
                                      externalE,
                                      externalB);
         FDext[0] = itsBunch_m->toLabTrafo_m.rotateFrom(externalB);
-        FDext[1] = itsBunch_m->toLabTrafo_m.rotateFrom(externalE * 1e-6);
+        FDext[1] = itsBunch_m->toLabTrafo_m.rotateFrom(externalE * Units::Vpm2MVpm);
     }
 
     if (statDump) {
         std::vector<std::pair<std::string, unsigned int> > collimatorLosses;
-        FieldList collimators = itsOpalBeamline_m.getElementByType(ElementBase::CCOLLIMATOR);
-        if (collimators.size() != 0) {
+        FieldList collimators = itsOpalBeamline_m.getElementByType(ElementType::CCOLLIMATOR);
+        if (!collimators.empty()) {
             for (FieldList::iterator it = collimators.begin(); it != collimators.end(); ++ it) {
                 FlexibleCollimator* coll = static_cast<FlexibleCollimator*>(it->getElement().get());
                 std::string name = coll->getName();
@@ -1241,7 +1256,7 @@ void ParallelTTracker::autophaseCavities(const BorisPusher &pusher) {
 
     auto elementSet = itsOpalBeamline_m.getElements(nextR);
     for (auto element: elementSet) {
-        if (element->getType() == ElementBase::TRAVELINGWAVE) {
+        if (element->getType() == ElementType::TRAVELINGWAVE) {
             const TravelingWave *TWelement = static_cast<const TravelingWave *>(element.get());
             if (!TWelement->getAutophaseVeto()) {
                 CavityAutophaser ap(itsReference, element);
@@ -1250,7 +1265,7 @@ void ParallelTTracker::autophaseCavities(const BorisPusher &pusher) {
                                        t, itsBunch_m->getdT());
             }
 
-        } else if (element->getType() == ElementBase::RFCAVITY) {
+        } else if (element->getType() == ElementType::RFCAVITY) {
             const RFCavity *RFelement = static_cast<const RFCavity *>(element.get());
             if (!RFelement->getAutophaseVeto()) {
                 CavityAutophaser ap(itsReference, element);
@@ -1319,7 +1334,7 @@ void ParallelTTracker::evenlyDistributeParticles() {
 
     std::vector<char> send_msgbuf;
 
-    if (send.size() > 0) {
+    if (!send.empty()) {
         const char *buffer;
 
         unsigned int totalSend = 0, startIndex = 0;
@@ -1341,8 +1356,8 @@ void ParallelTTracker::evenlyDistributeParticles() {
                 send_msgbuf.insert(send_msgbuf.end(), buffer, buffer + sizeof(double));
                 buffer = reinterpret_cast<const char*>(&(itsBunch_m->dt[idx]));
                 send_msgbuf.insert(send_msgbuf.end(), buffer, buffer + sizeof(double));
-                buffer = reinterpret_cast<const char*>(&(itsBunch_m->PType[idx]));
-                send_msgbuf.insert(send_msgbuf.end(), buffer, buffer + sizeof(short));
+                buffer = reinterpret_cast<const char*>(&(itsBunch_m->POrigin[idx]));
+                send_msgbuf.insert(send_msgbuf.end(), buffer, buffer + sizeof(ParticleOrigin));
                 buffer = reinterpret_cast<const char*>(&(itsBunch_m->TriID[idx]));
                 send_msgbuf.insert(send_msgbuf.end(), buffer, buffer + sizeof(int));
                 buffer = reinterpret_cast<const char*>(&(itsBunch_m->ID[idx]));
@@ -1384,10 +1399,10 @@ void ParallelTTracker::evenlyDistributeParticles() {
             j += 9 * sizeof(double);
 
             {
-                const short *buffer = reinterpret_cast<const short*>(recvbuf + j);
-                itsBunch_m->PType[idx] = buffer[0];
+                const ParticleOrigin *buffer = reinterpret_cast<const ParticleOrigin*>(recvbuf + j);
+                itsBunch_m->POrigin[idx] = buffer[0];
             }
-            j += sizeof(short);
+            j += sizeof(ParticleOrigin);
 
             {
                 const int *buffer = reinterpret_cast<const int*>(recvbuf + j);
@@ -1405,7 +1420,7 @@ void ParallelTTracker::evenlyDistributeParticles() {
         delete[] recvbuf;
     }
 
-    if (requests.size() > 0) {
+    if (!requests.empty()) {
         MPI_Waitall(requests.size(), &(requests[0]), MPI_STATUSES_IGNORE);
     }
 }

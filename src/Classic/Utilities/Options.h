@@ -19,8 +19,15 @@
 #ifndef OPTIONS_HH
 #define OPTIONS_HH
 
-#include "OptionTypes.h"
 #include "Utilities/ClassicRandom.h"
+
+#include <string>
+
+enum class DumpFrame: unsigned short {
+    GLOBAL,
+    BUNCH_MEAN,
+    REFERENCE
+};
 
 namespace Options {
     /// Echo flag.
@@ -30,40 +37,17 @@ namespace Options {
     /// Info flag.
     //  If true, print informative messages.
     extern bool info;
-
     extern int infoLevel;
-
-    /// Warn flag.
-    //  If true, print warning messages.
-    extern bool warn;
-
-    extern int warnLevel;
-
-    extern bool csrDump;
-
-    /// if true create symmetric distribution
-    extern bool cZero;
-
-    /// If true HDF5 files are written
-    extern bool enableHDF5;
-
-    extern bool asciidump;
-
-    // If the distance of a particle to bunch mass larger than remotePartDel times of the rms size of the bunch in any dimension,
-    // the particle will be deleted artifically to hold the accuracy of space charge calculation. The default setting of -1 stands for no deletion.
-    extern double remotePartDel;
-
-    extern double beamHaloBoundary;
-
-    extern bool writeBendTrajectories;
-
-    extern bool idealized;
 
     /// Trace flag.
     //  If true, print CPU time before and after each command.
     extern bool mtrace;
 
-    /// Random generator.
+    /// Warn flag.
+    //  If true, print warning messages.
+    extern bool warn;
+    extern int warnLevel;
+
     //  The global random generator.
     extern Random rangen;
 
@@ -75,6 +59,16 @@ namespace Options {
 
     /// The frequency to dump statistical values, e.e. dump data when step%statDumpFreq==0
     extern int statDumpFreq;
+
+    /// phase space dump flag for OPAL-cycl
+    //  if true, dump phase space after each turn
+    extern bool psDumpEachTurn;
+
+    /// flag to decide in which coordinate frame the phase space will be dumped for OPAL-cycl
+    //  - GLOBAL, in Cartesian frame of the global particle
+    //  - BUNCH_MEAN, in Cartesian frame of the bunch mean
+    //  - REFERENCE, in Cartesian frame of the reference (0) particle
+    extern DumpFrame psDumpFrame;
 
     /// The frequency to dump single particle trajectory of particles with ID = 0 & 1
     extern int sptDumpFreq;
@@ -91,50 +85,62 @@ namespace Options {
     /// The frequency to reset energy bin ID for all particles
     extern int rebinFreq;
 
-    /// phase space dump flag for OPAL-cycl
-    //  if true, dump phase space after each turn
-    extern bool psDumpEachTurn;
-
-    // Governs how often boundp_destroy is called to destroy lost particles
-    // Mainly used in the CyclotronTracker as of now -DW
-    extern int boundpDestroyFreq;
-
-    /// flag to decide in which coordinate frame the phase space will be dumped for OPAL-cycl
-    //  - GLOBAL, in Cartesian frame of the global particle
-    //  - BUNCH_MEAN, in Cartesian frame of the bunch mean
-    //  - REFERENCE, in Cartesian frame of the reference (0) particle
-    extern DumpFrame psDumpFrame;
-
     /// The frequency to solve space charge fields.
     extern int scSolveFreq;
 
     // How many small timesteps are inside the large timestep used in multiple time stepping (MTS) integrator
     extern int mtsSubsteps;
 
+    // If the distance of a particle to bunch mass larger than remotePartDel times of the rms size of the bunch in any dimension,
+    // the particle will be deleted artifically to hold the accuracy of space charge calculation. The default setting of -1 stands for no deletion.
+    extern double remotePartDel;
+
     extern bool rhoDump;
 
     extern bool ebDump;
 
+    extern bool csrDump;
+
+    // the number of refinements of the search range for the phase with maximum energy
+    // if eq 0 then no autophase
     // if true opal find the phases in the cavities, such that the energy gain is at maximum
     extern int autoPhase;
 
-    /// The frequency to dump the particle-geometry surface interation data.
-    extern int surfDumpFreq;
-
+    // Options for the Belos solver
     /// RCG: cycle length
     extern int numBlocks;
-
     /// RCG: number of recycle blocks
     extern int recycleBlocks;
-
     /// number of old left hand sides used to extrapolate a new start vector
     extern int nLHS;
+
+    /// If true create symmetric distribution
+    extern bool cZero;
 
     /// random number generator
     extern std::string rngtype;
 
+    /// If true HDF5 files are written
+    extern bool enableHDF5;
+
+    /// If true VTK files are written
+    extern bool enableVTK;
+
+    extern bool asciidump;
+
+    // Governs how often boundp_destroy is called to destroy lost particles
+    // Mainly used in the CyclotronTracker as of now -DW
+    extern int boundpDestroyFreq;
+
+    extern double beamHaloBoundary;
+
     /// Do closed orbit and tune calculation only.
     extern bool cloTuneOnly;
+
+    // Using hard edge model for calculation of path length
+    extern bool idealized;
+
+    extern bool writeBendTrajectories;
 
     /// opal version of input file
     extern int version;
@@ -144,7 +150,7 @@ namespace Options {
 
     /// The frequency to dump AMR grid data and particles into file
     extern int amrYtDumpFreq;
-    
+
     /// After how many steps the AMR grid hierarchy is updated
     extern int amrRegridFreq;
 
@@ -155,6 +161,8 @@ namespace Options {
 
     /// The frequency to delete particles (currently: OPAL-cycl only)
     extern unsigned int delPartFreq;
+
+    extern bool computePercentiles;
 }
 
 #endif // OPAL_Options_HH

@@ -18,15 +18,15 @@
 //
 
 #include "Track/Track.h"
-// #include "Algorithms/PartBunchBase.h"
-#include "Algorithms/PartBunch.h" //FIXME
+
+#include "Algorithms/PartBunch.h"
 #ifdef ENABLE_AMR
     #include "Algorithms/AmrPartBunch.h"
 #endif
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/Options.h"
 
-Track *Track::block = 0;
+Track* Track::block = 0;
 std::stack<Track*> Track::stashedTrack;
 
 /**
@@ -37,9 +37,10 @@ otherwise a new bunch is allocated in the dictionary.
 */
 
 
-Track::Track(BeamSequence *u, const PartData &ref, const std::vector<double> & dt,
-             const std::vector<unsigned long long> & maxtsteps, int stepsperturn,
-             double zStart, const std::vector<double> & zStop, int timeintegrator,
+Track::Track(BeamSequence* u, const PartData& ref, const std::vector<double>& dt,
+             const std::vector<unsigned long long>& maxtsteps, int stepsperturn,
+             double zStart, const std::vector<double>& zStop,
+             Steppers::TimeIntegrator timeintegrator,
              double t0, double dtScInit, double deltaTau):
     bunch(nullptr),
     reference(ref),

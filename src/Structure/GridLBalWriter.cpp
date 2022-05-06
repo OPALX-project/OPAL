@@ -20,11 +20,12 @@
 //
 #include "GridLBalWriter.h"
 
+#include "Algorithms/AmrPartBunch.h"
+#include "Physics/Units.h"
 #include "Utilities/Timer.h"
 
 #include <sstream>
 
-#include "Algorithms/AmrPartBunch.h"
 
 GridLBalWriter::GridLBalWriter(const std::string& fname, bool restart)
     : SDDSWriter(fname, restart)
@@ -108,7 +109,7 @@ void GridLBalWriter::write(PartBunchBase<double, 3> *beam) {
 
     this->writeHeader();
 
-    columns_m.addColumnValue("t", beam->getT() * 1e9); // 1
+    columns_m.addColumnValue("t", beam->getT() * Units::s2ns); // 1
 
     int nLevel = (amrbeam->getAmrObject())->maxLevel() + 1;
 

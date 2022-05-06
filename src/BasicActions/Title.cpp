@@ -1,28 +1,25 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Title.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: Title
-//   The class for the OPAL Title command.
+// Class Title
+//   The class for OPAL TITLE command.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 2000 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:37 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "BasicActions/Title.h"
+
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 
-
-// Class Title
-// ------------------------------------------------------------------------
 
 Title::Title():
     Action(1, "TITLE",
@@ -35,7 +32,7 @@ Title::Title():
 }
 
 
-Title::Title(const std::string &name, Title *parent):
+Title::Title(const std::string& name, Title* parent):
     Action(name, parent)
 {}
 
@@ -44,7 +41,7 @@ Title::~Title()
 {}
 
 
-Title *Title::clone(const std::string &name) {
+Title* Title::clone(const std::string& name) {
     return new Title(name, this);
 }
 
@@ -55,6 +52,6 @@ void Title::execute() {
 }
 
 
-void Title::parse(Statement &statement) {
+void Title::parse(Statement& statement) {
     parseShortcut(statement);
 }

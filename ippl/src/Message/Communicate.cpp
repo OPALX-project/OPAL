@@ -61,7 +61,7 @@ std::ostream& operator<<(std::ostream& o, const Communicate& c)
 // Constructor.
 // 	arguments: command-line args, and number of processes
 // to start (if < 0, start the 'default' number, i.e. the number of
-// hosts 
+// hosts
 // Note: The base-class constructor does not need the argument info or
 // the number of nodes, it just by default sets the number of nodes=1
 // Also note: the derived classes should erase Contexts and Processes, and
@@ -83,7 +83,7 @@ Communicate::Communicate(int, char **, int)
 // Destructor.  Nothing to do at present.
 Communicate::~Communicate(void)
 {
-    
+
 
     // delete the cached messages
     SentCache_t::iterator cachei = sentMsgCache.begin();
@@ -157,7 +157,7 @@ Message* Communicate::myreceive(int&, int&, int)
 // Default version of virtual barrier function ... here, does nothing.
 void Communicate::mybarrier(void)
 {
-    
+
 
     // just return NULL, since we cannot find a message with this function
     return;
@@ -239,7 +239,7 @@ bool Communicate::send(Message *msg, int node, int tag, bool delmsg)
 //      2. In receive queue
 Message* Communicate::receive(int& node, int& tag)
 {
-    
+
 
     //Inform dbgmsg("Comm::receive", INFORM_ALL_NODES);
     //dbgmsg << "Doing receive from node " << node << ", tag " << tag << endl;
@@ -299,10 +299,10 @@ Message* Communicate::receive(int& node, int& tag)
 // A blocking version of receive.
 Message *Communicate::receive_block(int& node, int &tag)
 {
-    
-    
-    
-    
+
+
+
+
 
     // process list of resend requests
     process_resend_requests();
@@ -313,13 +313,13 @@ Message *Communicate::receive_block(int& node, int &tag)
 
     // If we haven't already found a message, check the local messages
     //dbgmsg << "Checking for queued message ..." << endl;
-    
+
     Message *msg = find_msg(node, tag);
-    
+
     //dbgmsg << "Found one? " << (msg != 0 ? "yes" : "no") << endl;
 
     // keep checking for remote msgs until we get one
-    
+
     if (myNode() != node)
     {
         while (msg == 0)
@@ -362,7 +362,7 @@ Message *Communicate::receive_block(int& node, int &tag)
             }
         }
     }
-    
+
 
     // If we're on just one node, and we did not find a message, this is
     // a big problem.
@@ -438,7 +438,7 @@ int Communicate::broadcast_others(Message *msg, int tag, bool delmsg)
 // else to get here before returning to calling function).
 void Communicate::barrier()
 {
-    
+
 
     mybarrier();
     //INCIPPLSTAT(incBarriers);
@@ -864,7 +864,7 @@ void Communicate::remove_single_ok_message(MsgNum_t mnum)
 // process list of resend requests
 void Communicate::process_resend_requests()
 {
-    if (resendList.size() > 0)
+    if (!resendList.empty())
     {
         Inform dbgmsg("***Communicate::process_resend_reqs", INFORM_ALL_NODES);
         dbgmsg << "Clearing " << sentOKList.size() << " and resending ";
@@ -872,7 +872,7 @@ void Communicate::process_resend_requests()
     }
 
     // clear out OK messages
-    while (sentOKList.size() > 0)
+    while (!sentOKList.empty())
     {
         MsgNum_t mnum = *(sentOKList.begin());
         sentOKList.erase(sentOKList.begin());
@@ -880,7 +880,7 @@ void Communicate::process_resend_requests()
     }
 
     // resend a message, if necessary
-    while (resendList.size() > 0)
+    while (!resendList.empty())
     {
         MsgNum_t mnum = *(resendList.begin());
         resendList.erase(resendList.begin());
@@ -888,7 +888,7 @@ void Communicate::process_resend_requests()
     }
 
     // inform other nodes that we've received their messages ok
-    while (informOKList.size() > 0)
+    while (!informOKList.empty())
     {
         int node = (*(informOKList.begin())).first;
         MsgNum_t mnum = (*(informOKList.begin())).second;
@@ -897,7 +897,7 @@ void Communicate::process_resend_requests()
     }
 
     // request resends from other nodes
-    while (requestList.size() > 0)
+    while (!requestList.empty())
     {
         int node = (*(requestList.begin())).first;
         MsgNum_t mnum = (*(requestList.begin())).second;

@@ -17,11 +17,13 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Elements/OpalVKicker.h"
+
 #include "AbstractObjects/AttributeHandler.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/YCorrectorRep.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 
 
 OpalVKicker::OpalVKicker():
@@ -69,7 +71,7 @@ void OpalVKicker::update() {
     corr->setBx(kick * factor);
     corr->setKickY(kick);
     if(itsAttr[DESIGNENERGY]) {
-        double kineticEnergy = Attributes::getReal(itsAttr[DESIGNENERGY]) * 1e6;
+        double kineticEnergy = Attributes::getReal(itsAttr[DESIGNENERGY]) * Units::MeV2eV;
         corr->setDesignEnergy(kineticEnergy, false);
     }
 

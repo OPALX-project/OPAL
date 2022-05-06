@@ -1,4 +1,3 @@
-
 // ------------------------------------------------------------------------
 // $RCSfile: Object.cpp,v $
 // ------------------------------------------------------------------------
@@ -25,6 +24,7 @@
 #include "Parser/Statement.h"
 #include "Utilities/Options.h"
 #include "Utilities/ParseError.h"
+#include "Utilities/Util.h"
 
 #include <cmath>
 #include <iostream>
@@ -201,22 +201,51 @@ void Object::registerOwnership(const AttributeHandler::OwnerType &itsClass) cons
 void Object::printHelp(std::ostream &/*os*/) const {
     *gmsg << endl << itsHelp << endl;
 
-    if(itsAttr.size() > 0) {
+    if(!itsAttr.empty()) {
         *gmsg << "Attributes:" << endl;
 
-        size_t maxLength = 16;
+        size_t maxNameLength = 16;
+        size_t maxTypeLength = 16;
         std::vector<Attribute>::const_iterator it;
         for (it = itsAttr.begin(); it != itsAttr.end(); ++ it) {
             std::string name = it->getName();
-            maxLength = std::max(maxLength, name.length() + 1);
+            maxNameLength = std::max(maxNameLength, name.length() + 1);
+            std::string type = it->getType();
+            maxTypeLength = std::max(maxTypeLength, type.length() + 1);
         }
 
         for (it = itsAttr.begin(); it != itsAttr.end(); ++ it) {
             std::string type = it->getType();
             std::string name = it->getName();
-            *gmsg << '\t' << type << std::string(16 - type.length(), ' ');
-            *gmsg << name << std::string(maxLength - name.length(), ' ');
-            *gmsg << it->getHelp();
+            std::istringstream help(it->getHelp());
+            std::vector<std::string> words;
+            std::copy(std::istream_iterator<std::string>(help),
+                      std::istream_iterator<std::string>(),
+                      std::back_inserter(words));
+            unsigned int columnWidth = 40;
+            if (maxNameLength + maxTypeLength < 40u) {
+                columnWidth = 80 - maxNameLength - maxTypeLength;
+            }
+
+            auto wordsIt = words.begin();
+            auto wordsEnd = words.end();
+            while (wordsIt != wordsEnd) {
+                *gmsg << '\t' << type << std::string(maxTypeLength - type.length(), ' ');
+                *gmsg << name << std::string(maxNameLength - name.length(), ' ');
+                unsigned int totalLength = 0;
+                do {
+                    totalLength += wordsIt->length();
+                    *gmsg << *wordsIt << " ";
+                    ++ wordsIt;
+                } while (wordsIt != wordsEnd && totalLength + wordsIt->length() < columnWidth);
+                if (wordsIt != wordsEnd) {
+                    *gmsg << endl;
+                }
+
+                type = "";
+                name = "";
+            }
+
             if(it->isReadOnly()) *gmsg << " (read only)";
             *gmsg << endl;
         }

@@ -154,7 +154,7 @@ public:
     //  Slices and stepsize used to determine integration step.
     virtual double getStepsize() const = 0;
 
-    virtual ElementBase::ElementType getType() const override;
+    virtual ElementType getType() const override;
 
 private:
 

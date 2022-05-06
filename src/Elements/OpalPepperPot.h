@@ -21,7 +21,6 @@
 
 #include "Elements/OpalElement.h"
 
-
 class ParticleMatterInteraction;
 
 class OpalPepperPot: public OpalElement {
@@ -35,7 +34,6 @@ public:
         NHOLY,
         XSIZE,
         YSIZE,
-        OUTFN,
         SIZE
     };
 
@@ -45,7 +43,7 @@ public:
     virtual ~OpalPepperPot();
 
     /// Make clone.
-    virtual OpalPepperPot *clone(const std::string &name);
+    virtual OpalPepperPot* clone(const std::string& name);
 
     /// Update the embedded CLASSIC collimator.
     virtual void update();
@@ -53,13 +51,13 @@ public:
 private:
 
     // Not implemented.
-    OpalPepperPot(const OpalPepperPot &);
-    void operator=(const OpalPepperPot &);
+    OpalPepperPot(const OpalPepperPot&);
+    void operator=(const OpalPepperPot&);
 
     // Clone constructor.
-    OpalPepperPot(const std::string &name, OpalPepperPot *parent);
+    OpalPepperPot(const std::string& name, OpalPepperPot* parent);
 
-    ParticleMatterInteraction *parmatint_m;
+    ParticleMatterInteraction* parmatint_m;
 };
 
 #endif // OPAL_OpalPepperPot_HH

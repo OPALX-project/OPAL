@@ -2,7 +2,7 @@
 // Class Physics
 //   A namespace defining various mathematical and physical constants.
 //
-// Copyright (c) 2015-2019, Christof Metzger-Kraus, Helmholtz-Zentrum Berlin
+// Copyright (c) 2015-2021, Christof Metzger-Kraus, Helmholtz-Zentrum Berlin
 //                          Pedro Calvo, CIEMAT, Spain
 // All rights reserved
 //
@@ -24,9 +24,6 @@
 #define CLASSIC_Physics_HH
 
 
-// Class Physics
-// ------------------------------------------------------------------------
-
 namespace Physics {
 
     /// The value of \f[ \pi \f]
@@ -43,12 +40,6 @@ namespace Physics {
 
     /// The logarithm of $e$ to the base 10
     constexpr double log10e     = 0.43429448190325182765;
-
-    /// The conversion factor from radians to degrees
-    constexpr double rad2deg    = 180.0 / pi;
-
-    /// The conversion factor from degrees to radians
-    constexpr double deg2rad    = 1.0 / rad2deg;
 
     /// The velocity of light in m/s
     constexpr double c          = 299792458.0;
@@ -110,14 +101,14 @@ namespace Physics {
     /// The charge of proton
     constexpr double z_p        = 1;
 
-    /// The carbon rest mass in GeV
-    constexpr double m_c        = 12 * amu;
+    /// The carbon-12 (fully-stripped) rest mass in GeV
+    constexpr double m_c        = 11.9967074146787 * amu;
 
     /// The H- rest mass in GeV
     constexpr double m_hm       = 1.00837 * amu;
 
-    /// The uranium rest mass in GeV
-    constexpr double m_u        = 238.050787 * amu;
+    /// The uranium-238 (fully-stripped) rest mass in GeV
+    constexpr double m_u        = 237.999501 * amu;
 
     /// The muon rest mass in GeV
     constexpr double m_mu       = 0.1056583755;
@@ -125,8 +116,11 @@ namespace Physics {
     /// The deuteron rest mass in GeV
     constexpr double m_d        = 2.013553212745 * amu;
 
-    /// The xenon rest mass in GeV
-    constexpr double m_xe       = 124 * amu;
+    /// The xenon-129 (fully-stripped) rest mass in GeV
+    constexpr double m_xe       = 128.87494026 * amu;
+
+    /// The alpha particle rest mass in GeV
+    constexpr double m_alpha    = 4.001506179127 * amu;
 
     /// The hydrogen atom rest mass in GeV
     constexpr double m_h        = 1.00782503224 * amu;
@@ -137,7 +131,7 @@ namespace Physics {
     /// The H3+ rest mass in GeV
     constexpr double m_h3p       = 3.02293 * amu;
 
-    constexpr double PMASS      = 1.67262192369e-27;  // kg
+    constexpr double PMASS      = 1.67262192369e-27; // kg
 
     constexpr double EMASS      = 9.1093837015e-31; // kg
 
@@ -149,7 +143,6 @@ namespace Physics {
     constexpr double e0m        = 1.75882001076e+11;
     // e/mc
     constexpr double e0mc       = e0m / c;
-
 };
 
 #endif // CLASSIC_Physics_HH

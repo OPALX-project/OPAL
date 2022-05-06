@@ -87,7 +87,7 @@ public:
     void save3DInput();
     void print(Inform &) const;
 
-    FieldList getElementByType(ElementBase::ElementType);
+    FieldList getElementByType(ElementType);
 
     void swap(OpalBeamline & rhs);
     void merge(OpalBeamline &rhs);

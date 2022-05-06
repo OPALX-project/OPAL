@@ -180,7 +180,7 @@ TEST(Quad, Quadrupole)
     bunch->setdT(1.0e-10);//time step
     double startField = 0.0, endField = 5.0 ;
     quad->setElementLength(3.0);
-    ElementBase::ApertureType type = ElementBase::ApertureType::RECTANGULAR;
+    ApertureType type = ApertureType::RECTANGULAR;
     vector<double> aperture(2, 1);
     quad->setAperture(type, aperture);
     quad->initialise(bunch, startField, endField);

@@ -1,29 +1,23 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- * This program was prepared by PSI.
- * All rights in the program are reserved by PSI.
- * Neither PSI nor the author(s)
- * makes any warranty, express or implied, or assumes any liability or
- * responsibility for the use of this software
- *
- * Visit www.amas.web.psi for more details
- *
- ***************************************************************************/
-
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
-// include files
+//
+// CommMPI - MPI-specific communications object for use with the
+// Ippl framework.
+// Allows user to establish id's for available nodes, establish connections,
+// and send/receive data.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Message/CommMPI.h"
 #include "Message/Message.h"
 #include "Utility/IpplInfo.h"
@@ -103,7 +97,7 @@ CommMPI::CommMPI(int& argc , char**& argv, int procs, bool mpiinit, MPI_Comm mpi
         MPI_Init_thread(&argc, &argv, MPI_THREAD_FUNNELED, &provided);
         INFOMSG("Ippl will be initialized with " <<
                 omp_get_max_threads() << " OMP threads\n");
-        
+
         if ( provided != MPI_THREAD_FUNNELED )
             ERRORMSG("CommMPI: Didn't get requested MPI-OpenMP setting.\n");
 #else
@@ -149,7 +143,7 @@ CommMPI::CommMPI(int& argc , char**& argv, int procs, bool mpiinit, MPI_Comm mpi
         std::vector<int> child_ready(TotalNodes);
         for (i = 0; i < TotalNodes; child_ready[i++] = 0)
             ;
-        INFOMSG("CommMPI: Parent process waiting for children ..." << endl);
+        INFOMSG(level5 << "CommMPI: Parent process waiting for children ..." << endl);
         reported = 1;		// since the parent is already ready
         while (reported < TotalNodes)
         {
@@ -160,7 +154,7 @@ CommMPI::CommMPI(int& argc , char**& argv, int procs, bool mpiinit, MPI_Comm mpi
             {
                 child_ready[rep_host] = 1;
                 reported++;
-                INFOMSG("CommMPI: Child " << rep_host << " ready." << endl);
+                INFOMSG(level5 << "CommMPI: Child " << rep_host << " ready." << endl);
             }
             else
             {
@@ -171,7 +165,7 @@ CommMPI::CommMPI(int& argc , char**& argv, int procs, bool mpiinit, MPI_Comm mpi
         }
 
         //~ delete [] child_ready;
-        INFOMSG("CommMPI: Initialization complete." << endl);
+        INFOMSG(level5 << "CommMPI: Initialization complete." << endl);
 
     }
     else  			// this is a child process; get data from pops
@@ -180,7 +174,7 @@ CommMPI::CommMPI(int& argc , char**& argv, int procs, bool mpiinit, MPI_Comm mpi
         ierror = MPI_Get_processor_name(host_name, &result_len);
         if (ierror >= 0)
         {
-            INFOMSG("CommMPI: Started job " << myHost << " on host `");
+            INFOMSG(level5 << "CommMPI: Started job " << myHost << " on host `");
             INFOMSG(host_name <<  "'." << endl);
         }
         else

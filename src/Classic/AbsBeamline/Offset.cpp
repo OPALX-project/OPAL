@@ -38,7 +38,7 @@ const double Offset::lengthUnits_m = 1e3;
 double Offset::float_tolerance = 1e-12;
 
 Offset::Offset(const std::string& name)
-    : Component(name), _is_local(false), geometry_m(NULL) {
+    : Component(name), _is_local(false), geometry_m(nullptr) {
     geometry_m = new Euclid3DGeometry(Euclid3D());
 }
 
@@ -47,13 +47,13 @@ Offset::Offset()
 {}
 
 Offset::Offset(std::string name, const Offset& rhs)
-    : Component(name), _is_local(false), geometry_m(NULL) {
+    : Component(name), _is_local(false), geometry_m(nullptr) {
     *this = rhs;
     setName(name);
 }
 
 Offset::Offset(const Offset& rhs)
-    : Component(rhs.getName()), _is_local(false), geometry_m(NULL) {
+    : Component(rhs.getName()), _is_local(false), geometry_m(nullptr) {
     *this = rhs;
 }
 
@@ -70,10 +70,10 @@ Offset& Offset::operator=(const Offset& rhs) {
     _end_direction = rhs._end_direction;
     _is_local = rhs._is_local;
 
-    if (geometry_m != NULL)
+    if (geometry_m != nullptr)
         delete geometry_m;
-    if (rhs.geometry_m == NULL) {
-        geometry_m = NULL;
+    if (rhs.geometry_m == nullptr) {
+        geometry_m = nullptr;
     } else {
         geometry_m = new Euclid3DGeometry(rhs.geometry_m->getTotalTransform());
     }
@@ -100,7 +100,7 @@ void Offset::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/,
 }
 
 void Offset::finalise() {
-    RefPartBunch_m = NULL;
+    RefPartBunch_m = nullptr;
 }
 
 ElementBase* Offset::clone() const {
@@ -175,7 +175,7 @@ void Offset::updateGeometry() {
     double theta_out = getTheta(Vector_t(1., 0., 0.), getEndDirection());
     Euclid3D euclid3D(-std::sin(theta_in)*length, 0., std::cos(theta_in)*length,
                       0., -theta_out, 0.);
-    if (geometry_m != NULL)
+    if (geometry_m != nullptr)
         delete geometry_m;
     geometry_m = new Euclid3DGeometry(euclid3D);
 }
@@ -192,7 +192,7 @@ void Offset::updateGeometry(Vector_t /*startPosition*/, Vector_t startDirection)
 }
 
 bool Offset::isGeometryAllocated() const {
-    return geometry_m != NULL;
+    return geometry_m != nullptr;
 }
 
 bool operator==(const Offset& off1, const Offset& off2) {
@@ -232,7 +232,7 @@ std::ostream& operator<<(std::ostream& out, const Offset& off) {
 }
 
 bool Offset::bends() const {
-    if (geometry_m == NULL) {
+    if (geometry_m == nullptr) {
         throw GeneralClassicException("Offset::bends",
               "Try to determine if Offset bends when geometry_m not allocated");
     }

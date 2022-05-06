@@ -64,7 +64,7 @@ bool Marker::bends() const {
 void Marker::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {
 }
 
-ElementBase::ElementType Marker::getType() const {
-    return MARKER;
+ElementType Marker::getType() const {
+    return ElementType::MARKER;
 }
 

@@ -4,12 +4,13 @@
 
 #include "Structure/H5PartWrapperForPC.h"
 
-#include "OPALconfig.h"
-#include "Algorithms/PartBunchBase.h"
 #include "AbstractObjects/OpalData.h"
+#include "Algorithms/PartBunchBase.h"
+#include "OPALconfig.h"
+#include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
-#include "Physics/Physics.h"
 
 #include <sstream>
 #include <set>
@@ -140,7 +141,7 @@ void H5PartWrapperForPC::readStepHeader(PartBunchBase<double, 3>* bunch) {
         bunch->setLocalTrackStep((long long) 0 );
     }
 
-    double mass = bunch->getM() * 1e-6;
+    double mass = bunch->getM() * Units::eV2MeV;
     meanMomentum_m = sqrt(std::pow(meanE_m,2.0) + 2 * meanE_m * mass) / mass;
 }
 
@@ -161,7 +162,9 @@ void H5PartWrapperForPC::readStepData(PartBunchBase<double, 3>* bunch,
     numParticles = lastParticle - firstParticle + 1;
 
     std::vector<char> buffer(numParticles * sizeof(h5_float64_t));
-    h5_float64_t *f64buffer = reinterpret_cast<h5_float64_t*>(&buffer[0]);
+    char* buffer_ptr = Util::c_data(buffer);
+    h5_float64_t *f64buffer = reinterpret_cast<h5_float64_t*>(buffer_ptr);
+    h5_int64_t *i64buffer = reinterpret_cast<h5_int64_t*>(buffer_ptr);
 
     READDATA(Float64, file_m, "x", f64buffer);
     for(long int n = 0; n < numParticles; ++ n) {
@@ -205,16 +208,12 @@ void H5PartWrapperForPC::readStepData(PartBunchBase<double, 3>* bunch,
     }
 
     if ( bunch->getNumBunch() > 1 ) {
-        std::vector<char> ibuffer(numParticles * sizeof(h5_int64_t));
-        h5_int64_t *i64buffer = reinterpret_cast<h5_int64_t*>(&ibuffer[0]);
         READDATA(Int64, file_m, "bin", i64buffer);
         for(long int n = 0; n < numParticles; ++ n) {
             bunch->Bin[n] = i64buffer[n];
         }
     }
 
-    std::vector<char> ibuffer(numParticles * sizeof(h5_int64_t));
-    h5_int64_t *i64buffer = reinterpret_cast<h5_int64_t*>(&ibuffer[0]);
     READDATA(Int64, file_m, "bunchNumber", i64buffer);
     for(long int n = 0; n < numParticles; ++ n) {
         bunch->bunchNum[n] = i64buffer[n];
@@ -355,10 +354,10 @@ void H5PartWrapperForPC::writeStepHeader(PartBunchBase<double, 3>* bunch,
     h5_int64_t numBunch = (h5_int64_t)bunch->getNumBunch();
     h5_int64_t SteptoLastInj = (h5_int64_t)bunch->getSteptoLastInj();
 
-    double mass = 1.0e-9 * bunch->getM();
+    double mass = Units::eV2GeV * bunch->getM();
     double charge = bunch->getCharge();
 
-    h5_int64_t localFrame = ( Options::psDumpFrame != Options::GLOBAL );
+    h5_int64_t localFrame = ( Options::psDumpFrame != DumpFrame::GLOBAL );
 
     double sposHead = 0.0;
     double sposRef = 0.0;
@@ -486,8 +485,9 @@ void H5PartWrapperForPC::writeStepData(PartBunchBase<double, 3>* bunch) {
     const size_t skipID = IDZero;
 
     std::vector<char> buffer(numLocalParticles * sizeof(h5_float64_t));
-    h5_float64_t *f64buffer = reinterpret_cast<h5_float64_t*>(&buffer[0]);
-    h5_int64_t   *i64buffer = reinterpret_cast<h5_int64_t*>  (&buffer[0]);
+    char* buffer_ptr = Util::c_data(buffer);
+    h5_float64_t *f64buffer = reinterpret_cast<h5_float64_t*>(buffer_ptr);
+    h5_int64_t   *i64buffer = reinterpret_cast<h5_int64_t*>  (buffer_ptr);
 
 
     REPORTONERROR(H5PartSetNumParticles(file_m, numLocalParticles));

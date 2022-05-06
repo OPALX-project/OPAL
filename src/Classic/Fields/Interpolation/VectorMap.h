@@ -87,8 +87,8 @@ class VectorMap {
     /** Destructor */
     virtual             ~VectorMap() {;}
 
-    /** Return the mesh used by the vector map or NULL if no mesh */
-    virtual Mesh* getMesh() const {return NULL;}
+    /** Return the mesh used by the vector map or nullptr if no mesh */
+    virtual Mesh* getMesh() const {return nullptr;}
   private:
 };
 

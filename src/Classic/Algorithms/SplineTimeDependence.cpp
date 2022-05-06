@@ -36,23 +36,23 @@
 SplineTimeDependence::SplineTimeDependence(size_t splineOrder,
                                            std::vector<double> times,
                                            std::vector<double> values)
-    : spline_m(NULL), acc_m(NULL) {
+    : spline_m(nullptr), acc_m(nullptr) {
     setSpline(splineOrder, times, values);
 }
 
 SplineTimeDependence::SplineTimeDependence(const SplineTimeDependence& /*rhs*/)
-    : spline_m(NULL), acc_m(NULL) {
+    : spline_m(nullptr), acc_m(nullptr) {
     setSpline(splineOrder_m, times_m, values_m);
 }
 
-SplineTimeDependence::SplineTimeDependence() : spline_m(NULL), acc_m(NULL) {
+SplineTimeDependence::SplineTimeDependence() : spline_m(nullptr), acc_m(nullptr) {
 }
 
 SplineTimeDependence::~SplineTimeDependence() {
-    if (spline_m != NULL) {
+    if (spline_m != nullptr) {
         gsl_spline_free(spline_m);
     }
-    if (acc_m != NULL) {
+    if (acc_m != nullptr) {
         gsl_interp_accel_free(acc_m);
     }
 }
@@ -64,7 +64,7 @@ SplineTimeDependence* SplineTimeDependence::clone() {
 }
 
 Inform& SplineTimeDependence::print(Inform &os) {
-    if (spline_m == NULL) {
+    if (spline_m == nullptr) {
         os << "Uninitiaised SplineTimeDependence" << endl;
         return os;
     }
@@ -98,9 +98,9 @@ void SplineTimeDependence::setSpline(size_t splineOrder,
                                 "Times should increase monotonically");
         }
     }
-    if (spline_m != NULL) {
+    if (spline_m != nullptr) {
         gsl_spline_free(spline_m);
-        spline_m = NULL;
+        spline_m = nullptr;
     }
     if (splineOrder == 1) {
         spline_m = gsl_spline_alloc (gsl_interp_linear, times.size());
@@ -110,7 +110,7 @@ void SplineTimeDependence::setSpline(size_t splineOrder,
     times_m = times;
     values_m = values;
     gsl_spline_init(spline_m, &times[0], &values[0], times.size());
-    if (acc_m == NULL) {
+    if (acc_m == nullptr) {
         acc_m = gsl_interp_accel_alloc();
     } else {
         gsl_interp_accel_reset(acc_m);

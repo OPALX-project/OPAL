@@ -35,14 +35,14 @@ namespace ndgridtest {
 
 class NDGridTest : public ::testing::Test {
 public:
-    NDGridTest() : grid_m(NULL) {
+    NDGridTest() : grid_m(nullptr) {
     }
 
     void SetUp( ) {
         std::vector< std::vector<double> > gridCoordinates(2);
-        gridCoordinates[0] = std::vector<double>(2, 0.);
+        gridCoordinates[0] = std::vector<double>(2, 0.); // 0., 3.
         gridCoordinates[0][1] = 3.;
-        gridCoordinates[1] = std::vector<double>(3, 1.);
+        gridCoordinates[1] = std::vector<double>(3, 1.); // 1., 5., 9.
         gridCoordinates[1][1] = 5.;
         gridCoordinates[1][2] = 9.;
         grid_m = new interpolation::NDGrid(gridCoordinates);
@@ -52,9 +52,9 @@ public:
 
     void TearDown( ) {
         delete grid_m;
-        grid_m = NULL;
+        grid_m = nullptr;
         delete grid2_m;
-        grid2_m = NULL;
+        grid2_m = nullptr;
     }
 
     ~NDGridTest() {
@@ -92,7 +92,7 @@ TEST_F(NDGridTest, Constructor2Test) {
     std::vector<int> size(2);
     size[0] = 2;
     size[1] = 3;
-    std::vector<const double*> gridCoordinates(2, NULL);
+    std::vector<const double*> gridCoordinates(2, nullptr);
     const double vec1[] = {0., 2.};
     const double vec2[] = {1., 5., 9.};
     gridCoordinates[0] = vec1;
@@ -118,6 +118,19 @@ TEST_F(NDGridTest, Constructor3Test) {
         ASSERT_EQ(grid1.size(i), size);
         EXPECT_NEAR(grid1.coord(1, i), gridCoordinates[i][0], 1e-12) << "Failed for i " << i;
         EXPECT_NEAR(grid1.coord(i+2, i), gridCoordinates[i][size-1], 1e-12) << "Failed for i " << i;
+    }
+}
+
+TEST_F(NDGridTest, CpyConstructorTest) {
+    interpolation::NDGrid grid(*grid_m);
+    EXPECT_EQ(grid.getConstantSpacing(), grid_m->getConstantSpacing());
+    ASSERT_EQ(grid.getPositionDimension(), grid_m->getPositionDimension());
+    for (int i = 0; i < grid.getPositionDimension(); ++i) {
+        ASSERT_EQ(grid.coordVector(i).size(), grid_m->coordVector(i).size());
+        for (size_t j = 0; j < grid.coordVector(i).size(); ++j) {
+            EXPECT_NEAR(grid.coordVector(i)[j],
+                        grid_m->coordVector(i)[j], 1e-15);
+        }
     }
 }
 
@@ -234,6 +247,9 @@ TEST_F(NDGridTest, BeginEndTest) {
     ASSERT_EQ(grid_m->end().getState().size(), (unsigned int)2);
     EXPECT_EQ(grid_m->end().getState()[0], 3); // one past the last (2, 3)
     EXPECT_EQ(grid_m->end().getState()[1], 1);
+    EXPECT_EQ(grid_m->begin().toInteger(), 0);
+    EXPECT_EQ(grid_m->end().toInteger(), 6);
+    
 }
 
 TEST_F(NDGridTest, GetPositionTest) {
@@ -320,6 +336,28 @@ TEST_F(NDGridTest, DualTest) {
         for (size_t j = 0; j < ref[i].size(); ++j) {
             EXPECT_NEAR(new_grid->coordVector(i)[j], ref[i][j], 1e-9) << i << " " << j;
         }
+    }
+}
+
+TEST_F(NDGridTest, IsOutOfBoundsBeginTest) {
+    // nb isOutOfBounds is defined in Mesh.hh (but tested here for convenience
+    interpolation::Mesh::Iterator it = grid_m->begin();
+    EXPECT_FALSE(it.isOutOfBounds());
+    for (size_t i = 0; i < it.getState().size(); ++i) {
+        it[i] -= 1;
+        EXPECT_TRUE(it.isOutOfBounds());
+        it[i] += 1;
+    }
+}
+
+TEST_F(NDGridTest, IsOutOfBoundsEndTest) {
+    interpolation::Mesh::Iterator it = grid_m->end();
+    it--;
+    EXPECT_FALSE(it.isOutOfBounds());
+    for (size_t i = 0; i < it.getState().size(); ++i) {
+        it[i] += 1;
+        EXPECT_TRUE(it.isOutOfBounds());
+        it[i] -= 1;
     }
 }
 

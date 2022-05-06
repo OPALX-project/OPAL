@@ -29,7 +29,7 @@ BendBase::BendBase(const std::string &name):
     chordLength_m(0.0),
     angle_m(0.0),
     entranceAngle_m(0.0),
-    fieldmap_m(NULL),
+    fieldmap_m(nullptr),
     gap_m(0.0),
     designEnergy_m(0.0),
     designEnergyChangeable_m(true),

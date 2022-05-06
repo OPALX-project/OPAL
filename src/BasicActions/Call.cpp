@@ -1,22 +1,22 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Call.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: Call
-//   The class for OPAL "CALL" commands.
+// Class Call
+//   The class for OPAL CALL command.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 2000 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:37 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "BasicActions/Call.h"
+
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "OpalParser/OpalParser.h"
@@ -24,27 +24,23 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 #include "Utility/IpplInfo.h"
+
 #include <iostream>
 
-using std::cerr;
-using std::endl;
-
-
-// Class Call
-// ------------------------------------------------------------------------
+extern Inform* gmsg;
 
 Call::Call():
     Action(1, "CALL",
            "The \"CALL\" statement switches input temporarily to the "
            "named file.") {
-    itsAttr[0] =
-        Attributes::makeString("FILE", "Name of file to be read", "CALL");
+    itsAttr[0] = Attributes::makeString
+                 ("FILE", "Name of file to be read", "CALL");
 
     registerOwnership(AttributeHandler::STATEMENT);
 }
 
 
-Call::Call(const std::string &name, Call *parent):
+Call::Call(const std::string& name, Call* parent):
     Action(name, parent)
 {}
 
@@ -53,7 +49,7 @@ Call::~Call()
 {}
 
 
-Call *Call::clone(const std::string &name) {
+Call* Call::clone(const std::string& name) {
     return new Call(name, this);
 }
 
@@ -61,18 +57,15 @@ Call *Call::clone(const std::string &name) {
 void Call::execute() {
     std::string file = Attributes::getString(itsAttr[0]);
 
-    if(Options::info && Ippl::myNode() == 0) {
-        cerr << "Start reading input stream \"" << file << "\"." << endl;
+    if (Options::info && Ippl::myNode() == 0) {
+        *gmsg << "* Reading input stream '" << file
+              << "' from \"CALL\" command.\n" << endl;
     }
 
     OpalParser().run(new FileStream(file));
-
-    if(Options::info && Ippl::myNode() == 0) {
-        cerr << "End reading input stream \"" << file << "\"." << endl;
-    }
 }
 
 
-void Call::parse(Statement &statement) {
+void Call::parse(Statement& statement) {
     parseShortcut(statement);
 }

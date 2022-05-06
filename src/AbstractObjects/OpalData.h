@@ -1,22 +1,27 @@
+//
+// Class OpalData
+//   The global OPAL structure.
+//   The OPAL object holds all global data required for a OPAL execution.
+//   In particular it contains the main Directory, which allows retrieval
+//   of command objects by their name.  For other data refer to the
+//   implementation file.
+//
+// Copyright (c) 200x - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_OpalData_HH
 #define OPAL_OpalData_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: OpalData.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1.4.2 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: OpalData
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2004/11/12 20:10:11 $
-// $Author: adelmann $
-//
-// ------------------------------------------------------------------------
 #include "AbstractObjects/ObjectFunction.h"
 
 #include <iosfwd>
@@ -39,14 +44,8 @@ class BoundaryGeometry;
 typedef std::pair<std::string, double > MaxPhasesT;
 typedef std::map<double, double> energyEvolution_t;
 
-// Class OpalData
-// ------------------------------------------------------------------------
-/// The global OPAL structure.
-//  The OPAL object holds all global data required for an OPAL execution.
-//  In particular it contains the main Directory, which allows retrieval
-//  of command objects by their name.  For other data refer to the
-//  implementation file.
 
+/// The global OPAL structure.
 class OpalData {
 
 public:
@@ -62,10 +61,10 @@ public:
     ~OpalData();
 
     /// Enum for writing to files
-    enum class OPENMODE {
+    enum class OpenMode: unsigned short {
+        UNDEFINED,
         WRITE,
-        APPEND,
-        UNDEFINED
+        APPEND
     };
 
     /// reset object for consecutive runs
@@ -100,7 +99,7 @@ public:
     /// Invalidate expressions.
     //  Force re-evaluation of all expressions before next command is
     //  executed.
-    //  Also set the [b]modified[/b] flag in [b]object[/b], if not NULL.
+    //  Also set the [b]modified[/b] flag in [b]object[/b], if not nullptr.
     void makeDirty(Object *object);
 
     /// Print all objects.
@@ -191,6 +190,9 @@ public:
     /// store opals input filename
     void storeInputFn(const std::string &fn);
 
+    /// checks the output file names of all items to avoid duplicates
+    void checkAndAddOutputFileName(const std::string &outfn);
+
     /// get opals restart h5 format filename
     std::string getRestartFileName();
 
@@ -206,8 +208,8 @@ public:
     /// get the dump frequency as found in restart file
     int getRestartDumpFreq() const;
 
-    void setOpenMode(OPENMODE openMode);
-    OPENMODE getOpenMode() const;
+    void setOpenMode(OpenMode openMode);
+    OpenMode getOpenMode() const;
 
     /// set the last step in a run for possible follow-up run
     void setLastStep(const int &step);
@@ -240,7 +242,6 @@ public:
     void setGlobalGeometry(BoundaryGeometry *bg);
     ///
     BoundaryGeometry *getGlobalGeometry();
-
 
     bool hasGlobalGeometry();
 

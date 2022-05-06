@@ -1,6 +1,6 @@
 //
 // Class OpalFlexibleCollimator
-//   The ECOLLIMATOR element.
+//   The Flexible Collimator element.
 //
 // Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
@@ -30,7 +30,6 @@ public:
     enum {
         FNAME = COMMON,  // The horizontal half-size.
         DESC,
-        OUTFN,
         DUMP,
         SIZE
     };
@@ -41,7 +40,7 @@ public:
     virtual ~OpalFlexibleCollimator();
 
     /// Make clone.
-    virtual OpalFlexibleCollimator *clone(const std::string &name);
+    virtual OpalFlexibleCollimator* clone(const std::string& name);
 
     /// Update the embedded CLASSIC collimator.
     virtual void update();
@@ -49,13 +48,13 @@ public:
 private:
 
     // Not implemented.
-    OpalFlexibleCollimator(const OpalFlexibleCollimator &);
-    void operator=(const OpalFlexibleCollimator &);
+    OpalFlexibleCollimator(const OpalFlexibleCollimator&);
+    void operator=(const OpalFlexibleCollimator&);
 
     // Clone constructor.
-    OpalFlexibleCollimator(const std::string &name, OpalFlexibleCollimator *parent);
+    OpalFlexibleCollimator(const std::string& name, OpalFlexibleCollimator* parent);
 
-    ParticleMatterInteraction *partMatInt_m;
+    ParticleMatterInteraction* parmatint_m;
 };
 
 #endif // OPAL_OpalFlexibleCollimator_HH

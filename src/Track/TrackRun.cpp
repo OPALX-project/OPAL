@@ -2,7 +2,7 @@
 // Class TrackRun
 //   The RUN command.
 //
-// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 200x - 2022, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -16,33 +16,43 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Track/TrackRun.h"
-#include "AbstractObjects/BeamSequence.h"
-#include "AbstractObjects/OpalData.h"
-#include "AbstractObjects/ObjectFunction.h"
-#include "Algorithms/Tracker.h"
-#include "Algorithms/ThickTracker.h"
 
-#include "Algorithms/ParallelTTracker.h"
+#include "AbstractObjects/BeamSequence.h"
+#include "AbstractObjects/ObjectFunction.h"
+#include "AbstractObjects/OpalData.h"
+
 #include "Algorithms/ParallelCyclotronTracker.h"
+#include "Algorithms/ParallelTTracker.h"
+#include "Algorithms/ThickTracker.h"
+#include "Algorithms/Tracker.h"
 
 #include "Attributes/Attributes.h"
+
 #include "Beamlines/TBeamline.h"
 
 #include "BasicActions/Option.h"
 
 #include "Distribution/Distribution.h"
+
+#include "Physics/Physics.h"
+#include "Physics/Units.h"
+
 #include "Track/Track.h"
+
 #include "Utilities/OpalException.h"
+
 #include "Structure/Beam.h"
 #include "Structure/BoundaryGeometry.h"
-#include "Structure/FieldSolver.h"
 #include "Structure/DataSink.h"
+#include "Structure/FieldSolver.h"
 #include "Structure/H5PartWrapper.h"
-#include "Structure/H5PartWrapperForPT.h"
 #include "Structure/H5PartWrapperForPC.h"
+#include "Structure/H5PartWrapperForPT.h"
 
 #include "OPALconfig.h"
 #include "changes.h"
+
+#include <boost/assign.hpp>
 
 #include <cmath>
 #include <fstream>
@@ -51,17 +61,16 @@
 extern Inform *gmsg;
 
 namespace {
-
     // The attributes of class TrackRun.
     enum {
-        METHOD,       // Tracking method to use.
-        TURNS,        // The number of turns to be tracked.
-        MBMODE,       // The working way for multi-bunch mode for OPAL-cycl: "FORCE" or "AUTO"
-        PARAMB,       // The control parameter for "AUTO" mode of multi-bunch,
-        MB_ETA,       // The scale parameter for binning in multi-bunch mode
-        MB_BINNING,   // The binning type in multi-bunch mode
-        BEAM,         // The beam to track
-        FIELDSOLVER,  // The field solver attached
+        METHOD,           // Tracking method to use.
+        TURNS,            // The number of turns to be tracked.
+        MBMODE,           // The working way for multi-bunch mode for OPAL-cycl: "FORCE" or "AUTO"
+        PARAMB,           // The control parameter for "AUTO" mode of multi-bunch,
+        MB_ETA,           // The scale parameter for binning in multi-bunch mode
+        MB_BINNING,       // The binning type in multi-bunch mode
+        BEAM,             // The beam to track
+        FIELDSOLVER,      // The field solver attached
         BOUNDARYGEOMETRY, // The boundary geometry
         DISTRIBUTION, // The particle distribution
         KEEPALIVE,    // Keep the track object alive after tracking ends
@@ -72,70 +81,89 @@ namespace {
 
 const std::string TrackRun::defaultDistribution("DISTRIBUTION");
 
+const boost::bimap<TrackRun::RunMethod, std::string> TrackRun::stringMethod_s =
+    boost::assign::list_of<const boost::bimap<TrackRun::RunMethod, std::string>::relation>
+    (RunMethod::PARALLELT,  "PARALLEL-T")
+    (RunMethod::CYCLOTRONT, "CYCLOTRON-T")
+    (RunMethod::THICK,      "THICK");
+
+
 TrackRun::TrackRun():
     Action(SIZE, "RUN",
            "The \"RUN\" sub-command tracks the defined particles through "
            "the given lattice."),
-    itsTracker(NULL),
-    dist(NULL),
-    fs(NULL),
-    ds(NULL),
-    phaseSpaceSink_m(NULL) {
-    itsAttr[METHOD] = Attributes::makeUpperCaseString
-                      ("METHOD", "Name of tracking algorithm to use:\n"
-                       "\t\t\t\"THIN\" (default) or \"THICK, OPAL-T,OPAL-T3D, OPAL-CYCL\".", "THIN");
-    itsAttr[TURNS] = Attributes::makeReal
-                     ("TURNS", "Number of turns to be tracked; Number of neighboring bunches to be tracked in cyclotron", 1.0);
+    itsTracker(nullptr),
+    dist(nullptr),
+    fs(nullptr),
+    ds(nullptr),
+    phaseSpaceSink_m(nullptr),
+    isFollowupTrack_m(false),
+    method_m(RunMethod::NONE),
+    macromass_m(0.0),
+    macrocharge_m(0.0) {
+    itsAttr[METHOD] = Attributes::makePredefinedString
+        ("METHOD", "Name of tracking algorithm to use.",
+         {"THICK", "OPAL-T", "PARALLEL-T", "OPAL-CYCL", "CYCLOTRON-T"});
 
-    itsAttr[MBMODE] = Attributes::makeUpperCaseString
-                      ("MBMODE", "The working way for multi-bunch mode for OPAL-cycl: FORCE or AUTO ", "FORCE");
+    itsAttr[TURNS] = Attributes::makeReal
+        ("TURNS", "Number of turns to be tracked; Number of neighboring bunches to be tracked in cyclotron.", 1.0);
+
+    itsAttr[MBMODE] = Attributes::makePredefinedString
+        ("MBMODE", "The working way for multi-bunch mode for OPAL-cycl.",
+         {"FORCE", "AUTO"}, "FORCE");
 
     itsAttr[PARAMB] = Attributes::makeReal
-                      ("PARAMB", "Control parameter to define when to start multi-bunch mode, only available in \"AUTO\" mode ", 5.0);
+        ("PARAMB", "Control parameter to define when to start multi-bunch mode, only available in \"AUTO\" mode.", 5.0);
 
-    itsAttr[MB_ETA] = Attributes::makeReal("MB_ETA",
-                                           "The scale parameter for binning in multi-bunch mode",
-                                           0.01);
+    itsAttr[MB_ETA] = Attributes::makeReal
+        ("MB_ETA", "The scale parameter for binning in multi-bunch mode.", 0.01);
 
-    itsAttr[MB_BINNING] = Attributes::makeUpperCaseString
-                          ("MB_BINNING", "Type of energy binning in multi-bunch mode: GAMMA or BUNCH", "GAMMA");
+    itsAttr[MB_BINNING] = Attributes::makePredefinedString
+        ("MB_BINNING", "Type of energy binning in multi-bunch mode.",
+         {"GAMMA_BINNING", "BUNCH_BINNING"}, "GAMMA_BINNING");
 
     itsAttr[BEAM] = Attributes::makeString
-                    ("BEAM", "Name of beam ", "BEAM");
+        ("BEAM", "Name of beam.");
+
     itsAttr[FIELDSOLVER] = Attributes::makeString
-                           ("FIELDSOLVER", "Field solver to be used ", "FIELDSOLVER");
+        ("FIELDSOLVER", "Field solver to be used.");
+
     itsAttr[BOUNDARYGEOMETRY] = Attributes::makeString
-                           ("BOUNDARYGEOMETRY", "Boundary geometry to be used NONE (default)", "NONE");
+        ("BOUNDARYGEOMETRY", "Boundary geometry to be used NONE (default).", "NONE");
+
     itsAttr[DISTRIBUTION] = Attributes::makeStringArray
                              ("DISTRIBUTION", "List of particle distributions to be used ");
     itsAttr[KEEPALIVE] = Attributes::makeBool
                              ("KEEPALIVE", "Keep the track object alive after tracking finishes", false);
     itsAttr[TRACKBACK] = Attributes::makeBool
-        ("TRACKBACK", "Track in reverse direction, default: false", false);
+        ("TRACKBACK", "Track in reverse direction, default: false.", false);
+
     registerOwnership(AttributeHandler::SUB_COMMAND);
-
     opal = OpalData::getInstance();
 }
 
 
-TrackRun::TrackRun(const std::string &name, TrackRun *parent):
+TrackRun::TrackRun(const std::string& name, TrackRun* parent):
     Action(name, parent),
-    itsTracker(NULL),
-    dist(NULL),
-    fs(NULL),
-    ds(NULL),
-    phaseSpaceSink_m(NULL) {
+    itsTracker(nullptr),
+    dist(nullptr),
+    fs(nullptr),
+    ds(nullptr),
+    phaseSpaceSink_m(nullptr),
+    isFollowupTrack_m(false),
+    method_m(RunMethod::NONE),
+    macromass_m(0.0),
+    macrocharge_m(0.0) {
     opal = OpalData::getInstance();
 }
 
 
-TrackRun::~TrackRun()
-{
+TrackRun::~TrackRun() {
     delete phaseSpaceSink_m;
 }
 
 
-TrackRun *TrackRun::clone(const std::string &name) {
+TrackRun* TrackRun::clone(const std::string& name) {
     return new TrackRun(name, this);
 }
 
@@ -169,24 +197,46 @@ void TrackRun::execute() {
         }
     }
 
-    // Get algorithm to use.
-    std::string method = Attributes::getString(itsAttr[METHOD]);
-    if (method == "THICK") {
-        setupThickTracker();
-    } else if(method == "PARALLEL-T" || method == "OPAL-T") {
-        setupTTracker();
-    } else if(method == "CYCLOTRON-T" || method == "OPAL-CYCL") {
-        setupCyclotronTracker();
-    } else {
-        throw OpalException("TrackRun::execute()",
-                            "Method name \"" + method + "\" unknown.");
+    isFollowupTrack_m = opal->hasBunchAllocated();
+    if (!itsAttr[DISTRIBUTION] && !isFollowupTrack_m) {
+        throw OpalException("TrackRun::execute",
+                            "\"DISTRIBUTION\" must be set in \"RUN\" command.");
+    }
+    if (!itsAttr[FIELDSOLVER]) {
+        throw OpalException("TrackRun::execute",
+                            "\"FIELDSOLVER\" must be set in \"RUN\" command.");
+    }
+    if (!itsAttr[BEAM]) {
+        throw OpalException("TrackRun::execute",
+                            "\"BEAM\" must be set in \"RUN\" command.");
     }
 
-    if(method == "THIN" || method == "THICK") {
+    // Get algorithm to use.
+    setRunMethod();
+    switch (method_m) {
+       case RunMethod::THICK: {
+            setupThickTracker();
+            break;
+        }
+        case RunMethod::PARALLELT: {
+            setupTTracker();
+            break;
+        }
+        case RunMethod::CYCLOTRONT: {
+            setupCyclotronTracker();
+            break;
+        }
+        default: {
+            throw OpalException("TrackRun::execute",
+                                "Unknown \"METHOD\" for the \"RUN\" command");
+        }
+    }
+
+    if (method_m == RunMethod::THICK) {
         int turns = int(std::round(Attributes::getReal(itsAttr[TURNS])));
 
         // Track for the all but last turn.
-        for(int turn = 1; turn < turns; ++turn) {
+        for (int turn = 1; turn < turns; ++turn) {
             itsTracker->execute();
         }
 
@@ -206,41 +256,39 @@ void TrackRun::execute() {
     }
 }
 
-
-void TrackRun::setupThickTracker()
-{
-    bool isFollowupTrack = opal->hasBunchAllocated();
-
-    if(isFollowupTrack) {
-        *gmsg << "* ********************************************************************************** " << endl;
-        *gmsg << "* Selected Tracking Method == THICK, FOLLOWUP TRACK" << endl;
-        *gmsg << "* ********************************************************************************** " << endl;
-        Track::block->bunch->setLocalTrackStep(0);
+void TrackRun::setRunMethod() {
+    if (!itsAttr[METHOD]) {
+        throw OpalException("TrackRun::setRunMethod",
+                            "The attribute \"METHOD\" isn't set for the \"RUN\" command");
     } else {
-        *gmsg << "* ********************************************************************************** " << endl;
-        *gmsg << "* Selected Tracking Method == THICK, NEW TRACK" << endl;
-        *gmsg << "* ********************************************************************************** " << endl;
-    }
-
-    Beam *beam = Beam::find(Attributes::getString(itsAttr[BEAM]));
-    if (Attributes::getString(itsAttr[BOUNDARYGEOMETRY]) != "NONE") {
-        // Ask the dictionary if BoundaryGeometry is allocated.
-        // If it is allocated use the allocated BoundaryGeometry
-        if (!OpalData::getInstance()->hasGlobalGeometry()) {
-            BoundaryGeometry *bg = BoundaryGeometry::find(Attributes::getString(itsAttr[BOUNDARYGEOMETRY]))->
-                clone(getOpalName() + std::string("_geometry"));
-            OpalData::getInstance()->setGlobalGeometry(bg);
+        auto it = stringMethod_s.right.find(Attributes::getString(itsAttr[METHOD]));
+        if (it != stringMethod_s.right.end()) {
+            method_m = it->second;
         }
     }
+}
+
+std::string TrackRun::getRunMethodName() const {
+    return stringMethod_s.left.at(method_m);
+}
+
+void TrackRun::setupThickTracker() {
+    if (isFollowupTrack_m) {
+        Track::block->bunch->setLocalTrackStep(0);
+    }
+
+    Beam* beam = Beam::find(Attributes::getString(itsAttr[BEAM]));
+
+    setBoundaryGeometry();
 
     setupFieldsolver();
 
-    if(opal->inRestartRun()) {
+    if (opal->inRestartRun()) {
         phaseSpaceSink_m = new H5PartWrapperForPT(opal->getInputBasename() + std::string(".h5"),
                                                   opal->getRestartStep(),
                                                   OpalData::getInstance()->getRestartFileName(),
                                                   H5_O_WRONLY);
-    } else if (isFollowupTrack) {
+    } else if (isFollowupTrack_m) {
         phaseSpaceSink_m = new H5PartWrapperForPT(opal->getInputBasename() + std::string(".h5"),
                                                   -1,
                                                   opal->getInputBasename() + std::string(".h5"),
@@ -250,31 +298,36 @@ void TrackRun::setupThickTracker()
                                                   H5_O_WRONLY);
     }
 
-    double charge = setDistributionParallelT(beam);
+    macrocharge_m = setDistributionParallelT(beam);
+
+    *gmsg << *this  << endl;
 
     Track::block->bunch->setdT(Track::block->dT.front());
     Track::block->bunch->dtScInit_m = Track::block->dtScInit;
     Track::block->bunch->deltaTau_m = Track::block->deltaTau;
 
-    if (!isFollowupTrack && !opal->inRestartRun())
+    if (!isFollowupTrack_m && !opal->inRestartRun()) {
         Track::block->bunch->setT(Track::block->t0_m);
-    if (Track::block->bunch->getIfBeamEmitting()) {
-      Track::block->bunch->setChargeZeroPart(charge);
-    } else {
-      Track::block->bunch->setCharge(charge);
     }
+
+    if (Track::block->bunch->getIfBeamEmitting()) {
+        Track::block->bunch->setChargeZeroPart(macrocharge_m);
+    } else {
+        Track::block->bunch->setCharge(macrocharge_m);
+    }
+
     // set coupling constant
     double coefE = 1.0 / (4 * Physics::pi * Physics::epsilon_0);
     Track::block->bunch->setCouplingConstant(coefE);
-
 
     // statistical data are calculated (rms, eps etc.)
     Track::block->bunch->calcBeamParameters();
 
     initDataSink();
 
-    if(!opal->hasBunchAllocated())
-      *gmsg << *dist << endl;
+    if (!isFollowupTrack_m) {
+        *gmsg << *dist << endl;
+    }
 
     if (Track::block->bunch->getTotalNum() > 0) {
         double spos = /*Track::block->bunch->get_sPos() +*/ Track::block->zstart;
@@ -298,9 +351,6 @@ void TrackRun::setupThickTracker()
 
     *gmsg << *beam << endl;
     *gmsg << *fs   << endl;
-    *gmsg << level2
-          << "Phase space dump frequency " << Options::psDumpFreq << " and "
-          << "statistics dump frequency " << Options::statDumpFreq << " w.r.t. the time step." << endl;
 
     itsTracker = new ThickTracker(*Track::block->use->fetchLine(),
                                   Track::block->bunch, *beam, *ds, Track::block->reference,
@@ -312,40 +362,25 @@ void TrackRun::setupThickTracker()
 
 void TrackRun::setupTTracker(){
     OpalData::getInstance()->setInOPALTMode();
-    bool isFollowupTrack = opal->hasBunchAllocated();
 
-    if(isFollowupTrack) {
-        *gmsg << "* ********************************************************************************** " << endl;
-        *gmsg << "* Selected Tracking Method == PARALLEL-T, FOLLOWUP TRACK" << endl;
-        *gmsg << "* ********************************************************************************** " << endl;
+    if (isFollowupTrack_m) {
         Track::block->bunch->setLocalTrackStep(0);
-    } else {
-        *gmsg << "* ********************************************************************************** " << endl;
-        *gmsg << "* Selected Tracking Method == PARALLEL-T, NEW TRACK" << endl;
-        *gmsg << "* ********************************************************************************** " << endl;
     }
 
-    Beam *beam = Beam::find(Attributes::getString(itsAttr[BEAM]));
-    Track::block->bunch->setBeamFrequency(beam->getFrequency() * 1e6);
+    Beam* beam = Beam::find(Attributes::getString(itsAttr[BEAM]));
+    Track::block->bunch->setBeamFrequency(beam->getFrequency() * Units::MHz2Hz);
+    Track::block->bunch->setPType(beam->getParticleName());
 
-    if (Attributes::getString(itsAttr[BOUNDARYGEOMETRY]) != "NONE") {
-        // Ask the dictionary if BoundaryGeometry is allocated.
-        // If it is allocated use the allocated BoundaryGeometry
-        if (!OpalData::getInstance()->hasGlobalGeometry()) {
-            BoundaryGeometry *bg = BoundaryGeometry::find(Attributes::getString(itsAttr[BOUNDARYGEOMETRY]))->
-                clone(getOpalName() + std::string("_geometry"));
-            OpalData::getInstance()->setGlobalGeometry(bg);
-        }
-    }
+    setBoundaryGeometry();
 
     setupFieldsolver();
 
-    if(opal->inRestartRun()) {
+    if (opal->inRestartRun()) {
         phaseSpaceSink_m = new H5PartWrapperForPT(opal->getInputBasename() + std::string(".h5"),
                                                   opal->getRestartStep(),
                                                   OpalData::getInstance()->getRestartFileName(),
                                                   H5_O_WRONLY);
-    } else if (isFollowupTrack) {
+    } else if (isFollowupTrack_m) {
         phaseSpaceSink_m = new H5PartWrapperForPT(opal->getInputBasename() + std::string(".h5"),
                                                   -1,
                                                   opal->getInputBasename() + std::string(".h5"),
@@ -355,19 +390,25 @@ void TrackRun::setupTTracker(){
                                                   H5_O_WRONLY);
     }
 
-    double charge = setDistributionParallelT(beam);
+    macrocharge_m = setDistributionParallelT(beam);
+    macromass_m   = beam->getMassPerParticle();
+
+    *gmsg << *this  << endl;
 
     Track::block->bunch->setdT(Track::block->dT.front());
     Track::block->bunch->dtScInit_m = Track::block->dtScInit;
     Track::block->bunch->deltaTau_m = Track::block->deltaTau;
 
-    if (!isFollowupTrack && !opal->inRestartRun())
+    if (!isFollowupTrack_m && !opal->inRestartRun()) {
         Track::block->bunch->setT(Track::block->t0_m);
+    }
 
     if (Track::block->bunch->getIfBeamEmitting()) {
-        Track::block->bunch->setChargeZeroPart(charge);
+        Track::block->bunch->setChargeZeroPart(macrocharge_m);
+        Track::block->bunch->setMassZeroPart(macromass_m);
     } else {
-        Track::block->bunch->setCharge(charge);
+        Track::block->bunch->setCharge(macrocharge_m);
+        Track::block->bunch->setMass(macromass_m);
     }
     // set coupling constant
     double coefE = 1.0 / (4 * Physics::pi * Physics::epsilon_0);
@@ -378,14 +419,14 @@ void TrackRun::setupTTracker(){
 
     initDataSink();
 
-    if(!opal->hasBunchAllocated()) {
+    if (!isFollowupTrack_m) {
         *gmsg << std::scientific;
         *gmsg << *dist << endl;
     }
 
     if (Track::block->bunch->getTotalNum() > 0) {
         double spos = Track::block->zstart;
-        auto &zstop = Track::block->zstop;
+        auto& zstop = Track::block->zstop;
         auto it = Track::block->dT.begin();
 
         unsigned int i = 0;
@@ -404,9 +445,6 @@ void TrackRun::setupTTracker(){
 
     // findPhasesForMaxEnergy();
 
-    *gmsg << level2
-          << "Phase space dump frequency " << Options::psDumpFreq << " and "
-          << "statistics dump frequency " << Options::statDumpFreq << " w.r.t. the time step." << endl;
 #ifdef P3M_TEST
 
     Track::block->bunch->runTests();
@@ -426,22 +464,16 @@ void TrackRun::setupTTracker(){
 }
 
 void TrackRun::setupCyclotronTracker(){
-    OpalData::getInstance()->setInOPALCyclMode();
-    Beam *beam = Beam::find(Attributes::getString(itsAttr[BEAM]));
 
-    if (Attributes::getString(itsAttr[BOUNDARYGEOMETRY]) != "NONE") {
-        // Ask the dictionary if BoundaryGeometry is allocated.
-        // If it is allocated use the allocated BoundaryGeometry
-        if (!OpalData::getInstance()->hasGlobalGeometry()) {
-            BoundaryGeometry *bg = BoundaryGeometry::find(Attributes::getString(itsAttr[BOUNDARYGEOMETRY]))->
-                clone(getOpalName() + std::string("_geometry"));
-            OpalData::getInstance()->setGlobalGeometry(bg);
-        }
-    }
+    OpalData::getInstance()->setInOPALCyclMode();
+    Beam* beam = Beam::find(Attributes::getString(itsAttr[BEAM]));
+
+    setBoundaryGeometry();
 
     setupFieldsolver();
 
-    Track::block->bunch->PType = ParticleType::REGULAR;
+    Track::block->bunch->setPType(beam->getParticleName());
+    Track::block->bunch->POrigin = ParticleOrigin::REGULAR;
 
     std::vector<std::string> distr_str = Attributes::getStringArray(itsAttr[DISTRIBUTION]);
     if (distr_str.size() == 0) {
@@ -450,10 +482,6 @@ void TrackRun::setupCyclotronTracker(){
         dist = Distribution::find(distr_str.at(0));
     }
 
-    // set macromass and charge for simulation particles
-    double macromass = 0.0;
-    double macrocharge = 0.0;
-
     // multi-bunch parameters
     const int specifiedNumBunch = int(std::abs(std::round(Attributes::getReal(itsAttr[TURNS]))));
     const double mbPara         = Attributes::getReal(itsAttr[PARAMB]);
@@ -461,12 +489,12 @@ void TrackRun::setupCyclotronTracker(){
     const double mbEta          = Attributes::getReal(itsAttr[MB_ETA]);
     const std::string mbBinning = Attributes::getString(itsAttr[MB_BINNING]);
 
-    if(opal->inRestartRun()) {
+    if (opal->inRestartRun()) {
         phaseSpaceSink_m = new H5PartWrapperForPC(opal->getInputBasename() + std::string(".h5"),
                                                   opal->getRestartStep(),
                                                   OpalData::getInstance()->getRestartFileName(),
                                                   H5_O_WRONLY);
-    } else if (opal->hasBunchAllocated()) {
+    } else if (isFollowupTrack_m) {
         phaseSpaceSink_m = new H5PartWrapperForPC(opal->getInputBasename() + std::string(".h5"),
                                                   -1,
                                                   opal->getInputBasename() + std::string(".h5"),
@@ -476,29 +504,28 @@ void TrackRun::setupCyclotronTracker(){
                                                   H5_O_WRONLY);
     }
 
-    if(beam->getNumberOfParticles() < 3 || beam->getCurrent() == 0.0) {
-        macrocharge = beam->getCharge() * Physics::q_e;
-        macromass = beam->getMass();
-        dist->createOpalCycl(Track::block->bunch,
-                             beam->getNumberOfParticles(),
-                             beam->getCurrent(),*Track::block->use->fetchLine());
+    if (beam->getNumberOfParticles() < 3 || beam->getCurrent() == 0.0) {
+        macrocharge_m = beam->getCharge() * Physics::q_e;
+        macromass_m   = beam->getMass();
+        Track::block->bunch->setDistribution(dist,
+                                             beam->getNumberOfParticles(),
+                                             beam->getCurrent(),
+                                             *Track::block->use->fetchLine());
 
     } else {
-
         /**
            getFrequency() gets RF frequency [MHz], NOT isochronous revolution frequency of particle!
            getCurrent() gets beamcurrent [A]
-
         */
-        macrocharge = beam->getChargePerParticle();
-        macromass   = beam->getMassPerParticle();
+        macrocharge_m = beam->getChargePerParticle();
+        macromass_m   = beam->getMassPerParticle();
 
-        if(!opal->hasBunchAllocated()) {
-            if(!opal->inRestartRun()) {
-                dist->createOpalCycl(Track::block->bunch,
-                                     beam->getNumberOfParticles(),
-                                     beam->getCurrent(),
-                                     *Track::block->use->fetchLine());
+        if (!isFollowupTrack_m) {
+            if (!opal->inRestartRun()) {
+                Track::block->bunch->setDistribution(dist,
+                                                     beam->getNumberOfParticles(),
+                                                     beam->getCurrent(),
+                                                     *Track::block->use->fetchLine());
 
             } else {
                 dist->doRestartOpalCycl(Track::block->bunch,
@@ -509,13 +536,10 @@ void TrackRun::setupCyclotronTracker(){
             }
         }
     }
-    Track::block->bunch->setMass(macromass); // set the Mass per macro-particle, [GeV/c^2]
-    Track::block->bunch->setCharge(macrocharge);  // set the charge per macro-particle, [C]
+    Track::block->bunch->setMass(macromass_m); // set the Mass per macro-particle, [GeV/c^2]
+    Track::block->bunch->setCharge(macrocharge_m);  // set the charge per macro-particle, [C]
 
-    *gmsg << "* Mass of simulation particle= " << macromass << " GeV/c^2" << endl;
-    *gmsg << "* Charge of simulation particle= " << macrocharge << " [C]" << endl;
-
-    Track::block->bunch->setdT(1.0 / (Track::block->stepsPerTurn * beam->getFrequency() * 1.0e6));
+    Track::block->bunch->setdT(1.0 / (Track::block->stepsPerTurn * beam->getFrequency() * Units::MHz2Hz));
     Track::block->bunch->setStepsPerTurn(Track::block->stepsPerTurn);
 
     // set coupling constant
@@ -527,22 +551,6 @@ void TrackRun::setupCyclotronTracker(){
 
     initDataSink(specifiedNumBunch);
 
-    if(!opal->hasBunchAllocated()) {
-        *gmsg << "* ********************************************************************************** " << endl;
-        *gmsg << "* Selected Tracking Method == CYCLOTRON-T, NEW TRACK" << endl;
-        *gmsg << "* ********************************************************************************** " << endl;
-    } else {
-        *gmsg << "* ********************************************************************************** " << endl;
-        *gmsg << "* Selected Tracking Method == CYCLOTRON-T, FOLLOWUP TRACK" << endl;
-        *gmsg << "* ********************************************************************************** " << endl;
-    }
-    *gmsg << "* Number of neighbour bunches= " << specifiedNumBunch << endl;
-    *gmsg << "* DT                         = " << Track::block->dT.front() << endl;
-    *gmsg << "* MAXSTEPS                   = " << Track::block->localTimeSteps.front() << endl;
-    *gmsg << "* Phase space dump frequency = " << Options::psDumpFreq << endl;
-    *gmsg << "* Statistics dump frequency  = " << Options::statDumpFreq << " w.r.t. the time step." << endl;
-    *gmsg << "* ********************************************************************************** " << endl;
-
     itsTracker = new ParallelCyclotronTracker(*Track::block->use->fetchLine(),
                                               Track::block->bunch, *ds, Track::block->reference,
                                               false, false, Track::block->localTimeSteps.front(),
@@ -551,8 +559,7 @@ void TrackRun::setupCyclotronTracker(){
 
     ParallelCyclotronTracker* cyclTracker = dynamic_cast<ParallelCyclotronTracker*>(itsTracker);
 
-    if(opal->inRestartRun()) {
-
+    if (opal->inRestartRun()) {
         H5PartWrapperForPC *h5pw = static_cast<H5PartWrapperForPC*>(phaseSpaceSink_m);
         cyclTracker->setBeGa(h5pw->getMeanMomentum());
 
@@ -577,22 +584,22 @@ void TrackRun::setupCyclotronTracker(){
     // statistical data are calculated (rms, eps etc.)
     Track::block->bunch->calcBeamParameters();
 
+    *gmsg << *this  << endl;
     *gmsg << *dist << endl;
     *gmsg << *beam << endl;
     *gmsg << *fs   << endl;
-    // *gmsg << *Track::block->bunch  << endl;
 }
 
 void TrackRun::setupFieldsolver() {
     fs = FieldSolver::find(Attributes::getString(itsAttr[FIELDSOLVER]));
 
-    if (fs->getType() != std::string("NONE")) {
+    if (fs->getFieldSolverType() != FieldSolverType::NONE) {
         size_t numGridPoints = fs->getMX()*fs->getMY()*fs->getMT(); // total number of gridpoints
-        Beam *beam = Beam::find(Attributes::getString(itsAttr[BEAM]));
+        Beam* beam = Beam::find(Attributes::getString(itsAttr[BEAM]));
         size_t numParticles = beam->getNumberOfParticles();
 
         if (!opal->inRestartRun() && numParticles < numGridPoints
-            && fs->getType() != std::string("SAAMG") // in SPIRAL/SAAMG we're meshing the whole domain -DW
+            && fs->getFieldSolverType() != FieldSolverType::SAAMG // in SPIRAL/SAAMG we're meshing the whole domain -DW
             && !Options::amr)
         {
             throw OpalException("TrackRun::setupFieldsolver()",
@@ -604,21 +611,21 @@ void TrackRun::setupFieldsolver() {
         OpalData::getInstance()->addProblemCharacteristicValue("MX", fs->getMX());
         OpalData::getInstance()->addProblemCharacteristicValue("MY", fs->getMY());
         OpalData::getInstance()->addProblemCharacteristicValue("MT", fs->getMT());
-
     }
 
     fs->initCartesianFields();
     Track::block->bunch->setSolver(fs);
-    if (fs->hasPeriodicZ())
+    if (fs->hasPeriodicZ()) {
         Track::block->bunch->setBCForDCBeam();
-    else
+    } else {
         Track::block->bunch->setBCAllOpen();
+    }
 }
 
 
 void TrackRun::initDataSink(const int& numBunch) {
-    if(!opal->inRestartRun()) {
-        if(!opal->hasDataSinkAllocated()) {
+    if (!opal->inRestartRun()) {
+        if (!opal->hasDataSinkAllocated()) {
             opal->setDataSink(new DataSink(phaseSpaceSink_m, false, numBunch));
         } else {
             ds = opal->getDataSink();
@@ -627,13 +634,23 @@ void TrackRun::initDataSink(const int& numBunch) {
     } else {
         opal->setDataSink(new DataSink(phaseSpaceSink_m, true, numBunch));
     }
-
     ds = opal->getDataSink();
 }
 
+void TrackRun::setBoundaryGeometry() {
+    if (Attributes::getString(itsAttr[BOUNDARYGEOMETRY]) != "NONE") {
+        // Ask the dictionary if BoundaryGeometry is allocated.
+        // If it is allocated use the allocated BoundaryGeometry
+        if (!OpalData::getInstance()->hasGlobalGeometry()) {
+            const std::string geomDescriptor = Attributes::getString(itsAttr[BOUNDARYGEOMETRY]);
+            BoundaryGeometry* bg = BoundaryGeometry::find(geomDescriptor)->clone(geomDescriptor);
+            OpalData::getInstance()->setGlobalGeometry(bg);
+        }
+    }
+}
 
-double TrackRun::setDistributionParallelT(Beam *beam) {
 
+double TrackRun::setDistributionParallelT(Beam* beam) {
     /*
      * Distribution(s) can be set via a single distribution or a list
      * (array) of distributions. If an array is defined the first in the
@@ -676,7 +693,7 @@ double TrackRun::setDistributionParallelT(Beam *beam) {
      * Initialize distributions.
      */
     size_t numberOfParticles = beam->getNumberOfParticles();
-    if (!opal->hasBunchAllocated()) {
+    if (!isFollowupTrack_m) {
         if (!opal->inRestartRun()) {
             /*
              * Here we are not doing a restart run
@@ -702,5 +719,28 @@ double TrackRun::setDistributionParallelT(Beam *beam) {
 
     // Return charge per macroparticle.
     return beam->getChargePerParticle();
+}
 
+Inform& TrackRun::print(Inform& os) const {
+    os << endl;
+    os << "* ************* T R A C K  R U N *************************************************** " << endl;
+    if (!isFollowupTrack_m) {
+        os << "* Selected Tracking Method == " << getRunMethodName() << ", NEW TRACK" << '\n'
+           << "* ********************************************************************************** " << '\n';
+    } else {
+        os << "* Selected Tracking Method == " << getRunMethodName() << ", FOLLOWUP TRACK" << '\n'
+           << "* ********************************************************************************** " << '\n';
+    }
+    os << "* Phase space dump frequency    = " << Options::psDumpFreq << '\n'
+       << "* Statistics dump frequency     = " << Options::statDumpFreq << " w.r.t. the time step." << '\n'
+       << "* DT                            = " << Track::block->dT.front() << " [s]\n"
+       << "* MAXSTEPS                      = " << Track::block->localTimeSteps.front() << '\n'
+       << "* Mass of simulation particle   = " << macromass_m << " [GeV/c^2]" << '\n'
+       << "* Charge of simulation particle = " << macrocharge_m << " [C]" << '\n';
+    if (method_m == RunMethod::CYCLOTRONT) {
+        os << "* Number of neighbour bunches   = " << int(std::abs(std::round(Attributes::getReal(itsAttr[TURNS])))) << '\n'
+           << "* STEPSPERTURN                  = " << Track::block->stepsPerTurn << '\n';
+    }
+    os << "* ********************************************************************************** ";
+    return os;
 }

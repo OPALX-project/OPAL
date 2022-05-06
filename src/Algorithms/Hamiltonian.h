@@ -22,9 +22,11 @@
 #ifndef HAMILTONIAN_H
 #define HAMILTONIAN_H
 
-#include "Classic/FixedAlgebra/FTps.h"
-#include "Classic/FixedAlgebra/FVps.h"
-#include "Classic/FixedAlgebra/FTpsMath.h"
+#include "FixedAlgebra/FTps.h"
+#include "FixedAlgebra/FVps.h"
+#include "FixedAlgebra/FTpsMath.h"
+#include "Physics/Units.h"
+
 #define PSdim 6
 
 #include <functional>
@@ -177,7 +179,7 @@ private:
 //
 //     double gamma2=gamma * gamma;
 //
-//     double freq = itsBeam_m->getFrequency() * 1e6;              // [freq] = Hz (form MHz)
+//     double freq = itsBeam_m->getFrequency() * Units::MHz2Hz;              // [freq] = Hz (form MHz)
 //     double I = itsBeam_m->getCurrent();                         // [I] = A
 //     double q = bunch->getQ();                              // [q] = e
 //
@@ -224,13 +226,12 @@ private:
 //     // (these units are for [mm], [mrad] and [promille])
 //     // according Hinterberger - Physik der Teilcherbeschleuniger Eq.4.8
 //
-//     double mm2m = 1e3;
 //     double mrad2pnorm= 1e3; // for small angles (tan(a) ~ a)
 //     double promille2delta = 1/(10 * bunch->getInitialBeta()); // [E/p0-1/b0] = [1/b0 * (E0 - E)/E0]
 //
 //
 //     H = ( -0.5 * Kx * x * x
-//           -0.5 * Ky * y * y ) * mm2m / mrad2pnorm
+//           -0.5 * Ky * y * y ) * Units::mm2m / mrad2pnorm
 //         - (0.5 * Kz * z * z * gamma2) * promille2delta ;
 // }
 

@@ -19,12 +19,12 @@
 
 #include <iostream>
 
-RNGStream * RNGStream::globalInstance_sm = NULL;
+RNGStream * RNGStream::globalInstance_sm = nullptr;
 unsigned int RNGStream::globalSeed_sm = 42;
 unsigned int RNGStream::numGlobalInstances_sm = 0;
 
 RNGStream* RNGStream::getInstance() {
-    if (globalInstance_sm == NULL)
+    if (globalInstance_sm == nullptr)
         globalInstance_sm = new RNGStream();
 
     ++ numGlobalInstances_sm;
@@ -46,14 +46,14 @@ void RNGStream::deleteInstance(RNGStream* & generator) {
         delete generator;
     }
 
-    generator = NULL;
+    generator = nullptr;
     return;
 }
 
 void RNGStream::setGlobalSeed(unsigned int seed) {
     globalSeed_sm = seed;
 
-    if (globalInstance_sm != NULL)
+    if (globalInstance_sm != nullptr)
         globalInstance_sm->RNGenerator_m.seed(seed);
 }
 

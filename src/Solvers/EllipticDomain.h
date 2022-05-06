@@ -45,7 +45,7 @@ public:
     ~EllipticDomain();
 
     /// queries if a given (x,y,z) coordinate lies inside the domain
-    bool isInside(int x, int y, int z) const {
+    bool isInside(int x, int y, int z) const override {
         double xx = getXRangeMin() + hr_m[0] * (x + 0.5);
         double yy = getYRangeMin() + hr_m[1] * (y + 0.5);
 
@@ -56,7 +56,7 @@ public:
     }
 
     /// calculates intersection
-    void compute(Vector_t hr, NDIndex<3> localId);
+    void compute(Vector_t hr, NDIndex<3> localId) override;
 
 private:
 
@@ -74,11 +74,11 @@ private:
     int toCoordIdx(int x, int y) const { return y * nr_m[0] + x; }
 
     /// conversion from (x,y,z) to index on the 3D grid
-    int indexAccess(int x, int y, int z) const {
+    int indexAccess(int x, int y, int z) const override {
         return idxMap_m.at(toCoordIdx(x, y)) + z * getNumXY();
     }
 
-    int coordAccess(int idx) const {
+    int coordAccess(int idx) const override {
         int ixy = idx % getNumXY();
         return coordMap_m.at(ixy);
     }

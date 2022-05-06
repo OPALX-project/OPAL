@@ -474,9 +474,8 @@ public:
         h5_prop_t props = H5CreateFileProp ();
         MPI_Comm comm = Ippl::getComm();
         h5_err_t h5err = H5SetPropFileMPIOCollective (props, &comm);
-#if defined (NDEBUG)
+        // suppress unused warning if we compile for production
         (void)h5err;
-#endif
         PAssert (h5err != H5_ERR);
         H5f_m = H5OpenFile (fn.c_str(), H5_O_RDONLY, props);
         PAssert (H5f_m != (h5_file_t)H5_ERR);

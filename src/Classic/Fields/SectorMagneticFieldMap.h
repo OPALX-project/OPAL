@@ -131,7 +131,7 @@ class SectorMagneticFieldMap : public SectorField {
     bool getFieldstrength
                   (const Vector_t &R_c, Vector_t &E_c, Vector_t &B_c) const;
 
-    /** Get a pointer to the interpolator or NULL if it is not set
+    /** Get a pointer to the interpolator or nullptr if it is not set
      *
      *  Note SectorMagneticFieldMap still owns this memory.
      */
@@ -180,7 +180,7 @@ class SectorMagneticFieldMap : public SectorField {
     /** Read in the field map from the file */
     void readMap();
 
-    /** Delete the field map interpolator and set pointer to NULL */
+    /** Delete the field map interpolator and set pointer to nullptr */
     void freeMap();
 
     /** Magnetostatic field map - so returns 0. */

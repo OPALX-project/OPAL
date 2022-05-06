@@ -26,11 +26,13 @@
 #include <map>
 #include <numeric>
 
-#include "OPALconfig.h"
 #include "AbstractObjects/OpalData.h"
+#include "OPALconfig.h"
+#include "Physics/Units.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Timer.h"
 #include "Utilities/Util.h"
+
 #include <AMReX_ParallelDescriptor.H>
 
 #include <boost/filesystem.hpp>
@@ -144,7 +146,7 @@ void AmrMultiGrid::solve(AmrScalarFieldContainer_t &rho,
 
     // write efield to AMReX
     this->computeEfield_m(efield);
-    
+
     // copy solution back
     for (int lev = 0; lev < nlevel_m; ++lev) {
         int ilev = lbase_m + lev;
@@ -446,7 +448,7 @@ void AmrMultiGrid::residual_m(const lo_t& level,
          */
         Teuchos::RCP<vector_t> Ax = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p, true) );
         mglevel_m[level]->Anf_p->apply(*x, *Ax);
-        
+
         if ( mglevel_m[level]->Bcrse_p != Teuchos::null ) {
             // operationr: Ax += B * phi^(l-1)
             mglevel_m[level]->Bcrse_p->apply(*mglevel_m[level-1]->phi_p,
@@ -470,7 +472,7 @@ void AmrMultiGrid::relax_m(const lo_t& level) {
             Teuchos::RCP<vector_t> Ax = Teuchos::rcp( new vector_t(mglevel_m[level]->map_p, true) );
             mglevel_m[level]->Anf_p->apply(*mglevel_m[level]->phi_p, *Ax);
             mglevel_m[level]->residual_p->update(1.0, *mglevel_m[level]->rho_p, -1.0, *Ax, 0.0);
-            
+
         } else {
             this->residual_no_fine_m(level,
                                      mglevel_m[level]->residual_p,
@@ -787,7 +789,7 @@ void AmrMultiGrid::buildMultiLevel_m(const amrex::Vector<AmrField_u>& rho,
         }
         smoother_m.resize(nlevel_m-1);
     }
-    
+
     for (int lev = 0; lev < nlevel_m; ++lev) {
         this->open_m(lev, matrices);
 
@@ -952,11 +954,11 @@ void AmrMultiGrid::open_m(const lo_t& level,
          */
         if ( lbase_m != lfine_m ) {
             nEntries = (AMREX_SPACEDIM << 1) + 5 /* plus boundaries */ + nPhysBoundary + nIntBoundary;
-    
+
             mglevel_m[level]->Awf_p = Teuchos::rcp(
                 new matrix_t(mglevel_m[level]->map_p, nEntries,
                              Tpetra::StaticProfile) );
-        
+
             /*
              * uncovered cells matrix
              */
@@ -964,7 +966,7 @@ void AmrMultiGrid::open_m(const lo_t& level,
                 new matrix_t(mglevel_m[level]->map_p, 1,
                              Tpetra::StaticProfile) );
         }
-        
+
         /*
          * gradient matrices
          */
@@ -2107,9 +2109,9 @@ AmrMultiGrid::Norm
 AmrMultiGrid::convertToEnumNorm_m(const std::string& norm) {
     std::map<std::string, Norm> map;
 
-    map["L1"]   = Norm::L1;
-    map["L2"]   = Norm::L2;
-    map["LINF"] = Norm::LINF;
+    map["L1_NORM"]   = Norm::L1;
+    map["L2_NORM"]   = Norm::L2;
+    map["LINF_NORM"] = Norm::LINF;
 
     auto n = map.find(norm);
 
@@ -2207,7 +2209,7 @@ void AmrMultiGrid::writeSDDSData_m(const scalar_t& error) {
             writeSDDSHeader_m(outfile);
         }
 
-        outfile << itsAmrObject_mp->getT() * 1e9 << std::setw(pwi) << '\t'  // 1
+        outfile << itsAmrObject_mp->getT() * Units::s2ns << std::setw(pwi) << '\t'  // 1
                 << this->nIter_m << std::setw(pwi) << '\t'                  // 2
                 << this->bIter_m << std::setw(pwi) << '\t'                  // 3
                 << this->regrid_m << std::setw(pwi) <<  '\t'                // 4

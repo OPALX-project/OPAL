@@ -1,22 +1,22 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Select.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: Select
-//   Class for the OPAL SELECT command.
+// Class Select
+//   The class for OPAL SELECT command.
 //
-// ------------------------------------------------------------------------
+// Copyright (c) 2000 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:33:37 $
-// $Author: Andreas Adelmann $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "BasicActions/Select.h"
+
 #include "AbstractObjects/BeamSequence.h"
 #include "AbstractObjects/OpalData.h"
 #include "AbstractObjects/Table.h"
@@ -25,13 +25,10 @@
 #include "Tables/Selector.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
+
 #include <iostream>
 
-
-// Class Select
-// ------------------------------------------------------------------------
-
-// The attributes of class Select.
+extern Inform* gmsg;
 
 namespace {
     enum {
@@ -45,8 +42,6 @@ namespace {
         SIZE
     };
 }
-
-extern Inform *gmsg;
 
 Select::Select():
     Action(SIZE, "SELECT",
@@ -79,7 +74,7 @@ Select::Select():
 }
 
 
-Select::Select(const std::string &name, Select *parent):
+Select::Select(const std::string& name, Select* parent):
     Action(name, parent)
 {}
 
@@ -88,19 +83,19 @@ Select::~Select()
 {}
 
 
-Select *Select::clone(const std::string &name) {
+Select* Select::clone(const std::string& name) {
     return new Select(name, this);
 }
 
 
 void Select::execute() {
-    // Find beam sequence  or table definition.
+    // Find beam sequence or table definition.
     const std::string name = Attributes::getString(itsAttr[LINE]);
 
-    if(Object *obj = OpalData::getInstance()->find(name)) {
-        if(BeamSequence *line = dynamic_cast<BeamSequence *>(obj)) {
+    if (Object* obj = OpalData::getInstance()->find(name)) {
+        if (BeamSequence* line = dynamic_cast<BeamSequence*>(obj)) {
             select(*line->fetchLine());
-        } else if(Table *table = dynamic_cast<Table *>(obj)) {
+        } else if (Table* table = dynamic_cast<Table*>(obj)) {
             select(*table->getLine());
         } else {
             throw OpalException("Select::execute()",
@@ -114,20 +109,20 @@ void Select::execute() {
 }
 
 
-void Select::select(const Beamline &bl) {
-    if(Attributes::getBool(itsAttr[FULL])) {
+void Select::select(const Beamline& bl) {
+    if (Attributes::getBool(itsAttr[FULL])) {
         // Select all positions.
         Flagger flagger(bl, true);
         flagger.execute();
-        if(Options::info) {
-            *gmsg << level3 << "\nAll elements selected.\n" << endl;
+        if (Options::info) {
+            *gmsg << level2 << "\nAll elements selected.\n" << endl;
         }
-    } else if(Attributes::getBool(itsAttr[CLEAR])) {
+    } else if (Attributes::getBool(itsAttr[CLEAR])) {
         // Deselect all selections.
         Flagger flagger(bl, false);
         flagger.execute();
-        if(Options::info) {
-            *gmsg << level3 << "\nAll elements de-selected.\n" << endl;
+        if (Options::info) {
+            *gmsg << level2 << "\nAll elements de-selected.\n" << endl;
         }
     } else {
         Selector sel(bl,
@@ -137,16 +132,16 @@ void Select::select(const Beamline &bl) {
                      Attributes::getString(itsAttr[PATTERN]));
         sel.execute();
 
-        int count = sel.getCount();
-
-        if(count == 0) {
-            *gmsg << level3 << "No elements";
-        } else if(count == 1) {
-            *gmsg << level3 << "\n1 element";
-        } else {
-            *gmsg << level3 << '\n' << count << " elements";
+        if (Options::info) {
+            int count = sel.getCount();
+            if (count == 0) {
+                *gmsg << level2 << "No elements";
+            } else if (count == 1) {
+                *gmsg << level2 << "\n1 element";
+            } else {
+                *gmsg << level2 << '\n' << count << " elements";
+            }
+            *gmsg << level2 << " selected.\n" << endl;
         }
-
-        *gmsg << level3 << " selected.\n" << endl;
     }
 }

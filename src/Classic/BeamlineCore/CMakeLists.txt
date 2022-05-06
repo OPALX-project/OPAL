@@ -1,5 +1,4 @@
 set (_SRCS
-    BeamStrippingRep.cpp
     CCollimatorRep.cpp
     CorrectorRep.cpp
     CyclotronRep.cpp
@@ -24,12 +23,12 @@ set (_SRCS
     SourceRep.cpp
     StripperRep.cpp
     TravelingWaveRep.cpp
+    VacuumRep.cpp
     XCorrectorRep.cpp
     YCorrectorRep.cpp
     )
 
 set (HDRS
-    BeamStrippingRep.h
     CCollimatorRep.h
     CorrectorRep.h
     CyclotronRep.h
@@ -55,6 +54,7 @@ set (HDRS
     SourceRep.h
     StripperRep.h
     TravelingWaveRep.h
+    VacuumRep.h
     XCorrectorRep.h
     YCorrectorRep.h
     )

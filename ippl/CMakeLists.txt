@@ -6,7 +6,7 @@ set (IPPL_VERSION_NAME "V${IPPL_VERSION_MAJOR}.${IPPL_VERSION_MINOR}")
 
 set (IPPL_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
-if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
+if (${BUILD_FOR_PRODUCTION})
     add_definitions (-DNOPAssert)
 endif ()
 
@@ -29,4 +29,3 @@ install (
     DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/cmake/${PROJECT_NAME}"
     RENAME ${PROJECT_NAME}Config.cmake
     )
-

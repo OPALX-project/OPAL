@@ -30,7 +30,7 @@ namespace mslang {
 
     bool Union::parse_detail(iterator &it, const iterator &end, Function* &fun) {
         Union *unin = static_cast<Union*>(fun);
-        unin->funcs_m.push_back(NULL);
+        unin->funcs_m.push_back(nullptr);
         if (!parse(it, end, unin->funcs_m.back())) return false;
 
         boost::regex argumentList("(,[a-z]+\\(.*)");
@@ -40,7 +40,7 @@ namespace mslang {
         std::string str(it, end);
         while (boost::regex_match(str, what, argumentList)) {
             iterator it2 = it + 1;
-            unin->funcs_m.push_back(NULL);
+            unin->funcs_m.push_back(nullptr);
 
             if (!parse(it2, end, unin->funcs_m.back())) return false;
 

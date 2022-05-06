@@ -57,12 +57,12 @@ class Mesh {
     virtual Mesh::Iterator begin() const = 0;
 
     /** Return the last+1 point on the mesh */
-    virtual Mesh::Iterator end()   const = 0;
+    virtual Mesh::Iterator end() const = 0;
 
     /** Return a copy of child object */
     virtual Mesh* clone() = 0;
 
-    /** Return the "Dual" of the mesh or NULL if not implemented
+    /** Return the "Dual" of the mesh or nullptr if not implemented
      *
      *  Dual is a polyhedron that has centre of each face as a point on the mesh
      */
@@ -221,11 +221,15 @@ class Mesh::Iterator {
     /** Return the mesh over which the iterator acts */
     inline const Mesh* getMesh() const;
 
+    /** Return true if the iterator is off the edge of the mesh */
+    virtual inline bool isOutOfBounds() const;
+
+    /** Add the internal state vector of it onto this */
+    virtual inline void addState(const Mesh::Iterator& it);
+
     friend class Mesh;
-    friend class TwoDGrid;
     friend class ThreeDGrid;
     friend class NDGrid;
-    friend class TriangularMesh;
 
     friend Mesh::Iterator  operator++(Mesh::Iterator& lhs, int);
     friend Mesh::Iterator  operator--(Mesh::Iterator& lhs, int);

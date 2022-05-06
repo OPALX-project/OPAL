@@ -23,6 +23,7 @@
 #include "MemoryManagement/Pointer.h"
 #include <string>
 #include <map>
+#include <set>
 
 class Attribute;
 class Statement;
@@ -110,6 +111,9 @@ public:
     //  If [b]parse[/b] is called with the flag set,
     //  then [b]OpalException[/b] is thrown.
     void setReadOnly(bool);
+
+    /// Add predefined strings values to the help
+    void setPredefinedValues(const std::set<std::string>&, const std::string&);
 
     enum OwnerType {
         ELEMENT,

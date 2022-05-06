@@ -276,7 +276,7 @@ void Fieldmap::clearDictionary() {
     std::map<std::string, FieldmapDescription>::iterator it = FieldmapDictionary.begin();
     for (;it != FieldmapDictionary.end(); ++ it) {
         delete it->second.Map;
-        it->second.Map = NULL;
+        it->second.Map = nullptr;
     }
     FieldmapDictionary.clear();
 }
@@ -296,7 +296,7 @@ MapType Fieldmap::readHeader(std::string Filename) {
 
     if (!fs::exists(Filename))
         throw GeneralClassicException("Fieldmap::readHeader()",
-                                      "File \"" + Filename + "\" doesn't exist");
+                                      "File '" + Filename + "' doesn't exist");
 
     std::ifstream File(Filename.c_str());
     if (!File.good()) {
@@ -386,7 +386,7 @@ MapType Fieldmap::readHeader(std::string Filename) {
 
         for (h5_ssize_t i = 0; i < num_fields; ++ i) {
             h5err = H5BlockGetFieldInfo(
-                file, (h5_size_t)i, name, len_name, NULL, NULL, NULL, NULL);
+                file, (h5_size_t)i, name, len_name, nullptr, nullptr, nullptr, nullptr);
             PAssert (h5err != H5_ERR);
             // using field name "Bfield" and "Hfield" to distinguish the type
             if (std::strcmp(name, "Bfield") == 0) {
@@ -442,7 +442,7 @@ void Fieldmap::freeMap(std::string Filename) {
 
         if ((*position).second.RefCounter == 0) {
             delete (*position).second.Map;
-            (*position).second.Map = NULL;
+            (*position).second.Map = nullptr;
             FieldmapDictionary.erase(position);
         }
     }

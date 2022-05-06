@@ -20,13 +20,14 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Algorithms/CavityAutophaser.h"
-#include "Algorithms/Vektor.h"
 #include "AbsBeamline/RFCavity.h"
 #include "AbsBeamline/TravelingWave.h"
-#include "Utilities/Options.h"
-#include "Utilities/OpalException.h"
-#include "Utilities/Util.h"
 #include "AbstractObjects/OpalData.h"
+#include "Algorithms/Vektor.h"
+#include "Physics/Units.h"
+#include "Utilities/OpalException.h"
+#include "Utilities/Options.h"
+#include "Utilities/Util.h"
 
 #include <fstream>
 #include <iostream>
@@ -52,8 +53,8 @@ double CavityAutophaser::getPhaseAtMaxEnergy(const Vector_t &R,
                                              const Vector_t &P,
                                              double t,
                                              double dt) {
-    if(!(itsCavity_m->getType() == ElementBase::TRAVELINGWAVE ||
-         itsCavity_m->getType() == ElementBase::RFCAVITY)) {
+    if(!(itsCavity_m->getType() == ElementType::TRAVELINGWAVE ||
+         itsCavity_m->getType() == ElementType::RFCAVITY)) {
         throw OpalException("CavityAutophaser::getPhaseAtMaxEnergy()",
                             "given element is not a cavity");
     }
@@ -92,7 +93,7 @@ double CavityAutophaser::getPhaseAtMaxEnergy(const Vector_t &R,
                    << std::left << std::setw(68) << std::setfill('*') << ss.str()
                    << std::setfill(' ') << endl);
     if (!apVeto) {
-        double initialEnergy = Util::getKineticEnergy(P, itsReference_m.getM()) * 1e-6;
+        double initialEnergy = Util::getKineticEnergy(P, itsReference_m.getM()) * Units::eV2MeV;
         double AstraPhase    = 0.0;
         double designEnergy  = element->getDesignEnergy();
 
@@ -161,15 +162,15 @@ double CavityAutophaser::getPhaseAtMaxEnergy(const Vector_t &R,
             track(t + tErr, dt, newPhase, &out);
             out.close();
         } else {
-            track(t + tErr, dt, newPhase, NULL);
+            track(t + tErr, dt, newPhase, nullptr);
         }
 
         INFOMSG(level1 << std::fixed << std::setprecision(4)
-                << itsCavity_m->getName() << "_phi = "  << newPhase * Physics::rad2deg <<  " [deg], "
-                << "corresp. in Astra = " << AstraPhase * Physics::rad2deg << " [deg],\n"
-                << "E = " << finalEnergy << " [MeV], " << "phi_nom = " << originalPhase * Physics::rad2deg << " [deg]\n"
+                << itsCavity_m->getName() << "_phi = "  << newPhase * Units::rad2deg <<  " [deg], "
+                << "corresp. in Astra = " << AstraPhase * Units::rad2deg << " [deg],\n"
+                << "E = " << finalEnergy << " [MeV], " << "phi_nom = " << originalPhase * Units::rad2deg << " [deg]\n"
                 << "Ez_0 = " << amplitude << " [MV/m]" << "\n"
-                << "time = " << (t + tErr) * 1e9 << " [ns], dt = " << dt * 1e12 << " [ps]" << endl);
+                << "time = " << (t + tErr) * Units::s2ns << " [ns], dt = " << dt * Units::s2ps << " [ps]" << endl);
 
     } else {
         auto status = optimizeCavityPhase(originalPhase, t + tErr, dt);
@@ -183,11 +184,11 @@ double CavityAutophaser::getPhaseAtMaxEnergy(const Vector_t &R,
             INFOMSG(level1 << ">>>>>> APVETO >>>>>> " << endl);
         }
         INFOMSG(level1 << std::fixed << std::setprecision(4)
-                << itsCavity_m->getName() << "_phi = "  << originalPhase * Physics::rad2deg <<  " [deg], "
-                << "corresp. in Astra = " << AstraPhase * Physics::rad2deg << " [deg],\n"
-                << "E = " << finalEnergy << " [MeV], " << "phi_nom = " << originalPhase * Physics::rad2deg << " [deg]\n"
+                << itsCavity_m->getName() << "_phi = "  << originalPhase * Units::rad2deg <<  " [deg], "
+                << "corresp. in Astra = " << AstraPhase * Units::rad2deg << " [deg],\n"
+                << "E = " << finalEnergy << " [MeV], " << "phi_nom = " << originalPhase * Units::rad2deg << " [deg]\n"
                 << "Ez_0 = " << amplitude << " [MV/m]" << "\n"
-                << "time = " << (t + tErr) * 1e9 << " [ns], dt = " << dt * 1e12 << " [ps]" << endl);
+                << "time = " << (t + tErr) * Units::s2ns << " [ns], dt = " << dt * Units::s2ps << " [ps]" << endl);
         if (!isDCGun) {
             INFOMSG(level1 << " <<<<<< APVETO <<<<<< " << endl);
         }
@@ -211,10 +212,10 @@ double CavityAutophaser::guessCavityPhase(double t) {
         return orig_phi;
     }
 
-    Phimax = element->getAutoPhaseEstimate(Util::getKineticEnergy(refP, itsReference_m.getM()) * 1e-6,
+    Phimax = element->getAutoPhaseEstimate(Util::getKineticEnergy(refP, itsReference_m.getM()) * Units::eV2MeV,
                                            t,
                                            itsReference_m.getQ(),
-                                           itsReference_m.getM() * 1e-6);
+                                           itsReference_m.getM() * Units::eV2MeV);
 
     return std::fmod(Phimax + Physics::two_pi, Physics::two_pi);
 }
@@ -302,11 +303,11 @@ double CavityAutophaser::track(double t,
                                                             t,
                                                             dt,
                                                             itsReference_m.getQ(),
-                                                            itsReference_m.getM() * 1e-6,
+                                                            itsReference_m.getM() * Units::eV2MeV,
                                                             out);
     rfc->setPhasem(initialPhase);
 
-    double finalKineticEnergy = Util::getKineticEnergy(Vector_t(0.0, 0.0, pe.first), itsReference_m.getM() * 1e-6);
+    double finalKineticEnergy = Util::getKineticEnergy(Vector_t(0.0, 0.0, pe.first), itsReference_m.getM() * Units::eV2MeV);
 
     return finalKineticEnergy;
 }

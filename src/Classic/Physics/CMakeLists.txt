@@ -1,5 +1,6 @@
 set (_SRCS
     Material.cpp
+    ParticleProperties.cpp
     )
 
 include_directories (
@@ -10,6 +11,7 @@ add_opal_sources (${_SRCS})
 
 set (HDRS
     Material.h
+    ParticleProperties.h
     Physics.h
     )
 

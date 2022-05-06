@@ -29,6 +29,7 @@
 #include "Utilities/OpalException.h"
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
+#include "Physics/Units.h"
 
 #include <boost/filesystem.hpp>
 
@@ -158,7 +159,7 @@ void MemoryProfiler::update() {
                             "Failed to open '" + fname + "'.");
     }
 
-    std::string token = "";
+    std::string token;
     while (ifs >> token) {
         if ( !procinfo_m.count(token) ) {
             continue;
@@ -218,8 +219,8 @@ void MemoryProfiler::write(const PartBunchBase<double, 3> *beam) {
 
     this->writeHeader();
 
-    columns_m.addColumnValue("t", beam->getT() * 1e9);             // 1
-    columns_m.addColumnValue("s", pathLength);                     // 2
+    columns_m.addColumnValue("t", beam->getT() * Units::s2ns); // 1
+    columns_m.addColumnValue("s", pathLength);                   // 2
 
     // boost::variant can't overload double and long double. By using a
     // string this shortcoming can be bypassed.

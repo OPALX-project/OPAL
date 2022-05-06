@@ -21,13 +21,10 @@
 #include "BeamlineCore/MonitorRep.h"
 #include "Utilities/Util.h"
 
-extern Inform *gmsg;
 
 OpalMonitor::OpalMonitor():
-    OpalElement(SIZE, "MONITOR",
+    OpalElement(COMMON, "MONITOR",
                 "The \"MONITOR\" element defines a monitor for both planes.") {
-    itsAttr[OUTFN] = Attributes::makeString
-                     ("OUTFN", "Monitor output filename");
 
     registerOwnership();
 
@@ -35,7 +32,7 @@ OpalMonitor::OpalMonitor():
 }
 
 
-OpalMonitor::OpalMonitor(const std::string &name, OpalMonitor *parent):
+OpalMonitor::OpalMonitor(const std::string& name, OpalMonitor* parent):
     OpalElement(name, parent) {
     setElement(new MonitorRep(name));
 }
@@ -45,7 +42,7 @@ OpalMonitor::~OpalMonitor()
 {}
 
 
-OpalMonitor *OpalMonitor::clone(const std::string &name) {
+OpalMonitor* OpalMonitor::clone(const std::string& name) {
     return new OpalMonitor(name, this);
 }
 
@@ -53,16 +50,17 @@ OpalMonitor *OpalMonitor::clone(const std::string &name) {
 void OpalMonitor::update() {
     OpalElement::update();
 
-    MonitorRep *mon =
-        dynamic_cast<MonitorRep *>(getElement());
+    MonitorRep* mon =
+        dynamic_cast<MonitorRep*>(getElement());
+
     double length = std::max(0.01, Attributes::getReal(itsAttr[LENGTH]));
     mon->setElementLength(length);
     mon->setOutputFN(Attributes::getString(itsAttr[OUTFN]));
 
     if (Attributes::getString(itsAttr[TYPE]) == "TEMPORAL") {
-        mon->setType(Monitor::TEMPORAL);
+        mon->setCollectionType(CollectionType::TEMPORAL);
     } else {
-        mon->setType(Monitor::SPATIAL);
+        mon->setCollectionType(CollectionType::SPATIAL);
     }
 
     // Transmit "unknown" attributes.

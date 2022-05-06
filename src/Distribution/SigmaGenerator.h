@@ -40,11 +40,13 @@
 
 #include <boost/numeric/ublas/matrix.hpp>
 
-#include "AbsBeamline/Cyclotron.h"
 #include "FixedAlgebra/FTps.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 
 #include "Distribution/RealDiracMatrix.h"
+
+class Cyclotron;
 
 class SigmaGenerator
 {
@@ -163,7 +165,7 @@ private:
     /// Velocity (c/v), \f$ \left[\beta\right] = 1 \f$
     double beta_m;
     /// Is the mass of the particles, \f$ \left[m\right] = \frac{MeV}{c^{2}} \f$
-    double m_m;
+    double mass_m;
     /// Is the particle charge [e]
     double q_m;
     /// Is the number of iterations needed for convergence
@@ -307,9 +309,9 @@ std::array<double,3> SigmaGenerator::getEmittances() const
 {
     double bgam = gamma_m*beta_m;
     return std::array<double,3>{{
-        emittance_m[0] / Physics::pi / bgam * 1.0e6,
-        emittance_m[1] / Physics::pi / bgam * 1.0e6,
-        emittance_m[2] / Physics::pi / bgam * 1.0e6
+            emittance_m[0] / Physics::pi / bgam * Units::m2mm * Units::rad2mrad,
+        emittance_m[1] / Physics::pi / bgam * Units::m2mm * Units::rad2mrad,
+        emittance_m[2] / Physics::pi / bgam * Units::m2mm * Units::rad2mrad
     }};
 }
 

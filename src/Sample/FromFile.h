@@ -96,7 +96,7 @@ public:
         std::vector<std::string> dvars({std::istream_iterator<std::string>{iss},
                                         std::istream_iterator<std::string>{}});
         size_t j = 0;
-        for (const std::string str: dvars) {
+        for (const std::string& str: dvars) {
             if (str == dvarName_m) break;
             ++ j;
         }

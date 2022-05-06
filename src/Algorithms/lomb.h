@@ -17,7 +17,7 @@ typedef struct {
 typedef std::vector<LOMB_TYPE>::const_iterator CI_lt;
 typedef std::vector<double>::const_iterator CI_vd;
 
-class Lomb_eq : public std::unary_function<LOMB_TYPE, bool> {
+class Lomb_eq {
     double b;
 public:
     explicit Lomb_eq(const double &a) : b(a) {}

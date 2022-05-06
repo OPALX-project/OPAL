@@ -38,7 +38,8 @@
 
 #include "BoxLibLayout.h"
 
-#include "Message/Formatter.h"
+#include "Message/Format.h"
+#include "Message/MsgBuffer.h"
 #include "Utility/PAssert.h"
 #include "Utilities/OpalException.h"
 
@@ -348,7 +349,8 @@ void BoxLibLayout<T, Dim>::update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
     }
 
     //wait for communication to finish and clean up buffers
-    MPI_Waitall(requests.size(), &(requests[0]), MPI_STATUSES_IGNORE);
+    MPI_Request* requests_ptr = requests.empty()? static_cast<MPI_Request*>(0): &(requests[0]);
+    MPI_Waitall(requests.size(), requests_ptr, MPI_STATUSES_IGNORE);
     for (unsigned int j = 0; j<buffers.size(); ++j)
     {
         delete buffers[j];
@@ -479,7 +481,7 @@ void BoxLibLayout<T, Dim>::clearLevelMask(int lev) {
 
 
 template <class T, unsigned Dim>
-const std::unique_ptr<typename BoxLibLayout<T, Dim>::mask_t>& 
+const std::unique_ptr<typename BoxLibLayout<T, Dim>::mask_t>&
 BoxLibLayout<T, Dim>::getLevelMask(int lev) const {
     if ( lev >= (int)masks_m.size() ) {
         throw OpalException("BoxLibLayout::getLevelMask()",

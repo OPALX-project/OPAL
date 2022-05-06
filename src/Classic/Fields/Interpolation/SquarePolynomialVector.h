@@ -58,7 +58,7 @@ namespace interpolation {
  *  \f$ w_i = x_{i_1}x_{i_2} \ldots x_{i_n} \f$ \n
  *  \n
  *
- *  Nb: it is a SquarePolynomialVector because coefficients include all
+ *  Nb: it is a *Square*PolynomialVector because coefficients include all
  *  polynomial coefficients with \f$ i_ j <= n \f$; coefficients sit within an
  *  n-dimensional square. The distinction should be made with a PolynomialVector
  *  where coefficients include all polynomial coefficients with 
@@ -138,6 +138,17 @@ class SquarePolynomialVector {
      *  Note that there is no bound checking here.
      */
     void  F(const MVector<double>& point, MVector<double>& value) const;
+
+    /** Generate polynomial corresponding to the partial derivative of y
+     * 
+     *  @returns \f$ \frac{\partial^{j_1+j_2+\ldots} \vec{y}}
+     *                    {\partial x^j_1 \partial x^j_2 \ldots} \f$
+     *  at some set point \f$ \vec{x} \f$.
+     *
+     *  derivPower is an array with indices of the derivative in the 
+     *      "IndexByPower" style, of length PointDimension()
+     */
+    SquarePolynomialVector Deriv(const int* derivPower) const;
 
     /** Length of the input point (x) vector. */
     unsigned int PointDimension()         const {return _pointDim;}

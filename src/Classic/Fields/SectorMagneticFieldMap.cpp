@@ -62,7 +62,7 @@ SectorMagneticFieldMap::SectorMagneticFieldMap(std::string file_name,
                                                double field_units,
                                                int polynomial_order,
                                                int smoothing_order)
-       : SectorField(file_name), interpolator_m(NULL), symmetry_m(dipole),
+       : SectorField(file_name), interpolator_m(nullptr), symmetry_m(dipole),
          units_m(6, 1.), filename_m(file_name), phiOffset_m(0.),
          poly_order_m(polynomial_order), smoothing_order_m(smoothing_order) {
     units_m[0] *= length_units;
@@ -94,11 +94,11 @@ SectorMagneticFieldMap::SectorMagneticFieldMap(std::string file_name,
 
 SectorMagneticFieldMap::SectorMagneticFieldMap
                                            (const SectorMagneticFieldMap& field)
-    : SectorField(field), interpolator_m(NULL), symmetry_m(field.symmetry_m),
+    : SectorField(field), interpolator_m(nullptr), symmetry_m(field.symmetry_m),
       units_m(field.units_m),
       filename_m(field.filename_m), phiOffset_m(field.phiOffset_m) {
-    VectorMap* interpolator = NULL;
-    if (field.interpolator_m != NULL) {
+    VectorMap* interpolator = nullptr;
+    if (field.interpolator_m != nullptr) {
         interpolator = field.interpolator_m;
     }
     setInterpolator(interpolator);
@@ -113,11 +113,11 @@ VectorMap* SectorMagneticFieldMap::getInterpolator() {
 }
 
 void SectorMagneticFieldMap::setInterpolator(VectorMap* interpolator) {
-    if (interpolator_m != NULL) {
+    if (interpolator_m != nullptr) {
         delete interpolator_m;
     }
     interpolator_m = interpolator;
-    if (interpolator_m != NULL) {
+    if (interpolator_m != nullptr) {
         if (interpolator_m->getPointDimension() != 3)
             throw(LogicalError(
                       "SectorMagneticFieldMap::setInterpolator",
@@ -129,7 +129,7 @@ void SectorMagneticFieldMap::setInterpolator(VectorMap* interpolator) {
                       "Attempt to load interpolator with ValueDimension != 3"
                   ));
         ThreeDGrid* grid = dynamic_cast<ThreeDGrid*>(interpolator_m->getMesh());
-        if (grid == NULL)
+        if (grid == nullptr)
             throw(LogicalError(
                       "SectorMagneticFieldMap::setInterpolator",
                       "Attempt to load interpolator with grid not ThreeDGrid"
@@ -158,7 +158,7 @@ void SectorMagneticFieldMap::readMap() {
 }
 
 void SectorMagneticFieldMap::freeMap() {
-    setInterpolator(NULL);
+    setInterpolator(nullptr);
 }
 
 SectorMagneticFieldMap::symmetry SectorMagneticFieldMap::StringToSymmetry
@@ -326,7 +326,7 @@ VectorMap* SectorMagneticFieldMap::IO::readMap(
                      "Failed to read file "+file_name+" with "+(&exc)->what()
                ));
     }
-    return NULL;
+    return nullptr;
 }
 
 VectorMap* SectorMagneticFieldMap::IO::getInterpolatorPolyPatch(

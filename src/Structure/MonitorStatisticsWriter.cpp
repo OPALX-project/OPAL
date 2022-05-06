@@ -1,7 +1,25 @@
-#include "MonitorStatisticsWriter.h"
+//
+// Class MonitorStatisticsWriter
+//   This class writes statistics of monitor element.
+//
+// Copyright (c) 2019, Christof Metzger-Kraus, Open Sourcerer
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#include "Structure/MonitorStatisticsWriter.h"
+#include "Physics/Units.h"
 
 #include "Structure/LossDataSink.h"
-#include "Ippl.h"
+#include "Utility/IpplInfo.h"
 
 MonitorStatisticsWriter::MonitorStatisticsWriter(const std::string& fname, bool restart)
     : SDDSWriter(fname, restart)
@@ -42,9 +60,9 @@ void MonitorStatisticsWriter::fillHeader() {
     columns_m.addColumn("ref_px", "double", "1", "x momentum of reference particle in lab cs");
     columns_m.addColumn("ref_py", "double", "1", "y momentum of reference particle in lab cs");
     columns_m.addColumn("ref_pz", "double", "1", "z momentum of reference particle in lab cs");
-    columns_m.addColumn("min_x", "double", "m", "Max Beamsize in x");
-    columns_m.addColumn("min_y", "double", "m", "Max Beamsize in y");
-    columns_m.addColumn("min_s", "double", "m", "Max Beamsize in s");
+    columns_m.addColumn("min_x", "double", "m", "Min Beamsize in x");
+    columns_m.addColumn("min_y", "double", "m", "Min Beamsize in y");
+    columns_m.addColumn("min_s", "double", "m", "Min Beamsize in s");
     columns_m.addColumn("max_x", "double", "m", "Max Beamsize in x");
     columns_m.addColumn("max_y", "double", "m", "Max Beamsize in y");
     columns_m.addColumn("max_s", "double", "m", "Max Beamsize in s");
@@ -56,11 +74,11 @@ void MonitorStatisticsWriter::fillHeader() {
 }
 
 
-void MonitorStatisticsWriter::addRow(const SetStatistics &set) {
+void MonitorStatisticsWriter::addRow(const SetStatistics& set) {
 
-    if ( Ippl::myNode() != 0 )
+    if ( Ippl::myNode() != 0 ) {
         return;
-
+    }
 
     this->fillHeader();
 
@@ -68,14 +86,14 @@ void MonitorStatisticsWriter::addRow(const SetStatistics &set) {
 
     this->writeHeader();
 
-    columns_m.addColumnValue("name", set.element_m);
+    columns_m.addColumnValue("name", set.outputName_m);
     columns_m.addColumnValue("s", set.spos_m);
     columns_m.addColumnValue("t", set.refTime_m);
     columns_m.addColumnValue("numParticles", set.nTotal_m);
     columns_m.addColumnValue("rms_x", set.rrms_m(0));
     columns_m.addColumnValue("rms_y", set.rrms_m(1));
     columns_m.addColumnValue("rms_s", set.rrms_m(2));
-    columns_m.addColumnValue("rms_t", set.trms_m * 1e9);
+    columns_m.addColumnValue("rms_t", set.trms_m * Units::s2ns);
     columns_m.addColumnValue("rms_px", set.prms_m(0));
     columns_m.addColumnValue("rms_py", set.prms_m(1));
     columns_m.addColumnValue("rms_ps", set.prms_m(2));
@@ -85,7 +103,7 @@ void MonitorStatisticsWriter::addRow(const SetStatistics &set) {
     columns_m.addColumnValue("mean_x", set.rmean_m(0));
     columns_m.addColumnValue("mean_y", set.rmean_m(1));
     columns_m.addColumnValue("mean_s", set.rmean_m(2));
-    columns_m.addColumnValue("mean_t", set.tmean_m * 1e9);
+    columns_m.addColumnValue("mean_t", set.tmean_m * Units::s2ns);
     columns_m.addColumnValue("ref_x", set.RefPartR_m(0));
     columns_m.addColumnValue("ref_y", set.RefPartR_m(1));
     columns_m.addColumnValue("ref_z", set.RefPartR_m(2));

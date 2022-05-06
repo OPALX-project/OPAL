@@ -63,7 +63,7 @@ void VerticalFFAMagnet::initialise(PartBunchBase<double, 3> *bunch, double &/*st
 }
 
 void VerticalFFAMagnet::finalise() {
-    RefPartBunch_m = NULL;
+    RefPartBunch_m = nullptr;
 }
 
 BGeometryBase& VerticalFFAMagnet::getGeometry() {

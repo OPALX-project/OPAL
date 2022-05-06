@@ -30,7 +30,6 @@ public:
     enum {
         XSIZE = COMMON,  // The horizontal half-size.
         YSIZE,           // The vertical half-size.
-        OUTFN,
         SIZE
     };
 
@@ -40,7 +39,7 @@ public:
     virtual ~OpalSlit();
 
     /// Make clone.
-    virtual OpalSlit *clone(const std::string &name);
+    virtual OpalSlit* clone(const std::string& name);
 
     /// Update the embedded CLASSIC collimator.
     virtual void update();
@@ -48,13 +47,13 @@ public:
 private:
 
     // Not implemented.
-    OpalSlit(const OpalSlit &);
-    void operator=(const OpalSlit &);
+    OpalSlit(const OpalSlit&);
+    void operator=(const OpalSlit&);
 
     // Clone constructor.
-    OpalSlit(const std::string &name, OpalSlit *parent);
+    OpalSlit(const std::string& name, OpalSlit* parent);
 
-    ParticleMatterInteraction *parmatint_m;
+    ParticleMatterInteraction* parmatint_m;
 };
 
 #endif // OPAL_OpalSlit_HH

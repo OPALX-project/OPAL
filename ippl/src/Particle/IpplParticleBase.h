@@ -100,7 +100,8 @@
 #include "AppTypes/Vektor.h"
 #include "DataSource/DataSource.h"
 #include "DataSource/MakeDataSource.h"
-#include "Message/Formatter.h"
+#include "Message/Format.h"
+#include "Message/MsgBuffer.h"
 #include <vector>
 #include <utility>
 #include <iostream>
@@ -142,9 +143,6 @@ public:
     typedef attrib_container_t::iterator      attrib_iterator;
     typedef ParticleAttribBase::SortList_t    SortList_t;
 
-    // useful constants
-    unsigned int MIN_NUM_PART_PER_CORE;
-
     // our position, and our global ID's
     ParticlePos_t   R;
     ParticleIndex_t ID;
@@ -154,7 +152,6 @@ public:
     // If this constructor is used, the user must call 'initialize' with
     // a layout object in order to use this.
     IpplParticleBase() :
-        MIN_NUM_PART_PER_CORE(0),
         Layout(NULL),
         TotalNum(0),
         LocalNum(0),
@@ -164,7 +161,6 @@ public:
 
     // constructor 2: arguments = layout to use.
     IpplParticleBase(PLayout *layout) :
-        MIN_NUM_PART_PER_CORE(0),
         Layout(layout),
         TotalNum(0),
         LocalNum(0),
@@ -202,10 +198,6 @@ public:
     size_t getGhostNum() const { return GhostNum; }
     void setTotalNum(size_t n) { TotalNum = n; }
     void setLocalNum(size_t n) { LocalNum = n; }
-
-    unsigned int getMinimumNumberOfParticlesPerCore() const { return MIN_NUM_PART_PER_CORE; };
-    void setMinimumNumberOfParticlesPerCore(unsigned int n) { MIN_NUM_PART_PER_CORE=n; };
-
 
     // get the layout manager
     PLayout& getLayout() { return *Layout; }
@@ -361,7 +353,7 @@ protected:
     // Each destroy is stored as a pair of unsigned ints, the particle
     // index I to start at and the number of particles M to destroy.
     std::vector< std::pair<size_t,size_t> > DestroyList;
-    
+
 private:
     // our layout object, which we delete in our destructor
     PLayout *Layout;
@@ -379,7 +371,7 @@ private:
 
     // unique particle ID number generation value
     unsigned NextID;
-    
+
     //
     // private methods
     //

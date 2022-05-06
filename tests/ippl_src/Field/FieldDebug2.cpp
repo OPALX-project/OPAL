@@ -36,7 +36,7 @@ TEST(Field, FieldDebug2)
     NDIndex<D> cells; for (d=0; d<D; d++) cells[d] = Index(ncells[d]);
 
     // New Inform-based version (tjw):
-    Inform fdi(NULL,0);
+    Inform fdi(nullptr,0);
     setInform(fdi);
 
     // Scalar Field Cell-Centered------------------------------------------------

@@ -66,14 +66,13 @@
 #include "ValueDefinitions/StringConstant.h"
 
 // Element commands.
-#include "Elements/OpalBeamStripping.h"
 #include "Elements/OpalCavity.h"
 #include "Elements/OpalCCollimator.h"
 #include "Elements/OpalCyclotron.h"
+#include "Elements/OpalDegrader.h"
 #include "Elements/OpalDrift.h"
 #include "Elements/OpalECollimator.h"
 #include "Elements/OpalFlexibleCollimator.h"
-#include "Elements/OpalDegrader.h"
 #include "Elements/OpalHKicker.h"
 #include "Elements/OpalKicker.h"
 #include "Elements/OpalMarker.h"
@@ -89,12 +88,13 @@
 #include "Elements/OpalOffset/OpalGlobalCartesianOffset.h"
 #include "Elements/OpalOffset/OpalGlobalCylindricalOffset.h"
 #include "Elements/OpalPepperPot.h"
+#include "Elements/OpalPolynomialTimeDependence.h"
 #include "Elements/OpalProbe.h"
 #include "Elements/OpalQuadrupole.h"
-#include "Elements/OpalPolynomialTimeDependence.h"
 #include "Elements/OpalRBend.h"
 #include "Elements/OpalRBend3D.h"
 #include "Elements/OpalRCollimator.h"
+#include "Elements/OpalRingDefinition.h"
 #include "Elements/OpalSBend.h"
 #include "Elements/OpalSBend3D.h"
 #include "Elements/OpalScalingFFAMagnet.h"
@@ -103,17 +103,17 @@
 #include "Elements/OpalSlit.h"
 #include "Elements/OpalSolenoid.h"
 #include "Elements/OpalSource.h"
-#include "Elements/OpalTravelingWave.h"
-#ifdef ENABLE_OPAL_FEL
-#include "Elements/OpalUndulator.h"
-#endif
-#include "Elements/OpalVKicker.h"
-//#include "Elements/OpalWire.h"
 #include "Elements/OpalStripper.h"
-#include "Elements/OpalRingDefinition.h"
+#include "Elements/OpalTravelingWave.h"
+#include "Elements/OpalVacuum.h"
 #include "Elements/OpalVariableRFCavity.h"
 #include "Elements/OpalVariableRFCavityFringeField.h"
 #include "Elements/OpalVerticalFFAMagnet.h"
+#include "Elements/OpalVKicker.h"
+
+#ifdef ENABLE_OPAL_FEL
+#include "Elements/OpalUndulator.h"
+#endif
 
 // Structure-related commands.
 #include "Lines/Line.h"
@@ -157,7 +157,6 @@ namespace {
         opal->create(new Value());
     }
 
-
     void makeDefinitions() {
         OpalData *opal = OpalData::getInstance();
         // Must create the value definitions first.
@@ -187,17 +186,15 @@ namespace {
         opal->create(new OpalSample());
     }
 
-
     void makeElements() {
         OpalData *opal = OpalData::getInstance();
-        opal->create(new OpalBeamStripping());
         opal->create(new OpalCavity());
         opal->create(new OpalCCollimator());
         opal->create(new OpalCyclotron());
+        opal->create(new OpalDegrader());
         opal->create(new OpalDrift());
         opal->create(new OpalECollimator());
         opal->create(new OpalFlexibleCollimator());
-        opal->create(new OpalDegrader());
         opal->create(new OpalHKicker());
         opal->create(new OpalKicker());
         opal->create(new OpalMarker());
@@ -212,13 +209,14 @@ namespace {
 //        opal->create(new OpalOffset::OpalLocalCylindricalOffset());
 //        opal->create(new OpalOffset::OpalGlobalCartesianOffset());
 //        opal->create(new OpalOffset::OpalGlobalCylindricalOffset());
-        opal->create(new OpalProbe());
         opal->create(new OpalPepperPot());
         opal->create(new OpalPolynomialTimeDependence());
+        opal->create(new OpalProbe());
         opal->create(new OpalQuadrupole());
         opal->create(new OpalRBend());
         opal->create(new OpalRBend3D());
         opal->create(new OpalRCollimator());
+        opal->create(new OpalRingDefinition());
         opal->create(new OpalSBend());
         opal->create(new OpalSBend3D());
         opal->create(new OpalScalingFFAMagnet());
@@ -227,19 +225,19 @@ namespace {
         opal->create(new OpalSlit());
         opal->create(new OpalSolenoid());
         opal->create(new OpalSource());
+        opal->create(new OpalStripper());
         opal->create(new OpalTravelingWave());
 #ifdef ENABLE_OPAL_FEL        
         opal->create(new OpalUndulator());
 #endif
+        opal->create(new OpalVacuum());
         opal->create(new OpalVariableRFCavity());
         opal->create(new OpalVariableRFCavityFringeField());
         opal->create(new OpalVerticalFFAMagnet());
         opal->create(new OpalVKicker());
-        // opal->create(new OpalWire());
-        opal->create(new OpalStripper());
+
         opal->create(new Line());
         opal->create(new Sequence());
-        opal->create(new OpalRingDefinition());
     }
 };
 

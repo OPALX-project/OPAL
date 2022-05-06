@@ -53,7 +53,7 @@ public:
     (const std::string &name, Statement &, const Parser *);
 
     /// Make a sequence template.
-    //  Return NULL, since one cannot make a template from a template.
+    //  Return nullptr, since one cannot make a template from a template.
     virtual Object *makeTemplate(const std::string &name, TokenStream &, Statement &);
 
     /// Parse the sequence template.

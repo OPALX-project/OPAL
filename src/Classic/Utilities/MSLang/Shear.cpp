@@ -29,7 +29,7 @@ namespace mslang {
             std::shared_ptr<Base> &obj = bfuncs[j];
             obj->trafo_m = obj->trafo_m.mult(shear);
 
-            if (obj->divisor_m.size() > 0)
+            if (!obj->divisor_m.empty())
                 applyShear(obj->divisor_m);
         }
     }

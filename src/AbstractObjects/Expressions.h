@@ -207,7 +207,7 @@ namespace Expressions {
     //  When no string is seen, a ParseError is thrown with the message
     //  given as the second argument.
     extern std::string parseString(Statement &, const char msg[]);
-
+    extern std::string parseStringValue(Statement &, const char msg[]);
 
     // ARRAY EXPRESSION PARSERS.
 

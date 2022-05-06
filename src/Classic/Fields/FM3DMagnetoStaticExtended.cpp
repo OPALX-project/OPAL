@@ -1,5 +1,6 @@
 #include "Fields/FM3DMagnetoStaticExtended.h"
 #include "Fields/Fieldmap.hpp"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
@@ -12,9 +13,9 @@ extern Inform *gmsg;
 
 FM3DMagnetoStaticExtended::FM3DMagnetoStaticExtended(std::string aFilename):
     Fieldmap(aFilename),
-    FieldstrengthBx_m(NULL),
-    FieldstrengthBy_m(NULL),
-    FieldstrengthBz_m(NULL) {
+    FieldstrengthBx_m(nullptr),
+    FieldstrengthBy_m(nullptr),
+    FieldstrengthBz_m(nullptr) {
     std::ifstream file;
     std::string tmpString;
     double tmpDouble;
@@ -63,12 +64,12 @@ FM3DMagnetoStaticExtended::FM3DMagnetoStaticExtended(std::string aFilename):
                                           "Format of fieldmap '" + Filename_m + "' didn't pass basic test");
         } else {
             // conversion from cm to m
-            xbegin_m /= 100.;
-            xend_m /= 100.;
-            yend_m = std::max(std::abs(ybegin_m), yend_m) / 100.;
+            xbegin_m *= Units::cm2m;
+            xend_m *= Units::cm2m;
+            yend_m = std::max(std::abs(ybegin_m), yend_m) * Units::cm2m;
             ybegin_m = 0.0;
-            zbegin_m /= 100.;
-            zend_m /= 100.;
+            zbegin_m *= Units::cm2m;
+            zend_m *= Units::cm2m;
             length_m = zend_m - zbegin_m;
 
             hx_m = (xend_m - xbegin_m) / num_gridpx_m;
@@ -91,7 +92,7 @@ FM3DMagnetoStaticExtended::~FM3DMagnetoStaticExtended() {
 }
 
 void FM3DMagnetoStaticExtended::readMap() {
-    if(FieldstrengthBz_m == NULL) {
+    if(FieldstrengthBz_m == nullptr) {
         // declare variables and allocate memory
         std::ifstream in;
         std::string tmpString;
@@ -624,14 +625,14 @@ void FM3DMagnetoStaticExtended::saveField(const std::string &fname, unsigned int
 }
 
 void FM3DMagnetoStaticExtended::freeMap() {
-    if(FieldstrengthBz_m != NULL) {
+    if(FieldstrengthBz_m != nullptr) {
         delete[] FieldstrengthBx_m;
         delete[] FieldstrengthBy_m;
         delete[] FieldstrengthBz_m;
 
-        FieldstrengthBx_m = NULL;
-        FieldstrengthBy_m = NULL;
-        FieldstrengthBz_m = NULL;
+        FieldstrengthBx_m = nullptr;
+        FieldstrengthBy_m = nullptr;
+        FieldstrengthBz_m = nullptr;
 
         INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }

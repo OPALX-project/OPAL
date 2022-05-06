@@ -109,3 +109,26 @@ TEST(SquarePolynomialVectorTest, TestF) {
     EXPECT_EQ(value[0], refValue(1)); // sum (0, ..., 8)
     EXPECT_EQ(value[1], refValue(2)); // sum (9, ..., 17)
 }
+
+TEST(SquarePolynomialVectorTest, TestDeriv) {
+    std::vector<double> data(32);
+    for (size_t i = 0; i < data.size(); ++i)
+        data[i] = i;
+    // Up to x^3
+    MMatrix<double> inputCoeffs(2, 16, &data[0]);
+    SquarePolynomialVector input(2, inputCoeffs);
+    std::vector<int> derivPower({1, 2});
+    SquarePolynomialVector test = input.Deriv(&derivPower[0]);
+    std::vector<double> refCoeffs({
+        28, 64, 156, 336, 132, 540, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        30, 68, 162, 348, 138, 558, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+    });
+    MMatrix<double> testCoeffs = test.GetCoefficientsAsMatrix();
+    size_t index = 0;
+    for (size_t i = 0; i < testCoeffs.num_row(); ++i) {
+        for (size_t j = 0; j < testCoeffs.num_col(); ++j) {
+            EXPECT_NEAR(testCoeffs(i+1, j+1), refCoeffs[index], 1e-12);
+            index++;
+        }
+    }
+}

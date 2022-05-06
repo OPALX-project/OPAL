@@ -14,25 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "Solvers/GreenWakeFunction.hh"
+#include "Solvers/GreenWakeFunction.h"
+
 #include "Algorithms/PartBunchBase.h"
 #include "Utilities/GeneralClassicException.h"
 
-#include <fstream>
-#include <string>
-#include <vector>
-#include <istream>
-#include <iostream>  // Needed for stream I/O
-#include <iomanip>   // Needed for I/O manipulators
 #include "gsl/gsl_fft_real.h"
 #include "gsl/gsl_fft_halfcomplex.h"
 
+#include <fstream>
+#include <istream>
+#include <iostream>  // Needed for stream I/O
+#include <iomanip>   // Needed for I/O manipulators
 
 //IFF: TEST
 //#define ENABLE_WAKE_DEBUG
 //#define ENABLE_WAKE_DUMP
 //#define ENABLE_WAKE_TESTS_FFT_OUT
 
+
+const std::map<WakeDirection, std::string> GreenWakeFunction::wakeDirectiontoString_s = {
+    {WakeDirection::TRANSVERSAL,  "TRANSVERSAL"},
+    {WakeDirection::LONGITUDINAL, "LONGITUDINAL"},
+};
 
 /**
  *
@@ -57,7 +61,7 @@ GreenWakeFunction::GreenWakeFunction(const std::string &name,
                                      double sigma,
                                      int acMode,
                                      double tau,
-                                     int direction,
+                                     WakeDirection direction,
                                      bool constLength,
                                      std::string fname):
     WakeFunction(name, NBIN),
@@ -81,7 +85,7 @@ GreenWakeFunction::GreenWakeFunction(const std::string &name,
 }
 
 GreenWakeFunction::~GreenWakeFunction() {
-    //~ if(FftWField_m != 0) {
+    //~ if (FftWField_m != 0) {
         //~ delete[] FftWField_m;
     //~ }
 }
@@ -112,7 +116,7 @@ std::pair<int, int> GreenWakeFunction::distrIndices(int vectLen) {
     return dist;
 }
 
-void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
+void GreenWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
 
     Vector_t rmin, rmax;
     double charge = bunch->getChargePerParticle();
@@ -129,27 +133,31 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
 
     mindist = rmin(2);
     switch(direction_m) {
-        case LONGITUDINAL:
+        case WakeDirection::LONGITUDINAL: {
             spacing = std::abs(rmax(2) - rmin(2));
             break; //FIXME: Kann mann das Spacing immer ändern?
-        case TRANSVERSAL:
+        }
+        case WakeDirection::TRANSVERSAL: {
             spacing = rmax(0) * rmax(0) + rmax(1) * rmax(1);
             break;
-        default:
-            throw GeneralClassicException("GreenWakeFunction::apply", "invalid direction specified");
+        }
+        default: {
+            throw GeneralClassicException("GreenWakeFunction::apply",
+                                          "Invalid direction specified");
+        }
     }
     PAssert(NBin_m > 0);
     spacing /= (NBin_m - 1); //FIXME: why -1? CKR: because grid spacings = grid points - 1
 
     // Calculate the Wakefield if needed
-    if(FftWField_m.empty()) {
+    if (FftWField_m.empty()) {
         FftWField_m.resize(2*NBin_m-1);
-        if(filename_m != "") {
+        if (!filename_m.empty()) {
             setWakeFromFile(NBin_m, spacing);
         } else {
             CalcWakeFFT(spacing);
         }
-    } else if(!constLength_m) {
+    } else if (!constLength_m) {
         CalcWakeFFT(spacing);
     }
 
@@ -164,11 +172,11 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
 #endif
 
     // smooth the line density of the particle bunch
-    for(std::vector<Filter *>::const_iterator fit = filters_m.begin(); fit != filters_m.end(); ++fit) {
+    for (std::vector<Filter *>::const_iterator fit = filters_m.begin(); fit != filters_m.end(); ++fit) {
         (*fit)->apply(lineDensity_m);
     }
 
-    for(unsigned int i = 0; i < lineDensity_m.size(); i++) {
+    for (unsigned int i = 0; i < lineDensity_m.size(); i++) {
         K += lineDensity_m[i];
     }
     K = 1 / K;
@@ -179,28 +187,28 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
     // Add the right OutEnergy[i] to all the particles
     //FIXME: can we specify LONG AND TRANS?
     switch(direction_m) {
-        case LONGITUDINAL:
-            for(unsigned int i = 0; i < bunch->getLocalNum(); i++) {
+        case WakeDirection::LONGITUDINAL: {
+            for (unsigned int i = 0; i < bunch->getLocalNum(); i++) {
 
                 //FIXME: Stimmt das????????? (von den einheiten)
                 // calculate bin containing particle
                 int idx = (int)(floor((bunch->R[i](2) - mindist) / spacing));
                 //IFF: should be ok
-                if(idx == NBin_m) idx--;
+                if (idx == NBin_m) idx--;
                 PAssert(idx >= 0 && idx < NBin_m);
                 double dE = OutEnergy[idx];
                 bunch->Ef[i](2) += dE;
 
             }
             break;
-
-        case TRANSVERSAL:
-            for(unsigned int i = 0; i < bunch->getLocalNum(); i++) {
+        }
+        case WakeDirection::TRANSVERSAL: {
+            for (unsigned int i = 0; i < bunch->getLocalNum(); i++) {
 
                 // calculate bin containing particle
                 int idx = (int)(floor((bunch->R[i](2) - mindist) / spacing));
                 //IFF: should be ok
-                if(idx == NBin_m) idx--;
+                if (idx == NBin_m) idx--;
                 PAssert(idx >= 0 && idx < NBin_m);
                 double dE = OutEnergy[idx];
 
@@ -212,9 +220,11 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
 
             }
             break;
-
-        default:
-            throw GeneralClassicException("GreenWakeFunction::apply", "invalid direction specified");
+        }
+        default: {
+            throw GeneralClassicException("GreenWakeFunction::apply",
+                                          "Invalid direction specified");
+        }
     }
 
 #ifdef ENABLE_WAKE_DUMP
@@ -229,7 +239,7 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
        << "# direction = " << direction << "\n"
        << "# spacing = " << spacing << "\n"
        << "# Lbunch = " << NBin_m << "\n";
-    for(int i = 0; i < NBin_m; i++) {
+    for (int i = 0; i < NBin_m; i++) {
         f2 << i + 1 << " " << OutEnergy[i] << "\n";
     }
     f2.flush();
@@ -248,8 +258,8 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
  */
 void GreenWakeFunction::compEnergy(const double K,
                                    const double charge,
-                                   const double *lambda,
-                                   double *OutEnergy) {
+                                   const double* lambda,
+                                   double* OutEnergy) {
     int N = 2 * NBin_m - 1;
     // Allocate Space for the zero padded lambda and its Fourier Transformed
     std::vector<double> pLambda(N);
@@ -259,7 +269,7 @@ void GreenWakeFunction::compEnergy(const double K,
     gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(N);
 
     // fill the arrays with data
-    for(int i = 0; i < NBin_m; i ++) {
+    for (int i = 0; i < NBin_m; i ++) {
         pLambda[N-i-1] = 0.0;
         pLambda[i] = lambda[i];
     }
@@ -270,7 +280,7 @@ void GreenWakeFunction::compEnergy(const double K,
 
     // convolution -> multiplication in Fourier space
     pLambda[0] *= FftWField_m[0];
-    for(int i = 1; i < N; i += 2) {
+    for (int i = 1; i < N; i += 2) {
         double temp = pLambda[i];
         pLambda[i] = FftWField_m[i] * pLambda[i] - FftWField_m[i+1] * pLambda[i+1];
         pLambda[i+1] = FftWField_m[i] * pLambda[i+1] + FftWField_m[i+1] * temp;
@@ -282,7 +292,7 @@ void GreenWakeFunction::compEnergy(const double K,
     gsl_fft_halfcomplex_inverse(pLambda.data(), 1, N, hc, work);
 
     // Write the result to the output:
-    for(int i = 0; i < NBin_m; i ++) {
+    for (int i = 0; i < NBin_m; i ++) {
         OutEnergy[i] = -charge * K * pLambda[i] / (2.0 * NBin_m) * N; // CKR: I doubt that the multiplication with N is correct,
         //      put it here to get the same result as with FFTW
         //      My suspicion: S. Pauli has forgotten that if you
@@ -309,7 +319,7 @@ void GreenWakeFunction::compEnergy(const double K,
 void GreenWakeFunction::compEnergy(const double K,
                                    const double charge,
                                    std::vector<double> lambda,
-                                   double *OutEnergy) {
+                                   double* OutEnergy) {
     int N = 2 * NBin_m - 1;
     // Allocate Space for the zero padded lambda and its Fourier Transformed
     std::vector<double> pLambda(N);
@@ -319,7 +329,7 @@ void GreenWakeFunction::compEnergy(const double K,
     gsl_fft_real_workspace *work = gsl_fft_real_workspace_alloc(N);
 
     // fill the arrays with data
-    for(int i = 0; i < NBin_m; i ++) {
+    for (int i = 0; i < NBin_m; i ++) {
         pLambda[N-i-1] = 0.0;
         pLambda[i] = lambda[i];
     }
@@ -331,7 +341,7 @@ void GreenWakeFunction::compEnergy(const double K,
 
     // Convolution -> just a multiplication in Fourier space
     pLambda[0] *= FftWField_m[0];
-    for(int i = 1; i < N; i += 2) {
+    for (int i = 1; i < N; i += 2) {
         double temp = pLambda[i];
         pLambda[i] = FftWField_m[i] * pLambda[i] - FftWField_m[i+1] * pLambda[i+1];
         pLambda[i+1] = FftWField_m[i] * pLambda[i+1] + FftWField_m[i+1] * temp;
@@ -343,7 +353,7 @@ void GreenWakeFunction::compEnergy(const double K,
     gsl_fft_halfcomplex_inverse(pLambda.data(), 1, N, hc, work);
 
     // Write the result to the output:
-    for(int i = 0; i < NBin_m; i ++) {
+    for (int i = 0; i < NBin_m; i ++) {
         OutEnergy[i] = -charge * K * pLambda[i] / (2.0 * NBin_m) * N; // CKR: I doubt that the multiplication with N is correct,
         //      put it here to get the same result as with FFTW
         //      My suspicion: S. Pauli has forgotten that if you
@@ -376,7 +386,7 @@ void GreenWakeFunction::CalcWakeFFT(double spacing) {
     const int lowIndex = myDist.first;
     const int hiIndex  = myDist.second;
 
-    for(int i = 0; i < M; i ++) {
+    for (int i = 0; i < M; i ++) {
         FftWField_m[i] = 0.0;
     }
 
@@ -385,7 +395,7 @@ void GreenWakeFunction::CalcWakeFFT(double spacing) {
       */
 
     //     if (Ippl::myNode() != Ippl::getNodes()-1) {
-    for(int i = lowIndex; i <= hiIndex; i ++) {
+    for (int i = lowIndex; i <= hiIndex; i ++) {
         Wake w(i * spacing, Z0_m, radius_m, sigma_m, acMode_m, tau_m, direction_m);
         FftWField_m[i] = simpson(w, a, b, N);
     }
@@ -404,7 +414,7 @@ void GreenWakeFunction::CalcWakeFFT(double spacing) {
 
 #ifdef ENABLE_WAKE_TESTS_FFT_OUT
     std::vector<double> wf(2*NBin_m-1);
-    for(int i = 0; i < 2 * NBin_m - 1; ++ i) {
+    for (int i = 0; i < 2 * NBin_m - 1; ++ i) {
         wf[i] = FftWField_m[i];
     }
 #endif
@@ -425,7 +435,7 @@ void GreenWakeFunction::CalcWakeFFT(double spacing) {
        << "# Lbunch = " << NBin_m << "\n";
 
     f2 << "0\t" << FftWField_m[0] << "\t0.0\t" << wf[0] << "\n";
-    for(int i = 1; i < M; i += 2) {
+    for (int i = 1; i < M; i += 2) {
         f2 << (i + 1) / 2 << "\t"
            << FftWField_m[i] << "\t"
            << FftWField_m[i + 1] << "\t"
@@ -455,31 +465,31 @@ void GreenWakeFunction::setWakeFromFile(int NBin_m, double spacing) {
 
     fs.open(filename_m.c_str());
 
-    if(fs.fail()) {
+    if (fs.fail()) {
         throw GeneralClassicException("GreenWakeFunction::setWakeFromFile",
-                            "Open file operation failed, please check if \""
-                            + filename_m +  "\" really exists.");
+                            "Open file operation failed, please check if '"
+                            + filename_m +  "' really exists.");
     }
 
     fs >> name;
     msg << " SSDS1 read = " << name << endl;
-    if(name.compare("SDDS1") != 0) {
+    if (name.compare("SDDS1") != 0) {
         throw GeneralClassicException("GreenWakeFunction::setWakeFromFile",
-                            " No SDDS1 File. A SDDS1 file should start with a SDDS1 String. Check file \""
-                            + filename_m +  "\" ");
+                            " No SDDS1 File. A SDDS1 file should start with a SDDS1 String. Check file '"
+                            + filename_m +  "' ");
     }
 
-    for(int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
         fs.getline(temp, 256);
         msg << "line " << i << " :   " << temp << endl;
     }
 
     fs >> Np;
     msg << " header read" << endl;
-    if(Np <= 0) {
+    if (Np <= 0) {
         throw GeneralClassicException("GreenWakeFunction::setWakeFromFile",
-                            " The particle number should be bigger than zero! Please check the first line of file \""
-                            + filename_m +  "\".");
+                            " The particle number should be bigger than zero! Please check the first line of file '"
+                            + filename_m +  "'.");
     }
 
     msg  << " Np = " << Np << endl;
@@ -487,21 +497,21 @@ void GreenWakeFunction::setWakeFromFile(int NBin_m, double spacing) {
     std::vector<double> dist(Np);
 
     // read the wakefunction
-    for(int i = 0; i < Np; i ++) {
-        if(!fs.eof()) {
+    for (int i = 0; i < Np; i ++) {
+        if (!fs.eof()) {
             fs >> dist[i] >> wake[i] >> dummy;
         }
-        if(fs.eof()) {
+        if (fs.eof()) {
             throw GeneralClassicException("GreenWakeFunction::setWakeFromFile",
-                                " End of file reached before the whole wakefield is imported, please check file \""
-                                + filename_m +  "\".");
+                                " End of file reached before the whole wakefield is imported, please check file '"
+                                + filename_m +  "'.");
         }
     }
     // if needed interpolate the wake in a way that the wake form the file fits to the wake needs in the code (??)
 
     FftWField_m.resize(NBin_m);
 
-    for(int i = 0; i < NBin_m; i ++) {
+    for (int i = 0; i < NBin_m; i ++) {
         int j = 0;
         while(dist[j] < i * spacing) {
             j++;
@@ -520,6 +530,10 @@ void GreenWakeFunction::setWakeFromFile(int NBin_m, double spacing) {
     gsl_fft_real_workspace_free(work);
 }
 
-const std::string GreenWakeFunction::getType() const {
-    return "GreenWakeFunction";
+WakeType GreenWakeFunction::getType() const {
+    return WakeType::GreenWakeFunction;
+}
+
+std::string GreenWakeFunction::getWakeDirectionString(const WakeDirection& direction) {
+    return wakeDirectiontoString_s.at(direction);
 }

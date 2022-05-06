@@ -19,13 +19,14 @@
 // ------------------------------------------------------------------------
 
 #include "AbsBeamline/Bend2D.h"
-#include "Algorithms/PartBunchBase.h"
 #include "AbsBeamline/BeamlineVisitor.h"
+#include "AbstractObjects/OpalData.h"
+#include "Algorithms/PartBunchBase.h"
+#include "Fields/Fieldmap.h"
+#include "Physics/Units.h"
+#include "Structure/MeshGenerator.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
-#include "Fields/Fieldmap.h"
-#include "AbstractObjects/OpalData.h"
-#include "Structure/MeshGenerator.h"
 
 #include "gsl/gsl_poly.h"
 
@@ -61,10 +62,10 @@ Bend2D::Bend2D(const Bend2D &right):
     exitParameter3_m(right.exitParameter3_m),
     engeCoeffsEntry_m(right.engeCoeffsEntry_m),
     engeCoeffsExit_m(right.engeCoeffsExit_m),
-    entryFieldValues_m(NULL),
-    exitFieldValues_m(NULL),
-    entryFieldAccel_m(NULL),
-    exitFieldAccel_m(NULL),
+    entryFieldValues_m(nullptr),
+    exitFieldValues_m(nullptr),
+    entryFieldAccel_m(nullptr),
+    exitFieldAccel_m(nullptr),
     deltaBeginEntry_m(right.deltaBeginEntry_m),
     deltaEndEntry_m(right.deltaEndEntry_m),
     polyOrderEntry_m(right.polyOrderEntry_m),
@@ -102,10 +103,10 @@ Bend2D::Bend2D(const std::string &name):
     exitParameter1_m(0.0),
     exitParameter2_m(0.0),
     exitParameter3_m(0.0),
-    entryFieldValues_m(NULL),
-    exitFieldValues_m(NULL),
-    entryFieldAccel_m(NULL),
-    exitFieldAccel_m(NULL),
+    entryFieldValues_m(nullptr),
+    exitFieldValues_m(nullptr),
+    entryFieldAccel_m(nullptr),
+    exitFieldAccel_m(nullptr),
     deltaBeginEntry_m(0.0),
     deltaEndEntry_m(0.0),
     polyOrderEntry_m(0),
@@ -121,12 +122,12 @@ Bend2D::Bend2D(const std::string &name):
 }
 
 Bend2D::~Bend2D() {
-    if (entryFieldAccel_m != NULL) {
+    if (entryFieldAccel_m != nullptr) {
         for (unsigned int i = 0; i < 3u; ++ i) {
             gsl_spline_free(entryFieldValues_m[i]);
             gsl_spline_free(exitFieldValues_m[i]);
-            entryFieldValues_m[i] = NULL;
-            exitFieldValues_m[i] = NULL;
+            entryFieldValues_m[i] = nullptr;
+            exitFieldValues_m[i] = nullptr;
         }
         delete[] entryFieldValues_m;
         delete[] exitFieldValues_m;
@@ -169,7 +170,7 @@ bool Bend2D::apply(const Vector_t &R,
             return false;
         }
 
-        return true;
+        return getFlagDeleteOnTransverseExit();
     }
     return false;
 
@@ -223,9 +224,8 @@ void Bend2D::initialise(PartBunchBase<double, 3> *bunch,
             << "======================================================================\n"
             << endl;
     } else {
-        ERRORMSG("There is something wrong with your field map \""
-                 << fileName_m
-                 << "\"");
+        ERRORMSG("There is something wrong with your field map '"
+                 << fileName_m << "'");
         endField = startField - 1.0e-3;
     }
 }
@@ -688,7 +688,7 @@ void Bend2D::findBendStrength() {
 
     const double tolerance = 1e-7; // [deg]
     double actualBendAngle = calculateBendAngle();
-    double error = std::abs(actualBendAngle - angle_m) * Physics::rad2deg;
+    double error = std::abs(actualBendAngle - angle_m) * Units::rad2deg;
     if (error < tolerance)
         return;
 
@@ -718,7 +718,7 @@ void Bend2D::findBendStrength() {
         fieldAmplitude_m = (amplitude1 + amplitude2) / 2.0;
         double newBendAngle = calculateBendAngle();
 
-        error = std::abs(newBendAngle - angle_m) * Physics::rad2deg;
+        error = std::abs(newBendAngle - angle_m) * Units::rad2deg;
 
         if (error > tolerance) {
 
@@ -783,7 +783,7 @@ bool Bend2D::initializeFieldMap() {
 
     fieldmap_m = Fieldmap::getFieldmap(fileName_m, fast_m);
 
-    if (fieldmap_m != NULL) {
+    if (fieldmap_m != nullptr) {
         if (fileName_m != "1DPROFILE1-DEFAULT")
             return true;
         else
@@ -865,19 +865,19 @@ void Bend2D::print(Inform &msg, double bendAngleX, double bendAngleY) {
     msg << "Bend angle magnitude:    "
         << angle_m
         << " rad ("
-        << angle_m * Physics::rad2deg
+        << angle_m * Units::rad2deg
         << " degrees)"
         << "\n";
     msg << "Entrance edge angle:     "
         << entranceAngle_m
         << " rad ("
-        << entranceAngle_m * Physics::rad2deg
+        << entranceAngle_m * Units::rad2deg
         << " degrees)"
         << "\n";
     msg << "Exit edge angle:         "
         << exitAngle_m
         << " rad ("
-        << exitAngle_m * Physics::rad2deg
+        << exitAngle_m * Units::rad2deg
         << " degrees)"
         << "\n";
     msg << "Bend design radius:      "
@@ -903,7 +903,7 @@ void Bend2D::print(Inform &msg, double bendAngleX, double bendAngleY) {
     msg << "Rotation about z axis:   "
         << rotationZAxis_m
         << " rad ("
-        << rotationZAxis_m * Physics::rad2deg
+        << rotationZAxis_m * Units::rad2deg
         << " degrees)"
         << "\n";
     msg << "\n"
@@ -914,13 +914,13 @@ void Bend2D::print(Inform &msg, double bendAngleX, double bendAngleY) {
     msg << "Reference particle is bent: "
         << bendAngleX
         << " rad ("
-        << bendAngleX * Physics::rad2deg
+        << bendAngleX * Units::rad2deg
         << " degrees) in x plane"
         << "\n";
     msg << "Reference particle is bent: "
         << bendAngleY
         << " rad ("
-        << bendAngleY * Physics::rad2deg
+        << bendAngleY * Units::rad2deg
         << " degrees) in y plane"
         << "\n";
 
@@ -961,7 +961,7 @@ void Bend2D::readFieldMap(Inform &msg) {
     polyOrderEntry_m = engeCoeffsEntry_m.size() - 1;
     polyOrderExit_m = engeCoeffsExit_m.size() - 1;
 
-    double stepSize = Physics::c * 1e-12;
+    double stepSize = Physics::c * Units::ps2s;
     double entryLength = std::abs(entranceParameter3_m - entranceParameter1_m);
     unsigned int numStepsEntry = std::ceil(entryLength / stepSize) + 3;
     double stepSizeEntry = entryLength / (numStepsEntry - 3);
@@ -1177,7 +1177,7 @@ bool Bend2D::setupBendGeometry(double &startField, double &endField) {
     }
 
     reinitialize_m = findIdealBendParameters(chordLength_m);
-    if (getType() == RBEND) {
+    if (getType() == ElementType::RBEND) {
         setEntranceAngle(getEntranceAngle());
     }
 
@@ -1311,7 +1311,7 @@ std::vector<Vector_t> Bend2D::getOutline() const {
         Quaternion rotation = getQuaternion(upperCornerAtEntry - rotationCenter, Vector_t(0,0,1));
         Vector_t tmp = CoordinateSystemTrafo(rotationCenter, rotation).transformTo(upperCornerAtExit);
         double totalAngle = -std::fmod(Physics::two_pi - std::atan2(tmp(0), tmp(2)), Physics::two_pi);
-        numSteps = std::max(2.0, std::ceil(-totalAngle / (5.0 * Physics::deg2rad)));
+        numSteps = std::max(2.0, std::ceil(-totalAngle / (5.0 * Units::deg2rad)));
         double dAngle = 0.5 * totalAngle / (1.0 * numSteps - 1.0);
 
         outline.push_back(upperCornerAtEntry);
@@ -1514,7 +1514,7 @@ MeshData Bend2D::getSurfaceMesh() const {
     Vector_t T = cross(P1 - rotationCenter, P2 - rotationCenter);
     if (T[1] > 0) { // fringe fields are overlapping
         Vector_t dir1 = toEntranceRegion_m.rotateFrom(Vector_t(1, 0, 0));
-        if (this->getType() == ElementBase::RBEND ||
+        if (this->getType() == ElementType::RBEND ||
             std::abs(entranceAngle_m + exitAngle_m - angle_m) < 1e-8) {
             mesh.decorations_m.push_back(std::make_pair(0.5 * (P1 + P2) - 0.25 * dir1,
                                                         0.5 * (P1 + P2) + 0.25 * dir1));
@@ -1682,28 +1682,18 @@ std::array<double,2> Bend2D::getExitFringeFieldLength() const {
     return extFFL;
 }
 
-ElementBase::BoundingBox Bend2D::getBoundingBoxInLabCoords() const {
+BoundingBox Bend2D::getBoundingBoxInLabCoords() const {
     CoordinateSystemTrafo toBegin = getEdgeToBegin() * csTrafoGlobal2Local_m;
     CoordinateSystemTrafo toEnd = getEdgeToEnd() * csTrafoGlobal2Local_m;
 
     std::vector<Vector_t> outline = getOutline();
 
     BoundingBox bb;
-    bb.lowerLeftCorner = std::numeric_limits<double>::max();
-    bb.upperRightCorner = std::numeric_limits<double>::lowest();
-
     Vector_t dY(0, 0.5 * getFullGap(), 0);
     for (int i : {-1, 1}) {
         for (const Vector_t & vec: outline) {
             Vector_t vecInLabCoords = csTrafoGlobal2Local_m.transformFrom(vec + i * dY);
-            for (unsigned int d = 0; d < 3; ++ d) {
-                if (vecInLabCoords(d) < bb.lowerLeftCorner(d)) {
-                    bb.lowerLeftCorner(d) = vecInLabCoords(d);
-                }
-                if (vecInLabCoords(d) > bb.upperRightCorner(d)) {
-                    bb.upperRightCorner(d) = vecInLabCoords(d);
-                }
-            }
+            bb.enlargeToContainPosition(vecInLabCoords);
         }
     }
 

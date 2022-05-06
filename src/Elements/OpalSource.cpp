@@ -16,6 +16,7 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Elements/OpalSource.h"
+
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/SourceRep.h"
@@ -26,17 +27,18 @@ OpalSource::OpalSource():
     OpalElement(SIZE, "SOURCE",
                 "The \"SOURCE\" element defines a Source.") {
     itsAttr[DISTRIBUTION] = Attributes::makeStringArray
-                            ("DISTRIBUTION", "List of particle distributions to be used ");
+        ("DISTRIBUTION", "List of particle distributions to be used ");
 
     itsAttr[TRANSPARENT] = Attributes::makeBool
-                           ("TRANSPARENT", "Make the source element transparent to impacting elements; Default value is FALSE", false);
+        ("TRANSPARENT", "Make the source element transparent to impacting elements; Default value is FALSE", false);
+
     registerOwnership();
 
     setElement(new SourceRep("SOURCE"));
 }
 
 
-OpalSource::OpalSource(const std::string &name, OpalSource *parent):
+OpalSource::OpalSource(const std::string& name, OpalSource* parent):
     OpalElement(name, parent) {
     setElement(new SourceRep(name));
 }
@@ -46,7 +48,7 @@ OpalSource::~OpalSource()
 {}
 
 
-OpalSource *OpalSource::clone(const std::string &name) {
+OpalSource *OpalSource::clone(const std::string& name) {
     return new OpalSource(name, this);
 }
 
@@ -54,8 +56,8 @@ OpalSource *OpalSource::clone(const std::string &name) {
 void OpalSource::update() {
     OpalElement::update();
 
-    SourceRep *sol =
-        dynamic_cast<SourceRep *>(getElement());
+    SourceRep* sol =
+        dynamic_cast<SourceRep*>(getElement());
     double length = 0.05;
 
     sol->setElementLength(length);
@@ -63,6 +65,8 @@ void OpalSource::update() {
     if (Attributes::getBool(itsAttr[TRANSPARENT])) {
         sol->setTransparent();
     }
+
+    sol->setOutputFN(Attributes::getString(itsAttr[OUTFN]));
 
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(sol);

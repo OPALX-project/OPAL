@@ -24,18 +24,13 @@ class OpalMonitor: public OpalElement {
 
 public:
 
-    enum {
-        OUTFN = COMMON,
-        SIZE
-    };
-
     /// Exemplar constructor.
     OpalMonitor();
 
     virtual ~OpalMonitor();
 
     /// Make clone.
-    virtual OpalMonitor *clone(const std::string &name);
+    virtual OpalMonitor* clone(const std::string& name);
 
     /// Update the embedded CLASSIC monitor.
     virtual void update();
@@ -43,11 +38,11 @@ public:
 private:
 
     // Not implemented.
-    OpalMonitor(const OpalMonitor &);
-    void operator=(const OpalMonitor &);
+    OpalMonitor(const OpalMonitor&);
+    void operator=(const OpalMonitor&);
 
     // Clone constructor.
-    OpalMonitor(const std::string &name, OpalMonitor *parent);
+    OpalMonitor(const std::string& name, OpalMonitor* parent);
 };
 
 #endif // OPAL_OpalMonitor_HH

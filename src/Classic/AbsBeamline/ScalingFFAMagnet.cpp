@@ -33,7 +33,7 @@
 
 ScalingFFAMagnet::ScalingFFAMagnet(const std::string &name)
         : Component(name),
-         planarArcGeometry_m(1., 1.), dummy(), endField_m(NULL) {
+         planarArcGeometry_m(1., 1.), dummy(), endField_m(nullptr) {
 }
 
 ScalingFFAMagnet::ScalingFFAMagnet(const ScalingFFAMagnet &right)
@@ -87,7 +87,7 @@ void ScalingFFAMagnet::initialise(PartBunchBase<double, 3> *bunch, double &/*sta
 }
 
 void ScalingFFAMagnet::finalise() {
-    RefPartBunch_m = NULL;
+    RefPartBunch_m = nullptr;
 }
 
 bool ScalingFFAMagnet::bends() const {
@@ -196,7 +196,7 @@ void ScalingFFAMagnet::calculateDfCoefficients() {
 }
 
 void ScalingFFAMagnet::setEndField(endfieldmodel::EndFieldModel* endField) {
-    if (endField_m != NULL) {
+    if (endField_m != nullptr) {
         delete endField_m;
     }
     endField_m = endField;

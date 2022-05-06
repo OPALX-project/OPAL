@@ -27,23 +27,22 @@
 
 #include "AbsBeamline/VariableRFCavity.h"
 
-#include "Physics/Physics.h"
-#include "Algorithms/PartBunchBase.h"
 #include "AbsBeamline/BeamlineVisitor.h"
+#include "Algorithms/PartBunchBase.h"
+#include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 
-const double VariableRFCavity::lengthUnit_m = 1e3; // metres -> mm
-
 VariableRFCavity::VariableRFCavity(const std::string &name) : Component(name) {
-    initNull();  // initialise everything to NULL
+    initNull();  // initialise everything to nullptr
 }
 
 VariableRFCavity::VariableRFCavity() : Component() {
-    initNull();  // initialise everything to NULL
+    initNull();  // initialise everything to nullptr
 }
 
 VariableRFCavity::VariableRFCavity(const VariableRFCavity& var) : Component() {
-    initNull();  // initialise everything to NULL
+    initNull();  // initialise everything to nullptr
     *this = var;
 }
 
@@ -52,15 +51,15 @@ VariableRFCavity& VariableRFCavity::operator=(const VariableRFCavity& rhs) {
         return *this;
     }
     setName(rhs.getName());
-    setPhaseModel(NULL);
-    setAmplitudeModel(NULL);
-    setFrequencyModel(NULL);
-    if (rhs.phaseTD_m != NULL)
+    setPhaseModel(nullptr);
+    setAmplitudeModel(nullptr);
+    setFrequencyModel(nullptr);
+    if (rhs.phaseTD_m != nullptr)
         setPhaseModel(std::shared_ptr<AbstractTimeDependence>(rhs.phaseTD_m->clone()));
-    if (rhs.amplitudeTD_m != NULL) {
+    if (rhs.amplitudeTD_m != nullptr) {
         setAmplitudeModel(std::shared_ptr<AbstractTimeDependence>(rhs.amplitudeTD_m->clone()));
     }
-    if (rhs.frequencyTD_m != NULL)
+    if (rhs.frequencyTD_m != nullptr)
         setFrequencyModel(std::shared_ptr<AbstractTimeDependence>(rhs.frequencyTD_m->clone()));
     phaseName_m = rhs.phaseName_m;
     amplitudeName_m = rhs.amplitudeName_m;
@@ -82,7 +81,7 @@ void VariableRFCavity::initNull() {
   frequencyName_m = "";
   halfHeight_m = 0.;
   halfWidth_m = 0;
-  RefPartBunch_m = NULL;
+  RefPartBunch_m = nullptr;
 }
 
 std::shared_ptr<AbstractTimeDependence> VariableRFCavity::getAmplitudeModel() const {
@@ -147,7 +146,7 @@ bool VariableRFCavity::apply(const Vector_t &R, const Vector_t &/*P*/,
         }
 
         double E0 = amplitudeTD_m->getValue(t);
-        double f = frequencyTD_m->getValue(t) * 1.0E-3; // need GHz on the element we have MHz
+        double f = frequencyTD_m->getValue(t) * Units::MHz2Hz * Units::Hz2GHz; // need GHz on the element we have MHz
         double phi = phaseTD_m->getValue(t);
         E = Vector_t(0., 0., E0*sin(Physics::two_pi * f * t + phi));
         return false;
@@ -165,7 +164,7 @@ void VariableRFCavity::initialise(PartBunchBase<double, 3> *bunch, double &/*sta
 }
 
 void VariableRFCavity::finalise() {
-    RefPartBunch_m = NULL;
+    RefPartBunch_m = nullptr;
 }
 
 ElementBase* VariableRFCavity::clone() const {

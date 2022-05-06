@@ -14,7 +14,8 @@
 
 #include "Message/Message.h"
 #include "Message/Communicate.h"
-#include "Message/Formatter.h"
+#include "Message/Format.h"
+#include "Message/MsgBuffer.h"
 
 template <class T, unsigned Dim, class Mesh, class CachingPolicy> class ParticleSpatialLayout;
 
@@ -233,7 +234,8 @@ template<class C>
 		}
 
 		//wait for communication to finish and clean up buffers
-        MPI_Waitall(requests.size(), &(requests[0]), MPI_STATUSES_IGNORE);
+        MPI_Request* requests_ptr = requests.empty()? static_cast<MPI_Request*>(0): &(requests[0]);
+        MPI_Waitall(requests.size(), requests_ptr, MPI_STATUSES_IGNORE);
         for (unsigned int j = 0; j<buffers.size(); ++j)
         {
 			delete buffers[j]->getFormat();

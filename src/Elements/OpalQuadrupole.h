@@ -42,11 +42,11 @@ public:
     virtual ~OpalQuadrupole();
 
     /// Make clone.
-    virtual OpalQuadrupole *clone(const std::string &name);
+    virtual OpalQuadrupole* clone(const std::string& name);
 
     /// Print the quadrupole.
     //  Handle printing in OPAL-8 format.
-    virtual void print(std::ostream &) const;
+    virtual void print(std::ostream&) const;
 
     /// Update the embedded CLASSIC multipole.
     virtual void update();
@@ -54,13 +54,13 @@ public:
 private:
 
     // Not implemented.
-    OpalQuadrupole(const OpalQuadrupole &);
-    void operator=(const OpalQuadrupole &);
+    OpalQuadrupole(const OpalQuadrupole&);
+    void operator=(const OpalQuadrupole&);
 
     // Clone constructor.
-    OpalQuadrupole(const std::string &name, OpalQuadrupole *parent);
+    OpalQuadrupole(const std::string& name, OpalQuadrupole* parent);
 
-    ParticleMatterInteraction *parmatint_m;
+    ParticleMatterInteraction* parmatint_m;
 };
 
 #endif // OPAL_OpalQuadrupole_HH

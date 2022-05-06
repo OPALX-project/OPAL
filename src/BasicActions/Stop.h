@@ -1,29 +1,25 @@
+//
+// Class Stop
+//   The class for OPAL STOP command.
+//
+// Copyright (c) 2000 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_Stop_HH
 #define OPAL_Stop_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: Stop.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: Stop
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:33:37 $
-// $Author: Andreas Adelmann $
-//
-// ------------------------------------------------------------------------
-
 #include "AbstractObjects/Action.h"
 
-
-// Class Stop
-// ------------------------------------------------------------------------
-/// The STOP command.
 
 class Stop: public Action {
 
@@ -35,7 +31,7 @@ public:
     virtual ~Stop();
 
     /// Make clone.
-    virtual Stop *clone(const std::string &name);
+    virtual Stop* clone(const std::string& name);
 
     /// Execute the command.
     virtual void execute();
@@ -43,11 +39,11 @@ public:
 private:
 
     // Not implemented.
-    Stop(const Stop &);
-    void operator=(const Stop &);
+    Stop(const Stop&);
+    void operator=(const Stop&);
 
     // Clone constructor.
-    Stop(const std::string &name, Stop *parent);
+    Stop(const std::string& name, Stop* parent);
 };
 
 #endif // OPAL_Stop_HH

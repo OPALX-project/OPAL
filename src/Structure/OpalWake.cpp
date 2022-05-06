@@ -2,7 +2,7 @@
 // Class OpalWake
 //   The class for the OPAL WAKE command.
 //
-// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2008 - 2022, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -15,32 +15,33 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-
 #include "Structure/OpalWake.h"
-#include "Solvers/GreenWakeFunction.hh"
-#include "Solvers/CSRWakeFunction.hh"
-#include "Solvers/CSRIGFWakeFunction.hh"
+
+#include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
+#include "Solvers/GreenWakeFunction.h"
+#include "Solvers/CSRWakeFunction.h"
+#include "Solvers/CSRIGFWakeFunction.h"
 #include "Utilities/OpalException.h"
-#include "AbsBeamline/ElementBase.h"
 #include "Utilities/OpalFilter.h"
+
+#include <unordered_map>
 
 extern Inform *gmsg;
 
 // The attributes of class OpalWake.
 namespace {
     enum {
-        // DESCRIPTION OF SINGLE PARTICLE:
-        TYPE,       // The type of the wake
-        NBIN,       // Number of bins for the line density
-        CONST_LENGTH,// True if the length of the Bunch is considered as constant
-        CONDUCT,    // Conductivity, either AC or DC
-        Z0,     //
-        RADIUS, // Radius of the tube
+        TYPE,         // The type of the wake
+        NBIN,         // Number of bins for the line density
+        CONST_LENGTH, // True if the length of the Bunch is considered as constant
+        CONDUCT,      // Conductivity, either AC or DC
+        Z0,
+        RADIUS,       // Radius of the tube
         SIGMA,
         TAU,
-        FILTERS, // List of filters to apply on line density
+        FILTERS,      // List of filters to apply on line density
         FNAME,
         SIZE
     };
@@ -51,8 +52,9 @@ OpalWake::OpalWake():
                "The \"WAKE\" statement defines data for the wakefuction "
                "on an element."),
     wf_m(0) {
-    itsAttr[TYPE] = Attributes::makeUpperCaseString
-        ("TYPE", "Specifies the wake function: 1D-CSR, 1D-CSR-IGF, LONG-SHORT-RANGE, TRANSV-SHORT-RANGE");
+    itsAttr[TYPE] = Attributes::makePredefinedString
+        ("TYPE", "Specifies the wake function.",
+         {"1D-CSR", "1D-CSR-IGF", "LONG-SHORT-RANGE", "TRANSV-SHORT-RANGE"});
 
     itsAttr[NBIN] = Attributes::makeReal
         ("NBIN", "Number of bins for the line density calculation");
@@ -60,8 +62,8 @@ OpalWake::OpalWake():
     itsAttr[CONST_LENGTH] = Attributes::makeBool
         ("CONST_LENGTH", "True if the length of the Bunch is considered as constant");
 
-    itsAttr[CONDUCT] = Attributes::makeUpperCaseString
-        ("CONDUCT", "Conductivity: DC, AC");
+    itsAttr[CONDUCT] = Attributes::makePredefinedString
+        ("CONDUCT", "Conductivity.", {"DC", "AC"});
 
     itsAttr[Z0] = Attributes::makeReal
         ("Z0", "Impedance of the beam pipe ");
@@ -81,7 +83,7 @@ OpalWake::OpalWake():
     itsAttr[FNAME] = Attributes::makeStringArray
         ("FNAME", "Filename of the wakefield file");
 
-    OpalWake *defWake = clone("UNNAMED_WAKE");
+    OpalWake* defWake = clone("UNNAMED_WAKE");
     defWake->builtin = true;
 
     try {
@@ -95,7 +97,7 @@ OpalWake::OpalWake():
 }
 
 
-OpalWake::OpalWake(const std::string &name, OpalWake *parent):
+OpalWake::OpalWake(const std::string& name, OpalWake* parent):
     Definition(name, parent),
     wf_m(parent->wf_m)
 {}
@@ -106,13 +108,13 @@ OpalWake::~OpalWake() {
 }
 
 
-bool OpalWake::canReplaceBy(Object *object) {
+bool OpalWake::canReplaceBy(Object* object) {
     // Can replace only by another WAKE.
-    return dynamic_cast<OpalWake *>(object) != 0;
+    return dynamic_cast<OpalWake*>(object) != 0;
 }
 
 
-OpalWake *OpalWake::clone(const std::string &name) {
+OpalWake* OpalWake::clone(const std::string& name) {
     return new OpalWake(name, this);
 }
 
@@ -122,9 +124,8 @@ void OpalWake::execute() {
 }
 
 
-OpalWake *OpalWake::find(const std::string &name) {
-    OpalWake *wake = dynamic_cast<OpalWake *>(OpalData::getInstance()->find(name));
-
+OpalWake* OpalWake::find(const std::string& name) {
+    OpalWake* wake = dynamic_cast<OpalWake*>(OpalData::getInstance()->find(name));
     if (wake == 0) {
         throw OpalException("OpalWake::find()", "Wake \"" + name + "\" not found.");
     }
@@ -143,90 +144,94 @@ void OpalWake::update() {
 }
 
 
-void OpalWake::initWakefunction(const ElementBase &element) {
+void OpalWake::initWakefunction(const ElementBase& element) {
     *gmsg << "* ************* W A K E ************************************************************\n";
     *gmsg << "OpalWake::initWakefunction ";
     *gmsg << "for element " << element.getName() << "\n";
     *gmsg << "* **********************************************************************************" << endl;
 
-
     std::vector<std::string> filters_str = Attributes::getStringArray(itsAttr[FILTERS]);
-    std::vector<Filter *> filters;
+    std::vector<Filter*> filters;
 
-    for(std::vector<std::string>::const_iterator fit = filters_str.begin(); fit != filters_str.end(); ++ fit) {
+    for (std::vector<std::string>::const_iterator fit = filters_str.begin(); fit != filters_str.end(); ++fit) {
         OpalFilter *f = OpalFilter::find(*fit);
-
         if (f) {
             f->initOpalFilter();
             filters.push_back(f->filter_m);
         }
     }
-    std::string type = Attributes::getString(itsAttr[TYPE]);
-    if (type == "1D-CSR") {
 
-        if (filters.size() == 0 && Attributes::getReal(itsAttr[NBIN]) <= 7) {
-            throw OpalException("OpalWake::initWakeFunction",
-                                "At least 8 bins have to be used, ideally far more");
+    static const std::unordered_map<std::string, OpalWakeType> stringOpalWakeType_s = {
+        {"1D-CSR",             OpalWakeType::CSR},
+        {"1D-CSR-IGF",         OpalWakeType::CSRIGF},
+        {"LONG-SHORT-RANGE",   OpalWakeType::LONGSHORTRANGE},
+        {"TRANSV-SHORT-RANGE", OpalWakeType::TRANSVSHORTRANGE}
+    };
+
+    if (!itsAttr[TYPE]) {
+        throw OpalException("TrackRun::execute",
+                            "The attribute \"TYPE\" isn't set for the \"WAKE\" statement");
+    }
+    OpalWakeType type = stringOpalWakeType_s.at(Attributes::getString(itsAttr[TYPE]));
+    switch (type) {
+        case OpalWakeType::CSR: {
+            if (filters.size() == 0 && Attributes::getReal(itsAttr[NBIN]) <= 7) {
+                throw OpalException("OpalWake::initWakeFunction",
+                                    "At least 8 bins have to be used, ideally far more");
+            }
+
+            wf_m = new CSRWakeFunction(getOpalName(), filters,
+                                       (int)(Attributes::getReal(itsAttr[NBIN])));
+            break;
         }
+        case OpalWakeType::CSRIGF: {
+            if (filters.size() == 0 && Attributes::getReal(itsAttr[NBIN]) <= 7) {
+                throw OpalException("OpalWake::initWakeFunction",
+                                    "At least 8 bins have to be used, ideally far more");
+            }
 
-        wf_m = new CSRWakeFunction(getOpalName(),
-                                   filters,
-                                   (int)(Attributes::getReal(itsAttr[NBIN])));
-
-    } else if (type == "1D-CSR-IGF") {
-
-        if (filters.size() == 0 && Attributes::getReal(itsAttr[NBIN]) <= 7) {
-            throw OpalException("OpalWake::initWakeFunction",
-                                "At least 8 bins have to be used, ideally far more");
+            wf_m = new CSRIGFWakeFunction(getOpalName(), filters,
+                                          (int)(Attributes::getReal(itsAttr[NBIN])));
+            break;
         }
+        case OpalWakeType::LONGSHORTRANGE: {
+            int acMode = Attributes::getString(itsAttr[CONDUCT]) == "DC"? 2: 1;
 
-        wf_m = new CSRIGFWakeFunction(getOpalName(),
-                                      filters,
-                                      (int)(Attributes::getReal(itsAttr[NBIN])));
+            wf_m = new GreenWakeFunction(getOpalName(), filters,
+                                         (int)(Attributes::getReal(itsAttr[NBIN])),
+                                         Attributes::getReal(itsAttr[Z0]),
+                                         Attributes::getReal(itsAttr[RADIUS]),
+                                         Attributes::getReal(itsAttr[SIGMA]),
+                                         acMode,
+                                         Attributes::getReal(itsAttr[TAU]),
+                                         WakeDirection::LONGITUDINAL,
+                                         Attributes::getBool(itsAttr[CONST_LENGTH]),
+                                         Attributes::getString(itsAttr[FNAME]));
+            break;
+        }
+        case OpalWakeType::TRANSVSHORTRANGE: {
+            int acMode = Attributes::getString(itsAttr[CONDUCT]) == "DC" ? 2: 1;
 
-    } else if (type == "LONG-SHORT-RANGE") {
-        int acMode = Attributes::getString(itsAttr[CONDUCT]) == "DC"? 2: 1;
-
-        wf_m = new GreenWakeFunction(getOpalName(),
-                                     filters,
-                                     (int)(Attributes::getReal(itsAttr[NBIN])),
-                                     Attributes::getReal(itsAttr[Z0]),
-                                     Attributes::getReal(itsAttr[RADIUS]),
-                                     Attributes::getReal(itsAttr[SIGMA]),
-                                     acMode,
-                                     Attributes::getReal(itsAttr[TAU]),
-                                     1,
-                                     Attributes::getBool(itsAttr[CONST_LENGTH]),
-                                     Attributes::getString(itsAttr[FNAME]));
-
-    } else if (type == "TRANSV-SHORT-RANGE") {
-        int acMode = Attributes::getString(itsAttr[CONDUCT]) == "DC" ? 2: 1;
-
-        wf_m = new GreenWakeFunction(getOpalName(),
-                                     filters,
-                                     (int)(Attributes::getReal(itsAttr[NBIN])),
-                                     Attributes::getReal(itsAttr[Z0]),
-                                     Attributes::getReal(itsAttr[RADIUS]),
-                                     Attributes::getReal(itsAttr[SIGMA]),
-                                     acMode,
-                                     Attributes::getReal(itsAttr[TAU]),
-                                     0,
-                                     Attributes::getBool(itsAttr[CONST_LENGTH]),
-                                     Attributes::getString(itsAttr[FNAME]));
-
-    } else if (type == "LONG-TRANSV-SHORT-RANGE") {
-        throw OpalException("OpalWake::initWakeFunction",
-                            "LONG-TRANSV-SHORT-RANGE wake is not implemented");
-    } else if (type.empty() == false) {
-        throw OpalException("OpalWake::initWakeFunction",
-                            type + " is not a valid wake type");
-    } else {
-        wf_m = 0;
-        INFOMSG("no wakefunction attached" << endl);
+            wf_m = new GreenWakeFunction(getOpalName(), filters,
+                                         (int)(Attributes::getReal(itsAttr[NBIN])),
+                                         Attributes::getReal(itsAttr[Z0]),
+                                         Attributes::getReal(itsAttr[RADIUS]),
+                                         Attributes::getReal(itsAttr[SIGMA]),
+                                         acMode,
+                                         Attributes::getReal(itsAttr[TAU]),
+                                         WakeDirection::TRANSVERSAL,
+                                         Attributes::getBool(itsAttr[CONST_LENGTH]),
+                                         Attributes::getString(itsAttr[FNAME]));
+           break;
+        }
+        default: {
+            throw OpalException("OpalWake::initWakefunction",
+                                "Invalid \"TYPE\" of \"WAKE\" statement");
+        }
     }
 }
 
-void OpalWake::print(std::ostream &os) const {
+void OpalWake::print(std::ostream& os) const {
     os << "* ************* W A K E ************************************************************ " << std::endl;
     os << "* WAKE         " << getOpalName() << '\n'
        << "* BINS         " << Attributes::getReal(itsAttr[NBIN]) << '\n'

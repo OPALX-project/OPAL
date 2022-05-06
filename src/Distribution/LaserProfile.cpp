@@ -32,9 +32,9 @@ LaserProfile::LaserProfile(const std::string &fileName,
                            short flags):
     sizeX_m(0),
     sizeY_m(0),
-    hist2d_m(NULL),
-    rng_m(NULL),
-    pdf_m(NULL),
+    hist2d_m(nullptr),
+    rng_m(nullptr),
+    pdf_m(nullptr),
     centerMass_m(0.0),
     standardDeviation_m(0.0){
 
@@ -138,8 +138,8 @@ unsigned short * LaserProfile::readHDF5File(const std::string &fileName,
     }
 
     hid_t dataSetSpace = H5Dget_space(dataSet);
-    H5Sget_simple_extent_dims(dataSetSpace, dim, NULL);
-    hid_t filespace = H5Screate_simple(2, dim, NULL);
+    H5Sget_simple_extent_dims(dataSetSpace, dim, nullptr);
+    hid_t filespace = H5Screate_simple(2, dim, nullptr);
 
     sizeX_m        = dim[0];
     sizeY_m        = dim[1];
@@ -147,10 +147,10 @@ unsigned short * LaserProfile::readHDF5File(const std::string &fileName,
     hsize_t startHyperslab[]  = {0, 0};
     hsize_t blockCount[]  = {sizeX_m, sizeY_m};
 
-    H5Sselect_hyperslab(filespace, H5S_SELECT_SET, startHyperslab, NULL, blockCount, NULL);
+    H5Sselect_hyperslab(filespace, H5S_SELECT_SET, startHyperslab, nullptr, blockCount, nullptr);
 
     unsigned short  *image = new unsigned short  [sizeX_m * sizeY_m];
-    hid_t mem = H5Screate_simple(2, blockCount, NULL);
+    hid_t mem = H5Screate_simple(2, blockCount, nullptr);
 
     H5Dread(dataSet, H5T_NATIVE_USHORT, mem, filespace, H5P_DEFAULT, image);
 

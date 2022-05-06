@@ -25,6 +25,7 @@
 #include "AbstractObjects/Table.h"
 #include "AbstractObjects/TableRowRep.h"
 #include "AbstractObjects/OpalData.h"
+#include "AbstractObjects/Object.h"
 #include "Expressions/ABinary.h"
 #include "Expressions/AColumn.h"
 #include "Expressions/AList.h"
@@ -52,6 +53,7 @@
 #include "Utilities/Options.h"
 #include "Utilities/ParseError.h"
 #include "ValueDefinitions/BoolConstant.h"
+#include "ValueDefinitions/StringConstant.h"
 #include <algorithm>
 #include <cerrno>
 #include <cmath>
@@ -399,24 +401,75 @@ namespace Expressions {
     std::string parseString(Statement &stat, const char msg[]) {
         std::string result = std::string("");
         std::string temp;
-
-        while(stat.word(temp) || stat.str(temp)) {
-            if(temp == "STRING") {
+        bool isWord = stat.word(temp);
+        
+        while(isWord || stat.str(temp)) {
+            if(isWord && temp == "TO_STRING") {
                 parseDelimiter(stat, '(');
                 double value = parseRealConst(stat);
                 parseDelimiter(stat, ')');
                 std::ostringstream os;
-                os << value << std::ends;
+                os << value;
                 result += os.str();
             } else {
                 result += temp;
             }
 
             if(! stat.delimiter('&')) break;
+	    isWord = stat.word(temp);
         }
 
         if(result.empty()) {
-            throw ParseError("Expressions::parseString()", msg);
+            std::string errorMsg(msg);
+            errorMsg = stat.str() + "\n" + errorMsg;
+            throw ParseError("Expressions::parseString()", errorMsg);
+        } else {
+            return result;
+        }
+    }
+
+    std::string parseStringValue(Statement &stat, const char msg[]) {
+        std::string result;
+        std::string temp;
+        Object *object = nullptr;
+        bool isWord = stat.word(temp);
+        bool isValidObject = isWord && (object = OpalData::getInstance()->find(temp), object);
+        bool isConversion = isWord && temp == "TO_STRING";
+
+        while(stat.str(temp) || isValidObject || isConversion) {
+            if (isValidObject) {
+                StringConstant *stringConst = dynamic_cast<StringConstant*>(object);
+                if (stringConst) {
+                    result += stringConst->getString();
+                } else {
+                    result += temp;
+                    break;
+                }
+            } else if (isConversion) {
+                parseDelimiter(stat, '(');
+                double value = parseRealConst(stat);
+                parseDelimiter(stat, ')');
+                std::ostringstream os;
+                os << value;
+                result += os.str();                  
+            } else {
+                result += temp;
+            }
+
+            if(! stat.delimiter('&')) {
+                break;
+            }
+
+            object = nullptr;
+            isWord = stat.word(temp);
+            isValidObject = isWord && (object = OpalData::getInstance()->find(temp), object);
+            isConversion = isWord && temp == "TO_STRING";
+        }
+
+        if(result.empty()) {
+            std::string errorMsg(msg);
+            errorMsg = stat.str() + "\n" + errorMsg;
+            throw ParseError("Expressions::parseStringValue()", errorMsg);
         } else {
             return result;
         }
@@ -494,13 +547,13 @@ namespace Expressions {
         if(stat.delimiter('{')) {
             // List of string values within braces.
             do {
-                array.push_back(parseString(stat, "String value expected."));
+                array.push_back(parseStringValue(stat, "String value expected."));
             } while(stat.delimiter(','));
 
             parseDelimiter(stat, '}');
         } else {
             // A single string value.
-            array.push_back(parseString(stat, "String value expected."));
+            array.push_back(parseStringValue(stat, "String value expected."));
         }
 
         return array;

@@ -1,27 +1,42 @@
 //
-//  Copyright & License: See Copyright.readme in src directory
+// Class H5PartWrapperForPT
+//   A class that manages all calls to H5Part for the Parallel-T tracker.
 //
-
+// Copyright (c) 200x-2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Structure/H5PartWrapperForPT.h"
 
-#include "OPALconfig.h"
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Algorithms/Vektor.h"
+#include "OPALconfig.h"
+#include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
-#include "Physics/Physics.h"
 
 #include "h5core/h5_types.h"
 
+#include <cmath>
 #include <sstream>
 #include <set>
 
-H5PartWrapperForPT::H5PartWrapperForPT(const std::string &fileName, h5_int32_t flags):
+H5PartWrapperForPT::H5PartWrapperForPT(const std::string& fileName, h5_int32_t flags):
     H5PartWrapper(fileName, flags)
 { }
 
-H5PartWrapperForPT::H5PartWrapperForPT(const std::string &fileName, int restartStep, std::string sourceFile, h5_int32_t flags):
+H5PartWrapperForPT::H5PartWrapperForPT(const std::string& fileName, int restartStep, std::string sourceFile, h5_int32_t flags):
     H5PartWrapper(fileName, restartStep, sourceFile, flags)
 {
     if (restartStep == -1) {
@@ -73,7 +88,7 @@ void H5PartWrapperForPT::readHeader() {
             H5ReadFileAttribInt64(file_m, "nAutoPhaseCavities", &numAutoPhaseCavities) != H5_SUCCESS) {
             numAutoPhaseCavities = 0;
         } else {
-            for(long i = 0; i < numAutoPhaseCavities; ++ i) {
+            for (long i = 0; i < numAutoPhaseCavities; ++ i) {
                 std::string elementName  = "Cav-" + std::to_string(i + 1) + "-name";
                 std::string elementPhase = "Cav-" + std::to_string(i + 1) + "-value";
 
@@ -123,9 +138,9 @@ void H5PartWrapperForPT::readStepHeader(PartBunchBase<double, 3>* bunch) {
 
     Vector_t TaitBryant;
     READSTEPATTRIB(Float64, file_m, "TaitBryantAngles", (h5_float64_t *)&TaitBryant);
-    Quaternion rotTheta(cos(0.5 * TaitBryant[0]), 0, sin(0.5 * TaitBryant[0]), 0);
-    Quaternion rotPhi(cos(0.5 * TaitBryant[1]), sin(0.5 * TaitBryant[1]), 0, 0);
-    Quaternion rotPsi(cos(0.5 * TaitBryant[2]), 0, 0, sin(0.5 * TaitBryant[2]));
+    Quaternion rotTheta(std::cos(0.5 * TaitBryant[0]), 0, std::sin(0.5 * TaitBryant[0]), 0);
+    Quaternion rotPhi(std::cos(0.5 * TaitBryant[1]), std::sin(0.5 * TaitBryant[1]), 0, 0);
+    Quaternion rotPsi(std::cos(0.5 * TaitBryant[2]), 0, 0, std::sin(0.5 * TaitBryant[2]));
     Quaternion rotation = rotTheta * (rotPhi * rotPsi);
     bunch->toLabTrafo_m = CoordinateSystemTrafo(-rotation.conjugate().rotate(RefPartR), rotation);
 }
@@ -142,47 +157,48 @@ void H5PartWrapperForPT::readStepData(PartBunchBase<double, 3>* bunch, h5_ssize_
     numParticles = lastParticle - firstParticle + 1;
 
     std::vector<char> buffer(numParticles * sizeof(h5_float64_t));
-    h5_float64_t *f64buffer = reinterpret_cast<h5_float64_t*>(&buffer[0]);
-    h5_int32_t *i32buffer = reinterpret_cast<h5_int32_t*>(&buffer[0]);
+    char* buffer_ptr = Util::c_data(buffer);
+    h5_float64_t* f64buffer = reinterpret_cast<h5_float64_t*>(buffer_ptr);
+    h5_int32_t* i32buffer = reinterpret_cast<h5_int32_t*>(buffer_ptr);
 
     READDATA(Float64, file_m, "x", f64buffer);
-    for(long int n = 0; n < numParticles; ++ n) {
+    for (long int n = 0; n < numParticles; ++ n) {
         bunch->R[n](0) = f64buffer[n];
         bunch->Bin[n] = 0;
     }
 
     READDATA(Float64, file_m, "y", f64buffer);
-    for(long int n = 0; n < numParticles; ++ n) {
+    for (long int n = 0; n < numParticles; ++ n) {
         bunch->R[n](1) = f64buffer[n];
     }
 
     READDATA(Float64, file_m, "z", f64buffer);
-    for(long int n = 0; n < numParticles; ++ n) {
+    for (long int n = 0; n < numParticles; ++ n) {
         bunch->R[n](2) = f64buffer[n];
     }
 
     READDATA(Float64, file_m, "px", f64buffer);
-    for(long int n = 0; n < numParticles; ++ n) {
+    for (long int n = 0; n < numParticles; ++ n) {
         bunch->P[n](0) = f64buffer[n];
     }
 
     READDATA(Float64, file_m, "py", f64buffer);
-    for(long int n = 0; n < numParticles; ++ n) {
+    for (long int n = 0; n < numParticles; ++ n) {
         bunch->P[n](1) = f64buffer[n];
     }
 
     READDATA(Float64, file_m, "pz", f64buffer);
-    for(long int n = 0; n < numParticles; ++ n) {
+    for (long int n = 0; n < numParticles; ++ n) {
         bunch->P[n](2) = f64buffer[n];
     }
 
     READDATA(Float64, file_m, "q", f64buffer);
-    for(long int n = 0; n < numParticles; ++ n) {
+    for (long int n = 0; n < numParticles; ++ n) {
         bunch->Q[n] = f64buffer[n];
     }
 
     READDATA(Int32, file_m, "id", i32buffer);
-    for(long int n = 0; n < numParticles; ++ n) {
+    for (long int n = 0; n < numParticles; ++ n) {
         bunch->ID[n] = i32buffer[n];
     }
 
@@ -194,7 +210,6 @@ void H5PartWrapperForPT::writeHeader() {
     OPAL_version << OPAL_PROJECT_NAME << " " << OPAL_PROJECT_VERSION << " # git rev. " << Util::getGitRevision();
     WRITESTRINGFILEATTRIB(file_m, "OPAL_version", OPAL_version.str().c_str());
 
-
     WRITESTRINGFILEATTRIB(file_m, "idUnit", "1");
     WRITESTRINGFILEATTRIB(file_m, "xUnit", "m");
     WRITESTRINGFILEATTRIB(file_m, "yUnit", "m");
@@ -205,6 +220,7 @@ void H5PartWrapperForPT::writeHeader() {
     WRITESTRINGFILEATTRIB(file_m, "pzUnit", "#beta#gamma");
 
     WRITESTRINGFILEATTRIB(file_m, "ptypeUnit", "1");
+    WRITESTRINGFILEATTRIB(file_m, "poriginUnit", "1");
     WRITESTRINGFILEATTRIB(file_m, "qUnit", "C");
 
     if (Options::ebDump) {
@@ -272,18 +288,17 @@ void H5PartWrapperForPT::writeHeader() {
     WRITEFILEATTRIB(Float64, file_m, "dPhiGlobal", &dphi, 1);
 }
 
-void H5PartWrapperForPT::writeStep(PartBunchBase<double, 3>* bunch, const std::map<std::string, double> &additionalStepAttributes) {
+void H5PartWrapperForPT::writeStep(PartBunchBase<double, 3>* bunch, const std::map<std::string, double>& additionalStepAttributes) {
     if (bunch->getTotalNum() == 0) return;
 
     open(H5_O_APPENDONLY);
+    bunch->calcBeamParameters();
     writeStepHeader(bunch, additionalStepAttributes);
     writeStepData(bunch);
     close();
 }
 
-void H5PartWrapperForPT::writeStepHeader(PartBunchBase<double, 3>* bunch, const std::map<std::string, double> &additionalStepAttributes) {
-    bunch->calcBeamParameters();
-
+void H5PartWrapperForPT::writeStepHeader(PartBunchBase<double, 3>* bunch, const std::map<std::string, double>& additionalStepAttributes) {
     double   actPos   = bunch->get_sPos();
     double   t        = bunch->getT();
     Vector_t rmin     = bunch->get_origin();
@@ -311,7 +326,7 @@ void H5PartWrapperForPT::writeStepHeader(PartBunchBase<double, 3>* bunch, const 
     h5_int64_t localTrackStep = (h5_int64_t)bunch->getLocalTrackStep();
     h5_int64_t globalTrackStep = (h5_int64_t)bunch->getGlobalTrackStep();
 
-    double mass = 1.0e-9 * bunch->getM();
+    double mass = Units::eV2GeV * bunch->getM();
     double charge = bunch->getCharge();
 
     h5_int64_t numBunch = 1;
@@ -323,26 +338,26 @@ void H5PartWrapperForPT::writeStepHeader(PartBunchBase<double, 3>* bunch, const 
 
     REPORTONERROR(H5SetStep(file_m, numSteps_m));
 
-    char const *OPALFlavour = "opal-t";
+    char const* OPALFlavour = "opal-t";
     WRITESTRINGSTEPATTRIB(file_m, "OPAL_flavour", OPALFlavour);
     WRITESTEPATTRIB(Float64, file_m, "SPOS", &actPos, 1);
-    WRITESTEPATTRIB(Float64, file_m, "RefPartR", (h5_float64_t *)&RefPartR, 3);
-    WRITESTEPATTRIB(Float64, file_m, "centroid", (h5_float64_t *)&centroid, 3);
-    WRITESTEPATTRIB(Float64, file_m, "RMSX", (h5_float64_t *)&xsigma, 3);
+    WRITESTEPATTRIB(Float64, file_m, "RefPartR", (h5_float64_t*)&RefPartR, 3);
+    WRITESTEPATTRIB(Float64, file_m, "centroid", (h5_float64_t*)&centroid, 3);
+    WRITESTEPATTRIB(Float64, file_m, "RMSX", (h5_float64_t*)&xsigma, 3);
 
-    WRITESTEPATTRIB(Float64, file_m, "RefPartP", (h5_float64_t *)&RefPartP, 3);
-    WRITESTEPATTRIB(Float64, file_m, "MEANP", (h5_float64_t *)&pmean, 3);
-    WRITESTEPATTRIB(Float64, file_m, "RMSP", (h5_float64_t *)&psigma, 3);
-    WRITESTEPATTRIB(Float64, file_m, "TaitBryantAngles", (h5_float64_t *)&TaitBryant, 3);
+    WRITESTEPATTRIB(Float64, file_m, "RefPartP", (h5_float64_t*)&RefPartP, 3);
+    WRITESTEPATTRIB(Float64, file_m, "MEANP", (h5_float64_t*)&pmean, 3);
+    WRITESTEPATTRIB(Float64, file_m, "RMSP", (h5_float64_t*)&psigma, 3);
+    WRITESTEPATTRIB(Float64, file_m, "TaitBryantAngles", (h5_float64_t*)&TaitBryant, 3);
 
-    WRITESTEPATTRIB(Float64, file_m, "#varepsilon", (h5_float64_t *)&vareps, 3);
-    WRITESTEPATTRIB(Float64, file_m, "#varepsilon-geom", (h5_float64_t *)&geomvareps, 3);
+    WRITESTEPATTRIB(Float64, file_m, "#varepsilon", (h5_float64_t*)&vareps, 3);
+    WRITESTEPATTRIB(Float64, file_m, "#varepsilon-geom", (h5_float64_t*)&geomvareps, 3);
 
-    WRITESTEPATTRIB(Float64, file_m, "minX", (h5_float64_t *)&rmin, 3);
-    WRITESTEPATTRIB(Float64, file_m, "maxX", (h5_float64_t *)&rmax, 3);
+    WRITESTEPATTRIB(Float64, file_m, "minX", (h5_float64_t*)&rmin, 3);
+    WRITESTEPATTRIB(Float64, file_m, "maxX", (h5_float64_t*)&rmax, 3);
 
-    WRITESTEPATTRIB(Float64, file_m, "minP", (h5_float64_t *)&minP, 3);
-    WRITESTEPATTRIB(Float64, file_m, "maxP", (h5_float64_t *)&maxP, 3);
+    WRITESTEPATTRIB(Float64, file_m, "minP", (h5_float64_t*)&minP, 3);
+    WRITESTEPATTRIB(Float64, file_m, "maxP", (h5_float64_t*)&maxP, 3);
 
     WRITESTEPATTRIB(Int64, file_m, "Step", &numSteps_m, 1);
     WRITESTEPATTRIB(Int64, file_m, "LocalTrackStep", &localTrackStep, 1);
@@ -372,8 +387,8 @@ void H5PartWrapperForPT::writeStepHeader(PartBunchBase<double, 3>* bunch, const 
                             additionalStepAttributes.at("E-ref_z"),
                             additionalStepAttributes.at("E-ref_y"));
 
-        WRITESTEPATTRIB(Float64, file_m, "B-ref", (h5_float64_t *)&referenceB, 3);
-        WRITESTEPATTRIB(Float64, file_m, "E-ref", (h5_float64_t *)&referenceE, 3);
+        WRITESTEPATTRIB(Float64, file_m, "B-ref", (h5_float64_t*)&referenceB, 3);
+        WRITESTEPATTRIB(Float64, file_m, "E-ref", (h5_float64_t*)&referenceE, 3);
     } catch (std::out_of_range & m) {
         ERRORMSG(m.what() << endl);
 
@@ -390,75 +405,80 @@ void H5PartWrapperForPT::writeStepData(PartBunchBase<double, 3>* bunch) {
     REPORTONERROR(H5PartSetNumParticles(file_m, numLocalParticles));
 
     std::vector<char> buffer(numLocalParticles * sizeof(h5_float64_t));
-    h5_float64_t *f64buffer = reinterpret_cast<h5_float64_t*>(&buffer[0]);
-    h5_int64_t *i64buffer = reinterpret_cast<h5_int64_t*>(&buffer[0]);
-    h5_int32_t *i32buffer = reinterpret_cast<h5_int32_t*>(&buffer[0]);
+    char* buffer_ptr = Util::c_data(buffer);
+    h5_float64_t* f64buffer = reinterpret_cast<h5_float64_t*>(buffer_ptr);
+    h5_int64_t* i64buffer = reinterpret_cast<h5_int64_t*>(buffer_ptr);
+    h5_int32_t* i32buffer = reinterpret_cast<h5_int32_t*>(buffer_ptr);
 
-    for(size_t i = 0; i < numLocalParticles; ++ i)
+    for (size_t i = 0; i < numLocalParticles; ++ i)
         f64buffer[i] =  bunch->R[i](0);
     WRITEDATA(Float64, file_m, "x", f64buffer);
 
-    for(size_t i = 0; i < numLocalParticles; ++ i)
+    for (size_t i = 0; i < numLocalParticles; ++ i)
         f64buffer[i] =  bunch->R[i](1);
     WRITEDATA(Float64, file_m, "y", f64buffer);
 
-    for(size_t i = 0; i < numLocalParticles; ++ i)
+    for (size_t i = 0; i < numLocalParticles; ++ i)
         f64buffer[i] =  bunch->R[i](2);
     WRITEDATA(Float64, file_m, "z", f64buffer);
 
-    for(size_t i = 0; i < numLocalParticles; ++ i)
+    for (size_t i = 0; i < numLocalParticles; ++ i)
         f64buffer[i] =  bunch->P[i](0);
     WRITEDATA(Float64, file_m, "px", f64buffer);
 
-    for(size_t i = 0; i < numLocalParticles; ++ i)
+    for (size_t i = 0; i < numLocalParticles; ++ i)
         f64buffer[i] =  bunch->P[i](1);
     WRITEDATA(Float64, file_m, "py", f64buffer);
 
-    for(size_t i = 0; i < numLocalParticles; ++ i)
+    for (size_t i = 0; i < numLocalParticles; ++ i)
         f64buffer[i] =  bunch->P[i](2);
     WRITEDATA(Float64, file_m, "pz", f64buffer);
 
-    for(size_t i = 0; i < numLocalParticles; ++ i)
+    for (size_t i = 0; i < numLocalParticles; ++ i)
         f64buffer[i] =  bunch->Q[i];
     WRITEDATA(Float64, file_m, "q", f64buffer);
 
-    for(size_t i = 0; i < numLocalParticles; ++ i)
+    for (size_t i = 0; i < numLocalParticles; ++ i)
         i64buffer[i] =  bunch->ID[i];
     WRITEDATA(Int64, file_m, "id", i64buffer);
 
-    for(size_t i = 0; i < numLocalParticles; ++ i)
+    for (size_t i = 0; i < numLocalParticles; ++ i)
         i32buffer[i] = (h5_int32_t) bunch->PType[i];
     WRITEDATA(Int32, file_m, "ptype", i32buffer);
 
-    if(Options::ebDump) {
-        for(size_t i = 0; i < numLocalParticles; ++ i)
+    for (size_t i = 0; i < numLocalParticles; ++ i)
+        i32buffer[i] = (h5_int32_t) bunch->POrigin[i];
+    WRITEDATA(Int32, file_m, "porigin", i32buffer);
+
+    if (Options::ebDump) {
+        for (size_t i = 0; i < numLocalParticles; ++ i)
             f64buffer[i] =  bunch->Ef[i](0);
         WRITEDATA(Float64, file_m, "Ex", f64buffer);
 
-        for(size_t i = 0; i < numLocalParticles; ++ i)
+        for (size_t i = 0; i < numLocalParticles; ++ i)
             f64buffer[i] =  bunch->Ef[i](1);
         WRITEDATA(Float64, file_m, "Ey", f64buffer);
 
-        for(size_t i = 0; i < numLocalParticles; ++ i)
+        for (size_t i = 0; i < numLocalParticles; ++ i)
             f64buffer[i] =  bunch->Ef[i](2);
         WRITEDATA(Float64, file_m, "Ez", f64buffer);
 
-        for(size_t i = 0; i < numLocalParticles; ++ i)
+        for (size_t i = 0; i < numLocalParticles; ++ i)
             f64buffer[i] =  bunch->Bf[i](0);
         WRITEDATA(Float64, file_m, "Bx", f64buffer);
 
-        for(size_t i = 0; i < numLocalParticles; ++ i)
+        for (size_t i = 0; i < numLocalParticles; ++ i)
             f64buffer[i] =  bunch->Bf[i](1);
         WRITEDATA(Float64, file_m, "By", f64buffer);
 
-        for(size_t i = 0; i < numLocalParticles; ++ i)
+        for (size_t i = 0; i < numLocalParticles; ++ i)
             f64buffer[i] =  bunch->Bf[i](2);
         WRITEDATA(Float64, file_m, "Bz", f64buffer);
 
     }
 
     /// Write space charge field map if asked for.
-    if(Options::rhoDump) {
+    if (Options::rhoDump) {
         NDIndex<3> idx = bunch->getFieldLayout().getLocalNDIndex();
         NDIndex<3> elem;
         h5_err_t herr = H5Block3dSetView(
@@ -474,9 +494,9 @@ void H5PartWrapperForPT::writeStepData(PartBunchBase<double, 3>* bunch) {
         // h5block uses the fortran convention of storing data:
         // INTEGER, DIMENSION(2,3) :: a
         // => {a(1,1), a(2,1), a(1,2), a(2,2), a(1,3), a(2,3)}
-        for(int i = idx[2].min(); i <= idx[2].max(); ++ i) {
-            for(int j = idx[1].min(); j <= idx[1].max(); ++ j) {
-                for(int k = idx[0].min(); k <= idx[0].max(); ++ k) {
+        for (int i = idx[2].min(); i <= idx[2].max(); ++ i) {
+            for (int j = idx[1].min(); j <= idx[1].max(); ++ j) {
+                for (int k = idx[0].min(); k <= idx[0].max(); ++ k) {
                     data[ii] = bunch->getRho(k, j, i);
                     ++ ii;
                 }

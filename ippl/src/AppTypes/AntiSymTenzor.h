@@ -379,6 +379,10 @@ public:
   // Operators
   
   Element_t operator()(unsigned int i, unsigned int j) const {
+    // PAssert and PAssert_EQ are macros. They are defined empty, if we
+    // compile for production. i and j are unused in this case. The
+    // following statement suppress the 'unused' warning.
+    (void)i; (void)j;
     PAssert_EQ(i, j);
     return T(0.0);
   }
@@ -390,6 +394,7 @@ public:
   }
 
   AssignProxy operator()(unsigned int i, unsigned int j) {
+    (void)i; (void)j;
     PAssert_EQ(i, j);
     return AssignProxy(AntiSymTenzor<T,1>::Zero, 0);
   }
@@ -401,6 +406,7 @@ public:
   }
 
   Element_t operator[](unsigned int i) const { 
+    (void)i;
     PAssert (i == 0);
     return AntiSymTenzor<T,1>::Zero;
   }
@@ -408,6 +414,7 @@ public:
   // These are the same as operator[] but with () instead:
 
   Element_t operator()(unsigned int i) const { 
+    (void)i;
     PAssert (i == 0);
     return AntiSymTenzor<T,1>::Zero;
   }

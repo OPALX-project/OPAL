@@ -1,24 +1,26 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
+//
+// CommMPI - MPI-specific communications object for use with the
+// Ippl framework.
+// Allows user to establish id's for available nodes, establish connections,
+// and send/receive data.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef COMM_MPI_H
 #define COMM_MPI_H
 
-/***************************************************************************
- * CommMPI.h - MPI-specific communications object for use with the
- * Ippl framework.
- * Allows user to establish id's for available nodes, establish connections,
- * and send/receive data.
- ***************************************************************************/
-
-// include files
 #include "Message/Communicate.h"
 #include <mpi.h>
 
@@ -31,7 +33,7 @@ public:
     // constructor arguments: command-line args, and number of processes
     // to start (if < 0, start the 'default' number, i.e. the number of
     // hosts in a MPI virtual machine, the number of nodes in an O2K, etc)
-    CommMPI(int& argc, char**& argv, int procs = (-1), bool mpiinit = true, 
+    CommMPI(int& argc, char**& argv, int procs = (-1), bool mpiinit = true,
             MPI_Comm mpicomm = MPI_COMM_WORLD);
     virtual ~CommMPI(void);
 

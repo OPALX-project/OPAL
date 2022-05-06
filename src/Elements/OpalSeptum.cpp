@@ -21,12 +21,12 @@
 #include "BeamlineCore/SeptumRep.h"
 #include "Structure/OpalWake.h"
 #include "Physics/Physics.h"
-
+#include "Physics/Units.h"
 
 OpalSeptum::OpalSeptum():
     OpalElement(SIZE, "SEPTUM",
                 "The \"SEPTUM\" element defines a Septum."),
-    owk_m(NULL) {
+    owk_m(nullptr) {
 
     itsAttr[XSTART] = Attributes::makeReal
                       ("XSTART", " Start of x coordinate");
@@ -38,8 +38,6 @@ OpalSeptum::OpalSeptum():
                     ("YEND", "End of y coordinate");
     itsAttr[WIDTH] = Attributes::makeReal
                      ("WIDTH", "Width of the septum");
-    itsAttr[OUTFN] = Attributes::makeString
-                     ("OUTFN", "Output filename");
 
     registerOwnership();
 
@@ -49,7 +47,7 @@ OpalSeptum::OpalSeptum():
 
 OpalSeptum::OpalSeptum(const std::string &name, OpalSeptum *parent):
     OpalElement(name, parent),
-    owk_m(NULL) {
+    owk_m(nullptr) {
     setElement(new SeptumRep(name));
 }
 
@@ -70,16 +68,15 @@ void OpalSeptum::update() {
 
     SeptumRep *sept = dynamic_cast<SeptumRep *>(getElement());
 
-    const double mm2m = 0.001;
-    double xstart = mm2m * Attributes::getReal(itsAttr[XSTART]);
-    double xend   = mm2m * Attributes::getReal(itsAttr[XEND]);
-    double ystart = mm2m * Attributes::getReal(itsAttr[YSTART]);
-    double yend   = mm2m * Attributes::getReal(itsAttr[YEND]);
-    double width  = mm2m * Attributes::getReal(itsAttr[WIDTH]);
+    double xstart = Units::mm2m * Attributes::getReal(itsAttr[XSTART]);
+    double xend   = Units::mm2m * Attributes::getReal(itsAttr[XEND]);
+    double ystart = Units::mm2m * Attributes::getReal(itsAttr[YSTART]);
+    double yend   = Units::mm2m * Attributes::getReal(itsAttr[YEND]);
+    double width  = Units::mm2m * Attributes::getReal(itsAttr[WIDTH]);
 
     double length = Attributes::getReal(itsAttr[LENGTH]);
 
-    if(itsAttr[WAKEF] && owk_m == NULL) {
+    if(itsAttr[WAKEF] && owk_m == nullptr) {
         owk_m = (OpalWake::find(Attributes::getString(itsAttr[WAKEF])))->clone(getOpalName() + std::string("_wake"));
         owk_m->initWakefunction(*sept);
         sept->setWake(owk_m->wf_m);

@@ -1,29 +1,25 @@
+//
+// Class Help
+//   The class for OPAL HELP command.
+//
+// Copyright (c) 2000 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_Help_HH
 #define OPAL_Help_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: Help.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: Help
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:33:37 $
-// $Author: Andreas Adelmann $
-//
-// ------------------------------------------------------------------------
-
 #include "AbstractObjects/Action.h"
 
-
-// Class Help
-// ------------------------------------------------------------------------
-/// The HELP commands.
 
 class Help: public Action {
 
@@ -35,22 +31,22 @@ public:
     virtual ~Help();
 
     /// Make clone.
-    virtual Help *clone(const std::string &name);
+    virtual Help* clone(const std::string& name);
 
     /// Execute the command.
     virtual void execute();
 
     /// Parse command (special for one-attribute command).
-    virtual void parse(Statement &);
+    virtual void parse(Statement&);
 
 private:
 
     // Not implemented.
-    Help(const Help &);
-    void operator=(const Help &);
+    Help(const Help&);
+    void operator=(const Help&);
 
     // Clone constructor.
-    Help(const std::string &name, Help *parent);
+    Help(const std::string& name, Help* parent);
 };
 
 #endif // OPAL_Help_HH

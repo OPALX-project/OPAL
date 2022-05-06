@@ -51,7 +51,7 @@ public:
     (const std::string &name, Statement &stat, const Parser *);
 
     /// Make a line template.
-    //  Return NULL, since one cannot make a template from a template.
+    //  Return nullptr, since one cannot make a template from a template.
     virtual Object *makeTemplate(const std::string &, TokenStream &, Statement &);
 
     /// Parse the line template.

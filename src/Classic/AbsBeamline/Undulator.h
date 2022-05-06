@@ -42,13 +42,14 @@ public:
 
     virtual void initialise(PartBunchBase<double, 3>* bunch, double& startField, double& endField);
 
+    using Component::apply;
     void apply(PartBunchBase<double, 3>* itsBunch, CoordinateSystemTrafo const& refToLocalCSTrafo);
 
     virtual void finalise();
 
     virtual bool bends() const;
 
-    virtual ElementBase::ElementType getType() const;
+    virtual ElementType getType() const;
 
     virtual void getDimensions(double& zBegin, double& zEnd) const;
 

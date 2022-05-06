@@ -36,7 +36,7 @@
 #include "AbsBeamline/EndFieldModel/Tanh.h"
 #include "AbsBeamline/VariableRFCavityFringeField.h"
 
-class VariableRFCavityFringeFieldTest : public ::testing::Test { 
+class VariableRFCavityFringeFieldTest : public ::testing::Test {
 public:
     VariableRFCavityFringeFieldTest() {
         cav1 = VariableRFCavityFringeField("bob");
@@ -77,8 +77,8 @@ TEST_F(VariableRFCavityFringeFieldTest, TestConstructor) {
     std::cerr << "Test Ctor" << std::endl;
     VariableRFCavityFringeField cav("bob");
     EXPECT_FLOAT_EQ(cav.getCavityCentre(), 0.);
-    endfieldmodel::EndFieldModel* null = NULL;
-    EXPECT_EQ(&(*(cav.getEndField())), null);
+
+    EXPECT_FALSE(cav.getEndField());
     std::cerr << "Test Ctor 2" << std::endl;
 }
 
@@ -88,7 +88,7 @@ TEST_F(VariableRFCavityFringeFieldTest, TestSetGet) {
     EXPECT_EQ(&(*(cav1.getEndField())), &(*shared));
     long int count = shared.use_count();
     EXPECT_EQ(count, 3);
-    PolynomialTimeDependence* time = NULL;
+    PolynomialTimeDependence* time = nullptr;
     EXPECT_NE(&(*(cav1.getFrequencyModel())), time);
 }
 
@@ -151,10 +151,10 @@ void testFieldLookup(VariableRFCavityFringeField& cav, Vector_t R, double t, Vec
     cav.apply(R, centroid, t, Etest, Btest);
     for (size_t i = 0; i < 3; ++i) {
         EXPECT_FLOAT_EQ(E[i], Etest[i]) << "\nR:" << R << " t: " << t
-        << "\nE expected: " << E << " " << " E meas: " << Etest 
+        << "\nE expected: " << E << " " << " E meas: " << Etest
         << "\nB expected: " << B << " " << " B meas: " << Btest << std::endl;
-        EXPECT_FLOAT_EQ(B[i], Btest[i]) << "\nR:" << R 
-        << "\nE expected: " << E << " " << " E meas: " << Etest 
+        EXPECT_FLOAT_EQ(B[i], Btest[i]) << "\nR:" << R
+        << "\nE expected: " << E << " " << " E meas: " << Etest
         << "\nB expected: " << B << " " << " B meas: " << Btest << std::endl;
     }
 }
@@ -238,7 +238,7 @@ Vector_t testMaxwell3(VariableRFCavityFringeField& cav, Vector_t pos, double t, 
     Vector_t result = dBdt*1e-1 + curlE;
 
     if (verbose) {
-        std::cerr << "maxwell3 at R: " << pos << " t: " << t << " with dx: " 
+        std::cerr << "maxwell3 at R: " << pos << " t: " << t << " with dx: "
                   << deltaPos << " dt: " << deltaT << std::endl;
         std::cerr << "  dEdx           " << dEdx << std::endl;
         std::cerr << "  dEdy           " << dEdy << std::endl;
@@ -263,12 +263,12 @@ std::vector<double> testMaxwell1and2(VariableRFCavityFringeField& cav, Vector_t 
     partial(cav, pos, t, deltaPos, 0, dEdx, dBdx);
     partial(cav, pos, t, deltaPos, 1, dEdy, dBdy);
     partial(cav, pos, t, deltaPos, 2, dEdz, dBdz);
-    
+
     double divE = dEdx[0] + dEdy[1] + dEdz[2];
     double divB = dBdx[0] + dBdy[1] + dBdz[2];
 
     if (verbose) {
-        std::cerr << "maxwell1+2 at R: " << pos << " t: " << t << " with dx: " 
+        std::cerr << "maxwell1+2 at R: " << pos << " t: " << t << " with dx: "
                   << deltaPos << std::endl;
         std::cerr << "  dEidi          "
                   << dEdx[0] << " " << dEdy[1] << " " << dEdz[2] << std::endl;

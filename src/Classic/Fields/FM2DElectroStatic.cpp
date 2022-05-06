@@ -1,5 +1,6 @@
 #include "Fields/FM2DElectroStatic.h"
 #include "Fields/Fieldmap.hpp"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
@@ -9,8 +10,8 @@
 
 FM2DElectroStatic::FM2DElectroStatic(std::string aFilename)
     : Fieldmap(aFilename),
-      FieldstrengthEz_m(NULL),
-      FieldstrengthEr_m(NULL) {
+      FieldstrengthEz_m(nullptr),
+      FieldstrengthEr_m(nullptr) {
     std::ifstream file;
     std::string tmpString;
     double tmpDouble;
@@ -73,10 +74,10 @@ FM2DElectroStatic::FM2DElectroStatic(std::string aFilename)
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         } else {
             // conversion from cm to m
-            rbegin_m /= 100.;
-            rend_m /= 100.;
-            zbegin_m /= 100.;
-            zend_m /= 100.;
+            rbegin_m *= Units::cm2m;
+            rend_m *= Units::cm2m;
+            zbegin_m *= Units::cm2m;
+            zend_m *= Units::cm2m;
 
             hr_m = (rend_m - rbegin_m) / num_gridpr_m;
             hz_m = (zend_m - zbegin_m) / num_gridpz_m;
@@ -97,7 +98,7 @@ FM2DElectroStatic::~FM2DElectroStatic() {
 }
 
 void FM2DElectroStatic::readMap() {
-    if (FieldstrengthEz_m == NULL) {
+    if (FieldstrengthEz_m == nullptr) {
         // declare variables and allocate memory
     	std::ifstream in;
         std::string tmpString;
@@ -144,8 +145,8 @@ void FM2DElectroStatic::readMap() {
 
         // conversion MV/m to V/m and normalization to Ez_max = 1 MV/m
         for (int i = 0; i < num_gridpr_m * num_gridpz_m; ++ i) {
-            FieldstrengthEz_m[i] *= 1e6 / Ezmax;
-            FieldstrengthEr_m[i] *= 1e6 / Ezmax;
+            FieldstrengthEz_m[i] *= Units::MVpm2Vpm / Ezmax;
+            FieldstrengthEr_m[i] *= Units::MVpm2Vpm / Ezmax;
         }
         INFOMSG(typeset_msg("read in field map '" + Filename_m + "'", "info") << "\n"
                 << endl);
@@ -153,11 +154,11 @@ void FM2DElectroStatic::readMap() {
 }
 
 void FM2DElectroStatic::freeMap() {
-    if (FieldstrengthEz_m != NULL) {
+    if (FieldstrengthEz_m != nullptr) {
         delete[] FieldstrengthEz_m;
-        FieldstrengthEz_m = NULL;
+        FieldstrengthEz_m = nullptr;
         delete[] FieldstrengthEr_m;
-        FieldstrengthEr_m = NULL;
+        FieldstrengthEr_m = nullptr;
 
         INFOMSG(typeset_msg("freed field map '" + Filename_m + "'", "info") << "\n"
                 << endl)

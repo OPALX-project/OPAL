@@ -1,7 +1,7 @@
 #ifndef MSLANG_H
 #define MSLANG_H
 
-#include "Utilities/MSLang/BoundingBox.h"
+#include "Utilities/MSLang/BoundingBox2D.h"
 #include "Utilities/MSLang/AffineTransformation.h"
 #include "Algorithms/Vektor.h"
 #include "AppTypes/Tenzor.h"
@@ -39,7 +39,7 @@ namespace mslang {
 
     struct Base: public Function {
         AffineTransformation trafo_m;
-        BoundingBox bb_m;
+        BoundingBox2D bb_m;
         std::vector<std::shared_ptr<Base> > divisor_m;
 
         Base():

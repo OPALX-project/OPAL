@@ -38,7 +38,7 @@
 namespace interpolation {
 
 template <class Tmplt>
-MMatrix<Tmplt>::MMatrix() : _matrix(NULL)
+MMatrix<Tmplt>::MMatrix() : _matrix(nullptr)
 {}
 template MMatrix<double>   ::MMatrix();
 template MMatrix<m_complex>::MMatrix();
@@ -62,15 +62,15 @@ template MMatrix<m_complex> MMatrix<m_complex>::inverse() const;
 template <>
 void MMatrix<double>::delete_matrix()
 {
-  if(_matrix != NULL) gsl_matrix_free( (gsl_matrix*)_matrix );
-  _matrix = NULL;
+  if(_matrix != nullptr) gsl_matrix_free( (gsl_matrix*)_matrix );
+  _matrix = nullptr;
 }
 
 template <>
 void MMatrix<m_complex>::delete_matrix()
 {
-  if(_matrix != NULL) gsl_matrix_complex_free( (gsl_matrix_complex*)_matrix );
-  _matrix = NULL;
+  if(_matrix != nullptr) gsl_matrix_complex_free( (gsl_matrix_complex*)_matrix );
+  _matrix = nullptr;
 }
 
 
@@ -79,7 +79,7 @@ MMatrix<double>& MMatrix<double>::operator= (const MMatrix<double>& mm)
 {
   if (&mm == this) return *this;
   delete_matrix();
-  if(!mm._matrix) { _matrix = NULL; return *this; }
+  if(!mm._matrix) { _matrix = nullptr; return *this; }
   _matrix = gsl_matrix_alloc( mm.num_row(), mm.num_col() );
   gsl_matrix_memcpy((gsl_matrix*)_matrix, (const gsl_matrix*)mm._matrix);
   return *this;
@@ -90,14 +90,14 @@ MMatrix<m_complex>& MMatrix<m_complex>::operator= (const MMatrix<m_complex>& mm)
 {
   if (&mm == this) return *this;
   delete_matrix();
-  if(!mm._matrix) { _matrix = NULL; return *this; }
+  if(!mm._matrix) { _matrix = nullptr; return *this; }
   _matrix = gsl_matrix_complex_alloc( mm.num_row(), mm.num_col() );
   gsl_matrix_complex_memcpy((gsl_matrix_complex*)_matrix, (const gsl_matrix_complex*)mm._matrix);
   return *this;
 }
 
 template <>
-MMatrix<double>::MMatrix( const MMatrix<double>& mm ) : _matrix(NULL)
+MMatrix<double>::MMatrix( const MMatrix<double>& mm ) : _matrix(nullptr)
 {
   if(mm._matrix)
   {
@@ -107,7 +107,7 @@ MMatrix<double>::MMatrix( const MMatrix<double>& mm ) : _matrix(NULL)
 }
 
 template <>
-MMatrix<m_complex>::MMatrix( const MMatrix<m_complex>& mm ) : _matrix(NULL)
+MMatrix<m_complex>::MMatrix( const MMatrix<m_complex>& mm ) : _matrix(nullptr)
 {
   if(mm._matrix)
   {
@@ -117,7 +117,7 @@ MMatrix<m_complex>::MMatrix( const MMatrix<m_complex>& mm ) : _matrix(NULL)
 }
 
 template <class Tmplt>
-MMatrix<Tmplt>::MMatrix(size_t i, size_t j, Tmplt* data_beg ) : _matrix(NULL)
+MMatrix<Tmplt>::MMatrix(size_t i, size_t j, Tmplt* data_beg ) : _matrix(nullptr)
 {
   build_matrix(i, j, data_beg);
 }

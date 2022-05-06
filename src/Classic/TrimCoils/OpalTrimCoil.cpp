@@ -57,8 +57,8 @@ OpalTrimCoil::OpalTrimCoil():
     Definition(SIZE, "TRIMCOIL",
                "The \"TRIMCOIL\" statement defines a trim coil."),
     trimcoil_m(nullptr) {
-    itsAttr[TYPE]      = Attributes::makeUpperCaseString
-                         ("TYPE", "Specifies the type of trim coil: PSI-BFIELD, PSI-PHASE, PSI-BFIELD-MIRRORED");
+    itsAttr[TYPE]      = Attributes::makePredefinedString
+                        ("TYPE", "Specifies the type of trim coil.", {"PSI-BFIELD", "PSI-PHASE", "PSI-BFIELD-MIRRORED"});
 
     itsAttr[COEFNUM]   = Attributes::makeRealArray
                          ("COEFNUM", "Radial profile: list of polynomial coefficients for the numerator (not for PSI-BFIELD-MIRRORED)");
@@ -171,9 +171,6 @@ void OpalTrimCoil::initOpalTrimCoil() {
     } else if (type == "PSI-BFIELD-MIRRORED") {
         double slope = Attributes::getReal(itsAttr[SLPTC]);
         trimcoil_m = std::unique_ptr<TrimCoilMirrored>     (new TrimCoilMirrored(bmax, rmin, rmax, slope));
-    } else {
-        throw OpalException("OpalTrimCoil::initOpalTrimCoil",
-                            type + " is not a valid trim coil type");
     }
 
     trimcoil_m->setAzimuth(phimin, phimax);

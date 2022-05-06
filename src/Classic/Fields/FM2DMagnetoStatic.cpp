@@ -1,5 +1,6 @@
 #include "Fields/FM2DMagnetoStatic.h"
 #include "Fields/Fieldmap.hpp"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
@@ -9,8 +10,8 @@
 
 FM2DMagnetoStatic::FM2DMagnetoStatic(std::string aFilename):
     Fieldmap(aFilename),
-    FieldstrengthBz_m(NULL),
-    FieldstrengthBr_m(NULL) {
+    FieldstrengthBz_m(nullptr),
+    FieldstrengthBr_m(nullptr) {
     std::ifstream file;
     std::string tmpString;
     double tmpDouble;
@@ -75,10 +76,10 @@ FM2DMagnetoStatic::FM2DMagnetoStatic(std::string aFilename):
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         } else {
             // conversion from cm to m
-            rbegin_m /= 100.;
-            rend_m /= 100.;
-            zbegin_m /= 100.;
-            zend_m /= 100.;
+            rbegin_m *= Units::cm2m;
+            rend_m *= Units::cm2m;
+            zbegin_m *= Units::cm2m;
+            zend_m *= Units::cm2m;
 
             hr_m = (rend_m - rbegin_m) / num_gridpr_m;
             hz_m = (zend_m - zbegin_m) / num_gridpz_m;
@@ -99,7 +100,7 @@ FM2DMagnetoStatic::~FM2DMagnetoStatic() {
 }
 
 void FM2DMagnetoStatic::readMap() {
-    if(FieldstrengthBz_m == NULL) {
+    if(FieldstrengthBz_m == nullptr) {
         // declare variables and allocate memory
         std::ifstream in;
         std::string tmpString;
@@ -153,12 +154,12 @@ void FM2DMagnetoStatic::readMap() {
 }
 
 void FM2DMagnetoStatic::freeMap() {
-    if(FieldstrengthBz_m != NULL) {
+    if(FieldstrengthBz_m != nullptr) {
         delete[] FieldstrengthBz_m;
         delete[] FieldstrengthBr_m;
 
-        FieldstrengthBz_m = NULL;
-        FieldstrengthBr_m = NULL;
+        FieldstrengthBz_m = nullptr;
+        FieldstrengthBr_m = nullptr;
 
         INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }

@@ -21,7 +21,7 @@
 #include "BeamlineCore/ProbeRep.h"
 #include "Structure/OpalWake.h"
 #include "Physics/Physics.h"
-
+#include "Physics/Units.h"
 
 OpalProbe::OpalProbe():
     OpalElement(SIZE, "PROBE",
@@ -40,8 +40,6 @@ OpalProbe::OpalProbe():
                      ("WIDTH", "Width of the probe, not used.");
     itsAttr[STEP] = Attributes::makeReal
                      ("STEP", "Step size of the probe [mm]", 1.0);
-    itsAttr[OUTFN] = Attributes::makeString
-                     ("OUTFN", "Output filename");
 
     registerOwnership();
 
@@ -71,12 +69,12 @@ void OpalProbe::update() {
 
     ProbeRep *prob =
         dynamic_cast<ProbeRep *>(getElement());
-    const double mm2m = 0.001;
-    double xstart = mm2m * Attributes::getReal(itsAttr[XSTART]);
-    double xend   = mm2m * Attributes::getReal(itsAttr[XEND]);
-    double ystart = mm2m * Attributes::getReal(itsAttr[YSTART]);
-    double yend   = mm2m * Attributes::getReal(itsAttr[YEND]);
-    double step   = mm2m * Attributes::getReal(itsAttr[STEP]);
+
+    double xstart = Units::mm2m * Attributes::getReal(itsAttr[XSTART]);
+    double xend   = Units::mm2m * Attributes::getReal(itsAttr[XEND]);
+    double ystart = Units::mm2m * Attributes::getReal(itsAttr[YSTART]);
+    double yend   = Units::mm2m * Attributes::getReal(itsAttr[YEND]);
+    double step   = Units::mm2m * Attributes::getReal(itsAttr[STEP]);
 
     double length = Attributes::getReal(itsAttr[LENGTH]);
 

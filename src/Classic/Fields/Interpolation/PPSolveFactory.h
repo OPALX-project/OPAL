@@ -120,7 +120,7 @@ class PPSolveFactory {
     void getPoints();
     void getValues(Mesh::Iterator it);
     void getDerivPoints();
-    void getDerivs(Mesh::Iterator it);
+    void getDerivs(const Mesh::Iterator& it);
 
     // nothing calls this method but I don't quite feel brave enough to remove
     // it...
@@ -150,7 +150,6 @@ class PPSolveFactory {
     std::vector< std::vector<int> > derivOrigins_m;
     std::vector< std::vector<int> > derivIndices_m;
     std::vector< MVector<double> > derivPolyVec_m;
-    std::vector<int> derivIndexByPower_m;
 
     std::vector<std::vector<std::vector<int> > > edgePoints_m;
     std::vector< std::vector<int> > smoothingPoints_m;

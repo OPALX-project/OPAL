@@ -1,6 +1,7 @@
 #include "Fields/FM1DMagnetoStatic.h"
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
@@ -212,10 +213,10 @@ void FM1DMagnetoStatic::computeFourierCoefficients(double maxBz,
 void FM1DMagnetoStatic::convertHeaderData() {
 
     // Convert to m.
-    rBegin_m /= 100.0;
-    rEnd_m /= 100.0;
-    zBegin_m /= 100.0;
-    zEnd_m /= 100.0;
+    rBegin_m *= Units::cm2m;
+    rEnd_m *= Units::cm2m;
+    zBegin_m *= Units::cm2m;
+    zEnd_m *= Units::cm2m;
 }
 
 double FM1DMagnetoStatic::readFileData(std::ifstream &fieldFile,

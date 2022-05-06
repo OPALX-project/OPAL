@@ -8,7 +8,7 @@
 #define OPAL_VERSION_PATCH   ${PROJECT_VERSION_PATCH}
 
 /* Define string with the options used to compile OPAL */
-#define OPAL_COMPILE_OPTIONS "${CMAKE_CXX_FLAGS}"
+#define OPAL_COMPILE_OPTIONS "${OPAL_COMPILE_OPTIONS} ${CMAKE_CXX_FLAGS}"
 
 /* Define to the address where bug reports for this package should be sent. */
 #define PACKAGE_BUGREPORT "${PROJECT_BUGREPORT}"

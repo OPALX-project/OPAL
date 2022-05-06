@@ -20,22 +20,23 @@
 
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Algorithms/PartBunchBase.h"
+#include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Structure/LossDataSink.h"
 #include "Utilities/Options.h"
+#include "Utilities/Util.h"
 
 
 PluginElement::PluginElement():PluginElement("")
 {}
 
 PluginElement::PluginElement(const std::string &name):
-    Component(name),
-    filename_m("") {
+    Component(name) {
     setDimensions(0.0, 0.0, 0.0, 0.0);
 }
 
 PluginElement::PluginElement(const PluginElement &right):
-    Component(right),
-    filename_m(right.filename_m) {
+    Component(right) {
     setDimensions(right.xstart_m, right.xend_m, right.ystart_m, right.yend_m);
 }
 
@@ -80,17 +81,6 @@ bool PluginElement::apply(const size_t &/*i*/, const double &, Vector_t &, Vecto
 
 bool PluginElement::applyToReferenceParticle(const Vector_t &, const Vector_t &, const double &, Vector_t &, Vector_t &) {
     return false;
-}
-
-void PluginElement::setOutputFN(std::string fn) {
-    filename_m = fn;
-}
-
-std::string PluginElement::getOutputFN() const {
-    if (filename_m == std::string(""))
-        return getName();
-    else
-        return filename_m.substr(0, filename_m.rfind("."));
 }
 
 void PluginElement::setDimensions(double xstart, double xend, double ystart, double yend) {
@@ -154,7 +144,7 @@ void PluginElement::setGeom(const double dist) {
 
 void PluginElement::changeWidth(PartBunchBase<double, 3> *bunch, int i, const double tstep, const double tangle) {
 
-    constexpr double c_mtns = Physics::c * 1.0e-9; // m/s --> m/ns
+    constexpr double c_mtns = Physics::c / Units::s2ns; // m/s --> m/ns
     double lstep  = euclidean_norm(bunch->P[i]) / Util::getGamma(bunch->P[i]) * c_mtns * tstep; // [m]
     double sWidth = lstep / std::sqrt( 1 + 1/tangle/tangle );
     setGeom(sWidth);
@@ -235,9 +225,9 @@ int PluginElement::checkPoint(const double &x, const double &y) const {
 }
 
 void PluginElement::save() {
-    OpalData::OPENMODE openMode;
+    OpalData::OpenMode openMode;
     if (numPassages_m > 0) {
-        openMode = OpalData::OPENMODE::APPEND;
+        openMode = OpalData::OpenMode::APPEND;
     } else {
         openMode = OpalData::getInstance()->getOpenMode();
     }

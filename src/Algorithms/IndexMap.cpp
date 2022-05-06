@@ -48,9 +48,9 @@ IndexMap::IndexMap():
 { }
 
 void IndexMap::print(std::ostream &out) const {
-    if (mapRange2Element_m.size() == 0) return;
+    if (mapRange2Element_m.empty()) return;
 
-    out << "Size of map " << mapRange2Element_m.size() << " sections " << std::endl;
+    out << "* Size of map " << mapRange2Element_m.size() << " sections " << std::endl;
     out << std::fixed << std::setprecision(6);
     auto mapIti = mapRange2Element_m.begin();
     auto mapItf = mapRange2Element_m.end();
@@ -61,14 +61,14 @@ void IndexMap::print(std::ostream &out) const {
     for (; mapIti != mapItf; mapIti++) {
         const key_t key = (*mapIti).first;
         const value_t val = (*mapIti).second;
-        out << "Key: ("
+        out << "* Key: ("
             << std::setw(numDigits + 7) << std::right << key.begin
             << " - "
             << std::setw(numDigits + 7) << std::right << key.end
             << ") number of overlapping elements " << val.size() << "\n";
 
         for (auto element: val) {
-            out << std::setw(25 + 2 * numDigits) << " " << element->getName() << "\n";
+            out << "* " << std::setw(25 + 2 * numDigits) << " " << element->getName() << "\n";
         }
     }
 }
@@ -149,7 +149,7 @@ void IndexMap::tidyUp(double zstop) {
     map_t::reverse_iterator rit = mapRange2Element_m.rbegin();
 
     if (rit != mapRange2Element_m.rend() &&
-        (*rit).second.size() == 0 &&
+        (*rit).second.empty() &&
         zstop > (*rit).first.begin) {
 
         key_t key{(*rit).first.begin, zstop};
@@ -175,7 +175,7 @@ enum elements {
 };
 
 void IndexMap::saveSDDS(double initialPathLength) const {
-    if (mapRange2Element_m.size() == 0) return;
+    if (mapRange2Element_m.empty()) return;
 
     std::vector<std::tuple<double, std::vector<double>, std::string> > sectors;
 
@@ -191,7 +191,7 @@ void IndexMap::saveSDDS(double initialPathLength) const {
     auto mapItf = mapRange2Element_m.end();
     for (; mapIti != mapItf; mapIti++) {
         const auto &sectorElements = (*mapIti).second;
-        if (sectorElements.size() == 0)
+        if (sectorElements.empty())
             continue;
 
         const auto &sectorRange = (*mapIti).first;
@@ -256,8 +256,8 @@ void IndexMap::saveSDDS(double initialPathLength) const {
         auto element = (*it).first;
         auto name = element->getName();
         auto type = element->getType();
-        if (type != ElementBase::RFCAVITY &&
-            type != ElementBase::TRAVELINGWAVE) {
+        if (type != ElementType::RFCAVITY &&
+            type != ElementType::TRAVELINGWAVE) {
             continue;
         }
 
@@ -287,7 +287,7 @@ void IndexMap::saveSDDS(double initialPathLength) const {
     }
 
     // add row if range of first sector starts after initialPathLength
-    if (sectors.size() > 0 &&
+    if (!sectors.empty() &&
         std::get<0>(sectors[0]) > initialPathLength) {
         auto tmp = sectors;
         sectors = std::vector<std::tuple<double, std::vector<double>, std::string> >(1);
@@ -305,7 +305,7 @@ void IndexMap::saveSDDS(double initialPathLength) const {
 
     for (auto sector: sectors) {
         std::string names = std::get<2>(sector);
-        if (names != "") {
+        if (!names.empty()) {
             names = names.substr(0, names.length() - 2);
         }
         names = "\"" + names + "\"";
@@ -318,8 +318,8 @@ void IndexMap::saveSDDS(double initialPathLength) const {
 namespace {
     void insertFlags(std::vector<double> &flags, std::shared_ptr<Component> element) {
         switch (element->getType()) {
-        case ElementBase::RBEND:
-        case ElementBase::SBEND:
+        case ElementType::RBEND:
+        case ElementType::SBEND:
             {
                 const Bend2D* bend = static_cast<const Bend2D*>(element.get());
                 if (bend->getRotationAboutZ() > 0.5 * Physics::pi &&
@@ -330,7 +330,7 @@ namespace {
                 }
             }
             break;
-        case ElementBase::MULTIPOLE:
+        case ElementType::MULTIPOLE:
             {
                 const Multipole* mult = static_cast<const Multipole*>(element.get());
                 switch(mult->getMaxNormalComponentIndex()) {
@@ -354,14 +354,14 @@ namespace {
                 }
             }
             break;
-        case ElementBase::SOLENOID:
+        case ElementType::SOLENOID:
             flags[SOLENOID] = 1;
             break;
-        case ElementBase::RFCAVITY:
-        case ElementBase::TRAVELINGWAVE:
+        case ElementType::RFCAVITY:
+        case ElementType::TRAVELINGWAVE:
             flags[RFCAVITY] = 1;
             break;
-        case ElementBase::MONITOR:
+        case ElementType::MONITOR:
             flags[MONITOR] = 1;
             break;
         default:

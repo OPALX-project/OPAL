@@ -33,7 +33,7 @@ class OwnPtr {
 public:
 
     /// Default constructor.
-    //  Set the pointer to NULL.
+    //  Set the pointer to nullptr.
     OwnPtr();
 
     /// Copy constructor.
@@ -65,7 +65,7 @@ public:
     Object &operator*() const;
 
     /// Test for validity.
-    //  Return true, if the pointer is not NULL.
+    //  Return true, if the pointer is not nullptr.
     bool isValid() const;
 
     /// Release ownership.

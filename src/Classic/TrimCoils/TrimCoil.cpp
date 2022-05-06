@@ -26,7 +26,7 @@
 
 #include <cmath>
 
-#include "Physics/Physics.h"
+#include "Physics/Units.h"
 
 TrimCoil::TrimCoil(double bmax,
                    double rmin,
@@ -55,6 +55,6 @@ void TrimCoil::setAzimuth(const double phimin, const double phimax)
     if (phimin_m < 0) phimin_m += 360;
     if (phimax_m < 0) phimax_m += 360;
 
-    phimin_m = phimin * Physics::deg2rad;
-    phimax_m = phimax * Physics::deg2rad;
+    phimin_m = phimin * Units::deg2rad;
+    phimax_m = phimax * Units::deg2rad;
 }

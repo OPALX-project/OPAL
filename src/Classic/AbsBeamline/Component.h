@@ -159,10 +159,7 @@ public:
 
     virtual void getDimensions(double &zBegin, double &zEnd) const = 0;
 
-    virtual ElementBase::ElementType getType() const;
-
-    virtual void setComponentType(std::string /*name*/) { };
-    virtual std::string getComponentType() const { return ""; };
+    virtual ElementType getType() const;
 
     /// Return design element.
     //  If this method returns a pointer to this component.

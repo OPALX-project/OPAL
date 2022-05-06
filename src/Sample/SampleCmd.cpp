@@ -333,7 +333,7 @@ void SampleCmd::execute() {
         if ((it = argumentMapper.find(i)) != argumentMapper.end()) {
             std::string type = itsAttr[i].getType();
             if (type == "string") {
-                if (Attributes::getString(itsAttr[i]) != "") {
+                if (!Attributes::getString(itsAttr[i]).empty()) {
                     std::string argument = "--" + (*it).second + "=" + Attributes::getString(itsAttr[i]);
                     arguments.push_back(argument);
                 }
@@ -360,12 +360,12 @@ void SampleCmd::execute() {
 
     arguments.push_back("--nsamples=" + std::to_string(nSample));
 
-    if (Attributes::getString(itsAttr[INPUT]) == "") {
+    if (Attributes::getString(itsAttr[INPUT]).empty()) {
         throw OpalException("SampleCmd::execute",
                             "The argument INPUT has to be provided");
     }
 
-    if (Attributes::getString(itsAttr[OUTDIR]) != "") {
+    if (!Attributes::getString(itsAttr[OUTDIR]).empty()) {
         fs::path dir(Attributes::getString(itsAttr[OUTDIR]));
         if (dir.is_relative()) {
             fs::path path = fs::path(std::string(getenv("PWD")));
@@ -380,7 +380,7 @@ void SampleCmd::execute() {
         arguments.push_back(argument);
     }
 
-    if (Attributes::getString(itsAttr[TEMPLATEDIR]) != "") {
+    if (!Attributes::getString(itsAttr[TEMPLATEDIR]).empty()) {
         fs::path dir(Attributes::getString(itsAttr[TEMPLATEDIR]));
         if (dir.is_relative()) {
             fs::path path = fs::path(std::string(getenv("PWD")));
@@ -392,7 +392,7 @@ void SampleCmd::execute() {
         arguments.push_back(argument);
     }
 
-    if (Attributes::getString(itsAttr[FIELDMAPDIR]) != "") {
+    if (!Attributes::getString(itsAttr[FIELDMAPDIR]).empty()) {
         fs::path dir(Attributes::getString(itsAttr[FIELDMAPDIR]));
         if (dir.is_relative()) {
             fs::path path = fs::path(std::string(getenv("PWD")));
@@ -403,7 +403,7 @@ void SampleCmd::execute() {
         setenv("FIELDMAPS", dir.c_str(), 1);
     }
 
-    if (Attributes::getString(itsAttr[DISTDIR]) != "") {
+    if (!Attributes::getString(itsAttr[DISTDIR]).empty()) {
         fs::path dir(Attributes::getString(itsAttr[DISTDIR]));
         if (dir.is_relative()) {
             fs::path path = fs::path(std::string(getenv("PWD")));

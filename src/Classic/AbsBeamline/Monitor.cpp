@@ -1,40 +1,37 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Monitor.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: Monitor
+// Class Monitor
 //   Defines the abstract interface for a beam position monitor.
 //
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
+// Copyright (c) 2000 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
 //
-// $Date: 2000/03/27 09:32:31 $
-// $Author: fci $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbsBeamline/Monitor.h"
-#include "Physics/Physics.h"
-#include "Algorithms/PartBunchBase.h"
+
 #include "AbsBeamline/BeamlineVisitor.h"
+#include "AbstractObjects/OpalData.h"
+#include "Algorithms/PartBunchBase.h"
 #include "Fields/Fieldmap.h"
+#include "Physics/Physics.h"
 #include "Structure/LossDataSink.h"
+#include "Structure/MonitorStatisticsWriter.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
+
 #include <boost/filesystem.hpp>
-#include "AbstractObjects/OpalData.h"
-#include "Structure/MonitorStatisticsWriter.h"
 
 #include <fstream>
 #include <memory>
 
-
-// Class Monitor
-// ------------------------------------------------------------------------
 
 std::map<double, SetStatistics> Monitor::statFileEntries_sm;
 const double Monitor::halfLength_s = 0.005;
@@ -57,7 +54,7 @@ Monitor::Monitor(const std::string &name):
     Component(name),
     filename_m(""),
     plane_m(OFF),
-    type_m(SPATIAL),
+    type_m(CollectionType::SPATIAL),
     numPassages_m(0)
 {}
 
@@ -75,20 +72,37 @@ bool Monitor::apply(const size_t &i, const double &t, Vector_t &/*E*/, Vector_t 
     const Vector_t &P = RefPartBunch_m->P[i];
     const double &dt = RefPartBunch_m->dt[i];
     const Vector_t singleStep  = Physics::c * dt * Util::getBeta(P);
-    if (online_m && type_m == SPATIAL) {
+    if (online_m && type_m == CollectionType::SPATIAL) {
         if (dt * R(2) < 0.0 &&
             dt * (R(2) + singleStep(2)) > 0.0) {
-            double frac = R(2) / singleStep(2);
+            // if R(2) is negative then frac should be positive and vice versa
+            double frac = -R(2) / singleStep(2);
 
-            lossDs_m->addParticle(R + frac * singleStep,
-                                  P,
-                                  RefPartBunch_m->ID[i],
-                                  t + frac * dt,
-                                  0);
+            lossDs_m->addParticle(OpalParticle(RefPartBunch_m->ID[i],
+                                               R + frac * singleStep,
+                                               P,
+                                               t + frac * dt,
+                                               RefPartBunch_m->Q[i],
+                                               RefPartBunch_m->M[i]));
         }
     }
 
     return false;
+}
+
+void Monitor::driftToCorrectPositionAndSave(const Vector_t& refR, const Vector_t& refP) {
+    const double cdt = Physics::c * RefPartBunch_m->getdT();
+    const Vector_t driftPerTimeStep = cdt * Util::getBeta(refP);
+    const double tau = -refR(2) / driftPerTimeStep(2);
+    const CoordinateSystemTrafo update(refR + tau * driftPerTimeStep, getQuaternion(refP, Vector_t(0, 0, 1)));
+    const CoordinateSystemTrafo refToLocalCSTrafo = update * (getCSTrafoGlobal2Local() * RefPartBunch_m->toLabTrafo_m);
+
+    for (OpalParticle particle : *RefPartBunch_m) {
+        Vector_t beta = refToLocalCSTrafo.rotateTo(Util::getBeta(particle.getP()));
+        Vector_t dS = (tau - 0.5) * cdt * beta; // the particles are half a step ahead relative to the reference particle
+        particle.setR(refToLocalCSTrafo.transformTo(particle.getR()) + dS);
+        lossDs_m->addParticle(particle);
+    }
 }
 
 bool Monitor::applyToReferenceParticle(const Vector_t &R,
@@ -113,25 +127,19 @@ bool Monitor::applyToReferenceParticle(const Vector_t &R,
                                            RefPartBunch_m->get_sPos() + ds,
                                            RefPartBunch_m->getGlobalTrackStep());
 
-            if (type_m == TEMPORAL) {
-                const unsigned int localNum = RefPartBunch_m->getLocalNum();
-
-                for (unsigned int i = 0; i < localNum; ++ i) {
-                    Vector_t shift = ((frac - 0.5) * cdt * Util::getBeta(RefPartBunch_m->P[i])
-                                      - singleStep);
-                    lossDs_m->addParticle(RefPartBunch_m->R[i] + shift,
-                                          RefPartBunch_m->P[i],
-                                          RefPartBunch_m->ID[i],
-                                          time,
-                                          0);
+            if (type_m == CollectionType::TEMPORAL) {
+                driftToCorrectPositionAndSave(R, P);
+                auto stats = lossDs_m->computeStatistics(1);
+                if (!stats.empty()) {
+                    statFileEntries_sm.insert(std::make_pair(stats.begin()->spos_m, *stats.begin()));
+                    OpalData::OpenMode openMode;
+                    if (numPassages_m > 0) {
+                        openMode = OpalData::OpenMode::APPEND;
+                    } else {
+                        openMode = OpalData::getInstance()->getOpenMode();
+                    }
+                    lossDs_m->save(1, openMode);
                 }
-                OpalData::OPENMODE openMode;
-                if (numPassages_m > 0) {
-                    openMode = OpalData::OPENMODE::APPEND;
-                } else {
-                    openMode = OpalData::getInstance()->getOpenMode();
-                }
-                lossDs_m->save(1, openMode);
             }
 
             ++ numPassages_m;
@@ -145,32 +153,30 @@ void Monitor::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
     endField = startField + halfLength_s;
     startField -= halfLength_s;
 
-    if (filename_m == std::string(""))
-        filename_m = getName();
-    else
-        filename_m = filename_m.substr(0, filename_m.rfind("."));
-
     const size_t totalNum = bunch->getTotalNum();
     double currentPosition = endField;
     if (totalNum > 0) {
         currentPosition = bunch->get_sPos();
     }
 
-    if (OpalData::getInstance()->getOpenMode() == OpalData::OPENMODE::WRITE ||
+    filename_m = getOutputFN();
+
+    if (OpalData::getInstance()->getOpenMode() == OpalData::OpenMode::WRITE ||
         currentPosition < startField) {
+
         namespace fs = boost::filesystem;
 
         fs::path lossFileName = fs::path(filename_m + ".h5");
         if (fs::exists(lossFileName)) {
             Ippl::Comm->barrier();
-            if (Ippl::myNode() == 0)
+            if (Ippl::myNode() == 0) {
                 fs::remove(lossFileName);
-
+            }
             Ippl::Comm->barrier();
         }
     }
 
-    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(filename_m, !Options::asciidump, getType()));
+    lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(filename_m, !Options::asciidump, type_m));
 }
 
 void Monitor::finalise() {
@@ -187,7 +193,7 @@ void Monitor::goOffline() {
         statFileEntries_sm.insert(std::make_pair(stat.spos_m, stat));
     }
 
-    if (type_m != TEMPORAL) {
+    if (type_m != CollectionType::TEMPORAL) {
         lossDs_m->save(numPassages_m);
     }
 }
@@ -196,18 +202,14 @@ bool Monitor::bends() const {
     return false;
 }
 
-void Monitor::setOutputFN(std::string fn) {
-    filename_m = fn;
-}
-
 void Monitor::getDimensions(double &zBegin, double &zEnd) const {
     zBegin = -halfLength_s;
     zEnd = halfLength_s;
 }
 
 
-ElementBase::ElementType Monitor::getType() const {
-    return MONITOR;
+ElementType Monitor::getType() const {
+    return ElementType::MONITOR;
 }
 
 void Monitor::writeStatistics() {

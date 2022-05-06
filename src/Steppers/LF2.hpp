@@ -16,6 +16,7 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "BorisPusher.h"
+#include "Physics/Units.h"
 
 template <typename FieldFunction, typename ... Arguments>
 bool LF2<FieldFunction, Arguments ...>::doAdvance_m(PartBunchBase<double, 3>* bunch,
@@ -27,12 +28,12 @@ bool LF2<FieldFunction, Arguments ...>::doAdvance_m(PartBunchBase<double, 3>* bu
     bool flagNoDeletion = true;
 
     // push for first LF2 half step
-    push_m(bunch->R[i], bunch->P[i], 0.5 * dt * 1.0e-9);  // ns --> s
+    push_m(bunch->R[i], bunch->P[i], 0.5 * dt * Units::ns2s);
 
-    flagNoDeletion = kick_m(bunch, i, t, dt * 1.0e-9, args ...);
+    flagNoDeletion = kick_m(bunch, i, t, dt * Units::ns2s, args ...);
 
     // push for second LF2 half step
-    push_m(bunch->R[i], bunch->P[i], 0.5 * dt * 1.0e-9);  // ns --> s
+    push_m(bunch->R[i], bunch->P[i], 0.5 * dt * Units::ns2s);
 
     return flagNoDeletion;
 }
@@ -56,21 +57,21 @@ bool LF2<FieldFunction, Arguments ...>::kick_m(PartBunchBase<double, 3>* bunch, 
 {
     Vector_t externalE = Vector_t(0.0, 0.0, 0.0);
     Vector_t externalB = Vector_t(0.0, 0.0, 0.0);
-    
+
     bool outOfBound = this->fieldfunc_m(t, i, externalE, externalB, args ...);
-    
+
     if ( outOfBound )
         return false;
-    
-    
+
+
     double const q = bunch->Q[0] / Physics::q_e; // For now all particles have the same charge
-    double const M = bunch->M[0] * 1.0e9; // For now all particles have the same rest energy
-    
+    double const M = bunch->M[0] * Units::GeV2eV; // For now all particles have the same rest energy
+
     BorisPusher pusher;
-    
+
     pusher.kick(bunch->R[i], bunch->P[i],
                 externalE, externalB,
                 h, M, q);
-    
+
     return true;
 }

@@ -26,7 +26,7 @@ namespace mslang {
             std::shared_ptr<Base> &obj = bfuncs[j];
             obj->trafo_m = obj->trafo_m.mult(shift);
 
-            if (obj->divisor_m.size() > 0)
+            if (!obj->divisor_m.empty())
                 applyTranslation(obj->divisor_m);
         }
     }

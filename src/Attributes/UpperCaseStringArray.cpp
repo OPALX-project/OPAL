@@ -40,7 +40,7 @@ namespace Attributes {
 
 
     const std::string &UpperCaseStringArray::getType() const {
-        static std::string type = "upper case string array";
+        static std::string type = "string array";
         return type;
     }
 
@@ -64,7 +64,7 @@ namespace Attributes {
         }
 
         array[index - 1] =
-            Expressions::parseString(statement, "String value expected.");
+            Expressions::parseStringValue(statement, "String value expected.");
         Attributes::setUpperCaseStringArray(attr, array);
     }
 

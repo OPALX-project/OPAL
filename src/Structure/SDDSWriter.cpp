@@ -16,15 +16,18 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "SDDSWriter.h"
+#include "Structure/SDDSWriter.h"
 
-#include <queue>
+#include "AbstractObjects/OpalData.h"
+#include "Algorithms/PartBunchBase.h"
 #include "OPALconfig.h"
 #include "Util/SDDSParser.h"
-#include "Ippl.h"
-#include "Algorithms/PartBunchBase.h"
-#include "AbstractObjects/OpalData.h"
 #include "Utilities/Util.h"
+
+#include "Utility/IpplInfo.h"
+
+#include <queue>
+
 
 SDDSWriter::SDDSWriter(const std::string& fname, bool restart)
     : fname_m(fname)
@@ -35,9 +38,9 @@ SDDSWriter::SDDSWriter(const std::string& fname, bool restart)
 
     if (fs::exists(fname_m) && restart) {
         mode_m = std::ios::app;
-        INFOMSG("Appending data to existing data file: " << fname_m << endl);
+        INFOMSG("* Appending data to existing data file: '" << fname_m << "'" << endl);
     } else {
-        INFOMSG("Creating new file for data: " << fname_m << endl);
+        INFOMSG("* Creating new file for data: '" << fname_m << "'" << endl);
     }
 }
 
@@ -101,7 +104,7 @@ void SDDSWriter::replaceVersionString() {
 
     if (!fs.is_open()) return;
 
-    while (allLines.size() > 0) {
+    while (!allLines.empty()) {
         line = allLines.front();
 
         if (line != versionFile) {

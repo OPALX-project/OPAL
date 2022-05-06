@@ -42,7 +42,7 @@ public:
     /// Apply visitor to Stripper.
     virtual void accept(BeamlineVisitor &) const override;
     ///@{ Override implementation of PluginElement
-    virtual ElementBase::ElementType getType() const override;
+    virtual ElementType getType() const override;
     ///@}
 
     ///@{ Member variable access

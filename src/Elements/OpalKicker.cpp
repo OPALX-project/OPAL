@@ -18,13 +18,13 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Elements/OpalKicker.h"
+
 #include "AbstractObjects/AttributeHandler.h"
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
-// JMJ 18/12/2000 no longer need this, see code commented out below.
-//#include "Utilities/Options.h"
 #include "BeamlineCore/CorrectorRep.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 
 
 OpalKicker::OpalKicker():
@@ -80,7 +80,7 @@ void OpalKicker::update() {
     corr->setKickX(hKick);
     corr->setKickY(vKick);
     if(itsAttr[DESIGNENERGY]) {
-        double kineticEnergy = Attributes::getReal(itsAttr[DESIGNENERGY]) * 1e6;
+        double kineticEnergy = Attributes::getReal(itsAttr[DESIGNENERGY]) * Units::MeV2eV;
         corr->setDesignEnergy(kineticEnergy, false);
     }
 

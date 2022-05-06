@@ -56,13 +56,13 @@ void Interpolator3dGridTo3d::function
 void Interpolator3dGridTo3d::setAll(ThreeDGrid* grid,
                                  double *** Bx, double *** By, double *** Bz,
                                  interpolationAlgorithm algo) {
-    if (coordinates_m != NULL)
+    if (coordinates_m != nullptr)
       coordinates_m->remove(this);
     grid->add(this);
     coordinates_m = grid;
 
     for (int i = 0; i < 3; i++)
-        if (interpolator_m[i] != NULL)
+        if (interpolator_m[i] != nullptr)
         delete interpolator_m[i];
 
     switch (algo) {

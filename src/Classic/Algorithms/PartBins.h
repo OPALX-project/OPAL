@@ -171,7 +171,7 @@ inline Inform &operator<<(Inform &os, PartBins &p) {
 }
 
 
-class AscendingLocationSort: public std::binary_function< std::vector<double>, std::vector<double>, bool> {
+class AscendingLocationSort {
 public:
     AscendingLocationSort(int direction = 0): direction_m(direction)
     {;}
@@ -183,7 +183,7 @@ private:
     int direction_m;
 };
 
-class DescendingLocationSort: public std::binary_function< std::vector<double>, std::vector<double>, bool> {
+class DescendingLocationSort {
 public:
     DescendingLocationSort(int direction = 0): direction_m(direction)
     {;}

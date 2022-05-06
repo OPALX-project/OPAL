@@ -1,24 +1,28 @@
+//
+// Class Distribution
+//   This class defines the initial beam that is injected or emitted into the simulation.
+//
+// Copyright (c) 2008 - 2022, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_Distribution_HH
 #define OPAL_Distribution_HH
-
-// Distribution class
-//
-// Copyright (c) 2008-2020
-// Paul Scherrer Institut, Villigen PSI, Switzerland
-// All rights reserved.
-//
-// OPAL is licensed under GNU GPL version 3.
-
-#include <fstream>
-#include <string>
-#include <vector>
 
 #include "AbstractObjects/Definition.h"
 #include "Algorithms/PartData.h"
 #include "Algorithms/Vektor.h"
 #include "AppTypes/SymTenzor.h"
 #include "Attributes/Attributes.h"
-
 #include "Distribution/SigmaGenerator.h"
 
 #include <gsl/gsl_histogram.h>
@@ -28,6 +32,10 @@
 #ifdef WITH_UNIT_TESTS
 #include <gtest/gtest_prod.h>
 #endif
+
+#include <fstream>
+#include <string>
+#include <vector>
 
 class Beam;
 class Beamline;
@@ -39,34 +47,17 @@ class PartBins;
 class LaserProfile;
 class H5PartWrapper;
 
-namespace DistrTypeT
-{
-    enum DistrTypeT {NODIST,
-                     FROMFILE,
-                     GAUSS,
-                     BINOMIAL,
-                     FLATTOP,
-                     MULTIGAUSS,
-                     GUNGAUSSFLATTOPTH,
-                     ASTRAFLATTOPTH,
-                     MATCHEDGAUSS
-                    };
-}
-
-namespace EmissionModelT
-{
-    enum EmissionModelT {NONE,
-                         ASTRA,
-                         NONEQUIL
-                        };
-}
-
-namespace InputMomentumUnitsT
-{
-    enum InputMomentumUnitsT {NONE,
-                              EV
-                              };
-}
+enum class DistributionType: short {
+    NODIST = -1,
+    FROMFILE,
+    GAUSS,
+    BINOMIAL,
+    FLATTOP,
+    MULTIGAUSS,
+    GUNGAUSSFLATTOPTH,
+    ASTRAFLATTOPTH,
+    MATCHEDGAUSS
+};
 
 namespace Attrib
 {
@@ -193,11 +184,6 @@ namespace Attrib
     }
 }
 
-/*
- * Class Distribution
- *
- * Defines the initial beam that is injected or emitted into the simulation.
- */
 
 class Distribution: public Definition {
 
@@ -240,6 +226,7 @@ public:
     Vector_t get_pmean() const;
 
     std::string getTypeofDistribution();
+    DistributionType getType() const;
 
     Inform &printInfo(Inform &os) const;
 
@@ -253,8 +240,19 @@ public:
 
     void setNumberOfDistributions(unsigned int n) { numberOfDistributions_m = n; }
 
-    DistrTypeT::DistrTypeT getType() const;
+
 private:
+    enum class EmissionModel: unsigned short {
+        NONE,
+        ASTRA,
+        NONEQUIL
+    };
+
+    enum class InputMomentumUnits: unsigned short {
+        NONE,
+        EVOVERC
+    };
+
 #ifdef WITH_UNIT_TESTS
     FRIEND_TEST(GaussTest, FullSigmaTest1);
     FRIEND_TEST(GaussTest, FullSigmaTest2);
@@ -297,7 +295,8 @@ private:
     void checkEmissionParameters();
     void checkIfEmitted();
     void checkParticleNumber(size_t &numberOfParticles);
-    void chooseInputMomentumUnits(InputMomentumUnitsT::InputMomentumUnitsT inputMoUnits);
+    void checkFileMomentum();
+    void chooseInputMomentumUnits(InputMomentumUnits inputMoUnits);
     size_t getNumberOfParticlesInFile(std::ifstream &inputFile);
 
     class BinomialBehaviorSplitter {
@@ -384,8 +383,8 @@ private:
     void writeOutFileEmission();
     void writeOutFileInjection();
 
-    std::string distT_m;                 /// Distribution type. Declared as string
-    DistrTypeT::DistrTypeT distrTypeT_m; /// and list type for switch statements.
+    std::string distT_m;                 /// Distribution type strings.
+    DistributionType distrTypeT_m;       /// List of Distribution types.
 
     unsigned int numberOfDistributions_m;
 
@@ -400,7 +399,7 @@ private:
     std::vector<size_t> particlesPerDist_m;
 
     /// Emission Model.
-    EmissionModelT::EmissionModelT emissionModel_m;
+    EmissionModel emissionModel_m;
 
     /// Emission parameters.
     double tEmission_m;
@@ -459,7 +458,7 @@ private:
     double avrgpz_m;
 
     //Distribution parameters.
-    InputMomentumUnitsT::InputMomentumUnitsT inputMoUnits_m;
+    InputMomentumUnits inputMoUnits_m;
     double sigmaTRise_m;
     double sigmaTFall_m;
     double tPulseLengthFWHM_m;
@@ -490,6 +489,8 @@ private:
     double sigmaRise_m;
     double sigmaFall_m;
     double cutoff_m;
+
+    std::string outFilename_m;
 };
 
 inline Inform &operator<<(Inform &os, const Distribution &d) {
@@ -502,7 +503,7 @@ Vector_t Distribution::get_pmean() const {
 }
 
 inline
-DistrTypeT::DistrTypeT Distribution::getType() const {
+DistributionType Distribution::getType() const {
     return distrTypeT_m;
 }
 
@@ -513,7 +514,7 @@ double Distribution::getPercentageEmitted() const {
 
 inline
 std::string Distribution::getTypeofDistribution() {
-    return (std::string) Attributes::getString(itsAttr[Attrib::Distribution::TYPE]);
+    return distT_m;
 }
 
 #endif // OPAL_Distribution_HH

@@ -83,8 +83,8 @@ void SBend::setSkewComponent(int n, double v) {
  *  the equivalent method but with the Vector_t data types.
  */
 
-ElementBase::ElementType SBend::getType() const {
-    return SBEND;
+ElementType SBend::getType() const {
+    return ElementType::SBEND;
 }
 
 

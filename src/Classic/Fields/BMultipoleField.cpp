@@ -83,13 +83,13 @@ inline BMultipoleField::Pair BMultipoleField::Pair::operator-() const
 // ------------------------------------------------------------------------
 
 BMultipoleField::BMultipoleField():
-    pairs(NULL),
+    pairs(nullptr),
     itsOrder(0)
 {}
 
 
 BMultipoleField::BMultipoleField(const BMultipoleField &rhs):
-    pairs(NULL),
+    pairs(nullptr),
     itsOrder(rhs.itsOrder) {
 
     if (itsOrder > 0)

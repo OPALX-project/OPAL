@@ -25,7 +25,7 @@
 AmrPartBunch::AmrPartBunch(const PartData *ref)
     : PartBunchBase<double, 3>(new AmrPartBunch::pbase_t(new AmrLayout_t()), ref)
     , amrobj_mp(nullptr)
-    , amrpbase_mp(dynamic_cast<AmrPartBunch::pbase_t*>(pbase.get()))
+    , amrpbase_mp(dynamic_cast<AmrPartBunch::pbase_t*>(pbase_m.get()))
     , fieldlayout_m(nullptr)
 {
     amrpbase_mp->initializeAmr();
@@ -34,7 +34,7 @@ AmrPartBunch::AmrPartBunch(const PartData *ref)
 AmrPartBunch::AmrPartBunch(const PartData *ref, pbase_t* pbase_p)
     : PartBunchBase<double, 3>(new AmrPartBunch::pbase_t(new AmrLayout_t(&pbase_p->getAmrLayout())), ref)
     , amrobj_mp(nullptr)
-    , amrpbase_mp(dynamic_cast<AmrPartBunch::pbase_t*>(pbase.get()))
+    , amrpbase_mp(dynamic_cast<AmrPartBunch::pbase_t*>(pbase_m.get()))
     , fieldlayout_m(nullptr)
 {
     amrpbase_mp->initializeAmr();

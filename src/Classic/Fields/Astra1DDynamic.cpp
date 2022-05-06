@@ -1,6 +1,7 @@
 #include "Fields/Astra1DDynamic.h"
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
@@ -14,7 +15,7 @@
 
 Astra1DDynamic::Astra1DDynamic(std::string aFilename):
     Fieldmap(aFilename),
-    FourCoefs_m(NULL) {
+    FourCoefs_m(nullptr) {
 
     std::ifstream file;
     int skippedValues = 0;
@@ -72,7 +73,7 @@ Astra1DDynamic::Astra1DDynamic(std::string aFilename):
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         } else {
             // conversion from MHz to Hz and from frequency to angular frequency
-            frequency_m *= Physics::two_pi * 1e6;
+            frequency_m *= Physics::two_pi * Units::MHz2Hz;
             xlrep_m = frequency_m / Physics::c;
         }
         length_m = 2.0 * num_gridpz_m * (zend_m - zbegin_m) / (num_gridpz_m - 1);
@@ -89,7 +90,7 @@ Astra1DDynamic::~Astra1DDynamic() {
 }
 
 void Astra1DDynamic::readMap() {
-    if (FourCoefs_m == NULL) {
+    if (FourCoefs_m == nullptr) {
         // declare variables and allocate memory
     	std::ifstream in;
 
@@ -154,10 +155,9 @@ void Astra1DDynamic::readMap() {
             Ez_max = 1.0;
         }
 
-        // normalize to Ez_max = 1 MV/m
-        FourCoefs_m[0] = 1.0e6 * RealValues[0] / (Ez_max * 2. * num_gridpz_m); // factor 1e6 due to conversion MV/m to V/m
+        FourCoefs_m[0] = RealValues[0] / (Ez_max * Units::Vpm2MVpm* 2. * num_gridpz_m);
         for (int i = 1; i < 2 * accuracy_m - 1; ++ i) {
-            FourCoefs_m[i] = 1.0e6 * RealValues[i] / (Ez_max * num_gridpz_m);
+            FourCoefs_m[i] = RealValues[i] / (Ez_max * Units::Vpm2MVpm * num_gridpz_m);
         }
 
         gsl_spline_free(Ez_interpolant);
@@ -174,9 +174,9 @@ void Astra1DDynamic::readMap() {
 }
 
 void Astra1DDynamic::freeMap() {
-    if (FourCoefs_m != NULL) {
+    if (FourCoefs_m != nullptr) {
         delete[] FourCoefs_m;
-        FourCoefs_m = NULL;
+        FourCoefs_m = nullptr;
 
         INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }

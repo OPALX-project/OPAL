@@ -34,7 +34,7 @@ TEST(GaussTest, FullSigmaTest1) {
 
     Distribution dist;
 
-    Attributes::setUpperCaseString(dist.itsAttr[Attrib::Distribution::TYPE], "GAUSS");
+    Attributes::setPredefinedString(dist.itsAttr[Attrib::Distribution::TYPE], "GAUSS");
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::SIGMAX], expectedR11 * 1e-3);
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::SIGMAPX], expectedR22);
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::SIGMAY], expectedR33 * 1e-3);
@@ -112,7 +112,7 @@ TEST(GaussTest, FullSigmaTest2) {
 
     Distribution dist;
 
-    Attributes::setUpperCaseString(dist.itsAttr[Attrib::Distribution::TYPE], "GAUSS");
+    Attributes::setPredefinedString(dist.itsAttr[Attrib::Distribution::TYPE], "GAUSS");
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::SIGMAX], expectedR11 * 1e-3);
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::SIGMAPX], expectedR22);
     Attributes::setReal(dist.itsAttr[Attrib::Distribution::SIGMAY], expectedR33 * 1e-3);

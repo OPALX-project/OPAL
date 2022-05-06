@@ -191,7 +191,7 @@ public:
             individual temp = it->second;
             for(size_t i=0; i<temp->objectives_m.size(); i++)
                 file << temp->objectives_m[i] << " ";
-            if (temp->objectives_m.size() > 0)
+            if (!temp->objectives_m.empty())
                 file << std::endl;
         }
 

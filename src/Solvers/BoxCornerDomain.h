@@ -93,14 +93,14 @@ public:
     }
 
     /// queries if a given (x,y,z) coordinate lies inside the domain
-    inline bool isInside(int x, int y, int z) const {
+    inline bool isInside(int x, int y, int z) const override {
         const double xx = (x - (nr_m[0] - 1) / 2.0) * hr_m[0];
         const double yy = (y - (nr_m[1] - 1) / 2.0) * hr_m[1];
         const double b = getB(z * hr_m[2]);
         return (xx < getXRangeMax() && yy < b && z >= 0 && z < nr_m[2]);
     }
 
-    void compute(Vector_t hr, NDIndex<3> localId);
+    void compute(Vector_t hr, NDIndex<3> localId) override;
 
 private:
 
@@ -139,11 +139,11 @@ private:
     }
 
     /// conversion from (x,y,z) to index on the 3D grid
-    int indexAccess(int x, int y, int z) const {
+    int indexAccess(int x, int y, int z) const override {
         return idxMap_m.at(toCoordIdx(x, y, z));
     }
 
-    int coordAccess(int idx) const {
+    int coordAccess(int idx) const override {
         return coordMap_m.at(idx);
     }
 

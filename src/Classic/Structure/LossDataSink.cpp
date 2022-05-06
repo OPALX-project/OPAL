@@ -1,31 +1,42 @@
+//
+// Class LossDataSink
+//   This class writes file attributes to describe phase space of loss files
+//
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Structure/LossDataSink.h"
 
-#include "Utilities/Options.h"
 #include "AbstractObjects/OpalData.h"
+#include "Algorithms/DistributionMoments.h"
+#include "Message/GlobalComm.h"
+#include "OPALconfig.h"
 #include "Utilities/GeneralClassicException.h"
+#include "Utilities/Options.h"
 #include "Utilities/Util.h"
+#include "Utility/IpplInfo.h"
 
 #include <boost/filesystem.hpp>
-#include "OPALconfig.h"
-
-#include "Message/GlobalComm.h"
-#include "Utility/IpplInfo.h"
 
 #include <cmath>
 
-#define ADD_ATTACHMENT( fname ) {             \
-    h5_int64_t h5err = H5AddAttachment (H5file_m, fname); \
-    if (h5err <= H5_ERR) {                                              \
-        std::stringstream ss;                                               \
-        ss << "failed to add attachment " << fname << " to file " << fn_m; \
-        throw GeneralClassicException(std::string(__func__), ss.str()); \
-    }\
-}
+extern Inform* gmsg;
+
 #define WRITE_FILEATTRIB_STRING( attribute, value ) {             \
     h5_int64_t h5err = H5WriteFileAttribString (H5file_m, attribute, value); \
     if (h5err <= H5_ERR) {                                              \
         std::stringstream ss;                                               \
-        ss << "failed to write string attribute " << attribute << " to file " << fn_m; \
+        ss << "failed to write string attribute " << attribute << " to file " << fileName_m; \
         throw GeneralClassicException(std::string(__func__), ss.str()); \
     }\
 }
@@ -33,7 +44,7 @@
         h5_int64_t h5err = H5WriteStepAttribFloat64 (H5file_m, attribute, value, size); \
     if (h5err <= H5_ERR) { \
         std::stringstream ss; \
-        ss << "failed to write float64 attribute " << attribute << " to file " << fn_m; \
+        ss << "failed to write float64 attribute " << attribute << " to file " << fileName_m; \
         throw GeneralClassicException(std::string(__func__), ss.str()); \
     }\
 }
@@ -41,15 +52,15 @@
         h5_int64_t h5err = H5WriteStepAttribInt64 (H5file_m, attribute, value, size); \
     if (h5err <= H5_ERR) { \
         std::stringstream ss; \
-        ss << "failed to write int64 attribute " << attribute << " to file " << fn_m; \
+        ss << "failed to write int64 attribute " << attribute << " to file " << fileName_m; \
         throw GeneralClassicException(std::string(__func__), ss.str()); \
     }\
 }
-#define WRITE_DATA_FLOAT64( name, value ) { \
+#define WRITE_DATA_FLOAT64( name, value ) {                             \
         h5_int64_t h5err = H5PartWriteDataFloat64 (H5file_m, name, value); \
     if (h5err <= H5_ERR) { \
         std::stringstream ss; \
-        ss << "failed to write float64 data " << name << " to file " << fn_m; \
+        ss << "failed to write float64 data " << name << " to file " << fileName_m; \
         throw GeneralClassicException(std::string(__func__), ss.str()); \
     }\
 }
@@ -57,7 +68,7 @@
         h5_int64_t h5err = H5PartWriteDataInt64 (H5file_m, name, value); \
     if (h5err <= H5_ERR) { \
         std::stringstream ss; \
-        ss << "failed to write int64 data " << name << " to file " << fn_m; \
+        ss << "failed to write int64 data " << name << " to file " << fileName_m; \
         throw GeneralClassicException(std::string(__func__), ss.str()); \
     }\
 }
@@ -65,7 +76,7 @@
     h5_int64_t h5err = H5SetStep (H5file_m, H5call_m); \
     if (h5err <= H5_ERR) {                                              \
         std::stringstream ss;                                               \
-        ss << "failed to set step " << H5call_m << " in file " << fn_m; \
+        ss << "failed to set step " << H5call_m << " in file " << fileName_m; \
         throw GeneralClassicException(std::string(__func__), ss.str()); \
     }\
 }
@@ -73,7 +84,7 @@
     H5call_m = H5GetNumSteps( H5file_m );                        \
     if (H5call_m <= H5_ERR) {                                             \
         std::stringstream ss;                                               \
-        ss << "failed to get number of steps of file " << fn_m; \
+        ss << "failed to get number of steps of file " << fileName_m; \
         throw GeneralClassicException(std::string(__func__), ss.str()); \
     }\
 }
@@ -81,16 +92,16 @@
     h5_int64_t h5err = H5PartSetNumParticles (H5file_m, num); \
     if (h5err <= H5_ERR) {                                              \
         std::stringstream ss;                                               \
-        ss << "failed to set number of particles to " << num << " in step " << H5call_m << " in file " << fn_m; \
+        ss << "failed to set number of particles to " << num << " in step " << H5call_m << " in file " << fileName_m; \
         throw GeneralClassicException(std::string(__func__), ss.str()); \
     }\
 }
 
 #define OPEN_FILE( fname, mode, props ) {        \
     H5file_m = H5OpenFile (fname, mode, props); \
-    if(H5file_m == (h5_file_t)H5_ERR) { \
+    if (H5file_m == (h5_file_t)H5_ERR) { \
         std::stringstream ss;                                               \
-        ss << "failed to open file " << fn_m; \
+        ss << "failed to open file " << fileName_m; \
         throw GeneralClassicException(std::string(__func__), ss.str()); \
     }\
 }
@@ -98,14 +109,42 @@
     h5_int64_t h5err = H5CloseFile (H5file_m); \
     if (h5err <= H5_ERR) {                                              \
         std::stringstream ss;                                               \
-        ss << "failed to close file " << fn_m; \
+        ss << "failed to close file " << fileName_m; \
         throw GeneralClassicException(std::string(__func__), ss.str()); \
     }\
 }
 
+namespace {
+    void f64transform(const std::vector<OpalParticle> &particles,
+                   unsigned int startIdx,
+                   unsigned int numParticles,
+                   h5_float64_t *buffer,
+                   std::function<h5_float64_t(const OpalParticle&)> select) {
+        std::transform(particles.begin() + startIdx,
+                       particles.begin() + startIdx + numParticles,
+                       buffer, select);
+    }
+    void i64transform(const std::vector<OpalParticle> &particles,
+                   unsigned int startIdx,
+                   unsigned int numParticles,
+                   h5_int64_t *buffer,
+                   std::function<h5_int64_t(const OpalParticle&)> select) {
+        std::transform(particles.begin() + startIdx,
+                       particles.begin() + startIdx + numParticles,
+                       buffer, select);
+    }
+
+    void cminmax(double &min, double &max, double val) {
+        if (-val > min) {
+            min = -val;
+        } else if (val > max) {
+            max = val;
+        }
+    }
+}
 
 SetStatistics::SetStatistics():
-    element_m(""),
+    outputName_m(""),
     spos_m(0.0),
     refTime_m(0.0),
     tmean_m(0.0),
@@ -129,51 +168,46 @@ SetStatistics::SetStatistics():
     fac_m(0.0)
     { }
 
-LossDataSink::LossDataSink(std::string elem, bool hdf5Save, ElementBase::ElementType type):
+LossDataSink::LossDataSink(std::string outfn, bool hdf5Save, CollectionType collectionType):
     h5hut_mode_m(hdf5Save),
     H5file_m(0),
-    element_m(elem),
+    outputName_m(outfn),
     H5call_m(0),
-    type_m(type)
+    collectionType_m(collectionType)
 {
-    x_m.clear();
-    y_m.clear();
-    z_m.clear();
-    px_m.clear();
-    py_m.clear();
-    pz_m.clear();
-    id_m.clear();
-    turn_m.clear();
-    bunchNum_m.clear();
-    time_m.clear();
+    particles_m.clear();
+    turnNumber_m.clear();
+    bunchNumber_m.clear();
+
+    if (h5hut_mode_m && !Options::enableHDF5) {
+        throw GeneralClassicException(
+                "LossDataSink::LossDataSink",
+                "You must select an OPTION to save Loss data files\n"
+                "Please, choose 'ENABLEHDF5=TRUE' or 'ASCIIDUMP=TRUE'");
+    }
+
+    OpalData::getInstance()->checkAndAddOutputFileName(outputName_m);
+
+    if (OpalData::getInstance()->hasBunchAllocated()) {
+        OpalData::getInstance()->setOpenMode(OpalData::OpenMode::APPEND);
+    }
 }
 
-LossDataSink::LossDataSink(const LossDataSink &rsh):
-    h5hut_mode_m(rsh.h5hut_mode_m),
-    H5file_m(rsh.H5file_m),
-    element_m(rsh.element_m),
-    H5call_m(rsh.H5call_m),
-    RefPartR_m(rsh.RefPartR_m),
-    RefPartP_m(rsh.RefPartP_m),
-    globalTrackStep_m(rsh.globalTrackStep_m),
-    refTime_m(rsh.refTime_m),
-    spos_m(rsh.spos_m),
-    type_m(rsh.type_m)
+LossDataSink::LossDataSink(const LossDataSink &rhs):
+    h5hut_mode_m(rhs.h5hut_mode_m),
+    H5file_m(rhs.H5file_m),
+    outputName_m(rhs.outputName_m),
+    H5call_m(rhs.H5call_m),
+    RefPartR_m(rhs.RefPartR_m),
+    RefPartP_m(rhs.RefPartP_m),
+    globalTrackStep_m(rhs.globalTrackStep_m),
+    refTime_m(rhs.refTime_m),
+    spos_m(rhs.spos_m),
+    collectionType_m(rhs.collectionType_m)
 {
-    x_m.clear();
-    y_m.clear();
-    z_m.clear();
-    px_m.clear();
-    py_m.clear();
-    pz_m.clear();
-    id_m.clear();
-    turn_m.clear();
-    bunchNum_m.clear();
-    time_m.clear();
-}
-
-LossDataSink::LossDataSink() {
-    LossDataSink(std::string("NULL"), false);
+    particles_m.clear();
+    turnNumber_m.clear();
+    bunchNumber_m.clear();
 }
 
 LossDataSink::~LossDataSink() noexcept(false) {
@@ -188,7 +222,7 @@ void LossDataSink::openH5(h5_int32_t mode) {
     h5_prop_t props = H5CreateFileProp ();
     MPI_Comm comm = Ippl::getComm();
     H5SetPropFileMPIOCollective (props, &comm);
-    OPEN_FILE (fn_m.c_str(), mode, props);
+    OPEN_FILE (fileName_m.c_str(), mode, props);
     H5CloseProp (props);
 }
 
@@ -198,28 +232,70 @@ void LossDataSink::writeHeaderH5() {
     // Write file attributes to describe phase space to H5 file.
     std::stringstream OPAL_version;
     OPAL_version << OPAL_PROJECT_NAME << " " << OPAL_PROJECT_VERSION << " # git rev. " << Util::getGitRevision();
-    WRITE_FILEATTRIB_STRING ("OPAL_version", OPAL_version.str().c_str());
-    WRITE_FILEATTRIB_STRING ("tUnit", "s");
-    WRITE_FILEATTRIB_STRING ("xUnit", "m");
-    WRITE_FILEATTRIB_STRING ("yUnit", "m");
-    WRITE_FILEATTRIB_STRING ("zUnit", "m");
-    WRITE_FILEATTRIB_STRING ("pxUnit", "#beta#gamma");
-    WRITE_FILEATTRIB_STRING ("pyUnit", "#beta#gamma");
-    WRITE_FILEATTRIB_STRING ("pzUnit", "#beta#gamma");
-    WRITE_FILEATTRIB_STRING ("idUnit", "1");
+    WRITE_FILEATTRIB_STRING("OPAL_version", OPAL_version.str().c_str());
 
-    /// in case of circular machines
-    if (hasTimeAttribute()) {
-        WRITE_FILEATTRIB_STRING ("turnUnit", "1");
-        WRITE_FILEATTRIB_STRING ("timeUnit", "s");
+    WRITE_FILEATTRIB_STRING("SPOSUnit", "m");
+    WRITE_FILEATTRIB_STRING("TIMEUnit", "s");
+    WRITE_FILEATTRIB_STRING("RefPartRUnit", "m");
+    WRITE_FILEATTRIB_STRING("RefPartPUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("GlobalTrackStepUnit", "1");
+
+    WRITE_FILEATTRIB_STRING("centroidUnit", "m");
+    WRITE_FILEATTRIB_STRING("RMSXUnit", "m");
+    WRITE_FILEATTRIB_STRING("MEANPUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("RMSPUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("#varepsilonUnit", "m rad");
+    WRITE_FILEATTRIB_STRING("#varepsilon-geomUnit", "m rad");
+    WRITE_FILEATTRIB_STRING("ENERGYUnit", "MeV");
+    WRITE_FILEATTRIB_STRING("dEUnit", "MeV");
+    WRITE_FILEATTRIB_STRING("TotalChargeUnit", "C");
+    WRITE_FILEATTRIB_STRING("TotalMassUnit", "MeV");
+
+    WRITE_FILEATTRIB_STRING("idUnit", "1");
+    WRITE_FILEATTRIB_STRING("xUnit", "m");
+    WRITE_FILEATTRIB_STRING("yUnit", "m");
+    WRITE_FILEATTRIB_STRING("zUnit", "m");
+    WRITE_FILEATTRIB_STRING("pxUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("pyUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("pzUnit", "#beta#gamma");
+    WRITE_FILEATTRIB_STRING("qUnit", "C");
+    WRITE_FILEATTRIB_STRING("mUnit", "MeV");
+
+    WRITE_FILEATTRIB_STRING("turnUnit", "1");
+    WRITE_FILEATTRIB_STRING("bunchNumUnit", "1");
+
+    WRITE_FILEATTRIB_STRING("timeUnit", "s");
+    WRITE_FILEATTRIB_STRING("meanTimeUnit", "s");
+    WRITE_FILEATTRIB_STRING("rmsTimeUnit", "s");
+
+    if (Options::computePercentiles) {
+        WRITE_FILEATTRIB_STRING("68-percentileUnit", "m");
+        WRITE_FILEATTRIB_STRING("95-percentileUnit", "m");
+        WRITE_FILEATTRIB_STRING("99-percentileUnit", "m");
+        WRITE_FILEATTRIB_STRING("99_99-percentileUnit", "m");
+        WRITE_FILEATTRIB_STRING("normalizedEps68PercentileUnit", "m rad");
+        WRITE_FILEATTRIB_STRING("normalizedEps95PercentileUnit", "m rad");
+        WRITE_FILEATTRIB_STRING("normalizedEps99PercentileUnit", "m rad");
+        WRITE_FILEATTRIB_STRING("normalizedEps99_99PercentileUnit", "m rad");
     }
-    WRITE_FILEATTRIB_STRING ("SPOSUnit", "mm");
-    WRITE_FILEATTRIB_STRING ("TIMEUnit", "s");
 
-    WRITE_FILEATTRIB_STRING ("mpart", "GeV");
-    WRITE_FILEATTRIB_STRING ("qi", "C");
+    if (collectionType_m == CollectionType::TEMPORAL) {
+        WRITE_FILEATTRIB_STRING("type", "temporal");
+    } else {
+        WRITE_FILEATTRIB_STRING("type", "spatial");
+    }
+}
 
-    ADD_ATTACHMENT (OpalData::getInstance()->getInputFn().c_str());
+
+void LossDataSink::writeHeaderASCII() {
+    bool hasTurn = hasTurnInformations();
+    if (Ippl::myNode() == 0) {
+        os_m << "# x (m),  y (m),  z (m),  px ( ),  py ( ),  pz ( ), id";
+        if (hasTurn) {
+            os_m << ",  turn ( ), bunchNumber ( )";
+        }
+        os_m << ", time (s)" << std::endl;
+    }
 }
 
 void LossDataSink::addReferenceParticle(const Vector_t &x,
@@ -235,42 +311,32 @@ void LossDataSink::addReferenceParticle(const Vector_t &x,
     refTime_m.push_back(time);
 }
 
-void LossDataSink::addParticle(const Vector_t &x,const  Vector_t &p, const size_t  id) {
-    x_m.push_back(x(0));
-    y_m.push_back(x(1));
-    z_m.push_back(x(2));
-    px_m.push_back(p(0));
-    py_m.push_back(p(1));
-    pz_m.push_back(p(2));
-    id_m.push_back(id);
+void LossDataSink::addParticle(const OpalParticle &particle, const boost::optional<std::pair<int, short>> &turnBunchNumPair) {
+    if (turnBunchNumPair) {
+        if (!particles_m.empty() && turnNumber_m.empty()) {
+            throw GeneralClassicException("LossDataSink::addParticle",
+                                          "Either no particle or all have turn number and bunch number");
+        }
+        turnNumber_m.push_back(turnBunchNumPair.get().first);
+        bunchNumber_m.push_back(turnBunchNumPair.get().second);
+    }
+
+    particles_m.push_back(particle);
 }
 
-// For ring type simulation, dump the time and turn number
-void LossDataSink::addParticle(const Vector_t &x, const Vector_t &p, const size_t id,
-                               const double time, const size_t turn,
-                               const size_t& bunchNum) {
-    addParticle(x, p, id);
-    turn_m.push_back(turn);
-    time_m.push_back(time);
-    bunchNum_m.push_back(bunchNum);
-}
+void LossDataSink::save(unsigned int numSets, OpalData::OpenMode openMode) {
 
-void LossDataSink::save(unsigned int numSets, OpalData::OPENMODE openMode) {
-
-    if (element_m == std::string("")) return;
+    if (outputName_m.empty()) return;
     if (hasNoParticlesToDump()) return;
 
-    if (openMode == OpalData::OPENMODE::UNDEFINED) {
+    if (openMode == OpalData::OpenMode::UNDEFINED) {
         openMode = OpalData::getInstance()->getOpenMode();
     }
 
     namespace fs = boost::filesystem;
     if (h5hut_mode_m) {
-        if (!Options::enableHDF5) return;
-
-        fn_m = element_m + std::string(".h5");
-        INFOMSG(level2 << "Save " << fn_m << endl);
-        if (openMode == OpalData::OPENMODE::WRITE || !fs::exists(fn_m)) {
+        fileName_m = outputName_m + std::string(".h5");
+        if (openMode == OpalData::OpenMode::WRITE || !fs::exists(fileName_m)) {
             openH5();
             writeHeaderH5();
         } else {
@@ -283,11 +349,10 @@ void LossDataSink::save(unsigned int numSets, OpalData::OPENMODE openMode) {
         }
         CLOSE_FILE ();
         H5file_m = 0;
-    }
-    else {
-        fn_m = element_m + std::string(".loss");
-        INFOMSG(level2 << "Save " << fn_m << endl);
-        if (openMode == OpalData::OPENMODE::WRITE || !fs::exists(fn_m)) {
+
+    } else {
+        fileName_m = outputName_m + std::string(".loss");
+        if (openMode == OpalData::OpenMode::WRITE || !fs::exists(fileName_m)) {
             openASCII();
             writeHeaderASCII();
         } else {
@@ -296,18 +361,13 @@ void LossDataSink::save(unsigned int numSets, OpalData::OPENMODE openMode) {
         saveASCII();
         closeASCII();
     }
+    *gmsg << level2 << "Save '" << fileName_m << "'" << endl;
+
     Ippl::Comm->barrier();
 
-    x_m.clear();
-    y_m.clear();
-    z_m.clear();
-    px_m.clear();
-    py_m.clear();
-    pz_m.clear();
-    id_m.clear();
-    turn_m.clear();
-    bunchNum_m.clear();
-    time_m.clear();
+    particles_m.clear();
+    turnNumber_m.clear();
+    bunchNumber_m.clear();
     spos_m.clear();
     refTime_m.clear();
     RefPartR_m.clear();
@@ -321,41 +381,45 @@ void LossDataSink::save(unsigned int numSets, OpalData::OPENMODE openMode) {
 // 2. Some nodes have 0 lost particles, some not -> H5 can handle that but all
 // nodes HAVE to participate, otherwise H5 waits endlessly for a response from
 // the nodes that didn't enter the saveH5 function. -DW
-bool LossDataSink::hasNoParticlesToDump() {
+bool LossDataSink::hasNoParticlesToDump() const {
 
-    size_t nLoc = x_m.size();
+    size_t nLoc = particles_m.size();
 
     reduce(nLoc, nLoc, OpAddAssign());
 
     return nLoc == 0;
 }
 
-bool LossDataSink::hasTimeAttribute() {
+bool LossDataSink::hasTurnInformations() const {
 
-    size_t tLoc = time_m.size();
+    bool hasTurnInformation = !turnNumber_m.empty();
 
-    reduce(tLoc, tLoc, OpAddAssign());
+    allreduce(hasTurnInformation, 1, std::logical_or<bool>());
 
-    return tLoc > 0;
+    return hasTurnInformation > 0;
 }
 
 void LossDataSink::saveH5(unsigned int setIdx) {
-    size_t startIdx = 0;
-    size_t nLoc = x_m.size();
+    size_t nLoc = particles_m.size();
+    size_t startIdx = 0, endIdx = nLoc;
     if (setIdx + 1 < startSet_m.size()) {
         startIdx = startSet_m[setIdx];
-        nLoc = startSet_m[setIdx + 1] - startSet_m[setIdx];
+        endIdx = startSet_m[setIdx + 1];
+        nLoc = endIdx - startIdx;
     }
 
     std::unique_ptr<size_t[]>  locN(new size_t[Ippl::getNodes()]);
     std::unique_ptr<size_t[]> globN(new size_t[Ippl::getNodes()]);
 
-    for(int i = 0; i < Ippl::getNodes(); i++) {
+    for (int i = 0; i < Ippl::getNodes(); i++) {
         globN[i] = locN[i] = 0;
     }
 
     locN[Ippl::myNode()] = nLoc;
     reduce(locN.get(), locN.get() + Ippl::getNodes(), globN.get(), OpAddAssign());
+
+    DistributionMoments engine;
+    engine.compute(particles_m.begin() + startIdx, particles_m.begin() + endIdx);
 
     /// Set current record/time step.
     SET_STEP ();
@@ -368,24 +432,87 @@ void LossDataSink::saveH5(unsigned int setIdx) {
         WRITE_STEPATTRIB_FLOAT64 ("RefPartP", (h5_float64_t *)&(RefPartP_m[setIdx]), 3);
         WRITE_STEPATTRIB_INT64("GlobalTrackStep", &(globalTrackStep_m[setIdx]), 1);
     }
-    // Write all data
-    WRITE_DATA_FLOAT64 ("x", &x_m[startIdx]);
-    WRITE_DATA_FLOAT64 ("y", &y_m[startIdx]);
-    WRITE_DATA_FLOAT64 ("z", &z_m[startIdx]);
-    WRITE_DATA_FLOAT64 ("px", &px_m[startIdx]);
-    WRITE_DATA_FLOAT64 ("py", &py_m[startIdx]);
-    WRITE_DATA_FLOAT64 ("pz", &pz_m[startIdx]);
 
-    /// Write particle id numbers.
-    std::vector<h5_int64_t> larray(id_m.begin() + startIdx, id_m.end() );
-    WRITE_DATA_INT64 ("id", &larray[0]);
-    if (hasTimeAttribute()) {
-        WRITE_DATA_FLOAT64 ("time", &time_m[startIdx]);
-        larray.assign (turn_m.begin() + startIdx, turn_m.end() );
-        WRITE_DATA_INT64 ("turn", &larray[0]);
-        larray.assign (bunchNum_m.begin() + startIdx, bunchNum_m.end() );
-        WRITE_DATA_INT64 ("bunchNumber", &larray[0]);
+    Vector_t tmpVector;
+    double tmpDouble;
+    WRITE_STEPATTRIB_FLOAT64("centroid", (tmpVector = engine.getMeanPosition(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("RMSX", (tmpVector = engine.getStandardDeviationPosition(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("MEANP", (tmpVector = engine.getMeanMomentum(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("RMSP", (tmpVector = engine.getStandardDeviationMomentum(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("#varepsilon", (tmpVector = engine.getNormalizedEmittance(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("#varepsilon-geom", (tmpVector = engine.getGeometricEmittance(), &tmpVector[0]), 3);
+    WRITE_STEPATTRIB_FLOAT64("ENERGY", (tmpDouble = engine.getMeanKineticEnergy(), &tmpDouble), 1);
+    WRITE_STEPATTRIB_FLOAT64("dE", (tmpDouble = engine.getStdKineticEnergy(), &tmpDouble), 1);
+    WRITE_STEPATTRIB_FLOAT64("TotalCharge", (tmpDouble = engine.getTotalCharge(), &tmpDouble), 1);
+    WRITE_STEPATTRIB_FLOAT64("TotalMass", (tmpDouble = engine.getTotalMass(), &tmpDouble), 1);
+    WRITE_STEPATTRIB_FLOAT64("meanTime", (tmpDouble = engine.getMeanTime(), &tmpDouble), 1);
+    WRITE_STEPATTRIB_FLOAT64("rmsTime", (tmpDouble = engine.getStdTime(), &tmpDouble), 1);
+    if (Options::computePercentiles) {
+        WRITE_STEPATTRIB_FLOAT64("68-percentile", (tmpVector = engine.get68Percentile(), &tmpVector[0]), 3);
+        WRITE_STEPATTRIB_FLOAT64("95-percentile", (tmpVector = engine.get95Percentile(), &tmpVector[0]), 3);
+        WRITE_STEPATTRIB_FLOAT64("99-percentile", (tmpVector = engine.get99Percentile(), &tmpVector[0]), 3);
+        WRITE_STEPATTRIB_FLOAT64("99_99-percentile", (tmpVector = engine.get99_99Percentile(), &tmpVector[0]), 3);
+
+        WRITE_STEPATTRIB_FLOAT64("normalizedEps68Percentile",
+                                 (tmpVector = engine.getNormalizedEmittance68Percentile(), &tmpVector[0]), 3);
+        WRITE_STEPATTRIB_FLOAT64("normalizedEps95Percentile",
+                                 (tmpVector = engine.getNormalizedEmittance95Percentile(), &tmpVector[0]), 3);
+        WRITE_STEPATTRIB_FLOAT64("normalizedEps99Percentile",
+                                 (tmpVector = engine.getNormalizedEmittance99Percentile(), &tmpVector[0]), 3);
+        WRITE_STEPATTRIB_FLOAT64("normalizedEps99_99Percentile",
+                                 (tmpVector = engine.getNormalizedEmittance99_99Percentile(), &tmpVector[0]), 3);
     }
+
+    WRITE_STEPATTRIB_FLOAT64("maxR", (tmpVector = engine.getMaxR(), &tmpVector[0]), 3);
+
+    // Write all data
+    std::vector<char> buffer(nLoc * sizeof(h5_float64_t));
+    h5_float64_t *f64buffer = nLoc > 0? reinterpret_cast<h5_float64_t*>(&buffer[0]) : nullptr;
+    h5_int64_t *i64buffer = nLoc > 0? reinterpret_cast<h5_int64_t*>(&buffer[0]) : nullptr;
+
+    ::i64transform(particles_m, startIdx, nLoc, i64buffer,
+                   [](const OpalParticle &particle) { return particle.getId(); });
+    WRITE_DATA_INT64 ("id", i64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getX(); });
+    WRITE_DATA_FLOAT64 ("x", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getY(); });
+    WRITE_DATA_FLOAT64 ("y", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getZ(); });
+    WRITE_DATA_FLOAT64 ("z", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getPx(); });
+    WRITE_DATA_FLOAT64 ("px", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getPy(); });
+    WRITE_DATA_FLOAT64 ("py", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getPz(); });
+    WRITE_DATA_FLOAT64 ("pz", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getCharge(); });
+    WRITE_DATA_FLOAT64 ("q", f64buffer);
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getMass(); });
+    WRITE_DATA_FLOAT64 ("m", f64buffer);
+
+    if (hasTurnInformations()) {
+        std::copy(turnNumber_m.begin() + startIdx,
+                  turnNumber_m.begin() + startIdx + nLoc,
+                  i64buffer);
+        WRITE_DATA_INT64 ("turn", i64buffer);
+
+        std::copy(bunchNumber_m.begin() + startIdx,
+                  bunchNumber_m.begin() + startIdx + nLoc,
+                  i64buffer);
+        WRITE_DATA_INT64 ("bunchNumber", i64buffer);
+    }
+
+    ::f64transform(particles_m, startIdx, nLoc, f64buffer,
+                   [](const OpalParticle &particle) { return particle.getTime(); });
+    WRITE_DATA_FLOAT64 ("time", f64buffer);
 
     ++ H5call_m;
 }
@@ -396,91 +523,83 @@ void LossDataSink::saveASCII() {
       ASCII output
     */
     int tag = Ippl::Comm->next_tag(IPPL_APP_TAG3, IPPL_APP_CYCLE);
-    bool hasTime = hasTimeAttribute(); // reduce needed for the case when node 0 has no particles
-    if(Ippl::Comm->myNode() == 0) {
-        const unsigned partCount = x_m.size();
+    bool hasTurn = hasTurnInformations();
+    if (Ippl::Comm->myNode() == 0) {
+        const unsigned partCount = particles_m.size();
 
-        for(unsigned i = 0; i < partCount; i++) {
-            os_m << element_m   << "   ";
-            os_m << x_m[i] << "   ";
-            os_m << y_m[i] << "   ";
-            os_m << z_m[i] << "   ";
-            os_m << px_m[i] << "   ";
-            os_m << py_m[i] << "   ";
-            os_m << pz_m[i] << "   ";
-            os_m << id_m[i]   << "   ";
-            if (hasTime) {
-                os_m << turn_m[i] << "   ";
-                os_m << bunchNum_m[i] << "   ";
-                os_m << time_m[i];
+        for (unsigned i = 0; i < partCount; i++) {
+            const OpalParticle& particle = particles_m[i];
+            os_m << particle.getX() << "   ";
+            os_m << particle.getY() << "   ";
+            os_m << particle.getZ() << "   ";
+            os_m << particle.getPx() << "   ";
+            os_m << particle.getPy() << "   ";
+            os_m << particle.getPz() << "   ";
+            os_m << particle.getId() << "   ";
+            if (hasTurn) {
+                os_m << turnNumber_m[i] << "   ";
+                os_m << bunchNumber_m[i] << "   ";
             }
-            os_m << std::endl;
+            os_m << particle.getTime()
+                 << std::endl;
         }
 
         int notReceived =  Ippl::getNodes() - 1;
-        while(notReceived > 0) {
+        while (notReceived > 0) {
             unsigned dataBlocks = 0;
             int node = COMM_ANY_NODE;
             Message *rmsg =  Ippl::Comm->receive_block(node, tag);
-            if(rmsg == 0) {
+            if (rmsg == 0) {
                 ERRORMSG("LossDataSink: Could not receive from client nodes output." << endl);
             }
             notReceived--;
             rmsg->get(&dataBlocks);
-            for(unsigned i = 0; i < dataBlocks; i++) {
+            rmsg->get(&hasTurn);
+            for (unsigned i = 0; i < dataBlocks; i++) {
                 long id;
                 size_t bunchNum, turn;
                 double rx, ry, rz, px, py, pz, time;
-                rmsg->get(&id);
-                rmsg->get(&rx);
-                rmsg->get(&ry);
-                rmsg->get(&rz);
-                rmsg->get(&px);
-                rmsg->get(&py);
-                rmsg->get(&pz);
-                if (hasTime) {
-                    rmsg->get(&turn);
-                    rmsg->get(&bunchNum);
-                    rmsg->get(&time);
+
+                os_m << (rmsg->get(&rx), rx) << "   ";
+                os_m << (rmsg->get(&ry), ry) << "   ";
+                os_m << (rmsg->get(&rz), rz) << "   ";
+                os_m << (rmsg->get(&px), px) << "   ";
+                os_m << (rmsg->get(&py), py) << "   ";
+                os_m << (rmsg->get(&pz), pz) << "   ";
+                os_m << (rmsg->get(&id), id) << "   ";
+                if (hasTurn) {
+                    os_m << (rmsg->get(&turn), turn) << "   ";
+                    os_m << (rmsg->get(&bunchNum), bunchNum) << "   ";
                 }
-                os_m << element_m << "   ";
-                os_m << rx << "   ";
-                os_m << ry << "   ";
-                os_m << rz << "   ";
-                os_m << px << "   ";
-                os_m << py << "   ";
-                os_m << pz << "   ";
-                os_m << id << "   ";
-                if (hasTime) {
-                    os_m << turn << "   ";
-                    os_m << bunchNum << "   ";
-                    os_m << time;
-                }
-                os_m << std::endl;
+                os_m << (rmsg->get(&time), time)
+                     << std::endl;
             }
             delete rmsg;
         }
     } else {
         Message *smsg = new Message();
-        const unsigned msgsize = x_m.size();
+        const unsigned msgsize = particles_m.size();
         smsg->put(msgsize);
-        for(unsigned i = 0; i < msgsize; i++) {
-            smsg->put(id_m[i]);
-            smsg->put(x_m[i]);
-            smsg->put(y_m[i]);
-            smsg->put(z_m[i]);
-            smsg->put(px_m[i]);
-            smsg->put(py_m[i]);
-            smsg->put(pz_m[i]);
-            if (hasTime) {
-                smsg->put(turn_m[i]);
-                smsg->put(bunchNum_m[i]);
-                smsg->put(time_m[i]);
+        smsg->put(hasTurn);
+        for (unsigned i = 0; i < msgsize; i++) {
+            const OpalParticle& particle = particles_m[i];
+            smsg->put(particle.getX());
+            smsg->put(particle.getY());
+            smsg->put(particle.getZ());
+            smsg->put(particle.getPx());
+            smsg->put(particle.getPy());
+            smsg->put(particle.getPz());
+            smsg->put(particle.getId());
+            if (hasTurn) {
+                smsg->put(turnNumber_m[i]);
+                smsg->put(bunchNumber_m[i]);
             }
+            smsg->put(particle.getTime());
         }
         bool res = Ippl::Comm->send(smsg, 0, tag);
-        if(! res)
+        if (!res) {
             ERRORMSG("LossDataSink Ippl::Comm->send(smsg, 0, tag) failed " << endl);
+        }
     }
 }
 
@@ -505,10 +624,9 @@ void LossDataSink::saveASCII() {
 */
 void LossDataSink::splitSets(unsigned int numSets) {
     if (numSets <= 1 ||
-        x_m.size() == 0 ||
-        time_m.size() != x_m.size()) return;
+        particles_m.size() == 0) return;
 
-    const size_t nLoc = x_m.size();
+    const size_t nLoc = particles_m.size();
     size_t avgNumPerSet = nLoc / numSets;
     std::vector<size_t> numPartsInSet(numSets, avgNumPerSet);
     for (unsigned int j = 0; j < (nLoc - numSets * avgNumPerSet); ++ j) {
@@ -520,7 +638,7 @@ void LossDataSink::splitSets(unsigned int numSets) {
     double* meanT = &data[0];
     double* numParticles = &data[numSets];
     std::vector<double> timeRange(numSets, 0.0);
-    double maxT = time_m[0];
+    double maxT = particles_m[0].getTime();
 
     for (unsigned int iteration = 0; iteration < 2; ++ iteration) {
         size_t partIdx = 0;
@@ -528,8 +646,8 @@ void LossDataSink::splitSets(unsigned int numSets) {
 
             const size_t &numThisSet = numPartsInSet[j];
             for (size_t k = 0; k < numThisSet; ++ k, ++ partIdx) {
-                meanT[j] += time_m[partIdx];
-                maxT = std::max(maxT, time_m[partIdx]);
+                meanT[j] += particles_m[partIdx].getTime();
+                maxT = std::max(maxT, particles_m[partIdx].getTime());
             }
             numParticles[j] = numThisSet;
         }
@@ -552,7 +670,7 @@ void LossDataSink::splitSets(unsigned int numSets) {
         size_t setNum = 0;
         size_t idxPrior = 0;
         for (size_t idx = 0; idx < nLoc; ++ idx) {
-            if (time_m[idx] > timeRange[setNum]) {
+            if (particles_m[idx].getTime() > timeRange[setNum]) {
                 numPartsInSet[setNum] = idx - idxPrior;
                 idxPrior = idx;
                 ++ setNum;
@@ -566,23 +684,13 @@ void LossDataSink::splitSets(unsigned int numSets) {
     }
 }
 
-namespace {
-    void cminmax(double &min, double &max, double val) {
-        if (-val > min) {
-            min = -val;
-        } else if (val > max) {
-            max = val;
-        }
-    }
-}
-
 SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
     SetStatistics stat;
     double part[6];
 
     const unsigned int totalSize = 45;
     double plainData[totalSize];
-    double rminmax[6];
+    double rminmax[6] = {};
 
     Util::KahanAccumulation data[totalSize];
     Util::KahanAccumulation *localCentroid = data + 1;
@@ -590,7 +698,7 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
     Util::KahanAccumulation *localOthers = data + 43;
 
     size_t startIdx = 0;
-    size_t nLoc = x_m.size();
+    size_t nLoc = particles_m.size();
     if (setIdx + 1 < startSet_m.size()) {
         startIdx = startSet_m[setIdx];
         nLoc = startSet_m[setIdx + 1] - startSet_m[setIdx];
@@ -599,30 +707,32 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
     data[0].sum = nLoc;
 
     unsigned int idx = startIdx;
-    for(unsigned long k = 0; k < nLoc; ++ k, ++ idx) {
-        part[1] = px_m[idx];
-        part[3] = py_m[idx];
-        part[5] = pz_m[idx];
-        part[0] = x_m[idx];
-        part[2] = y_m[idx];
-        part[4] = z_m[idx];
+    for (unsigned long k = 0; k < nLoc; ++ k, ++ idx) {
+        const OpalParticle& particle = particles_m[idx];
 
-        for(int i = 0; i < 6; i++) {
+        part[0] = particle.getX();
+        part[1] = particle.getPx();
+        part[2] = particle.getY();
+        part[3] = particle.getPy();
+        part[4] = particle.getZ();
+        part[5] = particle.getPz();
+
+        for (int i = 0; i < 6; i++) {
             localCentroid[i] += part[i];
-            for(int j = 0; j <= i; j++) {
+            for (int j = 0; j <= i; j++) {
                 localMoments[i * 6 + j] += part[i] * part[j];
             }
         }
-        localOthers[0] += time_m[idx];
-        localOthers[1] += std::pow(time_m[idx], 2);
+        localOthers[0] += particle.getTime();
+        localOthers[1] += std::pow(particle.getTime(), 2);
 
-        ::cminmax(rminmax[0], rminmax[1], x_m[idx]);
-        ::cminmax(rminmax[2], rminmax[3], y_m[idx]);
-        ::cminmax(rminmax[4], rminmax[5], z_m[idx]);
+        ::cminmax(rminmax[0], rminmax[1], particle.getX());
+        ::cminmax(rminmax[2], rminmax[3], particle.getY());
+        ::cminmax(rminmax[4], rminmax[5], particle.getZ());
     }
 
-    for(int i = 0; i < 6; i++) {
-        for(int j = 0; j < i; j++) {
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < i; j++) {
             localMoments[j * 6 + i] = localMoments[i * 6 + j];
         }
     }
@@ -631,24 +741,23 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
         plainData[i] = data[i].sum;
     }
 
-    new_reduce(plainData, totalSize, std::plus<double>());
-    new_reduce(rminmax, 6, std::greater<double>());
+    allreduce(plainData, totalSize, std::plus<double>());
+    allreduce(rminmax, 6, std::greater<double>());
 
-    if (Ippl::myNode() != 0) return stat;
     if (plainData[0] == 0.0) return stat;
 
     double *centroid = plainData + 1;
     double *moments = plainData + 7;
     double *others = plainData + 43;
 
-    stat.element_m = element_m;
+    stat.outputName_m = outputName_m;
     stat.spos_m = spos_m[setIdx];
     stat.refTime_m = refTime_m[setIdx];
     stat.RefPartR_m = RefPartR_m[setIdx];
     stat.RefPartP_m = RefPartP_m[setIdx];
     stat.nTotal_m = (unsigned long)std::round(plainData[0]);
 
-    for(unsigned int i = 0 ; i < 3u; i++) {
+    for (unsigned int i = 0 ; i < 3u; i++) {
         stat.rmean_m(i) = centroid[2 * i] / stat.nTotal_m;
         stat.pmean_m(i) = centroid[(2 * i) + 1] / stat.nTotal_m;
         stat.rsqsum_m(i) = (moments[2 * i * 6 + 2 * i] -
@@ -660,16 +769,16 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
                            stat.nTotal_m * stat.rmean_m(i) * stat.pmean_m(i));
     }
     stat.tmean_m = others[0] / stat.nTotal_m;
-    stat.trms_m = sqrt(std::max(0.0, (others[1] / stat.nTotal_m - std::pow(stat.tmean_m, 2))));
+    stat.trms_m = std::sqrt(std::max(0.0, (others[1] / stat.nTotal_m - std::pow(stat.tmean_m, 2))));
 
     stat.eps2_m = ((stat.rsqsum_m * stat.psqsum_m - stat.rpsum_m * stat.rpsum_m) /
                    (1.0 * stat.nTotal_m * stat.nTotal_m));
 
     stat.rpsum_m /= stat.nTotal_m;
 
-    for(unsigned int i = 0 ; i < 3u; i++) {
-        stat.rrms_m(i) = sqrt(std::max(0.0, stat.rsqsum_m(i)) / stat.nTotal_m);
-        stat.prms_m(i) = sqrt(std::max(0.0, stat.psqsum_m(i)) / stat.nTotal_m);
+    for (unsigned int i = 0 ; i < 3u; i++) {
+        stat.rrms_m(i) = std::sqrt(std::max(0.0, stat.rsqsum_m(i)) / stat.nTotal_m);
+        stat.prms_m(i) = std::sqrt(std::max(0.0, stat.psqsum_m(i)) / stat.nTotal_m);
         stat.eps_norm_m(i)  =  std::sqrt(std::max(0.0, stat.eps2_m(i)));
         double tmp = stat.rrms_m(i) * stat.prms_m(i);
         stat.fac_m(i) = (tmp == 0) ? 0.0 : 1.0 / tmp;

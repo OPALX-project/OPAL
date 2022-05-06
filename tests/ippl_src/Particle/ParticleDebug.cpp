@@ -77,7 +77,7 @@ TEST(Particle, ParticleDebug)
 
     // Inform output objects for test output:
     Inform* fdip =
-        new Inform(NULL,"text.test.TestParticleDebug",Inform::OVERWRITE,0);
+        new Inform(nullptr,"text.test.TestParticleDebug",Inform::OVERWRITE,0);
     Inform& fdi = *fdip;
 
     // --------------------------------------------------------------------------

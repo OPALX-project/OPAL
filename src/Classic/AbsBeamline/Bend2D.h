@@ -90,7 +90,7 @@ public:
 
     virtual void finalise() override;
     virtual void getDimensions(double &sBegin, double &sEnd) const override;
-    virtual ElementBase::ElementType getType() const override = 0;
+    virtual ElementType getType() const override = 0;
     virtual void initialise(PartBunchBase<double, 3> *bunch,
                             double &startField,
                             double &endField) override;

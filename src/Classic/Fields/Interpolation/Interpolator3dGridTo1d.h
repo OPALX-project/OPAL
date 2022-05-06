@@ -53,9 +53,9 @@ class Interpolator3dGridTo1d : public VectorMap {
    */
   inline Interpolator3dGridTo1d(ThreeDGrid* grid, double ***F);
 
-  /** Default constructor - initialises data to NULL
+  /** Default constructor - initialises data to nullptr
    *
-   *  Note I have no NULL checking on most member functions so be careful
+   *  Note I have no nullptr checking on most member functions so be careful
    */
   inline Interpolator3dGridTo1d();
 
@@ -101,19 +101,19 @@ class Interpolator3dGridTo1d : public VectorMap {
 
   /** Set x coordinates in the mesh to an arbitrary set of points
    *
-   *  If mesh is NULL, does nothing
+   *  If mesh is nullptr, does nothing
    */
   inline void setX(int nCoords, double* x);
 
   /** Set y coordinates in the mesh to an arbitrary set of points
    *
-   *  If mesh is NULL, does nothing
+   *  If mesh is nullptr, does nothing
    */
   inline void setY(int nCoords, double* y);
 
   /** Set z coordinates in the mesh to an arbitrary set of points
    *
-   *  If mesh is NULL, does nothing
+   *  If mesh is nullptr, does nothing
    */
   inline void setZ(int nCoords, double* z);
 
@@ -141,12 +141,12 @@ class Interpolator3dGridTo1d : public VectorMap {
 };
 
 Interpolator3dGridTo1d::Interpolator3dGridTo1d(ThreeDGrid* grid, double ***F)
-      : coordinates_m(NULL), f_m(NULL) {
+      : coordinates_m(nullptr), f_m(nullptr) {
     setAll(grid, F);
 }
 
 Interpolator3dGridTo1d::Interpolator3dGridTo1d()
-      : coordinates_m(NULL), f_m(NULL) {
+      : coordinates_m(nullptr), f_m(nullptr) {
 }
 
 Interpolator3dGridTo1d::~Interpolator3dGridTo1d() {
@@ -183,24 +183,24 @@ void Interpolator3dGridTo1d::setF(double*** inF) {
 }
 
 void Interpolator3dGridTo1d::setGrid(ThreeDGrid* grid) {
-    if (coordinates_m != NULL)
+    if (coordinates_m != nullptr)
         coordinates_m->remove(this);
     grid->add(this);
     coordinates_m = grid;
 }
 
 void Interpolator3dGridTo1d::setX(int nCoords, double* x) {
-    if (coordinates_m != NULL)
+    if (coordinates_m != nullptr)
         coordinates_m->setX(nCoords, x);
 }
 
 void Interpolator3dGridTo1d::setY(int nCoords, double* y) {
-    if (coordinates_m != NULL)
+    if (coordinates_m != nullptr)
         coordinates_m->setY(nCoords, y);
 }
 
 void Interpolator3dGridTo1d::setZ(int nCoords, double* z) {
-    if (coordinates_m != NULL)
+    if (coordinates_m != nullptr)
         coordinates_m->setZ(nCoords, z);
 }
 

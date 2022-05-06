@@ -14,25 +14,26 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "Solvers/CSRWakeFunction.hh"
-#include "Solvers/RootFinderForCSR.h"
+#include "Solvers/CSRWakeFunction.h"
 
+#include "AbsBeamline/RBend.h"
+#include "AbsBeamline/SBend.h"
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Filters/Filter.h"
 #include "Filters/SavitzkyGolay.h"
 #include "Physics/Physics.h"
-#include "AbsBeamline/RBend.h"
-#include "AbsBeamline/SBend.h"
+#include "Solvers/RootFinderForCSR.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
-#include <iostream>
-#include <fstream>
 #include <cmath>
+#include <fstream>
+#include <iostream>
 
-
-CSRWakeFunction::CSRWakeFunction(const std::string &name, std::vector<Filter *> filters, const unsigned int &N):
+CSRWakeFunction::CSRWakeFunction(const std::string& name,
+                                 std::vector<Filter*> filters,
+                                 const unsigned int& N):
     WakeFunction(name, N),
     filters_m(filters.begin(), filters.end()),
     lineDensity_m(),
@@ -48,7 +49,7 @@ CSRWakeFunction::CSRWakeFunction(const std::string &name, std::vector<Filter *> 
     diffOp_m = filters_m.back();
 }
 
-void CSRWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
+void CSRWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
     Inform msg("CSRWake ");
 
     const double sPos = bunch->get_sPos();
@@ -133,9 +134,9 @@ void CSRWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
     }
 }
 
-void CSRWakeFunction::initialize(const ElementBase *ref) {
-    if (ref->getType() == ElementBase::RBEND ||
-       ref->getType() == ElementBase::SBEND) {
+void CSRWakeFunction::initialize(const ElementBase* ref) {
+    if (ref->getType() == ElementType::RBEND ||
+        ref->getType() == ElementType::SBEND) {
 
         const Bend2D *bend = static_cast<const Bend2D *>(ref);
         double End;
@@ -149,7 +150,8 @@ void CSRWakeFunction::initialize(const ElementBase *ref) {
     }
 }
 
-void CSRWakeFunction::calculateLineDensity(PartBunchBase<double, 3> *bunch, std::pair<double, double> &meshInfo) {
+void CSRWakeFunction::calculateLineDensity(PartBunchBase<double, 3>* bunch,
+                                           std::pair<double, double>& meshInfo) {
     bunch->calcLineDensity(nBins_m, lineDensity_m, meshInfo);
 
     std::vector<Filter *>::const_iterator fit;
@@ -196,7 +198,7 @@ void CSRWakeFunction::calculateContributionInside(size_t sliceNumber, double ang
 
             if (4.0 * relativeSlippageLength < sliceNumber) {
 
-                int j = sliceNumber - static_cast<int>(floor(4.0 * relativeSlippageLength));
+                int j = sliceNumber - static_cast<int>(std::floor(4.0 * relativeSlippageLength));
                 double frac = 4.0 * relativeSlippageLength - (sliceNumber - j);
                 Ez_m[sliceNumber] -= (frac * lineDensity_m[j - 1] + (1. - frac) * lineDensity_m[j]) / std::pow(SlippageLength, 1. / 3.);
 
@@ -213,13 +215,13 @@ void CSRWakeFunction::calculateContributionInside(size_t sliceNumber, double ang
 
         if (4. * relativeSlippageLength < sliceNumber) {
 
-            int j = sliceNumber - static_cast<int>(floor(4. * relativeSlippageLength));
+            int j = sliceNumber - static_cast<int>(std::floor(4. * relativeSlippageLength));
             double frac = 4. * relativeSlippageLength - (sliceNumber - j);
             Ez_m[sliceNumber] -= (frac * lineDensity_m[j - 1] + (1. - frac) * lineDensity_m[j]) / std::pow(SlippageLength, 1. / 3.);
 
         }
 
-        int j = sliceNumber - static_cast<int>(floor(SlippageLength / meshSpacing));
+        int j = sliceNumber - static_cast<int>(std::floor(SlippageLength / meshSpacing));
         double frac = relativeSlippageLength - (sliceNumber - j);
         Ez_m[sliceNumber] += (frac * lineDensity_m[j - 1] + (1. - frac) * lineDensity_m[j]) / std::pow(SlippageLength, 1. / 3.);
 
@@ -304,7 +306,7 @@ void CSRWakeFunction::calculateContributionAfter(size_t sliceNumber, double angl
     Ez_m[sliceNumber] *= prefactor;
 }
 
-double CSRWakeFunction::calcPsi(const double &psiInitial, const double &x, const double &Ds) const {
+double CSRWakeFunction::calcPsi(const double& psiInitial, const double& x, const double& Ds) const {
     /** solve the equation
      *  \f[
      *  \Delta s = \frac{R \Psi^3}{24} \frac{\Psi + 4x}{\Psi + x}
@@ -335,6 +337,6 @@ double CSRWakeFunction::calcPsi(const double &psiInitial, const double &x, const
     return psi;
 }
 
-const std::string CSRWakeFunction::getType() const {
-    return "CSRWakeFunction";
+WakeType CSRWakeFunction::getType() const {
+    return WakeType::CSRWakeFunction;
 }

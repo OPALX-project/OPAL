@@ -1,22 +1,24 @@
+//
+// Class Beam
+//   The class for the OPAL BEAM command.
+//   A BEAM definition is used by most physics commands to define the
+//   particle charge and the reference momentum, together with some other data.
+//
+// Copyright (c) 200x - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_Beam_HH
 #define OPAL_Beam_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: Beam.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: Beam
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:33:44 $
-// $Author: Andreas Adelmann $
-//
-// ------------------------------------------------------------------------
 
 #include "AbstractObjects/Definition.h"
 #include "Algorithms/PartData.h"
@@ -26,17 +28,9 @@
 
 class Inform;
 
-// Class Beam
-// ------------------------------------------------------------------------
-/// The BEAM definition.
-//  A BEAM definition is used by most physics commands to define the
-//  particle charge and the reference momentum, together with some other
-//  data.
-
 class Beam: public Definition {
 
 public:
-
     /// Exemplar constructor.
     Beam();
 
@@ -44,28 +38,22 @@ public:
 
     /// Test if replacement is allowed.
     //  Can replace only by another BEAM.
-    virtual bool canReplaceBy(Object *object);
+    virtual bool canReplaceBy(Object* object);
 
     /// Make clone.
-    virtual Beam *clone(const std::string &name);
+    virtual Beam* clone(const std::string& name);
 
     /// Check the BEAM data.
     virtual void execute();
 
     /// Find named BEAM.
-    static Beam *find(const std::string &name);
-
-    //ff => get gamma value
-    double getGamma() const;
-
-    //ff => get PC value
-    double getPC() const;
+    static Beam* find(const std::string& name);
 
     /// Return the number of (macro)particles
     size_t getNumberOfParticles() const;
 
     /// Return the embedded CLASSIC PartData.
-    const PartData &getReference() const;
+    const PartData& getReference() const;
 
     /// Return the beam current in A
     double getCurrent() const;
@@ -91,16 +79,15 @@ public:
     /// Update the BEAM data.
     virtual void update();
 
-    void print(std::ostream &os) const;
+    void print(std::ostream& os) const;
 
 private:
-
     // Not implemented.
-    Beam(const Beam &);
-    void operator=(const Beam &);
+    Beam(const Beam&);
+    void operator=(const Beam&);
 
     // Clone constructor.
-    Beam(const std::string &name, Beam *parent);
+    Beam(const std::string& name, Beam* parent);
 
     // The particle reference data.
     PartData reference;
@@ -109,10 +96,9 @@ private:
     static const double energy_scale;
 };
 
-inline std::ostream &operator<<(std::ostream &os, const Beam &b) {
+inline std::ostream &operator<<(std::ostream& os, const Beam& b) {
     b.print(os);
     return os;
 }
-
 
 #endif // OPAL_Beam_HH

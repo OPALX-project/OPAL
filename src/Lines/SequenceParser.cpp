@@ -45,9 +45,9 @@ SequenceParser::~SequenceParser()
 
 
 void SequenceParser::parse(Statement &stat) const {
-    if(stat.keyword("ENDSEQUENCE")) {
+    if (stat.keyword("ENDSEQUENCE")) {
         // Finish setting up of sequence.
-        if(okFlag) {
+        if (okFlag) {
             try {
                 // Finish parsing the ENDSEQUENCE statement.
                 itsSequence->Object::parse(stat);
@@ -90,11 +90,11 @@ void SequenceParser::fillPositions() const {
     while(! references.empty()) {
         int count = 0;
 
-        for(RefList::iterator i = references.begin();
+        for (RefList::iterator i = references.begin();
             i != references.end();) {
-            if(i->fromPosition != 0  &&
+            if (i->fromPosition != 0  &&
                i->fromPosition->itsFlag == SequenceMember::ABSOLUTE) {
-                for(std::list<SequenceMember *>::iterator j = i->itsList.begin();
+                for (std::list<SequenceMember *>::iterator j = i->itsList.begin();
                     j != i->itsList.end(); ++j) {
                     (*j)->itsPosition += i->fromPosition->itsPosition;
                     (*j)->itsFlag = SequenceMember::ABSOLUTE;
@@ -107,7 +107,7 @@ void SequenceParser::fillPositions() const {
             }
         }
 
-        if(count == 0) {
+        if (count == 0) {
             throw OpalException("SequenceParser::fillPositions()",
                                 "Circular \"FROM\" clauses.");
         }
@@ -116,10 +116,10 @@ void SequenceParser::fillPositions() const {
 
 
 void SequenceParser::findFromPositions() const {
-    for(RefList::iterator i = references.begin(); i != references.end(); ++i) {
+    for (RefList::iterator i = references.begin(); i != references.end(); ++i) {
         TLine::iterator pos = itsSequence->findNamedPosition(itsLine, i->fromName);
 
-        if(pos != itsLine.end()) {
+        if (pos != itsLine.end()) {
             i->fromPosition = &(*pos);
         } else {
             throw OpalException("SequenceParser::findFromPositions()",
@@ -134,11 +134,11 @@ void SequenceParser::findNeighbourPositions() const {
     Attribute *attr = itsSequence->findAttribute("REFER");
     std::string ref = Attributes::getString(*attr);
 
-    if(ref == "ENTRY") {
+    if (ref == "ENTRY") {
         type = Sequence::IS_ENTRY;
-    } else if(ref == "CENTRE"  ||  ref == "") {
+    } else if (ref == "CENTRE" || ref.empty()) {
         type = Sequence::IS_CENTRE;
-    } else if(ref == "EXIT") {
+    } else if (ref == "EXIT") {
         type = Sequence::IS_EXIT;
     } else {
         throw OpalException("SequenceParser::findNeighbourPositions()",
@@ -147,36 +147,36 @@ void SequenceParser::findNeighbourPositions() const {
                             itsSequence->getOpalName() + "\".");
     }
 
-    for(TLine::iterator i = itsLine.begin(); i != itsLine.end(); ++i) {
+    for (TLine::iterator i = itsLine.begin(); i != itsLine.end(); ++i) {
         TLine::iterator j = i;
         switch(i->itsFlag) {
 
             case SequenceMember::DRIFT:
             case SequenceMember::IMMEDIATE:
                 // Add scaled length of current.
-                if(type != Sequence::IS_ENTRY) {
+                if (type != Sequence::IS_ENTRY) {
                     std::string name = i->getElement()->getName();
                     Element *elem = Element::find(name);
                     double length = elem->getLength();
 
-                    if(type == Sequence::IS_CENTRE) {
+                    if (type == Sequence::IS_CENTRE) {
                         i->itsPosition += length / 2.0;
-                    } else if(type == Sequence::IS_EXIT) {
+                    } else if (type == Sequence::IS_EXIT) {
                         i->itsPosition += length;
                     }
                 }
 
                 // Add scaled length of previous.
-                if(j != itsLine.begin()) {
+                if (j != itsLine.begin()) {
                     --j;
-                    if(type != Sequence::IS_EXIT) {
+                    if (type != Sequence::IS_EXIT) {
                         std::string name = j->getElement()->getName();
                         Element *elem = Element::find(name);
                         double length = elem->getLength();
 
-                        if(type == Sequence::IS_ENTRY) {
+                        if (type == Sequence::IS_ENTRY) {
                             i->itsPosition += length;
-                        } else if(type == Sequence::IS_CENTRE) {
+                        } else if (type == Sequence::IS_CENTRE) {
                             i->itsPosition += length / 2.0;
                         }
                     }
@@ -192,7 +192,7 @@ void SequenceParser::findNeighbourPositions() const {
                 break;
 
             case SequenceMember::PREVIOUS:
-                if(j != itsLine.begin()) {
+                if (j != itsLine.begin()) {
                     --j;
                     Reference ref("PREVIOUS", &(*i));
                     ref.fromPosition = &(*j);
@@ -204,7 +204,7 @@ void SequenceParser::findNeighbourPositions() const {
 
             case SequenceMember::NEXT:
                 ++j;
-                if(j != itsLine.end()) {
+                if (j != itsLine.end()) {
                     // Current position is relative to *j;
                     Reference ref("NEXT", &(*i));
                     ref.fromPosition = &(*j);
@@ -225,7 +225,6 @@ void SequenceParser::findNeighbourPositions() const {
             }
             break;
 
-
             default:
                 ;
         }
@@ -239,14 +238,14 @@ void SequenceParser::parseMember(Statement &stat) const {
     SequenceMember member;
 
     // Read object identifier.
-    if(stat.delimiter('-')) {
+    if (stat.delimiter('-')) {
         member.setReflectionFlag(true);
         clsName = Expressions::parseString(stat, "Class name expected.");
         member.itsType = SequenceMember::GLOBAL;
     } else {
         clsName = Expressions::parseString(stat, "Object or class name expected.");
 
-        if(stat.delimiter(':')) {
+        if (stat.delimiter(':')) {
             member.itsType = SequenceMember::LOCAL;
             member.setReflectionFlag(stat.delimiter('-'));
             objName = clsName;
@@ -257,28 +256,28 @@ void SequenceParser::parseMember(Statement &stat) const {
     }
 
     // Find exemplar object.
-    if(Object *obj = OpalData::getInstance()->find(clsName)) {
+    if (Object *obj = OpalData::getInstance()->find(clsName)) {
         Pointer<Object> copy;
-        if(obj) {
-            if(member.itsType == SequenceMember::LOCAL) {
+        if (obj) {
+            if (member.itsType == SequenceMember::LOCAL) {
                 // We must make a copy or a macro instance.
-                if(objName == itsSequence->getOpalName()) {
+                if (objName == itsSequence->getOpalName()) {
                     throw ParseError("SequenceParser::parseMember()",
                                      "You cannot redefine \"" + objName +
                                      "\" within the sequence of the same name.");
-                } else if(clsName == itsSequence->getOpalName()) {
+                } else if (clsName == itsSequence->getOpalName()) {
                     throw ParseError("SequenceParser::parseMember()",
                                      "You cannot refer to \"" + objName +
                                      "\" within the sequence of the same name.");
-                } else if(OpalData::getInstance()->find(objName)) {
+                } else if (OpalData::getInstance()->find(objName)) {
                     throw ParseError("SequenceParser::parseMember()",
                                      "You cannot redefine \"" + objName +
                                      "\" within a sequence.");
                 }
 
-                if(stat.delimiter('(')) {
+                if (stat.delimiter('(')) {
                     copy = obj->makeInstance(objName, stat, this);
-                } else if(BeamSequence *line = dynamic_cast<BeamSequence *>(obj)) {
+                } else if (BeamSequence *line = dynamic_cast<BeamSequence *>(obj)) {
                     copy = line->copy(objName);
                 } else {
                     copy = obj->clone(objName);
@@ -290,7 +289,7 @@ void SequenceParser::parseMember(Statement &stat) const {
         }
 
         // Test for correct object type.
-        if(Element *elem = dynamic_cast<Element *>(&*copy)) {
+        if (Element *elem = dynamic_cast<Element *>(&*copy)) {
             ElementBase *base = elem->getElement();
             member.setElement(base->copyStructure());
 
@@ -305,7 +304,7 @@ void SequenceParser::parseMember(Statement &stat) const {
             parseEnd(stat);
 
             // For local instantiation define element.
-            if(member.itsType == SequenceMember::LOCAL) OpalData::getInstance()->define(&*copy);
+            if (member.itsType == SequenceMember::LOCAL) OpalData::getInstance()->define(&*copy);
         } else {
             throw ParseError("SequenceParser::parseMember()", "Object \"" +
                              objName + "\" is not an element.");
@@ -328,20 +327,20 @@ void SequenceParser::parsePosition
         std::string name =
             Expressions::parseString(stat, "Attribute name expected.");
 
-        if(name == "AT") {
+        if (name == "AT") {
             Expressions::parseDelimiter(stat, '=');
             position = Expressions::parseRealConst(stat);
             flag |= (flag & 0x0001) ? 0x0008 : 0x0001;
-        } else if(name == "DRIFT") {
+        } else if (name == "DRIFT") {
             Expressions::parseDelimiter(stat, '=');
             position = Expressions::parseRealConst(stat);
             flag |= (flag & 0x0002) ? 0x0008 : 0x0002;
-        } else if(name == "FROM") {
+        } else if (name == "FROM") {
             Expressions::parseDelimiter(stat, '=');
-            if(stat.delimiter('#')) {
-                if(stat.keyword("S")) {
+            if (stat.delimiter('#')) {
+                if (stat.keyword("S")) {
                     fromName = "#S";
-                } else if(stat.keyword("E")) {
+                } else if (stat.keyword("E")) {
                     fromName = "#E";
                 } else {
                     throw ParseError("SequenceParser::parsePosition()",
@@ -352,12 +351,12 @@ void SequenceParser::parsePosition
                            (stat, "Expected <name>, \"#S\", or \"#E\".");
             }
             flag |= (flag & 0x0004) ? 0x0008 : 0x0004;
-        } else if(defined) {
+        } else if (defined) {
             // May be element attribute.
-            if(Attribute *attr = elem.findAttribute(name)) {
-                if(stat.delimiter('=')) {
+            if (Attribute *attr = elem.findAttribute(name)) {
+                if (stat.delimiter('=')) {
                     attr->parse(stat, true);
-                } else if(stat.delimiter(":=")) {
+                } else if (stat.delimiter(":=")) {
                     attr->parse(stat, false);
                 } else {
                     throw ParseError("SequenceParser::parsePosition()",
@@ -400,16 +399,16 @@ void SequenceParser::parsePosition
             // "at=...,from=...".
             member.itsPosition = position;
 
-            if(fromName == "PREVIOUS") {
+            if (fromName == "PREVIOUS") {
                 // Position refers to previous element.
                 member.itsFlag = SequenceMember::PREVIOUS;
-            } else if(fromName == "NEXT") {
+            } else if (fromName == "NEXT") {
                 // Position refers to next element.
                 member.itsFlag = SequenceMember::NEXT;
-            } else if(fromName == "#S") {
+            } else if (fromName == "#S") {
                 // Position refers to begin of sequence.
                 member.itsFlag = SequenceMember::ABSOLUTE;
-            } else if(fromName == "#E") {
+            } else if (fromName == "#E") {
                 // Position refers to end of sequence.
                 member.itsFlag = SequenceMember::END;
             } else {
@@ -417,9 +416,9 @@ void SequenceParser::parsePosition
                 member.itsFlag = SequenceMember::FROM;
 
                 // Find reference to fromName.
-                for(RefList::iterator i = references.begin();
+                for (RefList::iterator i = references.begin();
                     i != references.end(); ++i) {
-                    if(i->fromName == fromName) {
+                    if (i->fromName == fromName) {
                         // Build reference to a new "FROM" name.
                         i->itsList.push_back(&member);
                         return;

@@ -46,7 +46,7 @@ private:
     double track(double t,
                  const double dt,
                  const double phase,
-                 std::ofstream *out = NULL) const;
+                 std::ofstream *out = nullptr) const;
 
     const PartData &itsReference_m;
     std::shared_ptr<Component> itsCavity_m;

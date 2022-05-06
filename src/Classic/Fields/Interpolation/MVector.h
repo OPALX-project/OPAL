@@ -119,10 +119,10 @@ template <class Tmplt>
 class MVector
 {
 public:
-  MVector() : _vector(NULL)                               {;}
+  MVector() : _vector(nullptr)                               {;}
   MVector( const MVector<Tmplt>& mv);
-  MVector( const Tmplt* ta_beg, const Tmplt* ta_end ) : _vector(NULL) { build_vector(ta_beg, ta_end); } //copy from data and put it in the vector
-  MVector( std::vector<Tmplt> tv) : _vector(NULL)         { build_vector(&tv[0], &tv.back()+1); }
+  MVector( const Tmplt* ta_beg, const Tmplt* ta_end ) : _vector(nullptr) { build_vector(ta_beg, ta_end); } //copy from data and put it in the vector
+  MVector( std::vector<Tmplt> tv) : _vector(nullptr)         { build_vector(&tv[0], &tv.back()+1); }
   MVector( size_t i );
   MVector( size_t i, Tmplt  value );
   template <class Tmplt2> MVector(MVector<Tmplt2>);
@@ -206,9 +206,9 @@ MVector<double>    im     (MVector<m_complex> mv);
 template <class Tmplt>
 inline MVector<Tmplt>::~MVector() { delete_vector();}
 template <>
-inline void MVector<double>::delete_vector() { if(_vector != NULL) gsl_vector_free( (gsl_vector*)_vector); }
+inline void MVector<double>::delete_vector() { if(_vector != nullptr) gsl_vector_free( (gsl_vector*)_vector); }
 template <>
-inline void MVector<m_complex>::delete_vector() { if(_vector != NULL) gsl_vector_complex_free( (gsl_vector_complex*)_vector); }
+inline void MVector<m_complex>::delete_vector() { if(_vector != nullptr) gsl_vector_complex_free( (gsl_vector_complex*)_vector); }
 
 MVector<m_complex> inline & operator *=(MVector<m_complex>& v, gsl_complex c)
 {gsl_vector_complex_scale((gsl_vector_complex*)v._vector,  c); return v;}
@@ -245,7 +245,7 @@ template <class Tmplt> bool inline operator!=(const MVector<Tmplt>& c1, const MV
 template <class Tmplt>
 gsl_vector inline* MVector<Tmplt>::get_vector(const MVector<double>&    m)
 {
-  if(m._vector == NULL) 
+  if(m._vector == nullptr)
     throw(GeneralClassicException("MVector::get_vector", "Attempt to access uninitialised matrix"));
   return (gsl_vector*)m._vector;
 }
@@ -253,7 +253,7 @@ gsl_vector inline* MVector<Tmplt>::get_vector(const MVector<double>&    m)
 template <class Tmplt>
 gsl_vector_complex inline* MVector<Tmplt>::get_vector(const MVector<m_complex>& m)
 {
-  if(m._vector == NULL) 
+  if(m._vector == nullptr)
     throw(GeneralClassicException("MVector::get_vector", "Attempt to access uninitialised vector"));
   return (gsl_vector_complex*)m._vector;
 

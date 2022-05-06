@@ -1,5 +1,4 @@
-cmake_minimum_required (VERSION 2.8.10)
-cmake_policy (SET CMP0048 NEW)
+cmake_minimum_required (VERSION 3.12)
 project (MSLANG)
 set (MSLANG_VERSION_MAJOR 0)
 set (MSLANG_VERSION_MINOR 1)

@@ -1,3 +1,20 @@
+//
+// Class Material
+//   Base class for representing materials
+//
+// Copyright (c) 2019 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Physics/Material.h"
 #include "Physics/Air.h"
 #include "Physics/AluminaAL2O3.h"
@@ -22,7 +39,7 @@ using namespace Physics;
 
 std::map<std::string, std::shared_ptr<Material> > Material::protoTable_sm;
 
-std::shared_ptr<Material> Material::addMaterial(const std::string &name,
+std::shared_ptr<Material> Material::addMaterial(const std::string& name,
                                                 std::shared_ptr<Material> mat_ptr) {
     std::string nameUp = Util::toUpper(name);
     if (protoTable_sm.find(nameUp) != protoTable_sm.end())
@@ -33,11 +50,9 @@ std::shared_ptr<Material> Material::addMaterial(const std::string &name,
     return mat_ptr;
 }
 
-std::shared_ptr<Material> Material::getMaterial(const std::string &name) {
+std::shared_ptr<Material> Material::getMaterial(const std::string& name) {
     std::string nameUp = Util::toUpper(name);
-    if (protoTable_sm.find(nameUp) != protoTable_sm.end()) return protoTable_sm[nameUp];
-
-    throw GeneralClassicException("Material::getMaterial", "Unknown material '" + name + "'");
+    return protoTable_sm[nameUp];
 }
 
 namespace {
@@ -49,8 +64,6 @@ namespace {
                                                std::shared_ptr<Material>(new Aluminum()));
     auto beryllium     = Material::addMaterial("Beryllium",
                                                std::shared_ptr<Material>(new Beryllium()));
-    auto berilium      = Material::addMaterial("Berilium",
-                                               beryllium);
     auto boroncarbide  = Material::addMaterial("BoronCarbide",
                                                std::shared_ptr<Material>(new BoronCarbide()));
     auto copper        = Material::addMaterial("Copper",
@@ -69,8 +82,6 @@ namespace {
                                                std::shared_ptr<Material>(new Mylar()));
     auto titanium      = Material::addMaterial("Titanium",
                                                std::shared_ptr<Material>(new Titanium()));
-    auto titan         = Material::addMaterial("Titan",
-                                               titanium);
     auto water         = Material::addMaterial("Water",
                                                std::shared_ptr<Material>(new Water()));
 }

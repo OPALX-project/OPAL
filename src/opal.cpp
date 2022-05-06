@@ -20,6 +20,10 @@ extern Inform *gmsg;
 
 #include "Message/Communicate.h"
 
+#include "GSLErrorHandling.h"
+
+#include <gsl/gsl_errno.h>
+
 #include <fstream>
 #include <iostream>
 #include <limits>
@@ -44,6 +48,8 @@ int run_opal(char */*args*/[], std::string inputfile, int restartStep,
     if (Options::amr)
         amrex::Initialize(comm);
 #endif
+
+    gsl_set_error_handler(&handleGSLErrors);
 
     OpalData *opal = OpalData::getInstance();
 

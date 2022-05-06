@@ -27,6 +27,8 @@
 #include "Algorithms/Vektor.h"
 #include "Elements/OpalBeamline.h"
 #include "Steppers/BorisPusher.h"
+#include "Structure/BoundingBox.h"
+#include "Structure/ValueRange.h"
 
 #include <string>
 #include <map>
@@ -54,6 +56,8 @@ public:
                              double position) const;
     IndexMap::value_t getTouchingElements(const IndexMap::key_t &range) const;
 
+    BoundingBox getBoundingBox() const;
+
 private:
     /// position of reference particle in lab coordinates
     Vector_t r_m;
@@ -68,10 +72,13 @@ private:
     double time_m;
     /// the time step
     double dt_m;
+    ValueRange<long> stepRange_m;
+    long currentStep_m{0};
 
     /// final position in path length
     StepSizeConfig stepSizes_m;
     const double zstop_m;
+    ValueRange<double> pathLengthRange_m;
 
     OpalBeamline &itsOpalBeamline_m;
     IndexMap imap_m;
@@ -84,7 +91,7 @@ private:
     std::ofstream logger_m;
     size_t loggingFrequency_m;
 
-    ElementBase::BoundingBox globalBoundingBox_m;
+    BoundingBox globalBoundingBox_m;
 
     struct elementPosition {
         double startField_m;
@@ -135,4 +142,8 @@ IndexMap::value_t OrbitThreader::getTouchingElements(const IndexMap::key_t &rang
     return imap_m.getTouchingElements(range);
 }
 
+inline
+BoundingBox OrbitThreader::getBoundingBox() const {
+    return globalBoundingBox_m;
+}
 #endif

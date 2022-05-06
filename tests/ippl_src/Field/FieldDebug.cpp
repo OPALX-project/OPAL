@@ -41,7 +41,7 @@ TEST(Field, FieldDebug)
 
     // New Inform-based version (tjw):
     Inform* fdip =
-        new Inform(NULL,"text.test.TestFieldDebug",Inform::OVERWRITE,0);
+        new Inform(nullptr,"text.test.TestFieldDebug",Inform::OVERWRITE,0);
     Inform& fdi = *fdip;
     setInform(fdi);
 

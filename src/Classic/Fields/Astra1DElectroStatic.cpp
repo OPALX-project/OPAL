@@ -1,6 +1,7 @@
 #include "Fields/Astra1DElectroStatic.h"
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
@@ -13,7 +14,7 @@
 
 Astra1DElectroStatic::Astra1DElectroStatic(std::string aFilename)
     : Fieldmap(aFilename),
-      FourCoefs_m(NULL) {
+      FourCoefs_m(nullptr) {
 
     std::ifstream file;
     int skippedValues = 0;
@@ -80,7 +81,7 @@ Astra1DElectroStatic::~Astra1DElectroStatic() {
 }
 
 void Astra1DElectroStatic::readMap() {
-    if (FourCoefs_m == NULL) {
+    if (FourCoefs_m == nullptr) {
         // declare variables and allocate memory
 
         std::ifstream in;
@@ -147,9 +148,9 @@ void Astra1DElectroStatic::readMap() {
             Ez_max = 1.0;
 
         // normalize to Ez_max = 1 MV/m
-        FourCoefs_m[0] = 1e6 * RealValues[0] / (Ez_max * num_gridpz_m); // factor 1e6 due to conversion MV/m to V/m
+        FourCoefs_m[0] = Units::MVpm2Vpm * RealValues[0] / (Ez_max * num_gridpz_m);
         for (int i = 1; i < 2 * accuracy_m - 1; i++) {
-            FourCoefs_m[i] = 1e6 * 2.* RealValues[i] / (Ez_max * num_gridpz_m);
+            FourCoefs_m[i] = Units::MVpm2Vpm * 2.* RealValues[i] / (Ez_max * num_gridpz_m);
         }
 
         gsl_fft_real_workspace_free(work);
@@ -167,10 +168,10 @@ void Astra1DElectroStatic::readMap() {
 }
 
 void Astra1DElectroStatic::freeMap() {
-    if (FourCoefs_m != NULL) {
+    if (FourCoefs_m != nullptr) {
 
         delete[] FourCoefs_m;
-        FourCoefs_m = NULL;
+        FourCoefs_m = nullptr;
 
         INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }

@@ -18,18 +18,22 @@
 #ifndef PART_BUNCH_BASE_H
 #define PART_BUNCH_BASE_H
 
-#include "Utility/IpplTimings.h"
-#include "Particle/AbstractParticle.h"
-#include "Particle/ParticleAttrib.h"
-
 #include "Algorithms/CoordinateSystemTrafo.h"
+#include "Algorithms/DistributionMoments.h"
 #include "Algorithms/OpalParticle.h"
 #include "Algorithms/PBunchDefs.h"
 #include "Algorithms/Quaternion.h"
 #include "Algorithms/Vektor.h"
-
+#include "Distribution/Distribution.h"
 #include "FixedAlgebra/FMatrix.h"
 #include "FixedAlgebra/FVector.h"
+#include "Particle/AbstractParticle.h"
+#include "Particle/ParticleAttrib.h"
+#include "Physics/ParticleProperties.h"
+#include "Physics/Units.h"
+#include "Structure/FieldSolver.h"
+#include "Utilities/GeneralClassicException.h"
+#include "Utility/IpplTimings.h"
 
 #include <memory>
 #include <utility>
@@ -41,16 +45,8 @@ class PartBins;
 class PartBinsCyc;
 class PartData;
 
-namespace ParticleType {
-    enum type { REGULAR,
-                FIELDEMISSION,
-                SECONDARY,
-                NEWSECONDARY,
-                STRIPPED};
-}
-
 template <class T, unsigned Dim>
-class PartBunchBase
+class PartBunchBase : std::enable_shared_from_this<PartBunchBase<T, Dim>>
 {
 public:
     typedef typename AbstractParticle<T, Dim>::ParticlePos_t   ParticlePos_t;
@@ -65,19 +61,18 @@ public:
     enum UnitState_t { units = 0, unitless = 1 };
 
 public:
-
     virtual ~PartBunchBase() { }
 
-    PartBunchBase(AbstractParticle<T, Dim>* pb, const PartData *ref);
+    PartBunchBase(AbstractParticle<T, Dim>* pb, const PartData* ref);
 
-    PartBunchBase(const PartBunchBase &rhs) = delete; // implement if needed
+    PartBunchBase(const PartBunchBase& rhs) = delete; // implement if needed
 
     /*
      * Bunch common member functions
      */
 
     // This is required since we initialize the Layout and the RegionLayout with default constructor
-    virtual void initialize(FieldLayout_t *fLayout) = 0;
+    virtual void initialize(FieldLayout_t* fLayout) = 0;
 
     bool getIfBeamEmitting();
 
@@ -99,9 +94,12 @@ public:
     //FIXME: unify methods, use convention that all particles have own dt
     void switchOffUnitlessPositions(bool use_dt_per_particle = false);
 
-    void setDistribution(Distribution *d,
-                         std::vector<Distribution *> addedDistributions,
-                         size_t &np);
+    void setDistribution(Distribution* d,
+                         std::vector<Distribution*> addedDistributions,
+                         size_t& np);
+    void setDistribution(Distribution* d,
+                         size_t numberOfParticles,
+                         double current, const Beamline& bl);
 
     bool isGridFixed() const;
 
@@ -120,9 +118,9 @@ public:
 
     bool weHaveBins() const;
 
-    void setPBins(PartBins *pbin);
+    void setPBins(PartBins* pbin);
 
-    void setPBins(PartBinsCyc *pbin);
+    void setPBins(PartBinsCyc* pbin);
 
     /** \brief Emit particles in the given bin
         i.e. copy the particles from the bin structure into the
@@ -155,8 +153,8 @@ public:
     /** \brief returns the number of particles outside of a box defined by x */
     size_t calcNumPartsOutside(Vector_t x);
 
-    void calcLineDensity(unsigned int nBins, std::vector<double> &lineDensity,
-                         std::pair<double, double> &meshInfo);
+    void calcLineDensity(unsigned int nBins, std::vector<double>& lineDensity,
+                         std::pair<double, double>& meshInfo);
 
     void setBeamFrequency(double v);
 
@@ -167,7 +165,7 @@ public:
     virtual void boundp();
 
     /** delete particles which are too far away from the center of beam*/
-    void boundp_destroy();
+    void boundp_destroyCycl();
 
     /** This is only temporary in order to get the collimator and pepperpot working */
     size_t boundp_destroyT();
@@ -177,7 +175,6 @@ public:
     /*
        Read out coordinates
      */
-
     virtual double getPx(int i);
     virtual double getPy(int i);
     virtual double getPz(int i);
@@ -194,9 +191,9 @@ public:
 
     virtual void setZ(int i, double zcoo);
 
-    void get_bounds(Vector_t &rmin, Vector_t &rmax);
+    void get_bounds(Vector_t& rmin, Vector_t& rmax) const;
 
-    void getLocalBounds(Vector_t &rmin, Vector_t &rmax);
+    void getLocalBounds(Vector_t& rmin, Vector_t& rmax) const;
 
     std::pair<Vector_t, double> getBoundingSphere();
 
@@ -206,21 +203,90 @@ public:
     /*
        Compatibility function push_back
      */
+    void push_back(OpalParticle const& p);
 
-    void push_back(OpalParticle p);
+    void setParticle(FVector<double, 6> z, int ii);
 
-    void set_part(FVector<double, 6> z, int ii);
+    void setParticle(OpalParticle const& p, int ii);
 
-    void set_part(OpalParticle p, int ii);
+    OpalParticle getParticle(int ii);
 
-    OpalParticle get_part(int ii);
+    class ConstIterator {
+        friend class PartBunchBase<T, Dim>;
+
+    public:
+        ConstIterator():
+            bunch_m(nullptr),
+            index_m(0)
+        {}
+        ConstIterator(PartBunchBase const* bunch, unsigned int i):
+            bunch_m(bunch),
+            index_m(i)
+        {}
+
+        ~ConstIterator()
+        {}
+
+        bool operator == (ConstIterator const& rhs) const
+        {
+            return bunch_m == rhs.bunch_m && index_m == rhs.index_m;
+        }
+
+        bool operator != (ConstIterator const& rhs) const
+        {
+            return bunch_m != rhs.bunch_m || index_m != rhs.index_m;
+        }
+
+        OpalParticle operator*() const
+        {
+            if (index_m >= bunch_m->getLocalNum()) {
+                throw GeneralClassicException("PartBunchBase::ConstIterator::operator*", "out of bounds");
+            }
+            return OpalParticle(bunch_m->ID[index_m],
+                                bunch_m->R[index_m],
+                                bunch_m->P[index_m],
+                                bunch_m->getT(),
+                                bunch_m->Q[index_m],
+                                bunch_m->getM() * Units::eV2MeV);
+        }
+
+        ConstIterator operator++()
+        {
+            ++index_m;
+            return *this;
+        }
+
+        ConstIterator operator++(int)
+        {
+            ConstIterator it = *this;
+            ++index_m;
+
+            return it;
+        }
+
+        int operator-(const ConstIterator& other) const
+        {
+            return index_m - other.index_m;
+        }
+    private:
+        PartBunchBase const* bunch_m;
+        unsigned int index_m;
+    };
+
+    ConstIterator begin() const {
+        return ConstIterator(this, 0);
+    }
+
+    ConstIterator end() const {
+        return ConstIterator(this, getLocalNum());
+    }
 
     /// Return maximum amplitudes.
     //  The matrix [b]D[/b] is used to normalise the first two modes.
     //  The maximum normalised amplitudes for these modes are stored
     //  in [b]axmax[/b] and [b]aymax[/b].
-    void maximumAmplitudes(const FMatrix<double, 6, 6> &D,
-                           double &axmax, double &aymax);
+    void maximumAmplitudes(const FMatrix<double, 6, 6>& D,
+                           double& axmax, double& aymax);
 
     void   setdT(double dt);
     double getdT() const;
@@ -240,7 +306,6 @@ public:
     void set_sPos(double s);
 
     double get_gamma() const;
-
     double get_meanKineticEnergy() const;
     Vector_t get_origin() const;
     Vector_t get_maxExtent() const;
@@ -254,11 +319,18 @@ public:
     Vector_t get_emit() const;
     Vector_t get_norm_emit() const;
     Vector_t get_halo() const;
+    Vector_t get_68Percentile() const;
+    Vector_t get_95Percentile() const;
+    Vector_t get_99Percentile() const;
+    Vector_t get_99_99Percentile() const;
+    Vector_t get_normalizedEps_68Percentile() const;
+    Vector_t get_normalizedEps_95Percentile() const;
+    Vector_t get_normalizedEps_99Percentile() const;
+    Vector_t get_normalizedEps_99_99Percentile() const;
     virtual Vector_t get_hr() const;
 
     double get_Dx() const;
     double get_Dy() const;
-
     double get_DDx() const;
     double get_DDy() const;
 
@@ -270,7 +342,6 @@ public:
     void get_PBounds(Vector_t &min, Vector_t &max) const;
 
     void calcBeamParameters();
-
     void calcBeamParametersInitial(); // Calculate initial beam parameters before emission.
 
     double getCouplingConstant() const;
@@ -283,6 +354,7 @@ public:
 
     // set the mass per simulation particle
     void setMass(double mass);
+    void setMassZeroPart(double mass);
 
     /// get the total charge per simulation particle
     double getCharge() const;
@@ -290,11 +362,13 @@ public:
     /// get the macro particle charge
     double getChargePerParticle() const;
 
+    double getMassPerParticle() const;
+
     virtual void setSolver(FieldSolver *fs);
 
     bool hasFieldSolver();
 
-    std::string getFieldSolverType() const;
+    FieldSolverType getFieldSolverType() const;
 
     void setStepsPerTurn(int n);
     int getStepsPerTurn() const;
@@ -344,23 +418,27 @@ public:
     double getM() const;
     double getP() const;
     double getE() const;
-    ParticleType::type getPType() const;
+    ParticleOrigin getPOrigin() const;
+    ParticleType getPType() const;
     double getInitialBeta() const;
     double getInitialGamma() const;
     ///@}
     ///@{ Set reference data
     void resetQ(double q);
     void resetM(double m);
-    void setPType(ParticleType::type);
+    void setPOrigin(ParticleOrigin);
+    void setPType(const std::string& type);
     ///@}
     double getdE() const;
     virtual double getGamma(int i);
     virtual double getBeta(int i);
     virtual void actT();
 
-    const PartData *getReference() const;
+    const PartData* getReference() const;
 
     double getEmissionDeltaT();
+
+    DistributionType getDistType() const;
 
     Quaternion_t getQKs3D();
     void         setQKs3D(Quaternion_t q);
@@ -373,7 +451,7 @@ public:
 
     void calcEMean();
 
-    Inform &print(Inform &os);
+    Inform& print(Inform& os);
 
     /*
      * (Pure) virtual member functions
@@ -385,14 +463,14 @@ public:
 
     virtual void resetInterpolationCache(bool clearCache = false);
 
-    /** \brief calculates back the max/min of the efield on the grid */
+    //brief calculates back the max/min of the efield on the grid
     virtual VectorPair_t getEExtrema() = 0;
 
     virtual double getRho(int x, int y, int z) = 0;
 
     virtual void computeSelfFields() = 0;
 
-    /** /brief used for self fields with binned distribution */
+    //brief used for self fields with binned distribution
     virtual void computeSelfFields(int bin) = 0;
 
     virtual void computeSelfFields_cycl(double gamma) = 0;
@@ -414,7 +492,7 @@ public:
 //     virtual Mesh_t &getMesh() = 0;
 
 //     virtual void setFieldLayout(FieldLayout_t* fLayout) = 0;
-    virtual FieldLayout_t &getFieldLayout() = 0;
+    virtual FieldLayout_t& getFieldLayout() = 0;
 
     virtual void resizeMesh() { };
 
@@ -430,10 +508,7 @@ public:
     size_t getDestroyNum() const;
     size_t getGhostNum() const;
 
-    unsigned int getMinimumNumberOfParticlesPerCore() const;
-    void setMinimumNumberOfParticlesPerCore(unsigned int n);
-
-    ParticleLayout<T, Dim> & getLayout();
+    ParticleLayout<T, Dim>& getLayout();
     const ParticleLayout<T, Dim>& getLayout() const;
 
     bool getUpdateFlag(UpdateFlags_t f) const;
@@ -441,11 +516,11 @@ public:
 
 
     ParticleBConds<Position_t, Dimension>& getBConds() {
-        return pbase->getBConds();
+        return pbase_m->getBConds();
     }
 
     void setBConds(const ParticleBConds<Position_t, Dimension>& bc) {
-        pbase->setBConds(bc);
+        pbase_m->setBConds(bc);
     }
 
     bool singleInitNode() const;
@@ -485,38 +560,36 @@ public:
     /*
      * Bunch attributes
      */
-
-
     ParticlePos_t& R;
     ParticleIndex_t& ID;
 
-
     // Particle container attributes
-    ParticleAttrib< Vector_t > P;      // particle momentum //  ParticleSpatialLayout<double, 3>::ParticlePos_t P;
-    ParticleAttrib< double >   Q;      // charge per simulation particle, unit: C.
-    ParticleAttrib< double >   M;      // mass per simulation particle, for multi-species particle tracking, unit:GeV/c^2.
-    ParticleAttrib< double >   Phi;    // the electric potential
-    ParticleAttrib< Vector_t > Ef;     // e field vector
-    ParticleAttrib< Vector_t > Eftmp;  // e field vector for gun simulations
+    ParticleAttrib< Vector_t >     P;      // particle momentum //  ParticleSpatialLayout<double, 3>::ParticlePos_t P;
+    ParticleAttrib< double >       Q;      // charge per simulation particle, unit: C.
+    ParticleAttrib< double >       M;      // mass per simulation particle, for multi-species particle tracking, unit:GeV/c^2.
+    ParticleAttrib< double >       Phi;    // the electric potential
+    ParticleAttrib< Vector_t >     Ef;     // e field vector
+    ParticleAttrib< Vector_t >     Eftmp;  // e field vector for gun simulations
 
-    ParticleAttrib< Vector_t > Bf;    // b field vector
-    ParticleAttrib< int >      Bin;   // holds the bin in which the particle is in, if zero particle is marked for deletion
-    ParticleAttrib< double >   dt;   // holds the dt timestep for particle
-
-    ParticleAttrib< short >    PType; // we can distinguish dark current particles from primary particle
-    ParticleAttrib< int >      TriID; // holds the ID of triangle that the particle hit. Only for BoundaryGeometry case.
-    ParticleAttrib< short >    cavityGapCrossed; ///< particle just crossed cavity gap (for ParallelCyclotronTracker)
-
-    ParticleAttrib< short >    bunchNum; // bunch number to which particle belongs (multi-bunch mode)
-
+    ParticleAttrib< Vector_t >     Bf;     // b field vector
+    ParticleAttrib< int >          Bin;    // holds the bin in which the particle is in, if zero particle is marked for deletion
+    ParticleAttrib< double >       dt;     // holds the dt timestep for particle
+    ParticleAttrib< ParticleType > PType;  // particle names
+    ParticleAttrib< ParticleOrigin > POrigin;  // we can distinguish dark current particles from primary particle
+    ParticleAttrib< int >          TriID;  // holds the ID of triangle that the particle hit. Only for BoundaryGeometry case.
+    ParticleAttrib< short >        cavityGapCrossed; // particle just crossed cavity gap (for ParallelCyclotronTracker)
+    ParticleAttrib< short >        bunchNum; // bunch number to which particle belongs (multi-bunch mode)
 
     Vector_t RefPartR_m;
     Vector_t RefPartP_m;
-    ParticleType::type refPType_m;
+
     CoordinateSystemTrafo toLabTrafo_m;
 
+    ParticleOrigin refPOrigin_m;
+    ParticleType refPType_m;
+
     // The structure for particle binning
-    PartBins *pbin_m;
+    PartBins* pbin_m;
 
     /// timer for IC, can not be in Distribution.h
     IpplTimings::TimerRef distrReload_m;
@@ -524,9 +597,6 @@ public:
 
     // For AMTS integrator in OPAL-T
     double dtScInit_m, deltaTau_m;
-
-    /// if a local node has less than 2 particles  lowParticleCount_m == true
-    bool lowParticleCount_m;
 
     // get 2nd order momentum matrix
     FMatrix<double, 2 * Dim, 2 * Dim> getSigmaMatrix();
@@ -548,13 +618,11 @@ protected:
     /// timer for selfField calculation
     IpplTimings::TimerRef selfFieldTimer_m;
 
+    const PartData* reference;
 
-    const PartData *reference;
-
-
-//     /*
-//       Member variables starts here
-//     */
+    /*
+       Member variables starts here
+     */
 
     // unit state of PartBunch
     UnitState_t unit_state_;
@@ -570,10 +638,6 @@ protected:
     double dt_m;
     /// holds the actual time of the integration
     double t_m;
-    /// mean energy of the bunch (MeV)
-    double eKin_m;
-    /// energy spread of the beam in MeV
-    double dE_m;
     /// the position along design trajectory
     double spos_m;
 
@@ -590,45 +654,18 @@ protected:
     /// minimal extend of particles
     Vector_t rmin_m;
 
-    /// rms beam size (m)
-    Vector_t rrms_m;
-    /// rms momenta
-    Vector_t prms_m;
-    /// mean position (m)
-    Vector_t rmean_m;
-    /// mean momenta
-    Vector_t pmean_m;
-
-    /// rms emittance (not normalized)
-    Vector_t eps_m;
-
-    /// rms normalized emittance
-    Vector_t eps_norm_m;
-
-    Vector_t halo_m;
-
-    /// rms correlation
-    Vector_t rprms_m;
-
-    /// dispersion x & y
-    double Dx_m;
-    double Dy_m;
-
-    /// derivative of the dispersion
-    double DDx_m;
-    double DDy_m;
-
     /// meshspacing of cartesian mesh
     Vector_t hr_m;
     /// meshsize of cartesian mesh
     Vektor<int, 3> nr_m;
 
     /// stores the used field solver
-    FieldSolver *fs_m;
+    FieldSolver* fs_m;
 
     double couplingConstant_m;
 
     double qi_m;
+    double massPerParticle_m;
 
     /// counter to store the distribution dump
     int distDump_m;
@@ -674,14 +711,24 @@ protected:
 
     std::unique_ptr<size_t[]> globalPartPerNode_m;
 
-
     Distribution *dist_m;
+    DistributionMoments momentsComputer_m;
 
     // flag to tell if we are a DC-beam
     bool dcBeam_m;
     double periodLength_m;
-    std::shared_ptr<AbstractParticle<T, Dim> > pbase;
+    std::shared_ptr<AbstractParticle<T, Dim> > pbase_m;
 };
+
+template<class T, unsigned Dim>
+typename PartBunchBase<T, Dim>::ConstIterator begin(PartBunchBase<T, Dim> const& bunch) {
+    return bunch.begin();
+}
+
+template<class T, unsigned Dim>
+typename PartBunchBase<T, Dim>::ConstIterator end(PartBunchBase<T, Dim> const& bunch) {
+    return bunch.end();
+}
 
 #include "PartBunchBase.hpp"
 

@@ -59,9 +59,6 @@ public:
     virtual void setTotalNum(size_t n) = 0;
     virtual void setLocalNum(size_t n) = 0;
 
-    virtual unsigned int getMinimumNumberOfParticlesPerCore() const = 0;
-    virtual void setMinimumNumberOfParticlesPerCore(unsigned int n) = 0;
-
     virtual Layout_t& getLayout() = 0;
     virtual const Layout_t& getLayout() const = 0;
 

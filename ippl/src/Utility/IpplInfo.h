@@ -1,29 +1,34 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
+//
+// IpplInfo has the following capabilities:
+//   1) It initializes all globally-used Ippl variables, such as the
+//      Communicate class and other manager classes;
+//   2) It parses command-line arguments to determine how to configure the
+//      global state of the Ippl application;
+//   3) It properly selects and configures the Communicate class, generally
+//      resulting in initialization of the parallel machine;
+//   4) It offers to the user a single class with access member functions to
+//      query for information about the Ippl application (such as what is
+//      the Communicate class instance to use, how many processors are there
+//      in the current run, etc.)
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef IPPL_INFO_H
 #define IPPL_INFO_H
 
 /*
- * IpplInfo.has the following capabilities:
- *   1) It initializes all globally-used Ippl variables, such as the
- *      Communicate class and other manager classes;
- *   2) It parses command-line arguments to determine how to configure the
- *      global state of the Ippl application;
- *   3) It properly selects and configures the Communicate class, generally
- *      resulting in initialization of the parallel machine;
- *   4) It offers to the user a single class with access member functions to
- *      query for information about the Ippl application (such as what is
- *      the Communicate class instance to use, how many processors are there
- *      in the current run, etc.)
- *
  * The globally-available Ippl objects are (available via IpplInfo::variable)
  *   Communicate *Comm ....... parallel communication object
  *   Inform *Info ............ used to print out informative messages
@@ -213,7 +218,7 @@ public:
   // print out a detailed listing, otherwise a summary.
   static void printVersion(void);
 
-  static void printHelp(char** argv);
+  static void printHelp();
 
   // version: return the name of this version of Ippl, as a string
   // (from IpplVersions.h)
@@ -349,9 +354,3 @@ typedef IpplInfo Ippl;
 
 
 #endif // IPPL_INFO_H
-
-/***************************************************************************
- * $RCSfile: IpplInfo.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:33 $
- * IPPL_VERSION_ID: $Id: IpplInfo.h,v 1.1.1.1 2003/01/23 07:40:33 adelmann Exp $
- ***************************************************************************/

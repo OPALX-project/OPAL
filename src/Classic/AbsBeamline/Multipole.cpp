@@ -1,30 +1,27 @@
-// ------------------------------------------------------------------------
-// $RCSfile: Multipole.cpp,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
 //
-// Class: Multipole
-//   Defines the abstract interface for a Multipole magnet.
+// Class Multipole
+//   The MULTIPOLE element defines a thick multipole.
 //
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
+// Copyright (c) 2012-2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
 //
-// $Date: 2000/03/27 09:32:31 $
-// $Author: fci $
+// This file is part of OPAL.
 //
-// ------------------------------------------------------------------------
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbsBeamline/Multipole.h"
+
 #include "Algorithms/PartBunchBase.h"
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Fields/Fieldmap.h"
 #include "Physics/Physics.h"
-
-extern Inform *gmsg;
+#include "Utilities/GeneralClassicException.h"
 
 namespace{
     enum {
@@ -36,8 +33,16 @@ namespace{
     };
 }
 
-// Class Multipole
-// ------------------------------------------------------------------------
+namespace {
+    unsigned int factorial(unsigned int n) {
+        static int fact[] = {1, 1, 2, 6, 24, 120, 720, 5040, 40320,
+                             362880, 3628800, 39916800, 479001600};
+        if (n > 12) {
+            throw GeneralClassicException("Multipole::factorial", "Factorial can't be larger than 12");
+        }
+        return fact[n];
+    }
+}
 
 Multipole::Multipole():
     Multipole("")
@@ -107,18 +112,9 @@ void Multipole::setNormalComponent(int n, double v, double vError) {
         NormalComponents[n - 1] = (v + vError) / 2;
         NormalComponentErrors[n - 1] = NormalComponents[n - 1];
         break;
-    case SEXTUPOLE:
-        NormalComponents[n - 1] = (v + vError) / 2;
-        NormalComponentErrors[n - 1] = vError / 2;
-        break;
-    case OCTUPOLE:
-    case DECAPOLE:
-        NormalComponents[n - 1] = (v + vError) / 24;
-        NormalComponentErrors[n - 1] = vError / 24;
-        break;
     default:
-        NormalComponents[n - 1] = (v + vError);
-        NormalComponentErrors[n - 1] = vError;
+        NormalComponents[n - 1]      = (v + vError) / factorial(n-1);
+        NormalComponentErrors[n - 1] =      vError  / factorial(n-1);
     }
 }
 
@@ -133,24 +129,12 @@ void Multipole::setSkewComponent(int n, double v, double vError) {
     }
     switch(n-1) {
     case DIPOLE:
-        SkewComponents[n - 1] = (v + vError) / 2;
+        SkewComponents[n - 1]      = (v + vError) / 2;
         SkewComponentErrors[n - 1] = SkewComponents[n - 1];
         break;
-    case SEXTUPOLE:
-        SkewComponents[n - 1] = (v + vError) / 2;
-        SkewComponentErrors[n - 1] = vError / 2;
-        break;
-    case OCTUPOLE:
-        SkewComponents[n - 1] = (v + vError) / 6;
-        SkewComponentErrors[n - 1] = vError / 6;
-        break;
-    case DECAPOLE:
-        SkewComponents[n - 1] = (v + vError) / 24;
-        SkewComponentErrors[n - 1] = vError / 24;
-        break;
     default:
-        SkewComponents[n - 1] = (v + vError);
-        SkewComponentErrors[n - 1] = vError;
+        SkewComponents[n - 1]      = (v + vError) / factorial(n-1);
+        SkewComponentErrors[n - 1] =      vError  / factorial(n-1);
     }
 }
 
@@ -290,7 +274,7 @@ void Multipole::computeField(Vector_t R, Vector_t &/*E*/, Vector_t &B) {
 bool Multipole::apply(const size_t &i, const double &, Vector_t &E, Vector_t &B) {
     const Vector_t &R = RefPartBunch_m->R[i];
     if(R(2) < 0.0 || R(2) > getElementLength()) return false;
-    if (!isInsideTransverse(R)) return true;
+    if (!isInsideTransverse(R)) return getFlagDeleteOnTransverseExit();
 
     Vector_t Ef(0.0), Bf(0.0);
     computeField(R, Ef, Bf);
@@ -305,7 +289,7 @@ bool Multipole::apply(const size_t &i, const double &, Vector_t &E, Vector_t &B)
 
 bool Multipole::apply(const Vector_t &R, const Vector_t &, const double &, Vector_t &E, Vector_t &B) {
     if(R(2) < 0.0 || R(2) > getElementLength()) return false;
-    if (!isInsideTransverse(R)) return true;
+    if (!isInsideTransverse(R)) return getFlagDeleteOnTransverseExit();
 
     computeField(R, E, B);
 
@@ -357,8 +341,8 @@ void Multipole::getDimensions(double &zBegin, double &zEnd) const {
 }
 
 
-ElementBase::ElementType Multipole::getType() const {
-    return MULTIPOLE;
+ElementType Multipole::getType() const {
+    return ElementType::MULTIPOLE;
 }
 
 
@@ -371,7 +355,7 @@ bool Multipole::isInside(const Vector_t &r) const {
 }
 
 bool Multipole::isFocusing(unsigned int component) const {
-    if (component >= NormalComponents.size()) throw GeneralClassicException("Multipole::isFocusing", "component to big");
+    if (component >= NormalComponents.size()) throw GeneralClassicException("Multipole::isFocusing", "component too big");
 
     return NormalComponents[component] * std::pow(-1, component + 1) * RefPartBunch_m->getChargePerParticle() > 0.0;
 }

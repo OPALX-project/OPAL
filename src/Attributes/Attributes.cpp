@@ -25,8 +25,9 @@
 #include "Attributes/Real.h"
 #include "Attributes/RealArray.h"
 #include "Attributes/Reference.h"
-#include "Attributes/opalstr.h"
+#include "Attributes/String.h"
 #include "Attributes/StringArray.h"
+#include "Attributes/PredefinedString.h"
 #include "Attributes/UpperCaseString.h"
 #include "Attributes/UpperCaseStringArray.h"
 #include "Attributes/TableRow.h"
@@ -344,7 +345,8 @@ namespace Attributes {
             AttributeBase *base = &attr.getBase();
             std::string expr;
             if(dynamic_cast<String *>(&attr.getHandler())
-               || dynamic_cast<UpperCaseString *>(&attr.getHandler())) {
+               || dynamic_cast<UpperCaseString *>(&attr.getHandler())
+               || dynamic_cast<PredefinedString *>(&attr.getHandler())) {
                 expr = dynamic_cast<SValue<std::string> *>(base)->evaluate();
             } else if(SValue<SRefAttr<std::string> > *ref =
                           dynamic_cast<SValue<SRefAttr<std::string> > *>(base)) {
@@ -397,6 +399,42 @@ namespace Attributes {
         } else {
             throw OpalException("Attributes::setString()", "Attribute \"" +
                                 attr.getName() + "\" is not a string.");
+        }
+    }
+
+
+    // ----------------------------------------------------------------------
+    // Predefined string value.
+
+    Attribute makePredefinedString(const std::string &name,
+                                   const std::string &help,
+                                   const std::initializer_list<std::string>& predefinedStrings) {
+        return Attribute(new PredefinedString(name, help, predefinedStrings), nullptr);
+    }
+
+
+    Attribute
+    makePredefinedString(const std::string &name,
+                         const std::string &help,
+                         const std::initializer_list<std::string>& predefinedStrings,
+                         const std::string &initial) {
+        return Attribute(new PredefinedString(name, help, predefinedStrings, initial),
+                         new SValue<std::string>(Util::toUpper(initial)));
+    }
+
+
+    void setPredefinedString(Attribute &attr, const std::string &val) {
+        SValue<SRefAttr<std::string> > *ref;
+        std::string upperCaseVal = Util::toUpper(val);
+        if(dynamic_cast<const PredefinedString *>(&attr.getHandler())) {
+            attr.set(new SValue<std::string>(upperCaseVal));
+        } else if((attr.isBaseAllocated() == true) &&
+                  (ref = dynamic_cast<SValue<SRefAttr<std::string> >*>(&attr.getBase()))) {
+            const SRefAttr<std::string> &value = ref->evaluate();
+            value.set(upperCaseVal);
+        } else {
+            throw OpalException("Attributes::setPredefinedString()", "Attribute \"" +
+                                attr.getName() + "\" is not a supported string.");
         }
     }
 

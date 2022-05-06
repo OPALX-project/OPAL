@@ -54,7 +54,7 @@ inline BorisPusher::BorisPusher(const PartData &ref):
 { }
 
 inline BorisPusher::BorisPusher():
-    itsReference(NULL)
+    itsReference(nullptr)
 { }
 
 inline void BorisPusher::initialise(const PartData *ref)

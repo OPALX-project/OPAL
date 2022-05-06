@@ -20,7 +20,7 @@
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Fields/Fieldmap.h"
-#include "Solvers/ParticleMatterInteractionHandler.hh"
+#include "Solvers/ParticleMatterInteractionHandler.h"
 #include "Structure/LossDataSink.h"
 
 #include <cmath>
@@ -66,7 +66,7 @@ bool CCollimator::doPreCheck(PartBunchBase<double, 3> *bunch) {
         double rbunch_min = std::hypot(xmin, ymin);
         double rbunch_max = std::hypot(xmax, ymax);
 
-        if( rbunch_max > rmin_m && rbunch_min < rmax_m ){ // check similar to z
+        if ( rbunch_max > rmin_m && rbunch_min < rmax_m ){ // check similar to z
             return true;
         }
     }
@@ -75,20 +75,24 @@ bool CCollimator::doPreCheck(PartBunchBase<double, 3> *bunch) {
 
 // rectangle collimators in cyclotron cylindrical coordinates
 // when there is no particlematterinteraction, the particle hitting collimator is deleted directly
-bool CCollimator::doCheck(PartBunchBase<double, 3> *bunch, const int /*turnnumber*/, const double /*t*/, const double /*tstep*/) {
+bool CCollimator::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const double t, const double /*tstep*/) {
 
     bool flagNeedUpdate = false;
     size_t tempnum = bunch->getLocalNum();
     int pflag = 0;
     // now check each particle in bunch
     for (unsigned int i = 0; i < tempnum; ++i) {
-        if (bunch->PType[i] == ParticleType::REGULAR && bunch->R[i](2) < zend_m && bunch->R[i](2) > zstart_m ) {
+        if (bunch->R[i](2) < zend_m && bunch->R[i](2) > zstart_m ) {
             // only now careful check in r
             pflag = checkPoint(bunch->R[i](0), bunch->R[i](1));
             /// bunch->Bin[i] != -1 makes sure the particle is not stored in more than one collimator
             if ((pflag != 0) && (bunch->Bin[i] != -1)) {
-                if (!parmatint_m)
-                    lossDs_m->addParticle(bunch->R[i], bunch->P[i], bunch->ID[i]);
+                if (!parmatint_m) {
+                    lossDs_m->addParticle(OpalParticle(bunch->ID[i],
+                                                       bunch->R[i], bunch->P[i],
+                                                       t, bunch->Q[i], bunch->M[i]),
+                                          std::make_pair(turnnumber, bunch->bunchNum[i]));
+                }
                 bunch->Bin[i] = -1;
                 flagNeedUpdate = true;
             }
@@ -145,7 +149,7 @@ void CCollimator::setDimensions(double xstart, double xend, double ystart, doubl
     zend_m   = zend;
     width_m  = width;
     // zstart and zend are independent from x, y
-    if (zstart_m > zend_m){
+    if (zstart_m > zend_m) {
         std::swap(zstart_m, zend_m);
     }
     setGeom(width_m);
@@ -156,8 +160,8 @@ void CCollimator::getDimensions(double &zBegin, double &zEnd) const {
     zEnd = getElementLength();
 }
 
-ElementBase::ElementType CCollimator::getType() const {
-    return CCOLLIMATOR;
+ElementType CCollimator::getType() const {
+    return ElementType::CCOLLIMATOR;
 }
 
 void CCollimator::doSetGeom() {

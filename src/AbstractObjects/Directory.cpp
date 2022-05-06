@@ -67,7 +67,7 @@ Object *Directory::find(const std::string &name) const {
     ObjectDir::const_iterator it = dir.find(name);
 
     if(it == dir.end()) {
-        return NULL;
+        return nullptr;
     } else {
         return &*it->second;
     }

@@ -131,19 +131,19 @@ class Interpolator3dGridTo3d : public VectorMap {
 
   /** Set x coordinates in the mesh to an arbitrary set of points
    *
-   *  If mesh is NULL, does nothing
+   *  If mesh is nullptr, does nothing
    */
   inline void setX(int nCoords, double* x);
 
   /** Set y coordinates in the mesh to an arbitrary set of points
    *
-   *  If mesh is NULL, does nothing
+   *  If mesh is nullptr, does nothing
    */
   inline void setY(int nCoords, double* y);
 
   /** Set z coordinates in the mesh to an arbitrary set of points
    *
-   *  If mesh is NULL, does nothing
+   *  If mesh is nullptr, does nothing
    */
   inline void setZ(int nCoords, double* z);
 
@@ -185,33 +185,33 @@ ThreeDGrid* Interpolator3dGridTo3d::getMesh() const {
 }
 
 void Interpolator3dGridTo3d::setGrid(ThreeDGrid* grid) {
-    if (coordinates_m != NULL)
+    if (coordinates_m != nullptr)
         coordinates_m->remove(this);
     grid->add(this);
     coordinates_m = grid;
 }
 
 void Interpolator3dGridTo3d::setX(int nCoords, double* x) {
-    if (coordinates_m != NULL)
+    if (coordinates_m != nullptr)
         coordinates_m->setX(nCoords, x);
 }
 
 void Interpolator3dGridTo3d::setY(int nCoords, double* y) {
-    if (coordinates_m != NULL)
+    if (coordinates_m != nullptr)
         coordinates_m->setY(nCoords, y);
 }
 
 void Interpolator3dGridTo3d::setZ(int nCoords, double* z) {
-    if (coordinates_m != NULL)
+    if (coordinates_m != nullptr)
         coordinates_m->setZ(nCoords, z);
 }
 
 inline Interpolator3dGridTo3d::Interpolator3dGridTo3d(ThreeDGrid* grid,
                        double ***Bx, double ***By, double ***Bz,
                        interpolationAlgorithm /*algo*/)
-      : coordinates_m(NULL) {
+      : coordinates_m(nullptr) {
     for (int i = 0; i < 3; i++)
-        interpolator_m[i] = NULL;
+        interpolator_m[i] = nullptr;
     setAll(grid, Bx, By, Bz);
 }
 

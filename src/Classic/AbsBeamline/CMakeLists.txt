@@ -4,7 +4,6 @@ add_subdirectory(MultipoleTFunctions)
 set (_SRCS
     AttributeSet.cpp
     BeamlineVisitor.cpp
-    BeamStripping.cpp
     Bend2D.cpp
     BendBase.cpp
     CCollimator.cpp
@@ -38,6 +37,7 @@ set (_SRCS
     Source.cpp
     Stripper.cpp
     TravelingWave.cpp
+    Vacuum.cpp
     VariableRFCavity.cpp
     VariableRFCavityFringeField.cpp
     VerticalFFAMagnet.cpp
@@ -46,7 +46,6 @@ set (_SRCS
 set (HDRS
     AttributeSet.h
     BeamlineVisitor.h
-    BeamStripping.h
     Bend2D.h
     BendBase.h
     CCollimator.h
@@ -81,6 +80,7 @@ set (HDRS
     SpecificElementVisitor.h
     Stripper.h
     TravelingWave.h
+    Vacuum.h
     VariableRFCavity.h
     VariableRFCavityFringeField.h
     VerticalFFAMagnet.h

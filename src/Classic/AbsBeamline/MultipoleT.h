@@ -136,7 +136,7 @@ public:
     /** Initialises the geometry */
     void initialise();
 
-    /** Finalise the MultipoleT - sets bunch to NULL */
+    /** Finalise the MultipoleT - sets bunch to nullptr */
     void finalise() override;
     /** Return true if dipole component not zero */
     bool bends() const override;

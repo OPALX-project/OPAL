@@ -1,14 +1,30 @@
 //
-//  Copyright & License: See Copyright.readme in src directory
+// Class LossDataSink
+//   This class writes file attributes to describe phase space of loss files
 //
-
+// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef LOSSDATASINK_H_
 #define LOSSDATASINK_H_
 
 //////////////////////////////////////////////////////////////
 #include "Algorithms/Vektor.h"
+#include "Algorithms/OpalParticle.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/OpalData.h"
+
+#include <boost/optional.hpp>
 
 #include <string>
 #include <fstream>
@@ -21,7 +37,7 @@
 struct SetStatistics {
     SetStatistics();
 
-    std::string element_m;
+    std::string outputName_m;
     double spos_m;
     double refTime_m; // ns
     double tmean_m; // ns
@@ -47,28 +63,34 @@ struct SetStatistics {
 
 namespace std {
     template<>
-    struct less<SetStatistics> : binary_function<SetStatistics, SetStatistics, bool> {
+    struct less<SetStatistics> {
         bool operator() (const SetStatistics& x, const SetStatistics& y) const {
             return x.spos_m < y.spos_m;
         }
     };
 }
+enum class CollectionType: unsigned short {
+                                           SPATIAL = 0,
+                                           TEMPORAL
+};
+
 /*
   - In the destructor we do ALL the file handling
   - h5hut_mode_m defines h5hut or ASCII
  */
 class LossDataSink {
  public:
-    LossDataSink();
 
-    LossDataSink(std::string elem, bool hdf5Save, ElementBase::ElementType type = ElementBase::ANY);
+    LossDataSink() = default;
+
+    LossDataSink(std::string outfn, bool hdf5Save, CollectionType = CollectionType::TEMPORAL);
 
     LossDataSink(const LossDataSink &rsh);
     ~LossDataSink() noexcept(false);
 
     bool inH5Mode() { return h5hut_mode_m;}
 
-    void save(unsigned int numSets = 1, OpalData::OPENMODE openMode = OpalData::OPENMODE::UNDEFINED);
+    void save(unsigned int numSets = 1, OpalData::OpenMode openMode = OpalData::OpenMode::UNDEFINED);
 
     void addReferenceParticle(const Vector_t &x,
                               const Vector_t &p,
@@ -76,10 +98,7 @@ class LossDataSink {
                               double spos,
                               long long globalTrackStep);
 
-    void addParticle(const Vector_t &x, const Vector_t &p, const size_t id);
-
-    void addParticle(const Vector_t &x, const Vector_t &p, const size_t  id,
-                     const double time, const size_t turn, const size_t& bunchNum = 0);
+    void addParticle(const OpalParticle &, const boost::optional<std::pair<int, short int>> &turnBunchNumPair = boost::none);
 
     size_t size() const;
 
@@ -88,40 +107,31 @@ class LossDataSink {
 private:
     void openASCII() {
         if(Ippl::myNode() == 0) {
-            os_m.open(fn_m.c_str(), std::ios::out);
+            os_m.open(fileName_m.c_str(), std::ios::out);
         }
     }
     void openH5(h5_int32_t mode = H5_O_WRONLY);
 
     void appendASCII() {
-        if(Ippl::myNode() == 0) {
-            os_m.open(fn_m.c_str(), std::ios::app);
+        if (Ippl::myNode() == 0) {
+            os_m.open(fileName_m.c_str(), std::ios::app);
         }
     }
 
-    void writeHeaderASCII() {
-        if(Ippl::myNode() == 0) {
-            //FIXME Issue #45 (Cyclotron units)
-            os_m << "# Element " << element_m << " x (m),  y (m),  z (m),  px ( ),  py ( ),  pz ( ), id";
-            if (time_m.size() != 0) {
-                os_m << ",  turn, bunchNumber, time (ns) ";
-            }
-            os_m << std::endl;
-        }
-    }
+    void writeHeaderASCII();
     void writeHeaderH5();
 
     void saveASCII();
     void saveH5(unsigned int setIdx);
 
     void closeASCII() {
-        if(Ippl::myNode() == 0)
+        if (Ippl::myNode() == 0) {
             os_m.close();
+        }
     }
 
-    bool hasNoParticlesToDump();
-
-    bool hasTimeAttribute();
+    bool hasNoParticlesToDump() const;
+    bool hasTurnInformations() const;
 
     void reportOnError(h5_int64_t rc, const char* file, int line);
 
@@ -129,7 +139,7 @@ private:
     SetStatistics computeSetStatistics(unsigned int setIdx);
 
     // filename without extension
-    std::string fn_m;
+    std::string fileName_m;
 
     // write either in ASCII or H5hut format
     bool h5hut_mode_m;
@@ -140,22 +150,14 @@ private:
     /// used to write out data in H5hut mode
     h5_file_t H5file_m;
 
-    std::string element_m;
+    std::string outputName_m;
 
     /// Current record, or time step, of H5 file.
     h5_int64_t H5call_m;
 
-    std::vector<long>   id_m;
-    std::vector<double>  x_m;
-    std::vector<double>  y_m;
-    std::vector<double>  z_m;
-    std::vector<double> px_m;
-    std::vector<double> py_m;
-    std::vector<double> pz_m;
-    std::vector<size_t> bunchNum_m;
-
-    std::vector<size_t> turn_m;
-    std::vector<double> time_m;
+    std::vector<OpalParticle> particles_m;
+    std::vector<size_t> bunchNumber_m;
+    std::vector<size_t> turnNumber_m;
 
     std::vector<Vector_t> RefPartR_m;
     std::vector<Vector_t> RefPartP_m;
@@ -165,12 +167,12 @@ private:
 
     std::vector<unsigned long> startSet_m;
 
-    ElementBase::ElementType type_m;
+    CollectionType collectionType_m;
 };
 
 inline
 size_t LossDataSink::size() const {
-    return x_m.size();
+    return particles_m.size();
 }
 
 inline

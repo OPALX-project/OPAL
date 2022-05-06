@@ -1,3 +1,22 @@
+//
+// Class StepSizeConfig
+//
+// This class stores tuples of time step sizes, path length range limits and limit of number of step sizes.
+//
+// Copyright (c) 2019 - 2021, Christof Metzger-Kraus
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Algorithms/StepSizeConfig.h"
 #include "Utilities/OpalException.h"
 
@@ -116,7 +135,7 @@ unsigned long StepSizeConfig::getNumSteps() const {
 
 unsigned long long StepSizeConfig::getMaxSteps() const {
     unsigned long long maxSteps = 0;
-    for (const auto config: configurations_m) {
+    for (const auto& config: configurations_m) {
         maxSteps += std::get<2>(config);
     }
 
@@ -127,7 +146,7 @@ unsigned long long StepSizeConfig::getNumStepsFinestResolution() const {
     double minTimeStep = std::get<0>(configurations_m.front());
     unsigned long long totalNumSteps = 0;
 
-    for (const auto config: configurations_m) {
+    for (const auto& config: configurations_m) {
         const double &dt = std::get<0>(config);
         const unsigned long &numSteps = std::get<2>(config);
 
@@ -144,7 +163,7 @@ unsigned long long StepSizeConfig::getNumStepsFinestResolution() const {
 
 double StepSizeConfig::getMinTimeStep() const {
     double minTimeStep = std::get<0>(configurations_m.front());
-    for (const auto config: configurations_m) {
+    for (const auto& config: configurations_m) {
         if (minTimeStep > std::get<0>(config)) {
             minTimeStep = std::get<0>(config);
         }
@@ -178,4 +197,12 @@ void StepSizeConfig::print(Inform &out) const {
             << std::setw(20) << std::get<2>(*it)
             << endl;
     }
+}
+
+ValueRange<double> StepSizeConfig::getPathLengthRange() const {
+    ValueRange<double> result;
+    for (const entry_t& entry : configurations_m) {
+        result.enlargeIfOutside(std::get<1>(entry));
+    }
+    return result;
 }

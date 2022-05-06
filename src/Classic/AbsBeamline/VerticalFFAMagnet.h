@@ -86,7 +86,7 @@ class VerticalFFAMagnet : public Component {
       */
     void initialise();
 
-     /** Finalise the VerticalFFAMagnet - sets bunch to NULL */
+     /** Finalise the VerticalFFAMagnet - sets bunch to nullptr */
     void finalise();
 
     /** Return false - VerticalFFAMagnet is a straight magnet 

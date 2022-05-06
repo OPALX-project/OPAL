@@ -1,23 +1,25 @@
 set (_SRCS
     CRC.cpp
-    Communicate.cpp
     CommCreator.cpp
     CommMPI.cpp
+    Communicate.cpp
+    Format.cpp
     MessageFunctions.cpp
-    Formatter.cpp
+    MsgBuffer.cpp
     )
 
 set (_HDRS
+    CRC.h
     CommCreator.h
     CommMPI.h
     Communicate.h
-    CRC.h
     DataTypes.h
-    Formatter.h
-    GlobalComm.hpp
+    Format.h
     GlobalComm.h
-    Message.hpp
+    GlobalComm.hpp
     Message.h
+    Message.hpp
+    MsgBuffer.h
     Operations.h
     TagMaker.h
     Tags.h

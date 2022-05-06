@@ -18,6 +18,7 @@
 
 #include "Fields/FM3DH5Block_nonscale.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 
 FM3DH5Block_nonscale::FM3DH5Block_nonscale (
@@ -70,9 +71,9 @@ void FM3DH5Block_nonscale::readMap (
     closeFile ();
 
     for (long long i = 0; i < num_gridpx_m * num_gridpy_m * num_gridpz_m; i++) {
-        FieldstrengthEz_m[i] *= 1.0e6 ;
-        FieldstrengthEx_m[i] *= 1.0e6 ;
-        FieldstrengthEy_m[i] *= 1.0e6 ;
+        FieldstrengthEz_m[i] *= Units::MVpm2Vpm ;
+        FieldstrengthEx_m[i] *= Units::MVpm2Vpm ;
+        FieldstrengthEy_m[i] *= Units::MVpm2Vpm ;
         FieldstrengthHx_m[i] *= 1.0e6 * Physics::mu_0 ;
         FieldstrengthHy_m[i] *= 1.0e6 * Physics::mu_0 ;
         FieldstrengthHz_m[i] *= 1.0e6 * Physics::mu_0 ;

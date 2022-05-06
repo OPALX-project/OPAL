@@ -16,20 +16,22 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Elements/OpalCavity.h"
+
 #include "AbstractObjects/Attribute.h"
+#include "Algorithms/AbstractTimeDependence.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/RFCavityRep.h"
-#include "Algorithms/AbstractTimeDependence.h"
-#include "Structure/OpalWake.h"
-#include "Structure/BoundaryGeometry.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
+#include "Structure/BoundaryGeometry.h"
+#include "Structure/OpalWake.h"
 
 
 OpalCavity::OpalCavity():
     OpalElement(SIZE, "RFCAVITY",
                 "The \"RFCAVITY\" element defines an RF cavity."),
-    owk_m(NULL),
-    obgeo_m(NULL) {
+    owk_m(nullptr),
+    obgeo_m(nullptr) {
     itsAttr[VOLT] = Attributes::makeReal
                     ("VOLT", "RF voltage in MV");
     itsAttr[DVOLT] = Attributes::makeReal
@@ -78,8 +80,8 @@ OpalCavity::OpalCavity():
 
 OpalCavity::OpalCavity(const std::string &name, OpalCavity *parent):
     OpalElement(name, parent),
-    owk_m(NULL),
-    obgeo_m(NULL) {
+    owk_m(nullptr),
+    obgeo_m(nullptr) {
     setElement(new RFCavityRep(name));
 }
 
@@ -101,11 +103,11 @@ void OpalCavity::update() {
         dynamic_cast<RFCavityRep *>(getElement());
 
     double length = Attributes::getReal(itsAttr[LENGTH]);
-    double peak  = Attributes::getReal(itsAttr[VOLT]);
-    double peakError  = Attributes::getReal(itsAttr[DVOLT]);
-    double phase  = Attributes::getReal(itsAttr[LAG]);
-    double phaseError  = Attributes::getReal(itsAttr[DLAG]);
-    double freq   = 1e6 * Physics::two_pi * Attributes::getReal(itsAttr[FREQ]);
+    double peak = Attributes::getReal(itsAttr[VOLT]);
+    double peakError = Attributes::getReal(itsAttr[DVOLT]);
+    double phase = Attributes::getReal(itsAttr[LAG]);
+    double phaseError = Attributes::getReal(itsAttr[DLAG]);
+    double freq = Physics::two_pi * Attributes::getReal(itsAttr[FREQ]) * Units::MHz2Hz;
     std::string fmapfn = Attributes::getString(itsAttr[FMAPFN]);
     std::string type = Attributes::getString(itsAttr[TYPE]);
     bool fast = Attributes::getBool(itsAttr[FAST]);
@@ -119,13 +121,13 @@ void OpalCavity::update() {
     double phi0 = Attributes::getReal(itsAttr[PHI0]);
     double kineticEnergy = Attributes::getReal(itsAttr[DESIGNENERGY]);
 
-    if(itsAttr[WAKEF] && owk_m == NULL) {
+    if(itsAttr[WAKEF] && owk_m == nullptr) {
         owk_m = (OpalWake::find(Attributes::getString(itsAttr[WAKEF])))->clone(getOpalName() + std::string("_wake"));
         owk_m->initWakefunction(*rfc);
         rfc->setWake(owk_m->wf_m);
     }
 
-    if(itsAttr[GEOMETRY] && obgeo_m == NULL) {
+    if(itsAttr[GEOMETRY] && obgeo_m == nullptr) {
         obgeo_m = (BoundaryGeometry::find(Attributes::getString(itsAttr[GEOMETRY])))->clone(getOpalName() + std::string("_geometry"));
         if(obgeo_m) {
             rfc->setBoundaryGeometry(obgeo_m);
@@ -134,7 +136,7 @@ void OpalCavity::update() {
 
     rfc->setElementLength(length);
 
-    rfc->setAmplitude(1e6 * peak);
+    rfc->setAmplitude(Units::MVpm2Vpm * peak);
     rfc->setFrequency(freq);
     rfc->setPhase(phase);
 
@@ -150,7 +152,6 @@ void OpalCavity::update() {
     rfc->setFast(fast);
     rfc->setAutophaseVeto(apVeto);
     rfc->setCavityType(type);
-    rfc->setComponentType(type);
     rfc->setRmin(rmin);
     rfc->setRmax(rmax);
     rfc->setAzimuth(angle);

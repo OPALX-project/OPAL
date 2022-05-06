@@ -43,8 +43,8 @@ class Fieldmap;
  *  where E0, B0 are user defined fields, a(t), f(t), q(t) are time
  *  dependent amplitude, frequency, phase respectively; it is assumed that these
  *  quantities vary sufficiently slowly that Maxwell is satisfied.
- * 
- *  The time dependent quantities are 
+ *
+ *  The time dependent quantities are
  */
 class VariableRFCavity: public Component {
   public:
@@ -57,7 +57,7 @@ class VariableRFCavity: public Component {
     /** Assignment operator; performs deepcopy on time-dependence models*/
     VariableRFCavity& operator=(const VariableRFCavity &);
     /** Destructor does nothing
-     * 
+     *
      * The shared_ptrs will self-destruct when reference count goes to 0
      */
     virtual ~VariableRFCavity();
@@ -72,7 +72,7 @@ class VariableRFCavity: public Component {
     /** Inheritable deepcopy method */
     virtual ElementBase* clone() const override;
 
-    /** Calculate the field at the position of the i^th particle 
+    /** Calculate the field at the position of the i^th particle
      *
      *  @param i indexes the particle whose field we need
      *  @param t the time at which the field is calculated
@@ -109,14 +109,14 @@ class VariableRFCavity: public Component {
     virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
 
     /** Initialise ready for tracking
-     * 
+     *
      *  Just sets RefPartBunch_m
      */
     virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
     /** Finalise following tracking
-     * 
-     *  Just sets RefPartBunch_m to NULL
+     *
+     *  Just sets RefPartBunch_m to nullptr
      */
     virtual void finalise() override;
 
@@ -221,7 +221,7 @@ class VariableRFCavity: public Component {
     double _length;
     /// The cavity's geometry.
     StraightGeometry geometry;
-    static const double lengthUnit_m;
+    static constexpr double lengthUnit_m = 1e3;
 
 private:
 };
@@ -249,7 +249,7 @@ double VariableRFCavity::getWidth() const {
 double VariableRFCavity::getLength() const {
     return _length/lengthUnit_m;
 }
- 
+
 void VariableRFCavity::setHeight(double fullHeight) {
     halfHeight_m = fullHeight/2*lengthUnit_m;
 }

@@ -75,7 +75,7 @@ public:
                         {})
         , sampleMethods_m(sampleMethods)
     {
-        if (obj.size() == 0) {
+        if (obj.empty()) {
         // create a dummy objective, base class requires at least 1 objective
             this->objectives_ = {
                 {"dummy", new Expressions::Expr_t("dummy")}
@@ -171,7 +171,7 @@ protected:
 
             if (i == this->my_rank_in_worker_comm_) continue;
 
-            if (this->is_worker_idle_[i] && request_queue_.size() > 0)
+            if (this->is_worker_idle_[i] && !request_queue_.empty())
                 sendNewJobToWorker(i);
 
             all_worker_idle = all_worker_idle && this->is_worker_idle_[i];
@@ -251,7 +251,7 @@ protected:
             MPI_Send_reqvars(res, opt_master_rank, this->opt_comm_);
 
             // we keep worker busy _after_ results have been sent to sampler
-            if (request_queue_.size() > 0)
+            if (!request_queue_.empty())
                 sendNewJobToWorker(status.MPI_SOURCE);
 
             return true;

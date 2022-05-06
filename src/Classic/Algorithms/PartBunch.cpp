@@ -93,7 +93,7 @@ void PartBunch::do_binaryRepart() {
     get_bounds(rmin_m, rmax_m);
 
     pbase_t* underlyingPbase =
-        dynamic_cast<pbase_t*>(pbase.get());
+        dynamic_cast<pbase_t*>(pbase_m.get());
 
     BinaryRepartition(*underlyingPbase);
     update();
@@ -319,7 +319,7 @@ void PartBunch::computeSelfFields(int binNumber) {
 }
 
 void PartBunch::resizeMesh() {
-    if (fs_m->getFieldSolverType() != "SAAMG") {
+    if (fs_m->getFieldSolverType() != FieldSolverType::SAAMG) {
         return;
     }
 
@@ -412,8 +412,10 @@ void PartBunch::computeSelfFields() {
         //from the discretization of the convolution integral.
         //this is only necessary for the FFT solver
         //FIXME: later move this scaling into FFTPoissonSolver
-        if(fs_m->getFieldSolverType() == "FFT" || fs_m->getFieldSolverType() == "FFTBOX")
+        if (fs_m->getFieldSolverType() == FieldSolverType::FFT ||
+            fs_m->getFieldSolverType() == FieldSolverType::FFTBOX) {
             rho_m *= hr_scaled[0] * hr_scaled[1] * hr_scaled[2];
+        }
 
         // the scalar potential is given back in rho_m in units
         // [C/m] = [F*V/m] and must be divided by
@@ -530,8 +532,10 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
         //from the discretization of the convolution integral.
         //this is only necessary for the FFT solver
         //TODO FIXME: later move this scaling into FFTPoissonSolver
-        if(fs_m->getFieldSolverType() == "FFT" || fs_m->getFieldSolverType() == "FFTBOX")
+        if (fs_m->getFieldSolverType() == FieldSolverType::FFT ||
+            fs_m->getFieldSolverType() == FieldSolverType::FFTBOX) {
             rho_m *= hr_scaled[0] * hr_scaled[1] * hr_scaled[2];
+        }
 
         /// retrive coefficient: -1/(eps)
         rho_m *= getCouplingConstant();
@@ -656,8 +660,10 @@ void PartBunch::computeSelfFields_cycl(int bin) {
 
         // Do the multiplication of the grid-cube volume coming from the discretization of the convolution integral.
         // This is only necessary for the FFT solver. FIXME: later move this scaling into FFTPoissonSolver
-        if(fs_m->getFieldSolverType() == "FFT" || fs_m->getFieldSolverType() == "FFTBOX")
+        if (fs_m->getFieldSolverType() == FieldSolverType::FFT ||
+            fs_m->getFieldSolverType() == FieldSolverType::FFTBOX) {
             rho_m *= hr_scaled[0] * hr_scaled[1] * hr_scaled[2];
+        }
 
         /// retrive coefficient: -1/(eps)
         rho_m *= getCouplingConstant();

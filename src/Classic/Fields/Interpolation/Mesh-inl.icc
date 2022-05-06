@@ -180,5 +180,25 @@ bool operator!=(const Mesh::Iterator& lhs, const Mesh::Iterator& rhs) {
         return false;
     return true;
 }
+
+bool Mesh::Iterator::isOutOfBounds() const {
+    if (!mesh_m) {
+        return true;
+    }
+    Mesh::Iterator first = mesh_m->begin();
+    Mesh::Iterator last = mesh_m->end()-1;
+    for (size_t i = 0; i < state_m.size(); ++i) {
+        if (state_m[i] < first[i] || state_m[i] > last[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Mesh::Iterator::addState(const Mesh::Iterator& it) {
+    for (size_t i = 0; i < state_m.size(); ++i)
+        state_m[i] += it.state_m[i];
+}
+
 }
 

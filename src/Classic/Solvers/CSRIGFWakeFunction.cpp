@@ -14,23 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
+#include "Solvers/CSRIGFWakeFunction.h"
+
+#include "AbsBeamline/RBend.h"
+#include "AbsBeamline/SBend.h"
 #include "AbstractObjects/OpalData.h"
-#include "Solvers/CSRIGFWakeFunction.hh"
-#include "Solvers/RootFinderForCSR.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Filters/Filter.h"
 #include "Filters/SavitzkyGolay.h"
 #include "Physics/Physics.h"
-#include "AbsBeamline/RBend.h"
-#include "AbsBeamline/SBend.h"
+#include "Physics/Units.h"
+#include "Solvers/RootFinderForCSR.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
-#include <iostream>
-#include <fstream>
 #include <cmath>
+#include <fstream>
+#include <iostream>
 
-CSRIGFWakeFunction::CSRIGFWakeFunction(const std::string &name, std::vector<Filter *> filters, const unsigned int &N):
+CSRIGFWakeFunction::CSRIGFWakeFunction(const std::string& name, std::vector<Filter*> filters, const unsigned int& N):
     WakeFunction(name, N),
     filters_m(filters.begin(), filters.end()),
     lineDensity_m(),
@@ -46,7 +48,7 @@ CSRIGFWakeFunction::CSRIGFWakeFunction(const std::string &name, std::vector<Filt
     diffOp_m = filters_m.back();
 }
 
-void CSRIGFWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
+void CSRIGFWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
     Inform msg("CSRWake ");
 
     std::pair<double, double> meshInfo;
@@ -129,9 +131,9 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3> *bunch) {
     }
 }
 
-void CSRIGFWakeFunction::initialize(const ElementBase *ref) {
-    if (ref->getType() == ElementBase::RBEND ||
-       ref->getType() == ElementBase::SBEND) {
+void CSRIGFWakeFunction::initialize(const ElementBase* ref) {
+    if (ref->getType() == ElementType::RBEND ||
+       ref->getType() == ElementType::SBEND) {
 
         const Bend2D *bend = static_cast<const Bend2D *>(ref);
         double End;
@@ -145,7 +147,8 @@ void CSRIGFWakeFunction::initialize(const ElementBase *ref) {
     }
 }
 
-void CSRIGFWakeFunction::calculateLineDensity(PartBunchBase<double, 3> *bunch, std::pair<double, double> &meshInfo) {
+void CSRIGFWakeFunction::calculateLineDensity(PartBunchBase<double, 3>* bunch,
+                                              std::pair<double, double>& meshInfo) {
     bunch->calcLineDensity(nBins_m, lineDensity_m, meshInfo);
 
     // the following is only needed for after dipole
@@ -157,10 +160,10 @@ void CSRIGFWakeFunction::calculateLineDensity(PartBunchBase<double, 3> *bunch, s
     diffOp_m->calc_derivative(dlineDensitydz_m, meshInfo.second);
 }
 
-void CSRIGFWakeFunction::calculateGreenFunction(PartBunchBase<double, 3> *bunch, double meshSpacing)
-{
+void CSRIGFWakeFunction::calculateGreenFunction(PartBunchBase<double, 3>* bunch,
+                                                double meshSpacing) {
     unsigned int numOfSlices = lineDensity_m.size();
-    double gamma = bunch->get_meanKineticEnergy()/(bunch->getM()*1e-6)+1.0;
+    double gamma = bunch->get_meanKineticEnergy() / (bunch->getM() * Units::eV2MeV)+1.0;
     double xmu_const = 3.0 * gamma * gamma * gamma / (2.0 * bendRadius_m);
     double chi_const = 9.0 / 16.0 * (6.0 - std::log(27.0 / 4.0));
 
@@ -183,15 +186,18 @@ void CSRIGFWakeFunction::calculateGreenFunction(PartBunchBase<double, 3> *bunch,
     }
 }
 
-void CSRIGFWakeFunction::calculateContributionInside(size_t sliceNumber, double angleOfSlice, double /*meshSpacing*/)
-{
+void CSRIGFWakeFunction::calculateContributionInside(size_t sliceNumber,
+                                                     double angleOfSlice,
+                                                     double /*meshSpacing*/) {
     if (angleOfSlice > totalBendAngle_m || angleOfSlice < 0.0) return;
     int startSliceNum = 0;
     for (int j = sliceNumber; j >= startSliceNum; j--)
         Ez_m[sliceNumber] += lineDensity_m[j] * Grn_m[sliceNumber - j];
 }
 
-void CSRIGFWakeFunction::calculateContributionAfter(size_t sliceNumber, double angleOfSlice, double meshSpacing) {
+void CSRIGFWakeFunction::calculateContributionAfter(size_t sliceNumber,
+                                                    double angleOfSlice,
+                                                    double meshSpacing) {
     if (angleOfSlice <= totalBendAngle_m) return;
 
     double Ds_max = bendRadius_m * std::pow(totalBendAngle_m, 3) / 24. * (4. - 3.* totalBendAngle_m / angleOfSlice);
@@ -202,7 +208,7 @@ void CSRIGFWakeFunction::calculateContributionAfter(size_t sliceNumber, double a
     int j = 0;
     double frac = 0.0;
     if (Ds_max2 / meshSpacing < sliceNumber) {
-        j = sliceNumber - static_cast<int>(floor(Ds_max2 / meshSpacing));
+        j = sliceNumber - static_cast<int>(std::floor(Ds_max2 / meshSpacing));
         frac = Ds_max2 / meshSpacing - (sliceNumber - j);
         Ez_m[sliceNumber] -= (frac * lineDensity_m[j - 1] + (1. - frac) * lineDensity_m[j]) / (2. * angleOfSlice - totalBendAngle_m);
     }
@@ -210,7 +216,7 @@ void CSRIGFWakeFunction::calculateContributionAfter(size_t sliceNumber, double a
     // Now do delta function contribution for particles whose retarded position
     // is in the bend.
     if (Ds_max / meshSpacing < sliceNumber) {
-        j = sliceNumber - static_cast<int>(floor(Ds_max / meshSpacing));
+        j = sliceNumber - static_cast<int>(std::floor(Ds_max / meshSpacing));
         frac = Ds_max / meshSpacing - (sliceNumber - j);
         Ez_m[sliceNumber] += (frac * lineDensity_m[j - 1] + (1.0 - frac) * lineDensity_m[j]) / (2. * angleOfSlice - totalBendAngle_m);
     }
@@ -248,7 +254,7 @@ void CSRIGFWakeFunction::calculateContributionAfter(size_t sliceNumber, double a
     Ez_m[sliceNumber] *= prefactor;
 }
 
-double CSRIGFWakeFunction::calcPsi(const double &psiInitial, const double &x, const double &Ds) const {
+double CSRIGFWakeFunction::calcPsi(const double& psiInitial, const double& x, const double& Ds) const {
     /** solve the equation
      *  \f[
      *  \Delta s = \frac{R \Psi^3}{24} \frac{\Psi + 4x}{\Psi + x}
@@ -275,6 +281,7 @@ double CSRIGFWakeFunction::calcPsi(const double &psiInitial, const double &x, co
     ERRORMSG("In CSRWakeFunction::calcPsi(): exceed maximum number of iterations!" << endl);
     return psi;
 }
-const std::string CSRIGFWakeFunction::getType() const {
-    return "CSRIGFWakeFunction";
+
+WakeType CSRIGFWakeFunction::getType() const {
+    return WakeType::CSRIGFWakeFunction;
 }

@@ -39,12 +39,12 @@ namespace Attributes {
 
 
     const std::string &UpperCaseString::getType() const {
-        static const std::string type("upper case string");
+        static const std::string type("string");
         return type;
     }
 
     void UpperCaseString::parse(Attribute &attr, Statement &stat, bool) const {
-        Attributes::setUpperCaseString(attr, parseString(stat, "String value expected."));
+        Attributes::setUpperCaseString(attr, parseStringValue(stat, "String value expected."));
     }
 
 };

@@ -21,6 +21,7 @@
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Utilities/Timer.h"
+#include "Physics/Units.h"
 
 #include <sstream>
 
@@ -90,6 +91,63 @@ void StatWriter::fillHeader(const losses_t &losses) {
     columns_m.addColumn("dt", "double", "ns", "time step size");
     columns_m.addColumn("partsOutside", "double",  "1", "outside n*sigma of the beam");
 
+    if (Options::computePercentiles) {
+        columns_m.addColumn("68_Percentile_x", "double", "m",
+                            "68.27 percentile (1 sigma of normal distribution) of x-component of position");
+        columns_m.addColumn("68_Percentile_y", "double", "m",
+                            "68.27 percentile (1 sigma of normal distribution) of y-component of position");
+        columns_m.addColumn("68_Percentile_z", "double", "m",
+                            "68.27 percentile (1 sigma of normal distribution) of z-component of position");
+
+        columns_m.addColumn("95_Percentile_x", "double", "m",
+                            "95.45 percentile (2 sigma of normal distribution) of x-component of position");
+        columns_m.addColumn("95_Percentile_y", "double", "m",
+                            "95.45 percentile (2 sigma of normal distribution) of y-component of position");
+        columns_m.addColumn("95_Percentile_z", "double", "m",
+                            "95.45 percentile (2 sigma of normal distribution) of z-component of position");
+
+        columns_m.addColumn("99_Percentile_x", "double", "m",
+                            "99.73 percentile (3 sigma of normal distribution) of x-component of position");
+        columns_m.addColumn("99_Percentile_y", "double", "m",
+                            "99.73 percentile (3 sigma of normal distribution) of y-component of position");
+        columns_m.addColumn("99_Percentile_z", "double", "m",
+                            "99.73 percentile (3 sigma of normal distribution) of z-component of position");
+
+        columns_m.addColumn("99_99_Percentile_x", "double", "m",
+                            "99.994 percentile (4 sigma of normal distribution) of x-component of position");
+        columns_m.addColumn("99_99_Percentile_y", "double", "m",
+                            "99.994 percentile (4 sigma of normal distribution) of y-component of position");
+        columns_m.addColumn("99_99_Percentile_z", "double", "m",
+                            "99.994 percentile (4 sigma of normal distribution) of z-component of position");
+
+        columns_m.addColumn("normalizedEps68Percentile_x", "double", "m",
+                            "x-component of normalized emittance at 68 percentile (1 sigma of normal distribution)");
+        columns_m.addColumn("normalizedEps68Percentile_y", "double", "m",
+                            "y-component of normalized emittance at 68 percentile (1 sigma of normal distribution)");
+        columns_m.addColumn("normalizedEps68Percentile_z", "double", "m",
+                            "z-component of normalized emittance at 68 percentile (1 sigma of normal distribution)");
+
+        columns_m.addColumn("normalizedEps95Percentile_x", "double", "m",
+                            "x-component of normalized emittance at 95 percentile (2 sigma of normal distribution)");
+        columns_m.addColumn("normalizedEps95Percentile_y", "double", "m",
+                            "y-component of normalized emittance at 95 percentile (2 sigma of normal distribution)");
+        columns_m.addColumn("normalizedEps95Percentile_z", "double", "m",
+                            "z-component of normalized emittance at 95 percentile (2 sigma of normal distribution)");
+
+        columns_m.addColumn("normalizedEps99Percentile_x", "double", "m",
+                            "x-component of normalized emittance at 99 percentile (3 sigma of normal distribution)");
+        columns_m.addColumn("normalizedEps99Percentile_y", "double", "m",
+                            "y-component of normalized emittance at 99 percentile (3 sigma of normal distribution)");
+        columns_m.addColumn("normalizedEps99Percentile_z", "double", "m",
+                            "z-component of normalized emittance at 99 percentile (3 sigma of normal distribution)");
+
+        columns_m.addColumn("normalizedEps99_99Percentile_x", "double", "m",
+                            "x-component of normalized emittance at 99.99 percentile (4 sigma of normal distribution)");
+        columns_m.addColumn("normalizedEps99_99Percentile_y", "double", "m",
+                            "y-component of normalized emittance at 99.99 percentile (4 sigma of normal distribution)");
+        columns_m.addColumn("normalizedEps99_99Percentile_z", "double", "m",
+                            "z-component of normalized emittance at 99.99 percentile (4 sigma of normal distribution)");
+    }
     if (OpalData::getInstance()->isInOPALCyclMode() &&
         Ippl::getNodes() == 1) {
         columns_m.addColumn("R0_x", "double", "m", "R0 Particle position in x");
@@ -159,7 +217,7 @@ void StatWriter::write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
 
     this->writeHeader();
 
-    columns_m.addColumnValue("t", beam->getT() * 1e9);             // 1
+    columns_m.addColumnValue("t", beam->getT() * Units::s2ns);   // 1
     columns_m.addColumnValue("s", pathLength);                     // 2
     columns_m.addColumnValue("numParticles", beam->getTotalNum()); // 3
     columns_m.addColumnValue("charge", Q);                         // 4
@@ -214,9 +272,42 @@ void StatWriter::write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
     columns_m.addColumnValue("Ez_ref", FDext[1](2));               // 39 E-ref z
 
     columns_m.addColumnValue("dE", beam->getdE());                 // 40 dE energy spread
-    columns_m.addColumnValue("dt", beam->getdT() * 1e9);           // 41 dt time step size
+    columns_m.addColumnValue("dt", beam->getdT() * Units::s2ns); // 41 dt time step size
     columns_m.addColumnValue("partsOutside", npOutside);           // 42 number of particles outside n*sigma
 
+    if (Options::computePercentiles) {
+        columns_m.addColumnValue("68_Percentile_x", beam->get_68Percentile()[0]);
+        columns_m.addColumnValue("68_Percentile_y", beam->get_68Percentile()[1]);
+        columns_m.addColumnValue("68_Percentile_z", beam->get_68Percentile()[2]);
+
+        columns_m.addColumnValue("95_Percentile_x", beam->get_95Percentile()[0]);
+        columns_m.addColumnValue("95_Percentile_y", beam->get_95Percentile()[1]);
+        columns_m.addColumnValue("95_Percentile_z", beam->get_95Percentile()[2]);
+
+        columns_m.addColumnValue("99_Percentile_x", beam->get_99Percentile()[0]);
+        columns_m.addColumnValue("99_Percentile_y", beam->get_99Percentile()[1]);
+        columns_m.addColumnValue("99_Percentile_z", beam->get_99Percentile()[2]);
+
+        columns_m.addColumnValue("99_99_Percentile_x", beam->get_99_99Percentile()[0]);
+        columns_m.addColumnValue("99_99_Percentile_y", beam->get_99_99Percentile()[1]);
+        columns_m.addColumnValue("99_99_Percentile_z", beam->get_99_99Percentile()[2]);
+
+        columns_m.addColumnValue("normalizedEps68Percentile_x", beam->get_normalizedEps_68Percentile()[0]);
+        columns_m.addColumnValue("normalizedEps68Percentile_y", beam->get_normalizedEps_68Percentile()[1]);
+        columns_m.addColumnValue("normalizedEps68Percentile_z", beam->get_normalizedEps_68Percentile()[2]);
+
+        columns_m.addColumnValue("normalizedEps95Percentile_x", beam->get_normalizedEps_95Percentile()[0]);
+        columns_m.addColumnValue("normalizedEps95Percentile_y", beam->get_normalizedEps_95Percentile()[1]);
+        columns_m.addColumnValue("normalizedEps95Percentile_z", beam->get_normalizedEps_95Percentile()[2]);
+
+        columns_m.addColumnValue("normalizedEps99Percentile_x", beam->get_normalizedEps_99Percentile()[0]);
+        columns_m.addColumnValue("normalizedEps99Percentile_y", beam->get_normalizedEps_99Percentile()[1]);
+        columns_m.addColumnValue("normalizedEps99Percentile_z", beam->get_normalizedEps_99Percentile()[2]);
+
+        columns_m.addColumnValue("normalizedEps99_99Percentile_x", beam->get_normalizedEps_99_99Percentile()[0]);
+        columns_m.addColumnValue("normalizedEps99_99Percentile_y", beam->get_normalizedEps_99_99Percentile()[1]);
+        columns_m.addColumnValue("normalizedEps99_99Percentile_z", beam->get_normalizedEps_99_99Percentile()[2]);
+    }
     if (OpalData::getInstance()->isInOPALCyclMode()) {
         if (Ippl::getNodes() == 1) {
             if (beam->getLocalNum() > 0) {

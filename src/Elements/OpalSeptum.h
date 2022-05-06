@@ -33,7 +33,6 @@ public:
         YSTART,          // Start of y coordinate
         YEND,            // End of y coordinate
         WIDTH,           // Width of the septum
-        OUTFN,           // Output filename
         SIZE
     };
     /// Exemplar constructor.

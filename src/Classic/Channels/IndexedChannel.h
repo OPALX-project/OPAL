@@ -62,7 +62,7 @@ public:
 
     /// Test if settable.
     //  Return true, if the channel can receive values, i.e. if the [b]sefF[/b]
-    //  pointer is not NULL.
+    //  pointer is not nullptr.
     virtual bool isSettable() const;
 
 private:

@@ -2,8 +2,8 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
- * This program was prepared by PSI. 
+ *
+ * This program was prepared by PSI.
  * All rights in the program are reserved by PSI.
  * Neither PSI nor the author(s)
  * makes any warranty, express or implied, or assumes any liability or
@@ -17,7 +17,7 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
+ *
  *
  * Visit http://people.web.psi.ch/adelmann/ for more details
  *
@@ -161,7 +161,7 @@ bool DataSource::disconnect(DataConnect *dataconn) {
   }
 
   // if we've removed all, we can erase all
-  if (dataconn == 0 && ConnectionList.size() > 0) {
+  if (dataconn == 0 && !ConnectionList.empty()) {
     //dbgmsg<<"Erasing all " << ConnectionList.size() << " DSO's ..." << endl;
     ConnectionList.erase(ConnectionList.begin(), ConnectionList.end());
   }
@@ -217,5 +217,5 @@ void DataSource::interact(const char *str, DataConnect *dataconn) {
 /***************************************************************************
  * $RCSfile: DataSource.cpp,v $   $Author: adelmann $
  * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:25 $
- * IPPL_VERSION_ID: $Id: DataSource.cpp,v 1.1.1.1 2003/01/23 07:40:25 adelmann Exp $ 
+ * IPPL_VERSION_ID: $Id: DataSource.cpp,v 1.1.1.1 2003/01/23 07:40:25 adelmann Exp $
  ***************************************************************************/

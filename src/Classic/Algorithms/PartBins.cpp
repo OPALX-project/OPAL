@@ -19,7 +19,10 @@
 #include "Algorithms/PartBins.h"
 #include "Algorithms/PBunchDefs.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
+
 #include "Utility/Inform.h"
+
 #include <cfloat>
 #include <limits>
 #include <vector>
@@ -116,7 +119,7 @@ void PartBins::sortArray() {
         In order that the method getBin(double x) works xmin_m has to be lowered a bit more.
     */
 
-    double sshift = std::sqrt(1. - (1. / (gamma_m * gamma_m))) * Physics::c * 1e-13;
+    double sshift = std::sqrt(1. - (1. / (gamma_m * gamma_m))) * Physics::c * 0.1 * Units::ps2s;
     std::sort(tmppart_m.begin(), tmppart_m.end(), DescendingLocationSort(2));
     xmax_m = tmppart_m[0][2];
     xmin_m = tmppart_m.back()[2];

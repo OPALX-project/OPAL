@@ -29,7 +29,7 @@ OpalRBend::OpalRBend():
     OpalBend("RBEND",
              "The \"RBEND\" element defines a rectangular bending magnet."),
     owk_m(0),
-    parmatint_m(NULL) {
+    parmatint_m(nullptr) {
 
     registerOwnership();
 
@@ -37,10 +37,10 @@ OpalRBend::OpalRBend():
 }
 
 
-OpalRBend::OpalRBend(const std::string &name, OpalRBend *parent):
+OpalRBend::OpalRBend(const std::string& name, OpalRBend* parent):
     OpalBend(name, parent),
     owk_m(0),
-    parmatint_m(NULL) {
+    parmatint_m(nullptr) {
     setElement(new RBendRep(name));
 }
 
@@ -51,7 +51,7 @@ OpalRBend::~OpalRBend() {
 }
 
 
-OpalRBend *OpalRBend::clone(const std::string &name) {
+OpalRBend* OpalRBend::clone(const std::string& name) {
     return new OpalRBend(name, this);
 }
 
@@ -60,12 +60,13 @@ void OpalRBend::update() {
     OpalElement::update();
 
     // Define geometry.
-    RBendRep *bend =
-        dynamic_cast<RBendRep *>(getElement());
+    RBendRep* bend =
+        dynamic_cast<RBendRep*>(getElement());
+
     double length = Attributes::getReal(itsAttr[LENGTH]);
     double angle  = Attributes::getReal(itsAttr[ANGLE]);
     double e1     = Attributes::getReal(itsAttr[E1]);
-    RBendGeometry &geometry = bend->getGeometry();
+    RBendGeometry& geometry = bend->getGeometry();
     geometry.setElementLength(length);
     geometry.setBendAngle(angle);
 
@@ -126,9 +127,9 @@ void OpalRBend::update() {
                             "ROTATION not supported any more; use PSI instead");
 
 
-    if (itsAttr[FMAPFN])
+    if (itsAttr[FMAPFN]) {
         bend->setFieldMapFN(Attributes::getString(itsAttr[FMAPFN]));
-    else if (bend->getName() != "RBEND") {
+    } else if (bend->getName() != "RBEND") {
         ERRORMSG(bend->getName() << ": No filename for a field map given. "
                  "Will assume the default map "
                  "\"1DPROFILE1-DEFAULT\"."
@@ -153,12 +154,12 @@ void OpalRBend::update() {
 
     if (itsAttr[HAPERT]) {
         double hapert = Attributes::getReal(itsAttr[HAPERT]);
-        bend->setAperture(ElementBase::RECTANGULAR, std::vector<double>({hapert, gap, 1.0}));
+        bend->setAperture(ApertureType::RECTANGULAR, std::vector<double>({hapert, gap, 1.0}));
     } else {
-        bend->setAperture(ElementBase::RECTANGULAR, std::vector<double>({0.5, gap, 1.0}));
+        bend->setAperture(ApertureType::RECTANGULAR, std::vector<double>({0.5, gap, 1.0}));
     }
 
-    if (itsAttr[WAKEF] && itsAttr[DESIGNENERGY] && owk_m == NULL) {
+    if (itsAttr[WAKEF] && itsAttr[DESIGNENERGY] && owk_m == nullptr) {
         owk_m = (OpalWake::find(Attributes::getString(itsAttr[WAKEF])))->clone(getOpalName() + std::string("_wake"));
         owk_m->initWakefunction(*bend);
         bend->setWake(owk_m->wf_m);
@@ -169,8 +170,10 @@ void OpalRBend::update() {
     else
         bend->setK1(0.0);
 
-    if (itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == NULL) {
-        parmatint_m = (ParticleMatterInteraction::find(Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION])))->clone(getOpalName() + std::string("_parmatint"));
+    if (itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == nullptr) {
+        const std::string matterDescriptor = Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION]);
+        ParticleMatterInteraction* orig = ParticleMatterInteraction::find(matterDescriptor);
+        parmatint_m = orig->clone(matterDescriptor);
         parmatint_m->initParticleMatterInteractionHandler(*bend);
         bend->setParticleMatterInteraction(parmatint_m->handler_m);
     }

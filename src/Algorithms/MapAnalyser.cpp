@@ -281,7 +281,7 @@ MapAnalyser::cfMatrix_t MapAnalyser::invertMatrix_m(const cfMatrix_t& M){
     int eigenDecompStatus = gsl_linalg_complex_LU_decomp(m, p, &s);
     if (eigenDecompStatus != 0){
         std::cout<< "This actually works" << std::endl;
-        //gsl_set_error_handler (NULL);
+        //gsl_set_error_handler (nullptr);
 
     }
 
@@ -295,7 +295,7 @@ MapAnalyser::cfMatrix_t MapAnalyser::invertMatrix_m(const cfMatrix_t& M){
 
     if (invertStatus != 0){
         std::cout<< "This actually works" << std::endl;
-        //gsl_set_error_handler (NULL);
+        //gsl_set_error_handler (nullptr);
 
     }
 

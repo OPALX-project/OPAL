@@ -56,10 +56,10 @@ int main(int argc, char *argv[])
         }
         out.close();
 
-        if (baseBlocks.size() > 0) {
+        if (!baseBlocks.empty()) {
             Vector_t llc, urc;
             std::shared_ptr<mslang::Base> & first = baseBlocks.front();
-            const mslang::BoundingBox &bb = first->bb_m;
+            const mslang::BoundingBox2D &bb = first->bb_m;
             llc = Vector_t(bb.center_m[0] - 0.5 * bb.width_m,
                            bb.center_m[1] - 0.5 * bb.height_m,
                            0.0);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 
 
             for (unsigned int i = 1; i < baseBlocks.size(); ++ i) {
-                const mslang::BoundingBox &bb = baseBlocks[i]->bb_m;
+                const mslang::BoundingBox2D &bb = baseBlocks[i]->bb_m;
                 llc[0] = std::min(llc[0], bb.center_m[0] - 0.5 * bb.width_m);
                 llc[1] = std::min(llc[1], bb.center_m[1] - 0.5 * bb.height_m);
                 urc[0] = std::max(urc[0], bb.center_m[0] + 0.5 * bb.width_m);
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
             urc[1] += 1e-3 * width;
 
             mslang::QuadTree tree;
-            tree.bb_m = mslang::BoundingBox(llc, urc);
+            tree.bb_m = mslang::BoundingBox2D(llc, urc);
 
             tree.objects_m.insert(tree.objects_m.end(), baseBlocks.begin(), baseBlocks.end());
             tree.buildUp();

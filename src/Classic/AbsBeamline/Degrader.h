@@ -1,26 +1,22 @@
+//
+// Class Degrader
+//   Defines the abstract interface for a beam degrader.
+//
+// Copyright (c) 2000 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_Degrader_HH
 #define CLASSIC_Degrader_HH
-
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:31 $
-// $Author: fci $
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: Degrader
-//   Defines the abstract interface for a beam Degrader.
-//   *** MISSING *** Degrader interface is still incomplete.
-//
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:31 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
 
 #include "AbsBeamline/Component.h"
 #include "AbsBeamline/BeamlineVisitor.h"
@@ -28,13 +24,6 @@
 
 #include <string>
 #include <vector>
-
-class LossDataSink;
-
-// Class Degrader
-// ------------------------------------------------------------------------
-/// Abstract collimator.
-//  Class Degrader defines the abstract interface for a collimator.
 
 class Degrader: public Component {
 
@@ -53,52 +42,45 @@ public:
     };
 
     /// Constructor with given name.
-    explicit Degrader(const std::string &name);
+    explicit Degrader(const std::string& name);
 
     Degrader();
-    Degrader(const Degrader &rhs);
+    Degrader(const Degrader& rhs);
     virtual ~Degrader();
 
     /// Apply visitor to Degrader.
-    virtual void accept(BeamlineVisitor &) const;
+    virtual void accept(BeamlineVisitor&) const;
 
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    virtual bool apply(const size_t& i, const double& t, Vector_t& E, Vector_t& B);
 
-    virtual bool applyToReferenceParticle(const Vector_t &R,
-                                          const Vector_t &P,
-                                          const double &t,
-                                          Vector_t &E,
-                                          Vector_t &B);
+    virtual bool applyToReferenceParticle(const Vector_t& R,
+                                          const Vector_t& P,
+                                          const double& t,
+                                          Vector_t& E,
+                                          Vector_t& B);
 
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+    virtual void initialise(PartBunchBase<double, 3>* bunch, double& startField, double& endField);
 
-    virtual void initialise(PartBunchBase<double, 3> *bunch);
+    virtual void initialise(PartBunchBase<double, 3>* bunch);
 
     virtual void finalise();
 
     virtual bool bends() const;
 
-    virtual void goOnline(const double &kineticEnergy);
+    virtual void goOnline(const double& kineticEnergy);
 
     virtual void goOffline();
 
-    virtual ElementBase::ElementType getType() const;
+    virtual ElementType getType() const;
 
-    virtual void getDimensions(double &zBegin, double &zEnd) const;
-
-    std::string  getDegraderShape(); // AAA
-
-    void setOutputFN(std::string fn);
-    std::string getOutputFN();
+    virtual void getDimensions(double& zBegin, double& zEnd) const;
 
     virtual bool isInMaterial(double z);
 
 private:
 
     // Not implemented.
-    void operator=(const Degrader &);
-
-    std::string filename_m;               /**< The name of the outputfile*/
+    void operator=(const Degrader&);
 
     std::vector<double> PosX_m;
     std::vector<double> PosY_m;
@@ -108,8 +90,6 @@ private:
     std::vector<double> MomentumZ_m;
     std::vector<double> time_m;
     std::vector<int> id_m;
-
-    std::unique_ptr<LossDataSink> lossDs_m;
 };
 
 #endif // CLASSIC_Degrader_HH

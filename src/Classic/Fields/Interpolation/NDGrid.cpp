@@ -36,6 +36,10 @@ namespace interpolation {
 NDGrid::NDGrid() : coord_m(), maps_m(), constantSpacing_m(false)  {
 }
 
+NDGrid::NDGrid(const NDGrid& rhs) : coord_m(rhs.coord_m), maps_m(rhs.maps_m),
+                                    constantSpacing_m(rhs.constantSpacing_m) {
+}
+
 NDGrid::NDGrid(std::vector<int> size, std::vector<const double *> gridCoordinates)
     : coord_m(), maps_m(), constantSpacing_m(false) { 
     for (unsigned int i=0; i<size.size(); i++) {

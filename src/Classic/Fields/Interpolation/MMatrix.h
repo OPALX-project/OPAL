@@ -184,7 +184,7 @@ private:
   //delete the matrix and set it to null  
   void delete_matrix();  
   //return the matrix overloaded to the correct type or throw
-  //if _matrix == NULL
+  //if _matrix == nullptr
   static gsl_matrix*         get_matrix(const MMatrix<double>&    m);
   static gsl_matrix_complex* get_matrix(const MMatrix<m_complex>& m);
   //gsl object
@@ -349,7 +349,7 @@ template <class Tmplt> std::ostream& operator<<(std::ostream& out, MMatrix<Tmplt
 template <class Tmplt>
 gsl_matrix         inline* MMatrix<Tmplt>::get_matrix(const MMatrix<double>&    m)
 {
-  if(m._matrix == NULL) 
+  if(m._matrix == nullptr)
     throw(GeneralClassicException("MMatrix::get_matrix", "Attempt to access uninitialised matrix"));
   return (gsl_matrix*)m._matrix;
 }
@@ -357,7 +357,7 @@ gsl_matrix         inline* MMatrix<Tmplt>::get_matrix(const MMatrix<double>&    
 template <class Tmplt>
 gsl_matrix_complex inline* MMatrix<Tmplt>::get_matrix(const MMatrix<m_complex>& m)
 {
-  if(m._matrix == NULL) 
+  if(m._matrix == nullptr)
     throw(GeneralClassicException("MMatrix::get_matrix", "Attempt to access uninitialised matrix"));
   return (gsl_matrix_complex*)m._matrix;
 

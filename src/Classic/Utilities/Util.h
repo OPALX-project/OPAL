@@ -1,17 +1,35 @@
+//
+// Namespace Util
+//   This namespace contains useful global methods.
+//
+// Copyright (c) 200x - 2022, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef USEFULFUNCTIONS
 #define USEFULFUNCTIONS
 
 #include "Algorithms/Vektor.h"
 #include "Algorithms/Quaternion.h"
 
-#include <string>
+#include <algorithm>
+#include <cmath>
 #include <cstring>
+#include <functional>
+#include <initializer_list>
 #include <limits>
 #include <sstream>
+#include <string>
 #include <type_traits>
-#include <functional>
-#include <cmath>
-#include <initializer_list>
 
 // ------- DON'T DELETE: start --------
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
@@ -47,7 +65,7 @@ namespace Util {
     }
 
     inline
-    double convertMomentumeVToBetaGamma(double p, double mass) {
+    double convertMomentumEVoverCToBetaGamma(double p, double mass) {
         return p / mass;
     }
 
@@ -174,17 +192,25 @@ namespace Util {
         return chargeOutput.str();
     }
 
-    Vector_t getTaitBryantAngles(Quaternion rotation, const std::string &elementName = "");
+    Vector_t getTaitBryantAngles(Quaternion rotation, const std::string& elementName = "");
 
-    std::string toUpper(const std::string &str);
+    std::string toUpper(const std::string& str);
+
+    std::string boolToUpperString(const bool& b);
+
+    std::string boolVectorToUpperString(const std::vector<bool>& b);
+
+    std::string doubleVectorToString(const std::vector<double>& v);
 
     std::string combineFilePath(std::initializer_list<std::string>);
+
+    template<class IteratorIn, class IteratorOut>
+    void toString(IteratorIn first, IteratorIn last, IteratorOut out);
 
     template <typename T>
     std::string toStringWithThousandSep(T value, char sep = '\'');
 
-    struct KahanAccumulation
-    {
+    struct KahanAccumulation {
         long double sum;
         long double correction;
         KahanAccumulation();
@@ -192,10 +218,16 @@ namespace Util {
         KahanAccumulation& operator+=(double value);
     };
 
-    unsigned int rewindLinesSDDS(const std::string &fileName, double maxSPos, bool checkForTime = true);
+    unsigned int rewindLinesSDDS(const std::string& fileName, double maxSPos, bool checkForTime = true);
 
-    std::string base64_encode(const std::string &string_to_encode);//unsigned char const* , unsigned int len);
+    std::string base64_encode(const std::string& string_to_encode);//unsigned char const* , unsigned int len);
     std::string base64_decode(std::string const& s);
+
+    template<typename T, typename A>
+    T* c_data(std::vector<T,A>& v) { return v.empty() ? static_cast<T*>(0) : &(v[0]); }
+
+    template<typename T, typename A>
+    T const* c_data(std::vector<T,A> const& v) { return v.empty() ? static_cast<T const*>(0) : &(v[0]); }
 }
 
 template <typename T>
@@ -230,6 +262,15 @@ std::string Util::toStringWithThousandSep(T value, char sep) {
     }
 
     return ret.str();
+}
+
+template<class IteratorIn, class IteratorOut>
+void Util::toString(IteratorIn first, IteratorIn last, IteratorOut out) {
+    std::transform(first, last, out, [](auto d) {
+        std::ostringstream stm;
+        stm << d;
+        return stm.str();
+    } );
 }
 
 #endif

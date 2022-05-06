@@ -49,7 +49,7 @@ public:
 
     virtual bool bends() const override;
 
-    virtual ElementBase::ElementType getType() const override;
+    virtual ElementType getType() const override;
 
     virtual void getDimensions(double &zBegin, double &zEnd) const override;
 

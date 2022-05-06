@@ -20,10 +20,11 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Fields/Astra1DDynamic_fast.h"
-#include "Utilities/GeneralClassicException.h"
-#include "Utilities/Util.h"
-#include "Utilities/OpalException.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
+#include "Utilities/GeneralClassicException.h"
+#include "Utilities/OpalException.h"
+#include "Utilities/Util.h"
 
 #include <fstream>
 #include <ios>
@@ -33,7 +34,7 @@ Astra1DDynamic_fast::Astra1DDynamic_fast(std::string aFilename):
 {
     numHeaderLines_m = 3;
 
-    onAxisField_m = NULL;
+    onAxisField_m = nullptr;
 
     Type = TAstraDynamic;
 
@@ -59,7 +60,7 @@ Astra1DDynamic_fast::Astra1DDynamic_fast(std::string aFilename):
     }
 
     // conversion from MHz to Hz and from frequency to angular frequency
-    frequency_m *= Physics::two_pi * 1e6;
+    frequency_m *= Physics::two_pi * Units::MHz2Hz;
     xlrep_m = frequency_m / Physics::c;
 
     hz_m = (zend_m - zbegin_m) / (num_gridpz_m - 1);
@@ -71,7 +72,7 @@ Astra1DDynamic_fast::~Astra1DDynamic_fast() {
 }
 
 void Astra1DDynamic_fast::readMap() {
-    if(onAxisField_m == NULL) {
+    if(onAxisField_m == nullptr) {
         std::ifstream file(Filename_m.c_str());
 
         onAxisField_m = new double[num_gridpz_m];
@@ -81,7 +82,7 @@ void Astra1DDynamic_fast::readMap() {
         double maxEz = readFieldData(file);
         file.close();
 
-        normalizeFieldData(maxEz * 1e-6);
+        normalizeFieldData(maxEz * Units::Vpm2MVpm);
 
         std::vector<double> zvals = getEvenlyDistributedSamplingPoints();
         std::vector<double> evenFieldSampling = interpolateFieldData(zvals);
@@ -162,7 +163,7 @@ void Astra1DDynamic_fast::setFrequency(double freq) {
 
 void Astra1DDynamic_fast::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
     F.resize(num_gridpz_m);
-    if(onAxisField_m == NULL) {
+    if(onAxisField_m == nullptr) {
         double Ez_max = 0.0;
         double tmpDouble;
         int tmpInt;

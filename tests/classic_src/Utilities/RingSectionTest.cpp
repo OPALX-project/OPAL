@@ -38,7 +38,7 @@ TEST(RingSectionTest, TestConstructDestruct) {
     OpalTestUtilities::SilenceTest silencer;
 
     RingSection ors;
-    MockComponent* compNull = NULL;
+    MockComponent* compNull = nullptr;
     Vector_t vec0(0, 0, 0);
     EXPECT_EQ(ors.getComponent(), compNull);
     EXPECT_EQ(ors.getStartPosition(), vec0);

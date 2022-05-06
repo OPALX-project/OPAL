@@ -20,6 +20,7 @@
 #include "Parser/Statement.h"
 #include "Utilities/OpalException.h"
 
+#include <boost/algorithm/string/join.hpp>
 
 // Class AttributeHandler
 // ------------------------------------------------------------------------
@@ -92,6 +93,17 @@ bool AttributeHandler::isReadOnly() const {
 
 void AttributeHandler::setReadOnly(bool flag) {
     is_readonly = flag;
+}
+
+void AttributeHandler::setPredefinedValues(const std::set<std::string>& predefinedValues,
+                                           const std::string& defaultValue)
+{
+    std::string validValues = " Valid values are " + boost::algorithm::join(predefinedValues, ", ") + ".";
+    if (defaultValue != "_HAS_NO_DEFAULT_") {
+        validValues += " Its default is " + defaultValue + ".";
+    }
+    std::string* help = const_cast<std::string*>(&itsHelp);
+    *help += validValues;
 }
 
 std::multimap<AttributeHandler::OwnerType, std::string> AttributeHandler::getOwner(const std::string &att) {

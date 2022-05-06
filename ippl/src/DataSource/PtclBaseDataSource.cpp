@@ -47,7 +47,7 @@ IpplParticleBaseDataSource::IpplParticleBaseDataSource(const char *nm,
 IpplParticleBaseDataSource::~IpplParticleBaseDataSource() {
 
   // disconnect all our currently connected attributes
-  while (AttribList.size() > 0)
+  while (!AttribList.empty())
     disconnect_attrib(AttribList.front());
 
   // remove ourselves from the list of available IpplParticleBase containers

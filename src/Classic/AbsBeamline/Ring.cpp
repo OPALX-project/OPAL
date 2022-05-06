@@ -46,8 +46,8 @@ const Ring* Ring::lastLockedRing_m = NULL;
 
 Ring::Ring(std::string ring)
     : Component(ring), planarArcGeometry_m(1, 1),
-      refPartBunch_m(NULL),
-      lossDS_m(NULL),
+      refPartBunch_m(nullptr),
+      lossDS_m(nullptr),
       beamRInit_m(0.), beamPRInit_m(0.), beamPhiInit_m(0.),
       latticeRInit_m(0.), latticePhiInit_m(0.), latticeThetaInit_m(0.),
       isLocked_m(false), isClosed_m(true),
@@ -55,7 +55,7 @@ Ring::Ring(std::string ring)
       phiStep_m(Physics::pi/100.),
       ringSections_m(),
       section_list_m() {
-    setRefPartBunch(NULL);
+    setRefPartBunch(nullptr);
 }
 
 void Ring::accept(BeamlineVisitor& visitor) const {
@@ -66,7 +66,7 @@ Ring::Ring(const Ring& ring)
 
     : Component(ring.getName()),
       planarArcGeometry_m(ring.planarArcGeometry_m),
-      lossDS_m(NULL),
+      lossDS_m(nullptr),
       beamRInit_m(ring.beamRInit_m),
       beamPRInit_m(ring.beamPRInit_m),
       beamPhiInit_m(ring.beamPhiInit_m),
@@ -84,7 +84,7 @@ Ring::Ring(const Ring& ring)
       ringSections_m(),
       section_list_m(ring.section_list_m.size()) {
     setRefPartBunch(ring.refPartBunch_m);
-    if (ring.lossDS_m != NULL)
+    if (ring.lossDS_m != nullptr)
         throw GeneralClassicException("Ring::Ring(const Ring&)",
                                       "Can't copy construct LossDataSink so copy constructor fails");
     for (size_t i = 0; i < section_list_m.size(); ++i) {
@@ -112,7 +112,10 @@ bool Ring::apply(const size_t &id, const double &t, Vector_t &E,
         gmsgALL << getName() << ": particle " << id
                 << " at " << refPartBunch_m->R[id]
                 << " m out of the field map boundary" << endl;
-        lossDS_m->addParticle(refPartBunch_m->R[id] * Vector_t(1000.0), refPartBunch_m->P[id], id);
+        lossDS_m->addParticle(OpalParticle(id,
+                                           refPartBunch_m->R[id] * Vector_t(1000.0), refPartBunch_m->P[id],
+                                           t,
+                                           refPartBunch_m->Q[id], refPartBunch_m->M[id]));
         lossDS_m->save();
 
         refPartBunch_m->Bin[id] = -1;
@@ -170,8 +173,8 @@ void Ring::initialise(PartBunchBase<double, 3> * bunch, double &/*startField*/,
 
 void Ring::finalise() {
     online_m = false;
-    setRefPartBunch(NULL);
-    setLossDataSink(NULL);
+    setRefPartBunch(nullptr);
+    setLossDataSink(nullptr);
 }
 
 void Ring::setRefPartBunch(PartBunchBase<double, 3>* bunch) {
@@ -214,7 +217,7 @@ void Ring::rotateToCyclCoordinates(Euclid3D& delta) const {
 
 
 Vector_t Ring::getNextPosition() const {
-    if (section_list_m.size() > 0) {
+    if (!section_list_m.empty()) {
         return section_list_m.back()->getEndPosition();
     }
     return Vector_t(latticeRInit_m*std::sin(latticePhiInit_m),
@@ -223,7 +226,7 @@ Vector_t Ring::getNextPosition() const {
 }
 
 Vector_t Ring::getNextNormal() const {
-    if (section_list_m.size() > 0) {
+    if (!section_list_m.empty()) {
         return section_list_m.back()->getEndNormal();
     }
     return Vector_t(std::cos(latticePhiInit_m+latticeThetaInit_m),
@@ -368,8 +371,8 @@ void Ring::buildRingSections() {
 }
 
 RingSection* Ring::getLastSectionPlaced() const {
-    if (section_list_m.size() == 0) {
-        return NULL;
+    if (section_list_m.empty()) {
+        return nullptr;
     }
     return section_list_m.back();
 }

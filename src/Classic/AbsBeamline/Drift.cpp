@@ -81,6 +81,6 @@ void Drift::getDimensions(double &zBegin, double &zEnd) const {
     zEnd = startField_m + getElementLength();
 }
 
-ElementBase::ElementType Drift::getType() const {
-    return DRIFT;
+ElementType Drift::getType() const {
+    return ElementType::DRIFT;
 }

@@ -22,8 +22,6 @@
 #include "Parser/Token.h"
 #include <iostream>
 
-extern Inform *gmsg;
-
 // Class Statement
 // ------------------------------------------------------------------------
 
@@ -229,4 +227,11 @@ void Statement::printWhere(Inform &msg, bool withToken) const {
     } else {
         msg << ":\n";
     }
+}
+
+std::string Statement::str() const {
+    std::ostringstream str;
+    print(str);
+
+    return str.str();
 }

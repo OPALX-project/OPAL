@@ -1,6 +1,7 @@
 #include "Fields/FM2DDynamic.h"
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
@@ -11,9 +12,9 @@
 
 FM2DDynamic::FM2DDynamic(std::string aFilename)
     : Fieldmap(aFilename),
-      FieldstrengthEz_m(NULL),
-      FieldstrengthEr_m(NULL),
-      FieldstrengthBt_m(NULL) {
+      FieldstrengthEz_m(nullptr),
+      FieldstrengthEr_m(nullptr),
+      FieldstrengthBt_m(nullptr) {
     std::ifstream file;
     std::string tmpString;
     double tmpDouble;
@@ -79,13 +80,13 @@ FM2DDynamic::FM2DDynamic(std::string aFilename)
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         } else {
             // convert MHz to Hz and frequency to angular frequency
-            frequency_m *= Physics::two_pi * 1e6;
+            frequency_m *= Physics::two_pi * Units::MHz2Hz;
 
             // convert cm to m
-            rbegin_m /= 100.0;
-            rend_m /= 100.0;
-            zbegin_m /= 100.0;
-            zend_m /= 100.0;
+            rbegin_m *= Units::cm2m;
+            rend_m *= Units::cm2m;
+            zbegin_m *= Units::cm2m;
+            zend_m *= Units::cm2m;
 
             hr_m = (rend_m - rbegin_m) / num_gridpr_m;
             hz_m = (zend_m - zbegin_m) / num_gridpz_m;
@@ -107,7 +108,7 @@ FM2DDynamic::~FM2DDynamic() {
 }
 
 void FM2DDynamic::readMap() {
-    if(FieldstrengthEz_m == NULL) {
+    if(FieldstrengthEz_m == nullptr) {
         // declare variables and allocate memory
         std::ifstream in;
         std::string tmpString;
@@ -172,13 +173,13 @@ void FM2DDynamic::readMap() {
 }
 
 void FM2DDynamic::freeMap() {
-    if(FieldstrengthEz_m != NULL) {
+    if(FieldstrengthEz_m != nullptr) {
         delete[] FieldstrengthEz_m;
-        FieldstrengthEz_m = NULL;
+        FieldstrengthEz_m = nullptr;
         delete[] FieldstrengthEr_m;
-        FieldstrengthEr_m = NULL;
+        FieldstrengthEr_m = nullptr;
         delete[] FieldstrengthBt_m;
-        FieldstrengthBt_m = NULL;
+        FieldstrengthBt_m = nullptr;
 
         INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m + "'", "info") << "\n"
                 << endl);

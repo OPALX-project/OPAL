@@ -1,6 +1,7 @@
 #include "Fields/FM1DMagnetoStatic_fast.h"
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/Util.h"
 #include "Utilities/GeneralClassicException.h"
 
@@ -13,7 +14,7 @@ FM1DMagnetoStatic_fast::FM1DMagnetoStatic_fast(std::string aFilename):
     Fieldmap(aFilename) {
 
     Type = T1DMagnetoStatic;
-    onAxisField_m = NULL;
+    onAxisField_m = nullptr;
 
     std::ifstream fieldFile(Filename_m.c_str());
     if(fieldFile.good()) {
@@ -44,7 +45,7 @@ FM1DMagnetoStatic_fast::~FM1DMagnetoStatic_fast() {
 
 void FM1DMagnetoStatic_fast::readMap() {
 
-    if(onAxisField_m == NULL) {
+    if(onAxisField_m == nullptr) {
 
         std::ifstream fieldFile(Filename_m.c_str());
         stripFileHeader(fieldFile);
@@ -77,9 +78,9 @@ void FM1DMagnetoStatic_fast::readMap() {
 }
 
 void FM1DMagnetoStatic_fast::freeMap() {
-    if(onAxisField_m != NULL) {
+    if(onAxisField_m != nullptr) {
         delete [] onAxisField_m;
-        onAxisField_m = NULL;
+        onAxisField_m = nullptr;
 
         gsl_spline_free(onAxisFieldInterpolants_m);
         gsl_spline_free(onAxisFieldPInterpolants_m);
@@ -287,10 +288,10 @@ void FM1DMagnetoStatic_fast::computeInterpolationVectors(double onAxisFieldP[],
 void FM1DMagnetoStatic_fast::convertHeaderData() {
 
     // Convert to m.
-    rBegin_m /= 100.0;
-    rEnd_m /= 100.0;
-    zBegin_m /= 100.0;
-    zEnd_m /= 100.0;
+    rBegin_m *= Units::cm2m;
+    rEnd_m *= Units::cm2m;
+    zBegin_m *= Units::cm2m;
+    zEnd_m *= Units::cm2m;
 }
 
 void FM1DMagnetoStatic_fast::normalizeField(double maxBz, std::vector<double> &fourierCoefs) {

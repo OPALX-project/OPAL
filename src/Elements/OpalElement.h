@@ -25,7 +25,6 @@
 
 class Statement;
 
-
 class OpalElement: public Element {
 
 public:
@@ -52,6 +51,8 @@ public:
         DTHETA,         // The rotation around y axis in rad.
         DPHI,           // The rotation around x axis in rad.
         DPSI,           // The rotation around s axis in rad.
+        OUTFN,          // Output filename
+        DELETEONTRANSVERSEEXIT, // Flag whether particles should be deleted if exit transversally
         COMMON
     };
 
@@ -64,8 +65,7 @@ public:
     const std::string getTypeName() const;
 
     //return the element aperture vector
-    std::pair<ElementBase::ApertureType, std::vector<double> > getApert() const;
-
+    std::pair<ApertureType, std::vector<double> > getApert() const;
 
     /// Return the element's type name.
     const std::string getWakeF() const;
@@ -83,56 +83,57 @@ public:
     /// Parse the element.
     //  This special version for elements handles unknown attributes by
     //  appending them to the attribute list.
-    virtual void parse(Statement &);
+    virtual void parse(Statement&);
 
     /// Print the object.
     //  This special version handles special printing in OPAL-8 format.
-    virtual void print(std::ostream &) const;
+    virtual void print(std::ostream&) const;
 
     /// Update the embedded CLASSIC element.
     virtual void update();
 
     /// Transmit the ``unknown'' (not known to OPAL) attributes to CLASSIC.
-    virtual void updateUnknown(ElementBase *);
+    virtual void updateUnknown(ElementBase*);
 
 protected:
 
     /// Exemplar constructor.
-    OpalElement(int size, const char *name, const char *help);
+    OpalElement(int size, const char* name, const char* help);
 
     /// Clone constructor.
-    OpalElement(const std::string &name, OpalElement *parent);
+    OpalElement(const std::string& name, OpalElement* parent);
 
     /// Print multipole components in OPAL-8 format.
     //  This function is accessible to all multipole-like elements
     //  (RBend, SBend, Quadrupole, Sextupole, Octupole, Multipole).
-    static void printMultipoleStrength(std::ostream &os,
+    static void printMultipoleStrength(std::ostream& os,
                                        int order,
-                                       int &len,
-                                       const std::string &sName,
-                                       const std::string &tName,
-                                       const Attribute &length,
-                                       const Attribute &vNorm,
-                                       const Attribute &vSkew);
+                                       int& len,
+                                       const std::string& sName,
+                                       const std::string& tName,
+                                       const Attribute& length,
+                                       const Attribute& vNorm,
+                                       const Attribute& vSkew);
 
     /// Print an attribute with a OPAL-8 name (as an expression).
-    static void printAttribute(std::ostream &os,
-                               const std::string &name,
-                               const std::string &image,
-                               int &len);
+    static void printAttribute(std::ostream& os,
+                               const std::string& name,
+                               const std::string& image,
+                               int& len);
 
     /// Print an attribute with a OPAL-8 name (as a constant).
-    static void printAttribute(std::ostream &os,
-                               const std::string &name,
+    static void printAttribute(std::ostream& os,
+                               const std::string& name,
                                double value,
-                               int &len);
+                               int& len);
 
     void registerOwnership() const;
+
 private:
 
     // Not implemented.
     OpalElement();
-    void operator=(const OpalElement &);
+    void operator=(const OpalElement&);
 
     // The original size of the attribute list.
     int itsSize;

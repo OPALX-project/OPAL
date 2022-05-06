@@ -68,7 +68,7 @@ class PolynomialPatch : public VectorMap {
                     Mesh* validity_region,
                     std::vector<SquarePolynomialVector*> polynomials_);
 
-    /** Default constructor leaves validity_region_ and grid_points_ as NULL
+    /** Default constructor leaves validity_region_ and grid_points_ as nullptr
      *
      *  Note it is not safe to call some member functions e.g. function(...) on
      *  default constructed PolynomialPatch.

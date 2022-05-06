@@ -30,19 +30,19 @@
 #include "AbsBeamline/BeamlineVisitor.h"
 
 SBend3D::SBend3D(const std::string &name)
-        : Component(name), map_m(NULL),
+        : Component(name), map_m(nullptr),
          planarArcGeometry_m(1., 1.), fieldUnits_m(1.), lengthUnits_m(1.),
          polyOrder_m(1), smoothOrder_m(1), dummy() {
 }
 
 SBend3D::SBend3D(const SBend3D &right)
-        : Component(right), map_m(NULL),
+        : Component(right), map_m(nullptr),
           planarArcGeometry_m(right.planarArcGeometry_m),
           fieldUnits_m(right.fieldUnits_m), lengthUnits_m(right.lengthUnits_m),
           polyOrder_m(right.polyOrder_m), smoothOrder_m(right.smoothOrder_m),
           dummy() {
     RefPartBunch_m = right.RefPartBunch_m;
-    if (right.map_m != NULL)
+    if (right.map_m != nullptr)
         map_m = new SectorMagneticFieldMap(*right.map_m);
 }
 
@@ -79,7 +79,7 @@ void SBend3D::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/
 }
 
 void SBend3D::finalise() {
-    RefPartBunch_m = NULL;
+    RefPartBunch_m = nullptr;
 }
 
 bool SBend3D::bends() const {
@@ -94,11 +94,11 @@ const BGeometryBase& SBend3D::getGeometry() const {
     return planarArcGeometry_m;
 }
 
-void SBend3D::setFieldMapFileName(std::string name) {
+void SBend3D::setFieldMapFileName(const std::string& name) {
     delete map_m;
-    map_m = NULL;
+    map_m = nullptr;
     
-    if (name != "") {
+    if (!name.empty()) {
         map_m = new SectorMagneticFieldMap(
                         name,
                         "Dipole",

@@ -106,7 +106,7 @@ class ScalingFFAMagnet : public Component {
       */
     void initialise();
 
-     /** Finalise the ScalingFFAMagnet - sets bunch to NULL */
+     /** Finalise the ScalingFFAMagnet - sets bunch to nullptr */
     void finalise() override;
 
     /** Return true - ScalingFFAMagnet always bends the reference particle */
@@ -260,7 +260,7 @@ class ScalingFFAMagnet : public Component {
     double azimuthalExtent_m = 0.; // maximum distance used for field calculation
     double verticalExtent_m = 0.; // maximum allowed distance from the midplane
     Vector_t centre_m;
-    endfieldmodel::EndFieldModel* endField_m = NULL;
+    endfieldmodel::EndFieldModel* endField_m = nullptr;
     const double fp_tolerance = 1e-18;
     std::vector<std::vector<double> > dfCoefficients_m;
 };

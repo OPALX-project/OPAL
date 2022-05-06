@@ -29,7 +29,7 @@
 
 namespace interpolation {
 void Interpolator3dGridTo1d::deleteFunc(double*** func) {
-    if (func == NULL)
+    if (func == nullptr)
         return;
     for (int i = 0; i < getNumberOfXCoords(); i++) {
         for (int j = 0; j < getNumberOfYCoords(); j++)
@@ -37,6 +37,6 @@ void Interpolator3dGridTo1d::deleteFunc(double*** func) {
         delete [] func[i];
     }
     delete [] func;
-    func = NULL;
+    func = nullptr;
 }
 }

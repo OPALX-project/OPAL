@@ -38,7 +38,7 @@ public:
     virtual ~OpalSource();
 
     /// Make clone.
-    virtual OpalSource *clone(const std::string &name);
+    virtual OpalSource* clone(const std::string& name);
 
     /// Update the embedded CLASSIC solenoid.
     virtual void update();
@@ -46,11 +46,11 @@ public:
 private:
 
     // Not implemented.
-    OpalSource(const OpalSource &);
-    void operator=(const OpalSource &);
+    OpalSource(const OpalSource&);
+    void operator=(const OpalSource&);
 
     // Clone constructor.
-    OpalSource(const std::string &name, OpalSource *parent);
+    OpalSource(const std::string& name, OpalSource* parent);
 };
 
 #endif // OPAL_OPALSOURCE_HH

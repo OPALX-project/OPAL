@@ -1,153 +1,254 @@
+//
+// Class OpalParticle
+//   This class represents the canonical coordinates of a particle.
+//
+// Copyright (c) 2008 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_OpalParticle_HH
 #define CLASSIC_OpalParticle_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: OpalParticle.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: OpalParticle
-//
-// ------------------------------------------------------------------------
-// Class category: Algorithms
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:33 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
-
-
-// Class OpalParticle
-// ------------------------------------------------------------------------
-/// OpalParticle position.
-//  This class represents the canonical coordinates of a particle.
-//  {P}
-//  NOTE. The order of phase space coordinates is,
-//  as opposed to the original CLASSIC definition:
-//  {CENTER}
-//  X = 0, PX = 1, Y = 2, PY = 3, T = 4, PT = 5.
-//  {/CENTER}
-//  The copy constructor, destructor, and assignment operator generated
-//  by the compiler perform the correct operation.  For speed reasons
-//  they are not implemented.
+#include "Vektor.h"
 
 class OpalParticle {
 
 public:
 
     // Particle coordinate numbers.
-    enum { X, PX, Y, PY, T, PT };
+    enum { X, Y, L, INVALID };
 
     /// Constructor.
     //  Construct particle with the given coordinates.
-    OpalParticle(double x, double px, double y, double py, double t, double pt);
+    OpalParticle(int64_t id,
+                 double x, double px,
+                 double y, double py,
+                 double z, double pz,
+                 double time,
+                 double q, double m);
+
+    OpalParticle(int64_t id,
+                 Vector_t const& R, Vector_t const& P,
+                 double time, double q, double m);
 
     OpalParticle();
 
-    /// Get coordinate.
-    //  Access coordinate by index.
-    //  Note above order of phase space coordinates!
-    double &operator[](int);
+    /// Set the horizontal position in m.
+    void setX(double) ;
 
-    /// Get reference to horizontal position in m.
-    double &x() ;
+    /// Set the horizontal momentum.
+    void setPx(double);
 
-    /// Get reference to horizontal momentum (no dimension).
-    double &px();
+    /// Set the vertical displacement in m.
+    void setY(double) ;
 
-    /// Get reference to vertical displacement in m.
-    double &y() ;
+    /// Set the vertical momentum.
+    void setPy(double);
 
-    /// Get reference to vertical momentum (no dimension).
-    double &py();
+    /// Set longitudinal position in m.
+    void setZ(double) ;
 
-    /// Get reference to longitudinal displacement c*t in m.
-    double &t() ;
+    /// Set the longitudinal momentum
+    void setPz(double);
 
-    /// Get reference to relative momentum error (no dimension).
-    double &pt();
+    /// Set position in m
+    void setR(Vector_t const&);
+
+    /// Set momentum
+    void setP(Vector_t const&);
+
+    /// Set the time
+    void setTime(double t);
+
+    /// Get the id of the particle
+    int64_t getId() const;
 
     /// Get coordinate.
     //  Access coordinate by index for constant particle.
-    double operator[](int) const;
+    double operator[](unsigned int) const;
 
     /// Get horizontal position in m.
-    double x() const;
+    double getX() const;
 
     /// Get horizontal momentum (no dimension).
-    double px() const;
+    double getPx() const;
 
     /// Get vertical displacement in m.
-    double y() const;
+    double getY() const;
 
     /// Get vertical momentum (no dimension).
-    double py() const;
+    double getPy() const;
 
     /// Get longitudinal displacement c*t in m.
-    double t() const;
+    double getZ() const;
 
     /// Get relative momentum error (no dimension).
-    double pt() const;
+    double getPz() const;
+
+    /// Get position in m
+    const Vector_t& getR() const;
+
+    /// Get momentum
+    const Vector_t& getP() const;
+
+    /// Get time
+    double getTime() const;
+
+    /// Get charge in Coulomb
+    double getCharge() const;
+
+    /// Get mass in GeV/c^2
+    double getMass() const;
 
 private:
-
-    // The particle's phase space coordinates:
-    double phase[6];
+    int64_t id_m;
+    Vector_t R_m;
+    Vector_t P_m;
+    double time_m;
+    double charge_m;
+    double mass_m;
 };
 
-
-// Inline member functions.
-// ------------------------------------------------------------------------
-
-inline double &OpalParticle::operator[](int i) {
-    return phase[i];
+inline
+void OpalParticle::setX(double val)
+{
+    R_m[X] = val;
 }
 
-inline double &OpalParticle::x()
-{ return phase[X]; }
-
-inline double &OpalParticle::y()
-{ return phase[Y]; }
-
-inline double &OpalParticle::t()
-{ return phase[T]; }
-
-inline double &OpalParticle::px()
-{ return phase[PX]; }
-
-inline double &OpalParticle::py()
-{ return phase[PY]; }
-
-inline double &OpalParticle::pt() {
-    return phase[PT];
+inline
+void OpalParticle::setY(double val)
+{
+    R_m[Y] = val;
 }
 
-
-inline double OpalParticle::operator[](int i) const {
-    return phase[i];
+inline
+void OpalParticle::setZ(double val)
+{
+    R_m[L] = val;
 }
 
-inline double OpalParticle::x() const
-{ return phase[X]; }
+inline
+void OpalParticle::setPx(double val)
+{
+    P_m[X] = val;
+}
 
-inline double OpalParticle::y() const
-{ return phase[Y]; }
+inline
+void OpalParticle::setPy(double val)
+{
+    P_m[Y] = val;
+}
 
-inline double OpalParticle::t() const
-{ return phase[T]; }
+inline
+void OpalParticle::setPz(double val)
+{
+    P_m[L]  = val;
+}
 
-inline double OpalParticle::px() const
-{ return phase[PX]; }
+inline
+void OpalParticle::setR(Vector_t const& R)
+{
+    R_m = R;
+}
 
-inline double OpalParticle::py() const
-{ return phase[PY]; }
+inline
+void OpalParticle::setP(Vector_t const& P)
+{
+    P_m = P;
+}
 
-inline double OpalParticle::pt() const {
-    return phase[PT];
+inline
+void OpalParticle::setTime(double t)
+{
+    time_m = t;
+}
+
+inline
+int64_t OpalParticle::getId() const
+{
+    return id_m;
+}
+
+inline
+double OpalParticle::operator[](unsigned int i) const
+{
+    PAssert_LT(i, 6u);
+    return i % 2 == 0? R_m[i / 2]: P_m[i / 2];
+}
+
+inline
+double OpalParticle::getX() const
+{
+    return R_m[X];
+}
+
+inline
+double OpalParticle::getY() const
+{
+    return R_m[Y];
+}
+
+inline
+double OpalParticle::getZ() const
+{
+    return R_m[L];
+}
+
+inline
+double OpalParticle::getPx() const
+{
+    return P_m[X];
+}
+
+inline
+double OpalParticle::getPy() const
+{
+    return P_m[Y];
+}
+
+inline
+double OpalParticle::getPz() const
+{
+    return P_m[L];
+}
+
+inline
+const Vector_t& OpalParticle::getR() const
+{
+    return R_m;
+}
+
+inline
+const Vector_t& OpalParticle::getP() const
+{
+    return P_m;
+}
+
+inline
+double OpalParticle::getTime() const
+{
+    return time_m;
+}
+
+inline
+double OpalParticle::getCharge() const
+{
+    return charge_m;
+}
+
+inline
+double OpalParticle::getMass() const
+{
+    return mass_m;
 }
 
 #endif // CLASSIC_OpalParticle_HH

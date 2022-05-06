@@ -21,8 +21,6 @@
 #include <list>
 
 #include "AbsBeamline/BeamlineVisitor.h"
-
-#include "AbsBeamline/BeamStripping.h"
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Cyclotron.h"
@@ -42,17 +40,18 @@
 #include "AbsBeamline/RBend.h"
 #include "AbsBeamline/Ring.h"
 #include "AbsBeamline/RFCavity.h"
-#include "AbsBeamline/VariableRFCavity.h"
-#include "AbsBeamline/VariableRFCavityFringeField.h"
-#include "AbsBeamline/TravelingWave.h"
 #include "AbsBeamline/SBend.h"
 #include "AbsBeamline/SBend3D.h"
 #include "AbsBeamline/ScalingFFAMagnet.h"
-#include "AbsBeamline/VerticalFFAMagnet.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Solenoid.h"
 #include "AbsBeamline/Source.h"
 #include "AbsBeamline/Stripper.h"
+#include "AbsBeamline/TravelingWave.h"
+#include "AbsBeamline/Vacuum.h"
+#include "AbsBeamline/VariableRFCavity.h"
+#include "AbsBeamline/VariableRFCavityFringeField.h"
+#include "AbsBeamline/VerticalFFAMagnet.h"
 
 #ifdef ENABLE_OPAL_FEL
 #include "AbsBeamline/Undulator.h"
@@ -86,29 +85,29 @@ public:
 
     virtual void execute();
 
-    /// Apply the algorithm to a beam stripping.
-    virtual void visitBeamStripping(const BeamStripping &);
-
+    /// Apply the algorithm to a beam line.
+    virtual void visitBeamline(const Beamline &);
+    
     /// Apply the algorithm to a collimator.
     virtual void visitCCollimator(const CCollimator &);
 
     /// Apply the algorithm to an arbitrary component.
     virtual void visitComponent(const Component &);
 
+    /// Apply the algorithm to a closed orbit corrector.
+    virtual void visitCorrector(const Corrector &);
+
     /// Apply the algorithm to an cyclotron
     virtual void visitCyclotron(const Cyclotron &);
 
-    /// Apply the algorithm to an opal ring..
-    virtual void visitRing(const Ring &);
-
-    /// Apply the algorithm to a corrector.
-    virtual void visitCorrector(const Corrector &);
-
-    /// Apply the algorithm to a drift.
+    /// Apply the algorithm to a degrader.
     virtual void visitDegrader(const Degrader &);
 
     /// Apply the algorithm to a drift.
     virtual void visitDrift(const Drift &);
+
+    /// Apply the algorithm to a FlaggedElmPtr.
+    virtual void visitFlaggedElmPtr(const FlaggedElmPtr &);
 
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &);
@@ -116,25 +115,25 @@ public:
     /// Apply the algorithm to a marker.
     virtual void visitMarker(const Marker &);
 
-    /// Apply the algorithm to a monitor.
+    /// Apply the algorithm to a beam position monitor.
     virtual void visitMonitor(const Monitor &);
 
     /// Apply the algorithm to a multipole.
     virtual void visitMultipole(const Multipole &);
 
-    /// Apply the algorithm to a multipoleT.
+    /// Apply the algorithm to an arbitrary multipole.
     virtual void visitMultipoleT(const MultipoleT &);
 
-    /// Apply the algorithm to a multipoleTStraight.
+    /// Apply the algorithm to an arbitrary straight multipole.
     virtual void visitMultipoleTStraight(const MultipoleTStraight &);
 
-    /// Apply the algorithm to a multipoleT.
+    /// Apply the algorithm to an arbitrary curved multipole of constant radius.
     virtual void visitMultipoleTCurvedConstRadius(const MultipoleTCurvedConstRadius &);
 
-    /// Apply the algorithm to a multipoleT.
+    /// Apply the algorithm to an arbitrary curved multipole of variable radius.
     virtual void visitMultipoleTCurvedVarRadius(const MultipoleTCurvedVarRadius &);
 
-    /// Apply the algorithm to an Offset.
+    /// Apply the algorithm to an offset (placement).
     virtual void visitOffset(const Offset &);
 
     /// Apply the algorithm to a probe.
@@ -147,28 +146,19 @@ public:
     virtual void visitRBend3D(const RBend3D &);
 
     /// Apply the algorithm to a RF cavity.
-    virtual void visitVariableRFCavity(const VariableRFCavity &vcav);
-
-    /// Apply the algorithm to a RF cavity.
-    virtual void visitVariableRFCavityFringeField
-                                      (const VariableRFCavityFringeField &vcav);
-
-    /// Apply the algorithm to a RF cavity.
     virtual void visitRFCavity(const RFCavity &);
 
-    /// Apply the algorithm to a RF cavity.
-    virtual void visitTravelingWave(const TravelingWave &);
-
-#ifdef ENABLE_OPAL_FEL
-    /// Apply the algorithm to an undulator.
-    virtual void visitUndulator(const Undulator &);
-#endif
+    /// Apply the algorithm to a ring.
+    virtual void visitRing(const Ring &);
 
     /// Apply the algorithm to a sector bend.
     virtual void visitSBend(const SBend &);
 
-    /// Apply the algorithm to a sector bend.
+    /// Apply the algorithm to a sector bend with 3D field map.
     virtual void visitSBend3D(const SBend3D &);
+
+    /// Apply the algorithm to a scaling FFA magnet.
+    virtual void visitScalingFFAMagnet(const ScalingFFAMagnet &);
 
     /// Apply the algorithm to a septum.
     virtual void visitSeptum(const Septum &);
@@ -176,23 +166,33 @@ public:
     /// Apply the algorithm to a solenoid.
     virtual void visitSolenoid(const Solenoid &);
 
-    /// Apply the algorithm to a solenoid.
+    /// Apply the algorithm to a source.
     virtual void visitSource(const Source &);
 
-    /// Apply the algorithm to a spiral sector magnet.
-    virtual void visitScalingFFAMagnet(const ScalingFFAMagnet &);
-
-    /// Apply the algorithm to a spiral sector magnet.
-    virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet &);
-
-    /// Apply the algorithm to a charge stripper.
+   /// Apply the algorithm to a particle stripper.
     virtual void visitStripper(const Stripper &);
 
-    /// Apply the algorithm to a beam line.
-    virtual void visitBeamline(const Beamline &);
+    /// Apply the algorithm to a traveling wave
+    virtual void visitTravelingWave(const TravelingWave &);
 
-    /// Apply the algorithm to a FlaggedElmPtr.
-    virtual void visitFlaggedElmPtr(const FlaggedElmPtr &);
+#ifdef ENABLE_OPAL_FEL
+    /// Apply the algorithm to an undulator.
+    virtual void visitUndulator(const Undulator &);
+#endif
+
+    /// Apply the algorithm to a vacuum space.
+    virtual void visitVacuum(const Vacuum &);
+
+    /// Apply the algorithm to a variable RF cavity.
+    virtual void visitVariableRFCavity(const VariableRFCavity &vcav);
+
+    /// Apply the algorithm to a variable RF cavity with Fringe Field..
+    virtual void visitVariableRFCavityFringeField
+                                      (const VariableRFCavityFringeField &vcav);
+
+    /// Apply the algorithm to a vertical FFA magnet.
+    virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet &);
+
 
     size_t size() const;
 
@@ -229,8 +229,8 @@ void SpecificElementVisitor<ELEM>::execute()
 { }
 
 template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitBeamStripping(const BeamStripping &element) {
-    CastsTrait<ELEM, BeamStripping>::apply(allElementsOfTypeE, element);
+void SpecificElementVisitor<ELEM>::visitBeamline(const Beamline &element) {
+    element.iterate(*this, false);
 }
 
 template<class ELEM>
@@ -244,18 +244,13 @@ void SpecificElementVisitor<ELEM>::visitComponent(const Component &element) {
 }
 
 template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitCyclotron(const Cyclotron &element) {
-    CastsTrait<ELEM, Cyclotron>::apply(allElementsOfTypeE, element);
-}
-
-template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitRing(const Ring &element) {
-    CastsTrait<ELEM, Ring>::apply(allElementsOfTypeE, element);
-}
-
-template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitCorrector(const Corrector &element) {
     CastsTrait<ELEM, Corrector>::apply(allElementsOfTypeE, element);
+}
+
+template<class ELEM>
+void SpecificElementVisitor<ELEM>::visitCyclotron(const Cyclotron &element) {
+    CastsTrait<ELEM, Cyclotron>::apply(allElementsOfTypeE, element);
 }
 
 template<class ELEM>
@@ -266,6 +261,12 @@ void SpecificElementVisitor<ELEM>::visitDegrader(const Degrader &element) {
 template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitDrift(const Drift &element) {
     CastsTrait<ELEM, Drift>::apply(allElementsOfTypeE, element);
+}
+
+template<class ELEM>
+void SpecificElementVisitor<ELEM>::visitFlaggedElmPtr(const FlaggedElmPtr &element) {
+    const ElementBase* wrappedElement = element.getElement();
+    wrappedElement->accept(*this);
 }
 
 template<class ELEM>
@@ -329,34 +330,14 @@ void SpecificElementVisitor<ELEM>::visitRBend3D(const RBend3D &element) {
 }
 
 template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitVariableRFCavity
-                                             (const VariableRFCavity &element) {
-    CastsTrait<ELEM, VariableRFCavity>::apply(allElementsOfTypeE, element);
-}
-
-template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitVariableRFCavityFringeField
-                                  (const VariableRFCavityFringeField &element) {
-    CastsTrait<ELEM, VariableRFCavityFringeField>::apply(allElementsOfTypeE,
-                                                         element);
-}
-
-template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitRFCavity(const RFCavity &element) {
     CastsTrait<ELEM, RFCavity>::apply(allElementsOfTypeE, element);
 }
 
 template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitTravelingWave(const TravelingWave &element) {
-    CastsTrait<ELEM, TravelingWave>::apply(allElementsOfTypeE, element);
+void SpecificElementVisitor<ELEM>::visitRing(const Ring &element) {
+    CastsTrait<ELEM, Ring>::apply(allElementsOfTypeE, element);
 }
-
-#ifdef ENABLE_OPAL_FEL
-template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitUndulator(const Undulator &element) {
-    CastsTrait<ELEM, Undulator>::apply(allElementsOfTypeE, element);
-}
-#endif
 
 template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitSBend(const SBend &element) {
@@ -371,11 +352,6 @@ void SpecificElementVisitor<ELEM>::visitSBend3D(const SBend3D &element) {
 template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitScalingFFAMagnet(const ScalingFFAMagnet &element) {
     CastsTrait<ELEM, ScalingFFAMagnet>::apply(allElementsOfTypeE, element);
-}
-
-template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitVerticalFFAMagnet(const VerticalFFAMagnet &element) {
-    CastsTrait<ELEM, VerticalFFAMagnet>::apply(allElementsOfTypeE, element);
 }
 
 template<class ELEM>
@@ -399,14 +375,38 @@ void SpecificElementVisitor<ELEM>::visitStripper(const Stripper &element) {
 }
 
 template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitBeamline(const Beamline &element) {
-    element.iterate(*this, false);
+void SpecificElementVisitor<ELEM>::visitTravelingWave(const TravelingWave &element) {
+    CastsTrait<ELEM, TravelingWave>::apply(allElementsOfTypeE, element);
+}
+
+#ifdef ENABLE_OPAL_FEL
+template<class ELEM>
+void SpecificElementVisitor<ELEM>::visitUndulator(const Undulator &element) {
+    CastsTrait<ELEM, Undulator>::apply(allElementsOfTypeE, element);
+}
+#endif
+
+template<class ELEM>
+void SpecificElementVisitor<ELEM>::visitVacuum(const Vacuum &element) {
+    CastsTrait<ELEM, Vacuum>::apply(allElementsOfTypeE, element);
 }
 
 template<class ELEM>
-void SpecificElementVisitor<ELEM>::visitFlaggedElmPtr(const FlaggedElmPtr &element) {
-    const ElementBase* wrappedElement = element.getElement();
-    wrappedElement->accept(*this);
+void SpecificElementVisitor<ELEM>::visitVariableRFCavity
+                                             (const VariableRFCavity &element) {
+    CastsTrait<ELEM, VariableRFCavity>::apply(allElementsOfTypeE, element);
+}
+
+template<class ELEM>
+void SpecificElementVisitor<ELEM>::visitVariableRFCavityFringeField
+                                  (const VariableRFCavityFringeField &element) {
+    CastsTrait<ELEM, VariableRFCavityFringeField>::apply(allElementsOfTypeE,
+                                                         element);
+}
+
+template<class ELEM>
+void SpecificElementVisitor<ELEM>::visitVerticalFFAMagnet(const VerticalFFAMagnet &element) {
+    CastsTrait<ELEM, VerticalFFAMagnet>::apply(allElementsOfTypeE, element);
 }
 
 template<class ELEM>

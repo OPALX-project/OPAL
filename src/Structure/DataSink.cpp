@@ -25,19 +25,20 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-
 #include "Structure/DataSink.h"
 
-#include "Utility/FieldDebugFunctions.h"
-
 #include "OPALconfig.h"
+
 #include "AbstractObjects/OpalData.h"
-#include "Utilities/Options.h"
-#include "Utilities/Util.h"
 #include "Fields/Fieldmap.h"
+#include "Physics/Units.h"
 #include "Structure/BoundaryGeometry.h"
 #include "Structure/H5PartWrapper.h"
+#include "Structure/LBalWriter.h"
+#include "Utilities/Options.h"
 #include "Utilities/Timer.h"
+#include "Utilities/Util.h"
+#include "Utility/FieldDebugFunctions.h"
 
 #ifdef __linux__
     #include "MemoryProfiler.h"
@@ -45,17 +46,12 @@
     #include "MemoryWriter.h"
 #endif
 
-
 #ifdef ENABLE_AMR
     #include "Algorithms/AmrPartBunch.h"
 #endif
 
-
-
-#include "LBalWriter.h"
-
 #ifdef ENABLE_AMR
-    #include "GridLBalWriter.h"
+    #include "Structure/GridLBalWriter.h"
 #endif
 
 #include <sstream>
@@ -89,7 +85,7 @@ DataSink::DataSink(H5PartWrapper *h5wrapper, short numBunch)
 
 void DataSink::dumpH5(PartBunchBase<double, 3> *beam, Vector_t FDext[]) const {
     if (!Options::enableHDF5) return;
-    
+
     h5Writer_m->writePhaseSpace(beam, FDext);
 }
 
@@ -100,7 +96,7 @@ int DataSink::dumpH5(PartBunchBase<double, 3> *beam, Vector_t FDext[], double me
                      double azimuth, double elevation, bool local) const
 {
     if (!Options::enableHDF5) return -1;
-    
+
     return h5Writer_m->writePhaseSpace(beam, FDext, meanEnergy, refPr, refPt, refPz,
                                        refR, refTheta, refZ, azimuth, elevation, local);
 }
@@ -137,20 +133,20 @@ void DataSink::dumpSDDS(PartBunchBase<double, 3> *beam, Vector_t FDext[],
 
 void DataSink::storeCavityInformation() {
     if (!Options::enableHDF5) return;
-    
+
     h5Writer_m->storeCavityInformation();
 }
 
 
 void DataSink::changeH5Wrapper(H5PartWrapper *h5wrapper) {
     if (!Options::enableHDF5) return;
-    
+
     h5Writer_m->changeH5Wrapper(h5wrapper);
 }
 
 
 void DataSink::writeGeomToVtk(BoundaryGeometry &bg, std::string fn) {
-    if(Ippl::myNode() == 0) {
+    if (Ippl::myNode() == 0 && Options::enableVTK) {
         bg.writeGeomToVtk (fn);
     }
 }
@@ -172,11 +168,11 @@ void DataSink::writeImpactStatistics(const PartBunchBase<double, 3> *beam, long 
     if(Ippl::myNode() == 0) {
         std::string ffn = fn + std::string(".dat");
 
-        std::unique_ptr<Inform> ofp(new Inform(NULL, ffn.c_str(), Inform::APPEND, 0));
+        std::unique_ptr<Inform> ofp(new Inform(nullptr, ffn.c_str(), Inform::APPEND, 0));
         Inform &fid = *ofp;
         fid.precision(6);
         fid << std::setiosflags(std::ios::scientific);
-        double t = beam->getT() * 1.0e9;
+        double t = beam->getT() * Units::s2ns;
         if(!nEmissionMode) {
 
             if(step == 0) {
@@ -239,7 +235,7 @@ void DataSink::rewindLines() {
     double spos = h5Writer_m->getLastPosition();
     if (isMultiBunch_m) {
         /* first check if multi-bunch restart
-         * 
+         *
          * first element of vector belongs to first
          * injected bunch in machine --> rewind lines
          * according to that file --> thus rewind in

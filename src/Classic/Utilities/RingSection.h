@@ -104,7 +104,7 @@ class RingSection {
      *         overwrite with 0. before filling field
      *  \returns true if pos is outside of the field bounding box, else false
      *
-     *  Note; does not check for component == NULL; caller must assign
+     *  Note; does not check for component == nullptr; caller must assign
      *  component_m (using setComponent) before calling this function.
      */
     bool getFieldValue(const Vector_t& pos, const Vector_t& centroid,

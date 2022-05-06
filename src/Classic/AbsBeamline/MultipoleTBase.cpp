@@ -91,7 +91,7 @@ bool MultipoleTBase::apply(const Vector_t &R, const Vector_t &/*P*/,
         for(int i = 0; i < 3; i++) {
             B[i] = 0.0;
         }
-        return true;
+        return getFlagDeleteOnTransverseExit();
     }
 }
 
@@ -116,7 +116,7 @@ Vector_t MultipoleTBase::rotateFrame(const Vector_t &R) {
 }
 
 Vector_t MultipoleTBase::rotateFrameInverse(Vector_t &B) {
-    /** This function represents the inverse of the rotation 
+    /** This function represents the inverse of the rotation
       * around the central axis performed by rotateFrame() method
       * Used to rotate B field back to global coordinate system
       */
@@ -141,7 +141,7 @@ bool MultipoleTBase::setFringeField(const double &s0,
 
 double MultipoleTBase::getBz(const Vector_t &R) {
     if (std::abs(getFringeDeriv(0, R[2])) < 1.0e-12) {
-        return 0.0; 
+        return 0.0;
     }
     double Bz = 0.0;
     std::size_t n = getMaxOrder() + 1;
@@ -151,11 +151,11 @@ double MultipoleTBase::getBz(const Vector_t &R) {
              / gsl_sf_fact(2 * n);
     }
     return Bz;
-} 
+}
 
 double MultipoleTBase::getBx(const Vector_t &R) {
     if (std::abs(getFringeDeriv(0, R[2])) < 1.0e-12) {
-        return 0.0; 
+        return 0.0;
     }
     double Bx = 0.0;
     std::size_t n = getMaxOrder() + 1;
@@ -166,11 +166,11 @@ double MultipoleTBase::getBx(const Vector_t &R) {
     }
     Bx *= R[1];
     return Bx;
-} 
+}
 
 double MultipoleTBase::getBs(const Vector_t &R) {
     if (std::abs(getFringeDeriv(0, R[2])) < 1.0e-12) {
-        return 0.0; 
+        return 0.0;
     }
     double Bs = 0.0;
     std::size_t n = getMaxOrder() + 1;
@@ -237,7 +237,7 @@ double MultipoleTBase::getFnDerivX(const std::size_t &n,
 }
 
 double MultipoleTBase::getFnDerivS(const std::size_t &n,
-                                   const double &x, 
+                                   const double &x,
                                    const double &s) {
     if (n == 0) {
         return getTransDeriv(0, x) * getFringeDeriv(1, s);

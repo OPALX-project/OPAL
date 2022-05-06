@@ -1,59 +1,67 @@
+//
+// Class FieldSolver
+//   The class for the OPAL FIELDSOLVER command.
+//   A FieldSolver definition is used by most physics commands to define the
+//   particle charge and the reference momentum, together with some other data.
+//
+// Copyright (c) 200x - 2022, Paul Scherrer Institut, Villigen PSI, Switzerland
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_FieldSolver_HH
 #define OPAL_FieldSolver_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: FieldSolver.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-//
-// Class: FieldSolver
-//
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:33:44 $
-// $Author: Andreas Adelmann $
-//
-// ------------------------------------------------------------------------
-
-class FieldSolver;
 #include "AbstractObjects/Definition.h"
 #include "Algorithms/PartData.h"
 #include "Solvers/PoissonSolver.h"
-
 #ifdef ENABLE_AMR
     #include "Amr/AmrObject.h"
     #include "Solvers/AmrPoissonSolver.h"
     #include <memory>
 #endif
 
+#include <string>
+
 template <class T, unsigned Dim>
 class PartBunchBase;
 
+enum class FieldSolverType: short {
+    NONE = -1,
+    FFT,
+    FFTBOX,
+    SAAMG,
+    P3M,
+    FMG,
+    ML,
+    AMRMG,
+    HYPRE,
+    HPGMG
+};
 
-// Class FieldSolver
-// ------------------------------------------------------------------------
-/// The FieldSolver definition.
-//  A FieldSolver definition is used by most physics commands to define the
-//  particle charge and the reference momentum, together with some other
-//  data.
 
 class FieldSolver: public Definition {
 
 public:
-
     /// Exemplar constructor.
     FieldSolver();
 
     virtual ~FieldSolver();
 
     /// Make clone.
-    virtual FieldSolver *clone(const std::string &name);
+    virtual FieldSolver* clone(const std::string& name);
 
     /// Find named FieldSolver.
-    static FieldSolver *find(const std::string &name);
+    static FieldSolver* find(const std::string& name);
 
     std::string getType();
 
@@ -83,17 +91,19 @@ public:
 
     void initCartesianFields();
 
-    void initSolver(PartBunchBase<double, 3> *b);
+    void initSolver(PartBunchBase<double, 3>* b);
 
     bool hasValidSolver();
 
-    std::string getFieldSolverType() {return fsType_m; }
+    void setFieldSolverType();
+    FieldSolverType getFieldSolverType() const;
 
-    inline Layout_t &getParticleLayout() { return *PL_m; }
-    
+    inline Layout_t &getParticleLayout() { return* PL_m; }
+
     FieldLayout_t *getFieldLayout() { return FL_m; }
-    
-    Inform &printInfo(Inform &os) const;
+
+    Inform& printInfo(Inform& os) const;
+
     unsigned int getInteractionRadius() {return (unsigned int) rpp_m; }
 
     bool hasPeriodicZ();
@@ -111,7 +121,7 @@ public:
 #endif
 
     /// the actual solver, should be a base object
-    PoissonSolver *solver_m;
+    PoissonSolver* solver_m;
 
 private:
 #ifdef ENABLE_AMR
@@ -126,31 +136,37 @@ private:
 #endif
 
     // Not implemented.
-    FieldSolver(const FieldSolver &);
-    void operator=(const FieldSolver &);
+    FieldSolver(const FieldSolver&);
+    void operator=(const FieldSolver&);
 
     // Clone constructor.
-    FieldSolver(const std::string &name, FieldSolver *parent);
+    FieldSolver(const std::string& name, FieldSolver* parent);
 
     /// The cartesian mesh
-    Mesh_t *mesh_m;
+    Mesh_t* mesh_m;
 
     /// The field layout f
-    FieldLayout_t *FL_m;
+    FieldLayout_t* FL_m;
 
     /// The particle layout
     std::unique_ptr<Layout_t> PL_m;
 
     /// all the particles are here ...
-    PartBunchBase<double, 3> *itsBunch_m;
+    PartBunchBase<double, 3>* itsBunch_m;
 
-    std::string fsType_m;
+    std::string fsName_m;
+    FieldSolverType fsType_m;
 
     double rpp_m;
-
 };
 
-inline Inform &operator<<(Inform &os, const FieldSolver &fs) {
+inline
+FieldSolverType FieldSolver::getFieldSolverType() const {
+    return fsType_m;
+}
+
+inline
+Inform& operator<<(Inform& os, const FieldSolver& fs) {
     return fs.printInfo(os);
 }
 

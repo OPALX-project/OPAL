@@ -82,13 +82,13 @@ public:
     /// Construct a read/write channel.
     //  This method constructs a Channel permitting read/write access to
     //  the attribute [b]aKey[/b] and returns it.
-    //  If the attribute does not exist, it returns NULL.
+    //  If the attribute does not exist, it returns nullptr.
     Channel *getChannel(const std::string &aKey, bool create = false);
 
     /// Construct a read-only channel.
     //  This method constructs a Channel permitting read-only access to
     //  the attribute [b]aKey[/b] and returns it.
-    //  If the attribute does not exist, it returns NULL.
+    //  If the attribute does not exist, it returns nullptr.
     const ConstChannel *getConstChannel(const std::string &aKey) const;
 
 protected:

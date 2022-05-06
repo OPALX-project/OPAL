@@ -31,7 +31,7 @@
 //   acting as a leaf in the Composite pattern.  A Component is associated
 //   with an electromagnetic field.
 // 2017-03-20 (Rogers) set default aperture to something huge; else we get a
-//         segmentation fault by default from NULL dereference during tracking
+//         segmentation fault by default from nullptr dereference during tracking
 
 const std::vector<double> Component::defaultAperture_m =
                                 std::vector<double>({1e6, 1e6, 1.0});
@@ -53,9 +53,9 @@ Component::Component(const Component &right):
 Component::Component(const std::string &name):
     ElementBase(name),
     exit_face_slope_m(0.0),
-    RefPartBunch_m(NULL),
+    RefPartBunch_m(nullptr),
     online_m(false) {
-    setAperture(ElementBase::ELLIPTICAL, defaultAperture_m);
+    setAperture(ApertureType::ELLIPTICAL, defaultAperture_m);
 
 }
 
@@ -92,8 +92,8 @@ bool Component::Online() {
     return online_m;
 }
 
-ElementBase::ElementType Component::getType() const {
-    return ElementBase::ANY;
+ElementType Component::getType() const {
+    return ElementType::ANY;
 }
 
 bool Component::apply(const size_t &i,

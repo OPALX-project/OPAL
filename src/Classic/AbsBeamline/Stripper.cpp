@@ -28,6 +28,7 @@
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Structure/LossDataSink.h"
 
 extern Inform *gmsg;
@@ -117,7 +118,7 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
 
     Inform gmsgALL("OPAL", INFORM_ALL_NODES);
     for (unsigned int i = 0; i < tempnum; ++i) {
-        if (bunch->PType[i] != ParticleType::REGULAR) continue;
+        if (bunch->POrigin[i] != ParticleOrigin::REGULAR) continue;
 
         double tangle = calculateIncidentAngle(bunch->P[i](0), bunch->P[i](1));
         changeWidth(bunch, i, tstep, tangle);
@@ -127,12 +128,14 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
         // dist1 > 0, right hand, dt > 0; dist1 < 0, left hand, dt < 0
         double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m; // [m]
         double dist2 = dist1 * std::sqrt(1.0 + 1.0 / tangle / tangle);
-        double dt = dist2 / (std::sqrt(1.0 - 1.0 / (1.0 + dot(bunch->P[i], bunch->P[i]))) * Physics::c) * 1.0e9; // [ns]
+        double dt = dist2 / (std::sqrt(1.0 - 1.0 / (1.0 + dot(bunch->P[i], bunch->P[i]))) * Physics::c);
         strippoint(0) = (B_m * B_m * bunch->R[i](0) - A_m * B_m* bunch->R[i](1) - A_m * C_m) / (R_m * R_m);
         strippoint(1) = (A_m * A_m * bunch->R[i](1) - A_m * B_m* bunch->R[i](0) - B_m * C_m) / (R_m * R_m);
         strippoint(2) = bunch->R[i](2);
-        lossDs_m->addParticle(strippoint, bunch->P[i], bunch->ID[i], t+dt,
-                              turnnumber, bunch->bunchNum[i]);
+        lossDs_m->addParticle(OpalParticle(bunch->ID[i],
+                                           strippoint, bunch->P[i],
+                                           t+dt, bunch->Q[i], bunch->M[i]),
+                              std::make_pair(turnnumber, bunch->bunchNum[i]));
 
         flagNeedUpdate = true;
         if (stop_m) {
@@ -142,12 +145,12 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
             gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i] << " collide in stripper " << getName() << endl;
             // change charge and mass of PartData when the reference particle hits the stripper.
             if (bunch->ID[i] == 0)
-                bunch->setPType(ParticleType::STRIPPED);
+                bunch->setPOrigin(ParticleOrigin::STRIPPED);
 
             // change the mass and charge
             bunch->M[i] = opmass_m;
             bunch->Q[i] = opcharge_m * Physics::q_e;
-            bunch->PType[i] = ParticleType::STRIPPED;
+            bunch->POrigin[i] = ParticleOrigin::STRIPPED;
 
             int j = 1;
             //create new particles
@@ -158,8 +161,8 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
                 bunch->P[index] = bunch->P[i];
                 bunch->Q[index] = bunch->Q[i];
                 bunch->M[index] = bunch->M[i];
-                // once the particle is stripped, change PType from 0 to 1 as a flag so as to avoid repetitive stripping.
-                bunch->PType[index] = ParticleType::STRIPPED;
+                // once the particle is stripped, change POrigin from 0 to 1 as a flag so as to avoid repetitive stripping.
+                bunch->POrigin[index] = ParticleOrigin::STRIPPED;
                 if (bunch->weHaveBins())
                     bunch->Bin[index] = bunch->Bin[i];
 
@@ -176,8 +179,8 @@ bool Stripper::doFinaliseCheck(PartBunchBase<double, 3> *bunch, bool flagNeedUpd
 
     if (!stop_m){
         // change charge and mass of PartData when the reference particle hits the stripper.
-        if (bunch->getPType() == ParticleType::STRIPPED) {
-            bunch->resetM(opmass_m * 1.0e9); // GeV -> eV
+        if (bunch->getPOrigin() == ParticleOrigin::STRIPPED) {
+            bunch->resetM(opmass_m * Units::GeV2eV);
             bunch->resetQ(opcharge_m);       // elementary charge
         }
     }
@@ -185,6 +188,6 @@ bool Stripper::doFinaliseCheck(PartBunchBase<double, 3> *bunch, bool flagNeedUpd
     return flagNeedUpdate;
 }
 
-ElementBase::ElementType Stripper::getType() const {
-    return STRIPPER;
+ElementType Stripper::getType() const {
+    return ElementType::STRIPPER;
 }

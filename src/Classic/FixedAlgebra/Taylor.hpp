@@ -19,6 +19,7 @@
 //
 // ------------------------------------------------------------------------
 
+#include <functional>
 #include <numeric>
 #include <iomanip>
 
@@ -114,7 +115,7 @@ Taylor<T> Taylor<T>::operator-() const {
 template<class T>
 Taylor<T> &Taylor<T>::operator*=(const T &val) {
     std::transform(begin(), end(), begin(),
-                   std::bind2nd(std::multiplies<T>(), val));
+                   std::bind(std::multiplies<T>(), std::placeholders::_2, val));
     return *this;
 }
 
@@ -122,7 +123,7 @@ Taylor<T> &Taylor<T>::operator*=(const T &val) {
 template<class T>
 Taylor<T> &Taylor<T>::operator/=(const T &val) {
     std::transform(begin(), end(), begin(),
-                   std::bind2nd(std::divides<T>(), val));
+                   std::bind(std::divides<T>(), std::placeholders::_2, val));
     return *this;
 }
 

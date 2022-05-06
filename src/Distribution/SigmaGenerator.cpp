@@ -31,8 +31,7 @@
 #include "SigmaGenerator.h"
 
 #include "AbstractObjects/OpalData.h"
-#include "Utilities/Options.h"
-#include "Utilities/Options.h"
+#include "AbsBeamline/Cyclotron.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Util.h"
 
@@ -41,25 +40,15 @@
 #include "MapGenerator.h"
 
 #include <cmath>
-#include <fstream>
-#include <functional>
 #include <iomanip>
-#include <iterator>
 #include <limits>
-#include <list>
 #include <numeric>
 #include <sstream>
+#include <utility>
+
+#include <boost/filesystem.hpp>
 
 #include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
-
-#include <boost/numeric/ublas/vector_proxy.hpp>
-#include <boost/numeric/ublas/triangular.hpp>
-#include <boost/numeric/ublas/lu.hpp>
-#include <boost/numeric/ublas/io.hpp>
-
-#include <gsl/gsl_matrix.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_eigen.h>
 
 extern Inform *gmsg;
 
@@ -76,13 +65,13 @@ SigmaGenerator::SigmaGenerator(double I,
                                unsigned int truncOrder,
                                bool write)
     : I_m(I)
-    , wo_m(cycl->getRfFrequ(0)*1E6/cycl->getCyclHarm()*2.0*Physics::pi)
+    , wo_m(cycl->getRfFrequ()[0]*Units::MHz2Hz/cycl->getCyclHarm()*2.0*Physics::pi)
     , E_m(E)
     , gamma_m(E/m+1.0)
     , gamma2_m(gamma_m*gamma_m)
     , nh_m(cycl->getCyclHarm())
     , beta_m(std::sqrt(1.0-1.0/gamma2_m))
-    , m_m(m)
+    , mass_m(m)
     , q_m(q)
     , niterations_m(0)
     , converged_m(false)
@@ -100,14 +89,14 @@ SigmaGenerator::SigmaGenerator(double I,
     , prinit_m(0.0)
 {
     // minimum beta*gamma
-    double bgam = Util::getBetaGamma(Emin_m, m_m);
+    double bgam = Util::getBetaGamma(Emin_m, mass_m);
 
     // set emittances (initialization like that due to old compiler version)
     // [ex] = [ey] = [ez] = pi*mm*mrad --> [emittance] = m rad
     // normalized emittance (--> multiply with beta*gamma)
-    emittance_m[0] = ex * Physics::pi * 1.0e-6 * bgam;
-    emittance_m[1] = ey * Physics::pi * 1.0e-6 * bgam;
-    emittance_m[2] = ez * Physics::pi * 1.0e-6 * bgam;
+    emittance_m[0] = ex * Physics::pi * bgam * Units::mm2m * Units::mrad2rad;
+    emittance_m[1] = ey * Physics::pi * bgam * Units::mm2m * Units::mrad2rad;
+    emittance_m[2] = ez * Physics::pi * bgam * Units::mm2m * Units::mrad2rad;
 
     // Define the Hamiltonian
     Series::setGlobalTruncOrder(truncOrder_m);
@@ -127,8 +116,7 @@ SigmaGenerator::SigmaGenerator(double I,
     };
 
     Hsc_m = [&](double sigx, double sigy, double sigz) {
-        // convert m from MeV/c^2 to eV/c^2
-        double m = m_m * 1.0e6;
+        double m = mass_m * Units::MeV2eV;
 
         // formula (57)
         double lam = Physics::two_pi*Physics::c / (wo_m * nh_m); // wavelength, [lam] = m
@@ -195,7 +183,7 @@ bool SigmaGenerator::match(double accuracy,
         std::vector<matrix_t> Mcycs(nSteps_m), Mscs(nSteps_m);
 
         ClosedOrbitFinder<double, unsigned int,
-            boost::numeric::odeint::runge_kutta4<container_t> > cof(m_m, q_m, N_m, cycl, false, nSectors_m);
+            boost::numeric::odeint::runge_kutta4<container_t> > cof(mass_m, q_m, N_m, cycl, false, nSectors_m);
 
         if ( !cof.findOrbit(accuracy, maxitOrbit, E_m, denergy, rguess) ) {
             throw OpalException("SigmaGenerator::match()",
@@ -500,8 +488,7 @@ void SigmaGenerator::initialize(double nuz, double ravg)
     // helper constants
     double invbg = 1.0 / (beta_m * gamma_m);
 
-    // convert mass m_m from MeV/c^2 to eV*s^{2}/m^{2}
-    double m = m_m * 1.0e6;        // [m] = eV/c^2, [m_m] = MeV/c^2
+    double mass = mass_m * Units::MeV2eV;
 
     // emittance [ex] = [ey] = [ez] = m rad
     double ex = emittance_m[0] * invbg;                        // [ex] = m rad
@@ -509,28 +496,29 @@ void SigmaGenerator::initialize(double nuz, double ravg)
     double ez = emittance_m[2] * invbg;                        // [ez] = m rad
 
     // initial guess of emittance, [e] = m rad
-    double e = std::cbrt(ex * ey * ez);             // cbrt computes cubic root (C++11) <cmath>
+    double guessedEmittance = std::cbrt(ex * ey * ez);             // cbrt computes cubic root (C++11) <cmath>
 
     // cyclotron radius [rcyc] = m
     double rcyc = ravg / beta_m;
 
     // "average" inverse bending radius
-    double h = 1.0 / ravg;            // [h] = 1/m
+    double avgInverseBendingRadius = 1.0 / ravg;
 
     // formula (57)
     double lam = Physics::two_pi * Physics::c / (wo_m * nh_m); // wavelength, [lam] = m
 
     // m * c^3 --> c^2 in [m] = eV / c^2 cancel --> m * c in denominator
     double K3 = 3.0 *  std::abs(q_m) * I_m * lam
-              / (20.0 * std::sqrt(5.0) * Physics::pi * Physics::epsilon_0 * m
+              / (20.0 * std::sqrt(5.0) * Physics::pi * Physics::epsilon_0 * mass
                       * Physics::c * beta_m * beta_m * gamma2_m * gamma_m);    // [K3] = m
 
     // c in denominator cancels with unit of [m] = eV / c^2 --> we need to multiply
     // with c in order to get dimensionless quantity
-    double alpha =  std::abs(q_m) * Physics::mu_0 * I_m * Physics::c / (5.0 * std::sqrt(10.0) * m
-                 * gamma_m * nh_m) * std::sqrt(rcyc * rcyc * rcyc / (e * e * e));   // [alpha] = 1/rad --> [alpha] = 1
+    double alpha =  (std::abs(q_m) * Physics::mu_0 * I_m * Physics::c
+                     / (5.0 * std::sqrt(10.0) * mass * gamma_m * nh_m)
+                     * std::sqrt(rcyc * rcyc * rcyc / (std::pow(guessedEmittance, 3))));   // [alpha] = 1/rad --> [alpha] = 1
 
-    double sig0 = std::sqrt(2.0 * rcyc * e) / gamma_m;                              // [sig0] = m*sqrt(rad) --> [sig0] = m
+    double sig0 = std::sqrt(2.0 * rcyc * guessedEmittance) / gamma_m;                     // [sig0] = m*sqrt(rad) --> [sig0] = m
 
     // formula (56)
     double sig;                                     // [sig] = m
@@ -545,7 +533,7 @@ void SigmaGenerator::initialize(double nuz, double ravg)
 
     // K = Kx = Ky = Kz
     double K = K3 * gamma_m / (3.0 * sig * sig * sig);   // formula (46), [K] = 1/m^{2}
-    double kx = h * h * gamma2_m;                        // formula (46) (assumption of an isochronous cyclotron), [kx] = 1/m^{2}
+    double kx = std::pow(avgInverseBendingRadius, 2) * gamma2_m;// formula (46) (assumption of an isochronous cyclotron), [kx] = 1/m^{2}
 
     double a = 0.5 * kx - K;    // formula (22) (with K = Kx = Kz), [a] = 1/m^{2}
     double b = K * K;           // formula (22) (with K = Kx = Kz and kx = h^2*gamma^2), [b] = 1/m^{4}
@@ -567,15 +555,15 @@ void SigmaGenerator::initialize(double nuz, double ravg)
         throw OpalException("SigmaGenerator::initialize()",
                             "Square root of negative number.");
 
-    if (h * h * nuz * nuz <= K)
+    if (std::pow(avgInverseBendingRadius, 2) * nuz * nuz <= K)
         throw OpalException("SigmaGenerator::initialize()",
                             "h^{2} * nu_{z}^{2} <= K (i.e. square root of negative number)");
 
-    double Omega = std::sqrt(a + tmp);                // formula (22), [Omega] = 1/m
-    double omega = std::sqrt(a - tmp);                // formula (22), [omega] = 1/m
+    double Omega = std::sqrt(a + tmp);                        // formula (22), [Omega] = 1/m
+    double omega = std::sqrt(a - tmp);                        // formula (22), [omega] = 1/m
 
-    double A = h / (Omega * Omega + K);           // formula (26), [A] = m
-    double B = h / (omega * omega + K);           // formula (26), [B] = m
+    double A = avgInverseBendingRadius / (Omega * Omega + K); // formula (26), [A] = m
+    double B = avgInverseBendingRadius / (omega * omega + K); // formula (26), [B] = m
     double invAB = 1.0 / (B - A);                 // [invAB] = 1/m
 
     // construct initial sigma-matrix (formula (29, 30, 31)
@@ -594,7 +582,7 @@ void SigmaGenerator::initialize(double nuz, double ravg)
     sigma(1,4) = sigma(4,1) = invAB * (ex * Omega+ez * omega) / (K * gamma2_m);
 
     // formula (31), [sigma(2,2)] = m rad
-    sigma(2,2) = ey / (std::sqrt(h * h * nuz * nuz - K));
+    sigma(2,2) = ey / (std::sqrt(std::pow(avgInverseBendingRadius,2) * nuz * nuz - K));
 
     sigma(3,3) = (ey * ey) / sigma(2,2);
 

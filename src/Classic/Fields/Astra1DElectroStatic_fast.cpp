@@ -2,6 +2,7 @@
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 
 #include <fstream>
 #include <ios>
@@ -10,7 +11,7 @@ Astra1DElectroStatic_fast::Astra1DElectroStatic_fast(std::string aFilename):
     Astra1D_fast(aFilename) {
     numHeaderLines_m = 2;
 
-    onAxisField_m = NULL;
+    onAxisField_m = nullptr;
 
     Type = TAstraElectroStatic;
 
@@ -41,7 +42,7 @@ Astra1DElectroStatic_fast::~Astra1DElectroStatic_fast() {
 }
 
 void Astra1DElectroStatic_fast::readMap() {
-    if(onAxisField_m == NULL) {
+    if(onAxisField_m == nullptr) {
         // declare variables and allocate memory
 
         onAxisField_m = new double[num_gridpz_m];
@@ -52,7 +53,7 @@ void Astra1DElectroStatic_fast::readMap() {
         double maxEz = readFieldData(file);
         file.close();
 
-        normalizeFieldData(maxEz * 1e-6);
+        normalizeFieldData(maxEz * Units::Vpm2MVpm);
 
         std::vector<double> zvals = getEvenlyDistributedSamplingPoints();
         std::vector<double> evenFieldSampling = interpolateFieldData(zvals);

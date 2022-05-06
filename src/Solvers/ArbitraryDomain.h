@@ -49,12 +49,12 @@ public:
     ~ArbitraryDomain();
 
     /// queries if a given (x,y,z) coordinate lies inside the domain
-    bool isInside(int idx, int idy, int idz) const {
+    bool isInside(int idx, int idy, int idz) const override {
         return isInsideMap_m.at(toCoordIdx(idx, idy, idz));
     }
 
     // calculates intersection with rotated and shifted geometry
-    void compute(Vector_t hr, NDIndex<3> localId);
+    void compute(Vector_t hr, NDIndex<3> localId) override;
 
 private:
     BoundaryGeometry *bgeom_m;
@@ -87,11 +87,11 @@ private:
     }
 
     // Conversion from (x,y,z) to index on the 3D grid
-    int indexAccess(int x, int y, int z) const {
+    int indexAccess(int x, int y, int z) const override {
         return idxMap_m.at(toCoordIdx(x, y, z));
     }
 
-    int coordAccess(int idx) const {
+    int coordAccess(int idx) const override {
         return coordMap_m.at(idx);
     }
 

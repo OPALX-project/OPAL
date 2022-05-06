@@ -1,18 +1,26 @@
+//
+// Class PeakFinder
+//   Find peaks of radial profile.
+//   It computes a histogram based on the radial distribution of the particle
+//   bunch. After that all peaks of the histogram are searched.
+//   The radii are written in ASCII format to a file.
+//   This class is used for the cyclotron probe element.
+//
+// Copyright (c) 2017 - 2021, Matthias Frey, Jochem Snuverink, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef PEAKFINDER_H
 #define PEAKFINDER_H
-
-/*!
- * @file PeakFinder.h
- * @author Matthias Frey,
- *         Jochem Snuverink
- * @date 22. - 26. May 2017
- * @brief Find peaks of radial profile
- * @details It computes a histogram based on the radial
- * distribution of the particle bunch. After that all
- * peaks of the histogram are searched. The radii are
- * written in ASCII format to a file. This class is
- * used for the cyclotron probe element.
- */
 
 #include "Algorithms/Vektor.h"
 
@@ -70,7 +78,7 @@ private:
     container_t globHist_m;
 
     /// filename with extension (.peaks)
-    std::string fn_m;
+    std::string fileName_m;
 
     /// histogram filename with extension (.hist)
     std::string hist_m;
@@ -82,7 +90,7 @@ private:
     std::ofstream hos_m;
 
     /// Element/probe name, for name output file
-    std::string element_m;
+    std::string outputName_m;
 
     // Histogram details
     /// Number of bins

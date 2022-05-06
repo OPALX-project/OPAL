@@ -31,14 +31,14 @@
 #include "Utilities/GeneralClassicException.h"
 
 RingSection::RingSection()
-  : component_m(NULL),
+  : component_m(nullptr),
     componentPosition_m(0.), componentOrientation_m(0.),
     startPosition_m(0.), startOrientation_m(0.),
     endPosition_m(0.), endOrientation_m(0.) {
 }
 
 RingSection::RingSection(const RingSection& rhs)
-  : component_m(NULL),
+  : component_m(nullptr),
     componentPosition_m(0.), componentOrientation_m(0.),
     startPosition_m(0.), startOrientation_m(0.),
     endPosition_m(0.), endOrientation_m(0.) {
@@ -46,7 +46,7 @@ RingSection::RingSection(const RingSection& rhs)
 }
 
 RingSection::~RingSection() {
-    //if (component_m != NULL)
+    //if (component_m != nullptr)
     //    delete component_m;
 }
 
@@ -54,7 +54,7 @@ RingSection::~RingSection() {
 RingSection& RingSection::operator=(const RingSection& rhs) {
     if (&rhs != this) {
         component_m = dynamic_cast<Component*>(rhs.component_m->clone());
-        if (component_m == NULL)
+        if (component_m == nullptr)
             throw GeneralClassicException("RingSection::operator=",
                                 "Failed to copy RingSection");
         componentPosition_m = rhs.componentPosition_m;

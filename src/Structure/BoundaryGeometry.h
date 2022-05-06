@@ -36,11 +36,6 @@
 class OpalBeamline;
 class ElementBase;
 
-#include <unordered_map>
-#include <unordered_set>
-#include <array>
-#include <vector>
-
 #include "AbstractObjects/Definition.h"
 #include "Attributes/Attributes.h"
 #include "Utilities/Util.h"
@@ -48,6 +43,17 @@ class ElementBase;
 #include "Utility/PAssert.h"
 
 #include <gsl/gsl_rng.h>
+
+#include <array>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+
+enum class Topology: unsigned short {
+    RECTANGULAR,
+    BOXCORNER,
+    ELLIPTIC
+};
 
 class BoundaryGeometry : public Definition {
 
@@ -92,8 +98,14 @@ public:
         return Attributes::getString(itsAttr[FGEOM]);
     }
 
-    inline std::string getTopology() const {
-        return Util::toUpper(Attributes::getString(itsAttr[TOPO]));
+    inline Topology getTopology() const {
+        static const std::unordered_map<std::string, Topology> stringTopology_s = {
+            {"RECTANGULAR", Topology::RECTANGULAR},
+            {"BOXCORNER",   Topology::BOXCORNER},
+            {"ELLIPTIC",    Topology::ELLIPTIC}
+        };
+        Topology topo = stringTopology_s.at(Attributes::getString(itsAttr[TOPO]));
+        return topo;
     }
 
     inline double getA() {

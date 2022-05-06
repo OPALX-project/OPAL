@@ -11,7 +11,7 @@ Astra1DMagnetoStatic_fast::Astra1DMagnetoStatic_fast(std::string aFilename):
 {
     numHeaderLines_m = 2;
 
-    onAxisField_m = NULL;
+    onAxisField_m = nullptr;
 
     Type = TAstraMagnetoStatic;
 
@@ -43,7 +43,7 @@ Astra1DMagnetoStatic_fast::~Astra1DMagnetoStatic_fast() {
 }
 
 void Astra1DMagnetoStatic_fast::readMap() {
-    if(onAxisField_m == NULL) {
+    if(onAxisField_m == nullptr) {
         onAxisField_m = new double[num_gridpz_m];
         zvals_m = new double[num_gridpz_m];
 

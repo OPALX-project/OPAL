@@ -147,7 +147,7 @@ public:
      * Methods for OPAL-T.
      */
 
-    virtual ElementBase::ElementType getType() const override;
+    virtual ElementType getType() const override;
     virtual void setBendAngle(double angle) override;
     virtual void setEntranceAngle(double entranceAngle) override;
 

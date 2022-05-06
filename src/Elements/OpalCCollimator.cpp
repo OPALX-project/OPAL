@@ -20,31 +20,26 @@
 #include "BeamlineCore/CCollimatorRep.h"
 #include "Structure/ParticleMatterInteraction.h"
 #include "Physics/Physics.h"
-
-
-// Class OpalCCollimator
-// ------------------------------------------------------------------------
+#include "Physics/Units.h"
 
 OpalCCollimator::OpalCCollimator():
     OpalElement(SIZE, "CCOLLIMATOR",
                 "The \"CCOLLIMATOR\" element defines a rectangular-shape cyclotron collimator"),
-    parmatint_m(NULL) {
+    parmatint_m(nullptr) {
     itsAttr[XSTART] = Attributes::makeReal
                       ("XSTART", " Start of x coordinate [mm]");
-    itsAttr[XEND] = Attributes::makeReal
-                    ("XEND", " End of x coordinate, [mm]");
+    itsAttr[XEND]   = Attributes::makeReal
+                      ("XEND", " End of x coordinate, [mm]");
     itsAttr[YSTART] = Attributes::makeReal
                       ("YSTART", "Start of y coordinate, [mm]");
-    itsAttr[YEND] = Attributes::makeReal
-                    ("YEND", "End of y coordinate, [mm]");
+    itsAttr[YEND]   = Attributes::makeReal
+                      ("YEND", "End of y coordinate, [mm]");
     itsAttr[ZSTART] = Attributes::makeReal
-      ("ZSTART", "Start of vertical coordinate, [mm], default value: -100",-100.0);
-    itsAttr[ZEND] = Attributes::makeReal
-      ("ZEND", "End of vertical coordinate, [mm], default value: 100", 100.0);
-    itsAttr[WIDTH] = Attributes::makeReal
-                     ("WIDTH", "Width of the collimator [mm]");
-    itsAttr[OUTFN] = Attributes::makeString
-                     ("OUTFN", "Output filename");
+                      ("ZSTART", "Start of vertical coordinate, [mm], default value: -100",-100.0);
+    itsAttr[ZEND]   = Attributes::makeReal
+                      ("ZEND", "End of vertical coordinate, [mm], default value: 100", 100.0);
+    itsAttr[WIDTH]  = Attributes::makeReal
+                      ("WIDTH", "Width of the collimator [mm]");
 
     registerOwnership();
 
@@ -52,20 +47,20 @@ OpalCCollimator::OpalCCollimator():
 }
 
 
-OpalCCollimator::OpalCCollimator(const std::string &name, OpalCCollimator *parent):
+OpalCCollimator::OpalCCollimator(const std::string& name, OpalCCollimator* parent):
     OpalElement(name, parent),
-    parmatint_m(NULL) {
+    parmatint_m(nullptr) {
     setElement(new CCollimatorRep(name));
 }
 
 
 OpalCCollimator::~OpalCCollimator() {
-    if(parmatint_m)
+    if (parmatint_m)
         delete parmatint_m;
 }
 
 
-OpalCCollimator *OpalCCollimator::clone(const std::string &name) {
+OpalCCollimator* OpalCCollimator::clone(const std::string& name) {
     return new OpalCCollimator(name, this);
 }
 
@@ -73,16 +68,16 @@ OpalCCollimator *OpalCCollimator::clone(const std::string &name) {
 void OpalCCollimator::update() {
     OpalElement::update();
 
-    CCollimatorRep *coll =
-        dynamic_cast<CCollimatorRep *>(getElement());
-    const double mm2m = 1e-3;
-    double xstart = mm2m * Attributes::getReal(itsAttr[XSTART]);
-    double xend   = mm2m * Attributes::getReal(itsAttr[XEND]);
-    double ystart = mm2m * Attributes::getReal(itsAttr[YSTART]);
-    double yend   = mm2m * Attributes::getReal(itsAttr[YEND]);
-    double zstart = mm2m * Attributes::getReal(itsAttr[ZSTART]);
-    double zend   = mm2m * Attributes::getReal(itsAttr[ZEND]);
-    double width  = mm2m * Attributes::getReal(itsAttr[WIDTH]);
+    CCollimatorRep* coll =
+        dynamic_cast<CCollimatorRep*>(getElement());
+
+    double xstart = Units::mm2m * Attributes::getReal(itsAttr[XSTART]);
+    double xend   = Units::mm2m * Attributes::getReal(itsAttr[XEND]);
+    double ystart = Units::mm2m * Attributes::getReal(itsAttr[YSTART]);
+    double yend   = Units::mm2m * Attributes::getReal(itsAttr[YEND]);
+    double zstart = Units::mm2m * Attributes::getReal(itsAttr[ZSTART]);
+    double zend   = Units::mm2m * Attributes::getReal(itsAttr[ZEND]);
+    double width  = Units::mm2m * Attributes::getReal(itsAttr[WIDTH]);
 
     double length = Attributes::getReal(itsAttr[LENGTH]);
 
@@ -90,8 +85,10 @@ void OpalCCollimator::update() {
     coll->setDimensions(xstart, xend, ystart, yend, zstart, zend, width);
     coll->setOutputFN(Attributes::getString(itsAttr[OUTFN]));
 
-    if(itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == NULL) {
-        parmatint_m = (ParticleMatterInteraction::find(Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION])))->clone(getOpalName() + std::string("_parmatint"));
+    if (itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == nullptr) {
+        const std::string matterDescriptor = Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION]);
+        ParticleMatterInteraction* orig = ParticleMatterInteraction::find(matterDescriptor);
+        parmatint_m = orig->clone(matterDescriptor);
         parmatint_m->initParticleMatterInteractionHandler(*coll);
         coll->setParticleMatterInteraction(parmatint_m->handler_m);
     }

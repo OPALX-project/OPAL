@@ -84,7 +84,7 @@ TEST(PolynomialTimeDependenceTest, TDMapTest) {
 TEST(PolynomialTimeDependenceTest, TDMapNameLookupTest) {
     OpalTestUtilities::SilenceTest silencer;
 
-    EXPECT_THROW(AbstractTimeDependence::getName(NULL),
+    EXPECT_THROW(AbstractTimeDependence::getName(nullptr),
                  GeneralClassicException);
     PolynomialTimeDependence time_dep(std::vector<double>(1, 1));
     std::shared_ptr<PolynomialTimeDependence> td1(time_dep.clone());

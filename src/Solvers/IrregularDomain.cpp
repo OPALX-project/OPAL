@@ -40,9 +40,6 @@ IrregularDomain::IrregularDomain(const IntVector_t& nr, const Vector_t& hr,
         interpolationMethod_m = LINEAR;
     else if (interpl == "QUADRATIC")
         interpolationMethod_m = QUADRATIC;
-    else
-        throw OpalException("IrregularDomain::IrregularDomain",
-                            "No interpolation method '" + interpl + "' available.");
 }
 
 

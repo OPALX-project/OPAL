@@ -25,14 +25,13 @@
 #include "Utilities/FormatError.h"
 #include <cctype>
 
-
 // Class StringStream
 // ------------------------------------------------------------------------
 
 StringStream::StringStream(const std::string &str):
     TokenStream("expression"),
-    line(str + '\n'),
-    curr_char(0)
+    line_m(str + '\n'),
+    currentChar_m(0)
 {}
 
 
@@ -47,17 +46,17 @@ Token StringStream::readToken() {
     }
 
     while(true) {
-        if(curr_char >= line.length()  ||  line[curr_char] == '\n') {
+        if(currentChar_m >= line_m.length()  ||  line_m[currentChar_m] == '\n') {
             return Token("string", 1, Token::IS_EOF, "EOF");
-        } else if(isspace(line[curr_char])) {
-            curr_char++;
+        } else if(isspace(line_m[currentChar_m])) {
+            currentChar_m++;
         } else {
             break;
         }
     }
 
     // First character.
-    char ch = line[curr_char];
+    char ch = line_m[currentChar_m];
 
     if(ch == '"'  ||  ch == '\'') {
         // String token.
@@ -66,37 +65,37 @@ Token StringStream::readToken() {
         // Word token.
         return readWord();
     } else if(isdigit(ch) ||
-              (ch == '.' && isdigit(line[curr_char+1]))) {
+              (ch == '.' && isdigit(line_m[currentChar_m+1]))) {
         // Numeric token.
         return readNumber();
     } else {
         // Delimiter tokens.
-        if(ch == '<'  &&  line[curr_char+1] == '=') {
-            curr_char += 2;
+        if(ch == '<'  &&  line_m[currentChar_m+1] == '=') {
+            currentChar_m += 2;
             return Token("string", 1, Token::IS_DELIMITER, "<=");
-        } else if(ch == '>'  &&  line[curr_char+1] == '=') {
-            curr_char += 2;
+        } else if(ch == '>'  &&  line_m[currentChar_m+1] == '=') {
+            currentChar_m += 2;
             return Token("string", 1, Token::IS_DELIMITER, ">=");
-        } else if(ch == '='  &&  line[curr_char+1] == '=') {
-            curr_char += 2;
+        } else if(ch == '='  &&  line_m[currentChar_m+1] == '=') {
+            currentChar_m += 2;
             return Token("string", 1, Token::IS_DELIMITER, "==");
-        } else if(ch == '!'  &&  line[curr_char+1] == '=') {
-            curr_char += 2;
+        } else if(ch == '!'  &&  line_m[currentChar_m+1] == '=') {
+            currentChar_m += 2;
             return Token("string", 1, Token::IS_DELIMITER, "!=");
-        } else if(ch == '|'  &&  line[curr_char+1] == '|') {
-            curr_char += 2;
+        } else if(ch == '|'  &&  line_m[currentChar_m+1] == '|') {
+            currentChar_m += 2;
             return Token("string", 1, Token::IS_DELIMITER, "||");
-        } else if(ch == '&'  &&  line[curr_char+1] == '&') {
-            curr_char += 2;
+        } else if(ch == '&'  &&  line_m[currentChar_m+1] == '&') {
+            currentChar_m += 2;
             return Token("string", 1, Token::IS_DELIMITER, "&&");
-        } else if(ch == ':'  &&  line[curr_char+1] == '=') {
-            curr_char += 2;
+        } else if(ch == ':'  &&  line_m[currentChar_m+1] == '=') {
+            currentChar_m += 2;
             return Token("string", 1, Token::IS_DELIMITER, ":=");
-        } else if(ch == '-'  &&  line[curr_char+1] == '>') {
-            curr_char += 2;
+        } else if(ch == '-'  &&  line_m[currentChar_m+1] == '>') {
+            currentChar_m += 2;
             return Token("string", 1, Token::IS_DELIMITER, "->");
         } else {
-            curr_char++;
+            currentChar_m++;
             return Token("string", 1, Token::IS_DELIMITER, ch);
         }
     }
@@ -112,28 +111,28 @@ Token StringStream::readNumber() {
     int expsig = 1;
     int expval = 0;
     int places = 0;
-    int lex_pos = curr_char;
+    int lex_pos = currentChar_m;
 
-    while(isdigit(line[curr_char])) {
+    while(isdigit(line_m[currentChar_m])) {
         // Digits preceding decimal point.
-        value = 10.0 * value + double(line[curr_char] - '0');
+        value = 10.0 * value + double(line_m[currentChar_m] - '0');
         digit = true;
-        curr_char++;
+        currentChar_m++;
     }
 
-    if(digit && line[curr_char] != '.' && toupper(line[curr_char]) != 'E') {
+    if(digit && line_m[currentChar_m] != '.' && toupper(line_m[currentChar_m]) != 'E') {
         // Unsigned integer seen.
-        std::string lexeme(line.data() + lex_pos, curr_char - lex_pos);
+        std::string lexeme(line_m.data() + lex_pos, currentChar_m - lex_pos);
         return Token("string", 1, lexeme, int(value + 0.5));
     }
 
     // Decimal point.
-    if(line[curr_char] == '.') {
-        curr_char++;
+    if(line_m[currentChar_m] == '.') {
+        currentChar_m++;
 
         // Digits following decimal point.
-        while(isdigit(line[curr_char])) {
-            value = 10.0 * value + double(line[curr_char++] - '0');
+        while(isdigit(line_m[currentChar_m])) {
+            value = 10.0 * value + double(line_m[currentChar_m++] - '0');
             digit = true;
             places++;
         }
@@ -142,36 +141,36 @@ Token StringStream::readNumber() {
     if(! digit) eflag = true;
 
     // Exponent ?
-    if(toupper(line[curr_char]) == 'E') {
-        curr_char++;
+    if(toupper(line_m[currentChar_m]) == 'E') {
+        currentChar_m++;
         digit = false;
 
-        if(line[curr_char] == '+') {
-            curr_char++;
-        } else if(line[curr_char] == '-') {
-            curr_char++;
+        if(line_m[currentChar_m] == '+') {
+            currentChar_m++;
+        } else if(line_m[currentChar_m] == '-') {
+            currentChar_m++;
             expsig = -1;
         }
 
-        while(isdigit(line[curr_char])) {
-            expval = 10 * expval + (line[curr_char++] - '0');
+        while(isdigit(line_m[currentChar_m])) {
+            expval = 10 * expval + (line_m[currentChar_m++] - '0');
             digit = true;
         }
 
         if(! digit) eflag = true;
 
         // Skip over any non-punctuation characters.
-        char ch = line[curr_char];
+        char ch = line_m[currentChar_m];
 
         while(! isspace(ch)  &&  ! ispunct(ch)) {
             eflag = true;
-            curr_char++;
-            ch = line[curr_char];
+            currentChar_m++;
+            ch = line_m[currentChar_m];
         }
     }
 
     // Put pieces together.
-    std::string lexeme(line.data() + lex_pos, curr_char - lex_pos);
+    std::string lexeme(line_m.data() + lex_pos, currentChar_m - lex_pos);
 
     if(eflag) {
         return Token("string", 1, Token::IS_ERROR,
@@ -195,24 +194,24 @@ Token StringStream::readNumber() {
 Token StringStream::readString() {
     std::string lexeme;
 
-    if(line[curr_char] == '"'  ||  line[curr_char] == '\'') {
-        char quote = line[curr_char];
-        curr_char++;
+    if(line_m[currentChar_m] == '"'  ||  line_m[currentChar_m] == '\'') {
+        char quote = line_m[currentChar_m];
+        currentChar_m++;
 
         while(true) {
-            if(curr_char >= line.length()) {
+            if(currentChar_m >= line_m.length()) {
                 throw FormatError("StringStream::readString()",
                                   "String not terminated.");
             }
 
-            if(line[curr_char] == quote) {
-                curr_char++;
-                if(line[curr_char] != quote) break;
-            } else if(line[curr_char] == '\\') {
-                curr_char++;
+            if(line_m[currentChar_m] == quote) {
+                currentChar_m++;
+                if(line_m[currentChar_m] != quote) break;
+            } else if(line_m[currentChar_m] == '\\') {
+                currentChar_m++;
             }
 
-            lexeme += line[curr_char++];
+            lexeme += line_m[currentChar_m++];
         }
     }
 
@@ -222,15 +221,15 @@ Token StringStream::readString() {
 
 Token StringStream::readWord() {
     std::string lexeme;
-    char ch = line[curr_char];
+    char ch = line_m[currentChar_m];
 
-    if(isalpha(line[curr_char])) {
+    if(isalpha(line_m[currentChar_m])) {
         lexeme += toupper(ch);
-        char ch = line[++curr_char];
+        char ch = line_m[++currentChar_m];
 
         while(isalnum(ch) || ch == '_' || ch == '.' || ch == '\'') {
             lexeme += toupper(ch);
-            ch = line[++curr_char];
+            ch = line_m[++currentChar_m];
         }
     }
 

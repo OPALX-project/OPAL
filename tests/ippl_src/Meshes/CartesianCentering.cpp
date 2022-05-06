@@ -27,7 +27,7 @@ CenteringEnum CCCEnums<3U,3U,0U>::vectorFace[3U*3U];
 TEST(Meshes, CartesianCentering)
 {
     // For writing file output to compare against hardcoded correct file output:
-    Inform fdi(NULL,"text.test.TestCartesianCentering",Inform::OVERWRITE,0);
+    Inform fdi(nullptr,"text.test.TestCartesianCentering",Inform::OVERWRITE,0);
 
     const unsigned nx=4, ny=4, nz=4;
     Index I(nx), J(ny), K(nz);

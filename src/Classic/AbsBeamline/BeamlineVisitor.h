@@ -41,7 +41,6 @@ class Beamline;
 class FlaggedElmPtr;
 
 // Specific element classes interacting with a BeamlineVisitor
-class BeamStripping;
 class CCollimator;
 class Corrector;
 class Cyclotron;
@@ -72,6 +71,7 @@ class TravelingWave;
 #ifdef ENABLE_OPAL_FEL
 class Undulator;
 #endif
+class Vacuum;
 class VariableRFCavity;
 class VariableRFCavityFringeField;
 class VerticalFFAMagnet;
@@ -86,35 +86,32 @@ public:
     /// Execute the algorithm on the attached beam line.
     virtual void execute() = 0;
 
-    /// Apply the algorithm to a beam stripping interaction.
-    virtual void visitBeamStripping(const BeamStripping &) = 0;
-
+    /// Apply the algorithm to a beam line.
+    virtual void visitBeamline(const Beamline &) = 0;
+    
     /// Apply the algorithm to a collimator.
     virtual void visitCCollimator(const CCollimator &) = 0;
 
-    /// Apply the algorithm to an arbitrary component (catch all).
+    /// Apply the algorithm to an arbitrary component.
     virtual void visitComponent(const Component &) = 0;
 
     /// Apply the algorithm to a closed orbit corrector.
     virtual void visitCorrector(const Corrector &) = 0;
 
-    /// Apply the algorithm to a diagnostic.
+    /// Apply the algorithm to a cyclotron.
+    virtual void visitCyclotron(const Cyclotron &) = 0;
+
+    /// Apply the algorithm to a degrader.
     virtual void visitDegrader(const Degrader &) = 0;
 
     /// Apply the algorithm to a drift space.
     virtual void visitDrift(const Drift &) = 0;
 
+    /// Apply the algorithm to a FlaggedElmPtr.
+    virtual void visitFlaggedElmPtr(const FlaggedElmPtr &) = 0;
+
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &) = 0;
-
-    /// Apply the algorithm to an Ring
-    virtual void visitRing(const Ring &) = 0;
-
-    /// Apply the algorithm to a cyclotron.
-    virtual void visitCyclotron(const Cyclotron &) = 0;
-
-    /// Apply the algorithm to an Offset (placement).
-    virtual void visitOffset(const Offset &) = 0;
 
     /// Apply the algorithm to a marker.
     virtual void visitMarker(const Marker &) = 0;
@@ -125,18 +122,21 @@ public:
     /// Apply the algorithm to a multipole.
     virtual void visitMultipole(const Multipole &) = 0;
 
-    /// Apply the algorithm to an arbitrary Multipole.
+    /// Apply the algorithm to an arbitrary multipole.
     virtual void visitMultipoleT(const MultipoleT &) = 0;
 
-    /// Apply the algorithm to an arbitrary straight Multipole.
+    /// Apply the algorithm to an arbitrary straight multipole.
     virtual void visitMultipoleTStraight(const MultipoleTStraight &) = 0;
 
-    /// Apply the algorithm to an arbitrary curved Multipole of constant radius.
+    /// Apply the algorithm to an arbitrary curved multipole of constant radius.
     virtual void visitMultipoleTCurvedConstRadius(const MultipoleTCurvedConstRadius &) = 0;
 
-    /// Apply the algorithm to an arbitrary curved Multipole of variable radius.
+    /// Apply the algorithm to an arbitrary curved multipole of variable radius.
     virtual void visitMultipoleTCurvedVarRadius(const MultipoleTCurvedVarRadius &) = 0;
 
+    /// Apply the algorithm to an offset (placement).
+    virtual void visitOffset(const Offset &) = 0;
+    
     /// Apply the algorithm to a probe.
     virtual void visitProbe(const Probe &) = 0;
 
@@ -149,26 +149,17 @@ public:
     /// Apply the algorithm to a RF cavity.
     virtual void visitRFCavity(const RFCavity &) = 0;
 
-    /// Apply the algorithm to a variable RF cavity.
-    virtual void visitVariableRFCavity(const VariableRFCavity &) = 0;
-
-    /// Apply the algorithm to a variable RF cavity with Fringe Field.
-    virtual void visitVariableRFCavityFringeField
-                                      (const VariableRFCavityFringeField &) = 0;
-
-    /// Apply the algorithm to a RF cavity.
-    virtual void visitTravelingWave(const TravelingWave &) = 0;
-
-#ifdef ENABLE_OPAL_FEL
-    /// Apply the algorithm to an undulator space.
-    virtual void visitUndulator(const Undulator &) = 0;
-#endif
+    /// Apply the algorithm to a ring
+    virtual void visitRing(const Ring &) = 0;
 
     /// Apply the algorithm to a sector bend.
     virtual void visitSBend(const SBend &) = 0;
 
-    /// Apply the algorithm to a Sector Bend with 3D field map.
+    /// Apply the algorithm to a sector bend with 3D field map.
     virtual void visitSBend3D(const SBend3D &) = 0;
+
+    /// Apply the algorithm to a scaling FFA magnet.
+    virtual void visitScalingFFAMagnet(const ScalingFFAMagnet &) = 0;
 
     /// Apply the algorithm to a septum magnet.
     virtual void visitSeptum(const Septum &) = 0;
@@ -176,22 +167,31 @@ public:
     /// Apply the algorithm to a solenoid.
     virtual void visitSolenoid(const Solenoid &) = 0;
 
-    /// Apply the algorithm to a solenoid.
-    virtual void visitScalingFFAMagnet(const ScalingFFAMagnet &) = 0;
-
     /// Apply the algorithm to a source.
     virtual void visitSource(const Source &) = 0;
-
-    /// Apply the algorithm to a Beamline.
-    virtual void visitBeamline(const Beamline &) = 0;
-
-    /// Apply the algorithm to a FlaggedElmPtr.
-    virtual void visitFlaggedElmPtr(const FlaggedElmPtr &) = 0;
 
     /// Apply the algorithm to a particle stripper.
     virtual void visitStripper(const Stripper &) = 0;
 
-    /// Apply the algorithm to a vertical FFA magnet
+    /// Apply the algorithm to a traveling wave.
+    virtual void visitTravelingWave(const TravelingWave &) = 0;
+
+#ifdef ENABLE_OPAL_FEL
+    /// Apply the algorithm to an undulator.
+    virtual void visitUndulator(const Undulator &) = 0;
+#endif
+
+    /// Apply the algorithm to a vacuum space.
+    virtual void visitVacuum(const Vacuum &) = 0;
+    
+    /// Apply the algorithm to a variable RF cavity.
+    virtual void visitVariableRFCavity(const VariableRFCavity &) = 0;
+
+    /// Apply the algorithm to a variable RF cavity with Fringe Field.
+    virtual void visitVariableRFCavityFringeField
+                                      (const VariableRFCavityFringeField &) = 0;
+
+    /// Apply the algorithm to a vertical FFA magnet.
     virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet &) = 0;
 
 private:

@@ -30,15 +30,15 @@ AmrSmoother::AmrSmoother(const Teuchos::RCP<const matrix_t>& A,
                          lo_t nSweeps)
 {
     const std::string type = "RELAXATION";
-    
+
     Ifpack2::Factory factory;
     prec_mp = factory.create(type, A);
-    
+
     params_mp = Teuchos::rcp( new Teuchos::ParameterList );
-    
+
     this->initParameter_m(smoother, nSweeps);
-    
-    
+
+
     prec_mp->setParameters(*params_mp);
     prec_mp->initialize();
     prec_mp->compute();
@@ -63,13 +63,13 @@ void AmrSmoother::smooth(const Teuchos::RCP<vector_t>& x,
 AmrSmoother::Smoother
 AmrSmoother::convertToEnumSmoother(const std::string& smoother) {
     std::map<std::string, Smoother> map;
-    
+
     map["GS"]     = Smoother::GAUSS_SEIDEL;
     map["SGS"]    = Smoother::SGS;
     map["JACOBI"] = Smoother::JACOBI;
-    
+
     auto sm = map.find(smoother);
-    
+
     if ( sm == map.end() )
         throw OpalException("AmrMultiGrid::convertToEnumNorm_m()",
                             "No smoother '" + smoother + "'.");
@@ -82,18 +82,18 @@ void AmrSmoother::initParameter_m(const Smoother& smoother,
 {
     if ( params_mp == Teuchos::null )
         params_mp = Teuchos::rcp( new Teuchos::ParameterList );
-    
-    
-    std::string type = "";
+
+
+    std::string type;
     scalar_t damping = 1.0;
     std::pair<bool, scalar_t> l1 = std::make_pair(true, 1.5);
-    
+
     bool backward = false;
     std::pair<bool, scalar_t> fix = std::make_pair(true, 1.0e-5);
     bool check = true;
-    
+
     switch ( smoother ) {
-        
+
         case GAUSS_SEIDEL:
         {
             type = "Gauss-Seidel";
@@ -116,7 +116,7 @@ void AmrSmoother::initParameter_m(const Smoother& smoother,
         default:
             break;
     };
-    
+
     params_mp->set("relaxation: type", type);
     params_mp->set("relaxation: sweeps", nSweeps);
     params_mp->set("relaxation: zero starting solution", false);

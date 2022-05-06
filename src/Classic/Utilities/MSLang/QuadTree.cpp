@@ -9,7 +9,7 @@ namespace mslang {
         bb_m(right.bb_m),
         nodes_m()
     {
-        if (right.nodes_m.size() != 0) {
+        if (!right.nodes_m.empty()) {
             for (unsigned int i = 0; i < 4u; ++ i) {
                 nodes_m.emplace_back(new QuadTree(*right.nodes_m[i]));
             }
@@ -36,9 +36,9 @@ namespace mslang {
                          right.objects_m.end());
         bb_m = right.bb_m;
 
-        if (nodes_m.size() != 0) nodes_m.clear();
+        if (!nodes_m.empty()) nodes_m.clear();
 
-        if (right.nodes_m.size() != 0) {
+        if (!right.nodes_m.empty()) {
             for (unsigned int i = 0; i < 4u; ++ i) {
                 nodes_m.emplace_back(new QuadTree(*right.nodes_m[i]));
             }
@@ -68,12 +68,12 @@ namespace mslang {
         nodes_m.reserve(4);
         for (unsigned int i = 0; i < 4u; ++ i) {
             nodes_m.emplace_back(new QuadTree(level_m + 1,
-                                              BoundingBox(Vector_t(X[i / 2], Y[i % 2], 0.0),
-                                                          Vector_t(X[i / 2 + 1], Y[i % 2 + 1], 0.0))));
+                                              BoundingBox2D(Vector_t(X[i / 2], Y[i % 2], 0.0),
+                                                            Vector_t(X[i / 2 + 1], Y[i % 2 + 1], 0.0))));
 
             nodes_m.back()->transferIfInside(objects_m);
 
-            if (nodes_m.back()->objects_m.size() != 0) {
+            if (!nodes_m.back()->objects_m.empty()) {
                 allEmpty = false;
             }
         }
@@ -94,7 +94,7 @@ namespace mslang {
         out << "# num holes: " << objects_m.size() << std::endl;
         out << std::endl;
 
-        if (nodes_m.size() != 0) {
+        if (!nodes_m.empty()) {
             for (unsigned int i = 0; i < 4u; ++ i) {
                 nodes_m[i]->writeGnuplot(out);
             }
@@ -102,7 +102,7 @@ namespace mslang {
     }
 
     bool QuadTree::isInside(const Vector_t &R) const {
-        if (nodes_m.size() != 0) {
+        if (!nodes_m.empty()) {
             Vector_t X = R - bb_m.center_m;
             unsigned int idx = (X[1] < 0.0 ? 0: 1);
             idx += (X[0] < 0.0 ? 0: 2);
@@ -122,7 +122,7 @@ namespace mslang {
     }
 
     void QuadTree::getDepth(unsigned int &d) const {
-        if (nodes_m.size() > 0) {
+        if (!nodes_m.empty()) {
             for (const auto & node: nodes_m) {
                 node->getDepth(d);
             }

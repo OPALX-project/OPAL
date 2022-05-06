@@ -57,7 +57,7 @@ class SolveFactory {
      *                    vector of length point_dim
      *  \param deriv_positions Position of the derivatives; should be a vector
      *                    of length 
-     *                    smoothing_oder^point_dim - polynomial_order^point_dim.
+     *                    smoothing_order^point_dim - polynomial_order^point_dim.
      *                    Each element should be a vector of length point_dim.
      *  \param deriv_indices Index the derivatives. Should be a vector with
      *                    same length as deriv_positions. Each element should
@@ -71,8 +71,7 @@ class SolveFactory {
      *  as in PolynomialPatch, we get a lot faster). The matrix inversion can
      *  fail for badly formed sets of positions/deriv_positions; caveat emptor!
      */
-    SolveFactory(int polynomial_order,
-                 int smoothing_order,
+    SolveFactory(int smoothing_order,
                  int point_dim,
                  int value_dim,
                  std::vector< std::vector<double> > positions,
@@ -116,9 +115,6 @@ class SolveFactory {
     void BuildHInvMatrix(std::vector< std::vector<double> > positions,
                          std::vector< std::vector<double> > deriv_positions,
                          std::vector< std::vector<int> >& deriv_indices);
-    // :FIXME: remove unused declaration
-    // int polynomial_order_;
-    // int smoothing_order_;
     int n_poly_coeffs_;
     std::vector< std::vector<int> > square_points_;
     std::vector< std::vector<int> > square_deriv_nearby_points_;

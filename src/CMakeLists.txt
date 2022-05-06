@@ -29,6 +29,8 @@ else ()
     set (AMR_MG_SOLVER_LIBS "")
 endif ()
 
+get_directory_property (OPAL_COMPILE_OPTION_LIST COMPILE_OPTIONS)
+string (REGEX REPLACE "([^\\]|^);" "\\1 " OPAL_COMPILE_OPTIONS "${OPAL_COMPILE_OPTION_LIST}")
 configure_file(config.h.in ${CMAKE_CURRENT_SOURCE_DIR}/OPALconfig.h)
 
 set (OPAL_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR})

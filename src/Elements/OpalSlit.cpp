@@ -26,13 +26,11 @@
 OpalSlit::OpalSlit():
     OpalElement(SIZE, "SLIT",
                 "The \"SLIT\" element defines a slit."),
-    parmatint_m(NULL) {
+    parmatint_m(nullptr) {
     itsAttr[XSIZE] = Attributes::makeReal
                      ("XSIZE", "Horizontal half-aperture in m");
     itsAttr[YSIZE] = Attributes::makeReal
                      ("YSIZE", "Vertical half-aperture in m");
-    itsAttr[OUTFN] = Attributes::makeString
-                     ("OUTFN", "Monitor output filename");
 
     registerOwnership();
 
@@ -40,20 +38,20 @@ OpalSlit::OpalSlit():
 }
 
 
-OpalSlit::OpalSlit(const std::string &name, OpalSlit *parent):
+OpalSlit::OpalSlit(const std::string& name, OpalSlit* parent):
     OpalElement(name, parent),
-    parmatint_m(NULL) {
+    parmatint_m(nullptr) {
     setElement(new FlexibleCollimatorRep(name));
 }
 
 
 OpalSlit::~OpalSlit() {
-    if(parmatint_m)
+    if (parmatint_m)
         delete parmatint_m;
 }
 
 
-OpalSlit *OpalSlit::clone(const std::string &name) {
+OpalSlit* OpalSlit::clone(const std::string& name) {
     return new OpalSlit(name, this);
 }
 
@@ -61,8 +59,9 @@ OpalSlit *OpalSlit::clone(const std::string &name) {
 void OpalSlit::update() {
     OpalElement::update();
 
-    FlexibleCollimatorRep *coll =
-        dynamic_cast<FlexibleCollimatorRep *>(getElement());
+    FlexibleCollimatorRep* coll =
+        dynamic_cast<FlexibleCollimatorRep*>(getElement());
+
     double length = Attributes::getReal(itsAttr[LENGTH]);
     coll->setElementLength(length);
 
@@ -76,8 +75,10 @@ void OpalSlit::update() {
 
     coll->setOutputFN(Attributes::getString(itsAttr[OUTFN]));
 
-    if(itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == NULL) {
-        parmatint_m = (ParticleMatterInteraction::find(Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION])))->clone(getOpalName() + std::string("_parmatint"));
+    if (itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == nullptr) {
+        const std::string matterDescriptor = Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION]);
+        ParticleMatterInteraction* orig = ParticleMatterInteraction::find(matterDescriptor);
+        parmatint_m = orig->clone(matterDescriptor);
         parmatint_m->initParticleMatterInteractionHandler(*coll);
         coll->setParticleMatterInteraction(parmatint_m->handler_m);
     }
@@ -85,7 +86,7 @@ void OpalSlit::update() {
     std::vector<double> apert = {Attributes::getReal(itsAttr[XSIZE]),
                                  Attributes::getReal(itsAttr[YSIZE]),
                                  1.0};
-    coll->setAperture(ElementBase::RECTANGULAR, apert );
+    coll->setAperture(ApertureType::RECTANGULAR, apert );
 
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(coll);

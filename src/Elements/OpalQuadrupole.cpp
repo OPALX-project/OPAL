@@ -32,19 +32,17 @@
 OpalQuadrupole::OpalQuadrupole():
     OpalElement(SIZE, "QUADRUPOLE",
                 "The \"QUADRUPOLE\" element defines a Quadrupole."),
-    parmatint_m(NULL) {
-    itsAttr[K1] = Attributes::makeReal
-                  ("K1", "Normalised upright quadrupole coefficient in m^(-2)");
-    itsAttr[DK1] = Attributes::makeReal
-                  ("DK1", "Normalised upright quadrupole coefficient error in m^(-2)");
-    itsAttr[K1S] = Attributes::makeReal
-                   ("K1S", "Normalised skew quadrupole coefficient in m^(-2)");
-    itsAttr[DK1S] = Attributes::makeReal
-                   ("DK1S", "Normalised skew quadrupole coefficient error in m^(-2)");
-
+    parmatint_m(nullptr) {
+    itsAttr[K1]    = Attributes::makeReal
+                     ("K1", "Normalised upright quadrupole coefficient in m^(-2)");
+    itsAttr[DK1]   = Attributes::makeReal
+                     ("DK1", "Normalised upright quadrupole coefficient error in m^(-2)");
+    itsAttr[K1S]   = Attributes::makeReal
+                     ("K1S", "Normalised skew quadrupole coefficient in m^(-2)");
+    itsAttr[DK1S]  = Attributes::makeReal
+                     ("DK1S", "Normalised skew quadrupole coefficient error in m^(-2)");
     itsAttr[NSLICES] = Attributes::makeReal
-                      ("NSLICES",
-                      "The number of slices/ steps for this element in Map Tracking", 1);
+                       ("NSLICES", "The number of slices/ steps for this element in Map Tracking", 1);
 
     registerOwnership();
 
@@ -52,9 +50,9 @@ OpalQuadrupole::OpalQuadrupole():
 }
 
 
-OpalQuadrupole::OpalQuadrupole(const std::string &name, OpalQuadrupole *parent):
+OpalQuadrupole::OpalQuadrupole(const std::string& name, OpalQuadrupole* parent):
     OpalElement(name, parent),
-    parmatint_m(NULL) {
+    parmatint_m(nullptr) {
     setElement((new MultipoleRep(name)));
 }
 
@@ -64,12 +62,12 @@ OpalQuadrupole::~OpalQuadrupole() {
 }
 
 
-OpalQuadrupole *OpalQuadrupole::clone(const std::string &name) {
+OpalQuadrupole* OpalQuadrupole::clone(const std::string& name) {
     return new OpalQuadrupole(name, this);
 }
 
 
-void OpalQuadrupole::print(std::ostream &os) const {
+void OpalQuadrupole::print(std::ostream& os) const {
     OpalElement::print(os);
 }
 
@@ -77,8 +75,9 @@ void OpalQuadrupole::print(std::ostream &os) const {
 void OpalQuadrupole::update() {
     OpalElement::update();
 
-    MultipoleRep *quad =
-        dynamic_cast<MultipoleRep *>(getElement());
+    MultipoleRep* quad =
+        dynamic_cast<MultipoleRep*>(getElement());
+
     quad->setElementLength(Attributes::getReal(itsAttr[LENGTH]));
     double factor = OpalData::getInstance()->getP0() / Physics::c;
 
@@ -90,8 +89,10 @@ void OpalQuadrupole::update() {
     quad->setSkewComponent(2, Attributes::getReal(itsAttr[K1S]), Attributes::getReal(itsAttr[DK1S]));
     quad->setNSlices(Attributes::getReal(itsAttr[NSLICES]));
 
-    if(itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == NULL) {
-        parmatint_m = (ParticleMatterInteraction::find(Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION])))->clone(getOpalName() + std::string("_parmatint"));
+    if (itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == nullptr) {
+        const std::string matterDescriptor = Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION]);
+        ParticleMatterInteraction* orig = ParticleMatterInteraction::find(matterDescriptor);
+        parmatint_m = orig->clone(matterDescriptor);
         parmatint_m->initParticleMatterInteractionHandler(*quad);
         quad->setParticleMatterInteraction(parmatint_m->handler_m);
     }

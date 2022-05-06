@@ -85,7 +85,7 @@ Channel *AttributeSet::getChannel(const std::string &aKey, bool create) {
             return new DirectChannel(itsMap[aKey]);
         }
         //    for (NameMap::iterator index = itsMap.begin(); index != itsMap.end(); index++)
-        return NULL;
+        return nullptr;
     } else {
         return new DirectChannel((*index).second);
     }

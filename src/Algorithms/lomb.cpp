@@ -6,6 +6,9 @@
 /* (update: ASM, September 2001)                                             */
 /*****************************************************************************/
 #include "lomb.h"
+
+#include "Physics/Physics.h"
+
 #include <iostream>
 
 LOMB_class::LOMB_class(int)
@@ -14,10 +17,7 @@ LOMB_class::LOMB_class(int)
  * ===========
  *
  *---------------------------------------------------------------------------*/
-{
-    // Do nothing......
-    TWOPID = 6.2831853071795865;
-}
+{}
 
 
 LOMB_class::~LOMB_class(void)
@@ -89,7 +89,7 @@ int LOMB_class::period(std::vector<LOMB_TYPE> *indata, std::vector<LOMB_TYPE> *o
 
     for(p = indata->begin(); p != indata->end(); p++) {
 
-        arg    = TWOPID * (((*p).x - xave) * pnow);
+        arg    = Physics::two_pi * (((*p).x - xave) * pnow);
         wpr.push_back((-2. * pow(sin(0.5 * arg) , 2)));
         wpi.push_back(sin(arg));
         wr.push_back(cos(arg));

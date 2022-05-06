@@ -1,6 +1,7 @@
 #include "Fields/FM1DProfile1.h"
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 
 #include <fstream>
@@ -53,7 +54,7 @@ FM1DProfile1::FM1DProfile1(std::string aFilename):
         if(inputFile.good()) {
 
             int tempInt = 0;
-            std::string tempString = "";
+            std::string tempString;
             double tempDouble = 0.0;
 
             bool parsingPassed = interpretLine<std::string, int, int, double>
@@ -99,13 +100,13 @@ FM1DProfile1::FM1DProfile1(std::string aFilename):
             } else {
 
                 // Convert from cm to m. Make sure gap is positive.
-                entranceParameter1_m /= 100.0;
-                entranceParameter2_m /= 100.0;
-                entranceParameter3_m /= 100.0;
+                entranceParameter1_m *= Units::cm2m;
+                entranceParameter2_m *= Units::cm2m;
+                entranceParameter3_m *= Units::cm2m;
 
-                exitParameter1_m /= 100.0;
-                exitParameter2_m /= 100.0;
-                exitParameter3_m /= 100.0;
+                exitParameter1_m *= Units::cm2m;
+                exitParameter2_m *= Units::cm2m;
+                exitParameter3_m *= Units::cm2m;
 
                 gapHeight_m = std::abs(gapHeight_m / 100.0);
 

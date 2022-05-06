@@ -1,7 +1,6 @@
 //
-// Class: ThickTracker
+// Class ThickTracker
 //   Tracks using thick-lens algorithm.
-// ------------------------------------------------------------------------
 //
 // Copyright (c) 2018, Philippe Ganz, ETH Zürich
 // All rights reserved
@@ -38,10 +37,7 @@
 
 #include "Physics/Physics.h"
 
-//
-// Class ThickTracker
-// ------------------------------------------------------------------------
-//
+
 ThickTracker::ThickTracker(const Beamline &beamline,
                            const PartData &reference,
                            bool revBeam, bool revTrack)
@@ -206,7 +202,7 @@ void ThickTracker::execute() {
     if ( OpalData::getInstance()->hasPriorTrack() ||
          OpalData::getInstance()->inRestartRun() )
     {
-        OpalData::getInstance()->setOpenMode(OpalData::OPENMODE::APPEND);
+        OpalData::getInstance()->setOpenMode(OpalData::OpenMode::APPEND);
     }
 
     prepareSections();
@@ -241,7 +237,7 @@ void ThickTracker::execute() {
 void ThickTracker::checkElementOrder_m() {
 
     // check order of beam line
-    FieldList elements = itsOpalBeamline_m.getElementByType(ElementBase::ANY);
+    FieldList elements = itsOpalBeamline_m.getElementByType(ElementType::ANY);
     beamline_t::const_iterator el = elements_m.cbegin();
 
     double currentEnd = zstart_m;
@@ -272,7 +268,7 @@ void ThickTracker::fillGaps_m() {
 
     beamline_t tmp;
 
-    FieldList elements = itsOpalBeamline_m.getElementByType(ElementBase::ANY);
+    FieldList elements = itsOpalBeamline_m.getElementByType(ElementType::ANY);
     beamline_t::const_iterator el = elements_m.cbegin();
 
     double currentEnd = zstart_m;
@@ -587,7 +583,7 @@ void ThickTracker::dump_m() {
                                      externalE,
                                      externalB);
         FDext[0] = referenceToLabCSTrafo_m.rotateFrom(externalB);
-        FDext[1] = referenceToLabCSTrafo_m.rotateFrom(externalE * 1e-6);
+        FDext[1] = referenceToLabCSTrafo_m.rotateFrom(externalE * Units::Vpm2MVpm);
     }
 
 

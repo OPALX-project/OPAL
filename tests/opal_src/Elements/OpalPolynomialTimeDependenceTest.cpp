@@ -10,8 +10,8 @@ class BeamlineVisitor;
 class TestElement : public ElementBase {
   public:
 
-    TestElement() : ElementBase(), base(NULL), type("") {}
-    ElementBase::ElementType getType() const {return ElementBase::ANY;}
+    TestElement() : ElementBase(), base(nullptr), type("") {}
+    ElementType getType() const {return ElementType::ANY;}
     BGeometryBase  &getGeometry() {
         return *base;
     }
@@ -20,7 +20,7 @@ class TestElement : public ElementBase {
         return *base;
     }
 
-    ElementBase* clone() const {return NULL;}
+    ElementBase* clone() const {return nullptr;}
 
     void accept(BeamlineVisitor& /*visitor*/) const {}
 

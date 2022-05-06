@@ -94,7 +94,7 @@ class SBend3D : public Component {
       */
     void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
 
-     /** Finalise the SBend3D - sets bunch to NULL */
+     /** Finalise the SBend3D - sets bunch to nullptr */
     void finalise() override;
 
     /** Return true - SBend3D always bends the reference particle */
@@ -122,10 +122,10 @@ class SBend3D : public Component {
      *
      *  @param name the file name of the field map
      *
-     *  This generates a new field map object with the given name. If name == ""
-     *  then sets the field map to NULL.
+     *  This generates a new field map object with the given name.
+     *  If name.empty() then sets the field map to nullptr.
      */
-    void setFieldMapFileName(std::string name);
+    void setFieldMapFileName(const std::string& name);
 
     /** Get the file name of the field map */
     inline std::string getFieldMapFileName() const;

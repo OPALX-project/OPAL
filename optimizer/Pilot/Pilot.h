@@ -388,7 +388,7 @@ protected:
 
             all_worker_idle = all_worker_idle && is_worker_idle_[i];
 
-            if(is_worker_idle_[i] && request_queue_.size() > 0)
+            if(is_worker_idle_[i] && !request_queue_.empty())
                 sendNewJobToWorker(i);
         }
 
@@ -469,7 +469,7 @@ protected:
             MPI_Send_reqvars(res, opt_master_rank, opt_comm_);
 
             // we keep worker busy _after_ results have been sent to optimizer
-            if(request_queue_.size() > 0)
+            if(!request_queue_.empty())
                 sendNewJobToWorker(status.MPI_SOURCE);
 
             return true;

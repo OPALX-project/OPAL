@@ -27,7 +27,7 @@ namespace Expressions {
     // ----------------------------------------------------------------------
     /// Look up name.
     //  The input table is a C array of structures containing a [b]name[/b]
-    //  entry.  The result is a pointer to one component of the array or NULL.
+    //  entry.  The result is a pointer to one component of the array or nullptr.
     //  May be replaced by a map<> with suitable parameters.
 
     template <class T> inline

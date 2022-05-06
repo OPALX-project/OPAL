@@ -1,7 +1,7 @@
 #include "Utilities/MSLang/Rectangle.h"
 #include "Utilities/MSLang/ArgumentExtractor.h"
 #include "Utilities/MSLang/matheval.h"
-#include "Physics/Physics.h"
+#include "Physics/Units.h"
 
 #include <boost/regex.hpp>
 
@@ -10,7 +10,7 @@ namespace mslang {
         std::string indent(indentwidth, ' ');
         std::string indent2(indentwidth + 8, ' ');
         Vector_t origin = trafo_m.getOrigin();
-        double angle = trafo_m.getAngle() * Physics::rad2deg;
+        double angle = trafo_m.getAngle() * Units::rad2deg;
         std::cout << indent << "rectangle, \n"
                   << indent2 << "w: " << width_m << ", \n"
                   << indent2 << "h: " << height_m << ", \n"
@@ -40,7 +40,7 @@ namespace mslang {
             else if (corners[i][1] > urc[1]) urc[1] = corners[i][1];
         }
 
-        bb_m = BoundingBox(llc, urc);
+        bb_m = BoundingBox2D(llc, urc);
 
         for (auto item: divisor_m) {
             item->computeBoundingBox();

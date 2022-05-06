@@ -25,7 +25,7 @@ namespace mslang {
             std::shared_ptr<Base> &obj = bfuncs[j];
             obj->trafo_m = obj->trafo_m.mult(rotation);
 
-            if (obj->divisor_m.size() > 0)
+            if (!obj->divisor_m.empty())
                 applyRotation(obj->divisor_m);
         }
     }

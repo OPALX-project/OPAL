@@ -15,7 +15,7 @@ set (_SRCS
     Mesher.cpp
     MSLang.cpp
     MSLang/ArgumentExtractor.cpp
-    MSLang/BoundingBox.cpp
+    MSLang/BoundingBox2D.cpp
     MSLang/Difference.cpp
     MSLang/Ellipse.cpp
     MSLang/Intersection.cpp
@@ -67,7 +67,7 @@ set (HDRS
     MSLang.h
     MSLang/ArgumentExtractor.h
     MSLang/AffineTransformation.h
-    MSLang/BoundingBox.h
+    MSLang/BoundingBox2D.h
     MSLang/Difference.h
     MSLang/Ellipse.h
     MSLang/Intersection.h
@@ -84,7 +84,6 @@ set (HDRS
     MSLang/Translation.h
     MSLang/Triangle.h
     MSLang/Union.h
-    OptionTypes.h
     Options.h
     OverflowError.h
     ParseError.h

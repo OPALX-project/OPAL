@@ -125,7 +125,7 @@ public:
     virtual Euclid3D getExitFrame()     const;
 
     /// Get beamline type
-    virtual ElementBase::ElementType getType() const;
+    virtual ElementType getType() const;
 
     /// Append a T object.
     virtual void append(const T &);
@@ -406,8 +406,8 @@ Euclid3D TBeamline<T>::getExitFrame() const {
 
 
 template <class T> inline
-ElementBase::ElementType TBeamline<T>::getType() const {
-    return BEAMLINE;
+ElementType TBeamline<T>::getType() const {
+    return ElementType::BEAMLINE;
 }
 
 

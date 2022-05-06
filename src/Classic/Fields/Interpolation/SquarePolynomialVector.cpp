@@ -114,7 +114,8 @@ void  SquarePolynomialVector::F(const double*   point,    double* value)        
     for(unsigned int i=0; i<ValueDimension(); i++) value[i]  = valueV(i+1);
 }
 
-void  SquarePolynomialVector::F(const MVector<double>& point,   MVector<double>& value) const
+void  SquarePolynomialVector::F(const MVector<double>& point,
+                                MVector<double>& value) const
 {
     MVector<double> polyVector(_polyCoeffs.num_col(), 1);
     MakePolyVector(point, polyVector);
@@ -123,7 +124,9 @@ void  SquarePolynomialVector::F(const MVector<double>& point,   MVector<double>&
 }
 
 
-MVector<double>& SquarePolynomialVector::MakePolyVector(const MVector<double>& point, MVector<double>& polyVector) const
+MVector<double>& SquarePolynomialVector::MakePolyVector(
+                                const MVector<double>& point,
+                                MVector<double>& polyVector) const
 {
     for(unsigned int i=0; i<_polyCoeffs.num_col(); i++) {
         polyVector(i+1) = 1.;
@@ -161,7 +164,7 @@ void SquarePolynomialVector::IndexByPowerRecursive(std::vector<int> check, size_
 std::vector<int> SquarePolynomialVector::IndexByPower(int index, int point_dim) {
     if (point_dim < 1)
         throw(GeneralClassicException(
-            "PPSolveFactory::GetNearbyPointsSquares",
+            "SquarePolynomialVector::IndexByPower",
             "Point dimension must be > 0"
         ));
     while (int(_polyKeyByPower.size()) < point_dim)
@@ -216,7 +219,7 @@ std::ostream& operator<<(std::ostream& out, const SquarePolynomialVector& spv)
 
 void SquarePolynomialVector::PrintHeader(std::ostream& out, char int_separator, char str_separator, int length, bool pad_at_start) const
 {
-  if(_polyKeyByPower[_pointDim-1].size() > 0) PrintContainer< std::vector<int> >(out, _polyKeyByPower[_pointDim-1][0], int_separator, str_separator, length-1, pad_at_start);
+    if(!_polyKeyByPower[_pointDim-1].empty()) PrintContainer< std::vector<int> >(out, _polyKeyByPower[_pointDim-1][0], int_separator, str_separator, length-1, pad_at_start);
   for(unsigned int i=1; i<_polyCoeffs.num_col(); ++i)
     PrintContainer<std::vector<int> >(out, _polyKeyByPower[_pointDim-1][i], int_separator, str_separator, length, pad_at_start);
 }
@@ -253,5 +256,50 @@ unsigned int SquarePolynomialVector::PolynomialOrder() const {
     return maxPower;
 }
 
+SquarePolynomialVector SquarePolynomialVector::Deriv(const int* derivPower) const {
+    if (derivPower == nullptr) {
+        throw(GeneralClassicException(
+            "SquarePolynomialVector::Deriv",
+            "Derivative points to nullptr"
+        ));
+    }
+    MMatrix<double> newPolyCoeffs(_polyCoeffs.num_row(),  _polyCoeffs.num_col(), 0.);
+    std::vector< std::vector<int> > powerKey = _polyKeyByPower[_pointDim-1];
+    for (size_t j = 0; j < _polyCoeffs.num_col(); ++j) {
+        std::vector<int> thisPower = powerKey[j];
+        std::vector<int> newPower(_pointDim);
+        // f(x) = Product(x_i^t_i)
+        // d^n f(x)  / Product(d x_j^d_j) =
+        //       t_i >= d_j ... Product(x_i^(t_i - d_j) * t_i!/(t_i-d_j)!
+        //       t_i < d_j  ... 0
+        double newCoeff = 1.;
+        // calculate the coefficient
+        for (size_t k = 0; k < thisPower.size(); ++k) {
+            newPower[k] = thisPower[k] - derivPower[k];
+            if (newPower[k] < 0) {
+                newCoeff = 0.;
+                break;
+            }
+            newCoeff *= gsl_sf_fact(thisPower[k])/gsl_sf_fact(newPower[k]);
+        }
+        // put it in the matrix of coefficients
+        for (size_t k = 0; k < powerKey.size(); ++k) {
+            bool match = true;
+            for (size_t l = 0; l < powerKey[k].size(); ++l) {
+                if (powerKey[k][l] != newPower[l]) {
+                    match = false;
+                    break;
+                }
+            }
+            if (match) {
+                for (size_t i = 0; i < _polyCoeffs.num_row(); ++i) {
+                    newPolyCoeffs(i+1, k+1) = newCoeff*_polyCoeffs(i+1, j+1);
+                }
+            }
+        }
+    }
+    SquarePolynomialVector vec(_pointDim, newPolyCoeffs);
+    return vec;
+}
 
 }

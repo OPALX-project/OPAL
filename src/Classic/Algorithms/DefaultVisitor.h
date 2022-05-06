@@ -45,55 +45,55 @@ public:
     /// Apply the algorithm to the top-level beamline.
     virtual void execute();
 
-    /// Apply the algorithm to a beam stripping.
-    virtual void visitBeamStripping(const BeamStripping &);
-
+    /// Apply the algorithm to a beam line.
+    virtual void visitBeamline(const Beamline &);
+    
     /// Apply the algorithm to a collimator.
     virtual void visitCCollimator(const CCollimator &);
 
     /// Apply the algorithm to an arbitrary component.
     virtual void visitComponent(const Component &);
 
+    /// Apply the algorithm to a closed orbit corrector.
+    virtual void visitCorrector(const Corrector &);
+
     /// Apply the algorithm to an cyclotron
     virtual void visitCyclotron(const Cyclotron &);
 
-    /// Apply the algorithm to an opal ring..
-    virtual void visitRing(const Ring &);
-
-    /// Apply the algorithm to a corrector.
-    virtual void visitCorrector(const Corrector &);
-
-    /// Apply the algorithm to a drift.
+    /// Apply the algorithm to a degrader.
     virtual void visitDegrader(const Degrader &);
 
-    /// Apply the algorithm to a drift.
+    /// Apply the algorithm to a drift space.
     virtual void visitDrift(const Drift &);
 
+    /// Apply the algorithm to a FlaggedElmPtr.
+    virtual void visitFlaggedElmPtr(const FlaggedElmPtr &);
+    
     /// Apply the algorithm to a flexible collimator
     virtual void visitFlexibleCollimator(const FlexibleCollimator &);
 
     /// Apply the algorithm to a marker.
     virtual void visitMarker(const Marker &);
 
-    /// Apply the algorithm to a monitor.
+    /// Apply the algorithm to a beam position monitor.
     virtual void visitMonitor(const Monitor &);
 
     /// Apply the algorithm to a multipole.
     virtual void visitMultipole(const Multipole &);
 
-    /// Apply the algorithm to a multipoleT.
+    /// Apply the algorithm to to an arbitrary multipole.
     virtual void visitMultipoleT(const MultipoleT &);
 
-    /// Apply the algorithm to a multipoleTStraight.
+    /// Apply the algorithm to an arbitrary straight multipole.
     virtual void visitMultipoleTStraight(const MultipoleTStraight &);
 
-    /// Apply the algorithm to a multipoleTCurvedConstRadius.
+    /// Apply the algorithm to an arbitrary curved multipole of constant radius.
     virtual void visitMultipoleTCurvedConstRadius(const MultipoleTCurvedConstRadius &);
 
-    /// Apply the algorithm to a multipoleTCurvedVarRadius.
+    /// Apply the algorithm to an arbitrary curved multipole of variable radius.
     virtual void visitMultipoleTCurvedVarRadius(const MultipoleTCurvedVarRadius &);
 
-    /// Apply the algorithm to an Offset.
+    /// Apply the algorithm to an offset (placement).
     virtual void visitOffset(const Offset &);
 
     /// Apply the algorithm to a probe.
@@ -106,33 +106,19 @@ public:
     virtual void visitRBend3D(const RBend3D &);
 
     /// Apply the algorithm to a RF cavity.
-    virtual void visitVariableRFCavity(const VariableRFCavity &vcav);
-
-    /// Apply the algorithm to a RF cavity.
-    virtual void visitVariableRFCavityFringeField(const VariableRFCavityFringeField &vcav);
-
-    /// Apply the algorithm to a RF cavity.
     virtual void visitRFCavity(const RFCavity &);
 
-    /// Apply the algorithm to a RF cavity.
-    virtual void visitTravelingWave(const TravelingWave &);
-
-#ifdef ENABLE_OPAL_FEL
-    /// Apply the algorithm to an undulator.
-    virtual void visitUndulator(const Undulator &);
-#endif
+    /// Apply the algorithm to a ring.
+    virtual void visitRing(const Ring &);
 
     /// Apply the algorithm to a sector bend.
     virtual void visitSBend(const SBend &);
 
-    /// Apply the algorithm to a sector bend.
+    /// Apply the algorithm to a sector bend with 3D field map.
     virtual void visitSBend3D(const SBend3D &);
 
     /// Apply the algorithm to a scaling FFA magnet.
     virtual void visitScalingFFAMagnet(const ScalingFFAMagnet &);
-
-    /// Apply the algorithm to a RF cavity.
-    virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet &);
 
     /// Apply the algorithm to a septum.
     virtual void visitSeptum(const Septum &);
@@ -143,14 +129,28 @@ public:
     /// Apply the algorithm to a source.
     virtual void visitSource(const Source &);
 
-    /// Apply the algorithm to a charge stripper.
+    /// Apply the algorithm to a particle stripper.
     virtual void visitStripper(const Stripper &);
 
-    /// Apply the algorithm to a beam line.
-    virtual void visitBeamline(const Beamline &);
+    /// Apply the algorithm to a traveling wave.
+    virtual void visitTravelingWave(const TravelingWave &);
 
-    /// Apply the algorithm to a FlaggedElmPtr.
-    virtual void visitFlaggedElmPtr(const FlaggedElmPtr &);
+#ifdef ENABLE_OPAL_FEL
+    /// Apply the algorithm to an undulator.
+    virtual void visitUndulator(const Undulator &);
+#endif
+
+    /// Apply the algorithm to a vacuum space.
+    virtual void visitVacuum(const Vacuum &);
+
+    /// Apply the algorithm to a a variable RF cavity.
+    virtual void visitVariableRFCavity(const VariableRFCavity &vcav);
+
+    /// Apply the algorithm to a a variable RF cavity with Fringe Field.
+    virtual void visitVariableRFCavityFringeField(const VariableRFCavityFringeField &vcav);
+
+    /// Apply the algorithm to a vertical FFA magnet.
+    virtual void visitVerticalFFAMagnet(const VerticalFFAMagnet &);
 
 protected:
 

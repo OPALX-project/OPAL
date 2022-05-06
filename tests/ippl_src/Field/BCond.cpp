@@ -309,7 +309,7 @@ TEST(Field, BCSimple2)
 TEST(Field, BC)
 {
     // For writing file output to compare against hardcoded correct file output:
-    Inform fdi(NULL,"text.test.TestBC",Inform::OVERWRITE,0);
+    Inform fdi(nullptr,"text.test.TestBC",Inform::OVERWRITE,0);
     setInform(fdi);
 
     Index I(5);

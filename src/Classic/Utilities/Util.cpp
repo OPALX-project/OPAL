@@ -1,18 +1,32 @@
+//
+// Namespace Util
+//   This namespace contains useful global methods.
+//
+// Copyright (c) 200x - 2022, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Utilities/Util.h"
 #include "Physics/Physics.h"
 #include "OPALrevision.h"
 
+#include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 
-#include <boost/filesystem.hpp>
-
-#include <queue>
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <algorithm>
 #include <cctype>
-#include <cmath>
+#include <fstream>
+#include <iostream>
+#include <iterator>
+#include <queue>
 
 namespace Util {
     std::string getGitRevision() {
@@ -99,7 +113,7 @@ namespace Util {
 #undef erfinv_d1
 #undef erfinv_d0
 
-        Vector_t getTaitBryantAngles(Quaternion rotation, const std::string &/*elementName*/) {
+    Vector_t getTaitBryantAngles(Quaternion rotation, const std::string& /*elementName*/) {
         Quaternion rotationBAK = rotation;
 
         // y axis
@@ -129,11 +143,54 @@ namespace Util {
         return Vector_t(theta, phi, psi);
     }
 
-    std::string toUpper(const std::string &str) {
+    std::string toUpper(const std::string& str) {
         std::string output = str;
-        std::transform(output.begin(), output.end(), output.begin(), [](const char c) { return toupper(c);});
+        std::transform(output.begin(), output.end(), output.begin(), [](const char c) { return std::toupper(c);});
 
         return output;
+    }
+
+    std::string boolToUpperString(const bool& b) {
+        std::ostringstream valueStream;
+        valueStream << std::boolalpha << b;
+        std::string output = Util::toUpper(valueStream.str());
+        return output;
+    }
+
+    std::string boolVectorToUpperString(const std::vector<bool>& b) {
+        std::ostringstream output;
+        if (b.size() > 1) {
+            output << "(";
+        }
+        for (size_t i = 0; i < b.size(); ++i) {
+            output << std::boolalpha << boolToUpperString(b[i]);
+            if (b.size() > 1) {
+                (i < (b.size()-1)) ? (output << ", ") : (output << ")");
+            }
+        }
+
+        return output.str();
+    }
+
+    std::string doubleVectorToString(const std::vector<double>& v) {
+        std::vector<std::string> stringVec;
+        stringVec.reserve(v.size());
+        Util::toString(std::begin(v), std::end(v), std::back_inserter(stringVec));
+
+        std::ostringstream output;
+        if (v.size() > 1) {
+            output << "(";
+        }
+        unsigned int i = 0;
+        for (auto& s: stringVec) {
+            ++i;
+            output << s;
+            if (v.size() > 1) {
+                (i < stringVec.size()) ? (output << ", ") : (output << ")");
+            }
+        }
+
+        return output.str();
     }
 
     std::string combineFilePath(std::initializer_list<std::string> ilist) {
@@ -149,7 +206,6 @@ namespace Util {
         correction(0.0)
     { }
 
-
     KahanAccumulation& KahanAccumulation::operator+=(double value) {
         long double y = value - this->correction;
         long double t = this->sum + y;
@@ -161,7 +217,7 @@ namespace Util {
     /** \brief
      *  rewind the SDDS file such that the spos of the last step is less or equal to maxSPos
      */
-    unsigned int rewindLinesSDDS(const std::string &fileName, double maxSPos, bool checkForTime) {
+    unsigned int rewindLinesSDDS(const std::string& fileName, double maxSPos, bool checkForTime) {
         if (Ippl::myNode() > 0) return 0;
 
         std::fstream fs(fileName.c_str(), std::fstream::in);
@@ -185,11 +241,10 @@ namespace Util {
 
         std::istringstream linestream;
 
-        while (getline(fs, line)) {
+        while (std::getline(fs, line)) {
             allLines.push(line);
         }
         fs.close();
-
 
         fs.open (fileName.c_str(), std::fstream::out);
 
@@ -238,7 +293,7 @@ namespace Util {
             allLines.pop();
         }
 
-        while (allLines.size() > 0) {
+        while (!allLines.empty()) {
             line = allLines.front();
 
             linestream.str(line);
@@ -265,7 +320,7 @@ namespace Util {
 
         fs.close();
 
-        if (allLines.size() > 0)
+        if (!allLines.empty())
             INFOMSG(level2 << "rewind " + fileName + " to " + std::to_string(maxSPos) << " m" << endl);
 
         return allLines.size();
@@ -302,12 +357,11 @@ namespace Util {
                                             "abcdefghijklmnopqrstuvwxyz"
                                             "0123456789+/";
 
-
     static inline bool is_base64(unsigned char c) {
-        return (isalnum(c) || (c == '+') || (c == '/'));
+        return (std::isalnum(c) || (c == '+') || (c == '/'));
     }
 
-    std::string base64_encode(const std::string &string_to_encode) {
+    std::string base64_encode(const std::string& string_to_encode) {
         const char* bytes_to_encode = string_to_encode.c_str();
         unsigned int in_len = string_to_encode.size();
         std::string ret;

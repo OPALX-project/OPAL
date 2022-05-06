@@ -489,7 +489,7 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
     // (this is needed in find_processors).  But if an SMP has 0 nodes,
     // it is an error since the configuration file lists an SMP on which
     // we are not running.
-    if (smpdata->NodeList.size() > 0) {
+    if (!smpdata->NodeList.empty()) {
       sort(smpdata->NodeList.begin(), smpdata->NodeList.end());
       smpdata->Box0Node = smpdata->NodeList[0];
     } else {

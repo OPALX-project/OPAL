@@ -24,7 +24,6 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-
 #include <fstream>
 #include <iostream>
 
@@ -32,11 +31,17 @@
 
 #include "opal_src/Utilities/MockComponent.h"
 
-#include "Attributes/Attributes.h"
-#include "Utilities/OpalException.h"
 #include "BasicActions/DumpEMFields.h"
 
+#include "AbstractObjects/OpalData.h"
+#include "Attributes/Attributes.h"
+#include "Physics/Physics.h"
+#include "Utilities/OpalException.h"
+#include "Utilities/Util.h"
+
 #include "opal_test_utilities/SilenceTest.h"
+
+#include "boost/filesystem.hpp"
 
 namespace DumpEMFieldsTest {
 
@@ -64,7 +69,7 @@ void setAttributesCart(DumpEMFields* dump,
     setOneAttribute(dump, "T_STEPS", nt);
     Attributes::setString(*dump->findAttribute("FILE_NAME"), filename);
     if (!defaultCoords) {
-        Attributes::setString(*dump->findAttribute("COORDINATE_SYSTEM"), "cARtesiAN");
+        Attributes::setPredefinedString(*dump->findAttribute("COORDINATE_SYSTEM"), "cARtesiAN");
     }
 }
 
@@ -87,7 +92,7 @@ void setAttributesCyl(DumpEMFields* dump,
     setOneAttribute(dump, "DT", dt);
     setOneAttribute(dump, "T_STEPS", nt);
     Attributes::setString(*dump->findAttribute("FILE_NAME"), filename);
-    Attributes::setString(*dump->findAttribute("COORDINATE_SYSTEM"), "cYLindriCAL");
+    Attributes::setPredefinedString(*dump->findAttribute("COORDINATE_SYSTEM"), "cYLindriCAL");
 }
 TEST(DumpEMFieldsTest, ConstructorDestructor) {
     OpalTestUtilities::SilenceTest silencer;
@@ -97,7 +102,7 @@ TEST(DumpEMFieldsTest, ConstructorDestructor) {
     delete dump1;
     // grid is not null and it is in the set
     DumpEMFields* dump2 = new DumpEMFields();
-    setAttributesCart(dump2, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1.,  "/dev/null");
+    setAttributesCart(dump2, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1., "/dev/null");
     dump2->execute();
     delete dump2;
 }
@@ -117,49 +122,56 @@ TEST(DumpEMFieldsTest, executeTest) {
     // dump the fields
     DumpEMFields dump1;
     execute_throws(&dump1, "should throw due to nsteps < 1");
-    setAttributesCart(&dump1, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1.,  "/dev/null", true);
+    setAttributesCart(&dump1, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1., "/dev/null", true);
     dump1.execute();  // should be okay (normal)
-    setAttributesCart(&dump1, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1.,  "/dev/null", false);
+    setAttributesCart(&dump1, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1., "/dev/null", false);
     dump1.execute();  // should be okay (normal)
-    setAttributesCart(&dump1, -1., -1., 1.,   -1., -1., 1.,   -1., -1., 1.,   1., 1., 1.,  "/dev/null");
+    setAttributesCart(&dump1, -1., -1., 1.,   -1., -1., 1.,   -1., -1., 1.,   1., 1., 1., "/dev/null");
     dump1.execute();  // should be okay (-ve step is okay)
-    setAttributesCart(&dump1, -1., -1., 0.,   -1., -1., 1.,   -1., -1., 1.,   1., 1., 1.,  "/dev/null");
+    setAttributesCart(&dump1, -1., -1., 0.,   -1., -1., 1.,   -1., -1., 1.,   1., 1., 1., "/dev/null");
     execute_throws(&dump1, "should throw due to nsteps x < 1");
-    setAttributesCart(&dump1, -1., -1., 1.,   -1., -1., 0.,   -1., -1., 1.,   1., 1., 1.,  "/dev/null");
+    setAttributesCart(&dump1, -1., -1., 1.,   -1., -1., 0.,   -1., -1., 1.,   1., 1., 1., "/dev/null");
     execute_throws(&dump1, "should throw due to nsteps y < 1");
-    setAttributesCart(&dump1, -1., -1., 1.,   -1., -1., 1.,   -1., -1., 0.,   1., 1., 1.,  "/dev/null");
+    setAttributesCart(&dump1, -1., -1., 1.,   -1., -1., 1.,   -1., -1., 0.,   1., 1., 1., "/dev/null");
     execute_throws(&dump1, "should throw due to nsteps z < 1");
-    setAttributesCart(&dump1, -1., -1., 1.,   -1., -1., 1.,   -1., -1., 1.,   1., 1., 0.,  "/dev/null");
+    setAttributesCart(&dump1, -1., -1., 1.,   -1., -1., 1.,   -1., -1., 1.,   1., 1., 0., "/dev/null");
     execute_throws(&dump1, "should throw due to nsteps t < 1");
-    setAttributesCart(&dump1, -1., -1., 1.,   -1., -1., 1.,   -1., -1., 1.5,   1., 1., 1.,  "/dev/null");
+    setAttributesCart(&dump1, -1., -1., 1.,   -1., -1., 1.,   -1., -1., 1.5,   1., 1., 1., "/dev/null");
     execute_throws(&dump1, "should throw due to nsteps not integer");
 }
 
-void clear_files() {
-    size_t n_str_array = 0;
-    std::string str_array[5] = {"test1", "test2", "test3", "test4", "testCyl"};
-    for (size_t i = 0; i < n_str_array; ++i) {
-        if (fopen(str_array[i].c_str(), "r") != NULL) {
-            remove(str_array[i].c_str());
-        }
+void clear_files(std::set<std::string> const& files) {
+
+    std::string auxDirectory = OpalData::getInstance()->getAuxiliaryOutputDirectory();
+
+    for (const std::string& fname : files) {
+        boost::filesystem::remove(Util::combineFilePath({auxDirectory, fname}));
     }
 }
 
 TEST(DumpEMFieldsTest, writeFieldsCartTest) {
     OpalTestUtilities::SilenceTest silencer;
 
-    clear_files();
+    std::string auxDirectory = OpalData::getInstance()->getAuxiliaryOutputDirectory();
+    boost::filesystem::create_directory(auxDirectory);
+
+    std::string fname1 = "test5";
+    std::string fname2 = "test6";
+    std::string fname3 = "test7";
+    std::string fname4 = "test8";
+
+    clear_files({fname1, fname2, fname3, fname4});
     DumpEMFields dump1;
-    setAttributesCart(&dump1, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1.,  "test1");
+    setAttributesCart(&dump1, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1., fname1);
     dump1.execute();
     DumpEMFields dump2;
-    setAttributesCart(&dump2, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1.,  "test2");
+    setAttributesCart(&dump2, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1., fname2);
     dump2.execute();
     DumpEMFields dump3;
-    setAttributesCart(&dump3, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1.,  "test3");
+    setAttributesCart(&dump3, 1., 1., 1.,   1., 1., 1.,   1., 1., 1.,   1., 1., 1., fname3);
     // note we don't execute dump3; so it should not be written
     DumpEMFields dump4;
-    setAttributesCart(&dump4, 0.1, 0.1, 3.,   -0.1, 0.2, 2.,   0.2, 0.3, 2.,   1., 1., 2.,  "test4");
+    setAttributesCart(&dump4, 0.1, 0.1, 3.,   -0.1, 0.2, 2.,   0.2, 0.3, 2.,   1., 1., 2., fname4);
     dump4.execute();
     MockComponent comp;
     try {
@@ -167,13 +179,13 @@ TEST(DumpEMFieldsTest, writeFieldsCartTest) {
     } catch (OpalException& exc) {
         EXPECT_TRUE(false) << "Threw OpalException on writefields: " << exc.what() << std::endl;;
     }
-    std::ifstream fin1("test1");
+    std::ifstream fin1(Util::combineFilePath({auxDirectory, fname1}));
     EXPECT_TRUE(fin1.good());
-    std::ifstream fin2("test2");
+    std::ifstream fin2(Util::combineFilePath({auxDirectory, fname2}));
     EXPECT_TRUE(fin2.good());
-    std::ifstream fin3("test3");
-    EXPECT_FALSE(fin3.good());  // does not exist
-    std::ifstream fin4("test4");
+    std::ifstream fin3(Util::combineFilePath({auxDirectory, fname3}));
+    EXPECT_FALSE(fin3.good()); // does not exist
+    std::ifstream fin4(Util::combineFilePath({auxDirectory, fname4}));
     EXPECT_TRUE(fin4.good());
     int n_lines;
     fin4 >> n_lines;
@@ -207,15 +219,20 @@ TEST(DumpEMFieldsTest, writeFieldsCartTest) {
         EXPECT_NEAR(line[8], -line[5], tol);
         EXPECT_NEAR(line[9], -line[6], tol);
     }
-    // clear_files();
+    clear_files({fname1, fname2, fname3, fname4});
 }
 
 TEST(DumpEMFieldsTest, writeFieldsCylTest) {
     OpalTestUtilities::SilenceTest silencer;
-    const double rad = M_PI/180.;
-    clear_files();
+
+    std::string auxDirectory = OpalData::getInstance()->getAuxiliaryOutputDirectory();
+    boost::filesystem::create_directory(auxDirectory);
+
+    std::string fnameCyl = "testCyl";
+
+    clear_files({fnameCyl});
     DumpEMFields dump;
-    setAttributesCyl(&dump, 0.1, 0.1, 3.,   90.*rad, 45.*rad, 16,   0.2, 0.3, 2.,   1., 1., 2.,  "testCyl");
+    setAttributesCyl(&dump, 0.1, 0.1, 3.,   90.*Units::deg2rad, 45.*Units::deg2rad, 16,   0.2, 0.3, 2.,   1., 1., 2., fnameCyl);
     dump.execute();
     // depending on execution order, this might write cartesian tests as well... never mind
     MockComponent comp;
@@ -224,7 +241,7 @@ TEST(DumpEMFieldsTest, writeFieldsCylTest) {
     } catch (OpalException& exc) {
         EXPECT_TRUE(false) << "Threw OpalException on writefields: " << exc.what() << std::endl;;
     }
-    std::ifstream fin("testCyl");
+    std::ifstream fin(Util::combineFilePath({auxDirectory, fnameCyl}));
     EXPECT_TRUE(fin.good());
     int n_lines;
     fin >> n_lines;
@@ -260,7 +277,7 @@ TEST(DumpEMFieldsTest, writeFieldsCylTest) {
         EXPECT_NEAR(line[8], -line[5], tol);
         EXPECT_NEAR(line[9], -line[6], tol);
     }
-    clear_files();
+    clear_files({fnameCyl});
 
     // EXPECT_TRUE(false) << "Do DumpEMFields cylindrical documentation!";
 }

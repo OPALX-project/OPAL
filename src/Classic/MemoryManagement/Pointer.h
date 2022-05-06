@@ -40,7 +40,7 @@ class Pointer {
 public:
 
     /// Default constructor.
-    //  Set the pointer to NULL.
+    //  Set the pointer to nullptr.
     Pointer();
 
     /// Copy constructor.
@@ -78,7 +78,7 @@ public:
     bool operator!=(const Pointer &) const;
 
     /// Test for validity.
-    //  Return true, if the pointer is not NULL.
+    //  Return true, if the pointer is not nullptr.
     bool isValid() const;
 
     /// Force unique.

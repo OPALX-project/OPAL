@@ -172,7 +172,7 @@ void Timing::print(const std::string &fn, const std::map<std::string, unsigned i
      *msg << "\n";
      */
 
-    if (problemSize.size() > 0) {
+    if (!problemSize.empty()) {
         *msg << "Problem size:\n";
         for (auto it: problemSize) {
             *msg << "    " << std::setw(10) << it.first << ": " << it.second << "\n";

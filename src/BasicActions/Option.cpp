@@ -18,27 +18,34 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "BasicActions/Option.h"
+
+#include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "Parser/FileStream.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
-#include "Utilities/OptionTypes.h"
 #include "Utilities/ClassicRandom.h"
 
 #include "Utility/Inform.h"
 #include "Utility/IpplInfo.h"
 #include "Utility/IpplMemoryUsage.h"
 
+#include <boost/assign.hpp>
+
 #include <ctime>
+#include <cstddef>
 #include <iostream>
 #include <limits>
-#include <cstddef>
 
-extern Inform *gmsg;
+extern Inform* gmsg;
 
 using namespace Options;
 
-std::string DumpFrameToString(DumpFrame df);
+const boost::bimap<DumpFrame, std::string> Option::bmDumpFrameString_s =
+    boost::assign::list_of<const boost::bimap<DumpFrame, std::string>::relation>
+        (DumpFrame::GLOBAL,     "GLOBAL")
+        (DumpFrame::BUNCH_MEAN, "BUNCH_MEAN")
+        (DumpFrame::REFERENCE,  "REFERENCE");
 
 namespace {
     // The attributes of class Option.
@@ -63,13 +70,13 @@ namespace {
         EBDUMP,
         CSRDUMP,
         AUTOPHASE,
-        SURFDUMPFREQ,
         NUMBLOCKS,
         RECYCLEBLOCKS,
         NLHS,
         CZERO,
         RNGTYPE,
         ENABLEHDF5,
+        ENABLEVTK,
         ASCIIDUMP,
         BOUNDPDESTROYFQ,
         BEAMHALOBOUNDARY,
@@ -87,6 +94,7 @@ namespace {
         DELPARTFREQ,
         MINBINEMITTED,
         MINSTEPFORREBIN,
+        COMPUTEPERCENTILES,
         SIZE
     };
 }
@@ -104,7 +112,9 @@ Option::Option():
                     ("INFO", "If true, print information messages", info);
 
     itsAttr[TRACE] = Attributes::makeBool
-                     ("TRACE", "If true, print execution trace", mtrace);
+                     ("TRACE", "If true, print execution trace"
+                      "Must be the first option in the inputfile in "
+                      "order to render correct results", mtrace);
 
     itsAttr[WARN] = Attributes::makeBool
                     ("WARN", "If true, print warning messages", warn);
@@ -135,28 +145,30 @@ Option::Option():
     itsAttr[SCSOLVEFREQ] = Attributes::makeReal
                            ("SCSOLVEFREQ", "The frequency to solve space charge fields. its default value is 1");
 
-    itsAttr[MTSSUBSTEPS] = Attributes::makeReal("MTSSUBSTEPS", "How many small timesteps "
-                                                "are inside the large timestep used in multiple "
-                                                "time stepping (MTS) integrator");
+    itsAttr[MTSSUBSTEPS] = Attributes::makeReal
+                           ("MTSSUBSTEPS", "How many small timesteps "
+                            "are inside the large timestep used in multiple "
+                            "time stepping (MTS) integrator");
 
     itsAttr[REMOTEPARTDEL] = Attributes::makeReal
-      ("REMOTEPARTDEL", "Artifically delete the remote particle if its distance "
-       "to the beam mass is larger than REMOTEPARTDEL times of the beam rms size, "
-       "its default values is 0 (no delete) ",0.0);
+                             ("REMOTEPARTDEL", "Artifically delete the remote particle "
+                              "if its distance to the beam mass is larger than "
+                              "REMOTEPARTDEL times of the beam rms size, "
+                              "its default values is 0 (no delete) ",remotePartDel);
 
-    itsAttr[PSDUMPFRAME] = Attributes::makeUpperCaseString
-                                ("PSDUMPFRAME", "Controls the frame of phase space dump in "
-                                 "stat file and h5 file. If 'GLOBAL' OPAL will dump in the "
-                                 "lab (global) Cartesian frame; if 'BUNCH_MEAN' OPAL will "
-                                 "dump in the local Cartesian frame of the beam mean; "
-                                 "if 'REFERENCE'  OPAL will dump in the local Cartesian "
-                                 "frame of the reference particle 0. Only aviable for "
-                                 "OPAL-cycl, its default value is 'GLOBAL'");
+    itsAttr[PSDUMPFRAME] = Attributes::makePredefinedString
+                           ("PSDUMPFRAME", "Controls the frame of phase space dump in "
+                            "stat file and h5 file. If 'GLOBAL' OPAL will dump in the "
+                            "lab (global) Cartesian frame; if 'BUNCH_MEAN' OPAL will "
+                            "dump in the local Cartesian frame of the beam mean; "
+                            "if 'REFERENCE'  OPAL will dump in the local Cartesian "
+                            "frame of the reference particle 0. Only available for "
+                            "OPAL-cycl.", {"BUNCH_MEAN", "REFERENCE", "GLOBAL"}, "GLOBAL");
 
     itsAttr[SPTDUMPFREQ] = Attributes::makeReal
                            ("SPTDUMPFREQ", "The frequency to dump single "
                             "particle trajectory of particles with ID = 0 & 1, "
-                            "its default value is 1. ");
+                            "its default value is 1.", sptDumpFreq);
 
     itsAttr[REPARTFREQ] = Attributes::makeReal
                           ("REPARTFREQ", "The frequency to do particles repartition "
@@ -180,8 +192,8 @@ Option::Option():
                         "space the scalar rho field is also dumped (H5Block)", rhoDump);
 
     itsAttr[EBDUMP] = Attributes::makeBool
-                       ("EBDUMP", "If true, in addition to the phase space the "
-                        "E and B field at each particle is also dumped into the H5 file)", ebDump);
+                      ("EBDUMP", "If true, in addition to the phase space the "
+                       "E and B field at each particle is also dumped into the H5 file)", ebDump);
 
     itsAttr[CSRDUMP] = Attributes::makeBool
                        ("CSRDUMP", "If true, the csr E field, line density "
@@ -194,54 +206,58 @@ Option::Option():
                           "acceleration. Defines the number of refinements of the "
                           "search range", autoPhase);
 
-    itsAttr[SURFDUMPFREQ] =  Attributes::makeReal
-                             ("SURFDUMPFREQ", "The frequency to dump surface-particle "
-                              "interaction data, its default value is -1 (no dump).",
-                              surfDumpFreq);
-
     itsAttr[CZERO] =  Attributes::makeBool
                       ("CZERO", "If set to true a symmetric distribution is "
-                       "created -> centroid == 0.0 ", cZero);
+                       "created -> centroid == 0.0", cZero);
 
-    itsAttr[RNGTYPE] =  Attributes::makeUpperCaseString
-                        ("RNGTYPE", "RANDOM (default), Quasi-random number "
-                         "generators: HALTON, SOBOL, NIEDERREITER (Gsl ref manual 18.5)", rngtype);
+    itsAttr[RNGTYPE] =  Attributes::makePredefinedString
+                        ("RNGTYPE", "Type of pseudo- or quasi-random number generator, "
+                         "see also Quasi-Random Sequences, GSL reference manual.",
+                         {"RANDOM", "HALTON", "SOBOL", "NIEDERREITER"}, rngtype);
 
-
-    itsAttr[CLOTUNEONLY] =  Attributes::makeBool
-                                   ("CLOTUNEONLY", "If set to true stop after "
-                                    "CLO and tune calculation ", cloTuneOnly);
+    itsAttr[CLOTUNEONLY] = Attributes::makeBool
+                           ("CLOTUNEONLY", "If set to true stop after "
+                            "CLO and tune calculation ", cloTuneOnly);
 
     itsAttr[NUMBLOCKS] = Attributes::makeReal
-                          ("NUMBLOCKS", "Maximum number of vectors in the Krylov "
-                           "space (for RCGSolMgr). Default value is 0 and BlockCGSolMgr will be used.");
+                         ("NUMBLOCKS", "Maximum number of vectors in the Krylov "
+                          "space (for RCGSolMgr). Default value is 0 and BlockCGSolMgr will be used.");
+
     itsAttr[RECYCLEBLOCKS] = Attributes::makeReal
-                          ("RECYCLEBLOCKS", "Number of vectors in the recycle "
-                           "space (for RCGSolMgr). Default value is 0 and BlockCGSolMgr will be used.");
+                             ("RECYCLEBLOCKS", "Number of vectors in the recycle "
+                              "space (for RCGSolMgr). Default value is 0 and BlockCGSolMgr will be used.");
+
     itsAttr[NLHS] = Attributes::makeReal
-                          ("NLHS", "Number of stored old solutions for extrapolating "
-                           "the new starting vector. Default value is 1 and just the last solution is used.");
+                    ("NLHS", "Number of stored old solutions for extrapolating "
+                     "the new starting vector. Default value is 1 and just the last solution is used.");
 
     itsAttr[ENABLEHDF5] = Attributes::makeBool
-        ("ENABLEHDF5", "If true, HDF5 actions are enabled", enableHDF5);
+                          ("ENABLEHDF5", "If true, HDF5 actions are enabled", enableHDF5);
+
+    itsAttr[ENABLEVTK] = Attributes::makeBool
+                         ("ENABLEVTK", "If true, writing of VTK files are enabled", enableVTK);
 
     itsAttr[ASCIIDUMP] = Attributes::makeBool
-        ("ASCIIDUMP", "If true, some of the elements dump in ASCII instead of HDF5", false);
+                         ("ASCIIDUMP", "If true, some of the elements dump in ASCII instead of HDF5", asciidump);
 
     itsAttr[BOUNDPDESTROYFQ] = Attributes::makeReal
-      ("BOUNDPDESTROYFQ", "The frequency to do boundp_destroy to delete lost particles. Default 10",10.0);
+                               ("BOUNDPDESTROYFQ", "The frequency to do boundp_destroy to "
+                                "delete lost particles. Default 10", boundpDestroyFreq);
 
     itsAttr[BEAMHALOBOUNDARY] = Attributes::makeReal
-      ("BEAMHALOBOUNDARY", "Defines in terms of sigma where the halo starts. Default 0.0",0.0);
+                                ("BEAMHALOBOUNDARY", "Defines in terms of sigma where "
+                                 "the halo starts. Default 0.0", beamHaloBoundary);
 
     itsAttr[IDEALIZED] = Attributes::makeBool
-        ("IDEALIZED", "Using the hard edge model for the calculation of path length. Default: false", false);
+                         ("IDEALIZED", "Using the hard edge model for the calculation "
+                          "of path length. Default: false", idealized);
 
     itsAttr[LOGBENDTRAJECTORY] = Attributes::makeBool
-        ("LOGBENDTRAJECTORY", "Writing the trajectory of every bend to disk. Default: false", false);
+                                 ("LOGBENDTRAJECTORY", "Writing the trajectory of "
+                                  "every bend to disk. Default: false", writeBendTrajectories);
 
     itsAttr[VERSION] = Attributes::makeReal
-        ("VERSION", "Version of OPAL for which input file was written", 10000);
+                       ("VERSION", "Version of OPAL for which input file was written", version);
 
 #ifdef ENABLE_AMR
     itsAttr[AMR] = Attributes::makeBool
@@ -257,14 +273,23 @@ Option::Option():
                                                     "in multi-bunch mode (default: 10)",
                                                     amrRegridFreq);
 #endif
+
     itsAttr[MEMORYDUMP] = Attributes::makeBool
-        ("MEMORYDUMP", "If true, write memory to SDDS file", memoryDump);
+                          ("MEMORYDUMP", "If true, write memory to SDDS file", memoryDump);
 
     itsAttr[HALOSHIFT] = Attributes::makeReal
-        ("HALOSHIFT", "Constant parameter to shift halo value (default: 0.0)", haloShift);
+                         ("HALOSHIFT", "Constant parameter to shift halo value (default: 0.0)", haloShift);
 
     itsAttr[DELPARTFREQ] = Attributes::makeReal
-        ("DELPARTFREQ", "The frequency to delete particles, i.e. delete when step%delPartFreq == 0. Default: 1", delPartFreq);
+                           ("DELPARTFREQ", "The frequency to delete particles, "
+                            "i.e. delete when step%delPartFreq == 0. Default: 1", delPartFreq);
+
+    itsAttr[COMPUTEPERCENTILES] = Attributes::makeBool
+                                  ("COMPUTEPERCENTILES", "Flag to control whether the 68.27 "
+                                   "(1 sigma for normal distribution), the 95.45 (2 sigmas), "
+                                   "the 99.73 (3 sigmas) and the 99.994 (4 sigmas) percentiles "
+                                   "for the beam size and the normalized emittance should "
+                                   "be computed. Default: false", computePercentiles);
 
     registerOwnership(AttributeHandler::STATEMENT);
 
@@ -272,17 +297,17 @@ Option::Option():
 }
 
 
-Option::Option(const std::string &name, Option *parent):
+Option::Option(const std::string& name, Option* parent):
     Action(name, parent) {
-    Attributes::setBool(itsAttr[ECHO],       echo);
-    Attributes::setBool(itsAttr[INFO],       info);
-    Attributes::setBool(itsAttr[TRACE],      mtrace);
-    Attributes::setBool(itsAttr[WARN],       warn);
-    Attributes::setReal(itsAttr[SEED],       seed);
+    Attributes::setBool(itsAttr[ECHO], echo);
+    Attributes::setBool(itsAttr[INFO], info);
+    Attributes::setBool(itsAttr[TRACE], mtrace);
+    Attributes::setBool(itsAttr[WARN], warn);
+    Attributes::setReal(itsAttr[SEED], seed);
     Attributes::setReal(itsAttr[PSDUMPFREQ], psDumpFreq);
     Attributes::setReal(itsAttr[STATDUMPFREQ], statDumpFreq);
     Attributes::setBool(itsAttr[PSDUMPEACHTURN], psDumpEachTurn);
-    Attributes::setUpperCaseString(itsAttr[PSDUMPFRAME], DumpFrameToString(psDumpFrame));
+    Attributes::setPredefinedString(itsAttr[PSDUMPFRAME], getDumpFrameString(psDumpFrame));
     Attributes::setReal(itsAttr[SPTDUMPFREQ], sptDumpFreq);
     Attributes::setReal(itsAttr[SCSOLVEFREQ], scSolveFreq);
     Attributes::setReal(itsAttr[MTSSUBSTEPS], mtsSubsteps);
@@ -295,14 +320,14 @@ Option::Option(const std::string &name, Option *parent):
     Attributes::setBool(itsAttr[EBDUMP], ebDump);
     Attributes::setBool(itsAttr[CSRDUMP], csrDump);
     Attributes::setReal(itsAttr[AUTOPHASE], autoPhase);
-    Attributes::setReal(itsAttr[SURFDUMPFREQ], surfDumpFreq);
     Attributes::setBool(itsAttr[CZERO], cZero);
     Attributes::setBool(itsAttr[CLOTUNEONLY], cloTuneOnly);
-    Attributes::setUpperCaseString(itsAttr[RNGTYPE], std::string(rngtype));
+    Attributes::setPredefinedString(itsAttr[RNGTYPE], std::string(rngtype));
     Attributes::setReal(itsAttr[NUMBLOCKS], numBlocks);
     Attributes::setReal(itsAttr[RECYCLEBLOCKS], recycleBlocks);
     Attributes::setReal(itsAttr[NLHS], nLHS);
     Attributes::setBool(itsAttr[ENABLEHDF5], enableHDF5);
+    Attributes::setBool(itsAttr[ENABLEVTK], enableVTK);
     Attributes::setBool(itsAttr[ASCIIDUMP], asciidump);
     Attributes::setReal(itsAttr[BOUNDPDESTROYFQ], boundpDestroyFreq);
     Attributes::setReal(itsAttr[BEAMHALOBOUNDARY], beamHaloBoundary);
@@ -317,6 +342,7 @@ Option::Option(const std::string &name, Option *parent):
     Attributes::setBool(itsAttr[MEMORYDUMP], memoryDump);
     Attributes::setReal(itsAttr[HALOSHIFT], haloShift);
     Attributes::setReal(itsAttr[DELPARTFREQ], delPartFreq);
+    Attributes::setBool(itsAttr[COMPUTEPERCENTILES], computePercentiles);
 }
 
 
@@ -324,23 +350,29 @@ Option::~Option()
 {}
 
 
-Option *Option::clone(const std::string &name) {
+Option* Option::clone(const std::string& name) {
     return new Option(name, this);
 }
 
 
 void Option::execute() {
     // Store the option flags.
-    echo      = Attributes::getBool(itsAttr[ECHO]);
-    info      = Attributes::getBool(itsAttr[INFO]);
-    mtrace     = Attributes::getBool(itsAttr[TRACE]);
-    warn      = Attributes::getBool(itsAttr[WARN]);
-    psDumpEachTurn =   Attributes::getBool(itsAttr[PSDUMPEACHTURN]);
-    rhoDump = Attributes::getBool(itsAttr[RHODUMP]);
-    ebDump = Attributes::getBool(itsAttr[EBDUMP]);
-    csrDump = Attributes::getBool(itsAttr[CSRDUMP]);
-    enableHDF5 = Attributes::getBool(itsAttr[ENABLEHDF5]);
-    version = Attributes::getReal(itsAttr[VERSION]);
+    echo           = Attributes::getBool(itsAttr[ECHO]);
+    info           = Attributes::getBool(itsAttr[INFO]);
+    mtrace         = Attributes::getBool(itsAttr[TRACE]);
+    warn           = Attributes::getBool(itsAttr[WARN]);
+    psDumpEachTurn = Attributes::getBool(itsAttr[PSDUMPEACHTURN]);
+    remotePartDel  = Attributes::getReal(itsAttr[REMOTEPARTDEL]);
+    rhoDump        = Attributes::getBool(itsAttr[RHODUMP]);
+    ebDump         = Attributes::getBool(itsAttr[EBDUMP]);
+    csrDump        = Attributes::getBool(itsAttr[CSRDUMP]);
+    enableHDF5     = Attributes::getBool(itsAttr[ENABLEHDF5]);
+    enableVTK      = Attributes::getBool(itsAttr[ENABLEVTK]);
+    idealized      = Attributes::getBool(itsAttr[IDEALIZED]);
+    asciidump      = Attributes::getBool(itsAttr[ASCIIDUMP]);
+    version        = Attributes::getReal(itsAttr[VERSION]);
+    seed           = Attributes::getReal(itsAttr[SEED]);
+    writeBendTrajectories = Attributes::getBool(itsAttr[LOGBENDTRAJECTORY]);
 #ifdef ENABLE_AMR
     amr = Attributes::getBool(itsAttr[AMR]);
     amrYtDumpFreq = int(Attributes::getReal(itsAttr[AMR_YT_DUMP_FREQ]));
@@ -352,17 +384,17 @@ void Option::execute() {
     amrRegridFreq = int(Attributes::getReal(itsAttr[AMR_REGRID_FREQ]));
     amrRegridFreq = ( amrRegridFreq < 1 ) ? 1 : amrRegridFreq;
 #endif
-    memoryDump  = Attributes::getBool(itsAttr[MEMORYDUMP]);
-    haloShift   = Attributes::getReal(itsAttr[HALOSHIFT]);
-    delPartFreq = Attributes::getReal(itsAttr[DELPARTFREQ]);
+
+    memoryDump     = Attributes::getBool(itsAttr[MEMORYDUMP]);
+    haloShift      = Attributes::getReal(itsAttr[HALOSHIFT]);
+    delPartFreq    = Attributes::getReal(itsAttr[DELPARTFREQ]);
+    computePercentiles = Attributes::getBool(itsAttr[COMPUTEPERCENTILES]);
 
     if ( memoryDump ) {
         IpplMemoryUsage::IpplMemory_p memory = IpplMemoryUsage::getInstance(
                 IpplMemoryUsage::Unit::GB, false);
         memory->sample();
     }
-
-    seed = Attributes::getReal(itsAttr[SEED]);
 
     /// note: rangen is used only for the random number generator in the OPAL language
     ///       not for the distributions
@@ -372,19 +404,14 @@ void Option::execute() {
     else
       rangen.init55(seed);
 
-
     IpplInfo::Info->on(info);
     IpplInfo::Warn->on(warn);
 
     handlePsDumpFrame(Attributes::getString(itsAttr[PSDUMPFRAME]));
 
-    if(itsAttr[ASCIIDUMP]) {
-        asciidump = Attributes::getBool(itsAttr[ASCIIDUMP]);
-    }
-
     /// note: rangen is used only for the random number generator in the OPAL language
     ///       not for the distributions
-    if(itsAttr[SEED]) {
+    if (itsAttr[SEED]) {
         seed = int(Attributes::getReal(itsAttr[SEED]));
         if (seed == -1)
             rangen.init55(time(0));
@@ -392,41 +419,34 @@ void Option::execute() {
             rangen.init55(seed);
     }
 
-    if(itsAttr[PSDUMPFREQ]) {
+    if (itsAttr[PSDUMPFREQ]) {
         psDumpFreq = int(Attributes::getReal(itsAttr[PSDUMPFREQ]));
         if (psDumpFreq==0)
             psDumpFreq = std::numeric_limits<int>::max();
     }
 
-    if(itsAttr[STATDUMPFREQ]) {
+    if (itsAttr[STATDUMPFREQ]) {
         statDumpFreq = int(Attributes::getReal(itsAttr[STATDUMPFREQ]));
         if (statDumpFreq==0)
             statDumpFreq = std::numeric_limits<int>::max();
     }
 
-    if(itsAttr[SPTDUMPFREQ]) {
+    if (itsAttr[SPTDUMPFREQ]) {
         sptDumpFreq = int(Attributes::getReal(itsAttr[SPTDUMPFREQ]));
         if (sptDumpFreq==0)
             sptDumpFreq = std::numeric_limits<int>::max();
     }
 
-
-    if(itsAttr[SCSOLVEFREQ]) {
+    if (itsAttr[SCSOLVEFREQ]) {
         scSolveFreq = int(Attributes::getReal(itsAttr[SCSOLVEFREQ]));
         scSolveFreq = ( scSolveFreq < 1 ) ? 1 : scSolveFreq;
     }
 
-
-    if(itsAttr[MTSSUBSTEPS]) {
+    if (itsAttr[MTSSUBSTEPS]) {
         mtsSubsteps = int(Attributes::getReal(itsAttr[MTSSUBSTEPS]));
     }
 
-
-    if(itsAttr[REMOTEPARTDEL]) {
-        remotePartDel = Attributes::getReal(itsAttr[REMOTEPARTDEL]);
-    }
-
-    if(itsAttr[REPARTFREQ]) {
+    if (itsAttr[REPARTFREQ]) {
         repartFreq = int(Attributes::getReal(itsAttr[REPARTFREQ]));
     }
 
@@ -438,48 +458,43 @@ void Option::execute() {
         minStepForRebin = int(Attributes::getReal(itsAttr[MINSTEPFORREBIN]));
     }
 
-    if(itsAttr[REBINFREQ]) {
+    if (itsAttr[REBINFREQ]) {
         rebinFreq = int(Attributes::getReal(itsAttr[REBINFREQ]));
     }
 
-    if(itsAttr[AUTOPHASE]) {
+    if (itsAttr[AUTOPHASE]) {
         autoPhase = int(Attributes::getReal(itsAttr[AUTOPHASE]));
     }
-    if(itsAttr[SURFDUMPFREQ]) {
-        surfDumpFreq = int(Attributes::getReal(itsAttr[SURFDUMPFREQ]));
-    }
-    if(itsAttr[NUMBLOCKS]) {
+
+    if (itsAttr[NUMBLOCKS]) {
         numBlocks = int(Attributes::getReal(itsAttr[NUMBLOCKS]));
     }
-    if(itsAttr[RECYCLEBLOCKS]) {
+
+    if (itsAttr[RECYCLEBLOCKS]) {
         recycleBlocks = int(Attributes::getReal(itsAttr[RECYCLEBLOCKS]));
     }
-    if(itsAttr[NLHS]) {
+
+    if (itsAttr[NLHS]) {
         nLHS = int(Attributes::getReal(itsAttr[NLHS]));
     }
 
-    if(itsAttr[CZERO]) {
+    if (itsAttr[CZERO]) {
         cZero = bool(Attributes::getBool(itsAttr[CZERO]));
     }
 
-    if(itsAttr[RNGTYPE]) {
+    if (itsAttr[RNGTYPE]) {
         rngtype = std::string(Attributes::getString(itsAttr[RNGTYPE]));
     } else {
         rngtype = std::string("RANDOM");
     }
 
-    if(itsAttr[BEAMHALOBOUNDARY]) {
+    if (itsAttr[BEAMHALOBOUNDARY]) {
         beamHaloBoundary  = Attributes::getReal(itsAttr[BEAMHALOBOUNDARY]);
-    }
-    else {
+    } else {
         beamHaloBoundary = 0;
     }
 
-    idealized = Attributes::getBool(itsAttr[IDEALIZED]);
-
-    writeBendTrajectories = Attributes::getBool(itsAttr[LOGBENDTRAJECTORY]);
-
-    if(itsAttr[CLOTUNEONLY]) {
+    if (itsAttr[CLOTUNEONLY]) {
         cloTuneOnly = bool(Attributes::getBool(itsAttr[CLOTUNEONLY]));
     } else {
         cloTuneOnly = false;
@@ -488,34 +503,26 @@ void Option::execute() {
     // Set message flags.
     FileStream::setEcho(echo);
 
-    if(Attributes::getBool(itsAttr[TELL])) {
+    if (Attributes::getBool(itsAttr[TELL])) {
         *gmsg << "\nCurrent settings of options:\n" << *this << endl;
     }
-}
 
-void Option::handlePsDumpFrame(const std::string &dumpFrame) {
-    if (dumpFrame == "GLOBAL") {
-        psDumpFrame = GLOBAL;
-    } else if (dumpFrame == "BUNCH_MEAN") {
-        psDumpFrame = BUNCH_MEAN;
-    } else if (dumpFrame == "REFERENCE") {
-        psDumpFrame = REFERENCE;
-    } else {
-        std::string msg = std::string("Did not recognise PSDUMPFRAME '")+\
-                    dumpFrame+std::string("'. It should be one of 'GLOBAL',")+\
-                    std::string(" 'BUNCH_MEAN' or 'REFERENCE'");
-        throw OpalException("Option::handlePsDumpFrame", msg);
+    Option* main = dynamic_cast<Option*>(OpalData::getInstance()->find("OPTION"));
+    if (main) {
+        main->update(itsAttr);
     }
 }
 
-std::string DumpFrameToString(DumpFrame df) {
-    switch (df) {
-    case BUNCH_MEAN:
-        return std::string("BUNCH_MEAN");
-    case REFERENCE:
-        return std::string("REFERENCE");
-    case GLOBAL:
-    default:
-        return std::string("GLOBAL");
+void Option::handlePsDumpFrame(const std::string& dumpFrame) {
+    psDumpFrame = bmDumpFrameString_s.right.at(dumpFrame);
+}
+
+std::string Option::getDumpFrameString(const DumpFrame& df) {
+    return bmDumpFrameString_s.left.at(df);
+}
+
+void Option::update(const std::vector<Attribute>& othersAttributes) {
+    for (int i = 0; i < SIZE; ++ i) {
+        itsAttr[i] = othersAttributes[i];
     }
 }

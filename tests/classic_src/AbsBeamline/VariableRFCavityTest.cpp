@@ -37,7 +37,7 @@
 #include "opal_test_utilities/SilenceTest.h"
 
 void testNull(VariableRFCavity& cav1) {
-    std::shared_ptr<AbstractTimeDependence> null_poly(NULL);
+    std::shared_ptr<AbstractTimeDependence> null_poly(nullptr);
     EXPECT_DOUBLE_EQ(cav1.getLength(), 0.);
     EXPECT_EQ(cav1.getAmplitudeModel(), null_poly);
     EXPECT_EQ(cav1.getPhaseModel(), null_poly);
@@ -54,7 +54,7 @@ TEST(VariableRFCavityTest, TestConstructorEtc) {
     EXPECT_EQ(cav2.getName(), "a_name");
     testNull(cav1);
     // and now we implicitly check the destructor doesnt throw up on
-    // case where everything is initialised to NULL
+    // case where everything is initialised to nullptr
 }
 
 // Is the obscure pointer-to-member function syntax appropriate here? I have
@@ -71,7 +71,7 @@ void testGetSet(VariableRFCavity& cav1,
     EXPECT_EQ((cav1.*getMethod)(), poly_2);  // shallow equals is okay
     (cav1.*setMethod)(poly_2);
     EXPECT_EQ((cav1.*getMethod)(), poly_2);  // shallow equals is okay
-    (cav1.*setMethod)(NULL);  // and this deletes the memory
+    (cav1.*setMethod)(nullptr);  // and this deletes the memory
 }
 
 TEST(VariableRFCavityTest, TestGetSet) {

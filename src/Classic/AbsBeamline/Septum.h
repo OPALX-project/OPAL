@@ -34,7 +34,7 @@ public:
     /// Apply visitor to Septum.
     virtual void accept(BeamlineVisitor &) const override;
     ///@{ Override implementation of PluginElement
-    virtual ElementBase::ElementType getType() const override;
+    virtual ElementType getType() const override;
     virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
     ///@}
     /// unhide PluginElement::initialise(PartBunchBase<double, 3> *bunch)

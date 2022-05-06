@@ -2,7 +2,7 @@
 
 #include "opal_test_utilities/SilenceTest.h"
 
-#include "Solvers/GreenWakeFunction.hh"
+#include "Solvers/GreenWakeFunction.h"
 
 #include "TestLambda.h" // Profile of the bunch
 
@@ -31,7 +31,7 @@ TEST(GreenWakeFunctionTest, TestApply)
     std::vector<double> relativeErrorEnergy = {1e-9, 1};
 
     for (int acmode : acmodes) {
-        GreenWakeFunction gwf("opal", filters, nbin, Z0, radius, sigma, acmode, tau, 0, const_length, fname);
+        GreenWakeFunction gwf("opal", filters, nbin, Z0, radius, sigma, acmode, tau, WakeDirection::TRANSVERSAL, const_length, fname);
 
         double spacing = 1e-6; //IFF: charge in testLambda.h in 1um spacings
         // determine K and charge
@@ -44,7 +44,7 @@ TEST(GreenWakeFunctionTest, TestApply)
                   << "# sigma = "     << gwf.sigma_m     << std::endl
                   << "# acMode = "    << gwf.acMode_m    << std::endl
                   << "# tau = "       << gwf.tau_m       << std::endl
-                  << "# direction = " << gwf.direction_m << std::endl
+                  << "# direction = " << gwf.getWakeDirectionString(gwf.direction_m) << std::endl
                   << "# spacing = "   << spacing         << std::endl
                   << "# Lbunch = "    << gwf.NBin_m      << std::endl;
 

@@ -38,14 +38,14 @@ PolynomialPatch::PolynomialPatch(Mesh* grid_points,
     validity_region_ = validity_region;
     points_ = polynomials;
     // validate input data
-    if (grid_points_ == NULL)
+    if (grid_points_ == nullptr)
         throw GeneralClassicException(
-                "PolynomialPatch::PolynomialPatch",                   
-                "PolynomialPatch grid_points_ was NULL");
-    if (validity_region_ == NULL)
+                "PolynomialPatch::PolynomialPatch",
+                "PolynomialPatch grid_points_ was nullptr");
+    if (validity_region_ == nullptr)
         throw GeneralClassicException(
-                "PolynomialPatch::PolynomialPatch",                   
-                "PolynomialPatch validity_region_ was NULL");
+                "PolynomialPatch::PolynomialPatch",
+                "PolynomialPatch validity_region_ was nullptr");
     if (points_.size() == 0) {
         throw GeneralClassicException(
             "PolynomialPatch::PolynomialPatch",
@@ -66,10 +66,10 @@ PolynomialPatch::PolynomialPatch(Mesh* grid_points,
     }
     value_dimension_ = points_[0]->ValueDimension();
     for (size_t i = 0; i < points_.size(); ++i) {
-        if (points_[i] == NULL)
+        if (points_[i] == nullptr)
             throw GeneralClassicException(
                               "PolynomialPatch::PolynomialPatch",
-                              "PolynomialPatch points_ element was NULL");
+                              "PolynomialPatch points_ element was nullptr");
         if (points_[i]->PointDimension() != point_dimension_) {
             throw GeneralClassicException(
                 "PolynomialPatch::PolynomialPatch",
@@ -83,18 +83,18 @@ PolynomialPatch::PolynomialPatch(Mesh* grid_points,
 }
 
 VectorMap* PolynomialPatch::clone() const {
-    Mesh* new_mesh = NULL;
-    if (grid_points_ != NULL) {
+    Mesh* new_mesh = nullptr;
+    if (grid_points_ != nullptr) {
         new_mesh = grid_points_->clone();
     }
-    Mesh* new_validity = NULL;
-    if (validity_region_ != NULL) {
+    Mesh* new_validity = nullptr;
+    if (validity_region_ != nullptr) {
         new_validity = validity_region_->clone();
     }
     std::vector<SquarePolynomialVector*> new_points(points_.size());
     for (size_t i = 0; i < points_.size(); ++i) {
-        if (points_[i] == NULL) {
-            new_points[i] = NULL;
+        if (points_[i] == nullptr) {
+            new_points[i] = nullptr;
         } else {
             new_points[i] = new SquarePolynomialVector(*points_[i]);
         }
@@ -103,7 +103,7 @@ VectorMap* PolynomialPatch::clone() const {
 }
 
 PolynomialPatch::PolynomialPatch()
-  : validity_region_(NULL), grid_points_(NULL), points_(), point_dimension_(0),
+  : validity_region_(nullptr), grid_points_(nullptr), points_(), point_dimension_(0),
     value_dimension_(0) {
 }
 

@@ -28,6 +28,7 @@
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/StripperRep.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 
 
 OpalStripper::OpalStripper():
@@ -52,8 +53,6 @@ OpalStripper::OpalStripper():
                      ("OPYIELD", "Yield (Particle number of the outcome particle) per income particle");
     itsAttr[STOP] = Attributes::makeBool
       ("STOP", "Option Whether stop tracking at the stripper. Default: true", true);
-    itsAttr[OUTFN] = Attributes::makeString
-                     ("OUTFN", "Output filename");
 
     registerOwnership();
 
@@ -81,11 +80,10 @@ void OpalStripper::update() {
 
     StripperRep *strp = dynamic_cast<StripperRep *>(getElement());
 
-    const double mm2m = 0.001;
-    double xstart   = mm2m * Attributes::getReal(itsAttr[XSTART]);
-    double xend     = mm2m * Attributes::getReal(itsAttr[XEND]);
-    double ystart   = mm2m * Attributes::getReal(itsAttr[YSTART]);
-    double yend     = mm2m * Attributes::getReal(itsAttr[YEND]);
+    double xstart   = Units::mm2m * Attributes::getReal(itsAttr[XSTART]);
+    double xend     = Units::mm2m * Attributes::getReal(itsAttr[XEND]);
+    double ystart   = Units::mm2m * Attributes::getReal(itsAttr[YSTART]);
+    double yend     = Units::mm2m * Attributes::getReal(itsAttr[YEND]);
 
     double length   = Attributes::getReal(itsAttr[LENGTH]);
     double opcharge = Attributes::getReal(itsAttr[OPCHARGE]);

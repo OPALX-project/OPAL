@@ -44,7 +44,7 @@ public:
     ///@{ Member variable access
     virtual double getStep() const;
     ///@}
-    virtual ElementBase::ElementType getType() const override;
+    virtual ElementType getType() const override;
 
 private:
     /// Initialise peakfinder file

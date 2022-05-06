@@ -38,7 +38,7 @@
 
 class ScalingFFAMagnetTest : public ::testing::Test {
 public:
-    ScalingFFAMagnetTest() : sector_m(NULL), fout_m(), silencer_m() {
+    ScalingFFAMagnetTest() : sector_m(nullptr), fout_m(), silencer_m() {
     }
 
     void SetUp( ) {
@@ -62,7 +62,7 @@ public:
 
     void TearDown( ) {
         delete sector_m;
-        sector_m = NULL;
+        sector_m = nullptr;
     }
 
     ~ScalingFFAMagnetTest() {

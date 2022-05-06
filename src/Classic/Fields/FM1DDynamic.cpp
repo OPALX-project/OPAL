@@ -1,6 +1,7 @@
 #include "Fields/FM1DDynamic.h"
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
@@ -219,7 +220,7 @@ void FM1DDynamic::computeFourierCoefficients(double maxEz, double fieldData[]) {
      * Normalize the Fourier coefficients such that the max field value
      * is 1 V/m.
      */
-    maxEz /= 1.0e6;
+    maxEz *= Units::Vpm2MVpm;
 
     fourierCoefs_m.push_back(fieldData[0] / (totalSize * maxEz));
     for(int coefIndex = 1; coefIndex < 2 * accuracy_m - 1; ++ coefIndex)
@@ -233,13 +234,13 @@ void FM1DDynamic::computeFourierCoefficients(double maxEz, double fieldData[]) {
 void FM1DDynamic::convertHeaderData() {
 
     // Convert to angular frequency in Hz.
-    frequency_m *= Physics::two_pi * 1.0e6;
+    frequency_m *= Physics::two_pi * Units::MHz2Hz;
 
     // Convert to m.
-    rBegin_m /= 100.0;
-    rEnd_m /= 100.0;
-    zBegin_m /= 100.0;
-    zEnd_m /= 100.0;
+    rBegin_m *= Units::cm2m;
+    rEnd_m *= Units::cm2m;
+    zBegin_m *= Units::cm2m;
+    zEnd_m *= Units::cm2m;
 
     twoPiOverLambdaSq_m = pow(frequency_m / Physics::c, 2.0);
 }

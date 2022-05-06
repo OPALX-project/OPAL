@@ -31,7 +31,7 @@
 
 #include "AbsBeamline/Ring.h"
 #include "Attributes/Attributes.h"
-#include "Physics/Physics.h"
+#include "Physics/Units.h"
 
 OpalRingDefinition::OpalRingDefinition() :
     OpalElement(SIZE, "RINGDEFINITION",
@@ -57,7 +57,7 @@ OpalRingDefinition::OpalRingDefinition() :
     itsAttr[RFFREQ] = Attributes::makeReal("RFFREQ",
                                            "The nominal RF frequency of the ring [MHz].");
     // I see also makeBool, but dont know how it works; no registerBoolAttribute
-    itsAttr[IS_CLOSED] = Attributes::makeString("IS_CLOSED",
+    itsAttr[IS_CLOSED] = Attributes::makeBool("IS_CLOSED",
                                                 "Set to 'false' to disable checking for closure of the ring");
     itsAttr[MIN_R] = Attributes::makeReal("MIN_R",
                                            "Minimum allowed radius during tracking [m]. If not defined, any radius is allowed. If MIN_R is defined, MAX_R must also be defined.");
@@ -86,21 +86,19 @@ OpalRingDefinition::~OpalRingDefinition() {}
 
 void OpalRingDefinition::update() {
     Ring *ring = dynamic_cast<Ring*>(getElement());
-    double degree = Physics::pi/180.;
-    double metres = 1e3;
     ring->setBeamPhiInit(Attributes::getReal(itsAttr[BEAM_PHIINIT]));
     ring->setBeamPRInit(Attributes::getReal(itsAttr[BEAM_PRINIT]));
-    ring->setBeamRInit(Attributes::getReal(itsAttr[BEAM_RINIT])*metres);
-    ring->setLatticeRInit(Attributes::getReal(itsAttr[LAT_RINIT])*metres);
+    ring->setBeamRInit(Attributes::getReal(itsAttr[BEAM_RINIT])*Units::m2mm);
+    ring->setLatticeRInit(Attributes::getReal(itsAttr[LAT_RINIT])*Units::m2mm);
 
-    ring->setLatticePhiInit(Attributes::getReal(itsAttr[LAT_PHIINIT])*degree);
-    ring->setLatticeThetaInit(Attributes::getReal(itsAttr[LAT_THETAINIT])*degree);
+    ring->setLatticePhiInit(Attributes::getReal(itsAttr[LAT_PHIINIT])*Units::deg2rad);
+    ring->setLatticeThetaInit(Attributes::getReal(itsAttr[LAT_THETAINIT])*Units::deg2rad);
     ring->setSymmetry(Attributes::getReal(itsAttr[SYMMETRY]));
     ring->setScale(Attributes::getReal(itsAttr[SCALE]));
 
     ring->setHarmonicNumber(Attributes::getReal(itsAttr[HARMONIC_NUMBER]));
     ring->setRFFreq(Attributes::getReal(itsAttr[RFFREQ]));
-    ring->setIsClosed(!(Attributes::getString(itsAttr[IS_CLOSED])=="FALSE"));
+    ring->setIsClosed(Attributes::getBool(itsAttr[IS_CLOSED]));
     double minR = -1;
     double maxR = -1;
 

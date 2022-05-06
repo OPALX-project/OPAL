@@ -56,7 +56,7 @@ namespace mslang {
                             bestArea = height * (x - tmp.first);
                         }
                         height = tmp.second;
-                    } while (stack.size() > 0 && cache[x] < height);
+                    } while (!stack.empty() && cache[x] < height);
                     height = cache[x];
                     if (height != 0) {
                         stack.push(std::make_pair(tmp.first, height));
@@ -64,7 +64,7 @@ namespace mslang {
                 }
             }
 
-            if (stack.size() > 0) {
+            if (!stack.empty()) {
                 std::pair<unsigned int, unsigned int> tmp = stack.top();
                 stack.pop();
                 if (M > tmp.first && height * (M - tmp.first) > bestArea) {

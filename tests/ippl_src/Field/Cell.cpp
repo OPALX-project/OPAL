@@ -316,7 +316,7 @@ TEST(Field,CellToVertex2D)
     // VecC1.writeb("vtest2");
 
     Inform* fdip =
-        new Inform(NULL,"text.test.TestFieldCellToVertex2D",Inform::OVERWRITE,0);
+        new Inform(nullptr,"text.test.TestFieldCellToVertex2D",Inform::OVERWRITE,0);
     Inform& fdi = *fdip;
     setInform(fdi);
     //    setFormat(3,1); // 3 elements per line, 1 digit past decimal

@@ -1,41 +1,42 @@
-// Distribution class
 //
-// Copyright (c) 2008-2020
-// Paul Scherrer Institut, Villigen PSI, Switzerland
-// All rights reserved.
+// Class Distribution
+//   This class defines the initial beam that is injected or emitted into the simulation.
 //
-// OPAL is licensed under GNU GPL version 3.
-
+// Copyright (c) 2008 - 2022, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Distribution/Distribution.h"
-#include "Distribution/ClosedOrbitFinder.h"
+
 #include "AbsBeamline/SpecificElementVisitor.h"
-
-#include <cmath>
-#include <cfloat>
-#include <iomanip>
-#include <iostream>
-#include <string>
-#include <vector>
-#include <numeric>
-
-// IPPL
-#include "DataSource/DataConnect.h"
-#include "Utility/IpplTimings.h"
-
+#include "AbstractObjects/BeamSequence.h"
 #include "AbstractObjects/Expressions.h"
-#include "Utilities/Options.h"
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBins.h"
-#include "Algorithms/PartBunchBase.h"
 #include "Algorithms/PartBinsCyc.h"
+#include "Algorithms/PartBunchBase.h"
 #include "BasicActions/Option.h"
+#include "DataSource/DataConnect.h"
+#include "Distribution/ClosedOrbitFinder.h"
 #include "Distribution/LaserProfile.h"
 #include "Elements/OpalBeamline.h"
-#include "AbstractObjects/BeamSequence.h"
+#include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Structure/H5PartWrapper.h"
 #include "Structure/H5PartWrapperForPC.h"
 #include "Utilities/EarlyLeaveException.h"
+#include "Utilities/Options.h"
 #include "Utilities/Util.h"
+#include "Utility/IpplTimings.h"
 
 #include <gsl/gsl_histogram.h>
 #include <gsl/gsl_linalg.h>
@@ -43,10 +44,18 @@
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_sf_erf.h>
 
-#include <sys/time.h>
-
+#include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 #include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
+
+#include <sys/time.h>
+
+#include <cmath>
+#include <cfloat>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <numeric>
 
 extern Inform *gmsg;
 
@@ -68,17 +77,14 @@ namespace {
     }
 }
 
-//
-// Class Distribution
-// ------------------------------------------------------------------------
 
 Distribution::Distribution():
     Definition( Attrib::Legacy::Distribution::SIZE, "DISTRIBUTION",
                 "The DISTRIBUTION statement defines data for the 6D particle distribution."),
-    distrTypeT_m(DistrTypeT::NODIST),
+    distrTypeT_m(DistributionType::NODIST),
     numberOfDistributions_m(1),
     emitting_m(false),
-    emissionModel_m(EmissionModelT::NONE),
+    emissionModel_m(EmissionModel::NONE),
     tEmission_m(0.0),
     tBin_m(0.0),
     currentEmissionTime_m(0.0),
@@ -86,9 +92,9 @@ Distribution::Distribution():
     currentSampleBin_m(0),
     numberOfEnergyBins_m(0),
     numberOfSampleBins_m(0),
-    energyBins_m(NULL),
-    energyBinHist_m(NULL),
-    randGen_m(NULL),
+    energyBins_m(nullptr),
+    energyBinHist_m(nullptr),
+    randGen_m(nullptr),
     pTotThermal_m(0.0),
     pmean_m(0.0),
     cathodeWorkFunc_m(0.0),
@@ -99,7 +105,7 @@ Distribution::Distribution():
     totalNumberParticles_m(0),
     totalNumberEmittedParticles_m(0),
     avrgpz_m(0.0),
-    inputMoUnits_m(InputMomentumUnitsT::NONE),
+    inputMoUnits_m(InputMomentumUnits::NONE),
     sigmaTRise_m(0.0),
     sigmaTFall_m(0.0),
     tPulseLengthFWHM_m(0.0),
@@ -109,7 +115,7 @@ Distribution::Distribution():
     laserProfileFileName_m(""),
     laserImageName_m(""),
     laserIntensityCut_m(0.0),
-    laserProfile_m(NULL),
+    laserProfile_m(nullptr),
     I_m(0.0),
     E_m(0.0)
 {
@@ -136,7 +142,7 @@ Distribution::Distribution():
 Distribution::Distribution(const std::string &name, Distribution *parent):
     Definition(name, parent),
     distT_m(parent->distT_m),
-    distrTypeT_m(DistrTypeT::NODIST),
+    distrTypeT_m(DistributionType::NODIST),
     numberOfDistributions_m(parent->numberOfDistributions_m),
     emitting_m(parent->emitting_m),
     particleRefData_m(parent->particleRefData_m),
@@ -150,9 +156,9 @@ Distribution::Distribution(const std::string &name, Distribution *parent):
     currentSampleBin_m(parent->currentSampleBin_m),
     numberOfEnergyBins_m(parent->numberOfEnergyBins_m),
     numberOfSampleBins_m(parent->numberOfSampleBins_m),
-    energyBins_m(NULL),
-    energyBinHist_m(NULL),
-    randGen_m(NULL),
+    energyBins_m(nullptr),
+    energyBinHist_m(nullptr),
+    randGen_m(nullptr),
     pTotThermal_m(parent->pTotThermal_m),
     pmean_m(parent->pmean_m),
     cathodeWorkFunc_m(parent->cathodeWorkFunc_m),
@@ -189,7 +195,7 @@ Distribution::Distribution(const std::string &name, Distribution *parent):
     laserProfileFileName_m(parent->laserProfileFileName_m),
     laserImageName_m(parent->laserImageName_m),
     laserIntensityCut_m(parent->laserIntensityCut_m),
-    laserProfile_m(NULL),
+    laserProfile_m(nullptr),
     I_m(parent->I_m),
     E_m(parent->E_m),
     tRise_m(parent->tRise_m),
@@ -256,7 +262,7 @@ void Distribution::create(size_t &numberOfParticles, double massIneV, double cha
      * For now we just cut the number of generated particles in half.
      */
     size_t numberOfLocalParticles = numberOfParticles;
-    if (Options::cZero && distrTypeT_m != DistrTypeT::FROMFILE) {
+    if (Options::cZero && distrTypeT_m != DistributionType::FROMFILE) {
         numberOfLocalParticles = (numberOfParticles + 1) / 2;
     }
 
@@ -282,40 +288,40 @@ void Distribution::create(size_t &numberOfParticles, double massIneV, double cha
 
     switch (distrTypeT_m) {
 
-    case DistrTypeT::MATCHEDGAUSS:
+    case DistributionType::MATCHEDGAUSS:
         createMatchedGaussDistribution(numberOfLocalParticles, massIneV, charge);
         break;
-    case DistrTypeT::FROMFILE:
+    case DistributionType::FROMFILE:
         createDistributionFromFile(numberOfParticles, massIneV);
         break;
-    case DistrTypeT::GAUSS:
+    case DistributionType::GAUSS:
         createDistributionGauss(numberOfLocalParticles, massIneV);
         break;
-    case DistrTypeT::BINOMIAL:
+    case DistributionType::BINOMIAL:
         createDistributionBinomial(numberOfLocalParticles, massIneV);
         break;
-    case DistrTypeT::FLATTOP:
-    case DistrTypeT::GUNGAUSSFLATTOPTH:
-    case DistrTypeT::ASTRAFLATTOPTH:
+    case DistributionType::FLATTOP:
+    case DistributionType::GUNGAUSSFLATTOPTH:
+    case DistributionType::ASTRAFLATTOPTH:
         createDistributionFlattop(numberOfLocalParticles, massIneV);
         break;
-    case DistrTypeT::MULTIGAUSS:
+    case DistributionType::MULTIGAUSS:
         createDistributionMultiGauss(numberOfLocalParticles, massIneV);
         break;
     default:
-        INFOMSG("Distribution unknown." << endl);
-        break;
+        throw OpalException("Distribution::create",
+                            "Unknown \"TYPE\" of \"DISTRIBUTION\"");
     }
 
     if (emitting_m) {
 
         unsigned int numAdditionalRNsPerParticle = 0;
-        if (emissionModel_m == EmissionModelT::ASTRA ||
-            distrTypeT_m == DistrTypeT::ASTRAFLATTOPTH ||
-            distrTypeT_m == DistrTypeT::GUNGAUSSFLATTOPTH) {
+        if (emissionModel_m == EmissionModel::ASTRA ||
+            distrTypeT_m == DistributionType::ASTRAFLATTOPTH ||
+            distrTypeT_m == DistributionType::GUNGAUSSFLATTOPTH) {
 
             numAdditionalRNsPerParticle = 2;
-        } else if (emissionModel_m == EmissionModelT::NONEQUIL) {
+        } else if (emissionModel_m == EmissionModel::NONEQUIL) {
             if (Options::cZero) {
                 numAdditionalRNsPerParticle = 40;
             } else {
@@ -361,7 +367,7 @@ void Distribution::create(size_t &numberOfParticles, double massIneV, double cha
     if (Options::seed != -1)
         Options::seed = gsl_rng_uniform_int(randGen_m, gsl_rng_max(randGen_m));
 
-    if (particlesPerDist_m.size() == 0) {
+    if (particlesPerDist_m.empty()) {
         particlesPerDist_m.push_back(tOrZDist_m.size());
     } else {
         particlesPerDist_m[0] = tOrZDist_m.size();
@@ -443,7 +449,7 @@ void Distribution::doRestartOpalCycl(PartBunchBase<double, 3> *beam,
     INFOMSG("Tracking Step since last bunch injection is " << beam->getSteptoLastInj() << endl);
     INFOMSG(beam->getNumBunch() << " Bunches(bins) exist in this file" << endl);
 
-    double gamma = 1 + meanE / beam->getM() * 1.0e6;
+    double gamma = 1 + meanE / (beam->getM() * Units::eV2MeV);
     double beta = std::sqrt(1.0 - (1.0 / std::pow(gamma, 2)));
 
     INFOMSG("* Gamma = " << gamma << ", Beta = " << beta << endl);
@@ -510,7 +516,7 @@ double Distribution::getTEmission() {
     sigmaFall_m = tFall_m / tratio;
 
     switch(distrTypeT_m) {
-    case DistrTypeT::ASTRAFLATTOPTH: {
+    case DistributionType::ASTRAFLATTOPTH: {
         double a = tPulseLengthFWHM_m / 2;
         double sig = tRise_m / 2;
         double inv_erf08 = 0.906193802436823; // erfinv(0.8)
@@ -528,7 +534,7 @@ double Distribution::getTEmission() {
         tEmission_m = tPulseLengthFWHM_m + 10 * sig;
         break;
     }
-    case DistrTypeT::GUNGAUSSFLATTOPTH: {
+    case DistributionType::GUNGAUSSFLATTOPTH: {
         tEmission_m = tPulseLengthFWHM_m + (cutoff_m - std::sqrt(2.0 * std::log(2.0))) * (sigmaRise_m + sigmaFall_m);
         break;
     }
@@ -546,10 +552,10 @@ Inform &Distribution::printInfo(Inform &os) const {
     if (OpalData::getInstance()->inRestartRun()) {
         os << "* In restart. Distribution read in from .h5 file." << endl;
     } else {
-        if (addedDistributions_m.size() > 0)
+        if (!addedDistributions_m.empty()) {
             os << "* Main Distribution" << endl
                << "-----------------" << endl;
-
+        }
         if (particlesPerDist_m.empty())
             printDist(os, 0);
         else
@@ -581,6 +587,10 @@ Inform &Distribution::printInfo(Inform &os) const {
             printEmissionModel(os);
         } else {
             os << "* Distribution is injected." << endl;
+        }
+
+        if (Attributes::getBool(itsAttr[Attrib::Distribution::WRITETOFILE])) {
+            os << "*\n* Write initial distribution to file '" << outFilename_m << "'" << endl;
         }
     }
     os << "* " << endl;
@@ -637,13 +647,13 @@ void Distribution::applyEmissionModel(double lowEnergyLimit, double &px, double 
 
     switch (emissionModel_m) {
 
-    case EmissionModelT::NONE:
+    case EmissionModel::NONE:
         applyEmissModelNone(pz);
         break;
-    case EmissionModelT::ASTRA:
+    case EmissionModel::ASTRA:
         applyEmissModelAstra(px, py, pz, additionalRNs);
         break;
-    case EmissionModelT::NONEQUIL:
+    case EmissionModel::NONEQUIL:
         applyEmissModelNonEquil(lowEnergyLimit, px, py, pz, additionalRNs);
         break;
     default:
@@ -715,7 +725,7 @@ void Distribution::applyEmissModelNonEquil(double lowEnergyLimit,
 
     // Compute emission momenta.
     double betaGammaExternal
-        = std::sqrt(std::pow(energyExternal / (Physics::m_e * 1.0e9) + 1.0, 2) - 1.0);
+        = std::sqrt(std::pow(energyExternal / (Physics::m_e * Units::GeV2eV) + 1.0, 2) - 1.0);
 
     bgx = betaGammaExternal * sinThetaOut * std::cos(phi);
     bgy = betaGammaExternal * sinThetaOut * std::sin(phi);
@@ -737,7 +747,7 @@ void Distribution::calcPartPerDist(size_t numberOfParticles) {
         if (i > 0)
             currDist = addedDistributions_m[i - 1];
 
-        if (currDist->distrTypeT_m == DistrTypeT::FROMFILE) {
+        if (currDist->distrTypeT_m == DistributionType::FROMFILE) {
             std::ifstream inputFile;
             if (Ippl::myNode() == 0) {
                 std::string fileName = Attributes::getString(currDist->itsAttr[Attrib::Distribution::FNAME]);
@@ -762,7 +772,7 @@ void Distribution::calcPartPerDist(size_t numberOfParticles) {
         if (i > 0)
             currDist = addedDistributions_m[i - 1];
 
-        if (currDist->distrTypeT_m == DistrTypeT::FROMFILE) {
+        if (currDist->distrTypeT_m == DistributionType::FROMFILE) {
             particlesPerDist_m.push_back(nPartFromFiles[i]);
         } else {
             size_t particlesCurrentDist = numberOfParticles * currDist->getWeight() / totalWeight;
@@ -779,7 +789,7 @@ void Distribution::calcPartPerDist(size_t numberOfParticles) {
             if (i > 0)
                 currDist = addedDistributions_m[i - 1];
 
-            if (currDist->distrTypeT_m != DistrTypeT::FROMFILE) {
+            if (currDist->distrTypeT_m != DistributionType::FROMFILE) {
                 particlesPerDist_m.at(i) += diffNumber;
                 diffNumber = 0;
                 break;
@@ -823,8 +833,8 @@ void Distribution::checkIfEmitted() {
 
     switch (distrTypeT_m) {
 
-    case DistrTypeT::ASTRAFLATTOPTH:
-    case DistrTypeT::GUNGAUSSFLATTOPTH:
+    case DistributionType::ASTRAFLATTOPTH:
+    case DistributionType::GUNGAUSSFLATTOPTH:
         emitting_m = true;
         break;
     default:
@@ -849,7 +859,7 @@ void Distribution::checkParticleNumber(size_t &numberOfParticles) {
                             "distribution " +
                             std::to_string(numberOfDistParticles) + "\n"
                             "is different from the number of particles\n"
-                            "defined by the BEAM command " +
+                            "defined by the BEAM command\n" +
                             std::to_string(numberOfParticles) + ".\n"
                             "This often happens when using a FROMFILE type\n"
                             "distribution and not matching the number of\n"
@@ -858,19 +868,37 @@ void Distribution::checkParticleNumber(size_t &numberOfParticles) {
     }
 }
 
-void Distribution::chooseInputMomentumUnits(InputMomentumUnitsT::InputMomentumUnitsT inputMoUnits) {
+void Distribution::checkFileMomentum() {
+    // If the distribution was read from a file, the file momentum pmean_m[2]
+    // should coincide with the momentum given in the beam command avrgpz_m.
 
+    if (std::abs(pmean_m[2] - avrgpz_m) / pmean_m[2] > 1e-2) {
+        throw OpalException("Distribution::checkFileMomentum",
+                            "The z-momentum of the particle distribution\n" +
+                            std::to_string(pmean_m[2]) + "\n"
+                            "is different from the momentum given in the \"BEAM\" command\n" +
+                            std::to_string(avrgpz_m) + ".\n"
+                            "When using a \"FROMFILE\" type distribution\n"
+                            "the momentum in the \"BEAM\" command should be\n"
+                            "the same as the momentum of the particles in the file.");
+    }
+}
+
+void Distribution::chooseInputMomentumUnits(InputMomentumUnits inputMoUnits) {
     /*
      * Toggle what units to use for inputing momentum.
      */
-    std::string inputUnits = Attributes::getString(itsAttr[Attrib::Distribution::INPUTMOUNITS]);
-    if (inputUnits == "NONE")
-        inputMoUnits_m = InputMomentumUnitsT::NONE;
-    else if (inputUnits == "EV")
-        inputMoUnits_m = InputMomentumUnitsT::EV;
-    else
-        inputMoUnits_m = inputMoUnits;
+    static const std::map<std::string, InputMomentumUnits> stringInputMomentumUnits_s = {
+        {"NONE",    InputMomentumUnits::NONE},
+        {"EVOVERC", InputMomentumUnits::EVOVERC}
+    };
 
+    const std::string inputUnits = Attributes::getString(itsAttr[Attrib::Distribution::INPUTMOUNITS]);
+    if (inputUnits.empty()) {
+        inputMoUnits_m = inputMoUnits;
+    } else {
+        inputMoUnits_m = stringInputMomentumUnits_s.at(inputUnits);
+    }
 }
 
 void Distribution::createDistributionBinomial(size_t numberOfParticles, double massIneV) {
@@ -884,7 +912,7 @@ void Distribution::createDistributionFlattop(size_t numberOfParticles, double ma
     setDistParametersFlattop(massIneV);
 
     if (emitting_m) {
-        if (laserProfile_m == NULL)
+        if (laserProfile_m == nullptr)
             generateFlattopT(numberOfParticles);
         else
             generateFlattopLaserProfile(numberOfParticles);
@@ -920,7 +948,7 @@ void Distribution::createDistributionMultiGauss(size_t numberOfParticles, double
         bool allow = false;
         double randNums[2] = {0.0, 0.0};
         while (!allow) {
-            if (quasiRandGen2D != NULL) {
+            if (quasiRandGen2D != nullptr) {
                 gsl_qrng_get(quasiRandGen2D, randNums);
             } else {
                 randNums[0] = gsl_rng_uniform(randGen_m);
@@ -1000,24 +1028,16 @@ size_t Distribution::getNumberOfParticlesInFile(std::ifstream &inputFile) {
 }
 
 void Distribution::createDistributionFromFile(size_t /*numberOfParticles*/, double massIneV) {
-
-    *gmsg << level3 << "\n"
-          << "------------------------------------------------------------------------------------\n";
-    *gmsg << "READ INITIAL DISTRIBUTION FROM FILE \""
-          << Attributes::getString(itsAttr[Attrib::Distribution::FNAME])
-          << "\"\n";
-    *gmsg << "------------------------------------------------------------------------------------\n" << endl;
-
     // Data input file is only read by node 0.
     std::ifstream inputFile;
     std::string fileName = Attributes::getString(itsAttr[Attrib::Distribution::FNAME]);
+    if (!boost::filesystem::exists(fileName)) {
+        throw OpalException(
+            "Distribution::createDistributionFromFile",
+            "Open file operation failed, please check if '" + fileName + "' really exists.");
+    }
     if (Ippl::myNode() == 0) {
         inputFile.open(fileName.c_str());
-        if (inputFile.fail())
-            throw OpalException("Distribution::createDistributionFromFile",
-                                "Open file operation failed, please check if \""
-                                + fileName
-                                + "\" really exists.");
     }
 
     size_t numberOfParticlesRead = getNumberOfParticlesInFile(inputFile);
@@ -1029,26 +1049,25 @@ void Distribution::createDistributionFromFile(size_t /*numberOfParticles*/, doub
 
     pmean_m = 0.0;
 
-    size_t numPartsToSend = 0;
     unsigned int distributeFrequency = 1000;
-    size_t singleDataSize = (/*sizeof(int) +*/ 6 * sizeof(double));
-    unsigned int dataSize = distributeFrequency * singleDataSize;
-    std::vector<char> data;
+    size_t singleDataSize            = 6;
+    unsigned int dataSize            = distributeFrequency * singleDataSize;
+    std::vector<double> data(dataSize);
 
-    data.reserve(dataSize);
-
-    const char* buffer;
     if (Ippl::myNode() == 0) {
-        char lineBuffer[1024];
-        unsigned int numParts = 0;
+        constexpr unsigned int bufferSize = 1024;
+        char lineBuffer[bufferSize];
+        unsigned int numParts                         = 0;
+        std::vector<double>::iterator currentPosition = data.begin();
         while (!inputFile.eof()) {
-            inputFile.getline(lineBuffer, 1024);
+            inputFile.getline(lineBuffer, bufferSize);
 
             Vector_t R(0.0), P(0.0);
 
             std::istringstream line(lineBuffer);
             line >> R(0);
-            if (line.rdstate()) break;
+            if (line.rdstate())
+                break;
             line >> P(0);
             line >> R(1);
             line >> P(1);
@@ -1058,28 +1077,22 @@ void Distribution::createDistributionFromFile(size_t /*numberOfParticles*/, doub
             if (saveProcessor >= (unsigned)Ippl::getNodes())
                 saveProcessor = 0;
 
-            if (inputMoUnits_m == InputMomentumUnitsT::EV) {
-                P(0) = Util::convertMomentumeVToBetaGamma(P(0), massIneV);
-                P(1) = Util::convertMomentumeVToBetaGamma(P(1), massIneV);
-                P(2) = Util::convertMomentumeVToBetaGamma(P(2), massIneV);
+            if (inputMoUnits_m == InputMomentumUnits::EVOVERC) {
+                P(0) = Util::convertMomentumEVoverCToBetaGamma(P(0), massIneV);
+                P(1) = Util::convertMomentumEVoverCToBetaGamma(P(1), massIneV);
+                P(2) = Util::convertMomentumEVoverCToBetaGamma(P(2), massIneV);
             }
-
             pmean_m += P;
 
             if (saveProcessor > 0u) {
-                buffer = reinterpret_cast<const char*>(&R[0]);
-                data.insert(data.end(), buffer, buffer + 3 * sizeof(double));
-                buffer = reinterpret_cast<const char*>(&P[0]);
-                data.insert(data.end(), buffer, buffer + 3 * sizeof(double));
-                ++ numPartsToSend;
+                currentPosition = std::copy(&(R[0]), &(R[0]) + 3, currentPosition);
+                currentPosition = std::copy(&(P[0]), &(P[0]) + 3, currentPosition);
 
-                if (numPartsToSend % distributeFrequency == 0) {
+                if (currentPosition == data.end()) {
                     MPI_Bcast(&dataSize, 1, MPI_UNSIGNED, 0, Ippl::getComm());
-                    MPI_Bcast(&data[0], dataSize, MPI_CHAR, 0, Ippl::getComm());
-                    numPartsToSend = 0;
+                    MPI_Bcast(&(data[0]), dataSize, MPI_DOUBLE, 0, Ippl::getComm());
 
-                    std::vector<char>().swap(data);
-                    data.reserve(dataSize);
+                    currentPosition = data.begin();
                 }
             } else {
                 xDist_m.push_back(R(0));
@@ -1090,53 +1103,49 @@ void Distribution::createDistributionFromFile(size_t /*numberOfParticles*/, doub
                 pzDist_m.push_back(P(2));
             }
 
-            ++ numParts;
-            ++ saveProcessor;
+            ++numParts;
+            ++saveProcessor;
         }
 
-        dataSize = (numberOfParticlesRead == numParts? data.size(): std::numeric_limits<unsigned int>::max());
+        dataSize =
+            (numberOfParticlesRead == numParts ? currentPosition - data.begin()
+                                               : std::numeric_limits<unsigned int>::max());
+
         MPI_Bcast(&dataSize, 1, MPI_UNSIGNED, 0, Ippl::getComm());
         if (numberOfParticlesRead != numParts) {
-            throw OpalException("Distribution::createDistributionFromFile",
-                                "Found " +
-                                std::to_string(numParts) +
-                                " particles in file '" +
-                                fileName +
-                                "' instead of " +
-                                std::to_string(numberOfParticlesRead));
+            throw OpalException(
+                "Distribution::createDistributionFromFile",
+                "Found " + std::to_string(numParts) + " particles in file '" + fileName
+                    + "' instead of " + std::to_string(numberOfParticlesRead));
         }
-        MPI_Bcast(&data[0], dataSize, MPI_CHAR, 0, Ippl::getComm());
+        MPI_Bcast(&(data[0]), dataSize, MPI_DOUBLE, 0, Ippl::getComm());
 
     } else {
         do {
             MPI_Bcast(&dataSize, 1, MPI_UNSIGNED, 0, Ippl::getComm());
             if (dataSize == std::numeric_limits<unsigned int>::max()) {
-                throw OpalException("Distribution::createDistributionFromFile",
-                                    "Couldn't find " +
-                                    std::to_string(numberOfParticlesRead) +
-                                    " particles in file '" +
-                                    fileName + "'");
+                throw OpalException(
+                    "Distribution::createDistributionFromFile",
+                    "Couldn't find " + std::to_string(numberOfParticlesRead)
+                        + " particles in file '" + fileName + "'");
             }
-            MPI_Bcast(&data[0], dataSize, MPI_CHAR, 0, Ippl::getComm());
+            MPI_Bcast(&(data[0]), dataSize, MPI_DOUBLE, 0, Ippl::getComm());
 
             size_t i = 0;
             while (i < dataSize) {
-
-                if (saveProcessor + 1 == (unsigned) Ippl::myNode()) {
-                    const double *tmp = reinterpret_cast<const double*>(&data[i]);
+                if (saveProcessor + 1 == (unsigned)Ippl::myNode()) {
+                    const double* tmp = &(data[i]);
                     xDist_m.push_back(tmp[0]);
                     yDist_m.push_back(tmp[1]);
                     tOrZDist_m.push_back(tmp[2]);
                     pxDist_m.push_back(tmp[3]);
                     pyDist_m.push_back(tmp[4]);
                     pzDist_m.push_back(tmp[5]);
-                    i += 6 * sizeof(double);
-                } else {
-                    i += singleDataSize;
                 }
+                i += singleDataSize;
 
-                ++ saveProcessor;
-                if (saveProcessor + 1 >= (unsigned) Ippl::getNodes()) {
+                ++saveProcessor;
+                if (saveProcessor + 1 >= (unsigned)Ippl::getNodes()) {
                     saveProcessor = 0;
                 }
             }
@@ -1150,7 +1159,6 @@ void Distribution::createDistributionFromFile(size_t /*numberOfParticles*/, doub
         inputFile.close();
 }
 
-
 void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
                                                   double massIneV,
                                                   double charge)
@@ -1161,16 +1169,15 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
       - eliminate physics and error
     */
 
-    std::string LineName = Attributes::getString(itsAttr[Attrib::Distribution::LINE]);
-    if (LineName == "") return;
+    std::string lineName = Attributes::getString(itsAttr[Attrib::Distribution::LINE]);
+    if (lineName.empty()) return;
 
-    const BeamSequence* LineSequence = BeamSequence::find(LineName);
-
-    if (LineSequence == NULL)
+    const BeamSequence* lineSequence = BeamSequence::find(lineName);
+    if (lineSequence == nullptr)
         throw OpalException("Distribution::CreateMatchedGaussDistribution",
                             "didn't find any Cyclotron element in line");
 
-    SpecificElementVisitor<Cyclotron> CyclotronVisitor(*LineSequence->fetchLine());
+    SpecificElementVisitor<Cyclotron> CyclotronVisitor(*lineSequence->fetchLine());
     CyclotronVisitor.execute();
     size_t NumberOfCyclotrons = CyclotronVisitor.size();
 
@@ -1206,7 +1213,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
 
     *gmsg << "* ----------------------------------------------------" << endl;
     *gmsg << "* About to find closed orbit and matched distribution " << endl;
-    *gmsg << "* I= " << I_m*1E3 << " (mA)  E= " << E_m*1E-6 << " (MeV)" << endl;
+    *gmsg << "* I= " << I_m*Units::A2mA << " (mA)  E= " << E_m*Units::eV2MeV << " (MeV)" << endl;
     *gmsg << "* EX= " << Attributes::getReal(itsAttr[Attrib::Distribution::EX])
           << "  EY= " << Attributes::getReal(itsAttr[Attrib::Distribution::EY])
           << "  ET= " << Attributes::getReal(itsAttr[Attrib::Distribution::ET]) << endl;
@@ -1217,9 +1224,10 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
     else
         *gmsg << "* SECTOR: " << "match using single sector" << endl;
 
-    *gmsg << "* NSTEPS = " << Nint << endl
-          << "* HN= "      << CyclotronElement->getCyclHarm()
-          << "  PHIINIT= " << CyclotronElement->getPHIinit()  << endl
+    *gmsg << "* NSTEPS = "    << Nint << endl
+          << "* HN = "        << CyclotronElement->getCyclHarm()
+          << "  PHIINIT = "   << CyclotronElement->getPHIinit()    << endl
+          << "* FIELD MAP = " << CyclotronElement->getFieldMapFN() << endl
           << "* ----------------------------------------------------" << endl;
 
     if ( CyclotronElement->getFMLowE()  < 0 ||
@@ -1236,7 +1244,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
     double rguess =
         Attributes::getReal(itsAttr[Attrib::Distribution::RGUESS]);
 
-    double denergy = 1000.0 *
+    double denergy = Units::GeV2MeV *
         Attributes::getReal(itsAttr[Attrib::Distribution::DENERGY]);
 
     if ( denergy < 0.0 )
@@ -1252,8 +1260,8 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
         typedef boost::numeric::odeint::runge_kutta4<container_t> rk4_t;
         typedef ClosedOrbitFinder<double,unsigned int, rk4_t> cof_t;
 
-        cof_t cof(massIneV*1E-6, charge, Nint, CyclotronElement, full, Nsectors);
-        cof.findOrbit(accuracy, maxitCOF, E_m*1E-6, denergy, rguess, true);
+        cof_t cof(massIneV*Units::eV2MeV, charge, Nint, CyclotronElement, full, Nsectors);
+        cof.findOrbit(accuracy, maxitCOF, E_m*Units::eV2MeV, denergy, rguess, true);
 
         throw EarlyLeaveException("Distribution::createMatchedGaussDistribution()",
                                   "Do only tune calculation.");
@@ -1263,11 +1271,11 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
 
     std::unique_ptr<SigmaGenerator> siggen = std::unique_ptr<SigmaGenerator>(
         new SigmaGenerator(I_m,
-                           Attributes::getReal(itsAttr[Attrib::Distribution::EX])*1E6,
-                           Attributes::getReal(itsAttr[Attrib::Distribution::EY])*1E6,
-                           Attributes::getReal(itsAttr[Attrib::Distribution::ET])*1E6,
-                           E_m*1E-6,
-                           massIneV*1E-6,
+                           Attributes::getReal(itsAttr[Attrib::Distribution::EX])*Units::m2mm * Units::rad2mrad,
+                           Attributes::getReal(itsAttr[Attrib::Distribution::EY])*Units::m2mm * Units::rad2mrad,
+                           Attributes::getReal(itsAttr[Attrib::Distribution::ET])*Units::m2mm * Units::rad2mrad,
+                           E_m*Units::eV2MeV,
+                           massIneV*Units::eV2MeV,
                            charge,
                            CyclotronElement,
                            Nint,
@@ -1289,7 +1297,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
             *gmsg << "* RGUESS " << rguess << " (m) " << endl;
 
         *gmsg << "* Converged (Ex, Ey, Ez) = (" << Emit[0] << ", " << Emit[1] << ", "
-              << Emit[2] << ") pi mm mrad for E= " << E_m*1E-6 << " (MeV)" << endl;
+              << Emit[2] << ") pi mm mrad for E= " << E_m * Units::eV2MeV << " (MeV)" << endl;
         *gmsg << "* Sigma-Matrix " << endl;
 
         for (unsigned int i = 0; i < siggen->getSigma().size1(); ++ i) {
@@ -1309,11 +1317,11 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
         generateMatchedGauss(siggen->getSigma(), numberOfParticles, massIneV);
 
         // update injection radius and radial momentum
-        CyclotronElement->setRinit(siggen->getInjectionRadius() * 1.0e3);
+        CyclotronElement->setRinit(siggen->getInjectionRadius() * Units::m2mm);
         CyclotronElement->setPRinit(siggen->getInjectionMomentum());
     }
     else {
-        *gmsg << "* Not converged for " << E_m*1E-6 << " MeV" << endl;
+        *gmsg << "* Not converged for " << E_m*Units::eV2MeV << " MeV" << endl;
 
         throw OpalException("Distribution::CreateMatchedGaussDistribution",
                             "didn't find any matched distribution.");
@@ -1339,15 +1347,9 @@ void Distribution::createOpalCycl(PartBunchBase<double, 3> *beam,
     /*
      *  setup data for matched distribution generation
      */
-
-    E_m = (beam->getInitialGamma()-1.0)*beam->getM();
+    E_m = (beam->getInitialGamma() - 1.0) * beam->getM();
     I_m = current;
 
-    /*
-      Fixme:
-
-      avrgpz_m = beam->getP()/beam->getM();
-    */
     size_t numberOfPartToCreate = numberOfParticles;
     totalNumberParticles_m = numberOfParticles;
     if (beam->getTotalNum() != 0) {
@@ -1358,10 +1360,10 @@ void Distribution::createOpalCycl(PartBunchBase<double, 3> *beam,
     setupParticleBins(beam->getM(),beam);
 
     /*
-     * Set what units to use for input momentum units. Default is
-     * eV.
+     * Set what units to use for input momentum units. Default in OPAL-cycl
+     * is eV/c.
      */
-    chooseInputMomentumUnits(InputMomentumUnitsT::EV);
+    chooseInputMomentumUnits(InputMomentumUnits::EVOVERC);
 
     /*
      * Determine the number of particles for each distribution. For OPAL-cycl
@@ -1415,8 +1417,8 @@ void Distribution::createOpalT(PartBunchBase<double, 3> *beam,
 
     // This is PC from BEAM
     double deltaP = Attributes::getReal(itsAttr[Attrib::Distribution::OFFSETP]);
-    if (inputMoUnits_m == InputMomentumUnitsT::EV) {
-        deltaP = Util::convertMomentumeVToBetaGamma(deltaP, beam->getM());
+    if (inputMoUnits_m == InputMomentumUnits::EVOVERC) {
+        deltaP = Util::convertMomentumEVoverCToBetaGamma(deltaP, beam->getM());
     }
 
     avrgpz_m = beam->getP()/beam->getM() + deltaP;
@@ -1424,10 +1426,10 @@ void Distribution::createOpalT(PartBunchBase<double, 3> *beam,
     totalNumberParticles_m = numberOfParticles;
 
     /*
-     * Set what units to use for input momentum units. Default is
+     * Set what units to use for input momentum units. Default in OPAL-T is
      * unitless (i.e. BetaXGamma, BetaYGamma, BetaZGamma).
      */
-    chooseInputMomentumUnits(InputMomentumUnitsT::NONE);
+    chooseInputMomentumUnits(InputMomentumUnits::NONE);
 
     // Set distribution type(s).
     setDistType();
@@ -1467,7 +1469,7 @@ void Distribution::createOpalT(PartBunchBase<double, 3> *beam,
     // Move added distribution particles to main distribution.
     addDistributions();
 
-    if (emitting_m && emissionModel_m == EmissionModelT::NONE)
+    if (emitting_m && emissionModel_m == EmissionModel::NONE)
         setupEmissionModelNone(beam);
 
     // Check number of particles in distribution.
@@ -1476,7 +1478,9 @@ void Distribution::createOpalT(PartBunchBase<double, 3> *beam,
     if (emitting_m) {
         checkEmissionParameters();
     } else {
-        if (distrTypeT_m != DistrTypeT::FROMFILE) {
+        if (distrTypeT_m == DistributionType::FROMFILE) {
+            checkFileMomentum();
+        } else {
             pmean_m = Vector_t(0, 0, avrgpz_m);
         }
     }
@@ -1515,9 +1519,9 @@ void Distribution::createOpalT(PartBunchBase<double, 3> *beam,
         std::vector<std::vector<double> > mirrored;
         const auto end = additionalRNs_m.end();
 
-        if (emissionModel_m == EmissionModelT::ASTRA ||
-            distrTypeT_m == DistrTypeT::ASTRAFLATTOPTH ||
-            distrTypeT_m == DistrTypeT::GUNGAUSSFLATTOPTH) {
+        if (emissionModel_m == EmissionModel::ASTRA ||
+            distrTypeT_m == DistributionType::ASTRAFLATTOPTH ||
+            distrTypeT_m == DistributionType::GUNGAUSSFLATTOPTH) {
 
             for (auto it = additionalRNs_m.begin(); it != end; ++ it) {
                 std::vector<double> tmp;
@@ -1635,9 +1639,11 @@ size_t Distribution::emitParticles(PartBunchBase<double, 3> *beam, double eZ) {
                     = Vector_t(px, py, pz);
                 beam->Bin[numberOfEmittedParticles] = currentEnergyBin_m - 1;
                 beam->Q[numberOfEmittedParticles] = beam->getChargePerParticle();
+                beam->M[numberOfEmittedParticles] = beam->getMassPerParticle();
                 beam->Ef[numberOfEmittedParticles] = Vector_t(0.0);
                 beam->Bf[numberOfEmittedParticles] = Vector_t(0.0);
-                beam->PType[numberOfEmittedParticles] = ParticleType::REGULAR;
+                beam->PType[numberOfEmittedParticles] = beam->getPType();
+                beam->POrigin[numberOfEmittedParticles] = ParticleOrigin::REGULAR;
                 beam->TriID[numberOfEmittedParticles] = 0;
                 numberOfEmittedParticles++;
 
@@ -1762,7 +1768,7 @@ void Distribution::sampleUniformDisk(gsl_qrng* quasiRandGen2D, double& x1, doubl
     bool allow = false;
     double randNums[2] = {0.0, 0.0};
     while (!allow) {
-        if (quasiRandGen2D != NULL)
+        if (quasiRandGen2D != nullptr)
             gsl_qrng_get(quasiRandGen2D, randNums);
         else {
             randNums[0] = gsl_rng_uniform(randGen_m);
@@ -2103,7 +2109,7 @@ void Distribution::generateFlattopLaserProfile(size_t numberOfParticles) {
         }
     }
 
-    if (distrTypeT_m == DistrTypeT::ASTRAFLATTOPTH)
+    if (distrTypeT_m == DistributionType::ASTRAFLATTOPTH)
         generateAstraFlattopT(numberOfParticles);
     else
         generateLongFlattopT(numberOfParticles);
@@ -2145,7 +2151,7 @@ void Distribution::generateFlattopT(size_t numberOfParticles) {
 
     gsl_qrng_free(quasiRandGen2D);
 
-    if (distrTypeT_m == DistrTypeT::ASTRAFLATTOPTH)
+    if (distrTypeT_m == DistributionType::ASTRAFLATTOPTH)
         generateAstraFlattopT(numberOfParticles);
     else
         generateLongFlattopT(numberOfParticles);
@@ -2175,7 +2181,7 @@ void Distribution::generateFlattopZ(size_t numberOfParticles) {
         x *= sigmaR_m[0];
         y *= sigmaR_m[1];
 
-        if (quasiRandGen1D != NULL)
+        if (quasiRandGen1D != nullptr)
             gsl_qrng_get(quasiRandGen1D, &z);
         else
             z = gsl_rng_uniform(randGen_m);
@@ -2259,7 +2265,7 @@ void Distribution::generateGaussZ(size_t numberOfParticles) {
         else rn *= 10;
     }
     //Sets again the standard GSL error handler on
-    gsl_set_error_handler(NULL);
+    gsl_set_error_handler(nullptr);
 */
     //Just to be sure
     if (errcode == GSL_EDOM) {
@@ -2403,7 +2409,7 @@ void Distribution::generateMatchedGauss(const SigmaGenerator::matrix_t& sigma,
     correlationMatrix_m(5, 0) = sigma(0, 5) / (std::sqrt(sigma(0, 0) * sigma(5, 5)));
     correlationMatrix_m(5, 1) = sigma(1, 5) / (std::sqrt(sigma(1, 1) * sigma(5, 5)));
 
-    inputMoUnits_m = InputMomentumUnitsT::NONE;
+    inputMoUnits_m = InputMomentumUnits::NONE;
 
     /*
      * decouple horizontal and longitudinal direction
@@ -2558,7 +2564,7 @@ void Distribution::generateLongFlattopT(size_t numberOfParticles) {
 
         if (modulationAmp == 0.0 || numModulationPeriods == 0.0) {
 
-            if (quasiRandGen1D != NULL)
+            if (quasiRandGen1D != nullptr)
                 gsl_qrng_get(quasiRandGen1D, &t);
             else
                 t = gsl_rng_uniform(randGen_m);
@@ -2570,7 +2576,7 @@ void Distribution::generateLongFlattopT(size_t numberOfParticles) {
             bool allow = false;
             double randNums[2] = {0.0, 0.0};
             while (!allow) {
-                if (quasiRandGen2D != NULL) {
+                if (quasiRandGen2D != nullptr) {
                     gsl_qrng_get(quasiRandGen2D, randNums);
                 } else {
                     randNums[0]= gsl_rng_uniform(randGen_m);
@@ -2731,8 +2737,8 @@ void Distribution::injectBeam(PartBunchBase<double, 3> *beam) {
     std::vector<double> id1 = Attributes::getRealArray(itsAttr[Attrib::Distribution::ID1]);
     std::vector<double> id2 = Attributes::getRealArray(itsAttr[Attrib::Distribution::ID2]);
 
-    bool hasID1 = (id1.size() != 0);
-    bool hasID2 = (id2.size() != 0);
+    bool hasID1 = !id1.empty();
+    bool hasID2 = !id2.empty();
 
     if (hasID1 || hasID2)
         *gmsg << "* Use special ID1 or ID2 particle in distribution" << endl;
@@ -2751,11 +2757,12 @@ void Distribution::injectBeam(PartBunchBase<double, 3> *beam) {
                                       pzDist_m.at(partIndex));
 
         beam->Q[partIndex] = beam->getChargePerParticle();
+        beam->M[partIndex] = beam->getMassPerParticle();
         beam->Ef[partIndex] = Vector_t(0.0);
         beam->Bf[partIndex] = Vector_t(0.0);
-        beam->PType[partIndex] = ParticleType::REGULAR;
+        beam->PType[partIndex] = beam->getPType();
+        beam->POrigin[partIndex] = ParticleOrigin::REGULAR;
         beam->TriID[partIndex] = 0;
-
         if (numberOfEnergyBins_m > 0) {
             size_t binNumber = findEBin(tOrZDist_m.at(partIndex));
             beam->Bin[partIndex] = binNumber;
@@ -2870,7 +2877,7 @@ std::vector<double>& Distribution::getBGzDist() {
 void Distribution::printDist(Inform &os, size_t numberOfParticles) const {
 
     if (numberOfParticles > 0) {
-        size_t np = numberOfParticles * (Options::cZero && !(distrTypeT_m == DistrTypeT::FROMFILE)? 2: 1);
+        size_t np = numberOfParticles * (Options::cZero && !(distrTypeT_m == DistributionType::FROMFILE)? 2: 1);
         reduce(np, np, OpAddAssign());
         os << "* Number of particles: "
            << np
@@ -2878,31 +2885,45 @@ void Distribution::printDist(Inform &os, size_t numberOfParticles) const {
            << "* " << endl;
     }
 
-    switch (distrTypeT_m) {
+    os << "* Distribution input momentum units: ";
+    switch (inputMoUnits_m) {
+        case InputMomentumUnits::NONE: {
+            os << "[Beta Gamma]" << "\n* " << endl;
+            break;
+        }
+        case InputMomentumUnits::EVOVERC: {
+            os << "[eV/c]" << "\n* " << endl;
+            break;
+        }
+        default:
+            throw OpalException("Distribution::printDist",
+                                "Unknown \"INPUTMOUNITS\" for \"DISTRIBUTION\" command");
+    }
 
-    case DistrTypeT::FROMFILE:
-        printDistFromFile(os);
-        break;
-    case DistrTypeT::GAUSS:
-        printDistGauss(os);
-        break;
-    case DistrTypeT::BINOMIAL:
-        printDistBinomial(os);
-        break;
-    case DistrTypeT::FLATTOP:
-    case DistrTypeT::GUNGAUSSFLATTOPTH:
-    case DistrTypeT::ASTRAFLATTOPTH:
-        printDistFlattop(os);
-        break;
-    case DistrTypeT::MULTIGAUSS:
-        printDistMultiGauss(os);
-        break;
-    case DistrTypeT::MATCHEDGAUSS:
-        printDistMatchedGauss(os);
-        break;
-    default:
-        INFOMSG("Distribution unknown." << endl;);
-        break;
+    switch (distrTypeT_m) {
+        case DistributionType::FROMFILE:
+            printDistFromFile(os);
+            break;
+        case DistributionType::GAUSS:
+            printDistGauss(os);
+            break;
+        case DistributionType::BINOMIAL:
+            printDistBinomial(os);
+            break;
+        case DistributionType::FLATTOP:
+        case DistributionType::GUNGAUSSFLATTOPTH:
+        case DistributionType::ASTRAFLATTOPTH:
+            printDistFlattop(os);
+            break;
+        case DistributionType::MULTIGAUSS:
+            printDistMultiGauss(os);
+            break;
+        case DistributionType::MATCHEDGAUSS:
+            printDistMatchedGauss(os);
+            break;
+        default:
+            throw OpalException("Distribution::printDist",
+                                "Unknown \"TYPE\" of \"DISTRIBUTION\"");
     }
 
 }
@@ -2939,11 +2960,11 @@ void Distribution::printDistFlattop(Inform &os) const {
 
     switch (distrTypeT_m) {
 
-    case DistrTypeT::ASTRAFLATTOPTH:
+    case DistributionType::ASTRAFLATTOPTH:
         os << "* Distribution type: ASTRAFLATTOPTH" << endl;
         break;
 
-    case DistrTypeT::GUNGAUSSFLATTOPTH:
+    case DistributionType::GUNGAUSSFLATTOPTH:
         os << "* Distribution type: GUNGAUSSFLATTOPTH" << endl;
         break;
 
@@ -2954,7 +2975,7 @@ void Distribution::printDistFlattop(Inform &os) const {
     }
     os << "* " << endl;
 
-    if (laserProfile_m != NULL) {
+    if (laserProfile_m != nullptr) {
 
         os << "* Transverse profile determined by laser image: " << endl
            << endl
@@ -2971,7 +2992,7 @@ void Distribution::printDistFlattop(Inform &os) const {
 
     if (emitting_m) {
 
-        if (distrTypeT_m == DistrTypeT::ASTRAFLATTOPTH) {
+        if (distrTypeT_m == DistributionType::ASTRAFLATTOPTH) {
 
             os << "* Time Rise                     = " << tRise_m
                << " [sec]" << endl;
@@ -3033,8 +3054,8 @@ void Distribution::printDistMultiGauss(Inform &os) const {
 void Distribution::printDistFromFile(Inform &os) const {
     os << "* Distribution type: FROMFILE" << endl;
     os << "* " << endl;
-    os << "* Input file:        "
-       << Attributes::getString(itsAttr[Attrib::Distribution::FNAME]) << endl;
+    os << "* Input file: '"
+       << Attributes::getString(itsAttr[Attrib::Distribution::FNAME]) << "'" << endl;
 }
 
 
@@ -3128,13 +3149,13 @@ void Distribution::printEmissionModel(Inform &os) const {
 
     switch (emissionModel_m) {
 
-    case EmissionModelT::NONE:
+    case EmissionModel::NONE:
         printEmissionModelNone(os);
         break;
-    case EmissionModelT::ASTRA:
+    case EmissionModel::ASTRA:
         printEmissionModelAstra(os);
         break;
-    case EmissionModelT::NONEQUIL:
+    case EmissionModel::NONEQUIL:
         printEmissionModelNonEquil(os);
         break;
     default:
@@ -3198,7 +3219,7 @@ bool Distribution::Rebin() {
 
 void Distribution::reflectDistribution(size_t &numberOfParticles) {
 
-    if (!Options::cZero || (distrTypeT_m == DistrTypeT::FROMFILE))
+    if (!Options::cZero || (distrTypeT_m == DistributionType::FROMFILE))
         return;
 
     size_t currentNumPart = tOrZDist_m.size();
@@ -3268,15 +3289,15 @@ gsl_qrng* Distribution::selectRandomGenerator(std::string,unsigned int dimension
 
 void Distribution::setAttributes() {
     itsAttr[Attrib::Distribution::TYPE]
-        = Attributes::makeUpperCaseString("TYPE","Distribution type: "
-                                          "FROMFILE, "
-                                          "GAUSS, "
-                                          "BINOMIAL, "
-                                          "FLATTOP, "
-                                          "MULTIGAUSS, "
-                                          "GUNGAUSSFLATTOPTH, "
-                                          "ASTRAFLATTOPTH, "
-                                          "GAUSSMATCHED");
+        = Attributes::makePredefinedString("TYPE","Distribution type.",
+                                           {"FROMFILE",
+                                            "GAUSS",
+                                            "BINOMIAL",
+                                            "FLATTOP",
+                                            "MULTIGAUSS",
+                                            "GUNGAUSSFLATTOPTH",
+                                            "ASTRAFLATTOPTH",
+                                            "GAUSSMATCHED"});
     itsAttr[Attrib::Legacy::Distribution::DISTRIBUTION]
         = Attributes::makeString("DISTRIBUTION","This attribute isn't supported any more. Use TYPE instead");
     itsAttr[Attrib::Distribution::LINE]
@@ -3328,8 +3349,7 @@ void Distribution::setAttributes() {
                                "distribution list.", 1.0);
 
     itsAttr[Attrib::Distribution::INPUTMOUNITS]
-        = Attributes::makeUpperCaseString("INPUTMOUNITS", "Tell OPAL what input units are for momentum."
-                                          " Currently \"NONE\" or \"EV\".", "");
+        = Attributes::makePredefinedString("INPUTMOUNITS", "Tell OPAL what the input units are of the momentum.", {"NONE", "EVOVERC"});
 
     // Attributes for beam emission.
     itsAttr[Attrib::Distribution::EMITTED]
@@ -3339,8 +3359,9 @@ void Distribution::setAttributes() {
         = Attributes::makeReal("EMISSIONSTEPS", "Number of time steps to use during emission.",
                                1);
     itsAttr[Attrib::Distribution::EMISSIONMODEL]
-        = Attributes::makeUpperCaseString("EMISSIONMODEL", "Model used to emit electrons from a "
-                                          "photocathode.", "None");
+        = Attributes::makePredefinedString("EMISSIONMODEL", "Model used to emit electrons from a "
+                                           "photocathode.",
+                                           {"NONE", "ASTRA", "NONEQUIL"}, "NONE");
     itsAttr[Attrib::Distribution::EKIN]
         = Attributes::makeReal("EKIN", "Kinetic energy used in ASTRA thermal emittance "
                                "model (eV). (Thermal energy added in with random "
@@ -3580,38 +3601,27 @@ void Distribution::setDistToEmitted(bool emitted) {
 void Distribution::setDistType() {
     if (itsAttr[Attrib::Legacy::Distribution::DISTRIBUTION]) {
         throw OpalException("Distribution::setDistType()",
-                            "The attribute DISTRIBUTION isn't supported any more, use TYPE instead");
+                            "The attribute \"DISTRIBUTION\" isn't supported any more, use \"TYPE\" instead");
     }
 
+    static const std::map<std::string, DistributionType> typeStringToDistType_s = {
+        {"NODIST",            DistributionType::NODIST},
+        {"FROMFILE",          DistributionType::FROMFILE},
+        {"GAUSS",             DistributionType::GAUSS},
+        {"BINOMIAL",          DistributionType::BINOMIAL},
+        {"FLATTOP",           DistributionType::FLATTOP},
+        {"MULTIGAUSS",        DistributionType::MULTIGAUSS},
+        {"GUNGAUSSFLATTOPTH", DistributionType::GUNGAUSSFLATTOPTH},
+        {"ASTRAFLATTOPTH",    DistributionType::ASTRAFLATTOPTH},
+        {"GAUSSMATCHED",      DistributionType::MATCHEDGAUSS}
+    };
+
     distT_m = Attributes::getString(itsAttr[Attrib::Distribution::TYPE]);
-    if (distT_m == "FROMFILE")
-        distrTypeT_m = DistrTypeT::FROMFILE;
-    else if (distT_m == "GAUSS")
-        distrTypeT_m = DistrTypeT::GAUSS;
-    else if (distT_m == "BINOMIAL")
-        distrTypeT_m = DistrTypeT::BINOMIAL;
-    else if (distT_m == "FLATTOP")
-        distrTypeT_m = DistrTypeT::FLATTOP;
-    else if (distT_m == "MULTIGAUSS")
-        distrTypeT_m = DistrTypeT::MULTIGAUSS;
-    else if (distT_m == "GUNGAUSSFLATTOPTH")
-        distrTypeT_m = DistrTypeT::GUNGAUSSFLATTOPTH;
-    else if (distT_m == "ASTRAFLATTOPTH")
-        distrTypeT_m = DistrTypeT::ASTRAFLATTOPTH;
-    else if (distT_m == "GAUSSMATCHED")
-        distrTypeT_m = DistrTypeT::MATCHEDGAUSS;
-    else {
-        throw OpalException("Distribution::setDistType()",
-                            "The distribution \"" + distT_m + "\" isn't known.\n" +
-                            "Known distributions are:\n"
-                            "FROMFILE\n"
-                            "GAUSS\n"
-                            "BINOMIAL\n"
-                            "FLATTOP\n"
-                            "MULTIGAUSS\n"
-                            "GUNGAUSSFLATTOPTH\n"
-                            "ASTRAFLATTTOPTH\n"
-                            "GAUSSMATCHED");
+    if (distT_m.empty()) {
+        throw OpalException("Distribution::setDistType",
+                            "The attribute \"TYPE\" isn't set for the \"DISTRIBUTION\"!");
+    } else {
+        distrTypeT_m = typeStringToDistType_s.at(distT_m);
     }
 }
 
@@ -3642,26 +3652,26 @@ void Distribution::setSigmaP_m(double massIneV) {
     }
 
     // Check what input units we are using for momentum.
-    if (inputMoUnits_m == InputMomentumUnitsT::EV) {
-        sigmaP_m[0] = Util::convertMomentumeVToBetaGamma(sigmaP_m[0], massIneV);
-        sigmaP_m[1] = Util::convertMomentumeVToBetaGamma(sigmaP_m[1], massIneV);
-        sigmaP_m[2] = Util::convertMomentumeVToBetaGamma(sigmaP_m[2], massIneV);
+    if (inputMoUnits_m == InputMomentumUnits::EVOVERC) {
+        sigmaP_m[0] = Util::convertMomentumEVoverCToBetaGamma(sigmaP_m[0], massIneV);
+        sigmaP_m[1] = Util::convertMomentumEVoverCToBetaGamma(sigmaP_m[1], massIneV);
+        sigmaP_m[2] = Util::convertMomentumEVoverCToBetaGamma(sigmaP_m[2], massIneV);
     }
 }
 
 void Distribution::setEmissionTime(double &maxT, double &minT) {
 
-    if (addedDistributions_m.size() == 0) {
+    if (addedDistributions_m.empty()) {
 
         switch (distrTypeT_m) {
 
-        case DistrTypeT::FLATTOP:
-        case DistrTypeT::GAUSS:
-        case DistrTypeT::GUNGAUSSFLATTOPTH:
+        case DistributionType::FLATTOP:
+        case DistributionType::GAUSS:
+        case DistributionType::GUNGAUSSFLATTOPTH:
             tEmission_m = tPulseLengthFWHM_m + (cutoffR_m[2] - std::sqrt(2.0 * std::log(2.0)))
                 * (sigmaTRise_m + sigmaTFall_m);
             break;
-        case DistrTypeT::ASTRAFLATTOPTH:
+        case DistributionType::ASTRAFLATTOPTH:
             /*
              * Don't do anything. Emission time is set during the distribution
              * creation. Only this distribution type does it this way. This is
@@ -3705,7 +3715,7 @@ void Distribution::setDistParametersBinomial(double massIneV) {
      */
     std::vector<double> cr = Attributes::getRealArray(itsAttr[Attrib::Distribution::R]);
 
-    if (cr.size()>0) {
+    if (!cr.empty()) {
         throw OpalException("Distribution::setDistParametersBinomial",
                             "Attribute R is not supported for binomial distribution\n"
                             "use CORR[X|Y|Z] and R51, R52, R61, R62 instead");
@@ -3819,7 +3829,7 @@ void Distribution::setDistParametersFlattop(double massIneV) {
     }
 
     // Legacy for ASTRAFLATTOPTH.
-    if (distrTypeT_m == DistrTypeT::ASTRAFLATTOPTH)
+    if (distrTypeT_m == DistributionType::ASTRAFLATTOPTH)
         tRise_m = std::abs(Attributes::getReal(itsAttr[Attrib::Distribution::TRISE]));
 
 }
@@ -3845,7 +3855,7 @@ void Distribution::setDistParametersGauss(double massIneV) {
     /*
      * Set distribution parameters. Do all the necessary checks depending
      * on the input attributes.
-     * In case of DistrTypeT::MATCHEDGAUSS we only need to set the cutoff parameters
+     * In case of DistributionType::MATCHEDGAUSS we only need to set the cutoff parameters
      */
 
 
@@ -3863,12 +3873,12 @@ void Distribution::setDistParametersGauss(double massIneV) {
         cutoffR_m[1] = Attributes::getReal(itsAttr[Attrib::Distribution::CUTOFFR]);
     }
 
-    if  (distrTypeT_m != DistrTypeT::MATCHEDGAUSS) {
+    if  (distrTypeT_m != DistributionType::MATCHEDGAUSS) {
         setSigmaP_m(massIneV);
 
         std::vector<double> cr = Attributes::getRealArray(itsAttr[Attrib::Distribution::R]);
 
-        if (cr.size()>0) {
+        if (!cr.empty()) {
             if (cr.size() == 15) {
                 *gmsg << "* Use r to specify correlations" << endl;
                 unsigned int k = 0;
@@ -3899,7 +3909,7 @@ void Distribution::setDistParametersGauss(double massIneV) {
         }
     }
 
-    if (distrTypeT_m != DistrTypeT::MATCHEDGAUSS)
+    if (distrTypeT_m != DistributionType::MATCHEDGAUSS)
         setSigmaR_m();
 
     if (emitting_m) {
@@ -3945,34 +3955,41 @@ void Distribution::setDistParametersGauss(double massIneV) {
 
 void Distribution::setupEmissionModel(PartBunchBase<double, 3> *beam) {
 
+    static const std::map<std::string, EmissionModel> stringEmissionModel_s = {
+        {"NONE",     EmissionModel::NONE},
+        {"ASTRA",    EmissionModel::ASTRA},
+        {"NONEQUIL", EmissionModel::NONEQUIL}
+    };
+
     std::string model = Attributes::getString(itsAttr[Attrib::Distribution::EMISSIONMODEL]);
-    if (model == "ASTRA")
-        emissionModel_m = EmissionModelT::ASTRA;
-    else if (model == "NONEQUIL")
-        emissionModel_m = EmissionModelT::NONEQUIL;
-    else
-        emissionModel_m = EmissionModelT::NONE;
-
-    /*
-     * The ASTRAFLATTOPTH  of GUNGAUSSFLATTOPTH distributions always uses the
-     * ASTRA emission model.
-     */
-    if (distrTypeT_m == DistrTypeT::ASTRAFLATTOPTH
-        || distrTypeT_m == DistrTypeT::GUNGAUSSFLATTOPTH)
-        emissionModel_m = EmissionModelT::ASTRA;
-
-    switch (emissionModel_m) {
-
-    case EmissionModelT::ASTRA:
-        setupEmissionModelAstra(beam);
-        break;
-    case EmissionModelT::NONEQUIL:
-        setupEmissionModelNonEquil();
-        break;
-    default:
-        break;
+    if (model.empty()) {
+        emissionModel_m = EmissionModel::NONE;
+    } else {
+        emissionModel_m = stringEmissionModel_s.at(model);
     }
 
+    /*
+     * The ASTRAFLATTOPTH of GUNGAUSSFLATTOPTH distributions always uses the
+     * ASTRA emission model.
+     */
+    if (distrTypeT_m == DistributionType::ASTRAFLATTOPTH ||
+        distrTypeT_m == DistributionType::GUNGAUSSFLATTOPTH) {
+        emissionModel_m = EmissionModel::ASTRA;
+    }
+
+    switch (emissionModel_m) {
+        case EmissionModel::ASTRA: {
+            setupEmissionModelAstra(beam);
+            break;
+        }
+        case EmissionModel::NONEQUIL: {
+            setupEmissionModelNonEquil();
+            break;
+        }
+        default: {
+            break;
+        }
+    }
 }
 
 void Distribution::setupEmissionModelAstra(PartBunchBase<double, 3> *beam) {
@@ -4010,7 +4027,7 @@ void Distribution::setupEmissionModelNonEquil() {
         + cathodeTemp_m * std::log(1.0e9 - 1.0);
 
     // TODO: get better estimate of pmean
-    pmean_m = Vector_t(0, 0, std::sqrt(std::pow(0.5 * emitEnergyUpperLimit_m / (Physics::m_e * 1e9) + 1.0, 2) - 1.0));
+    pmean_m = Vector_t(0, 0, std::sqrt(std::pow(0.5 * emitEnergyUpperLimit_m / (Physics::m_e * Units::GeV2eV) + 1.0, 2) - 1.0));
 }
 
 void Distribution::setupEnergyBins(double maxTOrZ, double minTOrZ) {
@@ -4045,7 +4062,7 @@ void Distribution::setupParticleBins(double /*massIneV*/, PartBunchBase<double, 
         energyBins_m->setGamma(gamma);
 
     } else {
-        energyBins_m = NULL;
+        energyBins_m = nullptr;
     }
 }
 
@@ -4053,17 +4070,17 @@ void Distribution::shiftBeam(double &maxTOrZ, double &minTOrZ) {
 
     if (emitting_m) {
 
-        if (addedDistributions_m.size() == 0) {
+        if (addedDistributions_m.empty()) {
 
-            if (distrTypeT_m == DistrTypeT::ASTRAFLATTOPTH) {
+            if (distrTypeT_m == DistributionType::ASTRAFLATTOPTH) {
                 for (double& tOrZ : tOrZDist_m)
                     tOrZ -= tEmission_m / 2.0;
 
                 minTOrZ -= tEmission_m / 2.0;
                 maxTOrZ -= tEmission_m / 2.0;
-            } else if (distrTypeT_m == DistrTypeT::GAUSS
-                       || distrTypeT_m == DistrTypeT::FLATTOP
-                       || distrTypeT_m == DistrTypeT::GUNGAUSSFLATTOPTH) {
+            } else if (distrTypeT_m == DistributionType::GAUSS
+                       || distrTypeT_m == DistributionType::FLATTOP
+                       || distrTypeT_m == DistributionType::GUNGAUSSFLATTOPTH) {
                 for (double& tOrZ : tOrZDist_m)
                     tOrZ -= tEmission_m;
 
@@ -4085,7 +4102,7 @@ void Distribution::shiftBeam(double &maxTOrZ, double &minTOrZ) {
             maxTOrZ -= maxTOrZ;
         }
 
-    } else if (distrTypeT_m != DistrTypeT::FROMFILE) {
+    } else if (distrTypeT_m != DistributionType::FROMFILE) {
         double avgZ[] = {0.0, 1.0 * tOrZDist_m.size()};
         for (double tOrZ : tOrZDist_m)
             avgZ[0] += tOrZ;
@@ -4138,10 +4155,10 @@ void Distribution::shiftDistCoordinates(double massIneV) {
             WARNMSG("PT & PZ are obsolete and will be ignored. The moments of the beam is defined with PC" << endl);
 
         // Check input momentum units.
-        if (inputMoUnits_m == InputMomentumUnitsT::EV) {
-            deltaPx = Util::convertMomentumeVToBetaGamma(deltaPx, massIneV);
-            deltaPy = Util::convertMomentumeVToBetaGamma(deltaPy, massIneV);
-            deltaPz = Util::convertMomentumeVToBetaGamma(deltaPz, massIneV);
+        if (inputMoUnits_m == InputMomentumUnits::EVOVERC) {
+            deltaPx = Util::convertMomentumEVoverCToBetaGamma(deltaPx, massIneV);
+            deltaPy = Util::convertMomentumEVoverCToBetaGamma(deltaPy, massIneV);
+            deltaPz = Util::convertMomentumEVoverCToBetaGamma(deltaPz, massIneV);
         }
 
         size_t endIdx = startIdx + particlesPerDist_m[i];
@@ -4160,28 +4177,23 @@ void Distribution::shiftDistCoordinates(double massIneV) {
 
 void Distribution::writeOutFileHeader() {
 
-    if (Attributes::getBool(itsAttr[Attrib::Distribution::WRITETOFILE]) == false)
+    if (Attributes::getBool(itsAttr[Attrib::Distribution::WRITETOFILE]) == false) {
         return;
+    }
 
     unsigned int totalNum = tOrZDist_m.size();
     reduce(totalNum, totalNum, OpAddAssign());
     if (Ippl::myNode() != 0)
         return;
 
-    std::string fname = Util::combineFilePath({
+    outFilename_m = Util::combineFilePath({
         OpalData::getInstance()->getAuxiliaryOutputDirectory(),
         OpalData::getInstance()->getInputBasename() + "_" + getOpalName() + ".dat"
     });
 
-    *gmsg << "\n"
-          << std::left << std::setw(84) << std::setfill('*') << "* " << "\n"
-          << "* Write initial distribution to file \"" << fname << "\"\n"
-          << std::left << std::setw(84) << std::setfill('*') << "* "
-          << std::setfill(' ') << endl;
-
-    std::ofstream outputFile(fname);
+    std::ofstream outputFile(outFilename_m);
     if (outputFile.bad()) {
-        *gmsg << "Unable to open output file \"" << fname << "\"" << endl;
+        *gmsg << "Unable to open output file '" << outFilename_m << "'" << endl;
     } else {
         outputFile.setf(std::ios::left);
         outputFile << "# ";
@@ -4243,7 +4255,7 @@ void Distribution::writeOutFileEmission() {
     if (Ippl::myNode() == 0) {
         MPI_Reduce(MPI_IN_PLACE, &(numberOfBits[0]), Ippl::getNodes(), MPI_UNSIGNED_LONG, MPI_SUM, 0, Ippl::getComm());
     } else {
-        MPI_Reduce(&(numberOfBits[0]), NULL, Ippl::getNodes(), MPI_UNSIGNED_LONG, MPI_SUM, 0, Ippl::getComm());
+        MPI_Reduce(&(numberOfBits[0]), nullptr, Ippl::getNodes(), MPI_UNSIGNED_LONG, MPI_SUM, 0, Ippl::getComm());
     }
 
     Ippl::Comm->barrier();
@@ -4272,16 +4284,9 @@ void Distribution::writeOutFileEmission() {
             Ippl::Comm->raw_send(&(msgbuf[0]), totalSendBits, 0, tag);
         }
     } else {
-
-        std::string fname = Util::combineFilePath({
-            OpalData::getInstance()->getAuxiliaryOutputDirectory(),
-            OpalData::getInstance()->getInputBasename() + "_" + getOpalName() + ".dat"
-        });
-
-
-        std::ofstream outputFile(fname, std::fstream::app);
+        std::ofstream outputFile(outFilename_m, std::fstream::app);
         if (outputFile.bad()) {
-            ERRORMSG(level1 << "Unable to write to file \"" << fname << "\"" << endl);
+            ERRORMSG(level1 << "Unable to write to file '" << outFilename_m << "'" << endl);
             for (int node = 1; node < Ippl::getNodes(); ++ node) {
                 if (numberOfBits[node] == 0) continue;
                 char *recvbuf = new char[numberOfBits[node]];
@@ -4354,20 +4359,16 @@ void Distribution::writeOutFileInjection() {
     if (Attributes::getBool(itsAttr[Attrib::Distribution::WRITETOFILE]) == false)
         return;
 
-    std::string fname = Util::combineFilePath({
-        OpalData::getInstance()->getAuxiliaryOutputDirectory(),
-        OpalData::getInstance()->getInputBasename() + "_" + getOpalName() + ".dat"
-    });
     // Nodes take turn writing particles to file.
     for (int nodeIndex = 0; nodeIndex < Ippl::getNodes(); nodeIndex++) {
 
         // Write to file if its our turn.
         size_t numberOfParticles = 0;
         if (Ippl::myNode() == nodeIndex) {
-            std::ofstream outputFile(fname, std::fstream::app);
+            std::ofstream outputFile(outFilename_m, std::fstream::app);
             if (outputFile.bad()) {
                 *gmsg << "Node " << Ippl::myNode() << " unable to write"
-                      << "to file \"" << fname << "\"" << endl;
+                      << "to file '" << outFilename_m << "'" << endl;
             } else {
 
                 outputFile.precision(9);
@@ -4415,15 +4416,15 @@ double Distribution::GaussianLikeBehavior::get(double rand) {
 }
 
 void Distribution::adjustPhaseSpace(double massIneV) {
-    if (emitting_m || distrTypeT_m == DistrTypeT::FROMFILE || OpalData::getInstance()->isInOPALCyclMode())
+    if (emitting_m || distrTypeT_m == DistributionType::FROMFILE || OpalData::getInstance()->isInOPALCyclMode())
         return;
 
     double deltaPx = Attributes::getReal(itsAttr[Attrib::Distribution::OFFSETPX]);
     double deltaPy = Attributes::getReal(itsAttr[Attrib::Distribution::OFFSETPY]);
     // Check input momentum units.
-    if (inputMoUnits_m == InputMomentumUnitsT::EV) {
-        deltaPx = Util::convertMomentumeVToBetaGamma(deltaPx, massIneV);
-        deltaPy = Util::convertMomentumeVToBetaGamma(deltaPy, massIneV);
+    if (inputMoUnits_m == InputMomentumUnits::EVOVERC) {
+        deltaPx = Util::convertMomentumEVoverCToBetaGamma(deltaPx, massIneV);
+        deltaPy = Util::convertMomentumEVoverCToBetaGamma(deltaPy, massIneV);
     }
 
     double avrg[6];

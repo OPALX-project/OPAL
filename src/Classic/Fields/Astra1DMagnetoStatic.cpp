@@ -14,7 +14,7 @@
 
 Astra1DMagnetoStatic::Astra1DMagnetoStatic(std::string aFilename)
     : Fieldmap(aFilename),
-      FourCoefs_m(NULL) {
+      FourCoefs_m(nullptr) {
     std::ifstream file;
     int skippedValues = 0;
     std::string tmpString;
@@ -76,7 +76,7 @@ Astra1DMagnetoStatic::~Astra1DMagnetoStatic() {
 }
 
 void Astra1DMagnetoStatic::readMap() {
-    if (FourCoefs_m == NULL) {
+    if (FourCoefs_m == nullptr) {
         // declare variables and allocate memory
     	std::ifstream in;
 
@@ -158,10 +158,10 @@ void Astra1DMagnetoStatic::readMap() {
 }
 
 void Astra1DMagnetoStatic::freeMap() {
-    if (FourCoefs_m != NULL) {
+    if (FourCoefs_m != nullptr) {
 
         delete[] FourCoefs_m;
-        FourCoefs_m = NULL;
+        FourCoefs_m = nullptr;
 
         INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }

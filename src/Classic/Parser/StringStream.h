@@ -58,8 +58,8 @@ private:
     Token readWord();
 
     // Current input string;
-    const std::string line;
-    std::string::size_type curr_char;
+    const std::string line_m;
+    std::string::size_type currentChar_m;
 };
 
 #endif // CLASSIC_StringStream_HH

@@ -2,7 +2,7 @@
 /***************************************************************************
  *
  * The IPPL Framework
- * 
+ *
  *
  * Visit http://people.web.psi.ch/adelmann/ for more details
  *
@@ -89,7 +89,7 @@ public:
 
   // Constructor which takes a FieldLayout, and stores a ref to it
   // This will assume a MeshType with unit spacing and that the domain of
-  // the MeshType is one larger in each dimension than the domain of the 
+  // the MeshType is one larger in each dimension than the domain of the
   // FieldLayout (i.e., the FieldLayout index space refers to cell-centered
   // Field quantities).
   RegionLayout(FieldLayout<Dim>&);
@@ -101,7 +101,7 @@ public:
 
   // Constructor which takes an NDIndex and converts it to a RegionLayout.
   // These assume a MeshType with unit spacing and that the domain of
-  // the MeshType is one larger in each dimension than the given domain 
+  // the MeshType is one larger in each dimension than the given domain
   // (i.e., the index space refers to cell-centered Field quantities).
   RegionLayout(const NDIndex<Dim>& domain, int vnodes=-1);
   RegionLayout(const Index& i1,int vnodes=-1);
@@ -301,7 +301,7 @@ private:
     // the storage for allocated Rnode's when the program exits
     RnodePool() { }
     ~RnodePool() {
-      while (this->size() > 0) {
+      while (!this->empty()) {
 	delete this->back();
 	this->pop_back();
       }
@@ -348,5 +348,5 @@ private:
 /***************************************************************************
  * $RCSfile: RegionLayout.h,v $   $Author: adelmann $
  * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:32 $
- * IPPL_VERSION_ID: $Id: RegionLayout.h,v 1.1.1.1 2003/01/23 07:40:32 adelmann Exp $ 
+ * IPPL_VERSION_ID: $Id: RegionLayout.h,v 1.1.1.1 2003/01/23 07:40:32 adelmann Exp $
  ***************************************************************************/

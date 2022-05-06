@@ -1,3 +1,21 @@
+//
+// Class OptimizeCmd
+//   The OptimizeCmd definition.
+//   A OptimizeCmd definition is used to parse the parametes for the optimizer.
+//
+// Copyright (c) 2017, Christof Metzger-Kraus
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Optimize/OptimizeCmd.h"
 #include "Optimize/Objective.h"
 #include "Optimize/Constraint.h"
@@ -154,10 +172,10 @@ OptimizeCmd::OptimizeCmd():
         ("FIELDMAPDIR", "Directory where field maps are stored");
     itsAttr[DISTDIR] = Attributes::makeString
         ("DISTDIR", "Directory where distributions are stored", "");
-    itsAttr[CROSSOVER] = Attributes::makeUpperCaseString
-        ("CROSSOVER", "Type of cross over (default: Blend)", "Blend");
-    itsAttr[MUTATION] = Attributes::makeUpperCaseString
-        ("MUTATION", "Type of bit mutation (default: IndependentBit)", "IndependentBit");
+    itsAttr[CROSSOVER] = Attributes::makePredefinedString
+        ("CROSSOVER", "Type of cross over.", {"BLEND", "NAIVEONEPOINT", "NAIVEUNIFORM", "SIMULATEDBINARY"}, "BLEND");
+    itsAttr[MUTATION] = Attributes::makePredefinedString
+        ("MUTATION", "Type of bit mutation.", {"ONEBIT", "INDEPENDENTBIT"}, "INDEPENDENTBIT");
     itsAttr[RESTART_FILE] = Attributes::makeString
         ("RESTART_FILE", "H5 file to restart the OPAL simulations from (optional)", "");
     itsAttr[RESTART_STEP] = Attributes::makeReal
@@ -277,7 +295,7 @@ void OptimizeCmd::execute() {
         if ((it = argumentMapper.find(i)) != argumentMapper.end()) {
             std::string type = itsAttr[i].getType();
             if (type == "string") {
-                if (Attributes::getString(itsAttr[i]) != "") {
+                if (!Attributes::getString(itsAttr[i]).empty()) {
                     std::string argument = "--" + (*it).second + "=" + Attributes::getString(itsAttr[i]);
                     arguments.push_back(argument);
                 }
@@ -299,7 +317,7 @@ void OptimizeCmd::execute() {
         }
     }
     // sanity checks
-    if (Attributes::getString(itsAttr[INPUT]) == "") {
+    if (Attributes::getString(itsAttr[INPUT]).empty()) {
         throw OpalException("OptimizeCmd::execute",
                             "The argument INPUT has to be provided");
     }
@@ -316,7 +334,7 @@ void OptimizeCmd::execute() {
         throw OpalException("OptimizeCmd::execute",
                             "The hypervolume reference point should have the same dimension as the objectives");
     }
-    if (Attributes::getString(itsAttr[STARTPOPULATION])     != "" &&
+    if (!Attributes::getString(itsAttr[STARTPOPULATION]).empty() &&
         Attributes::getBool(  itsAttr[INITIALOPTIMIZATION]) == true) {
         throw OpalException("OptimizeCmd::execute",
                             "No INITIAL_OPTIMIZATION possible when reading initial population from file (STARTPOPULATION)");
@@ -327,7 +345,7 @@ void OptimizeCmd::execute() {
                             "No INITIAL_OPTIMIZATION possible with BIRTH_CONTROL");
     }
 
-    if (Attributes::getString(itsAttr[SIMTMPDIR]) != "") {
+    if (!Attributes::getString(itsAttr[SIMTMPDIR]).empty()) {
         fs::path dir(Attributes::getString(itsAttr[SIMTMPDIR]));
         if (dir.is_relative()) {
             fs::path path = fs::path(std::string(getenv("PWD")));
@@ -342,7 +360,7 @@ void OptimizeCmd::execute() {
         arguments.push_back(argument);
     }
 
-    if (Attributes::getString(itsAttr[TEMPLATEDIR]) != "") {
+    if (!Attributes::getString(itsAttr[TEMPLATEDIR]).empty()) {
         fs::path dir(Attributes::getString(itsAttr[TEMPLATEDIR]));
         if (dir.is_relative()) {
             fs::path path = fs::path(std::string(getenv("PWD")));
@@ -354,7 +372,7 @@ void OptimizeCmd::execute() {
         arguments.push_back(argument);
     }
 
-    if (Attributes::getString(itsAttr[FIELDMAPDIR]) != "") {
+    if (!Attributes::getString(itsAttr[FIELDMAPDIR]).empty()) {
         fs::path dir(Attributes::getString(itsAttr[FIELDMAPDIR]));
         if (dir.is_relative()) {
             fs::path path = fs::path(std::string(getenv("PWD")));
@@ -365,7 +383,7 @@ void OptimizeCmd::execute() {
         setenv("FIELDMAPS", dir.c_str(), 1);
     }
 
-    if (Attributes::getString(itsAttr[DISTDIR]) != "") {
+    if (!Attributes::getString(itsAttr[DISTDIR]).empty()) {
         fs::path dir(Attributes::getString(itsAttr[DISTDIR]));
         if (dir.is_relative()) {
             fs::path path = fs::path(std::string(getenv("PWD")));

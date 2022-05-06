@@ -1,3 +1,20 @@
+//
+// Class Material
+//   Base class for representing materials
+//
+// Copyright (c) 2019 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
@@ -11,10 +28,16 @@ namespace Physics {
     class Material {
     public:
         enum FitCoeffs {
-            A2 = 0,
+            A1 = 0,
+            A2,
             A3,
             A4,
-            A5
+            A5,
+            B1,
+            B2,
+            B3,
+            B4,
+            B5
         };
 
         Material(double atomicNumber,
@@ -22,7 +45,7 @@ namespace Physics {
                  double massDensity,
                  double radiationLength,
                  double meanExcitationEnergy,
-                 std::array<double, 4> fitCoefficients):
+                 std::array<double, 10> fitCoefficients):
             atomicNumber_m(atomicNumber),
             atomicMass_m(atomicMass),
             massDensity_m(massDensity),
@@ -38,8 +61,8 @@ namespace Physics {
         double getMeanExcitationEnergy() const; // [eV]
         double getStoppingPowerFitCoefficients(FitCoeffs n) const;
 
-        static std::shared_ptr<Material> getMaterial(const std::string &name);
-        static std::shared_ptr<Material> addMaterial(const std::string &name,
+        static std::shared_ptr<Material> getMaterial(const std::string& name);
+        static std::shared_ptr<Material> addMaterial(const std::string& name,
                                                      std::shared_ptr<Material> mat_ptr);
     private:
         static
@@ -50,7 +73,7 @@ namespace Physics {
         const double massDensity_m;
         const double radiationLength_m;
         const double meanExcitationEnergy_m;
-        const std::array<double,4> stoppingPowerFitCoefficients_m;
+        const std::array<double,10> stoppingPowerFitCoefficients_m;
     };
 
     inline

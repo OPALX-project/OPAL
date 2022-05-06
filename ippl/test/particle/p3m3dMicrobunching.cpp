@@ -465,6 +465,8 @@ class ChargedParticles : public IpplParticleBase<PL> {
                     MPI_Comm comm = Ippl::getComm();
                     h5_err_t h5err = H5SetPropFileMPIOCollective (props, &comm);
                     PAssert (h5err != H5_ERR);
+                    // suppress unused warning if we compile for production
+		    (void) h5err;
                     H5f_m = H5OpenFile(fn.c_str(), H5_O_WRONLY, props);
                 }
 

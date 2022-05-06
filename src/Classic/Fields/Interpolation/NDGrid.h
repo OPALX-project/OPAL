@@ -106,6 +106,9 @@ class NDGrid : public Mesh {
      */
     NDGrid(std::vector< std::vector<double> > gridCoordinates);
 
+    /** Copy constructor */
+    NDGrid(const NDGrid& grid);
+
     /** Destructor */
     ~NDGrid() {;}
 

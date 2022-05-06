@@ -75,7 +75,7 @@ class Ring : public Component {
      */
     Ring(const Ring& ring);
 
-    /** Destructor - deletes lossDS_m if not NULL */
+    /** Destructor - deletes lossDS_m if not nullptr */
     virtual ~Ring();
 
     /** Overwrite data in vector E and B with electric and magnetic field
@@ -314,7 +314,7 @@ class Ring : public Component {
      */
     void lockRing();
 
-    /** Get the last section placed or NULL if no sections were placed yet */
+    /** Get the last section placed or nullptr if no sections were placed yet */
     RingSection* getLastSectionPlaced() const;
 
     /** Get the list of sections at position pos */

@@ -83,13 +83,13 @@ public:
     };
 
     // multi-bunch modes
-    enum class MB_MODE {
+    enum class MultiBunchMode: unsigned short {
         FORCE  = 0,
         AUTO   = 1
     };
 
     // multi-bunch binning type
-    enum class MB_BINNING {
+    enum class MultiBunchBinning: unsigned short {
         GAMMA = 0,
         BUNCH = 1
     };
@@ -97,7 +97,7 @@ public:
     /*
      * @param numBunch > 1 --> multi bunch mode
      * @param eta binning value
-     * @param para only for MB_MODE::AUTO
+     * @param para only for MultiBunchMode::AUTO
      * @param mode of multi-bunch
      * @param binning type of particle binning
      */
@@ -164,11 +164,11 @@ private:
     // 0 for single bunch (default),
     // 1 for FORCE,
     // 2 for AUTO
-    MB_MODE mode_m; //multiBunchMode_m;
+    MultiBunchMode mode_m; //multiBunchMode_m;
 
     // 0 for GAMMA (default),
     // 1 for BUNCH
-    MB_BINNING binning_m; //binningType_m;
+    MultiBunchBinning binning_m; //binningType_m;
 
     // control parameter for AUTO multi-bunch mode
     double coeffDBunches_m;
@@ -202,7 +202,7 @@ short MultiBunchHandler::getNumBunch() const {
 
 inline
 bool MultiBunchHandler::isForceMode() const {
-    return (mode_m == MB_MODE::FORCE);
+    return (mode_m == MultiBunchMode::FORCE);
 }
 
 

@@ -104,7 +104,7 @@ void OpalParser::parse(Statement &stat) const {
                 std::string positionIndicator = std::string(position, ' ') + "^\n";
                 std::ostringstream statStr;
                 stat.print(statStr);
-                if (hint != "") {
+                if (!hint.empty()) {
                     throw ParseError("OpalParser::parse()",
                                      statStr.str() +
                                      positionIndicator +
@@ -178,7 +178,7 @@ void OpalParser::parseAction(Statement &stat) const {
         }
     } else {
         std::string hint = getHint(cmdName, "command");
-        if (hint != "") {
+        if (!hint.empty()) {
             throw ParseError("OpalParser::parseAction()",
                              "Syntax error, " + hint);
         }
@@ -571,7 +571,7 @@ Statement *OpalParser::readStatement(TokenStream *is) const {
             stat = readStatement(is);
         } else if(token.isDel('?')) {
             // Give help.
-            *gmsg << "\ntry typing \"HELP\" or \"SHOW\" for help.\n" << endl;
+            *gmsg << "\ntry typing \"HELP\" for help.\n" << endl;
             stat = readStatement(is);
         } else if(! token.isEOF()) {
             stat = new SimpleStatement(token.getFile(), token.getLine());
@@ -641,62 +641,62 @@ void OpalParser::stop() const {
 
 std::string OpalParser::getHint(const std::string &name, const std::string &type) {
     auto owner = AttributeHandler::getOwner(name);
-    if (owner.size() > 0) {
-        std::string hint = "the " + type + " '" + name + "' could belong to\n";
-        {
-            std::string elements = "";
-            auto its = owner.equal_range(AttributeHandler::ELEMENT);
-            if (its.first != its.second) {
-                elements = (its.first)->second;
-                bool any = (its.first)->second == "Any";
-                for (auto it = std::next(its.first); it != its.second && !any; ++ it) {
-                    elements += ", " + it->second;
-                    any = it->second == "Any";
-                }
-                if (any) {
-                    hint += std::string("  - any element\n");
-                } else {
-                    hint += std::string("  - the element") + (std::distance(its.first, its.second) > 1? "s ": " ") + elements + "\n";
-                }
-            }
-        }
-        {
-            std::string commands = "";
-            auto its = owner.equal_range(AttributeHandler::COMMAND);
-            if (its.first != its.second) {
-                commands = (its.first)->second;
-                for (auto it = std::next(its.first); it != its.second; ++ it) {
-                    commands += ", " + it->second;
-                }
-                hint += std::string("  - the command") + (std::distance(its.first, its.second) > 1? "s ": " ") + commands + "\n";
-            }
-        }
-        {
-            std::string sub_commands = "";
-            auto its = owner.equal_range(AttributeHandler::SUB_COMMAND);
-            if (its.first != its.second) {
-                sub_commands = (its.first)->second;
-                for (auto it = std::next(its.first); it != its.second; ++ it) {
-                    sub_commands += ", " + it->second;
-                }
-                hint += std::string("  - the sub-command") + (std::distance(its.first, its.second) > 1? "s ": " ") + sub_commands + "\n";
-            }
-        }
-        {
-            std::string statements = "";
-            auto its = owner.equal_range(AttributeHandler::STATEMENT);
-            if (its.first != its.second) {
-                statements = (its.first)->second;
-                for (auto it = std::next(its.first); it != its.second; ++ it) {
-                    statements += ", " + it->second;
-                }
-                hint += std::string("  - the statement") + (std::distance(its.first, its.second) > 1? "s ": " ") + statements + "\n";
-            }
-        }
-
-        hint += "but it's not present!";
-        return hint;
+    if (owner.empty()) {
+        return std::string();
     }
 
-    return "";
+    std::string hint = "the " + type + " '" + name + "' could belong to\n";
+    {
+        std::string elements;
+        auto its = owner.equal_range(AttributeHandler::ELEMENT);
+        if (its.first != its.second) {
+            elements = (its.first)->second;
+            bool any = (its.first)->second == "Any";
+            for (auto it = std::next(its.first); it != its.second && !any; ++ it) {
+                elements += ", " + it->second;
+                any = it->second == "Any";
+            }
+            if (any) {
+                hint += std::string("  - any element\n");
+            } else {
+                hint += std::string("  - the element") + (std::distance(its.first, its.second) > 1? "s ": " ") + elements + "\n";
+            }
+        }
+    }
+    {
+        std::string commands;
+        auto its = owner.equal_range(AttributeHandler::COMMAND);
+        if (its.first != its.second) {
+            commands = (its.first)->second;
+            for (auto it = std::next(its.first); it != its.second; ++ it) {
+                commands += ", " + it->second;
+            }
+            hint += std::string("  - the command") + (std::distance(its.first, its.second) > 1? "s ": " ") + commands + "\n";
+        }
+    }
+    {
+        std::string sub_commands;
+        auto its = owner.equal_range(AttributeHandler::SUB_COMMAND);
+        if (its.first != its.second) {
+            sub_commands = (its.first)->second;
+            for (auto it = std::next(its.first); it != its.second; ++ it) {
+                sub_commands += ", " + it->second;
+            }
+            hint += std::string("  - the sub-command") + (std::distance(its.first, its.second) > 1? "s ": " ") + sub_commands + "\n";
+        }
+    }
+    {
+        std::string statements;
+        auto its = owner.equal_range(AttributeHandler::STATEMENT);
+        if (its.first != its.second) {
+            statements = (its.first)->second;
+            for (auto it = std::next(its.first); it != its.second; ++ it) {
+                statements += ", " + it->second;
+            }
+            hint += std::string("  - the statement") + (std::distance(its.first, its.second) > 1? "s ": " ") + statements + "\n";
+        }
+    }
+
+    hint += "but it's not present!";
+    return hint;
 }

@@ -98,7 +98,7 @@ const bool& AmrObject::isRefined() const {
 
 
 std::string AmrObject::enum2string(int number) {
-    std::string tagging = "";
+    std::string tagging;
     switch ( number ) {
         case TaggingCriteria::CHARGE_DENSITY:
             tagging = "CHARGE_DENSITY";

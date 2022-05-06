@@ -1,12 +1,12 @@
 #include "Utilities/MSLang/Triangle.h"
-#include "Physics/Physics.h"
+#include "Physics/Units.h"
 
 namespace mslang {
     void Triangle::print(int indentwidth) {
         std::string indent(indentwidth, ' ');
         std::string indentbase(4, ' ');
         Vector_t origin = trafo_m.getOrigin();
-        double angle = trafo_m.getAngle() * Physics::rad2deg;
+        double angle = trafo_m.getAngle() * Units::rad2deg;
 
         std::cout << indent << "triangle, \n";
 
@@ -69,7 +69,7 @@ namespace mslang {
             else if (corners[i][1] > urc[1]) urc[1] = corners[i][1];
         }
 
-        bb_m = BoundingBox(llc, urc);
+        bb_m = BoundingBox2D(llc, urc);
 
         for (auto item: divisor_m) {
             item->computeBoundingBox();

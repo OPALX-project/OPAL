@@ -166,6 +166,7 @@ public:
     //  stream.  If [b]withToken[/b] is true, print also the last token parsed.
     virtual void printWhere(Inform &msg, bool withToken) const;
 
+    std::string str() const;
 protected:
 
     // Line number where statement begins.

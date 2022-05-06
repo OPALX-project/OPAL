@@ -4,6 +4,7 @@
 #include <list>
 #include <memory>
 #include "AbsBeamline/Component.h"
+#include "Structure/BoundingBox.h"
 
 class ClassicField {
 public:
@@ -29,7 +30,7 @@ public:
         return (fle.getLength() < 1.e-6);
     }
 
-    ElementBase::BoundingBox getBoundingBoxInLabCoords() const;
+    BoundingBox getBoundingBoxInLabCoords() const;
 
     unsigned int order_m;
 private:
@@ -74,7 +75,7 @@ inline void ClassicField::setEnd(const double & z) {
 }
 
 inline
-ElementBase::BoundingBox ClassicField::getBoundingBoxInLabCoords() const {
+BoundingBox ClassicField::getBoundingBoxInLabCoords() const {
     return element_m->getBoundingBoxInLabCoords();
 }
 #endif // CLASSIC_FIELD_H

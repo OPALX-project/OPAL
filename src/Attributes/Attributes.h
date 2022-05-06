@@ -23,6 +23,7 @@
 #include <list>
 #include <string>
 #include <vector>
+#include <initializer_list>
 
 class PlaceRep;
 class RangeRep;
@@ -138,6 +139,23 @@ namespace Attributes {
 
     /// Set string value.
     extern void setString(Attribute &attr, const std::string &val);
+
+    /// Make predefined string attribute.
+    //  Initial value undefined.
+    extern Attribute makePredefinedString(const std::string &name,
+                                          const std::string &help,
+                                          const std::initializer_list<std::string>& predefinedStrings);
+
+    /// Make predefined string attribute.
+    //  Initial value is defined.
+    extern Attribute
+    makePredefinedString(const std::string &name,
+                         const std::string &help,
+                         const std::initializer_list<std::string>& predefinedStrings,
+                         const std::string &initial);
+
+    /// Set predefined string value.
+    extern void setPredefinedString(Attribute &attr, const std::string &val);
 
     /// Make uppercase string attribute.
     //  Initial value undefined.

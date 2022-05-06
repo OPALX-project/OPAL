@@ -77,7 +77,6 @@ target_link_libraries (
     ${MPI_CXX_LIBRARIES}
     ${H5Hut_LIBRARY}
     ${HDF5_LIBRARIES}
-    z
     boost_timer
 )
 
@@ -91,4 +90,9 @@ add_executable (salman-1 salman-1.cpp)
 target_link_libraries (salman-1 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
 
 add_executable (test-scatter-1 test-scatter-1.cpp)
-target_link_libraries (test-scatter-1 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
+target_link_libraries (
+    test-scatter-1
+    ${IPPL_LIBS}
+    ${MPI_CXX_LIBRARIES}
+    boost_timer
+)

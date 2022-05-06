@@ -35,7 +35,6 @@ public:
         ZSTART,           // Top boundary
         ZEND,             // Bottom boundary
         WIDTH,            // The width of collimator
-        OUTFN,            // Output filename
         SIZE
     };
 
@@ -45,7 +44,7 @@ public:
     virtual ~OpalCCollimator();
 
     /// Make clone.
-    virtual OpalCCollimator *clone(const std::string &name);
+    virtual OpalCCollimator* clone(const std::string& name);
 
     /// Update the embedded CLASSIC collimator.
     virtual void update();
@@ -53,12 +52,12 @@ public:
 private:
 
     // Not implemented.
-    OpalCCollimator(const OpalCCollimator &);
-    void operator=(const OpalCCollimator &);
+    OpalCCollimator(const OpalCCollimator&);
+    void operator=(const OpalCCollimator&);
 
     // Clone constructor.
-    OpalCCollimator(const std::string &name, OpalCCollimator *parent);
-    ParticleMatterInteraction *parmatint_m;
+    OpalCCollimator(const std::string& name, OpalCCollimator* parent);
+    ParticleMatterInteraction* parmatint_m;
 };
 
 #endif // OPAL_OpalCCollimator_HH

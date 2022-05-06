@@ -3,11 +3,12 @@ set (_SRCS
     Bool.cpp
     BoolArray.cpp
     Place.cpp
+    PredefinedString.cpp
     Range.cpp
     Real.cpp
     RealArray.cpp
     Reference.cpp
-    opalstr.cpp
+    String.cpp
     StringArray.cpp
     TableRow.cpp
     TokenList.cpp
@@ -26,12 +27,13 @@ set (HDRS
     Attributes.h
     BoolArray.h
     Bool.h
-    opalstr.h
     Place.h
+    PredefinedString.h
     Range.h
     RealArray.h
     Real.h
     Reference.h
+    String.h
     StringArray.h
     TableRow.h
     TokenListArray.h

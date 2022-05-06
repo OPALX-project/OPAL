@@ -25,13 +25,11 @@
 OpalPepperPot::OpalPepperPot():
     OpalElement(SIZE, "PEPPERPOT",
                 "The \"PEPPERPOT\" element defines an pepperpot collimator."),
-    parmatint_m(NULL) {
+    parmatint_m(nullptr) {
     itsAttr[XSIZE] = Attributes::makeReal
                      ("XSIZE", "Size in x of the pepperpot in m");
     itsAttr[YSIZE] = Attributes::makeReal
                      ("YSIZE", "Size in y of the pepperpot in m");
-    itsAttr[OUTFN] = Attributes::makeString
-                     ("OUTFN", "Pepperpot output filename");
     itsAttr[NHOLX] = Attributes::makeReal
                      ("NHOLX", "Number of holes in x");
     itsAttr[NHOLY] = Attributes::makeReal
@@ -45,20 +43,20 @@ OpalPepperPot::OpalPepperPot():
 }
 
 
-OpalPepperPot::OpalPepperPot(const std::string &name, OpalPepperPot *parent):
+OpalPepperPot::OpalPepperPot(const std::string& name, OpalPepperPot* parent):
     OpalElement(name, parent),
-    parmatint_m(NULL) {
+    parmatint_m(nullptr) {
     setElement(new FlexibleCollimatorRep(name));
 }
 
 
 OpalPepperPot::~OpalPepperPot() {
-    if(parmatint_m)
+    if (parmatint_m)
         delete parmatint_m;
 }
 
 
-OpalPepperPot *OpalPepperPot::clone(const std::string &name) {
+OpalPepperPot* OpalPepperPot::clone(const std::string& name) {
     return new OpalPepperPot(name, this);
 }
 
@@ -66,8 +64,9 @@ OpalPepperPot *OpalPepperPot::clone(const std::string &name) {
 void OpalPepperPot::update() {
     OpalElement::update();
 
-    FlexibleCollimatorRep *ppo =
-        dynamic_cast<FlexibleCollimatorRep *>(getElement());
+    FlexibleCollimatorRep* ppo =
+        dynamic_cast<FlexibleCollimatorRep*>(getElement());
+
     double length = Attributes::getReal(itsAttr[LENGTH]);
     ppo->setElementLength(length);
     ppo->setOutputFN(Attributes::getString(itsAttr[OUTFN]));
@@ -95,8 +94,10 @@ void OpalPepperPot::update() {
         exit(1);
     }
 
-    if(itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == NULL) {
-        parmatint_m = (ParticleMatterInteraction::find(Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION])))->clone(getOpalName() + std::string("_parmatint"));
+    if (itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == nullptr) {
+        const std::string matterDescriptor = Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION]);
+        ParticleMatterInteraction* orig = ParticleMatterInteraction::find(matterDescriptor);
+        parmatint_m = orig->clone(matterDescriptor);
         parmatint_m->initParticleMatterInteractionHandler(*ppo);
         ppo->setParticleMatterInteraction(parmatint_m->handler_m);
     }

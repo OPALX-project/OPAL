@@ -26,6 +26,8 @@
 #include "Particle/IpplParticleBase.h"
 #include "Region/RegionLayout.h"
 #include "Message/Message.h"
+#include "Message/Format.h"
+#include "Message/MsgBuffer.h"
 #include "FieldLayout/FieldLayoutUser.h"
 #include "Utility/IpplException.h"
 
@@ -39,7 +41,6 @@
 
 #include "BoxParticleCachingPolicy.h"
 
-#include "Message/Formatter.h"
 #include <mpi.h>
 
 // forward declarations
@@ -1093,7 +1094,6 @@ protected:
 
         std::multimap<unsigned, unsigned> p2n; //<node ID, particle ID>
 
-        int minParticlesPerNode = PData.getMinimumNumberOfParticlesPerCore();
         int particlesLeft = LocalNum;
         bool responsibleNodeNotFound = false;
         for (unsigned int ip=0; ip<LocalNum; ++ip)
@@ -1111,9 +1111,6 @@ protected:
 
             if (found)
                 continue;
-
-            if (particlesLeft <= minParticlesPerNode)
-	        break; //leave atleast minimum number of particles per core
 
             typename RegionLayout<T,Dim,Mesh>::touch_range_dv touchingVN = RLayout.touch_range_rdv(pLoc);
 
@@ -1197,7 +1194,8 @@ protected:
         }
 
         //wait for communication to finish and clean up buffers
-        MPI_Waitall(requests.size(), &(requests[0]), MPI_STATUSES_IGNORE);
+        MPI_Request* requests_ptr = requests.empty()? static_cast<MPI_Request*>(0): &(requests[0]);
+        MPI_Waitall(requests.size(), requests_ptr, MPI_STATUSES_IGNORE);
 
         return LocalNum;
     }
@@ -1222,7 +1220,6 @@ protected:
 
         std::multimap<unsigned, unsigned> p2n; //<node ID, particle ID>
 
-        int minParticlesPerNode = PData.getMinimumNumberOfParticlesPerCore();
         int particlesLeft = LocalNum;
         bool responsibleNodeNotFound = false;
         for (unsigned int ip=0; ip<LocalNum; ++ip)
@@ -1243,9 +1240,6 @@ protected:
 
             if (found)
                 continue;
-
-            if (particlesLeft <= minParticlesPerNode)
-                continue; //leave atleast minimum number of particles per core
 
             typename RegionLayout<T,Dim,Mesh>::touch_range_dv touchingVN = RLayout.touch_range_rdv(pLoc);
 
@@ -1326,7 +1320,8 @@ protected:
         }
 
         //wait for communication to finish and clean up buffers
-        MPI_Waitall(requests.size(), &(requests[0]), 0);
+        MPI_Request* requests_ptr = requests.empty()? static_cast<MPI_Request*>(0): &(requests[0]);
+        MPI_Waitall(requests.size(), requests_ptr, 0);
 
         return LocalNum;
     }

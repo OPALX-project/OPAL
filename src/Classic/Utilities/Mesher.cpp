@@ -84,7 +84,7 @@ bool Mesher::isPotentialEdgeIntersected(unsigned int i) const {
     unsigned int iPlusOne = (i + 1) % numVertices;
     unsigned int iMinusOne = (i + numVertices - 1) % numVertices;
 
-    mslang::BoundingBox bbPotentialNewEdge;
+    mslang::BoundingBox2D bbPotentialNewEdge;
     bbPotentialNewEdge.center_m = 0.5 * (vertices_m[iMinusOne] + vertices_m[iPlusOne]);
     bbPotentialNewEdge.width_m = std::abs(vertices_m[iMinusOne][0] - vertices_m[iPlusOne][0]);
     bbPotentialNewEdge.height_m = std::abs(vertices_m[iMinusOne][1] - vertices_m[iPlusOne][1]);
@@ -93,7 +93,7 @@ bool Mesher::isPotentialEdgeIntersected(unsigned int i) const {
         unsigned int k = (j % numVertices);
         unsigned int kPlusOne = ((k + 1) % numVertices);
 
-        mslang::BoundingBox bbThisEdge;
+        mslang::BoundingBox2D bbThisEdge;
         bbThisEdge.center_m = 0.5 * (vertices_m[k] + vertices_m[kPlusOne]);
         bbThisEdge.width_m = std::abs(vertices_m[k][0] - vertices_m[kPlusOne][0]);
         bbThisEdge.height_m = std::abs(vertices_m[k][1] - vertices_m[kPlusOne][1]);

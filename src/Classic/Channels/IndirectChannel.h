@@ -61,7 +61,7 @@ public:
 
     /// Test if settable.
     //  Return true, if the channel can be written, i.e. if the set
-    //  method pointer is not NULL
+    //  method pointer is not nullptr
     virtual bool isSettable() const;
 
 private:

@@ -24,6 +24,7 @@
 #include "Algebra/Vector.h"
 #include "Utilities/SizeError.h"
 #include <algorithm>
+#include <functional>
 #include <numeric>
 
 
@@ -190,7 +191,7 @@ Matrix<T> &Matrix<T>::operator=(const Array2D<T> &rhs) {
 template<class T>
 Matrix<T> &Matrix<T>::operator*=(const T &val) {
     std::transform(this->begin(), this->end(), this->begin(),
-                   std::bind2nd(std::multiplies<T>(), val));
+                   std::bind(std::multiplies<T>(), std::placeholders::_2, val));
     return *this;
 }
 
@@ -198,7 +199,7 @@ Matrix<T> &Matrix<T>::operator*=(const T &val) {
 template<class T>
 Matrix<T> &Matrix<T>::operator/=(const T &val) {
     std::transform(this->begin(), this->end(), this->begin(),
-                   std::bind2nd(std::divides<T>(), val));
+                   std::bind(std::divides<T>(), std::placeholders::_2, val));
     return *this;
 }
 

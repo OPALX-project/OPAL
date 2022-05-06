@@ -10,7 +10,7 @@ ClassicField::ClassicField(std::shared_ptr<Component> element, const double &sta
 { }
 
 ClassicField::~ClassicField() {
-    element_m = NULL;
+    element_m = nullptr;
 }
 
 void ClassicField::setOn(const double &kineticEnergy) {

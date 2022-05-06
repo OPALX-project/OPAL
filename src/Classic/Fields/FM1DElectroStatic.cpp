@@ -1,6 +1,7 @@
 #include "Fields/FM1DElectroStatic.h"
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
@@ -199,9 +200,9 @@ void FM1DElectroStatic::computeFourierCoefficients(double maxEz,
      * value is 1 V/m.
      */
 
-    fourierCoefs_m.push_back(1.0e6 * fieldData[0] / (totalSize * maxEz));
+    fourierCoefs_m.push_back(fieldData[0] / (totalSize * maxEz * Units::Vpm2MVpm));
     for (int coefIndex = 1; coefIndex < 2 * accuracy_m - 1; ++ coefIndex)
-        fourierCoefs_m.push_back(2.0 * 1.0e6 * fieldData[coefIndex] / (totalSize * maxEz));
+        fourierCoefs_m.push_back(2.0 * fieldData[coefIndex] / (totalSize * maxEz * Units::Vpm2MVpm));
 
     gsl_fft_real_workspace_free(workSpace);
     gsl_fft_real_wavetable_free(waveTable);
@@ -211,10 +212,10 @@ void FM1DElectroStatic::computeFourierCoefficients(double maxEz,
 void FM1DElectroStatic::convertHeaderData() {
 
     // Convert to m.
-    rBegin_m /= 100.0;
-    rEnd_m /= 100.0;
-    zBegin_m /= 100.0;
-    zEnd_m /= 100.0;
+    rBegin_m *= Units::cm2m;
+    rEnd_m *= Units::cm2m;
+    zBegin_m *= Units::cm2m;
+    zEnd_m *= Units::cm2m;
 }
 
 double FM1DElectroStatic::readFileData(std::ifstream &fieldFile,

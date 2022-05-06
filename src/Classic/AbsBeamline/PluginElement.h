@@ -59,11 +59,6 @@ public:
                                           Vector_t &B) override;
     ///@}
 
-    /// Set output filename
-    void setOutputFN(std::string fn);
-    /// Get output filename
-    std::string getOutputFN() const;
-
     /// Set dimensions and consistency checks
     void setDimensions(double xstart, double xend, double ystart, double yend);
 
@@ -110,7 +105,6 @@ private:
 
 protected:
     /* Members */
-    std::string filename_m; /**< The name of the outputfile*/
     ///@{ input geometry positions
     double xstart_m;
     double xend_m;

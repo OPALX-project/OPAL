@@ -70,7 +70,7 @@ public:
 
     /// Find entry.
     //  The entry is identified by [b]name[/b].
-    //  If the entry [b]name[/b] does not exist, return [b]NULL[/b].
+    //  If the entry [b]name[/b] does not exist, return [b]nullptr[/b].
     Object *find(const std::string &name) const;
 
     /// Define new object.

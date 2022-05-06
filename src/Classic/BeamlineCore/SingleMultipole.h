@@ -86,7 +86,7 @@ public:
     /// Construct a read/write channel.
     //  This method constructs a Channel permitting read/write access to
     //  the attribute [b]aKey[/b] and returns it.
-    //  If the attribute does not exist, it returns NULL.
+    //  If the attribute does not exist, it returns nullptr.
     virtual Channel *getChannel(const std::string &aKey, bool = false);
 
 private:

@@ -1,22 +1,23 @@
+//
+// Class Multipole
+//   The MULTIPOLE element defines a thick multipole.
+//
+// Copyright (c) 2012-2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+
 #ifndef CLASSIC_Multipole_HH
 #define CLASSIC_Multipole_HH
-
-// ------------------------------------------------------------------------
-// $RCSfile: Multipole.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-// Description:
-// ------------------------------------------------------------------------
-// Class category: AbsBeamline
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:31 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
 
 #include "AbsBeamline/Component.h"
 #include "BeamlineGeometry/StraightGeometry.h"
@@ -96,10 +97,10 @@ public:
 
     size_t getMaxNormalComponentIndex() const;
     size_t getMaxSkewComponentIndex() const;
-    
+
     //set number of slices for map tracking
     void setNSlices(const std::size_t& nSlices);
-    
+
     //set number of slices for map tracking
     std::size_t getNSlices() const;
 
@@ -123,7 +124,7 @@ public:
 
     virtual bool bends() const override;
 
-    virtual ElementBase::ElementType getType() const override;
+    virtual ElementType getType() const override;
 
     virtual void getDimensions(double &zBegin, double &zEnd) const override;
 

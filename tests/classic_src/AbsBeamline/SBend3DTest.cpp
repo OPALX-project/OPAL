@@ -52,7 +52,7 @@ class LoadFieldMap {
     // skip_line - skip a line in the input file, index from 0; ignored if -ve
     LoadFieldMap(std::string name, int polynomial_order, int smoothing_order,
                  int skip_line)
-        : sbend3d_m(NULL), fname_m(name) {
+        : sbend3d_m(nullptr), fname_m(name) {
         writeFieldMap(skip_line);
         getFieldMap(polynomial_order, smoothing_order);
     }
@@ -73,7 +73,7 @@ class LoadFieldMap {
             sbend3d_m->setFieldMapFileName(fname_m);
           } catch (std::exception& exc) {
             std::cerr << exc.what() << std::endl;
-            sbend3d_m = NULL;
+            sbend3d_m = nullptr;
             throw std::runtime_error("Failed to get field map");
         }
     }
@@ -147,7 +147,7 @@ TEST(SBend3DTest, SBend3DGeometryTest) {
 
     LoadFieldMap fieldLoader("field1", 1, 1, -1);
     SBend3D* field = fieldLoader.sbend3d_m;
-    if (field == NULL)
+    if (field == nullptr)
         return; // skip the test
     Vector_t B, E, centroid;
     double radius = 2110.;
@@ -184,7 +184,7 @@ void testField(double r, double y, double phi,
                double tol) {
     LoadFieldMap fieldLoader("field2", 1, 1, -1);
     SBend3D* field = fieldLoader.sbend3d_m;
-    if (field == NULL) {
+    if (field == nullptr) {
         std::cerr << "SKIPPING SBEND3D TEST - FAILED TO LOAD FIELD" << std::endl;
         return; // skip the test
     }

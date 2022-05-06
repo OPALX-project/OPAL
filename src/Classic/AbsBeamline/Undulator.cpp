@@ -25,6 +25,7 @@
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 
 #include <sys/time.h>
 #include <cmath>
@@ -143,6 +144,7 @@ void Undulator::apply(
     msg << "Mesh parameters have been transferred to the full-wave solver." << endl;
 
     MITHRA::Seed seed;
+    seed.a0_ = 0.0; // initialise unitialised member (see #658)
     std::vector<MITHRA::ExtField> externalFields;
     std::vector<MITHRA::FreeElectronLaser> FELs;
 
@@ -182,13 +184,13 @@ void Undulator::apply(
 
     // Run the full-wave solver.
     timeval simulationStart;
-    gettimeofday(&simulationStart, NULL);
+    gettimeofday(&simulationStart, nullptr);
     solver.solve();
 
     // Get total computational time of the full wave simulation.
     timeval simulationEnd;
-    gettimeofday(&simulationEnd, NULL);
-    double deltaTime = (simulationEnd.tv_usec - simulationStart.tv_usec) / 1.0e6;
+    gettimeofday(&simulationEnd, nullptr);
+    double deltaTime = (simulationEnd.tv_usec - simulationStart.tv_usec) * Units::us2s;
     deltaTime += (simulationEnd.tv_sec - simulationStart.tv_sec);
     msg << "::: Total full wave simulation time [seconds] = " << deltaTime << endl;
 
@@ -265,8 +267,8 @@ bool Undulator::bends() const {
 void Undulator::getDimensions(double& /*zBegin*/, double& /*zEnd*/) const {
 }
 
-ElementBase::ElementType Undulator::getType() const {
-    return UNDULATOR;
+ElementType Undulator::getType() const {
+    return ElementType::UNDULATOR;
 }
 
 void Undulator::setK(double k) {

@@ -74,7 +74,7 @@ TEST(OpalVariableRFCavityTest, TestFillRegisteredAttributes) {
     opal_cav.setParent(&parent);
     opal_cav.fillRegisteredAttributes(cav);
 
-    Attribute* null_att = NULL;
+    Attribute* null_att = nullptr;
     EXPECT_EQ(opal_cav.findAttribute("NONSENSE ATTRIBUTE ASDASDA"), null_att);
     ASSERT_NE(opal_cav.findAttribute("L"), null_att);
     EXPECT_EQ(Attributes::getReal(*opal_cav.findAttribute("L")), 99.);

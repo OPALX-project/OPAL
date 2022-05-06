@@ -1,5 +1,7 @@
-cmake_minimum_required (VERSION 3.1)
-project (OPAL VERSION 2.5.0)
+cmake_minimum_required (VERSION 3.12)
+cmake_policy(VERSION 3.12)
+
+project (OPAL VERSION 2021.1.99)
 set (PROJECT_BUGREPORT opal@lists.psi.ch)
 
 string (REGEX REPLACE "\\.([0-9])\\." ".0\\1." PACKAGE_VERSION ${PROJECT_VERSION})
@@ -26,6 +28,13 @@ set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O3 -g ")
 set (CMAKE_CXX_FLAGS_RELEASE "-O3")
 set (CMAKE_CXX_FLAGS_DEBUG  "-O0 -g")
 
+string(TOUPPER "${CMAKE_BUILD_TYPE}" uppercase_CMAKE_BUILD_TYPE)
+if (uppercase_CMAKE_BUILD_TYPE MATCHES "^(DEBUG|RELWITHDEBINFO)$")
+    option (BUILD_FOR_PRODUCTION "Disable all assertion checks; Only use for production" OFF)
+else()
+    option (BUILD_FOR_PRODUCTION "Disable all assertion checks; Only use for production" ON)
+endif()
+
 # Resolve all library dependencies
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules")
 
@@ -37,7 +46,7 @@ message (STATUS "The underlying C++ compiler is: ${CMAKE_CXX_COMPILER}")
 
 option (ENABLE_OpenMP "Use hybrid parallelism MPI-OpenMP" OFF)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS OFF)
 
@@ -57,6 +66,7 @@ add_compile_options (-fstrict-aliasing)
 # See issue 587 and corresponding merge request 415.
 add_compile_options (-fno-aggressive-loop-optimizations)
 
+option (USE_STATIC_LIBRARIES "Link with static libraries if available" ON)
 if (BUILD_OPAL_PYTHON)
     SET(USE_STATIC_LIBRARIES OFF)
     find_package (Python COMPONENTS Development REQUIRED)
@@ -69,7 +79,7 @@ else ()
 endif ()
 
 
-if (NOT USE_STATIC_LIBRARIES)
+if (NOT ${USE_STATIC_LIBRARIES})
     add_compile_options (-fPIE -fPIC)
     add_link_options (-pie)
 else ()
@@ -106,6 +116,12 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     endif ()
 
 elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
+    # An error in Trilinos/12.18.1 causes
+    # -Waggressive-loop-optimizations with -O3 optimization.
+    # See issue 587 and corresponding merge request 415.
+    # Clang does not support this flag!
+    add_compile_options (-fno-aggressive-loop-optimizations)
+
     if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "4.7.3")
         message (FATAL_ERROR "To build OPAL you need GCC version 4.7.3 or greater")
     endif ()
@@ -116,6 +132,11 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
         add_link_options (-fopenmp)
     endif ()
 
+    # Enables extra error checking in the form of precondition assertion, such
+    # as bounds checking and null pointer checks when dereferencing smart pointers
+    if (NOT ${BUILD_FOR_PRODUCTION})
+        add_compile_options(-Wp,-D_GLIBCXX_ASSERTIONS)
+    endif()
 else ()
     message (STATUS "Unknown C++ compiler. Please use the GNU or Intel compiler, if you are having problems.")
 endif ()
@@ -146,8 +167,12 @@ if (USE_STATIC_LIBRARIES)
 else ()
     set (HDF5_USE_STATIC_LIBRARIES OFF)
 endif ()
+set (HDF5_PREFER_PARALLEL ON)
 find_package (HDF5 REQUIRED)
-message (STATUS "Found HDF5 libraries: ${HDF5_C_LIBRARIES}")
+if(UNIX AND NOT APPLE)
+    set (HDF5_LIBRARIES ${HDF5_LIBRARIES} ${CMAKE_DL_LIBS} rt z)
+endif ()
+message (STATUS "Found HDF5 libraries: ${HDF5_LIBRARIES}")
 
 find_package (GSL REQUIRED)
 message (STATUS "Found gsl libraries: ${GSL_LIBRARIES}")
@@ -155,15 +180,24 @@ message (STATUS "Found gsl libraries: ${GSL_LIBRARIES}")
 set (BOOSTROOT $ENV{BOOST_DIR})
 if (USE_STATIC_LIBRARIES)
     set (Boost_USE_STATIC_LIBS ON)
+else ()
+    set (Boost_USE_STATIC_LIBS OFF)
 endif ()
 set (Boost_USE_MULTITHREADED OFF)
 set (Boost_USE_STATIC_RUNTIME OFF)
-set (Boost_REQ chrono filesystem iostreams regex serialization system timer)
+set (Boost_LIBRARIES chrono filesystem iostreams regex serialization system timer)
 if (BUILD_OPAL_PYTHON)
-    set (Boost_REQ ${Boost_REQ} python37)
+    set (Boost_LIBRARIES ${Boost_LIBRARIES} python37)
 endif ()
+if(UNIX AND NOT APPLE)
+##################################################################################################################
+# ROGERS HACK
+#    set (Boost_LIBRARIES ${Boost_LIBRARIES} rt)
+endif ()
+
+
 find_package (Boost 1.66.0
-    REQUIRED COMPONENTS ${Boost_REQ})
+    REQUIRED COMPONENTS ${Boost_LIBRARIES})
 message (STATUS "Found Boost include dir: ${Boost_INCLUDE_DIR}")
 message (STATUS "Found Boost library dir: ${Boost_LIBRARY_DIR}")
 message (STATUS "Found Boost libraries: ${Boost_LIBRARIES}")
@@ -253,6 +287,17 @@ if (NO_FIELD_ASSIGN_OPTIMIZATION)
 endif ()
 
 option (ENABLE_DOXYDOC "compile Doxygen documentation" OFF)
+if (ENABLE_DOXYDOC)
+    find_package(Doxygen REQUIRED)
+    configure_file (${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
+        ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY
+	)
+    add_custom_target (doxydoc
+        ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen" VERBATIM
+        )
+endif ()
 
 add_custom_target(always_rebuild ALL
     DEPENDS

@@ -61,7 +61,7 @@ class ThreeDGrid : public Mesh {
     /** Deep copy the grid */
     ThreeDGrid * clone() {return new ThreeDGrid(*this);}
 
-    /** Not implemented (returns NULL) */
+    /** Not implemented (returns nullptr) */
     Mesh * dual () const;
 
     /** Default constructor */

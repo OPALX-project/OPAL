@@ -1,13 +1,13 @@
 #include "opal_test_utilities/SilenceTest.h"
 #include "Utility/IpplInfo.h"
 
-std::streambuf *OpalTestUtilities::SilenceTest::_defaultCout = NULL;
-std::streambuf *OpalTestUtilities::SilenceTest::_defaultCerr = NULL;
+std::streambuf *OpalTestUtilities::SilenceTest::_defaultCout = nullptr;
+std::streambuf *OpalTestUtilities::SilenceTest::_defaultCerr = nullptr;
 
 OpalTestUtilities::SilenceTest::SilenceTest():
     _failed(false) {
     IpplInfo::instantiateGlobals();
-    if (_defaultCout == NULL ) {
+    if (_defaultCout == nullptr ) {
         _defaultCout = std::cout.rdbuf();
         _defaultCerr = std::cerr.rdbuf();
 
@@ -22,11 +22,11 @@ OpalTestUtilities::SilenceTest::SilenceTest():
 }
 
 OpalTestUtilities::SilenceTest::~SilenceTest() { // return buffer to normal on delete
-    if (_defaultCout != NULL) {
+    if (_defaultCout != nullptr) {
         std::cout.rdbuf(_defaultCout);
         std::cerr.rdbuf(_defaultCerr);
-        _defaultCout = NULL;
-        _defaultCerr = NULL;
+        _defaultCout = nullptr;
+        _defaultCerr = nullptr;
 
         ::testing::TestEventListeners& listeners =
               ::testing::UnitTest::GetInstance()->listeners();

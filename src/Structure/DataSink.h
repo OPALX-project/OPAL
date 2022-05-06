@@ -29,11 +29,10 @@
 #define _OPAL_DATA_SINK_H
 
 #include "Algorithms/Vektor.h"
-
-#include "SDDSWriter.h"
-#include "StatWriter.h"
-#include "H5Writer.h"
-#include "MultiBunchDump.h"
+#include "Structure/H5Writer.h"
+#include "Structure/MultiBunchDump.h"
+#include "Structure/SDDSWriter.h"
+#include "Structure/StatWriter.h"
 
 #include <iomanip>
 #include <memory>
