@@ -83,6 +83,7 @@
 #include "Elements/OpalMultipoleTCurvedConstRadius.h"
 #include "Elements/OpalMultipoleTCurvedVarRadius.h"
 #include "Elements/OpalOctupole.h"
+#include "Elements/OpalOutputPlane.h"
 #include "Elements/OpalOffset/OpalLocalCartesianOffset.h"
 #include "Elements/OpalOffset/OpalLocalCylindricalOffset.h"
 #include "Elements/OpalOffset/OpalGlobalCartesianOffset.h"
@@ -209,6 +210,7 @@ namespace {
 //        opal->create(new OpalOffset::OpalLocalCylindricalOffset());
 //        opal->create(new OpalOffset::OpalGlobalCartesianOffset());
 //        opal->create(new OpalOffset::OpalGlobalCylindricalOffset());
+        opal->create(new OpalOutputPlane());
         opal->create(new OpalPepperPot());
         opal->create(new OpalPolynomialTimeDependence());
         opal->create(new OpalProbe());
