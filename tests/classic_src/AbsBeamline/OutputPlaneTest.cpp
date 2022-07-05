@@ -27,10 +27,10 @@ public:
 
     bool apply(const Vector_t& /*R*/, const Vector_t& /*P*/, const double& /*t*/, Vector_t& E, Vector_t& B) override {
         B[0] = 0.;
-        B[1] = 0.;
+        B[1] = 1.;
         B[2] = 0.;        
         
-        E[0] = 10.;
+        E[0] = 0.;
         E[1] = 0.;
         E[2] = 0.;
         return false;
@@ -257,12 +257,22 @@ TEST_F(OutputPlaneTest, TestEField) {
     P = Vector_t(0, 0.1, 0.0);
     output_m->RK4Step(1.0, q2m, t, R, P);
 
-    EXPECT_NEAR(P[0], 2.99792, 1e-5);
+    // when E[0] in mock dipole is set to 10 the follwing checks should pass
+    //EXPECT_NEAR(P[0], 2.99792, 1e-5);
+    //EXPECT_NEAR(P[1], 0.1, 1e-5);
+    //EXPECT_NEAR(P[2], 0.0, 1e-5); 
+
+    //EXPECT_NEAR(R[0], 0.21709, 1e-5);
+    //EXPECT_NEAR(R[1], 0.03177, 1e-5);
+    //EXPECT_NEAR(R[2], 0.0, 1e-5); 
+    
+    // when E[0] is set to zero there should be no change in P[0] 
+    EXPECT_NEAR(P[0], 0.0, 1e-5);
     EXPECT_NEAR(P[1], 0.1, 1e-5);
     EXPECT_NEAR(P[2], 0.0, 1e-5); 
 
     
-    EXPECT_NEAR(R[0], 0.21709, 1e-5);
+    EXPECT_NEAR(R[0], 0.0, 1e-5);
     EXPECT_NEAR(R[1], 0.03177, 1e-5);
     EXPECT_NEAR(R[2], 0.0, 1e-5); 
 
@@ -326,5 +336,74 @@ TEST_F(OutputPlaneTest, TestExtent) {
 
     EXPECT_EQ( horizextent, halfwidth);
     EXPECT_EQ( vertextent, halfheight);
+
+}
+
+
+TEST_F(OutputPlaneTest, checkOneTest){
+    OutputPlane* myOutputPlane = new OutputPlane("TestPlane"); 
+    MockDipole* myDipole = new MockDipole("TestDipole");
+    // check that checkOne returns true when the particle is within one time step
+    // of the OutputPlane and false when it is not within one timestep
+    myOutputPlane->setGlobalFieldMap(myDipole);
+
+    Vector_t R, P;
+    Vector_t R1, P1;
+
+    double tStep = 1.0; // ns
+
+    Vector_t normal = {1.0, 0.0, 1.0};
+    Vector_t centre = {0.0, 0.0, 1.0};
+    myOutputPlane->setCentre(centre);
+    myOutputPlane->setNormal(normal);
+    myOutputPlane->setTolerance(1e-9);
+
+    R = Vector_t(0.1, 0.0, 0.1);
+    P = Vector_t(0.1, 0.0, 0.0); 
+    double t = 0.0;
+    bool cross;
+    // distance from plane
+
+    //Vector_t delta = R - centre;
+    
+    cross = myOutputPlane->checkOne(0, tStep, 0.0, t, R, P);
+
+    //double dist = normal[0]*delta[0] + normal[1]*delta[1] + normal[2]*delta[2];
+    //double sStep = tStep*euclidean_norm(P)*Physics::c*1e-9;
+
+    //myOutputPlane->checkOne(0, 1.0, 1.1, t, R, P);
+    //bool val;
+    //if (fabs(dist) > sStep) {
+    //    val = false;
+    //} else {
+    //    val = true;
+    //}
+    EXPECT_FALSE(cross);
+
+    // opposite case where it is near to the plane
+    //R1 = Vector_t(0.01, 0.01, 0.02);
+    //P1 = Vector_t(0,0, 0); //  initial momnetum
+    //double t = 10.0;
+
+    // distance from plane
+    R1 = Vector_t(1.0-0.01, 0.0, -0.01);
+    P1 = Vector_t(0.1, 0.0, 0.0); 
+
+    bool cross1;
+
+    //Vector_t delta1 = R1 - centre;
+
+    //double dist1 = normal[0]*delta[0] + normal[1]*delta[1] + normal[2]*delta[2];
+    //double sStep1 = tStep1*euclidean_norm(P)*Physics::c*1e-9;
+    cross1 = myOutputPlane->checkOne(0, tStep, 0.0, t, R1, P1);
+    //EXPECT_TRUE(false) << cross1;
+    //myOutputPlane->checkOne(0, 1.0, 1.1, t, R, P);
+
+    //if (fabs(dist1) > sStep1) {
+    //    val = false;
+    //}else{
+    //    val = true;
+    //}
+    EXPECT_TRUE(cross1);
 
 }
