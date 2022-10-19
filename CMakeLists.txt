@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.12)
 cmake_policy(VERSION 3.12)
 
-project (OPAL VERSION 2022.2-dev)
+project (OPAL VERSION 2022.2.99)
 set (PROJECT_BUGREPORT opal@lists.psi.ch)
 
 string (REGEX REPLACE "\\.([0-9])\\." ".0\\1." PACKAGE_VERSION ${PROJECT_VERSION})
