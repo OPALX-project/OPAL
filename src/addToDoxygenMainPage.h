@@ -15,19 +15,21 @@ C++ classes.
 <P>
 <B>
 Authors
-Andreas Adelmann (PSI);
-Pedro Calvo (CIEMAT);
-Matthias Frey (PSI);
-Achim Gsell (PSI);
-Uldis Locans (PSI);
-Christof Metzger-Kraus;
-Nicole Neveu (SLAC);
-Chris Rogers (RAL);
-Steve Russell (LANL);
-Suzanne Sheehy (Oxford);
-Jochem Snuverink (PSI);
-Daniel Winklehner (MIT);
+Andreas Adelmann (PSI)
 Arnau Albà (PSI)
+Pedro Calvo (CIEMAT)
+Matthias Frey (U. St Andrews)
+Achim Gsell (PSI)
+Uldis Locans (PSI)
+Christof Metzger-Kraus
+Sriramkrishnan Muralikrishnan (JSC)
+Nicole Neveu (SLAC)
+Philippe Piot (NIU)
+Chris Rogers (RAL)
+Steve Russell (LANL)
+Suzanne Sheehy (Oxford)
+Jochem Snuverink (PSI)
+Daniel Winklehner (MIT)
 </B>
 <P>
 For further information please contact us on the <a href="mailto:opal@lists.psi.ch">OPAL mailing list</a>
