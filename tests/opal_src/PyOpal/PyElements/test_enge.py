@@ -1,5 +1,5 @@
 """
-Test ScalingFFAMagnet python implementation
+Test Enge python implementation
 """
 
 import math
@@ -7,7 +7,7 @@ import unittest
 import pyopal.elements.enge
 
 class EngeTest(unittest.TestCase):
-    """Test ScalingFFAMagnet"""
+    """Test Enge"""
     def setUp(self):
         self.enge = pyopal.elements.enge.Enge()
         self.enge.x0 = 1.2
