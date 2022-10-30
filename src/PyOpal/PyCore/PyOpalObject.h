@@ -204,6 +204,11 @@ public:
     template <class ValueType>
     ValueType dummyGet() const {PyOpalObjectGetProperty<C>::setObject(this); return ValueType();}
 
+    /** Overload the method to perform any additional setup that can be made 
+     *  before the OpalObject is accessed, after OpalObject->update() is called.
+     */
+    virtual void doSetup() {}
+
     /** dummySet sets the element ptr for PyOpalObjectSetProperty but doesn't
      *  actually do the set(...)
      */
@@ -273,6 +278,7 @@ boost::python::object PyOpalObject<C>::getFieldValue(
             double x, double y, double z, double t) {
     std::shared_ptr<C> objectPtr = pyobject.getOpalShared();
     objectPtr->update();
+    pyobject.doSetup();
     ElementBase* element = objectPtr->getElement();
     Component* component = dynamic_cast<Component*>(element);
     if (component == nullptr) {

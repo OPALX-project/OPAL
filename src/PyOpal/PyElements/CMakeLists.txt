@@ -9,3 +9,9 @@ python_module(ring_definition "${RINGDEFINITION_SRCS}" "elements")
 
 set (LOCALCARTESIANOFFSET_SRCS PyLocalCartesianOffset.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
 python_module(local_cartesian_offset "${LOCALCARTESIANOFFSET_SRCS}" "elements")
+
+set (ENGE_SRCS PyEnge.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
+python_module(enge "${ENGE_SRCS}" "elements")
+
+set (SCALINGFFAMAGNET_SRCS PyScalingFFAMagnet.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
+python_module(scaling_ffa_magnet "${SCALINGFFAMAGNET_SRCS}" "elements")
