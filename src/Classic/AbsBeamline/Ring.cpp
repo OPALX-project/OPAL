@@ -109,7 +109,6 @@ bool Ring::apply(const size_t &id, const double &t, Vector_t &E,
                                            refPartBunch_m->R[id] * Vector_t(1000.0), refPartBunch_m->P[id],
                                            t,
                                            refPartBunch_m->Q[id], refPartBunch_m->M[id]));
-        lossDS_m->save();
 
         refPartBunch_m->Bin[id] = -1;
     }
@@ -165,6 +164,7 @@ void Ring::initialise(PartBunchBase<double, 3> * bunch, double &/*startField*/,
 }
 
 void Ring::finalise() {
+    lossDS_m->save();
     online_m = false;
     setLossDataSink(nullptr);
 }
