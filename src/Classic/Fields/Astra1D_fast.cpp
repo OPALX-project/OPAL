@@ -1,3 +1,4 @@
+
 #include "Fields/Astra1D_fast.h"
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
@@ -6,19 +7,19 @@
 #include <fstream>
 #include <ios>
 
-Astra1D_fast::Astra1D_fast(std::string aFilename):
-    Fieldmap(aFilename) {
+_Astra1D_fast::_Astra1D_fast(const std::string& filename):
+    _Fieldmap(filename) {
     normalize_m = true;
 }
 
-Astra1D_fast::~Astra1D_fast() {
+_Astra1D_fast::~_Astra1D_fast() {
     freeMap();
 }
 
-void Astra1D_fast::readMap()
+void _Astra1D_fast::readMap()
 { }
 
-void Astra1D_fast::freeMap() {
+void _Astra1D_fast::freeMap() {
     if(onAxisField_m != nullptr) {
         for(int i = 0; i < 4; ++i) {
             gsl_spline_free(onAxisInterpolants_m[i]);
@@ -29,15 +30,13 @@ void Astra1D_fast::freeMap() {
         onAxisField_m = nullptr;
         delete[] zvals_m;
         zvals_m = nullptr;
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }
 }
 
-void Astra1D_fast::getOnaxisEz(std::vector<std::pair<double, double> > & /*F*/)
+void _Astra1D_fast::getOnaxisEz(std::vector<std::pair<double, double> > & /*F*/)
 { }
 
-bool Astra1D_fast::determineNumSamplingPoints(std::ifstream &file) {
+bool _Astra1D_fast::determineNumSamplingPoints(std::ifstream &file) {
     double tmpDouble, tmpDouble2;
     unsigned int skippedValues = 0;
     bool passed = interpretLine<double, double>(file, zbegin_m, tmpDouble);
@@ -58,7 +57,7 @@ bool Astra1D_fast::determineNumSamplingPoints(std::ifstream &file) {
     return passed || file.eof();
 }
 
-double Astra1D_fast::readFieldData(std::ifstream &file) {
+double _Astra1D_fast::readFieldData(std::ifstream &file) {
     double tmpDouble = zbegin_m - hz_m;
     double maxValue = 0;
     int nsp;
@@ -82,7 +81,7 @@ double Astra1D_fast::readFieldData(std::ifstream &file) {
     return maxValue;
 }
 
-void Astra1D_fast::normalizeFieldData(double maxValue) {
+void _Astra1D_fast::normalizeFieldData(double maxValue) {
     int ii = num_gridpz_m - 1;
     for(int i = 0; i < num_gridpz_m; ++ i, -- ii) {
         onAxisField_m[i] /= maxValue;
@@ -90,7 +89,7 @@ void Astra1D_fast::normalizeFieldData(double maxValue) {
     }
 }
 
-std::vector<double> Astra1D_fast::getEvenlyDistributedSamplingPoints() {
+std::vector<double> _Astra1D_fast::getEvenlyDistributedSamplingPoints() {
     std::vector<double> zvals(num_gridpz_m, 0.0);
 
     for(int i = 1; i < num_gridpz_m - 1; ++ i) {
@@ -101,7 +100,7 @@ std::vector<double> Astra1D_fast::getEvenlyDistributedSamplingPoints() {
     return zvals;
 }
 
-std::vector<double> Astra1D_fast::interpolateFieldData(std::vector<double> &samplingPoints) {
+std::vector<double> _Astra1D_fast::interpolateFieldData(std::vector<double> &samplingPoints) {
     std::vector<double> realValues(num_gridpz_m);
 
     onAxisInterpolants_m[0] = gsl_spline_alloc(gsl_interp_cspline, num_gridpz_m);
@@ -117,7 +116,7 @@ std::vector<double> Astra1D_fast::interpolateFieldData(std::vector<double> &samp
     return realValues;
 }
 
-std::vector<double> Astra1D_fast::computeFourierCoefficients(int accuracy,
+std::vector<double> _Astra1D_fast::computeFourierCoefficients(int accuracy,
                                                                     std::vector<double> &evenFieldSampling) {
     std::vector<double> fourierCoefficients(2 * accuracy - 1);
     std::vector<double> RealValues(2 * num_gridpz_m, 0.0);
@@ -145,7 +144,7 @@ std::vector<double> Astra1D_fast::computeFourierCoefficients(int accuracy,
     return fourierCoefficients;
 }
 
-void Astra1D_fast::computeFieldDerivatives(std::vector<double> & fourierComponents, int accuracy) {
+void _Astra1D_fast::computeFieldDerivatives(std::vector<double> & fourierComponents, int accuracy) {
     double interiorDerivative, base;
     double coskzl, sinkzl, z = 0.0;
     std::vector<double> zvals(num_gridpz_m);
@@ -182,4 +181,3 @@ void Astra1D_fast::computeFieldDerivatives(std::vector<double> & fourierComponen
         gsl_spline_init(onAxisInterpolants_m[i], &zvals[0], &higherDerivatives[i - 1][0], num_gridpz_m);
     }
 }
-

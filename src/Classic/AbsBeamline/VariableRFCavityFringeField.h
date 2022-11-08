@@ -30,8 +30,8 @@
 
 #include <iostream>
 #include "AbsBeamline/VariableRFCavity.h"
+#include "Fields/Definitions.h"
 
-class Fieldmap;
 namespace endfieldmodel {
     class EndFieldModel;
 }
@@ -52,7 +52,7 @@ namespace endfieldmodel {
  *  VariableRFCavity.
  *
  *  Set/get methods use metres; but internally we store as mm (for tracking)
- * 
+ *
  *  Field units are kG and GV/mm
  */
 class VariableRFCavityFringeField : public VariableRFCavity {
@@ -66,7 +66,7 @@ class VariableRFCavityFringeField : public VariableRFCavity {
     /** Assignment operator; performs deepcopy on time-dependence models*/
     VariableRFCavityFringeField& operator=(const VariableRFCavityFringeField &);
     /** Destructor does nothing
-     * 
+     *
      * The shared_ptrs will self-destruct when reference count goes to 0
      */
     virtual ~VariableRFCavityFringeField();
@@ -81,7 +81,7 @@ class VariableRFCavityFringeField : public VariableRFCavity {
     /** Inheritable deepcopy method */
     virtual ElementBase* clone() const override;
 
-    /** Calculate the field at the position of the i^th particle 
+    /** Calculate the field at the position of the i^th particle
      *
      *  @param i indexes the particle whose field we need
      *  @param t the time at which the field is calculated
@@ -126,7 +126,7 @@ class VariableRFCavityFringeField : public VariableRFCavity {
                        (std::shared_ptr<endfieldmodel::EndFieldModel> endField);
 
     /** Get the endFieldModel
-     * 
+     *
      *  @returns the endFieldModel; VariableRFCavityFringe retains ownership of
      *  the memory allocated to the endFieldModel.
      */
@@ -134,7 +134,7 @@ class VariableRFCavityFringeField : public VariableRFCavity {
                                                             getEndField() const;
 
     /** Initialise ready for tracking
-     * 
+     *
      *  Does any setup on VirtualRFCavity and sets field expansion coefficients
      */
     virtual void initialise(PartBunchBase<double, 3> *bunch,

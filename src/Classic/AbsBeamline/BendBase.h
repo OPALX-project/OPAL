@@ -2,11 +2,11 @@
 #define CLASSIC_BENDBASE_H
 
 #include "AbsBeamline/Component.h"
+#include "Fields/Definitions.h"
 
 #include <vector>
 #include <string>
 
-class Fieldmap;
 
 class BendBase: public Component {
 public:
@@ -53,7 +53,7 @@ protected:
     double angle_m;         ///< Bend angle
     double entranceAngle_m; ///< Angle between incoming reference trajectory
                             ///< and the entrance face of the magnet (radians).
-    Fieldmap *fieldmap_m;      ///< Magnet field map.
+    Fieldmap fieldmap_m;      ///< Magnet field map.
     const bool fast_m = false; ///< Flag to turn on fast field calculation.
 
     double gap_m; ///< Full vertical gap of the magnets.

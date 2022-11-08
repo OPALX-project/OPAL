@@ -22,10 +22,10 @@
 #include "AbsBeamline/Component.h"
 #include "BeamlineGeometry/StraightGeometry.h"
 #include "Fields/BMultipoleField.h"
+#include "Fields/Definitions.h"
 
 template <class T, unsigned Dim>
 class PartBunchBase;
-class Fieldmap;
 
 // Class Multipole
 // ------------------------------------------------------------------------

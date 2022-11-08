@@ -3,9 +3,11 @@
 
 #include "Fields/Fieldmap.h"
 
-class Astra1D_fast: public Fieldmap {
+class _Astra1D_fast: public _Fieldmap {
 
 public:
+    virtual ~_Astra1D_fast();
+
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const = 0;
     virtual bool getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const = 0;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const = 0;
@@ -18,8 +20,7 @@ public:
 
     virtual bool isInside(const Vector_t &r) const;
 protected:
-    Astra1D_fast(std::string aFilename);
-    virtual ~Astra1D_fast();
+    _Astra1D_fast(const std::string& filename);
 
     virtual void readMap();
     virtual void freeMap();
@@ -47,12 +48,14 @@ protected:
     int num_gridpz_m;
     int numHeaderLines_m;
 
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
 
-inline bool Astra1D_fast::isInside(const Vector_t &r) const
+inline bool _Astra1D_fast::isInside(const Vector_t &r) const
 {
     return r(2) >= zbegin_m && r(2) < zend_m;
 }
+
+using Astra1D_fast = std::shared_ptr<_Astra1D_fast>;
 
 #endif

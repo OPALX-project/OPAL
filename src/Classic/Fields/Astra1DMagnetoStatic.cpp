@@ -12,8 +12,8 @@
 #include <ios>
 
 
-Astra1DMagnetoStatic::Astra1DMagnetoStatic(std::string aFilename)
-    : Fieldmap(aFilename),
+_Astra1DMagnetoStatic::_Astra1DMagnetoStatic(const std::string& filename)
+    : _Fieldmap(filename),
       FourCoefs_m(nullptr) {
     std::ifstream file;
     int skippedValues = 0;
@@ -34,7 +34,7 @@ Astra1DMagnetoStatic::Astra1DMagnetoStatic(std::string aFilename)
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
                 tmpString != "FALSE")
-                throw GeneralClassicException("Astra1DMagnetoStatic::Astra1DMagnetoStatic",
+                throw GeneralClassicException("_Astra1DMagnetoStatic::_Astra1DMagnetoStatic",
                                               "The third string on the first line of 1D field "
                                               "maps has to be either TRUE or FALSE");
 
@@ -60,7 +60,7 @@ Astra1DMagnetoStatic::Astra1DMagnetoStatic(std::string aFilename)
         if (!parsing_passed && !file.eof()) {
             disableFieldmapWarning();
             zend_m = zbegin_m - 1e-3;
-            throw GeneralClassicException("Astra1DMagnetoStatic::Astra1DMagnetoStatic",
+            throw GeneralClassicException("_Astra1DMagnetoStatic::_Astra1DMagnetoStatic",
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         }
         length_m = 2.0 * num_gridpz_m * (zend_m - zbegin_m) / (num_gridpz_m - 1);
@@ -71,11 +71,16 @@ Astra1DMagnetoStatic::Astra1DMagnetoStatic(std::string aFilename)
     }
 }
 
-Astra1DMagnetoStatic::~Astra1DMagnetoStatic() {
+_Astra1DMagnetoStatic::~_Astra1DMagnetoStatic() {
     freeMap();
 }
 
-void Astra1DMagnetoStatic::readMap() {
+Astra1DMagnetoStatic _Astra1DMagnetoStatic::create(const std::string& filename)
+{
+    return Astra1DMagnetoStatic(new _Astra1DMagnetoStatic(filename));
+}
+
+void _Astra1DMagnetoStatic::readMap() {
     if (FourCoefs_m == nullptr) {
         // declare variables and allocate memory
     	std::ifstream in;
@@ -157,17 +162,15 @@ void Astra1DMagnetoStatic::readMap() {
     }
 }
 
-void Astra1DMagnetoStatic::freeMap() {
+void _Astra1DMagnetoStatic::freeMap() {
     if (FourCoefs_m != nullptr) {
 
         delete[] FourCoefs_m;
         FourCoefs_m = nullptr;
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }
 }
 
-bool Astra1DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
+bool _Astra1DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
@@ -202,26 +205,26 @@ bool Astra1DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, 
     return false;
 }
 
-bool Astra1DMagnetoStatic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
+bool _Astra1DMagnetoStatic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void Astra1DMagnetoStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _Astra1DMagnetoStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
-void Astra1DMagnetoStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
+void _Astra1DMagnetoStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
-void Astra1DMagnetoStatic::swap()
+void _Astra1DMagnetoStatic::swap()
 { }
 
-void Astra1DMagnetoStatic::getInfo(Inform *msg) {
+void _Astra1DMagnetoStatic::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (1D magnetostatic); zini= " << zbegin_m << " m; zfinal= " << zend_m << " m;" << endl;
 }
 
-double Astra1DMagnetoStatic::getFrequency() const {
+double _Astra1DMagnetoStatic::getFrequency() const {
     return 0.0;
 }
 
-void Astra1DMagnetoStatic::setFrequency(double /*freq*/)
+void _Astra1DMagnetoStatic::setFrequency(double /*freq*/)
 { }

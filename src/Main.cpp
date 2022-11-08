@@ -511,7 +511,7 @@ int opalMain(int argc, char *argv[]) {
                        OpalData::getInstance()->getProblemCharacteristicValues());
 
     Ippl::Comm->barrier();
-    Fieldmap::clearDictionary();
+    _Fieldmap::clearDictionary();
     OpalData::deleteInstance();
     delete gmsg;
 

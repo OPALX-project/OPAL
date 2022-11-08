@@ -10,8 +10,8 @@
 #include <fstream>
 #include <ios>
 
-FM1DElectroStatic_fast::FM1DElectroStatic_fast(std::string aFilename):
-    Fieldmap(aFilename),
+_FM1DElectroStatic_fast::_FM1DElectroStatic_fast(const std::string& filename):
+    _Fieldmap(filename),
     accuracy_m(0)
 {
 
@@ -41,11 +41,16 @@ FM1DElectroStatic_fast::FM1DElectroStatic_fast(std::string aFilename):
     }
 }
 
-FM1DElectroStatic_fast::~FM1DElectroStatic_fast() {
+_FM1DElectroStatic_fast::~_FM1DElectroStatic_fast() {
     freeMap();
 }
 
-void FM1DElectroStatic_fast::readMap() {
+FM1DElectroStatic_fast _FM1DElectroStatic_fast::create(const std::string& filename)
+{
+    return FM1DElectroStatic_fast(new _FM1DElectroStatic_fast(filename));
+}
+
+void _FM1DElectroStatic_fast::readMap() {
     if (onAxisField_m == nullptr) {
 
         std::ifstream fieldFile(Filename_m.c_str());
@@ -78,7 +83,7 @@ void FM1DElectroStatic_fast::readMap() {
     }
 }
 
-void FM1DElectroStatic_fast::freeMap() {
+void _FM1DElectroStatic_fast::freeMap() {
     if (onAxisField_m != nullptr) {
         delete [] onAxisField_m;
         onAxisField_m = nullptr;
@@ -91,13 +96,10 @@ void FM1DElectroStatic_fast::freeMap() {
         gsl_interp_accel_free(onAxisFieldPAccel_m);
         gsl_interp_accel_free(onAxisFieldPPAccel_m);
         gsl_interp_accel_free(onAxisFieldPPPAccel_m);
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info")
-                << endl);
     }
 }
 
-bool FM1DElectroStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
+bool _FM1DElectroStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
                                               Vector_t &B) const {
 
     std::vector<double> fieldComponents;
@@ -108,7 +110,7 @@ bool FM1DElectroStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
 
 }
 
-bool FM1DElectroStatic_fast::getFieldDerivative(const Vector_t &R,
+bool _FM1DElectroStatic_fast::getFieldDerivative(const Vector_t &R,
                                                 Vector_t &E,
                                                 Vector_t &/*B*/,
                                                 const DiffDirection &/*dir*/) const {
@@ -120,32 +122,32 @@ bool FM1DElectroStatic_fast::getFieldDerivative(const Vector_t &R,
 
 }
 
-void FM1DElectroStatic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _FM1DElectroStatic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zBegin_m;
     zEnd = zEnd_m;
 }
-void FM1DElectroStatic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
+void _FM1DElectroStatic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
                                                 double &/*yIni*/, double &/*yFinal*/,
                                                 double &/*zIni*/, double &/*zFinal*/) const {}
 
-void FM1DElectroStatic_fast::swap()
+void _FM1DElectroStatic_fast::swap()
 { }
 
-void FM1DElectroStatic_fast::getInfo(Inform *msg) {
+void _FM1DElectroStatic_fast::getInfo(Inform *msg) {
     (*msg) << Filename_m
            << " (1D electrotostatic); zini= "
            << zBegin_m << " m; zfinal= "
            << zEnd_m << " m;" << endl;
 }
 
-double FM1DElectroStatic_fast::getFrequency() const {
+double _FM1DElectroStatic_fast::getFrequency() const {
     return 0.0;
 }
 
-void FM1DElectroStatic_fast::setFrequency(double /*freq*/)
+void _FM1DElectroStatic_fast::setFrequency(double /*freq*/)
 { }
 
-bool FM1DElectroStatic_fast::checkFileData(std::ifstream &fieldFile,
+bool _FM1DElectroStatic_fast::checkFileData(std::ifstream &fieldFile,
                                            bool parsingPassed) {
 
     double tempDouble;
@@ -157,7 +159,7 @@ bool FM1DElectroStatic_fast::checkFileData(std::ifstream &fieldFile,
 
 }
 
-void FM1DElectroStatic_fast::computeFieldDerivatives(std::vector<double> fourierCoefs,
+void _FM1DElectroStatic_fast::computeFieldDerivatives(std::vector<double> fourierCoefs,
                                                      double onAxisFieldP[],
                                                      double onAxisFieldPP[],
                                                      double onAxisFieldPPP[]) {
@@ -192,7 +194,7 @@ void FM1DElectroStatic_fast::computeFieldDerivatives(std::vector<double> fourier
     }
 }
 
-void FM1DElectroStatic_fast::computeFieldOffAxis(const Vector_t &R, Vector_t &E, Vector_t &/*B*/,
+void _FM1DElectroStatic_fast::computeFieldOffAxis(const Vector_t &R, Vector_t &E, Vector_t &/*B*/,
                                                  std::vector<double> fieldComponents) const {
 
     double radiusSq = pow(R(0), 2.0) + pow(R(1), 2.0);
@@ -205,7 +207,7 @@ void FM1DElectroStatic_fast::computeFieldOffAxis(const Vector_t &R, Vector_t &E,
 
 }
 
-void FM1DElectroStatic_fast::computeFieldOnAxis(double z,
+void _FM1DElectroStatic_fast::computeFieldOnAxis(double z,
                                                 std::vector<double> &fieldComponents) const {
 
     fieldComponents.push_back(gsl_spline_eval(onAxisFieldInterpolants_m,
@@ -218,7 +220,7 @@ void FM1DElectroStatic_fast::computeFieldOnAxis(double z,
                                               z, onAxisFieldPPPAccel_m));
 }
 
-std::vector<double> FM1DElectroStatic_fast::computeFourierCoefficients(double fieldData[]) {
+std::vector<double> _FM1DElectroStatic_fast::computeFourierCoefficients(double fieldData[]) {
 
     const unsigned int totalSize = 2 * numberOfGridPoints_m - 1;
     gsl_fft_real_wavetable *waveTable = gsl_fft_real_wavetable_alloc(totalSize);
@@ -250,7 +252,7 @@ std::vector<double> FM1DElectroStatic_fast::computeFourierCoefficients(double fi
 
 }
 
-void FM1DElectroStatic_fast::computeInterpolationVectors(double onAxisFieldP[],
+void _FM1DElectroStatic_fast::computeInterpolationVectors(double onAxisFieldP[],
                                                          double onAxisFieldPP[],
                                                          double onAxisFieldPPP[]) {
 
@@ -284,7 +286,7 @@ void FM1DElectroStatic_fast::computeInterpolationVectors(double onAxisFieldP[],
     delete [] z;
 }
 
-void FM1DElectroStatic_fast::convertHeaderData() {
+void _FM1DElectroStatic_fast::convertHeaderData() {
 
     // Convert to m.
     rBegin_m *= Units::cm2m;
@@ -294,7 +296,7 @@ void FM1DElectroStatic_fast::convertHeaderData() {
 
 }
 
-void FM1DElectroStatic_fast::normalizeField(double maxEz, std::vector<double> &fourierCoefs) {
+void _FM1DElectroStatic_fast::normalizeField(double maxEz, std::vector<double> &fourierCoefs) {
 
     for (unsigned int dataIndex = 0; dataIndex < numberOfGridPoints_m; ++ dataIndex)
         onAxisField_m[dataIndex] /= (maxEz * Units::Vpm2MVpm);
@@ -304,7 +306,7 @@ void FM1DElectroStatic_fast::normalizeField(double maxEz, std::vector<double> &f
 
 }
 
-double FM1DElectroStatic_fast::readFileData(std::ifstream &fieldFile,
+double _FM1DElectroStatic_fast::readFileData(std::ifstream &fieldFile,
                                             double fieldData[]) {
 
     double maxEz = 0.0;
@@ -320,7 +322,7 @@ double FM1DElectroStatic_fast::readFileData(std::ifstream &fieldFile,
     return maxEz;
 }
 
-bool FM1DElectroStatic_fast::readFileHeader(std::ifstream &fieldFile) {
+bool _FM1DElectroStatic_fast::readFileHeader(std::ifstream &fieldFile) {
 
     std::string tempString;
     int tempInt;
@@ -339,7 +341,7 @@ bool FM1DElectroStatic_fast::readFileHeader(std::ifstream &fieldFile) {
         tempString = Util::toUpper(tempString);
         if (tempString != "TRUE" &&
             tempString != "FALSE")
-            throw GeneralClassicException("FM1DElectroStatic_fast::readFileHeader",
+            throw GeneralClassicException("_FM1DElectroStatic_fast::readFileHeader",
                                           "The third string on the first line of 1D field "
                                           "maps has to be either TRUE or FALSE");
 
@@ -363,7 +365,7 @@ bool FM1DElectroStatic_fast::readFileHeader(std::ifstream &fieldFile) {
     return parsingPassed;
 }
 
-void FM1DElectroStatic_fast::stripFileHeader(std::ifstream &fieldFile) {
+void _FM1DElectroStatic_fast::stripFileHeader(std::ifstream &fieldFile) {
 
     std::string tempString;
 
@@ -372,7 +374,7 @@ void FM1DElectroStatic_fast::stripFileHeader(std::ifstream &fieldFile) {
     getLine(fieldFile, tempString);
 }
 
-void FM1DElectroStatic_fast::prepareForMapCheck(std::vector<double> &fourierCoefs) {
+void _FM1DElectroStatic_fast::prepareForMapCheck(std::vector<double> &fourierCoefs) {
     std::vector<double> zSampling(numberOfGridPoints_m);
     for (unsigned int zStepIndex = 0; zStepIndex < numberOfGridPoints_m; ++ zStepIndex)
         zSampling[zStepIndex] = deltaZ_m * zStepIndex;

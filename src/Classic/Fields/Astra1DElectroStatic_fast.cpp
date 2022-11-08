@@ -7,8 +7,8 @@
 #include <fstream>
 #include <ios>
 
-Astra1DElectroStatic_fast::Astra1DElectroStatic_fast(std::string aFilename):
-    Astra1D_fast(aFilename) {
+_Astra1DElectroStatic_fast::_Astra1DElectroStatic_fast(const std::string& filename):
+    _Astra1D_fast(filename) {
     numHeaderLines_m = 2;
 
     onAxisField_m = nullptr;
@@ -30,18 +30,23 @@ Astra1DElectroStatic_fast::Astra1DElectroStatic_fast(std::string aFilename):
     if(!parsing_passed && !file.eof()) {
         disableFieldmapWarning();
         zend_m = zbegin_m - 1e-3;
-        throw GeneralClassicException("Astra1DElectroStatic_fast::Astra1DElectroStatic_fast",
+        throw GeneralClassicException("_Astra1DElectroStatic_fast::_Astra1DElectroStatic_fast",
                                       "An error occured when reading the fieldmap '" + Filename_m + "'");
     }
     hz_m = (zend_m - zbegin_m) / (num_gridpz_m - 1);
     length_m = 2.0 * num_gridpz_m * hz_m;
 }
 
-Astra1DElectroStatic_fast::~Astra1DElectroStatic_fast() {
+_Astra1DElectroStatic_fast::~_Astra1DElectroStatic_fast() {
     freeMap();
 }
 
-void Astra1DElectroStatic_fast::readMap() {
+Astra1DElectroStatic_fast _Astra1DElectroStatic_fast::create(const std::string& filename)
+{
+    return Astra1DElectroStatic_fast(new _Astra1DElectroStatic_fast(filename));
+}
+
+void _Astra1DElectroStatic_fast::readMap() {
     if(onAxisField_m == nullptr) {
         // declare variables and allocate memory
 
@@ -73,7 +78,7 @@ void Astra1DElectroStatic_fast::readMap() {
     }
 }
 
-bool Astra1DElectroStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &/*B*/) const {
+bool _Astra1DElectroStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &/*B*/) const {
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
@@ -91,31 +96,31 @@ bool Astra1DElectroStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
     return false;
 }
 
-bool Astra1DElectroStatic_fast::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
+bool _Astra1DElectroStatic_fast::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void Astra1DElectroStatic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _Astra1DElectroStatic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
-void Astra1DElectroStatic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
+void _Astra1DElectroStatic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
-void Astra1DElectroStatic_fast::swap()
+void _Astra1DElectroStatic_fast::swap()
 { }
 
-void Astra1DElectroStatic_fast::getInfo(Inform *msg) {
+void _Astra1DElectroStatic_fast::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (1D electrostatic); zini= " << zbegin_m << " m; zfinal= " << zend_m << " m;" << endl;
 }
 
-double Astra1DElectroStatic_fast::getFrequency() const {
+double _Astra1DElectroStatic_fast::getFrequency() const {
     return 0.0;
 }
 
-void Astra1DElectroStatic_fast::setFrequency(double /*freq*/)
+void _Astra1DElectroStatic_fast::setFrequency(double /*freq*/)
 { }
 
-bool Astra1DElectroStatic_fast::readFileHeader(std::ifstream &file) {
+bool _Astra1DElectroStatic_fast::readFileHeader(std::ifstream &file) {
     std::string tmpString;
     int tmpInt;
 
@@ -138,7 +143,7 @@ bool Astra1DElectroStatic_fast::readFileHeader(std::ifstream &file) {
     return passed;
 }
 
-int Astra1DElectroStatic_fast::stripFileHeader(std::ifstream &file) {
+int _Astra1DElectroStatic_fast::stripFileHeader(std::ifstream &file) {
     std::string tmpString;
     int accuracy;
 
@@ -150,4 +155,3 @@ int Astra1DElectroStatic_fast::stripFileHeader(std::ifstream &file) {
 
     return accuracy;
 }
-

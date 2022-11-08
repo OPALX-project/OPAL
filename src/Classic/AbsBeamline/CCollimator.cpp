@@ -153,7 +153,7 @@ void CCollimator::doFinalise() {
 void CCollimator::print() {
     if (RefPartBunch_m == nullptr) {
         if (!informed_m) {
-            std::string errormsg = Fieldmap::typeset_msg("BUNCH SIZE NOT SET", "warning");
+            std::string errormsg = _Fieldmap::typeset_msg("BUNCH SIZE NOT SET", "warning");
             ERRORMSG(errormsg << endl);
             if (Ippl::myNode() == 0) {
                 std::ofstream omsg("errormsg.txt", std::ios_base::app);

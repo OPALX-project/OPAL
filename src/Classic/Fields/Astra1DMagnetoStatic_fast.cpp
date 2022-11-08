@@ -6,8 +6,8 @@
 #include <fstream>
 #include <ios>
 
-Astra1DMagnetoStatic_fast::Astra1DMagnetoStatic_fast(std::string aFilename):
-    Astra1D_fast(aFilename)
+_Astra1DMagnetoStatic_fast::_Astra1DMagnetoStatic_fast(const std::string& filename):
+    _Astra1D_fast(filename)
 {
     numHeaderLines_m = 2;
 
@@ -31,18 +31,23 @@ Astra1DMagnetoStatic_fast::Astra1DMagnetoStatic_fast(std::string aFilename):
     if(!parsing_passed) {
         disableFieldmapWarning();
         zend_m = zbegin_m - 1e-3;
-        throw GeneralClassicException("Astra1DMagnetoStatic_fast::Astra1DMagnetoStatic_fast",
+        throw GeneralClassicException("_Astra1DMagnetoStatic_fast::_Astra1DMagnetoStatic_fast",
                                       "An error occured when reading the fieldmap '" + Filename_m + "'");
     }
     hz_m = (zend_m - zbegin_m) / (num_gridpz_m - 1);
     length_m = 2.0 * num_gridpz_m * hz_m;
 }
 
-Astra1DMagnetoStatic_fast::~Astra1DMagnetoStatic_fast() {
+_Astra1DMagnetoStatic_fast::~_Astra1DMagnetoStatic_fast() {
     freeMap();
 }
 
-void Astra1DMagnetoStatic_fast::readMap() {
+Astra1DMagnetoStatic_fast _Astra1DMagnetoStatic_fast::create(const std::string& filename)
+{
+    return Astra1DMagnetoStatic_fast(new _Astra1DMagnetoStatic_fast(filename));
+}
+
+void _Astra1DMagnetoStatic_fast::readMap() {
     if(onAxisField_m == nullptr) {
         onAxisField_m = new double[num_gridpz_m];
         zvals_m = new double[num_gridpz_m];
@@ -72,7 +77,7 @@ void Astra1DMagnetoStatic_fast::readMap() {
     }
 }
 
-bool Astra1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
+bool _Astra1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
@@ -90,32 +95,32 @@ bool Astra1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &/*
     return false;
 }
 
-bool Astra1DMagnetoStatic_fast::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
+bool _Astra1DMagnetoStatic_fast::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void Astra1DMagnetoStatic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _Astra1DMagnetoStatic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
 
-void Astra1DMagnetoStatic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
+void _Astra1DMagnetoStatic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
-void Astra1DMagnetoStatic_fast::swap()
+void _Astra1DMagnetoStatic_fast::swap()
 { }
 
-void Astra1DMagnetoStatic_fast::getInfo(Inform *msg) {
+void _Astra1DMagnetoStatic_fast::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (1D magnetostatic); zini= " << zbegin_m << " m; zfinal= " << zend_m << " m;" << endl;
 }
 
-double Astra1DMagnetoStatic_fast::getFrequency() const {
+double _Astra1DMagnetoStatic_fast::getFrequency() const {
     return 0.0;
 }
 
-void Astra1DMagnetoStatic_fast::setFrequency(double /*freq*/)
+void _Astra1DMagnetoStatic_fast::setFrequency(double /*freq*/)
 { }
 
-bool Astra1DMagnetoStatic_fast::readFileHeader(std::ifstream &file) {
+bool _Astra1DMagnetoStatic_fast::readFileHeader(std::ifstream &file) {
     std::string tmpString;
     int tmpInt;
 
@@ -138,7 +143,7 @@ bool Astra1DMagnetoStatic_fast::readFileHeader(std::ifstream &file) {
     return passed;
 }
 
-int Astra1DMagnetoStatic_fast::stripFileHeader(std::ifstream &file) {
+int _Astra1DMagnetoStatic_fast::stripFileHeader(std::ifstream &file) {
     std::string tmpString;
     int accuracy;
 
@@ -150,4 +155,3 @@ int Astra1DMagnetoStatic_fast::stripFileHeader(std::ifstream &file) {
 
     return accuracy;
 }
-

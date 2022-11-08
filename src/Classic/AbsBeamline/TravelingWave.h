@@ -20,10 +20,9 @@
 
 #include "AbsBeamline/RFCavity.h"
 #include "Physics/Physics.h"
+#include "Fields/Definitions.h"
 
 #include <cmath>
-
-class Fieldmap;
 
 class TravelingWave: public RFCavity {
 

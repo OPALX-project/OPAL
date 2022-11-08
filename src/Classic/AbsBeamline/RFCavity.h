@@ -21,13 +21,12 @@
 #include "AbsBeamline/Component.h"
 #include "Algorithms/AbstractTimeDependence.h"
 #include "Physics/Physics.h"
+#include "Fields/Definitions.h"
 
 #include <boost/bimap.hpp>
 
 #include <cmath>
 #include <string>
-
-class Fieldmap;
 
 enum class CavityType: unsigned short {
     SW,
@@ -215,7 +214,7 @@ protected:
 
     double designEnergy_m;
 
-    Fieldmap* fieldmap_m;
+    Fieldmap fieldmap_m;
     double startField_m;         /**< starting point of field(m)*/
 
 private:

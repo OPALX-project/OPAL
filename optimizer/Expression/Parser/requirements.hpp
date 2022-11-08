@@ -12,9 +12,9 @@
 #include <set>
 #include <boost/function.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/spirit/include/phoenix_core.hpp>
-#include <boost/spirit/include/phoenix_function.hpp>
-#include <boost/spirit/include/phoenix_operator.hpp>
+#include <boost/phoenix/core.hpp>
+#include <boost/phoenix/function.hpp>
+#include <boost/phoenix/operator.hpp>
 
 namespace client { namespace code_gen
 {

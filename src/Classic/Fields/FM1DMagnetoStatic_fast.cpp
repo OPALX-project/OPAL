@@ -10,8 +10,8 @@
 #include <fstream>
 #include <ios>
 
-FM1DMagnetoStatic_fast::FM1DMagnetoStatic_fast(std::string aFilename):
-    Fieldmap(aFilename) {
+_FM1DMagnetoStatic_fast::_FM1DMagnetoStatic_fast(const std::string& filename):
+    _Fieldmap(filename) {
 
     Type = T1DMagnetoStatic;
     onAxisField_m = nullptr;
@@ -39,11 +39,16 @@ FM1DMagnetoStatic_fast::FM1DMagnetoStatic_fast(std::string aFilename):
     }
 }
 
-FM1DMagnetoStatic_fast::~FM1DMagnetoStatic_fast() {
+_FM1DMagnetoStatic_fast::~_FM1DMagnetoStatic_fast() {
     freeMap();
 }
 
-void FM1DMagnetoStatic_fast::readMap() {
+FM1DMagnetoStatic_fast _FM1DMagnetoStatic_fast::create(const std::string& filename)
+{
+    return FM1DMagnetoStatic_fast(new _FM1DMagnetoStatic_fast(filename));
+}
+
+void _FM1DMagnetoStatic_fast::readMap() {
 
     if(onAxisField_m == nullptr) {
 
@@ -77,7 +82,7 @@ void FM1DMagnetoStatic_fast::readMap() {
     }
 }
 
-void FM1DMagnetoStatic_fast::freeMap() {
+void _FM1DMagnetoStatic_fast::freeMap() {
     if(onAxisField_m != nullptr) {
         delete [] onAxisField_m;
         onAxisField_m = nullptr;
@@ -90,13 +95,10 @@ void FM1DMagnetoStatic_fast::freeMap() {
         gsl_interp_accel_free(onAxisFieldPAccel_m);
         gsl_interp_accel_free(onAxisFieldPPAccel_m);
         gsl_interp_accel_free(onAxisFieldPPPAccel_m);
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info")
-                << endl);
     }
 }
 
-bool FM1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
+bool _FM1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
                                               Vector_t &B) const {
 
     std::vector<double> fieldComponents;
@@ -107,7 +109,7 @@ bool FM1DMagnetoStatic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
 
 }
 
-bool FM1DMagnetoStatic_fast::getFieldDerivative(const Vector_t &R,
+bool _FM1DMagnetoStatic_fast::getFieldDerivative(const Vector_t &R,
                                                 Vector_t &/*E*/,
                                                 Vector_t &B,
                                                 const DiffDirection &/*dir*/) const {
@@ -119,33 +121,33 @@ bool FM1DMagnetoStatic_fast::getFieldDerivative(const Vector_t &R,
 
 }
 
-void FM1DMagnetoStatic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _FM1DMagnetoStatic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zBegin_m;
     zEnd = zEnd_m;
 }
 
-void FM1DMagnetoStatic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
+void _FM1DMagnetoStatic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
                                                 double &/*yIni*/, double &/*yFinal*/,
                                                 double &/*zIni*/, double &/*zFinal*/) const {}
 
-void FM1DMagnetoStatic_fast::swap()
+void _FM1DMagnetoStatic_fast::swap()
 { }
 
-void FM1DMagnetoStatic_fast::getInfo(Inform *msg) {
+void _FM1DMagnetoStatic_fast::getInfo(Inform *msg) {
     (*msg) << Filename_m
            << " (1D magnetostatic); zini= "
            << zBegin_m << " m; zfinal= "
            << zEnd_m << " m;" << endl;
 }
 
-double FM1DMagnetoStatic_fast::getFrequency() const {
+double _FM1DMagnetoStatic_fast::getFrequency() const {
     return 0.0;
 }
 
-void FM1DMagnetoStatic_fast::setFrequency(double /*freq*/)
+void _FM1DMagnetoStatic_fast::setFrequency(double /*freq*/)
 { }
 
-bool FM1DMagnetoStatic_fast::checkFileData(std::ifstream &fieldFile,
+bool _FM1DMagnetoStatic_fast::checkFileData(std::ifstream &fieldFile,
                                            bool parsingPassed) {
 
     double tempDouble;
@@ -157,7 +159,7 @@ bool FM1DMagnetoStatic_fast::checkFileData(std::ifstream &fieldFile,
 
 }
 
-void FM1DMagnetoStatic_fast::computeFieldDerivatives(std::vector<double> fourierCoefs,
+void _FM1DMagnetoStatic_fast::computeFieldDerivatives(std::vector<double> fourierCoefs,
                                                      double onAxisFieldP[],
                                                      double onAxisFieldPP[],
                                                      double onAxisFieldPPP[]) {
@@ -192,7 +194,7 @@ void FM1DMagnetoStatic_fast::computeFieldDerivatives(std::vector<double> fourier
     }
 }
 
-void FM1DMagnetoStatic_fast::computeFieldOffAxis(const Vector_t &R,
+void _FM1DMagnetoStatic_fast::computeFieldOffAxis(const Vector_t &R,
                                                  Vector_t &/*E*/,
                                                  Vector_t &B,
                                                  std::vector<double> fieldComponents) const {
@@ -207,7 +209,7 @@ void FM1DMagnetoStatic_fast::computeFieldOffAxis(const Vector_t &R,
 
 }
 
-void FM1DMagnetoStatic_fast::computeFieldOnAxis(double z,
+void _FM1DMagnetoStatic_fast::computeFieldOnAxis(double z,
                                                 std::vector<double> &fieldComponents) const {
 
     fieldComponents.push_back(gsl_spline_eval(onAxisFieldInterpolants_m,
@@ -220,7 +222,7 @@ void FM1DMagnetoStatic_fast::computeFieldOnAxis(double z,
                                               z, onAxisFieldPPPAccel_m));
 }
 
-std::vector<double> FM1DMagnetoStatic_fast::computeFourierCoefficients(double fieldData[]) {
+std::vector<double> _FM1DMagnetoStatic_fast::computeFourierCoefficients(double fieldData[]) {
 
     const unsigned int totalSize = 2 * numberOfGridPoints_m - 1;
     gsl_fft_real_wavetable *waveTable = gsl_fft_real_wavetable_alloc(totalSize);
@@ -251,7 +253,7 @@ std::vector<double> FM1DMagnetoStatic_fast::computeFourierCoefficients(double fi
 
 }
 
-void FM1DMagnetoStatic_fast::computeInterpolationVectors(double onAxisFieldP[],
+void _FM1DMagnetoStatic_fast::computeInterpolationVectors(double onAxisFieldP[],
                                                          double onAxisFieldPP[],
                                                          double onAxisFieldPPP[]) {
 
@@ -285,7 +287,7 @@ void FM1DMagnetoStatic_fast::computeInterpolationVectors(double onAxisFieldP[],
     delete [] z;
 }
 
-void FM1DMagnetoStatic_fast::convertHeaderData() {
+void _FM1DMagnetoStatic_fast::convertHeaderData() {
 
     // Convert to m.
     rBegin_m *= Units::cm2m;
@@ -294,7 +296,7 @@ void FM1DMagnetoStatic_fast::convertHeaderData() {
     zEnd_m *= Units::cm2m;
 }
 
-void FM1DMagnetoStatic_fast::normalizeField(double maxBz, std::vector<double> &fourierCoefs) {
+void _FM1DMagnetoStatic_fast::normalizeField(double maxBz, std::vector<double> &fourierCoefs) {
     if (!normalize_m) return;
 
     for (unsigned int dataIndex = 0; dataIndex < numberOfGridPoints_m; ++ dataIndex)
@@ -306,7 +308,7 @@ void FM1DMagnetoStatic_fast::normalizeField(double maxBz, std::vector<double> &f
 
 }
 
-double FM1DMagnetoStatic_fast::readFileData(std::ifstream &fieldFile,
+double _FM1DMagnetoStatic_fast::readFileData(std::ifstream &fieldFile,
                                             double fieldData[]) {
 
     double maxBz = 0.0;
@@ -319,7 +321,7 @@ double FM1DMagnetoStatic_fast::readFileData(std::ifstream &fieldFile,
     return maxBz;
 }
 
-bool FM1DMagnetoStatic_fast::readFileHeader(std::ifstream &fieldFile) {
+bool _FM1DMagnetoStatic_fast::readFileHeader(std::ifstream &fieldFile) {
 
     std::string tempString;
     int tempInt;
@@ -339,7 +341,7 @@ bool FM1DMagnetoStatic_fast::readFileHeader(std::ifstream &fieldFile) {
         tempString = Util::toUpper(tempString);
         if (tempString != "TRUE" &&
             tempString != "FALSE")
-            throw GeneralClassicException("FM1DMagnetoStatic_fast::readFileHeader",
+            throw GeneralClassicException("_FM1DMagnetoStatic_fast::readFileHeader",
                                           "The third string on the first line of 1D field "
                                           "maps has to be either TRUE or FALSE");
 
@@ -365,7 +367,7 @@ bool FM1DMagnetoStatic_fast::readFileHeader(std::ifstream &fieldFile) {
     return parsingPassed;
 }
 
-void FM1DMagnetoStatic_fast::stripFileHeader(std::ifstream &fieldFile) {
+void _FM1DMagnetoStatic_fast::stripFileHeader(std::ifstream &fieldFile) {
 
     std::string tempString;
 
@@ -374,7 +376,7 @@ void FM1DMagnetoStatic_fast::stripFileHeader(std::ifstream &fieldFile) {
     getLine(fieldFile, tempString);
 }
 
-void FM1DMagnetoStatic_fast::prepareForMapCheck(std::vector<double> &fourierCoefs) {
+void _FM1DMagnetoStatic_fast::prepareForMapCheck(std::vector<double> &fourierCoefs) {
     std::vector<double> zSampling(numberOfGridPoints_m);
     for (unsigned int zStepIndex = 0; zStepIndex < numberOfGridPoints_m; ++ zStepIndex)
         zSampling[zStepIndex] = deltaZ_m * zStepIndex;

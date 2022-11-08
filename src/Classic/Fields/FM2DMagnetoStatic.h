@@ -3,9 +3,11 @@
 
 #include "Fields/Fieldmap.h"
 
-class FM2DMagnetoStatic: public Fieldmap {
+class _FM2DMagnetoStatic: public _Fieldmap {
 
 public:
+    virtual ~_FM2DMagnetoStatic();
+
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
     virtual bool getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
@@ -17,8 +19,9 @@ public:
 
     virtual bool isInside(const Vector_t &r) const;
 private:
-    FM2DMagnetoStatic(std::string aFilename);
-    ~FM2DMagnetoStatic();
+    _FM2DMagnetoStatic(const std::string& filename);
+
+    static FM2DMagnetoStatic create(const std::string& filename);
 
     virtual void readMap();
     virtual void freeMap();
@@ -36,12 +39,14 @@ private:
     int num_gridpz_m;              /**< Read in number of points after 0(not counted here) in grid, z-direction*/
 
     bool swap_m;
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
 
-inline bool FM2DMagnetoStatic::isInside(const Vector_t &r) const
+inline bool _FM2DMagnetoStatic::isInside(const Vector_t &r) const
 {
     return r(2) >= zbegin_m && r(2) < zend_m && std::sqrt(r(0)*r(0) + r(1)*r(1)) < rend_m;
 }
+
+using FM2DMagnetoStatic = std::shared_ptr<_FM2DMagnetoStatic>;
 
 #endif

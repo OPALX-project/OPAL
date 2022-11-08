@@ -23,18 +23,20 @@
 
 #include <vector>
 
-class FM3DMagnetoStaticH5Block: public FM3DH5BlockBase {
+class _FM3DMagnetoStaticH5Block: public _FM3DH5BlockBase {
 
 public:
     virtual bool getFieldstrength (
         const Vector_t &R, Vector_t &E, Vector_t &B) const;
-    
-private:
-    FM3DMagnetoStaticH5Block (
-        std::string aFilename);
 
-    virtual ~FM3DMagnetoStaticH5Block (
+    virtual ~_FM3DMagnetoStaticH5Block (
         );
+
+private:
+    _FM3DMagnetoStaticH5Block (
+        const std::string& filename);
+
+    static FM3DMagnetoStaticH5Block create(const std::string& filename);
 
     virtual void readMap (
         );
@@ -49,8 +51,10 @@ private:
     std::vector<double> FieldstrengthBx_m;    /**< 3D array with Bx */
     std::vector<double> FieldstrengthBy_m;    /**< 3D array with By */
 
-    friend class Fieldmap;
-    friend class FM3DH5BlockBase;
+    friend class _Fieldmap;
+    friend class _FM3DH5BlockBase;
 };
+
+using FM3DMagnetoStaticH5Block = std::shared_ptr<_FM3DMagnetoStaticH5Block>;
 
 #endif

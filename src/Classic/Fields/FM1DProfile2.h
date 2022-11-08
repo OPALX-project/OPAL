@@ -3,9 +3,11 @@
 
 #include "Fields/Fieldmap.h"
 
-class FM1DProfile2: public Fieldmap {
+class _FM1DProfile2: public _Fieldmap {
 
 public:
+    virtual ~_FM1DProfile2();
+
     virtual bool getFieldstrength(const Vector_t &X, Vector_t &strength, Vector_t &info) const;
     virtual bool getFieldDerivative(const Vector_t &X, Vector_t &E, Vector_t &B, const DiffDirection &dir) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
@@ -18,8 +20,9 @@ public:
     virtual void setEdgeConstants(const double &bendAngle, const double &entranceAngle, const double &exitAngle);
 
 private:
-    FM1DProfile2(std::string aFilename);
-    ~FM1DProfile2();
+    _FM1DProfile2(const std::string& filename);
+
+    static FM1DProfile2 create(const std::string& filename);
 
     virtual void readMap();
     virtual void freeMap();
@@ -55,11 +58,13 @@ private:
     double cosExitRotation_m;
     double sinExitRotation_m;
 
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
 
 namespace QRDecomposition {
     void solve(double *Matrix, double *Solution, double *rightHandSide, const int &M, const int &N);
 }
+
+using FM1DProfile2 = std::shared_ptr<_FM1DProfile2>;
 
 #endif

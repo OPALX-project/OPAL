@@ -11,9 +11,10 @@
  * Class FM1DProfile1 defines a 1D field map for us in bending magnets.
  */
 
-class FM1DProfile1: public Fieldmap {
+class _FM1DProfile1: public _Fieldmap {
 
 public:
+    virtual ~_FM1DProfile1();
 
     virtual bool getFieldDerivative(const Vector_t &X,
                                     Vector_t &E,
@@ -49,9 +50,9 @@ public:
 private:
 
     /// Constructor with field map file name.
-    FM1DProfile1(std::string Filename);
+    _FM1DProfile1(const std::string& filename);
 
-    virtual ~FM1DProfile1();
+    static FM1DProfile1 create(const std::string& filename);
 
     virtual void freeMap();
     virtual void readMap();
@@ -84,7 +85,9 @@ private:
      double sBegin_m;                /// Start of field map in s coordinates (m).
      double sEnd_m;                  /// End of field map in s coordinates (m).
 
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
+
+using FM1DProfile1 = std::shared_ptr<_FM1DProfile1>;
 
 #endif

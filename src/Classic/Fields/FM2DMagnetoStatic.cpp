@@ -8,8 +8,8 @@
 #include <ios>
 #include <cmath>
 
-FM2DMagnetoStatic::FM2DMagnetoStatic(std::string aFilename):
-    Fieldmap(aFilename),
+_FM2DMagnetoStatic::_FM2DMagnetoStatic(const std::string& filename):
+    _Fieldmap(filename),
     FieldstrengthBz_m(nullptr),
     FieldstrengthBr_m(nullptr) {
     std::ifstream file;
@@ -35,7 +35,7 @@ FM2DMagnetoStatic::FM2DMagnetoStatic(std::string aFilename):
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
                 tmpString != "FALSE")
-                throw GeneralClassicException("FM2DMagnetoStatic::FM2DMagnetoStatic",
+                throw GeneralClassicException("_FM2DMagnetoStatic::_FM2DMagnetoStatic",
                                               "The third string on the first line of 2D field "
                                               "maps has to be either TRUE or FALSE");
 
@@ -72,7 +72,7 @@ FM2DMagnetoStatic::FM2DMagnetoStatic(std::string aFilename):
         if(!parsing_passed) {
             disableFieldmapWarning();
             zend_m = zbegin_m - 1e-3;
-            throw GeneralClassicException("FM2DMagnetoStatic::FM2DMagnetoStatic",
+            throw GeneralClassicException("_FM2DMagnetoStatic::_FM2DMagnetoStatic",
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         } else {
             // conversion from cm to m
@@ -95,11 +95,16 @@ FM2DMagnetoStatic::FM2DMagnetoStatic(std::string aFilename):
     }
 }
 
-FM2DMagnetoStatic::~FM2DMagnetoStatic() {
+_FM2DMagnetoStatic::~_FM2DMagnetoStatic() {
     freeMap();
 }
 
-void FM2DMagnetoStatic::readMap() {
+FM2DMagnetoStatic _FM2DMagnetoStatic::create(const std::string& filename)
+{
+    return FM2DMagnetoStatic(new _FM2DMagnetoStatic(filename));
+}
+
+void _FM2DMagnetoStatic::readMap() {
     if(FieldstrengthBz_m == nullptr) {
         // declare variables and allocate memory
         std::ifstream in;
@@ -153,19 +158,17 @@ void FM2DMagnetoStatic::readMap() {
     }
 }
 
-void FM2DMagnetoStatic::freeMap() {
+void _FM2DMagnetoStatic::freeMap() {
     if(FieldstrengthBz_m != nullptr) {
         delete[] FieldstrengthBz_m;
         delete[] FieldstrengthBr_m;
 
         FieldstrengthBz_m = nullptr;
         FieldstrengthBr_m = nullptr;
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }
 }
 
-bool FM2DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
+bool _FM2DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
     // do bi-linear interpolation
     const double RR = std::sqrt(R(0) * R(0) + R(1) * R(1));
 
@@ -201,7 +204,7 @@ bool FM2DMagnetoStatic::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vec
     return false;
 }
 
-bool FM2DMagnetoStatic::getFieldDerivative(const Vector_t &R, Vector_t &/*E*/, Vector_t &B, const DiffDirection &dir) const {
+bool _FM2DMagnetoStatic::getFieldDerivative(const Vector_t &R, Vector_t &/*E*/, Vector_t &B, const DiffDirection &dir) const {
 
     double BfieldR, BfieldZ;
 
@@ -303,25 +306,25 @@ bool FM2DMagnetoStatic::getFieldDerivative(const Vector_t &R, Vector_t &/*E*/, V
     return false;
 }
 
-void FM2DMagnetoStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _FM2DMagnetoStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
 
-void FM2DMagnetoStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
+void _FM2DMagnetoStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
-void FM2DMagnetoStatic::swap() {
+void _FM2DMagnetoStatic::swap() {
     if(swap_m) swap_m = false;
     else swap_m = true;
 }
 
-void FM2DMagnetoStatic::getInfo(Inform *msg) {
+void _FM2DMagnetoStatic::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (2D magnetostatic); zini= " << zbegin_m << " m; zfinal= " << zend_m << " m;" << endl;
 }
 
-double FM2DMagnetoStatic::getFrequency() const {
+double _FM2DMagnetoStatic::getFrequency() const {
     return 0.0;
 }
 
-void FM2DMagnetoStatic::setFrequency(double /*freq*/)
+void _FM2DMagnetoStatic::setFrequency(double /*freq*/)
 { ;}

@@ -178,7 +178,7 @@ void RFCavity::initialise(PartBunchBase<double, 3>* bunch, double& startField, d
     std::stringstream errormsg;
     RefPartBunch_m = bunch;
 
-    fieldmap_m = Fieldmap::getFieldmap(filename_m, fast_m);
+    fieldmap_m = _Fieldmap::getFieldmap(filename_m, fast_m);
     fieldmap_m->getFieldDimensions(startField_m, endField);
     if (endField <= startField_m) {
         throw GeneralClassicException("RFCavity::initialise",
@@ -191,7 +191,7 @@ void RFCavity::initialise(PartBunchBase<double, 3>* bunch, double& startField, d
         errormsg << "FREQUENCY IN INPUT FILE DIFFERENT THAN IN FIELD MAP '" << filename_m << "';\n"
                  << frequency_m / Physics::two_pi * Units::Hz2MHz << " MHz <> "
                  << fieldmap_m->getFrequency() / Physics::two_pi * Units::Hz2MHz << " MHz; TAKE ON THE LATTER";
-        std::string errormsg_str = Fieldmap::typeset_msg(errormsg.str(), "warning");
+        std::string errormsg_str = _Fieldmap::typeset_msg(errormsg.str(), "warning");
         ERRORMSG(errormsg_str << "\n" << endl);
         if (Ippl::myNode() == 0) {
             std::ofstream omsg("errormsg.txt", std::ios_base::app);
@@ -252,13 +252,13 @@ bool RFCavity::bends() const {
 }
 
 void RFCavity::goOnline(const double&) {
-    Fieldmap::readMap(filename_m);
+    _Fieldmap::readMap(filename_m);
 
     online_m = true;
 }
 
 void RFCavity::goOffline() {
-    Fieldmap::freeMap(filename_m);
+    _Fieldmap::freeMap(filename_m);
 
     online_m = false;
 }

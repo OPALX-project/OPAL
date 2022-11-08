@@ -19,26 +19,27 @@
 #include "Fields/FM3DMagnetoStaticH5Block.h"
 #include "Utilities/GeneralClassicException.h"
 
-FM3DMagnetoStaticH5Block::FM3DMagnetoStaticH5Block (
-    std::string aFilename
-    ) : Fieldmap (
-        aFilename),
-    FM3DH5BlockBase (
-        ) {
-        Type = T3DMagnetoStaticH5Block;
+_FM3DMagnetoStaticH5Block::_FM3DMagnetoStaticH5Block (const std::string& filename)
+    : _Fieldmap(filename)
+    , _FM3DH5BlockBase () {
+    Type = T3DMagnetoStaticH5Block;
 
-        openFileMPIOCollective (aFilename);
-        getFieldInfo ("Efield");
-        getResonanceFrequency ();
-        closeFile ();
+    openFileMPIOCollective (filename);
+    getFieldInfo ("Efield");
+    getResonanceFrequency ();
+    closeFile ();
 }
 
-FM3DMagnetoStaticH5Block::~FM3DMagnetoStaticH5Block (
-    ) {
+_FM3DMagnetoStaticH5Block::~_FM3DMagnetoStaticH5Block () {
     freeMap ();
 }
 
-void FM3DMagnetoStaticH5Block::readMap (
+FM3DMagnetoStaticH5Block _FM3DMagnetoStaticH5Block::create(const std::string& filename)
+{
+    return FM3DMagnetoStaticH5Block(new _FM3DMagnetoStaticH5Block(filename));
+}
+
+void _FM3DMagnetoStaticH5Block::readMap (
     ) {
     if (!FieldstrengthEz_m.empty()) {
         return;
@@ -72,7 +73,7 @@ void FM3DMagnetoStaticH5Block::readMap (
                             + Filename_m  + "' (H5hut format) read", "info")
              << endl);
 }
-void FM3DMagnetoStaticH5Block::freeMap (
+void _FM3DMagnetoStaticH5Block::freeMap (
     ) {
     if(FieldstrengthEz_m.empty()) {
         return;
@@ -83,11 +84,9 @@ void FM3DMagnetoStaticH5Block::freeMap (
     FieldstrengthBx_m.clear();
     FieldstrengthBy_m.clear();
     FieldstrengthBz_m.clear();
-    INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m + "'", "info")
-            << endl);
 }
 
-bool FM3DMagnetoStaticH5Block::getFieldstrength (
+bool _FM3DMagnetoStaticH5Block::getFieldstrength (
     const Vector_t& R,
     Vector_t& E,
     Vector_t& B
@@ -103,7 +102,7 @@ bool FM3DMagnetoStaticH5Block::getFieldstrength (
     return false;
 }
 
-double FM3DMagnetoStaticH5Block::getFrequency (
+double _FM3DMagnetoStaticH5Block::getFrequency (
     ) const {
     return 0.0;
 }

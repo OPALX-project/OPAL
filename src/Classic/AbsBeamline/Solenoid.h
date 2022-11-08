@@ -22,10 +22,10 @@
 // ------------------------------------------------------------------------
 
 #include "AbsBeamline/Component.h"
+#include "Fields/Definitions.h"
 
 template <class T, unsigned Dim>
 class PartBunchBase;
-class Fieldmap;
 
 // Class Solenoid
 // ------------------------------------------------------------------------
@@ -91,7 +91,7 @@ private:
 
     //  std::string name;                   /**< The name of the object*/
     std::string filename_m;               /**< The name of the inputfile*/
-    Fieldmap *myFieldmap_m;
+    Fieldmap myFieldmap_m;
     double scale_m;                /**< scale multiplier*/
     double scaleError_m;                /**< scale multiplier error*/
 

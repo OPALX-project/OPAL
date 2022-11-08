@@ -28,7 +28,7 @@ static_assert (sizeof(double) == sizeof (h5_float64_t),
 static_assert (sizeof(long long) == sizeof (h5_int64_t),
                "long long and h5_int64_t are not the same type" );
 
-class FM3DH5BlockBase: virtual public Fieldmap {
+class _FM3DH5BlockBase: virtual public _Fieldmap {
 
 public:
     virtual void readMap (
@@ -71,7 +71,7 @@ public:
 
     virtual void swap(
         ) {};
-    
+
     virtual void getInfo (
         Inform *msg);
 
@@ -85,14 +85,14 @@ public:
         std::vector<std::pair<double, double> >& F);
 
 protected:
-    FM3DH5BlockBase (
+    _FM3DH5BlockBase (
         ) {};
 
-    virtual ~FM3DH5BlockBase (
+    virtual ~_FM3DH5BlockBase (
         ) {};
 
     void openFileMPIOCollective (
-        const std::string aFilename);
+        const std::string& filename);
 
     long long getNumSteps (
         void);
@@ -115,7 +115,7 @@ protected:
 
     void closeFile (
         void);
-    
+
     virtual bool isInside (
         const Vector_t &r
         ) const {
@@ -151,7 +151,7 @@ protected:
         ) const {
         unsigned long result = j + k * num_gridpy_m;
         result = i + result * num_gridpx_m;
-        
+
         return result;
     }
 
@@ -194,7 +194,7 @@ protected:
     std::vector<double> FieldstrengthEz_m;    /**< 3D array with Ez */
     std::vector<double> FieldstrengthEx_m;    /**< 3D array with Ex */
     std::vector<double> FieldstrengthEy_m;    /**< 3D array with Ey */
-    
+
     double xbegin_m;
     double xend_m;
 
@@ -215,7 +215,9 @@ protected:
     double frequency_m;
 
     bool swap_m;
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
+
+using FM3DH5BlockBase = std::shared_ptr<_FM3DH5BlockBase>;
 
 #endif

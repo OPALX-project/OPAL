@@ -21,26 +21,31 @@
 #include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
 
-FM3DH5Block_nonscale::FM3DH5Block_nonscale (
-    std::string aFilename
-    ) : Fieldmap (
-        aFilename),
-    FM3DH5BlockBase (
+_FM3DH5Block_nonscale::_FM3DH5Block_nonscale (
+    const std::string& filename
+    ) : _Fieldmap (
+        filename),
+    _FM3DH5BlockBase (
         ) {
         Type = T3DDynamicH5Block;
 
-        openFileMPIOCollective (aFilename);
+        openFileMPIOCollective (filename);
         getFieldInfo ("Efield");
         getResonanceFrequency ();
         closeFile ();
 }
 
-FM3DH5Block_nonscale::~FM3DH5Block_nonscale (
+_FM3DH5Block_nonscale::~_FM3DH5Block_nonscale (
     ) {
     freeMap();
 }
 
-void FM3DH5Block_nonscale::readMap (
+FM3DH5Block_nonscale _FM3DH5Block_nonscale::create(const std::string& filename)
+{
+    return FM3DH5Block_nonscale(new _FM3DH5Block_nonscale(filename));
+}
+
+void _FM3DH5Block_nonscale::readMap (
     ) {
     if (!FieldstrengthEz_m.empty()) {
         return;
@@ -84,7 +89,7 @@ void FM3DH5Block_nonscale::readMap (
              << endl);
 }
 
-void FM3DH5Block_nonscale::freeMap (
+void _FM3DH5Block_nonscale::freeMap (
     ) {
     if(FieldstrengthEz_m.empty ()) {
         return;
@@ -95,12 +100,9 @@ void FM3DH5Block_nonscale::freeMap (
     FieldstrengthHx_m.clear ();
     FieldstrengthHy_m.clear ();
     FieldstrengthHz_m.clear ();
-
-    INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m + "'", "info")
-            << endl);
 }
 
-bool FM3DH5Block_nonscale::getFieldstrength (
+bool _FM3DH5Block_nonscale::getFieldstrength (
     const Vector_t& R,
     Vector_t& E,
     Vector_t& B

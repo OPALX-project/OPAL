@@ -3,9 +3,11 @@
 
 #include "Fields/Fieldmap.h"
 
-class FM1DElectroStatic_fast: public Fieldmap {
+class _FM1DElectroStatic_fast: public _Fieldmap {
 
 public:
+    virtual ~_FM1DElectroStatic_fast();
+
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
     virtual void getFieldDimensions(double &xIni, double &xFinal,
@@ -20,8 +22,9 @@ public:
 
     virtual bool isInside(const Vector_t &r) const;
 private:
-    FM1DElectroStatic_fast(std::string aFilename);
-    ~FM1DElectroStatic_fast();
+    _FM1DElectroStatic_fast(const std::string& filename);
+
+    static FM1DElectroStatic_fast create(const std::string& filename);
 
     virtual void readMap();
     virtual void freeMap();
@@ -67,12 +70,14 @@ private:
     gsl_interp_accel *onAxisFieldPPAccel_m;
     gsl_interp_accel *onAxisFieldPPPAccel_m;
 
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
 
-inline bool FM1DElectroStatic_fast::isInside(const Vector_t &r) const
+inline bool _FM1DElectroStatic_fast::isInside(const Vector_t &r) const
 {
     return r(2) >= zBegin_m && r(2) < zEnd_m;
 }
+
+using FM1DElectroStatic_fast = std::shared_ptr<_FM1DElectroStatic_fast>;
 
 #endif

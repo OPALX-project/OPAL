@@ -60,7 +60,7 @@ Solenoid::Solenoid(const std::string &name):
 
 
 Solenoid::~Solenoid() {
-    //    Fieldmap::deleteFieldmap(filename_m);
+    //    _Fieldmap::deleteFieldmap(filename_m);
 }
 
 
@@ -121,7 +121,7 @@ void Solenoid::initialise(PartBunchBase<double, 3> *bunch, double &startField, d
 
     RefPartBunch_m = bunch;
 
-    myFieldmap_m = Fieldmap::getFieldmap(filename_m, fast_m);
+    myFieldmap_m = _Fieldmap::getFieldmap(filename_m, fast_m);
 
     if(myFieldmap_m != nullptr) {
         msg << level2 << getName() << " using file ";
@@ -147,12 +147,12 @@ bool Solenoid::bends() const {
 
 
 void Solenoid::goOnline(const double &) {
-    Fieldmap::readMap(filename_m);
+    _Fieldmap::readMap(filename_m);
     online_m = true;
 }
 
 void Solenoid::goOffline() {
-    Fieldmap::freeMap(filename_m);
+    _Fieldmap::freeMap(filename_m);
     online_m = false;
 }
 
