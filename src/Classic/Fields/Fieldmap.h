@@ -7,6 +7,7 @@
 #include <map>
 #include <vector>
 #include "Algorithms/Vektor.h"
+#include "Fields/Definitions.h"
 
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_spline.h"
@@ -57,11 +58,11 @@ enum DiffDirection {
     DZ
 };
 
-class Fieldmap {
+class _Fieldmap {
 
 public:
 
-    static Fieldmap *getFieldmap(std::string Filename, bool fast = false);
+    static Fieldmap getFieldmap(std::string Filename, bool fast = false);
     static std::vector<std::string> getListFieldmapNames();
     static void deleteFieldmap(std::string Filename);
     static void clearDictionary();
@@ -104,14 +105,14 @@ public:
     virtual void freeMap() = 0;
 
 protected:
-    Fieldmap () = delete;
+    _Fieldmap () = delete;
 
-    Fieldmap(const std::string& aFilename)
-        : Filename_m(aFilename),
+    _Fieldmap(const std::string& filename)
+        : Filename_m(filename),
         lines_read_m(0),
         normalize_m(true) { };
 
-    virtual ~Fieldmap() { ;};
+    virtual ~_Fieldmap() { ;};
     MapType Type;
 
     std::string Filename_m;
@@ -183,10 +184,10 @@ private:
 
     struct FieldmapDescription {
         MapType Type;
-        Fieldmap *Map;
+        Fieldmap Map;
         unsigned int RefCounter;
         bool read;
-        FieldmapDescription(MapType aType, Fieldmap *aMap):
+        FieldmapDescription(MapType aType, Fieldmap aMap):
             Type(aType),
             Map(aMap),
             RefCounter(1),

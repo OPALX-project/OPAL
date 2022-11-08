@@ -3,9 +3,11 @@
 
 #include "Fields/Fieldmap.h"
 
-class FM1DDynamic: public Fieldmap {
+class _FM1DDynamic: public _Fieldmap {
 
 public:
+    virtual ~_FM1DDynamic();
+
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
     virtual bool getFieldDerivative(const Vector_t &R, Vector_t &E,
                                     Vector_t &B, const DiffDirection &dir) const;
@@ -21,9 +23,9 @@ public:
 
     virtual bool isInside(const Vector_t &r) const;
 private:
-    FM1DDynamic(std::string aFilename);
-    ~FM1DDynamic();
+    _FM1DDynamic(const std::string& filename);
 
+    static FM1DDynamic create(const std::string& filename);
     virtual void readMap();
     virtual void freeMap();
 
@@ -54,12 +56,14 @@ private:
     int accuracy_m;                         /// Number of Fourier coefficients to use reconstructing field.
     std::vector<double> fourierCoefs_m;     /// Fourier coefficients derived from field map.
 
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
 
-inline bool FM1DDynamic::isInside(const Vector_t &r) const
+inline bool _FM1DDynamic::isInside(const Vector_t &r) const
 {
     return r(2) >= zBegin_m && r(2) < zEnd_m;
 }
+
+using FM1DDynamic = std::shared_ptr<_FM1DDynamic>;
 
 #endif

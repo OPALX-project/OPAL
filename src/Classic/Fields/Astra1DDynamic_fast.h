@@ -24,9 +24,11 @@
 
 #include "Fields/Astra1D_fast.h"
 
-class Astra1DDynamic_fast: public Astra1D_fast {
+class _Astra1DDynamic_fast: public _Astra1D_fast {
 
 public:
+    virtual ~_Astra1DDynamic_fast();
+
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
     virtual bool getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
@@ -38,8 +40,9 @@ public:
     virtual void getOnaxisEz(std::vector<std::pair<double, double> > & F);
 
 private:
-    Astra1DDynamic_fast(std::string aFilename);
-    virtual ~Astra1DDynamic_fast();
+    _Astra1DDynamic_fast(const std::string& filename);
+
+    static Astra1DDynamic_fast create(const std::string& filename);
 
     virtual void readMap();
 
@@ -49,7 +52,8 @@ private:
     double frequency_m;
     double xlrep_m;
 
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
 
+using Astra1DDynamic_fast = std::shared_ptr<_Astra1DDynamic_fast>;
 #endif

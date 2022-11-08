@@ -1,5 +1,5 @@
 //
-// Class Astra1DDynamic_fast
+// Class _Astra1DDynamic_fast
 //
 // This class provides a reader for Astra style field maps. It pre-computes the field
 // on a lattice to increase the performance during simulation.
@@ -29,8 +29,8 @@
 #include <fstream>
 #include <ios>
 
-Astra1DDynamic_fast::Astra1DDynamic_fast(std::string aFilename):
-    Astra1D_fast(aFilename)
+_Astra1DDynamic_fast::_Astra1DDynamic_fast(const std::string& filename):
+    _Astra1D_fast(filename)
 {
     numHeaderLines_m = 3;
 
@@ -55,7 +55,7 @@ Astra1DDynamic_fast::Astra1DDynamic_fast(std::string aFilename):
     if(!parsing_passed) {
         disableFieldmapWarning();
         zend_m = zbegin_m - 1e-3;
-        throw GeneralClassicException("Astra1DDynamic_fast::Astra1DDynamic_fast",
+        throw GeneralClassicException("_Astra1DDynamic_fast::_Astra1DDynamic_fast",
                                       "An error occured when reading the fieldmap '" + Filename_m + "'");
     }
 
@@ -67,11 +67,16 @@ Astra1DDynamic_fast::Astra1DDynamic_fast(std::string aFilename):
     length_m = 2.0 * num_gridpz_m * hz_m;
 }
 
-Astra1DDynamic_fast::~Astra1DDynamic_fast() {
+_Astra1DDynamic_fast::~_Astra1DDynamic_fast() {
     freeMap();
 }
 
-void Astra1DDynamic_fast::readMap() {
+Astra1DDynamic_fast _Astra1DDynamic_fast::create(const std::string& filename)
+{
+    return Astra1DDynamic_fast(new _Astra1DDynamic_fast(filename));
+}
+
+void _Astra1DDynamic_fast::readMap() {
     if(onAxisField_m == nullptr) {
         std::ifstream file(Filename_m.c_str());
 
@@ -101,7 +106,7 @@ void Astra1DDynamic_fast::readMap() {
     }
 }
 
-bool Astra1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool _Astra1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
@@ -112,7 +117,7 @@ bool Astra1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E, Vecto
         ezpp = gsl_spline_eval(onAxisInterpolants_m[2], R(2) - zbegin_m, onAxisAccel_m[2]);
         ezppp = gsl_spline_eval(onAxisInterpolants_m[3], R(2) - zbegin_m, onAxisAccel_m[3]);
     } catch (OpalException const& e) {
-        throw OpalException("Astra1DDynamic_fast::getFieldstrength",
+        throw OpalException("_Astra1DDynamic_fast::getFieldstrength",
                             "The requested interpolation point, " + std::to_string(R(2)) + " is out of range");
     }
     // expand the field off-axis
@@ -131,7 +136,7 @@ bool Astra1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E, Vecto
     return false;
 }
 
-bool Astra1DDynamic_fast::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
+bool _Astra1DDynamic_fast::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     double ezp = gsl_spline_eval(onAxisInterpolants_m[1], R(2) - zbegin_m, onAxisAccel_m[1]);
 
     E(2) +=  ezp;
@@ -139,29 +144,29 @@ bool Astra1DDynamic_fast::getFieldDerivative(const Vector_t &R, Vector_t &E, Vec
     return false;
 }
 
-void Astra1DDynamic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _Astra1DDynamic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
 
-void Astra1DDynamic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
+void _Astra1DDynamic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
-void Astra1DDynamic_fast::swap()
+void _Astra1DDynamic_fast::swap()
 { }
 
-void Astra1DDynamic_fast::getInfo(Inform *msg) {
+void _Astra1DDynamic_fast::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (1D dynamic); zini= " << zbegin_m << " m; zfinal= " << zend_m << " m;" << endl;
 }
 
-double Astra1DDynamic_fast::getFrequency() const {
+double _Astra1DDynamic_fast::getFrequency() const {
     return frequency_m;
 }
 
-void Astra1DDynamic_fast::setFrequency(double freq) {
+void _Astra1DDynamic_fast::setFrequency(double freq) {
     frequency_m = freq;
 }
 
-void Astra1DDynamic_fast::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
+void _Astra1DDynamic_fast::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
     F.resize(num_gridpz_m);
     if(onAxisField_m == nullptr) {
         double Ez_max = 0.0;
@@ -195,7 +200,7 @@ void Astra1DDynamic_fast::getOnaxisEz(std::vector<std::pair<double, double> > & 
     }
 }
 
-bool Astra1DDynamic_fast::readFileHeader(std::ifstream &file) {
+bool _Astra1DDynamic_fast::readFileHeader(std::ifstream &file) {
     std::string tmpString;
     int tmpInt;
     bool passed = true;
@@ -208,7 +213,7 @@ bool Astra1DDynamic_fast::readFileHeader(std::ifstream &file) {
         tmpString = Util::toUpper(tmpString);
         if (tmpString != "TRUE" &&
             tmpString != "FALSE")
-            throw GeneralClassicException("Astra1DDynamic_fast::readFileHeader",
+            throw GeneralClassicException("_Astra1DDynamic_fast::readFileHeader",
                                           "The third string on the first line of 1D field "
                                           "maps has to be either TRUE or FALSE");
 
@@ -220,7 +225,7 @@ bool Astra1DDynamic_fast::readFileHeader(std::ifstream &file) {
     return passed;
 }
 
-int Astra1DDynamic_fast::stripFileHeader(std::ifstream &file) {
+int _Astra1DDynamic_fast::stripFileHeader(std::ifstream &file) {
     std::string tmpString;
     double tmpDouble;
     int accuracy;

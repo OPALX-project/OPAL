@@ -3,9 +3,11 @@
 
 #include "Fields/Astra1D_fast.h"
 
-class Astra1DElectroStatic_fast: public Astra1D_fast {
+class _Astra1DElectroStatic_fast: public _Astra1D_fast {
 
 public:
+    virtual ~_Astra1DElectroStatic_fast();
+
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
     virtual void getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const;
@@ -16,15 +18,18 @@ public:
     virtual void setFrequency(double freq);
 
 private:
-    Astra1DElectroStatic_fast(std::string aFilename);
-    ~Astra1DElectroStatic_fast();
+    _Astra1DElectroStatic_fast(const std::string& filename);
+
+    static Astra1DElectroStatic_fast create(const std::string& filename);
 
     virtual void readMap();
 
     bool readFileHeader(std::ifstream &file);
     int stripFileHeader(std::ifstream &file);
 
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
+
+using Astra1DElectroStatic_fast = std::shared_ptr<_Astra1DElectroStatic_fast>;
 
 #endif

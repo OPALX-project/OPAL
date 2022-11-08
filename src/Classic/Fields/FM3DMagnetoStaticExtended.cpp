@@ -11,8 +11,8 @@
 
 extern Inform *gmsg;
 
-FM3DMagnetoStaticExtended::FM3DMagnetoStaticExtended(std::string aFilename):
-    Fieldmap(aFilename),
+_FM3DMagnetoStaticExtended::_FM3DMagnetoStaticExtended(const std::string& filename):
+    _Fieldmap(filename),
     FieldstrengthBx_m(nullptr),
     FieldstrengthBy_m(nullptr),
     FieldstrengthBz_m(nullptr) {
@@ -34,7 +34,7 @@ FM3DMagnetoStaticExtended::FM3DMagnetoStaticExtended(std::string aFilename):
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
                 tmpString != "FALSE")
-                throw GeneralClassicException("FM3DMagnetoStaticExtended::FM3DMagnetoStaticExtended",
+                throw GeneralClassicException("_FM3DMagnetoStaticExtended::_FM3DMagnetoStaticExtended",
                                               "The second string on the first line of 3D field "
                                               "maps has to be either TRUE or FALSE");
 
@@ -60,7 +60,7 @@ FM3DMagnetoStaticExtended::FM3DMagnetoStaticExtended(std::string aFilename):
         if(!parsing_passed) {
             disableFieldmapWarning();
             zend_m = zbegin_m - 1e-3;
-            throw GeneralClassicException("FM3DMagnetoStaticExtended::FM3DMagnetoStaticExtended(std::string)",
+            throw GeneralClassicException("_FM3DMagnetoStaticExtended::_FM3DMagnetoStaticExtended(std::string)",
                                           "Format of fieldmap '" + Filename_m + "' didn't pass basic test");
         } else {
             // conversion from cm to m
@@ -82,16 +82,21 @@ FM3DMagnetoStaticExtended::FM3DMagnetoStaticExtended(std::string aFilename):
             num_gridpz_m++;
         }
     } else {
-        throw GeneralClassicException("FM3DMagnetoStaticExtended::FM3DMagnetoStaticExtended(std::string)",
+        throw GeneralClassicException("_FM3DMagnetoStaticExtended::_FM3DMagnetoStaticExtended(std::string)",
                                       "Couldn't read fieldmap '" + Filename_m + "'");
     }
 }
 
-FM3DMagnetoStaticExtended::~FM3DMagnetoStaticExtended() {
+_FM3DMagnetoStaticExtended::~_FM3DMagnetoStaticExtended() {
     freeMap();
 }
 
-void FM3DMagnetoStaticExtended::readMap() {
+FM3DMagnetoStaticExtended _FM3DMagnetoStaticExtended::create(const std::string& filename)
+{
+    return FM3DMagnetoStaticExtended(new _FM3DMagnetoStaticExtended(filename));
+}
+
+void _FM3DMagnetoStaticExtended::readMap() {
     if(FieldstrengthBz_m == nullptr) {
         // declare variables and allocate memory
         std::ifstream in;
@@ -155,7 +160,7 @@ void FM3DMagnetoStaticExtended::readMap() {
     }
 }
 
-void FM3DMagnetoStaticExtended::integrateBx(unsigned j) {
+void _FM3DMagnetoStaticExtended::integrateBx(unsigned j) {
     if (j == 1) {
         {
             unsigned int i = 0;
@@ -222,7 +227,7 @@ void FM3DMagnetoStaticExtended::integrateBx(unsigned j) {
     }
 }
 
-void FM3DMagnetoStaticExtended::integrateBz(unsigned j) {
+void _FM3DMagnetoStaticExtended::integrateBz(unsigned j) {
     if (j == 1) {
         // treat cells at i = 0:num_gridpx_m - 1, j = 1, k = 1:num_gridpz_m - 2;
         for(unsigned int i = 0; i < num_gridpx_m; i ++) {
@@ -280,7 +285,7 @@ void FM3DMagnetoStaticExtended::integrateBz(unsigned j) {
     }
 }
 
-void FM3DMagnetoStaticExtended::integrateBy(unsigned j) {
+void _FM3DMagnetoStaticExtended::integrateBy(unsigned j) {
     if (j == 1) {
         for (unsigned int i = 1; i < num_gridpx_m - 1; i ++) {
             { // treat cells at i = 1:num_gridpx_m - 2, j = 1, k = 0
@@ -497,7 +502,7 @@ void FM3DMagnetoStaticExtended::integrateBy(unsigned j) {
     }
 }
 
-void FM3DMagnetoStaticExtended::smoothData(double * data, unsigned j)
+void _FM3DMagnetoStaticExtended::smoothData(double * data, unsigned j)
 {
     const double offWeight = 0.1, sumWeightInv = 1.0 / (1.0 + 4 * (1 + offWeight) * offWeight);
     double *tmp = new double[num_gridpx_m * num_gridpy_m * num_gridpz_m];
@@ -602,7 +607,7 @@ void FM3DMagnetoStaticExtended::smoothData(double * data, unsigned j)
     delete[] tmp;
 }
 
-void FM3DMagnetoStaticExtended::saveField(const std::string &fname, unsigned int j) const
+void _FM3DMagnetoStaticExtended::saveField(const std::string &fname, unsigned int j) const
 {
     std::ofstream out(fname);
     out.precision(6);
@@ -624,7 +629,7 @@ void FM3DMagnetoStaticExtended::saveField(const std::string &fname, unsigned int
     out.close();
 }
 
-void FM3DMagnetoStaticExtended::freeMap() {
+void _FM3DMagnetoStaticExtended::freeMap() {
     if(FieldstrengthBz_m != nullptr) {
         delete[] FieldstrengthBx_m;
         delete[] FieldstrengthBy_m;
@@ -633,12 +638,10 @@ void FM3DMagnetoStaticExtended::freeMap() {
         FieldstrengthBx_m = nullptr;
         FieldstrengthBy_m = nullptr;
         FieldstrengthBz_m = nullptr;
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }
 }
 
-Vector_t FM3DMagnetoStaticExtended::interpolateTrilinearly(const Vector_t &X) const {
+Vector_t _FM3DMagnetoStaticExtended::interpolateTrilinearly(const Vector_t &X) const {
     IndexTriplet idx = getIndex(X);
     Vector_t B(0.0);
 
@@ -672,7 +675,7 @@ Vector_t FM3DMagnetoStaticExtended::interpolateTrilinearly(const Vector_t &X) co
     return B;
 }
 
-double FM3DMagnetoStaticExtended::getWeightedData(double *data, const IndexTriplet &idx, unsigned short corner) const {
+double _FM3DMagnetoStaticExtended::getWeightedData(double *data, const IndexTriplet &idx, unsigned short corner) const {
     unsigned short switchX = ((corner & HX) >> 2), switchY = ((corner & HY) >> 1), switchZ = (corner & HZ);
     double factorX = 0.5 + (1 - 2 * switchX) * (0.5 - idx.weight(0));
     double factorY = 0.5 + (1 - 2 * switchY) * (0.5 - idx.weight(1));
@@ -683,7 +686,7 @@ double FM3DMagnetoStaticExtended::getWeightedData(double *data, const IndexTripl
     return factorX * factorY * factorZ * data[getIndex(i, j, k)];
 }
 
-bool FM3DMagnetoStaticExtended::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
+bool _FM3DMagnetoStaticExtended::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
     if (isInside(R)) {
         Vector_t suppB = interpolateTrilinearly(R);
         suppB(0) *= copysign(1, R(1));
@@ -695,16 +698,16 @@ bool FM3DMagnetoStaticExtended::getFieldstrength(const Vector_t &R, Vector_t &/*
     return false;
 }
 
-bool FM3DMagnetoStaticExtended::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
+bool _FM3DMagnetoStaticExtended::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void FM3DMagnetoStaticExtended::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _FM3DMagnetoStaticExtended::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
 
-void FM3DMagnetoStaticExtended::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {
+void _FM3DMagnetoStaticExtended::getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const {
     xIni = xbegin_m;
     xFinal = xend_m;
     yIni = -yend_m;
@@ -713,16 +716,16 @@ void FM3DMagnetoStaticExtended::getFieldDimensions(double &xIni, double &xFinal,
     zFinal = zend_m;
 }
 
-void FM3DMagnetoStaticExtended::swap() {
+void _FM3DMagnetoStaticExtended::swap() {
 }
 
-void FM3DMagnetoStaticExtended::getInfo(Inform *msg) {
+void _FM3DMagnetoStaticExtended::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (3D magnetostatic, extended); zini= " << zbegin_m << " m; zfinal= " << zend_m << " m;" << endl;
 }
 
-double FM3DMagnetoStaticExtended::getFrequency() const {
+double _FM3DMagnetoStaticExtended::getFrequency() const {
     return 0.0;
 }
 
-void FM3DMagnetoStaticExtended::setFrequency(double /*freq*/)
+void _FM3DMagnetoStaticExtended::setFrequency(double /*freq*/)
 { ;}

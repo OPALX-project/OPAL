@@ -5,9 +5,11 @@
 #include "gsl/gsl_spline.h"
 #include "Fields/Fieldmap.h"
 
-class FM2DDynamic: public Fieldmap {
+class _FM2DDynamic: public _Fieldmap {
 
 public:
+    virtual ~_FM2DDynamic();
+
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
     virtual void getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const;
@@ -20,8 +22,9 @@ public:
 
     virtual bool isInside(const Vector_t &r) const;
 private:
-    FM2DDynamic(std::string aFilename);
-    ~FM2DDynamic();
+    _FM2DDynamic(const std::string& filename);
+
+    static FM2DDynamic create(const std::string& filename);
 
     virtual void readMap();
     virtual void freeMap();
@@ -42,12 +45,14 @@ private:
     int num_gridpz_m;              /**< Read in number of points after 0(not counted here) in grid, z-direction*/
 
     bool swap_m;
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
 
-inline bool FM2DDynamic::isInside(const Vector_t &r) const
+inline bool _FM2DDynamic::isInside(const Vector_t &r) const
 {
     return r(2) >= zbegin_m && r(2) < zend_m && std::sqrt(r(0)*r(0) + r(1)*r(1)) < rend_m;
 }
+
+using FM2DDynamic = std::shared_ptr<_FM2DDynamic>;
 
 #endif

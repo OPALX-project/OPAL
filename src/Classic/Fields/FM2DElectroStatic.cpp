@@ -8,8 +8,8 @@
 #include <ios>
 #include <cmath>
 
-FM2DElectroStatic::FM2DElectroStatic(std::string aFilename)
-    : Fieldmap(aFilename),
+_FM2DElectroStatic::_FM2DElectroStatic(const std::string& filename)
+    : _Fieldmap(filename),
       FieldstrengthEz_m(nullptr),
       FieldstrengthEr_m(nullptr) {
     std::ifstream file;
@@ -33,7 +33,7 @@ FM2DElectroStatic::FM2DElectroStatic(std::string aFilename)
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
                 tmpString != "FALSE")
-                throw GeneralClassicException("FM2DElectroStatic::FM2DElectroStatic",
+                throw GeneralClassicException("_FM2DElectroStatic::_FM2DElectroStatic",
                                               "The third string on the first line of 2D field "
                                               "maps has to be either TRUE or FALSE");
 
@@ -70,7 +70,7 @@ FM2DElectroStatic::FM2DElectroStatic(std::string aFilename)
         if (!parsing_passed) {
             disableFieldmapWarning();
             zend_m = zbegin_m - 1e-3;
-            throw GeneralClassicException("FM2DElectroStatic::FM2DElectroStatic",
+            throw GeneralClassicException("_FM2DElectroStatic::_FM2DElectroStatic",
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         } else {
             // conversion from cm to m
@@ -93,11 +93,16 @@ FM2DElectroStatic::FM2DElectroStatic(std::string aFilename)
     }
 }
 
-FM2DElectroStatic::~FM2DElectroStatic() {
+_FM2DElectroStatic::~_FM2DElectroStatic() {
     freeMap();
 }
 
-void FM2DElectroStatic::readMap() {
+FM2DElectroStatic _FM2DElectroStatic::create(const std::string& filename)
+{
+    return FM2DElectroStatic(new _FM2DElectroStatic(filename));
+}
+
+void _FM2DElectroStatic::readMap() {
     if (FieldstrengthEz_m == nullptr) {
         // declare variables and allocate memory
     	std::ifstream in;
@@ -153,19 +158,16 @@ void FM2DElectroStatic::readMap() {
     }
 }
 
-void FM2DElectroStatic::freeMap() {
+void _FM2DElectroStatic::freeMap() {
     if (FieldstrengthEz_m != nullptr) {
         delete[] FieldstrengthEz_m;
         FieldstrengthEz_m = nullptr;
         delete[] FieldstrengthEr_m;
         FieldstrengthEr_m = nullptr;
-
-        INFOMSG(typeset_msg("freed field map '" + Filename_m + "'", "info") << "\n"
-                << endl)
     }
 }
 
-bool FM2DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &/*B*/) const {
+bool _FM2DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &/*B*/) const {
     // do bi-linear interpolation
     const double RR = std::sqrt(R(0) * R(0) + R(1) * R(1));
 
@@ -200,28 +202,28 @@ bool FM2DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_
     return false;
 }
 
-bool FM2DElectroStatic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
+bool _FM2DElectroStatic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void FM2DElectroStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _FM2DElectroStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
-void FM2DElectroStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
+void _FM2DElectroStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
-void FM2DElectroStatic::swap() {
+void _FM2DElectroStatic::swap() {
     if (swap_m) swap_m = false;
     else swap_m = true;
 }
 
-void FM2DElectroStatic::getInfo(Inform *msg) {
+void _FM2DElectroStatic::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (2D electrostatic); zini= " << zbegin_m << " m; zfinal= " << zend_m << " m;" << endl;
 }
 
-double FM2DElectroStatic::getFrequency() const {
+double _FM2DElectroStatic::getFrequency() const {
     return 0.0;
 }
 
-void FM2DElectroStatic::setFrequency(double /*freq*/)
+void _FM2DElectroStatic::setFrequency(double /*freq*/)
 { ;}

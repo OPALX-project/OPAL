@@ -3,9 +3,11 @@
 
 #include "Fields/Fieldmap.h"
 
-class FM1DElectroStatic: public Fieldmap {
+class _FM1DElectroStatic: public _Fieldmap {
 
 public:
+    virtual ~_FM1DElectroStatic();
+
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
     virtual void getFieldDimensions(double &xIni, double &xFinal,
@@ -20,8 +22,9 @@ public:
 
     virtual bool isInside(const Vector_t &r) const;
 private:
-    FM1DElectroStatic(std::string aFilename);
-    ~FM1DElectroStatic();
+    _FM1DElectroStatic(const std::string& filename);
+
+    static FM1DElectroStatic create(const std::string& filename);
 
     virtual void readMap();
     virtual void freeMap();
@@ -47,12 +50,14 @@ private:
     int accuracy_m;                         /// Number of Fourier coefficients to use reconstructing field.
     std::vector<double> fourierCoefs_m;     /// Fourier coefficients derived from field map.
 
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
 
-inline bool FM1DElectroStatic::isInside(const Vector_t &r) const
+inline bool _FM1DElectroStatic::isInside(const Vector_t &r) const
 {
     return r(2) >= zBegin_m && r(2) < zEnd_m;
 }
+
+using FM1DElectroStatic = std::shared_ptr<_FM1DElectroStatic>;
 
 #endif

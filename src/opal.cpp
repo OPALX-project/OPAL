@@ -85,7 +85,7 @@ int run_opal(char */*args*/[], std::string inputfile, int restartStep,
     // cleanup
     //OPAL->reset();
     OpalData::deleteInstance();
-    Fieldmap::clearDictionary();
+    _Fieldmap::clearDictionary();
     delete parser;
     delete gmsg;
 

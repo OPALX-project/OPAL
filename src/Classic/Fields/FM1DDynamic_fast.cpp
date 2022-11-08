@@ -10,8 +10,8 @@
 #include <fstream>
 #include <ios>
 
-FM1DDynamic_fast::FM1DDynamic_fast(std::string aFilename):
-    Fieldmap(aFilename),
+_FM1DDynamic_fast::_FM1DDynamic_fast(const std::string& filename):
+    _Fieldmap(filename),
     accuracy_m(0)
 {
 
@@ -41,11 +41,15 @@ FM1DDynamic_fast::FM1DDynamic_fast(std::string aFilename):
     }
 }
 
-FM1DDynamic_fast::~FM1DDynamic_fast() {
+_FM1DDynamic_fast::~_FM1DDynamic_fast() {
     freeMap();
 }
 
-void FM1DDynamic_fast::readMap() {
+FM1DDynamic_fast _FM1DDynamic_fast::create(const std::string& filename) {
+    return FM1DDynamic_fast(new _FM1DDynamic_fast(filename));
+}
+
+void _FM1DDynamic_fast::readMap() {
 
     if (onAxisField_m == nullptr) {
 
@@ -78,7 +82,7 @@ void FM1DDynamic_fast::readMap() {
     }
 }
 
-void FM1DDynamic_fast::freeMap() {
+void _FM1DDynamic_fast::freeMap() {
     if (onAxisField_m != nullptr) {
         delete [] onAxisField_m;
         onAxisField_m = nullptr;
@@ -91,13 +95,10 @@ void FM1DDynamic_fast::freeMap() {
         gsl_interp_accel_free(onAxisFieldPAccel_m);
         gsl_interp_accel_free(onAxisFieldPPAccel_m);
         gsl_interp_accel_free(onAxisFieldPPPAccel_m);
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info")
-                << endl);
     }
 }
 
-bool FM1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
+bool _FM1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
                                         Vector_t &B) const {
 
     std::vector<double> fieldComponents;
@@ -107,7 +108,7 @@ bool FM1DDynamic_fast::getFieldstrength(const Vector_t &R, Vector_t &E,
     return false;
 }
 
-bool FM1DDynamic_fast::getFieldDerivative(const Vector_t &R,
+bool _FM1DDynamic_fast::getFieldDerivative(const Vector_t &R,
                                           Vector_t &E,
                                           Vector_t &/*B*/,
                                           const DiffDirection &/*dir*/) const {
@@ -118,34 +119,34 @@ bool FM1DDynamic_fast::getFieldDerivative(const Vector_t &R,
     return false;
 }
 
-void FM1DDynamic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _FM1DDynamic_fast::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zBegin_m;
     zEnd = zEnd_m;
 }
 
-void FM1DDynamic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
+void _FM1DDynamic_fast::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
                                           double &/*yIni*/, double &/*yFinal*/,
                                           double &/*zIni*/, double &/*zFinal*/) const {}
 
-void FM1DDynamic_fast::swap()
+void _FM1DDynamic_fast::swap()
 { }
 
-void FM1DDynamic_fast::getInfo(Inform *msg) {
+void _FM1DDynamic_fast::getInfo(Inform *msg) {
     (*msg) << Filename_m
            << " (1D dynamic); zini= "
            << zBegin_m << " m; zfinal= "
            << zEnd_m << " m;" << endl;
 }
 
-double FM1DDynamic_fast::getFrequency() const {
+double _FM1DDynamic_fast::getFrequency() const {
     return frequency_m;
 }
 
-void FM1DDynamic_fast::setFrequency(double freq) {
+void _FM1DDynamic_fast::setFrequency(double freq) {
     frequency_m = freq;
 }
 
-void FM1DDynamic_fast::getOnaxisEz(std::vector<std::pair<double, double>> &eZ) {
+void _FM1DDynamic_fast::getOnaxisEz(std::vector<std::pair<double, double>> &eZ) {
 
     eZ.resize(numberOfGridPoints_m);
     std::ifstream fieldFile(Filename_m.c_str());
@@ -156,7 +157,7 @@ void FM1DDynamic_fast::getOnaxisEz(std::vector<std::pair<double, double>> &eZ) {
 
 }
 
-bool FM1DDynamic_fast::checkFileData(std::ifstream &fieldFile,
+bool _FM1DDynamic_fast::checkFileData(std::ifstream &fieldFile,
                                      bool parsingPassed) {
 
     double tempDouble;
@@ -168,7 +169,7 @@ bool FM1DDynamic_fast::checkFileData(std::ifstream &fieldFile,
 
 }
 
-void FM1DDynamic_fast::computeFieldDerivatives(std::vector<double> fourierCoefs,
+void _FM1DDynamic_fast::computeFieldDerivatives(std::vector<double> fourierCoefs,
                                                double onAxisFieldP[],
                                                double onAxisFieldPP[],
                                                double onAxisFieldPPP[]) {
@@ -204,7 +205,7 @@ void FM1DDynamic_fast::computeFieldDerivatives(std::vector<double> fourierCoefs,
 
 }
 
-void FM1DDynamic_fast::computeFieldOffAxis(const Vector_t &R,
+void _FM1DDynamic_fast::computeFieldOffAxis(const Vector_t &R,
                                            Vector_t &E,
                                            Vector_t &B,
                                            std::vector<double> fieldComponents) const {
@@ -228,7 +229,7 @@ void FM1DDynamic_fast::computeFieldOffAxis(const Vector_t &R,
 
 }
 
-void FM1DDynamic_fast::computeFieldOnAxis(double z,
+void _FM1DDynamic_fast::computeFieldOnAxis(double z,
                                           std::vector<double> &fieldComponents)
     const {
 
@@ -242,7 +243,7 @@ void FM1DDynamic_fast::computeFieldOnAxis(double z,
                                               z, onAxisFieldPPPAccel_m));
 }
 
-std::vector<double> FM1DDynamic_fast::computeFourierCoefficients(double fieldData[]) {
+std::vector<double> _FM1DDynamic_fast::computeFourierCoefficients(double fieldData[]) {
     const unsigned int totalSize = 2 * numberOfGridPoints_m - 1;
     gsl_fft_real_wavetable *waveTable = gsl_fft_real_wavetable_alloc(totalSize);
     gsl_fft_real_workspace *workSpace = gsl_fft_real_workspace_alloc(totalSize);
@@ -274,7 +275,7 @@ std::vector<double> FM1DDynamic_fast::computeFourierCoefficients(double fieldDat
 
 }
 
-void FM1DDynamic_fast::computeInterpolationVectors(double onAxisFieldP[],
+void _FM1DDynamic_fast::computeInterpolationVectors(double onAxisFieldP[],
                                                    double onAxisFieldPP[],
                                                    double onAxisFieldPPP[]) {
 
@@ -307,7 +308,7 @@ void FM1DDynamic_fast::computeInterpolationVectors(double onAxisFieldP[],
     delete [] z;
 }
 
-void FM1DDynamic_fast::convertHeaderData() {
+void _FM1DDynamic_fast::convertHeaderData() {
 
     // Convert to angular frequency in Hz.
     frequency_m *= Physics::two_pi * Units::MHz2Hz;
@@ -321,7 +322,7 @@ void FM1DDynamic_fast::convertHeaderData() {
     twoPiOverLambdaSq_m = pow(frequency_m / Physics::c, 2.0);
 }
 
-void FM1DDynamic_fast::normalizeField(double maxEz,
+void _FM1DDynamic_fast::normalizeField(double maxEz,
                                       std::vector<double> &fourierCoefs) {
 
     for (unsigned int dataIndex = 0; dataIndex < numberOfGridPoints_m; ++ dataIndex)
@@ -333,7 +334,7 @@ void FM1DDynamic_fast::normalizeField(double maxEz,
 
 }
 
-double FM1DDynamic_fast::readFileData(std::ifstream &fieldFile,
+double _FM1DDynamic_fast::readFileData(std::ifstream &fieldFile,
                                       double fieldData[]) {
 
     double maxEz = 0.0;
@@ -349,7 +350,7 @@ double FM1DDynamic_fast::readFileData(std::ifstream &fieldFile,
     return maxEz;
 }
 
-double FM1DDynamic_fast::readFileData(std::ifstream &fieldFile,
+double _FM1DDynamic_fast::readFileData(std::ifstream &fieldFile,
                                       std::vector<std::pair<double, double>> &eZ) {
 
     double maxEz = 0.0;
@@ -367,7 +368,7 @@ double FM1DDynamic_fast::readFileData(std::ifstream &fieldFile,
     return maxEz;
 }
 
-bool FM1DDynamic_fast::readFileHeader(std::ifstream &fieldFile) {
+bool _FM1DDynamic_fast::readFileHeader(std::ifstream &fieldFile) {
 
     std::string tempString;
     int tempInt;
@@ -386,7 +387,7 @@ bool FM1DDynamic_fast::readFileHeader(std::ifstream &fieldFile) {
         tempString = Util::toUpper(tempString);
         if (tempString != "TRUE" &&
             tempString != "FALSE")
-            throw GeneralClassicException("FM1DDynamic_fast::readFileHeader",
+            throw GeneralClassicException("_FM1DDynamic_fast::readFileHeader",
                                           "The third string on the first line of 1D field "
                                           "maps has to be either TRUE or FALSE");
 
@@ -413,7 +414,7 @@ bool FM1DDynamic_fast::readFileHeader(std::ifstream &fieldFile) {
     return parsingPassed;
 }
 
-void FM1DDynamic_fast::scaleField(double maxEz,
+void _FM1DDynamic_fast::scaleField(double maxEz,
                                   std::vector<std::pair<double, double>> &eZ) {
     if (!normalize_m) return;
 
@@ -421,7 +422,7 @@ void FM1DDynamic_fast::scaleField(double maxEz,
         eZ.at(dataIndex).second /= maxEz;
 }
 
-void FM1DDynamic_fast::stripFileHeader(std::ifstream &fieldFile) {
+void _FM1DDynamic_fast::stripFileHeader(std::ifstream &fieldFile) {
 
     std::string tempString;
 
@@ -431,7 +432,7 @@ void FM1DDynamic_fast::stripFileHeader(std::ifstream &fieldFile) {
     getLine(fieldFile, tempString);
 }
 
-void FM1DDynamic_fast::prepareForMapCheck(std::vector<double> &fourierCoefs) {
+void _FM1DDynamic_fast::prepareForMapCheck(std::vector<double> &fourierCoefs) {
     std::vector<double> zSampling(numberOfGridPoints_m);
     for (unsigned int zStepIndex = 0; zStepIndex < numberOfGridPoints_m; ++ zStepIndex)
         zSampling[zStepIndex] = deltaZ_m * zStepIndex;

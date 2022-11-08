@@ -3,9 +3,11 @@
 
 #include "Fields/Fieldmap.h"
 
-class FM3DDynamic: public Fieldmap {
+class _FM3DDynamic: public _Fieldmap {
 
 public:
+    virtual ~_FM3DDynamic();
+
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
     virtual void getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const;
@@ -18,8 +20,9 @@ public:
 
     virtual bool isInside(const Vector_t &r) const;
 private:
-    FM3DDynamic(std::string aFilename);
-    ~FM3DDynamic();
+    _FM3DDynamic(const std::string& filename);
+
+    static FM3DDynamic create(const std::string& filename);
 
     virtual void readMap();
     virtual void freeMap();
@@ -50,14 +53,16 @@ private:
     unsigned int num_gridpz_m;              /**< Read in number of points after 0(not counted here) in grid, z-direction*/
 
     bool normalize_m;
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
 
-inline bool FM3DDynamic::isInside(const Vector_t &r) const
+inline bool _FM3DDynamic::isInside(const Vector_t &r) const
 {
     return ((r(0) >= xbegin_m && r(0) < xend_m) &&
             (r(1) >= ybegin_m && r(1) < yend_m) &&
             (r(2) >= zbegin_m && r(2) < zend_m));
 }
+
+using FM3DDynamic = std::shared_ptr<_FM3DDynamic>;
 
 #endif

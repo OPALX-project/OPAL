@@ -12,8 +12,8 @@
 #include <ios>
 
 
-FM3DDynamic::FM3DDynamic(std::string aFilename):
-    Fieldmap(aFilename),
+_FM3DDynamic::_FM3DDynamic(const std::string& filename):
+    _Fieldmap(filename),
     FieldstrengthEz_m(nullptr),
     FieldstrengthEx_m(nullptr),
     FieldstrengthEy_m(nullptr),
@@ -38,7 +38,7 @@ FM3DDynamic::FM3DDynamic(std::string aFilename):
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
                 tmpString != "FALSE")
-                throw GeneralClassicException("FM3DDynamic::FM3DDynamic",
+                throw GeneralClassicException("_FM3DDynamic::_FM3DDynamic",
                                               "The second string on the first line of 3D field "
                                               "maps has to be either TRUE or FALSE");
 
@@ -73,7 +73,7 @@ FM3DDynamic::FM3DDynamic(std::string aFilename):
         if(!parsing_passed) {
             disableFieldmapWarning();
             zend_m = zbegin_m - 1e-3;
-            throw GeneralClassicException("FM3DDynamic::FM3DDynamic",
+            throw GeneralClassicException("_FM3DDynamic::_FM3DDynamic",
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         } else {
             frequency_m *= Physics::two_pi * Units::MHz2Hz;
@@ -102,11 +102,16 @@ FM3DDynamic::FM3DDynamic(std::string aFilename):
 }
 
 
-FM3DDynamic::~FM3DDynamic() {
+_FM3DDynamic::~_FM3DDynamic() {
     freeMap();
 }
 
-void FM3DDynamic::readMap() {
+FM3DDynamic _FM3DDynamic::create(const std::string& filename)
+{
+    return FM3DDynamic(new _FM3DDynamic(filename));
+}
+
+void _FM3DDynamic::readMap() {
     if(FieldstrengthEz_m == nullptr) {
 
     	std::ifstream in(Filename_m.c_str());
@@ -217,7 +222,7 @@ void FM3DDynamic::readMap() {
     }
 }
 
-void FM3DDynamic::freeMap() {
+void _FM3DDynamic::freeMap() {
     if(FieldstrengthEz_m != nullptr) {
         delete[] FieldstrengthEz_m;
         delete[] FieldstrengthEx_m;
@@ -232,13 +237,10 @@ void FM3DDynamic::freeMap() {
         FieldstrengthBz_m = nullptr;
         FieldstrengthBx_m = nullptr;
         FieldstrengthBy_m = nullptr;
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m + "'", "info") << "\n"
-                << endl);
     }
 }
 
-bool FM3DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool _FM3DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
     const unsigned int index_x = static_cast<int>(std::floor((R(0) - xbegin_m) / hx_m));
     const double lever_x = (R(0) - xbegin_m) / hx_m - index_x;
 
@@ -318,34 +320,34 @@ bool FM3DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) 
     return false;
 }
 
-bool FM3DDynamic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
+bool _FM3DDynamic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void FM3DDynamic::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _FM3DDynamic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
-void FM3DDynamic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
+void _FM3DDynamic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
-void FM3DDynamic::swap() {}
+void _FM3DDynamic::swap() {}
 
-void FM3DDynamic::getInfo(Inform *msg) {
+void _FM3DDynamic::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (3D dynamic) "
            << " xini= " << xbegin_m << " xfinal= " << xend_m
            << " yini= " << ybegin_m << " yfinal= " << yend_m
            << " zini= " << zbegin_m << " zfinal= " << zend_m << " (m) " << endl;
 }
 
-double FM3DDynamic::getFrequency() const {
+double _FM3DDynamic::getFrequency() const {
     return frequency_m;
 }
 
-void FM3DDynamic::setFrequency(double freq) {
+void _FM3DDynamic::setFrequency(double freq) {
     frequency_m = freq;
 }
 
-void FM3DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
+void _FM3DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
     F.resize(num_gridpz_m);
 
     int index_x = static_cast<int>(ceil(-xbegin_m / hx_m));

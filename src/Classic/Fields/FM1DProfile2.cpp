@@ -7,8 +7,8 @@
 #include <ios>
 #include <cmath>
 
-FM1DProfile2::FM1DProfile2(std::string aFilename)
-    : Fieldmap(aFilename),
+_FM1DProfile2::_FM1DProfile2(const std::string& filename)
+    : _Fieldmap(filename),
       EngeCoefs_entry_m(nullptr),
       EngeCoefs_exit_m(nullptr),
       exit_slope_m(0.0),
@@ -80,14 +80,19 @@ FM1DProfile2::FM1DProfile2(std::string aFilename)
     }
 }
 
-FM1DProfile2::~FM1DProfile2() {
+_FM1DProfile2::~_FM1DProfile2() {
     if (EngeCoefs_entry_m != nullptr) {
         delete[] EngeCoefs_entry_m;
         delete[] EngeCoefs_exit_m;
     }
 }
 
-void FM1DProfile2::readMap() {
+FM1DProfile2 _FM1DProfile2::create(const std::string& filename)
+{
+    return FM1DProfile2(new _FM1DProfile2(filename));
+}
+
+void _FM1DProfile2::readMap() {
     if (EngeCoefs_entry_m == nullptr) {
         double tolerance = 1e-8;
 
@@ -192,19 +197,15 @@ void FM1DProfile2::readMap() {
     }
 }
 
-void FM1DProfile2::freeMap() {
+void _FM1DProfile2::freeMap() {
     if (EngeCoefs_entry_m != nullptr) {
 
         delete[] EngeCoefs_entry_m;
         delete[] EngeCoefs_exit_m;
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << "\n"
-                << endl);
-
     }
 }
 
-bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vector_t &info) const {
+bool _FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vector_t &info) const {
 
     info = Vector_t(0.0);
 
@@ -323,35 +324,35 @@ bool FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vecto
 
 }
 
-bool FM1DProfile2::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
+bool _FM1DProfile2::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void FM1DProfile2::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _FM1DProfile2::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_entry_m;
     zEnd = zend_exit_m;
 }
-void FM1DProfile2::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
+void _FM1DProfile2::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
-void FM1DProfile2::swap()
+void _FM1DProfile2::swap()
 {}
 
-void FM1DProfile2::getInfo(Inform *msg) {
+void _FM1DProfile2::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (1D Profile type 2); zini= " << zbegin_entry_m << " m; zfinal= " << zend_exit_m << " m;" << endl;
 }
 
-double FM1DProfile2::getFrequency() const {
+double _FM1DProfile2::getFrequency() const {
     return 0.0;
 }
 
-void FM1DProfile2::setFrequency(double /*freq*/)
+void _FM1DProfile2::setFrequency(double /*freq*/)
 {}
 
-void FM1DProfile2::setExitFaceSlope(const double &m) {
+void _FM1DProfile2::setExitFaceSlope(const double &m) {
     exit_slope_m = m;
 }
 
-void FM1DProfile2::setEdgeConstants(const double &bendAngle, const double &entranceAngle, const double &exitAngle) {
+void _FM1DProfile2::setEdgeConstants(const double &bendAngle, const double &entranceAngle, const double &exitAngle) {
 
     double deltaZ = polynomialOrigin_exit_m - polynomialOrigin_entry_m;
 

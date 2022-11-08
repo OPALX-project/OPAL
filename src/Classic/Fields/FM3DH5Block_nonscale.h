@@ -23,18 +23,20 @@
 
 #include <vector>
 
-class FM3DH5Block_nonscale: public FM3DH5BlockBase {
+class _FM3DH5Block_nonscale: public _FM3DH5BlockBase {
 
 public:
     virtual bool getFieldstrength (
         const Vector_t &R, Vector_t &E, Vector_t &B) const;
-    
-private:
-    FM3DH5Block_nonscale (
-        std::string aFilename);
 
-    virtual ~FM3DH5Block_nonscale (
+    virtual ~_FM3DH5Block_nonscale (
         );
+
+private:
+    _FM3DH5Block_nonscale (
+        const std::string& filename);
+
+    static FM3DH5Block_nonscale create(const std::string& filename);
 
     virtual void readMap (
         );
@@ -46,8 +48,10 @@ private:
     std::vector<double> FieldstrengthHx_m;    /**< 3D array with Hx */
     std::vector<double> FieldstrengthHy_m;    /**< 3D array with Hy */
 
-    friend class Fieldmap;
-    friend class FM3DH5BlockBase;
+    friend class _Fieldmap;
+    friend class _FM3DH5BlockBase;
 };
+
+using FM3DH5Block_nonscale = std::shared_ptr<_FM3DH5Block_nonscale>;
 
 #endif

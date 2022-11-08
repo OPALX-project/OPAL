@@ -3,9 +3,11 @@
 
 #include "Fields/Fieldmap.h"
 
-class Astra1DMagnetoStatic: public Fieldmap {
+class _Astra1DMagnetoStatic: public _Fieldmap {
 
 public:
+    virtual ~_Astra1DMagnetoStatic();
+
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
     virtual void getFieldDimensions(double &xIni, double &xFinal, double &yIni, double &yFinal, double &zIni, double &zFinal) const;
@@ -17,8 +19,9 @@ public:
 
     virtual bool isInside(const Vector_t &r) const;
 private:
-    Astra1DMagnetoStatic(std::string aFilename);
-    ~Astra1DMagnetoStatic();
+    _Astra1DMagnetoStatic(const std::string& filename);
+
+    static Astra1DMagnetoStatic create(const std::string& filename);
 
     virtual void readMap();
     virtual void freeMap();
@@ -32,12 +35,14 @@ private:
     int accuracy_m;
     int num_gridpz_m;
 
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
 
-inline bool Astra1DMagnetoStatic::isInside(const Vector_t &r) const
+inline bool _Astra1DMagnetoStatic::isInside(const Vector_t &r) const
 {
     return r(2) >= zbegin_m && r(2) < zend_m;
 }
+
+using Astra1DMagnetoStatic = std::shared_ptr<_Astra1DMagnetoStatic>;
 
 #endif

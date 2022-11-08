@@ -50,7 +50,7 @@ TEST(OpalScalingFFAMagnetTest, TestUpdate) {
     EXPECT_NEAR(mag1->getR0(), 12.5*Units::m2mm, 1e-9);
     EXPECT_NEAR(mag1->getFieldIndex(), 2.0, 1e-9);
     EXPECT_NEAR(mag1->getTanDelta(), 0.7, 1e-9);
-    EXPECT_EQ(mag1->getMaxOrder(), 3);
+    EXPECT_EQ(mag1->getMaxOrder(), 3u);
     EXPECT_NEAR(mag1->getRMin(), 11.95*Units::m2mm, 1e-9);
     EXPECT_NEAR(mag1->getRMax(), 13.15*Units::m2mm, 1e-9);
     EXPECT_NEAR(mag1->getVerticalExtent(), 3.0*Units::m2mm, 1e-9);
@@ -115,10 +115,10 @@ TEST(OpalScalingFFAMagnetTest, TestFieldCheck) {
         Vector_t B, P, E;
         double t = 0.;
         // magnet start plus half centre length should have maximum field
-        Vector_t rMiddle = cartesianCoord(r0mm, phi); 
+        Vector_t rMiddle = cartesianCoord(r0mm, phi);
         bool outOfBounds = mag1->apply(rMiddle, P, t, E, B);
         EXPECT_EQ(outOfBounds, oob[i]);
-        EXPECT_NEAR(B[1], field[i], 1e-4) << "failed for phi " 
+        EXPECT_NEAR(B[1], field[i], 1e-4) << "failed for phi "
                                         << position[i] << "*PI/64 " << std::endl;
     }
 
@@ -134,4 +134,3 @@ TEST(OpalScalingFFAMagnetTest, TestFieldCheck) {
     EXPECT_EQ(rot(2), 0.);
 
 }
-

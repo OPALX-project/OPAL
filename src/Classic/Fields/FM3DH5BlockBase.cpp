@@ -21,51 +21,51 @@
 #include "Physics/Physics.h"
 #include "Utilities/GeneralClassicException.h"
 
-void FM3DH5BlockBase::openFileMPIOCollective (
-    const std::string aFilename
+void _FM3DH5BlockBase::openFileMPIOCollective (
+    const std::string& filename
     ) {
     h5_prop_t props = H5CreateFileProp ();
     MPI_Comm comm = Ippl::getComm();
     if (H5SetPropFileMPIOCollective (props, &comm) == H5_ERR) {
         throw GeneralClassicException (
-            "FM3DH5BlockBase::openFileMPIOCollective () ",
+            "_FM3DH5BlockBase::openFileMPIOCollective () ",
             "Cannot set MPIO collective!");
     }
-    file_m = H5OpenFile (aFilename.c_str(), H5_O_RDONLY, props);
+    file_m = H5OpenFile (filename.c_str(), H5_O_RDONLY, props);
     if (file_m == (h5_file_t)H5_ERR) {
         throw GeneralClassicException (
-            "FM3DH5BlockBase::openFileMPIOCollective () ",
-            "Cannot open file '" + aFilename + "'!");
+            "_FM3DH5BlockBase::openFileMPIOCollective () ",
+            "Cannot open file '" + filename + "'!");
     }
     H5CloseProp (props);
 }
 
-long long FM3DH5BlockBase::getNumSteps (void) {
+long long _FM3DH5BlockBase::getNumSteps (void) {
     long long num_steps = H5GetNumSteps(file_m);
     if (num_steps <= 0) {
         if (num_steps == 0) {
             throw GeneralClassicException (
-                "FM3DH5BlockBase::getNumSteps () ",
+                "_FM3DH5BlockBase::getNumSteps () ",
                 "Number of time-steps in file '" + Filename_m + "' is zero!");
         } else {
             throw GeneralClassicException (
-                "FM3DH5BlockBase::getNumSteps () ",
+                "_FM3DH5BlockBase::getNumSteps () ",
                 "Query number of time-steps in file '" + Filename_m + "' failed!");
         }
     }
     return num_steps;
 }
 
-void FM3DH5BlockBase::setStep (long long step) {
+void _FM3DH5BlockBase::setStep (long long step) {
     if (H5SetStep(file_m, step) == H5_ERR) {
         throw GeneralClassicException (
-            "FM3DH5BlockBase::setStep () ",
+            "_FM3DH5BlockBase::setStep () ",
             "Cannot set time-step to " + std::to_string (step) +
             " in file '" + Filename_m + "'!");
     }
 }
-    
-void FM3DH5BlockBase::getFieldInfo (const char* name) {
+
+void _FM3DH5BlockBase::getFieldInfo (const char* name) {
     long long last_step = getNumSteps () - 1;
     setStep (last_step);
     h5_size_t grid_rank;
@@ -77,7 +77,7 @@ void FM3DH5BlockBase::getFieldInfo (const char* name) {
                 &grid_rank, grid_dims, &field_dims, &ftype
                 ) == H5_ERR) {
         throw GeneralClassicException (
-            "FM3DH5BlockBase::GetFieldInfo () ",
+            "_FM3DH5BlockBase::GetFieldInfo () ",
             "Query of field info for " + std::string (name) +
             " in time-step " + std::to_string (last_step) +
             " in file '" + Filename_m + "' failed!");
@@ -90,16 +90,16 @@ void FM3DH5BlockBase::getFieldInfo (const char* name) {
             file_m, "Efield", &hx_m, &hy_m, &hz_m
             ) == H5_ERR) {
         throw GeneralClassicException (
-            "FM3DH5BlockBase::GetFieldInfo () ",
+            "_FM3DH5BlockBase::GetFieldInfo () ",
             "Query of field spacing"
             " in time-step " + std::to_string (last_step) +
             " in file '" + Filename_m + "' failed!");
     }
-    
+
     if (H5Block3dGetFieldOrigin(
             file_m, "Efield", &xbegin_m, &ybegin_m, &zbegin_m) == H5_ERR) {
         throw GeneralClassicException (
-            "FM3DH5BlockBase::GetFieldInfo () ",
+            "_FM3DH5BlockBase::GetFieldInfo () ",
             "Query of field origin"
             " in time-step " + std::to_string (last_step) +
             " in file '" + Filename_m + "' failed!");
@@ -109,19 +109,19 @@ void FM3DH5BlockBase::getFieldInfo (const char* name) {
     zend_m = zbegin_m + (num_gridpz_m - 1) * hz_m;
 }
 
-void FM3DH5BlockBase::getResonanceFrequency (void) {
+void _FM3DH5BlockBase::getResonanceFrequency (void) {
     if (H5ReadFileAttribFloat64 (
             file_m, "Resonance Frequency(Hz)", &frequency_m
             ) == H5_ERR) {
         throw GeneralClassicException (
-            "FM3DH5BlockBase::GetResonanceFrequency () ",
+            "_FM3DH5BlockBase::GetResonanceFrequency () ",
             "Cannot read file attribute 'Resonance Frequency(Hz)'"
             " in file '" + Filename_m + "'!");
     }
     frequency_m *= Physics::two_pi;
 }
 
-void FM3DH5BlockBase::readField (
+void _FM3DH5BlockBase::readField (
     const char* name,
     double* x,
     double* y,
@@ -132,7 +132,7 @@ void FM3DH5BlockBase::readField (
                          0, num_gridpy_m - 1,
                          0, num_gridpz_m - 1) == H5_ERR) {
         throw GeneralClassicException (
-            "FM3DH5BlockBase::ReadField () ",
+            "_FM3DH5BlockBase::ReadField () ",
             "Cannot set view "
             "0, " + std::to_string (num_gridpx_m) +
             "0, " + std::to_string (num_gridpy_m) +
@@ -144,21 +144,21 @@ void FM3DH5BlockBase::readField (
             name,
             x, y, z) == H5_ERR) {
         throw GeneralClassicException (
-            "FM3DH5BlockBase::ReadField () ",
+            "_FM3DH5BlockBase::ReadField () ",
             "Cannot read field " + std::string (name) +
             " in file '" + Filename_m + "'!");
     }
 }
 
-void FM3DH5BlockBase::closeFile (void) {
+void _FM3DH5BlockBase::closeFile (void) {
     if (H5CloseFile (file_m) == H5_ERR) {
         throw GeneralClassicException (
-            "FM3DH5BlockBase::closeFile () ",
+            "_FM3DH5BlockBase::closeFile () ",
             "Error closing file '" + Filename_m + "'!");
     }
 }
 
-double FM3DH5BlockBase::getWeightedData (
+double _FM3DH5BlockBase::getWeightedData (
     const std::vector<double>& data,
     const IndexTriplet& idx,
     unsigned short corner
@@ -175,7 +175,7 @@ double FM3DH5BlockBase::getWeightedData (
     return factorX * factorY * factorZ * data[getIndex(i, j, k)];
 }
 
-Vector_t FM3DH5BlockBase::interpolateTrilinearly (
+Vector_t _FM3DH5BlockBase::interpolateTrilinearly (
     const std::vector<double>& field_strength_x,
     const std::vector<double>& field_strength_y,
     const std::vector<double>& field_strength_z,
@@ -214,7 +214,7 @@ Vector_t FM3DH5BlockBase::interpolateTrilinearly (
     return result;
 }
 
-void FM3DH5BlockBase::getInfo (Inform* msg) {
+void _FM3DH5BlockBase::getInfo (Inform* msg) {
     (*msg) << Filename_m << " (3D dynamic) "
            << " xini= " << xbegin_m << " xfinal= " << xend_m
            << " yini= " << ybegin_m << " yfinal= " << yend_m
@@ -222,15 +222,15 @@ void FM3DH5BlockBase::getInfo (Inform* msg) {
     (*msg) << " hx= " << hx_m <<" hy= " << hy_m <<" hz= " << hz_m << " [mm] " <<endl;
 }
 
-double FM3DH5BlockBase::getFrequency () const {
+double _FM3DH5BlockBase::getFrequency () const {
     return frequency_m;
 }
 
-void FM3DH5BlockBase::setFrequency (double freq) {
+void _FM3DH5BlockBase::setFrequency (double freq) {
     frequency_m = freq;
 }
 
-void FM3DH5BlockBase::getOnaxisEz (
+void _FM3DH5BlockBase::getOnaxisEz (
     std::vector<std::pair<double, double>>& F
     ) {
     F.resize(num_gridpz_m);

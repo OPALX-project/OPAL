@@ -477,7 +477,7 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
     }
 
     //The RF field is supposed to be sampled on a cartesian grid
-    std::vector<Fieldmap *>::const_iterator fi  = RFfields_m.begin();
+    std::vector<Fieldmap>::const_iterator fi  = RFfields_m.begin();
     std::vector<double>::const_iterator rffi    = rffrequ_m.begin();
     std::vector<double>::const_iterator rfphii  = rfphi_m.begin();
     std::vector<double>::const_iterator escali  = escale_m.begin();
@@ -1404,7 +1404,7 @@ void Cyclotron::getFieldFromFile_BandRF(const double& scaleFactor) {
     // read 3D E&B field data file
     // loop over all field maps and superpose fields
     for (auto& fm: RFfilename_m) {
-        Fieldmap *f = Fieldmap::getFieldmap(fm, false);
+        Fieldmap f = _Fieldmap::getFieldmap(fm, false);
         *gmsg << "* Reading '" << fm << "'" << endl;
         f->readMap();
         RFfields_m.push_back(f);
@@ -1431,7 +1431,7 @@ void Cyclotron::getFieldFromFile_Synchrocyclotron(const double& scaleFactor) {
     *gmsg << "* ------------------------------------------------------------" << endl;
 
     for (; fm != RFfilename_m.end(); ++fm, ++rffcfni, ++rfvcfni, ++fcount) {
-        Fieldmap *f = Fieldmap::getFieldmap(*fm, false);
+        Fieldmap f = _Fieldmap::getFieldmap(*fm, false);
         f->readMap();
         // if (IPPL::Comm->getOutputLevel() != 0) f->getInfo(gmsg);
         RFfields_m.push_back(f);

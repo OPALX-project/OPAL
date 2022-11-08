@@ -13,8 +13,8 @@
 #include <ios>
 
 
-Astra1DDynamic::Astra1DDynamic(std::string aFilename):
-    Fieldmap(aFilename),
+_Astra1DDynamic::_Astra1DDynamic(const std::string& filename):
+    _Fieldmap(filename),
     FourCoefs_m(nullptr) {
 
     std::ifstream file;
@@ -41,7 +41,7 @@ Astra1DDynamic::Astra1DDynamic(std::string aFilename):
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
                 tmpString != "FALSE")
-                throw GeneralClassicException("Astra1DDynamic::Astra1DDynamic",
+                throw GeneralClassicException("_Astra1DDynamic::_Astra1DDynamic",
                                               "The third string on the first line of 1D field "
                                               "maps has to be either TRUE or FALSE");
 
@@ -69,7 +69,7 @@ Astra1DDynamic::Astra1DDynamic(std::string aFilename):
         if (!parsing_passed && !file.eof()) {
             disableFieldmapWarning();
             zend_m = zbegin_m - 1e-3;
-            throw GeneralClassicException("Astra1DDynamic::Astra1DDynamic",
+            throw GeneralClassicException("_Astra1DDynamic::_Astra1DDynamic",
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         } else {
             // conversion from MHz to Hz and from frequency to angular frequency
@@ -85,11 +85,16 @@ Astra1DDynamic::Astra1DDynamic(std::string aFilename):
     }
 }
 
-Astra1DDynamic::~Astra1DDynamic() {
+_Astra1DDynamic::~_Astra1DDynamic() {
     freeMap();
 }
 
-void Astra1DDynamic::readMap() {
+Astra1DDynamic _Astra1DDynamic::create(const std::string& filename)
+{
+    return Astra1DDynamic(new _Astra1DDynamic(filename));
+}
+
+void _Astra1DDynamic::readMap() {
     if (FourCoefs_m == nullptr) {
         // declare variables and allocate memory
     	std::ifstream in;
@@ -173,16 +178,14 @@ void Astra1DDynamic::readMap() {
     }
 }
 
-void Astra1DDynamic::freeMap() {
+void _Astra1DDynamic::freeMap() {
     if (FourCoefs_m != nullptr) {
         delete[] FourCoefs_m;
         FourCoefs_m = nullptr;
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }
 }
 
-bool Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool _Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
@@ -223,7 +226,7 @@ bool Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &
     return false;
 }
 
-bool Astra1DDynamic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
+bool _Astra1DDynamic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     const double kz = Physics::two_pi * (R(2) - zbegin_m) / length_m + Physics::pi;
     double ezp = 0.0;
 
@@ -236,29 +239,29 @@ bool Astra1DDynamic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t
     return false;
 }
 
-void Astra1DDynamic::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _Astra1DDynamic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
 
-void Astra1DDynamic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
+void _Astra1DDynamic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
-void Astra1DDynamic::swap()
+void _Astra1DDynamic::swap()
 { }
 
-void Astra1DDynamic::getInfo(Inform *msg) {
+void _Astra1DDynamic::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (1D dynamic); zini= " << zbegin_m << " m; zfinal= " << zend_m << " m;" << endl;
 }
 
-double Astra1DDynamic::getFrequency() const {
+double _Astra1DDynamic::getFrequency() const {
     return frequency_m;
 }
 
-void Astra1DDynamic::setFrequency(double freq) {
+void _Astra1DDynamic::setFrequency(double freq) {
     frequency_m = freq;
 }
 
-void Astra1DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
+void _Astra1DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
     double Ez_max = 0.0;
     double tmpDouble;
     int tmpInt;

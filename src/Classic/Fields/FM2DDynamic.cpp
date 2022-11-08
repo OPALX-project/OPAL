@@ -10,8 +10,8 @@
 #include <cmath>
 
 
-FM2DDynamic::FM2DDynamic(std::string aFilename)
-    : Fieldmap(aFilename),
+_FM2DDynamic::_FM2DDynamic(const std::string& filename)
+    : _Fieldmap(filename),
       FieldstrengthEz_m(nullptr),
       FieldstrengthEr_m(nullptr),
       FieldstrengthBt_m(nullptr) {
@@ -33,7 +33,7 @@ FM2DDynamic::FM2DDynamic(std::string aFilename)
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
                 tmpString != "FALSE")
-                throw GeneralClassicException("FM2DDynamic::FM2DDynamic",
+                throw GeneralClassicException("_FM2DDynamic::_FM2DDynamic",
                                               "The third string on the first line of 2D field "
                                               "maps has to be either TRUE or FALSE");
 
@@ -76,7 +76,7 @@ FM2DDynamic::FM2DDynamic(std::string aFilename)
         if(!parsing_passed) {
             disableFieldmapWarning();
             zend_m = zbegin_m - 1e-3;
-            throw GeneralClassicException("FM2DDynamic::FM2DDynamic",
+            throw GeneralClassicException("_FM2DDynamic::_FM2DDynamic",
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         } else {
             // convert MHz to Hz and frequency to angular frequency
@@ -103,11 +103,16 @@ FM2DDynamic::FM2DDynamic(std::string aFilename)
 }
 
 
-FM2DDynamic::~FM2DDynamic() {
+_FM2DDynamic::~_FM2DDynamic() {
     freeMap();
 }
 
-void FM2DDynamic::readMap() {
+FM2DDynamic _FM2DDynamic::create(const std::string& filename)
+{
+    return FM2DDynamic(new _FM2DDynamic(filename));
+}
+
+void _FM2DDynamic::readMap() {
     if(FieldstrengthEz_m == nullptr) {
         // declare variables and allocate memory
         std::ifstream in;
@@ -172,7 +177,7 @@ void FM2DDynamic::readMap() {
     }
 }
 
-void FM2DDynamic::freeMap() {
+void _FM2DDynamic::freeMap() {
     if(FieldstrengthEz_m != nullptr) {
         delete[] FieldstrengthEz_m;
         FieldstrengthEz_m = nullptr;
@@ -180,13 +185,10 @@ void FM2DDynamic::freeMap() {
         FieldstrengthEr_m = nullptr;
         delete[] FieldstrengthBt_m;
         FieldstrengthBt_m = nullptr;
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m + "'", "info") << "\n"
-                << endl);
     }
 }
 
-bool FM2DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
+bool _FM2DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const {
     // do bi-linear interpolation
     const double RR = std::sqrt(R(0) * R(0) + R(1) * R(1));
 
@@ -230,34 +232,34 @@ bool FM2DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) 
     return false;
 }
 
-bool FM2DDynamic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
+bool _FM2DDynamic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void FM2DDynamic::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _FM2DDynamic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
-void FM2DDynamic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
+void _FM2DDynamic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
-void FM2DDynamic::swap() {
+void _FM2DDynamic::swap() {
     if(swap_m) swap_m = false;
     else swap_m = true;
 }
 
-void FM2DDynamic::getInfo(Inform *msg) {
+void _FM2DDynamic::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (2D dynamic); zini= " << zbegin_m << " m; zfinal= " << zend_m << " m;" << endl;
 }
 
-double FM2DDynamic::getFrequency() const {
+double _FM2DDynamic::getFrequency() const {
     return frequency_m;
 }
 
-void FM2DDynamic::setFrequency(double freq) {
+void _FM2DDynamic::setFrequency(double freq) {
     frequency_m = freq;
 }
 
-void FM2DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
+void _FM2DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
     double dz = (zend_m - zbegin_m) / (num_gridpz_m - 1);
     F.resize(num_gridpz_m);
 

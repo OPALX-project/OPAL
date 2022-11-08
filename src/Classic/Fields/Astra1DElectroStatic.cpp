@@ -12,8 +12,8 @@
 #include <fstream>
 #include <ios>
 
-Astra1DElectroStatic::Astra1DElectroStatic(std::string aFilename)
-    : Fieldmap(aFilename),
+_Astra1DElectroStatic::_Astra1DElectroStatic(const std::string& filename)
+    : _Fieldmap(filename),
       FourCoefs_m(nullptr) {
 
     std::ifstream file;
@@ -38,7 +38,7 @@ Astra1DElectroStatic::Astra1DElectroStatic(std::string aFilename)
             tmpString = Util::toUpper(tmpString);
             if (tmpString != "TRUE" &&
                 tmpString != "FALSE")
-                throw GeneralClassicException("Astra1DElectroStatic::Astra1DElectroStatic",
+                throw GeneralClassicException("_Astra1DElectroStatic::_Astra1DElectroStatic",
                                               "The third string on the first line of 1D field "
                                               "maps has to be either TRUE or FALSE");
 
@@ -64,7 +64,7 @@ Astra1DElectroStatic::Astra1DElectroStatic(std::string aFilename)
         if (!parsing_passed && !file.eof()) {
             disableFieldmapWarning();
             zend_m = zbegin_m - 1e-3;
-            throw GeneralClassicException("Astra1DElectroStatic::Astra1DElectroStatic",
+            throw GeneralClassicException("_Astra1DElectroStatic::_Astra1DElectroStatic",
                                           "An error occured when reading the fieldmap '" + Filename_m + "'");
         }
         length_m = 2.0 * num_gridpz_m * (zend_m - zbegin_m) / (num_gridpz_m - 1);
@@ -76,11 +76,16 @@ Astra1DElectroStatic::Astra1DElectroStatic(std::string aFilename)
     }
 }
 
-Astra1DElectroStatic::~Astra1DElectroStatic() {
+_Astra1DElectroStatic::~_Astra1DElectroStatic() {
     freeMap();
 }
 
-void Astra1DElectroStatic::readMap() {
+Astra1DElectroStatic _Astra1DElectroStatic::create(const std::string& filename)
+{
+    return Astra1DElectroStatic(new _Astra1DElectroStatic(filename));
+}
+
+void _Astra1DElectroStatic::readMap() {
     if (FourCoefs_m == nullptr) {
         // declare variables and allocate memory
 
@@ -167,17 +172,15 @@ void Astra1DElectroStatic::readMap() {
     }
 }
 
-void Astra1DElectroStatic::freeMap() {
+void _Astra1DElectroStatic::freeMap() {
     if (FourCoefs_m != nullptr) {
 
         delete[] FourCoefs_m;
         FourCoefs_m = nullptr;
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info") << endl);
     }
 }
 
-bool Astra1DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &/*B*/) const {
+bool _Astra1DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &/*B*/) const {
     // do fourier interpolation in z-direction
     const double RR2 = R(0) * R(0) + R(1) * R(1);
 
@@ -212,27 +215,27 @@ bool Astra1DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vect
     return false;
 }
 
-bool Astra1DElectroStatic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
+bool _Astra1DElectroStatic::getFieldDerivative(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/, const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void Astra1DElectroStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _Astra1DElectroStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zbegin_m;
     zEnd = zend_m;
 }
 
-void Astra1DElectroStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
+void _Astra1DElectroStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/, double &/*yIni*/, double &/*yFinal*/, double &/*zIni*/, double &/*zFinal*/) const {}
 
-void Astra1DElectroStatic::swap()
+void _Astra1DElectroStatic::swap()
 { }
 
-void Astra1DElectroStatic::getInfo(Inform *msg) {
+void _Astra1DElectroStatic::getInfo(Inform *msg) {
     (*msg) << Filename_m << " (1D electrostatic); zini= " << zbegin_m << " m; zfinal= " << zend_m << " m;" << endl;
 }
 
-double Astra1DElectroStatic::getFrequency() const {
+double _Astra1DElectroStatic::getFrequency() const {
     return 0.0;
 }
 
-void Astra1DElectroStatic::setFrequency(double /*freq*/)
+void _Astra1DElectroStatic::setFrequency(double /*freq*/)
 { }

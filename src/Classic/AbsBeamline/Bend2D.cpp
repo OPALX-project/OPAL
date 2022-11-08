@@ -781,7 +781,7 @@ bool Bend2D::findIdealBendParameters(double chordLength) {
 
 bool Bend2D::initializeFieldMap() {
 
-    fieldmap_m = Fieldmap::getFieldmap(fileName_m, fast_m);
+    fieldmap_m = _Fieldmap::getFieldmap(fileName_m, fast_m);
 
     if (fieldmap_m != nullptr) {
         if (fileName_m != "1DPROFILE1-DEFAULT")
@@ -947,7 +947,7 @@ void Bend2D::readFieldMap(Inform &msg) {
     msg << level2 << getName() << " using file ";
     fieldmap_m->getInfo(&msg);
 
-    Fieldmap::readMap(fileName_m);
+    _Fieldmap::readMap(fileName_m);
     fieldmap_m->get1DProfile1EntranceParam(entranceParameter1_m,
                                            entranceParameter2_m,
                                            entranceParameter3_m);

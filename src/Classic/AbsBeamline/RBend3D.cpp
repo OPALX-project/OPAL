@@ -95,7 +95,7 @@ void RBend3D::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
 
     RefPartBunch_m = bunch;
 
-    fieldmap_m = Fieldmap::getFieldmap(fileName_m, fast_m);
+    fieldmap_m = _Fieldmap::getFieldmap(fileName_m, fast_m);
     if(fieldmap_m != nullptr) {
         msg << level2 << getName() << " using file ";
         fieldmap_m->getInfo(&msg);
@@ -189,12 +189,12 @@ void RBend3D::finalise()
 {}
 
 void RBend3D::goOnline(const double &) {
-    Fieldmap::readMap(fileName_m);
+    _Fieldmap::readMap(fileName_m);
     online_m = true;
 }
 
 void RBend3D::goOffline() {
-    Fieldmap::freeMap(fileName_m);
+    _Fieldmap::freeMap(fileName_m);
     online_m = false;
 }
 

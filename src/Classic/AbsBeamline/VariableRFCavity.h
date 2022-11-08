@@ -32,8 +32,8 @@
 #include "Fields/EMField.h"
 #include "BeamlineGeometry/StraightGeometry.h"
 #include "AbsBeamline/Component.h"
+#include "Fields/Definitions.h"
 
-class Fieldmap;
 
 /** @class VariableRFCavity
  *

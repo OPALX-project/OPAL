@@ -27,11 +27,11 @@
 #define CLASSIC_Cyclotron_HH
 
 #include "AbsBeamline/Component.h"
+#include "Fields/Definitions.h"
 
 #include <string>
 #include <vector>
 
-class Fieldmap;
 class LossDataSink;
 class TrimCoil;
 
@@ -283,8 +283,8 @@ private:
     void operator=(const Cyclotron &) = delete;
 
     // RF field map handler
-    //    Fieldmap *RFfield;
-    std::vector<Fieldmap*> RFfields_m;
+    //    Fieldmap RFfield;
+    std::vector<Fieldmap> RFfields_m;
     std::vector<std::string> RFfilename_m;
     std::vector<std::string> RFFCoeff_fn_m;
     std::vector<std::string> RFVCoeff_fn_m;

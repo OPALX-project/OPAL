@@ -3,9 +3,11 @@
 
 #include "Fields/Fieldmap.h"
 
-class FM3DMagnetoStaticExtended: public Fieldmap {
+class _FM3DMagnetoStaticExtended: public _Fieldmap {
 
 public:
+    virtual ~_FM3DMagnetoStaticExtended();
+
     virtual bool getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t &B) const;
     virtual bool getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_t &B, const DiffDirection &dir) const;
     virtual void getFieldDimensions(double &zBegin, double &zEnd) const;
@@ -17,8 +19,9 @@ public:
 
     virtual bool isInside(const Vector_t &r) const;
 private:
-    FM3DMagnetoStaticExtended(std::string aFilename);
-    ~FM3DMagnetoStaticExtended();
+    _FM3DMagnetoStaticExtended(const std::string& filename);
+
+    static FM3DMagnetoStaticExtended create(const std::string& filename);
 
     virtual void readMap();
     virtual void freeMap();
@@ -74,17 +77,17 @@ private:
     unsigned int num_gridpy_m;     /**< Read in number of points after 0(not counted here) in grid, y-direction*/
     unsigned int num_gridpz_m;     /**< Read in number of points after 0(not counted here) in grid, z-direction*/
 
-    friend class Fieldmap;
+    friend class _Fieldmap;
 };
 
 inline
-bool FM3DMagnetoStaticExtended::isInside(const Vector_t &r) const
+bool _FM3DMagnetoStaticExtended::isInside(const Vector_t &r) const
 {
     return r(2) >= 0.0 && r(2) < length_m && r(0) >= xbegin_m && r(0) < xend_m && std::abs(r(1)) < yend_m;
 }
 
 inline
-unsigned long FM3DMagnetoStaticExtended::getIndex(unsigned int i, unsigned int j, unsigned int k) const
+unsigned long _FM3DMagnetoStaticExtended::getIndex(unsigned int i, unsigned int j, unsigned int k) const
 {
     unsigned long result = i + j * num_gridpx_m;
     result = k + result * num_gridpz_m;
@@ -93,7 +96,7 @@ unsigned long FM3DMagnetoStaticExtended::getIndex(unsigned int i, unsigned int j
 }
 
 inline
-FM3DMagnetoStaticExtended::IndexTriplet FM3DMagnetoStaticExtended::getIndex(const Vector_t &X) const {
+_FM3DMagnetoStaticExtended::IndexTriplet _FM3DMagnetoStaticExtended::getIndex(const Vector_t &X) const {
     IndexTriplet idx;
     idx.i = std::floor((X(0) - xbegin_m) / hx_m);
     idx.j = std::floor(std::abs(X(1)) / hy_m);
@@ -108,5 +111,7 @@ FM3DMagnetoStaticExtended::IndexTriplet FM3DMagnetoStaticExtended::getIndex(cons
 
     return idx;
 }
+
+using FM3DMagnetoStaticExtended = std::shared_ptr<_FM3DMagnetoStaticExtended>;
 
 #endif

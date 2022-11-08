@@ -10,8 +10,8 @@
 #include <fstream>
 #include <ios>
 
-FM1DElectroStatic::FM1DElectroStatic(std::string aFilename):
-    Fieldmap(aFilename) {
+_FM1DElectroStatic::_FM1DElectroStatic(const std::string& filename):
+    _Fieldmap(filename) {
 
     Type = T1DElectroStatic;
 
@@ -37,11 +37,16 @@ FM1DElectroStatic::FM1DElectroStatic(std::string aFilename):
     }
 }
 
-FM1DElectroStatic::~FM1DElectroStatic() {
+_FM1DElectroStatic::~_FM1DElectroStatic() {
     freeMap();
 }
 
-void FM1DElectroStatic::readMap() {
+FM1DElectroStatic _FM1DElectroStatic::create(const std::string& filename)
+{
+    return FM1DElectroStatic(new _FM1DElectroStatic(filename));
+}
+
+void _FM1DElectroStatic::readMap() {
 
     if (fourierCoefs_m.empty()) {
 
@@ -59,17 +64,14 @@ void FM1DElectroStatic::readMap() {
     }
 }
 
-void FM1DElectroStatic::freeMap() {
+void _FM1DElectroStatic::freeMap() {
 
     if (!fourierCoefs_m.empty()) {
         fourierCoefs_m.clear();
-
-        INFOMSG(level3 << typeset_msg("freed fieldmap '" + Filename_m  + "'", "info")
-                << endl);
     }
 }
 
-bool FM1DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E,
+bool _FM1DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E,
                                          Vector_t &B) const {
 
     std::vector<double> fieldComponents;
@@ -79,7 +81,7 @@ bool FM1DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E,
     return false;
 }
 
-bool FM1DElectroStatic::getFieldDerivative(const Vector_t &R,
+bool _FM1DElectroStatic::getFieldDerivative(const Vector_t &R,
                                            Vector_t &E,
                                            Vector_t &/*B*/,
                                            const DiffDirection &/*dir*/) const {
@@ -102,32 +104,32 @@ bool FM1DElectroStatic::getFieldDerivative(const Vector_t &R,
     return false;
 }
 
-void FM1DElectroStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
+void _FM1DElectroStatic::getFieldDimensions(double &zBegin, double &zEnd) const {
     zBegin = zBegin_m;
     zEnd = zEnd_m;
 }
-void FM1DElectroStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
+void _FM1DElectroStatic::getFieldDimensions(double &/*xIni*/, double &/*xFinal*/,
                                            double &/*yIni*/, double &/*yFinal*/,
                                            double &/*zIni*/, double &/*zFinal*/) const {}
 
-void FM1DElectroStatic::swap()
+void _FM1DElectroStatic::swap()
 { }
 
-void FM1DElectroStatic::getInfo(Inform *msg) {
+void _FM1DElectroStatic::getInfo(Inform *msg) {
     (*msg) << Filename_m
            << " (1D electrostatic); zini= "
            << zBegin_m << " m; zfinal= "
            << zEnd_m << " m;" << endl;
 }
 
-double FM1DElectroStatic::getFrequency() const {
+double _FM1DElectroStatic::getFrequency() const {
     return 0.0;
 }
 
-void FM1DElectroStatic::setFrequency(double /*freq*/)
+void _FM1DElectroStatic::setFrequency(double /*freq*/)
 { }
 
-bool FM1DElectroStatic::checkFileData(std::ifstream &fieldFile,
+bool _FM1DElectroStatic::checkFileData(std::ifstream &fieldFile,
                                       bool parsingPassed) {
 
     double tempDouble;
@@ -139,7 +141,7 @@ bool FM1DElectroStatic::checkFileData(std::ifstream &fieldFile,
 
 }
 
-void FM1DElectroStatic::computeFieldOffAxis(const Vector_t &R,
+void _FM1DElectroStatic::computeFieldOffAxis(const Vector_t &R,
                                             Vector_t &E,
                                             Vector_t &/*B*/,
                                             std::vector<double> fieldComponents) const {
@@ -154,7 +156,7 @@ void FM1DElectroStatic::computeFieldOffAxis(const Vector_t &R,
 
 }
 
-void FM1DElectroStatic::computeFieldOnAxis(double z,
+void _FM1DElectroStatic::computeFieldOnAxis(double z,
                                            std::vector<double> &fieldComponents) const {
 
     double kz = Physics::two_pi * z / length_m + Physics::pi;
@@ -187,7 +189,7 @@ void FM1DElectroStatic::computeFieldOnAxis(double z,
     }
 }
 
-void FM1DElectroStatic::computeFourierCoefficients(double maxEz,
+void _FM1DElectroStatic::computeFourierCoefficients(double maxEz,
                                                    double fieldData[]) {
     const unsigned int totalSize = 2 * numberOfGridPoints_m - 1;
     gsl_fft_real_wavetable *waveTable = gsl_fft_real_wavetable_alloc(totalSize);
@@ -209,7 +211,7 @@ void FM1DElectroStatic::computeFourierCoefficients(double maxEz,
 
 }
 
-void FM1DElectroStatic::convertHeaderData() {
+void _FM1DElectroStatic::convertHeaderData() {
 
     // Convert to m.
     rBegin_m *= Units::cm2m;
@@ -218,7 +220,7 @@ void FM1DElectroStatic::convertHeaderData() {
     zEnd_m *= Units::cm2m;
 }
 
-double FM1DElectroStatic::readFileData(std::ifstream &fieldFile,
+double _FM1DElectroStatic::readFileData(std::ifstream &fieldFile,
                                        double fieldData[]) {
 
     double maxEz = 0.0;
@@ -243,7 +245,7 @@ double FM1DElectroStatic::readFileData(std::ifstream &fieldFile,
     return maxEz;
 }
 
-bool FM1DElectroStatic::readFileHeader(std::ifstream &fieldFile) {
+bool _FM1DElectroStatic::readFileHeader(std::ifstream &fieldFile) {
 
     std::string tempString;
     int tempInt;
@@ -262,7 +264,7 @@ bool FM1DElectroStatic::readFileHeader(std::ifstream &fieldFile) {
         tempString = Util::toUpper(tempString);
         if (tempString != "TRUE" &&
             tempString != "FALSE")
-            throw GeneralClassicException("FM1DElectroStatic::readFileHeader",
+            throw GeneralClassicException("_FM1DElectroStatic::readFileHeader",
                                           "The third string on the first line of 1D field "
                                           "maps has to be either TRUE or FALSE");
 
@@ -286,7 +288,7 @@ bool FM1DElectroStatic::readFileHeader(std::ifstream &fieldFile) {
     return parsingPassed;
 }
 
-void FM1DElectroStatic::stripFileHeader(std::ifstream &fieldFile) {
+void _FM1DElectroStatic::stripFileHeader(std::ifstream &fieldFile) {
 
     std::string tempString;
 

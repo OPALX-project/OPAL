@@ -1,5 +1,5 @@
 //
-// Class FM3DH5Block
+// Class _FM3DH5Block
 //   Class for dynamic 3D field-maps stored in H5hut files.
 //
 // Copyright (c) 2020, Achim Gsell, Paul Scherrer Institut, Villigen PSI, Switzerland
@@ -18,25 +18,30 @@
 
 #include "Fields/FM3DH5Block.h"
 
-FM3DH5Block::FM3DH5Block (
-    std::string aFilename
-    ) : Fieldmap (
-        aFilename
+_FM3DH5Block::_FM3DH5Block (
+    const std::string& filename
+    ) : _Fieldmap(
+        filename
         ) {
         Type = T3DDynamicH5Block;
 
-        openFileMPIOCollective (aFilename);
+        openFileMPIOCollective (filename);
         getFieldInfo ("Efield");
         getResonanceFrequency ();
         closeFile ();
 }
 
-FM3DH5Block::~FM3DH5Block (
+_FM3DH5Block::~_FM3DH5Block (
     ) {
     freeMap ();
 }
 
-void FM3DH5Block::readMap (
+FM3DH5Block _FM3DH5Block::create(const std::string& filename)
+{
+    return FM3DH5Block(new _FM3DH5Block(filename));
+}
+
+void _FM3DH5Block::readMap (
     ) {
     if (!FieldstrengthEz_m.empty()) {
         return;
@@ -71,7 +76,7 @@ void FM3DH5Block::readMap (
              << endl);
 }
 
-void FM3DH5Block::freeMap (
+void _FM3DH5Block::freeMap (
     ) {
     if(FieldstrengthEz_m.empty ()) {
         return;
@@ -82,13 +87,9 @@ void FM3DH5Block::freeMap (
     FieldstrengthHx_m.clear ();
     FieldstrengthHy_m.clear ();
     FieldstrengthHz_m.clear ();
-
-    INFOMSG (level3
-             << typeset_msg ("freed fieldmap '" + Filename_m + "'", "info")
-             << endl);
 }
 
-bool FM3DH5Block::getFieldstrength (
+bool _FM3DH5Block::getFieldstrength (
     const Vector_t& R,
     Vector_t& E,
     Vector_t& B

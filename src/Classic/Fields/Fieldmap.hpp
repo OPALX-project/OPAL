@@ -9,7 +9,7 @@
 #include "Fields/Fieldmap.h"
 
 template<class T>
-bool Fieldmap::interpretLine(std::ifstream & in, T & value, const bool & file_length_known)
+bool _Fieldmap::interpretLine(std::ifstream & in, T & value, const bool & file_length_known)
 {
     bool read_all = true;
     std::string buffer;
@@ -36,7 +36,7 @@ bool Fieldmap::interpretLine(std::ifstream & in, T & value, const bool & file_le
 }
 
 template<class S, class T>
-bool Fieldmap::interpretLine(std::ifstream & in, S & value1, T & value2, const bool & file_length_known)
+bool _Fieldmap::interpretLine(std::ifstream & in, S & value1, T & value2, const bool & file_length_known)
 {
     bool read_all = true;
     std::string buffer;
@@ -67,7 +67,7 @@ bool Fieldmap::interpretLine(std::ifstream & in, S & value1, T & value2, const b
 }
 
 template<class S, class T, class U>
-bool Fieldmap::interpretLine(std::ifstream & in, S & value1, T & value2, U & value3, const bool & file_length_known)
+bool _Fieldmap::interpretLine(std::ifstream & in, S & value1, T & value2, U & value3, const bool & file_length_known)
 {
     bool read_all = true;
     std::string buffer;
@@ -101,7 +101,7 @@ bool Fieldmap::interpretLine(std::ifstream & in, S & value1, T & value2, U & val
 }
 
 template<class S, class T, class U, class V>
-bool Fieldmap::interpretLine(std::ifstream & in, S & value1, T & value2, U & value3, V & value4, const bool & file_length_known)
+bool _Fieldmap::interpretLine(std::ifstream & in, S & value1, T & value2, U & value3, V & value4, const bool & file_length_known)
 {
     bool read_all = true;
     std::string buffer;
@@ -138,7 +138,7 @@ bool Fieldmap::interpretLine(std::ifstream & in, S & value1, T & value2, U & val
 }
 
 template<class S>
-bool Fieldmap::interpretLine(std::ifstream & in, S & value1, S & value2, S & value3, S & value4, S & value5, S & value6, const bool & file_length_known)
+bool _Fieldmap::interpretLine(std::ifstream & in, S & value1, S & value2, S & value3, S & value4, S & value5, S & value6, const bool & file_length_known)
 {
     bool read_all = true;
     std::string buffer;

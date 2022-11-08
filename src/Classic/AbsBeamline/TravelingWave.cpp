@@ -237,12 +237,12 @@ bool TravelingWave::bends() const {
 }
 
 void TravelingWave::goOnline(const double&) {
-    Fieldmap::readMap(filename_m);
+    _Fieldmap::readMap(filename_m);
     online_m = true;
 }
 
 void TravelingWave::goOffline() {
-    Fieldmap::freeMap(filename_m);
+    _Fieldmap::freeMap(filename_m);
 }
 
 void TravelingWave::getDimensions(double& zBegin, double& zEnd) const {

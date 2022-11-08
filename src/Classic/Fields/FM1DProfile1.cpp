@@ -7,8 +7,8 @@
 #include <fstream>
 #include <ios>
 
-FM1DProfile1::FM1DProfile1(std::string aFilename):
-    Fieldmap(aFilename),
+_FM1DProfile1::_FM1DProfile1(const std::string& filename):
+    _Fieldmap(filename),
     entranceParameter1_m(0.0),
     entranceParameter2_m(0.0),
     entranceParameter3_m(0.0),
@@ -123,10 +123,15 @@ FM1DProfile1::FM1DProfile1(std::string aFilename):
     }
 }
 
-FM1DProfile1::~FM1DProfile1() {
+_FM1DProfile1::~_FM1DProfile1() {
 }
 
-void FM1DProfile1::readMap() {
+FM1DProfile1 _FM1DProfile1::create(const std::string& filename)
+{
+    return FM1DProfile1(new _FM1DProfile1(filename));
+}
+
+void _FM1DProfile1::readMap() {
 
     if(!engeCoeffsEntry_m.empty())
         engeCoeffsEntry_m.clear();
@@ -206,10 +211,10 @@ void FM1DProfile1::readMap() {
     }
 }
 
-void FM1DProfile1::freeMap() {
+void _FM1DProfile1::freeMap() {
 }
 
-bool FM1DProfile1::getFieldstrength(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/) const {
+bool _FM1DProfile1::getFieldstrength(const Vector_t &/*R*/, Vector_t &/*E*/, Vector_t &/*B*/) const {
 
     /*
      * For this type of field map, the elements who use it calculate the field
@@ -219,19 +224,19 @@ bool FM1DProfile1::getFieldstrength(const Vector_t &/*R*/, Vector_t &/*E*/, Vect
 
 }
 
-bool FM1DProfile1::getFieldDerivative(const Vector_t &/*R*/,
+bool _FM1DProfile1::getFieldDerivative(const Vector_t &/*R*/,
                                       Vector_t &/*E*/,
                                       Vector_t &/*B*/,
                                       const DiffDirection &/*dir*/) const {
     return false;
 }
 
-void FM1DProfile1::getFieldDimensions(double &sBegin,
+void _FM1DProfile1::getFieldDimensions(double &sBegin,
                                       double &sEnd) const {
     sBegin = sBegin_m;
     sEnd = sEnd_m;
 }
-void FM1DProfile1::getFieldDimensions(double &/*xIni*/,
+void _FM1DProfile1::getFieldDimensions(double &/*xIni*/,
                                       double &/*xFinal*/,
                                       double &/*yIni*/,
                                       double &/*yFinal*/,
@@ -240,30 +245,30 @@ void FM1DProfile1::getFieldDimensions(double &/*xIni*/,
 
 }
 
-void FM1DProfile1::swap()
+void _FM1DProfile1::swap()
 {}
 
-void FM1DProfile1::getInfo(Inform *msg) {
+void _FM1DProfile1::getInfo(Inform *msg) {
     (*msg) << Filename_m
            << " (1D Profile type 1)"
            << endl;
 }
 
-double FM1DProfile1::getFrequency() const {
+double _FM1DProfile1::getFrequency() const {
     return 0.0;
 }
 
-void FM1DProfile1::setFrequency(double /*freq*/)
+void _FM1DProfile1::setFrequency(double /*freq*/)
 {}
 
-void FM1DProfile1::get1DProfile1EngeCoeffs(std::vector<double> &engeCoeffsEntry,
+void _FM1DProfile1::get1DProfile1EngeCoeffs(std::vector<double> &engeCoeffsEntry,
         std::vector<double> &engeCoeffsExit) {
     engeCoeffsEntry = engeCoeffsEntry_m;
     engeCoeffsExit = engeCoeffsExit_m;
 
 }
 
-void FM1DProfile1::get1DProfile1EntranceParam(double &entranceParameter1,
+void _FM1DProfile1::get1DProfile1EntranceParam(double &entranceParameter1,
         double &entranceParameter2,
         double &entranceParameter3) {
     entranceParameter1 = entranceParameter1_m;
@@ -271,7 +276,7 @@ void FM1DProfile1::get1DProfile1EntranceParam(double &entranceParameter1,
     entranceParameter3 = entranceParameter3_m;
 }
 
-void FM1DProfile1::get1DProfile1ExitParam(double &exitParameter1,
+void _FM1DProfile1::get1DProfile1ExitParam(double &exitParameter1,
         double &exitParameter2,
         double &exitParameter3) {
     exitParameter1 = exitParameter1_m;
@@ -279,24 +284,24 @@ void FM1DProfile1::get1DProfile1ExitParam(double &exitParameter1,
     exitParameter3 = exitParameter3_m;
 }
 
-double FM1DProfile1::getFieldGap() {
+double _FM1DProfile1::getFieldGap() {
     return gapHeight_m;
 }
-void FM1DProfile1::setFieldGap(double gap) {
+void _FM1DProfile1::setFieldGap(double gap) {
 
     gapHeight_m = gap;
 
 }
 
-double FM1DProfile1::computeEntranceFringe(double z) const {
+double _FM1DProfile1::computeEntranceFringe(double z) const {
     return computeFringe(engeCoeffsEntry_m, z / gapHeight_m);
 }
 
-double FM1DProfile1::computeExitFringe(double z) const {
+double _FM1DProfile1::computeExitFringe(double z) const {
     return computeFringe(engeCoeffsExit_m, z / gapHeight_m);
 }
 
-double FM1DProfile1::computeFringe(const std::vector<double> &coefs, double z) const {
+double _FM1DProfile1::computeFringe(const std::vector<double> &coefs, double z) const {
 
     const size_t N = coefs.size();
     double expSum = coefs.at(0);
