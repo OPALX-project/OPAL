@@ -620,6 +620,10 @@ boost::python::class_<PyOpalObject<C> > PyOpalObject<C>::make_class(const char* 
         std::cerr << "Failed to initialise class because '" << exc.what() 
                   << "'" << std::endl;
         throw exc;
+    } catch (std::exception& exc) {
+        std::cerr << "Failed to initialise class because '" << exc.what() 
+                  << "'" << std::endl;
+        throw exc;
     }
     return pyclass;
 }

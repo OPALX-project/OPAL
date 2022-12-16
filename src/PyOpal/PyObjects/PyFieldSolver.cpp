@@ -31,7 +31,6 @@ std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<FieldSolv
     {"PRECMODE", "preconditioner_mode", "", PyOpalObjectNS::PREDEFINED_STRING},
     {"RC", "cutoff_radius", "", PyOpalObjectNS::DOUBLE},
     {"ALPHA", "alpha", "", PyOpalObjectNS::DOUBLE},
-    {"EPSILON", "epsilon", "", PyOpalObjectNS::DOUBLE},
 };
 
 void registerFieldSolver(PyOpalObjectNS::PyOpalObject<FieldSolver>& pyfs) {

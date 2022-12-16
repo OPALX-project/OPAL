@@ -36,6 +36,8 @@ BOOST_PYTHON_MODULE(line) {
         //.def("__delitem__", &PyLine::removeElement)
         .def("append", &PyLine::append);
     lineClass.def("register", &PyLine::registerObject);
+    lineClass.def("get_opal_name", &PyLine::getName);
+    lineClass.def("set_opal_name", &PyLine::setName);
     aLine.addGetOpalElement(lineClass);
 
     // line is dependent on opal_element; all line elements are stored as 

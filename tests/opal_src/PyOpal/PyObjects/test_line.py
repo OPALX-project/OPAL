@@ -38,6 +38,12 @@ class TestLine(unittest.TestCase):
         self.assertEqual(self.line.phi, 6.0)
         self.assertEqual(self.line.psi, 7.0)
 
+        # Note, if debugging, this is the name of the Opal/Lines/Line.h line
+        # that is defined in PyLine::register()
+        self.line.set_opal_name("A OPAL NAME")
+        self.assertEqual(self.line.get_opal_name(), "A OPAL NAME")
+
+
     def test_append(self):
         """Check that we can append elements"""
         self.line.append(self.magnet1)
