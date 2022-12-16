@@ -1,6 +1,7 @@
 #include "PyOpal/PyCore/ExceptionTranslation.h"
 #include "PyOpal/PyCore/PyOpalObject.h"
 #include "PyOpal/PyCore/Globals.h"
+#include "PyOpal/PyElements/PyEndFieldModel.h"
 
 #include "Classic/AbsBeamline/EndFieldModel/EndFieldModel.h"
 #include "Elements/OpalAsymmetricEnge.h"
@@ -9,7 +10,8 @@ namespace PyOpal {
 namespace PyAsymmetricEnge {
 
 const char* module_docstring = 
-    "enge module holds an Enge end field 'plugin' class for use with field models";
+"asymmetric_enge module holds an AsymmetricEnge end field 'plugin' class for\n"
+"use with field models\n";
 
 template <>
 std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalAsymmetricEnge>::attributes = {
@@ -20,17 +22,6 @@ std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalAsymm
     {"LAMBDA_END", "lambda_end", "", PyOpalObjectNS::DOUBLE},
     {"COEFFICIENTS_END", "coefficients_end", "", PyOpalObjectNS::FLOAT_LIST},
 };
-
-/** Note very similar code in PyEnge; would be better to share if it is needed much more */
-double function(PyOpalObjectNS::PyOpalObject<OpalAsymmetricEnge> pyobject, double x, int n) {
-    std::shared_ptr<OpalAsymmetricEnge> objectPtr = pyobject.getOpalShared();
-    objectPtr->update();
-    std::string name = objectPtr->getOpalName();
-    std::shared_ptr<endfieldmodel::EndFieldModel> model = endfieldmodel::EndFieldModel::getEndFieldModel(name);
-    model->setMaximumDerivative(n);
-    double value = model->function(x, n);
-    return value;
-}
 
 template <>
 std::string PyOpalObjectNS::PyOpalObject<OpalAsymmetricEnge>::classDocstring = 
@@ -44,7 +35,8 @@ BOOST_PYTHON_MODULE(asymmetric_enge) {
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalAsymmetricEnge> element;
     auto elementClass = element.make_class("AsymmetricEnge");
-    elementClass.def("function", &function);
+    elementClass.def("function", &PyOpal::PyEndFieldModel::function<OpalAsymmetricEnge>);
+    elementClass.def("update", &PyOpalObjectNS::update<OpalAsymmetricEnge>);
 }
 
 }

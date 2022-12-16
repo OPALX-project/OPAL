@@ -1,4 +1,5 @@
 #ifndef PyOpalObject_H
+#define PyOpalObject_H
 
 #include <Python.h>
 #include <structmember.h>
@@ -264,6 +265,17 @@ protected:
     static double efieldUnits_m;
     static const std::string getFieldValueDocString;
 };
+
+/** Call update on a pyelement
+ * 
+ *  Note that C must be a subtype of OpalElement or some other class that has an
+ *  C::update() method (i.e. not OpalObject).
+ */
+template <class C>
+void update(PyOpalObjectNS::PyOpalObject<C> pyelement) {
+    std::shared_ptr<C> objectPtr = pyelement.getOpalShared();
+    objectPtr->update();
+}
 
 template <class C>
 template <class ValueType>

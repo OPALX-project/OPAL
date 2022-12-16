@@ -139,7 +139,6 @@ void OpalScalingFFAMagnet::update() {
     } else {
         setupDefaultEndField();    
     }
-    magnet->getEndField()->setMaximumDerivative(maxOrder+2);
     // internally OpalScalingFFAMagnet uses radians, so we scale all lengths to
     // radians.
     magnet->getEndField()->rescale(1/r0);

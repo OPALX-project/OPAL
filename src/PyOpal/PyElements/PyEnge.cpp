@@ -1,6 +1,7 @@
 #include "PyOpal/PyCore/ExceptionTranslation.h"
 #include "PyOpal/PyCore/PyOpalObject.h"
 #include "PyOpal/PyCore/Globals.h"
+#include "PyOpal/PyElements/PyEndFieldModel.h"
 
 #include "Classic/AbsBeamline/EndFieldModel/EndFieldModel.h"
 #include "Elements/OpalEnge.h"
@@ -18,29 +19,21 @@ std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalEnge>
     {"COEFFICIENTS", "coefficients", "", PyOpalObjectNS::FLOAT_LIST},
 };
 
-double function(PyOpalObjectNS::PyOpalObject<OpalEnge> pyobject, double x, int n) {
-    std::shared_ptr<OpalEnge> objectPtr = pyobject.getOpalShared();
-    objectPtr->update();
-    std::string name = objectPtr->getOpalName();
-    std::shared_ptr<endfieldmodel::EndFieldModel> model = endfieldmodel::EndFieldModel::getEndFieldModel(name);
-    model->setMaximumDerivative(n);
-    double value = model->function(x, n);
-    return value;
-}
-
 template <>
 std::string PyOpalObjectNS::PyOpalObject<OpalEnge>::classDocstring = 
 "Enge class is a field element that models a Enge function.\n"
 "\n"
 "It is referenced and set to field elements by use of the OPAL name (note not\n"
-"any python name). The OPAL name is set using 'set_opal_name'.\n";
+"any python name). The OPAL name is set/retrieved using 'set_opal_name' and\n"
+"'get_opal_name' respectively.\n";
 
 BOOST_PYTHON_MODULE(enge) { 
     PyOpal::Globals::Initialise();
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalEnge> element;
     auto elementClass = element.make_class("Enge");
-    elementClass.def("function", &function);
+    elementClass.def("function", &PyOpal::PyEndFieldModel::function<OpalEnge>);
+    elementClass.def("update", &PyOpalObjectNS::update<OpalEnge>);
 }
 
 }

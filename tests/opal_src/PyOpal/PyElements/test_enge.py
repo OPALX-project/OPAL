@@ -28,6 +28,9 @@ class EngeTest(unittest.TestCase):
         self.assertAlmostEqual(value, 0.5, 6)
         value = self.enge.function(-1.2, 0)
         self.assertAlmostEqual(value, 0.5, 6)
+        self.enge.x0 = 2.3
+        value = self.enge.function(2.3, 0)
+        self.assertAlmostEqual(value, 0.5, 6)
 
 if __name__ == "__main__":
     unittest.main()

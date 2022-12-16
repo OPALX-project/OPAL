@@ -215,6 +215,7 @@ void ScalingFFAMagnet::setupEndField() {
     endfieldmodel::EndFieldModel* newEFM = efm->clone();
     newEFM->rescale(Units::m2mm*1.0/getR0());
     setEndField(newEFM);
+    newEFM->setMaximumDerivative(maxOrder_m+2);
 
     double defaultExtent = (newEFM->getEndLength()*4.+
                             newEFM->getCentreLength());

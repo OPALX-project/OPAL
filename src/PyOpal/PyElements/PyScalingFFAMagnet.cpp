@@ -8,7 +8,10 @@
 namespace PyOpal {
 
 /** Overload this method on the PyOpalObject - it is supposed to be called every
- *  time the magnet is updated.
+ *  time the magnet is updated (i.e. every time get_field_value is called from python).
+ * 
+ *  The point is the EndFieldModel could have changed and we redo setup just in case
+ *  (terribly inefficient)
  */
 template <>
 void PyOpalObjectNS::PyOpalObject<OpalScalingFFAMagnet>::doSetup() {
@@ -44,6 +47,15 @@ template <>
 std::string PyOpalObjectNS::PyOpalObject<OpalScalingFFAMagnet>::classDocstring = 
 "ScalingFFAMagnet class is a field element that models a Scaling FFA magnet.";
 
+std::string update_docstr =
+"Check for changes to the EndFieldModel and update the ScalingFFAMagnet appropriately.\n"
+"This is done automatically the first time the ScalingFFAMagnet is used but not for\n"
+"subsequent uses. WARNING: if user changes the end field model, user must call\n"
+"'update_end_field' manually to load the new parameters.\n"
+"\n"
+"May throw an exception if the EndFieldModel is not valid or cannot be found.\n"
+"\n"
+"Returns None.\n";
 
 BOOST_PYTHON_MODULE(scaling_ffa_magnet) {
     PyOpal::Globals::Initialise();
@@ -52,6 +64,9 @@ BOOST_PYTHON_MODULE(scaling_ffa_magnet) {
     auto elementClass = element.make_class("ScalingFFAMagnet");
     element.addGetOpalElement(elementClass);
     element.addGetFieldValue(elementClass, 1e+3, 1.0, 1.0, 1e-1);
+
+    elementClass.def("update_end_field", &PyOpalObjectNS::PyOpalObject<OpalScalingFFAMagnet>::doSetup);//, refresh_docstr);
+
 }
 
 }
