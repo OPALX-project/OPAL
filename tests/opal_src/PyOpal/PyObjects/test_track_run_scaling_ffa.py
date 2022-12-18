@@ -23,6 +23,7 @@ import pyopal.objects.field_solver
 import pyopal.objects.track
 import pyopal.objects.parser
 import pyopal.elements.enge
+import pyopal.objects.field
 
 
 class TrackRunExecute():
@@ -39,6 +40,7 @@ class TrackRunExecute():
         self.distribution = None
         self.distribution_file = tempfile.NamedTemporaryFile("w+")
         self.track_run = pyopal.objects.track_run.TrackRun()
+        self.r0 = 4.0
 
 
     def make_field_solver(self):
@@ -74,7 +76,7 @@ class TrackRunExecute():
         self.ring = pyopal.elements.ring_definition.RingDefinition()
         self.ring.set_opal_name("a_ring")
         self.line.set_opal_name("ffa_line")
-        self.ring.lattice_initial_r = 4.0
+        self.ring.lattice_initial_r = self.r0
         self.ring.beam_initial_r = 0.0
         self.ring.minimum_r = 0.5
         self.ring.maximum_r = 10.0
@@ -88,17 +90,19 @@ class TrackRunExecute():
         f_magnet, d_magnet = self.make_scaling_ffa_magnets()
         self.line.append(drift)
         self.line.append(f_magnet)
-        self.line.append(d_magnet)
+        #self.line.append(d_magnet)
         self.line.register()
 
     def make_scaling_ffa_magnets(self):
         f_magnet = pyopal.elements.scaling_ffa_magnet.ScalingFFAMagnet()
-        f_magnet.r0 = 4.0
+        f_magnet.r0 = self.r0
         f_magnet.b0 = 0.32191091
         f_magnet.field_index = 7.66265526
         f_magnet.tan_delta = math.tan(math.pi/4)
         f_magnet.max_vertical_power = 3
         f_magnet.end_field_model = "f_enge"
+        f_magnet.radial_neg_extent = 1.0
+        f_magnet.radial_pos_extent = 1.0
 
         f_end = pyopal.elements.enge.Enge()
         f_end.set_opal_name("f_enge")
@@ -167,6 +171,11 @@ class TrackRunExecute():
         run.execute()
         track.execute()
         run.execute()
+        for phi_i in range(-1, 21, 1):
+            phi = phi_i
+            point = (self.r0*math.cos(math.radians(phi)), self.r0*math.sin(math.radians(phi)), 0, 0)
+            value = pyopal.objects.field.get_field_value(*point)
+            print("Field value at phi", round(phi, 2), "point", point, "is E:", value[0:3], "B:", value[3:])
 
     def __del__(self):
         """move back to the old cwd"""
@@ -193,8 +202,10 @@ class TestTrackRun(unittest.TestCase):
             stdout=log, stderr=subprocess.STDOUT, check=False)
         log.seek(0)
         error_message=""
-        if self.verbose:
+        if self.verbose > 0:
             error_message = log.read()
+            if self.verbose > 1:
+                print(error_message)
         log.close()
         self.assertEqual(proc.returncode, 0, msg=error_message)
 
@@ -204,5 +215,8 @@ if __name__ == "__main__":
     if "run_test_track_run" in sys.argv:
         TrackRunExecute().run_one()
     else:
-        TestTrackRun.verbose = True
+        # verbose = 0 -> silent
+        # verbose = 1 -> print on error
+        # verbose = 2 -> always print
+        TestTrackRun.verbose = 2
         unittest.main()

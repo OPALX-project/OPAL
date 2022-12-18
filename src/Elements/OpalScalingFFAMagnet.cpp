@@ -144,7 +144,15 @@ void OpalScalingFFAMagnet::update() {
     magnet->getEndField()->rescale(1/r0);
 
     // get rmin and rmax bounding box edge in mm
+    if (!itsAttr[RADIAL_NEG_EXTENT]) {
+            throw OpalException("OpalScalingFFAMagnet::update()",
+                                "RADIAL_NEG_EXTENT needs to be defined");    
+    }
     double rmin = r0-Attributes::getReal(itsAttr[RADIAL_NEG_EXTENT]);
+    if (!itsAttr[RADIAL_POS_EXTENT]) {
+            throw OpalException("OpalScalingFFAMagnet::update()",
+                                "RADIAL_POS_EXTENT needs to be defined");    
+    }
     double rmax = r0+Attributes::getReal(itsAttr[RADIAL_POS_EXTENT]);
     magnet->setRMin(rmin*Units::m2mm);
     magnet->setRMax(rmax*Units::m2mm);

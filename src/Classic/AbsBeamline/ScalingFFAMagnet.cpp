@@ -140,9 +140,6 @@ bool ScalingFFAMagnet::getFieldValueCylindrical(const Vector_t &pos, Vector_t &B
     if (z < -verticalExtent_m || z > verticalExtent_m) {
         return true;
     }
-    //std::cerr << "ScalingFFAMagnet::getFieldValueCylindrical " << phiSpiral << " " 
-    //          << endField_m->function(phiSpiral, 0) << " " << endField_m->getEndLength()
-    //          << " " << endField_m->getCentreLength()  << std::endl;
     std::vector<double> fringeDerivatives(maxOrder_m+1, 0.);
     for (size_t i = 0; i < fringeDerivatives.size(); ++i) {
         fringeDerivatives[i] = endField_m->function(phiSpiral, i); // d^i_phi f

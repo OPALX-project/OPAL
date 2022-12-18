@@ -212,8 +212,8 @@ Vector_t Ring::getNextPosition() const {
     if (!section_list_m.empty()) {
         return section_list_m.back()->getEndPosition();
     }
-    return Vector_t(latticeRInit_m*std::sin(latticePhiInit_m),
-                    latticeRInit_m*std::cos(latticePhiInit_m),
+    return Vector_t(latticeRInit_m*std::cos(latticePhiInit_m),
+                    latticeRInit_m*std::sin(latticePhiInit_m),
                     0.);
 }
 
@@ -221,8 +221,8 @@ Vector_t Ring::getNextNormal() const {
     if (!section_list_m.empty()) {
         return section_list_m.back()->getEndNormal();
     }
-    return Vector_t(std::cos(latticePhiInit_m+latticeThetaInit_m),
-                    -std::sin(latticePhiInit_m+latticeThetaInit_m),
+    return Vector_t(-std::sin(latticePhiInit_m+latticeThetaInit_m),
+                    std::cos(latticePhiInit_m+latticeThetaInit_m),
                     0.);
 }
 
