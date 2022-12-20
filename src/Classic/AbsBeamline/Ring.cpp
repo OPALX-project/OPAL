@@ -35,6 +35,7 @@
 
 #include "Fields/EMField.h"
 #include "AbsBeamline/BeamlineVisitor.h"
+#include "BeamlineGeometry/Euclid3D.h"
 #include "Structure/LossDataSink.h"
 #include "Algorithms/PartBunchBase.h"
 
@@ -131,7 +132,6 @@ bool Ring::apply(const Vector_t &R, const Vector_t &/*P*/,
             return true;
         }
     }
-
     for (size_t i = 0; i < sections.size(); ++i) {
         Vector_t B_temp(0.0, 0.0, 0.0);
         Vector_t E_temp(0.0, 0.0, 0.0);
