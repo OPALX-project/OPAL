@@ -118,7 +118,6 @@ bool ScalingFFAMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
     //Vector_t posCyl(r, pos[1], phi);
     Vector_t bCyl(0., 0., 0.); //br bz bphi
     bool outOfBounds = getFieldValueCylindrical(posCyl, bCyl);
-    std::cerr << " global " << R << " r0 " << r0_m << " cyl " << posCyl << " oob " << outOfBounds << std::endl;
     // this is cartesian coordinates
     B[1] += bCyl[1];
     B[0] += bCyl[0]*std::cos(phi) -bCyl[2]*std::sin(phi);
@@ -141,7 +140,6 @@ bool ScalingFFAMagnet::getFieldValueCylindrical(const Vector_t &pos, Vector_t &B
     double g = tanDelta_m*std::log(normRadius);
     double phiSpiral = phi - g - phiStart_m;
     double h = std::pow(normRadius, k_m)*Bz_m;
-    std::cerr << "ScalingFFAMagnet::getFieldValueCylindrical phi: " << phi << " phiSpiral: " << phiSpiral << " phi0: " << phiStart_m << std::endl;
     if (phiSpiral < -azimuthalExtent_m || phiSpiral > azimuthalExtent_m) {
         return true;
     }
