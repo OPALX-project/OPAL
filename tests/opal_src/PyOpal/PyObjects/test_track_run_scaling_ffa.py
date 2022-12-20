@@ -93,43 +93,6 @@ class TrackRunExecute():
         #self.line.append(d_magnet)
         self.line.register()
 
-    def make_scaling_ffa_magnets(self):
-        f_magnet = pyopal.elements.scaling_ffa_magnet.ScalingFFAMagnet()
-        f_magnet.r0 = self.r0
-        f_magnet.b0 = 0.32191091
-        f_magnet.field_index = 7.66265526
-        f_magnet.tan_delta = math.tan(math.pi/4)
-        f_magnet.max_vertical_power = 3
-        f_magnet.end_field_model = "f_enge"
-        f_magnet.radial_neg_extent = 1.0
-        f_magnet.radial_pos_extent = 1.0
-
-        f_end = pyopal.elements.enge.Enge()
-        f_end.set_opal_name("f_enge")
-        f_end.x0 = 0.1
-        f_end.enge_lambda = 0.15
-        f_end.coefficients = [-1.3, 3.42, -1.2, 0.3]
-        f_end.update()
-        f_magnet.update_end_field()
-
-        d_magnet = pyopal.elements.scaling_ffa_magnet.ScalingFFAMagnet()
-        d_magnet.b0 = -0.25592699667
-        d_magnet.r0 = f_magnet.r0
-        d_magnet.tan_delta = f_magnet.tan_delta
-        d_magnet.field_index = f_magnet.field_index
-        d_magnet.max_vertical_power = f_magnet.max_vertical_power
-        d_magnet.end_field_model = "d_enge"
-
-        d_end = pyopal.elements.enge.Enge()
-        d_end.set_opal_name("d_enge")
-        d_end.x0 = 0.05*d_magnet.r0
-        d_end.enge_lambda = 0.15
-        d_end.coefficients = f_end.coefficients
-        d_end.update()
-        d_magnet.update_end_field()
-
-        return f_magnet, d_magnet
-
     def make_distribution(self):
         """Make a distribution, from tempfile data"""
         self.distribution_file.write(self.distribution_str)
@@ -171,11 +134,114 @@ class TrackRunExecute():
         run.execute()
         track.execute()
         run.execute()
-        for phi_i in range(-1, 21, 1):
-            phi = phi_i
-            point = (self.r0*math.cos(math.radians(phi)), self.r0*math.sin(math.radians(phi)), 0, 0)
-            value = pyopal.objects.field.get_field_value(*point)
-            print("Field value at phi", round(phi, 2), "point", point, "is E:", value[0:3], "B:", value[3:])
+        self.field_map_cartesian()
+
+    def field_map_cylindrical(self):
+        r_points = [self.r0+i*0.01 for i in range(1, 1+1)]
+        phi_points = [i*1 for i in range(-5, 15+1)]
+        phi_bins = [phi_points[0]+(phi_points[1]-phi_points[0])*(i-0.5) for i in range(len(phi_points)+1)]
+        r_grid = []
+        phi_grid = []
+        by_grid = []
+        for radius in r_points:
+            for phi in phi_points:
+                r_grid.append(radius)
+                phi_grid.append(phi)
+                point = (radius*math.cos(math.radians(phi)), radius*math.sin(math.radians(phi)), 0, 0)
+                value = pyopal.objects.field.get_field_value(*point)
+                by_grid.append(value[3])
+                print("Field value at r, phi", radius, round(phi, 2), "point", point, "is B:", value[1:4], "E:", value[4:])
+        if TestTrackRun.verbose < 3:
+            return
+        try:
+            import matplotlib
+            import matplotlib.pyplot
+        except ImportError:
+            print("Matplotlib not imported - not making plots")
+            return
+        binner = lambda a_list: [a_list[0]+(a_list[1]-a_list[0])*(i-0.5) for i in range(len(a_list)+1)]
+        r_bins = binner(r_points)
+        phi_bins = binner(phi_points)
+        figure = matplotlib.pyplot.figure()
+        axes = figure.add_subplot(1, 1, 1)
+        axes.hist2d(r_grid, phi_grid, bins=[r_bins, phi_bins], weights=by_grid)
+        axes.set_xlabel("r [m]")
+        axes.set_ylabel("phi [deg]")
+        axes.set_title("by [T]")
+        figure.savefig(os.path.expandvars("${HOME}/fig.png"))
+
+    def make_scaling_ffa_magnets(self):
+        f_magnet = pyopal.elements.scaling_ffa_magnet.ScalingFFAMagnet()
+        f_magnet.r0 = self.r0
+        f_magnet.b0 = 0.5
+        f_magnet.field_index = 1
+        f_magnet.tan_delta = math.tan(math.radians(10.0))
+        f_magnet.max_vertical_power = 3
+        f_magnet.end_field_model = "f_enge"
+        f_magnet.radial_neg_extent = 1.0
+        f_magnet.radial_pos_extent = 1.0
+        f_magnet.azimuthal_extent = 2.0
+        f_magnet.magnet_start = 1.0
+
+        f_end = pyopal.elements.enge.Enge()
+        f_end.set_opal_name("f_enge")
+        f_end.x0 = 0.1
+        f_end.enge_lambda = 0.05
+        f_end.coefficients = [-1.3, 3.42, -1.2, 0.3]
+        f_end.update()
+        f_magnet.update_end_field()
+
+        d_magnet = pyopal.elements.scaling_ffa_magnet.ScalingFFAMagnet()
+        d_magnet.b0 = -0.25592699667
+        d_magnet.r0 = f_magnet.r0
+        d_magnet.tan_delta = f_magnet.tan_delta
+        d_magnet.field_index = f_magnet.field_index
+        d_magnet.max_vertical_power = f_magnet.max_vertical_power
+        d_magnet.end_field_model = "d_enge"
+
+        d_end = pyopal.elements.enge.Enge()
+        d_end.set_opal_name("d_enge")
+        d_end.x0 = 0.05*d_magnet.r0
+        d_end.enge_lambda = 0.15
+        d_end.coefficients = f_end.coefficients
+        d_end.update()
+        d_magnet.update_end_field()
+
+        return f_magnet, d_magnet
+
+    def field_map_cartesian(self):
+        x_points = [i*0.03 for i in range(-0, 200+1)]
+        y_points = [i*0.03 for i in range(-0, 200+1)]
+        x_grid = []
+        y_grid = []
+        by_grid = []
+        for x in x_points:
+            for y in y_points:
+                x_grid.append(x)
+                y_grid.append(y)
+                point = (x, y, 0, 0)
+                value = pyopal.objects.field.get_field_value(*point)
+                by_grid.append(value[3])
+                print("Field value at point", point, "is B:", value[1:4], "E:", value[4:])
+        if TestTrackRun.verbose < 3:
+            return
+        try:
+            import matplotlib
+            import matplotlib.pyplot
+        except ImportError:
+            print("Matplotlib not imported - not making plots")
+            return
+        binner = lambda a_list: [a_list[0]+(a_list[1]-a_list[0])*(i-0.5) for i in range(len(a_list)+1)]
+        x_bins = binner(x_points)
+        y_bins = binner(y_points)
+        figure = matplotlib.pyplot.figure()
+        axes = figure.add_subplot(1, 1, 1)
+        hist = axes.hist2d(x_grid, y_grid, bins=[x_bins, y_bins], weights=by_grid)
+        axes.set_xlabel("x [m]")
+        axes.set_ylabel("y [m]")
+        axes.set_title("by [T]")
+        figure.colorbar(hist[3])
+        figure.savefig(os.path.expandvars("${HOME}/fig.png"))
 
     def __del__(self):
         """move back to the old cwd"""
@@ -209,7 +275,7 @@ class TestTrackRun(unittest.TestCase):
         log.close()
         self.assertEqual(proc.returncode, 0, msg=error_message)
 
-    verbose = False
+    verbose = 3
 
 if __name__ == "__main__":
     if "run_test_track_run" in sys.argv:
@@ -218,5 +284,5 @@ if __name__ == "__main__":
         # verbose = 0 -> silent
         # verbose = 1 -> print on error
         # verbose = 2 -> always print
-        TestTrackRun.verbose = 2
+        # verbose = 3 -> make a plot in ${HOME}
         unittest.main()

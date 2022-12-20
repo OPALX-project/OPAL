@@ -106,12 +106,19 @@ void ScalingFFAMagnet::accept(BeamlineVisitor& visitor) const {
 
 
 bool ScalingFFAMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
-    Vector_t pos = R - centre_m;
-    double r = std::sqrt(pos[0]*pos[0]+pos[2]*pos[2]);
-    double phi = std::atan2(pos[2], pos[0]); // angle between y-axis and position vector in anticlockwise direction
-    Vector_t posCyl(r, pos[1], phi);
+    double x;
+    if (r0_m > 0.0) { // anticlockwise
+        x = r0_m - R[0];
+    } else { // clockwise
+        x = R[0] - r0_m;
+    }
+    double r = std::sqrt(x*x+R[2]*R[2]);
+    double phi = std::atan2(R[2], x); // angle between y-axis and position vector in anticlockwise direction
+    Vector_t posCyl(r, R[1], phi);
+    //Vector_t posCyl(r, pos[1], phi);
     Vector_t bCyl(0., 0., 0.); //br bz bphi
     bool outOfBounds = getFieldValueCylindrical(posCyl, bCyl);
+    std::cerr << " global " << R << " r0 " << r0_m << " cyl " << posCyl << " oob " << outOfBounds << std::endl;
     // this is cartesian coordinates
     B[1] += bCyl[1];
     B[0] += bCyl[0]*std::cos(phi) -bCyl[2]*std::sin(phi);
@@ -130,10 +137,11 @@ bool ScalingFFAMagnet::getFieldValueCylindrical(const Vector_t &pos, Vector_t &B
         return true;
     }
 
-    double normRadius = r/r0_m;
+    double normRadius = r/std::abs(r0_m);
     double g = tanDelta_m*std::log(normRadius);
     double phiSpiral = phi - g - phiStart_m;
     double h = std::pow(normRadius, k_m)*Bz_m;
+    std::cerr << "ScalingFFAMagnet::getFieldValueCylindrical phi: " << phi << " phiSpiral: " << phiSpiral << " phi0: " << phiStart_m << std::endl;
     if (phiSpiral < -azimuthalExtent_m || phiSpiral > azimuthalExtent_m) {
         return true;
     }
@@ -210,7 +218,7 @@ void ScalingFFAMagnet::setupEndField() {
     std::shared_ptr<endfieldmodel::EndFieldModel> efm
               = endfieldmodel::EndFieldModel::getEndFieldModel(endFieldName_m);
     endfieldmodel::EndFieldModel* newEFM = efm->clone();
-    newEFM->rescale(Units::m2mm*1.0/getR0());
+    newEFM->rescale(Units::m2mm*1.0/std::abs(r0_m));
     setEndField(newEFM);
     newEFM->setMaximumDerivative(maxOrder_m+2);
 
@@ -228,6 +236,6 @@ void ScalingFFAMagnet::setupEndField() {
         setAzimuthalExtent(newEFM->getEndLength()*5.+
                            newEFM->getCentreLength()/2.0);
     }
-    planarArcGeometry_m.setElementLength(r0_m*phiEnd_m); // length = phi r
+    planarArcGeometry_m.setElementLength(std::abs(r0_m)*phiEnd_m); // length = phi r
     planarArcGeometry_m.setCurvature(1./r0_m);
 }
