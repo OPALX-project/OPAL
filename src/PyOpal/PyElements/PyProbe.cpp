@@ -30,8 +30,7 @@ BOOST_PYTHON_MODULE(probe) {
     PyOpal::Globals::Initialise();
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalProbe> element;
-    auto elementClass = element.make_class("Probe");
-    element.addGetOpalElement(elementClass);
+    auto elementClass = element.make_element_class("Probe");
 }
 
 }

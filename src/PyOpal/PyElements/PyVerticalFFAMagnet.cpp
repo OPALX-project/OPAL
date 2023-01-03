@@ -32,7 +32,6 @@ BOOST_PYTHON_MODULE(vertical_ffa_magnet) {
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalVerticalFFAMagnet> element;
     auto elementClass = element.make_class("VerticalFFAMagnet");
-    element.addGetOpalElement(elementClass);
     element.addGetFieldValue(elementClass, 1e+3, 1.0, 1.0, 1e-1);
 }
 

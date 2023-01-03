@@ -31,7 +31,7 @@ BOOST_PYTHON_MODULE(enge) {
     PyOpal::Globals::Initialise();
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalEnge> element;
-    auto elementClass = element.make_class("Enge");
+    auto elementClass = element.make_element_class("Enge");
     elementClass.def("function", &PyOpal::PyEndFieldModel::function<OpalEnge>);
     elementClass.def("update", &PyOpalObjectNS::update<OpalEnge>);
 }

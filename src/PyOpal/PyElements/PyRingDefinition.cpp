@@ -37,8 +37,7 @@ BOOST_PYTHON_MODULE(ring_definition) {
     PyOpal::Globals::Initialise();
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalRingDefinition> element;
-    auto elementClass = element.make_class("RingDefinition");
-    element.addGetOpalElement(elementClass);
+    auto elementClass = element.make_element_class("RingDefinition");
     element.addGetFieldValue(elementClass, 1.0, 1.0, 1.0, 1e-1);
 }
 

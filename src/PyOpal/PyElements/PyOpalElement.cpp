@@ -27,7 +27,7 @@ PyOpalObjectNS::PyOpalObject<OpalElement>::PyOpalObject() : object_m(NULL) {}
 BOOST_PYTHON_MODULE(opal_element) {
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalElement> element;
-    element.make_class("OpalElement");
+    element.make_element_class("OpalElement");
 }
 
 }

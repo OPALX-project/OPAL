@@ -34,7 +34,7 @@ BOOST_PYTHON_MODULE(asymmetric_enge) {
     PyOpal::Globals::Initialise();
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalAsymmetricEnge> element;
-    auto elementClass = element.make_class("AsymmetricEnge");
+    auto elementClass = element.make_element_class("AsymmetricEnge");
     elementClass.def("function", &PyOpal::PyEndFieldModel::function<OpalAsymmetricEnge>);
     elementClass.def("update", &PyOpalObjectNS::update<OpalAsymmetricEnge>);
 }

@@ -61,8 +61,7 @@ BOOST_PYTHON_MODULE(scaling_ffa_magnet) {
     PyOpal::Globals::Initialise();
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalScalingFFAMagnet> element;
-    auto elementClass = element.make_class("ScalingFFAMagnet");
-    element.addGetOpalElement(elementClass);
+    auto elementClass = element.make_element_class("ScalingFFAMagnet");
     element.addGetFieldValue(elementClass, 1e+3, 1.0, 1.0, 1e-1);
 
     elementClass.def("update_end_field", &PyOpalObjectNS::PyOpalObject<OpalScalingFFAMagnet>::doSetup);//, refresh_docstr);
