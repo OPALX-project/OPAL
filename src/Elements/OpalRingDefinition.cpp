@@ -90,13 +90,26 @@ void OpalRingDefinition::update() {
     ring->setBeamPRInit(Attributes::getReal(itsAttr[BEAM_PRINIT]));
     ring->setBeamRInit(Attributes::getReal(itsAttr[BEAM_RINIT])*Units::m2mm);
     ring->setLatticeRInit(Attributes::getReal(itsAttr[LAT_RINIT])*Units::m2mm);
-
     ring->setLatticePhiInit(Attributes::getReal(itsAttr[LAT_PHIINIT])*Units::deg2rad);
     ring->setLatticeThetaInit(Attributes::getReal(itsAttr[LAT_THETAINIT])*Units::deg2rad);
-    ring->setSymmetry(Attributes::getReal(itsAttr[SYMMETRY]));
-    ring->setScale(Attributes::getReal(itsAttr[SCALE]));
 
-    ring->setHarmonicNumber(Attributes::getReal(itsAttr[HARMONIC_NUMBER]));
+    if (itsAttr[SYMMETRY]) {
+        ring->setSymmetry(Attributes::getReal(itsAttr[SYMMETRY]));
+    } else {
+        ring->setSymmetry(1);
+    }
+
+    if (itsAttr[SCALE]) {
+        ring->setScale(Attributes::getReal(itsAttr[SCALE]));
+    } else {
+        ring->setScale(1.0);
+    }
+
+    if (itsAttr[HARMONIC_NUMBER]) {
+        ring->setHarmonicNumber(Attributes::getReal(itsAttr[HARMONIC_NUMBER]));
+    } else {
+        ring->setHarmonicNumber(1);
+    }
     ring->setRFFreq(Attributes::getReal(itsAttr[RFFREQ]));
     ring->setIsClosed(Attributes::getBool(itsAttr[IS_CLOSED]));
     double minR = -1;

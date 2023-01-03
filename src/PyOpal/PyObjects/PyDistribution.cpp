@@ -9,7 +9,7 @@ namespace PyDistributionNS {
 template <>
 std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<Distribution>::attributes = {
     {"TYPE", "type", "", PyOpalObjectNS::PREDEFINED_STRING},
-    {"FNAME", "fname", "", PyOpalObjectNS::STRING},
+    {"FNAME", "filename", "", PyOpalObjectNS::STRING},
     {"INPUTMOUNITS", "momentum_units", "", PyOpalObjectNS::PREDEFINED_STRING},
 };
 

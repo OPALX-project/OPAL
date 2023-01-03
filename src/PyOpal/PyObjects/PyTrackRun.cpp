@@ -2,6 +2,7 @@
 #include "PyOpal/PyCore/Globals.h"
 #include "PyOpal/PyCore/PyOpalObject.h"
 
+#include "AbstractObjects/OpalData.h"
 #include "Track/TrackRun.h"
 
 
@@ -31,12 +32,19 @@ std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<TrackRun>
 template <>
 std::string PyOpalObjectNS::PyOpalObject<TrackRun>::classDocstring = "";
 
+void setRunName(PyOpalObjectNS::PyOpalObject<TrackRun>& /*run*/, std::string name) {
+
+    OpalData::getInstance()->storeInputFn(name);
+}
+
 BOOST_PYTHON_MODULE(track_run) {
     ExceptionTranslation::registerExceptions();
     PyOpal::Globals::Initialise();
     PyOpalObjectNS::PyOpalObject<TrackRun> trackRun;
     auto trackClass = trackRun.make_class("TrackRun");
     trackRun.addExecute(trackClass);
+    trackClass.def("set_run_name", &setRunName);
+    setRunName(trackRun, "PyOpal"); // force default run name to "PyOpal"
 }
 
 } // PyTrackRun

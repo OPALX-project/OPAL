@@ -3082,7 +3082,6 @@ void ParallelCyclotronTracker::singleMode_m(double& t, const double dt,
     IpplTimings::startTimer(IntegrationTimer_m);
 
     unsigned int i = 0; // we only have a single particle
-
     if ( step_m % Options::sptDumpFreq == 0 ) {
         outfTrackOrbit_m << "ID" <<itsBunch_m->ID[i]
                          << " " << itsBunch_m->R[i](0)

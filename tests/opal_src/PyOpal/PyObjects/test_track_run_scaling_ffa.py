@@ -39,7 +39,6 @@ class TrackRunExecute():
         self.offset = None
         self.distribution = None
         self.distribution_file = tempfile.NamedTemporaryFile("w+")
-        self.track_run = pyopal.objects.track_run.TrackRun()
         self.r0 = 4.0
 
 

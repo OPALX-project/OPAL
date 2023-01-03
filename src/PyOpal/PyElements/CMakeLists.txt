@@ -1,3 +1,5 @@
+# python_module function is defined in src/PyOpal/CMakeLists.txt
+
 set (VERTICALFFAMAGNET_SRCS PyVerticalFFAMagnet.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
 python_module(vertical_ffa_magnet "${VERTICALFFAMAGNET_SRCS}" "elements")
 
@@ -18,3 +20,6 @@ python_module(asymmetric_enge "${ASYMMETRICENGE_SRCS}" "elements")
 
 set (SCALINGFFAMAGNET_SRCS PyScalingFFAMagnet.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
 python_module(scaling_ffa_magnet "${SCALINGFFAMAGNET_SRCS}" "elements")
+
+set (PROBE_SRCS PyProbe.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
+python_module(probe "${PROBE_SRCS}" "elements")

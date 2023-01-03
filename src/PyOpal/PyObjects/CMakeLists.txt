@@ -21,3 +21,6 @@ python_module(field_solver "${FIELDSOLVER_SRCS}" objects)
 
 set (TRACKCMD_SRCS PyTrackCmd.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
 python_module(track "${TRACKCMD_SRCS}" objects)
+
+set (OPTION_SRCS PyOption.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
+python_module(option "${OPTION_SRCS}" objects)

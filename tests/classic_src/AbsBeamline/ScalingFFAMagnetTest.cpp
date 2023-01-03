@@ -520,3 +520,6 @@ TEST_F(ScalingFFAMagnetTest, AzimuthalBoundingBoxTest) {
     }
 }
 
+TEST_F(ScalingFFAMagnetTest, NegativeBendingRadiusTest) {
+    EXPECT_TRUE(false) << "Need to check negative bending radius";
+}
