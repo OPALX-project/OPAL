@@ -16,6 +16,7 @@ namespace PyOpal {
  */
 template <>
 void PyOpalObjectNS::PyOpalObject<OpalVariableRFCavity>::doSetup() {
+    object_m->update();
     VariableRFCavity* rf =
                       dynamic_cast<VariableRFCavity*>(object_m->getElement());
     rf->initialise();
@@ -31,8 +32,9 @@ std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalVaria
     {"PHASE_MODEL", "phase_model", "", PyOpalObjectNS::STRING},
     {"AMPLITUDE_MODEL", "amplitude_model", "", PyOpalObjectNS::STRING},
     {"FREQUENCY_MODEL", "frequency_model", "", PyOpalObjectNS::STRING},
-    {"WIDTH", "variable_radius", "", PyOpalObjectNS::DOUBLE},
-    {"HEIGHT", "bounding_box_length", "", PyOpalObjectNS::DOUBLE},
+    {"WIDTH", "width", "", PyOpalObjectNS::DOUBLE},
+    {"HEIGHT", "height", "", PyOpalObjectNS::DOUBLE},
+    {"L", "length", "", PyOpalObjectNS::DOUBLE},
 };
 
 template <>
@@ -45,6 +47,8 @@ BOOST_PYTHON_MODULE(variable_rf_cavity) {
     PyOpalObjectNS::PyOpalObject<OpalVariableRFCavity> element;
     auto elementClass = element.make_element_class("VariableRFCavity");
     element.addGetFieldValue(elementClass, 1e+3, 1.0, 1.0, 1e-1);
+    elementClass.def("update_time_dependence",
+                &PyOpalObjectNS::PyOpalObject<OpalVariableRFCavity>::doSetup);
 }
 }
 }

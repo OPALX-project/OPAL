@@ -1,5 +1,5 @@
-#ifndef PYELEMENTS_PYENDFIELDMODEL_H
-#define PYELEMENTS_PYENDFIELDMODEL_H
+#ifndef PYELEMENTS_PYABSTRACTTIMEDEPENDENCE_H
+#define PYELEMENTS_PYABSTRACTTIMEDEPENDENCE_H
 
 #include "PyOpal/PyCore/PyOpalObject.h"
 #include "Classic/Algorithms/AbstractTimeDependence.h"
@@ -26,4 +26,4 @@ double function(PyOpalObjectNS::PyOpalObject<C> pyobject, double t) {
 }
 }
 
-#endif // PYELEMENTS_PYENDFIELDMODEL_H
+#endif // PYELEMENTS_PYABSTRACTTIMEDEPENDENCE_H
