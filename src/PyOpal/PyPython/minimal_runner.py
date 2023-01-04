@@ -3,6 +3,7 @@ Minimal set of methods to build an OPAL simulation and run it.
 This takes about 0.1 s to run on my average desktop PC.
 """
 import os
+import sys
 import tempfile
 
 import pyopal.objects.track_run
@@ -18,7 +19,7 @@ import pyopal.objects.option
 class MinimalRunner(object):
     """Class to run a minimal OPAL setup.
 
-    Individual methods make_<BLAH> handle set up of each OPAL "global" object:
+    Individual methods make_foo handle set up of each OPAL "global" object:
     - self.field_solver
     - self.distribution
     - self.beam
@@ -26,6 +27,9 @@ class MinimalRunner(object):
     - self.track_run
     - self.line
     - self.ring
+    Explicitly, the OPAL routines are only called in make_foo and run_one so
+    that there is no OPAL things initialised and run_one_fork can be safely
+    called.
     """
     def __init__(self):
         """Initialise to empty data"""
@@ -45,7 +49,7 @@ class MinimalRunner(object):
         self.r0 = 1.0
         self.momentum = 0.1
         self.mass = 0.93827208816
-        self.run_name = None
+        self.run_name = None # default is "PyOpal"
 
     def make_field_solver(self):
         """Make an empty fieldsolver
@@ -138,12 +142,10 @@ class MinimalRunner(object):
     def make_option(self):
         """Options enable setting of global control variables.
 
-        For a full list of variables see the Option docs.
+        No options are set by default. For a full list of variables see the
+        Option docs.
         """
         self.option = pyopal.objects.option.Option()
-        self.option.echo = False
-        self.option.info = False
-        self.option.spt_dump_frequency = 2.0
         self.option.execute()
 
     def make_element_iterable(self):
@@ -199,6 +201,20 @@ class MinimalRunner(object):
         run.steps_per_turn = 100
         self.track_run = run
 
+    def preprocess(self):
+        """Perform any preprocessing steps just before the trackrun is executed
+
+        This method can be overloaded with user required steps.
+        """
+        pass
+
+    def postprocess(self):
+        """Perform any postprocessing steps after the tracking is executed
+
+        This method can be overloaded with user required steps.
+        """
+        pass
+
     def run_one(self):
         """Set up and run a simulation"""
         here = os.getcwd()
@@ -214,12 +230,40 @@ class MinimalRunner(object):
             self.make_track_run()
             if self.run_name:
                 self.track_run.set_run_name(self.run_name)
+            self.preprocess()
             self.track_run.execute()
+            self.postprocess()
         except:
             raise
         finally:
             print("Finished running in directory", os.getcwd())
             os.chdir(here)
+
+    def run_one_fork(self):
+        """
+        Set up and run a simulation in a fork of the current process
+
+        This method is memory safe - resources are only created in the
+        forked process, which is destroyed when the process concludes. The
+        downside is that resources (e.g. lattice objects, etc) are destroyed
+        when the process concludes. If something is needed, overload the 
+        preprocess and postprocess routines to do anything just before or just
+        after tracking.
+
+        Tested in linux, I don't know about OSX. Unlikely to work in any
+        Windows environment.
+        """
+        a_pid = os.fork()
+        if a_pid == 0: # the child process
+            self.run_one()
+            # hard exit returning 0 - don't want to end up in any exit handling
+            # stuff, just die ungracefully now the simulation has run
+            os._exit(0)
+        else:
+            retvalue = os.waitpid(a_pid, 0)[1]
+        if retvalue != 0:
+            # it means we never reached os._exit(0)
+            raise RuntimeError("Opal failed returning "+str(retvalue))
 
     distribution_str = """1
 0.0 0.0 0.0 0.0 0.0 0.0

@@ -203,13 +203,20 @@ class VariableRFCavity: public Component {
     /** @returns the cavity geometry */
     virtual const StraightGeometry& getGeometry() const override;
 
+    /** Lookup the time dependencies and update.
+     * 
+     *  Throws if the named time dependencies can't be found. Also throws if the
+     *  width or height is < 1 nm
+     */
+    void initialise() const;
+
+
     /// Not implemented
     virtual EMField &getField() override;
     /// Not implemented
     virtual const EMField &getField() const override;
   protected:
     void initNull();
-    void initialise() const;
     std::shared_ptr<AbstractTimeDependence> phaseTD_m;
     std::shared_ptr<AbstractTimeDependence> amplitudeTD_m;
     std::shared_ptr<AbstractTimeDependence> frequencyTD_m;
