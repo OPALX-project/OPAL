@@ -260,7 +260,7 @@ class MinimalRunner(object):
             # stuff, just die ungracefully now the simulation has run
             os._exit(0)
         else:
-            retvalue = os.waitpid(a_pid, 0)[1]
+            retvalue = os.waitpid(a_pid, os.WNOHANG)[1]
         if retvalue != 0:
             # it means we never reached os._exit(0)
             raise RuntimeError("Opal failed returning "+str(retvalue))
@@ -273,8 +273,8 @@ class MinimalRunner(object):
     " before calling make_line()."
 
 def main():
-    opal = MinimalRunner()
-    opal.run_one()
+    runner = MinimalRunner()
+    runner.run_one_fork()
 
 if __name__ == "__main__":
     main()

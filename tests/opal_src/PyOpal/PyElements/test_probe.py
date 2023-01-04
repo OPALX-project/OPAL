@@ -41,6 +41,7 @@ class ProbeRunner(pyopal.objects.minimal_runner.MinimalRunner):
 
 class TestProbe(unittest.TestCase):
     def test_one(self):
+        """The actual test - track through a probe and check we get an output"""
         probe_runner = ProbeRunner()
         probe_runner.run_one_fork() # forked process for memory safety
         probe_file = os.path.join(probe_runner.tmp_dir, "test_probe.loss")

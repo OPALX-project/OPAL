@@ -23,3 +23,12 @@ python_module(scaling_ffa_magnet "${SCALINGFFAMAGNET_SRCS}" "elements")
 
 set (PROBE_SRCS PyProbe.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
 python_module(probe "${PROBE_SRCS}" "elements")
+
+set (MULTIPOLET_SRCS PyMultipoleT.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
+python_module(multipolet "${MULTIPOLET_SRCS}" "elements")
+
+set (VARIABLERFCAVITY_SRCS PyVariableRFCavity.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
+python_module(variable_rf_cavity "${VARIABLERFCAVITY_SRCS}" "elements")
+
+set (POLYNOMIALTIMEDEPENDENCE_SRCS PyPolynomialTimeDependence.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
+python_module(polynomial_time_dependence "${POLYNOMIALTIMEDEPENDENCE_SRCS}" "elements")
