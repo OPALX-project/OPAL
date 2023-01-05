@@ -10,7 +10,7 @@ namespace PyOpal {
 namespace PyEnge {
 
 const char* module_docstring = 
-    "enge module holds an Enge end field 'plugin' class for use with field models";
+"enge module holds an Enge end field 'plugin' class for use with field models\n";
 
 template <>
 std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalEnge>::attributes = {

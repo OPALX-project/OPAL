@@ -15,7 +15,7 @@ import matplotlib.pyplot
 import pyopal.objects.minimal_runner
 import pyopal.elements.local_cartesian_offset
 import pyopal.elements.scaling_ffa_magnet
-import pyopal.elements.enge
+import pyopal.elements.asymmetric_enge
 import pyopal.objects.field
 
 class ScalingFFARunner(pyopal.objects.minimal_runner.MinimalRunner):
@@ -30,25 +30,39 @@ class ScalingFFARunner(pyopal.objects.minimal_runner.MinimalRunner):
 
     def build_ffa_magnets(self):
         f_magnet = pyopal.elements.scaling_ffa_magnet.ScalingFFAMagnet()
+        lambda_short = 0.07
+        lambda_long = 0.14
+        spiral_angle = 45
         f_magnet.r0 = self.r0
-        f_magnet.b0 = 0.5
-        f_magnet.field_index = 1
-        f_magnet.tan_delta = math.tan(math.radians(10.0))
+        f_magnet.b0 = -0.4067
+        f_magnet.field_index = 8.0095
+        f_magnet.tan_delta = math.tan(math.radians(spiral_angle))
         f_magnet.max_vertical_power = 3
         f_magnet.end_field_model = "f_enge"
         f_magnet.radial_neg_extent = 1.0
         f_magnet.radial_pos_extent = 1.0
         f_magnet.azimuthal_extent = 2.0
-        f_magnet.magnet_start = 1.0
+        f_magnet.magnet_start = 3*math.pi/160 # note this is a length [m]
 
-        f_end = pyopal.elements.enge.Enge()
+        print("ASYMMETRIC ENGE 1")
+        f_end = pyopal.elements.asymmetric_enge.AsymmetricEnge()
+        print("ASYMMETRIC ENGE 2")
         f_end.set_opal_name("f_enge")
-        f_end.x0 = 0.1
-        f_end.enge_lambda = 0.05
-        f_end.coefficients = [-1.3, 3.42, -1.2, 0.3]
+        print("ASYMMETRIC ENGE 2a")
+        f_end.lambda_start = 0.14
+        f_end.lambda_end = 0.07
+        print("ASYMMETRIC ENGE 2b")
+        f_end.x0_start = math.pi/20
+        f_end.x0_end = f_end.x0_start
+        print("ASYMMETRIC ENGE 3")
+        f_end.coefficients_start = [0.0, 3.91*cos(math.radians(spiral_angle))]
+        f_end.coefficients_end = f_end.coefficients_start
+        print("ASYMMETRIC ENGE")
         f_end.update()
+        print("ASYMMETRIC ENGE")
         f_magnet.update_end_field()
-
+        print("ASYMMETRIC ENGE")
+        """
         d_magnet = pyopal.elements.scaling_ffa_magnet.ScalingFFAMagnet()
         d_magnet.b0 = -0.25592699667
         d_magnet.r0 = f_magnet.r0
@@ -66,8 +80,8 @@ class ScalingFFARunner(pyopal.objects.minimal_runner.MinimalRunner):
         d_end.coefficients = f_end.coefficients
         d_end.update()
         d_magnet.update_end_field()
-
-        return f_magnet, d_magnet
+        """
+        return [f_magnet] #, d_magnet
 
     def make_element_iterable(self):
         return self.build_ffa_magnets()
@@ -161,6 +175,7 @@ class ScalingFFARunner(pyopal.objects.minimal_runner.MinimalRunner):
 """
 
 
+
 class TestTrackRun(unittest.TestCase):
     """Test class for track_run"""
     def test_run_one(self):
@@ -177,6 +192,14 @@ class TestTrackRun(unittest.TestCase):
 
     do_verbose = False
 
+def main():
+    runner = ScalingFFARunner()
+    runner.verbose = 3
+    runner.postprocess = runner.field_maps
+    runner.run_one_fork()
+
+
 if __name__ == "__main__":
-    TestTrackRun.do_verbose = True # verbose if called from command line
-    unittest.main()
+    main()
+#    TestTrackRun.do_verbose = True # verbose if called from command line
+#    unittest.main()

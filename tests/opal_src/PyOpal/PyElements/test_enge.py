@@ -32,5 +32,9 @@ class EngeTest(unittest.TestCase):
         value = self.enge.function(2.3, 0)
         self.assertAlmostEqual(value, 0.5, 6)
 
+    def test_name(self):
+        self.enge.set_opal_name("bob")
+        self.assertEqual(self.enge.get_opal_name(), "bob")
+
 if __name__ == "__main__":
     unittest.main()

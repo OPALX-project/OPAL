@@ -431,7 +431,9 @@ template <class C>
 void PyOpalObject<C>::setOpalElementName(PyOpalObject<C>& pyobject, std::string name) {
     std::shared_ptr<C> objectPtr = pyobject.getOpalShared();
     objectPtr->setOpalName(name);
-    objectPtr->getElement()->setName(name);
+    if (objectPtr->getElement()) { // some OpalThings don't define an Element
+        objectPtr->getElement()->setName(name);
+    }
 }
 
 template <class C>

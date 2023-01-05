@@ -5,6 +5,7 @@ Test AsymmetricEnge python implementation
 import math
 import unittest
 import pyopal.elements.asymmetric_enge
+import pyopal.elements.enge
 
 class AsymmetricEngeTest(unittest.TestCase):
     """Test AsymmetricEnge"""
@@ -30,10 +31,16 @@ class AsymmetricEngeTest(unittest.TestCase):
         """Check that we can get values out of enge"""
         value = self.enge.function(0.0, 0)
         self.assertAlmostEqual(value, 1.0, 6)
-        value = self.enge.function(2.2825, 0)
+        value = self.enge.function(2.3, 0)
         self.assertAlmostEqual(value, 0.5, 6)
-        value = self.enge.function(-4.5, 0)
+        value = self.enge.function(-1.2, 0)
         self.assertAlmostEqual(value, 0.5, 6)
+
+    def test_name(self):
+        """Check that we can set and get name"""
+        self.enge.set_opal_name("bob")
+        self.assertEqual(self.enge.get_opal_name(), "bob")
+
 
 if __name__ == "__main__":
     unittest.main()
