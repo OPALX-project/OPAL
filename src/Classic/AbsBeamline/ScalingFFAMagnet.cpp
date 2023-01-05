@@ -235,5 +235,5 @@ void ScalingFFAMagnet::setupEndField() {
                            newEFM->getCentreLength()/2.0);
     }
     planarArcGeometry_m.setElementLength(std::abs(r0_m)*phiEnd_m); // length = phi r
-    planarArcGeometry_m.setCurvature(1./r0_m);
+    planarArcGeometry_m.setCurvature(-1./r0_m);
 }

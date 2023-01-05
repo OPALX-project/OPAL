@@ -18,7 +18,7 @@ class ScalingFFAMagnetTest(unittest.TestCase):
         self.magnet.field_index = 2
         self.magnet.tan_delta = math.tan(math.pi/4)
         self.magnet.max_vertical_power = 3
-        #self.magnet.end_field_model =  
+        #self.magnet.end_field_model =
         self.magnet.end_length = 0.1
         self.magnet.centre_length = 1.1
         self.magnet.height = 0.61
@@ -26,52 +26,55 @@ class ScalingFFAMagnetTest(unittest.TestCase):
         self.magnet.radial_pos_extent = 1.3
         self.magnet.magnet_start = 1.5
         self.magnet.magnet_end = 2.5
-        self.magnet.azimuthal_extent = 5.1 # that is extent from the centre to the end
+        # azimuthal_extent is extent from the centre to the end
+        self.magnet.azimuthal_extent = 5.1
 
-    def get_cartesian_position(self, r, z, s):
+    def get_cartesian_position(self, r_cyl, z_cyl, s_cyl):
         """
-        Convert from magnet coordinates to cartesian coordinates. Magnet 
-        coordinates are a circle, centred at x=-r0, having constant radius of 
-        curvature r0. So x,y = 0,0 in cartesian coordinates correspond to 
+        Convert from magnet coordinates to cartesian coordinates. Magnet
+        coordinates are a circle, centred at x=-r0, having constant radius of
+        curvature r0. So x,y = 0,0 in cartesian coordinates correspond to
         r,s=r0,0
         """
-        theta = s/self.r0 # rad
-        width = r*math.cos(theta)-self.r0
-        longitudinal = r*math.sin(theta)
-        return width, z, longitudinal, 0.0
+        theta = s_cyl/self.r0 # rad
+        width = r_cyl*math.cos(theta)-self.r0
+        longitudinal = r_cyl*math.sin(theta)
+        return width, z_cyl, longitudinal, 0.0
 
     def test_get_field_value(self):
         """Check that we can get the field value okay"""
-        for s, by_ref in [(1.5, 2.0), (2.6, 2.0), (2.05, 4.0)]:
-            point_cart = self.get_cartesian_position(self.r0, 0.0, s)
-            oob, bx, by, bz, ex, ey, ez = self.magnet.get_field_value(*point_cart)
-            #print("Tried", format(s, "6.4g"), "gave", oob, format(by, "6.4g"))
-            self.assertAlmostEqual(by, by_ref, 3)
+        for s_cyl, by_ref in [(1.5, 2.0), (2.6, 2.0), (2.05, 4.0)]:
+            point_cart = self.get_cartesian_position(self.r0, 0.0, s_cyl)
+            field = self.magnet.get_field_value(*point_cart)
+            self.assertAlmostEqual(field[2], by_ref, 3)
 
     def test_bounding_box_azimuthal(self):
         """Check the bounding box is okay in azimuthal coordinates"""
         self.magnet.tan_delta = 0.0
         for point_cyl in [ # just inside 8 corner points
-            (self.r0-1.199, 0.304, 0.001), (self.r0-1.199, 0.304, 7.149), 
-            (self.r0+1.299, 0.304, 0.001), (self.r0+1.299, 0.304, 7.149), 
-            (self.r0-1.199, -0.304, 0.001), (self.r0-1.199, -0.304, 7.149), 
-            (self.r0+1.299, -0.304, 0.001), (self.r0+1.299, -0.304, 7.149), 
+            (self.r0-1.199, 0.304, 0.001), (self.r0-1.199, 0.304, 7.149),
+            (self.r0+1.299, 0.304, 0.001), (self.r0+1.299, 0.304, 7.149),
+            (self.r0-1.199, -0.304, 0.001), (self.r0-1.199, -0.304, 7.149),
+            (self.r0+1.299, -0.304, 0.001), (self.r0+1.299, -0.304, 7.149),
             ]:
             point_cart = self.get_cartesian_position(*point_cyl)
-            oob, bx, by, bz, ex, ey, ez = self.magnet.get_field_value(*point_cart)
-            self.assertFalse(oob, msg=f"Failed for {point_cyl}") # out of bounds
-        for point_cyl in [ # take two opposite corner points and move off in each of three directions
-            (self.r0-1.201, 0.304, 0.001), (self.r0-1.199, 0.306, 0.001), (self.r0-1.199, 0.306, -0.001), 
-            (self.r0+1.301, -0.304, 7.149), (self.r0+1.299, -0.306, 7.149), (self.r0+1.299, -0.304, 7.151),
+            field = self.magnet.get_field_value(*point_cart)
+            # field[0] is bool out of bounds
+            self.assertFalse(field[0], msg=f"Failed for {point_cyl}")
+        # take two opposite corner points and move off in each of three directions
+        for point_cyl in [
+            (self.r0-1.201, 0.304, 0.001), (self.r0-1.199, 0.306, 0.001),
+            (self.r0-1.199, 0.306, -0.001), (self.r0+1.301, -0.304, 7.149),
+            (self.r0+1.299, -0.306, 7.149), (self.r0+1.299, -0.304, 7.151),
             ]:
             point_cart = self.get_cartesian_position(*point_cyl)
-            oob, bx, by, bz, ex, ey, ez = self.magnet.get_field_value(*point_cart)
-            self.assertTrue(oob, msg=f"Failed for {point_cyl}") # out of bounds
+            field = self.magnet.get_field_value(*point_cart)
+            self.assertTrue(field[0], msg=f"Failed for {point_cyl}")
 
 
     def test_end_field_model(self):
         """
-        Check that the end field model is updated correctly. 
+        Check that the end field model is updated correctly.
 
         Note I tried to set up some lazy/automatic updating for the endfieldmodel
         but I found it tricky to make it work. So in the end user has to cajole

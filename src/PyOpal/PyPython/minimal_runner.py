@@ -30,6 +30,14 @@ class MinimalRunner(object):
     Explicitly, the OPAL routines are only called in make_foo and run_one so
     that there is no OPAL things initialised and run_one_fork can be safely
     called.
+
+    There are three hooks for user to overload and do stuff:
+    - make_element_iterable: add extra elements to the line
+    - preprocess: add some stuff to do just before tracking starts
+    - postprocess: add some stuff to do just after tracking ends
+    user can do postprocessing after calling run_one, but run_one_fork isolates
+    memory allocation into a forked process so parent process does not have
+    access to memory for e.g. checking details of the field maps, etc.
     """
     def __init__(self):
         """Initialise to empty data"""
@@ -125,8 +133,8 @@ class MinimalRunner(object):
     def make_ring(self):
         """Make a RingDefinition object.
 
-        The RingDefinition holds default parameters for a ring initial 
-        conditions, in particular the initial cylindrical coordinates for the 
+        The RingDefinition holds default parameters for a ring initial
+        conditions, in particular the initial cylindrical coordinates for the
         first element placement and beam, and the minimum and maximum radius
         allowed before particles are considered lost. The ring can be appended
         to self.line and used with OPAL cyclotron mode.
@@ -148,14 +156,6 @@ class MinimalRunner(object):
         self.option = pyopal.objects.option.Option()
         self.option.execute()
 
-    def make_element_iterable(self):
-        """
-        Return an iterable (e.g. list) of elements to append to the line
-
-        By default, returns an empty list. User can overload this method.
-        """
-        return []
-
     def make_line(self):
         """Make a Line object.
 
@@ -172,7 +172,7 @@ class MinimalRunner(object):
         an_element_iter = self.make_element_iterable()
         for element in an_element_iter:
             self.line.append(element)
-        self.line.register()   
+        self.line.register()
 
     def make_track(self):
         """Make a track object.
@@ -189,7 +189,7 @@ class MinimalRunner(object):
     def make_track_run(self):
         """Make a TrackRun
 
-        The TrackRun handles the interface between the Track, distribution, 
+        The TrackRun handles the interface between the Track, distribution,
         field solver and calls the actual tracking routines.
         """
         run = pyopal.objects.track_run.TrackRun()
@@ -200,6 +200,14 @@ class MinimalRunner(object):
         run.field_solver = "FIELDSOLVER"
         run.steps_per_turn = 100
         self.track_run = run
+
+    def make_element_iterable(self):
+        """
+        Return an iterable (e.g. list) of elements to append to the line
+
+        By default, returns an empty list. User can overload this method.
+        """
+        return []
 
     def preprocess(self):
         """Perform any preprocessing steps just before the trackrun is executed
@@ -246,7 +254,7 @@ class MinimalRunner(object):
         This method is memory safe - resources are only created in the
         forked process, which is destroyed when the process concludes. The
         downside is that resources (e.g. lattice objects, etc) are destroyed
-        when the process concludes. If something is needed, overload the 
+        when the process concludes. If something is needed, overload the
         preprocess and postprocess routines to do anything just before or just
         after tracking.
 

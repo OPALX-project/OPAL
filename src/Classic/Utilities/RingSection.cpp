@@ -136,9 +136,7 @@ std::vector<Vector_t> RingSection::getVirtualBoundingBox() const {
 //    double phi = atan2(r(1), r(0))+Physics::pi;
 bool RingSection::doesOverlap(double phiStart, double phiEnd) const {
     RingSection phiVirtualORS;
-    // phiStart -= Physics::pi;
-    // phiEnd -= Physics::pi;
-    phiVirtualORS.setStartPosition(Vector_t(sin(phiStart),
+   phiVirtualORS.setStartPosition(Vector_t(sin(phiStart),
                                             cos(phiStart),
                                             0.));
     phiVirtualORS.setStartNormal(Vector_t(cos(phiStart),
