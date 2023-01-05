@@ -253,7 +253,6 @@ void Ring::appendElement(const Component &element) {
                                +delta.getVector()(0)*std::sin(startF)+delta.getVector()(1)*std::cos(startF),
                                0)+startPos;
     section->setEndPosition(endPos);
-    std::cerr << "Ring::appendElement delta " << delta.getVector()(0) << " " << delta.getVector()(1) << " " << delta.getVector()(2) << " " << " endPos " << endPos << std::endl;
 
     double endF = delta.getRotation().getAxis()(2);//+
     //atan2(delta.getVector()(1), delta.getVector()(0));
