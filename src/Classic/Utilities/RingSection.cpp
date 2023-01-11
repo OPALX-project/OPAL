@@ -182,11 +182,11 @@ bool RingSection::doesOverlap(double phiStart, double phiEnd) const {
 void RingSection::rotate(Vector_t& vector) const {
     const Vector_t temp(vector);
     vector(0) = +cos2_m * temp(0) + sin2_m * temp(1);
-    vector(1) = -sin2_m * temp(0) + cos2_m * temp(1);
+    vector(1) = +sin2_m * temp(0) - cos2_m * temp(1);
 }
 
 void RingSection::rotate_back(Vector_t& vector) const {
     const Vector_t temp(vector);
-    vector(0) = +cos2_m * temp(0) - sin2_m * temp(1);
-    vector(1) = +sin2_m * temp(0) + cos2_m * temp(1);
+    vector(0) = +cos2_m * temp(0) + sin2_m * temp(1);
+    vector(1) = +sin2_m * temp(0) - cos2_m * temp(1);
 }

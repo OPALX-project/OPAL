@@ -54,10 +54,14 @@ class MinimalRunner(object):
         self.tmp_dir = tempfile.mkdtemp()
         self.distribution_filename = os.path.join(self.tmp_dir,
                                                   "distribution.dat")
-        self.r0 = 1.0
-        self.momentum = 0.1
-        self.mass = 0.93827208816
+        self.max_steps = 100
+        self.r0 = 1.0 # [m]
+        self.momentum = 0.1 # [GeV/c]
+        self.mass = 0.93827208816 # [GeV/c^2]
+        self.steps_per_turn = 100
+        self.time_per_turn = 1e-6 # [seconds]
         self.run_name = None # default is "PyOpal"
+        self.exit_code = 0
 
     def make_field_solver(self):
         """Make an empty fieldsolver
@@ -110,9 +114,9 @@ class MinimalRunner(object):
         beam.mass = self.mass
         beam.momentum = self.momentum
         beam.charge = 1.0
-        beam.beam_frequency = 1.0
+        beam.beam_frequency = 1e-6/self.time_per_turn # MHz
         beam.number_of_slices = 10
-        beam.number_of_particles = 1
+        beam.number_of_particles = int(self.distribution_str.split()[0])
         beam.register()
         self.beam = beam
 
@@ -126,8 +130,8 @@ class MinimalRunner(object):
         drift = pyopal.elements.local_cartesian_offset.LocalCartesianOffset()
         drift.end_position_x=0.0
         drift.end_position_y=0.0
-        drift.end_normal_x=1.0
-        drift.end_normal_y=0.0
+        drift.end_normal_x=0.0
+        drift.end_normal_y=1.0
         return drift
 
     def make_ring(self):
@@ -144,7 +148,7 @@ class MinimalRunner(object):
         self.ring.lattice_initial_r = self.r0
         self.ring.beam_initial_r = self.r0
         self.ring.minimum_r = self.r0/2
-        self.ring.maximum_r = self.r0*2
+        self.ring.maximum_r = self.r0*100
         self.ring.is_closed = False
 
     def make_option(self):
@@ -183,6 +187,8 @@ class MinimalRunner(object):
         track = pyopal.objects.track.Track()
         track.line = "test_line"
         track.beam = "SuperBeam"
+        track.max_steps = [self.max_steps]
+        track.steps_per_turn = self.steps_per_turn
         self.track = track
         self.track.execute()
 
@@ -198,7 +204,6 @@ class MinimalRunner(object):
         run.beam_name = "SuperBeam"
         run.distribution = ["SuperDist"]
         run.field_solver = "FIELDSOLVER"
-        run.steps_per_turn = 100
         self.track_run = run
 
     def make_element_iterable(self):
@@ -223,7 +228,7 @@ class MinimalRunner(object):
         """
         pass
 
-    def run_one(self):
+    def execute(self):
         """Set up and run a simulation"""
         here = os.getcwd()
         try:
@@ -247,9 +252,9 @@ class MinimalRunner(object):
             print("Finished running in directory", os.getcwd())
             os.chdir(here)
 
-    def run_one_fork(self):
+    def execute_fork(self):
         """
-        Set up and run a simulation in a fork of the current process
+        Set up and run a simulation in a fork of the current process. The 
 
         This method is memory safe - resources are only created in the
         forked process, which is destroyed when the process concludes. The
@@ -258,20 +263,23 @@ class MinimalRunner(object):
         preprocess and postprocess routines to do anything just before or just
         after tracking.
 
+        Returns the return code of the forked process, given by self.exit_code
+        from the forked MinimalRunner. This can be used as a simple flag for
+        comms from the child to the parent process (e.g. for testing purposes).
+        For example, postprocess(self) can be overloaded to set an exit code.
+
         Tested in linux, I don't know about OSX. Unlikely to work in any
         Windows environment.
         """
         a_pid = os.fork()
         if a_pid == 0: # the child process
-            self.run_one()
-            # hard exit returning 0 - don't want to end up in any exit handling
-            # stuff, just die ungracefully now the simulation has run
-            os._exit(0)
+            self.execute()
+            # hard exit returning exit_code - don't want to end up in any exit
+            # handling stuff, just die ungracefully now the simulation has run
+            os._exit(self.exit_code)
         else:
-            retvalue = os.waitpid(a_pid, os.WNOHANG)[1]
-        if retvalue != 0:
-            # it means we never reached os._exit(0)
-            raise RuntimeError("Opal failed returning "+str(retvalue))
+            retvalue = os.waitpid(a_pid, 0)[1]
+        return retvalue
 
     distribution_str = """1
 0.0 0.0 0.0 0.0 0.0 0.0
@@ -282,7 +290,7 @@ class MinimalRunner(object):
 
 def main():
     runner = MinimalRunner()
-    runner.run_one_fork()
+    runner.execute_fork()
 
 if __name__ == "__main__":
     main()

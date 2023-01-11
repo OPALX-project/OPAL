@@ -53,7 +53,7 @@ std::string update_docstr =
 "subsequent uses. WARNING: if user changes the end field model, user must call\n"
 "'update_end_field' manually to load the new parameters.\n"
 "\n"
-"May throw an exception if the EndFieldModel is not valid or cannot be found.\n"
+"May throw RuntimeError if the EndFieldModel is not valid or cannot be found.\n"
 "\n"
 "Returns None.\n";
 
@@ -64,7 +64,7 @@ BOOST_PYTHON_MODULE(scaling_ffa_magnet) {
     auto elementClass = element.make_element_class("ScalingFFAMagnet");
     element.addGetFieldValue(elementClass, 1e+3, 1.0, 1.0, 1e-1);
 
-    elementClass.def("update_end_field", &PyOpalObjectNS::PyOpalObject<OpalScalingFFAMagnet>::doSetup);//, refresh_docstr);
+    elementClass.def("update_end_field", &PyOpalObjectNS::PyOpalObject<OpalScalingFFAMagnet>::doSetup, update_docstr.c_str());
 
 }
 

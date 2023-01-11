@@ -202,6 +202,7 @@ public:
     void bgf_main_collision_test();
     void initializeBoundaryGeometry();
 
+    Ring* getRing() const {return opalRing_m;}
 private:
     enum class TrackingMode: unsigned short {
         UNDEFINED,

@@ -1,5 +1,8 @@
 """Test RingDefinition python implementation"""
+import os
 import unittest
+import pyopal.objects.minimal_runner
+import pyopal.elements.local_cartesian_offset
 import pyopal.elements.ring_definition
 
 class RingDefinitionTest(unittest.TestCase):
@@ -36,6 +39,7 @@ class RingDefinitionTest(unittest.TestCase):
         self.assertEqual(self.ring_definition.is_closed, True)
         self.assertEqual(self.ring_definition.minimum_r, 12.0)
         self.assertEqual(self.ring_definition.maximum_r, 13.0)
+        self.assertEqual(self.ring_definition.get_number_of_elements(), 0)
 
     def test_get_field_value(self):
         """
@@ -49,6 +53,13 @@ class RingDefinitionTest(unittest.TestCase):
         for i in range(1, 7):
             self.assertEqual(value[i], 0.0)
 
+    def test_element_lookups(self):
+        runner = RingTestRunner()
+        runner.execute_fork()
+        if os.path.exists(runner.test_file):
+            with open(runner.test_file) as fin:
+                test_string = fin.read()
+            self.assertFalse(True, msg="Failed in RingTestRunner\n"+test_string)
 
 if __name__ == "__main__":
     unittest.main()

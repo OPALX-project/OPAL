@@ -242,14 +242,14 @@ void Ring::appendElement(const Component &element) {
     RingSection* section = new RingSection();
     Vector_t startPos = getNextPosition();
     Vector_t startNorm = getNextNormal();
-
+    HANDLE OFFSET HERE
     section->setComponent(dynamic_cast<Component*>(element.clone()));
     section->setStartPosition(startPos);
     section->setStartNormal(startNorm);
 
     double startF = std::atan2(startNorm(1), startNorm(0));
     Vector_t endPos = Vector_t(
-                               +delta.getVector()(0)*std::cos(startF)-delta.getVector()(1)*std::sin(startF),
+                               +delta.getVector()(0)*std::cos(startF)+delta.getVector()(1)*std::sin(startF),
                                +delta.getVector()(0)*std::sin(startF)+delta.getVector()(1)*std::cos(startF),
                                0)+startPos;
     section->setEndPosition(endPos);
@@ -257,8 +257,8 @@ void Ring::appendElement(const Component &element) {
     double endF = delta.getRotation().getAxis()(2);//+
     //atan2(delta.getVector()(1), delta.getVector()(0));
     Vector_t endNorm = Vector_t(
-                                +startNorm(0)*std::cos(endF) + startNorm(1)*std::sin(endF),
-                                -startNorm(0)*std::sin(endF) + startNorm(1)*std::cos(endF),
+                                +startNorm(0)*std::cos(endF) - startNorm(1)*std::sin(endF),
+                                +startNorm(0)*std::sin(endF) + startNorm(1)*std::cos(endF),
                                 0);
     section->setEndNormal(endNorm);
 
@@ -267,7 +267,6 @@ void Ring::appendElement(const Component &element) {
 
     section_list_m.push_back(section);
 
-    double dphi = atan2(startNorm(0), startNorm(1));
     Inform msg("OPAL");
     msg << "* Added " << element.getName() << " to Ring" << endl;
     msg << "* Start position ("
@@ -276,7 +275,7 @@ void Ring::appendElement(const Component &element) {
         << section->getStartPosition()(2) << ") normal ("
         << section->getStartNormal()(0) << ", "
         << section->getStartNormal()(1) << ", "
-        << section->getStartNormal()(2) << "), phi " << dphi << endl;
+        << section->getStartNormal()(2) << ")" << endl;
     msg << "* End position   ("
         << section->getEndPosition()(0) << ", "
         << section->getEndPosition()(1) << ", "
@@ -353,7 +352,6 @@ void Ring::buildRingSections() {
     for (size_t i = 0; i < ringSections_m.size(); ++i) {
         double phi0 = i*phiStep_m;
         double phi1 = (i+1)*phiStep_m;
-        // std::cerr << phi0 << " " << phi1 << std::endl;
         for (size_t j = 0; j < section_list_m.size(); ++j) {
             if (section_list_m[j]->doesOverlap(phi0, phi1))
                 ringSections_m[i].push_back(section_list_m[j]);
@@ -382,4 +380,27 @@ void Ring::setRingAperture(double minR, double maxR) {
     willDoAperture_m = true;
     minR2_m = minR*minR;
     maxR2_m = maxR*maxR;
+}
+
+RingSection* Ring::getSection(int i) const {
+    if (i < 0) {
+        std::stringstream err;
+        err << "Attempt to get RingSection for element " << i
+            << ". Should be in range 0 <= i < " << section_list_m.size();
+        throw GeneralClassicException("Ring::getSection(int)", err.str());
+    }
+    RingSection* sec = section_list_m[i];
+    if (sec == nullptr) {
+        throw GeneralClassicException("Ring::getSection(int)",
+            "Opal internal error - RingSection was null");
+    }
+    return sec;
+}
+
+size_t Ring::getNumberOfRingSections() const {
+    return section_list_m.size();
+}
+
+void Ring::handleGlobalOffset(const Component &element) {
+
 }

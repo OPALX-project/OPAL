@@ -171,8 +171,8 @@ void Offset::updateGeometry() {
     double length = std::sqrt(translation(0)*translation(0)+
                          translation(1)*translation(1)+
                          translation(2)*translation(2));
-    double theta_in = getTheta(Vector_t(1., 0., 0.), translation);
-    double theta_out = getTheta(Vector_t(1., 0., 0.), getEndDirection());
+    double theta_in = getTheta(Vector_t(0., 1., 0.), translation);
+    double theta_out = getTheta(Vector_t(0., 1., 0.), getEndDirection());
     Euclid3D euclid3D(-std::sin(theta_in)*length, 0., std::cos(theta_in)*length,
                       0., -theta_out, 0.);
     if (geometry_m != nullptr)
@@ -255,10 +255,10 @@ Offset Offset::localCylindricalOffset(std::string name,
                                       double displacement) {
     Offset off(name);
     displacement *= lengthUnits_m;
-    off.setEndPosition(Vector_t(std::cos(phi_in)*displacement,
-                                std::sin(phi_in)*displacement,
+    off.setEndPosition(Vector_t(-std::sin(phi_in)*displacement,
+                                std::cos(phi_in)*displacement,
                                 0.));
-    off.setEndDirection(Vector_t(std::cos(phi_in+phi_out), std::sin(phi_in+phi_out), 0.));
+    off.setEndDirection(Vector_t(-std::sin(phi_in+phi_out), std::cos(phi_in+phi_out), 0.));
     off.setIsLocal(true);
     off.updateGeometry();
     return off;

@@ -59,9 +59,9 @@ OpalScalingFFAMagnet::OpalScalingFFAMagnet() :
     itsAttr[CENTRE_LENGTH] = Attributes::makeReal("CENTRE_LENGTH",
                                        "The centre length of the spiral FFA [m].");
     itsAttr[RADIAL_NEG_EXTENT] = Attributes::makeReal("RADIAL_NEG_EXTENT",
-                                       "Particles are considered outside the tracking region if radius is greater than R0-RADIAL_NEG_EXTENT [m].");
+                                       "Particles are considered outside the tracking region if radius is greater than R0-RADIAL_NEG_EXTENT [m].", 1);
     itsAttr[RADIAL_POS_EXTENT] = Attributes::makeReal("RADIAL_POS_EXTENT",
-                                       "Particles are considered outside the tracking region if radius is greater than R0+RADIAL_POS_EXTENT [m].");
+                                       "Particles are considered outside the tracking region if radius is greater than R0+RADIAL_POS_EXTENT [m].", 1);
     itsAttr[MAGNET_START] = Attributes::makeReal("MAGNET_START",
                                           "Determines the position of the central portion of the magnet field relative to the element start (default is 2*end_length). [m]");
     itsAttr[MAGNET_END] = Attributes::makeReal("MAGNET_END",

@@ -69,10 +69,10 @@ TEST(OpalScalingFFAMagnetTest, TestUpdate) {
     EXPECT_NEAR(mag1->getAzimuthalExtent(), 9.0/12.5, 1e-9);
 }
 
-// r in mm, phi in rad; note the weird coordinate system
+// r in mm, phi in rad
 Vector_t cartesianCoord(double r, double phi) {
-    phi -= Physics::pi/2.0;
-    return Vector_t(-r*sin(phi), 0.0, r*cos(phi))-Vector_t(r, 0, 0);
+    //phi -= Physics::pi/2.0;
+    return Vector_t(r-r*cos(phi), 0.0, r*sin(phi));
 }
 
 TEST(OpalScalingFFAMagnetTest, TestFieldCheck) {
@@ -118,15 +118,37 @@ TEST(OpalScalingFFAMagnetTest, TestFieldCheck) {
     Euclid3D delta = mag1->getGeometry().getTotalTransform();
     Vector3D vec = delta.getVector();
     Vector3D rot = delta.getRotation().getAxis();
-    EXPECT_EQ(vec(0), r0*Units::m2mm*(cos(mag1->getPhiEnd())-1));
-    EXPECT_EQ(vec(1), 0.);
-    EXPECT_EQ(vec(2), r0*Units::m2mm*sin(mag1->getPhiEnd()));
+    EXPECT_NEAR(vec(0), r0*Units::m2mm*sin(mag1->getPhiEnd()), 1e-6);
+    EXPECT_NEAR(vec(1), 0., 1e-6);
+    EXPECT_NEAR(vec(2), r0*Units::m2mm*(1-cos(mag1->getPhiEnd())), 1e-6);
 
     EXPECT_EQ(rot(0), 0.);
-    EXPECT_EQ(rot(1), -mag1->getPhiEnd());
+    EXPECT_EQ(rot(1), mag1->getPhiEnd());
     EXPECT_EQ(rot(2), 0.);
 
-    EXPECT_TRUE(false) << "Need to check negative bend radius is okay";
+    ////// REVERSE BEND ANGLE ///////////
+    setReal(opalMag1, "R0", -r0);
+    opalMag1.update();
+    element = opalMag1.getElement();
+    mag1 = dynamic_cast<ScalingFFAMagnet*>(element);
+    mag1->setupEndField();
 
+    Euclid3D delta2 = mag1->getGeometry().getTotalTransform();
+    Vector3D vec2 = delta2.getVector();
+    Vector3D rot2 = delta2.getRotation().getAxis();
+    EXPECT_NEAR(vec2(0), -r0*Units::m2mm*sin(mag1->getPhiEnd()), 1e-6);
+    EXPECT_NEAR(vec2(1), 0., 1e-6);
+    EXPECT_NEAR(vec2(2), r0*Units::m2mm*(1-cos(mag1->getPhiEnd())), 1e-6);
+
+    EXPECT_EQ(rot2(0), 0.);
+    EXPECT_EQ(rot2(1), -mag1->getPhiEnd());
+    EXPECT_EQ(rot2(2), 0.);
+
+}
+
+// r in mm, phi in rad
+Vector_t cartesianCoordNegRCurve(double r, double phi) {
+    //phi -= Physics::pi/2.0;
+    return Vector_t(r*cos(phi)-r, 0.0, r*sin(phi));
 }
 
