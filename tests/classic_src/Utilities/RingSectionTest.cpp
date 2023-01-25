@@ -30,6 +30,7 @@
 #include "gtest/gtest.h"
 #include "opal_src/Utilities/MockComponent.h"
 #include "Physics/Physics.h"
+#include "AbsBeamline/Offset.h"
 #include "Utilities/RingSection.h"
 
 #include "opal_test_utilities/SilenceTest.h"
@@ -144,22 +145,33 @@ TEST(RingSectionTest, TestGetFieldValue) {
     RingSection ors;
     MockComponent comp;
     ors.setComponent(&comp);
-    Vector_t centre(-1.33, +1.66, 0.);
+    Vector_t centre; //(-1.33, +1.66, 0.);
     for (double theta = -3.*Physics::pi; theta < 3.*Physics::pi; theta += Physics::pi/6.) {
         Vector_t orientation(0., 0., theta);
         ors.setComponentOrientation(orientation);
         ors.setComponentPosition(centre);
         double c = cos(orientation(2));
-        double s = -sin(orientation(2));
+        double s = sin(orientation(2));
+        // x y z are coordinates in local OPAL-CYCL coordinate system
         for (double x = 0.01; x < 1.; x += 0.1)
             for (double y = 0.01; y < 1.; y += 0.1)
                 for (double z = -0.01; z > -1.; z -= 0.1) {
-                    Vector_t offset(c*x+s*y, -s*x+c*y, z);
+                    Vector_t offset(c*x+s*y, +s*x-c*y, z);
                     Vector_t pos = centre+offset;
                     Vector_t centroid, B, E;
                     double t = 0;
-                    EXPECT_FALSE(ors.getFieldValue(pos, centroid, t, E, B));
-                    Vector_t bfield(c*x+s*y, -s*x+c*y, z);
+                    bool oobRef =  (x < 0. || x > 1. ||
+                                    z < -1. || z > 0. ||
+                                    y < 0. || y > 1.);
+                    bool oobTest = ors.getFieldValue(pos, centroid, t, E, B);
+                    EXPECT_EQ(oobTest, oobRef);
+                    Vector_t bfield(c*x+s*y, s*x-c*y, z);
+                    std::cout << "loc " << x << " " << y << " " << z 
+                              << " glob " << pos 
+                              << " bglob " << B 
+                              << " bloc " << bfield 
+                              << " oobTest " << oobTest 
+                              << " oobRef " << oobRef << std::endl;
                     for (int l = 0; l < 3; ++l) {
                         EXPECT_NEAR(B(l), +bfield(l), 1e-6);
                         EXPECT_NEAR(E(l), -bfield(l), 1e-6);
@@ -235,4 +247,50 @@ TEST(RingSectionTest, TestDoesOverlap) {
     EXPECT_TRUE(ors3.doesOverlap(f2, f3));
     EXPECT_FALSE(ors3.doesOverlap(f1, f1));
     EXPECT_FALSE(ors3.doesOverlap(f4, f4));
+}
+
+TEST(RingSectionTest, TestGlobalOffset1) {
+    // Try a global offset having same direction and position as the 
+    // start position and direction. following handleOffset, the offset should
+    // be a nullOp
+    Offset testOffset = Offset::globalCartesianOffset("aname", 
+                                                      Vector_t(1.0, 2.0, 3.0)*Units::mm2m,
+                                                      Vector_t(4.0, 5.0, 6.0));
+    EXPECT_FALSE(testOffset.getIsLocal());
+    RingSection section;
+    //handleOffset needs start position/normal to be set
+    section.setStartPosition(Vector_t(1.0, 2.0, 3.0));
+    section.setStartNormal(Vector_t(4.0, 5.0, 6.0));
+    section.setComponent(&testOffset); // this borrows the offset pointer
+    try {
+        section.handleOffset();
+    } catch (ClassicException& exc) {
+        EXPECT_TRUE(false) << "threw an exception: " << exc.what();
+    }
+    for (size_t i = 0; i < 3; ++i) {
+        EXPECT_EQ(testOffset.getEndPosition()[i], Vector_t(0, 0, 0)[i]) << i;
+        EXPECT_EQ(testOffset.getEndDirection()[i], Vector_t(0, 1, 0)[i]) << i;
+    }
+    EXPECT_TRUE(testOffset.getIsLocal());
+}
+
+TEST(RingSectionTest, TestGlobalOffset2) {
+    Vector_t startPos(1.0, 2.0, 3.0);
+    Vector_t endPos(2.0, 3.0, 3.0);
+    Vector_t startDir(-1.0, 0.0, 0.0);
+    Vector_t endDir(-1.0, -1.0, 0.0);
+    Offset testOffset =
+        Offset::globalCartesianOffset("aname", endPos*Units::mm2m, endDir);
+    RingSection section;
+    //handleOffset needs start position/normal to be set
+    section.setStartPosition(startPos);
+    section.setStartNormal(startDir);
+    section.setComponent(&testOffset); // this borrows the offset pointer
+    section.handleOffset();
+    for (size_t i = 0; i < 3; ++i) {
+        EXPECT_NEAR(testOffset.getEndPosition()[i], Vector_t(1, -1, 0)[i], 1e-6) << i;
+        EXPECT_NEAR(testOffset.getEndDirection()[i],
+                  Vector_t(-1/std::sqrt(2), 1/std::sqrt(2), 0)[i], 1e-6) << i;
+    }
+    EXPECT_TRUE(testOffset.getIsLocal());
 }

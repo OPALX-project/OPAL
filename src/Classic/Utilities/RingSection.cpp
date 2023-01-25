@@ -29,6 +29,7 @@
 
 #include "Physics/Physics.h"
 #include "Utilities/GeneralClassicException.h"
+#include "AbsBeamline/Offset.h"
 
 RingSection::RingSection()
   : component_m(nullptr),
@@ -190,3 +191,12 @@ void RingSection::rotate_back(Vector_t& vector) const {
     vector(0) = +cos2_m * temp(0) + sin2_m * temp(1);
     vector(1) = +sin2_m * temp(0) - cos2_m * temp(1);
 }
+
+void RingSection::handleOffset() {
+    Offset* offsetCast = dynamic_cast<Offset*>(component_m);
+    if (offsetCast == nullptr) {
+        return; // nothing to do, it wasn't an offset at all
+    }
+    offsetCast->updateGeometry(startPosition_m, startOrientation_m);
+}
+

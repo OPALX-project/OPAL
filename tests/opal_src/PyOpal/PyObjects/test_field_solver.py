@@ -1,5 +1,6 @@
 """Test the Field Solver"""
 
+import os
 import unittest
 import pyopal.objects.field_solver
 

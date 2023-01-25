@@ -580,9 +580,6 @@ void ParallelCyclotronTracker::visitOffset(const Offset& off) {
         throw OpalException(
                             "ParallelCylcotronTracker::visitOffset",
                             "Attempt to place an offset when Ring not defined");
-    Offset* offNonConst = const_cast<Offset*>(&off);
-    offNonConst->updateGeometry(opalRing_m->getNextPosition(),
-                                opalRing_m->getNextNormal());
     opalRing_m->appendElement(off);
 }
 

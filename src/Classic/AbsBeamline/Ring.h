@@ -344,6 +344,12 @@ class Ring : public Component {
 
     void rotateToCyclCoordinates(Euclid3D& euclid3d) const;
 
+    // get the initial position
+    Vector_t getStartPosition() const;
+
+    // get the initial normal
+    Vector_t getStartNormal() const;
+
     // predicate for sorting
     static bool sectionCompare(RingSection const* const sec1,
                                RingSection const* const sec2);

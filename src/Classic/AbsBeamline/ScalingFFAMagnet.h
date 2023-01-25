@@ -160,7 +160,7 @@ class ScalingFFAMagnet : public Component {
     double getR0() const {return r0_m;}
 
     /** Set the radius constant R_0 */
-    void setR0(double r0) {r0_m = r0;}
+    void setR0(double r0) {r0_m = r0; r0Sign_m = r0_m/std::abs(r0_m);}
 
     /** Get the centre of the sector */
     Vector_t getCentre() const {return centre_m;}
@@ -286,6 +286,7 @@ class ScalingFFAMagnet : public Component {
     double phiEnd_m = 0.; // used for placement of next element
     double azimuthalExtent_m = 0.; // maximum distance used for field calculation
     double verticalExtent_m = 0.; // maximum allowed distance from the midplane
+    double r0Sign_m = 0.0;
     Vector_t centre_m;
     endfieldmodel::EndFieldModel* endField_m = nullptr;
     std::string endFieldName_m = ""; 

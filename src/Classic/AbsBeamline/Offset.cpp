@@ -180,12 +180,21 @@ void Offset::updateGeometry() {
     geometry_m = new Euclid3DGeometry(euclid3D);
 }
 
-void Offset::updateGeometry(Vector_t /*startPosition*/, Vector_t startDirection) {
+void Offset::updateGeometry(Vector_t startPosition, Vector_t startDirection) {
     if (!_is_local) {
-        Vector_t translationGlobal = _end_position;
-        double theta_g2l = getTheta(startDirection, Vector_t(1, 0, 0));
-        _end_position = rotate(translationGlobal, theta_g2l);
-        _end_direction = rotate(_end_direction, theta_g2l);
+        // thetaIn is the angle between the y axis and startDirection
+        double thetaIn = std::atan2(-startDirection[0], startDirection[1]); // global OPAL-CYCL coords
+        // thetaOut is the angle between the y axis and endDirection
+        double thetaOut = std::atan2(-_end_direction[0], _end_direction[1]); // global OPAL-CYCL coords
+        // thetaRel is the angle between thetaOut and thetaIn
+        double thetaRel = thetaOut-thetaIn;
+        // deltaPosition is the position change in the global coordinate system
+        Vector_t deltaPosition = _end_position-startPosition;
+        // endPosition is the difference between end and startPosition in 
+        // startDirection coordinate system
+        _end_position = rotate(deltaPosition, -thetaIn);
+        // end direction is the normal in the coordinate system of startDirection
+        _end_direction = Vector_t(std::sin(-thetaRel), std::cos(-thetaRel), 0);
         _is_local = true;
     }
     updateGeometry();

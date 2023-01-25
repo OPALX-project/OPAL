@@ -37,7 +37,7 @@ def run_encapsulated_test(file_name):
     print("Offset start normal", value, "reference", ref_value, "Test", test_fail)
 
     value = pyopal.objects.field.get_element_end_position(1)
-    ref_value = [2.0, 11.0, 0.0]
+    ref_value = [0.0, 11.0, 0.0]
     for i in range(3):
         test_fail = test_fail or abs(value[i] - ref_value[i]) > float_tolerance
     print("Offset end position", value, "reference", ref_value, "Test", test_fail)

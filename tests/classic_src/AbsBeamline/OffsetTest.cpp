@@ -40,6 +40,8 @@ class SRotatedGeometry;
 
 const double units = 1e3;
 
+// see also RingSectionTest
+
 TEST(OffsetTest, TestConstructDestruct) {
     OpalTestUtilities::SilenceTest silencer;
 

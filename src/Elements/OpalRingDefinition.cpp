@@ -130,5 +130,4 @@ void OpalRingDefinition::update() {
     }
 
     setElement(ring);
-    std::cerr << "OpalRingDefinition::update " << ring << std::endl;
 }

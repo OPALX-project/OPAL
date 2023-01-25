@@ -166,9 +166,9 @@ public:
     bool printLine(Vector_t posCyl, double aux, std::ofstream& fout, double maxwell_tolerance) {
         double r = posCyl[0];
         double y = posCyl[1];
-        double phi = posCyl[2]-Physics::pi/2.0;
-        double x = -r*sin(phi);
-        double z = r*cos(phi);
+        double phi = posCyl[2];
+        double x = r*(1-cos(phi));
+        double z = r*sin(phi);
         Vector_t posCart(x, y, z);
         Vector_t mom(0., 0., 0.);
         Vector_t E(0., 0., 0.);
@@ -210,7 +210,7 @@ public:
     }
 
 private:
-    OpalTestUtilities::SilenceTest silencer_m;
+    // OpalTestUtilities::SilenceTest silencer_m;
 };
 
 TEST_F(ScalingFFAMagnetTest, ConstructorTest) {
@@ -270,17 +270,21 @@ TEST_F(ScalingFFAMagnetTest, ConstructorTest) {
 TEST_F(ScalingFFAMagnetTest, PlacementTest) {
     // test that when we are X0 from the centre, we get By = 0.5*B0
     double centre_length = dynamic_cast<endfieldmodel::Tanh*>(sector_m->getEndField())->getX0();
-    for (double phi_start = 0.; phi_start < psi0_m*3.1; phi_start += psi0_m/2.) {
-        sector_m->setPhiStart(phi_start+centre_length);
-        for (double i = 0.; i < 1.01; i += 0.5) {
-            double phi = i*centre_length*2+phi_start-Physics::pi/2.0;
-            Vector_t mom, E, B;
-            double t = 0;
-            Vector_t posCart(-r0_m*sin(phi), 0., r0_m*cos(phi));
-            sector_m->apply(posCart, mom, t, E, B);
-            double byTest = 1-fabs(i-0.5); // 0.5, 1.0, 0.5
-            EXPECT_NEAR(B[1], byTest, 1e-3) << " for phi_start " << phi_start
-                                            << " and phi test " << phi;
+    for (double r0 = -r0_m; r0 < 1.5*r0_m; r0 += r0_m*2) { 
+        for (double phi_start = 0.; phi_start < psi0_m*3.1; phi_start += psi0_m/2.) {
+            sector_m->setR0(r0);
+            sector_m->setPhiStart(phi_start+centre_length);
+            for (double i = 0.; i < 1.01; i += 0.5) {
+                double phi = i*centre_length*2+phi_start;
+                Vector_t mom, E, B;
+                double t = 0;
+                Vector_t posCart(r0*(1-cos(phi)), 0., std::abs(r0)*sin(phi));
+                sector_m->apply(posCart, mom, t, E, B);
+                double byTest = 1-fabs(i-0.5); // 0.5, 1.0, 0.5
+                EXPECT_NEAR(B[1], byTest, 1e-3) << " for r0 " << r0_m 
+                                                << " phi_start " << phi_start
+                                                << " and phi test " << phi;
+            }
         }
     }
 }
@@ -383,7 +387,7 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceOrderTest) {
             sector_m->setMaxOrder(i);
             sector_m->initialise();
             //Vector_t pos(r0_m, y, psi0_m*2);
-            Vector_t pos(r0_m*cos(psi0_m*2), y, r0_m*sin(psi0_m*2));
+            Vector_t pos(r0_m*(1-cos(psi0_m*2)), y, r0_m*sin(psi0_m*2));
             double divB = getDivBCart(pos, Vector_t(delta, delta, delta/r0_m));
             Vector_t curlB = getCurlBCart(pos, Vector_t(delta, delta, delta/r0_m));
             double curlBMag =
@@ -412,7 +416,7 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceOrderHackedTest) {
     bool cylindrical = false;
     int maxOrder = 10;
     // nb: if tan delta is 0., convergence reached at i = 7
-    for (double td = 0.2; td < 1.1; td += 0.2) { // 50 cm off midplane
+    for (double td = 0.0; td < 1.1; td += 10.2) { // 50 cm off midplane
         std::cout << "order y     B     divB     |curlB|     curlB" << std::endl;
 
         std::vector<double> divBVec(maxOrder);
@@ -420,7 +424,7 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceOrderHackedTest) {
         double delta = y/100.;
         for (size_t i = 0; i < divBVec.size(); ++i) {
             sector_m->setTanDelta(td);
-            sector_m->setR0(3.0);
+            sector_m->setR0(-3.0);
             sector_m->setFieldIndex(4);
             sector_m->setMaxOrder(i);
             sector_m->initialise();
@@ -432,7 +436,7 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceOrderHackedTest) {
                 divB = getDivBCyl(pos, Vector_t(delta, delta, delta/3.));
                 curlB = getCurlBCyl(pos, Vector_t(delta, delta, delta/3.));
             } else {
-                pos = Vector_t(-3.0*sin(psi0_m*2-Physics::pi/2.0), y, 3.0*cos(psi0_m*2-Physics::pi/2.0));
+                pos = Vector_t(3.0*(cos(psi0_m*2)-1), y, 3.0*sin(psi0_m*2));
                 sector_m->apply(pos, pos, divBVec[0], B, B);
                 divB = getDivBCart(pos, Vector_t(delta, delta, delta));
                 curlB = getCurlBCart(pos, Vector_t(delta, delta, delta));
@@ -442,7 +446,7 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceOrderHackedTest) {
             divB = fabs(divB);
             divBVec[i] = divB;
             curlBVec[i] = curlBMag;
-            std::cout << i << "     " << y << "    " << B << "     " << divB << "           "
+            std::cout << i << "     " << pos << "    " << y << "    " << B << "     " << divB << "           "
                       << curlBMag << "          " << curlB << std::endl;
 
             if (i > 1 && i % 2 == 1) {
@@ -492,17 +496,17 @@ TEST_F(ScalingFFAMagnetTest, RadialBoundingBoxTest) {
     Vector_t mom, E, B;
     double t = 0;
     double r1 = r0_m-0.09;
-    Vector_t pos1(r1*sin(psi0_m), 0.0, r1*cos(psi0_m));
+    Vector_t pos1(r0_m-r1*cos(psi0_m), 0.0, r1*sin(psi0_m));
     double r2 = r0_m-0.11;
-    Vector_t pos2(r2*sin(psi0_m), 0.0, r2*cos(psi0_m));
+    Vector_t pos2(r0_m-r2*cos(psi0_m), 0.0, r2*sin(psi0_m));
     EXPECT_FALSE(sector_m->apply(pos1, mom, t, E, B));
     EXPECT_TRUE(sector_m->apply(pos2, mom, t, E, B));
 
     sector_m->setRMax(r0_m+0.1);
     double r3 = r0_m+0.09;
-    Vector_t pos3(r3*sin(psi0_m), 0.0, r3*cos(psi0_m));
+    Vector_t pos3(r0_m-r3*cos(psi0_m), 0.0, r3*sin(psi0_m));
     double r4 = r0_m+0.11;
-    Vector_t pos4(r4*sin(psi0_m), 0.0, r4*cos(psi0_m));
+    Vector_t pos4(r0_m-r4*cos(psi0_m), 0.0, r4*sin(psi0_m));
     EXPECT_FALSE(sector_m->apply(pos3, mom, t, E, B));
     EXPECT_TRUE(sector_m->apply(pos4, mom, t, E, B));
 }
@@ -515,7 +519,7 @@ TEST_F(ScalingFFAMagnetTest, AzimuthalBoundingBoxTest) {
     double phi[] = {-2.1*psi0_m, -1.9*psi0_m, 7.9*psi0_m, 8.1*psi0_m};
     bool bb[] = {true, false, false, true};
     for(size_t i = 0; i < 4; ++i) {
-        Vector_t pos(-r0_m*sin(phi[i]-Physics::pi/2.0), 0.0, r0_m*cos(phi[i]-Physics::pi/2.0));
+        Vector_t pos(r0_m*(1-cos(phi[i])), 0,  r0_m*sin(phi[i]));
         EXPECT_EQ(sector_m->apply(pos, mom, t, E, B), bb[i]) << i << " " << pos;
     }
 }

@@ -275,7 +275,7 @@ class TestTrackRun(unittest.TestCase):
         if self.do_verbose:
             runner.verbose = 0
             runner.postprocess = runner.plots
-        runner.run_one_fork()
+        runner.execute_fork()
         print("Finished\n\n")
 
     do_verbose = False

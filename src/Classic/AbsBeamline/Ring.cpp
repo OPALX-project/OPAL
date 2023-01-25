@@ -211,7 +211,12 @@ void Ring::rotateToCyclCoordinates(Euclid3D& delta) const {
 Vector_t Ring::getNextPosition() const {
     if (!section_list_m.empty()) {
         return section_list_m.back()->getEndPosition();
+    } else {
+        return getStartPosition();
     }
+}
+
+Vector_t Ring::getStartPosition() const {
     return Vector_t(latticeRInit_m*std::cos(latticePhiInit_m),
                     latticeRInit_m*std::sin(latticePhiInit_m),
                     0.);
@@ -220,7 +225,12 @@ Vector_t Ring::getNextPosition() const {
 Vector_t Ring::getNextNormal() const {
     if (!section_list_m.empty()) {
         return section_list_m.back()->getEndNormal();
+    } else {
+        return getStartNormal();
     }
+}
+
+Vector_t Ring::getStartNormal() const {
     return Vector_t(-std::sin(latticePhiInit_m+latticeThetaInit_m),
                     std::cos(latticePhiInit_m+latticeThetaInit_m),
                     0.);
@@ -232,6 +242,15 @@ void Ring::appendElement(const Component &element) {
                                       "Attempt to append element "+element.getName()+
                                       " when ring is locked");
     }
+
+    RingSection* section = new RingSection();
+    Vector_t startPos = getNextPosition();
+    Vector_t startNorm = getNextNormal();
+
+    section->setComponent(dynamic_cast<Component*>(element.clone()));
+    section->setStartPosition(startPos);
+    section->setStartNormal(startNorm);
+    section->handleOffset();
     // delta is transform from start of bend to end with x, z as horizontal
     // I failed to get Rotation3D to work so use rotations written by hand.
     // Probably an error in my call to Rotation3D.
@@ -239,13 +258,6 @@ void Ring::appendElement(const Component &element) {
     rotateToCyclCoordinates(delta);
     checkMidplane(delta);
 
-    RingSection* section = new RingSection();
-    Vector_t startPos = getNextPosition();
-    Vector_t startNorm = getNextNormal();
-    HANDLE OFFSET HERE
-    section->setComponent(dynamic_cast<Component*>(element.clone()));
-    section->setStartPosition(startPos);
-    section->setStartNormal(startNorm);
 
     double startF = std::atan2(startNorm(1), startNorm(0));
     Vector_t endPos = Vector_t(
@@ -399,8 +411,4 @@ RingSection* Ring::getSection(int i) const {
 
 size_t Ring::getNumberOfRingSections() const {
     return section_list_m.size();
-}
-
-void Ring::handleGlobalOffset(const Component &element) {
-
 }

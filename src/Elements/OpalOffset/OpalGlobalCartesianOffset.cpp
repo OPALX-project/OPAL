@@ -37,9 +37,8 @@
 namespace OpalOffset {
 
 const std::string OpalGlobalCartesianOffset::doc_string =
-    std::string("The \"GLOBAL_CARTESIAN_OFFSET\" element defines an offset")+
-    std::string("in cartesian coordinates, relative to the last placed ")+
-    std::string("element.");
+"The \"GLOBAL_CARTESIAN_OFFSET\" element defines an offset in cartesian "
+"coordinates, relative to the origin of the coordinate system.";
 
 OpalGlobalCartesianOffset::OpalGlobalCartesianOffset()
        : OpalElement(int(SIZE),

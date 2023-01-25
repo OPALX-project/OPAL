@@ -50,6 +50,7 @@ ScalingFFAMagnet::ScalingFFAMagnet(const ScalingFFAMagnet &right)
     RefPartBunch_m = right.RefPartBunch_m;
     Bz_m = right.Bz_m;
     r0_m = right.r0_m;
+    r0Sign_m = right.r0Sign_m;
 }
 
 ScalingFFAMagnet::~ScalingFFAMagnet() {
@@ -107,11 +108,7 @@ void ScalingFFAMagnet::accept(BeamlineVisitor& visitor) const {
 
 bool ScalingFFAMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
     double x;
-    if (r0_m > 0.0) { // anticlockwise
-        x = r0_m - R[0];
-    } else { // clockwise
-        x = R[0] - r0_m;
-    }
+    x = r0Sign_m*(r0_m - R[0]);
     double r = std::sqrt(x*x+R[2]*R[2]);
     double phi = std::atan2(R[2], x); // angle between y-axis and position vector in anticlockwise direction
     Vector_t posCyl(r, R[1], phi);

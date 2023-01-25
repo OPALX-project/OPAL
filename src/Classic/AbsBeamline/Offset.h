@@ -180,6 +180,14 @@ class Offset : public Component {
 
     Euclid3DGeometry& getGeometry() override;
     const Euclid3DGeometry& getGeometry() const override;
+
+    /** Convert to a local coordinate system for global offsets
+     * 
+     *  If _is_local is true, just calls updateGeometry(). If false, then this
+     *  updates the geometry so that _endPosition and _endDirection are relative
+     *  to startPosition and startDirection (rather than the global coordinate
+     *  system)
+     */
     void updateGeometry(Vector_t startPosition, Vector_t startDirection);
     void updateGeometry();
     bool isGeometryAllocated() const;
