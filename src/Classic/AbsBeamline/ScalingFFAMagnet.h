@@ -25,6 +25,7 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
+#include "Algorithms/PartBunch.h"
 #include "Fields/BMultipoleField.h"
 #include "BeamlineGeometry/PlanarArcGeometry.h"
 #include "AbsBeamline/EndFieldModel/EndFieldModel.h"
@@ -67,7 +68,8 @@ class ScalingFFAMagnet : public Component {
      *  \param B calculated magnetic field
      *  \returns true if particle is outside the field map
      */
-    bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
+    inline bool apply(const size_t &i, const double &t,
+                      Vector_t &E, Vector_t &B) override;
 
     /** Calculate the field at some arbitrary position
      *
@@ -78,7 +80,7 @@ class ScalingFFAMagnet : public Component {
      *  \param B calculated magnetic field
      *  \returns true if particle is outside the field map, else false
      */
-    bool apply(const Vector_t &R, const Vector_t &P, const double &t,
+    inline bool apply(const Vector_t &R, const Vector_t &P, const double &t,
                Vector_t &E, Vector_t &B) override;
 
     /** Calculate the field at some arbitrary position in cartesian coordinates
@@ -93,7 +95,7 @@ class ScalingFFAMagnet : public Component {
     /** Calculate the field at some arbitrary position in cylindrical coordinates
      *
      *  \param R position in the local coordinate system of the bend, in
-     *           cylindrical polar coordinates defined like (r, y, phi)
+     *           cylindrical polar coordinates defined like (r, z, phi)
      *  \param B calculated magnetic field defined like (Br, By, Bphi)
      *  \returns true if particle is outside the field map, else false
      */
@@ -275,24 +277,34 @@ class ScalingFFAMagnet : public Component {
     PlanarArcGeometry planarArcGeometry_m;
     BMultipoleField dummy;
 
-    size_t maxOrder_m = 0;
-    double tanDelta_m = 0.;
-    double k_m = 0.;
-    double Bz_m = 0.;
-    double r0_m = 0.;
+    size_t maxOrder_m = 0; // maximum order used in the calculation
+    double tanDelta_m = 0.; // tan(spiral angle)
+    double k_m = 0.; // field index
+    double Bz_m = 0.; // nominal field on the radius
+    double r0_m = 0.; // radius; negative for clockwise geometry, else positive
     double rMin_m = 0.; // minimum radius
     double rMax_m = 0.; // maximum radius
     double phiStart_m = 0.; // offsets this element
     double phiEnd_m = 0.; // used for placement of next element
     double azimuthalExtent_m = 0.; // maximum distance used for field calculation
     double verticalExtent_m = 0.; // maximum allowed distance from the midplane
-    double r0Sign_m = 0.0;
-    Vector_t centre_m;
+    double r0Sign_m = 0.0; // -1 for clockwise geometry, else +1
+    Vector_t centre_m; // nominal ring centre
     endfieldmodel::EndFieldModel* endField_m = nullptr;
     std::string endFieldName_m = ""; 
     const double fp_tolerance = 1e-18;
     std::vector<std::vector<double> > dfCoefficients_m;
 };
+
+bool ScalingFFAMagnet::apply(const Vector_t &R, const Vector_t &/*P*/,
+                             const double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
+    return getFieldValue(R, B);
+}
+
+bool ScalingFFAMagnet::apply(const size_t &i, const double &t,
+                    Vector_t &E, Vector_t &B) {
+    return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
+}
 
 #endif
 

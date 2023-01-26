@@ -76,6 +76,13 @@ public:
     double magnetLength_m = 0.63; // m
     double psi0_m = magnetLength_m*2*M_PI/r0_m; // radians
 
+    Vector_t getB(Vector_t pos) {
+        Vector_t mom, B, E;
+        double t;
+        sector_m->apply(pos, mom, t, E, B);
+        return B;
+    }
+
     double getDBDu(int i, int j, Vector_t pos, double delta, bool isCartesian) {
         Vector_t mom(0., 0., 0.);
         Vector_t E(0., 0., 0.);
@@ -210,7 +217,7 @@ public:
     }
 
 private:
-    // OpalTestUtilities::SilenceTest silencer_m;
+    OpalTestUtilities::SilenceTest silencer_m;
 };
 
 TEST_F(ScalingFFAMagnetTest, ConstructorTest) {
@@ -376,37 +383,43 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceYTest) {
 }
 
 TEST_F(ScalingFFAMagnetTest, ConvergenceOrderTest) {
-    for (double y = 0.5; y > 0.2; y /= 10.) { // 50 cm off midplane
-        std::cout << "order y divB |curlB| curlB" << std::endl;
-        std::vector<double> divBVec(13);
-        std::vector<double> curlBVec(13);
-        std::vector<double> divBCartVec(13);
-        std::vector<double> curlBCartVec(13);
-        double delta = y/100.;
-        for (size_t i = 0; i < divBVec.size(); ++i) {
-            sector_m->setMaxOrder(i);
-            sector_m->initialise();
-            //Vector_t pos(r0_m, y, psi0_m*2);
-            Vector_t pos(r0_m*(1-cos(psi0_m*2)), y, r0_m*sin(psi0_m*2));
-            double divB = getDivBCart(pos, Vector_t(delta, delta, delta/r0_m));
-            Vector_t curlB = getCurlBCart(pos, Vector_t(delta, delta, delta/r0_m));
-            double curlBMag =
-                sqrt(curlB[0]*curlB[0] + curlB[1]*curlB[1] + curlB[2]*curlB[2]);
-            divB = fabs(divB);
-            divBVec[i] = divB;
-            curlBVec[i] = curlBMag;
-            std::cout << i << "     " << y << "    " << divB << "           "
-                      << curlBMag << " " << curlB << std::endl;
-            if (i > 1 && i % 2 == 1) {
-                EXPECT_LT(divBVec[i], divBVec[i-2]) << " with i "
-                                                    << i << std::endl;
+    for (double r0sign = -1.0; r0sign < 2.0; r0sign += 2.0) {
+        for (double y = 0.5; y > 0.2; y /= 10.) { // 50 cm off midplane
+            std::cout << "order y     B   divB      |curlB|       curlB" << std::endl;
+            std::vector<double> divBVec(13);
+            std::vector<double> curlBVec(13);
+            double delta = y/100.;
+            for (size_t i = 0; i < divBVec.size(); ++i) {
+                sector_m->setMaxOrder(i);
+                sector_m->initialise();
+                sector_m->setR0(r0sign*r0_m);
+                //Vector_t pos(r0_m, y, psi0_m*2);
+                Vector_t pos(r0sign*r0_m*(1-cos(2*psi0_m)), y, r0_m*sin(2*psi0_m));
+                Vector_t posCyl(r0_m, y, 2*psi0_m);
+                double divB = getDivBCart(pos, Vector_t(delta, delta, delta/r0_m));
+                Vector_t curlB = getCurlBCart(pos, Vector_t(delta, delta, delta/r0_m));
+                Vector_t curlBCyl = getCurlBCyl(posCyl, Vector_t(delta, delta, delta/r0_m));
+                Vector_t B = getB(pos);
+                Vector_t Bcyl;
+                sector_m->getFieldValueCylindrical(posCyl, Bcyl);
+                double curlBMag =
+                    sqrt(curlB[0]*curlB[0] + curlB[1]*curlB[1] + curlB[2]*curlB[2]);
+                divB = fabs(divB);
+                divBVec[i] = divB;
+                curlBVec[i] = curlBMag;
+                std::cout << i << "     " << y << "    " << B << " " << Bcyl << "     " << divB << "           "
+                          << curlBMag << " " << curlB << " " << curlBCyl << std::endl;
+                if (i > 1 && i % 2 == 1) {
+                    EXPECT_LT(divBVec[i], divBVec[i-2]) << " with i "
+                                                        << i << std::endl;
+                }
+                if (i > 1 && i % 2 == 0) {
+                    EXPECT_LT(curlBVec[i], curlBVec[i-2]) << " with i "
+                                                        << i << std::endl;
+                }
             }
-            if (i > 1 && i % 2 == 0) {
-                EXPECT_LT(curlBVec[i], curlBVec[i-2]) << " with i "
-                                                    << i << std::endl;
-            }
+            std::cout << std::endl;
         }
-        std::cout << std::endl;
     }
     sector_m->setMaxOrder(10);
 }
@@ -522,8 +535,4 @@ TEST_F(ScalingFFAMagnetTest, AzimuthalBoundingBoxTest) {
         Vector_t pos(r0_m*(1-cos(phi[i])), 0,  r0_m*sin(phi[i]));
         EXPECT_EQ(sector_m->apply(pos, mom, t, E, B), bb[i]) << i << " " << pos;
     }
-}
-
-TEST_F(ScalingFFAMagnetTest, NegativeBendingRadiusTest) {
-    EXPECT_TRUE(false) << "Need to check negative bending radius";
 }

@@ -13,15 +13,17 @@ MESSAGE(STATUS "Adding ${PyBoostLib} to boost required list")
 # script
 if (PYOPAL_INSTALL_DIR)
     # do nothing
-elif (Python3_SITEARCH)
-    # In my cmake build Python3_SITEARCH was not set
-    SET(PYOPAL_INSTALL_DIR ${Python3_SITEARCH})
-else()
-    exec_program("python find_install_location.py" "${CMAKE_CURRENT_SOURCE_DIR}"
-                 OUTPUT_VARIABLE Python_INSTALL_LOCATION)
-    MESSAGE(STATUS "Python install location resolved to ${Python_INSTALL_LOCATION}")
-    SET(PYOPAL_INSTALL_DIR ${Python_INSTALL_LOCATION})
+else() # elif doesn't exist in cmake 3.16
+    if (Python3_SITEARCH)
+        # In my cmake build Python3_SITEARCH was not set
+        SET(PYOPAL_INSTALL_DIR ${Python3_SITEARCH})
+    else()
+        exec_program("python find_install_location.py" "${CMAKE_CURRENT_SOURCE_DIR}"
+                     OUTPUT_VARIABLE Python_INSTALL_LOCATION)
+        SET(PYOPAL_INSTALL_DIR ${Python_INSTALL_LOCATION})
+    endif()
 endif()
+MESSAGE(STATUS "PyOpal install location resolved to ${PYOPAL_INSTALL_DIR}")
 
 set (Boost_LIBS ${Boost_LIBS} ${PyBoostLib})
 find_package (Boost 1.66.0

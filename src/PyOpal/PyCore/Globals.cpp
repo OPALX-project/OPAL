@@ -1,3 +1,4 @@
+#include <cstring>
 #include <gsl/gsl_errno.h>
 #include "Utilities/OpalException.h"
 

@@ -71,11 +71,6 @@ const EMField &ScalingFFAMagnet::getField() const {
     return dummy;
 }
 
-bool ScalingFFAMagnet::apply(const size_t &i, const double &t,
-                    Vector_t &E, Vector_t &B) {
-    return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
-}
-
 void ScalingFFAMagnet::initialise() {
     calculateDfCoefficients();
 }
@@ -107,8 +102,7 @@ void ScalingFFAMagnet::accept(BeamlineVisitor& visitor) const {
 
 
 bool ScalingFFAMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
-    double x;
-    x = r0Sign_m*(r0_m - R[0]);
+    double x = r0Sign_m*(r0_m - R[0]);
     double r = std::sqrt(x*x+R[2]*R[2]);
     double phi = std::atan2(R[2], x); // angle between y-axis and position vector in anticlockwise direction
     Vector_t posCyl(r, R[1], phi);
@@ -117,7 +111,7 @@ bool ScalingFFAMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
     bool outOfBounds = getFieldValueCylindrical(posCyl, bCyl);
     // this is cartesian coordinates
     B[1] += bCyl[1];
-    B[0] += bCyl[0]*std::cos(phi) -bCyl[2]*std::sin(phi);
+    B[0] += r0Sign_m*(-bCyl[0]*std::cos(phi) +bCyl[2]*std::sin(phi));
     B[2] += bCyl[0]*std::sin(phi) +bCyl[2]*std::cos(phi);
     return outOfBounds;
 
@@ -132,20 +126,27 @@ bool ScalingFFAMagnet::getFieldValueCylindrical(const Vector_t &pos, Vector_t &B
     if (r < rMin_m || r > rMax_m) {
         return true;
     }
-
-    double normRadius = r/std::abs(r0_m);
-    double g = tanDelta_m*std::log(normRadius);
-    double phiSpiral = phi - g - phiStart_m;
-    double h = std::pow(normRadius, k_m)*Bz_m;
-    if (phiSpiral < -azimuthalExtent_m || phiSpiral > azimuthalExtent_m) {
-        return true;
-    }
     if (z < -verticalExtent_m || z > verticalExtent_m) {
         return true;
     }
+    double normRadius = r/std::abs(r0_m);
+    double g = tanDelta_m*std::log(normRadius);
+    double phiSpiral = phi - g - phiStart_m;
+    if (phiSpiral < -azimuthalExtent_m || phiSpiral > azimuthalExtent_m) {
+        return true;
+    }
+
+    double h = std::pow(normRadius, k_m)*Bz_m;
     std::vector<double> fringeDerivatives(maxOrder_m+1, 0.);
     for (size_t i = 0; i < fringeDerivatives.size(); ++i) {
         fringeDerivatives[i] = endField_m->function(phiSpiral, i); // d^i_phi f
+    }
+
+    double zOverR = -1*r0Sign_m*z/r;
+    std::vector<double> zOverRVec(dfCoefficients_m.size()+1); // zOverR^n
+    zOverRVec[0] = 1.0;
+    for (size_t n = 1; n < zOverRVec.size(); ++n) {
+        zOverRVec[n] = zOverRVec[n-1]*zOverR;
     }
     for (size_t n = 0; n < dfCoefficients_m.size(); n += 2) {
         double f2n = 0;
@@ -153,24 +154,18 @@ bool ScalingFFAMagnet::getFieldValueCylindrical(const Vector_t &pos, Vector_t &B
         for (size_t i = 0; i < dfCoefficients_m[n].size(); ++i) {
             f2n += dfCoefficients_m[n][i]*fringeDerivatives[i];
         }
-        deltaB[1] = f2n*h*std::pow(z/r, n); // Bz = sum(f_2n * h * (z/r)^2n
+        deltaB[1] = f2n*h*zOverRVec[n]; // Bz = sum(f_2n * h * (z/r)^2n
         if (maxOrder_m >= n+1) {
             double f2nplus1 = 0;
             for (size_t i = 0; i < dfCoefficients_m[n+1].size() && n+1 < dfCoefficients_m.size(); ++i) {
                 f2nplus1 += dfCoefficients_m[n+1][i]*fringeDerivatives[i];
             }
-            deltaB[0] = (f2n*(k_m-n)/(n+1) - tanDelta_m*f2nplus1)*h*std::pow(z/r, n+1); // Br
-            deltaB[2] = f2nplus1*h*std::pow(z/r, n+1); // Bphi = sum(f_2n+1 * h * (z/r)^2n+1
+            deltaB[0] = -1*r0Sign_m*(f2n*(k_m-n)/(n+1) - tanDelta_m*f2nplus1)*h*zOverRVec[n+1]; // Br
+            deltaB[2] = -1*r0Sign_m*f2nplus1*h*zOverRVec[n+1]; // Bphi = sum(f_2n+1 * h * (z/r)^2n+1
         }
         B += deltaB;
     }
     return false;
-}
-
-
-bool ScalingFFAMagnet::apply(const Vector_t &R, const Vector_t &/*P*/,
-                             const double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
-    return getFieldValue(R, B);
 }
 
 void ScalingFFAMagnet::calculateDfCoefficients() {

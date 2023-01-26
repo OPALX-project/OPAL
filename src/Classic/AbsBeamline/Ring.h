@@ -326,6 +326,8 @@ class Ring : public Component {
     /** Get the list of sections at position pos */
     std::vector<RingSection*> getSectionsAt(const Vector_t& pos);
 
+    void handleGlobalOffset(const Component&);
+
     /** Convert from a Vector3D to a Vector_t */
     static inline Vector_t convert(const Vector3D& vec);
 

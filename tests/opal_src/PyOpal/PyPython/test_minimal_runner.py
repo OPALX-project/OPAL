@@ -35,7 +35,7 @@ class MinimalRunnerTest(unittest.TestCase):
         """Test that minimal runner calls overloaded functions okay"""
         runner = MinimalRunnerOverload()
         for i in range(5):
-            runner.run_one_fork()
+            runner.execute_fork()
         # check that the runner preproc and postproc were called
         with open(runner.preproc) as fin:
             self.assertEqual(len(fin.read()), 5)
