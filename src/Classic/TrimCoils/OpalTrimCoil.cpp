@@ -76,10 +76,10 @@ OpalTrimCoil::OpalTrimCoil():
                          ("BMAX", "Maximum magnetic field in Tesla.");
 
     itsAttr[PHIMIN]    = Attributes::makeReal
-                         ("PHIMIN", "Minimal azimuth [deg] (default 0)");
+                         ("PHIMIN", "Minimal azimuth [deg] (default 0)", 0.0);
 
     itsAttr[PHIMAX]    = Attributes::makeReal
-                         ("PHIMAX", "Maximal azimuth [deg] (default 360)");
+                         ("PHIMAX", "Maximal azimuth [deg] (default 360)", 360.0);
 
     itsAttr[RMIN]      = Attributes::makeReal
                          ("RMIN", "Minimum radius [mm].");
@@ -191,10 +191,11 @@ Inform& OpalTrimCoil::print(Inform &os) const {
         printPolynom(os,itsAttr[COEFDENOMPHI]);
     }
 
-    os << "* BMAX           " << Attributes::getReal(itsAttr[BMAX]) << '\n'
-       << "* RMIN           " << Attributes::getReal(itsAttr[RMIN]) << '\n'
-       << "* RMAX           " << Attributes::getReal(itsAttr[RMAX]) << '\n';
-
+    os << "* BMAX           " << Attributes::getReal(itsAttr[BMAX])   << '\n'
+       << "* RMIN           " << Attributes::getReal(itsAttr[RMIN])   << '\n'
+       << "* RMAX           " << Attributes::getReal(itsAttr[RMAX])   << '\n'
+       << "* PHIMIN         " << Attributes::getReal(itsAttr[PHIMIN]) << '\n'
+       << "* PHIMAX         " << Attributes::getReal(itsAttr[PHIMAX]) << '\n';
     if (Attributes::getString(itsAttr[TYPE]) == "PSI-BFIELD-MIRRORED") {
         os << "* SLPTC          " << Attributes::getReal(itsAttr[SLPTC]) << '\n';
     }
