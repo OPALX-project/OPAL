@@ -4,6 +4,9 @@
 #include "TrimCoils/TrimCoilPhaseFit.h"
 #include "TrimCoils/TrimCoilMirrored.h"
 
+#include "Physics/Units.h"
+#include "Utilities/Util.h"
+
 #include "opal_test_utilities/SilenceTest.h"
 
 const double margin = 1e-7;
@@ -12,8 +15,6 @@ const double margin = 1e-7;
 TEST(TrimCoil, TrimCoilBFitZeros)
 {
     OpalTestUtilities::SilenceTest silencer;
-
-    const double mm2m = 0.001;
 
     double bmax = 0.0;
     double rmin = 1000; // mm
@@ -24,7 +25,7 @@ TEST(TrimCoil, TrimCoilBFitZeros)
 
     const double one = 1.0;
     double br = one, bz = one;
-    myTrimCoil.applyField((rmin+rmax)*mm2m/2.0, 1, 0, &br, &bz);
+    myTrimCoil.applyField((rmin + rmax) * Units::mm2m / 2.0, 1, 0, &br, &bz);
     // not changed since bmax 0.0
     EXPECT_NEAR(br, one, margin);
     EXPECT_NEAR(bz, one, margin);
@@ -32,17 +33,17 @@ TEST(TrimCoil, TrimCoilBFitZeros)
     bmax = 1.0;
     myTrimCoil = TrimCoilBFit(bmax, rmin, rmax, {}, {}, {}, {});
 
-    myTrimCoil.applyField(rmin*mm2m - 1, 1, phi, &br, &bz);
+    myTrimCoil.applyField(rmin * Units::mm2m - 1, 1, phi, &br, &bz);
     // not changed since r outside range
     EXPECT_NEAR(br, one, margin);
     EXPECT_NEAR(bz, one, margin);
 
-    myTrimCoil.applyField(rmax*mm2m + 1, 1, phi, &br, &bz);
+    myTrimCoil.applyField(rmax * Units::mm2m + 1, 1, phi, &br, &bz);
     // not changed since r outside range
     EXPECT_NEAR(br, one, margin);
     EXPECT_NEAR(bz, one, margin);
 
-    myTrimCoil.applyField(rmax*mm2m - 1, 1, phi, &br, &bz);
+    myTrimCoil.applyField(rmax * Units::mm2m - 1, 1, phi, &br, &bz);
     // default constant field
     EXPECT_NEAR(br, one, margin);
     EXPECT_NEAR(bz, 11.0, margin); // 1 + 10*1
@@ -80,8 +81,19 @@ TEST(TrimCoil, TrimCoilBFit)
     EXPECT_NEAR(bz, bzSolution, margin);
     EXPECT_NEAR(br, brSolution, margin);
 
+    phi = Util::angle_0to2pi(1.0);
+    EXPECT_NEAR(phi, 1, margin);
+    phi = Util::angle_0to2pi(-1.0);
+    EXPECT_NEAR(phi, -1+Physics::two_pi, margin);
+
     // test phi angles
     myTrimCoil.setAzimuth(10,180);
+    bool valid = Util::angleBetweenAngles(0.0, 10*Units::deg2rad, 180*Units::deg2rad);
+    EXPECT_FALSE(valid);
+    valid = Util::angleBetweenAngles(1.0, 10*Units::deg2rad, 180*Units::deg2rad);
+    EXPECT_TRUE(valid);
+    valid = Util::angleBetweenAngles(3.2, 10*Units::deg2rad, 180*Units::deg2rad);
+    EXPECT_FALSE(valid);
     br = brStart, bz = bzStart;
     myTrimCoil.applyField(2.0, zStart, 3.2, &br, &bz); // outside range
     EXPECT_NEAR(bz, bzStart, margin);
@@ -92,6 +104,12 @@ TEST(TrimCoil, TrimCoilBFit)
 
     // test phi angles: first larger
     myTrimCoil.setAzimuth(180,20);
+    valid = Util::angleBetweenAngles(0.0, 180*Units::deg2rad, 20*Units::deg2rad);
+    EXPECT_TRUE(valid);
+    valid = Util::angleBetweenAngles(1.0, 180*Units::deg2rad, 20*Units::deg2rad);
+    EXPECT_FALSE(valid);
+    valid = Util::angleBetweenAngles(3.2, 180*Units::deg2rad, 20*Units::deg2rad);
+    EXPECT_TRUE(valid);
     br = brStart, bz = bzStart;
     myTrimCoil.applyField(2.0, zStart, 1.0, &br, &bz); // outside range
     EXPECT_NEAR(bz, bzStart, margin);
@@ -100,7 +118,24 @@ TEST(TrimCoil, TrimCoilBFit)
     myTrimCoil.applyField(2.0, zStart, 0.0, &br, &bz); //  inside range
     EXPECT_NEAR(bz, 2*bzSolution - bzStart, margin);
 
-    // Test Phi
+    // test phi angles: negative
+    myTrimCoil.setAzimuth(10,-180);
+    double pi = Util::angle_0to2pi(-180*Units::deg2rad);
+    valid = Util::angleBetweenAngles(0.0, 10*Units::deg2rad, pi);
+    EXPECT_FALSE(valid);
+    valid = Util::angleBetweenAngles(1.0, 10*Units::deg2rad, pi);
+    EXPECT_TRUE(valid);
+    valid = Util::angleBetweenAngles(3.2, 10*Units::deg2rad, pi);
+    EXPECT_FALSE(valid);
+    br = brStart, bz = bzStart;
+    myTrimCoil.applyField(2.0, zStart, 3.2, &br, &bz); // outside range
+    EXPECT_NEAR(bz, bzStart, margin);
+    myTrimCoil.applyField(2.0, zStart, 0.0, &br, &bz); // outside range
+    EXPECT_NEAR(bz, bzStart, margin);
+    myTrimCoil.applyField(2.0, zStart, 1.0, &br, &bz); //  inside range
+    EXPECT_NEAR(bz, bzSolution, margin);
+
+    // Test phi function
     // same rational function
     myTrimCoil = TrimCoilBFit(bmax, rmin, rmax, {}, {}, {4.0, 3.0}, {1.0, 2.0});
     br = brStart, bz = bzStart;

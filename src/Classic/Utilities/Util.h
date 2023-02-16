@@ -21,6 +21,8 @@
 #include "Algorithms/Vektor.h"
 #include "Algorithms/Quaternion.h"
 
+#include "Physics/Physics.h"
+
 #include <algorithm>
 #include <cmath>
 #include <cstring>
@@ -193,6 +195,19 @@ namespace Util {
     }
 
     Vector_t getTaitBryantAngles(Quaternion rotation, const std::string& elementName = "");
+
+    /// convert angle (in rad) to [0,2pi) range, from https://stackoverflow.com/a/29721295
+    inline double angle_0to2pi(double angle) {
+        // converts angle to range [-2*pi, 2*pi)
+        angle = std::fmod(angle, Physics::two_pi);
+        if (angle >= 0.0) return angle;
+        else              return angle + Physics::two_pi;
+    }
+    /// check if angle (in rad and in range [0,2pi]) is within [min, max]
+    inline bool angleBetweenAngles(const double angle, const double min, const double max) {
+        if (min <= max) return (angle >= min && angle <= max);
+        else            return (angle >= min || angle <= max);
+    }
 
     std::string toUpper(const std::string& str);
 

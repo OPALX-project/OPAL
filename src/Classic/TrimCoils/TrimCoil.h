@@ -35,7 +35,7 @@ public:
     /// Apply the trim coil at position r and z to Bfields br and bz
     /// Calls virtual doApplyField
     void applyField(const double r, const double z, const double phi_rad, double *br, double *bz);
-    /// Set azimuthal range
+    /// Set azimuthal range where trim coil acts: [phimin, phimax] (also when phimin > phimax)
     void setAzimuth(const double phimin, const double phimax);
     virtual ~TrimCoil() { };
 
