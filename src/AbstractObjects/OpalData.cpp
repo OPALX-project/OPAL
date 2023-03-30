@@ -492,45 +492,50 @@ void OpalData::define(Object *newObject) {
     Object *oldObject = p->mainDirectory.find(name);
 
     if (oldObject != nullptr  &&  oldObject != newObject) {
-        // Attempt to replace an object.
-        if (oldObject->isBuiltin()  ||  ! oldObject->canReplaceBy(newObject)) {
+        if (oldObject->isBuiltin()) {
             throw OpalException("OpalData::define()",
-                                "You cannot replace the object \"" + name + "\".");
-        } else {
-            if (Options::info) {
-                INFOMSG("Replacing the object \"" << name << "\"." << endl);
-            }
-
-            // Erase all tables which depend on the new object.
-            OpalDataImpl::tableIterator i = p->tableDirectory.begin();
-            while(i != p->tableDirectory.end()) {
-                // We must increment i before calling erase(name),
-                // since erase(name) removes "this" from "tables".
-                Table *table = *i++;
-                const std::string &tableName = table->getOpalName();
-
-                if (table->isDependent(name)) {
-                    if (Options::info) {
-                    	std::cerr << std::endl << "Erasing dependent table \""
-                                  << tableName << "\"." << std::endl;
-                    }
-
-                    // Remove table from directory.
-                    // This erases the table from the main directory,
-                    // and its destructor unregisters it from the table directory.
-                    erase(tableName);
-                }
-            }
-
-            // Replace all references to this object.
-            for (ObjectDir::iterator i = p->mainDirectory.begin();
-                i != p->mainDirectory.end(); ++i) {
-                (*i).second->replace(oldObject, newObject);
-            }
-
-            // Remove old object.
-            erase(name);
+                                "The keyword \""
+                                + name +
+                                "\" is protected and can't be used to name an object.");
+        } else if (! oldObject->canReplaceBy(newObject)) {
+            throw OpalException("OpalData::define()",
+                                "You cannot replace the already defined object \""
+                                + name +
+                                "\".");
         }
+        if (Options::info) {
+            INFOMSG("Replacing the object \"" << name << "\"." << endl);
+        }
+
+        // Erase all tables which depend on the new object.
+        OpalDataImpl::tableIterator i = p->tableDirectory.begin();
+        while(i != p->tableDirectory.end()) {
+            // We must increment i before calling erase(name),
+            // since erase(name) removes "this" from "tables".
+            Table *table = *i++;
+            const std::string &tableName = table->getOpalName();
+        
+            if (table->isDependent(name)) {
+                if (Options::info) {
+                    std::cerr << std::endl << "Erasing dependent table \""
+                              << tableName << "\"." << std::endl;
+                }
+
+                // Remove table from directory.
+                // This erases the table from the main directory,
+                // and its destructor unregisters it from the table directory.
+                erase(tableName);
+            }
+        }
+
+        // Replace all references to this object.
+        for (ObjectDir::iterator i = p->mainDirectory.begin();
+             i != p->mainDirectory.end(); ++i) {
+            (*i).second->replace(oldObject, newObject);
+        }
+
+        // Remove old object.
+        erase(name);
     }
 
     // Force re-evaluation of expressions.
