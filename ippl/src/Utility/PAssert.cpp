@@ -45,8 +45,9 @@ using namespace std;
 assertion::assertion( const char *cond, const char *file, int line ):
     std::runtime_error(cond)
 {
-    msg = new char[ strlen(cond) + strlen(file) + 500 ];
-    sprintf( msg, "Assertion: %s, failed in %s, line %8d.",
+    size_t size = strlen(cond) + strlen(file) + 500;
+    msg = new char[size];
+    snprintf( msg, size, "Assertion: %s, failed in %s, line %8d.",
 	     cond, file, line );
 }
 
@@ -90,8 +91,9 @@ void toss_cookies( const char *cond, const char *file, int line )
 
 void insist( const char *cond, const char *msg, const char *file, int line )
 {
-    char* fullmsg = new char[ strlen(cond) + strlen(msg) + strlen(file) + 500 ];
-    sprintf( fullmsg, "%s\nAssertion '%s' failed in \n%s on line %8d.",
+    size_t size = strlen(cond) + strlen(msg) + strlen(file) + 500;
+    char* fullmsg = new char[size];
+    snprintf( fullmsg, size, "%s\nAssertion '%s' failed in \n%s on line %8d.",
 	     msg, cond, file, line );
 
     throw assertion( fullmsg );

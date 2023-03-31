@@ -197,7 +197,7 @@ string DiscConfig::replace_wildcards(const string& s,
 	token = machine;
       } else if (token == "node" || token == "n" || token == "N") {
 	char buf[32];
-	sprintf(buf, "%d", Ippl::myNode());
+	snprintf(buf, sizeof(buf), "%d", Ippl::myNode());
 	token = buf;
       } else {
 	// look for an env var with this name
@@ -377,7 +377,7 @@ bool DiscConfig::parse_config(const char *BaseFile, bool WritingFile) {
       PAssert(msg);
       string nodename;
       ::getMessage(*msg,nodename);
-      sprintf(name, " %s %d", nodename.c_str(), node);
+      snprintf(name, sizeof(name), " %s %d", nodename.c_str(), node);
       NodeNameItems += name;
       delete msg;
     }

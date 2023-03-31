@@ -422,7 +422,7 @@ public:
  	    std::ofstream ostr;
             std::string Fn;
             char numbuf[6];
-            sprintf(numbuf, "%05d", idx);
+            snprintf(numbuf, sizeof(numbuf), "%05d", idx);
             Fn = fn  + std::string(numbuf) + ".dat";
             ostr.open(Fn.c_str(), std::ios::out );
             ostr.precision(15);
