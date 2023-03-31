@@ -201,7 +201,7 @@ void AmrYtWriter::writeFields(const amr::AmrScalarFieldContainer_t& rho,
         //
         static const std::string BaseName = "/Cell";
         char buf[64];
-        sprintf(buf, "Level_%d", lev);
+        snprintf(buf, sizeof(buf), "Level_%d", lev);
         std::string sLevel = buf;
     
         //

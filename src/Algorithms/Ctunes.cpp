@@ -6,6 +6,7 @@
 /* ASM, September 2001                                                       */
 /*****************************************************************************/
 #include <algorithm>
+#include <memory>
 #include <vector>
 #include <cstring>
 
@@ -64,8 +65,6 @@ int TUNE_class::lombAnalysis(std::vector<double> &x, std::vector<double> &y, int
 
     CI_lt p, q;
 
-    char   mess[80];
-    LOMB_class *la;
     std::vector<LOMB_TYPE> lodata, lodata2;
     /*---------------------------------------------------------------------------*/
 
@@ -86,9 +85,7 @@ int TUNE_class::lombAnalysis(std::vector<double> &x, std::vector<double> &y, int
     datcnt = (int) count_if(p, q, Lomb_eq(0.));
 
     if(datcnt > (q - p - 10)) {
-        memset(mess, '\0', sizeof(mess));
-        sprintf(mess, "Just found %d data points that are == 0!", datcnt);
-        *gmsg << "* " << mess << endl;
+        *gmsg << "* Just found " << datcnt << " data points that are == 0!" << endl;
         return(-1);
     }
 
@@ -98,17 +95,12 @@ int TUNE_class::lombAnalysis(std::vector<double> &x, std::vector<double> &y, int
     Qmin  = 0.2;
     Qmax  = 0.4;
 
-    la = new LOMB_class(1);
+    std::unique_ptr<LOMB_class> la(new LOMB_class(1));
 
     stat = 0;
     stat = la->period(&lodata, &lodata2, ofac, hifac, &nout, &jmax, &prob, 0);
     if(stat != 0) {
-        memset(mess, '\0', sizeof(mess));
-        sprintf(mess, "@C3ERROR: Lomb analysis failed!");
-        *gmsg << "* " << mess << endl;
-
-        delete la;
-        la = nullptr;
+        *gmsg << "* @C3ERROR: Lomb analysis failed!" << endl;
         return(-1);
     }
 
@@ -124,21 +116,23 @@ int TUNE_class::lombAnalysis(std::vector<double> &x, std::vector<double> &y, int
                (pairy[pairc] > lodata2[i+1].y)) {
                 probi = la->signi(&pairy[pairc], &nout, &tofac);
                 if(pairy[pairc] > 4.) {
-                    memset(mess, '\0', sizeof(mess));
-                    sprintf(mess, "%12.8f %8.2f %8.3f %d", pairx[pairc]*Norm, pairy[pairc], probi, i);
-                    *gmsg << "* " << mess << endl;
+                    *gmsg << std::fixed
+                          << std::setw(12) << std::setprecision(8) << pairx[pairc]*Norm << " "
+                          << std::setw(8)  << std::setprecision(2) << pairy[pairc] << " "
+                          << std::setw(8)  << std::setprecision(3) << probi << " "
+                          << i << endl;
                 }
             }
             pairc++;
         }
     }
 
-    memset(mess, '\0', sizeof(mess));
-    sprintf(mess, " ===> Max: %12.8f %8.3f\n", lodata2[jmax].x * Norm, lodata2[jmax].y);
-    *gmsg << "* " << mess << endl;
+    *gmsg << "* ===> Max: "
+          << std::fixed
+          << std::setw(12) << std::setprecision(8) << lodata2[jmax].x * Norm << " "
+          << std::setw(8)  << std::setprecision(2) << lodata2[jmax].y << " "
+          << endl;
 
-    delete la;
-    la = nullptr;
     return(0);
 }
 
@@ -161,13 +155,10 @@ int TUNE_class::lombAnalysis(double *x, double *y, int Ndat, int /*nhis*/)
 
     CI_lt p, q;
 
-    char   mess[80];
-    LOMB_class *la;
     std::vector<LOMB_TYPE> lodata, lodata2;
     /*---------------------------------------------------------------------------*/
 
-    sprintf(mess, "TUNE_class LombAnalysis requested");
-    *gmsg << "* " << mess << endl;
+    *gmsg << "* TUNE_class LombAnalysis requested" << endl;
 
     /*
      * Do Lomb analysis
@@ -186,9 +177,7 @@ int TUNE_class::lombAnalysis(double *x, double *y, int Ndat, int /*nhis*/)
     datcnt = count_if(p, q, Lomb_eq(0.));
 
     if(datcnt > (q - p - 10)) {
-        memset(mess, '\0', sizeof(mess));
-        sprintf(mess, "Just found %d data points that are == 0!", datcnt);
-        *gmsg << "* " << mess << endl;
+        *gmsg << "* Just found " << datcnt << "data points that are == 0!" << endl;
         return(-1);
     }
 
@@ -198,30 +187,21 @@ int TUNE_class::lombAnalysis(double *x, double *y, int Ndat, int /*nhis*/)
     Qmin  = 0.2;
     Qmax  = 0.4;
 
-    la = new LOMB_class(1);
+    std::unique_ptr<LOMB_class> la(new LOMB_class(1));
 
     stat = 0;
     stat = la->period(&lodata, &lodata2, ofac, hifac, &nout, &jmax, &prob, 0);
     if(stat != 0) {
-        memset(mess, '\0', sizeof(mess));
-        sprintf(mess, "@C3ERROR: Lomb analysis failed!");
-        *gmsg << "* " << mess << endl;
-
-        delete la;
-        la = nullptr;
+        *gmsg << "* @C3ERROR: Lomb analysis failed!" << endl;
         return(-1);
     }
 
-    memset(mess, '\0', sizeof(mess));
-    sprintf(mess, "=====> jmax = %d", jmax);
-    *gmsg << "* " << mess << endl;
+    *gmsg << "* =====> jmax = " << jmax << endl;
 
     double pairx[nout];
     double pairy[nout];
 
-    memset(mess, '\0', sizeof(mess));
-    sprintf(mess, "\n********** Peaks in Data:       **************");
-    *gmsg << "* " << mess << endl;
+    *gmsg << "* ********** Peaks in Data:       **************" << endl;
 
     /*
     ada make histogram
@@ -242,22 +222,22 @@ int TUNE_class::lombAnalysis(double *x, double *y, int Ndat, int /*nhis*/)
                (pairy[pairc] > lodata2[i+1].y)) {
                 probi = la->signi(&pairy[pairc], &nout, &tofac);
                 if(pairy[pairc] > 4.) {
-                    memset(mess, '\0', sizeof(mess));
-                    sprintf(mess, "%12.8f %8.2f %8.3f %d", pairx[pairc], pairy[pairc],
-                            probi, i);
-                    *gmsg << "* " << mess << endl;
+                    *gmsg << std::fixed
+                          << std::setw(12) << std::setprecision(8) << pairx[pairc] << " "
+                          << std::setw(8)  << std::setprecision(2) << pairy[pairc] << " "
+                          << std::setw(8)  << std::setprecision(3) << probi << " "
+                          << i << endl;
                 }
             }
             pairc++;
         }
     }
 
-    memset(mess, '\0', sizeof(mess));
-    sprintf(mess, "\n===> Max: %12.8f %8.3f\n", lodata2[jmax].x, lodata2[jmax].y);
-    *gmsg << "* " << mess << endl;
-
-    delete la;
-    la = nullptr;
+    *gmsg << "* ===> Max: "
+          << std::fixed
+          << std::setw(12) << std::setprecision(8) << lodata2[jmax].x << " "
+          << std::setw(8)  << std::setprecision(2) << lodata2[jmax].y << " "
+          << endl;
 
     return(0);
 
