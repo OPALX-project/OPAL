@@ -453,8 +453,9 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
         reduce(time, avgTime, 1, std::plus<double>());
         avgTime /= comm_mp->getSize();
         if (comm_mp->getRank() == 0) {
-            char filename[50];
-            snprintf(filename, sizeof(filename), "timing_MX%d_MY%d_MZ%d_nProc%d_recB%d_numB%d_nLHS%d",
+            char filename[256];  // common size supported by most file-systems
+            snprintf(filename, sizeof(filename),
+                     "timing_MX%d_MY%d_MZ%d_nProc%d_recB%d_numB%d_nLHS%d",
                     orig_nr_m[0], orig_nr_m[1], orig_nr_m[2],
                     comm_mp->getSize(), recycleBlocks_m, numBlocks_m, nLHS_m);
 
