@@ -738,13 +738,13 @@ bool Cyclotron::interpolate(const double& rad,
           With this we have B-field AND this is far more
           intuitive for me ....
         */
-        r1t1 = idx(ir, it);
+        r1t1 = idx(ir    , it);
         r2t1 = idx(ir + 1, it);
-        r1t2 = idx(ir, it + 1);
+        r1t2 = idx(ir    , it + 1);
         r2t2 = idx(ir + 1, it + 1);
     }
 
-    if ((it >= 0) && (ir >= 0) && (it < Bfield_m.ntetS_m) && (ir < Bfield_m.nrad_m)) {
+    if ((r1t1 >= 0) && (r2t2 < Bfield_m.ntot_m)) {
         // B_{z}
         double bzf = Bfield_m.bfld_m[r1t1] * wr2 * wt2 +
                      Bfield_m.bfld_m[r2t1] * wr1 * wt2 +
