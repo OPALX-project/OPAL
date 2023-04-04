@@ -656,7 +656,7 @@ void OpalSimulation::cleanUp(const std::vector<std::string>& keep) {
         {
             fs::directory_iterator it{p};
             while (it != fs::directory_iterator{}) {
-                std::string extension = Util::toUpper(fs::extension(it->path().filename()));
+                std::string extension = Util::toUpper(it->path().extension().string());
 
                 // remove .
                 extension.erase(0, 1);
