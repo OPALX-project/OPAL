@@ -1413,7 +1413,9 @@ void ParallelPeriodicFace<T,D,M,C>::apply( Field<T,D,M,C>& A )
   // Number of nodes that will send us messages.
 
   int receive_count = 0;
+#ifdef PRINT_DEBUG
   int send_count = 0;
+#endif
 
   // Communications tag
 
@@ -1744,7 +1746,9 @@ void ParallelPeriodicFace<T,D,M,C>::apply( Field<T,D,M,C>& A )
 #endif
 
 	      Ippl::Comm->send(messages[iproc], iproc, bc_comm_tag);
+#ifdef PRINT_DEBUG
 	      ++send_count;
+#endif
 
 	    }
 
@@ -2130,7 +2134,9 @@ void ParallelInterpolationFace<T,D,M,C>::apply( Field<T,D,M,C>& A )
   // Number of nodes that will send us messages.
 
   int receive_count = 0;
+#ifdef PRINT_DEBUG
   int send_count = 0;
+#endif
 
   // Communications tag
 
@@ -2467,8 +2473,9 @@ void ParallelInterpolationFace<T,D,M,C>::apply( Field<T,D,M,C>& A )
 #endif
 
 	      Ippl::Comm->send(messages[iproc], iproc, bc_comm_tag);
+#ifdef PRINT_DEBUG
 	      ++send_count;
-
+#endif
 	    }
 
 	}
@@ -6194,4 +6201,3 @@ void PatchBC<T,D,M,C>::apply( Field<T,D,M,C>& A )
 //----------------------------------------------------------------------
 
 #undef COMPONENT_APPLY_BUILTIN
-

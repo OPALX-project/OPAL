@@ -110,7 +110,6 @@ TEST(Maxwell, Zeros)
     //double radius = 1;
     double stepSize = 1.0e-6, x, z;
     //int step;
-    int counter = 0;
     //ofstream fout("some_data");
     for(z = 0.0; z <0.0015; z+= 0.0015)
         for(x = 0.; x<0.04; x += 0.04)
@@ -118,7 +117,6 @@ TEST(Maxwell, Zeros)
                 {
                   // step = phi/(Physics::pi/20);
                   //std::cout<<"Step #"<<step<<endl;
-                  counter ++;
                   Vector_t B(0.0);
                   R(0) = (myMagnet->Bend2D::designRadius_m + x) * cos(phi);
                   R(1) = z;
