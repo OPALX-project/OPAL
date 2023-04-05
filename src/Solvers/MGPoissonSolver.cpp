@@ -376,10 +376,17 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
 # pragma clang diagnostic push
 # pragma clang diagnostic warning "-Wdeprecated-declarations"
 #endif
+#if defined(__GNUG__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic warning "-Wdeprecated-declarations"
+#endif
     if (Teuchos::is_null(A))
         A = rcp(new TpetraCrsMatrix_t(map_p,  7, Tpetra::StaticProfile));
 #if defined(__clang__)
 # pragma clang diagnostic pop
+#endif
+#if defined(__GNUG__)
+# pragma GCC diagnostic pop
 #endif
     ComputeStencil(hr, RHS);
     IpplTimings::stopTimer(FunctionTimer4_m);
@@ -533,9 +540,16 @@ void MGPoissonSolver::ComputeStencil(Vector_t /*hr*/, Teuchos::RCP<TpetraVector_
 # pragma clang diagnostic push
 # pragma clang diagnostic warning "-Wdeprecated-declarations"
 #endif
-    int NumMyElements = map_p->getLocalNumElements();
+#if defined(__GNUG__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic warning "-Wdeprecated-declarations"
+#endif
+    int NumMyElements = map_p->getNodeNumElements();
 #if defined(__clang__)
 # pragma clang diagnostic pop
+#endif
+#if defined(__GNUG__)
+# pragma GCC diagnostic pop
 #endif
 
     auto MyGlobalElements = map_p->getMyGlobalIndices();
@@ -611,10 +625,17 @@ void MGPoissonSolver::printLoadBalanceStats() {
 # pragma clang diagnostic push
 # pragma clang diagnostic warning "-Wdeprecated-declarations"
 #endif
-    size_t myNumPart = map_p->getLocalNumElements();
+#if defined(__GNUG__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic warning "-Wdeprecated-declarations"
+#endif
+    size_t myNumPart = map_p->getNodeNumElements();
     size_t NumPart = map_p->getGlobalNumElements() * 1.0 / comm_mp->getSize();
 #if defined(__clang__)
 # pragma clang diagnostic pop
+#endif
+#if defined(__GNUG__)
+# pragma GCC diagnostic pop
 #endif
     double imbalance = 1.0;
     if (myNumPart >= NumPart)
