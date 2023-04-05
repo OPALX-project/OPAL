@@ -533,7 +533,7 @@ void MGPoissonSolver::ComputeStencil(Vector_t /*hr*/, Teuchos::RCP<TpetraVector_
 # pragma clang diagnostic push
 # pragma clang diagnostic warning "-Wdeprecated-declarations"
 #endif
-    int NumMyElements = map_p->getNodeNumElements();
+    int NumMyElements = map_p->getLocalNumElements();
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
@@ -611,7 +611,7 @@ void MGPoissonSolver::printLoadBalanceStats() {
 # pragma clang diagnostic push
 # pragma clang diagnostic warning "-Wdeprecated-declarations"
 #endif
-    size_t myNumPart = map_p->getNodeNumElements();
+    size_t myNumPart = map_p->getLocalNumElements();
     size_t NumPart = map_p->getGlobalNumElements() * 1.0 / comm_mp->getSize();
 #if defined(__clang__)
 # pragma clang diagnostic pop
