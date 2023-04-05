@@ -104,7 +104,6 @@ public:
             buckets[bucket_id] = i;
         }
 
-        double part_count = 0;
         //loop over all buckets
         for (int bx=0+int(!parallel_dims[0]); bx<buckets_per_dim[0]-int(!parallel_dims[0]); ++bx) {
             for (int by=0+int(!parallel_dims[1]); by<buckets_per_dim[1]-int(!parallel_dims[1]); ++by) {
@@ -168,9 +167,7 @@ public:
                             //loop over all particles in self cell
                             //self offset avoids double counting in self cell
                             int self_offset = 0;
-                            part_count = 0;
                             while (i != END) {
-                                part_count++;
                                 j = buckets[bucket_id_neigh];
                                 //increase offset by number of processed particles in self cell
                                 for (int o=0;o<self_offset;o++){

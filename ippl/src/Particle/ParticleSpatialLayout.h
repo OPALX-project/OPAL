@@ -631,9 +631,6 @@ protected:
    template < class PB >
     size_t short_swap_particles(size_t LocalNum, PB& PData)
     {
-    	static int sent = 0;
-
-
         unsigned d, i, j;			// loop variables
         size_t ip;
         unsigned N = Ippl::getNodes();
@@ -708,7 +705,6 @@ protected:
 
                                     // indicate we found it to quit this check
                                     foundit = true;
-                                    sent++;
                             }
                     }
 
@@ -1077,7 +1073,6 @@ protected:
     size_t new_swap_particles(size_t LocalNum, PB& PData)
     {
         Ippl::Comm->barrier();
-        static int sent = 0;
 
         unsigned N = Ippl::getNodes();
         unsigned myN = Ippl::myNode();
@@ -1092,7 +1087,6 @@ protected:
 
         std::multimap<unsigned, unsigned> p2n; //<node ID, particle ID>
 
-        int particlesLeft = LocalNum;
         bool responsibleNodeNotFound = false;
         for (unsigned int ip=0; ip<LocalNum; ++ip)
         {
@@ -1122,8 +1116,6 @@ protected:
             msgsend[destination] = 1;
 
             p2n.insert(std::pair<unsigned, unsigned>(destination, ip));
-            sent++;
-            particlesLeft--;
         }
 
         allreduce(&responsibleNodeNotFound,
@@ -1203,7 +1195,6 @@ protected:
                               const ParticleAttrib<char>& canSwap)
     {
         Ippl::Comm->barrier();
-        static int sent = 0;
 
         unsigned N = Ippl::getNodes();
         unsigned myN = Ippl::myNode();
@@ -1218,7 +1209,6 @@ protected:
 
         std::multimap<unsigned, unsigned> p2n; //<node ID, particle ID>
 
-        int particlesLeft = LocalNum;
         bool responsibleNodeNotFound = false;
         for (unsigned int ip=0; ip<LocalNum; ++ip)
         {
@@ -1251,8 +1241,6 @@ protected:
             msgsend[destination] = 1;
 
             p2n.insert(std::pair<unsigned, unsigned>(destination, ip));
-            sent++;
-            particlesLeft--;
         }
 
         allreduce(&responsibleNodeNotFound,

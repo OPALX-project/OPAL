@@ -159,31 +159,31 @@ public:
     return Expr::Child.offset(i,j,k)(Expr::Value.Arg);
   }
 
-  PETE_Return_t& operator*() 
+  PETE_Return_t& operator*()
   {
     return (*Expr::Child)(Expr::Value.Arg);
   }
-  PETE_Return_t& offset(int i) 
+  PETE_Return_t& offset(int i)
   {
     return Expr::Child.offset(i)(Expr::Value.Arg);
   }
-  PETE_Return_t& offset(int i, int j) 
+  PETE_Return_t& offset(int i, int j)
   {
     return Expr::Child.offset(i,j)(Expr::Value.Arg);
   }
-  PETE_Return_t& offset(int i, int j, int k) 
+  PETE_Return_t& offset(int i, int j, int k)
   {
     return Expr::Child.offset(i,j,k)(Expr::Value.Arg);
   }
-  PETE_Return_t& unit_offset(int i) 
+  PETE_Return_t& unit_offset(int i)
   {
     return Expr::Child.unit_offset(i)(Expr::Value.Arg);
   }
-  PETE_Return_t& unit_offset(int i, int j) 
+  PETE_Return_t& unit_offset(int i, int j)
   {
     return Expr::Child.unit_offset(i,j)(Expr::Value.Arg);
   }
-  PETE_Return_t& unit_offset(int i, int j, int k) 
+  PETE_Return_t& unit_offset(int i, int j, int k)
   {
     return Expr::Child.unit_offset(i,j,k)(Expr::Value.Arg);
   }
@@ -228,10 +228,10 @@ public:
 
 template<class T1, unsigned Dim, class RHS, class OP>
 void
-assign(const IndexedBareField<T1,Dim,Dim> &aa, RHS b, OP op, ExprTag<true>, 
+assign(const IndexedBareField<T1,Dim,Dim> &aa, RHS b, OP op, ExprTag<true>,
        bool fillGC)
 {
-  IndexedBareField<T1,Dim,Dim> &a = 
+  IndexedBareField<T1,Dim,Dim> &a =
     const_cast<IndexedBareField<T1,Dim,Dim>&>(aa);
 
   // debugging output macros.  these are only enabled if DEBUG_ASSIGN is
@@ -262,8 +262,9 @@ assign(const IndexedBareField<T1,Dim,Dim> &aa, RHS b, OP op, ExprTag<true>,
   a.getBareField().setDirtyFlag();
 
   // Loop over all the local fields of the left hand side.
-  
+#ifdef DEBUG_ASSIGN
   int lfcount=0;
+#endif
   bool needFinalCompressCheck = false;
   while (la != aend)
     {
@@ -361,18 +362,20 @@ assign(const IndexedBareField<T1,Dim,Dim> &aa, RHS b, OP op, ExprTag<true>,
 	}
 
       ++la;
+#ifdef DEBUG_ASSIGN
       ++lfcount;
+#endif
     }
-  
+
 
   // If we are not deferring guard cell fills, and we need to do this
   // now, fill the guard cells.  This will also apply any boundary
   // conditions after the guards have been updated.
   if (fillGC) {
     ASSIGNMSG(msg << "Filling GC's at end if necessary ..." << endl);
-    
+
     a.getBareField().fillGuardCellsIfNotDirty();
-    
+
   }
 
   // Try to compress the result.
@@ -417,7 +420,7 @@ assign(PETE_TUTree<OpParens<TP>,A> lhs, RHS wrhs, OP op, Tag,
   typedef typename Expressionize<RHS>::type::Wrapped RHS_Wrapped;
   typename Expressionize<RHS>::type expr = Expressionize<RHS>::apply(wrhs);
   RHS_Wrapped & rhs = expr.PETE_unwrap();
-  
+
   // Get a reference to the BareField on the left hand side, and the
   // total domain we are modifying.
   BareField<T1,Dim>& bare = lhs.Child.getBareField();
@@ -438,7 +441,7 @@ assign(PETE_TUTree<OpParens<TP>,A> lhs, RHS wrhs, OP op, Tag,
   bare.setDirtyFlag();
 
   // Loop over all the local fields of the left hand side.
-  
+
   bool needFinalCompressCheck = false;
   while (la != aend)
     {
@@ -458,7 +461,7 @@ assign(PETE_TUTree<OpParens<TP>,A> lhs, RHS wrhs, OP op, Tag,
 	  // the whole expression.
 	  typedef typename LField<T1,Dim>::iterator LA;
 	  typedef PETE_TUTree<OpParens<TP>,LA> LHS;
-	  typedef BrickExpression<Dim,ParensIterator<LHS>,RHS_Wrapped,OP> 
+	  typedef BrickExpression<Dim,ParensIterator<LHS>,RHS_Wrapped,OP>
 	    ExprT;
 
 	  // First look and see if the arrays are sufficiently aligned
@@ -524,15 +527,15 @@ assign(PETE_TUTree<OpParens<TP>,A> lhs, RHS wrhs, OP op, Tag,
 	}
       ++la;
     }
-  
+
 
   // Fill the guard cells on the left hand side, if we are deferring
   // this operation until the next time it is needed.
   ASSIGNMSG(msg << "Filling GC's at end if necessary ..." << endl);
   if (fillGC) {
-    
+
     bare.fillGuardCellsIfNotDirty();
-    
+
   }
 
   // Compress the LHS.
@@ -590,8 +593,9 @@ assign(const BareField<T1,Dim>& ca, RHS b, OP op, ExprTag<true>)
   a.setDirtyFlag();
 
   // Loop over the LHS LFields, and assign from RHS LFields
-  
+#ifdef DEBUG_ASSIGN
   int lfcount = 0;
+#endif
   bool needFinalCompressCheck = false;
   while (la != aend)
   {
@@ -635,16 +639,18 @@ assign(const BareField<T1,Dim>& ca, RHS b, OP op, ExprTag<true>)
 
     ++la;
     for_each(bb,NextLField(),PETE_NullCombiner());
+#ifdef DEBUG_ASSIGN
     ++lfcount;
+#endif
   }
-  
+
 
   // Fill the guard cells on the left hand side, if we are deferring
   // this operation until the next time it is needed.
   ASSIGNMSG(msg << "Filling GC's at end if necessary ..." << endl);
-  
+
   a.fillGuardCellsIfNotDirty();
-  
+
 
   // Compress the LHS, if necessary
   if (needFinalCompressCheck) {

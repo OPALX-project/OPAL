@@ -303,7 +303,6 @@ void FTpsData<N>::
 build(int order) {
     if(topOrder < order) {
         topOrder = order;
-        int prodSize = 0;
 
         // Build array containing binomial coefficients:
         // binom[0 ... topOrder+1][0 ... N].
@@ -359,7 +358,6 @@ build(int order) {
                     // use symmetry for LL half of prod array
                     for(int j = 0; j < std::min(i, ysize); j++) {
                         prod[i][j] = prod[j][i];
-                        ++prodSize;
                     }
                     for(int j = i; j < ysize; j++) {
                         power = expon[i] * expon[j];
@@ -370,7 +368,6 @@ build(int order) {
                             ind += binom[ord][vv];
                         }
                         prod[i][j] = ind;
-                        ++prodSize;
                     }
                 }
             }
