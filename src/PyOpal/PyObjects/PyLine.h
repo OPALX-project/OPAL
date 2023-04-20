@@ -1,3 +1,19 @@
+//
+// Python API for the Line
+//
+// Copyright (c) 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
+
 #ifndef PyOpal_PyLine_h
 
 
@@ -60,12 +76,28 @@ public:
      */
     void append(boost::python::object element);
 
+    /** Set the name of the underlying object.
+     *   
+     *  Note this is exposed as get_opal_name; technically this is the name of 
+     *  the underlying Classic ElementBase not an opal object
+     */
+    std::string getName() const;
+
+
+    /** Set the name of the underlying object.
+     *   
+     *  Note this is exposed as get_opal_name; technically this is the name of 
+     *  the underlying Classic ElementBase not an opal object.
+     */
+    void setName(std::string name);
+
     /** Returns the number of elements in the line */
     int getLength() const {return line.size();}
 
     /** Make a python::class_ object for a PyLine.
      * 
-     *  Should normally be called during module definition.
+     *  Should normally be called during module definition. This overrides the
+     *  PyObject make_class.
      */
     boost::python::class_<PyLine> make_class(const char* className);
 
@@ -77,6 +109,18 @@ private:
     /** Handle negative indices in pythonic way */
     int wrangleIndex(int index);
 };
+
+template <>
+std::string PyLine_<TBeamline<FlaggedElmPtr> >::getName() const {
+    std::shared_ptr<TBeamline<FlaggedElmPtr>> objectPtr = getOpalShared();
+    return objectPtr->getName();
+}
+
+template <>
+void PyLine_<TBeamline<FlaggedElmPtr> >::setName(std::string name) {
+    std::shared_ptr<TBeamline<FlaggedElmPtr>> objectPtr = getOpalShared();
+    objectPtr->setName(name);
+}
 
 template<>
 int PyLine_<TBeamline<FlaggedElmPtr> >::wrangleIndex(int index) {
@@ -90,7 +134,11 @@ int PyLine_<TBeamline<FlaggedElmPtr> >::wrangleIndex(int index) {
 template <>
 void PyLine_<TBeamline<FlaggedElmPtr> >::registerObject() {
     TBeamline<FlaggedElmPtr>* wrapped = getOpalShared().get();
-    Line* line = new Line();
+    // no constructor exists that takes a string name, but clone does, so I
+    // instantiate a line and then use clone to make a line having the correct
+    // name; duh.
+    Line lineDef;
+    Line* line = lineDef.clone(wrapped->getName());
     line->setElement(wrapped);
     Object* objectPtr = dynamic_cast<Object*>(line);
     if (objectPtr == NULL) {

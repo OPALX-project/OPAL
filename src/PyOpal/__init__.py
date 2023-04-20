@@ -1,0 +1,1 @@
+# Initialisation of pyopal module

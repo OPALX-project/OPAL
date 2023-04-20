@@ -29,6 +29,7 @@
 
 #include "Physics/Physics.h"
 #include "Utilities/GeneralClassicException.h"
+#include "AbsBeamline/Offset.h"
 
 RingSection::RingSection()
   : component_m(nullptr),
@@ -136,9 +137,7 @@ std::vector<Vector_t> RingSection::getVirtualBoundingBox() const {
 //    double phi = atan2(r(1), r(0))+Physics::pi;
 bool RingSection::doesOverlap(double phiStart, double phiEnd) const {
     RingSection phiVirtualORS;
-    // phiStart -= Physics::pi;
-    // phiEnd -= Physics::pi;
-    phiVirtualORS.setStartPosition(Vector_t(sin(phiStart),
+   phiVirtualORS.setStartPosition(Vector_t(sin(phiStart),
                                             cos(phiStart),
                                             0.));
     phiVirtualORS.setStartNormal(Vector_t(cos(phiStart),
@@ -184,11 +183,20 @@ bool RingSection::doesOverlap(double phiStart, double phiEnd) const {
 void RingSection::rotate(Vector_t& vector) const {
     const Vector_t temp(vector);
     vector(0) = +cos2_m * temp(0) + sin2_m * temp(1);
-    vector(1) = -sin2_m * temp(0) + cos2_m * temp(1);
+    vector(1) = +sin2_m * temp(0) - cos2_m * temp(1);
 }
 
 void RingSection::rotate_back(Vector_t& vector) const {
     const Vector_t temp(vector);
-    vector(0) = +cos2_m * temp(0) - sin2_m * temp(1);
-    vector(1) = +sin2_m * temp(0) + cos2_m * temp(1);
+    vector(0) = +cos2_m * temp(0) + sin2_m * temp(1);
+    vector(1) = +sin2_m * temp(0) - cos2_m * temp(1);
 }
+
+void RingSection::handleOffset() {
+    Offset* offsetCast = dynamic_cast<Offset*>(component_m);
+    if (offsetCast == nullptr) {
+        return; // nothing to do, it wasn't an offset at all
+    }
+    offsetCast->updateGeometry(startPosition_m, startOrientation_m);
+}
+

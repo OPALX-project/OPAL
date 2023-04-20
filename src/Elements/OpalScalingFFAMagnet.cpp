@@ -59,9 +59,9 @@ OpalScalingFFAMagnet::OpalScalingFFAMagnet() :
     itsAttr[CENTRE_LENGTH] = Attributes::makeReal("CENTRE_LENGTH",
                                        "The centre length of the spiral FFA [m].");
     itsAttr[RADIAL_NEG_EXTENT] = Attributes::makeReal("RADIAL_NEG_EXTENT",
-                                       "Particles are considered outside the tracking region if radius is greater than R0-RADIAL_NEG_EXTENT [m].");
+                                       "Particles are considered outside the tracking region if radius is greater than R0-RADIAL_NEG_EXTENT [m].", 1);
     itsAttr[RADIAL_POS_EXTENT] = Attributes::makeReal("RADIAL_POS_EXTENT",
-                                       "Particles are considered outside the tracking region if radius is greater than R0+RADIAL_POS_EXTENT [m].");
+                                       "Particles are considered outside the tracking region if radius is greater than R0+RADIAL_POS_EXTENT [m].", 1);
     itsAttr[MAGNET_START] = Attributes::makeReal("MAGNET_START",
                                           "Determines the position of the central portion of the magnet field relative to the element start (default is 2*end_length). [m]");
     itsAttr[MAGNET_END] = Attributes::makeReal("MAGNET_END",
@@ -123,8 +123,9 @@ void OpalScalingFFAMagnet::update() {
     // use L = r0*theta; we define the magnet ito length for UI but ito angles
     // internally; and use m as external default unit and mm internally
     // get r0 in m
-    double r0 = Attributes::getReal(itsAttr[R0]);
-    magnet->setR0(r0*Units::m2mm);
+    double r0Abs = std::abs(Attributes::getReal(itsAttr[R0]));
+    double r0Signed = Attributes::getReal(itsAttr[R0]);
+    magnet->setR0(r0Signed*Units::m2mm);
     // get B0 in T
     magnet->setDipoleConstant(Attributes::getReal(itsAttr[B0])*Units::T2kG);
 
@@ -139,17 +140,24 @@ void OpalScalingFFAMagnet::update() {
     } else {
         setupDefaultEndField();    
     }
-    magnet->getEndField()->setMaximumDerivative(maxOrder+2);
     // internally OpalScalingFFAMagnet uses radians, so we scale all lengths to
     // radians.
-    magnet->getEndField()->rescale(1/r0);
+    magnet->getEndField()->rescale(1/r0Abs);
 
     // get rmin and rmax bounding box edge in mm
-    double rmin = r0-Attributes::getReal(itsAttr[RADIAL_NEG_EXTENT]);
-    double rmax = r0+Attributes::getReal(itsAttr[RADIAL_POS_EXTENT]);
+    if (!itsAttr[RADIAL_NEG_EXTENT]) {
+            throw OpalException("OpalScalingFFAMagnet::update()",
+                                "RADIAL_NEG_EXTENT needs to be defined");    
+    }
+    double rmin = r0Abs-Attributes::getReal(itsAttr[RADIAL_NEG_EXTENT]);
+    if (!itsAttr[RADIAL_POS_EXTENT]) {
+            throw OpalException("OpalScalingFFAMagnet::update()",
+                                "RADIAL_POS_EXTENT needs to be defined");    
+    }
+    double rmax = r0Abs+Attributes::getReal(itsAttr[RADIAL_POS_EXTENT]);
     magnet->setRMin(rmin*Units::m2mm);
     magnet->setRMax(rmax*Units::m2mm);
-    Vector_t centre(-r0*Units::m2mm, 0, 0);
+    Vector_t centre(r0Signed*Units::m2mm, 0, 0);
     magnet->setCentre(centre);
 
     // we store maximum vertical displacement (which is half the height)
@@ -161,7 +169,7 @@ void OpalScalingFFAMagnet::update() {
             throw OpalException("OpalScalingFFAMagnet::update()",
                                 "MAGNET_END must be > 0.0");
         }
-        double phi_end = Attributes::getReal(itsAttr[MAGNET_END])/r0;
+        double phi_end = Attributes::getReal(itsAttr[MAGNET_END])/r0Abs;
         magnet->setPhiEnd(phi_end);
     } else {
         magnet->setPhiEnd(-1); // flag for setupEndField
@@ -175,7 +183,7 @@ void OpalScalingFFAMagnet::update() {
             throw OpalException("OpalScalingFFAMagnet::update()",
                                 "MAGNET_START must be > 0.0");
         }
-        double phi_start = Attributes::getReal(itsAttr[MAGNET_START])/r0;
+        double phi_start = Attributes::getReal(itsAttr[MAGNET_START])/r0Abs;
         magnet->setPhiStart(phi_start);
     } else {
         magnet->setPhiStart(-1); // flag for setupEndField
@@ -186,7 +194,7 @@ void OpalScalingFFAMagnet::update() {
             throw OpalException("OpalScalingFFAMagnet::update()",
                                 "AZIMUTHAL_EXTENT must be > 0.0");
         }
-        magnet->setAzimuthalExtent(Attributes::getReal(itsAttr[AZIMUTHAL_EXTENT])/r0);
+        magnet->setAzimuthalExtent(Attributes::getReal(itsAttr[AZIMUTHAL_EXTENT])/r0Abs);
     } else {
         magnet->setAzimuthalExtent(-1); // flag for setupEndField
     }

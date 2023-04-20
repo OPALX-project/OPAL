@@ -1,9 +1,29 @@
+//
+// Python API for Parser
+//
+// Copyright (c) 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
+
 #include <sstream>
 #include <string>
 #include <boost/python.hpp>
 
 #include "AbstractObjects/OpalData.h"
 #include "PyOpal/PyCore/ExceptionTranslation.h"
+// this define statement tells Main not to define the global gmsg and ippl
+// objects; they should be defined in Globals
+#define DONT_DEFINE_IPPL_GMSG 1
+#include "PyOpal/PyCore/Globals.h"
 #include "Main.cpp"
 
 namespace PyOpal {
@@ -49,9 +69,10 @@ boost::python::list list_objects() {
 
 std::string module_docstring =
 "The parser module is used to load an OPAL input file from within python";
- 
+
 BOOST_PYTHON_MODULE(parser) {
     PyOpal::ExceptionTranslation::registerExceptions();
+    PyOpal::Globals::Initialise();
     boost::python::scope().attr("__doc__") = module_docstring.c_str();
     boost::python::def("initialise_from_opal_file",
             initialise_from_opal_file,

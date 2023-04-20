@@ -1,3 +1,19 @@
+//
+// Python API for the Line
+//
+// Copyright (c) 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
+
 #include <Python.h>
 
 #include "Lines/Line.h"
@@ -36,6 +52,8 @@ BOOST_PYTHON_MODULE(line) {
         //.def("__delitem__", &PyLine::removeElement)
         .def("append", &PyLine::append);
     lineClass.def("register", &PyLine::registerObject);
+    lineClass.def("get_opal_name", &PyLine::getName);
+    lineClass.def("set_opal_name", &PyLine::setName);
     aLine.addGetOpalElement(lineClass);
 
     // line is dependent on opal_element; all line elements are stored as 

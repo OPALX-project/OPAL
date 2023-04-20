@@ -1,17 +1,30 @@
+# Copyright (c) 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+#
+# This file is part of OPAL.
+#
+# OPAL is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# You should have received a copy of the GNU General Public License
+# along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+
 """Test the track module"""
 import unittest
 import pyopal.objects.line
 import pyopal.objects.beam
 import pyopal.objects.track
+import pyopal.objects.encapsulated_test_case
 
-class TestTrack(unittest.TestCase):
+class TestTrack(pyopal.objects.encapsulated_test_case.EncapsulatedTestCase):
     """Quick check that we can run track okay"""
 
     def setUp(self):
         """Set up some data"""
         self.track = pyopal.objects.track.Track()
 
-    def test_init(self):
+    def encapsulated_test_init(self):
         """Check I didn't make any typos"""
         self.track.line = "test_line"
         self.track.beam = "test_beam"
@@ -26,18 +39,18 @@ class TestTrack(unittest.TestCase):
         self.track.time_integrator = "integrator"
         self.track.map_order = 9
 
-    def test_execute(self):
+    def encapsulated_test_execute(self):
         """Check we can register the beam"""
         beam = pyopal.objects.beam.Beam()
         beam.set_opal_name("test_track::beam")
         beam.register()
 
         line = pyopal.objects.line.Line()
+        line.set_opal_name("test_track::line")
         line.register()
-        #line.set_opal_name("test_track::line") does not work
 
         self.track.beam = "test_track::beam"
-        self.track.line = "LINE" # all lines are called LINE
+        self.track.line = "test_track::line"
         self.track.execute()
 
 

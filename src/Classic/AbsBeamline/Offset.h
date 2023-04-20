@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2014, Chris Rogers
+ *  Copyright (c) 2014-2023, Chris Rogers
  *  All rights reserved.
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions are met:
@@ -45,8 +45,7 @@
  *  @param _is_local parameter is True if everything is in the coordinate system
  *  of the last placed object. It is expected that everything will be in a local
  *  coordinate system before tracking begins (this is expected by, for example,
- *  Ring). This is expected to be set by the visit function in e.g.
- *  ParallelCyclotronTracker.
+ *  Ring).
  *  @param geometry the geometry that RingSection uses to do displacements
  *  This has to be a pointer because SRotatedGeometry
  *  does not have an defined assignment op. SRotatedGeometry does not have
@@ -180,6 +179,14 @@ class Offset : public Component {
 
     Euclid3DGeometry& getGeometry() override;
     const Euclid3DGeometry& getGeometry() const override;
+
+    /** Convert to a local coordinate system for global offsets
+     * 
+     *  If _is_local is true, just calls updateGeometry(). If false, then this
+     *  updates the geometry so that _endPosition and _endDirection are relative
+     *  to startPosition and startDirection (rather than the global coordinate
+     *  system)
+     */
     void updateGeometry(Vector_t startPosition, Vector_t startDirection);
     void updateGeometry();
     bool isGeometryAllocated() const;

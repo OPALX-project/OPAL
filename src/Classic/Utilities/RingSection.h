@@ -173,6 +173,19 @@ class RingSection {
 
     /** Get the rotation for the component relative to the section start */
     inline Vector_t getComponentOrientation() const {return componentOrientation_m;}
+
+    /** Check whether component_m is a global offset and handle 
+     *
+     *  A global Offset will have initially endPosition_m and endOrientation_m 
+     *  set relative to the global origin, not the startPosition_m and the
+     *  startOrientation_m (as OPAL expects).
+     * 
+     *  If component_m is an offset with is_local == false then transform the
+     *  offset from a coordinate system starting with globalStartPosition and
+     *  globalStartNormal to a coordinate system starting with startPosition_m 
+     *  and startNormal_m.
+     */
+    void handleOffset();
   private:
     void rotate(Vector_t& vector) const;
     void rotate_back(Vector_t& vector) const;

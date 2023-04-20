@@ -24,8 +24,7 @@ BOOST_PYTHON_MODULE(local_cartesian_offset) {
     Globals::Initialise();
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalLocalCartesianOffset> element;
-    auto elementClass = element.make_class("LocalCartesianOffset");
-    element.addGetOpalElement(elementClass);
+    auto elementClass = element.make_element_class("LocalCartesianOffset");
 }
 
 }

@@ -63,6 +63,7 @@ public:
             r(1) < -1. || r(1) > 0. ||
             r(2) < 0. || r(2) > 1.)
             return true; // isOutOfBounds
+        std::cerr << "MockComponent " << r << std::endl;
         B(0) = r(0);
         B(1) = r(1);
         B(2) = r(2);
