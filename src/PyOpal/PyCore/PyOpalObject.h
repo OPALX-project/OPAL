@@ -1,4 +1,21 @@
+//
+// Python API for PolynomialCoefficient (part of the multidimensional polynomial fitting routines)
+//
+// Copyright (c) 2008-2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
+
 #ifndef PyOpalObject_H
+#define PyOpalObject_H
 
 #include <Python.h>
 #include <structmember.h>
@@ -17,6 +34,8 @@
 #include "AbsBeamline/Component.h"
 #include "Attributes/Attributes.h"
 #include "OpalConfigure/Configure.h"
+
+extern Inform *gmsg;
 
 namespace PyOpal {
 
@@ -128,13 +147,29 @@ public:
     /** Default destructor */
     ~PyOpalObject() {}
 
-    /** This is the basic method to make a class. It should normally be called 
-     *  when the module is declared, BOOST_PYTHON_MODULE.
+    /** This is the basic method to make a class for OpalObjects. It should
+     *  normally be called when the module is declared, BOOST_PYTHON_MODULE.
      *
      *  Note that while in principle this could be static, in the end we need an
      *  instance of C so that we can access the docString from the attribute.
      */
     inline boost::python::class_<PyC> make_class(const char* className);
+
+    /** This is the basic method to make a class *for elements*.
+     * 
+     *  This differs from make_class(...) because the setOpalName method sets
+     *  the underlying element name at the same time.
+     */
+    inline boost::python::class_<PyC> make_element_class(const char* className);
+
+
+    /** This is the basic method to make a class for generic Opal object type.
+     * 
+     *  In this one, the setOpalName method is not assigned, and user has to
+     *  assign it (if they want it)
+     */
+    inline boost::python::class_<PyC> make_generic_class(const char* className);
+
 
     /** Add attributes to the python class.
      */
@@ -163,6 +198,13 @@ public:
      */
     template <class PYCLASS>
     void addSetOpalName(PYCLASS& pyclass);
+
+    /** Add a set_opal_name method to the python class (to set the opal internal
+     *  string that uniquely identifies the object). This version has bindings
+     *  specifically for OpalElements
+     */
+    template <class PYCLASS>
+    void addSetOpalElementName(PYCLASS& pyclass);
 
     /** Add a "get_opal_element" method to the python class (to overload as a
      *  PyOpalElement)
@@ -203,6 +245,11 @@ public:
      */
     template <class ValueType>
     ValueType dummyGet() const {PyOpalObjectGetProperty<C>::setObject(this); return ValueType();}
+
+    /** Overload the method to perform any additional setup that can be made 
+     *  before the OpalObject is accessed, after OpalObject->update() is called.
+     */
+    virtual void doSetup() {}
 
     /** dummySet sets the element ptr for PyOpalObjectSetProperty but doesn't
      *  actually do the set(...)
@@ -249,6 +296,7 @@ protected:
                     double x, double y, double z, double t);
     static std::string getOpalName(const PyOpalObject<C>& pyobject);
     static void setOpalName(PyOpalObject<C>& pyobject, std::string name);
+    static void setOpalElementName(PyOpalObject<C>& pyobject, std::string name);
     static void execute(PyOpalObject<C>& pyobject);
     static void registerObject(PyOpalObject<C>& pyobject);
     static boost::python::object getPyOpalElement(PyOpalObject<C>& pyobject);
@@ -259,6 +307,17 @@ protected:
     static double efieldUnits_m;
     static const std::string getFieldValueDocString;
 };
+
+/** Call update on a pyelement
+ * 
+ *  Note that C must be a subtype of OpalElement or some other class that has an
+ *  C::update() method (i.e. not OpalObject).
+ */
+template <class C>
+void update(PyOpalObjectNS::PyOpalObject<C> pyelement) {
+    std::shared_ptr<C> objectPtr = pyelement.getOpalShared();
+    objectPtr->update();
+}
 
 template <class C>
 template <class ValueType>
@@ -273,6 +332,7 @@ boost::python::object PyOpalObject<C>::getFieldValue(
             double x, double y, double z, double t) {
     std::shared_ptr<C> objectPtr = pyobject.getOpalShared();
     objectPtr->update();
+    pyobject.doSetup();
     ElementBase* element = objectPtr->getElement();
     Component* component = dynamic_cast<Component*>(element);
     if (component == nullptr) {
@@ -383,6 +443,15 @@ template <class C>
 void PyOpalObject<C>::setOpalName(PyOpalObject<C>& pyobject, std::string name) {
     std::shared_ptr<C> objectPtr = pyobject.getOpalShared();
     objectPtr->setOpalName(name);
+}
+
+template <class C>
+void PyOpalObject<C>::setOpalElementName(PyOpalObject<C>& pyobject, std::string name) {
+    std::shared_ptr<C> objectPtr = pyobject.getOpalShared();
+    objectPtr->setOpalName(name);
+    if (objectPtr->getElement()) { // some OpalThings don't define an Element
+        objectPtr->getElement()->setName(name);
+    }
 }
 
 template <class C>
@@ -585,7 +654,7 @@ std::string PyOpalObject<C>::getDocString(AttributeDef& def) {
 }
 
 template <class C>
-boost::python::class_<PyOpalObject<C> > PyOpalObject<C>::make_class(const char* className) {
+boost::python::class_<PyOpalObject<C> > PyOpalObject<C>::make_generic_class(const char* className) {
     // WARNING - boost::python is bugged so that in module initialisation, 
     // errors are not handled correctly
     //    https://github.com/boostorg/python/issues/280
@@ -597,15 +666,40 @@ boost::python::class_<PyOpalObject<C> > PyOpalObject<C>::make_class(const char* 
     try {
         addAttributes(pyclass);
         addGetOpalName(pyclass);
-        addSetOpalName(pyclass);
     } catch (OpalException& exc) {
         std::cerr << "Failed to initialise class because '" << exc.what() 
                   << "'" << std::endl;
         throw exc;
+    } catch (std::exception& exc) {
+        std::cerr << "Failed to initialise class because '" << exc.what() 
+                  << "'" << std::endl;
+        throw exc;
+    }
+    if (gmsg == nullptr) {
+        std::cerr <<
+            "Failed to initialise class because gmsg was not initialised.\n"
+            "PyOpal::Globals::Initialise() must be called before attempting to\n"
+            "initialise classes" << std::endl;
+        throw OpalException("PyOpalObject::make_generic_class",
+                            "Globals not initialised");
     }
     return pyclass;
 }
 
+template <class C>
+boost::python::class_<PyOpalObject<C> > PyOpalObject<C>::make_class(const char* className) {
+    auto pyclass = make_generic_class(className);
+    addSetOpalName(pyclass);
+    return pyclass;
+}
+
+template <class C>
+boost::python::class_<PyOpalObject<C> > PyOpalObject<C>::make_element_class(const char* className) {
+    auto pyclass = make_generic_class(className);
+    addSetOpalElementName(pyclass);
+    addGetOpalElement(pyclass);
+    return pyclass;
+}
 
 template <class C>
 template <class PYCLASS>
@@ -630,6 +724,12 @@ template <class C>
 template <class PYCLASS>
 void PyOpalObject<C>::addSetOpalName(PYCLASS& pyclass) {
     pyclass.def("set_opal_name", &PyOpalObject<C>::setOpalName);
+}
+
+template <class C>
+template <class PYCLASS>
+void PyOpalObject<C>::addSetOpalElementName(PYCLASS& pyclass) {
+    pyclass.def("set_opal_name", &PyOpalObject<C>::setOpalElementName);
 }
 
 template <class C>

@@ -57,8 +57,17 @@
 #include <iostream>
 #include <set>
 
-Ippl *ippl;
-Inform *gmsg;
+// ippl and gmsg need to be defined within the python module (these global
+// objects are shared across several python modules (dynamically loaded libs).
+// if we are using non-python OPAL, they are defined here, else they are defined
+// in PyOpal::Globals
+#ifdef DONT_DEFINE_IPPL_GMSG
+    extern Ippl *ippl;
+    extern Inform *gmsg;
+#else
+    Ippl *ippl;
+    Inform *gmsg;
+#endif
 
 namespace {
     void printStdoutHeader() {
@@ -128,11 +137,12 @@ int opalMain(int argc, char *argv[]);
 int main(int argc, char *argv[]) {
     // python has its own main function that can interfere with opal main;
     // so when calling from python we call opalMain instead
+    new Ippl(argc, argv);
+    gmsg = new  Inform("OPAL");
     return opalMain(argc, argv);
 }
+
 int opalMain(int argc, char *argv[]) {
-    Ippl *ippl = new Ippl(argc, argv);
-    gmsg = new  Inform("OPAL");
 
     namespace fs = boost::filesystem;
 

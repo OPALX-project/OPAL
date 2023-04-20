@@ -1,9 +1,22 @@
+# Copyright (c) 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+#
+# This file is part of OPAL.
+#
+# OPAL is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# You should have received a copy of the GNU General Public License
+# along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+
 """Test the Field Solver"""
 
+import os
 import unittest
 import pyopal.objects.field_solver
 
-class TestFieldSolver(unittest.TestCase):
+class TestFieldSolver(pyopal.objects.encapsulated_test_case.EncapsulatedTestCase):
     """Test the Field Solver"""
     def setUp(self):
         """Set up some data"""
@@ -35,7 +48,7 @@ class TestFieldSolver(unittest.TestCase):
         self.fs.alpha = 9
         self.fs.epsilon = 10
 
-    def test_init(self):
+    def encapsulated_test_init(self):
         """Check I didn't make any typos"""
         my_fs = pyopal.objects.field_solver.FieldSolver()
         self.assertEqual(self.fs.mesh_size_x, 2)
@@ -65,7 +78,7 @@ class TestFieldSolver(unittest.TestCase):
         self.assertEqual(self.fs.alpha, 9)
         self.assertEqual(self.fs.epsilon, 10)
 
-    def test_register(self):
+    def encapsulated_test_register(self):
         """Check we can register the beam"""
         my_beam = pyopal.objects.field_solver.FieldSolver()
         my_beam.type = "None"

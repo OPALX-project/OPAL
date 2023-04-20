@@ -38,7 +38,7 @@ OpalRingDefinition::OpalRingDefinition() :
                 "The \"RINGDEFINITION\" element defines basic ring parameters.") {
 
     itsAttr[HARMONIC_NUMBER] = Attributes::makeReal("HARMONIC_NUMBER",
-                                                    "The assumed harmonic number of the ring (i.e. number of bunches in the ring on a given turn).");
+                                                    "The assumed harmonic number of the ring (i.e. number of bunches in the ring on a given turn).", 1.0);
     itsAttr[LAT_RINIT] = Attributes::makeReal("LAT_RINIT",
                                                   "The initial radius of the first element to be placed in the ring [m].");
     itsAttr[LAT_PHIINIT] = Attributes::makeReal("LAT_PHIINIT", "The initial angle around the ring of the first element to be placed. [deg]");
@@ -50,8 +50,8 @@ OpalRingDefinition::OpalRingDefinition() :
     itsAttr[BEAM_RINIT] = Attributes::makeReal("BEAM_RINIT",
                                                "The initial radius of the beam [m].");
     itsAttr[SYMMETRY] = Attributes::makeReal("SYMMETRY",
-                                             "The rotational symmetry of the lattice.");
-    itsAttr[SCALE] = Attributes::makeReal("SCALE", "Scale the fields by a multiplicative factor",1.0);
+                                             "The rotational symmetry of the lattice.", 1.0);
+    itsAttr[SCALE] = Attributes::makeReal("SCALE", "Scale the fields by a multiplicative factor", 1.0);
     // should be in RF cavity definition; this comes from cyclotron definition,
     // but not right
     itsAttr[RFFREQ] = Attributes::makeReal("RFFREQ",
@@ -90,9 +90,9 @@ void OpalRingDefinition::update() {
     ring->setBeamPRInit(Attributes::getReal(itsAttr[BEAM_PRINIT]));
     ring->setBeamRInit(Attributes::getReal(itsAttr[BEAM_RINIT])*Units::m2mm);
     ring->setLatticeRInit(Attributes::getReal(itsAttr[LAT_RINIT])*Units::m2mm);
-
     ring->setLatticePhiInit(Attributes::getReal(itsAttr[LAT_PHIINIT])*Units::deg2rad);
     ring->setLatticeThetaInit(Attributes::getReal(itsAttr[LAT_THETAINIT])*Units::deg2rad);
+
     ring->setSymmetry(Attributes::getReal(itsAttr[SYMMETRY]));
     ring->setScale(Attributes::getReal(itsAttr[SCALE]));
 

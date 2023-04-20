@@ -1,3 +1,15 @@
+# Copyright (c) 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+#
+# This file is part of OPAL.
+#
+# OPAL is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# You should have received a copy of the GNU General Public License
+# along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+
 """Test Line implementation"""
 
 # we are testing the dunder operator, hence disable pylint warning
@@ -37,6 +49,12 @@ class TestLine(unittest.TestCase):
         self.assertEqual(self.line.theta, 5.0)
         self.assertEqual(self.line.phi, 6.0)
         self.assertEqual(self.line.psi, 7.0)
+
+        # Note, if debugging, this is the name of the Opal/Lines/Line.h line
+        # that is defined in PyLine::register()
+        self.line.set_opal_name("A OPAL NAME")
+        self.assertEqual(self.line.get_opal_name(), "A OPAL NAME")
+
 
     def test_append(self):
         """Check that we can append elements"""

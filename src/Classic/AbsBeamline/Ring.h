@@ -314,8 +314,14 @@ class Ring : public Component {
      */
     void lockRing();
 
+    /**Return ith section. Throw a readable exception if i is not valid*/
+    RingSection* getSection(int i) const;
+
     /** Get the last section placed or nullptr if no sections were placed yet */
     RingSection* getLastSectionPlaced() const;
+
+    /**Get number of RingSections */
+    size_t getNumberOfRingSections() const;
 
     /** Get the list of sections at position pos */
     std::vector<RingSection*> getSectionsAt(const Vector_t& pos);
@@ -325,7 +331,6 @@ class Ring : public Component {
 
     /** Convert from a Vector_t to a Vector3D */
     static inline Vector3D convert(const Vector_t& vec);
-
   private:
     // Force end to have azimuthal angle > start unless crossing phi = pi/-pi
     void resetAzimuths();
@@ -338,6 +343,12 @@ class Ring : public Component {
     void buildRingSections();
 
     void rotateToCyclCoordinates(Euclid3D& euclid3d) const;
+
+    // get the initial position
+    Vector_t getStartPosition() const;
+
+    // get the initial normal
+    Vector_t getStartNormal() const;
 
     // predicate for sorting
     static bool sectionCompare(RingSection const* const sec1,

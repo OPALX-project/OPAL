@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2012-2014, Chris Rogers
+ *  Copyright (c) 2012-2023, Chris Rogers
  *  All rights reserved.
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions are met:
@@ -35,6 +35,7 @@
 
 #include "Fields/EMField.h"
 #include "AbsBeamline/BeamlineVisitor.h"
+#include "BeamlineGeometry/Euclid3D.h"
 #include "Structure/LossDataSink.h"
 #include "Algorithms/PartBunchBase.h"
 
@@ -130,7 +131,6 @@ bool Ring::apply(const Vector_t &R, const Vector_t &/*P*/,
             return true;
         }
     }
-
     for (size_t i = 0; i < sections.size(); ++i) {
         Vector_t B_temp(0.0, 0.0, 0.0);
         Vector_t E_temp(0.0, 0.0, 0.0);
@@ -211,18 +211,28 @@ void Ring::rotateToCyclCoordinates(Euclid3D& delta) const {
 Vector_t Ring::getNextPosition() const {
     if (!section_list_m.empty()) {
         return section_list_m.back()->getEndPosition();
+    } else {
+        return getStartPosition();
     }
-    return Vector_t(latticeRInit_m*std::sin(latticePhiInit_m),
-                    latticeRInit_m*std::cos(latticePhiInit_m),
+}
+
+Vector_t Ring::getStartPosition() const {
+    return Vector_t(latticeRInit_m*std::cos(latticePhiInit_m),
+                    latticeRInit_m*std::sin(latticePhiInit_m),
                     0.);
 }
 
 Vector_t Ring::getNextNormal() const {
     if (!section_list_m.empty()) {
         return section_list_m.back()->getEndNormal();
+    } else {
+        return getStartNormal();
     }
-    return Vector_t(std::cos(latticePhiInit_m+latticeThetaInit_m),
-                    -std::sin(latticePhiInit_m+latticeThetaInit_m),
+}
+
+Vector_t Ring::getStartNormal() const {
+    return Vector_t(-std::sin(latticePhiInit_m+latticeThetaInit_m),
+                    std::cos(latticePhiInit_m+latticeThetaInit_m),
                     0.);
 }
 
@@ -232,12 +242,6 @@ void Ring::appendElement(const Component &element) {
                                       "Attempt to append element "+element.getName()+
                                       " when ring is locked");
     }
-    // delta is transform from start of bend to end with x, z as horizontal
-    // I failed to get Rotation3D to work so use rotations written by hand.
-    // Probably an error in my call to Rotation3D.
-    Euclid3D delta = element.getGeometry().getTotalTransform();
-    rotateToCyclCoordinates(delta);
-    checkMidplane(delta);
 
     RingSection* section = new RingSection();
     Vector_t startPos = getNextPosition();
@@ -246,28 +250,35 @@ void Ring::appendElement(const Component &element) {
     section->setComponent(dynamic_cast<Component*>(element.clone()));
     section->setStartPosition(startPos);
     section->setStartNormal(startNorm);
+    section->handleOffset();
+    // delta is transform from start of bend to end with x, z as horizontal
+    // I failed to get Rotation3D to work so use rotations written by hand.
+    // Probably an error in my call to Rotation3D.
+    Euclid3D delta = element.getGeometry().getTotalTransform();
+    rotateToCyclCoordinates(delta);
+    checkMidplane(delta);
 
-    double startF = std::atan2(startNorm(1), startNorm(0));
+    double placeF = std::atan2(startNorm(0), startNorm(1)); // angle between y axis and norm
     Vector_t endPos = Vector_t(
-                               +delta.getVector()(0)*std::cos(startF)-delta.getVector()(1)*std::sin(startF),
-                               +delta.getVector()(0)*std::sin(startF)+delta.getVector()(1)*std::cos(startF),
+                               +delta.getVector()(0)*std::sin(placeF)+delta.getVector()(1)*std::cos(placeF),
+                               +delta.getVector()(0)*std::cos(placeF)-delta.getVector()(1)*std::sin(placeF),
                                0)+startPos;
     section->setEndPosition(endPos);
 
     double endF = delta.getRotation().getAxis()(2);//+
     //atan2(delta.getVector()(1), delta.getVector()(0));
     Vector_t endNorm = Vector_t(
-                                +startNorm(0)*std::cos(endF) + startNorm(1)*std::sin(endF),
-                                -startNorm(0)*std::sin(endF) + startNorm(1)*std::cos(endF),
+                                +startNorm(0)*std::cos(endF) - startNorm(1)*std::sin(endF),
+                                +startNorm(0)*std::sin(endF) + startNorm(1)*std::cos(endF),
                                 0);
     section->setEndNormal(endNorm);
 
     section->setComponentPosition(startPos);
-    section->setComponentOrientation(Vector_t(0, 0, startF));
+    double orientation = std::atan2(startNorm(1), startNorm(0));
+    section->setComponentOrientation(Vector_t(0, 0, orientation));
 
     section_list_m.push_back(section);
 
-    double dphi = atan2(startNorm(0), startNorm(1));
     Inform msg("OPAL");
     msg << "* Added " << element.getName() << " to Ring" << endl;
     msg << "* Start position ("
@@ -276,7 +287,7 @@ void Ring::appendElement(const Component &element) {
         << section->getStartPosition()(2) << ") normal ("
         << section->getStartNormal()(0) << ", "
         << section->getStartNormal()(1) << ", "
-        << section->getStartNormal()(2) << "), phi " << dphi << endl;
+        << section->getStartNormal()(2) << ")" << endl;
     msg << "* End position   ("
         << section->getEndPosition()(0) << ", "
         << section->getEndPosition()(1) << ", "
@@ -353,7 +364,6 @@ void Ring::buildRingSections() {
     for (size_t i = 0; i < ringSections_m.size(); ++i) {
         double phi0 = i*phiStep_m;
         double phi1 = (i+1)*phiStep_m;
-        // std::cerr << phi0 << " " << phi1 << std::endl;
         for (size_t j = 0; j < section_list_m.size(); ++j) {
             if (section_list_m[j]->doesOverlap(phi0, phi1))
                 ringSections_m[i].push_back(section_list_m[j]);
@@ -382,4 +392,23 @@ void Ring::setRingAperture(double minR, double maxR) {
     willDoAperture_m = true;
     minR2_m = minR*minR;
     maxR2_m = maxR*maxR;
+}
+
+RingSection* Ring::getSection(int i) const {
+    if (i < 0 || i >= int(getNumberOfRingSections())) {
+        std::stringstream err;
+        err << "Attempt to get RingSection for element " << i
+            << ". Should be in range 0 <= i < " << getNumberOfRingSections();
+        throw GeneralClassicException("Ring::getSection(int)", err.str());
+    }
+    RingSection* sec = section_list_m[i];
+    if (sec == nullptr) {
+        throw GeneralClassicException("Ring::getSection(int)",
+            "Opal internal error - RingSection was null");
+    }
+    return sec;
+}
+
+size_t Ring::getNumberOfRingSections() const {
+    return section_list_m.size();
 }

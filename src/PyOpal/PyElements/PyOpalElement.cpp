@@ -1,5 +1,6 @@
 #include "PyOpal/PyCore/ExceptionTranslation.h"
 #include "PyOpal/PyCore/PyOpalObject.h"
+#include "PyOpal/PyCore/Globals.h"
 
 #include "Elements/OpalElement.h"
 
@@ -18,7 +19,7 @@ std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalEleme
 
 template <>
 std::string PyOpalObjectNS::PyOpalObject<OpalElement>::classDocstring = 
-"OpalElement is a base class for Opal element objects. In particular it\n"
+"OpalElement is a base class for Opal element objects. In particular it is\n"
 "used by Line class to handle wrapping of objects";
 
 template <>
@@ -26,8 +27,9 @@ PyOpalObjectNS::PyOpalObject<OpalElement>::PyOpalObject() : object_m(NULL) {}
 
 BOOST_PYTHON_MODULE(opal_element) {
     ExceptionTranslation::registerExceptions();
+    PyOpal::Globals::Initialise();
     PyOpalObjectNS::PyOpalObject<OpalElement> element;
-    element.make_class("OpalElement");
+    element.make_element_class("OpalElement");
 }
 
 }

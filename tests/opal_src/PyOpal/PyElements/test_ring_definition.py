@@ -1,5 +1,20 @@
+# Copyright (c) 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+#
+# This file is part of OPAL.
+#
+# OPAL is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# You should have received a copy of the GNU General Public License
+# along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+
 """Test RingDefinition python implementation"""
+import os
 import unittest
+import pyopal.objects.minimal_runner
+import pyopal.elements.local_cartesian_offset
 import pyopal.elements.ring_definition
 
 class RingDefinitionTest(unittest.TestCase):
@@ -48,7 +63,6 @@ class RingDefinitionTest(unittest.TestCase):
         self.assertTrue(value[0])
         for i in range(1, 7):
             self.assertEqual(value[i], 0.0)
-
 
 if __name__ == "__main__":
     unittest.main()

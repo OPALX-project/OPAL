@@ -171,8 +171,8 @@ void Offset::updateGeometry() {
     double length = std::sqrt(translation(0)*translation(0)+
                          translation(1)*translation(1)+
                          translation(2)*translation(2));
-    double theta_in = getTheta(Vector_t(1., 0., 0.), translation);
-    double theta_out = getTheta(Vector_t(1., 0., 0.), getEndDirection());
+    double theta_in = getTheta(Vector_t(0., 1., 0.), translation);
+    double theta_out = getTheta(Vector_t(0., 1., 0.), getEndDirection());
     Euclid3D euclid3D(-std::sin(theta_in)*length, 0., std::cos(theta_in)*length,
                       0., -theta_out, 0.);
     if (geometry_m != nullptr)
@@ -180,12 +180,21 @@ void Offset::updateGeometry() {
     geometry_m = new Euclid3DGeometry(euclid3D);
 }
 
-void Offset::updateGeometry(Vector_t /*startPosition*/, Vector_t startDirection) {
+void Offset::updateGeometry(Vector_t startPosition, Vector_t startDirection) {
     if (!_is_local) {
-        Vector_t translationGlobal = _end_position;
-        double theta_g2l = getTheta(startDirection, Vector_t(1, 0, 0));
-        _end_position = rotate(translationGlobal, theta_g2l);
-        _end_direction = rotate(_end_direction, theta_g2l);
+        // thetaIn is the angle between the y axis and startDirection
+        double thetaIn = std::atan2(-startDirection[0], startDirection[1]); // global OPAL-CYCL coords
+        // thetaOut is the angle between the y axis and endDirection
+        double thetaOut = std::atan2(-_end_direction[0], _end_direction[1]); // global OPAL-CYCL coords
+        // thetaRel is the angle between thetaOut and thetaIn
+        double thetaRel = thetaOut-thetaIn;
+        // deltaPosition is the position change in the global coordinate system
+        Vector_t deltaPosition = _end_position-startPosition;
+        // endPosition is the difference between end and startPosition in 
+        // startDirection coordinate system
+        _end_position = rotate(deltaPosition, -thetaIn);
+        // end direction is the normal in the coordinate system of startDirection
+        _end_direction = Vector_t(std::sin(-thetaRel), std::cos(-thetaRel), 0);
         _is_local = true;
     }
     updateGeometry();
@@ -255,10 +264,10 @@ Offset Offset::localCylindricalOffset(std::string name,
                                       double displacement) {
     Offset off(name);
     displacement *= lengthUnits_m;
-    off.setEndPosition(Vector_t(std::cos(phi_in)*displacement,
-                                std::sin(phi_in)*displacement,
+    off.setEndPosition(Vector_t(-std::sin(phi_in)*displacement,
+                                std::cos(phi_in)*displacement,
                                 0.));
-    off.setEndDirection(Vector_t(std::cos(phi_in+phi_out), std::sin(phi_in+phi_out), 0.));
+    off.setEndDirection(Vector_t(-std::sin(phi_in+phi_out), std::cos(phi_in+phi_out), 0.));
     off.setIsLocal(true);
     off.updateGeometry();
     return off;

@@ -22,8 +22,8 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#ifndef OPAL_SEQUENCE_H
-#define OPAL_SEQUENCE_H
+#ifndef SAMPLE_FROMFILE_H
+#define SAMPLE_FROMFILE_H
 
 #include "Sample/SamplingMethod.h"
 #include "Utilities/OpalException.h"
@@ -131,7 +131,7 @@ public:
         return globalSize_m;
     }
 
-    ~FromFile() {}
+    ~FromFile();
 
 private:
     std::vector<double> chain_m;

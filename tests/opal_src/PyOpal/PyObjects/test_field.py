@@ -1,45 +1,88 @@
+# Copyright (c) 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+#
+# This file is part of OPAL.
+#
+# OPAL is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# You should have received a copy of the GNU General Public License
+# along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+
 """Test the field module"""
 import unittest
 import tempfile
 import sys
-import subprocess
+import os
 import pyopal.objects.parser
 import pyopal.objects.field
+import pyopal.objects.encapsulated_test_case
 
-def run_encapsulated_test(file_name):
-    """Run the test in a subfile so that we don't get namespace clashes"""
-    pyopal.objects.parser.initialise_from_opal_file(file_name)
-    print("Testing")
-    value = pyopal.objects.field.get_field_value(0, 1, 0, 0)
-    print(value)
-    my_return_code = abs(value[3]-2) > 1e-3
-    return my_return_code
-
-class FieldTest(unittest.TestCase):
+class FieldTest(pyopal.objects.encapsulated_test_case.EncapsulatedTestCase):
     """Test that we can get fields out"""
-    def make_temp(self, a_string):
+    def setUp(self):
         """Dump string to a temporary file for use in testing"""
-        my_temp = tempfile.NamedTemporaryFile(mode='w+')
-        my_temp.write(a_string)
-        my_temp.flush()
-        return my_temp
+        self.write_temp(self.good_lattice)
 
-    def test_get_field_value(self):
+    def write_temp(self, a_string):
+        self.temp = tempfile.NamedTemporaryFile(mode='w+')
+        self.temp.write(a_string)
+        self.temp.flush()
+        self.file_name = self.temp.name
+
+    def encapsulated_test_field(self):
         """Test that we can get out a field value"""
-        temp_file = self.make_temp(FieldTest.good_lattice)
-        if self.debug:
-            temp_stdout = None
-            temp_stderr = None
-        else:
-            temp_stdout = tempfile.TemporaryFile()
-            temp_stderr = subprocess.STDOUT
-        proc = subprocess.run(["python3", __file__, "run_unit_test_encapsulation", temp_file.name],
-                    stdout=temp_stdout, stderr=temp_stderr, check=False)
-        if temp_stdout:
-            temp_stdout.close() # why does this not use resource allocation?
-        self.assertEqual(proc.returncode, 0)
+        print("TEST FIELD")
+        pyopal.objects.parser.initialise_from_opal_file(self.file_name)
+        float_tolerance = 1e-3
+        test_fail = False
+        print("Test result")
 
-    debug = 0
+        value = pyopal.objects.field.get_field_value(1, 0, 0, 0)
+        reference = (False, 0.0, 2.0, 0.0, 0.0, 0.0, 0.0)
+        print("Field", value, "reference", reference)
+        for i, ref_value in enumerate(reference):
+            test_fail = abs(value[i]-ref_value) > float_tolerance
+
+        value = pyopal.objects.field.get_number_of_elements()
+        ref_value = 2
+        test_fail = test_fail or value != ref_value
+        print("Number of elements", value, "reference", ref_value, "Test", test_fail)
+
+        value = pyopal.objects.field.get_element_name(1)
+        ref_value = "OFFSET_TEST"
+        test_fail = test_fail or value != ref_value
+        print("Element name", value, "reference", ref_value, "Test", test_fail)
+
+
+        value = pyopal.objects.field.get_element_start_position(1)
+        ref_value = [1.0, 10.0, 0.0]
+        for i in range(3):
+            test_fail = test_fail or abs(value[i] - ref_value[i]) > float_tolerance
+        print("Offset start", value, "reference", ref_value, "Test", test_fail)
+
+        value = pyopal.objects.field.get_element_start_normal(1)
+        ref_value = [0.0, 1.0, 0.0]
+        for i in range(3):
+            test_fail = test_fail or abs(value[i] - ref_value[i]) > float_tolerance
+        print("Offset start normal", value, "reference", ref_value, "Test", test_fail)
+
+        value = pyopal.objects.field.get_element_end_position(1)
+        ref_value = [0.0, 11.0, 0.0]
+        for i in range(3):
+            test_fail = test_fail or abs(value[i] - ref_value[i]) > float_tolerance
+        print("Offset end position", value, "reference", ref_value, "Test", test_fail)
+
+        value = pyopal.objects.field.get_element_end_normal(1)
+        ref_value = [2**-0.5, 2**-0.5, 0.0]
+        for i in range(3):
+            test_fail = test_fail or abs(value[i] - ref_value[i]) > float_tolerance
+        print("Offset end normal", value, "reference", ref_value, "Test", test_fail)
+
+        return test_fail
+
+    debug = False
     command = """
 import pyopal.objects.parser
 pyopal.objects.parser.initialise_from_opal_file(
@@ -62,13 +105,15 @@ field: VERTICALFFAMAGNET,
         WIDTH=2000,
         BB_LENGTH=10;
 
+offset_test: LOCAL_CARTESIAN_OFFSET, END_POSITION_X=-1.0, END_POSITION_Y=1.0,
+                                END_NORMAL_X=2,      END_NORMAL_Y=2;
 
 ringdef: RINGDEFINITION, HARMONIC_NUMBER=1, LAT_RINIT=1, LAT_PHIINIT=0,
          LAT_THETAINIT=0.0, BEAM_PHIINIT=0, BEAM_PRINIT=0,
          BEAM_RINIT=1, SYMMETRY=1, RFFREQ=1, IS_CLOSED=false,
          MIN_R=0.1, MAX_R=2;
 
-l1: Line = (ringdef, field);
+l1: Line = (ringdef, field, offset_test);
 
 Dist1: DISTRIBUTION, TYPE=gauss;
 
@@ -85,10 +130,5 @@ STOP;
 """
 
 if __name__ == "__main__":
-    print(sys.argv, len(sys.argv))
-    if len(sys.argv) > 2 and sys.argv[1] == "run_unit_test_encapsulation":
-        return_code = run_encapsulated_test(sys.argv[2])
-        sys.exit(return_code)
-    else:
-        FieldTest.debug = 1
-        unittest.main()
+    FieldTest.debug = False
+    unittest.main()
