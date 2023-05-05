@@ -8,6 +8,7 @@
 
 Ippl *ippl;
 Inform* gmsg;
+Inform* gmsgALL;
 
 class NewLineAdder: public ::testing::EmptyTestEventListener {
     virtual void OnTestPartResult(const ::testing::TestPartResult &test_part_result) {
@@ -28,7 +29,8 @@ namespace {
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     gmsg = new Inform("UnitTests: ", std::cerr);
-    if (!gmsg) {
+    gmsgALL = new Inform("UnitTests: ", std::cerr);
+    if (!gmsg || !gmsgALL) {
         return 1;
     }
     ippl = new Ippl(argc, argv);

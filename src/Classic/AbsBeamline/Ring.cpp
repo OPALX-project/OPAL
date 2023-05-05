@@ -45,6 +45,7 @@ const double Ring::lengthTolerance_m = 1e-2;
 const double Ring::angleTolerance_m = 1e-2;
 
 extern Inform* gmsg;
+extern Inform* gmsgALL;
 
 Ring::Ring(std::string ring)
     : Component(ring), planarArcGeometry_m(1, 1),
@@ -104,8 +105,7 @@ bool Ring::apply(const size_t &id, const double &t, Vector_t &E,
     bool flagNeedUpdate =
         apply(refPartBunch_m->R[id], refPartBunch_m->P[id], t, E, B);
     if(flagNeedUpdate) {
-        Inform gmsgALL("OPAL ", INFORM_ALL_NODES);
-        gmsgALL << level4 << getName() << ": particle " << id
+        *gmsgALL << level4 << getName() << ": particle " << id
                 << " at " << refPartBunch_m->R[id]
                 << " m out of the field map boundary" << endl;
         lossDS_m->addParticle(OpalParticle(id,

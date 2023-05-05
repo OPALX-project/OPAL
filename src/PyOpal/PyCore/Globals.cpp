@@ -77,6 +77,7 @@ void Initialise() {
     if (gmsg == nullptr) {
         IpplInfo::instantiateGlobals();
         gmsg = new Inform("OPAL");
+        gmsgALL = new Inform("OPAL ", INFORM_ALL_NODES);
     }
     gsl_set_error_handler(&errorHandlerGSL);
 }
