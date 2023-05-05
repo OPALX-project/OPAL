@@ -44,6 +44,8 @@
 #include <fstream>
 #include <iostream>
 
+extern Inform *gmsgALL;
+
 namespace {
     struct VacuumInsideTester: public InsideTester {
         explicit VacuumInsideTester(ElementBase* el) {
@@ -144,8 +146,6 @@ void BeamStrippingPhysics::doPhysics(PartBunchBase<double, 3>* bunch) {
       -- particle not dead (bunch->Bin[i] != -1)
       Delete particle i: bunch->Bin[i] != -1;
     */
-    Inform gmsgALL("OPAL", INFORM_ALL_NODES);
-
     temperature_m = vac_m->getTemperature();
     bool stop = vac_m->getStop();
     Vector_t extE = Vector_t(0.0, 0.0, 0.0);
@@ -188,7 +188,7 @@ void BeamStrippingPhysics::doPhysics(PartBunchBase<double, 3>* bunch) {
                 if (stop) {
                     bunch->Bin[i] = -1;
                     ++stoppedPartStat_m;
-                    gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i]
+                    *gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i]
                             << " is deleted by beam stripping interactions" << endl;
                 } else {
                     ++rediffusedStat_m;
@@ -689,8 +689,7 @@ void BeamStrippingPhysics::transformToSecondary(PartBunchBase<double, 3>* bunch,
     bunch->M[i] = ParticleProperties::getParticleMass(type);
     bunch->Q[i] = ParticleProperties::getParticleChargeInCoulomb(type);
 
-    Inform gmsgALL("OPAL", INFORM_ALL_NODES);
-    gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i]
+    *gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i]
             << " is transformed to " << ParticleProperties::getParticleTypeString(type) << endl;
 }
 
