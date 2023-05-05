@@ -16,6 +16,10 @@
 
 #include <cstring>
 #include <gsl/gsl_errno.h>
+#include <Python.h>
+#include <boost/python.hpp>
+
+#include "Utility/IpplInfo.h" // that is ippl land
 #include "Utilities/OpalException.h"
 
 // Note the gymnastics here - we only want to define gmsg and ippl once
@@ -34,26 +38,45 @@ namespace {
 
 namespace PyOpal {
 namespace Globals {
-void Initialise() {
-    if (gmsg == nullptr) {
-        gmsg = new Inform("OPAL");
+void printArgv(char** argv) { // debugging
+    int i = 0;
+    while (argv[i] != nullptr) {
+        std::cerr << i << " " << std::string(argv[i]) << std::endl;
+        ++i;
     }
+
+}
+
+void Initialise() {
     if (ippl == nullptr) {
-        int argc = 3;
+        PyObject* pyargv = PySys_GetObject("argv"); // this is a borrowed ref
+        boost::python::handle<> wrapper(boost::python::borrowed(pyargv)); // now wrapper owns the ref
+        boost::python::list myList(wrapper);
+
+        int argc = int(boost::python::len(myList));
         // I am not strong on the C-style strings, but if I understand correctly
         // there is a secret null pointer at the end of each string, hence the
         // char arrays have to be one character longer than you might think.
-        char* argvr[4];
+        char* argvr[argc+1];
         argvr[0] = new char[7];
         strcpy(argvr[0], "pyopal");
-        argvr[1] = new char[12];
-        strcpy(argvr[1], "--processes");
-        argvr[2] = new char[2];
-        strcpy(argvr[2], "3");
-        argvr[3] = nullptr;
+        for (int i = 1; i < argc; ++i) {
+            int stringLength(boost::python::len(myList[i]));
+            const char* value = boost::python::extract<const char*>(
+                                                 boost::python::str(myList[i]));
+            argvr[i] = new char[stringLength+1];
+            strcpy(argvr[i], value);
+        }
+        argvr[argc] = nullptr;
+        // and here is another secret nullptr to mark the end of the array of strings
+        // don't forget it, you might spend days debugging the segv otherwise...
         char** argv = argvr;
         // Ippl is a typedef of IpplInfo in ippl/Utilities
         ippl = new Ippl(argc, argv);
+    }
+    if (gmsg == nullptr) {
+        IpplInfo::instantiateGlobals();
+        gmsg = new Inform("OPAL");
     }
     gsl_set_error_handler(&errorHandlerGSL);
 }

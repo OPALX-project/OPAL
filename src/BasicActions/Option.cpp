@@ -411,6 +411,7 @@ void Option::execute() {
     else
       rangen.init55(seed);
 
+    gmsg->on(info);
     IpplInfo::Info->on(info);
     IpplInfo::Warn->on(warn);
 

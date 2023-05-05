@@ -14,6 +14,10 @@
 # along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+"""
+Module to hold FFAFieldMapper
+"""
+
 
 import os
 import math
@@ -24,7 +28,10 @@ import matplotlib.pyplot
 import pyopal.objects.field
 
 
-class FFAFieldMapper(object):
+class FFAFieldMapper():
+    """
+    Class to make field maps, intended for FFAs/ring geometries
+    """
     def __init__(self):
         # for cylindrical field map
         self.r_points = []
@@ -40,25 +47,30 @@ class FFAFieldMapper(object):
         self.radial_contours = []
         self.spiral_contours = []
 
-        self.plot_dir = os.getcwd()        
+        self.plot_dir = os.getcwd()
 
     @classmethod
-    def binner(self, a_list):
+    def binner(cls, a_list):
+        """Build a set of bins based on a list of grid coordinates"""
         return [a_list[0]+(a_list[1]-a_list[0])*(i-0.5) \
                                                   for i in range(len(a_list)+1)]
 
-    def load_tracks(self, track_orbit):
-        with open(track_orbit) as fin:
-            for line in range(2):
-                print(fin.readline())
-
-    def gen_cmap(self, bz_grid):
+    @classmethod
+    def gen_cmap(cls, bz_grid):
+        """Generate the colour mapping for field bz"""
         min_bz = min(bz_grid)
         max_bz = max(bz_grid)
         cmax = max(abs(min_bz), abs(max_bz))
         return min_bz, max_bz, cmax
 
+    def load_tracks(self, track_orbit):
+        """Placeholder for loading tracks"""
+        self.tracks = None
+
     def field_map_cylindrical(self, axes = None):
+        """Build a field map in cylindrical coordinates. If axes is defined
+        plot the field map on axes as a hist2d; else make a new figure/axes and
+        plot it there."""
         r_grid = []
         phi_grid = []
         bz_grid = []
@@ -99,27 +111,38 @@ class FFAFieldMapper(object):
         print("Generated cylindrical field map in", fig_fname)
         return figure
 
-    def draw_cylindrical_radial_contour(self, axes, contour):
+    @classmethod
+    def draw_cylindrical_radial_contour(cls, axes, contour):
+        """Draw a purely radial contour on axes""" 
         print("Plotting cylindrical radial contour", contour)
         xlim = axes.get_xlim()
         ylim = axes.get_ylim()
-        axes.plot(xlim, [contour["radius"]]*2, linestyle=contour["linestyle"], color=contour["colour"])
-        axes.text(xlim[-1], contour["radius"], contour["label"], horizontalalignment = "right", va="top", color=contour["colour"])
+        axes.plot(xlim, [contour["radius"]]*2,
+                  linestyle=contour["linestyle"], color=contour["colour"])
+        axes.text(xlim[-1], contour["radius"], contour["label"],
+                  horizontalalignment = "right", va="top", color=contour["colour"])
         axes.set_xlim(xlim)
         axes.set_ylim(ylim)
 
     def draw_cylindrical_spiral_contour(self, axes, contour):
+        """Draw a radially spiralling contour on axes""" 
         xlim = axes.get_xlim()
         ylim = axes.get_ylim()
         tan_d = math.tan(contour["spiral_angle"])
-        phi_points = [contour["phi0"] + tan_d*math.log(r/contour["r0"]) for r in self.r_points]
+        phi_points = [contour["phi0"] + tan_d*math.log(r/contour["r0"]) \
+                                                         for r in self.r_points]
         phi_points = [math.degrees(phi) for phi in phi_points]
-        axes.plot(phi_points, self.r_points, linestyle=contour["linestyle"], color=contour["colour"])
-        axes.text(phi_points[-1], self.r_points[-1], contour["label"], va = "top", rotation="vertical", color=contour["colour"])
+        axes.plot(phi_points, self.r_points, linestyle=contour["linestyle"],
+                  color=contour["colour"])
+        axes.text(phi_points[-1], self.r_points[-1], contour["label"],
+                  va="top", rotation="vertical", color=contour["colour"])
         axes.set_xlim(xlim)
         axes.set_ylim(ylim)
 
     def field_map_cartesian(self, axes = None):
+        """Build a field map in cartesian coordinates. If axes is defined
+        plot the field map on axes as a hist2d; else make a new figure/axes and
+        plot it there."""
         x_grid = []
         y_grid = []
         bz_grid = []
@@ -151,6 +174,7 @@ class FFAFieldMapper(object):
         return figure
 
     def oned_field_map(self, radius, axes = None):
+        """Build a oned field map along a line of constant radius."""
         bz_points = []
 
         for phi in self.phi_points:
@@ -173,16 +197,23 @@ class FFAFieldMapper(object):
         axes.set_ylabel("$B_z$ [T]")
         return axes.figure, bz_points
 
-    def draw_azimuthal_contour(self, radius, axes, contour):
+    @classmethod
+    def draw_azimuthal_contour(cls, radius, axes, contour):
+        """Build an azimuthal contour in a cylindrical field map"""
         xlim = axes.get_xlim()
         ylim = axes.get_ylim()
         tan_d = math.tan(contour["spiral_angle"])
         phi = contour["phi0"] + tan_d*math.log(radius/contour["r0"])
         phi = math.degrees(phi)
-        axes.plot([phi, phi], ylim, linestyle=contour["linestyle"], color=contour["colour"])
-        axes.text(phi, ylim[-1], contour["label"], va = "top", rotation="vertical", color=contour["colour"])
+        axes.plot([phi, phi], ylim, linestyle=contour["linestyle"],
+                   color=contour["colour"])
+        axes.text(phi, ylim[-1], contour["label"], va = "top",
+                  rotation="vertical", color=contour["colour"])
         axes.set_xlim(xlim)
         axes.set_ylim(ylim)
 
-    default_radial_contour = {"radius":0.0, "linestyle":"-", "colour":"grey", "oned_plot":False}
-    default_spiral_contour = {"phi0":0.0, "r0":0, "tan_delta":0, "line_style":"-", "colour":"grey", "oned_plot":False}
+    default_radial_contour = {"radius":0.0, "linestyle":"-",
+                              "colour":"grey", "oned_plot":False}
+    default_spiral_contour = {"phi0":0.0, "r0":0, "tan_delta":0,
+                              "line_style":"-", "colour":"grey",
+                              "oned_plot":False}

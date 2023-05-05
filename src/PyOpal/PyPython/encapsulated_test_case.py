@@ -47,7 +47,7 @@ class EncapsulatedTestCase(unittest.TestCase):
             a_pid = os.fork()
             if a_pid == 0: # the child process
                 try:
-                    retvalue = test_method(self)
+                    test_method(self)
                 except:
                     print("Encapsulated test failed with:")
                     sys.excepthook(*sys.exc_info())
@@ -56,6 +56,5 @@ class EncapsulatedTestCase(unittest.TestCase):
             else:
                 return_value = os.waitpid(a_pid, 0)[1]
                 classname = self.__class__.__name__
-                self.assertEqual(return_value, 0, 
+                self.assertEqual(return_value, 0,
                                  msg=f"Failed test {classname}.{name}")
-

@@ -10,6 +10,10 @@
 # You should have received a copy of the GNU General Public License
 # along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 
+"""
+Test variable RF cavity in python
+"""
+
 import math
 import unittest
 import pyopal.objects.minimal_runner
@@ -20,15 +24,21 @@ import pyopal.elements.variable_rf_cavity
 
 
 class TestVariableRFCavity(unittest.TestCase):
-    def make_time_dependence(self, name, p0, p1):
+    """
+    Test variable RF cavity in python
+    """
+    @classmethod
+    def make_time_dependence(cls, name, pol0, pol1):
+        """Make a time dependence"""
         ptd = pyopal.elements.polynomial_time_dependence.PolynomialTimeDependence()
-        ptd.p0 = p0
-        ptd.p1 = p1
+        ptd.p0 = pol0
+        ptd.p1 = pol1
         ptd.set_opal_name(name)
         ptd.update()
         return ptd
 
     def setUp(self):
+        """Set up the cavity"""
         self.phase = self.make_time_dependence("phase", 0.0, 0.0)
         self.voltage = self.make_time_dependence("voltage", 2.0, 0.0)
         self.frequency = self.make_time_dependence("frequency", 3.0, 4.0)
@@ -71,11 +81,11 @@ class TestVariableRFCavity(unittest.TestCase):
         """Check that field value returns okay"""
         for it in range(10):
             t = it*1e-3
-            ez = self.rf.get_field_value(0.0, 0.0, 0.0, t)[6]
+            e_z = self.rf.get_field_value(0.0, 0.0, 0.0, t)[6]
             freq = self.frequency.function(t)
-            v0 = self.voltage.function(t)
-            ezTest = v0*math.sin(2*math.pi*t*1e-3*freq) # NOTE the 1e-3 factor
-            self.assertAlmostEqual(ez, ezTest)
+            v_0 = self.voltage.function(t)
+            ez_test = v_0*math.sin(2*math.pi*t*1e-3*freq) # NOTE the 1e-3 factor
+            self.assertAlmostEqual(e_z, ez_test)
 
 
 if __name__ == "__main__":

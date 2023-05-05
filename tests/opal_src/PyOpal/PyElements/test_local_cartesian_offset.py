@@ -40,6 +40,7 @@ class OffsetPlacements(pyopal.objects.minimal_runner.MinimalRunner):
     """do placements"""
     def __init__(self):
         super().__init__()
+        self.verbose = 0
         self.offset = None
         self.nominal_end_pos = (0, 1., 0, 0)
         self.nominal_end_dir = (0, 1, 0, 0)
