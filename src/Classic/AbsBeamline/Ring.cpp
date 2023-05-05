@@ -44,6 +44,8 @@
 const double Ring::lengthTolerance_m = 1e-2;
 const double Ring::angleTolerance_m = 1e-2;
 
+extern Inform* gmsg;
+
 Ring::Ring(std::string ring)
     : Component(ring), planarArcGeometry_m(1, 1),
       refPartBunch_m(nullptr),
@@ -103,7 +105,7 @@ bool Ring::apply(const size_t &id, const double &t, Vector_t &E,
         apply(refPartBunch_m->R[id], refPartBunch_m->P[id], t, E, B);
     if(flagNeedUpdate) {
         Inform gmsgALL("OPAL ", INFORM_ALL_NODES);
-        gmsgALL << getName() << ": particle " << id
+        gmsgALL << level4 << getName() << ": particle " << id
                 << " at " << refPartBunch_m->R[id]
                 << " m out of the field map boundary" << endl;
         lossDS_m->addParticle(OpalParticle(id,
@@ -278,17 +280,15 @@ void Ring::appendElement(const Component &element) {
     section->setComponentOrientation(Vector_t(0, 0, orientation));
 
     section_list_m.push_back(section);
-
-    Inform msg("OPAL");
-    msg << "* Added " << element.getName() << " to Ring" << endl;
-    msg << "* Start position ("
+    *gmsg << "* Added " << element.getName() << " to Ring" << endl;
+    *gmsg << "* Start position ("
         << section->getStartPosition()(0) << ", "
         << section->getStartPosition()(1) << ", "
         << section->getStartPosition()(2) << ") normal ("
         << section->getStartNormal()(0) << ", "
         << section->getStartNormal()(1) << ", "
         << section->getStartNormal()(2) << ")" << endl;
-    msg << "* End position   ("
+    *gmsg << "* End position   ("
         << section->getEndPosition()(0) << ", "
         << section->getEndPosition()(1) << ", "
         << section->getEndPosition()(2) << ") normal ("
@@ -298,7 +298,6 @@ void Ring::appendElement(const Component &element) {
 }
 
 void Ring::lockRing() {
-    Inform msg("OPAL ");
     if (isLocked_m) {
         throw GeneralClassicException("Ring::lockRing",
                                       "Attempt to lock ring when it is already locked");
@@ -312,7 +311,7 @@ void Ring::lockRing() {
     // Apply symmetry properties; I think it is fastest to just duplicate
     // elements rather than try to do some angle manipulations when we do field
     // lookups because we do field lookups in Cartesian coordinates in general.
-    msg << "Applying symmetry to Ring" << endl;
+    *gmsg << "Applying symmetry to Ring" << endl;
     for (int i = 1; i < symmetry_m; ++i) {
         for (size_t j = 0; j < sectionListSize; ++j) {
             appendElement(*section_list_m[j]->getComponent());

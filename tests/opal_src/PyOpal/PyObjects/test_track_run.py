@@ -28,6 +28,7 @@ class TrackRunner(pyopal.objects.minimal_runner.MinimalRunner):
     def __init__(self):
         """Set up the test"""
         super().__init__()
+        self.verbose = 0
         self.run_method = "CYCLOTRON-T"
         self.keep_alive = True
         self.beam_name = "SuperBeam"

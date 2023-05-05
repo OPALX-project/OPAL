@@ -193,6 +193,12 @@ public:
     template <class PYCLASS>
     void addGetOpalName(PYCLASS& pyclass);
 
+    /** Add a set_attributes method to the python class (to setup opalobject
+     *  from a dictionary of kwargs)
+     */
+    template <class PYCLASS>
+    void addSetAttributes(PYCLASS& pyclass);
+
     /** Add a set_opal_name method to the python class (to set the opal internal
      *  string that uniquely identifies the object)
      */
@@ -285,21 +291,34 @@ public:
 
 protected:
     static std::vector<AttributeDef> attributes; /** class data (attributes) */
+    static std::map<std::string, AttributeDef> pyNameToAttribute; /** maps python name to AttributeDef for fast lookup */
     static std::string classDocstring; /** class docstring */
     static bool converterRegistered; /** set to true if the converter has been registered */
     std::shared_ptr<C> object_m; /** pointer to the element */
 
     /** Generates a docstring from the attribute */
     std::string getDocString(AttributeDef& def);
+    /** method to get field at a point in space-time */
     static boost::python::object getFieldValue(
                     PyOpalObjectNS::PyOpalObject<C>& pyobject,
                     double x, double y, double z, double t);
+    /** method to get the opal name of an object */
     static std::string getOpalName(const PyOpalObject<C>& pyobject);
+    /** method to set the opal name of an object */
     static void setOpalName(PyOpalObject<C>& pyobject, std::string name);
+    /** method to set the opal name of an element - elements have two "names",
+     *  one belonging to the OpalObject and one belonging to the Component */
     static void setOpalElementName(PyOpalObject<C>& pyobject, std::string name);
+    /** method to call "execute" on an object */
     static void execute(PyOpalObject<C>& pyobject);
+    /** method to call "register" on an object */
     static void registerObject(PyOpalObject<C>& pyobject);
+    /** return the underlying element (used e.g. by PyLine) */
     static boost::python::object getPyOpalElement(PyOpalObject<C>& pyobject);
+    /** set many attributes at once as a dict, stored in kwarg. 
+     *  args should be exactly equal to (self,) */
+    static boost::python::object setAttributes(boost::python::tuple args,
+                                               boost::python::dict kwargs);
     // unit definitions for getFieldValue method
     static double distanceUnits_m;
     static double timeUnits_m;
@@ -307,6 +326,10 @@ protected:
     static double efieldUnits_m;
     static const std::string getFieldValueDocString;
 };
+
+/** apparently this is okay because it is a template and doesnt break one definition rule */
+template <class C>
+std::map<std::string, AttributeDef> PyOpalObject<C>::pyNameToAttribute;
 
 /** Call update on a pyelement
  * 
@@ -348,6 +371,32 @@ boost::python::object PyOpalObject<C>::getFieldValue(
     return boost::python::make_tuple(outOfBounds,
                     B[0]*bfieldUnits_m, B[1]*bfieldUnits_m, B[2]*bfieldUnits_m,
                     E[0]*efieldUnits_m, E[1]*efieldUnits_m, E[2]*efieldUnits_m);
+}
+
+/** Pass a dictionary of attributes to the pyobject using the python *args **kwargs semantics */
+template <class C>
+boost::python::object PyOpalObject<C>::setAttributes(boost::python::tuple args,
+                                                     boost::python::dict kwargs) {
+    if (boost::python::len(args) == 0) {
+        throw OpalException("PyOpalObject::setAttributes",
+            "Did not find class instance (i.e. 'self') when calling "
+            "set_attributes");
+    } else if (boost::python::len(args) > 1) {
+        throw OpalException("PyOpalObject::setAttributes",
+            "set_attributes cannot take any non-keyword args (except the class"
+            " instance");
+    }
+    PyOpalObject<C> self = boost::python::extract<PyOpalObject<C> >(args[0]);
+    boost::python::list key_list = kwargs.keys();
+    for (boost::python::ssize_t i = 0; i < boost::python::len(key_list); ++i) {
+        boost::python::object key = key_list[i];
+        std::string keyStr = boost::python::extract<std::string>(key);
+        boost::python::object value = kwargs[key];
+        AttributeDef att = PyOpalObject<C>::pyNameToAttribute[keyStr];
+        self.setAttribute(att.type_m, att.opalName_m, value.ptr());
+    }
+    boost::python::object obj;
+    return obj;
 }
 
 /** Helper class to handle getting Attributes from python */
@@ -666,6 +715,7 @@ boost::python::class_<PyOpalObject<C> > PyOpalObject<C>::make_generic_class(cons
     try {
         addAttributes(pyclass);
         addGetOpalName(pyclass);
+        addSetAttributes(pyclass);
     } catch (OpalException& exc) {
         std::cerr << "Failed to initialise class because '" << exc.what() 
                   << "'" << std::endl;
@@ -713,11 +763,18 @@ void PyOpalObject<C>::addRegister(PYCLASS& pyclass) {
     pyclass.def("register", &PyOpalObject<C>::registerObject);
 }
 
-
 template <class C>
 template <class PYCLASS>
 void PyOpalObject<C>::addGetOpalName(PYCLASS& pyclass) {
     pyclass.def("get_opal_name", &PyOpalObject<C>::getOpalName);
+}
+
+template <class C>
+template <class PYCLASS>
+void PyOpalObject<C>::addSetAttributes(PYCLASS& pyclass) {
+    pyclass.def("set_attributes",
+                boost::python::raw_function(&PyOpalObject<C>::setAttributes, 0)
+                );
 }
 
 template <class C>
@@ -757,6 +814,7 @@ template <class C>
 template <class PYCLASS>
 void PyOpalObject<C>::addAttributes(PYCLASS& pyclass) {
     for (std::vector<AttributeDef>::iterator iter = attributes.begin(); iter != attributes.end(); ++iter) {
+        pyNameToAttribute[iter->pyName_m] = *iter;
         PyOpalObjectGetProperty<C> getProp(iter->type_m, iter->opalName_m);
         PyOpalObjectSetProperty<C> setProp(iter->type_m, iter->opalName_m);
         std::string docString = getDocString(*iter);

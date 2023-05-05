@@ -23,6 +23,7 @@ class ProbeRunner(pyopal.objects.minimal_runner.MinimalRunner):
     def __init__(self):
         """Set up the test"""
         super().__init__()
+        self.verbose = 0
         self.probe = None
         self.options = None
         self.r0 = 0.9

@@ -33,7 +33,7 @@ class FieldTest(pyopal.objects.encapsulated_test_case.EncapsulatedTestCase):
 
     def encapsulated_test_field(self):
         """Test that we can get out a field value"""
-        print("TEST FIELD")
+        print("Test field")
         pyopal.objects.parser.initialise_from_opal_file(self.file_name)
         float_tolerance = 1e-3
         test_fail = False
@@ -80,7 +80,7 @@ class FieldTest(pyopal.objects.encapsulated_test_case.EncapsulatedTestCase):
             test_fail = test_fail or abs(value[i] - ref_value[i]) > float_tolerance
         print("Offset end normal", value, "reference", ref_value, "Test", test_fail)
 
-        return test_fail
+        self.assertFalse(test_fail)
 
     debug = False
     command = """
@@ -93,6 +93,9 @@ Title,string="Dummy lattice for testing";
 ///
 
 OPTION, VERSION=20210100;
+OPTION, ECHO=False;
+OPTION, INFO=False;
+OPTION, WARN=False;
 
 field: VERTICALFFAMAGNET,
         B0=2,
@@ -130,5 +133,4 @@ STOP;
 """
 
 if __name__ == "__main__":
-    FieldTest.debug = False
     unittest.main()

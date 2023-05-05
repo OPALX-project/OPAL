@@ -80,7 +80,7 @@ Score must be greater than {self.pass_score} to pass. Try running pylint to chec
     def will_not_run_arg(self):
         parser = argparse.ArgumentParser()
         parser.add_argument("--do_not_run_pylint", action='store_true', help="disable pylint execution")
-        args = parser.parse_args()
+        args, unknown = parser.parse_known_args() # allow unrecognised arguments (e.g. for ippl parser)
         return args.do_not_run_pylint
 
     def test_check_pylint_tests(self):

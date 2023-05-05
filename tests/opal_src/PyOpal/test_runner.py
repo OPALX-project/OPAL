@@ -38,10 +38,13 @@ class TestEnv():
 
 def main():
     """A very simple test runner script"""
+    my_test_path = test_path()
+    print("Running PyOpal unit tests from path", my_test_path)
     suite = unittest.defaultTestLoader.discover(
-                start_dir = test_path(),
+                start_dir = my_test_path,
                 pattern = "test*"
     )
+
     with TestEnv() as test_env:
         runner = unittest.TextTestRunner(stream=test_env.stream)
         result = runner.run(suite)
@@ -59,7 +62,6 @@ def main():
     else:
         print("Tests passed")
         sys.exit(0)
-
 
 if __name__ == "__main__":
     main()

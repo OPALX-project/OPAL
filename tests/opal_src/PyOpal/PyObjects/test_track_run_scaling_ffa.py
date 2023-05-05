@@ -224,6 +224,8 @@ class ScalingFFARunner(pyopal.objects.minimal_runner.MinimalRunner):
 
 
         n_elements = pyopal.objects.field.get_number_of_elements()
+        if not self.verbose:
+            return
         print("PyOpal built", n_elements, "elements, not including the RingDefinition:")
         for i in range(pyopal.objects.field.get_number_of_elements()):
             start_pos = pyopal.objects.field.get_element_start_position(i)

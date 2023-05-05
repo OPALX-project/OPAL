@@ -78,6 +78,7 @@ class MinimalRunner(object):
         self.time_per_turn = 1e-6 # [seconds]
         self.run_name = None # default is "PyOpal"
         self.exit_code = 0
+        self.verbose = 2 # 2 is everything; 1 is warnings and errors; 0 is errors
 
     def make_field_solver(self):
         """Make an empty fieldsolver
@@ -174,6 +175,8 @@ class MinimalRunner(object):
         Option docs.
         """
         self.option = pyopal.objects.option.Option()
+        self.option.info = self.verbose > 1
+        self.option.warn = self.verbose > 0
         self.option.execute()
 
     def make_line(self):

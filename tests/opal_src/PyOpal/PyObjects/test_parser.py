@@ -40,6 +40,9 @@ Title,string="Dummy lattice for testing";
 ///
 
 OPTION, VERSION=20210100;
+OPTION, ECHO=False;
+OPTION, INFO=False;
+OPTION, WARN=False;
 
 null: LOCAL_CARTESIAN_OFFSET,
                 end_position_x=0., end_position_y=0.,
