@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
     // so when calling from python we call opalMain instead
     new Ippl(argc, argv);
     gmsg = new  Inform("OPAL");
-    gmsgALL = new Inform("OPAL ", INFORM_ALL_NODES);
+    gmsgALL = new Inform("OPAL", INFORM_ALL_NODES);
     return opalMain(argc, argv);
 }
 
