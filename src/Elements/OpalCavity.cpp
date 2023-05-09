@@ -29,48 +29,66 @@
 
 OpalCavity::OpalCavity():
     OpalElement(SIZE, "RFCAVITY",
-                "The \"RFCAVITY\" element defines an RF cavity."),
+                "The \"RFCAVITY\" element defines a RF cavity"),
     owk_m(nullptr),
     obgeo_m(nullptr) {
     itsAttr[VOLT] = Attributes::makeReal
-                    ("VOLT", "RF voltage in MV");
+        ("VOLT", "RF voltage [MV]");
+
     itsAttr[DVOLT] = Attributes::makeReal
-                     ("DVOLT", "RF voltage error in MV");
+        ("DVOLT", "RF voltage error [MV]");
+
     itsAttr[FREQ] = Attributes::makeReal
-                    ("FREQ", "RF frequency in MHz");
+        ("FREQ", "RF frequency [MHz]");
+
     itsAttr[LAG] = Attributes::makeReal
-                   ("LAG", "Phase lag (rad)");
+        ("LAG", "Phase lag [rad]");
+
     itsAttr[DLAG] = Attributes::makeReal
-                    ("DLAG", "Phase lag error (rad)");
+        ("DLAG", "Phase lag error [rad]");
+
     itsAttr[FMAPFN] = Attributes::makeString
-                      ("FMAPFN", "Filename of the fieldmap");
+        ("FMAPFN", "Filename of the fieldmap");
+
     itsAttr[GEOMETRY] = Attributes::makeString
-                        ("GEOMETRY", "BoundaryGeometry for Cavities");
+        ("GEOMETRY", "BoundaryGeometry for Cavities");
+
     itsAttr[FAST] = Attributes::makeBool
-                    ("FAST", "Faster but less accurate", true);
+        ("FAST", "Faster but less accurate (default=true)", true);
+
     itsAttr[APVETO] = Attributes::makeBool
-                    ("APVETO", "Do not use this cavity in the Autophase procedure", false);
+        ("APVETO", "Do not use this cavity in the Autophase procedure (default=false)", false);
+
     itsAttr[RMIN] = Attributes::makeReal
-                    ("RMIN", " Minimal Radius of a cyclotron cavity [mm]");
+        ("RMIN", "Minimal Radius of a cyclotron cavity [mm]");
+
     itsAttr[RMAX] = Attributes::makeReal
-                    ("RMAX", " Maximal Radius of a cyclotron cavity [mm]");
+        ("RMAX", "Maximal Radius of a cyclotron cavity [mm]");
+
     itsAttr[ANGLE] = Attributes::makeReal
-                     ("ANGLE", "Azimuth position of a cyclotron cavity [deg]");
+        ("ANGLE", "Azimuth position of a cyclotron cavity [deg]");
+
     itsAttr[PDIS] = Attributes::makeReal
-                    ("PDIS", "Shift distance of cavity gap from center of cyclotron [mm]");
+        ("PDIS", "Shift distance of cavity gap from center of cyclotron [mm]");
+
     itsAttr[GAPWIDTH] = Attributes::makeReal
-                        ("GAPWIDTH", "Gap width of a cyclotron cavity [mm]");
+        ("GAPWIDTH", "Gap width of a cyclotron cavity [mm]");
+
     itsAttr[PHI0] = Attributes::makeReal
-                    ("PHI0", "Initial phase of cavity [deg]");
+        ("PHI0", "Initial phase of cavity [deg]");
+
     itsAttr[DESIGNENERGY] = Attributes::makeReal
-                            ("DESIGNENERGY", "the mean energy of the particles at exit", -1.0);
+        ("DESIGNENERGY", "The mean energy of the particles at exit", -1.0);
+
     // attibutes for timedependent values
-    itsAttr[PHASE_MODEL] = Attributes::makeString("PHASE_MODEL",
-                                                  "The name of the phase time dependence model.");
-    itsAttr[AMPLITUDE_MODEL] = Attributes::makeString("AMPLITUDE_MODEL",
-                                                      "The name of the amplitude time dependence model.");
-    itsAttr[FREQUENCY_MODEL] = Attributes::makeString("FREQUENCY_MODEL",
-                                                      "The name of the frequency time dependence model.");
+    itsAttr[PHASE_MODEL] = Attributes::makeString
+        ("PHASE_MODEL", "The name of the phase time dependence model");
+
+    itsAttr[AMPLITUDE_MODEL] = Attributes::makeString
+        ("AMPLITUDE_MODEL", "The name of the amplitude time dependence model");
+
+    itsAttr[FREQUENCY_MODEL] = Attributes::makeString
+        ("FREQUENCY_MODEL", "The name of the frequency time dependence model");
 
     registerOwnership();
 
@@ -78,7 +96,7 @@ OpalCavity::OpalCavity():
 }
 
 
-OpalCavity::OpalCavity(const std::string &name, OpalCavity *parent):
+OpalCavity::OpalCavity(const std::string& name, OpalCavity* parent):
     OpalElement(name, parent),
     owk_m(nullptr),
     obgeo_m(nullptr) {
@@ -91,7 +109,7 @@ OpalCavity::~OpalCavity() {
 }
 
 
-OpalCavity *OpalCavity::clone(const std::string &name) {
+OpalCavity* OpalCavity::clone(const std::string& name) {
     return new OpalCavity(name, this);
 }
 
@@ -99,26 +117,30 @@ OpalCavity *OpalCavity::clone(const std::string &name) {
 void OpalCavity::update() {
     OpalElement::update();
 
-    RFCavityRep *rfc =
-        dynamic_cast<RFCavityRep *>(getElement());
+    RFCavityRep* rfc = dynamic_cast<RFCavityRep*>(getElement());
 
     double length = Attributes::getReal(itsAttr[LENGTH]);
-    double peak = Attributes::getReal(itsAttr[VOLT]);
+
+    double peak      = Attributes::getReal(itsAttr[VOLT]);
     double peakError = Attributes::getReal(itsAttr[DVOLT]);
-    double phase = Attributes::getReal(itsAttr[LAG]);
+
+    double phase      = Attributes::getReal(itsAttr[LAG]);
     double phaseError = Attributes::getReal(itsAttr[DLAG]);
+
     double freq = Physics::two_pi * Attributes::getReal(itsAttr[FREQ]) * Units::MHz2Hz;
+
     std::string fmapfn = Attributes::getString(itsAttr[FMAPFN]);
     std::string type = Attributes::getString(itsAttr[TYPE]);
+
     bool fast = Attributes::getBool(itsAttr[FAST]);
     bool apVeto = (Attributes::getBool(itsAttr[APVETO]));
 
-    double rmin = Attributes::getReal(itsAttr[RMIN]);
-    double rmax = Attributes::getReal(itsAttr[RMAX]);
-    double angle = Attributes::getReal(itsAttr[ANGLE]);
-    double pdis = Attributes::getReal(itsAttr[PDIS]);
-    double gapwidth = Attributes::getReal(itsAttr[GAPWIDTH]);
-    double phi0 = Attributes::getReal(itsAttr[PHI0]);
+    double rmin  = Units::mm2m * Attributes::getReal(itsAttr[RMIN]);
+    double rmax  = Units::mm2m * Attributes::getReal(itsAttr[RMAX]);
+    double angle = Units::deg2rad * Attributes::getReal(itsAttr[ANGLE]);
+    double pdis  = Units::mm2m * Attributes::getReal(itsAttr[PDIS]);
+    double gapwidth = Units::mm2m * Attributes::getReal(itsAttr[GAPWIDTH]);
+    double phi0 = Units::deg2rad * Attributes::getReal(itsAttr[PHI0]);
     double kineticEnergy = Attributes::getReal(itsAttr[DESIGNENERGY]);
 
     if(itsAttr[WAKEF] && owk_m == nullptr) {

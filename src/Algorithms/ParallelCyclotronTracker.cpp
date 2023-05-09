@@ -751,25 +751,25 @@ void ParallelCyclotronTracker::visitRFCavity(const RFCavity& as) {
     *gmsg << "* RF Field map file         = '" << fmfn << "'" << endl;
 
     double rmin = elptr->getRmin();
-    *gmsg << "* Minimal radius of cavity  = " << rmin << " [mm]" << endl;
+    *gmsg << "* Minimal radius of cavity  = " << rmin << " [m]" << endl;
 
     double rmax = elptr->getRmax();
-    *gmsg << "* Maximal radius of cavity  = " << rmax << " [mm]" << endl;
+    *gmsg << "* Maximal radius of cavity  = " << rmax << " [m]" << endl;
 
     double rff = elptr->getCycFrequency();
     *gmsg << "* RF frequency (2*pi*f)     = " << rff << " [rad/s]" << endl;
 
     double angle = elptr->getAzimuth();
-    *gmsg << "* Cavity azimuth position   = " << angle << " [deg] " << endl;
+    *gmsg << "* Cavity azimuth position   = " << angle * Units::rad2deg << " [deg] " << endl;
 
     double gap = elptr->getGapWidth();
-    *gmsg << "* Cavity gap width          = " << gap << " [mm] " << endl;
+    *gmsg << "* Cavity gap width          = " << gap << " [m] " << endl;
 
     double pdis = elptr->getPerpenDistance();
-    *gmsg << "* Cavity Shift distance     = " << pdis << " [mm] " << endl;
+    *gmsg << "* Cavity Shift distance     = " << pdis << " [m] " << endl;
 
     double phi0 = elptr->getPhi0();
-    *gmsg << "* Initial RF phase (t=0)    = " << phi0 << " [deg] " << endl;
+    *gmsg << "* Initial RF phase (t=0)    = " << phi0 * Units::rad2deg << " [deg] " << endl;
 
     /*
       Setup time dependence and in case of no
@@ -1178,7 +1178,7 @@ void ParallelCyclotronTracker::execute() {
         *gmsg << "* -> " <<  ElementBase::getTypeString(type) << endl;
         if (type == ElementType::RFCAVITY) {
             RFCavity* cav = static_cast<RFCavity*>((fd->second).second);
-            CavityCrossData ccd = {cav, cav->getSinAzimuth(), cav->getCosAzimuth(), cav->getPerpenDistance() * Units::mm2m};
+            CavityCrossData ccd = {cav, cav->getSinAzimuth(), cav->getCosAzimuth(), cav->getPerpenDistance()};
             cavCrossDatas_m.push_back(ccd);
         } else if ( type == ElementType::CCOLLIMATOR ||
                     type == ElementType::PROBE       ||
@@ -1487,24 +1487,23 @@ bool ParallelCyclotronTracker::getFieldsAtPoint(const double& t, const size_t& P
  */
 
 bool ParallelCyclotronTracker::checkGapCross(Vector_t Rold, Vector_t Rnew,
-                                             RFCavity * rfcavity, double& Dold)
-{
+                                             RFCavity* rfcavity, double& Dold) {
     bool flag = false;
     double sinx = rfcavity->getSinAzimuth();
     double cosx = rfcavity->getCosAzimuth();
-    // TODO: Presumably this is still in mm, so for now, change to m -DW
-    double PerpenDistance = Units::mm2m * rfcavity->getPerpenDistance();
+
+    double PerpenDistance = rfcavity->getPerpenDistance();
     double distNew = (Rnew[0] * sinx - Rnew[1] * cosx) - PerpenDistance;
     double distOld = (Rold[0] * sinx - Rold[1] * cosx) - PerpenDistance;
     if (distOld > 0.0 && distNew <= 0.0) flag = true;
     // This parameter is used correct cavity phase
-    Dold = Units::m2mm * distOld;
+    Dold = distOld;
     return flag;
 }
 
-bool ParallelCyclotronTracker::RFkick(RFCavity * rfcavity, const double t, const double dt, const int Pindex){
-    // For OPAL 2.0: As long as the RFCavity is in mm, we have to change R to mm here -DW
-    double radius = std::sqrt(std::pow(Units::m2mm * itsBunch_m->R[Pindex](0), 2.0) + std::pow(Units::m2mm * itsBunch_m->R[Pindex](1), 2.0)
+bool ParallelCyclotronTracker::RFkick(RFCavity* rfcavity, const double t, const double dt, const int Pindex) {
+
+    double radius = std::sqrt(std::pow(itsBunch_m->R[Pindex](0), 2.0) + std::pow(itsBunch_m->R[Pindex](1), 2.0)
                          - std::pow(rfcavity->getPerpenDistance() , 2.0));
     double rmin = rfcavity->getRmin();
     double rmax = rfcavity->getRmax();
@@ -3226,12 +3225,12 @@ void ParallelCyclotronTracker::gapCrossKick_m(size_t i, double t,
         sindex != FieldDimensions.end(); ++sindex)
     {
         bool tag_crossing = false;
-        double DistOld = 0.0; //mm
-        RFCavity * rfcav;
+        double DistOld = 0.0;
+        RFCavity* rfcav;
 
         if (((*sindex)->first) == ElementType::RFCAVITY) {
-            // here check gap cross in the list, if do , set tag_crossing to TRUE
-            rfcav = static_cast<RFCavity *>(((*sindex)->second).second);
+            // here check gap cross in the list, if do, set tag_crossing to TRUE
+            rfcav = static_cast<RFCavity*>(((*sindex)->second).second);
             tag_crossing = checkGapCross(Rold, itsBunch_m->R[i], rfcav, DistOld);
         }
 
@@ -3242,7 +3241,7 @@ void ParallelCyclotronTracker::gapCrossKick_m(size_t i, double t,
             double oldBetgam = std::sqrt(oldMomentum2);
             double oldGamma = std::sqrt(1.0 + oldMomentum2);
             double oldBeta = oldBetgam / oldGamma;
-            double dt1 = DistOld / (Physics::c * oldBeta * Units::m2mm / Units::s2ns); // ns, c in [mm/ns]
+            double dt1 = DistOld / (oldBeta * Physics::c / Units::s2ns); // ns, c in [m/ns]
             double dt2 = dt - dt1;
 
             // retrack particle from the old postion to cavity gap point

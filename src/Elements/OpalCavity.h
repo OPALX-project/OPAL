@@ -57,25 +57,23 @@ public:
     virtual ~OpalCavity();
 
     /// Make clone.
-    virtual OpalCavity *clone(const std::string &name);
+    virtual OpalCavity* clone(const std::string& name);
 
     /// Update the embedded CLASSIC cavity.
     virtual void update();
 
-private:
 
+private:
     // Not implemented.
-    OpalCavity(const OpalCavity &);
-    void operator=(const OpalCavity &);
+    OpalCavity(const OpalCavity&);
+    void operator=(const OpalCavity&);
 
     // Clone constructor.
-    OpalCavity(const std::string &name, OpalCavity *parent);
+    OpalCavity(const std::string& name, OpalCavity* parent);
 
-    OpalWake *owk_m;
+    OpalWake* owk_m;
 
-    BoundaryGeometry *obgeo_m;
-
-
+    BoundaryGeometry* obgeo_m;
 };
 
 #endif // OPAL_OpalCavity_HH
