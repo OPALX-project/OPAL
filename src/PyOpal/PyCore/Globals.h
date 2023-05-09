@@ -30,11 +30,13 @@
 #ifndef PYOPAL_GLOBALS_C
     extern Ippl *ippl;
     extern Inform *gmsg;
+    extern Inform *gmsgALL;
 #endif
 
 #ifdef PYOPAL_GLOBALS_C
     Ippl *ippl = NULL;
     Inform *gmsg = NULL;
+    Inform *gmsgALL = NULL;
 #endif
 namespace PyOpal {
 namespace Globals {

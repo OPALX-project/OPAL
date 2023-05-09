@@ -50,6 +50,7 @@ throw GeneralClassicException("Cyclotron::getFieldFromFile",\
                               "fscanf returned EOF at " #arg);
 
 extern Inform* gmsg;
+extern Inform *gmsgALL;
 
 Cyclotron::Cyclotron():
     Component() {
@@ -397,20 +398,19 @@ bool Cyclotron::apply(const size_t& id, const double& t, Vector_t& E, Vector_t& 
     const double rpos = std::hypot(RefPartBunch_m->R[id](0), RefPartBunch_m->R[id](1));
     const double zpos = RefPartBunch_m->R[id](2);
 
-    Inform gmsgALL("OPAL", INFORM_ALL_NODES);
     if (zpos > maxz_m || zpos < minz_m || rpos > maxr_m || rpos < minr_m) {
         flagNeedUpdate = true;
-        gmsgALL << level4 << getName() << ": Particle " << id
+        *gmsgALL << level4 << getName() << ": Particle " << id
                 << " out of the global aperture of cyclotron!" << endl;
-        gmsgALL << level4 << getName()
+        *gmsgALL << level4 << getName()
                 << ": Coords: "<< RefPartBunch_m->R[id] << " m"  << endl;
 
     } else {
         flagNeedUpdate = apply(RefPartBunch_m->R[id], RefPartBunch_m->P[id], t, E, B);
         if (flagNeedUpdate) {
-            gmsgALL << level4 << getName() << ": Particle "<< id
+            *gmsgALL << level4 << getName() << ": Particle "<< id
                     << " out of the field map boundary!" << endl;
-            gmsgALL << level4 << getName()
+            *gmsgALL << level4 << getName()
                     << ": Coords: "<< RefPartBunch_m->R[id] << " m" << endl;
         }
     }

@@ -64,9 +64,11 @@
 #ifdef DONT_DEFINE_IPPL_GMSG
     extern Ippl *ippl;
     extern Inform *gmsg;
+    extern Inform *gmsgALL;
 #else
     Ippl *ippl;
     Inform *gmsg;
+    Inform *gmsgALL;
 #endif
 
 namespace {
@@ -139,6 +141,7 @@ int main(int argc, char *argv[]) {
     // so when calling from python we call opalMain instead
     new Ippl(argc, argv);
     gmsg = new  Inform("OPAL");
+    gmsgALL = new Inform("OPAL", INFORM_ALL_NODES);
     return opalMain(argc, argv);
 }
 

@@ -32,6 +32,7 @@
 #include "Structure/LossDataSink.h"
 
 extern Inform *gmsg;
+extern Inform *gmsgALL;
 
 Stripper::Stripper():Stripper("")
 {}
@@ -116,7 +117,6 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
     size_t count = 0;
     size_t tempnum = bunch->getLocalNum();
 
-    Inform gmsgALL("OPAL", INFORM_ALL_NODES);
     for (unsigned int i = 0; i < tempnum; ++i) {
         if (bunch->POrigin[i] != ParticleOrigin::REGULAR) continue;
 
@@ -140,9 +140,9 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
         flagNeedUpdate = true;
         if (stop_m) {
             bunch->Bin[i] = -1;
-            gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i] << " is deleted by stripper " << getName() << endl;
+            *gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i] << " is deleted by stripper " << getName() << endl;
         } else {
-            gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i] << " collide in stripper " << getName() << endl;
+            *gmsgALL << level4 << getName() << ": Particle " << bunch->ID[i] << " collide in stripper " << getName() << endl;
             // change charge and mass of PartData when the reference particle hits the stripper.
             if (bunch->ID[i] == 0)
                 bunch->setPOrigin(ParticleOrigin::STRIPPED);

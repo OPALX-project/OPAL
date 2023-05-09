@@ -38,6 +38,7 @@
 #include <limits>
 
 extern Inform* gmsg;
+extern Inform* gmsgALL;
 
 using namespace Options;
 
@@ -411,6 +412,7 @@ void Option::execute() {
     else
       rangen.init55(seed);
 
+    gmsgALL->on(info);
     gmsg->on(info);
     IpplInfo::Info->on(info);
     IpplInfo::Warn->on(warn);
