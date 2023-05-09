@@ -158,13 +158,13 @@ void DumpEMFields::buildGrid() {
             origin[0] = Attributes::getReal(itsAttr[X_START]);
             spacing[0] = Attributes::getReal(itsAttr[DX]);
             double nx = Attributes::getReal(itsAttr[X_STEPS]);
-            checkInt(nx, "X_STEPS");
+            Util::checkInt(nx, "X_STEPS");
             gridSize[0] = nx;
 
             origin[1] = Attributes::getReal(itsAttr[Y_START]);
             spacing[1] = Attributes::getReal(itsAttr[DY]);
             double ny = Attributes::getReal(itsAttr[Y_STEPS]);
-            checkInt(ny, "Y_STEPS");
+            Util::checkInt(ny, "Y_STEPS");
             gridSize[1] = ny;
 
             break;
@@ -173,13 +173,13 @@ void DumpEMFields::buildGrid() {
             origin[0] = Attributes::getReal(itsAttr[R_START]);
             spacing[0] = Attributes::getReal(itsAttr[DR]);
             double nr = Attributes::getReal(itsAttr[R_STEPS]);
-            checkInt(nr, "R_STEPS");
+            Util::checkInt(nr, "R_STEPS");
             gridSize[0] = nr;
 
             origin[1] = Attributes::getReal(itsAttr[PHI_START]);
             spacing[1] = Attributes::getReal(itsAttr[DPHI]);
             double nphi = Attributes::getReal(itsAttr[PHI_STEPS]);
-            checkInt(nphi, "PHI_STEPS");
+            Util::checkInt(nphi, "PHI_STEPS");
             gridSize[1] = nphi;
 
             break;
@@ -189,13 +189,13 @@ void DumpEMFields::buildGrid() {
     origin[2] = Attributes::getReal(itsAttr[Z_START]);
     spacing[2] = Attributes::getReal(itsAttr[DZ]);
     double nz = Attributes::getReal(itsAttr[Z_STEPS]);
-    checkInt(nz, "Z_STEPS");
+    Util::checkInt(nz, "Z_STEPS");
     gridSize[2] = nz;
 
     origin[3] = Attributes::getReal(itsAttr[T_START]);
     spacing[3] = Attributes::getReal(itsAttr[DT]);
     double nt = Attributes::getReal(itsAttr[T_STEPS]);
-    checkInt(nt, "T_STEPS");
+    Util::checkInt(nt, "T_STEPS");
     gridSize[3] = nt;
 
     if (grid_m != nullptr) {
@@ -211,19 +211,6 @@ void DumpEMFields::writeFields(Component* field) {
     typedef std::unordered_set<DumpEMFields*>::iterator dump_iter;
     for (dump_iter it = dumpsSet_m.begin(); it != dumpsSet_m.end(); ++it) {
         (*it)->writeFieldThis(field);
-    }
-}
-
-void DumpEMFields::checkInt(double real, std::string name, double tolerance) {
-    real += tolerance; // prevent rounding error
-    if (std::abs(std::floor(real) - real) > 2*tolerance) {
-        throw OpalException("DumpEMFields::checkInt",
-                            "Value for " + name +
-                            " should be an integer but a real value was found");
-    }
-    if (std::floor(real) < 0.5) {
-        throw OpalException("DumpEMFields::checkInt",
-                            "Value for " + name + " should be 1 or more");
     }
 }
 

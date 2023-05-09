@@ -20,7 +20,6 @@
 
 #include "Algorithms/Vektor.h"
 #include "Algorithms/Quaternion.h"
-
 #include "Physics/Physics.h"
 
 #include <algorithm>
@@ -218,6 +217,8 @@ namespace Util {
     std::string doubleVectorToString(const std::vector<double>& v);
 
     std::string combineFilePath(std::initializer_list<std::string>);
+
+    void checkInt(double real, std::string name, double tolerance = 1e-9);
 
     template<class IteratorIn, class IteratorOut>
     void toString(IteratorIn first, IteratorIn last, IteratorOut out);

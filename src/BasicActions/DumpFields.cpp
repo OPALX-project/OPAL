@@ -114,9 +114,9 @@ void DumpFields::buildGrid() {
     double dz = Attributes::getReal(itsAttr[DZ]);
     double nz = Attributes::getReal(itsAttr[Z_STEPS]);
 
-    checkInt(nx, "X_STEPS");
-    checkInt(ny, "Y_STEPS");
-    checkInt(nz, "Z_STEPS");
+    Util::checkInt(nx, "X_STEPS");
+    Util::checkInt(ny, "Y_STEPS");
+    Util::checkInt(nz, "Z_STEPS");
     delete grid_m;
 
     grid_m = new interpolation::ThreeDGrid(dx, dy, dz,
@@ -130,18 +130,6 @@ void DumpFields::writeFields(Component* field) {
     typedef std::unordered_set<DumpFields*>::iterator dump_iter;
     for (dump_iter it = dumpsSet_m.begin(); it != dumpsSet_m.end(); ++it) {
         (*it)->writeFieldThis(field);
-    }
-}
-
-void DumpFields::checkInt(double real, std::string name, double tolerance) {
-    if (std::abs(std::floor(real) - real) > tolerance) {
-        throw OpalException("DumpFields::checkInt",
-                            "Value for " + name +
-                            " should be an integer but a real value was found");
-    }
-    if (std::floor(real) < 0.5) {
-        throw OpalException("DumpFields::checkInt",
-                            "Value for " + name + " should be 1 or more");
     }
 }
 
