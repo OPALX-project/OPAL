@@ -159,8 +159,8 @@ bool RFCavity::applyToReferenceParticle(const Vector_t& R,
 
         E += scale_m * std::cos(frequency_m * t + phase_m) * tmpE;
         B -= scale_m * std::sin(frequency_m * t + phase_m) * tmpB;
-
     }
+
     return false;
 }
 
@@ -234,8 +234,8 @@ void RFCavity::initialise(PartBunchBase<double, 3>* bunch,
         VrNormal_m[i] *= RefPartBunch_m->getQ();
         DvDr_m[i]     *= RefPartBunch_m->getQ();
     }
-    sinAngle_m = std::sin(angle_m * Units::deg2rad);
-    cosAngle_m = std::cos(angle_m * Units::deg2rad);
+    sinAngle_m = std::sin(angle_m);
+    cosAngle_m = std::cos(angle_m);
 
     if (!frequencyName_m.empty()) {
       *gmsg << "* Timedependent frequency model " << frequencyName_m << endl;
@@ -263,23 +263,23 @@ void RFCavity::goOffline() {
     online_m = false;
 }
 
-void  RFCavity::setRmin(double rmin) {
+void RFCavity::setRmin(double rmin) {
     rmin_m = rmin;
 }
 
-void  RFCavity::setRmax(double rmax) {
+void RFCavity::setRmax(double rmax) {
     rmax_m = rmax;
 }
 
-void  RFCavity::setAzimuth(double angle) {
+void RFCavity::setAzimuth(double angle) {
     angle_m = angle;
 }
 
-void  RFCavity::setPerpenDistance(double pdis) {
+void RFCavity::setPerpenDistance(double pdis) {
     pdis_m = pdis;
 }
 
-void  RFCavity::setGapWidth(double gapwidth) {
+void RFCavity::setGapWidth(double gapwidth) {
     gapwidth_m = gapwidth;
 }
 
@@ -287,31 +287,41 @@ void RFCavity::setPhi0(double phi0) {
     phi0_m = phi0;
 }
 
-double  RFCavity::getRmin() const {
-    return rmin_m;
+double RFCavity::getRmin() const {
+    if (rmin_m >= 0.0) {
+        return rmin_m;
+    } else {
+        throw GeneralClassicException("RFCavity::getRmin",
+                                      "RMIN must be positive");
+    }
 }
 
-double  RFCavity::getRmax() const {
-    return rmax_m;
+double RFCavity::getRmax() const {
+    if (rmax_m > rmin_m) {
+        return rmax_m;
+    } else {
+        throw GeneralClassicException("RFCavity::getRmax",
+                                      "The attribute RMAX has to be higher than RMIN");
+    }
 }
 
-double  RFCavity::getAzimuth() const {
+double RFCavity::getAzimuth() const {
     return angle_m;
 }
 
-double  RFCavity::getSinAzimuth() const {
+double RFCavity::getSinAzimuth() const {
     return sinAngle_m;
 }
 
-double  RFCavity::getCosAzimuth() const {
+double RFCavity::getCosAzimuth() const {
     return cosAngle_m;
 }
 
-double  RFCavity::getPerpenDistance() const {
+double RFCavity::getPerpenDistance() const {
     return pdis_m;
 }
 
-double  RFCavity::getGapWidth() const {
+double RFCavity::getGapWidth() const {
     return gapwidth_m;
 }
 
@@ -383,13 +393,13 @@ void RFCavity::getMomentaKick(const double normalRadius,
     double frequency = frequency_m * frequencyTD_m->getValue(t);
 
     if (gapwidth_m > 0.0) {
-    	double transit_factor = 0.5 * frequency * gapwidth_m * Units::mm2m / (Physics::c * beta);
+    	double transit_factor = 0.5 * frequency * gapwidth_m / (Physics::c * beta);
         Ufactor = std::sin(transit_factor) / transit_factor;
     }
 
     Voltage *= Ufactor;
     // rad/s, ns --> rad
-    double nphase = (frequency * (t + dtCorrt) * Units::ns2s) - phi0_m * Units::deg2rad;
+    double nphase = (frequency * (t + dtCorrt) * Units::ns2s) - phi0_m;
     double dgam = Voltage * std::cos(nphase) / (restMass);
 
     double tempdegree = std::fmod(nphase * Units::rad2deg, 360.0);
@@ -404,7 +414,7 @@ void RFCavity::getMomentaKick(const double normalRadius,
     double px = pr * cosAngle_m - ptheta * sinAngle_m ; // x
     double py = pr * sinAngle_m + ptheta * cosAngle_m; // y
 
-    double rotate = -derivate * (scale_m * Units::MVpm2Vpm) / ((rmax_m - rmin_m) * Units::mm2m) * std::sin(nphase) / (frequency * Physics::two_pi) / (betgam * restMass / Physics::c / chargenumber); // radian
+    double rotate = -derivate * (scale_m * Units::MVpm2Vpm) / (rmax_m - rmin_m) * std::sin(nphase) / (frequency * Physics::two_pi) / (betgam * restMass / Physics::c / chargenumber); // radian
 
     /// B field effects
     momentum[0] =  std::cos(rotate) * px + std::sin(rotate) * py;
@@ -421,7 +431,7 @@ void RFCavity::getMomentaKick(const double normalRadius,
 }
 
 /* cubic spline subrutine */
-double RFCavity::spline(double z, double *za) {
+double RFCavity::spline(double z, double* za) {
     double splint;
 
     // domain-test and handling of case "1-support-point"

@@ -166,7 +166,7 @@ public:
                         const double restMass,
                         const int chargenumber);
 
-    double spline(double z, double *za);
+    double spline(double z, double* za);
 
     virtual ElementType getType() const override;
 
@@ -472,7 +472,7 @@ void RFCavity::setFrequencyModel(std::shared_ptr<AbstractTimeDependence> frequen
 
 inline
 void RFCavity::setFrequencyModelName(std::string name) {
-  frequencyName_m=name;
+    frequencyName_m=name;
 }
 
 inline
