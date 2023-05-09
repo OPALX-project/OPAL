@@ -16,8 +16,9 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Utilities/Util.h"
-#include "Physics/Physics.h"
+
 #include "OPALrevision.h"
+#include "Utilities/OpalException.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
@@ -199,6 +200,19 @@ namespace Util {
             path /= entry;
         }
         return path.string();
+    }
+
+    void checkInt(double real, std::string name, double tolerance) {
+        real += tolerance; // prevent rounding error
+        if (std::abs(std::floor(real) - real) > 2*tolerance) {
+            throw OpalException("Util::checkInt",
+                                "Value for " + name +
+                                " should be an integer but a real value was found");
+        }
+        if (std::floor(real) < 0.5) {
+            throw OpalException("Util::checkInt",
+                                "Value for " + name + " should be 1 or more");
+        }
     }
 
     KahanAccumulation::KahanAccumulation():

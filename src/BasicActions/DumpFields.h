@@ -116,7 +116,6 @@ public:
 private:
     virtual void writeFieldThis(Component* field);
     virtual void buildGrid();
-    static void checkInt(double value, std::string name, double tolerance = 1e-9);
 
     interpolation::ThreeDGrid* grid_m = nullptr;
 
