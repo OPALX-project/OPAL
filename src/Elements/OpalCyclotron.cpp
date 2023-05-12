@@ -31,34 +31,34 @@
 
 OpalCyclotron::OpalCyclotron():
     OpalElement(SIZE, "CYCLOTRON",
-                "The \"CYCLOTRON\" defines an cyclotron"),
+                "The \"CYCLOTRON\" defines a cyclotron"),
     obgeo_m(nullptr)  {
     itsAttr[CYHARMON] = Attributes::makeReal
-        ("CYHARMON", "the harmonic number of the cyclotron");
+        ("CYHARMON", "The harmonic number of the cyclotron");
 
     itsAttr[SYMMETRY] = Attributes::makeReal
-        ("SYMMETRY", "defines how the field is stored");
+        ("SYMMETRY", "Defines how the field is stored");
 
     itsAttr[RINIT] = Attributes::makeReal
         ("RINIT", "Initial radius of the reference particle [mm]");
 
     itsAttr[PRINIT] = Attributes::makeReal
-        ("PRINIT", "Initial radial momentum of the reference particle, pr = beta_r * gamma");
+        ("PRINIT", "Initial radial momentum of the reference particle, pr=beta_r*gamma");
 
     itsAttr[PHIINIT] = Attributes::makeReal
         ("PHIINIT", "Initial azimuth of the reference particle [deg]");
 
     itsAttr[ZINIT] = Attributes::makeReal
-        ("ZINIT", "Initial z-coordinate of the reference particle [mm]. Default = 0 mm", 0.0);
+        ("ZINIT", "Initial z-coordinate of the reference particle [mm] (default=0 mm)", 0.0);
 
     itsAttr[PZINIT] = Attributes::makeReal
-        ("PZINIT", "Initial vertical momentum of the reference particle pz = beta_z * gamma. Default = 0", 0.0);
+        ("PZINIT", "Initial vertical momentum of the reference particle, pz=beta_z*gamma (default=0)", 0.0);
 
     itsAttr[FMAPFN] = Attributes::makeString
         ("FMAPFN", "Filename for the B fieldmap");
 
     itsAttr[BSCALE] = Attributes::makeReal
-         ("BSCALE", "Scale factor for the B-field", 1.0);
+         ("BSCALE", "Scale factor for the B-field (default=1)", 1.0);
 
     itsAttr[RFFREQ] = Attributes::makeRealArray
         ("RFFREQ", "RF Frequency(ies) [MHz]");
@@ -67,7 +67,7 @@ OpalCyclotron::OpalCyclotron():
         ("ESCALE", "Scale factor for the RF field(s)");
 
     itsAttr[SUPERPOSE] = Attributes::makeBoolArray
-        ("SUPERPOSE", "If TRUE, all of the electric field maps are superposed, only used when TYPE = BANDRF");
+        ("SUPERPOSE", "If TRUE, all of the electric field maps are superposed, only used when TYPE=BANDRF");
 
     itsAttr[RFMAPFN] = Attributes::makeStringArray
         ("RFMAPFN", "Filename(s) for the RF fieldmap(s)");
@@ -79,34 +79,34 @@ OpalCyclotron::OpalCyclotron():
         ("RFVCFN", "Filename(s) for the RF Voltage Coefficients");
 
     itsAttr[RFPHI] = Attributes::makeRealArray
-        ("RFPHI", "Initial phase(s) of the electric field map(s) [deg]");
+        ("RFPHI", "Initial phase(s) of the electric field map(s) [rad]");
 
     itsAttr[MINZ] = Attributes::makeReal
-        ("MINZ","Minimal vertical extent of the machine [mm]",-10000.0);
+        ("MINZ","Minimal vertical extent of the machine [mm] (default=-10000 mm)",-10000.0);
 
     itsAttr[MAXZ] = Attributes::makeReal
-        ("MAXZ","Maximal vertical extent of the machine [mm]",10000.0);
+        ("MAXZ","Maximal vertical extent of the machine [mm] (default=10000 mm)",10000.0);
 
     itsAttr[MINR] = Attributes::makeReal
-        ("MINR","Minimal radial extent of the machine [mm]", 0.0);
+        ("MINR","Minimal radial extent of the machine [mm] (default=0 mm)", 0.0);
 
     itsAttr[MAXR] = Attributes::makeReal
-        ("MAXR","Maximal radial extent of the machine [mm]", 10000.0);
+        ("MAXR","Maximal radial extent of the machine [mm] (default=10000 mm)", 10000.0);
 
     itsAttr[GEOMETRY] = Attributes::makeString
-        ("GEOMETRY", "Boundary Geometry for the Cyclotron");
+        ("GEOMETRY", "Boundary Geometry for the cyclotron");
 
     itsAttr[FMLOWE] = Attributes::makeReal
         ("FMLOWE", "Minimal Energy [GeV] the fieldmap can accept. Used in GAUSSMATCHED", -1.0);
 
     itsAttr[FMHIGHE] = Attributes::makeReal
-        ("FMHIGHE","Maximal Energy [GeV] the fieldmap can accept. Used in GAUSSMATCHED", -1.0);
+        ("FMHIGHE", "Maximal Energy [GeV] the fieldmap can accept. Used in GAUSSMATCHED", -1.0);
 
     itsAttr[SPIRAL] = Attributes::makeBool
-        ("SPIRAL","Flag whether or not this is a spiral inflector simulation", false);
+        ("SPIRAL", "Flag whether or not this is a spiral inflector simulation (default=FALSE)", false);
 
     itsAttr[TRIMCOILTHRESHOLD] = Attributes::makeReal
-        ("TRIMCOILTHRESHOLD","Minimum magnetic field [T] for which trim coils are applied", 0.0);
+        ("TRIMCOILTHRESHOLD", "Minimum magnetic field [T] for which trim coils are applied (default=0.0)", 0.0);
 
     itsAttr[TRIMCOIL] = Attributes::makeStringArray
         ("TRIMCOIL", "List of trim coils");

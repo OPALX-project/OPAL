@@ -216,6 +216,8 @@ public:
 
     void writeOutputFieldFiles();
 
+    void checkInitialReferenceParticle(double refR, double refTheta, double refZ);
+
 private:
     /// Apply trim coils (calculate field contributions) with smooth field transition
     void applyTrimCoil  (const double r, const double z, const double tet_rad, double& br, double& bz);

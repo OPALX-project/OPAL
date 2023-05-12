@@ -54,10 +54,10 @@ OpalElement::OpalElement(int size, const char* name, const char* help):
           "SPATIAL"});
 
     itsAttr[LENGTH] = Attributes::makeReal
-        ("L", "The element length in m");
+        ("L", "The element length [m]");
 
     itsAttr[ELEMEDGE] = Attributes::makeReal
-        ("ELEMEDGE", "The position of the element in path length (in m)");
+        ("ELEMEDGE", "The position of the element in path length [m]");
 
     itsAttr[APERT] = Attributes::makeString
         ("APERTURE", "The element aperture");
@@ -93,29 +93,29 @@ OpalElement::OpalElement(int size, const char* name, const char* help):
         ("PSI", "The rotation about the z-axis of the element", 0);
 
     itsAttr[DX] = Attributes::makeReal
-        ("DX", "Misalignment in x direction",0.0);
+        ("DX", "Misalignment in x direction", 0.0);
 
     itsAttr[DY] = Attributes::makeReal
-        ("DY", "Misalignment in y direction",0.0);
+        ("DY", "Misalignment in y direction", 0.0);
 
     itsAttr[DZ] = Attributes::makeReal
-        ("DZ", "Misalignment in z direction",0.0);
+        ("DZ", "Misalignment in z direction", 0.0);
 
     itsAttr[DTHETA] = Attributes::makeReal
-        ("DTHETA", "Misalignment in theta (Tait-Bryan angles)",0.0);
+        ("DTHETA", "Misalignment in theta (Tait-Bryan angles)", 0.0);
 
     itsAttr[DPHI] = Attributes::makeReal
-        ("DPHI", "Misalignment in theta (Tait-Bryan angles)",0.0);
+        ("DPHI", "Misalignment in theta (Tait-Bryan angles)", 0.0);
 
     itsAttr[DPSI] = Attributes::makeReal
-        ("DPSI", "Misalignment in theta (Tait-Bryan angles)",0.0);
+        ("DPSI", "Misalignment in theta (Tait-Bryan angles)", 0.0);
 
     itsAttr[OUTFN] = Attributes::makeString
         ("OUTFN", "Output filename");
 
     itsAttr[DELETEONTRANSVERSEEXIT] = Attributes::makeBool
         ("DELETEONTRANSVERSEEXIT", "Flag controlling if particles should be deleted if they exit "
-                                   "the element transversally", true);
+                                   "the element transversally. Default=TRUE", true);
 
     const unsigned int end = COMMON;
     for (unsigned int i = 0; i < end; ++ i) {
