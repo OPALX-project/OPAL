@@ -185,7 +185,7 @@ std::string Cyclotron::getFieldMapFN() const {
     if (fmapfn_m.empty()) {
         throw GeneralClassicException(
                         "Cyclotron::getFieldMapFN",
-                        "The attribute \"FMAPFN\" isn't set for the \"CYCLOTRON\" element!");
+                        "The attribute FMAPFN isn't set for the CYCLOTRON element");
     } else if (boost::filesystem::exists(fmapfn_m)) {
         return fmapfn_m;
     } else {
@@ -216,7 +216,7 @@ std::vector<double> Cyclotron::getRfPhi() const {
         return rfphi_m;
     } else {
         throw GeneralClassicException("Cyclotron::getRfPhi",
-                                      "RFPHI not defined for CYCLOTRON!");
+                                      "RFPHI not defined for CYCLOTRON");
     }
 }
 
@@ -229,7 +229,7 @@ std::vector<double> Cyclotron::getRfFrequ() const {
         return rffrequ_m;
     } else {
         throw GeneralClassicException("Cyclotron::getRfFrequ",
-                                      "RFFREQ not defined for CYCLOTRON!");
+                                      "RFFREQ not defined for CYCLOTRON");
     }
 }
 
@@ -242,7 +242,7 @@ std::vector<bool> Cyclotron::getSuperpose() const {
         return superpose_m;
     } else {
         throw GeneralClassicException("Cyclotron::getSuperpose",
-                                      "SUPERPOSE not defined for CYCLOTRON!");
+                                      "SUPERPOSE not defined for CYCLOTRON");
     }
 }
 
@@ -287,7 +287,7 @@ std::vector<double> Cyclotron::getEScale() const {
         return escale_m;
     } else {
         throw GeneralClassicException("Cyclotron::getEScale",
-                                      "EScale not defined for CYCLOTRON!");
+                                      "ESCALE not defined for CYCLOTRON");
     }
 }
 
@@ -320,11 +320,21 @@ void Cyclotron::setMaxR(double r) {
 }
 
 double Cyclotron::getMinR() const {
-    return minr_m;
+    if (minr_m >= 0.0) {
+        return minr_m;
+    } else {
+        throw GeneralClassicException("Cyclotron::getMinR",
+                                      "MINR must be positive");
+    }
 }
 
 double Cyclotron::getMaxR() const {
-    return maxr_m;
+    if (maxr_m > minr_m) {
+        return maxr_m;
+    } else {
+        throw GeneralClassicException("Cyclotron::getMaxR",
+                                      "The attribute MAXR has to be higher than MINR");
+    }
 }
 
 void  Cyclotron::setMinZ(double z) {
@@ -344,7 +354,12 @@ void Cyclotron::setMaxZ(double z) {
 }
 
 double Cyclotron::getMaxZ() const {
-    return maxz_m;
+    if (maxz_m > minz_m) {
+        return maxz_m;
+    } else {
+        throw GeneralClassicException("Cyclotron::getMaxZ",
+                                      "The attribute MAXZ has to be higher than MINZ");
+    }
 }
 
 void Cyclotron::setTrimCoils(const std::vector<TrimCoil*>& trimcoils) {
@@ -381,7 +396,7 @@ void Cyclotron::setBFieldType() {
     if (typeName_m.empty()) {
         throw GeneralClassicException(
                 "Cyclotron::setBFieldType",
-                "The attribute \"TYPE\" isn't set for the \"CYCLOTRON\" element!");
+                "The attribute TYPE isn't set for the CYCLOTRON element");
     } else {
         fieldType_m = typeStringToBFieldType_s.at(typeName_m);
     }
@@ -389,6 +404,27 @@ void Cyclotron::setBFieldType() {
 
 Cyclotron::BFieldType Cyclotron::getBFieldType() const {
     return fieldType_m;
+}
+
+void Cyclotron::checkInitialReferenceParticle(double refR,
+                                              double refTheta,
+                                              double refZ) {
+    refZ *= Units::mm2m;
+    refR *= Units::mm2m;
+    refTheta *= Units::deg2rad;
+
+    if ( (refZ < minz_m || refZ > maxz_m) ||
+         (refR < minr_m || refR > maxr_m) ) {
+        throw GeneralClassicException(
+                "Cyclotron::checkInitialReferenceParticle",
+                "The initial position of the reference particle (RINIT, ZINIT) "
+                "must be in the range of (MINR, MAXR) and (MINZ, MAXZ)");
+    }
+
+    if ( !Util::angleBetweenAngles(refTheta, -Physics::pi, Physics::pi) ) {
+        throw GeneralClassicException("Cyclotron::checkInitialReferenceParticle",
+                                      "PHIINIT is out of [-180, 180)");
+    }
 }
 
 bool Cyclotron::apply(const size_t& id, const double& t, Vector_t& E, Vector_t& B) {
@@ -809,7 +845,7 @@ void Cyclotron::read(const double& scaleFactor) {
         }
         default: {
             throw GeneralClassicException("Cyclotron::read",
-                                          "Unknown \"TYPE\" for the \"CYCLOTRON\" element!");
+                                          "Unknown TYPE for the CYCLOTRON element");
         }
     }
 

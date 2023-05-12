@@ -355,11 +355,6 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron& cycl) {
         referencePr    = cycl_m->getPRinit();
         referencePz    = cycl_m->getPZinit();
 
-        if (referenceTheta <= -180.0 || referenceTheta > 180.0) {
-            throw OpalException("Error in ParallelCyclotronTracker::visitCyclotron",
-                                "PHIINIT is out of [-180, 180)!");
-        }
-
         referencePtot =  itsReference.getGamma() * itsReference.getBeta();
 
         // Calculate reference azimuthal (tangential) momentum from total-, z- and radial momentum:
@@ -371,7 +366,7 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron& cycl) {
                 referencePt = 0.0;
             } else {
                 throw OpalException("Error in ParallelCyclotronTracker::visitCyclotron",
-                                    "Pt imaginary!");
+                                    "Pt imaginary");
             }
         } else {
             referencePt = std::sqrt(insqrt);
@@ -390,14 +385,14 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron& cycl) {
         if (Options::psDumpFrame != DumpFrame::GLOBAL) {
             if (!previousH5Local) {
                 throw OpalException("Error in ParallelCyclotronTracker::visitCyclotron",
-                                    "You are trying a local restart from a global h5 file!");
+                                    "You are trying a local restart from a global h5 file");
             }
             // Else, if the user wants to save the restarted run in global frame,
             // make sure the previous h5 file was global too
         } else {
             if (previousH5Local) {
                 throw OpalException("Error in ParallelCyclotronTracker::visitCyclotron",
-                                    "You are trying a global restart from a local h5 file!");
+                                    "You are trying a global restart from a local h5 file");
             }
         }
 
@@ -405,11 +400,9 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron& cycl) {
         referencePhi *= Units::deg2rad;
         referencePsi *= Units::deg2rad;
         referencePtot = bega;
-        if (referenceTheta <= -180.0 || referenceTheta > 180.0) {
-            throw OpalException("Error in ParallelCyclotronTracker::visitCyclotron",
-                                "PHIINIT is out of [-180, 180)!");
-        }
     }
+
+    cycl_m->checkInitialReferenceParticle(referenceR, referenceTheta, referenceZ);
 
     sinRefTheta_m = std::sin(referenceTheta * Units::deg2rad);
     cosRefTheta_m = std::cos(referenceTheta * Units::deg2rad);
@@ -844,7 +837,7 @@ void ParallelCyclotronTracker::visitRing(const Ring& ring) {
 
     if (referenceTheta <= -180.0 || referenceTheta > 180.0) {
         throw OpalException("Error in ParallelCyclotronTracker::visitRing",
-                            "PHIINIT is out of [-180, 180)!");
+                            "PHIINIT is out of [-180, 180)");
     }
 
     referenceZ = 0.0;
@@ -956,7 +949,7 @@ void ParallelCyclotronTracker::visitSolenoid(const Solenoid& solenoid) {
     myElements.push_back(dynamic_cast<Solenoid*>(solenoid.clone()));
     Component* elptr = *(--myElements.end());
     if (!elptr->hasAttribute("ELEMEDGE")) {
-        *gmsg << "Solenoid: no position of the element given!" << endl;
+        *gmsg << "Solenoid: no position of the element given" << endl;
         return;
     }
 }
@@ -1301,7 +1294,7 @@ void ParallelCyclotronTracker::MtsTracker() {
         } else {
             // if field solver is not available , only update bunch, to transfer particles between nodes if needed,
             // reset parameters such as LocalNum, initialTotalNum_m.
-            // INFOMSG("No space charge Effects are included!"<<endl;);
+            // INFOMSG("No space charge Effects are included"<<endl;);
             if ((step_m % Options::repartFreq * 100) == 0) { //TODO: why * 100?
                 Vector_t const meanP = calcMeanP();
                 double const phi = calculateAngle(meanP(0), meanP(1)) - 0.5 * Physics::pi;
@@ -2906,7 +2899,7 @@ std::tuple<double, double, double> ParallelCyclotronTracker::initializeTracking_
 
             if (Ippl::getNodes() != 1)
                 throw OpalException("Error in ParallelCyclotronTracker::initializeTracking_m",
-                                    "SEO MODE ONLY WORKS SERIALLY ON SINGLE NODE!");
+                                    "SEO MODE ONLY WORKS SERIALLY ON SINGLE NODE");
             break;
         }
         case TrackingMode::SINGLE: {
@@ -2919,7 +2912,7 @@ std::tuple<double, double, double> ParallelCyclotronTracker::initializeTracking_
 
             if (Ippl::getNodes() != 1)
                 throw OpalException("Error in ParallelCyclotronTracker::initializeTracking_m",
-                                    "SINGLE PARTICLE MODE ONLY WORKS SERIALLY ON A SINGLE NODE!");
+                                    "SINGLE PARTICLE MODE ONLY WORKS SERIALLY ON A SINGLE NODE");
 
             // For single particle mode open output files
             openFiles(azimuth_angle_m.size() + 1, OpalData::getInstance()->getInputBasename());
@@ -2993,7 +2986,7 @@ void ParallelCyclotronTracker::finalizeTracking_m(dvector_t& Ttime,
         itsBunch_m->calcBeamParameters();
         *gmsg << *itsBunch_m << endl;
     } else {
-        *gmsg << endl << "* No Particles left in bunch!" << endl;
+        *gmsg << endl << "* No Particles left in bunch" << endl;
         *gmsg << "* **********************************************************************************" << endl;
     }
 }
