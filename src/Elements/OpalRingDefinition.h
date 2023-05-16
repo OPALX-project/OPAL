@@ -47,6 +47,7 @@ class OpalRingDefinition: public OpalElement {
         LAT_THETAINIT,
         BEAM_RINIT,
         BEAM_PHIINIT,
+        BEAM_THETAINIT,
         BEAM_PRINIT,
         HARMONIC_NUMBER,
         SYMMETRY,

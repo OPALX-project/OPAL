@@ -27,6 +27,9 @@
 //  [LI]charge per particle expressed in proton charges,
 //  [LI]mass per particle expressed in eV,
 //  [LI]reference momentum per particle expressed in eV.
+//  [LI]momentumTolerance Fractional tolerance to deviations in the distribution
+//                        compared to the reference data at initialisation
+//                        If negative, no tolerance checking is done.
 //  [/UL]
 //  The copy constructor, destructor, and assignment operator generated
 //  by the compiler perform the correct operation.  For speed reasons
@@ -81,6 +84,11 @@ public:
     //  Input is the relativistic gamma = E/(m*c*c).
     void setGamma(double gamma);
 
+    /// Get the momentum tolerance
+    double getMomentumTolerance() const;
+
+    /// Set the momentum tolerance
+    void setMomentumTolerance(double tolerance);
 
     /// Set reference mass expressed in eV/c^2
     inline void setM(double m){mass = m;}
@@ -95,6 +103,7 @@ protected:
     double mass;     // Particle mass.
     double beta;     // particle velocity divided by c.
     double gamma;    // particle energy divided by particle mass
+    double momentumTolerance = 1e-2; // tolerance to momentum deviations
 };
 
 
@@ -128,6 +137,10 @@ inline double PartData::getBeta() const {
 
 inline double PartData::getGamma() const {
     return gamma;
+}
+
+inline double PartData::getMomentumTolerance() const {
+    return momentumTolerance;
 }
 
 #endif // MAD_PartData_HH

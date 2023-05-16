@@ -240,6 +240,7 @@ private:
     double bega;
     double referenceR;
     double referenceTheta;
+    double beamInitialRotation = 0.0;
     double referenceZ = 0.0;
 
     double referencePr;

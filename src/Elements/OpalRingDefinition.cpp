@@ -38,13 +38,15 @@ OpalRingDefinition::OpalRingDefinition() :
                 "The \"RINGDEFINITION\" element defines basic ring parameters.") {
 
     itsAttr[HARMONIC_NUMBER] = Attributes::makeReal("HARMONIC_NUMBER",
-                                                    "The assumed harmonic number of the ring (i.e. number of bunches in the ring on a given turn).", 1.0);
+                                                    "The assumed harmonic number of the ring (i.e. number of bunches in the ring on a given turn) (default = 1).", 1.0);
     itsAttr[LAT_RINIT] = Attributes::makeReal("LAT_RINIT",
                                                   "The initial radius of the first element to be placed in the ring [m].");
     itsAttr[LAT_PHIINIT] = Attributes::makeReal("LAT_PHIINIT", "The initial angle around the ring of the first element to be placed. [deg]");
     itsAttr[LAT_THETAINIT] = Attributes::makeReal("LAT_THETAINIT", "The angle relative to the tangent of the ring for the first element to be placed [deg].");
     itsAttr[BEAM_PHIINIT] = Attributes::makeReal("BEAM_PHIINIT",
                                                  "The initial angle around the ring of the beam [deg].");
+    itsAttr[BEAM_THETAINIT] = Attributes::makeReal("BEAM_THETAINIT",
+                                                    "Defines an angular offset of the beam relative to the tangent vector, in the x-y plane [deg] (default = 0).", 0.0);
     itsAttr[BEAM_PRINIT] = Attributes::makeReal("BEAM_PRINIT",
                                                 "An initial pr momentum offset of the beam.");
     itsAttr[BEAM_RINIT] = Attributes::makeReal("BEAM_RINIT",
@@ -87,6 +89,7 @@ OpalRingDefinition::~OpalRingDefinition() {}
 void OpalRingDefinition::update() {
     Ring *ring = dynamic_cast<Ring*>(getElement());
     ring->setBeamPhiInit(Attributes::getReal(itsAttr[BEAM_PHIINIT]));
+    ring->setBeamThetaInit(Attributes::getReal(itsAttr[BEAM_THETAINIT]));
     ring->setBeamPRInit(Attributes::getReal(itsAttr[BEAM_PRINIT]));
     ring->setBeamRInit(Attributes::getReal(itsAttr[BEAM_RINIT])*Units::m2mm);
     ring->setLatticeRInit(Attributes::getReal(itsAttr[LAT_RINIT])*Units::m2mm);

@@ -46,6 +46,7 @@ namespace {
         BCURRENT,   // Beam current in A
         BFREQ,      // Beam frequency in MHz
         NPART,      // Number of particles per bunch
+        MOMENTUM_TOLERANCE, // Fractional tolerance to momentum deviations
         SIZE
     };
 }
@@ -95,6 +96,12 @@ Beam::Beam():
 
     itsAttr[NPART]    = Attributes::makeReal
                         ("NPART", "Number of particles in bunch");
+
+    itsAttr[MOMENTUM_TOLERANCE]    = Attributes::makeReal
+                        ("MOMENTUM_TOLERANCE",
+     "Fractional tolerance to deviations in the distribution compared to the"
+     "reference data at initialisation. If <= 0, no tolerance checking is"
+     "done (default=1e-2).", 1e-2);
 
     // Set up default beam.
     Beam* defBeam = clone("UNNAMED_BEAM");
@@ -198,6 +205,10 @@ double Beam::getFrequency() const {
     return Attributes::getReal(itsAttr[BFREQ]);
 }
 
+double Beam::getMomentumTolerance() const {
+    return Attributes::getReal(itsAttr[MOMENTUM_TOLERANCE]);
+}
+
 double Beam::getChargePerParticle() const {
     return std::copysign(1.0, getCharge()) * getCurrent()
         / (getFrequency() * Units::MHz2Hz)
@@ -248,7 +259,8 @@ void Beam::update() {
                                 "\"PC\" should be greater than 0.");
         }
     }
-
+    double tol = Attributes::getReal(itsAttr[MOMENTUM_TOLERANCE]);
+    reference.setMomentumTolerance(tol);
     // Set default name.
     if (getOpalName().empty()) setOpalName("UNNAMED_BEAM");
 }

@@ -70,6 +70,9 @@ public:
     /// Return Particle's rest mass in GeV
     double getMass() const;
 
+    /// Return the fractional momentum tolerance
+    double getMomentumTolerance() const;
+
     /// Charge per macro particle in C
     double getChargePerParticle() const;
 
