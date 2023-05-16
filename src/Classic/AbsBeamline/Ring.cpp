@@ -72,6 +72,7 @@ Ring::Ring(const Ring& ring)
       beamRInit_m(ring.beamRInit_m),
       beamPRInit_m(ring.beamPRInit_m),
       beamPhiInit_m(ring.beamPhiInit_m),
+      beamThetaInit_m(ring.beamThetaInit_m),
       latticeRInit_m(ring.latticeRInit_m),
       latticePhiInit_m(ring.latticePhiInit_m),
       latticeThetaInit_m(ring.latticeThetaInit_m),

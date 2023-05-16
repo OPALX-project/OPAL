@@ -134,6 +134,7 @@ class MinimalRunner(object):
         beam.beam_frequency = 1e-6/self.time_per_turn # MHz
         beam.number_of_slices = 10
         beam.number_of_particles = int(self.distribution_str.split()[0])
+        beam.momentum_tolerance = 0  # disable momentum checking
         beam.register()
         self.beam = beam
 

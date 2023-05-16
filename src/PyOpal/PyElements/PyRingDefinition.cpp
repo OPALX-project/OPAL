@@ -53,6 +53,7 @@ std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalRingD
     {"LAT_THETAINIT", "lattice_initial_theta", "", PyOpalObjectNS::DOUBLE},
     {"BEAM_RINIT", "beam_initial_r", "", PyOpalObjectNS::DOUBLE},
     {"BEAM_PHIINIT", "beam_initial_phi", "", PyOpalObjectNS::DOUBLE},
+    {"BEAM_THETAINIT", "beam_initial_theta", "", PyOpalObjectNS::DOUBLE},
     {"BEAM_PRINIT", "beam_initial_pr", "", PyOpalObjectNS::DOUBLE},
     {"HARMONIC_NUMBER", "harmonic_number", "", PyOpalObjectNS::DOUBLE},
     {"SYMMETRY", "symmetry", "", PyOpalObjectNS::INT},

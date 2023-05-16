@@ -88,3 +88,8 @@ void PartData::setGamma(double v) {
     gamma = v;
     beta = std::sqrt(gamma * gamma - 1.0) / gamma;
 }
+
+
+void PartData::setMomentumTolerance(double tolerance) {
+    momentumTolerance = tolerance;
+}

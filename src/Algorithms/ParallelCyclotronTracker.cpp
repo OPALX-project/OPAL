@@ -834,6 +834,7 @@ void ParallelCyclotronTracker::visitRing(const Ring& ring) {
     referenceR = opalRing_m->getBeamRInit();
     referencePr = opalRing_m->getBeamPRInit();
     referenceTheta = opalRing_m->getBeamPhiInit();
+    beamInitialRotation = opalRing_m->getBeamThetaInit();
 
     if (referenceTheta <= -180.0 || referenceTheta > 180.0) {
         throw OpalException("Error in ParallelCyclotronTracker::visitRing",
@@ -2251,7 +2252,8 @@ void ParallelCyclotronTracker::initDistInGlobalFrame() {
 
         // Out of the three coordinates of meanR (R, Theta, Z) only the angle
         // changes the momentum vector...
-        localToGlobal(itsBunch_m->P, initialReferenceTheta);
+        double angle = initialReferenceTheta+beamInitialRotation*Units::deg2rad;
+        localToGlobal(itsBunch_m->P, angle);
 
         DistributionType distType = itsBunch_m->getDistType();
         if (distType == DistributionType::FROMFILE) {
@@ -2385,8 +2387,10 @@ void ParallelCyclotronTracker::checkFileMomentum() {
     allreduce(pTotalMean, 1, std::plus<double>());
 
     pTotalMean /= initialTotalNum_m;
+    double tolerance = itsReference.getMomentumTolerance();
 
-    if (std::abs(pTotalMean - referencePtot) / pTotalMean > 1e-2) {
+    if (tolerance > 0 &&
+        std::abs(pTotalMean - referencePtot) / pTotalMean > tolerance) {
         throw OpalException("ParallelCyclotronTracker::checkFileMomentum",
                             "The total momentum of the particle distribution\n"
                             "in the global reference frame: " +

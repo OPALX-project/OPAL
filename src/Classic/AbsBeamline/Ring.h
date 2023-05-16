@@ -240,6 +240,12 @@ class Ring : public Component {
     /** Get the initial beam azimuthal angle */
     double getBeamPhiInit() const {return beamPhiInit_m;}
 
+    /** Set the initial beam rotation relative to the tangent vector */
+    void setBeamThetaInit(double thetaInit) {beamThetaInit_m = thetaInit;}
+
+    /** Get the initial beam rotation relative to the tangent vector */
+    double getBeamThetaInit() const {return beamThetaInit_m;}
+
     /** Set the initial beam radial momentum */
     void setBeamPRInit(double pRInit) {beamPRInit_m = pRInit;}
 
@@ -380,6 +386,7 @@ class Ring : public Component {
     double beamRInit_m;
     double beamPRInit_m;
     double beamPhiInit_m;
+    double beamThetaInit_m;
 
     // position, orientation of the first lattice element
     double latticeRInit_m;
