@@ -27,6 +27,7 @@
 #include "Structure/MeshGenerator.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
+#include "Algorithms/Matrix.h"
 
 #include "gsl/gsl_poly.h"
 
@@ -1520,14 +1521,25 @@ MeshData Bend2D::getSurfaceMesh() const {
                                                         0.5 * (P1 + P2) + 0.25 * dir1));
         } else {
             Vector_t dir2 = toExitRegion_m.rotateFrom(Vector_t(-1, 0, 0));
-            Tenzor<double, 3> inv;
+            //Tenzor<double, 3> inv;
+            matrix_t inv(3,3);
             double det = -dir1[0] * dir2[2] + dir1[2] * dir2[0];
             inv(0, 0) = -dir2[2] / det;
             inv(0, 2) = dir2[0] / det;
             inv(1,1) = 1.0;
             inv(2, 0) = -dir1[2] / det;
             inv(2, 2) = dir1[0] / det;
-            Vector_t Tau = dot(inv, P2 - P1);
+            //Vector_t Tau = dot(inv, P2 - P1);
+            // Convert Vektor<double, 3> to Boost vector, done manually
+            std::array<double, 3> tempArray;
+            std::copy(&(P2-P1)[0], &(P2-P1)[0] + 3, tempArray.begin());
+
+            boost::numeric::ublas::vector<double> boost_P2mP1(3);
+            std::copy(tempArray.begin(), tempArray.end(), boost_P2mP1.begin());
+
+            // Perform the dot product using boost
+            boost::numeric::ublas::vector<double> Tau = boost::numeric::ublas::prod(inv, boost_P2mP1);
+
             Vector_t crossPoint = P1 + Tau[0] * dir1;
             double angle = std::asin(cross(dir1, dir2)[1]);
             Quaternion halfRot(std::cos(0.25 * angle), std::sin(0.25 * angle) * Vector_t(0, 1, 0));
