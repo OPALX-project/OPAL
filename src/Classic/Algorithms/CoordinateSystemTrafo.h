@@ -3,7 +3,9 @@
 
 #include "Algorithms/Vektor.h"
 #include "Algorithms/Quaternion.h"
-#include "AppTypes/Tenzor.h"
+//#include "AppTypes/Tenzor.h"
+//#include "Algorithms/Matrix.h"
+#include <boost/numeric/ublas/matrix.hpp>
 
 class CoordinateSystemTrafo {
 public:
@@ -34,7 +36,9 @@ public:
 private:
     Vector_t origin_m;
     Quaternion orientation_m;
-    Tenzor<double, 3> rotationMatrix_m;
+    // Tenzor<double, 3> rotationMatrix_m;
+    //matrix_t rotationMatrix_m(3,3);
+    matrix_t rotationMatrix_m;
 };
 
 inline
@@ -74,24 +78,85 @@ CoordinateSystemTrafo CoordinateSystemTrafo::inverted() const {
     return result;
 }
 
-inline
-Vector_t CoordinateSystemTrafo::transformTo(const Vector_t &r) const {
-    return dot(rotationMatrix_m, r - origin_m);
+inline Vector_t CoordinateSystemTrafo::transformTo(const Vector_t& r) const {
+    std::array<double, 3> tempArray;
+    std::copy(&(r-origin_m)[0], &(r-origin_m)[0] + 3, tempArray.begin());
+
+    boost::numeric::ublas::vector<double> boost_r_m_origin(3);
+
+    std::copy(tempArray.begin(), tempArray.end(), boost_r_m_origin.begin());
+
+    boost::numeric::ublas::vector<double> result = boost::numeric::ublas::prod(rotationMatrix_m, boost_r_m_origin);
+
+    Vector_t transformedVector(result(0), result(1), result(2));  // Convert boost::numeric::ublas::vector to Vector_t
+
+    return transformedVector;
 }
 
-inline
-Vector_t CoordinateSystemTrafo::transformFrom(const Vector_t &r) const {
-    return dot(transpose(rotationMatrix_m), r) + origin_m;
+inline Vector_t CoordinateSystemTrafo::transformFrom(const Vector_t& r) const {
+    std::array<double, 3> tempArray;
+    //std::copy(r, r + 3, tempArray.begin());
+
+    for (size_t i = 0; i < 3; ++i) {
+        tempArray[i] = r[i];
+    }
+    boost::numeric::ublas::vector<double> boost_r(3);
+    for (size_t i = 0; i < 3; ++i) {
+        boost_r[i] = tempArray[i];
+    }
+
+    //boost::numeric::ublas::vector<double> boost_r(3);
+    //std::copy(tempArray.begin(), tempArray.end(), boost_r.begin());
+
+    boost::numeric::ublas::vector<double> result = boost::numeric::ublas::prod(boost::numeric::ublas::trans(rotationMatrix_m), boost_r);
+
+    Vector_t transformedVector(result(0), result(1), result(2));  // Convert boost::numeric::ublas::vector to Vector_t
+
+    return transformedVector + origin_m;
 }
 
-inline
-Vector_t CoordinateSystemTrafo::rotateTo(const Vector_t &r) const {
-    return dot(rotationMatrix_m, r);
+inline Vector_t CoordinateSystemTrafo::rotateTo(const Vector_t& r) const {
+    std::array<double, 3> tempArray;
+    //std::copy(&r, &r + 3, tempArray.begin());
+
+    for (size_t i = 0; i < 3; ++i) {
+        tempArray[i] = r[i];
+    }
+    boost::numeric::ublas::vector<double> boost_r(3);
+    for (size_t i = 0; i < 3; ++i) {
+        boost_r[i] = tempArray[i];
+    }
+
+    //boost::numeric::ublas::vector<double> boost_r(3);
+    //std::copy(tempArray.begin(), tempArray.end(), boost_r.begin());
+
+    boost::numeric::ublas::vector<double> result = boost::numeric::ublas::prod(rotationMatrix_m, boost_r);
+
+    Vector_t rotatedVector(result(0), result(1), result(2));  // Convert boost::numeric::ublas::vector to Vector_t
+
+    return rotatedVector;
 }
 
-inline
-Vector_t CoordinateSystemTrafo::rotateFrom(const Vector_t &r) const {
-    return dot(transpose(rotationMatrix_m), r);
+inline Vector_t CoordinateSystemTrafo::rotateFrom(const Vector_t& r) const {
+    std::array<double, 3> tempArray;
+    //std::copy(&r, &r + 3, tempArray.begin());
+
+    for (size_t i = 0; i < 3; ++i) {
+        tempArray[i] = r[i];
+    }
+    boost::numeric::ublas::vector<double> boost_r(3);
+    for (size_t i = 0; i < 3; ++i) {
+        boost_r[i] = tempArray[i];
+    }
+
+    //boost::numeric::ublas::vector<double> boost_r(3);
+    //std::copy(tempArray.begin(), tempArray.end(), boost_r.begin());
+
+    boost::numeric::ublas::vector<double> result = boost::numeric::ublas::prod(boost::numeric::ublas::trans(rotationMatrix_m), boost_r);
+
+    Vector_t rotatedVector(result(0), result(1), result(2));  // Convert boost::numeric::ublas::vector to Vector_t
+
+    return rotatedVector;
 }
 
 #endif
