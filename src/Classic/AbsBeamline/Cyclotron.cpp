@@ -465,6 +465,11 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
                       const double& t, Vector_t& E, Vector_t& B) {
 
     const double rad   = std::hypot(R[0],R[1]);
+    if (std::abs(R[0]) < 0.0000001) {
+        throw GeneralClassicException(
+                        "Cyclotron::apply",
+                        "division by zero");
+    }
     const double tempv = std::atan(R[1] / R[0]);
     double tet = tempv;
 
