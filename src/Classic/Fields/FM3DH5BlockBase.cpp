@@ -243,7 +243,7 @@ void _FM3DH5BlockBase::getOnaxisEz (
     const int index_y = -static_cast<int>(std::floor(ybegin_m / hy_m));
     const double lever_y = -ybegin_m / hy_m - index_y;
     long idx = index_x + index_y*num_gridpx_m + num_gridpx_m*num_gridpy_m;
-    for (int i = 0;
+    for (unsigned long int i = 0;
          i < num_gridpz_m;
          i++, idx += num_gridpy_m * num_gridpx_m
         ) {

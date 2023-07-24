@@ -75,7 +75,7 @@ void _FM3DH5Block_nonscale::readMap (
 
     closeFile ();
 
-    for (long long i = 0; i < num_gridpx_m * num_gridpy_m * num_gridpz_m; i++) {
+    for (long long unsigned i = 0; i < num_gridpx_m * num_gridpy_m * num_gridpz_m; i++) {
         FieldstrengthEz_m[i] *= Units::MVpm2Vpm ;
         FieldstrengthEx_m[i] *= Units::MVpm2Vpm ;
         FieldstrengthEy_m[i] *= Units::MVpm2Vpm ;
