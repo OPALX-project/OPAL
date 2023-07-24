@@ -155,15 +155,48 @@ protected:
         return result;
     }
 
+    /*
+      Compute grid indices for a point X.
+
+      Before calling this function a Isinside(X) test must
+      to be performed!
+
+      2-dim example with num_gridpx_m = 5, num_gridpy_m = 4
+
+      3 +----+----+----+----+
+        |    |    |    |    |
+      2 +----+----+----+----+
+        |    |    |    |  X |
+      1 +----+----+----+----+
+        |    |    |    |    |
+      0 +----+----+----+----+
+        0    1    2    3    4
+
+      idx.x = 3
+      idx.y = 1
+
+      Note: max for idx.x is num_gridpx_m - 2 etc!
+    */
     IndexTriplet getIndex(const Vector_t &X) const {
         IndexTriplet idx;
         idx.i = std::floor((X(0) - xbegin_m) / hx_m);
         idx.j = std::floor((X(1) - ybegin_m) / hy_m);
         idx.k = std::floor((X(2) - zbegin_m) / hz_m);
-        PAssert_LT(idx.i, num_gridpx_m - 1);
-        PAssert_LT(idx.j, num_gridpy_m - 1);
-        PAssert_LT(idx.k, num_gridpz_m - 1);
-
+        /*
+          If X is close to the border, it can happen that idx.i > num_gridpx_m-2
+          (same for for j/y, k/z) due to rounding errors in above computation!
+          In this case we set idx.i to the maximum which is num_gridpx_m.
+          (same for j,k) 
+         */
+        if (idx.i > num_gridpx_m-2) {
+            idx.i = num_gridpx_m-2;
+        }
+        if (idx.j > num_gridpy_m-2) {
+            idx.j = num_gridpy_m-2;
+        }
+        if (idx.k > num_gridpz_m-2) {
+            idx.k = num_gridpz_m-2;
+        }
         idx.weight(0) = (X(0) - xbegin_m) / hx_m - idx.i;
         idx.weight(1) = (X(1) - ybegin_m) / hy_m - idx.j;
         idx.weight(2) = (X(2) - zbegin_m) / hz_m - idx.k;
