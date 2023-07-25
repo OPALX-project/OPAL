@@ -21,9 +21,11 @@
 #include "AbstractObjects/Definition.h"
 #include "Algorithms/PartData.h"
 #include "Algorithms/Vektor.h"
-#include "AppTypes/SymTenzor.h"
+//#include "AppTypes/SymTenzor.h"
 #include "Attributes/Attributes.h"
 #include "Distribution/SigmaGenerator.h"
+//#include "Algorithms/Matrix.h"
+#include <boost/numeric/ublas/matrix.hpp>
 
 #include <gsl/gsl_histogram.h>
 #include <gsl/gsl_qrng.h>
@@ -467,7 +469,8 @@ private:
     Vector_t cutoffR_m;
     Vector_t cutoffP_m;
     Vector_t mBinomial_m;
-    SymTenzor<double, 6> correlationMatrix_m;
+    //SymTenzor<double, 6> correlationMatrix_m;
+    boost::numeric::ublas::matrix<double> correlationMatrix_m;
 
     // Parameters multiGauss distribution.
     double sepPeaks_m;

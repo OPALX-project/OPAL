@@ -68,10 +68,17 @@ constexpr double SMALLESTCUTOFF = 1e-12;
 const double Distribution::percentTEmission_m = 0.0005;
 
 namespace {
-    SymTenzor<double, 6> getUnit6x6() {
-        SymTenzor<double, 6> unit6x6;
-        for (unsigned int i = 0; i < 6u; ++ i) {
-            unit6x6(i,i) = 1.0;
+    //SymTenzor<double, 6> getUnit6x6() {
+    //    SymTenzor<double, 6> unit6x6;
+    //    for (unsigned int i = 0; i < 6u; ++ i) {
+    //        unit6x6(i,i) = 1.0;
+    //    }
+    //    return unit6x6;
+    //}
+    matrix_t getUnit6x6() {
+        matrix_t unit6x6(6, 6, 0.0); // Initialize a 6x6 matrix with all elements as 0.0
+        for (unsigned int i = 0; i < 6u; ++i) {
+            unit6x6(i, i) = 1.0; // Set diagonal elements to 1.0
         }
         return unit6x6;
     }
