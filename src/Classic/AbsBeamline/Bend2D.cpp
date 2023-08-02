@@ -1521,7 +1521,6 @@ MeshData Bend2D::getSurfaceMesh() const {
                                                         0.5 * (P1 + P2) + 0.25 * dir1));
         } else {
             Vector_t dir2 = toExitRegion_m.rotateFrom(Vector_t(-1, 0, 0));
-            //Tenzor<double, 3> inv;
             matrix_t inv(3,3);
             double det = -dir1[0] * dir2[2] + dir1[2] * dir2[0];
             inv(0, 0) = -dir2[2] / det;
@@ -1529,16 +1528,12 @@ MeshData Bend2D::getSurfaceMesh() const {
             inv(1,1) = 1.0;
             inv(2, 0) = -dir1[2] / det;
             inv(2, 2) = dir1[0] / det;
-            //Vector_t Tau = dot(inv, P2 - P1);
-            // Convert Vektor<double, 3> to Boost vector, done manually
-            std::array<double, 3> tempArray;
-            std::copy(&(P2-P1)[0], &(P2-P1)[0] + 3, tempArray.begin());
 
-            boost::numeric::ublas::vector<double> boost_P2mP1(3);
-            std::copy(tempArray.begin(), tempArray.end(), boost_P2mP1.begin());
-
-            // Perform the dot product using boost
-            boost::numeric::ublas::vector<double> Tau = boost::numeric::ublas::prod(inv, boost_P2mP1);
+            boost::numeric::ublas::vector<double> Tau(3);
+            Tau(0) = (P2-P1)[0];
+            Tau(1) = (P2-P1)[1];
+            Tau(2) = (P2-P1)[2];
+            Tau = boost::numeric::ublas::prod(inv, Tau);
 
             Vector_t crossPoint = P1 + Tau[0] * dir1;
             double angle = std::asin(cross(dir1, dir2)[1]);

@@ -1667,10 +1667,6 @@ void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t>& particleV
     IpplTimings::startTimer(TransformTimer_m);
     particleVectors -= translationToGlobal;
 
-    //Tenzor<double, 3> const rotation( std::cos(phi), std::sin(phi), 0,
-    //                                  -std::sin(phi), std::cos(phi), 0,
-    //                                  0,        0, 1); // clockwise rotation
-
     boost::numeric::ublas::matrix<double> rotation(3,3);
     rotation(0,0) = std::cos(phi);
     rotation(0,1) = std::sin(phi);
@@ -1682,21 +1678,17 @@ void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t>& particleV
     rotation(2,1) = 0;
     rotation(2,2) = 1;
 
-    std::array<double, 3> tempArray;
-    boost::numeric::ublas::vector<double> boost_particleVectors(3);
+    boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        tempArray[0] = particleVectors[i](0);
-        tempArray[1] = particleVectors[i](1);
-        tempArray[2] = particleVectors[i](2);
+        particleVector(0) = particleVectors[i](0);
+        particleVector(1) = particleVectors[i](1);
+        particleVector(2) = particleVectors[i](2);
 
-        std::copy(tempArray.begin(), tempArray.end(), boost_particleVectors.begin());
-        boost_particleVectors = boost::numeric::ublas::prod(rotation, boost_particleVectors);
+        particleVector = boost::numeric::ublas::prod(rotation, particleVector);
         
-        particleVectors[i](0) = boost_particleVectors(0);
-        particleVectors[i](1) = boost_particleVectors(1);
-        particleVectors[i](2) = boost_particleVectors(2);
-
-        //particleVectors[i] = dot(rotation, particleVectors[i]);
+        particleVectors[i](0) = particleVector(0);
+        particleVectors[i](1) = particleVector(1);
+        particleVectors[i](2) = particleVector(2);
     }
     IpplTimings::stopTimer(TransformTimer_m);
 }
@@ -1704,9 +1696,6 @@ void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t>& particleV
 void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t>& particleVectors,
                                              double phi, Vector_t const translationToGlobal) {
     IpplTimings::startTimer(TransformTimer_m);
-    //Tenzor<double, 3> const rotation(std::cos(phi), -std::sin(phi), 0,
-    //                                 std::sin(phi),  std::cos(phi), 0,
-    //                                 0,         0, 1); // counter-clockwise rotation
 
     boost::numeric::ublas::matrix<double> rotation(3,3);
     rotation(0,0) = std::cos(phi);
@@ -1719,21 +1708,17 @@ void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t>& particleV
     rotation(2,1) = 0;
     rotation(2,2) = 1;
 
-    std::array<double, 3> tempArray;
-    boost::numeric::ublas::vector<double> boost_particleVectors(3);
+    boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        tempArray[0] = particleVectors[i](0);
-        tempArray[1] = particleVectors[i](1);
-        tempArray[2] = particleVectors[i](2);
+        particleVector(0) = particleVectors[i](0);
+        particleVector(1) = particleVectors[i](1);
+        particleVector(2) = particleVectors[i](2);
 
-        std::copy(tempArray.begin(), tempArray.end(), boost_particleVectors.begin());
-        boost_particleVectors = boost::numeric::ublas::prod(rotation, boost_particleVectors);
+        particleVector = boost::numeric::ublas::prod(rotation, particleVector);
 
-        particleVectors[i](0) = boost_particleVectors(0);
-        particleVectors[i](1) = boost_particleVectors(1);
-        particleVectors[i](2) = boost_particleVectors(2);
-
-        //particleVectors[i] = dot(rotation, particleVectors[i]);
+        particleVectors[i](0) = particleVector(0);
+        particleVectors[i](1) = particleVector(1);
+        particleVectors[i](2) = particleVector(2);
     }
 
     particleVectors += translationToGlobal;
@@ -1895,10 +1880,6 @@ inline void ParallelCyclotronTracker::normalizeVector(Vector_t& vector) {
 inline void ParallelCyclotronTracker::rotateAroundZ(ParticleAttrib<Vector_t>& particleVectors, double const phi) {
     // Clockwise rotation of particles 'particleVectors' by 'phi' around Z axis
 
-    //Tenzor<double, 3> const rotation( std::cos(phi), std::sin(phi), 0,
-    //                                  -std::sin(phi), std::cos(phi), 0,
-    //                                  0,        0, 1);
-
     boost::numeric::ublas::matrix<double> rotation(3,3);
     rotation(0,0) = std::cos(phi);
     rotation(0,1) = std::sin(phi);
@@ -1910,31 +1891,23 @@ inline void ParallelCyclotronTracker::rotateAroundZ(ParticleAttrib<Vector_t>& pa
     rotation(2,1) = 0;
     rotation(2,2) = 1;
 
-    std::array<double, 3> tempArray;
-    boost::numeric::ublas::vector<double> boost_particleVectors(3);
+    boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        tempArray[0] = particleVectors[i](0);
-        tempArray[1] = particleVectors[i](1);
-        tempArray[2] = particleVectors[i](2);
+        particleVector(0) = particleVectors[i](0);
+        particleVector(1) = particleVectors[i](1);
+        particleVector(2) = particleVectors[i](2);
 
-        std::copy(tempArray.begin(), tempArray.end(), boost_particleVectors.begin());
-        boost_particleVectors = boost::numeric::ublas::prod(rotation, boost_particleVectors);
+        particleVector = boost::numeric::ublas::prod(rotation, particleVector);
 
-        particleVectors[i](0) = boost_particleVectors(0);
-        particleVectors[i](1) = boost_particleVectors(1);
-        particleVectors[i](2) = boost_particleVectors(2);
-
-        //particleVectors[i] = dot(rotation, particleVectors[i]);
+        particleVectors[i](0) = particleVector(0);
+        particleVectors[i](1) = particleVector(1);
+        particleVectors[i](2) = particleVector(2);
     }
 }
 
 inline void ParallelCyclotronTracker::rotateAroundZ(Vector_t& myVector, double const phi) {
     // Clockwise rotation of single vector 'myVector' by 'phi' around Z axis
 
-    //Tenzor<double, 3> const rotation( std::cos(phi), std::sin(phi), 0,
-    //                                  -std::sin(phi), std::cos(phi), 0,
-    //                                  0,        0, 1);
-
     boost::numeric::ublas::matrix<double> rotation(3,3);
     rotation(0,0) = std::cos(phi);
     rotation(0,1) = std::sin(phi);
@@ -1946,28 +1919,20 @@ inline void ParallelCyclotronTracker::rotateAroundZ(Vector_t& myVector, double c
     rotation(2,1) = 0;
     rotation(2,2) = 1;
 
-    std::array<double, 3> tempArray;
     boost::numeric::ublas::vector<double> boost_myVector(3);
-    tempArray[0] = myVector(0);
-    tempArray[1] = myVector(1);
-    tempArray[2] = myVector(2);
+    boost_myVector(0) = myVector(0);
+    boost_myVector(1) = myVector(1);
+    boost_myVector(2) = myVector(2);
 
-    std::copy(tempArray.begin(), tempArray.end(), boost_myVector.begin());
     boost_myVector = boost::numeric::ublas::prod(rotation, boost_myVector);
 
     myVector(0) = boost_myVector(0);
     myVector(1) = boost_myVector(1);
     myVector(2) = boost_myVector(2);
-
-    //myVector = dot(rotation, myVector);
 }
 
 inline void ParallelCyclotronTracker::rotateAroundX(ParticleAttrib<Vector_t>& particleVectors, double const psi) {
     // Clockwise rotation of particles 'particleVectors' by 'psi' around X axis
-
-    //Tenzor<double, 3> const rotation(1,  0,          0,
-    //                                 0,  std::cos(psi), std::sin(psi),
-    //                                 0, -std::sin(psi), std::cos(psi));
 
     boost::numeric::ublas::matrix<double> rotation(3,3);
     rotation(0,0) = 1;
@@ -1980,31 +1945,23 @@ inline void ParallelCyclotronTracker::rotateAroundX(ParticleAttrib<Vector_t>& pa
     rotation(2,1) = -std::sin(psi);
     rotation(2,2) = std::cos(psi);
 
-    std::array<double, 3> tempArray;
-    boost::numeric::ublas::vector<double> boost_particleVectors(3);
+    boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        tempArray[0] = particleVectors[i](0);
-        tempArray[1] = particleVectors[i](1);
-        tempArray[2] = particleVectors[i](2);
+        particleVector(0) = particleVectors[i](0);
+        particleVector(1) = particleVectors[i](1);
+        particleVector(2) = particleVectors[i](2);
 
-        std::copy(tempArray.begin(), tempArray.end(), boost_particleVectors.begin());
-        boost_particleVectors = boost::numeric::ublas::prod(rotation, boost_particleVectors);
+        particleVector = boost::numeric::ublas::prod(rotation, particleVector);
 
-        particleVectors[i](0) = boost_particleVectors(0);
-        particleVectors[i](1) = boost_particleVectors(1);
-        particleVectors[i](2) = boost_particleVectors(2);
-
-        //particleVectors[i] = dot(rotation, particleVectors[i]);
+        particleVectors[i](0) = particleVector(0);
+        particleVectors[i](1) = particleVector(1);
+        particleVectors[i](2) = particleVector(2);
     }
 }
 
 inline void ParallelCyclotronTracker::rotateAroundX(Vector_t& myVector, double const psi) {
     // Clockwise rotation of single vector 'myVector' by 'psi' around X axis
 
-    //Tenzor<double, 3> const rotation(1,  0,          0,
-    //                                 0,  std::cos(psi), std::sin(psi),
-    //                                 0, -std::sin(psi), std::cos(psi));
-
     boost::numeric::ublas::matrix<double> rotation(3,3);
     rotation(0,0) = 1;
     rotation(0,1) = 0;
@@ -2016,20 +1973,16 @@ inline void ParallelCyclotronTracker::rotateAroundX(Vector_t& myVector, double c
     rotation(2,1) = -std::sin(psi);
     rotation(2,2) = std::cos(psi);
 
-    std::array<double, 3> tempArray;
     boost::numeric::ublas::vector<double> boost_myVector(3);
-    tempArray[0] = myVector(0);
-    tempArray[1] = myVector(1);
-    tempArray[2] = myVector(2);
+    boost_myVector(0) = myVector(0);
+    boost_myVector(1) = myVector(1);
+    boost_myVector(2) = myVector(2);
 
-    std::copy(tempArray.begin(), tempArray.end(), boost_myVector.begin());
     boost_myVector = boost::numeric::ublas::prod(rotation, boost_myVector);
 
     myVector(0) = boost_myVector(0);
     myVector(1) = boost_myVector(1);
     myVector(2) = boost_myVector(2);
-
-    //myVector = dot(rotation, myVector);
 }
 
 inline void ParallelCyclotronTracker::getQuaternionTwoVectors(Vector_t u, Vector_t v, Quaternion_t& quaternion) {

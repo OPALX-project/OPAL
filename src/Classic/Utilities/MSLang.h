@@ -4,7 +4,6 @@
 #include "Utilities/MSLang/BoundingBox2D.h"
 #include "Utilities/MSLang/AffineTransformation.h"
 #include "Algorithms/Vektor.h"
-//#include "AppTypes/Tenzor.h"
 
 #include <string>
 #include <iostream>

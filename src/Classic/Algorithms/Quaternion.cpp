@@ -18,7 +18,6 @@ namespace {
     }
 }
 
-//Quaternion::Quaternion(const Tenzor<double, 3> &M):
 Quaternion::Quaternion(const matrix_t &M):
     Vektor<double, 4>(0.0)
 {
@@ -132,8 +131,6 @@ Vector_t Quaternion::rotate(const Vector_t & vec) const
     return ((*this) * (quat * (*this).conjugate())).imag();
 }
 
-//Tenzor<double, 3> Quaternion::getRotationMatrix() const
-//matrix_t getRotationMatrix() const
 boost::numeric::ublas::matrix<double> Quaternion::getRotationMatrix() const
 {
     Quaternion rot(*this);
@@ -149,16 +146,6 @@ boost::numeric::ublas::matrix<double> Quaternion::getRotationMatrix() const
     mat(2, 0) = 2 * (-rot(0) * rot(2) + rot(1) * rot(3));
     mat(2, 1) = 2 * (rot(0) * rot(1) + rot(2) * rot(3));
     mat(2, 2) = 1 - 2 * (rot(1) * rot(1) + rot(2) * rot(2));
-
-    //Tenzor<double, 3> mat(1 - 2 * (rot(2) * rot(2) + rot(3) * rot(3)),
-    //                      2 * (-rot(0) * rot(3) + rot(1) * rot(2)),
-    //                      2 * (rot(0) * rot(2) + rot(1) * rot(3)),
-    //                      2 * (rot(0) * rot(3) + rot(1) * rot(2)),
-    //                      1 - 2 * (rot(1) * rot(1) + rot(3) * rot(3)),
-    //                      2 * (-rot(0) * rot(1) + rot(2) * rot(3)),
-    //                      2 * (-rot(0) * rot(2) + rot(1) * rot(3)),
-    //                      2 * (rot(0) * rot(1) + rot(2) * rot(3)),
-    //                      1 - 2 * (rot(1) * rot(1) + rot(2) * rot(2)));
 
     return mat;
 }

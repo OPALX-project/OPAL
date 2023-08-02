@@ -21,7 +21,6 @@
 #include "AbstractObjects/Definition.h"
 #include "Algorithms/PartData.h"
 #include "Algorithms/Vektor.h"
-//#include "AppTypes/SymTenzor.h"
 #include "Attributes/Attributes.h"
 #include "Distribution/SigmaGenerator.h"
 //#include "Algorithms/Matrix.h"
@@ -469,7 +468,6 @@ private:
     Vector_t cutoffR_m;
     Vector_t cutoffP_m;
     Vector_t mBinomial_m;
-    //SymTenzor<double, 6> correlationMatrix_m;
     boost::numeric::ublas::matrix<double> correlationMatrix_m;
 
     // Parameters multiGauss distribution.

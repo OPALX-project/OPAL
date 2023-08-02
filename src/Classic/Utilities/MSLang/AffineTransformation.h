@@ -2,18 +2,12 @@
 #define MSLANG_AFFINETRANSFORMATION_H
 
 #include "Algorithms/Vektor.h"
-//#include "AppTypes/Tenzor.h"
 #include "Algorithms/Matrix.h"
 
 #include <iostream>
 #include <fstream>
 
 namespace mslang {
-    //struct AffineTransformation: public Tenzor<double, 3> {
-        //AffineTransformation(const Vector_t& row0,
-        //                     const Vector_t& row1):
-        //    Tenzor(row0[0], row0[1], row0[2], row1[0], row1[1], row1[2], 0.0, 0.0, 1.0) {
-        //}
      struct AffineTransformation: public matrix_t {
         AffineTransformation(const Vector_t& row0,
                              const Vector_t& row1):
@@ -41,7 +35,6 @@ namespace mslang {
             (*this)(2, 1) = 0.0;
             (*this)(2, 2) = 1.0;       
           }
-          //  Tenzor(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0) { }
 
         AffineTransformation getInverse() const {
             AffineTransformation Ret;
@@ -68,18 +61,11 @@ namespace mslang {
         }
 
         Vector_t transformTo(const Vector_t &v) const {
-            //const Tenzor<double, 3> &A = *static_cast<const Tenzor<double, 3>* >(this);
-            //Vector_t b(v[0], v[1], 1.0);
-            //Vector_t w = dot(A, b);
-            //return Vector_t(w(0]), w(1), 0.0);
             matrix_t b = matrix_t(3, 1); // Create a 3x1 matrix for b
             b(0, 0) = v(0);
             b(1, 0) = v(1);
             b(2, 0) = 1.0;
-
-            // Vector_t w = dot(A, b);
             matrix_t w = boost::numeric::ublas::prod(*this, b);
-
             return Vector_t(w(0, 0), w(1, 0), 0.0);
         }
 
@@ -89,23 +75,12 @@ namespace mslang {
         }
 
         AffineTransformation mult(const AffineTransformation &B) {
-            //AffineTransformation Ret;
-            //const Tenzor<double, 3> &A = *static_cast<const Tenzor<double, 3> *>(this);
-            //const Tenzor<double, 3> &BTenz = *static_cast<const Tenzor<double, 3> *>(&B);
-            //Tenzor<double, 3> &C = *static_cast<Tenzor<double, 3> *>(&Ret);
-
-            //C = dot(A, BTenz);
-            //return Ret;
-
             AffineTransformation Ret;
             matrix_t &A = *this;
             const matrix_t &BTenz = B;
             matrix_t &C = Ret;
-
             C = boost::numeric::ublas::prod(A, BTenz);
-
             return Ret;
-
         }
     };
 }
