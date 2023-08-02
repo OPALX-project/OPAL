@@ -5,9 +5,6 @@
 #include "Algorithms/Vektor.h"
 #include "Algorithms/Matrix.h"
 
-//template <class, unsigned>
-//class Tenzor;
-
 class Quaternion: public Vektor<double, 4> {
 public:
     Quaternion();
@@ -15,7 +12,6 @@ public:
     Quaternion(const double &, const double &, const double &, const double &);
     Quaternion(const Vector_t &);
     Quaternion(const double &, const Vector_t &);
-    //Quaternion(const Tenzor<double, 3> &);
     Quaternion(const matrix_t &);
 
     Quaternion operator*(const double &) const;
@@ -40,8 +36,6 @@ public:
 
     Vector_t rotate(const Vector_t &) const;
 
-    //Tenzor<double, 3> getRotationMatrix() const;
-    //matrix_t getRotationMatrix() const;    
     boost::numeric::ublas::matrix<double> getRotationMatrix() const;
 };
 
