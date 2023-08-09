@@ -51,8 +51,6 @@ class OffsetPlacements(pyopal.objects.minimal_runner.MinimalRunner):
         v3 = tuple([v1_i+v2[i] for i, v1_i in enumerate(v1)])
         return v3
 
-
-
     def postprocess(self):
         pos1 = self.nominal_end_pos
         field = pyopal.objects.field.get_field_value(*pos1)

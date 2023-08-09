@@ -75,7 +75,7 @@ void VariableRFCavityFringeField::initNull() {
 }
 
 void VariableRFCavityFringeField::accept(BeamlineVisitor& visitor) const {
-    VariableRFCavity::initialise();
+    initialise();
     VariableRFCavityFringeField* cavity =
                                  const_cast<VariableRFCavityFringeField*>(this);
     cavity->initialiseCoefficients();
@@ -117,38 +117,27 @@ bool VariableRFCavityFringeField::apply(const Vector_t &R, const Vector_t &/*P*/
     E = Vector_t(0., 0., 0.);
     B = Vector_t(0., 0., 0.);
     // even power of y
-    //std::cerr << "EVEN POWER OF Y maxOrder: " << maxOrder_m << std::endl;
     for (size_t n = 0; n <= maxOrder_m ; n += 2) { // power of y
         double fCoeff = 0.;
         size_t index = n/2;
-        //std::cerr << "Size i: " << index << " f_m[i]: " << f_m[index].size()
-        //          << " endfield: " << endField.size() << std::endl;
         for (size_t i = 0; i < f_m[index].size() && i < endField.size(); i += 2) { // derivative of f
             fCoeff += f_m[index][i]*endField[i]*omegaPower[n-i];
         }
         E[2] += E_sin_t*y_power[n]*fCoeff;
     }
     // odd power of y
-    //std::cerr << "ODD POWER OF Y maxOrder: " << maxOrder_m << std::endl;
     for (size_t n = 1; n <= maxOrder_m; n += 2) {
         double gCoeff = 0.;
         double hCoeff = 0.;
         size_t index = (n-1)/2;
-        //std::cerr << "Size i: " << index << " g_m[i]: " << g_m[index].size() << " endfield: " << endField.size() << std::endl;
         for (size_t j = 0; j < g_m[index].size() && j < endField.size(); ++j) {
-            //std::cerr << "g_m        " << j << " " << g_m[index][j] << std::endl;
-            //std::cerr << "endfield   " << j << " " << endField[j] << std::endl;
-            //std::cerr << "omegaPower " << j << " " << omegaPower[n-j] << std::endl;
             gCoeff += g_m[index][j]*endField[j]*omegaPower[n-j];
         }
         for (size_t j = 0; j < h_m[index].size() && j < endField.size(); ++j) {
             hCoeff += h_m[index][j]*endField[j]*omegaPower[n-j];
-            //std::cerr << "j: " << j << " " << hCoeff << " ";
         }
-        //std::cerr << std::endl;
         E[1] += E_sin_t*y_power[n]*gCoeff;
         B[0] += B_cos_t*y_power[n]*hCoeff;
-        //std::cerr << "APPLY B " << n << " " << B[0] << " " << hCoeff << std::endl;
     }
     B *= Units::T2kG;
     return false;

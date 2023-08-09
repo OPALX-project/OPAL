@@ -27,8 +27,71 @@
 
 #include "gtest/gtest.h"
 
+#include "Physics/Units.h"
 #include "Attributes/Attributes.h"
 #include "AbsBeamline/Offset.h"
-#include "Elements/OpalOffset/OpalLocalCylindricalOffset.h"
+#include "Elements/OpalOffset/OpalGlobalCartesianOffset.h"
+#include "Elements/OpalOffset/OpalLocalCartesianOffset.h"
 
+using OpalOffset::OpalGlobalCartesianOffset;
+using OpalOffset::OpalLocalCartesianOffset;
 
+void setReal(OpalGlobalCartesianOffset& mag, std::string attName, double value) {
+    Attribute* att = mag.findAttribute(attName);
+    ASSERT_NE(att, nullptr);
+    Attributes::setReal(*att, value);
+}
+
+void setReal(OpalLocalCartesianOffset& mag, std::string attName, double value) {
+    Attribute* att = mag.findAttribute(attName);
+    ASSERT_NE(att, nullptr);
+    Attributes::setReal(*att, value);
+}
+
+TEST(OpalOffsetTest, TestGlobalCartesianOffset) {
+    OpalGlobalCartesianOffset offset;
+    Vector_t refDir(0.1, sqrt(0.99), 0.0);
+    Vector_t refPos(1, 2, 0.0);
+    setReal(offset, "END_POSITION_X", refPos[0]);
+    setReal(offset, "END_POSITION_Y", refPos[1]);
+    setReal(offset, "END_NORMAL_X", refDir[0]);
+    setReal(offset, "END_NORMAL_Y", refDir[1]);
+    offset.update();
+    ElementBase* element = offset.getElement();
+    Offset* off = dynamic_cast<Offset*>(element);
+    ASSERT_NE(off, nullptr);
+
+    Vector_t pos = off->getEndPosition();
+    EXPECT_NEAR(pos[0], refPos[0]*Units::m2mm, 1e-9);
+    EXPECT_NEAR(pos[1], refPos[1]*Units::m2mm, 1e-9);
+
+    Vector_t dir = off->getEndDirection();
+    EXPECT_NEAR(dir[0], refDir[0], 1e-9);
+    EXPECT_NEAR(dir[1], refDir[1], 1e-9);
+
+    EXPECT_FALSE(off->getIsLocal());
+}
+
+TEST(OpalOffsetTest, TestLocalCartesianOffset) {
+    OpalLocalCartesianOffset offset;
+    Vector_t refDir(0.1, sqrt(0.99), 0.0);
+    Vector_t refPos(1, 2, 0.0);
+    setReal(offset, "END_POSITION_X", refPos[0]);
+    setReal(offset, "END_POSITION_Y", refPos[1]);
+    setReal(offset, "END_NORMAL_X", refDir[0]);
+    setReal(offset, "END_NORMAL_Y", refDir[1]);
+    offset.update();
+    ElementBase* element = offset.getElement();
+    Offset* off = dynamic_cast<Offset*>(element);
+    ASSERT_NE(off, nullptr);
+
+    Vector_t pos = off->getEndPosition();
+    EXPECT_NEAR(pos[0], refPos[0]*Units::m2mm, 1e-9);
+    EXPECT_NEAR(pos[1], refPos[1]*Units::m2mm, 1e-9);
+
+    Vector_t dir = off->getEndDirection();
+    EXPECT_NEAR(dir[0], refDir[0], 1e-9);
+    EXPECT_NEAR(dir[1], refDir[1], 1e-9);
+
+    EXPECT_TRUE(off->getIsLocal());
+}

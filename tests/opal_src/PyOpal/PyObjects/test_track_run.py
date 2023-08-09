@@ -31,9 +31,9 @@ class TrackRunner(pyopal.objects.minimal_runner.MinimalRunner):
         self.verbose = 0
         self.run_method = "CYCLOTRON-T"
         self.keep_alive = True
-        self.beam_name = "SuperBeam"
-        self.distribution_name = ["SuperDist"]
-        self.field_solver_name = "FIELDSOLVER"
+        self.beam_name = "DefaultBeam"
+        self.distribution_name = ["DefaultDistribution"]
+        self.field_solver_name = "DefaultFieldSolver"
 
     def make_track_run(self):
         run = pyopal.objects.track_run.TrackRun()

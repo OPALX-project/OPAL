@@ -392,6 +392,11 @@ boost::python::object PyOpalObject<C>::setAttributes(boost::python::tuple args,
         boost::python::object key = key_list[i];
         std::string keyStr = boost::python::extract<std::string>(key);
         boost::python::object value = kwargs[key];
+        if (PyOpalObject<C>::pyNameToAttribute.find(keyStr) ==
+                                    PyOpalObject<C>::pyNameToAttribute.end()) {
+            throw OpalException("PyOpalObject::setAttributes",
+                                "Did not recognise attribute '"+keyStr+"'");
+        }
         AttributeDef att = PyOpalObject<C>::pyNameToAttribute[keyStr];
         self.setAttribute(att.type_m, att.opalName_m, value.ptr());
     }

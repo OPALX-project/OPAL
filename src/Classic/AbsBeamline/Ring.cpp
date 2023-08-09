@@ -257,7 +257,7 @@ void Ring::appendElement(const Component &element) {
     // delta is transform from start of bend to end with x, z as horizontal
     // I failed to get Rotation3D to work so use rotations written by hand.
     // Probably an error in my call to Rotation3D.
-    Euclid3D delta = element.getGeometry().getTotalTransform();
+    Euclid3D delta = section->getComponent()->getGeometry().getTotalTransform();
     rotateToCyclCoordinates(delta);
     checkMidplane(delta);
 

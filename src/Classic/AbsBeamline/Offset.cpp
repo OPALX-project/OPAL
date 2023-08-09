@@ -49,7 +49,6 @@ Offset::Offset()
 Offset::Offset(std::string name, const Offset& rhs)
     : Component(name), _is_local(false), geometry_m(nullptr) {
     *this = rhs;
-    setName(name);
 }
 
 Offset::Offset(const Offset& rhs)

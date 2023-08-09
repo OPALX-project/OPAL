@@ -12,6 +12,9 @@ python_module(ring_definition "${RINGDEFINITION_SRCS}" "elements")
 set (LOCALCARTESIANOFFSET_SRCS PyLocalCartesianOffset.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
 python_module(local_cartesian_offset "${LOCALCARTESIANOFFSET_SRCS}" "elements")
 
+set (GLOBALCARTESIANOFFSET_SRCS PyGlobalCartesianOffset.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
+python_module(global_cartesian_offset "${GLOBALCARTESIANOFFSET_SRCS}" "elements")
+
 set (ENGE_SRCS PyEnge.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
 python_module(enge "${ENGE_SRCS}" "elements")
 
@@ -29,6 +32,9 @@ python_module(multipolet "${MULTIPOLET_SRCS}" "elements")
 
 set (VARIABLERFCAVITY_SRCS PyVariableRFCavity.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
 python_module(variable_rf_cavity "${VARIABLERFCAVITY_SRCS}" "elements")
+
+set (VARIABLERFCAVITYFRINGEFIELD_SRCS PyVariableRFCavityFringeField.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
+python_module(variable_rf_cavity_fringe_field "${VARIABLERFCAVITYFRINGEFIELD_SRCS}" "elements")
 
 set (POLYNOMIALTIMEDEPENDENCE_SRCS PyPolynomialTimeDependence.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
 python_module(polynomial_time_dependence "${POLYNOMIALTIMEDEPENDENCE_SRCS}" "elements")

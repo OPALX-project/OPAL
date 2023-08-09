@@ -46,7 +46,7 @@ BOOST_PYTHON_MODULE(variable_rf_cavity) {
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalVariableRFCavity> element;
     auto elementClass = element.make_element_class("VariableRFCavity");
-    element.addGetFieldValue(elementClass, 1e+3, 1.0, 1.0, 1e-1);
+    element.addGetFieldValue(elementClass, 1e+3, 1e+9, 1.0, 1e-1);
     elementClass.def("update_time_dependence",
                 &PyOpalObjectNS::PyOpalObject<OpalVariableRFCavity>::doSetup);
 }
