@@ -12,6 +12,7 @@
 
 #include <fstream>
 #include <cmath>
+#include <sstream>
 
 using namespace std;
 
@@ -140,14 +141,18 @@ TEST(MultipoleTTest, CurvedMagnet) {
     myMagnet->setMaxOrder(3);
     double t = 0.0;
     double stepSize = 1e-3;
-    double x[21] = {-1.12, -0.99, -0.86, -0.77, -0.65, -0.53, -0.42, -0.29, -0.19, -0.11, -0.039, 0.00, -0.030, -0.12, -0.26, -0.40, -0.56, -0.72, -0.86, -0.96, -1.12};
-    double y[21] = {-2.74, -2.58, -2.30, -2.27, -2.00, -1.83, -1.62, -1.45, -1.13, -0.87, 0.53, 0.00, 0.46, 0.90, 1.36, 1.60, 1.83, 2.17, 2.30, 2.45, 2.77};
+    std::vector<double> x = {-1.12, -0.99, -0.86, -0.77,  -0.65,  -0.53, -0.42,
+                             -0.29, -0.19, -0.11, -0.039, -0.030, -0.12, -0.26,
+                             -0.40, -0.56, -0.72, -0.86,  -0.96,  -1.12};
+    std::vector<double> y = {-2.74, -2.58, -2.30, -2.27, -2.00, -1.83, -1.62,
+                             -1.45, -1.13, -0.87,  0.53,  0.46,  0.90,  1.36,
+                              1.60,  1.83,  2.17,  2.30,  2.45,  2.77};
     double z = 0.2;
     Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
-    for (int n = 0; n < 21; n++) {
-        R[0] = x[n];
+    for (size_t n = 0; n < x.size() && n < y.size(); n++) {
+        R[0] = x.at(n);
         R[1] = z;
-        R[2] = y[n];
+        R[2] = y.at(n);
         Vector_t B(0., 0., 0.);
         myMagnet->apply(R, P, t, E, B);
         double div = calcDivB(R, B, stepSize, myMagnet);
@@ -159,16 +164,14 @@ TEST(MultipoleTTest, CurvedMagnet) {
         curlMag = sqrt(curlMag);
         coordinatetransform::CoordinateTransform ct(x[n], z, y[n], 2.2, 0.3, 0.3, 4.4 / 0.628);
         std::vector<double> r = ct.getTransformation();
-        EXPECT_NEAR(div, 0, 2e-2)
-                     << "R: " << r[0] << " " << r[1] << " " << r[2] << std::endl
-                     << "R: " << x[n] << " " << z << " " << y[n] << std::endl
-                     << "B: " << B[0] << " " << B[1] << " " << B[2] << std::endl
-                     << "Del: " << div << " " << curl[0] << " " << curl[1] << " " << curl[2] << std::endl;
-        EXPECT_NEAR(curlMag, 0, 1e-9)
-                     << "R: " << r[0] << " " << r[1] << " " << r[2] << std::endl
-                     << "R: " << x[n] << " " << z << " " << y[n] << std::endl
-                     << "B: " << B[0] << " " << B[1] << " " << B[2] << std::endl
-                     << "Del: " << div << " " << curl[0] << " " << curl[1] << " " << curl[2] << std::endl;
+        std::stringstream msgStr;
+        msgStr << "R: " << r[0] << " " << r[1] << " " << r[2] << std::endl
+               << "R: " << x[n] << " " << z << " " << y[n] << std::endl
+               << "B: " << B[0] << " " << B[1] << " " << B[2] << std::endl
+               << "Del: " << div << " " << curl[0] << " " << curl[1] << " " << curl[2] << std::endl;
+        std::cerr << msgStr.str() << std::endl;
+        EXPECT_NEAR(div, 0, 2e-2) << msgStr.str();
+        EXPECT_NEAR(curlMag, 0, 1e-9) << msgStr.str();
     }
     delete myMagnet;
 }

@@ -25,11 +25,11 @@ class BeamRunner(pyopal.objects.minimal_runner.MinimalRunner):
         self.momentum = 0.1 # [GeV/c]
         self.mass = 0.93827208816 # [GeV/c^2]
         self.momentum_tolerance = 1e-6
-        self.verbose = 2
+        self.verbose = 0
 
     def make_beam(self):
         beam = pyopal.objects.beam.Beam()
-        beam.set_opal_name("SuperBeam")
+        beam.set_opal_name("DefaultBeam")
         beam.mass = self.mass
         beam.momentum = self.momentum
         beam.charge = 1.0

@@ -170,12 +170,16 @@ Vector_t MultipoleT::rotateFrameInverse(Vector_t &B) {
 }
 
 bool MultipoleT::insideAperture(const Vector_t &R) {
-    if (std::abs(R[1]) <= verticalApert_m / 2. && std::abs(R[0]) <= horizApert_m / 2.) {
-        return true;
-    }
-    else {
+    if (std::abs(R[1]) > verticalApert_m / 2.) {
+        return false;
+    } else if (std::abs(R[0]) > horizApert_m / 2.) {
+        return false;
+    } else if (R[2] < -boundingBoxLength_m/2.0) {
+        return false;
+    } else if (R[2] > boundingBoxLength_m/2.0) {
         return false;
     }
+    return true;
 }
 
 Vector_t MultipoleT::transformCoords(const Vector_t &R) {
@@ -530,7 +534,7 @@ double MultipoleT::getFn(std::size_t n, double x, double s) {
 }
 
 void MultipoleT::initialise() {
-    planarArcGeometry_m.setElementLength(2 * boundingBoxLength_m);
+    planarArcGeometry_m.setElementLength(length_m);
     planarArcGeometry_m.setCurvature(angle_m / length_m);
 }
 

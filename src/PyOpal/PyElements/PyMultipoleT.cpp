@@ -26,7 +26,7 @@ std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalMulti
     {"VARRADIUS", "variable_radius", "", PyOpalObjectNS::BOOL},
     {"BBLENGTH", "bounding_box_length", "", PyOpalObjectNS::DOUBLE},
     {"L", "length", "", PyOpalObjectNS::DOUBLE},
-    {"DELETEONTRANSVERSEEXIT", "delete_on_transvere_exit", "", PyOpalObjectNS::BOOL}
+    {"DELETEONTRANSVERSEEXIT", "delete_on_transverse_exit", "", PyOpalObjectNS::BOOL}
 };
 
 template <>

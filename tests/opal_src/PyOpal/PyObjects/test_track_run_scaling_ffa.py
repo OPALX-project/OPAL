@@ -20,7 +20,6 @@ framework but the integration test framework can't do it (yet).
 import os
 import math
 import unittest
-
 import pyopal.elements.local_cartesian_offset
 import pyopal.elements.scaling_ffa_magnet
 import pyopal.elements.asymmetric_enge
@@ -30,6 +29,8 @@ import pyopal.objects.minimal_runner
 try:
     # for plotting, we require matplotlib. If it cannot be imported, plotting
     # will not be performed.
+    import matplotlib
+    matplotlib.use('agg') # disable matplot gui during this test
     import pyopal.objects.ffa_field_mapper
     HAS_FFA_MAPPER = True
 except ImportError:

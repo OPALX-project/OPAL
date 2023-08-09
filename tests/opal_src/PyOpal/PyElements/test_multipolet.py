@@ -13,7 +13,60 @@
 import math
 import unittest 
 
+import pyopal.objects.field
+import pyopal.objects.minimal_runner
 import pyopal.elements.multipolet
+
+class TestMultipoleTRunner(pyopal.objects.minimal_runner.MinimalRunner):
+    """Test runner - I wanted to check the placement was okay"""
+    def __init__(self):
+        super().__init__()
+        self.verbose = 0
+        self.r0 = 2.0
+        self.multipole = None
+        self.length = 0.5
+        self.bb_length = 0.6
+
+    def make_element_iterable(self):
+        """Place a 1.5 T dipole"""
+        return [self.make_multipolet(1.5)]
+
+    def make_multipolet(self, bz):
+        """Make a default straight multipole"""
+        multipole = pyopal.elements.multipolet.MultipoleT()
+        multipole.t_p = [bz] # dipole
+        multipole.left_fringe = 0.01
+        multipole.right_fringe = 0.01
+        multipole.length = self.length
+        multipole.horizontal_aperture = 0.1
+        multipole.vertical_aperture = 0.1
+        multipole.maximum_f_order = 1
+        multipole.entrance_angle = 0.0
+        multipole.maximum_x_order = 1
+        multipole.variable_radius = 0
+        multipole.rotation = 0
+        multipole.angle = 0.0
+        multipole.bounding_box_length = self.bb_length
+        multipole.delete_on_transverse_exit = False
+        self.multipole = multipole
+        return multipole
+
+    @classmethod
+    def test_field(cls, y_test, bz_ref):
+        """Check that reference field is correct"""
+        pos = (2.0, y_test, 0.0, 0.0) # x,y,z,t
+        field = pyopal.objects.field.get_field_value(*pos)
+        if abs(field[3]-bz_ref) > 1e-12:
+            raise RuntimeError(f"test_multipole failed with pos {pos} field {field} bz_ref {bz_ref}")
+
+    def postprocess(self):
+        """Test placement - note that placement is from centre for this element"""
+        self.test_field(-0.301, 0.0)
+        self.test_field(-0.299, 8.317278708416809e-05)
+        self.test_field(0.299, 8.317278708416809e-05)
+        self.test_field(0.301, 0.0)
+        self.test_field(-0.25, 0.75)
+        self.test_field(0.25, 0.75)
 
 class TestMultipoleT(unittest.TestCase):
     """
@@ -22,7 +75,7 @@ class TestMultipoleT(unittest.TestCase):
     def make_multipolet(self):
         """Make a default straight multipole"""
         multipole = pyopal.elements.multipolet.MultipoleT()
-        multipole.t_p = [0.5] # dipole
+        multipole.t_p = [0.5] # 0.5 T dipole
         multipole.left_fringe = 0.02
         multipole.right_fringe = 0.03
         multipole.length = 0.9
@@ -34,8 +87,8 @@ class TestMultipoleT(unittest.TestCase):
         multipole.variable_radius = 0 # not tested
         multipole.rotation = 0 # not tested
         multipole.angle = 0.0 # not tested
-        multipole.bounding_box_length = 2.0 # doesn't appear to work
-        multipole.delete_on_transvere_exit = True
+        multipole.bounding_box_length = 2.0
+        multipole.delete_on_transverse_exit = True
         return multipole
 
     def test_on_axis_field(self):
@@ -52,18 +105,24 @@ class TestMultipoleT(unittest.TestCase):
 
         NOTE bb length does not appear to be used"""
         multipole = self.make_multipolet()
-        plist = [
+        plist = [ # should be rotated through 180 degrees?
+            ((-0.07, 0.0, 0.0, 0.0), False),
+            ((-0.08, 0.0, 0.0, 0.0), True),
             ((0.07, 0.0, 0.0, 0.0), False),
             ((0.08, 0.0, 0.0, 0.0), True),
+            ((0.0, -0.12, 0.0, 0.0), False),
+            ((0.0, -0.13, 0.0, 0.0), True),
             ((0.0, 0.12, 0.0, 0.0), False),
             ((0.0, 0.13, 0.0, 0.0), True),
+            ((0.0, 0.0, -0.99, 0.0), False),
+            ((0.0, 0.0, -1.01, 0.0), True),
+            ((0.0, 0.0, 0.99, 0.0), False),
+            ((0.0, 0.0, 1.01, 0.0), True),
         ]
         for point, oob in plist:
             field = multipole.get_field_value(*point)
             self.assertEqual(oob, field[0], msg="Failed on point "+str(point)+" expected oob "+str(oob))
-        field = multipole.get_field_value(0, 0, 10000, 0)
-        self.assertEqual(False, field[0], msg="This test should have failed")
-        multipole.delete_on_transvere_exit = False # disable bound checking
+        multipole.delete_on_transverse_exit = False # disable bound checking
         field = multipole.get_field_value(100000, 100000, 10000, 100000)
         self.assertEqual(False, field[0], msg="Failed on point "+str(point)+" expected oob "+str(oob))
 
@@ -79,6 +138,10 @@ class TestMultipoleT(unittest.TestCase):
         # just want to check they are different
         self.assertNotEqual(field_00[3], field_10[3])
 
+    def test_placement(self):
+        """Check placement is okay"""
+        runner = TestMultipoleTRunner()
+        runner.execute_fork()
 
 if __name__ == "__main__":
     unittest.main()

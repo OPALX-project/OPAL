@@ -78,6 +78,13 @@ class VariableRFCavityFringeField : public VariableRFCavity {
      */
     virtual void accept(BeamlineVisitor &) const override;
 
+    /** Lookup the time dependencies and update.
+     *
+     *  Throws if the named time dependencies can't be found. Also throws if the
+     *  width or height is < 1 nm
+     */
+    inline void initialise() const;
+
     /** Inheritable deepcopy method */
     virtual ElementBase* clone() const override;
 
@@ -181,6 +188,10 @@ double VariableRFCavityFringeField::getCavityCentre() const {
 void VariableRFCavityFringeField::setMaxOrder(size_t maxOrder) {
     maxOrder_m = maxOrder;
     initialiseCoefficients();
+}
+
+void VariableRFCavityFringeField::initialise() const {
+    VariableRFCavity::initialise();
 }
 
 size_t VariableRFCavityFringeField::getMaxOrder() const {

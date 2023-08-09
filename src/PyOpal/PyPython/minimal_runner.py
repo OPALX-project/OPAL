@@ -88,6 +88,7 @@ class MinimalRunner(object):
         (i.e. set to type = "NONE").
         """
         self.field_solver = pyopal.objects.field_solver.FieldSolver()
+        self.field_solver.set_opal_name("DefaultFieldSolver")
         self.field_solver.type = "NONE"
         self.field_solver.mesh_size_x = 5
         self.field_solver.mesh_size_y = 5
@@ -113,7 +114,7 @@ class MinimalRunner(object):
         dist_file.flush()
         dist_file.close()
         self.distribution = pyopal.objects.distribution.Distribution()
-        self.distribution.set_opal_name("SuperDist")
+        self.distribution.set_opal_name("DefaultDistribution")
         self.distribution.type = "FROMFILE"
         self.distribution.filename = self.distribution_filename
         self.distribution.register()
@@ -127,7 +128,7 @@ class MinimalRunner(object):
         so on.
         """
         beam = pyopal.objects.beam.Beam()
-        beam.set_opal_name("SuperBeam")
+        beam.set_opal_name("DefaultBeam")
         beam.mass = self.mass
         beam.momentum = self.momentum
         beam.charge = 1.0
@@ -146,6 +147,7 @@ class MinimalRunner(object):
         example a drift of length 0 is used.
         """
         drift = pyopal.elements.local_cartesian_offset.LocalCartesianOffset()
+        drift.set_opal_name("DefaultDrift")
         drift.end_position_x=0.0
         drift.end_position_y=0.0
         drift.end_normal_x=0.0
@@ -162,7 +164,7 @@ class MinimalRunner(object):
         to self.line and used with OPAL cyclotron mode.
         """
         self.ring = pyopal.elements.ring_definition.RingDefinition()
-        self.ring.set_opal_name("a_ring")
+        self.ring.set_opal_name("DefaultRing")
         self.ring.lattice_initial_r = self.r0
         self.ring.beam_initial_r = self.r0
         self.ring.minimum_r = self.r0/2
@@ -186,7 +188,7 @@ class MinimalRunner(object):
         The Line holds a sequence of beam elements.
         """
         self.line = pyopal.objects.line.Line()
-        self.line.set_opal_name("test_line")
+        self.line.set_opal_name("DefaultLine")
         try:
             self.line.append(self.ring)
         except Exception:
@@ -205,8 +207,8 @@ class MinimalRunner(object):
         elements.
         """
         track = pyopal.objects.track.Track()
-        track.line = "test_line"
-        track.beam = "SuperBeam"
+        track.line = "DefaultLine"
+        track.beam = "DefaultBeam"
         track.max_steps = [self.max_steps]
         track.steps_per_turn = self.steps_per_turn
         self.track = track
@@ -221,9 +223,9 @@ class MinimalRunner(object):
         run = pyopal.objects.track_run.TrackRun()
         run.method = "CYCLOTRON-T"
         run.keep_alive = True
-        run.beam_name = "SuperBeam"
-        run.distribution = ["SuperDist"]
-        run.field_solver = "FIELDSOLVER"
+        run.beam_name = "DefaultBeam"
+        run.distribution = ["DefaultDistribution"]
+        run.field_solver = "DefaultFieldSolver"
         self.track_run = run
 
     def make_element_iterable(self):
@@ -269,7 +271,8 @@ class MinimalRunner(object):
         except:
             raise
         finally:
-            print("Finished running in directory", os.getcwd())
+            if self.verbose:
+                print("Finished running in directory", os.getcwd())
             os.chdir(here)
 
     def execute_fork(self):
