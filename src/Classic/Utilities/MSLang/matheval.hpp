@@ -24,8 +24,9 @@
 #include <stdexcept>
 #include <string>
 
+#define BOOST_PHOENIX_STL_TUPLE_H_
 #define BOOST_RESULT_OF_USE_DECLTYPE
-#define BOOST_SPIRIT_USE_PHOENIX_V3
+
 #include <boost/math/constants/constants.hpp>
 #include <boost/phoenix.hpp>
 #include <boost/spirit/include/qi.hpp>
