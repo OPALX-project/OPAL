@@ -377,7 +377,7 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
 # pragma clang diagnostic warning "-Wdeprecated-declarations"
 #endif
     if (Teuchos::is_null(A))
-        A = rcp(new TpetraCrsMatrix_t(map_p,  7));
+        A = rcp(new TpetraCrsMatrix_t(map_p,  7, Tpetra::StaticProfile));
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
