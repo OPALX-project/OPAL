@@ -192,7 +192,7 @@ protected:
         __float128 difference = __float128(X(0)) - __float128(xbegin_m);
         idx.i = std::min(
                          (unsigned int)((difference) / __float128(hx_m)),
-                         num_gridpx_m
+                         num_gridpx_m-2
                          );
         idx.weight(0) = std::fmod(
                                   (long double)difference,
@@ -202,7 +202,7 @@ protected:
         difference = __float128(X(1)) - __float128(ybegin_m);
         idx.j = std::min(
                          (unsigned int)((difference) / __float128(hy_m)),
-                         num_gridpy_m
+                         num_gridpy_m-2
                          );
         idx.weight(1) = std::fmod(
                                   (long double)difference,
@@ -212,7 +212,8 @@ protected:
         difference = __float128(X(2)) - __float128(zbegin_m);
         idx.k = std::min(
                          (unsigned int)((difference) / __float128(hz_m)),
-                         num_gridpz_m);
+                         num_gridpz_m-2
+			 );
         idx.weight(2) = std::fmod(
                                   (long double)difference,
                                   (long double)hz_m
