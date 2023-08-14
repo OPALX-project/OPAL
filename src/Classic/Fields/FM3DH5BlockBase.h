@@ -155,19 +155,69 @@ protected:
         return result;
     }
 
+    /*
+      Compute grid indices for a point X.
+
+      Before calling this function a Isinside(X) test must
+      to be performed!
+
+      2-dim example with num_gridpx_m = 5, num_gridpy_m = 4
+
+      3 +----+----+----+----+
+        |    |    |    |    |
+      2 +----+----+----+----+
+        |    |    |    |   X|
+      1 +----+----+----+----+
+        |    |    |    |    |
+      0 +----+----+----+----+
+        0    1    2    3    4
+
+      idx.x = 3
+      idx.y = 1
+
+      Notes:
+      In above example: max for idx.x is num_gridpx_m - 2 which is 3.
+
+      If X is close to a cell border, it can happen that the computation
+      of the index is wrong due to rounding errors. In the example above
+      idx.i == 4 instead of 3. To mitigate this issue we use __float128.
+      To avoid out-of-bound errors we set the index to the max allowed
+      value, if it is out of bound.
+
+      std::fmod() doesn't support __float128 types! Best we can use is
+      long double.
+    */
     IndexTriplet getIndex(const Vector_t &X) const {
         IndexTriplet idx;
-        idx.i = std::floor((X(0) - xbegin_m) / hx_m);
-        idx.j = std::floor((X(1) - ybegin_m) / hy_m);
-        idx.k = std::floor((X(2) - zbegin_m) / hz_m);
-        PAssert_LT(idx.i, num_gridpx_m - 1);
-        PAssert_LT(idx.j, num_gridpy_m - 1);
-        PAssert_LT(idx.k, num_gridpz_m - 1);
+        __float128 difference = __float128(X(0)) - __float128(xbegin_m);
+        idx.i = std::min(
+                         (unsigned int)((difference) / __float128(hx_m)),
+                         num_gridpx_m-2
+                         );
+        idx.weight(0) = std::fmod(
+                                  (long double)difference,
+                                  (long double)hx_m
+                                  );
 
-        idx.weight(0) = (X(0) - xbegin_m) / hx_m - idx.i;
-        idx.weight(1) = (X(1) - ybegin_m) / hy_m - idx.j;
-        idx.weight(2) = (X(2) - zbegin_m) / hz_m - idx.k;
+        difference = __float128(X(1)) - __float128(ybegin_m);
+        idx.j = std::min(
+                         (unsigned int)((difference) / __float128(hy_m)),
+                         num_gridpy_m-2
+                         );
+        idx.weight(1) = std::fmod(
+                                  (long double)difference,
+                                  (long double)hy_m
+                                  );
 
+        difference = __float128(X(2)) - __float128(zbegin_m);
+        idx.k = std::min(
+                         (unsigned int)((difference) / __float128(hz_m)),
+                         num_gridpz_m-2
+			 );
+        idx.weight(2) = std::fmod(
+                                  (long double)difference,
+                                  (long double)hz_m
+                                  );
         return idx;
     }
 
@@ -208,9 +258,9 @@ protected:
     double hy_m;            /**< length between points in grid, y-direction */
     double hz_m;            /**< length between points in grid, z-direction */
 
-    double num_gridpx_m;    /**< number of points after 0(not counted here) in grid, x-direction*/
-    double num_gridpy_m;    /**< number of points after 0(not counted here) in grid, y-direction*/
-    double num_gridpz_m;    /**< number of points after 0(not counted here) in grid, z-direction*/
+    unsigned int num_gridpx_m;    /**< number of points after 0(not counted here) in grid, x-direction*/
+    unsigned int num_gridpy_m;    /**< number of points after 0(not counted here) in grid, y-direction*/
+    unsigned int num_gridpz_m;    /**< number of points after 0(not counted here) in grid, z-direction*/
 
     double frequency_m;
 

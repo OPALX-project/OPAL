@@ -889,7 +889,8 @@ void AmrMultiGrid::open_m(const lo_t& level,
             int nNeighbours = (nBcPoints_m + 1) * interp_mp->getNumberOfPoints();
 
             mglevel_m[level]->I_p = Teuchos::rcp( new matrix_t(mglevel_m[level]->map_p,
-                                                               nNeighbours) );
+                                                               nNeighbours,
+                                                               Tpetra::StaticProfile) );
 
             /*
              * coarse boundary matrix
@@ -899,7 +900,8 @@ void AmrMultiGrid::open_m(const lo_t& level,
                           2 * AMREX_SPACEDIM * interface_mp->getNumberOfPoints();
 
             mglevel_m[level]->Bcrse_p = Teuchos::rcp(
-                new matrix_t(mglevel_m[level]->map_p, nNeighbours) );
+                new matrix_t(mglevel_m[level]->map_p, nNeighbours,
+                             Tpetra::StaticProfile) );
 
         }
 
@@ -914,7 +916,8 @@ void AmrMultiGrid::open_m(const lo_t& level,
             int nNeighbours = AMREX_D_TERM(2, * 2, * 2);
 
             mglevel_m[level]->R_p = Teuchos::rcp(
-                new matrix_t(mglevel_m[level]->map_p, nNeighbours) );
+                new matrix_t(mglevel_m[level]->map_p, nNeighbours,
+                             Tpetra::StaticProfile) );
 
             /*
              * fine boundary matrix
@@ -924,7 +927,8 @@ void AmrMultiGrid::open_m(const lo_t& level,
             nNeighbours = 2 * AMREX_SPACEDIM * AMREX_D_TERM(2, * 2, * 2);
 
             mglevel_m[level]->Bfine_p = Teuchos::rcp(
-                new matrix_t(mglevel_m[level]->map_p, nNeighbours) );
+                new matrix_t(mglevel_m[level]->map_p, nNeighbours,
+                             Tpetra::StaticProfile) );
 
         }
 
@@ -941,7 +945,8 @@ void AmrMultiGrid::open_m(const lo_t& level,
 
         if (level > lbase_m || (level == lbase_m && !solver_mp->hasOperator())) {
             mglevel_m[level]->Anf_p = Teuchos::rcp(
-                new matrix_t(mglevel_m[level]->map_p, nEntries) );
+                new matrix_t(mglevel_m[level]->map_p, nEntries,
+                             Tpetra::StaticProfile) );
         }
 
         /*
@@ -951,13 +956,15 @@ void AmrMultiGrid::open_m(const lo_t& level,
             nEntries = (AMREX_SPACEDIM << 1) + 5 /* plus boundaries */ + nPhysBoundary + nIntBoundary;
 
             mglevel_m[level]->Awf_p = Teuchos::rcp(
-                new matrix_t(mglevel_m[level]->map_p, nEntries) );
+                new matrix_t(mglevel_m[level]->map_p, nEntries,
+                             Tpetra::StaticProfile) );
 
             /*
              * uncovered cells matrix
              */
             mglevel_m[level]->UnCovered_p = Teuchos::rcp(
-                new matrix_t(mglevel_m[level]->map_p, 1) );
+                new matrix_t(mglevel_m[level]->map_p, 1,
+                             Tpetra::StaticProfile) );
         }
 
         /*
@@ -968,7 +975,8 @@ void AmrMultiGrid::open_m(const lo_t& level,
         if (level > lbase_m || (level == lbase_m && !solver_mp->hasOperator())) {
             for (int d = 0; d < AMREX_SPACEDIM; ++d) {
                 mglevel_m[level]->G_p[d] = Teuchos::rcp(
-                    new matrix_t(mglevel_m[level]->map_p, nEntries) );
+                    new matrix_t(mglevel_m[level]->map_p, nEntries,
+                                 Tpetra::StaticProfile) );
             }
         }
     }
