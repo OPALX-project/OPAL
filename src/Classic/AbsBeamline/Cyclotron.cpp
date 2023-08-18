@@ -464,23 +464,22 @@ bool Cyclotron::apply(const size_t& id, const double& t, Vector_t& E, Vector_t& 
 bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
                       const double& t, Vector_t& E, Vector_t& B) {
 
-    const double rad   = std::hypot(R[0],R[1]);
-    if (std::abs(R[0]) < 0.0000001) {
-        throw GeneralClassicException(
-                        "Cyclotron::apply",
-                        "division by zero");
+    double tet = 0.0;
+    if (std::fabs(R[0]) < 1.0E-10) {
+        if (R[1] >= 0.0) {
+            tet = Physics::pi / 2.0;
+        } else {
+            tet = 1.5 * Physics::pi;
+        }
+    } else if (R[0] < 0.0) {
+        tet = Physics::pi + std::atan(R[1] / R[0]);
+    } else { 
+        if (R[1] > 0.0) {       // R[0] > 0.0 && R[1] > 0.0 
+            tet = std::atan(R[1] / R[0]);
+        } else {                // R[0] > 0.0 && R[1] <= 0.0 
+            tet = Physics::two_pi + std::atan(R[1] / R[0]);
+        }
     }
-    const double tempv = std::atan(R[1] / R[0]);
-    double tet = tempv;
-
-    /* if ((R[0] > 0) && (R[1] >= 0)) tet = tempv;
-       else*/
-    if      ((R[0] < 0) && (R[1] >= 0)) tet = Physics::pi + tempv;
-    else if ((R[0] < 0) && (R[1] <= 0)) tet = Physics::pi + tempv;
-    else if ((R[0] > 0) && (R[1] <= 0)) tet = Physics::two_pi + tempv;
-    else if ((R[0] == 0) && (R[1] > 0)) tet = Physics::pi / 2.0;
-    else if ((R[0] == 0) && (R[1] < 0)) tet = 1.5 * Physics::pi;
-
     double tet_rad = tet;
 
     // the actual angle of particle in degree
@@ -492,6 +491,7 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
     // dB_{z}/dr, dB_{z}/dtheta, B_{z}
     double brint = 0.0, btint = 0.0, bzint = 0.0;
 
+    const double rad   = std::hypot(R[0],R[1]);
     if ( this->interpolate(rad, tet_rad, brint, btint, bzint) ) {
 
         /* Br */
