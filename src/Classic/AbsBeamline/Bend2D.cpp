@@ -1530,9 +1530,10 @@ MeshData Bend2D::getSurfaceMesh() const {
             inv(2, 2) = dir1[0] / det;
 
             boost::numeric::ublas::vector<double> Tau(3);
-            Tau(0) = (P2-P1)[0];
-            Tau(1) = (P2-P1)[1];
-            Tau(2) = (P2-P1)[2];
+            Vector_t Pdiff = P2 - P1;
+            Tau(0) = Pdiff[0];
+            Tau(1) = Pdiff[1];
+            Tau(2) = Pdiff[2];
             Tau = boost::numeric::ublas::prod(inv, Tau);
 
             Vector_t crossPoint = P1 + Tau[0] * dir1;

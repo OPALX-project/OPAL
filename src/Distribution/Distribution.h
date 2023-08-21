@@ -23,7 +23,6 @@
 #include "Algorithms/Vektor.h"
 #include "Attributes/Attributes.h"
 #include "Distribution/SigmaGenerator.h"
-//#include "Algorithms/Matrix.h"
 #include <boost/numeric/ublas/matrix.hpp>
 
 #include <gsl/gsl_histogram.h>

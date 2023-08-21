@@ -86,13 +86,14 @@ inline Vector_t CoordinateSystemTrafo::transformTo(const Vector_t& r) const {
 }
 
 inline Vector_t CoordinateSystemTrafo::transformFrom(const Vector_t& r) const {
-    boost::numeric::ublas::vector<double> result(3);
-    for (size_t i = 0; i < 3; ++i) {
-        result(i) = r[i];
-    }
-    result = boost::numeric::ublas::prod(boost::numeric::ublas::trans(rotationMatrix_m), result);
-    Vector_t transformedVector(result(0), result(1), result(2));
-    return transformedVector + origin_m;
+    //boost::numeric::ublas::vector<double> result(3);
+    //for (size_t i = 0; i < 3; ++i) {
+    //    result(i) = r[i];
+    //}
+    //result = boost::numeric::ublas::prod(boost::numeric::ublas::trans(rotationMatrix_m), result);
+    //Vector_t transformedVector(result(0), result(1), result(2));
+    //return transformedVector + origin_m;
+    return rotateFrom(r) + origin_m;
 }
 
 inline Vector_t CoordinateSystemTrafo::rotateTo(const Vector_t& r) const {
