@@ -1895,16 +1895,7 @@ inline void ParallelCyclotronTracker::rotateAroundZ(Vector_t& myVector, double c
     rotation(2,1) = 0;
     rotation(2,2) = 1;
 
-    boost::numeric::ublas::vector<double> boost_myVector(3);
-    boost_myVector(0) = myVector(0);
-    boost_myVector(1) = myVector(1);
-    boost_myVector(2) = myVector(2);
-
-    boost_myVector = boost::numeric::ublas::prod(rotation, boost_myVector);
-
-    myVector(0) = boost_myVector(0);
-    myVector(1) = boost_myVector(1);
-    myVector(2) = boost_myVector(2);
+    myVector = prod_boost_vector(rotation, myVector);
 }
 
 inline void ParallelCyclotronTracker::rotateAroundX(ParticleAttrib<Vector_t>& particleVectors, double const psi) {
@@ -1941,16 +1932,7 @@ inline void ParallelCyclotronTracker::rotateAroundX(Vector_t& myVector, double c
     rotation(2,1) = -std::sin(psi);
     rotation(2,2) = std::cos(psi);
 
-    boost::numeric::ublas::vector<double> boost_myVector(3);
-    boost_myVector(0) = myVector(0);
-    boost_myVector(1) = myVector(1);
-    boost_myVector(2) = myVector(2);
-
-    boost_myVector = boost::numeric::ublas::prod(rotation, boost_myVector);
-
-    myVector(0) = boost_myVector(0);
-    myVector(1) = boost_myVector(1);
-    myVector(2) = boost_myVector(2);
+    myVector = prod_boost_vector(rotation, myVector);
 }
 
 inline void ParallelCyclotronTracker::getQuaternionTwoVectors(Vector_t u, Vector_t v, Quaternion_t& quaternion) {
