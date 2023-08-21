@@ -1680,15 +1680,7 @@ void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t>& particleV
 
     boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        particleVector(0) = particleVectors[i](0);
-        particleVector(1) = particleVectors[i](1);
-        particleVector(2) = particleVectors[i](2);
-
-        particleVector = boost::numeric::ublas::prod(rotation, particleVector);
-        
-        particleVectors[i](0) = particleVector(0);
-        particleVectors[i](1) = particleVector(1);
-        particleVectors[i](2) = particleVector(2);
+        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
     IpplTimings::stopTimer(TransformTimer_m);
 }
@@ -1710,15 +1702,7 @@ void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t>& particleV
 
     boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        particleVector(0) = particleVectors[i](0);
-        particleVector(1) = particleVectors[i](1);
-        particleVector(2) = particleVectors[i](2);
-
-        particleVector = boost::numeric::ublas::prod(rotation, particleVector);
-
-        particleVectors[i](0) = particleVector(0);
-        particleVectors[i](1) = particleVector(1);
-        particleVectors[i](2) = particleVector(2);
+        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
 
     particleVectors += translationToGlobal;
@@ -1893,15 +1877,7 @@ inline void ParallelCyclotronTracker::rotateAroundZ(ParticleAttrib<Vector_t>& pa
 
     boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        particleVector(0) = particleVectors[i](0);
-        particleVector(1) = particleVectors[i](1);
-        particleVector(2) = particleVectors[i](2);
-
-        particleVector = boost::numeric::ublas::prod(rotation, particleVector);
-
-        particleVectors[i](0) = particleVector(0);
-        particleVectors[i](1) = particleVector(1);
-        particleVectors[i](2) = particleVector(2);
+        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
 }
 
@@ -1947,15 +1923,7 @@ inline void ParallelCyclotronTracker::rotateAroundX(ParticleAttrib<Vector_t>& pa
 
     boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        particleVector(0) = particleVectors[i](0);
-        particleVector(1) = particleVectors[i](1);
-        particleVector(2) = particleVectors[i](2);
-
-        particleVector = boost::numeric::ublas::prod(rotation, particleVector);
-
-        particleVectors[i](0) = particleVector(0);
-        particleVectors[i](1) = particleVector(1);
-        particleVectors[i](2) = particleVector(2);
+        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
 }
 
