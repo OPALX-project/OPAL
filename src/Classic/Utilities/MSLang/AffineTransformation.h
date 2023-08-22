@@ -1,8 +1,8 @@
 #ifndef MSLANG_AFFINETRANSFORMATION_H
 #define MSLANG_AFFINETRANSFORMATION_H
 
+#include "Algorithms/BoostMatrix.h"
 #include "Algorithms/Vektor.h"
-#include "Algorithms/Matrix.h"
 
 #include <iostream>
 #include <fstream>

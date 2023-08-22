@@ -26,7 +26,7 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Algorithms/ParallelCyclotronTracker.h"
-#include "Algorithms/Matrix.h"
+#include "Algorithms/BoostMatrix.h"
 
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"

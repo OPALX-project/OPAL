@@ -2,8 +2,8 @@
 #define OPAL_QUATERNION_H
 
 #include "AppTypes/Vektor.h"
+#include "Algorithms/BoostMatrix.h"
 #include "Algorithms/Vektor.h"
-#include "Algorithms/Matrix.h"
 
 class Quaternion: public Vektor<double, 4> {
 public:

@@ -1,7 +1,7 @@
 //
-// This is header is made to facilitate boost's matrix and vector_t operations in OPAL.
+// This header file is made to facilitate boost's matrix and vector_t operations in OPAL.
 //
-// Copyright (c) 2023 - 2024, Mohsen Sadr, Paul Scherrer Institute, Villigen PSI, Switzerland
+// Copyright (c) 2023, Paul Scherrer Institute, Villigen PSI, Switzerland
 // All rights reserved
 //
 // This file is part of OPAL.

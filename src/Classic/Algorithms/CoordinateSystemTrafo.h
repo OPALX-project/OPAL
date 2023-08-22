@@ -1,9 +1,9 @@
 #ifndef COORDINATESYSTEMTRAFO
 #define COORDINATESYSTEMTRAFO
 
+#include "Algorithms/BoostMatrix.h"
 #include "Algorithms/Vektor.h"
 #include "Algorithms/Quaternion.h"
-#include "Algorithms/Matrix.h"
 
 class CoordinateSystemTrafo {
 public:

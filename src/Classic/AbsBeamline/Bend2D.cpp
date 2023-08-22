@@ -21,13 +21,13 @@
 #include "AbsBeamline/Bend2D.h"
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "AbstractObjects/OpalData.h"
+#include "Algorithms/BoostMatrix.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Fields/Fieldmap.h"
 #include "Physics/Units.h"
 #include "Structure/MeshGenerator.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
-#include "Algorithms/Matrix.h"
 
 #include "gsl/gsl_poly.h"
 

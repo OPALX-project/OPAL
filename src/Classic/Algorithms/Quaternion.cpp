@@ -1,8 +1,8 @@
+#include "Algorithms/BoostMatrix.h"
 #include "Algorithms/Quaternion.h"
 #include "Physics/Physics.h"
 #include "Utility/RandomNumberGen.h"
 #include "Utilities/GeneralClassicException.h"
-#include "Algorithms/Matrix.h"
 
 namespace {
     Vector_t normalize(const Vector_t & vec)

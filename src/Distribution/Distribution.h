@@ -19,11 +19,11 @@
 #define OPAL_Distribution_HH
 
 #include "AbstractObjects/Definition.h"
+#include "Algorithms/BoostMatrix.h"
 #include "Algorithms/PartData.h"
 #include "Algorithms/Vektor.h"
 #include "Attributes/Attributes.h"
 #include "Distribution/SigmaGenerator.h"
-#include "Algorithms/Matrix.h"
 
 #include <gsl/gsl_histogram.h>
 #include <gsl/gsl_qrng.h>
