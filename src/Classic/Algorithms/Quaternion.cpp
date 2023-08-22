@@ -2,6 +2,7 @@
 #include "Physics/Physics.h"
 #include "Utility/RandomNumberGen.h"
 #include "Utilities/GeneralClassicException.h"
+#include "Algorithms/Matrix.h"
 
 namespace {
     Vector_t normalize(const Vector_t & vec)
@@ -131,7 +132,7 @@ Vector_t Quaternion::rotate(const Vector_t & vec) const
     return ((*this) * (quat * (*this).conjugate())).imag();
 }
 
-boost::numeric::ublas::matrix<double> Quaternion::getRotationMatrix() const
+matrix_t Quaternion::getRotationMatrix() const
 {
     Quaternion rot(*this);
     rot.normalize();

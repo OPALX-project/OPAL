@@ -1667,7 +1667,7 @@ void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t>& particleV
     IpplTimings::startTimer(TransformTimer_m);
     particleVectors -= translationToGlobal;
 
-    boost::numeric::ublas::matrix<double> rotation(3,3);
+    matrix_t rotation(3,3);
     rotation(0,0) = std::cos(phi);
     rotation(0,1) = std::sin(phi);
     rotation(0,2) = 0;
@@ -1678,7 +1678,6 @@ void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t>& particleV
     rotation(2,1) = 0;
     rotation(2,2) = 1;
 
-    boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
         particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
@@ -1689,7 +1688,7 @@ void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t>& particleV
                                              double phi, Vector_t const translationToGlobal) {
     IpplTimings::startTimer(TransformTimer_m);
 
-    boost::numeric::ublas::matrix<double> rotation(3,3);
+    matrix_t rotation(3,3);
     rotation(0,0) = std::cos(phi);
     rotation(0,1) = -std::sin(phi);
     rotation(0,2) = 0;
@@ -1700,7 +1699,6 @@ void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t>& particleV
     rotation(2,1) = 0;
     rotation(2,2) = 1;
 
-    boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
         particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
@@ -1864,7 +1862,7 @@ inline void ParallelCyclotronTracker::normalizeVector(Vector_t& vector) {
 inline void ParallelCyclotronTracker::rotateAroundZ(ParticleAttrib<Vector_t>& particleVectors, double const phi) {
     // Clockwise rotation of particles 'particleVectors' by 'phi' around Z axis
 
-    boost::numeric::ublas::matrix<double> rotation(3,3);
+    matrix_t rotation(3,3);
     rotation(0,0) = std::cos(phi);
     rotation(0,1) = std::sin(phi);
     rotation(0,2) = 0;
@@ -1875,7 +1873,6 @@ inline void ParallelCyclotronTracker::rotateAroundZ(ParticleAttrib<Vector_t>& pa
     rotation(2,1) = 0;
     rotation(2,2) = 1;
 
-    boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
         particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
@@ -1884,7 +1881,7 @@ inline void ParallelCyclotronTracker::rotateAroundZ(ParticleAttrib<Vector_t>& pa
 inline void ParallelCyclotronTracker::rotateAroundZ(Vector_t& myVector, double const phi) {
     // Clockwise rotation of single vector 'myVector' by 'phi' around Z axis
 
-    boost::numeric::ublas::matrix<double> rotation(3,3);
+    matrix_t rotation(3,3);
     rotation(0,0) = std::cos(phi);
     rotation(0,1) = std::sin(phi);
     rotation(0,2) = 0;
@@ -1901,7 +1898,7 @@ inline void ParallelCyclotronTracker::rotateAroundZ(Vector_t& myVector, double c
 inline void ParallelCyclotronTracker::rotateAroundX(ParticleAttrib<Vector_t>& particleVectors, double const psi) {
     // Clockwise rotation of particles 'particleVectors' by 'psi' around X axis
 
-    boost::numeric::ublas::matrix<double> rotation(3,3);
+    matrix_t rotation(3,3);
     rotation(0,0) = 1;
     rotation(0,1) = 0;
     rotation(0,2) = 0;
@@ -1912,7 +1909,6 @@ inline void ParallelCyclotronTracker::rotateAroundX(ParticleAttrib<Vector_t>& pa
     rotation(2,1) = -std::sin(psi);
     rotation(2,2) = std::cos(psi);
 
-    boost::numeric::ublas::vector<double> particleVector(3);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
         particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
@@ -1921,7 +1917,7 @@ inline void ParallelCyclotronTracker::rotateAroundX(ParticleAttrib<Vector_t>& pa
 inline void ParallelCyclotronTracker::rotateAroundX(Vector_t& myVector, double const psi) {
     // Clockwise rotation of single vector 'myVector' by 'psi' around X axis
 
-    boost::numeric::ublas::matrix<double> rotation(3,3);
+    matrix_t rotation(3,3);
     rotation(0,0) = 1;
     rotation(0,1) = 0;
     rotation(0,2) = 0;

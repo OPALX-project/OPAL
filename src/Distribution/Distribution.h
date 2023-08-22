@@ -23,7 +23,7 @@
 #include "Algorithms/Vektor.h"
 #include "Attributes/Attributes.h"
 #include "Distribution/SigmaGenerator.h"
-#include <boost/numeric/ublas/matrix.hpp>
+#include "Algorithms/Matrix.h"
 
 #include <gsl/gsl_histogram.h>
 #include <gsl/gsl_qrng.h>
@@ -467,7 +467,7 @@ private:
     Vector_t cutoffR_m;
     Vector_t cutoffP_m;
     Vector_t mBinomial_m;
-    boost::numeric::ublas::matrix<double> correlationMatrix_m;
+    matrix_t correlationMatrix_m;
 
     // Parameters multiGauss distribution.
     double sepPeaks_m;

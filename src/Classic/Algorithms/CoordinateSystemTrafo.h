@@ -4,7 +4,6 @@
 #include "Algorithms/Vektor.h"
 #include "Algorithms/Quaternion.h"
 #include "Algorithms/Matrix.h"
-#include <boost/numeric/ublas/matrix.hpp>
 
 class CoordinateSystemTrafo {
 public:
@@ -76,13 +75,7 @@ CoordinateSystemTrafo CoordinateSystemTrafo::inverted() const {
 }
 
 inline Vector_t CoordinateSystemTrafo::transformTo(const Vector_t& r) const {
-    boost::numeric::ublas::vector<double> result(3);
-    for (size_t i = 0; i < 3; ++i) {
-        result(i) = r[i]-origin_m[i];
-    }
-    result = boost::numeric::ublas::prod(rotationMatrix_m, result);
-    Vector_t transformedVector(result(0), result(1), result(2));
-    return transformedVector;
+    return prod_boost_vector(rotationMatrix_m, r-origin_m);
 }
 
 inline Vector_t CoordinateSystemTrafo::transformFrom(const Vector_t& r) const {
@@ -90,24 +83,11 @@ inline Vector_t CoordinateSystemTrafo::transformFrom(const Vector_t& r) const {
 }
 
 inline Vector_t CoordinateSystemTrafo::rotateTo(const Vector_t& r) const {
-    boost::numeric::ublas::vector<double> result(3);
-    for (size_t i = 0; i < 3; ++i) {
-        result(i) = r[i];
-    }
-    result = boost::numeric::ublas::prod(rotationMatrix_m, result);
-    Vector_t rotatedVector(result(0), result(1), result(2));
-
-    return rotatedVector;
+    return prod_boost_vector(rotationMatrix_m, r);
 }
 
 inline Vector_t CoordinateSystemTrafo::rotateFrom(const Vector_t& r) const {
-    boost::numeric::ublas::vector<double> result(3);
-    for (size_t i = 0; i < 3; ++i) {
-        result(i) = r[i];
-    }
-    result = boost::numeric::ublas::prod(boost::numeric::ublas::trans(rotationMatrix_m), result);
-    Vector_t rotatedVector(result(0), result(1), result(2));
-    return rotatedVector;
+    return prod_boost_vector(boost::numeric::ublas::trans(rotationMatrix_m), r);
 }
 
 #endif

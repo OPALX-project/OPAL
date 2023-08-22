@@ -36,7 +36,7 @@ public:
 
     Vector_t rotate(const Vector_t &) const;
 
-    boost::numeric::ublas::matrix<double> getRotationMatrix() const;
+    matrix_t getRotationMatrix() const;
 };
 
 typedef Quaternion Quaternion_t;
