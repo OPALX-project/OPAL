@@ -20,6 +20,7 @@ include_directories (
 add_opal_sources(${_SRCS})
 
 set (HDRS
+    BoostMatrix.h
     CavityAutophaser.h
     Ctunes.h
     Hamiltonian.h
