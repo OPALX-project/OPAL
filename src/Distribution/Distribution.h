@@ -19,9 +19,9 @@
 #define OPAL_Distribution_HH
 
 #include "AbstractObjects/Definition.h"
+#include "Algorithms/BoostMatrix.h"
 #include "Algorithms/PartData.h"
 #include "Algorithms/Vektor.h"
-#include "AppTypes/SymTenzor.h"
 #include "Attributes/Attributes.h"
 #include "Distribution/SigmaGenerator.h"
 
@@ -467,7 +467,7 @@ private:
     Vector_t cutoffR_m;
     Vector_t cutoffP_m;
     Vector_t mBinomial_m;
-    SymTenzor<double, 6> correlationMatrix_m;
+    matrix_t correlationMatrix_m;
 
     // Parameters multiGauss distribution.
     double sepPeaks_m;

@@ -26,6 +26,7 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Algorithms/ParallelCyclotronTracker.h"
+#include "Algorithms/BoostMatrix.h"
 
 #include "AbsBeamline/CCollimator.h"
 #include "AbsBeamline/Corrector.h"
@@ -1666,13 +1667,19 @@ void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t>& particleV
     IpplTimings::startTimer(TransformTimer_m);
     particleVectors -= translationToGlobal;
 
-    Tenzor<double, 3> const rotation( std::cos(phi), std::sin(phi), 0,
-                                      -std::sin(phi), std::cos(phi), 0,
-                                      0,        0, 1); // clockwise rotation
+    matrix_t rotation(3,3);
+    rotation(0,0) = std::cos(phi);
+    rotation(0,1) = std::sin(phi);
+    rotation(0,2) = 0;
+    rotation(1,0) = -std::sin(phi);
+    rotation(1,1) = std::cos(phi);
+    rotation(1,2) = 0;   
+    rotation(2,0) = 0;
+    rotation(2,1) = 0;
+    rotation(2,2) = 1;
 
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-
-        particleVectors[i] = dot(rotation, particleVectors[i]);
+        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
     IpplTimings::stopTimer(TransformTimer_m);
 }
@@ -1680,13 +1687,20 @@ void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t>& particleV
 void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t>& particleVectors,
                                              double phi, Vector_t const translationToGlobal) {
     IpplTimings::startTimer(TransformTimer_m);
-    Tenzor<double, 3> const rotation(std::cos(phi), -std::sin(phi), 0,
-                                     std::sin(phi),  std::cos(phi), 0,
-                                     0,         0, 1); // counter-clockwise rotation
+
+    matrix_t rotation(3,3);
+    rotation(0,0) = std::cos(phi);
+    rotation(0,1) = -std::sin(phi);
+    rotation(0,2) = 0;
+    rotation(1,0) = std::sin(phi);
+    rotation(1,1) = std::cos(phi);
+    rotation(1,2) = 0;
+    rotation(2,0) = 0;
+    rotation(2,1) = 0;
+    rotation(2,2) = 1;
 
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-
-        particleVectors[i] = dot(rotation, particleVectors[i]);
+        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
 
     particleVectors += translationToGlobal;
@@ -1848,46 +1862,73 @@ inline void ParallelCyclotronTracker::normalizeVector(Vector_t& vector) {
 inline void ParallelCyclotronTracker::rotateAroundZ(ParticleAttrib<Vector_t>& particleVectors, double const phi) {
     // Clockwise rotation of particles 'particleVectors' by 'phi' around Z axis
 
-    Tenzor<double, 3> const rotation( std::cos(phi), std::sin(phi), 0,
-                                      -std::sin(phi), std::cos(phi), 0,
-                                      0,        0, 1);
+    matrix_t rotation(3,3);
+    rotation(0,0) = std::cos(phi);
+    rotation(0,1) = std::sin(phi);
+    rotation(0,2) = 0;
+    rotation(1,0) = -std::sin(phi);
+    rotation(1,1) = std::cos(phi);
+    rotation(1,2) = 0;
+    rotation(2,0) = 0;
+    rotation(2,1) = 0;
+    rotation(2,2) = 1;
 
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        particleVectors[i] = dot(rotation, particleVectors[i]);
+        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
 }
 
 inline void ParallelCyclotronTracker::rotateAroundZ(Vector_t& myVector, double const phi) {
     // Clockwise rotation of single vector 'myVector' by 'phi' around Z axis
 
-    Tenzor<double, 3> const rotation( std::cos(phi), std::sin(phi), 0,
-                                      -std::sin(phi), std::cos(phi), 0,
-                                      0,        0, 1);
+    matrix_t rotation(3,3);
+    rotation(0,0) = std::cos(phi);
+    rotation(0,1) = std::sin(phi);
+    rotation(0,2) = 0;
+    rotation(1,0) = -std::sin(phi);
+    rotation(1,1) = std::cos(phi);
+    rotation(1,2) = 0;
+    rotation(2,0) = 0;
+    rotation(2,1) = 0;
+    rotation(2,2) = 1;
 
-    myVector = dot(rotation, myVector);
+    myVector = prod_boost_vector(rotation, myVector);
 }
 
 inline void ParallelCyclotronTracker::rotateAroundX(ParticleAttrib<Vector_t>& particleVectors, double const psi) {
     // Clockwise rotation of particles 'particleVectors' by 'psi' around X axis
 
-    Tenzor<double, 3> const rotation(1,  0,          0,
-                                     0,  std::cos(psi), std::sin(psi),
-                                     0, -std::sin(psi), std::cos(psi));
+    matrix_t rotation(3,3);
+    rotation(0,0) = 1;
+    rotation(0,1) = 0;
+    rotation(0,2) = 0;
+    rotation(1,0) = 0;
+    rotation(1,1) = std::cos(psi);
+    rotation(1,2) = std::sin(psi);
+    rotation(2,0) = 0;
+    rotation(2,1) = -std::sin(psi);
+    rotation(2,2) = std::cos(psi);
 
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-
-        particleVectors[i] = dot(rotation, particleVectors[i]);
+        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
     }
 }
 
 inline void ParallelCyclotronTracker::rotateAroundX(Vector_t& myVector, double const psi) {
     // Clockwise rotation of single vector 'myVector' by 'psi' around X axis
 
-    Tenzor<double, 3> const rotation(1,  0,          0,
-                                     0,  std::cos(psi), std::sin(psi),
-                                     0, -std::sin(psi), std::cos(psi));
+    matrix_t rotation(3,3);
+    rotation(0,0) = 1;
+    rotation(0,1) = 0;
+    rotation(0,2) = 0;
+    rotation(1,0) = 0;
+    rotation(1,1) = std::cos(psi);
+    rotation(1,2) = std::sin(psi);
+    rotation(2,0) = 0;
+    rotation(2,1) = -std::sin(psi);
+    rotation(2,2) = std::cos(psi);
 
-    myVector = dot(rotation, myVector);
+    myVector = prod_boost_vector(rotation, myVector);
 }
 
 inline void ParallelCyclotronTracker::getQuaternionTwoVectors(Vector_t u, Vector_t v, Quaternion_t& quaternion) {

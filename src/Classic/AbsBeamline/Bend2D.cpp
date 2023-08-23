@@ -21,6 +21,7 @@
 #include "AbsBeamline/Bend2D.h"
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "AbstractObjects/OpalData.h"
+#include "Algorithms/BoostMatrix.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Fields/Fieldmap.h"
 #include "Physics/Units.h"
@@ -1520,14 +1521,21 @@ MeshData Bend2D::getSurfaceMesh() const {
                                                         0.5 * (P1 + P2) + 0.25 * dir1));
         } else {
             Vector_t dir2 = toExitRegion_m.rotateFrom(Vector_t(-1, 0, 0));
-            Tenzor<double, 3> inv;
+            matrix_t inv(3,3);
             double det = -dir1[0] * dir2[2] + dir1[2] * dir2[0];
             inv(0, 0) = -dir2[2] / det;
             inv(0, 2) = dir2[0] / det;
             inv(1,1) = 1.0;
             inv(2, 0) = -dir1[2] / det;
             inv(2, 2) = dir1[0] / det;
-            Vector_t Tau = dot(inv, P2 - P1);
+
+            boost::numeric::ublas::vector<double> Tau(3);
+            Vector_t Pdiff = P2 - P1;
+            Tau(0) = Pdiff[0];
+            Tau(1) = Pdiff[1];
+            Tau(2) = Pdiff[2];
+            Tau = boost::numeric::ublas::prod(inv, Tau);
+
             Vector_t crossPoint = P1 + Tau[0] * dir1;
             double angle = std::asin(cross(dir1, dir2)[1]);
             Quaternion halfRot(std::cos(0.25 * angle), std::sin(0.25 * angle) * Vector_t(0, 1, 0));

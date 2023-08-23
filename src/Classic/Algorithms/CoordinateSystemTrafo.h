@@ -1,9 +1,9 @@
 #ifndef COORDINATESYSTEMTRAFO
 #define COORDINATESYSTEMTRAFO
 
+#include "Algorithms/BoostMatrix.h"
 #include "Algorithms/Vektor.h"
 #include "Algorithms/Quaternion.h"
-#include "AppTypes/Tenzor.h"
 
 class CoordinateSystemTrafo {
 public:
@@ -34,7 +34,7 @@ public:
 private:
     Vector_t origin_m;
     Quaternion orientation_m;
-    Tenzor<double, 3> rotationMatrix_m;
+    matrix_t rotationMatrix_m;
 };
 
 inline
@@ -74,24 +74,20 @@ CoordinateSystemTrafo CoordinateSystemTrafo::inverted() const {
     return result;
 }
 
-inline
-Vector_t CoordinateSystemTrafo::transformTo(const Vector_t &r) const {
-    return dot(rotationMatrix_m, r - origin_m);
+inline Vector_t CoordinateSystemTrafo::transformTo(const Vector_t& r) const {
+    return prod_boost_vector(rotationMatrix_m, r-origin_m);
 }
 
-inline
-Vector_t CoordinateSystemTrafo::transformFrom(const Vector_t &r) const {
-    return dot(transpose(rotationMatrix_m), r) + origin_m;
+inline Vector_t CoordinateSystemTrafo::transformFrom(const Vector_t& r) const {
+    return rotateFrom(r) + origin_m;
 }
 
-inline
-Vector_t CoordinateSystemTrafo::rotateTo(const Vector_t &r) const {
-    return dot(rotationMatrix_m, r);
+inline Vector_t CoordinateSystemTrafo::rotateTo(const Vector_t& r) const {
+    return prod_boost_vector(rotationMatrix_m, r);
 }
 
-inline
-Vector_t CoordinateSystemTrafo::rotateFrom(const Vector_t &r) const {
-    return dot(transpose(rotationMatrix_m), r);
+inline Vector_t CoordinateSystemTrafo::rotateFrom(const Vector_t& r) const {
+    return prod_boost_vector(boost::numeric::ublas::trans(rotationMatrix_m), r);
 }
 
 #endif
