@@ -1,29 +1,25 @@
-/*
-
-  Purpose: Convert ANSYS E & B-Field data into H5hut (H5block)
-  format for usage in OPAL.
-
-  Usage: ascii2h5block efield.txt hfield.txt ehfout
-
-  To visualize use Visit: https://wci.llnl.gov/codes/visit/
-
-  Ch. Wang & A. Adelmann, 2011
-
-  ToDo: make it more generic
-
-  Modification by Chris van Herwaarden and Hui Zhang
-
-  The first three rows of a field map that you wish to combine should look like this:
-
-  int1 int2 int3
-  int1 int2 int3
-  int1 int2 int3
-
-  the integers are the amount of steps (or different values) in x y and z
-
-*/
-
-
+//
+// ascii2h5block tool
+//
+// Copyright (c) 2011 - 2023, Ch. Wang, A. Adelmann, Achim Gsell, Jochem Snuverink,
+//                            Paul Scherrer Institut, Villigen PSI, Switzerland
+//                            Daniel Winklehner, MIT, Cambridge, MA, USA
+//                            Chris van Herwaarden and Hui Zhang
+//                            Pedro Calvo, CIEMAT, Spain
+//
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#include <algorithm>
 #include <cmath>
 #include <cstdlib>
 #include <fstream>
@@ -32,7 +28,24 @@
 
 #include "H5hut.h"
 
-int main(int argc,char *argv[]) {
+#include "Physics/Units.h"
+
+/*
+  Purpose: Convert ASCII E & B-Field data into H5hut (H5block)
+  format for usage in OPAL.
+
+  Usage: ascii2h5block efield.txt hfield.txt ehfout
+
+  To visualize use Visit: https://wci.llnl.gov/codes/visit/
+
+  The first three rows of a field map that you wish to combine should look like this:
+
+  int1 int2 int3
+
+  the integers are the amount of steps (or different values) in x y and z
+
+*/
+int main(int argc,char* argv[]) {
 
     if (argc != 4) {
         std::cout << "Wrong number of arguments: ascii2h5block efield.txt (or \"\") hfield.txt (or \"\")  ehfout" << std::endl;
@@ -55,26 +68,25 @@ int main(int argc,char *argv[]) {
     std::string ehfout(argv[3]);
     ehfout += std::string(".h5part");
 
-    h5_float64_t freq = 72.615 * 1.0e6;
+    h5_float64_t freq = 72.615 * Units::MHz2Hz;
 
     std::cout << "--------------------------------------------------------" << std::endl;
     std::cout << "Combine " << efin << " and " << hfin << " to " << ehfout << std::endl;
-
     std::cout << "Frequency " << freq << " [Hz]" << std::endl;
 
     std::ifstream finE, finH;
     finH.open(hfin);
     finE.open(efin);
     bool efield = false, hfield = false;
-    if (finE.is_open())
+    if (finE.is_open()) {
         efield = true;
-    else if (efin.empty() == false) {
+    } else if (efin.empty() == false) {
         std::cout << "E-field \"" << efin << "\" could not be opened" << std::endl;
         std::exit(1);
     }
-    if (finH.is_open())
+    if (finH.is_open()) {
         hfield = true;
-    else if (hfin.empty() == false) {
+    } else if (hfin.empty() == false) {
         std::cout << "H-field \"" << hfin << "\" could not be opened" << std::endl;
         std::exit(1);
     }
@@ -86,36 +98,46 @@ int main(int argc,char *argv[]) {
         std::exit(1);
     }
 
+
+    int linesE = std::count(std::istreambuf_iterator<char>(finE),
+                 std::istreambuf_iterator<char>(), '\n');
+    linesE = linesE - 1;
+    finE.seekg(0, finE.beg); // Reset iterator
+
+    int linesH = std::count(std::istreambuf_iterator<char>(finH),
+                 std::istreambuf_iterator<char>(), '\n');
+    linesH = linesH - 1;
+    finH.seekg(0, finH.beg); // Reset iterator
+
     int gridPx = 0, gridPy = 0, gridPz = 0;
+    int HgridPx = 0, HgridPy = 0, HgridPz = 0;
     char temp[256];
     /* Header and grid info */
-    /* Deletes the first two rows in finE and finH to get rid of header info*/
     if (efield) {
-        finE.getline(temp,256);
         finE >> gridPx >> gridPy >> gridPz;
         finE.getline(temp,256);
-        finE.getline(temp,256);
     }
-
-    int HgridPx = 0, HgridPy = 0, HgridPz = 0;
     if (hfield) {
-        finH.getline(temp,256);
         finH >> HgridPx >> HgridPy >> HgridPz;
         finH.getline(temp,256);
-        finH.getline(temp,256);
     }
 
-    int n =  gridPx *  gridPy *  gridPz; /* number of rows in a column */
-    int m = HgridPx * HgridPy * HgridPz;
+    int ngridE =  gridPx *  gridPy *  gridPz; /* number of rows in a column */
+    int ngridH = HgridPx * HgridPy * HgridPz;
 
-    int H5gridPx = std::max(gridPx, HgridPx);
-    int H5gridPy = std::max(gridPy, HgridPy);
-    int H5gridPz = std::max(gridPz, HgridPz);
+    if (linesE != ngridE) {
+        std::cerr << "The number of lines in the E-file (" << linesE
+                  <<  ") doesn't match the number of lines specified by the grid ("
+                  << ngridE << ")." << std::endl;
+        std::exit(1);
+    }
+    if (linesH != ngridH) {
+        std::cerr << "The number of lines in the H-file (" << linesH
+                  <<  ") doesn't match the number of lines specified by the grid ("
+                  << ngridH << ")." << std::endl;
+        std::exit(1);
+    }
 
-    std::cout << "H5block grid" << std::endl;
-    std::cout << "H5gridPx " << H5gridPx << std::endl;
-    std::cout << "H5gridPy " << H5gridPy << std::endl;
-    std::cout << "H5gridPz " << H5gridPz << std::endl;
 
     h5_file_t file = H5OpenFile(ehfout.c_str(), H5_O_WRONLY, H5_PROP_DEFAULT);
     if (!file) {
@@ -125,36 +147,44 @@ int main(int argc,char *argv[]) {
 
     H5SetStep(file, 0);
     H5Block3dSetView(file,
-                     0, H5gridPx - 1,
-                     0, H5gridPy - 1,
-                     0, H5gridPz - 1);
+                     0, gridPx - 1,
+                     0, gridPy - 1,
+                     0, gridPz - 1);
 
-    std::cout << "number Edata " << n << std::endl;
     if (efield) {
-        h5_float64_t* sEx = new h5_float64_t[n]; /* redefines the sE and sH variables as arrays */
-        h5_float64_t* sEy = new h5_float64_t[n];
-        h5_float64_t* sEz = new h5_float64_t[n];
+        std::cout << "Number of electric field data " << linesE << std::endl;
 
-        h5_float64_t* FieldstrengthEz = new h5_float64_t[n]; /* redefines the fieldstrength variables as arrays */
-        h5_float64_t* FieldstrengthEx = new h5_float64_t[n];
-        h5_float64_t* FieldstrengthEy = new h5_float64_t[n];
+        h5_float64_t* sEx = new h5_float64_t[linesE]; /* redefines the sE and sH variables as arrays */
+        h5_float64_t* sEy = new h5_float64_t[linesE];
+        h5_float64_t* sEz = new h5_float64_t[linesE];
 
-        double* Ex = new double[n]; /* redefines the E and H variables as arrays */
-        double* Ey = new double[n];
-        double* Ez = new double[n];
+        h5_float64_t* FieldstrengthEz = new h5_float64_t[linesE]; /* redefines the fieldstrength variables as arrays */
+        h5_float64_t* FieldstrengthEx = new h5_float64_t[linesE];
+        h5_float64_t* FieldstrengthEy = new h5_float64_t[linesE];
 
-        for (int i = 0; i < n; i++) {
+        double* Ex = new double[linesE]; /* redefines the E and H variables as arrays */
+        double* Ey = new double[linesE];
+        double* Ez = new double[linesE];
+
+        for (int i = 0; i < linesE; i++) {
             finE >> sEx[i] >> sEy[i] >> sEz[i] >> Ex[i] >> Ey[i] >> Ez[i];
         }
         finE.close();
 
-        h5_float64_t stepEx = (sEx[n-1] - sEx[0]) / (gridPx - 1); /* calculates the stepsizes of the x,y,z of the efield and hfield*/
-        h5_float64_t stepEy = (sEy[n-1] - sEy[0]) / (gridPy - 1);
-        h5_float64_t stepEz = (sEz[n-1] - sEz[0]) / (gridPz - 1);
+        h5_float64_t stepEx = (sEx[linesE-1] - sEx[0]) / (gridPx - 1); /* calculates the stepsizes of the x,y,z of the efield and hfield*/
+        h5_float64_t stepEy = (sEy[linesE-1] - sEy[0]) / (gridPy - 1);
+        h5_float64_t stepEz = (sEz[linesE-1] - sEz[0]) / (gridPz - 1);
 
-        std::cout << "gridPx " << gridPx << " stepEx " << stepEx << std::endl;
-        std::cout << "gridPy " << gridPy << " stepEy " << stepEy << std::endl;
-        std::cout << "gridPz " << gridPz << " stepEz " << stepEz << std::endl;
+        if (stepEx < 0 || stepEy < 0 || stepEz < 0) {
+            std::cerr << "Wrong step size of the efield!" << std::endl;
+            std::exit(1);
+        }
+        std::cout << "gridPx = " << gridPx << " --- stepEx = " << stepEx << std::endl;
+        std::cout << "gridPy = " << gridPy << " --- stepEy = " << stepEy << std::endl;
+        std::cout << "gridPz = " << gridPz << " --- stepEz = " << stepEz << std::endl;
+        std::cout << "sEx limits = (" << sEx[0] << ", " << sEx[linesE-1] << ") m" << std::endl;
+        std::cout << "sEy limits = (" << sEy[0] << ", " << sEy[linesE-1] << ") m" << std::endl;
+        std::cout << "sEz limits = (" << sEz[0] << ", " << sEz[linesE-1] << ") m" << std::endl;
 
         for (int i = 0; i < gridPz; i++) {
             for (int j = 0; j < gridPy; j++) {
@@ -173,38 +203,45 @@ int main(int argc,char *argv[]) {
                                             FieldstrengthEy, /*!< IN: Y axis data */
                                             FieldstrengthEz  /*!< IN: Z axis data */
                                             );
-        H5Block3dSetFieldSpacing(file, "Efield", stepEx, stepEy, stepEz);
-        H5Block3dSetFieldOrigin (file, "Efield", sEx[0], sEy[0], sEz[0]);
+        H5Block3dSetFieldSpacing(file, "Efield", stepEx * Units::m2mm, stepEy * Units::m2mm, stepEz * Units::m2mm);
+        H5Block3dSetFieldOrigin (file, "Efield", sEx[0] * Units::m2mm, sEy[0] * Units::m2mm, sEz[0] * Units::m2mm);
     }
 
-    std::cout << "number Bdata " << m << std::endl;
 
     if (hfield) {
+        std::cout << "Number of magnetic field data " << linesH << std::endl;
 
-        h5_float64_t* sHx = new h5_float64_t[m];
-        h5_float64_t* sHy = new h5_float64_t[m];
-        h5_float64_t* sHz = new h5_float64_t[m];
+        h5_float64_t* sHx = new h5_float64_t[linesH];
+        h5_float64_t* sHy = new h5_float64_t[linesH];
+        h5_float64_t* sHz = new h5_float64_t[linesH];
 
-        h5_float64_t* FieldstrengthHz = new h5_float64_t[m];
-        h5_float64_t* FieldstrengthHx = new h5_float64_t[m];
-        h5_float64_t* FieldstrengthHy = new h5_float64_t[m];
+        h5_float64_t* FieldstrengthHz = new h5_float64_t[linesH];
+        h5_float64_t* FieldstrengthHx = new h5_float64_t[linesH];
+        h5_float64_t* FieldstrengthHy = new h5_float64_t[linesH];
 
-        double* Hx = new double[m];
-        double* Hy = new double[m];
-        double* Hz = new double[m];
+        double* Hx = new double[linesH];
+        double* Hy = new double[linesH];
+        double* Hz = new double[linesH];
 
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < linesH; i++) {
             finH >> sHx[i] >> sHy[i] >> sHz[i] >> Hx[i] >> Hy[i] >> Hz[i];
         }
         finH.close();
 
-        h5_float64_t stepHx = (sHx[m-1] - sHx[0]) / (HgridPx - 1);
-        h5_float64_t stepHy = (sHy[m-1] - sHy[0]) / (HgridPy - 1);
-        h5_float64_t stepHz = (sHz[m-1] - sHz[0]) / (HgridPz - 1);
+        h5_float64_t stepHx = (sHx[linesH-1] - sHx[0]) / (HgridPx - 1);
+        h5_float64_t stepHy = (sHy[linesH-1] - sHy[0]) / (HgridPy - 1);
+        h5_float64_t stepHz = (sHz[linesH-1] - sHz[0]) / (HgridPz - 1);
 
-        std::cout << "HgridPx " << HgridPx << " stepHx " << stepHx << std::endl;
-        std::cout << "HgridPy " << HgridPy << " stepHy " << stepHy << std::endl;
-        std::cout << "HgridPz " << HgridPz << " stepHz " << stepHz << std::endl;
+        if (stepHx < 0 || stepHy < 0 || stepHz < 0) {
+            std::cerr << "Wrong step size of the efield!" << std::endl;
+            std::exit(1);
+        }
+        std::cout << "HgridPx = " << HgridPx << " --- stepHx = " << stepHx << std::endl;
+        std::cout << "HgridPy = " << HgridPy << " --- stepHy = " << stepHy << std::endl;
+        std::cout << "HgridPz = " << HgridPz << " --- stepHz = " << stepHz << std::endl;
+        std::cout << "sHx limits = (" << sHx[0] << ", " << sHx[linesH-1] << ") m" << std::endl;
+        std::cout << "sHy limits = (" << sHy[0] << ", " << sHy[linesH-1] << ") m" << std::endl;
+        std::cout << "sHz limits = (" << sHz[0] << ", " << sHz[linesH-1] << ") m" << std::endl;
 
         for (int i = 0; i < HgridPz; i++) {
             for (int j = 0; j < HgridPy; j++) {
@@ -222,8 +259,8 @@ int main(int argc,char *argv[]) {
                                             FieldstrengthHy, /*!< IN: Y axis data */
                                             FieldstrengthHz  /*!< IN: Z axis data */
                                             );
-        H5Block3dSetFieldSpacing(file, "Hfield", stepHx, stepHy, stepHz);
-        H5Block3dSetFieldOrigin (file, "Hfield", sHx[0], sHy[0], sHz[0]);
+        H5Block3dSetFieldSpacing(file, "Hfield", stepHx * Units::m2mm, stepHy * Units::m2mm, stepHz * Units::m2mm);
+        H5Block3dSetFieldOrigin (file, "Hfield", sHx[0] * Units::m2mm, sHy[0] * Units::m2mm, sHz[0] * Units::m2mm);
     }
 
     H5WriteFileAttribFloat64 (

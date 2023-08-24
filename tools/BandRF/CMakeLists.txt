@@ -5,6 +5,10 @@ set (BANDRF_LIBS
     ${MPI_CXX_LIBRARIES}
 )
 
+include_directories (
+    ${CMAKE_SOURCE_DIR}/src/Classic
+)
+
 add_executable (ascii2h5block ascii2h5block.cpp)
 target_link_libraries (ascii2h5block ${BANDRF_LIBS})
 
