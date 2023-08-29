@@ -5,7 +5,7 @@
 //   bunch in multi-bunch mode of ParallelCyclotronTracker.
 //
 // Copyright (c) 2007 - 2014, Jianjun Yang, Paul Scherrer Institut, Villigen PSI, Switzerland
-// Copyright (c) 2012 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2012 - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // Implemented as part of the PhD thesis
@@ -25,20 +25,24 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "MultiBunchHandler.h"
+#include "Algorithms/MultiBunchHandler.h"
 
-#include "Physics/Units.h"
-#include "Structure/H5PartWrapperForPC.h"
-
-//FIXME Remove headers and dynamic_cast in
-#include "Algorithms/PartBunch.h"
+#include "AbstractObjects/OpalData.h"
 #ifdef ENABLE_AMR
     #include "Algorithms/AmrPartBunch.h"
 #endif
+#include "Algorithms/PartBinsCyc.h"
+//FIXME Remove headers and dynamic_cast in
+#include "Algorithms/PartBunch.h"
+#include "Physics/Units.h"
+#include "Structure/H5PartWrapperForPC.h"
+#include "Utilities/OpalException.h"
+
+#include <map>
 
 extern Inform *gmsg;
 
-MultiBunchHandler::MultiBunchHandler(PartBunchBase<double, 3> *beam,
+MultiBunchHandler::MultiBunchHandler(PartBunchBase<double, 3>* beam,
                                      const int& numBunch,
                                      const double& eta,
                                      const double& para,
@@ -67,8 +71,7 @@ MultiBunchHandler::MultiBunchHandler(PartBunchBase<double, 3> *beam,
     //        then starts to generate new bunches after each revolution,until get "TURNS" bunches;
     //        otherwise, run single bunch track
 
-    *gmsg << "***---------------------------- MULTI-BUNCHES MULTI-ENERGY-BINS MODE "
-            << "----------------------------*** " << endl;
+    *gmsg << "***-------------------- MULTI-BUNCHES MULTI-ENERGY-BINS MODE --------------------*** " << endl;
 
     // only for regular  run of multi bunches, instantiate the  PartBins class
     // note that for restart run of multi bunches, PartBins class is instantiated in function
@@ -82,7 +85,7 @@ MultiBunchHandler::MultiBunchHandler(PartBunchBase<double, 3> *beam,
 
         // initialize particles number for each bin (both existed and not yet emmitted)
         size_t partInBin[MaxBinNum] = {0};
-        partInBin[0] =  beam->getTotalNum();
+        partInBin[0] = beam->getTotalNum();
 
         beam->setPBins(new PartBinsCyc(MaxBinNum, BinCount, partInBin));
         // the allowed maximal bin number is set to 100
@@ -91,21 +94,21 @@ MultiBunchHandler::MultiBunchHandler(PartBunchBase<double, 3> *beam,
         this->setMode(mode);
 
     } else {
-        if(beam->pbin_m->getLastemittedBin() < 2) {
+        if (beam->pbin_m->getLastemittedBin() < 2) {
             *gmsg << "In this restart job, the multi-bunches mode is forcely set to AUTO mode." << endl;
             mode_m = MultiBunchMode::AUTO;
         } else {
             *gmsg << "In this restart job, the multi-bunches mode is forcely set to FORCE mode." << endl
-                    << "If the existing bunch number is less than the specified number of TURN, "
-                    << "readin the phase space of STEP#0 from h5 file consecutively" << endl;
+                  << "If the existing bunch number is less than the specified number of TURN, "
+                  << "readin the phase space of STEP#0 from h5 file consecutively" << endl;
             mode_m = MultiBunchMode::FORCE;
         }
     }
 }
 
 
-void MultiBunchHandler::saveBunch(PartBunchBase<double, 3> *beam)
-{
+void MultiBunchHandler::saveBunch(PartBunchBase<double, 3>* beam) {
+
     static IpplTimings::TimerRef saveBunchTimer = IpplTimings::getTimer("Save Bunch H5");
     IpplTimings::startTimer(saveBunchTimer);
     *gmsg << endl;
@@ -171,9 +174,8 @@ void MultiBunchHandler::saveBunch(PartBunchBase<double, 3> *beam)
 }
 
 
-bool MultiBunchHandler::readBunch(PartBunchBase<double, 3> *beam,
-                                  const PartData& ref)
-{
+bool MultiBunchHandler::readBunch(PartBunchBase<double, 3>* beam, const PartData& ref) {
+
     static IpplTimings::TimerRef readBunchTimer = IpplTimings::getTimer("Read Bunch H5");
     IpplTimings::startTimer(readBunchTimer);
     *gmsg << endl;
@@ -251,10 +253,9 @@ bool MultiBunchHandler::readBunch(PartBunchBase<double, 3> *beam,
 }
 
 
-short MultiBunchHandler::injectBunch(PartBunchBase<double, 3> *beam,
+short MultiBunchHandler::injectBunch(PartBunchBase<double, 3>* beam,
                                      const PartData& ref,
-                                     bool& flagTransition)
-{
+                                     bool& flagTransition) {
     short result = 0;
     if ((bunchCount_m == 1) && (mode_m == MultiBunchMode::AUTO) && (!flagTransition)) {
 
@@ -296,9 +297,8 @@ short MultiBunchHandler::injectBunch(PartBunchBase<double, 3> *beam,
 
         radiusLastTurn_m = radiusThisTurn_m;
         result = 1;
-    }
 
-    else if (bunchCount_m < numBunch_m) {
+    } else if (bunchCount_m < numBunch_m) {
         // Matthias: SteptoLastInj was used in MtsTracker, removed by DW in GenericTracker
 
         // If all of the following conditions are met, this code will be executed
@@ -338,13 +338,13 @@ short MultiBunchHandler::injectBunch(PartBunchBase<double, 3> *beam,
 }
 
 
-void MultiBunchHandler::updateParticleBins(PartBunchBase<double, 3> *beam) {
+void MultiBunchHandler::updateParticleBins(PartBunchBase<double, 3>* beam) {
     if (bunchCount_m < 2)
         return;
 
     static IpplTimings::TimerRef binningTimer = IpplTimings::getTimer("Particle Binning");
     IpplTimings::startTimer(binningTimer);
-    switch ( binning_m ) {
+    switch (binning_m) {
         case MultiBunchBinning::GAMMA:
             beam->resetPartBinID2(eta_m);
             break;
@@ -359,28 +359,49 @@ void MultiBunchHandler::updateParticleBins(PartBunchBase<double, 3> *beam) {
 
 
 void MultiBunchHandler::setMode(const std::string& mbmode) {
-    if ( mbmode.compare("FORCE") == 0 ) {
-        *gmsg << "FORCE mode: The multi bunches will be injected consecutively" << endl
-              << "            after each revolution, until get \"TURNS\" bunches." << endl;
-        mode_m = MultiBunchMode::FORCE;
-    } else if ( mbmode.compare("AUTO") == 0 ) {
-        *gmsg << "AUTO mode: The multi bunches will be injected only when the" << endl
-              << "           distance between two neighboring bunches is below" << endl
-              << "           the limitation. The control parameter is set to "
-              << coeffDBunches_m << endl;
-        mode_m = MultiBunchMode::AUTO;
+
+    static const std::map<std::string, MultiBunchMode> stringMBMode_s = {
+        {"FORCE", MultiBunchMode::FORCE},
+        {"AUTO",  MultiBunchMode::AUTO},
+    };
+    mode_m = stringMBMode_s.at(mbmode);
+
+    switch (mode_m) {
+        case MultiBunchMode::FORCE:
+            *gmsg << "FORCE mode: The multi bunches will be injected consecutively" << endl
+                  << "            after each revolution, until get \"TURNS\" bunches." << endl;
+             break;
+        case MultiBunchMode::AUTO:
+            *gmsg << "AUTO mode: The multi bunches will be injected only when the" << endl
+                  << "           distance between two neighboring bunches is below" << endl
+                  << "           the limitation. The control parameter is set to "
+                  << coeffDBunches_m << endl;
+             break;
+        default:
+            throw OpalException("MultiBunchHandler::setMode",
+                                "Unknown \"MBMODE\" multi-bunch mode for OPAL-cycl");
     }
 }
 
 
-void MultiBunchHandler::setBinning(std::string binning) {
+void MultiBunchHandler::setBinning(const std::string& binning) {
 
-    if ( binning.compare("BUNCH_BINNING") == 0 ) {
-        *gmsg << "Use 'BUNCH_BINNING' injection for binnning." << endl;
-        binning_m = MultiBunchBinning::BUNCH;
-    } else if ( binning.compare("GAMMA_BINNING") == 0 ) {
-        *gmsg << "Use 'GAMMA_BINNING' for binning." << endl;
-        binning_m = MultiBunchBinning::GAMMA;
+    static const std::map<std::string, MultiBunchBinning> stringMBBinning_s = {
+        {"BUNCH_BINNING", MultiBunchBinning::BUNCH},
+        {"GAMMA_BINNING", MultiBunchBinning::GAMMA},
+    };
+    binning_m = stringMBBinning_s.at(binning);
+
+    switch (binning_m) {
+        case MultiBunchBinning::BUNCH:
+            *gmsg << "\nUse 'BUNCH_BINNING' injection for binnning.\n" << endl;
+             break;
+        case MultiBunchBinning::GAMMA:
+            *gmsg << "\nUse 'GAMMA_BINNING' injection for binnning.\n" << endl;
+             break;
+        default:
+            throw OpalException("MultiBunchHandler::setBinning",
+                                "Unknown \"MB_BINNING\" type of energy binning in multi-bunch mode");
     }
 }
 
@@ -403,9 +424,9 @@ void MultiBunchHandler::setRadiusTurns(const double& radius) {
 
 
 bool MultiBunchHandler::calcBunchBeamParameters(PartBunchBase<double, 3>* beam,
-                                                short bunchNr)
-{
-    if ( !OpalData::getInstance()->isInOPALCyclMode() ) {
+                                                short bunchNr) {
+
+    if (!OpalData::getInstance()->isInOPALCyclMode()) {
         return false;
     }
 
@@ -470,16 +491,17 @@ bool MultiBunchHandler::calcBunchBeamParameters(PartBunchBase<double, 3>* beam,
     allreduce(bunchTotalNum, 1, std::plus<long int>());
 
     // here we also update the number of particles of *this* bunch
-    if (bunchNr >= (short)beam->getNumBunch())
+    if (bunchNr >= (short)beam->getNumBunch()) {
         throw OpalException("MultiBunchHandler::calcBunchBeamParameters()",
                             "Bunch number " + std::to_string(bunchNr) +
                             " exceeds bunch index " + std::to_string(beam->getNumBunch() - 1));
-
+    }
     beam->setTotalNumPerBunch(bunchTotalNum, bunchNr);
     beam->setLocalNumPerBunch(bunchLocalNum, bunchNr);
 
-    if ( bunchTotalNum == 0 )
+    if (bunchTotalNum == 0) {
         return false;
+    }
 
     // ekin
     const double m0 = beam->getM() * Units::eV2MeV;
