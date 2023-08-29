@@ -5,7 +5,7 @@
 //   bunch in multi-bunch mode of ParallelCyclotronTracker.
 //
 // Copyright (c) 2007 - 2014, Jianjun Yang, Paul Scherrer Institut, Villigen PSI, Switzerland
-// Copyright (c) 2012 - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2012 - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // Implemented as part of the PhD thesis
@@ -82,13 +82,11 @@ public:
         double halo[3];
     };
 
-    // multi-bunch modes
     enum class MultiBunchMode: unsigned short {
         FORCE  = 0,
         AUTO   = 1
     };
 
-    // multi-bunch binning type
     enum class MultiBunchBinning: unsigned short {
         GAMMA = 0,
         BUNCH = 1
@@ -101,16 +99,16 @@ public:
      * @param mode of multi-bunch
      * @param binning type of particle binning
      */
-    MultiBunchHandler(PartBunchBase<double, 3> *beam,
+    MultiBunchHandler(PartBunchBase<double, 3>* beam,
                       const int& numBunch,
                       const double& eta,
                       const double& para,
                       const std::string& mode,
                       const std::string& binning);
 
-    void saveBunch(PartBunchBase<double, 3> *beam);
+    void saveBunch(PartBunchBase<double, 3>* beam);
 
-    bool readBunch(PartBunchBase<double, 3> *beam,
+    bool readBunch(PartBunchBase<double, 3>* beam,
                    const PartData& ref);
 
     /* Returns:
@@ -118,17 +116,15 @@ public:
      *     1 - if bunch got saved
      *     2 - if bunch got injected
      */
-    short injectBunch(PartBunchBase<double, 3> *beam,
+    short injectBunch(PartBunchBase<double, 3>* beam,
                       const PartData& ref,
                       bool& flagTransition);
 
-    void updateParticleBins(PartBunchBase<double, 3> *beam);
-    
-    /// set the working sub-mode for multi-bunch mode: "FORCE" or "AUTO"
+    void updateParticleBins(PartBunchBase<double, 3>* beam);
+
     void setMode(const std::string& mbmode);
 
-    // set binning type
-    void setBinning(std::string binning);
+    void setBinning(const std::string& binning);
 
     void setRadiusTurns(const double& radius);
 
@@ -193,18 +189,15 @@ void MultiBunchHandler::setNumBunch(short n) {
     bunchCount_m = n;
 }
 
-
 inline
 short MultiBunchHandler::getNumBunch() const {
     return bunchCount_m;
 }
 
-
 inline
 bool MultiBunchHandler::isForceMode() const {
     return (mode_m == MultiBunchMode::FORCE);
 }
-
 
 inline
 MultiBunchHandler::beaminfo_t& MultiBunchHandler::getBunchInfo(short bunchNr) {
@@ -213,14 +206,12 @@ MultiBunchHandler::beaminfo_t& MultiBunchHandler::getBunchInfo(short bunchNr) {
     return binfo_m[bunchNr];
 }
 
-
 inline
 const MultiBunchHandler::beaminfo_t& MultiBunchHandler::getBunchInfo(short bunchNr) const {
     PAssert_GE(bunchNr, 0);
     PAssert_LT(bunchNr, (short)binfo_m.size());
     return binfo_m[bunchNr];
 }
-
 
 inline
 MultiBunchHandler::injection_t& MultiBunchHandler::getInjectionValues() {
