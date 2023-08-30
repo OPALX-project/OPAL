@@ -28,10 +28,12 @@
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "TrimCoils/TrimCoilBFit.h"
-#include "TrimCoils/TrimCoilPhaseFit.h"
 #include "TrimCoils/TrimCoilMirrored.h"
+#include "TrimCoils/TrimCoilPhaseFit.h"
 #include "Utilities/OpalException.h"
 #include "Utility/Inform.h"
+
+#include <map>
 
 extern Inform *gmsg;
 
@@ -39,15 +41,15 @@ extern Inform *gmsg;
 namespace {
     enum {
         TYPE,       // The type of trim coil
-        COEFNUM,    //
-        COEFDENOM,  //
+        COEFNUM,
+        COEFDENOM,
         COEFNUMPHI,
         COEFDENOMPHI,
-        BMAX,       //
+        BMAX,
         PHIMIN,
         PHIMAX,
-        RMIN,       //
-        RMAX,       //
+        RMIN,
+        RMAX,
         SLPTC,
         SIZE
     };
@@ -57,45 +59,44 @@ OpalTrimCoil::OpalTrimCoil():
     Definition(SIZE, "TRIMCOIL",
                "The \"TRIMCOIL\" statement defines a trim coil."),
     trimcoil_m(nullptr) {
-    itsAttr[TYPE]      = Attributes::makePredefinedString
-                        ("TYPE", "Specifies the type of trim coil.", {"PSI-BFIELD", "PSI-PHASE", "PSI-BFIELD-MIRRORED"});
+    itsAttr[TYPE] = Attributes::makePredefinedString
+                    ("TYPE", "Specifies the type of trim coil.",
+                     {"PSI-BFIELD", "PSI-PHASE", "PSI-BFIELD-MIRRORED"});
 
-    itsAttr[COEFNUM]   = Attributes::makeRealArray
-                         ("COEFNUM", "Radial profile: list of polynomial coefficients for the numerator (not for PSI-BFIELD-MIRRORED)");
+    itsAttr[COEFNUM] = Attributes::makeRealArray
+                       ("COEFNUM", "Radial profile: list of polynomial coefficients for the numerator (not for PSI-BFIELD-MIRRORED)");
 
     itsAttr[COEFDENOM] = Attributes::makeRealArray
                          ("COEFDENOM", "Radial profile: list of polynomial coefficients for the denominator (not for PSI-BFIELD-MIRRORED)");
 
-    itsAttr[COEFNUMPHI]   = Attributes::makeRealArray
-                         ("COEFNUMPHI", "Angular profile: list of polynomial coefficients for the numerator (not for PSI-BFIELD-MIRRORED)");
+    itsAttr[COEFNUMPHI] = Attributes::makeRealArray
+                          ("COEFNUMPHI", "Angular profile: list of polynomial coefficients for the numerator (not for PSI-BFIELD-MIRRORED)");
 
     itsAttr[COEFDENOMPHI] = Attributes::makeRealArray
-                         ("COEFDENOMPHI", "Angular profile: list of polynomial coefficients for the denominator (not for PSI-BFIELD-MIRRORED)");
+                            ("COEFDENOMPHI", "Angular profile: list of polynomial coefficients for the denominator (not for PSI-BFIELD-MIRRORED)");
 
-    itsAttr[BMAX]      = Attributes::makeReal
-                         ("BMAX", "Maximum magnetic field in Tesla.");
+    itsAttr[BMAX] = Attributes::makeReal
+                    ("BMAX", "Maximum magnetic field [T]");
 
-    itsAttr[PHIMIN]    = Attributes::makeReal
-                         ("PHIMIN", "Minimal azimuth [deg] (default 0)", 0.0);
+    itsAttr[PHIMIN] = Attributes::makeReal
+                      ("PHIMIN", "Minimal azimuth [deg] (default 0)", 0.0);
 
-    itsAttr[PHIMAX]    = Attributes::makeReal
-                         ("PHIMAX", "Maximal azimuth [deg] (default 360)", 360.0);
+    itsAttr[PHIMAX] = Attributes::makeReal
+                      ("PHIMAX", "Maximal azimuth [deg] (default 360)", 360.0);
 
-    itsAttr[RMIN]      = Attributes::makeReal
-                         ("RMIN", "Minimum radius [mm].");
+    itsAttr[RMIN] = Attributes::makeReal
+                    ("RMIN", "Minimum radius [mm]");
 
-    itsAttr[RMAX]      = Attributes::makeReal
-                         ("RMAX", "Maximum radius [mm].");
+    itsAttr[RMAX] = Attributes::makeReal
+                    ("RMAX", "Maximum radius [mm]");
 
-    itsAttr[SLPTC]      = Attributes::makeReal
-                         ("SLPTC", "Slopes of the rising edge [1/mm] (for PSI-BFIELD-MIRRORED)");
-
+    itsAttr[SLPTC] = Attributes::makeReal
+                     ("SLPTC", "Slopes of the rising edge [1/mm] (for PSI-BFIELD-MIRRORED)");
 
     registerOwnership(AttributeHandler::STATEMENT);
 
-    OpalTrimCoil *defTrimCoil = clone("UNNAMED_TRIMCOIL");
+    OpalTrimCoil* defTrimCoil = clone("UNNAMED_TRIMCOIL");
     defTrimCoil->builtin = true;
-
     try {
         defTrimCoil->update();
         OpalData::getInstance()->define(defTrimCoil);
@@ -105,7 +106,7 @@ OpalTrimCoil::OpalTrimCoil():
 }
 
 
-OpalTrimCoil::OpalTrimCoil(const std::string &name, OpalTrimCoil *parent):
+OpalTrimCoil::OpalTrimCoil(const std::string& name, OpalTrimCoil* parent):
     Definition(name, parent),
     trimcoil_m(nullptr)
 {}
@@ -115,13 +116,13 @@ OpalTrimCoil::~OpalTrimCoil() {
 }
 
 
-bool OpalTrimCoil::canReplaceBy(Object *object) {
+bool OpalTrimCoil::canReplaceBy(Object* object) {
     // Can replace only by another trim coil.
-    return dynamic_cast<OpalTrimCoil *>(object) != nullptr;
+    return dynamic_cast<OpalTrimCoil*>(object) != nullptr;
 }
 
 
-OpalTrimCoil *OpalTrimCoil::clone(const std::string &name) {
+OpalTrimCoil* OpalTrimCoil::clone(const std::string& name) {
     return new OpalTrimCoil(name, this);
 }
 
@@ -131,8 +132,8 @@ void OpalTrimCoil::execute() {
 }
 
 
-OpalTrimCoil *OpalTrimCoil::find(const std::string &name) {
-    OpalTrimCoil *trimcoil = dynamic_cast<OpalTrimCoil *>(OpalData::getInstance()->find(name));
+OpalTrimCoil* OpalTrimCoil::find(const std::string& name) {
+    OpalTrimCoil* trimcoil = dynamic_cast<OpalTrimCoil*>(OpalData::getInstance()->find(name));
 
     if (trimcoil == nullptr) {
         throw OpalException("OpalTrimCoil::find()", "OpalTrimCoil \"" + name + "\" not found.");
@@ -147,10 +148,26 @@ void OpalTrimCoil::update() {
 }
 
 
+OpalTrimCoil::TrimCoilType OpalTrimCoil::getTrimCoilType() const {
+    static const std::map<std::string, TrimCoilType> stringTrimCoilType_s = {
+        {"PSI-BFIELD",          TrimCoilType::BFIELD},
+        {"PSI-PHASE",           TrimCoilType::PHASE},
+        {"PSI-BFIELD-MIRRORED", TrimCoilType::BFIELDMIRRORED},
+    };
+
+    if (!itsAttr[TYPE]) {
+        throw OpalException("OpalTrimCoil::getTrimCoilType",
+                            "The attribute \"TYPE\" isn't set for the \"TRIMCOIL\" statement");
+    } else {
+        return stringTrimCoilType_s.at(Attributes::getString(itsAttr[TYPE]));
+    }
+}
+
+
 void OpalTrimCoil::initOpalTrimCoil() {
     if (trimcoil_m != nullptr) return;
 
-    std::string type = Attributes::getString(itsAttr[TYPE]);
+    TrimCoilType type = getTrimCoilType();
 
     double bmax   = Attributes::getReal(itsAttr[BMAX]);
     double phimin = Attributes::getReal(itsAttr[PHIMIN]);
@@ -158,17 +175,17 @@ void OpalTrimCoil::initOpalTrimCoil() {
     double rmin   = Attributes::getReal(itsAttr[RMIN]);
     double rmax   = Attributes::getReal(itsAttr[RMAX]);
 
-    if (type == "PSI-BFIELD" || type == "PSI-PHASE") {
+    if (type == TrimCoilType::BFIELD || type == TrimCoilType::PHASE) {
         std::vector<double> coefnum      = Attributes::getRealArray(itsAttr[COEFNUM]);
         std::vector<double> coefdenom    = Attributes::getRealArray(itsAttr[COEFDENOM]);
         std::vector<double> coefnumphi   = Attributes::getRealArray(itsAttr[COEFNUMPHI]);
         std::vector<double> coefdenomphi = Attributes::getRealArray(itsAttr[COEFDENOMPHI]);
-        if (type == "PSI-BFIELD")
+        if (type == TrimCoilType::BFIELD) {
             trimcoil_m = std::unique_ptr<TrimCoilBFit>     (new TrimCoilBFit    (bmax, rmin, rmax, coefnum, coefdenom, coefnumphi, coefdenomphi));
-        else // type == "PSI-PHASE"
+        } else { // TrimCoilType::PHASE
             trimcoil_m = std::unique_ptr<TrimCoilPhaseFit> (new TrimCoilPhaseFit(bmax, rmin, rmax, coefnum, coefdenom, coefnumphi, coefdenomphi));
-
-    } else if (type == "PSI-BFIELD-MIRRORED") {
+        }
+    } else if (type == TrimCoilType::BFIELDMIRRORED) {
         double slope = Attributes::getReal(itsAttr[SLPTC]);
         trimcoil_m = std::unique_ptr<TrimCoilMirrored>     (new TrimCoilMirrored(bmax, rmin, rmax, slope));
     }
@@ -178,25 +195,25 @@ void OpalTrimCoil::initOpalTrimCoil() {
     *gmsg << level3 << *this << endl;
 }
 
-Inform& OpalTrimCoil::print(Inform &os) const {
+
+Inform& OpalTrimCoil::print(Inform& os) const {
     os << "* ******************************** T R I M C O I L ********************************\n"
        << "* TRIMCOIL       " << getOpalName() << '\n'
        << "* TYPE           " << Attributes::getString(itsAttr[TYPE]) << '\n';
 
-    std::string type = Attributes::getString(itsAttr[TYPE]);
-    if (type == "PSI-BFIELD" || type == "PSI-PHASE") {
+    TrimCoilType type = getTrimCoilType();
+    if (type == TrimCoilType::BFIELD || type == TrimCoilType::PHASE) {
         printPolynom(os,itsAttr[COEFNUM]);
         printPolynom(os,itsAttr[COEFDENOM]);
         printPolynom(os,itsAttr[COEFNUMPHI]);
         printPolynom(os,itsAttr[COEFDENOMPHI]);
     }
-
     os << "* BMAX           " << Attributes::getReal(itsAttr[BMAX])   << '\n'
        << "* RMIN           " << Attributes::getReal(itsAttr[RMIN])   << '\n'
        << "* RMAX           " << Attributes::getReal(itsAttr[RMAX])   << '\n'
        << "* PHIMIN         " << Attributes::getReal(itsAttr[PHIMIN]) << '\n'
        << "* PHIMAX         " << Attributes::getReal(itsAttr[PHIMAX]) << '\n';
-    if (Attributes::getString(itsAttr[TYPE]) == "PSI-BFIELD-MIRRORED") {
+    if (type == TrimCoilType::BFIELDMIRRORED) {
         os << "* SLPTC          " << Attributes::getReal(itsAttr[SLPTC]) << '\n';
     }
     os << "* *********************************************************************************" << endl;
