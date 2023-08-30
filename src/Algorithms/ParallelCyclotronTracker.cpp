@@ -2428,8 +2428,8 @@ void ParallelCyclotronTracker::checkFileMomentum() {
     allreduce(pTotalMean, 1, std::plus<double>());
 
     pTotalMean /= initialTotalNum_m;
-    double tolerance = itsReference.getMomentumTolerance();
 
+    double tolerance = itsBunch_m->getMomentumTolerance();
     if (tolerance > 0 &&
         std::abs(pTotalMean - referencePtot) / pTotalMean > tolerance) {
         throw OpalException("ParallelCyclotronTracker::checkFileMomentum",

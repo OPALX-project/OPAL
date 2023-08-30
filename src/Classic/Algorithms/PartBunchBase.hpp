@@ -1679,6 +1679,12 @@ DistributionType PartBunchBase<T, Dim>::getDistType() const {
 
 
 template <class T, unsigned Dim>
+double PartBunchBase<T, Dim>::getMomentumTolerance() const {
+    return reference->getMomentumTolerance();
+}
+
+
+template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::resetQ(double q)  {
     const_cast<PartData *>(reference)->setQ(q);
 }

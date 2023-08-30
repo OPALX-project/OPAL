@@ -1,44 +1,43 @@
+//
+// Class PartData
+//   PartData represents a set of reference values for use in algorithms.
+//
+// Copyright (c) 200x - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef MAD_PartData_HH
 #define MAD_PartData_HH
 
-// ------------------------------------------------------------------------
-// $RCSfile: PartData.h,v $
-// ------------------------------------------------------------------------
-// $Revision: 1.1.1.1 $
-// ------------------------------------------------------------------------
-// Copyright: see Copyright.readme
-// ------------------------------------------------------------------------
-// Description:
-//
-// ------------------------------------------------------------------------
-// Class category: Algorithms
-// ------------------------------------------------------------------------
-//
-// $Date: 2000/03/27 09:32:33 $
-// $Author: fci $
-//
-// ------------------------------------------------------------------------
-
-// Class PartData
-// ------------------------------------------------------------------------
-/// Particle reference data.
-//  This class encapsulates the reference data for a beam:
-//  [UL]
-//  [LI]charge per particle expressed in proton charges,
-//  [LI]mass per particle expressed in eV,
-//  [LI]reference momentum per particle expressed in eV.
-//  [LI]momentumTolerance Fractional tolerance to deviations in the distribution
-//                        compared to the reference data at initialisation
-//                        If negative, no tolerance checking is done.
-//  [/UL]
-//  The copy constructor, destructor, and assignment operator generated
-//  by the compiler perform the correct operation.  For speed reasons
-//  they are not implemented.
+/** Class PartData
+ * ------------------------------------------------------------------------
+ *  Particle reference data.
+ *  This class encapsulates the reference data for a beam:
+ *  [UL]
+ *  [LI]charge per particle expressed in proton charges,
+ *  [LI]mass per particle expressed in eV,
+ *  [LI]reference momentum per particle expressed in eV.
+ *  [LI]momentumTolerance Fractional tolerance to deviations in the distribution
+ *                        compared to the reference data at initialisation
+ *                        If negative, no tolerance checking is done.
+ *  [/UL]
+ *  The copy constructor, destructor, and assignment operator generated
+ *  by the compiler perform the correct operation.  For speed reasons
+ *  they are not implemented.
+ */
 
 class PartData {
 
 public:
-
     /// Constructor.
     //  Inputs are:
     //  [DL]
@@ -68,6 +67,15 @@ public:
     /// The relativistic gamma per particle.
     double getGamma() const;
 
+    /// Get the momentum tolerance
+    double getMomentumTolerance() const;
+
+    /// Set reference charge expressed in proton charges.
+    void setQ(double q);
+
+    /// Set reference mass expressed in eV/c^2.
+    void setM(double m);
+
     /// Set reference momentum.
     //  Input is the momentum in eV.
     void setP(double p);
@@ -84,63 +92,55 @@ public:
     //  Input is the relativistic gamma = E/(m*c*c).
     void setGamma(double gamma);
 
-    /// Get the momentum tolerance
-    double getMomentumTolerance() const;
-
-    /// Set the momentum tolerance
+    /// Set the momentum tolerance.
     void setMomentumTolerance(double tolerance);
 
-    /// Set reference mass expressed in eV/c^2
-    inline void setM(double m){mass = m;}
-
-    /// Set reference charge expressed in proton charges,  
-    inline void setQ(double q) {charge = q;}
-
 protected:
-
     // The reference information.
-    double charge;   // Particle charge.
-    double mass;     // Particle mass.
-    double beta;     // particle velocity divided by c.
-    double gamma;    // particle energy divided by particle mass
-    double momentumTolerance = 1e-2; // tolerance to momentum deviations
+    double charge_m;   // Particle charge.
+    double mass_m;     // Particle mass.
+    double beta_m;     // Particle velocity divided by c.
+    double gamma_m;    // Particle energy divided by particle mass.
+    double momentumTolerance_m = 1e-2; // Tolerance to momentum deviations.
 };
 
 
 // Inline functions.
 // ------------------------------------------------------------------------
+inline void PartData::setM(double m) {
+    mass_m = m;
+}
+
+inline void PartData::setQ(double q) {
+    charge_m = q;
+}
 
 inline double PartData::getQ() const {
-    return charge;
+    return charge_m;
 }
-
 
 inline double PartData::getM() const {
-    return mass;
+    return mass_m;
 }
-
 
 inline double PartData::getP() const {
-    return beta * gamma * mass;
+    return beta_m * gamma_m * mass_m;
 }
-
 
 inline double PartData::getE() const {
-    return gamma * mass;
+    return gamma_m * mass_m;
 }
-
 
 inline double PartData::getBeta() const {
-    return beta;
+    return beta_m;
 }
 
-
 inline double PartData::getGamma() const {
-    return gamma;
+    return gamma_m;
 }
 
 inline double PartData::getMomentumTolerance() const {
-    return momentumTolerance;
+    return momentumTolerance_m;
 }
 
 #endif // MAD_PartData_HH

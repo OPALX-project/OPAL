@@ -447,6 +447,8 @@ public:
 
     DistributionType getDistType() const;
 
+    double getMomentumTolerance() const;
+
     Quaternion_t getQKs3D();
     void         setQKs3D(Quaternion_t q);
     Vector_t     getKs3DRefr();

@@ -4,7 +4,7 @@
 //   A BEAM definition is used by most physics commands to define the
 //   particle charge and the reference momentum, together with some other data.
 //
-// Copyright (c) 200x - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 200x - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -70,9 +70,6 @@ public:
     /// Return Particle's rest mass in GeV
     double getMass() const;
 
-    /// Return the fractional momentum tolerance
-    double getMomentumTolerance() const;
-
     /// Charge per macro particle in C
     double getChargePerParticle() const;
 
@@ -94,9 +91,6 @@ private:
 
     // The particle reference data.
     PartData reference;
-
-    // The converstion from GeV to eV.
-    static const double energy_scale;
 };
 
 inline std::ostream &operator<<(std::ostream& os, const Beam& b) {
