@@ -26,9 +26,10 @@
 #ifndef OPAL_TRIM_COIL_H
 #define OPAL_TRIM_COIL_H
 
-#include <string>
-#include <memory>
 #include "AbstractObjects/Definition.h"
+
+#include <memory>
+#include <string>
 
 class Attribute;
 class Inform;
@@ -44,16 +45,16 @@ public:
 
     /// Test if replacement is allowed.
     //  Can replace only by another OpalTrimCoil
-    virtual bool canReplaceBy(Object *object);
+    virtual bool canReplaceBy(Object* object);
 
     /// Make clone.
-    virtual OpalTrimCoil *clone(const std::string &name);
+    virtual OpalTrimCoil* clone(const std::string& name);
 
     /// Check the OpalTrimCoil data.
     virtual void execute();
 
     /// Find named trim coil.
-    static OpalTrimCoil *find(const std::string &name);
+    static OpalTrimCoil* find(const std::string& name);
 
     /// Update the OpalTrimCoil data.
     virtual void update();
@@ -69,19 +70,26 @@ public:
     std::unique_ptr<TrimCoil> trimcoil_m;
 
 private:
+    enum class TrimCoilType: unsigned short {
+        BFIELD,
+        PHASE,
+        BFIELDMIRRORED
+    };
 
     ///@{ Not implemented.
-    OpalTrimCoil  (const OpalTrimCoil &) = delete;
-    void operator=(const OpalTrimCoil &) = delete;
+    OpalTrimCoil  (const OpalTrimCoil&) = delete;
+    void operator=(const OpalTrimCoil&) = delete;
     ///@}
     /// Private copy constructor, called by clone
-    OpalTrimCoil(const std::string &name, OpalTrimCoil *parent);
+    OpalTrimCoil(const std::string &name, OpalTrimCoil* parent);
 
     /// Helper method for printing
     void printPolynom(Inform& os, const Attribute& attr) const;
+
+    TrimCoilType getTrimCoilType() const;
 };
 
-inline Inform &operator<<(Inform &os, const OpalTrimCoil &b) {
+inline Inform& operator<<(Inform& os, const OpalTrimCoil& b) {
     return b.print(os);
 }
 
