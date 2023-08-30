@@ -295,7 +295,7 @@ private:
     void checkEmissionParameters();
     void checkIfEmitted();
     void checkParticleNumber(size_t &numberOfParticles);
-    void checkFileMomentum();
+    void checkFileMomentum(double momentumTol);
     void chooseInputMomentumUnits(InputMomentumUnits inputMoUnits);
     size_t getNumberOfParticlesInFile(std::ifstream &inputFile);
 

@@ -4,7 +4,7 @@
 //   A BEAM definition is used by most physics commands to define the
 //   particle charge and the reference momentum, together with some other data.
 //
-// Copyright (c) 200x - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 200x - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -46,7 +46,7 @@ namespace {
         BCURRENT,   // Beam current in A
         BFREQ,      // Beam frequency in MHz
         NPART,      // Number of particles per bunch
-        MOMENTUM_TOLERANCE, // Fractional tolerance to momentum deviations
+        MOMENTUMTOLERANCE, // Fractional tolerance to momentum deviations
         SIZE
     };
 }
@@ -97,11 +97,11 @@ Beam::Beam():
     itsAttr[NPART]    = Attributes::makeReal
                         ("NPART", "Number of particles in bunch");
 
-    itsAttr[MOMENTUM_TOLERANCE]    = Attributes::makeReal
-                        ("MOMENTUM_TOLERANCE",
-     "Fractional tolerance to deviations in the distribution compared to the"
-     "reference data at initialisation. If <= 0, no tolerance checking is"
-     "done (default=1e-2).", 1e-2);
+    itsAttr[MOMENTUMTOLERANCE] = Attributes::makeReal
+                                 ("MOMENTUMTOLERANCE",
+                                  "Fractional tolerance to deviations in the distribution "
+                                  "compared to the reference data at initialisation (default=1e-2). "
+                                  "If MOMENTUMTOLERANCE<=0, no tolerance checking is done.", 1e-2);
 
     // Set up default beam.
     Beam* defBeam = clone("UNNAMED_BEAM");
@@ -205,10 +205,6 @@ double Beam::getFrequency() const {
     return Attributes::getReal(itsAttr[BFREQ]);
 }
 
-double Beam::getMomentumTolerance() const {
-    return Attributes::getReal(itsAttr[MOMENTUM_TOLERANCE]);
-}
-
 double Beam::getChargePerParticle() const {
     return std::copysign(1.0, getCharge()) * getCurrent()
         / (getFrequency() * Units::MHz2Hz)
@@ -259,8 +255,10 @@ void Beam::update() {
                                 "\"PC\" should be greater than 0.");
         }
     }
-    double tol = Attributes::getReal(itsAttr[MOMENTUM_TOLERANCE]);
-    reference.setMomentumTolerance(tol);
+
+    double momentumTol = Attributes::getReal(itsAttr[MOMENTUMTOLERANCE]);
+    reference.setMomentumTolerance(momentumTol);
+
     // Set default name.
     if (getOpalName().empty()) setOpalName("UNNAMED_BEAM");
 }
@@ -273,8 +271,11 @@ void Beam::print(std::ostream& os) const {
        << "* PARTICLE    " << Attributes::getString(itsAttr[PARTICLE]) << '\n'
        << "* REST MASS   " << Attributes::getReal(itsAttr[MASS]) << " [GeV]\n"
        << "* CHARGE      " << (charge > 0 ? '+' : '-') << "e * " << std::abs(charge) << " \n"
-       << "* MOMENTUM    " << reference.getP() << " [eV/c]\n"
-       << "* CURRENT     " << Attributes::getReal(itsAttr[BCURRENT]) << " [A]\n"
+       << "* MOMENTUM    " << reference.getP() << " [eV/c]\n";
+       if (Attributes::getReal(itsAttr[MOMENTUMTOLERANCE]) > 0) {
+           os << "* MOMENTUM TOLERANCE " << Attributes::getReal(itsAttr[MOMENTUMTOLERANCE]) << '\n';
+       }
+    os << "* CURRENT     " << Attributes::getReal(itsAttr[BCURRENT]) << " [A]\n"
        << "* FREQUENCY   " << Attributes::getReal(itsAttr[BFREQ]) << " [MHz]\n"
        << "* NPART       " << Attributes::getReal(itsAttr[NPART]) << '\n';
     os << "* ********************************************************************************** " << std::endl;

@@ -868,11 +868,11 @@ void Distribution::checkParticleNumber(size_t &numberOfParticles) {
     }
 }
 
-void Distribution::checkFileMomentum() {
+void Distribution::checkFileMomentum(double momentumTol) {
     // If the distribution was read from a file, the file momentum pmean_m[2]
     // should coincide with the momentum given in the beam command avrgpz_m.
-
-    if (std::abs(pmean_m[2] - avrgpz_m) / pmean_m[2] > 1e-2) {
+    if (momentumTol > 0 &&
+        std::abs(pmean_m[2] - avrgpz_m) / pmean_m[2] > momentumTol) {
         throw OpalException("Distribution::checkFileMomentum",
                             "The z-momentum of the particle distribution\n" +
                             std::to_string(pmean_m[2]) + "\n"
@@ -1479,7 +1479,8 @@ void Distribution::createOpalT(PartBunchBase<double, 3> *beam,
         checkEmissionParameters();
     } else {
         if (distrTypeT_m == DistributionType::FROMFILE) {
-            checkFileMomentum();
+            double momentumTol = beam->getMomentumTolerance();
+            checkFileMomentum(momentumTol);
         } else {
             pmean_m = Vector_t(0, 0, avrgpz_m);
         }
@@ -2925,7 +2926,6 @@ void Distribution::printDist(Inform &os, size_t numberOfParticles) const {
             throw OpalException("Distribution::printDist",
                                 "Unknown \"TYPE\" of \"DISTRIBUTION\"");
     }
-
 }
 
 void Distribution::printDistBinomial(Inform &os) const {
@@ -3337,8 +3337,7 @@ void Distribution::setAttributes() {
 
     itsAttr[Attrib::Distribution::FNAME]
         = Attributes::makeString("FNAME", "File for reading in 6D particle "
-                                 "coordinates.", "");
-
+                                 "coordinates.");
 
     itsAttr[Attrib::Distribution::WRITETOFILE]
         = Attributes::makeBool("WRITETOFILE", "Write initial distribution to file.",

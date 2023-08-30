@@ -35,7 +35,7 @@ std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<Beam>::at
     {"BCURRENT", "beam_current", "", PyOpalObjectNS::DOUBLE},
     {"BFREQ", "beam_frequency", "", PyOpalObjectNS::DOUBLE},
     {"NPART", "number_of_particles", "", PyOpalObjectNS::DOUBLE},
-    {"MOMENTUM_TOLERANCE", "momentum_tolerance", "", PyOpalObjectNS::DOUBLE},
+    {"MOMENTUMTOLERANCE", "momentum_tolerance", "", PyOpalObjectNS::DOUBLE},
 };
 
 BOOST_PYTHON_MODULE(beam) {
