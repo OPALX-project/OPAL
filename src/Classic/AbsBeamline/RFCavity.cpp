@@ -132,6 +132,7 @@ bool RFCavity::apply(const Vector_t& R,
 
     if (R(2) >= startField_m &&
         R(2) < startField_m + getElementLength()) {
+
         Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
 
         bool outOfBounds = fieldmap_m->getFieldstrength(R, tmpE, tmpB);
@@ -139,7 +140,6 @@ bool RFCavity::apply(const Vector_t& R,
 
         E += (scale_m + scaleError_m) * std::cos(frequency_m * t + phase_m + phaseError_m) * tmpE;
         B -= (scale_m + scaleError_m) * std::sin(frequency_m * t + phase_m + phaseError_m) * tmpB;
-
     }
     return false;
 }
@@ -399,7 +399,8 @@ void RFCavity::getMomentaKick(const double normalRadius,
 
     Voltage *= Ufactor;
     // rad/s, ns --> rad
-    double nphase = (frequency * (t + dtCorrt) * Units::ns2s) - phi0_m;
+
+    double nphase = (frequency * (t + dtCorrt)) - phi0_m;
     double dgam = Voltage * std::cos(nphase) / (restMass);
 
     double tempdegree = std::fmod(nphase * Units::rad2deg, 360.0);
@@ -412,7 +413,7 @@ void RFCavity::getMomentaKick(const double normalRadius,
     double pr = momentum[0] * cosAngle_m + momentum[1] * sinAngle_m;
     double ptheta = std::sqrt(newmomentum2 - std::pow(pr, 2));
     double px = pr * cosAngle_m - ptheta * sinAngle_m ; // x
-    double py = pr * sinAngle_m + ptheta * cosAngle_m; // y
+    double py = pr * sinAngle_m + ptheta * cosAngle_m;  // y
 
     double rotate = -derivate * (scale_m * Units::MVpm2Vpm) / (rmax_m - rmin_m) * std::sin(nphase) / (frequency * Physics::two_pi) / (betgam * restMass / Physics::c / chargenumber); // radian
 
@@ -422,12 +423,10 @@ void RFCavity::getMomentaKick(const double normalRadius,
 
     if (PID == 0) {
         Inform  m("OPAL", *gmsg, Ippl::myNode());
-
         m << "* Cavity " << getName() << " Phase= " << tempdegree << " [deg] transit time factor=  " << Ufactor
-          << " dE= " << dgam *restMass * Units::eV2MeV << " [MeV]"
-          << " E_kin= " << (gamma - 1.0)*restMass * Units::eV2MeV << " [MeV] Time dep freq = " << frequencyTD_m->getValue(t) << endl;
+          << " dE= " << dgam * restMass * Units::eV2MeV << " [MeV]"
+          << " E_kin= " << (gamma - 1.0) * restMass * Units::eV2MeV << " [MeV] Time dep freq = " << frequencyTD_m->getValue(t) << endl;
     }
-
 }
 
 /* cubic spline subrutine */

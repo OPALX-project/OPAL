@@ -1,43 +1,34 @@
-/*
- *  Copyright (c) 2012-2023, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
-
+//
+// Class Ring
+//   Defines the abstract interface for a ring type geometry.
+//
+// Copyright (c) 2012 - 2023, Chris Rogers, RAL-UKRI, England, UK
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbsBeamline/Ring.h"
 
-#include <sstream>
-#include <limits>
-#include <cmath>
+#include "Utility/Inform.h"
 
-#include "Utility/Inform.h" // ippl
-
-#include "Fields/EMField.h"
 #include "AbsBeamline/BeamlineVisitor.h"
-#include "BeamlineGeometry/Euclid3D.h"
-#include "Structure/LossDataSink.h"
 #include "Algorithms/PartBunchBase.h"
+#include "BeamlineGeometry/Euclid3D.h"
+#include "Fields/EMField.h"
+#include "Physics/Units.h"
+#include "Structure/LossDataSink.h"
+
+#include <cmath>
+#include <limits>
+#include <sstream>
 
 // fairly generous tolerance here... maybe too generous? Maybe should be
 // user parameter?
@@ -101,16 +92,18 @@ Ring::~Ring() {
         delete section_list_m[i];
 }
 
-bool Ring::apply(const size_t &id, const double &t, Vector_t &E,
-                 Vector_t &B) {
-    bool flagNeedUpdate =
-        apply(refPartBunch_m->R[id], refPartBunch_m->P[id], t, E, B);
-    if(flagNeedUpdate) {
+bool Ring::apply(const size_t &id, const double &t,
+                 Vector_t &E, Vector_t &B) {
+
+    bool flagNeedUpdate = apply(refPartBunch_m->R[id], refPartBunch_m->P[id], t, E, B);
+
+    if (flagNeedUpdate) {
         *gmsgALL << level4 << getName() << ": particle " << id
                 << " at " << refPartBunch_m->R[id]
                 << " m out of the field map boundary" << endl;
+
         lossDS_m->addParticle(OpalParticle(id,
-                                           refPartBunch_m->R[id] * Vector_t(1000.0), refPartBunch_m->P[id],
+                                           refPartBunch_m->R[id] , refPartBunch_m->P[id],
                                            t,
                                            refPartBunch_m->Q[id], refPartBunch_m->M[id]));
 
@@ -138,7 +131,7 @@ bool Ring::apply(const Vector_t &R, const Vector_t &/*P*/,
         Vector_t B_temp(0.0, 0.0, 0.0);
         Vector_t E_temp(0.0, 0.0, 0.0);
         // Super-TEMP! cyclotron tracker now uses m internally, have to change to mm here to match old field limits -DW
-        outOfBounds &= sections[i]->getFieldValue(R * Vector_t(1000.0), refPartBunch_m->get_centroid() * Vector_t(1000.0), t, E_temp, B_temp);
+        outOfBounds &= sections[i]->getFieldValue(R * Vector_t(Units::m2mm), refPartBunch_m->get_centroid() * Units::m2mm, t, E_temp, B_temp);
         B += (scale_m * B_temp);
         E += (scale_m * E_temp);
     }

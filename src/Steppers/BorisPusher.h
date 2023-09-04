@@ -113,7 +113,7 @@ inline void BorisPusher::kick(const Vector_t &/*R*/, Vector_t &P,
     P +=  cross(P, t);
     */
 
-    double const gamma = sqrt(1.0 + dot(P, P));
+    double const gamma = std::sqrt(1.0 + dot(P, P));
     Vector_t const t = 0.5 * dt * charge * Physics::c * Physics::c / (gamma * mass) * Bf;
     Vector_t const w = P + cross(P, t);
     Vector_t const s = 2.0 / (1.0 + dot(t, t)) * t;
@@ -135,7 +135,7 @@ inline void BorisPusher::push(Vector_t &R, const Vector_t &P, const double &/* d
      * R[i] += 0.5 * P[i] * recpgamma;
      * \endcode
      */
-    R += 0.5 * P / sqrt(1.0 + dot(P, P));
+    R += 0.5 * P / std::sqrt(1.0 + dot(P, P));
 }
 
 #endif

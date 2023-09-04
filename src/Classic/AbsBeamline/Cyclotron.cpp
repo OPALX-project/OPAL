@@ -162,7 +162,7 @@ double Cyclotron::getPZinit() const {
 }
 
 void Cyclotron::setTrimCoilThreshold(double trimCoilThreshold) {
-    trimCoilThreshold_m = Units::T2kG * trimCoilThreshold;
+    trimCoilThreshold_m = trimCoilThreshold;
 }
 
 double Cyclotron::getTrimCoilThreshold() const {
@@ -308,15 +308,11 @@ double Cyclotron::getRmax() const {
 }
 
 void Cyclotron::setMinR(double r) {
-    // DW: This is to let the user keep using mm in the input file for now
-    // while switching internally to m
-    minr_m = Units::mm2m * r;
+    minr_m = r;
 }
 
 void Cyclotron::setMaxR(double r) {
-    // DW: This is to let the user keep using mm in the input file for now
-    // while switching internally to m
-    maxr_m = Units::mm2m * r;
+    maxr_m = r;
 }
 
 double Cyclotron::getMinR() const {
@@ -338,9 +334,7 @@ double Cyclotron::getMaxR() const {
 }
 
 void  Cyclotron::setMinZ(double z) {
-    // DW: This is to let the user keep using mm in the input file for now
-    // while switching internally to m
-    minz_m = Units::mm2m * z;
+    minz_m = z;
 }
 
 double Cyclotron::getMinZ() const {
@@ -348,9 +342,7 @@ double Cyclotron::getMinZ() const {
 }
 
 void Cyclotron::setMaxZ(double z) {
-    // DW: This is to let the user keep using mm in the input file for now
-    // while switching internally to m
-    maxz_m = Units::mm2m * z;
+    maxz_m = z;
 }
 
 double Cyclotron::getMaxZ() const {
@@ -409,10 +401,6 @@ Cyclotron::BFieldType Cyclotron::getBFieldType() const {
 void Cyclotron::checkInitialReferenceParticle(double refR,
                                               double refTheta,
                                               double refZ) {
-    refZ *= Units::mm2m;
-    refR *= Units::mm2m;
-    refTheta *= Units::deg2rad;
-
     if ( (refZ < minz_m || refZ > maxz_m) ||
          (refR < minr_m || refR > maxr_m) ) {
         throw GeneralClassicException(
@@ -437,23 +425,23 @@ bool Cyclotron::apply(const size_t& id, const double& t, Vector_t& E, Vector_t& 
     if (zpos > maxz_m || zpos < minz_m || rpos > maxr_m || rpos < minr_m) {
         flagNeedUpdate = true;
         *gmsgALL << level4 << getName() << ": Particle " << id
-                << " out of the global aperture of cyclotron!" << endl;
+                 << " out of the global aperture of cyclotron!" << endl;
         *gmsgALL << level4 << getName()
-                << ": Coords: "<< RefPartBunch_m->R[id] << " m"  << endl;
+                 << ": Coords: "<< RefPartBunch_m->R[id] << " m"  << endl;
 
     } else {
         flagNeedUpdate = apply(RefPartBunch_m->R[id], RefPartBunch_m->P[id], t, E, B);
         if (flagNeedUpdate) {
             *gmsgALL << level4 << getName() << ": Particle "<< id
-                    << " out of the field map boundary!" << endl;
+                     << " out of the field map boundary!" << endl;
             *gmsgALL << level4 << getName()
-                    << ": Coords: "<< RefPartBunch_m->R[id] << " m" << endl;
+                     << ": Coords: "<< RefPartBunch_m->R[id] << " m" << endl;
         }
     }
 
     if (flagNeedUpdate) {
         lossDs_m->addParticle(OpalParticle(id, RefPartBunch_m->R[id], RefPartBunch_m->P[id],
-                                           t*Units::ns2s, RefPartBunch_m->Q[id], RefPartBunch_m->M[id]),
+                                           t, RefPartBunch_m->Q[id], RefPartBunch_m->M[id]),
                               std::make_pair(0, RefPartBunch_m->bunchNum[id]));
         RefPartBunch_m->Bin[id] = -1;
     }
@@ -465,7 +453,7 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
                       const double& t, Vector_t& E, Vector_t& B) {
 
     double tet = 0.0;
-    if (std::fabs(R[0]) < 1.0E-10) {
+    if (std::abs(R[0]) < 1.0E-10) {
         if (R[1] >= 0.0) {
             tet = Physics::pi / 2.0;
         } else {
@@ -480,19 +468,15 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
             tet = Physics::two_pi + std::atan(R[1] / R[0]);
         }
     }
-    double tet_rad = tet;
-
-    // the actual angle of particle in degree
-    tet *= Units::rad2deg;
 
     // Necessary for gap phase output -DW
-    if (0 <= tet && tet <= 45) waitingGap_m = 1;
+    if ( 0 <= tet && tet <= (Physics::pi / 4) ) waitingGap_m = 1;
 
     // dB_{z}/dr, dB_{z}/dtheta, B_{z}
     double brint = 0.0, btint = 0.0, bzint = 0.0;
 
-    const double rad   = std::hypot(R[0],R[1]);
-    if ( this->interpolate(rad, tet_rad, brint, btint, bzint) ) {
+    const double rad = std::hypot(R[0],R[1]);
+    if ( this->interpolate(rad, tet, brint, btint, bzint) ) {
 
         /* Br */
         double br = - brint * R[2];
@@ -503,11 +487,11 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
         /* Bz */
         double bz = - bzint;
 
-        this->applyTrimCoil(rad, R[2], tet_rad, br, bz);
+        this->applyTrimCoil(rad, R[2], tet, br, bz);
 
         /* Br Btheta -> Bx By */
-        B[0] = br * std::cos(tet_rad) - bt * std::sin(tet_rad);
-        B[1] = br * std::sin(tet_rad) + bt * std::cos(tet_rad);
+        B[0] = br * std::cos(tet) - bt * std::sin(tet);
+        B[1] = br * std::sin(tet) + bt * std::cos(tet);
         B[2] = bz;
     } else {
         return true;
@@ -518,10 +502,10 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
     }
 
     //The RF field is supposed to be sampled on a cartesian grid
-    std::vector<Fieldmap>::const_iterator fi  = RFfields_m.begin();
-    std::vector<double>::const_iterator rffi    = rffrequ_m.begin();
-    std::vector<double>::const_iterator rfphii  = rfphi_m.begin();
-    std::vector<double>::const_iterator escali  = escale_m.begin();
+    std::vector<Fieldmap>::const_iterator fi   = RFfields_m.begin();
+    std::vector<double>::const_iterator rffi   = rffrequ_m.begin();
+    std::vector<double>::const_iterator rfphii = rfphi_m.begin();
+    std::vector<double>::const_iterator escali = escale_m.begin();
     std::vector<bool>::const_iterator superposei = superpose_m.begin();
     std::vector<std::vector<double>>::const_iterator rffci = rffc_m.begin();
     std::vector<std::vector<double>>::const_iterator rfvci = rfvc_m.begin();
@@ -553,17 +537,17 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
         if (fieldType_m == BFieldType::SYNCHRO) {
             double powert = 1;
             for (const double fcoef : (*rffci)) {
-                powert *= (t * Units::ns2s);
+                powert *= t;
                 frequency += fcoef * powert; // Add frequency ramp [MHz/s^n]
             }
             powert = 1;
             for (const double vcoef : (*rfvci)) {
-                powert *= (t * Units::ns2s);
+                powert *= t;
                 ebscale += vcoef * powert; // Add frequency ramp [MHz/s^n]
             }
         }
 
-        double phase = Physics::two_pi * Units::MHz2Hz * frequency * t * Units::ns2s + (*rfphii);
+        double phase = Physics::two_pi * Units::MHz2Hz * frequency * t + (*rfphii);
 
         E += ebscale * std::cos(phase) * tmpE;
         B -= ebscale * std::sin(phase) * tmpB;
@@ -1146,7 +1130,6 @@ void Cyclotron::getFieldFromFile_FFA(const double& /*scaleFactor*/) {
     for (int i = 0; i < num_of_header_lines; ++i)
         file_to_read.ignore(max_num_of_char_in_a_line, '\n');
 
-    // TEMP for OPAL 2.0 changing this to m -DW
     while(!file_to_read.eof()) {
         double r, th, x, y, bz;
         file_to_read >> r >> th >> x >> y >> bz;

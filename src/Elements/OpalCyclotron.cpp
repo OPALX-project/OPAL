@@ -142,34 +142,34 @@ void OpalCyclotron::update() {
 
     double harmnum  = Attributes::getReal(itsAttr[CYHARMON]);
     double symmetry = Attributes::getReal(itsAttr[SYMMETRY]);
-    double rinit    = Attributes::getReal(itsAttr[RINIT]);
-    double prinit   = Attributes::getReal(itsAttr[PRINIT]);
-    double phiinit  = Attributes::getReal(itsAttr[PHIINIT]);
-    double zinit    = Attributes::getReal(itsAttr[ZINIT]);
-    double pzinit   = Attributes::getReal(itsAttr[PZINIT]);
     double bscale   = Attributes::getReal(itsAttr[BSCALE]);
 
-    double minz = Attributes::getReal(itsAttr[MINZ]);
-    double maxz = Attributes::getReal(itsAttr[MAXZ]);
-    double minr = Attributes::getReal(itsAttr[MINR]);
-    double maxr = Attributes::getReal(itsAttr[MAXR]);
+    double rinit    = Units::mm2m * Attributes::getReal(itsAttr[RINIT]);
+    double phiinit  = Units::deg2rad * Attributes::getReal(itsAttr[PHIINIT]);
+    double zinit    = Units::mm2m * Attributes::getReal(itsAttr[ZINIT]);
+    double prinit   = Attributes::getReal(itsAttr[PRINIT]);
+    double pzinit   = Attributes::getReal(itsAttr[PZINIT]);
 
-    double fmLowE  = Attributes::getReal(itsAttr[FMLOWE]);
-    double fmHighE = Attributes::getReal(itsAttr[FMHIGHE]);
+    double minz = Units::mm2m * Attributes::getReal(itsAttr[MINZ]);
+    double maxz = Units::mm2m * Attributes::getReal(itsAttr[MAXZ]);
+    double minr = Units::mm2m * Attributes::getReal(itsAttr[MINR]);
+    double maxr = Units::mm2m * Attributes::getReal(itsAttr[MAXR]);
+
+    double fmLowE  = Units::GeV2MeV * Attributes::getReal(itsAttr[FMLOWE]);
+    double fmHighE = Units::GeV2MeV * Attributes::getReal(itsAttr[FMHIGHE]);
 
     bool spiral_flag = Attributes::getBool(itsAttr[SPIRAL]);
-    double trimCoilThreshold = Attributes::getReal(itsAttr[TRIMCOILTHRESHOLD]);
+    double trimCoilThreshold = Units::T2kG * Attributes::getReal(itsAttr[TRIMCOILTHRESHOLD]);
 
     cycl->setFieldMapFN(fmapfm);
     cycl->setSymmetry(symmetry);
+    cycl->setBScale(bscale);
 
     cycl->setRinit(rinit);
     cycl->setPRinit(prinit);
     cycl->setPHIinit(phiinit);
     cycl->setZinit(zinit);
     cycl->setPZinit(pzinit);
-
-    cycl->setBScale(bscale);
 
     cycl->setCyclotronType(type);
     cycl->setCyclHarm(harmnum);
@@ -179,8 +179,8 @@ void OpalCyclotron::update() {
     cycl->setMinZ(minz);
     cycl->setMaxZ(maxz);
 
-    cycl->setFMLowE(fmLowE * Units::GeV2MeV);
-    cycl->setFMHighE(fmHighE * Units::GeV2MeV);
+    cycl->setFMLowE(fmLowE);
+    cycl->setFMHighE(fmHighE);
 
     cycl->setSpiralFlag(spiral_flag);
     cycl->setTrimCoilThreshold(trimCoilThreshold);

@@ -116,11 +116,11 @@ void PluginElement::setDimensions(double xstart, double xend, double ystart, dou
 void PluginElement::setGeom(const double dist) {
 
    double slope;
-    if (xend_m == xstart_m)
+    if (xend_m == xstart_m) {
       slope = 1.0e12;
-    else
+    } else {
       slope = (yend_m - ystart_m) / (xend_m - xstart_m);
-
+    }
     double coeff2 = std::sqrt(1 + slope * slope);
     double coeff1 = slope / coeff2;
     double halfdist = dist / 2.0;
@@ -143,9 +143,7 @@ void PluginElement::setGeom(const double dist) {
 }
 
 void PluginElement::changeWidth(PartBunchBase<double, 3> *bunch, int i, const double tstep, const double tangle) {
-
-    constexpr double c_mtns = Physics::c / Units::s2ns; // m/s --> m/ns
-    double lstep  = euclidean_norm(bunch->P[i]) / Util::getGamma(bunch->P[i]) * c_mtns * tstep; // [m]
+    double lstep  = euclidean_norm(bunch->P[i]) / Util::getGamma(bunch->P[i]) * Physics::c * tstep;
     double sWidth = lstep / std::sqrt( 1 + 1/tangle/tangle );
     setGeom(sWidth);
 }

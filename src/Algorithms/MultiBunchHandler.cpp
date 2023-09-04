@@ -271,9 +271,7 @@ short MultiBunchHandler::injectBunch(PartBunchBase<double, 3>* beam,
 
         *gmsg << "* MBM: Checking for automatically injecting new bunch ..." << endl;
 
-        //beam->R *= Vector_t(0.001); // mm --> m
         beam->calcBeamParameters();
-        //beam->R *= Vector_t(1000.0); // m --> mm
 
         Vector_t Rmean = beam->get_centroid(); // m
 
@@ -418,7 +416,6 @@ void MultiBunchHandler::setRadiusTurns(const double& radius) {
     } else {
         *gmsg << "Initial radial position = ";
     }
-    // New OPAL 2.0: Init in m -DW
     *gmsg << radiusThisTurn_m << " m" << endl;
 }
 
@@ -513,7 +510,7 @@ bool MultiBunchHandler::calcBunchBeamParameters(PartBunchBase<double, 3>* beam,
     double invN = 1.0 / double(bunchTotalNum);
     binfo.ekin = local[0] * invN;
 
-    binfo.time       = beam->getT() * Units::s2ns;
+    binfo.time       = beam->getT();
     binfo.nParticles = bunchTotalNum;
 
     for (unsigned int i = 0; i < dim; ++i) {

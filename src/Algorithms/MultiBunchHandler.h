@@ -42,10 +42,10 @@ public:
             , radius(0.0)
         { };
 
-        double time;            // ns
+        double time;            // s
         double pathlength;      // m
         double azimuth;         // deg
-        double radius;          // mm
+        double radius;          // m
     };
 
     struct beaminfo_t {

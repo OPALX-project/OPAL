@@ -37,14 +37,12 @@
 #include <utility>
 #include <vector>
 
-#include "Utilities/Options.h"
+#include "AbsBeamline/Cyclotron.h"
+#include "AbstractObjects/OpalData.h"
 #include "Utilities/OpalException.h"
+#include "Utilities/Options.h"
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
-
-#include "AbstractObjects/OpalData.h"
-
-#include "AbsBeamline/Cyclotron.h"
 
 // include headers for integration
 #include <boost/numeric/odeint/integrate/integrate_n_steps.hpp>
@@ -53,205 +51,205 @@
 extern Inform *gmsg;
 
 template<typename Value_type, typename Size_type, class Stepper>
-class ClosedOrbitFinder
-{
-    public:
-        /// Type of variables
-        typedef Value_type value_type;
-        /// Type for specifying sizes
-        typedef Size_type size_type;
-        /// Type of container for storing quantities (path length, orbit, etc.)
-        typedef std::vector<value_type> container_type;
-        /// Type for holding state of ODE values
-        typedef std::vector<value_type> state_type;
+class ClosedOrbitFinder {
 
-        typedef std::function<void(const state_type&, state_type&, const double)> function_t;
+public:
+    /// Type of variables
+    typedef Value_type value_type;
+    /// Type for specifying sizes
+    typedef Size_type size_type;
+    /// Type of container for storing quantities (path length, orbit, etc.)
+    typedef std::vector<value_type> container_type;
+    /// Type for holding state of ODE values
+    typedef std::vector<value_type> state_type;
 
-        /// Sets the initial values for the integration and calls findOrbit().
-        /*!
-         * @param E0 is the potential energy (particle energy at rest) [MeV].
-         * @param q is the particle charge [e]
-         * @param N specifies the number of splits (2pi/N), i.e number of integration steps
-         * @param cycl is the cyclotron element
-         * @param domain is a boolean (default: true). If "true" the closed orbit is computed over a single sector,
-         * otherwise over 2*pi.
-         * @param Nsectors is an int (default: 1). Number of sectors that the field map is averaged over
-         * in order to avoid first harmonic. Only valid if domain is false
-         */
-        ClosedOrbitFinder(value_type E0, value_type q, size_type N,
-                          Cyclotron* cycl, bool domain = true, int Nsectors = 1);
+    typedef std::function<void(const state_type&, state_type&, const double)> function_t;
 
-        /// Returns the inverse bending radius (size of container N+1)
-        container_type getInverseBendingRadius(const value_type& angle = 0);
+    /// Sets the initial values for the integration and calls findOrbit().
+    /*!
+     * @param E0 is the potential energy (particle energy at rest) [MeV].
+     * @param q is the particle charge [e]
+     * @param N specifies the number of splits (2pi/N), i.e number of integration steps
+     * @param cycl is the cyclotron element
+     * @param domain is a boolean (default: true). If "true" the closed orbit is computed over a single sector,
+     * otherwise over 2*pi.
+     * @param Nsectors is an int (default: 1). Number of sectors that the field map is averaged over
+     * in order to avoid first harmonic. Only valid if domain is false
+     */
+    ClosedOrbitFinder(value_type E0, value_type q, size_type N,
+                      Cyclotron* cycl, bool domain = true, int Nsectors = 1);
 
-        /// Returns the step lengths of the path (size of container N+1)
-        container_type getPathLength(const value_type& angle = 0);
+    /// Returns the inverse bending radius (size of container N+1)
+    container_type getInverseBendingRadius(const value_type& angle = 0);
 
-        /// Returns the field index (size of container N+1)
-        container_type getFieldIndex(const value_type& angle = 0);
+    /// Returns the step lengths of the path (size of container N+1)
+    container_type getPathLength(const value_type& angle = 0);
 
-        /// Returns the radial and vertical tunes (in that order)
-        std::pair<value_type,value_type> getTunes();
+    /// Returns the field index (size of container N+1)
+    container_type getFieldIndex(const value_type& angle = 0);
 
-        /// Returns the closed orbit (size of container N+1) starting at specific angle (only makes sense when computing
-        /// the closed orbit for a whole turn) (default value: 0°).
-        /// Attention: It computes the starting index of the array. If it's not an integer it just cuts the floating point
-        /// part, i.e. it takes the next starting index below. There's no interpolation of the radius.
-        /*!
-         * @param angle is the start angle for the output. Has to be within [0°,360°[ (default: 0°).
-         */
-        container_type getOrbit(value_type angle = 0);
+    /// Returns the radial and vertical tunes (in that order)
+    std::pair<value_type,value_type> getTunes();
 
-        /// Returns the momentum of the orbit (size of container N+1)starting at specific angle (only makes sense when
-        /// computing the closed orbit for a whole turn) (default value: 0°), \f$ \left[ p_{r} \right] = \si{m}\f$.
-        /// Attention: It computes the starting index of the array. If it's not an integer it just cuts the floating point
-        /// part, i.e. it takes the next starting index below. There's no interpolation of the momentum.
-        /*!
-         * @param angle is the start angle for the output. Has to be within [0°,360°[ (default: 0°).
-         * @returns the momentum in \f$ \beta * \gamma \f$ units
-         */
-        container_type getMomentum(value_type angle = 0);
+    /// Returns the closed orbit (size of container N+1) starting at specific angle (only makes sense when computing
+    /// the closed orbit for a whole turn) (default value: 0°).
+    /// Attention: It computes the starting index of the array. If it's not an integer it just cuts the floating point
+    /// part, i.e. it takes the next starting index below. There's no interpolation of the radius.
+    /*!
+     * @param angle is the start angle for the output. Has to be within [0°,360°[ (default: 0°).
+     */
+    container_type getOrbit(value_type angle = 0);
 
-        /// Returns the average orbit radius
-        value_type getAverageRadius();
+    /// Returns the momentum of the orbit (size of container N+1)starting at specific angle (only makes sense when
+    /// computing the closed orbit for a whole turn) (default value: 0°), \f$ \left[ p_{r} \right] = \si{m}\f$.
+    /// Attention: It computes the starting index of the array. If it's not an integer it just cuts the floating point
+    /// part, i.e. it takes the next starting index below. There's no interpolation of the momentum.
+    /*!
+     * @param angle is the start angle for the output. Has to be within [0°,360°[ (default: 0°).
+     * @returns the momentum in \f$ \beta * \gamma \f$ units
+     */
+    container_type getMomentum(value_type angle = 0);
 
-        /// Returns the frequency error
-        value_type getFrequencyError();
+    /// Returns the average orbit radius
+    value_type getAverageRadius();
 
-        /// Returns true if a closed orbit could be found
-        bool isConverged();
+    /// Returns the frequency error
+    value_type getFrequencyError();
 
-        /// Computes the closed orbit
-        /*!
-         * @param accuracy specifies the accuracy of the closed orbit
-         * @param maxit is the maximal number of iterations done for finding the closed orbit
-         * @param ekin energy for which to find closed orbit (in tune mode: upper limit of range)
-         * @param dE step increase [MeV]
-         * @param rguess initial radius guess in [mm]
-         * @param isTuneMode comptute tunes of all energies in one sweep
-         */
-        bool findOrbit(value_type accuracy, size_type maxit,
-                       value_type ekin,
-                       value_type dE = 1.0, value_type rguess = -1.0,
-                       bool isTuneMode = false);
+    /// Returns true if a closed orbit could be found
+    bool isConverged();
 
-        /// Fills in the values of h_m, ds_m, fidx_m.
-        void computeOrbitProperties(const value_type& E);
+    /// Computes the closed orbit
+    /*!
+     * @param accuracy specifies the accuracy of the closed orbit
+     * @param maxit is the maximal number of iterations done for finding the closed orbit
+     * @param ekin energy for which to find closed orbit (in tune mode: upper limit of range)
+     * @param dE step increase [MeV]
+     * @param rguess initial radius guess in [m]
+     * @param isTuneMode comptute tunes of all energies in one sweep
+     */
+    bool findOrbit(value_type accuracy, size_type maxit,
+                   value_type ekin,
+                   value_type dE = 1.0, value_type rguess = -1.0,
+                   bool isTuneMode = false);
 
-    private:
-        /// This function is called by the function getTunes().
-        /*! Transfer matrix Y = [y11, y12; y21, y22] (see Gordon paper for more details).
-         * @param y are the positions (elements y11 and y12 of Y)
-         * @param py2 is the momentum of the second solution (element y22 of Y)
-         * @param ncross is the number of sign changes (\#crossings of zero-line)
-         */
-        value_type computeTune(const std::array<value_type,2>&, value_type, size_type);
+    /// Fills in the values of h_m, ds_m, fidx_m.
+    void computeOrbitProperties(const value_type& E);
 
-        // Compute closed orbit for given energy
-        bool findOrbitOfEnergy_m(const value_type&, container_type&, value_type&,
-                                 const value_type&, size_type);
+private:
+    /// This function is called by the function getTunes().
+    /*! Transfer matrix Y = [y11, y12; y21, y22] (see Gordon paper for more details).
+     * @param y are the positions (elements y11 and y12 of Y)
+     * @param py2 is the momentum of the second solution (element y22 of Y)
+     * @param ncross is the number of sign changes (\#crossings of zero-line)
+     */
+    value_type computeTune(const std::array<value_type,2>&, value_type, size_type);
 
-        /// This function computes nzcross_ which is used to compute the tune in z-direction and the frequency error
+    // Compute closed orbit for given energy
+    bool findOrbitOfEnergy_m(const value_type&, container_type&, value_type&,
+                             const value_type&, size_type);
+
+    /// This function computes nzcross_ which is used to compute the tune in z-direction and the frequency error
 //         void computeVerticalOscillations();
 
-        /// This function rotates the calculated closed orbit finder properties to the initial angle
-        container_type rotate(value_type angle, const container_type& orbitProperty);
+    /// This function rotates the calculated closed orbit finder properties to the initial angle
+    container_type rotate(value_type angle, const container_type& orbitProperty);
 
-        /// Stores current position in horizontal direction for the solutions of the ODE with different initial values
-        std::array<value_type,2> x_m; // x_m = [x1, x2]
-        /// Stores current momenta in horizontal direction for the solutions of the ODE with different initial values
-        std::array<value_type,2> px_m; // px_m = [px1, px2]
-        /// Stores current position in vertical direction for the solutions of the ODE with different initial values
-        std::array<value_type,2> z_m; // z_m = [z1, z2]
-        /// Stores current momenta in vertical direction for the solutions of the ODE with different initial values
-        std::array<value_type,2> pz_m; // pz_m = [pz1, pz2]
+    /// Stores current position in horizontal direction for the solutions of the ODE with different initial values
+    std::array<value_type,2> x_m; // x_m = [x1, x2]
+    /// Stores current momenta in horizontal direction for the solutions of the ODE with different initial values
+    std::array<value_type,2> px_m; // px_m = [px1, px2]
+    /// Stores current position in vertical direction for the solutions of the ODE with different initial values
+    std::array<value_type,2> z_m; // z_m = [z1, z2]
+    /// Stores current momenta in vertical direction for the solutions of the ODE with different initial values
+    std::array<value_type,2> pz_m; // pz_m = [pz1, pz2]
 
-        /// Stores the inverse bending radius
-        container_type h_m;
-        /// Stores the step length
-        container_type ds_m;
-        /// Stores the radial orbit (size: N_m+1)
-        container_type r_m;
-        /// Stores the vertical oribt (size: N_m+1)
-        container_type vz_m;
-        /// Stores the radial momentum
-        container_type pr_m;
-        /// Stores the vertical momentum
-        container_type vpz_m;
-        /// Stores the field index
-        container_type fidx_m;
+    /// Stores the inverse bending radius
+    container_type h_m;
+    /// Stores the step length
+    container_type ds_m;
+    /// Stores the radial orbit (size: N_m+1)
+    container_type r_m;
+    /// Stores the vertical oribt (size: N_m+1)
+    container_type vz_m;
+    /// Stores the radial momentum
+    container_type pr_m;
+    /// Stores the vertical momentum
+    container_type vpz_m;
+    /// Stores the field index
+    container_type fidx_m;
 
-        /// Counts the number of zero-line crossings in horizontal direction (used for computing horizontal tune)
-        size_type nxcross_m;
-        /// Counts the number of zero-line crossings in vertical direction (used for computing vertical tune)
-        size_type nzcross_m; //#crossings of zero-line in x- and z-direction
+    /// Counts the number of zero-line crossings in horizontal direction (used for computing horizontal tune)
+    size_type nxcross_m;
+    /// Counts the number of zero-line crossings in vertical direction (used for computing vertical tune)
+    size_type nzcross_m; //#crossings of zero-line in x- and z-direction
 
-        /// Is the rest mass [MeV / c**2]
-        value_type E0_m;
+    /// Is the rest mass [MeV / c**2]
+    value_type E0_m;
 
-        // Is the particle charge [e]
-        value_type q_m;
+    // Is the particle charge [e]
+    value_type q_m;
 
-        /// Is the nominal orbital frequency
-        /* (see paper of Dr. C. Baumgarten: "Transverse-Longitudinal
-         * Coupling by Space Charge in Cyclotrons" (2012), formula (1))
-         */
-        value_type wo_m;
-        /// Number of integration steps
-        size_type N_m;
-        /// Is the angle step size
-        value_type dtheta_m;
+    /// Is the nominal orbital frequency
+    /* (see paper of Dr. C. Baumgarten: "Transverse-Longitudinal
+     * Coupling by Space Charge in Cyclotrons" (2012), formula (1))
+     */
+    value_type wo_m;
+    /// Number of integration steps
+    size_type N_m;
+    /// Is the angle step size
+    value_type dtheta_m;
 
-        /// Is the average radius
-        value_type ravg_m;
+    /// Is the average radius
+    value_type ravg_m;
 
-        /// Is the phase
-        value_type phase_m;
+    /// Is the phase
+    value_type phase_m;
 
-        /**
-         * Stores the last orbit value (since we have to return to the beginning to check the convergence in the
-         * findOrbit() function. This last value is then deleted from the array but is stored in lastOrbitVal_m to
-         * compute the vertical oscillations)
-         */
-        /* value_type lastOrbitVal_m; */
+    /**
+     * Stores the last orbit value (since we have to return to the beginning to check the convergence in the
+     * findOrbit() function. This last value is then deleted from the array but is stored in lastOrbitVal_m to
+     * compute the vertical oscillations)
+     */
+    /* value_type lastOrbitVal_m; */
 
-        /**
-         * Stores the last momentum value (since we have to return to the beginning to check the convergence in the
-         * findOrbit() function. This last value is then deleted from the array but is stored in lastMomentumVal_m to
-         * compute the vertical oscillations)
-         */
-        /* value_type lastMomentumVal_m; */
+    /**
+     * Stores the last momentum value (since we have to return to the beginning to check the convergence in the
+     * findOrbit() function. This last value is then deleted from the array but is stored in lastMomentumVal_m to
+     * compute the vertical oscillations)
+     */
+    /* value_type lastMomentumVal_m; */
 
-        /**
-         * Boolean which is true by default. "true": orbit integration over one sector only, "false": integration
-         * over 2*pi
-         */
-        bool domain_m;
-        /**
-         * Number of sectors to average the field map over
-         * in order to avoid first harmonic. Only valid if domain is false
-         */
-        int  nSectors_m;
+    /**
+     * Boolean which is true by default. "true": orbit integration over one sector only, "false": integration
+     * over 2*pi
+     */
+    bool domain_m;
+    /**
+     * Number of sectors to average the field map over
+     * in order to avoid first harmonic. Only valid if domain is false
+     */
+    int  nSectors_m;
 
-        /// Defines the stepper for integration of the ODE's
-        Stepper stepper_m;
+    /// Defines the stepper for integration of the ODE's
+    Stepper stepper_m;
 
-        /*!
-         * This quantity is defined in the paper "Transverse-Longitudinal Coupling by Space Charge in Cyclotrons"
-         * of Dr. Christian Baumgarten (2012)
-         * The lambda function takes the orbital frequency \f$ \omega_{o} \f$ (also defined in paper) as input argument.
-         */
-        std::function<double(double)> acon_m = [](double wo) { return Physics::c / wo; };
+    /*!
+     * This quantity is defined in the paper "Transverse-Longitudinal Coupling by Space Charge in Cyclotrons"
+     * of Dr. Christian Baumgarten (2012)
+     * The lambda function takes the orbital frequency \f$ \omega_{o} \f$ (also defined in paper) as input argument.
+     */
+    std::function<double(double)> acon_m = [](double wo) { return Physics::c / wo; };
 
-        /// Cyclotron unit \f$ \left[T\right] \f$ (Tesla)
-        /*!
-         * The lambda function takes the orbital frequency \f$ \omega_{o} \f$ as input argument.
-         */
-        std::function<double(double, double)> bcon_m = [this](double e0, double wo) {
-            return e0 * 1.0e7 / (q_m * Physics::c * Physics::c / wo);
-        };
+    /// Cyclotron unit \f$ \left[T\right] \f$ (Tesla)
+    /*!
+     * The lambda function takes the orbital frequency \f$ \omega_{o} \f$ as input argument.
+     */
+    std::function<double(double, double)> bcon_m = [this](double e0, double wo) {
+        return e0 * 1.0e7 / (q_m * Physics::c * Physics::c / wo);
+    };
 
-        Cyclotron* cycl_m;
+    Cyclotron* cycl_m;
 };
 
 // -----------------------------------------------------------------------------------------------------------------------
@@ -313,28 +311,31 @@ template<typename Value_type, typename Size_type, class Stepper>
 inline typename ClosedOrbitFinder<Value_type, Size_type, Stepper>::container_type
     ClosedOrbitFinder<Value_type, Size_type, Stepper>::getInverseBendingRadius(const value_type& angle)
 {
-    if (angle != 0.0)
+    if (angle != 0.0) {
         return rotate(angle, h_m);
-    else
+    } else {
         return h_m;
+    }
 }
 
 template<typename Value_type, typename Size_type, class Stepper>
 inline typename ClosedOrbitFinder<Value_type, Size_type, Stepper>::container_type
     ClosedOrbitFinder<Value_type, Size_type, Stepper>::getPathLength(const value_type& angle)
 {
-    if (angle != 0.0)
+    if (angle != 0.0) {
         return rotate(angle, ds_m);
-    else
+    } else {
         return ds_m;
+    }
 }
 
 template<typename Value_type, typename Size_type, class Stepper>
 inline typename ClosedOrbitFinder<Value_type, Size_type, Stepper>::container_type
     ClosedOrbitFinder<Value_type, Size_type, Stepper>::getFieldIndex(const value_type& angle)
 {
-    if (angle != 0.0)
+    if (angle != 0.0) {
         return rotate(angle, fidx_m);
+    }
     return fidx_m;
 }
 
@@ -353,10 +354,11 @@ template<typename Value_type, typename Size_type, class Stepper>
 inline typename ClosedOrbitFinder<Value_type, Size_type, Stepper>::container_type
     ClosedOrbitFinder<Value_type, Size_type, Stepper>::getOrbit(value_type angle)
 {
-    if (angle != 0.0)
+    if (angle != 0.0) {
         return rotate(angle, r_m);
-    else
+    } else {
         return r_m;
+    }
 }
 
 template<typename Value_type, typename Size_type, class Stepper>
@@ -365,9 +367,9 @@ inline typename ClosedOrbitFinder<Value_type, Size_type, Stepper>::container_typ
 {
     container_type pr = pr_m;
 
-    if (angle != 0.0)
+    if (angle != 0.0) {
         pr = rotate(angle, pr);
-
+    }
     // change units from meters to \beta * \gamma
     /* in Gordon paper:
      *
@@ -408,8 +410,6 @@ typename ClosedOrbitFinder<Value_type, Size_type, Stepper>::value_type
 // -----------------------------------------------------------------------------------------------------------------------
 // PRIVATE MEMBER FUNCTIONS
 // -----------------------------------------------------------------------------------------------------------------------
-
-
 
 template<typename Value_type, typename Size_type, class Stepper>
 bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type accuracy,
@@ -482,8 +482,8 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
 
     // iterate until suggested energy (start with minimum energy)
     // increase energy by dE
-    *gmsg << level3 << "Start iteration to find closed orbit of energy " << E_fin << " MeV "
-          << "in steps of " << dE << " MeV." << endl;
+    *gmsg << level3 << "Start iteration to find closed orbit of energy "
+          << E_fin << " MeV " << "in steps of " << dE << " MeV." << endl;
 
     for (; E <= E_fin + eps; E += dE) {
 
@@ -503,7 +503,7 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
             //      r            pr   z    pz
             init = {beta * acon, 0.0, 0.0, 1.0};
             if (rguess >= 0.0) {
-                init[0] = rguess * 0.001;
+                init[0] = rguess;
             }
             guess = FIRST;
         } else if (guess == FIRST) {
@@ -545,11 +545,10 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
         pn1 = pr_m[0] / p;
 
         if ( isTuneMode ) {
-
             this->computeOrbitProperties(E);
             value_type reo = this->getOrbit(   cycl_m->getPHIinit())[0];
             value_type peo = this->getMomentum(cycl_m->getPHIinit())[0];
-            std::pair<value_type , value_type > tunes = this->getTunes();
+            std::pair<value_type, value_type> tunes = this->getTunes();
 
             *gmsg << std::left
                   << "* ----------------------------" << endl
@@ -591,8 +590,9 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
     /* domain_m = true --> only integrated over a single sector
      * --> multiply by cycl_m->getSymmetry() to get correct phase_m
      */
-    if (domain_m)
+    if (domain_m) {
         phase_m *= cycl_m->getSymmetry();
+    }
 
     // returns true if converged, otherwise false
     return error < accuracy;
@@ -618,8 +618,7 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbitOfEnergy_m(
     // index for reaching next element of the arrays r and pr (no nicer way found yet)
     size_type idx = 0;
     // observer for storing the current value after each ODE step (e.g. Runge-Kutta step) into the containers of r and pr
-    auto store = [&](state_type& y, const value_type /*t*/)
-    {
+    auto store = [&](state_type& y, const value_type /*t*/) {
         r_m[idx]   = y[0];
         pr_m[idx]  = y[1];
         vz_m[idx]  = y[6];
@@ -649,16 +648,16 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbitOfEnergy_m(
     size_type niterations = 0;
 
     // energy dependent values
-    value_type en     = E / E0_m;                      // en = E/E0 = E/(mc^2) (E0 is potential energy)
+    value_type en     = E / E0_m;                   // en = E/E0 = E/(mc^2) (E0 is potential energy)
     value_type gamma  = en + 1.0;
-    value_type p = acon_m(wo_m) * std::sqrt(en * (2.0 + en));     // momentum [p] = m; Gordon, formula (3)
+    value_type p = acon_m(wo_m) * std::sqrt(en * (2.0 + en)); // momentum [p] = m; Gordon, formula (3)
     value_type gamma2    = gamma * gamma;           // = gamma^2
     value_type invgamma4 = 1.0 / (gamma2 * gamma2); // = 1/gamma^4
-    value_type p2 = p * p;                              // p^2 = p*p
+    value_type p2 = p * p;                          // p^2 = p*p
 
     // helper constants
-    value_type pr2;                                     // squared radial momentum (pr^2 = pr*pr)
-    value_type ptheta, invptheta;                       // azimuthal momentum
+    value_type pr2;               // squared radial momentum (pr^2 = pr*pr)
+    value_type ptheta, invptheta; // azimuthal momentum
 
     // define the six ODEs (using lambda function)
     function_t orbit_integration = [&](const state_type &y,
@@ -779,9 +778,11 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbitOfEnergy_m(
 
     } while ((error > accuracy) && (niterations++ < maxit));
 
-    if (error > accuracy)
-        *gmsg << "findOrbit not converged after " << niterations << " iterations with error: " << error << ". Needed accuracy " << accuracy << endl;
-
+    if (error > accuracy) {
+        *gmsg << "findOrbit not converged after " << niterations
+              << " iterations with error: " << error
+              << ". Needed accuracy " << accuracy << endl;
+    }
     return (error < accuracy);
 }
 
@@ -805,14 +806,14 @@ Value_type ClosedOrbitFinder<Value_type, Size_type, Stepper>::computeTune(const 
     value_type muPrime;
     if (abscos > 1.0) {
         // store the number of crossings
-        if (uneven)
+        if (uneven) {
             ncross = ncross + 1;
-
+        }
         // Gordon, formula (36b)
-        muPrime = -std::acosh(abscos);    // mu'
+        muPrime = -std::acosh(abscos); // mu'
 
     } else {
-        muPrime = (uneven) ? std::acos(-cos) : std::acos(cos);    // mu'
+        muPrime = (uneven) ? std::acos(-cos) : std::acos(cos); // mu'
         /* It has to be fulfilled: 0<= mu' <= pi
          * But since |cos(mu)| <= 1, we have
          * -1 <= cos(mu) <= 1 --> 0 <= mu <= pi (using above programmed line), such
@@ -837,9 +838,9 @@ Value_type ClosedOrbitFinder<Value_type, Size_type, Stepper>::computeTune(const 
     /* domain_m = true --> only integrated over a single sector --> multiply by cycl_m->getSymmetry() to
      * get correct tune.
      */
-    if (domain_m)
+    if (domain_m) {
         mu *= cycl_m->getSymmetry();
-
+    }
     return mu * Physics::u_two_pi;
 }
 
@@ -903,15 +904,12 @@ ClosedOrbitFinder<Value_type, Size_type, Stepper>::rotate(value_type angle, cons
 
     container_type orbitPropertyCopy = orbitProperty;
 
-    // compute the number of steps per degree
-    value_type deg_step = N_m / 360.0;
-
     if (angle < 0.0) {
-        angle = 360.0 + angle;
+        angle = Physics::two_pi + angle;
     }
 
     // compute starting point
-    unsigned int start = deg_step * angle;
+    unsigned int start = angle / dtheta_m;
 
     start %= orbitProperty.size();
 
@@ -922,7 +920,6 @@ ClosedOrbitFinder<Value_type, Size_type, Stepper>::rotate(value_type angle, cons
     std::copy_n(orbitProperty.begin(), start, orbitPropertyCopy.end() - start);
 
     return orbitPropertyCopy;
-
 }
 
 #endif
