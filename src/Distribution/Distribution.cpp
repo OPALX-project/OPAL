@@ -1226,7 +1226,7 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
 
     *gmsg << "* NSTEPS = "    << Nint << endl
           << "* HN = "        << CyclotronElement->getCyclHarm()
-          << "  PHIINIT = "   << CyclotronElement->getPHIinit()    << endl
+          << "  PHIINIT = "   << CyclotronElement->getPHIinit() * Units::rad2deg << endl
           << "* FIELD MAP = " << CyclotronElement->getFieldMapFN() << endl
           << "* ----------------------------------------------------" << endl;
 
@@ -1260,8 +1260,8 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
         typedef boost::numeric::odeint::runge_kutta4<container_t> rk4_t;
         typedef ClosedOrbitFinder<double,unsigned int, rk4_t> cof_t;
 
-        cof_t cof(massIneV*Units::eV2MeV, charge, Nint, CyclotronElement, full, Nsectors);
-        cof.findOrbit(accuracy, maxitCOF, E_m*Units::eV2MeV, denergy, rguess, true);
+        cof_t cof(massIneV * Units::eV2MeV, charge, Nint, CyclotronElement, full, Nsectors);
+        cof.findOrbit(accuracy, maxitCOF, E_m * Units::eV2MeV, denergy, rguess, true);
 
         throw EarlyLeaveException("Distribution::createMatchedGaussDistribution()",
                                   "Do only tune calculation.");
@@ -1271,11 +1271,11 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
 
     std::unique_ptr<SigmaGenerator> siggen = std::unique_ptr<SigmaGenerator>(
         new SigmaGenerator(I_m,
-                           Attributes::getReal(itsAttr[Attrib::Distribution::EX])*Units::m2mm * Units::rad2mrad,
-                           Attributes::getReal(itsAttr[Attrib::Distribution::EY])*Units::m2mm * Units::rad2mrad,
-                           Attributes::getReal(itsAttr[Attrib::Distribution::ET])*Units::m2mm * Units::rad2mrad,
-                           E_m*Units::eV2MeV,
-                           massIneV*Units::eV2MeV,
+                           Attributes::getReal(itsAttr[Attrib::Distribution::EX]) * Units::m2mm * Units::rad2mrad,
+                           Attributes::getReal(itsAttr[Attrib::Distribution::EY]) * Units::m2mm * Units::rad2mrad,
+                           Attributes::getReal(itsAttr[Attrib::Distribution::ET]) * Units::m2mm * Units::rad2mrad,
+                           E_m * Units::eV2MeV,
+                           massIneV * Units::eV2MeV,
                            charge,
                            CyclotronElement,
                            Nint,
@@ -1301,15 +1301,14 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
         *gmsg << "* Sigma-Matrix " << endl;
 
         for (unsigned int i = 0; i < siggen->getSigma().size1(); ++ i) {
-            *gmsg << std::setprecision(4)  << std::setw(11) << siggen->getSigma()(i,0);
+            *gmsg << std::setprecision(4) << std::setw(11) << siggen->getSigma()(i,0);
             for (unsigned int j = 1; j < siggen->getSigma().size2(); ++ j) {
                 if (std::abs(siggen->getSigma()(i,j)) < 1.0e-15) {
-                    *gmsg << " & " <<  std::setprecision(4)  << std::setw(11) << 0.0;
+                    *gmsg << " & " << std::setprecision(4) << std::setw(11) << 0.0;
                 }
                 else{
-                    *gmsg << " & " <<  std::setprecision(4)  << std::setw(11) << siggen->getSigma()(i,j);
+                    *gmsg << " & " << std::setprecision(4) << std::setw(11) << siggen->getSigma()(i,j);
                 }
-
             }
             *gmsg << " \\\\" << endl;
         }
@@ -1317,11 +1316,11 @@ void Distribution::createMatchedGaussDistribution(size_t numberOfParticles,
         generateMatchedGauss(siggen->getSigma(), numberOfParticles, massIneV);
 
         // update injection radius and radial momentum
-        CyclotronElement->setRinit(siggen->getInjectionRadius() * Units::m2mm);
+        CyclotronElement->setRinit(siggen->getInjectionRadius());
         CyclotronElement->setPRinit(siggen->getInjectionMomentum());
     }
     else {
-        *gmsg << "* Not converged for " << E_m*Units::eV2MeV << " MeV" << endl;
+        *gmsg << "* Not converged for " << E_m * Units::eV2MeV << " MeV" << endl;
 
         throw OpalException("Distribution::CreateMatchedGaussDistribution",
                             "didn't find any matched distribution.");

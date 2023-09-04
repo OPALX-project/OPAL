@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "BorisPusher.h"
 #include "Physics/Units.h"
+#include "Steppers/BorisPusher.h"
 
 template <typename FieldFunction, typename ... Arguments>
 bool LF2<FieldFunction, Arguments ...>::doAdvance_m(PartBunchBase<double, 3>* bunch,
@@ -28,12 +28,12 @@ bool LF2<FieldFunction, Arguments ...>::doAdvance_m(PartBunchBase<double, 3>* bu
     bool flagNoDeletion = true;
 
     // push for first LF2 half step
-    push_m(bunch->R[i], bunch->P[i], 0.5 * dt * Units::ns2s);
+    push_m(bunch->R[i], bunch->P[i], 0.5 * dt);
 
-    flagNoDeletion = kick_m(bunch, i, t, dt * Units::ns2s, args ...);
+    flagNoDeletion = kick_m(bunch, i, t, dt, args ...);
 
     // push for second LF2 half step
-    push_m(bunch->R[i], bunch->P[i], 0.5 * dt * Units::ns2s);
+    push_m(bunch->R[i], bunch->P[i], 0.5 * dt);
 
     return flagNoDeletion;
 }
@@ -43,7 +43,7 @@ template <typename FieldFunction, typename ... Arguments>
 void LF2<FieldFunction, Arguments ...>::push_m(Vector_t& R, const Vector_t& P,
                                                const double& h) const
 {
-    double const gamma = sqrt(1.0 + dot(P, P));
+    double const gamma = std::sqrt(1.0 + dot(P, P));
     double const c_gamma = Physics::c / gamma;
     Vector_t const v = P * c_gamma;
     R += h * v;

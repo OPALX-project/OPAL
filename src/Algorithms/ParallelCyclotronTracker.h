@@ -479,7 +479,7 @@ private:
     void update_m(double& t, const double& dt, const bool& finishedTurn);
 
     /*!
-     * @returns the time t [ns], time step dt [ns] and the azimuth angle [rad]
+     * @returns the time t [s], time step dt [s] and the azimuth angle [rad]
      */
     std::tuple<double, double, double> initializeTracking_m();
 
@@ -530,12 +530,12 @@ private:
     bool hasMultiBunch() const;
 
     /*
-     * @param dt time step in ns
+     * @param dt time step in s
      */
     void updatePathLength(const double& dt);
 
     /*
-     * @param dt time step in ns
+     * @param dt time step in s
      */
     void updateTime(const double& dt);
 

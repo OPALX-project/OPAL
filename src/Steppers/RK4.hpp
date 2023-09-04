@@ -29,11 +29,11 @@ bool RK4<FieldFunction, Arguments ...>::doAdvance_m(PartBunchBase<double, 3>* bu
     //   t          Independent variable (usually time)
     //   dt         Step size (usually time step)
     //   i          index of particle
-    
+
     double x[6];
-    
+
     this->copyTo(bunch->R[i], bunch->P[i], &x[0]);
-    
+
     double  deriv1[6];
     double  deriv2[6];
     double  deriv3[6];
@@ -41,10 +41,10 @@ bool RK4<FieldFunction, Arguments ...>::doAdvance_m(PartBunchBase<double, 3>* bu
     double  xtemp[6];
 
     // Evaluate f1 = f(x,t).
-
     bool outOfBound = derivate_m(bunch, x, t, deriv1 , i, args ...);
-    if (outOfBound)
+    if (outOfBound) {
         return false;
+    }
 
     // Evaluate f2 = f( x+dt*f1/2, t+dt/2 ).
     const double half_dt = 0.5 * dt;
@@ -54,30 +54,35 @@ bool RK4<FieldFunction, Arguments ...>::doAdvance_m(PartBunchBase<double, 3>* bu
         xtemp[j] = x[j] + half_dt * deriv1[j];
 
     outOfBound = derivate_m(bunch, xtemp, t_half, deriv2 , i, args ...);
-    if (outOfBound)
+    if (outOfBound) {
         return false;
+    }
 
     // Evaluate f3 = f( x+dt*f2/2, t+dt/2 ).
-    for(int j = 0; j < 6; ++j)
+    for (int j = 0; j < 6; ++j) {
         xtemp[j] = x[j] + half_dt * deriv2[j];
+    }
 
     outOfBound = derivate_m(bunch, xtemp, t_half, deriv3 , i, args ...);
-    if (outOfBound)
+    if (outOfBound) {
         return false;
+    }
 
     // Evaluate f4 = f( x+dt*f3, t+dt ).
     double t_full = t + dt;
-    for(int j = 0; j < 6; ++j)
+    for (int j = 0; j < 6; ++j) {
         xtemp[j] = x[j] + dt * deriv3[j];
+    }
 
     outOfBound = derivate_m(bunch, xtemp, t_full, deriv4 , i, args ...);
-    if (outOfBound)
+    if (outOfBound) {
         return false;
+    }
 
     // Return x(t+dt) computed from fourth-order R-K.
-    for(int j = 0; j < 6; ++j)
+    for (int j = 0; j < 6; ++j) {
         x[j] += dt / 6.*(deriv1[j] + deriv4[j] + 2.*(deriv2[j] + deriv3[j]));
-    
+    }
     this->copyFrom(bunch->R[i], bunch->P[i], &x[0]);
 
     return true;
@@ -100,30 +105,28 @@ bool RK4<FieldFunction, Arguments ...>::derivate_m(PartBunchBase<double, 3>* bun
     externalB = Vector_t(0.0, 0.0, 0.0);
     externalE = Vector_t(0.0, 0.0, 0.0);
 
-    for(int j = 0; j < 3; ++j)
+    for (int j = 0; j < 3; ++j) {
         tempR(j) = y[j];
-
+    }
     bunch->R[i] = tempR;
 
     bool outOfBound = this->fieldfunc_m(t, i, externalE, externalB, args ...);
 
     double qtom = bunch->Q[i] / (bunch->M[i] * mass_coeff);   // m^2/s^2/GV
 
-    double tempgamma = sqrt(1 + (y[3] * y[3] + y[4] * y[4] + y[5] * y[5]));
+    double tempgamma = std::sqrt(1 + (y[3] * y[3] + y[4] * y[4] + y[5] * y[5]));
 
-    yp[0] = c_mtns / tempgamma * y[3]; // [m/ns]
-    yp[1] = c_mtns / tempgamma * y[4]; // [m/ns]
-    yp[2] = c_mtns / tempgamma * y[5]; // [m/ns]
-
-/*
-    yp[0] = c_mmtns / tempgamma * y[3]; // [mm/ns]
-    yp[1] = c_mmtns / tempgamma * y[4]; // [mm/ns]
-    yp[2] = c_mmtns / tempgamma * y[5]; // [mm/ns]
-*/
+    yp[0] = Physics::c / tempgamma * y[3];
+    yp[1] = Physics::c / tempgamma * y[4];
+    yp[2] = Physics::c / tempgamma * y[5];
 
     yp[3] = (externalE(0) / Physics::c  + (externalB(2) * y[4] - externalB(1) * y[5]) / tempgamma) * qtom; // [1/ns]
     yp[4] = (externalE(1) / Physics::c  - (externalB(2) * y[3] - externalB(0) * y[5]) / tempgamma) * qtom; // [1/ns];
     yp[5] = (externalE(2) / Physics::c  + (externalB(1) * y[3] - externalB(0) * y[4]) / tempgamma) * qtom; // [1/ns];
+
+    yp[3] /= Units::ns2s;
+    yp[4] /= Units::ns2s;
+    yp[5] /= Units::ns2s;
 
     return outOfBound;
 }
@@ -146,7 +149,7 @@ void RK4<FieldFunction, Arguments ...>::copyFrom(Vector_t& R,
                                                  Vector_t& P,
                                                  double* x) const
 {
-    for(int j = 0; j < 3; j++) {
+    for (int j = 0; j < 3; j++) {
         R(j) = x[j];    // [x,y,z] (mm)
         P(j) = x[j+3];  // [px,py,pz] (beta*gamma)
     }
