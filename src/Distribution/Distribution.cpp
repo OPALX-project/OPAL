@@ -842,7 +842,7 @@ void Distribution::checkIfEmitted() {
     }
 }
 
-void Distribution::checkParticleNumber(size_t &numberOfParticles) {
+void Distribution::checkParticleNumber(size_t& numberOfParticles) {
 
     size_t numberOfDistParticles = tOrZDist_m.size();
     reduce(numberOfDistParticles, numberOfDistParticles, OpAddAssign());
@@ -851,6 +851,11 @@ void Distribution::checkParticleNumber(size_t &numberOfParticles) {
         throw OpalException("Distribution::checkParticleNumber",
                             "Zero particles in the distribution! "
                             "The number of particles needs to be specified.");
+    }
+
+    if (numberOfParticles == 1 && Ippl::getNodes() != 1) {
+        throw OpalException("Distribution::checkParticleNumber",
+                            "A single particle distribution works serially on single node");
     }
 
     if (numberOfDistParticles != numberOfParticles) {
