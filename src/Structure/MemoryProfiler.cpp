@@ -18,23 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "MemoryProfiler.h"
+#include "Structure/MemoryProfiler.h"
+
+#include "AbstractObjects/OpalData.h"
+#include "Algorithms/PartBunchBase.h"
+#include "Physics/Units.h"
+#include "Utilities/Timer.h"
+#include "Utilities/OpalException.h"
+
+#include "Ippl.h"
+
+#include <boost/filesystem.hpp>
 
 #ifdef __linux__
 #include <sys/types.h>
 #include <unistd.h>
 #endif
-
-#include "Utilities/Timer.h"
-#include "Utilities/OpalException.h"
-#include "AbstractObjects/OpalData.h"
-#include "Algorithms/PartBunchBase.h"
-#include "Physics/Units.h"
-
-#include <boost/filesystem.hpp>
-
-#include "Ippl.h"
-
 #include <sstream>
 
 MemoryProfiler::MemoryProfiler(const std::string& fname, bool restart)
@@ -197,7 +196,7 @@ void MemoryProfiler::compute(vm_t& vmMin,
 }
 
 
-void MemoryProfiler::write(const PartBunchBase<double, 3> *beam) {
+void MemoryProfiler::write(PartBunchBase<double, 3>* beam) {
 
     this->update();
 

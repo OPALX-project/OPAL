@@ -63,7 +63,6 @@ void SDDSWriter::rewindLines(size_t numberOfLines) {
     }
     fs.close();
 
-
     fs.open (fname_m.c_str(), std::fstream::out);
 
     if (!fs.is_open()) return;
@@ -98,7 +97,6 @@ void SDDSWriter::replaceVersionString() {
         allLines.push(line);
     }
     fs.close();
-
 
     fs.open (fname_m.c_str(), std::fstream::out);
 

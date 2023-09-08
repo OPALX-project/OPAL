@@ -41,9 +41,9 @@
 #include "Utility/FieldDebugFunctions.h"
 
 #ifdef __linux__
-    #include "MemoryProfiler.h"
+    #include "Structure/MemoryProfiler.h"
 #else
-    #include "MemoryWriter.h"
+    #include "Structure/MemoryWriter.h"
 #endif
 
 #ifdef ENABLE_AMR
@@ -56,6 +56,7 @@
 
 #include <sstream>
 
+
 DataSink::DataSink()
     : isMultiBunch_m(false)
 {
@@ -63,7 +64,7 @@ DataSink::DataSink()
 }
 
 
-DataSink::DataSink(H5PartWrapper *h5wrapper, bool restart, short numBunch)
+DataSink::DataSink(H5PartWrapper* h5wrapper, bool restart, short numBunch)
     : isMultiBunch_m(numBunch > 1)
 {
     if (restart && !Options::enableHDF5) {
@@ -78,7 +79,7 @@ DataSink::DataSink(H5PartWrapper *h5wrapper, bool restart, short numBunch)
 }
 
 
-DataSink::DataSink(H5PartWrapper *h5wrapper, short numBunch)
+DataSink::DataSink(H5PartWrapper* h5wrapper, short numBunch)
     : DataSink(h5wrapper, false, numBunch)
 { }
 
@@ -90,7 +91,7 @@ void DataSink::dumpH5(PartBunchBase<double, 3> *beam, Vector_t FDext[]) const {
 }
 
 
-int DataSink::dumpH5(PartBunchBase<double, 3> *beam, Vector_t FDext[], double meanEnergy,
+int DataSink::dumpH5(PartBunchBase<double, 3>* beam, Vector_t FDext[], double meanEnergy,
                      double refPr, double refPt, double refPz,
                      double refR, double refTheta, double refZ,
                      double azimuth, double elevation, bool local) const
@@ -102,15 +103,15 @@ int DataSink::dumpH5(PartBunchBase<double, 3> *beam, Vector_t FDext[], double me
 }
 
 
-void DataSink::dumpSDDS(PartBunchBase<double, 3> *beam, Vector_t FDext[],
+void DataSink::dumpSDDS(PartBunchBase<double, 3>* beam, Vector_t FDext[],
                         const double& azimuth) const
 {
     this->dumpSDDS(beam, FDext, losses_t(), azimuth);
 }
 
 
-void DataSink::dumpSDDS(PartBunchBase<double, 3> *beam, Vector_t FDext[],
-                        const losses_t &losses, const double& azimuth) const
+void DataSink::dumpSDDS(PartBunchBase<double, 3>* beam, Vector_t FDext[],
+                        const losses_t& losses, const double& azimuth) const
 {
     beam->calcBeamParameters();
 
@@ -124,8 +125,9 @@ void DataSink::dumpSDDS(PartBunchBase<double, 3> *beam, Vector_t FDext[],
 
     beam->gatherLoadBalanceStatistics();
 
-    for (size_t i = 0; i < sddsWriter_m.size(); ++i)
+    for (size_t i = 0; i < sddsWriter_m.size(); ++i) {
         sddsWriter_m[i]->write(beam);
+    }
 
     IpplTimings::stopTimer(StatMarkerTimer_m);
 }
@@ -138,34 +140,34 @@ void DataSink::storeCavityInformation() {
 }
 
 
-void DataSink::changeH5Wrapper(H5PartWrapper *h5wrapper) {
+void DataSink::changeH5Wrapper(H5PartWrapper* h5wrapper) {
     if (!Options::enableHDF5) return;
 
     h5Writer_m->changeH5Wrapper(h5wrapper);
 }
 
 
-void DataSink::writeGeomToVtk(BoundaryGeometry &bg, std::string fn) {
+void DataSink::writeGeomToVtk(BoundaryGeometry& bg, const std::string& fn) {
     if (Ippl::myNode() == 0 && Options::enableVTK) {
-        bg.writeGeomToVtk (fn);
+        bg.writeGeomToVtk(fn);
     }
 }
 
 
-void DataSink::writeImpactStatistics(const PartBunchBase<double, 3> *beam, long long &step, size_t &impact, double &sey_num,
+void DataSink::writeImpactStatistics(const PartBunchBase<double, 3>* beam, long long& step, size_t& impact, double& sey_num,
                                      size_t numberOfFieldEmittedParticles, bool nEmissionMode, std::string fn) {
 
     double charge = 0.0;
     size_t Npart = 0;
     double Npart_d = 0.0;
-    if(!nEmissionMode) {
+    if (!nEmissionMode) {
         charge = -1.0 * beam->getCharge();
         //reduce(charge, charge, OpAddAssign());
         Npart_d = -1.0 * charge / beam->getChargePerParticle();
     } else {
         Npart = beam->getTotalNum();
     }
-    if(Ippl::myNode() == 0) {
+    if (Ippl::myNode() == 0) {
         std::string ffn = fn + std::string(".dat");
 
         std::unique_ptr<Inform> ofp(new Inform(nullptr, ffn.c_str(), Inform::APPEND, 0));
@@ -173,9 +175,9 @@ void DataSink::writeImpactStatistics(const PartBunchBase<double, 3> *beam, long 
         fid.precision(6);
         fid << std::setiosflags(std::ios::scientific);
         double t = beam->getT() * Units::s2ns;
-        if(!nEmissionMode) {
+        if (!nEmissionMode) {
 
-            if(step == 0) {
+            if (step == 0) {
                 fid << "#Time/ns"  << std::setw(18) << "#Geometry impacts" << std::setw(18) << "tot_sey" << std::setw(18)
                     << "TotalCharge" << std::setw(18) << "PartNum" << " numberOfFieldEmittedParticles " << endl;
             }
@@ -183,7 +185,7 @@ void DataSink::writeImpactStatistics(const PartBunchBase<double, 3> *beam, long 
                 << std::setw(18) << Npart_d << std::setw(18) << numberOfFieldEmittedParticles << endl;
         } else {
 
-            if(step == 0) {
+            if (step == 0) {
                 fid << "#Time/ns"  << std::setw(18) << "#Geometry impacts" << std::setw(18) << "tot_sey" << std::setw(18)
                     << "ParticleNumber" << " numberOfFieldEmittedParticles " << endl;
             }
@@ -194,7 +196,7 @@ void DataSink::writeImpactStatistics(const PartBunchBase<double, 3> *beam, long 
 }
 
 
-void DataSink::writeMultiBunchStatistics(PartBunchBase<double, 3> *beam,
+void DataSink::writeMultiBunchStatistics(PartBunchBase<double, 3>* beam,
                                          MultiBunchHandler* mbhandler_p) {
     /// Start timer.
     IpplTimings::startTimer(StatMarkerTimer_m);
