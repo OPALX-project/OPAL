@@ -52,7 +52,7 @@ private:
     typedef std::unique_ptr<SDDSWriter>     sddsWriter_t;
     typedef std::unique_ptr<H5Writer>       h5Writer_t;
     typedef std::unique_ptr<MultiBunchDump> mbWriter_t;
-    
+
 public:
     /** \brief Default constructor.
      *
@@ -63,45 +63,44 @@ public:
     DataSink(H5PartWrapper *h5wrapper, bool restart, short numBunch);
     DataSink(H5PartWrapper *h5wrapper, short numBunch);
 
-    void dumpH5(PartBunchBase<double, 3> *beam, Vector_t FDext[]) const;
-    
-    int dumpH5(PartBunchBase<double, 3> *beam, Vector_t FDext[], double meanEnergy,
+    void dumpH5(PartBunchBase<double, 3>* beam, Vector_t FDext[]) const;
+
+    int dumpH5(PartBunchBase<double, 3>* beam, Vector_t FDext[], double meanEnergy,
                double refPr, double refPt, double refPz,
                double refR, double refTheta, double refZ,
                double azimuth, double elevation, bool local) const;
-    
-    void dumpSDDS(PartBunchBase<double, 3> *beam, Vector_t FDext[],
+
+    void dumpSDDS(PartBunchBase<double, 3>* beam, Vector_t FDext[],
                   const double& azimuth = -1) const;
-    
-    void dumpSDDS(PartBunchBase<double, 3> *beam, Vector_t FDext[],
-                  const losses_t &losses = losses_t(), const double& azimuth = -1) const;
-    
+
+    void dumpSDDS(PartBunchBase<double, 3>* beam, Vector_t FDext[],
+                  const losses_t& losses = losses_t(), const double& azimuth = -1) const;
+
     /** \brief Write cavity information from  H5 file
      */
     void storeCavityInformation();
-    
-    void changeH5Wrapper(H5PartWrapper *h5wrapper);
-    
+
+    void changeH5Wrapper(H5PartWrapper* h5wrapper);
+
     /**
      * Write geometry points and surface triangles to vtk file
      *
      * @param fn specifies the name of vtk file contains the geometry
      *
      */
-    void writeGeomToVtk(BoundaryGeometry &bg, std::string fn);
-    //void writeGeoContourToVtk(BoundaryGeometry &bg, std::string fn);
-    
-    
+    void writeGeomToVtk(BoundaryGeometry& bg, const std::string& fn);
+    //void writeGeoContourToVtk(BoundaryGeometry& bg, std::string fn);
+
     /**
      * Write impact number and outgoing secondaries in each time step
      *
      * @param fn specifies the name of vtk file contains the geometry
      *
      */
-    void writeImpactStatistics(const PartBunchBase<double, 3> *beam,
-                               long long int &step,
-                               size_t &impact,
-                               double &sey_num,
+    void writeImpactStatistics(const PartBunchBase<double, 3>* beam,
+                               long long int& step,
+                               size_t& impact,
+                               double& sey_num,
                                size_t numberOfFieldEmittedParticles,
                                bool nEmissionMode,
                                std::string fn);
@@ -110,7 +109,7 @@ public:
      * @param beam
      * @param mbhandler is the multi-bunch handler
      */
-    void writeMultiBunchStatistics(PartBunchBase<double, 3> *beam,
+    void writeMultiBunchStatistics(PartBunchBase<double, 3>* beam,
                                    MultiBunchHandler* mbhandler);
 
     /**
@@ -129,7 +128,6 @@ private:
     void init(bool restart = false,
               H5PartWrapper* h5wrapper = nullptr,
               short numBunch = 1);
-
 
     h5Writer_t      h5Writer_m;
     statWriter_t    statWriter_m;
@@ -156,6 +154,5 @@ std::string DataSink::convertToString(int number, int setw) {
     ss << std::setw(setw) << std::setfill('0') <<  number;
     return ss.str();
 }
-
 
 #endif // DataSink_H_

@@ -20,15 +20,15 @@
 #define OPAL_SDDS_WRITER_H
 
 #include <fstream>
-#include <string>
-#include <queue>
+#include <iomanip>
 #include <map>
-#include <vector>
+#include <ostream>
+#include <queue>
+#include <sstream>
+#include <string>
 #include <tuple>
 #include <utility>
-#include <ostream>
-#include <iomanip>
-#include <sstream>
+#include <vector>
 
 #include <boost/filesystem.hpp>
 
@@ -58,12 +58,11 @@ public:
                        std::string,
                        std::string> cols_t;
 
-
     SDDSWriter(const std::string& fname, bool restart);
 
     virtual ~SDDSWriter() { };
 
-    virtual void write(const PartBunchBase<double, 3>* /*beam*/) { };
+    virtual void write(PartBunchBase<double, 3>* /*beam*/) { };
 
     /** \brief
      *  delete the last 'numberOfLines' lines of the file 'fileName'
@@ -77,7 +76,6 @@ public:
     bool exists() const;
 
 protected:
-
     void addDescription(const std::string& text,
                         const std::string& content);
 
@@ -131,7 +129,6 @@ protected:
     bool hasColumns() const;
 
 private:
-
     void writeDescription();
 
     void writeParameters();
@@ -162,8 +159,7 @@ bool SDDSWriter::exists() const {
 
 inline
 void SDDSWriter::addDescription(const std::string& text,
-                                const std::string& content)
-{
+                                const std::string& content) {
     desc_m = std::make_pair(text, content);
 }
 
@@ -172,8 +168,7 @@ template<typename T>
 void SDDSWriter::addParameter(const std::string& name,
                               const std::string& type,
                               const std::string& desc,
-                              const T& value)
-{
+                              const T& value) {
     params_m.push(std::make_tuple(name, type, desc));
     std::stringstream ss;
     ss << value;

@@ -18,12 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "MemoryWriter.h"
+#include "Structure/MemoryWriter.h"
 
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
-#include "Utilities/Timer.h"
 #include "Physics/Units.h"
+#include "Utilities/Timer.h"
+
 #include "Ippl.h"
 
 MemoryWriter::MemoryWriter(const std::string& fname, bool restart)
@@ -61,7 +62,6 @@ void MemoryWriter::fillHeader() {
     std::string dateStr(simtimer.date());
     std::string timeStr(simtimer.time());
 
-
     std::stringstream ss;
 
     ss << "Memory statistics '"
@@ -72,13 +72,12 @@ void MemoryWriter::fillHeader() {
 
     this->addDefaultParameters();
 
-
     this->addInfo("ascii", 1);
 }
 
 
-void MemoryWriter::write(const PartBunchBase<double, 3> *beam)
-{
+void MemoryWriter::write(PartBunchBase<double, 3>* beam) {
+
     IpplMemoryUsage::IpplMemory_p memory = IpplMemoryUsage::getInstance();
     memory->sample();
 

@@ -21,23 +21,24 @@
 #ifndef OPAL_MEMORY_PROFILER_H
 #define OPAL_MEMORY_PROFILER_H
 
+#include "Structure/SDDSWriter.h"
+
 #include <fstream>
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 
-#include "SDDSWriter.h"
 
-class MemoryProfiler : public SDDSWriter {
+class MemoryProfiler: public SDDSWriter {
     /* Pay attention with units. /proc/[pid]/status returns values in
      * KiB (Kibibyte) although the units say kB.
      * KiB has base 2 not base 10
      */
-    
+
 public:
     typedef std::vector<long double> vm_t;
     typedef std::vector<std::string> units_t;
-    
+
     MemoryProfiler(const std::string& fname, bool restart);
 
     enum VirtualMemory {
@@ -57,14 +58,14 @@ public:
         VMSWAP      // VmSwap: Swapped-out virtual memory size by  anonymous  private  pages;  shmem  swap  usage  is  not
                     // included (since Linux 2.6.34).
     };
-    
-    void write(const PartBunchBase<double, 3> *beam) override;
-    
+
+    void write(PartBunchBase<double, 3>* beam) override;
+
 private:
     void header();
     void update();
     void compute(vm_t& vmMin, vm_t& vmMax, vm_t& vmAvg);
-    
+
 private:
     std::map<std::string, int> procinfo_m;
     vm_t vmem_m;
