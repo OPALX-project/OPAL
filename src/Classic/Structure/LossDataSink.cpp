@@ -24,6 +24,7 @@
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
+
 #include "Utility/IpplInfo.h"
 
 #include <boost/filesystem.hpp>
@@ -115,7 +116,7 @@ extern Inform* gmsg;
 }
 
 namespace {
-    void f64transform(const std::vector<OpalParticle> &particles,
+    void f64transform(const std::vector<OpalParticle>& particles,
                    unsigned int startIdx,
                    unsigned int numParticles,
                    h5_float64_t *buffer,
@@ -124,7 +125,7 @@ namespace {
                        particles.begin() + startIdx + numParticles,
                        buffer, select);
     }
-    void i64transform(const std::vector<OpalParticle> &particles,
+    void i64transform(const std::vector<OpalParticle>& particles,
                    unsigned int startIdx,
                    unsigned int numParticles,
                    h5_int64_t *buffer,
@@ -134,7 +135,7 @@ namespace {
                        buffer, select);
     }
 
-    void cminmax(double &min, double &max, double val) {
+    void cminmax(double& min, double& max, double val) {
         if (-val > min) {
             min = -val;
         } else if (val > max) {
@@ -168,7 +169,7 @@ SetStatistics::SetStatistics():
     fac_m(0.0)
     { }
 
-LossDataSink::LossDataSink(std::string outfn, bool hdf5Save, CollectionType collectionType):
+LossDataSink::LossDataSink(const std::string& outfn, bool hdf5Save, CollectionType collectionType):
     h5hut_mode_m(hdf5Save),
     H5file_m(0),
     outputName_m(outfn),
@@ -193,7 +194,7 @@ LossDataSink::LossDataSink(std::string outfn, bool hdf5Save, CollectionType coll
     }
 }
 
-LossDataSink::LossDataSink(const LossDataSink &rhs):
+LossDataSink::LossDataSink(const LossDataSink& rhs):
     h5hut_mode_m(rhs.h5hut_mode_m),
     H5file_m(rhs.H5file_m),
     outputName_m(rhs.outputName_m),
@@ -227,7 +228,6 @@ void LossDataSink::openH5(h5_int32_t mode) {
 
 
 void LossDataSink::writeHeaderH5() {
-
     // Write file attributes to describe phase space to H5 file.
     std::stringstream OPAL_version;
     OPAL_version << OPAL_PROJECT_NAME << " " << OPAL_PROJECT_VERSION << " # git rev. " << Util::getGitRevision();
@@ -297,12 +297,11 @@ void LossDataSink::writeHeaderASCII() {
     }
 }
 
-void LossDataSink::addReferenceParticle(const Vector_t &x,
-                                        const  Vector_t &p,
+void LossDataSink::addReferenceParticle(const Vector_t& x,
+                                        const Vector_t& p,
                                         double time,
                                         double spos,
-                                        long long globalTrackStep
-                                        ) {
+                                        long long globalTrackStep) {
     RefPartR_m.push_back(x);
     RefPartP_m.push_back(p);
     globalTrackStep_m.push_back((h5_int64_t)globalTrackStep);
@@ -310,7 +309,8 @@ void LossDataSink::addReferenceParticle(const Vector_t &x,
     refTime_m.push_back(time);
 }
 
-void LossDataSink::addParticle(const OpalParticle &particle, const boost::optional<std::pair<int, short>> &turnBunchNumPair) {
+void LossDataSink::addParticle(const OpalParticle& particle,
+                               const boost::optional<std::pair<int, short>>& turnBunchNumPair) {
     if (turnBunchNumPair) {
         if (!particles_m.empty() && turnNumber_m.empty()) {
             throw GeneralClassicException("LossDataSink::addParticle",
@@ -517,7 +517,6 @@ void LossDataSink::saveH5(unsigned int setIdx) {
 }
 
 void LossDataSink::saveASCII() {
-
     /*
       ASCII output
     */

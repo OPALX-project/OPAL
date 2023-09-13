@@ -18,30 +18,29 @@
 #ifndef LOSSDATASINK_H_
 #define LOSSDATASINK_H_
 
-//////////////////////////////////////////////////////////////
-#include "Algorithms/Vektor.h"
-#include "Algorithms/OpalParticle.h"
 #include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/OpalData.h"
+#include "Algorithms/Vektor.h"
+#include "Algorithms/OpalParticle.h"
+
+#include "H5hut.h"
 
 #include <boost/optional.hpp>
 
-#include <string>
 #include <fstream>
-#include <vector>
 #include <functional>
 #include <set>
-
-#include "H5hut.h"
+#include <string>
+#include <vector>
 
 struct SetStatistics {
     SetStatistics();
 
     std::string outputName_m;
     double spos_m;
-    double refTime_m; // ns
-    double tmean_m; // ns
-    double trms_m; // ns
+    double refTime_m;
+    double tmean_m;
+    double trms_m;
     unsigned long nTotal_m;
     Vector_t RefPartR_m;
     Vector_t RefPartP_m;
@@ -79,26 +78,26 @@ enum class CollectionType: unsigned short {
   - h5hut_mode_m defines h5hut or ASCII
  */
 class LossDataSink {
- public:
 
+public:
     LossDataSink() = default;
 
-    LossDataSink(std::string outfn, bool hdf5Save, CollectionType = CollectionType::TEMPORAL);
+    LossDataSink(const std::string& outfn, bool hdf5Save, CollectionType = CollectionType::TEMPORAL);
 
-    LossDataSink(const LossDataSink &rsh);
+    LossDataSink(const LossDataSink& rsh);
     ~LossDataSink() noexcept(false);
 
     bool inH5Mode() { return h5hut_mode_m;}
 
     void save(unsigned int numSets = 1, OpalData::OpenMode openMode = OpalData::OpenMode::UNDEFINED);
 
-    void addReferenceParticle(const Vector_t &x,
-                              const Vector_t &p,
+    void addReferenceParticle(const Vector_t& x,
+                              const Vector_t& p,
                               double time,
                               double spos,
                               long long globalTrackStep);
 
-    void addParticle(const OpalParticle &, const boost::optional<std::pair<int, short int>> &turnBunchNumPair = boost::none);
+    void addParticle(const OpalParticle&, const boost::optional<std::pair<int, short int>>& turnBunchNumPair = boost::none);
 
     size_t size() const;
 
@@ -106,7 +105,7 @@ class LossDataSink {
 
 private:
     void openASCII() {
-        if(Ippl::myNode() == 0) {
+        if (Ippl::myNode() == 0) {
             os_m.open(fileName_m.c_str(), std::ios::out);
         }
     }
@@ -138,7 +137,6 @@ private:
     void splitSets(unsigned int numSets);
     SetStatistics computeSetStatistics(unsigned int setIdx);
 
-    // filename without extension
     std::string fileName_m;
 
     // write either in ASCII or H5hut format
@@ -150,6 +148,7 @@ private:
     /// used to write out data in H5hut mode
     h5_file_t H5file_m;
 
+    // filename without extension
     std::string outputName_m;
 
     /// Current record, or time step, of H5 file.
