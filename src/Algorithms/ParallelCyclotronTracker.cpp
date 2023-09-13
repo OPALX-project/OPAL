@@ -5,7 +5,7 @@
 // Copyright (c) 2007 - 2014, Jianjun Yang, Andreas Adelmann and Matthias Toggweiler,
 //                            Paul Scherrer Institut, Villigen PSI, Switzerland
 // Copyright (c) 2014,        Daniel Winklehner, MIT, Cambridge, MA, USA
-// Copyright (c) 2012 - 2022, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2012 - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // Implemented as part of the PhD thesis
@@ -161,8 +161,6 @@ ParallelCyclotronTracker::ParallelCyclotronTracker(const Beamline& beamline,
  *
  */
 ParallelCyclotronTracker::~ParallelCyclotronTracker() {
-    if (bgf_m)
-        lossDs_m->save();
     for (Component* component : myElements) {
         delete(component);
     }
@@ -1233,6 +1231,9 @@ void ParallelCyclotronTracker::execute() {
     *gmsg << "* Finalizing i.e. write data and close files :" << endl;
     for (auto fd : FieldDimensions) {
         ((fd->second).second)->finalise();
+    }
+    if (bgf_m && lossDs_m) {
+        lossDs_m->save();
     }
     *gmsg << "* ------------------------------------------------------------------------ *" << endl;
 }
