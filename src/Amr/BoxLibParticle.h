@@ -35,8 +35,8 @@
 
 
 template<class PLayout>
-class BoxLibParticle : public virtual AmrParticleBase<PLayout>
-{
+class BoxLibParticle: public virtual AmrParticleBase<PLayout> {
+
 public:
     typedef typename AmrParticleBase<PLayout>::ParticlePos_t             ParticlePos_t;
     typedef typename AmrParticleBase<PLayout>::ParticleIndex_t           ParticleIndex_t;
@@ -47,24 +47,24 @@ public:
     typedef typename AmrParticleBase<PLayout>::AmrVectorFieldContainer_t AmrVectorFieldContainer_t;
     typedef typename AmrParticleBase<PLayout>::AmrVectorField_t          AmrVectorField_t;
     typedef typename AmrParticleBase<PLayout>::ParticleLevelCounter_t    ParticleLevelCounter_t;
-    
+
     typedef typename PLayout::AmrProcMap_t  AmrProcMap_t;
     typedef typename PLayout::AmrGrid_t     AmrGrid_t;
     typedef typename PLayout::AmrGeometry_t AmrGeometry_t;
     typedef typename PLayout::AmrIntVect_t  AmrIntVect_t;
     typedef typename PLayout::AmrBox_t      AmrBox_t;
     typedef typename PLayout::AmrReal_t     AmrReal_t;
-    
+
     typedef amrex::FArrayBox                FArrayBox_t;
-    
+
 public:
     BoxLibParticle();
-    
+
     /*!
      * @param layout that does the particle-to-core management
      */
     BoxLibParticle(PLayout *layout);
-    
+
     /*!
      * Multi-level scatter.
      * Scatter the data from the given attribute onto the given field, using
@@ -83,8 +83,7 @@ public:
                  ParticleAttrib<Vektor<PT, Dim> >& pp,
                  int lbase, int lfine,
                  const ParticleAttrib<int>& pbin, int bin = -1);
-    
-    
+
     /*!
      * Single-level scatter.
      * Scatter the data from the given attribute onto the given field, using
@@ -102,7 +101,7 @@ public:
                  ParticleAttrib<Vektor<PT, Dim> >& pp,
                  const ParticleAttrib<int>& pbin, int bin = -1,
                  int level = 0);
-    
+
     /*!
      * Multi-level gather.
      * Gather the data from the given Field into the given attribute, using
@@ -118,12 +117,12 @@ public:
     void gather(ParticleAttrib<FT>& attrib, AmrVectorFieldContainer_t& f,
                 ParticleAttrib<Vektor<PT, Dim> >& pp,
                 int lbase, int lfine);
-    
+
 private:
     /*
      * AMReX functions adjusted to work with Ippl
      */
-    
+
     /*!
      * Multi-level scatter (adjusted from AMReX).
      * 
@@ -135,11 +134,11 @@ private:
      * @param finest_level level we want to end
      */
     template <class AType>
-    void AssignDensityFort(ParticleAttrib<AType> &pa,
+    void AssignDensityFort(ParticleAttrib<AType>& pa,
                            AmrScalarFieldContainer_t& mf_to_be_filled, 
                            int lev_min, int ncomp, int finest_level,
                            const ParticleAttrib<int>& pbin, int bin = -1) const;
-    
+
     /*!
      * Multi-level gather (adjusted from AMReX).
      * 
@@ -152,7 +151,7 @@ private:
     void InterpolateFort(ParticleAttrib<AType> &pa,
                          AmrVectorFieldContainer_t& mesh_data, 
                          int lev_min, int lev_max);
-    
+
     /*!
      * Single-level gather (adjusted from AMReX).
      * 
@@ -162,8 +161,7 @@ private:
      */
     template <class AType>
     void InterpolateSingleLevelFort(ParticleAttrib<AType> &pa, AmrVectorField_t& mesh_data, int lev);
-    
-    
+
     /*!
      * Multi-level gather.
      * 
@@ -172,11 +170,10 @@ private:
      * @param lev for which we get the mesh data
      */
     template <class AType>
-    void InterpolateMultiLevelFort(ParticleAttrib<AType> &pa,
+    void InterpolateMultiLevelFort(ParticleAttrib<AType>& pa,
                                    AmrVectorFieldContainer_t& mesh_data,
                                    int lev);
-    
-    
+
     /*!
      * Single-level scatter (adjusted from AMReX).
      * 
@@ -187,15 +184,15 @@ private:
      * @param particle_lvl_offset is zero
      */
     template <class AType>
-    void AssignCellDensitySingleLevelFort(ParticleAttrib<AType> &pa, AmrField_t& mf, int level,
+    void AssignCellDensitySingleLevelFort(ParticleAttrib<AType>& pa, AmrField_t& mf, int level,
                                           const ParticleAttrib<int>& pbin, int bin = -1,
                                           int ncomp=1, int particle_lvl_offset = 0) const;
-    
+
 private:
     IpplTimings::TimerRef AssignDensityTimer_m;
 };
 
 
-#include "BoxLibParticle.hpp"
+#include "Amr/BoxLibParticle.hpp"
 
 #endif

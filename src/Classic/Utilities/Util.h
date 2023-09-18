@@ -220,6 +220,10 @@ namespace Util {
 
     void checkInt(double real, std::string name, double tolerance = 1e-9);
 
+    /// Check if there are only digits in a string
+    /// from https://stackoverflow.com/questions/19678572/how-to-validate-that-there-are-only-digits-in-a-string
+    bool isAllDigits(const std::string& str);
+
     template<class IteratorIn, class IteratorOut>
     void toString(IteratorIn first, IteratorIn last, IteratorOut out);
 

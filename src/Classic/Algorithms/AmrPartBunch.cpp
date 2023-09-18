@@ -20,7 +20,7 @@
 //
 #include "AmrPartBunch.h"
 
-#include "Utilities/OpalException.h"
+#include "Utilities/GeneralClassicException.h"
 
 AmrPartBunch::AmrPartBunch(const PartData *ref)
     : PartBunchBase<double, 3>(new AmrPartBunch::pbase_t(new AmrLayout_t()), ref)
@@ -40,9 +40,7 @@ AmrPartBunch::AmrPartBunch(const PartData *ref, pbase_t* pbase_p)
     amrpbase_mp->initializeAmr();
 }
 
-AmrPartBunch::~AmrPartBunch() {
-    
-}
+AmrPartBunch::~AmrPartBunch() { }
 
 
 AmrPartBunch::pbase_t *AmrPartBunch::getAmrParticleBase() {
@@ -61,7 +59,7 @@ void AmrPartBunch::initialize(FieldLayout_t */*fLayout*/) {
 
 
 void AmrPartBunch::do_binaryRepart() {
-    
+
     if ( amrobj_mp && !amrobj_mp->isRefined() ) {
         /* In the first call to this function we
          * intialize all fine levels
@@ -101,11 +99,11 @@ Vector_t AmrPartBunch::get_hr() const {
 void AmrPartBunch::set_meshEnlargement(double dh) {
     // set dh_m = dh
     PartBunchBase<double, 3>::set_meshEnlargement(dh);
-    
+
     // update base geometry with new mesh enlargement
     AmrLayout_t* layout_p = &amrpbase_mp->getAmrLayout();
     layout_p->setBoundingBox(dh);
-    
+
     // if amrobj_mp != nullptr --> we need to regrid
     this->do_binaryRepart();
 }
@@ -131,7 +129,7 @@ double AmrPartBunch::getRho(int x, int y, int z) {
 
 FieldLayout_t &AmrPartBunch::getFieldLayout() {
     //TODO Implement
-    throw OpalException("AmrPartBunch::getFieldLayout() ", "Not yet Implemented.");
+    throw GeneralClassicException("AmrPartBunch::getFieldLayout", "Not yet Implemented.");
     return *fieldlayout_m;
 }
 
@@ -142,50 +140,50 @@ void AmrPartBunch::boundp() {
     if ( !(R.isDirty() || ID.isDirty() ) && stateOfLastBoundP_ == unit_state_) return; //-DW
 
     stateOfLastBoundP_ = unit_state_;
-    
+
     if ( amrobj_mp ) {
         /* we do an explicit domain mapping of the particles and then
          * forbid it during the regrid process, this way it's only
          * executed ones --> saves computation
          */
         bool isForbidTransform = amrpbase_mp->isForbidTransform();
-            
+
         if ( !isForbidTransform ) {
             this->updateLorentzFactor();
             // Lorentz transform + mapping to [-1,1]
             amrpbase_mp->domainMapping();
             amrpbase_mp->setForbidTransform(true);
         }
-        
+
         this->update();
-        
+
         if ( !isForbidTransform ) {
             amrpbase_mp->setForbidTransform(false);
             // map particles back + undo Lorentz transform
             amrpbase_mp->domainMapping(true);
         }
-        
+
     } else {
         // At this point an amrobj_mp needs already be set
-        throw GeneralClassicException("AmrPartBunch::boundp() ",
+        throw GeneralClassicException("AmrPartBunch::boundp",
                                       "AmrObject pointer is not set.");
     }
-    
+
     R.resetDirtyFlag();
-    
+
     IpplTimings::stopTimer(boundpTimer_m);
 }
 
 
 void AmrPartBunch::computeSelfFields() {
     IpplTimings::startTimer(selfFieldTimer_m);
-    
+
     if ( !fs_m->hasValidSolver() )
-        throw OpalException("AmrPartBunch::computeSelfFields() ",
-                            "No field solver.");
-    
+        throw GeneralClassicException("AmrPartBunch::computeSelfFields",
+                                      "No field solver.");
+
     amrobj_mp->computeSelfFields();
-    
+
     IpplTimings::stopTimer(selfFieldTimer_m);
 }
 
@@ -206,15 +204,15 @@ void AmrPartBunch::computeSelfFields_cycl(double gamma) {
 
 void AmrPartBunch::computeSelfFields_cycl(int bin) {
     IpplTimings::startTimer(selfFieldTimer_m);
-    
+
     /* make sure it is refined in multi-bunch case
      */
     if ( !amrobj_mp->isRefined() ) {
         amrobj_mp->initFineLevels();
     }
-    
+
     amrobj_mp->computeSelfFields_cycl(bin);
-    
+
     IpplTimings::stopTimer(selfFieldTimer_m);
 }
 
@@ -226,19 +224,19 @@ void AmrPartBunch::setAmrDomainRatio(const std::vector<double>& ratio) {
 
 void AmrPartBunch::gatherLevelStatistics() {
     int nLevel = amrobj_mp->maxLevel() + 1;
-    
+
     std::unique_ptr<size_t[]> partPerLevel( new size_t[nLevel] );
     globalPartPerLevel_m.reset( new size_t[nLevel] );
-    
+
     for (int i = 0; i < nLevel; ++i)
         partPerLevel[i] = globalPartPerLevel_m[i] = 0.0;
-    
+
     // do not modify LocalNumPerLevel in here!!!
     auto& LocalNumPerLevel = amrpbase_mp->getLocalNumPerLevel();
-        
+
     for (size_t i = 0; i < LocalNumPerLevel.size(); ++i)
         partPerLevel[i] = LocalNumPerLevel[i];
-    
+
     reduce(*partPerLevel.get(),
            *globalPartPerLevel_m.get(),
            nLevel, std::plus<size_t>());
@@ -256,8 +254,7 @@ void AmrPartBunch::updateLorentzFactor(int bin) {
     if ( this->weHaveBins() ) {
         gamma = this->getBinGamma(bin);
     }
-    
-    
+
     /* At the beginning of simulation the Lorentz factor
      * is not yet set since PartBunchBase::calcBeamParameters
      * is not yet called. Therefore, we do this ugly workaround.
@@ -266,7 +263,7 @@ void AmrPartBunch::updateLorentzFactor(int bin) {
     if ( gamma >= 1.0 ) {
         init = false;
     }
-    
+
     if ( init ) {
         gamma = 1.0;
     }
@@ -289,9 +286,7 @@ void AmrPartBunch::updateLorentzFactor(double gamma) {
 }
 
 
-void AmrPartBunch::updateFieldContainers_m() {
-    
-}
+void AmrPartBunch::updateFieldContainers_m() { }
 
 void AmrPartBunch::updateDomainLength(Vektor<int, 3>& grid) {
     grid = amrobj_mp->getBaseLevelGridPoints();

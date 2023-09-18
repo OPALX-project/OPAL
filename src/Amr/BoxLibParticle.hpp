@@ -25,6 +25,7 @@
 #define BOXLIB_PARTICLE_HPP
 
 #include "Utilities/OpalException.h"
+#include "Utility/IpplTimings.h"
 
 #include <AMReX_BLFort.H>
 #include <AMReX_MultiFabUtil.H>
@@ -57,23 +58,23 @@ void BoxLibParticle<PLayout>::scatter(ParticleAttrib<FT>& attrib, AmrScalarField
         this->scatter(attrib, *(f[lbase].get()), pp, pbin, bin, lbase);
         return;
     }
-    
+
     const PLayout *layout_p = &this->getLayout();
     int nGrow = layout_p->refRatio(lbase)[0];
-    
+
     AmrScalarFieldContainer_t tmp(lfine+1);
     for (int lev = lbase; lev <= lfine; ++lev) {
-        
+
         f[lev]->setVal(0.0, f[lev]->nGrow());
-        
+
         const AmrGrid_t& ba = f[lev]->boxArray();
         const AmrProcMap_t& dm = f[lev]->DistributionMap();
         tmp[lev].reset(new AmrField_t(ba, dm, 1, nGrow));
         tmp[lev]->setVal(0.0, nGrow);
     }
-    
+
     this->AssignDensityFort(attrib, tmp, lbase, 1, lfine, pbin, bin);
-    
+
     for (int lev = lbase; lev <= lfine; ++lev)
         AmrField_t::Copy(*f[lev], *tmp[lev], 0, 0, f[lev]->nComp(), f[lev]->nGrow());
 }
@@ -91,11 +92,11 @@ void BoxLibParticle<PLayout>::scatter(ParticleAttrib<FT>& attrib, AmrField_t& f,
 
     AmrField_t tmp(ba, dmap, f.nComp(), 1);
     tmp.setVal(0.0, 1);
-    
+
     this->AssignCellDensitySingleLevelFort(attrib, tmp, level, pbin, bin);
-    
+
     f.setVal(0.0, f.nGrow());
-    
+
     AmrField_t::Copy(f, tmp, 0, 0, f.nComp(), f.nGrow());
 }
 
@@ -114,7 +115,7 @@ void BoxLibParticle<PLayout>::gather(ParticleAttrib<FT>& attrib, AmrVectorFieldC
 // Scatter the particle attribute pa on the grid
 template<class PLayout>
 template <class AType>
-void BoxLibParticle<PLayout>::AssignDensityFort(ParticleAttrib<AType> &pa,
+void BoxLibParticle<PLayout>::AssignDensityFort(ParticleAttrib<AType>& pa,
                                                 AmrScalarFieldContainer_t& mf_to_be_filled, 
                                                 int lev_min, int ncomp, int finest_level,
                                                 const ParticleAttrib<int>& pbin, int bin) const
@@ -122,16 +123,16 @@ void BoxLibParticle<PLayout>::AssignDensityFort(ParticleAttrib<AType> &pa,
 //     BL_PROFILE("AssignDensityFort()");
     IpplTimings::startTimer(AssignDensityTimer_m);
     const PLayout *layout_p = &this->getLayout();
-    
+
     // not done in amrex
     int rho_index = 0;
-    
+
     amrex::PhysBCFunct cphysbc, fphysbc;
     int lo_bc[] = {INT_DIR, INT_DIR, INT_DIR}; // periodic boundaries
     int hi_bc[] = {INT_DIR, INT_DIR, INT_DIR};
     amrex::Vector<amrex::BCRec> bcs(1, amrex::BCRec(lo_bc, hi_bc));
     amrex::PCInterp mapper;
-    
+
     AmrScalarFieldContainer_t tmp(finest_level+1);
     for (int lev = lev_min; lev <= finest_level; ++lev) {
         const AmrGrid_t& ba = mf_to_be_filled[lev]->boxArray();
@@ -139,7 +140,7 @@ void BoxLibParticle<PLayout>::AssignDensityFort(ParticleAttrib<AType> &pa,
         tmp[lev].reset(new AmrField_t(ba, dm, 1, 0));
         tmp[lev]->setVal(0.0);
     }
-    
+
     for (int lev = lev_min; lev <= finest_level; ++lev) {
         AssignCellDensitySingleLevelFort(pa, *mf_to_be_filled[lev], lev, pbin, bin, 1, 0);
 
@@ -160,15 +161,15 @@ void BoxLibParticle<PLayout>::AssignDensityFort(ParticleAttrib<AType> &pa,
                                       rho_index, 1, layout_p->refRatio(lev-1),
                                       layout_p->Geom(lev-1), layout_p->Geom(lev));
         }
-        
+
         mf_to_be_filled[lev]->plus(*tmp[lev], rho_index, ncomp, 0);
     }
-    
+
     for (int lev = finest_level - 1; lev >= lev_min; --lev) {
         amrex::average_down(*mf_to_be_filled[lev+1], 
                              *mf_to_be_filled[lev], rho_index, ncomp, layout_p->refRatio(lev));
     }
-    
+
     IpplTimings::stopTimer(AssignDensityTimer_m);
 }
 
@@ -176,7 +177,7 @@ void BoxLibParticle<PLayout>::AssignDensityFort(ParticleAttrib<AType> &pa,
 // This is the single-level version for cell-centered density
 template<class PLayout>
 template <class AType>
-void BoxLibParticle<PLayout>::AssignCellDensitySingleLevelFort(ParticleAttrib<AType> &pa,
+void BoxLibParticle<PLayout>::AssignCellDensitySingleLevelFort(ParticleAttrib<AType>& pa,
                                                                AmrField_t& mf_to_be_filled,
                                                                int       level,
                                                                const     ParticleAttrib<int>& pbin,
@@ -185,9 +186,9 @@ void BoxLibParticle<PLayout>::AssignCellDensitySingleLevelFort(ParticleAttrib<AT
                                                                int       /*particle_lvl_offset*/) const
 {
 //     BL_PROFILE("ParticleContainer<NStructReal, NStructInt, NArrayReal, NArrayInt>::AssignCellDensitySingleLevelFort()");
-    
+
     const PLayout *layout_p = &this->getLayout();
-    
+
     AmrField_t* mf_pointer;
 
     if (layout_p->OnSameGrids(level, mf_to_be_filled)) {
@@ -220,30 +221,30 @@ void BoxLibParticle<PLayout>::AssignCellDensitySingleLevelFort(ParticleAttrib<AT
         throw OpalException("BoxLibParticle::AssignCellDensitySingleLevelFort()",
                             "Problem must be periodic in no or all directions");
     }
-    
+
     for (amrex::MFIter mfi(*mf_pointer); mfi.isValid(); ++mfi) {
         (*mf_pointer)[mfi].setVal(0);
     }
-    
+
     //loop trough particles and distribute values on the grid
     const ParticleLevelCounter_t& LocalNumPerLevel = this->getLocalNumPerLevel();
     size_t lBegin = LocalNumPerLevel.begin(level);
     size_t lEnd   = LocalNumPerLevel.end(level);
-    
+
     AmrReal_t inv_dx[3] = { 1.0 / dx[0], 1.0 / dx[1], 1.0 / dx[2] };
     double lxyz[3] = { 0.0, 0.0, 0.0 };
     double wxyz_hi[3] = { 0.0, 0.0, 0.0 };
     double wxyz_lo[3] = { 0.0, 0.0, 0.0 };
     int ijk[3] = {0, 0, 0};
-    
+
     for (size_t ip = lBegin; ip < lEnd; ++ip) {
-        
+
         if ( bin > -1 && pbin[ip] != bin )
             continue;
-        
+
         const int grid = this->Grid[ip];
         FArrayBox_t& fab = (*mf_pointer)[grid];
-        
+
         // not callable:
         // begin amrex_deposit_cic(pbx.data(), nstride, N, fab.dataPtr(), box.loVect(), box.hiVect(), plo, dx);
         for (int i = 0; i < 3; ++i) {
@@ -252,11 +253,11 @@ void BoxLibParticle<PLayout>::AssignCellDensitySingleLevelFort(ParticleAttrib<AT
             wxyz_hi[i] = lxyz[i] - ijk[i];
             wxyz_lo[i] = 1.0 - wxyz_hi[i];
         }
-        
+
         int& i = ijk[0];
         int& j = ijk[1];
         int& k = ijk[2];
-        
+
         AmrIntVect_t i1(i-1, j-1, k-1);
         AmrIntVect_t i2(i-1, j-1, k);
         AmrIntVect_t i3(i-1, j,   k-1);
@@ -265,7 +266,7 @@ void BoxLibParticle<PLayout>::AssignCellDensitySingleLevelFort(ParticleAttrib<AT
         AmrIntVect_t i6(i,   j-1, k);
         AmrIntVect_t i7(i,   j,   k-1);
         AmrIntVect_t i8(i,   j,   k);
-        
+
         fab(i1, 0) += wxyz_lo[0]*wxyz_lo[1]*wxyz_lo[2]*pa[ip];
         fab(i2, 0) += wxyz_lo[0]*wxyz_lo[1]*wxyz_hi[2]*pa[ip];
         fab(i3, 0) += wxyz_lo[0]*wxyz_hi[1]*wxyz_lo[2]*pa[ip];
@@ -276,7 +277,7 @@ void BoxLibParticle<PLayout>::AssignCellDensitySingleLevelFort(ParticleAttrib<AT
         fab(i8, 0) += wxyz_hi[0]*wxyz_hi[1]*wxyz_hi[2]*pa[ip];
         // end of amrex_deposit_cic
     }
-    
+
     mf_pointer->SumBoundary(gm.periodicity());
 
     // Only multiply the first component by (1/vol) because this converts mass
@@ -313,7 +314,7 @@ void BoxLibParticle<PLayout>::InterpolateFort(ParticleAttrib<AType> &pa,
 
 template<class PLayout>
 template <class AType>
-void BoxLibParticle<PLayout>::InterpolateSingleLevelFort(ParticleAttrib<AType> &pa,
+void BoxLibParticle<PLayout>::InterpolateSingleLevelFort(ParticleAttrib<AType>& pa,
                                                          AmrVectorField_t& mesh_data, int lev)
 {
     for (std::size_t i = 0; i < mesh_data.size(); ++i) {
@@ -321,23 +322,23 @@ void BoxLibParticle<PLayout>::InterpolateSingleLevelFort(ParticleAttrib<AType> &
             throw OpalException("BoxLibParticle::InterpolateSingleLevelFort()",
                                 "Must have at least one ghost cell when in InterpolateSingleLevelFort");
     }
-    
+
     PLayout *layout_p = &this->getLayout();
-    
+
     const AmrGeometry_t& gm          = layout_p->Geom(lev);
     const AmrReal_t*     plo         = gm.ProbLo();
     const AmrReal_t*     dx          = gm.CellSize();
-    
+
     //loop trough particles and distribute values on the grid
     const ParticleLevelCounter_t& LocalNumPerLevel = this->getLocalNumPerLevel();
     size_t lBegin = LocalNumPerLevel.begin(lev);
-    size_t lEnd   = LocalNumPerLevel.end(lev);    
-    
+    size_t lEnd   = LocalNumPerLevel.end(lev);
+
     // make sure that boundaries are filled!
     for (std::size_t i = 0; i < mesh_data.size(); ++i) {
         mesh_data[i]->FillBoundary(gm.periodicity());
     }
-    
+
     AmrReal_t inv_dx[3] = { 1.0 / dx[0], 1.0 / dx[1], 1.0 / dx[2] };
     double lxyz[3] = { 0.0, 0.0, 0.0 };
     double wxyz_hi[3] = { 0.0, 0.0, 0.0 };
@@ -349,8 +350,7 @@ void BoxLibParticle<PLayout>::InterpolateSingleLevelFort(ParticleAttrib<AType> &
         FArrayBox_t& exfab = (*mesh_data[0])[grid];
         FArrayBox_t& eyfab = (*mesh_data[1])[grid];
         FArrayBox_t& ezfab = (*mesh_data[2])[grid];
-        
-        
+
         // not callable
         // begin amrex_interpolate_cic(pbx.data(), nstride, N, fab.dataPtr(), box.loVect(), box.hiVect(), nComp, plo, dx);
         for (int i = 0; i < 3; ++i) {
@@ -359,11 +359,11 @@ void BoxLibParticle<PLayout>::InterpolateSingleLevelFort(ParticleAttrib<AType> &
             wxyz_hi[i] = lxyz[i] - ijk[i];
             wxyz_lo[i] = 1.0 - wxyz_hi[i];
         }
-        
+
         int& i = ijk[0];
         int& j = ijk[1];
         int& k = ijk[2];
-        
+
         AmrIntVect_t i1(i-1, j-1, k-1);
         AmrIntVect_t i2(i-1, j-1, k);
         AmrIntVect_t i3(i-1, j,   k-1);
@@ -372,7 +372,7 @@ void BoxLibParticle<PLayout>::InterpolateSingleLevelFort(ParticleAttrib<AType> &
         AmrIntVect_t i6(i,   j-1, k);
         AmrIntVect_t i7(i,   j,   k-1);
         AmrIntVect_t i8(i,   j,   k);
-        
+
         pa[ip](0) = wxyz_lo[0]*wxyz_lo[1]*wxyz_lo[2]*exfab(i1) +
                     wxyz_lo[0]*wxyz_lo[1]*wxyz_hi[2]*exfab(i2) +
                     wxyz_lo[0]*wxyz_hi[1]*wxyz_lo[2]*exfab(i3) +
@@ -381,7 +381,7 @@ void BoxLibParticle<PLayout>::InterpolateSingleLevelFort(ParticleAttrib<AType> &
                     wxyz_hi[0]*wxyz_lo[1]*wxyz_hi[2]*exfab(i6) +
                     wxyz_hi[0]*wxyz_hi[1]*wxyz_lo[2]*exfab(i7) +
                     wxyz_hi[0]*wxyz_hi[1]*wxyz_hi[2]*exfab(i8);
-        
+
         pa[ip](1) = wxyz_lo[0]*wxyz_lo[1]*wxyz_lo[2]*eyfab(i1) +
                     wxyz_lo[0]*wxyz_lo[1]*wxyz_hi[2]*eyfab(i2) +
                     wxyz_lo[0]*wxyz_hi[1]*wxyz_lo[2]*eyfab(i3) +
@@ -390,7 +390,7 @@ void BoxLibParticle<PLayout>::InterpolateSingleLevelFort(ParticleAttrib<AType> &
                     wxyz_hi[0]*wxyz_lo[1]*wxyz_hi[2]*eyfab(i6) +
                     wxyz_hi[0]*wxyz_hi[1]*wxyz_lo[2]*eyfab(i7) +
                     wxyz_hi[0]*wxyz_hi[1]*wxyz_hi[2]*eyfab(i8);
-        
+
         pa[ip](2) = wxyz_lo[0]*wxyz_lo[1]*wxyz_lo[2]*ezfab(i1) +
                     wxyz_lo[0]*wxyz_lo[1]*wxyz_hi[2]*ezfab(i2) +
                     wxyz_lo[0]*wxyz_hi[1]*wxyz_lo[2]*ezfab(i3) +
@@ -406,7 +406,7 @@ void BoxLibParticle<PLayout>::InterpolateSingleLevelFort(ParticleAttrib<AType> &
 
 template<class PLayout>
 template <class AType>
-void BoxLibParticle<PLayout>::InterpolateMultiLevelFort(ParticleAttrib<AType> &pa,
+void BoxLibParticle<PLayout>::InterpolateMultiLevelFort(ParticleAttrib<AType>& pa,
                                                         AmrVectorFieldContainer_t& mesh_data,
                                                         int lev)
 {
@@ -415,32 +415,32 @@ void BoxLibParticle<PLayout>::InterpolateMultiLevelFort(ParticleAttrib<AType> &p
             throw OpalException("BoxLibParticle::InterpolateMultiLevelFort()",
                                 "Must have at least one ghost cell when in InterpolateMultiLevelFort");
     }
-    
+
     PLayout *layout_p = &this->getLayout();
-    
+
     const AmrGeometry_t& gm   = layout_p->Geom(lev);
     const AmrReal_t*     plo  = gm.ProbLo();
     const AmrReal_t*     fdx  = gm.CellSize();
     const AmrReal_t*     cdx  = layout_p->Geom(lev-1).CellSize();
     const AmrReal_t*     cplo = layout_p->Geom(lev-1).ProbLo();
-    
+
     //loop trough particles and distribute values on the grid
     const ParticleLevelCounter_t& LocalNumPerLevel = this->getLocalNumPerLevel();
     size_t lBegin = LocalNumPerLevel.begin(lev);
-    size_t lEnd   = LocalNumPerLevel.end(lev);    
-    
+    size_t lEnd   = LocalNumPerLevel.end(lev);
+
     // make sure that boundaries are filled!
     for (std::size_t i = 0; i < mesh_data[lev].size(); ++i) {
         mesh_data[lev][i]->FillBoundary(gm.periodicity());
     }
-    
+
     AmrReal_t inv_fdx[3] = { 1.0 / fdx[0], 1.0 / fdx[1], 1.0 / fdx[2] };
     AmrReal_t inv_cdx[3] = { 1.0 / cdx[0], 1.0 / cdx[1], 1.0 / cdx[2] };
     double lxyz[3] = { 0.0, 0.0, 0.0 };
     double wxyz_hi[3] = { 0.0, 0.0, 0.0 };
     double wxyz_lo[3] = { 0.0, 0.0, 0.0 };
     int ijk[3] = { 0, 0, 0 };
-    
+
     const AmrGrid_t& fba = mesh_data[lev][0]->boxArray();
     const AmrProcMap_t& fdmap = mesh_data[lev][0]->DistributionMap();
     AmrGrid_t cba = fba;
@@ -449,18 +449,18 @@ void BoxLibParticle<PLayout>::InterpolateMultiLevelFort(ParticleAttrib<AType> &p
     AmrField_t cmesh_exdata(cba, fdmap,
                             mesh_data[lev][0]->nComp(),
                             mesh_data[lev][0]->nGrow());
-    
+
     cmesh_exdata.setVal(0.0, 0, 1, mesh_data[lev][0]->nGrow());
     cmesh_exdata.copy(*mesh_data[lev-1][0], 0, 0, 1, 1, 1);
     cmesh_exdata.FillBoundary(gm.periodicity());
-    
+
     AmrField_t cmesh_eydata(cba, fdmap,
                             mesh_data[lev][1]->nComp(),
                             mesh_data[lev][1]->nGrow());
     cmesh_eydata.setVal(0.0, 0, 1, mesh_data[lev][1]->nGrow());
     cmesh_eydata.copy(*mesh_data[lev-1][1], 0, 0, 1, 1, 1);
     cmesh_eydata.FillBoundary(gm.periodicity());
-    
+
     AmrField_t cmesh_ezdata(cba, fdmap,
                             mesh_data[lev][2]->nComp(),
                             mesh_data[lev][2]->nGrow());
@@ -469,19 +469,19 @@ void BoxLibParticle<PLayout>::InterpolateMultiLevelFort(ParticleAttrib<AType> &p
     cmesh_ezdata.FillBoundary(gm.periodicity());
 
     for (size_t ip = lBegin; ip < lEnd; ++ip) {
-        
+
         const int grid = this->Grid[ip];
-        
+
         FArrayBox_t& exfab = (*(mesh_data[lev][0]))[grid];
         FArrayBox_t& eyfab = (*(mesh_data[lev][1]))[grid];
         FArrayBox_t& ezfab = (*(mesh_data[lev][2]))[grid];
-        
+
         FArrayBox_t& cexfab = cmesh_exdata[grid];
         FArrayBox_t& ceyfab = cmesh_eydata[grid];
         FArrayBox_t& cezfab = cmesh_ezdata[grid];
-        
+
         const typename PLayout::basefab_t& mfab = (*layout_p->getLevelMask(lev))[grid];
-        
+
         // not callable
         // begin amrex_interpolate_cic(pbx.data(), nstride, N, fab.dataPtr(), box.loVect(), box.hiVect(), nComp, plo, dx);
         for (int ii = 0; ii < 3; ++ii) {
@@ -490,18 +490,16 @@ void BoxLibParticle<PLayout>::InterpolateMultiLevelFort(ParticleAttrib<AType> &p
             wxyz_hi[ii] = lxyz[ii] - ijk[ii];
             wxyz_lo[ii] = 1.0 - wxyz_hi[ii];
         }
-        
+
         int& i = ijk[0];
         int& j = ijk[1];
         int& k = ijk[2];
-        
+
         bool use_coarse = false;
-        
+
         // AMReX: electrostatic_pic_3d.f90
         // use the coarse E near the level boundary
         if ( mfab(AmrIntVect_t(i-1, j-1, k-1)) == 1 ) {
-            
-            
             for (int ii = 0; ii < 3; ++ii) {
                 lxyz[ii] = ( this->R[ip](ii) - cplo[ii] ) * inv_cdx[ii] + 0.5;
                 ijk[ii] = lxyz[ii];
@@ -510,12 +508,12 @@ void BoxLibParticle<PLayout>::InterpolateMultiLevelFort(ParticleAttrib<AType> &p
             }
             use_coarse = true;
         }
-        
+
         AmrIntVect_t i1(i-1, j-1, k-1);
         AmrIntVect_t i3(i-1, j,   k-1);
         AmrIntVect_t i5(i,   j-1, k-1);
         AmrIntVect_t i7(i,   j,   k-1);
-        
+
         AmrIntVect_t i2(i-1, j-1, k);
         AmrIntVect_t i4(i-1, j,   k);
         AmrIntVect_t i6(i,   j-1, k);
@@ -529,7 +527,7 @@ void BoxLibParticle<PLayout>::InterpolateMultiLevelFort(ParticleAttrib<AType> &p
                         wxyz_lo[0] * wxyz_hi[1] * wxyz_hi[2] * cexfab(i4) +
                         wxyz_hi[0] * wxyz_lo[1] * wxyz_hi[2] * cexfab(i6) +
                         wxyz_hi[0] * wxyz_hi[1] * wxyz_hi[2] * cexfab(i8);
-                        
+
             pa[ip](1) = wxyz_lo[0] * wxyz_lo[1] * wxyz_lo[2] * ceyfab(i1) +
                         wxyz_lo[0] * wxyz_hi[1] * wxyz_lo[2] * ceyfab(i3) +
                         wxyz_hi[0] * wxyz_lo[1] * wxyz_lo[2] * ceyfab(i5) +
@@ -538,7 +536,7 @@ void BoxLibParticle<PLayout>::InterpolateMultiLevelFort(ParticleAttrib<AType> &p
                         wxyz_lo[0] * wxyz_hi[1] * wxyz_hi[2] * ceyfab(i4) +
                         wxyz_hi[0] * wxyz_lo[1] * wxyz_hi[2] * ceyfab(i6) +
                         wxyz_hi[0] * wxyz_hi[1] * wxyz_hi[2] * ceyfab(i8);
-                        
+
             pa[ip](2) = wxyz_lo[0] * wxyz_lo[1] * wxyz_lo[2] * cezfab(i1) +
                         wxyz_lo[0] * wxyz_hi[1] * wxyz_lo[2] * cezfab(i3) +
                         wxyz_hi[0] * wxyz_lo[1] * wxyz_lo[2] * cezfab(i5) +
@@ -556,7 +554,7 @@ void BoxLibParticle<PLayout>::InterpolateMultiLevelFort(ParticleAttrib<AType> &p
                          wxyz_lo[0] * wxyz_hi[1] * wxyz_hi[2] * exfab(i4) +
                          wxyz_hi[0] * wxyz_lo[1] * wxyz_hi[2] * exfab(i6) +
                          wxyz_hi[0] * wxyz_hi[1] * wxyz_hi[2] * exfab(i8);
-            
+
             pa[ip](1) =  wxyz_lo[0] * wxyz_lo[1] * wxyz_lo[2] * eyfab(i1) +
                          wxyz_lo[0] * wxyz_hi[1] * wxyz_lo[2] * eyfab(i3) +
                          wxyz_hi[0] * wxyz_lo[1] * wxyz_lo[2] * eyfab(i5) +
@@ -565,7 +563,7 @@ void BoxLibParticle<PLayout>::InterpolateMultiLevelFort(ParticleAttrib<AType> &p
                          wxyz_lo[0] * wxyz_hi[1] * wxyz_hi[2] * eyfab(i4) +
                          wxyz_hi[0] * wxyz_lo[1] * wxyz_hi[2] * eyfab(i6) +
                          wxyz_hi[0] * wxyz_hi[1] * wxyz_hi[2] * eyfab(i8);
-            
+
             pa[ip](2) =  wxyz_lo[0] * wxyz_lo[1] * wxyz_lo[2] * ezfab(i1) +
                          wxyz_lo[0] * wxyz_hi[1] * wxyz_lo[2] * ezfab(i3) +
                          wxyz_hi[0] * wxyz_lo[1] * wxyz_lo[2] * ezfab(i5) +

@@ -215,6 +215,12 @@ namespace Util {
         }
     }
 
+    bool isAllDigits(const std::string& str) {
+        return std::all_of(str.begin(),
+                           str.end(),
+                           [](char c) { return std::isdigit(c); });
+    }
+
     KahanAccumulation::KahanAccumulation():
         sum(0.0),
         correction(0.0)

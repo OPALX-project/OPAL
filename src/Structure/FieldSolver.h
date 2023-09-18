@@ -98,9 +98,9 @@ public:
     void setFieldSolverType();
     FieldSolverType getFieldSolverType() const;
 
-    inline Layout_t &getParticleLayout() { return* PL_m; }
+    inline Layout_t& getParticleLayout() { return* PL_m; }
 
-    FieldLayout_t *getFieldLayout() { return FL_m; }
+    FieldLayout_t* getFieldLayout() { return FL_m; }
 
     Inform& printInfo(Inform& os) const;
 
@@ -111,11 +111,11 @@ public:
     bool isAmrSolverType() const;
 
 #ifdef ENABLE_AMR
-    AmrObject *getAmrObject() {
+    AmrObject* getAmrObject() {
         return itsAmrObject_mp.get();
     }
-    
-    const AmrObject *getAmrObject() const {
+
+    const AmrObject* getAmrObject() const {
         return itsAmrObject_mp.get();
     }
 #endif
@@ -129,9 +129,9 @@ private:
     std::string getTagging_m() const;
 
     void initAmrObject_m();
-    
+
     void initAmrSolver_m();
-    
+
     std::unique_ptr<AmrObject> itsAmrObject_mp;
 #endif
 

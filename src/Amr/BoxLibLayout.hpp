@@ -36,14 +36,18 @@
 #ifndef BoxLibLayout_HPP
 #define BoxLibLayout_HPP
 
-#include "BoxLibLayout.h"
+#include "Amr/BoxLibLayout.h"
 
+#include "Algorithms/Vektor.h"
 #include "Message/Format.h"
 #include "Message/MsgBuffer.h"
 #include "Utility/PAssert.h"
 #include "Utilities/OpalException.h"
 
 #include <cmath>
+#include <utility>
+#include <vector>
+
 
 template <class T, unsigned Dim>
 Vector_t BoxLibLayout<T, Dim>::lowerBound = - Vector_t(1.0, 1.0, 1.0);
@@ -280,14 +284,12 @@ void BoxLibLayout<T, Dim>::update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
     std::vector<MsgBuffer*> buffers;
 
     //create a message and send particles to nodes they belong to
-    while (i!=p2n.end())
-    {
+    while (i!=p2n.end()) {
         unsigned cur_destination = i->first;
 
         MsgBuffer *msgbuf = new MsgBuffer(format, p2n.count(i->first));
 
-        for (; i!=p2n.end() && i->first == cur_destination; ++i)
-        {
+        for (; i!=p2n.end() && i->first == cur_destination; ++i) {
             Message msg;
             PData.putMessage(msg, i->second);
             PData.destroy(1, i->second);
@@ -305,54 +307,52 @@ void BoxLibLayout<T, Dim>::update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
     }
 
     //destroy the particles that are sent to other domains
-    if ( LocalNum < PData.getDestroyNum() )
+    if ( LocalNum < PData.getDestroyNum() ) {
         throw OpalException("BoxLibLayout::update()",
                             "Rank " + std::to_string(myN) +
                             " can't destroy more particles than possessed.");
-    else {
+    } else {
         LocalNum -= PData.getDestroyNum();  // update local num
         PData.performDestroy();
     }
 
     for (int lev = lev_min; lev <= lev_max; ++lev) {
-        if ( LocalNumPerLevel[lev] < 0 )
+        if ( LocalNumPerLevel[lev] < 0 ) {
             throw OpalException("BoxLibLayout::update()",
                                 "Negative particle level count.");
+        }
     }
 
     //receive new particles
-    for (int k = 0; k<msgrecv[myN]; ++k)
-    {
+    for (int k = 0; k<msgrecv[myN]; ++k) {
         int node = Communicate::COMM_ANY_NODE;
         char *buffer = 0;
         int bufsize = Ippl::Comm->raw_probe_receive(buffer, node, tag);
         MsgBuffer recvbuf(format, buffer, bufsize);
 
         Message *msg = recvbuf.get();
-        while (msg != 0)
-            {
-                /* pBeginIdx is the start index of the new particle data
-                 * pEndIdx is the last index of the new particle data
-                 */
-                size_t pBeginIdx = LocalNum;
+        while (msg != 0) {
+            /* pBeginIdx is the start index of the new particle data
+             * pEndIdx is the last index of the new particle data
+             */
+            size_t pBeginIdx = LocalNum;
 
-                LocalNum += PData.getSingleMessage(*msg);
+            LocalNum += PData.getSingleMessage(*msg);
 
-                size_t pEndIdx = LocalNum;
+            size_t pEndIdx = LocalNum;
 
-                for (size_t idx = pBeginIdx; idx < pEndIdx; ++idx)
-                    ++LocalNumPerLevel[ PData.Level[idx] ];
+            for (size_t idx = pBeginIdx; idx < pEndIdx; ++idx)
+                ++LocalNumPerLevel[ PData.Level[idx] ];
 
-                delete msg;
-                msg = recvbuf.get();
-            }
+            delete msg;
+            msg = recvbuf.get();
+        }
     }
 
     //wait for communication to finish and clean up buffers
     MPI_Request* requests_ptr = requests.empty()? static_cast<MPI_Request*>(0): &(requests[0]);
     MPI_Waitall(requests.size(), requests_ptr, MPI_STATUSES_IGNORE);
-    for (unsigned int j = 0; j<buffers.size(); ++j)
-    {
+    for (unsigned int j = 0; j<buffers.size(); ++j) {
         delete buffers[j];
     }
 
@@ -564,12 +564,10 @@ bool BoxLibLayout<T, Dim>::Where(AmrParticleBase< BoxLibLayout<T,Dim> >& p,
 
         if (lev == (int)p.Level[ip]) {
             // The fact that we are here means this particle does not belong to any finer grids.
-            if (0 <= p.Grid[ip] && p.Grid[ip] < ba.size())
-            {
+            if (0 <= p.Grid[ip] && p.Grid[ip] < ba.size()) {
                 const AmrBox_t& bx = ba.getCellCenteredBox(p.Grid[ip]);
                 const AmrBox_t& gbx = amrex::grow(bx,nGrow);
-                if (gbx.contains(iv))
-                {
+                if (gbx.contains(iv)) {
 //                     if (bx != pld.m_gridbox || !pld.m_tilebox.contains(iv)) {
 //                         pld.m_tile = getTileIndex(iv, bx, pld.m_tilebox);
 //                         pld.m_gridbox = bx;
@@ -581,8 +579,7 @@ bool BoxLibLayout<T, Dim>::Where(AmrParticleBase< BoxLibLayout<T,Dim> >& p,
 
         ba.intersections(AmrBox_t(iv, iv), isects, true, nGrow);
 
-        if (!isects.empty())
-        {
+        if (!isects.empty()) {
             p.Level[ip]  = lev;
             p.Grid[ip] = isects[0].first;
 
@@ -613,19 +610,16 @@ bool BoxLibLayout<T, Dim>::EnforcePeriodicWhere (AmrParticleBase< BoxLibLayout<T
     //
     SingleParticlePos_t R = p.R[ip];
 
-    if (PeriodicShift(R))
-    {
+    if (PeriodicShift(R)) {
         std::vector< std::pair<int, AmrBox_t> > isects;
 
-        for (int lev = lev_max; lev >= lev_min; lev--)
-        {
+        for (int lev = lev_max; lev >= lev_min; lev--) {
             const AmrIntVect_t& iv = Index(R, lev);
             const AmrGrid_t& ba = ParticleBoxArray(lev);
 
             ba.intersections(AmrBox_t(iv,iv),isects,true,0);
 
-            if (!isects.empty())
-            {
+            if (!isects.empty()) {
                 D_TERM(p.R[ip][0] = R[0];,
                        p.R[ip][1] = R[1];,
                        p.R[ip][2] = R[2];);
@@ -658,20 +652,18 @@ bool BoxLibLayout<T, Dim>::PeriodicShift (SingleParticlePos_t R) const
     const AmrIntVect_t&  iv      = Index(R, 0);
     bool            shifted = false;
 
-    for (int i = 0; i < AMREX_SPACEDIM; i++)
-    {
+    for (int i = 0; i < AMREX_SPACEDIM; i++) {
         if (!geom.isPeriodic(i)) continue;
 
-        if (iv[i] > dmn.bigEnd(i))
-        {
-            if (R[i] == geom.ProbHi(i))
+        if (iv[i] > dmn.bigEnd(i)) {
+            if (R[i] == geom.ProbHi(i)) {
                 //
                 // Don't let particles lie exactly on the domain face.
                 // Force the particle to be outside the domain so the
                 // periodic shift will bring it back inside.
                 //
                 R[i] += .125*geom.CellSize(i);
-
+            }
             R[i] -= geom.ProbLength(i);
 
             if (R[i] <= geom.ProbLo(i))
@@ -683,25 +675,24 @@ bool BoxLibLayout<T, Dim>::PeriodicShift (SingleParticlePos_t R) const
             PAssert(R[i] >= geom.ProbLo(i));
 
             shifted = true;
-        }
-        else if (iv[i] < dmn.smallEnd(i))
-        {
-            if (R[i] == geom.ProbLo(i))
+
+        } else if (iv[i] < dmn.smallEnd(i)) {
+            if (R[i] == geom.ProbLo(i)) {
                 //
                 // Don't let particles lie exactly on the domain face.
                 // Force the particle to be outside the domain so the
                 // periodic shift will bring it back inside.
                 //
                 R[i] -= .125*geom.CellSize(i);
-
+            }
             R[i] += geom.ProbLength(i);
 
-            if (R[i] >= geom.ProbHi(i))
+            if (R[i] >= geom.ProbHi(i)) {
                 //
                 // This can happen due to precision issues.
                 //
                 R[i] -= .125*geom.CellSize(i);
-
+            }
             PAssert(R[i] <= geom.ProbHi(i));
 
             shifted = true;
@@ -730,12 +721,10 @@ void BoxLibLayout<T, Dim>::locateParticle(
 
     bool success = false;
 
-    if (outside)
-    {
+    if (outside) {
         // Note that EnforcePeriodicWhere may shift the particle if it is successful.
         success = EnforcePeriodicWhere(p, ip, lev_min, lev_max);
-        if (!success && lev_min == 0)
-        {
+        if (!success && lev_min == 0) {
             // The particle has left the domain; invalidate it.
             p.destroy(1, ip);
             success = true;
@@ -747,19 +736,15 @@ void BoxLibLayout<T, Dim>::locateParticle(
                                 "We're losing particles although we shouldn't");
 
         }
-    }
-    else
-    {
+    } else {
         success = Where(p, ip, lev_min, lev_max);
     }
 
-    if (!success)
-    {
+    if (!success) {
         success = (nGrow > 0) && Where(p, ip, lev_min, lev_min, nGrow);
     }
 
-    if (!success)
-    {
+    if (!success) {
         std::stringstream ss;
         ss << "Invalid particle with ID " << ip << " at position " << p.R[ip] << ".";
         throw OpalException("BoxLibLayout::locateParticle()", ss.str());
@@ -788,8 +773,7 @@ int BoxLibLayout<T, Dim>::maxLevel () const {
 
 template <class T, unsigned Dim>
 typename BoxLibLayout<T, Dim>::AmrIntVect_t
-    BoxLibLayout<T, Dim>::refRatio (int level) const
-{
+    BoxLibLayout<T, Dim>::refRatio (int level) const {
     return refRatio_m[level];
 }
 
@@ -806,8 +790,7 @@ int BoxLibLayout<T, Dim>::MaxRefRatio (int level) const {
 template <class T, unsigned Dim>
 void BoxLibLayout<T, Dim>::initBaseBox_m(int nGridPoints,
                                          int maxGridSize,
-                                         double dh)
-{
+                                         double dh) {
     // physical box (in meters)
     AmrDomain_t real_box;
     for (int d = 0; d < AMREX_SPACEDIM; ++d) {

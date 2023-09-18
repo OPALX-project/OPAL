@@ -22,23 +22,24 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "AmrBoxLib.h"
+#include "Amr/AmrBoxLib.h"
 
 #include "Algorithms/AmrPartBunch.h"
+#include "Amr/AmrYtWriter.h"
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
-#include "Structure/FieldSolver.h"
 #include "Solvers/PoissonSolver.h"
+#include "Structure/FieldSolver.h"
+#include "Utilities/OpalException.h"
+#include "Utilities/Options.h"
 #include "Utility/PAssert.h"
 
-#include "Amr/AmrYtWriter.h"
-
-#include <AMReX_MultiFabUtil.H>
-
-#include <AMReX_ParmParse.H> // used in initialize function
 #include <AMReX_BCUtil.H>
+#include <AMReX_MultiFabUtil.H>
+#include <AMReX_ParmParse.H> // used in initialize function
 
-#include <map>
+#include <algorithm>
+#include <cmath>
 
 extern Inform* gmsg;
 
@@ -71,8 +72,7 @@ AmrBoxLib::AmrBoxLib(const AmrDomain_t& domain,
 
 
 std::unique_ptr<AmrBoxLib> AmrBoxLib::create(const AmrInfo& info,
-                                             AmrPartBunch* bunch_p)
-{
+                                             AmrPartBunch* bunch_p) {
     /* The bunch is initialized first with a Geometry,
      * BoxArray and DistributionMapping on
      * the base level (level = 0). Thus, we take the domain specified there in
@@ -135,8 +135,8 @@ void AmrBoxLib::regrid(double time) {
 
 
 void AmrBoxLib::getGridStatistics(std::map<int, long>& gridPtsPerCore,
-                                  std::vector<int>& gridsPerLevel) const
-{
+                                  std::vector<int>& gridsPerLevel) const {
+
     typedef std::vector<int> container_t;
 
     gridPtsPerCore.clear();
@@ -590,8 +590,8 @@ void AmrBoxLib::redistributeGrids(int /*how*/) {
 
 void AmrBoxLib::RemakeLevel (int lev, AmrReal_t /*time*/,
                              const AmrGrid_t& new_grids,
-                             const AmrProcMap_t& new_dmap)
-{
+                             const AmrProcMap_t& new_dmap) {
+
     SetBoxArray(lev, new_grids);
     SetDistributionMap(lev, new_dmap);
 
@@ -623,8 +623,7 @@ void AmrBoxLib::RemakeLevel (int lev, AmrReal_t /*time*/,
 
 void AmrBoxLib::MakeNewLevel (int lev, AmrReal_t /*time*/,
                               const AmrGrid_t& new_grids,
-                              const AmrProcMap_t& new_dmap)
-{
+                              const AmrProcMap_t& new_dmap) {
     SetBoxArray(lev, new_grids);
     SetDistributionMap(lev, new_dmap);
 
@@ -642,8 +641,6 @@ void AmrBoxLib::MakeNewLevel (int lev, AmrReal_t /*time*/,
     for (int j = 0; j < AMREX_SPACEDIM; ++j) {
         efield_m[lev][j]->setVal(0.0, 1);
     }
-
-
 
     /*
      * particles need to know the BoxArray
@@ -675,22 +672,22 @@ void AmrBoxLib::ErrorEst(int lev, TagBoxArray_t& tags,
     *gmsg << level2 << "*         Start tagging of level " << lev << endl;
 
     switch ( tagging_m ) {
-        case CHARGE_DENSITY:
+        case TaggingCriteria::CHARGE_DENSITY:
             tagForChargeDensity_m(lev, tags, time, ngrow);
             break;
-        case POTENTIAL:
+        case TaggingCriteria::POTENTIAL:
             tagForPotentialStrength_m(lev, tags, time, ngrow);
             break;
-        case EFIELD:
+        case TaggingCriteria::EFIELD:
             tagForEfield_m(lev, tags, time, ngrow);
             break;
-        case MOMENTA:
+        case TaggingCriteria::MOMENTA:
             tagForMomenta_m(lev, tags, time, ngrow);
             break;
-        case MAX_NUM_PARTICLES:
+        case TaggingCriteria::MAX_NUM_PARTICLES:
             tagForMaxNumParticles_m(lev, tags, time, ngrow);
             break;
-        case MIN_NUM_PARTICLES:
+        case TaggingCriteria::MIN_NUM_PARTICLES:
             tagForMinNumParticles_m(lev, tags, time, ngrow);
             break;
         default:
@@ -764,7 +761,7 @@ void AmrBoxLib::preRegrid_m() {
      * So, we need to solve the Poisson problem first assuming
      * a single bin only
      */
-    if ( tagging_m == POTENTIAL || tagging_m == EFIELD ) {
+    if ( tagging_m == TaggingCriteria::POTENTIAL || tagging_m == TaggingCriteria::EFIELD ) {
         this->solvePoisson_m();
     }
 }
@@ -1178,11 +1175,11 @@ void AmrBoxLib::tagForMinNumParticles_m(int lev, TagBoxArray_t& tags,
                     for (int k = tlo[2]; k <= thi[2]; ++k) {
                         AmrIntVect_t iv(i, j, k);
                         if ( cells.find(iv) != cells.end() &&
-                            cells[iv] >= minNumPart_m )
-                        {
+                            cells[iv] >= minNumPart_m ) {
                             tagfab(iv) = tagval;
-                        } else
+                        } else {
                             tagfab(iv) = clearval;
+                        }
                     }
                 }
             }
@@ -1529,21 +1526,18 @@ void AmrBoxLib::fillPhysbc_m(AmrField_t& mf, int lev) {
      * Author: Weiqun Zhang <weiqunzhang@lbl.gov>
      * Date:   Mon Jul 2 10:40:21 2018 -0700
      */
-    if (AmrGeometry_t::isAllPeriodic())
+    if (AmrGeometry_t::isAllPeriodic()) {
         return;
+    }
+
     // Set up BC; see Src/Base/AMReX_BC_TYPES.H for supported types
     amrex::Vector<amrex::BCRec> bc(mf.nComp());
-    for (int n = 0; n < mf.nComp(); ++n)
-    {
-        for (int idim = 0; idim < AMREX_SPACEDIM; ++idim)
-        {
-            if (AmrGeometry_t::isPeriodic(idim))
-            {
+    for (int n = 0; n < mf.nComp(); ++n) {
+        for (int idim = 0; idim < AMREX_SPACEDIM; ++idim) {
+            if (AmrGeometry_t::isPeriodic(idim)) {
                 bc[n].setLo(idim, amrex::BCType::int_dir); // interior
                 bc[n].setHi(idim, amrex::BCType::int_dir);
-            }
-            else
-            {
+            } else {
                 bc[n].setLo(idim, amrex::BCType::foextrap); // first-order extrapolation.
                 bc[n].setHi(idim, amrex::BCType::foextrap);
             }

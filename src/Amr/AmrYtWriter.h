@@ -31,16 +31,15 @@
 
 #include <vector>
 
-class AmrYtWriter : public AbstractAmrWriter {
-    
+class AmrYtWriter: public AbstractAmrWriter {
+
 public:
-    
     /*!
      * @param step we write
      * @param bin energy bin we write (multi-bunch simulation)
      */
     explicit AmrYtWriter(int step, int bin = 0);
-    
+
     /*!
      * Write yt files to the simulation subdirectory
      * data/amr/yt.
@@ -56,12 +55,11 @@ public:
                      const int& nLevel,
                      const double& time,
                      const double& scale);
-    
-    
+
     void writeBunch(const AmrPartBunch* bunch_p,
                     const double& time,
                     const double& gamma);
-    
+
 private:
     /* Copied and slightely modified version of
      * AMReX_ParticleContainerI.H
@@ -83,10 +81,9 @@ private:
                           amrex::Vector<long>& where,
                           const AmrPartBunch* bunch_p,
                           const double gamma) const;
-    
+
 private:
     std::string dir_m;                      ///< directory where to write files
-    
     std::vector<std::string> intData_m;     ///< integer bunch data
     std::vector<std::string> realData_m;    ///< real bunch data
 };
