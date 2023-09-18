@@ -45,10 +45,6 @@
     #include "Solvers/AMReXSolvers/MLPoissonSolver.h"
     #include "Amr/AmrDefs.h"
     #include "Algorithms/AmrPartBunch.h"
-
-    #include <algorithm>
-    #include <cctype>
-    #include <functional>
 #endif
 
 #ifdef HAVE_AMR_MG_SOLVER
@@ -274,7 +270,7 @@ FieldSolver::FieldSolver():
                                             8);
 
     itsAttr[AMR_TAGGING] = Attributes::makeUpperCaseString("AMR_TAGGING",
-                                                           "Refinement criteria [CHARGE_DENSITY | POTENTIAL | EFIELD]",
+                                                           "Refinement criteria [CHARGE_DENSITY | POTENTIAL | EFIELD | MIN_NUM_PARTICLES | MAX_NUM_PARTICLES]",
                                                            "CHARGE_DENSITY");
 
     itsAttr[AMR_DENSITY] = Attributes::makeReal("AMR_DENSITY",
@@ -713,15 +709,10 @@ Inform& FieldSolver::printInfo(Inform& os) const {
 std::string FieldSolver::getTagging_m() const {
     std::string tagging = Attributes::getString(itsAttr[AMR_TAGGING]);
 
-    std::function<bool(const std::string&)> all_digits = [](const std::string& s) {
-        // 15. Feb. 2019
-        // https://stackoverflow.com/questions/19678572/how-to-validate-that-there-are-only-digits-in-a-string
-        return std::all_of(s.begin(),  s.end(),
-        [](char c) { return std::isdigit(c); });
-    };
-
-    if ( all_digits(tagging) )
-        tagging = AmrObject::enum2string(std::stoi(tagging));
+    // This conversion was introduced to allow numbers for tagging (useful for the sampler).
+    if ( Util::isAllDigits(tagging) ) {
+        tagging = AmrObject::getTaggingString(std::stoi(tagging));
+    }
     return tagging;
 }
 

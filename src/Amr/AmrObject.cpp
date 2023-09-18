@@ -21,10 +21,12 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "AmrObject.h"
+#include "Amr/AmrObject.h"
+
+#include "Utilities/OpalException.h"
 
 AmrObject::AmrObject()
-    : AmrObject(CHARGE_DENSITY, 0.75, 1.0e-15)
+    : AmrObject(TaggingCriteria::CHARGE_DENSITY, 0.75, 1.0e-15)
 { }
 
 
@@ -52,23 +54,24 @@ void AmrObject::setTagging(TaggingCriteria tagging) {
 
 
 void AmrObject::setTagging(const std::string& tagging) {
-    if ( tagging == "POTENTIAL" )
-        tagging_m = TaggingCriteria::POTENTIAL;
-    else if (tagging == "EFIELD" )
-        tagging_m = TaggingCriteria::EFIELD;
-    else if ( tagging == "MOMENTA" )
-        tagging_m = TaggingCriteria::MOMENTA;
-    else if ( tagging == "MAX_NUM_PARTICLES" )
-        tagging_m = TaggingCriteria::MAX_NUM_PARTICLES;
-    else if ( tagging == "MIN_NUM_PARTICLES" )
-        tagging_m = TaggingCriteria::MIN_NUM_PARTICLES;
-    else if ( tagging == "CHARGE_DENSITY" )
-        tagging_m = TaggingCriteria::CHARGE_DENSITY;
-    else
-        throw OpalException("AmrObject::setTagging(std::string)",
-                            "Not supported refinement criteria "
+    static const std::map<std::string, TaggingCriteria> stringTaggingCriteria_s = {
+        {"CHARGE_DENSITY",     TaggingCriteria::CHARGE_DENSITY},
+        {"POTENTIAL",          TaggingCriteria::POTENTIAL},
+        {"EFIELD",             TaggingCriteria::EFIELD},
+        {"MOMENTA",            TaggingCriteria::MOMENTA},
+        {"MIN_NUM_PARTICLES",  TaggingCriteria::MIN_NUM_PARTICLES},
+        {"MAX_NUM_PARTICLES",  TaggingCriteria::MAX_NUM_PARTICLES }
+    };
+
+    if (stringTaggingCriteria_s.count(tagging)) {
+        tagging_m = stringTaggingCriteria_s.at(tagging);
+    } else {
+        throw OpalException("AmrObject::setTagging",
+                            "Not supported refinement criteria.\n"
+                            "Check the accepted values: "
                             "[CHARGE_DENSITY | POTENTIAL | EFIELD | "
-                            "MOMENTA | MAX_NUM_PARTICLES | MIN_NUM_PARTICLES].");
+                            "MOMENTA | MIN_NUM_PARTICLES | MAX_NUM_PARTICLES].");
+    }
 }
 
 
@@ -97,29 +100,29 @@ const bool& AmrObject::isRefined() const {
 }
 
 
-std::string AmrObject::enum2string(int number) {
+std::string AmrObject::getTaggingString(int number) {
     std::string tagging;
     switch ( number ) {
-        case TaggingCriteria::CHARGE_DENSITY:
+        case static_cast<std::underlying_type_t<TaggingCriteria>>(TaggingCriteria::CHARGE_DENSITY):
             tagging = "CHARGE_DENSITY";
             break;
-        case TaggingCriteria::POTENTIAL:
+        case static_cast<std::underlying_type_t<TaggingCriteria>>(TaggingCriteria::POTENTIAL):
             tagging = "POTENTIAL";
             break;
-        case TaggingCriteria::EFIELD:
+        case static_cast<std::underlying_type_t<TaggingCriteria>>(TaggingCriteria::EFIELD):
             tagging = "EFIELD";
             break;
-        case TaggingCriteria::MOMENTA:
+        case static_cast<std::underlying_type_t<TaggingCriteria>>(TaggingCriteria::MOMENTA):
             tagging = "MOMENTA";
             break;
-        case TaggingCriteria::MIN_NUM_PARTICLES:
+        case static_cast<std::underlying_type_t<TaggingCriteria>>(TaggingCriteria::MIN_NUM_PARTICLES):
             tagging = "MIN_NUM_PARTICLES";
             break;
-        case TaggingCriteria::MAX_NUM_PARTICLES:
+        case static_cast<std::underlying_type_t<TaggingCriteria>>(TaggingCriteria::MAX_NUM_PARTICLES):
             tagging = "MAX_NUM_PARTICLES";
             break;
         default:
-            throw OpalException("AmrObject::enum2string(int)",
+            throw OpalException("AmrObject::getTaggingString",
                                 "Only numbers between 0 and 5 allowed.");
     }
     return tagging;

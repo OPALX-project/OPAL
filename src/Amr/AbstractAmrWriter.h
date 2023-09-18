@@ -26,7 +26,7 @@
 #include "Algorithms/AmrPartBunch.h"
 
 class AbstractAmrWriter {
-    
+
 public:
     /*!
      * @param rho is the charge density on all levels
@@ -46,7 +46,7 @@ public:
                              const int& nLevel,
                              const double& time,
                              const double& scale = 1.0) = 0;
-    
+
     /*!
      * @param bunch_p
      * @param time
@@ -55,9 +55,9 @@ public:
     virtual void writeBunch(const AmrPartBunch* bunch_p,
                             const double& time,
                             const double& scale = 1.0) = 0;
-    
+
     virtual ~AbstractAmrWriter() { }
-    
+
 };
 
 #endif

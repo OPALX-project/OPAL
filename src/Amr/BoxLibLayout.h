@@ -44,23 +44,23 @@
 #include <AMReX_ParGDB.H>
 
 template<class T, unsigned Dim>
-class BoxLibLayout : public ParticleAmrLayout<T, Dim>,
-                     public amrex::ParGDB
+class BoxLibLayout: public ParticleAmrLayout<T, Dim>,
+                    public amrex::ParGDB
 {
-    
+
 public:
     typedef typename ParticleAmrLayout<T, Dim>::pair_t pair_t;
     typedef typename ParticleAmrLayout<T, Dim>::pair_iterator pair_iterator;
     typedef typename ParticleAmrLayout<T, Dim>::SingleParticlePos_t SingleParticlePos_t;
     typedef typename ParticleAmrLayout<T, Dim>::Index_t Index_t;
-    
+
     typedef amr::AmrField_t                AmrField_t;
     typedef amr::AmrVectorField_t          AmrVectorField_t;
     typedef amr::AmrScalarFieldContainer_t AmrScalarFieldContainer_t;
     typedef amr::AmrVectorFieldContainer_t AmrVectorFieldContainer_t;
     typedef typename ParticleAmrLayout<T, Dim>::ParticlePos_t ParticlePos_t;
     typedef ParticleAttrib<Index_t> ParticleIndex_t;
-    
+
     typedef amr::AmrProcMap_t           AmrProcMap_t;
     typedef amr::AmrGrid_t              AmrGrid_t;
     typedef amr::AmrGeometry_t          AmrGeometry_t;
@@ -73,10 +73,10 @@ public:
     typedef amr::AmrDomain_t            AmrDomain_t;
     typedef amr::AmrBox_t               AmrBox_t;
     typedef amr::AmrReal_t              AmrReal_t;
-    
+
     typedef amrex::BaseFab<int>         basefab_t;
     typedef amrex::FabArray<basefab_t>  mask_t;
-    
+
     /*!
      * Lower physical domain boundary (each dimension). It has to be
      * smaller than -1 since all particles are within \f$[-1, 1]^3\f$.
@@ -84,7 +84,7 @@ public:
      * enlargement factor (in [%]) in BoxLibLayout::initBaseBox_m().
      */
     static Vector_t lowerBound;
-    
+
     /*! Upper physical domain boundary (each dimension). It has to be
      * greater than 1 since all particles are within \f$[-1, 1]^3\f$.
      * The real computational domain is multiplied with the mesh
@@ -92,13 +92,13 @@ public:
      */
     static Vector_t upperBound;
 
+
 public:
-    
     /*!
      * Initializes default Geometry, DistributionMapping and BoxArray.
      */
     BoxLibLayout();
-    
+
     /*!
      * Given a layout it copies that.
      */
@@ -109,7 +109,7 @@ public:
      * @param maxGridSize for all levels.
      */
     BoxLibLayout(int nGridPoints, int maxGridSize);
-    
+
     /*!
      * Single-level constructor.
      * 
@@ -117,10 +117,10 @@ public:
      * @param dmap is the distribution map for grids
      * @param ba is the array of boxes for a level
      */
-    BoxLibLayout(const AmrGeometry_t &geom,
-                 const AmrProcMap_t &dmap,
-                 const AmrGrid_t &ba);
-    
+    BoxLibLayout(const AmrGeometry_t& geom,
+                 const AmrProcMap_t& dmap,
+                 const AmrGrid_t& ba);
+
     /*!
      * Multi-level constructor.
      * 
@@ -131,16 +131,15 @@ public:
      * @param rr is the refinement ratio among the levels
      * (always the ratio from l to l+1)
      */
-    BoxLibLayout(const AmrGeomContainer_t &geom,
-                 const AmrProcMapContainer_t &dmap,
-                 const AmrGridContainer_t &ba,
-                 const AmrIntArray_t &rr);
-    
-    
+    BoxLibLayout(const AmrGeomContainer_t& geom,
+                 const AmrProcMapContainer_t& dmap,
+                 const AmrGridContainer_t& ba,
+                 const AmrIntArray_t& rr);
+
     /*
      * Overloaded functions of ParticleAmrLayout
      */
-    
+
     /*!
      * This method is used when creating the AMR object. OPAL
      * takes the input argument BBOXINCR that is specified in
@@ -150,7 +149,7 @@ public:
      * @param dh is the mesh enlargement factor
      */
     void setBoundingBox(double dh);
-    
+
     /*!
      * The Poisson computation domain is per default [-1,1]^3.
      * With this method this can be changed in order to account
@@ -160,18 +159,17 @@ public:
      */
     void setDomainRatio(const std::vector<double>& ratio);
 
-
     /*
      * Functions of IpplParticleBase
      */
-    
+
     /*!
      * This method shouldn't be called. Otherwise
      * it throws an exception.
      */
     void update(IpplParticleBase< BoxLibLayout<T,Dim> >& PData,
                 const ParticleAttrib<char>* canSwap = 0);
-    
+
     /*!
      * The proper update method for AMR.
      * 
@@ -185,12 +183,11 @@ public:
      */
     void update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
                 int lev_min = 0, int lev_max = -1, bool isRegrid = false);
-    
-    
+
     /*
      * Functions from AMReX that are adjusted to work with Ippl AmrParticleBase class
      */
-    
+
     /*!
      * Get the cell of a particle
      * 
@@ -200,7 +197,7 @@ public:
      */
     AmrIntVect_t Index (AmrParticleBase< BoxLibLayout<T,Dim> >& p,
                         const unsigned int ip, int level) const;
-    
+
     /*!
      * Get the cell of a particle
      * 
@@ -208,13 +205,11 @@ public:
      * @param lev is the level
      */
     AmrIntVect_t Index (SingleParticlePos_t &R, int lev) const;
-    
-    
+
     /*
      * Additional methods
      */
-    
-    
+
     /*!
      * Build mask for a level used for interpolation from
      * grid to particles to reduce spurious self field
@@ -225,8 +220,7 @@ public:
     void clearLevelMask(int lev);
 
     const std::unique_ptr<mask_t>& getLevelMask(int lev) const;
-    
-    
+
     /*!
      * The particles live initially on the coarsest level.
      * Furthermore, the order the OPAL input file is parsed
@@ -248,7 +242,6 @@ public:
 //         this->m_rr.resize(maxLevel);
         this->maxLevel_m = maxLevel;
     }
-    
 
     /*!
      * Set the geometry of the problem. It is called in
@@ -260,8 +253,7 @@ public:
         for (unsigned int i = 0; i < geom.size(); ++i)
             this->m_geom[i] = geom[i];
     }
-    
-    
+
     /*!
      * Set the refinement ratios. It is called in
      * AmrBoxLib::initBaseLevel_m().
@@ -273,44 +265,44 @@ public:
             refRatio_m[i] = refRatio[i];
         }
     }
-    
+
     /*
      * ParGDB overwritten functions
      */
-    
+
     /*!
      * Check if an AMR level is well defined
      * 
      * @param level to check
      */
     inline bool LevelDefined (int level) const;
-    
+
     /*!
      * @returns the current finest level
      */
     inline int finestLevel () const;
-    
+
     /*!
      * @returns the maximum level of simulation
      */
     inline int maxLevel () const;
-    
+
     /*!
      * @param level
      * @returns the refinement ratio of this level to the next
      * higher one
      */
     inline AmrIntVect_t refRatio (int level) const;
-    
+
     /*!
      * @param level
      * @returns the maximum refinement ratio among all directions
      * for the given level.
      */
     inline int MaxRefRatio (int level) const;
-    
+
+
 private:
-    
     /*!
      * Set up the box for the whole computation.
      * The AMR object owning the bunch is not yet initialized.
@@ -320,12 +312,12 @@ private:
      * @param dh is the mesh enlargement factor
      */
     void initBaseBox_m(int nGridPoints, int maxGridSize, double dh = 0.04);
-    
-    
+
+
     /*
      * Functions from AMReX that are adjusted to work with Ippl AmrParticleBase class
      */
-    
+
     /*!
      * Function from AMReX adjusted to work with Ippl AmrParticleBase class
      * Checks/sets a particles location on levels lev_min and higher.
@@ -365,7 +357,7 @@ private:
      * @returns true if the particle was shifted.
      */
     bool PeriodicShift (SingleParticlePos_t R) const;
-    
+
     /*!
      * Function from AMReX adjusted to work with Ippl AmrParticleBase class
      * 
@@ -378,12 +370,12 @@ private:
     void locateParticle(AmrParticleBase< BoxLibLayout<T,Dim> >& p, 
                         const unsigned int ip,
                         int lev_min, int lev_max, int nGrow) const;
-    
+
+
 private:
-    
     // don't use m_rr from ParGDB since it is the same refinement in all directions
     AmrIntVectContainer_t refRatio_m;   /// Refinement ratios [0:finest_level-1]
-    
+
     /* mask to reduce spurious self-field forces at
      * coarse-fine interfaces
      */

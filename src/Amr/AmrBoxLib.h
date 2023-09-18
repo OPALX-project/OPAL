@@ -27,16 +27,18 @@
 
 #include "Amr/AmrObject.h"
 
-class AmrPartBunch;
-
 // AMReX headers
 #include <AMReX_AmrMesh.H>
 #include <AMReX.H>
 
-class AmrBoxLib : public AmrObject,
-                  public amrex::AmrMesh
-{
-    
+#include <map>
+#include <vector>
+
+class AmrPartBunch;
+
+class AmrBoxLib: public AmrObject,
+                 public amrex::AmrMesh {
+
 public:
     typedef amr::AmrField_t                 AmrField_t;
     typedef amr::AmrScalarFieldContainer_t  AmrScalarFieldContainer_t;
@@ -51,14 +53,13 @@ public:
     typedef amr::AmrProcMap_t               AmrProcMap_t;
     typedef amr::AmrGeometry_t              AmrGeometry_t;
     typedef amr::AmrIntVect_t               AmrIntVect_t;
-    
+
     typedef amrex::FArrayBox                FArrayBox_t;
     typedef amrex::Box                      Box_t;
     typedef amrex::TagBox                   TagBox_t;
     typedef amrex::TagBoxArray              TagBoxArray_t;
     typedef amrex::MFIter                   MFIter_t;
-    
-    
+
     /*!
      * Used for the redistribution of grids
      */
@@ -68,9 +69,8 @@ public:
         RANDOM    = 2,
         KNAPSACK  = 3
     };
-    
+
 public:
-    
     /*!
      * See other constructors documentation for further info.
      * @param domain is the physical domain of the problem
@@ -82,7 +82,7 @@ public:
               const AmrIntArray_t& nGridPts,
               int maxLevel,
               AmrPartBunch* bunch_p);
-    
+
     /*!
      * Create a new object
      * @param info are the initial informations to construct an AmrBoxLib object.
@@ -92,7 +92,7 @@ public:
      */
     static std::unique_ptr<AmrBoxLib> create(const AmrInfo& info,
                                              AmrPartBunch* bunch_p);
-    
+
     /*!
      * Inherited from AmrObject
      */
@@ -100,50 +100,50 @@ public:
 
     void getGridStatistics(std::map<int, long>& gridPtsPerCore,
                            std::vector<int>& gridsPerLevel) const;
-    
+
     /*!
      * Initial gridding. Sets up all levels.
      */
     void initFineLevels();
 
     VectorPair_t getEExtrema();
-    
+
     double getRho(int x, int y, int z);
-    
+
     void computeSelfFields();
-    
+
     void computeSelfFields(int bin);
-    
+
     void computeSelfFields_cycl(double gamma);
-    
+
     void computeSelfFields_cycl(int bin);
-    
+
     void updateMesh();
-    
+
     /*!
      * Mesh scaling for solver (gamma factor)
      * (in particle rest frame, the longitudinal length enlarged)
      */
     const Vector_t& getMeshScaling() const;
-    
+
     Vektor<int, 3> getBaseLevelGridPoints() const;
-    
+
     const int& maxLevel() const;
     const int& finestLevel() const;
-    
+
     /*!
      * @returns the time of the bunch [s]
      */
     double getT() const;
-    
+
     void redistributeGrids(int how);
-    
-    
+
+
 protected:
     /*
      * AmrMesh functions
      */
-    
+
     /*!
      * Update the grids and the distributionmapping for a specific level
      * (inherited from AmrMesh)
@@ -154,7 +154,7 @@ protected:
      */
     void RemakeLevel (int lev, AmrReal_t time,
                       const AmrGrid_t& new_grids, const AmrProcMap_t& new_dmap);
-    
+
     /*!
      * Create completeley new grids for a level (inherited from AmrMesh)
      * @param lev is the current level
@@ -164,20 +164,19 @@ protected:
      */
     void MakeNewLevel (int lev, AmrReal_t time,
                        const AmrGrid_t& new_grids, const AmrProcMap_t& new_dmap);
-    
+
     /*!
      * Clean up a level.
      * @param lev to free allocated memory.
      */
     void ClearLevel(int lev);
-    
+
     /*!
      * Is called in the AmrMesh function for performing tagging. (inherited from AmrMesh)
      */
     virtual void ErrorEst(int lev, TagBoxArray_t& tags,
                           AmrReal_t time, int ngrow) override;
-    
-    
+
     /*!
      * Make a new level from scratch using provided BoxArray and
      * DistributionMapping.
@@ -190,9 +189,9 @@ protected:
      * @param ba the boxes
      * @param dm the grid distribution among cores
      */
-    void MakeNewLevelFromScratch (int lev, AmrReal_t time,
-                                  const AmrGrid_t& ba,
-                                  const AmrProcMap_t& dm);
+    void MakeNewLevelFromScratch(int lev, AmrReal_t time,
+                                 const AmrGrid_t& ba,
+                                 const AmrProcMap_t& dm);
 
     /*!
      * Make a new level using provided BoxArray and
@@ -205,9 +204,10 @@ protected:
      * @param ba the boxes
      * @param dm the grid distribution among cores
      */
-    void MakeNewLevelFromCoarse (int lev, AmrReal_t time,
-                                 const AmrGrid_t& ba,
-                                 const AmrProcMap_t& dm);
+    void MakeNewLevelFromCoarse(int lev, AmrReal_t time,
+                                const AmrGrid_t& ba,
+                                const AmrProcMap_t& dm);
+
 
 private:
     /*!
@@ -217,7 +217,6 @@ private:
      * @param time of regrid
      */
     void doRegrid_m(int lbase, double time);
-    
 
     /*!
      * Called within doRegrid_m(). Especially used
@@ -233,15 +232,13 @@ private:
      */
     void postRegrid_m(int old_finest);
 
-
     double solvePoisson_m();
 
-    
     /* ATTENTION
      * The tagging routines assume the particles to be in the
      * AMR domain, i.e. [-1, 1]^3
      */
-    
+
     /*!
      * Mark a cell for refinement if the value is greater equal
      * than some amount of charge (AmrObject::chargedensity_m).
@@ -253,7 +250,7 @@ private:
      */
     void tagForChargeDensity_m(int lev, TagBoxArray_t& tags,
                                AmrReal_t time, int ngrow);
-    
+
     /*!
      * Mark a cell for refinement if the potential value is greater
      * equal than the maximum value of the potential on the grid
@@ -266,7 +263,7 @@ private:
      */
     void tagForPotentialStrength_m(int lev, TagBoxArray_t& tags,
                                    AmrReal_t time, int ngrow);
-    
+
     /*!
      * Mark a cell for refinement if one of the electric field components
      * is greater equal the maximum electric field value per direction scaled
@@ -279,7 +276,7 @@ private:
      */
     void tagForEfield_m(int lev, TagBoxArray_t& tags,
                         AmrReal_t time, int ngrow);
-    
+
     /*!
      * Mark a cell for refinement if at least one particle has
      * a high momentum. The lower bound is specified by the
@@ -293,7 +290,7 @@ private:
      */
     void tagForMomenta_m(int lev, TagBoxArray_t& tags,
                          AmrReal_t time, int ngrow);
-    
+
     /*!
      * Mark a cell for refinement if it contains at most
      * AmrObject::maxNumPart_m particles.
@@ -305,7 +302,7 @@ private:
      */
     void tagForMaxNumParticles_m(int lev, TagBoxArray_t& tags,
                                  AmrReal_t time, int ngrow);
-    
+
     /*!
      * Mark a cell for refinement if it contains at least
      * AmrObject::minNumPart_m particles.
@@ -317,7 +314,7 @@ private:
      */
     void tagForMinNumParticles_m(int lev, TagBoxArray_t& tags,
                                  AmrReal_t time, int ngrow);
-    
+
     /*!
      * Use particle BoxArray and DistributionMapping for AmrObject and
      * reset geometry for bunch
@@ -325,7 +322,7 @@ private:
      * @param nGridPts per dimension (nx, ny, nz / nt)
      */
     void initBaseLevel_m(const AmrIntArray_t& nGridPts);
-    
+
     /*!
      * AMReX uses the ParmParse object to initialize
      * parameters like the maximum level etc.
@@ -336,15 +333,14 @@ private:
      * @param layout_p of bunch
      */
     static void initParmParse_m(const AmrInfo& info, AmrLayout_t* layout_p);
-    
+
     /*!
      * Fill the physical / mesh boundary values
      * 
      * @param mf field to fill boundary values
      */
     void fillPhysbc_m(AmrField_t& mf, int lev = 0);
-    
-    
+
 //     void gradient(int lev) {
 //         
 //         phi_m[lev]->FillBoundary(geom[lev].periodicity());
@@ -382,23 +378,24 @@ private:
 //             }
 //         }
 //     }
-    
+
+
 private:
     /// bunch used for tagging strategies
-    AmrPartBunch *bunch_mp;
-    
+    AmrPartBunch* bunch_mp;
+
     // the layout of the bunch
-    AmrLayout_t  *layout_mp;
-    
+    AmrLayout_t* layout_mp;
+
     /// charge density on the grid for all levels
     AmrScalarFieldContainer_t rho_m;
-    
+
     /// scalar potential on the grid for all levels
     AmrScalarFieldContainer_t phi_m;
-    
+
     /// vector field on the grid for all levels
     AmrVectorFieldContainer_t efield_m;
-    
+
     /// in particle rest frame, the longitudinal length enlarged
     Vector_t meshScaling_m;
 
