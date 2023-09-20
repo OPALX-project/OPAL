@@ -2,7 +2,7 @@
 // Class TrackRun
 //   The RUN command.
 //
-// Copyright (c) 200x - 2022, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 200x - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -77,29 +77,30 @@ private:
     void setupThickTracker();
     void setupFieldsolver();
 
+    void initPhaseSpaceSink();
+
     void initDataSink(const int& numBunch = 1);
 
     void setBoundaryGeometry();
 
     double setDistributionParallelT(Beam* beam);
 
-    /*  itsTracker is a static object; this enables access to the last executed 
+    /*  itsTracker_m is a static object; this enables access to the last executed
      *  tracker object without excessive gymnastics, e.g. for access to the 
      *  field maps in PyField
      */
-    static std::shared_ptr<Tracker> itsTracker;
+    static std::shared_ptr<Tracker> itsTracker_m;
 
-    Distribution* dist;
-
+    Distribution* dist_m;
     std::vector<Distribution*> distrs_m;
 
-    FieldSolver* fs;
+    FieldSolver* fieldSolver_m;
 
-    DataSink* ds;
+    DataSink* dataSink_m;
 
     H5PartWrapper* phaseSpaceSink_m;
 
-    OpalData* opal;
+    OpalData* opalData_m;
 
     bool isFollowupTrack_m;
 
