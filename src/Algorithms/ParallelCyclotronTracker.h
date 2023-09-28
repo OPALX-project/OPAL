@@ -29,6 +29,7 @@
 #define OPAL_ParallelCyclotronTracker_HH
 
 #include "AbsBeamline/ElementBase.h"
+#include "Algorithms/BoostMatrix.h"
 #include "Algorithms/MultiBunchHandler.h"
 #include "Algorithms/Tracker.h"
 #include "Steppers/Steppers.h"
@@ -471,6 +472,9 @@ private:
     TrackingMode mode_m;
 
     Steppers::TimeIntegrator stepper_m;
+
+    // for change of coordinates
+    matrix_t rotation_m;
 
     /// Check if turn done
     bool isTurnDone();

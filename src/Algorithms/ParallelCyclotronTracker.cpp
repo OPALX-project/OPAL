@@ -60,7 +60,6 @@
 #include "AbstractObjects/Element.h"
 #include "AbstractObjects/OpalData.h"
 
-#include "Algorithms/BoostMatrix.h"
 #include "Algorithms/Ctunes.h"
 #include "Algorithms/PolynomialTimeDependence.h"
 
@@ -135,6 +134,7 @@ ParallelCyclotronTracker::ParallelCyclotronTracker(const Beamline& beamline,
     , itsStepper_mp(nullptr)
     , mode_m(TrackingMode::UNDEFINED)
     , stepper_m(timeintegrator)
+    , rotation_m(3,3)
 {
     itsBeamline = dynamic_cast<Beamline*>(beamline.clone());
     itsDataSink = &ds;
@@ -1664,19 +1664,18 @@ void ParallelCyclotronTracker::globalToLocal(ParticleAttrib<Vector_t>& particleV
     IpplTimings::startTimer(TransformTimer_m);
     particleVectors -= translationToGlobal;
 
-    matrix_t rotation(3,3);
-    rotation(0,0) = std::cos(phi);
-    rotation(0,1) = std::sin(phi);
-    rotation(0,2) = 0;
-    rotation(1,0) = -std::sin(phi);
-    rotation(1,1) = std::cos(phi);
-    rotation(1,2) = 0;   
-    rotation(2,0) = 0;
-    rotation(2,1) = 0;
-    rotation(2,2) = 1;
+    rotation_m(0,0) = std::cos(phi);
+    rotation_m(0,1) = std::sin(phi);
+    rotation_m(0,2) = 0;
+    rotation_m(1,0) = -std::sin(phi);
+    rotation_m(1,1) = std::cos(phi);
+    rotation_m(1,2) = 0;   
+    rotation_m(2,0) = 0;
+    rotation_m(2,1) = 0;
+    rotation_m(2,2) = 1;
 
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
+        particleVectors[i] = prod_boost_vector(rotation_m, particleVectors[i]);
     }
     IpplTimings::stopTimer(TransformTimer_m);
 }
@@ -1685,19 +1684,18 @@ void ParallelCyclotronTracker::localToGlobal(ParticleAttrib<Vector_t>& particleV
                                              double phi, Vector_t const translationToGlobal) {
     IpplTimings::startTimer(TransformTimer_m);
 
-    matrix_t rotation(3,3);
-    rotation(0,0) = std::cos(phi);
-    rotation(0,1) = -std::sin(phi);
-    rotation(0,2) = 0;
-    rotation(1,0) = std::sin(phi);
-    rotation(1,1) = std::cos(phi);
-    rotation(1,2) = 0;
-    rotation(2,0) = 0;
-    rotation(2,1) = 0;
-    rotation(2,2) = 1;
+    rotation_m(0,0) = std::cos(phi);
+    rotation_m(0,1) = -std::sin(phi);
+    rotation_m(0,2) = 0;
+    rotation_m(1,0) = std::sin(phi);
+    rotation_m(1,1) = std::cos(phi);
+    rotation_m(1,2) = 0;
+    rotation_m(2,0) = 0;
+    rotation_m(2,1) = 0;
+    rotation_m(2,2) = 1;
 
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
+        particleVectors[i] = prod_boost_vector(rotation_m, particleVectors[i]);
     }
 
     particleVectors += translationToGlobal;
@@ -1859,73 +1857,69 @@ inline void ParallelCyclotronTracker::normalizeVector(Vector_t& vector) {
 inline void ParallelCyclotronTracker::rotateAroundZ(ParticleAttrib<Vector_t>& particleVectors, double const phi) {
     // Clockwise rotation of particles 'particleVectors' by 'phi' around Z axis
 
-    matrix_t rotation(3,3);
-    rotation(0,0) = std::cos(phi);
-    rotation(0,1) = std::sin(phi);
-    rotation(0,2) = 0;
-    rotation(1,0) = -std::sin(phi);
-    rotation(1,1) = std::cos(phi);
-    rotation(1,2) = 0;
-    rotation(2,0) = 0;
-    rotation(2,1) = 0;
-    rotation(2,2) = 1;
+    rotation_m(0,0) = std::cos(phi);
+    rotation_m(0,1) = std::sin(phi);
+    rotation_m(0,2) = 0;
+    rotation_m(1,0) = -std::sin(phi);
+    rotation_m(1,1) = std::cos(phi);
+    rotation_m(1,2) = 0;
+    rotation_m(2,0) = 0;
+    rotation_m(2,1) = 0;
+    rotation_m(2,2) = 1;
 
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
+        particleVectors[i] = prod_boost_vector(rotation_m, particleVectors[i]);
     }
 }
 
 inline void ParallelCyclotronTracker::rotateAroundZ(Vector_t& myVector, double const phi) {
     // Clockwise rotation of single vector 'myVector' by 'phi' around Z axis
 
-    matrix_t rotation(3,3);
-    rotation(0,0) = std::cos(phi);
-    rotation(0,1) = std::sin(phi);
-    rotation(0,2) = 0;
-    rotation(1,0) = -std::sin(phi);
-    rotation(1,1) = std::cos(phi);
-    rotation(1,2) = 0;
-    rotation(2,0) = 0;
-    rotation(2,1) = 0;
-    rotation(2,2) = 1;
+    rotation_m(0,0) = std::cos(phi);
+    rotation_m(0,1) = std::sin(phi);
+    rotation_m(0,2) = 0;
+    rotation_m(1,0) = -std::sin(phi);
+    rotation_m(1,1) = std::cos(phi);
+    rotation_m(1,2) = 0;
+    rotation_m(2,0) = 0;
+    rotation_m(2,1) = 0;
+    rotation_m(2,2) = 1;
 
-    myVector = prod_boost_vector(rotation, myVector);
+    myVector = prod_boost_vector(rotation_m, myVector);
 }
 
 inline void ParallelCyclotronTracker::rotateAroundX(ParticleAttrib<Vector_t>& particleVectors, double const psi) {
     // Clockwise rotation of particles 'particleVectors' by 'psi' around X axis
 
-    matrix_t rotation(3,3);
-    rotation(0,0) = 1;
-    rotation(0,1) = 0;
-    rotation(0,2) = 0;
-    rotation(1,0) = 0;
-    rotation(1,1) = std::cos(psi);
-    rotation(1,2) = std::sin(psi);
-    rotation(2,0) = 0;
-    rotation(2,1) = -std::sin(psi);
-    rotation(2,2) = std::cos(psi);
+    rotation_m(0,0) = 1;
+    rotation_m(0,1) = 0;
+    rotation_m(0,2) = 0;
+    rotation_m(1,0) = 0;
+    rotation_m(1,1) = std::cos(psi);
+    rotation_m(1,2) = std::sin(psi);
+    rotation_m(2,0) = 0;
+    rotation_m(2,1) = -std::sin(psi);
+    rotation_m(2,2) = std::cos(psi);
 
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
-        particleVectors[i] = prod_boost_vector(rotation, particleVectors[i]);
+        particleVectors[i] = prod_boost_vector(rotation_m, particleVectors[i]);
     }
 }
 
 inline void ParallelCyclotronTracker::rotateAroundX(Vector_t& myVector, double const psi) {
     // Clockwise rotation of single vector 'myVector' by 'psi' around X axis
 
-    matrix_t rotation(3,3);
-    rotation(0,0) = 1;
-    rotation(0,1) = 0;
-    rotation(0,2) = 0;
-    rotation(1,0) = 0;
-    rotation(1,1) = std::cos(psi);
-    rotation(1,2) = std::sin(psi);
-    rotation(2,0) = 0;
-    rotation(2,1) = -std::sin(psi);
-    rotation(2,2) = std::cos(psi);
+    rotation_m(0,0) = 1;
+    rotation_m(0,1) = 0;
+    rotation_m(0,2) = 0;
+    rotation_m(1,0) = 0;
+    rotation_m(1,1) = std::cos(psi);
+    rotation_m(1,2) = std::sin(psi);
+    rotation_m(2,0) = 0;
+    rotation_m(2,1) = -std::sin(psi);
+    rotation_m(2,2) = std::cos(psi);
 
-    myVector = prod_boost_vector(rotation, myVector);
+    myVector = prod_boost_vector(rotation_m, myVector);
 }
 
 inline void ParallelCyclotronTracker::getQuaternionTwoVectors(Vector_t u, Vector_t v, Quaternion_t& quaternion) {
