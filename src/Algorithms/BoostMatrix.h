@@ -23,20 +23,22 @@
 typedef boost::numeric::ublas::matrix<double> matrix_t;
 
 template<class T>
-T prod_boost_vector(boost::numeric::ublas::matrix<double> rotation, const T& vector) {
-        boost::numeric::ublas::vector<double> boostVector(3);
-        boostVector(0) = vector(0);
-        boostVector(1) = vector(1);
-        boostVector(2) = vector(2);
+T prod_boost_vector(const boost::numeric::ublas::matrix<double>& rotation, const T& vector) {
+    // Ensure that 'vector' has the correct size (3x1 or 1x3)
+    assert(vector.size() == 3);
 
-        boostVector = boost::numeric::ublas::prod(rotation, boostVector);
+    // Create a temporary result vector
+    T result;
 
-        T prodVector;
-        prodVector(0) = boostVector(0);
-        prodVector(1) = boostVector(1);
-        prodVector(2) = boostVector(2);
+    // Perform matrix-vector multiplication directly without copying
+    for (std::size_t i = 0; i < 3; ++i) {
+        result(i) = 0;
+        for (std::size_t j = 0; j < 3; ++j) {
+            result(i) += rotation(i, j) * vector(j);
+        }
+    }
 
-        return prodVector;
+    return result;
 }
 
 #endif
