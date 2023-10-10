@@ -2,7 +2,7 @@
 // Class Degrader
 //   Defines the abstract interface for a beam degrader.
 //
-// Copyright (c) 2000 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2000 - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved.
 //
 // This file is part of OPAL.
@@ -28,7 +28,6 @@
 class Degrader: public Component {
 
 public:
-
     /// Plane selection.
     enum Plane {
         /// Monitor is off (inactive).
@@ -49,36 +48,37 @@ public:
     virtual ~Degrader();
 
     /// Apply visitor to Degrader.
-    virtual void accept(BeamlineVisitor&) const;
+    virtual void accept(BeamlineVisitor&) const override;
 
-    virtual bool apply(const size_t& i, const double& t, Vector_t& E, Vector_t& B);
+    virtual bool apply(const size_t& i, const double& t, Vector_t& E, Vector_t& B) override;
 
     virtual bool applyToReferenceParticle(const Vector_t& R,
                                           const Vector_t& P,
                                           const double& t,
                                           Vector_t& E,
-                                          Vector_t& B);
+                                          Vector_t& B) override;
 
-    virtual void initialise(PartBunchBase<double, 3>* bunch, double& startField, double& endField);
+    virtual void initialise(PartBunchBase<double, 3>* bunch, double& startField, double& endField) override;
 
     virtual void initialise(PartBunchBase<double, 3>* bunch);
 
-    virtual void finalise();
+    virtual void finalise() override;
 
-    virtual bool bends() const;
+    virtual bool bends() const override;
 
-    virtual void goOnline(const double& kineticEnergy);
+    virtual void goOnline(const double& kineticEnergy) override;
 
-    virtual void goOffline();
+    virtual void goOffline() override;
 
-    virtual ElementType getType() const;
+    virtual ElementType getType() const override;
 
-    virtual void getDimensions(double& zBegin, double& zEnd) const;
+    virtual void getDimensions(double& zBegin, double& zEnd) const override;
 
-    virtual bool isInMaterial(double z);
+    virtual bool isInside(const Vector_t& R) const override;
+
+    void setDimensions(double xsize, double ysize);
 
 private:
-
     // Not implemented.
     void operator=(const Degrader&);
 
@@ -90,6 +90,9 @@ private:
     std::vector<double> MomentumZ_m;
     std::vector<double> time_m;
     std::vector<int> id_m;
+
+    double width_m;
+    double height_m;
 };
 
 #endif // CLASSIC_Degrader_HH

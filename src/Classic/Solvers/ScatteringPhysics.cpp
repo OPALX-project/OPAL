@@ -54,7 +54,7 @@ namespace {
             deg_m = static_cast<Degrader*>(el);
         }
         bool checkHit(const Vector_t& R) override {
-            return deg_m->isInMaterial(R(2));
+            return deg_m->isInside(R);
         }
     private:
         Degrader* deg_m;

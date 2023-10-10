@@ -2,7 +2,7 @@
 // Class Degrader
 //   Defines the abstract interface for a beam degrader.
 //
-// Copyright (c) 2000 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2000 - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved.
 //
 // This file is part of OPAL.
@@ -23,10 +23,10 @@
 #include "Solvers/ParticleMatterInteractionHandler.h"
 #include "Utilities/Options.h"
 
+#include <cmath>
 #include <memory>
-#include <string>
 
-extern Inform *gmsg;
+extern Inform* gmsg;
 
 
 Degrader::Degrader():
@@ -42,12 +42,16 @@ Degrader::Degrader(const Degrader& right):
     MomentumY_m(right.MomentumY_m),
     MomentumZ_m(right.MomentumZ_m),
     time_m(right.time_m),
-    id_m(right.id_m)
+    id_m(right.id_m),
+    width_m(right.width_m),
+    height_m(right.height_m)
 {}
 
 Degrader::Degrader(const std::string& name):
-    Component(name)
-{}
+    Component(name),
+    width_m(0.0),
+    height_m(0.0)
+{ }
 
 Degrader::~Degrader() {
     if(online_m)
@@ -58,11 +62,22 @@ void Degrader::accept(BeamlineVisitor& visitor) const {
     visitor.visitDegrader(*this);
 }
 
-inline bool Degrader::isInMaterial(double z) {
- /**
-     check if the particle is in the degarder material
-  */
-    return ((z > 0.0) && (z <= getElementLength()));
+void Degrader::setDimensions(double xsize, double ysize) {
+    width_m  = xsize;
+    height_m = ysize;
+}
+
+
+bool Degrader::isInside(const Vector_t& R) const {
+    /**
+     check if the particle is in the degrader material
+    */
+    bool hit = false;
+    if ( R(2) > 0.0 && R(2) <= getElementLength() &&
+         (4 * (std::pow(R(0) / width_m, 2) + std::pow(R(1) / height_m, 2)) <= 1) ) {
+        hit = true;
+    }
+    return hit;
 }
 
 bool Degrader::apply(const size_t& i, const double& t, Vector_t& /*E*/, Vector_t& /*B*/) {
@@ -70,7 +85,7 @@ bool Degrader::apply(const size_t& i, const double& t, Vector_t& /*E*/, Vector_t
     const Vector_t& R = RefPartBunch_m->R[i];
     const Vector_t& P = RefPartBunch_m->P[i];
 
-    if (isInMaterial(R(2))) {
+    if ( isInside(R) ) {
         //if particle was already marked as -1 (it means it should have gone into degrader but didn't)
         //set the label to -2 (will not go into degrader and will be deleted when particles per core > 2)
         if (RefPartBunch_m->Bin[i] < 0) {
@@ -99,7 +114,7 @@ bool Degrader::applyToReferenceParticle(const Vector_t& R,
                                         const double& /*t*/,
                                         Vector_t& E,
                                         Vector_t& /*B*/) {
-    if (!isInMaterial(R(2))) return false;
+    if ( !isInside(R) ) return false;
 
     Vector_t updatedP = P;
     bool isDead = getParticleMatterInteraction()->computeEnergyLoss(RefPartBunch_m, updatedP, RefPartBunch_m->getdT(), false);

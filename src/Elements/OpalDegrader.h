@@ -2,7 +2,7 @@
 // Class OpalDegrader
 //   The DEGRADER element.
 //
-// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 200x - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -25,7 +25,6 @@ class ParticleMatterInteraction;
 class OpalDegrader: public OpalElement {
 
 public:
-
     /// The attributes of class OpalDegrader.
     enum {
         XSIZE = COMMON,  // not used
@@ -45,7 +44,6 @@ public:
     virtual void update();
 
 private:
-
     // Not implemented.
     OpalDegrader(const OpalDegrader&);
     void operator=(const OpalDegrader&);

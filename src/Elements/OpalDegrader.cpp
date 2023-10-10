@@ -2,7 +2,7 @@
 // Class OpalDegrader
 //   The DEGRADER element.
 //
-// Copyright (c) 200x - 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 200x - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -26,9 +26,10 @@ OpalDegrader::OpalDegrader():
                 "The \"DEGRADER\" element defines a degrader."),
     parmatint_m(nullptr) {
     itsAttr[XSIZE] = Attributes::makeReal
-        ("XSIZE", "not used",0.0);
+        ("XSIZE", "Horizontal axis of the transverse elliptical shape [m]", 1E6);
+
     itsAttr[YSIZE] = Attributes::makeReal
-        ("YSIZE", "not used",0.0);
+        ("YSIZE", "Vertical axis of the transverse elliptical shape [m]", 1E6);
 
     registerOwnership();
 
@@ -57,11 +58,14 @@ OpalDegrader* OpalDegrader::clone(const std::string& name) {
 void OpalDegrader::update() {
     OpalElement::update();
 
-    DegraderRep* deg =
-        dynamic_cast<DegraderRep*>(getElement());
+    DegraderRep* deg = dynamic_cast<DegraderRep*>(getElement());
 
     double length = Attributes::getReal(itsAttr[LENGTH]);
+    double xsize = Attributes::getReal(itsAttr[XSIZE]);
+    double ysize = Attributes::getReal(itsAttr[YSIZE]);
+
     deg->setElementLength(length);
+    deg->setDimensions(xsize, ysize);
 
     if (itsAttr[PARTICLEMATTERINTERACTION] && parmatint_m == nullptr) {
         const std::string matterDescriptor = Attributes::getString(itsAttr[PARTICLEMATTERINTERACTION]);
