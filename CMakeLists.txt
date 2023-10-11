@@ -62,6 +62,7 @@ add_compile_options (-funroll-loops)
 add_compile_options (-fstrict-aliasing)
 
 option (WILL_BUILD_STATIC_LIBRARY "Building static library" ON)
+option (BUILD_OPAL_PYTHON "Building Python interface for OPAL" OFF)
 if (BUILD_OPAL_PYTHON)
     option (WILL_BUILD_SHARED_LIBRARY "Building python hooks - requires dynamic libs" ON)
     find_package (Python3 COMPONENTS Development REQUIRED)
