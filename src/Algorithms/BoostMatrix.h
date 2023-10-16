@@ -24,8 +24,6 @@ typedef boost::numeric::ublas::matrix<double> matrix_t;
 
 template<class T>
 T prod_boost_vector(const boost::numeric::ublas::matrix<double>& rotation, const T& vector) {
-    // Ensure that 'vector' has the correct size (3x1 or 1x3)
-    assert(vector.size() == 3);
 
     // Create a temporary result vector
     T result;
