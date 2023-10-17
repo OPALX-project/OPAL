@@ -2,7 +2,7 @@
 // Class Ring
 //   Defines the abstract interface for a ring type geometry.
 //
-// Copyright (c) 2012 - 2023, Chris Rogers, RAL-UKRI, England, UK
+// Copyright (c) 2012 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -26,7 +26,7 @@
 #include "Physics/Units.h"
 #include "Structure/LossDataSink.h"
 
-#include <cmath>
+
 #include <limits>
 #include <sstream>
 
@@ -38,7 +38,7 @@ const double Ring::angleTolerance_m = 1e-2;
 extern Inform* gmsg;
 extern Inform* gmsgALL;
 
-Ring::Ring(std::string ring)
+Ring::Ring(const std::string& ring)
     : Component(ring), planarArcGeometry_m(1, 1),
       refPartBunch_m(nullptr),
       lossDS_m(nullptr),
@@ -92,8 +92,8 @@ Ring::~Ring() {
         delete section_list_m[i];
 }
 
-bool Ring::apply(const size_t &id, const double &t,
-                 Vector_t &E, Vector_t &B) {
+bool Ring::apply(const size_t& id, const double& t,
+                 Vector_t& E, Vector_t& B) {
 
     bool flagNeedUpdate = apply(refPartBunch_m->R[id], refPartBunch_m->P[id], t, E, B);
 
@@ -113,8 +113,8 @@ bool Ring::apply(const size_t &id, const double &t,
     return flagNeedUpdate;
 }
 
-bool Ring::apply(const Vector_t &R, const Vector_t &/*P*/,
-                 const double &t, Vector_t &E, Vector_t &B) {
+bool Ring::apply(const Vector_t& R, const Vector_t& /*P*/,
+                 const double& t, Vector_t& E, Vector_t& B) {
     B = Vector_t(0.0, 0.0, 0.0);
     E = Vector_t(0.0, 0.0, 0.0);
 
@@ -122,7 +122,7 @@ bool Ring::apply(const Vector_t &R, const Vector_t &/*P*/,
     bool outOfBounds = true;
     // assume field maps don't set B, E to 0...
     if (willDoAperture_m) {
-        double rSquared = R[0]*R[0]+R[1]*R[1];
+        double rSquared = R[0] * R[0] + R[1] * R[1];
         if (rSquared < minR2_m || rSquared > maxR2_m) {
             return true;
         }
@@ -130,8 +130,7 @@ bool Ring::apply(const Vector_t &R, const Vector_t &/*P*/,
     for (size_t i = 0; i < sections.size(); ++i) {
         Vector_t B_temp(0.0, 0.0, 0.0);
         Vector_t E_temp(0.0, 0.0, 0.0);
-        // Super-TEMP! cyclotron tracker now uses m internally, have to change to mm here to match old field limits -DW
-        outOfBounds &= sections[i]->getFieldValue(R * Vector_t(Units::m2mm), refPartBunch_m->get_centroid() * Units::m2mm, t, E_temp, B_temp);
+        outOfBounds &= sections[i]->getFieldValue(R, refPartBunch_m->get_centroid(), t, E_temp, B_temp);
         B += (scale_m * B_temp);
         E += (scale_m * E_temp);
     }
@@ -143,19 +142,19 @@ void Ring::setLossDataSink(LossDataSink* sink) {
     lossDS_m = sink;
 }
 
-void Ring::getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {
+void Ring::getDimensions(double& /*zBegin*/, double& /*zEnd*/) const {
     throw GeneralClassicException("Ring::getDimensions",
                                   "Cannot get s-dimension of a ring");
 }
 
-void Ring::initialise(PartBunchBase<double, 3> *bunch) {
+void Ring::initialise(PartBunchBase<double, 3>* bunch) {
     online_m = true;
     setRefPartBunch(bunch);
     setLossDataSink(new LossDataSink(getName(), false));
 }
 
-void Ring::initialise(PartBunchBase<double, 3> * bunch, double &/*startField*/,
-                      double &/*endField*/) {
+void Ring::initialise(PartBunchBase<double, 3>* bunch,
+                      double& /*startField*/, double& /*endField*/) {
     initialise(bunch);
 }
 
@@ -179,7 +178,7 @@ Rotation3D Ring::getRotationStartToEnd(Euclid3D delta) const {
     // Euclid3D/Rotation3D doesnt have a "getAngle" method so we use fairly
     // obscure technique to extract it.
     Vector3D rotationTest(1., 0., 0.);
-    rotationTest = delta.getRotation()*rotationTest;
+    rotationTest = delta.getRotation() * rotationTest;
     double deltaAngle = std::atan2(rotationTest(2), rotationTest(0));
     Rotation3D elementRotation = Rotation3D::ZRotation(deltaAngle);
     return elementRotation;
@@ -213,8 +212,8 @@ Vector_t Ring::getNextPosition() const {
 }
 
 Vector_t Ring::getStartPosition() const {
-    return Vector_t(latticeRInit_m*std::cos(latticePhiInit_m),
-                    latticeRInit_m*std::sin(latticePhiInit_m),
+    return Vector_t(latticeRInit_m * std::cos(latticePhiInit_m),
+                    latticeRInit_m * std::sin(latticePhiInit_m),
                     0.);
 }
 
@@ -232,10 +231,10 @@ Vector_t Ring::getStartNormal() const {
                     0.);
 }
 
-void Ring::appendElement(const Component &element) {
+void Ring::appendElement(const Component& element) {
     if (isLocked_m) {
         throw GeneralClassicException("Ring::appendElement",
-                                      "Attempt to append element "+element.getName()+
+                                      "Attempt to append element " + element.getName() +
                                       " when ring is locked");
     }
 
@@ -255,17 +254,15 @@ void Ring::appendElement(const Component &element) {
     checkMidplane(delta);
 
     double placeF = std::atan2(startNorm(0), startNorm(1)); // angle between y axis and norm
-    Vector_t endPos = Vector_t(
-                               +delta.getVector()(0)*std::sin(placeF)+delta.getVector()(1)*std::cos(placeF),
-                               +delta.getVector()(0)*std::cos(placeF)-delta.getVector()(1)*std::sin(placeF),
-                               0)+startPos;
+    Vector_t endPos = Vector_t(+delta.getVector()(0) * std::sin(placeF) + delta.getVector()(1) * std::cos(placeF),
+                               +delta.getVector()(0) * std::cos(placeF) - delta.getVector()(1) * std::sin(placeF),
+                               0) + startPos;
     section->setEndPosition(endPos);
 
     double endF = delta.getRotation().getAxis()(2);//+
     //atan2(delta.getVector()(1), delta.getVector()(0));
-    Vector_t endNorm = Vector_t(
-                                +startNorm(0)*std::cos(endF) - startNorm(1)*std::sin(endF),
-                                +startNorm(0)*std::sin(endF) + startNorm(1)*std::cos(endF),
+    Vector_t endNorm = Vector_t(+startNorm(0) * std::cos(endF) - startNorm(1) * std::sin(endF),
+                                +startNorm(0) * std::sin(endF) + startNorm(1) * std::cos(endF),
                                 0);
     section->setEndNormal(endNorm);
 
@@ -337,10 +334,10 @@ void Ring::resetAzimuths() {
 }
 
 void Ring::checkAndClose() {
-    Vector_t first_pos = section_list_m[0]->getStartPosition();
+    Vector_t first_pos  = section_list_m[0]->getStartPosition();
     Vector_t first_norm = section_list_m[0]->getStartNormal();
-    Vector_t last_pos = section_list_m.back()->getEndPosition();
-    Vector_t last_norm = section_list_m.back()->getEndNormal();
+    Vector_t last_pos   = section_list_m.back()->getEndPosition();
+    Vector_t last_norm  = section_list_m.back()->getEndNormal();
     for (int i = 0; i < 3; ++i) {
         if (std::abs(first_pos(i) - last_pos(i)) > lengthTolerance_m ||
             std::abs(first_norm(i) - last_norm(i)) > angleTolerance_m)
@@ -352,7 +349,7 @@ void Ring::checkAndClose() {
 }
 
 void Ring::buildRingSections() {
-    size_t nSections = 2.*Physics::pi/phiStep_m+1;
+    size_t nSections = Physics::two_pi/phiStep_m+1;
     ringSections_m = std::vector< std::vector<RingSection*> >(nSections);
     for (size_t i = 0; i < ringSections_m.size(); ++i) {
         double phi0 = i*phiStep_m;
@@ -378,13 +375,13 @@ bool Ring::sectionCompare(RingSection const* const sec1,
 
 void Ring::setRingAperture(double minR, double maxR) {
     if (minR < 0 || maxR < 0) {
-            throw GeneralClassicException("Ring::setRingAperture",
-                        "Could not parse negative or undefined aperture limit");
+        throw GeneralClassicException("Ring::setRingAperture",
+                                      "Could not parse negative or undefined aperture limit");
     }
 
     willDoAperture_m = true;
-    minR2_m = minR*minR;
-    maxR2_m = maxR*maxR;
+    minR2_m = minR * minR;
+    maxR2_m = maxR * maxR;
 }
 
 RingSection* Ring::getSection(int i) const {
@@ -396,8 +393,8 @@ RingSection* Ring::getSection(int i) const {
     }
     RingSection* sec = section_list_m[i];
     if (sec == nullptr) {
-        throw GeneralClassicException("Ring::getSection(int)",
-            "Opal internal error - RingSection was null");
+        throw GeneralClassicException("Ring::getSection",
+                                      "Opal internal error - RingSection was null");
     }
     return sec;
 }

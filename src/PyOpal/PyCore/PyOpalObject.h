@@ -419,7 +419,7 @@ public:
     /** postcall action
      *  - ArgumentPackage: this is really a PyObject* holding the argument calls
      *  - result: filled by the postcall operation.
-     *  Sets the element_m to NULL. Note that the whole element_m stuff is a bit
+     *  Sets the element_m to nullptr. Note that the whole element_m stuff is a bit
      *  hacky. Probably possible to extract the element from ArgumentPackage, I
      *  didn't manage to do it yet.
      */
@@ -450,7 +450,7 @@ public:
     /** postcall action
      *  - ArgumentPackage: this is really a PyObject* holding the argument calls
      *  - result: filled by the postcall operation (with PyNone).
-     *  Sets the element_m to NULL. Note that the whole element_m stuff is a bit
+     *  Sets the element_m to nullptr. Note that the whole element_m stuff is a bit
      *  hacky. Probably possible to extract the element from ArgumentPackage, I
      *  didn't manage to do it yet.
      */

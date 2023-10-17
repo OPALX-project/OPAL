@@ -1,45 +1,32 @@
-/*
- *  Copyright (c) 2014-2023, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
+//
+// Unit tests for class Offset
+//
+// Copyright (c) 2014, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#include "opal_test_utilities/SilenceTest.h"
 
-#include <vector>
+#include "AbsBeamline/Offset.h"
+#include "BeamlineGeometry/StraightGeometry.h"
+#include "Physics/Physics.h"
+#include "Utilities/GeneralClassicException.h"
 
 #include "gtest/gtest.h"
 
-#include "Physics/Units.h"
-#include "Physics/Physics.h"
-#include "Utilities/GeneralClassicException.h"
-#include "BeamlineGeometry/StraightGeometry.h"
-#include "AbsBeamline/Offset.h"
-
-#include "opal_test_utilities/SilenceTest.h"
+#include <cmath>
+#include <vector>
 
 class SRotatedGeometry;
-
-const double units = Units::m2mm;
 
 // see also RingSectionTest
 
@@ -91,7 +78,7 @@ TEST(OffsetTest, TestGetSet) {
 void testOffset(Offset& off, double refRotIn, double refRotOut, double length,
                 std::string msg) {
     Euclid3D transform = off.getGeometry().getTotalTransform();
-    double rotIn = -atan2(transform.getVector()(0), transform.getVector()(2));
+    double rotIn = -std::atan2(transform.getVector()(0), transform.getVector()(2));
     double rotOut = -transform.getRotation().getAxis()(1);
     EXPECT_NEAR(refRotIn, rotIn, 1e-6) << msg+"\n";
     EXPECT_NEAR(refRotOut, rotOut, 1e-6) << msg+"\n";
@@ -141,32 +128,32 @@ TEST(OffsetTest, TestUpdateRotations) {
 
     // Check we get length right
     buildTestOffset(Vector_t(-2., 1., 0.), Vector_t(+0., +1., 0.),
-                atan2(2., 1.), 0., sqrt(5.), "length");
+                std::atan2(2., 1.), 0., std::sqrt(5.), "length");
     // theta_in is the rotation from start direction TO the displacement vector
     // where positive angle means rotation anticlockwise
     buildTestOffset(Vector_t(-1., 1., 0.), Vector_t(0., 1., 0.),
-                +1.*Physics::pi/4., 0., sqrt(2.), "x-y rotation theta_in 1");
+                +1.*Physics::pi/4., 0., std::sqrt(2.), "x-y rotation theta_in 1");
     buildTestOffset(Vector_t(-1., -1., 0.), Vector_t(0., 1., 0.),
-                +3.*Physics::pi/4., 0., sqrt(2.), "x-y rotation theta_in 2");
+                +3.*Physics::pi/4., 0., std::sqrt(2.), "x-y rotation theta_in 2");
     buildTestOffset(Vector_t(1., -1., 0.), Vector_t(0., 1., 0.),
-                -3.*Physics::pi/4., 0., sqrt(2.), "x-y rotation theta_in 3");
+                -3.*Physics::pi/4., 0., std::sqrt(2.), "x-y rotation theta_in 3");
     buildTestOffset(Vector_t(1., 1., 0.), Vector_t(0., 1., 0.),
-                -1.*Physics::pi/4., 0., sqrt(2.), "x-y rotation theta_in 4");
+                -1.*Physics::pi/4., 0., std::sqrt(2.), "x-y rotation theta_in 4");
     // theta_out is the rotation from displacement vector TO end direction
     buildTestOffset(Vector_t(1., 1., 0.), Vector_t(0., 1., 0.),
-                -Physics::pi/4., 0., sqrt(2.),
+                -Physics::pi/4., 0., std::sqrt(2.),
                 "x-y rotation theta_out 1");
     buildTestOffset(Vector_t(1., 1., 0.), Vector_t(-1., 1., 0.),
-                -Physics::pi/4., Physics::pi/4., sqrt(2.),
+                -Physics::pi/4., Physics::pi/4., std::sqrt(2.),
                 "x-y rotation theta_out 2");
     buildTestOffset(Vector_t(1., 1., 0.), Vector_t(-1., 0., 0.),
-                -Physics::pi/4., 2.*Physics::pi/4., sqrt(2.),
+                -Physics::pi/4., 2.*Physics::pi/4., std::sqrt(2.),
                 "x-y rotation theta_out 3");
     buildTestOffset(Vector_t(1., 1., 0.), Vector_t(1., -1., 0.),
-                -Physics::pi/4., -3.*Physics::pi/4., sqrt(2.),
+                -Physics::pi/4., -3.*Physics::pi/4., std::sqrt(2.),
                 "x-y rotation theta_out 4");
     buildTestOffset(Vector_t(1., 1., 0.), Vector_t(1., 1., 0.),
-                -Physics::pi/4., -1.*Physics::pi/4., sqrt(2.),
+                -Physics::pi/4., -1.*Physics::pi/4., std::sqrt(2.),
                 "x-y rotation theta_out 5");
 }
 
@@ -235,13 +222,13 @@ TEST(OffsetTest, TestBends) {
     OpalTestUtilities::SilenceTest silencer;
     double theta1 = Offset::float_tolerance*10.; // precision not great
     double theta2 = Offset::float_tolerance/1000.;
-    Offset off = Offset::localCylindricalOffset("lco", theta1, 0., 3./units);
+    Offset off = Offset::localCylindricalOffset("lco", theta1, 0., 3.);
     EXPECT_TRUE(off.bends());
-    off = Offset::localCylindricalOffset("lco", 0., theta1, 3./units);
+    off = Offset::localCylindricalOffset("lco", 0., theta1, 3.);
     EXPECT_TRUE(off.bends());
-    off = Offset::localCylindricalOffset("lco", theta1, -theta1, 3./units);
+    off = Offset::localCylindricalOffset("lco", theta1, -theta1, 3.);
     EXPECT_TRUE(off.bends());  // a chicane is considered to "bend"
-    off = Offset::localCylindricalOffset("lco", theta2, theta2, 3./units);
+    off = Offset::localCylindricalOffset("lco", theta2, theta2, 3.);
     EXPECT_FALSE(off.bends());
 }
 
@@ -249,30 +236,30 @@ TEST(OffsetTest, TestLocalCylindricalOffset) {
     OpalTestUtilities::SilenceTest silencer;
 
     double theta = Physics::pi/3.;
-    Offset off1 = Offset::localCylindricalOffset("lco", theta, 0., 3./units);
+    Offset off1 = Offset::localCylindricalOffset("lco", theta, 0., 3.);
     EXPECT_EQ(off1.getName(), "lco");
     EXPECT_TRUE(off1.getIsLocal());
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off1.getEndPosition()(i),
-                         3.*Vector_t(-sin(theta), cos(theta), 0.)(i)) << i;
+                         3.*Vector_t(-std::sin(theta), std::cos(theta), 0.)(i)) << i;
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off1.getEndDirection()(i),
-                         Vector_t(-sin(theta), cos(theta), 0.)(i));
+                         Vector_t(-std::sin(theta), std::cos(theta), 0.)(i));
 
-    Offset off2 = Offset::localCylindricalOffset("lco", 0., theta, 3./units);
+    Offset off2 = Offset::localCylindricalOffset("lco", 0., theta, 3.);
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off2.getEndPosition()(i), Vector_t(0., 3., 0.)(i)) << i;
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off2.getEndDirection()(i),
-                         Vector_t(-sin(theta), cos(theta), 0.)(i)) << i;
+                         Vector_t(-std::sin(theta), std::cos(theta), 0.)(i)) << i;
 
-    Offset off3 = Offset::localCylindricalOffset("lco", theta, theta/3., 3./units);
+    Offset off3 = Offset::localCylindricalOffset("lco", theta, theta/3., 3.);
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off3.getEndPosition()(i),
-                         3.*Vector_t(-sin(theta), cos(theta), 0.)(i)) << i;
+                         3.*Vector_t(-std::sin(theta), std::cos(theta), 0.)(i)) << i;
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off3.getEndDirection()(i),
-                         Vector_t(-sin(4.*theta/3.), cos(4.*theta/3.), 0.)(i)) << i;
+                         Vector_t(-std::sin(4.*theta/3.), std::cos(4.*theta/3.), 0.)(i)) << i;
     //  testOffset(off1, theta, theta/3., 3., "");
 }
 
@@ -282,15 +269,15 @@ TEST(OffsetTest, TestGlobalCylindricalOffset) {
     double radius = 7.;
     double phi = Physics::pi/3.;
     double theta = Physics::pi/4.;
-    Offset off1 = Offset::globalCylindricalOffset("gco", radius/units, phi, theta);
+    Offset off1 = Offset::globalCylindricalOffset("gco", radius, phi, theta);
     EXPECT_EQ(off1.getName(), "gco");
     EXPECT_FALSE(off1.getIsLocal());
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off1.getEndPosition()(i),
-                         radius*Vector_t(cos(phi), sin(phi), 0.)(i)) << i;
+                         radius*Vector_t(std::cos(phi), std::sin(phi), 0.)(i)) << i;
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off1.getEndDirection()(i),
-                         Vector_t(sin(theta+phi), cos(theta+phi), 0.)(i)) << i;
+                         Vector_t(std::sin(theta+phi), std::cos(theta+phi), 0.)(i)) << i;
     testOffset(off1, 0., 0., 0., "");
 }
 
@@ -299,16 +286,16 @@ TEST(OffsetTest, TestLocalCartesianOffset) {
 
     double theta = Physics::pi/6.;
     Offset off1 = Offset::localCartesianOffset("lco",
-                          3./units*Vector_t(-sin(theta), cos(theta), 0.),
-                          10.*Vector_t(-sin(theta/3.), cos(theta/3.), 0.));
+                          3.*Vector_t(-std::sin(theta), std::cos(theta), 0.),
+                          10.*Vector_t(-std::sin(theta/3.), std::cos(theta/3.), 0.));
     EXPECT_EQ(off1.getName(), "lco");
     EXPECT_TRUE(off1.getIsLocal());
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off1.getEndPosition()(i),
-                         3.*Vector_t(-sin(theta), cos(theta), 0.)(i)) << i;
+                         3.*Vector_t(-std::sin(theta), std::cos(theta), 0.)(i)) << i;
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off1.getEndDirection()(i),
-                         10.*Vector_t(-sin(theta/3.), cos(theta/3.), 0.)(i));
+                         10.*Vector_t(-std::sin(theta/3.), std::cos(theta/3.), 0.)(i));
     testOffset(off1, theta, theta/3., 3., "");
 }
 
@@ -317,15 +304,15 @@ TEST(OffsetTest, TestGlobalCartesianOffset) {
 
     double theta = Physics::pi/3.;
     Offset off1 = Offset::globalCartesianOffset("gco",
-                          3./units*Vector_t(cos(theta), sin(theta), 0.),
-                          10.*Vector_t(cos(theta/3.), sin(theta/3.), 0.));
+                          3.*Vector_t(std::cos(theta), std::sin(theta), 0.),
+                          10.*Vector_t(std::cos(theta/3.), std::sin(theta/3.), 0.));
     EXPECT_EQ(off1.getName(), "gco");
     EXPECT_FALSE(off1.getIsLocal());
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off1.getEndPosition()(i),
-                         3.*Vector_t(cos(theta), sin(theta), 0.)(i)) << i;
+                         3.*Vector_t(std::cos(theta), std::sin(theta), 0.)(i)) << i;
     for (int i = 0; i<3; ++i)
         EXPECT_DOUBLE_EQ(off1.getEndDirection()(i),
-                         10.*Vector_t(cos(theta/3.), sin(theta/3.), 0.)(i));
+                         10.*Vector_t(std::cos(theta/3.), std::sin(theta/3.), 0.)(i));
     testOffset(off1, 0., 0., 0., "");
 }

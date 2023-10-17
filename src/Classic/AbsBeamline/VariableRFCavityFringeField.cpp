@@ -1,30 +1,21 @@
-/*
- *  Copyright (c) 2014, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
-
+//
+// Class VariableRFCavityFringeField
+//   Defines the abstract interface for a soft-edged RF Cavity
+//   with Time Dependent Parameters.
+//
+// Copyright (c) 2014 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbsBeamline/VariableRFCavityFringeField.h"
 
 #include "AbsBeamline/BeamlineVisitor.h"
@@ -33,21 +24,22 @@
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
 
-VariableRFCavityFringeField::VariableRFCavityFringeField(const std::string &name) : VariableRFCavity(name) {
+#include <cmath>
+
+VariableRFCavityFringeField::VariableRFCavityFringeField(const std::string& name): VariableRFCavity(name) {
     initNull();  // initialise everything to nullptr
 }
 
-VariableRFCavityFringeField::VariableRFCavityFringeField() : VariableRFCavity() {
+VariableRFCavityFringeField::VariableRFCavityFringeField(): VariableRFCavity() {
     initNull();  // initialise everything to nullptr
 }
 
-VariableRFCavityFringeField::VariableRFCavityFringeField(const VariableRFCavityFringeField& var) : VariableRFCavity() {
+VariableRFCavityFringeField::VariableRFCavityFringeField(const VariableRFCavityFringeField& var): VariableRFCavity() {
     initNull();  // initialise everything to nullptr
     *this = var;
 }
 
 VariableRFCavityFringeField& VariableRFCavityFringeField::operator=(const VariableRFCavityFringeField& rhs) {
-
     if (&rhs == this) {
         return *this;
     }
@@ -82,24 +74,25 @@ void VariableRFCavityFringeField::accept(BeamlineVisitor& visitor) const {
     visitor.visitVariableRFCavity(*this);
 }
 
-bool VariableRFCavityFringeField::apply(const Vector_t &R, const Vector_t &/*P*/, const double &t, Vector_t &E, Vector_t &B) {
-    if (R[2] > _length || R[2] < 0.) {
+bool VariableRFCavityFringeField::apply(const Vector_t& R, const Vector_t& /*P*/,
+                                        const double& t, Vector_t& E, Vector_t& B) {
+    if (R[2] > length_m || R[2] < 0.) {
         return true;
     }
     if (std::abs(R[0]) > halfWidth_m || std::abs(R[1]) > halfHeight_m) {
         return true;
     }
-    double z_pos = R[2]-zCentre_m;
+    double z_pos = R[2] - zCentre_m;
     double E0 = amplitudeTD_m->getValue(t);
-    double omega = Physics::two_pi*frequencyTD_m->getValue(t) * Units::MHz2Hz * Units::Hz2GHz; // need GHz on the element we have MHz
+    double omega = Physics::two_pi * frequencyTD_m->getValue(t) * Units::MHz2Hz * Units::Hz2GHz; // need GHz on the element we have MHz
     double phi = phaseTD_m->getValue(t);
-    double E_sin_t = E0*sin(omega * t + phi);
-    double B_cos_t = E0*cos(omega * t + phi); // 1/c^2 factor in the h_n coefficients
+    double E_sin_t = E0 * std::sin(omega * t + phi);
+    double B_cos_t = E0 * std::cos(omega * t + phi); // 1/c^2 factor in the h_n coefficients
 
     std::vector<double> y_power(maxOrder_m+1, 0.);
     y_power[0] = 1.;
     for (size_t i = 1; i < y_power.size(); ++i) {
-        y_power[i] = y_power[i-1]*R[1];
+        y_power[i] = y_power[i-1] * R[1];
     }
 
     // d^i f0 dz^i
@@ -111,7 +104,7 @@ bool VariableRFCavityFringeField::apply(const Vector_t &R, const Vector_t &/*P*/
     // omega^i
     std::vector<double> omegaPower(maxOrder_m+1, 1.);
     for (size_t i = 1; i < omegaPower.size(); ++i) {
-        omegaPower[i] = omegaPower[i-1]*omega;
+        omegaPower[i] = omegaPower[i-1] * omega;
     }
 
     E = Vector_t(0., 0., 0.);
@@ -121,9 +114,9 @@ bool VariableRFCavityFringeField::apply(const Vector_t &R, const Vector_t &/*P*/
         double fCoeff = 0.;
         size_t index = n/2;
         for (size_t i = 0; i < f_m[index].size() && i < endField.size(); i += 2) { // derivative of f
-            fCoeff += f_m[index][i]*endField[i]*omegaPower[n-i];
+            fCoeff += f_m[index][i] * endField[i] * omegaPower[n-i];
         }
-        E[2] += E_sin_t*y_power[n]*fCoeff;
+        E[2] += E_sin_t * y_power[n] * fCoeff;
     }
     // odd power of y
     for (size_t n = 1; n <= maxOrder_m; n += 2) {
@@ -131,34 +124,34 @@ bool VariableRFCavityFringeField::apply(const Vector_t &R, const Vector_t &/*P*/
         double hCoeff = 0.;
         size_t index = (n-1)/2;
         for (size_t j = 0; j < g_m[index].size() && j < endField.size(); ++j) {
-            gCoeff += g_m[index][j]*endField[j]*omegaPower[n-j];
+            gCoeff += g_m[index][j] * endField[j] * omegaPower[n-j];
         }
         for (size_t j = 0; j < h_m[index].size() && j < endField.size(); ++j) {
-            hCoeff += h_m[index][j]*endField[j]*omegaPower[n-j];
+            hCoeff += h_m[index][j] * endField[j] * omegaPower[n-j];
         }
-        E[1] += E_sin_t*y_power[n]*gCoeff;
-        B[0] += B_cos_t*y_power[n]*hCoeff;
+        E[1] += E_sin_t * y_power[n] * gCoeff;
+        B[0] += B_cos_t * y_power[n] * hCoeff;
     }
     B *= Units::T2kG;
     return false;
 }
 
-bool VariableRFCavityFringeField::apply(const size_t &i, const double &t,
-                             Vector_t &E, Vector_t &B) {
+bool VariableRFCavityFringeField::apply(const size_t& i, const double& t,
+                                        Vector_t& E, Vector_t& B) {
     return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
 }
 
-bool VariableRFCavityFringeField::applyToReferenceParticle(const Vector_t &R,
-                                                           const Vector_t &P,
-                                                           const double &t,
-                                                           Vector_t &E,
-                                                           Vector_t &B) {
+bool VariableRFCavityFringeField::applyToReferenceParticle(const Vector_t& R,
+                                                           const Vector_t& P,
+                                                           const double& t,
+                                                           Vector_t& E,
+                                                           Vector_t& B) {
     return apply(R, P, t, E, B);
 }
 
-void VariableRFCavityFringeField::initialise(PartBunchBase<double, 3> *bunch,
-                                             double &startField,
-                                             double &endField) {
+void VariableRFCavityFringeField::initialise(PartBunchBase<double, 3>* bunch,
+                                             double& startField,
+                                             double& endField) {
     VariableRFCavity::initialise(bunch, startField, endField);
     initialiseCoefficients();
 }
@@ -167,7 +160,7 @@ void printVector(std::ostream& out, std::vector< std::vector<double> > vec) {
     for (size_t i = 0; i < vec.size(); ++i) {
         out << std::setw(3) << i;
         for (size_t j = 0; j < vec[i].size(); ++j) {
-          out << " " << std::setw(14) << vec[i][j];
+            out << " " << std::setw(14) << vec[i][j];
         }
         out << std::endl;
     }
@@ -182,7 +175,7 @@ void VariableRFCavityFringeField::initialiseCoefficients() {
     // generate f_{n+2} term
     // note frequency term has to be added at apply(time) as we have
     // time-dependent frequency
-    for(size_t n = 0; n+2 <= maxOrder_m; n += 2) {
+    for (size_t n = 0; n+2 <= maxOrder_m; n += 2) {
         // n denotes the subscript on f_n
         // n+2 is the subscript on g_{n+2} and terms proportional to y^{n+2}
         std::vector<double> f_n = f_m.back(); // f_n
@@ -197,7 +190,7 @@ void VariableRFCavityFringeField::initialiseCoefficients() {
         f_m.push_back(f_np2);
     }
     // generate g_{n+2} and h_{n+2} term
-    for(size_t n = 0; n+1 <= maxOrder_m; n += 2) {
+    for (size_t n = 0; n+1 <= maxOrder_m; n += 2) {
         // n denotes the subscript on f_n
         // n+1 is the subscript on g_{n+1} and terms proportional to y^{n+1}
         size_t f_index = n/2;
@@ -223,7 +216,6 @@ void VariableRFCavityFringeField::printCoefficients(std::ostream& out) const {
     out << std::endl;
 }
 
-void VariableRFCavityFringeField::setEndField(
-                            std::shared_ptr<endfieldmodel::EndFieldModel> end) {
+void VariableRFCavityFringeField::setEndField(std::shared_ptr<endfieldmodel::EndFieldModel> end) {
     endField_m = end;
 }

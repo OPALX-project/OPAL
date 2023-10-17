@@ -1,30 +1,19 @@
-/*
- *  Copyright (c) 2014, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
-
+//
+// Unit tests for class Ring
+//
+// Copyright (c) 2014, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "gtest/gtest.h"
 
 #include "Algorithms/PartData.h"
@@ -46,7 +35,7 @@ class OffsetFactory {
   public:
     OffsetFactory(double radius=1., int start=0, double thetaSum=-1.) {
         i_m = start;
-        radius_m = radius/Units::m2mm;
+        radius_m = radius;
         thetaSum_m = thetaSum;
         if (thetaSum_m < 0.)
             thetaSum_m = 2.*Physics::pi;
@@ -72,11 +61,11 @@ class OffsetFactory {
     Component* yieldComp1() {
         nextIsMock_m = !nextIsMock_m;
         if (nextIsMock_m) {
-            Offset* off = new Offset(Offset::localCylindricalOffset("offset2", Physics::pi/6., Physics::pi/6., 2. * Units::mm2m));
+            Offset* off = new Offset(Offset::localCylindricalOffset("offset2", Physics::pi/6., Physics::pi/6., 2.));
             offVec_m.push_back(off);
             return off;
         }
-        Offset* off = new Offset(Offset::localCylindricalOffset("offset3", 0., 0., Units::mm2m));
+        Offset* off = new Offset(Offset::localCylindricalOffset("offset3", 0., 0., 1));
         offVec_m.push_back(off);
         MockComponent* mock = new MockComponent();
         mock->geom_m = &off->getGeometry();
@@ -121,7 +110,7 @@ TEST(RingTest, TestAppend1) {
         ring.setLatticeThetaInit(0.);
         ring.setSymmetry(1);
         ring.setIsClosed(true);
-        Offset off = Offset::localCylindricalOffset("cyl1", 0., Physics::pi/6., Units::mm2m);
+        Offset off = Offset::localCylindricalOffset("cyl1", 0., Physics::pi/6., 1);
         ring.appendElement(off);
         // note phiInit is at pi/2 i.e. on the y axis pointing towards negative x
         for (int i = 0; i < 3; ++i) {
@@ -159,7 +148,7 @@ TEST(RingTest, TestAppend2) {
         ring.setLatticeThetaInit(0.);
         ring.setSymmetry(1);
         ring.setIsClosed(true);
-        Offset off = Offset::localCylindricalOffset("cyl1", Physics::pi/24., Physics::pi/8., Units::mm2m);
+        Offset off = Offset::localCylindricalOffset("cyl1", Physics::pi/24., Physics::pi/8., 1);
         ring.appendElement(off);
         for (int i = 0; i < 3; ++i) {
             EXPECT_NEAR(ring.getNextPosition()(i),
@@ -247,7 +236,7 @@ TEST(RingTest, TestApply) {
     for (double phi = 0.0; phi < 3*Physics::pi+1e-3; phi += Physics::pi/3.0) {
         Ring ring("my_ring");
         try {
-            double radius = 2.;
+            double radius = 2.*Units::mm2m;
             PartData data;
             PartBunch bunch(&data);
             ring.setRefPartBunch(&bunch);
@@ -269,7 +258,7 @@ TEST(RingTest, TestApply) {
             rotated_position[1] = position[0]*sin(phi) + position[1]*cos(phi);
             rotated_position[2] = position[2];
             bool outOfBounds = ring.apply(rotated_position, P, 0.0,  E, B);
-            Vector_t refB = rotated_position*Units::m2mm - (ring.getSection(0)->getStartPosition());
+            Vector_t refB = rotated_position - (ring.getSection(0)->getStartPosition());
             for (size_t i = 0; i < 3; ++i) {
                 EXPECT_FALSE(outOfBounds);
                 EXPECT_NEAR(B[i], refB[i], 1e-6) << phi << " " << i;

@@ -2,7 +2,7 @@
 // Class OpalRingDefinition
 //   The Opal Ring element.
 //
-// Copyright (c) 2012 - 2023, Chris Rogers, RAL-UKRI, England, UK
+// Copyright (c) 2012 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
 // All rights reserved
 //
 // This file is part of OPAL.

@@ -1,36 +1,28 @@
-/*
- *  Copyright (c) 2014, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
-
+//
+// Class VariableRFCavityFringeField
+//   Defines the abstract interface for a soft-edged RF Cavity
+//   with Time Dependent Parameters.
+//
+// Copyright (c) 2014 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_ABSBEAMLINE_VariableRFCavityFringeField_HH
 #define CLASSIC_ABSBEAMLINE_VariableRFCavityFringeField_HH
 
-#include <iostream>
 #include "AbsBeamline/VariableRFCavity.h"
 #include "Fields/Definitions.h"
+
+#include <iostream>
 
 namespace endfieldmodel {
     class EndFieldModel;
@@ -51,20 +43,21 @@ namespace endfieldmodel {
  *  Inherits from VariableRFCavity; inheritance is used here to share code from
  *  VariableRFCavity.
  *
- *  Set/get methods use metres; but internally we store as mm (for tracking)
+ *  Set/get methods use metres
  *
  *  Field units are kG and GV/mm
  */
-class VariableRFCavityFringeField : public VariableRFCavity {
-  public:
+class VariableRFCavityFringeField: public VariableRFCavity {
+
+public:
     /// Constructor with given name.
-    explicit VariableRFCavityFringeField(const std::string &name);
+    explicit VariableRFCavityFringeField(const std::string& name);
     /** Copy Constructor; performs deepcopy on time-dependence models */
-    VariableRFCavityFringeField(const VariableRFCavityFringeField &);
+    VariableRFCavityFringeField(const VariableRFCavityFringeField&);
     /** Default constructor */
     VariableRFCavityFringeField();
     /** Assignment operator; performs deepcopy on time-dependence models*/
-    VariableRFCavityFringeField& operator=(const VariableRFCavityFringeField &);
+    VariableRFCavityFringeField& operator=(const VariableRFCavityFringeField&);
     /** Destructor does nothing
      *
      * The shared_ptrs will self-destruct when reference count goes to 0
@@ -76,7 +69,7 @@ class VariableRFCavityFringeField : public VariableRFCavity {
      *  The RF cavity finds the "time dependence" models by doing a string
      *  lookup against a list held by AbstractTimeDependence at accept time.
      */
-    virtual void accept(BeamlineVisitor &) const override;
+    virtual void accept(BeamlineVisitor&) const override;
 
     /** Lookup the time dependencies and update.
      *
@@ -97,7 +90,8 @@ class VariableRFCavityFringeField : public VariableRFCavity {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
+    virtual bool apply(const size_t& i, const double& t,
+                       Vector_t& E, Vector_t& B) override;
 
     /** Calculate the field at a given position
      *
@@ -109,8 +103,8 @@ class VariableRFCavityFringeField : public VariableRFCavity {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
-
+    virtual bool apply(const Vector_t& R, const Vector_t& P,
+                       const double& t, Vector_t& E, Vector_t& B) override;
 
     /** Calculate the field at a given position. This is identical to "apply".
      *
@@ -122,7 +116,8 @@ class VariableRFCavityFringeField : public VariableRFCavity {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
+    virtual bool applyToReferenceParticle(const Vector_t& R, const Vector_t& P,
+                                          const double& t, Vector_t& E, Vector_t& B) override;
 
     /** Set the endFieldModel
      *
@@ -144,9 +139,8 @@ class VariableRFCavityFringeField : public VariableRFCavity {
      *
      *  Does any setup on VirtualRFCavity and sets field expansion coefficients
      */
-    virtual void initialise(PartBunchBase<double, 3> *bunch,
-                            double &startField,
-                            double &endField) override;
+    virtual void initialise(PartBunchBase<double, 3>* bunch,
+                            double& startField, double& endField) override;
 
     /** Get the offset of centre of the cavity field from the element start in metres */
     virtual inline void setCavityCentre(double zCentre);
@@ -166,6 +160,7 @@ class VariableRFCavityFringeField : public VariableRFCavity {
     inline std::vector<std::vector<double> > getEyCoefficients() const;
     /** Get the coefficients for Bx */
     inline std::vector<std::vector<double> > getBxCoefficients() const;
+
 protected:
     double zCentre_m; // offsets this element
     size_t maxOrder_m;
@@ -173,16 +168,17 @@ protected:
     std::vector<std::vector<double> > f_m;
     std::vector<std::vector<double> > g_m;
     std::vector<std::vector<double> > h_m;
+
 private:
     void initNull();
 };
 
 void VariableRFCavityFringeField::setCavityCentre(double zCentre) {
-    zCentre_m = zCentre*1000.; // stored internally as mm
+    zCentre_m = zCentre;
 }
 
 double VariableRFCavityFringeField::getCavityCentre() const {
-    return zCentre_m/1000.; // stored internally as mm
+    return zCentre_m;
 }
 
 void VariableRFCavityFringeField::setMaxOrder(size_t maxOrder) {
@@ -198,23 +194,19 @@ size_t VariableRFCavityFringeField::getMaxOrder() const {
     return maxOrder_m;
 }
 
-std::shared_ptr<endfieldmodel::EndFieldModel>
-                              VariableRFCavityFringeField::getEndField() const {
+std::shared_ptr<endfieldmodel::EndFieldModel> VariableRFCavityFringeField::getEndField() const {
     return endField_m;
 }
 
-std::vector<std::vector<double> >
-                        VariableRFCavityFringeField::getEzCoefficients() const {
+std::vector<std::vector<double> > VariableRFCavityFringeField::getEzCoefficients() const {
     return f_m;
 }
 
-std::vector<std::vector<double> >
-                        VariableRFCavityFringeField::getEyCoefficients() const {
+std::vector<std::vector<double> > VariableRFCavityFringeField::getEyCoefficients() const {
     return g_m;
 }
 
-std::vector<std::vector<double> >
-                        VariableRFCavityFringeField::getBxCoefficients() const {
+std::vector<std::vector<double> > VariableRFCavityFringeField::getBxCoefficients() const {
     return h_m;
 }
 

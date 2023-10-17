@@ -1,35 +1,42 @@
 //
-// Unit tests for VerticalFFAMagnet Component
+// Unit tests for class VerticalFFAMagnet
 //
-// Copyright (c) 2019 Chris Rogers
+// Copyright (c) 2014, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
 // All rights reserved.
 //
-// OPAL is licensed under GNU GPL version 3.
+// This file is part of OPAL.
 //
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#include "opal_test_utilities/SilenceTest.h"
 
 
+#include "AbsBeamline/EndFieldModel/Tanh.h"
 #include "AbsBeamline/VerticalFFAMagnet.h"
+#include "Physics/Units.h"
+
+#include "opal_test_utilities/Maxwell.h"
+
+#include "gtest/gtest.h"
 
 #include <cmath>
 #include <fstream>
 #include <sstream>
 
-#include "gtest/gtest.h"
-#include "opal_test_utilities/SilenceTest.h"
-#include "opal_test_utilities/Maxwell.h"
-
-
-#include "Classic/AbsBeamline/EndFieldModel/Tanh.h"
-#include "Classic/AbsBeamline/VerticalFFAMagnet.h"
-
-class VerticalFFAMagnetTest : public ::testing::Test {
+class VerticalFFAMagnetTest: public ::testing::Test {
 public:
     VerticalFFAMagnetTest() {
     }
 
     void SetUp( ) {
         magnet_m.reset(new VerticalFFAMagnet("test"));
-        tanh_m = new endfieldmodel::Tanh(length_m*mm, length_m*mm/4., 20);
+        tanh_m = new endfieldmodel::Tanh(length_m*Units::m2mm, length_m*Units::m2mm/4., 20);
         tanh_m->setMaximumDerivative(2*maxOrder_m);
         magnet_m->setEndField(tanh_m);
         magnet_m->setMaxOrder(maxOrder_m);
@@ -54,8 +61,6 @@ public:
     size_t maxOrder_m = 2;
     double b0_m = 1.0;
     endfieldmodel::Tanh* tanh_m; // magnet_m owns this memory
-    const double mm = 1e3;
-    const double tesla = 10.;
     OpalTestUtilities::SilenceTest silencer_m;
 };
 
@@ -79,10 +84,9 @@ TEST_F(VerticalFFAMagnetTest, MidplaneFieldTest) {
     for (double z = -length_m*2.; z < length_m*2.; z += length_m/10.) {
         for (double y = -length_m/4.; y < length_m*2.; y += length_m/10.) {
             Vector_t position(0., y, z+length_m*2.); // z is relative to centre
-            position *= mm;
             Vector_t bfield;
             bool outOfBounds = magnet_m->getFieldValue(position, bfield);
-            double bRef = b0_m*tanh_m->function(z*mm, 0)*exp(k_m*y)*10.;
+            double bRef = b0_m*tanh_m->function(z, 0)*std::exp(k_m*y)*10.;
             EXPECT_FALSE(outOfBounds);
             EXPECT_NEAR(bfield(0), 0., 1e-12);
             EXPECT_NEAR(bfield(1), bRef, 1e-12);
@@ -96,16 +100,16 @@ TEST_F(VerticalFFAMagnetTest, BoundingBoxTest) {
     tests.insert(tests.begin(), {
         std::pair<Vector_t, bool>(Vector_t(0., 0., 1e-6), false),
         std::pair<Vector_t, bool>(Vector_t(0., 0., -1e-6), true),
-        std::pair<Vector_t, bool>(Vector_t(0., 0., length_m*4.*mm-1e-6), false),
-        std::pair<Vector_t, bool>(Vector_t(0., 0., length_m*4.*mm+1e-6), true),
-        std::pair<Vector_t, bool>(Vector_t(0., -length_m/4.*mm+1e-6, length_m*2*mm), false),
-        std::pair<Vector_t, bool>(Vector_t(0., -length_m/4.*mm-1e-6, length_m*2*mm), true),
-        std::pair<Vector_t, bool>(Vector_t(0., length_m*2.*mm-1e-6, length_m*2*mm), false),
-        std::pair<Vector_t, bool>(Vector_t(0., length_m*2.*mm+1e-6, length_m*2*mm), true),
-        std::pair<Vector_t, bool>(Vector_t(-length_m/2*mm+1e-6, 0., length_m*2*mm), false),
-        std::pair<Vector_t, bool>(Vector_t(-length_m/2*mm-1e-6, 0., length_m*2*mm), true),
-        std::pair<Vector_t, bool>(Vector_t(+length_m/2*mm-1e-6, 0., length_m*2*mm), false),
-        std::pair<Vector_t, bool>(Vector_t(+length_m/2*mm+1e-6, 0., length_m*2*mm), true),
+        std::pair<Vector_t, bool>(Vector_t(0., 0., length_m*4.-1e-6), false),
+        std::pair<Vector_t, bool>(Vector_t(0., 0., length_m*4.+1e-6), true),
+        std::pair<Vector_t, bool>(Vector_t(0., -length_m/4.+1e-6, length_m*2), false),
+        std::pair<Vector_t, bool>(Vector_t(0., -length_m/4.-1e-6, length_m*2), true),
+        std::pair<Vector_t, bool>(Vector_t(0., length_m*2.-1e-6, length_m*2), false),
+        std::pair<Vector_t, bool>(Vector_t(0., length_m*2.+1e-6, length_m*2), true),
+        std::pair<Vector_t, bool>(Vector_t(-length_m/2+1e-6, 0., length_m*2), false),
+        std::pair<Vector_t, bool>(Vector_t(-length_m/2-1e-6, 0., length_m*2), true),
+        std::pair<Vector_t, bool>(Vector_t(+length_m/2-1e-6, 0., length_m*2), false),
+        std::pair<Vector_t, bool>(Vector_t(+length_m/2+1e-6, 0., length_m*2), true),
     });
 
     Vector_t bfield;
@@ -129,7 +133,7 @@ TEST_F(VerticalFFAMagnetTest, MaxwellTest) {
     for (size_t i = 1; i < 12; i += 1) {
         magnet->setMaxOrder(i);
         magnet->initialise();
-        Vector_t pos(x*mm, y*mm, z*mm);
+        Vector_t pos(x, y, z);
         //maxTest.printLine(std::cerr, pos, 0.);
         double div = maxTest.divB(pos, 0.);
         double curl = euclidean_norm(maxTest.curlB(pos, 0.));

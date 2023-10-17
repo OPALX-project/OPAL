@@ -141,7 +141,7 @@ void PyLine_<TBeamline<FlaggedElmPtr> >::registerObject() {
     Line* line = lineDef.clone(wrapped->getName());
     line->setElement(wrapped);
     Object* objectPtr = dynamic_cast<Object*>(line);
-    if (objectPtr == NULL) {
+    if (objectPtr == nullptr) {
         throw OpalException("PyLine_<TBeamline<FlaggedElmPtr> >::register",
                             "Trying to register something that was not a Opal Object");
     }
@@ -208,7 +208,7 @@ void PyLine_<TBeamline<FlaggedElmPtr> >::append(boost::python::object pyelement)
     int i = line.size();
     // first we extend the size of the python object list by 1 with dummy variables
     line.push_back(boost::python::object());
-    FlaggedElmPtr felmptr(ElmPtr(NULL));
+    FlaggedElmPtr felmptr(ElmPtr(nullptr));
     object_m->push_back(felmptr);
     // then we set the python object using setElement method
     setElement(i, pyelement);

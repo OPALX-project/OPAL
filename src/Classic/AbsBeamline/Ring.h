@@ -2,7 +2,7 @@
 // Class Ring
 //   Defines the abstract interface for a ring type geometry.
 //
-// Copyright (c) 2012 - 2023, Chris Rogers, RAL-UKRI, England, UK
+// Copyright (c) 2012 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -18,14 +18,13 @@
 #ifndef RING_H
 #define RING_H
 
-#include <string>
-
 #include "AbsBeamline/Component.h"
-
 #include "BeamlineGeometry/PlanarArcGeometry.h"
-
-#include "Utilities/RingSection.h"
 #include "Utilities/GeneralClassicException.h"
+#include "Utilities/RingSection.h"
+
+#include <cmath>
+#include <string>
 
 class LossDataSink;
 template <class T, unsigned Dim>
@@ -51,13 +50,14 @@ class FieldMap;
  *  Also aim to maintain backwards compatibility with Cyclotron (i.e. use
  *  ParallelCyclotronTracker)
  */
-class Ring : public Component {
-  public:
+class Ring: public Component {
+
+public:
     /** Constructor
      *
      *  \param ring Name of the ring as defined in the input file
      */
-    Ring(std::string ring);
+    Ring(const std::string& ring);
 
     /** Copy constructor
      *
@@ -81,8 +81,8 @@ class Ring : public Component {
      *  true. If particle is off the field maps, then set flag on the particle
      *  "Bin" data to -1 and store in LossDataSink
      */
-    virtual bool apply(const size_t &id, const double &t, Vector_t &E,
-                       Vector_t &B) override;
+    virtual bool apply(const size_t& id, const double& t, Vector_t& E,
+                       Vector_t& B) override;
 
     /** Overwrite data in vector E and B with electromagnetic field at point R
      *
@@ -100,8 +100,8 @@ class Ring : public Component {
      *  If particle is off the field maps, then set flag on the particle
      *  "Bin" data to -1
      */
-    virtual bool apply(const Vector_t &R, const Vector_t &P,
-                       const double &t, Vector_t &E, Vector_t &B) override;
+    virtual bool apply(const Vector_t& R, const Vector_t& P,
+                       const double& t, Vector_t& E, Vector_t& B) override;
 
     /** Initialise the Ring
      *
@@ -111,15 +111,15 @@ class Ring : public Component {
      *  @param endField - not used
      *  @param scaleFactor - not used
      */
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField,
-                            double &endField) override;
+    virtual void initialise(PartBunchBase<double, 3>* bunch, double& startField,
+                            double& endField) override;
 
     /** Initialise the Ring - set the bunch and allocate a new LossDataSink
      *
      *  @param bunch the particle bunch. Ring borrows this pointer (caller
      *         owns memory)
      */
-    virtual void initialise(PartBunchBase<double, 3> *bunch);
+    virtual void initialise(PartBunchBase<double, 3>* bunch);
 
     /** Clean up the Ring
      *
@@ -139,7 +139,7 @@ class Ring : public Component {
     virtual void accept(BeamlineVisitor& visitor) const override;
 
     /** Not implemented - always throws an exception */
-    virtual void getDimensions(double &zBegin, double &zEnd) const override;
+    virtual void getDimensions(double& zBegin, double& zEnd) const override;
 
     /** Inherited copy constructor */
     virtual ElementBase* clone() const override {return new Ring(*this);}
@@ -163,19 +163,19 @@ class Ring : public Component {
      *  Ring applies a bounding box based on the element geometry, if there
      *  are field maps expanding outside this region they may get cut.
      */
-    void appendElement(const Component &element);
+    void appendElement(const Component& element);
 
     /** Not implemented, throws an exception */
-    virtual EMField &getField() override {throw GeneralClassicException("Ring::getField", "Not implemented");}
+    virtual EMField& getField() override {throw GeneralClassicException("Ring::getField", "Not implemented");}
 
     /** Not implemented, throws an exception */
-    virtual const EMField &getField() const override {throw GeneralClassicException("Ring::getField", "Not implemented");}
+    virtual const EMField& getField() const override {throw GeneralClassicException("Ring::getField", "Not implemented");}
 
     /** Not implemented */
-    virtual PlanarArcGeometry &getGeometry() override {return planarArcGeometry_m;}
+    virtual PlanarArcGeometry& getGeometry() override {return planarArcGeometry_m;}
 
     /** Not implemented */
-    virtual const PlanarArcGeometry &getGeometry() const override {return planarArcGeometry_m;}
+    virtual const PlanarArcGeometry& getGeometry() const override {return planarArcGeometry_m;}
 
     /** Set LossDataSink to sink.
      *
@@ -327,7 +327,8 @@ class Ring : public Component {
 
     /** Convert from a Vector_t to a Vector3D */
     static inline Vector3D convert(const Vector_t& vec);
-  private:
+
+private:
     // Force end to have azimuthal angle > start unless crossing phi = pi/-pi
     void resetAzimuths();
 
@@ -370,7 +371,7 @@ class Ring : public Component {
     // store for particles out of the aperture
     //
     // Ring owns this memory
-    LossDataSink *lossDS_m;
+    LossDataSink* lossDS_m;
 
     // initial position of the beam
     double beamRInit_m;

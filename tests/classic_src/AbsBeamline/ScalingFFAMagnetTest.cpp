@@ -1,46 +1,35 @@
-/*
- *  Copyright (c) 2017-2023, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
+//
+// Unit tests for class ScalingFFAMagnet
+//
+// Copyright (c) 2017, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#include "opal_test_utilities/SilenceTest.h"
+
+#include "AbsBeamline/EndFieldModel/Tanh.h"
+#include "AbsBeamline/Offset.h"
+#include "AbsBeamline/ScalingFFAMagnet.h"
+#include "Physics/Physics.h"
+
+#include "gtest/gtest.h"
 
 #include <cmath>
 #include <fstream>
 #include <sstream>
 
-#include "gtest/gtest.h"
-#include "opal_test_utilities/SilenceTest.h"
-
-#include "Physics/Physics.h"
-
-#include "Classic/AbsBeamline/EndFieldModel/Tanh.h"
-#include "Classic/AbsBeamline/ScalingFFAMagnet.h"
-#include "Classic/AbsBeamline/Offset.h"
-
-class ScalingFFAMagnetTest : public ::testing::Test {
+class ScalingFFAMagnetTest: public ::testing::Test {
 public:
-    ScalingFFAMagnetTest() : sector_m(nullptr), fout_m() {
+    ScalingFFAMagnetTest(): sector_m(nullptr), fout_m() {
     }
 
     void SetUp( ) {
@@ -48,7 +37,7 @@ public:
         // characteristic length is R*dphi => 0.6545 m
         endfieldmodel::Tanh* tanh = new endfieldmodel::Tanh(psi0_m, psi0_m/5., 20);
         sector_m->setEndField(tanh);
-        sector_m->setTanDelta(tan(Physics::pi/4.));
+        sector_m->setTanDelta(std::tan(Physics::pi/4.));
         sector_m->setR0(r0_m);
         sector_m->setRMin(0.);
         sector_m->setRMax(r0_m*2.);
@@ -174,8 +163,8 @@ public:
         double r = posCyl[0];
         double y = posCyl[1];
         double phi = posCyl[2];
-        double x = r*(1-cos(phi));
-        double z = r*sin(phi);
+        double x = r * (1 - std::cos(phi));
+        double z = r * std::sin(phi);
         Vector_t posCart(x, y, z);
         Vector_t mom(0., 0., 0.);
         Vector_t E(0., 0., 0.);
@@ -285,9 +274,9 @@ TEST_F(ScalingFFAMagnetTest, PlacementTest) {
                 double phi = i*centre_length*2+phi_start;
                 Vector_t mom, E, B;
                 double t = 0;
-                Vector_t posCart(r0*(cos(phi)-1), 0., std::abs(r0)*sin(phi));
+                Vector_t posCart(r0*(std::cos(phi)-1), 0., std::abs(r0)*std::sin(phi));
                 sector_m->apply(posCart, mom, t, E, B);
-                double byTest = 1-fabs(i-0.5); // 0.5, 1.0, 0.5
+                double byTest = 1-std::abs(i-0.5); // 0.5, 1.0, 0.5
                 EXPECT_NEAR(B[1], byTest, 1e-3) << " for r0 " << r0_m 
                                                 << " phi_start " << phi_start
                                                 << " and phi test " << phi;
@@ -347,8 +336,8 @@ TEST_F(ScalingFFAMagnetTest, TanhTest) {
     double numericalDerivative = sector_m->getEndField()->function(-psi0_m, 0);
     for (size_t order = 0; order < 5; ++order) {
         double analyticalDerivative = sector_m->getEndField()->function(-psi0_m, order);
-        if (fabs(numericalDerivative)+fabs(analyticalDerivative) > 1e-3) {
-            EXPECT_NEAR(analyticalDerivative, numericalDerivative, fabs(analyticalDerivative)*1e-3);
+        if (std::abs(numericalDerivative)+std::abs(analyticalDerivative) > 1e-3) {
+            EXPECT_NEAR(analyticalDerivative, numericalDerivative, std::abs(analyticalDerivative)*1e-3);
         }
         std::cout << order << " " << analyticalDerivative << " " << numericalDerivative << std::endl;
         numericalDerivative = sector_m->getEndField()->function(-psi0_m*0.9999, order)-
@@ -394,7 +383,7 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceOrderTest) {
                 sector_m->initialise();
                 sector_m->setR0(r0sign*r0_m);
                 //Vector_t pos(r0_m, y, psi0_m*2);
-                Vector_t pos(r0sign*r0_m*(cos(2*psi0_m)-1), y, r0_m*sin(2*psi0_m));
+                Vector_t pos(r0sign*r0_m*(std::cos(2*psi0_m)-1), y, r0_m*std::sin(2*psi0_m));
                 Vector_t posCyl(r0_m, y, 2*psi0_m);
                 double divB = getDivBCart(pos, Vector_t(delta, delta, delta/r0_m));
                 Vector_t curlB = getCurlBCart(pos, Vector_t(delta, delta, delta/r0_m));
@@ -402,9 +391,8 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceOrderTest) {
                 Vector_t B = getB(pos);
                 Vector_t Bcyl;
                 sector_m->getFieldValueCylindrical(posCyl, Bcyl);
-                double curlBMag =
-                    sqrt(curlB[0]*curlB[0] + curlB[1]*curlB[1] + curlB[2]*curlB[2]);
-                divB = fabs(divB);
+                double curlBMag = std::sqrt(curlB[0]*curlB[0] + curlB[1]*curlB[1] + curlB[2]*curlB[2]);
+                divB = std::abs(divB);
                 divBVec[i] = divB;
                 curlBVec[i] = curlBMag;
                 std::cout << i << "     " << y << "    " << B << " " << Bcyl << "     " << divB << "           "
@@ -449,14 +437,13 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceOrderHackedTest) {
                 divB = getDivBCyl(pos, Vector_t(delta, delta, delta/3.));
                 curlB = getCurlBCyl(pos, Vector_t(delta, delta, delta/3.));
             } else {
-                pos = Vector_t(3.0*(cos(psi0_m*2)-1), y, 3.0*sin(psi0_m*2));
+                pos = Vector_t(3.0*(std::cos(psi0_m*2)-1), y, 3.0*std::sin(psi0_m*2));
                 sector_m->apply(pos, pos, divBVec[0], B, B);
                 divB = getDivBCart(pos, Vector_t(delta, delta, delta));
                 curlB = getCurlBCart(pos, Vector_t(delta, delta, delta));
             }
-            double curlBMag =
-                sqrt(curlB[0]*curlB[0] + curlB[1]*curlB[1] + curlB[2]*curlB[2]);
-            divB = fabs(divB);
+            double curlBMag = std::sqrt(curlB[0]*curlB[0] + curlB[1]*curlB[1] + curlB[2]*curlB[2]);
+            divB = std::abs(divB);
             divBVec[i] = divB;
             curlBVec[i] = curlBMag;
             std::cout << i << "     " << pos << "    " << y << "    " << B << "     " << divB << "           "
@@ -493,7 +480,7 @@ TEST_F(ScalingFFAMagnetTest, VerticalBoundingBoxTest) {
     sector_m->setVerticalExtent(0.1);
     Vector_t mom, E, B;
     double t = 0;
-    Vector_t pos(r0_m*sin(psi0_m), 0.09, r0_m*cos(psi0_m));
+    Vector_t pos(r0_m*std::sin(psi0_m), 0.09, r0_m*std::cos(psi0_m));
 
     EXPECT_FALSE(sector_m->apply(pos, mom, t, E, B));
     pos[1] = 0.11;
@@ -509,17 +496,17 @@ TEST_F(ScalingFFAMagnetTest, RadialBoundingBoxTest) {
     Vector_t mom, E, B;
     double t = 0;
     double r1 = r0_m-0.09;
-    Vector_t pos1(r1*cos(psi0_m)-r0_m, 0.0, r1*sin(psi0_m));
+    Vector_t pos1(r1*std::cos(psi0_m)-r0_m, 0.0, r1*std::sin(psi0_m));
     double r2 = r0_m-0.11;
-    Vector_t pos2(r2*cos(psi0_m)-r0_m, 0.0, r2*sin(psi0_m));
+    Vector_t pos2(r2*std::cos(psi0_m)-r0_m, 0.0, r2*std::sin(psi0_m));
     EXPECT_FALSE(sector_m->apply(pos1, mom, t, E, B));
     EXPECT_TRUE(sector_m->apply(pos2, mom, t, E, B));
 
     sector_m->setRMax(r0_m+0.1);
     double r3 = r0_m+0.09;
-    Vector_t pos3(r3*cos(psi0_m)-r0_m, 0.0, r3*sin(psi0_m));
+    Vector_t pos3(r3*std::cos(psi0_m)-r0_m, 0.0, r3*std::sin(psi0_m));
     double r4 = r0_m+0.11;
-    Vector_t pos4(r4*cos(psi0_m)-r0_m, 0.0, r4*sin(psi0_m));
+    Vector_t pos4(r4*std::cos(psi0_m)-r0_m, 0.0, r4*std::sin(psi0_m));
     EXPECT_FALSE(sector_m->apply(pos3, mom, t, E, B));
     EXPECT_TRUE(sector_m->apply(pos4, mom, t, E, B));
 }
@@ -532,7 +519,7 @@ TEST_F(ScalingFFAMagnetTest, AzimuthalBoundingBoxTest) {
     double phi[] = {-2.1*psi0_m, -1.9*psi0_m, 7.9*psi0_m, 8.1*psi0_m};
     bool bb[] = {true, false, false, true};
     for(size_t i = 0; i < 4; ++i) {
-        Vector_t pos(r0_m*(cos(phi[i])-1), 0,  r0_m*sin(phi[i]));
+        Vector_t pos(r0_m*(std::cos(phi[i])-1), 0,  r0_m*std::sin(phi[i]));
         EXPECT_EQ(sector_m->apply(pos, mom, t, E, B), bb[i]) << i << " " << pos;
     }
 }

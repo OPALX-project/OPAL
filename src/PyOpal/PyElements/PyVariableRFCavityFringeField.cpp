@@ -1,9 +1,26 @@
+//
+// Python API for OpalVariableRFCavityFringeField
+//
+// Copyright (c) 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
+//
 #include "PyOpal/PyCore/ExceptionTranslation.h"
-#include "PyOpal/PyCore/PyOpalObject.h"
 #include "PyOpal/PyCore/Globals.h"
+#include "PyOpal/PyCore/PyOpalObject.h"
 
 #include "Classic/AbsBeamline/VariableRFCavityFringeField.h"
 #include "Elements/OpalVariableRFCavityFringeField.h"
+#include "Physics/Units.h"
+
 
 namespace PyOpal {
 
@@ -50,7 +67,7 @@ BOOST_PYTHON_MODULE(variable_rf_cavity_fringe_field) {
     ExceptionTranslation::registerExceptions();
     PyOpalObjectNS::PyOpalObject<OpalVariableRFCavityFringeField> element;
     auto elementClass = element.make_element_class("VariableRFCavityFringeField");
-    element.addGetFieldValue(elementClass, 1e+3, 1e+9, 1.0, 1e-1);
+    element.addGetFieldValue(elementClass, 1.0, Units::s2ns, 1.0, 1e-1);
     elementClass.def("update_time_dependence",
                 &PyOpalObjectNS::PyOpalObject<OpalVariableRFCavityFringeField>::doSetup);
 }

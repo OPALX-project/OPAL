@@ -1,7 +1,7 @@
 //
-// Tests for OpalScalingFFAMagnet element definitino
+// Unit tests for OpalScalingFFAMagnet element definition
 //
-// Copyright (c) Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// Copyright (c) 2022, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
 //
 // This file is part of OPAL.
 //
@@ -13,19 +13,20 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 //
+#include "opal_test_utilities/SilenceTest.h"
 
-#include <sstream>
+#include "AbsBeamline/EndFieldModel/EndFieldModel.h"
+#include "AbsBeamline/EndFieldModel/Tanh.h"
+#include "AbsBeamline/ScalingFFAMagnet.h"
+#include "Attributes/Attributes.h"
+#include "Elements/OpalScalingFFAMagnet.h"
+#include "Physics/Physics.h"
+#include "Physics/Units.h"
 
 #include "gtest/gtest.h"
-#include "Attributes/Attributes.h"
-#include "Classic/AbsBeamline/EndFieldModel/EndFieldModel.h"
-#include "Classic/AbsBeamline/EndFieldModel/Tanh.h"
-#include "Classic/AbsBeamline/ScalingFFAMagnet.h"
-#include "Elements/OpalScalingFFAMagnet.h"
-#include "Physics/Units.h"
-#include "Physics/Physics.h"
 
-#include "opal_test_utilities/SilenceTest.h"
+#include <cmath>
+#include <sstream>
 
 void setReal(OpalScalingFFAMagnet& mag, std::string attName, double value) {
     Attribute* att = mag.findAttribute(attName);
@@ -58,13 +59,13 @@ TEST(OpalScalingFFAMagnetTest, TestUpdate) {
     mag1->setupEndField();
     ASSERT_NE(mag1, nullptr);
     EXPECT_NEAR(mag1->getDipoleConstant(), 1.0*Units::T2kG, 1e-9);
-    EXPECT_NEAR(mag1->getR0(), 12.5*Units::m2mm, 1e-9);
+    EXPECT_NEAR(mag1->getR0(), 12.5, 1e-9);
     EXPECT_NEAR(mag1->getFieldIndex(), 2.0, 1e-9);
     EXPECT_NEAR(mag1->getTanDelta(), 0.7, 1e-9);
     EXPECT_EQ(mag1->getMaxOrder(), 3u);
-    EXPECT_NEAR(mag1->getRMin(), 11.95*Units::m2mm, 1e-9);
-    EXPECT_NEAR(mag1->getRMax(), 13.15*Units::m2mm, 1e-9);
-    EXPECT_NEAR(mag1->getVerticalExtent(), 3.0*Units::m2mm, 1e-9);
+    EXPECT_NEAR(mag1->getRMin(), 11.95, 1e-9);
+    EXPECT_NEAR(mag1->getRMax(), 13.15, 1e-9);
+    EXPECT_NEAR(mag1->getVerticalExtent(), 3.0, 1e-9);
 
     endfieldmodel::EndFieldModel* model = mag1->getEndField();
     endfieldmodel::Tanh* tanh = dynamic_cast<endfieldmodel::Tanh*>(model);
@@ -118,12 +119,11 @@ TEST(OpalScalingFFAMagnetTest, TestFieldCheck) {
     std::vector<bool> oob = {1, 0, 0, 0, 0, 0, 1};
     std::vector<double> field = {0.0, 0.0, b0kG/2, b0kG, b0kG/2, 0.0, 0.0};
     for (size_t i = 0; i < position.size(); ++i) {
-        double r0mm = r0*Units::m2mm;
         double phi = position[i]*Physics::pi/64.0;
         Vector_t B, P, E;
         double t = 0.;
         // magnet start plus half centre length should have maximum field
-        Vector_t rMiddle = cartesianCoord(r0mm, phi);
+        Vector_t rMiddle = cartesianCoord(r0, phi);
         bool outOfBounds = mag1->apply(rMiddle, P, t, E, B);
         EXPECT_EQ(outOfBounds, oob[i]);
         EXPECT_NEAR(B[1], field[i], 1e-4) << "failed for phi "
@@ -133,9 +133,9 @@ TEST(OpalScalingFFAMagnetTest, TestFieldCheck) {
     Euclid3D delta = mag1->getGeometry().getTotalTransform();
     Vector3D vec = delta.getVector();
     Vector3D rot = delta.getRotation().getAxis();
-    EXPECT_NEAR(vec(0), -r0*Units::m2mm*std::sin(mag1->getPhiEnd()), 1e-6);
+    EXPECT_NEAR(vec(0), -r0*std::sin(mag1->getPhiEnd()), 1e-6);
     EXPECT_NEAR(vec(1), 0., 1e-6);
-    EXPECT_NEAR(vec(2), r0*Units::m2mm*(1-std::cos(mag1->getPhiEnd())), 1e-6);
+    EXPECT_NEAR(vec(2), r0*(1-std::cos(mag1->getPhiEnd())), 1e-6);
 
     EXPECT_EQ(rot(0), 0.);
     EXPECT_EQ(rot(1), -mag1->getPhiEnd());
@@ -151,12 +151,11 @@ TEST(OpalScalingFFAMagnetTest, TestFieldCheck) {
     Euclid3D delta2 = mag1->getGeometry().getTotalTransform();
     Vector3D vec2 = delta2.getVector();
     Vector3D rot2 = delta2.getRotation().getAxis();
-    EXPECT_NEAR(vec2(0), r0*Units::m2mm*std::sin(mag1->getPhiEnd()), 1e-6);
+    EXPECT_NEAR(vec2(0), r0*std::sin(mag1->getPhiEnd()), 1e-6);
     EXPECT_NEAR(vec2(1), 0., 1e-6);
-    EXPECT_NEAR(vec2(2), r0*Units::m2mm*(1-std::cos(mag1->getPhiEnd())), 1e-6);
+    EXPECT_NEAR(vec2(2), r0*(1-std::cos(mag1->getPhiEnd())), 1e-6);
 
     EXPECT_EQ(rot2(0), 0.);
     EXPECT_EQ(rot2(1), mag1->getPhiEnd());
     EXPECT_EQ(rot2(2), 0.);
-
 }

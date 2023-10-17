@@ -30,16 +30,16 @@ namespace PyPolynomialCoefficient {
 int _init(PyObject* self, PyObject *args, PyObject *kwds) {
     PyCoefficient* py_coeff = reinterpret_cast<PyCoefficient*>(self);
     // failed to cast or self was not initialised - something horrible happened
-    if (py_coeff == NULL) {
+    if (py_coeff == nullptr) {
         PyErr_SetString(PyExc_TypeError,
                         "Failed to resolve self as PolynomialCoefficient in __init__");
         return -1;
     }
     // legal python to call initialised_object.__init__() to reinitialise, so
     // handle this case
-    if (py_coeff->coeff != NULL) {
+    if (py_coeff->coeff != nullptr) {
         delete py_coeff->coeff;
-        py_coeff->coeff = NULL;
+        py_coeff->coeff = nullptr;
     }
     // read in arguments
 
@@ -49,7 +49,7 @@ int _init(PyObject* self, PyObject *args, PyObject *kwds) {
     static char *kwlist[] = {const_cast<char*>("index_by_vector"),
                              const_cast<char*>("output_axis"),
                              const_cast<char*>("coefficient_value"),
-                             NULL};
+                             nullptr};
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "Oid", kwlist,
                                     &py_index, &value_axis, &coefficient)) {
         return -1;
@@ -68,7 +68,7 @@ int _init(PyObject* self, PyObject *args, PyObject *kwds) {
     for (size_t i = 0; i < list_size; ++i) {
         PyObject* py_value = PyList_GetItem(py_index, i);
         index[i] = int(PyLong_AsLong(py_value));
-        if (PyErr_Occurred() != NULL) { // not an int
+        if (PyErr_Occurred() != nullptr) { // not an int
             return -1;
         }
     }
@@ -85,7 +85,7 @@ int _init(PyObject* self, PyObject *args, PyObject *kwds) {
 PyObject *_alloc(PyTypeObject *type, Py_ssize_t nitems) {
     void* void_coeff = malloc(sizeof(PyCoefficient));
     PyCoefficient* coeff = reinterpret_cast<PyCoefficient*>(void_coeff);
-    coeff->coeff = NULL;
+    coeff->coeff = nullptr;
     Py_REFCNT(coeff) = 1;
     Py_TYPE(coeff) = type;
     return reinterpret_cast<PyObject*>(coeff);
@@ -96,8 +96,8 @@ PyObject *_new(PyTypeObject *type, Py_ssize_t nitems) {
 }
 
 void _free(PyCoefficient * self) {
-    if (self != NULL) {
-        if (self->coeff != NULL)
+    if (self != nullptr) {
+        if (self->coeff != nullptr)
             delete self->coeff;
         free(self);
     }
@@ -108,18 +108,18 @@ void _dealloc(PyCoefficient * self) {
 }
 
 static PyMemberDef _members[] = {
-{NULL}
+{nullptr}
 };
 
 static PyMethodDef _methods[] = {
-{NULL}
+{nullptr}
 };
 
 std::string class_docstring =
 std::string("PolynomialCoefficient docstring\n");
 
 static PyTypeObject PyCoefficientType = {
-    PyObject_HEAD_INIT(NULL)
+    PyObject_HEAD_INIT(nullptr)
     "polynomial_coefficient.PolynomialCoefficient",         /*tp_name*/
     sizeof(PyCoefficient),           /*tp_basicsize*/
     0,                         /*tp_itemsize*/
@@ -170,22 +170,22 @@ static struct PyModuleDef polynomial_coefficient_def = {
     "polynomial_coefficient",     /* m_name */
     module_docstring,  /* m_doc */
     -1,                  /* m_size */
-    NULL,    /* m_methods */
-    NULL,                /* m_reload */
-    NULL,                /* m_traverse */
-    NULL,                /* m_clear */
-    NULL,                /* m_free */
+    nullptr,    /* m_methods */
+    nullptr,                /* m_reload */
+    nullptr,                /* m_traverse */
+    nullptr,                /* m_clear */
+    nullptr,                /* m_free */
 };
 
 PyMODINIT_FUNC PyInit_polynomial_coefficient(void) {
     PyOpal::Globals::Initialise();
     PyPolynomialCoefficient::PyCoefficientType.tp_new = PyType_GenericNew;
     if (PyType_Ready(&PyPolynomialCoefficient::PyCoefficientType) < 0)
-        return NULL;
+        return nullptr;
 
     PyObject* module = PyModule_Create(&polynomial_coefficient_def);
-    if (module == NULL)
-        return NULL;
+    if (module == nullptr)
+        return nullptr;
 
     PyTypeObject* polynomial_coeff_type =
                           &PyPolynomialCoefficient::PyCoefficientType;

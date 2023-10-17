@@ -34,9 +34,9 @@
 #endif
 
 #ifdef PYOPAL_GLOBALS_C
-    Ippl *ippl = NULL;
-    Inform *gmsg = NULL;
-    Inform *gmsgALL = NULL;
+    Ippl *ippl = nullptr;
+    Inform *gmsg = nullptr;
+    Inform *gmsgALL = nullptr;
 #endif
 namespace PyOpal {
 namespace Globals {
