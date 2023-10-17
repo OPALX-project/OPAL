@@ -1,40 +1,31 @@
-/*
- *  Copyright (c) 2014-2023, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
+//
+// Unit tests for class RingSection
+//
+// Copyright (c) 2014 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved.
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#include "opal_src/Utilities/MockComponent.h"
+#include "opal_test_utilities/SilenceTest.h"
 
-#include <algorithm>
+#include "AbsBeamline/Offset.h"
+#include "Physics/Physics.h"
+#include "Physics/Units.h"
+#include "Utilities/RingSection.h"
 
 #include "gtest/gtest.h"
-#include "opal_src/Utilities/MockComponent.h"
-#include "Physics/Physics.h"
-#include "AbsBeamline/Offset.h"
-#include "Utilities/RingSection.h"
-#include "Physics/Units.h"
 
-#include "opal_test_utilities/SilenceTest.h"
+#include <algorithm>
+#include <cmath>
 
 TEST(RingSectionTest, TestConstructDestruct) {
     OpalTestUtilities::SilenceTest silencer;
@@ -85,7 +76,6 @@ TEST(RingSectionTest, TestIsOnOrPastStartPlane) {
     EXPECT_FALSE(ors.isOnOrPastStartPlane(vec4));
     EXPECT_FALSE(ors.isOnOrPastStartPlane(vec5));
     EXPECT_TRUE(ors.isOnOrPastStartPlane(vec6));
-
 
     ors.setStartPosition(Vector_t(-1., -1., 0.));
     ors.setStartNormal(Vector_t(1., -0.5, 0.));
@@ -151,8 +141,8 @@ TEST(RingSectionTest, TestGetFieldValue) {
         Vector_t orientation(0., 0., theta);
         ors.setComponentOrientation(orientation);
         ors.setComponentPosition(centre);
-        double c = cos(orientation(2));
-        double s = sin(orientation(2));
+        double c = std::cos(orientation(2));
+        double s = std::sin(orientation(2));
         // x y z are coordinates in local OPAL-CYCL coordinate system
         for (double x = 0.01; x < 1.; x += 0.1)
             for (double y = 0.01; y < 1.; y += 0.1)
@@ -183,8 +173,8 @@ TEST(RingSectionTest, TestGetFieldValue) {
 
 namespace {
     bool sort_comparator(Vector_t v1, Vector_t v2) {
-        if (fabs(v1(0) - v2(0)) < 1e-6) {
-            if (fabs(v1(1) - v2(1)) < 1e-6) {
+        if (std::abs(v1(0) - v2(0)) < 1e-6) {
+            if (std::abs(v1(1) - v2(1)) < 1e-6) {
                 return v1(2) > v2(2);
             }
             return v1(1) > v2(1);
@@ -203,14 +193,14 @@ TEST(RingSectionTest, TestGetVirtualBoundingBox) {
     ors.setEndNormal(Vector_t(-1, 1, 655));
     std::vector<Vector_t> bb = ors.getVirtualBoundingBox();
     std::vector<Vector_t> bbRef;
-    bbRef.push_back(Vector_t(0.99*sqrt(10)/(-sqrt(17))+3.,
-                             0.99*sqrt(10)*4./(+sqrt(17))-1., 99.));
-    bbRef.push_back(Vector_t(0.99*sqrt(10)/(+sqrt(17))+3.,
-                             0.99*sqrt(10)*4./(-sqrt(17))-1., 99.));
-    bbRef.push_back(Vector_t(0.99*sqrt(5)/(+sqrt(2))+2.,
-                             0.99*sqrt(5)/(+sqrt(2))+1., 77.));
-    bbRef.push_back(Vector_t(0.99*sqrt(5)/(-sqrt(2))+2.,
-                             0.99*sqrt(5)/(-sqrt(2))+1., 77.));
+    bbRef.push_back(Vector_t(0.99*std::sqrt(10)/(-std::sqrt(17))+3.,
+                             0.99*std::sqrt(10)*4./(+std::sqrt(17))-1., 99.));
+    bbRef.push_back(Vector_t(0.99*std::sqrt(10)/(+std::sqrt(17))+3.,
+                             0.99*std::sqrt(10)*4./(-std::sqrt(17))-1., 99.));
+    bbRef.push_back(Vector_t(0.99*std::sqrt(5)/(+std::sqrt(2))+2.,
+                             0.99*std::sqrt(5)/(+std::sqrt(2))+1., 77.));
+    bbRef.push_back(Vector_t(0.99*std::sqrt(5)/(-std::sqrt(2))+2.,
+                             0.99*std::sqrt(5)/(-std::sqrt(2))+1., 77.));
     std::sort(bb.begin(), bb.end(), sort_comparator);
     std::sort(bbRef.begin(), bbRef.end(), sort_comparator);
     EXPECT_EQ(bb.size(), bbRef.size());
@@ -223,10 +213,10 @@ TEST(RingSectionTest, TestGetVirtualBoundingBox) {
 namespace {
     RingSection buildORS(double r, double phi1, double phi2) {
         RingSection ors;
-        ors.setStartPosition(Vector_t(sin(phi1)*r, cos(phi1)*r, 0.));
-        ors.setStartNormal(Vector_t(cos(phi1), -sin(phi1), 0.));
-        ors.setEndPosition(Vector_t(sin(phi2)*r, cos(phi2)*r, 0.));
-        ors.setEndNormal(Vector_t(cos(phi2), -sin(phi2), 0.));
+        ors.setStartPosition(Vector_t(std::sin(phi1)*r, std::cos(phi1)*r, 0.));
+        ors.setStartNormal(Vector_t(std::cos(phi1), -std::sin(phi1), 0.));
+        ors.setEndPosition(Vector_t(std::sin(phi2)*r, std::cos(phi2)*r, 0.));
+        ors.setEndNormal(Vector_t(std::cos(phi2), -std::sin(phi2), 0.));
         return ors;
     }
 }
@@ -255,7 +245,7 @@ TEST(RingSectionTest, TestGlobalOffset1) {
     // start position and direction. following handleOffset, the offset should
     // be a nullOp
     Offset testOffset = Offset::globalCartesianOffset("aname", 
-                                                      Vector_t(1.0, 2.0, 3.0)*Units::mm2m,
+                                                      Vector_t(1.0, 2.0, 3.0),
                                                       Vector_t(4.0, 5.0, 6.0));
     EXPECT_FALSE(testOffset.getIsLocal());
     RingSection section;
@@ -281,7 +271,7 @@ TEST(RingSectionTest, TestGlobalOffset2) {
     Vector_t startDir(-1.0, 0.0, 0.0);
     Vector_t endDir(-1.0, -1.0, 0.0);
     Offset testOffset =
-        Offset::globalCartesianOffset("aname", endPos*Units::mm2m, endDir);
+        Offset::globalCartesianOffset("aname", endPos, endDir);
     RingSection section;
     //handleOffset needs start position/normal to be set
     section.setStartPosition(startPos);

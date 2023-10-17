@@ -1,40 +1,28 @@
-/*
- *  Copyright (c) 2014, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
-
+//
+// Class Offset
+//   Defines the abstract interface for offset of elements.
+//
+// Copyright (c) 2012 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "AbsBeamline/Offset.h"
+
+#include "AbsBeamline/BeamlineVisitor.h"
+#include "Physics/Physics.h"
+#include "Utilities/GeneralClassicException.h"
 
 #include <cmath>
 
-#include "Utilities/GeneralClassicException.h"
-#include "BeamlineGeometry/Euclid3DGeometry.h"
-#include "AbsBeamline/BeamlineVisitor.h"
-#include "Physics/Physics.h"
-
-const double Offset::lengthUnits_m = 1e3;
 double Offset::float_tolerance = 1e-12;
 
 Offset::Offset(const std::string& name)
@@ -46,7 +34,7 @@ Offset::Offset()
     : Offset("")
 {}
 
-Offset::Offset(std::string name, const Offset& rhs)
+Offset::Offset(const std::string& name, const Offset& rhs)
     : Component(name), _is_local(false), geometry_m(nullptr) {
     *this = rhs;
 }
@@ -80,21 +68,21 @@ Offset& Offset::operator=(const Offset& rhs) {
     return *this;
 }
 
-void Offset::accept(BeamlineVisitor & visitor) const {
+void Offset::accept(BeamlineVisitor& visitor) const {
     visitor.visitOffset(*this);
 }
 
-EMField &Offset::getField() {
+EMField& Offset::getField() {
     throw GeneralClassicException("Offset::getField()",
                         "No field defined for Offset");
 }
 
-const EMField &Offset::getField() const {
+const EMField& Offset::getField() const {
     throw GeneralClassicException("Offset::getField() const",
                         "No field defined for Offset");
 }
 
-void Offset::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
+void Offset::initialise(PartBunchBase<double, 3>* bunch, double& /*startField*/, double& /*endField*/) {
     RefPartBunch_m = bunch;
 }
 
@@ -130,11 +118,11 @@ bool Offset::getIsLocal() const {
     return _is_local;
 }
 
-Euclid3DGeometry &Offset::getGeometry() {
+Euclid3DGeometry& Offset::getGeometry() {
     return *geometry_m;
 }
 
-const Euclid3DGeometry &Offset::getGeometry() const {
+const Euclid3DGeometry& Offset::getGeometry() const {
     return *geometry_m;
 }
 
@@ -144,13 +132,16 @@ const Euclid3DGeometry &Offset::getGeometry() const {
 // }
 
 double Offset::getTheta(Vector_t vec1, Vector_t vec2) {
-    if (std::abs(vec1(2)) > 1e-9 || std::abs(vec2(2)) > 1e-9)
-        throw GeneralClassicException("Offset::getTheta(...)",
-                            "Rotations out of midplane are not implemented");
+    if (std::abs(vec1(2)) > 1e-9 || std::abs(vec2(2)) > 1e-9) {
+        throw GeneralClassicException("Offset::getTheta",
+                                      "Rotations out of midplane are not implemented");
+    }
+
     // probably not the most efficient, but only called at set up
-    double theta = std::atan2(vec2(1), vec2(0))-std::atan2(vec1(1), vec1(0));
-    if (theta < -Physics::pi)
-        theta += 2.*Physics::pi; // force into domain -pi < theta < pi
+    double theta = std::atan2(vec2(1), vec2(0)) - std::atan2(vec1(1), vec1(0));
+    if (theta < -Physics::pi) {
+        theta += Physics::two_pi; // force into domain -pi < theta < pi
+    }
     return theta;
 }
 
@@ -163,19 +154,24 @@ Vector_t Offset::rotate(Vector_t vec, double theta) {
 }
 
 void Offset::updateGeometry() {
-    if (!_is_local)
-        throw GeneralClassicException("Offset::updateGeometry(...)",
-                            "Global offset needs a local coordinate system");
+    if (!_is_local) {
+        throw GeneralClassicException("Offset::updateGeometry",
+                                      "Global offset needs a local coordinate system");
+    }
+
     Vector_t translation = getEndPosition();
-    double length = std::sqrt(translation(0)*translation(0)+
-                         translation(1)*translation(1)+
-                         translation(2)*translation(2));
-    double theta_in = getTheta(Vector_t(0., 1., 0.), translation);
+    double length = std::sqrt(translation(0) * translation(0) +
+                              translation(1) * translation(1) +
+                              translation(2) * translation(2));
+    double theta_in  = getTheta(Vector_t(0., 1., 0.), translation);
     double theta_out = getTheta(Vector_t(0., 1., 0.), getEndDirection());
-    Euclid3D euclid3D(-std::sin(theta_in)*length, 0., std::cos(theta_in)*length,
+    Euclid3D euclid3D(-std::sin(theta_in) * length, 0., std::cos(theta_in) * length,
                       0., -theta_out, 0.);
-    if (geometry_m != nullptr)
+
+    if (geometry_m != nullptr) {
         delete geometry_m;
+    }
+
     geometry_m = new Euclid3DGeometry(euclid3D);
 }
 
@@ -257,12 +253,11 @@ bool Offset::bends() const {
 }
 
 
-Offset Offset::localCylindricalOffset(std::string name,
+Offset Offset::localCylindricalOffset(const std::string& name,
                                       double phi_in,
                                       double phi_out,
                                       double displacement) {
     Offset off(name);
-    displacement *= lengthUnits_m;
     off.setEndPosition(Vector_t(-std::sin(phi_in)*displacement,
                                 std::cos(phi_in)*displacement,
                                 0.));
@@ -272,12 +267,11 @@ Offset Offset::localCylindricalOffset(std::string name,
     return off;
 }
 
-Offset Offset::globalCylindricalOffset(std::string name,
+Offset Offset::globalCylindricalOffset(const std::string& name,
                                        double radius_out,
                                        double phi_out,
                                        double theta_out) {
     Offset off(name);
-    radius_out *= lengthUnits_m;
     off.setEndPosition(Vector_t(std::cos(phi_out)*radius_out,
                                 std::sin(phi_out)*radius_out,
                                 0.));
@@ -288,11 +282,10 @@ Offset Offset::globalCylindricalOffset(std::string name,
     return off;
 }
 
-Offset Offset::localCartesianOffset(std::string name,
+Offset Offset::localCartesianOffset(const std::string& name,
                                     Vector_t end_position,
                                     Vector_t end_direction) {
     Offset off(name);
-    end_position *= lengthUnits_m;
     off.setEndPosition(end_position);
     off.setEndDirection(end_direction);
     off.setIsLocal(true);
@@ -300,14 +293,12 @@ Offset Offset::localCartesianOffset(std::string name,
     return off;
 }
 
-Offset Offset::globalCartesianOffset(std::string name,
+Offset Offset::globalCartesianOffset(const std::string& name,
                                      Vector_t end_position,
                                      Vector_t end_direction) {
     Offset off(name);
-    end_position *= lengthUnits_m;
     off.setEndPosition(end_position);
     off.setEndDirection(end_direction);
     off.setIsLocal(false);
     return off;
 }
-

@@ -1,45 +1,36 @@
-/*
- *  Copyright (c) 2012-2014, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
-
+//
+// Class RingSection
+//   Defines the component placement handler in ring geometry.
+//
+// Copyright (c) 2012 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Utilities/RingSection.h"
 
+#include "AbsBeamline/Offset.h"
 #include "Physics/Physics.h"
 #include "Utilities/GeneralClassicException.h"
-#include "AbsBeamline/Offset.h"
 
-RingSection::RingSection()
-  : component_m(nullptr),
+
+RingSection::RingSection():
+    component_m(nullptr),
     componentPosition_m(0.), componentOrientation_m(0.),
     startPosition_m(0.), startOrientation_m(0.),
     endPosition_m(0.), endOrientation_m(0.) {
 }
 
-RingSection::RingSection(const RingSection& rhs)
-  : component_m(nullptr),
+RingSection::RingSection(const RingSection& rhs):
+    component_m(nullptr),
     componentPosition_m(0.), componentOrientation_m(0.),
     startPosition_m(0.), startOrientation_m(0.),
     endPosition_m(0.), endOrientation_m(0.) {
@@ -55,9 +46,10 @@ RingSection::~RingSection() {
 RingSection& RingSection::operator=(const RingSection& rhs) {
     if (&rhs != this) {
         component_m = dynamic_cast<Component*>(rhs.component_m->clone());
-        if (component_m == nullptr)
+        if (component_m == nullptr) {
             throw GeneralClassicException("RingSection::operator=",
-                                "Failed to copy RingSection");
+                                          "Failed to copy RingSection");
+        }
         componentPosition_m = rhs.componentPosition_m;
         componentOrientation_m = rhs.componentOrientation_m;
         startPosition_m = rhs.startPosition_m;
@@ -69,27 +61,27 @@ RingSection& RingSection::operator=(const RingSection& rhs) {
 }
 
 bool RingSection::isOnOrPastStartPlane(const Vector_t& pos) const {
-    Vector_t posTransformed = pos-startPosition_m;
+    Vector_t posTransformed = pos - startPosition_m;
     // check that pos-startPosition_m is in front of startOrientation_m
-    double normProd = posTransformed(0)*startOrientation_m(0)+
-                      posTransformed(1)*startOrientation_m(1)+
-                      posTransformed(2)*startOrientation_m(2);
+    double normProd = posTransformed(0) * startOrientation_m(0) +
+                      posTransformed(1) * startOrientation_m(1) +
+                      posTransformed(2) * startOrientation_m(2);
     // check that pos and startPosition_m are on the same side of the ring
-    double posProd = pos(0)*startPosition_m(0)+
-                     pos(1)*startPosition_m(1)+
-                     pos(2)*startPosition_m(2);
+    double posProd = pos(0) * startPosition_m(0) +
+                     pos(1) * startPosition_m(1) +
+                     pos(2) * startPosition_m(2);
     return normProd >= 0. && posProd >= 0.;
 }
 
 bool RingSection::isPastEndPlane(const Vector_t& pos) const {
-    Vector_t posTransformed = pos-endPosition_m;
-    double normProd = posTransformed(0)*endOrientation_m(0)+
-                      posTransformed(1)*endOrientation_m(1)+
-                      posTransformed(2)*endOrientation_m(2);
-    // check that pos and startPosition_m are on the same side of the ring
-    double posProd = pos(0)*endPosition_m(0)+
-                     pos(1)*endPosition_m(1)+
-                     pos(2)*endPosition_m(2);
+    Vector_t posTransformed = pos - endPosition_m;
+    double normProd = posTransformed(0) * endOrientation_m(0) +
+                      posTransformed(1) * endOrientation_m(1)+
+                      posTransformed(2) * endOrientation_m(2);
+    // check that pos and endPosition_m are on the same side of the ring
+    double posProd = pos(0) * endPosition_m(0) +
+                     pos(1) * endPosition_m(1) +
+                     pos(2) * endPosition_m(2);
     return normProd > 0. && posProd > 0.;
 }
 
@@ -113,8 +105,8 @@ bool RingSection::getFieldValue(const Vector_t& pos,
 }
 
 void RingSection::updateComponentOrientation() {
-    sin2_m = sin(componentOrientation_m(2));
-    cos2_m = cos(componentOrientation_m(2));
+    sin2_m = std::sin(componentOrientation_m(2));
+    cos2_m = std::cos(componentOrientation_m(2));
 }
 
 std::vector<Vector_t> RingSection::getVirtualBoundingBox() const {
@@ -122,32 +114,32 @@ std::vector<Vector_t> RingSection::getVirtualBoundingBox() const {
     Vector_t endParallel(getEndNormal()(1), -getEndNormal()(0), 0);
     normalise(startParallel);
     normalise(endParallel);
-    double startRadius = 0.99*sqrt(getStartPosition()(0)*getStartPosition()(0)+
-                                   getStartPosition()(1)*getStartPosition()(1));
-    double endRadius = 0.99*sqrt(getEndPosition()(0)*getEndPosition()(0)+
-                                 getEndPosition()(1)*getEndPosition()(1));
+    double startRadius = 0.99 * std::sqrt(getStartPosition()(0) * getStartPosition()(0) +
+                                          getStartPosition()(1) * getStartPosition()(1));
+    double endRadius = 0.99 * std::sqrt(getEndPosition()(0) * getEndPosition()(0) +
+                                        getEndPosition()(1) * getEndPosition()(1));
     std::vector<Vector_t> bb;
-    bb.push_back(getStartPosition()-startParallel*startRadius);
-    bb.push_back(getStartPosition()+startParallel*startRadius);
-    bb.push_back(getEndPosition()-endParallel*endRadius);
-    bb.push_back(getEndPosition()+endParallel*endRadius);
+    bb.push_back(getStartPosition() - startParallel * startRadius);
+    bb.push_back(getStartPosition() + startParallel * startRadius);
+    bb.push_back(getEndPosition() - endParallel * endRadius);
+    bb.push_back(getEndPosition() + endParallel * endRadius);
     return bb;
 }
 
 //    double phi = atan2(r(1), r(0))+Physics::pi;
 bool RingSection::doesOverlap(double phiStart, double phiEnd) const {
     RingSection phiVirtualORS;
-   phiVirtualORS.setStartPosition(Vector_t(sin(phiStart),
-                                            cos(phiStart),
+    phiVirtualORS.setStartPosition(Vector_t(std::sin(phiStart),
+                                            std::cos(phiStart),
                                             0.));
-    phiVirtualORS.setStartNormal(Vector_t(cos(phiStart),
-                                          -sin(phiStart),
+    phiVirtualORS.setStartNormal(Vector_t(std::cos(phiStart),
+                                          -std::sin(phiStart),
                                           0.));
-    phiVirtualORS.setEndPosition(Vector_t(sin(phiEnd),
-                                          cos(phiEnd),
+    phiVirtualORS.setEndPosition(Vector_t(std::sin(phiEnd),
+                                          std::cos(phiEnd),
                                           0.));
-    phiVirtualORS.setEndNormal(Vector_t(cos(phiEnd),
-                                        -sin(phiEnd),
+    phiVirtualORS.setEndNormal(Vector_t(std::cos(phiEnd),
+                                        -std::sin(phiEnd),
                                         0.));
     std::vector<Vector_t> virtualBB = getVirtualBoundingBox();
     // at least one of the bounding box coordinates is in the defined sector

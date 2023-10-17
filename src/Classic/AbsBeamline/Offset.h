@@ -1,37 +1,26 @@
-/*
- *  Copyright (c) 2014-2023, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
-
-
+//
+// Class Offset
+//   Defines the abstract interface for offset of elements.
+//
+// Copyright (c) 2012 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_ABSBEAMLINE_Offset_HH
 #define CLASSIC_ABSBEAMLINE_Offset_HH
 
-#include "Fields/EMField.h"
-#include "BeamlineGeometry/Euclid3DGeometry.h"
 #include "AbsBeamline/Component.h"
+#include "BeamlineGeometry/Euclid3DGeometry.h"
+#include "Fields/EMField.h"
 
 #include <string>
 
@@ -57,17 +46,16 @@
  *  so unless I keep that alive in Offset I get memory errors (seg fault)
  *  @float_tolerance bends() and operator==(...) use float_tolerance when
  *  evaluating equality between doubles.
- *  @lengthUnits_m conversion factor from user interface to get to mm
  *
  *  WARNING: this object uses a default aperture that is large. It will screw up
  *  any calculation based on aperture (e.g. wakefields etc)
  */
-class Offset : public Component {
-  public:
+class Offset: public Component {
+public:
     /** Constructor sets everything to 0., makes a default geometry with
      *  everything set to 0.
      */
-    explicit Offset(const std::string &name);
+    explicit Offset(const std::string& name);
 
     /** Default constructor sets everything to 0., makes a default geometry
      *  with everything set to 0.
@@ -77,17 +65,17 @@ class Offset : public Component {
     /** Copy constructor; deep copies geometry_m; all other
      *  stuff is copied as well
      */
-    Offset(std::string name, const Offset &);
+    Offset(const std::string& name, const Offset&);
 
     /** Copy constructor; deep copies geometry_m; all other
      *  stuff is copied as well
      */
-    Offset(const Offset &);
+    Offset(const Offset&);
 
     /** Assignment operator deep copies geometry and wrappedGeometry; all other
      *  stuff is copied as well
      */
-    Offset& operator=(const Offset &);
+    Offset& operator=(const Offset&);
 
     /** Factory method to make an offset in Cylindrical coordinates local to the
      *  end of the previous element
@@ -98,7 +86,7 @@ class Offset : public Component {
      *   - displacement length of the displacement vector in the theta_in 
      *     direction
      */
-    static Offset localCylindricalOffset(std::string name,
+    static Offset localCylindricalOffset(const std::string& name,
                                          double theta_in,
                                          double theta_out,
                                          double displacement);
@@ -112,7 +100,7 @@ class Offset : public Component {
      *  element before placement; Offset will convert to the local coordinate
      *  system.
      */
-    static Offset globalCylindricalOffset(std::string name,
+    static Offset globalCylindricalOffset(const std::string& name,
                                           double radius_out,
                                           double phi_out,
                                           double theta_out);
@@ -123,7 +111,7 @@ class Offset : public Component {
      *   - end_position position of the end of the offset
      *   - end_direction direction of the end of the offset
      */
-    static Offset localCartesianOffset(std::string name,
+    static Offset localCartesianOffset(const std::string& name,
                                        Vector_t end_position,
                                        Vector_t end_direction);
 
@@ -135,7 +123,7 @@ class Offset : public Component {
      *  element before placement; Offset will convert to the local coordinate
      *  system.
      */
-    static Offset globalCartesianOffset(std::string name,
+    static Offset globalCartesianOffset(const std::string& name,
                                         Vector_t end_position,
                                         Vector_t end_direction);
 
@@ -146,7 +134,7 @@ class Offset : public Component {
      *
      *  Sets ring radius
      */
-    void accept(BeamlineVisitor &) const override;
+    void accept(BeamlineVisitor&) const override;
 
     /** Just calls the copy constructor on *this */
     ElementBase* clone() const override;
@@ -156,10 +144,10 @@ class Offset : public Component {
      */
     bool bends() const override;
 
-    void initialise(PartBunchBase<double, 3> *bunch, double &startField,
-                            double &endField) override;
+    void initialise(PartBunchBase<double, 3>* bunch,
+                    double& startField, double& endField) override;
     void finalise() override;
-    void getDimensions(double &/*zBegin*/, double &/*zEnd*/) const override {}
+    void getDimensions(double& /*zBegin*/, double& /*zEnd*/) const override {}
 
     void setEndPosition(Vector_t position);
     Vector_t getEndPosition() const;
@@ -192,9 +180,9 @@ class Offset : public Component {
     bool isGeometryAllocated() const;
 
     /// Not implemented - throws GeneralClassicException
-    EMField &getField() override;
+    EMField& getField() override;
     /// Not implemented - throws GeneralClassicException
-    const EMField &getField() const override;
+    const EMField& getField() const override;
     /** Calculate the angle between vectors on the midplane
      *
      *  Returns theta in domain -pi, pi. A positive angle means a rotation
@@ -211,13 +199,14 @@ class Offset : public Component {
     static Vector_t rotate(Vector_t vec, double theta);
 
     static double float_tolerance;
-  private:
+
+private:
     Vector_t _end_position;
     Vector_t _end_direction;
     bool     _is_local;
+
     // The offset's geometry.
     Euclid3DGeometry* geometry_m = nullptr;
-    static const double lengthUnits_m;
 };
 
 /** Return true if off1 is equal to off2 within static floating point tolerance

@@ -1,25 +1,34 @@
 //
-// Source file for VerticalFFAMagnet Component
+// Class VerticalFFAMagnet
+//   Defines the abstract interface for a vertical FFA magnet
+//   with vertical scaling fringe fields.
 //
-// Copyright (c) 2019 Chris Rogers
-// All rights reserved.
+// Copyright (c) 2019 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved
 //
-// OPAL is licensed under GNU GPL version 3.
+// This file is part of OPAL.
 //
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#include "AbsBeamline/VerticalFFAMagnet.h"
 
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "AbsBeamline/EndFieldModel/EndFieldModel.h"
 
-#include "AbsBeamline/VerticalFFAMagnet.h"
-
 #include <cmath>
 
-VerticalFFAMagnet::VerticalFFAMagnet(const std::string &name)
+VerticalFFAMagnet::VerticalFFAMagnet(const std::string& name)
     : Component(name), straightGeometry_m(1.) {
 }
 
-VerticalFFAMagnet::VerticalFFAMagnet(const VerticalFFAMagnet &right) 
-    : Component(right),
+VerticalFFAMagnet::VerticalFFAMagnet(const VerticalFFAMagnet& right):
+    Component(right),
     straightGeometry_m(right.straightGeometry_m),
     dummy(right.dummy),
     maxOrder_m(right.maxOrder_m),
@@ -30,8 +39,9 @@ VerticalFFAMagnet::VerticalFFAMagnet(const VerticalFFAMagnet &right)
     halfWidth_m(right.halfWidth_m),
     bbLength_m(right.bbLength_m),
     endField_m(right.endField_m->clone()),
-    dfCoefficients_m(right.dfCoefficients_m) {
-        RefPartBunch_m = right.RefPartBunch_m;
+    dfCoefficients_m(right.dfCoefficients_m)
+{
+    RefPartBunch_m = right.RefPartBunch_m;
 }
 
 
@@ -44,11 +54,11 @@ ElementBase* VerticalFFAMagnet::clone() const {
     return magnet;
 }
 
-EMField &VerticalFFAMagnet::getField() {
+EMField& VerticalFFAMagnet::getField() {
     return dummy;
 }
 
-const EMField &VerticalFFAMagnet::getField() const {
+const EMField& VerticalFFAMagnet::getField() const {
     return dummy;
 }
 
@@ -57,7 +67,8 @@ void VerticalFFAMagnet::initialise() {
     straightGeometry_m.setElementLength(bbLength_m); // length = phi r
 }
 
-void VerticalFFAMagnet::initialise(PartBunchBase<double, 3> *bunch, double &/*startField*/, double &/*endField*/) {
+void VerticalFFAMagnet::initialise(PartBunchBase<double, 3>* bunch,
+                                   double& /*startField*/, double& /*endField*/) {
     RefPartBunch_m = bunch;
     initialise();
 }
@@ -78,8 +89,7 @@ void VerticalFFAMagnet::accept(BeamlineVisitor& visitor) const {
     visitor.visitVerticalFFAMagnet(*this);
 }
 
-
-bool VerticalFFAMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
+bool VerticalFFAMagnet::getFieldValue(const Vector_t& R, Vector_t& B) const {
     if (std::abs(R[0]) > halfWidth_m ||
         R[2] < 0. || R[2] > bbLength_m ||
         R[1] < -zNegExtent_m || R[1] > zPosExtent_m) {
@@ -94,28 +104,28 @@ bool VerticalFFAMagnet::getFieldValue(const Vector_t &R, Vector_t &B) const {
     std::vector<double> x_n(maxOrder_m+1); // x^n
     x_n[0] = 1.; // x^0
     for (size_t i = 1; i < x_n.size(); ++i) {
-        x_n[i] = x_n[i-1]*R[0];
+        x_n[i] = x_n[i-1] * R[0];
     }
 
     // note that the last element is always 0, because dfCoefficients_m is 
     // of size maxOrder_m+1. This leads to better Maxwellianness in testing.
-    std::vector<double> f_n(maxOrder_m+2, 0.);
-    std::vector<double> dz_f_n(maxOrder_m+1, 0.);
+    std::vector<double> f_n(maxOrder_m + 2, 0.);
+    std::vector<double> dz_f_n(maxOrder_m + 1, 0.);
     for (size_t n = 0; n < dfCoefficients_m.size(); ++n) {
         const std::vector<double>& coefficients = dfCoefficients_m[n];
         for (size_t i = 0; i < coefficients.size(); ++i) {
-            f_n[n] += coefficients[i]*fringeDerivatives[i];
-            dz_f_n[n] += coefficients[i]*fringeDerivatives[i+1];
+            f_n[n] += coefficients[i] * fringeDerivatives[i];
+            dz_f_n[n] += coefficients[i] * fringeDerivatives[i+1];
         }
     }
-    double bref = Bz_m*exp(k_m*R[1]);
+    double bref = Bz_m * std::exp(k_m * R[1]);
     B[0] = 0.;
     B[1] = 0.;
     B[2] = 0.;
     for (size_t n = 0; n < x_n.size(); ++n) {
-        B[0] += bref*f_n[n+1]*(n+1)/k_m*x_n[n];
-        B[1] += bref*f_n[n]*x_n[n];
-        B[2] += bref*dz_f_n[n]/k_m*x_n[n];
+        B[0] += bref * f_n[n+1] * (n+1) / k_m * x_n[n];
+        B[1] += bref * f_n[n] * x_n[n];
+        B[2] += bref * dz_f_n[n] / k_m * x_n[n];
     }
     return false;
 }
@@ -131,11 +141,11 @@ void VerticalFFAMagnet::calculateDfCoefficients() {
     // where y is distance from the midplane and z is height
     for (size_t n = 2; n < dfCoefficients_m.size(); n+=2) {
         const std::vector<double>& oldCoefficients = dfCoefficients_m[n-2];
-        std::vector<double> coefficients(oldCoefficients.size()+2, 0);
+        std::vector<double> coefficients(oldCoefficients.size() + 2, 0);
         // j indexes the derivative of f_0
         for (size_t j = 0; j < oldCoefficients.size(); ++j) {
-            coefficients[j] += -1./(n)/(n-1)*k_m*k_m*oldCoefficients[j];
-            coefficients[j+2] += -1./(n)/(n-1)*oldCoefficients[j];
+            coefficients[j] += -1./(n)/(n-1) * k_m * k_m * oldCoefficients[j];
+            coefficients[j+2] += -1./(n)/(n-1) * oldCoefficients[j];
         }
         dfCoefficients_m[n] = coefficients;
     }

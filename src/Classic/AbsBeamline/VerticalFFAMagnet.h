@@ -1,19 +1,29 @@
 //
-// Header file for VerticalFFAMagnet Component
+// Class VerticalFFAMagnet
+//   Defines the abstract interface for a vertical FFA magnet
+//   with vertical scaling fringe fields.
 //
-// Copyright (c) 2019 Chris Rogers
-// All rights reserved.
+// Copyright (c) 2019 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved
 //
-// OPAL is licensed under GNU GPL version 3.
+// This file is part of OPAL.
 //
-
-#include "Fields/BMultipoleField.h"
-#include "BeamlineGeometry/StraightGeometry.h"
-#include "AbsBeamline/Component.h"
-#include "Algorithms/PartBunch.h"
-
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef ABSBEAMLINE_VerticalFFAMagnet_H
 #define ABSBEAMLINE_VerticalFFAMagnet_H
+
+#include "AbsBeamline/Component.h"
+#include "Algorithms/PartBunch.h"
+#include "BeamlineGeometry/StraightGeometry.h"
+#include "Fields/BMultipoleField.h"
+#include "Physics/Units.h"
 
 namespace endfieldmodel {
     class EndFieldModel;
@@ -25,13 +35,14 @@ namespace endfieldmodel {
  *  that has a dependence like B0 exp(mz)
  */
 
-class VerticalFFAMagnet : public Component {
-  public:
+class VerticalFFAMagnet: public Component {
+
+public:
     /** Construct a new VerticalFFAMagnet
      *
      *  \param name User-defined name of the VerticalFFAMagnet
      */
-    explicit VerticalFFAMagnet(const std::string &name);
+    explicit VerticalFFAMagnet(const std::string& name);
 
     /** Destructor - deletes the field */
     ~VerticalFFAMagnet();
@@ -48,7 +59,7 @@ class VerticalFFAMagnet : public Component {
      *  \param B calculated magnetic field
      *  \returns true if particle is outside the field map
      */
-    inline bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B);
+    inline bool apply(const size_t& i, const double& t, Vector_t& E, Vector_t& B);
 
     /** Calculate the field at some arbitrary position
      *
@@ -59,8 +70,8 @@ class VerticalFFAMagnet : public Component {
      *  \param B calculated magnetic field
      *  \returns true if particle is outside the field map, else false
      */
-    inline bool apply(const Vector_t &R, const Vector_t &P, const double &t,
-               Vector_t &E, Vector_t &B);
+    inline bool apply(const Vector_t& R, const Vector_t& P,
+                      const double& t,Vector_t& E, Vector_t& B);
 
     /** Calculate the field at some arbitrary position in cartesian coordinates
      *
@@ -69,7 +80,7 @@ class VerticalFFAMagnet : public Component {
      *  \param B calculated magnetic field defined like (Bx, By, Bz)
      *  \returns true if particle is outside the field map, else false
      */
-    bool getFieldValue(const Vector_t &R, Vector_t &B) const;
+    bool getFieldValue(const Vector_t& R, Vector_t& B) const;
 
      /** Initialise the VerticalFFAMagnet
       *
@@ -77,7 +88,7 @@ class VerticalFFAMagnet : public Component {
       *  \param startField not used
       *  \param endField not used
       */
-     void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField);
+     void initialise(PartBunchBase<double, 3>* bunch, double& startField, double& endField);
 
      /** Initialise the VerticalFFAMagnet
       *
@@ -97,7 +108,7 @@ class VerticalFFAMagnet : public Component {
     inline bool bends() const {return false;}
 
     /** Not implemented */
-    void getDimensions(double &/*zBegin*/, double &/*zEnd*/) const {}
+    void getDimensions(double& /*zBegin*/, double& /*zEnd*/) const {}
 
     /** Return the cell geometry */
     BGeometryBase& getGeometry();
@@ -106,10 +117,10 @@ class VerticalFFAMagnet : public Component {
     const BGeometryBase& getGeometry() const;
 
     /** Return a dummy (0.) field value (what is this for?) */
-    EMField &getField();
+    EMField& getField();
 
     /** Return a dummy (0.) field value (what is this for?) */
-    const EMField &getField() const;
+    const EMField& getField() const;
 
     /** Accept a beamline visitor */
     void accept(BeamlineVisitor& visitor) const;
@@ -137,40 +148,40 @@ class VerticalFFAMagnet : public Component {
     void setMaxOrder(size_t maxOrder);
 
     /** Get the centre field at z=0 */
-    double getB0() const {return Bz_m/Tesla;}
+    double getB0() const {return Bz_m * Units::kG2T;}
 
     /** Set the centre field at z=0 */
-    void setB0(double Bz) {Bz_m = Bz*Tesla;}
+    void setB0(double Bz) {Bz_m = Bz * Units::T2kG;}
 
     /** Get the field index */
-    double getFieldIndex() const {return k_m*mm;} // units are [m^{-1}]
+    double getFieldIndex() const {return k_m;} // units are [m^{-1}]
 
     /** Set the field index */
-    void setFieldIndex(double index) {k_m = index/mm;}
+    void setFieldIndex(double index) {k_m = index;}
 
     /** Get the maximum extent below z = 0 */
-    double getNegativeVerticalExtent() const {return zNegExtent_m/mm;}
+    double getNegativeVerticalExtent() const {return zNegExtent_m;}
 
     /** Set the maximum extent below z = 0 */
     inline void setNegativeVerticalExtent(double negativeExtent);
 
     /** Get the maximum extent above z = 0 */
-    double getPositiveVerticalExtent() const {return zPosExtent_m/mm;}
+    double getPositiveVerticalExtent() const {return zPosExtent_m;}
 
     /** set the maximum extent above z = 0 */
     inline void setPositiveVerticalExtent(double positiveExtent);
 
     /** Get the length of the bounding box (centred on magnet centre) */
-    double getBBLength() const {return bbLength_m/mm;}
+    double getBBLength() const {return bbLength_m;}
 
     /** Set the length of the bounding box (centred on magnet centre) */
-    void setBBLength(double bbLength) {bbLength_m = bbLength*mm;}
+    void setBBLength(double bbLength) {bbLength_m = bbLength;}
 
     /** Get the full width of the bounding box (centred on magnet centre) */
-    double getWidth() const {return halfWidth_m/mm*2.;}
+    double getWidth() const {return halfWidth_m * 2.;}
 
     /** Set the full width of the bounding box (centred on magnet centre) */
-    void setWidth(double width) {halfWidth_m = width/2*mm;}
+    void setWidth(double width) {halfWidth_m = width / 2;}
 
     /** Get the coefficients used for the field expansion
      *  
@@ -183,11 +194,12 @@ class VerticalFFAMagnet : public Component {
      *  field elements can be related back to c[n][k] (see elsewhere for details).
      */
     inline std::vector<std::vector<double> > getDfCoefficients() const;
+
 private:
     void calculateDfCoefficients();
 
     /** Copy constructor */
-    VerticalFFAMagnet(const VerticalFFAMagnet &right);
+    VerticalFFAMagnet(const VerticalFFAMagnet& right);
 
     VerticalFFAMagnet& operator=(const VerticalFFAMagnet& rhs);
     StraightGeometry straightGeometry_m;
@@ -202,26 +214,23 @@ private:
     double bbLength_m = 0.;
     std::unique_ptr<endfieldmodel::EndFieldModel> endField_m;
     std::vector<std::vector<double> > dfCoefficients_m;
-
-    const double mm=1000.;
-    const double Tesla=10.;
 };
 
 void VerticalFFAMagnet::setNegativeVerticalExtent(double negativeExtent) {
-    zNegExtent_m = negativeExtent*mm;
+    zNegExtent_m = negativeExtent;
 }
 
 void VerticalFFAMagnet::setPositiveVerticalExtent(double positiveExtent) {
-    zPosExtent_m = positiveExtent*mm;
+    zPosExtent_m = positiveExtent;
 }
 
-bool VerticalFFAMagnet::apply(const size_t &i, const double &t,
-                              Vector_t &E, Vector_t &B) {
+bool VerticalFFAMagnet::apply(const size_t& i, const double& t,
+                              Vector_t& E, Vector_t& B) {
     return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
 }
 
-bool VerticalFFAMagnet::apply(const Vector_t &R, const Vector_t &/*P*/,
-                              const double &, Vector_t &/*E*/, Vector_t &B) {
+bool VerticalFFAMagnet::apply(const Vector_t& R, const Vector_t& /*P*/,
+                              const double& , Vector_t& /*E*/, Vector_t& B) {
     return getFieldValue(R, B);
 }
 
@@ -230,4 +239,3 @@ std::vector<std::vector<double> > VerticalFFAMagnet::getDfCoefficients() const {
 }
 
 #endif
-

@@ -42,7 +42,7 @@ std::string initialise_from_opal_file_docstring =
 int initialise_from_opal_file(std::string file_name) {
     std::string exe("parser");
     char* argvr[3];
-    // argv must be NULL terminated array
+    // argv must be nullptr terminated array
     argvr[0] = exe.data();
     argvr[1] = file_name.data();
     argvr[2] = nullptr;

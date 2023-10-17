@@ -23,7 +23,7 @@ std::string PyOpalObjectNS::PyOpalObject<OpalElement>::classDocstring =
 "used by Line class to handle wrapping of objects";
 
 template <>
-PyOpalObjectNS::PyOpalObject<OpalElement>::PyOpalObject() : object_m(NULL) {}
+PyOpalObjectNS::PyOpalObject<OpalElement>::PyOpalObject() : object_m(nullptr) {}
 
 BOOST_PYTHON_MODULE(opal_element) {
     ExceptionTranslation::registerExceptions();

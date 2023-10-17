@@ -2,7 +2,7 @@
 // Class OpalRingDefinition
 //   The Opal Ring element.
 //
-// Copyright (c) 2012 - 2023, Chris Rogers, RAL-UKRI, England, UK
+// Copyright (c) 2012 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -22,6 +22,7 @@
 #include "Physics/Units.h"
 #include "Utilities/OpalException.h"
 
+#include <cmath>
 #include <limits>
 
 OpalRingDefinition::OpalRingDefinition() :
@@ -100,9 +101,9 @@ void OpalRingDefinition::update() {
     ring->setBeamThetaInit(Attributes::getReal(itsAttr[BEAM_THETAINIT]) * Units::deg2rad);
     ring->setBeamPRInit(Attributes::getReal(itsAttr[BEAM_PRINIT]));
     ring->setBeamRInit(Attributes::getReal(itsAttr[BEAM_RINIT]));
-    ring->setLatticeRInit(Attributes::getReal(itsAttr[LAT_RINIT]) * Units::m2mm);
-    ring->setLatticePhiInit(Attributes::getReal(itsAttr[LAT_PHIINIT])*Units::deg2rad);
-    ring->setLatticeThetaInit(Attributes::getReal(itsAttr[LAT_THETAINIT])*Units::deg2rad);
+    ring->setLatticeRInit(Attributes::getReal(itsAttr[LAT_RINIT]));
+    ring->setLatticePhiInit(Attributes::getReal(itsAttr[LAT_PHIINIT]) * Units::deg2rad);
+    ring->setLatticeThetaInit(Attributes::getReal(itsAttr[LAT_THETAINIT]) * Units::deg2rad);
 
     ring->setSymmetry(Attributes::getReal(itsAttr[SYMMETRY]));
     ring->setScale(Attributes::getReal(itsAttr[SCALE]));

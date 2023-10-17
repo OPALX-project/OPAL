@@ -42,15 +42,15 @@ std::string("in the matrix.\n");
 PyObject* get_coefficients_as_matrix(PyObject *self, PyObject *args, PyObject *kwds) {
     PyPolynomialMap* py_map = reinterpret_cast<PyPolynomialMap*>(self);
     // failed to cast or self was not initialised - something horrible happened
-    if (py_map == NULL) {
+    if (py_map == nullptr) {
         PyErr_SetString(PyExc_TypeError,
                 "Failed to resolve self as PolynomialMap");
-        return NULL;
+        return nullptr;
     }
-    if (py_map->map == NULL) {
+    if (py_map->map == nullptr) {
         PyErr_SetString(PyExc_TypeError,
                 "PolynomialMap not properly initialised");
-        return NULL;
+        return nullptr;
     }
     interpolation::MMatrix<double> coefficients = py_map->map->GetCoefficientsAsMatrix();
     PyObject* py_coefficients = PyList_New(coefficients.num_row());
@@ -85,10 +85,10 @@ std::string("represents the coefficients of x_0^2 x_1^1\n");
 PyObject* index_by_power(PyObject *py_class, PyObject *args, PyObject *kwds) {
     PyTypeObject* py_map_type = reinterpret_cast<PyTypeObject*>(py_class);
     // failed to cast or self was not initialised - something horrible happened
-    if (py_map_type == NULL) {
+    if (py_map_type == nullptr) {
         PyErr_SetString(PyExc_TypeError,
                 "Failed to resolve self as PolynomialMapType");
-        return NULL;
+        return nullptr;
     }
 
     int col = 0;
@@ -96,18 +96,18 @@ PyObject* index_by_power(PyObject *py_class, PyObject *args, PyObject *kwds) {
     static char *kwlist[] = {
         const_cast<char*>("col"),
         const_cast<char*>("dim"),
-        NULL
+        nullptr
     };
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "ii", kwlist, &col, &dim)) {
-        return NULL;
+        return nullptr;
     }
     if (col < 0) {
         PyErr_SetString(PyExc_ValueError, "col should be >= 0");
-        return NULL;
+        return nullptr;
     }
     if (dim <= 0) {
         PyErr_SetString(PyExc_ValueError, "dim should be > 0");
-        return NULL;
+        return nullptr;
     }
     std::vector<int> powers =
                   interpolation::SquarePolynomialVector::IndexByPower(col, dim);
@@ -131,29 +131,29 @@ std::string("value dimension of the mapping; corresponding to the ordinates\n");
 PyObject* evaluate(PyObject *self, PyObject *args, PyObject *kwds) {
     PyPolynomialMap* py_map = reinterpret_cast<PyPolynomialMap*>(self);
     // failed to cast or self was not initialised - something horrible happened
-    if (py_map == NULL) {
+    if (py_map == nullptr) {
         PyErr_SetString(PyExc_TypeError,
                 "Failed to resolve self as PolynomialMap");
-        return NULL;
+        return nullptr;
     }
-    if (py_map->map == NULL) {
+    if (py_map->map == nullptr) {
         PyErr_SetString(PyExc_TypeError,
                 "PolynomialMap not properly initialised");
-        return NULL;
+        return nullptr;
     }
     PyObject* py_point;
-    static char *kwlist[] = {const_cast<char*>("point"), NULL};
+    static char *kwlist[] = {const_cast<char*>("point"), nullptr};
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "O", kwlist, &py_point)) {
-        return NULL;
+        return nullptr;
     }
 
     if (!PyList_Check(py_point)) {
         PyErr_SetString(PyExc_TypeError, "point was not a list");
-        return NULL;
+        return nullptr;
     }
     if (PyList_Size(py_point) != py_map->map->PointDimension()) {
         PyErr_SetString(PyExc_TypeError, "point had wrong size");
-        return NULL;
+        return nullptr;
     }
     std::vector<double> point(py_map->map->PointDimension());
     for (size_t i = 0; i < point.size(); ++i) {
@@ -161,7 +161,7 @@ PyObject* evaluate(PyObject *self, PyObject *args, PyObject *kwds) {
         point[i] = PyFloat_AsDouble(point_i);
     }
     if (PyErr_Occurred()) // probably not a double in the list
-        return NULL;
+        return nullptr;
     std::vector<double> value(py_map->map->ValueDimension());
     py_map->map->F(&point[0], &value[0]);
     PyObject* py_value = PyList_New(value.size());
@@ -220,7 +220,7 @@ std::vector<std::vector<double> > get_vectors(PyObject* py_floats) {
         for (size_t j = 0; j < num_cols; ++j) {
             PyObject* py_value = PyList_GetItem(row, j);
             data.at(i).at(j) = PyFloat_AsDouble(py_value);
-            if (PyErr_Occurred() != NULL) // not a float
+            if (PyErr_Occurred() != nullptr) // not a float
                 return std::vector<std::vector<double> >();
         }
     }
@@ -230,14 +230,14 @@ std::vector<std::vector<double> > get_vectors(PyObject* py_floats) {
 PyObject* exact_solve(PyObject *py_class, PyObject *args, PyObject *kwds) {
     PyTypeObject* py_map_type = reinterpret_cast<PyTypeObject*>(py_class);
     // failed to cast or self was not initialised - something horrible happened
-    if (py_map_type == NULL) {
+    if (py_map_type == nullptr) {
         PyErr_SetString(PyExc_TypeError,
                 "Failed to resolve self as PolynomialMapType");
-        return NULL;
+        return nullptr;
     }
 
-    PyObject* py_points = NULL;
-    PyObject* py_values = NULL;
+    PyObject* py_points = nullptr;
+    PyObject* py_values = nullptr;
     int polynomial_order = 0;
     PyObject* py_error_matrix = Py_None; // borrowed reference
     static char *kwlist[] = {
@@ -245,31 +245,31 @@ PyObject* exact_solve(PyObject *py_class, PyObject *args, PyObject *kwds) {
         const_cast<char*>("values"),
         const_cast<char*>("polynomial_order"),
         const_cast<char*>("error_matrix"),
-        NULL
+        nullptr
     };
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "OOi|O", kwlist, &py_points,
             &py_values, &polynomial_order, &py_error_matrix)) {
-        return NULL;
+        return nullptr;
     }
     if (polynomial_order < 0) {
         PyErr_SetString(PyExc_ValueError, "polynomial_order should be >= 0");
-        return NULL;
+        return nullptr;
     }
     std::vector<std::vector<double> > points = get_vectors(py_points);
     if (points.size() == 0) {
         PyErr_SetString(PyExc_ValueError, "Failed to evaluate points");
-        return NULL;
+        return nullptr;
     }
     std::vector<std::vector<double> > values = get_vectors(py_values);
     if (values.size() == 0) {
         PyErr_SetString(PyExc_ValueError, "Failed to evaluate values");
-        return NULL;
+        return nullptr;
     }
     if (points.size() != values.size()) {
         PyErr_SetString(PyExc_ValueError, "points misaligned with values");
-        return NULL;
+        return nullptr;
     }
-    interpolation::SquarePolynomialVector* test_map = NULL;
+    interpolation::SquarePolynomialVector* test_map = nullptr;
     try {
         std::vector<std::vector<double> > no_derivs;
         std::vector<std::vector<int> > no_indices;
@@ -279,7 +279,7 @@ PyObject* exact_solve(PyObject *py_class, PyObject *args, PyObject *kwds) {
         test_map = solve.PolynomialSolve(values, no_derivs);
     } catch (GeneralClassicException& exc) {
         PyErr_SetString(PyExc_ValueError, exc.what().c_str());
-        return NULL;
+        return nullptr;
     }
     PyObject* py_map_obj = _alloc(py_map_type, 0);
     PyPolynomialMap* py_map = reinterpret_cast<PyPolynomialMap*>(py_map_obj);
@@ -307,75 +307,75 @@ std::string("Returns a polynomial map.\n");
 PyObject* least_squares(PyObject *py_class, PyObject *args, PyObject *kwds) {
     PyTypeObject* py_map_type = reinterpret_cast<PyTypeObject*>(py_class);
     // failed to cast or self was not initialised - something horrible happened
-    if (py_map_type == NULL) {
+    if (py_map_type == nullptr) {
         PyErr_SetString(PyExc_TypeError,
                 "Failed to resolve self as PolynomialMapType");
-        return NULL;
+        return nullptr;
     }
 
-    PyObject* py_points = NULL;
-    PyObject* py_values = NULL;
+    PyObject* py_points = nullptr;
+    PyObject* py_values = nullptr;
     int polynomial_order = 0;
-    PyObject* py_coefficients = NULL;
-    PyObject* py_weights = NULL;
+    PyObject* py_coefficients = nullptr;
+    PyObject* py_weights = nullptr;
     static char *kwlist[] = {
         const_cast<char*>("points"),
         const_cast<char*>("values"),
         const_cast<char*>("polynomial_order"),
         const_cast<char*>("polynomial_coefficients"),
         const_cast<char*>("weights"),
-        NULL
+        nullptr
     };
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "OOi|OO", kwlist, &py_points,
             &py_values, &polynomial_order, &py_coefficients, &py_weights)) {
-        return NULL;
+        return nullptr;
     }
     if (polynomial_order < 0) {
         PyErr_SetString(PyExc_ValueError, "polynomial_order should be >= 0");
-        return NULL;
+        return nullptr;
     }
     std::vector<std::vector<double> > points = get_vectors(py_points);
     std::vector<std::vector<double> > values = get_vectors(py_values);
     std::vector<interpolation::PolynomialCoefficient> coeff;
     std::vector<double> weights;
     // weights
-    if (py_weights != NULL) {
+    if (py_weights != nullptr) {
         if (!PyList_Check(py_weights)) {
             PyErr_SetString(PyExc_TypeError,
                             "Failed to resolve weights as a list");
-            return NULL;
+            return nullptr;
         }
         size_t list_size = PyList_Size(py_weights); // nb: size 0 is legal
         weights = std::vector<double>(list_size);
         for (size_t i = 0; i < list_size; ++i) {
             PyObject* py_value = PyList_GetItem(py_weights, i);
             weights[i] = int(PyFloat_AsDouble(py_value));
-            if (PyErr_Occurred() != NULL) { // not an int
-                return NULL;
+            if (PyErr_Occurred() != nullptr) { // not an int
+                return nullptr;
             }
         }
     }
     // coefficients
-    if (py_coefficients != NULL) {
+    if (py_coefficients != nullptr) {
         if (!PyList_Check(py_coefficients)) {
             PyErr_SetString(PyExc_TypeError,
                             "Failed to resolve coefficients as a list");
-            return NULL;
+            return nullptr;
         }
         size_t list_size = PyList_Size(py_coefficients); // nb: size 0 is legal
         for (size_t i = 0; i < list_size; ++i) {
             PyObject* py_value = PyList_GetItem(py_coefficients, i);
             PyCoefficient* py_coeff = reinterpret_cast<PyCoefficient*>(py_value);
-            if (py_coeff == NULL) {
+            if (py_coeff == nullptr) {
                 PyErr_SetString(PyExc_TypeError,
                     "Failed to resolve list item as a PolynomialCoefficient.");
-                return NULL;
+                return nullptr;
             }
             coeff.push_back(*(py_coeff->coeff));
         }
 
     }
-    interpolation::SquarePolynomialVector* test_map = NULL;
+    interpolation::SquarePolynomialVector* test_map = nullptr;
     try {
         interpolation::LeastSquaresSolveFactory solver(polynomial_order, points);
         solver.setWeights(weights);
@@ -383,7 +383,7 @@ PyObject* least_squares(PyObject *py_class, PyObject *args, PyObject *kwds) {
         test_map = new interpolation::SquarePolynomialVector(solver.solve(values));
     } catch (GeneralClassicException& exc) {
         PyErr_SetString(PyExc_ValueError, exc.what().c_str());
-        return NULL;
+        return nullptr;
     }
     PyObject* py_map_obj = _alloc(py_map_type, 0);
     PyPolynomialMap* py_map = reinterpret_cast<PyPolynomialMap*>(py_map_obj);
@@ -396,22 +396,22 @@ PyObject* least_squares(PyObject *py_class, PyObject *args, PyObject *kwds) {
 int _init(PyObject* self, PyObject *args, PyObject *kwds) {
     PyPolynomialMap* py_map = reinterpret_cast<PyPolynomialMap*>(self);
     // failed to cast or self was not initialised - something horrible happened
-    if (py_map == NULL) {
+    if (py_map == nullptr) {
         PyErr_SetString(PyExc_TypeError,
                         "Failed to resolve self as PolynomialMap in __init__");
         return -1;
     }
     // legal python to call initialised_object.__init__() to reinitialise, so
     // handle this case
-    if (py_map->map != NULL) {
+    if (py_map->map != nullptr) {
         delete py_map->map;
-        py_map->map = NULL;
+        py_map->map = nullptr;
     }
     // read in arguments
     int point_dim;
     PyObject* py_coefficients;
     static char *kwlist[] = {const_cast<char*>("point_dimension"),
-                             const_cast<char*>("coefficients"), NULL};
+                             const_cast<char*>("coefficients"), nullptr};
     if (!PyArg_ParseTupleAndKeywords(args, kwds, "iO", kwlist,
                                          &point_dim, &py_coefficients)) {
         return -1;
@@ -456,7 +456,7 @@ int _init(PyObject* self, PyObject *args, PyObject *kwds) {
         for (size_t j = 0; j < num_cols; ++j) {
             PyObject* py_value = PyList_GetItem(row, j);
             coefficients(i+1, j+1) = PyFloat_AsDouble(py_value);
-            if (PyErr_Occurred() != NULL) // not a float
+            if (PyErr_Occurred() != nullptr) // not a float
                 return -1;
         }
     }
@@ -474,7 +474,7 @@ int _init(PyObject* self, PyObject *args, PyObject *kwds) {
 PyObject *_alloc(PyTypeObject *type, Py_ssize_t nitems) {
     void* void_map = malloc(sizeof(PyPolynomialMap));
     PyPolynomialMap* map = reinterpret_cast<PyPolynomialMap*>(void_map);
-    map->map = NULL;
+    map->map = nullptr;
     Py_REFCNT(map) = 1;
     Py_TYPE(map) = type;
     return reinterpret_cast<PyObject*>(map);
@@ -489,15 +489,15 @@ void _dealloc(PyPolynomialMap * self) {
 }
 
 void _free(PyPolynomialMap * self) {
-    if (self != NULL) {
-        if (self->map != NULL)
+    if (self != nullptr) {
+        if (self->map != nullptr)
             delete self->map;
         free(self);
     }
 }
 
 static PyMemberDef _members[] = {
-{NULL}
+{nullptr}
 };
 
 static PyMethodDef _methods[] = {
@@ -511,7 +511,7 @@ static PyMethodDef _methods[] = {
   METH_CLASS|METH_VARARGS|METH_KEYWORDS, least_squares_docstring.c_str()},
 {"index_by_power", (PyCFunction)index_by_power,
   METH_CLASS|METH_VARARGS|METH_KEYWORDS, index_by_power_docstring.c_str()},
-{NULL}
+{nullptr}
 };
 
 std::string class_docstring =
@@ -527,7 +527,7 @@ std::string("The value dimension of the PolynomialMap is the number of rows\n")+
 std::string("coefficients matrix\n");
 
 static PyTypeObject PyPolynomialMapType = {
-    PyObject_HEAD_INIT(NULL)
+    PyObject_HEAD_INIT(nullptr)
     "polynomial_map.PolynomialMap",         /*tp_name*/
     sizeof(PyPolynomialMap),           /*tp_basicsize*/
     0,                         /*tp_itemsize*/
@@ -578,22 +578,22 @@ static struct PyModuleDef polynomial_map_def = {
     "polynomial_map",     /* m_name */
     module_docstring,  /* m_doc */
     -1,                  /* m_size */
-    NULL,    /* m_methods */
-    NULL,                /* m_reload */
-    NULL,                /* m_traverse */
-    NULL,                /* m_clear */
-    NULL,                /* m_free */
+    nullptr,    /* m_methods */
+    nullptr,                /* m_reload */
+    nullptr,                /* m_traverse */
+    nullptr,                /* m_clear */
+    nullptr,                /* m_free */
 };
 
 PyMODINIT_FUNC PyInit_polynomial_map(void) {
     PyOpal::Globals::Initialise();
     PySquarePolynomialMap::PyPolynomialMapType.tp_new = PyType_GenericNew;
     if (PyType_Ready(&PySquarePolynomialMap::PyPolynomialMapType) < 0)
-        return NULL;
+        return nullptr;
 
     PyObject* module = PyModule_Create(&polynomial_map_def);
-    if (module == NULL)
-        return NULL;
+    if (module == nullptr)
+        return nullptr;
 
     PyTypeObject* polynomial_map_type = &PySquarePolynomialMap::PyPolynomialMapType;
     Py_INCREF(polynomial_map_type);

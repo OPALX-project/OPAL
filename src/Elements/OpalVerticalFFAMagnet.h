@@ -2,7 +2,7 @@
 // Class OpalVerticalFFAMagnet
 //   The class provides the user interface for the VERTICALFFA object
 //
-// Copyright (c) 2019 Chris Rogers
+// Copyright (c) 2019 - 2023 Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -20,8 +20,9 @@
 
 #include "Elements/OpalElement.h"
 
-class OpalVerticalFFAMagnet : public OpalElement {
-  public:
+class OpalVerticalFFAMagnet: public OpalElement {
+
+public:
     /** enum maps string to integer value for UI definitions */
     enum {
         B0 = COMMON,
@@ -43,20 +44,20 @@ class OpalVerticalFFAMagnet : public OpalElement {
     virtual ~OpalVerticalFFAMagnet();
 
     /** Inherited copy constructor */
-    virtual OpalVerticalFFAMagnet *clone(const std::string &name);
+    virtual OpalVerticalFFAMagnet* clone(const std::string& name);
 
     /** Update the VerticalFFA with new parameters from UI parser */
     virtual void update();
 
-  private:
+private:
     // Not implemented.
-    OpalVerticalFFAMagnet(const OpalVerticalFFAMagnet &);
-    void operator=(const OpalVerticalFFAMagnet &);
+    OpalVerticalFFAMagnet(const OpalVerticalFFAMagnet&);
+    void operator=(const OpalVerticalFFAMagnet&);
 
     // Clone constructor.
-    OpalVerticalFFAMagnet(const std::string &name, OpalVerticalFFAMagnet *parent);
+    OpalVerticalFFAMagnet(const std::string& name, OpalVerticalFFAMagnet* parent);
 
-    static std::string docstring_m;
+    static const std::string docstring_m;
 };
 
 #endif // OPAL_OPALVERTICALFFAMAGNET_H

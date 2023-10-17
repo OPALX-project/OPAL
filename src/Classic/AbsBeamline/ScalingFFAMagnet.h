@@ -1,38 +1,31 @@
-/*
- *  Copyright (c) 2017, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
-
-#include "Algorithms/PartBunch.h"
-#include "Fields/BMultipoleField.h"
-#include "BeamlineGeometry/PlanarArcGeometry.h"
-#include "AbsBeamline/EndFieldModel/EndFieldModel.h"
-#include "AbsBeamline/Component.h"
-
+//
+// Class ScalingFFAMagnet
+//   Defines the abstract interface for a sector FFA magnet
+//   with radially scaling fringe fields.
+//
+// Copyright (c) 2017 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef ABSBEAMLINE_ScalingFFAMagnet_H
 #define ABSBEAMLINE_ScalingFFAMagnet_H
+
+#include "AbsBeamline/Component.h"
+#include "AbsBeamline/EndFieldModel/EndFieldModel.h"
+#include "Algorithms/PartBunch.h"
+#include "BeamlineGeometry/PlanarArcGeometry.h"
+#include "Fields/BMultipoleField.h"
+
+#include <cmath>
 
 /** Sector bending magnet with an FFA-style field index and spiral end shape
  * 
@@ -45,13 +38,14 @@
  *  placement.
  */
 
-class ScalingFFAMagnet : public Component {
-  public:
+class ScalingFFAMagnet: public Component {
+
+public:
     /** Construct a new ScalingFFAMagnet
      *
      *  \param name User-defined name of the ScalingFFAMagnet
      */
-    explicit ScalingFFAMagnet(const std::string &name);
+    explicit ScalingFFAMagnet(const std::string& name);
 
     /** Destructor - deletes map */
     ~ScalingFFAMagnet();
@@ -68,8 +62,8 @@ class ScalingFFAMagnet : public Component {
      *  \param B calculated magnetic field
      *  \returns true if particle is outside the field map
      */
-    inline bool apply(const size_t &i, const double &t,
-                      Vector_t &E, Vector_t &B) override;
+    inline bool apply(const size_t& i, const double& t,
+                      Vector_t& E, Vector_t& B) override;
 
     /** Calculate the field at some arbitrary position
      *
@@ -80,8 +74,8 @@ class ScalingFFAMagnet : public Component {
      *  \param B calculated magnetic field
      *  \returns true if particle is outside the field map, else false
      */
-    inline bool apply(const Vector_t &R, const Vector_t &P, const double &t,
-               Vector_t &E, Vector_t &B) override;
+    inline bool apply(const Vector_t& R, const Vector_t& P, const double& t,
+               Vector_t& E, Vector_t& B) override;
 
     /** Calculate the field at some arbitrary position in cartesian coordinates
      *
@@ -90,7 +84,7 @@ class ScalingFFAMagnet : public Component {
      *  \param B calculated magnetic field defined like (Bx, By, Bz)
      *  \returns true if particle is outside the field map, else false
      */
-    bool getFieldValue(const Vector_t &R, Vector_t &B) const;
+    bool getFieldValue(const Vector_t& R, Vector_t& B) const;
 
     /** Calculate the field at some arbitrary position in cylindrical coordinates
      *
@@ -99,7 +93,7 @@ class ScalingFFAMagnet : public Component {
      *  \param B calculated magnetic field defined like (Br, By, Bphi)
      *  \returns true if particle is outside the field map, else false
      */
-    bool getFieldValueCylindrical(const Vector_t &R, Vector_t &B) const;
+    bool getFieldValueCylindrical(const Vector_t& R, Vector_t& B) const;
 
      /** Initialise the ScalingFFAMagnet
       *
@@ -107,7 +101,7 @@ class ScalingFFAMagnet : public Component {
       *  \param startField not used
       *  \param endField not used
       */
-      void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
+      void initialise(PartBunchBase<double, 3>* bunch, double& startField, double& endField) override;
 
      /** Initialise the ScalingFFAMagnet
       *
@@ -123,7 +117,7 @@ class ScalingFFAMagnet : public Component {
     inline bool bends() const override;
 
     /** Not implemented */
-    void getDimensions(double &/*zBegin*/, double &/*zEnd*/) const override {}
+    void getDimensions(double& /*zBegin*/, double& /*zEnd*/) const override {}
 
     /** Return the cell geometry */
     BGeometryBase& getGeometry() override;
@@ -132,10 +126,10 @@ class ScalingFFAMagnet : public Component {
     const BGeometryBase& getGeometry() const override;
 
     /** Return a dummy (0.) field value (what is this for?) */
-    EMField &getField() override;
+    EMField& getField() override;
 
     /** Return a dummy (0.) field value (what is this for?) */
-    const EMField &getField() const override;
+    const EMField& getField() const override;
 
     /** Accept a beamline visitor */
     void accept(BeamlineVisitor& visitor) const override;
@@ -162,7 +156,7 @@ class ScalingFFAMagnet : public Component {
     double getR0() const {return r0_m;}
 
     /** Set the radius constant R_0 */
-    void setR0(double r0) {r0_m = r0; r0Sign_m = r0_m/std::abs(r0_m);}
+    void setR0(double r0) {r0_m = r0; r0Sign_m = r0_m / std::abs(r0_m);}
 
     /** Get the centre of the sector */
     Vector_t getCentre() const {return centre_m;}
@@ -262,7 +256,9 @@ class ScalingFFAMagnet : public Component {
 
     /** Return the end field name. */
     std::string getEndFieldName() const {return endFieldName_m;}
-  private:
+
+
+private:
     /** Calculate the df coefficients, ready for field generation
      *
      *  Must be called following any update to the the field parameters, in
@@ -271,7 +267,7 @@ class ScalingFFAMagnet : public Component {
     void calculateDfCoefficients();
 
     /** Copy constructor */
-    ScalingFFAMagnet(const ScalingFFAMagnet &right);
+    ScalingFFAMagnet(const ScalingFFAMagnet& right);
 
     ScalingFFAMagnet& operator=(const ScalingFFAMagnet& rhs);
     PlanarArcGeometry planarArcGeometry_m;
@@ -296,15 +292,14 @@ class ScalingFFAMagnet : public Component {
     std::vector<std::vector<double> > dfCoefficients_m;
 };
 
-bool ScalingFFAMagnet::apply(const Vector_t &R, const Vector_t &/*P*/,
-                             const double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
+bool ScalingFFAMagnet::apply(const Vector_t& R, const Vector_t& /*P*/,
+                             const double& /*t*/, Vector_t& /*E*/, Vector_t& B) {
     return getFieldValue(R, B);
 }
 
-bool ScalingFFAMagnet::apply(const size_t &i, const double &t,
-                    Vector_t &E, Vector_t &B) {
+bool ScalingFFAMagnet::apply(const size_t& i, const double& t,
+                             Vector_t& E, Vector_t& B) {
     return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
 }
 
 #endif
-

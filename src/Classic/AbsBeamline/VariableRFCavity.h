@@ -1,39 +1,29 @@
-/*
- *  Copyright (c) 2014, Chris Rogers
- *  All rights reserved.
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions are met:
- *  1. Redistributions of source code must retain the above copyright notice,
- *     this list of conditions and the following disclaimer.
- *  2. Redistributions in binary form must reproduce the above copyright notice,
- *     this list of conditions and the following disclaimer in the documentation
- *     and/or other materials provided with the distribution.
- *  3. Neither the name of STFC nor the names of its contributors may be used to
- *     endorse or promote products derived from this software without specific
- *     prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- */
-
+//
+// Class VariableRFCavity
+//   Defines the abstract interface for a RF Cavity
+//   with Time Dependent Parameters.
+//
+// Copyright (c) 2014 - 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef CLASSIC_ABSBEAMLINE_VariableRFCavity_HH
 #define CLASSIC_ABSBEAMLINE_VariableRFCavity_HH
 
-#include "Algorithms/AbstractTimeDependence.h"
-#include "Fields/EMField.h"
-#include "BeamlineGeometry/StraightGeometry.h"
 #include "AbsBeamline/Component.h"
+#include "Algorithms/AbstractTimeDependence.h"
+#include "BeamlineGeometry/StraightGeometry.h"
 #include "Fields/Definitions.h"
-
+#include "Fields/EMField.h"
 
 /** @class VariableRFCavity
  *
@@ -47,15 +37,16 @@
  *  The time dependent quantities are
  */
 class VariableRFCavity: public Component {
-  public:
+
+public:
     /// Constructor with given name.
-    explicit VariableRFCavity(const std::string &name);
+    explicit VariableRFCavity(const std::string& name);
     /** Copy Constructor; performs deepcopy on time-dependence models */
-    VariableRFCavity(const VariableRFCavity &);
+    VariableRFCavity(const VariableRFCavity& );
     /** Default constructor */
     VariableRFCavity();
     /** Assignment operator; performs deepcopy on time-dependence models*/
-    VariableRFCavity& operator=(const VariableRFCavity &);
+    VariableRFCavity& operator=(const VariableRFCavity&);
     /** Destructor does nothing
      *
      * The shared_ptrs will self-destruct when reference count goes to 0
@@ -67,7 +58,7 @@ class VariableRFCavity: public Component {
      *  The RF cavity finds the "time dependence" models by doing a string
      *  lookup against a list held by AbstractTimeDependence at accept time.
      */
-    virtual void accept(BeamlineVisitor &) const override;
+    virtual void accept(BeamlineVisitor&) const override;
 
     /** Inheritable deepcopy method */
     virtual ElementBase* clone() const override;
@@ -81,7 +72,8 @@ class VariableRFCavity: public Component {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) override;
+    virtual bool apply(const size_t& i, const double& t,
+                       Vector_t& E, Vector_t& B) override;
 
     /** Calculate the field at a given position
      *
@@ -93,7 +85,8 @@ class VariableRFCavity: public Component {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool apply(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
+    virtual bool apply(const Vector_t& R, const Vector_t& P,
+                       const double& t, Vector_t& E, Vector_t& B) override;
 
 
     /** Calculate the field at a given position. This is identical to "apply".
@@ -106,13 +99,14 @@ class VariableRFCavity: public Component {
      *
      *  @returns True if particle is outside the boundaries; else False
      */
-    virtual bool applyToReferenceParticle(const Vector_t &R, const Vector_t &P, const double &t, Vector_t &E, Vector_t &B) override;
+    virtual bool applyToReferenceParticle(const Vector_t& R, const Vector_t& P,
+                                          const double& t, Vector_t& E, Vector_t& B) override;
 
     /** Initialise ready for tracking
      *
      *  Just sets RefPartBunch_m
      */
-    virtual void initialise(PartBunchBase<double, 3> *bunch, double &startField, double &endField) override;
+    virtual void initialise(PartBunchBase<double, 3>* bunch, double& startField, double& endField) override;
 
     /** Finalise following tracking
      *
@@ -124,7 +118,7 @@ class VariableRFCavity: public Component {
     virtual bool bends() const override {return false;}
 
     /** Not used (does nothing) */
-    virtual void getDimensions(double &/*zBegin*/, double &/*zEnd*/) const override {}
+    virtual void getDimensions(double& /*zBegin*/, double& /*zEnd*/) const override {}
 
     /** Get the amplitude at a given time
      *
@@ -181,22 +175,19 @@ class VariableRFCavity: public Component {
      *
      *  The name is used to find the amplitude model at accept time
      */
-    virtual void setAmplitudeName(std::string amplitude)
-    { amplitudeName_m = amplitude; }
+    virtual void setAmplitudeName(const std::string& amplitude) { amplitudeName_m = amplitude; }
 
     /** Set the phase time dependence name
      *
      *  The name is used to find the phase model at accept time
      */
-    virtual void setPhaseName(std::string phase)
-    { phaseName_m = phase; }
+    virtual void setPhaseName(const std::string& phase) { phaseName_m = phase; }
 
     /** Set the frequency time dependence name
      *
      *  The name is used to find the frequency model at accept time
      */
-    virtual void setFrequencyName(std::string frequency)
-    { frequencyName_m = frequency; }
+    virtual void setFrequencyName(const std::string& frequency) { frequencyName_m = frequency; }
 
     /** Set the cavity geometry */
     virtual StraightGeometry& getGeometry() override;
@@ -210,12 +201,12 @@ class VariableRFCavity: public Component {
      */
     void initialise() const;
 
+    /// Not implemented
+    virtual EMField& getField() override;
+    /// Not implemented
+    virtual const EMField& getField() const override;
 
-    /// Not implemented
-    virtual EMField &getField() override;
-    /// Not implemented
-    virtual const EMField &getField() const override;
-  protected:
+protected:
     void initNull();
     std::shared_ptr<AbstractTimeDependence> phaseTD_m;
     std::shared_ptr<AbstractTimeDependence> amplitudeTD_m;
@@ -225,10 +216,10 @@ class VariableRFCavity: public Component {
     std::string frequencyName_m;
     double halfWidth_m;
     double halfHeight_m;
-    double _length;
+    double length_m;
+
     /// The cavity's geometry.
     StraightGeometry geometry;
-    static constexpr double lengthUnit_m = 1e3;
 
 private:
 };
@@ -246,26 +237,23 @@ double VariableRFCavity::getFrequency(double time) const {
 }
 
 double VariableRFCavity::getHeight() const {
-    return halfHeight_m*2/lengthUnit_m;
+    return halfHeight_m * 2;
 }
 
 double VariableRFCavity::getWidth() const {
-    return halfWidth_m*2/lengthUnit_m;
+    return halfWidth_m * 2;
 }
 
 double VariableRFCavity::getLength() const {
-    return _length/lengthUnit_m;
+    return length_m;
 }
 
 void VariableRFCavity::setHeight(double fullHeight) {
-    halfHeight_m = fullHeight/2*lengthUnit_m;
+    halfHeight_m = fullHeight / 2;
 }
 
 void VariableRFCavity::setWidth(double fullWidth) {
-    halfWidth_m = fullWidth/2*lengthUnit_m;
+    halfWidth_m = fullWidth / 2;
 }
-
-
-
 
 #endif // CLASSIC_VirtualRFCavity_HH

@@ -15,15 +15,14 @@
 //
 #include <boost/python.hpp>
 
-#include "Utilities/OpalException.h"
 #include "AbsBeamline/Ring.h"
-#include "Track/TrackRun.h"
 #include "Algorithms/ParallelTTracker.h"
 #include "Algorithms/ParallelCyclotronTracker.h"
-#include "Physics/Units.h"
+#include "Track/TrackRun.h"
+#include "Utilities/OpalException.h"
 
-#include "PyOpal/PyCore/Globals.h"
 #include "PyOpal/PyCore/ExceptionTranslation.h"
+#include "PyOpal/PyCore/Globals.h"
 
 namespace PyOpal {
 namespace Field {
@@ -73,9 +72,9 @@ py::object get_field_value_cyclotron(double x,
                                      double z,
                                      double t,
                                      ParallelCyclotronTracker* tracker) {
-    if (tracker == NULL) {
+    if (tracker == nullptr) {
         throw(OpalException("PyField::get_field_value_cyclotron",
-                            "ParallelCyclotronTracker was NULL"));
+                            "ParallelCyclotronTracker was nullptr"));
     }
     Vector_t R(x, y, z);
     Vector_t P, B, E;
@@ -96,7 +95,6 @@ py::object get_field_value(double x, double y, double z, double t) {
     throw(OpalException("PyField::get_field_value",
                         "Could not find a ParallelCyclotronTracker - get_field_value only works in OPAL-CYCL mode"));
 }
-
 
 
 // returns a *borrowed* pointer
@@ -131,9 +129,7 @@ std::string start_pos_docstring =
 boost::python::object getElementStartPosition(int i) {
     RingSection* sec = getRing()->getSection(i);
     Vector_t pos = sec->getStartPosition();
-    return boost::python::make_tuple(pos[0]*Units::mm2m,
-                                     pos[1]*Units::mm2m,
-                                     pos[2]*Units::mm2m);
+    return boost::python::make_tuple(pos[0], pos[1], pos[2]);
 }
 
 std::string end_pos_docstring = 
@@ -141,9 +137,7 @@ std::string end_pos_docstring =
 boost::python::object getElementEndPosition(int i) {
     RingSection* sec = getRing()->getSection(i);
     Vector_t pos = sec->getEndPosition();
-    return boost::python::make_tuple(pos[0]*Units::mm2m,
-                                     pos[1]*Units::mm2m,
-                                     pos[2]*Units::mm2m);
+    return boost::python::make_tuple(pos[0], pos[1], pos[2]);
 }
 
 std::string start_norm_docstring = 
@@ -196,4 +190,3 @@ BOOST_PYTHON_MODULE(field) {
 
 }
 }
-
