@@ -364,14 +364,15 @@ void LossDataSink::save(unsigned int numSets, OpalData::OpenMode openMode) {
 
     Ippl::Comm->barrier();
 
-    particles_m.clear();
-    turnNumber_m.clear();
-    bunchNumber_m.clear();
-    spos_m.clear();
-    refTime_m.clear();
-    RefPartR_m.clear();
-    RefPartP_m.clear();
-    globalTrackStep_m.clear();
+    /// clear and return memory                                                                                                                                                             
+    particles_m       = std::vector<OpalParticle>();                                                                                                                                        
+    turnNumber_m      = std::vector<size_t>();                                                                                                                                              
+    bunchNumber_m     = std::vector<size_t>();                                                                                                                                              
+    spos_m            = std::vector<double>();                                                                                                                                              
+    refTime_m         = std::vector<double>();                                                                                                                                              
+    RefPartR_m        = std::vector<Vector_t>();                                                                                                                                            
+    RefPartR_m        = std::vector<Vector_t>();                                                                                                                                            
+    globalTrackStep_m = std::vector<h5_int64_t>(); 
 }
 
 // Note: This was changed to calculate the global number of dumped particles
