@@ -89,6 +89,7 @@
 #include "Elements/OpalOffset/OpalLocalCylindricalOffset.h"
 #include "Elements/OpalOffset/OpalGlobalCartesianOffset.h"
 #include "Elements/OpalOffset/OpalGlobalCylindricalOffset.h"
+#include "Elements/OpalOutputPlane.h"
 #include "Elements/OpalPepperPot.h"
 #include "Elements/OpalPolynomialTimeDependence.h"
 #include "Elements/OpalProbe.h"
@@ -212,6 +213,7 @@ namespace {
 //        opal->create(new OpalOffset::OpalLocalCylindricalOffset());
 //        opal->create(new OpalOffset::OpalGlobalCartesianOffset());
 //        opal->create(new OpalOffset::OpalGlobalCylindricalOffset());
+        opal->create(new OpalOutputPlane());
         opal->create(new OpalPepperPot());
         opal->create(new OpalPolynomialTimeDependence());
         opal->create(new OpalProbe());

@@ -25,6 +25,7 @@ set (_SRCS
     OpalOffset/OpalLocalCartesianOffset.cpp
     OpalOffset/OpalGlobalCylindricalOffset.cpp
     OpalOffset/OpalGlobalCartesianOffset.cpp
+    OpalOutputPlane.cpp
     OpalProbe.cpp
     OpalPepperPot.cpp
     OpalPolynomialTimeDependence.cpp

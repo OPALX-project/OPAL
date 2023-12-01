@@ -100,6 +100,7 @@ enum class ElementType: unsigned short {
     MULTIPOLE,
     MULTIPOLET,
     OFFSET,
+    OUTPUTPLANE,
     PROBE,
     RBEND,
     RBEND3D,

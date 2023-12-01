@@ -4,6 +4,7 @@ set (_SRCS
     DipoleFieldTest.cpp
     MultipoleTTest.cpp
     OffsetTest.cpp
+    OutputPlaneTest.cpp
     PolynomialTest.cpp
     RingTest.cpp
     SBend3DTest.cpp
