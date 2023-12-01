@@ -41,6 +41,7 @@
 #include "AbsBeamline/MultipoleTCurvedVarRadius.h"
 #include "AbsBeamline/MultipoleTStraight.h"
 #include "AbsBeamline/Offset.h"
+#include "AbsBeamline/OutputPlane.h"
 #include "AbsBeamline/PluginElement.h"
 #include "AbsBeamline/Probe.h"
 #include "AbsBeamline/RBend.h"
@@ -670,6 +671,37 @@ void ParallelCyclotronTracker::visitMultipoleTCurvedVarRadius(const MultipoleTCu
     myElements.push_back(dynamic_cast<MultipoleTCurvedVarRadius*>(multTvcurv.clone()));
 }
 
+
+/**
+ *
+ *
+ * @param plane
+ */
+void ParallelCyclotronTracker::visitOutputPlane(const OutputPlane& plane) {
+    if (opalRing_m == nullptr) {
+        throw OpalException("ParallelCylcotronTracker::visitOutputPlane",
+                            "Attempt to place an OutputPlane when Ring not defined");
+    }
+
+    OutputPlane* elptr = dynamic_cast<OutputPlane*>(plane.clone());
+    elptr->setGlobalFieldMap(opalRing_m);
+    myElements.push_back(elptr);
+    elptr->initialise(itsBunch_m);
+
+    double BcParameter[8] = {};
+
+    Vector_t centre = elptr->getCentre();
+    Vector_t norm = elptr->getNormal();
+    double width = elptr->getHorizontalExtent();
+    BcParameter[0] = centre[0]-width*norm[1];
+    BcParameter[1] = centre[0]+width*norm[1];
+    BcParameter[2] = centre[1]-width*norm[0];
+    BcParameter[3] = centre[1]+width*norm[0];
+    BcParameter[4] = Units::mm2m; // thickness, not used
+    buildupFieldList(BcParameter, ElementType::OUTPUTPLANE, elptr);
+}
+
+
 /**
  *
  *
@@ -1173,6 +1205,7 @@ void ParallelCyclotronTracker::execute() {
             CavityCrossData ccd = {cav, cav->getSinAzimuth(), cav->getCosAzimuth(), cav->getPerpenDistance()};
             cavCrossDatas_m.push_back(ccd);
         } else if ( type == ElementType::CCOLLIMATOR ||
+                    type == ElementType::OUTPUTPLANE ||
                     type == ElementType::PROBE       ||
                     type == ElementType::SEPTUM      ||
                     type == ElementType::STRIPPER) {

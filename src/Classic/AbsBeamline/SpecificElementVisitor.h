@@ -36,6 +36,7 @@
 #include "AbsBeamline/MultipoleTStraight.h"
 #include "AbsBeamline/MultipoleTCurvedConstRadius.h"
 #include "AbsBeamline/MultipoleTCurvedVarRadius.h"
+#include "AbsBeamline/OutputPlane.h"
 #include "AbsBeamline/Probe.h"
 #include "AbsBeamline/RBend.h"
 #include "AbsBeamline/Ring.h"
@@ -135,6 +136,9 @@ public:
 
     /// Apply the algorithm to an offset (placement).
     virtual void visitOffset(const Offset &);
+
+    /// Apply the algorithm to an output plane.
+    virtual void visitOutputPlane(const OutputPlane &);
 
     /// Apply the algorithm to a probe.
     virtual void visitProbe(const Probe &prob);
@@ -312,6 +316,11 @@ void SpecificElementVisitor<ELEM>::visitMultipoleTCurvedVarRadius(const Multipol
 template<class ELEM>
 void SpecificElementVisitor<ELEM>::visitOffset(const Offset &element) {
     CastsTrait<ELEM, Offset>::apply(allElementsOfTypeE, element);
+}
+
+template<class ELEM>
+void SpecificElementVisitor<ELEM>::visitOutputPlane(const OutputPlane &element) {
+    CastsTrait<ELEM, OutputPlane>::apply(allElementsOfTypeE, element);
 }
 
 template<class ELEM>

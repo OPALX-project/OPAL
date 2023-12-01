@@ -2,6 +2,7 @@ set (_SRCS
     OpalAsymmetricEngeTest.cpp
     OpalEngeTest.cpp
     OpalOffsetTest.cpp
+    OpalOutputPlaneTest.cpp
     OpalPolynomialTimeDependenceTest.cpp
     OpalScalingFFAMagnetTest.cpp
     OpalSplineTimeDependenceTest.cpp

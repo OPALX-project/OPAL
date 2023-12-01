@@ -85,6 +85,7 @@ const std::map<ElementType, std::string> ElementBase::elementTypeToString_s = {
     {ElementType::MULTIPOLE,          "Multipole"},
     {ElementType::MULTIPOLET,         "MultipoleT"},
     {ElementType::OFFSET,             "Offset"},
+    {ElementType::OUTPUTPLANE,        "OutputPlane"},
     {ElementType::PROBE,              "Probe"},
     {ElementType::RBEND,              "RBend"},
     {ElementType::RBEND3D,            "RBend3D"},
