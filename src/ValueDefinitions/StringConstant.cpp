@@ -2,7 +2,7 @@
 // Class StringConstant
 //   The STRING CONSTANT definition.
 //
-// Copyright (c) 2000 - 2021, Paul Scherrer Institut, Villigen PSI, Switzerland
+// Copyright (c) 2000 - 2023, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -36,7 +36,7 @@ StringConstant::StringConstant():
 
     registerOwnership(AttributeHandler::STATEMENT);
 
-    OpalData *opal = OpalData::getInstance();
+    OpalData* opal = OpalData::getInstance();
     opal->create(new StringConstant("GITREVISION", this, Util::getGitRevision()));
 
     // NOTE: Strings that contain a hyphen can't be written without quotes and
@@ -54,6 +54,7 @@ StringConstant::StringConstant():
     CREATE_STRINGCONSTANT("STANDING");
     CREATE_STRINGCONSTANT("TEMPORAL");
     CREATE_STRINGCONSTANT("SPATIAL");
+
     // Beam / PARTICLE
     CREATE_STRINGCONSTANT("ELECTRON");
     CREATE_STRINGCONSTANT("PROTON");
@@ -67,6 +68,7 @@ StringConstant::StringConstant():
     CREATE_STRINGCONSTANT("XENON");
     CREATE_STRINGCONSTANT("H2P");
     CREATE_STRINGCONSTANT("ALPHA");
+
     // Distribution / TYPE
     CREATE_STRINGCONSTANT("FROMFILE");
     CREATE_STRINGCONSTANT("GAUSS");
@@ -127,11 +129,11 @@ StringConstant::StringConstant():
 
     // OutputPlane / PLACEMENT_STYLE
     CREATE_STRINGCONSTANT("CENTRE_NORMAL");
-    CREATE_STRINGCONSTANT("PROBE");
+    // additionally: PROBE;
 
     // OutputPlane / ALGORITHM
     CREATE_STRINGCONSTANT("INTERPOLATION");
-    // CREATE_STRINGCONSTANT("RK4");
+    // additionally: RK4;
 
     // ParticleMatterInteraction / TYPE
     CREATE_STRINGCONSTANT("SCATTERING");
@@ -274,44 +276,41 @@ StringConstant::StringConstant():
     CREATE_STRINGCONSTANT("CYLINDRICAL");
 }
 
-StringConstant::StringConstant(const std::string &name, StringConstant *parent):
-    ValueDefinition(name, parent)
-{}
+StringConstant::StringConstant(const std::string& name,
+                               StringConstant* parent)
+    : ValueDefinition(name, parent) {
+}
 
+StringConstant::StringConstant(const std::string& name,
+                               StringConstant* parent,
+                               const std::string& value)
+    : ValueDefinition(name, parent) {
 
-StringConstant::StringConstant(const std::string &name, StringConstant *parent, const std::string &value):
-    ValueDefinition(name, parent)
-{
     Attributes::setString(itsAttr[0], value);
     itsAttr[0].setReadOnly(true);
     builtin = true;
 }
 
-
 StringConstant::~StringConstant()
 {}
 
-
-bool StringConstant::canReplaceBy(Object *) {
+bool StringConstant::canReplaceBy(Object*) {
     return false;
 }
 
-
-StringConstant *StringConstant::clone(const std::string &name) {
+StringConstant *StringConstant::clone(const std::string& name) {
     return new StringConstant(name, this);
 }
-
 
 std::string StringConstant::getString() const {
     return Attributes::getString(itsAttr[0]);
 }
 
-
-void StringConstant::print(std::ostream &os) const {
+void StringConstant::print(std::ostream& os) const {
     os << "STRING " << getOpalName() << '=' << itsAttr[0] << ';';
     os << std::endl;
 }
 
-void StringConstant::printValue(std::ostream &os) const {
+void StringConstant::printValue(std::ostream& os) const {
     os << itsAttr[0];
 }
