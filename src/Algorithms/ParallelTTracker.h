@@ -170,6 +170,8 @@ public:
     /// Apply the algorithm to a vacuum space.
     virtual void visitVacuum(const Vacuum &);
 
+    // TODO I moved this just to test it. Maybe move back later.
+    void computeExternalFields(OrbitThreader &oth);
 private:
 
     // Not implemented.
@@ -251,7 +253,6 @@ private:
     void selectDT(bool backTrack = false);
     void changeDT(bool backTrack = false);
     void emitParticles(long long step);
-    void computeExternalFields(OrbitThreader &oth);
     void computeWakefield(IndexMap::value_t &elements);
     void computeParticleMatterInteraction(IndexMap::value_t elements, OrbitThreader &oth);
 #ifdef ENABLE_OPAL_FEL

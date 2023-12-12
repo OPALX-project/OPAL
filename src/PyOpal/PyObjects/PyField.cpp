@@ -86,6 +86,24 @@ py::object get_field_value_cyclotron(double x,
 
 }
 
+py::object get_field_value_t(OrbitThreader orbthreader,
+                            ParallelTTracker* tracker) {
+    if (tracker == NULL) {
+        throw(OpalException("PyField::get_field_value_t",
+                            "ParallelTTracker was NULL"));
+    }
+    
+    tracker->computeExternalFields(orbthreader);
+    int outOfBounds = 0; 
+    const ParticleAttrib<Vektor<double, 3> > B = tracker -> getBunch() -> Bf;   
+    const ParticleAttrib<Vektor<double, 3> > E = tracker -> getBunch() -> Ef; 
+    // Not doing out of bounds check yet
+    boost::python::tuple value = boost::python::make_tuple(outOfBounds,
+                                          B[0], B[1], B[2], E[0], E[1], E[2]);
+    return value;
+
+}
+
 py::object get_field_value(double x, double y, double z, double t) {
     std::shared_ptr<Tracker> tracker = TrackRun::getTracker();
     ParallelCyclotronTracker* trackerCycl = 
