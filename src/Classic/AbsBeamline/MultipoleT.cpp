@@ -73,6 +73,7 @@ MultipoleT::MultipoleT(const MultipoleT &right):
     rotation_m(right.rotation_m),
     variableRadius_m(right.variableRadius_m),
     boundingBoxLength_m(right.boundingBoxLength_m),
+    magnetStart_m(right.magnetStart_m),
     verticalApert_m(right.verticalApert_m),
     horizApert_m(right.horizApert_m),
     dummy() {
@@ -193,11 +194,11 @@ Vector_t MultipoleT::transformCoords(const Vector_t &R) {
         if (alpha != 0.0 && angle_m != 0.0) {
             X[0] = R[2] / sin(alpha) - radius;
             X[1] = R[1];
-            X[2] = radius * alpha;// + boundingBoxLength_m;
+            X[2] = radius * alpha - fringeField_l.Tanh::getX0()-magnetStart_m;
         } else {
             X[0] = R[0];
             X[1] = R[1];
-            X[2] = R[2];// + boundingBoxLength_m;
+            X[2] = R[2] - fringeField_l.Tanh::getX0()-magnetStart_m;
         }
     } else {
         // If radius is variable
@@ -209,7 +210,7 @@ Vector_t MultipoleT::transformCoords(const Vector_t &R) {
         std::vector<double> r = t.getTransformation();
         X[0] = r[0];
         X[1] = r[1];
-        X[2] = r[2];
+        X[2] = r[2] - fringeField_l.Tanh::getX0()-magnetStart_m;
     }
     return X;
 }
@@ -537,6 +538,16 @@ double MultipoleT::getFn(std::size_t n, double x, double s) {
 void MultipoleT::initialise() {
     planarArcGeometry_m.setElementLength(length_m);
     planarArcGeometry_m.setCurvature(angle_m / length_m);
+    if (verticalApert_m <= 0.0) {
+        throw OpalException("MultipoleT::initialise()",
+            "MultipoleT "+getName()+" had vertical aperture <= 0");
+    } else if (horizApert_m <= 0.0) {
+        throw OpalException("MultipoleT::initialise()",
+            "MultipoleT "+getName()+" had horizontal aperture <= 0");
+    } else if (boundingBoxLength_m <= 0.0) {
+        throw OpalException("MultipoleT::initialise()",
+            "MultipoleT "+getName()+" had bounding box <= 0");
+    }
 }
 
 void MultipoleT::initialise(PartBunchBase<double, 3>* bunch,

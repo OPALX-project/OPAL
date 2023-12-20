@@ -11,11 +11,21 @@
 # along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 
 import math
-import unittest 
+import unittest
+import sys
+import os
+
+try:
+    import matplotlib
+    import matplotlib.pyplot
+    import pyopal.objects.ffa_field_mapper
+except ImportError:
+    pass
 
 import pyopal.objects.field
 import pyopal.objects.minimal_runner
 import pyopal.elements.multipolet
+import pyopal.objects.field
 
 class TestMultipoleTRunner(pyopal.objects.minimal_runner.MinimalRunner):
     """Test runner - I wanted to check the placement was okay"""
@@ -34,20 +44,23 @@ class TestMultipoleTRunner(pyopal.objects.minimal_runner.MinimalRunner):
     def make_multipolet(self, bz):
         """Make a default straight multipole"""
         multipole = pyopal.elements.multipolet.MultipoleT()
-        multipole.t_p = [bz] # dipole
-        multipole.left_fringe = 0.01
-        multipole.right_fringe = 0.01
-        multipole.length = self.length
-        multipole.horizontal_aperture = 0.1
-        multipole.vertical_aperture = 0.1
-        multipole.maximum_f_order = 1
-        multipole.entrance_angle = 0.0
-        multipole.maximum_x_order = 1
-        multipole.variable_radius = 0
-        multipole.rotation = 0
-        multipole.angle = 0.0
-        multipole.bounding_box_length = self.bb_length
-        multipole.delete_on_transverse_exit = False
+        multipole.set_attributes(
+            t_p = [bz, 0.0, 0.0, 0.0/(0.05**3)], # dipole
+            left_fringe = 0.01,
+            right_fringe = 0.01,
+            length = self.length,
+            horizontal_aperture = 0.1,
+            vertical_aperture = 0.1,
+            maximum_f_order = 6,
+            entrance_angle = 0.0,
+            maximum_x_order = 6,
+            variable_radius = 0,
+            rotation = 0,
+            angle = 0.0,
+            bounding_box_length = self.bb_length,
+            delete_on_transverse_exit = False,
+            magnet_start = 0.1,
+        )
         self.multipole = multipole
         return multipole
 
@@ -61,12 +74,54 @@ class TestMultipoleTRunner(pyopal.objects.minimal_runner.MinimalRunner):
 
     def postprocess(self):
         """Test placement - note that placement is from centre for this element"""
+        self.plot()
         self.test_field(-0.301, 0.0)
         self.test_field(-0.299, 8.317278708416809e-05)
         self.test_field(0.299, 8.317278708416809e-05)
         self.test_field(0.301, 0.0)
         self.test_field(-0.25, 0.75)
         self.test_field(0.25, 0.75)
+
+    def plot(self):
+        mapper = pyopal.objects.ffa_field_mapper.FFAFieldMapper()
+        mapper.x_points = [i*0.004+1.9 for i in range(50)]
+        mapper.y_points = [i*0.01 for i in range(80)]
+        mapper.z_point = 0.02
+        mapper.field_map_cartesian(variable = "bz")
+        mapper.field_map_cartesian(variable = "div_b")
+        mapper.field_map_cartesian(variable = "curl_b")
+
+    def _plot(self):
+        """Plot the field"""
+        if 'matplotlib' not in sys.modules:
+            return
+        x0 = 1.5
+        x1 = 2.5
+        y0 = 0.0
+        y1 = 1.0
+        n_x = 1000
+        n_y = 1000
+        x_list = []
+        y_list = []
+        bz_list = []
+        dx = (x1-x0)/n_x
+        dy = (y1-y0)/n_y
+        figure = matplotlib.pyplot.figure()
+        axes = figure.add_subplot(1, 1, 1)
+        for i in range(n_x-1):
+            for j in range(n_y-1):
+                x = x0+(i+0.5)*dx
+                y = y0+(j+0.5)*dy
+                field = pyopal.objects.field.get_field_value(x, y, 0, 0)
+                x_list.append(x)
+                y_list.append(y)
+                bz_list.append(field[3])
+        bin_x = [x0+(x1-x0)*i/n_x for i in range(n_x)]
+        bin_y = [y0+(y1-y0)*j/n_y for j in range(n_y)]
+        axes.hist2d(x_list, y_list, weights=bz_list, bins=[bin_x, bin_y])
+        fname = "test_multipolet_1.png"
+        figure.savefig(fname)
+        print(f"Saved figure in {os.getcwd()}/{fname}")
 
 class TestMultipoleT(unittest.TestCase):
     """
@@ -141,6 +196,7 @@ class TestMultipoleT(unittest.TestCase):
     def test_placement(self):
         """Check placement is okay"""
         runner = TestMultipoleTRunner()
+        runner.tmp_dir = "tmp"
         runner.execute_fork()
 
 if __name__ == "__main__":

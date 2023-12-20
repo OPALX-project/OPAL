@@ -53,7 +53,7 @@ class ScalingFFARunner(pyopal.objects.minimal_runner.MinimalRunner):
         self.probe_id = 1
         self.n_cells = 16
         self.bend_direction = 1 # set to -1 for ring centred on x,y = 8,0 m
-        self.dr = 1.0
+        self.dr = 0.5
         self.spiral_angle = math.pi/6
         ke = 3e-3 # 3 MeV
         self.momentum = ((ke+self.mass)**2-self.mass**2)**0.5
@@ -202,19 +202,20 @@ class ScalingFFARunner(pyopal.objects.minimal_runner.MinimalRunner):
         ]
 
 
-        phi_start = self.f_start/self.r0
-        phi_middle = (self.f_start+self.f_centre_length/2)/self.r0
-        phi_fringe_end = (self.f_start+self.f_centre_length)/self.r0
-        phi_end = self.f_end/self.r0
+        phi_start = math.degrees(self.f_start/self.r0)
+        phi_middle = math.degrees((self.f_start+self.f_centre_length/2)/self.r0)
+        phi_fringe_end = math.degrees((self.f_start+self.f_centre_length)/self.r0)
+        phi_end = math.degrees(self.f_end/self.r0)
+        spiral_deg = math.degrees(self.spiral_angle)
         mapper.spiral_contours = [
-            {"phi0":phi_start, "r0":self.r0, "spiral_angle":self.spiral_angle, "linestyle":"dashed", "colour":"blue", "label":"magnet_start"},
-            {"phi0":phi_middle, "r0":self.r0, "spiral_angle":self.spiral_angle, "linestyle":"dashed", "colour":"grey", "label":"magnet_start+\ncentre_length/2"},
-            {"phi0":phi_fringe_end, "r0":self.r0, "spiral_angle":self.spiral_angle, "linestyle":"dashed", "colour":"grey", "label":"magnet_start+\ncentre_length"},
-            {"phi0":phi_end, "r0":self.r0, "spiral_angle":self.spiral_angle, "linestyle":"dashed", "colour":"blue", "label":"magnet_end"},
+            {"phi0":phi_start, "r0":self.r0, "spiral_angle":spiral_deg, "linestyle":"dashed", "colour":"blue", "label":"magnet_start/r0"},
+            {"phi0":phi_middle, "r0":self.r0, "spiral_angle":spiral_deg, "linestyle":"dashed", "colour":"grey", "label":"(magnet_start+\ncentre_length/2)/r0"},
+            {"phi0":phi_fringe_end, "r0":self.r0, "spiral_angle":spiral_deg, "linestyle":"dashed", "colour":"grey", "label":"(magnet_start+\ncentre_length)/r0"},
+            {"phi0":phi_end, "r0":self.r0, "spiral_angle":spiral_deg, "linestyle":"dashed", "colour":"blue", "label":"magnet_end/r0"},
         ]
 
         mapper.r_points = [self.r0+i*0.001 for i in range(-1200, 1200+1, 10)]
-        mapper.phi_points = [i/8.0 for i in range(0, 180+1, 5)]
+        mapper.phi_points = [i/8.0/10 for i in range(0, 1800+1, 5)]
         mapper.field_map_cylindrical()
 
         mapper.x_points = [i*0.05 for i in range(-100, 100+1, 5)]

@@ -40,6 +40,7 @@ std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalMulti
     {"ROTATION", "rotation", "", PyOpalObjectNS::DOUBLE},
     {"VARRADIUS", "variable_radius", "", PyOpalObjectNS::BOOL},
     {"BBLENGTH", "bounding_box_length", "", PyOpalObjectNS::DOUBLE},
+    {"MAGNET_START", "magnet_start", "", PyOpalObjectNS::DOUBLE},
     {"L", "length", "", PyOpalObjectNS::DOUBLE},
     {"DELETEONTRANSVERSEEXIT", "delete_on_transverse_exit", "", PyOpalObjectNS::BOOL}
 };
