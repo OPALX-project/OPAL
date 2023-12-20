@@ -34,6 +34,10 @@ class FFAFieldMapper():
     Class to make field maps, intended for FFAs/ring geometries
     """
     def __init__(self):
+        # arbitrary height and time offsets for map generation
+        self.z_position = 0.0
+        self.time = 0.0
+
         # for cylindrical field map
         self.r_points = []
         self.phi_points = []
@@ -134,8 +138,8 @@ class FFAFieldMapper():
                 phi_grid.append(phi)
                 point = (radius*math.cos(math.radians(phi)),
                          radius*math.sin(math.radians(phi)),
-                         0,
-                         0)
+                         self.z_position,
+                         self.time)
                 value = pyopal.objects.field.get_field_value(*point)
                 bz_grid.append(value[3])
                 if self.verbose > 0:
@@ -211,7 +215,7 @@ class FFAFieldMapper():
         axes.set_xlim(xlim)
         axes.set_ylim(ylim)
 
-    def field_map_cartesian(self, axes = None):
+    def field_map_cartesian(self, axes = None, variable = "bz"):
         """
         Plot a field map in cartesian coordinates.
 
@@ -228,9 +232,9 @@ class FFAFieldMapper():
             for pos_y in self.y_points:
                 x_grid.append(pos_x)
                 y_grid.append(pos_y)
-                point = (pos_x, pos_y, 0, 0)
-                value = pyopal.objects.field.get_field_value(*point)
-                bz_grid.append(value[3])
+                point = (pos_x, pos_y, self.z_position, self.time)
+                value = self.get_value(variable, [point])[0]
+                bz_grid.append(value)
                 if self.verbose > 0:
                     print("Field value at point", point,
                           "is B:", value[1:4], "E:", value[4:])
@@ -244,9 +248,9 @@ class FFAFieldMapper():
                     cmin=min_by, cmax=max_by, cmap=self.cmap, vmin=-cmax, vmax=cmax)
         axes.set_xlabel("x [m]")
         axes.set_ylabel("y [m]")
-        axes.set_title("$B_{z}$ [T]")
+        axes.set_title(self.axis_labels[variable])
         figure.colorbar(hist[3])
-        fig_fname = os.path.join(self.plot_dir, "scaling_ffa_map_cart.png")
+        fig_fname = os.path.join(self.plot_dir, f"scaling_ffa_map_cart_{variable}.png")
         figure.savefig(fig_fname)
         print("Generated cartesian field map in", fig_fname)
         return figure
@@ -290,8 +294,8 @@ class FFAFieldMapper():
         for phi in self.phi_points:
             point = (radius*math.cos(math.radians(phi)),
                      radius*math.sin(math.radians(phi)),
-                     0,
-                     0)
+                     self.z_position,
+                     self.time)
             value = pyopal.objects.field.get_field_value(*point)
             bz_points.append(value[3])
 
@@ -338,6 +342,7 @@ class FFAFieldMapper():
         - var2: variable in the denominator (range 1 to 4)
         """
         pos_vec = [pos_x, pos_y, pos_z, time]
+        var1 = self.field_variables.index(var1)
         var2 = self.position_variables.index(var2)
         pos_vec[var2] += self.delta_x
         field_plus = pyopal.objects.field.get_field_value(*pos_vec)[var1]
@@ -378,6 +383,22 @@ class FFAFieldMapper():
         ]
         return curl_b
 
+    def get_value(self, variable, point_list):
+        value_list = []
+        if variable in self.field_variables:
+            index = self.field_variables.index(variable)
+            for point in point_list:
+                value_list.append(pyopal.objects.field.get_field_value(*point)[index])
+        elif variable in self.deriv_variables:
+            if variable == "div_b":
+                for point in point_list:
+                    value_list.append(self.get_div_b(point[0], point[1], point[2], point[3]))
+            if variable == "curl_b":
+                for point in point_list:
+                    curl_b = self.get_curl_b(point[0], point[1], point[2], point[3])
+                    value_list.append((curl_b[0]**2+curl_b[1]**2+curl_b[2]**2)**0.5)
+        return value_list
+
     default_radial_contour = {"radius":0.0,
                               "linestyle":"-",
                               "colour":"grey",
@@ -391,3 +412,7 @@ class FFAFieldMapper():
     }
     position_variables = ["x", "y", "z", "t"]
     field_variables = ["out_of_bounds", "bx", "by", "bz", "ex", "ey", "ez"]
+    deriv_variables = ["div_b", "curl_b"]
+    axis_labels = {"bx":"B$_{x}$ [T]", "by":"B$_{y}$ [T]", "bz":"B$_{z}$ [T]",
+                   "ex":"E$_{x}$ []", "ey":"E$_{y}$ []", "ez":"E$_{z}$ []",
+                   "div_b":"$\\nabla .$ B [T/m]", "curl_b":"$|\\nabla \\times B|$ [T/m]"}

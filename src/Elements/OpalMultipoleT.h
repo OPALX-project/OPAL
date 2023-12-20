@@ -37,7 +37,8 @@ public:
         ROTATION,        // Rotation angle about central axis for skew elements
         EANGLE,          // Entrance angle
         VARRADIUS,       // Variable radius flag
-        BBLENGTH,        // Distance between centre of magnet and entrance
+        BBLENGTH,        // Length within which field is calculated
+        MAGNET_START,    // Distance to magnet entrance
         SIZE             // size of the enum
     };
 

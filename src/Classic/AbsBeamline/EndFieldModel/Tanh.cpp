@@ -30,6 +30,14 @@
 #include "gsl/gsl_sf_gamma.h"
 #include "gsl/gsl_sf_pow_int.h"
 
+#include <gsl/gsl_integration.h>
+#include <gsl/gsl_complex.h>
+#include <gsl/gsl_complex_math.h>
+#include <gsl/gsl_math.h>
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_sf_gamma.h>
+
+#include "AbsBeamline/MultipoleTFunctions/tanhDeriv.h"
 #include "AbsBeamline/EndFieldModel/Tanh.h"
 
 namespace endfieldmodel {
@@ -45,7 +53,6 @@ Tanh::~Tanh() {}
 Tanh* Tanh::clone() const {
     return new Tanh(*this);
 }
-
 
 double Tanh::getTanh(double x, int n) const {
   if (n == 0) return tanh((x+_x0)/_lambda);
@@ -63,14 +70,22 @@ double Tanh::getNegTanh(double x, int n) const {
   double t = 0;
   double lam_n = gsl_sf_pow_int(_lambda, n);
   double tanh_x = tanh((x-_x0)/_lambda);
-  for (size_t i = 0; i < _tdi[n].size(); i++)
+  for (size_t i = 0; i < _tdi[n].size(); i++) {
     t += 1./lam_n*static_cast<double>(_tdi[n][i][0])
             *gsl_sf_pow_int(tanh_x, _tdi[n][i][1]);
+  }
   return t;
 }
 
 double Tanh::function(double x, int n) const {
-  return (getTanh(x, n)-getNegTanh(x, n))/2.;
+  if (n > 10) {
+        // BUG this does not work and I do not understand for why not
+        double t = tanhderiv::integrate(x, _x0, _lambda, _lambda, n);
+        return t;
+  }
+  double tplus = getTanh(x, n);
+  double tminus = getNegTanh(x, n);
+  return (tplus-tminus)/2.;
 }
 
 void Tanh::setMaximumDerivative(size_t n) {
@@ -113,8 +128,6 @@ void Tanh::rescale(double scaleFactor) {
   _x0 *= scaleFactor;
   _lambda *= scaleFactor;
 }
-
-
 
 std::ostream& Tanh::print(std::ostream& out) const {
     out << "Tanh model with centre length: " << _x0 

@@ -35,7 +35,9 @@ OpalMultipoleT::OpalMultipoleT():
     OpalElement(SIZE, "MULTIPOLET",
                 "The \"MULTIPOLET\" element defines a combined function multipole.") {
     itsAttr[TP] = Attributes::makeRealArray
-        ("TP", "Transverse Profile derivatives in T m^(-k)");
+        ("TP",
+        "Array of multipolar field strengths b_k. The field generated in the "
+        "flat top is B = b_k x^k [T m^(-k)]");
 
     itsAttr[LFRINGE] = Attributes::makeReal
         ("LFRINGE", "The length of the left end field [m]");
@@ -70,10 +72,12 @@ OpalMultipoleT::OpalMultipoleT():
     itsAttr[BBLENGTH] = Attributes::makeReal
         ("BBLENGTH", "Distance between centre of magnet and entrance [m]");
 
+    itsAttr[MAGNET_START] = Attributes::makeReal
+        ("MAGNET_START", "Distance between the placement pointer and the magnet placement [m]");
+
     registerOwnership();
     setElement(new MultipoleT("MULTIPOLET"));
 }
-
 
 OpalMultipoleT::OpalMultipoleT(const std::string& name,
                                OpalMultipoleT* parent):
@@ -127,6 +131,7 @@ void OpalMultipoleT::update() {
     multT->setMaxXOrder(Attributes::getReal(itsAttr[MAXXORDER]));
     multT->setRotation(Attributes::getReal(itsAttr[ROTATION]));
     multT->setEntranceAngle(Attributes::getReal(itsAttr[EANGLE]));
+    multT->setMagnetStart(Attributes::getReal(itsAttr[MAGNET_START]));
 
     for (int comp = 0; comp < transSize; comp++) {
         double units = Units::T2kG * gsl_sf_pow_int(1.0, comp); // T m^-comp -> kG mm^-comp

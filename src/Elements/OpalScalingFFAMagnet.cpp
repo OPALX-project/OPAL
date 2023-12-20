@@ -44,8 +44,8 @@ OpalScalingFFAMagnet::OpalScalingFFAMagnet() :
 
     itsAttr[END_FIELD_MODEL] = Attributes::makeString
         ("END_FIELD_MODEL",
-         "Names the end field model of the ring, giving dipole field along a line of "
-         "constant radius. If blank, uses the default 'END_LENGTH' and 'CENTRE_LENGTH' "
+         "Names the end field model of the magnet, giving the field magnitude along a line of "
+         "constant radius. If blank, uses the 'END_LENGTH' and 'CENTRE_LENGTH' "
          "parameters and a tanh model. If 'END_FIELD_MODEL' is not blank, Opal will seek "
          "an END_FIELD_MODEL corresponding to the name defined in this string.");
 

@@ -1,6 +1,7 @@
 /*
  *  Copyright (c) 2017, Titus Dascalu
  *  Copyright (c) 2018, Martin Duy Tat
+ *  Copyright (c) 2023, Chris Rogers
  *  All rights reserved.
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions are met:
@@ -245,6 +246,14 @@ public:
      */
     void setBoundingBoxLength(const double &boundingBoxLength);
 
+    /** Get distance to entrance of magnet */
+    double getMagnetStart() const;
+    /** Set distance to magnet start from placement pointer
+     *  \param magnetStart -> Distance to magnet entrance
+     */
+    void setMagnetStart(const double &magnetStart);
+
+
 private:
     MultipoleT operator=(const MultipoleT& rhs);
     // End fields
@@ -285,8 +294,12 @@ private:
     double rotation_m;
     /** Variable radius flag */
     bool variableRadius_m;
-    /** Distance between centre of magnet and entrance */
+    /** Full length of the bounding box */
     double boundingBoxLength_m;
+    /** Distance from the placement pointer to the start of the field */
+    double magnetStart_m = 0.0;
+    /** Distance from the placement pointer to the next placement pointer */
+    double magnetEnd_m = 0.0;
     /** Get field component methods
      */
     double getBx (const Vector_t &R);
@@ -433,6 +446,15 @@ inline
 inline
     void MultipoleT::setBoundingBoxLength(const double &boundingBoxLength) {
         boundingBoxLength_m = boundingBoxLength;
+}
+inline
+    double MultipoleT::getMagnetStart() const {
+        return magnetStart_m;
+}
+
+inline
+    void MultipoleT::setMagnetStart(const double &magnetStart) {
+        magnetStart_m = magnetStart;
 }
 
 #endif
