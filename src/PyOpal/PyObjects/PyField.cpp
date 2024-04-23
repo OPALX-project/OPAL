@@ -85,8 +85,8 @@ py::object get_field_value_cyclotron(double x,
 
 }
 
-py::object get_field_value_t(OrbitThreader & orbthreader,
-                             ParallelTTracker* tracker) {
+py::object get_field_value_t(OrbitThreader orbthreader,
+                            ParallelTTracker* tracker) {
     if (tracker == NULL) {
         throw(OpalException("PyField::get_field_value_t",
                             "ParallelTTracker was NULL"));
