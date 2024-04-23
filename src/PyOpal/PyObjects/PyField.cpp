@@ -105,24 +105,21 @@ py::object get_field_value_t(OrbitThreader orbthreader,
 
 py::object get_field_value(double x, double y, double z, double t) {
     std::shared_ptr<Tracker> tracker = TrackRun::getTracker();
+
     ParallelCyclotronTracker* trackerCycl = 
-                        dynamic_cast<ParallelCyclotronTracker*>(tracker.get());
+        dynamic_cast<ParallelCyclotronTracker*>(tracker.get());
+    ParallelTTracker* trackerT = 
+        dynamic_cast<ParallelTTracker*>(tracker.get()); 
     if (trackerCycl != nullptr) {
         return get_field_value_cyclotron(x, y, z, t, trackerCycl);
     }
-    throw(OpalException("PyField::get_field_value",
-                        "Could not find a ParallelCyclotronTracker - get_field_value only works in OPAL-CYCL mode"));
-}
-
-py::object get_field_value_t(OrbitThreader & orbthreader) {
-    std::shared_ptr<Tracker> tracker = TrackRun::getTracker();
-    ParallelTTracker* trackert = 
-                        dynamic_cast<ParallelTTracker*>(tracker.get());
-    if (trackert != nullptr) {
-        return get_field_value_t(orbthreader, trackert);
+    else (trackerT != nullptr){
+        return get_field_value_t(orbthreader, trackerT)
     }
-    throw(OpalException("PyField::get_field_value_t",
-                        "Could not find a ParallelTTracker - get_field_value for OPAL-t not working" ));
+    
+    throw(OpalException("PyField::get_field_value",
+                        "Could not find a ParallelCyclotronTracker or ParallelTTracker."));
+    
 }
 
 // returns a *borrowed* pointer
