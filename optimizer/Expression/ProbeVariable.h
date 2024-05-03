@@ -47,7 +47,7 @@ struct ProbeVariable {
 
         bool is_valid = true;
 
-        boost::scoped_ptr<ProbeReader> sim_probe(new ProbeReader(probe_filename_));
+        const std::unique_ptr<ProbeReader> sim_probe(new ProbeReader(probe_filename_));
 
         try {
             sim_probe->parseFile();

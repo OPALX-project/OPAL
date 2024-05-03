@@ -52,7 +52,7 @@ struct NumberOfPeaks {
 
         bool is_valid = true;
 
-        boost::scoped_ptr<PeakReader> sim_peaks(new PeakReader(sim_filename_));
+        const std::unique_ptr<PeakReader> sim_peaks(new PeakReader(sim_filename_));
         std::size_t nPeaks = 0;
 
         try {

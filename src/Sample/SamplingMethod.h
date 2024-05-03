@@ -34,7 +34,7 @@ class SamplingMethod
 
 public:
     virtual ~SamplingMethod() {};
-    virtual void create(boost::shared_ptr<SampleIndividual>& ind, size_t i) = 0;
+    virtual void create(std::shared_ptr<SampleIndividual>& ind, size_t i) = 0;
     
     /*!
      * Allocate memory for sampling. Not every sampling method

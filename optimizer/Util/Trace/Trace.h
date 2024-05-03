@@ -26,8 +26,6 @@
 #include <vector>
 #include <map>
 
-#include "boost/smart_ptr.hpp"
-
 #include "Util/Trace/TraceComponent.h"
 
 class Trace {
@@ -42,7 +40,7 @@ public:
     {}
 
     void registerComponent(std::string name,
-            boost::shared_ptr<TraceComponent> component) {
+            std::shared_ptr<TraceComponent> component) {
         nameToIdx_.insert(
             std::pair<std::string, size_t>(name, pipeline_.size()));
         pipeline_.push_back(component);
@@ -53,7 +51,7 @@ public:
     }
 
     void log(std::ostringstream &dump) {
-        for(boost::shared_ptr<TraceComponent> component : pipeline_) {
+        for(std::shared_ptr<TraceComponent> component : pipeline_) {
             component->execute(dump);
         }
     }
@@ -62,7 +60,7 @@ private:
 
     std::string name_;
 
-    std::vector< boost::shared_ptr<TraceComponent> > pipeline_;
+    std::vector< std::shared_ptr<TraceComponent> > pipeline_;
     std::map< std::string, size_t > nameToIdx_;
 
 };

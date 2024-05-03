@@ -60,8 +60,8 @@ struct MaxNormRadialPeak {
 
         bool is_valid = true;
 
-        boost::scoped_ptr<PeakReader> meas_peaks(new PeakReader(meas_filename_));
-        boost::scoped_ptr<PeakReader> sim_peaks(new PeakReader(sim_filename_));
+        const std::unique_ptr<PeakReader> meas_peaks(new PeakReader(meas_filename_));
+        const std::unique_ptr<PeakReader> sim_peaks(new PeakReader(sim_filename_));
         try {
             sim_peaks->parseFile();
             meas_peaks->parseFile();

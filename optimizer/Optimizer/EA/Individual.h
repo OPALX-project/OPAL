@@ -33,8 +33,6 @@
 
 #include "Expression/Expression.h"
 
-#include "boost/smart_ptr.hpp"
-
 class Individual {
 
 public:
@@ -83,7 +81,7 @@ public:
     }
 
     /// copy another individual
-    Individual(boost::shared_ptr<Individual> individual) {
+    Individual(std::shared_ptr<Individual> individual) {
         genes_m       =       genes_t(individual->genes_m);
         objectives_m  =  objectives_t(individual->objectives_m);
         bounds_m      =      bounds_t(individual->bounds_m);

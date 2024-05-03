@@ -55,7 +55,6 @@
 #include "Optimizer/EA/Population.h"
 #include "Optimizer/EA/Variator.h"
 
-#include <boost/smart_ptr.hpp>
 #include <boost/chrono.hpp>
 #include <boost/property_tree/ptree.hpp>
 
@@ -103,7 +102,7 @@ public:
         Variator_t;
     typedef Population< Individual_t > Population_t;
     /// alias for usage in template
-    using individual = boost::shared_ptr<typename FixedPisaNsga2::Individual_t>;
+    using individual = std::shared_ptr<typename FixedPisaNsga2::Individual_t>;
 
 protected:
 
@@ -155,9 +154,9 @@ private:
     PisaState_t curState_m;
 
     /// collect some statistics of rejected and accepted individuals
-    boost::scoped_ptr<Statistics<size_t> > statistics_;
+    const std::unique_ptr<Statistics<size_t> > statistics_;
 
-    boost::scoped_ptr<Variator_t> variator_m;
+    std::unique_ptr<Variator_t> variator_m;
 
     std::vector<unsigned int> pp_all;        ///< IDs of population
     std::vector<unsigned int> parent_queue_; ///< IDs that will make new offspring
@@ -180,7 +179,7 @@ private:
     std::map<size_t, individual > jobmapping_m;
 
     /// population of pareto-front (for final output)
-    boost::shared_ptr<Population_t> paretoFront_m;
+    std::shared_ptr<Population_t> paretoFront_m;
 
     /// indicating if initial population has been created
     bool initialized_m;
@@ -247,8 +246,8 @@ private:
     boost::chrono::system_clock::time_point last_clock_;
 
     // DEBUG output helpers
-    boost::scoped_ptr<Trace> job_trace_;
-    boost::scoped_ptr<Trace> progress_;
+    std::unique_ptr<Trace> job_trace_;
+    std::unique_ptr<Trace> progress_;
 
 
     // entry point for starting the selector side of the PISA state machine
@@ -279,9 +278,9 @@ private:
     bool checkParetoFront(unsigned int id);
     /// Dumps index, objective values and bit string of all individuals in
     /// global_population.
-    void dumpPopulation(boost::shared_ptr<Population_t>);
-    void dumpPopulationToFile(boost::shared_ptr<Population_t>, std::ostringstream& filename, bool dump_offspring);
-    void dumpPopulationToJSON(boost::shared_ptr<Population_t>, std::ostringstream& filename, bool dump_offspring);
+    void dumpPopulation(std::shared_ptr<Population_t>);
+    void dumpPopulationToFile(std::shared_ptr<Population_t>, std::ostringstream& filename, bool dump_offspring);
+    void dumpPopulationToJSON(std::shared_ptr<Population_t>, std::ostringstream& filename, bool dump_offspring);
     void dumpIndividualToFile(int id,
                               individual& ind,
                               std::ofstream& file,

@@ -468,7 +468,7 @@ void SampleCmd::execute() {
     try {
         CmdArguments_t args(new CmdArguments(argv.size(), &argv[0]));
 
-        boost::shared_ptr<Comm_t>  comm(new Comm_t(args, MPI_COMM_WORLD));
+        std::shared_ptr<Comm_t>  comm(new Comm_t(args, MPI_COMM_WORLD));
         if (comm->isWorker())
             stashEnvironment();
 
@@ -480,7 +480,7 @@ void SampleCmd::execute() {
             }
         }
 
-        boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm, funcs, dvars,
+        const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm, funcs, dvars,
                                                   objectives, sampleMethods,
                                                   storeobjstr, filesToKeep, userVariables));
         if (comm->isWorker())

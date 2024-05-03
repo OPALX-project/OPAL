@@ -11,7 +11,6 @@
 #include "error_handler.hpp"
 #include <set>
 #include <boost/function.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/phoenix/core.hpp>
 #include <boost/phoenix/function.hpp>
 #include <boost/phoenix/operator.hpp>

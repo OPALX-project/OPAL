@@ -26,14 +26,13 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "boost/smart_ptr.hpp"
 #include "Util/CmdArguments.h"
 #include <cmath>
 
 
 template <class T> struct BlendCrossover
 {
-    void crossover(boost::shared_ptr<T> ind1, boost::shared_ptr<T> ind2,
+    void crossover(std::shared_ptr<T> ind1, std::shared_ptr<T> ind2,
                    CmdArguments_t /*args*/) {
 
         // BLX-0.5 performs better than BLX operators with any other \alpha

@@ -29,7 +29,6 @@
 
 #include "gtest/gtest.h"
 
-#include "boost/smart_ptr.hpp"
 #include "boost/tuple/tuple.hpp"
 #include "boost/variant/get.hpp"
 #include "boost/variant/variant.hpp"
@@ -77,7 +76,7 @@ namespace {
                 ("python", python));
 
         std::string testexpr = "python(\"resources/test.py\", 1.0)";
-        boost::scoped_ptr<Expression> e(new Expression(testexpr, funcs));
+        const std::unique_ptr<Expression> e(new Expression(testexpr, funcs));
         Expressions::Result_t result;
         EXPECT_NO_THROW({
             result = e->evaluate(vars);

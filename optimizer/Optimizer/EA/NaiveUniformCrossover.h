@@ -19,12 +19,11 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "boost/smart_ptr.hpp"
 #include "Util/CmdArguments.h"
 
 template <class T> struct NaiveUniformCrossover
 {
-    void crossover(boost::shared_ptr<T> ind1, boost::shared_ptr<T> ind2,
+    void crossover(std::shared_ptr<T> ind1, std::shared_ptr<T> ind2,
                    CmdArguments_t /*args*/) {
 
         Individual::genes_t genes_ind2 = ind2->genes_m;

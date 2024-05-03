@@ -19,12 +19,11 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "boost/smart_ptr.hpp"
 #include "Util/CmdArguments.h"
 
 template <class T> struct OneBitMutation
 {
-    void mutate(boost::shared_ptr<T> ind, CmdArguments_t /*args*/) {
+    void mutate(std::shared_ptr<T> ind, CmdArguments_t /*args*/) {
 
         int range = ind->genes_m.size();
         int position = static_cast<int>((rand() / (RAND_MAX + 1.0)) * range);

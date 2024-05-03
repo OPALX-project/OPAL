@@ -22,8 +22,6 @@
 #include "Optimizer/EA/Individual.h"
 #include "gtest/gtest.h"
 
-#include "boost/smart_ptr.hpp"
-
 namespace {
 
     // The fixture for testing class Foo.
@@ -53,7 +51,7 @@ namespace {
             // population_->clean_population();
         }
 
-        boost::shared_ptr<Individual> createIndividual(size_t num_genes) {
+        std::shared_ptr<Individual> createIndividual(size_t num_genes) {
 
             Individual::bounds_t bounds;
             Individual::names_t names;
@@ -63,24 +61,24 @@ namespace {
                 names.push_back("dvar"+std::to_string(i));
             }
 
-            boost::shared_ptr<Individual> ind(new Individual(bounds,names,constraints));
+            std::shared_ptr<Individual> ind(new Individual(bounds,names,constraints));
             return ind;
         }
 
         // Objects declared here can be used by all tests in the test case
-        boost::scoped_ptr< Population<Individual> > population_;
+        std::unique_ptr< Population<Individual> > population_;
     };
 
     TEST_F(PopulationTest, AddOneIndividual) {
 
-        boost::shared_ptr<Individual> ind = createIndividual(1);
+        std::shared_ptr<Individual> ind = createIndividual(1);
         unsigned int id = population_->add_individual(ind);
         double gene = ind->genes_m[0];
         double obj  = ind->objectives_m[0];
 
         EXPECT_EQ(static_cast<size_t>(0), id) << "first individuals id should be 0";
 
-        boost::shared_ptr<Individual> tmp = population_->get_individual(id);
+        std::shared_ptr<Individual> tmp = population_->get_individual(id);
         EXPECT_EQ(0, tmp.get()) << "no committed individuals after insert";
 
         tmp = population_->get_staging(id);
@@ -95,7 +93,7 @@ namespace {
 
     TEST_F(PopulationTest, CommitOneIndividual) {
 
-        boost::shared_ptr<Individual> ind = createIndividual(1);
+        std::shared_ptr<Individual> ind = createIndividual(1);
         unsigned int id = population_->add_individual(ind);
         double gene = ind->genes_m[0];
         double obj  = ind->objectives_m[0];
@@ -104,7 +102,7 @@ namespace {
 
         population_->commit_individuals();
 
-        boost::shared_ptr<Individual> tmp = population_->get_staging(id);
+        std::shared_ptr<Individual> tmp = population_->get_staging(id);
         EXPECT_EQ(0, tmp.get()) << "no staging individuals after commit";
 
         tmp = population_->get_individual(id);
@@ -118,10 +116,10 @@ namespace {
 
     TEST_F(PopulationTest, KeepIndividuals) {
 
-        boost::shared_ptr<Individual> ind1 = createIndividual(1);
-        boost::shared_ptr<Individual> ind2 = createIndividual(1);
-        boost::shared_ptr<Individual> ind3 = createIndividual(1);
-        boost::shared_ptr<Individual> ind4 = createIndividual(1);
+        std::shared_ptr<Individual> ind1 = createIndividual(1);
+        std::shared_ptr<Individual> ind2 = createIndividual(1);
+        std::shared_ptr<Individual> ind3 = createIndividual(1);
+        std::shared_ptr<Individual> ind4 = createIndividual(1);
 
         size_t id0 = population_->add_individual(ind1);
         EXPECT_EQ(static_cast<size_t>(0), id0);
@@ -143,17 +141,17 @@ namespace {
         size_t size = population_->size();
         EXPECT_EQ(survivors.size(), size);
 
-        boost::shared_ptr<Individual> tmp = population_->get_individual(id1);
+        std::shared_ptr<Individual> tmp = population_->get_individual(id1);
         EXPECT_EQ(ind2->genes_m[0], tmp->genes_m[0]);
         EXPECT_EQ(ind2->objectives_m[0], tmp->objectives_m[0]);
     }
 
     TEST_F(PopulationTest, IDsContinuous) {
 
-        boost::shared_ptr<Individual> ind0 = createIndividual(1);
-        boost::shared_ptr<Individual> ind1 = createIndividual(1);
-        boost::shared_ptr<Individual> ind2 = createIndividual(1);
-        boost::shared_ptr<Individual> ind3 = createIndividual(1);
+        std::shared_ptr<Individual> ind0 = createIndividual(1);
+        std::shared_ptr<Individual> ind1 = createIndividual(1);
+        std::shared_ptr<Individual> ind2 = createIndividual(1);
+        std::shared_ptr<Individual> ind3 = createIndividual(1);
 
         size_t id0 = population_->add_individual(ind0);
         EXPECT_EQ(static_cast<size_t>(0), id0);
@@ -167,30 +165,30 @@ namespace {
         unsigned int individual_to_be_removed_id = 1;
         population_->remove_individual(ind1);
 
-        boost::shared_ptr<Individual> newind = createIndividual(1);
+        std::shared_ptr<Individual> newind = createIndividual(1);
         unsigned int id_new = population_->add_individual(newind);
         EXPECT_EQ(individual_to_be_removed_id, id_new);
 
-        boost::shared_ptr<Individual> tmp = population_->get_staging(id_new);
+        std::shared_ptr<Individual> tmp = population_->get_staging(id_new);
         EXPECT_EQ(newind->genes_m[0], tmp->genes_m[0]);
         EXPECT_EQ(newind->objectives_m[0], tmp->objectives_m[0]);
     }
 
     TEST_F(PopulationTest, FindNonExistingStaging) {
 
-        boost::shared_ptr<Individual> tmp = population_->get_staging(124);
+        std::shared_ptr<Individual> tmp = population_->get_staging(124);
         EXPECT_EQ(0, tmp.get());
     }
 
     TEST_F(PopulationTest, FindNonExistingIndividual) {
 
-        boost::shared_ptr<Individual> tmp = population_->get_individual(124);
+        std::shared_ptr<Individual> tmp = population_->get_individual(124);
         EXPECT_EQ(0, tmp.get());
     }
 
     TEST_F(PopulationTest, RepresentedCheck) {
 
-        boost::shared_ptr<Individual> ind = createIndividual(1);
+        std::shared_ptr<Individual> ind = createIndividual(1);
         population_->add_individual(ind);
 
         population_->add_individual(ind);

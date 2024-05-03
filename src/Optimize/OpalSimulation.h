@@ -102,7 +102,7 @@ private:
     MPI_Comm comm_;
 
     /// object to generate simulation input files
-    boost::scoped_ptr<GenerateOpalSimulation> gs_;
+    std::unique_ptr<GenerateOpalSimulation> gs_;
 
     /// job id (SAMPLE command)
     int id_m;

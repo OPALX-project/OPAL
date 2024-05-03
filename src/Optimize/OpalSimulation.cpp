@@ -539,9 +539,9 @@ void OpalSimulation::collectResults() {
                 boost::trim_left_if(rhs_constr_str, boost::is_any_of("="));
 
                 functionDictionary_t funcs = constraint->getRegFuncs();
-                boost::scoped_ptr<Expressions::Expr_t> lhs(
+                const std::unique_ptr<Expressions::Expr_t> lhs(
                                                            new Expressions::Expr_t(lhs_constr_str, funcs));
-                boost::scoped_ptr<Expressions::Expr_t> rhs(
+                const std::unique_ptr<Expressions::Expr_t> rhs(
                                                            new Expressions::Expr_t(rhs_constr_str, funcs));
 
                 Expressions::Result_t lhs_res = lhs->evaluate(variable_dictionary);
@@ -599,7 +599,7 @@ void OpalSimulation::getVariableDictionary(variableDictionary_t& dictionary,
     if(req_vars.empty()) return;
 
     // get remaining required variable values from the stat file
-    boost::scoped_ptr<SDDSReader> sddsr(new SDDSReader(filename));
+    const std::unique_ptr<SDDSReader> sddsr(new SDDSReader(filename));
     sddsr->parseFile();
 
     for(std::string req_var : req_vars) {

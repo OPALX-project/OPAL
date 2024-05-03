@@ -56,7 +56,7 @@ public:
             RNGStream::deleteInstance(RNGInstance_m);
     }
 
-    void create(boost::shared_ptr<SampleIndividual>& ind, std::size_t i) {
+    void create(std::shared_ptr<SampleIndividual>& ind, std::size_t i) {
         /* values are created within [0, 1], thus, they need to be mapped
          * the domain [lower, upper]
          */

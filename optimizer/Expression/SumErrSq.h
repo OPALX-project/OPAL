@@ -69,7 +69,7 @@ struct SumErrSq {
         parseMeasurements(measurement_filename);
         bool is_valid = true;
 
-        boost::scoped_ptr<SDDSReader> sim_stats(new SDDSReader(stat_filename_));
+        const std::unique_ptr<SDDSReader> sim_stats(new SDDSReader(stat_filename_));
         try {
             sim_stats->parseFile();
         } catch (OptPilotException &ex) {

@@ -44,9 +44,6 @@
 #include <string>
 #include <unistd.h>
 
-#include "boost/smart_ptr.hpp"
-//#include "boost/dynamic_bitset.hpp"
-
 #include "Comm/MasterNode.h"
 #include "Comm/CommSplitter.h"
 
@@ -105,7 +102,7 @@ public:
 
     // constructor only for Pilot classes inherited from this class
     // they have their own setup function
-    Pilot(CmdArguments_t args, boost::shared_ptr<Comm_t> comm,
+    Pilot(CmdArguments_t args, std::shared_ptr<Comm_t> comm,
           const DVarContainer_t &dvar)
         : Poller(comm->mpiComm())
         , comm_(comm)
@@ -115,7 +112,7 @@ public:
         // do nothing
     }
 
-    Pilot(CmdArguments_t args, boost::shared_ptr<Comm_t> comm,
+    Pilot(CmdArguments_t args, std::shared_ptr<Comm_t> comm,
           functionDictionary_t known_expr_funcs)
         : Poller(comm->mpiComm())
         , comm_(comm)
@@ -124,7 +121,7 @@ public:
         setup(known_expr_funcs);
     }
 
-    Pilot(CmdArguments_t args, boost::shared_ptr<Comm_t> comm,
+    Pilot(CmdArguments_t args, std::shared_ptr<Comm_t> comm,
           functionDictionary_t known_expr_funcs,
           const DVarContainer_t &dvar,
           const Expressions::Named_t &obj,
@@ -163,7 +160,7 @@ protected:
     /// MPI communicator used for messages between all pilots
     MPI_Comm coworker_comm_;
 
-    boost::shared_ptr<Comm_t> comm_;
+    std::shared_ptr<Comm_t> comm_;
     CmdArguments_t cmd_args_;
 
     int global_rank_;
@@ -174,7 +171,7 @@ protected:
 
     typedef MasterNode< typename Opt_t::SolutionState_t,
                         SolPropagationGraph_t > MasterNode_t;
-    boost::scoped_ptr< MasterNode_t > master_node_;
+    std::unique_ptr< MasterNode_t > master_node_;
 
     /// input file for simulation with embedded optimization problem
     std::string input_file_;
@@ -191,7 +188,6 @@ protected:
 
     // keep track of state of all workers
     std::vector<bool> is_worker_idle_;
-    //boost::dynamic_bitset<> is_worker_idle_;
 
     /// keep track of requests and running jobs
     typedef std::map<size_t, std::pair<Param_t, reqVarContainer_t> > Jobs_t;
@@ -200,7 +196,7 @@ protected:
     Jobs_t  request_queue_;
 
     //DEBUG
-    boost::scoped_ptr<Trace> job_trace_;
+    std::unique_ptr<Trace> job_trace_;
 
 private:
     void setup(functionDictionary_t known_expr_funcs,
@@ -277,7 +273,7 @@ protected:
            << "\e[0m" << std::endl;
         std::cout << os.str() << std::flush;
 
-        boost::scoped_ptr<Opt_t> opt(
+        const std::unique_ptr<Opt_t> opt(
                 new Opt_t(objectives_, constraints_, dvars_, objectives_.size(),
                           comm_->getBundle(), cmd_args_, hypervolRef_, comm_->getNrWorkerGroups()));
         opt->initialize();
@@ -300,7 +296,7 @@ protected:
         pos = tmplfile.find(".");
         std::string simName = tmplfile.substr(0,pos);
 
-        boost::scoped_ptr< Worker<Sim_t> > w(
+        const std::unique_ptr< Worker<Sim_t> > w(
                 new Worker<Sim_t>(objectives_, constraints_, simName,
                     comm_->getBundle(), cmd_args_, userVariables));
 
@@ -320,7 +316,7 @@ protected:
         trace_filename << "pilot.trace." << comm_->getBundle().island_id;
         job_trace_.reset(new Trace("Optimizer Job Trace"));
         job_trace_->registerComponent( "sink",
-            boost::shared_ptr<TraceComponent>(new FileSink(trace_filename.str())));
+            std::shared_ptr<TraceComponent>(new FileSink(trace_filename.str())));
 
         worker_comm_ = comm_->getBundle().worker;
         opt_comm_ = comm_->getBundle().opt;

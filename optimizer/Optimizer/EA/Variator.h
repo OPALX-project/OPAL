@@ -26,8 +26,6 @@
 #include <map>
 #include <utility>
 
-#include "boost/smart_ptr.hpp"
-
 #include "Util/Types.h"
 #include "Util/CmdArguments.h"
 #include "Optimizer/EA/Population.h"
@@ -70,7 +68,7 @@ public:
         }
 
         //FIXME: pass population as arg to variator
-        //boost::shared_ptr< Population<ind_t> >
+        //std::shared_ptr< Population<ind_t> >
         population_m.reset(new Population<ind_t>());
 
         mutationProbability_m =
@@ -86,7 +84,7 @@ public:
     }
 
     //FIXME access population from outside
-    boost::shared_ptr< Population<ind_t> > population() {
+    std::shared_ptr< Population<ind_t> > population() {
         return population_m;
     }
 
@@ -155,7 +153,7 @@ public:
     }
 
     /// set an individual as infeasible: replace with a new individual
-    void infeasible(boost::shared_ptr<ind_t> ind) {
+    void infeasible(std::shared_ptr<ind_t> ind) {
         population_m->remove_individual(ind);
         new_individual();
     }
@@ -166,7 +164,7 @@ public:
     }
 
     /// return next individual to evaluate
-    boost::shared_ptr<ind_t> popIndividualToEvaluate() {
+    std::shared_ptr<ind_t> popIndividualToEvaluate() {
         unsigned int ind = individualsToEvaluate_m.front();
         individualsToEvaluate_m.pop();
         return population_m->get_staging(ind);
@@ -191,13 +189,13 @@ public:
 
             // pop first individual
             unsigned int idx = tmp.front(); tmp.pop();
-            boost::shared_ptr<ind_t> a = population_m->get_staging(idx);
+            std::shared_ptr<ind_t> a = population_m->get_staging(idx);
 
             // handle special case where we have an odd number of offspring
             if(tmp.empty()) {
                 if (drand(1) <= mutationProbability_m) {
                     // temporary copy in case not successful
-                    boost::shared_ptr<ind_t> copyA(new ind_t(a));
+                    std::shared_ptr<ind_t> copyA(new ind_t(a));
                     int iter = 0;
                     while (true) {
                         // assign with shared pointer constructor
@@ -219,13 +217,13 @@ public:
 
             // and second if any
             idx = tmp.front(); tmp.pop();
-            boost::shared_ptr<ind_t> b = population_m->get_staging(idx);
+            std::shared_ptr<ind_t> b = population_m->get_staging(idx);
 
             // create new individuals
 
             // temporary copy in case not successful
-            boost::shared_ptr<ind_t> copyA(new ind_t(a));
-            boost::shared_ptr<ind_t> copyB(new ind_t(b));
+            std::shared_ptr<ind_t> copyA(new ind_t(a));
+            std::shared_ptr<ind_t> copyB(new ind_t(b));
 
             int iter = 0;
             while (true) {
@@ -271,20 +269,20 @@ protected:
     
     /// create a new individual
     void new_individual(Individual::genes_t& dvars) {
-        boost::shared_ptr<ind_t> ind(new ind_t(dVarBounds_m, dNames_m, constraints_m));
+        std::shared_ptr<ind_t> ind(new ind_t(dVarBounds_m, dNames_m, constraints_m));
         std::swap(ind->genes_m, dvars);
         individualsToEvaluate_m.push( population_m->add_individual(ind) );
     }
 
     /// create a new individual
     void new_individual() {
-        boost::shared_ptr<ind_t> ind(new ind_t(dVarBounds_m, dNames_m, constraints_m));
+        std::shared_ptr<ind_t> ind(new ind_t(dVarBounds_m, dNames_m, constraints_m));
         individualsToEvaluate_m.push( population_m->add_individual(ind) );
     }
 
     /// copy an individual
-    void new_individual(boost::shared_ptr<ind_t> ind) {
-        boost::shared_ptr<ind_t> return_ind(new ind_t(ind));
+    void new_individual(std::shared_ptr<ind_t> ind) {
+        std::shared_ptr<ind_t> return_ind(new ind_t(ind));
         individualsToEvaluate_m.push(
             population_m->add_individual(return_ind) ) ;
     }
@@ -292,7 +290,7 @@ protected:
 private:
 
     /// population of individuals
-    boost::shared_ptr< Population<ind_t> > population_m;
+    std::shared_ptr< Population<ind_t> > population_m;
 
     /// user specified command line arguments
     CmdArguments_t args_;

@@ -50,7 +50,7 @@ struct _stat_sum {
         double step      = boost::get<double>(args[2]);
         std::string name = boost::get<std::string>(args[3]);
 
-        boost::scoped_ptr<SDDSReader> sim_stats(new SDDSReader(stat_filename_));
+        const std::unique_ptr<SDDSReader> sim_stats(new SDDSReader(stat_filename_));
         try {
             sim_stats->parseFile();
         } catch (OptPilotException &ex) {

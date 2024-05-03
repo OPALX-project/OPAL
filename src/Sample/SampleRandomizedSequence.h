@@ -42,7 +42,7 @@ public:
         , step_m(step)
     { }
 
-    void create(boost::shared_ptr<SampleIndividual>& ind, size_t i) {
+    void create(std::shared_ptr<SampleIndividual>& ind, size_t i) {
         size_t idx = unif_m.getNext();
         ind->genes[i] = static_cast<T>(lower_m + idx * step_m);
     }

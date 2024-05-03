@@ -32,8 +32,6 @@
 
 #include <iostream>
 
-#include "boost/smart_ptr.hpp"
-
 #include "Pilot/Poller.h"
 
 #include "Comm/types.h"
@@ -100,7 +98,7 @@ public:
 
 
 protected:
-    typedef boost::scoped_ptr<Sim_t> SimPtr_t;
+    typedef const std::unique_ptr<Sim_t> SimPtr_t;
 
     bool is_idle_;
     MPI_Comm coworker_comm_;

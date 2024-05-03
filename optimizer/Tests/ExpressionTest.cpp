@@ -28,7 +28,6 @@
 
 #include "gtest/gtest.h"
 
-#include "boost/smart_ptr.hpp"
 #include "boost/tuple/tuple.hpp"
 #include "boost/variant/get.hpp"
 #include "boost/variant/variant.hpp"
@@ -94,7 +93,7 @@ struct my_pow {
     TEST_F(ExpressionTest, RequestedVars) {
 
         std::string testexpr = "abs(A * A * 2.0 * b + 2.0)";
-        boost::scoped_ptr<Expression> e(new Expression(testexpr));
+        const std::unique_ptr<Expression> e(new Expression(testexpr));
 
         std::set<std::string> reqVars = e->getReqVars();
 
@@ -111,7 +110,7 @@ struct my_pow {
                 ("abs", abs_func));
 
         std::string testexpr = "abs(1.0 + A * A * 2.0 * B + 2.0)";
-        boost::scoped_ptr<Expression> e(new Expression(testexpr, funcs));
+        const std::unique_ptr<Expression> e(new Expression(testexpr, funcs));
 
         double a = 5.2;
         double b = -10.2;
@@ -140,7 +139,7 @@ struct my_pow {
                 ("abs", abs_func));
 
         std::string testexpr = "abs(1.0 + A * 2.0) + abs(B + 2.0)";
-        boost::scoped_ptr<Expression> e(new Expression(testexpr, funcs));
+        const std::unique_ptr<Expression> e(new Expression(testexpr, funcs));
 
         double a = 5.2;
         double b = -10.2;
@@ -173,7 +172,7 @@ struct my_pow {
                 ("pow", pow_func));
 
         std::string testexpr = "abs(1.0 + pow(A, 3) * 2.0) + abs(B + 2.0)";
-        boost::scoped_ptr<Expression> e(new Expression(testexpr, funcs));
+        const std::unique_ptr<Expression> e(new Expression(testexpr, funcs));
 
         double a = 5.2;
         double b = -10.2;
@@ -196,7 +195,7 @@ struct my_pow {
     TEST_F(ExpressionTest, EvaluateBooleanExpression) {
 
         std::string testexpr = "a > 5.2 - 1e-6";
-        boost::scoped_ptr<Expression> e(new Expression(testexpr));
+        const std::unique_ptr<Expression> e(new Expression(testexpr));
 
         double a = 5.2;
 
