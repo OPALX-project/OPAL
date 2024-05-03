@@ -147,7 +147,7 @@ SampleCmd *SampleCmd::clone(const std::string &name) {
 
 void SampleCmd::execute() {
 
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     auto opal = OpalData::getInstance();
     opal->setOptimizerFlag();

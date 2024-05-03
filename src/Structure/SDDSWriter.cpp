@@ -34,7 +34,7 @@ SDDSWriter::SDDSWriter(const std::string& fname, bool restart)
     , mode_m(std::ios::out)
     , indent_m("        ")
 {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     if (fs::exists(fname_m) && restart) {
         mode_m = std::ios::app;

@@ -195,7 +195,7 @@ namespace Util {
     }
 
     std::string combineFilePath(std::initializer_list<std::string> ilist) {
-        boost::filesystem::path path;
+        std::filesystem::path path;
         for (auto entry : ilist) {
             path /= entry;
         }

@@ -164,7 +164,7 @@ void Monitor::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
     if (OpalData::getInstance()->getOpenMode() == OpalData::OpenMode::WRITE ||
         currentPosition < startField) {
 
-        namespace fs = boost::filesystem;
+        namespace fs = std::filesystem;
 
         fs::path lossFileName = fs::path(filename_m + ".h5");
         if (fs::exists(lossFileName)) {

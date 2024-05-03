@@ -57,8 +57,6 @@
 #include "Expression/ProbeVariable.h"
 #include "Expression/SeptumExpr.h"
 
-#include <boost/filesystem.hpp>
-
 #include <map>
 #include <set>
 #include <string>
@@ -196,7 +194,7 @@ OptimizeCmd *OptimizeCmd::clone(const std::string &name) {
 }
 
 void OptimizeCmd::execute() {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     auto opal = OpalData::getInstance();
     opal->setOptimizerFlag();

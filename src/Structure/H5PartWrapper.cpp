@@ -128,7 +128,7 @@ void H5PartWrapper::storeCavityInformation() {
 
 void H5PartWrapper::copyFile(const std::string &sourceFile, int lastStep, h5_int32_t flags) {
 
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
     if (!fs::exists(sourceFile)) {
         throw OpalException("H5PartWrapper::copyFile",
                             "source file '" + sourceFile + "' does not exist");
@@ -252,7 +252,7 @@ void H5PartWrapper::copyFile(const std::string &sourceFile, int lastStep, h5_int
 }
 
 void H5PartWrapper::copyFileSystem(const std::string &sourceFile) {
-    // namespace fs = boost::filesystem;
+    // namespace fs = std::filesystem;
 
     if (sourceFile == fileName_m) return;
 

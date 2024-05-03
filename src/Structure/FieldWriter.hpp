@@ -55,8 +55,8 @@ void FieldWriter::dumpField(FieldType& field, std::string name,
      *   '******':   step padded with zeros to 6 digits
      */
     std::string dirname = OpalData::getInstance()->getAuxiliaryOutputDirectory();
-    boost::filesystem::path file(dirname);
-    boost::format filename("%1%-%2%-%|3$06|.dat");
+    std::filesystem::path file(dirname);
+    std::format filename("%1%-%2%-%|3$06|.dat");
     std::string basename = OpalData::getInstance()->getInputBasename();
     filename % basename % (name + std::string("_") + type) % step;
     file /= filename.str();

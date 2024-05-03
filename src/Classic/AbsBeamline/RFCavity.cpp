@@ -347,7 +347,7 @@ std::string RFCavity::getFieldMapFN() const {
         throw GeneralClassicException("RFCavity::getFieldMapFN",
                                       "The attribute \"FMAPFN\" isn't set "
                                       "for the \"RFCAVITY\" element!");
-    } else if (boost::filesystem::exists(filename_m)) {
+    } else if (std::filesystem::exists(filename_m)) {
         return filename_m;
     } else {
         throw GeneralClassicException("RFCavity::getFieldMapFN",

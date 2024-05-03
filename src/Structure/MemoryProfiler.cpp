@@ -146,7 +146,7 @@ void MemoryProfiler::update() {
     static pid_t pid = getpid();
     std::string fname = "/proc/" + std::to_string(pid) + "/status";
 
-    if ( !boost::filesystem::exists(fname) ) {
+    if ( !std::filesystem::exists(fname) ) {
         throw OpalException("MemoryProfiler::update()",
                             "File '" + fname + "' doesn't exist.");
     }

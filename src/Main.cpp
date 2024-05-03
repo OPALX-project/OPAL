@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
 
 int opalMain(int argc, char *argv[]) {
 
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
 #ifdef ENABLE_AMR
     bool initAMR = checkInitAmrFlag(argc, argv);
@@ -186,7 +186,7 @@ int opalMain(int argc, char *argv[]) {
     */
     if(Ippl::myNode() == 0) {
         if (!fs::exists(opal->getAuxiliaryOutputDirectory())) {
-            boost::system::error_code error_code;
+            std::error_code error_code;
             if (!fs::create_directory(opal->getAuxiliaryOutputDirectory(), error_code)) {
                 std::cerr << error_code.message() << std::endl;
                 // use error code to prevent create_directory from throwing an exception
@@ -207,7 +207,7 @@ int opalMain(int argc, char *argv[]) {
         FileStream::setEcho(Options::echo);
 
         char *startup = getenv("HOME");
-        boost::filesystem::path p = strncat(startup, "/init.opal", 20);
+        std::filesystem::path p = strncat(startup, "/init.opal", 20);
         if (startup != nullptr && is_regular_file(p)) {
 
             FileStream::setEcho(false);

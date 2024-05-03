@@ -66,9 +66,7 @@
 #include "Solvers/ParticleMatterInteractionHandler.h"
 #include "Solvers/WakeFunction.h"
 #include "Structure/BoundaryGeometry.h"
-
-#include <boost/filesystem.hpp>
-
+#include <filesystem>
 
 const std::map<ElementType, std::string> ElementBase::elementTypeToString_s = {
     {ElementType::ANY,                "Any"},
@@ -180,7 +178,7 @@ std::string ElementBase::getOutputFN() const {
     if (outputfn_m.empty()) {
         return getName();
     } else {
-        boost::filesystem::path filePath(outputfn_m);
+        std::filesystem::path filePath(outputfn_m);
         return filePath.replace_extension().native();
     }
 }

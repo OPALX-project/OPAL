@@ -100,7 +100,7 @@ AmrMultiGrid::AmrMultiGrid(AmrBoxLib* itsAmrObject_p,
     const BaseSolver solver = this->convertToEnumBaseSolver_m(bsolver);
     this->initBaseSolver_m(solver, rebalance, reuse);
 
-    if (boost::filesystem::exists(fname_m)) {
+    if (std::filesystem::exists(fname_m)) {
         flag_m = std::ios::app;
         INFOMSG("Appending solver information to existing file: " << fname_m << endl);
     } else {

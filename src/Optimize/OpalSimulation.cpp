@@ -48,7 +48,7 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
                , comm_(comm)
                , id_m(-1)
 {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     simTmpDir_ = args->getArg<std::string>("simtmpdir");
     if (simTmpDir_.empty()) {
@@ -155,7 +155,7 @@ bool OpalSimulation::hasResultsAvailable() {
 
 
 void OpalSimulation::createSymlink_m(const std::string& path) {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     for (auto &p: fs::directory_iterator(path)) {
         fs::path source = p.path();
@@ -178,7 +178,7 @@ void OpalSimulation::copyH5_m() {
 
     if (restartfile.empty()) return;
 
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
     if ( !fs::exists(restartfile) ) {
         std::cerr << "H5 file '" + restartfile + "' doesn't exist." << "\n"
                   << "in OpalSimulation::copyH5_m()" << std::endl;
@@ -198,7 +198,7 @@ void OpalSimulation::copyH5_m() {
 
 
 void OpalSimulation::setupSimulation() {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     CmdArguments_t args = getArgs();
     std::string restartfile = args->getArg<std::string>("restartfile", "", false);
@@ -241,7 +241,7 @@ void OpalSimulation::setupSimulation() {
 }
 
 void OpalSimulation::setupFSStructure() {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     int rank = 0;
     MPI_Comm_rank(comm_, &rank);
@@ -254,11 +254,11 @@ void OpalSimulation::setupFSStructure() {
     try {
         fs::create_directory(simulationDirName_);
         fs::permissions(simulationDirName_,
-                        fs::owner_all |
-                        fs::group_read |
-                        fs::group_exe |
-                        fs::others_read |
-                        fs::others_exe);
+                        fs::perms::owner_all |
+                        fs::perms::group_read |
+                        fs::perms::group_exec |
+                        fs::perms::others_read |
+                        fs::perms::others_exec);
 
     } catch (fs::filesystem_error &e) {
         std::cerr << e.what() << "\n"
@@ -271,11 +271,11 @@ void OpalSimulation::setupFSStructure() {
 
         fs::create_directory(dataDir);
         fs::permissions(dataDir,
-                        fs::owner_all |
-                        fs::group_read |
-                        fs::group_exe |
-                        fs::others_read |
-                        fs::others_exe);
+                        fs::perms::owner_all |
+                        fs::perms::group_read |
+                        fs::perms::group_exec |
+                        fs::perms::others_read |
+                        fs::perms::others_exec);
 
     } catch (fs::filesystem_error &e) {
         std::cerr << e.what() << "\n"
@@ -326,7 +326,7 @@ void OpalSimulation::restoreOut() {
 
 
 void OpalSimulation::run() {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     // make sure input file is not already existing
     MPI_Barrier(comm_);
@@ -623,7 +623,7 @@ void OpalSimulation::invalidBunch() {
 }
 
 void OpalSimulation::cleanUp() {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
     try {
         int my_rank = 0;
         MPI_Comm_rank(comm_, &my_rank);
@@ -639,7 +639,7 @@ void OpalSimulation::cleanUp() {
 }
 
 void OpalSimulation::cleanUp(const std::vector<std::string>& keep) {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     if ( keep.empty() ) {
         // if empty we keep all files

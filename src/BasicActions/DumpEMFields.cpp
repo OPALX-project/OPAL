@@ -292,7 +292,7 @@ void DumpEMFields::writeFieldThis(Component* field) {
     *gmsg << *this << endl;
 
     std::string fname;
-    if (boost::filesystem::path(filename_m).is_absolute() == true) {
+    if (std::filesystem::path(filename_m).is_absolute() == true) {
         fname = filename_m;
     } else {
         fname = Util::combineFilePath({

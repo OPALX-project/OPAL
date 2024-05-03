@@ -332,7 +332,7 @@ void LossDataSink::save(unsigned int numSets, OpalData::OpenMode openMode) {
         openMode = OpalData::getInstance()->getOpenMode();
     }
 
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
     if (h5hut_mode_m) {
         fileName_m = outputName_m + std::string(".h5");
         if (openMode == OpalData::OpenMode::WRITE || !fs::exists(fileName_m)) {

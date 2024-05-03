@@ -113,7 +113,7 @@ void clear_files(std::set<std::string> const& files) {
     std::string auxDirectory = OpalData::getInstance()->getAuxiliaryOutputDirectory();
 
     for (const std::string& fname : files) {
-        boost::filesystem::remove(Util::combineFilePath({auxDirectory, fname}));
+        std::filesystem::remove(Util::combineFilePath({auxDirectory, fname}));
     }
 }
 
@@ -122,7 +122,7 @@ TEST(DumpFieldsTest, writeFieldsTest) {
 
     std::string auxDirectory = OpalData::getInstance()->getAuxiliaryOutputDirectory();
 
-    boost::filesystem::create_directory(auxDirectory);
+    std::filesystem::create_directory(auxDirectory);
 
     std::string fname1 = "test1";
     std::string fname2 = "test2";

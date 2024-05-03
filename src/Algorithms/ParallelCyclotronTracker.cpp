@@ -1053,7 +1053,7 @@ void ParallelCyclotronTracker::visitVacuum(const Vacuum& vac) {
     *gmsg << "* Residual gas = " << gas << endl;
 
     double pressure = elptr->getPressure();
-    if ( boost::filesystem::exists(elptr->getPressureMapFN()) ) {
+    if ( std::filesystem::exists(elptr->getPressureMapFN()) ) {
         std::string pmfn = elptr->getPressureMapFN();
         *gmsg << "* Pressure field map file = '" << pmfn << "'" << endl;
         *gmsg << "* Default pressure = " << pressure << " [mbar]" << endl;

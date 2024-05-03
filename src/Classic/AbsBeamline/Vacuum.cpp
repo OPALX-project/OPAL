@@ -249,7 +249,7 @@ void Vacuum::initialise(PartBunchBase<double, 3>* bunch) {
 
     updateParticleAttributes();
 
-    if (boost::filesystem::exists(pmapfn_m)) {
+    if (std::filesystem::exists(pmapfn_m)) {
         getPressureFromFile();
         // calculate the radii of initial grid.
         initR(PP_m.rmin_m, PP_m.delr_m, PField_m.nrad_m);

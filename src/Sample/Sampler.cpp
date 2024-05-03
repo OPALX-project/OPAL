@@ -76,8 +76,8 @@ Sampler::Sampler(const std::map<std::string,
              << "_samples_" << comms_.island_id << ".json";
     jsonFname_m = filename.str();
 
-    if ( !boost::filesystem::exists(resultDir) ) {
-        boost::filesystem::create_directory(resultDir);
+    if ( !std::filesystem::exists(resultDir) ) {
+        std::filesystem::create_directory(resultDir);
     }
 
     DVarContainer_t::iterator itr;

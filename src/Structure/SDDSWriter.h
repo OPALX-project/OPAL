@@ -153,7 +153,7 @@ private:
 
 inline
 bool SDDSWriter::exists() const {
-    return boost::filesystem::exists(fname_m);
+    return std::filesystem::exists(fname_m);
 }
 
 

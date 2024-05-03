@@ -209,8 +209,8 @@ bool SigmaGenerator::match(double accuracy,
             OpalData::getInstance()->getAuxiliaryOutputDirectory(),
             "maps"
         });
-        if (!boost::filesystem::exists(fpath)) {
-            boost::filesystem::create_directory(fpath);
+        if (!std::filesystem::exists(fpath)) {
+            std::filesystem::create_directory(fpath);
         }
 
         std::pair<double,double> tunes = cof.getTunes();
