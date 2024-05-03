@@ -1626,7 +1626,9 @@ BoundaryGeometry::computeMeshVoxelization (void) {
         if (!std::filesystem::exists(vtkFileName)) {
             writeVTK = true;
         } else {
-            auto t_geom = boost::filesystem::last_write_time(h5FileName_m);
+            // here we keep using boost::filesystem. See
+            // https://stackoverflow.com/questions/51273205/how-to-compare-time-t-and-stdfilesystemfile-time-type
+            auto t_geom = boost::filesystem::last_write_time(h5Filename_m);
             auto t_vtk = boost::filesystem::last_write_time(vtkFileName);
             if (std::difftime(t_geom, t_vtk) > 0) {
                 writeVTK = true;
