@@ -28,7 +28,6 @@
 
 #include "gtest/gtest.h"
 
-#include "boost/smart_ptr.hpp"
 #include "boost/tuple/tuple.hpp"
 #include "boost/variant/get.hpp"
 #include "boost/variant/variant.hpp"
@@ -95,7 +94,7 @@ struct my_pow {
                 ("fromFile", ff));
 
         std::string testexpr = "fromFile(\"resources/fromfile_test.dat\")";
-        boost::scoped_ptr<Expression> e(new Expression(testexpr, funcs));
+        const std::unique_ptr<Expression> e(new Expression(testexpr, funcs));
         Expressions::Result_t result;
         EXPECT_NO_THROW({
             result = e->evaluate(vars);
@@ -126,7 +125,7 @@ struct my_pow {
 
         std::string testexpr = "sqrt(pow(fromFile(\"resources/fromfile_test.dat\"), 2) + "
             "pow(fromFile(\"resources/fromfile_test2.dat\"), 2))";
-        boost::scoped_ptr<Expression> e(new Expression(testexpr, funcs));
+        const std::unique_ptr<Expression> e(new Expression(testexpr, funcs));
         Expressions::Result_t result;
         EXPECT_NO_THROW({
             result = e->evaluate(vars);

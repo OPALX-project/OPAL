@@ -6,7 +6,6 @@
 #include "boost/type_traits/remove_cv.hpp"
 #include "boost/variant/get.hpp"
 #include "boost/variant/variant.hpp"
-#include "boost/smart_ptr.hpp"
 
 #include "Util/Types.h"
 #include "Util/PeakReader.h"
@@ -31,7 +30,7 @@ struct RadialPeak {
 
         bool is_valid = true;
 
-        boost::scoped_ptr<PeakReader> sim_peaks(new PeakReader(peak_filename_));
+        const std::unique_ptr<PeakReader> sim_peaks(new PeakReader(peak_filename_));
         try {
             sim_peaks->parseFile();
         } catch (OptPilotException &ex) {

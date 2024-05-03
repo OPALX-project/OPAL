@@ -23,13 +23,12 @@
 //
 #include <cmath>
 
-#include "boost/smart_ptr.hpp"
 #include "Util/CmdArguments.h"
 
 
 template <class T> struct SimulatedBinaryCrossover
 {
-    void crossover(boost::shared_ptr<T> ind1, boost::shared_ptr<T> ind2,
+    void crossover(std::shared_ptr<T> ind1, std::shared_ptr<T> ind2,
                    CmdArguments_t args) {
 
         double nu_c = args->getArg<double>("simbin-crossover-nu", 2.0, false);

@@ -37,7 +37,7 @@ public:
         , volumeLowerDimensions_m(modulo)
     { }
 
-    void create(boost::shared_ptr<SampleIndividual>& ind, size_t i) {
+    void create(std::shared_ptr<SampleIndividual>& ind, size_t i) {
         
         unsigned int id = ind->id;
         

@@ -47,7 +47,7 @@ public:
             RNGStream::deleteInstance(RNGInstance_m);
     }
 
-    void create(boost::shared_ptr<SampleIndividual>& ind, size_t i) {
+    void create(std::shared_ptr<SampleIndividual>& ind, size_t i) {
         ind->genes[i] = RNGInstance_m->getNext(dist_m);
     }
     

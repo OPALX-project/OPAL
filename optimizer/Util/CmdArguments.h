@@ -34,7 +34,6 @@
 #include <sstream>
 #include <set>
 
-#include "boost/smart_ptr.hpp"
 #include "boost/utility/value_init.hpp"
 
 #include "Util/OptPilotException.h"
@@ -173,7 +172,7 @@ private:
 
 };
 
-typedef boost::shared_ptr<CmdArguments> CmdArguments_t;
+typedef std::shared_ptr<CmdArguments> CmdArguments_t;
 
 template<class T>
 inline T CmdArguments::arg(const std::string name) {

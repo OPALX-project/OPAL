@@ -36,8 +36,6 @@
 #include <fstream>
 #include <sstream>
 
-#include "boost/smart_ptr.hpp"
-
 #include "extlib/wfgHypervolume/hypervolume.h"
 
 
@@ -52,7 +50,7 @@ public:
     ~Population() {}
 
     typedef typename Individual_t::genes_t          genes_t;
-    typedef boost::shared_ptr<Individual_t>         individual;
+    typedef std::shared_ptr<Individual_t>         individual;
     typedef std::pair< unsigned int, individual >   ind_t;
 
     /// population iterator type

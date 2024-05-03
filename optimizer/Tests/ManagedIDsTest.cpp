@@ -20,7 +20,6 @@
 //
 #include "Util/ManagedIDs.h"
 #include "gtest/gtest.h"
-#include "boost/smart_ptr.hpp"
 
 namespace {
 
@@ -51,7 +50,7 @@ namespace {
         }
 
         // Objects declared here can be used by all tests in the test case
-        boost::scoped_ptr<ManagedIDs> ids_;
+        std::unique_ptr<ManagedIDs> ids_;
     };
 
     TEST_F(ManagedIDsTest, OneID) {

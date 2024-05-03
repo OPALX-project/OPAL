@@ -35,7 +35,6 @@
 #include "boost/type_traits/remove_cv.hpp"
 #include "boost/variant/get.hpp"
 #include "boost/variant/variant.hpp"
-#include "boost/smart_ptr.hpp"
 
 #include "Util/Types.h"
 #include "Util/PeakReader.h"
@@ -58,8 +57,8 @@ struct SumErrSqRadialPeak {
 
         bool is_valid = true;
 
-        boost::scoped_ptr<PeakReader> meas_peaks(new PeakReader(meas_filename_));
-        boost::scoped_ptr<PeakReader> sim_peaks(new PeakReader(sim_filename_));
+        const std::unique_ptr<PeakReader> meas_peaks(new PeakReader(meas_filename_));
+        const std::unique_ptr<PeakReader> sim_peaks(new PeakReader(sim_filename_));
         try {
             sim_peaks->parseFile();
             meas_peaks->parseFile();

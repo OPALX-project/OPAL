@@ -51,7 +51,7 @@ class SamplePilot : protected Pilot<Opt_t,
 
 public:
 
-    SamplePilot(CmdArguments_t args, boost::shared_ptr<Comm_t> comm,
+    SamplePilot(CmdArguments_t args, std::shared_ptr<Comm_t> comm,
                 functionDictionary_t known_expr_funcs,
                 const DVarContainer_t &dvar,
                 const Expressions::Named_t &obj,
@@ -124,7 +124,7 @@ protected:
            << "\e[0m" << std::endl;
         std::cout << os.str() << std::flush;
 
-        boost::scoped_ptr<Opt_t> opt(
+        const std::unique_ptr<Opt_t> opt(
                                      new Opt_t(sampleMethods_m, this->objectives_, this->dvars_,
                                                this->comm_->getBundle(), this->cmd_args_));
         opt->initialize();
@@ -149,7 +149,7 @@ protected:
         pos = tmplfile.find(".");
         std::string simName = tmplfile.substr(0,pos);
 
-        boost::scoped_ptr< SampleWorker<Sim_t> > w(
+        const std::unique_ptr< SampleWorker<Sim_t> > w(
                                                    new SampleWorker<Sim_t>(this->objectives_, this->constraints_, simName,
                                                                            this->comm_->getBundle(), this->cmd_args_,
                                                                            storeobjstr, filesToKeep, userVariables));

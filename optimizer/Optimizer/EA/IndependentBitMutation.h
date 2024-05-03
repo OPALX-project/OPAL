@@ -19,12 +19,11 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "boost/smart_ptr.hpp"
 #include "Util/CmdArguments.h"
 
 template <class T> struct IndependentBitMutation
 {
-    void mutate(boost::shared_ptr<T> ind, CmdArguments_t args) {
+    void mutate(std::shared_ptr<T> ind, CmdArguments_t args) {
 
         const double probability =
             args->getArg<double>("gene-mutation-probability", 0.5);

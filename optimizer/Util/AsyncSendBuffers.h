@@ -22,7 +22,6 @@
 #include <algorithm>
 #include <string.h>
 #include "mpi.h"
-#include "boost/smart_ptr.hpp"
 #include "boost/bind.hpp"
 
 class AsyncSendBuffer {
@@ -80,7 +79,7 @@ class AsyncSendBuffers {
 public:
     AsyncSendBuffers() {}
 
-    void insert(boost::shared_ptr<AsyncSendBuffer> buf) {
+    void insert(std::shared_ptr<AsyncSendBuffer> buf) {
         collection_.push_back(buf);
     }
 
@@ -95,6 +94,6 @@ public:
     }
 
 private:
-    std::vector< boost::shared_ptr<AsyncSendBuffer> > collection_;
+    std::vector< std::shared_ptr<AsyncSendBuffer> > collection_;
 };
 

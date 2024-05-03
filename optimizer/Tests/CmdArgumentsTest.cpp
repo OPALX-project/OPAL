@@ -20,7 +20,6 @@
 //
 #include "Util/CmdArguments.h"
 #include "gtest/gtest.h"
-#include "boost/smart_ptr.hpp"
 
 namespace {
 
@@ -57,7 +56,7 @@ namespace {
         }
 
         // Objects declared here can be used by all tests in the test case
-        boost::scoped_ptr<CmdArguments> args_;
+        std::unique_ptr<CmdArguments> args_;
     };
 
     TEST_F(CmdArgumentsTest, RetrieveCorrectFatal) {

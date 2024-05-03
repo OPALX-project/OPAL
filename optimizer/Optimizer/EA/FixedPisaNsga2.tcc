@@ -149,16 +149,16 @@ FixedPisaNsga2<CO, MO>::FixedPisaNsga2(
     trace_filename << "opt.trace." << comms_.island_id;
     job_trace_.reset(new Trace("Optimizer Job Trace"));
     job_trace_->registerComponent( "sink",
-            boost::shared_ptr<TraceComponent>(
+            std::shared_ptr<TraceComponent>(
                 new FileSink(trace_filename.str())));
 
     std::ostringstream prog_filename;
     prog_filename << "opt.progress." << comms_.island_id;
     progress_.reset(new Trace("Optimizer Progress"));
     progress_->registerComponent( "timestamp",
-            boost::shared_ptr<TraceComponent>(new Timestamp()));
+            std::shared_ptr<TraceComponent>(new Timestamp()));
     progress_->registerComponent( "sink",
-            boost::shared_ptr<TraceComponent>(
+            std::shared_ptr<TraceComponent>(
                 new FileSink(prog_filename.str())));
 
     statistics_->registerStatistic("accepted", 0);
@@ -698,7 +698,7 @@ void FixedPisaNsga2<CO, MO>::runStateMachine() {
 }
 
 template< template <class> class CO, template <class> class MO >
-void FixedPisaNsga2<CO, MO>::dumpPopulation(boost::shared_ptr<Population_t> population) {
+void FixedPisaNsga2<CO, MO>::dumpPopulation(std::shared_ptr<Population_t> population) {
     std::ostringstream filename;
     int fileNumber = act_gen;
     if (dump_offspring_m == false) fileNumber--; // parents are from generation earlier (keeping filenumbers the same)
@@ -713,7 +713,7 @@ void FixedPisaNsga2<CO, MO>::dumpPopulation(boost::shared_ptr<Population_t> popu
 }
 
 template< template <class> class CO, template <class> class MO >
-void FixedPisaNsga2<CO, MO>::dumpPopulationToFile(boost::shared_ptr<Population_t> population,
+void FixedPisaNsga2<CO, MO>::dumpPopulationToFile(std::shared_ptr<Population_t> population,
                                                   std::ostringstream& filename,
                                                   bool dump_offspring) {
 
@@ -783,7 +783,7 @@ void FixedPisaNsga2<CO, MO>::dumpIndividualToFile(int idx,
 }
 
 template< template <class> class CO, template <class> class MO >
-void FixedPisaNsga2<CO, MO>::dumpPopulationToJSON(boost::shared_ptr<Population_t> population,
+void FixedPisaNsga2<CO, MO>::dumpPopulationToJSON(std::shared_ptr<Population_t> population,
                                                   std::ostringstream& filename,
                                                   bool dump_offspring) {
 

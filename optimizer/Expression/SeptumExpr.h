@@ -51,10 +51,10 @@ struct SeptumExpr {
         double result = 0.0;
 
         try {
-            boost::scoped_ptr<PeakReader> sim_peaks(new PeakReader(probe + std::string(".peaks")));
+            const std::unique_ptr<PeakReader> sim_peaks(new PeakReader(probe + std::string(".peaks")));
             sim_peaks->parseFile();
 
-            boost::scoped_ptr<ProbeHistReader> sim_hist(new ProbeHistReader(probe + std::string(".hist")));
+            const std::unique_ptr<ProbeHistReader> sim_hist(new ProbeHistReader(probe + std::string(".hist")));
             sim_hist->parseFile();
 
             double upperBound = 0.0;

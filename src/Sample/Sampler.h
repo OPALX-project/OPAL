@@ -119,9 +119,9 @@ private:
     Comm::Bundle_t comms_;
 
     /// mapping from unique job ID to individual
-    std::map<size_t, boost::shared_ptr<Individual_t> > jobmapping_m;
+    std::map<size_t, std::shared_ptr<Individual_t> > jobmapping_m;
 
-    std::queue<boost::shared_ptr<Individual_t> > individuals_m;
+    std::queue<std::shared_ptr<Individual_t> > individuals_m;
 
     /// bounds on each specified gene
     bounds_t dVarBounds_m;
@@ -158,7 +158,7 @@ private:
     std::list<Individual_t> individualsToDump_m;
 
     void dumpIndividualsToJSON();
-    void addIndividualToJSON(const boost::shared_ptr<Individual_t>& ind);
+    void addIndividualToJSON(const std::shared_ptr<Individual_t>& ind);
 
     void runStateMachine();
 

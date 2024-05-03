@@ -29,7 +29,6 @@
 
 #include "gtest/gtest.h"
 
-#include "boost/smart_ptr.hpp"
 #include "boost/tuple/tuple.hpp"
 #include "boost/type_traits/remove_cv.hpp"
 #include "boost/variant/get.hpp"
@@ -80,7 +79,7 @@ namespace {
                 ("sumErrSq", errsumsq));
 
         std::string testexpr = "sumErrSq(\"resources/measurement_test.dat\", \"rms_x\", \"resources/test.stat\")";
-        boost::scoped_ptr<Expression> e(new Expression(testexpr, funcs));
+        const std::unique_ptr<Expression> e(new Expression(testexpr, funcs));
         Expressions::Result_t result;
         EXPECT_NO_THROW({
             result = e->evaluate(vars);

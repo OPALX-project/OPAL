@@ -78,7 +78,7 @@ public:
         in.close();
     }
 
-    void create(boost::shared_ptr<SampleIndividual>& ind, size_t i) {
+    void create(std::shared_ptr<SampleIndividual>& ind, size_t i) {
         ind->genes[i] = getNext(ind->id);
     }
 

@@ -588,7 +588,7 @@ void OptimizeCmd::run(const CmdArguments_t& args,
     typedef CommSplitter< ManyMasterSplit< NoCommTopology > > Comm_t;
     typedef SocialNetworkGraph< NoCommTopology > SolPropagationGraph_t;
 
-    boost::shared_ptr<Comm_t>  comm(new Comm_t(args, MPI_COMM_WORLD));
+    std::shared_ptr<Comm_t>  comm(new Comm_t(args, MPI_COMM_WORLD));
     if (comm->isWorker())
         stashEnvironment();
 
@@ -604,7 +604,7 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             typedef FixedPisaNsga2< BlendCrossover, IndependentBitMutation > Opt_t;
             typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
+            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
                                               Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
@@ -616,7 +616,7 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             typedef FixedPisaNsga2< BlendCrossover, OneBitMutation > Opt_t;
             typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
+            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
                                               Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
@@ -628,7 +628,7 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             typedef FixedPisaNsga2< NaiveOnePointCrossover, IndependentBitMutation > Opt_t;
             typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
+            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
                                               Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
@@ -640,7 +640,7 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             typedef FixedPisaNsga2< NaiveOnePointCrossover, OneBitMutation > Opt_t;
             typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
+            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
                                               Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
@@ -652,7 +652,7 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             typedef FixedPisaNsga2< NaiveUniformCrossover, IndependentBitMutation > Opt_t;
             typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
+            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
                                               Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
@@ -664,7 +664,7 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             typedef FixedPisaNsga2< NaiveUniformCrossover, OneBitMutation > Opt_t;
             typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
+            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
                                               Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
@@ -676,7 +676,7 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             typedef FixedPisaNsga2< SimulatedBinaryCrossover, IndependentBitMutation > Opt_t;
             typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
+            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
                                               Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
@@ -688,7 +688,7 @@ void OptimizeCmd::run(const CmdArguments_t& args,
             typedef FixedPisaNsga2< SimulatedBinaryCrossover, OneBitMutation > Opt_t;
             typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            boost::scoped_ptr<pilot_t> pi(new pilot_t(args, comm,
+            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
                                               funcs, dvars,
                                               objectives, constraints,
                                               Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),

@@ -134,7 +134,7 @@ bool Sampler::onMessage(MPI_Status status, size_t length) {
     switch(tag) {
         case REQUEST_FINISHED: {
             unsigned int jid = static_cast<unsigned int>(length);
-            typename std::map<size_t, boost::shared_ptr<Individual_t> >::iterator it;
+            typename std::map<size_t, std::shared_ptr<Individual_t> >::iterator it;
             it = jobmapping_m.find(jid);
 
             if(it == jobmapping_m.end()) {
@@ -144,7 +144,7 @@ bool Sampler::onMessage(MPI_Status status, size_t length) {
             }
 
 
-            boost::shared_ptr<Individual_t> ind = it->second;
+            std::shared_ptr<Individual_t> ind = it->second;
 
             reqVarContainer_t res;
             MPI_Recv_reqvars(res, status.MPI_SOURCE, comms_.opt);
@@ -200,7 +200,7 @@ void Sampler::createNewIndividual() {
         dNames.push_back(dName);
     }
 
-    boost::shared_ptr<Individual_t> ind = boost::shared_ptr<Individual_t>( new Individual_t(dNames));
+    std::shared_ptr<Individual_t> ind = std::shared_ptr<Individual_t>( new Individual_t(dNames));
 
     ind->id = gid++;
     
@@ -292,7 +292,7 @@ void Sampler::dumpIndividualsToJSON() {
 }
 
 
-void Sampler::addIndividualToJSON(const boost::shared_ptr<Individual_t>& ind) {
+void Sampler::addIndividualToJSON(const std::shared_ptr<Individual_t>& ind) {
     individualsToDump_m.push_back(*ind);
 
     if (jsonDumpFreq_m <= individualsToDump_m.size()) {
@@ -340,7 +340,7 @@ void Sampler::runStateMachine() {
 void Sampler::dispatch_forward_solves() {
 
     while ( !individuals_m.empty() ) {
-        boost::shared_ptr<Individual_t> ind = individuals_m.front();
+        std::shared_ptr<Individual_t> ind = individuals_m.front();
 
         individuals_m.pop();
 
@@ -367,6 +367,6 @@ void Sampler::dispatch_forward_solves() {
         MPI_Send_params(params, pilot_rank, comms_.opt);
 
         jobmapping_m.insert(
-                std::pair<size_t, boost::shared_ptr<Individual_t> >(jid, ind));
+                std::pair<size_t, std::shared_ptr<Individual_t> >(jid, ind));
     }
 }
