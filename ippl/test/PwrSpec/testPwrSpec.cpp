@@ -33,8 +33,6 @@ Build:
 #include <iostream>
 #include <set>
 
-using namespace std;
-
 // dimension of our positions
 const unsigned Dim = 3;
 
@@ -289,7 +287,7 @@ public:
                         k2 -= nr_m[2];
 
                     kk=(int)nint(sqrt(ii*ii+jj*jj+k2*k2));
-                    kk = min(kmax_m, (int)kk);
+                    kk = std::min(kmax_m, (int)kk);
                     spectra1D_m[kk] += real(rho_m.localElement(loop));
                     Nk_m[kk]++;
                 }
