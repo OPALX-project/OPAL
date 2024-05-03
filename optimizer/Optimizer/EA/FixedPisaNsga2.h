@@ -55,7 +55,6 @@
 #include "Optimizer/EA/Population.h"
 #include "Optimizer/EA/Variator.h"
 
-#include <boost/chrono.hpp>
 #include <boost/property_tree/ptree.hpp>
 
 #include "Util/Trace/Trace.h"
@@ -242,8 +241,8 @@ private:
     /// file header for result files contains this parameter description
     std::string file_param_descr_;
 
-    boost::chrono::system_clock::time_point run_clock_start_;
-    boost::chrono::system_clock::time_point last_clock_;
+    std::chrono::system_clock::time_point run_clock_start_;
+    std::chrono::system_clock::time_point last_clock_;
 
     // DEBUG output helpers
     std::unique_ptr<Trace> job_trace_;
