@@ -185,14 +185,14 @@ public:
                   double& t, Vector_t& R, Vector_t& P);
 
     /** Returns empty field */
-    NullField& getField() {return nullfield_m;}
+    NullField& getField() override {return nullfield_m;}
     /** Returns empty field */
-    const NullField& getField() const {return nullfield_m;}
+    const NullField& getField() const override {return nullfield_m;}
 
     /** Returns empty geometry */
-    StraightGeometry& getGeometry() {return geom_m;}
+    StraightGeometry& getGeometry() override {return geom_m;}
     /** Returns empty geometry */
-    const StraightGeometry& getGeometry() const {return geom_m;}
+    const StraightGeometry& getGeometry() const override {return geom_m;}
     /** Make an RK4Step
      *  @li tstep: time step [s]
      *  @li chargeToMass: chargeToMass ratio [m^2/s^2/GV]
@@ -209,13 +209,13 @@ public:
     void operator=(const OutputPlane&) = delete;
     
     //ElementBase::ElementType getType() const;
-    ElementType getType() const;
+    ElementType getType() const override;
     void recentre(Vector_t R, Vector_t P);
 
 
 private:
     /// Initialise peakfinder file
-    virtual void doInitialise(PartBunchBase<double, 3>* /*bunch*/);
+    virtual void doInitialise(PartBunchBase<double, 3>* /*bunch*/) override;
 
     /// Record probe hits when bunch particles pass
     inline bool doPreCheck(PartBunchBase<double, 3> *bunch) override;
