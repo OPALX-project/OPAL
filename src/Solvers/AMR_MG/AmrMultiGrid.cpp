@@ -22,6 +22,7 @@
 #include "AmrMultiGrid.h"
 
 #include <algorithm>
+#include <filesystem>
 #include <functional>
 #include <map>
 #include <numeric>

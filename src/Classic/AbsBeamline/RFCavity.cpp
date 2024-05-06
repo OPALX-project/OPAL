@@ -26,6 +26,7 @@
 #include "Utilities/Util.h"
 
 #include <boost/assign.hpp>
+#include <filesystem>
 
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_spline.h"

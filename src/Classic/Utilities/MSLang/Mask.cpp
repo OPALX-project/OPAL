@@ -4,6 +4,7 @@
 #include "Utilities/PortableBitmapReader.h"
 
 #include <boost/regex.hpp>
+#include <filesystem>
 
 namespace {
     void updateCache(const std::vector<bool> &pixels, std::vector<int> &cache, int x, int width) {

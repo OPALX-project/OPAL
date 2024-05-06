@@ -28,6 +28,7 @@
 #include "Utility/IpplInfo.h"
 
 #include <cmath>
+#include <filesystem>
 
 extern Inform* gmsg;
 

@@ -25,6 +25,7 @@
 #include "Utilities/Util.h"
 
 #include <boost/regex.hpp>
+#include <filesystem>
 #include <fstream>
 
 OpalBeamline::OpalBeamline():

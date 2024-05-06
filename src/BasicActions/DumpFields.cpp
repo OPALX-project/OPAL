@@ -24,6 +24,7 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Util.h"
 
+#include <filesystem>
 #include <fstream>
 
 extern Inform* gmsg;

@@ -22,6 +22,8 @@
 #include "Optimizer/EA/Individual.h"
 #include "gtest/gtest.h"
 
+#include <memory>
+
 namespace {
 
     // The fixture for testing class Foo.
