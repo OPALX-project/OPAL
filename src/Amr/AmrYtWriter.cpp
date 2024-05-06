@@ -67,11 +67,11 @@ AmrYtWriter::AmrYtWriter(int step, int bin) {
     realData_m[idx++] ="magnetic_field_y";
     realData_m[idx++] ="magnetic_field_z";
 
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
 
     fs::path dir = OpalData::getInstance()->getInputBasename();
     std::string dataDir = OpalData::getInstance()->getAuxiliaryOutputDirectory();
-    boost::filesystem::path path = dir.parent_path() / dataDir / "amr" / "yt";
+    std::filesystem::path path = dir.parent_path() / dataDir / "amr" / "yt";
     dir_m = amrex::Concatenate((path / "plt").string(), step, 10);
     dir_m += "-";
     dir_m = amrex::Concatenate(dir_m, bin, 3);

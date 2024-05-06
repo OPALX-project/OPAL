@@ -41,8 +41,6 @@
 
 #include "opal_test_utilities/SilenceTest.h"
 
-#include "boost/filesystem.hpp"
-
 namespace DumpEMFieldsTest {
 
 void setOneAttribute(DumpEMFields* dump, std::string name, double value) {
@@ -145,7 +143,7 @@ void clear_files(std::set<std::string> const& files) {
     std::string auxDirectory = OpalData::getInstance()->getAuxiliaryOutputDirectory();
 
     for (const std::string& fname : files) {
-        boost::filesystem::remove(Util::combineFilePath({auxDirectory, fname}));
+        std::filesystem::remove(Util::combineFilePath({auxDirectory, fname}));
     }
 }
 
@@ -153,7 +151,7 @@ TEST(DumpEMFieldsTest, writeFieldsCartTest) {
     OpalTestUtilities::SilenceTest silencer;
 
     std::string auxDirectory = OpalData::getInstance()->getAuxiliaryOutputDirectory();
-    boost::filesystem::create_directory(auxDirectory);
+    std::filesystem::create_directory(auxDirectory);
 
     std::string fname1 = "test5";
     std::string fname2 = "test6";
@@ -226,7 +224,7 @@ TEST(DumpEMFieldsTest, writeFieldsCylTest) {
     OpalTestUtilities::SilenceTest silencer;
 
     std::string auxDirectory = OpalData::getInstance()->getAuxiliaryOutputDirectory();
-    boost::filesystem::create_directory(auxDirectory);
+    std::filesystem::create_directory(auxDirectory);
 
     std::string fnameCyl = "testCyl";
 

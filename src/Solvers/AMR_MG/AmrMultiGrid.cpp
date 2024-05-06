@@ -35,8 +35,6 @@
 
 #include <AMReX_ParallelDescriptor.H>
 
-#include <boost/filesystem.hpp>
-
 #if AMR_MG_WRITE
     #include <iomanip>
 #endif
@@ -100,7 +98,7 @@ AmrMultiGrid::AmrMultiGrid(AmrBoxLib* itsAmrObject_p,
     const BaseSolver solver = this->convertToEnumBaseSolver_m(bsolver);
     this->initBaseSolver_m(solver, rebalance, reuse);
 
-    if (boost::filesystem::exists(fname_m)) {
+    if (std::filesystem::exists(fname_m)) {
         flag_m = std::ios::app;
         INFOMSG("Appending solver information to existing file: " << fname_m << endl);
     } else {

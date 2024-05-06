@@ -26,7 +26,6 @@
 #include "Utilities/Util.h"
 
 #include <boost/assign.hpp>
-#include <boost/filesystem.hpp>
 
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_spline.h"
@@ -347,7 +346,7 @@ std::string RFCavity::getFieldMapFN() const {
         throw GeneralClassicException("RFCavity::getFieldMapFN",
                                       "The attribute \"FMAPFN\" isn't set "
                                       "for the \"RFCAVITY\" element!");
-    } else if (boost::filesystem::exists(filename_m)) {
+    } else if (std::filesystem::exists(filename_m)) {
         return filename_m;
     } else {
         throw GeneralClassicException("RFCavity::getFieldMapFN",

@@ -37,9 +37,9 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 
-#include <boost/filesystem.hpp>
-
 #include <gsl/gsl_sys.h>
+
+#include <boost/filesystem.hpp>
 
 extern Inform* gmsg;
 
@@ -1623,13 +1623,16 @@ BoundaryGeometry::computeMeshVoxelization (void) {
         });
         bool writeVTK = false;
 
-        if (!boost::filesystem::exists(vtkFileName)) {
+        if (!std::filesystem::exists(vtkFileName)) {
             writeVTK = true;
         } else {
-            std::time_t t_geom = boost::filesystem::last_write_time(h5FileName_m);
-            std::time_t t_vtk = boost::filesystem::last_write_time(vtkFileName);
-            if (std::difftime(t_geom,t_vtk) > 0)
+            // here we keep using boost::filesystem. See
+            // https://stackoverflow.com/questions/51273205/how-to-compare-time-t-and-stdfilesystemfile-time-type
+            auto t_geom = boost::filesystem::last_write_time(h5FileName_m);
+            auto t_vtk = boost::filesystem::last_write_time(vtkFileName);
+            if (std::difftime(t_geom, t_vtk) > 0) {
                 writeVTK = true;
+            }
         }
 
         if (writeVTK) {
@@ -2024,7 +2027,7 @@ Change orientation if diff is:
     *gmsg << level2 << "* Initializing Boundary Geometry..." << endl;
     IpplTimings::startTimer (Tinitialize_m);
 
-    if (!boost::filesystem::exists(h5FileName_m)) {
+    if (!std::filesystem::exists(h5FileName_m)) {
         throw OpalException("BoundaryGeometry::initialize",
                             "Failed to open file '" + h5FileName_m +
                             "', please check if it exists");

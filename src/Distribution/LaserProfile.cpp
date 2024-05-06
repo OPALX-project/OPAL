@@ -17,8 +17,6 @@
 #include "Utilities/PortableGraymapReader.h"
 #include "Utilities/Util.h"
 
-#include <boost/filesystem.hpp>
-
 #include <fstream>
 #include <iostream>
 #include <cmath>
@@ -82,7 +80,7 @@ LaserProfile::~LaserProfile() {
 
 unsigned short * LaserProfile::readFile(const std::string &fileName,
                                         const std::string &imageName) {
-    namespace fs = boost::filesystem;
+    namespace fs = std::filesystem;
     if (!fs::exists(fileName)) {
         throw OpalException("LaserProfile::readFile",
                             "given file '" + fileName + "' does not exist");

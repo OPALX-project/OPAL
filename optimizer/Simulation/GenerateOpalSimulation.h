@@ -42,7 +42,6 @@
 
 #include <vector>
 #include <boost/algorithm/string.hpp>
-#include "boost/filesystem.hpp"
 
 #include "Util/OptPilotException.h"
 
@@ -144,7 +143,7 @@ private:
     */
     void fillDictionary() {
 
-        namespace fs = boost::filesystem;
+        namespace fs = std::filesystem;
 
         fs::path pwd = fs::current_path();
         if (!fs::exists(varDictionary_) || fs::is_empty(varDictionary_))

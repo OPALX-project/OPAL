@@ -4,7 +4,6 @@
 #include "Utilities/PortableBitmapReader.h"
 
 #include <boost/regex.hpp>
-#include <boost/filesystem.hpp>
 
 namespace {
     void updateCache(const std::vector<bool> &pixels, std::vector<int> &cache, int x, int width) {
@@ -127,7 +126,7 @@ namespace mslang {
             filename = filename.substr(1, filename.length() - 2);
         }
 
-        if (!boost::filesystem::exists(filename)) {
+        if (!std::filesystem::exists(filename)) {
             ERRORMSG("file '" << filename << "' doesn't exists" << endl);
             return false;
         }

@@ -37,8 +37,6 @@
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
-#include <boost/filesystem.hpp>
-
 #include <cmath>
 #include <cstring>
 #include <cstdio>
@@ -186,7 +184,7 @@ std::string Cyclotron::getFieldMapFN() const {
         throw GeneralClassicException(
                         "Cyclotron::getFieldMapFN",
                         "The attribute FMAPFN isn't set for the CYCLOTRON element");
-    } else if (boost::filesystem::exists(fmapfn_m)) {
+    } else if (std::filesystem::exists(fmapfn_m)) {
         return fmapfn_m;
     } else {
         throw GeneralClassicException("Cyclotron::getFieldMapFN",

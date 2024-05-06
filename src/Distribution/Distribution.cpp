@@ -44,7 +44,6 @@
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_sf_erf.h>
 
-#include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 #include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
 
@@ -1036,7 +1035,7 @@ void Distribution::createDistributionFromFile(size_t /*numberOfParticles*/, doub
     // Data input file is only read by node 0.
     std::ifstream inputFile;
     std::string fileName = Attributes::getString(itsAttr[Attrib::Distribution::FNAME]);
-    if (!boost::filesystem::exists(fileName)) {
+    if (!std::filesystem::exists(fileName)) {
         throw OpalException(
             "Distribution::createDistributionFromFile",
             "Open file operation failed, please check if '" + fileName + "' really exists.");

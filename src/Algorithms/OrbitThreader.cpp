@@ -34,8 +34,6 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
-#include <boost/filesystem.hpp>
-
 #include <cmath>
 #include <iostream>
 #include <limits>
@@ -73,7 +71,7 @@ OrbitThreader::OrbitThreader(const PartData &ref,
             opal->getInputBasename() + "_DesignPath.dat"
         });
         if (opal->getOpenMode() == OpalData::OpenMode::WRITE ||
-            !boost::filesystem::exists(fileName)) {
+            !std::filesystem::exists(fileName)) {
             logger_m.open(fileName);
             logger_m << "#"
                      << std::setw(17) << "1 - s"

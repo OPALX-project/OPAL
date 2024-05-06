@@ -20,7 +20,6 @@
 #include "OPALrevision.h"
 #include "Utilities/OpalException.h"
 
-#include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 
 #include <cctype>
@@ -195,7 +194,7 @@ namespace Util {
     }
 
     std::string combineFilePath(std::initializer_list<std::string> ilist) {
-        boost::filesystem::path path;
+        std::filesystem::path path;
         for (auto entry : ilist) {
             path /= entry;
         }

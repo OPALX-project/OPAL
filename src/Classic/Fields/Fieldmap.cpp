@@ -34,14 +34,12 @@
 
 #include "H5hut.h"
 
-#include <boost/filesystem.hpp>
-
 #include <cmath>
 #include <iostream>
 #include <fstream>
 #include <ios>
 
-namespace fs = boost::filesystem;
+namespace fs = std::filesystem;
 
 #define REGISTER_PARSE_TYPE(X) template <> struct _Fieldmap::TypeParseTraits<X> \
     { static const char* name; } ; const char* _Fieldmap::TypeParseTraits<X>::name = #X
@@ -744,7 +742,7 @@ void _Fieldmap::write3DField(unsigned int nx,
     if (Ippl::myNode() != 0 ||
         (ef.size() != numpoints && bf.size() != numpoints)) return;
 
-    boost::filesystem::path p(Filename_m);
+    std::filesystem::path p(Filename_m);
     std::string fname = Util::combineFilePath({
         OpalData::getInstance()->getAuxiliaryOutputDirectory(),
         p.stem().string() + ".vtk"

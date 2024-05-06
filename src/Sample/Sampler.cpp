@@ -34,8 +34,6 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 
-#include <boost/filesystem.hpp>
-
 Sampler::Sampler(Expressions::Named_t /*objectives*/,
                  Expressions::Named_t /*constraints*/,
                  DVarContainer_t /*dvars*/,
@@ -76,8 +74,8 @@ Sampler::Sampler(const std::map<std::string,
              << "_samples_" << comms_.island_id << ".json";
     jsonFname_m = filename.str();
 
-    if ( !boost::filesystem::exists(resultDir) ) {
-        boost::filesystem::create_directory(resultDir);
+    if ( !std::filesystem::exists(resultDir) ) {
+        std::filesystem::create_directory(resultDir);
     }
 
     DVarContainer_t::iterator itr;

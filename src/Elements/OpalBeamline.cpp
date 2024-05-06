@@ -24,7 +24,6 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
-#include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 #include <fstream>
 
@@ -365,7 +364,7 @@ void OpalBeamline::save3DLattice() {
         OpalData::getInstance()->getInputBasename() + "_ElementPositions.txt"
     });
     if (OpalData::getInstance()->getOpenMode() == OpalData::OpenMode::APPEND &&
-        boost::filesystem::exists(fileName)) {
+        std::filesystem::exists(fileName)) {
         pos.open(fileName, std::ios_base::app);
     } else {
         pos.open(fileName);
