@@ -27,16 +27,16 @@
 class MockDipole : public Component {
 public:
     MockDipole(const std::string /*&name*/) : bfield_m(0, 1, 0), efield_m() {}
-    NullField &getField() {return nullfield_m;}
-    const NullField &getField() const {return nullfield_m;}
-    void accept(BeamlineVisitor& /*&visitor*/) const {}
-    void initialise(PartBunchBase<double, 3>* /*bunch*/, double& /*start*/, double& /*end*/) {}
-    void finalise() {}
-    bool bends() const {return true;}
-    void getDimensions(double& /*zBegin*/, double& /*zEnd*/) const {}
-    StraightGeometry& getGeometry() {return geom_m;}
-    const StraightGeometry& getGeometry() const {return geom_m;}
-    ElementBase* clone() const {return NULL;}
+    NullField &getField() override {return nullfield_m;}
+    const NullField &getField() const override {return nullfield_m;}
+    void accept(BeamlineVisitor& /*&visitor*/) const override {}
+    void initialise(PartBunchBase<double, 3>* /*bunch*/, double& /*start*/, double& /*end*/) override {}
+    void finalise() override {}
+    bool bends() const override {return true;}
+    void getDimensions(double& /*zBegin*/, double& /*zEnd*/) const override {}
+    StraightGeometry& getGeometry() override {return geom_m;}
+    const StraightGeometry& getGeometry() const override {return geom_m;}
+    ElementBase* clone() const override {return NULL;}
 
     void setField(Vector_t bfield, Vector_t efield) {bfield_m = bfield; efield_m = efield;}
 
