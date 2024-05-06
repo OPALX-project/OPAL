@@ -189,9 +189,9 @@ protected:
     */
     IndexTriplet getIndex(const Vector_t &X) const {
         IndexTriplet idx;
-        __float128 difference = __float128(X(0)) - __float128(xbegin_m);
+        long double difference = (long double)(X(0)) - (long double)(xbegin_m);
         idx.i = std::min(
-                         (unsigned int)((difference) / __float128(hx_m)),
+                         (unsigned int)((difference) / (long double)(hx_m)),
                          num_gridpx_m-2
                          );
         idx.weight(0) = std::fmod(
@@ -199,9 +199,9 @@ protected:
                                   (long double)hx_m
                                   );
 
-        difference = __float128(X(1)) - __float128(ybegin_m);
+        difference = (long double)(X(1)) - (long double)(ybegin_m);
         idx.j = std::min(
-                         (unsigned int)((difference) / __float128(hy_m)),
+                         (unsigned int)((difference) / (long double)(hy_m)),
                          num_gridpy_m-2
                          );
         idx.weight(1) = std::fmod(
@@ -209,9 +209,9 @@ protected:
                                   (long double)hy_m
                                   );
 
-        difference = __float128(X(2)) - __float128(zbegin_m);
+        difference = (long double)(X(2)) - (long double)(zbegin_m);
         idx.k = std::min(
-                         (unsigned int)((difference) / __float128(hz_m)),
+                         (unsigned int)((difference) / (long double)(hz_m)),
                          num_gridpz_m-2
 			 );
         idx.weight(2) = std::fmod(
