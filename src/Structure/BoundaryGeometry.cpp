@@ -37,9 +37,9 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 
-#include <boost/filesystem.hpp>
-
 #include <gsl/gsl_sys.h>
+
+#include <boost/filesystem.hpp>
 
 extern Inform* gmsg;
 
@@ -1628,7 +1628,7 @@ BoundaryGeometry::computeMeshVoxelization (void) {
         } else {
             // here we keep using boost::filesystem. See
             // https://stackoverflow.com/questions/51273205/how-to-compare-time-t-and-stdfilesystemfile-time-type
-            auto t_geom = boost::filesystem::last_write_time(h5Filename_m);
+            auto t_geom = boost::filesystem::last_write_time(h5FileName_m);
             auto t_vtk = boost::filesystem::last_write_time(vtkFileName);
             if (std::difftime(t_geom, t_vtk) > 0) {
                 writeVTK = true;

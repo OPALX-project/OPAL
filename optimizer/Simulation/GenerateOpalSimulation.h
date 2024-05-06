@@ -42,7 +42,6 @@
 
 #include <vector>
 #include <boost/algorithm/string.hpp>
-#include "boost/filesystem.hpp"
 
 #include "Util/OptPilotException.h"
 

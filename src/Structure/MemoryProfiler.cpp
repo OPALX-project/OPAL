@@ -28,8 +28,6 @@
 
 #include "Ippl.h"
 
-#include <boost/filesystem.hpp>
-
 #ifdef __linux__
 #include <sys/types.h>
 #include <unistd.h>

@@ -39,8 +39,6 @@
 
 #include "opal_test_utilities/SilenceTest.h"
 
-#include "boost/filesystem.hpp"
-
 namespace test {
 
 void test() {}

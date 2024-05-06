@@ -49,7 +49,6 @@
 
 #include <gsl/gsl_errno.h>
 
-#include <boost/filesystem.hpp>
 #include <boost/system/error_code.hpp>
 
 #include <cstring>

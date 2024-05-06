@@ -56,8 +56,6 @@
 #include "Expression/ProbeVariable.h"
 #include "Expression/SeptumExpr.h"
 
-#include <boost/filesystem.hpp>
-
 #include <map>
 #include <set>
 #include <string>

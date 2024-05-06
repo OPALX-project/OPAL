@@ -41,8 +41,6 @@
 
 #include "opal_test_utilities/SilenceTest.h"
 
-#include "boost/filesystem.hpp"
-
 namespace DumpEMFieldsTest {
 
 void setOneAttribute(DumpEMFields* dump, std::string name, double value) {

@@ -26,8 +26,6 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Util.h"
 
-#include <boost/filesystem.hpp>
-
 #include <cmath>
 #include <fstream>
 #include <map>

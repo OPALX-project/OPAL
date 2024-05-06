@@ -37,8 +37,6 @@
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
-#include <boost/filesystem.hpp>
-
 #include <cmath>
 #include <cstring>
 #include <cstdio>

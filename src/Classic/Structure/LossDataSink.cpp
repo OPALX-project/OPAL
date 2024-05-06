@@ -27,8 +27,6 @@
 
 #include "Utility/IpplInfo.h"
 
-#include <boost/filesystem.hpp>
-
 #include <cmath>
 
 extern Inform* gmsg;

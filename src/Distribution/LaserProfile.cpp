@@ -17,8 +17,6 @@
 #include "Utilities/PortableGraymapReader.h"
 #include "Utilities/Util.h"
 
-#include <boost/filesystem.hpp>
-
 #include <fstream>
 #include <iostream>
 #include <cmath>

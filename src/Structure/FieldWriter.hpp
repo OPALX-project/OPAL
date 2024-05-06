@@ -19,7 +19,6 @@
 #include <iomanip>
 #include <fstream>
 
-#include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 
 #include "Utilities/Util.h"

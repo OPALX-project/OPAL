@@ -24,8 +24,6 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Util.h"
 
-#include <boost/filesystem.hpp>
-
 #include <fstream>
 
 extern Inform* gmsg;

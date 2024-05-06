@@ -84,8 +84,6 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 
-#include <boost/filesystem.hpp>
-
 #include <cmath>
 #include <fstream>
 #include <iostream>

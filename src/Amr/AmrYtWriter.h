@@ -27,8 +27,6 @@
 
 #include "Amr/AbstractAmrWriter.h"
 
-#include <boost/filesystem.hpp>
-
 #include <vector>
 
 class AmrYtWriter: public AbstractAmrWriter {

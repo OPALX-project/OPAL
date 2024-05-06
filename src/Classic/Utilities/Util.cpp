@@ -20,7 +20,6 @@
 #include "OPALrevision.h"
 #include "Utilities/OpalException.h"
 
-#include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 
 #include <cctype>

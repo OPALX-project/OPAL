@@ -34,8 +34,6 @@
 
 #include "H5hut.h"
 
-#include <boost/filesystem.hpp>
-
 #include <cmath>
 #include <iostream>
 #include <fstream>

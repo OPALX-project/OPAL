@@ -24,7 +24,6 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
-#include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 #include <fstream>
 

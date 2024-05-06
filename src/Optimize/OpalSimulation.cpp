@@ -28,9 +28,6 @@
 #include "boost/smart_ptr.hpp"
 #include "boost/algorithm/string.hpp"
 
-#include "boost/filesystem.hpp"
-#include "boost/filesystem/operations.hpp"
-
 // access to OPAL lib
 #include "opal.h"
 #include "Utilities/OpalException.h"

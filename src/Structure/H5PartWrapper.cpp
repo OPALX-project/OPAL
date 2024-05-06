@@ -15,8 +15,6 @@
 #include "Message/Message.h"
 #include "Utility/PAssert.h"
 
-#include <boost/filesystem.hpp>
-
 #include <fstream>
 
 namespace {

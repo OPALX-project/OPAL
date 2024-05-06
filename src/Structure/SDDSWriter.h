@@ -30,8 +30,6 @@
 #include <utility>
 #include <vector>
 
-#include <boost/filesystem.hpp>
-
 #include "Structure/SDDSColumn.h"
 #include "Structure/SDDSColumnSet.h"
 

@@ -27,8 +27,6 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
-#include <boost/filesystem.hpp>
-
 #include <fstream>
 #include <memory>
 

@@ -46,7 +46,6 @@
 
 // include headers for integration
 #include <boost/numeric/odeint/integrate/integrate_n_steps.hpp>
-#include <boost/filesystem.hpp>
 
 extern Inform *gmsg;
 

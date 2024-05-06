@@ -35,8 +35,6 @@
 
 #include <AMReX_ParallelDescriptor.H>
 
-#include <boost/filesystem.hpp>
-
 #if AMR_MG_WRITE
     #include <iomanip>
 #endif

@@ -46,8 +46,6 @@
 #include <sstream>
 #include <utility>
 
-#include <boost/filesystem.hpp>
-
 #include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
 
 extern Inform *gmsg;

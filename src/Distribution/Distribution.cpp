@@ -44,7 +44,6 @@
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_sf_erf.h>
 
-#include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 #include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
 

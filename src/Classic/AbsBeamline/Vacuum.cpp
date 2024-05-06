@@ -32,7 +32,6 @@
 #include "Utilities/LogicalError.h"
 
 #include <boost/assign.hpp>
-#include <boost/filesystem.hpp>
 
 #include <cmath>
 #include <cstdio>
