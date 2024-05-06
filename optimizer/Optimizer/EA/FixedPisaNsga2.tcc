@@ -182,8 +182,8 @@ void FixedPisaNsga2<CO, MO>::initialize() {
     initialized_m = false;
 
     // start poll loop
-    run_clock_start_ = boost::chrono::system_clock::now();
-    last_clock_      = boost::chrono::system_clock::now();
+    run_clock_start_ = std::chrono::system_clock::now();
+    last_clock_      = std::chrono::system_clock::now();
     run();
 
     // run has ended
@@ -192,8 +192,8 @@ void FixedPisaNsga2<CO, MO>::initialize() {
         current_hvol_ =
           variator_m->population()->computeHypervolume(comms_.island_id, hvol_ref_m);
 
-    boost::chrono::duration<double> total =
-        boost::chrono::system_clock::now() - run_clock_start_;
+    std::chrono::duration<double> total =
+        std::chrono::system_clock::now() - run_clock_start_;
     std::ostringstream stats;
     stats << "__________________________________________" << std::endl;
     stats << "GENERATION " <<  act_gen << std::endl;
@@ -363,11 +363,11 @@ void FixedPisaNsga2<CO, MO>::postPoll() {
             current_hvol_ = hvol;
         }
 
-        boost::chrono::duration<double> total =
-            boost::chrono::system_clock::now() - run_clock_start_;
-        boost::chrono::duration<double> dt    =
-            boost::chrono::system_clock::now() - last_clock_;
-        last_clock_ = boost::chrono::system_clock::now();
+        std::chrono::duration<double> total =
+            std::chrono::system_clock::now() - run_clock_start_;
+        std::chrono::duration<double> dt    =
+            std::chrono::system_clock::now() - last_clock_;
+        last_clock_ = std::chrono::system_clock::now();
         std::ostringstream stats;
         stats << "__________________________________________" << std::endl;
         stats << "Arriving at generation " << act_gen + 1     << std::endl;

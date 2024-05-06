@@ -22,7 +22,6 @@
 #define __TIMESTAMP_H__
 
 #include <sstream>
-#include <boost/chrono.hpp>
 #include <ctime>
 
 #include "Util/Trace/TraceComponent.h"
@@ -40,9 +39,9 @@ public:
 
     void execute(std::ostringstream &dump) {
 
-        boost::chrono::time_point<boost::chrono::system_clock> now;
-        now = boost::chrono::system_clock::now();
-        std::time_t now_time = boost::chrono::system_clock::to_time_t(now);
+        std::chrono::time_point<std::chrono::system_clock> now;
+        now = std::chrono::system_clock::now();
+        std::time_t now_time = std::chrono::system_clock::to_time_t(now);
 
         std::ostringstream timestamp;
         timestamp << std::ctime(&now_time);
