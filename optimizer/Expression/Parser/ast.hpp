@@ -100,13 +100,13 @@ namespace client { namespace ast
         operand first;
         std::list<operation> rest;
     };
-
+#if 0
     // print functions for debugging
     inline std::ostream& operator<<(std::ostream& out, nil)
     {
         out << "nil"; return out;
     }
-
+#endif
     inline std::ostream& operator<<(std::ostream& out, identifier const& id)
     {
         out << id.name; return out;

@@ -159,7 +159,7 @@ public:
 
     virtual void getDimensions(double &zBegin, double &zEnd) const = 0;
 
-    virtual ElementType getType() const;
+    virtual ElementType getType() const override;
 
     /// Return design element.
     //  If this method returns a pointer to this component.

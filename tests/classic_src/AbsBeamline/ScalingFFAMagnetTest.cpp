@@ -67,7 +67,7 @@ public:
 
     Vector_t getB(Vector_t pos) {
         Vector_t mom, B, E;
-        double t;
+        double t = 0.0;
         sector_m->apply(pos, mom, t, E, B);
         return B;
     }
