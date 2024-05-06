@@ -28,6 +28,7 @@
 #define __POPULATION_H__
 
 #include <map>
+#include <memory>
 #include <vector>
 #include <utility>
 #include <queue>

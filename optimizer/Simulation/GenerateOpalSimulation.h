@@ -34,6 +34,7 @@
 #define __GENERATE_SIMULATION_H__
 
 #include <iostream>
+#include <filesystem>
 #include <fstream>
 #include <sstream>
 #include <string>

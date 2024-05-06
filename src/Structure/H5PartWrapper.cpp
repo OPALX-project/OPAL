@@ -15,6 +15,7 @@
 #include "Message/Message.h"
 #include "Utility/PAssert.h"
 
+#include <filesystem>
 #include <fstream>
 
 namespace {

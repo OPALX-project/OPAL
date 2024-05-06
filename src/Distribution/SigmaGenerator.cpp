@@ -40,6 +40,7 @@
 #include "MapGenerator.h"
 
 #include <cmath>
+#include <filesystem>
 #include <iomanip>
 #include <limits>
 #include <numeric>

@@ -31,6 +31,7 @@
 #include <AMReX_VisMF.H>
 #include <AMReX_VectorIO.H>
 #include <AMReX_NFiles.H>
+#include <filesystem>
 
 #include "AbstractObjects/OpalData.h"
 #include "Utilities/OpalException.h"

@@ -24,6 +24,7 @@
 
 #include <cctype>
 #include <fstream>
+#include <filesystem>
 #include <iostream>
 #include <iterator>
 #include <queue>

@@ -29,6 +29,7 @@
 #define __CMD_ARGUMENTS__
 
 #include <map>
+#include <memory>
 #include <string>
 #include <iostream>
 #include <sstream>

@@ -52,6 +52,7 @@
 #include <boost/system/error_code.hpp>
 
 #include <cstring>
+#include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <set>
