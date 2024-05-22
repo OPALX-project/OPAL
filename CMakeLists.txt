@@ -146,9 +146,6 @@ if (CMAKE_Fortran_COMPILER)
     if (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
         set (Fortran_LIBS "-lgfortran")
     endif ()
-    # CMake issue. Missing library libmpi_mpifh in MPI_Fortran_LINRARIES.
-    # See issue 587 and corresponding merge request 415.
-    set (Fortran_LIBS "${Fortran_LIBS} -lmpi_mpifh")
 else ()
     message (STATUS "No Fortran compiler found (optional)")
     if (ENABLE_AMR)
