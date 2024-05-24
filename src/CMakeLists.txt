@@ -121,48 +121,11 @@ set_property(TARGET libOPALObj PROPERTY POSITION_INDEPENDENT_CODE 1)
 
 add_executable (opal Main.cpp)
 
-if (WILL_BUILD_STATIC_LIBRARY)
-    add_library (libOPALstatic STATIC $<TARGET_OBJECTS:libOPALObj>)
-    set_target_properties (libOPALstatic PROPERTIES OUTPUT_NAME OPAL)
-    target_link_libraries (libOPALstatic
-        ${SAAMG_SOLVER_LIBS}
-        ${AMR_MG_SOLVER_LIBS}
-        ${AMR_LIBS}
-        ${MPI_CXX_LIBRARIES}
-        )
-    install (TARGETS libOPALstatic DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-endif()
-
-if (WILL_BUILD_SHARED_LIBRARY)
-    add_library(libOPALdynamic SHARED $<TARGET_OBJECTS:libOPALObj>)
-    set_target_properties (libOPALdynamic PROPERTIES OUTPUT_NAME OPAL)
-    target_compile_options(libOPALdynamic PRIVATE -fPIC)
-    target_link_libraries( libOPALdynamic
-        ${SAAMG_SOLVER_LIBS}
-        ${AMR_MG_SOLVER_LIBS}
-        ${AMR_LIBS}
-        ${MPI_CXX_LIBRARIES}
-        ${OPTP_LIBS}
-        ${OPTP_LIBRARY}
-        ${IPPL_LIBRARY}
-        ${GSL_LIBRARY}
-        ${GSL_CBLAS_LIBRARY}
-        ${H5Hut_LIBRARY}
-        ${HDF5_LIBRARIES}
-        ${Boost_LIBRARIES}
-        m
-        z
-        "-rdynamic"
-        )
-        install (TARGETS libOPALdynamic DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
-endif()
-
-if (BUILD_OPAL_PYTHON)
-    add_subdirectory (PyOpal)
-endif ()
-
-target_link_libraries( opal
-    libOPALstatic
+set (OPAL_LIBS
+    ${SAAMG_SOLVER_LIBS}
+    ${AMR_MG_SOLVER_LIBS}
+    ${AMR_LIBS}
+    ${MPI_CXX_LIBRARIES}
     ${OPTP_LIBS}
     ${OPTP_LIBRARY}
     ${IPPL_LIBRARY}
@@ -173,8 +136,38 @@ target_link_libraries( opal
     ${Boost_LIBRARIES}
     m
     z
-    ${CMAKE_DL_LIBS}
+    CACHE STRING "" FORCE
+)
+
+if (WILL_BUILD_STATIC_LIBRARY)
+    add_library (libOPALstatic STATIC $<TARGET_OBJECTS:libOPALObj>)
+    set_target_properties (libOPALstatic PROPERTIES OUTPUT_NAME OPAL)
+    target_link_libraries (
+        opal
+        libOPALstatic
+        ${OPAL_LIBS}
+        ${CMAKE_DL_LIBS}
+        pthread
     )
+    install (TARGETS libOPALstatic DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+endif()
+
+if (WILL_BUILD_SHARED_LIBRARY)
+    add_library(libOPALdynamic SHARED $<TARGET_OBJECTS:libOPALObj>)
+    set_target_properties (libOPALdynamic PROPERTIES OUTPUT_NAME OPAL)
+    target_compile_options(libOPALdynamic PRIVATE -fPIC)
+    target_link_libraries (
+        libOPALdynamic
+        ${OPAL_LIBS}
+        "-rdynamic"
+    )
+    install (TARGETS libOPALdynamic DESTINATION "${CMAKE_INSTALL_PREFIX}/lib")
+endif()
+
+if (BUILD_OPAL_PYTHON)
+    add_subdirectory (PyOpal)
+endif ()
+
 
 if (ENABLE_OPAL_FEL)
     include_directories (${MITHRA_INCLUDE_DIR})
