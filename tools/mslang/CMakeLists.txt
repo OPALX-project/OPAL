@@ -20,17 +20,8 @@ link_directories (
 
 set (MSLANG_LIBS
     libOPALstatic
-    ${OPTP_LIBS}
-    ${OPTP_LIBRARY}
-    ${IPPL_LIBRARY}
-    ${GSL_LIBRARY}
-    ${GSL_CBLAS_LIBRARY}
-    ${H5Hut_LIBRARY}
-    ${HDF5_LIBRARY}
-    ${Boost_LIBRARIES}
+    ${OPAL_LIBS}
     boost_timer
-    m
-    z
 )
 
 message (STATUS "Compiling MSLang")

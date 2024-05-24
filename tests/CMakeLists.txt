@@ -65,16 +65,7 @@ add_executable (${TEST_EXE} ${TEST_SRCS})
 target_link_libraries (
     ${TEST_EXE}
     libOPALstatic
-    ${OPTP_LIBS}
-    ${OPTP_LIBRARY}
-    ${IPPL_LIBRARY}
-    ${GSL_LIBRARY}
-    ${GSL_CBLAS_LIBRARY}
-    ${H5Hut_LIBRARY}
-    ${HDF5_LIBRARIES}
-    ${Boost_LIBRARIES}
-    ${Trilinos_LIBRARIES} ${Trilinos_TPL_LIBRARIES}
-    ${AMREX_LIBRARIES}
+    ${OPAL_LIBS}
     ${OTHER_CMAKE_EXE_LINKER_FLAGS}
     ${GTEST_BOTH_LIBRARIES}
     pthread

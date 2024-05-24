@@ -117,9 +117,10 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
     # See issue 587 and corresponding merge request 415.
     # Clang does not support this flag!
     add_compile_options (-fno-aggressive-loop-optimizations)
+    add_compile_options (-Wno-error=cpp)
 
-    if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "4.7.3")
-        message (FATAL_ERROR "To build OPAL you need GCC version 4.7.3 or greater")
+    if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "9.5.0")
+        message (FATAL_ERROR "To build OPAL you need GCC version 9.5.0 or greater")
     endif ()
     # Warning flags
 
@@ -305,9 +306,6 @@ endif ()
 
 # make variables visible in other CMakeLists files
 set (OPAL_CXX_FLAGS ${OPAL_CXX_FLAGS}
-    CACHE INTERNAL "" FORCE
-    )
-set (OPAL_LIBS ${OPAL_LIBS}
     CACHE INTERNAL "" FORCE
     )
 
