@@ -63,8 +63,11 @@ add_compile_options (-fstrict-aliasing)
 
 option (WILL_BUILD_STATIC_LIBRARY "Building static library" ON)
 option (BUILD_OPAL_PYTHON "Building Python interface for OPAL" OFF)
+option (WILL_BUILD_SHARED_LIBRARY "Building python hooks - requires dynamic libs" OFF)
 if (BUILD_OPAL_PYTHON)
-    option (WILL_BUILD_SHARED_LIBRARY "Building python hooks - requires dynamic libs" ON)
+    if (NOT WILL_BUILD_SHARED_LIBRARY)
+        message (FATAL_ERROR "For building python hooks you have to enable WILL_BUILD_SHARED_LIBRARY")
+    endif()
     find_package (Python3 COMPONENTS Development REQUIRED)
 endif ()
 
