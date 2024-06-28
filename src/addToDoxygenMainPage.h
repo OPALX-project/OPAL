@@ -27,7 +27,8 @@ Steve Russell (LANL);
 Suzanne Sheehy (Oxford);
 Jochem Snuverink (PSI);
 Daniel Winklehner (MIT);
-Arnau Albà (PSI)
+Arnau Alba (PSI)
+Mohsen Sadr (PSI)
 </B>
 <P>
 For further information please contact us on the <a href="mailto:opal@lists.psi.ch">OPAL mailing list</a>
