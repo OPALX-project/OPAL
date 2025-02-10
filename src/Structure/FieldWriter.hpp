@@ -16,8 +16,9 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include <iomanip>
+#include <filesystem>
 #include <fstream>
+#include <iomanip>
 
 #include <boost/format.hpp>
 
@@ -55,7 +56,7 @@ void FieldWriter::dumpField(FieldType& field, std::string name,
      */
     std::string dirname = OpalData::getInstance()->getAuxiliaryOutputDirectory();
     std::filesystem::path file(dirname);
-    std::format filename("%1%-%2%-%|3$06|.dat");
+    boost::format filename("%1%-%2%-%|3$06|.dat");
     std::string basename = OpalData::getInstance()->getInputBasename();
     filename % basename % (name + std::string("_") + type) % step;
     file /= filename.str();
