@@ -82,8 +82,8 @@ void IrregularDomain::getNeighbours(int id, StencilIndex_t& index) const {
 void IrregularDomain::getCoord(int idx, int& x, int& y, int& z) const {
     int xy = coordAccess(idx);
     x = xy % nr_m[0];
-    y = (xy - x) / nr_m[0];
-    z = idx / getNumXY();
+    y = ((xy - x) / nr_m[0]) % nr_m[1];
+    z = ((xy - x) / nr_m[0] - y) / nr_m[1];
 }
 
 int IrregularDomain::getIdx(int x, int y, int z) const {
