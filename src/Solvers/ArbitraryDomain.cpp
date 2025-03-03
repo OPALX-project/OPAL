@@ -256,19 +256,19 @@ void ArbitraryDomain::constantInterpolation(int idx, int idy, int idz,
     value.back = -1/(hr_m[2]*hr_m[2]);
     value.center = 2/(hr_m[0]*hr_m[0]) + 2/(hr_m[1]*hr_m[1]) + 2/(hr_m[2]*hr_m[2]);
 
-    if(!isInside(idx-1,idy,idz))
+    if (idx == 0 || !isInside(idx - 1, idy, idz))
         value.west = 0.0;
-    if(!isInside(idx+1,idy,idz))
+    if (idx == (nr_m[0] - 1) || !isInside(idx + 1, idy, idz))
         value.east = 0.0;
 
-    if(!isInside(idx,idy+1,idz))
+    if (idy == (nr_m[1] - 1) || !isInside(idx, idy + 1, idz))
         value.north = 0.0;
-    if(!isInside(idx,idy-1,idz))
+    if (idy == 0 || !isInside(idx, idy - 1, idz))
         value.south = 0.0;
 
-    if(!isInside(idx,idy,idz-1))
+    if (idz == 0 || !isInside(idx, idy, idz - 1))
         value.front = 0.0;
-    if(!isInside(idx,idy,idz+1))
+    if (idz == (nr_m[2] - 1) || !isInside(idx, idy, idz + 1))
         value.back = 0.0;
 }
 
