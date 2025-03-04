@@ -115,74 +115,87 @@ void ArbitraryDomain::compute(Vector_t hr, NDIndex<3> localId){
                     // because fastIsInside() creates a number of segments that depends on the
                     // distance between P and P0. Using the previous P as the new P0
                     // assures the smallest possible distance in most cases. -DW
-                    P0 = P;
+                    //P0 = P;
 
                     std::tuple<int, int, int> pos(idx, idy, idz);
 
                     dir = Vector_t(0, 0, 1);
 
                     if (bgeom_m->intersectRayBoundary(P, dir, I)) {
-                        intersectHiZ_m.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[2]));
+                        intersectHiZ_m.insert(
+                            std::pair<std::tuple<int, int, int>, double>(pos, I[2]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
-                        *gmsg << "zdir=+1 " << dir << " x,y,z= " << idx << "," << idy
-                              << "," << idz << " P=" << P <<" I=" << I << endl;
+                        INFOMSG(
+                            level2 << "zdir=+1 " << dir << " x,y,z= " << idx << "," << idy << ","
+                                   << idz << " P=" << P << " I=" << I << endl);
 #endif
                     }
 
                     if (bgeom_m->intersectRayBoundary(P, -dir, I)) {
-                        intersectLoZ_m.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[2]));
+                        intersectLoZ_m.insert(
+                            std::pair<std::tuple<int, int, int>, double>(pos, I[2]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
-                        *gmsg << "zdir=-1 " << -dir << " x,y,z= " << idx << "," << idy
-                              << "," << idz << " P=" << P <<" I=" << I << endl;
+                        INFOMSG(
+                            level2 << "zdir=-1 " << -dir << " x,y,z= " << idx << "," << idy << ","
+                                   << idz << " P=" << P << " I=" << I << endl);
 #endif
                     }
 
                     dir = Vector_t(0, 1, 0);
 
                     if (bgeom_m->intersectRayBoundary(P, dir, I)) {
-                        intersectHiY_m.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[1]));
+                        intersectHiY_m.insert(
+                            std::pair<std::tuple<int, int, int>, double>(pos, I[1]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
-                        *gmsg << "ydir=+1 " << dir << " x,y,z= " << idx << "," << idy
-                              << "," << idz << " P=" << P <<" I=" << I << endl;
+                        INFOMSG(
+                            level2 << "ydir=+1 " << dir << " x,y,z= " << idx << "," << idy << ","
+                                   << idz << " P=" << P << " I=" << I << endl);
 #endif
                     }
 
                     if (bgeom_m->intersectRayBoundary(P, -dir, I)) {
-                        intersectLoY_m.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[1]));
+                        intersectLoY_m.insert(
+                            std::pair<std::tuple<int, int, int>, double>(pos, I[1]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
-                        *gmsg << "ydir=-1" << -dir << " x,y,z= " << idx << "," << idy
-                              << "," << idz << " P=" << P <<" I=" << I << endl;
+                        INFOMSG(
+                            level2 << "ydir=-1" << -dir << " x,y,z= " << idx << "," << idy << ","
+                                   << idz << " P=" << P << " I=" << I << endl);
 #endif
                     }
 
                     dir = Vector_t(1, 0, 0);
 
                     if (bgeom_m->intersectRayBoundary(P, dir, I)) {
-                        intersectHiX_m.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[0]));
+                        intersectHiX_m.insert(
+                            std::pair<std::tuple<int, int, int>, double>(pos, I[0]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
-                        *gmsg << "xdir=+1 " << dir << " x,y,z= " << idx << "," << idy
-                              << "," << idz << " P=" << P <<" I=" << I << endl;
+                        INFOMSG(
+                            level2 << "xdir=+1 " << dir << " x,y,z= " << idx << "," << idy << ","
+                                   << idz << " P=" << P << " I=" << I << endl);
 #endif
                     }
 
-                    if (bgeom_m->intersectRayBoundary(P, -dir, I)){
-                        intersectLoX_m.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[0]));
+                    if (bgeom_m->intersectRayBoundary(P, -dir, I)) {
+                        intersectLoX_m.insert(
+                            std::pair<std::tuple<int, int, int>, double>(pos, I[0]));
                     } else {
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
-                        *gmsg << "xdir=-1 " << -dir << " x,y,z= " << idx << "," << idy
-                              << "," << idz << " P=" << P <<" I=" << I << endl;
+                        INFOMSG(
+                            level2 << "xdir=-1 " << -dir << " x,y,z= " << idx << "," << idy << ","
+                                   << idz << " P=" << P << " I=" << I << endl);
 #endif
                     }
                 } else {
                     isInsideMap_m[toCoordIdx(idx, idy, idz)] = false;
 #ifdef DEBUG_INTERSECT_RAY_BOUNDARY
-                    *gmsg << "OUTSIDE" << " x,y,z= " << idx << "," << idy
-                          << "," << idz << " P=" << P <<" I=" << I << endl;
+                    INFOMSG(
+                        level2 << "OUTSIDE" << " x,y,z= " << idx << "," << idy << "," << idz
+                               << " P=" << P << " I=" << I << endl);
 #endif
                 }
             }
@@ -277,88 +290,93 @@ void ArbitraryDomain::linearInterpolation(int idx, int idy, int idz,
 {
     scaleFactor = 1;
 
-    double cx = (idx - (nr_m[0]-1)/2.0)*hr_m[0];
-    double cy = (idy - (nr_m[1]-1)/2.0)*hr_m[1];
-    double cz = (idz - (nr_m[2]-1)/2.0)*hr_m[2];
-
-    double dx_w=hr_m[0];
-    double dx_e=hr_m[0];
-    double dy_n=hr_m[1];
-    double dy_s=hr_m[1];
-    double dz_f=hr_m[2];
-    double dz_b=hr_m[2];
-    value.center = 0.0;
+    double cx = getXRangeMin() + hr_m[0] * (idx + 0.5);
+    double cy = getYRangeMin() + hr_m[1] * (idy + 0.5);
+    double cz = getZRangeMin() + hr_m[2] * (idz + 0.5);
 
     std::tuple<int, int, int> coordxyz(idx, idy, idz);
 
-    if (idx == nr_m[0]-1)
-        dx_e = std::abs(intersectHiX_m.find(coordxyz)->second - cx);
-    if (idx == 0)
-        dx_w = std::abs(intersectLoX_m.find(coordxyz)->second - cx);
-    if (idy == nr_m[1]-1)
-        dy_n = std::abs(intersectHiY_m.find(coordxyz)->second - cy);
-    if (idy == 0)
-        dy_s = std::abs(intersectLoY_m.find(coordxyz)->second - cy);
-    if (idz == nr_m[2]-1)
-        dz_b = std::abs(intersectHiZ_m.find(coordxyz)->second - cz);
-    if (idz == 0)
-        dz_f = std::abs(intersectLoZ_m.find(coordxyz)->second - cz);
+    double dr = 0.0;
 
-    if(dx_w != 0)
-        value.west = -(dz_f + dz_b) * (dy_n + dy_s) / dx_w;
-    else
-        value.west = 0;
-    if(dx_e != 0)
-        value.east = -(dz_f + dz_b) * (dy_n + dy_s) / dx_e;
-    else
-        value.east = 0;
-    if(dy_n != 0)
-        value.north = -(dz_f + dz_b) * (dx_w + dx_e) / dy_n;
-    else
-        value.north = 0;
-    if(dy_s != 0)
-        value.south = -(dz_f + dz_b) * (dx_w + dx_e) / dy_s;
-    else
-        value.south = 0;
-    if(dz_f != 0)
-        value.front = -(dx_w + dx_e) * (dy_n + dy_s) / dz_f;
-    else
-        value.front = 0;
-    if(dz_b != 0)
-        value.back = -(dx_w + dx_e) * (dy_n + dy_s) / dz_b;
-    else
-        value.back = 0;
+    double dw = hr_m[0];
+    double de = hr_m[0];
+    double dn = hr_m[1];
+    double ds = hr_m[1];
+    double df = hr_m[2];
+    double db = hr_m[2];
 
-    //RHS scaleFactor for current 3D index
-    //0.5* comes from discretiztaion
-    //scaleFactor = 0.5*(dw+de)*(dn+ds)*(df+db);
-    scaleFactor = 0.5;
-    if(dx_w + dx_e != 0)
-        scaleFactor *= (dx_w + dx_e);
-    if(dy_n + dy_s != 0)
-        scaleFactor *= (dy_n + dy_s);
-    if(dz_f + dz_b != 0)
-        scaleFactor *= (dz_f + dz_b);
+    value.center = 0.0;
 
-    //catch the case where a point lies on the boundary
-    double m1 = dx_w * dx_e;
-    double m2 = dy_n * dy_s;
-    if(dx_e == 0)
-        m1 = dx_w;
-    if(dx_w == 0)
-        m1 = dx_e;
-    if(dy_n == 0)
-        m2 = dy_s;
-    if(dy_s == 0)
-        m2 = dy_n;
+    // we are a left boundary point
+    if (idx == 0 || !isInside(idx - 1, idy, idz)) {
+        dr = std::abs(intersectLoX_m.find(coordxyz)->second - cx);
+        value.center += 1.0 / (dr * dw);
+        value.west = 0.0;
+        // ...we are not
+    } else {
+        value.center += 1.0 / (dw * dw);
+        value.west = -1.0 / (dw * dw);
+    }
 
-    value.center = 2 / hr_m[2];
-    if(dx_w != 0 || dx_e != 0)
-        value.center *= (dx_w + dx_e);
-    if(dy_n != 0 || dy_s != 0)
-        value.center *= (dy_n + dy_s);
-    if(dx_w != 0 || dx_e != 0)
-        value.center += (dz_f + dz_b) * (dy_n + dy_s) * (dx_w + dx_e) / m1;
-    if(dy_n != 0 || dy_s != 0)
-        value.center += (dz_f + dz_b) * (dx_w + dx_e) * (dy_n + dy_s) / m2;
+    // we are a right boundary point
+    if (idx == (nr_m[0] - 1) || !isInside(idx + 1, idy, idz)) {
+        dr = std::abs(intersectHiX_m.find(coordxyz)->second - cx);
+        value.center += 1.0 / (dr * de);
+        value.east = 0.0;
+        // ...we are not
+    } else {
+        value.center += 1.0 / (de * de);
+        value.east = -1.0 / (de * de);
+    }
+
+    // we are a lower boundary point
+    if (idy == 0 || !isInside(idx, idy - 1, idz)) {
+        dr = std::abs(intersectLoY_m.find(coordxyz)->second - cy);
+        value.center += 1.0 / (dr * ds);
+        value.south = 0.0;
+        // ...we are not
+    } else {
+        value.center += 1.0 / (ds * ds);
+        value.south = -1.0 / (ds * ds);
+    }
+
+    // we are a upper boundary point
+    if (idy == (nr_m[1] - 1) || !isInside(idx, idy + 1, idz)) {
+        dr = std::abs(intersectHiY_m.find(coordxyz)->second - cy);
+        value.center += 1.0 / (dr * dn);
+        value.north = 0.0;
+        // ...we are not
+    } else {
+        value.center += 1.0 / (dn * dn);
+        value.north = -1.0 / (dn * dn);
+    }
+
+    // We are a back boundary point
+    if (idz == 0 || !isInside(idx, idy, idz - 1)) {
+        dr = std::abs(intersectLoZ_m.find(coordxyz)->second - cz);
+        value.center += 1.0 / (dr * db);
+        value.back = 0.0;
+        // ...we are not
+    } else {
+        value.center += 1.0 / (db * db);
+        value.back = -1.0 / (db * db);
+    }
+
+    // We are a front boundary point
+    if (idz == (nr_m[2] - 1) || !isInside(idx, idy, idz + 1)) {
+        dr = std::abs(intersectHiZ_m.find(coordxyz)->second - cz);
+        value.center += 1.0 / (dr * df);
+        value.front = 0.0;
+        // ...we are not
+    } else {
+        value.center += 1.0 / (df * df);
+        value.front = -1.0 / (df * df);
+    }
+
+    if (value.center <= 0.0) {
+        INFOMSG(
+            level3 << "Got value.center  <= 0.0 at idx/idy/idz = " << idx << "/" << idy << "/"
+                   << idz << endl);
+        INFOMSG(level3 << "This will lead to an exception and quit OPAL." << endl);
+    }
 }
