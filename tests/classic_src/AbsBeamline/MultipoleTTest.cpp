@@ -127,12 +127,15 @@ TEST(MultipoleTTest, Maxwell) {
 TEST(MultipoleTTest, CurvedMagnet) {
     OpalTestUtilities::SilenceTest silencer;
     // Build the magnet
+    double angle = 0.628;
+    double length = 4.4;
+    double rho = length / angle;
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
-    myMagnet->setBendAngle(0.628, true);
-    myMagnet->setElementLength(4.4);
+    myMagnet->setBendAngle(angle, true);
+    myMagnet->setElementLength(length);
     myMagnet->setBoundingBoxLength(0.0);
     myMagnet->setAperture(3.5, 3.5);
-    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setFringeField(length / 2.0, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
     myMagnet->setTransProfile({1.0, 1.0});
@@ -151,15 +154,15 @@ TEST(MultipoleTTest, CurvedMagnet) {
                              -1.45, -1.13, -0.87,  0.53,  0.46,  0.90,  1.36,
                               1.60,  1.83,  2.17,  2.30,  2.45,  2.77};
     double z = 0.2;
+    Vector_t centerR{-rho, z, 0.0};
     Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+    double localTheta = myMagnet->localCartesianRotation();
     for (size_t n = 0; n < x.size() && n < y.size(); n++) {
-        R[0] = x.at(n) /*- dx*/;
-        R[1] = z;
-        R[2] = y.at(n) /*- dz*/;
+        R = myMagnet->localCartesianToOpalCartesian({x[n], z, -y[n]});
         Vector_t B(0., 0., 0.);
         myMagnet->apply(R, P, t, E, B);
-        double div = calcDivB(R, B, stepSize, myMagnet.get());
-        vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get());
+        double div = calcDivB(R, B, stepSize, myMagnet.get(), localTheta);
+        vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get(), localTheta);
         double curlMag = 0.0;
         curlMag += gsl_sf_pow_int(curl[0], 2.0);
         curlMag += gsl_sf_pow_int(curl[1], 2.0);
@@ -394,7 +397,7 @@ TEST(MultipoleTTest, CurvedVarRadius) {
     myMagnet->setBendAngle(angle, true);
     myMagnet->setElementLength(length);
     myMagnet->setAperture(3.5, 3.5);
-    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setFringeField(length / 2.0, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
     myMagnet->setTransProfile({1.0, 1.0});
@@ -437,10 +440,13 @@ TEST(MultipoleTTest, ClonedCurvedVarRadius) {
     OpalTestUtilities::SilenceTest silencer;
     // Build a magnet
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
-    myMagnet->setBendAngle(0.628, true);
-    myMagnet->setElementLength(4.4);
+    double length = 4.4;
+    double angle = 0.628;
+    double rho = length / angle;
+    myMagnet->setBendAngle(angle, true);
+    myMagnet->setElementLength(length);
     myMagnet->setAperture(3.5, 3.5);
-    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setFringeField(length / 2.0, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
     myMagnet->setTransProfile({1.0, 1.0});
@@ -455,15 +461,15 @@ TEST(MultipoleTTest, ClonedCurvedVarRadius) {
     double y[21] = {-2.74, -2.58, -2.30, -2.27, -2.00, -1.83, -1.62, -1.45, -1.13, -0.87, 0.53,
                        0.00, 0.46, 0.90, 1.36, 1.60, 1.83, 2.17, 2.30, 2.45, 2.77};
     double z = 0.2;
+    Vector_t centerR{-rho, z, 0.0};
     Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+    double localTheta = myMagnet->localCartesianRotation();
     for (int n = 0; n < 21; n++) {
-        R[0] = x[n];
-        R[1] = z;
-        R[2] = y[n];
+        R = myMagnet->localCartesianToOpalCartesian({x[n], z, -y[n]});
         Vector_t B(0., 0., 0.);
         myMagnet->apply(R, P, t, E, B);
-        double div = calcDivB(R, B, stepSize, myMagnet.get());
-        vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get());
+        double div = calcDivB(R, B, stepSize, myMagnet.get(), localTheta);
+        vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get(), localTheta);
         double curlMag = 0.0;
         curlMag += gsl_sf_pow_int(curl[0], 2.0);
         curlMag += gsl_sf_pow_int(curl[1], 2.0);
