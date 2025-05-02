@@ -25,95 +25,66 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-
-
 #include "MultipoleTCurvedConstRadius.h"
+#include "MultipoleT.h"
 #include "gsl/gsl_sf_pow_int.h"
 
-using namespace endfieldmodel;
-
-MultipoleTCurvedConstRadius::MultipoleTCurvedConstRadius(
-                             const std::string &name):
-    MultipoleTBase(name),
-    maxOrderX_m(10),
-    planarArcGeometry_m(1.0, 1.0),
-    angle_m(0.0) {
+MultipoleTCurvedConstRadius::MultipoleTCurvedConstRadius(MultipoleT* element):
+    MultipoleTBase(element),
+    planarArcGeometry_m(1.0, 1.0) {
 }
 
-MultipoleTCurvedConstRadius::MultipoleTCurvedConstRadius(
-                             const MultipoleTCurvedConstRadius &right):
-    MultipoleTBase(right),
-    maxOrderX_m(right.maxOrderX_m),
-    recursion_m(right.recursion_m),
-    planarArcGeometry_m(right.planarArcGeometry_m),
-    angle_m(right.angle_m) {
-    RefPartBunch_m = right.RefPartBunch_m;
-}
-
-MultipoleTCurvedConstRadius::~MultipoleTCurvedConstRadius() {
-}
-
-ElementBase* MultipoleTCurvedConstRadius::clone() const {
-    return new MultipoleTCurvedConstRadius(*this);
+void MultipoleTCurvedConstRadius::initialise() {
+    planarArcGeometry_m.setElementLength(element_m->getLength());
+    planarArcGeometry_m.setCurvature(element_m->getBendAngle() / element_m->getLength());
+    setMaxOrder(element_m->getMaxFOrder(), element_m->getMaxXOrder());
 }
 
 void MultipoleTCurvedConstRadius::transformCoords(Vector_t &R) {
-    double radius = getLength() / angle_m;
-    double alpha = atan(R[2] / (R[0] + radius ));
-    if (alpha != 0.0 && angle_m != 0.0) {
-        R[0] = R[2] / sin(alpha) - radius;
-        R[2] = radius * alpha;// + getBoundingBoxLength();
-    } else {
-        //R[2] = R[2] + getBoundingBoxLength();
+    if(element_m->getBendAngle() != 0.0) {
+        double radius = element_m->getLength() / element_m->getBendAngle();
+        double alpha  = atan(R[2] / (R[0] + radius));
+        if (alpha != 0.0) {
+            R[0] = R[2] / sin(alpha) - radius;
+            R[2] = radius * alpha;
+        }
     }
+    R[2] += element_m->getLength() / 2.0;  // Magnet origin at the center rather than entry
 }
 
-void MultipoleTCurvedConstRadius::transformBField(Vector_t &B,
-                                                  const Vector_t &R) {
-    double theta = R[2] * angle_m / getLength();
+void MultipoleTCurvedConstRadius::transformBField(Vector_t &B, const Vector_t &R) {
+    double theta = R[2] * element_m->getBendAngle() / element_m->getLength();
     double Bx = B[0];
     double Bs = B[2];
     B[0] = Bx * cos(theta) - Bs * sin(theta);
     B[2] = Bx * sin(theta) + Bs * cos(theta);
 }
 
-void MultipoleTCurvedConstRadius::setMaxOrder(const std::size_t &maxOrder) {
-    MultipoleTBase::setMaxOrder(maxOrder);
+void MultipoleTCurvedConstRadius::setMaxOrder(size_t orderZ, size_t orderX) {
     std::size_t N = recursion_m.size();
-    while (maxOrder >= N) {
-        polynomial::RecursionRelation r(N, 2 * (N + maxOrderX_m + 1));
-        r.resizeX(getTransMaxOrder());
-        r.truncate(maxOrderX_m);
+    while (orderZ >= N) {
+        polynomial::RecursionRelation r(N, 2 * (N + orderX + 1));
+        r.resizeX(element_m->getTransMaxOrder());
+        r.truncate(orderX);
         recursion_m.push_back(r);
         N = recursion_m.size();
     }
 }
 
-double MultipoleTCurvedConstRadius::getRadius(const double &/*s*/) {
-    if (angle_m == 0.0) {
-        return -1.0;
-    } else {
-        return getLength() / angle_m;
-    }
+double MultipoleTCurvedConstRadius::getScaleFactor(double x, double /*s*/) {
+    return (1 + x * element_m->getBendAngle() / element_m->getLength());
 }
 
-double MultipoleTCurvedConstRadius::getScaleFactor(const double &x,
-                                                   const double &/*s*/) {
-    return (1 + x * angle_m / getLength());
-}
-
-double MultipoleTCurvedConstRadius::getFn(const std::size_t &n,
-                                          const double &x,
-                                          const double &s) {
+double MultipoleTCurvedConstRadius::getFn(size_t n, double x, double s) {
     if (n == 0) {
-        return getTransDeriv(0, x) * getFringeDeriv(0, s);
+        return element_m->getTransDeriv(0, x) * element_m->getFringeDeriv(0, s);
     }
-    double rho = getLength() / angle_m;
+    double rho = element_m->getLength() / element_m->getBendAngle();
     double func = 0.0;
     for (std::size_t j = 0;
          j <= recursion_m.at(n).getMaxSDerivatives();
          j++) {
-        double FringeDerivj = getFringeDeriv(2 * j, s);
+        double FringeDerivj = element_m->getFringeDeriv(2 * j, s);
         for (std::size_t i = 0;
              i <= recursion_m.at(n).getMaxXDerivatives();
              i++) {
@@ -121,11 +92,12 @@ double MultipoleTCurvedConstRadius::getFn(const std::size_t &n,
                 continue;
             }
             func += (recursion_m.at(n).evaluatePolynomial(x / rho, i, j)
-                    * getTransDeriv(i, x) * FringeDerivj)
-                    / gsl_sf_pow_int(rho, 2 * n - i - 2 * j);
+                    * element_m->getTransDeriv(i, x) * FringeDerivj)
+                    / gsl_sf_pow_int(rho, 2 * static_cast<int>(n) - static_cast<int>(i) -
+                                              2 * static_cast<int>(j));
         }
     }
-    func *= gsl_sf_pow_int(-1.0, n);
+    func *= gsl_sf_pow_int(-1.0, static_cast<int>(n));
     return func;
 }
  

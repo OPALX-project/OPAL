@@ -81,9 +81,6 @@
 #include "Elements/OpalMonitor.h"
 #include "Elements/OpalMultipole.h"
 #include "Elements/OpalMultipoleT.h"
-#include "Elements/OpalMultipoleTStraight.h"
-#include "Elements/OpalMultipoleTCurvedConstRadius.h"
-#include "Elements/OpalMultipoleTCurvedVarRadius.h"
 #include "Elements/OpalOctupole.h"
 #include "Elements/OpalOffset/OpalLocalCartesianOffset.h"
 #include "Elements/OpalOffset/OpalLocalCylindricalOffset.h"
@@ -205,9 +202,6 @@ namespace {
         opal->create(new OpalMonitor());
         opal->create(new OpalMultipole());
         opal->create(new OpalMultipoleT());
-        opal->create(new OpalMultipoleTStraight());
-        opal->create(new OpalMultipoleTCurvedConstRadius());
-        opal->create(new OpalMultipoleTCurvedVarRadius());
         opal->create(new OpalOctupole());
         opal->create(new OpalOffset::OpalLocalCartesianOffset());
 //        opal->create(new OpalOffset::OpalLocalCylindricalOffset());

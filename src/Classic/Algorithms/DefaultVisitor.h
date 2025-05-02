@@ -84,15 +84,6 @@ public:
     /// Apply the algorithm to to an arbitrary multipole.
     virtual void visitMultipoleT(const MultipoleT &);
 
-    /// Apply the algorithm to an arbitrary straight multipole.
-    virtual void visitMultipoleTStraight(const MultipoleTStraight &);
-
-    /// Apply the algorithm to an arbitrary curved multipole of constant radius.
-    virtual void visitMultipoleTCurvedConstRadius(const MultipoleTCurvedConstRadius &);
-
-    /// Apply the algorithm to an arbitrary curved multipole of variable radius.
-    virtual void visitMultipoleTCurvedVarRadius(const MultipoleTCurvedVarRadius &);
-
     /// Apply the algorithm to an offset (placement).
     virtual void visitOffset(const Offset &);
 

@@ -17,10 +17,7 @@ set (_SRCS
     OpalMonitor.cpp
     OpalMultipole.cpp
     OpalMultipoleT.cpp
-    OpalMultipoleTStraight.cpp
-    OpalMultipoleTCurvedConstRadius.cpp
-    OpalMultipoleTCurvedVarRadius.cpp
-    OpalOctupole.cpp
+        OpalOctupole.cpp
     OpalOffset/OpalLocalCylindricalOffset.cpp
     OpalOffset/OpalLocalCartesianOffset.cpp
     OpalOffset/OpalGlobalCylindricalOffset.cpp
@@ -70,10 +67,7 @@ set (HDRS
     OpalMonitor.h
     OpalMultipole.h
     OpalMultipoleT.h
-    OpalMultipoleTStraight.h
-    OpalMultipoleTCurvedConstRadius.h
-    OpalMultipoleTCurvedVarRadius.h
-    OpalOctupole.h
+        OpalOctupole.h
     OpalPepperPot.h
     OpalPolynomialTimeDependence.h
     OpalProbe.h
