@@ -268,7 +268,7 @@ protected:
     bool insideAperture(const Vector_t& R) const;
     bool insideBoundingBox(const Vector_t& R) const;
     void chooseImplementation();
-protected:
+
     // End fields
     endfieldmodel::Tanh fringeField_l{endfieldmodel::Tanh()}; // Left
     endfieldmodel::Tanh fringeField_r{endfieldmodel::Tanh()}; // Right

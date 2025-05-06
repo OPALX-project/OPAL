@@ -47,7 +47,8 @@ OpalMultipoleT::OpalMultipoleT()
     itsAttr[ANGLE] = Attributes::makeReal(
         "ANGLE", "The azimuthal angle of the magnet in ring [rad]", 0.0);
     itsAttr[MAXXORDER] = Attributes::makeReal(
-        "MAXXORDER", "Number of terms used in polynomial expansions");
+        "MAXXORDER", "Number of terms used in polynomial expansions",
+        DefaultMAXFORDER);
 
     // Further attributes for a variable radius multipole
     itsAttr[VARRADIUS] = Attributes::makeBool(
@@ -75,6 +76,21 @@ void OpalMultipoleT::print(std::ostream& os) const {
 void OpalMultipoleT::update() {
     // Base class first
     OpalElement::update();
+    // Make some sanity checks
+    auto maxFOrder = Attributes::getReal(itsAttr[MAXFORDER]);
+    if(maxFOrder < MinimumMAXFORDER) {
+        throw OpalException("OpalMultipoleT::Update",
+                            "Attribute MAXFORDER must be >= 1.0");
+    }
+    if(maxFOrder > MaximumMAXFORDER) {
+        WARNMSG("OpalMultipoleT::Update, a value of "
+                << maxFOrder << " for MAXFORDER may lead to excessive run time");
+    }
+    // Convert pole strengths from Tesla to internal units which are kGauss
+    auto tp = Attributes::getRealArray(itsAttr[TP]);
+    for(auto& i : tp) {
+        i *= Units::T2kG;
+    }
     // Set the attributes
     auto length = Attributes::getReal(itsAttr[LENGTH]);
     auto* multT = dynamic_cast<MultipoleT*>(getElement());
@@ -85,8 +101,8 @@ void OpalMultipoleT::update() {
     multT->setFringeField(
         length * 0.5, Attributes::getReal(itsAttr[LFRINGE]), Attributes::getReal(itsAttr[RFRINGE]));
     multT->setBoundingBoxLength(Attributes::getReal(itsAttr[BBLENGTH]));
-    multT->setTransProfile(Attributes::getRealArray(itsAttr[TP]));
-    multT->setMaxOrder(static_cast<size_t>(Attributes::getReal(itsAttr[MAXFORDER])),
+    multT->setTransProfile(tp);
+    multT->setMaxOrder(static_cast<size_t>(maxFOrder),
         static_cast<size_t>(Attributes::getReal(itsAttr[MAXXORDER])));
     multT->setRotation(Attributes::getReal(itsAttr[ROTATION]));
     multT->setEntranceAngle(Attributes::getReal(itsAttr[EANGLE]));

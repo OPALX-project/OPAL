@@ -62,6 +62,11 @@ private:
     OpalMultipoleT(const OpalMultipoleT&);
     void operator=(const OpalMultipoleT&);
 
+    /** Default value for maximum series expansion order */
+    static constexpr double DefaultMAXFORDER = 4.0;
+    static constexpr double MinimumMAXFORDER = 1.0;
+    static constexpr double MaximumMAXFORDER = 20.0;
+
     // Clone constructor.
     OpalMultipoleT(const std::string& name, OpalMultipoleT* parent);
 };
