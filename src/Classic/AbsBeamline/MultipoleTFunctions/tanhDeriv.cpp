@@ -72,24 +72,21 @@ double integrate(const double &a,
     double radius = gsl_hypot(a - 2, lambdaright * M_PI / 2) - 0.01;
     double radius2 = gsl_hypot(a + 2, lambdaleft * M_PI / 2) - 0.01;
     if (radius > radius2) radius = radius2;
-    struct my_f_params params = {a, s0, lambdaleft, lambdaright, radius, n};
+    my_f_params params = {a, s0, lambdaleft, lambdaright, radius, n};
     F.function = &my_f;
     F.params = &params;
     gsl_integration_workspace *w = gsl_integration_workspace_alloc(100);
     double error = gsl_sf_pow_int(10, -12);
-    double *result = new double;
-    double *abserr = new double;
+    double result;
+    double abserr;
     gsl_set_error_handler_off();
     int status = gsl_integration_qag(&F, 0, 2 * M_PI, 0, error,
-                                     100, 6, w, result, abserr);
+                                     100, 6, w, &result, &abserr);
     gsl_integration_workspace_free(w);
-    double finalResult = *result;
-    delete result;
-    delete abserr;
     if (status) {
-        return 0;
+        return result = 0.0;
     }
-    else return finalResult;
+    return result;
 }
 
 }
