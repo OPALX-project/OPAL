@@ -61,7 +61,8 @@ OpalMultipoleTStraight::OpalMultipoleTStraight():
                   ("EANGLE", "The entrance angle (rad)");
     itsAttr[MAXFORDER] = Attributes::makeReal
                   ("MAXFORDER",
-                   "Number of terms used in each field component");
+                   "Number of terms used in each field component",
+                    DefaultMAXFORDER);
     itsAttr[ROTATION] = Attributes::makeReal
                   ("ROTATION",
                    "Rotation angle about its axis for skew elements (rad)");
@@ -119,6 +120,15 @@ void OpalMultipoleTStraight::update() {
 
     multT->setTransMaxOrder(transSize - 1);
     multT->setMaxOrder(Attributes::getReal(itsAttr[MAXFORDER]));
+    if(multT->getMaxOrder() < MinimumMAXFORDER) {
+        throw OpalException("OpalMultipoleTStraight::Update",
+                            "Attribute MAXFORDER must be >= 1.0");
+    }
+    if(multT->getMaxOrder() > MaximumMAXFORDER) {
+        WARNMSG(std::string("OpalMultipoleTStraight::Update, a value of ")
+                << multT->getMaxOrder()
+                << std::string(" for MAXFORDER may lead to excessive run time"));
+    }
     multT->setRotation(Attributes::getReal(itsAttr[ROTATION]));
     multT->setEntranceAngle(Attributes::getReal(itsAttr[EANGLE]));
 

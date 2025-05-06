@@ -76,6 +76,11 @@ public:
 
     // Clone constructor.
     OpalMultipoleTStraight(const std::string &name, OpalMultipoleTStraight *parent);
+
+    /** Values for maximum series expansion order */
+    static constexpr double DefaultMAXFORDER = 4.0;
+    static constexpr double MinimumMAXFORDER = 1.0;
+    static constexpr double MaximumMAXFORDER = 20.0;
 };
 
 #endif

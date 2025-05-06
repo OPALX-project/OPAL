@@ -7,6 +7,7 @@
 #include "AbsBeamline/MultipoleTCurvedVarRadius.h"
 #include "AbsBeamline/MultipoleTFunctions/CoordinateTransform.h"
 #include "AbsBeamline/EndFieldModel/Tanh.h"
+#include "Elements/OpalMultipoleTStraight.h"
 
 #include "opal_test_utilities/SilenceTest.h"
 
@@ -315,3 +316,25 @@ TEST(MultipoleTTest, CurvedVarRadius) {
     }
     delete myMagnet;
 }
+
+// JAT: Test the MAXFORDER is reasonable-ness checks
+TEST(MultipoleTTest, StraightMAXFORDER) {
+    OpalTestUtilities::SilenceTest silencer;
+    OpalMultipoleTStraight magnetUi;
+    // Default value
+    EXPECT_DOUBLE_EQ(Attributes::getReal(magnetUi.itsAttr[OpalMultipoleTStraight::MAXFORDER]), 4);
+    magnetUi.update();
+    auto *multT = dynamic_cast<MultipoleTStraight*>(magnetUi.getElement());
+    EXPECT_EQ(multT->getMaxOrder(), 4);
+    // Zero is bad
+    Attributes::setReal(magnetUi.itsAttr[OpalMultipoleTStraight::MAXFORDER], 0);
+    EXPECT_ANY_THROW(magnetUi.update());
+    // More than 20 is worry-some
+    Attributes::setReal(magnetUi.itsAttr[OpalMultipoleTStraight::MAXFORDER], 21);
+    magnetUi.update();
+    EXPECT_EQ(multT->getMaxOrder(), 21);
+    auto& warn = dynamic_cast<std::ostringstream&>(IpplInfo::Warn->getStream());
+    EXPECT_STREQ(warn.str().c_str(), "OpalMultipoleTStraight::Update, a value of 21"
+                 " for MAXFORDER may lead to excessive run time");
+}
+
