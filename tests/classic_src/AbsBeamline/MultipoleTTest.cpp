@@ -96,7 +96,7 @@ TEST(MultipoleTTest, Maxwell) {
     //Set the magnet
     myMagnet->setElementLength(1.0);
     myMagnet->setFringeField(centralField, fringeLength, max_index);
-    myMagnet->setTransProfile({1.0, 100.0});
+    myMagnet->setTransProfile({0.1, 10.0});
     //highest power in the field is z ^ (2 * maxOrder + 1)
     //      !!!  should be less than max_index / 2 !!!
     myMagnet->setMaxOrder(3, 10);
@@ -139,7 +139,7 @@ TEST(MultipoleTTest, CurvedMagnet) {
     myMagnet->setFringeField(length / 2.0, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     myMagnet->setMaxOrder(3, 3);
     // Account for the magnet origin being at the center
     //double rho = 4.4 / 0.628;
@@ -193,7 +193,7 @@ TEST(MultipoleTTest, Straight) {
     myMagnet->setFringeField(2.2, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     myMagnet->setMaxOrder(5, 20);
     double t = 0.0;
     double stepSize = 1e-3;
@@ -241,7 +241,7 @@ TEST(MultipoleTTest, ClonedStraight) {
     myMagnet->setFringeField(2.2, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     myMagnet->setMaxOrder(5, 20);
     // Make the clone
     myMagnet.reset(dynamic_cast<MultipoleT*>(myMagnet->clone()));
@@ -292,7 +292,7 @@ TEST(MultipoleTTest, CurvedConstRadius) {
     myMagnet->setFringeField(length / 2.0, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     myMagnet->setMaxOrder(5, 20);
     // Test it
     double t = 0.0;
@@ -345,7 +345,7 @@ TEST(MultipoleTTest, ClonedCurvedConstRadius) {
     myMagnet->setFringeField(length / 2.0, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     myMagnet->setMaxOrder(5, 20);
     // Make the clone
     myMagnet.reset(dynamic_cast<MultipoleT*>(myMagnet->clone()));
@@ -401,7 +401,7 @@ TEST(MultipoleTTest, CurvedVarRadius) {
     myMagnet->setFringeField(length / 2.0, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     myMagnet->setMaxOrder(3, 3);
     double t = 0.0;
     double stepSize = 1e-3;
@@ -450,7 +450,7 @@ TEST(MultipoleTTest, ClonedCurvedVarRadius) {
     myMagnet->setFringeField(length / 2.0, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     myMagnet->setMaxOrder(3, 3);
     // Make the clone
     myMagnet.reset(dynamic_cast<MultipoleT*>(myMagnet->clone()));
@@ -501,7 +501,7 @@ TEST(MultipoleTTest, EntryOffsetCurvedVarRadius) {
     myMagnet->setFringeField(length / 2.0, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     myMagnet->setMaxOrder(3, 3);
     double a{}, b{};
     myMagnet->initialise(nullptr, a, b);
@@ -544,8 +544,8 @@ TEST(MultipoleTTest, UserInterface) {
     EXPECT_NEAR(myMagnet->getElementLength(), 4.1, 1e-6);
     auto tp = myMagnet->getTransProfile();
     EXPECT_EQ(tp.size(), 2);
-    EXPECT_NEAR(tp[0], 2.0, 1e-6);
-    EXPECT_NEAR(tp[1], 3.0, 1e-6);
+    EXPECT_NEAR(tp[0], 20.0, 1e-6);
+    EXPECT_NEAR(tp[1], 30.0, 1e-6);
     auto [s0, left, right] = myMagnet->getFringeField();
     EXPECT_NEAR(s0, 4.1 / 2.0, 1e-6);
     EXPECT_NEAR(left, 0.5, 1e-6);
@@ -591,8 +591,8 @@ TEST(MultipoleTTest, UserInterfaceClone) {
     EXPECT_NEAR(myMagnet->getElementLength(), 4.1, 1e-6);
     auto tp = myMagnet->getTransProfile();
     EXPECT_EQ(tp.size(), 2);
-    EXPECT_NEAR(tp[0], 2.0, 1e-6);
-    EXPECT_NEAR(tp[1], 3.0, 1e-6);
+    EXPECT_NEAR(tp[0], 20.0, 1e-6);
+    EXPECT_NEAR(tp[1], 30.0, 1e-6);
     auto [s0, left, right] = myMagnet->getFringeField();
     EXPECT_NEAR(s0, 4.1 / 2.0, 1e-6);
     EXPECT_NEAR(left, 0.5, 1e-6);
@@ -628,21 +628,21 @@ TEST(MultipoleTTest, Bends) {
     myMagnet->setFringeField(2.2, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
-    myMagnet->setTransProfile({0.0, 1.0});
+    myMagnet->setTransProfile({0.0, 0.1});
     myMagnet->setMaxOrder(5, 20);
     // Does it admit to a bend?
     EXPECT_FALSE(myMagnet->bends());
     // Set the bend angle with a zero dipole
     myMagnet->setBendAngle(10.0, false);
-    myMagnet->setTransProfile({0.0, 1.0});
+    myMagnet->setTransProfile({0.0, 0.0});
     EXPECT_TRUE(myMagnet->bends());
     // Set zero bend angle with a non-zero dipole
     myMagnet->setBendAngle(0.0, false);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     EXPECT_TRUE(myMagnet->bends());
     // Set bend angle with a non-zero dipole
     myMagnet->setBendAngle(10.0, false);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     EXPECT_TRUE(myMagnet->bends());
 }
 
@@ -658,7 +658,7 @@ TEST(MultipoleTTest, SetTransProfile) {
     myMagnet->setTransProfile({1.0, 2.0});
     myMagnet->setMaxOrder(5, 20);
     // Is the n-pole profile correct?
-    EXPECT_EQ(myMagnet->getTransProfile(), std::vector({1.0, 2.0}));
+    EXPECT_EQ(myMagnet->getTransProfile(), std::vector({10.0, 20.0}));
     // Setting an empty profile should cause a zero dipole profile
     myMagnet->setTransProfile({});
     EXPECT_EQ(myMagnet->getTransProfile(), std::vector({0.0}));
@@ -673,7 +673,7 @@ TEST(MultipoleTTest, Aperture) {
     myMagnet->setFringeField(2.2, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     myMagnet->setMaxOrder(5, 20);
     myMagnet->setFlagDeleteOnTransverseExit(true);
     double t = 0.0;
@@ -706,7 +706,7 @@ TEST(MultipoleTTest, BoundingBox) {
     myMagnet->setFringeField(2.2, 0.3, 0.3);
     myMagnet->setRotation(0.0);
     myMagnet->setEntranceAngle(0.0);
-    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setTransProfile({0.1, 0.1});
     myMagnet->setMaxOrder(5, 20);
     myMagnet->setFlagDeleteOnTransverseExit(true);
     myMagnet->setBoundingBoxLength(length + 0.5);

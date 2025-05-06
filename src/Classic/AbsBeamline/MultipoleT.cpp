@@ -264,6 +264,10 @@ void MultipoleT::setTransProfile(const std::vector<double>& profile) {
         transProfile_m = {0.0};
     }
     transMaxOrder_m = transProfile_m.size() - 1;
+    // Convert from Tesla to internal units which are kGauss
+    for(auto& i : transProfile_m) {
+        i *= Units::T2kG;
+    }
 }
 
 void MultipoleT::setMaxOrder(size_t orderZ, size_t orderX) {

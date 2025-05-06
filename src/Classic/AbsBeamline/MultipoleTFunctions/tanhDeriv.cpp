@@ -81,7 +81,7 @@ double integrate(const double &a,
     double abserr;
     gsl_set_error_handler_off();
     int status = gsl_integration_qag(&F, 0, 2 * M_PI, 0, error,
-                                     100, 6, w, &result, &abserr);
+                                     100, GSL_INTEG_GAUSS61, w, &result, &abserr);
     gsl_integration_workspace_free(w);
     if (status) {
         return result = 0.0;
