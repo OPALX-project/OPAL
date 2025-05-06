@@ -28,7 +28,6 @@
  */
 
 #include "MultipoleT.h"
-#include <cmath>
 #include "AbsBeamline/MultipoleTFunctions/tanhDeriv.h"
 #include "MultipoleTStraight.h"
 #include "MultipoleTCurvedConstRadius.h"
@@ -56,8 +55,7 @@ MultipoleT::MultipoleT(const MultipoleT& right)
       variableRadius_m(right.variableRadius_m),
       boundingBoxLength_m(right.boundingBoxLength_m),
       verticalApert_m(right.verticalApert_m),
-      horizontalApert_m(right.horizontalApert_m),
-      dummy() {
+      horizontalApert_m(right.horizontalApert_m) {
     RefPartBunch_m = right.RefPartBunch_m;
     chooseImplementation();
 }
@@ -91,13 +89,12 @@ Vector_t MultipoleT::rotateFrame(const Vector_t &R) const {
 }
 
 bool MultipoleT::insideAperture(const Vector_t& R) const {
-    return (std::abs(R[1]) <= (verticalApert_m / 2.0) &&
-            std::abs(R[0]) <= (horizontalApert_m / 2.0));
+    return std::abs(R[1]) <= verticalApert_m / 2.0 &&
+            std::abs(R[0]) <= horizontalApert_m / 2.0;
 }
 
 bool MultipoleT::insideBoundingBox(const Vector_t& R) const {
-    return (boundingBoxLength_m == 0.0) ||
-           ((R[0] >= -boundingBoxLength_m / 2.0) && (R[0] <= boundingBoxLength_m / 2.0));
+    return boundingBoxLength_m == 0.0 || fabs(R[2]) <= boundingBoxLength_m / 2.0;
 }
 
 Vector_t MultipoleT::toMagnetCoords(const Vector_t& R) {
@@ -125,17 +122,19 @@ Vector_t MultipoleT::getField(const Vector_t& magnetCoords) {
 bool MultipoleT::apply(
     const Vector_t& R, const Vector_t& /*P*/, const double& /*t*/, Vector_t& /*E*/, Vector_t& B) {
     Vector_t R_prime = toMagnetCoords(R);
+    bool result;
     if (insideAperture(R_prime)) {
         if(insideBoundingBox(R_prime)) {
             B = getField(R_prime);
         } else {
             B = {0.0, 0.0, 0.0};
         }
-        return false;
+        result = false;
     } else {
         B = {0.0, 0.0, 0.0};
-        return getFlagDeleteOnTransverseExit();
+        result = getFlagDeleteOnTransverseExit();
     }
+    return result;
 }
 
 void MultipoleT::setFringeField(const double& s0, const double& lambda_l, const double& lambda_r) {
@@ -152,14 +151,16 @@ std::tuple<double, double, double> MultipoleT::getFringeField() const {
 }
 
 double MultipoleT::getFringeDeriv(const std::size_t& n, const double& s) {
+    double result;
     if (n <= 10) {
-        return (fringeField_l.getTanh(s, static_cast<int>(n)) -
+        result = (fringeField_l.getTanh(s, static_cast<int>(n)) -
                 fringeField_r.getNegTanh(s, static_cast<int>(n))) / 2;
     } else {
-        return tanhderiv::integrate(
-            s, fringeField_l.Tanh::getX0(), fringeField_l.Tanh::getLambda(),
-            fringeField_r.Tanh::getLambda(), static_cast<int>(n));
+        result = tanhderiv::integrate(
+            s, fringeField_l.getX0(), fringeField_l.getLambda(),
+            fringeField_r.getLambda(), static_cast<int>(n));
     }
+    return result;
 }
 
 double MultipoleT::getTransDeriv(const std::size_t& n, const double& x) const {
@@ -277,6 +278,10 @@ void MultipoleT::setRotation(double rot) {
 
 void MultipoleT::setEntranceAngle(double entranceAngle) {
     entranceAngle_m = entranceAngle;
+}
+
+void MultipoleT::setEntryOffset(double offset){
+    entryOffset_m = offset;
 }
 
 bool MultipoleT::bends() const {

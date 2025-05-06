@@ -42,6 +42,7 @@ public:
         MAXXORDER,       // Maximum order in x in polynomial expansions
         // Further attributes for a variable radius multipole
         VARRADIUS,       // Variable radius flag
+        ENTRYOFFSET,     // Longitudinal offset from standard entrance point
         SIZE             // size of the enum
     };
 

@@ -35,23 +35,25 @@ OpalMultipoleT::OpalMultipoleT()
     itsAttr[RFRINGE] = Attributes::makeReal("RFRINGE", "The length of the right end field [m]");
     itsAttr[HAPERT]  = Attributes::makeReal("HAPERT", "The aperture width [m]");
     itsAttr[VAPERT]  = Attributes::makeReal("VAPERT", "The aperture height [m]");
-    itsAttr[MAXFORDER] =
-        Attributes::makeReal("MAXFORDER", "Number of terms used in each field component");
-    itsAttr[ROTATION] =
-        Attributes::makeReal("ROTATION", "Rotation angle about its axis for skew elements [rad]");
+    itsAttr[MAXFORDER] = Attributes::makeReal(
+        "MAXFORDER", "Number of terms used in each fringe component");
+    itsAttr[ROTATION] = Attributes::makeReal(
+        "ROTATION", "Rotation angle about its axis for skew elements [rad]");
     itsAttr[EANGLE] = Attributes::makeReal("EANGLE", "The entrance angle [rad]");
-    itsAttr[BBLENGTH] =
-        Attributes::makeReal("BBLENGTH", "Distance between centre of magnet and entrance [m]");
+    itsAttr[BBLENGTH] = Attributes::makeReal(
+        "BBLENGTH", "Distance between centre of magnet and entrance [m]");
 
     // Further attributes for a constant radius curved multipole
-    itsAttr[ANGLE] =
-        Attributes::makeReal("ANGLE", "The azimuthal angle of the magnet in ring [rad]", 0.0);
-    itsAttr[MAXXORDER] =
-        Attributes::makeReal("MAXXORDER", "Number of terms used in polynomial expansions");
+    itsAttr[ANGLE] = Attributes::makeReal(
+        "ANGLE", "The azimuthal angle of the magnet in ring [rad]", 0.0);
+    itsAttr[MAXXORDER] = Attributes::makeReal(
+        "MAXXORDER", "Number of terms used in polynomial expansions");
 
     // Further attributes for a variable radius multipole
-    itsAttr[VARRADIUS] =
-        Attributes::makeBool("VARRADIUS", "Set true if radius of magnet is variable", false);
+    itsAttr[VARRADIUS] = Attributes::makeBool(
+        "VARRADIUS", "Set true if radius of magnet is variable", false);
+    itsAttr[ENTRYOFFSET] = Attributes::makeReal(
+        "ENTRYOFFSET", "Longitudinal offset from standard entrance point [m]", 0.0);
 
     registerOwnership();
     setElement(new MultipoleT("MULTIPOLET"));
@@ -88,6 +90,7 @@ void OpalMultipoleT::update() {
         static_cast<size_t>(Attributes::getReal(itsAttr[MAXXORDER])));
     multT->setRotation(Attributes::getReal(itsAttr[ROTATION]));
     multT->setEntranceAngle(Attributes::getReal(itsAttr[EANGLE]));
+    multT->setEntryOffset(Attributes::getReal(itsAttr[ENTRYOFFSET]));
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(multT);
 }

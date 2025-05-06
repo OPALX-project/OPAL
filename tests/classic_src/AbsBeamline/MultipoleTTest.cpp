@@ -5,6 +5,7 @@
 #include "AbsBeamline/EndFieldModel/Tanh.h"
 #include <gsl/gsl_sf_pow_int.h>
 #include "opal_test_utilities/SilenceTest.h"
+#include "Elements/OpalMultipoleT.h"
 
 #include <cmath>
 #include <sstream>
@@ -488,3 +489,248 @@ TEST(MultipoleTTest, ClonedCurvedVarRadius) {
     }
 }
 
+TEST(MultipoleTTest, EntryOffsetCurvedVarRadius) {
+    OpalTestUtilities::SilenceTest silencer;
+    // Build a magnet
+    auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    double length = 4.4;
+    double angle = 0.628;
+    myMagnet->setBendAngle(angle, true);
+    myMagnet->setElementLength(length);
+    myMagnet->setAperture(3.5, 3.5);
+    myMagnet->setFringeField(length / 2.0, 0.3, 0.3);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setMaxOrder(3, 3);
+    double a{}, b{};
+    myMagnet->initialise(nullptr, a, b);
+    // With the standard entry position, this magnet actually only bends by 0.3 radians
+    EXPECT_NEAR(myMagnet->localCartesianRotation(), 0.3004, 0.0001);
+    // If we move the entry position by the fringe field lambda, we should get nearer
+    // to half the bend angle
+    myMagnet->setEntryOffset(0.3);
+    myMagnet->initialise(nullptr, a, b);
+    EXPECT_NEAR(myMagnet->localCartesianRotation(), 0.3101, 0.0001);
+    // And in the other direction
+    myMagnet->setEntryOffset(-0.3);
+    myMagnet->initialise(nullptr, a, b);
+    EXPECT_NEAR(myMagnet->localCartesianRotation(), 0.2685, 0.0001);
+}
+
+TEST(MultipoleTTest, UserInterface) {
+    // Make the UI
+    OpalMultipoleT ui;
+    // Set the attributes
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::LENGTH], 4.1);
+    Attributes::setRealArray(ui.itsAttr[OpalMultipoleT::TP], {2.0, 3.0});
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::LFRINGE], 0.5);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::RFRINGE], 0.6);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::HAPERT], 1.0);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::VAPERT], 1.1);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXFORDER], 4.0);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.1);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::EANGLE], 0.01);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::BBLENGTH], 6.0);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.628);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXXORDER], 7.0);
+    Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], false);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 0.15);
+    // Update the magnet
+    ui.update();
+    // Check the values
+    auto* myMagnet = dynamic_cast<MultipoleT*>(ui.getElement());
+    EXPECT_TRUE(myMagnet);
+    EXPECT_NEAR(myMagnet->getElementLength(), 4.1, 1e-6);
+    auto tp = myMagnet->getTransProfile();
+    EXPECT_EQ(tp.size(), 2);
+    EXPECT_NEAR(tp[0], 2.0, 1e-6);
+    EXPECT_NEAR(tp[1], 3.0, 1e-6);
+    auto [s0, left, right] = myMagnet->getFringeField();
+    EXPECT_NEAR(s0, 4.1 / 2.0, 1e-6);
+    EXPECT_NEAR(left, 0.5, 1e-6);
+    EXPECT_NEAR(right, 0.6, 1e-6);
+    auto [vertical, horizontal] = myMagnet->getAperture();
+    EXPECT_NEAR(vertical, 1.1, 1e-6);
+    EXPECT_NEAR(horizontal, 1.0, 1e-6);
+    EXPECT_NEAR(myMagnet->getMaxFOrder(), 4.0, 1e-6);
+    EXPECT_NEAR(myMagnet->getRotation(), 0.1, 1e-6);
+    EXPECT_NEAR(myMagnet->getEntranceAngle(), 0.01, 1e-6);
+    EXPECT_NEAR(myMagnet->getBoundingBoxLength(), 6.0, 1e-6);
+    EXPECT_NEAR(myMagnet->getBendAngle(), 0.628, 1e-6);
+    EXPECT_NEAR(myMagnet->getMaxXOrder(), 7.0, 1e-6);
+    EXPECT_FALSE(myMagnet->getVariableRadius());
+    EXPECT_NEAR(myMagnet->getEntryOffset(), 0.15, 1e-6);
+}
+
+TEST(MultipoleTTest, UserInterfaceClone) {
+    // Make the UI
+    OpalMultipoleT ui;
+    // Set the attributes
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::LENGTH], 4.1);
+    Attributes::setRealArray(ui.itsAttr[OpalMultipoleT::TP], {2.0, 3.0});
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::LFRINGE], 0.5);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::RFRINGE], 0.6);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::HAPERT], 1.0);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::VAPERT], 1.1);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXFORDER], 4.0);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.1);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::EANGLE], 0.01);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::BBLENGTH], 6.0);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.628);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXXORDER], 7.0);
+    Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], false);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 0.15);
+    // Make the clone
+    std::unique_ptr<OpalMultipoleT> uiClone{ui.clone("Clone")};
+    // Update the magnet
+    uiClone->update();
+    // Check the values
+    auto* myMagnet = dynamic_cast<MultipoleT*>(uiClone->getElement());
+    EXPECT_TRUE(myMagnet);
+    EXPECT_NEAR(myMagnet->getElementLength(), 4.1, 1e-6);
+    auto tp = myMagnet->getTransProfile();
+    EXPECT_EQ(tp.size(), 2);
+    EXPECT_NEAR(tp[0], 2.0, 1e-6);
+    EXPECT_NEAR(tp[1], 3.0, 1e-6);
+    auto [s0, left, right] = myMagnet->getFringeField();
+    EXPECT_NEAR(s0, 4.1 / 2.0, 1e-6);
+    EXPECT_NEAR(left, 0.5, 1e-6);
+    EXPECT_NEAR(right, 0.6, 1e-6);
+    auto [vertical, horizontal] = myMagnet->getAperture();
+    EXPECT_NEAR(vertical, 1.1, 1e-6);
+    EXPECT_NEAR(horizontal, 1.0, 1e-6);
+    EXPECT_NEAR(myMagnet->getMaxFOrder(), 4.0, 1e-6);
+    EXPECT_NEAR(myMagnet->getRotation(), 0.1, 1e-6);
+    EXPECT_NEAR(myMagnet->getEntranceAngle(), 0.01, 1e-6);
+    EXPECT_NEAR(myMagnet->getBoundingBoxLength(), 6.0, 1e-6);
+    EXPECT_NEAR(myMagnet->getBendAngle(), 0.628, 1e-6);
+    EXPECT_NEAR(myMagnet->getMaxXOrder(), 7.0, 1e-6);
+    EXPECT_FALSE(myMagnet->getVariableRadius());
+    EXPECT_NEAR(myMagnet->getEntryOffset(), 0.15, 1e-6);
+}
+
+TEST(MultipoleTTest, Print) {
+    // Make the UI
+    OpalMultipoleT ui;
+    // And print it
+    std::stringstream ss;
+    ui.print(ss);
+    EXPECT_EQ(ss.str(), "MULTIPOLET;\n");
+}
+
+TEST(MultipoleTTest, Bends) {
+    auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    // Initialise a magnet with no bend
+    myMagnet->setBendAngle(0.0, false);
+    myMagnet->setElementLength(4.4);
+    myMagnet->setAperture(3.5, 3.5);
+    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setTransProfile({0.0, 1.0});
+    myMagnet->setMaxOrder(5, 20);
+    // Does it admit to a bend?
+    EXPECT_FALSE(myMagnet->bends());
+    // Set the bend angle with a zero dipole
+    myMagnet->setBendAngle(10.0, false);
+    myMagnet->setTransProfile({0.0, 1.0});
+    EXPECT_TRUE(myMagnet->bends());
+    // Set zero bend angle with a non-zero dipole
+    myMagnet->setBendAngle(0.0, false);
+    myMagnet->setTransProfile({1.0, 1.0});
+    EXPECT_TRUE(myMagnet->bends());
+    // Set bend angle with a non-zero dipole
+    myMagnet->setBendAngle(10.0, false);
+    myMagnet->setTransProfile({1.0, 1.0});
+    EXPECT_TRUE(myMagnet->bends());
+}
+
+TEST(MultipoleTTest, SetTransProfile) {
+    auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    // Initialise a magnet
+    myMagnet->setBendAngle(0.0, false);
+    myMagnet->setElementLength(4.4);
+    myMagnet->setAperture(3.5, 3.5);
+    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setTransProfile({1.0, 2.0});
+    myMagnet->setMaxOrder(5, 20);
+    // Is the n-pole profile correct?
+    EXPECT_EQ(myMagnet->getTransProfile(), std::vector({1.0, 2.0}));
+    // Setting an empty profile should cause a zero dipole profile
+    myMagnet->setTransProfile({});
+    EXPECT_EQ(myMagnet->getTransProfile(), std::vector({0.0}));
+}
+
+TEST(MultipoleTTest, Aperture) {
+    auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    double length = 4.4;
+    myMagnet->setBendAngle(0.0, false);
+    myMagnet->setElementLength(length);
+    myMagnet->setAperture(3.0, 3.0);
+    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setMaxOrder(5, 20);
+    myMagnet->setFlagDeleteOnTransverseExit(true);
+    double t = 0.0;
+    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+    Vector_t B(0., 0., 0.);
+    // Inside the aperture
+    R = {1.4, 1.4, length/2.0};
+    EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_GE(B[1], 1.0);
+    // Outside the aperture in x
+    R = {1.6, 1.4, length/2.0};
+    EXPECT_TRUE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_DOUBLE_EQ(B[1], 0.0);
+    // Outside the aperture in y
+    R = {1.4, 1.6, length/2.0};
+    EXPECT_TRUE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_DOUBLE_EQ(B[1], 0.0);
+    // Outside the aperture in both
+    R = {1.6, 1.6, length/2.0};
+    EXPECT_TRUE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_DOUBLE_EQ(B[1], 0.0);
+}
+
+TEST(MultipoleTTest, BoundingBox) {
+    auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    double length = 1.5;
+    myMagnet->setBendAngle(0.0, false);
+    myMagnet->setElementLength(length);
+    myMagnet->setAperture(3.0, 3.0);
+    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setMaxOrder(5, 20);
+    myMagnet->setFlagDeleteOnTransverseExit(true);
+    myMagnet->setBoundingBoxLength(length + 0.5);
+    double t = 0.0;
+    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+    Vector_t B(0., 0., 0.);
+    // Inside the bounding box inside the magnet
+    R = {1.4, 1.4, length / 2.0};
+    EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_GE(B[1], 1.0);
+    // Inside the bounding box at the end
+    R = {1.4, 1.4, length + 0.2};
+    EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_GE(B[1], 1.0);
+    // Outside the bounding box at the end
+    R = {1.4, 1.4, length + 0.3};
+    EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_DOUBLE_EQ(B[1], 0.0);
+    // Inside the bounding box at the beginning
+    R = {1.4, 1.4, -0.2};
+    EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_GE(B[1], 1.0);
+    // Outside the bounding box at the beginning
+    R = {1.4, 1.4, -0.3};
+    EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_DOUBLE_EQ(B[1], 0.0);
+}

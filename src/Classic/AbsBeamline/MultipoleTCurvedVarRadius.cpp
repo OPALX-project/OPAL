@@ -38,7 +38,8 @@ MultipoleTCurvedVarRadius::MultipoleTCurvedVarRadius(MultipoleT* element):
 
 void MultipoleTCurvedVarRadius::initialise() {
     // Record geometry information
-    varRadiusGeometry_m.setElementLength(element_m->getLength());
+    varRadiusGeometry_m.setElementLength(element_m->getLength() +
+                                         2.0 * element_m->getEntryOffset());
     varRadiusGeometry_m.setRadius(element_m->getLength() / element_m->getBendAngle());
     auto [s0, leftFringe, rightFringe] = element_m->getFringeField();
     varRadiusGeometry_m.setS0(s0);
@@ -48,11 +49,12 @@ void MultipoleTCurvedVarRadius::initialise() {
     // Now work out where the entry point will be in the local cartesian coordinate system
     // whose origin is at the center of the magnet.
     localCartesianEntryPoint_ = curvilinearToLocalCartesian(
-        Vector_t{0.0, 0.0, element_m->getLength() / 2.0});
+        Vector_t{0.0, 0.0, element_m->getLength() / 2.0 + element_m->getEntryOffset()});
     // The tangent to the curve at this point forms the z axis of the coordinate system
-    // Opal addresses us in, so we can calculate the rotation required
+    // opal addresses us in, so we can calculate the rotation required
     auto secondPoint = curvilinearToLocalCartesian(
-        Vector_t{0.0, 0.0, element_m->getLength() / 2.0 + TangentStep});
+        Vector_t{0.0, 0.0,
+                 element_m->getLength() / 2.0 + element_m->getEntryOffset() + TangentStep});
     localCartesianRotation_ = -atan2(secondPoint[0] - localCartesianEntryPoint_[0],
                                     secondPoint[2] - localCartesianEntryPoint_[2]);
 }

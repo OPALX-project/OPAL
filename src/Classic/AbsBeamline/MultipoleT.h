@@ -173,6 +173,16 @@ public:
      *  \param entranceAngle -> Entrance angle
      */
     void setEntranceAngle(double entranceAngle);
+    /** Set the offset of the entry point from the standard position
+     * @param offset positive for further away from the center
+     */
+    void setEntryOffset(double offset);
+    /** Get the offset of the entry point from the standard position */
+    double getEntryOffset() const { return entryOffset_m; }
+    /** Set the variable radius of the magnet */
+    void setVariableRadius(bool variableRadius);
+    /** Get the variable radius of the magnet */
+    bool getVariableRadius() const { return variableRadius_m; }
     /** Set the bending angle of the magnet */
     void setBendAngle(double angle, bool variableRadius);
     /** Get the bending angle of the magnet */
@@ -192,6 +202,10 @@ public:
       * \param horizAp -> Horisontal aperture length
      */
     void setAperture(const double &vertAp, const double &horizAp);
+    /** Get the aperture dimensions
+     * @return {verticalApert, horizontalApert}
+     */
+    std::tuple<double, double> getAperture() { return {verticalApert_m, horizontalApert_m}; }
     /** Set the angle of rotation of the magnet around its axis \n
      *  To make skew components
      *  \param rot -> Angle of rotation
@@ -272,6 +286,7 @@ protected:
     double bendAngle_m{0.0};
     bool variableRadius_m{false};
     double boundingBoxLength_m{0.0};
+    double entryOffset_m{0.0};
     /** Assume rectangular aperture with these dimensions */
     double verticalApert_m{0.5};
     double horizontalApert_m{0.5};

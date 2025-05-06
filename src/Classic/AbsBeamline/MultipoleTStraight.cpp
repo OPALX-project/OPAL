@@ -80,5 +80,6 @@ double MultipoleTStraight::getFn(size_t n, double x, double s) {
 }
 
 void MultipoleTStraight::transformCoords(Vector_t& R) {
-    R[2] += element_m->getLength() / 2.0;  // Magnet origin at the center rather than entry
+    // Magnet origin at the center rather than entry
+    R[2] += element_m->getLength() / 2.0;
 }
