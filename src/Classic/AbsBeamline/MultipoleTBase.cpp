@@ -35,9 +35,6 @@ MultipoleTBase::MultipoleTBase(MultipoleT* element) :
 }
 
 double MultipoleTBase::getBz(const Vector_t &R) {
-    if (std::abs(element_m->getFringeDeriv(0, R[2])) < 1.0e-12) {
-        return 0.0;
-    }
     double Bz = 0.0;
     std::size_t n = element_m->getMaxFOrder() + 1;
     while (n != 0) {
@@ -49,9 +46,6 @@ double MultipoleTBase::getBz(const Vector_t &R) {
 }
 
 double MultipoleTBase::getBx(const Vector_t &R) {
-    if (std::abs(element_m->getFringeDeriv(0, R[2])) < 1.0e-12) {
-        return 0.0;
-    }
     double Bx = 0.0;
     std::size_t n = element_m->getMaxFOrder() + 1;
     while (n != 0) {
@@ -64,9 +58,6 @@ double MultipoleTBase::getBx(const Vector_t &R) {
 }
 
 double MultipoleTBase::getBs(const Vector_t &R) {
-    if (std::abs(element_m->getFringeDeriv(0, R[2])) < 1.0e-12) {
-        return 0.0;
-    }
     double Bs = 0.0;
     std::size_t n = element_m->getMaxFOrder() + 1;
     while (n != 0) {
