@@ -71,6 +71,19 @@ void MultipoleTCurvedConstRadius::setMaxOrder(size_t orderZ, size_t orderX) {
     }
 }
 
+Vector_t MultipoleTCurvedConstRadius::localCartesianToOpalCartesian(const Vector_t& r) {
+    Vector_t result = r;
+    if(element_m->getBendAngle() != 0.0) {
+        double radius = element_m->getLength() / element_m->getBendAngle();
+        double theta  = element_m->getBendAngle() /2.0;
+        double ds = radius * sin(theta);
+        double dx = radius * (1 - cos(theta));
+        result[0] = -dx;
+        result[2] = ds;
+    }
+    return result;
+}
+
 double MultipoleTCurvedConstRadius::getScaleFactor(double x, double /*s*/) {
     return (1 + x * element_m->getBendAngle() / element_m->getLength());
 }

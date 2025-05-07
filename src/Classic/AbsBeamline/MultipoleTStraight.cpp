@@ -79,6 +79,10 @@ double MultipoleTStraight::getFn(size_t n, double x, double s) {
     return f_n;
 }
 
+Vector_t MultipoleTStraight::localCartesianToOpalCartesian(const Vector_t& r) {
+    return {r[0], r[1], r[2] + element_m->getLength() / 2.0};
+}
+
 void MultipoleTStraight::transformCoords(Vector_t& R) {
     // Magnet origin at the center rather than entry
     R[2] += element_m->getLength() / 2.0;

@@ -12,8 +12,6 @@
 
 using namespace std;
 
-std::ofstream* fout = nullptr;
-
 Vector_t rotateBy(const Vector_t& center, const Vector_t& point, double theta) {
     auto x_prime = point[0] - center[0];
     auto z_prime = point[2] - center[2];
@@ -25,7 +23,6 @@ Vector_t rotateBy(const Vector_t& center, const Vector_t& point, double theta) {
 vector< vector<double> > partialsDerivB(const Vector_t &R,const Vector_t /*B*/, double stepSize,
                                        Component* dummyField, double theta = 0.0)
 {
-    auto* magnet = dynamic_cast<MultipoleT*>(dummyField);
     // builds a matrix of all partial derivatives of B -> dx_i B_j
     vector< vector<double> > allPartials(3, vector<double>(3));
     double t = 0 ;
@@ -42,13 +39,6 @@ vector< vector<double> > partialsDerivB(const Vector_t &R,const Vector_t /*B*/, 
         R_nnext = rotateBy(R, R_nnext, theta);
         R_prev = rotateBy(R, R_prev, theta);
         R_next = rotateBy(R, R_next, theta);
-        if(fout) {
-            *fout << "R=" << magnet->toMagnetCoords(R)
-                  << ", R_pprev=" << magnet->toMagnetCoords(R_pprev)
-                  << ", R_nnext=" << magnet->toMagnetCoords(R_nnext)
-                  << ", R_prev=" << magnet->toMagnetCoords(R_prev)
-                  << ", R_next=" << magnet->toMagnetCoords(R_next) << std::endl;
-        }
         // Get the magnetic fields and derivatives
         Vector_t B_prev, B_next, B_pprev, B_nnext;
         dummyField->apply(R_prev, P, t, E, B_prev);
@@ -86,7 +76,6 @@ vector<double> calcCurlB(Vector_t &R, Vector_t B, double stepSize, Component* du
 }
 
 TEST(MultipoleTTest, Maxwell) {
-    OpalTestUtilities::SilenceTest silencer;
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
     myMagnet->setBendAngle(0.0, false);
     double centralField = 5;
@@ -126,7 +115,6 @@ TEST(MultipoleTTest, Maxwell) {
 }
 
 TEST(MultipoleTTest, CurvedMagnet) {
-    OpalTestUtilities::SilenceTest silencer;
     // Build the magnet
     double angle = 0.628;
     double length = 4.4;
@@ -141,10 +129,6 @@ TEST(MultipoleTTest, CurvedMagnet) {
     myMagnet->setEntranceAngle(0.0);
     myMagnet->setTransProfile({1.0, 1.0});
     myMagnet->setMaxOrder(3, 3);
-    // Account for the magnet origin being at the center
-    //double rho = 4.4 / 0.628;
-    //double dz = rho * sin(0.628 / 2.0);
-    //double dx = rho * (1 - cos(0.628 / 2.0));
     // Test the magnet
     double t = 0.0;
     double stepSize = 1e-3;
@@ -183,8 +167,6 @@ TEST(MultipoleTTest, CurvedMagnet) {
 }
 
 TEST(MultipoleTTest, Straight) {
-    // failing
-    OpalTestUtilities::SilenceTest silencer;
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
     double length = 4.4;
     myMagnet->setBendAngle(0.0, false);
@@ -230,8 +212,6 @@ TEST(MultipoleTTest, Straight) {
 }
 
 TEST(MultipoleTTest, ClonedStraight) {
-    // failing
-    OpalTestUtilities::SilenceTest silencer;
     // Build the magnet
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
     double length = 4.4;
@@ -281,7 +261,6 @@ TEST(MultipoleTTest, ClonedStraight) {
 }
 
 TEST(MultipoleTTest, CurvedConstRadius) {
-    OpalTestUtilities::SilenceTest silencer;
     // Build the magnet
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
     double length = 4.4;
@@ -334,7 +313,6 @@ TEST(MultipoleTTest, CurvedConstRadius) {
 }
 
 TEST(MultipoleTTest, ClonedCurvedConstRadius) {
-    OpalTestUtilities::SilenceTest silencer;
     // Build the magnet
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
     double length = 4.4;
@@ -389,8 +367,6 @@ TEST(MultipoleTTest, ClonedCurvedConstRadius) {
 }
 
 TEST(MultipoleTTest, CurvedVarRadius) {
-    fout = new std::ofstream("TestData.txt");
-    OpalTestUtilities::SilenceTest silencer;
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
     double length = 4.4;
     double angle = 0.628;
@@ -438,7 +414,6 @@ TEST(MultipoleTTest, CurvedVarRadius) {
 }
 
 TEST(MultipoleTTest, ClonedCurvedVarRadius) {
-    OpalTestUtilities::SilenceTest silencer;
     // Build a magnet
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
     double length = 4.4;
@@ -490,7 +465,6 @@ TEST(MultipoleTTest, ClonedCurvedVarRadius) {
 }
 
 TEST(MultipoleTTest, EntryOffsetCurvedVarRadius) {
-    OpalTestUtilities::SilenceTest silencer;
     // Build a magnet
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
     double length = 4.4;
@@ -762,3 +736,180 @@ TEST(MultipoleTTest, BoundingBox) {
     EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
     EXPECT_DOUBLE_EQ(B[1], 0.0);
 }
+
+static void grabDataLine(MultipoleT* myMagnet, std::vector<double>& line, Vector_t pos) {
+    double stepSize = 3.0/100.0;
+    double t = 0.0;
+    Vector_t P(3), E(3);
+    for(size_t i = 0; i < line.size(); ++i) {
+        Vector_t R{pos[0], pos[1] - 1.5 + static_cast<double>(i) * stepSize, pos[2]};
+        Vector_t B{};
+        myMagnet->apply(R, P, t, E, B);
+        line[i] = std::hypot(B[0], B[1], B[2]);
+    }
+}
+
+TEST(MultipoleTTest, StraightShape) {
+    std::vector<double> line;
+    line.resize(101);
+    // Set up the magnet
+    auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    double length = 4.4;
+    myMagnet->setBendAngle(0.0, false);
+    myMagnet->setElementLength(length);
+    myMagnet->setAperture(3.5, 3.5);
+    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setMaxOrder(5, 20);
+    auto pos = myMagnet->localCartesianToOpalCartesian({0,0,0});
+    // Check dipole has constant field magnitude
+    myMagnet->setTransProfile({1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    double expected = line[50];
+    for(size_t i = 0; i < line.size(); ++i) {
+        EXPECT_NEAR(line[i], expected, 1e-2);
+    }
+    // Check quadrupole has linear field magnitude
+    myMagnet->setTransProfile({0.0, 1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    expected = 0;
+    double delta = line[51] - line[50];
+    EXPECT_NEAR(line[50], expected, 1e-2);
+    for(size_t i = 0; i < 50; ++i) {
+        expected += delta;
+        EXPECT_NEAR(line[50 - i - 1], expected, 1e-2);
+        EXPECT_NEAR(line[50 + i + 1], expected, 1e-2);
+    }
+    // Check the sextupole has quadratic field magnitude
+    myMagnet->setTransProfile({0.0, 0.0, 1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    delta = std::sqrt(line[51] - line[50]);
+    EXPECT_NEAR(line[50], 0, 1e-2);
+    for(size_t i = 0; i < 50; ++i) {
+        expected = std::pow(static_cast<double>(i + 1) * delta, 2);
+        EXPECT_NEAR(line[50 - i - 1], expected, 1e-2) << i;
+        EXPECT_NEAR(line[50 + i + 1], expected, 1e-2) << i;
+    }
+    // Check the octupole has cubic field magnitude
+    myMagnet->setTransProfile({0.0, 0.0, 0.0, 1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    delta = std::cbrt(line[51] - line[50]);
+    EXPECT_NEAR(line[50], 0, 1e-2);
+    for(size_t i = 0; i < 50; ++i) {
+        expected = std::pow(static_cast<double>(i + 1) * delta, 3);
+        EXPECT_NEAR(line[50 - i - 1], expected, 1e-2) << i;
+        EXPECT_NEAR(line[50 + i + 1], expected, 1e-2) << i;
+    }
+}
+
+TEST(MultipoleTTest, ConstCurvedShape) {
+    std::vector<double> line;
+    line.resize(101);
+    // Set up the magnet
+    auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    double length = 4.4;
+    double theta = 0.628;
+    myMagnet->setBendAngle(theta, false);
+    myMagnet->setElementLength(length);
+    myMagnet->setAperture(3.5, 3.5);
+    myMagnet->setFringeField(2.2, 0.1, 0.1);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setMaxOrder(5, 20);
+    auto pos = myMagnet->localCartesianToOpalCartesian({0,0,0});
+    // Check dipole has constant field magnitude
+    myMagnet->setTransProfile({1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    double expected = line[50];
+    for(size_t i = 0; i < line.size(); ++i) {
+        EXPECT_NEAR(line[i], expected, 1e-2);
+    }
+    // Check quadrupole has linear field magnitude
+    myMagnet->setTransProfile({0.0, 1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    expected = 0;
+    double delta = line[51] - line[50];
+    EXPECT_NEAR(line[50], expected, 1e-1);
+    for(size_t i = 0; i < 50; ++i) {
+        expected += delta;
+        EXPECT_NEAR(line[50 - i - 1], expected, 1e-1);
+        EXPECT_NEAR(line[50 + i + 1], expected, 1e-1);
+    }
+    // Check the sextupole has quadratic field magnitude
+    myMagnet->setTransProfile({0.0, 0.0, 1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    delta = std::sqrt(line[51] - line[50]);
+    EXPECT_NEAR(line[50], 0, 1e-2);
+    for(size_t i = 0; i < 50; ++i) {
+        expected = std::pow(static_cast<double>(i + 1) * delta, 2);
+        EXPECT_NEAR(line[50 - i - 1], expected, 2e-1) << i;
+        EXPECT_NEAR(line[50 + i + 1], expected, 2e-1) << i;
+    }
+    // Check the octupole has cubic field magnitude
+    myMagnet->setTransProfile({0.0, 0.0, 0.0, 1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    delta = std::cbrt(line[51] - line[50]);
+    EXPECT_NEAR(line[50], 0, 1e-2);
+    for(size_t i = 0; i < 50; ++i) {
+        expected = std::pow(static_cast<double>(i + 1) * delta, 3);
+        EXPECT_NEAR(line[50 - i - 1], expected, 1e-2) << i;
+        EXPECT_NEAR(line[50 + i + 1], expected, 1e-2) << i;
+    }
+}
+
+TEST(MultipoleTTest, VarCurvedShape) {
+    std::vector<double> line;
+    line.resize(101);
+    // Set up the magnet
+    auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    double length = 4.4;
+    double theta = 0.628;
+    myMagnet->setBendAngle(theta, true);
+    myMagnet->setElementLength(length);
+    myMagnet->setAperture(3.5, 3.5);
+    myMagnet->setFringeField(2.2, 0.1, 0.1);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setMaxOrder(5, 20);
+    auto pos = myMagnet->localCartesianToOpalCartesian({0,0,0});
+    // Check dipole has constant field magnitude
+    myMagnet->setTransProfile({1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    double expected = line[50];
+    for(size_t i = 0; i < line.size(); ++i) {
+        EXPECT_NEAR(line[i], expected, 1e-2);
+    }
+    // Check quadrupole has linear field magnitude
+    myMagnet->setTransProfile({0.0, 1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    expected = 0;
+    double delta = line[51] - line[50];
+    EXPECT_NEAR(line[50], expected, 1e-1);
+    for(size_t i = 0; i < 50; ++i) {
+        expected += delta;
+        EXPECT_NEAR(line[50 - i - 1], expected, 1e-1);
+        EXPECT_NEAR(line[50 + i + 1], expected, 1e-1);
+    }
+    // Check the sextupole has quadratic field magnitude
+    myMagnet->setTransProfile({0.0, 0.0, 1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    delta = std::sqrt(line[51] - line[50]);
+    EXPECT_NEAR(line[50], 0, 1e-2);
+    for(size_t i = 0; i < 50; ++i) {
+        expected = std::pow(static_cast<double>(i + 1) * delta, 2);
+        EXPECT_NEAR(line[50 - i - 1], expected, 2e-1) << i;
+        EXPECT_NEAR(line[50 + i + 1], expected, 2e-1) << i;
+    }
+    // Check the octupole has cubic field magnitude
+    myMagnet->setTransProfile({0.0, 0.0, 0.0, 1.0});
+    grabDataLine(myMagnet.get(), line, pos);
+    delta = std::cbrt(line[51] - line[50]);
+    EXPECT_NEAR(line[50], 0, 1e-2);
+    for(size_t i = 0; i < 50; ++i) {
+        expected = std::pow(static_cast<double>(i + 1) * delta, 3);
+        EXPECT_NEAR(line[50 - i - 1], expected, 1e-2) << i;
+        EXPECT_NEAR(line[50 + i + 1], expected, 1e-2) << i;
+    }
+}
+

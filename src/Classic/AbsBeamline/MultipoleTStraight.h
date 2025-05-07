@@ -115,6 +115,7 @@ public:
      *  \param s -> Coordinate s
      */
     double getFn(size_t n, double x, double s) override;
+    Vector_t localCartesianToOpalCartesian(const Vector_t& r) override;
 
 private:
     /** Geometry */

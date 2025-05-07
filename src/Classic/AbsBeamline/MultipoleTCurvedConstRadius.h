@@ -112,6 +112,7 @@ public:
      */
     void setMaxOrder(size_t orderZ, size_t orderX) override;
 
+    Vector_t localCartesianToOpalCartesian(const Vector_t& r) override;
 private:
     /** Object for storing differential operator acting on Fn */
     std::vector<polynomial::RecursionRelation> recursion_m;
