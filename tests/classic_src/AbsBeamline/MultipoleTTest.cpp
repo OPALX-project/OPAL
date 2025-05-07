@@ -115,6 +115,7 @@ TEST(MultipoleTTest, Maxwell) {
 }
 
 TEST(MultipoleTTest, CurvedMagnet) {
+    OpalTestUtilities::SilenceTest silencer;
     // Build the magnet
     double angle = 0.628;
     double length = 4.4;
@@ -367,6 +368,7 @@ TEST(MultipoleTTest, ClonedCurvedConstRadius) {
 }
 
 TEST(MultipoleTTest, CurvedVarRadius) {
+    OpalTestUtilities::SilenceTest silencer;
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
     double length = 4.4;
     double angle = 0.628;
@@ -414,6 +416,7 @@ TEST(MultipoleTTest, CurvedVarRadius) {
 }
 
 TEST(MultipoleTTest, ClonedCurvedVarRadius) {
+    OpalTestUtilities::SilenceTest silencer;
     // Build a magnet
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
     double length = 4.4;
@@ -465,6 +468,7 @@ TEST(MultipoleTTest, ClonedCurvedVarRadius) {
 }
 
 TEST(MultipoleTTest, EntryOffsetCurvedVarRadius) {
+    OpalTestUtilities::SilenceTest silencer;
     // Build a magnet
     auto myMagnet = std::make_unique<MultipoleT>("Combined function");
     double length = 4.4;
@@ -859,6 +863,7 @@ TEST(MultipoleTTest, ConstCurvedShape) {
 }
 
 TEST(MultipoleTTest, VarCurvedShape) {
+    OpalTestUtilities::SilenceTest silencer;
     std::vector<double> line;
     line.resize(101);
     // Set up the magnet
