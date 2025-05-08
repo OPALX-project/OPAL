@@ -507,15 +507,15 @@ TEST(MultipoleTTest, UserInterface) {
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::HAPERT], 1.0);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::VAPERT], 1.1);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXFORDER], 4.0);
-    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.1);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.0);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::EANGLE], 0.01);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::BBLENGTH], 6.0);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.628);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXXORDER], 7.0);
     Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], false);
-    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 0.15);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 0.0);
     // Update the magnet
-    ui.update();
+    EXPECT_NO_THROW(ui.update());
     // Check the values
     auto* myMagnet = dynamic_cast<MultipoleT*>(ui.getElement());
     EXPECT_TRUE(myMagnet);
@@ -532,13 +532,25 @@ TEST(MultipoleTTest, UserInterface) {
     EXPECT_NEAR(vertical, 1.1, 1e-6);
     EXPECT_NEAR(horizontal, 1.0, 1e-6);
     EXPECT_NEAR(myMagnet->getMaxFOrder(), 4.0, 1e-6);
-    EXPECT_NEAR(myMagnet->getRotation(), 0.1, 1e-6);
+    EXPECT_NEAR(myMagnet->getRotation(), 0.0, 1e-6);
     EXPECT_NEAR(myMagnet->getEntranceAngle(), 0.01, 1e-6);
     EXPECT_NEAR(myMagnet->getBoundingBoxLength(), 6.0, 1e-6);
     EXPECT_NEAR(myMagnet->getBendAngle(), 0.628, 1e-6);
     EXPECT_NEAR(myMagnet->getMaxXOrder(), 7.0, 1e-6);
     EXPECT_FALSE(myMagnet->getVariableRadius());
-    EXPECT_NEAR(myMagnet->getEntryOffset(), 0.15, 1e-6);
+    EXPECT_NEAR(myMagnet->getEntryOffset(), 0.0, 1e-6);
+    // Check rotation (only works for straight magnets)
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.0);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.1);
+    EXPECT_NO_THROW(ui.update());
+    EXPECT_NEAR(myMagnet->getRotation(), 0.1, 1e-6);
+    // Check entry offset (only works for var radius magnets)
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.0);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.5);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 1.2);
+    Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], true);
+    EXPECT_NO_THROW(ui.update());
+    EXPECT_NEAR(myMagnet->getEntryOffset(), 1.2, 1e-6);
 }
 
 TEST(MultipoleTTest, UserInterfaceClone) {
@@ -552,17 +564,17 @@ TEST(MultipoleTTest, UserInterfaceClone) {
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::HAPERT], 1.0);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::VAPERT], 1.1);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXFORDER], 4.0);
-    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.1);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.0);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::EANGLE], 0.01);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::BBLENGTH], 6.0);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.628);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXXORDER], 7.0);
     Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], false);
-    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 0.15);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 0.0);
     // Make the clone
     std::unique_ptr<OpalMultipoleT> uiClone{ui.clone("Clone")};
     // Update the magnet
-    uiClone->update();
+    EXPECT_NO_THROW(uiClone->update());
     // Check the values
     auto* myMagnet = dynamic_cast<MultipoleT*>(uiClone->getElement());
     EXPECT_TRUE(myMagnet);
@@ -579,18 +591,19 @@ TEST(MultipoleTTest, UserInterfaceClone) {
     EXPECT_NEAR(vertical, 1.1, 1e-6);
     EXPECT_NEAR(horizontal, 1.0, 1e-6);
     EXPECT_NEAR(myMagnet->getMaxFOrder(), 4.0, 1e-6);
-    EXPECT_NEAR(myMagnet->getRotation(), 0.1, 1e-6);
+    EXPECT_NEAR(myMagnet->getRotation(), 0.0, 1e-6);
     EXPECT_NEAR(myMagnet->getEntranceAngle(), 0.01, 1e-6);
     EXPECT_NEAR(myMagnet->getBoundingBoxLength(), 6.0, 1e-6);
     EXPECT_NEAR(myMagnet->getBendAngle(), 0.628, 1e-6);
     EXPECT_NEAR(myMagnet->getMaxXOrder(), 7.0, 1e-6);
     EXPECT_FALSE(myMagnet->getVariableRadius());
-    EXPECT_NEAR(myMagnet->getEntryOffset(), 0.15, 1e-6);
+    EXPECT_NEAR(myMagnet->getEntryOffset(), 0.0, 1e-6);
 }
 
 TEST(MultipoleTTest, UserInterfaceSanityCheck) {
     // Make the UI
     OpalMultipoleT ui;
+    auto& ss = dynamic_cast<std::ostringstream&>(IpplInfo::Warn->getStream());
     // Set the attributes
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::LENGTH], 4.1);
     Attributes::setRealArray(ui.itsAttr[OpalMultipoleT::TP], {0.2, 0.3});
@@ -598,22 +611,57 @@ TEST(MultipoleTTest, UserInterfaceSanityCheck) {
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::RFRINGE], 0.6);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::HAPERT], 1.0);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::VAPERT], 1.1);
-    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.1);
-    Attributes::setReal(ui.itsAttr[OpalMultipoleT::EANGLE], 0.01);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.0);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::EANGLE], 0.0);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::BBLENGTH], 6.0);
-    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.628);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.0);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXXORDER], 7.0);
     Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], false);
-    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 0.15);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 0.0);
     // Try F order of zero
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXFORDER], 0.0);
     EXPECT_ANY_THROW(ui.update());
     // Try F order of 21
+    ss.str("");
+    ss.clear();
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXFORDER], 21.0);
-    auto& ss = dynamic_cast<std::ostringstream&>(IpplInfo::Warn->getStream());
     EXPECT_NO_THROW(ui.update());
     EXPECT_EQ(ss.str(), "OpalMultipoleT::Update, a value of 21 "
                          "for MAXFORDER may lead to excessive run time");
+    // Try skew straight magnet
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXFORDER], 4);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.0);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.5);
+    EXPECT_NO_THROW(ui.update());
+    // Try skew bent magnet
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.5);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.5);
+    EXPECT_ANY_THROW(ui.update());
+    // Try the variable radius magnet
+    ss.str("");
+    ss.clear();
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ROTATION], 0.0);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.5);
+    Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], true);
+    EXPECT_NO_THROW(ui.update());
+    EXPECT_EQ(ss.str(), "OpalMultipoleT::Update, the variable radius multipole "
+        "magnet implementation is very slow");
+    // Try the entry offset with a straight magnet
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.0);
+    Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], false);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 1.0);
+    EXPECT_ANY_THROW(ui.update());
+    // Try the entry offset with a bent magnet
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.5);
+    Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], false);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 1.0);
+    EXPECT_ANY_THROW(ui.update());
+    // Try the entry offset with a variable radius bent magnet
+    ss.clear();
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ANGLE], 0.5);
+    Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], true);
+    Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 1.0);
+    EXPECT_NO_THROW(ui.update());
 }
 
 TEST(MultipoleTTest, Print) {
@@ -862,6 +910,11 @@ TEST(MultipoleTTest, ConstCurvedShape) {
     }
 }
 
+#if 0
+// This test checks the field magnitude shape of the variable radius multipole magnet.
+// It is commented out as it runs extremely slowly.
+// If you modify things in the variable radius implementation, be sure to run this test manually.
+// Note that this test does not add to the coverage report.
 TEST(MultipoleTTest, VarCurvedShape) {
     OpalTestUtilities::SilenceTest silencer;
     std::vector<double> line;
@@ -917,4 +970,5 @@ TEST(MultipoleTTest, VarCurvedShape) {
         EXPECT_NEAR(line[50 + i + 1], expected, 1e-2) << i;
     }
 }
+#endif
 

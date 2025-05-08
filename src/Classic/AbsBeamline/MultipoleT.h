@@ -179,8 +179,6 @@ public:
     void setEntryOffset(double offset);
     /** Get the offset of the entry point from the standard position */
     double getEntryOffset() const { return entryOffset_m; }
-    /** Set the variable radius of the magnet */
-    void setVariableRadius(bool variableRadius);
     /** Get the variable radius of the magnet */
     bool getVariableRadius() const { return variableRadius_m; }
     /** Set the bending angle of the magnet */

@@ -116,13 +116,11 @@ void MultipoleTCurvedVarRadius::setMaxOrder(size_t orderZ, size_t orderX) {
 }
 
 double MultipoleTCurvedVarRadius::getScaleFactor(double x, double s) {
-    double result;
-    if (element_m->getFringeDeriv(0, s) > 1.0e-12 && element_m->getBendAngle() != 0.0) {
+    double result = 1.0;
+    if (element_m->getFringeDeriv(0, s) > 1.0e-12) {
         double radius = element_m->getLength() * element_m->getFringeDeriv(0, 0) /
                (element_m->getFringeDeriv(0, s) * element_m->getBendAngle());
-        result = 1.0 + x / radius;
-    } else {
-        result = 1.0;
+        result += x / radius;
     }
     return result;
 }

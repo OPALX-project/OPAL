@@ -86,6 +86,21 @@ void OpalMultipoleT::update() {
         WARNMSG("OpalMultipoleT::Update, a value of "
                 << maxFOrder << " for MAXFORDER may lead to excessive run time");
     }
+    auto rotation = Attributes::getReal(itsAttr[ROTATION]);
+    double bendAngle = Attributes::getReal(itsAttr[ANGLE]);
+    if(bendAngle != 0.0 && rotation != 0.0) {
+        throw OpalException("OpalMultipoleT::Update",
+                            "Non-zero ROTATION (a skew multipole) is only supported for straight magnets");
+    }
+    bool varRadius = Attributes::getBool(itsAttr[VARRADIUS]);
+    if(varRadius && bendAngle != 0.0) {
+        WARNMSG("OpalMultipoleT::Update, the variable radius multipole magnet implementation is very slow");
+    }
+    double entryOffset = Attributes::getReal(itsAttr[ENTRYOFFSET]);
+    if((!varRadius || bendAngle == 0.0) && entryOffset != 0.0) {
+        throw OpalException("OpalMultipoleT::Update",
+                            "The ENTRYOFFSET is only supported for variable radius curved magnets");
+    }
     // Convert pole strengths from Tesla to internal units which are kGauss
     auto tp = Attributes::getRealArray(itsAttr[TP]);
     for(auto& i : tp) {
@@ -95,8 +110,7 @@ void OpalMultipoleT::update() {
     auto length = Attributes::getReal(itsAttr[LENGTH]);
     auto* multT = dynamic_cast<MultipoleT*>(getElement());
     multT->setElementLength(length);
-    multT->setBendAngle(
-        Attributes::getReal(itsAttr[ANGLE]), Attributes::getBool(itsAttr[VARRADIUS]));
+    multT->setBendAngle(bendAngle, varRadius);
     multT->setAperture(Attributes::getReal(itsAttr[VAPERT]), Attributes::getReal(itsAttr[HAPERT]));
     multT->setFringeField(
         length * 0.5, Attributes::getReal(itsAttr[LFRINGE]), Attributes::getReal(itsAttr[RFRINGE]));
@@ -104,9 +118,9 @@ void OpalMultipoleT::update() {
     multT->setTransProfile(tp);
     multT->setMaxOrder(static_cast<size_t>(maxFOrder),
         static_cast<size_t>(Attributes::getReal(itsAttr[MAXXORDER])));
-    multT->setRotation(Attributes::getReal(itsAttr[ROTATION]));
+    multT->setRotation(rotation);
     multT->setEntranceAngle(Attributes::getReal(itsAttr[EANGLE]));
-    multT->setEntryOffset(Attributes::getReal(itsAttr[ENTRYOFFSET]));
+    multT->setEntryOffset(entryOffset);
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(multT);
 }

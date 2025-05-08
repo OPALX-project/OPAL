@@ -129,7 +129,7 @@ private:
     /** Geometry */
     VarRadiusGeometry varRadiusGeometry_m;
     Vector_t localCartesianEntryPoint_;
-    double localCartesianRotation_;
+    double localCartesianRotation_{};
 };
 
 #endif

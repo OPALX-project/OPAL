@@ -132,7 +132,7 @@ public:
      *  \param orderX -> Number of terms in expansion in x
      */
     virtual void setMaxOrder(size_t /*orderZ*/, size_t /*orderX*/) {}
-    virtual Vector_t localCartesianToOpalCartesian(const Vector_t& r) { return r; }
+    virtual Vector_t localCartesianToOpalCartesian(const Vector_t& r) = 0;
     virtual double localCartesianRotation() { return 0.0; }
 };
 
