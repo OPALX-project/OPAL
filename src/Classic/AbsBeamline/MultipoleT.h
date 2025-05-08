@@ -81,7 +81,6 @@
 #include "Fields/BMultipoleField.h"
 #include "Algorithms/Vektor.h"
 #include "AbsBeamline/Component.h"
-#include "AbsBeamline/BeamlineVisitor.h"
 #include <vector>
 #include "MultipoleTBase.h"
 

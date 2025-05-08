@@ -36,7 +36,7 @@ OpalMultipoleT::OpalMultipoleT()
     itsAttr[HAPERT]  = Attributes::makeReal("HAPERT", "The aperture width [m]");
     itsAttr[VAPERT]  = Attributes::makeReal("VAPERT", "The aperture height [m]");
     itsAttr[MAXFORDER] = Attributes::makeReal(
-        "MAXFORDER", "Number of terms used in each fringe component");
+        "MAXFORDER", "Number of terms used in each fringe component", DefaultMAXFORDER);
     itsAttr[ROTATION] = Attributes::makeReal(
         "ROTATION", "Rotation angle about its axis for skew elements [rad]");
     itsAttr[EANGLE] = Attributes::makeReal("EANGLE", "The entrance angle [rad]");
@@ -47,8 +47,7 @@ OpalMultipoleT::OpalMultipoleT()
     itsAttr[ANGLE] = Attributes::makeReal(
         "ANGLE", "The azimuthal angle of the magnet in ring [rad]", 0.0);
     itsAttr[MAXXORDER] = Attributes::makeReal(
-        "MAXXORDER", "Number of terms used in polynomial expansions",
-        DefaultMAXFORDER);
+        "MAXXORDER", "Number of terms used in polynomial expansions", DefaultMAXXORDER);
 
     // Further attributes for a variable radius multipole
     itsAttr[VARRADIUS] = Attributes::makeBool(

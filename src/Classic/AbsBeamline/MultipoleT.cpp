@@ -28,6 +28,8 @@
  */
 
 #include "MultipoleT.h"
+
+#include "BeamlineVisitor.h"
 #include "AbsBeamline/MultipoleTFunctions/tanhDeriv.h"
 #include "MultipoleTStraight.h"
 #include "MultipoleTCurvedConstRadius.h"
