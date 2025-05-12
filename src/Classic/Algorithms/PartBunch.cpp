@@ -482,9 +482,16 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
 
     IpplTimings::startTimer(selfFieldTimer_m);
 
+    size_t numGridPoints = static_cast<size_t>(nr_m[0]) * static_cast<size_t>(nr_m[1]) * static_cast<size_t>(nr_m[2]);
+    if (getTotalNum() < numGridPoints) {
+        *gmsg << level2 << "The number of particles decreased below the grid points."
+                        << "Skip space-charge calculation." << endl;
+        return;
+    }
+
     if (fs_m->getFieldSolverType() == FieldSolverType::P3M) {
-        throw GeneralClassicException("PartBunch::computeSelfFields_cycl(double gamma)", 
-                            "P3M solver not available yet for cyclotrons");
+        throw GeneralClassicException("PartBunch::computeSelfFields_cycl(double gamma)",
+                                      "P3M solver not available yet for cyclotrons");
     }
 
     /// set initial charge density to zero.
@@ -493,7 +500,7 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
     /// set initial E field to zero
     eg_m = Vector_t(0.0);
 
-    if(fs_m->hasValidSolver()) {
+    if (fs_m->hasValidSolver()) {
         /// mesh the whole domain
         resizeMesh();
 
@@ -577,9 +584,7 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
         /// interpolate electric field at particle positions.
         Ef.gather(eg_m, this->R,  IntrplCIC_t());
 
-
-        
-        /// calculate coefficient
+        /// Calculate coefficient
         // Relativistic E&M says gamma*v/c^2 = gamma*beta/c = sqrt(gamma*gamma-1)/c
         // but because we already transformed E_trans into the moving frame we have to
         // add 1/gamma so we are using the E_trans from the rest frame -DW
@@ -588,7 +593,6 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
         /// calculate B field from E field
         Bf(0) =  betaC * Ef(2);
         Bf(2) = -betaC * Ef(0);
-
     }
 
     /*
