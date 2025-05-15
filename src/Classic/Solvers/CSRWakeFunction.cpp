@@ -75,12 +75,18 @@ void CSRWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
 
         double angleOfSlice = 0.0;
         double pathLengthOfSlice = minPathLength + i * meshSpacing;
-        if (pathLengthOfSlice > 0.0)
-            angleOfSlice = pathLengthOfSlice / bendRadius_m;
+
+        // bendRadius_m==0.0 can happen if we just go out into a drift
+        if (bendRadius_m==0.0)
+            angleOfSlice = 0.;
+        else
+            angleOfSlice = pathLengthOfSlice/bendRadius_m;
+
+        if (pathLengthOfSlice < 0.0) // should never happen
+            ERRORMSG("In CSRWakeFunction::apply() pathLengthOfSlice<0.0" << endl);
 
         calculateContributionInside(i, angleOfSlice, meshSpacing);
         calculateContributionAfter(i, angleOfSlice, meshSpacing);
-
         Ez_m[i] /= (4. * Physics::pi * Physics::epsilon_0);
     }
 
