@@ -4,13 +4,24 @@
     Distributed under the Boost Software License, Version 1.0. (See accompanying
     file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 =============================================================================*/
+
+/*
+  with boost 1.81 and newer we get multiple definition of
+  `boost::phoenix::placeholders::uargX` errors. A solution
+  suggested in https://github.com/boostorg/phoenix/issues/111
+  is to define BOOST_PHOENIX_STL_TUPLE_H_ so that
+  boost/stl/tuple.h is not included in boost/phoenix.hpp
+*/
+#define BOOST_PHOENIX_STL_TUPLE_H_
+
 #include "expression.hpp"
 #include "error_handler.hpp"
 #include "annotation.hpp"
-#include <boost/spirit/include/phoenix_function.hpp>
-#include <boost/spirit/include/phoenix.hpp>
+#include <boost/phoenix/function.hpp>
+#include <boost/phoenix.hpp>
 #include <boost/fusion/adapted.hpp>
 //#include <boost/spirit/include/qi_lit.hpp>
+
 
 namespace client { namespace parser
 {
