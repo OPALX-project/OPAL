@@ -35,7 +35,7 @@
 #include "boost/type_traits/remove_cv.hpp"
 #include "boost/variant/get.hpp"
 #include "boost/variant/variant.hpp"
-#include "boost/smart_ptr.hpp"
+//#include "boost/smart_ptr.hpp"
 
 #include "Util/Types.h"
 #include "Util/SDDSReader.h"
@@ -69,7 +69,7 @@ struct SumErrSq {
         parseMeasurements(measurement_filename);
         bool is_valid = true;
 
-        boost::scoped_ptr<SDDSReader> sim_stats(new SDDSReader(stat_filename_));
+        std::unique_ptr<SDDSReader> sim_stats(new SDDSReader(stat_filename_));
         try {
             sim_stats->parseFile();
         } catch (OptPilotException &ex) {

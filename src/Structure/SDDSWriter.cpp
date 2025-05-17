@@ -34,9 +34,7 @@ SDDSWriter::SDDSWriter(const std::string& fname, bool restart)
     , mode_m(std::ios::out)
     , indent_m("        ")
 {
-    namespace fs = boost::filesystem;
-
-    if (fs::exists(fname_m) && restart) {
+    if (std::filesystem::exists(fname_m) && restart) {
         mode_m = std::ios::app;
         INFOMSG("* Appending data to existing data file: '" << fname_m << "'" << endl);
     } else {

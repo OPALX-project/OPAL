@@ -95,7 +95,6 @@ namespace SDDS { namespace parser
 {
     namespace qi = boost::spirit::qi;
     namespace ascii = boost::spirit::ascii;
-    namespace phx = boost::phoenix;
 
     template <typename Iterator>
     struct file_parser: qi::grammar<Iterator, file(), skipper<Iterator> >

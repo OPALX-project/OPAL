@@ -30,7 +30,8 @@
 #include <iomanip>
 #include <sstream>
 
-#include <boost/filesystem.hpp>
+//#include <boost/filesystem.hpp>
+#include <filesystem>
 
 #include "Structure/SDDSColumn.h"
 #include "Structure/SDDSColumnSet.h"
@@ -156,7 +157,7 @@ private:
 
 inline
 bool SDDSWriter::exists() const {
-    return boost::filesystem::exists(fname_m);
+    return std::filesystem::exists(fname_m);
 }
 
 
