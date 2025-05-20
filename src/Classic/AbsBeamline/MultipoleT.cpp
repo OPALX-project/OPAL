@@ -1,6 +1,7 @@
 /*
  *  Copyright (c) 2017, Titus Dascalu
  *  Copyright (c) 2018, Martin Duy Tat
+ *  Copyright (c) 2019-2023, Chris Rogers
  *  Copyright (c) 2025, Jon Thompson
  *  All rights reserved.
  *  Redistribution and use in source and binary forms, with or without

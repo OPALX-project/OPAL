@@ -25,19 +25,7 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <cmath>
-
-#include "gsl/gsl_sf_gamma.h"
 #include "gsl/gsl_sf_pow_int.h"
-
-#include <gsl/gsl_integration.h>
-#include <gsl/gsl_complex.h>
-#include <gsl/gsl_complex_math.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_sf_gamma.h>
-
-#include "AbsBeamline/MultipoleTFunctions/tanhDeriv.h"
 #include "AbsBeamline/EndFieldModel/Tanh.h"
 
 namespace endfieldmodel {
@@ -78,14 +66,7 @@ double Tanh::getNegTanh(double x, int n) const {
 }
 
 double Tanh::function(double x, int n) const {
-  if (n > 10) {
-        // BUG this does not work and I do not understand for why not
-        double t = tanhderiv::integrate(x, _x0, _lambda, _lambda, n);
-        return t;
-  }
-  double tplus = getTanh(x, n);
-  double tminus = getNegTanh(x, n);
-  return (tplus-tminus)/2.;
+    return (getTanh(x, n) - getNegTanh(x, n)) / 2.0;
 }
 
 void Tanh::setMaximumDerivative(size_t n) {
