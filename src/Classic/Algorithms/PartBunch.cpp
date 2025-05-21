@@ -484,8 +484,7 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
 
     size_t numGridPoints = static_cast<size_t>(nr_m[0]) * static_cast<size_t>(nr_m[1]) * static_cast<size_t>(nr_m[2]);
     if (getTotalNum() < numGridPoints) {
-        *gmsg << level2 << "The number of particles decreased below the grid points."
-                        << "Skip space-charge calculation." << endl;
+        WARNMSG("The number of particles decreased below the grid points. Skip space-charge calculation." << endl);
         return;
     }
 
