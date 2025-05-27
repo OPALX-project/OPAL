@@ -71,7 +71,7 @@ void MultipoleT::accept(BeamlineVisitor& visitor) const {
     visitor.visitMultipoleT(*this);
 }
 
-Vector_t MultipoleT::rotateFrame(const Vector_t &R) const {
+Vector_t MultipoleT::rotateFrame(const Vector_t& R) const {
     Vector_t R_prime(3), R_pprime(3);
     /** Apply two 2D rotation matrices to coordinate vector
       * Rotate around central axis => skew fields
@@ -222,7 +222,7 @@ void MultipoleT::finalise() {
     RefPartBunch_m = nullptr;
 }
 
-bool MultipoleT::apply(const size_t &i, const double &t,Vector_t &E, Vector_t &B) {
+bool MultipoleT::apply(const size_t& i, const double& t, Vector_t& E, Vector_t& B) {
     return apply(RefPartBunch_m->R[i], RefPartBunch_m->P[i], t, E, B);
 }
 
@@ -252,7 +252,7 @@ void MultipoleT::chooseImplementation() {
     implementation_->initialise();
 }
 
-void MultipoleT::setAperture(const double &vertAp, const double &horizAp) {
+void MultipoleT::setAperture(const double& vertAp, const double& horizAp) {
     verticalApert_m = vertAp;
     horizontalApert_m = horizAp;
 }

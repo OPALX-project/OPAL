@@ -159,11 +159,11 @@ public:
      *  @f[ 1/2 * \left [tanh \left( \frac{s + s_0}{\lambda_{left}} \right) 
      *  - tanh \left( \frac{s - s_0}{\lambda_{right}} \right) \right] @f] 
      *  \param s0 -> Centre field length and
-     *  \lambda_{left} -> Left end field length
-     *  \lambda_{right} -> Right end field length
+     *  \lambda_left -> Left end field length
+     *  \lambda_right -> Right end field length
      */
-    void setFringeField(const double &s0, const double &lambda_left,
-                        const double &lambda_right);
+    void setFringeField(const double& s0, const double& lambda_left,
+                        const double& lambda_right);
     /** Get the fringe field model
      * @return {s0, leftFringe, rightFringe}
      */
@@ -198,7 +198,7 @@ public:
       * \param vertAp -> Vertical aperture length
       * \param horizAp -> Horisontal aperture length
      */
-    void setAperture(const double &vertAp, const double &horizAp);
+    void setAperture(const double& vertAp, const double& horizAp);
     /** Get the aperture dimensions
      * @return {verticalApert, horizontalApert}
      */
@@ -222,7 +222,7 @@ public:
      *  \param n -> nth derivative
      *  \param s -> Coordinate s
      */
-    double getFringeDeriv(const std::size_t &n, const double &s);
+    double getFringeDeriv(const std::size_t& n, const double& s);
     /** Calculate partial derivative of fn wrt x using a 5-point
      *  finite difference formula
      *  Error of order stepSize^4
@@ -230,9 +230,9 @@ public:
      *  \param x -> Coordinate x
      *  \param s -> Coordinate s
      */
-    double getFnDerivX(const std::size_t &n,
-                       const double &x,
-                       const double &s);
+    double getFnDerivX(const std::size_t& n,
+                       const double& x,
+                       const double& s);
     /** Calculate partial derivative of fn wrt s using a 5-point
      *  finite difference formula
      *  Error of order stepSize^4
@@ -240,16 +240,16 @@ public:
      *  \param x -> Coordinate x
      *  \param s -> Coordinate s
      */
-    double getFnDerivS(const std::size_t &n,
-                       const double &x,
-                       const double &s);
+    double getFnDerivS(const std::size_t& n,
+                       const double& x,
+                       const double& s);
     /** Returns the value of the transverse field n-th derivative at x \n
      *  Transverse field is a polynomial in x, differentiation follows
      *  usual polynomial rules of differentiation
      *  \param n -> nth derivative
      *  \param x -> Coordinate x
      */
-    double getTransDeriv(const std::size_t &n, const double &x) const;
+    double getTransDeriv(const std::size_t& n, const double& x) const;
 
     Vector_t toMagnetCoords(const Vector_t& R);
     Vector_t getField(const Vector_t& magnetCoords);
