@@ -43,9 +43,9 @@ void MultipoleTCurvedConstRadius::initialise() {
 void MultipoleTCurvedConstRadius::transformCoords(Vector_t &R) {
     if(element_m->getBendAngle() != 0.0) {
         double radius = element_m->getLength() / element_m->getBendAngle();
-        double alpha  = atan(R[2] / (R[0] + radius));
+        double alpha  = std::atan(R[2] / (R[0] + radius));
         if (alpha != 0.0) {
-            R[0] = R[2] / sin(alpha) - radius;
+            R[0] = R[2] / std::sin(alpha) - radius;
             R[2] = radius * alpha;
         }
     }
@@ -56,8 +56,8 @@ void MultipoleTCurvedConstRadius::transformBField(Vector_t &B, const Vector_t &R
     double theta = R[2] * element_m->getBendAngle() / element_m->getLength();
     double Bx = B[0];
     double Bs = B[2];
-    B[0] = Bx * cos(theta) - Bs * sin(theta);
-    B[2] = Bx * sin(theta) + Bs * cos(theta);
+    B[0] = Bx * std::cos(theta) - Bs * std::sin(theta);
+    B[2] = Bx * std::sin(theta) + Bs * std::cos(theta);
 }
 
 void MultipoleTCurvedConstRadius::setMaxOrder(size_t orderZ, size_t orderX) {
@@ -76,8 +76,8 @@ Vector_t MultipoleTCurvedConstRadius::localCartesianToOpalCartesian(const Vector
     if(element_m->getBendAngle() != 0.0) {
         double radius = element_m->getLength() / element_m->getBendAngle();
         double theta  = element_m->getBendAngle() /2.0;
-        double ds = radius * sin(theta);
-        double dx = radius * (1 - cos(theta));
+        double ds = radius * std::sin(theta);
+        double dx = radius * (1 - std::cos(theta));
         result[0] = -dx;
         result[2] = ds;
     }
