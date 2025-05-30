@@ -24,7 +24,7 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-
+#include <cmath>
 #include "gsl/gsl_sf_pow_int.h"
 #include "AbsBeamline/EndFieldModel/Tanh.h"
 
@@ -43,10 +43,10 @@ Tanh* Tanh::clone() const {
 }
 
 double Tanh::getTanh(double x, int n) const {
-  if (n == 0) return tanh((x+_x0)/_lambda);
+  if (n == 0) return std::tanh((x+_x0)/_lambda);
   double t = 0;
   double lam_n = gsl_sf_pow_int(_lambda, n);
-  double tanh_x = tanh((x+_x0)/_lambda);
+  double tanh_x = std::tanh((x+_x0)/_lambda);
   for (size_t i = 0; i < _tdi[n].size(); i++)
     t += 1./lam_n*static_cast<double>(_tdi[n][i][0])
             *gsl_sf_pow_int(tanh_x, _tdi[n][i][1]);
@@ -54,10 +54,10 @@ double Tanh::getTanh(double x, int n) const {
 }
 
 double Tanh::getNegTanh(double x, int n) const {
-  if (n == 0) return tanh((x-_x0)/_lambda);
+  if (n == 0) return std::tanh((x-_x0)/_lambda);
   double t = 0;
   double lam_n = gsl_sf_pow_int(_lambda, n);
-  double tanh_x = tanh((x-_x0)/_lambda);
+  double tanh_x = std::tanh((x-_x0)/_lambda);
   for (size_t i = 0; i < _tdi[n].size(); i++) {
     t += 1./lam_n*static_cast<double>(_tdi[n][i][0])
             *gsl_sf_pow_int(tanh_x, _tdi[n][i][1]);
