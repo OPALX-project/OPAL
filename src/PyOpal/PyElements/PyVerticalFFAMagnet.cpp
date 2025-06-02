@@ -20,35 +20,35 @@
 #include "Elements/OpalVerticalFFAMagnet.h"
 
 namespace PyOpal {
-namespace PyVerticalFFAMagnet {
+    template <>
+    std::vector<PyOpalObjectNS::AttributeDef>
+        PyOpalObjectNS::PyOpalObject<OpalVerticalFFAMagnet>::attributes = {
+            {"B0", "b0", "", PyOpalObjectNS::DOUBLE},
+            {"FIELD_INDEX", "field_index", "", PyOpalObjectNS::DOUBLE},
+            {"WIDTH", "width", "", PyOpalObjectNS::DOUBLE},
+            {"MAX_HORIZONTAL_POWER", "max_horizontal_power", "", PyOpalObjectNS::INT},
+            {"END_LENGTH", "end_length", "", PyOpalObjectNS::DOUBLE},
+            {"CENTRE_LENGTH", "centre_length", "", PyOpalObjectNS::DOUBLE},
+            {"BB_LENGTH", "bb_length", "", PyOpalObjectNS::DOUBLE},
+            {"HEIGHT_NEG_EXTENT", "height_neg_extent", "", PyOpalObjectNS::DOUBLE},
+            {"HEIGHT_POS_EXTENT", "height_pos_extent", "", PyOpalObjectNS::DOUBLE},
+    };
 
-const char* module_docstring = 
-    "vertical_ffa_magnet contains the VerticalFFAMagnet class";
+    template <>
+    std::string PyOpalObjectNS::PyOpalObject<OpalVerticalFFAMagnet>::classDocstring =
+        "VerticalFFAMagnet class is a field element that models a Vertical FFA magnet.";
 
-template <>
-std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalVerticalFFAMagnet>::attributes = {
-    {"B0", "b0", "", PyOpalObjectNS::DOUBLE},
-    {"FIELD_INDEX", "field_index", "", PyOpalObjectNS::DOUBLE},
-    {"WIDTH", "width", "", PyOpalObjectNS::DOUBLE},
-    {"MAX_HORIZONTAL_POWER", "max_horizontal_power", "", PyOpalObjectNS::INT},
-    {"END_LENGTH", "end_length", "", PyOpalObjectNS::DOUBLE},
-    {"CENTRE_LENGTH", "centre_length", "", PyOpalObjectNS::DOUBLE},
-    {"BB_LENGTH", "bb_length", "", PyOpalObjectNS::DOUBLE},
-    {"HEIGHT_NEG_EXTENT", "height_neg_extent", "", PyOpalObjectNS::DOUBLE},
-    {"HEIGHT_POS_EXTENT", "height_pos_extent", "", PyOpalObjectNS::DOUBLE},
-};
+    namespace PyVerticalFFAMagnet {
 
-template <>
-std::string PyOpalObjectNS::PyOpalObject<OpalVerticalFFAMagnet>::classDocstring = 
-"VerticalFFAMagnet class is a field element that models a Vertical FFA magnet.";
+        const char* module_docstring = "vertical_ffa_magnet contains the VerticalFFAMagnet class";
 
-BOOST_PYTHON_MODULE(vertical_ffa_magnet) {
-    PyOpal::Globals::Initialise();
-    ExceptionTranslation::registerExceptions();
-    PyOpalObjectNS::PyOpalObject<OpalVerticalFFAMagnet> element;
-    auto elementClass = element.make_element_class("VerticalFFAMagnet");
-    element.addGetFieldValue(elementClass, 1.0, 1.0, 1.0, 1e-1);
-}
+        BOOST_PYTHON_MODULE(vertical_ffa_magnet) {
+            PyOpal::Globals::Initialise();
+            ExceptionTranslation::registerExceptions();
+            PyOpalObjectNS::PyOpalObject<OpalVerticalFFAMagnet> element;
+            auto elementClass = element.make_element_class("VerticalFFAMagnet");
+            element.addGetFieldValue(elementClass, 1.0, 1.0, 1.0, 1e-1);
+        }
 
-}
-}
+    }  // namespace PyVerticalFFAMagnet
+}  // namespace PyOpal

@@ -1,36 +1,36 @@
 #include "PyOpal/PyCore/ExceptionTranslation.h"
-#include "PyOpal/PyCore/PyOpalObject.h"
 #include "PyOpal/PyCore/Globals.h"
+#include "PyOpal/PyCore/PyOpalObject.h"
 
 #include "Elements/OpalElement.h"
 
-//using namespace boost::python;
+// using namespace boost::python;
 namespace PyOpal {
-namespace PyOpalElement {
+    template <>
+    std::vector<PyOpalObjectNS::AttributeDef>
+        PyOpalObjectNS::PyOpalObject<OpalElement>::attributes = {};
 
-std::string track_run_docstring = std::string();
+    template <>
+    std::string PyOpalObjectNS::PyOpalObject<OpalElement>::classDocstring =
+        "OpalElement is a base class for Opal element objects. In particular it is\n"
+        "used by Line class to handle wrapping of objects";
 
+    template <>
+    PyOpalObjectNS::PyOpalObject<OpalElement>::PyOpalObject() : object_m(nullptr) {
+    }
 
-const char* module_docstring = "opal element base class";
+    namespace PyOpalElement {
 
-template <>
-std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalElement>::attributes = {
-};
+        std::string track_run_docstring = std::string();
 
-template <>
-std::string PyOpalObjectNS::PyOpalObject<OpalElement>::classDocstring = 
-"OpalElement is a base class for Opal element objects. In particular it is\n"
-"used by Line class to handle wrapping of objects";
+        const char* module_docstring = "opal element base class";
 
-template <>
-PyOpalObjectNS::PyOpalObject<OpalElement>::PyOpalObject() : object_m(nullptr) {}
+        BOOST_PYTHON_MODULE(opal_element) {
+            ExceptionTranslation::registerExceptions();
+            PyOpal::Globals::Initialise();
+            PyOpalObjectNS::PyOpalObject<OpalElement> element;
+            element.make_element_class("OpalElement");
+        }
 
-BOOST_PYTHON_MODULE(opal_element) {
-    ExceptionTranslation::registerExceptions();
-    PyOpal::Globals::Initialise();
-    PyOpalObjectNS::PyOpalObject<OpalElement> element;
-    element.make_element_class("OpalElement");
-}
-
-}
-}
+    }  // namespace PyOpalElement
+}  // namespace PyOpal
