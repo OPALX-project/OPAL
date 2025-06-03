@@ -58,8 +58,7 @@ class TestMultipoleTRunner(pyopal.objects.minimal_runner.MinimalRunner):
             rotation = 0,
             angle = 0.0,
             bounding_box_length = self.bb_length,
-            delete_on_transverse_exit = False,
-            magnet_start = 0.1,
+            entry_offset = 0.0,
         )
         self.multipole = multipole
         return multipole
@@ -143,7 +142,6 @@ class TestMultipoleT(unittest.TestCase):
         multipole.rotation = 0 # not tested
         multipole.angle = 0.0 # not tested
         multipole.bounding_box_length = 2.0
-        multipole.delete_on_transverse_exit = True
         return multipole
 
     def test_on_axis_field(self):
@@ -184,7 +182,7 @@ class TestMultipoleT(unittest.TestCase):
     def test_expansion(self):
         """Check the expansion parameters are parsed"""
         multipole = self.make_multipolet()
-        multipole.maximum_f_order = 0
+        multipole.maximum_f_order = 1 # 0 is a bad value to use
         multipole.maximum_x_order = 0 # this is related to opening angle stuff
         point = (0.05, 0.05, 0.45, 0.0)
         field_00 = multipole.get_field_value(*point)
