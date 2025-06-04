@@ -212,7 +212,7 @@ class TestOutputPlane(unittest.TestCase):
         """Check we cut approporiately with rectangular aperture"""
         width = 0.01
         plane_runner = OutputPlaneRunner(100, 0.001, 0.0, "INTERPOLATION", self.verbose)
-        plane_runner.output_plane.placement_style = "CENTRE-NORMAL"
+        plane_runner.output_plane.placement_style = "CENTRE_NORMAL"
         plane_runner.output_plane.centre = [0.9, 0.1, 0.0]
         plane_runner.output_plane.normal = [1.0, 1.0, 0.0]
         plane_runner.output_plane.height = 0.1
@@ -240,7 +240,7 @@ class TestOutputPlane(unittest.TestCase):
     def test_radial_aperture(self):
         """Check we cut appropriately with radial aperture"""
         plane_runner = OutputPlaneRunner(100, 0.001, 0.0, "INTERPOLATION", self.verbose)
-        plane_runner.output_plane.placement_style = "CENTRE-NORMAL"
+        plane_runner.output_plane.placement_style = "CENTRE_NORMAL"
         plane_runner.output_plane.output_filename = "" # defaults to "my_plane"
         plane_runner.output_plane.centre = [0.9, 0.1, 0.0]
         plane_runner.output_plane.normal = [1.0, 1.0, 0.0]
