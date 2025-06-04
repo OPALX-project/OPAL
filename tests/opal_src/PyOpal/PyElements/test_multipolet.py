@@ -15,10 +15,12 @@ import unittest
 import sys
 import os
 
+has_ffa_field_mapper = False
 try:
     import matplotlib
     import matplotlib.pyplot
     import pyopal.objects.ffa_field_mapper
+    has_ffa_field_mapper = True
 except ImportError:
     pass
 
@@ -72,14 +74,15 @@ class TestMultipoleTRunner(pyopal.objects.minimal_runner.MinimalRunner):
             raise RuntimeError(f"test_multipole failed with pos {pos} field {field} bz_ref {bz_ref}")
 
     def postprocess(self):
-        """Test placement - note that placement is from centre for this element"""
-        self.plot()
-        self.test_field(-0.301, 0.0)
-        self.test_field(-0.299, 8.317278708416809e-05)
-        self.test_field(0.299, 8.317278708416809e-05)
-        self.test_field(0.301, 0.0)
-        self.test_field(-0.25, 0.75)
-        self.test_field(0.25, 0.75)
+        """Test placement - note that placement is now from entry point"""
+        if has_ffa_field_mapper:
+            self.plot()
+        self.test_field(-0.301+0.25, 0.0)
+        self.test_field(-0.299+0.25, 8.317278708416809e-05)
+        self.test_field(0.299+0.25, 8.317278708416809e-05)
+        self.test_field(0.301+0.25, 0.0)
+        self.test_field(-0.25+0.25, 0.75)
+        self.test_field(0.25+0.25, 0.75)
 
     def plot(self):
         mapper = pyopal.objects.ffa_field_mapper.FFAFieldMapper()
@@ -194,7 +197,6 @@ class TestMultipoleT(unittest.TestCase):
     def test_placement(self):
         """Check placement is okay"""
         runner = TestMultipoleTRunner()
-        runner.tmp_dir = "tmp"
         runner.execute_fork()
 
 if __name__ == "__main__":
