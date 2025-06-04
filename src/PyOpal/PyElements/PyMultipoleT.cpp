@@ -37,7 +37,8 @@ namespace PyOpal {
             {"VARRADIUS", "variable_radius", "", PyOpalObjectNS::BOOL},
             {"BBLENGTH", "bounding_box_length", "", PyOpalObjectNS::DOUBLE},
             {"ENTRYOFFSET", "entry_offset", "", PyOpalObjectNS::DOUBLE},
-            {"L", "length", "", PyOpalObjectNS::DOUBLE}};
+            {"L", "length", "", PyOpalObjectNS::DOUBLE},
+            {"DELETEONTRANSVERSEEXIT", "delete_on_transverse_exit", "", PyOpalObjectNS::BOOL}};
 
     template <>
     std::string PyOpalObjectNS::PyOpalObject<OpalMultipoleT>::classDocstring =

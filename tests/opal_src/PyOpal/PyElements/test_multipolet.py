@@ -147,7 +147,7 @@ class TestMultipoleT(unittest.TestCase):
     def test_on_axis_field(self):
         """Check the on axis field is reasonable"""
         multipole = self.make_multipolet()
-        for zi, bz in [(-0.45, 0.25), (-0.0, 0.5), (0.45, 0.25)]:
+        for zi, bz in [(0.0, 0.25), (0.45, 0.5), (0.9, 0.25)]:
             point = (0.0, 0.0, zi, 0.0)
             field = multipole.get_field_value(*point)
             self.assertAlmostEqual(field[2], bz)
@@ -159,18 +159,18 @@ class TestMultipoleT(unittest.TestCase):
         NOTE bb length does not appear to be used"""
         multipole = self.make_multipolet()
         plist = [ # should be rotated through 180 degrees?
-            ((-0.07, 0.0, 0.0, 0.0), False),
-            ((-0.08, 0.0, 0.0, 0.0), True),
-            ((0.07, 0.0, 0.0, 0.0), False),
-            ((0.08, 0.0, 0.0, 0.0), True),
-            ((0.0, -0.12, 0.0, 0.0), False),
-            ((0.0, -0.13, 0.0, 0.0), True),
-            ((0.0, 0.12, 0.0, 0.0), False),
-            ((0.0, 0.13, 0.0, 0.0), True),
-            ((0.0, 0.0, -0.99, 0.0), False),
-            ((0.0, 0.0, -1.01, 0.0), True),
-            ((0.0, 0.0, 0.99, 0.0), False),
-            ((0.0, 0.0, 1.01, 0.0), True),
+            ((-0.07, 0.0, 0.45, 0.0), False),
+            ((-0.08, 0.0, 0.45, 0.0), True),
+            ((0.07, 0.0, 0.45, 0.0), False),
+            ((0.08, 0.0, 0.45, 0.0), True),
+            ((0.0, -0.12, 0.45, 0.0), False),
+            ((0.0, -0.13, 0.45, 0.0), True),
+            ((0.0, 0.12, 0.45, 0.0), False),
+            ((0.0, 0.13, 0.45, 0.0), True),
+            ((0.0, 0.0, -0.54, 0.0), False),
+            ((0.0, 0.0, -0.56, 0.0), True),
+            ((0.0, 0.0, 1.44, 0.0), False),
+            ((0.0, 0.0, 1.46, 0.0), True),
         ]
         for point, oob in plist:
             field = multipole.get_field_value(*point)
@@ -186,7 +186,7 @@ class TestMultipoleT(unittest.TestCase):
         multipole.maximum_x_order = 0 # this is related to opening angle stuff
         point = (0.05, 0.05, 0.45, 0.0)
         field_00 = multipole.get_field_value(*point)
-        multipole.maximum_f_order = 1
+        multipole.maximum_f_order = 2
         field_10 = multipole.get_field_value(*point)
         # just want to check they are different
         self.assertNotEqual(field_00[3], field_10[3])

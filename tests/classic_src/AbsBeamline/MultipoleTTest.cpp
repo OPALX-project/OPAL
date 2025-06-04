@@ -777,7 +777,7 @@ TEST(MultipoleTTest, BoundingBox) {
     EXPECT_GE(B[1], 1.0);
     // Outside the bounding box at the end
     R = {1.4, 1.4, length + 0.3};
-    EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_TRUE(myMagnet->apply(R, P, t, E, B));
     EXPECT_DOUBLE_EQ(B[1], 0.0);
     // Inside the bounding box at the beginning
     R = {1.4, 1.4, -0.2};
@@ -785,7 +785,7 @@ TEST(MultipoleTTest, BoundingBox) {
     EXPECT_GE(B[1], 1.0);
     // Outside the bounding box at the beginning
     R = {1.4, 1.4, -0.3};
-    EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_TRUE(myMagnet->apply(R, P, t, E, B));
     EXPECT_DOUBLE_EQ(B[1], 0.0);
 }
 
@@ -908,6 +908,24 @@ TEST(MultipoleTTest, ConstCurvedShape) {
         EXPECT_NEAR(line[50 - i - 1], expected, 1e-2) << i;
         EXPECT_NEAR(line[50 + i + 1], expected, 1e-2) << i;
     }
+}
+
+TEST(MultipoleTTest, ZeroTP) {
+    auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    myMagnet->setBendAngle(0.0, false);
+    myMagnet->setElementLength(0.5);
+    myMagnet->setAperture(100.0, 100.0);
+    myMagnet->setFringeField(0.25, 0.3, 0.3);
+    myMagnet->setTransProfile({0.0, 0.0});
+    double t = 0.0;
+    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+    Vector_t B(0., 0., 0.);
+    // Inside the aperture
+    R = {1.4, 1.4, 0.25};
+    EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
+    EXPECT_EQ(B[0], 0.0);
+    EXPECT_EQ(B[1], 0.0);
+    EXPECT_EQ(B[2], 0.0);
 }
 
 #if 0

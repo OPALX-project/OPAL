@@ -126,12 +126,8 @@ bool MultipoleT::apply(
     const Vector_t& R, const Vector_t& /*P*/, const double& /*t*/, Vector_t& /*E*/, Vector_t& B) {
     Vector_t R_prime = toMagnetCoords(R);
     bool result;
-    if (insideAperture(R_prime)) {
-        if(insideBoundingBox(R_prime)) {
-            B = getField(R_prime);
-        } else {
-            B = {0.0, 0.0, 0.0};
-        }
+    if (insideAperture(R_prime) && insideBoundingBox(R_prime)) {
+        B = getField(R_prime);
         result = false;
     } else {
         B = {0.0, 0.0, 0.0};

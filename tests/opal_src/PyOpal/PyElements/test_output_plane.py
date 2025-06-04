@@ -70,6 +70,13 @@ class OutputPlaneRunner(pyopal.objects.minimal_runner.MinimalRunner):
         self.output_plane.set_opal_name("my_plane")
 
     def make_dipole(self):
+        offset = pyopal.elements.local_cartesian_offset.LocalCartesianOffset()
+        offset.set_attributes(
+            end_position_x = 0,
+            end_position_y = -0.25,
+            end_normal_x = 0,
+            end_normal_y = 1
+        )
         dipole = pyopal.elements.multipolet.MultipoleT()
         dipole.set_attributes(
             t_p = [self.bz, self.bz*100],
@@ -80,7 +87,7 @@ class OutputPlaneRunner(pyopal.objects.minimal_runner.MinimalRunner):
             vertical_aperture = 100,
             bounding_box_length = 1.0
         )
-        return [dipole]
+        return [offset, dipole]
 
     @classmethod
     def make_time_dependence(cls, name, pol0, pol1):
