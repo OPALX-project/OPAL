@@ -100,8 +100,8 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     add_compile_options (-ftemplate-depth=1024)
     # get rid of linking warning with boost. Looks like that boost
     # is using this visibility setting.
-    add_compile_options (-fvisibility=hidden)
-    add_compile_options (-fvisibility-inlines-hidden)
+    add_compile_options (-fvisibility=default)
+    add_link_options("-Wl,-undefined,dynamic_lookup")
     add_compile_options (-Wno-deprecated-declarations)
     add_compile_options (-Wno-deprecated-builtins)
     add_compile_options (-Wno-deprecated-copy)
