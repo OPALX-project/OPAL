@@ -15,12 +15,12 @@ import unittest
 import sys
 import os
 
-has_ffa_field_mapper = False
+HAS_FFA_FIELD_MAPPER = False
 try:
     import matplotlib
     import matplotlib.pyplot
     import pyopal.objects.ffa_field_mapper
-    has_ffa_field_mapper = True
+    HAS_FFA_FIELD_MAPPER = True
 except ImportError:
     pass
 
@@ -71,11 +71,12 @@ class TestMultipoleTRunner(pyopal.objects.minimal_runner.MinimalRunner):
         pos = (2.0, y_test, 0.0, 0.0) # x,y,z,t
         field = pyopal.objects.field.get_field_value(*pos)
         if abs(field[3]-bz_ref) > 1e-12:
-            raise RuntimeError(f"test_multipole failed with pos {pos} field {field} bz_ref {bz_ref}")
+            raise RuntimeError(
+                f"test_multipole failed with pos {pos} field {field} bz_ref {bz_ref}")
 
     def postprocess(self):
         """Test placement - note that placement is now from entry point"""
-        if has_ffa_field_mapper:
+        if HAS_FFA_FIELD_MAPPER:
             self.plot()
         self.test_field(-0.301+0.25, 0.0)
         self.test_field(-0.299+0.25, 8.317278708416809e-05)
@@ -177,10 +178,12 @@ class TestMultipoleT(unittest.TestCase):
         ]
         for point, oob in plist:
             field = multipole.get_field_value(*point)
-            self.assertEqual(oob, field[0], msg="Failed on point "+str(point)+" expected oob "+str(oob))
+            self.assertEqual(oob, field[0],
+                             msg="Failed on point " + str(point) + " expected oob " + str(oob))
         multipole.delete_on_transverse_exit = False # disable bound checking
         field = multipole.get_field_value(100000, 100000, 10000, 100000)
-        self.assertEqual(False, field[0], msg="Failed on point "+str(point)+" expected oob "+str(oob))
+        self.assertEqual(False, field[0],
+                         msg="Failed on point " + str(point) + " expected oob " + str(oob))
 
     def test_expansion(self):
         """Check the expansion parameters are parsed"""
