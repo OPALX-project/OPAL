@@ -13,46 +13,48 @@
 //
 
 #include "PyOpal/PyCore/ExceptionTranslation.h"
-#include "PyOpal/PyCore/PyOpalObject.h"
 #include "PyOpal/PyCore/Globals.h"
+#include "PyOpal/PyCore/PyOpalObject.h"
 
 #include "Elements/OpalOutputPlane.h"
 
 namespace PyOpal {
-namespace PyOutputPlane {
+    template <>
+    std::vector<PyOpalObjectNS::AttributeDef>
+        PyOpalObjectNS::PyOpalObject<OpalOutputPlane>::attributes = {
+            {"CENTRE", "centre", "", PyOpalObjectNS::FLOAT_LIST},
+            {"NORMAL", "normal", "", PyOpalObjectNS::FLOAT_LIST},
+            {"XSTART", "x_start", "", PyOpalObjectNS::DOUBLE},
+            {"XEND", "x_end", "", PyOpalObjectNS::DOUBLE},
+            {"YSTART", "y_start", "", PyOpalObjectNS::DOUBLE},
+            {"YEND", "y_end", "", PyOpalObjectNS::DOUBLE},
+            {"PLACEMENT_STYLE", "placement_style", "", PyOpalObjectNS::PREDEFINED_STRING},
+            {"ALGORITHM", "algorithm", "", PyOpalObjectNS::PREDEFINED_STRING},
+            {"TOLERANCE", "tolerance", "", PyOpalObjectNS::DOUBLE},
+            {"REFERENCE_ALIGNMENT_PARTICLE", "reference_alignment_particle", "",
+             PyOpalObjectNS::INT},
+            {"OUTFN", "output_filename", "",
+             PyOpalObjectNS::STRING},  // OUTFN comes from OpalElement (yes, all elements can have a
+                                       // filename!)
+            {"VERBOSE", "verbose_level", "", PyOpalObjectNS::INT},
+            {"WIDTH", "width", "", PyOpalObjectNS::DOUBLE},
+            {"HEIGHT", "height", "", PyOpalObjectNS::DOUBLE},
+            {"RADIUS", "radius", "", PyOpalObjectNS::DOUBLE}};
 
-const char* module_docstring = 
-    "output_plane contains the OutputPlane class";
+    template <>
+    std::string PyOpalObjectNS::PyOpalObject<OpalOutputPlane>::classDocstring =
+        "OutputPlane is used to generate output data based on particle tracks crossing a plane.";
 
-template <>
-std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalOutputPlane>::attributes = {
-    {"CENTRE", "centre", "", PyOpalObjectNS::FLOAT_LIST},
-    {"NORMAL", "normal", "", PyOpalObjectNS::FLOAT_LIST},
-    {"XSTART", "x_start", "", PyOpalObjectNS::DOUBLE},
-    {"XEND", "x_end", "", PyOpalObjectNS::DOUBLE},
-    {"YSTART", "y_start", "", PyOpalObjectNS::DOUBLE},
-    {"YEND", "y_end", "", PyOpalObjectNS::DOUBLE},
-    {"PLACEMENT_STYLE", "placement_style", "", PyOpalObjectNS::PREDEFINED_STRING},
-    {"ALGORITHM", "algorithm", "", PyOpalObjectNS::PREDEFINED_STRING},
-    {"TOLERANCE", "tolerance", "", PyOpalObjectNS::DOUBLE},
-    {"REFERENCE_ALIGNMENT_PARTICLE", "reference_alignment_particle", "", PyOpalObjectNS::INT},
-    {"OUTFN", "output_filename", "", PyOpalObjectNS::STRING}, // OUTFN comes from OpalElement (yes, all elements can have a filename!)
-    {"VERBOSE", "verbose_level", "", PyOpalObjectNS::INT},
-    {"WIDTH", "width", "", PyOpalObjectNS::DOUBLE},
-    {"HEIGHT", "height", "", PyOpalObjectNS::DOUBLE},
-    {"RADIUS", "radius", "", PyOpalObjectNS::DOUBLE}
-};
+    namespace PyOutputPlane {
 
-template <>
-std::string PyOpalObjectNS::PyOpalObject<OpalOutputPlane>::classDocstring =
-"OutputPlane is used to generate output data based on particle tracks crossing a plane.";
+        const char* module_docstring = "output_plane contains the OutputPlane class";
 
-BOOST_PYTHON_MODULE(output_plane) {
-    PyOpal::Globals::Initialise();
-    ExceptionTranslation::registerExceptions();
-    PyOpalObjectNS::PyOpalObject<OpalOutputPlane> element;
-    auto elementClass = element.make_element_class("OutputPlane");
-}
+        BOOST_PYTHON_MODULE(output_plane) {
+            PyOpal::Globals::Initialise();
+            ExceptionTranslation::registerExceptions();
+            PyOpalObjectNS::PyOpalObject<OpalOutputPlane> element;
+            auto elementClass = element.make_element_class("OutputPlane");
+        }
 
-}
-}
+    }  // namespace PyOutputPlane
+}  // namespace PyOpal

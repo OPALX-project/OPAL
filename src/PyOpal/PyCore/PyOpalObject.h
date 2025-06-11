@@ -145,7 +145,7 @@ public:
     /** Copying is disabled */
     PyOpalObject(const PyOpalObject<C>& rhs);
     /** Default destructor */
-    ~PyOpalObject() {}
+    virtual ~PyOpalObject() = default;
 
     /** This is the basic method to make a class for OpalObjects. It should
      *  normally be called when the module is declared, BOOST_PYTHON_MODULE.

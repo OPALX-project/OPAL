@@ -122,6 +122,9 @@ void OpalOutputPlane::update() {
                 "OutputPlane had very small width or size was not defined");
         }
         output->setHorizontalExtent(width/2.0);
+    } else {
+        throw OpalException("OpalOutputPlane::update()",
+            "Did not recognise OutputPlane placement style '"+placementStyle+"'");
     }
     output->setCentre(centre);
     output->setNormal(normal);

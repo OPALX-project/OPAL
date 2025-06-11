@@ -81,104 +81,45 @@
 
 class MultipoleTStraight: public MultipoleTBase {
 public: 
-    /** Constructor
-     *  \param name -> User-defined name
-     */
-    explicit MultipoleTStraight(const std::string &name);
-    /** Copy constructor */
-    MultipoleTStraight(const MultipoleTStraight &right);
-    /** Destructor */ 
-    ~MultipoleTStraight();
-    /** Inheritable copy constructor */
-    virtual ElementBase* clone() const override;
-    /** Accept a beamline visitor */
-    void accept(BeamlineVisitor &visitor) const override;
-    /** Set the number of terms used in calculation of field components \n
-     *  Maximum power of z in Bz is 2 * maxOrder_m
-     *  \param maxOrder -> Number of terms in expansion in z
-     */
-    virtual void setMaxOrder(const std::size_t &maxOrder) override;
+    /** Constructor */
+    explicit MultipoleTStraight(MultipoleT* element);
+    /** Initialise the element */
+    void initialise() override;
     /** Return the cell geometry */
-    StraightGeometry& getGeometry() override;
+    BGeometryBase& getGeometry() override { return straightGeometry_m; }
     /** Return the cell geometry */
-    const StraightGeometry& getGeometry() const override;
-    /** Initialise the MultipoleT
-     *  \param bunch -> Bunch the global bunch object
-     *  \param startField -> Not used
-     *  \param endField -> Not used
-     */
-    virtual void initialise(PartBunchBase<double, 3>* bunch,
-                            double &startField,
-                            double &endField) override;
-private:
-    MultipoleTStraight operator=(const MultipoleTStraight &rhs);
-    /** Geometry */
-    StraightGeometry straightGeometry_m;
+    const BGeometryBase& getGeometry() const override { return straightGeometry_m; }
     /** Transform to Frenet-Serret coordinates for sector magnets */
-    virtual void transformCoords(Vector_t &R) override;
+    void transformCoords(Vector_t &R) override;
     /** Transform B-field from Frenet-Serret coordinates to lab coordinates */
-    virtual void transformBField(Vector_t &B, const Vector_t &R) override;
-    /** Radius of curvature \n
-     *  Straight magnet, infinite radius, infinity (1.0e300) is returned
-     *  \param s -> Coordinate s
-     */
-    virtual double getRadius(const double &s) override;
+    void transformBField(Vector_t &/*B*/, const Vector_t &/*R*/) override {}
     /** Returns the scale factor @f$ h_s = 1@f$
      *  \param x -> Coordinate x
      *  \param s -> Coordinate s
      */
-    virtual double getScaleFactor(const double &x, const double &s) override;
+    double getScaleFactor(double /*x*/, double /*s*/) override { return 1; }
     /** Get x-component of the B-field \n
      *  This function has been overloaded because calculating \n
      *  the B-field directly is quicker and more accurate
      */
-    virtual double getBx (const Vector_t &R) override;
+    double getBx (const Vector_t &R) override;
     /** Get s-component of the B-field \n
      *  This function has been overloaded because calculating \n
      *  the B-field directly is quicker and more accurate
      */
-    virtual double getBs (const Vector_t &R) override;
+    double getBs (const Vector_t &R) override;
     /** Calculate fn(x, s) by expanding the differential operator
      *  (from Laplacian and scalar potential) in terms of polynomials
      *  \param n -> nth derivative
      *  \param x -> Coordinate x
      *  \param s -> Coordinate s
      */
-    virtual double getFn(const std::size_t &n,
-                         const double &x,
-                         const double &s) override;
-};
+    double getFn(size_t n, double x, double s) override;
+    Vector_t localCartesianToOpalCartesian(const Vector_t& r) override;
 
-inline
-    void MultipoleTStraight::accept(BeamlineVisitor &visitor) const {
-        visitor.visitMultipoleTStraight(*this);
-}
-inline
-    void MultipoleTStraight::transformBField(Vector_t &/*B*/, const Vector_t &/*R*/) {
-}
-inline
-    double MultipoleTStraight::getRadius(const double &/*s*/) {
-        return 1e300;
-}
-inline
-    double MultipoleTStraight::getScaleFactor(const double &/*x*/,
-                                              const double &/*s*/) {
-    return 1.0;
-}
-inline
-    StraightGeometry& MultipoleTStraight::getGeometry() {
-        return straightGeometry_m;
-}
-inline
-    const StraightGeometry& MultipoleTStraight::getGeometry() const {
-        return straightGeometry_m;
-}
-inline
-    void MultipoleTStraight::initialise(PartBunchBase<double, 3>* bunch,
-                                        double &/*startField*/,
-                                        double &/*endField*/) {
-        RefPartBunch_m = bunch;
-        straightGeometry_m.setElementLength(2 * getBoundingBoxLength());
-}
+private:
+    /** Geometry */
+    StraightGeometry straightGeometry_m;
+};
 
 #endif

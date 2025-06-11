@@ -82,117 +82,42 @@
 
 class MultipoleTCurvedConstRadius: public MultipoleTBase {
 public: 
-    /** Constructor
-     *  \param name -> User-defined name
-     */
-    explicit MultipoleTCurvedConstRadius(const std::string &name);
-    /** Copy constructor */
-    MultipoleTCurvedConstRadius(const MultipoleTCurvedConstRadius &right);
-    /** Destructor */ 
-    ~MultipoleTCurvedConstRadius();
-    /** Inheritable copy constructor */
-    virtual ElementBase* clone() const override;
-    /** Accept a beamline visitor */
-    void accept(BeamlineVisitor &visitor) const override;
+    /** Constructor */
+    explicit MultipoleTCurvedConstRadius(MultipoleT* element);
+    /** Initialise the element */
+    void initialise() override;
     /** Return the cell geometry */
-    PlanarArcGeometry& getGeometry() override;
+    BGeometryBase& getGeometry() override { return planarArcGeometry_m; }
     /** Return the cell geometry */
-    const PlanarArcGeometry& getGeometry() const override;
-    /** Set the number of terms used in calculation of field components \n
-     *  Maximum power of z in Bz is 2 * maxOrder_m
-     *  \param maxOrder -> Number of terms in expansion in z
-     */
-    virtual void setMaxOrder(const std::size_t &maxOrder) override;
-    /** Get highest power of x in polynomial expansions */
-    std::size_t getMaxXOrder() const;
-    /** Set the number of terms used in polynomial expansions
-     *  \param maxXOrder -> Number of terms in expansion in z
-     */
-    void setMaxXOrder(const std::size_t &maxXOrder);
-    /** Set the bending angle of the magnet */
-    virtual void setBendAngle(const double &angle) override;
-    /** Get the bending angle of the magnet */
-    virtual double getBendAngle() const override;
-    /** Initialise the MultipoleT
-     *  \param bunch -> Bunch the global bunch object
-     *  \param startField -> Not used
-     *  \param endField -> Not used
-     */
-    virtual void initialise(PartBunchBase<double, 3>* bunch,
-                            double &startField,
-                            double &endField) override;
-private:
-    MultipoleTCurvedConstRadius operator=(
-                                const MultipoleTCurvedConstRadius &rhs);
-    /** Highest order of polynomial expansions in x */
-    std::size_t maxOrderX_m;
-    /** Object for storing differential operator acting on Fn */
-    std::vector<polynomial::RecursionRelation> recursion_m;
-    /** Geometry */
-    PlanarArcGeometry planarArcGeometry_m;
+    const BGeometryBase& getGeometry() const override { return planarArcGeometry_m; }
     /** Transform to Frenet-Serret coordinates for sector magnets */
-    virtual void transformCoords(Vector_t &R) override;
+    void transformCoords(Vector_t &/*R*/) override;
     /** Transform B-field from Frenet-Serret coordinates to lab coordinates */
-    virtual void transformBField(Vector_t &B, const Vector_t &R) override;
-    double angle_m;
-    /** Radius of curvature \n
-     *  If radius of curvature is infinite, -1 is returned \n
-     *  @f$ \rho(s) = length_m / angle_m @f$
-     *  \param s -> Coordinate s
-     */
-    virtual double getRadius(const double &s) override;
-    /** Returns the scale factor @f$ h_s = 1 + x / \rho @f$
+    void transformBField(Vector_t &/*B*/, const Vector_t &/*R*/) override;
+    /** Returns the scale factor @f$ h_s = 1@f$
      *  \param x -> Coordinate x
      *  \param s -> Coordinate s
      */
-    virtual double getScaleFactor(const double &x, const double &s) override;
+    double getScaleFactor(double x, double s) override;
     /** Calculate fn(x, s) by expanding the differential operator
      *  (from Laplacian and scalar potential) in terms of polynomials
      *  \param n -> nth derivative
      *  \param x -> Coordinate x
      *  \param s -> Coordinate s
      */
-    virtual double getFn(const std::size_t &n,
-                         const double &x,
-                         const double &s) override;
-};
+    double getFn(size_t n, double x, double s) override;
+    /** Set the number of terms used in calculation of field components \n
+     *  Maximum power of z in Bz is 2 * maxOrder_m
+     *  \param order -> Number of terms in expansion in z
+     */
+    void setMaxOrder(size_t orderZ, size_t orderX) override;
 
-inline
-    void MultipoleTCurvedConstRadius::accept(BeamlineVisitor &visitor) const {
-        visitor.visitMultipoleTCurvedConstRadius(*this);
-}
-inline
-    void MultipoleTCurvedConstRadius::setMaxXOrder(
-                                      const std::size_t &maxXorder) {
-        maxOrderX_m = maxXorder;
-}
-inline
-    std::size_t MultipoleTCurvedConstRadius::getMaxXOrder() const {
-        return maxOrderX_m;
-}
-inline
-    PlanarArcGeometry& MultipoleTCurvedConstRadius::getGeometry() {
-        return planarArcGeometry_m;
-}
-inline
-    const PlanarArcGeometry& MultipoleTCurvedConstRadius::getGeometry() const {
-        return planarArcGeometry_m;
-}
-inline
-    void MultipoleTCurvedConstRadius::setBendAngle(const double &angle) {
-        angle_m = angle;
-}
-inline
-    double MultipoleTCurvedConstRadius::getBendAngle() const {
-        return angle_m;
-}
-inline
-    void MultipoleTCurvedConstRadius::initialise(PartBunchBase<double, 3>* bunch,
-                                                 double &/*startField*/,
-                                                 double &/*endField*/) {
-        RefPartBunch_m = bunch;
-        planarArcGeometry_m.setElementLength(2 * getBoundingBoxLength());
-        planarArcGeometry_m.setCurvature(angle_m / getLength());
-}
+    Vector_t localCartesianToOpalCartesian(const Vector_t& r) override;
+private:
+    /** Object for storing differential operator acting on Fn */
+    std::vector<polynomial::RecursionRelation> recursion_m;
+    /** Geometry */
+    PlanarArcGeometry planarArcGeometry_m;
+};
 
 #endif

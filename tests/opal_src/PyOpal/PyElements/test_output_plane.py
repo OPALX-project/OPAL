@@ -70,6 +70,13 @@ class OutputPlaneRunner(pyopal.objects.minimal_runner.MinimalRunner):
         self.output_plane.set_opal_name("my_plane")
 
     def make_dipole(self):
+        offset = pyopal.elements.local_cartesian_offset.LocalCartesianOffset()
+        offset.set_attributes(
+            end_position_x = 0,
+            end_position_y = -0.25,
+            end_normal_x = 0,
+            end_normal_y = 1
+        )
         dipole = pyopal.elements.multipolet.MultipoleT()
         dipole.set_attributes(
             t_p = [self.bz, self.bz*100],
@@ -80,7 +87,7 @@ class OutputPlaneRunner(pyopal.objects.minimal_runner.MinimalRunner):
             vertical_aperture = 100,
             bounding_box_length = 1.0
         )
-        return [dipole]
+        return [offset, dipole]
 
     @classmethod
     def make_time_dependence(cls, name, pol0, pol1):
@@ -205,7 +212,7 @@ class TestOutputPlane(unittest.TestCase):
         """Check we cut approporiately with rectangular aperture"""
         width = 0.01
         plane_runner = OutputPlaneRunner(100, 0.001, 0.0, "INTERPOLATION", self.verbose)
-        plane_runner.output_plane.placement_style = "CENTRE-NORMAL"
+        plane_runner.output_plane.placement_style = "CENTRE_NORMAL"
         plane_runner.output_plane.centre = [0.9, 0.1, 0.0]
         plane_runner.output_plane.normal = [1.0, 1.0, 0.0]
         plane_runner.output_plane.height = 0.1
@@ -233,7 +240,7 @@ class TestOutputPlane(unittest.TestCase):
     def test_radial_aperture(self):
         """Check we cut appropriately with radial aperture"""
         plane_runner = OutputPlaneRunner(100, 0.001, 0.0, "INTERPOLATION", self.verbose)
-        plane_runner.output_plane.placement_style = "CENTRE-NORMAL"
+        plane_runner.output_plane.placement_style = "CENTRE_NORMAL"
         plane_runner.output_plane.output_filename = "" # defaults to "my_plane"
         plane_runner.output_plane.centre = [0.9, 0.1, 0.0]
         plane_runner.output_plane.normal = [1.0, 1.0, 0.0]

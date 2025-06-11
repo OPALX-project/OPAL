@@ -1,31 +1,32 @@
 #include "PyOpal/PyCore/ExceptionTranslation.h"
-#include "PyOpal/PyCore/PyOpalObject.h"
 #include "PyOpal/PyCore/Globals.h"
+#include "PyOpal/PyCore/PyOpalObject.h"
 
 #include "Elements/OpalOffset/OpalLocalCartesianOffset.h"
 
-//using namespace boost::python;
+// using namespace boost::python;
 namespace PyOpal {
-namespace PyOpalLocalCartesianOffset {
+    template <>
+    std::vector<PyOpalObjectNS::AttributeDef>
+        PyOpalObjectNS::PyOpalObject<OpalOffset::OpalLocalCartesianOffset>::attributes = {
+            {"END_POSITION_X", "end_position_x", "", PyOpalObjectNS::DOUBLE},
+            {"END_POSITION_Y", "end_position_y", "", PyOpalObjectNS::DOUBLE},
+            {"END_NORMAL_X", "end_normal_x", "", PyOpalObjectNS::DOUBLE},
+            {"END_NORMAL_Y", "end_normal_y", "", PyOpalObjectNS::DOUBLE},
+    };
 
-using OpalOffset::OpalLocalCartesianOffset;
+    namespace PyOpalLocalCartesianOffset {
 
-const char* module_docstring = "build a local cartesian offset";
+        using OpalOffset::OpalLocalCartesianOffset;
 
-template <>
-std::vector<PyOpalObjectNS::AttributeDef> PyOpalObjectNS::PyOpalObject<OpalLocalCartesianOffset>::attributes = {
-    {"END_POSITION_X", "end_position_x", "", PyOpalObjectNS::DOUBLE},
-    {"END_POSITION_Y", "end_position_y", "", PyOpalObjectNS::DOUBLE},
-    {"END_NORMAL_X", "end_normal_x", "", PyOpalObjectNS::DOUBLE},
-    {"END_NORMAL_Y", "end_normal_y", "", PyOpalObjectNS::DOUBLE},
-};
+        const char* module_docstring = "build a local cartesian offset";
 
-BOOST_PYTHON_MODULE(local_cartesian_offset) {
-    Globals::Initialise();
-    ExceptionTranslation::registerExceptions();
-    PyOpalObjectNS::PyOpalObject<OpalLocalCartesianOffset> element;
-    auto elementClass = element.make_element_class("LocalCartesianOffset");
-}
+        BOOST_PYTHON_MODULE(local_cartesian_offset) {
+            Globals::Initialise();
+            ExceptionTranslation::registerExceptions();
+            PyOpalObjectNS::PyOpalObject<OpalLocalCartesianOffset> element;
+            auto elementClass = element.make_element_class("LocalCartesianOffset");
+        }
 
-}
-}
+    }  // namespace PyOpalLocalCartesianOffset
+}  // namespace PyOpal
