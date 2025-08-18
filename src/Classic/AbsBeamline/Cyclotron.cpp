@@ -255,6 +255,9 @@ double Cyclotron::getSymmetry() const {
 
 void Cyclotron::setCyclotronType(const std::string& type) {
     typeName_m = type;
+    if (!typeName_m.empty()) {
+        setBFieldType();
+    }
 }
 
 const std::string& Cyclotron::getCyclotronType() const {
@@ -384,13 +387,7 @@ void Cyclotron::setBFieldType() {
         {"SYNCHROCYCLOTRON", BFieldType::SYNCHRO}
     };
 
-    if (typeName_m.empty()) {
-        throw GeneralClassicException(
-                "Cyclotron::setBFieldType",
-                "The attribute TYPE isn't set for the CYCLOTRON element");
-    } else {
-        fieldType_m = typeStringToBFieldType_s.at(typeName_m);
-    }
+    fieldType_m = typeStringToBFieldType_s.at(typeName_m);
 }
 
 Cyclotron::BFieldType Cyclotron::getBFieldType() const {
@@ -795,6 +792,10 @@ bool Cyclotron::interpolate(const double& rad,
 
 
 void Cyclotron::read(const double& scaleFactor) {
+    if (typeName_m.empty()) {
+        throw GeneralClassicException("Cyclotron::read",
+                                      "The attribute TYPE isn't set for the CYCLOTRON element");
+    }
     switch (fieldType_m) {
         case BFieldType::PSIBF: {
             *gmsg << "* Read field data from PSI format field map file" << endl;

@@ -444,7 +444,6 @@ void ParallelCyclotronTracker::visitCyclotron(const Cyclotron& cycl) {
     std::vector<double> rffrequ = cycl_m->getRfFrequ();
     *gmsg << "* RF frequency         = " << Util::doubleVectorToString(rffrequ) << " [MHz]" << endl;
 
-    cycl_m->setBFieldType();
     if (cycl_m->getBFieldType() == Cyclotron::BFieldType::BANDRF) {
         std::vector<double> rfphi = cycl_m->getRfPhi();
         for (size_t i = 0; i < rfphi.size(); ++i) {
