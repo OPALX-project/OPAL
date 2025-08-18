@@ -81,6 +81,7 @@ class Cyclotron: public Component {
 
 public:
     enum class BFieldType: unsigned short {
+        NONE,
         PSIBF,
         CARBONBF,
         ANSYSBF,
