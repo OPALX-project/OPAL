@@ -9,10 +9,11 @@ namespace PyOpal {
     template <>
     std::vector<PyOpalObjectNS::AttributeDef>
         PyOpalObjectNS::PyOpalObject<OpalPolynomialTimeDependence>::attributes = {
-            {"P0", "p0", "", PyOpalObjectNS::DOUBLE},
-            {"P1", "p1", "", PyOpalObjectNS::DOUBLE},  // lambda is a python reserved word
-            {"P2", "p2", "", PyOpalObjectNS::DOUBLE},
-            {"P3", "p3", "", PyOpalObjectNS::DOUBLE},
+            {"P0", "p0", "", DOUBLE},
+            {"P1", "p1", "", DOUBLE},
+            {"P2", "p2", "", DOUBLE},
+            {"P3", "p3", "", DOUBLE},
+            {"COEFFICIENTS", "coefficients", "", FLOAT_LIST},
     };
 
     template <>
@@ -31,7 +32,7 @@ namespace PyOpal {
             "polynomial_time_dependence module holds a PolynomialTimeDependence class";
 
         BOOST_PYTHON_MODULE(polynomial_time_dependence) {
-            PyOpal::Globals::Initialise();
+            Globals::Initialise();
             ExceptionTranslation::registerExceptions();
             PyOpalObjectNS::PyOpalObject<OpalPolynomialTimeDependence> element;
             auto elementClass = element.make_class("PolynomialTimeDependence");

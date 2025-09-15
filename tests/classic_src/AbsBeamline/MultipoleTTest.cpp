@@ -10,6 +10,8 @@
 #include <cmath>
 #include <sstream>
 
+#include "Algorithms/PolynomialTimeDependence.h"
+
 using namespace std;
 
 Vector_t rotateBy(const Vector_t& center, const Vector_t& point, double theta) {
@@ -551,6 +553,10 @@ TEST(MultipoleTTest, UserInterface) {
     Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], true);
     EXPECT_NO_THROW(ui.update());
     EXPECT_NEAR(myMagnet->getEntryOffset(), 1.2, 1e-6);
+    // Check time dependency
+    Attributes::setString(ui.itsAttr[OpalMultipoleT::SCALING_MODEL], "Scaling");
+    EXPECT_NO_THROW(ui.update());
+    EXPECT_EQ(myMagnet->getScalingName(), "SCALING");
 }
 
 TEST(MultipoleTTest, UserInterfaceClone) {
@@ -571,6 +577,7 @@ TEST(MultipoleTTest, UserInterfaceClone) {
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXXORDER], 7.0);
     Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], false);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 0.0);
+    Attributes::setString(ui.itsAttr[OpalMultipoleT::SCALING_MODEL], "Scaling");
     // Make the clone
     std::unique_ptr<OpalMultipoleT> uiClone{ui.clone("Clone")};
     // Update the magnet
@@ -598,6 +605,7 @@ TEST(MultipoleTTest, UserInterfaceClone) {
     EXPECT_NEAR(myMagnet->getMaxXOrder(), 7.0, 1e-6);
     EXPECT_FALSE(myMagnet->getVariableRadius());
     EXPECT_NEAR(myMagnet->getEntryOffset(), 0.0, 1e-6);
+    EXPECT_EQ(myMagnet->getScalingName(), "SCALING");
 }
 
 TEST(MultipoleTTest, UserInterfaceSanityCheck) {
@@ -918,7 +926,8 @@ TEST(MultipoleTTest, ZeroTP) {
     myMagnet->setFringeField(0.25, 0.3, 0.3);
     myMagnet->setTransProfile({0.0, 0.0});
     double t = 0.0;
-    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+    Vector_t R(0.0, 0.0, 0.0), E(3);
+    const Vector_t P(3);
     Vector_t B(0., 0., 0.);
     // Inside the aperture
     R = {1.4, 1.4, 0.25};
@@ -926,6 +935,67 @@ TEST(MultipoleTTest, ZeroTP) {
     EXPECT_EQ(B[0], 0.0);
     EXPECT_EQ(B[1], 0.0);
     EXPECT_EQ(B[2], 0.0);
+}
+
+TEST(MultipoleTTest, TimeDependentStraight) {
+    const auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    const std::shared_ptr<AbstractTimeDependence> poly1 =
+        std::make_shared<PolynomialTimeDependence>(std::vector{0.5});
+    constexpr double length = 4.4;
+    myMagnet->setBendAngle(0.0, false);
+    myMagnet->setElementLength(length);
+    myMagnet->setAperture(3.5, 3.5);
+    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setMaxOrder(5, 20);
+    // Get the B field without the time dependency
+    constexpr double t = 0.0;
+    const Vector_t R(0.01, 0.01, 0.01);
+    Vector_t E(3);
+    const Vector_t P(3);
+    Vector_t B1{};
+    myMagnet->apply(R, P, t, E, B1);
+    // Get the B field with the time dependency
+    myMagnet->setScalingModel(poly1);
+    Vector_t B2{};
+    myMagnet->apply(R, P, t, E, B2);
+    // With should be half the without
+    EXPECT_NEAR(B1[0] * 0.5, B2[0], DBL_EPSILON);
+    EXPECT_NEAR(B1[1] * 0.5, B2[1], DBL_EPSILON);
+    EXPECT_NEAR(B1[2] * 0.5, B2[2], DBL_EPSILON);
+}
+
+TEST(MultipoleTTest, TimeDependentStraightClone) {
+    auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    const std::shared_ptr<AbstractTimeDependence> poly1 =
+        std::make_shared<PolynomialTimeDependence>(std::vector{0.5});
+    constexpr double length = 4.4;
+    myMagnet->setBendAngle(0.0, false);
+    myMagnet->setElementLength(length);
+    myMagnet->setAperture(3.5, 3.5);
+    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setMaxOrder(5, 20);
+    // Get the B field without the time dependency
+    constexpr double t = 0.0;
+    const Vector_t R(0.01, 0.01, 0.01);
+    Vector_t E(3);
+    const Vector_t P(3);
+    Vector_t B1{};
+    myMagnet->apply(R, P, t, E, B1);
+    // Get the B field with the time dependency of a clone
+    myMagnet->setScalingModel(poly1);
+    myMagnet.reset(dynamic_cast<MultipoleT*>(myMagnet->clone()));
+    Vector_t B2{};
+    myMagnet->apply(R, P, t, E, B2);
+    // With should be half the without
+    EXPECT_NEAR(B1[0] * 0.5, B2[0], DBL_EPSILON);
+    EXPECT_NEAR(B1[1] * 0.5, B2[1], DBL_EPSILON);
+    EXPECT_NEAR(B1[2] * 0.5, B2[2], DBL_EPSILON);
 }
 
 #if 0

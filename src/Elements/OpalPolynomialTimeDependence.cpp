@@ -34,30 +34,28 @@
 #include "Attributes/Attributes.h"
 
 const std::string OpalPolynomialTimeDependence::doc_string =
-    std::string("The \"POLYNOMIAL_TIME_DEPENDENCE\" element defines ")+\
-    std::string("polynomial coefficients for time dependent RF phase, ")+\
-    std::string("frequency, amplitude, etc, given by ")+\
-    std::string("f(t) = P0+P1*t+P2*t^2+P3*t^3 where t is the time in ns");
+    std::string("The \"POLYNOMIAL_TIME_DEPENDENCE\" element defines ")
+    + std::string("polynomial coefficients for time dependent RF phase, ")
+    + std::string("frequency, amplitude, etc, given by ")
+    + std::string("f(t) = P0+P1*t+P2*t^2+P3*t^3 where t is the time in ns");
 
-// I investigated using a StringArray or RealArray here;
-// Don't seem to have capacity to handle variables, so for now not implemented
+// Use either P0..P3 or COEFFICIENTS.  If COEFFICIENTS are present, P0..P3 are ignored.
 OpalPolynomialTimeDependence::OpalPolynomialTimeDependence()
-       : OpalElement(int(SIZE),
-                     "POLYNOMIAL_TIME_DEPENDENCE",
-                     doc_string.c_str()) {
-    itsAttr[P0] = Attributes::makeReal("P0",
-      "Constant term in the polynomial expansion.");
-    itsAttr[P1] = Attributes::makeReal("P1",
-      "First order (linear) term in the polynomial expansion.");
-    itsAttr[P2] = Attributes::makeReal("P2",
-      "Second order (quadratic) term in the polynomial expansion.");
-    itsAttr[P3] = Attributes::makeReal("P3",
-      "Third order (cubic) term in the polynomial expansion.");
+    : OpalElement(static_cast<int>(SIZE), "POLYNOMIAL_TIME_DEPENDENCE", doc_string.c_str()) {
+    itsAttr[P0] = Attributes::makeReal("P0", "Constant term in the polynomial expansion.");
+    itsAttr[P1] =
+        Attributes::makeReal("P1", "First order (linear) term in the polynomial expansion.");
+    itsAttr[P2] =
+        Attributes::makeReal("P2", "Second order (quadratic) term in the polynomial expansion.");
+    itsAttr[P3] =
+        Attributes::makeReal("P3", "Third order (cubic) term in the polynomial expansion.");
+    itsAttr[COEFFICIENTS] = Attributes::makeRealArray(
+        "COEFFICIENTS", "Polynomial coefficients as an array with arbitrary length.");
 
     registerOwnership();
 }
 
-OpalPolynomialTimeDependence* OpalPolynomialTimeDependence::clone(const std::string &name) {
+OpalPolynomialTimeDependence* OpalPolynomialTimeDependence::clone(const std::string& name) {
     return new OpalPolynomialTimeDependence(name, this);
 }
 
@@ -65,20 +63,22 @@ void OpalPolynomialTimeDependence::print(std::ostream& out) const {
     OpalElement::print(out);
 }
 
-OpalPolynomialTimeDependence::OpalPolynomialTimeDependence(const std::string &name, OpalPolynomialTimeDependence *parent):
-    OpalElement(name, parent) {
+OpalPolynomialTimeDependence::OpalPolynomialTimeDependence(
+    const std::string& name, OpalPolynomialTimeDependence* parent)
+    : OpalElement(name, parent) {
 }
 
-OpalPolynomialTimeDependence::~OpalPolynomialTimeDependence() {}
+OpalPolynomialTimeDependence::~OpalPolynomialTimeDependence() = default;
 
 void OpalPolynomialTimeDependence::update() {
     // getOpalName() comes from AbstractObjects/Object.h
-    std::vector<double> polynomial_coefficients;
-    polynomial_coefficients.push_back(Attributes::getReal(itsAttr[P0]));
-    polynomial_coefficients.push_back(Attributes::getReal(itsAttr[P1]));
-    polynomial_coefficients.push_back(Attributes::getReal(itsAttr[P2]));
-    polynomial_coefficients.push_back(Attributes::getReal(itsAttr[P3]));
-
-    AbstractTimeDependence::setTimeDependence(getOpalName(),
-                                              std::make_shared<PolynomialTimeDependence>(polynomial_coefficients));
+    std::vector<double> polynomial_coefficients = Attributes::getRealArray(itsAttr[COEFFICIENTS]);
+    if (polynomial_coefficients.empty()) {
+        polynomial_coefficients.push_back(Attributes::getReal(itsAttr[P0]));
+        polynomial_coefficients.push_back(Attributes::getReal(itsAttr[P1]));
+        polynomial_coefficients.push_back(Attributes::getReal(itsAttr[P2]));
+        polynomial_coefficients.push_back(Attributes::getReal(itsAttr[P3]));
+    }
+    AbstractTimeDependence::setTimeDependence(
+        getOpalName(), std::make_shared<PolynomialTimeDependence>(polynomial_coefficients));
 }

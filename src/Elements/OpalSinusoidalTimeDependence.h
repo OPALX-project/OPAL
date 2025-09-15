@@ -1,5 +1,5 @@
 /*
- *  Copyright (c) 2012, Chris Rogers
+ *  Copyright (c) 2025, Jon Thompson
  *  All rights reserved.
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions are met:
@@ -25,53 +25,47 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef OPAL_OpalPolynomialTimeDependence_HH
-#define OPAL_OpalPolynomialTimeDependence_HH
+#ifndef OPAL_OPALSINUSOIDALTIMEDEPENDENCE_H
+#define OPAL_OPALSINUSOIDALTIMEDEPENDENCE_H
 
 #include "Elements/OpalElement.h"
 
-/** OpalPolynomialTimeDependence provides UI wrapper for the
- *  PolynomialTimeDependence
- */
-
-class OpalPolynomialTimeDependence : public OpalElement {
-  public:
+/** The UI wrapper for SinusoidalTimeDependence */
+class OpalSinusoidalTimeDependence final : public OpalElement {
+public:
     /** Enumeration maps to UI parameters */
     enum {
-        P0 = COMMON,
-        P1,
-        P2,
-        P3,
-        COEFFICIENTS,
+        FREQUENCIES = COMMON,
+        PHASE_OFFSETS,
+        AMPLITUDES,
+        DC_OFFSETS,
         SIZE // size of the enum
     };
 
     /** Define mapping from enum variables to string UI parameter names */
-    OpalPolynomialTimeDependence();
+    OpalSinusoidalTimeDependence();
 
-    /** No memory allocated so does nothing */
-    virtual ~OpalPolynomialTimeDependence();
+    /** Default destructor */
+    ~OpalSinusoidalTimeDependence() override = default;
 
     /** Inherited copy constructor */
-    virtual OpalPolynomialTimeDependence *clone(const std::string &name);
+    OpalSinusoidalTimeDependence *clone(const std::string &name) override;
 
-    /** Receive parameters from the parser and hand them off to the
-     *  PolynomialTimeDependence
-     */
-    void update();
+    /** Receive parameters from the parser and hand them off to the OpalSinusoidalTimeDependence*/
+    void update() override;
 
     /** Calls print on the OpalElement */
-    virtual void print(std::ostream &) const;
-  private:
+    void print(std::ostream &) const override;
+
+private:
     // Not implemented.
-    OpalPolynomialTimeDependence(const OpalPolynomialTimeDependence &);
-    void operator=(const OpalPolynomialTimeDependence &);
+    OpalSinusoidalTimeDependence(const OpalSinusoidalTimeDependence&) = delete;
+    OpalSinusoidalTimeDependence& operator=(const OpalSinusoidalTimeDependence &) = delete;
 
     // Clone constructor.
-    OpalPolynomialTimeDependence(const std::string &name,
-                                 OpalPolynomialTimeDependence *parent);
+    OpalSinusoidalTimeDependence(const std::string &name, OpalSinusoidalTimeDependence *parent);
 
     static const std::string doc_string;
 };
 
-#endif // OPAL_OpalPolynomialTimeDependence_HH
+#endif  // OPAL_OPALSINUSOIDALTIMEDEPENDENCE_H
