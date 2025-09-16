@@ -28,6 +28,9 @@
 #ifndef OPAL_SINUSOIDALTIMEDEPENDENCE_H
 #define OPAL_SINUSOIDALTIMEDEPENDENCE_H
 
+#include <vector>
+#include <cmath>
+
 #include "Algorithms/AbstractTimeDependence.h"
 class Inform;
 
