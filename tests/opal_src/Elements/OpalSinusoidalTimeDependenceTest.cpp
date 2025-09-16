@@ -26,6 +26,7 @@
  */
 #include <Algorithms/AbstractTimeDependence.h>
 #include <Attributes/Attributes.h>
+#include <Physics/Physics.h>
 
 #include <sstream>
 
@@ -90,6 +91,6 @@ TEST(OpalSinusoidalTimeDependenceTest, UpdateTest) {
     dependence.update();
     const auto dep = AbstractTimeDependence::getTimeDependence("SCALE1");
     const auto value = dep->getValue(0.1);
-    const auto shouldBe = 3.0 / 2.0 * std::sin(2.0 * M_PI * 8.0 * 0.1 + 0.1) - 1.0;
+    const auto shouldBe = 3.0 / 2.0 * std::sin(2.0 * Physics::pi * 8.0 * 0.1 + 0.1) - 1.0;
     EXPECT_DOUBLE_EQ(value, shouldBe);
 }

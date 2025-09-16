@@ -26,8 +26,10 @@
  */
 
 #include "SinusoidalTimeDependence.h"
+#include <Physics/Physics.h>
 #include "PolynomialTimeDependence.h"
 #include "Utility/Inform.h"
+
 
 SinusoidalTimeDependence::SinusoidalTimeDependence(
     const std::vector<double>& f, const std::vector<double>& p, const std::vector<double>& a,
@@ -51,7 +53,7 @@ double SinusoidalTimeDependence::getValue(const double time) {
         if (i < o_m.size()) {
             o = o_m[i];
         }
-        const auto angle = 2.0 * M_PI * f * time + p;
+        const auto angle = 2.0 * Physics::pi * f * time + p;
         result += a / 2.0 * std::sin(angle) + o;
     }
     return result;
