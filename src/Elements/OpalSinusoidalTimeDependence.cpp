@@ -32,11 +32,11 @@ OpalSinusoidalTimeDependence::OpalSinusoidalTimeDependence()
         "FREQUENCIES",
         "Sine wave frequencies, length determines the number of size waves included.");
     itsAttr[AMPLITUDES] = Attributes::makeRealArray(
-        "AMPLITUDES", "Peak-to-peak amplitude for each size wave, if missing 1.0 is assumed.");
+        "AMPLITUDES", "Peak-to-peak amplitude for each size wave.  If undefined, defaults to 1.0.");
     itsAttr[PHASE_OFFSETS] = Attributes::makeRealArray(
-        "PHASE_OFFSETS", "Phase offset for each sine wave, if missing 0.0 is assumed.");
+        "PHASE_OFFSETS", "Phase offset for each sine wave.  If undefined, defaults to 0.0.");
     itsAttr[DC_OFFSETS] = Attributes::makeRealArray(
-        "DC_OFFSETS", "DC offset for each sine wave, if missing 0.0 is assumed.");
+        "DC_OFFSETS", "DC offset for each sine wave.  If undefined, defaults to 0.0.");
     registerOwnership();
 }
 

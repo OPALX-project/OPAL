@@ -80,3 +80,16 @@ TEST(OpalPolynomialTimeDependenceTest, UpdateTest2) {
     constexpr auto shouldBe = 1.0 + 2.0 * 0.1 + 3.0 * 0.1 * 0.1 + 4.0 * 0.1 * 0.1 * 0.1;
     EXPECT_DOUBLE_EQ(value, shouldBe);
 }
+
+TEST(OpalPolynomialTimeDependenceTest, UpdateTest3) {
+    OpalTestUtilities::SilenceTest silencer;
+    OpalPolynomialTimeDependence dependence;
+    dependence.setOpalName("SCALE1");
+    Attributes::setRealArray(dependence.itsAttr[OpalPolynomialTimeDependence::COEFFICIENTS],
+        {1.0, 2.0, 3.0, 4.0});
+    Attributes::setReal(dependence.itsAttr[OpalPolynomialTimeDependence::P0], 1.0);
+    Attributes::setReal(dependence.itsAttr[OpalPolynomialTimeDependence::P1], 2.0);
+    Attributes::setReal(dependence.itsAttr[OpalPolynomialTimeDependence::P2], 3.0);
+    Attributes::setReal(dependence.itsAttr[OpalPolynomialTimeDependence::P3], 4.0);
+    EXPECT_ANY_THROW(dependence.update());
+}
