@@ -49,6 +49,28 @@ double SinusoidalTimeDependence::getValue(const double time) {
     return result;
 }
 
+double SinusoidalTimeDependence::getIntegral(const double time) {
+    double result{};
+    for (size_t i = 0; i < f_m.size(); i++) {
+        const auto f = f_m[i];
+        auto p       = 0.0;
+        auto a       = 1.0;
+        auto o       = 0.0;
+        if (i < p_m.size()) {
+            p = p_m[i];
+        }
+        if (i < a_m.size()) {
+            a = a_m[i];
+        }
+        if (i < o_m.size()) {
+            o = o_m[i];
+        }
+        result += o * time + a / Physics::two_pi / f *
+            (std::cos(p) - std::cos(Physics::two_pi * f * time + p));
+    }
+    return result;
+}
+
 SinusoidalTimeDependence* SinusoidalTimeDependence::clone() {
     return new SinusoidalTimeDependence(f_m, p_m, a_m, o_m);
 }

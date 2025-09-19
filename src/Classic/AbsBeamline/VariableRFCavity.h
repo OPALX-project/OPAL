@@ -21,6 +21,7 @@
 
 #include "AbsBeamline/Component.h"
 #include "Algorithms/AbstractTimeDependence.h"
+#include "Algorithms/TimeDependenceCache.h"
 #include "BeamlineGeometry/StraightGeometry.h"
 #include "Fields/Definitions.h"
 #include "Fields/EMField.h"
@@ -217,6 +218,7 @@ protected:
     double halfWidth_m;
     double halfHeight_m;
     double length_m;
+    TimeDependenceCache frequencyCache_m;
 
     /// The cavity's geometry.
     StraightGeometry geometry;

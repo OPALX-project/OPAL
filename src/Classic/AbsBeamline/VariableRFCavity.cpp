@@ -101,6 +101,7 @@ void VariableRFCavity::setPhaseModel(std::shared_ptr<AbstractTimeDependence> pha
 
 void VariableRFCavity::setFrequencyModel(std::shared_ptr<AbstractTimeDependence> frequency_td) {
     frequencyTD_m = frequency_td;
+    frequencyCache_m.setTimeDependence(frequencyTD_m.get());
 }
 
 StraightGeometry& VariableRFCavity::getGeometry() {
@@ -139,10 +140,11 @@ bool VariableRFCavity::apply(const Vector_t& R, const Vector_t& /*P*/,
         if (std::abs(R[0]) > halfWidth_m || std::abs(R[1]) > halfHeight_m) {
             return true;
         }
-        double E0 = amplitudeTD_m->getValue(t);
-        double f = frequencyTD_m->getValue(t) * Units::MHz2Hz * Units::Hz2GHz; // need GHz on the element we have MHz
-        double phi = phaseTD_m->getValue(t);
-        E = Vector_t(0., 0., E0 * std::sin(Physics::two_pi * f * t + phi));
+        const double E0 = amplitudeTD_m->getValue(t);
+        const double integralF = frequencyCache_m.getIntegral(t) * Units::MHz2Hz;
+        //const double integralF = frequencyTD_m->getIntegral(t) * Units::MHz2Hz;
+        const double phi = phaseTD_m->getValue(t);
+        E = Vector_t(0., 0., E0 * std::sin(Physics::two_pi * integralF + phi));
         return false;
     }
     return true;
@@ -153,7 +155,8 @@ bool VariableRFCavity::applyToReferenceParticle(const Vector_t& R, const Vector_
     return apply(R, P, t, E, B);
 }
 
-void VariableRFCavity::initialise(PartBunchBase<double, 3>* bunch, double& /*startField*/, double& /*endField*/) {
+void VariableRFCavity::initialise(PartBunchBase<double, 3>* bunch, double& /*startField*/,
+        double& /*endField*/) {
     RefPartBunch_m = bunch;
 }
 

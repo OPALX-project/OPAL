@@ -15,6 +15,7 @@ set (_SRCS
     Tracker.cpp
     Quaternion.cpp
     SinusoidalTimeDependence.cpp
+    TimeDependenceCache.cpp
     )
 
 if (ENABLE_AMR)
@@ -48,6 +49,7 @@ set (HDRS
     Tracker.h
     Vektor.h
     SinusoidalTimeDependence.h
+    TimeDependenceCache.h
     )
 
 if (ENABLE_AMR)
