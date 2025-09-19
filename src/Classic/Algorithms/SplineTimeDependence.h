@@ -82,6 +82,13 @@ class SplineTimeDependence : public AbstractTimeDependence {
      */
     inline double getValue(double time);
 
+    /** Return the integral of the spline from 0 to the given time
+     *
+     *  @param time: time at which the spline is referenced.
+     *
+     */
+    inline double getIntegral(double time);
+
     /** Inheritable copy constructor
      *
      *  @returns new SplineTimeDependence.
@@ -123,6 +130,16 @@ double SplineTimeDependence::getValue(double time) {
                             "time out of spline range");
     }
     return gsl_spline_eval (spline_m, time, acc_m);
+}
+
+inline
+double SplineTimeDependence::getIntegral(const double time) {
+    if (time < times_m[0] or time > times_m.back()) {
+        throw GeneralClassicException(
+                            "SplineTimeDependence::getValue",
+                            "time out of spline range");
+    }
+    return gsl_spline_eval_integ (spline_m, 0, time, acc_m);
 }
 
 #endif

@@ -55,6 +55,11 @@ public:
      */
     double getValue(double time) override;
 
+    /** Return the integral from 0 to time
+     *  @param time simulation time in seconds
+     */
+    double getIntegral(double time) override;
+
     /** Inheritable clone function
      *  @returns new SinusoidalTimeDependence that is a copy of this. User owns
      *  returned memory.

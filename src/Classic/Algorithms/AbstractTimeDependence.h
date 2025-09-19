@@ -61,6 +61,11 @@ class AbstractTimeDependence {
      */
     virtual double getValue(double time) = 0;
 
+    /** getIntegral(time) returns the integral from 0 to time of the function.
+     *
+     */
+    virtual double getIntegral(double time) = 0;
+
     /** Look up the time dependence that has a given name
      *  
      *  @param name name of the time dependence
