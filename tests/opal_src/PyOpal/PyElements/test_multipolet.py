@@ -28,6 +28,7 @@ import pyopal.objects.field
 import pyopal.objects.minimal_runner
 import pyopal.elements.multipolet
 import pyopal.objects.field
+import pyopal.elements.polynomial_time_dependence
 
 class TestMultipoleTRunner(pyopal.objects.minimal_runner.MinimalRunner):
     """Test runner - I wanted to check the placement was okay"""
@@ -148,6 +149,16 @@ class TestMultipoleT(unittest.TestCase):
         multipole.bounding_box_length = 2.0
         return multipole
 
+    @classmethod
+    def make_time_dependence(cls, name, pol0, pol1):
+        """Make a time dependence"""
+        ptd = pyopal.elements.polynomial_time_dependence.PolynomialTimeDependence()
+        ptd.p0 = pol0
+        ptd.p1 = pol1
+        ptd.set_opal_name(name)
+        ptd.update()
+        return ptd
+
     def test_on_axis_field(self):
         """Check the on axis field is reasonable"""
         multipole = self.make_multipolet()
@@ -201,6 +212,18 @@ class TestMultipoleT(unittest.TestCase):
         """Check placement is okay"""
         runner = TestMultipoleTRunner()
         runner.execute_fork()
+
+    def test_time_dependency(self):
+        """Check the time dependency is okay"""
+        self.scaling = self.make_time_dependence("SCALING", 0.5, 0.0)
+        multipole = self.make_multipolet()
+        multipole.scaling_model = "SCALING"
+        for zi, bz in [(0.0, 0.25/2.0), (0.45, 0.5/2.0), (0.9, 0.25/2.0)]:
+            point = (0.0, 0.0, zi, 0.0)
+            field = multipole.get_field_value(*point)
+            self.assertAlmostEqual(field[2], bz)
+            self.assertFalse(field[1])
+
 
 if __name__ == "__main__":
     unittest.main()

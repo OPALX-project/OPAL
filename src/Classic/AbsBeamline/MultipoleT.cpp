@@ -35,6 +35,7 @@
 #include "MultipoleTStraight.h"
 #include "MultipoleTCurvedConstRadius.h"
 #include "MultipoleTCurvedVarRadius.h"
+#include <boost/algorithm/string/case_conv.hpp>
 
 using namespace endfieldmodel;
 
@@ -58,7 +59,9 @@ MultipoleT::MultipoleT(const MultipoleT& right)
       variableRadius_m(right.variableRadius_m),
       boundingBoxLength_m(right.boundingBoxLength_m),
       verticalApert_m(right.verticalApert_m),
-      horizontalApert_m(right.horizontalApert_m) {
+      horizontalApert_m(right.horizontalApert_m),
+      scalingName_m(right.scalingName_m),
+      scalingTD_m(right.scalingTD_m) {
     RefPartBunch_m = right.RefPartBunch_m;
     chooseImplementation();
 }
@@ -68,6 +71,7 @@ ElementBase* MultipoleT::clone() const {
 }
 
 void MultipoleT::accept(BeamlineVisitor& visitor) const {
+    initialiseTimeDepencencies();
     visitor.visitMultipoleT(*this);
 }
 
@@ -122,12 +126,15 @@ Vector_t MultipoleT::getField(const Vector_t& magnetCoords) {
     return result;
 }
 
-bool MultipoleT::apply(
-    const Vector_t& R, const Vector_t& /*P*/, const double& /*t*/, Vector_t& /*E*/, Vector_t& B) {
-    Vector_t R_prime = toMagnetCoords(R);
+bool MultipoleT::apply(const Vector_t& R, const Vector_t& /*P*/, const double& t,
+        Vector_t& /*E*/, Vector_t& B) {
+    const Vector_t R_prime = toMagnetCoords(R);
     bool result;
     if (insideAperture(R_prime) && insideBoundingBox(R_prime)) {
         B = getField(R_prime);
+        if (scalingTD_m) {
+            B *= scalingTD_m->getValue(t);
+        }
         result = false;
     } else {
         B = {0.0, 0.0, 0.0};
@@ -291,6 +298,18 @@ void MultipoleT::initialise(PartBunchBase<double, 3>* bunch,
                             double& /*startField*/, double& /*endField*/) {
     RefPartBunch_m = bunch;
     implementation_->initialise();
+}
+
+void MultipoleT::setScalingName(const std::string& name) {
+    // Element names are stored in upper case
+    scalingName_m = boost::to_upper_copy<std::string>(name);
+}
+
+void MultipoleT::initialiseTimeDepencencies() const {
+    scalingTD_m.reset();
+    if (!scalingName_m.empty()) {
+        scalingTD_m = AbstractTimeDependence::getTimeDependence(scalingName_m);
+    }
 }
 
 BGeometryBase& MultipoleT::getGeometry() {

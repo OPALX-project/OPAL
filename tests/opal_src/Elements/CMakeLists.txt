@@ -8,6 +8,7 @@ set (_SRCS
     OpalSplineTimeDependenceTest.cpp
     OpalVariableRFCavityTest.cpp
     OpalVariableRFCavityFringeFieldTest.cpp
+    OpalSinusoidalTimeDependenceTest.cpp
 )
 
 include_directories (

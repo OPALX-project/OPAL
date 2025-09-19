@@ -14,6 +14,7 @@ set (_SRCS
     SplineTimeDependence.cpp
     Tracker.cpp
     Quaternion.cpp
+    SinusoidalTimeDependence.cpp
     )
 
 if (ENABLE_AMR)
@@ -46,6 +47,7 @@ set (HDRS
     SplineTimeDependence.h
     Tracker.h
     Vektor.h
+    SinusoidalTimeDependence.h
     )
 
 if (ENABLE_AMR)
