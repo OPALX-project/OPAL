@@ -23,6 +23,7 @@
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
+#include <boost/algorithm/string/case_conv.hpp>
 
 #include <cmath>
 
@@ -176,13 +177,13 @@ void VariableRFCavity::accept(BeamlineVisitor& visitor) const {
 void VariableRFCavity::initialise() const {
     VariableRFCavity* cavity = const_cast<VariableRFCavity*>(this);
     std::shared_ptr<AbstractTimeDependence> phaseTD =
-        AbstractTimeDependence::getTimeDependence(phaseName_m);
+        AbstractTimeDependence::getTimeDependence(boost::to_upper_copy<std::string>(phaseName_m));
     cavity->setPhaseModel(std::shared_ptr<AbstractTimeDependence>(phaseTD->clone()));
     std::shared_ptr<AbstractTimeDependence> frequencyTD =
-        AbstractTimeDependence::getTimeDependence(frequencyName_m);
+        AbstractTimeDependence::getTimeDependence(boost::to_upper_copy<std::string>(frequencyName_m));
     cavity->setFrequencyModel(std::shared_ptr<AbstractTimeDependence>(frequencyTD->clone()));
     std::shared_ptr<AbstractTimeDependence> amplitudeTD =
-        AbstractTimeDependence::getTimeDependence(amplitudeName_m);
+        AbstractTimeDependence::getTimeDependence(boost::to_upper_copy<std::string>(amplitudeName_m));
     cavity->setAmplitudeModel(std::shared_ptr<AbstractTimeDependence>(amplitudeTD->clone()));
 
     if (halfHeight_m < 1e-9 || halfWidth_m < 1e-9)
