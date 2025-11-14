@@ -1,7 +1,6 @@
 //
-// Class SinusoidalTimeDependence
-//   A time dependence class that generates sine waves
-//
+// Class TimeDependenceCache
+///
 // Copyright (c) 2025, Jon Thompson, STFC Rutherford Appleton Laboratory, Didcot, UK
 //
 // This file is part of OPAL.
@@ -16,6 +15,7 @@
 //
 
 #include "TimeDependenceCache.h"
+#include <algorithm>
 
 void TimeDependenceCache::setTimeDependence(AbstractTimeDependence* timeDependence) {
     timeDependence_m = timeDependence;

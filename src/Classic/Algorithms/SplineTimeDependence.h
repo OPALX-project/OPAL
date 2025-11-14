@@ -103,7 +103,8 @@ class SplineTimeDependence : public AbstractTimeDependence {
     /** Set the spline, deleting any existing spline data
      * 
      * @param splineOrder 1 for linear, 3 for cubic, all other values invalid
-     * @param
+    *  @param times the times of successive elements in the time dependence
+     *  @param values the values at each time step.
      */
     void setSpline(size_t splineOrder, const std::vector<double>& times,
             const std::vector<double>& values);

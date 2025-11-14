@@ -29,7 +29,7 @@
 /** @class VariableRFCavity
  *
  *  Generates a field like
- *      E = E0*a(t)*sin{f(t)*t-q(t)}
+ *      E = a(t) * sin{2*pi * integral(f(tau),0,t) + q(t)}
  *      B = 0
  *  where E0, B0 are user defined fields, a(t), f(t), q(t) are time
  *  dependent amplitude, frequency, phase respectively; it is assumed that these
