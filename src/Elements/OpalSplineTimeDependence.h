@@ -28,7 +28,6 @@
 #ifndef OPAL_OpalSplineTimeDependence_HH
 #define OPAL_OpalSplineTimeDependence_HH
 
-#include "Algorithms/SplineTimeDependence.h"
 #include "Elements/OpalElement.h"
 
 /** OpalSplineTimeDependence provides UI wrapper for the
@@ -49,26 +48,26 @@ class OpalSplineTimeDependence : public OpalElement {
     OpalSplineTimeDependence();
 
     /** No memory allocated so does nothing */
-    virtual ~OpalSplineTimeDependence();
+    ~OpalSplineTimeDependence() override = default;
 
     /** Inherited copy constructor */
-    virtual OpalSplineTimeDependence *clone(const std::string &name);
+    OpalSplineTimeDependence *clone(const std::string &name) override;
 
     /** Receive parameters from the parser and hand them off to the
      *  SplineTimeDependence
      */
-    void update();
+    void update() override;
 
     /** Calls print on the OpalElement */
-    virtual void print(std::ostream &) const;
-  private:
-    // Not implemented.
-    OpalSplineTimeDependence(const OpalSplineTimeDependence &);
-    void operator=(const OpalSplineTimeDependence &);
+    void print(std::ostream &) const override;
 
+    // Not implemented.
+    OpalSplineTimeDependence(const OpalSplineTimeDependence &) = delete;
+    void operator=(const OpalSplineTimeDependence &) = delete;
+
+  private:
     // Clone constructor.
-    OpalSplineTimeDependence(const std::string &name,
-                             OpalSplineTimeDependence *parent);
+    OpalSplineTimeDependence(const std::string &name, OpalSplineTimeDependence *parent);
 
     static const std::string doc_string;
 };

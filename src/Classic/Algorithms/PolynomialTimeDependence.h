@@ -54,6 +54,8 @@ class PolynomialTimeDependence : public AbstractTimeDependence {
     ~PolynomialTimeDependence() {}
     /** Return the polynomial Sum_i p_i t^i; returns 0 if p is of 0 length */
     inline double getValue(double time);
+    /** Return the integral of the polynomial from 0 to time */
+    inline double getIntegral(double time);
     /** Inheritable copy constructor
      *
      *  @returns new PolynomialTimeDependence that is a copy of this. User owns
@@ -83,6 +85,16 @@ double PolynomialTimeDependence::getValue(double time) {
         t_power *= time;
     }
     return x;
+}
+
+double PolynomialTimeDependence::getIntegral(double time) {
+    double result{};
+    double t_power{time};
+    for (std::size_t i = 0; i < coeffs.size() ; ++i) {
+        result += coeffs[i] * t_power / (i + 1);
+        t_power *= time;
+    }
+    return result;
 }
 
 

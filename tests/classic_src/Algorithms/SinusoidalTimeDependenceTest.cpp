@@ -92,3 +92,27 @@ TEST(SinusoidalTimeDependenceTest, TDMapNameLookupTest) {
                  GeneralClassicException);
 
 }
+
+TEST(SinusoidalTimeDependenceTest, Integral) {
+    OpalTestUtilities::SilenceTest silencer;
+
+    // Check empty coefficients always returns 0.
+    SinusoidalTimeDependence time_dependence_1({}, {}, {}, {});
+    EXPECT_NEAR(time_dependence_1.getIntegral(0.1), 0.0, 0.000001);
+
+    // Check a sine wave value
+    SinusoidalTimeDependence time_dependence_2({8.0}, {}, {}, {});
+    EXPECT_NEAR(time_dependence_2.getIntegral(0.1), 0.013746670117215259, 0.000001);
+
+    // Check the amplitude
+    SinusoidalTimeDependence time_dependence_3({8.0}, {}, {2.0}, {});
+    EXPECT_NEAR(time_dependence_3.getIntegral(0.1), 0.013746670117215259 * 2, 0.000001);
+
+    // Check the phase offset
+    SinusoidalTimeDependence time_dependence_4({8.0}, {0.1}, {2.0} , {});
+    EXPECT_NEAR(time_dependence_4.getIntegral(0.1), 0.02357815814417235, 0.000001);
+
+    // Check the DC offset
+    SinusoidalTimeDependence time_dependence_5({8.0}, {0.1}, {2.0}, {-1.0});
+    EXPECT_NEAR(time_dependence_5.getIntegral(0.1), 0.02357815814417235 - 0.1, 0.000001);
+}

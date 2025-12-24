@@ -51,9 +51,14 @@ public:
     ~SinusoidalTimeDependence() override = default;
 
     /** Return the sinusoidal value
-     *  @param time simulation time in seconds
+     *  @param time simulation time
      */
     double getValue(double time) override;
+
+    /** Return the integral from 0 to time
+     *  @param time simulation time
+     */
+    double getIntegral(double time) override;
 
     /** Inheritable clone function
      *  @returns new SinusoidalTimeDependence that is a copy of this. User owns

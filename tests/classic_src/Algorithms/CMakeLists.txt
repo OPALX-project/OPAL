@@ -4,6 +4,7 @@ set (_SRCS
     DistributionMomentsTest.cpp
     DistributionMomentsTestFixture.cpp
     SinusoidalTimeDependenceTest.cpp
+    TimeDependenceCacheTest.cpp
 )
 
 include_directories (
