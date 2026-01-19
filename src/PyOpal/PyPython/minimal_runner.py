@@ -1,4 +1,4 @@
-# Basic lattice set up defaults - either use as an example or inherit and 
+# Basic lattice set up defaults - either use as an example or inherit and
 # overload required methods
 #
 # Copyright (c) 2023, Chris Rogers, STFC Rutherford Appleton Laboratory, Didcot, UK
@@ -19,7 +19,6 @@ Minimal set of methods to build an OPAL simulation and run it.
 This takes about 0.1 s to run on my average desktop PC.
 """
 import os
-import sys
 import tempfile
 
 import pyopal.objects.track_run
@@ -32,7 +31,7 @@ import pyopal.objects.field_solver
 import pyopal.objects.track
 import pyopal.objects.option
 
-class MinimalRunner(object):
+class MinimalRunner:
     """Class to run a minimal OPAL setup.
 
     Individual methods make_foo handle set up of each OPAL "global" object:
@@ -109,10 +108,9 @@ class MinimalRunner(object):
         simulation. In this example, a distribution loaded from a tempfile is
         called, where the tempfile is written to disk dynamically at runtime.
         """
-        dist_file = open(self.distribution_filename, "w+")
-        dist_file.write(self.distribution_str)
-        dist_file.flush()
-        dist_file.close()
+        with open(self.distribution_filename, "w+", encoding="UTF-8") as dist_file:
+            dist_file.write(self.distribution_str)
+            dist_file.flush()
         self.distribution = pyopal.objects.distribution.Distribution()
         self.distribution.set_opal_name("DefaultDistribution")
         self.distribution.type = "FROMFILE"
@@ -241,14 +239,12 @@ class MinimalRunner(object):
 
         This method can be overloaded with user required steps.
         """
-        pass
 
     def postprocess(self):
         """Perform any postprocessing steps after the tracking is executed
 
         This method can be overloaded with user required steps.
         """
-        pass
 
     def execute(self):
         """Set up and run a simulation"""
@@ -268,8 +264,6 @@ class MinimalRunner(object):
             self.preprocess()
             self.track_run.execute()
             self.postprocess()
-        except:
-            raise
         finally:
             if self.verbose:
                 print("Finished running in directory", os.getcwd())
@@ -312,6 +306,7 @@ class MinimalRunner(object):
     " before calling make_line()."
 
 def main():
+    """Main function"""
     runner = MinimalRunner()
     runner.execute_fork()
 
