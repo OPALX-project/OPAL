@@ -1,21 +1,17 @@
+name: Doxygen GitHub Pages Deploy Action
+
 on:
   push:
     branches:
-      - master
-permissions:
-  contents: write
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Generate and Deploy Doxygen Docs
-        uses: AgarwalSaurav/ghaction-doxygen-ghpages@release/v2
+      - uses: DenverCoder1/doxygen-github-pages-action@v2.0.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          working-directory: .
-          doxyfile-path: ./Doxyfile.in
-          html-output-folder: doc/html
-          branch: gh-pages
+          config_file: Doxyfile.in
