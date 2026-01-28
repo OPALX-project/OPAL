@@ -88,9 +88,18 @@ void SDDSColumn::writeValue(std::ostream& os) const {
 
     os.flags(writeFlags_m);
     os.precision(writePrecision_m);
-    os << value_m << std::setw(10) << "\t";
+    os << this << std::setw(10) << "\t";
+    //os << value_m << std::setw(10) << "\t";
     set_m = false;
 }
+#if 0
+std::ostream& operator<<(std::ostream& os,
+                         const SDDSColumn& col) {
+    col.writeValue(os);
+
+    return os;
+}
+#endif
 
 std::ostream& operator<<(std::ostream& os,
                          const SDDSColumn& col) {

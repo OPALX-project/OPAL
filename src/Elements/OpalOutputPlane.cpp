@@ -93,29 +93,29 @@ void OpalOutputPlane::update() {
             throw OpalException("OpalOutputPlane::update()",
                 "OutputPlane centre should be a 3-vector");
         }
-        centre = Vector_t(centreVec[0], centreVec[1], centreVec[2]);
+        centre = Vector_t({centreVec[0], centreVec[1], centreVec[2]});
         std::vector<double> normalVec = Attributes::getRealArray(itsAttr[NORMAL]);
         if (normalVec.size() != 3) {
             throw OpalException("OpalOutputPlane::update()",
                 "OutputPlane normal should be a 3-vector");
         }
-        normal = Vector_t(normalVec[0], normalVec[1], normalVec[2]);
+        normal = Vector_t({normalVec[0], normalVec[1], normalVec[2]});
         if (euclidean_norm(normal) < tolerance) {
             throw OpalException("OpalOutputPlane::update()",
                 "OutputPlane normal was not defined or almost zero");
         }
     } else if (placementStyle == "PROBE") {
-        centre = Vector_t(
+        centre = Vector_t({
             Attributes::getReal(itsAttr[XSTART])+Attributes::getReal(itsAttr[XEND]),
             Attributes::getReal(itsAttr[YSTART])+Attributes::getReal(itsAttr[YEND]),
-            0.0
+            0.0}
         );
         centre *= 0.5; // average
-        normal = Vector_t(
+        normal = Vector_t({
             Attributes::getReal(itsAttr[YSTART])-Attributes::getReal(itsAttr[YEND]),
             Attributes::getReal(itsAttr[XEND])-Attributes::getReal(itsAttr[XSTART]),
             0.0
-        );
+            });
         double width = std::sqrt(normal[0]*normal[0]+normal[1]*normal[1]);
         if (width < tolerance) {
             throw OpalException("OpalOutputPlane::update()",

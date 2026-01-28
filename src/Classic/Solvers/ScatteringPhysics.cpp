@@ -434,12 +434,12 @@ void ScatteringPhysics::applyRandomRotation(Vector_t& P, double theta0) {
     double CosT = std::cos(Theta);
     double SinT = std::sin(Theta);
 
-    Vector_t X(std::cos(phiru)*std::sin(thetaru),
+    Vector_t X({std::cos(phiru)*std::sin(thetaru),
                std::sin(phiru)*std::sin(thetaru),
-               std::cos(thetaru));
+               std::cos(thetaru)});
     X *= euclidean_norm(P);
 
-    Vector_t W(-P(1), P(0), 0.0);
+    Vector_t W({-P(1), P(0), 0.0});
     W = W / normPtrans;
 
     // Rodrigues' formula for a rotation about W by angle Theta

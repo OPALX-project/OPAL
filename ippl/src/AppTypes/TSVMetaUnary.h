@@ -83,9 +83,9 @@ struct TSV_MetaUnary< Vektor<T1,3> , OP >
   typedef typename PETEUnaryReturn<T1,OP>::type T0;
   inline static Vektor<T0,3>
   apply(const Vektor<T1,3>& lhs) {
-    return Vektor<T0,3>( PETE_apply( OP(), lhs[0] ) ,
+      return Vektor<T0,3>( {PETE_apply( OP(), lhs[0] ) ,
 			 PETE_apply( OP(), lhs[1] ) ,
-			 PETE_apply( OP(), lhs[2] ) );
+                         PETE_apply( OP(), lhs[2] ) } );
   }
 };
 

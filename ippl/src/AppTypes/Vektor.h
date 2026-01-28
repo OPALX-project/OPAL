@@ -57,7 +57,7 @@ public:
   Vektor(const T& x00) {
     TSV_MetaAssignScalar<Vektor<T,D>,T,OpAssign>::apply(*this,x00);
   }
-
+#if 0
   // Constructors for fixed dimension
   Vektor(const T& x00, const T& x01) {
     PInsist(D==2, "Number of arguments does not match Vektor dimension!!");
@@ -79,6 +79,13 @@ public:
     X[2] = x02;
     X[3] = x03;
   }
+#endif
+    Vektor(std::initializer_list<T> init) {
+        for (auto it = init.begin(); it != init.end(); ++it) {
+            auto i = std::distance(init.begin(), it);
+            X[i] = *it;
+        }
+    }
 
   // Destructor
   ~Vektor() { }
@@ -185,7 +192,7 @@ public:
 private:
 
   // Just store D elements of type T.
-  T X[D];
+    T X[D];
 
 };
 

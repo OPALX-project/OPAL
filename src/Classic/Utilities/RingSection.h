@@ -229,11 +229,11 @@ inline Vector_t& RingSection::normalise(Vector_t& orientation) const {
 
 
 void RingSection::rotateToTCoordinates(Vector_t& vec) const {
-  vec = Vector_t(vec(1), vec(2), vec(0));
+    vec = Vector_t({vec(1), vec(2), vec(0)});
 }
 
 void RingSection::rotateToCyclCoordinates(Vector_t& vec) const {
-  vec = Vector_t(vec(2), vec(0), vec(1));
+    vec = Vector_t({vec(2), vec(0), vec(1)});
 }
 
 #endif //RING_SECTION_H

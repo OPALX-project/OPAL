@@ -15,9 +15,9 @@ void Mesher::orientVerticesCCW() {
     double sum = 0.0;
     for (unsigned int i = 0; i < size; ++ i) {
         unsigned int iPlusOne = (i + 1) % size;
-        Vector_t edge(vertices_m[iPlusOne][0] - vertices_m[i][0],
+        Vector_t edge({vertices_m[iPlusOne][0] - vertices_m[i][0],
                       vertices_m[iPlusOne][1] + vertices_m[i][1],
-                      0.0);
+                      0.0});
         sum += edge[0] * edge[1];
     }
     if (sum <= 0.0) return;

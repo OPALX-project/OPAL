@@ -415,24 +415,24 @@ void H5PartWrapperForPC::writeStepHeader(PartBunchBase<double, 3>* bunch,
         h5_float64_t azimuth   = additionalStepAttributes.at("AZIMUTH");
         h5_float64_t elevation = additionalStepAttributes.at("ELEVATION");
 
-        Vector_t referenceB(additionalStepAttributes.at("B-ref_x"),
+        Vector_t referenceB({additionalStepAttributes.at("B-ref_x"),
                             additionalStepAttributes.at("B-ref_z"),
-                            additionalStepAttributes.at("B-ref_y"));
-        Vector_t referenceE(additionalStepAttributes.at("E-ref_x"),
+                            additionalStepAttributes.at("B-ref_y")});
+        Vector_t referenceE({additionalStepAttributes.at("E-ref_x"),
                             additionalStepAttributes.at("E-ref_z"),
-                            additionalStepAttributes.at("E-ref_y"));
-        Vector_t headB(additionalStepAttributes.at("B-head_x"),
+                            additionalStepAttributes.at("E-ref_y")});
+        Vector_t headB({additionalStepAttributes.at("B-head_x"),
                       additionalStepAttributes.at("B-head_z"),
-                      additionalStepAttributes.at("B-head_y"));
-        Vector_t headE(additionalStepAttributes.at("E-head_x"),
+                       additionalStepAttributes.at("B-head_y")});
+        Vector_t headE({additionalStepAttributes.at("E-head_x"),
                        additionalStepAttributes.at("E-head_z"),
-                       additionalStepAttributes.at("E-head_y"));
-        Vector_t tailB(additionalStepAttributes.at("B-tail_x"),
+                       additionalStepAttributes.at("E-head_y")});
+        Vector_t tailB({additionalStepAttributes.at("B-tail_x"),
                       additionalStepAttributes.at("B-tail_z"),
-                      additionalStepAttributes.at("B-tail_y"));
-        Vector_t tailE(additionalStepAttributes.at("E-tail_x"),
+                       additionalStepAttributes.at("B-tail_y")});
+        Vector_t tailE({additionalStepAttributes.at("E-tail_x"),
                        additionalStepAttributes.at("E-tail_z"),
-                       additionalStepAttributes.at("E-tail_y"));
+                       additionalStepAttributes.at("E-tail_y")});
 
         WRITESTEPATTRIB(Float64, file_m, "REFPR",     &refpr, 1);
         WRITESTEPATTRIB(Float64, file_m, "REFPT",     &refpt, 1);

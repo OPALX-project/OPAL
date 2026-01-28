@@ -200,12 +200,12 @@ void _FM3DDynamic::readMap() {
                     const unsigned long index_y = j * deltaY;
                     for (unsigned long i = 0; i < num_gridpx_m; ++ i) {
                         const unsigned long index = i * deltaX + index_y + index_z;
-                        ef[l] = Vector_t(FieldstrengthEx_m[index],
+                        ef[l] = Vector_t({FieldstrengthEx_m[index],
                                          FieldstrengthEy_m[index],
-                                         FieldstrengthEz_m[index]);
-                        bf[l] = Vector_t(FieldstrengthBx_m[index],
+                                         FieldstrengthEz_m[index]});
+                        bf[l] = Vector_t({FieldstrengthBx_m[index],
                                          FieldstrengthBy_m[index],
-                                         FieldstrengthBz_m[index]);
+                                         FieldstrengthBz_m[index]});
                         ++ l;
                     }
                 }
@@ -377,7 +377,7 @@ void _FM3DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
     });
     std::ofstream out(fname);
     for(unsigned int i = 0; i < num_gridpz_m; ++ i) {
-        Vector_t R(0,0,zbegin_m + F[i].first), B(0.0), E(0.0);
+        Vector_t R({0,0,zbegin_m + F[i].first}), B(0.0), E(0.0);
         getFieldstrength(R, E, B);
         out << std::setw(16) << std::setprecision(8) << F[i].first
             << std::setw(16) << std::setprecision(8) << E(0)

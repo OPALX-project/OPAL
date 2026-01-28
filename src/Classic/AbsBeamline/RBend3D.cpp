@@ -70,8 +70,8 @@ bool RBend3D::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B) 
 }
 
 bool RBend3D::apply(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
-    const Vector_t tmpR(R(0), R(1), R(2) - startField_m);
-    Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+    const Vector_t tmpR({R(0), R(1), R(2) - startField_m});
+    Vector_t tmpE({0.0, 0.0, 0.0}), tmpB({0.0, 0.0, 0.0});
 
     fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
 
@@ -81,7 +81,7 @@ bool RBend3D::apply(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t
 }
 
 bool RBend3D::applyToReferenceParticle(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
-    const Vector_t tmpR(R(0), R(1), R(2) - startField_m);
+    const Vector_t tmpR({R(0), R(1), R(2) - startField_m});
     Vector_t tmpE(0.0), tmpB(0.0);
 
     fieldmap_m->getFieldstrength(tmpR, tmpE, tmpB);
@@ -110,14 +110,14 @@ void RBend3D::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
             double z = 0.0, dz = fieldLength / 1000;
             Vector_t E(0.0), B(0.0);
             while (z < fieldLength && B(1) < 0.5) {
-                fieldmap_m->getFieldstrength(Vector_t(0.0, 0.0, z), E, B);
+                fieldmap_m->getFieldstrength(Vector_t({0.0, 0.0, z}), E, B);
                 z += dz;
             }
             double zEntryEdge = z;
             z = fieldLength;
             B(1) = 0.0;
             while (z > 0.0 && B(1) < 0.5) {
-                fieldmap_m->getFieldstrength(Vector_t(0.0, 0.0, z), E, B);
+                fieldmap_m->getFieldstrength(Vector_t({0.0, 0.0, z}), E, B);
                 z -= dz;
             }
             chordLength_m = z - zEntryEdge;
@@ -142,12 +142,12 @@ void RBend3D::initialise(PartBunchBase<double, 3> *bunch, double &startField, do
             double z = 0.0, dz = lengthField_m / 999;
             double integratedBy = 0.0;
 
-            fieldmap_m->getFieldstrength(Vector_t(0.0, 0.0, z), E, B);
+            fieldmap_m->getFieldstrength(Vector_t({0.0, 0.0, z}), E, B);
             integratedBy += 0.5 * B(1);
             z = dz;
             while (z < lengthField_m) {
                 B = 0.0; E = 0.0;
-                fieldmap_m->getFieldstrength(Vector_t(0.0, 0.0, z), E, B);
+                fieldmap_m->getFieldstrength(Vector_t({0.0, 0.0, z}), E, B);
                 integratedBy += B(1);
                 z += dz;
             }
@@ -209,7 +209,7 @@ ElementType RBend3D::getType() const {
 }
 
 bool RBend3D::isInside(const Vector_t &r) const {
-    Vector_t tmpR(r(0), r(1), r(2) - startField_m);
+    Vector_t tmpR({r(0), r(1), r(2) - startField_m});
     return fieldmap_m->isInside(tmpR);
 }
 
@@ -240,27 +240,27 @@ MeshData RBend3D::getSurfaceMesh() const {
                                    XIni(2), XFinal(2));
 
     MeshData mesh;
-    mesh.vertices_m.push_back(Vector_t(XIni(0),   XIni(1),   XIni(2)));
-    mesh.vertices_m.push_back(Vector_t(XIni(0),   XIni(1),   XFinal(2)));
-    mesh.vertices_m.push_back(Vector_t(XIni(0),   XFinal(1), XIni(2)));
-    mesh.vertices_m.push_back(Vector_t(XIni(0),   XFinal(1), XFinal(2)));
-    mesh.vertices_m.push_back(Vector_t(XFinal(0), XIni(1),   XIni(2)));
-    mesh.vertices_m.push_back(Vector_t(XFinal(0), XIni(1),   XFinal(2)));
-    mesh.vertices_m.push_back(Vector_t(XFinal(0), XFinal(1), XIni(2)));
-    mesh.vertices_m.push_back(Vector_t(XFinal(0), XFinal(1), XFinal(2)));
+    mesh.vertices_m.push_back(Vector_t({XIni(0),   XIni(1),   XIni(2)}));
+    mesh.vertices_m.push_back(Vector_t({XIni(0),   XIni(1),   XFinal(2)}));
+    mesh.vertices_m.push_back(Vector_t({XIni(0),   XFinal(1), XIni(2)}));
+    mesh.vertices_m.push_back(Vector_t({XIni(0),   XFinal(1), XFinal(2)}));
+    mesh.vertices_m.push_back(Vector_t({XFinal(0), XIni(1),   XIni(2)}));
+    mesh.vertices_m.push_back(Vector_t({XFinal(0), XIni(1),   XFinal(2)}));
+    mesh.vertices_m.push_back(Vector_t({XFinal(0), XFinal(1), XIni(2)}));
+    mesh.vertices_m.push_back(Vector_t({XFinal(0), XFinal(1), XFinal(2)}));
 
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(0, 1, 2));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2, 1, 3));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(4, 6, 5));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(5, 6, 7));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(1, 5, 3));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(3, 5, 7));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(4, 2, 6));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(4, 0, 2));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(0, 4, 1));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(1, 4, 5));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2, 3, 6));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(3, 7, 6));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({0, 1, 2}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2, 1, 3}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({4, 6, 5}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({5, 6, 7}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({1, 5, 3}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({3, 5, 7}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({4, 2, 6}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({4, 0, 2}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({0, 4, 1}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({1, 4, 5}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2, 3, 6}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({3, 7, 6}));
 
     return mesh;
 }

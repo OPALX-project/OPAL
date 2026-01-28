@@ -208,9 +208,9 @@ void Line::parse(Statement &stat) {
     if (itsAttr[ORIGIN] || itsAttr[ORIENTATION]) {
         std::vector<double> origin = Attributes::getRealArray(itsAttr[ORIGIN]);
         if (origin.size() == 3) {
-            line->setOrigin3D(Vector_t(origin[0],
+            line->setOrigin3D(Vector_t({origin[0],
                                        origin[1],
-                                       origin[2]));
+                                       origin[2]}));
         } else {
             line->setOrigin3D(Vector_t(0.0));
             if (itsAttr[ORIGIN]) {
@@ -239,9 +239,9 @@ void Line::parse(Statement &stat) {
 
         line->setRelativeFlag(true);
     } else {
-        const Vector_t origin(Attributes::getReal(itsAttr[X]),
+        const Vector_t origin({Attributes::getReal(itsAttr[X]),
                               Attributes::getReal(itsAttr[Y]),
-                              Attributes::getReal(itsAttr[Z]));
+                              Attributes::getReal(itsAttr[Z])});
 
         const double theta = Attributes::getReal(itsAttr[THETA]);
         const double phi = Attributes::getReal(itsAttr[PHI]);

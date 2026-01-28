@@ -144,7 +144,7 @@ bool VariableRFCavity::apply(const Vector_t& R, const Vector_t& /*P*/,
         const double E0 = amplitudeTD_m->getValue(t);
         const double integralF = frequencyCache_m.getIntegral(t) * Units::MHz2Hz;
         const double phi = phaseTD_m->getValue(t);
-        E = Vector_t(0., 0., E0 * std::sin(Physics::two_pi * integralF + phi));
+        E = Vector_t({0., 0., E0 * std::sin(Physics::two_pi * integralF + phi)});
         return false;
     }
     return true;

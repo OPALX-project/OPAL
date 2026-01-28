@@ -110,32 +110,31 @@ template <class T> class TpsRep {
     TpsRep<T> &operator=(const TpsRep<T> &);
 
     // May need to add this:
-    //   T *dat;
+    T *dat;
 };
 
 
 template <class T> inline
 T *TpsRep<T>::data() {
-    return reinterpret_cast<T *>(this + 1);
+    // return reinterpret_cast<T *>(this + 1);
     // Could be changed to:
-    //   return dat;
+    return dat;
 }
 
 
 template <class T> inline
 void *TpsRep<T>::operator new(size_t s, size_t extra) {
-    return new char[s + extra * sizeof(double)];
+    //return new char[s + extra * sizeof(double)];
     // Could be changed to:
-    //   TpsRep<T> *p = new char[s];
-    //   p->dat = new T[extra];
-    //   return p;
+    TpsRep<T> *p = reinterpret_cast<TpsRep<T>*>(new char[s]);
+    p->dat = new T[extra];
+    return p;
 }
 
 
 template <class T> inline
 void TpsRep<T>::operator delete(void *p) {
-    // May have to add this:
-    //   delete [] reinterpret_cast<TpsRep<T>*>(p)->dat;
+    delete [] reinterpret_cast<TpsRep<T>*>(p)->dat;
     delete [] reinterpret_cast<char *>(p);
 }
 
@@ -204,12 +203,14 @@ TpsRep<T> *TpsRep<T>::grab() {
     return this;
 }
 
-
+#if 0
 template <class T> inline
 void TpsRep<T>::release(TpsRep<T> *p) {
-    if(--(p->ref) <= 0) delete p;
+    (p->ref)--;
+    if(p->ref <= 0)
+        delete [] reinterpret_cast<char *>(p);
 }
-
+#endif
 
 // Template class Tps<T>.
 // ------------------------------------------------------------------------

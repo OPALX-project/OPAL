@@ -210,17 +210,17 @@ bool _FM1DProfile2::getFieldstrength(const Vector_t &R, Vector_t &strength, Vect
     info = Vector_t(0.0);
 
     // Find coordinates in the entrance frame.
-    Vector_t REntrance(R(0), 0.0, R(2) + zbegin_entry_m);
+    Vector_t REntrance({R(0), 0.0, R(2) + zbegin_entry_m});
 
     // Find coordinates in the exit frame.
-    Vector_t RExit(0.0, R(1), 0.0);
+    Vector_t RExit({0.0, R(1), 0.0});
 
     RExit(0) = (R(0) - xExit_m) * cosExitRotation_m - (R(2) + zbegin_entry_m - zExit_m) * sinExitRotation_m;
     RExit(2) = (R(0) - xExit_m) * sinExitRotation_m + (R(2) + zbegin_entry_m - zExit_m) * cosExitRotation_m + polynomialOrigin_exit_m;
 
 
     if (REntrance(2) >= zend_entry_m && RExit(2) <= zbegin_exit_m) {
-        strength = Vector_t(1.0, 0.0, 0.0);
+        strength = Vector_t({1.0, 0.0, 0.0});
     } else {
         double d2Sdz2 = 0.0;
         double z;

@@ -171,8 +171,8 @@ namespace mslang {
 
             double midX = 0.5 * (ur.x_m + ll.x_m);
             double midY = 0.5 * (ur.y_m + ll.y_m);
-            rect.trafo_m = AffineTransformation(Vector_t(1, 0, (0.5 * width - midX) * pixel_width),
-                                                Vector_t(0, 1, (midY - 0.5 * height) * pixel_height));
+            rect.trafo_m = AffineTransformation(Vector_t({1, 0, (0.5 * width - midX) * pixel_width}),
+                                                Vector_t({0, 1, (midY - 0.5 * height) * pixel_height}));
 
             pixmap->pixels_m.push_back(rect);
             pixmap->pixels_m.back().computeBoundingBox();

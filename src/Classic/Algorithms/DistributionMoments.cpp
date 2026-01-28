@@ -208,7 +208,7 @@ void DistributionMoments::computePercentiles(const InputIt & first, const InputI
     int numParticles99 = boost::numeric_cast<int>(std::floor(totalNumParticles_m * percentileThreeSigmasNormalDist_m + 0.5));
     int numParticles99_99 = boost::numeric_cast<int>(std::floor(totalNumParticles_m * percentileFourSigmasNormalDist_m + 0.5));
 
-    for (int d = 0; d < 3; ++ d) {
+    for (int d = 0; d < 3; d++) {
         unsigned int localNum = last - first, current = 0;
         std::vector<Vektor<double, 2>> oneDPhaseSpace(localNum);
         for (InputIt it = first; it != last; ++ it, ++ current) {
@@ -218,7 +218,7 @@ void DistributionMoments::computePercentiles(const InputIt & first, const InputI
         }
         std::sort(oneDPhaseSpace.begin(), oneDPhaseSpace.end(),
                   [d, this](Vektor<double, 2>& left, Vektor<double, 2>& right) {
-                      return std::abs(left[0] - meanR_m[d]) < std::abs(right[0] - meanR_m[d]);
+                      return std::abs(left[0] - meanR_m[0]) < std::abs(right[0] - meanR_m[0]);
                   });
 
         iterator_t endSixtyEight, endNinetyFive, endNinetyNine, endNinetyNine_NinetyNine;

@@ -148,9 +148,9 @@ double Offset::getTheta(Vector_t vec1, Vector_t vec2) {
 Vector_t Offset::rotate(Vector_t vec, double theta) {
     double s = std::sin(theta);
     double c = std::cos(theta);
-    return Vector_t(+vec(0)*c-vec(1)*s,
+    return Vector_t({+vec(0)*c-vec(1)*s,
                     +vec(0)*s+vec(1)*c,
-                    0.);
+                    0.});
 }
 
 void Offset::updateGeometry() {
@@ -163,8 +163,8 @@ void Offset::updateGeometry() {
     double length = std::sqrt(translation(0) * translation(0) +
                               translation(1) * translation(1) +
                               translation(2) * translation(2));
-    double theta_in  = getTheta(Vector_t(0., 1., 0.), translation);
-    double theta_out = getTheta(Vector_t(0., 1., 0.), getEndDirection());
+    double theta_in  = getTheta(Vector_t({0., 1., 0.}), translation);
+    double theta_out = getTheta(Vector_t({0., 1., 0.}), getEndDirection());
     Euclid3D euclid3D(-std::sin(theta_in) * length, 0., std::cos(theta_in) * length,
                       0., -theta_out, 0.);
 
@@ -189,7 +189,7 @@ void Offset::updateGeometry(Vector_t startPosition, Vector_t startDirection) {
         // startDirection coordinate system
         _end_position = rotate(deltaPosition, -thetaIn);
         // end direction is the normal in the coordinate system of startDirection
-        _end_direction = Vector_t(std::sin(-thetaRel), std::cos(-thetaRel), 0);
+        _end_direction = Vector_t({std::sin(-thetaRel), std::cos(-thetaRel), 0});
         _is_local = true;
     }
     updateGeometry();
@@ -258,10 +258,10 @@ Offset Offset::localCylindricalOffset(const std::string& name,
                                       double phi_out,
                                       double displacement) {
     Offset off(name);
-    off.setEndPosition(Vector_t(-std::sin(phi_in)*displacement,
+    off.setEndPosition(Vector_t({-std::sin(phi_in)*displacement,
                                 std::cos(phi_in)*displacement,
-                                0.));
-    off.setEndDirection(Vector_t(-std::sin(phi_in+phi_out), std::cos(phi_in+phi_out), 0.));
+                                0.}));
+    off.setEndDirection(Vector_t({-std::sin(phi_in+phi_out), std::cos(phi_in+phi_out), 0.}));
     off.setIsLocal(true);
     off.updateGeometry();
     return off;
@@ -272,12 +272,12 @@ Offset Offset::globalCylindricalOffset(const std::string& name,
                                        double phi_out,
                                        double theta_out) {
     Offset off(name);
-    off.setEndPosition(Vector_t(std::cos(phi_out)*radius_out,
+    off.setEndPosition(Vector_t({std::cos(phi_out)*radius_out,
                                 std::sin(phi_out)*radius_out,
-                                0.));
-    off.setEndDirection(Vector_t(std::sin(phi_out+theta_out),
+                                0.}));
+    off.setEndDirection(Vector_t({std::sin(phi_out+theta_out),
                                  std::cos(phi_out+theta_out),
-                                 0.));
+                                 0.}));
     off.setIsLocal(false);
     return off;
 }

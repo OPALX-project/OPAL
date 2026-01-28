@@ -322,8 +322,8 @@ BoundingBox ElementBase::getBoundingBoxInLabCoords() const {
     for (int i = -1; i < 2; i += 2) {
         for (int j = -1; j < 2; j += 2) {
             unsigned int idx = (i + 1)/2 + (j + 1);
-            corners[idx] = toBegin.transformFrom(Vector_t(i * x, j * y, 0.0));
-            corners[idx + 4] = toEnd.transformFrom(Vector_t(i * f * x, j * f * y, 0.0));
+            corners[idx] = toBegin.transformFrom(Vector_t({i * x, j * y, 0.0}));
+            corners[idx + 4] = toEnd.transformFrom(Vector_t({i * f * x, j * f * y, 0.0}));
         }
     }
 
