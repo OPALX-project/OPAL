@@ -1,9 +1,9 @@
-name: Doxygen GitHub Pages Deploy Action
+name: Doxygen Deploy
 
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   deploy:
