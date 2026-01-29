@@ -1,0 +1,5 @@
+<map id="operator*" name="operator*">
+<area shape="rect" id="node2" href="$d1/de4/a06035.html#a3cc61e2c1c71fa6dd6e7e6f09c7d6aa1" title="Get pointer to beginning of series (zero&#45;order term). " alt="" coords="148,5,253,32"/>
+<area shape="rect" id="node3" href="$d1/de4/a06035.html#a09d44144bbd9d4fa5824d07113713400" title="Get pointer to end of series (one beyond highest term). " alt="" coords="154,56,247,83"/>
+<area shape="rect" id="node4" href="$d1/de4/a06035.html#a2a9a3286944ac82158b65e3d6093794c" title="Return order of this series. " alt="" coords="137,107,264,133"/>
+</map>

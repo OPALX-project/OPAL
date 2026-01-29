@@ -1,0 +1,7 @@
+<map id="DataSink::initMultiBunchDump" name="DataSink::initMultiBunchDump">
+<area shape="rect" id="node2" href="$d7/d4d/a07199.html#a6f185afafd30295bc2a74300501444ef" title="DataSink::convertToString" alt="" coords="287,5,477,32"/>
+<area shape="rect" id="node3" href="$d5/d13/a04739.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="275,56,489,83"/>
+<area shape="rect" id="node4" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="299,107,465,133"/>
+<area shape="rect" id="node6" href="$d5/d13/a04739.html#af8d0b55764c02667df67d086327b6a34" title="true if we do a restart run " alt="" coords="295,157,469,184"/>
+<area shape="rect" id="node5" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="537,107,689,133"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="Replacer::visitFlaggedElmPtr" name="Replacer::visitFlaggedElmPtr">
+<area shape="rect" id="node2" href="$db/d78/a05071.html#aa60aedf5e43e6a4561b4a93e6962f377" title="Make a structural copy. " alt="" coords="261,31,468,57"/>
+<area shape="rect" id="node5" href="$dc/d03/a05631.html#a5e93800b724a0a93cbb985fdc52cbf0f" title="Get the element pointer. " alt="" coords="560,123,708,149"/>
+<area shape="rect" id="node6" href="$db/d78/a05071.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="277,132,453,159"/>
+<area shape="rect" id="node7" href="$d6/d12/a04691.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="285,183,444,209"/>
+<area shape="rect" id="node8" href="$d5/d15/a05335.html#a8bab0e7be75745a80eeae0db6a489ba0" title="Apply the algorithm to a FlaggedElmPtr. " alt="" coords="265,234,464,275"/>
+<area shape="rect" id="node3" href="$db/d78/a05071.html#aa5580165a9f8b9e6d873927cff20d986" title="Return clone. " alt="" coords="559,5,709,32"/>
+<area shape="rect" id="node4" href="$db/d78/a05071.html#ac39f80091bcbce72cd429499a33c18f5" title="Test if the element can be shared. " alt="" coords="542,56,726,83"/>
+<area shape="rect" id="node9" href="$db/d78/a05071.html#a4c963794b96d83d5d3be0a9fe3c44322" title="Apply visitor. " alt="" coords="555,216,713,243"/>
+<area shape="rect" id="node10" href="$dd/df1/a05635.html#acc70d7f5db8ffe5b47920a6503bfcad9" title="Get reflection flag. " alt="" coords="516,267,752,293"/>
+</map>

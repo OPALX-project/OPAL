@@ -1,0 +1,5 @@
+<map id="RBend::setNormalComponent" name="RBend::setNormalComponent">
+<area shape="rect" id="node2" href="$dc/d07/a05175.html#a08c430780c0a0cd34b140edcd7710297" title="Get multipole expansion of field. " alt="" coords="305,5,428,32"/>
+<area shape="rect" id="node3" href="$d5/dd3/a05695.html#ac96ff94748364fff18da736edb95081d" title="Set component. " alt="" coords="268,57,465,98"/>
+<area shape="rect" id="node4" href="$d5/dd3/a05695.html#ad82a1693071b8440db526157d18fb1f6" title="BMultipoleField::reserve" alt="" coords="513,64,692,91"/>
+</map>

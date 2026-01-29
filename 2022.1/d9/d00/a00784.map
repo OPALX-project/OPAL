@@ -1,0 +1,20 @@
+<map id="src/Classic/AbsBeamline/SBend.h" name="src/Classic/AbsBeamline/SBend.h">
+<area shape="rect" id="node2" href="$df/d95/a00299.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="179,95,409,136"/>
+<area shape="rect" id="node3" href="$d5/d0f/a00308.html" title="src/Algorithms/ParallelTTracker.h" alt="" coords="434,102,669,129"/>
+<area shape="rect" id="node8" href="$dd/de2/a00320.html" title="src/Algorithms/ThickTracker.h" alt="" coords="693,102,906,129"/>
+<area shape="rect" id="node10" href="$d3/d95/a00779.html" title="src/Classic/AbsBeamline\l/SBend.cpp" alt="" coords="930,95,1111,136"/>
+<area shape="rect" id="node11" href="$d8/d2d/a00815.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="1136,95,1319,136"/>
+<area shape="rect" id="node13" href="$d9/dce/a00944.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="1343,95,1509,136"/>
+<area shape="rect" id="node14" href="$dd/d09/a01118.html" title="src/Classic/BeamlineCore\l/SBendRep.h" alt="" coords="1534,95,1721,136"/>
+<area shape="rect" id="node17" href="$da/d8b/a01871.html" title="src/Classic/Solvers\l/CSRIGFWakeFunction.cpp" alt="" coords="1745,95,1936,136"/>
+<area shape="rect" id="node18" href="$d9/d63/a01877.html" title="src/Classic/Solvers\l/CSRWakeFunction.cpp" alt="" coords="1961,95,2129,136"/>
+<area shape="rect" id="node19" href="$db/d29/a01895.html" title="src/Classic/Solvers\l/ScatteringPhysics.cpp" alt="" coords="2153,95,2321,136"/>
+<area shape="rect" id="node4" href="$d0/d96/a13491.html" title="src/_PyOpal/PyField.cpp" alt="" coords="5,191,180,218"/>
+<area shape="rect" id="node5" href="$d3/d07/a00305.html" title="src/Algorithms/ParallelTTracker.cpp" alt="" coords="204,191,453,218"/>
+<area shape="rect" id="node6" href="$d3/d2d/a13494.html" title="src/PyOpal/PyObjects\l/PyField.cpp" alt="" coords="478,184,638,225"/>
+<area shape="rect" id="node7" href="$d2/daf/a03245.html" title="src/Track/TrackRun.cpp" alt="" coords="662,191,830,218"/>
+<area shape="rect" id="node9" href="$da/de0/a00317.html" title="src/Algorithms/ThickTracker.cpp" alt="" coords="855,191,1083,218"/>
+<area shape="rect" id="node12" href="$d7/da1/a02231.html" title="src/Distribution/Distribution.cpp" alt="" coords="1113,191,1341,218"/>
+<area shape="rect" id="node15" href="$df/dd5/a01115.html" title="src/Classic/BeamlineCore\l/SBendRep.cpp" alt="" coords="1450,184,1637,225"/>
+<area shape="rect" id="node16" href="$d4/d73/a02465.html" title="src/Elements/OpalSBend.cpp" alt="" coords="1661,191,1869,218"/>
+</map>

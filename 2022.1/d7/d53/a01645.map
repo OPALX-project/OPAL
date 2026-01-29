@@ -1,0 +1,19 @@
+<map id="src/Classic/Filters/Filter.h" name="src/Classic/Filters/Filter.h">
+<area shape="rect" id="node2" href="$d0/dc0/a01652.html" title="src/Classic/Filters\l/FixedFFTLowPass.h" alt="" coords="537,95,686,136"/>
+<area shape="rect" id="node6" href="$d9/d79/a01658.html" title="src/Classic/Filters\l/RelativeFFTLowPass.h" alt="" coords="182,95,350,136"/>
+<area shape="rect" id="node8" href="$dc/d71/a01664.html" title="src/Classic/Filters\l/SavitzkyGolay.h" alt="" coords="851,95,985,136"/>
+<area shape="rect" id="node10" href="$da/d8b/a01871.html" title="src/Classic/Solvers\l/CSRIGFWakeFunction.cpp" alt="" coords="717,184,908,225"/>
+<area shape="rect" id="node11" href="$d9/d63/a01877.html" title="src/Classic/Solvers\l/CSRWakeFunction.cpp" alt="" coords="1102,184,1270,225"/>
+<area shape="rect" id="node12" href="$de/df6/a01670.html" title="src/Classic/Filters\l/Stencil.h" alt="" coords="375,95,509,136"/>
+<area shape="rect" id="node14" href="$d9/dd5/a01886.html" title="src/Classic/Solvers\l/GreenWakeFunction.h" alt="" coords="1617,95,1784,136"/>
+<area shape="rect" id="node17" href="$d9/d33/a03269.html" title="src/Utilities/OpalFilter.h" alt="" coords="1262,102,1435,129"/>
+<area shape="rect" id="node3" href="$df/dee/a01646.html" title="src/Classic/Filters\l/Filters.h" alt="" coords="371,184,505,225"/>
+<area shape="rect" id="node5" href="$dc/d87/a01649.html" title="src/Classic/Filters\l/FixedFFTLowPass.cpp" alt="" coords="529,184,693,225"/>
+<area shape="rect" id="node4" href="$d6/d8d/a03266.html" title="src/Utilities/OpalFilter.cpp" alt="" coords="779,273,967,300"/>
+<area shape="rect" id="node7" href="$df/ddd/a01655.html" title="src/Classic/Filters\l/RelativeFFTLowPass.cpp" alt="" coords="5,184,188,225"/>
+<area shape="rect" id="node9" href="$d4/d41/a01661.html" title="src/Classic/Filters\l/SavitzkyGolay.cpp" alt="" coords="932,184,1077,225"/>
+<area shape="rect" id="node13" href="$dd/d8d/a01667.html" title="src/Classic/Filters\l/Stencil.cpp" alt="" coords="212,184,347,225"/>
+<area shape="rect" id="node15" href="$db/d4b/a01883.html" title="src/Classic/Solvers\l/GreenWakeFunction.cpp" alt="" coords="1825,184,2008,225"/>
+<area shape="rect" id="node16" href="$d0/d04/a03161.html" title="src/Structure/OpalWake.cpp" alt="" coords="1600,191,1801,218"/>
+<area shape="rect" id="node18" href="$dd/d01/a02729.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="1345,191,1576,218"/>
+</map>

@@ -1,0 +1,20 @@
+<map id="src/AbstractObjects/BeamSequence.h" name="src/AbstractObjects/BeamSequence.h">
+<area shape="rect" id="node2" href="$dc/de6/a00167.html" title="src/AbstractObjects\l/BeamSequence.cpp" alt="" coords="5,95,160,136"/>
+<area shape="rect" id="node3" href="$d4/de5/a00503.html" title="src/BasicActions/Select.cpp" alt="" coords="185,102,383,129"/>
+<area shape="rect" id="node4" href="$d7/da1/a02231.html" title="src/Distribution/Distribution.cpp" alt="" coords="407,102,635,129"/>
+<area shape="rect" id="node5" href="$d8/d01/a02675.html" title="src/Lines/Line.cpp" alt="" coords="99,191,237,218"/>
+<area shape="rect" id="node6" href="$dc/d64/a02678.html" title="src/Lines/Line.h" alt="" coords="711,102,833,129"/>
+<area shape="rect" id="node13" href="$d8/da6/a02696.html" title="src/Lines/Sequence.h" alt="" coords="1081,102,1239,129"/>
+<area shape="rect" id="node15" href="$da/d28/a02705.html" title="src/Lines/SequenceParser.cpp" alt="" coords="1486,281,1698,307"/>
+<area shape="rect" id="node18" href="$d3/d1b/a03227.html" title="src/Track/TrackCmd.cpp" alt="" coords="1630,102,1805,129"/>
+<area shape="rect" id="node19" href="$d2/daf/a03245.html" title="src/Track/TrackRun.cpp" alt="" coords="1829,102,1997,129"/>
+<area shape="rect" id="node7" href="$d8/d32/a13503.html" title="src/_PyOpal/PyLine.cpp" alt="" coords="494,281,666,307"/>
+<area shape="rect" id="node8" href="$d5/d60/a13509.html" title="src/_PyOpal/PyLine.h" alt="" coords="584,191,741,218"/>
+<area shape="rect" id="node9" href="$d4/d9d/a02681.html" title="src/Lines/LineTemplate.cpp" alt="" coords="261,191,459,218"/>
+<area shape="rect" id="node10" href="$dd/d01/a02729.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="766,191,997,218"/>
+<area shape="rect" id="node11" href="$dd/d57/a13506.html" title="src/PyOpal/PyObjects\l/PyLine.cpp" alt="" coords="809,273,969,315"/>
+<area shape="rect" id="node12" href="$db/d83/a13512.html" title="src/PyOpal/PyObjects\l/PyLine.h" alt="" coords="1021,184,1181,225"/>
+<area shape="rect" id="node14" href="$d6/da8/a02693.html" title="src/Lines/Sequence.cpp" alt="" coords="1288,281,1461,307"/>
+<area shape="rect" id="node16" href="$d7/d73/a02708.html" title="src/Lines/SequenceParser.h" alt="" coords="1256,191,1453,218"/>
+<area shape="rect" id="node17" href="$d8/dd0/a02711.html" title="src/Lines/SequenceTemplate.cpp" alt="" coords="1030,281,1263,307"/>
+</map>

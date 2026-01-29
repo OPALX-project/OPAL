@@ -1,0 +1,51 @@
+<map id="ScatteringPhysics::computeInteraction" name="ScatteringPhysics::computeInteraction">
+<area shape="rect" id="node2" href="$d3/d2f/a06207.html#a46521f8a87300327763d447874100d2f" title="ScatteringPhysics::\laddParticleBackToBunch" alt="" coords="222,49,402,90"/>
+<area shape="rect" id="node5" href="$d3/d2f/a06207.html#aae9520c231d411dc84c7b6562e6cfe27" title="ScatteringPhysics::\lcomputeCoulombScattering" alt="" coords="211,577,413,618"/>
+<area shape="rect" id="node38" href="$d3/d2f/a06207.html#a86e964b00d30087b9f61222945c44e0b" title="ScatteringPhysics::\lcomputeEnergyLoss" alt="" coords="499,1015,653,1057"/>
+<area shape="rect" id="node48" href="$d3/d2f/a06207.html#a500918870333163f7530ac71cacd0503" title="ScatteringPhysics::\ldeleteParticleFromLocalVector" alt="" coords="203,767,421,809"/>
+<area shape="rect" id="node49" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="229,981,395,1008"/>
+<area shape="rect" id="node3" href="$d9/d06/a04735.html#a7797905b189544f920ae876894dfb40b" title="PartBunchBase::createWithID" alt="" coords="470,5,682,32"/>
+<area shape="rect" id="node4" href="$d9/d06/a04735.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="469,56,683,83"/>
+<area shape="rect" id="node6" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="801,288,847,315"/>
+<area shape="rect" id="node8" href="$d3/d2f/a06207.html#aa92cb0434f25da6f95f29e4c7a750b4a" title="ScatteringPhysics::\lapplyRandomRotation" alt="" coords="493,577,659,618"/>
+<area shape="rect" id="node10" href="$dc/d2c/a00893.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="802,693,846,720"/>
+<area shape="rect" id="node14" href="$dc/d2c/a00893.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="1037,795,1079,821"/>
+<area shape="rect" id="node24" href="$d0/d85/a00908.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="761,643,887,669"/>
+<area shape="rect" id="node27" href="$dc/d2c/a00893.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1035,541,1081,568"/>
+<area shape="rect" id="node28" href="$d3/d2f/a06207.html#a838e3ae678e96d928b9d4cc85512a797" title="ScatteringPhysics::\lapplyRotation" alt="" coords="503,846,649,887"/>
+<area shape="rect" id="node31" href="$d2/df8/a04550.html#adbeb33f36131d16373cbe28aa272a360" title="Util::getBeta" alt="" coords="524,525,628,552"/>
+<area shape="rect" id="node33" href="$dc/d2c/a00893.html#a06ff4f243bf8f2b00166b76eab20d29c" title="Natural logarithm. " alt="" coords="803,997,845,1024"/>
+<area shape="rect" id="node34" href="$dc/d4e/a05331.html#a9e32c2abaaa99cc1366d5b712d0baf0f" title="CoordinateSystemTrafo\l::rotateFrom" alt="" coords="489,107,663,149"/>
+<area shape="rect" id="node36" href="$dc/d4e/a05331.html#ae2537ef2597a313e3f6852c8175dd356" title="CoordinateSystemTrafo\l::rotateTo" alt="" coords="489,238,663,279"/>
+<area shape="rect" id="node37" href="$dc/d4e/a05331.html#ab7f68c4a5a5befa90cd9a82e310b2ee0" title="CoordinateSystemTrafo\l::transformFrom" alt="" coords="489,173,663,214"/>
+<area shape="rect" id="node7" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2025,592,2211,619"/>
+<area shape="rect" id="node9" href="$d5/d12/a03851.html#a76d80db75cdbabf029d6f5fdcef89cdb" title="atan" alt="" coords="799,491,849,517"/>
+<area shape="rect" id="node22" href="$d3/d53/a01262.html#a01046d3dab4c1e9ad6b2b6dee8cc8310" title="Vector cross product. " alt="" coords="796,440,852,467"/>
+<area shape="rect" id="node23" href="$d3/d53/a01262.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="1037,237,1079,264"/>
+<area shape="rect" id="node11" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1604,744,1748,771"/>
+<area shape="rect" id="node15" href="$d9/dba/a05287.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1246,744,1338,771"/>
+<area shape="rect" id="node12" href="$d4/d5e/a03542.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1796,643,1843,669"/>
+<area shape="rect" id="node13" href="$d4/d5e/a03542.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1891,592,1977,619"/>
+<area shape="rect" id="node16" href="$d9/dba/a05287.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1433,845,1556,872"/>
+<area shape="rect" id="node17" href="$d9/dba/a05287.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1441,592,1548,619"/>
+<area shape="rect" id="node18" href="$d9/dba/a05287.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="1609,693,1743,720"/>
+<area shape="rect" id="node19" href="$d9/dba/a05287.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="1607,541,1745,568"/>
+<area shape="rect" id="node20" href="$d8/dbd/a05291.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="1617,592,1735,619"/>
+<area shape="rect" id="node21" href="$d9/dba/a05287.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="1625,643,1727,669"/>
+<area shape="rect" id="node25" href="$dd/d95/a05263.html#a55cb732c23dd6b419f636aff0874ab82" title="Get beginning of data. " alt="" coords="999,592,1117,619"/>
+<area shape="rect" id="node26" href="$dd/d95/a05263.html#a941ffba563af0a4e17aae45292b1659e" title="Get end of data. " alt="" coords="1005,643,1111,669"/>
+<area shape="rect" id="node29" href="$de/d6b/a03845.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="795,896,853,923"/>
+<area shape="rect" id="node30" href="$de/d6b/a03845.html#aae355e465ddaedd0a66a3187cd09a5a8" title="fmod" alt="" coords="796,845,852,872"/>
+<area shape="rect" id="node32" href="$d2/df8/a04550.html#ae12a15e0d75307c934c8add55d2c25ac" title="Util::getGamma" alt="" coords="761,541,887,568"/>
+<area shape="rect" id="node35" href="$dc/de3/a03326.html#a1e71f6a6a4880f0c3ab147df4dd09050" title="transpose" alt="" coords="781,136,867,163"/>
+<area shape="rect" id="node39" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="799,1200,849,1227"/>
+<area shape="rect" id="node43" href="$d9/d06/a04735.html#a7270243d7bb7f3f5a58e154ed858e0fb" title="PartBunchBase::getPType" alt="" coords="731,1149,917,1176"/>
+<area shape="rect" id="node44" href="$d0/dce/a03971.html#a4f2ddb1680d4f912183950ea45ac1504" title="level4" alt="" coords="793,1251,855,1277"/>
+<area shape="rect" id="node46" href="$dc/d2c/a00893.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="799,1099,849,1125"/>
+<area shape="rect" id="node40" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="972,1200,1144,1227"/>
+<area shape="rect" id="node41" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1199,1225,1385,1252"/>
+<area shape="rect" id="node42" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1225,1175,1359,1201"/>
+<area shape="rect" id="node45" href="$d8/d4f/a12119.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="965,1251,1151,1277"/>
+<area shape="rect" id="node47" href="$d9/dba/a05287.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1007,947,1109,973"/>
+<area shape="rect" id="node50" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="500,1081,652,1108"/>
+</map>

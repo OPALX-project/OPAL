@@ -1,0 +1,12 @@
+<map id="OpalMarker::OpalMarker" name="OpalMarker::OpalMarker">
+<area shape="rect" id="node2" href="$d5/d13/a04739.html#a9b61b52d3e1991992ac7dae7bab951f8" title="Create new object. " alt="" coords="273,56,405,83"/>
+<area shape="rect" id="node7" href="$d6/d12/a04691.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="259,107,418,133"/>
+<area shape="rect" id="node8" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="255,157,422,184"/>
+<area shape="rect" id="node10" href="$db/d78/a05071.html#a7f915af4b3da11f8e8e8a50ca87969a1" title="Set sharable flag. " alt="" coords="233,208,444,235"/>
+<area shape="rect" id="node11" href="$d6/d12/a04691.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="259,259,418,285"/>
+<area shape="rect" id="node3" href="$d2/ddb/a04687.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="517,5,630,32"/>
+<area shape="rect" id="node4" href="$dc/d12/a04723.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="492,56,655,83"/>
+<area shape="rect" id="node5" href="$d2/ddb/a04687.html#afd593b9994a1000a969046c02dd66846" title="Define new object. " alt="" coords="510,107,637,133"/>
+<area shape="rect" id="node6" href="$dc/d17/a00872.html#aa8ae23ddaa752827580a9345f34b7cca" title="value_type" alt="" coords="703,107,797,133"/>
+<area shape="rect" id="node9" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="497,157,649,184"/>
+</map>

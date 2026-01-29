@@ -1,0 +1,31 @@
+<map id="src/Classic/Beamlines/FlaggedElmPtr.h" name="src/Classic/Beamlines/FlaggedElmPtr.h">
+<area shape="rect" id="node2" href="$dc/d9a/a00218.html" title="src/AbstractObjects\l/PlaceRep.cpp" alt="" coords="5,95,153,136"/>
+<area shape="rect" id="node3" href="$d8/d2d/a00815.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="177,95,360,136"/>
+<area shape="rect" id="node5" href="$d9/dce/a00944.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="384,95,551,136"/>
+<area shape="rect" id="node6" href="$d3/de5/a00956.html" title="src/Classic/Algorithms\l/Flagger.cpp" alt="" coords="575,95,741,136"/>
+<area shape="rect" id="node7" href="$d9/dda/a01289.html" title="src/Classic/Beamlines\l/FlaggedBeamline.h" alt="" coords="817,95,981,136"/>
+<area shape="rect" id="node15" href="$d8/d01/a02675.html" title="src/Lines/Line.cpp" alt="" coords="564,281,701,307"/>
+<area shape="rect" id="node20" href="$d8/d7a/a01292.html" title="src/Classic/Beamlines\l/FlaggedElmPtr.cpp" alt="" coords="1005,95,1169,136"/>
+<area shape="rect" id="node21" href="$d5/d25/a02687.html" title="src/Lines/Replacer.cpp" alt="" coords="1194,102,1359,129"/>
+<area shape="rect" id="node22" href="$d7/d94/a02702.html" title="src/Lines/SequenceMember.h" alt="" coords="1383,102,1594,129"/>
+<area shape="rect" id="node29" href="$d1/d86/a03209.html" title="src/Tables/RangeSelector.cpp" alt="" coords="1618,102,1829,129"/>
+<area shape="rect" id="node30" href="$d9/d65/a03215.html" title="src/Tables/Selector.cpp" alt="" coords="1853,102,2023,129"/>
+<area shape="rect" id="node4" href="$d7/da1/a02231.html" title="src/Distribution/Distribution.cpp" alt="" coords="155,191,383,218"/>
+<area shape="rect" id="node8" href="$df/d95/a00299.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="985,184,1216,225"/>
+<area shape="rect" id="node9" href="$d3/d07/a00305.html" title="src/Algorithms/ParallelTTracker.cpp" alt="" coords="1240,191,1489,218"/>
+<area shape="rect" id="node10" href="$da/de0/a00317.html" title="src/Algorithms/ThickTracker.cpp" alt="" coords="1513,191,1741,218"/>
+<area shape="rect" id="node11" href="$d0/d00/a01286.html" title="src/Classic/Beamlines\l/FlaggedBeamline.cpp" alt="" coords="647,184,813,225"/>
+<area shape="rect" id="node12" href="$dc/d64/a02678.html" title="src/Lines/Line.h" alt="" coords="838,191,961,218"/>
+<area shape="rect" id="node13" href="$d8/d32/a13503.html" title="src/_PyOpal/PyLine.cpp" alt="" coords="1203,370,1375,397"/>
+<area shape="rect" id="node14" href="$d5/d60/a13509.html" title="src/_PyOpal/PyLine.h" alt="" coords="1513,281,1670,307"/>
+<area shape="rect" id="node16" href="$d4/d9d/a02681.html" title="src/Lines/LineTemplate.cpp" alt="" coords="801,281,998,307"/>
+<area shape="rect" id="node17" href="$dd/d01/a02729.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="1073,281,1304,307"/>
+<area shape="rect" id="node18" href="$dd/d57/a13506.html" title="src/PyOpal/PyObjects\l/PyLine.cpp" alt="" coords="978,363,1138,404"/>
+<area shape="rect" id="node19" href="$db/d83/a13512.html" title="src/PyOpal/PyObjects\l/PyLine.h" alt="" coords="1329,273,1489,315"/>
+<area shape="rect" id="node23" href="$d8/da6/a02696.html" title="src/Lines/Sequence.h" alt="" coords="2015,191,2173,218"/>
+<area shape="rect" id="node28" href="$dd/d9a/a02699.html" title="src/Lines/SequenceMember.cpp" alt="" coords="1765,191,1991,218"/>
+<area shape="rect" id="node24" href="$d6/da8/a02693.html" title="src/Lines/Sequence.cpp" alt="" coords="1742,370,1915,397"/>
+<area shape="rect" id="node25" href="$da/d28/a02705.html" title="src/Lines/SequenceParser.cpp" alt="" coords="1940,370,2152,397"/>
+<area shape="rect" id="node26" href="$d7/d73/a02708.html" title="src/Lines/SequenceParser.h" alt="" coords="1927,281,2125,307"/>
+<area shape="rect" id="node27" href="$d8/dd0/a02711.html" title="src/Lines/SequenceTemplate.cpp" alt="" coords="2176,370,2409,397"/>
+</map>

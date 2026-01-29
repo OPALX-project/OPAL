@@ -1,0 +1,15 @@
+<map id="src/Expressions/SRefExpr.h" name="src/Expressions/SRefExpr.h">
+<area shape="rect" id="node2" href="$dc/d22/a13611.html" title="AbstractObjects/Expressions.h" alt="" coords="924,80,1143,107"/>
+<area shape="rect" id="node9" href="$de/db1/a00197.html" title="AbstractObjects/Invalidator.h" alt="" coords="5,244,216,271"/>
+<area shape="rect" id="node10" href="$d3/dd5/a00215.html" title="AbstractObjects/OpalData.h" alt="" coords="1188,80,1391,107"/>
+<area shape="rect" id="node14" href="$da/de8/a02657.html" title="Expressions/SValue.h" alt="" coords="481,80,641,107"/>
+<area shape="rect" id="node18" href="$dd/d09/a02180.html" title="Utilities/ParseError.h" alt="" coords="1707,80,1861,107"/>
+<area shape="rect" id="node20" href="$d1/dce/a02168.html" title="Utilities/Options.h" alt="" coords="1544,80,1683,107"/>
+<area shape="rect" id="node3" href="$d5/db3/a01751.html" title="MemoryManagement/OwnPtr.h" alt="" coords="773,162,995,189"/>
+<area shape="rect" id="node4" href="$d3/d92/a01796.html" title="Parser/Token.h" alt="" coords="565,162,681,189"/>
+<area shape="rect" id="node11" href="$d3/de5/a00209.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="1343,162,1580,189"/>
+<area shape="rect" id="node15" href="$d6/db8/a00158.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="148,155,335,196"/>
+<area shape="rect" id="node16" href="$db/dc0/a01757.html" title="MemoryManagement/RCObject.h" alt="" coords="240,244,475,271"/>
+<area shape="rect" id="node19" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="1994,162,2193,189"/>
+<area shape="rect" id="node21" href="$d5/da1/a01988.html" title="Utilities/ClassicRandom.h" alt="" coords="1780,162,1969,189"/>
+</map>

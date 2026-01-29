@@ -1,0 +1,25 @@
+<map id="IntSUDSImpl&lt; 2U &gt;::gather" name="IntSUDSImpl&lt; 2U &gt;::gather">
+<area shape="rect" id="node2" href="$dd/d2e/a03734.html#a5a77364cdfa15af6a69c3039b28f6519" title="FindDelta" alt="" coords="261,155,344,182"/>
+<area shape="rect" id="node3" href="$dd/d2e/a03734.html#a094b03069bcb7a0b2e1dc41e85e777ad" title="FindNGP" alt="" coords="265,206,341,232"/>
+<area shape="rect" id="node4" href="$dd/d2e/a03734.html#ab9a8255e05d81f19adaf9eecf2a8b04a" title="FindPos" alt="" coords="267,256,338,283"/>
+<area shape="rect" id="node5" href="$df/d3f/a09891.html#a85e95efe81b2d8cd71cbeb5acf487b6f" title="Interpolator::getFieldIter" alt="" coords="213,307,392,334"/>
+<area shape="rect" id="node24" href="$db/d9f/a08691.html#ad7b4c2bf98fc3a11dffb6e05270fe307" title="BrickIterator::offset" alt="" coords="229,358,377,384"/>
+<area shape="rect" id="node6" href="$df/da4/a12131.html#a8bdcd8abcec1d747ecf82579b42c853c" title="IpplInfo::abort" alt="" coords="461,54,574,80"/>
+<area shape="rect" id="node7" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1025,79,1076,106"/>
+<area shape="rect" id="node12" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1827,130,1962,156"/>
+<area shape="rect" id="node16" href="$d2/df4/a08275.html#ac785783b40bde6497da0587503f1f846" title="LField::begin" alt="" coords="466,231,569,258"/>
+<area shape="rect" id="node17" href="$d4/d95/a00989.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375" title="begin" alt="" coords="488,282,547,308"/>
+<area shape="rect" id="node19" href="$d2/ded/a08271.html#a762004cbc1ac304271ea609fc8abe501" title="BareField::begin_if" alt="" coords="446,332,589,359"/>
+<area shape="rect" id="node20" href="$d2/ded/a08271.html#ab436e2eb992a9a87449757517ab60b68" title="BareField::end_if" alt="" coords="452,383,583,410"/>
+<area shape="rect" id="node21" href="$d2/df4/a08275.html#aba07081c0381e7e0f25d214db7613164" title="LField::getAllocated" alt="" coords="443,434,592,460"/>
+<area shape="rect" id="node22" href="$d2/ded/a08271.html#add48f68ff3e320645708670d9d423cbe" title="BareField::getLayout" alt="" coords="440,484,595,511"/>
+<area shape="rect" id="node23" href="$d2/df4/a08275.html#a621e7e0f4520838b2507ab3ad2442318" title="LField::getOwned" alt="" coords="451,535,584,562"/>
+<area shape="rect" id="node13" href="$df/da4/a12131.html#a733d331c7749dce3f7c5874832125461" title="IpplInfo::IpplInfo" alt="" coords="663,28,791,55"/>
+<area shape="rect" id="node14" href="$df/da4/a12131.html#a0fcbec64e72d74c17d5e247953831fd5" title="IpplInfo::printStatistics" alt="" coords="643,79,812,106"/>
+<area shape="rect" id="node8" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1124,79,1296,106"/>
+<area shape="rect" id="node9" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1344,79,1531,106"/>
+<area shape="rect" id="node10" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1579,79,1776,106"/>
+<area shape="rect" id="node11" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1824,79,1965,106"/>
+<area shape="rect" id="node15" href="$df/dc8/a12147.html#a97e4d23a6f6e92736d7dcea9fc2f6679" title="IpplStats::print" alt="" coords="860,79,977,106"/>
+<area shape="rect" id="node18" href="$d9/d06/a04735.html#ad6ece85323a4f116320d363dfb419738" title="PartBunchBase::begin" alt="" coords="646,282,809,308"/>
+</map>

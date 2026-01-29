@@ -1,0 +1,9 @@
+<map id="TSV_MetaDot&lt; Tenzor&lt; T1, D &gt;, SymTenzor&lt; T2, D &gt; &gt;::apply" name="TSV_MetaDot&lt; Tenzor&lt; T1, D &gt;, SymTenzor&lt; T2, D &gt; &gt;::apply">
+<area shape="rect" id="node2" href="$d3/d53/a01262.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="258,5,301,32"/>
+<area shape="rect" id="node3" href="$d1/d16/a07463.html#a9f4503868713262de92109d5a11cb7a1" title="SymTenzor::HL" alt="" coords="220,56,339,83"/>
+<area shape="rect" id="node4" href="$d5/d12/a03851.html#a06dc3d53220b680f16b2c655bcb86a40" title="sum" alt="" coords="254,107,305,133"/>
+<area shape="rect" id="node5" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="521,81,707,108"/>
+<area shape="rect" id="node6" href="$d5/d12/a03851.html#a0a1cdb80c431a477e99aea03fea993fc" title="Reduction" alt="" coords="387,132,473,159"/>
+<area shape="rect" id="node7" href="$d5/d12/a03851.html#a1ea49580c5d70200ee20f6afbc6d6de3" title="for_each" alt="" coords="575,132,653,159"/>
+<area shape="rect" id="node8" href="$d5/d12/a03851.html#a1a29834440d6844017cef5d516087c28" title="PETE_apply" alt="" coords="565,183,663,209"/>
+</map>

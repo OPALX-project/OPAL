@@ -1,0 +1,30 @@
+<map id="src/Attributes/UpperCaseString.cpp" name="src/Attributes/UpperCaseString.cpp">
+<area shape="rect" id="node2" href="$de/dd7/a00362.html" title="Attributes/Attributes.h" alt="" coords="1041,319,1207,345"/>
+<area shape="rect" id="node17" href="$d3/def/a00446.html" title="Attributes/UpperCaseString.h" alt="" coords="509,319,720,345"/>
+<area shape="rect" id="node18" href="$dc/d22/a13611.html" title="AbstractObjects/Expressions.h" alt="" coords="1141,475,1360,502"/>
+<area shape="rect" id="node20" href="$da/de8/a02657.html" title="Expressions/SValue.h" alt="" coords="856,475,1016,502"/>
+<area shape="rect" id="node22" href="$dc/dc1/a03263.html" title="Utilities/OpalException.h" alt="" coords="1126,95,1309,121"/>
+<area shape="rect" id="node24" href="$dd/d09/a02180.html" title="Utilities/ParseError.h" alt="" coords="1333,95,1488,121"/>
+<area shape="rect" id="node25" href="$d6/d41/a02222.html" title="Utilities/Util.h" alt="" coords="1935,95,2047,121"/>
+<area shape="rect" id="node3" href="$d7/d9a/a00152.html" title="AbstractObjects/Attribute.h" alt="" coords="515,393,714,420"/>
+<area shape="rect" id="node13" href="$d3/d92/a01796.html" title="Parser/Token.h" alt="" coords="857,565,973,591"/>
+<area shape="rect" id="node4" href="$d6/db8/a00158.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="443,557,629,599"/>
+<area shape="rect" id="node9" href="$db/ddf/a00164.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="253,468,440,509"/>
+<area shape="rect" id="node10" href="$d9/d37/a01754.html" title="MemoryManagement/Pointer.h" alt="" coords="197,565,419,591"/>
+<area shape="rect" id="node5" href="$db/dc0/a01757.html" title="MemoryManagement/RCObject.h" alt="" coords="71,647,305,673"/>
+<area shape="rect" id="node6" href="$de/db1/a00197.html" title="AbstractObjects/Invalidator.h" alt="" coords="431,647,641,673"/>
+<area shape="rect" id="node19" href="$d5/db3/a01751.html" title="MemoryManagement/OwnPtr.h" alt="" coords="1166,565,1389,591"/>
+<area shape="rect" id="node23" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="1311,169,1510,196"/>
+<area shape="rect" id="node26" href="$de/dc4/a13617.html" title="Algorithms/Vektor.h" alt="" coords="2339,244,2490,271"/>
+<area shape="rect" id="node45" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="2367,169,2548,196"/>
+<area shape="rect" id="node27" href="$d0/dd7/a13620.html" title="AppTypes/Vektor.h" alt="" coords="2457,319,2599,345"/>
+<area shape="rect" id="node28" href="$df/d11/a04037.html" title="Utility/PAssert.h" alt="" coords="2671,565,2798,591"/>
+<area shape="rect" id="node31" href="$d6/d1c/a03692.html" title="Message/Message.h" alt="" coords="2268,475,2420,502"/>
+<area shape="rect" id="node37" href="$de/d6b/a03845.html" title="PETE/IpplExpressions.h" alt="" coords="2454,393,2626,420"/>
+<area shape="rect" id="node40" href="$db/dee/a03338.html" title="AppTypes/TSVMeta.h" alt="" coords="2872,393,3029,420"/>
+<area shape="rect" id="node36" href="$d2/db4/a03695.html" title="Message/Message.hpp" alt="" coords="2271,565,2439,591"/>
+<area shape="rect" id="node38" href="$de/de6/a03848.html" title="PETE/IpplTypeComputations.h" alt="" coords="2445,475,2659,502"/>
+<area shape="rect" id="node39" href="$d5/d12/a03851.html" title="PETE/PETE.h" alt="" coords="2683,475,2786,502"/>
+<area shape="rect" id="node41" href="$d3/d55/a03341.html" title="AppTypes/TSVMetaAssign.h" alt="" coords="2861,475,3061,502"/>
+<area shape="rect" id="node42" href="$d9/dd9/a03359.html" title="AppTypes/TSVMetaUnary.h" alt="" coords="3085,475,3280,502"/>
+</map>

@@ -1,0 +1,30 @@
+<map id="src/Classic/Structure/LossDataSink.h" name="src/Classic/Structure/LossDataSink.h">
+<area shape="rect" id="node2" href="$de/dc4/a13617.html" title="Algorithms/Vektor.h" alt="" coords="693,333,843,360"/>
+<area shape="rect" id="node25" href="$d7/dd4/a00968.html" title="Algorithms/OpalParticle.h" alt="" coords="693,95,880,121"/>
+<area shape="rect" id="node26" href="$d5/d0a/a00602.html" title="AbsBeamline/ElementBase.h" alt="" coords="1020,95,1231,121"/>
+<area shape="rect" id="node44" href="$d3/dd5/a00215.html" title="AbstractObjects/OpalData.h" alt="" coords="2025,177,2228,203"/>
+<area shape="rect" id="node3" href="$d0/dd7/a13620.html" title="AppTypes/Vektor.h" alt="" coords="767,408,908,435"/>
+<area shape="rect" id="node4" href="$df/d11/a04037.html" title="Utility/PAssert.h" alt="" coords="1667,632,1794,659"/>
+<area shape="rect" id="node8" href="$d6/d1c/a03692.html" title="Message/Message.h" alt="" coords="648,557,800,584"/>
+<area shape="rect" id="node16" href="$de/d6b/a03845.html" title="PETE/IpplExpressions.h" alt="" coords="875,483,1047,509"/>
+<area shape="rect" id="node19" href="$db/dee/a03338.html" title="AppTypes/TSVMeta.h" alt="" coords="1173,483,1331,509"/>
+<area shape="rect" id="node15" href="$d2/db4/a03695.html" title="Message/Message.hpp" alt="" coords="529,632,697,659"/>
+<area shape="rect" id="node17" href="$de/de6/a03848.html" title="PETE/IpplTypeComputations.h" alt="" coords="409,557,623,584"/>
+<area shape="rect" id="node18" href="$d5/d12/a03851.html" title="PETE/PETE.h" alt="" coords="926,557,1029,584"/>
+<area shape="rect" id="node20" href="$d3/d55/a03341.html" title="AppTypes/TSVMetaAssign.h" alt="" coords="1053,557,1253,584"/>
+<area shape="rect" id="node21" href="$d9/dd9/a03359.html" title="AppTypes/TSVMetaUnary.h" alt="" coords="1277,557,1472,584"/>
+<area shape="rect" id="node22" href="$da/dcf/a03344.html" title="AppTypes/TSVMetaBinary.h" alt="" coords="1496,557,1693,584"/>
+<area shape="rect" id="node27" href="$d0/ddb/a00542.html" title="AbsBeamline/AttributeSet.h" alt="" coords="1497,177,1700,203"/>
+<area shape="rect" id="node30" href="$d6/dad/a00941.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="1017,169,1234,211"/>
+<area shape="rect" id="node31" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="721,259,903,285"/>
+<area shape="rect" id="node33" href="$de/d61/a01205.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="45,259,267,285"/>
+<area shape="rect" id="node36" href="$da/d19/a01217.html" title="BeamlineGeometry/Geometry.h" alt="" coords="94,177,322,203"/>
+<area shape="rect" id="node37" href="$de/dca/a01907.html" title="Structure/BoundingBox.h" alt="" coords="449,177,631,203"/>
+<area shape="rect" id="node40" href="$db/dc0/a01757.html" title="MemoryManagement/RCObject.h" alt="" coords="757,177,992,203"/>
+<area shape="rect" id="node41" href="$d7/db2/a02036.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="1775,169,1950,211"/>
+<area shape="rect" id="node32" href="$d9/db1/a03335.html" title="AppTypes/Tenzor.h" alt="" coords="1124,408,1265,435"/>
+<area shape="rect" id="node34" href="$dd/d95/a01247.html" title="BeamlineGeometry/Rotation3D.h" alt="" coords="144,333,381,360"/>
+<area shape="rect" id="node35" href="$da/dd8/a01265.html" title="BeamlineGeometry/Vector3D.h" alt="" coords="97,408,321,435"/>
+<area shape="rect" id="node42" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="1747,333,1946,360"/>
+<area shape="rect" id="node45" href="$d3/de5/a00209.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="2205,259,2443,285"/>
+</map>

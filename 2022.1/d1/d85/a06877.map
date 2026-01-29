@@ -1,0 +1,22 @@
+<map id="SequenceParser::Reference" name="SequenceParser::Reference">
+<area shape="rect" id="node2" href="$d7/da1/a06871.html" title="A member of a SEQUENCE. " alt="" coords="2105,360,2244,387"/>
+<area shape="rect" id="node3" href="$dd/df1/a05635.html" title="A section of a beam line. " alt="" coords="1834,335,1950,361"/>
+<area shape="rect" id="node4" href="$dc/d03/a05631.html" title="A section of a beam line. " alt="" coords="1652,335,1717,361"/>
+<area shape="rect" id="node5" href="$d2/d6a/a06047.html" title="Pointer\&lt; ElementBase \&gt;" alt="" coords="1293,335,1477,361"/>
+<area shape="rect" id="node21" href="$d6/d12/a04691.html" title="Element" alt="" coords="1647,385,1723,412"/>
+<area shape="rect" id="node6" href="$db/d78/a05071.html" title="ElementBase" alt="" coords="1033,252,1141,279"/>
+<area shape="rect" id="node8" href="$dd/d16/a06179.html" title="ParticleMatterInteraction\lHandler" alt="" coords="1294,253,1477,294"/>
+<area shape="rect" id="node7" href="$d9/d4d/a06051.html" title="Abstract base class for reference counted objects. " alt="" coords="5,235,87,261"/>
+<area shape="rect" id="node11" href="$dc/d12/a04723.html" title="The base class for all OPAL objects. " alt="" coords="181,409,245,436"/>
+<area shape="rect" id="node9" href="$d8/da7/a07191.html" title="BoundaryGeometry" alt="" coords="673,320,822,347"/>
+<area shape="rect" id="node10" href="$d9/db6/a04683.html" title="The base class for all OPAL definitions. " alt="" coords="375,409,460,436"/>
+<area shape="rect" id="node12" href="$dd/d24/a07475.html" title="Vektor\&lt; int, 3 \&gt;" alt="" coords="354,359,481,385"/>
+<area shape="rect" id="node13" href="$dd/d24/a07475.html" title="Vektor\&lt; double, 3 \&gt;" alt="" coords="340,264,495,291"/>
+<area shape="rect" id="node14" href="$dc/d4e/a05331.html" title="CoordinateSystemTrafo" alt="" coords="660,179,835,205"/>
+<area shape="rect" id="node15" href="$db/de3/a05387.html" title="Tenzor\&lt; double, 3 \&gt;" alt="" coords="340,169,495,196"/>
+<area shape="rect" id="node16" href="$d2/dc7/a05391.html" title="Quaternion" alt="" coords="370,119,465,145"/>
+<area shape="rect" id="node17" href="$dd/d24/a07475.html" title="Vektor\&lt; double, 4 \&gt;" alt="" coords="136,119,291,145"/>
+<area shape="rect" id="node18" href="$d3/dc0/a06211.html" title="WakeFunction" alt="" coords="691,371,803,397"/>
+<area shape="rect" id="node19" href="$d0/d0c/a05015.html" title="Map of std::string versus double value. " alt="" coords="697,17,797,44"/>
+<area shape="rect" id="node20" href="$d2/d6a/a06047.html" title="Pointer\&lt; Element \&gt;" alt="" coords="1816,385,1968,412"/>
+</map>

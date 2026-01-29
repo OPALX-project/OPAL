@@ -1,0 +1,10 @@
+<map id="FM3DMagnetoStaticExtended::getFieldstrength" name="FM3DMagnetoStaticExtended::getFieldstrength">
+<area shape="rect" id="node2" href="$de/d6b/a03845.html#af6518b151e7b0d52fa4ec791b891f53b" title="copysign" alt="" coords="331,5,411,32"/>
+<area shape="rect" id="node3" href="$dd/d49/a05839.html#a2fef190ca5f66d82cfca454b02a06f32" title="FM3DMagnetoStaticExtended\l::interpolateTrilinearly" alt="" coords="265,57,477,98"/>
+<area shape="rect" id="node9" href="$dd/d49/a05839.html#a6249ae34c49fab88181bd4690e417516" title="FM3DMagnetoStaticExtended\l::isInside" alt="" coords="525,122,737,163"/>
+<area shape="rect" id="node4" href="$dd/d49/a05839.html#a5ed4f0bc476cea3496c513dbfb23ac2b" title="FM3DMagnetoStaticExtended\l::getIndex" alt="" coords="785,57,997,98"/>
+<area shape="rect" id="node8" href="$dd/d49/a05839.html#a54876e6eff5918b908e801b9cf105a82" title="FM3DMagnetoStaticExtended\l::getWeightedData" alt="" coords="525,57,737,98"/>
+<area shape="rect" id="node5" href="$d5/d12/a03851.html#ae29244719985f3e4cbc22b58064177de" title="floor" alt="" coords="1045,64,1096,91"/>
+<area shape="rect" id="node6" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1048,119,1093,145"/>
+<area shape="rect" id="node7" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1144,119,1329,145"/>
+</map>

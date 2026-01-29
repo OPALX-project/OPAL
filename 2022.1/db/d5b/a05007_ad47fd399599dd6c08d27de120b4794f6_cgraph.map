@@ -1,0 +1,9 @@
+<map id="Title::execute" name="Title::execute">
+<area shape="rect" id="node2" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="164,19,331,45"/>
+<area shape="rect" id="node4" href="$d2/d71/a04503.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="171,81,324,108"/>
+<area shape="rect" id="node8" href="$d5/d13/a04739.html#a0a3b80ebc86782bee19dc48b97f15958" title="Store the page title. " alt="" coords="171,132,324,159"/>
+<area shape="rect" id="node3" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="398,5,550,32"/>
+<area shape="rect" id="node5" href="$da/d19/a04667.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="379,56,569,83"/>
+<area shape="rect" id="node6" href="$da/d19/a04667.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="404,107,544,133"/>
+<area shape="rect" id="node7" href="$da/d19/a04667.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="395,157,553,184"/>
+</map>

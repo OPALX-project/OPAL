@@ -1,0 +1,35 @@
+<map id="src/_PyOpal/PyFieldSolver.cpp" name="src/_PyOpal/PyFieldSolver.cpp">
+<area shape="rect" id="node2" href="$de/dd2/a13461.html" title="PyOpal/ExceptionTranslation.h" alt="" coords="891,155,1109,181"/>
+<area shape="rect" id="node8" href="$d3/d8b/a00059.html" title="PyOpal/PyFieldSolver.h" alt="" coords="1212,80,1383,107"/>
+<area shape="rect" id="node37" href="$d9/d5e/a03086.html" title="Structure/FieldSolver.h" alt="" coords="586,80,753,107"/>
+<area shape="rect" id="node9" href="$d6/dab/a13539.html" title="PyOpal/PyOpalObject.h" alt="" coords="1450,155,1622,181"/>
+<area shape="rect" id="node14" href="$dc/dc1/a03263.html" title="Utilities/OpalException.h" alt="" coords="1178,304,1361,331"/>
+<area shape="rect" id="node16" href="$db/dda/a02318.html" title="Elements/OpalElement.h" alt="" coords="1510,229,1693,256"/>
+<area shape="rect" id="node18" href="$de/d79/a00203.html" title="AbstractObjects/Object.h" alt="" coords="1875,386,2058,413"/>
+<area shape="rect" id="node27" href="$d3/dd5/a00215.html" title="AbstractObjects/OpalData.h" alt="" coords="2620,386,2823,413"/>
+<area shape="rect" id="node30" href="$d6/d06/a00572.html" title="AbsBeamline/Component.h" alt="" coords="1867,229,2066,256"/>
+<area shape="rect" id="node32" href="$de/dd7/a00362.html" title="Attributes/Attributes.h" alt="" coords="2245,386,2411,413"/>
+<area shape="rect" id="node36" href="$d7/d1c/a02732.html" title="OpalConfigure/Configure.h" alt="" coords="2679,229,2871,256"/>
+<area shape="rect" id="node15" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="1178,386,1377,413"/>
+<area shape="rect" id="node17" href="$da/d15/a00188.html" title="AbstractObjects/Element.h" alt="" coords="1436,304,1631,331"/>
+<area shape="rect" id="node26" href="$d5/db3/a01751.html" title="MemoryManagement/OwnPtr.h" alt="" coords="1655,304,1878,331"/>
+<area shape="rect" id="node24" href="$d5/d0a/a00602.html" title="AbsBeamline/ElementBase.h" alt="" coords="1615,386,1825,413"/>
+<area shape="rect" id="node19" href="$d7/d9a/a00152.html" title="AbstractObjects/Attribute.h" alt="" coords="2005,468,2203,495"/>
+<area shape="rect" id="node21" href="$db/dc0/a01757.html" title="MemoryManagement/RCObject.h" alt="" coords="1577,468,1812,495"/>
+<area shape="rect" id="node28" href="$d3/de5/a00209.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="2809,468,3047,495"/>
+<area shape="rect" id="node31" href="$da/d06/a01403.html" title="Fields/EMField.h" alt="" coords="2005,304,2129,331"/>
+<area shape="rect" id="node33" href="$d3/d92/a01796.html" title="Parser/Token.h" alt="" coords="2366,468,2482,495"/>
+<area shape="rect" id="node38" href="$d5/de9/a00176.html" title="AbstractObjects/Definition.h" alt="" coords="2258,155,2462,181"/>
+<area shape="rect" id="node39" href="$d9/d9a/a00998.html" title="Algorithms/PartData.h" alt="" coords="215,155,380,181"/>
+<area shape="rect" id="node40" href="$d9/df8/a03023.html" title="Solvers/PoissonSolver.h" alt="" coords="271,229,447,256"/>
+<area shape="rect" id="node48" href="$dc/d84/a00338.html" title="Amr/AmrObject.h" alt="" coords="522,229,657,256"/>
+<area shape="rect" id="node50" href="$df/d81/a02966.html" title="Solvers/AmrPoissonSolver.h" alt="" coords="404,155,607,181"/>
+<area shape="rect" id="node41" href="$df/d59/a01001.html" title="Algorithms/PBunchDefs.h" alt="" coords="276,304,463,331"/>
+<area shape="rect" id="node44" href="$df/d8e/a03509.html" title="Field/Field.h" alt="" coords="5,468,104,495"/>
+<area shape="rect" id="node42" href="$de/dc4/a13617.html" title="Algorithms/Vektor.h" alt="" coords="191,386,342,413"/>
+<area shape="rect" id="node43" href="$d1/d22/a03731.html" title="Particle/IntCIC.h" alt="" coords="41,386,167,413"/>
+<area shape="rect" id="node45" href="$d4/dc4/a03647.html" title="Meshes/UniformCartesian.h" alt="" coords="116,543,319,569"/>
+<area shape="rect" id="node46" href="$dc/d0f/a03824.html" title="Particle/ParticleSpatial\lLayout.h" alt="" coords="885,379,1051,420"/>
+<area shape="rect" id="node47" href="$d6/d76/a03554.html" title="FieldLayout/CenteredField\lLayout.h" alt="" coords="417,379,607,420"/>
+<area shape="rect" id="node49" href="$d7/d7b/a03593.html" title="Index/NDIndex.h" alt="" coords="928,304,1059,331"/>
+</map>

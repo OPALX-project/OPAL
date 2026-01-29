@@ -1,0 +1,12 @@
+<map id="operator&lt;&lt;" name="operator&lt;&lt;">
+<area shape="rect" id="node2" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="215,81,265,108"/>
+<area shape="rect" id="node8" href="$d7/d05/a05163.html#aed7ae7d901915eb413c6c8b736f34f1e" title="Offset::getEndDirection" alt="" coords="153,132,327,159"/>
+<area shape="rect" id="node9" href="$d7/d05/a05163.html#a8e793d23c2d9ee7a2c6212c23372e2be" title="Offset::getEndPosition" alt="" coords="157,183,323,209"/>
+<area shape="rect" id="node10" href="$d7/d05/a05163.html#adfc84e76b7155476c168c959313eaa31" title="Offset::getIsLocal" alt="" coords="173,233,307,260"/>
+<area shape="rect" id="node11" href="$db/d78/a05071.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="152,284,328,311"/>
+<area shape="rect" id="node3" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="376,56,548,83"/>
+<area shape="rect" id="node4" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1079,5,1214,32"/>
+<area shape="rect" id="node5" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="596,56,783,83"/>
+<area shape="rect" id="node6" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="831,56,1028,83"/>
+<area shape="rect" id="node7" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1076,56,1217,83"/>
+</map>

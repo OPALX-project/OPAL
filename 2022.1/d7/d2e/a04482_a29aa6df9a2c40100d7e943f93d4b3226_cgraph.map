@@ -1,0 +1,51 @@
+<map id="PyOpal::Field::BOOST_PYTHON_MODULE" name="PyOpal::Field::BOOST_PYTHON_MODULE">
+<area shape="rect" id="node2" href="$d7/d2e/a04482.html#ab931c0a824376642803fc8e9cc0d99e7" title="PyOpal::Field::get\l_field_value" alt="" coords="250,968,385,1009"/>
+<area shape="rect" id="node50" href="$d5/d8a/a04475.html#a6b13e9b77d47f3b02a5f2e3ef12b2a9b" title="PyOpal::ExceptionTranslation\l::registerExceptions" alt="" coords="212,1033,423,1074"/>
+<area shape="rect" id="node3" href="$d7/d2e/a04482.html#a796215ed9fa64d61087938cf19f545a0" title="PyOpal::Field::get\l_field_value_ring" alt="" coords="487,880,621,921"/>
+<area shape="rect" id="node47" href="$d3/de5/a07315.html#af0316ce6a0bdaf33f0960e02928f0c20" title="TrackRun::getTracker" alt="" coords="476,946,632,972"/>
+<area shape="rect" id="node48" href="$d7/d2e/a04482.html#a8b05726d758282a2288b52705b9720a9" title="PyOpal::Field::get\l_field_value_parallelt" alt="" coords="473,997,635,1038"/>
+<area shape="rect" id="node49" href="$d7/d2e/a04482.html#a140ecd4eb26960e234f68a27724807aa" title="PyOpal::Field::get\l_field_value_cyclotron" alt="" coords="471,1062,637,1104"/>
+<area shape="rect" id="node4" href="$db/d48/a05187.html#a609db7093096dc7e73a4cc76ebaf253c" title="Ring::apply" alt="" coords="685,887,780,914"/>
+<area shape="rect" id="node5" href="$dd/d85/a06231.html#a25d7c4181fad11e48746561473385b48" title="LossDataSink::addParticle" alt="" coords="828,811,1019,838"/>
+<area shape="rect" id="node6" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1921,1419,1972,1446"/>
+<area shape="rect" id="node10" href="$db/d78/a05071.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="835,912,1011,939"/>
+<area shape="rect" id="node11" href="$dd/d85/a06231.html#a704151da22ad86bbc4df8dc3222ce9a8" title="LossDataSink::save" alt="" coords="849,862,998,888"/>
+<area shape="rect" id="node7" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="2102,1419,2274,1446"/>
+<area shape="rect" id="node8" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="2329,1419,2516,1446"/>
+<area shape="rect" id="node9" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="2355,352,2490,379"/>
+<area shape="rect" id="node12" href="$dd/d85/a06231.html#ad685ed3ffc0ebe6e66e0553a5bf8b535" title="LossDataSink::appendASCII" alt="" coords="1847,111,2047,138"/>
+<area shape="rect" id="node13" href="$da/d49/a09219.html#ac4593203c34f26c625bd51c7502c297e" title="Communicate::barrier" alt="" coords="1093,136,1257,163"/>
+<area shape="rect" id="node15" href="$dd/d85/a06231.html#af3ad22042cbf8b455ee4d6038e5a5dc9" title="LossDataSink::closeASCII" alt="" coords="2095,224,2281,251"/>
+<area shape="rect" id="node16" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="1091,238,1258,264"/>
+<area shape="rect" id="node18" href="$d5/d13/a04739.html#ab6c28623a1b959ae2339cabba0540d5b" title="OpalData::getOpenMode" alt="" coords="1084,912,1265,939"/>
+<area shape="rect" id="node19" href="$dd/d85/a06231.html#af4298f19a257d79aaf6203cb65bc481f" title="LossDataSink::hasNoParticles\lToDump" alt="" coords="1067,1061,1282,1102"/>
+<area shape="rect" id="node24" href="$d0/dce/a03971.html#a4b2b36162d7cd2032d0ea378d5015281" title="level2" alt="" coords="1143,1520,1206,1547"/>
+<area shape="rect" id="node26" href="$dd/d85/a06231.html#a1af23a54ee420c92199d2b1a2ecf8652" title="LossDataSink::openASCII" alt="" coords="1855,314,2039,340"/>
+<area shape="rect" id="node27" href="$dd/d85/a06231.html#aaa915918d8cad90c037e22e5b7619f5e" title="LossDataSink::openH5" alt="" coords="1091,1571,1259,1598"/>
+<area shape="rect" id="node29" href="$dd/d85/a06231.html#acae85b57e50f16b15329f3b8a52a4fcf" title="LossDataSink::saveASCII" alt="" coords="1083,862,1266,888"/>
+<area shape="rect" id="node42" href="$dd/d85/a06231.html#ad8fa3b13aeb3cc8f0c804a3e9f784a0a" title="LossDataSink::saveH5" alt="" coords="1091,710,1258,736"/>
+<area shape="rect" id="node45" href="$dd/d85/a06231.html#a67df26ea60d69002043113fc5bf20618" title="LossDataSink::writeHeader\lASCII" alt="" coords="1075,1310,1274,1352"/>
+<area shape="rect" id="node46" href="$dd/d85/a06231.html#a38b16281b091f47774b88c030e6bb10e" title="LossDataSink::writeHeaderH5" alt="" coords="1067,288,1283,315"/>
+<area shape="rect" id="node14" href="$da/d49/a09219.html#ac61e30b57fefb3684575e3f2ad5bc1a9" title="Communicate::mybarrier" alt="" coords="1363,136,1549,163"/>
+<area shape="rect" id="node17" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1380,238,1532,264"/>
+<area shape="rect" id="node20" href="$d4/d5e/a03686.html#a6e1e71ee127405447f7411777d80ebd6" title="reduce" alt="" coords="1423,1166,1489,1192"/>
+<area shape="rect" id="node21" href="$d4/dc7/a09807.html#aec355d9c01194461adbba236ffbd7b21" title="TagMaker::next_tag" alt="" coords="1639,1144,1789,1171"/>
+<area shape="rect" id="node22" href="$da/d49/a09219.html#ac0e671485db61cd6fdf8961504250b2b" title="Communicate::receive\l_block" alt="" coords="1629,1057,1799,1098"/>
+<area shape="rect" id="node23" href="$da/d49/a09219.html#a5c519594f60faadd9202606f1ba0bbc3" title="Communicate::send" alt="" coords="1638,1318,1790,1344"/>
+<area shape="rect" id="node25" href="$d8/d4f/a12119.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="1363,1520,1549,1547"/>
+<area shape="rect" id="node28" href="$df/da4/a12131.html#a8d995e140c485a5416394b5cc1c864c4" title="IpplInfo::getComm" alt="" coords="1385,1571,1527,1598"/>
+<area shape="rect" id="node30" href="$d9/de9/a09623.html#aeb7c0c5d1f49f8fd1b78eae709216da9" title="Message::get" alt="" coords="1402,1064,1510,1091"/>
+<area shape="rect" id="node31" href="$df/d5e/a05351.html#aae726ab3bf3b79e2e30cd853fbacd022" title="Get the id of the particle. " alt="" coords="1385,862,1527,888"/>
+<area shape="rect" id="node32" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1385,912,1527,939"/>
+<area shape="rect" id="node33" href="$df/d5e/a05351.html#aae9cb79e7f52b562aca9556ee468b827" title="Get horizontal momentum (no dimension). " alt="" coords="1383,507,1529,534"/>
+<area shape="rect" id="node34" href="$df/d5e/a05351.html#a1c5d8b391478188cf9a776989cf08d66" title="Get vertical momentum (no dimension). " alt="" coords="1383,558,1529,584"/>
+<area shape="rect" id="node35" href="$df/d5e/a05351.html#a2ba808950a8bf8486dce06232ce7f666" title="Get relative momentum error (no dimension). " alt="" coords="1384,608,1528,635"/>
+<area shape="rect" id="node36" href="$df/d5e/a05351.html#a98ccb7f7dc75caf71f5131a09c2d404d" title="Get time. " alt="" coords="1375,659,1537,686"/>
+<area shape="rect" id="node37" href="$df/d5e/a05351.html#ab697ff46a3a13dfc0538d5662db77d71" title="Get horizontal position in m. " alt="" coords="1387,710,1525,736"/>
+<area shape="rect" id="node38" href="$df/d5e/a05351.html#a5c3c9b986068d3508b019b81a63b174a" title="Get vertical displacement in m. " alt="" coords="1387,760,1525,787"/>
+<area shape="rect" id="node39" href="$df/d5e/a05351.html#a856ea94a4588822d4c9cfad5cc7e176a" title="Get longitudinal displacement c*t in m. " alt="" coords="1387,811,1525,838"/>
+<area shape="rect" id="node40" href="$dd/d85/a06231.html#ac8063b9bd61fcaa36bf8794d1deddbba" title="LossDataSink::hasTurnInformations" alt="" coords="1331,1267,1581,1294"/>
+<area shape="rect" id="node41" href="$d9/de9/a09623.html#a3fc943d7af8a5f88178faeab977802c0" title="Message::put" alt="" coords="1402,1216,1510,1243"/>
+<area shape="rect" id="node43" href="$dc/d54/a05339.html#a6a600c6ac90bb042bf1129fc04a613ae" title="DistributionMoments\l::compute" alt="" coords="1377,441,1535,482"/>
+<area shape="rect" id="node44" href="$df/d5e/a05351.html#a800665e69ae22e293a64382a31b53c93" title="Get charge in Coulomb. " alt="" coords="1369,339,1543,366"/>
+</map>

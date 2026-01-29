@@ -1,0 +1,11 @@
+<map id="Beam::getChargePerParticle" name="Beam::getChargePerParticle">
+<area shape="rect" id="node2" href="$de/d6b/a03845.html#af6518b151e7b0d52fa4ec791b891f53b" title="copysign" alt="" coords="323,5,403,32"/>
+<area shape="rect" id="node3" href="$d1/d45/a07163.html#a61641135ee698769b42408eefca7e294" title="Return the charge number in elementary charge. " alt="" coords="295,56,430,83"/>
+<area shape="rect" id="node8" href="$d1/d45/a07163.html#a2b887935cf3f7fed8e7d8fb37232d3d0" title="Return the beam current in A. " alt="" coords="294,107,431,133"/>
+<area shape="rect" id="node9" href="$d1/d45/a07163.html#a78c09a60e70db9a1cba84f7ce9c658cc" title="Return the beam frequency in MHz. " alt="" coords="285,157,440,184"/>
+<area shape="rect" id="node10" href="$d1/d45/a07163.html#a78f24e2aada7fc91ed556435faa4a2b5" title="Return the number of (macro)particles. " alt="" coords="257,208,468,235"/>
+<area shape="rect" id="node4" href="$d2/d71/a04503.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="516,132,659,159"/>
+<area shape="rect" id="node5" href="$da/d19/a04667.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="707,81,897,108"/>
+<area shape="rect" id="node6" href="$da/d19/a04667.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="732,132,872,159"/>
+<area shape="rect" id="node7" href="$da/d19/a04667.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="723,183,881,209"/>
+</map>

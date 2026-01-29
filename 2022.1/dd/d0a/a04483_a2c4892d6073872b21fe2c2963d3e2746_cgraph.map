@@ -1,0 +1,26 @@
+<map id="PyOpal::PyFieldSolverNS::registerFieldSolver" name="PyOpal::PyFieldSolverNS::registerFieldSolver">
+<area shape="rect" id="node2" href="$d5/d13/a04739.html#ad98bcdd94e9a6ce0149f2d3d976c8779" title="Define a new object. " alt="" coords="253,309,383,336"/>
+<area shape="rect" id="node24" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="235,487,401,513"/>
+<area shape="rect" id="node3" href="$d2/ddb/a04687.html#a6af87fa7c132144a4fed854a5c0ba253" title="First object in alphabetic order of name. " alt="" coords="683,107,809,133"/>
+<area shape="rect" id="node4" href="$dc/d12/a04723.html#a2462226f913277dbeec5928dd40c25c9" title="Test if replacement is allowed. " alt="" coords="449,360,612,387"/>
+<area shape="rect" id="node5" href="$d2/ddb/a04687.html#a4a8d6e8dc3b5f4f851a86b64daad1978" title="Last object in alphabetic order of name. " alt="" coords="689,157,803,184"/>
+<area shape="rect" id="node6" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="505,411,556,437"/>
+<area shape="rect" id="node12" href="$d5/d13/a04739.html#a352ed422ba6872cc3c76cc4dc32dc9d1" title="Delete existing entry. " alt="" coords="467,259,594,285"/>
+<area shape="rect" id="node14" href="$d2/ddb/a04687.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="689,360,803,387"/>
+<area shape="rect" id="node17" href="$dc/d12/a04723.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="449,461,612,488"/>
+<area shape="rect" id="node18" href="$d2/ddb/a04687.html#afd593b9994a1000a969046c02dd66846" title="Define new object. " alt="" coords="467,512,594,539"/>
+<area shape="rect" id="node20" href="$dc/d12/a04723.html#ae7e75b2311e00969ae6308e899d32686" title="True, if [b]this[/b] is a built&#45;in object. " alt="" coords="468,563,593,589"/>
+<area shape="rect" id="node21" href="$df/d9b/a04755.html#a83eb57bb3e4e17a0893ba0b217448a67" title="Find out if table depends on the object identified by [b]name[/b]. " alt="" coords="457,5,604,32"/>
+<area shape="rect" id="node22" href="$dc/d12/a04723.html#aa48af24109cadc6f450bcc37523651a5" title="Set/reset the [b]modified[/b] flag. " alt="" coords="469,56,593,83"/>
+<area shape="rect" id="node23" href="$d5/d13/a04739.html#a43390aa41dfa944e82a47c760923c242" title="Set the global momentum. " alt="" coords="467,107,594,133"/>
+<area shape="rect" id="node7" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="660,411,832,437"/>
+<area shape="rect" id="node8" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="880,411,1067,437"/>
+<area shape="rect" id="node11" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1363,360,1498,387"/>
+<area shape="rect" id="node9" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1115,411,1312,437"/>
+<area shape="rect" id="node10" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1360,411,1501,437"/>
+<area shape="rect" id="node13" href="$d2/ddb/a04687.html#a237a99238f9e6450701528719fee9791" title="Delete all entries. " alt="" coords="683,208,809,235"/>
+<area shape="rect" id="node15" href="$dc/d12/a04723.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="679,259,813,285"/>
+<area shape="rect" id="node16" href="$dc/d12/a04723.html#a01d106dd393b42e0622f2158b2f0a6da" title="Set parent object. " alt="" coords="679,309,813,336"/>
+<area shape="rect" id="node19" href="$dc/d17/a00872.html#aa8ae23ddaa752827580a9345f34b7cca" title="value_type" alt="" coords="699,512,793,539"/>
+<area shape="rect" id="node25" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="455,613,607,640"/>
+</map>

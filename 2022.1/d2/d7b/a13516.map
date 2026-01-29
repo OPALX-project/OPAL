@@ -1,0 +1,33 @@
+<map id="src/_PyOpal/PyLocalCartesianOffset.cpp" name="src/_PyOpal/PyLocalCartesianOffset.cpp">
+<area shape="rect" id="node2" href="$de/dd2/a13461.html" title="PyOpal/ExceptionTranslation.h" alt="" coords="196,102,414,129"/>
+<area shape="rect" id="node8" href="$d6/dab/a13539.html" title="PyOpal/PyOpalObject.h" alt="" coords="918,102,1090,129"/>
+<area shape="rect" id="node48" href="$d4/d2d/a02408.html" title="Elements/OpalOffset\l/OpalLocalCartesianOffset.h" alt="" coords="1605,95,1808,136"/>
+<area shape="rect" id="node13" href="$dc/dc1/a03263.html" title="Utilities/OpalException.h" alt="" coords="1126,259,1308,285"/>
+<area shape="rect" id="node15" href="$db/dda/a02318.html" title="Elements/OpalElement.h" alt="" coords="1615,184,1798,211"/>
+<area shape="rect" id="node17" href="$de/d79/a00203.html" title="AbstractObjects/Object.h" alt="" coords="1086,333,1268,360"/>
+<area shape="rect" id="node38" href="$d3/dd5/a00215.html" title="AbstractObjects/OpalData.h" alt="" coords="357,505,560,531"/>
+<area shape="rect" id="node41" href="$d6/d06/a00572.html" title="AbsBeamline/Component.h" alt="" coords="2507,333,2706,360"/>
+<area shape="rect" id="node43" href="$de/dd7/a00362.html" title="Attributes/Attributes.h" alt="" coords="634,333,800,360"/>
+<area shape="rect" id="node47" href="$d7/d1c/a02732.html" title="OpalConfigure/Configure.h" alt="" coords="1244,184,1436,211"/>
+<area shape="rect" id="node14" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="1795,594,1994,621"/>
+<area shape="rect" id="node16" href="$da/d15/a00188.html" title="AbstractObjects/Element.h" alt="" coords="1340,259,1534,285"/>
+<area shape="rect" id="node37" href="$d5/db3/a01751.html" title="MemoryManagement/OwnPtr.h" alt="" coords="2843,259,3066,285"/>
+<area shape="rect" id="node23" href="$d9/d37/a01754.html" title="MemoryManagement/Pointer.h" alt="" coords="994,594,1216,621"/>
+<area shape="rect" id="node27" href="$d5/d0a/a00602.html" title="AbsBeamline/ElementBase.h" alt="" coords="2402,415,2613,442"/>
+<area shape="rect" id="node18" href="$d7/d9a/a00152.html" title="AbstractObjects/Attribute.h" alt="" coords="1003,415,1202,442"/>
+<area shape="rect" id="node20" href="$db/dc0/a01757.html" title="MemoryManagement/RCObject.h" alt="" coords="1541,676,1776,703"/>
+<area shape="rect" id="node19" href="$d6/db8/a00158.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="1240,587,1426,628"/>
+<area shape="rect" id="node22" href="$db/ddf/a00164.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="1241,497,1428,539"/>
+<area shape="rect" id="node28" href="$d0/ddb/a00542.html" title="AbsBeamline/AttributeSet.h" alt="" coords="1956,505,2158,531"/>
+<area shape="rect" id="node29" href="$d6/dad/a00941.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="2631,497,2848,539"/>
+<area shape="rect" id="node30" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="2576,594,2757,621"/>
+<area shape="rect" id="node31" href="$de/d61/a01205.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="3028,594,3251,621"/>
+<area shape="rect" id="node32" href="$da/d19/a01217.html" title="BeamlineGeometry/Geometry.h" alt="" coords="3026,505,3254,531"/>
+<area shape="rect" id="node33" href="$de/dca/a01907.html" title="Structure/BoundingBox.h" alt="" coords="2183,505,2366,531"/>
+<area shape="rect" id="node35" href="$d7/db2/a02036.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="1756,497,1931,539"/>
+<area shape="rect" id="node39" href="$d3/de5/a00209.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="168,594,405,621"/>
+<area shape="rect" id="node42" href="$da/d06/a01403.html" title="Fields/EMField.h" alt="" coords="2903,415,3027,442"/>
+<area shape="rect" id="node44" href="$d3/d92/a01796.html" title="Parser/Token.h" alt="" coords="563,594,679,621"/>
+<area shape="rect" id="node49" href="$dc/dce/a00740.html" title="AbsBeamline/Offset.h" alt="" coords="3090,259,3253,285"/>
+<area shape="rect" id="node50" href="$d1/d34/a01211.html" title="BeamlineGeometry/Euclid3\lDGeometry.h" alt="" coords="3072,408,3272,449"/>
+</map>

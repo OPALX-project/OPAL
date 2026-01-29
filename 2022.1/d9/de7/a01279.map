@@ -1,0 +1,23 @@
+<map id="src/Classic/Beamlines/BeamlineGeometry.h" name="src/Classic/Beamlines/BeamlineGeometry.h">
+<area shape="rect" id="node2" href="$de/d33/a01274.html" title="src/Classic/Beamlines\l/BeamlineGeometry.cpp" alt="" coords="165,95,343,136"/>
+<area shape="rect" id="node3" href="$d4/d34/a01298.html" title="src/Classic/Beamlines\l/TBeamline.h" alt="" coords="368,95,532,136"/>
+<area shape="rect" id="node4" href="$d5/d60/a13509.html" title="src/_PyOpal/PyLine.h" alt="" coords="590,370,747,397"/>
+<area shape="rect" id="node6" href="$d9/dda/a01289.html" title="src/Classic/Beamlines\l/FlaggedBeamline.h" alt="" coords="785,184,949,225"/>
+<area shape="rect" id="node16" href="$db/d83/a13512.html" title="src/PyOpal/PyObjects\l/PyLine.h" alt="" coords="785,363,945,404"/>
+<area shape="rect" id="node17" href="$d8/da6/a02696.html" title="src/Lines/Sequence.h" alt="" coords="203,281,361,307"/>
+<area shape="rect" id="node22" href="$d2/daf/a03245.html" title="src/Track/TrackRun.cpp" alt="" coords="974,191,1142,218"/>
+<area shape="rect" id="node5" href="$d8/d32/a13503.html" title="src/_PyOpal/PyLine.cpp" alt="" coords="951,459,1123,486"/>
+<area shape="rect" id="node7" href="$df/d95/a00299.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="488,273,719,315"/>
+<area shape="rect" id="node8" href="$d3/d07/a00305.html" title="src/Algorithms/ParallelTTracker.cpp" alt="" coords="743,281,992,307"/>
+<area shape="rect" id="node9" href="$da/de0/a00317.html" title="src/Algorithms/ThickTracker.cpp" alt="" coords="1016,281,1244,307"/>
+<area shape="rect" id="node10" href="$d0/d00/a01286.html" title="src/Classic/Beamlines\l/FlaggedBeamline.cpp" alt="" coords="1268,273,1435,315"/>
+<area shape="rect" id="node11" href="$dc/d64/a02678.html" title="src/Lines/Line.h" alt="" coords="1459,281,1582,307"/>
+<area shape="rect" id="node12" href="$d8/d01/a02675.html" title="src/Lines/Line.cpp" alt="" coords="1557,370,1695,397"/>
+<area shape="rect" id="node13" href="$d4/d9d/a02681.html" title="src/Lines/LineTemplate.cpp" alt="" coords="1234,370,1431,397"/>
+<area shape="rect" id="node14" href="$dd/d01/a02729.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="976,370,1207,397"/>
+<area shape="rect" id="node15" href="$dd/d57/a13506.html" title="src/PyOpal/PyObjects\l/PyLine.cpp" alt="" coords="1274,452,1434,493"/>
+<area shape="rect" id="node18" href="$d6/da8/a02693.html" title="src/Lines/Sequence.cpp" alt="" coords="263,459,437,486"/>
+<area shape="rect" id="node19" href="$da/d28/a02705.html" title="src/Lines/SequenceParser.cpp" alt="" coords="461,459,673,486"/>
+<area shape="rect" id="node20" href="$d7/d73/a02708.html" title="src/Lines/SequenceParser.h" alt="" coords="290,370,487,397"/>
+<area shape="rect" id="node21" href="$d8/dd0/a02711.html" title="src/Lines/SequenceTemplate.cpp" alt="" coords="5,459,239,486"/>
+</map>

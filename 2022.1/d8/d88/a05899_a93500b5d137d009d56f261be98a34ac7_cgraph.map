@@ -1,0 +1,7 @@
+<map id="interpolation::SquarePolynomialVector::SquarePolynomialVector" name="interpolation::SquarePolynomialVector::SquarePolynomialVector">
+<area shape="rect" id="node2" href="$d8/d88/a05899.html#a3683def65a47286a6e68263c3d485b74" title="interpolation::SquarePolynomial\lVector::SetCoefficients" alt="" coords="284,39,515,80"/>
+<area shape="rect" id="node3" href="$d5/dfd/a05871.html#a485ae568ec26cd973074cf3704bc6938" title="returns number of columns in the matrix " alt="" coords="595,5,761,47"/>
+<area shape="rect" id="node4" href="$d8/d88/a05899.html#ad2553606f42010d402c404ed7d12b8e7" title="interpolation::SquarePolynomial\lVector::IndexByVector" alt="" coords="563,71,793,112"/>
+<area shape="rect" id="node5" href="$d8/d88/a05899.html#a6fbc59fce924184e894fe492c9e3f549" title="interpolation::SquarePolynomial\lVector::IndexByPower" alt="" coords="841,71,1072,112"/>
+<area shape="rect" id="node6" href="$d8/d88/a05899.html#aeee94321d9a80efbfba17d146a8588f9" title="interpolation::SquarePolynomial\lVector::IndexByPowerRecursive" alt="" coords="1120,71,1351,112"/>
+</map>

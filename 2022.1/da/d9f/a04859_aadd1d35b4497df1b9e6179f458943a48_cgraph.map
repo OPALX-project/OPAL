@@ -1,0 +1,51 @@
+<map id="ParallelTTracker::prepareSections" name="ParallelTTracker::prepareSections">
+<area shape="rect" id="node2" href="$db/d78/a05071.html#a4c963794b96d83d5d3be0a9fe3c44322" title="Apply visitor. " alt="" coords="270,857,429,884"/>
+<area shape="rect" id="node3" href="$df/d2f/a06551.html#a9ebfbf31cfc27d5cb8f59a6f5cfd0d46" title="OpalBeamline::compute3DLattice" alt="" coords="511,563,752,589"/>
+<area shape="rect" id="node27" href="$df/d2f/a06551.html#a930717579e990fd8ddd6063819f12acf" title="OpalBeamline::prepareSections" alt="" coords="236,1169,463,1196"/>
+<area shape="rect" id="node29" href="$df/d2f/a06551.html#ab64b48e0477e4e0c955c269c8b9964a3" title="OpalBeamline::save3DInput" alt="" coords="247,959,451,985"/>
+<area shape="rect" id="node44" href="$df/d2f/a06551.html#ac595b9f0a6db121b82620185cbc6152b" title="OpalBeamline::save3DLattice" alt="" coords="242,1557,457,1584"/>
+<area shape="rect" id="node4" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1327,883,1372,909"/>
+<area shape="rect" id="node6" href="$d2/dc7/a05391.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="1063,592,1229,619"/>
+<area shape="rect" id="node9" href="$dc/d2c/a00893.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="885,208,929,235"/>
+<area shape="rect" id="node11" href="$dc/d2c/a00893.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="1125,208,1167,235"/>
+<area shape="rect" id="node13" href="$d4/d95/a00989.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="884,1557,931,1584"/>
+<area shape="rect" id="node15" href="$d0/d85/a00908.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="844,107,971,133"/>
+<area shape="rect" id="node19" href="$d1/d82/a05027.html#a6248731d050834eda9d0612e50f167fb" title="BendBase::getBendAngle" alt="" coords="814,832,1001,859"/>
+<area shape="rect" id="node20" href="$d1/d82/a05027.html#a49703e2547809f3facd773caa0a524d7" title="BendBase::getChordLength" alt="" coords="808,325,1007,352"/>
+<area shape="rect" id="node21" href="$d1/d82/a05027.html#a0b7d77b57f54cec573e3d199bcc8f5cb" title="BendBase::getDesignPath" alt="" coords="813,933,1002,960"/>
+<area shape="rect" id="node22" href="$d1/d82/a05027.html#aba2fe3ad14c15238edcccb5441e0fbd0" title="BendBase::getEntranceAngle" alt="" coords="802,731,1013,757"/>
+<area shape="rect" id="node23" href="$db/d78/a05071.html#aab7ccd4b61b3d8289f042e0569f5b92f" title="ElementBase::getRotation\lAboutZ" alt="" coords="812,259,1003,301"/>
+<area shape="rect" id="node24" href="$d2/dc7/a05391.html#a16e61b715e53d7394996bb56c356916e" title="Quaternion::rotate" alt="" coords="837,427,978,453"/>
+<area shape="rect" id="node5" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1469,1423,1655,1449"/>
+<area shape="rect" id="node7" href="$d2/dc7/a05391.html#a237c3a9dfefea10e7ec6b5f373546427" title="Quaternion::real" alt="" coords="1286,617,1413,644"/>
+<area shape="rect" id="node8" href="$d2/dc7/a05391.html#a8cb33fa212258498b937d7e1a4684ce2" title="Quaternion::imag" alt="" coords="1282,567,1417,593"/>
+<area shape="rect" id="node10" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1277,157,1421,184"/>
+<area shape="rect" id="node12" href="$d9/dba/a05287.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1303,208,1395,235"/>
+<area shape="rect" id="node14" href="$d9/d06/a04735.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1071,1557,1221,1584"/>
+<area shape="rect" id="node16" href="$dd/d95/a05263.html#a55cb732c23dd6b419f636aff0874ab82" title="Get beginning of data. " alt="" coords="1087,5,1205,32"/>
+<area shape="rect" id="node17" href="$dd/d95/a05263.html#a941ffba563af0a4e17aae45292b1659e" title="Get end of data. " alt="" coords="1093,56,1199,83"/>
+<area shape="rect" id="node18" href="$dc/d2c/a00893.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1123,157,1169,184"/>
+<area shape="rect" id="node25" href="$d2/dc7/a05391.html#aa29522eb8e682639a9efddce09a49f6f" title="Quaternion::isUnit" alt="" coords="1076,477,1216,504"/>
+<area shape="rect" id="node26" href="$d2/dc7/a05391.html#afd6f04fe42007759224bbfb5c7727eb0" title="Quaternion::Norm" alt="" coords="1280,452,1419,479"/>
+<area shape="rect" id="node28" href="$dd/d4d/a06283.html#a3d7539be5c573244e665e5ada5d7d256" title="ClassicField::SortAsc" alt="" coords="554,1304,709,1331"/>
+<area shape="rect" id="node30" href="$d2/df8/a04550.html#a11460f59ebd4d9f7dc2f12724dece886" title="Util::combineFilePath" alt="" coords="828,1760,987,1787"/>
+<area shape="rect" id="node31" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="606,1253,657,1280"/>
+<area shape="rect" id="node33" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1079,1253,1213,1280"/>
+<area shape="rect" id="node34" href="$d5/d13/a04739.html#af5404b3339d48c4531df60b77ce628c3" title="get the name of the the additional data directory " alt="" coords="800,1651,1015,1693"/>
+<area shape="rect" id="node35" href="$db/d39/a05023.html#a3435cca03a7eb1bf17de13de0dc908dc" title="Bend2D::getExitAngle" alt="" coords="549,613,713,640"/>
+<area shape="rect" id="node36" href="$d5/d13/a04739.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="524,1136,739,1163"/>
+<area shape="rect" id="node37" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="824,1861,991,1888"/>
+<area shape="rect" id="node39" href="$dc/d4e/a05331.html#ad085ddf366336ee1a6cf42172fa72070" title="CoordinateSystemTrafo\l::getOrigin" alt="" coords="544,1187,719,1229"/>
+<area shape="rect" id="node40" href="$dc/d4e/a05331.html#af4ebb12a99b64d119dcfdbe184b7d467" title="CoordinateSystemTrafo\l::getRotation" alt="" coords="544,665,719,706"/>
+<area shape="rect" id="node41" href="$d2/df8/a04550.html#a22e5138e8ba947ade95e5465ccd026fb" title="Util::getTaitBryantAngles" alt="" coords="539,452,723,479"/>
+<area shape="rect" id="node32" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="821,1253,993,1280"/>
+<area shape="rect" id="node38" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1070,1861,1222,1888"/>
+<area shape="rect" id="node42" href="$de/d6b/a03845.html#aae355e465ddaedd0a66a3187cd09a5a8" title="fmod" alt="" coords="879,528,935,555"/>
+<area shape="rect" id="node43" href="$de/d6b/a03845.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="878,579,937,605"/>
+<area shape="rect" id="node45" href="$db/d4f/a06239.html#a67977b0dca7009ec44161b88ca8ca1d1" title="MeshGenerator::add" alt="" coords="555,1608,708,1635"/>
+<area shape="rect" id="node46" href="$d5/d12/a03851.html#ae29244719985f3e4cbc22b58064177de" title="floor" alt="" coords="606,2013,657,2040"/>
+<area shape="rect" id="node47" href="$db/d39/a05023.html#a4fc91d3e8e73ba0162202b7e8a12d048" title="Bend2D::getBeginToEnd\l_local" alt="" coords="543,2065,720,2106"/>
+<area shape="rect" id="node48" href="$d5/d13/a04739.html#ab6c28623a1b959ae2339cabba0540d5b" title="OpalData::getOpenMode" alt="" coords="541,1709,722,1736"/>
+<area shape="rect" id="node49" href="$d4/d5e/a03542.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="1324,1448,1375,1475"/>
+<area shape="rect" id="node50" href="$db/d4f/a06239.html#ab010c047248597448bba96ad7a055fe2" title="MeshGenerator::write" alt="" coords="550,1760,713,1787"/>
+</map>

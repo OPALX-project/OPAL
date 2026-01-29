@@ -1,0 +1,14 @@
+<map id="src/Classic/TrimCoils/TrimCoil.h" name="src/Classic/TrimCoils/TrimCoil.h">
+<area shape="rect" id="node2" href="$d8/dc8/a00581.html" title="src/Classic/AbsBeamline\l/Cyclotron.cpp" alt="" coords="5,95,187,136"/>
+<area shape="rect" id="node3" href="$d9/d17/a01937.html" title="src/Classic/TrimCoils\l/TrimCoil.cpp" alt="" coords="211,95,365,136"/>
+<area shape="rect" id="node4" href="$d4/dec/a01952.html" title="src/Classic/TrimCoils\l/TrimCoilFit.h" alt="" coords="569,95,724,136"/>
+<area shape="rect" id="node11" href="$d3/d67/a01958.html" title="src/Classic/TrimCoils\l/TrimCoilMirrored.h" alt="" coords="389,95,544,136"/>
+<area shape="rect" id="node13" href="$dd/d3b/a02291.html" title="src/Elements/OpalCyclotron.cpp" alt="" coords="748,102,977,129"/>
+<area shape="rect" id="node5" href="$d0/dce/a01946.html" title="src/Classic/TrimCoils\l/TrimCoilBFit.h" alt="" coords="927,184,1081,225"/>
+<area shape="rect" id="node8" href="$dd/d2e/a01949.html" title="src/Classic/TrimCoils\l/TrimCoilFit.cpp" alt="" coords="748,184,903,225"/>
+<area shape="rect" id="node9" href="$d6/d90/a01964.html" title="src/Classic/TrimCoils\l/TrimCoilPhaseFit.h" alt="" coords="569,184,724,225"/>
+<area shape="rect" id="node6" href="$d5/d31/a01931.html" title="src/Classic/TrimCoils\l/OpalTrimCoil.cpp" alt="" coords="659,273,813,315"/>
+<area shape="rect" id="node7" href="$df/dd8/a01943.html" title="src/Classic/TrimCoils\l/TrimCoilBFit.cpp" alt="" coords="927,273,1081,315"/>
+<area shape="rect" id="node10" href="$d2/d23/a01961.html" title="src/Classic/TrimCoils\l/TrimCoilPhaseFit.cpp" alt="" coords="475,273,635,315"/>
+<area shape="rect" id="node12" href="$d4/d93/a01955.html" title="src/Classic/TrimCoils\l/TrimCoilMirrored.cpp" alt="" coords="385,184,545,225"/>
+</map>

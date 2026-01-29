@@ -1,0 +1,35 @@
+<map id="src/Classic/Solvers/GreenWakeFunction.cpp" name="src/Classic/Solvers/GreenWakeFunction.cpp">
+<area shape="rect" id="node2" href="$d9/dd5/a01886.html" title="Solvers/GreenWakeFunction.h" alt="" coords="895,177,1110,203"/>
+<area shape="rect" id="node20" href="$d4/d95/a00989.html" title="Algorithms/PartBunchBase.h" alt="" coords="2359,95,2566,121"/>
+<area shape="rect" id="node44" href="$d7/db2/a02036.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="3454,259,3629,300"/>
+<area shape="rect" id="node3" href="$d4/d49/a01643.html" title="Filters/Filter.h" alt="" coords="695,266,803,293"/>
+<area shape="rect" id="node5" href="$db/d6b/a01853.html" title="Physics/Physics.h" alt="" coords="1871,348,2007,375"/>
+<area shape="rect" id="node6" href="$d5/d99/a01901.html" title="Solvers/WakeFunction.h" alt="" coords="879,266,1055,293"/>
+<area shape="rect" id="node8" href="$dd/d27/a03989.html" title="Utility/IpplInfo.h" alt="" coords="145,266,271,293"/>
+<area shape="rect" id="node15" href="$df/d11/a04037.html" title="Utility/PAssert.h" alt="" coords="1366,348,1493,375"/>
+<area shape="rect" id="node9" href="$dc/ddd/a04064.html" title="Utility/StaticIpplInfo.h" alt="" coords="145,348,309,375"/>
+<area shape="rect" id="node11" href="$d4/d2e/a03974.html" title="Utility/Inform.h" alt="" coords="385,348,506,375"/>
+<area shape="rect" id="node21" href="$d6/dad/a00941.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="3011,169,3229,211"/>
+<area shape="rect" id="node22" href="$de/dc4/a13617.html" title="Algorithms/Vektor.h" alt="" coords="2921,348,3071,375"/>
+<area shape="rect" id="node23" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="3033,266,3215,293"/>
+<area shape="rect" id="node25" href="$d5/da3/a00953.html" title="Algorithms/DistributionMoments.h" alt="" coords="1905,177,2151,203"/>
+<area shape="rect" id="node26" href="$d0/d54/a01691.html" title="FixedAlgebra/FMatrix.h" alt="" coords="2116,266,2287,293"/>
+<area shape="rect" id="node27" href="$dc/d3e/a01712.html" title="FixedAlgebra/FVector.h" alt="" coords="2191,348,2361,375"/>
+<area shape="rect" id="node28" href="$d3/dce/a01859.html" title="Physics/Units.h" alt="" coords="1869,266,1990,293"/>
+<area shape="rect" id="node29" href="$d7/dd4/a00968.html" title="Algorithms/OpalParticle.h" alt="" coords="2800,177,2987,203"/>
+<area shape="rect" id="node30" href="$df/d59/a01001.html" title="Algorithms/PBunchDefs.h" alt="" coords="3705,177,3892,203"/>
+<area shape="rect" id="node37" href="$d8/d6f/a02234.html" title="Distribution/Distribution.h" alt="" coords="3239,266,3430,293"/>
+<area shape="rect" id="node39" href="$d5/d35/a03716.html" title="Particle/AbstractParticle.h" alt="" coords="1223,177,1411,203"/>
+<area shape="rect" id="node40" href="$db/d07/a03779.html" title="Particle/ParticleAttrib.h" alt="" coords="296,266,467,293"/>
+<area shape="rect" id="node42" href="$da/d18/a01850.html" title="Physics/ParticleProperties.h" alt="" coords="2362,266,2563,293"/>
+<area shape="rect" id="node43" href="$d9/d5e/a03086.html" title="Structure/FieldSolver.h" alt="" coords="2690,266,2857,293"/>
+<area shape="rect" id="node46" href="$d9/d9f/a04013.html" title="Utility/IpplTimings.h" alt="" coords="1180,266,1335,293"/>
+<area shape="rect" id="node47" href="$d7/d76/a00992.html" title="PartBunchBase.hpp" alt="" coords="2528,177,2675,203"/>
+<area shape="rect" id="node24" href="$d9/db1/a03335.html" title="AppTypes/Tenzor.h" alt="" coords="1359,266,1500,293"/>
+<area shape="rect" id="node31" href="$d1/d22/a03731.html" title="Particle/IntCIC.h" alt="" coords="4069,266,4195,293"/>
+<area shape="rect" id="node32" href="$df/d8e/a03509.html" title="Field/Field.h" alt="" coords="3983,348,4081,375"/>
+<area shape="rect" id="node33" href="$d4/dc4/a03647.html" title="Meshes/UniformCartesian.h" alt="" coords="3880,423,4083,449"/>
+<area shape="rect" id="node34" href="$dc/d0f/a03824.html" title="Particle/ParticleSpatial\lLayout.h" alt="" coords="1525,259,1691,300"/>
+<area shape="rect" id="node36" href="$d6/d76/a03554.html" title="FieldLayout/CenteredField\lLayout.h" alt="" coords="3704,259,3893,300"/>
+<area shape="rect" id="node45" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="3430,348,3629,375"/>
+</map>

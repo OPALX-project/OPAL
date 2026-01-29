@@ -1,0 +1,36 @@
+<map id="OpalTrimCoil::OpalTrimCoil" name="OpalTrimCoil::OpalTrimCoil">
+<area shape="rect" id="node2" href="$d8/d45/a06251.html#ae7046c470a8c3f89772bf8317ee6d994" title="Make clone. " alt="" coords="275,85,423,112"/>
+<area shape="rect" id="node3" href="$d5/d13/a04739.html#ad98bcdd94e9a6ce0149f2d3d976c8779" title="Define a new object. " alt="" coords="284,427,415,453"/>
+<area shape="rect" id="node25" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="266,477,433,504"/>
+<area shape="rect" id="node27" href="$d2/d71/a04503.html#a68b7d34fbeb1da8447087c5ae6f3564f" title="Make predefined string attribute. " alt="" coords="249,529,449,570"/>
+<area shape="rect" id="node28" href="$d2/d71/a04503.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="270,595,429,621"/>
+<area shape="rect" id="node29" href="$d2/d71/a04503.html#aaaca5bec00805e40b85ec44bf0b1a873" title="Create real array attribute. " alt="" coords="252,645,447,672"/>
+<area shape="rect" id="node30" href="$dc/d12/a04723.html#a11c14d6b194bf37c2883bb42922852ac" title="Object::registerOwnership" alt="" coords="254,187,445,213"/>
+<area shape="rect" id="node34" href="$d8/d45/a06251.html#a7865b400d6ea9ee66aa1eb062715599b" title="Update the OpalTrimCoil data. " alt="" coords="270,136,429,163"/>
+<area shape="rect" id="node4" href="$d2/ddb/a04687.html#a6af87fa7c132144a4fed854a5c0ba253" title="First object in alphabetic order of name. " alt="" coords="787,376,913,403"/>
+<area shape="rect" id="node5" href="$dc/d12/a04723.html#a2462226f913277dbeec5928dd40c25c9" title="Test if replacement is allowed. " alt="" coords="525,325,688,352"/>
+<area shape="rect" id="node6" href="$d2/ddb/a04687.html#a4a8d6e8dc3b5f4f851a86b64daad1978" title="Last object in alphabetic order of name. " alt="" coords="793,528,907,555"/>
+<area shape="rect" id="node7" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="581,579,632,605"/>
+<area shape="rect" id="node13" href="$d5/d13/a04739.html#a352ed422ba6872cc3c76cc4dc32dc9d1" title="Delete existing entry. " alt="" coords="543,477,670,504"/>
+<area shape="rect" id="node15" href="$d2/ddb/a04687.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="793,325,907,352"/>
+<area shape="rect" id="node18" href="$dc/d12/a04723.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="525,107,688,133"/>
+<area shape="rect" id="node19" href="$d2/ddb/a04687.html#afd593b9994a1000a969046c02dd66846" title="Define new object. " alt="" coords="543,629,670,656"/>
+<area shape="rect" id="node21" href="$dc/d12/a04723.html#ae7e75b2311e00969ae6308e899d32686" title="True, if [b]this[/b] is a built&#45;in object. " alt="" coords="544,680,669,707"/>
+<area shape="rect" id="node22" href="$df/d9b/a04755.html#a83eb57bb3e4e17a0893ba0b217448a67" title="Find out if table depends on the object identified by [b]name[/b]. " alt="" coords="533,731,680,757"/>
+<area shape="rect" id="node23" href="$dc/d12/a04723.html#aa48af24109cadc6f450bcc37523651a5" title="Set/reset the [b]modified[/b] flag. " alt="" coords="545,781,669,808"/>
+<area shape="rect" id="node24" href="$d5/d13/a04739.html#a43390aa41dfa944e82a47c760923c242" title="Set the global momentum. " alt="" coords="543,275,670,301"/>
+<area shape="rect" id="node8" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="764,579,936,605"/>
+<area shape="rect" id="node9" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="984,579,1171,605"/>
+<area shape="rect" id="node12" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1467,528,1602,555"/>
+<area shape="rect" id="node10" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1219,579,1416,605"/>
+<area shape="rect" id="node11" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1464,579,1605,605"/>
+<area shape="rect" id="node14" href="$d2/ddb/a04687.html#a237a99238f9e6450701528719fee9791" title="Delete all entries. " alt="" coords="787,427,913,453"/>
+<area shape="rect" id="node16" href="$dc/d12/a04723.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="783,216,917,243"/>
+<area shape="rect" id="node17" href="$dc/d12/a04723.html#a01d106dd393b42e0622f2158b2f0a6da" title="Set parent object. " alt="" coords="783,477,917,504"/>
+<area shape="rect" id="node20" href="$dc/d17/a00872.html#aa8ae23ddaa752827580a9345f34b7cca" title="value_type" alt="" coords="803,680,897,707"/>
+<area shape="rect" id="node26" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="531,832,683,859"/>
+<area shape="rect" id="node31" href="$d1/d64/a04675.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="497,209,716,250"/>
+<area shape="rect" id="node32" href="$d4/d95/a00989.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="583,56,630,83"/>
+<area shape="rect" id="node33" href="$d9/d06/a04735.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="775,56,925,83"/>
+<area shape="rect" id="node35" href="$dc/d12/a04723.html#ace74608c221c27844e0eb08d6d25d269" title="Set object name. " alt="" coords="526,5,687,32"/>
+</map>

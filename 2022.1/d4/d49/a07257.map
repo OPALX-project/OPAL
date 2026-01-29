@@ -1,0 +1,6 @@
+<map id="OpalWake" name="OpalWake">
+<area shape="rect" id="node2" href="$d9/db6/a04683.html" title="The base class for all OPAL definitions. " alt="" coords="5,157,91,184"/>
+<area shape="rect" id="node3" href="$dc/d12/a04723.html" title="The base class for all OPAL objects. " alt="" coords="16,81,80,108"/>
+<area shape="rect" id="node4" href="$d9/d4d/a06051.html" title="Abstract base class for reference counted objects. " alt="" coords="7,5,89,32"/>
+<area shape="rect" id="node5" href="$d3/dc0/a06211.html" title="WakeFunction" alt="" coords="115,157,227,184"/>
+</map>

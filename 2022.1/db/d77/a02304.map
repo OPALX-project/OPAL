@@ -1,0 +1,31 @@
+<map id="src/Elements/OpalDrift.cpp" name="src/Elements/OpalDrift.cpp">
+<area shape="rect" id="node2" href="$d3/dc5/a02306.html" title="Elements/OpalDrift.h" alt="" coords="657,80,816,107"/>
+<area shape="rect" id="node15" href="$da/d5d/a03068.html" title="Structure/BoundaryGeometry.h" alt="" coords="1605,162,1828,189"/>
+<area shape="rect" id="node17" href="$de/dd7/a00362.html" title="Attributes/Attributes.h" alt="" coords="821,319,988,345"/>
+<area shape="rect" id="node42" href="$d5/d4c/a01058.html" title="BeamlineCore/DriftRep.h" alt="" coords="2117,80,2300,107"/>
+<area shape="rect" id="node47" href="$d8/dec/a03164.html" title="Structure/OpalWake.h" alt="" coords="1019,80,1182,107"/>
+<area shape="rect" id="node48" href="$da/de5/a03170.html" title="Structure/ParticleMatter\lInteraction.h" alt="" coords="1144,155,1318,196"/>
+<area shape="rect" id="node3" href="$db/dda/a02318.html" title="Elements/OpalElement.h" alt="" coords="594,162,777,189"/>
+<area shape="rect" id="node4" href="$da/d15/a00188.html" title="AbstractObjects/Element.h" alt="" coords="206,244,400,271"/>
+<area shape="rect" id="node14" href="$d5/db3/a01751.html" title="MemoryManagement/OwnPtr.h" alt="" coords="425,244,648,271"/>
+<area shape="rect" id="node5" href="$de/d79/a00203.html" title="AbstractObjects/Object.h" alt="" coords="216,319,398,345"/>
+<area shape="rect" id="node11" href="$d9/d37/a01754.html" title="MemoryManagement/Pointer.h" alt="" coords="102,579,323,606"/>
+<area shape="rect" id="node6" href="$d7/d9a/a00152.html" title="AbstractObjects/Attribute.h" alt="" coords="236,401,434,427"/>
+<area shape="rect" id="node7" href="$d6/db8/a00158.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="347,572,534,613"/>
+<area shape="rect" id="node10" href="$db/ddf/a00164.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="372,483,559,524"/>
+<area shape="rect" id="node16" href="$d5/de9/a00176.html" title="AbstractObjects/Definition.h" alt="" coords="942,244,1146,271"/>
+<area shape="rect" id="node21" href="$d6/d41/a02222.html" title="Utilities/Util.h" alt="" coords="1688,319,1800,345"/>
+<area shape="rect" id="node31" href="$d9/d9f/a04013.html" title="Utility/IpplTimings.h" alt="" coords="2391,319,2546,345"/>
+<area shape="rect" id="node35" href="$df/d11/a04037.html" title="Utility/PAssert.h" alt="" coords="1754,244,1881,271"/>
+<area shape="rect" id="node18" href="$d3/d92/a01796.html" title="Parser/Token.h" alt="" coords="785,579,901,606"/>
+<area shape="rect" id="node22" href="$de/dc4/a13617.html" title="Algorithms/Vektor.h" alt="" coords="1629,490,1780,517"/>
+<area shape="rect" id="node23" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="2142,401,2323,427"/>
+<area shape="rect" id="node32" href="$d9/d3f/a13650.html" title="Utility/Timer.h" alt="" coords="2531,401,2646,427"/>
+<area shape="rect" id="node33" href="$d9/d97/a04016.html" title="Utility/my_auto_ptr.h" alt="" coords="2670,401,2829,427"/>
+<area shape="rect" id="node43" href="$dc/d25/a00596.html" title="AbsBeamline/Drift.h" alt="" coords="2216,162,2369,189"/>
+<area shape="rect" id="node45" href="$d3/d0b/a01253.html" title="BeamlineGeometry/Straight\lGeometry.h" alt="" coords="2393,155,2597,196"/>
+<area shape="rect" id="node46" href="$d3/da1/a01613.html" title="Fields/NullField.h" alt="" coords="2060,162,2191,189"/>
+<area shape="rect" id="node44" href="$d6/d06/a00572.html" title="AbsBeamline/Component.h" alt="" coords="2402,244,2601,271"/>
+<area shape="rect" id="node49" href="$d9/d9a/a00998.html" title="Algorithms/PartData.h" alt="" coords="1171,244,1336,271"/>
+<area shape="rect" id="node50" href="$d9/d9b/a01889.html" title="Solvers/ParticleMatterInteraction\lHandler.h" alt="" coords="1030,393,1264,435"/>
+</map>

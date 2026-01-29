@@ -1,0 +1,18 @@
+<map id="src/_PyOpal/ExceptionTranslation.h" name="src/_PyOpal/ExceptionTranslation.h">
+<area shape="rect" id="node2" href="$d0/df8/a13455.html" title="src/_PyOpal/ExceptionTranslation.cpp" alt="" coords="5,87,269,114"/>
+<area shape="rect" id="node3" href="$d5/d55/a13479.html" title="src/_PyOpal/PyBeam.cpp" alt="" coords="294,87,477,114"/>
+<area shape="rect" id="node4" href="$d7/def/a13485.html" title="src/_PyOpal/PyDistribution.cpp" alt="" coords="501,87,723,114"/>
+<area shape="rect" id="node5" href="$d0/d96/a13491.html" title="src/_PyOpal/PyField.cpp" alt="" coords="747,87,922,114"/>
+<area shape="rect" id="node6" href="$d5/d8c/a13497.html" title="src/_PyOpal/PyFieldSolver.cpp" alt="" coords="946,87,1161,114"/>
+<area shape="rect" id="node7" href="$d8/d32/a13503.html" title="src/_PyOpal/PyLine.cpp" alt="" coords="1185,87,1357,114"/>
+<area shape="rect" id="node8" href="$d2/d4b/a13515.html" title="src/_PyOpal/PyLocalCartesian\lOffset.cpp" alt="" coords="1381,80,1595,121"/>
+<area shape="rect" id="node9" href="$d4/d3e/a13521.html" title="src/_PyOpal/PyNDGrid.cpp" alt="" coords="1620,87,1812,114"/>
+<area shape="rect" id="node10" href="$d6/d72/a13527.html" title="src/_PyOpal/PyOpalElement.cpp" alt="" coords="1836,87,2065,114"/>
+<area shape="rect" id="node11" href="$d6/def/a13563.html" title="src/_PyOpal/PyPolynomial\lPatch.cpp" alt="" coords="2090,80,2281,121"/>
+<area shape="rect" id="node12" href="$d7/d1f/a13575.html" title="src/_PyOpal/PyRingDefinition.cpp" alt="" coords="2305,87,2543,114"/>
+<area shape="rect" id="node13" href="$da/d6a/a13593.html" title="src/_PyOpal/PyTrackCmd.cpp" alt="" coords="2567,87,2777,114"/>
+<area shape="rect" id="node14" href="$d3/d7d/a13599.html" title="src/_PyOpal/PyTrackRun.cpp" alt="" coords="2801,87,3004,114"/>
+<area shape="rect" id="node15" href="$db/d51/a13605.html" title="src/_PyOpal/PyVerticalFFAMagnet.cpp" alt="" coords="3028,87,3292,114"/>
+<area shape="rect" id="node16" href="$d4/d16/a13524.html" title="src/PyOpal/PyObjects\l/PyNDGrid.cpp" alt="" coords="3316,80,3476,121"/>
+<area shape="rect" id="node17" href="$d9/d68/a13566.html" title="src/PyOpal/PyObjects\l/PyPolynomialPatch.cpp" alt="" coords="3501,80,3678,121"/>
+</map>

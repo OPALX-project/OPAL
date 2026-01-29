@@ -1,0 +1,7 @@
+<map id="OpalSBend" name="OpalSBend">
+<area shape="rect" id="node2" href="$dc/de9/a06555.html" title="Base class for all bending magnets. " alt="" coords="16,304,101,331"/>
+<area shape="rect" id="node3" href="$da/d07/a06583.html" title="OpalElement" alt="" coords="5,229,112,256"/>
+<area shape="rect" id="node4" href="$d6/d12/a04691.html" title="Element" alt="" coords="21,155,97,181"/>
+<area shape="rect" id="node5" href="$dc/d12/a04723.html" title="The base class for all OPAL objects. " alt="" coords="27,80,91,107"/>
+<area shape="rect" id="node6" href="$d9/d4d/a06051.html" title="Abstract base class for reference counted objects. " alt="" coords="18,5,99,32"/>
+</map>

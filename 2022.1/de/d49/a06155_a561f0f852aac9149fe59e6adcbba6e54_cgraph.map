@@ -1,0 +1,51 @@
+<map id="BeamStrippingPhysics::doPhysics" name="BeamStrippingPhysics::doPhysics">
+<area shape="rect" id="node2" href="$d6/de9/a05059.html#abac13f5ec019e94893cd8b2dbc13a98d" title="Cyclotron::apply" alt="" coords="539,208,667,235"/>
+<area shape="rect" id="node3" href="$d0/dce/a03971.html#a4f2ddb1680d4f912183950ea45ac1504" title="level4" alt="" coords="848,5,911,32"/>
+<area shape="rect" id="node6" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="854,360,905,387"/>
+<area shape="rect" id="node11" href="$d8/da5/a05247.html#a71d69d8f7f1122ed87056e6caac2b0fb" title="Vacuum::checkPressure" alt="" coords="515,259,691,285"/>
+<area shape="rect" id="node14" href="$dc/d2c/a00893.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="856,768,903,795"/>
+<area shape="rect" id="node23" href="$de/d49/a06155.html#a89572c3f5afb6e2eef8895298d5fd87d" title="BeamStrippingPhysics\l::computeCrossSection" alt="" coords="241,669,412,710"/>
+<area shape="rect" id="node33" href="$de/d49/a06155.html#ae6ecd10a84eb2da3a6c408616ea7c3ae" title="BeamStrippingPhysics\l::evalGasStripping" alt="" coords="243,971,410,1013"/>
+<area shape="rect" id="node34" href="$de/d49/a06155.html#adf117c79f7c923f52a472e58ee2a69f2" title="BeamStrippingPhysics\l::evalLorentzStripping" alt="" coords="519,819,686,861"/>
+<area shape="rect" id="node35" href="$d2/df8/a04550.html#ae12a15e0d75307c934c8add55d2c25ac" title="Util::getGamma" alt="" coords="539,951,666,977"/>
+<area shape="rect" id="node37" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="243,1037,410,1064"/>
+<area shape="rect" id="node39" href="$d2/df8/a04550.html#a23c9ed0a7dbf9f918bb68b94bb9309b1" title="Util::getKineticEnergy" alt="" coords="245,869,409,896"/>
+<area shape="rect" id="node40" href="$d9/d06/a04735.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="220,1088,433,1115"/>
+<area shape="rect" id="node41" href="$de/d49/a06155.html#a926a4c4adc482e280173eeeb8dd377e8" title="BeamStrippingPhysics\l::getName" alt="" coords="796,411,963,453"/>
+<area shape="rect" id="node42" href="$de/d49/a06155.html#a393f4a8060792c392e2e5c87973a8632" title="BeamStrippingPhysics\l::getSecondaryParticles" alt="" coords="239,513,414,554"/>
+<area shape="rect" id="node48" href="$d8/da5/a05247.html#ad8778701431190d5c21a63522597926d" title="Vacuum::getStop" alt="" coords="261,1139,393,1165"/>
+<area shape="rect" id="node49" href="$d9/d06/a04735.html#af792389ff15f7f9fe61a13138ff0d6f3" title="PartBunchBase::getT" alt="" coords="249,1189,405,1216"/>
+<area shape="rect" id="node50" href="$d8/da5/a05247.html#ab02e83ae85c9bd4892f288f789d1aa67" title="Vacuum::getTemperature" alt="" coords="234,1240,419,1267"/>
+<area shape="rect" id="node5" href="$db/d78/a05071.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="1039,107,1215,133"/>
+<area shape="rect" id="node4" href="$d8/d4f/a12119.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="1035,5,1220,32"/>
+<area shape="rect" id="node7" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1041,335,1213,361"/>
+<area shape="rect" id="node8" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1753,309,1887,336"/>
+<area shape="rect" id="node9" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1268,335,1455,361"/>
+<area shape="rect" id="node10" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1503,335,1700,361"/>
+<area shape="rect" id="node12" href="$d8/da5/a05247.html#a3639b06d73c88ac7dbc3c65f6a8e9fdf" title="Vacuum::getPressure" alt="" coords="800,259,959,285"/>
+<area shape="rect" id="node13" href="$dd/d61/a04548.html#a9033829b3f188b895945fbf3c999fdc0" title="Convert degrees to radians. " alt="" coords="779,309,979,336"/>
+<area shape="rect" id="node21" href="$d5/d12/a03851.html#a76d80db75cdbabf029d6f5fdcef89cdb" title="atan" alt="" coords="854,157,905,184"/>
+<area shape="rect" id="node22" href="$d8/da5/a05247.html#a53c753eda10ed6412d0303abc35cf7ac" title="Vacuum::idx" alt="" coords="828,208,931,235"/>
+<area shape="rect" id="node15" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1748,775,1892,801"/>
+<area shape="rect" id="node18" href="$d9/dba/a05287.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1315,724,1407,751"/>
+<area shape="rect" id="node16" href="$d4/d5e/a03542.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1940,724,1987,751"/>
+<area shape="rect" id="node17" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2035,724,2220,751"/>
+<area shape="rect" id="node19" href="$d9/dba/a05287.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1540,673,1663,700"/>
+<area shape="rect" id="node20" href="$d9/dba/a05287.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1548,724,1655,751"/>
+<area shape="rect" id="node24" href="$de/d49/a06155.html#a7b85a813a4452a7592a49b713d224597" title="BeamStrippingPhysics\l::computeCrossSectionBohr" alt="" coords="502,702,703,743"/>
+<area shape="rect" id="node27" href="$de/d49/a06155.html#a3952ab3dfacf846d4fea5a26830be2db" title="BeamStrippingPhysics\l::computeCrossSectionChebyshev" alt="" coords="481,885,724,926"/>
+<area shape="rect" id="node30" href="$de/d49/a06155.html#a098010b9f24063342e0353a0356d0b5f" title="BeamStrippingPhysics\l::computeCrossSectionNakai" alt="" coords="498,571,707,613"/>
+<area shape="rect" id="node31" href="$de/d49/a06155.html#ad3735648d91a682cf93af0f13b3d93b6" title="BeamStrippingPhysics\l::computeCrossSectionTabata" alt="" coords="495,637,710,678"/>
+<area shape="rect" id="node32" href="$d8/da5/a05247.html#a5c349aba32f02d75af92eeb06e5a6804" title="Vacuum::getResidualGas" alt="" coords="511,520,694,547"/>
+<area shape="rect" id="node25" href="$dc/d2c/a00893.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="855,673,904,700"/>
+<area shape="rect" id="node26" href="$d9/dba/a05287.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1077,673,1178,700"/>
+<area shape="rect" id="node28" href="$dc/d2c/a00893.html#ac11bd97cffeb59d260b6113f1b76cb60" title="Exponential. " alt="" coords="856,876,903,903"/>
+<area shape="rect" id="node29" href="$dc/d2c/a00893.html#a06ff4f243bf8f2b00166b76eab20d29c" title="Natural logarithm. " alt="" coords="1340,927,1383,953"/>
+<area shape="rect" id="node36" href="$d3/d53/a01262.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="858,977,901,1004"/>
+<area shape="rect" id="node38" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="527,1052,679,1079"/>
+<area shape="rect" id="node43" href="$de/d49/a06155.html#a9d2cbb9ca116f528e4750df6a3ea5b3b" title="BeamStrippingPhysics\l::transformToSecondary" alt="" coords="515,454,691,495"/>
+<area shape="rect" id="node44" href="$d3/d0b/a06139.html#a7375dfb0fc68ebc0f8779cd2fc1f3bd1" title="ParticleProperties\l::getParticleMass" alt="" coords="811,542,947,583"/>
+<area shape="rect" id="node45" href="$d3/d0b/a06139.html#aecb6a05cfe741d4bcfa86f00c0dd08b9" title="ParticleProperties\l::getParticleChargeInCoulomb" alt="" coords="772,607,987,649"/>
+<area shape="rect" id="node47" href="$d3/d0b/a06139.html#a0c6f22e6d45367884ab9a9755e628f93" title="ParticleProperties\l::getParticleTypeString" alt="" coords="796,477,963,518"/>
+<area shape="rect" id="node46" href="$d3/d0b/a06139.html#ac1987a9b0fec1632a680cb2093407c3e" title="ParticleProperties\l::getParticleCharge" alt="" coords="1055,607,1200,649"/>
+</map>

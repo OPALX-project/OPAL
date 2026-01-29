@@ -1,0 +1,9 @@
+<map id="MsgBuffer::get" name="MsgBuffer::get">
+<area shape="rect" id="node2" href="$db/de3/a09287.html#a21ff0a8e02322a605173d713ad7e5b46" title="Format::getItemBytes" alt="" coords="171,5,335,32"/>
+<area shape="rect" id="node3" href="$db/de3/a09287.html#a75faf047514514678476227c77d2f478" title="Format::getItemCount" alt="" coords="170,56,335,83"/>
+<area shape="rect" id="node4" href="$db/de3/a09287.html#ae0668d64e208f96167cb291daa95fa09" title="Format::getItemElems" alt="" coords="169,107,336,133"/>
+<area shape="rect" id="node5" href="$db/de3/a09287.html#a546b62364559d442696d41bdba4e8d60" title="Format::getSize" alt="" coords="191,157,315,184"/>
+<area shape="rect" id="node6" href="$d9/de9/a09623.html#a4586e2ea141a20fe0c65cff03e54638e" title="Message::putmsg" alt="" coords="185,208,321,235"/>
+<area shape="rect" id="node7" href="$d9/de9/a09623.html#adc2879b32cc3bc025e931e6219d0582e" title="Message::setCopy" alt="" coords="183,259,323,285"/>
+<area shape="rect" id="node8" href="$d9/de9/a09623.html#a22e02c53be8f84943784624cd35b8414" title="Message::setDelete" alt="" coords="177,309,328,336"/>
+</map>

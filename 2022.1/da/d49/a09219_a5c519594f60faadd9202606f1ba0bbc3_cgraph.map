@@ -1,0 +1,12 @@
+<map id="Communicate::send" name="Communicate::send">
+<area shape="rect" id="node2" href="$da/d49/a09219.html#add083ca7fa9466d949187d0e0fe31a2b" title="Communicate::add_msg" alt="" coords="207,31,387,57"/>
+<area shape="rect" id="node3" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="271,81,322,108"/>
+<area shape="rect" id="node9" href="$da/d49/a09219.html#aca765179d2843e977a7a78098c8cbde8" title="Communicate::getNodes" alt="" coords="205,132,388,159"/>
+<area shape="rect" id="node10" href="$da/d49/a09219.html#aedbfc462a5f9babc3fc07f875847547f" title="Communicate::myNode" alt="" coords="209,183,385,209"/>
+<area shape="rect" id="node11" href="$da/d49/a09219.html#a0980eed71a6f2ac1132190e52648c67e" title="Communicate::mysend" alt="" coords="210,233,383,260"/>
+<area shape="rect" id="node4" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="436,56,608,83"/>
+<area shape="rect" id="node5" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1139,5,1274,32"/>
+<area shape="rect" id="node6" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="656,56,843,83"/>
+<area shape="rect" id="node7" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="891,56,1088,83"/>
+<area shape="rect" id="node8" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1136,56,1277,83"/>
+</map>

@@ -1,0 +1,19 @@
+<map id="ClassicException" name="ClassicException">
+<area shape="rect" id="node2" href="$dd/d51/a06275.html" title="The abstract base class for all CLASSIC arithmetic exceptions. " alt="" coords="216,183,337,209"/>
+<area shape="rect" id="node11" href="$dc/d1f/a07319.html" title="EarlyLeaveException" alt="" coords="197,233,356,260"/>
+<area shape="rect" id="node12" href="$d7/d8c/a06311.html" title="Format error exception. " alt="" coords="227,284,326,311"/>
+<area shape="rect" id="node13" href="$db/d7f/a06315.html" title="GeneralClassicException" alt="" coords="185,335,368,361"/>
+<area shape="rect" id="node14" href="$dc/d49/a06319.html" title="Logical error exception. " alt="" coords="227,385,326,412"/>
+<area shape="rect" id="node15" href="$dd/d99/a07323.html" title="The base class for all OPAL exceptions. " alt="" coords="219,436,335,463"/>
+<area shape="rect" id="node17" href="$d9/d53/a06479.html" title="Parse exception. " alt="" coords="233,487,321,513"/>
+<area shape="rect" id="node18" href="$de/d75/a06503.html" title="SwitcherError" alt="" coords="222,537,331,564"/>
+<area shape="rect" id="node3" href="$d2/df2/a06291.html" title="Range error. " alt="" coords="450,5,561,32"/>
+<area shape="rect" id="node4" href="$d2/d33/a06295.html" title="Convergence error exception. " alt="" coords="436,56,575,83"/>
+<area shape="rect" id="node5" href="$d6/d5e/a06299.html" title="Zero divide error. " alt="" coords="458,107,553,133"/>
+<area shape="rect" id="node6" href="$d5/d7d/a06303.html" title="Domain error exception. " alt="" coords="453,157,557,184"/>
+<area shape="rect" id="node7" href="$de/d5b/a06307.html" title="Eigenvalue error exception. " alt="" coords="443,208,568,235"/>
+<area shape="rect" id="node8" href="$d8/d6f/a06475.html" title="Overflow exception. " alt="" coords="450,259,561,285"/>
+<area shape="rect" id="node9" href="$df/d24/a06495.html" title="Singular matrix exception. " alt="" coords="432,309,579,336"/>
+<area shape="rect" id="node10" href="$d6/d64/a06499.html" title="Size error exception. " alt="" coords="465,360,545,387"/>
+<area shape="rect" id="node16" href="$db/d92/a04791.html" title="IndexMap::OutOfBounds" alt="" coords="416,436,595,463"/>
+</map>

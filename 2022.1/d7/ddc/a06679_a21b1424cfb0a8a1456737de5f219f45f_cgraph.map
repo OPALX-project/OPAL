@@ -1,0 +1,11 @@
+<map id="OpalRingDefinition::print" name="OpalRingDefinition::print">
+<area shape="rect" id="node2" href="$da/d07/a06583.html#ad2c4b291585a568cd6c1b6c32e5f54d0" title="Print the object. " alt="" coords="197,132,341,159"/>
+<area shape="rect" id="node3" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="445,81,496,108"/>
+<area shape="rect" id="node9" href="$dc/d12/a04723.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="389,132,552,159"/>
+<area shape="rect" id="node10" href="$dc/d12/a04723.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="403,183,538,209"/>
+<area shape="rect" id="node4" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="600,56,772,83"/>
+<area shape="rect" id="node5" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="820,56,1007,83"/>
+<area shape="rect" id="node8" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1303,5,1438,32"/>
+<area shape="rect" id="node6" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1055,56,1252,83"/>
+<area shape="rect" id="node7" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1300,56,1441,83"/>
+</map>

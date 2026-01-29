@@ -1,0 +1,37 @@
+<map id="src/Algorithms/ThickTracker.h" name="src/Algorithms/ThickTracker.h">
+<area shape="rect" id="node2" href="$db/d23/a01025.html" title="Algorithms/Tracker.h" alt="" coords="440,162,595,189"/>
+<area shape="rect" id="node19" href="$d5/d0a/a00602.html" title="AbsBeamline/ElementBase.h" alt="" coords="1506,401,1716,427"/>
+<area shape="rect" id="node29" href="$d5/d35/a00266.html" title="Hamiltonian.h" alt="" coords="75,80,190,107"/>
+<area shape="rect" id="node31" href="$d9/dd6/a00272.html" title="Algorithms/IndexMap.h" alt="" coords="845,244,1017,271"/>
+<area shape="rect" id="node35" href="$dc/d25/a00596.html" title="AbsBeamline/Drift.h" alt="" coords="1454,80,1608,107"/>
+<area shape="rect" id="node36" href="$da/d36/a00650.html" title="AbsBeamline/Multipole.h" alt="" coords="1632,80,1816,107"/>
+<area shape="rect" id="node39" href="$d3/d2c/a00764.html" title="AbsBeamline/RBend3D.h" alt="" coords="1840,80,2024,107"/>
+<area shape="rect" id="node41" href="$da/d96/a00782.html" title="AbsBeamline/SBend.h" alt="" coords="2048,80,2214,107"/>
+<area shape="rect" id="node45" href="$df/de8/a00839.html" title="AbsBeamline/Vacuum.h" alt="" coords="2514,162,2690,189"/>
+<area shape="rect" id="node48" href="$d4/de7/a02270.html" title="Elements/OpalBeamline.h" alt="" coords="1168,162,1358,189"/>
+<area shape="rect" id="node3" href="$dc/d92/a00929.html" title="Algorithms/AbstractTracker.h" alt="" coords="372,244,581,271"/>
+<area shape="rect" id="node4" href="$d9/d9a/a00998.html" title="Algorithms/PartData.h" alt="" coords="323,319,488,345"/>
+<area shape="rect" id="node5" href="$d4/d95/a00989.html" title="Algorithms/PartBunchBase.h" alt="" coords="637,401,844,427"/>
+<area shape="rect" id="node13" href="$d4/d26/a01700.html" title="FixedAlgebra/FTps.h" alt="" coords="144,244,296,271"/>
+<area shape="rect" id="node17" href="$d2/d3d/a01982.html" title="Utilities/ClassicField.h" alt="" coords="1092,244,1258,271"/>
+<area shape="rect" id="node6" href="$d6/dad/a00941.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="804,483,1021,524"/>
+<area shape="rect" id="node7" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="1486,572,1667,599"/>
+<area shape="rect" id="node8" href="$d3/dce/a01859.html" title="Physics/Units.h" alt="" coords="44,490,165,517"/>
+<area shape="rect" id="node9" href="$d7/db2/a02036.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="1045,483,1220,524"/>
+<area shape="rect" id="node16" href="$df/d9a/a01715.html" title="FixedAlgebra/FVps.h" alt="" coords="94,319,248,345"/>
+<area shape="rect" id="node18" href="$d6/d06/a00572.html" title="AbsBeamline/Component.h" alt="" coords="1680,319,1878,345"/>
+<area shape="rect" id="node25" href="$de/dca/a01907.html" title="Structure/BoundingBox.h" alt="" coords="342,490,525,517"/>
+<area shape="rect" id="node20" href="$d0/ddb/a00542.html" title="AbsBeamline/AttributeSet.h" alt="" coords="1295,490,1498,517"/>
+<area shape="rect" id="node23" href="$de/d61/a01205.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="1934,572,2157,599"/>
+<area shape="rect" id="node24" href="$da/d19/a01217.html" title="BeamlineGeometry/Geometry.h" alt="" coords="2173,490,2401,517"/>
+<area shape="rect" id="node27" href="$db/dc0/a01757.html" title="MemoryManagement/RCObject.h" alt="" coords="1674,490,1908,517"/>
+<area shape="rect" id="node30" href="$d1/da7/a01709.html" title="FixedAlgebra/FTpsMath.h" alt="" coords="195,162,379,189"/>
+<area shape="rect" id="node33" href="$dc/dc1/a03263.html" title="Utilities/OpalException.h" alt="" coords="732,319,914,345"/>
+<area shape="rect" id="node37" href="$d3/d0b/a01253.html" title="BeamlineGeometry/Straight\lGeometry.h" alt="" coords="1621,155,1825,196"/>
+<area shape="rect" id="node38" href="$d2/d29/a01376.html" title="Fields/BMultipoleField.h" alt="" coords="1849,162,2024,189"/>
+<area shape="rect" id="node40" href="$d9/d19/a00560.html" title="AbsBeamline/BendBase.h" alt="" coords="2004,244,2194,271"/>
+<area shape="rect" id="node42" href="$dc/df9/a00554.html" title="AbsBeamline/Bend2D.h" alt="" coords="2150,162,2325,189"/>
+<area shape="rect" id="node44" href="$dd/dad/a01235.html" title="BeamlineGeometry/PlanarArc\lGeometry.h" alt="" coords="2068,393,2282,435"/>
+<area shape="rect" id="node46" href="$d7/d21/a00584.html" title="AbsBeamline/Cyclotron.h" alt="" coords="2508,244,2695,271"/>
+<area shape="rect" id="node49" href="$dd/d39/a01271.html" title="Beamlines/Beamline.h" alt="" coords="1384,319,1553,345"/>
+</map>

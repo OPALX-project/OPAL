@@ -1,0 +1,21 @@
+<map id="OpalDrift" name="OpalDrift">
+<area shape="rect" id="node2" href="$da/d07/a06583.html" title="OpalElement" alt="" coords="849,693,956,720"/>
+<area shape="rect" id="node3" href="$d6/d12/a04691.html" title="Element" alt="" coords="865,617,941,644"/>
+<area shape="rect" id="node4" href="$dc/d12/a04723.html" title="The base class for all OPAL objects. " alt="" coords="892,81,956,108"/>
+<area shape="rect" id="node10" href="$d9/db6/a04683.html" title="The base class for all OPAL definitions. " alt="" coords="881,157,967,184"/>
+<area shape="rect" id="node5" href="$d9/d4d/a06051.html" title="Abstract base class for reference counted objects. " alt="" coords="414,5,495,32"/>
+<area shape="rect" id="node7" href="$db/d78/a05071.html" title="ElementBase" alt="" coords="445,424,553,451"/>
+<area shape="rect" id="node6" href="$d2/d6a/a06047.html" title="Pointer\&lt; ElementBase \&gt;" alt="" coords="528,521,712,547"/>
+<area shape="rect" id="node8" href="$dd/d16/a06179.html" title="ParticleMatterInteraction\lHandler" alt="" coords="321,513,503,555"/>
+<area shape="rect" id="node20" href="$df/dc1/a07263.html" title="ParticleMatterInteraction" alt="" coords="591,617,774,644"/>
+<area shape="rect" id="node9" href="$d8/da7/a07191.html" title="BoundaryGeometry" alt="" coords="601,320,751,347"/>
+<area shape="rect" id="node19" href="$dc/d33/a07259.html" title="OpalWake" alt="" coords="849,424,937,451"/>
+<area shape="rect" id="node11" href="$dd/d24/a07475.html" title="Vektor\&lt; int, 3 \&gt;" alt="" coords="655,157,782,184"/>
+<area shape="rect" id="node12" href="$dd/d24/a07475.html" title="Vektor\&lt; double, 3 \&gt;" alt="" coords="476,157,631,184"/>
+<area shape="rect" id="node13" href="$dc/d4e/a05331.html" title="CoordinateSystemTrafo" alt="" coords="153,320,327,347"/>
+<area shape="rect" id="node14" href="$db/de3/a05387.html" title="Tenzor\&lt; double, 3 \&gt;" alt="" coords="5,157,160,184"/>
+<area shape="rect" id="node15" href="$d2/dc7/a05391.html" title="Quaternion" alt="" coords="185,157,279,184"/>
+<area shape="rect" id="node16" href="$dd/d24/a07475.html" title="Vektor\&lt; double, 4 \&gt;" alt="" coords="155,81,309,108"/>
+<area shape="rect" id="node17" href="$d3/dc0/a06211.html" title="WakeFunction" alt="" coords="775,320,887,347"/>
+<area shape="rect" id="node18" href="$d0/d0c/a05015.html" title="Map of std::string versus double value. " alt="" coords="477,320,577,347"/>
+</map>

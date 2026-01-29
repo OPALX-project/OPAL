@@ -1,0 +1,7 @@
+<map id="AmrBoxLib::tagForMinNumParticles_m" name="AmrBoxLib::tagForMinNumParticles_m">
+<area shape="rect" id="node2" href="$dc/df9/a07367.html#a41891496d8c77629efad224e6d7959df" title="AmrParticleLevelCounter\l::begin" alt="" coords="358,5,541,47"/>
+<area shape="rect" id="node3" href="$d0/d31/a05327.html#ad657df7a7c8ff3f0a5b610d68c9a2154" title="AmrPartBunch::getAmrParticleBase" alt="" coords="324,71,575,98"/>
+<area shape="rect" id="node4" href="$d2/dab/a07363.html#a68c57fd7f4843eff35c63138417add14" title="AmrParticleBase::getLocal\lNumPerLevel" alt="" coords="353,123,545,164"/>
+<area shape="rect" id="node5" href="$d3/d3a/a04891.html#ad66f6aa84f8212afce1ae62a7b416fa4" title="BoxLibLayout::Index" alt="" coords="372,189,527,215"/>
+<area shape="rect" id="node6" href="$d2/dab/a07363.html#ad79bca07de761a9c5de30b2578d362ff" title="AmrParticleBase::update" alt="" coords="358,239,541,266"/>
+</map>

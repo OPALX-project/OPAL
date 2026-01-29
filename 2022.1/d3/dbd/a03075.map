@@ -1,0 +1,36 @@
+<map id="src/Structure/DataSink.h" name="src/Structure/DataSink.h">
+<area shape="rect" id="node2" href="$de/dc4/a13617.html" title="Algorithms/Vektor.h" alt="" coords="597,543,748,569"/>
+<area shape="rect" id="node13" href="$d8/dfb/a03122.html" title="Structure/H5Writer.h" alt="" coords="5,155,159,181"/>
+<area shape="rect" id="node40" href="$da/d8d/a03158.html" title="Structure/MultiBunchDump.h" alt="" coords="2097,80,2305,107"/>
+<area shape="rect" id="node42" href="$da/dfb/a03188.html" title="SDDSWriter.h" alt="" coords="2572,543,2680,569"/>
+<area shape="rect" id="node50" href="$de/d3a/a03200.html" title="Structure/StatWriter.h" alt="" coords="2329,80,2491,107"/>
+<area shape="rect" id="node3" href="$d0/dd7/a13620.html" title="AppTypes/Vektor.h" alt="" coords="789,617,930,644"/>
+<area shape="rect" id="node4" href="$df/d11/a04037.html" title="Utility/PAssert.h" alt="" coords="917,692,1044,719"/>
+<area shape="rect" id="node6" href="$d6/d1c/a03692.html" title="Message/Message.h" alt="" coords="907,767,1059,793"/>
+<area shape="rect" id="node9" href="$de/d6b/a03845.html" title="PETE/IpplExpressions.h" alt="" coords="1068,692,1240,719"/>
+<area shape="rect" id="node10" href="$db/dee/a03338.html" title="AppTypes/TSVMeta.h" alt="" coords="735,692,893,719"/>
+<area shape="rect" id="node14" href="$da/dc0/a03104.html" title="Structure/H5PartWrapper.h" alt="" coords="315,617,508,644"/>
+<area shape="rect" id="node18" href="$d4/d95/a00989.html" title="Algorithms/PartBunchBase.h" alt="" coords="1189,229,1396,256"/>
+<area shape="rect" id="node15" href="$dd/d27/a03989.html" title="Utility/IpplInfo.h" alt="" coords="416,767,543,793"/>
+<area shape="rect" id="node19" href="$d6/dad/a00941.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="716,379,933,420"/>
+<area shape="rect" id="node20" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="769,468,950,495"/>
+<area shape="rect" id="node21" href="$d5/da3/a00953.html" title="Algorithms/DistributionMoments.h" alt="" coords="533,304,778,331"/>
+<area shape="rect" id="node22" href="$d0/d54/a01691.html" title="FixedAlgebra/FMatrix.h" alt="" coords="1059,386,1230,413"/>
+<area shape="rect" id="node23" href="$dc/d3e/a01712.html" title="FixedAlgebra/FVector.h" alt="" coords="1079,468,1248,495"/>
+<area shape="rect" id="node24" href="$d3/dce/a01859.html" title="Physics/Units.h" alt="" coords="571,386,692,413"/>
+<area shape="rect" id="node25" href="$d7/dd4/a00968.html" title="Algorithms/OpalParticle.h" alt="" coords="322,468,509,495"/>
+<area shape="rect" id="node26" href="$df/d59/a01001.html" title="Algorithms/PBunchDefs.h" alt="" coords="271,304,458,331"/>
+<area shape="rect" id="node27" href="$d8/d6f/a02234.html" title="Distribution/Distribution.h" alt="" coords="1375,468,1565,495"/>
+<area shape="rect" id="node29" href="$d5/d35/a03716.html" title="Particle/AbstractParticle.h" alt="" coords="1631,304,1819,331"/>
+<area shape="rect" id="node30" href="$db/d07/a03779.html" title="Particle/ParticleAttrib.h" alt="" coords="1074,543,1245,569"/>
+<area shape="rect" id="node32" href="$da/d18/a01850.html" title="Physics/ParticleProperties.h" alt="" coords="1793,543,1995,569"/>
+<area shape="rect" id="node33" href="$d9/d5e/a03086.html" title="Structure/FieldSolver.h" alt="" coords="1945,386,2112,413"/>
+<area shape="rect" id="node35" href="$d7/db2/a02036.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="1356,379,1531,420"/>
+<area shape="rect" id="node36" href="$d9/d9f/a04013.html" title="Utility/IpplTimings.h" alt="" coords="2091,617,2246,644"/>
+<area shape="rect" id="node37" href="$d7/d76/a00992.html" title="PartBunchBase.hpp" alt="" coords="1459,304,1606,331"/>
+<area shape="rect" id="node38" href="$d6/d41/a02222.html" title="Utilities/Util.h" alt="" coords="1657,386,1769,413"/>
+<area shape="rect" id="node41" href="$d9/dc1/a03194.html" title="StatBaseWriter.h" alt="" coords="2361,304,2491,331"/>
+<area shape="rect" id="node49" href="$de/d25/a00290.html" title="Algorithms/MultiBunchHandler.h" alt="" coords="2085,155,2316,181"/>
+<area shape="rect" id="node47" href="$df/d0d/a03176.html" title="Structure/SDDSColumn.h" alt="" coords="2728,692,2911,719"/>
+<area shape="rect" id="node48" href="$dd/d71/a03182.html" title="Structure/SDDSColumnSet.h" alt="" coords="2524,617,2728,644"/>
+</map>

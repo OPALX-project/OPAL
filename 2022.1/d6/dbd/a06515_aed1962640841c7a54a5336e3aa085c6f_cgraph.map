@@ -1,0 +1,51 @@
+<map id="Distribution::createMatchedGaussDistribution" name="Distribution::createMatchedGaussDistribution">
+<area shape="rect" id="node2" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1057,26,1103,53"/>
+<area shape="rect" id="node4" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="340,154,391,181"/>
+<area shape="rect" id="node10" href="$d7/d00/a05223.html#a00488795aa503a413930e54e3e5b00a5" title="Execute the algorithm on the attached beam line. " alt="" coords="281,206,449,247"/>
+<area shape="rect" id="node11" href="$de/d69/a04679.html#a5bd678e7a78bd9221de550c1273c15db" title="Return the embedded CLASSIC beam line. " alt="" coords="270,272,461,298"/>
+<area shape="rect" id="node12" href="$de/d69/a04679.html#ad15b8f38ef4d5bef1c4e1868c0a77535" title="Find a BeamSequence by name. " alt="" coords="288,322,443,349"/>
+<area shape="rect" id="node17" href="$d6/dbd/a06515.html#a7b3891ce4d6acb5dda35043275105837" title="Distribution::generateMatched\lGauss" alt="" coords="256,374,475,415"/>
+<area shape="rect" id="node38" href="$d2/d71/a04503.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="537,690,681,717"/>
+<area shape="rect" id="node42" href="$d6/de9/a05059.html#a098ca2acb3fa6876ab88acb644665708" title="Cyclotron::getCyclHarm" alt="" coords="277,490,454,517"/>
+<area shape="rect" id="node43" href="$d6/de9/a05059.html#a42bdd09ae90b58b328d111f263fa2346" title="Cyclotron::getFieldMapFN" alt="" coords="272,541,459,568"/>
+<area shape="rect" id="node44" href="$d6/de9/a05059.html#a62a152c63528b5338c0f9a5a45f5f639" title="Cyclotron::getFMHighE" alt="" coords="281,592,450,618"/>
+<area shape="rect" id="node45" href="$d6/de9/a05059.html#ae481abfe0889e88f070a048c7f564858" title="Cyclotron::getFMLowE" alt="" coords="283,642,448,669"/>
+<area shape="rect" id="node46" href="$d6/de9/a05059.html#a7b789e2c8e8dafd47e2acfcd9c97d0da" title="Cyclotron::getPHIinit" alt="" coords="287,693,443,720"/>
+<area shape="rect" id="node47" href="$d2/d71/a04503.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="537,741,680,768"/>
+<area shape="rect" id="node48" href="$d2/d71/a04503.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="532,792,685,818"/>
+<area shape="rect" id="node49" href="$d6/de9/a05059.html#ab3415866bc9cbdce9b077b397f7ffc58" title="Cyclotron::setPRinit" alt="" coords="290,845,441,872"/>
+<area shape="rect" id="node50" href="$d6/de9/a05059.html#acf77a178a4d38cc235d21937ef02ef7f" title="Cyclotron::setRinit" alt="" coords="294,896,437,922"/>
+<area shape="rect" id="node3" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2055,533,2240,560"/>
+<area shape="rect" id="node5" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="523,128,695,154"/>
+<area shape="rect" id="node6" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1263,178,1398,205"/>
+<area shape="rect" id="node7" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="745,128,931,154"/>
+<area shape="rect" id="node8" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="981,178,1179,205"/>
+<area shape="rect" id="node9" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1260,254,1401,281"/>
+<area shape="rect" id="node13" href="$d5/d13/a04739.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="551,229,666,256"/>
+<area shape="rect" id="node15" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="525,280,692,306"/>
+<area shape="rect" id="node14" href="$d2/ddb/a04687.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="781,229,895,256"/>
+<area shape="rect" id="node16" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="762,280,914,306"/>
+<area shape="rect" id="node18" href="$d2/df8/a04550.html#a401859d11cb91676474629baceb07612" title="Util::getBetaGamma" alt="" coords="531,432,687,458"/>
+<area shape="rect" id="node19" href="$dc/d2c/a00893.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1057,432,1103,458"/>
+<area shape="rect" id="node25" href="$d5/d12/a03851.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="1775,584,1825,610"/>
+<area shape="rect" id="node30" href="$da/d97/a06539.html#ac150f958cab3c4e66c1e48b38a357354" title="RealDiracMatrix::diagonalize" alt="" coords="1227,761,1435,788"/>
+<area shape="rect" id="node28" href="$dc/d2c/a00893.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="813,482,863,509"/>
+<area shape="rect" id="node20" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1728,432,1872,458"/>
+<area shape="rect" id="node22" href="$d9/dba/a05287.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1285,381,1377,408"/>
+<area shape="rect" id="node21" href="$d4/d5e/a03542.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1940,482,1987,509"/>
+<area shape="rect" id="node23" href="$d9/dba/a05287.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1520,381,1643,408"/>
+<area shape="rect" id="node24" href="$d9/dba/a05287.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1528,482,1635,509"/>
+<area shape="rect" id="node26" href="$d5/d12/a03851.html#a0a1cdb80c431a477e99aea03fea993fc" title="Reduction" alt="" coords="1920,584,2007,610"/>
+<area shape="rect" id="node27" href="$d5/d12/a03851.html#a1ea49580c5d70200ee20f6afbc6d6de3" title="for_each" alt="" coords="2108,584,2187,610"/>
+<area shape="rect" id="node29" href="$d9/dba/a05287.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1029,482,1131,509"/>
+<area shape="rect" id="node31" href="$da/d97/a06539.html#ab11cd5dc339b9a250eb16fa62d219f3f" title="RealDiracMatrix::getRDM" alt="" coords="1489,685,1673,712"/>
+<area shape="rect" id="node32" href="$d4/d81/a04556.html#ad5dc1f3a945f5a5fdc9a5bf7da178fa0" title="Computes the trace of a square matrix. " alt="" coords="1513,786,1650,813"/>
+<area shape="rect" id="node34" href="$da/d97/a06539.html#a2d7f8720027dc05f2eeedd965817384f" title="RealDiracMatrix::transform" alt="" coords="1483,736,1680,762"/>
+<area shape="rect" id="node35" href="$de/d6b/a03845.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="1552,837,1611,864"/>
+<area shape="rect" id="node36" href="$d4/d81/a04556.html#ab994fd6ec746cde3c38fcb3980bb4f67" title="Computes the cross product &#160;of two vectors in . " alt="" coords="1494,888,1669,914"/>
+<area shape="rect" id="node37" href="$d5/d12/a03851.html#a74dc182f1d4874ddea8940604665779b" title="fabs" alt="" coords="1556,938,1607,965"/>
+<area shape="rect" id="node33" href="$d5/d12/a03851.html#a06dc3d53220b680f16b2c655bcb86a40" title="sum" alt="" coords="1775,634,1825,661"/>
+<area shape="rect" id="node39" href="$da/d19/a04667.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="743,690,933,717"/>
+<area shape="rect" id="node40" href="$da/d19/a04667.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="768,741,908,768"/>
+<area shape="rect" id="node41" href="$da/d19/a04667.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="759,792,917,818"/>
+</map>

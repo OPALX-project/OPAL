@@ -1,0 +1,8 @@
+<map id="DataSource::connect" name="DataSource::connect">
+<area shape="rect" id="node2" href="$d4/ddb/a08183.html#a34cee99728197eac092f927dbd102406" title="DataConnect::checkin" alt="" coords="248,31,412,57"/>
+<area shape="rect" id="node5" href="$d4/da7/a08195.html#a757711b0933f32ae41f23cae348335a2" title="DataSourceObject::connected" alt="" coords="223,81,437,108"/>
+<area shape="rect" id="node6" href="$d4/da7/a08195.html#a8ec7667a2e53582c79eede9a72d3bbbc" title="DataSourceObject::getConnection" alt="" coords="209,132,451,159"/>
+<area shape="rect" id="node7" href="$d4/da7/a08195.html#ae6f8234b9614910fe10ec581224cc964" title="DataSourceObject::getSource" alt="" coords="224,183,436,209"/>
+<area shape="rect" id="node3" href="$d4/ddb/a08183.html#a7e151a3c73de8cf855cbf2e44c9c631b" title="DataConnect::begin" alt="" coords="499,5,649,32"/>
+<area shape="rect" id="node4" href="$d4/ddb/a08183.html#a2e4dad61a5fc81a427878302264c58b2" title="DataConnect::end" alt="" coords="505,56,643,83"/>
+</map>

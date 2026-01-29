@@ -1,0 +1,12 @@
+<map id="Tps::getCoefficient" name="Tps::getCoefficient">
+<area shape="rect" id="node2" href="$d9/dba/a05287.html#aaad089d78530e74af080abe107a7b069" title="Get coefficient. " alt="" coords="213,56,357,83"/>
+<area shape="rect" id="node3" href="$d3/dac/a05307.html#a3e76fbc07d833e8d0db5630b640c0876" title="Convert. " alt="" coords="197,107,372,133"/>
+<area shape="rect" id="node10" href="$d3/dac/a05307.html#ac71c697238f771df4d48d7f25b4e19d4" title="Get variables. " alt="" coords="420,208,619,235"/>
+<area shape="rect" id="node11" href="$d9/dba/a05287.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="217,208,352,235"/>
+<area shape="rect" id="node4" href="$da/d6b/a05303.html#a12f23d39f696c02da148722cb0bd8f06" title="TpsData::getTpsData" alt="" coords="440,5,599,32"/>
+<area shape="rect" id="node7" href="$d3/dac/a05307.html#ae55b542f6a7e8eb834e54f83b34ea618" title="Get order. " alt="" coords="432,56,607,83"/>
+<area shape="rect" id="node8" href="$dd/d95/a05263.html#a9096d7cb939561e15fe3e209c5de6578" title="Get array size. " alt="" coords="670,107,779,133"/>
+<area shape="rect" id="node9" href="$da/d6b/a05303.html#afa8022ccb80b09bd2a8d187e110e1ca9" title="TpsData::indexMonomial" alt="" coords="427,157,611,184"/>
+<area shape="rect" id="node5" href="$da/d6b/a05303.html#a44b479e9cba17e82e7d9ceab727ef066" title="TpsData::build" alt="" coords="667,5,783,32"/>
+<area shape="rect" id="node6" href="$da/d6b/a05303.html#a6ec8c0544fd09e9a701799d65f1bca46" title="TpsData::getSize" alt="" coords="831,5,963,32"/>
+</map>

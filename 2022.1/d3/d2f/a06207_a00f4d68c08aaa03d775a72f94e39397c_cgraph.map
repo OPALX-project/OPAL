@@ -1,0 +1,11 @@
+<map id="ScatteringPhysics::addBackToBunch" name="ScatteringPhysics::addBackToBunch">
+<area shape="rect" id="node2" href="$d3/d2f/a06207.html#a46521f8a87300327763d447874100d2f" title="ScatteringPhysics::\laddParticleBackToBunch" alt="" coords="226,45,406,86"/>
+<area shape="rect" id="node5" href="$d3/d2f/a06207.html#a500918870333163f7530ac71cacd0503" title="ScatteringPhysics::\ldeleteParticleFromLocalVector" alt="" coords="207,110,425,151"/>
+<area shape="rect" id="node6" href="$db/d78/a05071.html#a1b412456edcf01147abada7721605101" title="Get design length. " alt="" coords="199,176,433,203"/>
+<area shape="rect" id="node9" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="233,227,399,253"/>
+<area shape="rect" id="node3" href="$d9/d06/a04735.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="481,5,695,32"/>
+<area shape="rect" id="node4" href="$d9/d06/a04735.html#a7797905b189544f920ae876894dfb40b" title="PartBunchBase::createWithID" alt="" coords="482,56,694,83"/>
+<area shape="rect" id="node7" href="$dc/d4a/a05587.html#a73f1d2087c1b6c7fb3e5e00f6835f88e" title="Get geometry length. " alt="" coords="483,110,693,151"/>
+<area shape="rect" id="node8" href="$db/d78/a05071.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="487,176,689,203"/>
+<area shape="rect" id="node10" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="512,227,664,253"/>
+</map>

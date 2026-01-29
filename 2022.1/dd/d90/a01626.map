@@ -1,0 +1,28 @@
+<map id="src/Classic/Fields/SectorMagneticFieldMap.cpp" name="src/Classic/Fields/SectorMagneticFieldMap.cpp">
+<area shape="rect" id="node2" href="$dd/deb/a01628.html" title="Fields/SectorMagneticField\lMap.h" alt="" coords="1468,95,1661,136"/>
+<area shape="rect" id="node27" href="$d6/d55/a13623.html" title="Fields/Interpolation\l/Mesh.h" alt="" coords="1866,541,2013,583"/>
+<area shape="rect" id="node30" href="$d3/da5/a01598.html" title="Fields/Interpolation\l/ThreeDGrid.h" alt="" coords="1757,452,1903,493"/>
+<area shape="rect" id="node32" href="$d6/d82/a01607.html" title="Fields/Interpolation\l/VectorMap.h" alt="" coords="2070,363,2217,404"/>
+<area shape="rect" id="node33" href="$d7/def/a01538.html" title="Fields/Interpolation\l/Interpolator3dGridTo3d.h" alt="" coords="1907,95,2094,136"/>
+<area shape="rect" id="node36" href="$d9/df5/a01574.html" title="Fields/Interpolation\l/PolynomialPatch.h" alt="" coords="2190,184,2337,225"/>
+<area shape="rect" id="node48" href="$da/dd5/a01580.html" title="Fields/Interpolation\l/PPSolveFactory.h" alt="" coords="2418,184,2565,225"/>
+<area shape="rect" id="node49" href="$d1/dc4/a02042.html" title="Utilities/LogicalError.h" alt="" coords="821,549,986,575"/>
+<area shape="rect" id="node7" href="$d1/d3a/a01622.html" title="Fields/SectorField.h" alt="" coords="1371,191,1518,218"/>
+<area shape="rect" id="node8" href="$d9/d6e/a01409.html" title="Fields/Fieldmap.h" alt="" coords="1175,281,1309,307"/>
+<area shape="rect" id="node9" href="$de/dc4/a13617.html" title="Algorithms/Vektor.h" alt="" coords="860,370,1011,397"/>
+<area shape="rect" id="node10" href="$d0/dd7/a13620.html" title="AppTypes/Vektor.h" alt="" coords="945,459,1086,486"/>
+<area shape="rect" id="node11" href="$df/d11/a04037.html" title="Utility/PAssert.h" alt="" coords="52,638,179,665"/>
+<area shape="rect" id="node14" href="$d6/d1c/a03692.html" title="Message/Message.h" alt="" coords="442,638,594,665"/>
+<area shape="rect" id="node20" href="$de/d6b/a03845.html" title="PETE/IpplExpressions.h" alt="" coords="421,549,593,575"/>
+<area shape="rect" id="node22" href="$db/dee/a03338.html" title="AppTypes/TSVMeta.h" alt="" coords="1010,549,1167,575"/>
+<area shape="rect" id="node19" href="$d2/db4/a03695.html" title="Message/Message.hpp" alt="" coords="425,720,593,747"/>
+<area shape="rect" id="node21" href="$de/de6/a03848.html" title="PETE/IpplTypeComputations.h" alt="" coords="203,638,417,665"/>
+<area shape="rect" id="node34" href="$dc/d0c/a01532.html" title="Fields/Interpolation\l/Interpolator3dGridTo1d.h" alt="" coords="1810,273,1997,315"/>
+<area shape="rect" id="node35" href="$dc/dd2/a01604.html" title="Fields/Interpolation\l/TriLinearInterpolator.h" alt="" coords="1795,184,1963,225"/>
+<area shape="rect" id="node37" href="$de/d40/a01592.html" title="Fields/Interpolation\l/SquarePolynomialVector.h" alt="" coords="2393,273,2589,315"/>
+<area shape="rect" id="node38" href="$d8/daf/a01550.html" title="Fields/Interpolation\l/MMatrix.h" alt="" coords="2483,363,2630,404"/>
+<area shape="rect" id="node43" href="$d7/db6/a01556.html" title="Fields/Interpolation\l/MVector.h" alt="" coords="2483,452,2630,493"/>
+<area shape="rect" id="node47" href="$da/daf/a01568.html" title="Fields/Interpolation\l/PolynomialCoefficient.h" alt="" coords="2654,363,2835,404"/>
+<area shape="rect" id="node41" href="$d7/db2/a02036.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="2037,541,2212,583"/>
+<area shape="rect" id="node42" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="872,638,1071,665"/>
+</map>

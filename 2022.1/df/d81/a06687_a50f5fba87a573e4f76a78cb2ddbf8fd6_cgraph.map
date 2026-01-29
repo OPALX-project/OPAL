@@ -1,0 +1,12 @@
+<map id="OpalSBend3D::clone" name="OpalSBend3D::clone">
+<area shape="rect" id="node2" href="$df/d81/a06687.html#aa4cd2e2d8902b5fa7b5e187191e3f4cb" title="OpalSBend3D::OpalSBend3D" alt="" coords="208,81,416,108"/>
+<area shape="rect" id="node3" href="$d2/d71/a04503.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="501,5,660,32"/>
+<area shape="rect" id="node4" href="$d2/d71/a04503.html#ae9a947ca42d331f722e06f3a921fe170" title="Make string attribute. " alt="" coords="496,56,665,83"/>
+<area shape="rect" id="node5" href="$da/d07/a06583.html#af17ddf4b6ccfdcc6ce4ab34caa7ace82" title="OpalElement::registerOwnership" alt="" coords="464,107,697,133"/>
+<area shape="rect" id="node11" href="$d6/d12/a04691.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="501,157,660,184"/>
+<area shape="rect" id="node6" href="$d1/d64/a04675.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="745,15,964,57"/>
+<area shape="rect" id="node7" href="$d4/d95/a00989.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="831,81,878,108"/>
+<area shape="rect" id="node9" href="$dc/d12/a04723.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="773,132,936,159"/>
+<area shape="rect" id="node10" href="$dc/d12/a04723.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="787,183,922,209"/>
+<area shape="rect" id="node8" href="$d9/d06/a04735.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1012,81,1163,108"/>
+</map>

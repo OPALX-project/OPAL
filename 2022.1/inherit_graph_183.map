@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$d2/da1/a05647.html" title="Abstract interface for read&#45;only access to variable. " alt="" coords="5,56,117,83"/>
+<area shape="rect" id="node2" href="$d7/d3b/a05643.html" title="Abstract interface for read/write access to variable. " alt="" coords="165,56,240,83"/>
+<area shape="rect" id="node3" href="$d1/d19/a05651.html" title="Direct access to a [b]double[/b] variable. " alt="" coords="313,5,428,32"/>
+<area shape="rect" id="node4" href="$dc/d03/a05655.html" title="Access to an indexed [b]double[/b] data member. " alt="" coords="288,56,453,83"/>
+<area shape="rect" id="node5" href="$d7/d33/a05659.html" title="Access to a [b]double[/b] data member. " alt="" coords="289,107,452,133"/>
+</map>

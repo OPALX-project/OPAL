@@ -1,0 +1,5 @@
+<map id="PluginElement::finalise" name="PluginElement::finalise">
+<area shape="rect" id="node2" href="$df/daa/a05167.html#a98aa3ce5c49febe33a220bedfd4810ff" title="Virtual hook for finalise. " alt="" coords="224,5,413,32"/>
+<area shape="rect" id="node3" href="$df/daa/a05167.html#aa73b1eed3fa6d0151cb3815531a759a8" title="PluginElement::goOffline" alt="" coords="227,56,410,83"/>
+<area shape="rect" id="node4" href="$df/daa/a05167.html#a567bcee2946e1bb5007b404a8e19038a" title="Virtual hook for goOffline. " alt="" coords="461,56,663,83"/>
+</map>

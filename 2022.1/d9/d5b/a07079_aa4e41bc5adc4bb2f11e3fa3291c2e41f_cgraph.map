@@ -1,0 +1,14 @@
+<map id="BoxCornerDomain::quadraticInterpolation" name="BoxCornerDomain::quadraticInterpolation">
+<area shape="rect" id="node2" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="369,5,415,32"/>
+<area shape="rect" id="node4" href="$d9/d5b/a07079.html#ad67df42d228d0ec0eebdb18e5e3a46e6" title="BoxCornerDomain::getXIntersection" alt="" coords="264,56,520,83"/>
+<area shape="rect" id="node7" href="$d9/d5b/a07079.html#ae68e706df4c3d61fcfa5654c3eb9e669" title="BoxCornerDomain::getYIntersection" alt="" coords="265,157,519,184"/>
+<area shape="rect" id="node13" href="$d9/d5b/a07079.html#adbb7a53c60089ea870a2ddf8ae9bc160" title="queries if a given (x,y,z) coordinate lies inside the domain " alt="" coords="293,107,491,133"/>
+<area shape="rect" id="node3" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="593,5,778,32"/>
+<area shape="rect" id="node5" href="$de/dde/a07107.html#a32ad0dee32f3b4aa1d3a270ee4dac529" title="IrregularDomain::getXRangeMax" alt="" coords="568,107,803,133"/>
+<area shape="rect" id="node6" href="$de/dde/a07107.html#a87e4a2c6202a9a063d04345ffdcdcfdd" title="IrregularDomain::getXRangeMin" alt="" coords="570,56,801,83"/>
+<area shape="rect" id="node8" href="$d9/d5b/a07079.html#ac91cec567d14487a0e9d26a7af71ffed" title="as a function of z, determine the height (B) of the geometry " alt="" coords="596,157,775,184"/>
+<area shape="rect" id="node12" href="$de/dde/a07107.html#ac438ec29b617bad954f7a37be46a456b" title="IrregularDomain::getYRangeMin" alt="" coords="571,208,800,235"/>
+<area shape="rect" id="node9" href="$de/dde/a07107.html#a38030f695f976fd9454fff311d7ed151" title="IrregularDomain::getYRangeMax" alt="" coords="851,107,1085,133"/>
+<area shape="rect" id="node10" href="$de/dde/a07107.html#aeb2489d17587c9b4fcd0ca637aa6f533" title="IrregularDomain::getZRangeMax" alt="" coords="851,157,1085,184"/>
+<area shape="rect" id="node11" href="$de/dde/a07107.html#a59cca272cffb97af954018659b2ffe9d" title="IrregularDomain::getZRangeMin" alt="" coords="853,208,1083,235"/>
+</map>

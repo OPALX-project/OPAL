@@ -1,0 +1,12 @@
+<map id="OpalCavity::OpalCavity" name="OpalCavity::OpalCavity">
+<area shape="rect" id="node2" href="$d2/d71/a04503.html#a0456a7ab32848a41f018f6464bc6ffde" title="Make logical attribute. " alt="" coords="263,5,423,32"/>
+<area shape="rect" id="node3" href="$d2/d71/a04503.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="264,56,423,83"/>
+<area shape="rect" id="node4" href="$d2/d71/a04503.html#ae9a947ca42d331f722e06f3a921fe170" title="Make string attribute. " alt="" coords="259,107,428,133"/>
+<area shape="rect" id="node5" href="$da/d07/a06583.html#af17ddf4b6ccfdcc6ce4ab34caa7ace82" title="OpalElement::registerOwnership" alt="" coords="227,157,460,184"/>
+<area shape="rect" id="node11" href="$d6/d12/a04691.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="264,208,423,235"/>
+<area shape="rect" id="node6" href="$dc/d12/a04723.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="550,81,685,108"/>
+<area shape="rect" id="node7" href="$d4/d95/a00989.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="594,132,641,159"/>
+<area shape="rect" id="node9" href="$dc/d12/a04723.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="536,183,699,209"/>
+<area shape="rect" id="node10" href="$d1/d64/a04675.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="508,234,727,275"/>
+<area shape="rect" id="node8" href="$d9/d06/a04735.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="775,132,925,159"/>
+</map>

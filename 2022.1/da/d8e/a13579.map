@@ -1,0 +1,34 @@
+<map id="src/PyOpal/PyElements/PyRingDefinition.cpp" name="src/PyOpal/PyElements/PyRingDefinition.cpp">
+<area shape="rect" id="node2" href="$dc/dd7/a13464.html" title="PyOpal/PyCore/ExceptionTranslation.h" alt="" coords="253,95,522,121"/>
+<area shape="rect" id="node8" href="$d0/d46/a13542.html" title="PyOpal/PyCore/PyOpalObject.h" alt="" coords="860,95,1083,121"/>
+<area shape="rect" id="node47" href="$d0/d9d/a13476.html" title="PyOpal/PyCore/Globals.h" alt="" coords="28,95,211,121"/>
+<area shape="rect" id="node50" href="$df/d89/a02462.html" title="Elements/OpalRingDefinition.h" alt="" coords="1473,95,1694,121"/>
+<area shape="rect" id="node13" href="$dc/dc1/a03263.html" title="Utilities/OpalException.h" alt="" coords="1057,319,1240,345"/>
+<area shape="rect" id="node15" href="$db/dda/a02318.html" title="Elements/OpalElement.h" alt="" coords="1833,169,2016,196"/>
+<area shape="rect" id="node17" href="$de/d79/a00203.html" title="AbstractObjects/Object.h" alt="" coords="1347,319,1529,345"/>
+<area shape="rect" id="node37" href="$d3/dd5/a00215.html" title="AbstractObjects/OpalData.h" alt="" coords="415,475,618,502"/>
+<area shape="rect" id="node40" href="$d6/d06/a00572.html" title="AbsBeamline/Component.h" alt="" coords="1237,169,1436,196"/>
+<area shape="rect" id="node42" href="$de/dd7/a00362.html" title="Attributes/Attributes.h" alt="" coords="867,319,1033,345"/>
+<area shape="rect" id="node46" href="$d7/d1c/a02732.html" title="OpalConfigure/Configure.h" alt="" coords="717,169,909,196"/>
+<area shape="rect" id="node14" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="1120,565,1319,591"/>
+<area shape="rect" id="node16" href="$da/d15/a00188.html" title="AbstractObjects/Element.h" alt="" coords="1693,244,1887,271"/>
+<area shape="rect" id="node36" href="$d5/db3/a01751.html" title="MemoryManagement/OwnPtr.h" alt="" coords="2064,244,2287,271"/>
+<area shape="rect" id="node23" href="$d9/d37/a01754.html" title="MemoryManagement/Pointer.h" alt="" coords="1722,565,1943,591"/>
+<area shape="rect" id="node27" href="$d5/d0a/a00602.html" title="AbsBeamline/ElementBase.h" alt="" coords="2179,393,2390,420"/>
+<area shape="rect" id="node18" href="$d7/d9a/a00152.html" title="AbstractObjects/Attribute.h" alt="" coords="1269,393,1468,420"/>
+<area shape="rect" id="node20" href="$db/dc0/a01757.html" title="MemoryManagement/RCObject.h" alt="" coords="2305,647,2539,673"/>
+<area shape="rect" id="node19" href="$d6/db8/a00158.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="1343,557,1530,599"/>
+<area shape="rect" id="node22" href="$db/ddf/a00164.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="1543,468,1730,509"/>
+<area shape="rect" id="node28" href="$d0/ddb/a00542.html" title="AbsBeamline/AttributeSet.h" alt="" coords="2322,475,2525,502"/>
+<area shape="rect" id="node29" href="$d6/dad/a00941.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="2904,468,3121,509"/>
+<area shape="rect" id="node30" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="2891,565,3073,591"/>
+<area shape="rect" id="node31" href="$de/d61/a01205.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="2583,565,2805,591"/>
+<area shape="rect" id="node32" href="$da/d19/a01217.html" title="BeamlineGeometry/Geometry.h" alt="" coords="2549,475,2777,502"/>
+<area shape="rect" id="node33" href="$de/dca/a01907.html" title="Structure/BoundingBox.h" alt="" coords="1963,475,2145,502"/>
+<area shape="rect" id="node35" href="$d7/db2/a02036.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="1224,468,1399,509"/>
+<area shape="rect" id="node38" href="$d3/de5/a00209.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="426,565,663,591"/>
+<area shape="rect" id="node41" href="$da/d06/a01403.html" title="Fields/EMField.h" alt="" coords="1275,244,1399,271"/>
+<area shape="rect" id="node43" href="$d3/d92/a01796.html" title="Parser/Token.h" alt="" coords="789,565,905,591"/>
+<area shape="rect" id="node48" href="$d4/dff/a02723.html" title="opal.h" alt="" coords="5,169,68,196"/>
+<area shape="rect" id="node49" href="$dd/d27/a03989.html" title="Utility/IpplInfo.h" alt="" coords="157,244,284,271"/>
+</map>

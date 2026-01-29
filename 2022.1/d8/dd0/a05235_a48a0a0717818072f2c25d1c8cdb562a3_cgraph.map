@@ -1,0 +1,51 @@
+<map id="Undulator::apply" name="Undulator::apply">
+<area shape="rect" id="node2" href="$d4/d5e/a03686.html#a3f4c593649c5ad948ee3e8566bffeda6" title="allreduce" alt="" coords="275,5,358,32"/>
+<area shape="rect" id="node4" href="$d9/d06/a04735.html#a644c68187c47b47efa54ab2cf9ef3a27" title="PartBunchBase::calcBeamParameters" alt="" coords="184,56,449,83"/>
+<area shape="rect" id="node5" href="$d9/d06/a04735.html#ad7244dddace671a9e518f3fe4929f1b9" title="PartBunchBase::create" alt="" coords="233,107,401,133"/>
+<area shape="rect" id="node6" href="$d9/d06/a04735.html#aca3eb11cbe8b8affeae9aef3ba398e75" title="PartBunchBase::destroy" alt="" coords="229,157,405,184"/>
+<area shape="rect" id="node7" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="291,208,342,235"/>
+<area shape="rect" id="node11" href="$d0/d85/a00908.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="253,259,380,285"/>
+<area shape="rect" id="node14" href="$dc/d2c/a00893.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="561,309,608,336"/>
+<area shape="rect" id="node16" href="$d4/d5e/a03542.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1015,309,1061,336"/>
+<area shape="rect" id="node22" href="$d9/d06/a04735.html#abb205db2732109c056b0693e91913912" title="PartBunchBase::get\l_centroid" alt="" coords="243,411,391,453"/>
+<area shape="rect" id="node23" href="$d9/d06/a04735.html#a446fb70114c17e69382ae950734baec3" title="PartBunchBase::get\l_gamma" alt="" coords="243,477,391,518"/>
+<area shape="rect" id="node24" href="$d9/d06/a04735.html#aaa01b2db4d248d28fff4412e55eaa6a2" title="PartBunchBase::get\l_maxExtent" alt="" coords="243,542,391,583"/>
+<area shape="rect" id="node25" href="$d9/d06/a04735.html#ac3bd99adc985bee33077c21f9d744f15" title="PartBunchBase::get\l_pmean" alt="" coords="243,607,391,649"/>
+<area shape="rect" id="node26" href="$d8/dd0/a05235.html#ab3ac86465d2e7c5476c489850f722934" title="Undulator::getAngle" alt="" coords="241,673,393,700"/>
+<area shape="rect" id="node27" href="$d9/d06/a04735.html#a19aacd7d2904a811460d487ade713b9a" title="get the macro particle charge " alt="" coords="219,725,414,766"/>
+<area shape="rect" id="node28" href="$d9/d06/a04735.html#a4951c53df6841fd275a56f41fc76bfdf" title="PartBunchBase::getdT" alt="" coords="235,791,399,817"/>
+<area shape="rect" id="node29" href="$d8/dd0/a05235.html#a5c76de67b4ee712c6a6cd3142552e5a5" title="Undulator::getDtBunch" alt="" coords="231,841,402,868"/>
+<area shape="rect" id="node30" href="$d8/dd0/a05235.html#a0f81a0c0e9cd2cf50882705665df1cf1" title="Undulator::getK" alt="" coords="255,892,379,919"/>
+<area shape="rect" id="node31" href="$d8/dd0/a05235.html#ae861ce4400cafe5119446a625a194127" title="Undulator::getLambda" alt="" coords="233,943,400,969"/>
+<area shape="rect" id="node32" href="$d9/d06/a04735.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="210,993,423,1020"/>
+<area shape="rect" id="node33" href="$d8/dd0/a05235.html#a101b1754532ab305e53866381a22b4bd" title="Undulator::getMeshLength" alt="" coords="220,1044,413,1071"/>
+<area shape="rect" id="node34" href="$d8/dd0/a05235.html#abd4d8f266b4c482eead40212f7dcc7cd" title="Undulator::getMeshResolution" alt="" coords="208,1095,425,1121"/>
+<area shape="rect" id="node35" href="$d8/dd0/a05235.html#aa6e841635fc0347fb004308631f510dd" title="Undulator::getNumPeriods" alt="" coords="219,1145,414,1172"/>
+<area shape="rect" id="node36" href="$d9/d06/a04735.html#af792389ff15f7f9fe61a13138ff0d6f3" title="PartBunchBase::getT" alt="" coords="239,1196,395,1223"/>
+<area shape="rect" id="node37" href="$d9/d06/a04735.html#a3473f0bbd78f0e387277bb72490d9ee3" title="PartBunchBase::getTotalNum" alt="" coords="211,1247,422,1273"/>
+<area shape="rect" id="node38" href="$d8/dd0/a05235.html#a92c1b58c7d4e20f9201e165cb37551ea" title="Undulator::getTotalTime" alt="" coords="227,1297,406,1324"/>
+<area shape="rect" id="node39" href="$d8/dd0/a05235.html#a895a2e7cb1510c9a756ec67765da1e0c" title="Undulator::getTruncation\lOrder" alt="" coords="225,1349,408,1390"/>
+<area shape="rect" id="node40" href="$dc/d4e/a05331.html#ae5f60c7777720c99b382b87952bd9e8a" title="CoordinateSystemTrafo\l::inverted" alt="" coords="229,1414,404,1455"/>
+<area shape="rect" id="node45" href="$d9/d06/a04735.html#a4d0601f83df76c9e78d4f190bfb42ba4" title="PartBunchBase::print" alt="" coords="238,1480,395,1507"/>
+<area shape="rect" id="node46" href="$dc/d4e/a05331.html#ae2537ef2597a313e3f6852c8175dd356" title="CoordinateSystemTrafo\l::rotateTo" alt="" coords="229,1531,404,1573"/>
+<area shape="rect" id="node48" href="$d8/dd0/a05235.html#af3ddb42c7dab1949c3b38ab574a4b323" title="Undulator::setHasBeenSimulated" alt="" coords="197,1597,436,1624"/>
+<area shape="rect" id="node49" href="$d9/d06/a04735.html#addc3c351123a7c560c34507b2fa67b5c" title="PartBunchBase::setT" alt="" coords="239,1648,394,1675"/>
+<area shape="rect" id="node50" href="$dc/d4e/a05331.html#acacde969cf75ea57d36f24896874c6a0" title="CoordinateSystemTrafo\l::transformTo" alt="" coords="229,1699,404,1741"/>
+<area shape="rect" id="node3" href="$df/da4/a12131.html#a8d995e140c485a5416394b5cc1c864c4" title="IpplInfo::getComm" alt="" coords="513,5,656,32"/>
+<area shape="rect" id="node8" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="499,157,671,184"/>
+<area shape="rect" id="node9" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="720,132,907,159"/>
+<area shape="rect" id="node10" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="746,183,881,209"/>
+<area shape="rect" id="node12" href="$dd/d95/a05263.html#a55cb732c23dd6b419f636aff0874ab82" title="Get beginning of data. " alt="" coords="525,208,644,235"/>
+<area shape="rect" id="node13" href="$dd/d95/a05263.html#a941ffba563af0a4e17aae45292b1659e" title="Get end of data. " alt="" coords="531,259,638,285"/>
+<area shape="rect" id="node15" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="741,259,885,285"/>
+<area shape="rect" id="node21" href="$d9/dba/a05287.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="767,309,859,336"/>
+<area shape="rect" id="node17" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1304,284,1489,311"/>
+<area shape="rect" id="node18" href="$d4/d5e/a03542.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1169,335,1256,361"/>
+<area shape="rect" id="node19" href="$d4/d4b/a03464.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="1357,335,1436,361"/>
+<area shape="rect" id="node20" href="$d8/db3/a03488.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="1348,385,1445,412"/>
+<area shape="rect" id="node41" href="$dc/d4e/a05331.html#afdcb12eb2455fcba3d0503b6be30df24" title="CoordinateSystemTrafo\l::invert" alt="" coords="497,1414,672,1455"/>
+<area shape="rect" id="node42" href="$d2/dc7/a05391.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="955,1396,1121,1423"/>
+<area shape="rect" id="node43" href="$d2/dc7/a05391.html#a16e61b715e53d7394996bb56c356916e" title="Quaternion::rotate" alt="" coords="743,1421,884,1448"/>
+<area shape="rect" id="node44" href="$dc/de3/a03326.html#a1e71f6a6a4880f0c3ab147df4dd09050" title="transpose" alt="" coords="770,1472,857,1499"/>
+<area shape="rect" id="node47" href="$d3/d53/a01262.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="563,1623,606,1649"/>
+</map>

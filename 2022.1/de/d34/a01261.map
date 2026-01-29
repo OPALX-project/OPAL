@@ -1,0 +1,12 @@
+<map id="src/Classic/BeamlineGeometry/VarRadiusGeometry.h" name="src/Classic/BeamlineGeometry/VarRadiusGeometry.h">
+<area shape="rect" id="node2" href="$d8/d73/a00674.html" title="src/Classic/AbsBeamline\l/MultipoleTCurvedVarRadius.h" alt="" coords="498,95,714,136"/>
+<area shape="rect" id="node11" href="$d6/d0f/a01256.html" title="src/Classic/BeamlineGeometry\l/VarRadiusGeometry.cpp" alt="" coords="739,95,961,136"/>
+<area shape="rect" id="node3" href="$df/d95/a00299.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="5,184,236,225"/>
+<area shape="rect" id="node4" href="$d8/d13/a00671.html" title="src/Classic/AbsBeamline\l/MultipoleTCurvedVarRadius.cpp" alt="" coords="260,184,491,225"/>
+<area shape="rect" id="node5" href="$d8/d2d/a00815.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="515,184,697,225"/>
+<area shape="rect" id="node7" href="$d9/dce/a00944.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="721,184,888,225"/>
+<area shape="rect" id="node8" href="$d5/d43/a02378.html" title="src/Elements/OpalMultipole\lTCurvedVarRadius.h" alt="" coords="913,184,1113,225"/>
+<area shape="rect" id="node6" href="$d7/da1/a02231.html" title="src/Distribution/Distribution.cpp" alt="" coords="492,281,720,307"/>
+<area shape="rect" id="node9" href="$d6/dd7/a02375.html" title="src/Elements/OpalMultipole\lTCurvedVarRadius.cpp" alt="" coords="829,273,1029,315"/>
+<area shape="rect" id="node10" href="$dd/d01/a02729.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="1053,281,1284,307"/>
+</map>

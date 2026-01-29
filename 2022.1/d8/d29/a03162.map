@@ -1,0 +1,37 @@
+<map id="src/Structure/OpalWake.cpp" name="src/Structure/OpalWake.cpp">
+<area shape="rect" id="node2" href="$d8/dec/a03164.html" title="Structure/OpalWake.h" alt="" coords="580,80,743,107"/>
+<area shape="rect" id="node13" href="$d5/d0a/a00602.html" title="AbsBeamline/ElementBase.h" alt="" coords="2535,80,2745,107"/>
+<area shape="rect" id="node32" href="$d3/dd5/a00215.html" title="AbstractObjects/OpalData.h" alt="" coords="2008,244,2211,271"/>
+<area shape="rect" id="node35" href="$de/dd7/a00362.html" title="Attributes/Attributes.h" alt="" coords="303,244,470,271"/>
+<area shape="rect" id="node39" href="$d9/dd5/a01886.html" title="Solvers/GreenWakeFunction.h" alt="" coords="1498,162,1713,189"/>
+<area shape="rect" id="node45" href="$d9/d7d/a01880.html" title="Solvers/CSRWakeFunction.h" alt="" coords="1102,162,1303,189"/>
+<area shape="rect" id="node47" href="$de/dfb/a01874.html" title="Solvers/CSRIGFWakeFunction.h" alt="" coords="753,162,975,189"/>
+<area shape="rect" id="node48" href="$dc/dc1/a03263.html" title="Utilities/OpalException.h" alt="" coords="2770,80,2953,107"/>
+<area shape="rect" id="node49" href="$d9/d33/a03269.html" title="Utilities/OpalFilter.h" alt="" coords="989,80,1139,107"/>
+<area shape="rect" id="node3" href="$d5/de9/a00176.html" title="AbstractObjects/Definition.h" alt="" coords="473,162,677,189"/>
+<area shape="rect" id="node4" href="$de/d79/a00203.html" title="AbstractObjects/Object.h" alt="" coords="494,244,677,271"/>
+<area shape="rect" id="node5" href="$d7/d9a/a00152.html" title="AbstractObjects/Attribute.h" alt="" coords="451,319,650,345"/>
+<area shape="rect" id="node7" href="$db/dc0/a01757.html" title="MemoryManagement/RCObject.h" alt="" coords="633,572,868,599"/>
+<area shape="rect" id="node6" href="$d6/db8/a00158.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="501,483,688,524"/>
+<area shape="rect" id="node10" href="$db/ddf/a00164.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="552,393,739,435"/>
+<area shape="rect" id="node14" href="$d0/ddb/a00542.html" title="AbsBeamline/AttributeSet.h" alt="" coords="2285,401,2488,427"/>
+<area shape="rect" id="node16" href="$d6/dad/a00941.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="3098,155,3315,196"/>
+<area shape="rect" id="node20" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="2988,244,3169,271"/>
+<area shape="rect" id="node22" href="$de/d61/a01205.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="2741,244,2963,271"/>
+<area shape="rect" id="node25" href="$da/d19/a01217.html" title="BeamlineGeometry/Geometry.h" alt="" coords="2794,162,3022,189"/>
+<area shape="rect" id="node26" href="$de/dca/a01907.html" title="Structure/BoundingBox.h" alt="" coords="2485,162,2667,189"/>
+<area shape="rect" id="node29" href="$d7/db2/a02036.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="3339,155,3514,196"/>
+<area shape="rect" id="node17" href="$de/dc4/a13617.html" title="Algorithms/Vektor.h" alt="" coords="3003,319,3154,345"/>
+<area shape="rect" id="node21" href="$d9/db1/a03335.html" title="AppTypes/Tenzor.h" alt="" coords="3124,401,3265,427"/>
+<area shape="rect" id="node18" href="$d0/dd7/a13620.html" title="AppTypes/Vektor.h" alt="" coords="2895,401,3036,427"/>
+<area shape="rect" id="node19" href="$df/d11/a04037.html" title="Utility/PAssert.h" alt="" coords="2682,490,2809,517"/>
+<area shape="rect" id="node23" href="$dd/d95/a01247.html" title="BeamlineGeometry/Rotation3D.h" alt="" coords="2593,319,2831,345"/>
+<area shape="rect" id="node24" href="$da/dd8/a01265.html" title="BeamlineGeometry/Vector3D.h" alt="" coords="2616,401,2840,427"/>
+<area shape="rect" id="node30" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="3327,244,3526,271"/>
+<area shape="rect" id="node33" href="$d3/de5/a00209.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="1923,319,2160,345"/>
+<area shape="rect" id="node36" href="$d3/d92/a01796.html" title="Parser/Token.h" alt="" coords="310,490,426,517"/>
+<area shape="rect" id="node40" href="$d4/d49/a01643.html" title="Filters/Filter.h" alt="" coords="1307,244,1415,271"/>
+<area shape="rect" id="node41" href="$db/d6b/a01853.html" title="Physics/Physics.h" alt="" coords="1595,244,1731,271"/>
+<area shape="rect" id="node42" href="$d5/d99/a01901.html" title="Solvers/WakeFunction.h" alt="" coords="1056,244,1232,271"/>
+<area shape="rect" id="node43" href="$dd/d27/a03989.html" title="Utility/IpplInfo.h" alt="" coords="1857,244,1983,271"/>
+</map>

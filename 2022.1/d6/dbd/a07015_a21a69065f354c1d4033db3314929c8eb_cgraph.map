@@ -1,0 +1,7 @@
+<map id="AmrMultiGrid::restrict_m" name="AmrMultiGrid::restrict_m">
+<area shape="rect" id="node2" href="$d6/dbd/a07015.html#a7d3ecbc76e1c6e4e8a898260fcb35681" title="AmrMultiGrid::residual\l_no_fine_m" alt="" coords="239,5,407,47"/>
+<area shape="rect" id="node3" href="$d0/d9c/a12163.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="236,71,411,98"/>
+<area shape="rect" id="node5" href="$d0/d9c/a12163.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="237,122,409,149"/>
+<area shape="rect" id="node4" href="$d0/d4e/a12159.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="459,71,601,98"/>
+<area shape="rect" id="node6" href="$d0/d4e/a12159.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="459,122,601,149"/>
+</map>

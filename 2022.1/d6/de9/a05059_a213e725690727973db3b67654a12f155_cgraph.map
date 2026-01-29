@@ -1,0 +1,51 @@
+<map id="Cyclotron::initialise" name="Cyclotron::initialise">
+<area shape="rect" id="node2" href="$db/d78/a05071.html#a66b66616164e834b51b47fb0cc1081ee" title="Get output filename. " alt="" coords="201,233,400,260"/>
+<area shape="rect" id="node4" href="$d6/de9/a05059.html#a499ed1816887fba550d43b42ab5104af" title="Cyclotron::read" alt="" coords="240,411,361,437"/>
+<area shape="rect" id="node3" href="$db/d78/a05071.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="459,81,635,108"/>
+<area shape="rect" id="node5" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="2003,715,2054,741"/>
+<area shape="rect" id="node11" href="$d6/de9/a05059.html#ae8f3427f57d951671bf96e5eb3b27c3e" title="Cyclotron::getFieldFromFile_Ring" alt="" coords="968,309,1201,336"/>
+<area shape="rect" id="node13" href="$d6/de9/a05059.html#a725fe8de096ddc2200e17b2edbf5aa01" title="Cyclotron::getFieldFromFile\l_Carbon" alt="" coords="708,614,905,655"/>
+<area shape="rect" id="node29" href="$d6/de9/a05059.html#a17e3a89a8e14301942f71253c1af29ba" title="Cyclotron::getFieldFromFile\l_CYCIAE" alt="" coords="986,395,1183,437"/>
+<area shape="rect" id="node30" href="$d6/de9/a05059.html#a5cd49e137bcec54f21e5b727e3fd364c" title="Cyclotron::getFieldFromFile\l_AVFEQ" alt="" coords="708,867,905,909"/>
+<area shape="rect" id="node31" href="$d6/de9/a05059.html#aa8c76e2e43968518d4cad951b2667b1e" title="Cyclotron::getFieldFromFile_FFA" alt="" coords="693,816,920,843"/>
+<area shape="rect" id="node32" href="$d6/de9/a05059.html#a210f68e6f2140938c6e39e7f9c105536" title="Cyclotron::getFieldFromFile\l_BandRF" alt="" coords="448,527,645,569"/>
+<area shape="rect" id="node38" href="$d6/de9/a05059.html#a8cee874dcb8d76d7072d564c16c78330" title="Cyclotron::getFieldFromFile\l_Synchrocyclotron" alt="" coords="448,462,645,503"/>
+<area shape="rect" id="node39" href="$d6/de9/a05059.html#aaca37e9a01e3609fb9b8fff0c76becf3" title="Cyclotron::initR" alt="" coords="485,183,608,209"/>
+<area shape="rect" id="node40" href="$d6/de9/a05059.html#a6b5a9beb8f942b6d6bbd871a3acbe074" title="Cyclotron::getdiffs" alt="" coords="476,132,617,159"/>
+<area shape="rect" id="node6" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="2169,765,2341,792"/>
+<area shape="rect" id="node7" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="2873,816,3007,843"/>
+<area shape="rect" id="node8" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="2389,867,2576,893"/>
+<area shape="rect" id="node9" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="2624,892,2821,919"/>
+<area shape="rect" id="node10" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="2869,1323,3011,1349"/>
+<area shape="rect" id="node12" href="$d6/de9/a05059.html#a4b1fa45840ed8fc1599f5769ae5c8878" title="Cyclotron::idx" alt="" coords="1301,613,1413,640"/>
+<area shape="rect" id="node14" href="$d6/de9/a05059.html#a78110fc7bfc1d1f80b352ead44874f2e" title="Cyclotron::writeOutputField\lFiles" alt="" coords="985,867,1184,909"/>
+<area shape="rect" id="node15" href="$da/d1d/a03947.html#af36c2f36a380abec55b6127737aba9ea" title="fp1" alt="" coords="1335,1035,1378,1061"/>
+<area shape="rect" id="node23" href="$d2/df8/a04550.html#a11460f59ebd4d9f7dc2f12724dece886" title="Util::combineFilePath" alt="" coords="1277,867,1436,893"/>
+<area shape="rect" id="node24" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="1273,816,1440,843"/>
+<area shape="rect" id="node26" href="$d5/d13/a04739.html#af5404b3339d48c4531df60b77ce628c3" title="get the name of the the additional data directory " alt="" coords="1249,918,1464,959"/>
+<area shape="rect" id="node27" href="$da/d1d/a03947.html#a0fcf913e1278e8a4abfdb762b4567158" title="fp2" alt="" coords="1335,1085,1378,1112"/>
+<area shape="rect" id="node16" href="$d5/d25/a08467.html#a145fb07dd8ce69c94cc355f263fc22ef" title="FieldLayout::getDomain" alt="" coords="1712,867,1888,893"/>
+<area shape="rect" id="node17" href="$d2/ded/a08271.html#add48f68ff3e320645708670d9d423cbe" title="BareField::getLayout" alt="" coords="1723,1272,1877,1299"/>
+<area shape="rect" id="node18" href="$d7/d5e/a03953.html#a966ade7218f31e3bcca0ca0b78aaac2a" title="setInform" alt="" coords="1757,1221,1843,1248"/>
+<area shape="rect" id="node19" href="$dc/d61/a03950.html#a14461217deb25da5954ae09cf24f80a7" title="sfp1" alt="" coords="1563,1019,1613,1045"/>
+<area shape="rect" id="node20" href="$d2/ded/a08271.html#a7751f8b10ee09601e092ff39c58d58dd" title="BareField::getDomain" alt="" coords="1947,1069,2110,1096"/>
+<area shape="rect" id="node21" href="$d2/ded/a08271.html#af601be77c55022950aa394876e965f88" title="BareField::leftGuard" alt="" coords="1725,1120,1875,1147"/>
+<area shape="rect" id="node22" href="$da/db9/a12111.html#a368e21c15997618e269765c9a172ae88" title="FieldDebugPrint::print" alt="" coords="1719,1019,1881,1045"/>
+<area shape="rect" id="node25" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1512,816,1664,843"/>
+<area shape="rect" id="node28" href="$dc/d61/a03950.html#a2dd63b74512a53685800da8056370dfc" title="sfp2" alt="" coords="1563,1069,1613,1096"/>
+<area shape="rect" id="node33" href="$d9/dd4/a05755.html#a142ca0a0c3d78c3e6d82cf1c5a1865fd" title="Fieldmap::getFieldmap" alt="" coords="722,512,891,539"/>
+<area shape="rect" id="node37" href="$d9/dd4/a05755.html#afaf4152830d4a9fb506627e1e653e1fa" title="Fieldmap::readMap" alt="" coords="734,461,879,488"/>
+<area shape="rect" id="node34" href="$d9/dd4/a05755.html#a28e1dc69de1369c41f7ff23816564aef" title="Fieldmap::readHeader" alt="" coords="1002,461,1167,488"/>
+<area shape="rect" id="node35" href="$d9/dd4/a05755.html#ae259a8ec0d70e499792a066427485f1a" title="Fieldmap::getLine" alt="" coords="1288,461,1425,488"/>
+<area shape="rect" id="node36" href="$df/da4/a12131.html#a8d995e140c485a5416394b5cc1c864c4" title="IpplInfo::getComm" alt="" coords="1285,411,1428,437"/>
+<area shape="rect" id="node41" href="$d6/de9/a05059.html#a65bada597021305b6372562a19b38661" title="Cyclotron::gutdf5d" alt="" coords="735,107,878,133"/>
+<area shape="rect" id="node44" href="$d4/d5e/a03542.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1565,81,1611,108"/>
+<area shape="rect" id="node50" href="$d4/d5e/a03542.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="1563,157,1613,184"/>
+<area shape="rect" id="node42" href="$dc/d2c/a00893.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="1060,107,1109,133"/>
+<area shape="rect" id="node43" href="$d9/dba/a05287.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1306,107,1407,133"/>
+<area shape="rect" id="node45" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1936,132,2121,159"/>
+<area shape="rect" id="node46" href="$d4/d5e/a03542.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1757,56,1843,83"/>
+<area shape="rect" id="node47" href="$d4/d4b/a03464.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="1989,81,2068,108"/>
+<area shape="rect" id="node48" href="$d8/db3/a03488.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="2207,5,2304,32"/>
+<area shape="rect" id="node49" href="$d4/d5e/a03686.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="1966,31,2091,57"/>
+</map>

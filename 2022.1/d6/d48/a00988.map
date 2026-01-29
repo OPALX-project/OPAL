@@ -1,0 +1,35 @@
+<map id="src/Classic/Algorithms/PartBunch.h" name="src/Classic/Algorithms/PartBunch.h">
+<area shape="rect" id="node2" href="$d6/d7f/a00287.html" title="src/Algorithms/MultiBunch\lHandler.cpp" alt="" coords="1042,95,1234,136"/>
+<area shape="rect" id="node3" href="$de/ddd/a00653.html" title="src/Classic/AbsBeamline\l/MultipoleT.cpp" alt="" coords="1258,95,1439,136"/>
+<area shape="rect" id="node4" href="$dc/df1/a00662.html" title="src/Classic/AbsBeamline\l/MultipoleTBase.h" alt="" coords="1463,95,1645,136"/>
+<area shape="rect" id="node23" href="$d4/d45/a00791.html" title="src/Classic/AbsBeamline\l/ScalingFFAMagnet.cpp" alt="" coords="1719,95,1901,136"/>
+<area shape="rect" id="node24" href="$d0/d82/a00857.html" title="src/Classic/AbsBeamline\l/VerticalFFAMagnet.h" alt="" coords="1833,184,2014,225"/>
+<area shape="rect" id="node27" href="$d7/d98/a00983.html" title="src/Classic/Algorithms\l/PartBunch.cpp" alt="" coords="1925,95,2092,136"/>
+<area shape="rect" id="node28" href="$d1/dd8/a01022.html" title="src/Classic/Algorithms\l/Tracker.cpp" alt="" coords="2116,95,2283,136"/>
+<area shape="rect" id="node29" href="$d6/d58/a02993.html" title="src/Solvers/FFTBoxPoisson\lSolver.cpp" alt="" coords="2307,95,2502,136"/>
+<area shape="rect" id="node30" href="$dc/d94/a02999.html" title="src/Solvers/FFTPoissonSolver.cpp" alt="" coords="2527,102,2763,129"/>
+<area shape="rect" id="node31" href="$df/d3a/a03014.html" title="src/Solvers/MGPoissonSolver.h" alt="" coords="2787,102,3007,129"/>
+<area shape="rect" id="node33" href="$dd/dfd/a03017.html" title="src/Solvers/P3MPoissonSolver.cpp" alt="" coords="3031,102,3272,129"/>
+<area shape="rect" id="node34" href="$d1/da3/a03221.html" title="src/Track/Track.cpp" alt="" coords="3297,102,3441,129"/>
+<area shape="rect" id="node5" href="$df/d95/a00299.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="1808,273,2039,315"/>
+<area shape="rect" id="node6" href="$dc/d91/a00659.html" title="src/Classic/AbsBeamline\l/MultipoleTBase.cpp" alt="" coords="1575,184,1757,225"/>
+<area shape="rect" id="node7" href="$d0/d5c/a00668.html" title="src/Classic/AbsBeamline\l/MultipoleTCurvedConstRadius.h" alt="" coords="874,184,1106,225"/>
+<area shape="rect" id="node15" href="$d8/d73/a00674.html" title="src/Classic/AbsBeamline\l/MultipoleTCurvedVarRadius.h" alt="" coords="1335,184,1551,225"/>
+<area shape="rect" id="node19" href="$d6/dc0/a00734.html" title="src/Classic/AbsBeamline\l/MultipoleTStraight.h" alt="" coords="1130,184,1311,225"/>
+<area shape="rect" id="node8" href="$da/d46/a00665.html" title="src/Classic/AbsBeamline\l/MultipoleTCurvedConstRadius.cpp" alt="" coords="5,273,252,315"/>
+<area shape="rect" id="node9" href="$d8/d2d/a00815.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="931,273,1113,315"/>
+<area shape="rect" id="node11" href="$d9/dce/a00944.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="1137,273,1304,315"/>
+<area shape="rect" id="node12" href="$da/d75/a02372.html" title="src/Elements/OpalMultipole\lTCurvedConstRadius.h" alt="" coords="277,273,477,315"/>
+<area shape="rect" id="node10" href="$d7/da1/a02231.html" title="src/Distribution/Distribution.cpp" alt="" coords="936,370,1164,397"/>
+<area shape="rect" id="node13" href="$df/def/a02369.html" title="src/Elements/OpalMultipole\lTCurvedConstRadius.cpp" alt="" coords="231,363,431,404"/>
+<area shape="rect" id="node14" href="$dd/d01/a02729.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="456,370,687,397"/>
+<area shape="rect" id="node16" href="$d8/d13/a00671.html" title="src/Classic/AbsBeamline\l/MultipoleTCurvedVarRadius.cpp" alt="" coords="1553,273,1784,315"/>
+<area shape="rect" id="node17" href="$d5/d43/a02378.html" title="src/Elements/OpalMultipole\lTCurvedVarRadius.h" alt="" coords="1329,273,1529,315"/>
+<area shape="rect" id="node18" href="$d6/dd7/a02375.html" title="src/Elements/OpalMultipole\lTCurvedVarRadius.cpp" alt="" coords="1329,363,1529,404"/>
+<area shape="rect" id="node20" href="$df/df7/a00731.html" title="src/Classic/AbsBeamline\l/MultipoleTStraight.cpp" alt="" coords="725,273,906,315"/>
+<area shape="rect" id="node21" href="$d2/d11/a02384.html" title="src/Elements/OpalMultipole\lTStraight.h" alt="" coords="501,273,701,315"/>
+<area shape="rect" id="node22" href="$d7/d1a/a02381.html" title="src/Elements/OpalMultipole\lTStraight.cpp" alt="" coords="711,363,911,404"/>
+<area shape="rect" id="node25" href="$d6/d2f/a00854.html" title="src/Classic/AbsBeamline\l/VerticalFFAMagnet.cpp" alt="" coords="2277,273,2458,315"/>
+<area shape="rect" id="node26" href="$d8/d1b/a02555.html" title="src/Elements/OpalVertical\lFFAMagnet.cpp" alt="" coords="2063,273,2253,315"/>
+<area shape="rect" id="node32" href="$d6/d97/a03011.html" title="src/Solvers/MGPoissonSolver.cpp" alt="" coords="2779,191,3014,218"/>
+</map>

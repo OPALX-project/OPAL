@@ -1,0 +1,15 @@
+<map id="src/Attributes/TokenList.cpp" name="src/Attributes/TokenList.cpp">
+<area shape="rect" id="node2" href="$d1/d7e/a00434.html" title="Attributes/TokenList.h" alt="" coords="750,80,913,107"/>
+<area shape="rect" id="node15" href="$dc/d22/a13611.html" title="AbstractObjects/Expressions.h" alt="" coords="1145,237,1364,263"/>
+<area shape="rect" id="node18" href="$da/de8/a02657.html" title="Expressions/SValue.h" alt="" coords="910,237,1070,263"/>
+<area shape="rect" id="node20" href="$dc/dc1/a03263.html" title="Utilities/OpalException.h" alt="" coords="938,80,1120,107"/>
+<area shape="rect" id="node3" href="$d7/d9a/a00152.html" title="AbstractObjects/Attribute.h" alt="" coords="414,155,612,181"/>
+<area shape="rect" id="node9" href="$db/ddf/a00164.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="94,229,281,271"/>
+<area shape="rect" id="node13" href="$d3/d92/a01796.html" title="Parser/Token.h" alt="" coords="930,326,1046,353"/>
+<area shape="rect" id="node4" href="$d6/db8/a00158.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="462,319,649,360"/>
+<area shape="rect" id="node10" href="$d9/d37/a01754.html" title="MemoryManagement/Pointer.h" alt="" coords="217,326,438,353"/>
+<area shape="rect" id="node5" href="$db/dc0/a01757.html" title="MemoryManagement/RCObject.h" alt="" coords="32,408,266,435"/>
+<area shape="rect" id="node6" href="$de/db1/a00197.html" title="AbstractObjects/Invalidator.h" alt="" coords="450,408,661,435"/>
+<area shape="rect" id="node16" href="$d5/db3/a01751.html" title="MemoryManagement/OwnPtr.h" alt="" coords="1290,326,1512,353"/>
+<area shape="rect" id="node21" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="636,155,835,181"/>
+</map>

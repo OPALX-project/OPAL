@@ -1,0 +1,18 @@
+<map id="src/Attributes/StringArray.cpp" name="src/Attributes/StringArray.cpp">
+<area shape="rect" id="node2" href="$db/d43/a00422.html" title="Attributes/StringArray.h" alt="" coords="723,80,896,107"/>
+<area shape="rect" id="node13" href="$dc/d22/a13611.html" title="AbstractObjects/Expressions.h" alt="" coords="1315,237,1533,263"/>
+<area shape="rect" id="node18" href="$de/dd7/a00362.html" title="Attributes/Attributes.h" alt="" coords="1563,80,1730,107"/>
+<area shape="rect" id="node20" href="$d2/dca/a02606.html" title="Expressions/AValue.h" alt="" coords="944,80,1104,107"/>
+<area shape="rect" id="node24" href="$dc/dc1/a03263.html" title="Utilities/OpalException.h" alt="" coords="2075,80,2258,107"/>
+<area shape="rect" id="node26" href="$dd/d09/a02180.html" title="Utilities/ParseError.h" alt="" coords="1896,80,2051,107"/>
+<area shape="rect" id="node3" href="$d7/d9a/a00152.html" title="AbstractObjects/Attribute.h" alt="" coords="686,155,885,181"/>
+<area shape="rect" id="node9" href="$db/ddf/a00164.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="421,229,608,271"/>
+<area shape="rect" id="node4" href="$d6/db8/a00158.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="160,319,347,360"/>
+<area shape="rect" id="node10" href="$d9/d37/a01754.html" title="MemoryManagement/Pointer.h" alt="" coords="563,326,784,353"/>
+<area shape="rect" id="node5" href="$db/dc0/a01757.html" title="MemoryManagement/RCObject.h" alt="" coords="5,408,240,435"/>
+<area shape="rect" id="node6" href="$de/db1/a00197.html" title="AbstractObjects/Invalidator.h" alt="" coords="264,408,475,435"/>
+<area shape="rect" id="node14" href="$d5/db3/a01751.html" title="MemoryManagement/OwnPtr.h" alt="" coords="1207,326,1430,353"/>
+<area shape="rect" id="node15" href="$d3/d92/a01796.html" title="Parser/Token.h" alt="" coords="1015,326,1131,353"/>
+<area shape="rect" id="node21" href="$dc/d34/a02627.html" title="Expressions/SConstant.h" alt="" coords="1062,155,1245,181"/>
+<area shape="rect" id="node25" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="1947,155,2146,181"/>
+</map>

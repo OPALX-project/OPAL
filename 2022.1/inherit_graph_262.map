@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$da/d87/a08319.html" title="FFTBase\&lt; Dim, T \&gt;" alt="" coords="5,81,155,108"/>
+<area shape="rect" id="node2" href="$db/dff/a08291.html" title="FFT\&lt; Transform, Dim, T \&gt;" alt="" coords="211,5,402,32"/>
+<area shape="rect" id="node3" href="$d5/d66/a08295.html" title="FFT\&lt; CCTransform, Dim, T \&gt;" alt="" coords="203,56,411,83"/>
+<area shape="rect" id="node4" href="$dc/deb/a08303.html" title="FFT\&lt; RCTransform, Dim, T \&gt;" alt="" coords="203,107,410,133"/>
+<area shape="rect" id="node5" href="$db/d42/a08311.html" title="FFT\&lt; SineTransform,\l Dim, T \&gt;" alt="" coords="229,158,385,199"/>
+</map>

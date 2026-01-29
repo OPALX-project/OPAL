@@ -1,0 +1,9 @@
+<map id="AmrPartBunch::computeSelfFields_cycl" name="AmrPartBunch::computeSelfFields_cycl">
+<area shape="rect" id="node2" href="$d1/d8e/a04879.html#a5c51f2bbfd53b9b27908b0ff38b1aab5" title="AmrObject::computeSelfFields_cycl" alt="" coords="257,5,508,32"/>
+<area shape="rect" id="node3" href="$d1/d8e/a04879.html#a159d4cabe505c4db21486d03df91da02" title="AmrObject::initFineLevels" alt="" coords="289,56,477,83"/>
+<area shape="rect" id="node4" href="$d1/d8e/a04879.html#a31c846072ce5da08a4053fd1ececac28" title="AmrObject::isRefined" alt="" coords="303,107,462,133"/>
+<area shape="rect" id="node5" href="$d0/d9c/a12163.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="295,157,470,184"/>
+<area shape="rect" id="node7" href="$d0/d9c/a12163.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="297,208,469,235"/>
+<area shape="rect" id="node6" href="$d0/d4e/a12159.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="556,157,699,184"/>
+<area shape="rect" id="node8" href="$d0/d4e/a12159.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="557,208,698,235"/>
+</map>

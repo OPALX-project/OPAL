@@ -1,0 +1,16 @@
+<map id="SigmaGenerator::decouple" name="SigmaGenerator::decouple">
+<area shape="rect" id="node2" href="$da/d97/a06539.html#ac150f958cab3c4e66c1e48b38a357354" title="RealDiracMatrix::diagonalize" alt="" coords="248,183,456,209"/>
+<area shape="rect" id="node15" href="$da/d97/a06539.html#a317116162b8aad99f625e34286cc698b" title="RealDiracMatrix::symplex" alt="" coords="257,259,447,285"/>
+<area shape="rect" id="node3" href="$de/d6b/a03845.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="573,157,632,184"/>
+<area shape="rect" id="node4" href="$d4/d81/a04556.html#ab994fd6ec746cde3c38fcb3980bb4f67" title="Computes the cross product &#160;of two vectors in . " alt="" coords="515,208,690,235"/>
+<area shape="rect" id="node5" href="$d5/d12/a03851.html#a74dc182f1d4874ddea8940604665779b" title="fabs" alt="" coords="577,259,628,285"/>
+<area shape="rect" id="node6" href="$da/d97/a06539.html#ab11cd5dc339b9a250eb16fa62d219f3f" title="RealDiracMatrix::getRDM" alt="" coords="511,309,695,336"/>
+<area shape="rect" id="node7" href="$d5/d12/a03851.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="749,44,800,71"/>
+<area shape="rect" id="node12" href="$d4/d81/a04556.html#ad5dc1f3a945f5a5fdc9a5bf7da178fa0" title="Computes the trace of a square matrix. " alt="" coords="534,107,671,133"/>
+<area shape="rect" id="node14" href="$da/d97/a06539.html#a2d7f8720027dc05f2eeedd965817384f" title="RealDiracMatrix::transform" alt="" coords="504,5,701,32"/>
+<area shape="rect" id="node8" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="983,81,1168,108"/>
+<area shape="rect" id="node9" href="$d5/d12/a03851.html#a0a1cdb80c431a477e99aea03fea993fc" title="Reduction" alt="" coords="848,132,935,159"/>
+<area shape="rect" id="node10" href="$d5/d12/a03851.html#a1ea49580c5d70200ee20f6afbc6d6de3" title="for_each" alt="" coords="1036,132,1115,159"/>
+<area shape="rect" id="node11" href="$d5/d12/a03851.html#a1a29834440d6844017cef5d516087c28" title="PETE_apply" alt="" coords="1027,183,1124,209"/>
+<area shape="rect" id="node13" href="$d5/d12/a03851.html#a06dc3d53220b680f16b2c655bcb86a40" title="sum" alt="" coords="749,107,800,133"/>
+</map>

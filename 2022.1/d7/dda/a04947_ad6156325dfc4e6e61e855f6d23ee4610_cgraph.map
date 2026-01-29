@@ -1,0 +1,11 @@
+<map id="Attributes::TokenList::parse" name="Attributes::TokenList::parse">
+<area shape="rect" id="node2" href="$da/dec/a04499.html#a946c14794d1fd1880795af2c17054c16" title="Parse a token list (for macro argument and the like). " alt="" coords="208,132,413,159"/>
+<area shape="rect" id="node10" href="$da/d19/a04667.html#a6cd34bcfad889b4215734cbc0b5eafc2" title="Define new value. " alt="" coords="257,183,364,209"/>
+<area shape="rect" id="node3" href="$df/d40/a06071.html#addc8463ab069024b814f2a291c3fa620" title="Test for end of command. " alt="" coords="743,5,877,32"/>
+<area shape="rect" id="node4" href="$df/d40/a06071.html#ac7a9b7e88c7c356b6f41f3eb19cc7734" title="Mark position in command. " alt="" coords="504,208,636,235"/>
+<area shape="rect" id="node5" href="$df/d40/a06071.html#a1a0eb4cada570aae1069034300a11092" title="Return current token and skip it. " alt="" coords="727,56,893,83"/>
+<area shape="rect" id="node6" href="$d9/db8/a06079.html#a2954e99066d74d540ededed11eaf469c" title="Test for delimiter. " alt="" coords="759,157,861,184"/>
+<area shape="rect" id="node7" href="$df/d40/a06071.html#aa3a59708d440dd319ac301ae50b92451" title="Return to marked position. " alt="" coords="498,259,642,285"/>
+<area shape="rect" id="node8" href="$da/dec/a04499.html#aa03d83d4e42f30aee6aa517c60ee3254" title="Expressions::parseBracketList" alt="" coords="461,107,679,133"/>
+<area shape="rect" id="node9" href="$df/d40/a06071.html#aeb97c1ae2faf5064efe45c9cc49a3b11" title="Test for delimiter. " alt="" coords="731,107,889,133"/>
+</map>

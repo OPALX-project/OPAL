@@ -1,0 +1,11 @@
+<map id="Expressions::SRefExpr&lt; T &gt;" name="Expressions::SRefExpr&lt; T &gt;">
+<area shape="rect" id="node2" href="$de/db5/a04695.html" title="A scalar expression. " alt="" coords="5,451,192,477"/>
+<area shape="rect" id="node3" href="$d5/d64/a04719.html" title="Abstract base class for references which must be invalidated when an. " alt="" coords="231,5,323,32"/>
+<area shape="rect" id="node9" href="$db/dc1/a04671.html" title="Abstract base class for attribute values of different types. " alt="" coords="305,81,415,108"/>
+<area shape="rect" id="node4" href="$da/d19/a04667.html" title="A representation of an Object attribute. " alt="" coords="267,451,346,477"/>
+<area shape="rect" id="node5" href="$d2/d6a/a06047.html" title="Pointer\&lt; AttributeHandler \&gt;" alt="" coords="318,361,525,388"/>
+<area shape="rect" id="node6" href="$d1/d64/a04675.html" title="Abstract base class for attribute parsers. " alt="" coords="356,272,487,299"/>
+<area shape="rect" id="node7" href="$d9/d4d/a06051.html" title="Abstract base class for reference counted objects. " alt="" coords="450,5,531,32"/>
+<area shape="rect" id="node10" href="$dc/d12/a04723.html" title="The base class for all OPAL objects. " alt="" coords="521,132,585,159"/>
+<area shape="rect" id="node8" href="$d2/d6a/a06047.html" title="Pointer\&lt; AttributeBase \&gt;" alt="" coords="267,183,453,209"/>
+</map>

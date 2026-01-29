@@ -1,0 +1,7 @@
+<map id="TrackRun::initDataSink" name="TrackRun::initDataSink">
+<area shape="rect" id="node2" href="$d7/d4d/a07199.html#a2ba46ccadf3f2bd88c53e494ee7b4193" title="DataSink::changeH5Wrapper" alt="" coords="235,5,443,32"/>
+<area shape="rect" id="node3" href="$d5/d13/a04739.html#a090a6fe62c84eb9c9a390202115fb488" title="OpalData::getDataSink" alt="" coords="253,56,424,83"/>
+<area shape="rect" id="node4" href="$d5/d13/a04739.html#ab8f3190a47dda1444a9488532841266a" title="true if we already allocated a DataSink object " alt="" coords="221,107,456,133"/>
+<area shape="rect" id="node5" href="$d5/d13/a04739.html#af8d0b55764c02667df67d086327b6a34" title="true if we do a restart run " alt="" coords="252,157,425,184"/>
+<area shape="rect" id="node6" href="$d5/d13/a04739.html#ab54ac1f06aec822e5b3023913d28d981" title="OpalData::setDataSink" alt="" coords="253,208,424,235"/>
+</map>

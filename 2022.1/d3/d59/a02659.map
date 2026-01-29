@@ -1,0 +1,27 @@
+<map id="src/Expressions/SValue.h" name="src/Expressions/SValue.h">
+<area shape="rect" id="node2" href="$d4/def/a00359.html" title="src/Attributes/Attributes.cpp" alt="" coords="5,177,209,203"/>
+<area shape="rect" id="node3" href="$dd/db5/a00365.html" title="src/Attributes/Bool.cpp" alt="" coords="2821,259,2991,285"/>
+<area shape="rect" id="node4" href="$d4/d13/a00377.html" title="src/Attributes/Place.cpp" alt="" coords="112,87,287,114"/>
+<area shape="rect" id="node5" href="$dc/dc9/a00389.html" title="src/Attributes/Range.cpp" alt="" coords="311,87,493,114"/>
+<area shape="rect" id="node6" href="$db/dbc/a00395.html" title="src/Attributes/Real.cpp" alt="" coords="3015,259,3183,285"/>
+<area shape="rect" id="node7" href="$d1/d98/a00407.html" title="src/Attributes/Reference.cpp" alt="" coords="402,177,607,203"/>
+<area shape="rect" id="node8" href="$da/d9c/a00413.html" title="src/Attributes/String.cpp" alt="" coords="954,87,1133,114"/>
+<area shape="rect" id="node9" href="$dc/d2f/a00425.html" title="src/Attributes/TableRow.cpp" alt="" coords="1157,87,1357,114"/>
+<area shape="rect" id="node10" href="$df/d70/a00431.html" title="src/Attributes/TokenList.cpp" alt="" coords="1381,87,1583,114"/>
+<area shape="rect" id="node11" href="$d0/dc4/a00443.html" title="src/Attributes/UpperCase\lString.cpp" alt="" coords="1607,80,1791,121"/>
+<area shape="rect" id="node12" href="$d8/d26/a02357.html" title="src/Elements/OpalMultipole.cpp" alt="" coords="1135,177,1362,203"/>
+<area shape="rect" id="node13" href="$d9/d27/a02363.html" title="src/Elements/OpalMultipole\lT.cpp" alt="" coords="1386,169,1586,211"/>
+<area shape="rect" id="node14" href="$df/def/a02369.html" title="src/Elements/OpalMultipole\lTCurvedConstRadius.cpp" alt="" coords="1610,169,1810,211"/>
+<area shape="rect" id="node15" href="$d6/dd7/a02375.html" title="src/Elements/OpalMultipole\lTCurvedVarRadius.cpp" alt="" coords="2271,169,2471,211"/>
+<area shape="rect" id="node16" href="$d7/d1a/a02381.html" title="src/Elements/OpalMultipole\lTStraight.cpp" alt="" coords="2495,169,2695,211"/>
+<area shape="rect" id="node17" href="$d0/dea/a02585.html" title="src/Expressions/ARefExpr.h" alt="" coords="733,87,930,114"/>
+<area shape="rect" id="node19" href="$d0/d3f/a02630.html" title="src/Expressions/SDeferred.h" alt="" coords="2753,87,2957,114"/>
+<area shape="rect" id="node24" href="$dc/dcb/a02648.html" title="src/Expressions/SRefAttr.h" alt="" coords="517,87,708,114"/>
+<area shape="rect" id="node25" href="$df/de4/a02651.html" title="src/Expressions/SRefExpr.h" alt="" coords="1968,87,2164,114"/>
+<area shape="rect" id="node18" href="$df/d40/a02609.html" title="src/Expressions/Expressions.cpp" alt="" coords="715,177,947,203"/>
+<area shape="rect" id="node20" href="$dc/dcf/a02615.html" title="src/Expressions/SAutomatic.h" alt="" coords="2720,177,2935,203"/>
+<area shape="rect" id="node21" href="$d8/d01/a02675.html" title="src/Lines/Line.cpp" alt="" coords="2208,259,2345,285"/>
+<area shape="rect" id="node22" href="$da/d9e/a03059.html" title="src/Structure/Beam.cpp" alt="" coords="2373,259,2546,285"/>
+<area shape="rect" id="node23" href="$d5/dd8/a03083.html" title="src/Structure/FieldSolver.cpp" alt="" coords="1973,259,2178,285"/>
+<area shape="rect" id="node26" href="$d4/d44/a03065.html" title="src/Structure/BoundaryGeometry.cpp" alt="" coords="1936,177,2196,203"/>
+</map>

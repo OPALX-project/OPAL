@@ -1,0 +1,51 @@
+<map id="TrackRun::execute" name="TrackRun::execute">
+<area shape="rect" id="node2" href="$d4/d95/a00989.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375" title="begin" alt="" coords="271,9,330,35"/>
+<area shape="rect" id="node4" href="$d5/d13/a04739.html#a7ac03aea5b261237a20be94188b521b9" title="OpalData::bunchIsAllocated" alt="" coords="199,59,402,86"/>
+<area shape="rect" id="node5" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="846,1053,897,1079"/>
+<area shape="rect" id="node7" href="$d2/d71/a04503.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="1280,319,1423,346"/>
+<area shape="rect" id="node11" href="$d5/d13/a04739.html#abb6b5cfd0ebea6ed30d85b21bbbdb401" title="true if we already allocated a ParticleBunch object " alt="" coords="193,2091,408,2118"/>
+<area shape="rect" id="node12" href="$d5/d13/a04739.html#a6f7a1cb20f2b386464ebc64198723d4d" title="set OPAL in restart mode " alt="" coords="210,2142,391,2169"/>
+<area shape="rect" id="node13" href="$d3/de5/a07315.html#a4f73a91362086e8b0c1ae1228f571b9b" title="TrackRun::setRunMethod" alt="" coords="211,2041,391,2067"/>
+<area shape="rect" id="node15" href="$d3/de5/a07315.html#acba3b0ba516e6af70ec1373c04f8a651" title="TrackRun::setupCyclotron\lTracker" alt="" coords="207,1147,394,1188"/>
+<area shape="rect" id="node49" href="$d3/de5/a07315.html#aee6e8863908b38893ea762f8b0f6d623" title="TrackRun::setupThickTracker" alt="" coords="197,1990,404,2017"/>
+<area shape="rect" id="node50" href="$d3/de5/a07315.html#a3e61094ae4ca82a08249e2ebcd1e3b6b" title="TrackRun::setupTTracker" alt="" coords="211,1813,390,1839"/>
+<area shape="rect" id="node3" href="$d9/d06/a04735.html#ad6ece85323a4f116320d363dfb419738" title="PartBunchBase::begin" alt="" coords="507,9,670,35"/>
+<area shape="rect" id="node6" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1041,1053,1213,1079"/>
+<area shape="rect" id="node8" href="$da/d19/a04667.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="1471,370,1661,397"/>
+<area shape="rect" id="node9" href="$da/d19/a04667.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="1496,269,1636,295"/>
+<area shape="rect" id="node10" href="$da/d19/a04667.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="1487,319,1645,346"/>
+<area shape="rect" id="node14" href="$d2/d71/a04503.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="795,2167,948,2194"/>
+<area shape="rect" id="node16" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="1043,1914,1210,1941"/>
+<area shape="rect" id="node17" href="$d5/d13/a04739.html#a5f777118184b8fb056751e65f55c6463" title="OpalData::setInOPALCyclMode" alt="" coords="479,667,698,694"/>
+<area shape="rect" id="node18" href="$d1/d45/a07163.html#a605283d014f9629e67ce7f75489d84c8" title="Find named BEAM. " alt="" coords="825,2117,917,2143"/>
+<area shape="rect" id="node19" href="$d3/de5/a07315.html#aafd514352a846393f2d99a272e1086fd" title="TrackRun::setBoundaryGeometry" alt="" coords="471,2066,706,2093"/>
+<area shape="rect" id="node20" href="$d3/de5/a07315.html#ac1ad69fad13eff0d541306c41a16a69e" title="TrackRun::setupFieldsolver" alt="" coords="491,2015,686,2042"/>
+<area shape="rect" id="node21" href="$d1/d45/a07163.html#a78f24e2aada7fc91ed556435faa4a2b5" title="Return the number of (macro)particles. " alt="" coords="1021,566,1232,593"/>
+<area shape="rect" id="node22" href="$d5/d13/a04739.html#af8d0b55764c02667df67d086327b6a34" title="true if we do a restart run " alt="" coords="785,1965,958,1991"/>
+<area shape="rect" id="node23" href="$d9/d06/a04735.html#a0b5a00ba5c36f4bb090857f14ef8ea1c" title="PartBunchBase::setPType" alt="" coords="496,1509,681,1535"/>
+<area shape="rect" id="node24" href="$d1/d45/a07163.html#a03e6460760866b6c5de7d3fa91037f3b" title="Return Particle&#39;s name. " alt="" coords="501,1458,677,1485"/>
+<area shape="rect" id="node25" href="$d2/d71/a04503.html#abf36dfc76d83ae448a1b9c2b438f753f" title="Get string array value. " alt="" coords="777,110,965,137"/>
+<area shape="rect" id="node26" href="$d6/dbd/a06515.html#a01c4694a8802930fbafcd63baa23f1cf" title="Distribution::find" alt="" coords="806,1483,937,1510"/>
+<area shape="rect" id="node27" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="566,718,611,745"/>
+<area shape="rect" id="node28" href="$d5/d13/a04739.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="481,1559,696,1586"/>
+<area shape="rect" id="node29" href="$d5/d13/a04739.html#a92cfac50e1a10ca292d71ffcbc303964" title="get the step where to restart " alt="" coords="495,2117,682,2143"/>
+<area shape="rect" id="node30" href="$d5/d13/a04739.html#a77c724ec014362d7600faa4b6260a996" title="get opals restart h5 format filename " alt="" coords="479,1661,698,1687"/>
+<area shape="rect" id="node31" href="$d1/d45/a07163.html#a2b887935cf3f7fed8e7d8fb37232d3d0" title="Return the beam current in A. " alt="" coords="1058,269,1195,295"/>
+<area shape="rect" id="node32" href="$d1/d45/a07163.html#a61641135ee698769b42408eefca7e294" title="Return the charge number in elementary charge. " alt="" coords="1059,395,1194,422"/>
+<area shape="rect" id="node33" href="$d1/d45/a07163.html#a834d3211e650bf775fa97d219ccd2a3e" title="Return Particle&#39;s rest mass in GeV. " alt="" coords="810,313,933,339"/>
+<area shape="rect" id="node34" href="$d9/d06/a04735.html#ac6ebfd5ea91d58707cc4a358ecd014ee" title="PartBunchBase::setDistribution" alt="" coords="477,769,700,795"/>
+<area shape="rect" id="node35" href="$de/d69/a04679.html#a5bd678e7a78bd9221de550c1273c15db" title="Return the embedded CLASSIC beam line. " alt="" coords="493,819,684,846"/>
+<area shape="rect" id="node36" href="$d1/d45/a07163.html#a3f8f77b2109b5a56de9aeb986c69a7df" title="Charge per macro particle in C. " alt="" coords="769,509,973,535"/>
+<area shape="rect" id="node37" href="$d1/d45/a07163.html#a78c09a60e70db9a1cba84f7ce9c658cc" title="Return the beam frequency in MHz. " alt="" coords="1049,497,1204,523"/>
+<area shape="rect" id="node38" href="$d1/d45/a07163.html#a81483d03326238c0efedb9e7670e62f4" title="Mass per macro particle in GeV/c^2. " alt="" coords="493,1053,684,1079"/>
+<area shape="rect" id="node39" href="$d6/dbd/a06515.html#a5352c82595b73fff73566595fdb6ca1a" title="Distribution::doRestartOpalCycl" alt="" coords="475,1103,702,1130"/>
+<area shape="rect" id="node40" href="$d9/d06/a04735.html#a0dc48589757d9c140442ac0b289ee01b" title="PartBunchBase::setMass" alt="" coords="499,1407,679,1434"/>
+<area shape="rect" id="node41" href="$d9/d06/a04735.html#a0dcdcc75cf01228dc53dafebbc29a7a3" title="PartBunchBase::setCharge" alt="" coords="492,1762,685,1789"/>
+<area shape="rect" id="node42" href="$d9/d06/a04735.html#a9fbc4d6a9f7997714f7d3cb6c1308f79" title="PartBunchBase::setdT" alt="" coords="507,1813,670,1839"/>
+<area shape="rect" id="node43" href="$d9/d06/a04735.html#afb4ca066b8f9e3d98928ad140f01d182" title="PartBunchBase::setStepsPerTurn" alt="" coords="473,870,704,897"/>
+<area shape="rect" id="node44" href="$d9/d06/a04735.html#a9139c5f5729d94b481d13b9b98618448" title="PartBunchBase::setCoupling\lConstant" alt="" coords="487,2320,691,2361"/>
+<area shape="rect" id="node45" href="$d9/d06/a04735.html#a644c68187c47b47efa54ab2cf9ef3a27" title="PartBunchBase::calcBeamParameters" alt="" coords="456,1711,721,1738"/>
+<area shape="rect" id="node46" href="$d3/de5/a07315.html#a78ec6b74a3327390f5fc48e26c4d3ca8" title="TrackRun::initDataSink" alt="" coords="505,1965,673,1991"/>
+<area shape="rect" id="node47" href="$dd/dca/a04847.html#a05f76b0d83c1187e9150fc5546b84240" title="ParallelCyclotronTracker\l::setBeGa" alt="" coords="499,921,678,963"/>
+<area shape="rect" id="node48" href="$de/dbb/a07223.html#a9e4f8633ac437473a0f5c0c8801e41bc" title="H5PartWrapperForPC\l::getMeanMomentum" alt="" coords="509,987,669,1028"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="OpalMultipoleT::clone" name="OpalMultipoleT::clone">
+<area shape="rect" id="node2" href="$da/d7d/a06615.html#ad9cf4f65b51f45e24c2f3b3587b461ff" title="OpalMultipoleT::OpalMultipoleT" alt="" coords="216,107,441,133"/>
+<area shape="rect" id="node3" href="$d2/d71/a04503.html#a0456a7ab32848a41f018f6464bc6ffde" title="Make logical attribute. " alt="" coords="526,5,686,32"/>
+<area shape="rect" id="node4" href="$d2/d71/a04503.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="527,56,685,83"/>
+<area shape="rect" id="node5" href="$d2/d71/a04503.html#aaaca5bec00805e40b85ec44bf0b1a873" title="Create real array attribute. " alt="" coords="509,107,703,133"/>
+<area shape="rect" id="node6" href="$da/d07/a06583.html#af17ddf4b6ccfdcc6ce4ab34caa7ace82" title="OpalElement::registerOwnership" alt="" coords="489,157,723,184"/>
+<area shape="rect" id="node12" href="$d6/d12/a04691.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="527,208,685,235"/>
+<area shape="rect" id="node7" href="$d1/d64/a04675.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="771,66,989,107"/>
+<area shape="rect" id="node8" href="$d4/d95/a00989.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="857,132,903,159"/>
+<area shape="rect" id="node10" href="$dc/d12/a04723.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="799,183,961,209"/>
+<area shape="rect" id="node11" href="$dc/d12/a04723.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="813,233,947,260"/>
+<area shape="rect" id="node9" href="$d9/d06/a04735.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1037,132,1188,159"/>
+</map>

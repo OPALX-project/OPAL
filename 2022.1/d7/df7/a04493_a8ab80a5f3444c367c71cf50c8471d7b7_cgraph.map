@@ -1,0 +1,12 @@
+<map id="PyOpal::PyRingDefinition::BOOST_PYTHON_MODULE" name="PyOpal::PyRingDefinition::BOOST_PYTHON_MODULE">
+<area shape="rect" id="node2" href="$d5/d6d/a04635.html#a47fd708202ddb1bee86fdce1d8991eb8" title="PyOpal::PyOpalObjectNS\l::PyOpalObject::addGetOpalElement" alt="" coords="252,15,509,57"/>
+<area shape="rect" id="node3" href="$d5/d11/a04477.html#add6a4f09a4bf594241765fb6d14a2f2f" title="PyOpal::Globals::Initialise" alt="" coords="286,81,475,108"/>
+<area shape="rect" id="node10" href="$d5/d6d/a04635.html#aaada9e333a4ad12c6387d0ccbb80205e" title="PyOpal::PyOpalObjectNS\l::PyOpalObject::make_class" alt="" coords="279,133,482,174"/>
+<area shape="rect" id="node11" href="$d5/d8a/a04475.html#a6b13e9b77d47f3b02a5f2e3ef12b2a9b" title="PyOpal::ExceptionTranslation\l::registerExceptions" alt="" coords="275,198,486,239"/>
+<area shape="rect" id="node4" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="557,81,608,108"/>
+<area shape="rect" id="node5" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="656,56,828,83"/>
+<area shape="rect" id="node6" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="876,56,1063,83"/>
+<area shape="rect" id="node9" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1359,5,1494,32"/>
+<area shape="rect" id="node7" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1111,56,1308,83"/>
+<area shape="rect" id="node8" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1356,56,1497,83"/>
+</map>

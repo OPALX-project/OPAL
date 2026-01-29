@@ -1,0 +1,12 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$dc/dc2/a07135.html" title="PoissonSolver" alt="" coords="5,148,119,175"/>
+<area shape="rect" id="node2" href="$da/d3a/a07071.html" title="AmrPoissonSolver\&lt; AmrObject \&gt;" alt="" coords="167,5,405,32"/>
+<area shape="rect" id="node3" href="$da/d3a/a07071.html" title="AmrPoissonSolver\&lt; AmrBox\lLib \&gt;" alt="" coords="183,57,389,98"/>
+<area shape="rect" id="node7" href="$d9/d1d/a07099.html" title="FFTBoxPoissonSolver" alt="" coords="206,123,366,149"/>
+<area shape="rect" id="node8" href="$d4/d5e/a07103.html" title="FFTPoissonSolver" alt="" coords="219,173,353,200"/>
+<area shape="rect" id="node9" href="$d6/d82/a07115.html" title="MGPoissonSolver" alt="" coords="219,224,353,251"/>
+<area shape="rect" id="node10" href="$dd/d0b/a07131.html" title="P3MPoissonSolver" alt="" coords="216,275,356,301"/>
+<area shape="rect" id="node4" href="$d6/dbd/a07015.html" title="AmrMultiGrid" alt="" coords="470,13,578,40"/>
+<area shape="rect" id="node5" href="$dd/d63/a07083.html" title="FMGPoissonSolver" alt="" coords="453,64,595,91"/>
+<area shape="rect" id="node6" href="$d1/d3b/a07067.html" title="MLPoissonSolver" alt="" coords="459,115,589,141"/>
+</map>

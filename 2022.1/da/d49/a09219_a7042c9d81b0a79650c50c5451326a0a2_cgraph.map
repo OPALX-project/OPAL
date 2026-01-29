@@ -1,0 +1,7 @@
+<map id="Communicate::find_msg_length" name="Communicate::find_msg_length">
+<area shape="rect" id="node2" href="$d9/de9/a09623.html#adf6de3f25ef659274319872d5555efc5" title="Message::item" alt="" coords="283,5,401,32"/>
+<area shape="rect" id="node3" href="$d8/d1c/a09627.html#a0e6713041046074ac168e238c83dcf24" title="Message::MsgItem::numBytes" alt="" coords="233,56,451,83"/>
+<area shape="rect" id="node4" href="$d9/de9/a09623.html#a3064fb32119072349687a4a2fa603fd4" title="Message::size" alt="" coords="285,107,399,133"/>
+<area shape="rect" id="node5" href="$df/da4/a12131.html#ab5f1ed718bf40f59d85bdee51f260a0c" title="IpplInfo::useChecksums" alt="" coords="253,157,431,184"/>
+<area shape="rect" id="node6" href="$da/d49/a09219.html#aa4afc165d5415ad0197332084d222f4b" title="Communicate::wordround" alt="" coords="247,208,437,235"/>
+</map>

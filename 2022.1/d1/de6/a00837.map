@@ -1,0 +1,35 @@
+<map id="src/Classic/AbsBeamline/Vacuum.cpp" name="src/Classic/AbsBeamline/Vacuum.cpp">
+<area shape="rect" id="node2" href="$df/de8/a00839.html" title="AbsBeamline/Vacuum.h" alt="" coords="2633,95,2809,121"/>
+<area shape="rect" id="node10" href="$d7/db2/a02036.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="3169,408,3343,449"/>
+<area shape="rect" id="node19" href="$dd/de6/a00548.html" title="AbsBeamline/BeamlineVisitor.h" alt="" coords="205,95,432,121"/>
+<area shape="rect" id="node20" href="$d3/dd5/a00215.html" title="AbstractObjects/OpalData.h" alt="" coords="1328,415,1531,442"/>
+<area shape="rect" id="node24" href="$d4/d95/a00989.html" title="Algorithms/PartBunchBase.h" alt="" coords="1687,251,1894,278"/>
+<area shape="rect" id="node29" href="$db/d6b/a01853.html" title="Physics/Physics.h" alt="" coords="460,497,596,524"/>
+<area shape="rect" id="node30" href="$d3/dce/a01859.html" title="Physics/Units.h" alt="" coords="347,415,469,442"/>
+<area shape="rect" id="node44" href="$dd/de7/a01868.html" title="Solvers/BeamStrippingPhysics.h" alt="" coords="2885,169,3115,196"/>
+<area shape="rect" id="node45" href="$d9/d9b/a01889.html" title="Solvers/ParticleMatterInteraction\lHandler.h" alt="" coords="2883,244,3117,285"/>
+<area shape="rect" id="node47" href="$d1/dc4/a02042.html" title="Utilities/LogicalError.h" alt="" coords="3697,415,3863,442"/>
+<area shape="rect" id="node3" href="$d6/d06/a00572.html" title="AbsBeamline/Component.h" alt="" coords="2553,251,2751,278"/>
+<area shape="rect" id="node15" href="$d7/d21/a00584.html" title="AbsBeamline/Cyclotron.h" alt="" coords="2509,169,2696,196"/>
+<area shape="rect" id="node4" href="$d5/d0a/a00602.html" title="AbsBeamline/ElementBase.h" alt="" coords="2547,333,2757,360"/>
+<area shape="rect" id="node14" href="$da/d06/a01403.html" title="Fields/EMField.h" alt="" coords="2398,333,2522,360"/>
+<area shape="rect" id="node5" href="$d6/dad/a00941.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="2011,408,2229,449"/>
+<area shape="rect" id="node7" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="2151,497,2332,524"/>
+<area shape="rect" id="node6" href="$de/dc4/a13617.html" title="Algorithms/Vektor.h" alt="" coords="2294,572,2445,599"/>
+<area shape="rect" id="node8" href="$d9/db1/a03335.html" title="AppTypes/Tenzor.h" alt="" coords="1935,497,2076,524"/>
+<area shape="rect" id="node11" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="3571,497,3770,524"/>
+<area shape="rect" id="node21" href="$d3/de5/a00209.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="1364,497,1601,524"/>
+<area shape="rect" id="node25" href="$d5/da3/a00953.html" title="Algorithms/DistributionMoments.h" alt="" coords="520,333,765,360"/>
+<area shape="rect" id="node26" href="$d0/d54/a01691.html" title="FixedAlgebra/FMatrix.h" alt="" coords="493,415,664,442"/>
+<area shape="rect" id="node27" href="$dc/d3e/a01712.html" title="FixedAlgebra/FVector.h" alt="" coords="194,497,363,524"/>
+<area shape="rect" id="node31" href="$d7/dd4/a00968.html" title="Algorithms/OpalParticle.h" alt="" coords="2035,333,2221,360"/>
+<area shape="rect" id="node32" href="$df/d59/a01001.html" title="Algorithms/PBunchDefs.h" alt="" coords="1400,333,1587,360"/>
+<area shape="rect" id="node34" href="$d8/d6f/a02234.html" title="Distribution/Distribution.h" alt="" coords="2902,415,3093,442"/>
+<area shape="rect" id="node37" href="$d5/d35/a03716.html" title="Particle/AbstractParticle.h" alt="" coords="1187,333,1375,360"/>
+<area shape="rect" id="node38" href="$db/d07/a03779.html" title="Particle/ParticleAttrib.h" alt="" coords="941,333,1112,360"/>
+<area shape="rect" id="node40" href="$da/d18/a01850.html" title="Physics/ParticleProperties.h" alt="" coords="1734,415,1935,442"/>
+<area shape="rect" id="node41" href="$d9/d5e/a03086.html" title="Structure/FieldSolver.h" alt="" coords="2457,415,2623,442"/>
+<area shape="rect" id="node42" href="$d9/d9f/a04013.html" title="Utility/IpplTimings.h" alt="" coords="1555,415,1709,442"/>
+<area shape="rect" id="node43" href="$d7/d76/a00992.html" title="PartBunchBase.hpp" alt="" coords="1661,333,1808,360"/>
+<area shape="rect" id="node33" href="$d1/d22/a03731.html" title="Particle/IntCIC.h" alt="" coords="1027,415,1152,442"/>
+</map>

@@ -1,0 +1,51 @@
+<map id="CavityAutophaser::optimizeCavityPhase" name="CavityAutophaser::optimizeCavityPhase">
+<area shape="rect" id="node2" href="$de/d6b/a03845.html#aae355e465ddaedd0a66a3187cd09a5a8" title="fmod" alt="" coords="331,114,387,141"/>
+<area shape="rect" id="node3" href="$d7/d48/a05183.html#a61ca169d6bfb338941f4aa2364d408c3" title="RFCavity::getAutophaseVeto" alt="" coords="256,165,463,192"/>
+<area shape="rect" id="node4" href="$d7/d48/a05183.html#aa78f1fa142681e670afccaac01f8cba3" title="RFCavity::getFrequencym" alt="" coords="266,216,453,242"/>
+<area shape="rect" id="node5" href="$d7/d48/a05183.html#a05624fbb526f1796329afed4013f0af0" title="RFCavity::getPhasem" alt="" coords="538,241,698,268"/>
+<area shape="rect" id="node6" href="$d8/def/a04771.html#a4e0425aa96902fe3bf08c4a95e4c2719" title="CavityAutophaser::track" alt="" coords="270,342,449,369"/>
+<area shape="rect" id="node7" href="$d7/d48/a05183.html#a83e48e03c9beba578b150a99961f59b5" title="RFCavity::setPhasem" alt="" coords="539,342,697,369"/>
+<area shape="rect" id="node8" href="$d7/d48/a05183.html#a77d5ae497916552ced4ab32004fbe1b6" title="RFCavity::trackOnAxisParticle" alt="" coords="511,393,725,420"/>
+<area shape="rect" id="node38" href="$d2/df8/a04550.html#a23c9ed0a7dbf9f918bb68b94bb9309b1" title="Util::getKineticEnergy" alt="" coords="798,545,962,572"/>
+<area shape="rect" id="node49" href="$dd/d3d/a05379.html#a1d4498ce4cfa5644bb67b2686e7df9ad" title="The constant charge per particle. " alt="" coords="559,494,677,521"/>
+<area shape="rect" id="node50" href="$dd/d3d/a05379.html#a7c7b836d3ac05230f809f8b9f52e4c86" title="The constant mass per particle. " alt="" coords="559,292,677,318"/>
+<area shape="rect" id="node9" href="$d9/d06/a04735.html#a0ce220e81457d3f603fc2be29723bca3" title="PartBunchBase::getReference" alt="" coords="773,204,987,230"/>
+<area shape="rect" id="node10" href="$d7/d48/a05183.html#adf914d956cbf7ecaf6f979f764c1ddce" title="Get design length. " alt="" coords="1035,190,1241,217"/>
+<area shape="rect" id="node17" href="$d2/df8/a04550.html#ae12a15e0d75307c934c8add55d2c25ac" title="Util::getGamma" alt="" coords="1075,494,1201,521"/>
+<area shape="rect" id="node18" href="$dc/d2c/a00893.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1383,444,1430,470"/>
+<area shape="rect" id="node37" href="$d3/d53/a01262.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="1385,494,1428,521"/>
+<area shape="rect" id="node39" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="855,48,905,74"/>
+<area shape="rect" id="node45" href="$d7/d48/a05183.html#a99a57b9889eed154d266f1b95bbcc805" title="RFCavity::applyToReference\lParticle" alt="" coords="779,306,981,347"/>
+<area shape="rect" id="node11" href="$db/d78/a05071.html#a1b412456edcf01147abada7721605101" title="Get design length. " alt="" coords="1289,229,1524,256"/>
+<area shape="rect" id="node14" href="$d4/d95/a00989.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="1383,125,1430,152"/>
+<area shape="rect" id="node16" href="$d9/dd4/a05755.html#a0a0aff97e6e62b388b5001a9d20c3154" title="Fieldmap::getFieldDimensions" alt="" coords="1298,178,1515,205"/>
+<area shape="rect" id="node12" href="$db/d78/a05071.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="1576,174,1779,201"/>
+<area shape="rect" id="node13" href="$dc/d4a/a05587.html#a73f1d2087c1b6c7fb3e5e00f6835f88e" title="Get geometry length. " alt="" coords="1572,226,1783,267"/>
+<area shape="rect" id="node15" href="$d9/d06/a04735.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1602,124,1753,150"/>
+<area shape="rect" id="node19" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="2020,342,2164,369"/>
+<area shape="rect" id="node26" href="$d9/dba/a05287.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1631,393,1723,420"/>
+<area shape="rect" id="node20" href="$d4/d5e/a03542.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="2268,393,2315,420"/>
+<area shape="rect" id="node21" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2553,469,2739,496"/>
+<area shape="rect" id="node22" href="$d4/d5e/a03542.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="2419,393,2505,420"/>
+<area shape="rect" id="node23" href="$d4/d4b/a03464.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="2607,368,2685,394"/>
+<area shape="rect" id="node24" href="$d8/db3/a03488.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="2787,368,2884,394"/>
+<area shape="rect" id="node25" href="$d4/d5e/a03686.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="2583,317,2709,344"/>
+<area shape="rect" id="node27" href="$d9/dba/a05287.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1840,393,1963,420"/>
+<area shape="rect" id="node28" href="$d9/dba/a05287.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1848,494,1955,521"/>
+<area shape="rect" id="node29" href="$d9/dba/a05287.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="2025,545,2159,572"/>
+<area shape="rect" id="node30" href="$d9/dba/a05287.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="2023,596,2161,622"/>
+<area shape="rect" id="node31" href="$d8/dbd/a05291.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="2033,646,2151,673"/>
+<area shape="rect" id="node35" href="$d9/dba/a05287.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="2041,444,2143,470"/>
+<area shape="rect" id="node36" href="$d5/d12/a03851.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="2437,494,2487,521"/>
+<area shape="rect" id="node32" href="$da/d6b/a05303.html#a12f23d39f696c02da148722cb0bd8f06" title="TpsData::getTpsData" alt="" coords="2212,697,2371,724"/>
+<area shape="rect" id="node33" href="$da/d6b/a05303.html#a6ec8c0544fd09e9a701799d65f1bca46" title="TpsData::getSize" alt="" coords="2225,596,2357,622"/>
+<area shape="rect" id="node34" href="$d8/dbd/a05291.html#a33520f8c7100283fafbdf7171a0a3de5" title="TpsRep::data" alt="" coords="2238,646,2345,673"/>
+<area shape="rect" id="node40" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1052,48,1224,74"/>
+<area shape="rect" id="node41" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1834,73,1969,100"/>
+<area shape="rect" id="node42" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1313,22,1500,49"/>
+<area shape="rect" id="node43" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1579,22,1776,49"/>
+<area shape="rect" id="node44" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1831,22,1972,49"/>
+<area shape="rect" id="node46" href="$d9/dd4/a05755.html#a4f2049d7a51d1bc2292cbf2ae3f71705" title="Fieldmap::getFieldstrength" alt="" coords="1041,292,1235,318"/>
+<area shape="rect" id="node47" href="$dc/d2c/a00893.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="1116,342,1160,369"/>
+<area shape="rect" id="node48" href="$dc/d2c/a00893.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="1386,292,1427,318"/>
+</map>

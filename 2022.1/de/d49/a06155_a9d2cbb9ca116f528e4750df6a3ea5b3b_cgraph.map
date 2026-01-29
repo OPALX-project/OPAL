@@ -1,0 +1,16 @@
+<map id="BeamStrippingPhysics::transformToSecondary" name="BeamStrippingPhysics::transformToSecondary">
+<area shape="rect" id="node2" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="311,103,362,129"/>
+<area shape="rect" id="node8" href="$de/d49/a06155.html#a926a4c4adc482e280173eeeb8dd377e8" title="BeamStrippingPhysics\l::getName" alt="" coords="253,154,420,195"/>
+<area shape="rect" id="node10" href="$d3/d0b/a06139.html#aecb6a05cfe741d4bcfa86f00c0dd08b9" title="ParticleProperties\l::getParticleChargeInCoulomb" alt="" coords="229,219,444,261"/>
+<area shape="rect" id="node12" href="$d3/d0b/a06139.html#a7375dfb0fc68ebc0f8779cd2fc1f3bd1" title="ParticleProperties\l::getParticleMass" alt="" coords="269,285,405,326"/>
+<area shape="rect" id="node13" href="$d3/d0b/a06139.html#a0c6f22e6d45367884ab9a9755e628f93" title="ParticleProperties\l::getParticleTypeString" alt="" coords="253,350,420,391"/>
+<area shape="rect" id="node14" href="$d0/dce/a03971.html#a4f2ddb1680d4f912183950ea45ac1504" title="level4" alt="" coords="305,416,368,443"/>
+<area shape="rect" id="node3" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="499,56,671,83"/>
+<area shape="rect" id="node4" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1209,5,1343,32"/>
+<area shape="rect" id="node5" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="725,56,912,83"/>
+<area shape="rect" id="node6" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="960,56,1157,83"/>
+<area shape="rect" id="node7" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1205,56,1347,83"/>
+<area shape="rect" id="node9" href="$db/d78/a05071.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="497,161,673,188"/>
+<area shape="rect" id="node11" href="$d3/d0b/a06139.html#ac1987a9b0fec1632a680cb2093407c3e" title="ParticleProperties\l::getParticleCharge" alt="" coords="512,219,657,261"/>
+<area shape="rect" id="node15" href="$d8/d4f/a12119.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="492,416,677,443"/>
+</map>

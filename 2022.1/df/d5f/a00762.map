@@ -1,0 +1,35 @@
+<map id="src/Classic/AbsBeamline/RBend3D.cpp" name="src/Classic/AbsBeamline/RBend3D.cpp">
+<area shape="rect" id="node2" href="$d3/d2c/a00764.html" title="AbsBeamline/RBend3D.h" alt="" coords="219,169,403,196"/>
+<area shape="rect" id="node8" href="$d4/d95/a00989.html" title="Algorithms/PartBunchBase.h" alt="" coords="3001,95,3208,121"/>
+<area shape="rect" id="node18" href="$db/d6b/a01853.html" title="Physics/Physics.h" alt="" coords="4165,333,4301,360"/>
+<area shape="rect" id="node36" href="$d3/dd5/a00215.html" title="AbstractObjects/OpalData.h" alt="" coords="1233,251,1435,278"/>
+<area shape="rect" id="node39" href="$d1/dce/a02168.html" title="Utilities/Options.h" alt="" coords="2238,251,2377,278"/>
+<area shape="rect" id="node41" href="$d6/d41/a02222.html" title="Utilities/Util.h" alt="" coords="1097,251,1209,278"/>
+<area shape="rect" id="node44" href="$d8/d23/a03038.html" title="Steppers/BorisPusher.h" alt="" coords="4369,251,4539,278"/>
+<area shape="rect" id="node45" href="$dd/de6/a00548.html" title="AbsBeamline/BeamlineVisitor.h" alt="" coords="4585,95,4811,121"/>
+<area shape="rect" id="node46" href="$d9/d6e/a01409.html" title="Fields/Fieldmap.h" alt="" coords="1460,251,1595,278"/>
+<area shape="rect" id="node49" href="$de/d90/a01919.html" title="Structure/MeshGenerator.h" alt="" coords="2401,251,2595,278"/>
+<area shape="rect" id="node3" href="$d9/d19/a00560.html" title="AbsBeamline/BendBase.h" alt="" coords="2025,251,2214,278"/>
+<area shape="rect" id="node6" href="$d3/d0b/a01253.html" title="BeamlineGeometry/Straight\lGeometry.h" alt="" coords="204,244,408,285"/>
+<area shape="rect" id="node7" href="$d2/d29/a01376.html" title="Fields/BMultipoleField.h" alt="" coords="5,251,180,278"/>
+<area shape="rect" id="node9" href="$d6/dad/a00941.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="3828,244,4045,285"/>
+<area shape="rect" id="node10" href="$de/dc4/a13617.html" title="Algorithms/Vektor.h" alt="" coords="3664,408,3815,435"/>
+<area shape="rect" id="node11" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="3777,333,3958,360"/>
+<area shape="rect" id="node12" href="$d5/da3/a00953.html" title="Algorithms/DistributionMoments.h" alt="" coords="3457,169,3702,196"/>
+<area shape="rect" id="node13" href="$d0/d54/a01691.html" title="FixedAlgebra/FMatrix.h" alt="" coords="758,251,929,278"/>
+<area shape="rect" id="node14" href="$dc/d3e/a01712.html" title="FixedAlgebra/FVector.h" alt="" coords="585,333,755,360"/>
+<area shape="rect" id="node19" href="$d3/dce/a01859.html" title="Physics/Units.h" alt="" coords="4172,251,4293,278"/>
+<area shape="rect" id="node20" href="$d7/dd4/a00968.html" title="Algorithms/OpalParticle.h" alt="" coords="4075,169,4262,196"/>
+<area shape="rect" id="node21" href="$df/d59/a01001.html" title="Algorithms/PBunchDefs.h" alt="" coords="4585,169,4771,196"/>
+<area shape="rect" id="node22" href="$d8/d6f/a02234.html" title="Distribution/Distribution.h" alt="" coords="3409,251,3600,278"/>
+<area shape="rect" id="node25" href="$d5/d35/a03716.html" title="Particle/AbstractParticle.h" alt="" coords="3244,169,3432,196"/>
+<area shape="rect" id="node26" href="$db/d07/a03779.html" title="Particle/ParticleAttrib.h" alt="" coords="3163,251,3334,278"/>
+<area shape="rect" id="node28" href="$da/d18/a01850.html" title="Physics/ParticleProperties.h" alt="" coords="1799,251,2000,278"/>
+<area shape="rect" id="node30" href="$d9/d5e/a03086.html" title="Structure/FieldSolver.h" alt="" coords="2671,251,2837,278"/>
+<area shape="rect" id="node32" href="$d7/db2/a02036.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="2913,244,3088,285"/>
+<area shape="rect" id="node33" href="$d9/d9f/a04013.html" title="Utility/IpplTimings.h" alt="" coords="1619,251,1774,278"/>
+<area shape="rect" id="node35" href="$d7/d76/a00992.html" title="PartBunchBase.hpp" alt="" coords="2449,169,2595,196"/>
+<area shape="rect" id="node23" href="$d9/d9a/a00998.html" title="Algorithms/PartData.h" alt="" coords="3362,333,3527,360"/>
+<area shape="rect" id="node37" href="$d3/de5/a00209.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="1350,333,1587,360"/>
+<area shape="rect" id="node40" href="$d5/da1/a01988.html" title="Utilities/ClassicRandom.h" alt="" coords="2213,333,2402,360"/>
+</map>

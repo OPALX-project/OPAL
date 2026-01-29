@@ -1,0 +1,9 @@
+<map id="IfStatement::IfStatement" name="IfStatement::IfStatement">
+<area shape="rect" id="node2" href="$df/d40/a06071.html#a1f850d85458bb5d1a2a8b55a6643fb4b" title="Append a token. " alt="" coords="255,5,402,32"/>
+<area shape="rect" id="node3" href="$d9/db8/a06079.html#a2954e99066d74d540ededed11eaf469c" title="Test for delimiter. " alt="" coords="278,56,379,83"/>
+<area shape="rect" id="node4" href="$d9/db8/a06079.html#a4822f01048ccce2d0de033ee2be460f0" title="Test for end of file. " alt="" coords="277,107,381,133"/>
+<area shape="rect" id="node5" href="$d9/db8/a06079.html#a6774fc0b928966b65a6904effe76f676" title="Test for keyword. " alt="" coords="277,157,380,184"/>
+<area shape="rect" id="node6" href="$d8/d7a/a06083.html#a95468fdce5e109cb4333d0f07c417243" title="Put token back to stream. " alt="" coords="245,208,413,235"/>
+<area shape="rect" id="node7" href="$d3/ddd/a06063.html#a1511d5aa3199a4fc6f69187104cd2ee7" title="Read complete statement from token stream. " alt="" coords="245,259,412,285"/>
+<area shape="rect" id="node8" href="$d8/d7a/a06083.html#ac36e3948badf6b62c16c0cbcf775e8f3" title="Read single token from stream. " alt="" coords="237,309,420,336"/>
+</map>

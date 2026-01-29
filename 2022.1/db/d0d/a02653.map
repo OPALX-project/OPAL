@@ -1,0 +1,12 @@
+<map id="src/Expressions/SRefExpr.h" name="src/Expressions/SRefExpr.h">
+<area shape="rect" id="node2" href="$d8/d26/a02357.html" title="src/Elements/OpalMultipole.cpp" alt="" coords="5,87,232,114"/>
+<area shape="rect" id="node3" href="$d9/d27/a02363.html" title="src/Elements/OpalMultipole\lT.cpp" alt="" coords="256,80,456,121"/>
+<area shape="rect" id="node4" href="$df/def/a02369.html" title="src/Elements/OpalMultipole\lTCurvedConstRadius.cpp" alt="" coords="480,80,680,121"/>
+<area shape="rect" id="node5" href="$d6/dd7/a02375.html" title="src/Elements/OpalMultipole\lTCurvedVarRadius.cpp" alt="" coords="704,80,904,121"/>
+<area shape="rect" id="node6" href="$d7/d1a/a02381.html" title="src/Elements/OpalMultipole\lTStraight.cpp" alt="" coords="928,80,1128,121"/>
+<area shape="rect" id="node7" href="$df/d40/a02609.html" title="src/Expressions/Expressions.cpp" alt="" coords="1152,87,1384,114"/>
+<area shape="rect" id="node8" href="$d8/d01/a02675.html" title="src/Lines/Line.cpp" alt="" coords="1409,87,1546,114"/>
+<area shape="rect" id="node9" href="$da/d9e/a03059.html" title="src/Structure/Beam.cpp" alt="" coords="1571,87,1744,114"/>
+<area shape="rect" id="node10" href="$d4/d44/a03065.html" title="src/Structure/BoundaryGeometry.cpp" alt="" coords="1769,87,2029,114"/>
+<area shape="rect" id="node11" href="$d5/dd8/a03083.html" title="src/Structure/FieldSolver.cpp" alt="" coords="2053,87,2259,114"/>
+</map>

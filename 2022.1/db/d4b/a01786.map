@@ -1,0 +1,29 @@
+<map id="src/Classic/Parser/Statement.h" name="src/Classic/Parser/Statement.h">
+<area shape="rect" id="node2" href="$d6/d7d/a00161.html" title="src/AbstractObjects\l/AttributeHandler.cpp" alt="" coords="177,95,337,136"/>
+<area shape="rect" id="node3" href="$d3/db1/a00200.html" title="src/AbstractObjects\l/Object.cpp" alt="" coords="362,95,510,136"/>
+<area shape="rect" id="node4" href="$d2/dc8/a00242.html" title="src/AbstractObjects\l/ValueDefinition.cpp" alt="" coords="535,95,687,136"/>
+<area shape="rect" id="node5" href="$d9/d44/a00527.html" title="src/BasicActions/Value.cpp" alt="" coords="711,102,905,129"/>
+<area shape="rect" id="node6" href="$df/d21/a01778.html" title="src/Classic/Parser\l/SimpleStatement.h" alt="" coords="930,95,1081,136"/>
+<area shape="rect" id="node16" href="$d6/d27/a01781.html" title="src/Classic/Parser\l/Statement.cpp" alt="" coords="1893,95,2027,136"/>
+<area shape="rect" id="node17" href="$d7/d0c/a02315.html" title="src/Elements/OpalElement.cpp" alt="" coords="2052,102,2273,129"/>
+<area shape="rect" id="node18" href="$df/d40/a02609.html" title="src/Expressions/Expressions.cpp" alt="" coords="2297,102,2529,129"/>
+<area shape="rect" id="node19" href="$d8/d01/a02675.html" title="src/Lines/Line.cpp" alt="" coords="2554,102,2691,129"/>
+<area shape="rect" id="node20" href="$da/d28/a02705.html" title="src/Lines/SequenceParser.cpp" alt="" coords="2715,102,2927,129"/>
+<area shape="rect" id="node21" href="$da/d62/a02738.html" title="src/OpalParser/CompoundStatement.h" alt="" coords="1599,102,1868,129"/>
+<area shape="rect" id="node25" href="$d5/dc7/a02744.html" title="src/OpalParser/IfStatement.h" alt="" coords="1105,102,1313,129"/>
+<area shape="rect" id="node26" href="$de/d8c/a02747.html" title="src/OpalParser/Macro.cpp" alt="" coords="2951,102,3137,129"/>
+<area shape="rect" id="node27" href="$d9/d93/a02753.html" title="src/OpalParser/MacroCmd.cpp" alt="" coords="3161,102,3375,129"/>
+<area shape="rect" id="node28" href="$df/d91/a02774.html" title="src/OpalParser/WhileStatement.h" alt="" coords="1338,102,1574,129"/>
+<area shape="rect" id="node7" href="$dd/db5/a00365.html" title="src/Attributes/Bool.cpp" alt="" coords="413,191,582,218"/>
+<area shape="rect" id="node8" href="$db/dbc/a00395.html" title="src/Attributes/Real.cpp" alt="" coords="607,191,775,218"/>
+<area shape="rect" id="node9" href="$d1/d6b/a01775.html" title="src/Classic/Parser\l/SimpleStatement.cpp" alt="" coords="799,184,966,225"/>
+<area shape="rect" id="node10" href="$d4/d9d/a02681.html" title="src/Lines/LineTemplate.cpp" alt="" coords="991,191,1188,218"/>
+<area shape="rect" id="node11" href="$d8/dd0/a02711.html" title="src/Lines/SequenceTemplate.cpp" alt="" coords="667,273,901,300"/>
+<area shape="rect" id="node12" href="$d1/d3c/a02714.html" title="src/Lines/SequenceTemplate.h" alt="" coords="5,191,224,218"/>
+<area shape="rect" id="node14" href="$da/d73/a02765.html" title="src/OpalParser/OpalParser.cpp" alt="" coords="1263,191,1478,218"/>
+<area shape="rect" id="node15" href="$d5/d73/a03203.html" title="src/Tables/List.cpp" alt="" coords="249,191,389,218"/>
+<area shape="rect" id="node13" href="$d6/da8/a02693.html" title="src/Lines/Sequence.cpp" alt="" coords="28,273,201,300"/>
+<area shape="rect" id="node22" href="$d6/df4/a02735.html" title="src/OpalParser/CompoundStatement.cpp" alt="" coords="2025,191,2309,218"/>
+<area shape="rect" id="node23" href="$d6/d0b/a02741.html" title="src/OpalParser/IfStatement.cpp" alt="" coords="1502,191,1725,218"/>
+<area shape="rect" id="node24" href="$d0/dbd/a02771.html" title="src/OpalParser/WhileStatement.cpp" alt="" coords="1749,191,2000,218"/>
+</map>

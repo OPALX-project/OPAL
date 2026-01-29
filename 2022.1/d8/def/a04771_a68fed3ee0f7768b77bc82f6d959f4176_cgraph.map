@@ -1,0 +1,51 @@
+<map id="CavityAutophaser::guessCavityPhase" name="CavityAutophaser::guessCavityPhase">
+<area shape="rect" id="node2" href="$de/d6b/a03845.html#aae355e465ddaedd0a66a3187cd09a5a8" title="fmod" alt="" coords="925,146,981,173"/>
+<area shape="rect" id="node3" href="$d7/d48/a05183.html#ab658bb13dcceff736505e3c5965d1192" title="RFCavity::getAutoPhaseEstimate" alt="" coords="280,568,515,594"/>
+<area shape="rect" id="node39" href="$d7/d48/a05183.html#a05624fbb526f1796329afed4013f0af0" title="RFCavity::getPhasem" alt="" coords="873,786,1033,813"/>
+<area shape="rect" id="node46" href="$d2/df8/a04550.html#a23c9ed0a7dbf9f918bb68b94bb9309b1" title="Util::getKineticEnergy" alt="" coords="1133,146,1297,173"/>
+<area shape="rect" id="node48" href="$d7/d48/a05183.html#a61ca169d6bfb338941f4aa2364d408c3" title="RFCavity::getAutophaseVeto" alt="" coords="294,989,501,1016"/>
+<area shape="rect" id="node49" href="$dd/d3d/a05379.html#a7c7b836d3ac05230f809f8b9f52e4c86" title="The constant mass per particle. " alt="" coords="338,1040,457,1066"/>
+<area shape="rect" id="node50" href="$dd/d3d/a05379.html#a1d4498ce4cfa5644bb67b2686e7df9ad" title="The constant charge per particle. " alt="" coords="339,1090,456,1117"/>
+<area shape="rect" id="node4" href="$d9/dd4/a05755.html#a48d4a155d03d902144d550544e96964d" title="Fieldmap::getOnaxisEz" alt="" coords="595,517,765,544"/>
+<area shape="rect" id="node5" href="$d4/d95/a00989.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375" title="begin" alt="" coords="651,669,709,696"/>
+<area shape="rect" id="node7" href="$d4/d95/a00989.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="1694,248,1741,274"/>
+<area shape="rect" id="node9" href="$d5/d12/a03851.html#ae29244719985f3e4cbc22b58064177de" title="floor" alt="" coords="655,248,705,274"/>
+<area shape="rect" id="node10" href="$d7/d48/a05183.html#afe7eee108d80b1825e8e34ec8f46a1f4" title="RFCavity::getdT" alt="" coords="1411,573,1535,600"/>
+<area shape="rect" id="node20" href="$d7/d48/a05183.html#ab4882ff20d696dea0bd3bb1528310f37" title="RFCavity::getdA" alt="" coords="1152,938,1277,965"/>
+<area shape="rect" id="node21" href="$dc/d2c/a00893.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="1451,837,1495,864"/>
+<area shape="rect" id="node22" href="$dc/d2c/a00893.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="1697,837,1738,864"/>
+<area shape="rect" id="node23" href="$d7/d48/a05183.html#a249b34e7ae3a33714b81d6e46bc6fea0" title="RFCavity::getdB" alt="" coords="1152,989,1277,1016"/>
+<area shape="rect" id="node24" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="2421,105,2466,132"/>
+<area shape="rect" id="node25" href="$d5/d12/a03851.html#a76d80db75cdbabf029d6f5fdcef89cdb" title="atan" alt="" coords="655,349,705,376"/>
+<area shape="rect" id="node26" href="$d7/d48/a05183.html#a215e10b357c6fc9916d3b8ab30badaed" title="RFCavity::getdE" alt="" coords="1153,888,1277,914"/>
+<area shape="rect" id="node27" href="$d8/d4f/a12119.html#ab3bc980da96d8264e159c522f4eab559" title="Inform::precision" alt="" coords="887,248,1019,274"/>
+<area shape="rect" id="node28" href="$d0/dce/a03971.html#a4b2b36162d7cd2032d0ea378d5015281" title="level2" alt="" coords="921,197,984,224"/>
+<area shape="rect" id="node30" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1189,517,1240,544"/>
+<area shape="rect" id="node34" href="$dd/d61/a04548.html#a8d51d4f60fe567a87bcdb7d16cb940da" title="isnan function with adjusted return type " alt="" coords="595,720,765,762"/>
+<area shape="rect" id="node35" href="$d7/d48/a05183.html#af4210912c9e107525970cf5ed8aba86c" title="RFCavity::getAutoPhaseEstimate\lFallback" alt="" coords="563,400,797,442"/>
+<area shape="rect" id="node36" href="$d2/df8/a04550.html#a401859d11cb91676474629baceb07612" title="Util::getBetaGamma" alt="" coords="875,568,1031,594"/>
+<area shape="rect" id="node6" href="$d9/d06/a04735.html#ad6ece85323a4f116320d363dfb419738" title="PartBunchBase::begin" alt="" coords="871,669,1034,696"/>
+<area shape="rect" id="node8" href="$d9/d06/a04735.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1859,248,2009,274"/>
+<area shape="rect" id="node11" href="$dc/d2c/a00893.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1694,522,1741,549"/>
+<area shape="rect" id="node12" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="2228,724,2372,750"/>
+<area shape="rect" id="node16" href="$d9/dba/a05287.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1888,736,1980,762"/>
+<area shape="rect" id="node13" href="$d4/d5e/a03542.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="2420,597,2467,624"/>
+<area shape="rect" id="node14" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2649,546,2835,573"/>
+<area shape="rect" id="node15" href="$d4/d5e/a03542.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="2515,546,2601,573"/>
+<area shape="rect" id="node17" href="$d9/dba/a05287.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="2057,710,2180,737"/>
+<area shape="rect" id="node18" href="$d9/dba/a05287.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="2065,888,2172,914"/>
+<area shape="rect" id="node19" href="$d9/dba/a05287.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="2233,837,2367,864"/>
+<area shape="rect" id="node29" href="$d8/d4f/a12119.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="1122,96,1307,122"/>
+<area shape="rect" id="node31" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1387,624,1559,650"/>
+<area shape="rect" id="node32" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1650,624,1785,650"/>
+<area shape="rect" id="node33" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1624,573,1811,600"/>
+<area shape="rect" id="node40" href="$d7/d48/a05183.html#a83e48e03c9beba578b150a99961f59b5" title="RFCavity::setPhasem" alt="" coords="873,400,1032,426"/>
+<area shape="rect" id="node41" href="$d7/d48/a05183.html#a77d5ae497916552ced4ab32004fbe1b6" title="RFCavity::trackOnAxisParticle" alt="" coords="845,349,1060,376"/>
+<area shape="rect" id="node37" href="$dc/d2c/a00893.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="1448,674,1497,701"/>
+<area shape="rect" id="node38" href="$d9/dba/a05287.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1667,674,1768,701"/>
+<area shape="rect" id="node42" href="$d9/d06/a04735.html#a0ce220e81457d3f603fc2be29723bca3" title="PartBunchBase::getReference" alt="" coords="1108,349,1321,376"/>
+<area shape="rect" id="node43" href="$d7/d48/a05183.html#adf914d956cbf7ecaf6f979f764c1ddce" title="Get design length. " alt="" coords="1369,298,1576,325"/>
+<area shape="rect" id="node44" href="$d2/df8/a04550.html#ae12a15e0d75307c934c8add55d2c25ac" title="Util::getGamma" alt="" coords="1409,248,1536,274"/>
+<area shape="rect" id="node45" href="$d3/d53/a01262.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="1696,172,1739,198"/>
+<area shape="rect" id="node47" href="$d7/d48/a05183.html#a99a57b9889eed154d266f1b95bbcc805" title="RFCavity::applyToReference\lParticle" alt="" coords="1113,451,1316,492"/>
+</map>

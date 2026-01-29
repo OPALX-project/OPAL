@@ -1,0 +1,17 @@
+<map id="RealConstant::clone" name="RealConstant::clone">
+<area shape="rect" id="node2" href="$d1/db3/a07347.html#a3dd6f8720f075cadd23eb2a7e95089e3" title="Exemplar constructor. " alt="" coords="204,245,407,272"/>
+<area shape="rect" id="node3" href="$d5/d13/a04739.html#a9b61b52d3e1991992ac7dae7bab951f8" title="Create new object. " alt="" coords="484,81,616,108"/>
+<area shape="rect" id="node8" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="467,245,633,272"/>
+<area shape="rect" id="node10" href="$d2/d71/a04503.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="471,296,629,323"/>
+<area shape="rect" id="node11" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="483,347,617,373"/>
+<area shape="rect" id="node12" href="$dc/d12/a04723.html#a11c14d6b194bf37c2883bb42922852ac" title="Object::registerOwnership" alt="" coords="455,195,645,221"/>
+<area shape="rect" id="node4" href="$d2/ddb/a04687.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="746,56,859,83"/>
+<area shape="rect" id="node5" href="$dc/d12/a04723.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="721,107,884,133"/>
+<area shape="rect" id="node6" href="$d2/ddb/a04687.html#afd593b9994a1000a969046c02dd66846" title="Define new object. " alt="" coords="739,5,866,32"/>
+<area shape="rect" id="node7" href="$dc/d17/a00872.html#aa8ae23ddaa752827580a9345f34b7cca" title="value_type" alt="" coords="988,5,1083,32"/>
+<area shape="rect" id="node9" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="727,325,879,352"/>
+<area shape="rect" id="node13" href="$d1/d64/a04675.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="693,158,912,199"/>
+<area shape="rect" id="node14" href="$d4/d95/a00989.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="779,224,826,251"/>
+<area shape="rect" id="node16" href="$dc/d12/a04723.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="735,275,870,301"/>
+<area shape="rect" id="node15" href="$d9/d06/a04735.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="960,224,1111,251"/>
+</map>

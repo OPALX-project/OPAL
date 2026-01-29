@@ -1,0 +1,51 @@
+<map id="DistributionMoments::compute" name="DistributionMoments::compute">
+<area shape="rect" id="node2" href="$d9/d06/a04735.html#ad6ece85323a4f116320d363dfb419738" title="PartBunchBase::begin" alt="" coords="1176,196,1339,223"/>
+<area shape="rect" id="node3" href="$dc/d54/a05339.html#a92762bd0b6cb565157e66651b217087e" title="DistributionMoments\l::computeStatistics" alt="" coords="212,704,371,745"/>
+<area shape="rect" id="node7" href="$d9/d06/a04735.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1182,298,1333,324"/>
+<area shape="rect" id="node4" href="$dc/d54/a05339.html#ab3c82910988fb6208fb9ecf815cc8252" title="DistributionMoments\l::reset" alt="" coords="676,224,835,265"/>
+<area shape="rect" id="node8" href="$dc/d54/a05339.html#a54d314487b5dbf542b30f01e34f178fa" title="DistributionMoments\l::computeMeans" alt="" coords="427,876,585,917"/>
+<area shape="rect" id="node9" href="$dc/d54/a05339.html#acd36b3f12b46ed621abc99311ff38b3c" title="DistributionMoments\l::isParticleExcluded" alt="" coords="676,1032,835,1073"/>
+<area shape="rect" id="node25" href="$df/d5e/a05351.html#a98ccb7f7dc75caf71f5131a09c2d404d" title="Get time. " alt="" coords="674,980,837,1007"/>
+<area shape="rect" id="node34" href="$df/d5e/a05351.html#a285bc4ab2352a7cbf65d1879eb9a9d6a" title="Get momentum. " alt="" coords="687,1098,824,1124"/>
+<area shape="rect" id="node35" href="$df/d5e/a05351.html#a95c514cd5afeb4444c294c10ab96ea0b" title="Get mass in GeV/c^2. " alt="" coords="674,610,837,636"/>
+<area shape="rect" id="node36" href="$d4/d5e/a03686.html#a3f4c593649c5ad948ee3e8566bffeda6" title="allreduce" alt="" coords="981,442,1064,468"/>
+<area shape="rect" id="node38" href="$dc/d2c/a00893.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="998,635,1047,662"/>
+<area shape="rect" id="node40" href="$d2/df8/a04550.html#a23c9ed0a7dbf9f918bb68b94bb9309b1" title="Util::getKineticEnergy" alt="" coords="424,818,588,844"/>
+<area shape="rect" id="node41" href="$df/d5e/a05351.html#a800665e69ae22e293a64382a31b53c93" title="Get charge in Coulomb. " alt="" coords="419,412,593,439"/>
+<area shape="rect" id="node42" href="$dc/d54/a05339.html#add7f4d157f8ddeaceb77e64897190dcc" title="DistributionMoments\l::fillMembers" alt="" coords="676,813,835,854"/>
+<area shape="rect" id="node43" href="$dc/d54/a05339.html#abbee86ca1f98ca020344cf76428e8f6b" title="DistributionMoments\l::computePercentiles" alt="" coords="427,464,585,505"/>
+<area shape="rect" id="node5" href="$d4/d95/a00989.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375" title="begin" alt="" coords="993,259,1052,286"/>
+<area shape="rect" id="node6" href="$d4/d95/a00989.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="999,310,1046,336"/>
+<area shape="rect" id="node14" href="$d4/d5e/a03542.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="997,762,1048,788"/>
+<area shape="rect" id="node26" href="$d2/df8/a04550.html#ae12a15e0d75307c934c8add55d2c25ac" title="Util::getGamma" alt="" coords="692,930,819,956"/>
+<area shape="rect" id="node10" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="939,988,1106,1015"/>
+<area shape="rect" id="node12" href="$d5/d13/a04739.html#a6852d92bcca1864b63286ff91079bbe3" title="OpalData::isInOPALCyclMode" alt="" coords="917,1039,1128,1066"/>
+<area shape="rect" id="node13" href="$df/d5e/a05351.html#aae726ab3bf3b79e2e30cd853fbacd022" title="Get the id of the particle. " alt="" coords="952,1090,1093,1116"/>
+<area shape="rect" id="node11" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1181,988,1333,1015"/>
+<area shape="rect" id="node15" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2119,524,2304,551"/>
+<area shape="rect" id="node16" href="$d4/d5e/a03542.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1984,642,2071,668"/>
+<area shape="rect" id="node17" href="$d4/d4b/a03464.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="2172,696,2251,723"/>
+<area shape="rect" id="node19" href="$d8/db3/a03488.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="2396,642,2493,668"/>
+<area shape="rect" id="node20" href="$d4/d5e/a03686.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="2149,583,2274,610"/>
+<area shape="rect" id="node18" href="$d3/d9a/a08387.html#ade95693db1906427a7c73b8364a07b20" title="BareFieldIterator::\lGetBareField" alt="" coords="2375,693,2514,734"/>
+<area shape="rect" id="node21" href="$df/da4/a12131.html#a8bdcd8abcec1d747ecf82579b42c853c" title="IpplInfo::abort" alt="" coords="2388,540,2501,567"/>
+<area shape="rect" id="node22" href="$da/d49/a09219.html#aa072c62b650774371674b050109d8051" title="Communicate::broadcast\l_others" alt="" coords="2352,424,2537,465"/>
+<area shape="rect" id="node23" href="$da/d49/a09219.html#aca765179d2843e977a7a78098c8cbde8" title="Communicate::getNodes" alt="" coords="2585,511,2768,538"/>
+<area shape="rect" id="node24" href="$d6/d1c/a03692.html#ac34b443397f0101557c34a5c235ee578" title="getMessage" alt="" coords="2395,490,2495,516"/>
+<area shape="rect" id="node27" href="$dc/d2c/a00893.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="999,820,1046,847"/>
+<area shape="rect" id="node33" href="$d3/d53/a01262.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="1001,930,1044,956"/>
+<area shape="rect" id="node28" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1697,707,1841,734"/>
+<area shape="rect" id="node30" href="$d9/dba/a05287.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1387,660,1479,687"/>
+<area shape="rect" id="node29" href="$d4/d5e/a03542.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1889,642,1936,668"/>
+<area shape="rect" id="node31" href="$d9/dba/a05287.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1527,610,1649,636"/>
+<area shape="rect" id="node32" href="$d9/dba/a05287.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1535,660,1641,687"/>
+<area shape="rect" id="node37" href="$df/da4/a12131.html#a8d995e140c485a5416394b5cc1c864c4" title="IpplInfo::getComm" alt="" coords="1186,442,1329,468"/>
+<area shape="rect" id="node39" href="$d9/dba/a05287.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1207,635,1308,662"/>
+<area shape="rect" id="node44" href="$d5/d12/a03851.html#a1e48c97bec104c42a77b24cc974ff332" title="log10" alt="" coords="726,340,785,367"/>
+<area shape="rect" id="node45" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1000,107,1045,134"/>
+<area shape="rect" id="node46" href="$d5/d12/a03851.html#ae29244719985f3e4cbc22b58064177de" title="floor" alt="" coords="730,391,781,418"/>
+<area shape="rect" id="node47" href="$dc/d54/a05339.html#adfabe1b1264245a14c22931ce4db1e16" title="DistributionMoments\l::determinePercentilesDetail" alt="" coords="651,158,859,200"/>
+<area shape="rect" id="node50" href="$dc/d54/a05339.html#a98d32e78318b5f75e7c6f909ce761a3c" title="DistributionMoments\l::computeNormalizedEmittance" alt="" coords="641,493,869,534"/>
+<area shape="rect" id="node48" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="952,158,1093,184"/>
+<area shape="rect" id="node49" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="955,208,1090,235"/>
+</map>

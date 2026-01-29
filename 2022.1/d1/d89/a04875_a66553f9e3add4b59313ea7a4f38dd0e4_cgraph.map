@@ -1,0 +1,51 @@
+<map id="AmrBoxLib::computeSelfFields_cycl" name="AmrBoxLib::computeSelfFields_cycl">
+<area shape="rect" id="node2" href="$d2/dab/a07363.html#aff9fa3ac34746cf52796c3508e840a51" title="AmrParticleBase::domainMapping" alt="" coords="1043,213,1284,240"/>
+<area shape="rect" id="node22" href="$d1/d89/a04875.html#abed99c477ca0f7851954e0ea1c4121f5" title="AmrBoxLib::finestLevel" alt="" coords="343,669,515,696"/>
+<area shape="rect" id="node23" href="$d7/d46/a04895.html#aade082d3a66df5f78124c9518788f94b" title="BoxLibParticle::gather" alt="" coords="347,720,511,747"/>
+<area shape="rect" id="node24" href="$d0/d31/a05327.html#ad657df7a7c8ff3f0a5b610d68c9a2154" title="AmrPartBunch::getAmrParticleBase" alt="" coords="1332,593,1583,620"/>
+<area shape="rect" id="node25" href="$d9/d06/a04735.html#a8b691219af289152e6b74910ea4b30c1" title="PartBunchBase::getLocalTrackStep" alt="" coords="307,771,552,797"/>
+<area shape="rect" id="node26" href="$d9/d06/a04735.html#af792389ff15f7f9fe61a13138ff0d6f3" title="PartBunchBase::getT" alt="" coords="351,821,507,848"/>
+<area shape="rect" id="node27" href="$d9/d06/a04735.html#a61749a31a61cc801127ed1ea764d03ca" title="PartBunchBase::hasFieldSolver" alt="" coords="319,872,540,899"/>
+<area shape="rect" id="node28" href="$d2/dab/a07363.html#afc9cc878b907b7498ac76fb732f0dce1" title="AmrParticleBase::setForbid\lTransform" alt="" coords="331,923,528,965"/>
+<area shape="rect" id="node29" href="$d1/d89/a04875.html#a74849565da6c94ba6827c7bb200cc2b9" title="AmrBoxLib::solvePoisson_m" alt="" coords="1060,416,1267,443"/>
+<area shape="rect" id="node38" href="$dc/d2c/a00893.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="406,543,453,569"/>
+<area shape="rect" id="node44" href="$d2/dab/a07363.html#ad79bca07de761a9c5de30b2578d362ff" title="AmrParticleBase::update" alt="" coords="338,989,521,1016"/>
+<area shape="rect" id="node45" href="$d0/d31/a05327.html#a2c7ccd340be943a2072df634f356d415" title="AmrPartBunch::updateLorentz\lFactor" alt="" coords="322,1041,537,1082"/>
+<area shape="rect" id="node3" href="$d0/d9c/a12163.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="1370,239,1545,265"/>
+<area shape="rect" id="node5" href="$d4/d5e/a03542.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="1432,391,1483,417"/>
+<area shape="rect" id="node16" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1691,188,1737,215"/>
+<area shape="rect" id="node17" href="$dd/d61/a04548.html#a8d51d4f60fe567a87bcdb7d16cb940da" title="isnan function with adjusted return type " alt="" coords="1372,57,1543,98"/>
+<area shape="rect" id="node18" href="$dd/d61/a04548.html#a80be49cdc22c97d978ae335fb88031af" title="isinf function with adjusted return type " alt="" coords="1372,122,1543,163"/>
+<area shape="rect" id="node19" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1390,5,1525,32"/>
+<area shape="rect" id="node20" href="$d0/d9c/a12163.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="1371,289,1543,316"/>
+<area shape="rect" id="node4" href="$d0/d4e/a12159.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="1643,239,1785,265"/>
+<area shape="rect" id="node6" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1845,391,2031,417"/>
+<area shape="rect" id="node7" href="$d4/d5e/a03542.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1671,492,1757,519"/>
+<area shape="rect" id="node8" href="$d4/d4b/a03464.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="1899,492,1977,519"/>
+<area shape="rect" id="node9" href="$d8/db3/a03488.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="2121,543,2219,569"/>
+<area shape="rect" id="node10" href="$d4/d5e/a03686.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="1875,441,2001,468"/>
+<area shape="rect" id="node11" href="$d6/d1c/a03692.html#ac34b443397f0101557c34a5c235ee578" title="getMessage" alt="" coords="2120,492,2220,519"/>
+<area shape="rect" id="node13" href="$da/d49/a09219.html#aca765179d2843e977a7a78098c8cbde8" title="Communicate::getNodes" alt="" coords="2079,391,2261,417"/>
+<area shape="rect" id="node14" href="$da/d49/a09219.html#aedbfc462a5f9babc3fc07f875847547f" title="Communicate::myNode" alt="" coords="2082,441,2258,468"/>
+<area shape="rect" id="node15" href="$d4/dc7/a09807.html#aec355d9c01194461adbba236ffbd7b21" title="TagMaker::next_tag" alt="" coords="2095,340,2245,367"/>
+<area shape="rect" id="node12" href="$d9/de9/a09623.html#aeb7c0c5d1f49f8fd1b78eae709216da9" title="Message::get" alt="" coords="2309,391,2417,417"/>
+<area shape="rect" id="node21" href="$d0/d4e/a12159.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="1643,289,1785,316"/>
+<area shape="rect" id="node30" href="$d7/d46/a04895.html#af07bf76ae5636ffc23756c65bcd39991" title="BoxLibParticle::scatter" alt="" coords="1631,340,1797,367"/>
+<area shape="rect" id="node35" href="$d0/d31/a05327.html#ab5339203441cd2147467b61b5e0391c8" title="AmrPartBunch::getFieldSolver" alt="" coords="1350,492,1565,519"/>
+<area shape="rect" id="node36" href="$dc/dc2/a07135.html#a032419b9c29450457211426c5798ad4d" title="PoissonSolver::solve" alt="" coords="1379,543,1535,569"/>
+<area shape="rect" id="node37" href="$d1/d89/a04875.html#ad03a4301400b31f1f93040161ea59db9" title="AmrBoxLib::fillPhysbc_m" alt="" coords="1366,441,1549,468"/>
+<area shape="rect" id="node31" href="$d4/d5e/a03686.html#a858169225b8f772b4c71d4a681671495" title="scatter" alt="" coords="1905,340,1971,367"/>
+<area shape="rect" id="node32" href="$d8/d1c/a09627.html#a523d491d036f4490a52b2a76ad1a1823" title="Message::MsgItem::data" alt="" coords="2080,188,2260,215"/>
+<area shape="rect" id="node33" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="2145,239,2195,265"/>
+<area shape="rect" id="node34" href="$d9/de9/a09623.html#adf6de3f25ef659274319872d5555efc5" title="Message::item" alt="" coords="2111,137,2229,164"/>
+<area shape="rect" id="node39" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1091,517,1235,544"/>
+<area shape="rect" id="node41" href="$d9/dba/a05287.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="645,543,737,569"/>
+<area shape="rect" id="node40" href="$d4/d5e/a03542.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1434,644,1481,671"/>
+<area shape="rect" id="node42" href="$d9/dba/a05287.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="851,568,974,595"/>
+<area shape="rect" id="node43" href="$d9/dba/a05287.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="859,517,966,544"/>
+<area shape="rect" id="node46" href="$d9/d06/a04735.html#a446fb70114c17e69382ae950734baec3" title="PartBunchBase\&lt; double,\l 3 \&gt;::get_gamma" alt="" coords="600,1106,783,1147"/>
+<area shape="rect" id="node48" href="$d9/d06/a04735.html#a5cccd734775026586eef70edb9982b4d" title="PartBunchBase\&lt; double,\l 3 \&gt;::weHaveBins" alt="" coords="600,975,783,1017"/>
+<area shape="rect" id="node50" href="$d9/d06/a04735.html#a5f340261cebbb63967a800c99c060c79" title="Get gamma of one bin. " alt="" coords="600,1041,783,1082"/>
+<area shape="rect" id="node47" href="$dc/d54/a05339.html#a1cbb52b4b9a627572211c443dfc9a8d9" title="DistributionMoments\l::getMeanGamma" alt="" coords="833,1106,992,1147"/>
+<area shape="rect" id="node49" href="$dd/dc9/a05355.html#adf73db35db8dfadaba8c2e4eeb74db7d" title="PartBins::weHaveBins" alt="" coords="831,983,995,1009"/>
+</map>

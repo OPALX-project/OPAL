@@ -1,0 +1,51 @@
+<map id="SectorMagneticFieldMap::IO::readMap" name="SectorMagneticFieldMap::IO::readMap">
+<area shape="rect" id="node2" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1131,735,1181,761"/>
+<area shape="rect" id="node8" href="$d7/d57/a05931.html#a1d5ee9e388625f80a89fe126de4e3abf" title="SectorMagneticFieldMap\l::IO::generateGrid" alt="" coords="249,807,427,849"/>
+<area shape="rect" id="node10" href="$d7/d57/a05931.html#ab8aebcb6b5587591590d4f3859cbbca2" title="SectorMagneticFieldMap\l::IO::getInterpolator" alt="" coords="249,986,427,1027"/>
+<area shape="rect" id="node14" href="$d7/d57/a05931.html#aaac45a7d6f566caab689bed312c0f101" title="SectorMagneticFieldMap\l::IO::getInterpolatorPolyPatch" alt="" coords="232,618,444,659"/>
+<area shape="rect" id="node45" href="$d7/d57/a05931.html#a6b278c8aa16bc38c6bb71dfacd939ccd" title="SectorMagneticFieldMap\l::IO::readLines" alt="" coords="769,837,947,878"/>
+<area shape="rect" id="node3" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1377,684,1549,711"/>
+<area shape="rect" id="node4" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1627,684,1813,711"/>
+<area shape="rect" id="node7" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="2111,633,2246,660"/>
+<area shape="rect" id="node5" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1861,684,2059,711"/>
+<area shape="rect" id="node6" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="2108,684,2249,711"/>
+<area shape="rect" id="node9" href="$db/d12/a05903.html#abe852446fea9f1a65a71a1b374df7322" title="interpolation::ThreeDGrid\l::setConstantSpacing" alt="" coords="505,837,691,878"/>
+<area shape="rect" id="node11" href="$db/d12/a05903.html#a77a9b5f1b065cff54e47c142829d2d66" title="interpolation::ThreeDGrid\l::xSize" alt="" coords="505,954,691,995"/>
+<area shape="rect" id="node12" href="$db/d12/a05903.html#ae1828bdf4c1b19d6df4e4a11bbb34307" title="interpolation::ThreeDGrid\l::ySize" alt="" coords="505,1019,691,1061"/>
+<area shape="rect" id="node13" href="$db/d12/a05903.html#a5248cc3a3124f7b4f01206e76d8775b8" title="interpolation::ThreeDGrid\l::zSize" alt="" coords="505,1085,691,1126"/>
+<area shape="rect" id="node15" href="$db/d5e/a05891.html#aef480f189c74e5beca3c6cfeb7b65366" title="interpolation::PPSolveFactory\l::solve" alt="" coords="492,367,704,409"/>
+<area shape="rect" id="node16" href="$d4/d95/a00989.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375" title="begin" alt="" coords="829,27,887,53"/>
+<area shape="rect" id="node18" href="$d2/dea/a05863.html#ac4ed4f036f936ab9879c97aa9a786fc7" title="interpolation::Mesh\l::begin" alt="" coords="785,217,931,258"/>
+<area shape="rect" id="node19" href="$d4/d95/a00989.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="1133,239,1179,265"/>
+<area shape="rect" id="node21" href="$d2/dea/a05863.html#aaf5786d1f79a267a3c1046df67a730d8" title="interpolation::Mesh::end" alt="" coords="1067,487,1245,513"/>
+<area shape="rect" id="node22" href="$de/d29/a05867.html#aa3315af81a96c94652830cf176087154" title="interpolation::Mesh\l::Iterator::toInteger" alt="" coords="1083,290,1229,331"/>
+<area shape="rect" id="node23" href="$db/d5e/a05891.html#a127811846c8c097db57d364703d34b4b" title="interpolation::PPSolveFactory\l::getPoints" alt="" coords="752,399,964,441"/>
+<area shape="rect" id="node24" href="$d2/dea/a05863.html#a73ea86036e1dfe83aa86ca5ca6627ca0" title="interpolation::Mesh\l::getPositionDimension" alt="" coords="1069,421,1243,462"/>
+<area shape="rect" id="node27" href="$db/d5e/a05891.html#a5c07e84c569b5e53b53d69d7f903a0d7" title="interpolation::PPSolveFactory\l::getDerivPoints" alt="" coords="752,99,964,141"/>
+<area shape="rect" id="node40" href="$db/d5e/a05891.html#aabfcb09c4cf6450b9c9a4af8f7a0cdcf" title="interpolation::PPSolveFactory\l::getValues" alt="" coords="752,334,964,375"/>
+<area shape="rect" id="node42" href="$db/d5e/a05891.html#ae0c0d4664f1ab2f826907ef0056e5d7f" title="interpolation::PPSolveFactory\l::getDerivs" alt="" coords="752,567,964,609"/>
+<area shape="rect" id="node17" href="$d9/d06/a04735.html#ad6ece85323a4f116320d363dfb419738" title="PartBunchBase::begin" alt="" coords="1075,5,1237,32"/>
+<area shape="rect" id="node20" href="$d9/d06/a04735.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1388,256,1539,283"/>
+<area shape="rect" id="node25" href="$db/d5e/a05891.html#adcea6dbcd35b49a8a9b5f9a1e6a4acc4" title="interpolation::PPSolveFactory\l::getNearbyPointsSquares" alt="" coords="1050,355,1262,397"/>
+<area shape="rect" id="node26" href="$db/d5e/a05891.html#a62508eb3d6167d64e3e44d2aaad354a4" title="interpolation::PPSolveFactory\l::nearbyPointsRecursive" alt="" coords="1357,339,1569,381"/>
+<area shape="rect" id="node28" href="$d8/d88/a05899.html#a30a72c5bc2a48d94809af1fcfb7c9a2e" title="interpolation::SquarePolynomial\lVector::NumberOfPolynomialCoefficients" alt="" coords="1012,107,1300,149"/>
+<area shape="rect" id="node29" href="$d8/d88/a05899.html#a6fbc59fce924184e894fe492c9e3f549" title="interpolation::SquarePolynomial\lVector::IndexByPower" alt="" coords="1041,173,1271,214"/>
+<area shape="rect" id="node31" href="$dc/d2c/a00893.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="1131,56,1181,83"/>
+<area shape="rect" id="node30" href="$d8/d88/a05899.html#aeee94321d9a80efbfba17d146a8588f9" title="interpolation::SquarePolynomial\lVector::IndexByPowerRecursive" alt="" coords="1348,190,1579,231"/>
+<area shape="rect" id="node32" href="$d9/dba/a05287.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1413,139,1514,165"/>
+<area shape="rect" id="node33" href="$d9/dba/a05287.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1899,189,2021,216"/>
+<area shape="rect" id="node34" href="$d4/d5e/a03542.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="2299,265,2345,292"/>
+<area shape="rect" id="node37" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="2107,291,2251,317"/>
+<area shape="rect" id="node38" href="$d9/dba/a05287.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1674,240,1766,267"/>
+<area shape="rect" id="node35" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2528,316,2713,343"/>
+<area shape="rect" id="node36" href="$d4/d5e/a03542.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="2393,265,2480,292"/>
+<area shape="rect" id="node39" href="$d9/dba/a05287.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1907,240,2013,267"/>
+<area shape="rect" id="node41" href="$de/d29/a05867.html#a2887f93aa5a15d9626a295e03c2622b9" title="interpolation::Mesh\l::Iterator::getState" alt="" coords="1083,538,1229,579"/>
+<area shape="rect" id="node43" href="$de/d29/a05867.html#a6d26d702739d32286bef4ccd9e98f037" title="interpolation::Mesh\l::Iterator::getPosition" alt="" coords="1077,669,1235,710"/>
+<area shape="rect" id="node44" href="$de/d29/a05867.html#aa89d1e12977c2b727c92a285faf38c0e" title="interpolation::Mesh\l::Iterator::getMesh" alt="" coords="1083,603,1229,645"/>
+<area shape="rect" id="node46" href="$d7/d57/a05931.html#a6c88482510aca818106906a18f74cc19" title="SectorMagneticFieldMap\l::IO::comparator" alt="" coords="1631,807,1809,849"/>
+<area shape="rect" id="node48" href="$d2/dde/a05923.html#ad8a100b0da7b9f60e908fb6d5ca0e0c0" title="SectorField::convertToPolar" alt="" coords="1057,787,1255,813"/>
+<area shape="rect" id="node47" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="2299,587,2345,613"/>
+<area shape="rect" id="node49" href="$de/d6b/a03845.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="1434,787,1493,813"/>
+<area shape="rect" id="node50" href="$dc/d2c/a00893.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1440,405,1487,432"/>
+</map>

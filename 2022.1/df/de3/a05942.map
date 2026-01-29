@@ -1,0 +1,6 @@
+<map id="Filter" name="Filter">
+<area shape="rect" id="node2" href="$d1/d1f/a05947.html" title="FixedFFTLowPassFilter" alt="" coords="5,80,171,107"/>
+<area shape="rect" id="node3" href="$dc/d21/a05951.html" title="RelativeFFTLowPassFilter" alt="" coords="195,80,379,107"/>
+<area shape="rect" id="node4" href="$d0/d5d/a05955.html" title="SavitzkyGolayFilter" alt="" coords="403,80,551,107"/>
+<area shape="rect" id="node5" href="$d8/d33/a05959.html" title="StencilFilter" alt="" coords="576,80,675,107"/>
+</map>

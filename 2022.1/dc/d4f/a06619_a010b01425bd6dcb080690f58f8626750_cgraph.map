@@ -1,0 +1,51 @@
+<map id="OpalMultipoleTCurvedConstRadius::update" name="OpalMultipoleTCurvedConstRadius::update">
+<area shape="rect" id="node2" href="$d6/d12/a04691.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="581,157,739,184"/>
+<area shape="rect" id="node3" href="$df/d84/a05115.html#a5e2184f6e45b606f8bddee1236e1280f" title="MultipoleTCurvedConstRadius\l::getGeometry" alt="" coords="265,550,481,591"/>
+<area shape="rect" id="node4" href="$d2/d71/a04503.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="589,107,731,133"/>
+<area shape="rect" id="node8" href="$d2/d71/a04503.html#ab98e27fb1c758b0a63d9e242fcbe68e6" title="Get array value. " alt="" coords="571,208,749,235"/>
+<area shape="rect" id="node9" href="$dd/df7/a05111.html#af67890b68555f180ed1424b539be4e8e" title="MultipoleTBase::setAperture" alt="" coords="270,616,477,643"/>
+<area shape="rect" id="node10" href="$df/d84/a05115.html#a52a9b8c1268168888c57a236bbe8e36f" title="MultipoleTCurvedConstRadius\l::setBendAngle" alt="" coords="265,667,481,709"/>
+<area shape="rect" id="node11" href="$dd/df7/a05111.html#adf6e0b597b8abe81cfbcd1a81e9d46ee" title="MultipoleTBase::setBounding\lBoxLength" alt="" coords="268,733,479,774"/>
+<area shape="rect" id="node12" href="$d6/d12/a04691.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="294,799,453,825"/>
+<area shape="rect" id="node13" href="$db/d78/a05071.html#a2b59853ce20c48c2436d0c136adeea69" title="Set design length. " alt="" coords="256,849,491,876"/>
+<area shape="rect" id="node16" href="$dd/df7/a05111.html#ab8c9eea19663150d3f7429a8590629be" title="MultipoleTBase::setEntrance\lAngle" alt="" coords="270,901,477,942"/>
+<area shape="rect" id="node17" href="$dd/df7/a05111.html#ac510f4d86170803dd3a7c8dc6ac66103" title="MultipoleTBase::setFringe\lField" alt="" coords="279,966,468,1007"/>
+<area shape="rect" id="node18" href="$dd/df7/a05111.html#a2e98de4bb757cad42ba04ad9e4831fe6" title="MultipoleTBase::setLength" alt="" coords="276,1032,471,1059"/>
+<area shape="rect" id="node21" href="$df/d84/a05115.html#a7a4b875b982318e1ce590de4d37190a8" title="MultipoleTCurvedConstRadius\l::setMaxOrder" alt="" coords="265,1083,481,1125"/>
+<area shape="rect" id="node28" href="$df/d84/a05115.html#a1f8530210aa5eba0d7ac9ac0c01f6b47" title="MultipoleTCurvedConstRadius\l::setMaxXOrder" alt="" coords="265,1149,481,1190"/>
+<area shape="rect" id="node29" href="$dd/df7/a05111.html#a2bd23a91180368ce9103a1515c58734b" title="MultipoleTBase::setRotation" alt="" coords="271,1215,475,1241"/>
+<area shape="rect" id="node30" href="$dd/df7/a05111.html#afcbc348058a2a6487a20a84e3fc46fca" title="MultipoleTBase::setTrans\lMaxOrder" alt="" coords="281,1266,465,1307"/>
+<area shape="rect" id="node31" href="$dd/df7/a05111.html#ac3173cde3bca0af19b6ae05a2172f9ff" title="MultipoleTBase::setTrans\lProfile" alt="" coords="281,1331,465,1373"/>
+<area shape="rect" id="node32" href="$da/d07/a06583.html#ae7ef6d492cbb543c20367b7e4a2d86f5" title="Update the embedded CLASSIC element. " alt="" coords="294,480,453,507"/>
+<area shape="rect" id="node48" href="$da/d07/a06583.html#ab0c3e3b9796fc7f288fcfddb4a39080f" title="Transmit the `‘unknown’&#39; (not known to OPAL) attributes to CLASSIC. " alt="" coords="263,81,483,108"/>
+<area shape="rect" id="node5" href="$da/d19/a04667.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="829,107,1020,133"/>
+<area shape="rect" id="node6" href="$da/d19/a04667.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="855,157,995,184"/>
+<area shape="rect" id="node7" href="$da/d19/a04667.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="845,208,1004,235"/>
+<area shape="rect" id="node14" href="$db/d78/a05071.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="559,915,761,941"/>
+<area shape="rect" id="node15" href="$dc/d4a/a05587.html#a4d338ebcb0efefa851ff4bdc08f7efb2" title="Set geometry length. " alt="" coords="555,966,765,1007"/>
+<area shape="rect" id="node19" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="637,1032,683,1059"/>
+<area shape="rect" id="node20" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="832,1032,1017,1059"/>
+<area shape="rect" id="node22" href="$dd/df7/a05111.html#a13da407f681ff6ca02f8b22adc191d49" title="MultipoleTBase::getTrans\lMaxOrder" alt="" coords="567,1083,753,1125"/>
+<area shape="rect" id="node23" href="$d2/d38/a05147.html#a41e30165c0e48e0b5607bddb6a03b26c" title="polynomial::RecursionRelation\l::resizeX" alt="" coords="551,1149,769,1190"/>
+<area shape="rect" id="node25" href="$dd/df7/a05111.html#a3f1f5b44605a67cbf8d980e15be1a1fe" title="MultipoleTBase::setMaxOrder" alt="" coords="553,1215,767,1241"/>
+<area shape="rect" id="node26" href="$d2/d38/a05147.html#abef6f92974a541902882edc63d62817b" title="polynomial::RecursionRelation\l::truncate" alt="" coords="551,1266,769,1307"/>
+<area shape="rect" id="node24" href="$d0/dcf/a05131.html#a762ad70188a9b98672bb7ef7d771a393" title="polynomial::Differential\lOperator::resizeX" alt="" coords="837,1149,1013,1190"/>
+<area shape="rect" id="node27" href="$d0/dcf/a05131.html#a49bf0abd42e9c90e3f82c59907b4511c" title="polynomial::Differential\lOperator::truncate" alt="" coords="837,1266,1013,1307"/>
+<area shape="rect" id="node33" href="$d2/dc7/a05391.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="577,309,743,336"/>
+<area shape="rect" id="node36" href="$dc/d2c/a00893.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="638,360,682,387"/>
+<area shape="rect" id="node38" href="$dc/d2c/a00893.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="904,411,945,437"/>
+<area shape="rect" id="node39" href="$db/d78/a05071.html#a106c7760d3c2fbb2b3f67838f53fba26" title="ElementBase::fixPosition" alt="" coords="568,461,752,488"/>
+<area shape="rect" id="node40" href="$da/d07/a06583.html#a05ec70a49ff5c27d61d32692a4f8bd49" title="OpalElement::getApert" alt="" coords="575,512,745,539"/>
+<area shape="rect" id="node41" href="$d2/d71/a04503.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="588,259,732,285"/>
+<area shape="rect" id="node42" href="$db/d78/a05071.html#a14dd20e65c467dfa110245c52f4f2b5e" title="ElementBase::setAperture" alt="" coords="564,563,756,589"/>
+<area shape="rect" id="node43" href="$db/d78/a05071.html#a9174a8ab7e9f408d3e901561018f3c5c" title="ElementBase::setCSTrafoGlobal2\lLocal" alt="" coords="543,614,777,655"/>
+<area shape="rect" id="node44" href="$db/d78/a05071.html#a015eabbc7163b06af9ab098fda26eee8" title="Access to ELEMEDGE attribute. " alt="" coords="539,680,781,707"/>
+<area shape="rect" id="node45" href="$db/d78/a05071.html#a772112d8820ef7c07760f1ea80f2bd32" title="ElementBase::setFlagDelete\lOnTransverseExit" alt="" coords="557,731,763,773"/>
+<area shape="rect" id="node46" href="$db/d78/a05071.html#a38684f3be77a11ffff26a8896e93549d" title="ElementBase::setMisalignment" alt="" coords="548,797,772,824"/>
+<area shape="rect" id="node47" href="$db/d78/a05071.html#a86e24ebba296fc816d0dcb188537c874" title="Set rotation about z axis in bend frame. " alt="" coords="565,849,755,890"/>
+<area shape="rect" id="node34" href="$d2/dc7/a05391.html#a237c3a9dfefea10e7ec6b5f373546427" title="Quaternion::real" alt="" coords="861,259,988,285"/>
+<area shape="rect" id="node35" href="$d2/dc7/a05391.html#a8cb33fa212258498b937d7e1a4684ce2" title="Quaternion::imag" alt="" coords="857,309,992,336"/>
+<area shape="rect" id="node37" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1068,385,1212,412"/>
+<area shape="rect" id="node49" href="$da/d19/a04667.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="587,5,733,32"/>
+<area shape="rect" id="node50" href="$db/d78/a05071.html#a5c0cf4c10bceff7bc9fb225bae470174" title="Set value of an attribute. " alt="" coords="563,56,757,83"/>
+</map>

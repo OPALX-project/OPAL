@@ -1,0 +1,35 @@
+<map id="mslang::Union::parse_detail" name="mslang::Union::parse_detail">
+<area shape="rect" id="node2" href="$d4/d95/a00989.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="795,367,841,393"/>
+<area shape="rect" id="node4" href="$de/d83/a06467.html#aaa395e82e8962e96c9f100e5051f43cf" title="mslang::Function::parse" alt="" coords="213,367,389,393"/>
+<area shape="rect" id="node3" href="$d9/d06/a04735.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1011,367,1161,393"/>
+<area shape="rect" id="node5" href="$d9/d28/a06351.html#a46bcb59adb162a4adf73987ea9070d5e" title="mslang::Mask::parse\l_detail" alt="" coords="467,163,623,205"/>
+<area shape="rect" id="node22" href="$da/df2/a06427.html#abccbaf751b6e72aa24b9f9b5868abdd7" title="mslang::Polygon::parse\l_detail" alt="" coords="458,751,633,793"/>
+<area shape="rect" id="node26" href="$da/de8/a06443.html#a669296d777d04dbd61870db550bd8d89" title="mslang::Rotation::parse\l_detail" alt="" coords="457,359,633,401"/>
+<area shape="rect" id="node27" href="$d6/d33/a06455.html#adcb8fe07f7b4258dcd1f211ae812ae88" title="mslang::Translation\l::parse_detail" alt="" coords="471,425,620,466"/>
+<area shape="rect" id="node28" href="$de/d38/a06447.html#a464caaf8b36d831bce59e50bad211d20" title="mslang::Shear::parse\l_detail" alt="" coords="466,490,625,531"/>
+<area shape="rect" id="node29" href="$d7/de4/a06439.html#adf8a0726cd2a218b36cd78493d8c3aa1" title="mslang::Repeat::parse\l_detail" alt="" coords="462,686,629,727"/>
+<area shape="rect" id="node30" href="$d4/d67/a06339.html#abdb699e133aa3bd9f3ef90374e9e6584" title="mslang::Difference\l::parse_detail" alt="" coords="473,98,618,139"/>
+<area shape="rect" id="node31" href="$d0/d18/a06347.html#a58d258e74d179980eccd4c6f7c1a512c" title="mslang::Intersection\l::parse_detail" alt="" coords="468,229,623,270"/>
+<area shape="rect" id="node32" href="$da/d09/a06451.html#abf487bf1a59c66e3fae0aac6c7ee02d2" title="mslang::SymmetricDifference\l::parse_detail" alt="" coords="437,294,653,335"/>
+<area shape="rect" id="node33" href="$de/d0d/a06343.html#ab9f1c3d059e3bf675ae1ef9c398491f2" title="mslang::Ellipse::parse\l_detail" alt="" coords="463,555,628,597"/>
+<area shape="rect" id="node34" href="$da/d5b/a06435.html#a26263b49f7d439c00d0ede18c9841624" title="mslang::Rectangle::\lparse_detail" alt="" coords="470,621,621,662"/>
+<area shape="rect" id="node6" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="793,451,843,477"/>
+<area shape="rect" id="node12" href="$dc/d3f/a06331.html#a8d565895406bd7dd2e07b0c0b4fe7836" title="mslang::ArgumentExtractor::get" alt="" coords="703,501,933,528"/>
+<area shape="rect" id="node13" href="$d5/dc6/a06483.html#aefd99ada9086c7d935b575385f8c9812" title="PortableBitmapReader\l::getHeight" alt="" coords="734,131,902,173"/>
+<area shape="rect" id="node14" href="$dc/d3f/a06331.html#aca305f091c4b77531866cc33bdbfe676" title="mslang::ArgumentExtractor\l::getLengthConsumed" alt="" coords="717,553,919,594"/>
+<area shape="rect" id="node15" href="$d5/dc6/a06483.html#a424f5982ad50e00b9a4d0f3f5bd6781d" title="PortableBitmapReader\l::getPixels" alt="" coords="734,197,902,238"/>
+<area shape="rect" id="node16" href="$d5/dc6/a06483.html#ae3e0cb6d931850e7b366dcbc84bea18c" title="PortableBitmapReader\l::getWidth" alt="" coords="734,262,902,303"/>
+<area shape="rect" id="node17" href="$d9/d28/a06351.html#a2b03347d39ebdd0c38c21d67ce62c987" title="mslang::Mask::minimizeNumber\lOfRectangles" alt="" coords="701,66,935,107"/>
+<area shape="rect" id="node21" href="$de/d21/a04545.html#a75877cd3c46e10819f64e3b6fea7686e" title="mslang::parseMathExpression" alt="" coords="709,619,927,645"/>
+<area shape="rect" id="node7" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1000,485,1172,512"/>
+<area shape="rect" id="node8" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1247,485,1433,512"/>
+<area shape="rect" id="node11" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1739,536,1874,563"/>
+<area shape="rect" id="node9" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1491,485,1688,512"/>
+<area shape="rect" id="node10" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1736,485,1877,512"/>
+<area shape="rect" id="node18" href="$d9/d28/a06351.html#a4f0dafe315d9ad61ba5341620a6bb91d" title="mslang::Mask::computeArea" alt="" coords="983,44,1189,71"/>
+<area shape="rect" id="node19" href="$d9/d28/a06351.html#a3666f5e573a29f8c19a96b6c1c57fde1" title="mslang::Mask::findMaximal\lRectangle" alt="" coords="986,95,1186,137"/>
+<area shape="rect" id="node20" href="$d9/d28/a06351.html#ace87fb21ba06eecf119b17ef21357ab3" title="mslang::Mask::updateCache" alt="" coords="1237,103,1443,129"/>
+<area shape="rect" id="node23" href="$dc/d3f/a06331.html#a8bc6c8ad3b232ac27875b1e2298f6c7c" title="mslang::ArgumentExtractor\l::getNumArguments" alt="" coords="717,690,919,731"/>
+<area shape="rect" id="node24" href="$da/df2/a06427.html#a023194f285ed5877b8c9662acdef2972" title="mslang::Polygon::triangulize" alt="" coords="715,759,921,785"/>
+<area shape="rect" id="node25" href="$dd/d54/a06323.html#a328d6f09794dc38ac02bfa43e9024c0d" title="Mesher::getTriangles" alt="" coords="1008,759,1164,785"/>
+</map>

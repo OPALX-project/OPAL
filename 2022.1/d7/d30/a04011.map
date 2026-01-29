@@ -1,0 +1,23 @@
+<map id="ippl/src/Utility/IpplTimings.cpp" name="ippl/src/Utility/IpplTimings.cpp">
+<area shape="rect" id="node2" href="$d9/d9f/a04013.html" title="Utility/IpplTimings.h" alt="" coords="427,319,581,345"/>
+<area shape="rect" id="node11" href="$d4/d2e/a03974.html" title="Utility/Inform.h" alt="" coords="367,468,489,495"/>
+<area shape="rect" id="node15" href="$d4/d5e/a03686.html" title="Message/GlobalComm.h" alt="" coords="1222,87,1402,114"/>
+<area shape="rect" id="node38" href="$de/d6b/a03845.html" title="PETE/IpplExpressions.h" alt="" coords="873,169,1045,196"/>
+<area shape="rect" id="node3" href="$d9/d3f/a13650.html" title="Utility/Timer.h" alt="" coords="735,393,849,420"/>
+<area shape="rect" id="node5" href="$d9/d97/a04016.html" title="Utility/my_auto_ptr.h" alt="" coords="418,393,577,420"/>
+<area shape="rect" id="node16" href="$d3/d4a/a03689.html" title="Message/GlobalComm.hpp" alt="" coords="1214,169,1410,196"/>
+<area shape="rect" id="node17" href="$d9/d9a/a03668.html" title="Message/Communicate.h" alt="" coords="1713,319,1900,345"/>
+<area shape="rect" id="node19" href="$dd/df6/a03713.html" title="Message/Tags.h" alt="" coords="2126,393,2250,420"/>
+<area shape="rect" id="node25" href="$d6/d1c/a03692.html" title="Message/Message.h" alt="" coords="1236,244,1388,271"/>
+<area shape="rect" id="node29" href="$dd/d27/a03989.html" title="Utility/IpplInfo.h" alt="" coords="1011,393,1138,420"/>
+<area shape="rect" id="node33" href="$d2/dfc/a04007.html" title="Utility/IpplStats.h" alt="" coords="975,319,1110,345"/>
+<area shape="rect" id="node34" href="$d4/d78/a03677.html" title="Message/DataTypes.h" alt="" coords="2091,468,2253,495"/>
+<area shape="rect" id="node35" href="$d1/d00/a03707.html" title="Message/Operations.h" alt="" coords="2183,244,2350,271"/>
+<area shape="rect" id="node18" href="$d5/d46/a03710.html" title="Message/TagMaker.h" alt="" coords="1759,393,1915,420"/>
+<area shape="rect" id="node28" href="$d2/db4/a03695.html" title="Message/Message.hpp" alt="" coords="1287,319,1455,345"/>
+<area shape="rect" id="node30" href="$dc/ddd/a04064.html" title="Utility/StaticIpplInfo.h" alt="" coords="1146,468,1310,495"/>
+<area shape="rect" id="node39" href="$de/de6/a03848.html" title="PETE/IpplTypeComputations.h" alt="" coords="777,244,991,271"/>
+<area shape="rect" id="node41" href="$d5/d12/a03851.html" title="PETE/PETE.h" alt="" coords="650,244,753,271"/>
+<area shape="rect" id="node40" href="$d3/d83/a03854.html" title="PETE/TypeComputations.h" alt="" coords="606,319,797,345"/>
+<area shape="rect" id="node42" href="$df/d11/a04037.html" title="Utility/PAssert.h" alt="" coords="129,319,255,345"/>
+</map>

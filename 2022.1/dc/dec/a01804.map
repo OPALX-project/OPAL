@@ -1,0 +1,36 @@
+<map id="src/Classic/Parser/TokenStream.h" name="src/Classic/Parser/TokenStream.h">
+<area shape="rect" id="node2" href="$d9/d27/a01763.html" title="src/Classic/Parser\l/AbsFileStream.h" alt="" coords="623,95,757,136"/>
+<area shape="rect" id="node14" href="$d1/d6b/a01775.html" title="src/Classic/Parser\l/SimpleStatement.cpp" alt="" coords="1063,95,1229,136"/>
+<area shape="rect" id="node15" href="$d2/d20/a01790.html" title="src/Classic/Parser\l/StringStream.h" alt="" coords="904,95,1039,136"/>
+<area shape="rect" id="node19" href="$d5/d12/a01799.html" title="src/Classic/Parser\l/TokenStream.cpp" alt="" coords="1254,95,1393,136"/>
+<area shape="rect" id="node20" href="$d6/d0b/a02741.html" title="src/OpalParser/IfStatement.cpp" alt="" coords="1225,281,1448,307"/>
+<area shape="rect" id="node21" href="$de/d8e/a02762.html" title="src/OpalParser/MacroStream.h" alt="" coords="2631,102,2848,129"/>
+<area shape="rect" id="node31" href="$d0/dbd/a02771.html" title="src/OpalParser/WhileStatement.cpp" alt="" coords="2019,281,2270,307"/>
+<area shape="rect" id="node3" href="$d0/d9d/a01760.html" title="src/Classic/Parser\l/AbsFileStream.cpp" alt="" coords="401,184,547,225"/>
+<area shape="rect" id="node4" href="$d7/d6d/a01769.html" title="src/Classic/Parser\l/FileStream.h" alt="" coords="623,184,757,225"/>
+<area shape="rect" id="node5" href="$d2/d9f/a13467.html" title="src/_PyOpal/Globals.cpp" alt="" coords="178,281,357,307"/>
+<area shape="rect" id="node6" href="$dd/dc1/a00212.html" title="src/AbstractObjects\l/OpalData.cpp" alt="" coords="5,273,153,315"/>
+<area shape="rect" id="node7" href="$dd/d63/a00455.html" title="src/BasicActions/Call.cpp" alt="" coords="381,281,565,307"/>
+<area shape="rect" id="node8" href="$d6/d1a/a00485.html" title="src/BasicActions/Option.cpp" alt="" coords="589,281,791,307"/>
+<area shape="rect" id="node9" href="$d0/d79/a01766.html" title="src/Classic/Parser\l/FileStream.cpp" alt="" coords="816,273,951,315"/>
+<area shape="rect" id="node10" href="$d0/df8/a02717.html" title="src/Main.cpp" alt="" coords="975,281,1077,307"/>
+<area shape="rect" id="node13" href="$d5/d95/a02720.html" title="src/opal.cpp" alt="" coords="1101,281,1201,307"/>
+<area shape="rect" id="node11" href="$d8/d26/a13545.html" title="src/_PyOpal/PyParser.cpp" alt="" coords="835,370,1019,397"/>
+<area shape="rect" id="node12" href="$de/d38/a13548.html" title="src/PyOpal/PyObjects\l/PyParser.cpp" alt="" coords="1043,363,1203,404"/>
+<area shape="rect" id="node16" href="$dd/db5/a00365.html" title="src/Attributes/Bool.cpp" alt="" coords="781,191,951,218"/>
+<area shape="rect" id="node17" href="$db/dbc/a00395.html" title="src/Attributes/Real.cpp" alt="" coords="975,191,1143,218"/>
+<area shape="rect" id="node18" href="$de/dc3/a01787.html" title="src/Classic/Parser\l/StringStream.cpp" alt="" coords="1167,184,1306,225"/>
+<area shape="rect" id="node22" href="$de/db4/a02684.html" title="src/Lines/LineTemplate.h" alt="" coords="2464,191,2647,218"/>
+<area shape="rect" id="node25" href="$d8/dd0/a02711.html" title="src/Lines/SequenceTemplate.cpp" alt="" coords="2679,281,2912,307"/>
+<area shape="rect" id="node26" href="$d1/d3c/a02714.html" title="src/Lines/SequenceTemplate.h" alt="" coords="2777,191,2995,218"/>
+<area shape="rect" id="node28" href="$da/d62/a02738.html" title="src/OpalParser/CompoundStatement.h" alt="" coords="1753,191,2022,218"/>
+<area shape="rect" id="node32" href="$dc/d80/a02756.html" title="src/OpalParser/MacroCmd.h" alt="" coords="3085,191,3285,218"/>
+<area shape="rect" id="node35" href="$da/d8e/a02759.html" title="src/OpalParser/MacroStream.cpp" alt="" coords="3309,191,3541,218"/>
+<area shape="rect" id="node23" href="$d8/d01/a02675.html" title="src/Lines/Line.cpp" alt="" coords="2295,281,2432,307"/>
+<area shape="rect" id="node24" href="$d4/d9d/a02681.html" title="src/Lines/LineTemplate.cpp" alt="" coords="2457,281,2654,307"/>
+<area shape="rect" id="node27" href="$d6/da8/a02693.html" title="src/Lines/Sequence.cpp" alt="" coords="2937,281,3110,307"/>
+<area shape="rect" id="node29" href="$d6/df4/a02735.html" title="src/OpalParser/CompoundStatement.cpp" alt="" coords="1472,281,1756,307"/>
+<area shape="rect" id="node30" href="$da/d73/a02765.html" title="src/OpalParser/OpalParser.cpp" alt="" coords="1780,281,1995,307"/>
+<area shape="rect" id="node33" href="$dd/d01/a02729.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="3135,281,3365,307"/>
+<area shape="rect" id="node34" href="$d9/d93/a02753.html" title="src/OpalParser/MacroCmd.cpp" alt="" coords="3389,281,3604,307"/>
+</map>

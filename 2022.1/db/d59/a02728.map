@@ -1,0 +1,18 @@
+<map id="src/OPALconfig.h" name="src/OPALconfig.h">
+<area shape="rect" id="node2" href="$d2/d9f/a13467.html" title="src/_PyOpal/Globals.cpp" alt="" coords="5,87,184,114"/>
+<area shape="rect" id="node3" href="$d4/dff/a01910.html" title="src/Classic/Structure\l/LossDataSink.cpp" alt="" coords="208,80,363,121"/>
+<area shape="rect" id="node4" href="$d0/df8/a02717.html" title="src/Main.cpp" alt="" coords="387,87,490,114"/>
+<area shape="rect" id="node7" href="$d5/d95/a02720.html" title="src/opal.cpp" alt="" coords="514,87,614,114"/>
+<area shape="rect" id="node8" href="$d5/d4c/a02846.html" title="src/Sample/Sampler.cpp" alt="" coords="639,87,817,114"/>
+<area shape="rect" id="node9" href="$d4/d04/a02888.html" title="src/Solvers/AMR_MG\l/AmrMultiGrid.cpp" alt="" coords="841,80,996,121"/>
+<area shape="rect" id="node10" href="$df/d48/a03071.html" title="src/Structure/DataSink.cpp" alt="" coords="1020,87,1215,114"/>
+<area shape="rect" id="node11" href="$d5/d43/a03101.html" title="src/Structure/H5PartWrapper.cpp" alt="" coords="1239,87,1470,114"/>
+<area shape="rect" id="node12" href="$da/d4a/a03107.html" title="src/Structure/H5PartWrapper\lForPC.cpp" alt="" coords="1495,80,1700,121"/>
+<area shape="rect" id="node13" href="$d0/dcd/a03113.html" title="src/Structure/H5PartWrapper\lForPT.cpp" alt="" coords="1724,80,1929,121"/>
+<area shape="rect" id="node14" href="$db/d09/a03131.html" title="src/Structure/LBalWriter.cpp" alt="" coords="1954,87,2155,114"/>
+<area shape="rect" id="node15" href="$d1/d30/a03185.html" title="src/Structure/SDDSWriter.cpp" alt="" coords="2179,87,2389,114"/>
+<area shape="rect" id="node16" href="$d2/daf/a03245.html" title="src/Track/TrackRun.cpp" alt="" coords="2413,87,2581,114"/>
+<area shape="rect" id="node17" href="$d6/d85/a03290.html" title="src/ValueDefinitions\l/RealConstant.cpp" alt="" coords="2606,80,2757,121"/>
+<area shape="rect" id="node5" href="$d8/d26/a13545.html" title="src/_PyOpal/PyParser.cpp" alt="" coords="248,177,432,203"/>
+<area shape="rect" id="node6" href="$de/d38/a13548.html" title="src/PyOpal/PyObjects\l/PyParser.cpp" alt="" coords="456,169,616,211"/>
+</map>

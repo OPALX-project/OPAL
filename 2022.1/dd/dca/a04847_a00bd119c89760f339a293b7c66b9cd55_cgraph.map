@@ -1,0 +1,10 @@
+<map id="ParallelCyclotronTracker::kick" name="ParallelCyclotronTracker::kick">
+<area shape="rect" id="node2" href="$d9/d06/a04735.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="232,5,445,32"/>
+<area shape="rect" id="node3" href="$df/d78/a07147.html#a063ebfefbbf275703add583e42f5bd5f" title="BorisPusher::kick" alt="" coords="271,56,406,83"/>
+<area shape="rect" id="node6" href="$d0/d9c/a12163.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="251,107,426,133"/>
+<area shape="rect" id="node8" href="$d0/d9c/a12163.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="253,157,425,184"/>
+<area shape="rect" id="node4" href="$dd/d3d/a05379.html#a7c7b836d3ac05230f809f8b9f52e4c86" title="The constant mass per particle. " alt="" coords="505,5,624,32"/>
+<area shape="rect" id="node5" href="$dd/d3d/a05379.html#a1d4498ce4cfa5644bb67b2686e7df9ad" title="The constant charge per particle. " alt="" coords="506,56,623,83"/>
+<area shape="rect" id="node7" href="$d0/d4e/a12159.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="493,107,636,133"/>
+<area shape="rect" id="node9" href="$d0/d4e/a12159.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="494,157,635,184"/>
+</map>

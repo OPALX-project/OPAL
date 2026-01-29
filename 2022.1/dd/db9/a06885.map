@@ -1,0 +1,8 @@
+<map id="CompoundStatement" name="CompoundStatement">
+<area shape="rect" id="node2" href="$df/d40/a06071.html" title="Interface for statements. " alt="" coords="5,260,96,287"/>
+<area shape="rect" id="node3" href="$d2/d6a/a06047.html" title="Pointer\&lt; MacroStream \&gt;" alt="" coords="120,260,304,287"/>
+<area shape="rect" id="node4" href="$da/daf/a06903.html" title="An input buffer for macro commands. " alt="" coords="158,171,266,197"/>
+<area shape="rect" id="node5" href="$d8/d7a/a06083.html" title="Abstract interface for a stream of input tokens. " alt="" coords="159,95,265,121"/>
+<area shape="rect" id="node6" href="$d9/d4d/a06051.html" title="Abstract base class for reference counted objects. " alt="" coords="125,5,206,32"/>
+<area shape="rect" id="node7" href="$d9/db8/a06079.html" title="Representation of a single input token. " alt="" coords="230,5,290,32"/>
+</map>

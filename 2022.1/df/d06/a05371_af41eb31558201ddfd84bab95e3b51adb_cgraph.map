@@ -1,0 +1,51 @@
+<map id="PartBunch::computeSelfFields_cycl" name="PartBunch::computeSelfFields_cycl">
+<area shape="rect" id="node2" href="$d9/d06/a04735.html#aeef472ade44d7753a7aefebd9a128253" title="Compute the (global) Debye length for the beam. " alt="" coords="327,212,509,253"/>
+<area shape="rect" id="node8" href="$dc/d2c/a00893.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1184,303,1231,330"/>
+<area shape="rect" id="node12" href="$dc/dc2/a07135.html#a39087f829663923b1a334339f242102d" title="PoissonSolver::computePotential" alt="" coords="300,522,536,549"/>
+<area shape="rect" id="node13" href="$d2/d2a/a07211.html#ada37e484745b325bddee658700b57bee" title="Dump a scalar or vector field to a file. " alt="" coords="335,573,501,599"/>
+<area shape="rect" id="node14" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="937,750,987,777"/>
+<area shape="rect" id="node22" href="$d9/d06/a04735.html#a1765e1263850f996593c04bfe52ff99b" title="PartBunchBase\&lt; double,\l 3 \&gt;::getCouplingConstant" alt="" coords="321,751,515,792"/>
+<area shape="rect" id="node23" href="$da/d80/a07207.html#a824da99715ba7e44401b2945b2c0c6d2" title="FieldSolver::getFieldSolverType" alt="" coords="851,1137,1073,1163"/>
+<area shape="rect" id="node24" href="$df/d42/a03623.html#ad5e75e4b4ad528c95e7d4704a8b5816f" title="Grad" alt="" coords="391,867,445,894"/>
+<area shape="rect" id="node25" href="$da/d80/a07207.html#ae1782ac4be24074a8bd6eae022ff3140" title="FieldSolver::hasValidSolver" alt="" coords="319,918,517,945"/>
+<area shape="rect" id="node26" href="$df/d06/a05371.html#ae2fb670bdaa8030400987b315341d8a8" title="resize mesh to geometry specified " alt="" coords="334,1238,502,1265"/>
+<area shape="rect" id="node36" href="$d0/d9c/a12163.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="875,1622,1049,1649"/>
+<area shape="rect" id="node39" href="$d0/d9c/a12163.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="876,1717,1048,1743"/>
+<area shape="rect" id="node41" href="$d5/d12/a03851.html#a06dc3d53220b680f16b2c655bcb86a40" title="sum" alt="" coords="937,1881,987,1907"/>
+<area shape="rect" id="node50" href="$d0/d37/a08231.html#a4de21f316101f0d08b27daafd8b69349" title="ParticleAttrib::scatter" alt="" coords="339,1943,497,1970"/>
+<area shape="rect" id="node3" href="$dc/d54/a05339.html#a11b3ef308d6b6ae5a136b3b998c3d29e" title="DistributionMoments\l::computeDebyeLength" alt="" coords="607,161,780,203"/>
+<area shape="rect" id="node4" href="$d4/d5e/a03686.html#a3f4c593649c5ad948ee3e8566bffeda6" title="allreduce" alt="" coords="921,227,1003,254"/>
+<area shape="rect" id="node5" href="$dc/d54/a05339.html#a299245e0460f9c0752c95c8b14af1628" title="DistributionMoments\l::computePlasmaParameter" alt="" coords="861,44,1063,85"/>
+<area shape="rect" id="node6" href="$dc/d2c/a00893.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="1183,22,1232,49"/>
+<area shape="rect" id="node7" href="$d2/df8/a04550.html#ae12a15e0d75307c934c8add55d2c25ac" title="Util::getGamma" alt="" coords="899,278,1025,305"/>
+<area shape="rect" id="node11" href="$dc/d54/a05339.html#aef596f0891ae9e9fd6925efa43f29025" title="DistributionMoments\l::resetPlasmaParameters" alt="" coords="869,161,1055,203"/>
+<area shape="rect" id="node9" href="$d9/dba/a05287.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1362,329,1506,355"/>
+<area shape="rect" id="node10" href="$d9/dba/a05287.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1388,278,1480,305"/>
+<area shape="rect" id="node16" href="$d5/d13/a04739.html#af5404b3339d48c4531df60b77ce628c3" title="get the name of the the additional data directory " alt="" coords="586,481,801,523"/>
+<area shape="rect" id="node17" href="$d5/d13/a04739.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="586,547,801,574"/>
+<area shape="rect" id="node18" href="$d5/d13/a04739.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="610,430,777,457"/>
+<area shape="rect" id="node20" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="623,598,764,625"/>
+<area shape="rect" id="node21" href="$d2/df8/a04550.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="641,379,746,406"/>
+<area shape="rect" id="node15" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1121,750,1293,777"/>
+<area shape="rect" id="node19" href="$d5/d13/a04739.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="886,430,1038,457"/>
+<area shape="rect" id="node27" href="$dc/dc2/a07135.html#a8c8868d1d89b6d6c5a4811384a862357" title="PoissonSolver::getXRangeMin" alt="" coords="586,1639,801,1666"/>
+<area shape="rect" id="node28" href="$dc/dc2/a07135.html#ae47c6e710a7ed54e19f124a0169e77f6" title="PoissonSolver::getXRangeMax" alt="" coords="584,1690,803,1717"/>
+<area shape="rect" id="node29" href="$dc/dc2/a07135.html#a61cbde54ba995a5342d22dc06a5d5043" title="PoissonSolver::getYRangeMin" alt="" coords="586,1741,801,1767"/>
+<area shape="rect" id="node30" href="$dc/dc2/a07135.html#ad0bb8409eb128f8357940566b76d0288" title="PoissonSolver::getYRangeMax" alt="" coords="584,902,803,929"/>
+<area shape="rect" id="node31" href="$d9/d06/a04735.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase\&lt; double,\l 3 \&gt;::getLocalNum" alt="" coords="602,953,785,995"/>
+<area shape="rect" id="node32" href="$d0/dce/a03971.html#a4b2b36162d7cd2032d0ea378d5015281" title="level2" alt="" coords="662,1019,725,1046"/>
+<area shape="rect" id="node33" href="$d9/d06/a04735.html#aca3eb11cbe8b8affeae9aef3ba398e75" title="PartBunchBase\&lt; double,\l 3 \&gt;::destroy" alt="" coords="602,1071,785,1112"/>
+<area shape="rect" id="node34" href="$d9/d06/a04735.html#a2aa97a1a0251ddfa5a1823f1befe5878" title="PartBunchBase\&lt; double,\l 3 \&gt;::update" alt="" coords="871,1243,1053,1284"/>
+<area shape="rect" id="node35" href="$d9/d06/a04735.html#ad1ee6b7f03a3b0613c452a83a5e94641" title="PartBunchBase\&lt; double,\l 3 \&gt;::boundp" alt="" coords="602,1523,785,1564"/>
+<area shape="rect" id="node38" href="$d9/d06/a04735.html#a1094c6ca28ab01f413ec84d92edb5a3f" title="PartBunchBase::get\l_bounds" alt="" coords="888,1533,1036,1575"/>
+<area shape="rect" id="node44" href="$dc/dc2/a07135.html#aba27dc16741790e5cf8d28e443748cc7" title="PoissonSolver::resizeMesh" alt="" coords="596,1187,791,1214"/>
+<area shape="rect" id="node45" href="$df/d06/a05371.html#ac69ee3930dd27996d6cccb9e1ac314be" title="PartBunch::getMesh" alt="" coords="618,1238,769,1265"/>
+<area shape="rect" id="node46" href="$de/d08/a08475.html#abcb43da49c5fdc92d3e78f392c0aeb26" title="UniformCartesian::set\l_meshSpacing" alt="" coords="611,1289,776,1331"/>
+<area shape="rect" id="node47" href="$de/d08/a08475.html#a2d9df16a9683a601a0d535cabeacfb3e" title="UniformCartesian::set\l_origin" alt="" coords="611,1355,776,1396"/>
+<area shape="rect" id="node48" href="$df/dbf/a08199.html#a1413ba19b3028a41439227c916a8f34c" title="Field::initialize" alt="" coords="635,1421,751,1447"/>
+<area shape="rect" id="node49" href="$df/d06/a05371.html#ab5787c227d333e8ec6ef5480dc2e9ffc" title="PartBunch::getFieldLayout" alt="" coords="598,1471,789,1498"/>
+<area shape="rect" id="node37" href="$d0/d4e/a12159.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="1136,1622,1279,1649"/>
+<area shape="rect" id="node40" href="$d0/d4e/a12159.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="1137,1717,1278,1743"/>
+<area shape="rect" id="node42" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1341,1881,1527,1907"/>
+<area shape="rect" id="node43" href="$d5/d12/a03851.html#a0a1cdb80c431a477e99aea03fea993fc" title="Reduction" alt="" coords="1164,1906,1251,1933"/>
+</map>

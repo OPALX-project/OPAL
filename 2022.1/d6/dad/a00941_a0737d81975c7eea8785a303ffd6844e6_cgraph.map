@@ -1,0 +1,12 @@
+<map id="operator&lt;&lt;" name="operator&lt;&lt;">
+<area shape="rect" id="node2" href="$dc/d4e/a05331.html#ae4fe55abd2178911d5ee96b8463b0272" title="CoordinateSystemTrafo\l::print" alt="" coords="152,74,327,115"/>
+<area shape="rect" id="node3" href="$d2/dc7/a05391.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="564,56,731,83"/>
+<area shape="rect" id="node6" href="$d2/dc7/a05391.html#a16e61b715e53d7394996bb56c356916e" title="Quaternion::rotate" alt="" coords="375,107,516,133"/>
+<area shape="rect" id="node4" href="$d2/dc7/a05391.html#a237c3a9dfefea10e7ec6b5f373546427" title="Quaternion::real" alt="" coords="785,5,911,32"/>
+<area shape="rect" id="node5" href="$d2/dc7/a05391.html#a8cb33fa212258498b937d7e1a4684ce2" title="Quaternion::imag" alt="" coords="781,56,915,83"/>
+<area shape="rect" id="node7" href="$d2/dc7/a05391.html#aa29522eb8e682639a9efddce09a49f6f" title="Quaternion::isUnit" alt="" coords="577,107,717,133"/>
+<area shape="rect" id="node10" href="$d2/dc7/a05391.html#afd6f04fe42007759224bbfb5c7727eb0" title="Quaternion::Norm" alt="" coords="779,157,917,184"/>
+<area shape="rect" id="node8" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="825,107,871,133"/>
+<area shape="rect" id="node9" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="965,107,1151,133"/>
+<area shape="rect" id="node11" href="$d3/d53/a01262.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="1037,157,1079,184"/>
+</map>

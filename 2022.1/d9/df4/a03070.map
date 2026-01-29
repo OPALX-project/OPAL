@@ -1,0 +1,18 @@
+<map id="src/Structure/BoundaryGeometry.h" name="src/Structure/BoundaryGeometry.h">
+<area shape="rect" id="node2" href="$dd/dc1/a00212.html" title="src/AbstractObjects\l/OpalData.cpp" alt="" coords="5,80,153,121"/>
+<area shape="rect" id="node3" href="$df/d95/a00299.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="177,80,408,121"/>
+<area shape="rect" id="node4" href="$d3/d07/a00305.html" title="src/Algorithms/ParallelTTracker.cpp" alt="" coords="432,87,681,114"/>
+<area shape="rect" id="node5" href="$d5/d8a/a00599.html" title="src/Classic/AbsBeamline\l/ElementBase.cpp" alt="" coords="706,80,887,121"/>
+<area shape="rect" id="node6" href="$d2/dd2/a02279.html" title="src/Elements/OpalCavity.cpp" alt="" coords="912,87,1119,114"/>
+<area shape="rect" id="node7" href="$dd/d3b/a02291.html" title="src/Elements/OpalCyclotron.cpp" alt="" coords="1143,87,1373,114"/>
+<area shape="rect" id="node8" href="$dc/da4/a02303.html" title="src/Elements/OpalDrift.cpp" alt="" coords="1397,87,1593,114"/>
+<area shape="rect" id="node9" href="$dd/d01/a02729.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="1617,87,1848,114"/>
+<area shape="rect" id="node10" href="$db/d6c/a02969.html" title="src/Solvers/ArbitraryDomain.cpp" alt="" coords="1873,87,2105,114"/>
+<area shape="rect" id="node11" href="$d1/df2/a02990.html" title="src/Solvers/EllipticDomain.h" alt="" coords="2129,87,2333,114"/>
+<area shape="rect" id="node13" href="$d6/d97/a03011.html" title="src/Solvers/MGPoissonSolver.cpp" alt="" coords="2254,169,2489,196"/>
+<area shape="rect" id="node14" href="$d4/d44/a03065.html" title="src/Structure/BoundaryGeometry.cpp" alt="" coords="2409,87,2669,114"/>
+<area shape="rect" id="node15" href="$df/d48/a03071.html" title="src/Structure/DataSink.cpp" alt="" coords="2694,87,2889,114"/>
+<area shape="rect" id="node16" href="$d5/dd8/a03083.html" title="src/Structure/FieldSolver.cpp" alt="" coords="2913,87,3118,114"/>
+<area shape="rect" id="node17" href="$d2/daf/a03245.html" title="src/Track/TrackRun.cpp" alt="" coords="3142,87,3310,114"/>
+<area shape="rect" id="node12" href="$da/dcd/a02987.html" title="src/Solvers/EllipticDomain.cpp" alt="" coords="2011,169,2230,196"/>
+</map>

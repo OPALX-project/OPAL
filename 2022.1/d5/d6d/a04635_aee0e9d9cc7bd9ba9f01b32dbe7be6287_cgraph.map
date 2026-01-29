@@ -1,0 +1,13 @@
+<map id="PyOpal::PyOpalObjectNS::PyOpalObject::setAttribute" name="PyOpal::PyOpalObjectNS::PyOpalObject::setAttribute">
+<area shape="rect" id="node2" href="$d2/d71/a04503.html#a331aeab2679223922cf19b456fac6882" title="Set logical value. " alt="" coords="273,56,416,83"/>
+<area shape="rect" id="node10" href="$d2/d71/a04503.html#aa92fad2ca301134087589e159653b624" title="Set real value. " alt="" coords="273,107,416,133"/>
+<area shape="rect" id="node11" href="$d2/d71/a04503.html#a2e63f83856209eba69ebd031cc58ec44" title="Set array value. " alt="" coords="256,208,433,235"/>
+<area shape="rect" id="node12" href="$d2/d71/a04503.html#a7b38ec248b1a35f814b6243e38a9a6ad" title="Set string value. " alt="" coords="269,157,421,184"/>
+<area shape="rect" id="node3" href="$da/d19/a04667.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="507,5,647,32"/>
+<area shape="rect" id="node4" href="$da/d19/a04667.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="497,157,656,184"/>
+<area shape="rect" id="node5" href="$da/d19/a04667.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="503,208,650,235"/>
+<area shape="rect" id="node7" href="$da/d19/a04667.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="481,56,672,83"/>
+<area shape="rect" id="node8" href="$d7/de9/a04715.html#a9f2de4ecdd67c51008baf6f6d247c0b1" title="Store new value. " alt="" coords="482,107,671,133"/>
+<area shape="rect" id="node9" href="$da/d19/a04667.html#a6cd34bcfad889b4215734cbc0b5eafc2" title="Define new value. " alt="" coords="523,259,630,285"/>
+<area shape="rect" id="node6" href="$d1/d64/a04675.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="720,208,919,235"/>
+</map>

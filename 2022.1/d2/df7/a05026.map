@@ -1,0 +1,11 @@
+<map id="BendBase" name="BendBase">
+<area shape="rect" id="node5" href="$db/d39/a05023.html" title="Bend2D" alt="" coords="69,304,142,331"/>
+<area shape="rect" id="node10" href="$dc/daa/a05179.html" title="Interface for solenoids. " alt="" coords="167,304,249,331"/>
+<area shape="rect" id="node2" href="$d2/d61/a05043.html" title="Interface for a single beam element. " alt="" coords="107,155,205,181"/>
+<area shape="rect" id="node3" href="$db/d78/a05071.html" title="ElementBase" alt="" coords="102,80,210,107"/>
+<area shape="rect" id="node4" href="$d9/d4d/a06051.html" title="Abstract base class for reference counted objects. " alt="" coords="115,5,197,32"/>
+<area shape="rect" id="node6" href="$dc/d07/a05175.html" title="RBend" alt="" coords="29,379,93,405"/>
+<area shape="rect" id="node8" href="$de/d61/a05191.html" title="SBend" alt="" coords="123,379,186,405"/>
+<area shape="rect" id="node7" href="$d6/d94/a05479.html" title="RBendRep" alt="" coords="5,453,93,480"/>
+<area shape="rect" id="node9" href="$db/d0d/a05495.html" title="SBendRep" alt="" coords="118,453,205,480"/>
+</map>

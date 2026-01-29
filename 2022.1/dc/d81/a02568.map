@@ -1,0 +1,20 @@
+<map id="src/Expressions/AAutomatic.h" name="src/Expressions/AAutomatic.h">
+<area shape="rect" id="node2" href="$d4/d70/a02579.html" title="Expressions/ADeferred.h" alt="" coords="491,80,674,107"/>
+<area shape="rect" id="node13" href="$dc/d22/a13611.html" title="AbstractObjects/Expressions.h" alt="" coords="43,311,261,338"/>
+<area shape="rect" id="node27" href="$d3/dd5/a00215.html" title="AbstractObjects/OpalData.h" alt="" coords="1689,311,1892,338"/>
+<area shape="rect" id="node3" href="$d7/d9a/a00152.html" title="AbstractObjects/Attribute.h" alt="" coords="935,229,1134,256"/>
+<area shape="rect" id="node18" href="$d1/d03/a02582.html" title="Expressions/AList.h" alt="" coords="367,155,515,181"/>
+<area shape="rect" id="node22" href="$d2/dca/a02606.html" title="Expressions/AValue.h" alt="" coords="651,155,811,181"/>
+<area shape="rect" id="node23" href="$d1/dc4/a02042.html" title="Utilities/LogicalError.h" alt="" coords="1372,155,1537,181"/>
+<area shape="rect" id="node25" href="$dc/dc1/a03263.html" title="Utilities/OpalException.h" alt="" coords="1562,155,1745,181"/>
+<area shape="rect" id="node4" href="$d6/db8/a00158.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="788,393,975,435"/>
+<area shape="rect" id="node9" href="$db/ddf/a00164.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="1164,304,1351,345"/>
+<area shape="rect" id="node10" href="$d9/d37/a01754.html" title="MemoryManagement/Pointer.h" alt="" coords="999,401,1220,427"/>
+<area shape="rect" id="node5" href="$db/dc0/a01757.html" title="MemoryManagement/RCObject.h" alt="" coords="1075,483,1309,509"/>
+<area shape="rect" id="node6" href="$de/db1/a00197.html" title="AbstractObjects/Invalidator.h" alt="" coords="776,483,987,509"/>
+<area shape="rect" id="node14" href="$d5/db3/a01751.html" title="MemoryManagement/OwnPtr.h" alt="" coords="94,401,317,427"/>
+<area shape="rect" id="node15" href="$d3/d92/a01796.html" title="Parser/Token.h" alt="" coords="459,401,575,427"/>
+<area shape="rect" id="node19" href="$dc/d34/a02627.html" title="Expressions/SConstant.h" alt="" coords="383,229,566,256"/>
+<area shape="rect" id="node24" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="1554,229,1753,256"/>
+<area shape="rect" id="node28" href="$d3/de5/a00209.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="1740,401,1977,427"/>
+</map>

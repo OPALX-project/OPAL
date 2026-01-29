@@ -1,0 +1,10 @@
+<map id="ParallelCyclotronTracker::globalToLocal" name="ParallelCyclotronTracker::globalToLocal">
+<area shape="rect" id="node2" href="$dd/dca/a04847.html#aba83f00e82d1cb7ae648db1c9c77c9d1" title="ParallelCyclotronTracker\l::rotateWithQuaternion" alt="" coords="232,70,411,111"/>
+<area shape="rect" id="node6" href="$d0/d9c/a12163.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="234,157,409,184"/>
+<area shape="rect" id="node8" href="$d0/d9c/a12163.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="235,208,407,235"/>
+<area shape="rect" id="node3" href="$d9/d06/a04735.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="459,5,672,32"/>
+<area shape="rect" id="node4" href="$d3/d53/a01262.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="544,56,587,83"/>
+<area shape="rect" id="node5" href="$d3/d53/a01262.html#a01046d3dab4c1e9ad6b2b6dee8cc8310" title="Vector cross product. " alt="" coords="537,107,593,133"/>
+<area shape="rect" id="node7" href="$d0/d4e/a12159.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="494,157,637,184"/>
+<area shape="rect" id="node9" href="$d0/d4e/a12159.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="495,208,636,235"/>
+</map>

@@ -1,0 +1,17 @@
+<map id="Distribution::setDistParametersMultiGauss" name="Distribution::setDistParametersMultiGauss">
+<area shape="rect" id="node2" href="$de/d6b/a03845.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="612,17,657,44"/>
+<area shape="rect" id="node4" href="$d2/d71/a04503.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="563,112,706,139"/>
+<area shape="rect" id="node8" href="$d6/dbd/a06515.html#a7ea77a275831927103deb7901428e031" title="Distribution::setSigmaP_m" alt="" coords="281,169,475,196"/>
+<area shape="rect" id="node16" href="$d6/dbd/a06515.html#a423ed2d1a4a9f6b0f58ae201d3cadf8b" title="Distribution::setSigmaR_m" alt="" coords="280,68,476,95"/>
+<area shape="rect" id="node3" href="$d4/d61/a11343.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="796,5,981,32"/>
+<area shape="rect" id="node5" href="$da/d19/a04667.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="793,56,984,83"/>
+<area shape="rect" id="node6" href="$da/d19/a04667.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="819,107,959,133"/>
+<area shape="rect" id="node7" href="$da/d19/a04667.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="809,157,968,184"/>
+<area shape="rect" id="node9" href="$d0/dce/a03971.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="609,188,660,215"/>
+<area shape="rect" id="node15" href="$d2/df8/a04550.html#a276345c918fce880c783438bf33641d2" title="Util::convertMomentumEVover\lCToBetaGamma" alt="" coords="524,239,745,281"/>
+<area shape="rect" id="node10" href="$d8/d4f/a12119.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="803,208,975,235"/>
+<area shape="rect" id="node11" href="$df/da4/a12131.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1515,157,1650,184"/>
+<area shape="rect" id="node12" href="$d8/d4f/a12119.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1032,208,1219,235"/>
+<area shape="rect" id="node13" href="$d8/d4f/a12119.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1267,208,1464,235"/>
+<area shape="rect" id="node14" href="$df/da4/a12131.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1512,208,1653,235"/>
+</map>

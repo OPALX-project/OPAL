@@ -1,0 +1,28 @@
+<map id="src/Sample/SampleGaussianSequence.h" name="src/Sample/SampleGaussianSequence.h">
+<area shape="rect" id="node2" href="$de/d09/a02861.html" title="Sample/SamplingMethod.h" alt="" coords="486,319,682,345"/>
+<area shape="rect" id="node22" href="$d6/d41/a02222.html" title="Utilities/Util.h" alt="" coords="1078,95,1190,121"/>
+<area shape="rect" id="node3" href="$d9/d4d/a02840.html" title="Sample/SampleIndividual.h" alt="" coords="1014,393,1214,420"/>
+<area shape="rect" id="node14" href="$d0/dd3/a04121.html" title="Comm/types.h" alt="" coords="51,393,168,420"/>
+<area shape="rect" id="node16" href="$d5/d11/a04313.html" title="Util/CmdArguments.h" alt="" coords="314,393,476,420"/>
+<area shape="rect" id="node10" href="$dc/dc1/a03263.html" title="Utilities/OpalException.h" alt="" coords="809,475,992,502"/>
+<area shape="rect" id="node11" href="$d9/da1/a01976.html" title="Utilities/ClassicException.h" alt="" coords="809,557,1008,584"/>
+<area shape="rect" id="node21" href="$d3/d69/a04328.html" title="Util/OptPilotException.h" alt="" coords="494,557,672,584"/>
+<area shape="rect" id="node23" href="$de/dc4/a13617.html" title="Algorithms/Vektor.h" alt="" coords="1389,244,1540,271"/>
+<area shape="rect" id="node46" href="$d7/d59/a01013.html" title="Algorithms/Quaternion.h" alt="" coords="1407,169,1588,196"/>
+<area shape="rect" id="node24" href="$d0/dd7/a13620.html" title="AppTypes/Vektor.h" alt="" coords="1507,319,1648,345"/>
+<area shape="rect" id="node25" href="$df/d11/a04037.html" title="Utility/PAssert.h" alt="" coords="1448,557,1574,584"/>
+<area shape="rect" id="node28" href="$d6/d1c/a03692.html" title="Message/Message.h" alt="" coords="3468,475,3620,502"/>
+<area shape="rect" id="node35" href="$de/d6b/a03845.html" title="PETE/IpplExpressions.h" alt="" coords="3160,393,3332,420"/>
+<area shape="rect" id="node38" href="$db/dee/a03338.html" title="AppTypes/TSVMeta.h" alt="" coords="2142,393,2299,420"/>
+<area shape="rect" id="node33" href="$d2/db4/a03695.html" title="Message/Message.hpp" alt="" coords="3336,557,3504,584"/>
+<area shape="rect" id="node34" href="$dd/d27/a03989.html" title="Utility/IpplInfo.h" alt="" coords="3333,632,3460,659"/>
+<area shape="rect" id="node36" href="$de/de6/a03848.html" title="PETE/IpplTypeComputations.h" alt="" coords="3229,475,3444,502"/>
+<area shape="rect" id="node37" href="$d5/d12/a03851.html" title="PETE/PETE.h" alt="" coords="3102,475,3205,502"/>
+<area shape="rect" id="node39" href="$d3/d55/a03341.html" title="AppTypes/TSVMetaAssign.h" alt="" coords="1788,475,1988,502"/>
+<area shape="rect" id="node40" href="$d9/dd9/a03359.html" title="AppTypes/TSVMetaUnary.h" alt="" coords="2012,475,2207,502"/>
+<area shape="rect" id="node41" href="$da/dcf/a03344.html" title="AppTypes/TSVMetaBinary.h" alt="" coords="2231,475,2428,502"/>
+<area shape="rect" id="node42" href="$d1/d3a/a03353.html" title="AppTypes/TSVMetaDot.h" alt="" coords="2453,475,2633,502"/>
+<area shape="rect" id="node43" href="$d6/d18/a03350.html" title="AppTypes/TSVMetaCross.h" alt="" coords="2657,475,2850,502"/>
+<area shape="rect" id="node44" href="$d2/deb/a03356.html" title="AppTypes/TSVMetaDotDot.h" alt="" coords="2875,475,3078,502"/>
+<area shape="rect" id="node45" href="$d9/dc9/a03347.html" title="AppTypes/TSVMetaCompare.h" alt="" coords="1548,475,1764,502"/>
+</map>
