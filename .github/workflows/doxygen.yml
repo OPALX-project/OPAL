@@ -20,7 +20,7 @@ jobs:
       - name: Install Graphviz
         run: sudo apt-get install -y graphviz
       - name: Create docs directory
-        run: mkdir -p ./docs/html
+        run: mkdir -p ./doc/html
       - name: Run Doxygen to generate documentation
         run: doxygen Doxyfile.in
 
@@ -35,7 +35,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './docs/html'
+          path: './doc/html'
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
