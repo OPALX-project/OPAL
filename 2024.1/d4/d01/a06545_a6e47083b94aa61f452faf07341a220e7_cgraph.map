@@ -1,0 +1,51 @@
+<map id="OpalKicker::update" name="OpalKicker::update">
+<area shape="rect" id="node2" href="$df/df3/a04641.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="525,230,683,256"/>
+<area shape="rect" id="node3" href="$d7/dd4/a04689.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="234,1307,401,1334"/>
+<area shape="rect" id="node5" href="$d7/dd4/a04689.html#a11b79b143773676215123d1a8d351dff" title="Return value of global reference momentum. " alt="" coords="253,1358,381,1384"/>
+<area shape="rect" id="node8" href="$dd/d3c/a04466.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="791,280,934,307"/>
+<area shape="rect" id="node12" href="$d2/d8f/a05365.html#a9348a2959a4e8ef1e45222d831d6a54e" title="Set horizontal field component in Teslas. " alt="" coords="242,1408,393,1435"/>
+<area shape="rect" id="node14" href="$d2/d8f/a05365.html#a9538e1f1edcbfdaee30a2ed9429dcaf6" title="Set vertical field component in Teslas. " alt="" coords="242,1459,393,1486"/>
+<area shape="rect" id="node16" href="$de/db1/a04997.html#ad717ad19fc63fbd9cb69c5162ea0d393" title="Corrector::setDesignEnergy" alt="" coords="217,1168,417,1195"/>
+<area shape="rect" id="node25" href="$da/d7c/a05021.html#a2b59853ce20c48c2436d0c136adeea69" title="Set design length. " alt="" coords="200,1510,435,1536"/>
+<area shape="rect" id="node28" href="$de/db1/a04997.html#a120fa88ad234248b385952408e15b5fd" title="Corrector::setKickField" alt="" coords="233,1560,401,1587"/>
+<area shape="rect" id="node29" href="$de/db1/a04997.html#ae5100ef61ff3fbf37c2da18dc2df1ae0" title="Corrector::setKickX" alt="" coords="244,1611,391,1638"/>
+<area shape="rect" id="node30" href="$de/db1/a04997.html#ac1d6671534933f127ef432f5dbdd572b" title="Corrector::setKickY" alt="" coords="244,1662,391,1688"/>
+<area shape="rect" id="node31" href="$de/dd7/a06529.html#ae7ef6d492cbb543c20367b7e4a2d86f5" title="Update the embedded CLASSIC element. " alt="" coords="238,642,397,668"/>
+<area shape="rect" id="node48" href="$de/dd7/a06529.html#ab0c3e3b9796fc7f288fcfddb4a39080f" title="Transmit the `‘unknown’&#39; (not known to OPAL) attributes to CLASSIC. " alt="" coords="207,154,427,180"/>
+<area shape="rect" id="node4" href="$d7/dd4/a04689.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="528,1307,680,1334"/>
+<area shape="rect" id="node6" href="$d2/ddc/a04717.html#a10a795d2989714b067c2fbc3e3e8ec19" title="Return real value. " alt="" coords="515,1358,693,1384"/>
+<area shape="rect" id="node7" href="$da/d54/a04673.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="781,1358,944,1384"/>
+<area shape="rect" id="node9" href="$d3/de5/a04617.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="1000,407,1191,434"/>
+<area shape="rect" id="node10" href="$d3/de5/a04617.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="1025,306,1165,332"/>
+<area shape="rect" id="node11" href="$d3/de5/a04617.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="1016,356,1175,383"/>
+<area shape="rect" id="node13" href="$d5/d81/a05641.html#afc2b7d1d7eada7a0bc8672cb52fc739b" title="Set horizontal component. " alt="" coords="530,1408,678,1435"/>
+<area shape="rect" id="node15" href="$d5/d81/a05641.html#ad7dc2863877ae077d8a1b45dc6eb463c" title="Set vertical component. " alt="" coords="530,1459,678,1486"/>
+<area shape="rect" id="node17" href="$d8/d7e/a05561.html#a11bff484df0d6137580170260b3fd1c6" title="Get design length. " alt="" coords="494,1190,714,1232"/>
+<area shape="rect" id="node18" href="$de/db1/a04997.html#aea232847eac725c85bfa834fb36d5ad2" title="Return the corrector geometry. " alt="" coords="516,1256,692,1283"/>
+<area shape="rect" id="node19" href="$d7/d47/a04685.html#af51331c43ea82142dd6d237e6e3e5bfd" title="PartBunchBase::getM" alt="" coords="525,1139,683,1166"/>
+<area shape="rect" id="node20" href="$d3/d4f/a00761.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="579,1088,629,1115"/>
+<area shape="rect" id="node24" href="$d3/d4f/a00761.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="839,1022,886,1048"/>
+<area shape="rect" id="node21" href="$d7/dc3/a05241.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="812,1072,913,1099"/>
+<area shape="rect" id="node22" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1023,784,1167,811"/>
+<area shape="rect" id="node23" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1049,944,1141,971"/>
+<area shape="rect" id="node26" href="$da/d7c/a05021.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="503,1510,705,1536"/>
+<area shape="rect" id="node27" href="$d0/d8e/a05537.html#a4d338ebcb0efefa851ff4bdc08f7efb2" title="Set geometry length. " alt="" coords="499,1561,709,1602"/>
+<area shape="rect" id="node32" href="$d4/d27/a05341.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="521,987,687,1014"/>
+<area shape="rect" id="node35" href="$d3/d4f/a00761.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="582,718,626,744"/>
+<area shape="rect" id="node36" href="$d3/d4f/a00761.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="842,768,883,795"/>
+<area shape="rect" id="node37" href="$da/d7c/a05021.html#a106c7760d3c2fbb2b3f67838f53fba26" title="ElementBase::fixPosition" alt="" coords="512,819,696,846"/>
+<area shape="rect" id="node38" href="$de/dd7/a06529.html#a05ec70a49ff5c27d61d32692a4f8bd49" title="OpalElement::getApert" alt="" coords="519,331,689,358"/>
+<area shape="rect" id="node40" href="$dd/d3c/a04466.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="791,382,935,408"/>
+<area shape="rect" id="node41" href="$dd/d3c/a04466.html#ab98e27fb1c758b0a63d9e242fcbe68e6" title="Get array value. " alt="" coords="773,432,952,459"/>
+<area shape="rect" id="node42" href="$da/d7c/a05021.html#a14dd20e65c467dfa110245c52f4f2b5e" title="ElementBase::setAperture" alt="" coords="508,870,700,896"/>
+<area shape="rect" id="node43" href="$da/d7c/a05021.html#a9174a8ab7e9f408d3e901561018f3c5c" title="ElementBase::setCSTrafoGlobal2\lLocal" alt="" coords="487,921,721,962"/>
+<area shape="rect" id="node44" href="$da/d7c/a05021.html#a015eabbc7163b06af9ab098fda26eee8" title="Access to ELEMEDGE attribute. " alt="" coords="483,382,725,408"/>
+<area shape="rect" id="node45" href="$da/d7c/a05021.html#a772112d8820ef7c07760f1ea80f2bd32" title="ElementBase::setFlagDelete\lOnTransverseExit" alt="" coords="501,433,707,474"/>
+<area shape="rect" id="node46" href="$da/d7c/a05021.html#a38684f3be77a11ffff26a8896e93549d" title="ElementBase::setMisalignment" alt="" coords="492,499,716,526"/>
+<area shape="rect" id="node47" href="$da/d7c/a05021.html#a86e24ebba296fc816d0dcb188537c874" title="Set rotation about z axis in bend frame. " alt="" coords="509,550,699,592"/>
+<area shape="rect" id="node33" href="$d4/d27/a05341.html#a237c3a9dfefea10e7ec6b5f373546427" title="Quaternion::real" alt="" coords="799,971,926,998"/>
+<area shape="rect" id="node34" href="$d4/d27/a05341.html#a8cb33fa212258498b937d7e1a4684ce2" title="Quaternion::imag" alt="" coords="795,920,930,947"/>
+<area shape="rect" id="node39" href="$dd/d3c/a04466.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="786,331,939,358"/>
+<area shape="rect" id="node49" href="$d3/de5/a04617.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="531,128,677,155"/>
+<area shape="rect" id="node50" href="$da/d7c/a05021.html#a5c0cf4c10bceff7bc9fb225bae470174" title="Set value of an attribute. " alt="" coords="507,179,701,206"/>
+</map>

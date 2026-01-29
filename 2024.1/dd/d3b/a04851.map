@@ -1,0 +1,7 @@
+<map id="Attributes::BoolArray" name="Attributes::BoolArray">
+<area shape="rect" id="node2" href="$d4/d0f/a04625.html" title="Abstract base class for attribute parsers. " alt="" coords="19,260,150,287"/>
+<area shape="rect" id="node3" href="$d8/dc4/a05997.html" title="Abstract base class for reference counted objects. " alt="" coords="32,5,113,32"/>
+<area shape="rect" id="node5" href="$d9/dd9/a04621.html" title="Abstract base class for attribute values of different types. " alt="" coords="133,81,244,108"/>
+<area shape="rect" id="node4" href="$d7/d00/a05993.html" title="Pointer\&lt; AttributeBase \&gt;" alt="" coords="101,171,287,197"/>
+<area shape="rect" id="node6" href="$db/d7c/a04669.html" title="Abstract base class for references which must be invalidated when an. " alt="" coords="143,5,235,32"/>
+</map>

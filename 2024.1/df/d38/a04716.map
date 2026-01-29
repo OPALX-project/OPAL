@@ -1,0 +1,9 @@
+<map id="ValueDefinition" name="ValueDefinition">
+<area shape="rect" id="node4" href="$dd/d8c/a07325.html" title="BoolConstant" alt="" coords="5,229,115,256"/>
+<area shape="rect" id="node5" href="$d0/d9d/a07329.html" title="RealConstant" alt="" coords="139,229,247,256"/>
+<area shape="rect" id="node6" href="$db/dc8/a07333.html" title="RealVariable" alt="" coords="271,229,374,256"/>
+<area shape="rect" id="node7" href="$d9/da9/a07337.html" title="RealVector" alt="" coords="399,229,489,256"/>
+<area shape="rect" id="node8" href="$da/dea/a07341.html" title="StringConstant" alt="" coords="514,229,633,256"/>
+<area shape="rect" id="node2" href="$da/d54/a04673.html" title="The base class for all OPAL objects. " alt="" coords="291,80,355,107"/>
+<area shape="rect" id="node3" href="$d8/dc4/a05997.html" title="Abstract base class for reference counted objects. " alt="" coords="282,5,363,32"/>
+</map>

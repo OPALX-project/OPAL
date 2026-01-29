@@ -1,0 +1,51 @@
+<map id="OpalVariableRFCavityFringeField::update" name="OpalVariableRFCavityFringeField::update">
+<area shape="rect" id="node2" href="$d7/da9/a06689.html#adf7ddf42e3e25c1b838e401e64ebf83a" title="OpalVariableRFCavityFringe\lField::convertToUnsigned" alt="" coords="288,5,491,47"/>
+<area shape="rect" id="node6" href="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="669,122,715,149"/>
+<area shape="rect" id="node8" href="$df/df3/a04641.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="613,357,771,383"/>
+<area shape="rect" id="node9" href="$dd/d3c/a04466.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="892,709,1035,735"/>
+<area shape="rect" id="node13" href="$dd/d3c/a04466.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="887,962,1040,989"/>
+<area shape="rect" id="node14" href="$d6/d88/a05205.html#a7c8d98a2b26cfdf5edecf7b540bff45a" title="VariableRFCavity::setAmplitudeName" alt="" coords="256,290,523,317"/>
+<area shape="rect" id="node15" href="$d7/dd9/a05209.html#aebc41c64f9c79708faea7432ef8f8aff" title="VariableRFCavityFringeField\l::setCavityCentre" alt="" coords="288,341,491,383"/>
+<area shape="rect" id="node16" href="$df/df3/a04641.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="310,407,469,434"/>
+<area shape="rect" id="node17" href="$d7/dd9/a05209.html#afde99d278bde249e9c617aefe7a75689" title="VariableRFCavityFringeField\l::setEndField" alt="" coords="288,123,491,164"/>
+<area shape="rect" id="node18" href="$d6/d88/a05205.html#ab9df196b112c39d54ef5b8bd5984c830" title="VariableRFCavity::setFrequencyName" alt="" coords="257,525,522,551"/>
+<area shape="rect" id="node19" href="$d6/d88/a05205.html#a2eb9ef6f417a59735fb1a3ed84495830" title="VariableRFCavity::setHeight" alt="" coords="288,575,491,602"/>
+<area shape="rect" id="node20" href="$d6/d88/a05205.html#aa11ff1d2b9202074e049fe06050feb8c" title="VariableRFCavity::setLength" alt="" coords="861,189,1065,215"/>
+<area shape="rect" id="node24" href="$d7/dd9/a05209.html#a88fab20b3c9447fdcbc8770874181f32" title="VariableRFCavityFringeField\l::setMaxOrder" alt="" coords="288,459,491,500"/>
+<area shape="rect" id="node26" href="$d6/d88/a05205.html#a4e6a4da0deefc2bf3932128cd95d70fe" title="VariableRFCavity::setPhaseName" alt="" coords="270,731,509,758"/>
+<area shape="rect" id="node27" href="$d6/d88/a05205.html#abc24e63bf8b68c9d3ff867cc07c21eba" title="VariableRFCavity::setWidth" alt="" coords="290,782,489,809"/>
+<area shape="rect" id="node28" href="$d3/d4f/a00761.html#ad84dbecae2d8ab299d32325699bf4da9" title="Hyperbolic tangent. " alt="" coords="364,1215,415,1242"/>
+<area shape="rect" id="node35" href="$de/dd7/a06529.html#ae7ef6d492cbb543c20367b7e4a2d86f5" title="Update the embedded CLASSIC element. " alt="" coords="310,681,469,707"/>
+<area shape="rect" id="node3" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1571,62,1617,89"/>
+<area shape="rect" id="node5" href="$dd/d51/a03842.html#ae29244719985f3e4cbc22b58064177de" title="floor" alt="" coords="667,63,717,90"/>
+<area shape="rect" id="node4" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1685,189,1871,215"/>
+<area shape="rect" id="node7" href="$d7/d47/a04685.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="888,122,1039,149"/>
+<area shape="rect" id="node10" href="$d3/de5/a04617.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="1127,905,1318,931"/>
+<area shape="rect" id="node11" href="$d3/de5/a04617.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="1153,766,1293,793"/>
+<area shape="rect" id="node12" href="$d3/de5/a04617.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="1143,829,1302,855"/>
+<area shape="rect" id="node21" href="$d8/d7e/a05561.html#a57fcc99bad2c6e5faaaa117bb82e8f36" title="Set design length. " alt="" coords="1113,181,1332,223"/>
+<area shape="rect" id="node22" href="$df/dfa/a03533.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="1416,189,1467,215"/>
+<area shape="rect" id="node23" href="$df/dfa/a03533.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1551,214,1637,241"/>
+<area shape="rect" id="node25" href="$d7/dd9/a05209.html#ab701ae90099b02a9f2b1ca465cc8ea8b" title="VariableRFCavityFringeField\l::initialiseCoefficients" alt="" coords="591,291,793,332"/>
+<area shape="rect" id="node29" href="$d3/d4f/a00761.html#a6b476cfe9b59176715d2f942090c5ad3" title="Hyperbolic cosine. " alt="" coords="666,1266,718,1293"/>
+<area shape="rect" id="node32" href="$d3/d4f/a00761.html#aceb922162125d4dbbfcf70831c93fd28" title="Hyperbolic sine. " alt="" coords="939,1266,988,1293"/>
+<area shape="rect" id="node30" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1151,1114,1295,1141"/>
+<area shape="rect" id="node33" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1177,1215,1269,1242"/>
+<area shape="rect" id="node31" href="$df/dfa/a03533.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1418,265,1465,291"/>
+<area shape="rect" id="node34" href="$d7/dc3/a05241.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1380,1215,1503,1242"/>
+<area shape="rect" id="node36" href="$d4/d27/a05341.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="609,861,775,887"/>
+<area shape="rect" id="node39" href="$d3/d4f/a00761.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="670,1165,714,1191"/>
+<area shape="rect" id="node40" href="$d3/d4f/a00761.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="943,1114,984,1141"/>
+<area shape="rect" id="node41" href="$da/d7c/a05021.html#a106c7760d3c2fbb2b3f67838f53fba26" title="ElementBase::fixPosition" alt="" coords="600,1013,784,1039"/>
+<area shape="rect" id="node42" href="$de/dd7/a06529.html#a05ec70a49ff5c27d61d32692a4f8bd49" title="OpalElement::getApert" alt="" coords="607,962,777,989"/>
+<area shape="rect" id="node43" href="$dd/d3c/a04466.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="891,759,1035,786"/>
+<area shape="rect" id="node44" href="$dd/d3c/a04466.html#ab98e27fb1c758b0a63d9e242fcbe68e6" title="Get array value. " alt="" coords="874,911,1053,938"/>
+<area shape="rect" id="node45" href="$da/d7c/a05021.html#a14dd20e65c467dfa110245c52f4f2b5e" title="ElementBase::setAperture" alt="" coords="596,509,788,535"/>
+<area shape="rect" id="node46" href="$da/d7c/a05021.html#a9174a8ab7e9f408d3e901561018f3c5c" title="ElementBase::setCSTrafoGlobal2\lLocal" alt="" coords="575,560,809,601"/>
+<area shape="rect" id="node47" href="$da/d7c/a05021.html#a015eabbc7163b06af9ab098fda26eee8" title="Access to ELEMEDGE attribute. " alt="" coords="571,626,813,653"/>
+<area shape="rect" id="node48" href="$da/d7c/a05021.html#a772112d8820ef7c07760f1ea80f2bd32" title="ElementBase::setFlagDelete\lOnTransverseExit" alt="" coords="589,677,795,719"/>
+<area shape="rect" id="node49" href="$da/d7c/a05021.html#a38684f3be77a11ffff26a8896e93549d" title="ElementBase::setMisalignment" alt="" coords="580,743,804,770"/>
+<area shape="rect" id="node50" href="$da/d7c/a05021.html#a86e24ebba296fc816d0dcb188537c874" title="Set rotation about z axis in bend frame. " alt="" coords="597,795,787,836"/>
+<area shape="rect" id="node37" href="$d4/d27/a05341.html#a237c3a9dfefea10e7ec6b5f373546427" title="Quaternion::real" alt="" coords="900,810,1027,837"/>
+<area shape="rect" id="node38" href="$d4/d27/a05341.html#a8cb33fa212258498b937d7e1a4684ce2" title="Quaternion::imag" alt="" coords="896,861,1031,887"/>
+</map>

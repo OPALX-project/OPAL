@@ -1,0 +1,23 @@
+<map id="src/OpalParser/OpalParser.h" name="src/OpalParser/OpalParser.h">
+<area shape="rect" id="node2" href="$d0/d89/a00071.html" title="src/AbstractObjects\l/OpalData.cpp" alt="" coords="5,80,153,121"/>
+<area shape="rect" id="node3" href="$da/de0/a00317.html" title="src/BasicActions/Call.cpp" alt="" coords="178,87,362,114"/>
+<area shape="rect" id="node4" href="$d0/df5/a02576.html" title="src/Lines/SequenceParser.cpp" alt="" coords="124,177,336,203"/>
+<area shape="rect" id="node5" href="$d4/d70/a02579.html" title="src/Lines/SequenceParser.h" alt="" coords="437,87,634,114"/>
+<area shape="rect" id="node7" href="$d1/d03/a02582.html" title="src/Lines/SequenceTemplate.cpp" alt="" coords="559,177,792,203"/>
+<area shape="rect" id="node8" href="$d4/d61/a02588.html" title="src/Main.cpp" alt="" coords="709,87,812,114"/>
+<area shape="rect" id="node10" href="$d1/de9/a02591.html" title="src/opal.cpp" alt="" coords="836,87,936,114"/>
+<area shape="rect" id="node11" href="$d8/d09/a02624.html" title="src/OpalParser/MacroCmd.cpp" alt="" coords="960,87,1175,114"/>
+<area shape="rect" id="node12" href="$dd/d32/a02636.html" title="src/OpalParser/OpalParser.cpp" alt="" coords="1199,87,1413,114"/>
+<area shape="rect" id="node13" href="$dd/d07/a03233.html" title="src/Track/TrackParser.h" alt="" coords="1438,87,1606,114"/>
+<area shape="rect" id="node6" href="$db/d44/a02564.html" title="src/Lines/Sequence.cpp" alt="" coords="361,177,534,203"/>
+<area shape="rect" id="node9" href="$d0/dbd/a02771.html" title="src/PyOpal/PyObjects\l/PyParser.cpp" alt="" coords="817,169,977,211"/>
+<area shape="rect" id="node14" href="$d9/d65/a03215.html" title="src/Track/Track.h" alt="" coords="1009,177,1139,203"/>
+<area shape="rect" id="node19" href="$d1/d48/a03218.html" title="src/Track/TrackCmd.cpp" alt="" coords="1408,259,1583,285"/>
+<area shape="rect" id="node20" href="$d7/de1/a03224.html" title="src/Track/TrackEnd.cpp" alt="" coords="1607,259,1775,285"/>
+<area shape="rect" id="node22" href="$df/dc9/a03230.html" title="src/Track/TrackParser.cpp" alt="" coords="1584,177,1767,203"/>
+<area shape="rect" id="node15" href="$d8/d01/a02675.html" title="src/Optimize/OptimizeCmd.cpp" alt="" coords="1159,259,1383,285"/>
+<area shape="rect" id="node16" href="$d1/de5/a02822.html" title="src/Sample/SampleCmd.cpp" alt="" coords="312,259,516,285"/>
+<area shape="rect" id="node17" href="$de/d27/a03002.html" title="src/Solvers/MGPoissonSolver.cpp" alt="" coords="541,259,775,285"/>
+<area shape="rect" id="node18" href="$df/d1e/a03212.html" title="src/Track/Track.cpp" alt="" coords="799,259,943,285"/>
+<area shape="rect" id="node21" href="$d5/de9/a03236.html" title="src/Track/TrackRun.cpp" alt="" coords="967,259,1135,285"/>
+</map>

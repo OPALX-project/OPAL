@@ -1,0 +1,6 @@
+<map id="ElementBase::getEntrance" name="ElementBase::getEntrance">
+<area shape="rect" id="node2" href="$d0/d8e/a05537.html#a5db85da1c96e5be8ffbdd0b2b913be47" title="Get entrance position. " alt="" coords="248,5,463,32"/>
+<area shape="rect" id="node5" href="$da/d7c/a05021.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="254,56,457,83"/>
+<area shape="rect" id="node3" href="$d0/d8e/a05537.html#a801847a7293b13d6f3e589d14e705385" title="Get origin position. " alt="" coords="511,5,707,32"/>
+<area shape="rect" id="node4" href="$d0/d8e/a05537.html#ad65fbb978aab956e163378ef589d74c0" title="Get arc length. " alt="" coords="755,5,977,32"/>
+</map>

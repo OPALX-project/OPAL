@@ -1,0 +1,11 @@
+<map id="src/AbstractObjects/Table.h" name="src/AbstractObjects/Table.h">
+<area shape="rect" id="node2" href="$d0/d89/a00071.html" title="src/AbstractObjects\l/OpalData.cpp" alt="" coords="5,95,153,136"/>
+<area shape="rect" id="node3" href="$db/dab/a00089.html" title="src/AbstractObjects\l/Table.cpp" alt="" coords="177,95,325,136"/>
+<area shape="rect" id="node4" href="$dd/db5/a00365.html" title="src/BasicActions/Select.cpp" alt="" coords="349,102,548,129"/>
+<area shape="rect" id="node5" href="$d4/da8/a02444.html" title="src/Expressions/AColumn.cpp" alt="" coords="573,102,786,129"/>
+<area shape="rect" id="node6" href="$dc/d5c/a02459.html" title="src/Expressions/ARow.cpp" alt="" coords="810,102,999,129"/>
+<area shape="rect" id="node7" href="$d2/d35/a02480.html" title="src/Expressions/Expressions.cpp" alt="" coords="1023,102,1255,129"/>
+<area shape="rect" id="node8" href="$d6/d90/a02492.html" title="src/Expressions/SCell.cpp" alt="" coords="1279,102,1466,129"/>
+<area shape="rect" id="node9" href="$d9/dc1/a03194.html" title="src/Tables/List.cpp" alt="" coords="1491,102,1631,129"/>
+<area shape="rect" id="node10" href="$d9/d4f/a03206.html" title="src/Tables/Selector.cpp" alt="" coords="1655,102,1824,129"/>
+</map>

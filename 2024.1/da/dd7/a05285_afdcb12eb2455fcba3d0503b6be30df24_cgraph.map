@@ -1,0 +1,11 @@
+<map id="CoordinateSystemTrafo::invert" name="CoordinateSystemTrafo::invert">
+<area shape="rect" id="node2" href="$d4/d27/a05341.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="417,56,584,83"/>
+<area shape="rect" id="node5" href="$d4/d27/a05341.html#a16e61b715e53d7394996bb56c356916e" title="Quaternion::rotate" alt="" coords="228,107,369,133"/>
+<area shape="rect" id="node3" href="$d4/d27/a05341.html#a237c3a9dfefea10e7ec6b5f373546427" title="Quaternion::real" alt="" coords="638,5,765,32"/>
+<area shape="rect" id="node4" href="$d4/d27/a05341.html#a8cb33fa212258498b937d7e1a4684ce2" title="Quaternion::imag" alt="" coords="634,56,769,83"/>
+<area shape="rect" id="node6" href="$d4/d27/a05341.html#aa29522eb8e682639a9efddce09a49f6f" title="Quaternion::isUnit" alt="" coords="431,107,571,133"/>
+<area shape="rect" id="node9" href="$d4/d27/a05341.html#afd6f04fe42007759224bbfb5c7727eb0" title="Quaternion::Norm" alt="" coords="632,157,771,184"/>
+<area shape="rect" id="node7" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="679,107,724,133"/>
+<area shape="rect" id="node8" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="819,107,1004,133"/>
+<area shape="rect" id="node10" href="$d0/d61/a01130.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="890,157,933,184"/>
+</map>

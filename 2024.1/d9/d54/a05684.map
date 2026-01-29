@@ -1,0 +1,12 @@
+<map id="EMField" name="EMField">
+<area shape="rect" id="node2" href="$db/d56/a05653.html" title="Representation for a single magnetic multipole field. " alt="" coords="5,80,167,121"/>
+<area shape="rect" id="node3" href="$d6/d2b/a05861.html" title="A zero electromagnetic field. " alt="" coords="191,87,269,114"/>
+<area shape="rect" id="node4" href="$d9/d28/a05881.html" title="Abstract base class for static electric fields. " alt="" coords="293,87,431,114"/>
+<area shape="rect" id="node7" href="$d3/d87/a05885.html" title="Abstract base class for static magnetic fields. " alt="" coords="455,87,603,114"/>
+<area shape="rect" id="node5" href="$d2/d57/a05665.html" title="ConstEzField" alt="" coords="310,169,414,196"/>
+<area shape="rect" id="node6" href="$de/d8f/a05865.html" title="OscillatingField\&lt; ConstEz\lField \&gt;" alt="" coords="268,244,456,285"/>
+<area shape="rect" id="node8" href="$d9/d8d/a05645.html" title="The magnetic field of a multipole. " alt="" coords="451,169,572,196"/>
+<area shape="rect" id="node9" href="$db/dbf/a05657.html" title="A homogenous magnetostatic field. " alt="" coords="597,169,695,196"/>
+<area shape="rect" id="node10" href="$d5/d81/a05641.html" title="The field of a magnetic dipole. " alt="" coords="537,251,640,278"/>
+<area shape="rect" id="node11" href="$d9/d24/a05661.html" title="A homogeneous magnetostatic field in z&#45;direction. " alt="" coords="664,251,769,278"/>
+</map>

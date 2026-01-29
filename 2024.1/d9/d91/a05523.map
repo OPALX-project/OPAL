@@ -1,0 +1,51 @@
+<map id="YCorrectorRep" name="YCorrectorRep">
+<area shape="rect" id="node2" href="$d2/d8f/a05365.html" title="CorrectorRep" alt="" coords="2012,293,2119,320"/>
+<area shape="rect" id="node3" href="$de/db1/a04997.html" title="Interface for general corrector. " alt="" coords="1785,356,1868,383"/>
+<area shape="rect" id="node4" href="$d1/d18/a04993.html" title="Interface for a single beam element. " alt="" coords="1568,356,1665,383"/>
+<area shape="rect" id="node5" href="$da/d7c/a05021.html" title="ElementBase" alt="" coords="1208,156,1316,183"/>
+<area shape="rect" id="node7" href="$d7/db7/a06125.html" title="ParticleMatterInteraction\lHandler" alt="" coords="1525,170,1708,211"/>
+<area shape="rect" id="node6" href="$d8/dc4/a05997.html" title="Abstract base class for reference counted objects. " alt="" coords="825,56,907,83"/>
+<area shape="rect" id="node8" href="$d9/dd3/a07173.html" title="BoundaryGeometry" alt="" coords="791,389,941,416"/>
+<area shape="rect" id="node9" href="$d3/d70/a04633.html" title="The base class for all OPAL definitions. " alt="" coords="463,527,548,553"/>
+<area shape="rect" id="node32" href="$d4/deb/a06461.html" title="Distribution" alt="" coords="817,845,915,872"/>
+<area shape="rect" id="node38" href="$db/d5b/a07189.html" title="FieldSolver" alt="" coords="1570,801,1663,828"/>
+<area shape="rect" id="node10" href="$df/dee/a07461.html" title="Vektor\&lt; int, 3 \&gt;" alt="" coords="442,476,569,503"/>
+<area shape="rect" id="node17" href="$d7/d47/a04685.html" title="PartBunchBase\&lt; double, 3 \&gt;" alt="" coords="1157,919,1367,945"/>
+<area shape="rect" id="node11" href="$df/dee/a07461.html" title="Vektor\&lt; double, 3 \&gt;" alt="" coords="16,643,171,669"/>
+<area shape="rect" id="node12" href="$da/dd7/a05285.html" title="CoordinateSystemTrafo" alt="" coords="779,301,953,328"/>
+<area shape="rect" id="node30" href="$dc/d46/a05293.html" title="DistributionMoments" alt="" coords="426,981,585,1008"/>
+<area shape="rect" id="node33" href="$df/dcb/a06477.html" title="LaserProfile" alt="" coords="456,744,555,771"/>
+<area shape="rect" id="node13" href="$d4/d27/a05341.html" title="Quaternion" alt="" coords="458,227,553,253"/>
+<area shape="rect" id="node14" href="$df/dee/a07461.html" title="Vektor\&lt; double, 4 \&gt;" alt="" coords="16,227,171,253"/>
+<area shape="rect" id="node15" href="$d9/d8a/a06157.html" title="WakeFunction" alt="" coords="810,107,922,133"/>
+<area shape="rect" id="node16" href="$d1/d39/a04965.html" title="Map of std::string versus double value. " alt="" coords="816,5,916,32"/>
+<area shape="rect" id="node18" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; short \&gt;" alt="" coords="781,1045,951,1072"/>
+<area shape="rect" id="node19" href="$da/dbb/a10037.html" title="ParticleAttribBase" alt="" coords="436,1448,575,1475"/>
+<area shape="rect" id="node22" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; double \&gt;" alt="" coords="776,1179,956,1205"/>
+<area shape="rect" id="node24" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; int \&gt;" alt="" coords="789,1239,943,1265"/>
+<area shape="rect" id="node26" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; Particle\lOrigin \&gt;" alt="" coords="781,1599,951,1641"/>
+<area shape="rect" id="node28" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; Particle\lType \&gt;" alt="" coords="781,1438,951,1479"/>
+<area shape="rect" id="node36" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; T \&gt;" alt="" coords="794,1544,938,1571"/>
+<area shape="rect" id="node42" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; Vektor \&gt;" alt="" coords="777,1359,955,1385"/>
+<area shape="rect" id="node20" href="$de/d9a/a08177.html" title="DataSource" alt="" coords="457,1281,554,1308"/>
+<area shape="rect" id="node21" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; short \&gt; \&gt;" alt="" coords="411,1033,600,1074"/>
+<area shape="rect" id="node23" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; double \&gt; \&gt;" alt="" coords="411,1103,600,1145"/>
+<area shape="rect" id="node25" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; int \&gt; \&gt;" alt="" coords="411,1169,600,1210"/>
+<area shape="rect" id="node27" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; ParticleOrigin \&gt; \&gt;" alt="" coords="411,1706,600,1747"/>
+<area shape="rect" id="node29" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; ParticleType \&gt; \&gt;" alt="" coords="411,1569,600,1610"/>
+<area shape="rect" id="node31" href="$d8/d07/a05921.html" title="FMatrix\&lt; double, 6, 6 \&gt;" alt="" coords="5,1143,181,1169"/>
+<area shape="rect" id="node34" href="$da/d15/a05309.html" title="PartBins" alt="" coords="468,693,543,720"/>
+<area shape="rect" id="node35" href="$dc/dd3/a05333.html" title="PartData" alt="" coords="466,931,545,957"/>
+<area shape="rect" id="node37" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; T \&gt; \&gt;" alt="" coords="411,1641,600,1682"/>
+<area shape="rect" id="node39" href="$db/d5f/a08461.html" title="UniformCartesian\&lt; Dim,\l MFLOAT \&gt;" alt="" coords="1171,827,1353,869"/>
+<area shape="rect" id="node40" href="$d9/df1/a08761.html" title="CenteredFieldLayout\l\&lt; Dim, Mesh, Centering \&gt;" alt="" coords="1166,710,1358,751"/>
+<area shape="rect" id="node41" href="$d2/dd5/a07117.html" title="PoissonSolver" alt="" coords="1205,776,1319,803"/>
+<area shape="rect" id="node43" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; Vektor \&gt; \&gt;" alt="" coords="411,1503,600,1545"/>
+<area shape="rect" id="node44" href="$d8/d7e/a05561.html" title="A geometry representing a straight line. " alt="" coords="1757,243,1896,269"/>
+<area shape="rect" id="node45" href="$d0/d8e/a05537.html" title="Abstract base class for accelerator geometry classes. " alt="" coords="1553,243,1681,269"/>
+<area shape="rect" id="node46" href="$d5/d81/a05641.html" title="The field of a magnetic dipole. " alt="" coords="1775,293,1878,320"/>
+<area shape="rect" id="node47" href="$db/dbf/a05657.html" title="A homogenous magnetostatic field. " alt="" coords="1567,293,1666,320"/>
+<area shape="rect" id="node48" href="$d3/d87/a05885.html" title="Abstract base class for static magnetic fields. " alt="" coords="1188,252,1336,279"/>
+<area shape="rect" id="node49" href="$d6/d6d/a05685.html" title="Abstract base class for electromagnetic fields. " alt="" coords="831,179,901,205"/>
+<area shape="rect" id="node50" href="$d0/d8b/a05681.html" title="A representation of an electromagnetic field. " alt="" coords="462,176,549,203"/>
+</map>

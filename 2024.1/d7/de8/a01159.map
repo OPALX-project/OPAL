@@ -1,0 +1,12 @@
+<map id="src/Classic/Beamlines/FlaggedBeamline.h" name="src/Classic/Beamlines/FlaggedBeamline.h">
+<area shape="rect" id="node2" href="$d6/d7d/a00161.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="5,95,236,136"/>
+<area shape="rect" id="node3" href="$dc/de6/a00167.html" title="src/Algorithms/ParallelTTracker.cpp" alt="" coords="260,102,509,129"/>
+<area shape="rect" id="node4" href="$db/dd9/a00179.html" title="src/Algorithms/ThickTracker.cpp" alt="" coords="533,102,761,129"/>
+<area shape="rect" id="node5" href="$d5/d16/a01154.html" title="src/Classic/Beamlines\l/FlaggedBeamline.cpp" alt="" coords="785,95,952,136"/>
+<area shape="rect" id="node6" href="$d0/df5/a02549.html" title="src/Lines/Line.h" alt="" coords="977,102,1099,129"/>
+<area shape="rect" id="node7" href="$d1/d1a/a02546.html" title="src/Lines/Line.cpp" alt="" coords="539,191,676,218"/>
+<area shape="rect" id="node8" href="$de/d48/a02552.html" title="src/Lines/LineTemplate.cpp" alt="" coords="701,191,898,218"/>
+<area shape="rect" id="node9" href="$d1/d88/a02600.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="923,191,1153,218"/>
+<area shape="rect" id="node10" href="$da/d8e/a02759.html" title="src/PyOpal/PyObjects\l/PyLine.cpp" alt="" coords="1170,273,1330,315"/>
+<area shape="rect" id="node11" href="$de/d8e/a02762.html" title="src/PyOpal/PyObjects\l/PyLine.h" alt="" coords="1229,184,1389,225"/>
+</map>

@@ -1,0 +1,51 @@
+<map id="EllipticDomain::compute" name="EllipticDomain::compute">
+<area shape="rect" id="node2" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="804,483,849,510"/>
+<area shape="rect" id="node4" href="$d2/de6/a07089.html#aa0d091999d4d1e18b2441b577c2d8506" title="IrregularDomain::getHr" alt="" coords="249,53,421,79"/>
+<area shape="rect" id="node5" href="$d2/de6/a07089.html#a32ad0dee32f3b4aa1d3a270ee4dac529" title="IrregularDomain::getXRangeMax" alt="" coords="483,27,717,54"/>
+<area shape="rect" id="node6" href="$d2/de6/a07089.html#a87e4a2c6202a9a063d04345ffdcdcfdd" title="IrregularDomain::getXRangeMin" alt="" coords="485,103,715,130"/>
+<area shape="rect" id="node7" href="$d2/de6/a07089.html#a38030f695f976fd9454fff311d7ed151" title="IrregularDomain::getYRangeMax" alt="" coords="483,154,717,181"/>
+<area shape="rect" id="node8" href="$d2/de6/a07089.html#ac438ec29b617bad954f7a37be46a456b" title="IrregularDomain::getYRangeMin" alt="" coords="485,205,715,231"/>
+<area shape="rect" id="node9" href="$d2/d4d/a07069.html#a78d581962a86aa910a5c3d9e81263b69" title="queries if a given (x,y,z) coordinate lies inside the domain " alt="" coords="248,154,423,181"/>
+<area shape="rect" id="node10" href="$d2/de6/a07089.html#af7be85bf099587b622ea6331d63e6b4c" title="IrregularDomain::setHr" alt="" coords="250,357,421,383"/>
+<area shape="rect" id="node11" href="$df/d4a/a07125.html#aafbae2dd1d2f7fdd7e38ec1c0c76ef8c" title="RegularDomain::setNumXY" alt="" coords="236,407,435,434"/>
+<area shape="rect" id="node12" href="$d3/d4f/a00761.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="312,306,359,333"/>
+<area shape="rect" id="node50" href="$d2/d4d/a07069.html#a9713baf9f408352c7885a44b60d32e72" title="conversion from (x,y) to index in xy plane " alt="" coords="237,509,433,535"/>
+<area shape="rect" id="node3" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1499,458,1684,485"/>
+<area shape="rect" id="node13" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="936,205,1080,231"/>
+<area shape="rect" id="node35" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="554,306,646,333"/>
+<area shape="rect" id="node14" href="$df/dfa/a03533.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1184,267,1231,294"/>
+<area shape="rect" id="node15" href="$df/dfa/a03533.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1349,293,1436,319"/>
+<area shape="rect" id="node16" href="$d2/d67/a03455.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="1552,394,1631,421"/>
+<area shape="rect" id="node18" href="$dc/d14/a03479.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="1776,39,1873,66"/>
+<area shape="rect" id="node19" href="$d4/d78/a03677.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="1529,293,1654,319"/>
+<area shape="rect" id="node17" href="$d6/db6/a08373.html#ade95693db1906427a7c73b8364a07b20" title="BareFieldIterator::\lGetBareField" alt="" coords="1755,629,1894,671"/>
+<area shape="rect" id="node20" href="$d2/d36/a12117.html#a8bdcd8abcec1d747ecf82579b42c853c" title="IpplInfo::abort" alt="" coords="1768,191,1881,218"/>
+<area shape="rect" id="node24" href="$dc/d08/a09205.html#aa072c62b650774371674b050109d8051" title="Communicate::broadcast\l_others" alt="" coords="1732,395,1917,436"/>
+<area shape="rect" id="node25" href="$dc/d08/a09205.html#aca765179d2843e977a7a78098c8cbde8" title="Communicate::getNodes" alt="" coords="1965,343,2148,370"/>
+<area shape="rect" id="node26" href="$dc/d08/a09205.html#aedbfc462a5f9babc3fc07f875847547f" title="Communicate::myNode" alt="" coords="1969,453,2145,479"/>
+<area shape="rect" id="node28" href="$d6/dc7/a03683.html#ac34b443397f0101557c34a5c235ee578" title="getMessage" alt="" coords="1775,141,1875,167"/>
+<area shape="rect" id="node30" href="$dd/dd6/a09793.html#aec355d9c01194461adbba236ffbd7b21" title="TagMaker::next_tag" alt="" coords="1750,578,1899,605"/>
+<area shape="rect" id="node31" href="$d6/dc7/a03683.html#a04b92846c9f02264188b7e562649ddb1" title="putMessage" alt="" coords="1775,90,1875,117"/>
+<area shape="rect" id="node32" href="$dc/d08/a09205.html#ac0e671485db61cd6fdf8961504250b2b" title="Communicate::receive\l_block" alt="" coords="1740,512,1909,553"/>
+<area shape="rect" id="node33" href="$dc/d08/a09205.html#a5c519594f60faadd9202606f1ba0bbc3" title="Communicate::send" alt="" coords="1749,343,1901,370"/>
+<area shape="rect" id="node34" href="$d7/d50/a09609.html#a3064fb32119072349687a4a2fa603fd4" title="Message::size" alt="" coords="1768,242,1881,269"/>
+<area shape="rect" id="node21" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="2031,293,2082,319"/>
+<area shape="rect" id="node22" href="$d2/d36/a12117.html#a733d331c7749dce3f7c5874832125461" title="IpplInfo::IpplInfo" alt="" coords="1993,242,2121,269"/>
+<area shape="rect" id="node23" href="$d2/d36/a12117.html#a0fcbec64e72d74c17d5e247953831fd5" title="IpplInfo::printStatistics" alt="" coords="1972,191,2141,218"/>
+<area shape="rect" id="node27" href="$dc/d08/a09205.html#a0980eed71a6f2ac1132190e52648c67e" title="Communicate::mysend" alt="" coords="1970,398,2143,425"/>
+<area shape="rect" id="node29" href="$d7/d50/a09609.html#aeb7c0c5d1f49f8fd1b78eae709216da9" title="Message::get" alt="" coords="2003,141,2111,167"/>
+<area shape="rect" id="node36" href="$d7/dc3/a05241.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="765,357,888,383"/>
+<area shape="rect" id="node37" href="$d7/dc3/a05241.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="773,306,880,333"/>
+<area shape="rect" id="node38" href="$d7/dc3/a05241.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="941,407,1075,434"/>
+<area shape="rect" id="node39" href="$d7/dc3/a05241.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="939,458,1077,485"/>
+<area shape="rect" id="node40" href="$d4/d21/a05245.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="949,154,1067,181"/>
+<area shape="rect" id="node45" href="$d7/dc3/a05241.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="957,306,1059,333"/>
+<area shape="rect" id="node46" href="$dd/d51/a03842.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="1182,458,1233,485"/>
+<area shape="rect" id="node41" href="$dd/dde/a05257.html#a12f23d39f696c02da148722cb0bd8f06" title="TpsData::getTpsData" alt="" coords="1128,154,1287,181"/>
+<area shape="rect" id="node43" href="$dd/dde/a05257.html#a6ec8c0544fd09e9a701799d65f1bca46" title="TpsData::getSize" alt="" coords="1525,129,1657,155"/>
+<area shape="rect" id="node44" href="$d4/d21/a05245.html#a33520f8c7100283fafbdf7171a0a3de5" title="TpsRep::data" alt="" coords="1154,205,1261,231"/>
+<area shape="rect" id="node42" href="$dd/dde/a05257.html#a44b479e9cba17e82e7d9ceab727ef066" title="TpsData::build" alt="" coords="1335,154,1451,181"/>
+<area shape="rect" id="node47" href="$dd/d51/a03842.html#a0a1cdb80c431a477e99aea03fea993fc" title="Reduction" alt="" coords="1349,559,1436,586"/>
+<area shape="rect" id="node48" href="$dd/d51/a03842.html#a1ea49580c5d70200ee20f6afbc6d6de3" title="for_each" alt="" coords="1552,585,1631,611"/>
+<area shape="rect" id="node49" href="$dd/d51/a03842.html#a1a29834440d6844017cef5d516087c28" title="PETE_apply" alt="" coords="1543,534,1640,561"/>
+</map>

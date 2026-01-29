@@ -1,0 +1,34 @@
+<map id="src/Algorithms/OrbitThreader.cpp" name="src/Algorithms/OrbitThreader.cpp">
+<area shape="rect" id="node2" href="$d6/db8/a00158.html" title="Algorithms/OrbitThreader.h" alt="" coords="2025,80,2224,107"/>
+<area shape="rect" id="node7" href="$d5/d08/a03254.html" title="Utilities/OpalException.h" alt="" coords="2339,229,2521,256"/>
+<area shape="rect" id="node22" href="$db/d43/a00422.html" title="AbsBeamline/BendBase.h" alt="" coords="1586,155,1775,181"/>
+<area shape="rect" id="node24" href="$d1/daa/a00638.html" title="AbsBeamline/RFCavity.h" alt="" coords="777,155,957,181"/>
+<area shape="rect" id="node28" href="$d5/d5b/a00695.html" title="AbsBeamline/TravelingWave.h" alt="" coords="905,80,1123,107"/>
+<area shape="rect" id="node29" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="3774,155,3977,181"/>
+<area shape="rect" id="node33" href="$d4/d3e/a00116.html" title="Algorithms/CavityAutophaser.h" alt="" coords="1143,155,1367,181"/>
+<area shape="rect" id="node34" href="$db/d10/a00350.html" title="BasicActions/Option.h" alt="" coords="251,155,415,181"/>
+<area shape="rect" id="node36" href="$d6/d94/a02033.html" title="Utilities/Options.h" alt="" coords="263,229,402,256"/>
+<area shape="rect" id="node38" href="$d5/d54/a00938.html" title="BeamlineCore/MarkerRep.h" alt="" coords="3721,80,3920,107"/>
+<area shape="rect" id="node41" href="$d3/d4c/a01724.html" title="Physics/Units.h" alt="" coords="1304,80,1425,107"/>
+<area shape="rect" id="node42" href="$d2/d31/a02087.html" title="Utilities/Util.h" alt="" coords="3202,155,3314,181"/>
+<area shape="rect" id="node3" href="$de/d76/a00134.html" title="Algorithms/IndexMap.h" alt="" coords="1851,155,2023,181"/>
+<area shape="rect" id="node10" href="$d5/de9/a00176.html" title="Algorithms/StepSizeConfig.h" alt="" coords="2736,155,2943,181"/>
+<area shape="rect" id="node11" href="$d4/dc6/a01793.html" title="Structure/ValueRange.h" alt="" coords="2995,229,3169,256"/>
+<area shape="rect" id="node14" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="2112,304,2263,331"/>
+<area shape="rect" id="node15" href="$df/daa/a02135.html" title="Elements/OpalBeamline.h" alt="" coords="2357,155,2548,181"/>
+<area shape="rect" id="node17" href="$df/d1b/a03029.html" title="Steppers/BorisPusher.h" alt="" coords="1391,155,1562,181"/>
+<area shape="rect" id="node20" href="$dd/d20/a01772.html" title="Structure/BoundingBox.h" alt="" coords="2099,155,2281,181"/>
+<area shape="rect" id="node6" href="$d1/d7e/a00434.html" title="AbsBeamline/Component.h" alt="" coords="1469,304,1668,331"/>
+<area shape="rect" id="node8" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="2339,304,2537,331"/>
+<area shape="rect" id="node16" href="$de/d4e/a00500.html" title="AbsBeamline/Marker.h" alt="" coords="2546,229,2714,256"/>
+<area shape="rect" id="node18" href="$dd/db2/a00866.html" title="Algorithms/PartData.h" alt="" coords="1453,229,1618,256"/>
+<area shape="rect" id="node19" href="$db/d7f/a01718.html" title="Physics/Physics.h" alt="" coords="1242,229,1378,256"/>
+<area shape="rect" id="node23" href="$dc/dd9/a01268.html" title="Fields/Definitions.h" alt="" coords="1072,229,1217,256"/>
+<area shape="rect" id="node25" href="$d4/d45/a00791.html" title="Algorithms/AbstractTimeDependence.h" alt="" coords="770,229,1047,256"/>
+<area shape="rect" id="node30" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="4083,229,4321,256"/>
+<area shape="rect" id="node35" href="$dd/dad/a00005.html" title="AbstractObjects/Action.h" alt="" coords="5,229,188,256"/>
+<area shape="rect" id="node37" href="$db/d6b/a01853.html" title="Utilities/ClassicRandom.h" alt="" coords="263,304,453,331"/>
+<area shape="rect" id="node39" href="$d1/dfa/a01097.html" title="BeamlineGeometry/NullGeometry.h" alt="" coords="4156,155,4411,181"/>
+<area shape="rect" id="node40" href="$d8/d7b/a01478.html" title="Fields/NullField.h" alt="" coords="4001,155,4131,181"/>
+<area shape="rect" id="node43" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="2738,229,2919,256"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="SDDSWriter::writeHeader" name="SDDSWriter::writeHeader">
+<area shape="rect" id="node2" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1467,48,1602,74"/>
+<area shape="rect" id="node3" href="$d4/d49/a07257.html#a70c931bcaac7452b800467105623e469" title="SDDSWriter::writeColumns" alt="" coords="247,48,442,74"/>
+<area shape="rect" id="node5" href="$d4/d49/a07257.html#ac0d6d203ec0446c64082459609f1c776" title="SDDSWriter::writeDescription" alt="" coords="239,98,451,125"/>
+<area shape="rect" id="node11" href="$d4/d49/a07257.html#a510934f832463e33780bc3b5fd2eb0eb" title="SDDSWriter::writeInfo" alt="" coords="263,149,426,176"/>
+<area shape="rect" id="node12" href="$d4/d49/a07257.html#a8abe9146e039a28dfe7c0baf3295473b" title="SDDSWriter::writeParameters" alt="" coords="239,200,451,226"/>
+<area shape="rect" id="node4" href="$d0/d14/a07253.html#aef3d880ed9ac28f75ab6c3974dc2d850" title="SDDSColumnSet::writeHeader" alt="" coords="499,48,716,74"/>
+<area shape="rect" id="node6" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="582,124,633,150"/>
+<area shape="rect" id="node7" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="764,98,936,125"/>
+<area shape="rect" id="node8" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="984,98,1171,125"/>
+<area shape="rect" id="node9" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1219,98,1416,125"/>
+<area shape="rect" id="node10" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1464,98,1605,125"/>
+</map>

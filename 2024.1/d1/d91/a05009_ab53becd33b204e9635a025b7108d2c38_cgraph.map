@@ -1,0 +1,5 @@
+<map id="Cyclotron::applyTrimCoil" name="Cyclotron::applyTrimCoil">
+<area shape="rect" id="node2" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="313,5,358,32"/>
+<area shape="rect" id="node4" href="$d1/d91/a05009.html#a9745a391e65b0faf01c8964b4e561282" title="Apply trim coils (calculate field contributions) " alt="" coords="235,56,436,83"/>
+<area shape="rect" id="node3" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="484,5,669,32"/>
+</map>

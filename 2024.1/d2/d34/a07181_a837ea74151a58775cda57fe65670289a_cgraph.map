@@ -1,0 +1,13 @@
+<map id="DataSink::DataSink" name="DataSink::DataSink">
+<area shape="rect" id="node2" href="$d2/d34/a07181.html#a5f69a2186bae01bb9a608b3f44577e3c" title="DataSink::init" alt="" coords="229,81,340,108"/>
+<area shape="rect" id="node12" href="$d2/d34/a07181.html#a0dff21b9bc96518fd7f971c55f021c96" title="DataSink::rewindLines" alt="" coords="201,132,368,159"/>
+<area shape="rect" id="node3" href="$d7/dd4/a04689.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="709,5,876,32"/>
+<area shape="rect" id="node5" href="$d7/dd4/a04689.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="685,56,900,83"/>
+<area shape="rect" id="node6" href="$da/d9b/a12149.html#a59ffa7a04c160376d3a6593bff568fb4" title="IpplTimings::getTimer" alt="" coords="444,183,609,209"/>
+<area shape="rect" id="node9" href="$d2/d34/a07181.html#a3635da56b78cea97d2b342ef806ff1c0" title="DataSink::initMultiBunchDump" alt="" coords="416,107,637,133"/>
+<area shape="rect" id="node4" href="$d7/dd4/a04689.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="948,5,1100,32"/>
+<area shape="rect" id="node7" href="$d2/db2/a12145.html#ad8cc1e1e72cef6a72e059d33913d8af7" title="Timing::getTimer" alt="" coords="725,208,860,235"/>
+<area shape="rect" id="node8" href="$dc/dce/a00740.html#aa8ae23ddaa752827580a9345f34b7cca" title="value_type" alt="" coords="977,208,1071,235"/>
+<area shape="rect" id="node10" href="$d7/dd4/a04689.html#af8d0b55764c02667df67d086327b6a34" title="true if we do a restart run " alt="" coords="706,157,879,184"/>
+<area shape="rect" id="node11" href="$d2/d34/a07181.html#a6f185afafd30295bc2a74300501444ef" title="DataSink::convertToString" alt="" coords="697,107,888,133"/>
+</map>

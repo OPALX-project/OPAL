@@ -1,0 +1,18 @@
+<map id="OpalData::getVariableData" name="OpalData::getVariableData">
+<area shape="rect" id="node2" href="$d7/dd4/a04689.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="534,5,649,32"/>
+<area shape="rect" id="node4" href="$d7/dd4/a04689.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="508,56,675,83"/>
+<area shape="rect" id="node6" href="$db/dc8/a07333.html#ad0ae5755b0173d7b672116c41d4c0c7c" title="Return value. " alt="" coords="275,233,435,260"/>
+<area shape="rect" id="node11" href="$da/dea/a07341.html#a05aa2d9085d8abb047c16ac5774605b3" title="Return value. " alt="" coords="262,309,447,336"/>
+<area shape="rect" id="node13" href="$d7/dd4/a04689.html#aff9d45761be6c1e80baf90f34ba2e1d4" title="OpalData::getVariableNames" alt="" coords="249,132,460,159"/>
+<area shape="rect" id="node3" href="$d4/d88/a04637.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="761,5,875,32"/>
+<area shape="rect" id="node5" href="$d7/dd4/a04689.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="742,56,894,83"/>
+<area shape="rect" id="node7" href="$dd/d3c/a04466.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="520,309,663,336"/>
+<area shape="rect" id="node8" href="$d3/de5/a04617.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="723,284,913,311"/>
+<area shape="rect" id="node9" href="$d3/de5/a04617.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="748,335,888,361"/>
+<area shape="rect" id="node10" href="$d3/de5/a04617.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="739,385,897,412"/>
+<area shape="rect" id="node12" href="$dd/d3c/a04466.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="515,360,668,387"/>
+<area shape="rect" id="node14" href="$d4/d88/a04637.html#a6af87fa7c132144a4fed854a5c0ba253" title="First object in alphabetic order of name. " alt="" coords="529,107,654,133"/>
+<area shape="rect" id="node15" href="$d4/d88/a04637.html#a4a8d6e8dc3b5f4f851a86b64daad1978" title="Last object in alphabetic order of name. " alt="" coords="535,157,648,184"/>
+<area shape="rect" id="node16" href="$da/d54/a04673.html#ae7e75b2311e00969ae6308e899d32686" title="True, if [b]this[/b] is a built&#45;in object. " alt="" coords="529,208,654,235"/>
+<area shape="rect" id="node17" href="$da/d54/a04673.html#ae00faaa61774277a8a55de0538e358a7" title="Return the object category as a string. " alt="" coords="515,259,667,285"/>
+</map>

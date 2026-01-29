@@ -1,0 +1,51 @@
+<map id="Distribution::createOpalCycl" name="Distribution::createOpalCycl">
+<area shape="rect" id="node2" href="$d7/dd4/a04689.html#af5b03ae2e5863b4ef2af71f8fd29b4a0" title="OpalData::addProblemCharacteristic\lValue" alt="" coords="259,478,517,519"/>
+<area shape="rect" id="node3" href="$d4/deb/a06461.html#a3765a060651b910b4c3b42e31a52a7e7" title="Distribution::calcPartPerDist" alt="" coords="585,137,789,164"/>
+<area shape="rect" id="node10" href="$d4/deb/a06461.html#aeb630584ff9cc256b7cf80e781846fa7" title="Distribution::checkParticle\lNumber" alt="" coords="873,1027,1065,1068"/>
+<area shape="rect" id="node12" href="$d4/deb/a06461.html#ab0262d6fd0f7dc29e33f5b3099a32c99" title="Distribution::chooseInput\lMomentumUnits" alt="" coords="295,543,481,584"/>
+<area shape="rect" id="node13" href="$d4/deb/a06461.html#a65943ed080220d3bd760ed1625822d86" title="Distribution::create" alt="" coords="315,710,461,737"/>
+<area shape="rect" id="node15" href="$d7/dd4/a04689.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="1164,1545,1331,1572"/>
+<area shape="rect" id="node28" href="$d4/deb/a06461.html#a46558a2e3df8de6d6a91f56a69587860" title="Distribution::fillParticleBins" alt="" coords="289,1213,487,1240"/>
+<area shape="rect" id="node31" href="$d7/d47/a04685.html#a68fbe75b675ee67250d6afa8173581b9" title="PartBunchBase::getInitial\lGamma" alt="" coords="295,1416,481,1458"/>
+<area shape="rect" id="node32" href="$d7/d47/a04685.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="281,1482,495,1509"/>
+<area shape="rect" id="node33" href="$d7/d47/a04685.html#af51331c43ea82142dd6d237e6e3e5bfd" title="PartBunchBase::getM" alt="" coords="608,1558,767,1585"/>
+<area shape="rect" id="node34" href="$d7/d47/a04685.html#a16508077c3f6403314e7923dc74e06f9" title="Access to reference data. " alt="" coords="309,1634,467,1661"/>
+<area shape="rect" id="node35" href="$d7/d47/a04685.html#a3473f0bbd78f0e387277bb72490d9ee3" title="PartBunchBase::getTotalNum" alt="" coords="283,1685,493,1712"/>
+<area shape="rect" id="node36" href="$d4/deb/a06461.html#a3bce1a897f1d7c7e9165dc34385a4f01" title="Distribution::initializeBeam" alt="" coords="288,1736,488,1762"/>
+<area shape="rect" id="node40" href="$d4/deb/a06461.html#a5bea5afa503b1178c39cdbd0937e3635" title="Distribution::injectBeam" alt="" coords="597,1326,777,1353"/>
+<area shape="rect" id="node46" href="$d4/deb/a06461.html#aad12f72d9f5d280134d1c5ec12ffd913" title="Distribution::setDistType" alt="" coords="297,660,479,686"/>
+<area shape="rect" id="node47" href="$d7/d47/a04685.html#acf96334d37969c6238cdc788714b5b2e" title="PartBunchBase::setPBins" alt="" coords="297,1786,479,1813"/>
+<area shape="rect" id="node48" href="$d4/deb/a06461.html#aa73a9b0660592249e2c8840eebcbb826" title="Distribution::setupParticleBins" alt="" coords="279,1533,497,1560"/>
+<area shape="rect" id="node49" href="$d4/deb/a06461.html#a0130f5b7fbfd02e9ff6138e8bd8480ae" title="Distribution::shiftDistCoordinates" alt="" coords="1128,1161,1367,1188"/>
+<area shape="rect" id="node50" href="$d4/deb/a06461.html#a1711022002a61493a953eb717592eef1" title="Distribution::writeOutFile\lHeader" alt="" coords="877,1092,1061,1134"/>
+<area shape="rect" id="node4" href="$d4/deb/a06461.html#a4816d6d7b0c604fc5825a60d5312b369" title="Distribution::getNumberOf\lParticlesInFile" alt="" coords="871,391,1066,432"/>
+<area shape="rect" id="node5" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1180,516,1315,542"/>
+<area shape="rect" id="node6" href="$dd/d3c/a04466.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="1171,213,1324,240"/>
+<area shape="rect" id="node9" href="$d4/deb/a06461.html#a25eaa70b8adeed75383e842dca8fe3f0" title="Distribution::getWeight" alt="" coords="883,86,1055,113"/>
+<area shape="rect" id="node7" href="$d4/d78/a03677.html#a6e1e71ee127405447f7411777d80ebd6" title="reduce" alt="" coords="1214,976,1281,1002"/>
+<area shape="rect" id="node8" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1465,976,1516,1002"/>
+<area shape="rect" id="node11" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1177,728,1318,754"/>
+<area shape="rect" id="node14" href="$d4/deb/a06461.html#a112dfaece789dade1c8385e3135468f6" title="Distribution::adjustPhase\lSpace" alt="" coords="595,1387,780,1428"/>
+<area shape="rect" id="node17" href="$d4/deb/a06461.html#a49a2932c1bbc9d3fc4898b0009692a12" title="Distribution::createDistribution\lBinomial" alt="" coords="576,762,799,803"/>
+<area shape="rect" id="node18" href="$d4/deb/a06461.html#aae8aea755efb33f396e09cbc691e4261" title="Distribution::createDistribution\lFlattop" alt="" coords="576,827,799,868"/>
+<area shape="rect" id="node19" href="$d4/deb/a06461.html#aaa2e34b2e6c92ce03b56e0af7f0216cf" title="Distribution::createDistribution\lFromFile" alt="" coords="576,391,799,432"/>
+<area shape="rect" id="node20" href="$d4/deb/a06461.html#aef2953d27bb5eb872c4482c259fed96d" title="Distribution::createDistribution\lGauss" alt="" coords="576,995,799,1036"/>
+<area shape="rect" id="node21" href="$d4/deb/a06461.html#a6bd1d6cf572876c3fe3299959b9a5794" title="Distribution::createDistribution\lMultiGauss" alt="" coords="857,691,1080,732"/>
+<area shape="rect" id="node22" href="$dd/d3c/a04466.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="1175,858,1319,885"/>
+<area shape="rect" id="node23" href="$d4/deb/a06461.html#aed1962640841c7a54a5336e3aa085c6f" title="Distribution::createMatched\lGaussDistribution" alt="" coords="867,574,1070,615"/>
+<area shape="rect" id="node24" href="$d4/deb/a06461.html#ab671aac19afe1ac4ddfe4124236394b4" title="Distribution::getNumOfLocal\lParticlesToCreate" alt="" coords="865,508,1072,550"/>
+<area shape="rect" id="node25" href="$d7/db0/a03962.html#a4b2b36162d7cd2032d0ea378d5015281" title="level2" alt="" coords="656,508,719,534"/>
+<area shape="rect" id="node26" href="$d4/deb/a06461.html#a87fe7a4587a11e381ac2a4bd2223c167" title="Distribution::reflectDistribution" alt="" coords="857,808,1080,834"/>
+<area shape="rect" id="node27" href="$d4/deb/a06461.html#ab4125342927a4c1417c617bb3e71f354" title="Distribution::scaleDistCoordinates" alt="" coords="565,558,809,585"/>
+<area shape="rect" id="node16" href="$d7/dd4/a04689.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1415,1545,1567,1572"/>
+<area shape="rect" id="node29" href="$da/d15/a05309.html#a82fc3f56e9d961a314ea2e5fe1ea5f1f" title="Add a particle to the temporary container. " alt="" coords="638,1213,737,1240"/>
+<area shape="rect" id="node30" href="$da/d15/a05309.html#aa5ef533a3a6614fc69558d2d1178ceb7" title="PartBins::sortArray" alt="" coords="897,1158,1040,1185"/>
+<area shape="rect" id="node37" href="$d7/d47/a04685.html#ae2020f0b051f6584869d9c3f65024ee3" title="PartBunchBase::setTEmission" alt="" coords="580,1786,795,1813"/>
+<area shape="rect" id="node38" href="$d7/d47/a04685.html#a120ac37bdd15628765e1260fe16a1c56" title="PartBunchBase::setNumBunch" alt="" coords="578,1685,797,1712"/>
+<area shape="rect" id="node39" href="$d7/d47/a04685.html#a01885c179adeeff75426e3466f3a2202" title="PartBunchBase::setEnergyBins" alt="" coords="577,1736,797,1762"/>
+<area shape="rect" id="node41" href="$d4/deb/a06461.html#ad1d11b4c99e67ac3c3f11dc05627c2c2" title="Distribution::writeOutFile\lInjection" alt="" coords="877,910,1061,951"/>
+<area shape="rect" id="node42" href="$dd/d3c/a04466.html#ab98e27fb1c758b0a63d9e242fcbe68e6" title="Get array value. " alt="" coords="879,1326,1058,1353"/>
+<area shape="rect" id="node43" href="$d7/d47/a04685.html#ad7244dddace671a9e518f3fe4929f1b9" title="PartBunchBase::create" alt="" coords="885,1377,1053,1404"/>
+<area shape="rect" id="node44" href="$d7/d47/a04685.html#a19aacd7d2904a811460d487ade713b9a" title="get the macro particle charge " alt="" coords="871,1428,1066,1470"/>
+<area shape="rect" id="node45" href="$d7/d47/a04685.html#a1565ee86342c1f9b131461c7226e321a" title="PartBunchBase::getMassPer\lParticle" alt="" coords="867,1260,1070,1302"/>
+</map>

@@ -1,0 +1,30 @@
+<map id="src/Elements/OpalBeamline.cpp" name="src/Elements/OpalBeamline.cpp">
+<area shape="rect" id="node2" href="$df/daa/a02135.html" title="Elements/OpalBeamline.h" alt="" coords="543,80,734,107"/>
+<area shape="rect" id="node23" href="$df/d15/a00416.html" title="AbsBeamline/Bend2D.h" alt="" coords="1967,80,2142,107"/>
+<area shape="rect" id="node31" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="1744,155,1947,181"/>
+<area shape="rect" id="node35" href="$d3/d4c/a01724.html" title="Physics/Units.h" alt="" coords="2662,80,2783,107"/>
+<area shape="rect" id="node36" href="$d6/d3d/a01784.html" title="Structure/MeshGenerator.h" alt="" coords="2344,155,2539,181"/>
+<area shape="rect" id="node38" href="$d6/d94/a02033.html" title="Utilities/Options.h" alt="" coords="2499,80,2637,107"/>
+<area shape="rect" id="node40" href="$d2/d31/a02087.html" title="Utilities/Util.h" alt="" coords="3123,155,3235,181"/>
+<area shape="rect" id="node5" href="$d5/d3e/a01139.html" title="Beamlines/Beamline.h" alt="" coords="151,237,321,263"/>
+<area shape="rect" id="node7" href="$dd/d7e/a00809.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="806,393,1023,435"/>
+<area shape="rect" id="node12" href="$de/df8/a00440.html" title="AbsBeamline/Corrector.h" alt="" coords="341,155,523,181"/>
+<area shape="rect" id="node17" href="$d1/d0b/a00452.html" title="AbsBeamline/Degrader.h" alt="" coords="547,155,730,181"/>
+<area shape="rect" id="node19" href="$de/d4e/a00500.html" title="AbsBeamline/Marker.h" alt="" coords="944,155,1112,181"/>
+<area shape="rect" id="node20" href="$d0/d5c/a00668.html" title="AbsBeamline/Septum.h" alt="" coords="23,155,198,181"/>
+<area shape="rect" id="node21" href="$d4/d9b/a00680.html" title="AbsBeamline/Source.h" alt="" coords="1136,155,1304,181"/>
+<area shape="rect" id="node22" href="$d3/d19/a01847.html" title="Utilities/ClassicField.h" alt="" coords="755,155,920,181"/>
+<area shape="rect" id="node6" href="$d2/d9d/a00464.html" title="AbsBeamline/ElementBase.h" alt="" coords="1099,319,1309,345"/>
+<area shape="rect" id="node8" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="1775,557,1926,584"/>
+<area shape="rect" id="node9" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="1113,483,1295,509"/>
+<area shape="rect" id="node10" href="$d5/d99/a01901.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="1250,393,1425,435"/>
+<area shape="rect" id="node13" href="$d1/d7e/a00434.html" title="AbsBeamline/Component.h" alt="" coords="1105,237,1303,263"/>
+<area shape="rect" id="node14" href="$d8/d91/a00410.html" title="AbsBeamline/BeamlineVisitor.h" alt="" coords="525,237,752,263"/>
+<area shape="rect" id="node15" href="$dd/de4/a01121.html" title="BeamlineGeometry/Straight\lGeometry.h" alt="" coords="777,229,981,271"/>
+<area shape="rect" id="node16" href="$d8/ddf/a01238.html" title="Fields/BDipoleField.h" alt="" coords="345,237,501,263"/>
+<area shape="rect" id="node24" href="$db/d43/a00422.html" title="AbsBeamline/BendBase.h" alt="" coords="1429,155,1619,181"/>
+<area shape="rect" id="node25" href="$df/d1b/a03029.html" title="Steppers/BorisPusher.h" alt="" coords="2664,155,2835,181"/>
+<area shape="rect" id="node26" href="$db/d7f/a01718.html" title="Physics/Physics.h" alt="" coords="2681,237,2817,263"/>
+<area shape="rect" id="node32" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="1928,237,2165,263"/>
+<area shape="rect" id="node39" href="$db/d6b/a01853.html" title="Utilities/ClassicRandom.h" alt="" coords="2859,155,3048,181"/>
+</map>

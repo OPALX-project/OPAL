@@ -1,0 +1,51 @@
+<map id="ScatteringPhysics::apply" name="ScatteringPhysics::apply">
+<area shape="rect" id="node2" href="$d1/dc5/a06153.html#a00f4d68c08aaa03d775a72f94e39397c" title="ScatteringPhysics::\laddBackToBunch" alt="" coords="241,1075,387,1116"/>
+<area shape="rect" id="node12" href="$d1/dc5/a06153.html#a91918113fc9b747bf5b6caa96848bad9" title="ScatteringPhysics::\lcomputeInteraction" alt="" coords="239,980,389,1021"/>
+<area shape="rect" id="node14" href="$d7/d47/a04685.html#a7270243d7bb7f3f5a58e154ed858e0fb" title="PartBunchBase::getPType" alt="" coords="773,981,960,1007"/>
+<area shape="rect" id="node32" href="$d1/dc5/a06153.html#a35cb884d4bbf2e911321bb9244c35549" title="ScatteringPhysics::\lcopyFromBunch" alt="" coords="241,1353,387,1395"/>
+<area shape="rect" id="node33" href="$da/d9b/a12149.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="507,1589,682,1615"/>
+<area shape="rect" id="node35" href="$da/d9b/a12149.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="509,1639,681,1666"/>
+<area shape="rect" id="node41" href="$d1/dc5/a06153.html#a4906379e49969c214d82ec0a94e81bb0" title="ScatteringPhysics::\lgatherStatistics" alt="" coords="241,1572,387,1613"/>
+<area shape="rect" id="node43" href="$d7/d47/a04685.html#a4951c53df6841fd275a56f41fc76bfdf" title="PartBunchBase::getdT" alt="" coords="232,1638,396,1665"/>
+<area shape="rect" id="node44" href="$d7/d47/a04685.html#af51331c43ea82142dd6d237e6e3e5bfd" title="PartBunchBase::getM" alt="" coords="235,1689,393,1715"/>
+<area shape="rect" id="node45" href="$de/d5c/a06085.html#a0c6f22e6d45367884ab9a9755e628f93" title="ParticleProperties\l::getParticleTypeString" alt="" coords="231,1740,397,1781"/>
+<area shape="rect" id="node46" href="$d7/d47/a04685.html#a16508077c3f6403314e7923dc74e06f9" title="Access to reference data. " alt="" coords="235,1806,393,1833"/>
+<area shape="rect" id="node47" href="$d7/d47/a04685.html#af792389ff15f7f9fe61a13138ff0d6f3" title="PartBunchBase::getT" alt="" coords="236,1857,392,1883"/>
+<area shape="rect" id="node48" href="$d1/dc5/a06153.html#ae4b27279d844875fcb65b239ac7e8175" title="ScatteringPhysics::push" alt="" coords="226,1419,402,1446"/>
+<area shape="rect" id="node49" href="$d1/dc5/a06153.html#a42e85fb90bfb068e8cd9950ea0118558" title="ScatteringPhysics::\lresetTimeStep" alt="" coords="241,1908,387,1949"/>
+<area shape="rect" id="node50" href="$d1/dc5/a06153.html#a2919726864b1ecea8d8beeafc6c45add" title="ScatteringPhysics::\lsetTimeStepForLeavingParticles" alt="" coords="199,1184,429,1225"/>
+<area shape="rect" id="node3" href="$d1/dc5/a06153.html#a46521f8a87300327763d447874100d2f" title="ScatteringPhysics::\laddParticleBackToBunch" alt="" coords="505,1016,685,1057"/>
+<area shape="rect" id="node6" href="$d1/dc5/a06153.html#a500918870333163f7530ac71cacd0503" title="ScatteringPhysics::\ldeleteParticleFromLocalVector" alt="" coords="485,951,704,992"/>
+<area shape="rect" id="node7" href="$da/d7c/a05021.html#a1b412456edcf01147abada7721605101" title="Get design length. " alt="" coords="477,1234,712,1261"/>
+<area shape="rect" id="node10" href="$d7/dd4/a04689.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="511,1082,678,1109"/>
+<area shape="rect" id="node4" href="$d7/d47/a04685.html#a7797905b189544f920ae876894dfb40b" title="PartBunchBase::createWithID" alt="" coords="761,1031,973,1058"/>
+<area shape="rect" id="node5" href="$d7/d47/a04685.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="760,1183,973,1210"/>
+<area shape="rect" id="node8" href="$d0/d8e/a05537.html#a73f1d2087c1b6c7fb3e5e00f6835f88e" title="Get geometry length. " alt="" coords="761,1235,972,1276"/>
+<area shape="rect" id="node9" href="$da/d7c/a05021.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="765,1301,968,1327"/>
+<area shape="rect" id="node11" href="$d7/dd4/a04689.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="791,1082,943,1109"/>
+<area shape="rect" id="node13" href="$d1/dc5/a06153.html#a86e964b00d30087b9f61222945c44e0b" title="ScatteringPhysics::\lcomputeEnergyLoss" alt="" coords="518,821,671,863"/>
+<area shape="rect" id="node22" href="$d1/dc5/a06153.html#aae9520c231d411dc84c7b6562e6cfe27" title="ScatteringPhysics::\lcomputeCoulombScattering" alt="" coords="493,349,696,391"/>
+<area shape="rect" id="node15" href="$dc/da4/a04515.html#ae12a15e0d75307c934c8add55d2c25ac" title="Util::getGamma" alt="" coords="1045,1031,1172,1058"/>
+<area shape="rect" id="node16" href="$d3/d4f/a00761.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1244,525,1291,551"/>
+<area shape="rect" id="node17" href="$d3/d4f/a00761.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="842,727,891,754"/>
+<area shape="rect" id="node18" href="$d3/d4f/a00761.html#a06ff4f243bf8f2b00166b76eab20d29c" title="Natural logarithm. " alt="" coords="845,626,888,653"/>
+<area shape="rect" id="node19" href="$d7/db0/a03962.html#a4f2ddb1680d4f912183950ea45ac1504" title="level4" alt="" coords="835,778,898,805"/>
+<area shape="rect" id="node20" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="841,829,892,855"/>
+<area shape="rect" id="node21" href="$d9/dd4/a00776.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="1045,525,1172,551"/>
+<area shape="rect" id="node23" href="$dc/da4/a04515.html#adbeb33f36131d16373cbe28aa272a360" title="Util::getBeta" alt="" coords="815,575,919,602"/>
+<area shape="rect" id="node24" href="$d3/d4f/a00761.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="1087,71,1131,98"/>
+<area shape="rect" id="node25" href="$d3/d4f/a00761.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="1247,71,1288,98"/>
+<area shape="rect" id="node26" href="$da/dd7/a05285.html#ae2537ef2597a313e3f6852c8175dd356" title="CoordinateSystemTrafo\l::rotateTo" alt="" coords="779,459,954,500"/>
+<area shape="rect" id="node27" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1086,355,1131,382"/>
+<area shape="rect" id="node28" href="$d1/dc5/a06153.html#a838e3ae678e96d928b9d4cc85512a797" title="ScatteringPhysics::\lapplyRotation" alt="" coords="794,5,939,47"/>
+<area shape="rect" id="node29" href="$da/dd7/a05285.html#a9e32c2abaaa99cc1366d5b712d0baf0f" title="CoordinateSystemTrafo\l::rotateFrom" alt="" coords="1021,176,1196,217"/>
+<area shape="rect" id="node30" href="$da/dd7/a05285.html#ab7f68c4a5a5befa90cd9a82e310b2ee0" title="CoordinateSystemTrafo\l::transformFrom" alt="" coords="779,173,954,215"/>
+<area shape="rect" id="node31" href="$d1/dc5/a06153.html#aa92cb0434f25da6f95f29e4c7a750b4a" title="ScatteringPhysics::\lapplyRandomRotation" alt="" coords="783,291,950,332"/>
+<area shape="rect" id="node37" href="$d9/d65/a03578.html#a752c18322dca8529aae15d804a2b95cd" title="ne" alt="" coords="575,1437,614,1463"/>
+<area shape="rect" id="node38" href="$d7/dd4/a04689.html#a3f791fef03196163c941a8e685fd4b76" title="OpalData::isInOPALTMode" alt="" coords="501,1285,689,1311"/>
+<area shape="rect" id="node39" href="$d7/d47/a04685.html#aca3eb11cbe8b8affeae9aef3ba398e75" title="PartBunchBase::destroy" alt="" coords="507,1335,683,1362"/>
+<area shape="rect" id="node40" href="$d7/d47/a04685.html#ab134c61db6f524d3c21741c4879501aa" title="PartBunchBase::performDestroy" alt="" coords="479,1386,710,1413"/>
+<area shape="rect" id="node34" href="$d2/db2/a12145.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="795,1589,938,1615"/>
+<area shape="rect" id="node36" href="$d2/db2/a12145.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="796,1639,937,1666"/>
+<area shape="rect" id="node42" href="$d4/d78/a03677.html#a3f4c593649c5ad948ee3e8566bffeda6" title="allreduce" alt="" coords="553,1690,636,1717"/>
+</map>

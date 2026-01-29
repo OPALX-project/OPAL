@@ -1,0 +1,51 @@
+<map id="TravelingWave::initialise" name="TravelingWave::initialise">
+<area shape="rect" id="node2" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="520,963,565,989"/>
+<area shape="rect" id="node4" href="$dd/d51/a03842.html#ae29244719985f3e4cbc22b58064177de" title="floor" alt="" coords="281,1768,331,1795"/>
+<area shape="rect" id="node5" href="$d0/d6f/a05137.html#a6c0772681aaef3784df12ae9bbfd42c3" title="RFCavity::initialise" alt="" coords="235,1667,377,1693"/>
+<area shape="rect" id="node40" href="$da/d7c/a05021.html#a2b59853ce20c48c2436d0c136adeea69" title="Set design length. " alt="" coords="425,1869,660,1896"/>
+<area shape="rect" id="node44" href="$d3/d4f/a00761.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="285,107,327,133"/>
+<area shape="rect" id="node3" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1724,157,1909,184"/>
+<area shape="rect" id="node6" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1073,1717,1123,1744"/>
+<area shape="rect" id="node9" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1515,1805,1650,1832"/>
+<area shape="rect" id="node10" href="$db/db9/a05705.html#ab53e199eee0a17ece7fc208a28a04aaf" title="_Fieldmap::getFieldmap" alt="" coords="455,1013,631,1040"/>
+<area shape="rect" id="node37" href="$da/d7c/a05021.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="455,1616,631,1643"/>
+<area shape="rect" id="node38" href="$d7/db0/a03962.html#a4b2b36162d7cd2032d0ea378d5015281" title="level2" alt="" coords="511,1768,574,1795"/>
+<area shape="rect" id="node43" href="$db/db9/a05705.html#a1577476b45d1b62aae507e3b387a343e" title="_Fieldmap::typeset_msg" alt="" coords="453,1717,633,1744"/>
+<area shape="rect" id="node7" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1269,1729,1441,1756"/>
+<area shape="rect" id="node8" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1489,1729,1676,1756"/>
+<area shape="rect" id="node11" href="$d9/d36/a05629.html#a0267c3a3fbe9a5d46308397b3ef49ac6" title="_Astra1DElectroStatic\l_fast::create" alt="" coords="736,805,899,846"/>
+<area shape="rect" id="node13" href="$d8/d0c/a05637.html#ad536d487f9fe2becef6bf6833ef29f31" title="_Astra1DMagnetoStatic\l_fast::create" alt="" coords="730,259,905,301"/>
+<area shape="rect" id="node15" href="$df/dfb/a05781.html#a8169b6abb4b8f542a7dbf32bde58fa36" title="_FM3DMagnetoStatic\l::create" alt="" coords="738,1455,897,1497"/>
+<area shape="rect" id="node16" href="$d8/d30/a05789.html#afb9639648478654f1b12f8cb3fdf8322" title="_FM3DMagnetoStaticExtended\l::create" alt="" coords="708,1521,927,1562"/>
+<area shape="rect" id="node17" href="$d1/d03/a05633.html#a769cd3946807b488adc1fad7e02d5513" title="_Astra1DMagnetoStatic\l::create" alt="" coords="730,1586,905,1627"/>
+<area shape="rect" id="node18" href="$db/d7d/a05625.html#a95d5ca31ba8054271258cab9a4d3dee6" title="_Astra1DElectroStatic\l::create" alt="" coords="736,1651,899,1693"/>
+<area shape="rect" id="node19" href="$db/dcc/a05753.html#abd846add249a1ec8294d19df20c11815" title="_FM2DElectroStatic\l::create" alt="" coords="744,325,891,366"/>
+<area shape="rect" id="node20" href="$db/da0/a05757.html#a74ae5492b0a2f34198eb7ec06cce5301" title="_FM2DMagnetoStatic\l::create" alt="" coords="738,390,897,431"/>
+<area shape="rect" id="node21" href="$d9/d6a/a05761.html#a6eeec20b580922eb3e44e9731ec76cb6" title="_FM3DDynamic::create" alt="" coords="731,456,903,483"/>
+<area shape="rect" id="node22" href="$df/d85/a05745.html#a569c2d6eb0b6da83efccf101b81b6fc6" title="_FM1DProfile2::create" alt="" coords="736,507,899,533"/>
+<area shape="rect" id="node23" href="$d1/df2/a05617.html#ab34cc6e38c07ac8161a8f7b73a2306ea" title="_Astra1DDynamic::create" alt="" coords="723,557,911,584"/>
+<area shape="rect" id="node24" href="$df/ddb/a05729.html#ad4b55a3f2fa50c93ead84225409252fc" title="_FM1DElectroStatic\l_fast::create" alt="" coords="744,609,891,650"/>
+<area shape="rect" id="node25" href="$d1/dc7/a05733.html#abe7c04d6de09f9adcd4f3414b4c65928" title="_FM1DMagnetoStatic\l::create" alt="" coords="738,674,897,715"/>
+<area shape="rect" id="node26" href="$d0/d2b/a05737.html#a651e87c1e1adae0ae060cfd7591870c9" title="_FM1DMagnetoStatic\l_fast::create" alt="" coords="738,739,897,781"/>
+<area shape="rect" id="node27" href="$d6/d3f/a05725.html#aeaf96a8abda856644627d600ba5c40b1" title="_FM1DElectroStatic\l::create" alt="" coords="744,922,891,963"/>
+<area shape="rect" id="node28" href="$d3/dc8/a05749.html#a88a96440c4f26ebb5a1b57687f46fb33" title="_FM2DDynamic::create" alt="" coords="731,988,903,1015"/>
+<area shape="rect" id="node29" href="$d0/d8e/a05717.html#a5a10fcb334bb1e030521323dd570ef6d" title="_FM1DDynamic::create" alt="" coords="731,1039,903,1065"/>
+<area shape="rect" id="node30" href="$d5/d30/a05721.html#a35ae3ab93b8f818ffe0b838bf5ac635e" title="_FM1DDynamic_fast::\lcreate" alt="" coords="736,1090,899,1131"/>
+<area shape="rect" id="node31" href="$dc/da3/a05797.html#ae069685f0e8b7e4dff7cdbc18d91e69e" title="_FM3DMagnetoStaticH5Block\l::create" alt="" coords="711,1155,923,1197"/>
+<area shape="rect" id="node32" href="$d4/d48/a05765.html#a8982e53dc0b409f91adc486f551484b3" title="_FM3DH5Block::create" alt="" coords="733,1221,901,1248"/>
+<area shape="rect" id="node33" href="$dc/dd8/a05769.html#af0e06c30d2757590c77d13624164d659" title="_FM3DH5Block_nonscale\l::create" alt="" coords="725,1273,909,1314"/>
+<area shape="rect" id="node34" href="$db/d36/a05621.html#aa3b86f9c973e5bd9e8f406942b77e003" title="_Astra1DDynamic_fast\l::create" alt="" coords="732,1338,903,1379"/>
+<area shape="rect" id="node35" href="$d9/d6a/a05741.html#a55e789994b707c847273ab1b65c3839c" title="_FM1DProfile1::create" alt="" coords="736,1404,899,1431"/>
+<area shape="rect" id="node36" href="$db/db9/a05705.html#ae428d79c75675574e3cfd06c45c9b245" title="_Fieldmap::readHeader" alt="" coords="731,871,903,897"/>
+<area shape="rect" id="node12" href="$d9/d36/a05629.html#adc6a498a4aa76cd16bcdc1deae3cad2c" title="_Astra1DElectroStatic\l_fast::_Astra1DElectroStatic_fast" alt="" coords="981,805,1215,846"/>
+<area shape="rect" id="node14" href="$d8/d0c/a05637.html#a989b6c877fc23ca8edd188f1281563fd" title="_Astra1DMagnetoStatic\l_fast::_Astra1DMagnetoStatic_fast" alt="" coords="975,259,1221,301"/>
+<area shape="rect" id="node39" href="$dd/dad/a12105.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="725,1768,910,1795"/>
+<area shape="rect" id="node41" href="$da/d7c/a05021.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="716,1869,919,1896"/>
+<area shape="rect" id="node42" href="$d0/d8e/a05537.html#a4d338ebcb0efefa851ff4bdc08f7efb2" title="Set geometry length. " alt="" coords="712,1921,923,1962"/>
+<area shape="rect" id="node45" href="$d3/d4f/a00761.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="521,107,565,133"/>
+<area shape="rect" id="node46" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1283,107,1427,133"/>
+<area shape="rect" id="node48" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="771,56,863,83"/>
+<area shape="rect" id="node47" href="$df/dfa/a03533.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1559,107,1606,133"/>
+<area shape="rect" id="node49" href="$d7/dc3/a05241.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1037,56,1159,83"/>
+<area shape="rect" id="node50" href="$d7/dc3/a05241.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1045,5,1151,32"/>
+</map>

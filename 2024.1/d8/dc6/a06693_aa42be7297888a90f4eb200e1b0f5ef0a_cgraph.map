@@ -1,0 +1,12 @@
+<map id="OpalVerticalFFAMagnet::clone" name="OpalVerticalFFAMagnet::clone">
+<area shape="rect" id="node2" href="$d8/dc6/a06693.html#a77605993c7cfc1d5e9d315028d74cab5" title="OpalVerticalFFAMagnet\l::OpalVerticalFFAMagnet" alt="" coords="224,115,403,156"/>
+<area shape="rect" id="node3" href="$dd/d3c/a04466.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="488,46,647,73"/>
+<area shape="rect" id="node4" href="$de/dd7/a06529.html#af17ddf4b6ccfdcc6ce4ab34caa7ace82" title="OpalElement::registerOwnership" alt="" coords="451,97,684,123"/>
+<area shape="rect" id="node10" href="$df/df3/a04641.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="488,147,647,174"/>
+<area shape="rect" id="node11" href="$d3/dbd/a05213.html#ae3031462e50440e87aec40922b845aee" title="VerticalFFAMagnet::\lsetEndField" alt="" coords="493,199,642,240"/>
+<area shape="rect" id="node5" href="$d4/d0f/a04625.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="732,5,951,47"/>
+<area shape="rect" id="node6" href="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="818,71,865,98"/>
+<area shape="rect" id="node8" href="$da/d54/a04673.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="760,122,923,149"/>
+<area shape="rect" id="node9" href="$da/d54/a04673.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="774,173,909,199"/>
+<area shape="rect" id="node7" href="$d7/d47/a04685.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="999,71,1149,98"/>
+</map>

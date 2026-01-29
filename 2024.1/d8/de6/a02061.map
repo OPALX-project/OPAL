@@ -1,0 +1,34 @@
+<map id="src/Classic/Utilities/RingSection.cpp" name="src/Classic/Utilities/RingSection.cpp">
+<area shape="rect" id="node2" href="$d2/d8a/a02063.html" title="Utilities/RingSection.h" alt="" coords="565,95,731,121"/>
+<area shape="rect" id="node44" href="$d5/d99/a01901.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="802,333,977,375"/>
+<area shape="rect" id="node48" href="$d5/d0a/a00602.html" title="AbsBeamline/Offset.h" alt="" coords="1440,95,1603,121"/>
+<area shape="rect" id="node50" href="$db/d7f/a01718.html" title="Physics/Physics.h" alt="" coords="1627,95,1763,121"/>
+<area shape="rect" id="node3" href="$d1/d7e/a00434.html" title="AbsBeamline/Component.h" alt="" coords="1354,169,1553,196"/>
+<area shape="rect" id="node4" href="$d2/d9d/a00464.html" title="AbsBeamline/ElementBase.h" alt="" coords="1333,251,1544,278"/>
+<area shape="rect" id="node47" href="$de/d33/a01274.html" title="Fields/EMField.h" alt="" coords="1569,251,1693,278"/>
+<area shape="rect" id="node5" href="$d9/de6/a00404.html" title="AbsBeamline/AttributeSet.h" alt="" coords="1707,341,1909,367"/>
+<area shape="rect" id="node9" href="$dd/d7e/a00809.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="561,333,778,375"/>
+<area shape="rect" id="node34" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="509,423,691,449"/>
+<area shape="rect" id="node35" href="$d9/d7c/a01073.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="2038,423,2261,449"/>
+<area shape="rect" id="node39" href="$d2/df3/a01085.html" title="BeamlineGeometry/Geometry.h" alt="" coords="2035,341,2263,367"/>
+<area shape="rect" id="node40" href="$dd/d20/a01772.html" title="Structure/BoundingBox.h" alt="" coords="1347,341,1530,367"/>
+<area shape="rect" id="node43" href="$d1/d3a/a01622.html" title="MemoryManagement/RCObject.h" alt="" coords="1001,341,1236,367"/>
+<area shape="rect" id="node10" href="$d4/d81/a00110.html" title="Algorithms/BoostMatrix.h" alt="" coords="560,497,747,524"/>
+<area shape="rect" id="node12" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="771,497,922,524"/>
+<area shape="rect" id="node13" href="$d4/daf/a13446.html" title="AppTypes/Vektor.h" alt="" coords="417,579,559,606"/>
+<area shape="rect" id="node14" href="$d7/dcb/a04028.html" title="Utility/PAssert.h" alt="" coords="1375,811,1502,837"/>
+<area shape="rect" id="node17" href="$d6/dc7/a03683.html" title="Message/Message.h" alt="" coords="168,736,320,763"/>
+<area shape="rect" id="node25" href="$d5/d73/a03836.html" title="PETE/IpplExpressions.h" alt="" coords="366,661,538,688"/>
+<area shape="rect" id="node28" href="$d8/d5d/a03329.html" title="AppTypes/TSVMeta.h" alt="" coords="991,661,1148,688"/>
+<area shape="rect" id="node24" href="$d4/d5e/a03686.html" title="Message/Message.hpp" alt="" coords="160,811,328,837"/>
+<area shape="rect" id="node26" href="$d9/d83/a03839.html" title="PETE/IpplTypeComputations.h" alt="" coords="345,736,559,763"/>
+<area shape="rect" id="node27" href="$dd/d51/a03842.html" title="PETE/PETE.h" alt="" coords="583,736,686,763"/>
+<area shape="rect" id="node29" href="$d6/d83/a03332.html" title="AppTypes/TSVMetaAssign.h" alt="" coords="1252,736,1452,763"/>
+<area shape="rect" id="node30" href="$d6/d18/a03350.html" title="AppTypes/TSVMetaUnary.h" alt="" coords="812,736,1007,763"/>
+<area shape="rect" id="node31" href="$d9/db1/a03335.html" title="AppTypes/TSVMetaBinary.h" alt="" coords="1031,736,1228,763"/>
+<area shape="rect" id="node36" href="$df/dd5/a01115.html" title="BeamlineGeometry/Rotation3D.h" alt="" coords="2185,497,2423,524"/>
+<area shape="rect" id="node38" href="$db/d28/a01133.html" title="BeamlineGeometry/Vector3D.h" alt="" coords="2036,579,2260,606"/>
+<area shape="rect" id="node37" href="$d6/d0d/a01091.html" title="BeamlineGeometry/Matrix3D.h" alt="" coords="2284,579,2508,606"/>
+<area shape="rect" id="node45" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="1013,497,1211,524"/>
+<area shape="rect" id="node49" href="$d2/d4d/a01079.html" title="BeamlineGeometry/Euclid3\lDGeometry.h" alt="" coords="2049,244,2249,285"/>
+</map>

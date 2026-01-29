@@ -1,0 +1,9 @@
+<map id="Value::parse" name="Value::parse">
+<area shape="rect" id="node2" href="$da/d54/a04673.html#a0e384c277bc2ee2414f56d08e81f867b" title="Parser for single&#45;attribute commands. " alt="" coords="156,132,319,159"/>
+<area shape="rect" id="node3" href="$d7/d72/a06017.html#aeb97c1ae2faf5064efe45c9cc49a3b11" title="Test for delimiter. " alt="" coords="369,5,527,32"/>
+<area shape="rect" id="node4" href="$da/d54/a04673.html#aaba6fa24b81be56d195924fa9f6ea9bd" title="Find an attribute by name. " alt="" coords="371,56,525,83"/>
+<area shape="rect" id="node5" href="$da/d54/a04673.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="367,107,529,133"/>
+<area shape="rect" id="node6" href="$d7/d72/a06017.html#ac7a9b7e88c7c356b6f41f3eb19cc7734" title="Mark position in command. " alt="" coords="382,157,514,184"/>
+<area shape="rect" id="node7" href="$d7/d72/a06017.html#aa3a59708d440dd319ac301ae50b92451" title="Return to marked position. " alt="" coords="376,208,520,235"/>
+<area shape="rect" id="node8" href="$d7/d72/a06017.html#ac8e21e0dce1b621eacc7d1405f760af4" title="Return word value. " alt="" coords="383,259,513,285"/>
+</map>

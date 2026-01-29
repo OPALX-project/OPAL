@@ -1,0 +1,35 @@
+<map id="src/Classic/AbsBeamline/Multipole.h" name="src/Classic/AbsBeamline/Multipole.h">
+<area shape="rect" id="node2" href="$d7/d06/a00131.html" title="src/Algorithms/IndexMap.cpp" alt="" coords="5,102,216,129"/>
+<area shape="rect" id="node3" href="$d6/d7d/a00161.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="241,95,471,136"/>
+<area shape="rect" id="node4" href="$d5/dcb/a00170.html" title="src/Algorithms/ParallelTTracker.h" alt="" coords="496,102,731,129"/>
+<area shape="rect" id="node8" href="$d7/d25/a00182.html" title="src/Algorithms/ThickTracker.h" alt="" coords="755,102,968,129"/>
+<area shape="rect" id="node10" href="$df/db6/a00509.html" title="src/Classic/AbsBeamline\l/Multipole.cpp" alt="" coords="992,95,1173,136"/>
+<area shape="rect" id="node11" href="$db/d77/a00683.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="1198,95,1381,136"/>
+<area shape="rect" id="node13" href="$d8/db7/a00812.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="1405,95,1571,136"/>
+<area shape="rect" id="node14" href="$df/d39/a00950.html" title="src/Classic/BeamlineCore\l/MultipoleRep.h" alt="" coords="1653,95,1840,136"/>
+<area shape="rect" id="node20" href="$df/d59/a01001.html" title="src/Classic/BeamlineCore\l/SingleMultipole.h" alt="" coords="2685,95,2872,136"/>
+<area shape="rect" id="node33" href="$d0/d9d/a01760.html" title="src/Classic/Solvers\l/ScatteringPhysics.cpp" alt="" coords="2896,95,3064,136"/>
+<area shape="rect" id="node34" href="$d6/d27/a01781.html" title="src/Classic/Structure\l/MeshGenerator.cpp" alt="" coords="3088,95,3243,136"/>
+<area shape="rect" id="node5" href="$dc/de6/a00167.html" title="src/Algorithms/ParallelTTracker.cpp" alt="" coords="85,191,334,218"/>
+<area shape="rect" id="node6" href="$d9/d93/a02753.html" title="src/PyOpal/PyObjects\l/PyField.cpp" alt="" coords="359,184,519,225"/>
+<area shape="rect" id="node7" href="$d5/de9/a03236.html" title="src/Track/TrackRun.cpp" alt="" coords="543,191,711,218"/>
+<area shape="rect" id="node9" href="$db/dd9/a00179.html" title="src/Algorithms/ThickTracker.cpp" alt="" coords="735,191,963,218"/>
+<area shape="rect" id="node12" href="$dd/d77/a02096.html" title="src/Distribution/Distribution.cpp" alt="" coords="987,191,1215,218"/>
+<area shape="rect" id="node15" href="$d3/d29/a00947.html" title="src/Classic/BeamlineCore\l/MultipoleRep.cpp" alt="" coords="1240,184,1427,225"/>
+<area shape="rect" id="node16" href="$d6/d41/a02222.html" title="src/Elements/OpalMultipole.cpp" alt="" coords="1451,191,1677,218"/>
+<area shape="rect" id="node17" href="$d7/d70/a02252.html" title="src/Elements/OpalOctupole.cpp" alt="" coords="1702,191,1927,218"/>
+<area shape="rect" id="node18" href="$d3/dc5/a02306.html" title="src/Elements/OpalQuadrupole.cpp" alt="" coords="1952,191,2195,218"/>
+<area shape="rect" id="node19" href="$d3/d35/a02360.html" title="src/Elements/OpalSextupole.cpp" alt="" coords="2219,191,2451,218"/>
+<area shape="rect" id="node21" href="$d3/de5/a00956.html" title="src/Classic/BeamlineCore\l/Octupole.h" alt="" coords="2475,184,2661,225"/>
+<area shape="rect" id="node23" href="$d7/dd4/a00968.html" title="src/Classic/BeamlineCore\l/Quadrupole.h" alt="" coords="2685,184,2872,225"/>
+<area shape="rect" id="node25" href="$d9/d9a/a00998.html" title="src/Classic/BeamlineCore\l/Sextupole.h" alt="" coords="2896,184,3083,225"/>
+<area shape="rect" id="node27" href="$d6/d8d/a01007.html" title="src/Classic/BeamlineCore\l/SkewOctupole.h" alt="" coords="3107,184,3293,225"/>
+<area shape="rect" id="node29" href="$d7/d59/a01013.html" title="src/Classic/BeamlineCore\l/SkewQuadrupole.h" alt="" coords="3317,184,3504,225"/>
+<area shape="rect" id="node31" href="$db/daf/a01019.html" title="src/Classic/BeamlineCore\l/SkewSextupole.h" alt="" coords="3528,184,3715,225"/>
+<area shape="rect" id="node22" href="$d5/da3/a00953.html" title="src/Classic/BeamlineCore\l/Octupole.cpp" alt="" coords="2475,273,2661,315"/>
+<area shape="rect" id="node24" href="$d3/dcd/a00965.html" title="src/Classic/BeamlineCore\l/Quadrupole.cpp" alt="" coords="2685,273,2872,315"/>
+<area shape="rect" id="node26" href="$dd/d48/a00995.html" title="src/Classic/BeamlineCore\l/Sextupole.cpp" alt="" coords="2896,273,3083,315"/>
+<area shape="rect" id="node28" href="$df/dbc/a01004.html" title="src/Classic/BeamlineCore\l/SkewOctupole.cpp" alt="" coords="3107,273,3293,315"/>
+<area shape="rect" id="node30" href="$d0/d2b/a01010.html" title="src/Classic/BeamlineCore\l/SkewQuadrupole.cpp" alt="" coords="3317,273,3504,315"/>
+<area shape="rect" id="node32" href="$de/def/a01016.html" title="src/Classic/BeamlineCore\l/SkewSextupole.cpp" alt="" coords="3528,273,3715,315"/>
+</map>

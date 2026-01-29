@@ -1,0 +1,17 @@
+<map id="src/OpalParser/Macro.cpp" name="src/OpalParser/Macro.cpp">
+<area shape="rect" id="node2" href="$d6/d10/a02621.html" title="OpalParser/Macro.h" alt="" coords="1216,80,1363,107"/>
+<area shape="rect" id="node16" href="$da/d5d/a13437.html" title="AbstractObjects/Expressions.h" alt="" coords="1293,311,1512,338"/>
+<area shape="rect" id="node19" href="$dc/d87/a01649.html" title="Parser/Statement.h" alt="" coords="1587,311,1733,338"/>
+<area shape="rect" id="node24" href="$d7/d13/a02045.html" title="Utilities/ParseError.h" alt="" coords="1664,155,1819,181"/>
+<area shape="rect" id="node3" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="773,155,955,181"/>
+<area shape="rect" id="node15" href="$d4/d41/a01661.html" title="Parser/Token.h" alt="" coords="1515,401,1631,427"/>
+<area shape="rect" id="node4" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="535,229,734,256"/>
+<area shape="rect" id="node6" href="$d1/d3a/a01622.html" title="MemoryManagement/RCObject.h" alt="" coords="5,483,240,509"/>
+<area shape="rect" id="node5" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="211,393,397,435"/>
+<area shape="rect" id="node10" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="472,304,659,345"/>
+<area shape="rect" id="node11" href="$d3/deb/a01619.html" title="MemoryManagement/Pointer.h" alt="" coords="597,401,819,427"/>
+<area shape="rect" id="node7" href="$d9/d2e/a00056.html" title="AbstractObjects/Invalidator.h" alt="" coords="264,483,475,509"/>
+<area shape="rect" id="node17" href="$db/dad/a01616.html" title="MemoryManagement/OwnPtr.h" alt="" coords="1150,401,1373,427"/>
+<area shape="rect" id="node20" href="$d3/db5/a03965.html" title="Utility/Inform.h" alt="" coords="1809,401,1930,427"/>
+<area shape="rect" id="node25" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="1662,229,1861,256"/>
+</map>

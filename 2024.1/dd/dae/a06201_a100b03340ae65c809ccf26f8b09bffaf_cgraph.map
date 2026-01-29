@@ -1,0 +1,4 @@
+<map id="TrimCoil::setAzimuth" name="TrimCoil::setAzimuth">
+<area shape="rect" id="node2" href="$dc/da4/a04515.html#aed34070f4793b1ca864021990916d0b4" title="convert angle (in rad) to [0,2pi) range, from https://stackoverflow.com/a/29721295 ..." alt="" coords="211,5,348,32"/>
+<area shape="rect" id="node3" href="$d5/d73/a03836.html#aae355e465ddaedd0a66a3187cd09a5a8" title="fmod" alt="" coords="396,5,452,32"/>
+</map>

@@ -1,0 +1,51 @@
+<map id="ParallelCyclotronTracker::execute" name="ParallelCyclotronTracker::execute">
+<area shape="rect" id="node2" href="$da/d7c/a05021.html#a4c963794b96d83d5d3be0a9fe3c44322" title="Apply visitor. " alt="" coords="262,157,421,184"/>
+<area shape="rect" id="node3" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1087,579,1137,605"/>
+<area shape="rect" id="node5" href="$d3/d7d/a04797.html#ad2016305c2bf533cd133bd453e57f7f0" title="ParallelCyclotronTracker\l::GenericTracker" alt="" coords="252,681,431,722"/>
+<area shape="rect" id="node7" href="$d3/d7d/a04797.html#af22bc369a0c1bf03b2a4fd94ff544134" title="ParallelCyclotronTracker\l::isMultiBunch" alt="" coords="1023,1462,1201,1503"/>
+<area shape="rect" id="node9" href="$d7/d47/a04685.html#a926547f8adc7ff91c3fe639f0fadccbf" title="PartBunchBase::getNumBunch" alt="" coords="1003,1805,1221,1832"/>
+<area shape="rect" id="node10" href="$d7/dd4/a04689.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="757,2176,923,2203"/>
+<area shape="rect" id="node31" href="$d0/d6f/a05137.html#a58648e6c9265858963a0104398aa6e02" title="RFCavity::getCosAzimuth" alt="" coords="248,2227,435,2253"/>
+<area shape="rect" id="node32" href="$d3/d7d/a04797.html#a877030a63b8e5869cda18b26c0b2e208" title="ParallelCyclotronTracker\l::getFieldsAtPoint" alt="" coords="499,1958,677,1999"/>
+<area shape="rect" id="node34" href="$d7/dd4/a04689.html#ad8297e5d291eb54eef52a22af617cf64" title="OpalData::getGlobalGeometry" alt="" coords="232,2277,451,2304"/>
+<area shape="rect" id="node35" href="$da/d54/a04673.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="260,2328,423,2355"/>
+<area shape="rect" id="node36" href="$d0/d6f/a05137.html#ac9dfec52bbe15f4bb6859b0d436dcf75" title="RFCavity::getPerpenDistance" alt="" coords="236,2379,447,2405"/>
+<area shape="rect" id="node37" href="$d0/d6f/a05137.html#a95ab6fb74ae41fbf95b87845cee2804f" title="RFCavity::getSinAzimuth" alt="" coords="250,2429,433,2456"/>
+<area shape="rect" id="node38" href="$da/d7c/a05021.html#a98ba64b0bb174add064da5223a737a66" title="ElementBase::getTypeString" alt="" coords="239,2480,444,2507"/>
+<area shape="rect" id="node40" href="$dd/dfc/a05141.html#ad250951f169d59aeee3671b74f5e45ec" title="Ring::lockRing" alt="" coords="531,107,645,133"/>
+<area shape="rect" id="node44" href="$d3/d7d/a04797.html#a4aab9067e07fca841908971f333bb05d" title="ParallelCyclotronTracker\l::MtsTracker" alt="" coords="252,1513,431,1554"/>
+<area shape="rect" id="node48" href="$d7/dd4/a04689.html#af6d424393543f1c7fcac662f91a6c6b3" title="OpalData::setOpenMode" alt="" coords="251,2531,431,2557"/>
+<area shape="rect" id="node49" href="$d4/df2/a04921.html#a6c9e6340b7162c18ed7bf5cb4c84028a" title="DumpFields::writeFields" alt="" coords="253,2581,429,2608"/>
+<area shape="rect" id="node50" href="$df/dd6/a04917.html#a673b786efdbf5e7bedaeca06b4876c4a" title="DumpEMFields::writeFields" alt="" coords="244,2632,439,2659"/>
+<area shape="rect" id="node4" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1289,579,1461,605"/>
+<area shape="rect" id="node6" href="$d3/d7d/a04797.html#a7236d29b67e337d42854b34af3063d22" title="ParallelCyclotronTracker\l::initializeTracking_m" alt="" coords="499,1790,677,1831"/>
+<area shape="rect" id="node12" href="$d3/d7d/a04797.html#a68fea5657661817956cb8b52aecd44b0" title="ParallelCyclotronTracker\l::applyPluginElements" alt="" coords="751,681,929,722"/>
+<area shape="rect" id="node13" href="$d7/d47/a04685.html#a3473f0bbd78f0e387277bb72490d9ee3" title="PartBunchBase::getTotalNum" alt="" coords="1269,1112,1480,1139"/>
+<area shape="rect" id="node15" href="$d3/d7d/a04797.html#ad7eecb45b13ecf2eb11bdc95c6a4f296" title="ParallelCyclotronTracker\l::deleteParticle" alt="" coords="751,1235,929,1277"/>
+<area shape="rect" id="node20" href="$d3/d7d/a04797.html#af2afb9b11e96ae14c0f448d950b31ec1" title="ParallelCyclotronTracker\l::seoMode_m" alt="" coords="751,513,929,554"/>
+<area shape="rect" id="node21" href="$d3/d7d/a04797.html#a3aa4e3f090e50a22880361f10775fff9" title="ParallelCyclotronTracker\l::singleMode_m" alt="" coords="499,681,677,722"/>
+<area shape="rect" id="node22" href="$d3/d7d/a04797.html#aa1d62a6f0278bdacc6dc77ddec8a2e64" title="ParallelCyclotronTracker\l::bunchMode_m" alt="" coords="499,1075,677,1117"/>
+<area shape="rect" id="node29" href="$d3/d7d/a04797.html#a3efa96beca39db5e15c4b224d2596850" title="Update time and path length, write to output files. " alt="" coords="499,411,677,453"/>
+<area shape="rect" id="node30" href="$d3/d7d/a04797.html#a982b55a67be81156364fe1f8af54c4b2" title="ParallelCyclotronTracker\l::finalizeTracking_m" alt="" coords="751,1521,929,1562"/>
+<area shape="rect" id="node8" href="$d7/d47/a04685.html#a5cccd734775026586eef70edb9982b4d" title="PartBunchBase::weHaveBins" alt="" coords="1271,1469,1479,1496"/>
+<area shape="rect" id="node11" href="$d7/dd4/a04689.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1036,2176,1188,2203"/>
+<area shape="rect" id="node14" href="$d7/d47/a04685.html#a270741b3a4a1bd7d6ff17a6ea690255b" title="PartBunchBase::updateNum\lTotal" alt="" coords="1011,739,1213,781"/>
+<area shape="rect" id="node16" href="$d3/d7d/a04797.html#a15da20b251e91cb0f98cc68ef596ca3a" title="ParallelCyclotronTracker\l::calcMeanP" alt="" coords="1023,1235,1201,1277"/>
+<area shape="rect" id="node17" href="$d3/d7d/a04797.html#acf68ac4efd8953d5cda0641a510e6bd4" title="ParallelCyclotronTracker\l::calcMeanR" alt="" coords="1023,1313,1201,1354"/>
+<area shape="rect" id="node18" href="$d3/d7d/a04797.html#a4dc913467861193e1296857af2469078" title="ParallelCyclotronTracker\l::calculateAngle" alt="" coords="1023,805,1201,846"/>
+<area shape="rect" id="node19" href="$d3/d7d/a04797.html#a83172750245917351809eb7cca06595c" title="ParallelCyclotronTracker\l::globalToLocal" alt="" coords="1023,1122,1201,1163"/>
+<area shape="rect" id="node23" href="$dc/d08/a09205.html#ac4593203c34f26c625bd51c7502c297e" title="Communicate::barrier" alt="" coords="1293,1637,1457,1664"/>
+<area shape="rect" id="node24" href="$d3/d7d/a04797.html#a472a74c55259d687fd274dbeac60a53a" title="ParallelCyclotronTracker\l::computeSpaceChargeFields_m" alt="" coords="725,1353,955,1394"/>
+<area shape="rect" id="node26" href="$d7/d47/a04685.html#a61749a31a61cc801127ed1ea764d03ca" title="PartBunchBase::hasFieldSolver" alt="" coords="729,1907,951,1933"/>
+<area shape="rect" id="node27" href="$d3/d7d/a04797.html#a31acc2346a133e5a834afddb1332a0f6" title="ParallelCyclotronTracker\l::injectBunch" alt="" coords="751,915,929,957"/>
+<area shape="rect" id="node28" href="$d3/d7d/a04797.html#ae413f18725a0b8a5bef87f40d2c32f46" title="ParallelCyclotronTracker\l::singleParticleDump" alt="" coords="751,798,929,839"/>
+<area shape="rect" id="node25" href="$d3/d7d/a04797.html#a10e0bca491e7f0692e75f0fc7922da07" title="ParallelCyclotronTracker\l::repartition" alt="" coords="1023,1630,1201,1671"/>
+<area shape="rect" id="node33" href="$d3/d7d/a04797.html#a24e7de550ff5ade419fcd0838a026a3d" title="Calculate the field map at an arbitrary point. " alt="" coords="741,1958,939,1999"/>
+<area shape="rect" id="node39" href="$da/d7c/a05021.html#a6a1834ad3ce0e86abbbe1dfcf676afb2" title="Get element type std::string. " alt="" coords="505,2480,671,2507"/>
+<area shape="rect" id="node41" href="$dd/dfc/a05141.html#ae0d1bcb3efbc9396ab65ab28bce39e0f" title="Ring::appendElement" alt="" coords="759,107,921,133"/>
+<area shape="rect" id="node42" href="$dd/dfc/a05141.html#a4bbee5de778f69df78fe97f378ec6bfc" title="Ring::checkAndClose" alt="" coords="761,56,919,83"/>
+<area shape="rect" id="node43" href="$dd/dfc/a05141.html#a0ab5fce3179dd16f5bee3bfeba755e32" title="Ring::buildRingSections" alt="" coords="753,5,927,32"/>
+<area shape="rect" id="node45" href="$df/dfa/a03533.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="563,1571,613,1597"/>
+<area shape="rect" id="node46" href="$d3/d7d/a04797.html#a00bd119c89760f339a293b7c66b9cd55" title="ParallelCyclotronTracker\l::kick" alt="" coords="751,1689,929,1730"/>
+<area shape="rect" id="node47" href="$d3/d7d/a04797.html#a666d11a4d347fdefa083a03ce36088b4" title="ParallelCyclotronTracker\l::borisExternalFields" alt="" coords="499,1673,677,1714"/>
+</map>

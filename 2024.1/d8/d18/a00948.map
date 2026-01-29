@@ -1,0 +1,34 @@
+<map id="src/Classic/BeamlineCore/MultipoleRep.cpp" name="src/Classic/BeamlineCore/MultipoleRep.cpp">
+<area shape="rect" id="node2" href="$df/d39/a00950.html" title="BeamlineCore/MultipoleRep.h" alt="" coords="860,95,1075,121"/>
+<area shape="rect" id="node46" href="$d1/d35/a01184.html" title="Channels/IndexedChannel.h" alt="" coords="1099,95,1302,121"/>
+<area shape="rect" id="node49" href="$dc/d70/a01187.html" title="Channels/IndirectChannel.h" alt="" coords="1326,95,1526,121"/>
+<area shape="rect" id="node3" href="$d4/dfb/a00512.html" title="AbsBeamline/Multipole.h" alt="" coords="770,169,954,196"/>
+<area shape="rect" id="node41" href="$dd/de4/a01121.html" title="BeamlineGeometry/Straight\lGeometry.h" alt="" coords="985,244,1189,285"/>
+<area shape="rect" id="node4" href="$d1/d7e/a00434.html" title="AbsBeamline/Component.h" alt="" coords="763,251,961,278"/>
+<area shape="rect" id="node42" href="$d4/dd5/a01244.html" title="Fields/BMultipoleField.h" alt="" coords="564,251,739,278"/>
+<area shape="rect" id="node44" href="$dc/dd9/a01268.html" title="Fields/Definitions.h" alt="" coords="395,251,540,278"/>
+<area shape="rect" id="node5" href="$d2/d9d/a00464.html" title="AbsBeamline/ElementBase.h" alt="" coords="871,333,1082,360"/>
+<area shape="rect" id="node40" href="$de/d33/a01274.html" title="Fields/EMField.h" alt="" coords="5,415,129,442"/>
+<area shape="rect" id="node6" href="$d9/de6/a00404.html" title="AbsBeamline/AttributeSet.h" alt="" coords="1102,415,1305,442"/>
+<area shape="rect" id="node10" href="$dd/d7e/a00809.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="463,408,680,449"/>
+<area shape="rect" id="node27" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="511,505,693,531"/>
+<area shape="rect" id="node28" href="$d9/d7c/a01073.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="1197,505,1420,531"/>
+<area shape="rect" id="node32" href="$d2/df3/a01085.html" title="BeamlineGeometry/Geometry.h" alt="" coords="1511,415,1739,442"/>
+<area shape="rect" id="node33" href="$dd/d20/a01772.html" title="Structure/BoundingBox.h" alt="" coords="153,415,336,442"/>
+<area shape="rect" id="node36" href="$d1/d3a/a01622.html" title="MemoryManagement/RCObject.h" alt="" coords="705,415,939,442"/>
+<area shape="rect" id="node37" href="$d5/d99/a01901.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="1504,497,1679,539"/>
+<area shape="rect" id="node11" href="$d4/d81/a00110.html" title="Algorithms/BoostMatrix.h" alt="" coords="637,587,823,613"/>
+<area shape="rect" id="node13" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="401,587,552,613"/>
+<area shape="rect" id="node14" href="$d4/daf/a13446.html" title="AppTypes/Vektor.h" alt="" coords="506,669,647,695"/>
+<area shape="rect" id="node15" href="$d7/dcb/a04028.html" title="Utility/PAssert.h" alt="" coords="157,751,284,777"/>
+<area shape="rect" id="node18" href="$d6/dc7/a03683.html" title="Message/Message.h" alt="" coords="650,825,802,852"/>
+<area shape="rect" id="node23" href="$d5/d73/a03836.html" title="PETE/IpplExpressions.h" alt="" coords="728,751,900,777"/>
+<area shape="rect" id="node24" href="$d8/d5d/a03329.html" title="AppTypes/TSVMeta.h" alt="" coords="309,751,466,777"/>
+<area shape="rect" id="node29" href="$df/dd5/a01115.html" title="BeamlineGeometry/Rotation3D.h" alt="" coords="1187,587,1425,613"/>
+<area shape="rect" id="node31" href="$db/d28/a01133.html" title="BeamlineGeometry/Vector3D.h" alt="" coords="1038,669,1262,695"/>
+<area shape="rect" id="node30" href="$d6/d0d/a01091.html" title="BeamlineGeometry/Matrix3D.h" alt="" coords="1286,669,1510,695"/>
+<area shape="rect" id="node38" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="1500,587,1699,613"/>
+<area shape="rect" id="node43" href="$dc/dce/a01505.html" title="Fields/StaticMagneticField.h" alt="" coords="541,333,743,360"/>
+<area shape="rect" id="node47" href="$d6/db6/a01172.html" title="Channels/Channel.h" alt="" coords="1291,169,1441,196"/>
+<area shape="rect" id="node48" href="$d8/d11/a01178.html" title="Channels/ConstChannel.h" alt="" coords="1272,251,1460,278"/>
+</map>

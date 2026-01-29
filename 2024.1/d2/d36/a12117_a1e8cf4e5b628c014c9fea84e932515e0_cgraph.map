@@ -1,0 +1,12 @@
+<map id="IpplInfo::printVersion" name="IpplInfo::printVersion">
+<area shape="rect" id="node2" href="$d2/d36/a12117.html#af31c58a05235ef60d572c85c2d5b64fd" title="IpplInfo::compileDate" alt="" coords="222,5,385,32"/>
+<area shape="rect" id="node3" href="$d2/d36/a12117.html#a52237c0de05d59082177571851378ef1" title="IpplInfo::compileMachine" alt="" coords="211,56,396,83"/>
+<area shape="rect" id="node4" href="$d2/d36/a12117.html#ae5c65c19f89d46e97ffed4d6291418d5" title="IpplInfo::compileUser" alt="" coords="223,107,384,133"/>
+<area shape="rect" id="node5" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="278,157,329,184"/>
+<area shape="rect" id="node11" href="$d2/d36/a12117.html#ac856f55f74a24ea58f4253d6274f698c" title="IpplInfo::version" alt="" coords="240,208,367,235"/>
+<area shape="rect" id="node6" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="444,132,616,159"/>
+<area shape="rect" id="node7" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="664,132,851,159"/>
+<area shape="rect" id="node10" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1147,81,1282,108"/>
+<area shape="rect" id="node8" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="899,132,1096,159"/>
+<area shape="rect" id="node9" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1144,132,1285,159"/>
+</map>

@@ -1,0 +1,5 @@
+<map id="SectorMagneticFieldMap::getDeltaPhi" name="SectorMagneticFieldMap::getDeltaPhi">
+<area shape="rect" id="node2" href="$d3/d6a/a05857.html#a746982d064969d9b76e4f57a782128a0" title="interpolation::VectorMap\l::getMesh" alt="" coords="235,5,416,47"/>
+<area shape="rect" id="node3" href="$d1/d9d/a05849.html#a020b2e46f5dc90057a4e84385bb975ea" title="interpolation::ThreeDGrid\l::maxZ" alt="" coords="232,71,419,112"/>
+<area shape="rect" id="node4" href="$d1/d9d/a05849.html#af32cd23a75c48e143b30d4383eaaa90e" title="interpolation::ThreeDGrid\l::minZ" alt="" coords="232,136,419,177"/>
+</map>

@@ -1,0 +1,22 @@
+<map id="src/Solvers/MGPoissonSolver.cpp" name="src/Solvers/MGPoissonSolver.cpp">
+<area shape="rect" id="node2" href="$de/da4/a03005.html" title="Solvers/MGPoissonSolver.h" alt="" coords="2586,80,2783,107"/>
+<area shape="rect" id="node4" href="$d5/d08/a03254.html" title="Utilities/OpalException.h" alt="" coords="2034,229,2217,256"/>
+<area shape="rect" id="node18" href="$da/d9e/a03059.html" title="Structure/BoundaryGeometry.h" alt="" coords="829,155,1052,181"/>
+<area shape="rect" id="node20" href="$d5/ddf/a00224.html" title="Attributes/Attributes.h" alt="" coords="222,229,389,256"/>
+<area shape="rect" id="node23" href="$db/d7f/a01718.html" title="Physics/Physics.h" alt="" coords="2890,304,3026,331"/>
+<area shape="rect" id="node31" href="$d7/dc1/a02963.html" title="ArbitraryDomain.h" alt="" coords="3490,155,3633,181"/>
+<area shape="rect" id="node35" href="$d7/d93/a02981.html" title="EllipticDomain.h" alt="" coords="1209,80,1338,107"/>
+<area shape="rect" id="node36" href="$db/d6c/a02969.html" title="BoxCornerDomain.h" alt="" coords="2637,229,2790,256"/>
+<area shape="rect" id="node37" href="$de/dec/a03020.html" title="RectangularDomain.h" alt="" coords="35,229,198,256"/>
+<area shape="rect" id="node38" href="$d9/d65/a03215.html" title="Track/Track.h" alt="" coords="27,155,134,181"/>
+<area shape="rect" id="node39" href="$d6/d85/a03290.html" title="ValueDefinitions/RealVariable.h" alt="" coords="3642,80,3868,107"/>
+<area shape="rect" id="node40" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="1570,229,1772,256"/>
+<area shape="rect" id="node41" href="$d6/d94/a02033.html" title="Utilities/Options.h" alt="" coords="978,80,1116,107"/>
+<area shape="rect" id="node3" href="$df/d3a/a03014.html" title="PoissonSolver.h" alt="" coords="1432,155,1556,181"/>
+<area shape="rect" id="node5" href="$dc/d94/a02999.html" title="IrregularDomain.h" alt="" coords="2814,229,2954,256"/>
+<area shape="rect" id="node17" href="$d6/d2f/a00854.html" title="Algorithms/PartBunch.h" alt="" coords="2025,155,2200,181"/>
+<area shape="rect" id="node19" href="$d4/d8c/a00035.html" title="AbstractObjects/Definition.h" alt="" coords="701,229,905,256"/>
+<area shape="rect" id="node22" href="$d2/d31/a02087.html" title="Utilities/Util.h" alt="" coords="1898,229,2010,256"/>
+<area shape="rect" id="node25" href="$d9/def/a04004.html" title="Utility/IpplTimings.h" alt="" coords="1188,229,1343,256"/>
+<area shape="rect" id="node26" href="$d7/dcb/a04028.html" title="Utility/PAssert.h" alt="" coords="1368,229,1494,256"/>
+</map>

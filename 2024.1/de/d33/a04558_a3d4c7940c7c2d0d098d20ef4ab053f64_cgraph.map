@@ -1,0 +1,14 @@
+<map id="PyOpal::PyLineNS::BOOST_PYTHON_MODULE" name="PyOpal::PyLineNS::BOOST_PYTHON_MODULE">
+<area shape="rect" id="node2" href="$dd/db9/a06885.html#a47fd708202ddb1bee86fdce1d8991eb8" title="PyOpal::PyOpalObjectNS\l::PyOpalObject::addGetOpalElement" alt="" coords="244,5,501,47"/>
+<area shape="rect" id="node3" href="$dc/dcd/a06901.html#aa0a5a9a4e21ad052c2148f090b1796d7" title="PyOpal::PyLine_::append" alt="" coords="281,71,464,98"/>
+<area shape="rect" id="node4" href="$dc/dcd/a06901.html#ae50bbcc9e2f759d286504ecc1c33a14e" title="PyOpal::PyLine_::getElement" alt="" coords="268,122,477,149"/>
+<area shape="rect" id="node5" href="$dc/dcd/a06901.html#a2eb67fd08dc122d239e6103eba50d3aa" title="PyOpal::PyLine_::getLength" alt="" coords="273,173,472,199"/>
+<area shape="rect" id="node6" href="$dc/dcd/a06901.html#ad50f85bab26258bbe0a06b1befe605f1" title="PyOpal::PyLine_::getName" alt="" coords="275,223,470,250"/>
+<area shape="rect" id="node7" href="$d7/da8/a04536.html#add6a4f09a4bf594241765fb6d14a2f2f" title="PyOpal::Globals::Initialise" alt="" coords="278,274,467,301"/>
+<area shape="rect" id="node9" href="$dc/dcd/a06901.html#a6e9d932564b663316a10f8759082ebc5" title="PyOpal::PyLine_::make\l_class" alt="" coords="287,325,458,367"/>
+<area shape="rect" id="node10" href="$df/de9/a04534.html#a6b13e9b77d47f3b02a5f2e3ef12b2a9b" title="PyOpal::ExceptionTranslation\l::registerExceptions" alt="" coords="267,391,478,432"/>
+<area shape="rect" id="node11" href="$dc/dcd/a06901.html#a1416f0bbf13326364d31b25ad09a3c18" title="PyOpal::PyLine_::register\lObject" alt="" coords="281,456,465,497"/>
+<area shape="rect" id="node12" href="$dc/dcd/a06901.html#aa3948a15ec4690c3316225b9e4664d3e" title="PyOpal::PyLine_::setElement" alt="" coords="269,522,477,549"/>
+<area shape="rect" id="node13" href="$dc/dcd/a06901.html#a37d8f38623b7056e98dbd3a199e61ef2" title="PyOpal::PyLine_::setName" alt="" coords="276,573,469,599"/>
+<area shape="rect" id="node8" href="$d2/d36/a12117.html#a166424080a04feb0a36a6bc1a9c09c3a" title="IpplInfo::instantiateGlobals" alt="" coords="549,274,748,301"/>
+</map>

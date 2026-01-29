@@ -1,0 +1,5 @@
+<map id="OpalBeamline::activateElements" name="OpalBeamline::activateElements">
+<area shape="rect" id="node2" href="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="369,5,416,32"/>
+<area shape="rect" id="node4" href="$d7/d01/a04977.html#a79c9ba7cad9c40eae57145e7747ba701" title="BendBase::getDesignEnergy" alt="" coords="289,56,496,83"/>
+<area shape="rect" id="node3" href="$d7/d47/a04685.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="544,5,695,32"/>
+</map>

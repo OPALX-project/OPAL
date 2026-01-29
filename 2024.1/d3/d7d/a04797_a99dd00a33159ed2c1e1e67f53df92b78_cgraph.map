@@ -1,0 +1,51 @@
+<map id="ParallelCyclotronTracker::gapCrossKick_m" name="ParallelCyclotronTracker::gapCrossKick_m">
+<area shape="rect" id="node2" href="$d3/d7d/a04797.html#a52d5fc95fde1a205343739362d465f36" title="ParallelCyclotronTracker\l::checkGapCross" alt="" coords="232,61,411,102"/>
+<area shape="rect" id="node6" href="$d9/dd4/a00776.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="258,247,385,273"/>
+<area shape="rect" id="node30" href="$dc/da4/a04515.html#adbeb33f36131d16373cbe28aa272a360" title="Util::getBeta" alt="" coords="269,149,373,176"/>
+<area shape="rect" id="node33" href="$d3/d7d/a04797.html#a5c507cc377b28df9b66a7b3831c2ed05" title="ParallelCyclotronTracker\l::RFkick" alt="" coords="232,454,411,495"/>
+<area shape="rect" id="node3" href="$d0/d6f/a05137.html#a58648e6c9265858963a0104398aa6e02" title="RFCavity::getCosAzimuth" alt="" coords="471,5,657,32"/>
+<area shape="rect" id="node4" href="$d0/d6f/a05137.html#ac9dfec52bbe15f4bb6859b0d436dcf75" title="RFCavity::getPerpenDistance" alt="" coords="459,208,669,235"/>
+<area shape="rect" id="node5" href="$d0/d6f/a05137.html#a95ab6fb74ae41fbf95b87845cee2804f" title="RFCavity::getSinAzimuth" alt="" coords="473,56,655,83"/>
+<area shape="rect" id="node7" href="$d9/d28/a05217.html#a55cb732c23dd6b419f636aff0874ab82" title="Get beginning of data. " alt="" coords="505,157,623,184"/>
+<area shape="rect" id="node8" href="$d9/d28/a05217.html#a941ffba563af0a4e17aae45292b1659e" title="Get end of data. " alt="" coords="511,259,617,285"/>
+<area shape="rect" id="node9" href="$d3/d4f/a00761.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="782,309,829,336"/>
+<area shape="rect" id="node10" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1641,360,1785,387"/>
+<area shape="rect" id="node18" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1209,411,1301,437"/>
+<area shape="rect" id="node11" href="$df/dfa/a03533.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1889,360,1936,387"/>
+<area shape="rect" id="node12" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2175,461,2360,488"/>
+<area shape="rect" id="node13" href="$df/dfa/a03533.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="2040,360,2127,387"/>
+<area shape="rect" id="node14" href="$d2/d67/a03455.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="2228,309,2307,336"/>
+<area shape="rect" id="node16" href="$dc/d14/a03479.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="2429,389,2526,416"/>
+<area shape="rect" id="node17" href="$d4/d78/a03677.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="2205,411,2330,437"/>
+<area shape="rect" id="node15" href="$d6/db6/a08373.html#ade95693db1906427a7c73b8364a07b20" title="BareFieldIterator::\lGetBareField" alt="" coords="2408,302,2547,343"/>
+<area shape="rect" id="node19" href="$d7/dc3/a05241.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1433,385,1556,412"/>
+<area shape="rect" id="node20" href="$d7/dc3/a05241.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1441,563,1548,589"/>
+<area shape="rect" id="node21" href="$d7/dc3/a05241.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="1646,461,1781,488"/>
+<area shape="rect" id="node22" href="$d7/dc3/a05241.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="1645,563,1782,589"/>
+<area shape="rect" id="node23" href="$d4/d21/a05245.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="1654,613,1773,640"/>
+<area shape="rect" id="node27" href="$d7/dc3/a05241.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="1663,664,1764,691"/>
+<area shape="rect" id="node28" href="$dd/d51/a03842.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="1887,512,1938,539"/>
+<area shape="rect" id="node24" href="$dd/dde/a05257.html#a12f23d39f696c02da148722cb0bd8f06" title="TpsData::getTpsData" alt="" coords="1833,664,1992,691"/>
+<area shape="rect" id="node25" href="$dd/dde/a05257.html#a6ec8c0544fd09e9a701799d65f1bca46" title="TpsData::getSize" alt="" coords="1847,563,1979,589"/>
+<area shape="rect" id="node26" href="$d4/d21/a05245.html#a33520f8c7100283fafbdf7171a0a3de5" title="TpsRep::data" alt="" coords="1859,613,1966,640"/>
+<area shape="rect" id="node29" href="$dd/d51/a03842.html#a0a1cdb80c431a477e99aea03fea993fc" title="Reduction" alt="" coords="2040,461,2127,488"/>
+<area shape="rect" id="node31" href="$dc/da4/a04515.html#ae12a15e0d75307c934c8add55d2c25ac" title="Util::getGamma" alt="" coords="501,107,627,133"/>
+<area shape="rect" id="node32" href="$d0/d61/a01130.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="784,107,827,133"/>
+<area shape="rect" id="node34" href="$d3/d4f/a00761.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="781,360,830,387"/>
+<area shape="rect" id="node36" href="$d0/d6f/a05137.html#af90ea0cd7726b5fdb17082c0f702588a" title="RFCavity::getRmin" alt="" coords="493,512,635,539"/>
+<area shape="rect" id="node37" href="$d0/d6f/a05137.html#a06eb3e02d5e9c26cb967de237b1e41ad" title="RFCavity::getRmax" alt="" coords="491,563,637,589"/>
+<area shape="rect" id="node38" href="$d0/d6f/a05137.html#a08878a675b003ca43d8c316788837260" title="used in OPAL&#45;cycl " alt="" coords="465,461,663,488"/>
+<area shape="rect" id="node49" href="$d7/d47/a04685.html#af51331c43ea82142dd6d237e6e3e5bfd" title="PartBunchBase::getM" alt="" coords="485,613,643,640"/>
+<area shape="rect" id="node50" href="$d7/d47/a04685.html#a16508077c3f6403314e7923dc74e06f9" title="Access to reference data. " alt="" coords="485,664,643,691"/>
+<area shape="rect" id="node35" href="$d7/dc3/a05241.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="977,309,1078,336"/>
+<area shape="rect" id="node39" href="$d0/d6f/a05137.html#a9af48054e57a0c3158e53c5e05315d90" title="RFCavity::spline" alt="" coords="742,664,869,691"/>
+<area shape="rect" id="node40" href="$d3/d4f/a00761.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="785,461,826,488"/>
+<area shape="rect" id="node41" href="$d3/d4f/a00761.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="1005,512,1049,539"/>
+<area shape="rect" id="node42" href="$d5/d73/a03836.html#aae355e465ddaedd0a66a3187cd09a5a8" title="fmod" alt="" coords="777,411,833,437"/>
+<area shape="rect" id="node43" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1646,715,1781,741"/>
+<area shape="rect" id="node44" href="$da/d7c/a05021.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="717,512,893,539"/>
+<area shape="rect" id="node45" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="780,613,831,640"/>
+<area shape="rect" id="node46" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="941,639,1113,665"/>
+<area shape="rect" id="node47" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1161,639,1348,665"/>
+<area shape="rect" id="node48" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1396,639,1593,665"/>
+</map>

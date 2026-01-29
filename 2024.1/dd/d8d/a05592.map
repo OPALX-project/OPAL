@@ -1,0 +1,6 @@
+<map id="Channel" name="Channel">
+<area shape="rect" id="node3" href="$de/dc2/a05601.html" title="Direct access to a [b]double[/b] variable. " alt="" coords="5,155,120,181"/>
+<area shape="rect" id="node4" href="$d4/d64/a05605.html" title="Access to an indexed [b]double[/b] data member. " alt="" coords="144,155,309,181"/>
+<area shape="rect" id="node5" href="$d5/d6f/a05609.html" title="Access to a [b]double[/b] data member. " alt="" coords="333,155,496,181"/>
+<area shape="rect" id="node2" href="$da/d24/a05597.html" title="Abstract interface for read&#45;only access to variable. " alt="" coords="171,5,283,32"/>
+</map>

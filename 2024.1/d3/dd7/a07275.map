@@ -1,0 +1,25 @@
+<map id="Selector" name="Selector">
+<area shape="rect" id="node2" href="$db/d06/a07273.html" title="RangeSelector" alt="" coords="1899,245,2015,272"/>
+<area shape="rect" id="node3" href="$da/d4c/a05289.html" title="DefaultVisitor" alt="" coords="1645,297,1757,324"/>
+<area shape="rect" id="node4" href="$d5/db2/a04969.html" title="BeamlineVisitor" alt="" coords="1301,317,1427,344"/>
+<area shape="rect" id="node5" href="$d3/dc0/a05573.html" title="An abstract sequence of beam line components. " alt="" coords="1322,368,1406,395"/>
+<area shape="rect" id="node6" href="$da/d7c/a05021.html" title="ElementBase" alt="" coords="1012,304,1120,331"/>
+<area shape="rect" id="node8" href="$d7/db7/a06125.html" title="ParticleMatterInteraction\lHandler" alt="" coords="1273,251,1455,293"/>
+<area shape="rect" id="node22" href="$d7/d00/a05993.html" title="Pointer\&lt; ElementBase \&gt;" alt="" coords="1272,145,1456,172"/>
+<area shape="rect" id="node7" href="$d8/dc4/a05997.html" title="Abstract base class for reference counted objects. " alt="" coords="5,313,87,340"/>
+<area shape="rect" id="node11" href="$da/d54/a04673.html" title="The base class for all OPAL objects. " alt="" coords="181,93,245,120"/>
+<area shape="rect" id="node9" href="$d9/dd3/a07173.html" title="BoundaryGeometry" alt="" coords="651,121,801,148"/>
+<area shape="rect" id="node10" href="$d3/d70/a04633.html" title="The base class for all OPAL definitions. " alt="" coords="375,93,460,120"/>
+<area shape="rect" id="node21" href="$df/df3/a04641.html" title="Element" alt="" coords="1663,143,1739,169"/>
+<area shape="rect" id="node12" href="$df/dee/a07461.html" title="Vektor\&lt; int, 3 \&gt;" alt="" coords="354,43,481,69"/>
+<area shape="rect" id="node13" href="$df/dee/a07461.html" title="Vektor\&lt; double, 3 \&gt;" alt="" coords="340,212,495,239"/>
+<area shape="rect" id="node14" href="$da/dd7/a05285.html" title="CoordinateSystemTrafo" alt="" coords="639,279,813,305"/>
+<area shape="rect" id="node15" href="$d4/d27/a05341.html" title="Quaternion" alt="" coords="370,279,465,305"/>
+<area shape="rect" id="node16" href="$df/dee/a07461.html" title="Vektor\&lt; double, 4 \&gt;" alt="" coords="136,279,291,305"/>
+<area shape="rect" id="node17" href="$d9/d8a/a06157.html" title="WakeFunction" alt="" coords="670,431,782,457"/>
+<area shape="rect" id="node18" href="$d1/d39/a04965.html" title="Map of std::string versus double value. " alt="" coords="676,380,776,407"/>
+<area shape="rect" id="node19" href="$df/d8c/a04701.html" title="Representation of a range within a beam line or sequence. " alt="" coords="1657,219,1744,245"/>
+<area shape="rect" id="node20" href="$d2/d91/a04697.html" title="Representation of a place within a beam line or sequence. " alt="" coords="1323,200,1405,227"/>
+<area shape="rect" id="node23" href="$dd/d44/a07317.html" title="A regular expression. " alt="" coords="1885,308,2028,335"/>
+<area shape="rect" id="node24" href="$d3/dcf/a07313.html" title="RegularExpression::\lExpression" alt="" coords="1625,349,1776,390"/>
+</map>

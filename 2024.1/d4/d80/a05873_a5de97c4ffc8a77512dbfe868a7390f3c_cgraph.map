@@ -1,0 +1,51 @@
+<map id="SectorMagneticFieldMap::readMap" name="SectorMagneticFieldMap::readMap">
+<area shape="rect" id="node2" href="$d1/dc8/a05877.html#ad5f1522fc20a360aebbb147928c66c6c" title="SectorMagneticFieldMap\l::IO::readMap" alt="" coords="232,449,411,491"/>
+<area shape="rect" id="node37" href="$d4/d80/a05873.html#a5a62ea649266d38cc96cf82c56c363e2" title="SectorMagneticFieldMap\l::setInterpolator" alt="" coords="475,1144,654,1185"/>
+<area shape="rect" id="node3" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1338,537,1389,563"/>
+<area shape="rect" id="node8" href="$d1/dc8/a05877.html#a6b278c8aa16bc38c6bb71dfacd939ccd" title="SectorMagneticFieldMap\l::IO::readLines" alt="" coords="475,285,654,327"/>
+<area shape="rect" id="node17" href="$d1/dc8/a05877.html#a1d5ee9e388625f80a89fe126de4e3abf" title="SectorMagneticFieldMap\l::IO::generateGrid" alt="" coords="475,420,654,461"/>
+<area shape="rect" id="node19" href="$d1/dc8/a05877.html#ab8aebcb6b5587591590d4f3859cbbca2" title="SectorMagneticFieldMap\l::IO::getInterpolator" alt="" coords="475,104,654,145"/>
+<area shape="rect" id="node23" href="$d1/dc8/a05877.html#aaac45a7d6f566caab689bed312c0f101" title="SectorMagneticFieldMap\l::IO::getInterpolatorPolyPatch" alt="" coords="459,537,671,579"/>
+<area shape="rect" id="node4" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1504,511,1676,538"/>
+<area shape="rect" id="node5" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1724,511,1911,538"/>
+<area shape="rect" id="node7" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="2204,486,2339,513"/>
+<area shape="rect" id="node6" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1959,511,2156,538"/>
+<area shape="rect" id="node9" href="$da/df2/a05869.html#ad8a100b0da7b9f60e908fb6d5ca0e0c0" title="SectorField::convertToPolar" alt="" coords="740,267,937,294"/>
+<area shape="rect" id="node14" href="$d1/dc8/a05877.html#a6c88482510aca818106906a18f74cc19" title="SectorMagneticFieldMap\l::IO::comparator" alt="" coords="749,201,928,243"/>
+<area shape="rect" id="node10" href="$d5/d73/a03836.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="1085,267,1144,294"/>
+<area shape="rect" id="node11" href="$d3/d4f/a00761.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1091,217,1138,243"/>
+<area shape="rect" id="node12" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1291,217,1435,243"/>
+<area shape="rect" id="node13" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1317,267,1409,294"/>
+<area shape="rect" id="node15" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1092,166,1137,193"/>
+<area shape="rect" id="node16" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1271,166,1456,193"/>
+<area shape="rect" id="node18" href="$d1/d9d/a05849.html#abe852446fea9f1a65a71a1b374df7322" title="interpolation::ThreeDGrid\l::setConstantSpacing" alt="" coords="745,420,932,461"/>
+<area shape="rect" id="node20" href="$d1/d9d/a05849.html#a77a9b5f1b065cff54e47c142829d2d66" title="interpolation::ThreeDGrid\l::xSize" alt="" coords="745,71,932,112"/>
+<area shape="rect" id="node21" href="$d1/d9d/a05849.html#ae1828bdf4c1b19d6df4e4a11bbb34307" title="interpolation::ThreeDGrid\l::ySize" alt="" coords="745,136,932,177"/>
+<area shape="rect" id="node22" href="$d1/d9d/a05849.html#a5248cc3a3124f7b4f01206e76d8775b8" title="interpolation::ThreeDGrid\l::zSize" alt="" coords="745,5,932,47"/>
+<area shape="rect" id="node24" href="$d3/d07/a05837.html#aef480f189c74e5beca3c6cfeb7b65366" title="interpolation::PPSolveFactory\l::solve" alt="" coords="733,785,945,827"/>
+<area shape="rect" id="node25" href="$d0/d82/a00857.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375" title="begin" alt="" coords="1085,1233,1144,1259"/>
+<area shape="rect" id="node27" href="$d7/d4f/a05809.html#ac4ed4f036f936ab9879c97aa9a786fc7" title="interpolation::Mesh\l::begin" alt="" coords="1041,991,1188,1032"/>
+<area shape="rect" id="node28" href="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="1340,1174,1387,1201"/>
+<area shape="rect" id="node30" href="$d7/d4f/a05809.html#aaf5786d1f79a267a3c1046df67a730d8" title="interpolation::Mesh::end" alt="" coords="1274,939,1453,966"/>
+<area shape="rect" id="node31" href="$de/d05/a05813.html#aa3315af81a96c94652830cf176087154" title="interpolation::Mesh\l::Iterator::toInteger" alt="" coords="1290,1049,1437,1091"/>
+<area shape="rect" id="node32" href="$d3/d07/a05837.html#a127811846c8c097db57d364703d34b4b" title="interpolation::PPSolveFactory\l::getPoints" alt="" coords="1009,639,1221,680"/>
+<area shape="rect" id="node33" href="$d7/d4f/a05809.html#a73ea86036e1dfe83aa86ca5ca6627ca0" title="interpolation::Mesh\l::getPositionDimension" alt="" coords="1277,756,1450,797"/>
+<area shape="rect" id="node34" href="$d3/d07/a05837.html#a5c07e84c569b5e53b53d69d7f903a0d7" title="interpolation::PPSolveFactory\l::getDerivPoints" alt="" coords="1009,756,1221,797"/>
+<area shape="rect" id="node35" href="$d3/d07/a05837.html#aabfcb09c4cf6450b9c9a4af8f7a0cdcf" title="interpolation::PPSolveFactory\l::getValues" alt="" coords="1009,1108,1221,1149"/>
+<area shape="rect" id="node36" href="$d3/d07/a05837.html#ae0c0d4664f1ab2f826907ef0056e5d7f" title="interpolation::PPSolveFactory\l::getDerivs" alt="" coords="1009,873,1221,915"/>
+<area shape="rect" id="node26" href="$d7/d47/a04685.html#ad6ece85323a4f116320d363dfb419738" title="PartBunchBase::begin" alt="" coords="1282,1233,1445,1259"/>
+<area shape="rect" id="node29" href="$d7/d47/a04685.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1515,1174,1665,1201"/>
+<area shape="rect" id="node38" href="$d3/d6a/a05857.html#a3ed0999e8e0a3737c2c1457c1eed9b37" title="interpolation::VectorMap\l::getPointDimension" alt="" coords="748,1491,929,1532"/>
+<area shape="rect" id="node39" href="$d3/d6a/a05857.html#a073f6bf0e7d54bd5adc5614213b7a0e1" title="interpolation::VectorMap\l::getValueDimension" alt="" coords="748,851,929,892"/>
+<area shape="rect" id="node40" href="$d3/d6a/a05857.html#a746982d064969d9b76e4f57a782128a0" title="interpolation::VectorMap\l::getMesh" alt="" coords="748,916,929,957"/>
+<area shape="rect" id="node41" href="$da/df2/a05869.html#af34f8cbf4ad71ce5c5ecb51adaf030ce" title="SectorField::setPolarBoundingBox" alt="" coords="719,1309,959,1335"/>
+<area shape="rect" id="node42" href="$d1/d9d/a05849.html#ada5010723820c100fc736294774fe8cd" title="interpolation::ThreeDGrid\l::minX" alt="" coords="745,981,932,1023"/>
+<area shape="rect" id="node43" href="$d1/d9d/a05849.html#a83dc6dc62ec22e3856178bbcf097f821" title="interpolation::ThreeDGrid\l::minY" alt="" coords="745,1047,932,1088"/>
+<area shape="rect" id="node44" href="$d1/d9d/a05849.html#a608869c80f610c96db9161b43fc4249a" title="interpolation::ThreeDGrid\l::maxY" alt="" coords="745,1112,932,1153"/>
+<area shape="rect" id="node45" href="$d1/d9d/a05849.html#af32cd23a75c48e143b30d4383eaaa90e" title="interpolation::ThreeDGrid\l::minZ" alt="" coords="745,1177,932,1219"/>
+<area shape="rect" id="node46" href="$d1/d9d/a05849.html#a38683162f3c4a64decafb23d29ca5450" title="interpolation::ThreeDGrid\l::maxX" alt="" coords="745,1243,932,1284"/>
+<area shape="rect" id="node47" href="$d1/d9d/a05849.html#a020b2e46f5dc90057a4e84385bb975ea" title="interpolation::ThreeDGrid\l::maxZ" alt="" coords="745,1360,932,1401"/>
+<area shape="rect" id="node48" href="$d4/d80/a05873.html#aca0e372407030d9627ea8a520be140ae" title="SectorMagneticFieldMap\l::getInfo" alt="" coords="749,1425,928,1467"/>
+<area shape="rect" id="node49" href="$da/df2/a05869.html#ad2b2d2d32ec400394dba6cab9e3f84eb" title="SectorField::getPolarBounding\lBoxMax" alt="" coords="1007,1459,1223,1500"/>
+<area shape="rect" id="node50" href="$da/df2/a05869.html#a3dc347486678c77b1180c4da7122e5c3" title="SectorField::getPolarBounding\lBoxMin" alt="" coords="1007,1393,1223,1435"/>
+</map>

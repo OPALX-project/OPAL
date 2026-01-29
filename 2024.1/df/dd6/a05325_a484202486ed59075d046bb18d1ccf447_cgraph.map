@@ -1,0 +1,51 @@
+<map id="PartBunch::do_binaryRepart" name="PartBunch::do_binaryRepart">
+<area shape="rect" id="node2" href="$d8/d59/a03539.html#a58acf7944d8caaf24e9fadcb27d93024" title="BinaryRepartition" alt="" coords="800,110,935,137"/>
+<area shape="rect" id="node9" href="$d7/d47/a04685.html#ad1ee6b7f03a3b0613c452a83a5e94641" title="PartBunchBase\&lt; double,\l 3 \&gt;::boundp" alt="" coords="255,568,437,609"/>
+<area shape="rect" id="node15" href="$d7/d47/a04685.html#a1094c6ca28ab01f413ec84d92edb5a3f" title="PartBunchBase::get\l_bounds" alt="" coords="523,37,671,79"/>
+<area shape="rect" id="node48" href="$d7/d47/a04685.html#a2aa97a1a0251ddfa5a1823f1befe5878" title="PartBunchBase\&lt; double,\l 3 \&gt;::update" alt="" coords="255,1201,437,1243"/>
+<area shape="rect" id="node3" href="$d8/d59/a03539.html#a456f66b449914610ed052632213063dc" title="CalcBinaryRepartition" alt="" coords="1039,371,1201,398"/>
+<area shape="rect" id="node7" href="$d4/de3/a08453.html#a471c59dfe8c22af78f9bd9af2de6d7a5" title="FieldLayout::Repartition" alt="" coords="1033,110,1207,137"/>
+<area shape="rect" id="node4" href="$d4/de3/a08453.html#a145fb07dd8ce69c94cc355f263fc22ef" title="FieldLayout::getDomain" alt="" coords="1276,371,1452,398"/>
+<area shape="rect" id="node5" href="$dc/d08/a09205.html#aca765179d2843e977a7a78098c8cbde8" title="Communicate::getNodes" alt="" coords="1273,529,1455,555"/>
+<area shape="rect" id="node6" href="$dc/d08/a09205.html#aedbfc462a5f9babc3fc07f875847547f" title="Communicate::myNode" alt="" coords="1276,661,1452,687"/>
+<area shape="rect" id="node8" href="$d1/de9/a08765.html#ad75b34f31827852682fedd1a557f729a" title="FieldLayoutUser::Repartition" alt="" coords="1261,110,1467,137"/>
+<area shape="rect" id="node10" href="$da/d9b/a12149.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="509,939,684,966"/>
+<area shape="rect" id="node12" href="$d2/daf/a08217.html#a574d77d711a2bc3aeb8747e14ee29f7c" title="ParticleAttrib::isDirty" alt="" coords="518,990,675,1017"/>
+<area shape="rect" id="node13" href="$d7/d47/a04685.html#aaf0ee535af0077b272f2bbaf8fef3631" title="PartBunchBase::isGridFixed" alt="" coords="497,1041,696,1067"/>
+<area shape="rect" id="node14" href="$d7/d47/a04685.html#a4dffb2ef41443b2f62bb06cdda64d323" title="PartBunchBase::updateDomain\lLength" alt="" coords="485,1092,708,1133"/>
+<area shape="rect" id="node16" href="$da/d9b/a12149.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="511,1158,683,1185"/>
+<area shape="rect" id="node18" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="845,838,890,865"/>
+<area shape="rect" id="node20" href="$d7/d47/a04685.html#a5ae85b2582451bf5a50d0e2f9074cc35" title="PartBunchBase::getIfBeam\lEmitting" alt="" coords="499,103,694,144"/>
+<area shape="rect" id="node21" href="$df/dfa/a03533.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="571,787,622,814"/>
+<area shape="rect" id="node26" href="$d4/deb/a06461.html#a7e4f030047f0e03a3533ed0a51004aba" title="Distribution::getPercentage\lEmitted" alt="" coords="497,168,697,209"/>
+<area shape="rect" id="node27" href="$d7/d47/a04685.html#a3473f0bbd78f0e387277bb72490d9ee3" title="PartBunchBase::getTotalNum" alt="" coords="491,234,702,261"/>
+<area shape="rect" id="node28" href="$dd/d51/a03842.html#a06dc3d53220b680f16b2c655bcb86a40" title="sum" alt="" coords="571,889,622,915"/>
+<area shape="rect" id="node32" href="$d7/db0/a03962.html#a05f40bf636b1822127580d886951175c" title="level1" alt="" coords="565,285,628,311"/>
+<area shape="rect" id="node34" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="571,335,622,362"/>
+<area shape="rect" id="node38" href="$d7/d47/a04685.html#a3ab033aa31dfecb59e6edbdab4ba330a" title="PartBunchBase::updateFields" alt="" coords="492,386,701,413"/>
+<area shape="rect" id="node39" href="$db/d5b/a07189.html#a824da99715ba7e44401b2945b2c0c6d2" title="FieldSolver::getFieldSolverType" alt="" coords="485,437,708,463"/>
+<area shape="rect" id="node40" href="$d7/d47/a04685.html#a000fd20a0d4059b646b9903a375bfd76" title="PartBunchBase::getLayout" alt="" coords="501,487,693,514"/>
+<area shape="rect" id="node41" href="$d2/dd5/a07117.html#ad06fa3db8ddd66df61752779d32589eb" title="PoissonSolver::getinteraction\lRadius" alt="" coords="491,539,703,580"/>
+<area shape="rect" id="node42" href="$d3/d4f/a00761.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="573,605,620,631"/>
+<area shape="rect" id="node45" href="$db/d2c/a09809.html#a86037be2226f12fe88ceb4f3bf8ae056" title="ParticleSpatialLayout\l::enableCaching" alt="" coords="517,656,676,697"/>
+<area shape="rect" id="node46" href="$d4/dd0/a04537.html#aa8140964548778b1df536ea288848bf0" title="PyOpal::PyOpalObjectNS\l::update" alt="" coords="505,721,688,763"/>
+<area shape="rect" id="node11" href="$d2/db2/a12145.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="796,990,939,1017"/>
+<area shape="rect" id="node17" href="$d2/db2/a12145.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="797,1158,938,1185"/>
+<area shape="rect" id="node19" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1027,838,1213,865"/>
+<area shape="rect" id="node22" href="$df/dfa/a03533.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="824,737,911,763"/>
+<area shape="rect" id="node23" href="$d2/d67/a03455.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="1081,635,1159,662"/>
+<area shape="rect" id="node24" href="$dc/d14/a03479.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="1315,711,1413,738"/>
+<area shape="rect" id="node25" href="$d4/d78/a03677.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="1057,686,1183,713"/>
+<area shape="rect" id="node29" href="$dd/d51/a03842.html#a0a1cdb80c431a477e99aea03fea993fc" title="Reduction" alt="" coords="824,939,911,966"/>
+<area shape="rect" id="node30" href="$dd/d51/a03842.html#a1ea49580c5d70200ee20f6afbc6d6de3" title="for_each" alt="" coords="1081,914,1159,941"/>
+<area shape="rect" id="node31" href="$dd/d51/a03842.html#a1a29834440d6844017cef5d516087c28" title="PETE_apply" alt="" coords="1071,965,1169,991"/>
+<area shape="rect" id="node33" href="$dd/dad/a12105.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="775,285,960,311"/>
+<area shape="rect" id="node35" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="781,422,953,449"/>
+<area shape="rect" id="node36" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1027,422,1213,449"/>
+<area shape="rect" id="node37" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1053,473,1187,499"/>
+<area shape="rect" id="node43" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="795,611,939,638"/>
+<area shape="rect" id="node44" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="821,561,913,587"/>
+<area shape="rect" id="node47" href="$dd/db9/a06885.html#a4a1a6e310d2b5f4319cb77d629b0e97a" title="PyOpal::PyOpalObjectNS\l::PyOpalObject::getOpalShared" alt="" coords="756,671,979,712"/>
+<area shape="rect" id="node49" href="$d2/d8d/a12113.html#a404de25bb05ec1d849f965dff94c4e60" title="IpplException::where" alt="" coords="517,1209,676,1235"/>
+<area shape="rect" id="node50" href="$d2/d8d/a12113.html#abfd19bc7545bd0c2ade73f31318a1a7a" title="IpplException::what" alt="" coords="521,1259,672,1286"/>
+</map>

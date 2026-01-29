@@ -1,0 +1,13 @@
+<map id="src/Lines/LineTemplate.h" name="src/Lines/LineTemplate.h">
+<area shape="rect" id="node2" href="$d6/d10/a02621.html" title="OpalParser/Macro.h" alt="" coords="563,80,710,107"/>
+<area shape="rect" id="node16" href="$d6/d6a/a02633.html" title="OpalParser/MacroStream.h" alt="" coords="1045,229,1239,256"/>
+<area shape="rect" id="node3" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="124,155,307,181"/>
+<area shape="rect" id="node15" href="$d4/d41/a01661.html" title="Parser/Token.h" alt="" coords="995,401,1111,427"/>
+<area shape="rect" id="node4" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="371,229,569,256"/>
+<area shape="rect" id="node6" href="$d1/d3a/a01622.html" title="MemoryManagement/RCObject.h" alt="" coords="331,483,566,509"/>
+<area shape="rect" id="node5" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="437,393,623,435"/>
+<area shape="rect" id="node10" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="311,304,498,345"/>
+<area shape="rect" id="node11" href="$d3/deb/a01619.html" title="MemoryManagement/Pointer.h" alt="" coords="698,401,919,427"/>
+<area shape="rect" id="node7" href="$d9/d2e/a00056.html" title="AbstractObjects/Invalidator.h" alt="" coords="590,483,801,509"/>
+<area shape="rect" id="node17" href="$dd/d8d/a01667.html" title="Parser/TokenStream.h" alt="" coords="1078,311,1241,338"/>
+</map>

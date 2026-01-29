@@ -1,0 +1,7 @@
+<map id="Sequence::getEntrance" name="Sequence::getEntrance">
+<area shape="rect" id="node2" href="$d9/d4c/a06817.html#a7a11f38b6f5a642a4587a2ba1e9b1d95" title="Return the embedded CLASSIC beam line. " alt="" coords="255,5,409,32"/>
+<area shape="rect" id="node4" href="$d9/d4c/a06817.html#a69aecc72fb71b30ad17d433832eedc29" title="Sequence::findNamedPosition" alt="" coords="224,56,440,83"/>
+<area shape="rect" id="node5" href="$df/df3/a04641.html#a05cb634791b56a500a9ed03caac47c16" title="Return arc length from origin to entrance (negative !). " alt="" coords="251,107,413,133"/>
+<area shape="rect" id="node3" href="$df/df3/a04641.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="488,5,647,32"/>
+<area shape="rect" id="node6" href="$df/df3/a04641.html#a58f835862b37de4aa36f82f51abd9ee5" title="Return element length. " alt="" coords="493,107,642,133"/>
+</map>

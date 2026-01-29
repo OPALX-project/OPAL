@@ -1,0 +1,24 @@
+<map id="src/Distribution/SigmaGenerator.cpp" name="src/Distribution/SigmaGenerator.cpp">
+<area shape="rect" id="node2" href="$d5/d63/a02123.html" title="SigmaGenerator.h" alt="" coords="1625,87,1763,114"/>
+<area shape="rect" id="node20" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="298,184,501,211"/>
+<area shape="rect" id="node24" href="$d3/def/a00446.html" title="AbsBeamline/Cyclotron.h" alt="" coords="2521,184,2707,211"/>
+<area shape="rect" id="node27" href="$d5/d08/a03254.html" title="Utilities/OpalException.h" alt="" coords="2212,184,2395,211"/>
+<area shape="rect" id="node29" href="$d2/d31/a02087.html" title="Utilities/Util.h" alt="" coords="3843,87,3955,114"/>
+<area shape="rect" id="node38" href="$d4/d64/a02111.html" title="matrix_vector_operation.h" alt="" coords="1086,184,1281,211"/>
+<area shape="rect" id="node41" href="$d3/d1e/a02093.html" title="ClosedOrbitFinder.h" alt="" coords="3041,87,3189,114"/>
+<area shape="rect" id="node47" href="$d8/dd8/a02108.html" title="MapGenerator.h" alt="" coords="1909,87,2034,114"/>
+<area shape="rect" id="node9" href="$d6/d82/a01565.html" title="FixedAlgebra/FTps.h" alt="" coords="1505,184,1657,211"/>
+<area shape="rect" id="node15" href="$db/d7f/a01718.html" title="Physics/Physics.h" alt="" coords="2043,281,2179,307"/>
+<area shape="rect" id="node16" href="$d3/d4c/a01724.html" title="Physics/Units.h" alt="" coords="1935,184,2056,211"/>
+<area shape="rect" id="node17" href="$d0/d79/a02117.html" title="Distribution/RealDiracMatrix.h" alt="" coords="783,184,1000,211"/>
+<area shape="rect" id="node10" href="$d5/d10/a01571.html" title="FixedAlgebra/FTpsData.h" alt="" coords="1520,281,1703,307"/>
+<area shape="rect" id="node13" href="$da/dd5/a01580.html" title="FixedAlgebra/FVps.h" alt="" coords="1779,281,1932,307"/>
+<area shape="rect" id="node21" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="87,281,325,307"/>
+<area shape="rect" id="node25" href="$d1/d7e/a00434.html" title="AbsBeamline/Component.h" alt="" coords="2479,281,2677,307"/>
+<area shape="rect" id="node26" href="$dc/dd9/a01268.html" title="Fields/Definitions.h" alt="" coords="2701,281,2847,307"/>
+<area shape="rect" id="node28" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="2204,281,2403,307"/>
+<area shape="rect" id="node30" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="4269,281,4420,307"/>
+<area shape="rect" id="node31" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="4163,184,4345,211"/>
+<area shape="rect" id="node45" href="$d6/d94/a02033.html" title="Utilities/Options.h" alt="" coords="3085,281,3223,307"/>
+<area shape="rect" id="node48" href="$d7/db6/a01556.html" title="FixedAlgebra/FMatrix.h" alt="" coords="2782,184,2953,211"/>
+</map>

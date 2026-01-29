@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$d3/d83/a05889.html" title="Filter" alt="" coords="5,81,60,108"/>
+<area shape="rect" id="node2" href="$d2/d07/a05893.html" title="FixedFFTLowPassFilter" alt="" coords="117,5,283,32"/>
+<area shape="rect" id="node3" href="$dd/d35/a05897.html" title="RelativeFFTLowPassFilter" alt="" coords="108,56,292,83"/>
+<area shape="rect" id="node4" href="$db/da8/a05901.html" title="SavitzkyGolayFilter" alt="" coords="126,107,274,133"/>
+<area shape="rect" id="node5" href="$d9/d61/a05905.html" title="StencilFilter" alt="" coords="151,157,249,184"/>
+</map>

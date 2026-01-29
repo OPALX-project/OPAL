@@ -1,0 +1,21 @@
+<map id="SampleWorker::onMessage" name="SampleWorker::onMessage">
+<area shape="rect" id="node2" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="343,28,394,55"/>
+<area shape="rect" id="node8" href="$d9/d4e/a04307.html#a0fc7f6a68fa896ebe47bd38fdeb34a64" title="broadcast params to all entities in comm " alt="" coords="297,130,441,156"/>
+<area shape="rect" id="node11" href="$d9/d4e/a04307.html#af6ea4c1ffa3c091c346231a6931d1f4b" title="MPI_Recv_params" alt="" coords="299,79,438,106"/>
+<area shape="rect" id="node12" href="$d9/d4e/a04307.html#a030e08e17c09e052ced8358d76d40ce5" title="MPI_Send_reqvars" alt="" coords="299,180,439,207"/>
+<area shape="rect" id="node13" href="$da/d2e/a06965.html#abbfa509bc25c3579f5cc8caff5ebd924" title="notify coworkers of incoming broadcast " alt="" coords="252,231,485,258"/>
+<area shape="rect" id="node14" href="$d5/d17/a12513.html#aebc9249c7778c6ef237ed6da127366f3" title="Poller::run" alt="" coords="325,282,413,308"/>
+<area shape="rect" id="node20" href="$da/dde/a12609.html#a0479749ca15f819b292865c78427d6bd" title="OptPilotException::what" alt="" coords="279,332,458,359"/>
+<area shape="rect" id="node3" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="533,28,705,55"/>
+<area shape="rect" id="node4" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="753,28,940,55"/>
+<area shape="rect" id="node7" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1237,79,1371,106"/>
+<area shape="rect" id="node5" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="988,28,1185,55"/>
+<area shape="rect" id="node6" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1233,28,1375,55"/>
+<area shape="rect" id="node9" href="$d9/d4e/a04307.html#ae4442c138a55ccaaee0342211aec5441" title="deserializes params using Boost archive " alt="" coords="573,79,666,106"/>
+<area shape="rect" id="node10" href="$d9/d4e/a04307.html#a665a026d5aa4a3321c183b5f866763e1" title="serializes params using Boost archive " alt="" coords="581,130,658,156"/>
+<area shape="rect" id="node15" href="$d5/d17/a12513.html#a63bade169f963e12856baa64b5ad6bb9" title="Poller::onMessage" alt="" coords="549,383,689,410"/>
+<area shape="rect" id="node16" href="$d5/d17/a12513.html#aa07a78e6acc8bacc6e3b9e3aadef8532" title="enable implementation to react to STOP tag " alt="" coords="563,180,675,207"/>
+<area shape="rect" id="node17" href="$d5/d17/a12513.html#a8862f3178103af0f45a493d57105d5e4" title="executed after handling (if any) new request " alt="" coords="560,231,679,258"/>
+<area shape="rect" id="node18" href="$d5/d17/a12513.html#a5ad3a1cb55edf08847ed37965f6dd56b" title="executed before checking for new request " alt="" coords="563,282,675,308"/>
+<area shape="rect" id="node19" href="$d5/d17/a12513.html#a7750d4a9f379671afefb48e13331c8b0" title="executed before starting polling loop " alt="" coords="556,332,683,359"/>
+</map>

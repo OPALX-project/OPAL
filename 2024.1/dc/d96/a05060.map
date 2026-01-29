@@ -1,0 +1,8 @@
+<map id="MultipoleTBase" name="MultipoleTBase">
+<area shape="rect" id="node5" href="$d7/d59/a05065.html" title="MultipoleTCurvedConstRadius" alt="" coords="5,304,221,331"/>
+<area shape="rect" id="node6" href="$d2/d3f/a05069.html" title="MultipoleTCurvedVarRadius" alt="" coords="245,304,445,331"/>
+<area shape="rect" id="node7" href="$db/d83/a05109.html" title="MultipoleTStraight" alt="" coords="469,304,611,331"/>
+<area shape="rect" id="node2" href="$d1/d18/a04993.html" title="Interface for a single beam element. " alt="" coords="297,155,394,181"/>
+<area shape="rect" id="node3" href="$da/d7c/a05021.html" title="ElementBase" alt="" coords="291,80,399,107"/>
+<area shape="rect" id="node4" href="$d8/dc4/a05997.html" title="Abstract base class for reference counted objects. " alt="" coords="305,5,386,32"/>
+</map>

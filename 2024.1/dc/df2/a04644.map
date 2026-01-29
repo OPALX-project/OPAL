@@ -1,0 +1,9 @@
+<map id="Expressions::Scalar&lt; T &gt;" name="Expressions::Scalar&lt; T &gt;">
+<area shape="rect" id="node2" href="$d6/d8a/a06729.html" title="A scalar expression with one array operand. " alt="" coords="245,5,447,32"/>
+<area shape="rect" id="node3" href="$d5/dee/a06745.html" title="A scalar expression to retrieve an indexed component from an array. " alt="" coords="249,56,443,83"/>
+<area shape="rect" id="node4" href="$db/d92/a06753.html" title="A scalar expression with two scalar operands. " alt="" coords="248,107,444,133"/>
+<area shape="rect" id="node5" href="$d2/d15/a06761.html" title="A scalar constant expression. " alt="" coords="240,157,452,184"/>
+<area shape="rect" id="node6" href="$de/dc1/a06777.html" title="A scalar expression without operands. " alt="" coords="256,208,436,235"/>
+<area shape="rect" id="node7" href="$d7/ddc/a06781.html" title="An expression defined as a reference to a scalar. " alt="" coords="244,259,448,285"/>
+<area shape="rect" id="node8" href="$df/d67/a06785.html" title="A scalar expression with one scalar operand. " alt="" coords="249,309,443,336"/>
+</map>

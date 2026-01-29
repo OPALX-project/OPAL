@@ -1,0 +1,7 @@
+<map id="operator*" name="operator*">
+<area shape="rect" id="node2" href="$d7/d14/a05909.html#a8acbf188045791d858a7991339e8c534" title="Get iterator pointing to beginning of array. " alt="" coords="151,5,277,32"/>
+<area shape="rect" id="node3" href="$dc/dec/a05913.html#a6bdaadc44673c719ffbcb4a55d774839" title="Get column iterator. " alt="" coords="137,57,291,98"/>
+<area shape="rect" id="node6" href="$d7/d14/a05909.html#a581ffe36d9e7a2b963ed4e4f6f7dbcc6" title="Get iterator pointing past end of array. " alt="" coords="157,123,271,149"/>
+<area shape="rect" id="node4" href="$d0/d82/a00857.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375" title="begin" alt="" coords="339,64,397,91"/>
+<area shape="rect" id="node5" href="$d7/d47/a04685.html#ad6ece85323a4f116320d363dfb419738" title="PartBunchBase::begin" alt="" coords="445,64,608,91"/>
+</map>

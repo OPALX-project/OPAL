@@ -1,0 +1,10 @@
+<map id="CSRIGFWakeFunction::initialize" name="CSRIGFWakeFunction::initialize">
+<area shape="rect" id="node2" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="291,5,336,32"/>
+<area shape="rect" id="node4" href="$d7/d01/a04977.html#a6248731d050834eda9d0612e50f167fb" title="BendBase::getBendAngle" alt="" coords="220,56,407,83"/>
+<area shape="rect" id="node5" href="$df/d76/a04973.html#ae8fd174c61e465b68242904967000d74" title="Bend2D::getBendRadius" alt="" coords="224,107,403,133"/>
+<area shape="rect" id="node6" href="$df/d76/a04973.html#a01d39a705762884dae912d160f7944e0" title="Bend2D::getDimensions" alt="" coords="224,157,403,184"/>
+<area shape="rect" id="node7" href="$df/d76/a04973.html#a730595622a39accfc32a5a80c4ca229f" title="Bend2D::getEffectiveCenter" alt="" coords="212,208,415,235"/>
+<area shape="rect" id="node8" href="$df/d76/a04973.html#a30c6f934c890b311dd806400699510b9" title="Bend2D::getEffectiveLength" alt="" coords="212,259,415,285"/>
+<area shape="rect" id="node9" href="$da/d7c/a05021.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="225,309,401,336"/>
+<area shape="rect" id="node3" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="463,5,648,32"/>
+</map>

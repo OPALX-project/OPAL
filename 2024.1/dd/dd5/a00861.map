@@ -1,0 +1,30 @@
+<map id="src/Classic/Algorithms/PartBunchBase.hpp" name="src/Classic/Algorithms/PartBunchBase.hpp">
+<area shape="rect" id="node2" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="927,259,1130,285"/>
+<area shape="rect" id="node9" href="$d0/d11/a00842.html" title="Algorithms/PartBins.h" alt="" coords="1365,184,1527,211"/>
+<area shape="rect" id="node13" href="$d9/d30/a00848.html" title="Algorithms/PartBinsCyc.h" alt="" coords="1295,102,1482,129"/>
+<area shape="rect" id="node14" href="$dd/db2/a00866.html" title="Algorithms/PartData.h" alt="" coords="1175,184,1341,211"/>
+<area shape="rect" id="node15" href="$d9/dff/a02099.html" title="Distribution/Distribution.h" alt="" coords="1621,102,1812,129"/>
+<area shape="rect" id="node28" href="$db/d7f/a01718.html" title="Physics/Physics.h" alt="" coords="2463,259,2599,285"/>
+<area shape="rect" id="node31" href="$df/d9a/a01715.html" title="Physics/ParticleProperties.h" alt="" coords="456,259,657,285"/>
+<area shape="rect" id="node33" href="$d7/deb/a03077.html" title="Structure/FieldSolver.h" alt="" coords="636,102,803,129"/>
+<area shape="rect" id="node35" href="$d5/d08/a03254.html" title="Utilities/OpalException.h" alt="" coords="181,341,364,367"/>
+<area shape="rect" id="node39" href="$d5/d99/a01901.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="5,95,180,136"/>
+<area shape="rect" id="node40" href="$d6/d94/a02033.html" title="Utilities/Options.h" alt="" coords="2306,102,2445,129"/>
+<area shape="rect" id="node42" href="$d2/d50/a02081.html" title="Utilities/SwitcherError.h" alt="" coords="645,341,820,367"/>
+<area shape="rect" id="node43" href="$d2/d31/a02087.html" title="Utilities/Util.h" alt="" coords="3017,102,3129,129"/>
+<area shape="rect" id="node3" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="970,341,1207,367"/>
+<area shape="rect" id="node16" href="$d4/d8c/a00035.html" title="AbstractObjects/Definition.h" alt="" coords="947,184,1151,211"/>
+<area shape="rect" id="node19" href="$d4/d81/a00110.html" title="Algorithms/BoostMatrix.h" alt="" coords="2674,259,2861,285"/>
+<area shape="rect" id="node21" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="3545,259,3696,285"/>
+<area shape="rect" id="node24" href="$d5/ddf/a00224.html" title="Attributes/Attributes.h" alt="" coords="1637,259,1804,285"/>
+<area shape="rect" id="node26" href="$d5/d63/a02123.html" title="Distribution/SigmaGenerator.h" alt="" coords="1805,184,2023,211"/>
+<area shape="rect" id="node17" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="1155,259,1337,285"/>
+<area shape="rect" id="node18" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="1467,341,1665,367"/>
+<area shape="rect" id="node22" href="$d4/daf/a13446.html" title="AppTypes/Vektor.h" alt="" coords="3514,341,3655,367"/>
+<area shape="rect" id="node34" href="$df/d3a/a03014.html" title="Solvers/PoissonSolver.h" alt="" coords="255,259,431,285"/>
+<area shape="rect" id="node37" href="$d3/db1/a00200.html" title="Amr/AmrObject.h" alt="" coords="635,184,769,211"/>
+<area shape="rect" id="node38" href="$dd/d08/a02957.html" title="Solvers/AmrPoissonSolver.h" alt="" coords="357,184,559,211"/>
+<area shape="rect" id="node36" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="247,423,445,449"/>
+<area shape="rect" id="node41" href="$db/d6b/a01853.html" title="Utilities/ClassicRandom.h" alt="" coords="2463,184,2653,211"/>
+<area shape="rect" id="node44" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="3479,184,3661,211"/>
+</map>

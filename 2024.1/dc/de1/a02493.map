@@ -1,0 +1,16 @@
+<map id="src/Expressions/SCell.cpp" name="src/Expressions/SCell.cpp">
+<area shape="rect" id="node2" href="$d5/d56/a02495.html" title="Expressions/SCell.h" alt="" coords="373,229,522,256"/>
+<area shape="rect" id="node11" href="$d1/dc1/a00092.html" title="AbstractObjects/Table.h" alt="" coords="397,80,572,107"/>
+<area shape="rect" id="node21" href="$d8/d11/a01178.html" title="Channels/ConstChannel.h" alt="" coords="596,80,784,107"/>
+<area shape="rect" id="node3" href="$da/d5d/a13437.html" title="AbstractObjects/Expressions.h" alt="" coords="253,311,471,338"/>
+<area shape="rect" id="node10" href="$da/dec/a00080.html" title="AbstractObjects/PlaceRep.h" alt="" coords="597,311,797,338"/>
+<area shape="rect" id="node4" href="$db/dad/a01616.html" title="MemoryManagement/OwnPtr.h" alt="" coords="5,401,228,427"/>
+<area shape="rect" id="node5" href="$d4/d41/a01661.html" title="Parser/Token.h" alt="" coords="304,401,420,427"/>
+<area shape="rect" id="node12" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="844,155,1027,181"/>
+<area shape="rect" id="node13" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="985,229,1184,256"/>
+<area shape="rect" id="node15" href="$d1/d3a/a01622.html" title="MemoryManagement/RCObject.h" alt="" coords="1213,483,1447,509"/>
+<area shape="rect" id="node14" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="1023,393,1210,435"/>
+<area shape="rect" id="node17" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="1205,304,1391,345"/>
+<area shape="rect" id="node18" href="$d3/deb/a01619.html" title="MemoryManagement/Pointer.h" alt="" coords="1410,401,1631,427"/>
+<area shape="rect" id="node16" href="$d9/d2e/a00056.html" title="AbstractObjects/Invalidator.h" alt="" coords="978,483,1189,509"/>
+</map>

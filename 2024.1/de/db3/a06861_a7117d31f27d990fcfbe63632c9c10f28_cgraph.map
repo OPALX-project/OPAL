@@ -1,0 +1,22 @@
+<map id="WhileStatement::execute" name="WhileStatement::execute">
+<area shape="rect" id="node2" href="$d7/d72/a06017.html#abf261c86e06adc4f7d0a395779d53546" title="Execute. " alt="" coords="248,31,399,57"/>
+<area shape="rect" id="node3" href="$dd/d3c/a04466.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="251,81,395,108"/>
+<area shape="rect" id="node7" href="$d7/dd4/a04689.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="240,132,407,159"/>
+<area shape="rect" id="node9" href="$dd/d3c/a04466.html#a0456a7ab32848a41f018f6464bc6ffde" title="Make logical attribute. " alt="" coords="243,183,403,209"/>
+<area shape="rect" id="node10" href="$d3/de5/a04617.html#a6bc9587ae494cd83cc90b37bdc8b4780" title="Parse attribute. " alt="" coords="262,233,385,260"/>
+<area shape="rect" id="node12" href="$d7/d72/a06017.html#ad48f4bde092bb9fb68423da5b89d37d3" title="Print statement. " alt="" coords="259,284,387,311"/>
+<area shape="rect" id="node19" href="$d7/dd4/a04689.html#a65a9283faa4cf08b07376be4357d0f58" title="Update all objects. " alt="" coords="255,335,391,361"/>
+<area shape="rect" id="node4" href="$d3/de5/a04617.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="455,107,645,133"/>
+<area shape="rect" id="node5" href="$d3/de5/a04617.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="480,5,620,32"/>
+<area shape="rect" id="node6" href="$d3/de5/a04617.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="471,56,629,83"/>
+<area shape="rect" id="node8" href="$d7/dd4/a04689.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="474,157,626,184"/>
+<area shape="rect" id="node11" href="$d4/d0f/a04625.html#ac9f917b4f0edf9300da8b8da7efc8048" title="Parse new value. " alt="" coords="463,233,637,260"/>
+<area shape="rect" id="node13" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="525,284,575,311"/>
+<area shape="rect" id="node14" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="693,259,865,285"/>
+<area shape="rect" id="node15" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="913,259,1100,285"/>
+<area shape="rect" id="node18" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1397,208,1531,235"/>
+<area shape="rect" id="node16" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1148,259,1345,285"/>
+<area shape="rect" id="node17" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1393,259,1535,285"/>
+<area shape="rect" id="node20" href="$d4/d88/a04637.html#a6af87fa7c132144a4fed854a5c0ba253" title="First object in alphabetic order of name. " alt="" coords="487,335,613,361"/>
+<area shape="rect" id="node21" href="$d4/d88/a04637.html#a4a8d6e8dc3b5f4f851a86b64daad1978" title="Last object in alphabetic order of name. " alt="" coords="493,385,607,412"/>
+</map>

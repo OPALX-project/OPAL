@@ -1,0 +1,5 @@
+<map id="SectorMagneticFieldMap::IO::getInterpolator" name="SectorMagneticFieldMap::IO::getInterpolator">
+<area shape="rect" id="node2" href="$d1/d9d/a05849.html#a77a9b5f1b065cff54e47c142829d2d66" title="interpolation::ThreeDGrid\l::xSize" alt="" coords="232,5,419,47"/>
+<area shape="rect" id="node3" href="$d1/d9d/a05849.html#ae1828bdf4c1b19d6df4e4a11bbb34307" title="interpolation::ThreeDGrid\l::ySize" alt="" coords="232,71,419,112"/>
+<area shape="rect" id="node4" href="$d1/d9d/a05849.html#a5248cc3a3124f7b4f01206e76d8775b8" title="interpolation::ThreeDGrid\l::zSize" alt="" coords="232,136,419,177"/>
+</map>

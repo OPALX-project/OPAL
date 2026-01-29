@@ -1,0 +1,34 @@
+<map id="ippl/src/Particle/IpplParticleBase.hpp" name="ippl/src/Particle/IpplParticleBase.hpp">
+<area shape="rect" id="node2" href="$db/d49/a03737.html" title="Particle/IpplParticleBase.h" alt="" coords="1750,169,1941,196"/>
+<area shape="rect" id="node4" href="$d9/d79/a03809.html" title="Particle/ParticleLayout.h" alt="" coords="2413,319,2592,345"/>
+<area shape="rect" id="node14" href="$d7/dcb/a04028.html" title="Utility/PAssert.h" alt="" coords="1054,319,1181,345"/>
+<area shape="rect" id="node18" href="$d6/dc7/a03683.html" title="Message/Message.h" alt="" coords="680,393,832,420"/>
+<area shape="rect" id="node23" href="$dd/d78/a03980.html" title="Utility/IpplInfo.h" alt="" coords="258,543,385,569"/>
+<area shape="rect" id="node26" href="$d3/db5/a03965.html" title="Utility/Inform.h" alt="" coords="1030,617,1151,644"/>
+<area shape="rect" id="node39" href="$d2/d33/a03770.html" title="Particle/ParticleAttrib.h" alt="" coords="829,95,1000,121"/>
+<area shape="rect" id="node44" href="$df/d58/a03998.html" title="Utility/IpplStats.h" alt="" coords="155,319,290,345"/>
+<area shape="rect" id="node47" href="$dd/d77/a03659.html" title="Message/Communicate.h" alt="" coords="1863,393,2049,420"/>
+<area shape="rect" id="node50" href="$d4/d2e/a03974.html" title="Utility/IpplException.h" alt="" coords="2591,95,2758,121"/>
+<area shape="rect" id="node3" href="$d1/d00/a03707.html" title="Particle/AbstractParticle.h" alt="" coords="2035,244,2223,271"/>
+<area shape="rect" id="node9" href="$df/df7/a03776.html" title="Particle/ParticleAttribBase.h" alt="" coords="1383,393,1585,420"/>
+<area shape="rect" id="node13" href="$d4/daf/a13446.html" title="AppTypes/Vektor.h" alt="" coords="1352,244,1493,271"/>
+<area shape="rect" id="node34" href="$d0/d06/a03368.html" title="DataSource/DataSource.h" alt="" coords="1569,244,1757,271"/>
+<area shape="rect" id="node35" href="$da/dfd/a03401.html" title="DataSource/MakeDataSource.h" alt="" coords="1105,244,1327,271"/>
+<area shape="rect" id="node36" href="$d0/d1e/a03674.html" title="Message/Format.h" alt="" coords="1892,319,2033,345"/>
+<area shape="rect" id="node38" href="$d2/db4/a03695.html" title="Message/MsgBuffer.h" alt="" coords="2058,319,2217,345"/>
+<area shape="rect" id="node5" href="$d0/db5/a03788.html" title="Particle/ParticleBConds.h" alt="" coords="2386,468,2569,495"/>
+<area shape="rect" id="node8" href="$d0/dd4/a03812.html" title="Particle/ParticleLayout.hpp" alt="" coords="2436,393,2631,420"/>
+<area shape="rect" id="node6" href="$dd/dda/a03584.html" title="Index/NDIndex.h" alt="" coords="2283,543,2413,569"/>
+<area shape="rect" id="node31" href="$d5/d73/a03836.html" title="PETE/IpplExpressions.h" alt="" coords="507,319,679,345"/>
+<area shape="rect" id="node32" href="$d8/d5d/a03329.html" title="AppTypes/TSVMeta.h" alt="" coords="1292,319,1449,345"/>
+<area shape="rect" id="node22" href="$d4/d5e/a03686.html" title="Message/Message.hpp" alt="" coords="731,468,899,495"/>
+<area shape="rect" id="node24" href="$d4/d54/a04055.html" title="Utility/StaticIpplInfo.h" alt="" coords="145,617,309,644"/>
+<area shape="rect" id="node40" href="$db/d07/a03779.html" title="Particle/ParticleAttribElem.h" alt="" coords="624,169,827,196"/>
+<area shape="rect" id="node41" href="$d0/d33/a03899.html" title="SubParticle/SubParticleAttrib.h" alt="" coords="659,244,877,271"/>
+<area shape="rect" id="node42" href="$d2/db0/a03827.html" title="Particle/PAssign.h" alt="" coords="397,169,533,196"/>
+<area shape="rect" id="node43" href="$d0/ddf/a03935.html" title="Utility/DiscType.h" alt="" coords="1200,169,1336,196"/>
+<area shape="rect" id="node46" href="$dc/df3/a03773.html" title="Particle/ParticleAttrib.hpp" alt="" coords="245,244,432,271"/>
+<area shape="rect" id="node45" href="$d2/d6f/a13482.html" title="Utility/Timer.h" alt="" coords="187,393,301,420"/>
+<area shape="rect" id="node48" href="$d4/df9/a03701.html" title="Message/TagMaker.h" alt="" coords="1755,468,1911,495"/>
+<area shape="rect" id="node49" href="$d7/da2/a03704.html" title="Message/Tags.h" alt="" coords="1935,468,2059,495"/>
+</map>

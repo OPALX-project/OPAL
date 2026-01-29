@@ -1,0 +1,32 @@
+<map id="src/PyOpal/PyCore/PyOpalObject.h" name="src/PyOpal/PyCore/PyOpalObject.h">
+<area shape="rect" id="node10" href="$d5/d08/a03254.html" title="Utilities/OpalException.h" alt="" coords="1274,244,1457,271"/>
+<area shape="rect" id="node13" href="$df/d14/a02183.html" title="Elements/OpalElement.h" alt="" coords="1613,95,1795,121"/>
+<area shape="rect" id="node15" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="1906,244,2089,271"/>
+<area shape="rect" id="node41" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="2831,401,3033,427"/>
+<area shape="rect" id="node44" href="$d1/d7e/a00434.html" title="AbsBeamline/Component.h" alt="" coords="1143,95,1342,121"/>
+<area shape="rect" id="node46" href="$d5/ddf/a00224.html" title="Attributes/Attributes.h" alt="" coords="2518,244,2685,271"/>
+<area shape="rect" id="node50" href="$d1/d23/a02603.html" title="OpalConfigure/Configure.h" alt="" coords="2671,95,2863,121"/>
+<area shape="rect" id="node11" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="1214,490,1413,517"/>
+<area shape="rect" id="node14" href="$d6/d2d/a00047.html" title="AbstractObjects/Element.h" alt="" coords="1767,169,1961,196"/>
+<area shape="rect" id="node40" href="$db/dad/a01616.html" title="MemoryManagement/OwnPtr.h" alt="" coords="1418,169,1641,196"/>
+<area shape="rect" id="node22" href="$d3/deb/a01619.html" title="MemoryManagement/Pointer.h" alt="" coords="1943,490,2164,517"/>
+<area shape="rect" id="node26" href="$d2/d9d/a00464.html" title="AbsBeamline/ElementBase.h" alt="" coords="829,319,1040,345"/>
+<area shape="rect" id="node16" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="2102,319,2301,345"/>
+<area shape="rect" id="node18" href="$d1/d3a/a01622.html" title="MemoryManagement/RCObject.h" alt="" coords="1300,572,1535,599"/>
+<area shape="rect" id="node17" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="2239,483,2425,524"/>
+<area shape="rect" id="node21" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="1868,393,2055,435"/>
+<area shape="rect" id="node19" href="$d9/d2e/a00056.html" title="AbstractObjects/Invalidator.h" alt="" coords="2227,572,2437,599"/>
+<area shape="rect" id="node27" href="$d9/de6/a00404.html" title="AbsBeamline/AttributeSet.h" alt="" coords="1388,401,1591,427"/>
+<area shape="rect" id="node29" href="$dd/d7e/a00809.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="181,393,398,435"/>
+<area shape="rect" id="node33" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="175,490,356,517"/>
+<area shape="rect" id="node34" href="$d9/d7c/a01073.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="433,490,655,517"/>
+<area shape="rect" id="node35" href="$d2/df3/a01085.html" title="BeamlineGeometry/Geometry.h" alt="" coords="474,401,702,427"/>
+<area shape="rect" id="node36" href="$dd/d20/a01772.html" title="Structure/BoundingBox.h" alt="" coords="778,401,961,427"/>
+<area shape="rect" id="node38" href="$d5/d99/a01901.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="1138,393,1313,435"/>
+<area shape="rect" id="node30" href="$d4/d81/a00110.html" title="Algorithms/BoostMatrix.h" alt="" coords="44,572,231,599"/>
+<area shape="rect" id="node31" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="313,572,463,599"/>
+<area shape="rect" id="node32" href="$d4/daf/a13446.html" title="AppTypes/Vektor.h" alt="" coords="197,647,339,673"/>
+<area shape="rect" id="node42" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="2881,490,3119,517"/>
+<area shape="rect" id="node45" href="$de/d33/a01274.html" title="Fields/EMField.h" alt="" coords="1181,169,1305,196"/>
+<area shape="rect" id="node47" href="$d4/d41/a01661.html" title="Parser/Token.h" alt="" coords="2639,490,2755,517"/>
+</map>

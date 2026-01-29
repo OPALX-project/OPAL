@@ -1,0 +1,15 @@
+<map id="ThickTracker::ThickTracker" name="ThickTracker::ThickTracker">
+<area shape="rect" id="node2" href="$d3/dc0/a05573.html#a82e06496877a6d0e1c4d5c4dcb2067b4" title="Beamline::getInitialDirection" alt="" coords="248,5,457,32"/>
+<area shape="rect" id="node3" href="$d3/dc0/a05573.html#a8cf222c3e04e2f78c0cd96f13377335b" title="Beamline::getOrigin3D" alt="" coords="267,56,438,83"/>
+<area shape="rect" id="node4" href="$da/dd7/a05285.html#ae5f60c7777720c99b382b87952bd9e8a" title="CoordinateSystemTrafo\l::inverted" alt="" coords="265,107,440,149"/>
+<area shape="rect" id="node5" href="$da/dd7/a05285.html#afdcb12eb2455fcba3d0503b6be30df24" title="CoordinateSystemTrafo\l::invert" alt="" coords="505,107,680,149"/>
+<area shape="rect" id="node6" href="$d4/d27/a05341.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="917,89,1084,116"/>
+<area shape="rect" id="node9" href="$d4/d27/a05341.html#a16e61b715e53d7394996bb56c356916e" title="Quaternion::rotate" alt="" coords="728,140,869,167"/>
+<area shape="rect" id="node7" href="$d4/d27/a05341.html#a8cb33fa212258498b937d7e1a4684ce2" title="Quaternion::imag" alt="" coords="1134,39,1269,65"/>
+<area shape="rect" id="node8" href="$d4/d27/a05341.html#a237c3a9dfefea10e7ec6b5f373546427" title="Quaternion::real" alt="" coords="1138,89,1265,116"/>
+<area shape="rect" id="node10" href="$d4/d27/a05341.html#aa29522eb8e682639a9efddce09a49f6f" title="Quaternion::isUnit" alt="" coords="931,140,1071,167"/>
+<area shape="rect" id="node13" href="$d4/d27/a05341.html#afd6f04fe42007759224bbfb5c7727eb0" title="Quaternion::Norm" alt="" coords="1132,191,1271,217"/>
+<area shape="rect" id="node11" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1179,140,1224,167"/>
+<area shape="rect" id="node12" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1319,140,1504,167"/>
+<area shape="rect" id="node14" href="$d0/d61/a01130.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="1390,191,1433,217"/>
+</map>

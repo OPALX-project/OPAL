@@ -1,0 +1,31 @@
+<map id="src/Sample/OpalSample.cpp" name="src/Sample/OpalSample.cpp">
+<area shape="rect" id="node2" href="$d3/d85/a02813.html" title="Sample/OpalSample.h" alt="" coords="1245,80,1412,107"/>
+<area shape="rect" id="node17" href="$d5/d08/a03254.html" title="Utilities/OpalException.h" alt="" coords="1488,386,1670,413"/>
+<area shape="rect" id="node24" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="215,304,418,331"/>
+<area shape="rect" id="node27" href="$d5/ddf/a00224.html" title="Attributes/Attributes.h" alt="" coords="780,229,946,256"/>
+<area shape="rect" id="node31" href="$d2/d9f/a13467.html" title="Sample/FromFile.h" alt="" coords="1520,155,1662,181"/>
+<area shape="rect" id="node34" href="$df/dd0/a02804.html" title="Sample/LatinHyperCube.h" alt="" coords="2184,155,2374,181"/>
+<area shape="rect" id="node37" href="$d9/daf/a02807.html" title="Sample/Normal.h" alt="" coords="2025,155,2160,181"/>
+<area shape="rect" id="node39" href="$d2/d4c/a02828.html" title="Sample/SampleGaussianSequence.h" alt="" coords="2399,155,2658,181"/>
+<area shape="rect" id="node40" href="$d2/d31/a02087.html" title="Utilities/Util.h" alt="" coords="2583,229,2695,256"/>
+<area shape="rect" id="node47" href="$d0/d45/a02843.html" title="Sample/SampleRandomizedSequence.h" alt="" coords="1791,80,2071,107"/>
+<area shape="rect" id="node48" href="$dc/d05/a02855.html" title="Sample/Uniform.h" alt="" coords="1861,155,2001,181"/>
+<area shape="rect" id="node49" href="$d5/d4c/a02846.html" title="Sample/SampleSequence.h" alt="" coords="1568,80,1766,107"/>
+<area shape="rect" id="node3" href="$d4/d8c/a00035.html" title="AbstractObjects/Definition.h" alt="" coords="1006,155,1210,181"/>
+<area shape="rect" id="node13" href="$da/de8/a02852.html" title="Sample/SamplingMethod.h" alt="" coords="1833,229,2029,256"/>
+<area shape="rect" id="node4" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="970,229,1153,256"/>
+<area shape="rect" id="node5" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="765,304,964,331"/>
+<area shape="rect" id="node6" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="606,468,792,509"/>
+<area shape="rect" id="node9" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="771,379,958,420"/>
+<area shape="rect" id="node10" href="$d3/deb/a01619.html" title="MemoryManagement/Pointer.h" alt="" coords="942,475,1163,502"/>
+<area shape="rect" id="node14" href="$d0/d82/a02831.html" title="Sample/SampleIndividual.h" alt="" coords="2024,304,2224,331"/>
+<area shape="rect" id="node20" href="$d5/d8b/a04112.html" title="Comm/types.h" alt="" coords="1883,304,2000,331"/>
+<area shape="rect" id="node21" href="$d2/d27/a04301.html" title="Util/CmdArguments.h" alt="" coords="1595,304,1758,331"/>
+<area shape="rect" id="node18" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="1404,475,1602,502"/>
+<area shape="rect" id="node25" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="26,386,263,413"/>
+<area shape="rect" id="node28" href="$d4/d41/a01661.html" title="Parser/Token.h" alt="" coords="313,475,429,502"/>
+<area shape="rect" id="node35" href="$d6/d6c/a02819.html" title="Sample/RNGStream.h" alt="" coords="2155,229,2318,256"/>
+<area shape="rect" id="node41" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="2698,386,2849,413"/>
+<area shape="rect" id="node42" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="2619,304,2800,331"/>
+<area shape="rect" id="node43" href="$db/d7f/a01718.html" title="Physics/Physics.h" alt="" coords="2875,304,3011,331"/>
+</map>

@@ -1,0 +1,33 @@
+<map id="src/Classic/Utilities/MSLang.cpp" name="src/Classic/Utilities/MSLang.cpp">
+<area shape="rect" id="node2" href="$df/d52/a02027.html" title="Utilities/MSLang.h" alt="" coords="1429,259,1568,285"/>
+<area shape="rect" id="node28" href="$d5/dba/a01940.html" title="Utilities/MSLang/Ellipse.h" alt="" coords="1586,184,1773,211"/>
+<area shape="rect" id="node29" href="$d6/d8e/a01979.html" title="Utilities/MSLang/Rectangle.h" alt="" coords="1798,184,2004,211"/>
+<area shape="rect" id="node30" href="$de/d0a/a02015.html" title="Utilities/MSLang/Triangle.h" alt="" coords="2130,184,2325,211"/>
+<area shape="rect" id="node31" href="$de/d46/a01967.html" title="Utilities/MSLang/Polygon.h" alt="" coords="1986,102,2181,129"/>
+<area shape="rect" id="node32" href="$d4/dec/a01952.html" title="Utilities/MSLang/Mask.h" alt="" coords="1784,102,1962,129"/>
+<area shape="rect" id="node33" href="$d8/d98/a02009.html" title="Utilities/MSLang/Translation.h" alt="" coords="302,184,516,211"/>
+<area shape="rect" id="node34" href="$d3/d4e/a01991.html" title="Utilities/MSLang/Rotation.h" alt="" coords="541,184,738,211"/>
+<area shape="rect" id="node35" href="$d0/d2b/a01997.html" title="Utilities/MSLang/Shear.h" alt="" coords="762,184,941,211"/>
+<area shape="rect" id="node36" href="$d3/def/a01985.html" title="Utilities/MSLang/Repeat.h" alt="" coords="966,184,1154,211"/>
+<area shape="rect" id="node37" href="$d8/d45/a02021.html" title="Utilities/MSLang/Union.h" alt="" coords="1178,184,1360,211"/>
+<area shape="rect" id="node38" href="$de/da9/a01934.html" title="Utilities/MSLang/Difference.h" alt="" coords="925,102,1136,129"/>
+<area shape="rect" id="node39" href="$d7/d98/a02003.html" title="Utilities/MSLang/Symmetric\lDifference.h" alt="" coords="1160,95,1362,136"/>
+<area shape="rect" id="node40" href="$d0/dce/a01946.html" title="Utilities/MSLang/Intersection.h" alt="" coords="1387,102,1607,129"/>
+<area shape="rect" id="node41" href="$d3/d59/a01973.html" title="Utilities/MSLang/QuadTree.h" alt="" coords="22,184,226,211"/>
+<area shape="rect" id="node42" href="$d4/d2e/a02051.html" title="Utilities/PortableBitmap\lReader.h" alt="" coords="2665,423,2844,464"/>
+<area shape="rect" id="node46" href="$d4/d07/a01913.html" title="Utilities/Mesher.h" alt="" coords="2256,102,2391,129"/>
+<area shape="rect" id="node47" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="2210,341,2392,367"/>
+<area shape="rect" id="node48" href="$db/d7f/a01718.html" title="Physics/Physics.h" alt="" coords="2780,102,2916,129"/>
+<area shape="rect" id="node3" href="$d1/db0/a01928.html" title="Utilities/MSLang/Bounding\lBox2D.h" alt="" coords="1270,333,1462,375"/>
+<area shape="rect" id="node4" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="1874,430,2024,457"/>
+<area shape="rect" id="node24" href="$d0/d36/a01916.html" title="Utilities/MSLang/AffineTransformation.h" alt="" coords="1538,341,1816,367"/>
+<area shape="rect" id="node5" href="$d4/daf/a13446.html" title="AppTypes/Vektor.h" alt="" coords="1905,519,2046,546"/>
+<area shape="rect" id="node6" href="$d7/dcb/a04028.html" title="Utility/PAssert.h" alt="" coords="2178,601,2304,628"/>
+<area shape="rect" id="node10" href="$d6/dc7/a03683.html" title="Message/Message.h" alt="" coords="1712,676,1864,703"/>
+<area shape="rect" id="node19" href="$d5/d73/a03836.html" title="PETE/IpplExpressions.h" alt="" coords="1700,601,1872,628"/>
+<area shape="rect" id="node20" href="$d8/d5d/a03329.html" title="AppTypes/TSVMeta.h" alt="" coords="1897,601,2054,628"/>
+<area shape="rect" id="node17" href="$d4/d5e/a03686.html" title="Message/Message.hpp" alt="" coords="1558,751,1726,777"/>
+<area shape="rect" id="node25" href="$d4/d81/a00110.html" title="Algorithms/BoostMatrix.h" alt="" coords="2120,430,2306,457"/>
+<area shape="rect" id="node43" href="$d5/d08/a03254.html" title="Utilities/OpalException.h" alt="" coords="2530,519,2712,546"/>
+<area shape="rect" id="node44" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="2518,601,2716,628"/>
+</map>

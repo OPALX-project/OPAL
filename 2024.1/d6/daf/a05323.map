@@ -1,0 +1,51 @@
+<map id="PartBunch" name="PartBunch">
+<area shape="rect" id="node2" href="$d7/d47/a04685.html" title="PartBunchBase\&lt; double, 3 \&gt;" alt="" coords="1236,849,1445,876"/>
+<area shape="rect" id="node29" href="$db/d5b/a07189.html" title="FieldSolver" alt="" coords="1575,917,1668,944"/>
+<area shape="rect" id="node3" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; short \&gt;" alt="" coords="802,1049,971,1076"/>
+<area shape="rect" id="node4" href="$da/dbb/a10037.html" title="ParticleAttribBase" alt="" coords="438,944,577,971"/>
+<area shape="rect" id="node7" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; double \&gt;" alt="" coords="797,933,977,960"/>
+<area shape="rect" id="node11" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; int \&gt;" alt="" coords="810,679,963,705"/>
+<area shape="rect" id="node15" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; Particle\lOrigin \&gt;" alt="" coords="802,753,971,794"/>
+<area shape="rect" id="node17" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; Particle\lType \&gt;" alt="" coords="802,1117,971,1158"/>
+<area shape="rect" id="node27" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; T \&gt;" alt="" coords="815,1215,959,1241"/>
+<area shape="rect" id="node34" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; Vektor \&gt;" alt="" coords="797,855,976,881"/>
+<area shape="rect" id="node44" href="$d2/daf/a08217.html" title="ParticleAttrib\&lt; CacheData\lCIC\&lt; double, 3U \&gt; \&gt;" alt="" coords="791,1294,983,1335"/>
+<area shape="rect" id="node5" href="$de/d9a/a08177.html" title="DataSource" alt="" coords="459,1127,556,1153"/>
+<area shape="rect" id="node38" href="$db/d85/a08185.html" title="Field\&lt; Vector_t, 3,\l Mesh_t, Center_t \&gt;" alt="" coords="1265,1925,1416,1966"/>
+<area shape="rect" id="node46" href="$db/d85/a08185.html" title="Field\&lt; double, 3, Mesh\l_t, Center_t \&gt;" alt="" coords="1256,1635,1425,1677"/>
+<area shape="rect" id="node6" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; short \&gt; \&gt;" alt="" coords="413,1053,602,1094"/>
+<area shape="rect" id="node8" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; double \&gt; \&gt;" alt="" coords="413,819,602,861"/>
+<area shape="rect" id="node9" href="$d4/d27/a05341.html" title="Quaternion" alt="" coords="460,1525,555,1552"/>
+<area shape="rect" id="node13" href="$da/dd7/a05285.html" title="CoordinateSystemTrafo" alt="" coords="799,1411,974,1437"/>
+<area shape="rect" id="node10" href="$df/dee/a07461.html" title="Vektor\&lt; double, 4 \&gt;" alt="" coords="16,1525,171,1552"/>
+<area shape="rect" id="node12" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; int \&gt; \&gt;" alt="" coords="413,587,602,629"/>
+<area shape="rect" id="node14" href="$df/dee/a07461.html" title="Vektor\&lt; double, 3 \&gt;" alt="" coords="16,304,171,331"/>
+<area shape="rect" id="node20" href="$dc/d46/a05293.html" title="DistributionMoments" alt="" coords="428,536,587,563"/>
+<area shape="rect" id="node22" href="$d4/deb/a06461.html" title="Distribution" alt="" coords="837,312,936,339"/>
+<area shape="rect" id="node24" href="$df/dcb/a06477.html" title="LaserProfile" alt="" coords="458,316,557,343"/>
+<area shape="rect" id="node16" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; ParticleOrigin \&gt; \&gt;" alt="" coords="413,653,602,694"/>
+<area shape="rect" id="node18" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; ParticleType \&gt; \&gt;" alt="" coords="413,1186,602,1227"/>
+<area shape="rect" id="node19" href="$df/dee/a07461.html" title="Vektor\&lt; int, 3 \&gt;" alt="" coords="823,480,950,507"/>
+<area shape="rect" id="node21" href="$d8/d07/a05921.html" title="FMatrix\&lt; double, 6, 6 \&gt;" alt="" coords="5,1461,181,1488"/>
+<area shape="rect" id="node23" href="$d3/d70/a04633.html" title="The base class for all OPAL definitions. " alt="" coords="465,5,550,32"/>
+<area shape="rect" id="node25" href="$da/d15/a05309.html" title="PartBins" alt="" coords="470,376,545,403"/>
+<area shape="rect" id="node26" href="$dc/dd3/a05333.html" title="PartData" alt="" coords="468,447,547,473"/>
+<area shape="rect" id="node28" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; T \&gt; \&gt;" alt="" coords="413,1279,602,1321"/>
+<area shape="rect" id="node30" href="$db/d5f/a08461.html" title="UniformCartesian\&lt; Dim,\l MFLOAT \&gt;" alt="" coords="795,1575,978,1617"/>
+<area shape="rect" id="node31" href="$d9/df1/a08761.html" title="CenteredFieldLayout\l\&lt; Dim, Mesh, Centering \&gt;" alt="" coords="1020,1439,1212,1481"/>
+<area shape="rect" id="node32" href="$d4/de3/a08453.html" title="FieldLayout\&lt; Dim \&gt;" alt="" coords="431,1713,584,1740"/>
+<area shape="rect" id="node39" href="$d6/d6c/a08257.html" title="BareField\&lt; Vector_t,\l Dim \&gt;" alt="" coords="809,2049,964,2090"/>
+<area shape="rect" id="node47" href="$d6/d6c/a08257.html" title="BareField\&lt; double,\l Dim \&gt;" alt="" coords="814,1706,959,1747"/>
+<area shape="rect" id="node33" href="$d2/dd5/a07117.html" title="PoissonSolver" alt="" coords="1284,940,1397,967"/>
+<area shape="rect" id="node35" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; Vektor \&gt; \&gt;" alt="" coords="413,718,602,759"/>
+<area shape="rect" id="node36" href="$df/d9b/a08469.html" title="BConds\&lt; double, 3,\l UniformCartesian, Cell \&gt;" alt="" coords="1246,1841,1435,1882"/>
+<area shape="rect" id="node37" href="$d1/d20/a12221.html" title="vmap\&lt; int, RefCountedP\l\&lt; BCondBase\&lt; double, D,\l UniformCartesian, Cell \&gt; \&gt; \&gt;" alt="" coords="777,1852,996,1908"/>
+<area shape="rect" id="node40" href="$d1/de9/a08765.html" title="FieldLayoutUser" alt="" coords="444,1840,571,1867"/>
+<area shape="rect" id="node41" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; BareField\l\&lt; T, Dim \&gt; \&gt;" alt="" coords="425,2010,590,2051"/>
+<area shape="rect" id="node42" href="$d1/d20/a12221.html" title="vmap\&lt; typename Unique\l::type, my_auto_ptr\&lt;\l LField\&lt; T, Dim \&gt; \&gt; \&gt;" alt="" coords="412,1904,603,1960"/>
+<area shape="rect" id="node43" href="$df/d9b/a08469.html" title="BConds\&lt; Vector_t, Dim,\l Mesh_t, Center_t \&gt;" alt="" coords="797,1983,976,2025"/>
+<area shape="rect" id="node45" href="$d4/d5b/a11329.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; CacheDataCIC\&lt; double,\l 3U \&gt; \&gt; \&gt;" alt="" coords="411,1345,604,1401"/>
+<area shape="rect" id="node48" href="$df/d9b/a08469.html" title="BConds\&lt; double, Dim,\l Mesh_t, Center_t \&gt;" alt="" coords="802,1641,971,1682"/>
+<area shape="rect" id="node49" href="$df/d9b/a08469.html" title="BConds\&lt; Vektor, 3,\l UniformCartesian, Cell \&gt;" alt="" coords="1246,1737,1435,1778"/>
+<area shape="rect" id="node50" href="$d1/d20/a12221.html" title="vmap\&lt; int, RefCountedP\l\&lt; BCondBase\&lt; Vektor, D,\l UniformCartesian, Cell \&gt; \&gt; \&gt;" alt="" coords="777,1772,996,1828"/>
+</map>

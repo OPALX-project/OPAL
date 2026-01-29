@@ -1,0 +1,14 @@
+<map id="OrbitThreader" name="OrbitThreader">
+<area shape="rect" id="node2" href="$d6/d38/a06497.html" title="OpalBeamline" alt="" coords="972,39,1087,65"/>
+<area shape="rect" id="node3" href="$da/dd7/a05285.html" title="CoordinateSystemTrafo" alt="" coords="547,35,721,61"/>
+<area shape="rect" id="node4" href="$d4/d27/a05341.html" title="Quaternion" alt="" coords="239,5,334,32"/>
+<area shape="rect" id="node5" href="$df/dee/a07461.html" title="Vektor\&lt; double, 4 \&gt;" alt="" coords="5,5,160,32"/>
+<area shape="rect" id="node6" href="$df/dee/a07461.html" title="Vektor\&lt; double, 3 \&gt;" alt="" coords="209,95,364,121"/>
+<area shape="rect" id="node8" href="$de/d38/a06165.html" title="BoundingBox" alt="" coords="778,147,886,173"/>
+<area shape="rect" id="node7" href="$d3/d06/a04733.html" title="IndexMap" alt="" coords="987,208,1072,235"/>
+<area shape="rect" id="node9" href="$d7/df3/a07129.html" title="BorisPusher" alt="" coords="980,321,1079,348"/>
+<area shape="rect" id="node10" href="$dc/dd3/a05333.html" title="PartData" alt="" coords="595,284,673,311"/>
+<area shape="rect" id="node11" href="$d0/d05/a04813.html" title="StepSizeConfig" alt="" coords="970,372,1089,399"/>
+<area shape="rect" id="node12" href="$df/d83/a06193.html" title="ValueRange\&lt; long \&gt;" alt="" coords="951,423,1108,449"/>
+<area shape="rect" id="node13" href="$df/d83/a06193.html" title="ValueRange\&lt; double \&gt;" alt="" coords="943,473,1116,500"/>
+</map>

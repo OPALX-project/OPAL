@@ -1,0 +1,17 @@
+<map id="DataConnect::connect" name="DataConnect::connect">
+<area shape="rect" id="node2" href="$de/da7/a08169.html#ab274016aff7acb0e7cc4bbaa5ae795a8" title="DataConnect::connect" alt="" coords="219,161,384,187"/>
+<area shape="rect" id="node3" href="$de/d9a/a08177.html#ab798776b1f30bfea0dde7d2e6b9b85bc" title="DataSource::connect" alt="" coords="445,135,601,162"/>
+<area shape="rect" id="node16" href="$de/da7/a08169.html#a482efa9079c687552ce293b5821c694f" title="DataConnect::connected" alt="" coords="432,186,613,213"/>
+<area shape="rect" id="node4" href="$d2/d9f/a08173.html#a452b1073435a34dc24723cc81e532973" title="DataConnectCreator\l::create" alt="" coords="701,9,856,51"/>
+<area shape="rect" id="node6" href="$de/d9a/a08177.html#a75dbb70330d8342d541fc8a01b6aab52" title="DataSource::connected" alt="" coords="693,81,865,107"/>
+<area shape="rect" id="node8" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="753,135,804,162"/>
+<area shape="rect" id="node14" href="$de/da7/a08169.html#aa1d616c48c52252aa0961cbe0f14641f" title="DataConnect::getDefaultTransfer\lMethod" alt="" coords="661,187,896,228"/>
+<area shape="rect" id="node15" href="$de/d9a/a08177.html#aecf1e2a02d79291a594b424fca1e5719" title="DataSource::createDataSource\lObject" alt="" coords="668,252,889,293"/>
+<area shape="rect" id="node5" href="$d2/d9f/a08173.html#af3269e09b6de5063779f74b1da76f696" title="DataConnectCreator\l::getMethodName" alt="" coords="969,5,1123,47"/>
+<area shape="rect" id="node7" href="$de/d9a/a08177.html#ac9580f87f28cc2fbd4aa122e53b32bb9" title="DataSource::findDataSource\lObject" alt="" coords="944,71,1148,112"/>
+<area shape="rect" id="node9" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="960,137,1132,163"/>
+<area shape="rect" id="node10" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1679,86,1814,113"/>
+<area shape="rect" id="node11" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1196,137,1383,163"/>
+<area shape="rect" id="node12" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1431,137,1628,163"/>
+<area shape="rect" id="node13" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1676,137,1817,163"/>
+</map>

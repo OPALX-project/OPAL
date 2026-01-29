@@ -1,0 +1,37 @@
+<map id="ippl/src/Field/IndexedBareField.hpp" name="ippl/src/Field/IndexedBareField.hpp">
+<area shape="rect" id="node2" href="$d7/d65/a03518.html" title="Field/IndexedBareField.h" alt="" coords="338,244,518,271"/>
+<area shape="rect" id="node9" href="$d7/dcb/a04028.html" title="Utility/PAssert.h" alt="" coords="218,692,345,719"/>
+<area shape="rect" id="node22" href="$dd/d78/a03980.html" title="Utility/IpplInfo.h" alt="" coords="1515,393,1642,420"/>
+<area shape="rect" id="node29" href="$d3/d1c/a03551.html" title="FieldLayout/FieldLayout.h" alt="" coords="1611,95,1797,121"/>
+<area shape="rect" id="node3" href="$d7/d83/a03506.html" title="Field/FieldLoc.h" alt="" coords="297,393,417,420"/>
+<area shape="rect" id="node13" href="$d5/d73/a03836.html" title="PETE/IpplExpressions.h" alt="" coords="562,543,734,569"/>
+<area shape="rect" id="node16" href="$d2/d50/a03473.html" title="Field/BareFieldIterator.h" alt="" coords="695,319,870,345"/>
+<area shape="rect" id="node4" href="$d2/d9c/a04076.html" title="Utility/Vec.h" alt="" coords="311,543,412,569"/>
+<area shape="rect" id="node5" href="$d6/dc7/a03683.html" title="Message/Message.h" alt="" coords="911,617,1063,644"/>
+<area shape="rect" id="node14" href="$d9/d83/a03839.html" title="PETE/IpplTypeComputations.h" alt="" coords="519,617,734,644"/>
+<area shape="rect" id="node15" href="$dd/d51/a03842.html" title="PETE/PETE.h" alt="" coords="393,617,495,644"/>
+<area shape="rect" id="node17" href="$dd/dda/a03584.html" title="Index/NDIndex.h" alt="" coords="745,393,876,420"/>
+<area shape="rect" id="node20" href="$da/d72/a03527.html" title="Field/LField.h" alt="" coords="1159,393,1265,420"/>
+<area shape="rect" id="node21" href="$df/d5f/a03494.html" title="Field/CompressedBrickIterator.h" alt="" coords="935,468,1164,495"/>
+<area shape="rect" id="node18" href="$d8/db0/a03572.html" title="Index/Index.h" alt="" coords="749,468,859,495"/>
+<area shape="rect" id="node19" href="$df/d38/a03587.html" title="Index/NDIndexInlines.h" alt="" coords="195,617,368,644"/>
+<area shape="rect" id="node23" href="$d4/d54/a04055.html" title="Utility/StaticIpplInfo.h" alt="" coords="1493,468,1657,495"/>
+<area shape="rect" id="node25" href="$d3/db5/a03965.html" title="Utility/Inform.h" alt="" coords="1865,468,1986,495"/>
+<area shape="rect" id="node30" href="$d0/d20/a03557.html" title="FieldLayout/FieldLayoutUser.h" alt="" coords="2233,169,2447,196"/>
+<area shape="rect" id="node32" href="$d7/dfc/a04061.html" title="Utility/Unique.h" alt="" coords="2323,393,2447,420"/>
+<area shape="rect" id="node33" href="$d6/ddb/a04073.html" title="Utility/UserList.h" alt="" coords="2373,244,2504,271"/>
+<area shape="rect" id="node34" href="$da/d33/a04079.html" title="Utility/vmap.h" alt="" coords="2436,468,2551,495"/>
+<area shape="rect" id="node38" href="$d5/dda/a03560.html" title="FieldLayout/Vnode.h" alt="" coords="1378,319,1531,345"/>
+<area shape="rect" id="node39" href="$df/d11/a04037.html" title="Utility/RefCounted.h" alt="" coords="2094,393,2247,420"/>
+<area shape="rect" id="node40" href="$d1/d42/a03419.html" title="DomainMap/DomainMap.h" alt="" coords="1187,169,1381,196"/>
+<area shape="rect" id="node44" href="$dd/d25/a03512.html" title="Field/GuardCellSizes.h" alt="" coords="946,319,1113,345"/>
+<area shape="rect" id="node46" href="$d2/dfc/a04007.html" title="Utility/my_auto_ptr.h" alt="" coords="1457,169,1615,196"/>
+<area shape="rect" id="node47" href="$d6/d76/a03554.html" title="FieldLayout/FieldLayout.hpp" alt="" coords="1741,319,1944,345"/>
+<area shape="rect" id="node31" href="$d8/d9b/a04067.html" title="Utility/User.h" alt="" coords="2295,319,2401,345"/>
+<area shape="rect" id="node37" href="$db/d64/a04082.html" title="Utility/vmap.hpp" alt="" coords="2435,543,2565,569"/>
+<area shape="rect" id="node43" href="$d3/dff/a03422.html" title="DomainMap/DomainMap.hpp" alt="" coords="1143,244,1353,271"/>
+<area shape="rect" id="node45" href="$de/d3d/a03515.html" title="Field/GuardCellSizes.hpp" alt="" coords="901,393,1083,420"/>
+<area shape="rect" id="node48" href="$d2/d6e/a03566.html" title="FieldLayout/VRB.h" alt="" coords="1880,393,2019,420"/>
+<area shape="rect" id="node49" href="$dd/d77/a03659.html" title="Message/Communicate.h" alt="" coords="2011,468,2197,495"/>
+<area shape="rect" id="node50" href="$d1/d59/a03926.html" title="Utility/DiscMeta.h" alt="" coords="1667,393,1805,420"/>
+</map>

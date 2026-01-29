@@ -1,0 +1,51 @@
+<map id="Beam::clone" name="Beam::clone">
+<area shape="rect" id="node2" href="$d2/d6f/a07145.html#aa2f4785d060499243482e165b6bcdd5f" title="Exemplar constructor. " alt="" coords="156,643,263,669"/>
+<area shape="rect" id="node3" href="$d7/dd4/a04689.html#ad98bcdd94e9a6ce0149f2d3d976c8779" title="Define a new object. " alt="" coords="345,309,476,336"/>
+<area shape="rect" id="node21" href="$d7/dd4/a04689.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="327,555,494,581"/>
+<area shape="rect" id="node23" href="$dd/d3c/a04466.html#a68b7d34fbeb1da8447087c5ae6f3564f" title="Make predefined string attribute. " alt="" coords="311,606,511,647"/>
+<area shape="rect" id="node24" href="$dd/d3c/a04466.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="331,672,490,699"/>
+<area shape="rect" id="node25" href="$da/d54/a04673.html#a11c14d6b194bf37c2883bb42922852ac" title="Object::registerOwnership" alt="" coords="315,723,506,749"/>
+<area shape="rect" id="node29" href="$d2/d6f/a07145.html#a8e37cab990f7b4aa87f7cd481949e873" title="Update the BEAM data. " alt="" coords="354,1111,467,1137"/>
+<area shape="rect" id="node4" href="$da/d54/a04673.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="599,781,761,808"/>
+<area shape="rect" id="node5" href="$d4/d88/a04637.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="879,284,992,311"/>
+<area shape="rect" id="node6" href="$da/d54/a04673.html#ae7e75b2311e00969ae6308e899d32686" title="True, if [b]this[/b] is a built&#45;in object. " alt="" coords="617,157,743,184"/>
+<area shape="rect" id="node7" href="$da/d54/a04673.html#a2462226f913277dbeec5928dd40c25c9" title="Test if replacement is allowed. " alt="" coords="599,208,761,235"/>
+<area shape="rect" id="node8" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="655,107,705,133"/>
+<area shape="rect" id="node10" href="$d7/d3a/a04705.html#a83eb57bb3e4e17a0893ba0b217448a67" title="Find out if table depends on the object identified by [b]name[/b]. " alt="" coords="607,309,753,336"/>
+<area shape="rect" id="node11" href="$d7/dd4/a04689.html#a352ed422ba6872cc3c76cc4dc32dc9d1" title="Delete existing entry. " alt="" coords="617,461,743,488"/>
+<area shape="rect" id="node12" href="$d4/d88/a04637.html#a6af87fa7c132144a4fed854a5c0ba253" title="First object in alphabetic order of name. " alt="" coords="873,360,998,387"/>
+<area shape="rect" id="node13" href="$d4/d88/a04637.html#a4a8d6e8dc3b5f4f851a86b64daad1978" title="Last object in alphabetic order of name. " alt="" coords="879,411,992,437"/>
+<area shape="rect" id="node17" href="$da/d54/a04673.html#aa48af24109cadc6f450bcc37523651a5" title="Set/reset the [b]modified[/b] flag. " alt="" coords="618,512,742,539"/>
+<area shape="rect" id="node18" href="$d4/d88/a04637.html#afd593b9994a1000a969046c02dd66846" title="Define new object. " alt="" coords="617,5,743,32"/>
+<area shape="rect" id="node20" href="$d7/dd4/a04689.html#a43390aa41dfa944e82a47c760923c242" title="Set the global momentum. " alt="" coords="617,56,743,83"/>
+<area shape="rect" id="node9" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="849,107,1021,133"/>
+<area shape="rect" id="node14" href="$da/d54/a04673.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="868,588,1003,615"/>
+<area shape="rect" id="node15" href="$da/d54/a04673.html#a01d106dd393b42e0622f2158b2f0a6da" title="Set parent object. " alt="" coords="869,461,1002,488"/>
+<area shape="rect" id="node16" href="$d4/d88/a04637.html#a237a99238f9e6450701528719fee9791" title="Delete all entries. " alt="" coords="873,512,998,539"/>
+<area shape="rect" id="node19" href="$dc/dce/a00740.html#aa8ae23ddaa752827580a9345f34b7cca" title="value_type" alt="" coords="888,5,983,32"/>
+<area shape="rect" id="node22" href="$d7/dd4/a04689.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="604,563,756,589"/>
+<area shape="rect" id="node26" href="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="657,664,703,691"/>
+<area shape="rect" id="node28" href="$d4/d0f/a04625.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="571,715,789,757"/>
+<area shape="rect" id="node27" href="$d7/d47/a04685.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="860,664,1011,691"/>
+<area shape="rect" id="node30" href="$d2/d6f/a07145.html#a03e6460760866b6c5de7d3fa91037f3b" title="Return Particle&#39;s name. " alt="" coords="592,1136,768,1163"/>
+<area shape="rect" id="node35" href="$de/d5c/a06085.html#af929a4aaca5748e6ffab3d29e25b4279" title="ParticleProperties\l::getParticleType" alt="" coords="612,1187,748,1229"/>
+<area shape="rect" id="node36" href="$dd/d3c/a04466.html#aa92fad2ca301134087589e159653b624" title="Set real value. " alt="" coords="864,1537,1007,1564"/>
+<area shape="rect" id="node40" href="$de/d5c/a06085.html#a7375dfb0fc68ebc0f8779cd2fc1f3bd1" title="ParticleProperties\l::getParticleMass" alt="" coords="612,1305,748,1346"/>
+<area shape="rect" id="node41" href="$de/d5c/a06085.html#ac1987a9b0fec1632a680cb2093407c3e" title="ParticleProperties\l::getParticleCharge" alt="" coords="607,1370,753,1411"/>
+<area shape="rect" id="node42" href="$d2/d6f/a07145.html#a834d3211e650bf775fa97d219ccd2a3e" title="Return Particle&#39;s rest mass in GeV. " alt="" coords="619,1253,741,1280"/>
+<area shape="rect" id="node43" href="$dd/d3c/a04466.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="864,1436,1007,1463"/>
+<area shape="rect" id="node44" href="$d2/d6f/a07145.html#a61641135ee698769b42408eefca7e294" title="Return the charge number in elementary charge. " alt="" coords="613,1487,747,1513"/>
+<area shape="rect" id="node45" href="$dc/dd3/a05333.html#a4530ee883723a6dbb8e7fb70c0ef6c1f" title="Set gamma. " alt="" coords="601,832,759,859"/>
+<area shape="rect" id="node46" href="$dc/dd3/a05333.html#a7c7b836d3ac05230f809f8b9f52e4c86" title="The constant mass per particle. " alt="" coords="621,883,739,909"/>
+<area shape="rect" id="node47" href="$dc/dd3/a05333.html#a78b1e734e1c3063b103f2bf1b769b79b" title="Set reference energy. " alt="" coords="623,933,737,960"/>
+<area shape="rect" id="node48" href="$dc/dd3/a05333.html#a6ff6ff4f88825571d8f5eb7f28311231" title="Set reference momentum. " alt="" coords="623,984,737,1011"/>
+<area shape="rect" id="node49" href="$dc/dd3/a05333.html#aad968cd62ebe90ecbefc09873bae11a9" title="Set the momentum tolerance. " alt="" coords="559,1035,801,1061"/>
+<area shape="rect" id="node50" href="$da/d54/a04673.html#ace74608c221c27844e0eb08d6d25d269" title="Set object name. " alt="" coords="599,1085,761,1112"/>
+<area shape="rect" id="node31" href="$dd/d3c/a04466.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="859,1385,1012,1412"/>
+<area shape="rect" id="node32" href="$d3/de5/a04617.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="1069,1487,1260,1513"/>
+<area shape="rect" id="node33" href="$d3/de5/a04617.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="1095,1385,1235,1412"/>
+<area shape="rect" id="node34" href="$d3/de5/a04617.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="1085,1436,1244,1463"/>
+<area shape="rect" id="node37" href="$d3/de5/a04617.html#a6cd34bcfad889b4215734cbc0b5eafc2" title="Define new value. " alt="" coords="1111,1537,1218,1564"/>
+<area shape="rect" id="node38" href="$d9/d96/a04665.html#a9f2de4ecdd67c51008baf6f6d247c0b1" title="Store new value. " alt="" coords="1070,1588,1259,1615"/>
+<area shape="rect" id="node39" href="$d3/de5/a04617.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="1091,1639,1238,1665"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="DefaultVisitor" name="DefaultVisitor">
+<area shape="rect" id="node3" href="$db/d63/a05277.html" title="Track particles or bunches. " alt="" coords="209,155,332,181"/>
+<area shape="rect" id="node8" href="$d9/d63/a05297.html" title="Set/reset all selection flags in a beam line built from FlaggedElmPtr. " alt="" coords="357,155,427,181"/>
+<area shape="rect" id="node9" href="$db/d06/a07273.html" title="RangeSelector" alt="" coords="451,155,567,181"/>
+<area shape="rect" id="node11" href="$df/dfc/a06813.html" title="Replace all references to named element by a new version. " alt="" coords="591,155,670,181"/>
+<area shape="rect" id="node2" href="$d5/db2/a04969.html" title="BeamlineVisitor" alt="" coords="387,5,514,32"/>
+<area shape="rect" id="node4" href="$d9/d67/a05349.html" title="Tracker" alt="" coords="236,229,305,256"/>
+<area shape="rect" id="node5" href="$d3/d7d/a04797.html" title="ParallelCyclotronTracker" alt="" coords="5,304,184,331"/>
+<area shape="rect" id="node6" href="$d0/d6d/a04809.html" title="ParallelTTracker" alt="" coords="208,304,333,331"/>
+<area shape="rect" id="node7" href="$db/da7/a04817.html" title="Track using thick&#45;lens algorithm. " alt="" coords="357,304,461,331"/>
+<area shape="rect" id="node10" href="$d7/d2a/a07277.html" title="Selector" alt="" coords="472,229,547,256"/>
+</map>

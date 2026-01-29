@@ -1,0 +1,16 @@
+<map id="Definition" name="Definition">
+<area shape="rect" id="node4" href="$d2/d6f/a07145.html" title="Beam" alt="" coords="441,5,501,32"/>
+<area shape="rect" id="node5" href="$d9/dd3/a07173.html" title="BoundaryGeometry" alt="" coords="397,56,546,83"/>
+<area shape="rect" id="node6" href="$d5/d2d/a06865.html" title="Constraint" alt="" coords="427,107,516,133"/>
+<area shape="rect" id="node7" href="$d4/deb/a06461.html" title="Distribution" alt="" coords="422,157,521,184"/>
+<area shape="rect" id="node8" href="$d5/dfb/a06869.html" title="DVar" alt="" coords="445,208,498,235"/>
+<area shape="rect" id="node9" href="$db/d5b/a07189.html" title="FieldSolver" alt="" coords="425,259,518,285"/>
+<area shape="rect" id="node10" href="$d6/d19/a06873.html" title="Objective" alt="" coords="429,309,513,336"/>
+<area shape="rect" id="node11" href="$d9/da6/a07309.html" title="OpalFilter" alt="" coords="429,360,513,387"/>
+<area shape="rect" id="node12" href="$d9/d9e/a06929.html" title="OpalSample" alt="" coords="421,411,522,437"/>
+<area shape="rect" id="node13" href="$d2/d3c/a06197.html" title="OpalTrimCoil" alt="" coords="419,461,524,488"/>
+<area shape="rect" id="node14" href="$db/d5a/a07241.html" title="OpalWake" alt="" coords="427,512,515,539"/>
+<area shape="rect" id="node15" href="$d0/d1f/a07245.html" title="ParticleMatterInteraction" alt="" coords="380,563,563,589"/>
+<area shape="rect" id="node2" href="$da/d54/a04673.html" title="The base class for all OPAL objects. " alt="" coords="135,284,199,311"/>
+<area shape="rect" id="node3" href="$d8/dc4/a05997.html" title="Abstract base class for reference counted objects. " alt="" coords="5,284,87,311"/>
+</map>

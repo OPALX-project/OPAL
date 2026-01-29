@@ -1,0 +1,30 @@
+<map id="src/opal.h" name="src/opal.h">
+<area shape="rect" id="node2" href="$d4/d61/a02588.html" title="src/Main.cpp" alt="" coords="485,80,587,107"/>
+<area shape="rect" id="node4" href="$d1/de9/a02591.html" title="src/opal.cpp" alt="" coords="1513,80,1613,107"/>
+<area shape="rect" id="node5" href="$d6/dbb/a02669.html" title="src/Optimize/OpalSimulation.cpp" alt="" coords="1637,80,1872,107"/>
+<area shape="rect" id="node6" href="$df/d5e/a02690.html" title="src/PyOpal/PyCore/Globals.h" alt="" coords="2347,80,2554,107"/>
+<area shape="rect" id="node3" href="$d0/dbd/a02771.html" title="src/PyOpal/PyObjects\l/PyParser.cpp" alt="" coords="5,155,165,196"/>
+<area shape="rect" id="node7" href="$d5/d25/a02687.html" title="src/PyOpal/PyCore/Globals.cpp" alt="" coords="189,162,411,189"/>
+<area shape="rect" id="node8" href="$d7/d94/a02702.html" title="src/PyOpal/PyElements\l/PyAsymmetricEnge.cpp" alt="" coords="435,155,615,196"/>
+<area shape="rect" id="node9" href="$d7/d73/a02708.html" title="src/PyOpal/PyElements\l/PyEnge.cpp" alt="" coords="639,155,811,196"/>
+<area shape="rect" id="node10" href="$d8/dd0/a02711.html" title="src/PyOpal/PyElements\l/PyGlobalCartesianOffset.cpp" alt="" coords="835,155,1047,196"/>
+<area shape="rect" id="node11" href="$d1/d3c/a02714.html" title="src/PyOpal/PyElements\l/PyLocalCartesianOffset.cpp" alt="" coords="1071,155,1275,196"/>
+<area shape="rect" id="node12" href="$d0/df8/a02717.html" title="src/PyOpal/PyElements\l/PyMultipoleT.cpp" alt="" coords="1299,155,1471,196"/>
+<area shape="rect" id="node13" href="$d5/d95/a02720.html" title="src/PyOpal/PyElements\l/PyOpalElement.cpp" alt="" coords="1495,155,1667,196"/>
+<area shape="rect" id="node14" href="$d4/dff/a02723.html" title="src/PyOpal/PyElements\l/PyOutputPlane.cpp" alt="" coords="1691,155,1863,196"/>
+<area shape="rect" id="node15" href="$d6/d95/a02726.html" title="src/PyOpal/PyElements\l/PyPolynomialTimeDependence.cpp" alt="" coords="1888,155,2144,196"/>
+<area shape="rect" id="node16" href="$dd/d01/a02729.html" title="src/PyOpal/PyElements\l/PyProbe.cpp" alt="" coords="2169,155,2341,196"/>
+<area shape="rect" id="node17" href="$d7/d1c/a02732.html" title="src/PyOpal/PyElements\l/PyRingDefinition.cpp" alt="" coords="2365,155,2537,196"/>
+<area shape="rect" id="node18" href="$d6/df4/a02735.html" title="src/PyOpal/PyElements\l/PyScalingFFAMagnet.cpp" alt="" coords="2561,155,2748,196"/>
+<area shape="rect" id="node19" href="$da/d62/a02738.html" title="src/PyOpal/PyElements\l/PyVariableRFCavity.cpp" alt="" coords="2772,155,2951,196"/>
+<area shape="rect" id="node20" href="$d6/d0b/a02741.html" title="src/PyOpal/PyElements\l/PyVariableRFCavityFringeField.cpp" alt="" coords="2975,155,3225,196"/>
+<area shape="rect" id="node21" href="$d5/dc7/a02744.html" title="src/PyOpal/PyElements\l/PyVerticalFFAMagnet.cpp" alt="" coords="3249,155,3437,196"/>
+<area shape="rect" id="node22" href="$de/d8c/a02747.html" title="src/PyOpal/PyObjects\l/PyBeam.cpp" alt="" coords="3461,155,3621,196"/>
+<area shape="rect" id="node23" href="$d7/d14/a02750.html" title="src/PyOpal/PyObjects\l/PyDistribution.cpp" alt="" coords="3645,155,3805,196"/>
+<area shape="rect" id="node24" href="$d9/d93/a02753.html" title="src/PyOpal/PyObjects\l/PyField.cpp" alt="" coords="3829,155,3989,196"/>
+<area shape="rect" id="node25" href="$dc/d80/a02756.html" title="src/PyOpal/PyObjects\l/PyFieldSolver.cpp" alt="" coords="4013,155,4173,196"/>
+<area shape="rect" id="node26" href="$da/d8e/a02759.html" title="src/PyOpal/PyObjects\l/PyLine.cpp" alt="" coords="4197,155,4357,196"/>
+<area shape="rect" id="node27" href="$d3/d7e/a02768.html" title="src/PyOpal/PyObjects\l/PyOption.cpp" alt="" coords="4381,155,4541,196"/>
+<area shape="rect" id="node28" href="$de/db6/a02792.html" title="src/PyOpal/PyObjects\l/PyTrackCmd.cpp" alt="" coords="4565,155,4725,196"/>
+<area shape="rect" id="node29" href="$de/d05/a02795.html" title="src/PyOpal/PyObjects\l/PyTrackRun.cpp" alt="" coords="4749,155,4909,196"/>
+</map>

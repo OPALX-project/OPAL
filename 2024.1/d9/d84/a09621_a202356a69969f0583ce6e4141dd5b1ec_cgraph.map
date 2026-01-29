@@ -1,0 +1,10 @@
+<map id="MsgBuffer::add" name="MsgBuffer::add">
+<area shape="rect" id="node2" href="$d8/d14/a09613.html#a523d491d036f4490a52b2a76ad1a1823" title="Message::MsgItem::data" alt="" coords="192,5,372,32"/>
+<area shape="rect" id="node3" href="$da/dd9/a09273.html#a21ff0a8e02322a605173d713ad7e5b46" title="Format::getItemBytes" alt="" coords="200,56,364,83"/>
+<area shape="rect" id="node4" href="$da/dd9/a09273.html#a75faf047514514678476227c77d2f478" title="Format::getItemCount" alt="" coords="199,107,365,133"/>
+<area shape="rect" id="node5" href="$da/dd9/a09273.html#ae0668d64e208f96167cb291daa95fa09" title="Format::getItemElems" alt="" coords="199,157,365,184"/>
+<area shape="rect" id="node6" href="$d7/d50/a09609.html#adf6de3f25ef659274319872d5555efc5" title="Message::item" alt="" coords="223,208,341,235"/>
+<area shape="rect" id="node7" href="$d8/d14/a09613.html#a0e6713041046074ac168e238c83dcf24" title="Message::MsgItem::numBytes" alt="" coords="173,259,391,285"/>
+<area shape="rect" id="node8" href="$d8/d14/a09613.html#a8cb6a9851a27940fc51f7f6d3166dd23" title="Message::MsgItem::numElems" alt="" coords="172,309,392,336"/>
+<area shape="rect" id="node9" href="$d7/d50/a09609.html#a3064fb32119072349687a4a2fa603fd4" title="Message::size" alt="" coords="225,360,339,387"/>
+</map>

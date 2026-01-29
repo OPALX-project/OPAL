@@ -1,0 +1,13 @@
+<map id="Statistics::dumpStatistics" name="Statistics::dumpStatistics">
+<area shape="rect" id="node2" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="240,52,291,79"/>
+<area shape="rect" id="node8" href="$dd/d51/a03842.html#a06dc3d53220b680f16b2c655bcb86a40" title="sum" alt="" coords="240,128,291,155"/>
+<area shape="rect" id="node3" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="339,52,511,79"/>
+<area shape="rect" id="node4" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="559,27,745,54"/>
+<area shape="rect" id="node7" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1042,78,1177,104"/>
+<area shape="rect" id="node5" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="793,27,991,54"/>
+<area shape="rect" id="node6" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1039,27,1180,54"/>
+<area shape="rect" id="node9" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="559,128,745,155"/>
+<area shape="rect" id="node10" href="$dd/d51/a03842.html#a0a1cdb80c431a477e99aea03fea993fc" title="Reduction" alt="" coords="381,179,468,206"/>
+<area shape="rect" id="node11" href="$dd/d51/a03842.html#a1ea49580c5d70200ee20f6afbc6d6de3" title="for_each" alt="" coords="613,179,691,206"/>
+<area shape="rect" id="node12" href="$dd/d51/a03842.html#a1a29834440d6844017cef5d516087c28" title="PETE_apply" alt="" coords="603,230,701,256"/>
+</map>

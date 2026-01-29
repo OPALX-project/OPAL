@@ -1,0 +1,18 @@
+<map id="src/Classic/AbsBeamline/Drift.h" name="src/Classic/AbsBeamline/Drift.h">
+<area shape="rect" id="node2" href="$d6/d7d/a00161.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="5,95,236,136"/>
+<area shape="rect" id="node3" href="$d5/dcb/a00170.html" title="src/Algorithms/ParallelTTracker.h" alt="" coords="261,102,495,129"/>
+<area shape="rect" id="node7" href="$d7/d25/a00182.html" title="src/Algorithms/ThickTracker.h" alt="" coords="519,102,733,129"/>
+<area shape="rect" id="node9" href="$dd/d63/a00455.html" title="src/Classic/AbsBeamline\l/Drift.cpp" alt="" coords="757,95,938,136"/>
+<area shape="rect" id="node10" href="$db/d77/a00683.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="963,95,1145,136"/>
+<area shape="rect" id="node12" href="$d8/db7/a00812.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="1169,95,1336,136"/>
+<area shape="rect" id="node13" href="$d8/d38/a00926.html" title="src/Classic/BeamlineCore\l/DriftRep.h" alt="" coords="1361,95,1547,136"/>
+<area shape="rect" id="node17" href="$d0/d9d/a01760.html" title="src/Classic/Solvers\l/ScatteringPhysics.cpp" alt="" coords="1571,95,1739,136"/>
+<area shape="rect" id="node4" href="$dc/de6/a00167.html" title="src/Algorithms/ParallelTTracker.cpp" alt="" coords="24,191,273,218"/>
+<area shape="rect" id="node5" href="$d9/d93/a02753.html" title="src/PyOpal/PyObjects\l/PyField.cpp" alt="" coords="298,184,458,225"/>
+<area shape="rect" id="node6" href="$d5/de9/a03236.html" title="src/Track/TrackRun.cpp" alt="" coords="482,191,650,218"/>
+<area shape="rect" id="node8" href="$db/dd9/a00179.html" title="src/Algorithms/ThickTracker.cpp" alt="" coords="675,191,903,218"/>
+<area shape="rect" id="node11" href="$dd/d77/a02096.html" title="src/Distribution/Distribution.cpp" alt="" coords="933,191,1161,218"/>
+<area shape="rect" id="node14" href="$df/de9/a00923.html" title="src/Classic/BeamlineCore\l/DriftRep.cpp" alt="" coords="1186,184,1373,225"/>
+<area shape="rect" id="node15" href="$d1/dce/a02168.html" title="src/Elements/OpalDrift.cpp" alt="" coords="1397,191,1593,218"/>
+<area shape="rect" id="node16" href="$db/d44/a02564.html" title="src/Lines/Sequence.cpp" alt="" coords="1618,191,1791,218"/>
+</map>

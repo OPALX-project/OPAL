@@ -1,0 +1,14 @@
+<map id="OpalSimulation::getData" name="OpalSimulation::getData">
+<area shape="rect" id="node2" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="337,81,387,108"/>
+<area shape="rect" id="node8" href="$d3/db2/a12765.html#a6595b97a8ba090b5dfc7e9dd683fbcf4" title="Convert value from boost variant (only numeric types) to a value of type T. " alt="" coords="258,133,466,174"/>
+<area shape="rect" id="node9" href="$d3/db2/a12765.html#a4dd5ea80d49c4ee57b8335b82d8749c2" title="SDDS::SDDSParser::getColumnData" alt="" coords="236,199,488,225"/>
+<area shape="rect" id="node10" href="$d3/db2/a12765.html#a566a9059aea842a30c80389e3518a9fd" title="SDDS::SDDSParser::getColumnType" alt="" coords="237,249,487,276"/>
+<area shape="rect" id="node12" href="$d3/db2/a12765.html#a1d1fab6f49693839ab243a9c256b7512" title="SDDS::SDDSParser::run" alt="" coords="277,301,447,328"/>
+<area shape="rect" id="node3" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="561,56,733,83"/>
+<area shape="rect" id="node4" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="805,56,992,83"/>
+<area shape="rect" id="node7" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1289,5,1423,32"/>
+<area shape="rect" id="node5" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1040,56,1237,83"/>
+<area shape="rect" id="node6" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1285,56,1427,83"/>
+<area shape="rect" id="node11" href="$d3/db2/a12765.html#adda0d6cf390520dd68a0cb7a4f91a813" title="SDDS::SDDSParser::getColumn\lIndex" alt="" coords="536,239,757,281"/>
+<area shape="rect" id="node13" href="$d4/d1c/a04208.html#a5f394a6bd4d4e096e838a5d7b1570a3c" title="readFile" alt="" coords="610,305,683,332"/>
+</map>

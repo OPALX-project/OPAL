@@ -1,0 +1,9 @@
+<map id="BGeometryBase" name="BGeometryBase">
+<area shape="rect" id="node2" href="$d1/dfe/a05577.html" title="Implements the composite geometry of a beam line. " alt="" coords="183,5,332,32"/>
+<area shape="rect" id="node3" href="$d1/dfe/a05533.html" title="Euclid3DGeometry" alt="" coords="185,56,329,83"/>
+<area shape="rect" id="node4" href="$d0/d57/a05545.html" title="Geometry representing an identity transform. " alt="" coords="201,107,314,133"/>
+<area shape="rect" id="node5" href="$d1/da9/a05549.html" title="A simple arc in the XZ plane. " alt="" coords="183,157,332,184"/>
+<area shape="rect" id="node6" href="$d8/d7e/a05561.html" title="A geometry representing a straight line. " alt="" coords="188,208,327,235"/>
+<area shape="rect" id="node8" href="$d2/d4a/a05565.html" title="VarRadiusGeometry" alt="" coords="181,259,333,285"/>
+<area shape="rect" id="node7" href="$dc/d3d/a05553.html" title="The geometry for a RBend element. " alt="" coords="381,208,511,235"/>
+</map>

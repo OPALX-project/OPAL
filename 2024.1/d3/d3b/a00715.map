@@ -1,0 +1,13 @@
+<map id="src/Classic/AbsBeamline/VariableRFCavity.h" name="src/Classic/AbsBeamline/VariableRFCavity.h">
+<area shape="rect" id="node2" href="$d6/d7d/a00161.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="5,184,236,225"/>
+<area shape="rect" id="node3" href="$db/d77/a00683.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="260,184,443,225"/>
+<area shape="rect" id="node5" href="$d4/deb/a00710.html" title="src/Classic/AbsBeamline\l/VariableRFCavity.cpp" alt="" coords="767,95,949,136"/>
+<area shape="rect" id="node6" href="$dd/dd8/a00719.html" title="src/Classic/AbsBeamline\l/VariableRFCavityFringeField.h" alt="" coords="474,95,693,136"/>
+<area shape="rect" id="node8" href="$d8/db7/a00812.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="1215,184,1381,225"/>
+<area shape="rect" id="node11" href="$de/dc9/a02414.html" title="src/Elements/OpalVariable\lRFCavity.cpp" alt="" coords="973,95,1167,136"/>
+<area shape="rect" id="node12" href="$da/d62/a02738.html" title="src/PyOpal/PyElements\l/PyVariableRFCavity.cpp" alt="" coords="1191,95,1370,136"/>
+<area shape="rect" id="node4" href="$dd/d77/a02096.html" title="src/Distribution/Distribution.cpp" alt="" coords="237,273,465,300"/>
+<area shape="rect" id="node7" href="$d2/d94/a00716.html" title="src/Classic/AbsBeamline\l/VariableRFCavityFringeField.cpp" alt="" coords="467,184,700,225"/>
+<area shape="rect" id="node9" href="$d5/d2b/a02420.html" title="src/Elements/OpalVariable\lRFCavityFringeField.cpp" alt="" coords="724,184,917,225"/>
+<area shape="rect" id="node10" href="$d6/d0b/a02741.html" title="src/PyOpal/PyElements\l/PyVariableRFCavityFringeField.cpp" alt="" coords="941,184,1191,225"/>
+</map>

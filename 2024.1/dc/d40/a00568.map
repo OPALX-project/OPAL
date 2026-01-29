@@ -1,0 +1,23 @@
+<map id="src/Classic/AbsBeamline/MultipoleTFunctions/PolynomialSum.h" name="src/Classic/AbsBeamline/MultipoleTFunctions/PolynomialSum.h">
+<area shape="rect" id="node2" href="$dc/df9/a00554.html" title="src/Classic/AbsBeamline\l/MultipoleTFunctions/Differential\lOperatorTwo.h" alt="" coords="1245,95,1477,151"/>
+<area shape="rect" id="node3" href="$dd/d5c/a00578.html" title="src/Classic/AbsBeamline\l/MultipoleTFunctions/Recursion\lRelationTwo.h" alt="" coords="1097,199,1320,255"/>
+<area shape="rect" id="node21" href="$d9/d87/a00551.html" title="src/Classic/AbsBeamline\l/MultipoleTFunctions/Differential\lOperatorTwo.cpp" alt="" coords="1398,199,1630,255"/>
+<area shape="rect" id="node22" href="$dc/dae/a00563.html" title="src/Classic/AbsBeamline\l/MultipoleTFunctions/Polynomial\lSum.cpp" alt="" coords="1551,95,1783,151"/>
+<area shape="rect" id="node20" href="$d9/d42/a00575.html" title="src/Classic/AbsBeamline\l/MultipoleTFunctions/Recursion\lRelationTwo.cpp" alt="" coords="1249,303,1472,359"/>
+<area shape="rect" id="node4" href="$d5/dee/a00518.html" title="src/Classic/AbsBeamline\l/MultipoleT.h" alt="" coords="993,310,1174,351"/>
+<area shape="rect" id="node10" href="$dc/d19/a00515.html" title="src/Classic/AbsBeamline\l/MultipoleT.cpp" alt="" coords="1621,407,1802,448"/>
+<area shape="rect" id="node15" href="$d4/d33/a00536.html" title="src/Classic/AbsBeamline\l/MultipoleTCurvedVarRadius.h" alt="" coords="654,310,870,351"/>
+<area shape="rect" id="node5" href="$d6/d7d/a00161.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="485,407,716,448"/>
+<area shape="rect" id="node6" href="$d5/dcb/a00170.html" title="src/Algorithms/ParallelTTracker.h" alt="" coords="1138,414,1373,441"/>
+<area shape="rect" id="node11" href="$db/d77/a00683.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="931,407,1113,448"/>
+<area shape="rect" id="node13" href="$d8/db7/a00812.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="740,407,907,448"/>
+<area shape="rect" id="node14" href="$de/dfd/a02228.html" title="src/Elements/OpalMultipole\lT.cpp" alt="" coords="1397,407,1597,448"/>
+<area shape="rect" id="node7" href="$dc/de6/a00167.html" title="src/Algorithms/ParallelTTracker.cpp" alt="" coords="1016,503,1265,530"/>
+<area shape="rect" id="node8" href="$d9/d93/a02753.html" title="src/PyOpal/PyObjects\l/PyField.cpp" alt="" coords="1290,496,1450,537"/>
+<area shape="rect" id="node9" href="$d5/de9/a03236.html" title="src/Track/TrackRun.cpp" alt="" coords="1474,503,1642,530"/>
+<area shape="rect" id="node12" href="$dd/d77/a02096.html" title="src/Distribution/Distribution.cpp" alt="" coords="764,503,992,530"/>
+<area shape="rect" id="node16" href="$db/d44/a00533.html" title="src/Classic/AbsBeamline\l/MultipoleTCurvedVarRadius.cpp" alt="" coords="5,407,236,448"/>
+<area shape="rect" id="node17" href="$d6/dd2/a02243.html" title="src/Elements/OpalMultipole\lTCurvedVarRadius.h" alt="" coords="261,407,461,448"/>
+<area shape="rect" id="node18" href="$dc/d35/a02240.html" title="src/Elements/OpalMultipole\lTCurvedVarRadius.cpp" alt="" coords="141,496,341,537"/>
+<area shape="rect" id="node19" href="$d1/d88/a02600.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="365,503,596,530"/>
+</map>

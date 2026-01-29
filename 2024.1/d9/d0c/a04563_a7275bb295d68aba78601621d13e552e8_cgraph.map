@@ -1,0 +1,51 @@
+<map id="PyOpal::PyPolynomialPatch::initialiseFromSolveFactory" name="PyOpal::PyPolynomialPatch::initialiseFromSolveFactory">
+<area shape="rect" id="node2" href="$d9/d93/a05825.html#aeb7acccc6bab450400974c3498333574" title="interpolation::NDGrid\l::clone" alt="" coords="281,140,441,181"/>
+<area shape="rect" id="node4" href="$d3/d07/a05837.html#aef480f189c74e5beca3c6cfeb7b65366" title="interpolation::PPSolveFactory\l::solve" alt="" coords="255,332,467,373"/>
+<area shape="rect" id="node3" href="$d9/d93/a05825.html#a8b3f8851f7b5979e3c41ef25dbee8b84" title="////// NDGrid /////// " alt="" coords="541,5,701,47"/>
+<area shape="rect" id="node5" href="$d7/d4f/a05809.html#ac4ed4f036f936ab9879c97aa9a786fc7" title="interpolation::Mesh\l::begin" alt="" coords="547,123,694,164"/>
+<area shape="rect" id="node6" href="$d0/d82/a00857.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375" title="begin" alt="" coords="591,71,650,98"/>
+<area shape="rect" id="node8" href="$d7/d4f/a05809.html#aaf5786d1f79a267a3c1046df67a730d8" title="interpolation::Mesh::end" alt="" coords="829,599,1008,626"/>
+<area shape="rect" id="node9" href="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="895,549,942,575"/>
+<area shape="rect" id="node11" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="2592,602,2643,629"/>
+<area shape="rect" id="node17" href="$d3/d07/a05837.html#a5c07e84c569b5e53b53d69d7f903a0d7" title="interpolation::PPSolveFactory\l::getDerivPoints" alt="" coords="515,364,727,405"/>
+<area shape="rect" id="node18" href="$d7/d4f/a05809.html#a73ea86036e1dfe83aa86ca5ca6627ca0" title="interpolation::Mesh\l::getPositionDimension" alt="" coords="832,235,1005,276"/>
+<area shape="rect" id="node42" href="$d3/d07/a05837.html#ae0c0d4664f1ab2f826907ef0056e5d7f" title="interpolation::PPSolveFactory\l::getDerivs" alt="" coords="515,716,727,757"/>
+<area shape="rect" id="node46" href="$de/d05/a05813.html#aa3315af81a96c94652830cf176087154" title="interpolation::Mesh\l::Iterator::toInteger" alt="" coords="845,716,992,757"/>
+<area shape="rect" id="node47" href="$d3/d07/a05837.html#a127811846c8c097db57d364703d34b4b" title="interpolation::PPSolveFactory\l::getPoints" alt="" coords="515,299,727,340"/>
+<area shape="rect" id="node50" href="$d3/d07/a05837.html#aabfcb09c4cf6450b9c9a4af8f7a0cdcf" title="interpolation::PPSolveFactory\l::getValues" alt="" coords="515,537,727,579"/>
+<area shape="rect" id="node7" href="$d7/d47/a04685.html#ad6ece85323a4f116320d363dfb419738" title="PartBunchBase::begin" alt="" coords="837,71,1000,98"/>
+<area shape="rect" id="node10" href="$d7/d47/a04685.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1151,549,1301,575"/>
+<area shape="rect" id="node12" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="2691,577,2863,603"/>
+<area shape="rect" id="node13" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="2911,577,3097,603"/>
+<area shape="rect" id="node16" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="3394,526,3529,553"/>
+<area shape="rect" id="node14" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="3145,577,3343,603"/>
+<area shape="rect" id="node15" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="3391,577,3532,603"/>
+<area shape="rect" id="node19" href="$dd/d98/a05845.html#a6fbc59fce924184e894fe492c9e3f549" title="interpolation::SquarePolynomial\lVector::IndexByPower" alt="" coords="803,417,1034,459"/>
+<area shape="rect" id="node21" href="$dd/d98/a05845.html#a30a72c5bc2a48d94809af1fcfb7c9a2e" title="interpolation::SquarePolynomial\lVector::NumberOfPolynomialCoefficients" alt="" coords="775,483,1063,524"/>
+<area shape="rect" id="node22" href="$d3/d4f/a00761.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="894,366,943,393"/>
+<area shape="rect" id="node20" href="$dd/d98/a05845.html#aeee94321d9a80efbfba17d146a8588f9" title="interpolation::SquarePolynomial\lVector::IndexByPowerRecursive" alt="" coords="1111,428,1341,469"/>
+<area shape="rect" id="node23" href="$d7/dc3/a05241.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1175,377,1277,403"/>
+<area shape="rect" id="node24" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1700,538,1844,565"/>
+<area shape="rect" id="node25" href="$df/dfa/a03533.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1894,526,1941,553"/>
+<area shape="rect" id="node34" href="$d7/dc3/a05241.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1529,335,1652,362"/>
+<area shape="rect" id="node35" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1389,386,1481,413"/>
+<area shape="rect" id="node26" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2125,450,2311,477"/>
+<area shape="rect" id="node27" href="$df/dfa/a03533.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1991,526,2077,553"/>
+<area shape="rect" id="node28" href="$d2/d67/a03455.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="2179,501,2257,527"/>
+<area shape="rect" id="node30" href="$dc/d14/a03479.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="2403,551,2500,578"/>
+<area shape="rect" id="node31" href="$d4/d78/a03677.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="2155,602,2281,629"/>
+<area shape="rect" id="node29" href="$d6/db6/a08373.html#ade95693db1906427a7c73b8364a07b20" title="BareFieldIterator::\lGetBareField" alt="" coords="2382,485,2521,527"/>
+<area shape="rect" id="node32" href="$d2/d36/a12117.html#a8bdcd8abcec1d747ecf82579b42c853c" title="IpplInfo::abort" alt="" coords="2395,602,2508,629"/>
+<area shape="rect" id="node33" href="$dc/d08/a09205.html#aa072c62b650774371674b050109d8051" title="Communicate::broadcast\l_others" alt="" coords="2359,653,2544,695"/>
+<area shape="rect" id="node36" href="$d7/dc3/a05241.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1537,386,1644,413"/>
+<area shape="rect" id="node37" href="$d4/d21/a05245.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="1713,437,1831,463"/>
+<area shape="rect" id="node38" href="$d7/dc3/a05241.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="1703,234,1841,261"/>
+<area shape="rect" id="node39" href="$d7/dc3/a05241.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="1721,285,1823,311"/>
+<area shape="rect" id="node40" href="$d7/dc3/a05241.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="1705,335,1839,362"/>
+<area shape="rect" id="node41" href="$dd/d51/a03842.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="1892,393,1943,419"/>
+<area shape="rect" id="node43" href="$de/d05/a05813.html#aa89d1e12977c2b727c92a285faf38c0e" title="interpolation::Mesh\l::Iterator::getMesh" alt="" coords="845,833,992,875"/>
+<area shape="rect" id="node44" href="$de/d05/a05813.html#a6d26d702739d32286bef4ccd9e98f037" title="interpolation::Mesh\l::Iterator::getPosition" alt="" coords="839,899,998,940"/>
+<area shape="rect" id="node45" href="$de/d05/a05813.html#a2887f93aa5a15d9626a295e03c2622b9" title="interpolation::Mesh\l::Iterator::getState" alt="" coords="845,651,992,692"/>
+<area shape="rect" id="node48" href="$d3/d07/a05837.html#adcea6dbcd35b49a8a9b5f9a1e6a4acc4" title="interpolation::PPSolveFactory\l::getNearbyPointsSquares" alt="" coords="813,300,1025,341"/>
+<area shape="rect" id="node49" href="$d3/d07/a05837.html#a62508eb3d6167d64e3e44d2aaad354a4" title="interpolation::PPSolveFactory\l::nearbyPointsRecursive" alt="" coords="1120,300,1332,341"/>
+</map>

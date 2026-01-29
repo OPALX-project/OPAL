@@ -1,0 +1,32 @@
+<map id="src/Distribution/Distribution.cpp" name="src/Distribution/Distribution.cpp">
+<area shape="rect" id="node2" href="$d9/dff/a02099.html" title="Distribution/Distribution.h" alt="" coords="1351,177,1542,203"/>
+<area shape="rect" id="node13" href="$db/d7f/a01718.html" title="Physics/Physics.h" alt="" coords="2693,408,2829,435"/>
+<area shape="rect" id="node14" href="$d3/d4c/a01724.html" title="Physics/Units.h" alt="" coords="2701,333,2822,360"/>
+<area shape="rect" id="node18" href="$db/d77/a00683.html" title="AbsBeamline/SpecificElement\lVisitor.h" alt="" coords="3745,80,3961,121"/>
+<area shape="rect" id="node22" href="$d5/d16/a00029.html" title="AbstractObjects/BeamSequence.h" alt="" coords="4036,87,4279,114"/>
+<area shape="rect" id="node23" href="$da/d5d/a13437.html" title="AbstractObjects/Expressions.h" alt="" coords="280,259,499,285"/>
+<area shape="rect" id="node24" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="2963,259,3165,285"/>
+<area shape="rect" id="node26" href="$d0/d11/a00842.html" title="Algorithms/PartBins.h" alt="" coords="243,177,405,203"/>
+<area shape="rect" id="node27" href="$d9/d30/a00848.html" title="Algorithms/PartBinsCyc.h" alt="" coords="815,87,1001,114"/>
+<area shape="rect" id="node28" href="$d0/d82/a00857.html" title="Algorithms/PartBunchBase.h" alt="" coords="2054,87,2261,114"/>
+<area shape="rect" id="node29" href="$d9/def/a04004.html" title="Utility/IpplTimings.h" alt="" coords="2229,259,2384,285"/>
+<area shape="rect" id="node30" href="$db/d10/a00350.html" title="BasicActions/Option.h" alt="" coords="2834,177,2998,203"/>
+<area shape="rect" id="node31" href="$d6/d94/a02033.html" title="Utilities/Options.h" alt="" coords="2699,259,2837,285"/>
+<area shape="rect" id="node32" href="$d2/deb/a03356.html" title="DataSource/DataConnect.h" alt="" coords="4303,87,4500,114"/>
+<area shape="rect" id="node33" href="$d3/d1e/a02093.html" title="Distribution/ClosedOrbit\lFinder.h" alt="" coords="3073,169,3252,211"/>
+<area shape="rect" id="node36" href="$db/d7a/a02105.html" title="Distribution/LaserProfile.h" alt="" coords="1870,177,2061,203"/>
+<area shape="rect" id="node37" href="$df/daa/a02135.html" title="Elements/OpalBeamline.h" alt="" coords="3479,87,3670,114"/>
+<area shape="rect" id="node38" href="$d0/d2b/a03095.html" title="Structure/H5PartWrapper.h" alt="" coords="3241,259,3434,285"/>
+<area shape="rect" id="node39" href="$d5/d43/a03101.html" title="Structure/H5PartWrapperForPC.h" alt="" coords="2579,177,2810,203"/>
+<area shape="rect" id="node40" href="$d9/d01/a03248.html" title="Utilities/EarlyLeaveException.h" alt="" coords="4525,87,4750,114"/>
+<area shape="rect" id="node41" href="$d2/d31/a02087.html" title="Utilities/Util.h" alt="" coords="2341,177,2453,203"/>
+<area shape="rect" id="node3" href="$d4/d8c/a00035.html" title="AbstractObjects/Definition.h" alt="" coords="902,259,1106,285"/>
+<area shape="rect" id="node4" href="$d4/d81/a00110.html" title="Algorithms/BoostMatrix.h" alt="" coords="1181,259,1368,285"/>
+<area shape="rect" id="node5" href="$dd/db2/a00866.html" title="Algorithms/PartData.h" alt="" coords="1392,259,1557,285"/>
+<area shape="rect" id="node6" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="2054,259,2205,285"/>
+<area shape="rect" id="node7" href="$d5/ddf/a00224.html" title="Attributes/Attributes.h" alt="" coords="1582,259,1749,285"/>
+<area shape="rect" id="node11" href="$d5/d63/a02123.html" title="Distribution/SigmaGenerator.h" alt="" coords="659,259,877,285"/>
+<area shape="rect" id="node19" href="$d8/d91/a00410.html" title="AbsBeamline/BeamlineVisitor.h" alt="" coords="3905,259,4132,285"/>
+<area shape="rect" id="node20" href="$d4/dd3/a00428.html" title="AbsBeamline/CCollimator.h" alt="" coords="3972,177,4172,203"/>
+<area shape="rect" id="node21" href="$de/df8/a00440.html" title="AbsBeamline/Corrector.h" alt="" coords="3765,177,3947,203"/>
+</map>

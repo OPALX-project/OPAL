@@ -1,0 +1,10 @@
+<map id="AmrBoxLib::tagForMomenta_m" name="AmrBoxLib::tagForMomenta_m">
+<area shape="rect" id="node2" href="$d8/dd9/a07349.html#a41891496d8c77629efad224e6d7959df" title="AmrParticleLevelCounter\l::begin" alt="" coords="310,5,493,47"/>
+<area shape="rect" id="node3" href="$d0/d61/a01130.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="380,71,423,98"/>
+<area shape="rect" id="node4" href="$d0/d83/a05281.html#ad657df7a7c8ff3f0a5b610d68c9a2154" title="AmrPartBunch::getAmrParticleBase" alt="" coords="276,122,527,149"/>
+<area shape="rect" id="node5" href="$dd/d27/a07345.html#a68c57fd7f4843eff35c63138417add14" title="AmrParticleBase::getLocal\lNumPerLevel" alt="" coords="305,173,497,215"/>
+<area shape="rect" id="node6" href="$d4/d72/a04841.html#ad66f6aa84f8212afce1ae62a7b416fa4" title="BoxLibLayout::Index" alt="" coords="324,239,479,266"/>
+<area shape="rect" id="node7" href="$dd/d27/a07345.html#ad79bca07de761a9c5de30b2578d362ff" title="AmrParticleBase::update" alt="" coords="310,290,493,317"/>
+<area shape="rect" id="node8" href="$d4/dd0/a04537.html#aa8140964548778b1df536ea288848bf0" title="PyOpal::PyOpalObjectNS\l::update" alt="" coords="575,283,757,324"/>
+<area shape="rect" id="node9" href="$dd/db9/a06885.html#a4a1a6e310d2b5f4319cb77d629b0e97a" title="PyOpal::PyOpalObjectNS\l::PyOpalObject::getOpalShared" alt="" coords="805,283,1028,324"/>
+</map>

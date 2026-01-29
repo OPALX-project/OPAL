@@ -1,0 +1,27 @@
+<map id="TrackRun::setupFieldsolver" name="TrackRun::setupFieldsolver">
+<area shape="rect" id="node2" href="$d7/dd4/a04689.html#af5b03ae2e5863b4ef2af71f8fd29b4a0" title="OpalData::addProblemCharacteristic\lValue" alt="" coords="248,5,507,47"/>
+<area shape="rect" id="node3" href="$d2/d6f/a07145.html#a605283d014f9629e67ce7f75489d84c8" title="Find named BEAM. " alt="" coords="331,122,423,149"/>
+<area shape="rect" id="node8" href="$db/d5b/a07189.html#a538b19c55cccfcc1b4f8bfaa1654f4ac" title="Find named FieldSolver. " alt="" coords="315,71,440,98"/>
+<area shape="rect" id="node9" href="$db/d5b/a07189.html#a824da99715ba7e44401b2945b2c0c6d2" title="FieldSolver::getFieldSolverType" alt="" coords="266,173,489,199"/>
+<area shape="rect" id="node10" href="$db/d5b/a07189.html#abfdc9c98a1c29cf63ecfe3febb475323" title="Return meshsize. " alt="" coords="589,426,731,453"/>
+<area shape="rect" id="node15" href="$db/d5b/a07189.html#a7543fd923bb8a4e2e2a97356ce3e1fb1" title="Return meshsize. " alt="" coords="589,477,731,503"/>
+<area shape="rect" id="node16" href="$db/d5b/a07189.html#a16e7ad772330cd9223b3a3fdd3ce6bc8" title="Return meshsize. " alt="" coords="589,527,731,554"/>
+<area shape="rect" id="node17" href="$d2/d6f/a07145.html#a78f24e2aada7fc91ed556435faa4a2b5" title="Return the number of (macro)particles. " alt="" coords="555,578,765,605"/>
+<area shape="rect" id="node18" href="$dd/d3c/a04466.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="813,299,967,326"/>
+<area shape="rect" id="node19" href="$db/d5b/a07189.html#a8bef80364267d52be7c301cbc8b4a93f" title="FieldSolver::hasPeriodicZ" alt="" coords="567,223,753,250"/>
+<area shape="rect" id="node20" href="$db/d5b/a07189.html#a16c768e3525a157b8601c98c40e4c7d7" title="FieldSolver::initCartesian\lFields" alt="" coords="285,352,469,393"/>
+<area shape="rect" id="node23" href="$d7/dd4/a04689.html#af8d0b55764c02667df67d086327b6a34" title="true if we do a restart run " alt="" coords="291,621,464,647"/>
+<area shape="rect" id="node24" href="$d7/d47/a04685.html#a842c0abc705a8187933493cbdc8865d5" title="PartBunchBase::setBCAllOpen" alt="" coords="269,671,485,698"/>
+<area shape="rect" id="node25" href="$d7/d47/a04685.html#ac520a105e08efe1fd57d336525887d81" title="PartBunchBase::setBCForDCBeam" alt="" coords="256,722,499,749"/>
+<area shape="rect" id="node26" href="$d7/d47/a04685.html#adc599994ced13db7dd06ce7aaf292ebb" title="PartBunchBase::setSolver" alt="" coords="283,773,471,799"/>
+<area shape="rect" id="node4" href="$d7/dd4/a04689.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="603,122,717,149"/>
+<area shape="rect" id="node6" href="$d7/dd4/a04689.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="577,71,743,98"/>
+<area shape="rect" id="node5" href="$d4/d88/a04637.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="833,122,947,149"/>
+<area shape="rect" id="node7" href="$d7/dd4/a04689.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="814,71,966,98"/>
+<area shape="rect" id="node11" href="$dd/d3c/a04466.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="819,426,961,453"/>
+<area shape="rect" id="node12" href="$d3/de5/a04617.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="1015,426,1205,453"/>
+<area shape="rect" id="node13" href="$d3/de5/a04617.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="1040,325,1180,351"/>
+<area shape="rect" id="node14" href="$d3/de5/a04617.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="1031,375,1189,402"/>
+<area shape="rect" id="node21" href="$dd/d3c/a04466.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="818,375,962,402"/>
+<area shape="rect" id="node22" href="$db/d5b/a07189.html#a4fc7937b743fa345b79d818ed7dae9c0" title="FieldSolver::isAmrSolverType" alt="" coords="555,325,765,351"/>
+</map>

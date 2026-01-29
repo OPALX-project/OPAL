@@ -1,0 +1,17 @@
+<map id="ScalingFFAMagnet::setupEndField" name="ScalingFFAMagnet::setupEndField">
+<area shape="rect" id="node2" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="354,5,399,32"/>
+<area shape="rect" id="node4" href="$dd/dbe/a05029.html#a0d8e1f47361bd548b694c4f485e821d3" title="endfieldmodel::EndFieldModel\l::clone" alt="" coords="269,57,485,98"/>
+<area shape="rect" id="node5" href="$dd/dbe/a05029.html#acf396ee707a4157d76e37f8c99ace97e" title="endfieldmodel::EndFieldModel\l::getCentreLength" alt="" coords="269,122,485,163"/>
+<area shape="rect" id="node6" href="$dd/dbe/a05029.html#a3a92f74b61ce0cd31441d9a21fd07f73" title="endfieldmodel::EndFieldModel\l::getEndFieldModel" alt="" coords="269,187,485,229"/>
+<area shape="rect" id="node7" href="$dd/dbe/a05029.html#ad807c35faa33f581e97c341135db9eca" title="endfieldmodel::EndFieldModel\l::getEndLength" alt="" coords="269,253,485,294"/>
+<area shape="rect" id="node8" href="$d0/d88/a05153.html#add763ff3f02edce07ae90cff25b01d47" title="ScalingFFAMagnet::getPhi\lStart" alt="" coords="283,318,471,359"/>
+<area shape="rect" id="node9" href="$dd/dbe/a05029.html#a66c5bab815ad4c5c8d48a2b172fdbd6f" title="endfieldmodel::EndFieldModel\l::rescale" alt="" coords="269,383,485,425"/>
+<area shape="rect" id="node10" href="$d0/d88/a05153.html#a10498e75f8325a818af119c005dab6a9" title="ScalingFFAMagnet::setAzimuthal\lExtent" alt="" coords="260,449,493,490"/>
+<area shape="rect" id="node11" href="$d1/da9/a05549.html#a6263642c7a579fbb8e8ac653199b36fe" title="Set curvature. " alt="" coords="299,514,455,555"/>
+<area shape="rect" id="node12" href="$d1/da9/a05549.html#ab279211707d7355edaa4b55d31e4fe97" title="Set length. " alt="" coords="299,579,455,621"/>
+<area shape="rect" id="node13" href="$d0/d88/a05153.html#a8f1ae82af643b39a1b0c911f2f5f81fb" title="ScalingFFAMagnet::setEnd\lField" alt="" coords="281,645,472,686"/>
+<area shape="rect" id="node14" href="$dd/dbe/a05029.html#ad969d5284c2864fcab21f8f86bf0e6b8" title="endfieldmodel::EndFieldModel\l::setMaximumDerivative" alt="" coords="269,710,485,751"/>
+<area shape="rect" id="node15" href="$d0/d88/a05153.html#abf9b1b164604241f3ba3abe97df426fc" title="ScalingFFAMagnet::setPhiEnd" alt="" coords="271,776,482,803"/>
+<area shape="rect" id="node16" href="$d0/d88/a05153.html#a678e20877e9e4cf3ec9327b0bb34d999" title="ScalingFFAMagnet::setPhi\lStart" alt="" coords="283,827,470,869"/>
+<area shape="rect" id="node3" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="541,5,727,32"/>
+</map>

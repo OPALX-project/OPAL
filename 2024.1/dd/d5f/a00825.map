@@ -1,0 +1,34 @@
+<map id="src/Classic/Algorithms/Flagger.cpp" name="src/Classic/Algorithms/Flagger.cpp">
+<area shape="rect" id="node2" href="$dc/d1b/a00827.html" title="Algorithms/Flagger.h" alt="" coords="622,95,778,121"/>
+<area shape="rect" id="node5" href="$d6/d27/a01163.html" title="Beamlines/FlaggedElmPtr.h" alt="" coords="813,95,1013,121"/>
+<area shape="rect" id="node3" href="$d8/d2d/a00815.html" title="Algorithms/DefaultVisitor.h" alt="" coords="578,169,777,196"/>
+<area shape="rect" id="node4" href="$d8/d91/a00410.html" title="AbsBeamline/BeamlineVisitor.h" alt="" coords="557,244,784,271"/>
+<area shape="rect" id="node6" href="$de/df1/a01151.html" title="Beamlines/ElmPtr.h" alt="" coords="844,169,993,196"/>
+<area shape="rect" id="node7" href="$d2/d9d/a00464.html" title="AbsBeamline/ElementBase.h" alt="" coords="1053,244,1264,271"/>
+<area shape="rect" id="node50" href="$d3/deb/a01619.html" title="MemoryManagement/Pointer.h" alt="" coords="808,244,1029,271"/>
+<area shape="rect" id="node8" href="$d9/de6/a00404.html" title="AbsBeamline/AttributeSet.h" alt="" coords="95,326,297,353"/>
+<area shape="rect" id="node12" href="$dd/d7e/a00809.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="839,319,1057,360"/>
+<area shape="rect" id="node37" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="887,415,1068,442"/>
+<area shape="rect" id="node38" href="$d9/d7c/a01073.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="1497,415,1719,442"/>
+<area shape="rect" id="node42" href="$d2/df3/a01085.html" title="BeamlineGeometry/Geometry.h" alt="" coords="1442,326,1670,353"/>
+<area shape="rect" id="node43" href="$dd/d20/a01772.html" title="Structure/BoundingBox.h" alt="" coords="1133,326,1315,353"/>
+<area shape="rect" id="node46" href="$d1/d3a/a01622.html" title="MemoryManagement/RCObject.h" alt="" coords="1695,326,1929,353"/>
+<area shape="rect" id="node47" href="$d5/d99/a01901.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="261,408,435,449"/>
+<area shape="rect" id="node13" href="$d4/d81/a00110.html" title="Algorithms/BoostMatrix.h" alt="" coords="759,497,945,524"/>
+<area shape="rect" id="node15" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="1029,497,1179,524"/>
+<area shape="rect" id="node16" href="$d4/daf/a13446.html" title="AppTypes/Vektor.h" alt="" coords="993,579,1135,606"/>
+<area shape="rect" id="node17" href="$d7/dcb/a04028.html" title="Utility/PAssert.h" alt="" coords="1001,811,1127,837"/>
+<area shape="rect" id="node20" href="$d6/dc7/a03683.html" title="Message/Message.h" alt="" coords="1520,736,1672,763"/>
+<area shape="rect" id="node28" href="$d5/d73/a03836.html" title="PETE/IpplExpressions.h" alt="" coords="1291,661,1463,688"/>
+<area shape="rect" id="node31" href="$d8/d5d/a03329.html" title="AppTypes/TSVMeta.h" alt="" coords="656,661,813,688"/>
+<area shape="rect" id="node27" href="$d4/d5e/a03686.html" title="Message/Message.hpp" alt="" coords="1552,811,1720,837"/>
+<area shape="rect" id="node29" href="$d9/d83/a03839.html" title="PETE/IpplTypeComputations.h" alt="" coords="1281,736,1495,763"/>
+<area shape="rect" id="node30" href="$dd/d51/a03842.html" title="PETE/PETE.h" alt="" coords="1102,736,1205,763"/>
+<area shape="rect" id="node32" href="$d6/d83/a03332.html" title="AppTypes/TSVMetaAssign.h" alt="" coords="608,736,808,763"/>
+<area shape="rect" id="node33" href="$d6/d18/a03350.html" title="AppTypes/TSVMetaUnary.h" alt="" coords="832,736,1027,763"/>
+<area shape="rect" id="node34" href="$d9/db1/a03335.html" title="AppTypes/TSVMetaBinary.h" alt="" coords="387,736,584,763"/>
+<area shape="rect" id="node39" href="$df/dd5/a01115.html" title="BeamlineGeometry/Rotation3D.h" alt="" coords="1567,497,1804,524"/>
+<area shape="rect" id="node41" href="$db/d28/a01133.html" title="BeamlineGeometry/Vector3D.h" alt="" coords="1417,579,1641,606"/>
+<area shape="rect" id="node40" href="$d6/d0d/a01091.html" title="BeamlineGeometry/Matrix3D.h" alt="" coords="1665,579,1889,606"/>
+<area shape="rect" id="node48" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="243,497,442,524"/>
+</map>

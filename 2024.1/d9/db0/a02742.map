@@ -1,0 +1,34 @@
+<map id="src/PyOpal/PyElements/PyVariableRFCavityFringeField.cpp" name="src/PyOpal/PyElements/PyVariableRFCavityFringeField.cpp">
+<area shape="rect" id="node2" href="$de/db4/a02684.html" title="PyOpal/PyCore/ExceptionTranslation.h" alt="" coords="379,102,649,129"/>
+<area shape="rect" id="node8" href="$df/d5e/a02690.html" title="PyOpal/PyCore/Globals.h" alt="" coords="96,102,279,129"/>
+<area shape="rect" id="node16" href="$d8/da6/a02696.html" title="PyOpal/PyCore/PyOpalObject.h" alt="" coords="1288,102,1511,129"/>
+<area shape="rect" id="node43" href="$dd/dd8/a00719.html" title="Classic/AbsBeamline\l/VariableRFCavityFringeField.h" alt="" coords="2341,95,2559,136"/>
+<area shape="rect" id="node48" href="$d5/d73/a02423.html" title="Elements/OpalVariableRFCavity\lFringeField.h" alt="" coords="1713,95,1941,136"/>
+<area shape="rect" id="node49" href="$d3/d4c/a01724.html" title="Physics/Units.h" alt="" coords="2941,102,3063,129"/>
+<area shape="rect" id="node9" href="$db/d8b/a02594.html" title="opal.h" alt="" coords="117,184,180,211"/>
+<area shape="rect" id="node10" href="$dd/d78/a03980.html" title="Utility/IpplInfo.h" alt="" coords="124,266,251,293"/>
+<area shape="rect" id="node11" href="$d4/d54/a04055.html" title="Utility/StaticIpplInfo.h" alt="" coords="24,348,188,375"/>
+<area shape="rect" id="node13" href="$d3/db5/a03965.html" title="Utility/Inform.h" alt="" coords="212,348,333,375"/>
+<area shape="rect" id="node20" href="$d5/d08/a03254.html" title="Utilities/OpalException.h" alt="" coords="1244,184,1427,211"/>
+<area shape="rect" id="node22" href="$df/d14/a02183.html" title="Elements/OpalElement.h" alt="" coords="1841,184,2024,211"/>
+<area shape="rect" id="node24" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="1984,348,2167,375"/>
+<area shape="rect" id="node34" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="1235,348,1438,375"/>
+<area shape="rect" id="node36" href="$d1/d7e/a00434.html" title="AbsBeamline/Component.h" alt="" coords="2348,266,2547,293"/>
+<area shape="rect" id="node38" href="$d5/ddf/a00224.html" title="Attributes/Attributes.h" alt="" coords="1537,348,1704,375"/>
+<area shape="rect" id="node42" href="$d1/d23/a02603.html" title="OpalConfigure/Configure.h" alt="" coords="830,184,1022,211"/>
+<area shape="rect" id="node21" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="1025,266,1224,293"/>
+<area shape="rect" id="node23" href="$d6/d2d/a00047.html" title="AbstractObjects/Element.h" alt="" coords="2078,266,2273,293"/>
+<area shape="rect" id="node33" href="$db/dad/a01616.html" title="MemoryManagement/OwnPtr.h" alt="" coords="1831,266,2053,293"/>
+<area shape="rect" id="node26" href="$d3/deb/a01619.html" title="MemoryManagement/Pointer.h" alt="" coords="2265,497,2486,524"/>
+<area shape="rect" id="node31" href="$d2/d9d/a00464.html" title="AbsBeamline/ElementBase.h" alt="" coords="2211,348,2422,375"/>
+<area shape="rect" id="node25" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="1957,423,2156,449"/>
+<area shape="rect" id="node28" href="$d1/d3a/a01622.html" title="MemoryManagement/RCObject.h" alt="" coords="2298,423,2533,449"/>
+<area shape="rect" id="node35" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="1011,423,1249,449"/>
+<area shape="rect" id="node37" href="$de/d33/a01274.html" title="Fields/EMField.h" alt="" coords="2548,348,2672,375"/>
+<area shape="rect" id="node39" href="$d4/d41/a01661.html" title="Parser/Token.h" alt="" coords="1765,423,1881,449"/>
+<area shape="rect" id="node44" href="$d1/d04/a00713.html" title="AbsBeamline/VariableRFCavity.h" alt="" coords="2565,184,2799,211"/>
+<area shape="rect" id="node47" href="$dc/dd9/a01268.html" title="Fields/Definitions.h" alt="" coords="3204,266,3349,293"/>
+<area shape="rect" id="node45" href="$d4/d45/a00791.html" title="Algorithms/AbstractTimeDependence.h" alt="" coords="2622,266,2899,293"/>
+<area shape="rect" id="node46" href="$dd/de4/a01121.html" title="BeamlineGeometry/Straight\lGeometry.h" alt="" coords="2924,259,3128,300"/>
+<area shape="rect" id="node50" href="$db/d7f/a01718.html" title="Physics.h" alt="" coords="3254,184,3337,211"/>
+</map>

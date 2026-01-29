@@ -1,0 +1,51 @@
+<map id="PyOpal::PyParser::BOOST_PYTHON_MODULE" name="PyOpal::PyParser::BOOST_PYTHON_MODULE">
+<area shape="rect" id="node2" href="$d7/da8/a04536.html#add6a4f09a4bf594241765fb6d14a2f2f" title="PyOpal::Globals::Initialise" alt="" coords="249,16,439,43"/>
+<area shape="rect" id="node4" href="$d7/dba/a04561.html#a32beb909851da9c3ddd65968ca75f10e" title="PyOpal::PyParser::initialise\l_from_opal_file" alt="" coords="246,143,442,185"/>
+<area shape="rect" id="node47" href="$d7/dba/a04561.html#ad20769442290914069dc008190ccec9c" title="PyOpal::PyParser::list\l_objects" alt="" coords="264,78,424,119"/>
+<area shape="rect" id="node50" href="$df/de9/a04534.html#a6b13e9b77d47f3b02a5f2e3ef12b2a9b" title="PyOpal::ExceptionTranslation\l::registerExceptions" alt="" coords="239,209,449,250"/>
+<area shape="rect" id="node3" href="$d2/d36/a12117.html#a166424080a04feb0a36a6bc1a9c09c3a" title="IpplInfo::instantiateGlobals" alt="" coords="497,5,696,32"/>
+<area shape="rect" id="node5" href="$d4/d61/a02588.html#a077e8c4c8757f88627a18aa2e5e0443b" title="opalMain" alt="" coords="556,1109,637,1136"/>
+<area shape="rect" id="node6" href="$dc/d08/a09205.html#ac4593203c34f26c625bd51c7502c297e" title="Communicate::barrier" alt="" coords="771,376,935,403"/>
+<area shape="rect" id="node7" href="$d4/d61/a02588.html#ad597c4452f6a3ad9f185052989f5e6d5" title="checkInitAmrFlag" alt="" coords="786,427,921,453"/>
+<area shape="rect" id="node8" href="$db/db9/a05705.html#a394969db6b7cebb04a84e28cb34273e9" title="_Fieldmap::clearDictionary" alt="" coords="756,477,951,504"/>
+<area shape="rect" id="node9" href="$d2/d36/a12117.html#af95fa553702e1cb951e7d538ed034701" title="IpplInfo::compileOptions" alt="" coords="763,528,944,555"/>
+<area shape="rect" id="node10" href="$d2/dd6/a04528.html#a3d0c5652c42eb1959966a44a0084a063" title="Configure all commands. " alt="" coords="777,579,929,605"/>
+<area shape="rect" id="node11" href="$d7/dd4/a04689.html#aa1ec98ce135a5ec294aff5a76f6913f9" title="OpalData::deleteInstance" alt="" coords="760,629,947,656"/>
+<area shape="rect" id="node12" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1075,731,1126,757"/>
+<area shape="rect" id="node13" href="$d7/dd4/a04689.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="796,1051,911,1077"/>
+<area shape="rect" id="node14" href="$d7/dd4/a04689.html#af5404b3339d48c4531df60b77ce628c3" title="get the name of the the additional data directory " alt="" coords="746,1102,961,1143"/>
+<area shape="rect" id="node15" href="$d2/d36/a12117.html#a8d995e140c485a5416394b5cc1c864c4" title="IpplInfo::getComm" alt="" coords="782,1168,925,1195"/>
+<area shape="rect" id="node16" href="$dc/da4/a04515.html#ad397fcf4ef2da5e1b9a560b2c73d79f6" title="Util::getGitRevision" alt="" coords="779,1219,927,1245"/>
+<area shape="rect" id="node17" href="$d7/dd4/a04689.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="746,1269,961,1296"/>
+<area shape="rect" id="node18" href="$d7/dd4/a04689.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="770,107,937,133"/>
+<area shape="rect" id="node20" href="$da/d9b/a12149.html#a59ffa7a04c160376d3a6593bff568fb4" title="IpplTimings::getTimer" alt="" coords="771,1320,936,1347"/>
+<area shape="rect" id="node21" href="$d1/d57/a02543.html#ace81ef415558c955773dd484d99c6b7a" title="handleGSLErrors" alt="" coords="789,1371,918,1397"/>
+<area shape="rect" id="node22" href="$d7/dd4/a04689.html#af8d0b55764c02667df67d086327b6a34" title="true if we do a restart run " alt="" coords="767,1421,940,1448"/>
+<area shape="rect" id="node23" href="$d7/db0/a03962.html#aaa8816f8a4ebcda91abbeeeec1b3d6a7" title="level5" alt="" coords="822,1472,885,1499"/>
+<area shape="rect" id="node24" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="786,1523,921,1549"/>
+<area shape="rect" id="node25" href="$da/d9b/a12149.html#acba34e31a0e087487a086b55fd543e79" title="IpplTimings::print" alt="" coords="785,1573,921,1600"/>
+<area shape="rect" id="node26" href="$d2/d36/a12117.html#a1e8cf4e5b628c014c9fea84e932515e0" title="IpplInfo::printVersion" alt="" coords="775,680,932,707"/>
+<area shape="rect" id="node27" href="$d5/df0/a06857.html#a5ab9609f07da8c6634955f0bfa422ecc" title="Read current stream. " alt="" coords="793,832,914,859"/>
+<area shape="rect" id="node28" href="$d6/d5f/a06225.html#a02110c105ed46e90667574cdb2e62a74" title="Return the message string for the exception. " alt="" coords="1015,807,1187,833"/>
+<area shape="rect" id="node29" href="$d6/d5f/a06225.html#a4035a2970f75135bbb96e658b882d078" title="Return the name of the method or function which detected the exception. " alt="" coords="1011,857,1191,884"/>
+<area shape="rect" id="node30" href="$d0/d4e/a06005.html#a43cf5361478e2d9de7372af29bde0bdc" title="Set echo flag. " alt="" coords="778,1624,929,1651"/>
+<area shape="rect" id="node31" href="$d6/d55/a05925.html#ab84f4940ecb62965817060cb5daac7a8" title="Set the global truncation order. " alt="" coords="757,1675,949,1701"/>
+<area shape="rect" id="node32" href="$d7/dd4/a04689.html#aa599fa5f304184656e3242fc8ae5d24f" title="store opals restart h5 format filename " alt="" coords="744,1725,963,1752"/>
+<area shape="rect" id="node33" href="$d7/dd4/a04689.html#a6f7a1cb20f2b386464ebc64198723d4d" title="set OPAL in restart mode " alt="" coords="763,1776,944,1803"/>
+<area shape="rect" id="node34" href="$d7/dd4/a04689.html#ae6d0acdb8c9a0d0ae386de08b14e4402" title="store the location where to restart " alt="" coords="760,1827,947,1853"/>
+<area shape="rect" id="node35" href="$da/d9b/a12149.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="766,1877,941,1904"/>
+<area shape="rect" id="node36" href="$da/d9b/a12149.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="767,1928,939,1955"/>
+<area shape="rect" id="node37" href="$d7/dd4/a04689.html#acc359af695a34c9fddd090e47bf5bbfb" title="OpalData::storeArguments" alt="" coords="756,1979,951,2005"/>
+<area shape="rect" id="node38" href="$d7/dd4/a04689.html#a286e5b9ed3fbe43e62ea5fd5391b8a4f" title="store opals input filename " alt="" coords="767,2029,939,2056"/>
+<area shape="rect" id="node39" href="$dc/da4/a04515.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="801,2080,906,2107"/>
+<area shape="rect" id="node40" href="$d2/d8d/a12113.html#abfd19bc7545bd0c2ade73f31318a1a7a" title="IpplException::what" alt="" coords="778,2131,929,2157"/>
+<area shape="rect" id="node41" href="$d0/d98/a12749.html#a6b04392888bd9e3491fb168a951c959a" title="SDDSParserException\l::what" alt="" coords="772,158,935,199"/>
+<area shape="rect" id="node42" href="$d7/de7/a07305.html#a02110c105ed46e90667574cdb2e62a74" title="Return the message string for the exception. " alt="" coords="775,224,931,251"/>
+<area shape="rect" id="node43" href="$d9/db0/a12169.html#a97bdbd6c393eda3e1c6e395cb803ac59" title="assertion::what" alt="" coords="792,275,915,301"/>
+<area shape="rect" id="node44" href="$d2/d8d/a12113.html#a404de25bb05ec1d849f965dff94c4e60" title="IpplException::where" alt="" coords="774,325,933,352"/>
+<area shape="rect" id="node45" href="$d0/d98/a12749.html#aefdc25f30f93d951fd91c366dc4f735a" title="SDDSParserException\l::where" alt="" coords="772,934,935,975"/>
+<area shape="rect" id="node46" href="$d7/de7/a07305.html#a4035a2970f75135bbb96e658b882d078" title="Return the name of the method or function which detected the exception. " alt="" coords="771,1000,935,1027"/>
+<area shape="rect" id="node19" href="$d7/dd4/a04689.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1025,107,1177,133"/>
+<area shape="rect" id="node48" href="$d7/dd4/a04689.html#ab7e6a242619abf13e098a381ece66a2b" title="Get a list of all objects. " alt="" coords="509,56,684,83"/>
+<area shape="rect" id="node49" href="$d4/d88/a04637.html#a6af87fa7c132144a4fed854a5c0ba253" title="First object in alphabetic order of name. " alt="" coords="791,56,916,83"/>
+</map>

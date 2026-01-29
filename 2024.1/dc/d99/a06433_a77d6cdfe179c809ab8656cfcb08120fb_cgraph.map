@@ -1,0 +1,6 @@
+<map id="PortableGraymapReader::PortableGraymapReader" name="PortableGraymapReader::PortableGraymapReader">
+<area shape="rect" id="node2" href="$dc/d99/a06433.html#a6755a583972b3519e42c1451645d7e20" title="PortableGraymapReader\l::readHeader" alt="" coords="243,5,424,47"/>
+<area shape="rect" id="node4" href="$dc/d99/a06433.html#a7387dc9f2a7038465032f84dcbd138cc" title="PortableGraymapReader\l::readImageAscii" alt="" coords="243,71,424,112"/>
+<area shape="rect" id="node5" href="$dc/d99/a06433.html#a2dd7f3a8e9a96b48684acbd117057b00" title="PortableGraymapReader\l::readImageBinary" alt="" coords="243,136,424,177"/>
+<area shape="rect" id="node3" href="$dc/d99/a06433.html#a205543542a95f79202aa41500d7f7003" title="PortableGraymapReader\l::getNextPart" alt="" coords="472,5,653,47"/>
+</map>

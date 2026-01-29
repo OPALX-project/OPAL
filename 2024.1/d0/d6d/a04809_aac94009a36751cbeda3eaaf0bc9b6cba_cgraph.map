@@ -1,0 +1,51 @@
+<map id="ParallelTTracker::findStartPosition" name="ParallelTTracker::findStartPosition">
+<area shape="rect" id="node2" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="906,1233,951,1259"/>
+<area shape="rect" id="node4" href="$d0/d6d/a04809.html#aeb4337b364188d4a40e64e6185c6a37a" title="ParallelTTracker::applyFractionalStep" alt="" coords="241,450,503,477"/>
+<area shape="rect" id="node7" href="$d3/d4f/a00761.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1298,718,1345,745"/>
+<area shape="rect" id="node15" href="$d7/d47/a04685.html#addc3c351123a7c560c34507b2fa67b5c" title="PartBunchBase::setT" alt="" coords="587,526,741,553"/>
+<area shape="rect" id="node18" href="$d0/d6d/a04809.html#a4e3191f64a578c041eec6b598de2c62d" title="ParallelTTracker::autophase\lCavities" alt="" coords="271,1007,473,1048"/>
+<area shape="rect" id="node20" href="$d7/d47/a04685.html#a4951c53df6841fd275a56f41fc76bfdf" title="PartBunchBase::getdT" alt="" coords="847,1334,1011,1361"/>
+<area shape="rect" id="node25" href="$d9/dd4/a00776.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="865,1174,992,1201"/>
+<area shape="rect" id="node28" href="$dc/da4/a04515.html#a23c9ed0a7dbf9f918bb68b94bb9309b1" title="Util::getKineticEnergy" alt="" coords="847,971,1011,998"/>
+<area shape="rect" id="node29" href="$dc/da4/a04515.html#ae12a15e0d75307c934c8add55d2c25ac" title="Util::getGamma" alt="" coords="1088,921,1215,947"/>
+<area shape="rect" id="node33" href="$d0/d6d/a04809.html#aa58217cd0e85abd31465d76a9396b256" title="ParallelTTracker::changeDT" alt="" coords="273,1334,471,1361"/>
+<area shape="rect" id="node35" href="$d0/d6d/a04809.html#a10b75ca4c94291eb259445ffe1f9f474" title="ParallelTTracker::selectDT" alt="" coords="569,1486,759,1513"/>
+<area shape="rect" id="node39" href="$d6/d38/a06497.html#a924559eb37faf62cebd7c77e683099b6" title="OpalBeamline::containsSource" alt="" coords="261,1435,483,1462"/>
+<area shape="rect" id="node40" href="$d0/d05/a04813.html#a5ae0ce7869b545292ad764dede689cb7" title="StepSizeConfig::getdT" alt="" coords="290,1486,454,1513"/>
+<area shape="rect" id="node41" href="$d0/d05/a04813.html#aa669c97195546c2396c6026dc75db650" title="StepSizeConfig::reachedEnd" alt="" coords="563,1537,765,1563"/>
+<area shape="rect" id="node42" href="$d7/d47/a04685.html#af51331c43ea82142dd6d237e6e3e5bfd" title="PartBunchBase::getM" alt="" coords="293,1638,451,1665"/>
+<area shape="rect" id="node43" href="$d0/d05/a04813.html#a991bc5e1bde2b045b365fb25d28b1746" title="StepSizeConfig::getZStop" alt="" coords="279,1537,465,1563"/>
+<area shape="rect" id="node44" href="$d3/d4f/a00761.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="1127,90,1176,117"/>
+<area shape="rect" id="node46" href="$da/dd7/a05285.html#ae2537ef2597a313e3f6852c8175dd356" title="CoordinateSystemTrafo\l::rotateTo" alt="" coords="841,200,1016,241"/>
+<area shape="rect" id="node47" href="$d0/d05/a04813.html#a8767ccd9a8e81c866ac4d7bc6593821a" title="StepSizeConfig::shiftZStopLeft" alt="" coords="263,1689,481,1715"/>
+<area shape="rect" id="node48" href="$d0/d6d/a04809.html#a7b4bf5be18fb77c4cad12341beff541c" title="ParallelTTracker::update\lReferenceParticle" alt="" coords="575,679,753,720"/>
+<area shape="rect" id="node3" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1707,971,1892,998"/>
+<area shape="rect" id="node5" href="$d5/d69/a00878.html#a2d2b2270eefa971fcff95d54dcc92cf5" title="getQuaternion" alt="" coords="607,795,721,822"/>
+<area shape="rect" id="node11" href="$d7/d47/a04685.html#af792389ff15f7f9fe61a13138ff0d6f3" title="PartBunchBase::getT" alt="" coords="851,331,1007,358"/>
+<area shape="rect" id="node12" href="$d7/df3/a07129.html#aa0aa7e271fd7444217c180f50c90b7b4" title="BorisPusher::push" alt="" coords="859,382,998,409"/>
+<area shape="rect" id="node13" href="$da/dd7/a05285.html#a9e32c2abaaa99cc1366d5b712d0baf0f" title="CoordinateSystemTrafo\l::rotateFrom" alt="" coords="841,265,1016,307"/>
+<area shape="rect" id="node16" href="$da/dd7/a05285.html#ab7f68c4a5a5befa90cd9a82e310b2ee0" title="CoordinateSystemTrafo\l::transformFrom" alt="" coords="577,243,751,284"/>
+<area shape="rect" id="node17" href="$d4/dd0/a04537.html#aa8140964548778b1df536ea288848bf0" title="PyOpal::PyOpalObjectNS\l::update" alt="" coords="573,308,755,349"/>
+<area shape="rect" id="node6" href="$d0/d61/a01130.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="1300,895,1343,922"/>
+<area shape="rect" id="node8" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1420,667,1564,694"/>
+<area shape="rect" id="node10" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1446,718,1538,745"/>
+<area shape="rect" id="node9" href="$df/dfa/a03533.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1612,642,1659,669"/>
+<area shape="rect" id="node14" href="$d4/d81/a00110.html#a51353d2921885b3821cd9089170845e8" title="prod_boost_vector" alt="" coords="1080,273,1223,299"/>
+<area shape="rect" id="node19" href="$d0/d6f/a05137.html#a61ca169d6bfb338941f4aa2364d408c3" title="RFCavity::getAutophaseVeto" alt="" coords="825,1123,1032,1150"/>
+<area shape="rect" id="node21" href="$d6/d38/a06497.html#af966835f281da6e404951cefdfb536ca" title="OpalBeamline::getElements" alt="" coords="827,667,1031,694"/>
+<area shape="rect" id="node23" href="$d0/dae/a04721.html#ab4614cea0cac6a1d8fa5d516a49a748c" title="CavityAutophaser::getPhase\lAtMaxEnergy" alt="" coords="561,948,767,989"/>
+<area shape="rect" id="node31" href="$d6/d38/a06497.html#a1c39422c66259d152579e6d1b8233c1f" title="OpalBeamline::rotateToLocalCS" alt="" coords="551,1065,777,1091"/>
+<area shape="rect" id="node32" href="$d6/d38/a06497.html#a57d9e139d2b80688f4899012767e603f" title="OpalBeamline::transformTo\lLocalCS" alt="" coords="564,1116,764,1157"/>
+<area shape="rect" id="node22" href="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="1128,642,1175,669"/>
+<area shape="rect" id="node24" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="903,819,954,846"/>
+<area shape="rect" id="node30" href="$d7/db0/a03962.html#a05f40bf636b1822127580d886951175c" title="level1" alt="" coords="897,769,960,795"/>
+<area shape="rect" id="node26" href="$d9/d28/a05217.html#a55cb732c23dd6b419f636aff0874ab82" title="Get beginning of data. " alt="" coords="1092,1225,1211,1251"/>
+<area shape="rect" id="node27" href="$d9/d28/a05217.html#a941ffba563af0a4e17aae45292b1659e" title="Get end of data. " alt="" coords="1098,1174,1205,1201"/>
+<area shape="rect" id="node34" href="$d7/d47/a04685.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="557,1435,771,1462"/>
+<area shape="rect" id="node36" href="$d7/d47/a04685.html#a5ae85b2582451bf5a50d0e2f9074cc35" title="PartBunchBase::getIfBeam\lEmitting" alt="" coords="831,1413,1026,1455"/>
+<area shape="rect" id="node37" href="$d7/d47/a04685.html#a4db1e117ba16bdd5bfd062b587cffd55" title="PartBunchBase::getEmission\lDeltaT" alt="" coords="825,1479,1032,1520"/>
+<area shape="rect" id="node38" href="$d7/d47/a04685.html#a9fbc4d6a9f7997714f7d3cb6c1308f79" title="PartBunchBase::setdT" alt="" coords="847,1545,1010,1571"/>
+<area shape="rect" id="node45" href="$d7/dc3/a05241.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1271,642,1372,669"/>
+<area shape="rect" id="node49" href="$d6/d38/a06497.html#aa1395281d59f6828b25dcd7f8c3e1a1f" title="OpalBeamline::getCSTrafo\lLab2Local" alt="" coords="833,551,1025,592"/>
+<area shape="rect" id="node50" href="$da/dd7/a05285.html#acacde969cf75ea57d36f24896874c6a0" title="CoordinateSystemTrafo\l::transformTo" alt="" coords="841,433,1016,475"/>
+</map>

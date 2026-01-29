@@ -1,0 +1,51 @@
+<map id="ParallelCyclotronTracker::GenericTracker" name="ParallelCyclotronTracker::GenericTracker">
+<area shape="rect" id="node2" href="$d3/d7d/a04797.html#a68fea5657661817956cb8b52aecd44b0" title="ParallelCyclotronTracker\l::applyPluginElements" alt="" coords="484,625,663,666"/>
+<area shape="rect" id="node7" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1311,2442,1361,2468"/>
+<area shape="rect" id="node10" href="$d7/d47/a04685.html#a3473f0bbd78f0e387277bb72490d9ee3" title="PartBunchBase::getTotalNum" alt="" coords="1051,2828,1261,2855"/>
+<area shape="rect" id="node14" href="$d3/d7d/a04797.html#aa1d62a6f0278bdacc6dc77ddec8a2e64" title="ParallelCyclotronTracker\l::bunchMode_m" alt="" coords="232,2194,411,2236"/>
+<area shape="rect" id="node25" href="$d3/d7d/a04797.html#ad7eecb45b13ecf2eb11bdc95c6a4f296" title="ParallelCyclotronTracker\l::deleteParticle" alt="" coords="484,1418,663,1460"/>
+<area shape="rect" id="node46" href="$d3/d7d/a04797.html#a982b55a67be81156364fe1f8af54c4b2" title="ParallelCyclotronTracker\l::finalizeTracking_m" alt="" coords="484,2868,663,2909"/>
+<area shape="rect" id="node47" href="$d3/d7d/a04797.html#a7236d29b67e337d42854b34af3063d22" title="ParallelCyclotronTracker\l::initializeTracking_m" alt="" coords="484,2634,663,2676"/>
+<area shape="rect" id="node48" href="$d3/d7d/a04797.html#af2afb9b11e96ae14c0f448d950b31ec1" title="ParallelCyclotronTracker\l::seoMode_m" alt="" coords="779,410,958,452"/>
+<area shape="rect" id="node49" href="$d3/d7d/a04797.html#a3aa4e3f090e50a22880361f10775fff9" title="ParallelCyclotronTracker\l::singleMode_m" alt="" coords="232,684,411,725"/>
+<area shape="rect" id="node50" href="$d3/d7d/a04797.html#a3efa96beca39db5e15c4b224d2596850" title="Update time and path length, write to output files. " alt="" coords="779,3082,958,3124"/>
+<area shape="rect" id="node3" href="$da/d0e/a05201.html#aa6791e81ff97015ab88e53b2f0628da7" title="Vacuum::checkVacuum" alt="" coords="783,831,955,858"/>
+<area shape="rect" id="node9" href="$d7/d47/a04685.html#af792389ff15f7f9fe61a13138ff0d6f3" title="PartBunchBase::getT" alt="" coords="791,2122,947,2148"/>
+<area shape="rect" id="node11" href="$da/d9b/a12149.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="1069,679,1243,706"/>
+<area shape="rect" id="node12" href="$da/d9b/a12149.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="1070,1222,1242,1248"/>
+<area shape="rect" id="node13" href="$d7/d47/a04685.html#a270741b3a4a1bd7d6ff17a6ea690255b" title="PartBunchBase::updateNum\lTotal" alt="" coords="767,242,970,284"/>
+<area shape="rect" id="node4" href="$d9/dd4/a00776.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="1093,308,1219,335"/>
+<area shape="rect" id="node5" href="$d7/d47/a04685.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="1049,2006,1263,2032"/>
+<area shape="rect" id="node6" href="$d4/d78/a03677.html#a6e1e71ee127405447f7411777d80ebd6" title="reduce" alt="" coords="1123,1947,1189,1974"/>
+<area shape="rect" id="node8" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1409,2442,1581,2468"/>
+<area shape="rect" id="node15" href="$dc/d08/a09205.html#ac4593203c34f26c625bd51c7502c297e" title="Communicate::barrier" alt="" coords="1074,2980,1238,3007"/>
+<area shape="rect" id="node16" href="$d3/d7d/a04797.html#ab251404bffc001dee5f7c39b56c08a6b" title="ParallelCyclotronTracker\l::bgf_main_collision_test" alt="" coords="481,2165,665,2206"/>
+<area shape="rect" id="node17" href="$d3/d7d/a04797.html#a15da20b251e91cb0f98cc68ef596ca3a" title="ParallelCyclotronTracker\l::calcMeanP" alt="" coords="779,2005,958,2046"/>
+<area shape="rect" id="node18" href="$d3/d7d/a04797.html#a472a74c55259d687fd274dbeac60a53a" title="ParallelCyclotronTracker\l::computeSpaceChargeFields_m" alt="" coords="459,1837,688,1878"/>
+<area shape="rect" id="node22" href="$d3/d7d/a04797.html#a9a8843522ab0b1e76f7f19411df5b790" title="ParallelCyclotronTracker\l::getQuaternionTwoVectors" alt="" coords="771,2493,967,2534"/>
+<area shape="rect" id="node23" href="$d3/d7d/a04797.html#a83172750245917351809eb7cca06595c" title="ParallelCyclotronTracker\l::globalToLocal" alt="" coords="779,1670,958,1712"/>
+<area shape="rect" id="node33" href="$d3/d7d/a04797.html#af22bc369a0c1bf03b2a4fd94ff544134" title="ParallelCyclotronTracker\l::isMultiBunch" alt="" coords="779,2661,958,2702"/>
+<area shape="rect" id="node41" href="$d3/d7d/a04797.html#a99dd00a33159ed2c1e1e67f53df92b78" title="ParallelCyclotronTracker\l::gapCrossKick_m" alt="" coords="484,508,663,549"/>
+<area shape="rect" id="node42" href="$d7/d47/a04685.html#a61749a31a61cc801127ed1ea764d03ca" title="PartBunchBase::hasFieldSolver" alt="" coords="463,2766,684,2792"/>
+<area shape="rect" id="node43" href="$d3/d7d/a04797.html#a31acc2346a133e5a834afddb1332a0f6" title="ParallelCyclotronTracker\l::injectBunch" alt="" coords="484,2700,663,2741"/>
+<area shape="rect" id="node44" href="$d3/d7d/a04797.html#a4fdf924bb54c04c26a2ee6448fa01cae" title="Check if turn done. " alt="" coords="1067,108,1245,149"/>
+<area shape="rect" id="node45" href="$d3/d7d/a04797.html#ae413f18725a0b8a5bef87f40d2c32f46" title="ParallelCyclotronTracker\l::singleParticleDump" alt="" coords="779,2224,958,2265"/>
+<area shape="rect" id="node19" href="$d7/d47/a04685.html#ad1ee6b7f03a3b0613c452a83a5e94641" title="PartBunchBase::boundp" alt="" coords="781,1787,956,1814"/>
+<area shape="rect" id="node20" href="$d3/d7d/a04797.html#acf68ac4efd8953d5cda0641a510e6bd4" title="ParallelCyclotronTracker\l::calcMeanR" alt="" coords="779,1940,958,1981"/>
+<area shape="rect" id="node21" href="$d7/d47/a04685.html#a3fc75c2f6f10d9e768b668d9a6281781" title="PartBunchBase::getLastemittedBin" alt="" coords="745,1838,992,1864"/>
+<area shape="rect" id="node24" href="$d3/d7d/a04797.html#ad8da0627c388a54d35052ad1e91f6047" title="ParallelCyclotronTracker\l::localToGlobal" alt="" coords="779,1553,958,1594"/>
+<area shape="rect" id="node26" href="$dd/d51/a03842.html#a98c9dc238bd3ab19e8545cbd35595457" title="acos" alt="" coords="843,1451,895,1478"/>
+<area shape="rect" id="node27" href="$d4/d78/a03677.html#a3f4c593649c5ad948ee3e8566bffeda6" title="allreduce" alt="" coords="827,1502,910,1528"/>
+<area shape="rect" id="node28" href="$d7/d47/a04685.html#a644c68187c47b47efa54ab2cf9ef3a27" title="PartBunchBase::calcBeamParameters" alt="" coords="736,2391,1001,2418"/>
+<area shape="rect" id="node29" href="$d3/d7d/a04797.html#a4dc913467861193e1296857af2469078" title="ParallelCyclotronTracker\l::calculateAngle" alt="" coords="1067,385,1245,426"/>
+<area shape="rect" id="node30" href="$d7/d47/a04685.html#aca3eb11cbe8b8affeae9aef3ba398e75" title="PartBunchBase::destroy" alt="" coords="781,932,957,959"/>
+<area shape="rect" id="node31" href="$d7/d47/a04685.html#a51ee6119a807a463ea3ae3acf14618d0" title="PartBunchBase::getLocalNum\lPerBunch" alt="" coords="762,984,975,1025"/>
+<area shape="rect" id="node32" href="$d7/d47/a04685.html#a926547f8adc7ff91c3fe639f0fadccbf" title="PartBunchBase::getNumBunch" alt="" coords="759,2340,978,2367"/>
+<area shape="rect" id="node34" href="$d7/db0/a03962.html#acb24191df3a19b295603a460591ba95d" title="level3" alt="" coords="837,1050,900,1076"/>
+<area shape="rect" id="node35" href="$d7/d47/a04685.html#ab134c61db6f524d3c21741c4879501aa" title="PartBunchBase::performDestroy" alt="" coords="753,1100,984,1127"/>
+<area shape="rect" id="node36" href="$d7/d47/a04685.html#a29ca57fb0fea183092d65cc5cd7278a4" title="PartBunchBase::setLocalBin\lCount" alt="" coords="767,1152,970,1193"/>
+<area shape="rect" id="node37" href="$d7/d47/a04685.html#a4f7728801e0d3c663b2d2b49246c665d" title="PartBunchBase::setLocalNum\lPerBunch" alt="" coords="763,1217,975,1258"/>
+<area shape="rect" id="node38" href="$d7/d47/a04685.html#a85249558619c2a5f4cc71c706384e898" title="PartBunchBase::setTotalNum" alt="" coords="764,1283,973,1310"/>
+<area shape="rect" id="node39" href="$d7/d47/a04685.html#ac4c8a918a6235f9f03f76666f36b9a6e" title="PartBunchBase::setTotalNum\lPerBunch" alt="" coords="764,1334,973,1376"/>
+<area shape="rect" id="node40" href="$dd/d51/a03842.html#a06dc3d53220b680f16b2c655bcb86a40" title="sum" alt="" coords="843,1400,894,1427"/>
+</map>

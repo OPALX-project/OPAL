@@ -1,0 +1,9 @@
+<map id="Distribution" name="Distribution">
+<area shape="rect" id="node2" href="$d3/d70/a04633.html" title="The base class for all OPAL definitions. " alt="" coords="5,216,91,243"/>
+<area shape="rect" id="node3" href="$da/d54/a04673.html" title="The base class for all OPAL objects. " alt="" coords="16,81,80,108"/>
+<area shape="rect" id="node4" href="$d8/dc4/a05997.html" title="Abstract base class for reference counted objects. " alt="" coords="7,5,89,32"/>
+<area shape="rect" id="node5" href="$df/dcb/a06477.html" title="LaserProfile" alt="" coords="255,216,353,243"/>
+<area shape="rect" id="node6" href="$df/dee/a07461.html" title="Vektor\&lt; double, 3 \&gt;" alt="" coords="208,81,363,108"/>
+<area shape="rect" id="node7" href="$da/d15/a05309.html" title="PartBins" alt="" coords="377,216,452,243"/>
+<area shape="rect" id="node8" href="$dc/dd3/a05333.html" title="PartData" alt="" coords="503,216,582,243"/>
+</map>

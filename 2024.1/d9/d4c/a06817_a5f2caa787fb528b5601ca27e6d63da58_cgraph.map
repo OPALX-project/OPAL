@@ -1,0 +1,12 @@
+<map id="Sequence::getExit" name="Sequence::getExit">
+<area shape="rect" id="node2" href="$d9/d4c/a06817.html#a7a11f38b6f5a642a4587a2ba1e9b1d95" title="Return the embedded CLASSIC beam line. " alt="" coords="223,5,377,32"/>
+<area shape="rect" id="node4" href="$d9/d4c/a06817.html#a69aecc72fb71b30ad17d433832eedc29" title="Sequence::findNamedPosition" alt="" coords="192,56,408,83"/>
+<area shape="rect" id="node5" href="$df/df3/a04641.html#af085c2df46efbc538aacdf78a6195cf3" title="Return arc length from origin to exit (positive !). " alt="" coords="235,107,365,133"/>
+<area shape="rect" id="node7" href="$d9/d4c/a06817.html#a05b2a85a91a9b5c6212e0cd61aac45c5" title="Return sequence length. " alt="" coords="221,157,379,184"/>
+<area shape="rect" id="node3" href="$df/df3/a04641.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="456,5,615,32"/>
+<area shape="rect" id="node6" href="$df/df3/a04641.html#a58f835862b37de4aa36f82f51abd9ee5" title="Return element length. " alt="" coords="461,107,610,133"/>
+<area shape="rect" id="node8" href="$dd/d3c/a04466.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="464,157,607,184"/>
+<area shape="rect" id="node9" href="$d3/de5/a04617.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="663,107,853,133"/>
+<area shape="rect" id="node10" href="$d3/de5/a04617.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="688,157,828,184"/>
+<area shape="rect" id="node11" href="$d3/de5/a04617.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="679,208,837,235"/>
+</map>

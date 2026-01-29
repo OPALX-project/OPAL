@@ -1,0 +1,12 @@
+<map id="FlexibleCollimator::goOnline" name="FlexibleCollimator::goOnline">
+<area shape="rect" id="node2" href="$dd/d13/a05041.html#a1ca1832c394ef1da5c33ce0a30ccd710" title="FlexibleCollimator\l::print" alt="" coords="195,99,336,141"/>
+<area shape="rect" id="node3" href="$db/db9/a05705.html#a1577476b45d1b62aae507e3b387a343e" title="_Fieldmap::typeset_msg" alt="" coords="384,5,564,32"/>
+<area shape="rect" id="node4" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="449,132,499,159"/>
+<area shape="rect" id="node6" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1329,107,1463,133"/>
+<area shape="rect" id="node10" href="$d7/db0/a03962.html#acb24191df3a19b295603a460591ba95d" title="level3" alt="" coords="443,233,505,260"/>
+<area shape="rect" id="node5" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="619,132,791,159"/>
+<area shape="rect" id="node7" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="845,157,1032,184"/>
+<area shape="rect" id="node8" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1080,157,1277,184"/>
+<area shape="rect" id="node9" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1325,157,1467,184"/>
+<area shape="rect" id="node11" href="$dd/dad/a12105.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="612,259,797,285"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="AbsFileStream::readToken" name="AbsFileStream::readToken">
+<area shape="rect" id="node2" href="$df/dd2/a06001.html#aac2e455b1580091e0641bb1ffa394aa5" title="Read next input line. " alt="" coords="513,87,680,113"/>
+<area shape="rect" id="node3" href="$df/dd2/a06001.html#a3c9fe78efa7b69a411a68de12f73a09b" title="AbsFileStream::readNumber" alt="" coords="253,36,457,63"/>
+<area shape="rect" id="node4" href="$df/dd2/a06001.html#ab4667a05fc80bdb319c145e957fcfe97" title="AbsFileStream::readString" alt="" coords="259,87,450,113"/>
+<area shape="rect" id="node5" href="$df/dd2/a06001.html#ab8ddfff10a3b9ba6aea64b7ba5ba92b8" title="AbsFileStream::readWord" alt="" coords="262,137,447,164"/>
+<area shape="rect" id="node6" href="$df/dd2/a06001.html#ad68a31c735ea1b69af836c44a5132028" title="AbsFileStream::skipComments" alt="" coords="244,188,465,215"/>
+</map>

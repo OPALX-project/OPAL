@@ -1,0 +1,18 @@
+<map id="AttributeHandler" name="AttributeHandler">
+<area shape="rect" id="node3" href="$df/d9f/a04849.html" title="Parser for attribute of type logical. " alt="" coords="353,5,476,32"/>
+<area shape="rect" id="node4" href="$d6/ddb/a04853.html" title="Parser for an attribute of type logical array. " alt="" coords="335,56,494,83"/>
+<area shape="rect" id="node5" href="$de/d4c/a04857.html" title="Parser for an attribute of type place reference. " alt="" coords="350,107,479,133"/>
+<area shape="rect" id="node6" href="$d5/db5/a04861.html" title="Parser for an attribute of type string. " alt="" coords="314,157,515,184"/>
+<area shape="rect" id="node7" href="$dd/d2f/a04865.html" title="Parser for an attribute of type range definition. " alt="" coords="347,208,482,235"/>
+<area shape="rect" id="node8" href="$d7/dd0/a04869.html" title="Parser for an attribute of type real. " alt="" coords="353,259,476,285"/>
+<area shape="rect" id="node9" href="$d3/d24/a04873.html" title="Parser for an attribute of type real array. " alt="" coords="336,309,493,336"/>
+<area shape="rect" id="node10" href="$db/dab/a04877.html" title="Parser for an attribute of type attribute reference. " alt="" coords="335,360,494,387"/>
+<area shape="rect" id="node11" href="$d3/d92/a04881.html" title="Parser for an attribute of type string. " alt="" coords="349,411,481,437"/>
+<area shape="rect" id="node12" href="$d5/d10/a04885.html" title="Parser for an attribute of type string array. " alt="" coords="331,461,498,488"/>
+<area shape="rect" id="node13" href="$d8/d02/a04889.html" title="Parser for an attribute of type table row reference. " alt="" coords="337,512,492,539"/>
+<area shape="rect" id="node14" href="$d2/dc3/a04897.html" title="Parser for an attribute of type token list. " alt="" coords="337,563,492,589"/>
+<area shape="rect" id="node15" href="$db/d24/a04901.html" title="Parser for an attribute of type token list array. " alt="" coords="319,613,510,640"/>
+<area shape="rect" id="node16" href="$da/de1/a04905.html" title="Parser for an attribute of type string. " alt="" coords="313,664,516,691"/>
+<area shape="rect" id="node17" href="$d3/dc4/a04909.html" title="Parser for an attribute of type string array. " alt="" coords="313,715,516,757"/>
+<area shape="rect" id="node2" href="$d8/dc4/a05997.html" title="Abstract base class for reference counted objects. " alt="" coords="5,360,87,387"/>
+</map>

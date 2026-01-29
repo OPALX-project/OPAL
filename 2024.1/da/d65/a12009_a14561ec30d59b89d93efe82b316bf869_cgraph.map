@@ -1,0 +1,12 @@
+<map id="DiscField::write_layout" name="DiscField::write_layout">
+<area shape="rect" id="node2" href="$d2/d36/a12117.html#a8bdcd8abcec1d747ecf82579b42c853c" title="IpplInfo::abort" alt="" coords="223,56,336,83"/>
+<area shape="rect" id="node3" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="767,81,817,108"/>
+<area shape="rect" id="node9" href="$d2/d36/a12117.html#a733d331c7749dce3f7c5874832125461" title="IpplInfo::IpplInfo" alt="" coords="405,31,533,57"/>
+<area shape="rect" id="node10" href="$d2/d36/a12117.html#a0fcbec64e72d74c17d5e247953831fd5" title="IpplInfo::printStatistics" alt="" coords="384,81,553,108"/>
+<area shape="rect" id="node4" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="865,56,1037,83"/>
+<area shape="rect" id="node5" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1569,5,1703,32"/>
+<area shape="rect" id="node6" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1085,56,1272,83"/>
+<area shape="rect" id="node7" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1320,56,1517,83"/>
+<area shape="rect" id="node8" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1565,56,1707,83"/>
+<area shape="rect" id="node11" href="$dd/d08/a12133.html#a97e4d23a6f6e92736d7dcea9fc2f6679" title="IpplStats::print" alt="" coords="601,81,719,108"/>
+</map>

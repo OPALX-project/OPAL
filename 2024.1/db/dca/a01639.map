@@ -1,0 +1,28 @@
+<map id="src/Classic/Parser/Parser.h" name="src/Classic/Parser/Parser.h">
+<area shape="rect" id="node2" href="$de/d14/a01640.html" title="src/Classic/Parser\l/SimpleStatement.cpp" alt="" coords="424,95,591,136"/>
+<area shape="rect" id="node3" href="$dd/d75/a02639.html" title="src/OpalParser/OpalParser.h" alt="" coords="615,102,815,129"/>
+<area shape="rect" id="node25" href="$d2/dca/a02606.html" title="src/OpalParser/CompoundStatement.cpp" alt="" coords="840,102,1124,129"/>
+<area shape="rect" id="node26" href="$d6/dfc/a02612.html" title="src/OpalParser/IfStatement.cpp" alt="" coords="1148,102,1371,129"/>
+<area shape="rect" id="node27" href="$d5/d96/a02642.html" title="src/OpalParser/WhileStatement.cpp" alt="" coords="1395,102,1646,129"/>
+<area shape="rect" id="node4" href="$d0/d89/a00071.html" title="src/AbstractObjects\l/OpalData.cpp" alt="" coords="5,184,153,225"/>
+<area shape="rect" id="node5" href="$da/de0/a00317.html" title="src/BasicActions/Call.cpp" alt="" coords="178,191,362,218"/>
+<area shape="rect" id="node6" href="$d0/df5/a02576.html" title="src/Lines/SequenceParser.cpp" alt="" coords="124,281,336,307"/>
+<area shape="rect" id="node7" href="$d4/d70/a02579.html" title="src/Lines/SequenceParser.h" alt="" coords="437,191,634,218"/>
+<area shape="rect" id="node9" href="$d1/d03/a02582.html" title="src/Lines/SequenceTemplate.cpp" alt="" coords="559,281,792,307"/>
+<area shape="rect" id="node10" href="$d4/d61/a02588.html" title="src/Main.cpp" alt="" coords="709,191,812,218"/>
+<area shape="rect" id="node12" href="$d1/de9/a02591.html" title="src/opal.cpp" alt="" coords="836,191,936,218"/>
+<area shape="rect" id="node13" href="$d8/d09/a02624.html" title="src/OpalParser/MacroCmd.cpp" alt="" coords="960,191,1175,218"/>
+<area shape="rect" id="node14" href="$dd/d32/a02636.html" title="src/OpalParser/OpalParser.cpp" alt="" coords="1199,191,1413,218"/>
+<area shape="rect" id="node15" href="$dd/d07/a03233.html" title="src/Track/TrackParser.h" alt="" coords="1438,191,1606,218"/>
+<area shape="rect" id="node8" href="$db/d44/a02564.html" title="src/Lines/Sequence.cpp" alt="" coords="361,281,534,307"/>
+<area shape="rect" id="node11" href="$d0/dbd/a02771.html" title="src/PyOpal/PyObjects\l/PyParser.cpp" alt="" coords="817,273,977,315"/>
+<area shape="rect" id="node16" href="$d9/d65/a03215.html" title="src/Track/Track.h" alt="" coords="1009,281,1139,307"/>
+<area shape="rect" id="node21" href="$d1/d48/a03218.html" title="src/Track/TrackCmd.cpp" alt="" coords="1408,363,1583,389"/>
+<area shape="rect" id="node22" href="$d7/de1/a03224.html" title="src/Track/TrackEnd.cpp" alt="" coords="1607,363,1775,389"/>
+<area shape="rect" id="node24" href="$df/dc9/a03230.html" title="src/Track/TrackParser.cpp" alt="" coords="1584,281,1767,307"/>
+<area shape="rect" id="node17" href="$d8/d01/a02675.html" title="src/Optimize/OptimizeCmd.cpp" alt="" coords="1159,363,1383,389"/>
+<area shape="rect" id="node18" href="$d1/de5/a02822.html" title="src/Sample/SampleCmd.cpp" alt="" coords="312,363,516,389"/>
+<area shape="rect" id="node19" href="$de/d27/a03002.html" title="src/Solvers/MGPoissonSolver.cpp" alt="" coords="541,363,775,389"/>
+<area shape="rect" id="node20" href="$df/d1e/a03212.html" title="src/Track/Track.cpp" alt="" coords="799,363,943,389"/>
+<area shape="rect" id="node23" href="$d5/de9/a03236.html" title="src/Track/TrackRun.cpp" alt="" coords="967,363,1135,389"/>
+</map>

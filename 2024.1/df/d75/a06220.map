@@ -1,0 +1,11 @@
+<map id="ArithmeticError" name="ArithmeticError">
+<area shape="rect" id="node3" href="$d0/d93/a06237.html" title="Range error. " alt="" coords="373,5,483,32"/>
+<area shape="rect" id="node4" href="$d5/d41/a06241.html" title="Convergence error exception. " alt="" coords="359,56,497,83"/>
+<area shape="rect" id="node5" href="$d5/de1/a06245.html" title="Zero divide error. " alt="" coords="381,107,475,133"/>
+<area shape="rect" id="node6" href="$d3/d36/a06249.html" title="Domain error exception. " alt="" coords="376,157,480,184"/>
+<area shape="rect" id="node7" href="$d0/d63/a06253.html" title="Eigenvalue error exception. " alt="" coords="365,208,491,235"/>
+<area shape="rect" id="node8" href="$de/d0a/a06421.html" title="Overflow exception. " alt="" coords="373,259,483,285"/>
+<area shape="rect" id="node9" href="$d5/da2/a06441.html" title="Singular matrix exception. " alt="" coords="355,309,501,336"/>
+<area shape="rect" id="node10" href="$d6/d6e/a06445.html" title="Size error exception. " alt="" coords="388,360,468,387"/>
+<area shape="rect" id="node2" href="$d6/d5f/a06225.html" title="The abstract base class for all exceptions in CLASSIC. " alt="" coords="5,183,137,209"/>
+</map>

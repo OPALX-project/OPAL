@@ -1,0 +1,51 @@
+<map id="Bend2D::findBendStrength" name="Bend2D::findBendStrength">
+<area shape="rect" id="node2" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1181,855,1226,882"/>
+<area shape="rect" id="node4" href="$df/d76/a04973.html#affa905a4ffbc1b28314faf2ceb091979" title="Bend2D::calculateBendAngle" alt="" coords="278,1099,489,1126"/>
+<area shape="rect" id="node47" href="$d5/d73/a03836.html#af6518b151e7b0d52fa4ec791b891f53b" title="copysign" alt="" coords="343,1226,423,1253"/>
+<area shape="rect" id="node48" href="$df/d76/a04973.html#acc98718c55cb5862cef2eebc05e04210" title="Bend2D::estimateFieldAdjustmentStep" alt="" coords="247,754,520,781"/>
+<area shape="rect" id="node3" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2279,622,2464,649"/>
+<area shape="rect" id="node5" href="$d5/d73/a03836.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="1174,965,1233,991"/>
+<area shape="rect" id="node6" href="$d7/d01/a04977.html#a46f8eab5e301c6e6422a6f48787b227a" title="Calculate beta*gamma from design energy. " alt="" coords="849,83,1052,110"/>
+<area shape="rect" id="node22" href="$df/d76/a04973.html#a5e35ad2e405c6d03375cd9af168d47d7" title="Bend2D::calculateMapField" alt="" coords="579,561,776,587"/>
+<area shape="rect" id="node31" href="$d9/dd4/a00776.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="1140,1125,1267,1151"/>
+<area shape="rect" id="node41" href="$d7/d47/a04685.html#a4951c53df6841fd275a56f41fc76bfdf" title="PartBunchBase::getdT" alt="" coords="595,1125,759,1151"/>
+<area shape="rect" id="node42" href="$d7/df3/a07129.html#a063ebfefbbf275703add583e42f5bd5f" title="BorisPusher::kick" alt="" coords="610,1226,745,1253"/>
+<area shape="rect" id="node45" href="$d7/df3/a07129.html#aa0aa7e271fd7444217c180f50c90b7b4" title="BorisPusher::push" alt="" coords="608,1074,747,1101"/>
+<area shape="rect" id="node7" href="$d7/d01/a04977.html#a044e1317118a71e0aac342b79e14c2bc" title="Calculate gamma from design energy. " alt="" coords="1117,58,1290,85"/>
+<area shape="rect" id="node9" href="$d3/d4f/a00761.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1396,667,1443,694"/>
+<area shape="rect" id="node20" href="$d3/d4f/a00761.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="1179,193,1228,219"/>
+<area shape="rect" id="node8" href="$d7/d47/a04685.html#af51331c43ea82142dd6d237e6e3e5bfd" title="PartBunchBase::getM" alt="" coords="1340,21,1499,47"/>
+<area shape="rect" id="node10" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1857,521,2001,547"/>
+<area shape="rect" id="node13" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1547,530,1639,557"/>
+<area shape="rect" id="node11" href="$df/dfa/a03533.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="2049,571,2096,598"/>
+<area shape="rect" id="node12" href="$df/dfa/a03533.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="2144,571,2231,598"/>
+<area shape="rect" id="node14" href="$d7/dc3/a05241.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1687,505,1809,531"/>
+<area shape="rect" id="node15" href="$d7/dc3/a05241.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1695,631,1801,658"/>
+<area shape="rect" id="node16" href="$d7/dc3/a05241.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="1862,673,1997,699"/>
+<area shape="rect" id="node17" href="$d7/dc3/a05241.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="1861,723,1998,750"/>
+<area shape="rect" id="node18" href="$d4/d21/a05245.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="1870,774,1989,801"/>
+<area shape="rect" id="node19" href="$d7/dc3/a05241.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="1879,571,1980,598"/>
+<area shape="rect" id="node21" href="$d7/dc3/a05241.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1369,378,1470,405"/>
+<area shape="rect" id="node23" href="$df/d76/a04973.html#a59e92933b027283824c377c58083cde3" title="Bend2D::calcCentralField" alt="" coords="859,470,1043,497"/>
+<area shape="rect" id="node24" href="$df/d76/a04973.html#a7ce1d5b46fe8070e61c23d2c2cbeb653" title="Bend2D::calcEntranceFringe\lField" alt="" coords="849,185,1052,227"/>
+<area shape="rect" id="node27" href="$da/dd7/a05285.html#acacde969cf75ea57d36f24896874c6a0" title="CoordinateSystemTrafo\l::transformTo" alt="" coords="1116,412,1291,453"/>
+<area shape="rect" id="node28" href="$df/d76/a04973.html#a10809c90ac525244024d921fd3c34e4e" title="Bend2D::calcExitFringeField" alt="" coords="850,251,1051,278"/>
+<area shape="rect" id="node29" href="$df/d76/a04973.html#a4fc91d3e8e73ba0162202b7e8a12d048" title="Bend2D::getBeginToEnd\l_local" alt="" coords="1115,645,1292,687"/>
+<area shape="rect" id="node30" href="$df/d76/a04973.html#a1e7c65308e5e5e92cf0b94d6a130bf18" title="Bend2D::inMagnetCentralRegion" alt="" coords="835,805,1067,831"/>
+<area shape="rect" id="node35" href="$df/d76/a04973.html#aadfa078f1ee41baaefcc3f37486ff3c6" title="Bend2D::inMagnetEntrance\lRegion" alt="" coords="851,907,1050,948"/>
+<area shape="rect" id="node36" href="$df/d76/a04973.html#a3b6f64c102d887a3555c9989fc6bfd73" title="Bend2D::inMagnetExitRegion" alt="" coords="845,653,1056,679"/>
+<area shape="rect" id="node37" href="$df/d76/a04973.html#afa7c5e751db70d67abb9912953cb02e9" title="Bend2D::isPositionInEntrance\lField" alt="" coords="844,587,1057,628"/>
+<area shape="rect" id="node38" href="$df/d76/a04973.html#aa9a295a6dc4b0f6203222c5d8a6c5222" title="Bend2D::isPositionInExit\lField" alt="" coords="860,521,1041,563"/>
+<area shape="rect" id="node39" href="$df/d76/a04973.html#aab33f995e4c78226fb0b12f2ac242efb" title="Bend2D::transformToEntrance\lRegion" alt="" coords="843,353,1059,395"/>
+<area shape="rect" id="node40" href="$df/d76/a04973.html#a0becd8f3b9d71f3e295f73d983bf0d59" title="Bend2D::transformToExitRegion" alt="" coords="837,419,1065,446"/>
+<area shape="rect" id="node25" href="$da/dd7/a05285.html#a9e32c2abaaa99cc1366d5b712d0baf0f" title="CoordinateSystemTrafo\l::rotateFrom" alt="" coords="1116,244,1291,285"/>
+<area shape="rect" id="node26" href="$d4/d81/a00110.html#a51353d2921885b3821cd9089170845e8" title="prod_boost_vector" alt="" coords="1348,429,1491,455"/>
+<area shape="rect" id="node34" href="$d5/d73/a03836.html#aae355e465ddaedd0a66a3187cd09a5a8" title="fmod" alt="" coords="1175,805,1231,831"/>
+<area shape="rect" id="node32" href="$d9/d28/a05217.html#a55cb732c23dd6b419f636aff0874ab82" title="Get beginning of data. " alt="" coords="1360,1150,1479,1177"/>
+<area shape="rect" id="node33" href="$d9/d28/a05217.html#a941ffba563af0a4e17aae45292b1659e" title="Get end of data. " alt="" coords="1366,1099,1473,1126"/>
+<area shape="rect" id="node43" href="$dc/dd3/a05333.html#a7c7b836d3ac05230f809f8b9f52e4c86" title="The constant mass per particle. " alt="" coords="891,1226,1010,1253"/>
+<area shape="rect" id="node44" href="$dc/dd3/a05333.html#a1d4498ce4cfa5644bb67b2686e7df9ad" title="The constant charge per particle. " alt="" coords="892,1277,1009,1303"/>
+<area shape="rect" id="node46" href="$d0/d61/a01130.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="929,1125,972,1151"/>
+<area shape="rect" id="node49" href="$d7/d01/a04977.html#aca45c9b2f0bf8ead0fe00a79ab1ecdb7" title="Calculate field amplitude from design energy and radius. " alt="" coords="568,58,787,85"/>
+<area shape="rect" id="node50" href="$d7/d47/a04685.html#a16508077c3f6403314e7923dc74e06f9" title="Access to reference data. " alt="" coords="871,33,1030,59"/>
+</map>

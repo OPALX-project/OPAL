@@ -1,0 +1,51 @@
+<map id="ParallelTTracker::computeSpaceChargeFields" name="ParallelTTracker::computeSpaceChargeFields">
+<area shape="rect" id="node2" href="$d7/d47/a04685.html#ad1ee6b7f03a3b0613c452a83a5e94641" title="PartBunchBase::boundp" alt="" coords="289,5,464,32"/>
+<area shape="rect" id="node3" href="$d7/d47/a04685.html#a644c68187c47b47efa54ab2cf9ef3a27" title="PartBunchBase::calcBeamParameters" alt="" coords="244,56,509,83"/>
+<area shape="rect" id="node4" href="$d7/d47/a04685.html#a9deb0a65a66a3a9039d729d66859558a" title="Compute the gammas of all bins. " alt="" coords="271,107,483,133"/>
+<area shape="rect" id="node5" href="$d7/d47/a04685.html#a19c045a1006df08db1b6e9186f82df75" title="PartBunchBase::computeSelf\lFields" alt="" coords="272,158,481,199"/>
+<area shape="rect" id="node6" href="$d4/d27/a05341.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="981,189,1148,216"/>
+<area shape="rect" id="node9" href="$d0/d6d/a04809.html#a8cda30a383590b166362ca95790ad799" title="ParallelTTracker::doBinary\lRepartition" alt="" coords="969,305,1160,346"/>
+<area shape="rect" id="node28" href="$d7/d47/a04685.html#abb205db2732109c056b0693e91913912" title="PartBunchBase::get\l_centroid" alt="" coords="303,443,451,485"/>
+<area shape="rect" id="node29" href="$d7/d47/a04685.html#ac3bd99adc985bee33077c21f9d744f15" title="PartBunchBase::get\l_pmean" alt="" coords="303,509,451,550"/>
+<area shape="rect" id="node30" href="$d7/d47/a04685.html#a62ee44394dc5a9dca5c44e2665741543" title="PartBunchBase::getLastEmitted\lEnergyBin" alt="" coords="263,574,490,615"/>
+<area shape="rect" id="node31" href="$d7/d47/a04685.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="270,640,483,667"/>
+<area shape="rect" id="node32" href="$d7/d47/a04685.html#ab4f987030a8774c594fc24c33a5accc9" title="PartBunchBase::getNumber\lOfEnergyBins" alt="" coords="277,691,477,733"/>
+<area shape="rect" id="node33" href="$d5/d69/a00878.html#a2d2b2270eefa971fcff95d54dcc92cf5" title="getQuaternion" alt="" coords="319,392,434,419"/>
+<area shape="rect" id="node44" href="$da/dd7/a05285.html#ae5f60c7777720c99b382b87952bd9e8a" title="CoordinateSystemTrafo\l::inverted" alt="" coords="289,275,464,317"/>
+<area shape="rect" id="node47" href="$d7/d47/a04685.html#a083c7f930eb0d8888cf1d4b9663e1829" title="PartBunchBase::resetInterpolation\lCache" alt="" coords="255,757,498,798"/>
+<area shape="rect" id="node48" href="$d7/d47/a04685.html#aaed94ffd2ba695bf55c197a56ae45545" title="Set the charge of one bin to the value of q and all other to zero. " alt="" coords="269,823,484,849"/>
+<area shape="rect" id="node49" href="$d7/d47/a04685.html#a8fc8a2726ce302ccf893c2bf638d6572" title="PartBunchBase::setGlobal\lMeanR" alt="" coords="282,874,471,915"/>
+<area shape="rect" id="node50" href="$d7/d47/a04685.html#a35461cc43457af38a43f3f098b4c3249" title="PartBunchBase::weHaveEnergyBins" alt="" coords="250,940,503,967"/>
+<area shape="rect" id="node7" href="$d4/d27/a05341.html#a237c3a9dfefea10e7ec6b5f373546427" title="Quaternion::real" alt="" coords="1255,21,1382,48"/>
+<area shape="rect" id="node8" href="$d4/d27/a05341.html#a8cb33fa212258498b937d7e1a4684ce2" title="Quaternion::imag" alt="" coords="1251,72,1386,99"/>
+<area shape="rect" id="node10" href="$df/dfa/a03533.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="1293,443,1344,469"/>
+<area shape="rect" id="node16" href="$d7/d47/a04685.html#a61749a31a61cc801127ed1ea764d03ca" title="PartBunchBase::hasFieldSolver" alt="" coords="1208,392,1429,419"/>
+<area shape="rect" id="node17" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1293,123,1344,149"/>
+<area shape="rect" id="node21" href="$da/d9b/a12149.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="1231,173,1406,200"/>
+<area shape="rect" id="node23" href="$d7/d47/a04685.html#a9703f915aa5424bbf6e0ffeaa026efaa" title="PartBunchBase::do_binary\lRepart" alt="" coords="1223,275,1414,317"/>
+<area shape="rect" id="node24" href="$dc/d08/a09205.html#ac4593203c34f26c625bd51c7502c297e" title="Communicate::barrier" alt="" coords="1237,224,1401,251"/>
+<area shape="rect" id="node26" href="$da/d9b/a12149.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="1233,341,1405,368"/>
+<area shape="rect" id="node11" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1711,544,1897,571"/>
+<area shape="rect" id="node12" href="$df/dfa/a03533.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1527,443,1613,469"/>
+<area shape="rect" id="node13" href="$d2/d67/a03455.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="1765,443,1843,469"/>
+<area shape="rect" id="node14" href="$dc/d14/a03479.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="1945,443,2043,469"/>
+<area shape="rect" id="node15" href="$d4/d78/a03677.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="1741,392,1867,419"/>
+<area shape="rect" id="node18" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1484,123,1656,149"/>
+<area shape="rect" id="node19" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1711,97,1897,124"/>
+<area shape="rect" id="node20" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1737,148,1871,175"/>
+<area shape="rect" id="node22" href="$d2/db2/a12145.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="1499,173,1641,200"/>
+<area shape="rect" id="node25" href="$dc/d08/a09205.html#ac61e30b57fefb3684575e3f2ad5bc1a9" title="Communicate::mybarrier" alt="" coords="1477,224,1663,251"/>
+<area shape="rect" id="node27" href="$d2/db2/a12145.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="1499,341,1641,368"/>
+<area shape="rect" id="node34" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="828,595,873,621"/>
+<area shape="rect" id="node35" href="$d3/d4f/a00761.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="623,443,667,469"/>
+<area shape="rect" id="node38" href="$d3/d4f/a00761.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="830,544,871,571"/>
+<area shape="rect" id="node41" href="$d0/d61/a01130.html#a01046d3dab4c1e9ad6b2b6dee8cc8310" title="Vector cross product. " alt="" coords="617,595,673,621"/>
+<area shape="rect" id="node42" href="$d0/d61/a01130.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="623,645,666,672"/>
+<area shape="rect" id="node43" href="$d3/d4f/a00761.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="827,392,874,419"/>
+<area shape="rect" id="node36" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="993,468,1137,495"/>
+<area shape="rect" id="node39" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1019,532,1111,559"/>
+<area shape="rect" id="node37" href="$df/dfa/a03533.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1295,493,1342,520"/>
+<area shape="rect" id="node40" href="$d7/dc3/a05241.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1257,544,1380,571"/>
+<area shape="rect" id="node45" href="$da/dd7/a05285.html#afdcb12eb2455fcba3d0503b6be30df24" title="CoordinateSystemTrafo\l::invert" alt="" coords="557,275,732,317"/>
+<area shape="rect" id="node46" href="$d4/d27/a05341.html#a16e61b715e53d7394996bb56c356916e" title="Quaternion::rotate" alt="" coords="780,291,921,317"/>
+</map>

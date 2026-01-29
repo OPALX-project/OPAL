@@ -1,0 +1,6 @@
+<map id="Communicate::broadcast_all" name="Communicate::broadcast_all">
+<area shape="rect" id="node2" href="$dc/d08/a09205.html#add083ca7fa9466d949187d0e0fe31a2b" title="Communicate::add_msg" alt="" coords="263,5,443,32"/>
+<area shape="rect" id="node3" href="$dc/d08/a09205.html#aca765179d2843e977a7a78098c8cbde8" title="Communicate::getNodes" alt="" coords="261,56,444,83"/>
+<area shape="rect" id="node4" href="$dc/d08/a09205.html#aedbfc462a5f9babc3fc07f875847547f" title="Communicate::myNode" alt="" coords="265,107,441,133"/>
+<area shape="rect" id="node5" href="$dc/d08/a09205.html#a0980eed71a6f2ac1132190e52648c67e" title="Communicate::mysend" alt="" coords="266,157,439,184"/>
+</map>

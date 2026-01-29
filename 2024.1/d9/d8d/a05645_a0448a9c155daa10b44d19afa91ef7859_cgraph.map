@@ -1,0 +1,8 @@
+<map id="BMultipoleField::Bfield" name="BMultipoleField::Bfield">
+<area shape="rect" id="node2" href="$d9/d8d/a05645.html#a959c59faaca2d8ac95ebb89b2b4429de" title="Get field. " alt="" coords="220,81,387,108"/>
+<area shape="rect" id="node3" href="$d0/d2a/a05669.html#a90971c532ee932cf50965529ec027d31" title="Return coordinate. " alt="" coords="435,5,545,32"/>
+<area shape="rect" id="node4" href="$d0/d2a/a05669.html#af7de04ddd8a9a546096514fd4e6f47dc" title="Return coordinate. " alt="" coords="435,56,545,83"/>
+<area shape="rect" id="node5" href="$da/ded/a01547.html#a91ceef5bc22b78d0bf05396aa191e401" title="Take imaginary part of a complex generator. " alt="" coords="463,107,517,133"/>
+<area shape="rect" id="node7" href="$da/ded/a01547.html#ad2c903016dffc98273f94db999545737" title="Take real part of a complex generator. " alt="" coords="467,157,513,184"/>
+<area shape="rect" id="node6" href="$dd/da9/a05929.html#ad04c5277115352a09af43bda20e483a0" title="Get pointer past end of generator. " alt="" coords="593,132,739,159"/>
+</map>

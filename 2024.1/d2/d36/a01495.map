@@ -1,0 +1,10 @@
+<map id="src/Classic/Fields/SectorMagneticFieldMap.h" name="src/Classic/Fields/SectorMagneticFieldMap.h">
+<area shape="rect" id="node2" href="$dc/df2/a00656.html" title="src/Classic/AbsBeamline\l/SBend3D.h" alt="" coords="467,95,649,136"/>
+<area shape="rect" id="node9" href="$de/d3c/a01490.html" title="src/Classic/Fields\l/SectorMagneticFieldMap.cpp" alt="" coords="673,95,883,136"/>
+<area shape="rect" id="node3" href="$d6/d7d/a00161.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="5,184,236,225"/>
+<area shape="rect" id="node4" href="$de/ddd/a00653.html" title="src/Classic/AbsBeamline\l/SBend3D.cpp" alt="" coords="261,184,442,225"/>
+<area shape="rect" id="node5" href="$db/d77/a00683.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="467,184,649,225"/>
+<area shape="rect" id="node7" href="$d8/db7/a00812.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="673,184,840,225"/>
+<area shape="rect" id="node8" href="$d7/d54/a02342.html" title="src/Elements/OpalSBend3D.cpp" alt="" coords="865,191,1091,218"/>
+<area shape="rect" id="node6" href="$dd/d77/a02096.html" title="src/Distribution/Distribution.cpp" alt="" coords="444,273,672,300"/>
+</map>

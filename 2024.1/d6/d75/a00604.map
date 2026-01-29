@@ -1,0 +1,19 @@
+<map id="src/Classic/AbsBeamline/Offset.h" name="src/Classic/AbsBeamline/Offset.h">
+<area shape="rect" id="node2" href="$d6/d7d/a00161.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="5,95,236,136"/>
+<area shape="rect" id="node3" href="$d5/d8a/a00599.html" title="src/Classic/AbsBeamline\l/Offset.cpp" alt="" coords="261,95,442,136"/>
+<area shape="rect" id="node4" href="$db/d77/a00683.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="467,95,649,136"/>
+<area shape="rect" id="node6" href="$d8/db7/a00812.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="673,95,840,136"/>
+<area shape="rect" id="node7" href="$d5/d8b/a02060.html" title="src/Classic/Utilities\l/RingSection.cpp" alt="" coords="865,95,1011,136"/>
+<area shape="rect" id="node8" href="$dc/db6/a02258.html" title="src/Elements/OpalOffset\l/OpalGlobalCartesianOffset.cpp" alt="" coords="713,184,939,225"/>
+<area shape="rect" id="node9" href="$d7/d24/a02261.html" title="src/Elements/OpalOffset\l/OpalGlobalCartesianOffset.h" alt="" coords="1086,95,1297,136"/>
+<area shape="rect" id="node12" href="$d7/dc8/a02264.html" title="src/Elements/OpalOffset\l/OpalGlobalCylindricalOffset.cpp" alt="" coords="1200,184,1433,225"/>
+<area shape="rect" id="node13" href="$d5/d95/a02267.html" title="src/Elements/OpalOffset\l/OpalGlobalCylindricalOffset.h" alt="" coords="1371,95,1590,136"/>
+<area shape="rect" id="node14" href="$d4/de7/a02270.html" title="src/Elements/OpalOffset\l/OpalLocalCartesianOffset.cpp" alt="" coords="1941,184,2159,225"/>
+<area shape="rect" id="node15" href="$d7/d6e/a02273.html" title="src/Elements/OpalOffset\l/OpalLocalCartesianOffset.h" alt="" coords="1614,95,1817,136"/>
+<area shape="rect" id="node17" href="$d2/d81/a02276.html" title="src/Elements/OpalOffset\l/OpalLocalCylindricalOffset.cpp" alt="" coords="2184,184,2409,225"/>
+<area shape="rect" id="node18" href="$d2/dd2/a02279.html" title="src/Elements/OpalOffset\l/OpalLocalCylindricalOffset.h" alt="" coords="1891,95,2102,136"/>
+<area shape="rect" id="node5" href="$dd/d77/a02096.html" title="src/Distribution/Distribution.cpp" alt="" coords="444,191,672,218"/>
+<area shape="rect" id="node10" href="$d1/d88/a02600.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="1457,191,1688,218"/>
+<area shape="rect" id="node11" href="$d8/dd0/a02711.html" title="src/PyOpal/PyElements\l/PyGlobalCartesianOffset.cpp" alt="" coords="964,184,1176,225"/>
+<area shape="rect" id="node16" href="$d1/d3c/a02714.html" title="src/PyOpal/PyElements\l/PyLocalCartesianOffset.cpp" alt="" coords="1712,184,1916,225"/>
+</map>

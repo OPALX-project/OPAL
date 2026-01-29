@@ -1,0 +1,13 @@
+<map id="src/Expressions/ABinary.h" name="src/Expressions/ABinary.h">
+<area shape="rect" id="node2" href="$d3/d27/a02453.html" title="Expressions/AList.h" alt="" coords="382,80,530,107"/>
+<area shape="rect" id="node13" href="$d4/db0/a02540.html" title="Expressions/TFunction2.h" alt="" coords="691,80,877,107"/>
+<area shape="rect" id="node14" href="$db/d4b/a01883.html" title="Utilities/DomainError.h" alt="" coords="691,155,861,181"/>
+<area shape="rect" id="node17" href="$d5/d08/a03254.html" title="Utilities/OpalException.h" alt="" coords="1087,155,1270,181"/>
+<area shape="rect" id="node18" href="$d4/d9b/a02039.html" title="Utilities/OverflowError.h" alt="" coords="886,155,1063,181"/>
+<area shape="rect" id="node3" href="$da/d5d/a13437.html" title="AbstractObjects/Expressions.h" alt="" coords="347,229,565,256"/>
+<area shape="rect" id="node10" href="$dd/dd4/a02498.html" title="Expressions/SConstant.h" alt="" coords="194,155,377,181"/>
+<area shape="rect" id="node4" href="$db/dad/a01616.html" title="MemoryManagement/OwnPtr.h" alt="" coords="361,304,583,331"/>
+<area shape="rect" id="node5" href="$d4/d41/a01661.html" title="Parser/Token.h" alt="" coords="169,304,285,331"/>
+<area shape="rect" id="node15" href="$da/dcd/a01835.html" title="Utilities/ArithmeticError.h" alt="" coords="827,229,1013,256"/>
+<area shape="rect" id="node16" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="849,304,1047,331"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="OpalBend" name="OpalBend">
+<area shape="rect" id="node6" href="$d5/d07/a06617.html" title="OpalRBend" alt="" coords="5,379,100,405"/>
+<area shape="rect" id="node7" href="$dc/db0/a06633.html" title="OpalSBend" alt="" coords="125,379,218,405"/>
+<area shape="rect" id="node2" href="$de/dd7/a06529.html" title="OpalElement" alt="" coords="58,229,165,256"/>
+<area shape="rect" id="node3" href="$df/df3/a04641.html" title="Element" alt="" coords="73,155,149,181"/>
+<area shape="rect" id="node4" href="$da/d54/a04673.html" title="The base class for all OPAL objects. " alt="" coords="79,80,143,107"/>
+<area shape="rect" id="node5" href="$d8/dc4/a05997.html" title="Abstract base class for reference counted objects. " alt="" coords="71,5,152,32"/>
+</map>

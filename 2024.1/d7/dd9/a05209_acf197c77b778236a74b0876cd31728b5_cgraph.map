@@ -1,0 +1,10 @@
+<map id="VariableRFCavityFringeField::accept" name="VariableRFCavityFringeField::accept">
+<area shape="rect" id="node2" href="$d7/dd9/a05209.html#af98a16e858c404e8fb296492e456399e" title="VariableRFCavityFringeField\l::initialise" alt="" coords="262,104,465,145"/>
+<area shape="rect" id="node8" href="$d7/dd9/a05209.html#ab701ae90099b02a9f2b1ca465cc8ea8b" title="VariableRFCavityFringeField\l::initialiseCoefficients" alt="" coords="262,169,465,211"/>
+<area shape="rect" id="node9" href="$d5/db2/a04969.html#ade5e0c54dba31ff52a669c55e3cac92e" title="Apply the algorithm to a variable RF cavity. " alt="" coords="256,235,471,276"/>
+<area shape="rect" id="node3" href="$d6/d88/a05205.html#a1c71d75c366fe56fe35d7428cc034740" title="VariableRFCavity::initialise" alt="" coords="519,111,715,138"/>
+<area shape="rect" id="node4" href="$de/d7d/a05273.html#a24e23ba4f7cb7106c38eda2c32f78f41" title="AbstractTimeDependence\l::getTimeDependence" alt="" coords="781,5,971,47"/>
+<area shape="rect" id="node5" href="$d6/d88/a05205.html#afdd63737ad7e0345610dc8911cdb15cf" title="VariableRFCavity::setAmplitude\lModel" alt="" coords="763,71,989,112"/>
+<area shape="rect" id="node6" href="$d6/d88/a05205.html#aa0babc3f8e06d306fc56d73eeaf519f1" title="VariableRFCavity::setFrequency\lModel" alt="" coords="763,136,989,177"/>
+<area shape="rect" id="node7" href="$d6/d88/a05205.html#a827954dda9cf79989a3aed6eb6e5b451" title="VariableRFCavity::setPhase\lModel" alt="" coords="777,201,975,243"/>
+</map>

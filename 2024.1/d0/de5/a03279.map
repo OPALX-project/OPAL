@@ -1,0 +1,10 @@
+<map id="src/ValueDefinitions/BoolConstant.h" name="src/ValueDefinitions/BoolConstant.h">
+<area shape="rect" id="node2" href="$d0/dc2/a00104.html" title="AbstractObjects/ValueDefinition.h" alt="" coords="725,95,965,121"/>
+<area shape="rect" id="node3" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="753,169,936,196"/>
+<area shape="rect" id="node4" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="427,244,625,271"/>
+<area shape="rect" id="node6" href="$d1/d3a/a01622.html" title="MemoryManagement/RCObject.h" alt="" coords="330,497,565,524"/>
+<area shape="rect" id="node5" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="107,408,294,449"/>
+<area shape="rect" id="node10" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="363,319,550,360"/>
+<area shape="rect" id="node11" href="$d3/deb/a01619.html" title="MemoryManagement/Pointer.h" alt="" coords="494,415,715,442"/>
+<area shape="rect" id="node7" href="$d9/d2e/a00056.html" title="AbstractObjects/Invalidator.h" alt="" coords="95,497,306,524"/>
+</map>

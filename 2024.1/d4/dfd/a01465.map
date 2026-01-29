@@ -1,0 +1,16 @@
+<map id="src/Classic/Fields/Interpolation/ThreeDGrid.h" name="src/Classic/Fields/Interpolation/ThreeDGrid.h">
+<area shape="rect" id="node2" href="$dd/d4e/a00329.html" title="src/BasicActions/DumpFields.cpp" alt="" coords="205,102,439,129"/>
+<area shape="rect" id="node3" href="$d7/d1c/a01397.html" title="src/Classic/Fields\l/Interpolation/Interpolator3d\lGridTo1d.h" alt="" coords="343,184,549,240"/>
+<area shape="rect" id="node7" href="$de/d3c/a01490.html" title="src/Classic/Fields\l/SectorMagneticFieldMap.cpp" alt="" coords="947,503,1158,545"/>
+<area shape="rect" id="node10" href="$d2/d2f/a01460.html" title="src/Classic/Fields\l/Interpolation/ThreeDGrid.cpp" alt="" coords="732,95,947,136"/>
+<area shape="rect" id="node11" href="$d2/d48/a01472.html" title="src/Classic/Fields\l/Interpolation/VectorMap.h" alt="" coords="515,95,708,136"/>
+<area shape="rect" id="node4" href="$d6/d2f/a01394.html" title="src/Classic/Fields\l/Interpolation/Interpolator3d\lGridTo1d.cpp" alt="" coords="343,288,549,344"/>
+<area shape="rect" id="node5" href="$da/d06/a01403.html" title="src/Classic/Fields\l/Interpolation/Interpolator3d\lGridTo3d.h" alt="" coords="347,392,553,448"/>
+<area shape="rect" id="node8" href="$d9/d8b/a01469.html" title="src/Classic/Fields\l/Interpolation/TriLinearInterpolator.h" alt="" coords="13,295,268,337"/>
+<area shape="rect" id="node6" href="$dc/d35/a01400.html" title="src/Classic/Fields\l/Interpolation/Interpolator3d\lGridTo3d.cpp" alt="" coords="347,496,553,552"/>
+<area shape="rect" id="node9" href="$d5/d67/a01466.html" title="src/Classic/Fields\l/Interpolation/TriLinearInterpolator.cpp" alt="" coords="5,399,276,441"/>
+<area shape="rect" id="node12" href="$d7/dfd/a01439.html" title="src/Classic/Fields\l/Interpolation/PolynomialPatch.h" alt="" coords="948,191,1181,233"/>
+<area shape="rect" id="node13" href="$dc/d85/a01436.html" title="src/Classic/Fields\l/Interpolation/PolynomialPatch.cpp" alt="" coords="674,295,922,337"/>
+<area shape="rect" id="node14" href="$d0/de2/a01442.html" title="src/Classic/Fields\l/Interpolation/PPSolveFactory.cpp" alt="" coords="946,295,1183,337"/>
+<area shape="rect" id="node15" href="$df/de4/a02780.html" title="src/PyOpal/PyObjects\l/PyPolynomialPatch.cpp" alt="" coords="1208,295,1385,337"/>
+</map>

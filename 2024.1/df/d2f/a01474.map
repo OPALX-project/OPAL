@@ -1,0 +1,13 @@
+<map id="src/Classic/Fields/Interpolation/VectorMap.h" name="src/Classic/Fields/Interpolation/VectorMap.h">
+<area shape="rect" id="node2" href="$d7/d1c/a01397.html" title="src/Classic/Fields\l/Interpolation/Interpolator3d\lGridTo1d.h" alt="" coords="250,95,455,151"/>
+<area shape="rect" id="node4" href="$da/d06/a01403.html" title="src/Classic/Fields\l/Interpolation/Interpolator3d\lGridTo3d.h" alt="" coords="66,303,271,359"/>
+<area shape="rect" id="node6" href="$de/d3c/a01490.html" title="src/Classic/Fields\l/SectorMagneticFieldMap.cpp" alt="" coords="499,414,710,455"/>
+<area shape="rect" id="node9" href="$d7/dfd/a01439.html" title="src/Classic/Fields\l/Interpolation/PolynomialPatch.h" alt="" coords="700,102,933,143"/>
+<area shape="rect" id="node3" href="$d6/d2f/a01394.html" title="src/Classic/Fields\l/Interpolation/Interpolator3d\lGridTo1d.cpp" alt="" coords="27,199,233,255"/>
+<area shape="rect" id="node7" href="$d9/d8b/a01469.html" title="src/Classic/Fields\l/Interpolation/TriLinearInterpolator.h" alt="" coords="308,206,563,247"/>
+<area shape="rect" id="node5" href="$dc/d35/a01400.html" title="src/Classic/Fields\l/Interpolation/Interpolator3d\lGridTo3d.cpp" alt="" coords="66,407,271,463"/>
+<area shape="rect" id="node8" href="$d5/d67/a01466.html" title="src/Classic/Fields\l/Interpolation/TriLinearInterpolator.cpp" alt="" coords="296,310,567,351"/>
+<area shape="rect" id="node10" href="$dc/d85/a01436.html" title="src/Classic/Fields\l/Interpolation/PolynomialPatch.cpp" alt="" coords="693,206,941,247"/>
+<area shape="rect" id="node11" href="$d0/de2/a01442.html" title="src/Classic/Fields\l/Interpolation/PPSolveFactory.cpp" alt="" coords="965,206,1202,247"/>
+<area shape="rect" id="node12" href="$df/de4/a02780.html" title="src/PyOpal/PyObjects\l/PyPolynomialPatch.cpp" alt="" coords="1227,206,1404,247"/>
+</map>

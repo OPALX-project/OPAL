@@ -1,0 +1,37 @@
+<map id="src/Classic/AbsBeamline/Ring.cpp" name="src/Classic/AbsBeamline/Ring.cpp">
+<area shape="rect" id="node2" href="$d9/d0f/a00644.html" title="AbsBeamline/Ring.h" alt="" coords="3549,95,3702,121"/>
+<area shape="rect" id="node9" href="$d9/d7c/a01073.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="4197,497,4420,524"/>
+<area shape="rect" id="node17" href="$de/d33/a01274.html" title="Fields/EMField.h" alt="" coords="3748,333,3872,360"/>
+<area shape="rect" id="node22" href="$d3/db5/a03965.html" title="Utility/Inform.h" alt="" coords="3485,415,3606,442"/>
+<area shape="rect" id="node26" href="$d8/d91/a00410.html" title="AbsBeamline/BeamlineVisitor.h" alt="" coords="4322,95,4548,121"/>
+<area shape="rect" id="node27" href="$d0/d82/a00857.html" title="Algorithms/PartBunchBase.h" alt="" coords="1742,259,1949,285"/>
+<area shape="rect" id="node33" href="$d3/d4c/a01724.html" title="Physics/Units.h" alt="" coords="877,415,998,442"/>
+<area shape="rect" id="node48" href="$df/d21/a01778.html" title="Structure/LossDataSink.h" alt="" coords="729,259,914,285"/>
+<area shape="rect" id="node3" href="$d1/d7e/a00434.html" title="AbsBeamline/Component.h" alt="" coords="3578,259,3777,285"/>
+<area shape="rect" id="node13" href="$d5/d99/a01901.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="2890,408,3065,449"/>
+<area shape="rect" id="node18" href="$d9/d10/a01103.html" title="BeamlineGeometry/PlanarArc\lGeometry.h" alt="" coords="3778,169,3993,211"/>
+<area shape="rect" id="node19" href="$d2/d8a/a02063.html" title="Utilities/RingSection.h" alt="" coords="3474,177,3641,203"/>
+<area shape="rect" id="node4" href="$d2/d9d/a00464.html" title="AbsBeamline/ElementBase.h" alt="" coords="3342,333,3552,360"/>
+<area shape="rect" id="node5" href="$dd/d7e/a00809.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="3192,408,3409,449"/>
+<area shape="rect" id="node8" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="3070,497,3251,524"/>
+<area shape="rect" id="node12" href="$d2/df3/a01085.html" title="BeamlineGeometry/Geometry.h" alt="" coords="3917,415,4145,442"/>
+<area shape="rect" id="node6" href="$d4/d81/a00110.html" title="Algorithms/BoostMatrix.h" alt="" coords="3067,572,3254,599"/>
+<area shape="rect" id="node7" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="781,572,932,599"/>
+<area shape="rect" id="node10" href="$df/dd5/a01115.html" title="BeamlineGeometry/Rotation3D.h" alt="" coords="4267,572,4504,599"/>
+<area shape="rect" id="node11" href="$db/d28/a01133.html" title="BeamlineGeometry/Vector3D.h" alt="" coords="4195,647,4419,673"/>
+<area shape="rect" id="node14" href="$d2/d5b/a01841.html" title="Utilities/ClassicException.h" alt="" coords="2610,497,2809,524"/>
+<area shape="rect" id="node28" href="$d6/d8b/a00821.html" title="Algorithms/DistributionMoments.h" alt="" coords="986,333,1231,360"/>
+<area shape="rect" id="node29" href="$d7/db6/a01556.html" title="FixedAlgebra/FMatrix.h" alt="" coords="2098,415,2268,442"/>
+<area shape="rect" id="node30" href="$d3/daa/a01577.html" title="FixedAlgebra/FVector.h" alt="" coords="2225,497,2394,524"/>
+<area shape="rect" id="node34" href="$d3/d13/a00836.html" title="Algorithms/OpalParticle.h" alt="" coords="260,333,447,360"/>
+<area shape="rect" id="node35" href="$d3/db2/a00869.html" title="Algorithms/PBunchDefs.h" alt="" coords="572,333,759,360"/>
+<area shape="rect" id="node36" href="$d9/dff/a02099.html" title="Distribution/Distribution.h" alt="" coords="1368,415,1558,442"/>
+<area shape="rect" id="node38" href="$d1/d00/a03707.html" title="Particle/AbstractParticle.h" alt="" coords="1560,333,1748,360"/>
+<area shape="rect" id="node39" href="$d2/d33/a03770.html" title="Particle/ParticleAttrib.h" alt="" coords="1943,333,2114,360"/>
+<area shape="rect" id="node41" href="$df/d9a/a01715.html" title="Physics/ParticleProperties.h" alt="" coords="2293,415,2494,442"/>
+<area shape="rect" id="node42" href="$d7/deb/a03077.html" title="Structure/FieldSolver.h" alt="" coords="1125,415,1292,442"/>
+<area shape="rect" id="node44" href="$d9/def/a04004.html" title="Utility/IpplTimings.h" alt="" coords="2698,333,2852,360"/>
+<area shape="rect" id="node46" href="$d2/d5e/a00860.html" title="PartBunchBase.hpp" alt="" coords="1772,333,1919,360"/>
+<area shape="rect" id="node32" href="$db/d7f/a01718.html" title="Physics/Physics.h" alt="" coords="1268,497,1404,524"/>
+<area shape="rect" id="node47" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="1684,415,1887,442"/>
+</map>

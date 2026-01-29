@@ -1,0 +1,12 @@
+<map id="OpalOffset::OpalGlobalCartesianOffset::update" name="OpalOffset::OpalGlobalCartesianOffset::update">
+<area shape="rect" id="node2" href="$da/d54/a04673.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="311,56,473,83"/>
+<area shape="rect" id="node3" href="$dd/d3c/a04466.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="321,107,463,133"/>
+<area shape="rect" id="node7" href="$d1/dbd/a05113.html#ade1666b2c2defa1813e537e45e59a1ab" title="Offset::globalCartesianOffset" alt="" coords="287,157,497,184"/>
+<area shape="rect" id="node11" href="$df/df3/a04641.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="313,208,471,235"/>
+<area shape="rect" id="node4" href="$d3/de5/a04617.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="571,5,711,32"/>
+<area shape="rect" id="node5" href="$d3/de5/a04617.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="561,56,720,83"/>
+<area shape="rect" id="node6" href="$d3/de5/a04617.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="545,107,736,133"/>
+<area shape="rect" id="node8" href="$d1/dbd/a05113.html#aa6d74cd2d0ca69354c48eb808aa1cb08" title="Offset::setEndDirection" alt="" coords="555,157,727,184"/>
+<area shape="rect" id="node9" href="$d1/dbd/a05113.html#a8c12fd6f7d13b5f36a1b77da59946b6f" title="Offset::setEndPosition" alt="" coords="558,208,723,235"/>
+<area shape="rect" id="node10" href="$d1/dbd/a05113.html#ae5338232057d9a57ca7c863d076d075c" title="Offset::setIsLocal" alt="" coords="573,259,708,285"/>
+</map>

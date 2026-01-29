@@ -1,0 +1,30 @@
+<map id="src/Classic/Fields/BDipoleField.h" name="src/Classic/Fields/BDipoleField.h">
+<area shape="rect" id="node2" href="$de/df8/a00440.html" title="src/Classic/AbsBeamline\l/Corrector.h" alt="" coords="1283,95,1464,136"/>
+<area shape="rect" id="node12" href="$d0/d85/a00908.html" title="src/Classic/BeamlineCore\l/CorrectorRep.h" alt="" coords="2003,184,2189,225"/>
+<area shape="rect" id="node29" href="$dd/dad/a01235.html" title="src/Classic/Fields\l/BDipoleField.cpp" alt="" coords="1789,95,1923,136"/>
+<area shape="rect" id="node3" href="$d6/d7d/a00161.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="1637,273,1867,315"/>
+<area shape="rect" id="node4" href="$d5/dcb/a00170.html" title="src/Algorithms/ParallelTTracker.h" alt="" coords="443,370,677,397"/>
+<area shape="rect" id="node8" href="$d4/da8/a00437.html" title="src/Classic/AbsBeamline\l/Corrector.cpp" alt="" coords="729,184,911,225"/>
+<area shape="rect" id="node9" href="$db/d77/a00683.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="1379,184,1562,225"/>
+<area shape="rect" id="node11" href="$d8/db7/a00812.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="935,184,1102,225"/>
+<area shape="rect" id="node21" href="$df/daa/a02135.html" title="src/Elements/OpalBeamline.h" alt="" coords="1126,191,1341,218"/>
+<area shape="rect" id="node5" href="$dc/de6/a00167.html" title="src/Algorithms/ParallelTTracker.cpp" alt="" coords="946,459,1195,486"/>
+<area shape="rect" id="node6" href="$d9/d93/a02753.html" title="src/PyOpal/PyObjects\l/PyField.cpp" alt="" coords="480,452,640,493"/>
+<area shape="rect" id="node7" href="$d5/de9/a03236.html" title="src/Track/TrackRun.cpp" alt="" coords="159,459,327,486"/>
+<area shape="rect" id="node10" href="$dd/d77/a02096.html" title="src/Distribution/Distribution.cpp" alt="" coords="1385,281,1613,307"/>
+<area shape="rect" id="node13" href="$da/d5b/a00905.html" title="src/Classic/BeamlineCore\l/CorrectorRep.cpp" alt="" coords="2335,273,2521,315"/>
+<area shape="rect" id="node14" href="$de/d9e/a01061.html" title="src/Classic/BeamlineCore\l/XCorrectorRep.h" alt="" coords="2545,273,2732,315"/>
+<area shape="rect" id="node17" href="$d2/d49/a01067.html" title="src/Classic/BeamlineCore\l/YCorrectorRep.h" alt="" coords="1892,273,2079,315"/>
+<area shape="rect" id="node20" href="$df/d4a/a02204.html" title="src/Elements/OpalKicker.cpp" alt="" coords="2103,281,2310,307"/>
+<area shape="rect" id="node15" href="$d5/d4c/a01058.html" title="src/Classic/BeamlineCore\l/XCorrectorRep.cpp" alt="" coords="2432,363,2619,404"/>
+<area shape="rect" id="node16" href="$d7/db7/a02198.html" title="src/Elements/OpalHKicker.cpp" alt="" coords="2643,370,2861,397"/>
+<area shape="rect" id="node18" href="$d9/db3/a01064.html" title="src/Classic/BeamlineCore\l/YCorrectorRep.cpp" alt="" coords="1779,363,1965,404"/>
+<area shape="rect" id="node19" href="$da/d5c/a02432.html" title="src/Elements/OpalVKicker.cpp" alt="" coords="1989,370,2205,397"/>
+<area shape="rect" id="node22" href="$d6/db8/a00158.html" title="src/Algorithms/OrbitThreader.h" alt="" coords="883,281,1104,307"/>
+<area shape="rect" id="node24" href="$d7/d25/a00182.html" title="src/Algorithms/ThickTracker.h" alt="" coords="5,281,219,307"/>
+<area shape="rect" id="node26" href="$dc/de4/a00677.html" title="src/Classic/AbsBeamline\l/Source.cpp" alt="" coords="1128,273,1309,315"/>
+<area shape="rect" id="node27" href="$dd/d07/a02132.html" title="src/Elements/OpalBeamline.cpp" alt="" coords="293,281,523,307"/>
+<area shape="rect" id="node28" href="$d4/d90/a03056.html" title="src/Structure/BoundaryGeometry.cpp" alt="" coords="598,281,858,307"/>
+<area shape="rect" id="node23" href="$d3/df8/a00155.html" title="src/Algorithms/OrbitThreader.cpp" alt="" coords="797,370,1033,397"/>
+<area shape="rect" id="node25" href="$db/dd9/a00179.html" title="src/Algorithms/ThickTracker.cpp" alt="" coords="150,370,378,397"/>
+</map>

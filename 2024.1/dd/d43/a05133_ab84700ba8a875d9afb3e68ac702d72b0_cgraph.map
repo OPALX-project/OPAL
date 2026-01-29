@@ -1,0 +1,51 @@
+<map id="RBend3D::initialise" name="RBend3D::initialise">
+<area shape="rect" id="node2" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="295,12,340,39"/>
+<area shape="rect" id="node4" href="$d5/d73/a03836.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="563,208,621,235"/>
+<area shape="rect" id="node5" href="$d7/d01/a04977.html#aca45c9b2f0bf8ead0fe00a79ab1ecdb7" title="Calculate field amplitude from design energy and radius. " alt="" coords="208,151,427,177"/>
+<area shape="rect" id="node9" href="$d7/d47/a04685.html#a16508077c3f6403314e7923dc74e06f9" title="Access to reference data. " alt="" coords="513,56,671,83"/>
+<area shape="rect" id="node10" href="$d5/d73/a03836.html#af6518b151e7b0d52fa4ec791b891f53b" title="copysign" alt="" coords="277,424,357,451"/>
+<area shape="rect" id="node11" href="$d7/d47/a04685.html#a4951c53df6841fd275a56f41fc76bfdf" title="PartBunchBase::getdT" alt="" coords="235,475,399,501"/>
+<area shape="rect" id="node12" href="$da/d7c/a05021.html#a1b412456edcf01147abada7721605101" title="Get design length. " alt="" coords="200,525,435,552"/>
+<area shape="rect" id="node15" href="$db/db9/a05705.html#ab53e199eee0a17ece7fc208a28a04aaf" title="_Fieldmap::getFieldmap" alt="" coords="229,1359,405,1385"/>
+<area shape="rect" id="node40" href="$da/d7c/a05021.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="504,461,680,488"/>
+<area shape="rect" id="node41" href="$dd/d43/a05133.html#a38114fdd0ea8993aff6b1d006e949731" title="RBend3D::goOnline" alt="" coords="243,1595,391,1621"/>
+<area shape="rect" id="node43" href="$d7/db0/a03962.html#a4b2b36162d7cd2032d0ea378d5015281" title="level2" alt="" coords="286,2016,349,2043"/>
+<area shape="rect" id="node45" href="$da/d7c/a05021.html#a2b59853ce20c48c2436d0c136adeea69" title="Set design length. " alt="" coords="200,579,435,605"/>
+<area shape="rect" id="node47" href="$dd/d43/a05133.html#ac7de448de020549e24fc0f79f245d343" title="RBend3D::trackRefParticle\lThrough" alt="" coords="221,306,413,347"/>
+<area shape="rect" id="node3" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="499,5,685,32"/>
+<area shape="rect" id="node6" href="$d7/d01/a04977.html#a46f8eab5e301c6e6422a6f48787b227a" title="Calculate beta*gamma from design energy. " alt="" coords="491,157,693,184"/>
+<area shape="rect" id="node8" href="$d7/d47/a04685.html#af51331c43ea82142dd6d237e6e3e5bfd" title="PartBunchBase::getM" alt="" coords="971,132,1129,159"/>
+<area shape="rect" id="node7" href="$d7/d01/a04977.html#a044e1317118a71e0aac342b79e14c2bc" title="Calculate gamma from design energy. " alt="" coords="749,157,923,184"/>
+<area shape="rect" id="node13" href="$d0/d8e/a05537.html#a73f1d2087c1b6c7fb3e5e00f6835f88e" title="Get geometry length. " alt="" coords="487,513,697,554"/>
+<area shape="rect" id="node14" href="$da/d7c/a05021.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="491,579,693,605"/>
+<area shape="rect" id="node16" href="$d9/d36/a05629.html#a0267c3a3fbe9a5d46308397b3ef49ac6" title="_Astra1DElectroStatic\l_fast::create" alt="" coords="511,1410,673,1451"/>
+<area shape="rect" id="node17" href="$d8/d0c/a05637.html#ad536d487f9fe2becef6bf6833ef29f31" title="_Astra1DMagnetoStatic\l_fast::create" alt="" coords="505,1475,679,1517"/>
+<area shape="rect" id="node18" href="$df/dfb/a05781.html#a8169b6abb4b8f542a7dbf32bde58fa36" title="_FM3DMagnetoStatic\l::create" alt="" coords="513,1541,671,1582"/>
+<area shape="rect" id="node19" href="$d8/d30/a05789.html#afb9639648478654f1b12f8cb3fdf8322" title="_FM3DMagnetoStaticExtended\l::create" alt="" coords="483,1606,701,1647"/>
+<area shape="rect" id="node20" href="$d1/d03/a05633.html#a769cd3946807b488adc1fad7e02d5513" title="_Astra1DMagnetoStatic\l::create" alt="" coords="505,1671,679,1713"/>
+<area shape="rect" id="node21" href="$db/d7d/a05625.html#a95d5ca31ba8054271258cab9a4d3dee6" title="_Astra1DElectroStatic\l::create" alt="" coords="511,1737,673,1778"/>
+<area shape="rect" id="node22" href="$db/dcc/a05753.html#abd846add249a1ec8294d19df20c11815" title="_FM2DElectroStatic\l::create" alt="" coords="519,1802,665,1843"/>
+<area shape="rect" id="node23" href="$db/da0/a05757.html#a74ae5492b0a2f34198eb7ec06cce5301" title="_FM2DMagnetoStatic\l::create" alt="" coords="513,1867,671,1909"/>
+<area shape="rect" id="node24" href="$d9/d6a/a05761.html#a6eeec20b580922eb3e44e9731ec76cb6" title="_FM3DDynamic::create" alt="" coords="506,1933,678,1960"/>
+<area shape="rect" id="node25" href="$df/d85/a05745.html#a569c2d6eb0b6da83efccf101b81b6fc6" title="_FM1DProfile2::create" alt="" coords="511,1984,673,2011"/>
+<area shape="rect" id="node26" href="$d1/df2/a05617.html#ab34cc6e38c07ac8161a8f7b73a2306ea" title="_Astra1DDynamic::create" alt="" coords="498,2035,686,2061"/>
+<area shape="rect" id="node27" href="$df/ddb/a05729.html#ad4b55a3f2fa50c93ead84225409252fc" title="_FM1DElectroStatic\l_fast::create" alt="" coords="519,2086,665,2127"/>
+<area shape="rect" id="node28" href="$d1/dc7/a05733.html#abe7c04d6de09f9adcd4f3414b4c65928" title="_FM1DMagnetoStatic\l::create" alt="" coords="513,695,671,737"/>
+<area shape="rect" id="node29" href="$d0/d2b/a05737.html#a651e87c1e1adae0ae060cfd7591870c9" title="_FM1DMagnetoStatic\l_fast::create" alt="" coords="513,761,671,802"/>
+<area shape="rect" id="node30" href="$d6/d3f/a05725.html#aeaf96a8abda856644627d600ba5c40b1" title="_FM1DElectroStatic\l::create" alt="" coords="519,826,665,867"/>
+<area shape="rect" id="node31" href="$d3/dc8/a05749.html#a88a96440c4f26ebb5a1b57687f46fb33" title="_FM2DDynamic::create" alt="" coords="506,892,678,919"/>
+<area shape="rect" id="node32" href="$d0/d8e/a05717.html#a5a10fcb334bb1e030521323dd570ef6d" title="_FM1DDynamic::create" alt="" coords="506,943,678,969"/>
+<area shape="rect" id="node33" href="$d5/d30/a05721.html#a35ae3ab93b8f818ffe0b838bf5ac635e" title="_FM1DDynamic_fast::\lcreate" alt="" coords="511,994,673,1035"/>
+<area shape="rect" id="node34" href="$dc/da3/a05797.html#ae069685f0e8b7e4dff7cdbc18d91e69e" title="_FM3DMagnetoStaticH5Block\l::create" alt="" coords="486,1059,698,1101"/>
+<area shape="rect" id="node35" href="$d4/d48/a05765.html#a8982e53dc0b409f91adc486f551484b3" title="_FM3DH5Block::create" alt="" coords="508,1125,676,1152"/>
+<area shape="rect" id="node36" href="$dc/dd8/a05769.html#af0e06c30d2757590c77d13624164d659" title="_FM3DH5Block_nonscale\l::create" alt="" coords="500,1177,684,1218"/>
+<area shape="rect" id="node37" href="$db/d36/a05621.html#aa3b86f9c973e5bd9e8f406942b77e003" title="_Astra1DDynamic_fast\l::create" alt="" coords="507,1242,677,1283"/>
+<area shape="rect" id="node38" href="$d9/d6a/a05741.html#a55e789994b707c847273ab1b65c3839c" title="_FM1DProfile1::create" alt="" coords="511,1308,673,1335"/>
+<area shape="rect" id="node39" href="$db/db9/a05705.html#ae428d79c75675574e3cfd06c45c9b245" title="_Fieldmap::readHeader" alt="" coords="506,1359,678,1385"/>
+<area shape="rect" id="node42" href="$db/db9/a05705.html#a78e1929a0ba2b326a1c36aa3ac1af0fd" title="_Fieldmap::readMap" alt="" coords="516,2152,668,2179"/>
+<area shape="rect" id="node44" href="$dd/dad/a12105.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="499,2203,685,2229"/>
+<area shape="rect" id="node46" href="$d0/d8e/a05537.html#a4d338ebcb0efefa851ff4bdc08f7efb2" title="Set geometry length. " alt="" coords="487,630,697,671"/>
+<area shape="rect" id="node48" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="525,309,659,336"/>
+<area shape="rect" id="node49" href="$dc/da4/a04515.html#a11460f59ebd4d9f7dc2f12724dece886" title="Util::combineFilePath" alt="" coords="513,360,671,387"/>
+<area shape="rect" id="node50" href="$d7/dd4/a04689.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="509,411,675,437"/>
+</map>

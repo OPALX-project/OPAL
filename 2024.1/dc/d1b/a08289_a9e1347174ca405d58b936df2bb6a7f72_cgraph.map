@@ -1,0 +1,6 @@
+<map id="FFT&lt; RCTransform, Dim, T &gt;::setup" name="FFT&lt; RCTransform, Dim, T &gt;::setup">
+<area shape="rect" id="node2" href="$d8/da8/a08305.html#acdafb6643adbbfc837507114ae8220a0" title="get dimension number from list of transformed dimensions " alt="" coords="242,5,437,32"/>
+<area shape="rect" id="node3" href="$d8/da8/a08305.html#a4aa9b793a79e7d326742c932ca2385c9" title="get our domain " alt="" coords="261,56,417,83"/>
+<area shape="rect" id="node4" href="$d8/da8/a08305.html#a31ebac743710b1931fac01fb1716dc81" title="query number of transform dimensions " alt="" coords="233,107,445,133"/>
+<area shape="rect" id="node5" href="$d8/da8/a08305.html#a2177ec0df888376f04b58a70d8a120cc" title="FFTBase::transVnodes" alt="" coords="257,157,422,184"/>
+</map>

@@ -1,0 +1,51 @@
+<map id="ParallelTTracker::computeWakefield" name="ParallelTTracker::computeWakefield">
+<area shape="rect" id="node2" href="$d9/d8a/a06157.html#af1a567abb171ad15db9776f93887d96c" title="WakeFunction::apply" alt="" coords="299,52,455,79"/>
+<area shape="rect" id="node3" href="$d7/d47/a04685.html#a644c68187c47b47efa54ab2cf9ef3a27" title="PartBunchBase::calcBeamParameters" alt="" coords="244,103,509,129"/>
+<area shape="rect" id="node4" href="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="353,153,400,180"/>
+<area shape="rect" id="node6" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="351,204,402,231"/>
+<area shape="rect" id="node12" href="$d7/d47/a04685.html#ac3bd99adc985bee33077c21f9d744f15" title="PartBunchBase::get\l_pmean" alt="" coords="303,255,451,297"/>
+<area shape="rect" id="node13" href="$d7/d47/a04685.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="270,321,483,348"/>
+<area shape="rect" id="node14" href="$d5/d69/a00878.html#a2d2b2270eefa971fcff95d54dcc92cf5" title="getQuaternion" alt="" coords="319,439,434,465"/>
+<area shape="rect" id="node32" href="$d7/d47/a04685.html#a61749a31a61cc801127ed1ea764d03ca" title="PartBunchBase::hasFieldSolver" alt="" coords="266,489,487,516"/>
+<area shape="rect" id="node33" href="$d9/d8a/a06157.html#aa68009b7c1a49164c86a025a450f0e9e" title="WakeFunction::initialize" alt="" coords="289,540,465,567"/>
+<area shape="rect" id="node34" href="$da/dd7/a05285.html#ae5f60c7777720c99b382b87952bd9e8a" title="CoordinateSystemTrafo\l::inverted" alt="" coords="289,373,464,414"/>
+<area shape="rect" id="node42" href="$d7/db0/a03962.html#a4b2b36162d7cd2032d0ea378d5015281" title="level2" alt="" coords="345,591,408,617"/>
+<area shape="rect" id="node44" href="$da/dd7/a05285.html#ae2537ef2597a313e3f6852c8175dd356" title="CoordinateSystemTrafo\l::rotateTo" alt="" coords="289,642,464,683"/>
+<area shape="rect" id="node46" href="$da/d9b/a12149.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="289,773,464,800"/>
+<area shape="rect" id="node48" href="$da/d9b/a12149.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="291,824,463,851"/>
+<area shape="rect" id="node50" href="$da/dd7/a05285.html#acacde969cf75ea57d36f24896874c6a0" title="CoordinateSystemTrafo\l::transformTo" alt="" coords="289,707,464,749"/>
+<area shape="rect" id="node5" href="$d7/d47/a04685.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="575,5,725,32"/>
+<area shape="rect" id="node7" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="564,157,736,184"/>
+<area shape="rect" id="node8" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="791,107,977,133"/>
+<area shape="rect" id="node11" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1274,157,1409,184"/>
+<area shape="rect" id="node9" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1025,107,1223,133"/>
+<area shape="rect" id="node10" href="$d2/d36/a12117.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1271,107,1412,133"/>
+<area shape="rect" id="node15" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1319,360,1364,387"/>
+<area shape="rect" id="node17" href="$d3/d4f/a00761.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="628,613,672,640"/>
+<area shape="rect" id="node21" href="$d3/d4f/a00761.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="863,512,905,539"/>
+<area shape="rect" id="node29" href="$d0/d61/a01130.html#a01046d3dab4c1e9ad6b2b6dee8cc8310" title="Vector cross product. " alt="" coords="622,563,678,589"/>
+<area shape="rect" id="node30" href="$d0/d61/a01130.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="1511,411,1553,437"/>
+<area shape="rect" id="node31" href="$d3/d4f/a00761.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="861,461,907,488"/>
+<area shape="rect" id="node16" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1881,461,2067,488"/>
+<area shape="rect" id="node18" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1460,512,1604,539"/>
+<area shape="rect" id="node22" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1078,563,1170,589"/>
+<area shape="rect" id="node19" href="$df/dfa/a03533.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1652,512,1699,539"/>
+<area shape="rect" id="node20" href="$df/dfa/a03533.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1747,512,1833,539"/>
+<area shape="rect" id="node23" href="$d7/dc3/a05241.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1280,563,1403,589"/>
+<area shape="rect" id="node24" href="$d7/dc3/a05241.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1288,664,1395,691"/>
+<area shape="rect" id="node25" href="$d7/dc3/a05241.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="1465,613,1599,640"/>
+<area shape="rect" id="node26" href="$d7/dc3/a05241.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="1463,664,1601,691"/>
+<area shape="rect" id="node27" href="$d4/d21/a05245.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="1473,715,1591,741"/>
+<area shape="rect" id="node28" href="$d7/dc3/a05241.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="1481,765,1583,792"/>
+<area shape="rect" id="node35" href="$da/dd7/a05285.html#afdcb12eb2455fcba3d0503b6be30df24" title="CoordinateSystemTrafo\l::invert" alt="" coords="563,251,737,293"/>
+<area shape="rect" id="node36" href="$d4/d27/a05341.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="1041,208,1207,235"/>
+<area shape="rect" id="node39" href="$d4/d27/a05341.html#a16e61b715e53d7394996bb56c356916e" title="Quaternion::rotate" alt="" coords="813,259,955,285"/>
+<area shape="rect" id="node37" href="$d4/d27/a05341.html#a237c3a9dfefea10e7ec6b5f373546427" title="Quaternion::real" alt="" coords="1278,259,1405,285"/>
+<area shape="rect" id="node38" href="$d4/d27/a05341.html#a8cb33fa212258498b937d7e1a4684ce2" title="Quaternion::imag" alt="" coords="1274,208,1409,235"/>
+<area shape="rect" id="node40" href="$d4/d27/a05341.html#aa29522eb8e682639a9efddce09a49f6f" title="Quaternion::isUnit" alt="" coords="1054,309,1194,336"/>
+<area shape="rect" id="node41" href="$d4/d27/a05341.html#afd6f04fe42007759224bbfb5c7727eb0" title="Quaternion::Norm" alt="" coords="1272,309,1411,336"/>
+<area shape="rect" id="node43" href="$dd/dad/a12105.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="557,664,743,691"/>
+<area shape="rect" id="node45" href="$d4/d81/a00110.html#a51353d2921885b3821cd9089170845e8" title="prod_boost_vector" alt="" coords="579,715,721,741"/>
+<area shape="rect" id="node47" href="$d2/db2/a12145.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="579,773,721,800"/>
+<area shape="rect" id="node49" href="$d2/db2/a12145.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="579,824,721,851"/>
+</map>

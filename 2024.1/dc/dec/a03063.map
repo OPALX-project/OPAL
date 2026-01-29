@@ -1,0 +1,32 @@
+<map id="src/Structure/DataSink.cpp" name="src/Structure/DataSink.cpp">
+<area shape="rect" id="node2" href="$d4/d44/a03065.html" title="Structure/DataSink.h" alt="" coords="713,80,869,107"/>
+<area shape="rect" id="node5" href="$d0/d2b/a03095.html" title="Structure/H5PartWrapper.h" alt="" coords="443,229,636,256"/>
+<area shape="rect" id="node18" href="$de/d94/a02597.html" title="OPALconfig.h" alt="" coords="582,80,689,107"/>
+<area shape="rect" id="node19" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="165,229,367,256"/>
+<area shape="rect" id="node22" href="$d8/d0d/a01280.html" title="Fields/Fieldmap.h" alt="" coords="660,229,795,256"/>
+<area shape="rect" id="node26" href="$d3/d4c/a01724.html" title="Physics/Units.h" alt="" coords="1559,80,1680,107"/>
+<area shape="rect" id="node28" href="$da/d9e/a03059.html" title="Structure/BoundaryGeometry.h" alt="" coords="2044,80,2267,107"/>
+<area shape="rect" id="node31" href="$d2/d31/a02087.html" title="Utilities/Util.h" alt="" coords="1662,155,1774,181"/>
+<area shape="rect" id="node42" href="$dc/d0a/a03125.html" title="Structure/LBalWriter.h" alt="" coords="1321,80,1483,107"/>
+<area shape="rect" id="node43" href="$d6/d94/a02033.html" title="Utilities/Options.h" alt="" coords="2594,80,2733,107"/>
+<area shape="rect" id="node45" href="$d5/d55/a13479.html" title="Utilities/Timer.h" alt="" coords="3116,80,3243,107"/>
+<area shape="rect" id="node47" href="$da/d1d/a03947.html" title="Utility/FieldDebugFunctions.h" alt="" coords="2291,80,2502,107"/>
+<area shape="rect" id="node48" href="$d2/d0f/a03137.html" title="Structure/MemoryWriter.h" alt="" coords="893,80,1081,107"/>
+<area shape="rect" id="node49" href="$d5/d72/a00803.html" title="Algorithms/AmrPartBunch.h" alt="" coords="2757,80,2959,107"/>
+<area shape="rect" id="node50" href="$d7/d54/a03089.html" title="Structure/GridLBalWriter.h" alt="" coords="1105,80,1296,107"/>
+<area shape="rect" id="node3" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="1224,304,1375,331"/>
+<area shape="rect" id="node4" href="$d0/dcd/a03113.html" title="Structure/H5Writer.h" alt="" coords="172,155,325,181"/>
+<area shape="rect" id="node11" href="$d0/d74/a03149.html" title="Structure/MultiBunchDump.h" alt="" coords="587,155,795,181"/>
+<area shape="rect" id="node12" href="$db/d65/a03179.html" title="SDDSWriter.h" alt="" coords="1029,155,1137,181"/>
+<area shape="rect" id="node16" href="$d1/d45/a03191.html" title="Structure/StatWriter.h" alt="" coords="401,155,563,181"/>
+<area shape="rect" id="node6" href="$dd/d78/a03980.html" title="Utility/IpplInfo.h" alt="" coords="536,304,663,331"/>
+<area shape="rect" id="node20" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="126,304,363,331"/>
+<area shape="rect" id="node23" href="$dc/dd9/a01268.html" title="Fields/Definitions.h" alt="" coords="1055,304,1200,331"/>
+<area shape="rect" id="node27" href="$db/d7f/a01718.html" title="Physics/Physics.h" alt="" coords="1219,229,1355,256"/>
+<area shape="rect" id="node29" href="$d4/d8c/a00035.html" title="AbstractObjects/Definition.h" alt="" coords="2127,155,2331,181"/>
+<area shape="rect" id="node30" href="$d5/ddf/a00224.html" title="Attributes/Attributes.h" alt="" coords="2305,229,2472,256"/>
+<area shape="rect" id="node36" href="$d9/def/a04004.html" title="Utility/IpplTimings.h" alt="" coords="2025,229,2179,256"/>
+<area shape="rect" id="node37" href="$d7/dcb/a04028.html" title="Utility/PAssert.h" alt="" coords="2496,229,2623,256"/>
+<area shape="rect" id="node32" href="$df/d41/a00881.html" title="Algorithms/Quaternion.h" alt="" coords="1379,229,1561,256"/>
+<area shape="rect" id="node44" href="$db/d6b/a01853.html" title="Utilities/ClassicRandom.h" alt="" coords="2953,155,3142,181"/>
+</map>

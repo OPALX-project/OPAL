@@ -1,0 +1,7 @@
+<map id="TrackRun::initPhaseSpaceSink" name="TrackRun::initPhaseSpaceSink">
+<area shape="rect" id="node2" href="$d7/dd4/a04689.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="270,5,485,32"/>
+<area shape="rect" id="node3" href="$d7/dd4/a04689.html#a77c724ec014362d7600faa4b6260a996" title="get opals restart h5 format filename " alt="" coords="268,56,487,83"/>
+<area shape="rect" id="node4" href="$d7/dd4/a04689.html#a92cfac50e1a10ca292d71ffcbc303964" title="get the step where to restart " alt="" coords="284,107,471,133"/>
+<area shape="rect" id="node5" href="$d7/dd4/a04689.html#af8d0b55764c02667df67d086327b6a34" title="true if we do a restart run " alt="" coords="291,157,464,184"/>
+<area shape="rect" id="node6" href="$d7/dd4/a04689.html#a6852d92bcca1864b63286ff91079bbe3" title="OpalData::isInOPALCyclMode" alt="" coords="272,208,483,235"/>
+</map>

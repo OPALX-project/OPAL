@@ -1,0 +1,32 @@
+<map id="src/Main.cpp" name="src/Main.cpp">
+<area shape="rect" id="node2" href="$db/d8b/a02594.html" title="opal.h" alt="" coords="501,87,564,114"/>
+<area shape="rect" id="node3" href="$dd/d78/a03980.html" title="Utility/IpplInfo.h" alt="" coords="377,177,504,203"/>
+<area shape="rect" id="node4" href="$d3/db5/a03965.html" title="Utility/Inform.h" alt="" coords="31,259,152,285"/>
+<area shape="rect" id="node10" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="529,177,731,203"/>
+<area shape="rect" id="node15" href="$d1/d23/a02603.html" title="OpalConfigure/Configure.h" alt="" coords="1047,87,1239,114"/>
+<area shape="rect" id="node16" href="$dd/d75/a02639.html" title="OpalParser/OpalParser.h" alt="" coords="777,177,955,203"/>
+<area shape="rect" id="node19" href="$d4/d99/a01634.html" title="Parser/FileStream.h" alt="" coords="1314,87,1461,114"/>
+<area shape="rect" id="node22" href="$d5/d55/a13479.html" title="Utilities/Timer.h" alt="" coords="1688,87,1815,114"/>
+<area shape="rect" id="node24" href="$d8/d0d/a01280.html" title="Fields/Fieldmap.h" alt="" coords="1661,177,1796,203"/>
+<area shape="rect" id="node29" href="$d6/d82/a01565.html" title="FixedAlgebra/FTps.h" alt="" coords="1954,177,2106,203"/>
+<area shape="rect" id="node34" href="$db/d10/a00350.html" title="BasicActions/Option.h" alt="" coords="2364,87,2528,114"/>
+<area shape="rect" id="node35" href="$d6/d94/a02033.html" title="Utilities/Options.h" alt="" coords="2713,177,2851,203"/>
+<area shape="rect" id="node36" href="$d5/d08/a03254.html" title="Utilities/OpalException.h" alt="" coords="2455,177,2637,203"/>
+<area shape="rect" id="node37" href="$d9/d01/a03248.html" title="Utilities/EarlyLeaveException.h" alt="" coords="1891,87,2116,114"/>
+<area shape="rect" id="node38" href="$d2/d31/a02087.html" title="Utilities/Util.h" alt="" coords="2875,177,2987,203"/>
+<area shape="rect" id="node40" href="$d0/dc5/a04415.html" title="Util/SDDSParser/SDDSParser\lException.h" alt="" coords="3062,169,3267,211"/>
+<area shape="rect" id="node41" href="$de/d94/a02597.html" title="OPALconfig.h" alt="" coords="2553,87,2659,114"/>
+<area shape="rect" id="node43" href="$dd/d77/a03659.html" title="Message/Communicate.h" alt="" coords="1450,177,1637,203"/>
+<area shape="rect" id="node44" href="$d4/d2e/a03974.html" title="Utility/IpplException.h" alt="" coords="2264,177,2431,203"/>
+<area shape="rect" id="node45" href="$d9/def/a04004.html" title="Utility/IpplTimings.h" alt="" coords="1271,177,1426,203"/>
+<area shape="rect" id="node46" href="$d1/d57/a02543.html" title="GSLErrorHandling.h" alt="" coords="2140,87,2288,114"/>
+<area shape="rect" id="node11" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="227,259,465,285"/>
+<area shape="rect" id="node17" href="$db/d95/a01637.html" title="Parser/Parser.h" alt="" coords="673,259,790,285"/>
+<area shape="rect" id="node18" href="$d3/deb/a01619.html" title="MemoryManagement/Pointer.h" alt="" coords="814,259,1035,285"/>
+<area shape="rect" id="node20" href="$dd/deb/a01628.html" title="Parser/AbsFileStream.h" alt="" coords="1077,177,1247,203"/>
+<area shape="rect" id="node25" href="$dd/d6c/a13443.html" title="Algorithms/Vektor.h" alt="" coords="2257,259,2408,285"/>
+<area shape="rect" id="node26" href="$dc/dd9/a01268.html" title="Fields/Definitions.h" alt="" coords="1375,259,1520,285"/>
+<area shape="rect" id="node30" href="$d5/d10/a01571.html" title="FixedAlgebra/FTpsData.h" alt="" coords="2296,333,2479,360"/>
+<area shape="rect" id="node32" href="$da/dd5/a01580.html" title="FixedAlgebra/FVps.h" alt="" coords="2080,259,2233,285"/>
+<area shape="rect" id="node33" href="$da/daf/a01568.html" title="FixedAlgebra/FTps.hpp" alt="" coords="1837,259,2005,285"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="SequenceTemplate" name="SequenceTemplate">
+<area shape="rect" id="node2" href="$d7/db6/a06845.html" title="Abstract base class for macros. " alt="" coords="71,171,132,197"/>
+<area shape="rect" id="node3" href="$da/d54/a04673.html" title="The base class for all OPAL objects. " alt="" coords="5,95,69,121"/>
+<area shape="rect" id="node4" href="$d8/dc4/a05997.html" title="Abstract base class for reference counted objects. " alt="" coords="71,5,153,32"/>
+<area shape="rect" id="node6" href="$da/dbc/a06029.html" title="Abstract interface for a stream of input tokens. " alt="" coords="179,95,285,121"/>
+<area shape="rect" id="node5" href="$dc/d2a/a06853.html" title="An input buffer for macro commands. " alt="" coords="167,171,275,197"/>
+<area shape="rect" id="node7" href="$d6/da1/a06025.html" title="Representation of a single input token. " alt="" coords="202,5,262,32"/>
+</map>

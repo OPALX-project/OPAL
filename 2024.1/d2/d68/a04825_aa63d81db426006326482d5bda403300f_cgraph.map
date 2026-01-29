@@ -1,0 +1,51 @@
+<map id="AmrBoxLib::initFineLevels" name="AmrBoxLib::initFineLevels">
+<area shape="rect" id="node2" href="$dd/d27/a07345.html#aff9fa3ac34746cf52796c3508e840a51" title="AmrParticleBase::domainMapping" alt="" coords="741,216,983,243"/>
+<area shape="rect" id="node13" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="2027,938,2077,964"/>
+<area shape="rect" id="node25" href="$d0/d83/a05281.html#ad657df7a7c8ff3f0a5b610d68c9a2154" title="AmrPartBunch::getAmrParticleBase" alt="" coords="1031,698,1281,724"/>
+<area shape="rect" id="node26" href="$d7/d47/a04685.html#a926547f8adc7ff91c3fe639f0fadccbf" title="PartBunchBase::getNumBunch" alt="" coords="244,1119,463,1146"/>
+<area shape="rect" id="node27" href="$d7/d47/a04685.html#af792389ff15f7f9fe61a13138ff0d6f3" title="PartBunchBase::getT" alt="" coords="275,1170,431,1196"/>
+<area shape="rect" id="node28" href="$dd/d27/a07345.html#a0e7e493bd9d6c93933a45d3f86001e94" title="AmrParticleBase::isForbid\lTransform" alt="" coords="259,1221,447,1262"/>
+<area shape="rect" id="node29" href="$d2/d68/a04825.html#aa93c1b8c77432a496dba8107bcad1cd1" title="AmrBoxLib::regrid" alt="" coords="284,516,423,543"/>
+<area shape="rect" id="node50" href="$dd/d27/a07345.html#afc9cc878b907b7498ac76fb732f0dce1" title="AmrParticleBase::setForbid\lTransform" alt="" coords="255,1286,452,1328"/>
+<area shape="rect" id="node3" href="$da/d9b/a12149.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="1069,242,1243,268"/>
+<area shape="rect" id="node5" href="$df/dfa/a03533.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="1131,343,1181,370"/>
+<area shape="rect" id="node15" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="2825,887,2960,914"/>
+<area shape="rect" id="node20" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1398,191,1443,218"/>
+<area shape="rect" id="node21" href="$d3/d13/a04513.html#a8d51d4f60fe567a87bcdb7d16cb940da" title="isnan function with adjusted return type " alt="" coords="1071,60,1241,101"/>
+<area shape="rect" id="node22" href="$d3/d13/a04513.html#a80be49cdc22c97d978ae335fb88031af" title="isinf function with adjusted return type " alt="" coords="1071,125,1241,166"/>
+<area shape="rect" id="node23" href="$da/d9b/a12149.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="1070,292,1242,319"/>
+<area shape="rect" id="node4" href="$d2/db2/a12145.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="1349,242,1492,268"/>
+<area shape="rect" id="node6" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1560,368,1745,395"/>
+<area shape="rect" id="node7" href="$df/dfa/a03533.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1377,444,1464,471"/>
+<area shape="rect" id="node8" href="$d2/d67/a03455.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="1613,431,1692,458"/>
+<area shape="rect" id="node10" href="$dc/d14/a03479.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="1837,487,1935,514"/>
+<area shape="rect" id="node11" href="$d4/d78/a03677.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="1590,538,1715,564"/>
+<area shape="rect" id="node9" href="$d6/db6/a08373.html#ade95693db1906427a7c73b8364a07b20" title="BareFieldIterator::\lGetBareField" alt="" coords="1817,421,1955,462"/>
+<area shape="rect" id="node12" href="$d2/d36/a12117.html#a8bdcd8abcec1d747ecf82579b42c853c" title="IpplInfo::abort" alt="" coords="1829,735,1943,762"/>
+<area shape="rect" id="node18" href="$dc/d08/a09205.html#aa072c62b650774371674b050109d8051" title="Communicate::broadcast\l_others" alt="" coords="1793,589,1979,630"/>
+<area shape="rect" id="node19" href="$d6/dc7/a03683.html#ac34b443397f0101557c34a5c235ee578" title="getMessage" alt="" coords="1836,538,1936,564"/>
+<area shape="rect" id="node14" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="2125,938,2297,964"/>
+<area shape="rect" id="node16" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="2345,912,2532,939"/>
+<area shape="rect" id="node17" href="$dd/dad/a12105.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="2580,887,2777,914"/>
+<area shape="rect" id="node24" href="$d2/db2/a12145.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="1350,292,1491,319"/>
+<area shape="rect" id="node30" href="$d2/d68/a04825.html#a217bca19ac42bcd2d2c2b9c3e032abc6" title="AmrBoxLib::preRegrid_m" alt="" coords="511,478,693,504"/>
+<area shape="rect" id="node36" href="$df/dfa/a03533.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1133,394,1179,420"/>
+<area shape="rect" id="node37" href="$d2/d68/a04825.html#ac51a06dbf1ad731a9a7e2e4a7a851524" title="AmrBoxLib::doRegrid_m" alt="" coords="513,554,691,580"/>
+<area shape="rect" id="node43" href="$d2/d68/a04825.html#a4bd436a948366fabc7ec86bc1271c14b" title="AmrBoxLib::postRegrid_m" alt="" coords="767,794,957,820"/>
+<area shape="rect" id="node31" href="$d2/d68/a04825.html#a74849565da6c94ba6827c7bb200cc2b9" title="AmrBoxLib::solvePoisson_m" alt="" coords="759,452,965,479"/>
+<area shape="rect" id="node32" href="$d6/d2e/a04845.html#af07bf76ae5636ffc23756c65bcd39991" title="BoxLibParticle::scatter" alt="" coords="1073,546,1239,572"/>
+<area shape="rect" id="node33" href="$d0/d83/a05281.html#ab5339203441cd2147467b61b5e0391c8" title="AmrPartBunch::getFieldSolver" alt="" coords="1049,596,1263,623"/>
+<area shape="rect" id="node34" href="$d2/dd5/a07117.html#a032419b9c29450457211426c5798ad4d" title="PoissonSolver::solve" alt="" coords="1078,444,1234,471"/>
+<area shape="rect" id="node35" href="$d2/d68/a04825.html#ad03a4301400b31f1f93040161ea59db9" title="AmrBoxLib::fillPhysbc_m" alt="" coords="1065,495,1247,522"/>
+<area shape="rect" id="node38" href="$d2/d68/a04825.html#ae9c111c90d5f4eb9dbfcff4a7b42a788" title="AmrBoxLib::ClearLevel" alt="" coords="777,503,947,530"/>
+<area shape="rect" id="node39" href="$d2/d68/a04825.html#a929ea2ebf2811f358f4b49f33b4393b5" title="AmrBoxLib::MakeNewLevel" alt="" coords="762,554,962,580"/>
+<area shape="rect" id="node41" href="$d2/d68/a04825.html#a55b50e0435a8d18f3d12f68a909bd45f" title="AmrBoxLib::RemakeLevel" alt="" coords="767,671,957,698"/>
+<area shape="rect" id="node42" href="$d8/d25/a07353.html#ae7b8763bbdd12deae53bc6a43fb7b18c" title="ParticleAmrLayout::\lsetFinestLevel" alt="" coords="787,605,937,646"/>
+<area shape="rect" id="node40" href="$d4/d72/a04841.html#a4e7ceddfde96c50672bebdbef6f51b9e" title="BoxLibLayout::buildLevelMask" alt="" coords="1047,647,1265,674"/>
+<area shape="rect" id="node44" href="$dd/d27/a07345.html#ad79bca07de761a9c5de30b2578d362ff" title="AmrParticleBase::update" alt="" coords="1065,967,1247,994"/>
+<area shape="rect" id="node46" href="$dd/d27/a07345.html#a68c57fd7f4843eff35c63138417add14" title="AmrParticleBase::getLocal\lNumPerLevel" alt="" coords="1060,901,1252,942"/>
+<area shape="rect" id="node47" href="$d4/d72/a04841.html#a695eb56399e801c5a4d825596a3e1f27" title="BoxLibLayout::clearLevelMask" alt="" coords="1047,748,1265,775"/>
+<area shape="rect" id="node48" href="$d7/d47/a04685.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="1049,799,1263,826"/>
+<area shape="rect" id="node49" href="$d2/dd5/a07117.html#ad344154dc2677853ab673d3fe2868622" title="PoissonSolver::hasToRegrid" alt="" coords="1057,850,1255,876"/>
+<area shape="rect" id="node45" href="$d4/dd0/a04537.html#aa8140964548778b1df536ea288848bf0" title="PyOpal::PyOpalObjectNS\l::update" alt="" coords="1329,952,1512,993"/>
+</map>

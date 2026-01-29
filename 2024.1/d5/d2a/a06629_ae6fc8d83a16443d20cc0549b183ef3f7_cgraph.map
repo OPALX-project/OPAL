@@ -1,0 +1,22 @@
+<map id="OpalRingDefinition::update" name="OpalRingDefinition::update">
+<area shape="rect" id="node2" href="$dd/d3c/a04466.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="223,81,367,108"/>
+<area shape="rect" id="node6" href="$df/df3/a04641.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="215,132,374,159"/>
+<area shape="rect" id="node7" href="$dd/d3c/a04466.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="223,31,366,57"/>
+<area shape="rect" id="node8" href="$dd/dfc/a05141.html#ab401d6c3cebf5d0631cbdfdf147e0cd0" title="Ring::setBeamPhiInit" alt="" coords="215,183,374,209"/>
+<area shape="rect" id="node9" href="$dd/dfc/a05141.html#a9365e1d73cd8a546e18b2592ea68768f" title="Ring::setBeamPRInit" alt="" coords="217,233,372,260"/>
+<area shape="rect" id="node10" href="$dd/dfc/a05141.html#a6958949609216eaf41f54e7c189a0981" title="Ring::setBeamRInit" alt="" coords="221,284,368,311"/>
+<area shape="rect" id="node11" href="$dd/dfc/a05141.html#a466c5e57e587c7c3c171cd265988ac16" title="Ring::setBeamThetaInit" alt="" coords="207,335,382,361"/>
+<area shape="rect" id="node12" href="$df/df3/a04641.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="215,385,374,412"/>
+<area shape="rect" id="node13" href="$dd/dfc/a05141.html#a7373a7a9fc3332abddbe6f0b3e448f41" title="Ring::setHarmonicNumber" alt="" coords="197,436,392,463"/>
+<area shape="rect" id="node14" href="$dd/dfc/a05141.html#a6aa8ddfa8c98aeeaaabebf1f067d60ea" title="Ring::setIsClosed" alt="" coords="227,487,362,513"/>
+<area shape="rect" id="node15" href="$dd/dfc/a05141.html#a7408ffa32d8e463a059a4807cb6b2d28" title="Ring::setLatticePhiInit" alt="" coords="213,537,377,564"/>
+<area shape="rect" id="node16" href="$dd/dfc/a05141.html#ad865170ded73c1bb60a77c1ff0550aa3" title="Ring::setLatticeRInit" alt="" coords="218,588,371,615"/>
+<area shape="rect" id="node17" href="$dd/dfc/a05141.html#a6d374f85771cfbe423f2059f8ae875a5" title="Ring::setLatticeThetaInit" alt="" coords="204,639,385,665"/>
+<area shape="rect" id="node18" href="$dd/dfc/a05141.html#ac91e816910c2b984efc450c4037ecf06" title="Ring::setRFFreq" alt="" coords="233,689,356,716"/>
+<area shape="rect" id="node19" href="$dd/dfc/a05141.html#a87f83c7faf641497ef4da3564de9a307" title="Ring::setRingAperture" alt="" coords="213,740,377,767"/>
+<area shape="rect" id="node20" href="$dd/dfc/a05141.html#a8a6c0274766962f2135da13eed5df276" title="Ring::setScale" alt="" coords="237,791,352,817"/>
+<area shape="rect" id="node21" href="$dd/dfc/a05141.html#a0ea782d900cfe0ac023ddfa9da56be92" title="Ring::setSymmetry" alt="" coords="221,841,368,868"/>
+<area shape="rect" id="node3" href="$d3/de5/a04617.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="440,5,631,32"/>
+<area shape="rect" id="node4" href="$d3/de5/a04617.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="465,56,605,83"/>
+<area shape="rect" id="node5" href="$d3/de5/a04617.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="456,107,615,133"/>
+</map>

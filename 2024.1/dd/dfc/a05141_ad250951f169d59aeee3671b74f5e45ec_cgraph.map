@@ -1,0 +1,51 @@
+<map id="Ring::lockRing" name="Ring::lockRing">
+<area shape="rect" id="node2" href="$dd/dfc/a05141.html#ae0d1bcb3efbc9396ab65ab28bce39e0f" title="Ring::appendElement" alt="" coords="175,740,336,767"/>
+<area shape="rect" id="node18" href="$d7/db0/a03962.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="492,31,543,57"/>
+<area shape="rect" id="node49" href="$dd/dfc/a05141.html#a0ab5fce3179dd16f5bee3bfeba755e32" title="Ring::buildRingSections" alt="" coords="168,132,343,159"/>
+<area shape="rect" id="node50" href="$dd/dfc/a05141.html#a4bbee5de778f69df78fe97f378ec6bfc" title="Ring::checkAndClose" alt="" coords="176,81,335,108"/>
+<area shape="rect" id="node3" href="$d5/d73/a03836.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="1031,715,1089,741"/>
+<area shape="rect" id="node4" href="$dd/dfc/a05141.html#aa0617caa811b22e70439f1ace00809a1" title="Ring::checkMidplane" alt="" coords="439,284,595,311"/>
+<area shape="rect" id="node7" href="$d9/ddf/a05557.html#aaa729463c5e9207ffefd6d322ee594aa" title="Get axis vector. " alt="" coords="730,385,881,412"/>
+<area shape="rect" id="node8" href="$d2/d99/a05529.html#aff01b0f880a9b395149a71c7f0938b0b" title="Get rotation. " alt="" coords="724,284,887,311"/>
+<area shape="rect" id="node9" href="$d2/d99/a05529.html#aa11d7ee987d9f85367425adcdc783b81" title="Get displacement. " alt="" coords="731,335,880,361"/>
+<area shape="rect" id="node10" href="$da/d7c/a05021.html#aa5580165a9f8b9e6d873927cff20d986" title="Return clone. " alt="" coords="442,487,593,513"/>
+<area shape="rect" id="node11" href="$d3/d4f/a00761.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="1038,943,1082,969"/>
+<area shape="rect" id="node14" href="$d3/d4f/a00761.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="1201,993,1243,1020"/>
+<area shape="rect" id="node22" href="$de/d20/a06437.html#a0ebc523b46ca6d9cbec0042226f6677b" title="RingSection::getComponent" alt="" coords="416,689,619,716"/>
+<area shape="rect" id="node23" href="$de/d20/a06437.html#aa11bf6c68731c2d953718f9b0ae7be37" title="RingSection::getEndNormal" alt="" coords="417,740,617,767"/>
+<area shape="rect" id="node24" href="$de/d20/a06437.html#a947c061856f7720715a0cee8577c780e" title="RingSection::getEndPosition" alt="" coords="415,791,619,817"/>
+<area shape="rect" id="node25" href="$da/d7c/a05021.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="416,841,619,868"/>
+<area shape="rect" id="node26" href="$da/d7c/a05021.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="429,892,605,919"/>
+<area shape="rect" id="node27" href="$dd/dfc/a05141.html#a46dc7ddd81b6fa4f579202ce27efa1d8" title="Ring::getNextNormal" alt="" coords="438,1196,597,1223"/>
+<area shape="rect" id="node29" href="$dd/dfc/a05141.html#a09e8908fa4675875da6c8ba50d4b1475" title="Ring::getNextPosition" alt="" coords="436,183,599,209"/>
+<area shape="rect" id="node31" href="$de/d20/a06437.html#a3a0be608bd2c8237a285513b1f74c2b3" title="RingSection::getStartNormal" alt="" coords="414,1044,621,1071"/>
+<area shape="rect" id="node32" href="$de/d20/a06437.html#a9cfca9c15b9cd75fde39808388edaf56" title="RingSection::getStartPosition" alt="" coords="412,1095,623,1121"/>
+<area shape="rect" id="node33" href="$d0/d8e/a05537.html#a6d62c3c3d775b7ee530295c68ba024c0" title="Get transform. " alt="" coords="391,1364,644,1391"/>
+<area shape="rect" id="node37" href="$de/d20/a06437.html#a3279ea15d6d1ff67050ae6da0bbca420" title="RingSection::handleOffset" alt="" coords="422,1145,613,1172"/>
+<area shape="rect" id="node39" href="$dd/dfc/a05141.html#ae3394b6aecb563ac38515eb7f7a66e96" title="Ring::rotateToCyclCoordinates" alt="" coords="408,385,627,412"/>
+<area shape="rect" id="node40" href="$de/d20/a06437.html#a202095dba951b171e78366cba292d8fa" title="RingSection::setComponent" alt="" coords="416,1313,619,1340"/>
+<area shape="rect" id="node41" href="$de/d20/a06437.html#a414850ca188818f52e0c6631f76d76e2" title="RingSection::setComponent\lOrientation" alt="" coords="416,1247,619,1289"/>
+<area shape="rect" id="node43" href="$de/d20/a06437.html#a1bb693eeea3783eb72f135d308e5f14f" title="RingSection::setComponent\lPosition" alt="" coords="416,1415,619,1457"/>
+<area shape="rect" id="node44" href="$de/d20/a06437.html#aa74c58644d96eb4c50cf85e30ead96d7" title="RingSection::setEndNormal" alt="" coords="418,993,617,1020"/>
+<area shape="rect" id="node46" href="$de/d20/a06437.html#a9e6b901fccd60001b38e36ff2f95f038" title="RingSection::setEndPosition" alt="" coords="416,132,619,159"/>
+<area shape="rect" id="node47" href="$de/d20/a06437.html#a0f14cd4abded3d9dc14feb81df3e53f1" title="RingSection::setStartNormal" alt="" coords="414,943,621,969"/>
+<area shape="rect" id="node48" href="$de/d20/a06437.html#a32f1c940c47d56ea055d274fcf58b766" title="RingSection::setStartPosition" alt="" coords="412,639,623,665"/>
+<area shape="rect" id="node5" href="$d5/d73/a03836.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="783,183,828,209"/>
+<area shape="rect" id="node6" href="$d4/d5b/a11329.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1888,779,2073,805"/>
+<area shape="rect" id="node12" href="$d7/dc3/a05241.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1601,943,1745,969"/>
+<area shape="rect" id="node15" href="$d7/dc3/a05241.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1291,993,1383,1020"/>
+<area shape="rect" id="node13" href="$df/dfa/a03533.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1793,943,1840,969"/>
+<area shape="rect" id="node16" href="$d7/dc3/a05241.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1431,993,1553,1020"/>
+<area shape="rect" id="node17" href="$d7/dc3/a05241.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1439,1044,1545,1071"/>
+<area shape="rect" id="node19" href="$dd/dad/a12105.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="719,31,891,57"/>
+<area shape="rect" id="node20" href="$dd/dad/a12105.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="967,5,1153,32"/>
+<area shape="rect" id="node21" href="$d2/d36/a12117.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="993,56,1127,83"/>
+<area shape="rect" id="node28" href="$dd/dfc/a05141.html#ae1e11e960ad17df74ba3ab627bc16b65" title="Ring::getStartNormal" alt="" coords="726,1044,885,1071"/>
+<area shape="rect" id="node30" href="$dd/dfc/a05141.html#af9a036cf38db4011cd28c60f0e004430" title="Ring::getStartPosition" alt="" coords="724,233,887,260"/>
+<area shape="rect" id="node34" href="$d0/d8e/a05537.html#a5db85da1c96e5be8ffbdd0b2b913be47" title="Get entrance position. " alt="" coords="698,1313,913,1340"/>
+<area shape="rect" id="node35" href="$d0/d8e/a05537.html#a6a97a8c8e41886fcf6115188674468a0" title="Get exit position. " alt="" coords="714,1364,897,1391"/>
+<area shape="rect" id="node36" href="$d0/d8e/a05537.html#a0b27cf0c53d13be32e8cec8343c31900" title="Get transform. " alt="" coords="694,1415,917,1441"/>
+<area shape="rect" id="node38" href="$d1/dbd/a05113.html#a0a9ef0521bbc0431525cdcd2b0694b0c" title="Offset::updateGeometry" alt="" coords="716,993,895,1020"/>
+<area shape="rect" id="node42" href="$de/d20/a06437.html#a98035ec79e5a907921233bc4ba29b147" title="RingSection::updateComponent\lOrientation" alt="" coords="692,1095,919,1137"/>
+<area shape="rect" id="node45" href="$de/d20/a06437.html#ace89dbc03f714d8aa59cbd3637cd72cc" title="RingSection::normalise" alt="" coords="719,943,891,969"/>
+</map>
