@@ -1,0 +1,11 @@
+digraph "interpolation::SquarePolynomialVector::IndexByVector"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node38 [label="interpolation::SquarePolynomial\lVector::IndexByVector",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node38 -> Node39 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node39 [label="interpolation::SquarePolynomial\lVector::IndexByPower",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d8f/a05865.html#a6fbc59fce924184e894fe492c9e3f549"];
+  Node39 -> Node40 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node40 [label="interpolation::SquarePolynomial\lVector::IndexByPowerRecursive",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d8f/a05865.html#aeee94321d9a80efbfba17d146a8588f9"];
+}

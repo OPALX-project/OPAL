@@ -1,0 +1,27 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Utilities/RingSection.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node60 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Utilities/RingSection.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node60 -> Node61 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node61 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/Ring.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d0f/a00644.html"];
+  Node61 -> Node62 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node62 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelCyclotronTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d7d/a00161.html"];
+  Node61 -> Node63 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node63 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/Ring.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d3a/a00641.html"];
+  Node61 -> Node64 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node64 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/SpecificElementVisitor.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d77/a00683.html"];
+  Node64 -> Node65 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node65 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Distribution\l/Distribution.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dd8/a02108.html"];
+  Node61 -> Node66 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node66 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Algorithms/DefaultVisitor.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/db7/a00812.html"];
+  Node61 -> Node67 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node67 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalRingDefinition.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d6e/a02324.html"];
+  Node61 -> Node68 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node68 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyElements/PyRingDefinition.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d1c/a02732.html"];
+  Node61 -> Node69 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node69 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyField.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d8e/a02759.html"];
+  Node60 -> Node70 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Utilities/RingSection.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d9d/a02072.html"];
+  Node60 -> Node68 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="SFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/ddc/a06781.html",tooltip="Functions of arc length. "];
+}

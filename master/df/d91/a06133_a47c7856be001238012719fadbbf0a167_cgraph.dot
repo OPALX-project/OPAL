@@ -1,0 +1,11 @@
+digraph "GreenWakeFunction::compEnergy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node131 [label="GreenWakeFunction::\lcompEnergy",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node131 -> Node132 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node132 [label="real",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d1a/a01559.html#ad2c903016dffc98273f94db999545737",tooltip="Take real part of a complex generator. "];
+  Node132 -> Node133 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node133 [label="FLieGenerator::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/da4/a05949.html#ad04c5277115352a09af43bda20e483a0",tooltip="Get pointer past end of generator. "];
+}

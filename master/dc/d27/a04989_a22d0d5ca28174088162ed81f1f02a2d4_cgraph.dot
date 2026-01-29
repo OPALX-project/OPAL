@@ -1,0 +1,26 @@
+digraph "CCollimator::goOnline"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node324 [label="CCollimator::goOnline",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node324 -> Node325 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node325 [label="CCollimator::print",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d27/a04989.html#aa3dd21360dc2929ab912aae0ef5507a6",tooltip="unused check method "];
+  Node325 -> Node326 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node326 [label="_Fieldmap::typeset_msg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d3f/a05725.html#a1577476b45d1b62aae507e3b387a343e"];
+  Node325 -> Node327 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node327 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node327 -> Node328 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node328 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node328 -> Node329 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node329 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node328 -> Node330 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node330 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node330 -> Node331 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node331 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node331 -> Node332 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node332 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node331 -> Node329 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node331 -> Node327 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node325 -> Node329 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

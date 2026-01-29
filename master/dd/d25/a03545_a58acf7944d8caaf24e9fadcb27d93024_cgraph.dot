@@ -1,0 +1,19 @@
+digraph "BinaryRepartition"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="BinaryRepartition",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="CalcBinaryRepartition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d25/a03545.html#a456f66b449914610ed052632213063dc"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Communicate::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d94/a09217.html#aca765179d2843e977a7a78098c8cbde8"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Communicate::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d94/a09217.html#aedbfc462a5f9babc3fc07f875847547f"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="FieldLayout::getDomain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/db8/a08465.html#a145fb07dd8ce69c94cc355f263fc22ef"];
+  Node0 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="FieldLayout::Repartition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/db8/a08465.html#a471c59dfe8c22af78f9bd9af2de6d7a5"];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="FieldLayoutUser::Repartition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d3e/a08777.html#ad75b34f31827852682fedd1a557f729a"];
+}

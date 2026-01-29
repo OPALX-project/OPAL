@@ -1,0 +1,17 @@
+digraph "AmrPartBunch::updateLorentzFactor"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node307 [label="AmrPartBunch::updateLorentz\lFactor",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node307 -> Node308 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node308 [label="PartBunchBase\< double,\l 3 \>::get_gamma",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#a446fb70114c17e69382ae950734baec3"];
+  Node308 -> Node309 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node309 [label="DistributionMoments\l::getMeanGamma",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d5f/a05301.html#a1cbb52b4b9a627572211c443dfc9a8d9"];
+  Node307 -> Node310 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node310 [label="PartBunchBase\< double,\l 3 \>::getBinGamma",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#a5f340261cebbb63967a800c99c060c79",tooltip="Get gamma of one bin. "];
+  Node307 -> Node311 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node311 [label="PartBunchBase\< double,\l 3 \>::weHaveBins",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#a5cccd734775026586eef70edb9982b4d"];
+  Node311 -> Node312 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node312 [label="PartBins::weHaveBins",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d96/a05317.html#adf73db35db8dfadaba8c2e4eeb74db7d"];
+}

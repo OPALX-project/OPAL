@@ -1,0 +1,16 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Expressions/SAutomatic.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node26 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Expressions\l/SAutomatic.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node26 -> Node27 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node27 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Attributes\l/Bool.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d01/a00227.html"];
+  Node26 -> Node28 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node28 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Attributes\l/Real.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d39/a00257.html"];
+  Node26 -> Node29 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Lines\l/Line.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d1a/a02546.html"];
+  Node26 -> Node30 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Structure\l/Beam.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d90/a03056.html"];
+  Node26 -> Node31 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Structure\l/FieldSolver.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d7a/a03080.html"];
+}

@@ -1,0 +1,35 @@
+digraph "SBendRep::getChannel"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node8 [label="SBendRep::getChannel",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node8 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="ElementBase::getChannel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a02257dc2843938a8baa24583fdd6b273",tooltip="Construct a read/write channel. "];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="AttributeSet::getChannel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d76/a04973.html#a9ca26ee9df44ab1d5c19554d647b8c4d",tooltip="Construct a read/write channel. "];
+  Node8 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="SBend::getNormalComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d88/a05153.html#ad64577000d259fa8d97319cc43356db2",tooltip="Get normal component. "];
+  Node11 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="SBend::getField",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d88/a05153.html#aeb61791f436d7b333490294dcec4fc4f",tooltip="Get multipole expansion of field. "];
+  Node11 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="BMultipoleField::getNormal\lComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d57/a05665.html#a8599002a6283ed0426a7b9f227f91774",tooltip="Get component. "];
+  Node8 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="SBend::getSkewComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d88/a05153.html#acbb7bb44da79a4602aa16315ad03bedc",tooltip="Get skew component. "];
+  Node14 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="BMultipoleField::getSkew\lComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d57/a05665.html#ac6929efdf66ed0ba1f1813f2d0ad2f66",tooltip="Get component. "];
+  Node8 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="SBend::setNormalComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d88/a05153.html#af7e2668ee43ef4d3151f9f811cfcac2b",tooltip="Set normal component. "];
+  Node16 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="BMultipoleField::setNormal\lComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d57/a05665.html#ac96ff94748364fff18da736edb95081d",tooltip="Set component. "];
+  Node17 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="BMultipoleField::reserve",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d57/a05665.html#ad82a1693071b8440db526157d18fb1f6"];
+  Node8 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="SBend::setSkewComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d88/a05153.html#aae2350b3218f4d63369555891ac3a1ae",tooltip="Set skew component. "];
+  Node19 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="BMultipoleField::setSkew\lComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d57/a05665.html#acac015bb89af0cf234ce729d955061da",tooltip="Set component. "];
+  Node20 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

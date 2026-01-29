@@ -1,0 +1,13 @@
+digraph "/psi/home/gsell/data/src" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_70f430bac9d51041d9094dbff049b5c0 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="data" fontname="Helvetica", fontsize="10", URL="dir_70f430bac9d51041d9094dbff049b5c0.html"]
+  subgraph clusterdir_fa73c31579d2d8a74f3490fd7b62a5f7 {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_fa73c31579d2d8a74f3490fd7b62a5f7.html"];
+    dir_fa73c31579d2d8a74f3490fd7b62a5f7 [shape=plaintext label="src"];
+    dir_194a2eebcf880120d76177fc1b474703 [shape=box label="OPAL" color="red" fillcolor="white" style="filled" URL="dir_194a2eebcf880120d76177fc1b474703.html"];
+  }
+  }
+}

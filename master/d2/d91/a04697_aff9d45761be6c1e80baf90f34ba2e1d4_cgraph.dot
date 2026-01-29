@@ -1,0 +1,23 @@
+digraph "OpalData::getVariableNames"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node94 [label="OpalData::getVariableNames",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node94 -> Node95 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node95 [label="Directory::begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/de3/a04645.html#a6af87fa7c132144a4fed854a5c0ba253",tooltip="First object in alphabetic order of name. "];
+  Node94 -> Node96 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node96 [label="Directory::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/de3/a04645.html#a4a8d6e8dc3b5f4f851a86b64daad1978",tooltip="Last object in alphabetic order of name. "];
+  Node94 -> Node97 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node97 [label="OpalData::find",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#a8847589c28aa77d2797a61e8118ff5c6",tooltip="Find entry. "];
+  Node97 -> Node98 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node98 [label="Directory::find",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/de3/a04645.html#a9004a43fe680a069941293f8ab075c24",tooltip="Find entry. "];
+  Node94 -> Node99 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node99 [label="Object::getCategory",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#ae00faaa61774277a8a55de0538e358a7",tooltip="Return the object category as a string. "];
+  Node94 -> Node100 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node100 [label="OpalData::getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ac79e35ccb2194504a19ce52ddc5fd6e0"];
+  Node100 -> Node101 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node101 [label="OpalData::OpalData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#accc445ea08f633c3157728e420fd47c6"];
+  Node94 -> Node102 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node102 [label="Object::isBuiltin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#ae7e75b2311e00969ae6308e899d32686",tooltip="True, if [b]this[/b] is a built-in object. "];
+}

@@ -1,0 +1,29 @@
+digraph "Tps::getCoefficient"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node135 [label="Tps::getCoefficient",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node135 -> Node136 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node136 [label="Tps::getCoefficient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d42/a05249.html#aaad089d78530e74af080abe107a7b069",tooltip="Get coefficient. "];
+  Node135 -> Node137 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node137 [label="TpsMonomial::getIndex",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d68/a05269.html#a3e76fbc07d833e8d0db5630b640c0876",tooltip="Convert. "];
+  Node137 -> Node138 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node138 [label="TpsData::getTpsData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/daf/a05265.html#a12f23d39f696c02da148722cb0bd8f06"];
+  Node138 -> Node139 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node139 [label="TpsData::build",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/daf/a05265.html#a44b479e9cba17e82e7d9ceab727ef066"];
+  Node139 -> Node140 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node140 [label="TpsData::getSize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/daf/a05265.html#a6ec8c0544fd09e9a701799d65f1bca46"];
+  Node137 -> Node141 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node141 [label="TpsMonomial::getOrder",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d68/a05269.html#ae55b542f6a7e8eb834e54f83b34ea618",tooltip="Get order. "];
+  Node141 -> Node142 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node142 [label="Array1D::size",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/daa/a05225.html#a9096d7cb939561e15fe3e209c5de6578",tooltip="Get array size. "];
+  Node137 -> Node142 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node137 -> Node143 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node143 [label="TpsData::indexMonomial",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/daf/a05265.html#afa8022ccb80b09bd2a8d187e110e1ca9"];
+  Node135 -> Node144 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node144 [label="TpsMonomial::getVariables",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d68/a05269.html#ac71c697238f771df4d48d7f25b4e19d4",tooltip="Get variables. "];
+  Node144 -> Node142 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node135 -> Node145 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node145 [label="Tps::getVariables",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d42/a05249.html#a0b6c7d1a057ad24e08027a885d1b110a",tooltip="Get number of variables. "];
+}

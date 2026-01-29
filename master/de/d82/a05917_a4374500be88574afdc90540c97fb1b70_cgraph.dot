@@ -1,0 +1,15 @@
+digraph "RelativeFFTLowPassFilter::calc_derivative"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node6 [label="RelativeFFTLowPassFilter\l::calc_derivative",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="abs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d51/a03842.html#a7633e9416cb6fdd16745f5ba3e3ea7d3"];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="PETE_Expr::PETE_unwrap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html#a9e3caaa1091db73ad743988a76490937"];
+  Node6 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="real",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d1a/a01559.html#ad2c903016dffc98273f94db999545737",tooltip="Take real part of a complex generator. "];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="FLieGenerator::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/da4/a05949.html#ad04c5277115352a09af43bda20e483a0",tooltip="Get pointer past end of generator. "];
+}

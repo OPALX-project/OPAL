@@ -1,0 +1,9 @@
+digraph "OpalSeptum::OpalSeptum"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node11 [label="OpalSeptum::OpalSeptum",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node11 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="Element::setElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d71/a04649.html#adcaf1c30b170487a357d7cc9ad8404cf",tooltip="Assign new CLASSIC element. "];
+}

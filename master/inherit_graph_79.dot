@@ -1,0 +1,29 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="BeamlineVisitor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d01/a04977.html"];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="DefaultVisitor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d63/a05297.html"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="AbstractTracker",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dd7/a05285.html",tooltip="Track particles or bunches. "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Tracker",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/deb/a05369.html"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="ParallelCyclotronTracker",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d75/a04805.html"];
+  Node3 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="ParallelTTracker",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/da7/a04817.html"];
+  Node3 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="ThickTracker",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d68/a04825.html",tooltip="Track using thick-lens algorithm. "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Flagger",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d70/a05305.html",tooltip="Set/reset all selection flags in a beam line built from FlaggedElmPtr. "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="RangeSelector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/da1/a07285.html"];
+  Node8 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Selector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/db8/a07289.html"];
+  Node1 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Replacer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/ddc/a06825.html",tooltip="Replace all references to named element by a new version. "];
+  Node0 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="SpecificElementVisitor\l\< ELEM \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d22/a05185.html"];
+}

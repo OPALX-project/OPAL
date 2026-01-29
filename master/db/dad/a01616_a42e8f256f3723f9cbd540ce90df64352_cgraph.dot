@@ -1,0 +1,9 @@
+digraph "operator&gt;&gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node19 [label="operator\>\>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node19 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="TransportFun::get",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d4e/a06005.html#a9f5b26ad7e037cac805c51f6d92f7b39",tooltip="Read TransportFun on the stream [b]is[/b]. "];
+}

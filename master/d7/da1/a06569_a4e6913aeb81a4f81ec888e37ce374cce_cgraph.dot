@@ -1,0 +1,27 @@
+digraph "OpalMarker::OpalMarker"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="OpalMarker::OpalMarker",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="OpalData::create",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#a9b61b52d3e1991992ac7dae7bab951f8",tooltip="Create new object. "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Directory::find",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/de3/a04645.html#a9004a43fe680a069941293f8ab075c24",tooltip="Find entry. "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Object::getOpalName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#a5ec68ba1c3f450f8ea2b139f193c5a39",tooltip="Return object name. "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Directory::insert",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/de3/a04645.html#afd593b9994a1000a969046c02dd66846",tooltip="Define new object. "];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="value_type",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dce/a00740.html#aa8ae23ddaa752827580a9345f34b7cca"];
+  Node0 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Element::getElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d71/a04649.html#a68136aee2ed8edfe943a7bf2933b08ca",tooltip="Return the embedded CLASSIC element. "];
+  Node0 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="OpalData::getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ac79e35ccb2194504a19ce52ddc5fd6e0"];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="OpalData::OpalData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#accc445ea08f633c3157728e420fd47c6"];
+  Node0 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="ElementBase::makeSharable",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a7f915af4b3da11f8e8e8a50ca87969a1",tooltip="Set sharable flag. "];
+  Node0 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Element::setElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d71/a04649.html#adcaf1c30b170487a357d7cc9ad8404cf",tooltip="Assign new CLASSIC element. "];
+}

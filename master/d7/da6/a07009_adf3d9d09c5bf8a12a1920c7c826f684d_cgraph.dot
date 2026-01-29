@@ -1,0 +1,17 @@
+digraph "AmrMultiGrid::computeEfield_m"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node95 [label="AmrMultiGrid::computeEfield_m",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node95 -> Node96 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node96 [label="IpplTimings::startTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d19/a12161.html#af9d914cab7e60b310cb44c75c8bff228"];
+  Node96 -> Node97 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node97 [label="Timing::startTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d4d/a12157.html#ad39485290627108c6ac78c84427277aa"];
+  Node95 -> Node98 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node98 [label="IpplTimings::stopTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d19/a12161.html#a8b229ce711198a6e0e190e7d9098c3eb"];
+  Node98 -> Node99 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node99 [label="Timing::stopTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d4d/a12157.html#a9b5f2cf6b4aa922ada3d453b0d656e34"];
+  Node95 -> Node100 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node100 [label="AmrMultiGrid::trilinos2amrex_m",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/da6/a07009.html#a0606702e71475f17f5a76a932e0d47e6"];
+}

@@ -1,0 +1,31 @@
+digraph "PyOpal::PyLineNS::BOOST_PYTHON_MODULE"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="PyOpal::PyLineNS::BOOST\l_PYTHON_MODULE",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="PyOpal::PyOpalObjectNS\l::PyOpalObject::addGetOpalElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/db5/a06897.html#a47fd708202ddb1bee86fdce1d8991eb8"];
+  Node0 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="PyOpal::PyLine_::append",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d0a/a06913.html#aa0a5a9a4e21ad052c2148f090b1796d7"];
+  Node0 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="PyOpal::PyLine_::getElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d0a/a06913.html#ae50bbcc9e2f759d286504ecc1c33a14e"];
+  Node0 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="PyOpal::PyLine_::getLength",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d0a/a06913.html#a2eb67fd08dc122d239e6103eba50d3aa"];
+  Node0 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="PyOpal::PyLine_::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d0a/a06913.html#ad50f85bab26258bbe0a06b1befe605f1"];
+  Node0 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="PyOpal::Globals::Initialise",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d73/a04542.html#add6a4f09a4bf594241765fb6d14a2f2f"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="IpplInfo::instantiateGlobals",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#a166424080a04feb0a36a6bc1a9c09c3a"];
+  Node0 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="PyOpal::PyLine_::make\l_class",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d0a/a06913.html#a6e9d932564b663316a10f8759082ebc5"];
+  Node0 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="PyOpal::ExceptionTranslation\l::registerExceptions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dad/a04540.html#a6b13e9b77d47f3b02a5f2e3ef12b2a9b"];
+  Node0 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="PyOpal::PyLine_::register\lObject",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d0a/a06913.html#a1416f0bbf13326364d31b25ad09a3c18"];
+  Node0 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="PyOpal::PyLine_::setElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d0a/a06913.html#aa3948a15ec4690c3316225b9e4664d3e"];
+  Node0 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="PyOpal::PyLine_::setName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d0a/a06913.html#a37d8f38623b7056e98dbd3a199e61ef2"];
+}

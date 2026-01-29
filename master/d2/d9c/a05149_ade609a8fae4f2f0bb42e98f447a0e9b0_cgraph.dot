@@ -1,0 +1,11 @@
+digraph "Ring::apply"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node125 [label="Ring::apply",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node125 -> Node126 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node126 [label="PartBunchBase::get\l_centroid",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#abb205db2732109c056b0693e91913912"];
+  Node125 -> Node127 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node127 [label="Ring::getSectionsAt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d9c/a05149.html#a0d4fac85405a403dce2acf662f18f0ed"];
+}

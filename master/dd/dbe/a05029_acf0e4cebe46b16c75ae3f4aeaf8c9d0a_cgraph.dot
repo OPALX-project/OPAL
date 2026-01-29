@@ -1,0 +1,15 @@
+digraph "ElementBase::getEntrancePatch"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node113 [label="ElementBase::getEntrance\lPatch",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node113 -> Node114 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node114 [label="BGeometryBase::getEntrance\lPatch",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/ddf/a05557.html#ac49a4bc6e22058d0deeb76cdf9ec0a2a",tooltip="Get patch. "];
+  Node114 -> Node115 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node115 [label="Euclid3D::identity",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/da9/a05549.html#ab8af897206b9e8f979c4260ad11d5bed",tooltip="Make identity. "];
+  Node115 -> Node116 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node116 [label="Euclid3D::Euclid3D",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/da9/a05549.html#a6f9d1a9cfd2fa832bc3ad4ae1fb170d3",tooltip="Default constructor. "];
+  Node113 -> Node117 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node117 [label="ElementBase::getGeometry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#acc8b1c2de0674e1d3e1ff6173617bbed",tooltip="Get geometry. "];
+}

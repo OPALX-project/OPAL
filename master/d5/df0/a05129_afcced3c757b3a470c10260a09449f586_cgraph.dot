@@ -1,0 +1,13 @@
+digraph "PluginElement::save"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node245 [label="PluginElement::save",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node245 -> Node246 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node246 [label="OpalData::getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ac79e35ccb2194504a19ce52ddc5fd6e0"];
+  Node246 -> Node247 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node247 [label="OpalData::OpalData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#accc445ea08f633c3157728e420fd47c6"];
+  Node245 -> Node248 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node248 [label="OpalData::getOpenMode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ab6c28623a1b959ae2339cabba0540d5b"];
+}

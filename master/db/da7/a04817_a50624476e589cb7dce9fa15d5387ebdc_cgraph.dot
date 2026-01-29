@@ -1,0 +1,37 @@
+digraph "ParallelTTracker::prepareEmission"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1489 [label="ParallelTTracker::prepare\lEmission",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1489 -> Node1490 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1490 [label="PartBunchBase::doEmission",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#ad969795f1c78c7bbdc26942753ac2dbd"];
+  Node1489 -> Node1491 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1491 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node1491 -> Node1492 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1492 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node1492 -> Node1493 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1493 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node1493 -> Node1494 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1494 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node1494 -> Node1491 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1494 -> Node1495 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1495 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node1494 -> Node1496 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1496 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node1492 -> Node1496 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1489 -> Node1497 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1497 [label="PartBunchBase::getdT",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#a4951c53df6841fd275a56f41fc76bfdf"];
+  Node1489 -> Node1498 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1498 [label="PartBunchBase::getEmission\lDeltaT",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#a4db1e117ba16bdd5bfd062b587cffd55"];
+  Node1489 -> Node1499 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1499 [label="PartBunchBase::getNumber\lOfEmissionSteps",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#a824dc660b8f595da880df9f9b36b5346"];
+  Node1489 -> Node1500 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1500 [label="PartBunchBase::getNumber\lOfEnergyBins",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#ab4f987030a8774c594fc24c33a5accc9"];
+  Node1489 -> Node1501 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1501 [label="PartBunchBase::getTEmission",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#a45c6b4a15fc982c5861c813c7c14f706"];
+  Node1489 -> Node1502 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1502 [label="level2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a4b2b36162d7cd2032d0ea378d5015281"];
+  Node1502 -> Node1503 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1503 [label="Inform::setMessageLevel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a9fb7d950a408c97487fbdc7328b038a5"];
+}

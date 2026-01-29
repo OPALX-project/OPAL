@@ -1,0 +1,13 @@
+digraph "OpalBeamline::activateElements"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node3 [label="OpalBeamline::activateElements",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="PartBunchBase::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#ad231fcc85484b425051ff45b9288da34"];
+  Node3 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="BendBase::getDesignEnergy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/da3/a04985.html#a79c9ba7cad9c40eae57145e7747ba701"];
+}

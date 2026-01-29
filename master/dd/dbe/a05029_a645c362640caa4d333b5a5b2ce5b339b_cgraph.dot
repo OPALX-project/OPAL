@@ -1,0 +1,19 @@
+digraph "ElementBase::getEntranceFrame"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node106 [label="ElementBase::getEntrance\lFrame",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node106 -> Node107 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node107 [label="BGeometryBase::getEntrance\lFrame",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/ddf/a05557.html#a80203d8413eeb9a6895c24682cb0a500",tooltip="Get transform. "];
+  Node107 -> Node108 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node108 [label="BGeometryBase::getEntrance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/ddf/a05557.html#a5db85da1c96e5be8ffbdd0b2b913be47",tooltip="Get entrance position. "];
+  Node108 -> Node109 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node109 [label="BGeometryBase::getOrigin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/ddf/a05557.html#a801847a7293b13d6f3e589d14e705385",tooltip="Get origin position. "];
+  Node109 -> Node110 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node110 [label="BGeometryBase::getArcLength",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/ddf/a05557.html#ad65fbb978aab956e163378ef589d74c0",tooltip="Get arc length. "];
+  Node107 -> Node111 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node111 [label="BGeometryBase::getTransform",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/ddf/a05557.html#a0b27cf0c53d13be32e8cec8343c31900",tooltip="Get transform. "];
+  Node106 -> Node112 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node112 [label="ElementBase::getGeometry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#acc8b1c2de0674e1d3e1ff6173617bbed",tooltip="Get geometry. "];
+}

@@ -1,0 +1,9 @@
+digraph "polynomial::RecursionRelation::getMaxXDerivatives"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node83 [label="polynomial::RecursionRelation\l::getMaxXDerivatives",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node83 -> Node84 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node84 [label="polynomial::Differential\lOperator::getXDerivatives",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d1a/a05089.html#ae8ca99152f0936b1441c0ce40e44c7e3"];
+}

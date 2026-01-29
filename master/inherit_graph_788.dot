@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="PETEBinaryReturn\< float,\l RNGLattice\< double \>,\l OpMultipply \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/db3/a10425.html"];
+}

@@ -1,0 +1,23 @@
+digraph "Cyclotron::apply"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node87 [label="Cyclotron::apply",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node87 -> Node88 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node88 [label="Cyclotron::applyTrimCoil",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d3a/a05017.html#ab53becd33b204e9635a025b7108d2c38",tooltip="Apply trim coils (calculate field contributions) with smooth field transition. "];
+  Node88 -> Node89 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node89 [label="abs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d51/a03842.html#a7633e9416cb6fdd16745f5ba3e3ea7d3"];
+  Node89 -> Node90 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node90 [label="PETE_Expr::PETE_unwrap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html#a9e3caaa1091db73ad743988a76490937"];
+  Node88 -> Node91 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node91 [label="Cyclotron::applyTrimCoil_m",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d3a/a05017.html#a9745a391e65b0faf01c8964b4e561282",tooltip="Apply trim coils (calculate field contributions) "];
+  Node87 -> Node92 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node92 [label="Cyclotron::interpolate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d3a/a05017.html#ac2d2fd4fda9a37e0affed1a78b5c6a40"];
+  Node92 -> Node93 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node93 [label="matheval::detail::math::rad",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d04/a04519.html#a9033829b3f188b895945fbf3c999fdc0",tooltip="Convert degrees to radians. "];
+  Node92 -> Node94 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node94 [label="fmod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d51/a03842.html#aae355e465ddaedd0a66a3187cd09a5a8"];
+  Node92 -> Node95 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node95 [label="Cyclotron::idx",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d3a/a05017.html#a4b1fa45840ed8fc1599f5769ae5c8878"];
+}

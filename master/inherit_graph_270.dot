@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="FDoubleEigen\< N \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d67/a05937.html",tooltip="Eigenvalues and eigenvectors for a real general matrix. "];
+}

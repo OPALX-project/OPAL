@@ -1,0 +1,35 @@
+digraph "ElementBase"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node61 [label="ElementBase",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node62 -> Node61 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node62 [label="RCObject",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d72/a06017.html",tooltip="Abstract base class for reference counted objects. "];
+  Node63 -> Node61 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" parmatint_m" ,fontname="Helvetica"];
+  Node63 [label="ParticleMatterInteraction\lHandler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d6e/a06145.html"];
+  Node61 -> Node63 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" element_ref_m" ,fontname="Helvetica"];
+  Node64 -> Node61 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bgeometry_m" ,fontname="Helvetica"];
+  Node64 [label="BoundaryGeometry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/da0/a07185.html"];
+  Node65 -> Node64 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node65 [label="Definition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/df3/a04641.html",tooltip="The base class for all OPAL definitions. "];
+  Node66 -> Node65 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node66 [label="Object",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html",tooltip="The base class for all OPAL objects. "];
+  Node62 -> Node66 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node66 -> Node66 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" itsParent" ,fontname="Helvetica"];
+  Node67 -> Node64 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" nr_m" ,fontname="Helvetica"];
+  Node67 [label="Vektor\< int, 3 \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d68/a07473.html"];
+  Node68 -> Node64 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sizeOfVoxel\nmaxExtent\nminExtent\nmaxExtent_m\nminExtent_m\ninsidePoint_m" ,fontname="Helvetica"];
+  Node68 [label="Vektor\< double, 3 \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d68/a07473.html"];
+  Node69 -> Node61 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" misalignment_m\ncsTrafoGlobal2Local_m" ,fontname="Helvetica"];
+  Node69 [label="CoordinateSystemTrafo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d46/a05293.html"];
+  Node70 -> Node69 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" orientation_m" ,fontname="Helvetica"];
+  Node70 [label="Quaternion",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d67/a05349.html"];
+  Node71 -> Node70 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node71 [label="Vektor\< double, 4 \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d68/a07473.html"];
+  Node68 -> Node69 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" origin_m" ,fontname="Helvetica"];
+  Node72 -> Node61 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" wake_m" ,fontname="Helvetica"];
+  Node72 [label="WakeFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d51/a06177.html"];
+  Node73 -> Node61 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" userAttribs" ,fontname="Helvetica"];
+  Node73 [label="AttributeSet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d76/a04973.html",tooltip="Map of std::string versus double value. "];
+}

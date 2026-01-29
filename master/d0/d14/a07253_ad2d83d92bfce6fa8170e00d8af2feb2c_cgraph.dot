@@ -1,0 +1,13 @@
+digraph "OpalWake::execute"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node78 [label="OpalWake::execute",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node78 -> Node79 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node79 [label="OpalWake::update",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d14/a07253.html#aa4d7f30c39ba15abf080beb8171b627d",tooltip="Update the WAKE data. "];
+  Node79 -> Node80 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node80 [label="Object::getOpalName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#a5ec68ba1c3f450f8ea2b139f193c5a39",tooltip="Return object name. "];
+  Node79 -> Node81 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node81 [label="Object::setOpalName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#ace74608c221c27844e0eb08d6d25d269",tooltip="Set object name. "];
+}

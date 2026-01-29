@@ -1,0 +1,15 @@
+digraph "FFT&lt; RCTransform, Dim, T &gt;::setup"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node4 [label="FFT\< RCTransform, Dim,\l T \>::setup",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="FFTBase::activeDimension",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#acdafb6643adbbfc837507114ae8220a0",tooltip="get dimension number from list of transformed dimensions "];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="FFTBase::getDomain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#a4aa9b793a79e7d326742c932ca2385c9",tooltip="get our domain "];
+  Node4 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="FFTBase::numTransformDims",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#a31ebac743710b1931fac01fb1716dc81",tooltip="query number of transform dimensions "];
+  Node4 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="FFTBase::transVnodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#a2177ec0df888376f04b58a70d8a120cc"];
+}

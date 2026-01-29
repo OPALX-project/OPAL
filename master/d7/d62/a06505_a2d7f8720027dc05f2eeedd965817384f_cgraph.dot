@@ -1,0 +1,18 @@
+digraph "RealDiracMatrix::transform"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node28 [label="RealDiracMatrix::transform",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node28 -> Node29 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="prod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a120639401358f60ba9c8377440c2aff5"];
+  Node29 -> Node30 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="PETE_Expr::PETE_unwrap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html#a9e3caaa1091db73ad743988a76490937"];
+  Node29 -> Node31 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="Reduction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a0a1cdb80c431a477e99aea03fea993fc"];
+  Node31 -> Node32 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="for_each",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a1ea49580c5d70200ee20f6afbc6d6de3"];
+  Node31 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node33 [label="PETE_apply",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a1a29834440d6844017cef5d516087c28"];
+  Node31 -> Node30 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

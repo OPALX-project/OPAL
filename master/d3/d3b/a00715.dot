@@ -1,0 +1,31 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/AbsBeamline/VariableRFCavity.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node65 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/VariableRFCavity.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node65 -> Node66 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node66 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelCyclotronTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d7d/a00161.html"];
+  Node65 -> Node67 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node67 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/SpecificElementVisitor.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d77/a00683.html"];
+  Node67 -> Node68 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node68 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Distribution\l/Distribution.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dd8/a02108.html"];
+  Node65 -> Node69 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node69 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/VariableRFCavity.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/deb/a00710.html"];
+  Node65 -> Node70 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/VariableRFCavityFringe\lField.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dd8/a00719.html"];
+  Node70 -> Node66 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 -> Node67 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 -> Node71 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node71 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/VariableRFCavityFringe\lField.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d94/a00716.html"];
+  Node70 -> Node72 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node72 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Algorithms/DefaultVisitor.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/db7/a00812.html"];
+  Node70 -> Node73 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node73 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalVariableRFCavityFringeField.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d2b/a02420.html"];
+  Node70 -> Node74 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node74 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyElements/PyVariableRFCavityFringe\lField.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d8c/a02747.html"];
+  Node65 -> Node72 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node65 -> Node75 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node75 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalVariableRFCavity.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/dc9/a02414.html"];
+  Node65 -> Node76 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node76 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyElements/PyVariableRFCavity.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dc7/a02744.html"];
+}

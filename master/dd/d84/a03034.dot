@@ -1,0 +1,22 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Solvers/RegularDomain.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node48 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/RegularDomain.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node48 -> Node49 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node49 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/BoxCornerDomain.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d24/a02975.html"];
+  Node49 -> Node50 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node50 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/BoxCornerDomain.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/daf/a02972.html"];
+  Node49 -> Node51 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node51 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/MGPoissonSolver.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dbd/a03008.html"];
+  Node48 -> Node52 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node52 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/EllipticDomain.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dcd/a02987.html"];
+  Node52 -> Node53 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node53 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/EllipticDomain.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d7e/a02984.html"];
+  Node52 -> Node51 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node48 -> Node54 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node54 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/RectangularDomain.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/da3/a03026.html"];
+  Node54 -> Node51 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node48 -> Node55 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node55 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/RegularDomain.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d1b/a03029.html"];
+}

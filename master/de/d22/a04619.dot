@@ -1,0 +1,11 @@
+digraph "Action"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node22 [label="Action",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node23 -> Node22 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="Object",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html",tooltip="The base class for all OPAL objects. "];
+  Node24 -> Node23 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 [label="RCObject",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d72/a06017.html",tooltip="Abstract base class for reference counted objects. "];
+  Node23 -> Node23 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" itsParent" ,fontname="Helvetica"];
+}

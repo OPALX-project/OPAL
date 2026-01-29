@@ -1,0 +1,17 @@
+digraph "TrackRun::initDataSink"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node277 [label="TrackRun::initDataSink",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node277 -> Node278 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node278 [label="DataSink::changeH5Wrapper",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d69/a07193.html#a2ba46ccadf3f2bd88c53e494ee7b4193"];
+  Node277 -> Node279 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node279 [label="OpalData::getDataSink",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#a090a6fe62c84eb9c9a390202115fb488"];
+  Node277 -> Node280 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node280 [label="OpalData::hasDataSinkAllocated",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ab8f3190a47dda1444a9488532841266a",tooltip="true if we already allocated a DataSink object "];
+  Node277 -> Node281 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node281 [label="OpalData::inRestartRun",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#af8d0b55764c02667df67d086327b6a34",tooltip="true if we do a restart run "];
+  Node277 -> Node282 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node282 [label="OpalData::setDataSink",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ab54ac1f06aec822e5b3023913d28d981"];
+}

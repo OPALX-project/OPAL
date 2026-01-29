@@ -1,0 +1,40 @@
+digraph "SigmaGenerator::decouple"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node69 [label="SigmaGenerator::decouple",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node69 -> Node70 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 [label="RealDiracMatrix::diagonalize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d62/a06505.html#ac150f958cab3c4e66c1e48b38a357354"];
+  Node70 -> Node71 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node71 [label="atan2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d51/a03842.html#adece0042b4015b8521d983143b6af21a"];
+  Node70 -> Node72 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node72 [label="matt_boost::cross_prod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dd3/a04527.html#ab994fd6ec746cde3c38fcb3980bb4f67",tooltip="Computes the cross product  of two vectors in . "];
+  Node70 -> Node73 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node73 [label="fabs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a74dc182f1d4874ddea8940604665779b"];
+  Node70 -> Node74 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node74 [label="RealDiracMatrix::getRDM",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d62/a06505.html#ab11cd5dc339b9a250eb16fa62d219f3f"];
+  Node70 -> Node75 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node75 [label="prod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a120639401358f60ba9c8377440c2aff5"];
+  Node75 -> Node76 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node76 [label="PETE_Expr::PETE_unwrap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html#a9e3caaa1091db73ad743988a76490937"];
+  Node75 -> Node77 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node77 [label="Reduction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a0a1cdb80c431a477e99aea03fea993fc"];
+  Node77 -> Node78 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node78 [label="for_each",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a1ea49580c5d70200ee20f6afbc6d6de3"];
+  Node77 -> Node79 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node79 [label="PETE_apply",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a1a29834440d6844017cef5d516087c28"];
+  Node77 -> Node76 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 -> Node80 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node80 [label="matt_boost::trace",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dd3/a04527.html#ad5dc1f3a945f5a5fdc9a5bf7da178fa0",tooltip="Computes the trace of a square matrix. "];
+  Node80 -> Node81 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node81 [label="sum",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a06dc3d53220b680f16b2c655bcb86a40"];
+  Node81 -> Node76 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node81 -> Node77 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 -> Node82 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node82 [label="RealDiracMatrix::transform",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d62/a06505.html#a2d7f8720027dc05f2eeedd965817384f"];
+  Node82 -> Node75 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node69 -> Node83 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node83 [label="RealDiracMatrix::symplex",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d62/a06505.html#a317116162b8aad99f625e34286cc698b"];
+  Node83 -> Node74 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

@@ -1,0 +1,11 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="Stepper\< FieldFunction,\l Arguments... \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d09/a07153.html"];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="LF2\< FieldFunction,\l Arguments \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d6f/a07145.html",tooltip="Leap-Frog 2nd order. "];
+  Node0 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="RK4\< FieldFunction,\l Arguments \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d98/a07149.html",tooltip="4-th order Runnge-Kutta stepper "];
+}

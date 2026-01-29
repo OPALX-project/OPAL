@@ -1,0 +1,35 @@
+digraph "Definition"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="Definition",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="Object",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html",tooltip="The base class for all OPAL objects. "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="RCObject",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d72/a06017.html",tooltip="Abstract base class for reference counted objects. "];
+  Node0 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Beam",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dd2/a07157.html"];
+  Node0 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="BoundaryGeometry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/da0/a07185.html"];
+  Node0 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Constraint",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d85/a06877.html"];
+  Node0 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Distribution",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/ddb/a06481.html"];
+  Node0 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="DVar",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dc5/a06881.html"];
+  Node0 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="FieldSolver",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d9c/a07201.html"];
+  Node0 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Objective",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/db9/a06885.html"];
+  Node0 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="OpalFilter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d90/a07321.html"];
+  Node0 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="OpalSample",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d88/a06941.html"];
+  Node0 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="OpalTrimCoil",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d44/a06217.html"];
+  Node0 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="OpalWake",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d14/a07253.html"];
+  Node0 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="ParticleMatterInteraction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d49/a07257.html"];
+}

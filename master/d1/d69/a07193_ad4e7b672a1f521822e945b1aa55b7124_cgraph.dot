@@ -1,0 +1,29 @@
+digraph "DataSink::DataSink"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="DataSink::DataSink",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="DataSink::init",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d69/a07193.html#a5f69a2186bae01bb9a608b3f44577e3c"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="OpalData::getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ac79e35ccb2194504a19ce52ddc5fd6e0"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="OpalData::OpalData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#accc445ea08f633c3157728e420fd47c6"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="OpalData::getInputBasename",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#a3539361fbd2937b2b70723d6470ba8a6",tooltip="get input file name without extension "];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="IpplTimings::getTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d19/a12161.html#a59ffa7a04c160376d3a6593bff568fb4"];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Timing::getTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d4d/a12157.html#ad8cc1e1e72cef6a72e059d33913d8af7"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="value_type",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dce/a00740.html#aa8ae23ddaa752827580a9345f34b7cca"];
+  Node1 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="DataSink::initMultiBunchDump",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d69/a07193.html#a3635da56b78cea97d2b342ef806ff1c0"];
+  Node8 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="OpalData::inRestartRun",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#af8d0b55764c02667df67d086327b6a34",tooltip="true if we do a restart run "];
+  Node8 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="DataSink::convertToString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d69/a07193.html#a6f185afafd30295bc2a74300501444ef"];
+}

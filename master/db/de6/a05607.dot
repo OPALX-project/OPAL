@@ -1,0 +1,46 @@
+digraph "TBeamline&lt; T &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node4 [label="TBeamline\< T \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Beamline",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d1e/a05593.html",tooltip="An abstract sequence of beam line components. "];
+  Node6 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="ElementBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html"];
+  Node7 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="RCObject",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d72/a06017.html",tooltip="Abstract base class for reference counted objects. "];
+  Node8 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" parmatint_m" ,fontname="Helvetica"];
+  Node8 [label="ParticleMatterInteraction\lHandler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d6e/a06145.html"];
+  Node6 -> Node8 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" element_ref_m" ,fontname="Helvetica"];
+  Node9 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bgeometry_m" ,fontname="Helvetica"];
+  Node9 [label="BoundaryGeometry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/da0/a07185.html"];
+  Node10 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Definition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/df3/a04641.html",tooltip="The base class for all OPAL definitions. "];
+  Node11 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="Object",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html",tooltip="The base class for all OPAL objects. "];
+  Node7 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 -> Node11 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" itsParent" ,fontname="Helvetica"];
+  Node12 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" nr_m" ,fontname="Helvetica"];
+  Node12 [label="Vektor\< int, 3 \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d68/a07473.html"];
+  Node13 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sizeOfVoxel\nmaxExtent\nminExtent\nmaxExtent_m\nminExtent_m\ninsidePoint_m" ,fontname="Helvetica"];
+  Node13 [label="Vektor\< double, 3 \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d68/a07473.html"];
+  Node14 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" misalignment_m\ncsTrafoGlobal2Local_m" ,fontname="Helvetica"];
+  Node14 [label="CoordinateSystemTrafo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d46/a05293.html"];
+  Node15 -> Node14 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" orientation_m" ,fontname="Helvetica"];
+  Node15 [label="Quaternion",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d67/a05349.html"];
+  Node16 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="Vektor\< double, 4 \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d68/a07473.html"];
+  Node13 -> Node14 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" origin_m" ,fontname="Helvetica"];
+  Node17 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" wake_m" ,fontname="Helvetica"];
+  Node17 [label="WakeFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d51/a06177.html"];
+  Node18 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" userAttribs" ,fontname="Helvetica"];
+  Node18 [label="AttributeSet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d76/a04973.html",tooltip="Map of std::string versus double value. "];
+  Node15 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" itsCoordTrafoTo_m" ,fontname="Helvetica"];
+  Node13 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" itsOrigin_m" ,fontname="Helvetica"];
+  Node19 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" itsGeometry" ,fontname="Helvetica"];
+  Node19 [label="BeamlineGeometry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d24/a05597.html",tooltip="Implements the composite geometry of a beam line. "];
+  Node20 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="BGeometryBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/ddf/a05557.html",tooltip="Abstract base class for accelerator geometry classes. "];
+  Node5 -> Node19 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" itsLine" ,fontname="Helvetica"];
+}

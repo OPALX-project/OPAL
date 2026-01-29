@@ -1,0 +1,9 @@
+digraph "SIndex::notifyUserOfDelete"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node28 [label="SIndex::notifyUserOfDelete",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node28 -> Node29 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="UserList::getUserListID",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d20/a12221.html#a2143514bffbc001f6e0793116f3bf076"];
+}

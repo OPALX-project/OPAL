@@ -1,0 +1,35 @@
+<map id="/psi/home/gsell/data/src/OPAL/src/ippl/src/DataSource/FilePtclBaseDataSource.h" name="/psi/home/gsell/data/src/OPAL/src/ippl/src/DataSource/FilePtclBaseDataSource.h">
+<area shape="rect" id="node2" href="$dd/d8e/a03377.html" title="DataSource/DataSourceObject.h" alt="" coords="893,497,1123,524"/>
+<area shape="rect" id="node7" href="$d1/dd8/a03743.html" title="Particle/IpplParticleBase.h" alt="" coords="1626,109,1817,136"/>
+<area shape="rect" id="node45" href="$d0/ddf/a03935.html" title="Utility/DiscParticle.h" alt="" coords="2620,348,2775,375"/>
+<area shape="rect" id="node49" href="$dc/da7/a03404.html" title="DataSource/FilePtclBaseData\lSource.hpp" alt="" coords="2704,259,2915,300"/>
+<area shape="rect" id="node3" href="$d4/d6f/a03374.html" title="DataSource/DataSource.h" alt="" coords="1886,572,2074,599"/>
+<area shape="rect" id="node5" href="$d9/d97/a04016.html" title="Utility/NamedObj.h" alt="" coords="620,572,767,599"/>
+<area shape="rect" id="node8" href="$dd/df6/a03713.html" title="Particle/AbstractParticle.h" alt="" coords="857,184,1045,211"/>
+<area shape="rect" id="node9" href="$d7/dab/a03815.html" title="Particle/ParticleLayout.h" alt="" coords="679,266,857,293"/>
+<area shape="rect" id="node12" href="$d9/df0/a03782.html" title="Particle/ParticleAttribBase.h" alt="" coords="2037,497,2240,524"/>
+<area shape="rect" id="node15" href="$d0/db9/a13458.html" title="AppTypes/Vektor.h" alt="" coords="1340,348,1481,375"/>
+<area shape="rect" id="node27" href="$da/dc7/a03407.html" title="DataSource/MakeDataSource.h" alt="" coords="1042,348,1265,375"/>
+<area shape="rect" id="node29" href="$df/d98/a03680.html" title="Message/Format.h" alt="" coords="484,423,625,449"/>
+<area shape="rect" id="node31" href="$d4/df9/a03701.html" title="Message/MsgBuffer.h" alt="" coords="301,423,459,449"/>
+<area shape="rect" id="node32" href="$d7/d4f/a03746.html" title="Particle/IpplParticleBase.hpp" alt="" coords="1618,184,1825,211"/>
+<area shape="rect" id="node10" href="$d6/da7/a03794.html" title="Particle/ParticleBConds.h" alt="" coords="94,423,277,449"/>
+<area shape="rect" id="node11" href="$d4/d5e/a03818.html" title="Particle/ParticleLayout.hpp" alt="" coords="671,348,865,375"/>
+<area shape="rect" id="node16" href="$d9/d85/a04034.html" title="Utility/PAssert.h" alt="" coords="1582,423,1709,449"/>
+<area shape="rect" id="node19" href="$d3/d4a/a03689.html" title="Message/Message.h" alt="" coords="1169,497,1321,524"/>
+<area shape="rect" id="node23" href="$dd/d51/a03842.html" title="PETE/IpplExpressions.h" alt="" coords="1386,423,1558,449"/>
+<area shape="rect" id="node24" href="$d9/db1/a03335.html" title="AppTypes/TSVMeta.h" alt="" coords="1015,423,1172,449"/>
+<area shape="rect" id="node28" href="$df/de2/a03410.html" title="DataSource/MakeDataSource.hpp" alt="" coords="701,423,939,449"/>
+<area shape="rect" id="node33" href="$df/df7/a03776.html" title="Particle/ParticleAttrib.h" alt="" coords="1792,266,1963,293"/>
+<area shape="rect" id="node34" href="$d0/dce/a03971.html" title="Utility/Inform.h" alt="" coords="1689,497,1810,524"/>
+<area shape="rect" id="node35" href="$d9/def/a04004.html" title="Utility/IpplStats.h" alt="" coords="2241,348,2375,375"/>
+<area shape="rect" id="node36" href="$d7/df2/a03986.html" title="Utility/IpplInfo.h" alt="" coords="2739,423,2866,449"/>
+<area shape="rect" id="node40" href="$d1/df9/a03665.html" title="Message/Communicate.h" alt="" coords="2701,497,2888,524"/>
+<area shape="rect" id="node44" href="$dd/d78/a03980.html" title="Utility/IpplException.h" alt="" coords="119,266,286,293"/>
+<area shape="rect" id="node37" href="$d7/dfc/a04061.html" title="Utility/StaticIpplInfo.h" alt="" coords="3051,497,3215,524"/>
+<area shape="rect" id="node41" href="$d1/d00/a03707.html" title="Message/TagMaker.h" alt="" coords="2695,572,2851,599"/>
+<area shape="rect" id="node42" href="$d5/d46/a03710.html" title="Message/Tags.h" alt="" coords="3190,572,3314,599"/>
+<area shape="rect" id="node46" href="$d7/d01/a03920.html" title="Utility/DiscConfig.h" alt="" coords="2517,423,2664,449"/>
+<area shape="rect" id="node47" href="$d0/d0f/a04085.html" title="Utility/vmap.h" alt="" coords="2912,497,3027,524"/>
+<area shape="rect" id="node50" href="$db/d7d/a03386.html" title="DataSource/FileDataConnect.h" alt="" coords="2900,348,3119,375"/>
+</map>

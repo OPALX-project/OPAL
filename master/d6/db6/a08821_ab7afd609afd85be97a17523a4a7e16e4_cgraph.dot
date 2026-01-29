@@ -1,0 +1,11 @@
+digraph "SIndex::SIndex"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="SIndex::SIndex",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="SIndex::setup",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/db6/a08821.html#a5184417b97cf040dfc850ff0ced5ba7a"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="FieldLayout::end_iv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/db8/a08465.html#a02206cd5b8f4df1f2e2e17aa3e232846"];
+}

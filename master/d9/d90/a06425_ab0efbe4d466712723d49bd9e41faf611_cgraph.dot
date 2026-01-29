@@ -1,0 +1,11 @@
+digraph "mslang::Triangle::apply"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node3 [label="mslang::Triangle::apply",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="mslang::Triangle::clone",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d90/a06425.html#a43ec8ab0778290f532aec2e33f9e61fd"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="mslang::Triangle::Triangle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d90/a06425.html#a5905d4dd88902504a545d3da3339b30c"];
+}

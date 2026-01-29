@@ -1,0 +1,14 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Fields/Interpolation/NDGrid.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node7 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/NDGrid.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="/psi/home/gsell/data\l/src/OPAL/src/src/BasicActions\l/DumpEMFields.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d55/a00323.html"];
+  Node7 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/NDGrid.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d85/a01436.html"];
+  Node7 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyNDGrid.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/dbd/a02771.html"];
+  Node7 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyPolynomialPatch.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d69/a02786.html"];
+}

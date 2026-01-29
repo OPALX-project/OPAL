@@ -1,0 +1,13 @@
+digraph "VariableRFCavityFringeField::clone"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node90 [label="VariableRFCavityFringeField\l::clone",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node90 -> Node91 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node91 [label="VariableRFCavityFringeField\l::VariableRFCavityFringeField",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d28/a05217.html#a70d64550a9f48c8b855caf39b18027c8"];
+  Node91 -> Node92 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node92 [label="VariableRFCavityFringeField\l::initNull",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d28/a05217.html#a0819af35de58074f2f736db3dd1fe8e4"];
+  Node92 -> Node93 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node93 [label="VariableRFCavity::initNull",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/dbd/a05213.html#ad434d636a3ef4a6a043985838a5cdb53"];
+}

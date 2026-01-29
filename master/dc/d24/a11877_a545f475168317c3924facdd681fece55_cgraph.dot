@@ -1,0 +1,14 @@
+digraph "PRegion::operator&lt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node24 [label="PRegion::operator\<",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node24 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node25 [label="PRegion::length",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d24/a11877.html#afd06fc8c61b9ebfde8235bf2278b366b"];
+  Node25 -> Node26 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node26 [label="PRegion::max",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d24/a11877.html#a4f910764d1b3dfc3fb5c9add2231d93c"];
+  Node25 -> Node27 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node27 [label="PRegion::min",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d24/a11877.html#ab3d4e049e13656981d236ea94aecaca7"];
+  Node24 -> Node27 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

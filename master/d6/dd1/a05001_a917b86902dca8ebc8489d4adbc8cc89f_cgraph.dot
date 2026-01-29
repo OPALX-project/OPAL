@@ -1,0 +1,15 @@
+digraph "Component::EBfield"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node230 [label="Component::EBfield",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node230 -> Node231 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node231 [label="EMField::EBfield",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/db9/a05705.html#af833b1f981c92b817ccaa6325194778b",tooltip="Get field. "];
+  Node231 -> Node232 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node232 [label="EMField::Efield",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/db9/a05705.html#af3a6ea7c84477c05b1cc8a7129e2cefc",tooltip="Get field. "];
+  Node231 -> Node233 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node233 [label="EMField::Bfield",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/db9/a05705.html#a5521f1033a65183805053fac038b2291",tooltip="Get field. "];
+  Node230 -> Node234 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node234 [label="Component::getField",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dd1/a05001.html#ad3d8e5409704f13393ce655b39aab741",tooltip="Return field. "];
+}

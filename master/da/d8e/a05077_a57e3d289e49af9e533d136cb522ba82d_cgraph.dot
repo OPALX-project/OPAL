@@ -1,0 +1,17 @@
+digraph "MultipoleTCurvedVarRadius::setMaxOrder"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node449 [label="MultipoleTCurvedVarRadius\l::setMaxOrder",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node449 -> Node450 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node450 [label="MultipoleT::getTransMaxOrder",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d59/a05065.html#a088f0d0dad3ee42460ebb33568959f1e"];
+  Node449 -> Node451 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node451 [label="polynomial::RecursionRelation\lTwo::resizeX",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d83/a05109.html#ae1fd871a81b6d5ef6ad50eb05755a495"];
+  Node451 -> Node452 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node452 [label="polynomial::Differential\lOperatorTwo::resizeX",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/df5/a05093.html#a7678e007d36621ecef56dfa51668cbea"];
+  Node449 -> Node453 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node453 [label="polynomial::RecursionRelation\lTwo::truncate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d83/a05109.html#a1e8e7aa27aba00693972e06a730a95cf"];
+  Node453 -> Node454 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node454 [label="polynomial::Differential\lOperatorTwo::truncate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/df5/a05093.html#a7d5dc08c83982fcdb1698bec495b1c77"];
+}

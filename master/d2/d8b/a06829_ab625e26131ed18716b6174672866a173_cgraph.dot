@@ -1,0 +1,18 @@
+digraph "Sequence::replace"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node251 [label="Sequence::replace",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node251 -> Node252 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node252 [label="DefaultVisitor::execute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d63/a05297.html#af22b64e4dde053effbf725dbc19f1b71",tooltip="Apply the algorithm to the top-level beamline. "];
+  Node252 -> Node253 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node253 [label="ElementBase::accept",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a4c963794b96d83d5d3be0a9fe3c44322",tooltip="Apply visitor. "];
+  Node251 -> Node254 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node254 [label="Sequence::fetchLine",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d8b/a06829.html#a7a11f38b6f5a642a4587a2ba1e9b1d95",tooltip="Return the embedded CLASSIC beam line. "];
+  Node254 -> Node255 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node255 [label="Element::getElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d71/a04649.html#a68136aee2ed8edfe943a7bf2933b08ca",tooltip="Return the embedded CLASSIC element. "];
+  Node251 -> Node255 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node251 -> Node256 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node256 [label="Object::getOpalName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#a5ec68ba1c3f450f8ea2b139f193c5a39",tooltip="Return object name. "];
+}

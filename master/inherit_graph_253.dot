@@ -1,0 +1,17 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node43 [label="vector",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node43 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 [label="Expressions::ArrayOfPtrs\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d12/a04661.html",tooltip="An array of pointers to scalar expressions. "];
+  Node43 -> Node45 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node45 [label="LineDensity",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d15/a06181.html"];
+  Node43 -> Node46 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node46 [label="RegionLayout\< T, Dim,\l MeshType \>::RnodePool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d87/a11885.html"];
+  Node43 -> Node47 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node47 [label="SDDS::columnList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/df4/a12689.html"];
+  Node43 -> Node48 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node48 [label="SDDS::parameterList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d98/a12749.html"];
+}

@@ -1,0 +1,11 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1835 [label="default_call_policies",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node1835 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 [label="PyOpal::PyOpalObjectNS\l::PyOpalObjectGetProperty\< C \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dcd/a06901.html"];
+  Node1835 -> Node1837 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1837 [label="PyOpal::PyOpalObjectNS\l::PyOpalObjectSetProperty\< C \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d07/a06905.html"];
+}

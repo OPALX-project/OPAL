@@ -1,0 +1,12 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Solvers/AMR_MG/AmrOpenBoundary.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node14 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrOpenBoundary.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrMultiGridCore.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d5e/a02891.html"];
+  Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrMultiGrid.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d04/a02888.html"];
+  Node16 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrMultiGrid.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d68/a02885.html"];
+}

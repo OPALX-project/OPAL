@@ -1,0 +1,9 @@
+digraph "BGeometryBase::getOrigin"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node27 [label="BGeometryBase::getOrigin",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node27 -> Node28 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node28 [label="BGeometryBase::getArcLength",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/ddf/a05557.html#ad65fbb978aab956e163378ef589d74c0",tooltip="Get arc length. "];
+}

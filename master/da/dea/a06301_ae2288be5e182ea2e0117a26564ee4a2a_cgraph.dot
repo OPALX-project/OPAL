@@ -1,0 +1,21 @@
+digraph "mslang::BoundingBox2D::writeGnuplot"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node19 [label="mslang::BoundingBox2D\l::writeGnuplot",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node19 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node20 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node21 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node22 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node23 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 -> Node24 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node23 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node25 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node21 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

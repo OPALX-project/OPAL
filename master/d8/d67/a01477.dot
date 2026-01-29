@@ -1,0 +1,40 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Fields/Interpolation/ThreeDGrid.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node7 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/ThreeDGrid.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="/psi/home/gsell/data\l/src/OPAL/src/src/BasicActions\l/DumpFields.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d4e/a00329.html"];
+  Node7 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/Interpolator3d\lGridTo1d.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d6e/a01409.html"];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/Interpolator3d\lGridTo1d.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d25/a01406.html"];
+  Node9 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/Interpolator3d\lGridTo3d.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d70/a01415.html"];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/Interpolator3d\lGridTo3d.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d10/a01412.html"];
+  Node11 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/SectorMagneticFieldMap.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/dc6/a01502.html"];
+  Node9 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/TriLinear\lInterpolator.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/de4/a01481.html"];
+  Node14 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/TriLinear\lInterpolator.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d7b/a01478.html"];
+  Node7 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/ThreeDGrid.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d48/a01472.html"];
+  Node7 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/VectorMap.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d21/a01484.html"];
+  Node17 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/Polynomial\lPatch.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/dbc/a01451.html"];
+  Node18 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/Polynomial\lPatch.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d08/a01448.html"];
+  Node18 -> Node20 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/PPSolveFactory.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/df6/a01454.html"];
+  Node18 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 -> Node21 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyPolynomialPatch.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d69/a02786.html"];
+  Node17 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

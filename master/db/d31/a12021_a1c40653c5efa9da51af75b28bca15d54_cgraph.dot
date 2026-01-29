@@ -1,0 +1,17 @@
+digraph "DiscField::compute_expected"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node8 [label="DiscField::compute\l_expected",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node8 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="FieldLayout::begin_iv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/db8/a08465.html#adbde9513bc2b5b30b40223d5218abb4a"];
+  Node8 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="FieldLayout::end_iv",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/db8/a08465.html#a02206cd5b8f4df1f2e2e17aa3e232846"];
+  Node8 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="NDIndex::intersect",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dcf/a08205.html#ad175b56cd8ec95f78a201cac4feb8931"];
+  Node8 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="NDIndex::size",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dcf/a08205.html#a13dd94cf2a9c224510a41c5dda2f1bbe"];
+  Node8 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="NDIndex::touches",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dcf/a08205.html#a2917bb719ec865512e42401b55284d7d"];
+}

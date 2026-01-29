@@ -1,0 +1,23 @@
+digraph "PyOpal::PyOpalObjectNS::PyOpalObject::make_generic_class"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node189 [label="PyOpal::PyOpalObjectNS\l::PyOpalObject::make_generic_class",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node189 -> Node190 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node190 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node190 -> Node191 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node191 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node191 -> Node192 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node192 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node192 -> Node193 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node193 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node193 -> Node190 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node193 -> Node194 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node194 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node193 -> Node195 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node195 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node191 -> Node195 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node189 -> Node196 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node196 [label="OpalException::what",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d44/a07317.html#a02110c105ed46e90667574cdb2e62a74",tooltip="Return the message string for the exception. "];
+}

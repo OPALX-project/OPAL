@@ -1,0 +1,44 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Utilities/MSLang/QuadTree.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node45 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Utilities/MSLang/QuadTree.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node45 -> Node46 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node46 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/FlexibleCollimator.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d0f/a00494.html"];
+  Node46 -> Node47 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node47 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelTTracker.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dcb/a00170.html"];
+  Node47 -> Node48 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node48 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelTTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/de6/a00167.html"];
+  Node47 -> Node49 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node49 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyField.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d8e/a02759.html"];
+  Node47 -> Node50 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node50 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Track\l/TrackRun.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d19/a03242.html"];
+  Node46 -> Node51 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node51 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/FlexibleCollimator.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d60/a00491.html"];
+  Node46 -> Node52 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node52 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/SpecificElementVisitor.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d77/a00683.html"];
+  Node52 -> Node53 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node53 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Distribution\l/Distribution.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dd8/a02108.html"];
+  Node46 -> Node54 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node54 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Algorithms/DefaultVisitor.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/db7/a00812.html"];
+  Node46 -> Node55 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node55 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/FlexibleCollimatorRep.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dce/a00944.html"];
+  Node55 -> Node56 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node56 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/FlexibleCollimator\lRep.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dad/a00941.html"];
+  Node55 -> Node57 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node57 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalECollimator.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d4d/a02186.html"];
+  Node55 -> Node58 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node58 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalFlexibleCollimator.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d4a/a02204.html"];
+  Node55 -> Node59 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node59 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalPepperPot.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d49/a02282.html"];
+  Node55 -> Node60 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node60 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalRCollimator.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/dda/a02318.html"];
+  Node55 -> Node61 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node61 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalSlit.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d4f/a02366.html"];
+  Node46 -> Node62 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node62 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Solvers/ScatteringPhysics.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d20/a01772.html"];
+  Node45 -> Node63 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node63 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Utilities/MSLang/QuadTree.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d3d/a01982.html"];
+  Node45 -> Node64 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node64 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Utilities/MSLang.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/db2/a02036.html"];
+}

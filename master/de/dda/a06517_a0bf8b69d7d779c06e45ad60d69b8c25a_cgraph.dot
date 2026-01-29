@@ -1,0 +1,11 @@
+digraph "OpalBeamline::rotateFrom"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node114 [label="OpalBeamline::rotateFrom",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node114 -> Node115 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node115 [label="CoordinateSystemTrafo\l::rotateFrom",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d46/a05293.html#a9e32c2abaaa99cc1366d5b712d0baf0f"];
+  Node115 -> Node116 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node116 [label="prod_boost_vector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d81/a00110.html#a51353d2921885b3821cd9089170845e8"];
+}

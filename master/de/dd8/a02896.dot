@@ -1,0 +1,40 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Solvers/AMR_MG/AmrMultiGridDefs.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node8 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrMultiGridDefs.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node8 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/BottomSolver.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d08/a02936.html"];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/Amesos2BottomSolver.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d47/a02864.html"];
+  Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrMultiGridCore.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d5e/a02891.html"];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrMultiGrid.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d04/a02888.html"];
+  Node12 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrMultiGrid.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d68/a02885.html"];
+  Node9 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/BelosBottomSolver.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d41/a02930.html"];
+  Node14 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/MueLuBottomSolver.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d6b/a02945.html"];
+  Node15 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrPreconditioner.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/deb/a02915.html"];
+  Node16 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/Ifpack2Preconditioner.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d87/a02939.html"];
+  Node17 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/MueLuPreconditioner.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d32/a02951.html"];
+  Node18 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrSmoother.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d27/a02921.html"];
+  Node19 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 -> Node20 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrSmoother.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db9/a02918.html"];
+  Node8 -> Node21 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrMultiGridLevel.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d4c/a02897.html"];
+  Node21 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

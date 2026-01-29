@@ -1,0 +1,19 @@
+digraph "MultipoleRep::getChannel"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node6 [label="MultipoleRep::getChannel",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="ElementBase::getChannel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a02257dc2843938a8baa24583fdd6b273",tooltip="Construct a read/write channel. "];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="AttributeSet::getChannel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d76/a04973.html#a9ca26ee9df44ab1d5c19554d647b8c4d",tooltip="Construct a read/write channel. "];
+  Node6 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Multipole::getNormalComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d34/a05061.html#ae84f4dae51e37e61dcedf649b19709fd",tooltip="Get normal component. "];
+  Node6 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Multipole::getSkewComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d34/a05061.html#aca2b7ac062c3c0f410133dbab55b3edb",tooltip="Get skew component. "];
+  Node6 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="Multipole::setNormalComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d34/a05061.html#ac028bcabea2c908878282430c9242c77",tooltip="Set normal component. "];
+  Node6 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="Multipole::setSkewComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d34/a05061.html#ae7b67b5d67d5b1abdf90ed0e41b9e2a3",tooltip="Set skew component. "];
+}

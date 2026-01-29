@@ -1,0 +1,25 @@
+digraph "ScatteringPhysics::addBackToBunch"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node12 [label="ScatteringPhysics::\laddBackToBunch",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="ScatteringPhysics::\laddParticleBackToBunch",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/da5/a06173.html#a46521f8a87300327763d447874100d2f"];
+  Node13 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="PartBunchBase::getLocalNum",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#a1f81217882e2f010b529837e0abc8889"];
+  Node13 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="PartBunchBase::createWithID",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#a7797905b189544f920ae876894dfb40b"];
+  Node12 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="ScatteringPhysics::\ldeleteParticleFromLocalVector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/da5/a06173.html#a500918870333163f7530ac71cacd0503"];
+  Node12 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="ElementBase::getElementLength",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a1b412456edcf01147abada7721605101",tooltip="Get design length. "];
+  Node17 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="BGeometryBase::getElement\lLength",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/ddf/a05557.html#a73f1d2087c1b6c7fb3e5e00f6835f88e",tooltip="Get geometry length. "];
+  Node17 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="ElementBase::getGeometry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#acc8b1c2de0674e1d3e1ff6173617bbed",tooltip="Get geometry. "];
+  Node12 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="OpalData::getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ac79e35ccb2194504a19ce52ddc5fd6e0"];
+  Node20 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="OpalData::OpalData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#accc445ea08f633c3157728e420fd47c6"];
+}

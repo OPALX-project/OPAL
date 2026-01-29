@@ -1,0 +1,43 @@
+digraph "Tps::setCoefficient"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node933 [label="Tps::setCoefficient",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node933 -> Node934 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node934 [label="TpsMonomial::getIndex",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d68/a05269.html#a3e76fbc07d833e8d0db5630b640c0876",tooltip="Convert. "];
+  Node934 -> Node935 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node935 [label="TpsData::getTpsData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/daf/a05265.html#a12f23d39f696c02da148722cb0bd8f06"];
+  Node935 -> Node936 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node936 [label="TpsData::build",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/daf/a05265.html#a44b479e9cba17e82e7d9ceab727ef066"];
+  Node936 -> Node937 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node937 [label="TpsData::getSize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/daf/a05265.html#a6ec8c0544fd09e9a701799d65f1bca46"];
+  Node934 -> Node938 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node938 [label="TpsMonomial::getOrder",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d68/a05269.html#ae55b542f6a7e8eb834e54f83b34ea618",tooltip="Get order. "];
+  Node938 -> Node939 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node939 [label="Array1D::size",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/daa/a05225.html#a9096d7cb939561e15fe3e209c5de6578",tooltip="Get array size. "];
+  Node934 -> Node939 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node934 -> Node940 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node940 [label="TpsData::indexMonomial",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/daf/a05265.html#afa8022ccb80b09bd2a8d187e110e1ca9"];
+  Node933 -> Node941 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node941 [label="TpsMonomial::getVariables",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d68/a05269.html#ac71c697238f771df4d48d7f25b4e19d4",tooltip="Get variables. "];
+  Node941 -> Node939 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node933 -> Node942 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node942 [label="Tps::getVariables",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d42/a05249.html#a0b6c7d1a057ad24e08027a885d1b110a",tooltip="Get number of variables. "];
+  Node933 -> Node943 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node943 [label="Tps::setCoefficient",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d42/a05249.html#a75f70c3767be81967ff44ac603e81a58",tooltip="Set coefficient. "];
+  Node943 -> Node944 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node944 [label="TpsRep::create",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d90/a05253.html#a60ca441d1df63dbb331a57cf3ebbfde4"];
+  Node944 -> Node935 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node944 -> Node937 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node944 -> Node945 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node945 [label="TpsRep::data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d90/a05253.html#a33520f8c7100283fafbdf7171a0a3de5"];
+  Node943 -> Node945 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node943 -> Node946 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node946 [label="Tps::getOrder",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d42/a05249.html#aeff61ceb64a6541d851cfb2da84146ab",tooltip="Get order. "];
+  Node943 -> Node942 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node943 -> Node947 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node947 [label="TpsRep::release",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d90/a05253.html#afcc8dbd03cb0e6d2bec689be39e9a79b"];
+  Node943 -> Node948 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node948 [label="Tps::unique",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d42/a05249.html#a293e46672fa0725a600a6f1917d13f2c"];
+}

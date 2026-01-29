@@ -1,0 +1,11 @@
+digraph "IpplMessageCounterRegion::IpplMessageCounterRegion"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="IpplMessageCounterRegion\l::IpplMessageCounterRegion",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="IpplMessageCounter\l::addRegion",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d6a/a12141.html#ab202866ccf116c01c628bf6f904ab93d"];
+  Node0 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="IpplMessageCounter\l::getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d6a/a12141.html#a45f9253386cef63e40ff7404f435467f"];
+}

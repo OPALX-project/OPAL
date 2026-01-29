@@ -1,0 +1,11 @@
+digraph "operator/"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node11 [label="operator/",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node11 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="LinearFun::inverse",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dc4/a05997.html#af0786c513636d3944e69a90e6a475435",tooltip="Approximate reciprocal value 1/(*this). "];
+  Node11 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="LinearFun::multiply",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dc4/a05997.html#a6c462e2c0da6539274b7cc9e68b32a5f",tooltip="Multiplication truncated to order one. "];
+}

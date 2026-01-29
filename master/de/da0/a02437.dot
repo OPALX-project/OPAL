@@ -1,0 +1,10 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Elements/OpalVKicker.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node69 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalVKicker.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node69 -> Node70 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalVKicker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d5c/a02432.html"];
+  Node69 -> Node71 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node71 [label="/psi/home/gsell/data\l/src/OPAL/src/src/OpalConfigure\l/Configure.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d88/a02600.html"];
+}

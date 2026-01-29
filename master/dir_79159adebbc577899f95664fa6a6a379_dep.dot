@@ -1,0 +1,17 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/optimizer/Expression" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_80eebead1364a1351b6fcfbe8ef57fa8 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="optimizer" fontname="Helvetica", fontsize="10", URL="dir_80eebead1364a1351b6fcfbe8ef57fa8.html"]
+  subgraph clusterdir_79159adebbc577899f95664fa6a6a379 {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_79159adebbc577899f95664fa6a6a379.html"];
+    dir_79159adebbc577899f95664fa6a6a379 [shape=plaintext label="Expression"];
+    dir_65f75dfd55d15ec00821276cbd5ec406 [shape=box label="Parser" color="black" fillcolor="white" style="filled" URL="dir_65f75dfd55d15ec00821276cbd5ec406.html"];
+  }
+  }
+  dir_6b772c6a25906c67ecfa63bb411f3ba6 [shape=box label="Util" fillcolor="white" style="filled" color="red" URL="dir_6b772c6a25906c67ecfa63bb411f3ba6.html"];
+  dir_6b772c6a25906c67ecfa63bb411f3ba6->dir_79159adebbc577899f95664fa6a6a379 [headlabel="1", labeldistance=1.5 headhref="dir_000033_000031.html"];
+  dir_79159adebbc577899f95664fa6a6a379->dir_6b772c6a25906c67ecfa63bb411f3ba6 [headlabel="27", labeldistance=1.5 headhref="dir_000031_000033.html"];
+  dir_79159adebbc577899f95664fa6a6a379->dir_65f75dfd55d15ec00821276cbd5ec406 [headlabel="16", labeldistance=1.5 headhref="dir_000031_000032.html"];
+}

@@ -1,0 +1,19 @@
+digraph "OpalSinusoidalTimeDependence::update"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node31 [label="OpalSinusoidalTimeDependence\l::update",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node31 -> Node32 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="Object::getOpalName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#a5ec68ba1c3f450f8ea2b139f193c5a39",tooltip="Return object name. "];
+  Node31 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node33 [label="Attributes::getRealArray",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#ab98e27fb1c758b0a63d9e242fcbe68e6",tooltip="Get array value. "];
+  Node33 -> Node34 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node34 [label="Attribute::isBaseAllocated",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#ad501832e9f9617f12978cf0db5e3ca7a"];
+  Node33 -> Node35 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node35 [label="Attribute::getHandler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#aea141e99b173cc9db4e66a0f62786ac9",tooltip="Return a reference to the parser. "];
+  Node33 -> Node36 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node36 [label="Attribute::getBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#a3ad89aafd57487e0cbbc62d29515b29f",tooltip="Return reference to polymorphic value. "];
+  Node31 -> Node37 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node37 [label="AbstractTimeDependence\l::setTimeDependence",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d83/a05281.html#a01ef3c216ccd4fcc866d4426cc6e3532"];
+}

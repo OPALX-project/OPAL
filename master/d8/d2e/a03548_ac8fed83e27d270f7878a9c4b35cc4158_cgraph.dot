@@ -1,0 +1,19 @@
+digraph "BcastCuts"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="BcastCuts",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="Communicate::broadcast_all",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d94/a09217.html#acdb5351804f141ebb9c90e997fc5ae4e"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Communicate::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d94/a09217.html#aca765179d2843e977a7a78098c8cbde8"];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Communicate::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d94/a09217.html#aedbfc462a5f9babc3fc07f875847547f"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Communicate::mysend",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d94/a09217.html#a0980eed71a6f2ac1132190e52648c67e"];
+  Node1 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Communicate::add_msg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d94/a09217.html#add083ca7fa9466d949187d0e0fe31a2b"];
+  Node0 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Message::put",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d84/a09621.html#a3fc943d7af8a5f88178faeab977802c0"];
+}

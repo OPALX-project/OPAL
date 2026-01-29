@@ -1,0 +1,46 @@
+digraph "OpalSBend3D::update"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node26 [label="OpalSBend3D::update",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node26 -> Node27 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node27 [label="Element::getElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d71/a04649.html#a68136aee2ed8edfe943a7bf2933b08ca",tooltip="Return the embedded CLASSIC element. "];
+  Node26 -> Node28 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node28 [label="Attributes::getReal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#a04ef4de7f8e753119a3d32411a0f0a2d",tooltip="Return real value. "];
+  Node28 -> Node29 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="Attribute::isBaseAllocated",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#ad501832e9f9617f12978cf0db5e3ca7a"];
+  Node28 -> Node30 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="Attribute::getBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#a3ad89aafd57487e0cbbc62d29515b29f",tooltip="Return reference to polymorphic value. "];
+  Node28 -> Node31 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="Attribute::getHandler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#aea141e99b173cc9db4e66a0f62786ac9",tooltip="Return a reference to the parser. "];
+  Node26 -> Node32 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="Attributes::getString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#ad795567b62ebabd9fe7de3e4336303c2",tooltip="Get string value. "];
+  Node32 -> Node29 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 -> Node30 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 -> Node31 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node26 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node33 [label="Element::setElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d71/a04649.html#adcaf1c30b170487a357d7cc9ad8404cf",tooltip="Assign new CLASSIC element. "];
+  Node26 -> Node34 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node34 [label="SBend3D::setFieldMapFileName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/df0/a05157.html#a995e1ba4795bb094e388a9e4d095cf18"];
+  Node34 -> Node35 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node35 [label="SectorField::getPolarBounding\lBoxMax",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d83/a05889.html#ad2b2d2d32ec400394dba6cab9e3f84eb"];
+  Node34 -> Node36 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node36 [label="SectorField::getPolarBounding\lBoxMin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d83/a05889.html#a3dc347486678c77b1180c4da7122e5c3"];
+  Node34 -> Node37 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node37 [label="SectorMagneticFieldMap\l::getDeltaPhi",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d07/a05893.html#a6da76087887595c0c4cf71ebb68c1928"];
+  Node37 -> Node38 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node38 [label="interpolation::VectorMap\l::getMesh",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dc8/a05877.html#a746982d064969d9b76e4f57a782128a0"];
+  Node37 -> Node39 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node39 [label="interpolation::ThreeDGrid\l::maxZ",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/df2/a05869.html#a020b2e46f5dc90057a4e84385bb975ea"];
+  Node37 -> Node40 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node40 [label="interpolation::ThreeDGrid\l::minZ",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/df2/a05869.html#af32cd23a75c48e143b30d4383eaaa90e"];
+  Node34 -> Node41 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node41 [label="PlanarArcGeometry::\lsetElementLength",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d72/a05569.html#ab279211707d7355edaa4b55d31e4fe97",tooltip="Set length. "];
+  Node34 -> Node42 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node42 [label="PlanarArcGeometry::\lsetCurvature",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d72/a05569.html#a6263642c7a579fbb8e8ac653199b36fe",tooltip="Set curvature. "];
+  Node26 -> Node43 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node43 [label="SBend3D::setFieldUnits",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/df0/a05157.html#a4e9edf0f8f49308600e16a3b32115708"];
+  Node26 -> Node44 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node44 [label="SBend3D::setLengthUnits",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/df0/a05157.html#aaf2f15111c6ca8b5eec213c68e33ea50"];
+}

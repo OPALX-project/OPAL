@@ -1,0 +1,29 @@
+digraph "IpplInfo::printVersion"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node161 [label="IpplInfo::printVersion",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node161 -> Node162 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node162 [label="IpplInfo::compileDate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#af31c58a05235ef60d572c85c2d5b64fd"];
+  Node161 -> Node163 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node163 [label="IpplInfo::compileMachine",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#a52237c0de05d59082177571851378ef1"];
+  Node161 -> Node164 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node164 [label="IpplInfo::compileUser",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ae5c65c19f89d46e97ffed4d6291418d5"];
+  Node161 -> Node165 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node165 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node165 -> Node166 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node166 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node166 -> Node167 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node167 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node167 -> Node168 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node168 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node168 -> Node165 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node168 -> Node169 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node169 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node168 -> Node170 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node170 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node166 -> Node170 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node161 -> Node171 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node171 [label="IpplInfo::version",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ac856f55f74a24ea58f4253d6274f698c"];
+}

@@ -1,0 +1,14 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/AbsBeamline/MultipoleTCurvedVarRadius.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node52 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/MultipoleTCurvedVar\lRadius.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node52 -> Node53 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node53 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/MultipoleT.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d19/a00515.html"];
+  Node52 -> Node54 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node54 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/MultipoleTCurvedVar\lRadius.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d44/a00533.html"];
+  Node52 -> Node55 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node55 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/SpecificElementVisitor.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d77/a00683.html"];
+  Node55 -> Node56 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node56 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Distribution\l/Distribution.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dd8/a02108.html"];
+}

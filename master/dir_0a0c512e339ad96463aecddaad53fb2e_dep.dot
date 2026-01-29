@@ -1,0 +1,11 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Filters" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_d235ccafb34880d2a3dfd7e70a4539df {
+    graph [ bgcolor="#ddddee", pencolor="black", label="Classic" fontname="Helvetica", fontsize="10", URL="dir_d235ccafb34880d2a3dfd7e70a4539df.html"]
+  dir_0a0c512e339ad96463aecddaad53fb2e [shape=box, label="Filters", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_0a0c512e339ad96463aecddaad53fb2e.html"];
+  }
+  dir_ad772af3516d4a9be740aee7d43f4c98 [shape=box label="Physics" URL="dir_ad772af3516d4a9be740aee7d43f4c98.html"];
+  dir_0a0c512e339ad96463aecddaad53fb2e->dir_ad772af3516d4a9be740aee7d43f4c98 [headlabel="2", labeldistance=1.5 headhref="dir_000062_000066.html"];
+}

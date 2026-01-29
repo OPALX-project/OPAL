@@ -1,0 +1,12 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Utilities/RegularExpression.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node2 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Utilities\l/RegularExpression.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="/psi/home/gsell/data\l/src/OPAL/src/src/AbstractObjects\l/OpalData.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d89/a00071.html"];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Tables\l/Selector.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d1e/a03212.html"];
+  Node2 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Utilities\l/RegularExpression.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d33/a03269.html"];
+}

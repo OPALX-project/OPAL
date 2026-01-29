@@ -1,0 +1,9 @@
+digraph "MPI_Recv_serialized"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node12 [label="MPI_Recv_serialized",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="deserialize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d38/a04316.html#ae4442c138a55ccaaee0342211aec5441",tooltip="deserializes params using Boost archive "];
+}

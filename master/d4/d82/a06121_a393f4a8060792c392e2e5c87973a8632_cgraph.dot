@@ -1,0 +1,41 @@
+digraph "BeamStrippingPhysics::getSecondaryParticles"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node669 [label="BeamStrippingPhysics\l::getSecondaryParticles",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node669 -> Node670 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node670 [label="Vacuum::getResidualGas",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/dd9/a05209.html#a5c349aba32f02d75af92eeb06e5a6804"];
+  Node669 -> Node671 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node671 [label="BeamStrippingPhysics\l::transformToSecondary",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d82/a06121.html#a9d2cbb9ca116f528e4750df6a3ea5b3b"];
+  Node671 -> Node672 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node672 [label="ParticleProperties\l::getParticleMass",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d0c/a06105.html#a7375dfb0fc68ebc0f8779cd2fc1f3bd1"];
+  Node671 -> Node673 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node673 [label="ParticleProperties\l::getParticleChargeInCoulomb",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d0c/a06105.html#aecb6a05cfe741d4bcfa86f00c0dd08b9"];
+  Node673 -> Node674 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node674 [label="ParticleProperties\l::getParticleCharge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d0c/a06105.html#ac1987a9b0fec1632a680cb2093407c3e"];
+  Node671 -> Node675 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node675 [label="level4",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a4f2ddb1680d4f912183950ea45ac1504"];
+  Node675 -> Node676 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node676 [label="Inform::setMessageLevel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a9fb7d950a408c97487fbdc7328b038a5"];
+  Node671 -> Node677 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node677 [label="BeamStrippingPhysics\l::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d82/a06121.html#a926a4c4adc482e280173eeeb8dd377e8"];
+  Node677 -> Node678 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node678 [label="ElementBase::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a07827d00308052e65fe03da558f0b987",tooltip="Get element name. "];
+  Node671 -> Node679 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node679 [label="ParticleProperties\l::getParticleTypeString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d0c/a06105.html#a0c6f22e6d45367884ab9a9755e628f93"];
+  Node671 -> Node680 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node680 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node680 -> Node681 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node681 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node681 -> Node682 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node682 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node681 -> Node683 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node683 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node683 -> Node684 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node684 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node684 -> Node685 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node685 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node684 -> Node682 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node684 -> Node680 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="TSV_MetaBinary\< Tenzor\l\< T1, D \>, SymTenzor\<\l T2, D \>, OP \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/db3/a07769.html"];
+}

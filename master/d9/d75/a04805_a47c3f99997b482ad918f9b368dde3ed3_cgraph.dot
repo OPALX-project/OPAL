@@ -1,0 +1,11 @@
+digraph "ParallelCyclotronTracker::hasMultiBunch"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node2376 [label="ParallelCyclotronTracker\l::hasMultiBunch",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2376 -> Node2377 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2377 [label="ParallelCyclotronTracker\l::isMultiBunch",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d75/a04805.html#af22bc369a0c1bf03b2a4fd94ff544134"];
+  Node2377 -> Node2378 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2378 [label="PartBunchBase::weHaveBins",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#a5cccd734775026586eef70edb9982b4d"];
+}

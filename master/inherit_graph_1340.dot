@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="TSV_MetaCross\< Vektor\l\< T1, 3 \>, Vektor\< T2,\l 3 \> \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/da2/a07853.html"];
+}

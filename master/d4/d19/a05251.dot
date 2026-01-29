@@ -1,0 +1,24 @@
+digraph "TpsRep&lt; T &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="TpsRep\< T \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" help" ,fontname="Helvetica"];
+  Node2 [label="TpsData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/daf/a05265.html",tooltip="Bookkeeping class for Tps<T>. "];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" prod" ,fontname="Helvetica"];
+  Node3 [label="Array1D\< ProductRow \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/daa/a05225.html"];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data" ,fontname="Helvetica"];
+  Node4 [label="Array1D\< int \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/daa/a05225.html"];
+  Node5 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" subTable" ,fontname="Helvetica"];
+  Node5 [label="Array1D\< TpsSubstitution \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/daa/a05225.html"];
+  Node6 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data" ,fontname="Helvetica"];
+  Node6 [label="TpsSubstitution",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d7d/a05273.html",tooltip="Substitution for Tps<T>. "];
+  Node7 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" binom" ,fontname="Helvetica"];
+  Node7 [label="Array2D\< int \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d3b/a05229.html"];
+  Node8 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" expon" ,fontname="Helvetica"];
+  Node8 [label="Array1D\< TpsMonomial \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/daa/a05225.html"];
+  Node9 -> Node8 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" data" ,fontname="Helvetica"];
+  Node9 [label="TpsMonomial",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d68/a05269.html",tooltip="Exponent array for Tps<T>. "];
+  Node4 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" array" ,fontname="Helvetica"];
+}

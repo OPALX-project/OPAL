@@ -1,0 +1,11 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/AbsBeamline/MultipoleTFunctions" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_d04336a97d2c1175f88b91b21aac76c6 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="AbsBeamline" fontname="Helvetica", fontsize="10", URL="dir_d04336a97d2c1175f88b91b21aac76c6.html"]
+  dir_44313dc4e06213135da9ccb30eef965f [shape=box, label="MultipoleTFunctions", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_44313dc4e06213135da9ccb30eef965f.html"];
+  }
+  dir_28321b34c58a4e6a7aec33e50fdb23e6 [shape=box label="ippl" fillcolor="white" style="filled" color="red" URL="dir_28321b34c58a4e6a7aec33e50fdb23e6.html"];
+  dir_44313dc4e06213135da9ccb30eef965f->dir_28321b34c58a4e6a7aec33e50fdb23e6 [headlabel="1", labeldistance=1.5 headhref="dir_000053_000007.html"];
+}

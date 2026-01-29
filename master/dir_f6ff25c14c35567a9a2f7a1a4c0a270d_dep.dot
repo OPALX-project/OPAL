@@ -1,0 +1,19 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/ippl/src/Particle/PairBuilder" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_34773001a52e8d6265c5ba6f99fd94c3 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="Particle" fontname="Helvetica", fontsize="10", URL="dir_34773001a52e8d6265c5ba6f99fd94c3.html"]
+  dir_f6ff25c14c35567a9a2f7a1a4c0a270d [shape=box, label="PairBuilder", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_f6ff25c14c35567a9a2f7a1a4c0a270d.html"];
+  }
+  dir_b1b93043ed6c23d4fb910986e1452dca [shape=box label="Utility" URL="dir_b1b93043ed6c23d4fb910986e1452dca.html"];
+  dir_4be6567ac663315238c733e43d6db1cf [shape=box label="Message" URL="dir_4be6567ac663315238c733e43d6db1cf.html"];
+  dir_2d971dbe977723338f7b4cbe0b51dca0 [shape=box label="Region" URL="dir_2d971dbe977723338f7b4cbe0b51dca0.html"];
+  dir_b1b93043ed6c23d4fb910986e1452dca->dir_4be6567ac663315238c733e43d6db1cf [headlabel="19", labeldistance=1.5 headhref="dir_000025_000018.html"];
+  dir_f6ff25c14c35567a9a2f7a1a4c0a270d->dir_b1b93043ed6c23d4fb910986e1452dca [headlabel="1", labeldistance=1.5 headhref="dir_000020_000025.html"];
+  dir_f6ff25c14c35567a9a2f7a1a4c0a270d->dir_4be6567ac663315238c733e43d6db1cf [headlabel="1", labeldistance=1.5 headhref="dir_000020_000018.html"];
+  dir_f6ff25c14c35567a9a2f7a1a4c0a270d->dir_2d971dbe977723338f7b4cbe0b51dca0 [headlabel="1", labeldistance=1.5 headhref="dir_000020_000022.html"];
+  dir_4be6567ac663315238c733e43d6db1cf->dir_b1b93043ed6c23d4fb910986e1452dca [headlabel="12", labeldistance=1.5 headhref="dir_000018_000025.html"];
+  dir_2d971dbe977723338f7b4cbe0b51dca0->dir_b1b93043ed6c23d4fb910986e1452dca [headlabel="6", labeldistance=1.5 headhref="dir_000022_000025.html"];
+  dir_2d971dbe977723338f7b4cbe0b51dca0->dir_4be6567ac663315238c733e43d6db1cf [headlabel="1", labeldistance=1.5 headhref="dir_000022_000018.html"];
+}

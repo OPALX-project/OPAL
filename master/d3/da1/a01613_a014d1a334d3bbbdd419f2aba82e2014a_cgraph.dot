@@ -1,0 +1,13 @@
+digraph "operator*"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node4 [label="operator*",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Taylor::begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dd2/a06001.html#a3cc61e2c1c71fa6dd6e7e6f09c7d6aa1",tooltip="Get pointer to beginning of series (zero-order term). "];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Taylor::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dd2/a06001.html#a09d44144bbd9d4fa5824d07113713400",tooltip="Get pointer to end of series (one beyond highest term). "];
+  Node4 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Taylor::getOrder",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dd2/a06001.html#a2a9a3286944ac82158b65e3d6093794c",tooltip="Return order of this series. "];
+}

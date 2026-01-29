@@ -1,0 +1,36 @@
+<map id="/psi/home/gsell/data/src/OPAL/src/ippl/src/DataSource/FileFieldDataSource.hpp" name="/psi/home/gsell/data/src/OPAL/src/ippl/src/DataSource/FileFieldDataSource.hpp">
+<area shape="rect" id="node2" href="$d2/dce/a03389.html" title="DataSource/FileFieldData\lSource.h" alt="" coords="747,109,931,151"/>
+<area shape="rect" id="node12" href="$d7/df2/a03986.html" title="Utility/IpplInfo.h" alt="" coords="925,423,1051,449"/>
+<area shape="rect" id="node30" href="$d9/d2a/a03923.html" title="Utility/DiscField.h" alt="" coords="1637,199,1773,225"/>
+<area shape="rect" id="node46" href="$db/d7d/a03386.html" title="DataSource/FileDataConnect.h" alt="" coords="131,117,349,143"/>
+<area shape="rect" id="node48" href="$d1/df9/a03665.html" title="Message/Communicate.h" alt="" coords="2392,348,2579,375"/>
+<area shape="rect" id="node3" href="$dd/d8e/a03377.html" title="DataSource/DataSourceObject.h" alt="" coords="265,273,495,300"/>
+<area shape="rect" id="node8" href="$d7/d83/a03506.html" title="Field/Field.h" alt="" coords="789,273,888,300"/>
+<area shape="rect" id="node4" href="$d4/d6f/a03374.html" title="DataSource/DataSource.h" alt="" coords="239,348,427,375"/>
+<area shape="rect" id="node6" href="$d9/d97/a04016.html" title="Utility/NamedObj.h" alt="" coords="68,348,215,375"/>
+<area shape="rect" id="node9" href="$d2/d50/a03473.html" title="Field/BareField.h" alt="" coords="1439,348,1567,375"/>
+<area shape="rect" id="node10" href="$df/dfa/a03533.html" title="Field/LField.h" alt="" coords="1306,423,1411,449"/>
+<area shape="rect" id="node24" href="$de/d3d/a03515.html" title="Field/FieldSpec.h" alt="" coords="1106,348,1235,375"/>
+<area shape="rect" id="node25" href="$d1/d07/a03482.html" title="Field/BCond.h" alt="" coords="693,348,803,375"/>
+<area shape="rect" id="node26" href="$d8/d59/a03539.html" title="Field/ReductionLoc.h" alt="" coords="1260,348,1415,375"/>
+<area shape="rect" id="node27" href="$d5/d3c/a03875.html" title="SubField/SubField.h" alt="" coords="491,423,637,449"/>
+<area shape="rect" id="node28" href="$db/dde/a03644.html" title="Meshes/UniformCartesian.h" alt="" coords="828,348,1031,375"/>
+<area shape="rect" id="node29" href="$df/d8e/a03509.html" title="Field/Field.hpp" alt="" coords="553,348,668,375"/>
+<area shape="rect" id="node19" href="$d9/d85/a04034.html" title="Utility/PAssert.h" alt="" coords="2242,572,2369,599"/>
+<area shape="rect" id="node20" href="$d0/d0f/a04085.html" title="Utility/vmap.h" alt="" coords="1537,423,1652,449"/>
+<area shape="rect" id="node13" href="$d7/dfc/a04061.html" title="Utility/StaticIpplInfo.h" alt="" coords="906,497,1070,524"/>
+<area shape="rect" id="node15" href="$d0/dce/a03971.html" title="Utility/Inform.h" alt="" coords="2715,497,2837,524"/>
+<area shape="rect" id="node31" href="$dd/de9/a03590.html" title="Index/NDIndex.h" alt="" coords="1919,423,2049,449"/>
+<area shape="rect" id="node34" href="$d8/db3/a03488.html" title="Field/BrickExpression.h" alt="" coords="1794,273,1966,300"/>
+<area shape="rect" id="node37" href="$de/d7e/a03914.html" title="Utility/DiscBuffer.h" alt="" coords="2547,497,2691,524"/>
+<area shape="rect" id="node38" href="$d7/d01/a03920.html" title="Utility/DiscConfig.h" alt="" coords="2221,348,2368,375"/>
+<area shape="rect" id="node39" href="$df/d75/a04010.html" title="Utility/IpplTimings.h" alt="" coords="1076,423,1231,449"/>
+<area shape="rect" id="node43" href="$d1/d59/a03926.html" title="Utility/DiscField.hpp" alt="" coords="2489,273,2641,300"/>
+<area shape="rect" id="node32" href="$d9/d65/a03578.html" title="Index/Index.h" alt="" coords="1807,497,1918,524"/>
+<area shape="rect" id="node33" href="$d7/d7b/a03593.html" title="Index/NDIndexInlines.h" alt="" coords="1993,497,2167,524"/>
+<area shape="rect" id="node35" href="$df/d5c/a03470.html" title="Field/AssignTags.h" alt="" coords="1794,348,1934,375"/>
+<area shape="rect" id="node36" href="$d0/d17/a03491.html" title="Field/BrickExpression.hpp" alt="" coords="1958,348,2146,375"/>
+<area shape="rect" id="node44" href="$d5/d46/a03710.html" title="Message/Tags.h" alt="" coords="2666,423,2790,449"/>
+<area shape="rect" id="node47" href="$de/dce/a03362.html" title="DataSource/DataConnect.h" alt="" coords="43,273,240,300"/>
+<area shape="rect" id="node49" href="$d1/d00/a03707.html" title="Message/TagMaker.h" alt="" coords="2293,423,2449,449"/>
+</map>

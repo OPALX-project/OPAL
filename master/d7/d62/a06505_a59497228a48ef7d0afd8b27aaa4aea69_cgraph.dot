@@ -1,0 +1,29 @@
+digraph "RealDiracMatrix::diagonalize"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node14 [label="RealDiracMatrix::diagonalize",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node14 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="RealDiracMatrix::getRDM",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d62/a06505.html#ab11cd5dc339b9a250eb16fa62d219f3f"];
+  Node14 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="prod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a120639401358f60ba9c8377440c2aff5"];
+  Node16 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="PETE_Expr::PETE_unwrap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html#a9e3caaa1091db73ad743988a76490937"];
+  Node16 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="Reduction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a0a1cdb80c431a477e99aea03fea993fc"];
+  Node18 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="for_each",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a1ea49580c5d70200ee20f6afbc6d6de3"];
+  Node18 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="PETE_apply",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a1a29834440d6844017cef5d516087c28"];
+  Node18 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="RealDiracMatrix::update",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d62/a06505.html#ab1523d2e862124d2b391470925c8eee4"];
+  Node21 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="matt_boost::cross_prod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dd3/a04527.html#ab994fd6ec746cde3c38fcb3980bb4f67",tooltip="Computes the cross product  of two vectors in . "];
+  Node21 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="atan2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d51/a03842.html#adece0042b4015b8521d983143b6af21a"];
+  Node21 -> Node24 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 [label="RealDiracMatrix::transform",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d62/a06505.html#a2d7f8720027dc05f2eeedd965817384f"];
+  Node24 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

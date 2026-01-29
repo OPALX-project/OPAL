@@ -1,0 +1,14 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/FixedAlgebra" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_d235ccafb34880d2a3dfd7e70a4539df {
+    graph [ bgcolor="#ddddee", pencolor="black", label="Classic" fontname="Helvetica", fontsize="10", URL="dir_d235ccafb34880d2a3dfd7e70a4539df.html"]
+  dir_6b457fa767026f1510242117765a92d1 [shape=box, label="FixedAlgebra", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_6b457fa767026f1510242117765a92d1.html"];
+  }
+  dir_8698fe23a0dea23b56d3a14185ed7f9b [shape=box label="Utilities" fillcolor="white" style="filled" color="red" URL="dir_8698fe23a0dea23b56d3a14185ed7f9b.html"];
+  dir_608c92becd0d5dc4764a20fd70194312 [shape=box label="Algebra" URL="dir_608c92becd0d5dc4764a20fd70194312.html"];
+  dir_6b457fa767026f1510242117765a92d1->dir_8698fe23a0dea23b56d3a14185ed7f9b [headlabel="24", labeldistance=1.5 headhref="dir_000063_000070.html"];
+  dir_6b457fa767026f1510242117765a92d1->dir_608c92becd0d5dc4764a20fd70194312 [headlabel="6", labeldistance=1.5 headhref="dir_000063_000054.html"];
+  dir_608c92becd0d5dc4764a20fd70194312->dir_8698fe23a0dea23b56d3a14185ed7f9b [headlabel="17", labeldistance=1.5 headhref="dir_000054_000070.html"];
+}

@@ -1,0 +1,35 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/BeamlineGeometry/VarRadiusGeometry.cpp"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node0 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineGeometry/VarRadiusGeometry.cpp",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="cmath",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node0 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="vector",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node0 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="BeamlineGeometry/VarRadius\lGeometry.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d3e/a01139.html"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="BeamlineGeometry/Geometry.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dfa/a01097.html"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="BeamlineGeometry/Euclid3D.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/df3/a01085.html"];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="BeamlineGeometry/Rotation3D.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d5b/a01127.html"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="BeamlineGeometry/Matrix3D.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d10/a01103.html"];
+  Node6 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="BeamlineGeometry/Vector3D.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d65/a01145.html"];
+  Node5 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Utilities/GeneralClassic\lException.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d07/a01913.html"];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Utilities/ClassicException.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d6b/a01853.html"];
+  Node10 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="string",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node3 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="algorithm",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled"];
+  Node0 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node0 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="AbsBeamline/MultipoleTFunctions\l/CoordinateTransform.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/ddb/a00542.html"];
+  Node13 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

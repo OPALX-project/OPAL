@@ -1,0 +1,15 @@
+digraph "CompressedBrickIterator::permute"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node47 [label="CompressedBrickIterator\l::permute",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node47 -> Node48 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node48 [label="permute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d63/a03500.html#ab0ff84d0d3605f47aa1b83750d8b5f15"];
+  Node48 -> Node49 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node49 [label="CompressedBrickIterator\l::GetCompressedData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dcd/a08201.html#ae4dab9b5613ede54eec80924d517adbc"];
+  Node48 -> Node50 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node50 [label="CompressedBrickIterator\l::GetStride",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dcd/a08201.html#af7b4f6008cb6073d3ecea7131d71f0da"];
+  Node48 -> Node51 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node51 [label="CompressedBrickIterator\l::IsCompressed",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dcd/a08201.html#af9e9275cc7aee1d4289b3965dd74b991"];
+}

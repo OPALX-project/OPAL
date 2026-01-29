@@ -1,0 +1,31 @@
+digraph "operator&lt;&lt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node11 [label="operator\<\<",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node11 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="Inform::getStream",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#aa9bf9aaf3307ed6c7c54a2948bcae688"];
+  Node11 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="CoordinateSystemTrafo\l::print",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d46/a05293.html#ae4fe55abd2178911d5ee96b8463b0272"];
+  Node13 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="Quaternion::conjugate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d67/a05349.html#a23fa21eb2e14c5207f90e840787c348a"];
+  Node14 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="Quaternion::real",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d67/a05349.html#a237c3a9dfefea10e7ec6b5f373546427"];
+  Node14 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="Quaternion::imag",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d67/a05349.html#a8cb33fa212258498b937d7e1a4684ce2"];
+  Node13 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="Quaternion::rotate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d67/a05349.html#a16e61b715e53d7394996bb56c356916e"];
+  Node17 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="Quaternion::isUnit",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d67/a05349.html#aa29522eb8e682639a9efddce09a49f6f"];
+  Node18 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="abs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d51/a03842.html#a7633e9416cb6fdd16745f5ba3e3ea7d3"];
+  Node19 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="PETE_Expr::PETE_unwrap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html#a9e3caaa1091db73ad743988a76490937"];
+  Node18 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="Quaternion::Norm",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d67/a05349.html#afd6f04fe42007759224bbfb5c7727eb0"];
+  Node21 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="dot",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/ddc/a01142.html#a731854fb8292e52014666a5412601853",tooltip="Vector dot product. "];
+  Node17 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

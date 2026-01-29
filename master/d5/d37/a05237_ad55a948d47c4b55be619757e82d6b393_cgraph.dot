@@ -1,0 +1,21 @@
+digraph "Matrix::operator+="
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node67 [label="Matrix::operator+=",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node67 -> Node68 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node68 [label="Array2D::begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d3b/a05229.html#a250e922055b655fb5e119e67da07e60c",tooltip="Get pointer to beginning of data. "];
+  Node67 -> Node69 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node69 [label="begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d82/a00857.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375"];
+  Node69 -> Node70 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 [label="PartBunchBase::begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#ad6ece85323a4f116320d363dfb419738"];
+  Node67 -> Node71 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node71 [label="end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743"];
+  Node71 -> Node72 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node72 [label="PartBunchBase::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#ad231fcc85484b425051ff45b9288da34"];
+  Node67 -> Node73 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node73 [label="Array2D::ncols",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d3b/a05229.html#ae2ec54ec52b65f1241357c3059fc538e",tooltip="Get number of columns. "];
+  Node67 -> Node74 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node74 [label="Array2D::nrows",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d3b/a05229.html#a29182d455c8e0ed20d654e119e0024f9",tooltip="Get number of rows. "];
+}

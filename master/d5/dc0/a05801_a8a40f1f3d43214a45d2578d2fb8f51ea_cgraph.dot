@@ -1,0 +1,18 @@
+digraph "_FM3DMagnetoStatic::getFieldstrength"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node15 [label="_FM3DMagnetoStatic\l::getFieldstrength",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node15 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="_FM3DMagnetoStatic\l::interpolateTrilinearly",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dc0/a05801.html#af6335587e6de89f6ab762e439451a02e"];
+  Node16 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="_FM3DMagnetoStatic\l::getIndex",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dc0/a05801.html#a356b1417a56d8fbceabee8257e4831d5"];
+  Node17 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="floor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#ae29244719985f3e4cbc22b58064177de"];
+  Node16 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="_FM3DMagnetoStatic\l::getWeightedData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dc0/a05801.html#a11efa0c17f6cb1678b63f00550cf5244"];
+  Node19 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="_FM3DMagnetoStatic\l::isInside",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dc0/a05801.html#adb75a3a8a057711072f476e1e8a2bb7b"];
+}

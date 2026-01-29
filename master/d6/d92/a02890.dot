@@ -1,0 +1,8 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Solvers/AMR_MG/AmrMultiGrid.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node323 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrMultiGrid.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node323 -> Node324 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node324 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/AMR_MG/AmrMultiGrid.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d68/a02885.html"];
+}

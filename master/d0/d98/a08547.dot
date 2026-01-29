@@ -1,0 +1,10 @@
+digraph "ExtrapolateAndZeroFace&lt; T, D, M, C &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node5 [label="ExtrapolateAndZeroFace\l\< T, D, M, C \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node6 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="BCondBase\< T, D, M, C \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d15/a08477.html"];
+  Node7 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="RefCounted",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d4d/a12185.html"];
+}

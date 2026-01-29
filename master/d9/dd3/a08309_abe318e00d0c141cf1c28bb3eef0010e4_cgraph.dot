@@ -1,0 +1,19 @@
+digraph "FFT&lt; SineTransform, Dim, T &gt;::setup"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node6 [label="FFT\< SineTransform,\l Dim, T \>::setup",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="FFTBase::activeDimension",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#acdafb6643adbbfc837507114ae8220a0",tooltip="get dimension number from list of transformed dimensions "];
+  Node6 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="FFTBase::compressTemps",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#aaf2b61078c6637e69f216b65dbc982f5",tooltip="do we compress temps? "];
+  Node6 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="FFTBase::getDomain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#a4aa9b793a79e7d326742c932ca2385c9",tooltip="get our domain "];
+  Node6 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="FFTBase::numTransformDims",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#a31ebac743710b1931fac01fb1716dc81",tooltip="query number of transform dimensions "];
+  Node6 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="FFTBase::transformDim",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#aa820fe11586ed6128ed31de5a8fd3d0c",tooltip="query whether this dimension is to be transformed "];
+  Node6 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="FFTBase::transVnodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#a2177ec0df888376f04b58a70d8a120cc"];
+}

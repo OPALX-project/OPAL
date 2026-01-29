@@ -1,0 +1,9 @@
+digraph "SBendRep::clone"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node4 [label="SBendRep::clone",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="SBendRep::SBendRep",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d42/a05465.html#acfac6eb245236810c6043fce5d27d571"];
+}

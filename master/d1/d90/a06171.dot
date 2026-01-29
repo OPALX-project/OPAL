@@ -1,0 +1,36 @@
+digraph "ScatteringPhysics"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node2 [label="ScatteringPhysics",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="ParticleMatterInteraction\lHandler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d6e/a06145.html"];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" element_ref_m" ,fontname="Helvetica"];
+  Node4 [label="ElementBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html"];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="RCObject",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d72/a06017.html",tooltip="Abstract base class for reference counted objects. "];
+  Node3 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" parmatint_m" ,fontname="Helvetica"];
+  Node6 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bgeometry_m" ,fontname="Helvetica"];
+  Node6 [label="BoundaryGeometry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/da0/a07185.html"];
+  Node7 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Definition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/df3/a04641.html",tooltip="The base class for all OPAL definitions. "];
+  Node8 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="Object",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html",tooltip="The base class for all OPAL objects. "];
+  Node5 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node8 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" itsParent" ,fontname="Helvetica"];
+  Node9 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" nr_m" ,fontname="Helvetica"];
+  Node9 [label="Vektor\< int, 3 \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d68/a07473.html"];
+  Node10 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sizeOfVoxel\nmaxExtent\nminExtent\nmaxExtent_m\nminExtent_m\ninsidePoint_m" ,fontname="Helvetica"];
+  Node10 [label="Vektor\< double, 3 \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d68/a07473.html"];
+  Node11 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" misalignment_m\ncsTrafoGlobal2Local_m" ,fontname="Helvetica"];
+  Node11 [label="CoordinateSystemTrafo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d46/a05293.html"];
+  Node12 -> Node11 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" orientation_m" ,fontname="Helvetica"];
+  Node12 [label="Quaternion",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d67/a05349.html"];
+  Node13 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="Vektor\< double, 4 \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d68/a07473.html"];
+  Node10 -> Node11 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" origin_m" ,fontname="Helvetica"];
+  Node14 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" wake_m" ,fontname="Helvetica"];
+  Node14 [label="WakeFunction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d51/a06177.html"];
+  Node15 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" userAttribs" ,fontname="Helvetica"];
+  Node15 [label="AttributeSet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d76/a04973.html",tooltip="Map of std::string versus double value. "];
+}

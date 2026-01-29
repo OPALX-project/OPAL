@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="IpplMessageCounterRegion",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d9f/a12137.html"];
+}

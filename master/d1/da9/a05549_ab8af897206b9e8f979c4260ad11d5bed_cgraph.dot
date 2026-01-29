@@ -1,0 +1,9 @@
+digraph "Euclid3D::identity"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node17 [label="Euclid3D::identity",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node17 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="Euclid3D::Euclid3D",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/da9/a05549.html#a6f9d1a9cfd2fa832bc3ad4ae1fb170d3",tooltip="Default constructor. "];
+}

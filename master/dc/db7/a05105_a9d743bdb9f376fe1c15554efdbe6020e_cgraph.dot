@@ -1,0 +1,9 @@
+digraph "polynomial::RecursionRelation::isPolynomialZero"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node85 [label="polynomial::RecursionRelation\l::isPolynomialZero",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node85 -> Node86 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node86 [label="polynomial::Differential\lOperator::isPolynomialZero",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d1a/a05089.html#a2e5a7fca073ef2bfdc61b703e2e34820"];
+}

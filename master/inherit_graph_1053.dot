@@ -1,0 +1,25 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="PoissonSolver",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/df3/a07129.html"];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="AmrPoissonSolver\< AmrObject \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d2e/a07065.html"];
+  Node0 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="AmrPoissonSolver\< AmrBox\lLib \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d2e/a07065.html"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="AmrMultiGrid",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/da6/a07009.html"];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="FMGPoissonSolver",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d8e/a07077.html"];
+  Node2 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="MLPoissonSolver",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/db3/a07061.html"];
+  Node0 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="FFTBoxPoissonSolver",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d3d/a07093.html"];
+  Node0 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="FFTPoissonSolver",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d62/a07097.html"];
+  Node0 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="MGPoissonSolver",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/da1/a07109.html"];
+  Node0 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="P3MPoissonSolver",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d4a/a07125.html"];
+}

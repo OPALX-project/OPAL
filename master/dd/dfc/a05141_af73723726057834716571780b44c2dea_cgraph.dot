@@ -1,0 +1,9 @@
+digraph "RBend3D::accept"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node4 [label="RBend3D::accept",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="BeamlineVisitor::visitRBend3D",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d01/a04977.html#a40510b94394d2d677f86c6cd3d52102b",tooltip="Apply the algorithm to a rectangular bend. "];
+}

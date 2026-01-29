@@ -1,0 +1,14 @@
+digraph "mslang::Base"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node0 [label="mslang::Base",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="mslang::Function",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d99/a06433.html"];
+  Node0 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="mslang::Ellipse",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d7d/a06309.html"];
+  Node0 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="mslang::Rectangle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d53/a06401.html"];
+  Node0 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="mslang::Triangle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d90/a06425.html"];
+}

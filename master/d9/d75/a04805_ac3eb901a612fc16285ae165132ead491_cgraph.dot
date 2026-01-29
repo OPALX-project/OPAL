@@ -1,0 +1,31 @@
+digraph "ParallelCyclotronTracker::visitSolenoid"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node5319 [label="ParallelCyclotronTracker\l::visitSolenoid",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node5319 -> Node5320 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5320 [label="ElementBase::clone",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#aa5580165a9f8b9e6d873927cff20d986",tooltip="Return clone. "];
+  Node5319 -> Node5321 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5321 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node5321 -> Node5322 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5322 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node5322 -> Node5323 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5323 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node5323 -> Node5324 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5324 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node5324 -> Node5321 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5324 -> Node5325 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5325 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node5324 -> Node5326 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5326 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node5322 -> Node5326 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5319 -> Node5327 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5327 [label="ElementBase::hasAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a7fb38d50e1dbcd9bd946599ce92a4f0c",tooltip="Test for existence of an attribute. "];
+  Node5327 -> Node5328 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5328 [label="ElementBase::getConstChannel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a3f661b0e1335c79d11f6978c897acaf7",tooltip="Construct a read-only channel. "];
+  Node5328 -> Node5329 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5329 [label="ElementBase::getChannel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a02257dc2843938a8baa24583fdd6b273",tooltip="Construct a read/write channel. "];
+  Node5329 -> Node5330 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5330 [label="AttributeSet::getChannel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d76/a04973.html#a9ca26ee9df44ab1d5c19554d647b8c4d",tooltip="Construct a read/write channel. "];
+}

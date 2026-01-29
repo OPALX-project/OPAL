@@ -1,0 +1,15 @@
+digraph "PyOpal::PyOutputPlane::BOOST_PYTHON_MODULE"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="PyOpal::PyOutputPlane\l::BOOST_PYTHON_MODULE",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="PyOpal::Globals::Initialise",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d73/a04542.html#add6a4f09a4bf594241765fb6d14a2f2f"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="IpplInfo::instantiateGlobals",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#a166424080a04feb0a36a6bc1a9c09c3a"];
+  Node0 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="PyOpal::PyOpalObjectNS\l::PyOpalObject::make_element_class",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/db5/a06897.html#ab4cdc87d6771cb8f14a2cbe6f1d3b4c5"];
+  Node0 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="PyOpal::ExceptionTranslation\l::registerExceptions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dad/a04540.html#a6b13e9b77d47f3b02a5f2e3ef12b2a9b"];
+}

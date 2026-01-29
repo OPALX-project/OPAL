@@ -1,0 +1,17 @@
+digraph "RangeSelector::handleElement"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node14 [label="RangeSelector::handleElement",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node14 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="RangeRep::isActive",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dcf/a04709.html#a35001fb89ccde652a9327ef97b0094bb",tooltip="Test for active range. "];
+  Node14 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="DefaultVisitor::visitFlagged\lElmPtr",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d63/a05297.html#a8bab0e7be75745a80eeae0db6a489ba0",tooltip="Apply the algorithm to a FlaggedElmPtr. "];
+  Node16 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="ElementBase::accept",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a4c963794b96d83d5d3be0a9fe3c44322",tooltip="Apply visitor. "];
+  Node16 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="ElmPtr::getElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/dc2/a05601.html#a5e93800b724a0a93cbb985fdc52cbf0f",tooltip="Get the element pointer. "];
+  Node16 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="FlaggedElmPtr::getReflectionFlag",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d64/a05605.html#acc70d7f5db8ffe5b47920a6503bfcad9",tooltip="Get reflection flag. "];
+}

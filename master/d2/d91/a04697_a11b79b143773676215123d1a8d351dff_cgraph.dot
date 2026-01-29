@@ -1,0 +1,11 @@
+digraph "OpalData::getP0"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node68 [label="OpalData::getP0",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node68 -> Node69 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node69 [label="ValueDefinition::getReal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/dfa/a04725.html#a10a795d2989714b067c2fbc3e3e8ec19",tooltip="Return real value. "];
+  Node69 -> Node70 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 [label="Object::getOpalName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#a5ec68ba1c3f450f8ea2b139f193c5a39",tooltip="Return object name. "];
+}

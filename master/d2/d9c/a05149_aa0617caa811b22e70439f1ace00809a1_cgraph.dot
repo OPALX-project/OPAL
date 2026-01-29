@@ -1,0 +1,17 @@
+digraph "Ring::checkMidplane"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node133 [label="Ring::checkMidplane",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node133 -> Node134 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node134 [label="abs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d51/a03842.html#a7633e9416cb6fdd16745f5ba3e3ea7d3"];
+  Node134 -> Node135 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node135 [label="PETE_Expr::PETE_unwrap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html#a9e3caaa1091db73ad743988a76490937"];
+  Node133 -> Node136 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node136 [label="Rotation3D::getAxis",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dfe/a05577.html#aaa729463c5e9207ffefd6d322ee594aa",tooltip="Get axis vector. "];
+  Node133 -> Node137 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node137 [label="Euclid3D::getRotation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/da9/a05549.html#aff01b0f880a9b395149a71c7f0938b0b",tooltip="Get rotation. "];
+  Node133 -> Node138 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node138 [label="Euclid3D::getVector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/da9/a05549.html#aa11d7ee987d9f85367425adcdc783b81",tooltip="Get displacement. "];
+}

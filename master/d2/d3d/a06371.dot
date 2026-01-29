@@ -1,0 +1,15 @@
+digraph "matheval::detail::grammar&lt; real_t, Iterator &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="matheval::detail::grammar\l\< real_t, Iterator \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" bfunc" ,fontname="Helvetica"];
+  Node2 [label="matheval::detail::grammar\l\< real_t, Iterator \>::bfunc_",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/df8/a06385.html",tooltip="symbol table for binary functions like \"pow\" "];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ufunc" ,fontname="Helvetica"];
+  Node3 [label="matheval::detail::grammar\l\< real_t, Iterator \>::ufunc_",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d75/a06381.html",tooltip="symbol table for unary functions like \"abs\" "];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" constant" ,fontname="Helvetica"];
+  Node4 [label="matheval::detail::grammar\l\< real_t, Iterator \>::constant_",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/df4/a06377.html",tooltip="symbol table for constants like \"pi\" "];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" err_handler" ,fontname="Helvetica"];
+  Node5 [label="matheval::detail::expectation\l_handler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d12/a06369.html",tooltip="Error handler for expectation errors. "];
+}

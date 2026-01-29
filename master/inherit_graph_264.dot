@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="FArray1D\< int, N \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/da9/a05929.html"];
+}

@@ -1,0 +1,11 @@
+digraph "MultipoleT::getFringeField"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node385 [label="MultipoleT::getFringeField",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node385 -> Node386 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node386 [label="endfieldmodel::Tanh\l::getLambda",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d03/a05045.html#abcc3bb169df72dc863449f10768e39f3"];
+  Node385 -> Node387 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node387 [label="endfieldmodel::Tanh\l::getX0",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d03/a05045.html#a78567eb12e49bf9370979d27a032fb09"];
+}

@@ -1,0 +1,21 @@
+digraph "Solenoid::getElementDimensions"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node28 [label="Solenoid::getElementDimensions",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node28 -> Node29 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d82/a00857.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375"];
+  Node29 -> Node30 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="PartBunchBase::begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#ad6ece85323a4f116320d363dfb419738"];
+  Node28 -> Node31 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743"];
+  Node31 -> Node32 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="PartBunchBase::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#ad231fcc85484b425051ff45b9288da34"];
+  Node28 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node33 [label="ElementBase::getElementLength",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a1b412456edcf01147abada7721605101",tooltip="Get design length. "];
+  Node33 -> Node34 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node34 [label="BGeometryBase::getElement\lLength",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/ddf/a05557.html#a73f1d2087c1b6c7fb3e5e00f6835f88e",tooltip="Get geometry length. "];
+  Node33 -> Node35 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node35 [label="ElementBase::getGeometry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#acc8b1c2de0674e1d3e1ff6173617bbed",tooltip="Get geometry. "];
+}

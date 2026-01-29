@@ -1,0 +1,19 @@
+digraph "DomainMap&lt; Key, T, Touches, Contains, Split &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node1 [label="DomainMap\< Key, T,\l Touches, Contains,\l Split \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Root" ,fontname="Helvetica"];
+  Node2 [label="DomainMap\< Key, T,\l Touches, Contains,\l Split \>::Node",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d67/a08253.html"];
+  Node2 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Left\nRight\nParent" ,fontname="Helvetica"];
+  Node3 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" contains" ,fontname="Helvetica"];
+  Node3 [label="Contains\< Dim \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d73/a08813.html"];
+  Node4 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" split" ,fontname="Helvetica"];
+  Node4 [label="Split\< Dim \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/de6/a08817.html"];
+  Node5 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Leftmost" ,fontname="Helvetica"];
+  Node5 [label="DomainMap\< Key, T,\l Touches, Contains,\l Split \>::iterator",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d6c/a08257.html"];
+  Node2 -> Node5 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" p" ,fontname="Helvetica"];
+  Node6 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" touches" ,fontname="Helvetica"];
+  Node6 [label="Touches\< Dim \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d14/a08809.html"];
+}

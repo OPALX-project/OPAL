@@ -1,0 +1,12 @@
+digraph "TrackParser"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node3 [label="TrackParser",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="OpalParser",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dfb/a06869.html",tooltip="The default parser for OPAL-9. "];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Parser",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dbc/a06029.html",tooltip="Interface for abstract language parser. "];
+  Node6 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" trackDirectory" ,fontname="Helvetica"];
+  Node6 [label="Directory",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/de3/a04645.html",tooltip="A map of string versus pointer to Object. "];
+}

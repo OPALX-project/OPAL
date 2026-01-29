@@ -1,0 +1,44 @@
+digraph "FlexibleCollimator::initialise"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node119 [label="FlexibleCollimator\l::initialise",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node119 -> Node120 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node120 [label="ElementBase::getElementLength",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a1b412456edcf01147abada7721605101",tooltip="Get design length. "];
+  Node120 -> Node121 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node121 [label="BGeometryBase::getElement\lLength",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/ddf/a05557.html#a73f1d2087c1b6c7fb3e5e00f6835f88e",tooltip="Get geometry length. "];
+  Node120 -> Node122 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node122 [label="ElementBase::getGeometry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#acc8b1c2de0674e1d3e1ff6173617bbed",tooltip="Get geometry. "];
+  Node119 -> Node123 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node123 [label="ElementBase::getOutputFN",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a66b66616164e834b51b47fb0cc1081ee",tooltip="Get output filename. "];
+  Node123 -> Node124 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node124 [label="ElementBase::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a07827d00308052e65fe03da558f0b987",tooltip="Get element name. "];
+  Node119 -> Node125 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node125 [label="ElementBase::getParticle\lMatterInteraction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a1a364a24eede3f2e2265bbf44ad69c56"];
+  Node119 -> Node126 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node126 [label="FlexibleCollimator\l::goOnline",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/daa/a05049.html#a957858b9b325bcd2637ab49a9711d46c"];
+  Node126 -> Node127 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node127 [label="FlexibleCollimator\l::print",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/daa/a05049.html#a1ca1832c394ef1da5c33ce0a30ccd710"];
+  Node127 -> Node128 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node128 [label="_Fieldmap::typeset_msg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d3f/a05725.html#a1577476b45d1b62aae507e3b387a343e"];
+  Node127 -> Node129 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node129 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node129 -> Node130 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node130 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node130 -> Node131 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node131 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node130 -> Node132 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node132 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node132 -> Node133 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node133 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node133 -> Node134 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node134 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node133 -> Node131 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node133 -> Node129 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node127 -> Node131 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node127 -> Node135 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node135 [label="level3",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#acb24191df3a19b295603a460591ba95d"];
+  Node135 -> Node136 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node136 [label="Inform::setMessageLevel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a9fb7d950a408c97487fbdc7328b038a5"];
+}

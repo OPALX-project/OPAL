@@ -1,0 +1,10 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Fields/FM2DMagnetoStatic.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node43 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM2DMagnetoStatic.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node43 -> Node44 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node44 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Fieldmap.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dda/a01289.html"];
+  Node43 -> Node45 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node45 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM2DMagnetoStatic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d5c/a01358.html"];
+}

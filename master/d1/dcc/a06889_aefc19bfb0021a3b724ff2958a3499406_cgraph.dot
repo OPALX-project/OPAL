@@ -1,0 +1,46 @@
+digraph "OpalSimulation::collectResults"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node26 [label="OpalSimulation::collectResults",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node26 -> Node27 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node27 [label="OpalSimulation::cleanUp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dcc/a06889.html#ae7c50f38867a756ad80cb9a765ea78ad"];
+  Node27 -> Node28 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node28 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node28 -> Node29 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node29 -> Node30 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node30 -> Node31 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node31 -> Node28 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 -> Node32 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node31 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node33 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node29 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node26 -> Node28 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node26 -> Node34 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node34 [label="Expression::evaluate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d51/a12281.html#acd39eabe47464a92add6be47c612ac5c",tooltip="evaluate an expression given a value dictionary of free variables "];
+  Node34 -> Node35 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node35 [label="end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743"];
+  Node35 -> Node36 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node36 [label="PartBunchBase::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#ad231fcc85484b425051ff45b9288da34"];
+  Node34 -> Node37 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node37 [label="client::code_gen::StackEvaluator\l::registerFunctions",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d77/a12405.html#ae4cd764d5b7f2455a4dc348e3b90d530"];
+  Node34 -> Node38 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node38 [label="client::code_gen::StackEvaluator\l::registerVariables",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d77/a12405.html#a2370f70f24c3ee8dea17daaf13c4ec7a"];
+  Node34 -> Node39 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node39 [label="client::code_gen::StackEvaluator\l::result",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d77/a12405.html#a018753737204dd249edcd0ed4a404d3d"];
+  Node26 -> Node40 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node40 [label="Expression::getRegFuncs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d51/a12281.html#ab2bf129ca8f0ae0ee4a1b0def9e3d5a3"];
+  Node26 -> Node41 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node41 [label="OpalSimulation::getVariable\lDictionary",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dcc/a06889.html#a4a56080455297035ec9aedabdfdf86fa",tooltip="get variables for expression evaluation from SDDS file. Can throw SDDSParserException ..."];
+  Node41 -> Node42 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node42 [label="Expression::getReqVars",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d51/a12281.html#a382c64e4b2c9afea0b59972352e0b03b"];
+  Node26 -> Node43 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node43 [label="OpalSimulation::invalidBunch",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dcc/a06889.html#a333ee9492d9c266b7f173aea0d170424",tooltip="mark a solution as invalid "];
+  Node26 -> Node44 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node44 [label="Expression::toString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d51/a12281.html#a450f0f0d7056515bc02ff49136ce8ae7"];
+}

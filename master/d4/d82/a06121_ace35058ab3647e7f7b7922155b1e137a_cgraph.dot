@@ -1,0 +1,11 @@
+digraph "BeamStrippingPhysics::BeamStrippingPhysics"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="BeamStrippingPhysics\l::BeamStrippingPhysics",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="BeamStrippingPhysics\l::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d82/a06121.html#a926a4c4adc482e280173eeeb8dd377e8"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="ElementBase::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a07827d00308052e65fe03da558f0b987",tooltip="Get element name. "];
+}

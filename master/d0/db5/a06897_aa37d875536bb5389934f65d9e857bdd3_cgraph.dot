@@ -1,0 +1,39 @@
+digraph "PyOpal::PyOpalObjectNS::PyOpalObject::getAttribute"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node93 [label="PyOpal::PyOpalObjectNS\l::PyOpalObject::getAttribute",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node93 -> Node94 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node94 [label="Attributes::getBool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#a8f4df54f34b43a8304cb34f961a1c488",tooltip="Return logical value. "];
+  Node94 -> Node95 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node95 [label="Attribute::getBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#a3ad89aafd57487e0cbbc62d29515b29f",tooltip="Return reference to polymorphic value. "];
+  Node94 -> Node96 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node96 [label="Attribute::getHandler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#aea141e99b173cc9db4e66a0f62786ac9",tooltip="Return a reference to the parser. "];
+  Node94 -> Node97 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node97 [label="Attribute::isBaseAllocated",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#ad501832e9f9617f12978cf0db5e3ca7a"];
+  Node93 -> Node98 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node98 [label="Attributes::getReal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#a04ef4de7f8e753119a3d32411a0f0a2d",tooltip="Return real value. "];
+  Node98 -> Node95 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node98 -> Node96 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node98 -> Node97 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node93 -> Node99 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node99 [label="Attributes::getRealArray",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#ab98e27fb1c758b0a63d9e242fcbe68e6",tooltip="Get array value. "];
+  Node99 -> Node95 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node99 -> Node96 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node99 -> Node97 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node93 -> Node100 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node100 [label="Attributes::getString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#ad795567b62ebabd9fe7de3e4336303c2",tooltip="Get string value. "];
+  Node100 -> Node95 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node100 -> Node96 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node100 -> Node97 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node93 -> Node101 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node101 [label="Attributes::getStringArray",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#abf36dfc76d83ae448a1b9c2b438f753f",tooltip="Get string array value. "];
+  Node101 -> Node95 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node101 -> Node96 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node101 -> Node102 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node102 [label="OpalData::getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ac79e35ccb2194504a19ce52ddc5fd6e0"];
+  Node102 -> Node103 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node103 [label="OpalData::OpalData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#accc445ea08f633c3157728e420fd47c6"];
+  Node101 -> Node97 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

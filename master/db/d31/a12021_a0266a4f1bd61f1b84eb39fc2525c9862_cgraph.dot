@@ -1,0 +1,38 @@
+digraph "DiscField::read_offset"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node949 [label="DiscField::read_offset",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node949 -> Node950 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node950 [label="IpplInfo::abort",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#a8bdcd8abcec1d747ecf82579b42c853c"];
+  Node950 -> Node951 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node951 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node951 -> Node952 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node952 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node952 -> Node953 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node953 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node952 -> Node954 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node954 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node954 -> Node955 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node955 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node955 -> Node956 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node956 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node955 -> Node953 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node955 -> Node951 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node950 -> Node957 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node957 [label="IpplInfo::IpplInfo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#a733d331c7749dce3f7c5874832125461"];
+  Node950 -> Node958 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node958 [label="IpplInfo::printStatistics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#a0fcbec64e72d74c17d5e247953831fd5"];
+  Node958 -> Node959 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node959 [label="IpplStats::print",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db2/a12145.html#a97e4d23a6f6e92736d7dcea9fc2f6679"];
+  Node959 -> Node951 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node949 -> Node951 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node949 -> Node960 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node960 [label="DiscConfig::getFilename",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d07/a12005.html#a05bd58e90fa26c847ef382a8c306196d"];
+  Node949 -> Node961 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node961 [label="DiscField::open_df_file",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d31/a12021.html#adea1eab5d37e0559636433d06aca23aa"];
+  Node961 -> Node950 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node961 -> Node951 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node961 -> Node953 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

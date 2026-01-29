@@ -1,0 +1,11 @@
+digraph "RBend::getNormalComponent"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node96 [label="RBend::getNormalComponent",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node96 -> Node97 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node97 [label="RBend::getField",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d6f/a05137.html#a08c430780c0a0cd34b140edcd7710297",tooltip="Get multipole expansion of field. "];
+  Node96 -> Node98 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node98 [label="BMultipoleField::getNormal\lComponent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d57/a05665.html#a8599002a6283ed0426a7b9f227f91774",tooltip="Get component. "];
+}

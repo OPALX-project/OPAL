@@ -1,0 +1,15 @@
+digraph "operator*"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="operator*",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="Matrix::dotm",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d37/a05237.html#abef81a67a6f6c15e9472a076d43a589d",tooltip="Matrix product. "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Array2D::nrows",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d3b/a05229.html#a29182d455c8e0ed20d654e119e0024f9",tooltip="Get number of rows. "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Array2D::ncols",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d3b/a05229.html#ae2ec54ec52b65f1241357c3059fc538e",tooltip="Get number of columns. "];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Array2D::col_begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d3b/a05229.html#adcb11ce5d23a66af828e59d105446248",tooltip="Get column iterator. "];
+}

@@ -1,0 +1,38 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Fields/Interpolation/PolynomialCoefficient.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/Polynomial\lCoefficient.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/PPSolveFactory.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/df7/a01457.html"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/PPSolveFactory.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/df6/a01454.html"];
+  Node2 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/SolveFactory.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d2f/a01460.html"];
+  Node2 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/SectorMagneticFieldMap.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/dc6/a01502.html"];
+  Node2 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyPolynomialPatch.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d69/a02786.html"];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/SquarePolynomial\lVector.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d8b/a01469.html"];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/Polynomial\lPatch.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/dbc/a01451.html"];
+  Node8 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/Polynomial\lPatch.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d08/a01448.html"];
+  Node8 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/SolveFactory.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d42/a01463.html"];
+  Node10 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PySquarePolynomialMap.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/db6/a02792.html"];
+  Node7 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Interpolation/SquarePolynomial\lVector.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d67/a01466.html"];
+  Node7 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyPolynomialCoefficient.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/de4/a02780.html"];
+}

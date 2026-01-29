@@ -1,0 +1,24 @@
+digraph "RealDiracMatrix::update"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node100 [label="RealDiracMatrix::update",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node100 -> Node101 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node101 [label="atan2",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d51/a03842.html#adece0042b4015b8521d983143b6af21a"];
+  Node100 -> Node102 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node102 [label="matt_boost::cross_prod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dd3/a04527.html#ab994fd6ec746cde3c38fcb3980bb4f67",tooltip="Computes the cross product  of two vectors in . "];
+  Node100 -> Node103 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node103 [label="RealDiracMatrix::transform",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d62/a06505.html#a2d7f8720027dc05f2eeedd965817384f"];
+  Node103 -> Node104 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node104 [label="prod",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a120639401358f60ba9c8377440c2aff5"];
+  Node104 -> Node105 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node105 [label="PETE_Expr::PETE_unwrap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html#a9e3caaa1091db73ad743988a76490937"];
+  Node104 -> Node106 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node106 [label="Reduction",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a0a1cdb80c431a477e99aea03fea993fc"];
+  Node106 -> Node107 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node107 [label="for_each",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a1ea49580c5d70200ee20f6afbc6d6de3"];
+  Node106 -> Node108 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node108 [label="PETE_apply",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/de6/a03848.html#a1a29834440d6844017cef5d516087c28"];
+  Node106 -> Node105 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

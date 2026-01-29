@@ -1,0 +1,9 @@
+digraph "polynomial::RecursionRelation::truncate"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node100 [label="polynomial::RecursionRelation\l::truncate",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node100 -> Node101 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node101 [label="polynomial::Differential\lOperator::truncate",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d1a/a05089.html#a49bf0abd42e9c90e3f82c59907b4511c"];
+}

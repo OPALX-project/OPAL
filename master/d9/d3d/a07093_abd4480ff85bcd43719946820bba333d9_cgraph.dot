@@ -1,0 +1,15 @@
+digraph "FFTBoxPoissonSolver::greensFunction"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node173 [label="FFTBoxPoissonSolver\l::greensFunction",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node173 -> Node174 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node174 [label="IpplTimings::startTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d19/a12161.html#af9d914cab7e60b310cb44c75c8bff228"];
+  Node174 -> Node175 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node175 [label="Timing::startTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d4d/a12157.html#ad39485290627108c6ac78c84427277aa"];
+  Node173 -> Node176 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node176 [label="IpplTimings::stopTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d19/a12161.html#a8b229ce711198a6e0e190e7d9098c3eb"];
+  Node176 -> Node177 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node177 [label="Timing::stopTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d4d/a12157.html#a9b5f2cf6b4aa922ada3d453b0d656e34"];
+}

@@ -1,0 +1,17 @@
+digraph "Offset::operator="
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node251 [label="Offset::operator=",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node251 -> Node252 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node252 [label="ElementBase::getAperture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a23f0892aef1944a47f4c51990729b833"];
+  Node251 -> Node253 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node253 [label="ElementBase::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a07827d00308052e65fe03da558f0b987",tooltip="Get element name. "];
+  Node251 -> Node254 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node254 [label="Euclid3DGeometry::getTotal\lTransform",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d3d/a05553.html#a7ee4b2abb157d1a41d074c184e0ac2d8",tooltip="Get total transform from beginning to end. "];
+  Node251 -> Node255 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node255 [label="ElementBase::setAperture",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a14dd20e65c467dfa110245c52f4f2b5e"];
+  Node251 -> Node256 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node256 [label="ElementBase::setName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a02db7a51bd2dee275faf331a9c2db557",tooltip="Set element name. "];
+}

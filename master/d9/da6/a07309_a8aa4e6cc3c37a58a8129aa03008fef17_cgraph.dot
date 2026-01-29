@@ -1,0 +1,35 @@
+digraph "TrackRun::clone"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node19 [label="TrackRun::clone",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node19 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="TrackRun::TrackRun",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/da6/a07309.html#a7f2d1b746fe500a840c557ae83fa00d6",tooltip="Exemplar constructor. "];
+  Node20 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="OpalData::getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ac79e35ccb2194504a19ce52ddc5fd6e0"];
+  Node21 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="OpalData::OpalData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#accc445ea08f633c3157728e420fd47c6"];
+  Node20 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="Attributes::makeBool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#a0456a7ab32848a41f018f6464bc6ffde",tooltip="Make logical attribute. "];
+  Node20 -> Node24 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 [label="Attributes::makePredefined\lString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#a68b7d34fbeb1da8447087c5ae6f3564f",tooltip="Make predefined string attribute. "];
+  Node20 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node25 [label="Attributes::makeReal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#a6e6d302b6aceb7118637b3670373809b",tooltip="Make real attribute. "];
+  Node20 -> Node26 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node26 [label="Attributes::makeString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#ae9a947ca42d331f722e06f3a921fe170",tooltip="Make string attribute. "];
+  Node20 -> Node27 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node27 [label="Attributes::makeStringArray",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#a5a4063334a01637b7ad54c98b692dc40",tooltip="Create a string array attribute. "];
+  Node20 -> Node28 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node28 [label="Object::registerOwnership",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#a11c14d6b194bf37c2883bb42922852ac"];
+  Node28 -> Node29 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="AttributeHandler::addAttribute\lOwner",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d70/a04633.html#a550c346064f9c4e06ff5c88ff4b0ae9e"];
+  Node28 -> Node30 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d82/a00857.html#a42b0c32b83ea01767b2e7e6159694743"];
+  Node30 -> Node31 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="PartBunchBase::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d45/a04693.html#ad231fcc85484b425051ff45b9288da34"];
+  Node28 -> Node32 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="Object::getOpalName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#a5ec68ba1c3f450f8ea2b139f193c5a39",tooltip="Return object name. "];
+  Node28 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node33 [label="Object::getParent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#a489e6b0505923e64c18a8bb83062d5e3",tooltip="Return parent pointer. "];
+}

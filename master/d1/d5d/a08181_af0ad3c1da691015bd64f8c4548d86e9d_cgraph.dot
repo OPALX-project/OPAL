@@ -1,0 +1,16 @@
+digraph "DataConnect::disconnectConnections"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node66 [label="DataConnect::disconnectConnections",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node66 -> Node67 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node67 [label="DataConnect::checkout",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d5d/a08181.html#a470add11e909ef46a39ee18d7116be2c"];
+  Node67 -> Node68 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node68 [label="DataConnect::begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d5d/a08181.html#a7e151a3c73de8cf855cbf2e44c9c631b"];
+  Node67 -> Node69 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node69 [label="DataSource::disconnect",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d37/a08189.html#ad4e2acdb1f12a04172fc0530f682e3be"];
+  Node69 -> Node67 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node67 -> Node70 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 [label="DataConnect::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d5d/a08181.html#a2e4dad61a5fc81a427878302264c58b2"];
+}

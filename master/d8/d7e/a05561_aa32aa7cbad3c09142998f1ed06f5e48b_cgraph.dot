@@ -1,0 +1,11 @@
+digraph "Matrix3D::inverse"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node5 [label="Matrix3D::inverse",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="det",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d00/a03323.html#a87f563492f55c91c2da5effa37c36ef6"];
+  Node5 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="Matrix3D::Matrix3D",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d7e/a05561.html#afe9c6b7abe858fe9f6aea8f0607a00a7",tooltip="Default constructor. "];
+}

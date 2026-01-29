@@ -1,0 +1,14 @@
+digraph "AbstractParticle&lt; T, Dim &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node2 [label="AbstractParticle\< T,\l Dim \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ID_p\nR_p" ,fontname="Helvetica"];
+  Node3 [label="ParticleAttrib\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/def/a08229.html"];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="ParticleAttribBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d45/a10049.html"];
+  Node5 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="DataSource",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d37/a08189.html"];
+  Node6 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="PETE_Expr\< ParticleAttrib\l\< T \> \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html"];
+}

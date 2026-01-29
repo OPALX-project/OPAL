@@ -1,0 +1,17 @@
+digraph "Flagger::visitFlaggedElmPtr"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node5 [label="Flagger::visitFlaggedElmPtr",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="FlaggedElmPtr::setSelectionFlag",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d64/a05605.html#af3ec42bfe8cec993b2ee0823e9e537e9",tooltip="Get selection flag. "];
+  Node5 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="DefaultVisitor::visitFlagged\lElmPtr",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d63/a05297.html#a8bab0e7be75745a80eeae0db6a489ba0",tooltip="Apply the algorithm to a FlaggedElmPtr. "];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="ElementBase::accept",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a4c963794b96d83d5d3be0a9fe3c44322",tooltip="Apply visitor. "];
+  Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="ElmPtr::getElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/dc2/a05601.html#a5e93800b724a0a93cbb985fdc52cbf0f",tooltip="Get the element pointer. "];
+  Node7 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="FlaggedElmPtr::getReflectionFlag",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d64/a05605.html#acc70d7f5db8ffe5b47920a6503bfcad9",tooltip="Get reflection flag. "];
+}

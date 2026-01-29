@@ -1,0 +1,39 @@
+digraph "ParallelCyclotronTracker::visitSeptum"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node5303 [label="ParallelCyclotronTracker\l::visitSeptum",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node5303 -> Node5304 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5304 [label="ParallelCyclotronTracker\l::buildupFieldList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d75/a04805.html#ab7465c427fa65b689499fa1678417050"];
+  Node5303 -> Node5305 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5305 [label="ElementBase::clone",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#aa5580165a9f8b9e6d873927cff20d986",tooltip="Return clone. "];
+  Node5303 -> Node5306 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5306 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node5306 -> Node5307 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5307 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node5307 -> Node5308 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5308 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node5308 -> Node5309 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5309 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node5309 -> Node5306 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5309 -> Node5310 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5310 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node5309 -> Node5311 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5311 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node5307 -> Node5311 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5303 -> Node5312 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5312 [label="ElementBase::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a07827d00308052e65fe03da558f0b987",tooltip="Get element name. "];
+  Node5303 -> Node5313 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5313 [label="Septum::getWidth",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/dbb/a05165.html#ae8acecad5f598176c0a70cfbd4a0660a"];
+  Node5303 -> Node5314 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5314 [label="PluginElement::getXEnd",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/df0/a05129.html#ab06a614073fd7204b808e8c5d7a3d6bf"];
+  Node5303 -> Node5315 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5315 [label="PluginElement::getXStart",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/df0/a05129.html#adf03280be6438e40778b65c2b3292c05",tooltip="Member variable access. "];
+  Node5303 -> Node5316 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5316 [label="PluginElement::getYEnd",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/df0/a05129.html#ae40ca7b43fba6abcc1f3ffcaead4f0c0"];
+  Node5303 -> Node5317 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5317 [label="PluginElement::getYStart",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/df0/a05129.html#a454774d958ed90147fc9c397b61ace89"];
+  Node5303 -> Node5318 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5318 [label="Septum::initialise",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/dbb/a05165.html#a5948316cc5f6ad2f85722642b2b20e24",tooltip="Pure virtual implementation of Component. "];
+}

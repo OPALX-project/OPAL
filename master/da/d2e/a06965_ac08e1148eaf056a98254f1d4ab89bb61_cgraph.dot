@@ -1,0 +1,15 @@
+digraph "Sampler::runStateMachine"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node37 [label="Sampler::runStateMachine",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node37 -> Node38 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node38 [label="Sampler::dispatch_forward\l_solves",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d2e/a06965.html#a6789e6f4523d6bc27275c28ac60b02e3"];
+  Node38 -> Node39 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node39 [label="MPI_Send_params",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d11/a04313.html#a1d8e47273285f3ce5de5911e0b4919db"];
+  Node39 -> Node40 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node40 [label="serialize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d11/a04313.html#a665a026d5aa4a3321c183b5f866763e1",tooltip="serializes params using Boost archive "];
+  Node37 -> Node41 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node41 [label="Sampler::dumpIndividuals\lToJSON",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d2e/a06965.html#abef60e0e43bde8fc8d6afda391692de0"];
+}

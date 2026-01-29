@@ -1,0 +1,11 @@
+digraph "FFT&lt; SineTransform, 1U, T &gt;::setup"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node3 [label="FFT\< SineTransform,\l 1U, T \>::setup",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="FFTBase::compressTemps",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#aaf2b61078c6637e69f216b65dbc982f5",tooltip="do we compress temps? "];
+  Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="FFTBase::getDomain",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d52/a08317.html#a4aa9b793a79e7d326742c932ca2385c9",tooltip="get our domain "];
+}

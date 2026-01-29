@@ -1,0 +1,25 @@
+digraph "BoundaryGeometry::intersectLineTriangle"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node623 [label="BoundaryGeometry::intersect\lLineTriangle",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node623 -> Node624 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node624 [label="cross",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/ddc/a01142.html#a01046d3dab4c1e9ad6b2b6dee8cc8310",tooltip="Vector cross product. "];
+  Node623 -> Node625 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node625 [label="dot",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/ddc/a01142.html#a731854fb8292e52014666a5412601853",tooltip="Vector dot product. "];
+  Node623 -> Node626 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node626 [label="cmp_diff::eq_zero",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d24/a04589.html#aa42c8785fb15232a182195aaa3d36e0b"];
+  Node623 -> Node627 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node627 [label="cmp_diff::ge_zero",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d24/a04589.html#a6a71e2b276c9ad840d1d34cb14b4ad12"];
+  Node623 -> Node628 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node628 [label="BoundaryGeometry::getPoint",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/da0/a07185.html#acc8c3c09b4e37b773307708fb86286f0"];
+  Node623 -> Node629 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node629 [label="cmp_diff::gt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d24/a04589.html#a51c88bcde429a23580584ecc57ac7041"];
+  Node623 -> Node630 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node630 [label="cmp_diff::le",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d24/a04589.html#abe48806a438faddc2875aa257cb9f77c"];
+  Node623 -> Node631 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node631 [label="cmp_diff::lt",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d24/a04589.html#a082f05035dcbe13a7ad59908831dd62d"];
+  Node623 -> Node632 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node632 [label="cmp_diff::lt_zero",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d24/a04589.html#a6e145234b1a759d43130435f21ad46e3"];
+}

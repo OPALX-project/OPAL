@@ -1,0 +1,9 @@
+digraph "Degrader::accept"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node11 [label="Degrader::accept",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node11 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="BeamlineVisitor::visitDegrader",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d01/a04977.html#a216452b943700a4948ff2d6febcfeb8d",tooltip="Apply the algorithm to a degrader. "];
+}

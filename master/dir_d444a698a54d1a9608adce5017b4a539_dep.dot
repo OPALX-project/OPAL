@@ -1,0 +1,19 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/PyOpal/PyElements" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_bf6cab3c9049b96324f062a9c8fa1ff1 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="PyOpal" fontname="Helvetica", fontsize="10", URL="dir_bf6cab3c9049b96324f062a9c8fa1ff1.html"]
+  dir_d444a698a54d1a9608adce5017b4a539 [shape=box, label="PyElements", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_d444a698a54d1a9608adce5017b4a539.html"];
+  }
+  dir_6cfe006fb08a6da2795b1de650da964f [shape=box label="Elements" fillcolor="white" style="filled" color="red" URL="dir_6cfe006fb08a6da2795b1de650da964f.html"];
+  dir_28de348b893d1beb5cdb60b041d1b631 [shape=box label="PyCore" URL="dir_28de348b893d1beb5cdb60b041d1b631.html"];
+  dir_d235ccafb34880d2a3dfd7e70a4539df [shape=box label="Classic" fillcolor="white" style="filled" color="red" URL="dir_d235ccafb34880d2a3dfd7e70a4539df.html"];
+  dir_6cfe006fb08a6da2795b1de650da964f->dir_d235ccafb34880d2a3dfd7e70a4539df [headlabel="123", labeldistance=1.5 headhref="dir_000073_000050.html"];
+  dir_d444a698a54d1a9608adce5017b4a539->dir_6cfe006fb08a6da2795b1de650da964f [headlabel="16", labeldistance=1.5 headhref="dir_000081_000073.html"];
+  dir_d444a698a54d1a9608adce5017b4a539->dir_28de348b893d1beb5cdb60b041d1b631 [headlabel="50", labeldistance=1.5 headhref="dir_000081_000080.html"];
+  dir_d444a698a54d1a9608adce5017b4a539->dir_d235ccafb34880d2a3dfd7e70a4539df [headlabel="14", labeldistance=1.5 headhref="dir_000081_000050.html"];
+  dir_28de348b893d1beb5cdb60b041d1b631->dir_6cfe006fb08a6da2795b1de650da964f [headlabel="1", labeldistance=1.5 headhref="dir_000080_000073.html"];
+  dir_28de348b893d1beb5cdb60b041d1b631->dir_d235ccafb34880d2a3dfd7e70a4539df [headlabel="2", labeldistance=1.5 headhref="dir_000080_000050.html"];
+  dir_d235ccafb34880d2a3dfd7e70a4539df->dir_6cfe006fb08a6da2795b1de650da964f [headlabel="1", labeldistance=1.5 headhref="dir_000050_000073.html"];
+}

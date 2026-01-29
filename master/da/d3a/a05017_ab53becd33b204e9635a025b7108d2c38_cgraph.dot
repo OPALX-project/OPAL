@@ -1,0 +1,13 @@
+digraph "Cyclotron::applyTrimCoil"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node96 [label="Cyclotron::applyTrimCoil",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node96 -> Node97 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node97 [label="abs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d51/a03842.html#a7633e9416cb6fdd16745f5ba3e3ea7d3"];
+  Node97 -> Node98 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node98 [label="PETE_Expr::PETE_unwrap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html#a9e3caaa1091db73ad743988a76490937"];
+  Node96 -> Node99 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node99 [label="Cyclotron::applyTrimCoil_m",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d3a/a05017.html#a9745a391e65b0faf01c8964b4e561282",tooltip="Apply trim coils (calculate field contributions) "];
+}

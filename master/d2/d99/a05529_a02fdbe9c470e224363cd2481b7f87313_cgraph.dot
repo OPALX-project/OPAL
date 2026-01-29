@@ -1,0 +1,11 @@
+digraph "VacuumRep::getChannel"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node6 [label="VacuumRep::getChannel",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="ElementBase::getChannel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a02257dc2843938a8baa24583fdd6b273",tooltip="Construct a read/write channel. "];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="AttributeSet::getChannel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d76/a04973.html#a9ca26ee9df44ab1d5c19554d647b8c4d",tooltip="Construct a read/write channel. "];
+}

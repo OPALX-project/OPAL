@@ -1,0 +1,11 @@
+digraph "PyOpal::Field::getRing"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node439 [label="PyOpal::Field::getRing",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node439 -> Node440 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node440 [label="ParallelCyclotronTracker\l::getRing",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d75/a04805.html#a9cf64a28e8fc1652c6e1b4795e489226"];
+  Node439 -> Node441 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node441 [label="TrackRun::getTracker",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/da6/a07309.html#af0316ce6a0bdaf33f0960e02928f0c20"];
+}

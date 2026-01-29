@@ -1,0 +1,16 @@
+digraph "TokenStream"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node0 [label="TokenStream",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="RCObject",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d72/a06017.html",tooltip="Abstract base class for reference counted objects. "];
+  Node0 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="AbsFileStream",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dc2/a06021.html",tooltip="A stream of input tokens. "];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="FileStream",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/da1/a06025.html",tooltip="A stream of input tokens. "];
+  Node0 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="MacroStream",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d2d/a06865.html",tooltip="An input buffer for macro commands. "];
+  Node0 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="StringStream",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/dc8/a06041.html",tooltip="A stream of input tokens. "];
+}

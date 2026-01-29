@@ -1,0 +1,19 @@
+digraph "Sampler::initialize"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node10 [label="Sampler::initialize",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node10 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="Poller::run",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d06/a12525.html#aebc9249c7778c6ef237ed6da127366f3"];
+  Node11 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="Poller::onMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d06/a12525.html#a63bade169f963e12856baa64b5ad6bb9"];
+  Node11 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="Poller::onStop",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d06/a12525.html#aa07a78e6acc8bacc6e3b9e3aadef8532",tooltip="enable implementation to react to STOP tag "];
+  Node11 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="Poller::postPoll",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d06/a12525.html#a8862f3178103af0f45a493d57105d5e4",tooltip="executed after handling (if any) new request "];
+  Node11 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="Poller::prePoll",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d06/a12525.html#a5ad3a1cb55edf08847ed37965f6dd56b",tooltip="executed before checking for new request "];
+  Node11 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="Poller::setupPoll",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d06/a12525.html#a7750d4a9f379671afefb48e13331c8b0",tooltip="executed before starting polling loop "];
+}

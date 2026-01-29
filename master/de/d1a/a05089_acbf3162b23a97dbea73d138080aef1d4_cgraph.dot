@@ -1,0 +1,11 @@
+digraph "polynomial::DifferentialOperator::setPolynomial"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node26 [label="polynomial::Differential\lOperator::setPolynomial",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node26 -> Node27 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node27 [label="polynomial::Differential\lOperator::resizeS",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d1a/a05089.html#af58750e4e957461b8539026d0d7a60e1"];
+  Node26 -> Node28 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node28 [label="polynomial::Differential\lOperator::resizeX",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d1a/a05089.html#a762ad70188a9b98672bb7ef7d771a393"];
+}

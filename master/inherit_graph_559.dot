@@ -1,0 +1,13 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="MultipoleTBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d3f/a05069.html"];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="MultipoleTCurvedConstRadius",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dd2/a05073.html"];
+  Node0 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="MultipoleTCurvedVarRadius",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d8e/a05077.html"];
+  Node0 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="MultipoleTStraight",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d15/a05117.html"];
+}

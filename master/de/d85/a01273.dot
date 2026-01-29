@@ -1,0 +1,14 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Fields/ConstBzField.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node4 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/ConstBzField.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/SolenoidRep.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d41/a01037.html"];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/SolenoidRep.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d91/a01034.html"];
+  Node5 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalSolenoid.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d75/a02372.html"];
+  Node4 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/ConstBzField.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dd9/a01268.html"];
+}

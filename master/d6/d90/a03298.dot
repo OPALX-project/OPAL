@@ -1,0 +1,18 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/ValueDefinitions/RealVariable.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node14 [label="/psi/home/gsell/data\l/src/OPAL/src/src/ValueDefinitions\l/RealVariable.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="/psi/home/gsell/data\l/src/OPAL/src/src/AbstractObjects\l/OpalData.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d89/a00071.html"];
+  Node14 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelTTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/de6/a00167.html"];
+  Node14 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Attributes\l/Attributes.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d52/a00221.html"];
+  Node14 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="/psi/home/gsell/data\l/src/OPAL/src/src/OpalConfigure\l/Configure.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d88/a02600.html"];
+  Node14 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Solvers\l/MGPoissonSolver.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/dbd/a03008.html"];
+  Node14 -> Node20 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="/psi/home/gsell/data\l/src/OPAL/src/src/ValueDefinitions\l/RealVariable.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d74/a03293.html"];
+}

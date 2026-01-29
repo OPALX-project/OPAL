@@ -1,0 +1,17 @@
+digraph "PutSingleItem&lt; T, false, false &gt;::put"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node27 [label="PutSingleItem\< T, false,\l false \>::put",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node27 -> Node28 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node28 [label="Message::putmsg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d84/a09621.html#a4586e2ea141a20fe0c65cff03e54638e"];
+  Node27 -> Node29 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="Message::setCopy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d84/a09621.html#adc2879b32cc3bc025e931e6219d0582e"];
+  Node27 -> Node30 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="Message::setDelete",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d84/a09621.html#a22e02c53be8f84943784624cd35b8414"];
+  Node27 -> Node31 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="Message::size",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d84/a09621.html#a3064fb32119072349687a4a2fa603fd4"];
+  Node27 -> Node32 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="value_type",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dce/a00740.html#aa8ae23ddaa752827580a9345f34b7cca"];
+}

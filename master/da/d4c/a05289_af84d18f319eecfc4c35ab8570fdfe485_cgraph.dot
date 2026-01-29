@@ -1,0 +1,13 @@
+digraph "AmrPartBunch::updateLorentzFactor"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node313 [label="AmrPartBunch::updateLorentz\lFactor",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node313 -> Node314 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node314 [label="OpalData::getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ac79e35ccb2194504a19ce52ddc5fd6e0"];
+  Node314 -> Node315 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node315 [label="OpalData::OpalData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#accc445ea08f633c3157728e420fd47c6"];
+  Node313 -> Node316 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node316 [label="AmrParticleBase::setLorentz\lFactor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d01/a07357.html#a02fd807a4cf23d3fe369b40d5c8cc533"];
+}

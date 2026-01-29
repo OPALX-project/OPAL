@@ -1,0 +1,15 @@
+digraph "PortableGraymapReader::PortableGraymapReader"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="PortableGraymapReader\l::PortableGraymapReader",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="PortableGraymapReader\l::readHeader",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/df3/a06453.html#a6755a583972b3519e42c1451645d7e20"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="PortableGraymapReader\l::getNextPart",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/df3/a06453.html#a205543542a95f79202aa41500d7f7003"];
+  Node0 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="PortableGraymapReader\l::readImageAscii",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/df3/a06453.html#a7387dc9f2a7038465032f84dcbd138cc"];
+  Node0 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="PortableGraymapReader\l::readImageBinary",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/df3/a06453.html#a2dd7f3a8e9a96b48684acbd117057b00"];
+}

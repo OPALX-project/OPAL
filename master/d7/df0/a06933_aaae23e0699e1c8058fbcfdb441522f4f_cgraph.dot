@@ -1,0 +1,13 @@
+digraph "LatinHyperCube::allocate"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node4 [label="LatinHyperCube::allocate",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="LatinHyperCube::fillBins_m",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/df0/a06933.html#adc8532df6cab2d6a15a8f1af5ede692d"];
+  Node4 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="RNGStream::getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d7c/a06945.html#a068a96e090d217d93d8540787d9e3f6c"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="RNGStream::RNGStream",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d7c/a06945.html#a7832d92ef3e3bcdc9a21e7708d0a647f"];
+}

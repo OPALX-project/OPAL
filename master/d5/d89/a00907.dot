@@ -1,0 +1,28 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Algorithms/Tracker.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node366 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Algorithms/Tracker.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node366 -> Node367 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node367 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelCyclotronTracker.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/ddf/a00164.html"];
+  Node367 -> Node368 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node368 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelCyclotronTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d7d/a00161.html"];
+  Node367 -> Node369 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node369 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyField.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d8e/a02759.html"];
+  Node367 -> Node370 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node370 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Track\l/TrackRun.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d19/a03242.html"];
+  Node366 -> Node371 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node371 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelTTracker.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dcb/a00170.html"];
+  Node371 -> Node372 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node372 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelTTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/de6/a00167.html"];
+  Node371 -> Node369 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node371 -> Node370 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node366 -> Node373 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node373 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ThickTracker.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d25/a00182.html"];
+  Node373 -> Node374 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node374 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ThickTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/dd9/a00179.html"];
+  Node373 -> Node370 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node366 -> Node375 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node375 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Algorithms/Tracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dd3/a00902.html"];
+  Node366 -> Node370 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

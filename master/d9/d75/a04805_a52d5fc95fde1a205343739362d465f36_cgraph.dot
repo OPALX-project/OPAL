@@ -1,0 +1,13 @@
+digraph "ParallelCyclotronTracker::checkGapCross"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node873 [label="ParallelCyclotronTracker\l::checkGapCross",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node873 -> Node874 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node874 [label="RFCavity::getCosAzimuth",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d60/a05145.html#a58648e6c9265858963a0104398aa6e02"];
+  Node873 -> Node875 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node875 [label="RFCavity::getPerpenDistance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d60/a05145.html#ac9dfec52bbe15f4bb6859b0d436dcf75"];
+  Node873 -> Node876 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node876 [label="RFCavity::getSinAzimuth",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d60/a05145.html#a95ab6fb74ae41fbf95b87845cee2804f"];
+}

@@ -1,0 +1,11 @@
+digraph "Euclid3D::isPureZRotation"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node32 [label="Euclid3D::isPureZRotation",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node32 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node33 [label="Rotation3D::isPureZRotation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dfe/a05577.html#ab63c058c6dfadb93d44ee28607141ef0",tooltip="Test for rotation. "];
+  Node32 -> Node34 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node34 [label="Vector3D::isZero",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/de1/a05589.html#a98c1888b3a37bf6d7ab5eaac9cd541b1",tooltip="Test for zero. "];
+}

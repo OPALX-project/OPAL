@@ -1,0 +1,15 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Algorithms/AbstractTracker.cpp"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node0 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Algorithms/AbstractTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="Algorithms/AbstractTracker.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/db8/a00797.html"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Algorithms/DefaultVisitor.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d2d/a00815.html"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="AbsBeamline/BeamlineVisitor.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d91/a00410.html"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="Algorithms/PartData.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/db2/a00866.html"];
+  Node0 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

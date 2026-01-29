@@ -1,0 +1,22 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Algorithms/StepSizeConfig.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node11 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/StepSizeConfig.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node11 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/OrbitThreader.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/db8/a00158.html"];
+  Node12 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/OrbitThreader.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/df8/a00155.html"];
+  Node12 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelTTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/de6/a00167.html"];
+  Node12 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelTTracker.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dcb/a00170.html"];
+  Node15 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyField.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d8e/a02759.html"];
+  Node15 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Track\l/TrackRun.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d19/a03242.html"];
+  Node11 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/StepSizeConfig.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d3f/a00173.html"];
+}

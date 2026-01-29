@@ -1,0 +1,27 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/AbsBeamline/RBend3D.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node65 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/RBend3D.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node65 -> Node66 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node66 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelTTracker.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dcb/a00170.html"];
+  Node66 -> Node67 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node67 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelTTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/de6/a00167.html"];
+  Node66 -> Node68 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node68 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyField.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d8e/a02759.html"];
+  Node66 -> Node69 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node69 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Track\l/TrackRun.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d19/a03242.html"];
+  Node65 -> Node70 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node70 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ThickTracker.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d25/a00182.html"];
+  Node70 -> Node71 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node71 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ThickTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/dd9/a00179.html"];
+  Node70 -> Node69 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node65 -> Node72 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node72 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/AbsBeamline/RBend3D.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dd1/a00629.html"];
+  Node65 -> Node73 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node73 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Algorithms/DefaultVisitor.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/db7/a00812.html"];
+  Node65 -> Node74 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node74 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Structure/MeshGenerator.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/dc6/a01793.html"];
+  Node65 -> Node75 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node75 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalRBend3D.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d73/a02312.html"];
+}

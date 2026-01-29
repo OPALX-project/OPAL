@@ -1,0 +1,18 @@
+digraph "IpplParticleBase&lt; PLayout &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node0 [label="IpplParticleBase\< PLayout \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="DataSource",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d37/a08189.html"];
+  Node2 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="AbstractParticle\< PLayout\l::Position_t, PLayout::\lDimension \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d62/a09817.html"];
+  Node0 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="AmrParticleBase\< PLayout \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d01/a07357.html"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="BoxLibParticle\< PLayout \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/ddb/a04853.html"];
+  Node0 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="GenArrayParticle\< PLayout \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d07/a09837.html"];
+  Node0 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="GenParticle\< PLayout \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d68/a09841.html"];
+}

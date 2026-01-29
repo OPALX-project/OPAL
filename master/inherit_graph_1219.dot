@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="Taylor\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dd2/a06001.html",tooltip="A representation for a Taylor series in one variable,. "];
+}

@@ -1,0 +1,11 @@
+digraph "mslang::Mask::minimizeNumberOfRectangles"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node3 [label="mslang::Mask::minimizeNumber\lOfRectangles",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="mslang::Mask::computeArea",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d92/a06317.html#a7381dd0c18ee3b93b75de05ef31dddee"];
+  Node3 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="mslang::Mask::findMaximal\lRectangle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d92/a06317.html#a9132147ebafc7fff0409d1a4f1a2a306"];
+}

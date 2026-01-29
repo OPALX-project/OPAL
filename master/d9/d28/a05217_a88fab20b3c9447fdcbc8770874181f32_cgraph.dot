@@ -1,0 +1,9 @@
+digraph "VariableRFCavityFringeField::setMaxOrder"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node196 [label="VariableRFCavityFringeField\l::setMaxOrder",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node196 -> Node197 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node197 [label="VariableRFCavityFringeField\l::initialiseCoefficients",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d28/a05217.html#ab701ae90099b02a9f2b1ca465cc8ea8b"];
+}

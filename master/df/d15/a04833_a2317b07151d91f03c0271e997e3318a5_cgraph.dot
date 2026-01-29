@@ -1,0 +1,25 @@
+digraph "AmrBoxLib::AmrBoxLib"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="AmrBoxLib::AmrBoxLib",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="AmrBoxLib::initBaseLevel_m",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d15/a04833.html#aaee06ae3609a1f500a8fa28ad9d80a67"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="AmrBoxLib::RemakeLevel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d15/a04833.html#a55b50e0435a8d18f3d12f68a909bd45f"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="BoxLibLayout::buildLevelMask",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d9f/a04849.html#a4e7ceddfde96c50672bebdbef6f51b9e"];
+  Node1 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="BoxLibLayout::define",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d9f/a04849.html#adc49b0b002fadff0e7a4eee8edd3506a"];
+  Node0 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="AmrBoxLib::maxLevel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d15/a04833.html#a1198039bdf2ca7e55ad8c9a6c2570750"];
+  Node0 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="BoxLibLayout::resize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d9f/a04849.html#ad7b99db9c92bc54068eb802c34793df9"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="BoxLibLayout::maxLevel",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d9f/a04849.html#aa35d762704c52c61260ac05b5349b677"];
+  Node0 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="AmrBoxLib::updateMesh",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d15/a04833.html#a5fc9af60b898e10b934461cf324a8f8e"];
+  Node8 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="AmrPartBunch::setBaseLevel\lMeshSpacing",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d4c/a05289.html#a675d3437c1a465576f808bccde82c906"];
+}

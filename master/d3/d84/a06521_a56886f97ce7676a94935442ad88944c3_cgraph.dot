@@ -1,0 +1,13 @@
+digraph "OpalBend::OpalBend"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="OpalBend::OpalBend",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="Attributes::makeBool",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#a0456a7ab32848a41f018f6464bc6ffde",tooltip="Make logical attribute. "];
+  Node0 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Attributes::makeReal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#a6e6d302b6aceb7118637b3670373809b",tooltip="Make real attribute. "];
+  Node0 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Attributes::makeString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#ae9a947ca42d331f722e06f3a921fe170",tooltip="Make string attribute. "];
+}

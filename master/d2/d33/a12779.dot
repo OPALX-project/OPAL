@@ -1,0 +1,25 @@
+digraph "SDDSReader"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node2 [label="SDDSReader",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="SDDS::SDDSParser",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/dcc/a12777.html"];
+  Node4 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sddsData_m" ,fontname="Helvetica"];
+  Node4 [label="SDDS::file",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d8e/a12721.html"];
+  Node5 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sddsIncludes_m" ,fontname="Helvetica"];
+  Node5 [label="SDDS::includeList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/da5/a12733.html"];
+  Node6 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sddsAssociates_m" ,fontname="Helvetica"];
+  Node6 [label="SDDS::associateList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d16/a12661.html"];
+  Node7 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sddsParameters_m" ,fontname="Helvetica"];
+  Node7 [label="SDDS::parameterList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d98/a12749.html"];
+  Node8 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sddsVersion_m" ,fontname="Helvetica"];
+  Node8 [label="SDDS::version",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d1d/a12773.html"];
+  Node9 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sddsArrays_m" ,fontname="Helvetica"];
+  Node9 [label="SDDS::arrayList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dd7/a12645.html"];
+  Node10 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sddsColumns_m" ,fontname="Helvetica"];
+  Node10 [label="SDDS::columnList",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/df4/a12689.html"];
+  Node11 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sddsData_m" ,fontname="Helvetica"];
+  Node11 [label="SDDS::data",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d37/a12701.html"];
+}

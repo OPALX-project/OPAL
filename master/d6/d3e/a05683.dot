@@ -1,0 +1,18 @@
+digraph "ConstEzField"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node4 [label="ConstEzField",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="StaticElectricField",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/da8/a05901.html",tooltip="Abstract base class for static electric fields. "];
+  Node6 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="EMField",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/db9/a05705.html",tooltip="Abstract base class for electromagnetic fields. "];
+  Node7 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ZeroEBfield" ,fontname="Helvetica"];
+  Node7 [label="EBVectors",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dd6/a05701.html",tooltip="A representation of an electromagnetic field. "];
+  Node8 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" B" ,fontname="Helvetica"];
+  Node8 [label="BVector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/ddc/a05697.html",tooltip="A magnetic field vector. "];
+  Node9 -> Node7 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" E" ,fontname="Helvetica"];
+  Node9 [label="EVector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d6d/a05693.html",tooltip="An electric field vector. "];
+  Node8 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ZeroBfield" ,fontname="Helvetica"];
+  Node9 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ZeroEfield" ,fontname="Helvetica"];
+}

@@ -1,0 +1,15 @@
+digraph "PluginElement::initialise"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node237 [label="PluginElement::initialise",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node237 -> Node238 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node238 [label="PluginElement::doInitialise",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/df0/a05129.html#a08182f9a017f3bb12c855fa827c9cf6b",tooltip="Pure virtual hook for initialise. "];
+  Node237 -> Node239 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node239 [label="ElementBase::getOutputFN",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a66b66616164e834b51b47fb0cc1081ee",tooltip="Get output filename. "];
+  Node239 -> Node240 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node240 [label="ElementBase::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a07827d00308052e65fe03da558f0b987",tooltip="Get element name. "];
+  Node237 -> Node241 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node241 [label="Component::goOnline",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dd1/a05001.html#a524c4a0b9f8f8df251f0d643836e33cc"];
+}

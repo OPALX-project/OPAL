@@ -1,0 +1,22 @@
+digraph "Distribution"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node4 [label="Distribution",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="Definition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/df3/a04641.html",tooltip="The base class for all OPAL definitions. "];
+  Node6 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="Object",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html",tooltip="The base class for all OPAL objects. "];
+  Node7 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="RCObject",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d72/a06017.html",tooltip="Abstract base class for reference counted objects. "];
+  Node6 -> Node6 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" itsParent" ,fontname="Helvetica"];
+  Node8 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" laserProfile_m" ,fontname="Helvetica"];
+  Node8 [label="LaserProfile",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d38/a06497.html"];
+  Node9 -> Node8 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" centerMass_m\nstandardDeviation_m" ,fontname="Helvetica"];
+  Node9 [label="Vektor\< double, 3 \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d68/a07473.html"];
+  Node9 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" sigmaR_m\nsigmaP_m\npmean_m\ncutoffR_m\ncutoffP_m\nmBinomial_m" ,fontname="Helvetica"];
+  Node10 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" energyBins_m" ,fontname="Helvetica"];
+  Node10 [label="PartBins",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d96/a05317.html"];
+  Node11 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" particleRefData_m" ,fontname="Helvetica"];
+  Node11 [label="PartData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d27/a05341.html"];
+}

@@ -1,0 +1,8 @@
+digraph "_Astra1D_fast"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node5 [label="_Astra1D_fast",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node6 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="_Fieldmap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d3f/a05725.html"];
+}

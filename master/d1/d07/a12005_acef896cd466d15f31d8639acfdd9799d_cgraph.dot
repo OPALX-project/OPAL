@@ -1,0 +1,38 @@
+digraph "DiscConfig::add_SMP_directory"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node42 [label="DiscConfig::add_SMP\l_directory",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node42 -> Node43 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node43 [label="DiscConfig::dc_tokenize\l_string",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d07/a12005.html#ae7ebcb53f60d7b99fb3f21fbeb0bec3b"];
+  Node42 -> Node44 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node44 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node44 -> Node45 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node45 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node45 -> Node46 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node46 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node45 -> Node47 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node47 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node47 -> Node48 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node48 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node48 -> Node49 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node49 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node48 -> Node46 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node48 -> Node44 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node42 -> Node49 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node42 -> Node50 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node50 [label="DiscConfig::replace\l_wildcards",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d07/a12005.html#a2bf62db9377f05cb4aa5a6fca509c04c"];
+  Node50 -> Node44 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node50 -> Node51 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node51 [label="IpplInfo::abort",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#a8bdcd8abcec1d747ecf82579b42c853c"];
+  Node51 -> Node44 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node51 -> Node52 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node52 [label="IpplInfo::IpplInfo",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#a733d331c7749dce3f7c5874832125461"];
+  Node51 -> Node53 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node53 [label="IpplInfo::printStatistics",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#a0fcbec64e72d74c17d5e247953831fd5"];
+  Node53 -> Node54 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node54 [label="IpplStats::print",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db2/a12145.html#a97e4d23a6f6e92736d7dcea9fc2f6679"];
+  Node54 -> Node44 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node50 -> Node46 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

@@ -1,0 +1,9 @@
+digraph "sint"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node6 [label="sint",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node6 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="sint1",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/df8/a03443.html#a8c129531f2edbb55b442510d82bfad1c"];
+}

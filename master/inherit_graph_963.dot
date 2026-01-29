@@ -1,0 +1,7 @@
+digraph "Graphical Class Hierarchy"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="PETEBinaryReturn\< Tenzor\l\< T1, Dim \>, AntiSymTenzor\l\< T2, Dim \>, FnDotDot \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d1f/a10965.html"];
+}

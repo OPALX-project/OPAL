@@ -1,0 +1,17 @@
+digraph "RangeRep::enter"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node4 [label="RangeRep::enter",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="PlaceRep::enter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d3a/a04705.html#aa01662d550b7b2d054c498fe831ee3aa",tooltip="Enter an element or line. "];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="FlaggedElmPtr::getCounter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d64/a05605.html#a006432c0346ba8e6faf0d0005da632b3",tooltip="Get clone counter. "];
+  Node5 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="ElmPtr::getElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/dc2/a05601.html#a5e93800b724a0a93cbb985fdc52cbf0f",tooltip="Get the element pointer. "];
+  Node5 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="ElementBase::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a07827d00308052e65fe03da558f0b987",tooltip="Get element name. "];
+  Node4 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="PlaceRep::isActive",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d3a/a04705.html#a1da2b96ba1a0e688351dee8260199324",tooltip="Return status. "];
+}

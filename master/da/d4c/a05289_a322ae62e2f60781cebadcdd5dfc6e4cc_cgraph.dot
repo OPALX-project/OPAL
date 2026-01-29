@@ -1,0 +1,17 @@
+digraph "AmrPartBunch::computeSelfFields"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node76 [label="AmrPartBunch::computeSelf\lFields",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node76 -> Node77 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node77 [label="AmrObject::computeSelfFields",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d82/a04837.html#ac160170a097df55a3bcc2f3356efa665"];
+  Node76 -> Node78 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node78 [label="IpplTimings::startTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d19/a12161.html#af9d914cab7e60b310cb44c75c8bff228"];
+  Node78 -> Node79 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node79 [label="Timing::startTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d4d/a12157.html#ad39485290627108c6ac78c84427277aa"];
+  Node76 -> Node80 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node80 [label="IpplTimings::stopTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d19/a12161.html#a8b229ce711198a6e0e190e7d9098c3eb"];
+  Node80 -> Node81 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node81 [label="Timing::stopTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d4d/a12157.html#a9b5f2cf6b4aa922ada3d453b0d656e34"];
+}

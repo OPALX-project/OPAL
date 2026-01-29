@@ -1,0 +1,17 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Lines/Line.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node77 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Lines\l/Line.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node77 -> Node78 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node78 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Lines\l/Line.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d1a/a02546.html"];
+  Node77 -> Node79 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node79 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Lines\l/LineTemplate.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d48/a02552.html"];
+  Node77 -> Node80 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node80 [label="/psi/home/gsell/data\l/src/OPAL/src/src/OpalConfigure\l/Configure.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d88/a02600.html"];
+  Node77 -> Node81 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node81 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyLine.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d73/a02765.html"];
+  Node77 -> Node82 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node82 [label="/psi/home/gsell/data\l/src/OPAL/src/src/PyOpal\l/PyObjects/PyLine.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/d7e/a02768.html"];
+  Node82 -> Node81 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

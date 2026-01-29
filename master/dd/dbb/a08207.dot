@@ -1,0 +1,15 @@
+digraph "FieldDataSource&lt; T, Dim, M, C &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node3 [label="FieldDataSource\< T,\l Dim, M, C \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="DataSourceObject",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d8d/a08193.html"];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="NamedObj",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/db0/a12169.html"];
+  Node6 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Connection" ,fontname="Helvetica"];
+  Node6 [label="DataConnect",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d5d/a08181.html"];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Source" ,fontname="Helvetica"];
+  Node7 [label="DataSource",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d37/a08189.html"];
+}

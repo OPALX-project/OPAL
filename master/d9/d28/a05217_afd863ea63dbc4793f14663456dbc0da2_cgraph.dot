@@ -1,0 +1,9 @@
+digraph "VariableRFCavityFringeField::applyToReferenceParticle"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node88 [label="VariableRFCavityFringeField\l::applyToReferenceParticle",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node88 -> Node89 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node89 [label="VariableRFCavityFringeField\l::apply",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d28/a05217.html#a5d27db6147959872bc22a1443d1e7944"];
+}

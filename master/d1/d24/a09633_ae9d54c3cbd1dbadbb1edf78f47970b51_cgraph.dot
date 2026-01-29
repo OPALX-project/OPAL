@@ -1,0 +1,21 @@
+digraph "MsgBuffer::get"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node13 [label="MsgBuffer::get",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node13 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="Format::getItemBytes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d46/a09285.html#a21ff0a8e02322a605173d713ad7e5b46"];
+  Node13 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="Format::getItemCount",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d46/a09285.html#a75faf047514514678476227c77d2f478"];
+  Node13 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="Format::getItemElems",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d46/a09285.html#ae0668d64e208f96167cb291daa95fa09"];
+  Node13 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="Format::getSize",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d46/a09285.html#a546b62364559d442696d41bdba4e8d60"];
+  Node13 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="Message::putmsg",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d84/a09621.html#a4586e2ea141a20fe0c65cff03e54638e"];
+  Node13 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="Message::setCopy",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d84/a09621.html#adc2879b32cc3bc025e931e6219d0582e"];
+  Node13 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="Message::setDelete",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d84/a09621.html#a22e02c53be8f84943784624cd35b8414"];
+}

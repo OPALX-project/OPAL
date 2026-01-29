@@ -1,0 +1,36 @@
+digraph "FileIpplParticleBaseDataSource&lt; T &gt;"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node3 [label="FileIpplParticleBaseData\lSource\< T \>",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="DataSourceObject",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d8d/a08193.html"];
+  Node5 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="NamedObj",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/db0/a12169.html"];
+  Node6 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Connection" ,fontname="Helvetica"];
+  Node6 [label="DataConnect",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d5d/a08181.html"];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node4 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Source" ,fontname="Helvetica"];
+  Node7 [label="DataSource",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/d37/a08189.html"];
+  Node8 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" DP" ,fontname="Helvetica"];
+  Node8 [label="DiscParticle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d21/a12029.html"];
+  Node9 -> Node8 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Config" ,fontname="Helvetica"];
+  Node9 [label="DiscConfig",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d07/a12005.html"];
+  Node10 -> Node9 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" SMPMap" ,fontname="Helvetica"];
+  Node10 [label="vmap\< std::string,\l DiscConfig::SMPData *\>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dc7/a12233.html"];
+  Node11 -> Node10 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" Lt" ,fontname="Helvetica"];
+  Node11 [label="dummy_less\< std::string \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dd6/a12229.html"];
+  Node12 -> Node3 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" MyParticles" ,fontname="Helvetica"];
+  Node12 [label="IpplParticleBase\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d71/a08233.html"];
+  Node7 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="AbstractParticle\< T\l ::Position_t, T ::Dimension \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d62/a09817.html"];
+  Node14 -> Node13 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" ID_p\nR_p" ,fontname="Helvetica"];
+  Node14 [label="ParticleAttrib\< T \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/def/a08229.html"];
+  Node15 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="ParticleAttribBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d45/a10049.html"];
+  Node7 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="PETE_Expr\< ParticleAttrib\l\< T \> \>",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html"];
+}

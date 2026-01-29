@@ -1,0 +1,44 @@
+digraph "OpalData::getVariableData"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node77 [label="OpalData::getVariableData",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node77 -> Node78 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node78 [label="OpalData::find",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#a8847589c28aa77d2797a61e8118ff5c6",tooltip="Find entry. "];
+  Node78 -> Node79 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node79 [label="Directory::find",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/de3/a04645.html#a9004a43fe680a069941293f8ab075c24",tooltip="Find entry. "];
+  Node77 -> Node80 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node80 [label="OpalData::getInstance",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#ac79e35ccb2194504a19ce52ddc5fd6e0"];
+  Node80 -> Node81 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node81 [label="OpalData::OpalData",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#accc445ea08f633c3157728e420fd47c6"];
+  Node77 -> Node82 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node82 [label="RealVariable::getReal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d27/a07345.html#ad0ae5755b0173d7b672116c41d4c0c7c",tooltip="Return value. "];
+  Node82 -> Node83 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node83 [label="Attributes::getReal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#a04ef4de7f8e753119a3d32411a0f0a2d",tooltip="Return real value. "];
+  Node83 -> Node84 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node84 [label="Attribute::isBaseAllocated",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#ad501832e9f9617f12978cf0db5e3ca7a"];
+  Node83 -> Node85 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node85 [label="Attribute::getBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#a3ad89aafd57487e0cbbc62d29515b29f",tooltip="Return reference to polymorphic value. "];
+  Node83 -> Node86 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node86 [label="Attribute::getHandler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#aea141e99b173cc9db4e66a0f62786ac9",tooltip="Return a reference to the parser. "];
+  Node77 -> Node87 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node87 [label="StringConstant::getString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d8/d25/a07353.html#a05aa2d9085d8abb047c16ac5774605b3",tooltip="Return value. "];
+  Node87 -> Node88 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node88 [label="Attributes::getString",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#ad795567b62ebabd9fe7de3e4336303c2",tooltip="Get string value. "];
+  Node88 -> Node84 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node88 -> Node85 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node88 -> Node86 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node77 -> Node89 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node89 [label="OpalData::getVariableNames",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d91/a04697.html#aff9d45761be6c1e80baf90f34ba2e1d4"];
+  Node89 -> Node90 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node90 [label="Directory::begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/de3/a04645.html#a6af87fa7c132144a4fed854a5c0ba253",tooltip="First object in alphabetic order of name. "];
+  Node89 -> Node91 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node91 [label="Directory::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/de3/a04645.html#a4a8d6e8dc3b5f4f851a86b64daad1978",tooltip="Last object in alphabetic order of name. "];
+  Node89 -> Node80 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node89 -> Node78 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node89 -> Node92 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node92 [label="Object::isBuiltin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#ae7e75b2311e00969ae6308e899d32686",tooltip="True, if [b]this[/b] is a built-in object. "];
+  Node89 -> Node93 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node93 [label="Object::getCategory",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#ae00faaa61774277a8a55de0538e358a7",tooltip="Return the object category as a string. "];
+}

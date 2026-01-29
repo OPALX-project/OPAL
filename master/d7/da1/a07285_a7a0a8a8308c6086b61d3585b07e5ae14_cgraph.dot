@@ -1,0 +1,42 @@
+digraph "RangeSelector::visitFlaggedElmPtr"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node21 [label="RangeSelector::visitFlagged\lElmPtr",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node21 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="RangeRep::enter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dcf/a04709.html#ae4bdd62f050aadfdd3af3323a6cf51a8",tooltip="Enter an element or line. "];
+  Node22 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="PlaceRep::enter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d3a/a04705.html#aa01662d550b7b2d054c498fe831ee3aa",tooltip="Enter an element or line. "];
+  Node23 -> Node24 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 [label="FlaggedElmPtr::getCounter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d64/a05605.html#a006432c0346ba8e6faf0d0005da632b3",tooltip="Get clone counter. "];
+  Node23 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node25 [label="ElmPtr::getElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/dc2/a05601.html#a5e93800b724a0a93cbb985fdc52cbf0f",tooltip="Get the element pointer. "];
+  Node23 -> Node26 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node26 [label="ElementBase::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a07827d00308052e65fe03da558f0b987",tooltip="Get element name. "];
+  Node22 -> Node27 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node27 [label="PlaceRep::isActive",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d3a/a04705.html#a1da2b96ba1a0e688351dee8260199324",tooltip="Return status. "];
+  Node21 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 -> Node28 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node28 [label="RangeSelector::handleBeamline",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/da1/a07285.html#acf92d9633eadd2731575ddb7e9345da6",tooltip="The operation to be done for beamlines. "];
+  Node28 -> Node29 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 [label="DefaultVisitor::visitFlagged\lElmPtr",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d63/a05297.html#a8bab0e7be75745a80eeae0db6a489ba0",tooltip="Apply the algorithm to a FlaggedElmPtr. "];
+  Node29 -> Node30 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="ElementBase::accept",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a4c963794b96d83d5d3be0a9fe3c44322",tooltip="Apply visitor. "];
+  Node29 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node29 -> Node31 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="FlaggedElmPtr::getReflectionFlag",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d64/a05605.html#acc70d7f5db8ffe5b47920a6503bfcad9",tooltip="Get reflection flag. "];
+  Node21 -> Node32 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="RangeSelector::handleElement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/da1/a07285.html#a06985d97c2f76283f7ce1f3030ef6c24",tooltip="The operation to be done for elements. "];
+  Node32 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node33 [label="RangeRep::isActive",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dcf/a04709.html#a35001fb89ccde652a9327ef97b0094bb",tooltip="Test for active range. "];
+  Node32 -> Node29 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 -> Node34 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node34 [label="RangeRep::leave",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dcf/a04709.html#acf5342b3314794fe2c85e93323d3a38f",tooltip="Leave an element or line. "];
+  Node34 -> Node27 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node34 -> Node35 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node35 [label="PlaceRep::leave",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d3a/a04705.html#ae6a10fa8ed09716088384fc8315e6bbc",tooltip="Leave an element or line. "];
+  Node35 -> Node24 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node35 -> Node25 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node35 -> Node26 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

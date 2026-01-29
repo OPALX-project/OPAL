@@ -1,0 +1,13 @@
+digraph "AmrParticleBase::AmrParticleBase"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="AmrParticleBase::AmrParticleBase",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="IpplTimings::getTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d19/a12161.html#a59ffa7a04c160376d3a6593bff568fb4"];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Timing::getTimer",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d4d/a12157.html#ad8cc1e1e72cef6a72e059d33913d8af7"];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="value_type",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dce/a00740.html#aa8ae23ddaa752827580a9345f34b7cca"];
+}

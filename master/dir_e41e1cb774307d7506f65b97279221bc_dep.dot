@@ -1,0 +1,15 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Parser" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_d235ccafb34880d2a3dfd7e70a4539df {
+    graph [ bgcolor="#ddddee", pencolor="black", label="Classic" fontname="Helvetica", fontsize="10", URL="dir_d235ccafb34880d2a3dfd7e70a4539df.html"]
+  dir_e41e1cb774307d7506f65b97279221bc [shape=box, label="Parser", style="filled", fillcolor="#eeeeff", pencolor="black", URL="dir_e41e1cb774307d7506f65b97279221bc.html"];
+  }
+  dir_8698fe23a0dea23b56d3a14185ed7f9b [shape=box label="Utilities" fillcolor="white" style="filled" color="red" URL="dir_8698fe23a0dea23b56d3a14185ed7f9b.html"];
+  dir_28321b34c58a4e6a7aec33e50fdb23e6 [shape=box label="ippl" fillcolor="white" style="filled" color="red" URL="dir_28321b34c58a4e6a7aec33e50fdb23e6.html"];
+  dir_15a7b05a2df21115f899dcbbbd4696b7 [shape=box label="MemoryManagement" URL="dir_15a7b05a2df21115f899dcbbbd4696b7.html"];
+  dir_e41e1cb774307d7506f65b97279221bc->dir_8698fe23a0dea23b56d3a14185ed7f9b [headlabel="5", labeldistance=1.5 headhref="dir_000065_000070.html"];
+  dir_e41e1cb774307d7506f65b97279221bc->dir_28321b34c58a4e6a7aec33e50fdb23e6 [headlabel="2", labeldistance=1.5 headhref="dir_000065_000007.html"];
+  dir_e41e1cb774307d7506f65b97279221bc->dir_15a7b05a2df21115f899dcbbbd4696b7 [headlabel="1", labeldistance=1.5 headhref="dir_000065_000064.html"];
+}

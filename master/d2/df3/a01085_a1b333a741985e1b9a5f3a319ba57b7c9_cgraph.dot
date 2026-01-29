@@ -1,0 +1,13 @@
+digraph "Inverse"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="Inverse",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="Euclid3D::inverse",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/da9/a05549.html#ab20064d9d41890febdf3b584afd85366",tooltip="Inverse. "];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="Rotation3D::inverse",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dfe/a05577.html#a6a96cccea39de64dda1b25a96cd8bfcd",tooltip="Inversion. "];
+  Node1 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="Euclid3D::Euclid3D",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/da9/a05549.html#a6f9d1a9cfd2fa832bc3ad4ae1fb170d3",tooltip="Default constructor. "];
+}

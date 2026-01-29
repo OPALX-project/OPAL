@@ -1,0 +1,15 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Utilities/MSLang/Rectangle.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node45 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Utilities/MSLang/Rectangle.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node45 -> Node46 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node46 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Utilities/MSLang/Mask.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d90/a01964.html"];
+  Node46 -> Node47 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node47 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Utilities/MSLang/Mask.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d23/a01961.html"];
+  Node46 -> Node48 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node48 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Utilities/MSLang.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/db2/a02036.html"];
+  Node45 -> Node49 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node49 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Utilities/MSLang/Rectangle.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/da1/a01988.html"];
+  Node45 -> Node48 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

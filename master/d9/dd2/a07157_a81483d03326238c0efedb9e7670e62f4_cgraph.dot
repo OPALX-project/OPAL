@@ -1,0 +1,34 @@
+digraph "Beam::getMassPerParticle"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node345 [label="Beam::getMassPerParticle",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node345 -> Node346 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node346 [label="Beam::getCharge",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dd2/a07157.html#a61641135ee698769b42408eefca7e294",tooltip="Return the charge number in elementary charge. "];
+  Node346 -> Node347 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node347 [label="Attributes::getReal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$df/dfb/a04472.html#a04ef4de7f8e753119a3d32411a0f0a2d",tooltip="Return real value. "];
+  Node347 -> Node348 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node348 [label="Attribute::isBaseAllocated",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#ad501832e9f9617f12978cf0db5e3ca7a"];
+  Node347 -> Node349 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node349 [label="Attribute::getBase",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#a3ad89aafd57487e0cbbc62d29515b29f",tooltip="Return reference to polymorphic value. "];
+  Node347 -> Node350 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node350 [label="Attribute::getHandler",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d0f/a04625.html#aea141e99b173cc9db4e66a0f62786ac9",tooltip="Return a reference to the parser. "];
+  Node345 -> Node351 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node351 [label="Beam::getChargePerParticle",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dd2/a07157.html#a3f8f77b2109b5a56de9aeb986c69a7df",tooltip="Charge per macro particle in C. "];
+  Node351 -> Node352 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node352 [label="copysign",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d51/a03842.html#af6518b151e7b0d52fa4ec791b891f53b"];
+  Node351 -> Node346 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node351 -> Node353 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node353 [label="Beam::getCurrent",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dd2/a07157.html#a2b887935cf3f7fed8e7d8fb37232d3d0",tooltip="Return the beam current in A. "];
+  Node353 -> Node347 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node351 -> Node354 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node354 [label="Beam::getFrequency",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dd2/a07157.html#a78c09a60e70db9a1cba84f7ce9c658cc",tooltip="Return the beam frequency in MHz. "];
+  Node354 -> Node347 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node351 -> Node355 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node355 [label="Beam::getNumberOfParticles",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dd2/a07157.html#a78f24e2aada7fc91ed556435faa4a2b5",tooltip="Return the number of (macro)particles. "];
+  Node355 -> Node347 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node345 -> Node356 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node356 [label="Beam::getMass",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/dd2/a07157.html#a834d3211e650bf775fa97d219ccd2a3e",tooltip="Return Particle&#39;s rest mass in GeV. "];
+  Node356 -> Node347 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

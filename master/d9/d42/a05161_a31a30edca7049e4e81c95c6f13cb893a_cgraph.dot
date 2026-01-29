@@ -1,0 +1,15 @@
+digraph "ScalingFFAMagnet::clone"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node77 [label="ScalingFFAMagnet::clone",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node77 -> Node78 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node78 [label="ScalingFFAMagnet::initialise",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d42/a05161.html#adc965c40402df9830ef7e4837b715e0e"];
+  Node78 -> Node79 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node79 [label="ScalingFFAMagnet::initialise",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d42/a05161.html#a2d2bd534c2567988f4f3dd029abd25c6"];
+  Node79 -> Node80 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node80 [label="ScalingFFAMagnet::calculate\lDfCoefficients",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d42/a05161.html#a5f4fa2061641a74d3ea11ef5dd3be779"];
+  Node77 -> Node81 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node81 [label="ScalingFFAMagnet::Scaling\lFFAMagnet",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d42/a05161.html#a3a0407e4c933d1161e75439ace41687a"];
+}

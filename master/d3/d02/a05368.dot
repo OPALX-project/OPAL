@@ -1,0 +1,18 @@
+digraph "Tracker"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node0 [label="Tracker",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node1 -> Node0 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="AbstractTracker",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dd7/a05285.html",tooltip="Track particles or bunches. "];
+  Node2 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="DefaultVisitor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d63/a05297.html"];
+  Node3 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="BeamlineVisitor",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d01/a04977.html"];
+  Node0 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="ParallelCyclotronTracker",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d75/a04805.html"];
+  Node0 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="ParallelTTracker",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/da7/a04817.html"];
+  Node0 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="ThickTracker",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d68/a04825.html",tooltip="Track using thick-lens algorithm. "];
+}

@@ -1,0 +1,10 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/BeamlineCore/ProbeRep.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node64 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/ProbeRep.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node64 -> Node65 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node65 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/ProbeRep.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d3c/a00971.html"];
+  Node64 -> Node66 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node66 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Elements\l/OpalProbe.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dae/a02294.html"];
+}

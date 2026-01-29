@@ -1,0 +1,41 @@
+digraph "ClassicException"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node0 [label="ClassicException",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node0 -> Node1 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node1 [label="ArithmeticError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d41/a06241.html",tooltip="The abstract base class for all CLASSIC arithmetic exceptions. "];
+  Node1 -> Node2 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="CLRangeError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d62/a06257.html",tooltip="Range error. "];
+  Node1 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="ConvergenceError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d45/a06261.html",tooltip="Convergence error exception. "];
+  Node1 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="DivideError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/dfe/a06265.html",tooltip="Zero divide error. "];
+  Node1 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="DomainError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/daf/a06269.html",tooltip="Domain error exception. "];
+  Node1 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="EigenvalueError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d6a/a06273.html",tooltip="Eigenvalue error exception. "];
+  Node1 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="OverflowError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/da2/a06441.html",tooltip="Overflow exception. "];
+  Node1 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="SingularMatrixError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/deb/a06461.html",tooltip="Singular matrix exception. "];
+  Node1 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="SizeError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/de9/a06465.html",tooltip="Size error exception. "];
+  Node0 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="EarlyLeaveException",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/dcf/a07313.html"];
+  Node0 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="FormatError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d78/a06277.html",tooltip="Format error exception. "];
+  Node0 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="GeneralClassicException",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/dd4/a06281.html"];
+  Node0 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="LogicalError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d3e/a06285.html",tooltip="Logical error exception. "];
+  Node0 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="OpalException",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d44/a07317.html",tooltip="The base class for all OPAL exceptions. "];
+  Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="IndexMap::OutOfBounds",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d71/a04749.html"];
+  Node0 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="ParseError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d6e/a06445.html",tooltip="Parse exception. "];
+  Node0 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="SwitcherError",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d1b/a06469.html"];
+}

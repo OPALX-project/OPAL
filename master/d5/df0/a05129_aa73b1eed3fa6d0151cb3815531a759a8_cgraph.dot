@@ -1,0 +1,9 @@
+digraph "PluginElement::goOffline"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node234 [label="PluginElement::goOffline",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node234 -> Node235 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node235 [label="PluginElement::doGoOffline",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/df0/a05129.html#a567bcee2946e1bb5007b404a8e19038a",tooltip="Virtual hook for goOffline. "];
+}

@@ -1,0 +1,32 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Fields/BSingleMultipoleField.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node4 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/BSingleMultipoleField.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/SingleMultipole.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d59/a01013.html"];
+  Node5 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/Octupole.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/dd4/a00968.html"];
+  Node6 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/Octupole.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d3/dcd/a00965.html"];
+  Node5 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/Quadrupole.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d20/a00980.html"];
+  Node8 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/Quadrupole.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d6c/a00977.html"];
+  Node5 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/Sextupole.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d2b/a01010.html"];
+  Node10 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/Sextupole.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d8d/a01007.html"];
+  Node5 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/SkewOctupole.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/daf/a01019.html"];
+  Node12 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/SkewOctupole.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/def/a01016.html"];
+  Node5 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/SkewQuadrupole.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d23/a01025.html"];
+  Node14 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/SkewQuadrupole.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dd8/a01022.html"];
+  Node5 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/SkewSextupole.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dcf/a01031.html"];
+  Node16 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/BeamlineCore/SkewSextupole.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d08/a01028.html"];
+}

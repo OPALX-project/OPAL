@@ -1,0 +1,31 @@
+digraph "operator=="
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node12 [label="operator==",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node12 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="abs",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d51/a03842.html#a7633e9416cb6fdd16745f5ba3e3ea7d3"];
+  Node13 -> Node14 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="PETE_Expr::PETE_unwrap",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/db8/a11341.html#a9e3caaa1091db73ad743988a76490937"];
+  Node12 -> Node15 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="Rotation3D::getAxis",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/dfe/a05577.html#aaa729463c5e9207ffefd6d322ee594aa",tooltip="Get axis vector. "];
+  Node12 -> Node16 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="Offset::getEndDirection",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/db3/a05121.html#aed7ae7d901915eb413c6c8b736f34f1e"];
+  Node12 -> Node17 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="Offset::getEndPosition",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/db3/a05121.html#a8e793d23c2d9ee7a2c6212c23372e2be"];
+  Node12 -> Node18 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="Offset::getGeometry",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/db3/a05121.html#a0cc772e19f68c7e6b077a7e91764660c",tooltip="Get geometry. "];
+  Node12 -> Node19 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="Offset::getIsLocal",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/db3/a05121.html#adfc84e76b7155476c168c959313eaa31"];
+  Node12 -> Node20 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node20 [label="ElementBase::getName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dbe/a05029.html#a07827d00308052e65fe03da558f0b987",tooltip="Get element name. "];
+  Node12 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="Euclid3D::getRotation",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/da9/a05549.html#aff01b0f880a9b395149a71c7f0938b0b",tooltip="Get rotation. "];
+  Node12 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="Euclid3DGeometry::getTotal\lTransform",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d3d/a05553.html#a7ee4b2abb157d1a41d074c184e0ac2d8",tooltip="Get total transform from beginning to end. "];
+  Node12 -> Node23 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node23 [label="Euclid3D::getVector",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/da9/a05549.html#aa11d7ee987d9f85367425adcdc783b81",tooltip="Get displacement. "];
+  Node12 -> Node24 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node24 [label="Offset::isGeometryAllocated",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/db3/a05121.html#a1ee2625c3006834ed0bcba648d2c3411"];
+}

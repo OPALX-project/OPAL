@@ -1,0 +1,17 @@
+digraph "/psi/home/gsell/data/src/OPAL/src" {
+  compound=true
+  node [ fontsize="10", fontname="Helvetica"];
+  edge [ labelfontsize="10", labelfontname="Helvetica"];
+  subgraph clusterdir_194a2eebcf880120d76177fc1b474703 {
+    graph [ bgcolor="#ddddee", pencolor="black", label="OPAL" fontname="Helvetica", fontsize="10", URL="dir_194a2eebcf880120d76177fc1b474703.html"]
+  subgraph clusterdir_214f9fa1ac541a3b8370eeb22e7ea3a2 {
+    graph [ bgcolor="#eeeeff", pencolor="black", label="" URL="dir_214f9fa1ac541a3b8370eeb22e7ea3a2.html"];
+    dir_214f9fa1ac541a3b8370eeb22e7ea3a2 [shape=plaintext label="src"];
+    dir_28321b34c58a4e6a7aec33e50fdb23e6 [shape=box label="ippl" color="red" fillcolor="white" style="filled" URL="dir_28321b34c58a4e6a7aec33e50fdb23e6.html"];
+    dir_80eebead1364a1351b6fcfbe8ef57fa8 [shape=box label="optimizer" color="red" fillcolor="white" style="filled" URL="dir_80eebead1364a1351b6fcfbe8ef57fa8.html"];
+    dir_968f690f4337319b4fe65ee97dcc8d74 [shape=box label="src" color="red" fillcolor="white" style="filled" URL="dir_968f690f4337319b4fe65ee97dcc8d74.html"];
+  }
+  }
+  dir_968f690f4337319b4fe65ee97dcc8d74->dir_80eebead1364a1351b6fcfbe8ef57fa8 [headlabel="65", labeldistance=1.5 headhref="dir_000043_000026.html"];
+  dir_968f690f4337319b4fe65ee97dcc8d74->dir_28321b34c58a4e6a7aec33e50fdb23e6 [headlabel="116", labeldistance=1.5 headhref="dir_000043_000007.html"];
+}

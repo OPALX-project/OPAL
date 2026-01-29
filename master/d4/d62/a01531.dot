@@ -1,0 +1,12 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Filters/FixedFFTLowPass.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node3 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/FixedFFTLowPass.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/Filters.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d8e/a01523.html"];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Utilities\l/OpalFilter.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dc1/a03263.html"];
+  Node3 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/FixedFFTLowPass.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d0a/a01526.html"];
+}

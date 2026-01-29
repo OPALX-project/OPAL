@@ -1,0 +1,17 @@
+digraph "MacroCmd::makeInstance"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node7 [label="MacroCmd::makeInstance",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node7 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="MacroStream::append",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/d2d/a06865.html#a5487bbe9350796067803cd18bba86bb9",tooltip="Append a token to the stream. "];
+  Node7 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="Token::getWord",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d27/a06045.html#a511f66ff8f632f4966e959c22e46762d",tooltip="Return word value. "];
+  Node9 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="Token::invalid",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d27/a06045.html#ab01344d54896e47732673fdca50e9d81"];
+  Node7 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="Token::isEOF",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d27/a06045.html#a4822f01048ccce2d0de033ee2be460f0",tooltip="Test for end of file. "];
+  Node7 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="Token::isWord",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/d27/a06045.html#a39bf9220800c0ca8341c3197fb201c00",tooltip="Test for word. "];
+}

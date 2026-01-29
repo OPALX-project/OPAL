@@ -1,0 +1,21 @@
+digraph "Title::parse"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node29 [label="Title::parse",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node29 -> Node30 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node30 [label="Object::parseShortcut",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#a0e384c277bc2ee2414f56d08e81f867b",tooltip="Parser for single-attribute commands. "];
+  Node30 -> Node31 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node31 [label="Statement::delimiter",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d98/a06037.html#aeb97c1ae2faf5064efe45c9cc49a3b11",tooltip="Test for delimiter. "];
+  Node30 -> Node32 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node32 [label="Object::findAttribute",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#aaba6fa24b81be56d195924fa9f6ea9bd",tooltip="Find an attribute by name. "];
+  Node30 -> Node33 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node33 [label="Object::getOpalName",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/db6/a04681.html#a5ec68ba1c3f450f8ea2b139f193c5a39",tooltip="Return object name. "];
+  Node30 -> Node34 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node34 [label="Statement::mark",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d98/a06037.html#ac7a9b7e88c7c356b6f41f3eb19cc7734",tooltip="Mark position in command. "];
+  Node30 -> Node35 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node35 [label="Statement::restore",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d98/a06037.html#aa3a59708d440dd319ac301ae50b92451",tooltip="Return to marked position. "];
+  Node30 -> Node36 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node36 [label="Statement::word",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d98/a06037.html#ac8e21e0dce1b621eacc7d1405f760af4",tooltip="Return word value. "];
+}

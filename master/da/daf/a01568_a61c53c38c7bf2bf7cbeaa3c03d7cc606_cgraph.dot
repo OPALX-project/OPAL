@@ -1,0 +1,11 @@
+digraph "operator-"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node20 [label="operator-",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node20 -> Node21 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node21 [label="FArray2D\< T, R, C \>\l::begin",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dca/a05933.html#af44560b27bff3d010d74865ac88cd984",tooltip="Get beginning of data. "];
+  Node20 -> Node22 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node22 [label="FArray2D\< T, R, C \>\l::end",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/dca/a05933.html#a35dbe6ef5222ed848e770300b2633ec2",tooltip="Get pointer past end of data. "];
+}

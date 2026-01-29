@@ -1,0 +1,28 @@
+digraph "LossDataSink::writeHeaderASCII"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  rankdir="LR";
+  Node525 [label="LossDataSink::writeHeader\lASCII",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node525 -> Node526 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node526 [label="endl",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/de8/a03968.html#a3479363bc276c3798e3f3656c66d93ed"];
+  Node526 -> Node527 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node527 [label="Inform::outputMessage",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a1cbfef351ec64d2a23f2aeffe925fb3d"];
+  Node527 -> Node528 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node528 [label="Inform::display_message",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a94df0d4272b58ccb485d957d02ae777e"];
+  Node528 -> Node529 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node529 [label="Inform::display_single_line",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d36/a12117.html#a2d6b9792e2d129b151c15c65933eeb16"];
+  Node529 -> Node526 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node529 -> Node530 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node530 [label="IpplInfo::getNodes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#ace7b103c3bf58266544e165c6b5a69d4"];
+  Node529 -> Node531 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node531 [label="IpplInfo::myNode",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#aebc2813151a7229c571dc6e272d9feb6"];
+  Node527 -> Node531 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node525 -> Node532 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node532 [label="LossDataSink::hasTurnInformations",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d2/d3c/a06197.html#ac8063b9bd61fcaa36bf8794d1deddbba"];
+  Node532 -> Node533 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node533 [label="allreduce",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dc7/a03683.html#a3f4c593649c5ad948ee3e8566bffeda6"];
+  Node533 -> Node534 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node534 [label="IpplInfo::getComm",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d71/a12129.html#a8d995e140c485a5416394b5cc1c864c4"];
+  Node525 -> Node531 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

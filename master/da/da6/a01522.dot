@@ -1,0 +1,47 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Filters/Filter.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node2 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/Filter.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node2 -> Node3 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/FixedFFTLowPass.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/dce/a01529.html"];
+  Node3 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/Filters.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$db/d8e/a01523.html"];
+  Node4 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Utilities\l/OpalFilter.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dc1/a03263.html"];
+  Node3 -> Node6 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/FixedFFTLowPass.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d0a/a01526.html"];
+  Node2 -> Node7 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/RelativeFFTLowPass.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d93/a01535.html"];
+  Node7 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 -> Node8 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/RelativeFFTLowPass.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/d0c/a01532.html"];
+  Node2 -> Node9 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/SavitzkyGolay.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/dc8/a01541.html"];
+  Node9 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 -> Node10 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/SavitzkyGolay.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/def/a01538.html"];
+  Node9 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Solvers/CSRIGFWakeFunction.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d0d/a01748.html"];
+  Node9 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Solvers/CSRWakeFunction.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d37/a01754.html"];
+  Node2 -> Node13 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/Stencil.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/ded/a01547.html"];
+  Node13 -> Node4 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 -> Node14 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node14 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Filters/Stencil.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d83/a01544.html"];
+  Node2 -> Node11 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node12 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node15 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node15 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Solvers/GreenWakeFunction.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/d27/a01763.html"];
+  Node15 -> Node16 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node16 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Solvers/GreenWakeFunction.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d9d/a01760.html"];
+  Node15 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node17 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Structure\l/OpalWake.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d8d/a03158.html"];
+  Node2 -> Node18 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Utilities\l/OpalFilter.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d8d/a03266.html"];
+  Node18 -> Node19 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node19 [label="/psi/home/gsell/data\l/src/OPAL/src/src/OpalConfigure\l/Configure.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d88/a02600.html"];
+  Node18 -> Node17 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node18 -> Node5 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

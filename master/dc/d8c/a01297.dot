@@ -1,0 +1,44 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/Classic/Fields/Fieldmap.hpp"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node45 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Fieldmap.hpp",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node45 -> Node46 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node46 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Astra1D_fast.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d61/a01205.html"];
+  Node45 -> Node47 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node47 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Astra1DDynamic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d34/a01211.html"];
+  Node45 -> Node48 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node48 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Astra1DElectroStatic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/ddd/a01223.html"];
+  Node45 -> Node49 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node49 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/Astra1DMagnetoStatic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dd/dad/a01235.html"];
+  Node45 -> Node50 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node50 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM1DDynamic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d34/a01298.html"];
+  Node45 -> Node51 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node51 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM1DDynamic_fast.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/dae/a01304.html"];
+  Node45 -> Node52 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node52 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM1DElectroStatic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$da/d79/a01310.html"];
+  Node45 -> Node53 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node53 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM1DElectroStatic\l_fast.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/d49/a01316.html"];
+  Node45 -> Node54 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node54 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM1DMagnetoStatic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d5/df4/a01322.html"];
+  Node45 -> Node55 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node55 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM1DMagnetoStatic\l_fast.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$dc/dd9/a01328.html"];
+  Node45 -> Node56 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node56 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM1DProfile1.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d4/dd1/a01334.html"];
+  Node45 -> Node57 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node57 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM1DProfile2.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d7/d51/a01340.html"];
+  Node45 -> Node58 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node58 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM2DDynamic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d9/de4/a01346.html"];
+  Node45 -> Node59 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node59 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM2DElectroStatic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d85/a01352.html"];
+  Node45 -> Node60 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node60 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM2DMagnetoStatic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d5c/a01358.html"];
+  Node45 -> Node61 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node61 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM3DDynamic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d1f/a01364.html"];
+  Node45 -> Node62 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node62 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM3DH5BlockBase.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d9d/a01382.html"];
+  Node45 -> Node63 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node63 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM3DMagnetoStatic.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d0/d36/a01388.html"];
+  Node45 -> Node64 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node64 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Classic\l/Fields/FM3DMagnetoStaticExtended.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d2f/a01394.html"];
+}

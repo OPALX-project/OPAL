@@ -1,0 +1,12 @@
+digraph "/psi/home/gsell/data/src/OPAL/src/src/BasicActions/DumpEMFields.h"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node70 [label="/psi/home/gsell/data\l/src/OPAL/src/src/BasicActions\l/DumpEMFields.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
+  Node70 -> Node71 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node71 [label="/psi/home/gsell/data\l/src/OPAL/src/src/Algorithms\l/ParallelCyclotronTracker.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d6/d7d/a00161.html"];
+  Node70 -> Node72 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node72 [label="/psi/home/gsell/data\l/src/OPAL/src/src/BasicActions\l/DumpEMFields.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$de/d55/a00323.html"];
+  Node70 -> Node73 [dir="back",color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node73 [label="/psi/home/gsell/data\l/src/OPAL/src/src/OpalConfigure\l/Configure.cpp",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$d1/d88/a02600.html"];
+}
