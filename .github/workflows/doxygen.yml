@@ -7,11 +7,12 @@ permissions:
   pages: write
   id-token: write
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
+    name: Build site
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,6 +26,15 @@ jobs:
         run: mkdir -p ./docs/html
       - name: Run Doxygen to generate documentation
         run: doxygen Doxyfile.in
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
