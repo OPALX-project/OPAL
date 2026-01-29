@@ -28,6 +28,10 @@ jobs:
           pwd
           ls -l doc
           ls -l doc/html
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: doc/html
 
   deploy:
     name: Deploy to GitHub Pages
@@ -37,11 +41,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '/home/runner/work/OPAL/OPAL/doc/html'
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
