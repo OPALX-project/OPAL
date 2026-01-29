@@ -40,7 +40,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'doc/html'
+          path: '/home/runner/work/OPAL/OPAL/doc/html'
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
