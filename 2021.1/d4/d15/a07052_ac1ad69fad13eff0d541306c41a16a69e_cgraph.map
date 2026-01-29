@@ -1,0 +1,32 @@
+<map id="TrackRun::setupFieldsolver" name="TrackRun::setupFieldsolver">
+<area shape="rect" id="node2" href="$d1/d55/a04496.html#af5b03ae2e5863b4ef2af71f8fd29b4a0" title="OpalData::addProblemCharacteristic\lValue" alt="" coords="248,5,507,47"/>
+<area shape="rect" id="node3" href="$d9/d26/a06900.html#a605283d014f9629e67ce7f75489d84c8" title="Find named BEAM. " alt="" coords="331,122,423,149"/>
+<area shape="rect" id="node6" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="813,122,980,149"/>
+<area shape="rect" id="node8" href="$d3/d89/a06944.html#a538b19c55cccfcc1b4f8bfaa1654f4ac" title="Find named FieldSolver. " alt="" coords="315,71,440,98"/>
+<area shape="rect" id="node9" href="$d3/d89/a06944.html#abfdc9c98a1c29cf63ecfe3febb475323" title="Return meshsize. " alt="" coords="589,375,731,402"/>
+<area shape="rect" id="node17" href="$d3/d89/a06944.html#a7543fd923bb8a4e2e2a97356ce3e1fb1" title="Return meshsize. " alt="" coords="589,426,731,453"/>
+<area shape="rect" id="node18" href="$d3/d89/a06944.html#a16e7ad772330cd9223b3a3fdd3ce6bc8" title="Return meshsize. " alt="" coords="589,578,731,605"/>
+<area shape="rect" id="node19" href="$d9/d26/a06900.html#a78f24e2aada7fc91ed556435faa4a2b5" title="Return the number of (macro)particles. " alt="" coords="555,629,765,655"/>
+<area shape="rect" id="node20" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="583,299,737,326"/>
+<area shape="rect" id="node24" href="$d3/d89/a06944.html#a3ffff4a3f8576c6b4a81525dbd6833ab" title="FieldSolver::getType" alt="" coords="301,274,453,301"/>
+<area shape="rect" id="node25" href="$d3/d89/a06944.html#a8bef80364267d52be7c301cbc8b4a93f" title="FieldSolver::hasPeriodicZ" alt="" coords="285,325,470,351"/>
+<area shape="rect" id="node26" href="$d3/d89/a06944.html#a16c768e3525a157b8601c98c40e4c7d7" title="FieldSolver::initCartesian\lFields" alt="" coords="285,477,469,519"/>
+<area shape="rect" id="node29" href="$d1/d55/a04496.html#af8d0b55764c02667df67d086327b6a34" title="true if we do a restart run " alt="" coords="291,645,464,671"/>
+<area shape="rect" id="node30" href="$d1/dc3/a04492.html#a842c0abc705a8187933493cbdc8865d5" title="PartBunchBase::setBCAllOpen" alt="" coords="269,695,485,722"/>
+<area shape="rect" id="node31" href="$d1/dc3/a04492.html#adc599994ced13db7dd06ce7aaf292ebb" title="PartBunchBase::setSolver" alt="" coords="283,746,471,773"/>
+<area shape="rect" id="node4" href="$d1/d55/a04496.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="603,71,717,98"/>
+<area shape="rect" id="node5" href="$d1/d13/a04444.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="840,71,953,98"/>
+<area shape="rect" id="node7" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1047,122,1199,149"/>
+<area shape="rect" id="node10" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="825,578,968,605"/>
+<area shape="rect" id="node11" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="1028,426,1219,453"/>
+<area shape="rect" id="node12" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="1053,543,1193,570"/>
+<area shape="rect" id="node13" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="1044,375,1203,402"/>
+<area shape="rect" id="node14" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="1043,477,1204,519"/>
+<area shape="rect" id="node15" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="1050,325,1197,351"/>
+<area shape="rect" id="node16" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="1267,325,1465,351"/>
+<area shape="rect" id="node21" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="873,223,920,250"/>
+<area shape="rect" id="node23" href="$d6/db7/a04354.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="844,173,949,199"/>
+<area shape="rect" id="node22" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1048,223,1199,250"/>
+<area shape="rect" id="node27" href="$d9/d4e/a04307.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="825,426,969,453"/>
+<area shape="rect" id="node28" href="$d3/d89/a06944.html#a4fc7937b743fa345b79d818ed7dae9c0" title="FieldSolver::isAmrSolverType" alt="" coords="555,527,765,554"/>
+</map>

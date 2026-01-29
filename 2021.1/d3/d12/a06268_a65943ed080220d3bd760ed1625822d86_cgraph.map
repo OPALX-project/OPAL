@@ -1,0 +1,51 @@
+<map id="Distribution::create" name="Distribution::create">
+<area shape="rect" id="node2" href="$d3/d12/a06268.html#a112dfaece789dade1c8385e3135468f6" title="Distribution::adjustPhase\lSpace" alt="" coords="511,109,696,150"/>
+<area shape="rect" id="node9" href="$d3/d12/a06268.html#a49a2932c1bbc9d3fc4898b0009692a12" title="Distribution::createDistribution\lBinomial" alt="" coords="492,1314,715,1355"/>
+<area shape="rect" id="node14" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1079,1577,1213,1604"/>
+<area shape="rect" id="node15" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1075,1781,1217,1808"/>
+<area shape="rect" id="node16" href="$d9/d4e/a04307.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="1074,2240,1218,2267"/>
+<area shape="rect" id="node17" href="$d3/d12/a06268.html#aae8aea755efb33f396e09cbc691e4261" title="Distribution::createDistribution\lFlattop" alt="" coords="211,1833,433,1874"/>
+<area shape="rect" id="node22" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1351,1959,1402,1985"/>
+<area shape="rect" id="node27" href="$d3/d12/a06268.html#aaa2e34b2e6c92ce03b56e0af7f0216cf" title="Distribution::createDistribution\lFromFile" alt="" coords="492,458,715,499"/>
+<area shape="rect" id="node30" href="$d3/d12/a06268.html#aef2953d27bb5eb872c4482c259fed96d" title="Distribution::createDistribution\lGauss" alt="" coords="492,1654,715,1695"/>
+<area shape="rect" id="node34" href="$d3/d12/a06268.html#a6bd1d6cf572876c3fe3299959b9a5794" title="Distribution::createDistribution\lMultiGauss" alt="" coords="492,1431,715,1473"/>
+<area shape="rect" id="node37" href="$d3/d12/a06268.html#aed1962640841c7a54a5336e3aa085c6f" title="Distribution::createMatched\lGaussDistribution" alt="" coords="502,2718,705,2759"/>
+<area shape="rect" id="node47" href="$d3/d12/a06268.html#ab671aac19afe1ac4ddfe4124236394b4" title="Distribution::getNumOfLocal\lParticlesToCreate" alt="" coords="777,1650,984,1691"/>
+<area shape="rect" id="node48" href="$dd/dbc/a03800.html#a4b2b36162d7cd2032d0ea378d5015281" title="level2" alt="" coords="291,3197,353,3224"/>
+<area shape="rect" id="node49" href="$d3/d12/a06268.html#a87fe7a4587a11e381ac2a4bd2223c167" title="Distribution::reflectDistribution" alt="" coords="769,808,992,835"/>
+<area shape="rect" id="node50" href="$d3/d12/a06268.html#ab4125342927a4c1417c617bb3e71f354" title="Distribution::scaleDistCoordinates" alt="" coords="200,925,444,952"/>
+<area shape="rect" id="node3" href="$d7/d65/a03518.html#a3f4c593649c5ad948ee3e8566bffeda6" title="allreduce" alt="" coords="839,36,922,63"/>
+<area shape="rect" id="node5" href="$d6/db7/a04354.html#a276345c918fce880c783438bf33641d2" title="Util::convertMomentumEVover\lCToBetaGamma" alt="" coords="770,138,991,179"/>
+<area shape="rect" id="node6" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="1293,356,1460,383"/>
+<area shape="rect" id="node7" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="1075,829,1217,856"/>
+<area shape="rect" id="node8" href="$d4/dfa/a00746.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="1121,1295,1171,1321"/>
+<area shape="rect" id="node4" href="$d5/d16/a11864.html#a8d995e140c485a5416394b5cc1c864c4" title="IpplInfo::getComm" alt="" coords="1075,120,1217,147"/>
+<area shape="rect" id="node10" href="$d3/d12/a06268.html#a02e919b4d6d89b54e5d1f78eed5071e4" title="Distribution::setDistParameters\lBinomial" alt="" coords="767,691,994,733"/>
+<area shape="rect" id="node12" href="$d3/d12/a06268.html#aa38c1185a7592d7cdcf79bb2931098db" title="Distribution::generateBinomial" alt="" coords="769,1345,992,1372"/>
+<area shape="rect" id="node11" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1123,1193,1169,1220"/>
+<area shape="rect" id="node13" href="$d4/d6f/a03374.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="1121,1135,1171,1161"/>
+<area shape="rect" id="node18" href="$d3/d12/a06268.html#a941c452b4cb717eaf3c86fff9ac064a5" title="Distribution::setDistParameters\lFlattop" alt="" coords="767,626,994,667"/>
+<area shape="rect" id="node20" href="$d3/d12/a06268.html#a0cf826519c9e76cf9e234116422008f7" title="Distribution::generateFlattopT" alt="" coords="495,1840,712,1867"/>
+<area shape="rect" id="node25" href="$d3/d12/a06268.html#ac2a6c036dddc9bd41f08273c99ecdfe6" title="Distribution::generateFlattop\lLaserProfile" alt="" coords="499,1891,708,1933"/>
+<area shape="rect" id="node26" href="$d3/d12/a06268.html#a76c40e56507612cc1a5228405fb44f18" title="Distribution::generateFlattopZ" alt="" coords="494,2051,713,2077"/>
+<area shape="rect" id="node19" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="1069,407,1223,433"/>
+<area shape="rect" id="node21" href="$d3/d12/a06268.html#ac473f3f4447546ca73b95edf519913ba" title="Select and allocate gsl random number generator. " alt="" coords="1047,2465,1245,2506"/>
+<area shape="rect" id="node23" href="$d3/d12/a06268.html#aa7d7cb9f6b68fce38095a69d2d4c8d24" title="Distribution::sampleUniformDisk" alt="" coords="763,1244,999,1271"/>
+<area shape="rect" id="node24" href="$d3/d12/a06268.html#a91d5b73394a749b61e87fec4b462957b" title="Distribution::generateLong\lFlattopT" alt="" coords="783,1833,978,1874"/>
+<area shape="rect" id="node28" href="$d3/d12/a06268.html#a4816d6d7b0c604fc5825a60d5312b369" title="Distribution::getNumberOf\lParticlesInFile" alt="" coords="783,458,978,499"/>
+<area shape="rect" id="node29" href="$d7/d65/a03518.html#a6e1e71ee127405447f7411777d80ebd6" title="reduce" alt="" coords="1113,621,1179,648"/>
+<area shape="rect" id="node31" href="$d3/d12/a06268.html#ae82fe3130925ebf8cb40bd07853f92c6" title="Distribution::setDistParameters\lGauss" alt="" coords="767,1077,994,1118"/>
+<area shape="rect" id="node32" href="$d3/d12/a06268.html#affbea6828859d285ab7c04b08efe0b03" title="Distribution::generateTransverse\lGauss" alt="" coords="763,1715,998,1757"/>
+<area shape="rect" id="node33" href="$d3/d12/a06268.html#ac723b058cade9984e402f578cce2a7ce" title="Distribution::generateGaussZ" alt="" coords="774,1396,987,1423"/>
+<area shape="rect" id="node35" href="$d3/d12/a06268.html#aadd4d1f08f4c870e8afd4c9e358e9803" title="Distribution::setDistParameters\lMultiGauss" alt="" coords="767,1011,994,1053"/>
+<area shape="rect" id="node36" href="$d4/dfa/a00746.html#ac11bd97cffeb59d260b6113f1b76cb60" title="Exponential. " alt="" coords="857,909,904,936"/>
+<area shape="rect" id="node38" href="$d6/d11/a04436.html#ad15b8f38ef4d5bef1c4e1868c0a77535" title="Find a BeamSequence by name. " alt="" coords="1069,356,1223,383"/>
+<area shape="rect" id="node39" href="$d6/d11/a04436.html#a5bd678e7a78bd9221de550c1273c15db" title="Return the embedded CLASSIC beam line. " alt="" coords="785,2827,976,2853"/>
+<area shape="rect" id="node40" href="$da/d4c/a04980.html#a00488795aa503a413930e54e3e5b00a5" title="Execute the algorithm on the attached beam line. " alt="" coords="797,2878,965,2919"/>
+<area shape="rect" id="node41" href="$d1/daa/a04816.html#a098ca2acb3fa6876ab88acb644665708" title="Cyclotron::getCyclHarm" alt="" coords="792,2944,969,2971"/>
+<area shape="rect" id="node42" href="$d1/daa/a04816.html#a7b789e2c8e8dafd47e2acfcd9c97d0da" title="Cyclotron::getPHIinit" alt="" coords="803,2995,959,3021"/>
+<area shape="rect" id="node43" href="$d1/daa/a04816.html#a42bdd09ae90b58b328d111f263fa2346" title="Cyclotron::getFieldMapFN" alt="" coords="787,3045,974,3072"/>
+<area shape="rect" id="node44" href="$d1/daa/a04816.html#ae481abfe0889e88f070a048c7f564858" title="Cyclotron::getFMLowE" alt="" coords="798,2725,963,2752"/>
+<area shape="rect" id="node45" href="$d1/daa/a04816.html#a62a152c63528b5338c0f9a5a45f5f639" title="Cyclotron::getFMHighE" alt="" coords="796,2776,965,2803"/>
+<area shape="rect" id="node46" href="$d3/d12/a06268.html#a7b3891ce4d6acb5dda35043275105837" title="Distribution::generateMatched\lGauss" alt="" coords="771,2203,990,2245"/>
+</map>

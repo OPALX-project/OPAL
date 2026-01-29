@@ -1,0 +1,51 @@
+<map id="Bend2D::setupBendGeometry" name="Bend2D::setupBendGeometry">
+<area shape="rect" id="node2" href="$d6/db2/a04780.html#a1d80a74be06d2ae6c8186720dc686059" title="Bend2D::findChordLength" alt="" coords="270,477,457,504"/>
+<area shape="rect" id="node3" href="$d6/db2/a04780.html#a7f5ee2b5831334a3c79bea993fdaf3c7" title="Bend2D::findIdealBendParameters" alt="" coords="507,804,751,830"/>
+<area shape="rect" id="node17" href="$d6/db2/a04780.html#a955e80149993bfb320f986f6e668ca64" title="Bend2D::setEntranceAngle" alt="" coords="811,1850,1005,1877"/>
+<area shape="rect" id="node23" href="$d2/d13/a04784.html#aba2fe3ad14c15238edcccb5441e0fbd0" title="BendBase::getEntranceAngle" alt="" coords="1065,1774,1276,1801"/>
+<area shape="rect" id="node24" href="$d6/db2/a04780.html#ae92ca6a5ecf2a4abae3bb2f697195fa6" title="Get element type std::string. " alt="" coords="297,1404,429,1430"/>
+<area shape="rect" id="node25" href="$d6/db2/a04780.html#abe467a8986ff540752a3363a75b1c4b9" title="Bend2D::isFieldZero" alt="" coords="553,137,705,164"/>
+<area shape="rect" id="node28" href="$d6/db2/a04780.html#a7553f0b96a930694b2ffa632af91475e" title="Bend2D::setBendEffective\lLength" alt="" coords="268,702,459,743"/>
+<area shape="rect" id="node39" href="$d6/db2/a04780.html#aaa19eba22ab0899f902e2e937cbbabe8" title="Bend2D::setFieldBoundaries" alt="" coords="806,1252,1010,1278"/>
+<area shape="rect" id="node40" href="$d6/db2/a04780.html#a7266e5417ca6a3c4023ee6e742dea064" title="Bend2D::setFieldCalcParam" alt="" coords="808,1150,1008,1177"/>
+<area shape="rect" id="node49" href="$d6/db2/a04780.html#a6406125f8904e6deb1e21c4d820088ff" title="Bend2D::setBendStrength" alt="" coords="269,578,458,605"/>
+<area shape="rect" id="node4" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1390,694,1435,721"/>
+<area shape="rect" id="node6" href="$d0/d1e/a03674.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="1141,846,1200,873"/>
+<area shape="rect" id="node7" href="$d2/d13/a04784.html#a36b8268a75f393e61571244cac0ec257" title="Calculate bend angle from chord length and design radius. " alt="" coords="813,1201,1003,1228"/>
+<area shape="rect" id="node9" href="$d2/d13/a04784.html#ad0b738e14273dffee8ec0e8eb87748bd" title="Calculate design radius from design energy and field amplitude. " alt="" coords="803,492,1013,518"/>
+<area shape="rect" id="node14" href="$d1/dc3/a04492.html#a16508077c3f6403314e7923dc74e06f9" title="Access to reference data. " alt="" coords="1091,644,1250,670"/>
+<area shape="rect" id="node15" href="$d2/d13/a04784.html#aca45c9b2f0bf8ead0fe00a79ab1ecdb7" title="Calculate field amplitude from design energy and radius. " alt="" coords="799,593,1017,620"/>
+<area shape="rect" id="node16" href="$d0/d1e/a03674.html#af6518b151e7b0d52fa4ec791b891f53b" title="copysign" alt="" coords="868,542,948,569"/>
+<area shape="rect" id="node22" href="$d6/db2/a04780.html#a386d42750d3751be34faaa740a822d44" title="Bend2D::setExitAngle" alt="" coords="827,1800,989,1826"/>
+<area shape="rect" id="node5" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1549,694,1735,721"/>
+<area shape="rect" id="node8" href="$df/d98/a03680.html#ab8b5bc6bd9839a587c61b29350417f0f" title="asin" alt="" coords="1146,1673,1195,1700"/>
+<area shape="rect" id="node10" href="$d1/dc3/a04492.html#af51331c43ea82142dd6d237e6e3e5bfd" title="PartBunchBase::getM" alt="" coords="1091,593,1250,620"/>
+<area shape="rect" id="node11" href="$d2/d13/a04784.html#a46f8eab5e301c6e6422a6f48787b227a" title="Calculate beta*gamma from design energy. " alt="" coords="1069,441,1272,468"/>
+<area shape="rect" id="node12" href="$d4/dfa/a00746.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="1388,441,1437,468"/>
+<area shape="rect" id="node13" href="$db/df9/a05044.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1591,441,1693,468"/>
+<area shape="rect" id="node18" href="$d4/dfa/a00746.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="1391,1724,1435,1750"/>
+<area shape="rect" id="node19" href="$d4/dfa/a00746.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="1621,1724,1663,1750"/>
+<area shape="rect" id="node20" href="$d2/d13/a04784.html#a5750c199b85ee17f0597c2122c769389" title="BendBase::setEntranceAngle" alt="" coords="1066,1926,1275,1953"/>
+<area shape="rect" id="node21" href="$d4/dfa/a00746.html#aaf4c9e6032cf18666e610d31e47a9ff9" title="Tangent. " alt="" coords="1149,1825,1192,1852"/>
+<area shape="rect" id="node26" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="883,86,933,113"/>
+<area shape="rect" id="node27" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1085,86,1257,113"/>
+<area shape="rect" id="node29" href="$d6/db2/a04780.html#affa905a4ffbc1b28314faf2ceb091979" title="Bend2D::calculateBendAngle" alt="" coords="803,441,1013,468"/>
+<area shape="rect" id="node38" href="$d6/db2/a04780.html#af7b3a94e21473d7a292c554a8e216242" title="Bend2D::findBendEffective\lLength" alt="" coords="531,738,726,779"/>
+<area shape="rect" id="node30" href="$d6/db2/a04780.html#a5e35ad2e405c6d03375cd9af168d47d7" title="Bend2D::calculateMapField" alt="" coords="1072,542,1269,569"/>
+<area shape="rect" id="node34" href="$d3/d4f/a00761.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="1107,238,1234,265"/>
+<area shape="rect" id="node35" href="$d1/dc3/a04492.html#a4951c53df6841fd275a56f41fc76bfdf" title="PartBunchBase::getdT" alt="" coords="1089,289,1253,316"/>
+<area shape="rect" id="node36" href="$d3/d98/a06884.html#a063ebfefbbf275703add583e42f5bd5f" title="BorisPusher::kick" alt="" coords="1103,340,1238,366"/>
+<area shape="rect" id="node37" href="$d3/d98/a06884.html#aa0aa7e271fd7444217c180f50c90b7b4" title="BorisPusher::push" alt="" coords="1343,390,1482,417"/>
+<area shape="rect" id="node31" href="$d6/db2/a04780.html#a4fc91d3e8e73ba0162202b7e8a12d048" title="Bend2D::getBeginToEnd\l_local" alt="" coords="1324,1022,1501,1063"/>
+<area shape="rect" id="node32" href="$d3/d82/a05088.html#acacde969cf75ea57d36f24896874c6a0" title="CoordinateSystemTrafo\l::transformTo" alt="" coords="1325,956,1500,998"/>
+<area shape="rect" id="node33" href="$df/dd5/a01115.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="1621,1088,1663,1114"/>
+<area shape="rect" id="node41" href="$d4/dc5/a05148.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="1329,1546,1496,1573"/>
+<area shape="rect" id="node42" href="$d0/d1e/a03674.html#aae355e465ddaedd0a66a3187cd09a5a8" title="fmod" alt="" coords="1143,1302,1199,1329"/>
+<area shape="rect" id="node43" href="$d2/d13/a04784.html#a6248731d050834eda9d0612e50f167fb" title="BendBase::getBendAngle" alt="" coords="1077,1353,1264,1380"/>
+<area shape="rect" id="node44" href="$d2/d13/a04784.html#a49703e2547809f3facd773caa0a524d7" title="BendBase::getChordLength" alt="" coords="1071,1404,1270,1430"/>
+<area shape="rect" id="node45" href="$d7/d49/a00863.html#a2d2b2270eefa971fcff95d54dcc92cf5" title="getQuaternion" alt="" coords="1113,1201,1228,1228"/>
+<area shape="rect" id="node46" href="$df/da2/a04828.html#aab7ccd4b61b3d8289f042e0569f5b92f" title="ElementBase::getRotation\lAboutZ" alt="" coords="1075,1455,1266,1496"/>
+<area shape="rect" id="node47" href="$d4/dc5/a05148.html#a16e61b715e53d7394996bb56c356916e" title="Quaternion::rotate" alt="" coords="1100,1521,1241,1548"/>
+<area shape="rect" id="node48" href="$d3/d82/a05088.html#ab7f68c4a5a5befa90cd9a82e310b2ee0" title="CoordinateSystemTrafo\l::transformFrom" alt="" coords="1325,1139,1500,1180"/>
+<area shape="rect" id="node50" href="$d6/db2/a04780.html#a67cdcba10cbc715800ae3f63b9295085" title="Bend2D::findBendStrength" alt="" coords="532,466,725,493"/>
+</map>

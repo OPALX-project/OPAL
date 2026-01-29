@@ -1,0 +1,11 @@
+<map id="Tps::setCoefficient" name="Tps::setCoefficient">
+<area shape="rect" id="node2" href="$d0/d8b/a05048.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="204,56,323,83"/>
+<area shape="rect" id="node6" href="$d0/d8b/a05048.html#a33520f8c7100283fafbdf7171a0a3de5" title="TpsRep::data" alt="" coords="405,107,511,133"/>
+<area shape="rect" id="node7" href="$db/df9/a05044.html#aeff61ceb64a6541d851cfb2da84146ab" title="Get order. " alt="" coords="208,157,319,184"/>
+<area shape="rect" id="node8" href="$db/df9/a05044.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="196,208,331,235"/>
+<area shape="rect" id="node9" href="$d0/d8b/a05048.html#afcc8dbd03cb0e6d2bec689be39e9a79b" title="TpsRep::release" alt="" coords="201,259,326,285"/>
+<area shape="rect" id="node10" href="$db/df9/a05044.html#a293e46672fa0725a600a6f1917d13f2c" title="Tps::unique" alt="" coords="215,309,312,336"/>
+<area shape="rect" id="node3" href="$dc/d96/a05060.html#a12f23d39f696c02da148722cb0bd8f06" title="TpsData::getTpsData" alt="" coords="379,5,537,32"/>
+<area shape="rect" id="node5" href="$dc/d96/a05060.html#a6ec8c0544fd09e9a701799d65f1bca46" title="TpsData::getSize" alt="" coords="749,31,881,57"/>
+<area shape="rect" id="node4" href="$dc/d96/a05060.html#a44b479e9cba17e82e7d9ceab727ef066" title="TpsData::build" alt="" coords="585,5,701,32"/>
+</map>

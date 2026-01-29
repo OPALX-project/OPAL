@@ -1,0 +1,18 @@
+<map id="Sequence::update" name="Sequence::update">
+<area shape="rect" id="node2" href="$d4/d61/a06612.html#a7a11f38b6f5a642a4587a2ba1e9b1d95" title="Return the embedded CLASSIC beam line. " alt="" coords="196,44,349,71"/>
+<area shape="rect" id="node4" href="$d4/d61/a06612.html#afdcd78899078765ad0df0eb1a5f008c7" title="Sequence::updateList" alt="" coords="192,132,353,159"/>
+<area shape="rect" id="node3" href="$d5/d8e/a04448.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="417,5,576,32"/>
+<area shape="rect" id="node5" href="$df/da2/a04828.html#ac39f80091bcbce72cd429499a33c18f5" title="Test if the element can be shared. " alt="" coords="405,56,589,83"/>
+<area shape="rect" id="node6" href="$df/da2/a04828.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="409,107,585,133"/>
+<area shape="rect" id="node7" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="413,157,580,184"/>
+<area shape="rect" id="node9" href="$d1/d55/a04496.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="439,208,554,235"/>
+<area shape="rect" id="node11" href="$d4/d61/a06612.html#af5c35ee18c59e876b9bccf8ecfa7e953" title="Sequence::findDriftLength" alt="" coords="401,309,592,336"/>
+<area shape="rect" id="node8" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="645,157,797,184"/>
+<area shape="rect" id="node10" href="$d1/d13/a04444.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="665,208,778,235"/>
+<area shape="rect" id="node12" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="699,259,744,285"/>
+<area shape="rect" id="node14" href="$d5/d8e/a04448.html#a05cb634791b56a500a9ed03caac47c16" title="Return arc length from origin to entrance (negative !). " alt="" coords="640,309,803,336"/>
+<area shape="rect" id="node16" href="$d5/d8e/a04448.html#af085c2df46efbc538aacdf78a6195cf3" title="Return arc length from origin to exit (positive !). " alt="" coords="656,360,787,387"/>
+<area shape="rect" id="node17" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="640,411,803,437"/>
+<area shape="rect" id="node13" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="851,259,1036,285"/>
+<area shape="rect" id="node15" href="$d5/d8e/a04448.html#a58f835862b37de4aa36f82f51abd9ee5" title="Return element length. " alt="" coords="869,335,1018,361"/>
+</map>

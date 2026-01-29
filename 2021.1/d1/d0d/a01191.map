@@ -1,0 +1,28 @@
+<map id="src/Classic/Fields/Astra1DDynamic_fast.cpp" name="src/Classic/Fields/Astra1DDynamic_fast.cpp">
+<area shape="rect" id="node2" href="$dd/d43/a01193.html" title="Fields/Astra1DDynamic\l_fast.h" alt="" coords="411,95,585,136"/>
+<area shape="rect" id="node38" href="$d9/d63/a01877.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="5,95,180,136"/>
+<area shape="rect" id="node40" href="$da/d14/a02066.html" title="Utilities/Util.h" alt="" coords="1381,184,1493,211"/>
+<area shape="rect" id="node47" href="$d0/d2b/a03095.html" title="Utilities/OpalException.h" alt="" coords="204,102,387,129"/>
+<area shape="rect" id="node48" href="$db/dbe/a01706.html" title="Physics/Physics.h" alt="" coords="659,102,795,129"/>
+<area shape="rect" id="node3" href="$de/db5/a01181.html" title="Fields/Astra1D_fast.h" alt="" coords="411,184,569,211"/>
+<area shape="rect" id="node4" href="$d3/d53/a01262.html" title="Fields/Fieldmap.h" alt="" coords="413,259,548,285"/>
+<area shape="rect" id="node8" href="$db/ddf/a13198.html" title="Algorithms/Vektor.h" alt="" coords="1947,333,2097,360"/>
+<area shape="rect" id="node9" href="$db/db0/a13201.html" title="AppTypes/Vektor.h" alt="" coords="2050,408,2191,435"/>
+<area shape="rect" id="node10" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="297,632,424,659"/>
+<area shape="rect" id="node13" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="2370,557,2522,584"/>
+<area shape="rect" id="node23" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="2152,483,2324,509"/>
+<area shape="rect" id="node26" href="$da/de5/a03170.html" title="AppTypes/TSVMeta.h" alt="" coords="1182,483,1339,509"/>
+<area shape="rect" id="node19" href="$da/d72/a03527.html" title="Message/Message.hpp" alt="" coords="2362,632,2530,659"/>
+<area shape="rect" id="node20" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="2247,707,2373,733"/>
+<area shape="rect" id="node24" href="$d4/d78/a03677.html" title="PETE/IpplTypeComputations.h" alt="" coords="2131,557,2345,584"/>
+<area shape="rect" id="node25" href="$df/d98/a03680.html" title="PETE/PETE.h" alt="" coords="1952,557,2055,584"/>
+<area shape="rect" id="node27" href="$d3/dcf/a03173.html" title="AppTypes/TSVMetaAssign.h" alt="" coords="1509,557,1709,584"/>
+<area shape="rect" id="node28" href="$d1/d45/a03191.html" title="AppTypes/TSVMetaUnary.h" alt="" coords="1733,557,1927,584"/>
+<area shape="rect" id="node29" href="$df/d0d/a03176.html" title="AppTypes/TSVMetaBinary.h" alt="" coords="398,557,595,584"/>
+<area shape="rect" id="node30" href="$d1/d30/a03185.html" title="AppTypes/TSVMetaDot.h" alt="" coords="620,557,800,584"/>
+<area shape="rect" id="node31" href="$dd/d71/a03182.html" title="AppTypes/TSVMetaCross.h" alt="" coords="824,557,1017,584"/>
+<area shape="rect" id="node32" href="$da/dfb/a03188.html" title="AppTypes/TSVMetaDotDot.h" alt="" coords="1042,557,1245,584"/>
+<area shape="rect" id="node33" href="$db/d65/a03179.html" title="AppTypes/TSVMetaCompare.h" alt="" coords="1269,557,1485,584"/>
+<area shape="rect" id="node39" href="$d4/d29/a01817.html" title="Utilities/ClassicException.h" alt="" coords="11,184,209,211"/>
+<area shape="rect" id="node41" href="$dd/db2/a00866.html" title="Algorithms/Quaternion.h" alt="" coords="1997,259,2178,285"/>
+</map>

@@ -1,0 +1,24 @@
+<map id="src/Optimize/OptimizeCmd.h" name="src/Optimize/OptimizeCmd.h">
+<area shape="rect" id="node2" href="$dd/dad/a00005.html" title="AbstractObjects/Action.h" alt="" coords="599,155,781,181"/>
+<area shape="rect" id="node14" href="$de/d5a/a04142.html" title="Util/CmdArguments.h" alt="" coords="1114,386,1277,413"/>
+<area shape="rect" id="node20" href="$d6/d10/a02621.html" title="Optimize/DVar.h" alt="" coords="469,80,596,107"/>
+<area shape="rect" id="node22" href="$d7/d5e/a03953.html" title="Expression/Expression.h" alt="" coords="2104,304,2284,331"/>
+<area shape="rect" id="node3" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="379,229,561,256"/>
+<area shape="rect" id="node4" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="364,304,563,331"/>
+<area shape="rect" id="node6" href="$d9/dfd/a01610.html" title="MemoryManagement/RCObject.h" alt="" coords="95,565,330,591"/>
+<area shape="rect" id="node5" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="98,468,285,509"/>
+<area shape="rect" id="node9" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="461,379,647,420"/>
+<area shape="rect" id="node10" href="$d6/d82/a01607.html" title="MemoryManagement/Pointer.h" alt="" coords="562,475,783,502"/>
+<area shape="rect" id="node19" href="$d9/d81/a04157.html" title="Util/OptPilotException.h" alt="" coords="1568,475,1745,502"/>
+<area shape="rect" id="node21" href="$d4/d8c/a00035.html" title="AbstractObjects/Definition.h" alt="" coords="369,155,573,181"/>
+<area shape="rect" id="node23" href="$d7/d12/a04298.html" title="Util/Types.h" alt="" coords="2226,475,2325,502"/>
+<area shape="rect" id="node26" href="$d9/d0c/a03992.html" title="Expression/Parser/expression.hpp" alt="" coords="4201,386,4441,413"/>
+<area shape="rect" id="node34" href="$de/d78/a13186.html" title="skipper.hpp" alt="" coords="4429,475,4527,502"/>
+<area shape="rect" id="node35" href="$d7/df2/a03986.html" title="Expression/Parser/evaluator.hpp" alt="" coords="2917,386,3148,413"/>
+<area shape="rect" id="node43" href="$df/d58/a03998.html" title="function.hpp" alt="" coords="2688,475,2791,502"/>
+<area shape="rect" id="node44" href="$dd/d81/a04001.html" title="Expression/Parser/requirements.hpp" alt="" coords="3439,386,3695,413"/>
+<area shape="rect" id="node48" href="$d1/d55/a03959.html" title="Expression/GlobalFunctions.h" alt="" coords="2088,386,2300,413"/>
+<area shape="rect" id="node28" href="$db/d69/a13174.html" title="ast.hpp" alt="" coords="4223,475,4293,502"/>
+<area shape="rect" id="node33" href="$d6/d5a/a13180.html" title="error_handler.hpp" alt="" coords="3675,475,3811,502"/>
+<area shape="rect" id="node50" href="$da/dfb/a04274.html" title="Util/SDDSReader.h" alt="" coords="2061,475,2202,502"/>
+</map>

@@ -1,0 +1,35 @@
+<map id="src/Classic/Solvers/GreenWakeFunction.cpp" name="src/Classic/Solvers/GreenWakeFunction.cpp">
+<area shape="rect" id="node2" href="$de/daf/a01736.html" title="Solvers/GreenWakeFunction.h" alt="" coords="727,177,942,203"/>
+<area shape="rect" id="node20" href="$d0/d11/a00842.html" title="Algorithms/PartBunchBase.h" alt="" coords="1687,95,1894,121"/>
+<area shape="rect" id="node35" href="$d9/d63/a01877.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="43,259,218,300"/>
+<area shape="rect" id="node3" href="$d1/dde/a01496.html" title="Filters/Filter.h" alt="" coords="1341,266,1449,293"/>
+<area shape="rect" id="node5" href="$d5/db3/a01751.html" title="Solvers/WakeFunction.h" alt="" coords="1089,266,1265,293"/>
+<area shape="rect" id="node7" href="$db/dbe/a01706.html" title="Physics/Physics.h" alt="" coords="243,266,379,293"/>
+<area shape="rect" id="node8" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="606,266,733,293"/>
+<area shape="rect" id="node15" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="403,266,530,293"/>
+<area shape="rect" id="node9" href="$dc/d61/a03893.html" title="Utility/StaticIpplInfo.h" alt="" coords="602,348,766,375"/>
+<area shape="rect" id="node11" href="$da/d1a/a03803.html" title="Utility/Inform.h" alt="" coords="2065,348,2186,375"/>
+<area shape="rect" id="node21" href="$d8/d2e/a03548.html" title="Particle/AbstractParticle.h" alt="" coords="3522,177,3710,203"/>
+<area shape="rect" id="node23" href="$d3/dce/a03608.html" title="Particle/ParticleAttrib.h" alt="" coords="2975,177,3145,203"/>
+<area shape="rect" id="node34" href="$dd/d51/a03842.html" title="Utility/IpplTimings.h" alt="" coords="911,266,1065,293"/>
+<area shape="rect" id="node37" href="$d0/dad/a00806.html" title="Algorithms/DistributionMoments.h" alt="" coords="1908,177,2153,203"/>
+<area shape="rect" id="node38" href="$d6/d83/a01544.html" title="FixedAlgebra/FMatrix.h" alt="" coords="1524,266,1695,293"/>
+<area shape="rect" id="node39" href="$d6/d82/a01565.html" title="FixedAlgebra/FVector.h" alt="" coords="1463,348,1633,375"/>
+<area shape="rect" id="node40" href="$db/ddf/a13198.html" title="Vektor.h" alt="" coords="1959,348,2033,375"/>
+<area shape="rect" id="node41" href="$d5/d12/a00794.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="1455,169,1673,211"/>
+<area shape="rect" id="node42" href="$dd/db2/a00866.html" title="Algorithms/Quaternion.h" alt="" coords="1769,266,1951,293"/>
+<area shape="rect" id="node43" href="$d6/d8b/a00821.html" title="Algorithms/OpalParticle.h" alt="" coords="1193,177,1380,203"/>
+<area shape="rect" id="node44" href="$d6/d2f/a00854.html" title="Algorithms/PBunchDefs.h" alt="" coords="1697,177,1884,203"/>
+<area shape="rect" id="node46" href="$d7/dcf/a00845.html" title="PartBunchBase.hpp" alt="" coords="237,177,384,203"/>
+<area shape="rect" id="node22" href="$d4/dc4/a03647.html" title="Particle/ParticleLayout.h" alt="" coords="3809,266,3988,293"/>
+<area shape="rect" id="node24" href="$d3/df2/a03614.html" title="Particle/ParticleAttribBase.h" alt="" coords="2695,266,2897,293"/>
+<area shape="rect" id="node26" href="$d4/d35/a03617.html" title="Particle/ParticleAttribElem.h" alt="" coords="3481,266,3684,293"/>
+<area shape="rect" id="node27" href="$db/d49/a03737.html" title="SubParticle/SubParticleAttrib.h" alt="" coords="3335,348,3553,375"/>
+<area shape="rect" id="node28" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="3581,423,3753,449"/>
+<area shape="rect" id="node29" href="$d1/df9/a03665.html" title="Particle/PAssign.h" alt="" coords="3780,348,3916,375"/>
+<area shape="rect" id="node30" href="$d1/d86/a03209.html" title="DataSource/DataSource.h" alt="" coords="2431,266,2619,293"/>
+<area shape="rect" id="node31" href="$d6/d19/a03242.html" title="DataSource/MakeDataSource.h" alt="" coords="3023,266,3246,293"/>
+<area shape="rect" id="node32" href="$dd/dfe/a03425.html" title="Index/NDIndex.h" alt="" coords="2920,348,3051,375"/>
+<area shape="rect" id="node33" href="$dc/df3/a03773.html" title="Utility/DiscType.h" alt="" coords="3271,266,3407,293"/>
+<area shape="rect" id="node36" href="$d4/d29/a01817.html" title="Utilities/ClassicException.h" alt="" coords="51,348,250,375"/>
+</map>

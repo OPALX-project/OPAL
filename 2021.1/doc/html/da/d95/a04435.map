@@ -1,0 +1,7 @@
+<map id="BeamSequence" name="BeamSequence">
+<area shape="rect" id="node5" href="$dd/dfe/a06600.html" title="Line" alt="" coords="5,304,55,331"/>
+<area shape="rect" id="node6" href="$d4/d61/a06612.html" title="Sequence" alt="" coords="79,304,165,331"/>
+<area shape="rect" id="node2" href="$d5/d8e/a04448.html" title="Element" alt="" coords="37,155,113,181"/>
+<area shape="rect" id="node3" href="$df/d3d/a04480.html" title="The base class for all OPAL objects. " alt="" coords="43,80,107,107"/>
+<area shape="rect" id="node4" href="$db/d2a/a05808.html" title="Abstract base class for reference counted objects. " alt="" coords="35,5,116,32"/>
+</map>

@@ -1,0 +1,12 @@
+<map id="ScatteringPhysics::ScatteringPhysics" name="ScatteringPhysics::ScatteringPhysics">
+<area shape="rect" id="node2" href="$dd/d44/a05968.html#a11f017c3b99b05f56fb00a5b0c66750e" title="The material of the collimator. " alt="" coords="199,5,408,47"/>
+<area shape="rect" id="node5" href="$dd/d44/a05968.html#abc9d4734c1b73eebfa7b0085186e4fbb" title="ScatteringPhysics::\lgetName" alt="" coords="231,71,376,112"/>
+<area shape="rect" id="node7" href="$d0/d38/a11896.html#a59ffa7a04c160376d3a6593bff568fb4" title="IpplTimings::getTimer" alt="" coords="221,137,386,163"/>
+<area shape="rect" id="node10" href="$df/da2/a04828.html#a6a1834ad3ce0e86abbbe1dfcf676afb2" title="Get element type std::string. " alt="" coords="220,187,387,214"/>
+<area shape="rect" id="node11" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="236,238,371,265"/>
+<area shape="rect" id="node3" href="$d6/dd1/a05888.html#aef7faed40269a7fbae2c3c9ce493f7dd" title="Physics::Material::\lgetMaterial" alt="" coords="474,5,614,47"/>
+<area shape="rect" id="node4" href="$d6/db7/a04354.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="680,13,785,39"/>
+<area shape="rect" id="node6" href="$df/da2/a04828.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="456,78,632,105"/>
+<area shape="rect" id="node8" href="$d2/dd7/a11892.html#ad8cc1e1e72cef6a72e059d33913d8af7" title="Timing::getTimer" alt="" coords="477,137,611,163"/>
+<area shape="rect" id="node9" href="$d8/db9/a00725.html#aa8ae23ddaa752827580a9345f34b7cca" title="value_type" alt="" coords="685,137,780,163"/>
+</map>

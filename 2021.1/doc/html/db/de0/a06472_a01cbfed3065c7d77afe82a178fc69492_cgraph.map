@@ -1,0 +1,51 @@
+<map id="OpalUndulator::update" name="OpalUndulator::update">
+<area shape="rect" id="node2" href="$d5/d8e/a04448.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="547,208,706,235"/>
+<area shape="rect" id="node3" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="821,348,964,375"/>
+<area shape="rect" id="node10" href="$d9/d4e/a04307.html#ab98e27fb1c758b0a63d9e242fcbe68e6" title="Get array value. " alt="" coords="803,272,982,299"/>
+<area shape="rect" id="node11" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="816,567,969,593"/>
+<area shape="rect" id="node17" href="$db/d04/a04992.html#a0a7556a9541f5fa95b7ac4dda441f1fc" title="Undulator::setAngle" alt="" coords="265,848,415,875"/>
+<area shape="rect" id="node18" href="$db/d04/a04992.html#aaa96ea70638125a77630bd8ebd3e9f9f" title="Undulator::setDtBunch" alt="" coords="255,899,425,925"/>
+<area shape="rect" id="node19" href="$df/da2/a04828.html#a2b59853ce20c48c2436d0c136adeea69" title="Set design length. " alt="" coords="223,949,457,976"/>
+<area shape="rect" id="node22" href="$db/d04/a04992.html#a544b9bdff49179e91319c86dbd1fff45" title="Undulator::setFilename" alt="" coords="253,1000,427,1027"/>
+<area shape="rect" id="node23" href="$db/d04/a04992.html#aec072d15f2d5ef51eea627e7c0a90677" title="Undulator::setK" alt="" coords="279,1051,401,1077"/>
+<area shape="rect" id="node24" href="$db/d04/a04992.html#a4dc6413a954e4f5cd43fbea79729b8dd" title="Undulator::setLambda" alt="" coords="257,1101,423,1128"/>
+<area shape="rect" id="node25" href="$db/d04/a04992.html#a478c3c617bf02247aa068b15d0e56950" title="Undulator::setMeshLength" alt="" coords="244,1152,436,1179"/>
+<area shape="rect" id="node26" href="$db/d04/a04992.html#ae19e3bd54cd96e152ac099b467588b36" title="Undulator::setMeshResolution" alt="" coords="232,1203,448,1229"/>
+<area shape="rect" id="node27" href="$db/d04/a04992.html#a7b649ce80dd34cdfe9e29849d6f7df20" title="Undulator::setNumPeriods" alt="" coords="243,1253,437,1280"/>
+<area shape="rect" id="node28" href="$db/d04/a04992.html#a701f94a34ce6259f03741e59d7c519cf" title="Undulator::setTotalTime" alt="" coords="251,1304,429,1331"/>
+<area shape="rect" id="node29" href="$db/d04/a04992.html#a744d3b6f3251e63e3059ee389cfbc5d2" title="Undulator::setTruncation\lOrder" alt="" coords="249,1355,431,1397"/>
+<area shape="rect" id="node30" href="$d2/dfe/a06332.html#ae7ef6d492cbb543c20367b7e4a2d86f5" title="Update the embedded CLASSIC element. " alt="" coords="261,553,419,580"/>
+<area shape="rect" id="node46" href="$d2/dfe/a06332.html#ab0c3e3b9796fc7f288fcfddb4a39080f" title="Transmit the `‘unknown’&#39; (not known to OPAL) attributes to CLASSIC. " alt="" coords="517,56,737,83"/>
+<area shape="rect" id="node4" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="1037,424,1228,451"/>
+<area shape="rect" id="node5" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="1063,323,1203,349"/>
+<area shape="rect" id="node6" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="1053,373,1212,400"/>
+<area shape="rect" id="node7" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="1052,475,1213,517"/>
+<area shape="rect" id="node8" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="1059,272,1206,299"/>
+<area shape="rect" id="node9" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="1276,272,1475,299"/>
+<area shape="rect" id="node12" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="1049,541,1216,568"/>
+<area shape="rect" id="node14" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="1109,592,1156,619"/>
+<area shape="rect" id="node16" href="$d6/db7/a04354.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="1080,643,1185,669"/>
+<area shape="rect" id="node13" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1299,541,1451,568"/>
+<area shape="rect" id="node15" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1300,592,1451,619"/>
+<area shape="rect" id="node20" href="$df/da2/a04828.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="525,949,728,976"/>
+<area shape="rect" id="node21" href="$da/def/a05344.html#a4d338ebcb0efefa851ff4bdc08f7efb2" title="Set geometry length. " alt="" coords="521,1001,732,1042"/>
+<area shape="rect" id="node31" href="$d4/dc5/a05148.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="543,528,710,555"/>
+<area shape="rect" id="node34" href="$d4/dfa/a00746.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="605,899,649,925"/>
+<area shape="rect" id="node37" href="$d4/dfa/a00746.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="872,899,913,925"/>
+<area shape="rect" id="node39" href="$df/da2/a04828.html#a106c7760d3c2fbb2b3f67838f53fba26" title="ElementBase::fixPosition" alt="" coords="535,629,719,656"/>
+<area shape="rect" id="node40" href="$d2/dfe/a06332.html#abdee4534d2270577d76f0d4a88b4532b" title="OpalElement::getApert" alt="" coords="541,579,712,605"/>
+<area shape="rect" id="node41" href="$df/da2/a04828.html#a14dd20e65c467dfa110245c52f4f2b5e" title="ElementBase::setAperture" alt="" coords="531,680,723,707"/>
+<area shape="rect" id="node42" href="$df/da2/a04828.html#a9174a8ab7e9f408d3e901561018f3c5c" title="ElementBase::setCSTrafoGlobal2\lLocal" alt="" coords="509,731,744,773"/>
+<area shape="rect" id="node43" href="$df/da2/a04828.html#a015eabbc7163b06af9ab098fda26eee8" title="Access to ELEMEDGE attribute. " alt="" coords="505,309,748,336"/>
+<area shape="rect" id="node44" href="$df/da2/a04828.html#a38684f3be77a11ffff26a8896e93549d" title="ElementBase::setMisalignment" alt="" coords="515,360,739,387"/>
+<area shape="rect" id="node45" href="$df/da2/a04828.html#a86e24ebba296fc816d0dcb188537c874" title="Set rotation about z axis in bend frame. " alt="" coords="531,411,722,453"/>
+<area shape="rect" id="node32" href="$d4/dc5/a05148.html#a237c3a9dfefea10e7ec6b5f373546427" title="Quaternion::real" alt="" coords="829,516,956,543"/>
+<area shape="rect" id="node33" href="$d4/dc5/a05148.html#a8cb33fa212258498b937d7e1a4684ce2" title="Quaternion::imag" alt="" coords="825,465,960,492"/>
+<area shape="rect" id="node35" href="$db/df9/a05044.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1061,936,1205,963"/>
+<area shape="rect" id="node38" href="$db/df9/a05044.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1087,873,1179,900"/>
+<area shape="rect" id="node36" href="$d4/d6f/a03374.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1352,936,1399,963"/>
+<area shape="rect" id="node47" href="$df/da2/a04828.html#a5c0cf4c10bceff7bc9fb225bae470174" title="Set value of an attribute. " alt="" coords="796,56,989,83"/>
+<area shape="rect" id="node48" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1107,107,1158,133"/>
+<area shape="rect" id="node49" href="$df/da2/a04828.html#a02257dc2843938a8baa24583fdd6b273" title="Construct a read/write channel. " alt="" coords="1037,5,1228,32"/>
+<area shape="rect" id="node50" href="$dd/dc9/a05400.html#aad3b7b15033b6db682bcc91a52db5132" title="Test if settable. " alt="" coords="1059,56,1207,83"/>
+</map>

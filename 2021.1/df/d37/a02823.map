@@ -1,0 +1,29 @@
+<map id="src/Solvers/EllipticDomain.h" name="src/Solvers/EllipticDomain.h">
+<area shape="rect" id="node6" href="$d6/d92/a02867.html" title="Solvers/RegularDomain.h" alt="" coords="516,80,703,107"/>
+<area shape="rect" id="node21" href="$d3/d5d/a02900.html" title="Structure/BoundaryGeometry.h" alt="" coords="1277,80,1500,107"/>
+<area shape="rect" id="node49" href="$d0/d2b/a03095.html" title="Utilities/OpalException.h" alt="" coords="2005,80,2188,107"/>
+<area shape="rect" id="node7" href="$d9/d4d/a02840.html" title="Solvers/IrregularDomain.h" alt="" coords="452,155,644,181"/>
+<area shape="rect" id="node8" href="$db/ddf/a13198.html" title="Algorithms/Vektor.h" alt="" coords="326,304,477,331"/>
+<area shape="rect" id="node17" href="$dd/db2/a00866.html" title="Algorithms/Quaternion.h" alt="" coords="279,229,460,256"/>
+<area shape="rect" id="node18" href="$dd/dfe/a03425.html" title="Index/NDIndex.h" alt="" coords="74,304,204,331"/>
+<area shape="rect" id="node9" href="$db/db0/a13201.html" title="AppTypes/Vektor.h" alt="" coords="172,386,314,413"/>
+<area shape="rect" id="node10" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="386,475,513,502"/>
+<area shape="rect" id="node13" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="226,557,378,584"/>
+<area shape="rect" id="node16" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="138,475,310,502"/>
+<area shape="rect" id="node19" href="$d6/daa/a03413.html" title="Index/Index.h" alt="" coords="37,386,148,413"/>
+<area shape="rect" id="node20" href="$d5/d6b/a03428.html" title="Index/NDIndexInlines.h" alt="" coords="338,386,511,413"/>
+<area shape="rect" id="node25" href="$d4/d8c/a00035.html" title="AbstractObjects/Definition.h" alt="" coords="1674,155,1878,181"/>
+<area shape="rect" id="node34" href="$dd/d52/a00221.html" title="Attributes/Attributes.h" alt="" coords="1540,229,1706,256"/>
+<area shape="rect" id="node38" href="$da/d14/a02066.html" title="Utilities/Util.h" alt="" coords="991,155,1103,181"/>
+<area shape="rect" id="node43" href="$dd/d51/a03842.html" title="Utility/IpplTimings.h" alt="" coords="890,386,1044,413"/>
+<area shape="rect" id="node26" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="2422,229,2605,256"/>
+<area shape="rect" id="node27" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="2057,304,2256,331"/>
+<area shape="rect" id="node29" href="$d9/dfd/a01610.html" title="MemoryManagement/RCObject.h" alt="" coords="2163,557,2398,584"/>
+<area shape="rect" id="node28" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="2231,468,2418,509"/>
+<area shape="rect" id="node31" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="2063,379,2250,420"/>
+<area shape="rect" id="node32" href="$d6/d82/a01607.html" title="MemoryManagement/Pointer.h" alt="" coords="1884,475,2106,502"/>
+<area shape="rect" id="node35" href="$df/ddd/a01655.html" title="Parser/Token.h" alt="" coords="1744,475,1860,502"/>
+<area shape="rect" id="node44" href="$d6/d3d/a13231.html" title="Utility/Timer.h" alt="" coords="750,475,864,502"/>
+<area shape="rect" id="node46" href="$de/d6b/a03845.html" title="Utility/my_auto_ptr.h" alt="" coords="1021,475,1180,502"/>
+<area shape="rect" id="node50" href="$d4/d29/a01817.html" title="Utilities/ClassicException.h" alt="" coords="1697,304,1896,331"/>
+</map>

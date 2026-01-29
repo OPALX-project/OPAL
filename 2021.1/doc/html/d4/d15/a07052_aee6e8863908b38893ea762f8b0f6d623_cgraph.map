@@ -1,0 +1,51 @@
+<map id="TrackRun::setupThickTracker" name="TrackRun::setupThickTracker">
+<area shape="rect" id="node2" href="$d1/dc3/a04492.html#a644c68187c47b47efa54ab2cf9ef3a27" title="PartBunchBase::calcBeamParameters" alt="" coords="260,5,525,32"/>
+<area shape="rect" id="node3" href="$d0/daa/a06928.html#acffe2e824ae9803d968125f11d390542" title="Return a clone. " alt="" coords="297,267,488,293"/>
+<area shape="rect" id="node5" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="1175,261,1341,288"/>
+<area shape="rect" id="node7" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="909,427,1062,453"/>
+<area shape="rect" id="node15" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="960,1335,1011,1361"/>
+<area shape="rect" id="node17" href="$d9/d26/a06900.html#a605283d014f9629e67ce7f75489d84c8" title="Find named BEAM. " alt="" coords="645,107,737,133"/>
+<area shape="rect" id="node19" href="$d0/daa/a06928.html#a71a82a76cc68ac9d0b0cebb91febb659" title="BoundaryGeometry::find" alt="" coords="601,56,781,83"/>
+<area shape="rect" id="node20" href="$d1/d55/a04496.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="285,1251,500,1277"/>
+<area shape="rect" id="node21" href="$d1/d55/a04496.html#a77c724ec014362d7600faa4b6260a996" title="get opals restart h5 format filename " alt="" coords="283,1301,502,1328"/>
+<area shape="rect" id="node22" href="$d1/d55/a04496.html#a92cfac50e1a10ca292d71ffcbc303964" title="get the step where to restart " alt="" coords="597,1385,784,1412"/>
+<area shape="rect" id="node23" href="$d1/d55/a04496.html#abb6b5cfd0ebea6ed30d85b21bbbdb401" title="true if we already allocated a ParticleBunch object " alt="" coords="583,1436,798,1463"/>
+<area shape="rect" id="node24" href="$d4/d15/a07052.html#a78ec6b74a3327390f5fc48e26c4d3ca8" title="TrackRun::initDataSink" alt="" coords="309,655,477,681"/>
+<area shape="rect" id="node28" href="$d1/d55/a04496.html#af8d0b55764c02667df67d086327b6a34" title="true if we do a restart run " alt="" coords="604,528,777,555"/>
+<area shape="rect" id="node30" href="$dd/dbc/a03800.html#a4b2b36162d7cd2032d0ea378d5015281" title="level2" alt="" coords="361,1352,424,1379"/>
+<area shape="rect" id="node32" href="$d1/dc3/a04492.html#a0dcdcc75cf01228dc53dafebbc29a7a3" title="PartBunchBase::setCharge" alt="" coords="296,1403,489,1429"/>
+<area shape="rect" id="node33" href="$d1/dc3/a04492.html#a6bf29b6c2efebb0556acdff60e2ac577" title="PartBunchBase::setCharge\lZeroPart" alt="" coords="296,1454,489,1495"/>
+<area shape="rect" id="node34" href="$d1/dc3/a04492.html#a9139c5f5729d94b481d13b9b98618448" title="PartBunchBase::setCoupling\lConstant" alt="" coords="291,1519,495,1561"/>
+<area shape="rect" id="node35" href="$d4/d15/a07052.html#a99ff049fcdecc0af280c07786b341345" title="TrackRun::setDistribution\lParallelT" alt="" coords="301,1033,485,1074"/>
+<area shape="rect" id="node47" href="$d1/dc3/a04492.html#a9fbc4d6a9f7997714f7d3cb6c1308f79" title="PartBunchBase::setdT" alt="" coords="311,1585,474,1612"/>
+<area shape="rect" id="node48" href="$d1/d55/a04496.html#ae8b3e5bc430bf329a7d88a2e0601a59a" title="OpalData::setGlobalGeometry" alt="" coords="283,1636,502,1663"/>
+<area shape="rect" id="node49" href="$d1/dc3/a04492.html#a28964ccb8f0261cf71e4ab9289f424a9" title="step in a TRACK command " alt="" coords="271,1687,515,1713"/>
+<area shape="rect" id="node50" href="$d4/d15/a07052.html#ac1ad69fad13eff0d541306c41a16a69e" title="TrackRun::setupFieldsolver" alt="" coords="295,427,490,453"/>
+<area shape="rect" id="node4" href="$d0/daa/a06928.html#afb1832c737f8af335b6437500d8a75be" title="BoundaryGeometry::Boundary\lGeometry" alt="" coords="581,259,800,301"/>
+<area shape="rect" id="node6" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1401,261,1553,288"/>
+<area shape="rect" id="node8" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="1163,632,1353,659"/>
+<area shape="rect" id="node9" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="1188,379,1328,405"/>
+<area shape="rect" id="node10" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="1179,429,1337,456"/>
+<area shape="rect" id="node11" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="1177,313,1339,354"/>
+<area shape="rect" id="node12" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="1185,480,1331,507"/>
+<area shape="rect" id="node13" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="1235,531,1281,557"/>
+<area shape="rect" id="node14" href="$d6/db7/a04354.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="1205,581,1311,608"/>
+<area shape="rect" id="node16" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1172,1335,1344,1361"/>
+<area shape="rect" id="node18" href="$d1/d55/a04496.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="928,108,1043,135"/>
+<area shape="rect" id="node25" href="$df/da0/a06936.html#a2ba46ccadf3f2bd88c53e494ee7b4193" title="DataSink::changeH5Wrapper" alt="" coords="587,731,795,757"/>
+<area shape="rect" id="node26" href="$d1/d55/a04496.html#a090a6fe62c84eb9c9a390202115fb488" title="OpalData::getDataSink" alt="" coords="605,579,776,605"/>
+<area shape="rect" id="node27" href="$d1/d55/a04496.html#ab8f3190a47dda1444a9488532841266a" title="true if we already allocated a DataSink object " alt="" coords="573,629,808,656"/>
+<area shape="rect" id="node29" href="$d1/d55/a04496.html#ab54ac1f06aec822e5b3023913d28d981" title="OpalData::setDataSink" alt="" coords="605,680,776,707"/>
+<area shape="rect" id="node31" href="$d9/d03/a11852.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="598,1537,783,1564"/>
+<area shape="rect" id="node36" href="$d3/d12/a06268.html#a3f20c331a47e66bdda573ea74324f800" title="Distribution::doRestartOpalT" alt="" coords="587,832,794,859"/>
+<area shape="rect" id="node38" href="$d3/d12/a06268.html#a01c4694a8802930fbafcd63baa23f1cf" title="Distribution::find" alt="" coords="625,208,756,235"/>
+<area shape="rect" id="node39" href="$d9/d26/a06900.html#a3f8f77b2109b5a56de9aeb986c69a7df" title="Charge per macro particle in C. " alt="" coords="589,1233,793,1260"/>
+<area shape="rect" id="node40" href="$d9/d26/a06900.html#a78f24e2aada7fc91ed556435faa4a2b5" title="Return the number of (macro)particles. " alt="" coords="880,1233,1091,1260"/>
+<area shape="rect" id="node41" href="$d3/d12/a06268.html#a85adc4f7fb9b05bb2c2ac72a1e077b66" title="Distribution::getEmission\lTimeShift" alt="" coords="597,949,784,990"/>
+<area shape="rect" id="node42" href="$d9/d4e/a04307.html#abf36dfc76d83ae448a1b9c2b438f753f" title="Get string array value. " alt="" coords="891,544,1079,571"/>
+<area shape="rect" id="node43" href="$d3/d12/a06268.html#abeaf6bcf810fa076792987a0f3282fe7" title="Distribution::getTEmission" alt="" coords="593,1015,788,1041"/>
+<area shape="rect" id="node44" href="$d1/dc3/a04492.html#ac6ebfd5ea91d58707cc4a358ecd014ee" title="PartBunchBase::setDistribution" alt="" coords="579,1065,802,1092"/>
+<area shape="rect" id="node45" href="$d1/d55/a04496.html#ab96bf6ce40100a4844495910c54adabe" title="units: (sec) " alt="" coords="595,1117,787,1158"/>
+<area shape="rect" id="node46" href="$d3/d12/a06268.html#a7b05cafcb67897fe66d16d6fbb3500d9" title="Distribution::setNumberOf\lDistributions" alt="" coords="594,883,787,925"/>
+<area shape="rect" id="node37" href="$d1/d55/a04496.html#af5b03ae2e5863b4ef2af71f8fd29b4a0" title="OpalData::addProblemCharacteristic\lValue" alt="" coords="856,478,1115,519"/>
+</map>

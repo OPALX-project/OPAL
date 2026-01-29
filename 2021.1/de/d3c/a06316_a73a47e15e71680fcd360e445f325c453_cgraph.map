@@ -1,0 +1,51 @@
+<map id="OpalCyclotron::update" name="OpalCyclotron::update">
+<area shape="rect" id="node2" href="$de/dd0/a06004.html#a53e327deaff8590478a93de96926ac02" title="Find named trim coil. " alt="" coords="266,5,403,32"/>
+<area shape="rect" id="node5" href="$d0/daa/a06928.html#a71a82a76cc68ac9d0b0cebb91febb659" title="BoundaryGeometry::find" alt="" coords="245,56,425,83"/>
+<area shape="rect" id="node6" href="$d9/d4e/a04307.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="519,360,663,387"/>
+<area shape="rect" id="node12" href="$d9/d4e/a04307.html#a8bcd680da02832adb0f6fc5de70dd37e" title="Get logical array value. " alt="" coords="502,259,681,285"/>
+<area shape="rect" id="node13" href="$d5/d8e/a04448.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="255,512,414,539"/>
+<area shape="rect" id="node14" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="520,411,663,437"/>
+<area shape="rect" id="node15" href="$d9/d4e/a04307.html#ab98e27fb1c758b0a63d9e242fcbe68e6" title="Get array value. " alt="" coords="502,309,681,336"/>
+<area shape="rect" id="node16" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="515,208,668,235"/>
+<area shape="rect" id="node19" href="$d9/d4e/a04307.html#abf36dfc76d83ae448a1b9c2b438f753f" title="Get string array value. " alt="" coords="497,157,685,184"/>
+<area shape="rect" id="node21" href="$de/dd0/a06004.html#a97a834042cedcef0a2893a78cc91f53e" title="Initialise implementation. " alt="" coords="226,309,443,336"/>
+<area shape="rect" id="node22" href="$df/da2/a04828.html#a00698c7f2acc8ae799d858ae64e71564" title="ElementBase::setBoundary\lGeometry" alt="" coords="235,563,434,605"/>
+<area shape="rect" id="node23" href="$d1/daa/a04816.html#af3b0af517a149c83a57891dd8e3ec672" title="Cyclotron::setBScale" alt="" coords="257,629,413,656"/>
+<area shape="rect" id="node24" href="$d1/daa/a04816.html#a862cd2f1a7bb87a9eb14d2a17063f863" title="Cyclotron::setCyclHarm" alt="" coords="247,680,423,707"/>
+<area shape="rect" id="node25" href="$d1/daa/a04816.html#a31957ef0c733efec84669ea1834ee8a4" title="Cyclotron::setCyclotronType" alt="" coords="233,731,437,757"/>
+<area shape="rect" id="node26" href="$d1/daa/a04816.html#a4d0928557ff574f5d473d857629ff3ba" title="Cyclotron::setEScale" alt="" coords="257,781,412,808"/>
+<area shape="rect" id="node27" href="$d1/daa/a04816.html#adcea14e428026ffcba2acc9406259c22" title="Cyclotron::setFieldMapFN" alt="" coords="241,832,428,859"/>
+<area shape="rect" id="node28" href="$d1/daa/a04816.html#ac336c78facef8be819252c4f206ec362" title="Cyclotron::setFMHighE" alt="" coords="251,883,419,909"/>
+<area shape="rect" id="node29" href="$d1/daa/a04816.html#aef028710bd75f892f58b99b6c70ac3a1" title="Cyclotron::setFMLowE" alt="" coords="253,933,417,960"/>
+<area shape="rect" id="node30" href="$d1/daa/a04816.html#a5d6f62703ae15a1a8fa343074bb9d770" title="Cyclotron::setMaxR" alt="" coords="261,984,409,1011"/>
+<area shape="rect" id="node31" href="$d1/daa/a04816.html#a6ba679a6055d14f1e4de59e7303ca4b6" title="Cyclotron::setMaxZ" alt="" coords="261,1035,409,1061"/>
+<area shape="rect" id="node32" href="$d1/daa/a04816.html#a2aa3ce8d4b729781fab79065ba92f771" title="Cyclotron::setMinR" alt="" coords="263,1085,407,1112"/>
+<area shape="rect" id="node33" href="$d1/daa/a04816.html#aca342900811aaa4416d34dc0bdd7198f" title="Cyclotron::setMinZ" alt="" coords="263,1136,407,1163"/>
+<area shape="rect" id="node34" href="$df/da2/a04828.html#a6d5bd035f2f5e56958f20d1b5090b8b3" title="Set output filename. " alt="" coords="236,1187,433,1213"/>
+<area shape="rect" id="node35" href="$d1/daa/a04816.html#aafa827137196e186ea934c2e46fbd082" title="Cyclotron::setPHIinit" alt="" coords="257,1237,412,1264"/>
+<area shape="rect" id="node36" href="$d1/daa/a04816.html#ab3415866bc9cbdce9b077b397f7ffc58" title="Cyclotron::setPRinit" alt="" coords="259,1288,410,1315"/>
+<area shape="rect" id="node37" href="$d1/daa/a04816.html#a38a0fcf802fbb52a197efde1ddd06def" title="Cyclotron::setPZinit" alt="" coords="259,1339,410,1365"/>
+<area shape="rect" id="node38" href="$d1/daa/a04816.html#aedf55c1241810014028ca1f497c368de" title="Cyclotron::setRFFCoeffFN" alt="" coords="241,1389,428,1416"/>
+<area shape="rect" id="node39" href="$d1/daa/a04816.html#ac0b8b0ad06f121a2fec97a9533465bc0" title="Cyclotron::setRfFieldMapFN" alt="" coords="235,1440,435,1467"/>
+<area shape="rect" id="node40" href="$d1/daa/a04816.html#ab0a65e60f43a0f8c2c401b390d62a769" title="Cyclotron::setRfFrequ" alt="" coords="254,1491,415,1517"/>
+<area shape="rect" id="node41" href="$d1/daa/a04816.html#a332862271fe7121b65b0f340d3e6c071" title="Cyclotron::setRfPhi" alt="" coords="261,1541,408,1568"/>
+<area shape="rect" id="node42" href="$d1/daa/a04816.html#a33e1d2aa0cf2f11ec58459868ba5da5f" title="Cyclotron::setRFVCoeffFN" alt="" coords="241,1592,429,1619"/>
+<area shape="rect" id="node43" href="$d1/daa/a04816.html#acf77a178a4d38cc235d21937ef02ef7f" title="Cyclotron::setRinit" alt="" coords="263,1643,406,1669"/>
+<area shape="rect" id="node44" href="$d1/daa/a04816.html#a1d8ee84474e27172883a149e111f8bd8" title="Cyclotron::setSpiralFlag" alt="" coords="247,1693,423,1720"/>
+<area shape="rect" id="node45" href="$d1/daa/a04816.html#a24a81a7f7950af8b2162d5b88806ce50" title="Cyclotron::setSuperpose" alt="" coords="245,1744,425,1771"/>
+<area shape="rect" id="node46" href="$d1/daa/a04816.html#a5321187930acf41ed7bd5dedf164ce9f" title="Cyclotron::setSymmetry" alt="" coords="245,1795,425,1821"/>
+<area shape="rect" id="node47" href="$d1/daa/a04816.html#a9861e0c5711c8513b692bf260924f6b6" title="Cyclotron::setTrimCoils" alt="" coords="249,1845,421,1872"/>
+<area shape="rect" id="node48" href="$d1/daa/a04816.html#a02fb2e30203f5af0c71dbeafda0f1e83" title="Cyclotron::setTrimCoilThreshold" alt="" coords="220,1896,449,1923"/>
+<area shape="rect" id="node49" href="$d1/daa/a04816.html#a04a32e3376d5fd5cac51e4b1229a339e" title="Cyclotron::setZinit" alt="" coords="263,1947,406,1973"/>
+<area shape="rect" id="node50" href="$d2/dfe/a06332.html#ab0c3e3b9796fc7f288fcfddb4a39080f" title="Transmit the `‘unknown’&#39; (not known to OPAL) attributes to CLASSIC. " alt="" coords="225,461,445,488"/>
+<area shape="rect" id="node3" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="745,31,912,57"/>
+<area shape="rect" id="node4" href="$d1/d55/a04496.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="534,31,649,57"/>
+<area shape="rect" id="node7" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="733,284,924,311"/>
+<area shape="rect" id="node8" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="759,233,899,260"/>
+<area shape="rect" id="node9" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="749,335,908,361"/>
+<area shape="rect" id="node10" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="748,437,909,478"/>
+<area shape="rect" id="node11" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="755,385,902,412"/>
+<area shape="rect" id="node17" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="805,183,852,209"/>
+<area shape="rect" id="node18" href="$d6/db7/a04354.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="776,132,881,159"/>
+<area shape="rect" id="node20" href="$dc/d93/a01535.html#ad2c903016dffc98273f94db999545737" title="Take real part of a complex generator. " alt="" coords="805,81,852,108"/>
+</map>

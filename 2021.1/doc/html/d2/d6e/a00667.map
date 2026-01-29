@@ -1,0 +1,20 @@
+<map id="src/Classic/AbsBeamline/Source.h" name="src/Classic/AbsBeamline/Source.h">
+<area shape="rect" id="node2" href="$dc/df1/a00662.html" title="src/Classic/AbsBeamline\l/Source.cpp" alt="" coords="5,184,187,225"/>
+<area shape="rect" id="node3" href="$d0/d5c/a00668.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="565,95,747,136"/>
+<area shape="rect" id="node5" href="$da/db8/a00797.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="1110,95,1277,136"/>
+<area shape="rect" id="node6" href="$de/def/a01016.html" title="src/Classic/BeamlineCore\l/SourceRep.h" alt="" coords="1913,95,2100,136"/>
+<area shape="rect" id="node9" href="$d8/dd8/a02108.html" title="src/Elements/OpalBeamline.h" alt="" coords="871,102,1086,129"/>
+<area shape="rect" id="node4" href="$d9/d95/a02075.html" title="src/Distribution/Distribution.cpp" alt="" coords="211,191,439,218"/>
+<area shape="rect" id="node7" href="$d7/d59/a01013.html" title="src/Classic/BeamlineCore\l/SourceRep.cpp" alt="" coords="2136,184,2323,225"/>
+<area shape="rect" id="node8" href="$d2/da6/a02339.html" title="src/Elements/OpalSource.cpp" alt="" coords="1901,191,2112,218"/>
+<area shape="rect" id="node10" href="$d3/df8/a00155.html" title="src/Algorithms/OrbitThreader.h" alt="" coords="1291,191,1512,218"/>
+<area shape="rect" id="node12" href="$db/ddf/a00164.html" title="src/Algorithms/ParallelTTracker.cpp" alt="" coords="1433,348,1682,375"/>
+<area shape="rect" id="node13" href="$dc/de6/a00167.html" title="src/Algorithms/ParallelTTracker.h" alt="" coords="1024,273,1259,300"/>
+<area shape="rect" id="node15" href="$d6/db8/a00158.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="1646,184,1877,225"/>
+<area shape="rect" id="node16" href="$db/dd9/a00179.html" title="src/Algorithms/ThickTracker.h" alt="" coords="1003,191,1216,218"/>
+<area shape="rect" id="node18" href="$db/d7a/a02105.html" title="src/Elements/OpalBeamline.cpp" alt="" coords="464,191,693,218"/>
+<area shape="rect" id="node19" href="$d2/d4c/a02897.html" title="src/Structure/BoundaryGeometry.cpp" alt="" coords="718,191,978,218"/>
+<area shape="rect" id="node11" href="$d7/d9a/a00152.html" title="src/Algorithms/OrbitThreader.cpp" alt="" coords="1283,273,1519,300"/>
+<area shape="rect" id="node14" href="$d7/deb/a03077.html" title="src/Track/TrackRun.cpp" alt="" coords="980,348,1148,375"/>
+<area shape="rect" id="node17" href="$d5/de9/a00176.html" title="src/Algorithms/ThickTracker.cpp" alt="" coords="721,273,949,300"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$de/d62/a05492.html" title="Abstract base class for electromagnetic fields. " alt="" coords="5,97,76,123"/>
+<area shape="rect" id="node2" href="$db/d6b/a05460.html" title="Representation for a single magnetic multipole field. " alt="" coords="124,5,285,47"/>
+<area shape="rect" id="node3" href="$d7/da9/a05672.html" title="A zero electromagnetic field. " alt="" coords="165,71,244,98"/>
+<area shape="rect" id="node4" href="$d4/d0d/a05692.html" title="Abstract base class for static electric fields. " alt="" coords="136,122,273,149"/>
+<area shape="rect" id="node7" href="$da/dff/a05696.html" title="Abstract base class for static magnetic fields. " alt="" coords="131,173,279,199"/>
+<area shape="rect" id="node5" href="$da/d7f/a05472.html" title="ConstEzField" alt="" coords="342,122,446,149"/>
+<area shape="rect" id="node6" href="$d6/d0e/a05676.html" title="OscillatingField\&lt; ConstEz\lField \&gt;" alt="" coords="503,115,691,156"/>
+<area shape="rect" id="node8" href="$dd/d67/a05452.html" title="The magnetic field of a multipole. " alt="" coords="333,173,455,199"/>
+<area shape="rect" id="node9" href="$d1/d22/a05464.html" title="A homogenous magnetostatic field. " alt="" coords="345,223,443,250"/>
+<area shape="rect" id="node10" href="$d9/d21/a05448.html" title="The field of a magnetic dipole. " alt="" coords="545,202,648,229"/>
+<area shape="rect" id="node11" href="$d1/d06/a05468.html" title="A homogeneous magnetostatic field in z&#45;direction. " alt="" coords="544,253,649,279"/>
+</map>

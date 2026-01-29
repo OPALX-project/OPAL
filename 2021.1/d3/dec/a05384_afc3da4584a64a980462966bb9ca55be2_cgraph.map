@@ -1,0 +1,7 @@
+<map id="BeamlineGeometry::getEntrance" name="BeamlineGeometry::getEntrance">
+<area shape="rect" id="node2" href="$df/da2/a04828.html#a9474fb82a9bc774302a90b46744c26a3" title="Get entrance position. " alt="" coords="288,31,483,57"/>
+<area shape="rect" id="node3" href="$df/da2/a04828.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="537,5,739,32"/>
+<area shape="rect" id="node4" href="$da/def/a05344.html#a5db85da1c96e5be8ffbdd0b2b913be47" title="Get entrance position. " alt="" coords="531,56,745,83"/>
+<area shape="rect" id="node5" href="$da/def/a05344.html#a801847a7293b13d6f3e589d14e705385" title="Get origin position. " alt="" coords="793,56,989,83"/>
+<area shape="rect" id="node6" href="$da/def/a05344.html#ad65fbb978aab956e163378ef589d74c0" title="Get arc length. " alt="" coords="1037,56,1260,83"/>
+</map>

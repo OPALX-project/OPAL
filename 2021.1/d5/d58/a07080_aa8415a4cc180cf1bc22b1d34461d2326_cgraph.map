@@ -1,0 +1,10 @@
+<map id="BoolConstant::clone" name="BoolConstant::clone">
+<area shape="rect" id="node2" href="$d5/d58/a07080.html#a6967c7d9b8fce84b70ccb45750f0ce41" title="Exemplar constructor. " alt="" coords="205,56,409,83"/>
+<area shape="rect" id="node3" href="$d9/d4e/a04307.html#a0456a7ab32848a41f018f6464bc6ffde" title="Make logical attribute. " alt="" coords="473,31,633,57"/>
+<area shape="rect" id="node4" href="$df/d3d/a04480.html#a11c14d6b194bf37c2883bb42922852ac" title="Object::registerOwnership" alt="" coords="457,81,648,108"/>
+<area shape="rect" id="node5" href="$df/d3d/a04480.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="738,5,873,32"/>
+<area shape="rect" id="node6" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="782,56,829,83"/>
+<area shape="rect" id="node8" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="724,107,887,133"/>
+<area shape="rect" id="node9" href="$dd/d4b/a04432.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="696,158,915,199"/>
+<area shape="rect" id="node7" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="963,56,1113,83"/>
+</map>

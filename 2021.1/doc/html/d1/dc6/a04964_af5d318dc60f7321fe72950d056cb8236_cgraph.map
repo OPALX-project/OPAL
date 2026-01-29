@@ -1,0 +1,22 @@
+<map id="Solenoid::initialise" name="Solenoid::initialise">
+<area shape="rect" id="node2" href="$df/da2/a04828.html#a1b412456edcf01147abada7721605101" title="Get design length. " alt="" coords="196,233,431,260"/>
+<area shape="rect" id="node5" href="$d9/ddd/a05512.html#a0a0aff97e6e62b388b5001a9d20c3154" title="Fieldmap::getFieldDimensions" alt="" coords="205,183,422,209"/>
+<area shape="rect" id="node6" href="$d9/ddd/a05512.html#a142ca0a0c3d78c3e6d82cf1c5a1865fd" title="Fieldmap::getFieldmap" alt="" coords="229,132,398,159"/>
+<area shape="rect" id="node16" href="$d9/ddd/a05512.html#a08628864ac6aa5661d4b8aa2a279fcd5" title="Fieldmap::getInfo" alt="" coords="246,284,381,311"/>
+<area shape="rect" id="node17" href="$df/da2/a04828.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="225,335,401,361"/>
+<area shape="rect" id="node18" href="$dd/dbc/a03800.html#a4b2b36162d7cd2032d0ea378d5015281" title="level2" alt="" coords="282,437,345,464"/>
+<area shape="rect" id="node20" href="$df/da2/a04828.html#a2b59853ce20c48c2436d0c136adeea69" title="Set design length. " alt="" coords="196,385,431,412"/>
+<area shape="rect" id="node3" href="$da/def/a05344.html#a73f1d2087c1b6c7fb3e5e00f6835f88e" title="Get geometry length. " alt="" coords="479,226,689,267"/>
+<area shape="rect" id="node4" href="$df/da2/a04828.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="483,308,685,335"/>
+<area shape="rect" id="node7" href="$d9/ddd/a05512.html#a28e1dc69de1369c41f7ff23816564aef" title="Fieldmap::readHeader" alt="" coords="501,132,667,159"/>
+<area shape="rect" id="node8" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="783,81,834,108"/>
+<area shape="rect" id="node14" href="$d5/d16/a11864.html#a8d995e140c485a5416394b5cc1c864c4" title="IpplInfo::getComm" alt="" coords="737,132,880,159"/>
+<area shape="rect" id="node15" href="$d9/ddd/a05512.html#ae259a8ec0d70e499792a066427485f1a" title="Fieldmap::getLine" alt="" coords="740,183,877,209"/>
+<area shape="rect" id="node9" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="928,56,1100,83"/>
+<area shape="rect" id="node10" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1148,56,1335,83"/>
+<area shape="rect" id="node13" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1631,5,1766,32"/>
+<area shape="rect" id="node11" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1383,56,1580,83"/>
+<area shape="rect" id="node12" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1628,56,1769,83"/>
+<area shape="rect" id="node19" href="$d9/d03/a11852.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="491,441,677,468"/>
+<area shape="rect" id="node21" href="$da/def/a05344.html#a4d338ebcb0efefa851ff4bdc08f7efb2" title="Set geometry length. " alt="" coords="479,375,689,417"/>
+</map>

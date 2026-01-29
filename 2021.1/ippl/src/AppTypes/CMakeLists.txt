@@ -1,0 +1,27 @@
+set (_SRCS
+  )
+
+set (_HDRS
+  AntiSymTenzor.h
+  AppTypeTraits.h
+  SymTenzor.h
+  Tenzor.h
+  TSVMetaAssign.h
+  TSVMetaBinary.h
+  TSVMetaCompare.h
+  TSVMetaCross.h
+  TSVMetaDotDot.h
+  TSVMetaDot.h
+  TSVMeta.h
+  TSVMetaUnary.h
+  Vektor.h
+  )
+
+include_directories (
+  ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+add_ippl_sources (${_SRCS})
+add_ippl_headers (${_HDRS})
+
+install (FILES ${_HDRS} DESTINATION include/AppTypes)

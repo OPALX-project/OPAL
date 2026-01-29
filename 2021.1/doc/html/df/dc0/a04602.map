@@ -1,0 +1,51 @@
+<map id="ParallelCyclotronTracker" name="ParallelCyclotronTracker">
+<area shape="rect" id="node2" href="$d7/d13/a05156.html" title="Tracker" alt="" coords="2407,435,2476,461"/>
+<area shape="rect" id="node3" href="$de/d0b/a05080.html" title="Track particles or bunches. " alt="" coords="2100,433,2223,460"/>
+<area shape="rect" id="node4" href="$d9/d2c/a05092.html" title="DefaultVisitor" alt="" coords="1837,383,1949,409"/>
+<area shape="rect" id="node5" href="$db/d2a/a04776.html" title="BeamlineVisitor" alt="" coords="1483,384,1609,411"/>
+<area shape="rect" id="node6" href="$d2/d6f/a05380.html" title="An abstract sequence of beam line components. " alt="" coords="1504,181,1588,208"/>
+<area shape="rect" id="node7" href="$df/da2/a04828.html" title="ElementBase" alt="" coords="1137,133,1245,160"/>
+<area shape="rect" id="node9" href="$d7/d35/a05936.html" title="ParticleMatterInteraction\lHandler" alt="" coords="1455,98,1637,139"/>
+<area shape="rect" id="node42" href="$dd/df4/a04800.html" title="Interface for a single beam element. " alt="" coords="1497,707,1595,733"/>
+<area shape="rect" id="node8" href="$db/d2a/a05808.html" title="Abstract base class for reference counted objects. " alt="" coords="5,37,87,64"/>
+<area shape="rect" id="node12" href="$df/d3d/a04480.html" title="The base class for all OPAL objects. " alt="" coords="181,125,245,152"/>
+<area shape="rect" id="node10" href="$d0/daa/a06928.html" title="BoundaryGeometry" alt="" coords="721,144,870,171"/>
+<area shape="rect" id="node11" href="$dc/dc7/a04440.html" title="The base class for all OPAL definitions. " alt="" coords="392,171,477,197"/>
+<area shape="rect" id="node35" href="$d3/d12/a06268.html" title="Distribution" alt="" coords="746,833,845,860"/>
+<area shape="rect" id="node38" href="$d3/d89/a06944.html" title="The FieldSolver definition. " alt="" coords="1499,791,1593,817"/>
+<area shape="rect" id="node13" href="$df/d79/a07212.html" title="Vektor\&lt; int, 3 \&gt;" alt="" coords="371,107,498,133"/>
+<area shape="rect" id="node21" href="$d1/dc3/a04492.html" title="PartBunchBase\&lt; double, 3 \&gt;" alt="" coords="1087,885,1296,912"/>
+<area shape="rect" id="node14" href="$df/d79/a07212.html" title="Vektor\&lt; double, 3 \&gt;" alt="" coords="357,469,512,496"/>
+<area shape="rect" id="node15" href="$d3/d82/a05088.html" title="CoordinateSystemTrafo" alt="" coords="708,424,883,451"/>
+<area shape="rect" id="node34" href="$db/d29/a05096.html" title="DistributionMoments" alt="" coords="716,716,875,743"/>
+<area shape="rect" id="node16" href="$d4/dc5/a05148.html" title="Quaternion" alt="" coords="387,912,482,939"/>
+<area shape="rect" id="node17" href="$df/d79/a07212.html" title="Vektor\&lt; double, 4 \&gt;" alt="" coords="136,912,291,939"/>
+<area shape="rect" id="node18" href="$d1/d4e/a05972.html" title="WakeFunction" alt="" coords="739,93,851,120"/>
+<area shape="rect" id="node19" href="$d0/d95/a04772.html" title="Map of std::string versus double value. " alt="" coords="745,43,845,69"/>
+<area shape="rect" id="node20" href="$db/d5a/a05136.html" title="Particle reference data. " alt="" coords="395,855,474,881"/>
+<area shape="rect" id="node47" href="$d7/d3f/a04944.html" title="Ring describes a ring type geometry for tracking. " alt="" coords="1868,880,1919,907"/>
+<area shape="rect" id="node22" href="$d8/d78/a05732.html" title="FMatrix\&lt; double, 2\l *Dim, 2 *Dim \&gt;" alt="" coords="723,1611,868,1653"/>
+<area shape="rect" id="node23" href="$de/d6e/a05724.html" title="A templated representation for 2&#45;dimensional arrays. " alt="" coords="340,1636,529,1663"/>
+<area shape="rect" id="node24" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; short \&gt;" alt="" coords="711,1527,880,1553"/>
+<area shape="rect" id="node25" href="$d6/dec/a09784.html" title="ParticleAttribBase" alt="" coords="365,1344,504,1371"/>
+<area shape="rect" id="node28" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; double \&gt;" alt="" coords="705,1432,885,1459"/>
+<area shape="rect" id="node30" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; int \&gt;" alt="" coords="719,1072,872,1099"/>
+<area shape="rect" id="node32" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; Particle\lOrigin \&gt;" alt="" coords="711,1241,880,1282"/>
+<area shape="rect" id="node33" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; Particle\lType \&gt;" alt="" coords="711,1123,880,1165"/>
+<area shape="rect" id="node37" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; T \&gt;" alt="" coords="723,1189,867,1216"/>
+<area shape="rect" id="node39" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; Vektor \&gt;" alt="" coords="706,1311,885,1337"/>
+<area shape="rect" id="node26" href="$d7/d97/a07928.html" title="DataSource" alt="" coords="386,1244,483,1271"/>
+<area shape="rect" id="node27" href="$d0/df3/a11076.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; short \&gt; \&gt;" alt="" coords="340,1570,529,1611"/>
+<area shape="rect" id="node29" href="$d0/df3/a11076.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; double \&gt; \&gt;" alt="" coords="340,1470,529,1511"/>
+<area shape="rect" id="node31" href="$d0/df3/a11076.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; int \&gt; \&gt;" alt="" coords="340,1037,529,1078"/>
+<area shape="rect" id="node36" href="$dc/dcd/a05112.html" title="PartBins" alt="" coords="397,977,472,1004"/>
+<area shape="rect" id="node40" href="$df/da0/a06936.html" title="DataSink" alt="" coords="2401,485,2482,512"/>
+<area shape="rect" id="node41" href="$d1/daa/a04816.html" title="Cyclotron" alt="" coords="1851,584,1935,611"/>
+<area shape="rect" id="node43" href="$d9/d3b/a04812.html" title="BPositions" alt="" coords="1501,559,1591,585"/>
+<area shape="rect" id="node44" href="$dc/d27/a04808.html" title="BfieldData" alt="" coords="1501,609,1591,636"/>
+<area shape="rect" id="node45" href="$df/d79/a07212.html" title="Vektor\&lt; T, D \&gt;" alt="" coords="2381,600,2501,627"/>
+<area shape="rect" id="node46" href="$d3/dba/a04608.html" title="ParallelCyclotronTracker\l::settings" alt="" coords="2352,651,2531,693"/>
+<area shape="rect" id="node48" href="$d3/d71/a05988.html" title="LossDataSink" alt="" coords="1491,992,1601,1019"/>
+<area shape="rect" id="node49" href="$d3/d06/a05356.html" title="A simple arc in the XZ plane. " alt="" coords="1471,941,1621,968"/>
+<area shape="rect" id="node50" href="$da/def/a05344.html" title="Abstract base class for accelerator geometry classes. " alt="" coords="1127,941,1255,968"/>
+</map>

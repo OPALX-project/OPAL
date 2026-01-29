@@ -1,0 +1,51 @@
+<map id="TrackRun::setupCyclotronTracker" name="TrackRun::setupCyclotronTracker">
+<area shape="rect" id="node2" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="350,5,395,32"/>
+<area shape="rect" id="node4" href="$d1/dc3/a04492.html#a644c68187c47b47efa54ab2cf9ef3a27" title="PartBunchBase::calcBeamParameters" alt="" coords="240,56,505,83"/>
+<area shape="rect" id="node5" href="$d0/daa/a06928.html#acffe2e824ae9803d968125f11d390542" title="Return a clone. " alt="" coords="277,469,468,496"/>
+<area shape="rect" id="node7" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="1079,385,1245,412"/>
+<area shape="rect" id="node8" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="849,528,1002,555"/>
+<area shape="rect" id="node9" href="$d3/d12/a06268.html#a0e13c5242b35d101e8b8c01babafaa05" title="Distribution::createOpalCycl" alt="" coords="823,120,1028,147"/>
+<area shape="rect" id="node10" href="$d3/d12/a06268.html#a5352c82595b73fff73566595fdb6ca1a" title="Distribution::doRestartOpalCycl" alt="" coords="259,259,486,285"/>
+<area shape="rect" id="node11" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="637,208,688,235"/>
+<area shape="rect" id="node12" href="$d6/d11/a04436.html#a5bd678e7a78bd9221de550c1273c15db" title="Return the embedded CLASSIC beam line. " alt="" coords="277,1339,468,1365"/>
+<area shape="rect" id="node13" href="$d9/d26/a06900.html#a605283d014f9629e67ce7f75489d84c8" title="Find named BEAM. " alt="" coords="617,629,709,656"/>
+<area shape="rect" id="node14" href="$d0/daa/a06928.html#a71a82a76cc68ac9d0b0cebb91febb659" title="BoundaryGeometry::find" alt="" coords="835,183,1015,209"/>
+<area shape="rect" id="node15" href="$d3/d12/a06268.html#a01c4694a8802930fbafcd63baa23f1cf" title="Distribution::find" alt="" coords="860,309,991,336"/>
+<area shape="rect" id="node16" href="$db/d72/a06960.html#a11247742d33eed578c4d16f3faf3552e" title="H5PartWrapperForPC\l::getAzimuth" alt="" coords="295,1390,451,1431"/>
+<area shape="rect" id="node17" href="$d9/d26/a06900.html#a61641135ee698769b42408eefca7e294" title="Return the charge number in elementary charge. " alt="" coords="858,933,993,960"/>
+<area shape="rect" id="node18" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="1091,1009,1233,1036"/>
+<area shape="rect" id="node19" href="$d9/d26/a06900.html#a3f8f77b2109b5a56de9aeb986c69a7df" title="Charge per macro particle in C. " alt="" coords="561,933,765,960"/>
+<area shape="rect" id="node20" href="$d9/d26/a06900.html#a2b887935cf3f7fed8e7d8fb37232d3d0" title="Return the beam current in A. " alt="" coords="857,984,994,1011"/>
+<area shape="rect" id="node21" href="$d9/d26/a06900.html#a78c09a60e70db9a1cba84f7ce9c658cc" title="Return the beam frequency in MHz. " alt="" coords="848,1035,1003,1061"/>
+<area shape="rect" id="node22" href="$d9/d26/a06900.html#a78f24e2aada7fc91ed556435faa4a2b5" title="Return the number of (macro)particles. " alt="" coords="820,857,1031,884"/>
+<area shape="rect" id="node23" href="$db/d72/a06960.html#a5fb270754e30305cab06db828fecbccc" title="H5PartWrapperForPC\l::getElevation" alt="" coords="295,1455,451,1497"/>
+<area shape="rect" id="node24" href="$d1/d55/a04496.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="265,1521,480,1548"/>
+<area shape="rect" id="node25" href="$d9/d26/a06900.html#a834d3211e650bf775fa97d219ccd2a3e" title="Return Particle&#39;s rest mass in GeV. " alt="" coords="601,1085,724,1112"/>
+<area shape="rect" id="node26" href="$d9/d26/a06900.html#a81483d03326238c0efedb9e7670e62f4" title="Mass per macro particle in GeV/c^2. " alt="" coords="277,984,468,1011"/>
+<area shape="rect" id="node27" href="$db/d72/a06960.html#a9e4f8633ac437473a0f5c0c8801e41bc" title="H5PartWrapperForPC\l::getMeanMomentum" alt="" coords="293,1573,453,1614"/>
+<area shape="rect" id="node28" href="$d9/d26/a06900.html#a03e6460760866b6c5de7d3fa91037f3b" title="Return Particle&#39;s name. " alt="" coords="575,579,751,605"/>
+<area shape="rect" id="node29" href="$db/d72/a06960.html#a293aba7024a1e795a9ae9e58bf36c7ad" title="H5PartWrapperForPC\l::getPreviousH5Local" alt="" coords="293,1638,452,1679"/>
+<area shape="rect" id="node30" href="$db/d72/a06960.html#a60543bc5f41edf25e819e4bd30ba645a" title="H5PartWrapperForPC\l::getReferencePr" alt="" coords="295,1703,451,1745"/>
+<area shape="rect" id="node31" href="$db/d72/a06960.html#ac5f1b977b3eb86e47e418025e9adf33c" title="H5PartWrapperForPC\l::getReferencePt" alt="" coords="295,1769,451,1810"/>
+<area shape="rect" id="node32" href="$db/d72/a06960.html#a06795ed69bd29366581ba966427940bc" title="H5PartWrapperForPC\l::getReferencePz" alt="" coords="295,1834,451,1875"/>
+<area shape="rect" id="node33" href="$db/d72/a06960.html#a756dffdc2bf92827640d356a0fe013a6" title="H5PartWrapperForPC\l::getReferenceR" alt="" coords="295,1899,451,1941"/>
+<area shape="rect" id="node34" href="$db/d72/a06960.html#a72a7d7a4eab2e6c7a7df1c7b2943851f" title="H5PartWrapperForPC\l::getReferenceT" alt="" coords="295,1965,451,2006"/>
+<area shape="rect" id="node35" href="$db/d72/a06960.html#a0c5448f0de0860e5a8d6315e80c8e357" title="H5PartWrapperForPC\l::getReferenceZ" alt="" coords="295,2030,451,2071"/>
+<area shape="rect" id="node36" href="$d1/d55/a04496.html#a77c724ec014362d7600faa4b6260a996" title="get opals restart h5 format filename " alt="" coords="263,2096,482,2123"/>
+<area shape="rect" id="node37" href="$d1/d55/a04496.html#a92cfac50e1a10ca292d71ffcbc303964" title="get the step where to restart " alt="" coords="279,2147,466,2173"/>
+<area shape="rect" id="node38" href="$d9/d4e/a04307.html#abf36dfc76d83ae448a1b9c2b438f753f" title="Get string array value. " alt="" coords="569,360,757,387"/>
+<area shape="rect" id="node39" href="$d1/d55/a04496.html#abb6b5cfd0ebea6ed30d85b21bbbdb401" title="true if we already allocated a ParticleBunch object " alt="" coords="265,2197,480,2224"/>
+<area shape="rect" id="node40" href="$d4/d15/a07052.html#a78ec6b74a3327390f5fc48e26c4d3ca8" title="TrackRun::initDataSink" alt="" coords="289,1237,457,1264"/>
+<area shape="rect" id="node41" href="$d1/d55/a04496.html#af8d0b55764c02667df67d086327b6a34" title="true if we do a restart run " alt="" coords="576,1237,749,1264"/>
+<area shape="rect" id="node42" href="$d1/dc3/a04492.html#a0dcdcc75cf01228dc53dafebbc29a7a3" title="PartBunchBase::setCharge" alt="" coords="276,2248,469,2275"/>
+<area shape="rect" id="node43" href="$d1/dc3/a04492.html#a9139c5f5729d94b481d13b9b98618448" title="PartBunchBase::setCoupling\lConstant" alt="" coords="271,2299,475,2341"/>
+<area shape="rect" id="node44" href="$d1/dc3/a04492.html#a9fbc4d6a9f7997714f7d3cb6c1308f79" title="PartBunchBase::setdT" alt="" coords="291,2365,454,2392"/>
+<area shape="rect" id="node45" href="$d1/d55/a04496.html#ae8b3e5bc430bf329a7d88a2e0601a59a" title="OpalData::setGlobalGeometry" alt="" coords="263,2416,482,2443"/>
+<area shape="rect" id="node46" href="$d1/d55/a04496.html#a5f777118184b8fb056751e65f55c6463" title="OpalData::setInOPALCyclMode" alt="" coords="263,2467,482,2493"/>
+<area shape="rect" id="node47" href="$d1/dc3/a04492.html#a0dc48589757d9c140442ac0b289ee01b" title="PartBunchBase::setMass" alt="" coords="283,2517,463,2544"/>
+<area shape="rect" id="node48" href="$d1/dc3/a04492.html#acee7aa0d853b90df62ea9f63e1c40df2" title="PartBunchBase::setPType" alt="" coords="280,2568,465,2595"/>
+<area shape="rect" id="node49" href="$d1/dc3/a04492.html#afb4ca066b8f9e3d98928ad140f01d182" title="PartBunchBase::setStepsPerTurn" alt="" coords="257,2619,488,2645"/>
+<area shape="rect" id="node50" href="$d4/d15/a07052.html#ac1ad69fad13eff0d541306c41a16a69e" title="TrackRun::setupFieldsolver" alt="" coords="275,756,470,783"/>
+<area shape="rect" id="node3" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="570,5,755,32"/>
+<area shape="rect" id="node6" href="$d0/daa/a06928.html#afb1832c737f8af335b6437500d8a75be" title="BoundaryGeometry::Boundary\lGeometry" alt="" coords="553,462,772,503"/>
+</map>

@@ -1,0 +1,51 @@
+<map id="OpalTravelingWave::update" name="OpalTravelingWave::update">
+<area shape="rect" id="node2" href="$dd/dad/a06468.html#ab0ce4223989c7c957e1fc89ed0d435ad" title="Make clone. " alt="" coords="249,19,403,60"/>
+<area shape="rect" id="node4" href="$d7/dca/a06996.html#a5de5d4a8e88b9d0c0f043637868f9f34" title="Find named WAKE. " alt="" coords="542,71,662,98"/>
+<area shape="rect" id="node7" href="$d9/d4e/a04307.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="782,426,926,453"/>
+<area shape="rect" id="node13" href="$d5/d8e/a04448.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="523,933,681,959"/>
+<area shape="rect" id="node14" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="521,578,683,605"/>
+<area shape="rect" id="node15" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="783,481,925,507"/>
+<area shape="rect" id="node16" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="777,325,931,351"/>
+<area shape="rect" id="node19" href="$d7/dca/a06996.html#a72fd7efc3c0b56908bb7ea42cc21d707" title="OpalWake::initWakefunction" alt="" coords="223,401,429,427"/>
+<area shape="rect" id="node25" href="$d1/d9e/a05300.html#ac985bdecf4f188b06d6038b7afe9792c" title="Set amplitude. " alt="" coords="208,882,444,909"/>
+<area shape="rect" id="node27" href="$da/d94/a04940.html#a1f980bfb51919c1645b9e3c0bcbfa9b7" title="RFCavity::setAmplitudeError" alt="" coords="223,933,429,959"/>
+<area shape="rect" id="node28" href="$da/d94/a04940.html#a65fa82cf3e4daec5e20bfd973e9c8c40" title="RFCavity::setAmplitudem" alt="" coords="233,983,419,1010"/>
+<area shape="rect" id="node29" href="$da/d94/a04940.html#ab2ccad97fbc629e9733b5f60fefb9a58" title="RFCavity::setAutophaseVeto" alt="" coords="223,1034,429,1061"/>
+<area shape="rect" id="node30" href="$da/d94/a04940.html#ad3a9b39d07e04720a380f2116055e4bb" title="RFCavity::setDesignEnergy" alt="" coords="227,1085,425,1111"/>
+<area shape="rect" id="node31" href="$df/da2/a04828.html#a2b59853ce20c48c2436d0c136adeea69" title="Set design length. " alt="" coords="209,1135,443,1162"/>
+<area shape="rect" id="node34" href="$da/d94/a04940.html#ad62e1893e1a7fe35f1cca1d1dfe325e2" title="RFCavity::setFast" alt="" coords="259,1186,393,1213"/>
+<area shape="rect" id="node35" href="$da/d94/a04940.html#af9c45edb9d51af354ae344ef5ad71ce3" title="Set the name of the field map. " alt="" coords="235,1237,417,1263"/>
+<area shape="rect" id="node36" href="$d1/d9e/a05300.html#a2e68e95cc511113067885b1b35151bbd" title="Set frequency. " alt="" coords="209,1287,443,1314"/>
+<area shape="rect" id="node38" href="$da/d94/a04940.html#aa41538c3fb62ec1449be15814313b327" title="RFCavity::setFrequencym" alt="" coords="233,1338,419,1365"/>
+<area shape="rect" id="node39" href="$d5/d6e/a04988.html#a69f1643cfd128e3973401abe1865d6cb" title="TravelingWave::setMode" alt="" coords="236,1389,416,1415"/>
+<area shape="rect" id="node40" href="$d5/d6e/a04988.html#a666455e573189854c65fbe7128e3fc0e" title="TravelingWave::setNumCells" alt="" coords="222,1439,430,1466"/>
+<area shape="rect" id="node41" href="$d1/d9e/a05300.html#a0bdef5794bc754caa7de8915bad9ee7b" title="Set phase. " alt="" coords="222,1490,430,1517"/>
+<area shape="rect" id="node43" href="$da/d94/a04940.html#a77bebe724d4adf2f0a1e32cb228eb7d9" title="RFCavity::setPhaseError" alt="" coords="237,1541,415,1567"/>
+<area shape="rect" id="node44" href="$d5/d6e/a04988.html#a86341d801187f7e2650c5a21b2688e9d" title="TravelingWave::setPhasem" alt="" coords="227,1591,425,1618"/>
+<area shape="rect" id="node46" href="$df/da2/a04828.html#af3188ea33a34936c60ea71d91ecbe25f" title="attach a wake field to the element " alt="" coords="240,1642,412,1669"/>
+<area shape="rect" id="node47" href="$d2/dfe/a06332.html#ae7ef6d492cbb543c20367b7e4a2d86f5" title="Update the embedded CLASSIC element. " alt="" coords="247,781,405,807"/>
+<area shape="rect" id="node50" href="$d2/dfe/a06332.html#ab0c3e3b9796fc7f288fcfddb4a39080f" title="Transmit the `‘unknown’&#39; (not known to OPAL) attributes to CLASSIC. " alt="" coords="492,730,712,757"/>
+<area shape="rect" id="node3" href="$dd/dad/a06468.html#ab0c2c4dd7854d5c9b5ed612cc0057052" title="Exemplar constructor. " alt="" coords="525,5,679,47"/>
+<area shape="rect" id="node5" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="1008,173,1175,199"/>
+<area shape="rect" id="node6" href="$d1/d55/a04496.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="797,122,911,149"/>
+<area shape="rect" id="node8" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="996,375,1187,402"/>
+<area shape="rect" id="node9" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="1021,426,1161,453"/>
+<area shape="rect" id="node10" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="1012,325,1171,351"/>
+<area shape="rect" id="node11" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="1011,477,1172,519"/>
+<area shape="rect" id="node12" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="1018,543,1165,570"/>
+<area shape="rect" id="node17" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="1068,274,1115,301"/>
+<area shape="rect" id="node18" href="$d6/db7/a04354.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="1039,223,1144,250"/>
+<area shape="rect" id="node20" href="$df/da2/a04828.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="514,527,690,554"/>
+<area shape="rect" id="node21" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="829,375,879,402"/>
+<area shape="rect" id="node22" href="$d9/d4e/a04307.html#abf36dfc76d83ae448a1b9c2b438f753f" title="Get string array value. " alt="" coords="760,274,948,301"/>
+<area shape="rect" id="node23" href="$df/d34/a07064.html#a605184ed9c6f888ada29e5e981c7bb39" title="Find named FILTER. " alt="" coords="544,122,660,149"/>
+<area shape="rect" id="node24" href="$df/d34/a07064.html#a274812769c5d5d12ba42a8d558aeb0e5" title="OpalFilter::initOpalFilter" alt="" coords="515,375,689,402"/>
+<area shape="rect" id="node26" href="$da/d7f/a05472.html#a368aaa93fdb3229338ca8be5fe315929" title="Set component. " alt="" coords="529,983,675,1010"/>
+<area shape="rect" id="node32" href="$df/da2/a04828.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="501,1106,703,1133"/>
+<area shape="rect" id="node33" href="$da/def/a05344.html#a4d338ebcb0efefa851ff4bdc08f7efb2" title="Set geometry length. " alt="" coords="497,1157,707,1199"/>
+<area shape="rect" id="node37" href="$d6/d0e/a05676.html#a19e883954411e1a67a0ce4220eefdb84" title="Assign the RF frequency in Hz. " alt="" coords="495,1287,709,1314"/>
+<area shape="rect" id="node42" href="$d6/d0e/a05676.html#a41b53395146cbaf11c6e239c17f6824b" title="Assign the RF phase in rad. " alt="" coords="508,1490,696,1517"/>
+<area shape="rect" id="node45" href="$df/d98/a03680.html#ae29244719985f3e4cbc22b58064177de" title="floor" alt="" coords="577,1591,627,1618"/>
+<area shape="rect" id="node48" href="$d4/dc5/a05148.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="519,882,685,909"/>
+<area shape="rect" id="node49" href="$d4/dfa/a00746.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="580,781,624,807"/>
+</map>

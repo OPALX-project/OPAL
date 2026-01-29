@@ -1,0 +1,17 @@
+<map id="Tps::setCoefficient" name="Tps::setCoefficient">
+<area shape="rect" id="node2" href="$d2/d8c/a05064.html#a3e76fbc07d833e8d0db5630b640c0876" title="Convert. " alt="" coords="208,116,383,143"/>
+<area shape="rect" id="node9" href="$d2/d8c/a05064.html#ac71c697238f771df4d48d7f25b4e19d4" title="Get variables. " alt="" coords="196,15,395,42"/>
+<area shape="rect" id="node10" href="$db/df9/a05044.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="467,218,602,244"/>
+<area shape="rect" id="node11" href="$db/df9/a05044.html#a75f70c3767be81967ff44ac603e81a58" title="Set coefficient. " alt="" coords="224,319,367,346"/>
+<area shape="rect" id="node3" href="$dc/d96/a05060.html#a12f23d39f696c02da148722cb0bd8f06" title="TpsData::getTpsData" alt="" coords="675,268,833,295"/>
+<area shape="rect" id="node6" href="$d2/d8c/a05064.html#ae55b542f6a7e8eb834e54f83b34ea618" title="Get order. " alt="" coords="447,116,622,143"/>
+<area shape="rect" id="node7" href="$d4/d79/a05020.html#a9096d7cb939561e15fe3e209c5de6578" title="Get array size. " alt="" coords="699,15,809,42"/>
+<area shape="rect" id="node8" href="$dc/d96/a05060.html#afa8022ccb80b09bd2a8d187e110e1ca9" title="TpsData::indexMonomial" alt="" coords="443,66,627,92"/>
+<area shape="rect" id="node4" href="$dc/d96/a05060.html#a44b479e9cba17e82e7d9ceab727ef066" title="TpsData::build" alt="" coords="881,268,997,295"/>
+<area shape="rect" id="node5" href="$dc/d96/a05060.html#a6ec8c0544fd09e9a701799d65f1bca46" title="TpsData::getSize" alt="" coords="1045,294,1177,320"/>
+<area shape="rect" id="node12" href="$d0/d8b/a05048.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="475,319,594,346"/>
+<area shape="rect" id="node13" href="$d0/d8b/a05048.html#a33520f8c7100283fafbdf7171a0a3de5" title="TpsRep::data" alt="" coords="701,370,807,396"/>
+<area shape="rect" id="node14" href="$db/df9/a05044.html#aeff61ceb64a6541d851cfb2da84146ab" title="Get order. " alt="" coords="479,420,590,447"/>
+<area shape="rect" id="node15" href="$d0/d8b/a05048.html#afcc8dbd03cb0e6d2bec689be39e9a79b" title="TpsRep::release" alt="" coords="472,471,597,498"/>
+<area shape="rect" id="node16" href="$db/df9/a05044.html#a293e46672fa0725a600a6f1917d13f2c" title="Tps::unique" alt="" coords="486,268,583,295"/>
+</map>

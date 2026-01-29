@@ -1,0 +1,51 @@
+<map id="OrbitThreader::integrate" name="OrbitThreader::integrate">
+<area shape="rect" id="node2" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="759,375,805,402"/>
+<area shape="rect" id="node4" href="$d0/d1e/a03674.html#af6518b151e7b0d52fa4ec791b891f53b" title="copysign" alt="" coords="305,527,385,554"/>
+<area shape="rect" id="node5" href="$df/dd5/a01115.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="561,299,604,326"/>
+<area shape="rect" id="node6" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="559,603,606,630"/>
+<area shape="rect" id="node8" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="2076,350,2127,377"/>
+<area shape="rect" id="node13" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="2878,426,3013,453"/>
+<area shape="rect" id="node14" href="$d3/d4f/a00761.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="282,173,409,199"/>
+<area shape="rect" id="node17" href="$d4/dfa/a00746.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="559,223,606,250"/>
+<area shape="rect" id="node40" href="$d3/dee/a06300.html#aa1395281d59f6828b25dcd7f8c3e1a1f" title="OpalBeamline::getCSTrafo\lLab2Local" alt="" coords="249,680,441,721"/>
+<area shape="rect" id="node41" href="$d3/dee/a06300.html#af966835f281da6e404951cefdfb536ca" title="OpalBeamline::getElements" alt="" coords="243,578,447,605"/>
+<area shape="rect" id="node42" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="262,746,429,773"/>
+<area shape="rect" id="node44" href="$db/d5a/a05136.html#a7c7b836d3ac05230f809f8b9f52e4c86" title="The constant mass per particle. " alt="" coords="523,797,642,823"/>
+<area shape="rect" id="node45" href="$d3/d98/a06884.html#a063ebfefbbf275703add583e42f5bd5f" title="BorisPusher::kick" alt="" coords="278,847,413,874"/>
+<area shape="rect" id="node47" href="$d3/d98/a06884.html#aa0aa7e271fd7444217c180f50c90b7b4" title="BorisPusher::push" alt="" coords="276,274,415,301"/>
+<area shape="rect" id="node48" href="$d3/dee/a06300.html#a68078928b9b5061896a305206c464f4e" title="OpalBeamline::rotateFrom\lLocalCS" alt="" coords="249,899,442,940"/>
+<area shape="rect" id="node49" href="$d3/dee/a06300.html#a1c39422c66259d152579e6d1b8233c1f" title="OpalBeamline::rotateToLocalCS" alt="" coords="232,965,459,991"/>
+<area shape="rect" id="node50" href="$d3/dee/a06300.html#a57d9e139d2b80688f4899012767e603f" title="OpalBeamline::transformTo\lLocalCS" alt="" coords="245,1016,445,1057"/>
+<area shape="rect" id="node3" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1609,173,1795,199"/>
+<area shape="rect" id="node7" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="707,603,857,630"/>
+<area shape="rect" id="node9" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="2175,375,2347,402"/>
+<area shape="rect" id="node10" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="2395,375,2581,402"/>
+<area shape="rect" id="node11" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="2629,375,2827,402"/>
+<area shape="rect" id="node12" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="2875,375,3016,402"/>
+<area shape="rect" id="node15" href="$d4/d79/a05020.html#a55cb732c23dd6b419f636aff0874ab82" title="Get beginning of data. " alt="" coords="523,122,642,149"/>
+<area shape="rect" id="node16" href="$d4/d79/a05020.html#a941ffba563af0a4e17aae45292b1659e" title="Get end of data. " alt="" coords="529,173,636,199"/>
+<area shape="rect" id="node18" href="$db/df9/a05044.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1076,21,1220,47"/>
+<area shape="rect" id="node28" href="$db/df9/a05044.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="736,223,828,250"/>
+<area shape="rect" id="node19" href="$d4/d6f/a03374.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1324,71,1371,98"/>
+<area shape="rect" id="node20" href="$d4/d6f/a03374.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1475,71,1561,98"/>
+<area shape="rect" id="node21" href="$d2/d76/a03296.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="1663,17,1741,43"/>
+<area shape="rect" id="node23" href="$db/d69/a03320.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="1887,71,1984,98"/>
+<area shape="rect" id="node24" href="$d7/d65/a03518.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="1639,122,1765,149"/>
+<area shape="rect" id="node22" href="$da/d54/a08124.html#ade95693db1906427a7c73b8364a07b20" title="BareFieldIterator::\lGetBareField" alt="" coords="1866,5,2005,47"/>
+<area shape="rect" id="node25" href="$d5/d16/a11864.html#a8bdcd8abcec1d747ecf82579b42c853c" title="IpplInfo::abort" alt="" coords="1879,307,1992,334"/>
+<area shape="rect" id="node26" href="$d7/d31/a08956.html#aa072c62b650774371674b050109d8051" title="Communicate::broadcast\l_others" alt="" coords="1843,173,2028,215"/>
+<area shape="rect" id="node27" href="$dc/d98/a03524.html#ac34b443397f0101557c34a5c235ee578" title="getMessage" alt="" coords="1885,122,1985,149"/>
+<area shape="rect" id="node29" href="$db/df9/a05044.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="905,223,1028,250"/>
+<area shape="rect" id="node30" href="$db/df9/a05044.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="913,173,1020,199"/>
+<area shape="rect" id="node31" href="$db/df9/a05044.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="1081,122,1215,149"/>
+<area shape="rect" id="node32" href="$db/df9/a05044.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="1079,173,1217,199"/>
+<area shape="rect" id="node33" href="$d0/d8b/a05048.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="1089,325,1207,351"/>
+<area shape="rect" id="node37" href="$db/df9/a05044.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="1097,274,1199,301"/>
+<area shape="rect" id="node38" href="$df/d98/a03680.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="1322,173,1373,199"/>
+<area shape="rect" id="node34" href="$dc/d96/a05060.html#a12f23d39f696c02da148722cb0bd8f06" title="TpsData::getTpsData" alt="" coords="1268,325,1427,351"/>
+<area shape="rect" id="node35" href="$dc/d96/a05060.html#a6ec8c0544fd09e9a701799d65f1bca46" title="TpsData::getSize" alt="" coords="1281,223,1413,250"/>
+<area shape="rect" id="node36" href="$d0/d8b/a05048.html#a33520f8c7100283fafbdf7171a0a3de5" title="TpsRep::data" alt="" coords="1294,274,1401,301"/>
+<area shape="rect" id="node39" href="$df/d98/a03680.html#a0a1cdb80c431a477e99aea03fea993fc" title="Reduction" alt="" coords="1475,223,1561,250"/>
+<area shape="rect" id="node43" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="507,746,659,773"/>
+<area shape="rect" id="node46" href="$db/d5a/a05136.html#a1d4498ce4cfa5644bb67b2686e7df9ad" title="The constant charge per particle. " alt="" coords="524,847,641,874"/>
+</map>

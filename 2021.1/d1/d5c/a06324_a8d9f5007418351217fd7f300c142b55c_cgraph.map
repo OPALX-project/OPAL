@@ -1,0 +1,51 @@
+<map id="OpalDrift::update" name="OpalDrift::update">
+<area shape="rect" id="node2" href="$d1/d5c/a06324.html#ad577d10240d0d758f542e21849881d78" title="Make clone. " alt="" coords="243,5,367,32"/>
+<area shape="rect" id="node4" href="$db/d56/a07000.html#a0bb3a6e3e85a28a30689eb8d40d9ad37" title="Make clone. " alt="" coords="214,57,397,98"/>
+<area shape="rect" id="node7" href="$d7/dca/a06996.html#a5de5d4a8e88b9d0c0f043637868f9f34" title="Find named WAKE. " alt="" coords="532,123,652,149"/>
+<area shape="rect" id="node9" href="$db/d56/a07000.html#a2f3daec3dd7434552dd84704cd47d5b9" title="Find named PARTICLEMATTERINTERACTION. " alt="" coords="501,174,683,215"/>
+<area shape="rect" id="node10" href="$d0/daa/a06928.html#a71a82a76cc68ac9d0b0cebb91febb659" title="BoundaryGeometry::find" alt="" coords="502,240,682,267"/>
+<area shape="rect" id="node11" href="$d5/d8e/a04448.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="513,1771,671,1797"/>
+<area shape="rect" id="node12" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="774,443,937,469"/>
+<area shape="rect" id="node13" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="784,892,927,919"/>
+<area shape="rect" id="node19" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="779,736,932,763"/>
+<area shape="rect" id="node22" href="$db/d56/a07000.html#ab5bc51a5bdf556223a3eab8f8453986c" title="ParticleMatterInteraction\l::initParticleMatterInteraction\lHandler" alt="" coords="487,747,697,803"/>
+<area shape="rect" id="node25" href="$d7/dca/a06996.html#a72fd7efc3c0b56908bb7ea42cc21d707" title="OpalWake::initWakefunction" alt="" coords="202,620,409,647"/>
+<area shape="rect" id="node30" href="$df/da2/a04828.html#a00698c7f2acc8ae799d858ae64e71564" title="ElementBase::setBoundary\lGeometry" alt="" coords="206,1435,405,1477"/>
+<area shape="rect" id="node31" href="$df/da2/a04828.html#a2b59853ce20c48c2436d0c136adeea69" title="Set design length. " alt="" coords="188,1501,423,1528"/>
+<area shape="rect" id="node34" href="$da/d47/a04824.html#ac5e5e3aa061b4193f91114c7e0ec55f5" title="Drift::setNSlices" alt="" coords="242,1552,369,1579"/>
+<area shape="rect" id="node35" href="$df/da2/a04828.html#a73a916d939eb197a8c145cb8f4ee9353" title="ElementBase::setParticle\lMatterInteraction" alt="" coords="213,1603,397,1645"/>
+<area shape="rect" id="node36" href="$df/da2/a04828.html#af3188ea33a34936c60ea71d91ecbe25f" title="attach a wake field to the element " alt="" coords="219,1669,391,1696"/>
+<area shape="rect" id="node37" href="$d2/dfe/a06332.html#ae7ef6d492cbb543c20367b7e4a2d86f5" title="Update the embedded CLASSIC element. " alt="" coords="226,1333,385,1360"/>
+<area shape="rect" id="node49" href="$d2/dfe/a06332.html#ab0c3e3b9796fc7f288fcfddb4a39080f" title="Transmit the `‘unknown’&#39; (not known to OPAL) attributes to CLASSIC. " alt="" coords="195,979,415,1005"/>
+<area shape="rect" id="node3" href="$d1/d5c/a06324.html#abf700394e75fb5c78f08a3076cf00f7d" title="Exemplar constructor. " alt="" coords="518,5,666,32"/>
+<area shape="rect" id="node5" href="$db/d56/a07000.html#a701e3a583b12691e0aa83dd066d4f1fa" title="Exemplar constructor. " alt="" coords="497,57,687,98"/>
+<area shape="rect" id="node6" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="1009,275,1176,301"/>
+<area shape="rect" id="node8" href="$d1/d55/a04496.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="798,224,913,251"/>
+<area shape="rect" id="node14" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="997,837,1188,864"/>
+<area shape="rect" id="node15" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="1023,736,1163,763"/>
+<area shape="rect" id="node16" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="1013,787,1172,813"/>
+<area shape="rect" id="node17" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="1012,889,1173,930"/>
+<area shape="rect" id="node18" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="1019,955,1166,981"/>
+<area shape="rect" id="node20" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="1069,635,1116,661"/>
+<area shape="rect" id="node21" href="$d6/db7/a04354.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="1040,685,1145,712"/>
+<area shape="rect" id="node23" href="$d9/d4e/a04307.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="783,837,927,864"/>
+<area shape="rect" id="node24" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="830,787,881,813"/>
+<area shape="rect" id="node26" href="$df/da2/a04828.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="504,544,680,571"/>
+<area shape="rect" id="node27" href="$d9/d4e/a04307.html#abf36dfc76d83ae448a1b9c2b438f753f" title="Get string array value. " alt="" coords="761,685,949,712"/>
+<area shape="rect" id="node28" href="$df/d34/a07064.html#a605184ed9c6f888ada29e5e981c7bb39" title="Find named FILTER. " alt="" coords="534,291,650,317"/>
+<area shape="rect" id="node29" href="$df/d34/a07064.html#a274812769c5d5d12ba42a8d558aeb0e5" title="OpalFilter::initOpalFilter" alt="" coords="505,827,679,853"/>
+<area shape="rect" id="node32" href="$df/da2/a04828.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="491,1821,693,1848"/>
+<area shape="rect" id="node33" href="$da/def/a05344.html#a4d338ebcb0efefa851ff4bdc08f7efb2" title="Set geometry length. " alt="" coords="487,1873,697,1914"/>
+<area shape="rect" id="node38" href="$d2/dfe/a06332.html#abdee4534d2270577d76f0d4a88b4532b" title="OpalElement::getApert" alt="" coords="507,696,677,723"/>
+<area shape="rect" id="node39" href="$df/da2/a04828.html#a14dd20e65c467dfa110245c52f4f2b5e" title="ElementBase::setAperture" alt="" coords="496,1603,688,1629"/>
+<area shape="rect" id="node40" href="$d9/d4e/a04307.html#ab98e27fb1c758b0a63d9e242fcbe68e6" title="Get array value. " alt="" coords="766,943,945,969"/>
+<area shape="rect" id="node41" href="$d4/dfa/a00746.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="570,1501,614,1528"/>
+<area shape="rect" id="node42" href="$d4/dfa/a00746.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="835,1501,876,1528"/>
+<area shape="rect" id="node43" href="$d4/dc5/a05148.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="509,1333,675,1360"/>
+<area shape="rect" id="node44" href="$df/da2/a04828.html#a9174a8ab7e9f408d3e901561018f3c5c" title="ElementBase::setCSTrafoGlobal2\lLocal" alt="" coords="475,1435,709,1477"/>
+<area shape="rect" id="node45" href="$df/da2/a04828.html#a106c7760d3c2fbb2b3f67838f53fba26" title="ElementBase::fixPosition" alt="" coords="500,1552,684,1579"/>
+<area shape="rect" id="node46" href="$df/da2/a04828.html#a86e24ebba296fc816d0dcb188537c874" title="Set rotation about z axis in bend frame. " alt="" coords="497,1654,687,1695"/>
+<area shape="rect" id="node47" href="$df/da2/a04828.html#a38684f3be77a11ffff26a8896e93549d" title="ElementBase::setMisalignment" alt="" coords="480,1720,704,1747"/>
+<area shape="rect" id="node48" href="$df/da2/a04828.html#a015eabbc7163b06af9ab098fda26eee8" title="Access to ELEMEDGE attribute. " alt="" coords="471,1283,713,1309"/>
+<area shape="rect" id="node50" href="$df/da2/a04828.html#a5c0cf4c10bceff7bc9fb225bae470174" title="Set value of an attribute. " alt="" coords="495,928,689,955"/>
+</map>

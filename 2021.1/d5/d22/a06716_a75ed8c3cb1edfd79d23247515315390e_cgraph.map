@@ -1,0 +1,8 @@
+<map id="Sampler::initialize" name="Sampler::initialize">
+<area shape="rect" id="node2" href="$da/dd6/a12260.html#aebc9249c7778c6ef237ed6da127366f3" title="Poller::run" alt="" coords="193,107,281,133"/>
+<area shape="rect" id="node3" href="$da/dd6/a12260.html#a63bade169f963e12856baa64b5ad6bb9" title="Poller::onMessage" alt="" coords="329,5,469,32"/>
+<area shape="rect" id="node4" href="$da/dd6/a12260.html#aa07a78e6acc8bacc6e3b9e3aadef8532" title="enable implementation to react to STOP tag " alt="" coords="343,56,455,83"/>
+<area shape="rect" id="node5" href="$da/dd6/a12260.html#a8862f3178103af0f45a493d57105d5e4" title="executed after handling (if any) new request " alt="" coords="340,107,459,133"/>
+<area shape="rect" id="node6" href="$da/dd6/a12260.html#a5ad3a1cb55edf08847ed37965f6dd56b" title="executed before checking for new request " alt="" coords="343,157,455,184"/>
+<area shape="rect" id="node7" href="$da/dd6/a12260.html#a7750d4a9f379671afefb48e13331c8b0" title="executed before starting polling loop " alt="" coords="336,208,463,235"/>
+</map>

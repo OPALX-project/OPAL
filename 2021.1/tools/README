@@ -1,0 +1,9 @@
+In order to compile the tools sdds2opal and opal2sdds you have to download the source code of SDDS version 3.4
+at https://www.aps.anl.gov/Accelerator-Operations-Physics/Software#SDDS%20Source .
+Unpack the sources, change to the directory epics/extensions/src/ and then upack the archive SDDSCMakeLists.tar.gz
+in this directory. Finally apply the patch SDDS.patch with the command
+$ patch -p1 < /path/to/patch/SDDS.patch
+Now you can use cmake to compile and install the SDDS library.
+
+Comment from Christof:
+These two programs (not scripts) export particle positions and momenta from HDF5 files to SDDS and from SDDS to ASCII (which then can be used to as FROMFILE distribution)

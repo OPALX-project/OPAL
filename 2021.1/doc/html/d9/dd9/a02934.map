@@ -1,0 +1,25 @@
+<map id="src/Structure/H5PartWrapper.cpp" name="src/Structure/H5PartWrapper.cpp">
+<area shape="rect" id="node2" href="$d0/d08/a02936.html" title="Structure/H5PartWrapper.h" alt="" coords="44,453,238,480"/>
+<area shape="rect" id="node13" href="$df/d23/a02558.html" title="OPALconfig.h" alt="" coords="2841,80,2948,107"/>
+<area shape="rect" id="node14" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="1036,379,1238,405"/>
+<area shape="rect" id="node18" href="$db/dbe/a01706.html" title="Physics/Physics.h" alt="" coords="2972,80,3108,107"/>
+<area shape="rect" id="node19" href="$d8/d98/a02009.html" title="Utilities/Options.h" alt="" coords="2470,80,2609,107"/>
+<area shape="rect" id="node22" href="$d0/d2b/a03095.html" title="Utilities/OpalException.h" alt="" coords="2634,80,2816,107"/>
+<area shape="rect" id="node24" href="$da/d14/a02066.html" title="Utilities/Util.h" alt="" coords="1948,80,2060,107"/>
+<area shape="rect" id="node27" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="2288,379,2415,405"/>
+<area shape="rect" id="node30" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="1536,379,1688,405"/>
+<area shape="rect" id="node45" href="$d8/d63/a03500.html" title="Message/Communicate.h" alt="" coords="645,379,832,405"/>
+<area shape="rect" id="node3" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="726,528,852,555"/>
+<area shape="rect" id="node4" href="$dc/d61/a03893.html" title="Utility/StaticIpplInfo.h" alt="" coords="435,603,599,629"/>
+<area shape="rect" id="node6" href="$da/d1a/a03803.html" title="Utility/Inform.h" alt="" coords="776,603,898,629"/>
+<area shape="rect" id="node15" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="1018,453,1256,480"/>
+<area shape="rect" id="node20" href="$d5/d2c/a02012.html" title="OptionTypes.h" alt="" coords="2521,155,2636,181"/>
+<area shape="rect" id="node21" href="$d6/dbd/a01829.html" title="Utilities/ClassicRandom.h" alt="" coords="2660,155,2849,181"/>
+<area shape="rect" id="node23" href="$d4/d29/a01817.html" title="Utilities/ClassicException.h" alt="" coords="2654,229,2852,256"/>
+<area shape="rect" id="node25" href="$db/ddf/a13198.html" title="Algorithms/Vektor.h" alt="" coords="1815,229,1966,256"/>
+<area shape="rect" id="node40" href="$dd/db2/a00866.html" title="Algorithms/Quaternion.h" alt="" coords="1913,155,2094,181"/>
+<area shape="rect" id="node26" href="$db/db0/a13201.html" title="AppTypes/Vektor.h" alt="" coords="1930,304,2072,331"/>
+<area shape="rect" id="node35" href="$da/d72/a03527.html" title="Message/Message.hpp" alt="" coords="1714,453,1882,480"/>
+<area shape="rect" id="node46" href="$d4/d5e/a03542.html" title="Message/TagMaker.h" alt="" coords="262,453,418,480"/>
+<area shape="rect" id="node47" href="$dd/d25/a03545.html" title="Message/Tags.h" alt="" coords="442,453,566,480"/>
+</map>

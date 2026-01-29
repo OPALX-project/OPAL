@@ -1,0 +1,51 @@
+<map id="CavityAutophaser::getPhaseAtMaxEnergy" name="CavityAutophaser::getPhaseAtMaxEnergy">
+<area shape="rect" id="node2" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1133,5,1179,32"/>
+<area shape="rect" id="node4" href="$d6/db7/a04354.html#a11460f59ebd4d9f7dc2f12724dece886" title="Util::combineFilePath" alt="" coords="283,563,442,589"/>
+<area shape="rect" id="node5" href="$df/dd5/a01115.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="1595,1545,1637,1572"/>
+<area shape="rect" id="node6" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1131,1495,1181,1521"/>
+<area shape="rect" id="node10" href="$d3/d4f/a00761.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="299,716,426,743"/>
+<area shape="rect" id="node13" href="$d4/dfa/a00746.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1593,613,1639,640"/>
+<area shape="rect" id="node16" href="$d0/d1e/a03674.html#aae355e465ddaedd0a66a3187cd09a5a8" title="fmod" alt="" coords="877,917,933,944"/>
+<area shape="rect" id="node17" href="$da/d94/a04940.html#a5997bb049b2b5222ed5c40e08833019e" title="RFCavity::getAmplitudem" alt="" coords="269,921,457,948"/>
+<area shape="rect" id="node18" href="$da/d94/a04940.html#a61ca169d6bfb338941f4aa2364d408c3" title="RFCavity::getAutophaseVeto" alt="" coords="802,1035,1009,1061"/>
+<area shape="rect" id="node19" href="$da/d94/a04940.html#acb039a9010026faa3ad25497ce6e5558" title="RFCavity::getDesignEnergy" alt="" coords="263,1023,462,1049"/>
+<area shape="rect" id="node20" href="$da/d94/a04940.html#aa78f1fa142681e670afccaac01f8cba3" title="RFCavity::getFrequencym" alt="" coords="533,1085,720,1112"/>
+<area shape="rect" id="node21" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="279,820,446,847"/>
+<area shape="rect" id="node23" href="$d6/db7/a04354.html#a23c9ed0a7dbf9f918bb68b94bb9309b1" title="Util::getKineticEnergy" alt="" coords="1074,1343,1238,1369"/>
+<area shape="rect" id="node25" href="$db/d5a/a05136.html#a7c7b836d3ac05230f809f8b9f52e4c86" title="The constant mass per particle. " alt="" coords="846,1187,965,1213"/>
+<area shape="rect" id="node26" href="$df/da2/a04828.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="275,1292,451,1319"/>
+<area shape="rect" id="node27" href="$da/d94/a04940.html#a05624fbb526f1796329afed4013f0af0" title="RFCavity::getPhasem" alt="" coords="825,1263,985,1289"/>
+<area shape="rect" id="node28" href="$db/d5a/a05136.html#a1d4498ce4cfa5644bb67b2686e7df9ad" title="The constant charge per particle. " alt="" coords="847,1444,964,1471"/>
+<area shape="rect" id="node29" href="$d2/dd6/a04528.html#a68fed3ee0f7768b77bc82f6d959f4176" title="CavityAutophaser::guessCavity\lPhase" alt="" coords="513,969,740,1010"/>
+<area shape="rect" id="node42" href="$dd/dbc/a03800.html#a05f40bf636b1822127580d886951175c" title="level1" alt="" coords="331,1444,394,1471"/>
+<area shape="rect" id="node44" href="$d2/dd6/a04528.html#a7bf32340c1f951d25ee70a66ad66745b" title="CavityAutophaser::optimize\lCavityPhase" alt="" coords="261,1125,464,1166"/>
+<area shape="rect" id="node45" href="$d2/dd6/a04528.html#ae6ded1d37df63641bd25832ac54a6301" title="CavityAutophaser::track" alt="" coords="537,1393,716,1420"/>
+<area shape="rect" id="node46" href="$da/d94/a04940.html#a83e48e03c9beba578b150a99961f59b5" title="RFCavity::setPhasem" alt="" coords="826,1545,985,1572"/>
+<area shape="rect" id="node48" href="$da/d94/a04940.html#a65fa82cf3e4daec5e20bfd973e9c8c40" title="RFCavity::setAmplitudem" alt="" coords="269,1697,456,1724"/>
+<area shape="rect" id="node49" href="$da/d94/a04940.html#ab2ccad97fbc629e9733b5f60fefb9a58" title="RFCavity::setAutophaseVeto" alt="" coords="260,1748,465,1775"/>
+<area shape="rect" id="node50" href="$d1/d55/a04496.html#a70d9db971fe1f977d02be3f5907127dc" title="OpalData::setMaxPhase" alt="" coords="274,1799,451,1825"/>
+<area shape="rect" id="node3" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1289,5,1475,32"/>
+<area shape="rect" id="node7" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1296,1495,1468,1521"/>
+<area shape="rect" id="node8" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1549,1444,1683,1471"/>
+<area shape="rect" id="node9" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1523,1495,1709,1521"/>
+<area shape="rect" id="node11" href="$d4/d79/a05020.html#a55cb732c23dd6b419f636aff0874ab82" title="Get beginning of data. " alt="" coords="567,765,686,792"/>
+<area shape="rect" id="node12" href="$d4/d79/a05020.html#a941ffba563af0a4e17aae45292b1659e" title="Get end of data. " alt="" coords="573,715,680,741"/>
+<area shape="rect" id="node14" href="$db/df9/a05044.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1757,183,1901,209"/>
+<area shape="rect" id="node15" href="$db/df9/a05044.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1783,233,1875,260"/>
+<area shape="rect" id="node22" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="551,867,703,893"/>
+<area shape="rect" id="node24" href="$d6/db7/a04354.html#ae12a15e0d75307c934c8add55d2c25ac" title="Util::getGamma" alt="" coords="1319,1444,1445,1471"/>
+<area shape="rect" id="node30" href="$da/d94/a04940.html#ab658bb13dcceff736505e3c5965d1192" title="RFCavity::getAutoPhaseEstimate" alt="" coords="788,335,1023,361"/>
+<area shape="rect" id="node31" href="$d9/ddd/a05512.html#a48d4a155d03d902144d550544e96964d" title="Fieldmap::getOnaxisEz" alt="" coords="1071,411,1241,437"/>
+<area shape="rect" id="node32" href="$d0/d11/a00842.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375" title="begin" alt="" coords="1127,461,1185,488"/>
+<area shape="rect" id="node33" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="1133,512,1179,539"/>
+<area shape="rect" id="node34" href="$df/d98/a03680.html#ae29244719985f3e4cbc22b58064177de" title="floor" alt="" coords="1131,563,1181,589"/>
+<area shape="rect" id="node35" href="$da/d94/a04940.html#afe7eee108d80b1825e8e34ec8f46a1f4" title="RFCavity::getdT" alt="" coords="1320,436,1444,463"/>
+<area shape="rect" id="node36" href="$da/d94/a04940.html#ab4882ff20d696dea0bd3bb1528310f37" title="RFCavity::getdA" alt="" coords="1093,208,1219,235"/>
+<area shape="rect" id="node37" href="$d4/dfa/a00746.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="1360,157,1404,184"/>
+<area shape="rect" id="node38" href="$d4/dfa/a00746.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="1595,183,1637,209"/>
+<area shape="rect" id="node39" href="$da/d94/a04940.html#a249b34e7ae3a33714b81d6e46bc6fea0" title="RFCavity::getdB" alt="" coords="1093,56,1219,83"/>
+<area shape="rect" id="node40" href="$df/d98/a03680.html#a76d80db75cdbabf029d6f5fdcef89cdb" title="atan" alt="" coords="1131,360,1181,387"/>
+<area shape="rect" id="node41" href="$da/d94/a04940.html#a215e10b357c6fc9916d3b8ab30badaed" title="RFCavity::getdE" alt="" coords="1094,107,1218,133"/>
+<area shape="rect" id="node43" href="$d9/d03/a11852.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="534,1444,719,1471"/>
+<area shape="rect" id="node47" href="$da/d94/a04940.html#a4347a9c3dfe5dab9b9dad275c763a9fc" title="RFCavity::trackOnAxisParticle" alt="" coords="798,1495,1013,1521"/>
+</map>

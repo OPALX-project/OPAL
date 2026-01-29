@@ -1,0 +1,8 @@
+<map id="BinaryRepartition" name="BinaryRepartition">
+<area shape="rect" id="node2" href="$d0/d57/a03380.html#a456f66b449914610ed052632213063dc" title="CalcBinaryRepartition" alt="" coords="194,69,357,96"/>
+<area shape="rect" id="node6" href="$d3/d6d/a08204.html#a471c59dfe8c22af78f9bd9af2de6d7a5" title="FieldLayout::Repartition" alt="" coords="188,132,363,159"/>
+<area shape="rect" id="node3" href="$d7/d31/a08956.html#aca765179d2843e977a7a78098c8cbde8" title="Communicate::getNodes" alt="" coords="422,5,605,32"/>
+<area shape="rect" id="node4" href="$d7/d31/a08956.html#aedbfc462a5f9babc3fc07f875847547f" title="Communicate::myNode" alt="" coords="425,56,601,83"/>
+<area shape="rect" id="node5" href="$d3/d6d/a08204.html#a145fb07dd8ce69c94cc355f263fc22ef" title="FieldLayout::getDomain" alt="" coords="425,107,601,133"/>
+<area shape="rect" id="node7" href="$db/d22/a08516.html#ad75b34f31827852682fedd1a557f729a" title="FieldLayoutUser::Repartition" alt="" coords="411,157,616,184"/>
+</map>

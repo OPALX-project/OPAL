@@ -1,0 +1,14 @@
+<map id="src/Classic/AbsBeamline/Cyclotron.h" name="src/Classic/AbsBeamline/Cyclotron.h">
+<area shape="rect" id="node2" href="$d6/db8/a00158.html" title="src/Algorithms/ParallelCyclotron\lTracker.cpp" alt="" coords="5,95,236,136"/>
+<area shape="rect" id="node3" href="$de/df8/a00440.html" title="src/Classic/AbsBeamline\l/Cyclotron.cpp" alt="" coords="261,95,442,136"/>
+<area shape="rect" id="node4" href="$d0/d5c/a00668.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="467,95,649,136"/>
+<area shape="rect" id="node6" href="$d1/d87/a00689.html" title="src/Classic/AbsBeamline\l/Vacuum.cpp" alt="" coords="674,95,855,136"/>
+<area shape="rect" id="node7" href="$da/db8/a00797.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="880,95,1047,136"/>
+<area shape="rect" id="node8" href="$d3/d8a/a00899.html" title="src/Classic/BeamlineCore\l/CyclotronRep.h" alt="" coords="1570,95,1757,136"/>
+<area shape="rect" id="node11" href="$df/d9a/a01715.html" title="src/Classic/Solvers\l/BeamStrippingPhysics.cpp" alt="" coords="1296,95,1495,136"/>
+<area shape="rect" id="node12" href="$de/d9d/a02072.html" title="src/Distribution/ClosedOrbit\lFinder.h" alt="" coords="1071,95,1272,136"/>
+<area shape="rect" id="node13" href="$d9/dff/a02099.html" title="src/Distribution/SigmaGenerator.cpp" alt="" coords="1107,191,1364,218"/>
+<area shape="rect" id="node5" href="$d9/d95/a02075.html" title="src/Distribution/Distribution.cpp" alt="" coords="681,191,909,218"/>
+<area shape="rect" id="node9" href="$da/dd6/a00896.html" title="src/Classic/BeamlineCore\l/CyclotronRep.cpp" alt="" coords="1454,184,1641,225"/>
+<area shape="rect" id="node10" href="$db/d26/a02129.html" title="src/Elements/OpalCyclotron.cpp" alt="" coords="1665,191,1894,218"/>
+</map>

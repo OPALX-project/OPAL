@@ -1,0 +1,51 @@
+<map id="Bend2D::findIdealBendParameters" name="Bend2D::findIdealBendParameters">
+<area shape="rect" id="node2" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="646,7,691,33"/>
+<area shape="rect" id="node4" href="$d0/d1e/a03674.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="377,57,436,84"/>
+<area shape="rect" id="node5" href="$d2/d13/a04784.html#a36b8268a75f393e61571244cac0ec257" title="Calculate bend angle from chord length and design radius. " alt="" coords="311,108,502,135"/>
+<area shape="rect" id="node7" href="$d2/d13/a04784.html#ad0b738e14273dffee8ec0e8eb87748bd" title="Calculate design radius from design energy and field amplitude. " alt="" coords="301,159,512,185"/>
+<area shape="rect" id="node42" href="$d1/dc3/a04492.html#a16508077c3f6403314e7923dc74e06f9" title="Access to reference data. " alt="" coords="589,209,748,236"/>
+<area shape="rect" id="node43" href="$d2/d13/a04784.html#aca45c9b2f0bf8ead0fe00a79ab1ecdb7" title="Calculate field amplitude from design energy and radius. " alt="" coords="297,209,516,236"/>
+<area shape="rect" id="node44" href="$d0/d1e/a03674.html#af6518b151e7b0d52fa4ec791b891f53b" title="copysign" alt="" coords="367,311,447,337"/>
+<area shape="rect" id="node45" href="$d6/db2/a04780.html#a955e80149993bfb320f986f6e668ca64" title="Bend2D::setEntranceAngle" alt="" coords="309,361,504,388"/>
+<area shape="rect" id="node50" href="$d6/db2/a04780.html#a386d42750d3751be34faaa740a822d44" title="Bend2D::setExitAngle" alt="" coords="325,412,488,439"/>
+<area shape="rect" id="node3" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2093,260,2279,287"/>
+<area shape="rect" id="node6" href="$df/d98/a03680.html#ab8b5bc6bd9839a587c61b29350417f0f" title="asin" alt="" coords="644,57,693,84"/>
+<area shape="rect" id="node8" href="$d1/dc3/a04492.html#af51331c43ea82142dd6d237e6e3e5bfd" title="PartBunchBase::getM" alt="" coords="1043,108,1201,135"/>
+<area shape="rect" id="node9" href="$d2/d13/a04784.html#a46f8eab5e301c6e6422a6f48787b227a" title="Calculate beta*gamma from design energy. " alt="" coords="567,159,770,185"/>
+<area shape="rect" id="node10" href="$d2/d13/a04784.html#a044e1317118a71e0aac342b79e14c2bc" title="Calculate gamma from design energy. " alt="" coords="821,108,995,135"/>
+<area shape="rect" id="node11" href="$d4/dfa/a00746.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1099,260,1145,287"/>
+<area shape="rect" id="node40" href="$d4/dfa/a00746.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="883,159,933,185"/>
+<area shape="rect" id="node12" href="$db/df9/a05044.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1560,260,1704,287"/>
+<area shape="rect" id="node28" href="$db/df9/a05044.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1249,311,1341,337"/>
+<area shape="rect" id="node13" href="$d4/d6f/a03374.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1808,260,1855,287"/>
+<area shape="rect" id="node14" href="$d4/d6f/a03374.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1959,387,2045,413"/>
+<area shape="rect" id="node15" href="$d2/d76/a03296.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="2147,479,2225,505"/>
+<area shape="rect" id="node17" href="$db/d69/a03320.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="2371,488,2468,515"/>
+<area shape="rect" id="node18" href="$d7/d65/a03518.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="2123,311,2249,337"/>
+<area shape="rect" id="node16" href="$da/d54/a08124.html#ade95693db1906427a7c73b8364a07b20" title="BareFieldIterator::\lGetBareField" alt="" coords="2350,539,2489,581"/>
+<area shape="rect" id="node19" href="$d5/d16/a11864.html#a8bdcd8abcec1d747ecf82579b42c853c" title="IpplInfo::abort" alt="" coords="2363,117,2476,144"/>
+<area shape="rect" id="node20" href="$d7/d31/a08956.html#aa072c62b650774371674b050109d8051" title="Communicate::broadcast\l_others" alt="" coords="2327,219,2512,261"/>
+<area shape="rect" id="node21" href="$d7/d31/a08956.html#aca765179d2843e977a7a78098c8cbde8" title="Communicate::getNodes" alt="" coords="2560,227,2743,253"/>
+<area shape="rect" id="node22" href="$d7/d31/a08956.html#aedbfc462a5f9babc3fc07f875847547f" title="Communicate::myNode" alt="" coords="2563,113,2739,140"/>
+<area shape="rect" id="node23" href="$dc/d98/a03524.html#ac34b443397f0101557c34a5c235ee578" title="getMessage" alt="" coords="2369,336,2469,363"/>
+<area shape="rect" id="node24" href="$d1/d51/a09544.html#aec355d9c01194461adbba236ffbd7b21" title="TagMaker::next_tag" alt="" coords="2345,387,2494,413"/>
+<area shape="rect" id="node25" href="$dc/d98/a03524.html#a04b92846c9f02264188b7e562649ddb1" title="putMessage" alt="" coords="2369,437,2469,464"/>
+<area shape="rect" id="node26" href="$d7/d31/a08956.html#ac0e671485db61cd6fdf8961504250b2b" title="Communicate::receive\l_block" alt="" coords="2335,51,2504,93"/>
+<area shape="rect" id="node27" href="$d7/d31/a08956.html#a5c519594f60faadd9202606f1ba0bbc3" title="Communicate::send" alt="" coords="2343,168,2495,195"/>
+<area shape="rect" id="node29" href="$db/df9/a05044.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1389,311,1512,337"/>
+<area shape="rect" id="node30" href="$db/df9/a05044.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1397,463,1504,489"/>
+<area shape="rect" id="node31" href="$db/df9/a05044.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="1565,412,1699,439"/>
+<area shape="rect" id="node32" href="$db/df9/a05044.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="1563,463,1701,489"/>
+<area shape="rect" id="node33" href="$d0/d8b/a05048.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="1573,513,1691,540"/>
+<area shape="rect" id="node37" href="$db/df9/a05044.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="1581,564,1683,591"/>
+<area shape="rect" id="node38" href="$df/d98/a03680.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="1806,336,1857,363"/>
+<area shape="rect" id="node34" href="$dc/d96/a05060.html#a12f23d39f696c02da148722cb0bd8f06" title="TpsData::getTpsData" alt="" coords="1752,564,1911,591"/>
+<area shape="rect" id="node35" href="$dc/d96/a05060.html#a6ec8c0544fd09e9a701799d65f1bca46" title="TpsData::getSize" alt="" coords="1765,463,1897,489"/>
+<area shape="rect" id="node36" href="$d0/d8b/a05048.html#a33520f8c7100283fafbdf7171a0a3de5" title="TpsRep::data" alt="" coords="1778,513,1885,540"/>
+<area shape="rect" id="node39" href="$df/d98/a03680.html#a0a1cdb80c431a477e99aea03fea993fc" title="Reduction" alt="" coords="1959,285,2045,312"/>
+<area shape="rect" id="node41" href="$db/df9/a05044.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1071,159,1173,185"/>
+<area shape="rect" id="node46" href="$d2/d13/a04784.html#a5750c199b85ee17f0597c2122c769389" title="BendBase::setEntranceAngle" alt="" coords="564,361,773,388"/>
+<area shape="rect" id="node47" href="$d4/dfa/a00746.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="886,412,930,439"/>
+<area shape="rect" id="node48" href="$d4/dfa/a00746.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="1101,311,1143,337"/>
+<area shape="rect" id="node49" href="$d4/dfa/a00746.html#aaf4c9e6032cf18666e610d31e47a9ff9" title="Tangent. " alt="" coords="647,412,690,439"/>
+</map>

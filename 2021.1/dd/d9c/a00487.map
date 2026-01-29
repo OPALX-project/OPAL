@@ -1,0 +1,17 @@
+<map id="src/Classic/AbsBeamline/FlexibleCollimator.h" name="src/Classic/AbsBeamline/FlexibleCollimator.h">
+<area shape="rect" id="node2" href="$dc/de6/a00167.html" title="src/Algorithms/ParallelTTracker.h" alt="" coords="246,102,481,129"/>
+<area shape="rect" id="node5" href="$db/d8e/a00482.html" title="src/Classic/AbsBeamline\l/FlexibleCollimator.cpp" alt="" coords="557,95,738,136"/>
+<area shape="rect" id="node6" href="$d0/d5c/a00668.html" title="src/Classic/AbsBeamline\l/SpecificElementVisitor.h" alt="" coords="763,95,945,136"/>
+<area shape="rect" id="node8" href="$da/db8/a00797.html" title="src/Classic/Algorithms\l/DefaultVisitor.cpp" alt="" coords="969,95,1136,136"/>
+<area shape="rect" id="node9" href="$d4/ddc/a00917.html" title="src/Classic/BeamlineCore\l/FlexibleCollimatorRep.h" alt="" coords="1187,95,1374,136"/>
+<area shape="rect" id="node16" href="$d0/d78/a01745.html" title="src/Classic/Solvers\l/ScatteringPhysics.cpp" alt="" coords="1398,95,1566,136"/>
+<area shape="rect" id="node3" href="$db/ddf/a00164.html" title="src/Algorithms/ParallelTTracker.cpp" alt="" coords="5,191,255,218"/>
+<area shape="rect" id="node4" href="$d7/deb/a03077.html" title="src/Track/TrackRun.cpp" alt="" coords="279,191,447,218"/>
+<area shape="rect" id="node7" href="$d9/d95/a02075.html" title="src/Distribution/Distribution.cpp" alt="" coords="472,191,700,218"/>
+<area shape="rect" id="node10" href="$d3/dd1/a00914.html" title="src/Classic/BeamlineCore\l/FlexibleCollimatorRep.cpp" alt="" coords="724,184,920,225"/>
+<area shape="rect" id="node11" href="$d3/d28/a02147.html" title="src/Elements/OpalECollimator.cpp" alt="" coords="945,191,1187,218"/>
+<area shape="rect" id="node12" href="$d4/d9b/a02159.html" title="src/Elements/OpalFlexible\lCollimator.cpp" alt="" coords="1212,184,1403,225"/>
+<area shape="rect" id="node13" href="$dd/dc3/a02249.html" title="src/Elements/OpalPepperPot.cpp" alt="" coords="1427,191,1660,218"/>
+<area shape="rect" id="node14" href="$df/d4d/a02285.html" title="src/Elements/OpalRCollimator.cpp" alt="" coords="1685,191,1927,218"/>
+<area shape="rect" id="node15" href="$d1/da3/a02327.html" title="src/Elements/OpalSlit.cpp" alt="" coords="1952,191,2140,218"/>
+</map>

@@ -1,0 +1,17 @@
+<map id="src/Structure/ParticleMatterInteraction.h" name="src/Structure/ParticleMatterInteraction.h">
+<area shape="rect" id="node2" href="$d5/d63/a02123.html" title="src/Elements/OpalCCollimator.cpp" alt="" coords="5,102,248,129"/>
+<area shape="rect" id="node3" href="$df/daa/a02135.html" title="src/Elements/OpalDegrader.cpp" alt="" coords="272,102,499,129"/>
+<area shape="rect" id="node4" href="$d5/d88/a02141.html" title="src/Elements/OpalDrift.cpp" alt="" coords="523,102,719,129"/>
+<area shape="rect" id="node5" href="$d3/d28/a02147.html" title="src/Elements/OpalECollimator.cpp" alt="" coords="744,102,987,129"/>
+<area shape="rect" id="node6" href="$d4/d9b/a02159.html" title="src/Elements/OpalFlexible\lCollimator.cpp" alt="" coords="1011,95,1202,136"/>
+<area shape="rect" id="node7" href="$dd/dc3/a02249.html" title="src/Elements/OpalPepperPot.cpp" alt="" coords="1226,102,1459,129"/>
+<area shape="rect" id="node8" href="$d5/d95/a02267.html" title="src/Elements/OpalQuadrupole.cpp" alt="" coords="1484,102,1727,129"/>
+<area shape="rect" id="node9" href="$d7/d6e/a02273.html" title="src/Elements/OpalRBend.cpp" alt="" coords="1751,102,1961,129"/>
+<area shape="rect" id="node10" href="$d2/dd2/a02279.html" title="src/Elements/OpalRBend3D.cpp" alt="" coords="1985,102,2212,129"/>
+<area shape="rect" id="node11" href="$df/d4d/a02285.html" title="src/Elements/OpalRCollimator.cpp" alt="" coords="2236,102,2479,129"/>
+<area shape="rect" id="node12" href="$d1/db8/a02297.html" title="src/Elements/OpalSBend.cpp" alt="" coords="2503,102,2711,129"/>
+<area shape="rect" id="node13" href="$d1/da3/a02327.html" title="src/Elements/OpalSlit.cpp" alt="" coords="2735,102,2923,129"/>
+<area shape="rect" id="node14" href="$df/def/a02369.html" title="src/Elements/OpalVacuum.cpp" alt="" coords="2948,102,3167,129"/>
+<area shape="rect" id="node15" href="$d1/d67/a02561.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="3191,102,3422,129"/>
+<area shape="rect" id="node16" href="$dc/d94/a02999.html" title="src/Structure/ParticleMatter\lInteraction.cpp" alt="" coords="3446,95,3645,136"/>
+</map>

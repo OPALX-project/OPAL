@@ -1,0 +1,31 @@
+<map id="Distribution::writeOutFileEmission" name="Distribution::writeOutFileEmission">
+<area shape="rect" id="node2" href="$d7/d31/a08956.html#ac4593203c34f26c625bd51c7502c297e" title="Communicate::barrier" alt="" coords="263,5,427,32"/>
+<area shape="rect" id="node4" href="$d6/db7/a04354.html#a11460f59ebd4d9f7dc2f12724dece886" title="Util::combineFilePath" alt="" coords="265,56,424,83"/>
+<area shape="rect" id="node5" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="319,259,370,285"/>
+<area shape="rect" id="node7" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1242,157,1377,184"/>
+<area shape="rect" id="node10" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1239,284,1380,311"/>
+<area shape="rect" id="node11" href="$d1/d55/a04496.html#af5404b3339d48c4531df60b77ce628c3" title="get the name of the the additional data directory " alt="" coords="237,361,452,402"/>
+<area shape="rect" id="node12" href="$d9/d4e/a04307.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="273,427,417,453"/>
+<area shape="rect" id="node19" href="$d5/d16/a11864.html#a8d995e140c485a5416394b5cc1c864c4" title="IpplInfo::getComm" alt="" coords="273,477,416,504"/>
+<area shape="rect" id="node20" href="$d1/d55/a04496.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="237,528,452,555"/>
+<area shape="rect" id="node21" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="261,579,428,605"/>
+<area shape="rect" id="node23" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="263,629,426,656"/>
+<area shape="rect" id="node24" href="$dd/dbc/a03800.html#a05f40bf636b1822127580d886951175c" title="level1" alt="" coords="313,680,376,707"/>
+<area shape="rect" id="node26" href="$d1/d51/a09544.html#aec355d9c01194461adbba236ffbd7b21" title="TagMaker::next_tag" alt="" coords="270,731,419,757"/>
+<area shape="rect" id="node28" href="$d7/d31/a08956.html#a99885d93b9fbd689fb9ea21c63b37914" title="Communicate::raw_probe\l_receive" alt="" coords="250,782,439,823"/>
+<area shape="rect" id="node29" href="$d7/d31/a08956.html#afb15c2fb0fddeb42375745ce17fbc02f" title="Communicate::raw_receive" alt="" coords="245,848,445,875"/>
+<area shape="rect" id="node30" href="$d7/d31/a08956.html#ace4e0702e85754384f92097ded34690f" title="Communicate::raw_send" alt="" coords="253,899,436,925"/>
+<area shape="rect" id="node3" href="$d7/d31/a08956.html#ac61e30b57fefb3684575e3f2ad5bc1a9" title="Communicate::mybarrier" alt="" coords="507,5,692,32"/>
+<area shape="rect" id="node6" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="513,208,685,235"/>
+<area shape="rect" id="node8" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="753,208,939,235"/>
+<area shape="rect" id="node9" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="993,233,1191,260"/>
+<area shape="rect" id="node13" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="504,528,695,555"/>
+<area shape="rect" id="node14" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="529,579,669,605"/>
+<area shape="rect" id="node15" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="520,360,679,387"/>
+<area shape="rect" id="node16" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="519,411,680,453"/>
+<area shape="rect" id="node17" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="526,477,673,504"/>
+<area shape="rect" id="node18" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="747,477,945,504"/>
+<area shape="rect" id="node22" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="523,629,675,656"/>
+<area shape="rect" id="node25" href="$d9/d03/a11852.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="507,680,692,707"/>
+<area shape="rect" id="node27" href="$d1/d51/a09544.html#a666b5136a7f17a2b2582870b35fa4434" title="TagMaker::create_base_tag" alt="" coords="500,731,699,757"/>
+</map>

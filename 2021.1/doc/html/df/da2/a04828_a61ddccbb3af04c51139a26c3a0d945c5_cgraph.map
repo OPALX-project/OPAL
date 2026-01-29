@@ -1,0 +1,10 @@
+<map id="ElementBase::getBoundingBoxInLabCoords" name="ElementBase::getBoundingBoxInLabCoords">
+<area shape="rect" id="node2" href="$df/da2/a04828.html#a9866c163d61dbd33e24080668a16c9e2" title="ElementBase::getEdgeToBegin" alt="" coords="252,5,472,32"/>
+<area shape="rect" id="node3" href="$df/da2/a04828.html#ae4d2f9d1f052ac44376cdf3714b0ef56" title="ElementBase::getEdgeToEnd" alt="" coords="259,56,465,83"/>
+<area shape="rect" id="node7" href="$d3/d82/a05088.html#ab7f68c4a5a5befa90cd9a82e310b2ee0" title="CoordinateSystemTrafo\l::transformFrom" alt="" coords="275,107,449,149"/>
+<area shape="rect" id="node4" href="$df/da2/a04828.html#a1b412456edcf01147abada7721605101" title="Get design length. " alt="" coords="520,56,755,83"/>
+<area shape="rect" id="node5" href="$df/da2/a04828.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="807,27,1009,53"/>
+<area shape="rect" id="node6" href="$da/def/a05344.html#a73f1d2087c1b6c7fb3e5e00f6835f88e" title="Get geometry length. " alt="" coords="803,78,1013,119"/>
+<area shape="rect" id="node8" href="$df/dd5/a01115.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="616,111,659,137"/>
+<area shape="rect" id="node9" href="$da/d8d/a03158.html#a1e71f6a6a4880f0c3ab147df4dd09050" title="transpose" alt="" coords="594,161,681,188"/>
+</map>

@@ -1,0 +1,51 @@
+<map id="LaserProfile::LaserProfile" name="LaserProfile::LaserProfile">
+<area shape="rect" id="node2" href="$da/d6a/a06284.html#ab1de0823b2a4e575b40de6f2c7d1bb99" title="LaserProfile::computeProfile\lStatistics" alt="" coords="236,299,440,341"/>
+<area shape="rect" id="node25" href="$da/d6a/a06284.html#a470fd36b12c763d015b2e17914a4f0ee" title="LaserProfile::fillHistrogram" alt="" coords="241,545,435,572"/>
+<area shape="rect" id="node26" href="$da/d6a/a06284.html#addc5671143eef719b9f431b50984ea8a" title="LaserProfile::saveHistogram" alt="" coords="488,545,693,572"/>
+<area shape="rect" id="node31" href="$da/d6a/a06284.html#af6c82fe4ce1f617fe24d52bbd9233875" title="LaserProfile::filterSpikes" alt="" coords="249,647,427,673"/>
+<area shape="rect" id="node32" href="$da/d6a/a06284.html#a59a5d9c25d627c73abedd2b5e4ef3b66" title="LaserProfile::flipX" alt="" coords="271,697,405,724"/>
+<area shape="rect" id="node33" href="$da/d6a/a06284.html#a4f0b7a5caa966eecb136b4484c6ca420" title="LaserProfile::flipY" alt="" coords="271,748,405,775"/>
+<area shape="rect" id="node34" href="$da/d6a/a06284.html#a0f07d573ed891779bf548aadf42ed0ef" title="LaserProfile::normalizeProfileData" alt="" coords="1233,361,1476,388"/>
+<area shape="rect" id="node37" href="$da/d6a/a06284.html#aa225e220be257a460506e72b951826a5" title="LaserProfile::printInfo" alt="" coords="257,444,419,471"/>
+<area shape="rect" id="node40" href="$da/d6a/a06284.html#a815344252204deef9c2cbe970a187089" title="LaserProfile::readFile" alt="" coords="259,799,417,825"/>
+<area shape="rect" id="node47" href="$da/d6a/a06284.html#a3a45baaebdbf31ce073a9de215ee968c" title="LaserProfile::sampleDist" alt="" coords="501,596,681,623"/>
+<area shape="rect" id="node49" href="$da/d6a/a06284.html#a6b2c116ffc9c8d24dd18fd14aab27a46" title="LaserProfile::setupRNG" alt="" coords="253,849,423,876"/>
+<area shape="rect" id="node50" href="$da/d6a/a06284.html#a999bc78f6f3fea10ebfde5fc49af8374" title="LaserProfile::swapXY" alt="" coords="259,900,417,927"/>
+<area shape="rect" id="node3" href="$d4/dfa/a00746.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="567,307,614,333"/>
+<area shape="rect" id="node4" href="$db/df9/a05044.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1283,309,1427,336"/>
+<area shape="rect" id="node17" href="$db/df9/a05044.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="803,243,895,269"/>
+<area shape="rect" id="node5" href="$d4/d6f/a03374.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1598,259,1645,285"/>
+<area shape="rect" id="node6" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1901,205,2087,232"/>
+<area shape="rect" id="node7" href="$d4/d6f/a03374.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1767,307,1853,333"/>
+<area shape="rect" id="node8" href="$d2/d76/a03296.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="1955,357,2033,384"/>
+<area shape="rect" id="node10" href="$db/d69/a03320.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="2155,299,2253,325"/>
+<area shape="rect" id="node11" href="$d7/d65/a03518.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="1931,256,2057,283"/>
+<area shape="rect" id="node9" href="$da/d54/a08124.html#ade95693db1906427a7c73b8364a07b20" title="BareFieldIterator::\lGetBareField" alt="" coords="2135,350,2273,391"/>
+<area shape="rect" id="node12" href="$d5/d16/a11864.html#a8bdcd8abcec1d747ecf82579b42c853c" title="IpplInfo::abort" alt="" coords="2147,248,2261,275"/>
+<area shape="rect" id="node13" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="2321,332,2372,359"/>
+<area shape="rect" id="node14" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="2420,332,2592,359"/>
+<area shape="rect" id="node15" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="2640,307,2827,333"/>
+<area shape="rect" id="node16" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="2666,357,2801,384"/>
+<area shape="rect" id="node18" href="$db/df9/a05044.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1033,243,1156,269"/>
+<area shape="rect" id="node19" href="$db/df9/a05044.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1041,171,1148,197"/>
+<area shape="rect" id="node20" href="$db/df9/a05044.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="1287,208,1422,235"/>
+<area shape="rect" id="node21" href="$db/df9/a05044.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="1286,5,1423,32"/>
+<area shape="rect" id="node22" href="$d0/d8b/a05048.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="1295,56,1414,83"/>
+<area shape="rect" id="node23" href="$db/df9/a05044.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="1304,157,1405,184"/>
+<area shape="rect" id="node24" href="$df/d98/a03680.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="1785,131,1835,157"/>
+<area shape="rect" id="node27" href="$d6/db7/a04354.html#a11460f59ebd4d9f7dc2f12724dece886" title="Util::combineFilePath" alt="" coords="769,584,928,611"/>
+<area shape="rect" id="node28" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="765,635,932,661"/>
+<area shape="rect" id="node30" href="$d1/d55/a04496.html#af5404b3339d48c4531df60b77ce628c3" title="get the name of the the additional data directory " alt="" coords="741,518,956,559"/>
+<area shape="rect" id="node29" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1019,635,1171,661"/>
+<area shape="rect" id="node35" href="$da/d6a/a06284.html#aa627bf29adf16e7fcf2c684b1fa19d13" title="LaserProfile::getProfileMax" alt="" coords="1524,361,1719,388"/>
+<area shape="rect" id="node36" href="$d4/d6f/a03374.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="1596,309,1647,336"/>
+<area shape="rect" id="node38" href="$dd/dbc/a03800.html#acb24191df3a19b295603a460591ba95d" title="level3" alt="" coords="559,467,622,493"/>
+<area shape="rect" id="node39" href="$d9/d03/a11852.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="756,467,941,493"/>
+<area shape="rect" id="node41" href="$da/d6a/a06284.html#a6e4bd471d76f2850e319ac89ed553886" title="LaserProfile::readPGMFile" alt="" coords="497,799,684,825"/>
+<area shape="rect" id="node46" href="$da/d6a/a06284.html#aafa5f434cde0fd7d14fa0899e936c887" title="LaserProfile::readHDF5File" alt="" coords="495,849,687,876"/>
+<area shape="rect" id="node42" href="$d1/d65/a06240.html#a2ea9c078b8ed8fd8cab6fbc29f4188f9" title="PortableGraymapReader\l::getWidth" alt="" coords="758,737,939,778"/>
+<area shape="rect" id="node43" href="$d1/d65/a06240.html#a45e48ff68876b7c3f0d7ac6e0c5065a6" title="PortableGraymapReader\l::getHeight" alt="" coords="758,802,939,843"/>
+<area shape="rect" id="node44" href="$d1/d65/a06240.html#a467b1ff4cdc747c12a6512dc50670707" title="PortableGraymapReader\l::getPixel" alt="" coords="758,867,939,909"/>
+<area shape="rect" id="node45" href="$d1/d65/a06240.html#a45a0c6b734f3a89f4e4f6e116450507f" title="PortableGraymapReader\l::getIdx" alt="" coords="1004,867,1185,909"/>
+<area shape="rect" id="node48" href="$da/d6a/a06284.html#a15eb14deaaeae65970699cbea55e175e" title="LaserProfile::getXY" alt="" coords="777,685,921,712"/>
+</map>

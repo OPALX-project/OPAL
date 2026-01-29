@@ -1,0 +1,35 @@
+<map id="ippl/src/Index/SIndexAssign.h" name="ippl/src/Index/SIndexAssign.h">
+<area shape="rect" id="node2" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="2011,603,2183,629"/>
+<area shape="rect" id="node28" href="$df/d89/a03440.html" title="Index/SIndexAssign.hpp" alt="" coords="1699,80,1877,107"/>
+<area shape="rect" id="node3" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="1899,677,2051,704"/>
+<area shape="rect" id="node22" href="$d4/d78/a03677.html" title="PETE/IpplTypeComputations.h" alt="" coords="2202,677,2417,704"/>
+<area shape="rect" id="node24" href="$df/d98/a03680.html" title="PETE/PETE.h" alt="" coords="2075,677,2178,704"/>
+<area shape="rect" id="node10" href="$da/d72/a03527.html" title="Message/Message.hpp" alt="" coords="1835,752,2003,779"/>
+<area shape="rect" id="node11" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="353,827,479,853"/>
+<area shape="rect" id="node12" href="$dc/d61/a03893.html" title="Utility/StaticIpplInfo.h" alt="" coords="394,901,558,928"/>
+<area shape="rect" id="node14" href="$da/d1a/a03803.html" title="Utility/Inform.h" alt="" coords="197,901,318,928"/>
+<area shape="rect" id="node23" href="$d6/dc7/a03683.html" title="PETE/TypeComputations.h" alt="" coords="2425,752,2615,779"/>
+<area shape="rect" id="node25" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="1162,752,1289,779"/>
+<area shape="rect" id="node29" href="$d2/d78/a03431.html" title="Index/SIndex.h" alt="" coords="1149,155,1267,181"/>
+<area shape="rect" id="node48" href="$d8/d5d/a03329.html" title="Field/BrickIterator.h" alt="" coords="1902,304,2050,331"/>
+<area shape="rect" id="node30" href="$dd/dfe/a03425.html" title="Index/NDIndex.h" alt="" coords="1105,453,1236,480"/>
+<area shape="rect" id="node35" href="$d8/df8/a03443.html" title="Index/SOffset.h" alt="" coords="1019,379,1141,405"/>
+<area shape="rect" id="node36" href="$d3/dff/a03422.html" title="Index/LSIndex.h" alt="" coords="1232,304,1357,331"/>
+<area shape="rect" id="node40" href="$d1/d35/a03398.html" title="FieldLayout/FieldLayoutUser.h" alt="" coords="195,379,410,405"/>
+<area shape="rect" id="node44" href="$d5/d85/a03434.html" title="Index/SIndex.hpp" alt="" coords="827,229,962,256"/>
+<area shape="rect" id="node31" href="$d6/daa/a03413.html" title="Index/Index.h" alt="" coords="1209,528,1319,555"/>
+<area shape="rect" id="node34" href="$d5/d6b/a03428.html" title="Index/NDIndexInlines.h" alt="" coords="1019,603,1192,629"/>
+<area shape="rect" id="node32" href="$d1/d42/a03419.html" title="Index/IndexInlines.h" alt="" coords="1217,603,1370,629"/>
+<area shape="rect" id="node33" href="$d0/d33/a03899.html" title="Utility/Unique.h" alt="" coords="411,677,535,704"/>
+<area shape="rect" id="node37" href="$da/dfd/a03401.html" title="FieldLayout/Vnode.h" alt="" coords="739,379,893,405"/>
+<area shape="rect" id="node39" href="$de/d7e/a03914.html" title="Utility/Vec.h" alt="" coords="1496,528,1597,555"/>
+<area shape="rect" id="node38" href="$d5/d3c/a03875.html" title="Utility/RefCounted.h" alt="" coords="689,453,842,480"/>
+<area shape="rect" id="node41" href="$d6/de4/a03905.html" title="Utility/User.h" alt="" coords="304,528,411,555"/>
+<area shape="rect" id="node42" href="$d4/da4/a03911.html" title="Utility/UserList.h" alt="" coords="331,453,461,480"/>
+<area shape="rect" id="node43" href="$d6/d9d/a03917.html" title="Utility/vmap.h" alt="" coords="587,528,701,555"/>
+<area shape="rect" id="node45" href="$df/df7/a03416.html" title="Index/IndexedSIndex.h" alt="" coords="1037,304,1208,331"/>
+<area shape="rect" id="node46" href="$d2/d21/a03392.html" title="FieldLayout/FieldLayout.h" alt="" coords="507,304,693,331"/>
+<area shape="rect" id="node47" href="$d1/dda/a03260.html" title="DomainMap/DomainMap.h" alt="" coords="917,677,1112,704"/>
+<area shape="rect" id="node49" href="$d6/d83/a03332.html" title="Field/BrickIterator.hpp" alt="" coords="1598,379,1762,405"/>
+<area shape="rect" id="node50" href="$d2/d76/a03296.html" title="Field/AssignDefs.h" alt="" coords="1635,453,1776,480"/>
+</map>

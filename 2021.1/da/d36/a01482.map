@@ -1,0 +1,24 @@
+<map id="src/Classic/Fields/SectorMagneticFieldMap.h" name="src/Classic/Fields/SectorMagneticFieldMap.h">
+<area shape="rect" id="node6" href="$d7/d1d/a01475.html" title="Fields/SectorField.h" alt="" coords="1527,95,1673,121"/>
+<area shape="rect" id="node7" href="$d3/d53/a01262.html" title="Fields/Fieldmap.h" alt="" coords="1889,169,2023,196"/>
+<area shape="rect" id="node8" href="$db/ddf/a13198.html" title="Algorithms/Vektor.h" alt="" coords="2042,244,2193,271"/>
+<area shape="rect" id="node9" href="$db/db0/a13201.html" title="AppTypes/Vektor.h" alt="" coords="1893,319,2035,345"/>
+<area shape="rect" id="node10" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="2203,543,2330,569"/>
+<area shape="rect" id="node13" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="1748,468,1900,495"/>
+<area shape="rect" id="node29" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="1949,393,2121,420"/>
+<area shape="rect" id="node33" href="$da/de5/a03170.html" title="AppTypes/TSVMeta.h" alt="" coords="919,393,1076,420"/>
+<area shape="rect" id="node18" href="$da/d72/a03527.html" title="Message/Message.hpp" alt="" coords="1424,543,1592,569"/>
+<area shape="rect" id="node19" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="1305,617,1431,644"/>
+<area shape="rect" id="node20" href="$dc/d61/a03893.html" title="Utility/StaticIpplInfo.h" alt="" coords="629,692,793,719"/>
+<area shape="rect" id="node22" href="$da/d1a/a03803.html" title="Utility/Inform.h" alt="" coords="1430,692,1551,719"/>
+<area shape="rect" id="node30" href="$d4/d78/a03677.html" title="PETE/IpplTypeComputations.h" alt="" coords="1925,468,2139,495"/>
+<area shape="rect" id="node32" href="$df/d98/a03680.html" title="PETE/PETE.h" alt="" coords="2163,468,2266,495"/>
+<area shape="rect" id="node31" href="$d6/dc7/a03683.html" title="PETE/TypeComputations.h" alt="" coords="1937,543,2127,569"/>
+<area shape="rect" id="node34" href="$d3/dcf/a03173.html" title="AppTypes/TSVMetaAssign.h" alt="" coords="1473,468,1673,495"/>
+<area shape="rect" id="node35" href="$d1/d45/a03191.html" title="AppTypes/TSVMetaUnary.h" alt="" coords="144,468,339,495"/>
+<area shape="rect" id="node36" href="$df/d0d/a03176.html" title="AppTypes/TSVMetaBinary.h" alt="" coords="363,468,560,495"/>
+<area shape="rect" id="node37" href="$d1/d30/a03185.html" title="AppTypes/TSVMetaDot.h" alt="" coords="585,468,765,495"/>
+<area shape="rect" id="node38" href="$dd/d71/a03182.html" title="AppTypes/TSVMetaCross.h" alt="" coords="789,468,982,495"/>
+<area shape="rect" id="node39" href="$da/dfb/a03188.html" title="AppTypes/TSVMetaDotDot.h" alt="" coords="1007,468,1209,495"/>
+<area shape="rect" id="node40" href="$db/d65/a03179.html" title="AppTypes/TSVMetaCompare.h" alt="" coords="1233,468,1449,495"/>
+</map>

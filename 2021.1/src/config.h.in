@@ -1,0 +1,14 @@
+/* Define to the one symbol short name of this package. */
+#define OPAL_PROJECT_NAME "${PROJECT_NAME}"
+
+/* Define OPAL version */
+#define OPAL_PROJECT_VERSION "${PROJECT_VERSION}"
+#define OPAL_VERSION_MAJOR   ${PROJECT_VERSION_MAJOR}
+#define OPAL_VERSION_MINOR   ${PROJECT_VERSION_MINOR}
+#define OPAL_VERSION_PATCH   ${PROJECT_VERSION_PATCH}
+
+/* Define string with the options used to compile OPAL */
+#define OPAL_COMPILE_OPTIONS "${OPAL_COMPILE_OPTIONS} ${CMAKE_CXX_FLAGS}"
+
+/* Define to the address where bug reports for this package should be sent. */
+#define PACKAGE_BUGREPORT "${PROJECT_BUGREPORT}"

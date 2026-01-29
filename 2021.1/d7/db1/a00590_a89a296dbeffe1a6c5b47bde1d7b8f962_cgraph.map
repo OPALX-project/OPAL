@@ -1,0 +1,14 @@
+<map id="operator==" name="operator==">
+<area shape="rect" id="node2" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="233,5,278,32"/>
+<area shape="rect" id="node4" href="$d7/ded/a05364.html#aaa729463c5e9207ffefd6d322ee594aa" title="Get axis vector. " alt="" coords="180,56,331,83"/>
+<area shape="rect" id="node5" href="$da/d05/a04920.html#aed7ae7d901915eb413c6c8b736f34f1e" title="Offset::getEndDirection" alt="" coords="169,107,342,133"/>
+<area shape="rect" id="node6" href="$da/d05/a04920.html#a8e793d23c2d9ee7a2c6212c23372e2be" title="Offset::getEndPosition" alt="" coords="172,157,339,184"/>
+<area shape="rect" id="node7" href="$da/d05/a04920.html#a0cc772e19f68c7e6b077a7e91764660c" title="Get geometry. " alt="" coords="178,208,333,235"/>
+<area shape="rect" id="node8" href="$da/d05/a04920.html#adfc84e76b7155476c168c959313eaa31" title="Offset::getIsLocal" alt="" coords="188,259,323,285"/>
+<area shape="rect" id="node9" href="$df/da2/a04828.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="167,309,343,336"/>
+<area shape="rect" id="node10" href="$d4/dcb/a05336.html#aff01b0f880a9b395149a71c7f0938b0b" title="Get rotation. " alt="" coords="174,360,337,387"/>
+<area shape="rect" id="node11" href="$d0/d8d/a05340.html#a7ee4b2abb157d1a41d074c184e0ac2d8" title="Get total transform from beginning to end. " alt="" coords="154,411,357,453"/>
+<area shape="rect" id="node12" href="$d4/dcb/a05336.html#aa11d7ee987d9f85367425adcdc783b81" title="Get displacement. " alt="" coords="181,477,330,504"/>
+<area shape="rect" id="node13" href="$da/d05/a04920.html#a1ee2625c3006834ed0bcba648d2c3411" title="Offset::isGeometryAllocated" alt="" coords="152,528,359,555"/>
+<area shape="rect" id="node3" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="407,5,592,32"/>
+</map>

@@ -1,0 +1,13 @@
+<map id="OrbitThreader" name="OrbitThreader">
+<area shape="rect" id="node2" href="$d3/dee/a06300.html" title="OpalBeamline" alt="" coords="973,79,1087,105"/>
+<area shape="rect" id="node3" href="$d3/d82/a05088.html" title="CoordinateSystemTrafo" alt="" coords="529,60,704,87"/>
+<area shape="rect" id="node4" href="$dc/ddb/a05144.html" title="Tenzor\&lt; double, 3 \&gt;" alt="" coords="209,5,364,32"/>
+<area shape="rect" id="node5" href="$d4/dc5/a05148.html" title="Quaternion" alt="" coords="239,56,334,83"/>
+<area shape="rect" id="node6" href="$df/d79/a07212.html" title="Vektor\&lt; double, 4 \&gt;" alt="" coords="5,56,160,83"/>
+<area shape="rect" id="node7" href="$df/d79/a07212.html" title="Vektor\&lt; double, 3 \&gt;" alt="" coords="209,143,364,169"/>
+<area shape="rect" id="node11" href="$dc/d4a/a04832.html" title="ElementBase::BoundingBox" alt="" coords="728,195,931,221"/>
+<area shape="rect" id="node8" href="$d6/dad/a04540.html" title="IndexMap" alt="" coords="987,256,1073,283"/>
+<area shape="rect" id="node9" href="$d3/d98/a06884.html" title="BorisPusher" alt="" coords="981,369,1079,396"/>
+<area shape="rect" id="node10" href="$db/d5a/a05136.html" title="Particle reference data. " alt="" coords="577,332,656,359"/>
+<area shape="rect" id="node12" href="$d2/dfe/a04620.html" title="StepSizeConfig" alt="" coords="971,420,1089,447"/>
+</map>

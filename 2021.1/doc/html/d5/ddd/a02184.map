@@ -1,0 +1,35 @@
+<map id="src/Elements/OpalMonitor.cpp" name="src/Elements/OpalMonitor.cpp">
+<area shape="rect" id="node2" href="$d5/d4d/a02186.html" title="Elements/OpalMonitor.h" alt="" coords="957,80,1134,107"/>
+<area shape="rect" id="node6" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="409,393,607,420"/>
+<area shape="rect" id="node31" href="$dd/d52/a00221.html" title="Attributes/Attributes.h" alt="" coords="1137,319,1303,345"/>
+<area shape="rect" id="node35" href="$dc/d92/a00929.html" title="BeamlineCore/MonitorRep.h" alt="" coords="1381,80,1584,107"/>
+<area shape="rect" id="node47" href="$da/d14/a02066.html" title="Utilities/Util.h" alt="" coords="2736,319,2848,345"/>
+<area shape="rect" id="node3" href="$dd/d3f/a02156.html" title="Elements/OpalElement.h" alt="" coords="906,155,1089,181"/>
+<area shape="rect" id="node4" href="$d6/d2d/a00047.html" title="AbstractObjects/Element.h" alt="" coords="765,237,960,263"/>
+<area shape="rect" id="node30" href="$dc/dd2/a01604.html" title="MemoryManagement/OwnPtr.h" alt="" coords="518,237,741,263"/>
+<area shape="rect" id="node5" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="703,319,886,345"/>
+<area shape="rect" id="node13" href="$d6/d82/a01607.html" title="MemoryManagement/Pointer.h" alt="" coords="93,565,315,591"/>
+<area shape="rect" id="node17" href="$d5/d5f/a00461.html" title="AbsBeamline/ElementBase.h" alt="" coords="1817,319,2028,345"/>
+<area shape="rect" id="node8" href="$d9/dfd/a01610.html" title="MemoryManagement/RCObject.h" alt="" coords="708,647,943,673"/>
+<area shape="rect" id="node7" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="339,557,525,599"/>
+<area shape="rect" id="node12" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="571,468,757,509"/>
+<area shape="rect" id="node9" href="$d9/d2e/a00056.html" title="AbstractObjects/Invalidator.h" alt="" coords="224,647,435,673"/>
+<area shape="rect" id="node18" href="$dd/db2/a00866.html" title="Algorithms/Quaternion.h" alt="" coords="2317,393,2499,420"/>
+<area shape="rect" id="node27" href="$d5/d4c/a01058.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="1686,475,1909,502"/>
+<area shape="rect" id="node28" href="$d5/d67/a01070.html" title="BeamlineGeometry/Geometry.h" alt="" coords="1643,393,1871,420"/>
+<area shape="rect" id="node19" href="$db/db0/a13201.html" title="AppTypes/Vektor.h" alt="" coords="2464,565,2605,591"/>
+<area shape="rect" id="node26" href="$db/ddf/a13198.html" title="Algorithms/Vektor.h" alt="" coords="2461,475,2611,502"/>
+<area shape="rect" id="node20" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="2065,647,2191,673"/>
+<area shape="rect" id="node21" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="2520,721,2672,748"/>
+<area shape="rect" id="node23" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="2449,647,2621,673"/>
+<area shape="rect" id="node24" href="$da/de5/a03170.html" title="AppTypes/TSVMeta.h" alt="" coords="2267,647,2424,673"/>
+<area shape="rect" id="node32" href="$df/ddd/a01655.html" title="Parser/Token.h" alt="" coords="995,565,1111,591"/>
+<area shape="rect" id="node36" href="$d4/d1e/a00497.html" title="AbsBeamline/Monitor.h" alt="" coords="1458,155,1630,181"/>
+<area shape="rect" id="node39" href="$da/d4e/a01106.html" title="BeamlineGeometry/Straight\lGeometry.h" alt="" coords="1379,229,1583,271"/>
+<area shape="rect" id="node46" href="$d5/d67/a01466.html" title="Fields/NullField.h" alt="" coords="2052,155,2183,181"/>
+<area shape="rect" id="node37" href="$df/d70/a00431.html" title="AbsBeamline/Component.h" alt="" coords="2039,237,2238,263"/>
+<area shape="rect" id="node40" href="$db/dc0/a01757.html" title="Structure/LossDataSink.h" alt="" coords="1830,237,2015,263"/>
+<area shape="rect" id="node38" href="$d6/d0f/a01256.html" title="Fields/EMField.h" alt="" coords="2587,319,2711,345"/>
+<area shape="rect" id="node41" href="$d6/d8b/a00821.html" title="Algorithms/OpalParticle.h" alt="" coords="2325,319,2512,345"/>
+<area shape="rect" id="node42" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="1355,475,1557,502"/>
+</map>

@@ -1,0 +1,21 @@
+<map id="Distribution::setDistParametersBinomial" name="Distribution::setDistParametersBinomial">
+<area shape="rect" id="node2" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="612,267,657,293"/>
+<area shape="rect" id="node4" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="563,157,706,184"/>
+<area shape="rect" id="node11" href="$d9/d4e/a04307.html#ab98e27fb1c758b0a63d9e242fcbe68e6" title="Get array value. " alt="" coords="545,107,724,133"/>
+<area shape="rect" id="node12" href="$d3/d12/a06268.html#a7ea77a275831927103deb7901428e031" title="Distribution::setSigmaP_m" alt="" coords="281,309,475,336"/>
+<area shape="rect" id="node20" href="$d3/d12/a06268.html#a423ed2d1a4a9f6b0f58ae201d3cadf8b" title="Distribution::setSigmaR_m" alt="" coords="280,208,476,235"/>
+<area shape="rect" id="node3" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="796,275,981,301"/>
+<area shape="rect" id="node5" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="793,157,984,184"/>
+<area shape="rect" id="node6" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="819,5,959,32"/>
+<area shape="rect" id="node7" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="809,56,968,83"/>
+<area shape="rect" id="node8" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="808,209,969,250"/>
+<area shape="rect" id="node9" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="815,107,962,133"/>
+<area shape="rect" id="node10" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="1032,107,1231,133"/>
+<area shape="rect" id="node13" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="609,317,660,344"/>
+<area shape="rect" id="node19" href="$d6/db7/a04354.html#a276345c918fce880c783438bf33641d2" title="Util::convertMomentumEVover\lCToBetaGamma" alt="" coords="524,369,745,410"/>
+<area shape="rect" id="node14" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="803,325,975,352"/>
+<area shape="rect" id="node15" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1527,275,1662,301"/>
+<area shape="rect" id="node16" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1038,325,1225,352"/>
+<area shape="rect" id="node17" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1279,325,1476,352"/>
+<area shape="rect" id="node18" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1524,325,1665,352"/>
+</map>

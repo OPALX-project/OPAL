@@ -1,0 +1,7 @@
+<map id="CCollimatorRep" name="CCollimatorRep">
+<area shape="rect" id="node2" href="$d2/d5c/a04788.html" title="CCollimator" alt="" coords="17,304,116,331"/>
+<area shape="rect" id="node3" href="$d1/db7/a04924.html" title="PluginElement" alt="" coords="9,229,125,256"/>
+<area shape="rect" id="node4" href="$dd/df4/a04800.html" title="Interface for a single beam element. " alt="" coords="18,155,115,181"/>
+<area shape="rect" id="node5" href="$df/da2/a04828.html" title="ElementBase" alt="" coords="13,80,121,107"/>
+<area shape="rect" id="node6" href="$db/d2a/a05808.html" title="Abstract base class for reference counted objects. " alt="" coords="26,5,107,32"/>
+</map>

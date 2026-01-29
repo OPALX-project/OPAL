@@ -1,0 +1,18 @@
+<map id="src/BasicActions/Help.cpp" name="src/BasicActions/Help.cpp">
+<area shape="rect" id="node2" href="$d3/d93/a00341.html" title="BasicActions/Help.h" alt="" coords="785,80,935,107"/>
+<area shape="rect" id="node4" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="505,229,687,256"/>
+<area shape="rect" id="node16" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="1055,229,1257,256"/>
+<area shape="rect" id="node19" href="$dd/d52/a00221.html" title="Attributes/Attributes.h" alt="" coords="862,229,1029,256"/>
+<area shape="rect" id="node23" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="1666,229,1793,256"/>
+<area shape="rect" id="node3" href="$dd/dad/a00005.html" title="AbstractObjects/Action.h" alt="" coords="745,155,927,181"/>
+<area shape="rect" id="node5" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="427,304,626,331"/>
+<area shape="rect" id="node7" href="$d9/dfd/a01610.html" title="MemoryManagement/RCObject.h" alt="" coords="5,557,240,584"/>
+<area shape="rect" id="node6" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="217,468,404,509"/>
+<area shape="rect" id="node11" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="348,379,535,420"/>
+<area shape="rect" id="node12" href="$d6/d82/a01607.html" title="MemoryManagement/Pointer.h" alt="" coords="479,475,700,502"/>
+<area shape="rect" id="node8" href="$d9/d2e/a00056.html" title="AbstractObjects/Invalidator.h" alt="" coords="264,557,475,584"/>
+<area shape="rect" id="node17" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="1244,304,1481,331"/>
+<area shape="rect" id="node20" href="$df/ddd/a01655.html" title="Parser/Token.h" alt="" coords="1002,475,1118,502"/>
+<area shape="rect" id="node24" href="$dc/d61/a03893.html" title="Utility/StaticIpplInfo.h" alt="" coords="1587,304,1751,331"/>
+<area shape="rect" id="node26" href="$da/d1a/a03803.html" title="Utility/Inform.h" alt="" coords="1827,304,1949,331"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="RFCavity" name="RFCavity">
+<area shape="rect" id="node5" href="$d5/d76/a05244.html" title="RFCavityRep" alt="" coords="5,304,109,331"/>
+<area shape="rect" id="node6" href="$d5/d6e/a04988.html" title="Interface for Traveling Wave. " alt="" coords="133,304,251,331"/>
+<area shape="rect" id="node2" href="$dd/df4/a04800.html" title="Interface for a single beam element. " alt="" coords="75,155,173,181"/>
+<area shape="rect" id="node3" href="$df/da2/a04828.html" title="ElementBase" alt="" coords="70,80,178,107"/>
+<area shape="rect" id="node4" href="$db/d2a/a05808.html" title="Abstract base class for reference counted objects. " alt="" coords="83,5,165,32"/>
+<area shape="rect" id="node7" href="$d1/d9e/a05300.html" title="TravelingWaveRep" alt="" coords="121,379,263,405"/>
+</map>

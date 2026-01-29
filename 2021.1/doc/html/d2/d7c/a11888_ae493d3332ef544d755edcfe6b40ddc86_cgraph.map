@@ -1,0 +1,5 @@
+<map id="IpplTimerInfo::stop" name="IpplTimerInfo::stop">
+<area shape="rect" id="node2" href="$d0/d4d/a11944.html#a81590170136304a4cee588088b8e1f8a" title="Timer::clock_time" alt="" coords="199,5,337,32"/>
+<area shape="rect" id="node3" href="$d0/d4d/a11944.html#ac25d4396c797cab1958e7349bbf2c5e8" title="Timer::cpu_time" alt="" coords="204,56,332,83"/>
+<area shape="rect" id="node4" href="$d0/d4d/a11944.html#a63f0eb44b27402196590a03781515dba" title="Timer::stop" alt="" coords="220,107,316,133"/>
+</map>

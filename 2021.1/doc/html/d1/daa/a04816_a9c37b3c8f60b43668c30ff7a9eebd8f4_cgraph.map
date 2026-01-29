@@ -1,0 +1,10 @@
+<map id="Cyclotron::apply" name="Cyclotron::apply">
+<area shape="rect" id="node2" href="$d1/daa/a04816.html#ab53becd33b204e9635a025b7108d2c38" title="Apply trim coils (calculate field contributions) with smooth field transition. " alt="" coords="181,56,363,83"/>
+<area shape="rect" id="node6" href="$d1/daa/a04816.html#ac2d2fd4fda9a37e0affed1a78b5c6a40" title="Cyclotron::interpolate" alt="" coords="191,132,353,159"/>
+<area shape="rect" id="node3" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="489,5,534,32"/>
+<area shape="rect" id="node5" href="$d1/daa/a04816.html#a9745a391e65b0faf01c8964b4e561282" title="Apply trim coils (calculate field contributions) " alt="" coords="411,56,612,83"/>
+<area shape="rect" id="node4" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="660,5,845,32"/>
+<area shape="rect" id="node7" href="$d3/dea/a04352.html#a9033829b3f188b895945fbf3c999fdc0" title="Convert degrees to radians. " alt="" coords="411,107,611,133"/>
+<area shape="rect" id="node8" href="$d0/d1e/a03674.html#aae355e465ddaedd0a66a3187cd09a5a8" title="fmod" alt="" coords="483,157,539,184"/>
+<area shape="rect" id="node9" href="$d1/daa/a04816.html#a4b1fa45840ed8fc1599f5769ae5c8878" title="Cyclotron::idx" alt="" coords="455,208,567,235"/>
+</map>

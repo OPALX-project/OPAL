@@ -1,0 +1,51 @@
+<map id="SequenceParser::parse" name="SequenceParser::parse">
+<area shape="rect" id="node2" href="$d4/d61/a06612.html#ace25f6664556fd0308e006ec75541f39" title="Sequence::addEndMarkers" alt="" coords="237,507,431,534"/>
+<area shape="rect" id="node5" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="1061,431,1228,458"/>
+<area shape="rect" id="node11" href="$d2/d5b/a06620.html#a733c061dd9c81756a9657f52589034d5" title="SequenceParser::fillPositions" alt="" coords="230,1081,438,1107"/>
+<area shape="rect" id="node19" href="$d4/d61/a06612.html#a510a396fca8cb52fdc5e2e06df2e96be" title="Sequence::insertDrifts" alt="" coords="251,609,417,635"/>
+<area shape="rect" id="node21" href="$d3/d19/a05828.html#aaa1bb4a243de8fa46292cacffd574edf" title="Test for keyword. " alt="" coords="807,1233,961,1259"/>
+<area shape="rect" id="node22" href="$d1/d55/a04496.html#a37632da51948a41456659b55e2176c91" title="Invalidate expressions. " alt="" coords="254,1233,414,1259"/>
+<area shape="rect" id="node24" href="$d9/dd5/a06652.html#a479d09c292d7e35db8c840f9a520c893" title="Check for end of statement. " alt="" coords="531,1461,691,1487"/>
+<area shape="rect" id="node30" href="$d2/d5b/a06620.html#abcc89d1c31f94dfd8ae866f5cf3cf6ac" title="SequenceParser::parseMember" alt="" coords="223,921,445,947"/>
+<area shape="rect" id="node44" href="$d3/d19/a05828.html#aec9c470a2c810d6e9b1a076f58eae21b" title="Return to start. " alt="" coords="270,1334,398,1361"/>
+<area shape="rect" id="node45" href="$d9/dd5/a06652.html#ab4dc58bf909195b3d9439e5f25c871dc" title="Set stop flag. " alt="" coords="270,1385,398,1411"/>
+<area shape="rect" id="node46" href="$d4/d61/a06612.html#a8dbfda8f4794c8afb8be0fef2a490663" title="Store sequence line. " alt="" coords="257,203,411,230"/>
+<area shape="rect" id="node3" href="$d5/d8e/a04448.html#a5b40298e379b7847c418b98760c601da" title="Find named Element. " alt="" coords="830,507,938,534"/>
+<area shape="rect" id="node7" href="$d5/d8e/a04448.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="805,279,963,306"/>
+<area shape="rect" id="node8" href="$d4/d61/a06612.html#a05b2a85a91a9b5c6212e0cd61aac45c5" title="Return sequence length. " alt="" coords="531,507,690,534"/>
+<area shape="rect" id="node10" href="$da/de3/a05388.html#a7c6a3c02d66b3cb4c97f05b08b102fef" title="Set the element pointer. " alt="" coords="537,609,684,635"/>
+<area shape="rect" id="node4" href="$d1/d55/a04496.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="1087,583,1202,610"/>
+<area shape="rect" id="node6" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1300,431,1452,458"/>
+<area shape="rect" id="node9" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="813,827,955,854"/>
+<area shape="rect" id="node12" href="$d2/d5b/a06620.html#a4ac8e379456e51920af23d95b196b31d" title="SequenceParser::findFrom\lPositions" alt="" coords="516,1364,705,1405"/>
+<area shape="rect" id="node14" href="$d2/d5b/a06620.html#ae10562b7f6b5aec7866336e6b0687235" title="SequenceParser::findNeighbour\lPositions" alt="" coords="499,913,723,955"/>
+<area shape="rect" id="node13" href="$d4/d61/a06612.html#a69aecc72fb71b30ad17d433832eedc29" title="Sequence::findNamedPosition" alt="" coords="776,1385,992,1411"/>
+<area shape="rect" id="node15" href="$df/d3d/a04480.html#aaba6fa24b81be56d195924fa9f6ea9bd" title="Find an attribute by name. " alt="" coords="807,929,961,955"/>
+<area shape="rect" id="node16" href="$d5/d8e/a04448.html#a58f835862b37de4aa36f82f51abd9ee5" title="Return element length. " alt="" coords="809,878,959,905"/>
+<area shape="rect" id="node17" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="803,1030,965,1057"/>
+<area shape="rect" id="node18" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="807,406,961,433"/>
+<area shape="rect" id="node20" href="$df/da2/a04828.html#a02db7a51bd2dee275faf331a9c2db557" title="Set element name. " alt="" coords="523,558,698,585"/>
+<area shape="rect" id="node23" href="$df/d3d/a04480.html#aa48af24109cadc6f450bcc37523651a5" title="Set/reset the [b]modified[/b] flag. " alt="" coords="822,1334,946,1361"/>
+<area shape="rect" id="node25" href="$d3/d19/a05828.html#addc8463ab069024b814f2a291c3fa620" title="Test for end of command. " alt="" coords="817,1587,951,1614"/>
+<area shape="rect" id="node26" href="$d3/d19/a05828.html#aeb97c1ae2faf5064efe45c9cc49a3b11" title="Test for delimiter. " alt="" coords="1297,1131,1455,1158"/>
+<area shape="rect" id="node27" href="$d3/d19/a05828.html#a432b410630045f73fcd57435499ecc3e" title="Return current character number in line. " alt="" coords="809,1537,959,1563"/>
+<area shape="rect" id="node28" href="$d3/d19/a05828.html#ad48f4bde092bb9fb68423da5b89d37d3" title="Print statement. " alt="" coords="820,1435,948,1462"/>
+<area shape="rect" id="node29" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1119,1359,1170,1386"/>
+<area shape="rect" id="node31" href="$da/dc0/a05392.html#a573261c872dbeaace4bdc1eadc69630a" title="Set reflection flag. " alt="" coords="493,710,728,737"/>
+<area shape="rect" id="node32" href="$d2/dc7/a04303.html#a9e29aecbec1ad7229b05c0a932040582" title="Parse string value. " alt="" coords="793,979,975,1006"/>
+<area shape="rect" id="node37" href="$d9/dd5/a06652.html#a6a3db2c0d1f0d4ac01af106e57752505" title="Find object by name in the main directory. " alt="" coords="822,659,946,686"/>
+<area shape="rect" id="node38" href="$df/d3d/a04480.html#a5cd1a79e44ec73019ed8657e33855291" title="Macro handler function. " alt="" coords="529,1081,693,1107"/>
+<area shape="rect" id="node39" href="$df/d3d/a04480.html#a7efb77eddd1a249e149dcfec616c2d3e" title="Return a clone. " alt="" coords="557,761,664,787"/>
+<area shape="rect" id="node40" href="$df/da2/a04828.html#aa60aedf5e43e6a4561b4a93e6962f377" title="Make a structural copy. " alt="" coords="507,659,714,686"/>
+<area shape="rect" id="node42" href="$d2/d5b/a06620.html#af3bc9b1e491c5aca7388b53713462d50" title="SequenceParser::parsePosition" alt="" coords="500,1131,721,1158"/>
+<area shape="rect" id="node43" href="$d1/d55/a04496.html#ad98bcdd94e9a6ce0149f2d3d976c8779" title="Define a new object. " alt="" coords="545,1237,676,1263"/>
+<area shape="rect" id="node33" href="$d3/d19/a05828.html#ac8e21e0dce1b621eacc7d1405f760af4" title="Return word value. " alt="" coords="1079,979,1210,1006"/>
+<area shape="rect" id="node34" href="$d3/d19/a05828.html#a4f177c8818ebf7047e4302b5886dca1e" title="Return string value. " alt="" coords="1087,929,1202,955"/>
+<area shape="rect" id="node35" href="$d2/dc7/a04303.html#aaede2a5e3540f59d253c0a565f161599" title="Test for one&#45;character delimiter. " alt="" coords="1042,1131,1247,1158"/>
+<area shape="rect" id="node36" href="$d2/dc7/a04303.html#acab3a7269ef8ca60c0ac1da0fcdb4bc0" title="Parse real constant. " alt="" coords="1040,1081,1249,1107"/>
+<area shape="rect" id="node41" href="$df/da2/a04828.html#aa5580165a9f8b9e6d873927cff20d986" title="Return clone. " alt="" coords="809,609,959,635"/>
+<area shape="rect" id="node47" href="$d1/d55/a04496.html#a696d78c4b23e4b0375ba2b3e0fc01e3b" title="Apply a function to all objects. " alt="" coords="547,51,674,78"/>
+<area shape="rect" id="node48" href="$d4/d61/a06612.html#a7a11f38b6f5a642a4587a2ba1e9b1d95" title="Return the embedded CLASSIC beam line. " alt="" coords="534,203,687,230"/>
+<area shape="rect" id="node49" href="$d4/d61/a06612.html#ae507f99575ceb3143d1b7538dbaba2b9" title="Return the reference type flag. " alt="" coords="521,254,700,281"/>
+<area shape="rect" id="node50" href="$df/d3d/a04480.html#aa6e71ce6385ca4963129458e9c51ae91" title="Increment and return the occurrence counter. " alt="" coords="541,102,680,129"/>
+</map>

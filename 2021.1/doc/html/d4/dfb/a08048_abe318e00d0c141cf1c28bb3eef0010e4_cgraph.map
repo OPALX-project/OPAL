@@ -1,0 +1,8 @@
+<map id="FFT&lt; SineTransform, Dim, T &gt;::setup" name="FFT&lt; SineTransform, Dim, T &gt;::setup">
+<area shape="rect" id="node2" href="$d7/d3a/a08056.html#acdafb6643adbbfc837507114ae8220a0" title="get dimension number from list of transformed dimensions " alt="" coords="218,5,413,32"/>
+<area shape="rect" id="node3" href="$d7/d3a/a08056.html#aaf2b61078c6637e69f216b65dbc982f5" title="do we compress temps? " alt="" coords="221,56,410,83"/>
+<area shape="rect" id="node4" href="$d7/d3a/a08056.html#a4aa9b793a79e7d326742c932ca2385c9" title="get our domain " alt="" coords="237,107,393,133"/>
+<area shape="rect" id="node5" href="$d7/d3a/a08056.html#a31ebac743710b1931fac01fb1716dc81" title="query number of transform dimensions " alt="" coords="209,157,421,184"/>
+<area shape="rect" id="node6" href="$d7/d3a/a08056.html#aa820fe11586ed6128ed31de5a8fd3d0c" title="query whether this dimension is to be transformed " alt="" coords="228,208,403,235"/>
+<area shape="rect" id="node7" href="$d7/d3a/a08056.html#a2177ec0df888376f04b58a70d8a120cc" title="FFTBase::transVnodes" alt="" coords="233,259,398,285"/>
+</map>

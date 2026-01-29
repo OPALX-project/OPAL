@@ -1,0 +1,51 @@
+<map id="ParallelCyclotronTracker::visitCyclotron" name="ParallelCyclotronTracker::visitCyclotron">
+<area shape="rect" id="node2" href="$dd/d03/a04604.html#acb81e900aff04c7a5326246d1d1b106e" title="ParallelCyclotronTracker\l::buildupFieldList" alt="" coords="262,142,441,183"/>
+<area shape="rect" id="node3" href="$df/da2/a04828.html#aa5580165a9f8b9e6d873927cff20d986" title="Return clone. " alt="" coords="276,208,427,235"/>
+<area shape="rect" id="node4" href="$d4/dfa/a00746.html#a38612900df9e86a0c30bbbcfab4f0be9" title="Cosine. " alt="" coords="329,309,373,336"/>
+<area shape="rect" id="node9" href="$d4/dfa/a00746.html#ae000d8140b7105680d14b9db8786945d" title="Sine. " alt="" coords="602,360,643,387"/>
+<area shape="rect" id="node18" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="326,411,377,437"/>
+<area shape="rect" id="node22" href="$db/d5a/a05136.html#a23dba80ac1c93b895b2d0b8748cbb739" title="The relativistic beta per particle. " alt="" coords="283,461,420,488"/>
+<area shape="rect" id="node23" href="$d1/daa/a04816.html#a6d21538ab068ab9ac41e5ef23dfe08a3" title="Cyclotron::getBScale" alt="" coords="273,512,430,539"/>
+<area shape="rect" id="node24" href="$d1/daa/a04816.html#a098ca2acb3fa6876ab88acb644665708" title="Cyclotron::getCyclHarm" alt="" coords="263,563,440,589"/>
+<area shape="rect" id="node25" href="$d1/daa/a04816.html#aecca8fc5b33b4aae7e36e6f18643a36e" title="Cyclotron::getCyclotronType" alt="" coords="249,613,454,640"/>
+<area shape="rect" id="node26" href="$d1/daa/a04816.html#a74ac40c48cd45b59ceb6ee79d41935af" title="Cyclotron::getEScale" alt="" coords="273,664,429,691"/>
+<area shape="rect" id="node27" href="$d1/daa/a04816.html#a42bdd09ae90b58b328d111f263fa2346" title="Cyclotron::getFieldMapFN" alt="" coords="258,715,445,741"/>
+<area shape="rect" id="node28" href="$db/d5a/a05136.html#a27d86c12be3dc52a56c245ff36041871" title="The relativistic gamma per particle. " alt="" coords="272,765,431,792"/>
+<area shape="rect" id="node29" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="268,816,435,843"/>
+<area shape="rect" id="node31" href="$d1/daa/a04816.html#a4c9eca7f86527b2973cc0e59a105f6cc" title="Cyclotron::getMaxR" alt="" coords="277,867,426,893"/>
+<area shape="rect" id="node32" href="$d1/daa/a04816.html#a6b494eac546c4882fe31875442156d38" title="Cyclotron::getMaxZ" alt="" coords="277,917,426,944"/>
+<area shape="rect" id="node33" href="$d1/daa/a04816.html#aea3b0d1c8394f7e5f4085916a7facef0" title="Cyclotron::getMinR" alt="" coords="279,968,424,995"/>
+<area shape="rect" id="node34" href="$d1/daa/a04816.html#a89d6cd7c8b5a7d0d853610b516e208d0" title="Cyclotron::getMinZ" alt="" coords="279,1019,424,1045"/>
+<area shape="rect" id="node35" href="$d1/daa/a04816.html#ae7ef6c8f2c32b4d352653702e9c5d19d" title="Cyclotron::getNumberOfTrimcoils" alt="" coords="232,1069,471,1096"/>
+<area shape="rect" id="node36" href="$d1/daa/a04816.html#a7b789e2c8e8dafd47e2acfcd9c97d0da" title="Cyclotron::getPHIinit" alt="" coords="273,1120,429,1147"/>
+<area shape="rect" id="node37" href="$d1/daa/a04816.html#a1ee6f03da77906adaea8ae75e4eca91c" title="Cyclotron::getPRinit" alt="" coords="276,1171,427,1197"/>
+<area shape="rect" id="node38" href="$d1/daa/a04816.html#a3ffb79294234b5f9a161c698c0219bf2" title="Cyclotron::getPZinit" alt="" coords="276,1221,427,1248"/>
+<area shape="rect" id="node39" href="$d1/daa/a04816.html#a7c5649a78e04b4650395e409f946d987" title="Cyclotron::getRfPhi" alt="" coords="278,1272,425,1299"/>
+<area shape="rect" id="node40" href="$d1/daa/a04816.html#ae825fac52f9fd89c8d72afeee8c7d9d6" title="Cyclotron::getRinit" alt="" coords="280,1323,423,1349"/>
+<area shape="rect" id="node41" href="$d1/daa/a04816.html#a60929072e89749b3003cfedb5a34fd34" title="Cyclotron::getRmax" alt="" coords="276,1373,427,1400"/>
+<area shape="rect" id="node42" href="$d1/daa/a04816.html#a45abd18f34b73644de07ee326e1eae15" title="Cyclotron::getRmin" alt="" coords="278,1424,425,1451"/>
+<area shape="rect" id="node43" href="$d1/daa/a04816.html#a156c84ef5b4abf775a91d0a78c531f41" title="Cyclotron::getSpiralFlag" alt="" coords="263,1475,440,1501"/>
+<area shape="rect" id="node44" href="$d1/daa/a04816.html#a5d36ea4776d7999579711be4d6c8c8b8" title="Cyclotron::getSuperpose" alt="" coords="261,1525,442,1552"/>
+<area shape="rect" id="node45" href="$d1/daa/a04816.html#a856e2c6f80b96099c311838d43707ec5" title="Cyclotron::getSymmetry" alt="" coords="261,1576,442,1603"/>
+<area shape="rect" id="node46" href="$d1/daa/a04816.html#a7244044e37c23a1caedada75c427cc7d" title="Cyclotron::getZinit" alt="" coords="280,1627,423,1653"/>
+<area shape="rect" id="node47" href="$d1/daa/a04816.html#a9e16c6bb041406486ba4f9afe5774baa" title="Cyclotron::initialise" alt="" coords="277,1677,425,1704"/>
+<area shape="rect" id="node48" href="$dd/d03/a04604.html#af22bc369a0c1bf03b2a4fd94ff544134" title="ParallelCyclotronTracker\l::isMultiBunch" alt="" coords="262,1729,441,1770"/>
+<area shape="rect" id="node50" href="$d4/dfa/a00746.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="599,208,646,235"/>
+<area shape="rect" id="node5" href="$db/df9/a05044.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1180,309,1324,336"/>
+<area shape="rect" id="node10" href="$db/df9/a05044.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="822,259,914,285"/>
+<area shape="rect" id="node6" href="$d4/d6f/a03374.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1374,157,1421,184"/>
+<area shape="rect" id="node7" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1605,107,1791,133"/>
+<area shape="rect" id="node8" href="$d4/d6f/a03374.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1471,107,1557,133"/>
+<area shape="rect" id="node11" href="$db/df9/a05044.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1009,259,1132,285"/>
+<area shape="rect" id="node12" href="$db/df9/a05044.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1017,157,1124,184"/>
+<area shape="rect" id="node13" href="$db/df9/a05044.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="1185,208,1319,235"/>
+<area shape="rect" id="node14" href="$db/df9/a05044.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="1183,259,1321,285"/>
+<area shape="rect" id="node15" href="$d0/d8b/a05048.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="1193,5,1311,32"/>
+<area shape="rect" id="node16" href="$db/df9/a05044.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="1201,107,1303,133"/>
+<area shape="rect" id="node17" href="$df/d98/a03680.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="1372,56,1423,83"/>
+<area shape="rect" id="node19" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="537,411,709,437"/>
+<area shape="rect" id="node20" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="775,411,961,437"/>
+<area shape="rect" id="node21" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="801,461,935,488"/>
+<area shape="rect" id="node30" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="547,816,699,843"/>
+<area shape="rect" id="node49" href="$d1/dc3/a04492.html#a5cccd734775026586eef70edb9982b4d" title="PartBunchBase::weHaveBins" alt="" coords="519,1736,727,1763"/>
+</map>

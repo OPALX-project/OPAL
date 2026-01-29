@@ -1,0 +1,23 @@
+<map id="OpalParser::readStatement" name="OpalParser::readStatement">
+<area shape="rect" id="node2" href="$d3/d19/a05828.html#a1f850d85458bb5d1a2a8b55a6643fb4b" title="Append a token. " alt="" coords="766,33,913,60"/>
+<area shape="rect" id="node3" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="575,337,626,364"/>
+<area shape="rect" id="node9" href="$dd/dce/a05840.html#af3c75bb1563dc851c714cead195c36ef" title="Return the token&#39;s file name. " alt="" coords="294,432,405,458"/>
+<area shape="rect" id="node10" href="$dd/dce/a05840.html#aabfcea7b4d2df9591a87095440764993" title="Return the token&#39;s line number. " alt="" coords="291,482,407,509"/>
+<area shape="rect" id="node11" href="$dd/dce/a05840.html#a2954e99066d74d540ededed11eaf469c" title="Test for delimiter. " alt="" coords="789,84,890,110"/>
+<area shape="rect" id="node12" href="$dd/dce/a05840.html#a4822f01048ccce2d0de033ee2be460f0" title="Test for end of file. " alt="" coords="787,236,891,262"/>
+<area shape="rect" id="node13" href="$dd/dce/a05840.html#a6774fc0b928966b65a6904effe76f676" title="Test for keyword. " alt="" coords="298,533,401,560"/>
+<area shape="rect" id="node14" href="$dd/dce/a05840.html#a1d4fce76848b7015d61b658df4130902" title="Test for string. " alt="" coords="291,584,408,610"/>
+<area shape="rect" id="node15" href="$dd/dce/a05840.html#a39bf9220800c0ca8341c3197fb201c00" title="Test for word. " alt="" coords="293,634,405,661"/>
+<area shape="rect" id="node16" href="$d9/dd5/a06652.html#a716da8362840d3c406cea96cc42ee48c" title="OpalParser::parseBracketList" alt="" coords="496,185,705,212"/>
+<area shape="rect" id="node18" href="$d9/dd5/a06652.html#a1d6f4cfc4ffed6f762a793493e903d34" title="OpalParser::parseTokenList" alt="" coords="251,160,448,186"/>
+<area shape="rect" id="node19" href="$d3/d19/a05828.html#aa4a916cf9e39d1a9edf2c97690282c34" title="Print position. " alt="" coords="264,330,435,357"/>
+<area shape="rect" id="node20" href="$d6/dfd/a05844.html#ac36e3948badf6b62c16c0cbcf775e8f3" title="Read single token from stream. " alt="" coords="258,685,441,712"/>
+<area shape="rect" id="node21" href="$d3/d19/a05828.html#aec9c470a2c810d6e9b1a076f58eae21b" title="Return to start. " alt="" coords="285,736,413,762"/>
+<area shape="rect" id="node22" href="$d4/ddf/a06032.html#a02110c105ed46e90667574cdb2e62a74" title="Return the message string for the exception. " alt="" coords="263,786,435,813"/>
+<area shape="rect" id="node4" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="753,286,925,313"/>
+<area shape="rect" id="node5" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="973,286,1160,313"/>
+<area shape="rect" id="node8" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1457,236,1591,262"/>
+<area shape="rect" id="node6" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1208,286,1405,313"/>
+<area shape="rect" id="node7" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1453,286,1595,313"/>
+<area shape="rect" id="node17" href="$d9/dd5/a06652.html#a1c27a3df8d6667e5a74053890a5524fe" title="Return next input token. " alt="" coords="756,160,923,186"/>
+</map>

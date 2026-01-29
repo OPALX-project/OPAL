@@ -1,0 +1,12 @@
+<map id="src/Classic/Fields/StaticElectricField.h" name="src/Classic/Fields/StaticElectricField.h">
+<area shape="rect" id="node2" href="$d4/d22/a01250.html" title="src/Classic/Fields\l/ConstEzField.h" alt="" coords="447,95,579,136"/>
+<area shape="rect" id="node11" href="$d2/d21/a01484.html" title="src/Classic/Fields\l/StaticElectricField.cpp" alt="" coords="604,95,772,136"/>
+<area shape="rect" id="node3" href="$d6/df2/a01175.html" title="src/Classic/Fields\l/AcceleratingField.h" alt="" coords="356,184,505,225"/>
+<area shape="rect" id="node10" href="$dd/d95/a01247.html" title="src/Classic/Fields\l/ConstEzField.cpp" alt="" coords="530,184,665,225"/>
+<area shape="rect" id="node4" href="$d3/dcd/a00965.html" title="src/Classic/BeamlineCore\l/RFCavityRep.h" alt="" coords="227,273,413,315"/>
+<area shape="rect" id="node7" href="$db/d08/a01028.html" title="src/Classic/BeamlineCore\l/TravelingWaveRep.h" alt="" coords="448,273,635,315"/>
+<area shape="rect" id="node5" href="$df/d88/a00962.html" title="src/Classic/BeamlineCore\l/RFCavityRep.cpp" alt="" coords="5,363,192,404"/>
+<area shape="rect" id="node6" href="$d0/d79/a02117.html" title="src/Elements/OpalCavity.cpp" alt="" coords="217,370,423,397"/>
+<area shape="rect" id="node8" href="$db/d23/a01025.html" title="src/Classic/BeamlineCore\l/TravelingWaveRep.cpp" alt="" coords="448,363,635,404"/>
+<area shape="rect" id="node9" href="$d8/d26/a02357.html" title="src/Elements/OpalTraveling\lWave.cpp" alt="" coords="659,363,858,404"/>
+</map>

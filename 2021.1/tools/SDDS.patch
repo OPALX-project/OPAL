@@ -1,0 +1,18 @@
+*** a/SDDS/include/mdb.h	2016-09-13 16:20:52.103038000 +0200
+--- b/SDDS/include/mdb.h	2016-09-13 16:21:54.605099520 +0200
+***************
+*** 1357,1366 ****
+--- 1357,1369 ----
+  
+  
+  #ifdef __cplusplus
++ }
+  #include <complex>
+  epicsShareFuncMDBMTH std::complex <double> complexErf(std::complex <double> z, long *flag);
+  epicsShareFuncMDBMTH std::complex <double> cexpi(double p);
+  epicsShareFuncMDBMTH std::complex <double> cipowr(std::complex <double> a, int n);
++ 
++ extern "C" {
+  #endif
+  
+  epicsShareFuncMDBMTH void complex_multiply(

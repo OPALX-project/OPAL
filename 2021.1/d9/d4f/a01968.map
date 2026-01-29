@@ -1,0 +1,28 @@
+<map id="src/Classic/Utilities/MSLang/Rotation.h" name="src/Classic/Utilities/MSLang/Rotation.h">
+<area shape="rect" id="node2" href="$d7/d98/a02003.html" title="Utilities/MSLang.h" alt="" coords="557,95,696,121"/>
+<area shape="rect" id="node3" href="$d4/d0d/a01904.html" title="Utilities/MSLang/Bounding\lBox.h" alt="" coords="93,169,285,211"/>
+<area shape="rect" id="node4" href="$db/ddf/a13198.html" title="Algorithms/Vektor.h" alt="" coords="403,259,554,285"/>
+<area shape="rect" id="node42" href="$dc/d31/a01892.html" title="Utilities/MSLang/AffineTransformation.h" alt="" coords="310,177,589,203"/>
+<area shape="rect" id="node43" href="$d2/d94/a03167.html" title="AppTypes/Tenzor.h" alt="" coords="1181,259,1323,285"/>
+<area shape="rect" id="node5" href="$db/db0/a13201.html" title="AppTypes/Vektor.h" alt="" coords="911,333,1052,360"/>
+<area shape="rect" id="node6" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="3001,557,3127,584"/>
+<area shape="rect" id="node10" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="741,483,893,509"/>
+<area shape="rect" id="node28" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="1149,408,1321,435"/>
+<area shape="rect" id="node32" href="$da/de5/a03170.html" title="AppTypes/TSVMeta.h" alt="" coords="1720,408,1877,435"/>
+<area shape="rect" id="node17" href="$da/d72/a03527.html" title="Message/Message.hpp" alt="" coords="733,557,901,584"/>
+<area shape="rect" id="node18" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="1570,632,1697,659"/>
+<area shape="rect" id="node19" href="$dc/d61/a03893.html" title="Utility/StaticIpplInfo.h" alt="" coords="1775,707,1939,733"/>
+<area shape="rect" id="node21" href="$da/d1a/a03803.html" title="Utility/Inform.h" alt="" coords="1630,707,1751,733"/>
+<area shape="rect" id="node29" href="$d4/d78/a03677.html" title="PETE/IpplTypeComputations.h" alt="" coords="918,483,1133,509"/>
+<area shape="rect" id="node31" href="$df/d98/a03680.html" title="PETE/PETE.h" alt="" coords="1209,483,1311,509"/>
+<area shape="rect" id="node30" href="$d6/dc7/a03683.html" title="PETE/TypeComputations.h" alt="" coords="1079,557,1270,584"/>
+<area shape="rect" id="node33" href="$d3/dcf/a03173.html" title="AppTypes/TSVMetaAssign.h" alt="" coords="2387,483,2587,509"/>
+<area shape="rect" id="node34" href="$d1/d45/a03191.html" title="AppTypes/TSVMetaUnary.h" alt="" coords="2611,483,2805,509"/>
+<area shape="rect" id="node35" href="$df/d0d/a03176.html" title="AppTypes/TSVMetaBinary.h" alt="" coords="2829,483,3027,509"/>
+<area shape="rect" id="node36" href="$d1/d30/a03185.html" title="AppTypes/TSVMetaDot.h" alt="" coords="1498,483,1678,509"/>
+<area shape="rect" id="node37" href="$dd/d71/a03182.html" title="AppTypes/TSVMetaCross.h" alt="" coords="1702,483,1895,509"/>
+<area shape="rect" id="node38" href="$da/dfb/a03188.html" title="AppTypes/TSVMetaDotDot.h" alt="" coords="1920,483,2123,509"/>
+<area shape="rect" id="node39" href="$db/d65/a03179.html" title="AppTypes/TSVMetaCompare.h" alt="" coords="2147,483,2363,509"/>
+<area shape="rect" id="node44" href="$d8/dec/a03164.html" title="AppTypes/SymTenzor.h" alt="" coords="1167,333,1337,360"/>
+<area shape="rect" id="node45" href="$da/d8d/a03158.html" title="AppTypes/AntiSymTenzor.h" alt="" coords="1362,333,1558,360"/>
+</map>

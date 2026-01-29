@@ -1,0 +1,28 @@
+<map id="optimizer/Expression/SDDSVariable.h" name="optimizer/Expression/SDDSVariable.h">
+<area shape="rect" id="node6" href="$d7/d12/a04298.html" title="Util/Types.h" alt="" coords="2453,95,2552,121"/>
+<area shape="rect" id="node26" href="$df/d58/a03998.html" title="function.hpp" alt="" coords="1387,319,1490,345"/>
+<area shape="rect" id="node33" href="$da/dfb/a04274.html" title="Util/SDDSReader.h" alt="" coords="1880,319,2021,345"/>
+<area shape="rect" id="node48" href="$d8/dc6/a04256.html" title="Util/SDDSParser/SDDSParser\lException.h" alt="" coords="2501,483,2707,524"/>
+<area shape="rect" id="node11" href="$d7/d5e/a03953.html" title="Expression/Expression.h" alt="" coords="1731,169,1911,196"/>
+<area shape="rect" id="node13" href="$d9/d81/a04157.html" title="Util/OptPilotException.h" alt="" coords="2523,319,2701,345"/>
+<area shape="rect" id="node14" href="$d9/d0c/a03992.html" title="Expression/Parser/expression.hpp" alt="" coords="1565,319,1805,345"/>
+<area shape="rect" id="node19" href="$de/d78/a13186.html" title="skipper.hpp" alt="" coords="105,401,202,427"/>
+<area shape="rect" id="node20" href="$d7/df2/a03986.html" title="Expression/Parser/evaluator.hpp" alt="" coords="1133,244,1363,271"/>
+<area shape="rect" id="node27" href="$dd/d81/a04001.html" title="Expression/Parser/requirements.hpp" alt="" coords="484,319,740,345"/>
+<area shape="rect" id="node31" href="$d1/d55/a03959.html" title="Expression/GlobalFunctions.h" alt="" coords="2147,244,2359,271"/>
+<area shape="rect" id="node16" href="$db/d69/a13174.html" title="ast.hpp" alt="" coords="1286,401,1357,427"/>
+<area shape="rect" id="node17" href="$d6/d5a/a13180.html" title="error_handler.hpp" alt="" coords="2189,490,2325,517"/>
+<area shape="rect" id="node34" href="$d6/d4e/a04271.html" title="SDDSParser.h" alt="" coords="1499,401,1608,427"/>
+<area shape="rect" id="node35" href="$d3/d5f/a13177.html" title="Util/SDDSParser/ast.hpp" alt="" coords="1622,654,1799,681"/>
+<area shape="rect" id="node37" href="$d4/d4b/a04232.html" title="Util/SDDSParser/file.hpp" alt="" coords="1287,490,1465,517"/>
+<area shape="rect" id="node38" href="$d7/d19/a13189.html" title="skipper.hpp" alt="" coords="1187,654,1285,681"/>
+<area shape="rect" id="node41" href="$d1/dde/a04223.html" title="description.hpp" alt="" coords="1205,572,1328,599"/>
+<area shape="rect" id="node42" href="$d1/dcc/a04250.html" title="parameter.hpp" alt="" coords="1525,572,1643,599"/>
+<area shape="rect" id="node43" href="$d7/dca/a04205.html" title="column.hpp" alt="" coords="1821,572,1920,599"/>
+<area shape="rect" id="node44" href="$df/dce/a04214.html" title="data.hpp" alt="" coords="1718,572,1797,599"/>
+<area shape="rect" id="node45" href="$d0/dd2/a04190.html" title="associate.hpp" alt="" coords="912,572,1024,599"/>
+<area shape="rect" id="node46" href="$d2/d29/a04181.html" title="array.hpp" alt="" coords="1048,572,1131,599"/>
+<area shape="rect" id="node47" href="$df/d88/a04241.html" title="include.hpp" alt="" coords="790,572,887,599"/>
+<area shape="rect" id="node39" href="$d1/db7/a13183.html" title="error_handler.hpp" alt="" coords="1411,654,1547,681"/>
+<area shape="rect" id="node40" href="$d1/d7a/a04262.html" title="version.hpp" alt="" coords="1352,572,1451,599"/>
+</map>

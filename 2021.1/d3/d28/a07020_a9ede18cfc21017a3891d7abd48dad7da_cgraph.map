@@ -1,0 +1,51 @@
+<map id="StatWriter::write" name="StatWriter::write">
+<area shape="rect" id="node2" href="$d5/d59/a07008.html#ad1261da8980ed31c601e12a1c7c1bc71" title="SDDSColumnSet::addColumn\lValue" alt="" coords="183,5,393,47"/>
+<area shape="rect" id="node3" href="$d0/d26/a07012.html#ac4d4201adcd06b23ee1161479a75c40a" title="SDDSWriter::close" alt="" coords="1023,1794,1162,1821"/>
+<area shape="rect" id="node4" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1253,1794,1387,1821"/>
+<area shape="rect" id="node5" href="$d3/d28/a07020.html#ae92850e788ca5005315553a81549e12c" title="StatWriter::fillHeader" alt="" coords="209,426,367,453"/>
+<area shape="rect" id="node10" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="767,223,933,250"/>
+<area shape="rect" id="node12" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="779,629,921,655"/>
+<area shape="rect" id="node20" href="$d1/dc3/a04492.html#a948918ac85a8c21cd6b5920461c2b751" title="PartBunchBase::get_DDx" alt="" coords="197,781,379,807"/>
+<area shape="rect" id="node21" href="$d1/dc3/a04492.html#a38d876eaf04b8e9a5ca3bdecbff9685a" title="PartBunchBase::get_DDy" alt="" coords="197,831,379,858"/>
+<area shape="rect" id="node22" href="$d1/dc3/a04492.html#a003dcc49a742d52f1e7e11c69bc6681f" title="PartBunchBase::get_Dx" alt="" coords="201,882,375,909"/>
+<area shape="rect" id="node23" href="$d1/dc3/a04492.html#aa00c7d675b9eace063e1efb97b4e0628" title="PartBunchBase::get_Dy" alt="" coords="201,933,375,959"/>
+<area shape="rect" id="node24" href="$d1/dc3/a04492.html#aaf75f59590b937a47247d0e53d21b0ad" title="PartBunchBase::get_halo" alt="" coords="197,983,379,1010"/>
+<area shape="rect" id="node25" href="$d1/dc3/a04492.html#aaa01b2db4d248d28fff4412e55eaa6a2" title="PartBunchBase::get\l_maxExtent" alt="" coords="214,1035,362,1076"/>
+<area shape="rect" id="node26" href="$d1/dc3/a04492.html#a02fe0321c9ea6a5dd397b567e24eea57" title="PartBunchBase::get\l_meanKineticEnergy" alt="" coords="210,1100,366,1141"/>
+<area shape="rect" id="node27" href="$d1/dc3/a04492.html#a9db005cb3654c4655f880247c37f9089" title="PartBunchBase::get\l_norm_emit" alt="" coords="214,1165,362,1207"/>
+<area shape="rect" id="node28" href="$d1/dc3/a04492.html#a738f1e551caa82b468286840ee7981f2" title="PartBunchBase::get_prms" alt="" coords="194,1231,382,1258"/>
+<area shape="rect" id="node29" href="$d1/dc3/a04492.html#afffeb91769af666331db4b79d4922118" title="PartBunchBase::get\l_rmean" alt="" coords="214,1283,362,1324"/>
+<area shape="rect" id="node30" href="$d1/dc3/a04492.html#aa0b6641b1ba46dda58d6971a8984007c" title="PartBunchBase::get\l_rprms" alt="" coords="214,1348,362,1389"/>
+<area shape="rect" id="node31" href="$d1/dc3/a04492.html#a55bafba7b6b623c88c2c69e30ce5c860" title="PartBunchBase::get_rrms" alt="" coords="195,1414,381,1441"/>
+<area shape="rect" id="node32" href="$d1/dc3/a04492.html#af1981256edd10c077d2c6ae225b1b9b6" title="PartBunchBase::get_sPos" alt="" coords="195,1465,381,1491"/>
+<area shape="rect" id="node33" href="$d1/dc3/a04492.html#a790f9eae835f61a362db86eb2790ca84" title="get the total charge per simulation particle " alt="" coords="191,1515,385,1542"/>
+<area shape="rect" id="node34" href="$d1/dc3/a04492.html#a7539bf2a20eaf7be1a73eac0e4fecf06" title="PartBunchBase::getdE" alt="" coords="206,1566,370,1593"/>
+<area shape="rect" id="node35" href="$d1/dc3/a04492.html#a4951c53df6841fd275a56f41fc76bfdf" title="PartBunchBase::getdT" alt="" coords="206,1617,370,1643"/>
+<area shape="rect" id="node36" href="$d1/dc3/a04492.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="181,1667,395,1694"/>
+<area shape="rect" id="node37" href="$d1/dc3/a04492.html#af792389ff15f7f9fe61a13138ff0d6f3" title="PartBunchBase::getT" alt="" coords="210,1718,366,1745"/>
+<area shape="rect" id="node38" href="$d1/dc3/a04492.html#a3473f0bbd78f0e387277bb72490d9ee3" title="PartBunchBase::getTotalNum" alt="" coords="183,1769,393,1795"/>
+<area shape="rect" id="node39" href="$d0/d26/a07012.html#aa02dd4d1ac257e951695636beac71d8e" title="SDDSWriter::open" alt="" coords="1024,1223,1161,1250"/>
+<area shape="rect" id="node40" href="$d0/d26/a07012.html#aaa843555c7279fd3a9791022bda13ec7" title="Write SDDS header. " alt="" coords="195,1921,381,1947"/>
+<area shape="rect" id="node49" href="$d0/d26/a07012.html#ad84a422f575580ad9ce226c758d84477" title="SDDSWriter::writeRow" alt="" coords="205,2022,371,2049"/>
+<area shape="rect" id="node6" href="$d5/d59/a07008.html#abff775573ece035e154afc13824cb02e" title="SDDSColumnSet::addColumn" alt="" coords="463,325,673,351"/>
+<area shape="rect" id="node7" href="$d0/d26/a07012.html#a73a5c6bccd0672cf79e11c8898ecabb7" title="SDDSWriter::addDefaultParameters" alt="" coords="443,375,693,402"/>
+<area shape="rect" id="node13" href="$d0/d26/a07012.html#a889981eb8060191dcd3c8fda0058069c" title="SDDSWriter::addDescription" alt="" coords="467,426,669,453"/>
+<area shape="rect" id="node14" href="$d0/d26/a07012.html#adc1b30c8b5ac9e22a493fcc77f7f36f6" title="SDDSWriter::addInfo" alt="" coords="491,477,645,503"/>
+<area shape="rect" id="node15" href="$da/dba/a07076.html#a4adfc867227c199839eca163e93da37c" title="Return date. " alt="" coords="481,527,655,554"/>
+<area shape="rect" id="node16" href="$d1/d55/a04496.html#a77ee645b42c83ac03ac8d6e1d1a8a1c1" title="get opals input filename " alt="" coords="488,578,648,605"/>
+<area shape="rect" id="node17" href="$d0/d26/a07012.html#a56e49afd6f1838d36507be3f02dd85a4" title="SDDSWriter::hasColumns" alt="" coords="475,173,661,199"/>
+<area shape="rect" id="node19" href="$da/dba/a07076.html#a6975c3ff3d6157c15de622f9123569ed" title="Return time. " alt="" coords="481,274,655,301"/>
+<area shape="rect" id="node8" href="$d0/d26/a07012.html#af42419eeb05b5084ae29fffa6b73cb2a" title="SDDSWriter::addParameter" alt="" coords="752,401,948,427"/>
+<area shape="rect" id="node9" href="$d6/db7/a04354.html#ad397fcf4ef2da5e1b9a560b2c73d79f6" title="Util::getGitRevision" alt="" coords="776,350,924,377"/>
+<area shape="rect" id="node11" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1017,223,1169,250"/>
+<area shape="rect" id="node18" href="$d5/d59/a07008.html#a5c871c6e101496af81abe7f337ba7de6" title="SDDSColumnSet::hasColumns" alt="" coords="741,173,959,199"/>
+<area shape="rect" id="node41" href="$d0/d26/a07012.html#a70c931bcaac7452b800467105623e469" title="SDDSWriter::writeColumns" alt="" coords="471,1895,665,1922"/>
+<area shape="rect" id="node43" href="$d0/d26/a07012.html#ac0d6d203ec0446c64082459609f1c776" title="SDDSWriter::writeDescription" alt="" coords="462,1997,674,2023"/>
+<area shape="rect" id="node47" href="$d0/d26/a07012.html#a510934f832463e33780bc3b5fd2eb0eb" title="SDDSWriter::writeInfo" alt="" coords="487,2047,649,2074"/>
+<area shape="rect" id="node48" href="$d0/d26/a07012.html#a8abe9146e039a28dfe7c0baf3295473b" title="SDDSWriter::writeParameters" alt="" coords="462,1946,674,1973"/>
+<area shape="rect" id="node42" href="$d5/d59/a07008.html#aef3d880ed9ac28f75ab6c3974dc2d850" title="SDDSColumnSet::writeHeader" alt="" coords="741,1895,959,1922"/>
+<area shape="rect" id="node44" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="825,2022,875,2049"/>
+<area shape="rect" id="node45" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1007,1946,1179,1973"/>
+<area shape="rect" id="node46" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1227,1946,1413,1973"/>
+<area shape="rect" id="node50" href="$d5/d59/a07008.html#abe9956e88c9f01ff043dd1494a69f0df" title="SDDSColumnSet::writeRow" alt="" coords="469,2098,667,2125"/>
+</map>

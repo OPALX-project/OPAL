@@ -1,0 +1,37 @@
+<map id="ippl/src/Index/SIndexAssign.hpp" name="ippl/src/Index/SIndexAssign.hpp">
+<area shape="rect" id="node2" href="$d5/d56/a03437.html" title="Index/SIndexAssign.h" alt="" coords="2241,304,2402,331"/>
+<area shape="rect" id="node12" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="1582,752,1709,779"/>
+<area shape="rect" id="node27" href="$d2/d78/a03431.html" title="Index/SIndex.h" alt="" coords="1405,80,1523,107"/>
+<area shape="rect" id="node48" href="$d8/d5d/a03329.html" title="Field/BrickIterator.h" alt="" coords="1977,229,2125,256"/>
+<area shape="rect" id="node3" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="2089,528,2261,555"/>
+<area shape="rect" id="node4" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="1823,603,1975,629"/>
+<area shape="rect" id="node21" href="$d4/d78/a03677.html" title="PETE/IpplTypeComputations.h" alt="" coords="1999,603,2214,629"/>
+<area shape="rect" id="node23" href="$df/d98/a03680.html" title="PETE/PETE.h" alt="" coords="2238,603,2341,629"/>
+<area shape="rect" id="node11" href="$da/d72/a03527.html" title="Message/Message.hpp" alt="" coords="1815,677,1983,704"/>
+<area shape="rect" id="node13" href="$dc/d61/a03893.html" title="Utility/StaticIpplInfo.h" alt="" coords="1755,827,1919,853"/>
+<area shape="rect" id="node15" href="$da/d1a/a03803.html" title="Utility/Inform.h" alt="" coords="1943,827,2065,853"/>
+<area shape="rect" id="node22" href="$d6/dc7/a03683.html" title="PETE/TypeComputations.h" alt="" coords="2161,677,2351,704"/>
+<area shape="rect" id="node24" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="1259,677,1386,704"/>
+<area shape="rect" id="node28" href="$dd/dfe/a03425.html" title="Index/NDIndex.h" alt="" coords="1140,379,1271,405"/>
+<area shape="rect" id="node33" href="$d8/df8/a03443.html" title="Index/SOffset.h" alt="" coords="1547,304,1669,331"/>
+<area shape="rect" id="node34" href="$d3/dff/a03422.html" title="Index/LSIndex.h" alt="" coords="1296,229,1421,256"/>
+<area shape="rect" id="node38" href="$d1/d35/a03398.html" title="FieldLayout/FieldLayoutUser.h" alt="" coords="195,304,410,331"/>
+<area shape="rect" id="node42" href="$d5/d85/a03434.html" title="Index/SIndex.hpp" alt="" coords="1397,155,1531,181"/>
+<area shape="rect" id="node29" href="$d6/daa/a03413.html" title="Index/Index.h" alt="" coords="933,453,1043,480"/>
+<area shape="rect" id="node32" href="$d5/d6b/a03428.html" title="Index/NDIndexInlines.h" alt="" coords="1119,528,1292,555"/>
+<area shape="rect" id="node30" href="$d1/d42/a03419.html" title="Index/IndexInlines.h" alt="" coords="839,528,993,555"/>
+<area shape="rect" id="node31" href="$d0/d33/a03899.html" title="Utility/Unique.h" alt="" coords="411,603,535,629"/>
+<area shape="rect" id="node35" href="$da/dfd/a03401.html" title="FieldLayout/Vnode.h" alt="" coords="771,304,925,331"/>
+<area shape="rect" id="node37" href="$de/d7e/a03914.html" title="Utility/Vec.h" alt="" coords="1848,528,1949,555"/>
+<area shape="rect" id="node36" href="$d5/d3c/a03875.html" title="Utility/RefCounted.h" alt="" coords="559,379,713,405"/>
+<area shape="rect" id="node39" href="$d6/de4/a03905.html" title="Utility/User.h" alt="" coords="304,453,411,480"/>
+<area shape="rect" id="node40" href="$d4/da4/a03911.html" title="Utility/UserList.h" alt="" coords="331,379,461,405"/>
+<area shape="rect" id="node41" href="$d6/d9d/a03917.html" title="Utility/vmap.h" alt="" coords="165,453,280,480"/>
+<area shape="rect" id="node43" href="$df/df7/a03416.html" title="Index/IndexedSIndex.h" alt="" coords="1496,229,1667,256"/>
+<area shape="rect" id="node44" href="$d2/d21/a03392.html" title="FieldLayout/FieldLayout.h" alt="" coords="640,229,827,256"/>
+<area shape="rect" id="node45" href="$d1/dda/a03260.html" title="DomainMap/DomainMap.h" alt="" coords="1351,603,1545,629"/>
+<area shape="rect" id="node46" href="$d1/d3a/a03353.html" title="Field/GuardCellSizes.h" alt="" coords="1001,304,1167,331"/>
+<area shape="rect" id="node47" href="$de/d6b/a03845.html" title="Utility/my_auto_ptr.h" alt="" coords="537,304,695,331"/>
+<area shape="rect" id="node49" href="$d6/d83/a03332.html" title="Field/BrickIterator.hpp" alt="" coords="1695,304,1859,331"/>
+<area shape="rect" id="node50" href="$d2/d76/a03296.html" title="Field/AssignDefs.h" alt="" coords="1721,379,1863,405"/>
+</map>

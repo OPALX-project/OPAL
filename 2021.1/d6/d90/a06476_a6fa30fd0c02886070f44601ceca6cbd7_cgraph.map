@@ -1,0 +1,14 @@
+<map id="OpalVacuum::clone" name="OpalVacuum::clone">
+<area shape="rect" id="node2" href="$d6/d90/a06476.html#a09c0aa9b051f5854044dc925731b3376" title="Exemplar constructor. " alt="" coords="200,148,395,175"/>
+<area shape="rect" id="node3" href="$d9/d4e/a04307.html#a0456a7ab32848a41f018f6464bc6ffde" title="Make logical attribute. " alt="" coords="479,5,639,32"/>
+<area shape="rect" id="node4" href="$d9/d4e/a04307.html#a68b7d34fbeb1da8447087c5ae6f3564f" title="Make predefined string attribute. " alt="" coords="459,57,659,98"/>
+<area shape="rect" id="node5" href="$d9/d4e/a04307.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="480,123,639,149"/>
+<area shape="rect" id="node6" href="$d9/d4e/a04307.html#ae9a947ca42d331f722e06f3a921fe170" title="Make string attribute. " alt="" coords="475,173,644,200"/>
+<area shape="rect" id="node7" href="$d2/dfe/a06332.html#af17ddf4b6ccfdcc6ce4ab34caa7ace82" title="OpalElement::registerOwnership" alt="" coords="443,224,676,251"/>
+<area shape="rect" id="node13" href="$d5/d8e/a04448.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="480,275,639,301"/>
+<area shape="rect" id="node8" href="$dd/d4b/a04432.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="724,133,943,174"/>
+<area shape="rect" id="node9" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="810,199,857,225"/>
+<area shape="rect" id="node11" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="752,249,915,276"/>
+<area shape="rect" id="node12" href="$df/d3d/a04480.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="766,300,901,327"/>
+<area shape="rect" id="node10" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="991,199,1141,225"/>
+</map>

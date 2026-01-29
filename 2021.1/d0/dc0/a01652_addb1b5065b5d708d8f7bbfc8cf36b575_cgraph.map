@@ -1,0 +1,7 @@
+<map id="operator&lt;&lt;" name="operator&lt;&lt;">
+<area shape="rect" id="node2" href="$dd/dce/a05840.html#ada1cc62aa4bf9b993429d885d99a8e6e" title="Return integer value. " alt="" coords="152,5,287,32"/>
+<area shape="rect" id="node4" href="$dd/dce/a05840.html#a4f0ed6a07ada75e5d0c1e06f09857493" title="Return the lexeme. " alt="" coords="163,56,275,83"/>
+<area shape="rect" id="node5" href="$dd/dce/a05840.html#ab28e2deb7e07b6645f1e114dbc809d83" title="Return real value. " alt="" coords="161,107,278,133"/>
+<area shape="rect" id="node6" href="$dd/dce/a05840.html#a129b1a1e572126addfb491233a01b76b" title="Return the token type. " alt="" coords="160,157,279,184"/>
+<area shape="rect" id="node3" href="$dd/dce/a05840.html#ab01344d54896e47732673fdca50e9d81" title="Token::invalid" alt="" coords="335,56,447,83"/>
+</map>

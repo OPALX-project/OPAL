@@ -1,0 +1,7 @@
+<map id="PluginElement::check" name="PluginElement::check">
+<area shape="rect" id="node2" href="$d1/db7/a04924.html#aea484d7de0bb513669c81a3f972c282c" title="Pure virtual hook for check. " alt="" coords="231,5,411,32"/>
+<area shape="rect" id="node3" href="$d1/db7/a04924.html#ae38fd6f860ed538e3cbada1a27c4d6e0" title="Finalise call after check. " alt="" coords="216,56,427,83"/>
+<area shape="rect" id="node5" href="$d1/db7/a04924.html#ae3e5832d4824eb2cac487ce735a5d666" title="Check if bunch is close to element. " alt="" coords="229,108,414,135"/>
+<area shape="rect" id="node4" href="$d1/db7/a04924.html#a898cecc34cc5277c0bb79efc0ce2fe96" title="Virtual hook for finaliseCheck. " alt="" coords="481,46,670,87"/>
+<area shape="rect" id="node6" href="$d1/db7/a04924.html#a8cf1fc1d083587ce43e79833aed13d59" title="Virtual hook for preCheck. " alt="" coords="475,112,676,139"/>
+</map>

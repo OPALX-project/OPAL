@@ -1,0 +1,12 @@
+<map id="Sequence::clone" name="Sequence::clone">
+<area shape="rect" id="node2" href="$d4/d61/a06612.html#a532b7e8df6ff6b2f990c14ae97859ca2" title="Exemplar constructor. " alt="" coords="181,81,337,108"/>
+<area shape="rect" id="node3" href="$d9/d4e/a04307.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="401,5,560,32"/>
+<area shape="rect" id="node4" href="$d9/d4e/a04307.html#ae9a947ca42d331f722e06f3a921fe170" title="Make string attribute. " alt="" coords="396,56,565,83"/>
+<area shape="rect" id="node5" href="$df/d3d/a04480.html#a11c14d6b194bf37c2883bb42922852ac" title="Object::registerOwnership" alt="" coords="385,107,576,133"/>
+<area shape="rect" id="node11" href="$d5/d8e/a04448.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="401,157,560,184"/>
+<area shape="rect" id="node6" href="$dd/d4b/a04432.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="624,15,843,57"/>
+<area shape="rect" id="node7" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="710,81,757,108"/>
+<area shape="rect" id="node9" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="652,132,815,159"/>
+<area shape="rect" id="node10" href="$df/d3d/a04480.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="666,183,801,209"/>
+<area shape="rect" id="node8" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="891,81,1041,108"/>
+</map>

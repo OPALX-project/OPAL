@@ -1,0 +1,204 @@
+/* 
+ *  Copyright (c) 2012, Chris Rogers
+ *  All rights reserved.
+ *  Redistribution and use in source and binary forms, with or without 
+ *  modification, are permitted provided that the following conditions are met: 
+ *  1. Redistributions of source code must retain the above copyright notice,
+ *     this list of conditions and the following disclaimer. 
+ *  2. Redistributions in binary form must reproduce the above copyright notice, 
+ *     this list of conditions and the following disclaimer in the documentation 
+ *     and/or other materials provided with the distribution.
+ *  3. Neither the name of STFC nor the names of its contributors may be used to 
+ *     endorse or promote products derived from this software without specific 
+ *     prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ *  AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+ *  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ *  ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+ *  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+ *  CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+ *  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+ *  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+ *  CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ *  POSSIBILITY OF SUCH DAMAGE.
+ */
+
+#include <vector>
+
+namespace interpolation {
+// inline declarations for Mesh class - keep them in a separate file to keep the
+// header file clean.
+
+Mesh::Mesh() {
+}
+
+Mesh::~Mesh() {
+}
+
+Mesh::Iterator::Iterator() {
+}
+
+Mesh::Iterator::Iterator(const Mesh::Iterator& in)
+    : mesh_m(in.mesh_m), state_m(in.state_m)   {
+}
+
+Mesh::Iterator::Iterator(std::vector<int> state, const Mesh* mesh)
+    : mesh_m(mesh), state_m(state) {
+}
+
+Mesh::Iterator::~Iterator() {
+}
+
+int Mesh::Iterator::toInteger() const {
+    return mesh_m->toInteger(*this);
+}
+
+std::vector<int> Mesh::Iterator::getState() const {
+    return state_m;
+}
+
+int& Mesh::Iterator::operator[](int i) {
+    return state_m[i];
+}
+
+const int& Mesh::Iterator::operator[](int i) const {
+    return state_m[i];
+}
+
+const Mesh* Mesh::Iterator::getMesh() const {
+    return mesh_m;
+}
+
+const Mesh::Iterator&  Mesh::Iterator::operator= (const Mesh::Iterator& rhs) {
+    mesh_m  = rhs.mesh_m;
+    state_m = rhs.state_m;
+    return *this;
+}
+
+void Mesh::Iterator::getPosition(double* point) const {
+    mesh_m->getPosition(*this, point);
+}
+
+std::vector<double> Mesh::Iterator::getPosition() const {
+    std::vector<double> PointV(mesh_m->getPositionDimension());
+    mesh_m->getPosition(*this, &PointV[0]);
+    return PointV;
+}
+
+Mesh::Iterator& operator++(Mesh::Iterator& lhs) {
+    return lhs.mesh_m->addOne(lhs);
+}
+
+Mesh::Iterator& operator--(Mesh::Iterator& lhs) {
+    return lhs.mesh_m->subOne(lhs);
+}
+
+Mesh::Iterator  operator++(Mesh::Iterator& lhs, int) {
+    Mesh::Iterator copy = lhs;
+    lhs.mesh_m->addOne(lhs);
+    return copy;
+}
+
+Mesh::Iterator  operator--(Mesh::Iterator& lhs, int) {
+    Mesh::Iterator copy = lhs;
+    lhs.mesh_m->subOne(lhs);
+    return copy;
+}
+
+Mesh::Iterator  operator-
+                        (const Mesh::Iterator& lhs, const Mesh::Iterator& rhs) {
+    Mesh::Iterator lhsCopy(lhs);
+    Mesh::Iterator lhsNew(lhs.mesh_m->subEquals(lhsCopy, rhs));
+    return lhsNew;
+}
+
+Mesh::Iterator  operator- (const Mesh::Iterator& lhs, const int& difference) {
+    Mesh::Iterator lhsCopy(lhs);
+    Mesh::Iterator lhsNew(lhs.mesh_m->subEquals(lhsCopy, difference));
+    return lhsNew;
+}
+
+Mesh::Iterator  operator+
+                      (const Mesh::Iterator& lhs, const Mesh::Iterator& rhs) {
+    Mesh::Iterator lhsCopy(lhs);
+    Mesh::Iterator lhsNew(lhs.mesh_m->addEquals(lhsCopy, rhs));
+    return lhsNew;
+}
+
+Mesh::Iterator  operator+ (const Mesh::Iterator& lhs, const int& difference) {
+    Mesh::Iterator lhsCopy(lhs);
+    Mesh::Iterator lhsNew(lhs.mesh_m->addEquals(lhsCopy, difference));
+    return lhsNew;
+}
+
+
+Mesh::Iterator& operator+=(Mesh::Iterator& lhs, const Mesh::Iterator& rhs) {
+    return lhs.mesh_m->addEquals(lhs, rhs);
+}
+
+Mesh::Iterator& operator-=(Mesh::Iterator& lhs, const Mesh::Iterator& rhs) {
+    return lhs.mesh_m->subEquals(lhs, rhs);
+}
+
+Mesh::Iterator& operator+=(Mesh::Iterator& lhs, const int& rhs) {
+    return lhs.mesh_m->addEquals(lhs, rhs);
+}
+
+Mesh::Iterator& operator-=(Mesh::Iterator& lhs, const int& rhs) {
+    return lhs.mesh_m->subEquals(lhs, rhs);
+}
+
+
+bool operator>=(const Mesh::Iterator& lhs, const Mesh::Iterator& rhs) {
+    if (lhs.mesh_m->isGreater(lhs, rhs) || lhs == rhs) return true;
+    return false;
+}
+
+bool operator<=(const Mesh::Iterator& lhs, const Mesh::Iterator& rhs) {
+    if (lhs.mesh_m->isGreater(lhs, rhs)) return false;
+    return true;
+}
+
+bool operator>(const Mesh::Iterator& lhs, const Mesh::Iterator& rhs) {
+    return !(lhs <= rhs);
+}
+
+bool operator<(const Mesh::Iterator& lhs, const Mesh::Iterator& rhs) {
+    return !(lhs >= rhs);
+}
+
+bool operator==(const Mesh::Iterator& lhs, const Mesh::Iterator& rhs) {
+    if (lhs.state_m == rhs.state_m)
+        return true;
+    return false;
+}
+
+bool operator!=(const Mesh::Iterator& lhs, const Mesh::Iterator& rhs) {
+    if (lhs.mesh_m == rhs.mesh_m && lhs.state_m == rhs.state_m)
+        return false;
+    return true;
+}
+
+bool Mesh::Iterator::isOutOfBounds() const {
+    if (!mesh_m) {
+        return true;
+    }
+    Mesh::Iterator first = mesh_m->begin();
+    Mesh::Iterator last = mesh_m->end()-1;
+    for (size_t i = 0; i < state_m.size(); ++i) {
+        if (state_m[i] < first[i] || state_m[i] > last[i]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Mesh::Iterator::addState(const Mesh::Iterator& it) {
+    for (size_t i = 0; i < state_m.size(); ++i)
+        state_m[i] += it.state_m[i];
+}
+
+}
+

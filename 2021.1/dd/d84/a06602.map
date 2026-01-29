@@ -1,0 +1,8 @@
+<map id="LineTemplate" name="LineTemplate">
+<area shape="rect" id="node2" href="$d2/d83/a06640.html" title="Abstract base class for macros. " alt="" coords="71,171,132,197"/>
+<area shape="rect" id="node3" href="$df/d3d/a04480.html" title="The base class for all OPAL objects. " alt="" coords="5,95,69,121"/>
+<area shape="rect" id="node4" href="$db/d2a/a05808.html" title="Abstract base class for reference counted objects. " alt="" coords="71,5,153,32"/>
+<area shape="rect" id="node6" href="$d6/dfd/a05844.html" title="Abstract interface for a stream of input tokens. " alt="" coords="179,95,285,121"/>
+<area shape="rect" id="node5" href="$d2/d56/a06648.html" title="An input buffer for macro commands. " alt="" coords="167,171,275,197"/>
+<area shape="rect" id="node7" href="$dd/dce/a05840.html" title="Representation of a single input token. " alt="" coords="202,5,262,32"/>
+</map>

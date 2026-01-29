@@ -1,0 +1,16 @@
+<map id="src/Lines/SequenceTemplate.h" name="src/Lines/SequenceTemplate.h">
+<area shape="rect" id="node2" href="$d1/d03/a02582.html" title="OpalParser/Macro.h" alt="" coords="895,80,1041,107"/>
+<area shape="rect" id="node16" href="$d0/da4/a01631.html" title="Parser/SimpleStatement.h" alt="" coords="1177,80,1367,107"/>
+<area shape="rect" id="node23" href="$db/d8b/a02594.html" title="OpalParser/MacroStream.h" alt="" coords="1037,229,1232,256"/>
+<area shape="rect" id="node3" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="715,155,898,181"/>
+<area shape="rect" id="node15" href="$df/ddd/a01655.html" title="Parser/Token.h" alt="" coords="895,401,1011,427"/>
+<area shape="rect" id="node4" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="355,229,554,256"/>
+<area shape="rect" id="node6" href="$d9/dfd/a01610.html" title="MemoryManagement/RCObject.h" alt="" coords="589,483,824,509"/>
+<area shape="rect" id="node5" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="289,393,476,435"/>
+<area shape="rect" id="node10" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="432,304,619,345"/>
+<area shape="rect" id="node11" href="$d6/d82/a01607.html" title="MemoryManagement/Pointer.h" alt="" coords="44,401,265,427"/>
+<area shape="rect" id="node7" href="$d9/d2e/a00056.html" title="AbstractObjects/Invalidator.h" alt="" coords="292,483,503,509"/>
+<area shape="rect" id="node17" href="$db/d95/a01637.html" title="Parser/Statement.h" alt="" coords="1205,311,1352,338"/>
+<area shape="rect" id="node19" href="$da/d1a/a03803.html" title="Utility/Inform.h" alt="" coords="1239,401,1361,427"/>
+<area shape="rect" id="node24" href="$d4/d41/a01661.html" title="Parser/TokenStream.h" alt="" coords="1019,311,1181,338"/>
+</map>

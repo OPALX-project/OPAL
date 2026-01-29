@@ -1,0 +1,15 @@
+<map id="src/Classic/Fields/BSingleMultipoleField.h" name="src/Classic/Fields/BSingleMultipoleField.h">
+<area shape="rect" id="node2" href="$d3/d7b/a00986.html" title="src/Classic/BeamlineCore\l/SingleMultipole.h" alt="" coords="532,95,719,136"/>
+<area shape="rect" id="node3" href="$d6/dad/a00941.html" title="src/Classic/BeamlineCore\l/Octupole.h" alt="" coords="5,184,192,225"/>
+<area shape="rect" id="node5" href="$d5/da3/a00953.html" title="src/Classic/BeamlineCore\l/Quadrupole.h" alt="" coords="216,184,403,225"/>
+<area shape="rect" id="node7" href="$d7/d98/a00983.html" title="src/Classic/BeamlineCore\l/Sextupole.h" alt="" coords="427,184,613,225"/>
+<area shape="rect" id="node9" href="$d7/d76/a00992.html" title="src/Classic/BeamlineCore\l/SkewOctupole.h" alt="" coords="637,184,824,225"/>
+<area shape="rect" id="node11" href="$d9/d9a/a00998.html" title="src/Classic/BeamlineCore\l/SkewQuadrupole.h" alt="" coords="848,184,1035,225"/>
+<area shape="rect" id="node13" href="$df/dbc/a01004.html" title="src/Classic/BeamlineCore\l/SkewSextupole.h" alt="" coords="1059,184,1245,225"/>
+<area shape="rect" id="node4" href="$d5/d54/a00938.html" title="src/Classic/BeamlineCore\l/Octupole.cpp" alt="" coords="5,273,192,315"/>
+<area shape="rect" id="node6" href="$df/d39/a00950.html" title="src/Classic/BeamlineCore\l/Quadrupole.cpp" alt="" coords="216,273,403,315"/>
+<area shape="rect" id="node8" href="$db/d20/a00980.html" title="src/Classic/BeamlineCore\l/Sextupole.cpp" alt="" coords="427,273,613,315"/>
+<area shape="rect" id="node10" href="$d4/d95/a00989.html" title="src/Classic/BeamlineCore\l/SkewOctupole.cpp" alt="" coords="637,273,824,315"/>
+<area shape="rect" id="node12" href="$dd/d48/a00995.html" title="src/Classic/BeamlineCore\l/SkewQuadrupole.cpp" alt="" coords="848,273,1035,315"/>
+<area shape="rect" id="node14" href="$df/d59/a01001.html" title="src/Classic/BeamlineCore\l/SkewSextupole.cpp" alt="" coords="1059,273,1245,315"/>
+</map>

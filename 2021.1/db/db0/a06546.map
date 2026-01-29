@@ -1,0 +1,6 @@
+<map id="Expressions::SBinary&lt; T, U &gt;" name="Expressions::SBinary&lt; T, U &gt;">
+<area shape="rect" id="node2" href="$d7/d79/a04452.html" title="A scalar expression. " alt="" coords="5,171,192,197"/>
+<area shape="rect" id="node3" href="$d4/d45/a04456.html" title="Expressions::PtrToScalar\&lt; U \&gt;" alt="" coords="217,171,437,197"/>
+<area shape="rect" id="node4" href="$d0/d5d/a05800.html" title="OwnPtr\&lt; Scalar\&lt; U \&gt; \&gt;" alt="" coords="237,95,416,121"/>
+<area shape="rect" id="node5" href="$d7/d79/a04452.html" title="Expressions::Scalar\&lt; U \&gt;" alt="" coords="233,5,421,32"/>
+</map>

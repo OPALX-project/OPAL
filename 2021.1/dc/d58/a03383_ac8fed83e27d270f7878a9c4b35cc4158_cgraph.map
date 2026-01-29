@@ -1,0 +1,8 @@
+<map id="BcastCuts" name="BcastCuts">
+<area shape="rect" id="node2" href="$d7/d31/a08956.html#acdb5351804f141ebb9c90e997fc5ae4e" title="Communicate::broadcast_all" alt="" coords="140,81,348,108"/>
+<area shape="rect" id="node7" href="$dc/dd6/a09360.html#a3fc943d7af8a5f88178faeab977802c0" title="Message::put" alt="" coords="190,132,298,159"/>
+<area shape="rect" id="node3" href="$d7/d31/a08956.html#aca765179d2843e977a7a78098c8cbde8" title="Communicate::getNodes" alt="" coords="396,5,579,32"/>
+<area shape="rect" id="node4" href="$d7/d31/a08956.html#aedbfc462a5f9babc3fc07f875847547f" title="Communicate::myNode" alt="" coords="399,56,575,83"/>
+<area shape="rect" id="node5" href="$d7/d31/a08956.html#a0980eed71a6f2ac1132190e52648c67e" title="Communicate::mysend" alt="" coords="401,107,574,133"/>
+<area shape="rect" id="node6" href="$d7/d31/a08956.html#add083ca7fa9466d949187d0e0fe31a2b" title="Communicate::add_msg" alt="" coords="397,157,577,184"/>
+</map>

@@ -1,0 +1,32 @@
+<map id="LineTemplate::makeInstance" name="LineTemplate::makeInstance">
+<area shape="rect" id="node2" href="$d3/d19/a05828.html#a1f850d85458bb5d1a2a8b55a6643fb4b" title="Append a token. " alt="" coords="281,157,427,184"/>
+<area shape="rect" id="node3" href="$dd/dfe/a06600.html#afd29432c38e0b8e55eb3190e4302d1da" title="Make clone. " alt="" coords="308,208,400,235"/>
+<area shape="rect" id="node12" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="979,259,1141,285"/>
+<area shape="rect" id="node15" href="$df/d3d/a04480.html#a9296b6f5b05bcced3692466f8e803c0a" title="Copy attributes from another object. " alt="" coords="271,309,437,336"/>
+<area shape="rect" id="node16" href="$d1/d55/a04496.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="297,360,411,387"/>
+<area shape="rect" id="node18" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="271,411,437,437"/>
+<area shape="rect" id="node20" href="$dd/dce/a05840.html#a511f66ff8f632f4966e959c22e46762d" title="Return word value. " alt="" coords="293,461,415,488"/>
+<area shape="rect" id="node22" href="$dd/dce/a05840.html#a4822f01048ccce2d0de033ee2be460f0" title="Test for end of file. " alt="" coords="302,512,406,539"/>
+<area shape="rect" id="node23" href="$dd/dce/a05840.html#a39bf9220800c0ca8341c3197fb201c00" title="Test for word. " alt="" coords="298,563,410,589"/>
+<area shape="rect" id="node24" href="$dd/dfe/a06600.html#a394f3a18317433e9107b4a3f09cd91a0" title="Parse the line object. " alt="" coords="307,613,401,640"/>
+<area shape="rect" id="node25" href="$d2/d83/a06640.html#af344e7f39d98155f8c9b8f3e54fefa75" title="Parse actual arguments. " alt="" coords="277,664,431,691"/>
+<area shape="rect" id="node29" href="$d2/d56/a06648.html#accf744148a7e6ddac736663d1ba41e21" title="Read a token from the stream. " alt="" coords="263,715,445,741"/>
+<area shape="rect" id="node30" href="$d2/d56/a06648.html#a8275a34a45d9cd76fac4dc32085c0ddd" title="Reset stream to start. " alt="" coords="281,765,427,792"/>
+<area shape="rect" id="node31" href="$d3/d19/a05828.html#aec9c470a2c810d6e9b1a076f58eae21b" title="Return to start. " alt="" coords="290,816,418,843"/>
+<area shape="rect" id="node4" href="$dd/dfe/a06600.html#acc11b8a429d8cdd63ba6803dff5602b3" title="Exemplar constructor. " alt="" coords="535,132,619,159"/>
+<area shape="rect" id="node5" href="$d9/d4e/a04307.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="726,5,885,32"/>
+<area shape="rect" id="node6" href="$d9/d4e/a04307.html#aaaca5bec00805e40b85ec44bf0b1a873" title="Create real array attribute. " alt="" coords="708,56,903,83"/>
+<area shape="rect" id="node7" href="$d9/d4e/a04307.html#ae9a947ca42d331f722e06f3a921fe170" title="Make string attribute. " alt="" coords="721,107,890,133"/>
+<area shape="rect" id="node8" href="$df/d3d/a04480.html#a11c14d6b194bf37c2883bb42922852ac" title="Object::registerOwnership" alt="" coords="710,157,901,184"/>
+<area shape="rect" id="node14" href="$d5/d8e/a04448.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="726,208,885,235"/>
+<area shape="rect" id="node9" href="$df/d3d/a04480.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="993,91,1127,117"/>
+<area shape="rect" id="node10" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="1037,141,1083,168"/>
+<area shape="rect" id="node13" href="$dd/d4b/a04432.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="951,193,1169,234"/>
+<area shape="rect" id="node11" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1217,141,1368,168"/>
+<area shape="rect" id="node17" href="$d1/d13/a04444.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="520,360,633,387"/>
+<area shape="rect" id="node19" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="501,411,653,437"/>
+<area shape="rect" id="node21" href="$dd/dce/a05840.html#ab01344d54896e47732673fdca50e9d81" title="Token::invalid" alt="" coords="521,461,633,488"/>
+<area shape="rect" id="node26" href="$d3/d19/a05828.html#aeb97c1ae2faf5064efe45c9cc49a3b11" title="Test for delimiter. " alt="" coords="498,613,655,640"/>
+<area shape="rect" id="node27" href="$d3/d19/a05828.html#a1a0eb4cada570aae1069034300a11092" title="Return current token and skip it. " alt="" coords="493,664,660,691"/>
+<area shape="rect" id="node28" href="$dd/dce/a05840.html#a2954e99066d74d540ededed11eaf469c" title="Test for delimiter. " alt="" coords="526,715,627,741"/>
+</map>

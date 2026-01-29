@@ -1,0 +1,11 @@
+<map id="Expressions::ARefExpr&lt; T &gt;" name="Expressions::ARefExpr&lt; T &gt;">
+<area shape="rect" id="node2" href="$df/d25/a04464.html" title="An array expression. " alt="" coords="5,451,196,477"/>
+<area shape="rect" id="node3" href="$d1/d73/a04476.html" title="Abstract base class for references which must be invalidated when an. " alt="" coords="236,5,328,32"/>
+<area shape="rect" id="node9" href="$de/dc4/a04428.html" title="Abstract base class for attribute values of different types. " alt="" coords="309,81,420,108"/>
+<area shape="rect" id="node4" href="$dc/d7e/a04424.html" title="A representation of an Object attribute. " alt="" coords="272,451,351,477"/>
+<area shape="rect" id="node5" href="$d9/d19/a05804.html" title="Pointer\&lt; AttributeHandler \&gt;" alt="" coords="323,361,529,388"/>
+<area shape="rect" id="node6" href="$dd/d4b/a04432.html" title="Abstract base class for attribute parsers. " alt="" coords="361,272,491,299"/>
+<area shape="rect" id="node7" href="$db/d2a/a05808.html" title="Abstract base class for reference counted objects. " alt="" coords="455,5,536,32"/>
+<area shape="rect" id="node10" href="$df/d3d/a04480.html" title="The base class for all OPAL objects. " alt="" coords="526,132,590,159"/>
+<area shape="rect" id="node8" href="$d9/d19/a05804.html" title="Pointer\&lt; AttributeBase \&gt;" alt="" coords="271,183,458,209"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="ConstChannel" name="ConstChannel">
+<area shape="rect" id="node2" href="$dd/dc9/a05400.html" title="Abstract interface for read/write access to variable. " alt="" coords="189,80,264,107"/>
+<area shape="rect" id="node3" href="$da/df4/a05408.html" title="Direct access to a [b]double[/b] variable. " alt="" coords="5,155,120,181"/>
+<area shape="rect" id="node4" href="$d8/d73/a05412.html" title="Access to an indexed [b]double[/b] data member. " alt="" coords="144,155,309,181"/>
+<area shape="rect" id="node5" href="$d3/d7f/a05416.html" title="Access to a [b]double[/b] data member. " alt="" coords="333,155,496,181"/>
+</map>

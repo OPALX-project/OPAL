@@ -1,0 +1,7 @@
+<map id="TravelingWaveRep" name="TravelingWaveRep">
+<area shape="rect" id="node2" href="$d5/d6e/a04988.html" title="Interface for Traveling Wave. " alt="" coords="17,304,135,331"/>
+<area shape="rect" id="node3" href="$da/d94/a04940.html" title="Interface for RF cavity. " alt="" coords="36,229,116,256"/>
+<area shape="rect" id="node4" href="$dd/df4/a04800.html" title="Interface for a single beam element. " alt="" coords="27,155,125,181"/>
+<area shape="rect" id="node5" href="$df/da2/a04828.html" title="ElementBase" alt="" coords="22,80,130,107"/>
+<area shape="rect" id="node6" href="$db/d2a/a05808.html" title="Abstract base class for reference counted objects. " alt="" coords="35,5,117,32"/>
+</map>

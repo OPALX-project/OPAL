@@ -1,0 +1,51 @@
+<map id="SigmaGenerator::match" name="SigmaGenerator::match">
+<area shape="rect" id="node2" href="$d6/db7/a04354.html#a11460f59ebd4d9f7dc2f12724dece886" title="Util::combineFilePath" alt="" coords="537,664,696,691"/>
+<area shape="rect" id="node3" href="$df/d40/a06296.html#abc877e51ae11d72e1aacefee6f2b7bec" title="Block diagonalizes the symplex part of the one turn transfer matrix. " alt="" coords="519,259,714,285"/>
+<area shape="rect" id="node18" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="851,883,901,909"/>
+<area shape="rect" id="node24" href="$df/d40/a06296.html#ae5daa6c957f70ef23294032478de8ef7" title="Transforms a floating point value to a string. " alt="" coords="511,613,722,640"/>
+<area shape="rect" id="node25" href="$d1/d55/a04496.html#af5404b3339d48c4531df60b77ce628c3" title="get the name of the the additional data directory " alt="" coords="509,817,724,858"/>
+<area shape="rect" id="node26" href="$df/d40/a06296.html#a15089b1a781af746c292191fb40a2808" title="SigmaGenerator::getEmittances" alt="" coords="231,984,461,1011"/>
+<area shape="rect" id="node27" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="533,765,700,792"/>
+<area shape="rect" id="node29" href="$d1/daa/a04816.html#a7b789e2c8e8dafd47e2acfcd9c97d0da" title="Cyclotron::getPHIinit" alt="" coords="268,1035,424,1061"/>
+<area shape="rect" id="node30" href="$df/d40/a06296.html#adb02be1aa1c1205130e1e29b6dfa0c31" title="SigmaGenerator::initialize" alt="" coords="250,563,442,589"/>
+<area shape="rect" id="node45" href="$df/d40/a06296.html#a0e26dac345551afd941e1632c4c875ac" title="SigmaGenerator::writeMatrix" alt="" coords="511,512,722,539"/>
+<area shape="rect" id="node46" href="$df/d40/a06296.html#a5b774aa8df9f43f119d7cbde36628f92" title="Returns the L2&#45;error norm between the old and new sigma&#45;matrix. " alt="" coords="237,395,455,421"/>
+<area shape="rect" id="node47" href="$df/d40/a06296.html#a2affbf401db75ca2c896e7f324ad3e1d" title="Computes the new initial sigma matrix. " alt="" coords="237,497,455,538"/>
+<area shape="rect" id="node49" href="$df/d40/a06296.html#ae090f0f4a7505cf0da2fe134cfa0e9ef" title="Computes new sigma matrices (one for each angle) " alt="" coords="235,715,457,741"/>
+<area shape="rect" id="node50" href="$df/d40/a06296.html#ade0f6f762ffcdad378fcb8b2c0407fa1" title="Called within SigmaGenerator::match(). " alt="" coords="245,817,447,858"/>
+<area shape="rect" id="node4" href="$d9/dfe/a06292.html#ac150f958cab3c4e66c1e48b38a357354" title="RealDiracMatrix::diagonalize" alt="" coords="772,183,980,209"/>
+<area shape="rect" id="node17" href="$d9/dfe/a06292.html#a317116162b8aad99f625e34286cc698b" title="RealDiracMatrix::symplex" alt="" coords="781,259,971,285"/>
+<area shape="rect" id="node5" href="$d0/d1e/a03674.html#adece0042b4015b8521d983143b6af21a" title="atan2" alt="" coords="1097,5,1156,32"/>
+<area shape="rect" id="node6" href="$d2/d5e/a04363.html#ab994fd6ec746cde3c38fcb3980bb4f67" title="Computes the cross product &#160;of two vectors in . " alt="" coords="1039,56,1214,83"/>
+<area shape="rect" id="node7" href="$df/d98/a03680.html#a74dc182f1d4874ddea8940604665779b" title="fabs" alt="" coords="1101,309,1152,336"/>
+<area shape="rect" id="node8" href="$d9/dfe/a06292.html#ab11cd5dc339b9a250eb16fa62d219f3f" title="RealDiracMatrix::getRDM" alt="" coords="1035,259,1219,285"/>
+<area shape="rect" id="node9" href="$df/d98/a03680.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="1341,259,1392,285"/>
+<area shape="rect" id="node14" href="$d2/d5e/a04363.html#ad5dc1f3a945f5a5fdc9a5bf7da178fa0" title="Computes the trace of a square matrix. " alt="" coords="1058,107,1195,133"/>
+<area shape="rect" id="node16" href="$d9/dfe/a06292.html#a2d7f8720027dc05f2eeedd965817384f" title="RealDiracMatrix::transform" alt="" coords="1028,157,1225,184"/>
+<area shape="rect" id="node10" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1943,385,2128,412"/>
+<area shape="rect" id="node11" href="$df/d98/a03680.html#a0a1cdb80c431a477e99aea03fea993fc" title="Reduction" alt="" coords="1563,259,1650,285"/>
+<area shape="rect" id="node12" href="$df/d98/a03680.html#a1ea49580c5d70200ee20f6afbc6d6de3" title="for_each" alt="" coords="1785,208,1863,235"/>
+<area shape="rect" id="node13" href="$df/d98/a03680.html#a1a29834440d6844017cef5d516087c28" title="PETE_apply" alt="" coords="1775,259,1873,285"/>
+<area shape="rect" id="node15" href="$df/d98/a03680.html#a06dc3d53220b680f16b2c655bcb86a40" title="sum" alt="" coords="1341,157,1392,184"/>
+<area shape="rect" id="node19" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1041,857,1213,884"/>
+<area shape="rect" id="node20" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1273,857,1460,884"/>
+<area shape="rect" id="node23" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1757,807,1891,833"/>
+<area shape="rect" id="node21" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1508,857,1705,884"/>
+<area shape="rect" id="node22" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1753,857,1895,884"/>
+<area shape="rect" id="node28" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="800,765,952,792"/>
+<area shape="rect" id="node31" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1584,588,1629,615"/>
+<area shape="rect" id="node32" href="$d4/dfa/a00746.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="593,461,640,488"/>
+<area shape="rect" id="node33" href="$db/df9/a05044.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1295,563,1439,589"/>
+<area shape="rect" id="node38" href="$db/df9/a05044.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="830,461,922,488"/>
+<area shape="rect" id="node34" href="$d4/d6f/a03374.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="1583,512,1630,539"/>
+<area shape="rect" id="node35" href="$d4/d6f/a03374.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1781,512,1867,539"/>
+<area shape="rect" id="node36" href="$d2/d76/a03296.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="1996,537,2075,564"/>
+<area shape="rect" id="node37" href="$db/d69/a03320.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="1987,487,2084,513"/>
+<area shape="rect" id="node39" href="$db/df9/a05044.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1065,411,1188,437"/>
+<area shape="rect" id="node40" href="$db/df9/a05044.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1073,512,1180,539"/>
+<area shape="rect" id="node41" href="$db/df9/a05044.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="1299,411,1434,437"/>
+<area shape="rect" id="node42" href="$db/df9/a05044.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="1298,461,1435,488"/>
+<area shape="rect" id="node43" href="$d0/d8b/a05048.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="1307,309,1426,336"/>
+<area shape="rect" id="node44" href="$db/df9/a05044.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="1316,360,1417,387"/>
+<area shape="rect" id="node48" href="$d0/d1e/a03674.html#a6ad969d85bea130408462174f7880d5d" title="sign" alt="" coords="592,411,641,437"/>
+</map>

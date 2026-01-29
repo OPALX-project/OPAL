@@ -1,0 +1,11 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="node1" href="$d4/ddb/a06732.html" title="SamplingMethod" alt="" coords="5,183,136,209"/>
+<area shape="rect" id="node2" href="$d5/dfc/a06680.html" title="FromFile" alt="" coords="273,5,349,32"/>
+<area shape="rect" id="node3" href="$d1/dea/a06684.html" title="LatinHyperCube" alt="" coords="247,56,374,83"/>
+<area shape="rect" id="node4" href="$dc/dfe/a06688.html" title="Normal" alt="" coords="275,107,346,133"/>
+<area shape="rect" id="node5" href="$d1/d4b/a06704.html" title="SampleGaussianSequence" alt="" coords="213,157,408,184"/>
+<area shape="rect" id="node6" href="$dd/d8c/a06720.html" title="SampleRandomizedSequence\&lt; T \&gt;" alt="" coords="184,208,437,235"/>
+<area shape="rect" id="node7" href="$d2/d5f/a06724.html" title="SampleSequence\&lt; T \&gt;" alt="" coords="225,259,397,285"/>
+<area shape="rect" id="node8" href="$df/dbb/a06736.html" title="Uniform\&lt; T \&gt;" alt="" coords="254,309,367,336"/>
+<area shape="rect" id="node9" href="$df/dbb/a06736.html" title="Uniform\&lt; size_t \&gt;" alt="" coords="239,360,382,387"/>
+</map>

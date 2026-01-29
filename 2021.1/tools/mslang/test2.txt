@@ -1,0 +1,20 @@
+repeat( // duplicate row of ellipses 100 times and
+        // distribute copies evenly in y-direction with distance = 0.2 mm
+       repeat( // duplicate ellipse 100 times and
+               // distribute copies evenly in x-direction with distance = 0.2 mm
+              translate( // shift ellipse to lower left corner
+                        ellipse( // define ellipse with major = minor = 0.1 mm, center = (0, 0)
+                                0.0001,
+                                0.0001
+                                ),
+                        -0.01,
+                        -0.01
+                        ),
+              100,
+              0.0002,
+              0.0
+              ),
+       100,
+       0.0,
+       0.0002
+      )

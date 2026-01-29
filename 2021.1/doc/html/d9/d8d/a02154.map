@@ -1,0 +1,33 @@
+<map id="src/Elements/OpalElement.cpp" name="src/Elements/OpalElement.cpp">
+<area shape="rect" id="node2" href="$dd/d3f/a02156.html" title="Elements/OpalElement.h" alt="" coords="859,80,1042,107"/>
+<area shape="rect" id="node5" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="269,304,467,331"/>
+<area shape="rect" id="node19" href="$da/d9c/a00413.html" title="AbsBeamline/Bend2D.h" alt="" coords="2031,80,2206,107"/>
+<area shape="rect" id="node23" href="$db/dbe/a01706.html" title="Physics/Physics.h" alt="" coords="2483,229,2619,256"/>
+<area shape="rect" id="node28" href="$de/ddb/a13192.html" title="AbstractObjects/Expressions.h" alt="" coords="1039,229,1257,256"/>
+<area shape="rect" id="node31" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="711,229,913,256"/>
+<area shape="rect" id="node34" href="$dd/d52/a00221.html" title="Attributes/Attributes.h" alt="" coords="1434,229,1601,256"/>
+<area shape="rect" id="node36" href="$db/d95/a01637.html" title="Parser/Statement.h" alt="" coords="1625,229,1772,256"/>
+<area shape="rect" id="node39" href="$d0/d2b/a03095.html" title="Utilities/OpalException.h" alt="" coords="2315,386,2498,413"/>
+<area shape="rect" id="node40" href="$d8/d98/a02009.html" title="Utilities/Options.h" alt="" coords="2827,80,2965,107"/>
+<area shape="rect" id="node43" href="$d7/dbe/a02024.html" title="Utilities/ParseError.h" alt="" coords="2136,386,2291,413"/>
+<area shape="rect" id="node44" href="$da/d14/a02066.html" title="Utilities/Util.h" alt="" coords="2888,229,3000,256"/>
+<area shape="rect" id="node3" href="$d6/d2d/a00047.html" title="AbstractObjects/Element.h" alt="" coords="493,155,688,181"/>
+<area shape="rect" id="node18" href="$dc/dd2/a01604.html" title="MemoryManagement/OwnPtr.h" alt="" coords="989,304,1211,331"/>
+<area shape="rect" id="node4" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="414,229,597,256"/>
+<area shape="rect" id="node10" href="$d6/d82/a01607.html" title="MemoryManagement/Pointer.h" alt="" coords="273,475,495,502"/>
+<area shape="rect" id="node13" href="$d5/d5f/a00461.html" title="AbsBeamline/ElementBase.h" alt="" coords="1784,304,1995,331"/>
+<area shape="rect" id="node6" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="569,468,756,509"/>
+<area shape="rect" id="node9" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="405,379,592,420"/>
+<area shape="rect" id="node14" href="$dd/db2/a00866.html" title="Algorithms/Quaternion.h" alt="" coords="2573,386,2755,413"/>
+<area shape="rect" id="node16" href="$d9/d63/a01877.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="1886,379,2061,420"/>
+<area shape="rect" id="node15" href="$db/ddf/a13198.html" title="Algorithms/Vektor.h" alt="" coords="2589,475,2739,502"/>
+<area shape="rect" id="node17" href="$d4/d29/a01817.html" title="Utilities/ClassicException.h" alt="" coords="2137,475,2335,502"/>
+<area shape="rect" id="node20" href="$d3/d29/a00419.html" title="AbsBeamline/BendBase.h" alt="" coords="1795,155,1984,181"/>
+<area shape="rect" id="node22" href="$d0/dee/a02870.html" title="Steppers/BorisPusher.h" alt="" coords="2397,155,2568,181"/>
+<area shape="rect" id="node21" href="$df/d70/a00431.html" title="AbsBeamline/Component.h" alt="" coords="1898,229,2097,256"/>
+<area shape="rect" id="node29" href="$df/ddd/a01655.html" title="Parser/Token.h" alt="" coords="1374,304,1490,331"/>
+<area shape="rect" id="node32" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="543,304,780,331"/>
+<area shape="rect" id="node37" href="$da/d1a/a03803.html" title="Utility/Inform.h" alt="" coords="2257,304,2378,331"/>
+<area shape="rect" id="node41" href="$d5/d2c/a02012.html" title="OptionTypes.h" alt="" coords="2744,155,2859,181"/>
+<area shape="rect" id="node42" href="$d6/dbd/a01829.html" title="Utilities/ClassicRandom.h" alt="" coords="2883,155,3072,181"/>
+</map>

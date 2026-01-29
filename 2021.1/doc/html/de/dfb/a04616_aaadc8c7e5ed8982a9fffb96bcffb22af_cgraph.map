@@ -1,0 +1,31 @@
+<map id="ParallelTTracker::emitParticles" name="ParallelTTracker::emitParticles">
+<area shape="rect" id="node2" href="$d1/dc3/a04492.html#a2fd03a303542cb8c087accbf9e6ed9bd" title="Emit particles in the given bin i.e. copy the particles from the bin structure into the particle cont..." alt="" coords="293,5,505,32"/>
+<area shape="rect" id="node3" href="$d3/dee/a06300.html#aa1395281d59f6828b25dcd7f8c3e1a1f" title="OpalBeamline::getCSTrafo\lLab2Local" alt="" coords="303,57,495,98"/>
+<area shape="rect" id="node4" href="$d1/dc3/a04492.html#a4951c53df6841fd275a56f41fc76bfdf" title="PartBunchBase::getdT" alt="" coords="317,123,481,149"/>
+<area shape="rect" id="node5" href="$d3/dee/a06300.html#ac0af82a5ad2c0099701f07f2a05864f5" title="OpalBeamline::getFieldAt" alt="" coords="305,173,492,200"/>
+<area shape="rect" id="node6" href="$d1/dc3/a04492.html#a5ae85b2582451bf5a50d0e2f9074cc35" title="PartBunchBase::getIfBeam\lEmitting" alt="" coords="301,225,496,266"/>
+<area shape="rect" id="node7" href="$d1/dc3/a04492.html#af792389ff15f7f9fe61a13138ff0d6f3" title="PartBunchBase::getT" alt="" coords="321,291,477,317"/>
+<area shape="rect" id="node8" href="$d1/dc3/a04492.html#a3473f0bbd78f0e387277bb72490d9ee3" title="PartBunchBase::getTotalNum" alt="" coords="293,341,504,368"/>
+<area shape="rect" id="node9" href="$d3/d82/a05088.html#ae5f60c7777720c99b382b87952bd9e8a" title="CoordinateSystemTrafo\l::inverted" alt="" coords="311,393,486,434"/>
+<area shape="rect" id="node21" href="$d1/dc3/a04492.html#ade294964df14d656561d6707e61b662f" title="PartBunchBase::Rebin" alt="" coords="317,459,480,485"/>
+<area shape="rect" id="node22" href="$d1/dc3/a04492.html#a083c7f930eb0d8888cf1d4b9663e1829" title="PartBunchBase::resetInterpolation\lCache" alt="" coords="277,510,520,551"/>
+<area shape="rect" id="node23" href="$d3/d82/a05088.html#ae2537ef2597a313e3f6852c8175dd356" title="CoordinateSystemTrafo\l::rotateTo" alt="" coords="593,631,767,673"/>
+<area shape="rect" id="node24" href="$d1/dc3/a04492.html#af944e6f18bc22afbc1993c2173c5bb1e" title="PartBunchBase::switchOff\lUnitlessPositions" alt="" coords="305,627,493,669"/>
+<area shape="rect" id="node25" href="$d1/dc3/a04492.html#a459c0df5e2c06083753ad271bd90813d" title="PartBunchBase::switchToUnitless\lPositions" alt="" coords="281,693,517,734"/>
+<area shape="rect" id="node26" href="$de/dfb/a04616.html#a4a93bfb1211763f9e9d7ec1c05dd0e5a" title="ParallelTTracker::transform\lBunch" alt="" coords="300,758,497,799"/>
+<area shape="rect" id="node28" href="$d3/d82/a05088.html#acacde969cf75ea57d36f24896874c6a0" title="CoordinateSystemTrafo\l::transformTo" alt="" coords="593,794,767,835"/>
+<area shape="rect" id="node29" href="$d1/dc3/a04492.html#a270741b3a4a1bd7d6ff17a6ea690255b" title="PartBunchBase::updateNum\lTotal" alt="" coords="297,875,500,917"/>
+<area shape="rect" id="node30" href="$d1/dc3/a04492.html#a35461cc43457af38a43f3f098b4c3249" title="PartBunchBase::weHaveEnergyBins" alt="" coords="272,941,525,968"/>
+<area shape="rect" id="node10" href="$d3/d82/a05088.html#afdcb12eb2455fcba3d0503b6be30df24" title="CoordinateSystemTrafo\l::invert" alt="" coords="593,415,767,457"/>
+<area shape="rect" id="node11" href="$d4/dc5/a05148.html#a23fa21eb2e14c5207f90e840787c348a" title="Quaternion::conjugate" alt="" coords="1024,397,1191,424"/>
+<area shape="rect" id="node14" href="$d4/dc5/a05148.html#a16e61b715e53d7394996bb56c356916e" title="Quaternion::rotate" alt="" coords="835,448,976,475"/>
+<area shape="rect" id="node20" href="$da/d8d/a03158.html#a1e71f6a6a4880f0c3ab147df4dd09050" title="transpose" alt="" coords="862,499,949,525"/>
+<area shape="rect" id="node12" href="$d4/dc5/a05148.html#a237c3a9dfefea10e7ec6b5f373546427" title="Quaternion::real" alt="" coords="1245,347,1371,373"/>
+<area shape="rect" id="node13" href="$d4/dc5/a05148.html#a8cb33fa212258498b937d7e1a4684ce2" title="Quaternion::imag" alt="" coords="1241,397,1375,424"/>
+<area shape="rect" id="node15" href="$d4/dc5/a05148.html#aa29522eb8e682639a9efddce09a49f6f" title="Quaternion::isUnit" alt="" coords="1037,448,1177,475"/>
+<area shape="rect" id="node18" href="$d4/dc5/a05148.html#afd6f04fe42007759224bbfb5c7727eb0" title="Quaternion::Norm" alt="" coords="1239,499,1377,525"/>
+<area shape="rect" id="node16" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1285,448,1331,475"/>
+<area shape="rect" id="node17" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1425,448,1611,475"/>
+<area shape="rect" id="node19" href="$df/dd5/a01115.html#a731854fb8292e52014666a5412601853" title="Vector dot product. " alt="" coords="1497,639,1539,665"/>
+<area shape="rect" id="node27" href="$d1/dc3/a04492.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="573,743,787,769"/>
+</map>

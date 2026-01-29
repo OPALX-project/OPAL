@@ -1,0 +1,42 @@
+#!/bin/bash
+#
+# create/rewrite 'src/OPALrevision.h'
+#
+
+print () {
+    echo '#define GIT_VERSION '\"$1\" > src/OPALrevision-new.h
+    if [[ -e  src/OPALrevision.h ]] && cmp -s src/OPALrevision.h src/OPALrevision-new.h; then
+        rm src/OPALrevision-new.h
+    else
+        mv src/OPALrevision-new.h src/OPALrevision.h
+    fi
+}
+
+# if git(1) is not in $PATH
+if ! which -a git &> /dev/null; then
+    if  [[ -e  src/OPALrevision.h ]]; then
+        # do nothing if file exist
+        exit 0
+    else
+        # otherwise create file
+        print unknown
+        exit $?
+    fi
+fi
+
+# if we are in a work-tree
+if git rev-parse --is-inside-work-tree &> /dev/null; then
+    # create/rewrite file
+    revision=$(git rev-parse HEAD)
+    print ${revision}
+    exit $?
+fi
+
+# if we are not in a work tree and the file does not exist
+if [[ ! -e  src/OPALrevision.h ]]; then
+    # create file
+    print unknown
+    exit $?
+fi
+
+exit 0

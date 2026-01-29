@@ -1,0 +1,39 @@
+<map id="Sequence::copy" name="Sequence::copy">
+<area shape="rect" id="node2" href="$d4/d61/a06612.html#a7dc48cc5f04439a840380415d9babd74" title="Make clone. " alt="" coords="217,123,345,150"/>
+<area shape="rect" id="node13" href="$df/da2/a04828.html#aa5580165a9f8b9e6d873927cff20d986" title="Return clone. " alt="" coords="449,182,599,209"/>
+<area shape="rect" id="node14" href="$df/da2/a04828.html#aa60aedf5e43e6a4561b4a93e6962f377" title="Make a structural copy. " alt="" coords="177,233,384,259"/>
+<area shape="rect" id="node16" href="$d4/d61/a06612.html#a7a11f38b6f5a642a4587a2ba1e9b1d95" title="Return the embedded CLASSIC beam line. " alt="" coords="447,287,601,314"/>
+<area shape="rect" id="node18" href="$da/de3/a05388.html#a5e93800b724a0a93cbb985fdc52cbf0f" title="Get the element pointer. " alt="" coords="207,334,355,361"/>
+<area shape="rect" id="node19" href="$da/de3/a05388.html#a7c6a3c02d66b3cb4c97f05b08b102fef" title="Set the element pointer. " alt="" coords="207,385,354,411"/>
+<area shape="rect" id="node20" href="$d4/d61/a06612.html#a8dbfda8f4794c8afb8be0fef2a490663" title="Store sequence line. " alt="" coords="204,435,357,462"/>
+<area shape="rect" id="node3" href="$d4/d61/a06612.html#a532b7e8df6ff6b2f990c14ae97859ca2" title="Exemplar constructor. " alt="" coords="446,122,602,149"/>
+<area shape="rect" id="node4" href="$d9/d4e/a04307.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="680,21,839,47"/>
+<area shape="rect" id="node5" href="$d9/d4e/a04307.html#ae9a947ca42d331f722e06f3a921fe170" title="Make string attribute. " alt="" coords="675,71,844,98"/>
+<area shape="rect" id="node6" href="$df/d3d/a04480.html#a11c14d6b194bf37c2883bb42922852ac" title="Object::registerOwnership" alt="" coords="664,122,855,149"/>
+<area shape="rect" id="node12" href="$d5/d8e/a04448.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="680,173,839,199"/>
+<area shape="rect" id="node7" href="$dd/d4b/a04432.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="903,5,1121,47"/>
+<area shape="rect" id="node8" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="989,173,1035,199"/>
+<area shape="rect" id="node10" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="931,71,1093,98"/>
+<area shape="rect" id="node11" href="$df/d3d/a04480.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="945,122,1079,149"/>
+<area shape="rect" id="node9" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1193,173,1344,199"/>
+<area shape="rect" id="node15" href="$df/da2/a04828.html#ac39f80091bcbce72cd429499a33c18f5" title="Test if the element can be shared. " alt="" coords="432,233,616,259"/>
+<area shape="rect" id="node17" href="$d5/d8e/a04448.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="680,287,839,314"/>
+<area shape="rect" id="node21" href="$d4/d61/a06612.html#ae507f99575ceb3143d1b7538dbaba2b9" title="Return the reference type flag. " alt="" coords="435,341,613,367"/>
+<area shape="rect" id="node29" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="929,543,1095,570"/>
+<area shape="rect" id="node32" href="$d1/d55/a04496.html#a696d78c4b23e4b0375ba2b3e0fc01e3b" title="Apply a function to all objects. " alt="" coords="461,442,587,469"/>
+<area shape="rect" id="node35" href="$d5/d8e/a04448.html#a5b40298e379b7847c418b98760c601da" title="Find named Element. " alt="" coords="470,518,578,545"/>
+<area shape="rect" id="node38" href="$df/d3d/a04480.html#aa6e71ce6385ca4963129458e9c51ae91" title="Increment and return the occurrence counter. " alt="" coords="455,569,593,595"/>
+<area shape="rect" id="node22" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="683,341,836,367"/>
+<area shape="rect" id="node23" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="917,223,1107,250"/>
+<area shape="rect" id="node24" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="942,274,1082,301"/>
+<area shape="rect" id="node25" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="933,325,1091,351"/>
+<area shape="rect" id="node26" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="931,376,1093,417"/>
+<area shape="rect" id="node27" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="939,442,1085,469"/>
+<area shape="rect" id="node31" href="$d6/db7/a04354.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="959,493,1065,519"/>
+<area shape="rect" id="node28" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="1169,442,1368,469"/>
+<area shape="rect" id="node30" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1193,543,1345,570"/>
+<area shape="rect" id="node33" href="$d1/d13/a04444.html#a6af87fa7c132144a4fed854a5c0ba253" title="First object in alphabetic order of name. " alt="" coords="697,442,822,469"/>
+<area shape="rect" id="node34" href="$d1/d13/a04444.html#a4a8d6e8dc3b5f4f851a86b64daad1978" title="Last object in alphabetic order of name. " alt="" coords="703,493,816,519"/>
+<area shape="rect" id="node36" href="$d1/d55/a04496.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="702,594,817,621"/>
+<area shape="rect" id="node37" href="$d1/d13/a04444.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="955,594,1069,621"/>
+</map>

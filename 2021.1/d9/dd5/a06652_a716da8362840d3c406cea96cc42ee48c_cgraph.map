@@ -1,0 +1,6 @@
+<map id="OpalParser::parseBracketList" name="OpalParser::parseBracketList">
+<area shape="rect" id="node2" href="$d3/d19/a05828.html#a1f850d85458bb5d1a2a8b55a6643fb4b" title="Append a token. " alt="" coords="273,5,419,32"/>
+<area shape="rect" id="node3" href="$dd/dce/a05840.html#a2954e99066d74d540ededed11eaf469c" title="Test for delimiter. " alt="" coords="295,56,397,83"/>
+<area shape="rect" id="node4" href="$dd/dce/a05840.html#a4822f01048ccce2d0de033ee2be460f0" title="Test for end of file. " alt="" coords="294,107,398,133"/>
+<area shape="rect" id="node5" href="$d9/dd5/a06652.html#a1c27a3df8d6667e5a74053890a5524fe" title="Return next input token. " alt="" coords="263,157,429,184"/>
+</map>

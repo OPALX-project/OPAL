@@ -1,0 +1,18 @@
+<map id="src/Expressions/SAutomatic.h" name="src/Expressions/SAutomatic.h">
+<area shape="rect" id="node2" href="$df/d89/a02462.html" title="Expressions/SDeferred.h" alt="" coords="1297,80,1479,107"/>
+<area shape="rect" id="node13" href="$de/ddb/a13192.html" title="AbstractObjects/Expressions.h" alt="" coords="1351,237,1569,263"/>
+<area shape="rect" id="node24" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="1775,237,1977,263"/>
+<area shape="rect" id="node3" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="554,155,753,181"/>
+<area shape="rect" id="node18" href="$da/dbe/a02489.html" title="Expressions/SValue.h" alt="" coords="1041,237,1201,263"/>
+<area shape="rect" id="node20" href="$db/d4b/a01883.html" title="Utilities/LogicalError.h" alt="" coords="41,155,207,181"/>
+<area shape="rect" id="node22" href="$d0/d2b/a03095.html" title="Utilities/OpalException.h" alt="" coords="290,155,473,181"/>
+<area shape="rect" id="node4" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="625,319,812,360"/>
+<area shape="rect" id="node9" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="495,229,681,271"/>
+<area shape="rect" id="node10" href="$d6/d82/a01607.html" title="MemoryManagement/Pointer.h" alt="" coords="212,326,433,353"/>
+<area shape="rect" id="node5" href="$d9/dfd/a01610.html" title="MemoryManagement/RCObject.h" alt="" coords="524,408,759,435"/>
+<area shape="rect" id="node6" href="$d9/d2e/a00056.html" title="AbstractObjects/Invalidator.h" alt="" coords="783,408,993,435"/>
+<area shape="rect" id="node14" href="$dc/dd2/a01604.html" title="MemoryManagement/OwnPtr.h" alt="" coords="1375,326,1598,353"/>
+<area shape="rect" id="node15" href="$df/ddd/a01655.html" title="Parser/Token.h" alt="" coords="1015,326,1131,353"/>
+<area shape="rect" id="node21" href="$d4/d29/a01817.html" title="Utilities/ClassicException.h" alt="" coords="25,237,223,263"/>
+<area shape="rect" id="node25" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="1996,326,2233,353"/>
+</map>

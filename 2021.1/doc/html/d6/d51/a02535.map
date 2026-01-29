@@ -1,0 +1,34 @@
+<map id="src/Lines/SequenceMember.h" name="src/Lines/SequenceMember.h">
+<area shape="rect" id="node2" href="$db/d17/a01148.html" title="Beamlines/FlaggedElmPtr.h" alt="" coords="645,80,845,107"/>
+<area shape="rect" id="node42" href="$d6/d82/a01607.html" title="MemoryManagement/Pointer.h" alt="" coords="675,490,896,517"/>
+<area shape="rect" id="node43" href="$d6/d2d/a00047.html" title="AbstractObjects/Element.h" alt="" coords="477,155,672,181"/>
+<area shape="rect" id="node3" href="$d1/dae/a01136.html" title="Beamlines/ElmPtr.h" alt="" coords="696,155,845,181"/>
+<area shape="rect" id="node4" href="$d5/d5f/a00461.html" title="AbsBeamline/ElementBase.h" alt="" coords="1304,229,1515,256"/>
+<area shape="rect" id="node5" href="$d7/d00/a00401.html" title="AbsBeamline/AttributeSet.h" alt="" coords="976,401,1179,427"/>
+<area shape="rect" id="node9" href="$d5/d12/a00794.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="1763,304,1981,345"/>
+<area shape="rect" id="node28" href="$dd/db2/a00866.html" title="Algorithms/Quaternion.h" alt="" coords="1508,401,1689,427"/>
+<area shape="rect" id="node32" href="$d5/d4c/a01058.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="2254,401,2477,427"/>
+<area shape="rect" id="node36" href="$d5/d67/a01070.html" title="BeamlineGeometry/Geometry.h" alt="" coords="2063,311,2291,338"/>
+<area shape="rect" id="node37" href="$d9/dfd/a01610.html" title="MemoryManagement/RCObject.h" alt="" coords="169,572,404,599"/>
+<area shape="rect" id="node38" href="$d9/d63/a01877.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="1259,304,1434,345"/>
+<area shape="rect" id="node10" href="$db/ddf/a13198.html" title="Algorithms/Vektor.h" alt="" coords="1547,490,1698,517"/>
+<area shape="rect" id="node29" href="$d2/d94/a03167.html" title="AppTypes/Tenzor.h" alt="" coords="1864,490,2005,517"/>
+<area shape="rect" id="node11" href="$db/db0/a13201.html" title="AppTypes/Vektor.h" alt="" coords="1439,572,1580,599"/>
+<area shape="rect" id="node12" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="1830,647,1957,673"/>
+<area shape="rect" id="node15" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="2083,721,2235,748"/>
+<area shape="rect" id="node23" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="2185,647,2357,673"/>
+<area shape="rect" id="node25" href="$da/de5/a03170.html" title="AppTypes/TSVMeta.h" alt="" coords="1648,647,1805,673"/>
+<area shape="rect" id="node22" href="$da/d72/a03527.html" title="Message/Message.hpp" alt="" coords="2053,796,2221,823"/>
+<area shape="rect" id="node24" href="$d4/d78/a03677.html" title="PETE/IpplTypeComputations.h" alt="" coords="2299,721,2514,748"/>
+<area shape="rect" id="node30" href="$d8/dec/a03164.html" title="AppTypes/SymTenzor.h" alt="" coords="2057,572,2228,599"/>
+<area shape="rect" id="node31" href="$da/d8d/a03158.html" title="AppTypes/AntiSymTenzor.h" alt="" coords="1837,572,2033,599"/>
+<area shape="rect" id="node33" href="$d3/dbd/a01100.html" title="BeamlineGeometry/Rotation3D.h" alt="" coords="2425,490,2663,517"/>
+<area shape="rect" id="node35" href="$dd/d09/a01118.html" title="BeamlineGeometry/Vector3D.h" alt="" coords="2432,572,2656,599"/>
+<area shape="rect" id="node34" href="$d6/d80/a01076.html" title="BeamlineGeometry/Matrix3D.h" alt="" coords="2680,572,2904,599"/>
+<area shape="rect" id="node39" href="$d4/d29/a01817.html" title="Utilities/ClassicException.h" alt="" coords="1259,401,1458,427"/>
+<area shape="rect" id="node44" href="$df/d03/a00062.html" title="AbstractObjects/Object.h" alt="" coords="171,229,354,256"/>
+<area shape="rect" id="node45" href="$da/d45/a00011.html" title="AbstractObjects/Attribute.h" alt="" coords="363,311,562,338"/>
+<area shape="rect" id="node46" href="$d4/d51/a00017.html" title="AbstractObjects/Attribute\lBase.h" alt="" coords="413,483,600,524"/>
+<area shape="rect" id="node49" href="$d3/d52/a00023.html" title="AbstractObjects/Attribute\lHandler.h" alt="" coords="300,393,487,435"/>
+<area shape="rect" id="node47" href="$d9/d2e/a00056.html" title="AbstractObjects/Invalidator.h" alt="" coords="479,572,689,599"/>
+</map>

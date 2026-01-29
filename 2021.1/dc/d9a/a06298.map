@@ -1,0 +1,7 @@
+<map id="OpalBeamline" name="OpalBeamline">
+<area shape="rect" id="node2" href="$d3/d82/a05088.html" title="CoordinateSystemTrafo" alt="" coords="145,171,319,197"/>
+<area shape="rect" id="node3" href="$dc/ddb/a05144.html" title="Tenzor\&lt; double, 3 \&gt;" alt="" coords="5,81,160,108"/>
+<area shape="rect" id="node4" href="$d4/dc5/a05148.html" title="Quaternion" alt="" coords="185,81,279,108"/>
+<area shape="rect" id="node5" href="$df/d79/a07212.html" title="Vektor\&lt; double, 4 \&gt;" alt="" coords="155,5,309,32"/>
+<area shape="rect" id="node6" href="$df/d79/a07212.html" title="Vektor\&lt; double, 3 \&gt;" alt="" coords="304,81,459,108"/>
+</map>

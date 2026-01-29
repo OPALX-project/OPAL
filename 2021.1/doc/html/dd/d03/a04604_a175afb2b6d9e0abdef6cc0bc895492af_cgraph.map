@@ -1,0 +1,20 @@
+<map id="ParallelCyclotronTracker::visitVacuum" name="ParallelCyclotronTracker::visitVacuum">
+<area shape="rect" id="node2" href="$dd/d03/a04604.html#acb81e900aff04c7a5326246d1d1b106e" title="ParallelCyclotronTracker\l::buildupFieldList" alt="" coords="254,5,433,47"/>
+<area shape="rect" id="node3" href="$df/da2/a04828.html#aa5580165a9f8b9e6d873927cff20d986" title="Return clone. " alt="" coords="268,71,419,98"/>
+<area shape="rect" id="node4" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="318,122,369,149"/>
+<area shape="rect" id="node10" href="$d7/d8a/a05004.html#a3639b06d73c88ac7dbc3c65f6a8e9fdf" title="Vacuum::getPressure" alt="" coords="264,173,423,199"/>
+<area shape="rect" id="node11" href="$d7/d8a/a05004.html#a41950fa7fd3ac7d5a09fe4e6504e1a3d" title="Vacuum::getPressureMapFN" alt="" coords="242,223,445,250"/>
+<area shape="rect" id="node12" href="$d7/d8a/a05004.html#a5cab72da0ece717746981e431eb4921e" title="Vacuum::getPScale" alt="" coords="270,274,417,301"/>
+<area shape="rect" id="node13" href="$d7/d8a/a05004.html#ac589044f04ff30a2db8624aeb668392d" title="Vacuum::getResidualGasName" alt="" coords="232,325,455,351"/>
+<area shape="rect" id="node14" href="$d7/d8a/a05004.html#ad8778701431190d5c21a63522597926d" title="Vacuum::getStop" alt="" coords="277,375,409,402"/>
+<area shape="rect" id="node15" href="$d7/d8a/a05004.html#ab02e83ae85c9bd4892f288f789d1aa67" title="Vacuum::getTemperature" alt="" coords="251,426,436,453"/>
+<area shape="rect" id="node16" href="$d7/d8a/a05004.html#a3e32bc6fe04d5b025ad874a59f7f1218" title="Vacuum::initialise" alt="" coords="274,477,413,503"/>
+<area shape="rect" id="node5" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="534,147,706,174"/>
+<area shape="rect" id="node6" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="797,147,984,174"/>
+<area shape="rect" id="node9" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1293,198,1427,225"/>
+<area shape="rect" id="node7" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1044,147,1241,174"/>
+<area shape="rect" id="node8" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1289,147,1431,174"/>
+<area shape="rect" id="node17" href="$df/da2/a04828.html#a1b412456edcf01147abada7721605101" title="Get design length. " alt="" coords="503,477,737,503"/>
+<area shape="rect" id="node18" href="$da/def/a05344.html#a73f1d2087c1b6c7fb3e5e00f6835f88e" title="Get geometry length. " alt="" coords="785,499,996,540"/>
+<area shape="rect" id="node19" href="$df/da2/a04828.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="789,447,992,474"/>
+</map>

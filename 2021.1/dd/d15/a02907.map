@@ -1,0 +1,33 @@
+<map id="src/Structure/DataSink.h" name="src/Structure/DataSink.h">
+<area shape="rect" id="node2" href="$db/ddf/a13198.html" title="Algorithms/Vektor.h" alt="" coords="1989,543,2139,569"/>
+<area shape="rect" id="node15" href="$de/dec/a03020.html" title="SDDSWriter.h" alt="" coords="683,543,791,569"/>
+<area shape="rect" id="node28" href="$d1/d60/a03032.html" title="StatWriter.h" alt="" coords="1097,80,1196,107"/>
+<area shape="rect" id="node32" href="$d4/dbc/a02954.html" title="H5Writer.h" alt="" coords="2775,155,2865,181"/>
+<area shape="rect" id="node49" href="$d1/df2/a02990.html" title="MultiBunchDump.h" alt="" coords="1221,80,1366,107"/>
+<area shape="rect" id="node3" href="$db/db0/a13201.html" title="AppTypes/Vektor.h" alt="" coords="1897,617,2039,644"/>
+<area shape="rect" id="node4" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="1905,692,2031,719"/>
+<area shape="rect" id="node8" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="2219,767,2371,793"/>
+<area shape="rect" id="node11" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="2214,692,2386,719"/>
+<area shape="rect" id="node12" href="$da/de5/a03170.html" title="AppTypes/TSVMeta.h" alt="" coords="1672,692,1829,719"/>
+<area shape="rect" id="node24" href="$d8/dbd/a03008.html" title="Structure/SDDSColumn.h" alt="" coords="145,692,327,719"/>
+<area shape="rect" id="node26" href="$df/d3a/a03014.html" title="Structure/SDDSColumnSet.h" alt="" coords="246,617,450,644"/>
+<area shape="rect" id="node27" href="$d0/d2b/a03095.html" title="Utilities/OpalException.h" alt="" coords="625,692,807,719"/>
+<area shape="rect" id="node29" href="$dd/da3/a03026.html" title="StatBaseWriter.h" alt="" coords="1089,229,1220,256"/>
+<area shape="rect" id="node30" href="$da/d14/a02066.html" title="Utilities/Util.h" alt="" coords="1241,386,1353,413"/>
+<area shape="rect" id="node31" href="$dd/db2/a00866.html" title="Algorithms/Quaternion.h" alt="" coords="1820,468,2001,495"/>
+<area shape="rect" id="node33" href="$d0/d08/a02936.html" title="Structure/H5PartWrapper.h" alt="" coords="2678,617,2871,644"/>
+<area shape="rect" id="node36" href="$d0/d11/a00842.html" title="Algorithms/PartBunchBase.h" alt="" coords="1989,229,2195,256"/>
+<area shape="rect" id="node34" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="2686,767,2813,793"/>
+<area shape="rect" id="node37" href="$d8/d2e/a03548.html" title="Particle/AbstractParticle.h" alt="" coords="1735,304,1923,331"/>
+<area shape="rect" id="node38" href="$d3/dce/a03608.html" title="Particle/ParticleAttrib.h" alt="" coords="2215,543,2385,569"/>
+<area shape="rect" id="node39" href="$dd/d51/a03842.html" title="Utility/IpplTimings.h" alt="" coords="1244,617,1399,644"/>
+<area shape="rect" id="node40" href="$d9/d63/a01877.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="1429,379,1603,420"/>
+<area shape="rect" id="node41" href="$d0/dad/a00806.html" title="Algorithms/DistributionMoments.h" alt="" coords="2049,304,2295,331"/>
+<area shape="rect" id="node42" href="$d6/d83/a01544.html" title="FixedAlgebra/FMatrix.h" alt="" coords="1729,386,1900,413"/>
+<area shape="rect" id="node43" href="$d6/d82/a01565.html" title="FixedAlgebra/FVector.h" alt="" coords="1575,468,1745,495"/>
+<area shape="rect" id="node44" href="$d5/d12/a00794.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="2077,379,2294,420"/>
+<area shape="rect" id="node45" href="$d6/d8b/a00821.html" title="Algorithms/OpalParticle.h" alt="" coords="2177,468,2364,495"/>
+<area shape="rect" id="node46" href="$d6/d2f/a00854.html" title="Algorithms/PBunchDefs.h" alt="" coords="2388,468,2575,495"/>
+<area shape="rect" id="node48" href="$d7/dcf/a00845.html" title="PartBunchBase.hpp" alt="" coords="1317,304,1464,331"/>
+<area shape="rect" id="node50" href="$da/d1e/a00149.html" title="Algorithms/MultiBunchHandler.h" alt="" coords="1481,155,1711,181"/>
+</map>

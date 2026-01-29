@@ -1,0 +1,66 @@
+\clearpage
+\section{General Multipole (extension)}
+\label{sec:multipoleT}
+\index{MULTIPOLET}
+A \keyword{MULTIPOLET} is in \opalt a general multipole with extended features. It can represent a straight or curved magnet. In the curved case, the user may choose between constant or variable radius. This model includes fringe fields. 
+\begin{example}
+label:MULTIPOLET, L=real, ANGLE=real, VAPERT=real, HAPERT=real,
+      LFRINGE=real, RFRINGE=real, TP=real-vector, VARRADIUS=bool;
+\end{example}
+\begin{kdescription}
+\item[L]
+  Physical length of the magnet (meters), without end fields. (Default: 1 m)
+\item[ANGLE]
+  Physical angle of the magnet (radians). If not specified, the magnet is considered to be straight (ANGLE=0.0). This is not the total bending angle since the end fields cause additional bending. The radius of the multipole is set from the LENGTH and ANGLE attributes. 
+\item[VAPERT]
+  Vertical (non-bend plane) aperture of the magnet (meters). (Default: 0.5 m)
+\item[HAPERT]
+  Horizontal (bend plane) aperture of the magnet (meters). (Default: 0.5 m)
+\item[LFRINGE]
+  Length of the left fringe field (meters). (Default: 0.0 m)
+\item[RFRINGE]
+  Length of the right fringe field (meters). (Default: 0.0 m)
+\item[TP]
+  A real vector \seesec{anarray}, containing the multipole coefficients of the field expansion on the mid-plane in the body of the magnet: the transverse profile $ T(x) = B_0 + B_1 x + B_2 x^2   + \dots $ is set by TP={$B_0$, $B_1$, $B_2$} (units: $ T \cdot m^{-n}$). The order of highest multipole component is arbitrary, but all components up to the maximum must be given, even if they are zero.
+\item[MAXFORDER]
+  The order of the maximum function $f_n$ used in the field expansion (default: 5). See the scalar magnetic potential below. This sets for example the maximum power of $z$ in the field expansion of vertical component $B_z$ to $2 \cdot \text{MAXFORDER} $.
+\item[EANGLE]
+  Entrance edge angle (radians).
+\item[ROTATION]
+  Rotation of the magnet about its central axis (radians, counterclockwise). This enables to obtain skew fields. (Default 0.0 rad)  
+  \item[VARRADIUS]
+  This is to be set TRUE if the magnet has variable radius. More precisely, at each point along the magnet, its radius is computed such that the reference trajectory always remains in the centre of the magnet. In the body of the magnet the radius is set from the LENGTH and ANGLE attributes. It is then continuously changed to be proportional to the dipole field on the reference trajectory while entering the end fields. This attribute is only to be set TRUE for a non-zero dipole component. (Default: FALSE) 
+\item[VARSTEP]
+  The step size (meters) used in calculating the reference trajectory for VARRARDIUS = TRUE. It specifies how often the radius of curvature is re-calculated. This has a considerable effect on tracking time. (Default: 0.1 m)
+\end{kdescription}
+
+Superposition of many multipole components is permitted.
+The reference system for a multipole is a Cartesian coordinate system for straight
+geometry and a $(x,s,z)$ Frenet-Serret coordinate system for curved geometry. In the latter case, the axis $\hat{s}$ is the central axis of the magnet. 
+
+ 
+\ifthenelse{\boolean{ShowMap}}{\seefig{straight}}{}.
+
+\noindent The following example shows a combined function magnet with a dipole component
+of 2 Tesla and a quadrupole gradient of 0.1 Tesla/m.
+\begin{example}
+M30:MULTIPOLET, L=1, RFRINGE=0.3, LFRINGE=0.2, ANGLE=PI/6, TP=$\left\{ 2.0, 0.1 \right\}$, VARRADIUS=TRUE;
+\end{example}
+
+The field expansion used in this model is based on the following scalar potential:
+\begin{equation}
+ V = z f_0(x,s) + \frac{z^3}{3!} f_1(x,s) + \frac{z^5}{5!} f_2(x,s) + \dots 
+\end{equation}
+Mid-plane symmetry is assumed and the vertical component of the field on the mid-plane is given by the user under the form of the transverse profile $T(x)$. The full expression for the vertical component is then 
+\begin{equation}
+B_z = f_0 = T(x) \cdot S(s)
+\end{equation} 
+where $S(s)$ is the fringe field. This element uses the Tanh model for the end fields, having only three parameters (the centre length $s_0$ and the fringe field lengths $\lambda_{left}$, $\lambda_{right}$):
+\begin{equation}
+ S(s) = \frac{1}{2} \left[ tanh \left( \frac{s + s_0}{\lambda_{left}} \right) - 
+ tanh \left( \frac{s - s_0}{\lambda_{right}} \right) \right]
+\end{equation}
+Starting from Maxwell's laws, the functions $f_n$ are computed recursively and finally each component of the magnetic field is obtained from $V$ using the corresponding geometries.
+
+
+

@@ -1,0 +1,28 @@
+<map id="OpalSBend3D::update" name="OpalSBend3D::update">
+<area shape="rect" id="node2" href="$d5/d8e/a04448.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="251,115,410,141"/>
+<area shape="rect" id="node3" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="259,165,402,192"/>
+<area shape="rect" id="node10" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="254,224,407,251"/>
+<area shape="rect" id="node16" href="$d5/d8e/a04448.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="251,331,410,357"/>
+<area shape="rect" id="node17" href="$d2/ddb/a04952.html#a02b7ca32b17441eed53894f344921a9b" title="SBend3D::setFieldMapFileName" alt="" coords="217,468,444,495"/>
+<area shape="rect" id="node26" href="$d2/ddb/a04952.html#a4e9edf0f8f49308600e16a3b32115708" title="SBend3D::setFieldUnits" alt="" coords="244,519,417,545"/>
+<area shape="rect" id="node27" href="$d2/ddb/a04952.html#aaf2f15111c6ca8b5eec213c68e33ea50" title="SBend3D::setLengthUnits" alt="" coords="237,569,424,596"/>
+<area shape="rect" id="node4" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="505,5,695,32"/>
+<area shape="rect" id="node5" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="530,56,670,83"/>
+<area shape="rect" id="node6" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="521,107,679,133"/>
+<area shape="rect" id="node7" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="519,158,681,199"/>
+<area shape="rect" id="node8" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="527,224,673,251"/>
+<area shape="rect" id="node9" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="756,224,955,251"/>
+<area shape="rect" id="node11" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="517,275,683,301"/>
+<area shape="rect" id="node13" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="577,325,623,352"/>
+<area shape="rect" id="node15" href="$d6/db7/a04354.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="547,376,653,403"/>
+<area shape="rect" id="node12" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="779,275,931,301"/>
+<area shape="rect" id="node14" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="780,325,931,352"/>
+<area shape="rect" id="node18" href="$d1/dcd/a05680.html#ad2b2d2d32ec400394dba6cab9e3f84eb" title="SectorField::getPolarBounding\lBoxMax" alt="" coords="492,689,708,730"/>
+<area shape="rect" id="node19" href="$d1/dcd/a05680.html#a3dc347486678c77b1180c4da7122e5c3" title="SectorField::getPolarBounding\lBoxMin" alt="" coords="492,427,708,469"/>
+<area shape="rect" id="node20" href="$d9/d54/a05684.html#a6da76087887595c0c4cf71ebb68c1928" title="SectorMagneticFieldMap\l::getDeltaPhi" alt="" coords="511,493,689,534"/>
+<area shape="rect" id="node24" href="$d3/d06/a05356.html#ab279211707d7355edaa4b55d31e4fe97" title="Set length. " alt="" coords="522,558,678,599"/>
+<area shape="rect" id="node25" href="$d3/d06/a05356.html#a6263642c7a579fbb8e8ac653199b36fe" title="Set curvature. " alt="" coords="522,623,678,665"/>
+<area shape="rect" id="node21" href="$da/df1/a05668.html#a746982d064969d9b76e4f57a782128a0" title="interpolation::VectorMap\l::getMesh" alt="" coords="765,427,946,469"/>
+<area shape="rect" id="node22" href="$d4/de8/a05660.html#a020b2e46f5dc90057a4e84385bb975ea" title="interpolation::ThreeDGrid\l::maxZ" alt="" coords="762,493,949,534"/>
+<area shape="rect" id="node23" href="$d4/de8/a05660.html#af32cd23a75c48e143b30d4383eaaa90e" title="interpolation::ThreeDGrid\l::minZ" alt="" coords="762,558,949,599"/>
+</map>

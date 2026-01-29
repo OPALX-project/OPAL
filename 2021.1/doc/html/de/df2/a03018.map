@@ -1,0 +1,36 @@
+<map id="src/Structure/SDDSWriter.cpp" name="src/Structure/SDDSWriter.cpp">
+<area shape="rect" id="node2" href="$de/dec/a03020.html" title="Structure/SDDSWriter.h" alt="" coords="1971,162,2141,189"/>
+<area shape="rect" id="node16" href="$db/db6/a00074.html" title="AbstractObjects/OpalData.h" alt="" coords="2649,251,2852,278"/>
+<area shape="rect" id="node20" href="$d0/d11/a00842.html" title="Algorithms/PartBunchBase.h" alt="" coords="3410,80,3617,107"/>
+<area shape="rect" id="node35" href="$da/d14/a02066.html" title="Utilities/Util.h" alt="" coords="3027,251,3139,278"/>
+<area shape="rect" id="node36" href="$df/d23/a02558.html" title="OPALconfig.h" alt="" coords="3641,80,3748,107"/>
+<area shape="rect" id="node37" href="$d6/d4e/a04271.html" title="Util/SDDSParser.h" alt="" coords="847,80,983,107"/>
+<area shape="rect" id="node50" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="2543,80,2670,107"/>
+<area shape="rect" id="node14" href="$d8/dbd/a03008.html" title="Structure/SDDSColumn.h" alt="" coords="1593,333,1775,360"/>
+<area shape="rect" id="node15" href="$df/d3a/a03014.html" title="Structure/SDDSColumnSet.h" alt="" coords="1618,251,1822,278"/>
+<area shape="rect" id="node17" href="$da/d24/a00068.html" title="AbstractObjects/ObjectFunction.h" alt="" coords="2567,333,2804,360"/>
+<area shape="rect" id="node21" href="$d8/d2e/a03548.html" title="Particle/AbstractParticle.h" alt="" coords="3541,162,3729,189"/>
+<area shape="rect" id="node22" href="$d3/dce/a03608.html" title="Particle/ParticleAttrib.h" alt="" coords="3855,162,4025,189"/>
+<area shape="rect" id="node23" href="$dd/d51/a03842.html" title="Utility/IpplTimings.h" alt="" coords="2420,251,2575,278"/>
+<area shape="rect" id="node24" href="$d9/d63/a01877.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="3502,244,3677,285"/>
+<area shape="rect" id="node25" href="$d0/dad/a00806.html" title="Algorithms/DistributionMoments.h" alt="" coords="3271,162,3516,189"/>
+<area shape="rect" id="node26" href="$d6/d83/a01544.html" title="FixedAlgebra/FMatrix.h" alt="" coords="3220,251,3391,278"/>
+<area shape="rect" id="node27" href="$d6/d82/a01565.html" title="FixedAlgebra/FVector.h" alt="" coords="3221,333,3390,360"/>
+<area shape="rect" id="node28" href="$db/ddf/a13198.html" title="Vektor.h" alt="" coords="4156,408,4231,435"/>
+<area shape="rect" id="node29" href="$d5/d12/a00794.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="4354,244,4571,285"/>
+<area shape="rect" id="node30" href="$dd/db2/a00866.html" title="Algorithms/Quaternion.h" alt="" coords="4231,333,4412,360"/>
+<area shape="rect" id="node31" href="$d6/d8b/a00821.html" title="Algorithms/OpalParticle.h" alt="" coords="3969,333,4156,360"/>
+<area shape="rect" id="node32" href="$d6/d2f/a00854.html" title="Algorithms/PBunchDefs.h" alt="" coords="4100,162,4287,189"/>
+<area shape="rect" id="node34" href="$d7/dcf/a00845.html" title="PartBunchBase.hpp" alt="" coords="2999,162,3145,189"/>
+<area shape="rect" id="node38" href="$d3/d5f/a13177.html" title="Util/SDDSParser/ast.hpp" alt="" coords="971,333,1149,360"/>
+<area shape="rect" id="node39" href="$d4/d4b/a04232.html" title="Util/SDDSParser/file.hpp" alt="" coords="762,162,939,189"/>
+<area shape="rect" id="node40" href="$d7/d19/a13189.html" title="skipper.hpp" alt="" coords="710,333,807,360"/>
+<area shape="rect" id="node41" href="$d1/dde/a04223.html" title="description.hpp" alt="" coords="697,251,820,278"/>
+<area shape="rect" id="node42" href="$d1/dcc/a04250.html" title="parameter.hpp" alt="" coords="1001,251,1119,278"/>
+<area shape="rect" id="node43" href="$d7/dca/a04205.html" title="column.hpp" alt="" coords="1193,251,1292,278"/>
+<area shape="rect" id="node44" href="$df/dce/a04214.html" title="data.hpp" alt="" coords="473,251,551,278"/>
+<area shape="rect" id="node45" href="$d0/dd2/a04190.html" title="associate.hpp" alt="" coords="336,251,448,278"/>
+<area shape="rect" id="node46" href="$d2/d29/a04181.html" title="array.hpp" alt="" coords="895,251,977,278"/>
+<area shape="rect" id="node47" href="$df/d88/a04241.html" title="include.hpp" alt="" coords="575,251,673,278"/>
+<area shape="rect" id="node48" href="$d8/dc6/a04256.html" title="Util/SDDSParser/SDDSParser\lException.h" alt="" coords="5,155,211,196"/>
+</map>

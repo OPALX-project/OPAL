@@ -1,0 +1,7 @@
+<map id="interpolation::complex" name="interpolation::complex">
+<area shape="rect" id="node2" href="$de/d12/a04308.html#a2ec626b0d2d5bbb9b4d08e4f54dfba89" title="interpolation::m_complex\l_build" alt="" coords="223,5,412,47"/>
+<area shape="rect" id="node3" href="$d3/d0c/a05628.html#a485ae568ec26cd973074cf3704bc6938" title="returns number of columns in the matrix " alt="" coords="235,71,400,112"/>
+<area shape="rect" id="node4" href="$d3/d0c/a05628.html#a885f1a7f322a023feb4f156338a83076" title="returns number of rows in the matrix " alt="" coords="235,136,400,177"/>
+<area shape="rect" id="node5" href="$dc/d93/a01535.html#ad2c903016dffc98273f94db999545737" title="Take real part of a complex generator. " alt="" coords="294,202,341,229"/>
+<area shape="rect" id="node6" href="$d2/db8/a05740.html#ad04c5277115352a09af43bda20e483a0" title="Get pointer past end of generator. " alt="" coords="460,202,605,229"/>
+</map>

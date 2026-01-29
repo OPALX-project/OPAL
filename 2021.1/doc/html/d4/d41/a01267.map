@@ -1,0 +1,22 @@
+<map id="src/Classic/Fields/Fieldmap.hpp" name="src/Classic/Fields/Fieldmap.hpp">
+<area shape="rect" id="node2" href="$d8/d11/a01178.html" title="src/Classic/Fields\l/Astra1D_fast.cpp" alt="" coords="5,95,143,136"/>
+<area shape="rect" id="node3" href="$d1/d35/a01184.html" title="src/Classic/Fields\l/Astra1DDynamic.cpp" alt="" coords="167,95,330,136"/>
+<area shape="rect" id="node4" href="$d2/d22/a01196.html" title="src/Classic/Fields\l/Astra1DElectroStatic.cpp" alt="" coords="354,95,541,136"/>
+<area shape="rect" id="node5" href="$d9/d31/a01208.html" title="src/Classic/Fields\l/Astra1DMagnetoStatic.cpp" alt="" coords="565,95,764,136"/>
+<area shape="rect" id="node6" href="$dc/dd9/a01268.html" title="src/Classic/Fields\l/FM1DDynamic.cpp" alt="" coords="789,95,935,136"/>
+<area shape="rect" id="node7" href="$de/d33/a01274.html" title="src/Classic/Fields\l/FM1DDynamic_fast.cpp" alt="" coords="959,95,1138,136"/>
+<area shape="rect" id="node8" href="$d8/d0d/a01280.html" title="src/Classic/Fields\l/FM1DElectroStatic.cpp" alt="" coords="1162,95,1333,136"/>
+<area shape="rect" id="node9" href="$d0/d00/a01286.html" title="src/Classic/Fields\l/FM1DElectroStatic_fast.cpp" alt="" coords="1357,95,1559,136"/>
+<area shape="rect" id="node10" href="$d8/d7a/a01292.html" title="src/Classic/Fields\l/FM1DMagnetoStatic.cpp" alt="" coords="1584,95,1767,136"/>
+<area shape="rect" id="node11" href="$d4/d34/a01298.html" title="src/Classic/Fields\l/FM1DMagnetoStatic_fast.cpp" alt="" coords="1791,95,2005,136"/>
+<area shape="rect" id="node12" href="$d6/dae/a01304.html" title="src/Classic/Fields\l/FM1DProfile1.cpp" alt="" coords="2030,95,2169,136"/>
+<area shape="rect" id="node13" href="$da/d79/a01310.html" title="src/Classic/Fields\l/FM1DProfile2.cpp" alt="" coords="2193,95,2331,136"/>
+<area shape="rect" id="node14" href="$d4/d49/a01316.html" title="src/Classic/Fields\l/FM2DDynamic.cpp" alt="" coords="2355,95,2502,136"/>
+<area shape="rect" id="node15" href="$d5/df4/a01322.html" title="src/Classic/Fields\l/FM2DElectroStatic.cpp" alt="" coords="2526,95,2697,136"/>
+<area shape="rect" id="node16" href="$dc/dd9/a01328.html" title="src/Classic/Fields\l/FM2DMagnetoStatic.cpp" alt="" coords="2721,95,2904,136"/>
+<area shape="rect" id="node17" href="$d4/dd1/a01334.html" title="src/Classic/Fields\l/FM3DDynamic.cpp" alt="" coords="2929,95,3075,136"/>
+<area shape="rect" id="node18" href="$d0/d85/a01352.html" title="src/Classic/Fields\l/FM3DH5BlockBase.cpp" alt="" coords="3100,95,3275,136"/>
+<area shape="rect" id="node19" href="$de/d5c/a01358.html" title="src/Classic/Fields\l/FM3DMagnetoStatic.cpp" alt="" coords="3299,95,3481,136"/>
+<area shape="rect" id="node20" href="$de/d1f/a01364.html" title="src/Classic/Fields\l/FM3DMagnetoStaticExtended.cpp" alt="" coords="3506,95,3749,136"/>
+<area shape="rect" id="node21" href="$d2/d29/a01376.html" title="src/Classic/Fields\l/FMDummy.cpp" alt="" coords="3773,95,3905,136"/>
+</map>

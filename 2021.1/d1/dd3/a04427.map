@@ -1,0 +1,11 @@
+<map id="AttributeBase" name="AttributeBase">
+<area shape="rect" id="node4" href="$d3/d1a/a06536.html" title="Object attribute with a constant array value. " alt="" coords="21,155,212,181"/>
+<area shape="rect" id="node7" href="$df/dfb/a04472.html" title="An attribute defined as a reference to a scalar. " alt="" coords="236,155,435,181"/>
+<area shape="rect" id="node8" href="$d2/d2b/a06584.html" title="Object attribute with a constant scalar value. " alt="" coords="459,155,649,181"/>
+<area shape="rect" id="node2" href="$db/d2a/a05808.html" title="Abstract base class for reference counted objects. " alt="" coords="240,5,321,32"/>
+<area shape="rect" id="node3" href="$d1/d73/a04476.html" title="Abstract base class for references which must be invalidated when an. " alt="" coords="345,5,437,32"/>
+<area shape="rect" id="node5" href="$d3/dcd/a06508.html" title="Object attribute with a `‘deferred’&#39; array value. " alt="" coords="11,229,223,256"/>
+<area shape="rect" id="node6" href="$d5/d47/a06496.html" title="Object attribute with an `‘automatic’&#39; array value. " alt="" coords="5,304,228,331"/>
+<area shape="rect" id="node9" href="$d4/dc0/a06560.html" title="Object attribute with a `‘deferred’&#39; scalar value. " alt="" coords="449,229,659,256"/>
+<area shape="rect" id="node10" href="$db/d1f/a06544.html" title="Object attribute with an `‘automatic’&#39; scalar value. " alt="" coords="443,304,665,331"/>
+</map>

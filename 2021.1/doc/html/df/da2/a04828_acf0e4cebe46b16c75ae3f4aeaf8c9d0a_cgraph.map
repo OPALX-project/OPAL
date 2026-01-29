@@ -1,0 +1,6 @@
+<map id="ElementBase::getEntrancePatch" name="ElementBase::getEntrancePatch">
+<area shape="rect" id="node2" href="$da/def/a05344.html#ac49a4bc6e22058d0deeb76cdf9ec0a2a" title="Get patch. " alt="" coords="248,5,463,47"/>
+<area shape="rect" id="node5" href="$df/da2/a04828.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="254,71,457,98"/>
+<area shape="rect" id="node3" href="$d4/dcb/a05336.html#ab8af897206b9e8f979c4260ad11d5bed" title="Make identity. " alt="" coords="511,13,648,39"/>
+<area shape="rect" id="node4" href="$d4/dcb/a05336.html#a6f9d1a9cfd2fa832bc3ad4ae1fb170d3" title="Default constructor. " alt="" coords="696,13,840,39"/>
+</map>

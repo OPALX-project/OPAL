@@ -1,0 +1,27 @@
+<map id="FFT&lt; CCTransform, Dim, T &gt;::transform" name="FFT&lt; CCTransform, Dim, T &gt;::transform">
+<area shape="rect" id="node2" href="$dd/d54/a08008.html#a762004cbc1ac304271ea609fc8abe501" title="BareField::begin_if" alt="" coords="269,5,412,32"/>
+<area shape="rect" id="node3" href="$d7/d06/a08076.html#a6ff4f24968fdbc49cf14bd654c7b6aa2" title="FFTPACK::callFFT" alt="" coords="275,56,406,83"/>
+<area shape="rect" id="node4" href="$d7/d3a/a08056.html#af704ad07ee5d6ef7a8b69cdabf469940" title="compare indexes of two domains " alt="" coords="254,107,427,133"/>
+<area shape="rect" id="node5" href="$d7/d3a/a08056.html#aaf2b61078c6637e69f216b65dbc982f5" title="do we compress temps? " alt="" coords="246,157,435,184"/>
+<area shape="rect" id="node6" href="$dd/d54/a08008.html#ab436e2eb992a9a87449757517ab60b68" title="BareField::end_if" alt="" coords="275,208,406,235"/>
+<area shape="rect" id="node7" href="$d7/d3a/a08056.html#a1ea7db4389b613401ac28c1b3dba6aa9" title="translate direction name string into dimension number " alt="" coords="259,259,423,285"/>
+<area shape="rect" id="node8" href="$d3/d6d/a08204.html#ae709e9245e65406dc72b94c65f74849b" title="FieldLayout::getDistribution" alt="" coords="240,309,441,336"/>
+<area shape="rect" id="node9" href="$d7/d3a/a08056.html#a4aa9b793a79e7d326742c932ca2385c9" title="get our domain " alt="" coords="263,360,419,387"/>
+<area shape="rect" id="node10" href="$d3/d6d/a08204.html#a145fb07dd8ce69c94cc355f263fc22ef" title="FieldLayout::getDomain" alt="" coords="253,411,429,437"/>
+<area shape="rect" id="node11" href="$d7/d3a/a08056.html#a1489b5f912a7e512138bd4f2c615b567" title="access the internal FFT Engine " alt="" coords="266,461,415,488"/>
+<area shape="rect" id="node12" href="$dd/d54/a08008.html#a651ce2d2cbefaf0184970d5a4ccf6863" title="BareField::getGC" alt="" coords="275,512,406,539"/>
+<area shape="rect" id="node13" href="$dd/d54/a08008.html#add48f68ff3e320645708670d9d423cbe" title="BareField::getLayout" alt="" coords="263,563,418,589"/>
+<area shape="rect" id="node14" href="$d7/d3a/a08056.html#a5e84b3c5b639faf3df6f45fa9a853a26" title="get the FFT normalization factor " alt="" coords="257,613,424,640"/>
+<area shape="rect" id="node15" href="$d3/d4c/a08012.html#a1f8759cfe977141e4aada00ddb55166f" title="LField::getP" alt="" coords="293,664,389,691"/>
+<area shape="rect" id="node16" href="$d7/d3a/a08056.html#a31ebac743710b1931fac01fb1716dc81" title="query number of transform dimensions " alt="" coords="235,715,447,741"/>
+<area shape="rect" id="node17" href="$d3/d4c/a08012.html#a1bbbe1755b3c06c6bacdfc6fb377a0d0" title="LField::size" alt="" coords="294,765,387,792"/>
+<area shape="rect" id="node18" href="$d3/d4c/a08012.html#ac8d1d4505ca5562f4feee551089c1276" title="LField::Uncompress" alt="" coords="267,816,415,843"/>
+<area shape="rect" id="node19" href="$d3/d4c/a08012.html#a5bf55eca1a2d772944a15f1e4361efed" title="LField::IsCompressed" alt="" coords="509,791,668,817"/>
+<area shape="rect" id="node20" href="$d3/d4c/a08012.html#a180465f6c6ecf2706eb444a1c7a95ec9" title="LField::ReallyUncompress" alt="" coords="495,841,683,868"/>
+<area shape="rect" id="node21" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="731,841,781,868"/>
+<area shape="rect" id="node22" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="829,816,1001,843"/>
+<area shape="rect" id="node23" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1533,765,1667,792"/>
+<area shape="rect" id="node24" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1049,816,1236,843"/>
+<area shape="rect" id="node25" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1284,816,1481,843"/>
+<area shape="rect" id="node26" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1529,816,1671,843"/>
+</map>

@@ -1,0 +1,15 @@
+<map id="OpalOffset::OpalGlobalCartesianOffset::update" name="OpalOffset::OpalGlobalCartesianOffset::update">
+<area shape="rect" id="node2" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="311,122,473,149"/>
+<area shape="rect" id="node3" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="321,173,463,199"/>
+<area shape="rect" id="node10" href="$da/d05/a04920.html#ac4e3ad1005999f06252270c95c8b958b" title="Offset::globalCartesianOffset" alt="" coords="287,274,497,301"/>
+<area shape="rect" id="node14" href="$d5/d8e/a04448.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="313,325,471,351"/>
+<area shape="rect" id="node4" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="560,5,721,47"/>
+<area shape="rect" id="node5" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="571,71,711,98"/>
+<area shape="rect" id="node6" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="561,122,720,149"/>
+<area shape="rect" id="node7" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="567,173,714,199"/>
+<area shape="rect" id="node9" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="545,223,736,250"/>
+<area shape="rect" id="node8" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="784,173,983,199"/>
+<area shape="rect" id="node11" href="$da/d05/a04920.html#aa6d74cd2d0ca69354c48eb808aa1cb08" title="Offset::setEndDirection" alt="" coords="555,274,727,301"/>
+<area shape="rect" id="node12" href="$da/d05/a04920.html#a8c12fd6f7d13b5f36a1b77da59946b6f" title="Offset::setEndPosition" alt="" coords="558,325,723,351"/>
+<area shape="rect" id="node13" href="$da/d05/a04920.html#ae5338232057d9a57ca7c863d076d075c" title="Offset::setIsLocal" alt="" coords="573,375,708,402"/>
+</map>

@@ -1,0 +1,8 @@
+<map id="VariableRFCavity::accept" name="VariableRFCavity::accept">
+<area shape="rect" id="node2" href="$d6/df3/a05008.html#a1c71d75c366fe56fe35d7428cc034740" title="VariableRFCavity::initialise" alt="" coords="245,111,441,138"/>
+<area shape="rect" id="node7" href="$db/d2a/a04776.html#ade5e0c54dba31ff52a669c55e3cac92e" title="Apply the algorithm to a variable RF cavity. " alt="" coords="236,163,451,204"/>
+<area shape="rect" id="node3" href="$d1/ddd/a05076.html#a24e23ba4f7cb7106c38eda2c32f78f41" title="AbstractTimeDependence\l::getTimeDependence" alt="" coords="517,5,707,47"/>
+<area shape="rect" id="node4" href="$d6/df3/a05008.html#a827954dda9cf79989a3aed6eb6e5b451" title="VariableRFCavity::setPhase\lModel" alt="" coords="513,71,711,112"/>
+<area shape="rect" id="node5" href="$d6/df3/a05008.html#aa0babc3f8e06d306fc56d73eeaf519f1" title="VariableRFCavity::setFrequency\lModel" alt="" coords="499,136,725,177"/>
+<area shape="rect" id="node6" href="$d6/df3/a05008.html#afdd63737ad7e0345610dc8911cdb15cf" title="VariableRFCavity::setAmplitude\lModel" alt="" coords="499,201,725,243"/>
+</map>

@@ -1,0 +1,11 @@
+<map id="RealVariable::RealVariable" name="RealVariable::RealVariable">
+<area shape="rect" id="node2" href="$d9/d4e/a04307.html#aa92fad2ca301134087589e159653b624" title="Set real value. " alt="" coords="257,132,399,159"/>
+<area shape="rect" id="node10" href="$d9/dbb/a04524.html#a37162c7c98291458e6a8265b130385ed" title="Return the attribute representing the value of the definition. " alt="" coords="245,183,411,209"/>
+<area shape="rect" id="node3" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="475,5,633,32"/>
+<area shape="rect" id="node4" href="$dc/d7e/a04424.html#a6cd34bcfad889b4215734cbc0b5eafc2" title="Define new value. " alt="" coords="501,56,607,83"/>
+<area shape="rect" id="node5" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="459,107,649,133"/>
+<area shape="rect" id="node6" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="484,157,624,184"/>
+<area shape="rect" id="node7" href="$df/dfb/a04472.html#a9f2de4ecdd67c51008baf6f6d247c0b1" title="Store new value. " alt="" coords="459,208,649,235"/>
+<area shape="rect" id="node8" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="481,259,627,285"/>
+<area shape="rect" id="node9" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="697,259,896,285"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="LaserProfile::readPGMFile" name="LaserProfile::readPGMFile">
+<area shape="rect" id="node2" href="$d1/d65/a06240.html#a45e48ff68876b7c3f0d7ac6e0c5065a6" title="PortableGraymapReader\l::getHeight" alt="" coords="240,5,421,47"/>
+<area shape="rect" id="node3" href="$d1/d65/a06240.html#a467b1ff4cdc747c12a6512dc50670707" title="PortableGraymapReader\l::getPixel" alt="" coords="240,71,421,112"/>
+<area shape="rect" id="node5" href="$d1/d65/a06240.html#a2ea9c078b8ed8fd8cab6fbc29f4188f9" title="PortableGraymapReader\l::getWidth" alt="" coords="240,136,421,177"/>
+<area shape="rect" id="node4" href="$d1/d65/a06240.html#a45a0c6b734f3a89f4e4f6e116450507f" title="PortableGraymapReader\l::getIdx" alt="" coords="469,71,651,112"/>
+</map>

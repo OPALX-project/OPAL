@@ -1,0 +1,7 @@
+<map id="PartBins::calcHBins" name="PartBins::calcHBins">
+<area shape="rect" id="node2" href="$dc/dcd/a05112.html#a9254a9924368ba9faf68b0a33b817f6a" title="PartBins::calcExtrema" alt="" coords="200,5,364,32"/>
+<area shape="rect" id="node3" href="$dc/dcd/a05112.html#a9d131627487f1c7b994427c20c184ed4" title="PartBins::getBin" alt="" coords="219,56,345,83"/>
+<area shape="rect" id="node4" href="$df/d98/a03680.html#ae29244719985f3e4cbc22b58064177de" title="floor" alt="" coords="412,31,463,57"/>
+<area shape="rect" id="node5" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="415,81,460,108"/>
+<area shape="rect" id="node6" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="511,81,696,108"/>
+</map>

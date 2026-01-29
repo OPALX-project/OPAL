@@ -1,0 +1,17 @@
+<map id="RealVariable::RealVariable" name="RealVariable::RealVariable">
+<area shape="rect" id="node2" href="$d1/d55/a04496.html#a9b61b52d3e1991992ac7dae7bab951f8" title="Create new object. " alt="" coords="275,81,407,108"/>
+<area shape="rect" id="node7" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="257,245,424,272"/>
+<area shape="rect" id="node9" href="$d9/d4e/a04307.html#a6e6d302b6aceb7118637b3670373809b" title="Make real attribute. " alt="" coords="261,296,420,323"/>
+<area shape="rect" id="node10" href="$df/d3d/a04480.html#a11c14d6b194bf37c2883bb42922852ac" title="Object::registerOwnership" alt="" coords="245,195,436,221"/>
+<area shape="rect" id="node15" href="$df/d3d/a04480.html#aa48af24109cadc6f450bcc37523651a5" title="Set/reset the [b]modified[/b] flag. " alt="" coords="279,347,403,373"/>
+<area shape="rect" id="node16" href="$d1/d55/a04496.html#a43390aa41dfa944e82a47c760923c242" title="Set the global momentum. " alt="" coords="277,397,404,424"/>
+<area shape="rect" id="node3" href="$d1/d13/a04444.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="537,56,650,83"/>
+<area shape="rect" id="node4" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="512,107,675,133"/>
+<area shape="rect" id="node5" href="$d1/d13/a04444.html#afd593b9994a1000a969046c02dd66846" title="Define new object. " alt="" coords="530,5,657,32"/>
+<area shape="rect" id="node6" href="$d8/db9/a00725.html#aa8ae23ddaa752827580a9345f34b7cca" title="value_type" alt="" coords="779,5,873,32"/>
+<area shape="rect" id="node8" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="517,325,669,352"/>
+<area shape="rect" id="node11" href="$dd/d4b/a04432.html#a550c346064f9c4e06ff5c88ff4b0ae9e" title="AttributeHandler::addAttribute\lOwner" alt="" coords="484,158,703,199"/>
+<area shape="rect" id="node12" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="570,224,617,251"/>
+<area shape="rect" id="node14" href="$df/d3d/a04480.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="526,275,661,301"/>
+<area shape="rect" id="node13" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="751,224,901,251"/>
+</map>

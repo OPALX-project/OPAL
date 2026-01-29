@@ -1,0 +1,12 @@
+<map id="src/Structure/OpalWake.h" name="src/Structure/OpalWake.h">
+<area shape="rect" id="node2" href="$d0/d79/a02117.html" title="src/Elements/OpalCavity.cpp" alt="" coords="5,87,212,114"/>
+<area shape="rect" id="node3" href="$d5/d88/a02141.html" title="src/Elements/OpalDrift.cpp" alt="" coords="236,87,432,114"/>
+<area shape="rect" id="node4" href="$d7/d24/a02261.html" title="src/Elements/OpalProbe.cpp" alt="" coords="456,87,660,114"/>
+<area shape="rect" id="node5" href="$d7/d6e/a02273.html" title="src/Elements/OpalRBend.cpp" alt="" coords="684,87,893,114"/>
+<area shape="rect" id="node6" href="$d2/dd2/a02279.html" title="src/Elements/OpalRBend3D.cpp" alt="" coords="918,87,1145,114"/>
+<area shape="rect" id="node7" href="$d1/db8/a02297.html" title="src/Elements/OpalSBend.cpp" alt="" coords="1169,87,1377,114"/>
+<area shape="rect" id="node8" href="$d7/d0c/a02315.html" title="src/Elements/OpalSeptum.cpp" alt="" coords="1401,87,1619,114"/>
+<area shape="rect" id="node9" href="$d8/d26/a02357.html" title="src/Elements/OpalTraveling\lWave.cpp" alt="" coords="1643,80,1841,121"/>
+<area shape="rect" id="node10" href="$d1/d67/a02561.html" title="src/OpalConfigure/Configure.cpp" alt="" coords="1865,87,2096,114"/>
+<area shape="rect" id="node11" href="$d6/d58/a02993.html" title="src/Structure/OpalWake.cpp" alt="" coords="2120,87,2321,114"/>
+</map>

@@ -1,0 +1,19 @@
+<map id="BeamStrippingPhysics::getSecondaryParticles" name="BeamStrippingPhysics::getSecondaryParticles">
+<area shape="rect" id="node2" href="$d1/dc3/a04492.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="228,5,441,32"/>
+<area shape="rect" id="node3" href="$d7/d8a/a05004.html#a5c349aba32f02d75af92eeb06e5a6804" title="Vacuum::getResidualGas" alt="" coords="243,56,426,83"/>
+<area shape="rect" id="node4" href="$d5/d98/a05916.html#a98ffefc319f3106d6d474cadd8ba8d3f" title="BeamStrippingPhysics\l::transformToH3plus" alt="" coords="251,303,418,345"/>
+<area shape="rect" id="node15" href="$d5/d98/a05916.html#a9f2c90425fd716e2af9f78a563c77bb9" title="BeamStrippingPhysics\l::transformToHminus" alt="" coords="251,107,418,149"/>
+<area shape="rect" id="node16" href="$d5/d98/a05916.html#a53e895a291ffc097bd2823b2ec597b3d" title="BeamStrippingPhysics\l::transformToHydrogen" alt="" coords="249,173,420,214"/>
+<area shape="rect" id="node17" href="$d5/d98/a05916.html#adb8e7bc5bbcdbdb2ba6694f60bb3811b" title="BeamStrippingPhysics\l::transformToProton" alt="" coords="251,238,418,279"/>
+<area shape="rect" id="node18" href="$d1/dc3/a04492.html#a5cccd734775026586eef70edb9982b4d" title="PartBunchBase::weHaveBins" alt="" coords="231,369,439,396"/>
+<area shape="rect" id="node5" href="$dd/dbc/a03800.html#a4f2ddb1680d4f912183950ea45ac1504" title="level4" alt="" coords="541,155,604,181"/>
+<area shape="rect" id="node7" href="$d5/d98/a05916.html#a2f4aed76d0565421fab80d5a6333b08a" title="BeamStrippingPhysics\l::getName" alt="" coords="489,206,656,247"/>
+<area shape="rect" id="node9" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="547,272,598,299"/>
+<area shape="rect" id="node6" href="$d9/d03/a11852.html#a9fb7d950a408c97487fbdc7328b038a5" title="Inform::setMessageLevel" alt="" coords="704,155,889,181"/>
+<area shape="rect" id="node8" href="$df/da2/a04828.html#a07827d00308052e65fe03da558f0b987" title="Get element name. " alt="" coords="709,213,885,240"/>
+<area shape="rect" id="node10" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="711,268,883,295"/>
+<area shape="rect" id="node11" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1421,217,1555,244"/>
+<area shape="rect" id="node12" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="937,268,1124,295"/>
+<area shape="rect" id="node13" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1172,268,1369,295"/>
+<area shape="rect" id="node14" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1417,268,1559,295"/>
+</map>

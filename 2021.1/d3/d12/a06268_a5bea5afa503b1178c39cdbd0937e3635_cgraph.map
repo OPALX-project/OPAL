@@ -1,0 +1,51 @@
+<map id="Distribution::injectBeam" name="Distribution::injectBeam">
+<area shape="rect" id="node2" href="$d1/dc3/a04492.html#ad1ee6b7f03a3b0613c452a83a5e94641" title="PartBunchBase::boundp" alt="" coords="267,5,442,32"/>
+<area shape="rect" id="node3" href="$d1/dc3/a04492.html#a34d410a167cbe2a0704dec05b7591682" title="PartBunchBase::calcEMean" alt="" coords="257,56,453,83"/>
+<area shape="rect" id="node4" href="$d1/dc3/a04492.html#ad7244dddace671a9e518f3fe4929f1b9" title="PartBunchBase::create" alt="" coords="271,107,439,133"/>
+<area shape="rect" id="node5" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="1099,711,1150,737"/>
+<area shape="rect" id="node11" href="$d3/d12/a06268.html#ab38fd0ab4876c155d3313e46364280a3" title="Distribution::findEBin" alt="" coords="552,188,711,215"/>
+<area shape="rect" id="node12" href="$d1/dc3/a04492.html#a19aacd7d2904a811460d487ade713b9a" title="get the macro particle charge " alt="" coords="257,259,452,301"/>
+<area shape="rect" id="node13" href="$d1/dc3/a04492.html#a1565ee86342c1f9b131461c7226e321a" title="PartBunchBase::getMassPer\lParticle" alt="" coords="253,325,456,366"/>
+<area shape="rect" id="node14" href="$d1/dc3/a04492.html#a7270243d7bb7f3f5a58e154ed858e0fb" title="PartBunchBase::getPType" alt="" coords="261,391,448,417"/>
+<area shape="rect" id="node15" href="$d9/d4e/a04307.html#ab98e27fb1c758b0a63d9e242fcbe68e6" title="Get array value. " alt="" coords="542,137,721,164"/>
+<area shape="rect" id="node21" href="$d1/dc3/a04492.html#af1d90f3077b25f0a043ff809e572cd34" title="PartBunchBase::iterateEmittedBin" alt="" coords="233,508,476,535"/>
+<area shape="rect" id="node22" href="$d3/d12/a06268.html#ad1d11b4c99e67ac3c3f11dc05627c2c2" title="Distribution::writeOutFile\lInjection" alt="" coords="263,442,447,483"/>
+<area shape="rect" id="node6" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1272,685,1444,712"/>
+<area shape="rect" id="node7" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1975,635,2110,661"/>
+<area shape="rect" id="node8" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1492,685,1679,712"/>
+<area shape="rect" id="node9" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1727,711,1924,737"/>
+<area shape="rect" id="node10" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1972,1107,2113,1133"/>
+<area shape="rect" id="node16" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="787,180,977,207"/>
+<area shape="rect" id="node17" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="803,231,961,257"/>
+<area shape="rect" id="node18" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="812,79,952,105"/>
+<area shape="rect" id="node19" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="809,129,955,156"/>
+<area shape="rect" id="node20" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="1025,129,1224,156"/>
+<area shape="rect" id="node23" href="$d9/d4e/a04307.html#a8f4df54f34b43a8304cb34f961a1c488" title="Return logical value. " alt="" coords="559,289,703,316"/>
+<area shape="rect" id="node25" href="$d6/db7/a04354.html#a11460f59ebd4d9f7dc2f12724dece886" title="Util::combineFilePath" alt="" coords="552,239,711,265"/>
+<area shape="rect" id="node26" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="548,391,715,417"/>
+<area shape="rect" id="node28" href="$d1/d55/a04496.html#af5404b3339d48c4531df60b77ce628c3" title="get the name of the the additional data directory " alt="" coords="524,442,739,483"/>
+<area shape="rect" id="node29" href="$d1/d55/a04496.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="524,508,739,535"/>
+<area shape="rect" id="node30" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="550,609,713,636"/>
+<area shape="rect" id="node31" href="$d9/d03/a11852.html#ab3bc980da96d8264e159c522f4eab559" title="Inform::precision" alt="" coords="565,660,697,687"/>
+<area shape="rect" id="node32" href="$d7/d65/a03518.html#a6e1e71ee127405447f7411777d80ebd6" title="reduce" alt="" coords="598,1015,665,1041"/>
+<area shape="rect" id="node24" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="801,282,963,323"/>
+<area shape="rect" id="node27" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="806,399,958,425"/>
+<area shape="rect" id="node33" href="$d5/d16/a11864.html#a8bdcd8abcec1d747ecf82579b42c853c" title="IpplInfo::abort" alt="" coords="825,761,939,788"/>
+<area shape="rect" id="node36" href="$d7/d31/a08956.html#aa072c62b650774371674b050109d8051" title="Communicate::broadcast\l_others" alt="" coords="789,1218,975,1259"/>
+<area shape="rect" id="node37" href="$d7/d31/a08956.html#aca765179d2843e977a7a78098c8cbde8" title="Communicate::getNodes" alt="" coords="1033,1167,1216,1193"/>
+<area shape="rect" id="node38" href="$d7/d31/a08956.html#aedbfc462a5f9babc3fc07f875847547f" title="Communicate::myNode" alt="" coords="1037,1309,1213,1336"/>
+<area shape="rect" id="node40" href="$d9/d30/a09364.html#a523d491d036f4490a52b2a76ad1a1823" title="Message::MsgItem::data" alt="" coords="792,812,972,839"/>
+<area shape="rect" id="node41" href="$dc/d98/a03524.html#ac34b443397f0101557c34a5c235ee578" title="getMessage" alt="" coords="832,863,932,889"/>
+<area shape="rect" id="node43" href="$dc/dd6/a09360.html#adf6de3f25ef659274319872d5555efc5" title="Message::item" alt="" coords="823,913,941,940"/>
+<area shape="rect" id="node44" href="$d1/d51/a09544.html#aec355d9c01194461adbba236ffbd7b21" title="TagMaker::next_tag" alt="" coords="807,964,957,991"/>
+<area shape="rect" id="node46" href="$db/d69/a03320.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="833,1065,931,1092"/>
+<area shape="rect" id="node47" href="$dc/d98/a03524.html#a04b92846c9f02264188b7e562649ddb1" title="putMessage" alt="" coords="832,1116,932,1143"/>
+<area shape="rect" id="node48" href="$d7/d31/a08956.html#ac0e671485db61cd6fdf8961504250b2b" title="Communicate::receive\l_block" alt="" coords="797,1335,967,1377"/>
+<area shape="rect" id="node49" href="$d7/d31/a08956.html#a5c519594f60faadd9202606f1ba0bbc3" title="Communicate::send" alt="" coords="806,1167,958,1193"/>
+<area shape="rect" id="node50" href="$dc/dd6/a09360.html#a3064fb32119072349687a4a2fa603fd4" title="Message::size" alt="" coords="825,1284,939,1311"/>
+<area shape="rect" id="node34" href="$d5/d16/a11864.html#a733d331c7749dce3f7c5874832125461" title="IpplInfo::IpplInfo" alt="" coords="1061,812,1189,839"/>
+<area shape="rect" id="node35" href="$d5/d16/a11864.html#a0fcbec64e72d74c17d5e247953831fd5" title="IpplInfo::printStatistics" alt="" coords="1040,761,1209,788"/>
+<area shape="rect" id="node39" href="$d7/d31/a08956.html#a0980eed71a6f2ac1132190e52648c67e" title="Communicate::mysend" alt="" coords="1038,1221,1211,1248"/>
+<area shape="rect" id="node42" href="$dc/dd6/a09360.html#aeb7c0c5d1f49f8fd1b78eae709216da9" title="Message::get" alt="" coords="1071,863,1179,889"/>
+<area shape="rect" id="node45" href="$d1/d51/a09544.html#a666b5136a7f17a2b2582870b35fa4434" title="TagMaker::create_base_tag" alt="" coords="1025,964,1224,991"/>
+</map>

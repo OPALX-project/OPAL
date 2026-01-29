@@ -1,0 +1,7 @@
+<map id="CommMPI::resend" name="CommMPI::resend">
+<area shape="rect" id="node2" href="$d1/dd5/a11876.html#a45f9253386cef63e40ff7404f435467f" title="IpplMessageCounter\l::getInstance" alt="" coords="204,5,359,47"/>
+<area shape="rect" id="node3" href="$d7/d31/a08956.html#aedbfc462a5f9babc3fc07f875847547f" title="Communicate::myNode" alt="" coords="193,71,369,98"/>
+<area shape="rect" id="node4" href="$d1/dd5/a11876.html#ae1cd61d35be2f84bcc3542bc63d7a9b2" title="IpplMessageCounter\l::registerMessage" alt="" coords="204,123,359,164"/>
+<area shape="rect" id="node5" href="$d1/dd5/a11876.html#a5c72a6964d7fa870b37b8df869bdbbbf" title="IpplMessageCounter\l::getActiveRegion" alt="" coords="439,89,594,131"/>
+<area shape="rect" id="node6" href="$df/d59/a11872.html#a840053a0ee78aa11ef7f97ad54c71e4d" title="IpplMessageCounterRegion\l::registerMessage" alt="" coords="417,155,616,196"/>
+</map>

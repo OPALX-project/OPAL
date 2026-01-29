@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# cleanup
+if stat -t *_results.dat* >/dev/null 2>&1
+then
+    rm *_results.dat*
+fi
+
+mpirun -np 30 ../../../build/Drivers/homotopy-standalone/homotopy-standalone.exe \
+    --inputfile=Problem.in --outfile=results.dat --outdir=./ \
+    --num-masters=10 --num-coworkers=1 --sol-synch=1 \
+    --num-points=50 --iterations=5 \
+    --num-objectives=2 --num-design-vars=3 \
+    --preprojection=0
+

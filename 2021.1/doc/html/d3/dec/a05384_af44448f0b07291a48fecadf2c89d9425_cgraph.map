@@ -1,0 +1,6 @@
+<map id="BeamlineGeometry::getOrigin" name="BeamlineGeometry::getOrigin">
+<area shape="rect" id="node2" href="$df/da2/a04828.html#a61c5f558acc417678fb8e270362b49e3" title="Get origin position. " alt="" coords="269,31,445,57"/>
+<area shape="rect" id="node3" href="$df/da2/a04828.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="493,5,696,32"/>
+<area shape="rect" id="node4" href="$da/def/a05344.html#a801847a7293b13d6f3e589d14e705385" title="Get origin position. " alt="" coords="497,56,693,83"/>
+<area shape="rect" id="node5" href="$da/def/a05344.html#ad65fbb978aab956e163378ef589d74c0" title="Get arc length. " alt="" coords="744,56,967,83"/>
+</map>

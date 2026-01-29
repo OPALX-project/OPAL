@@ -1,0 +1,51 @@
+<map id="OpalVerticalFFAMagnet::update" name="OpalVerticalFFAMagnet::update">
+<area shape="rect" id="node2" href="$df/d98/a03680.html#ae29244719985f3e4cbc22b58064177de" title="floor" alt="" coords="295,5,345,32"/>
+<area shape="rect" id="node3" href="$d5/d8e/a04448.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="241,56,399,83"/>
+<area shape="rect" id="node4" href="$d5/d66/a05016.html#ac965b781fde8480d767aa5dce228d48f" title="VerticalFFAMagnet::\lgetEndField" alt="" coords="245,107,395,149"/>
+<area shape="rect" id="node5" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="249,173,391,200"/>
+<area shape="rect" id="node12" href="$d5/d66/a05016.html#adf1d14a8edb2bcee2c9497f1908f4c66" title="VerticalFFAMagnet::\linitialise" alt="" coords="245,225,395,266"/>
+<area shape="rect" id="node33" href="$d5/d66/a05016.html#ab12aad84544fd6ee20a02aa4deca71de" title="VerticalFFAMagnet::\lsetB0" alt="" coords="245,290,395,331"/>
+<area shape="rect" id="node34" href="$d5/d66/a05016.html#a07da72291124c906131bcbfaf50cc84b" title="VerticalFFAMagnet::\lsetBBLength" alt="" coords="245,355,395,397"/>
+<area shape="rect" id="node35" href="$d5/d8e/a04448.html#adcaf1c30b170487a357d7cc9ad8404cf" title="Assign new CLASSIC element. " alt="" coords="241,421,399,448"/>
+<area shape="rect" id="node36" href="$d5/d66/a05016.html#abf32ad73bed084ce2615568dbc32b650" title="VerticalFFAMagnet::\lsetFieldIndex" alt="" coords="245,473,395,514"/>
+<area shape="rect" id="node37" href="$de/df4/a04844.html#a98f4e89bec4bdfa609fa4d9a8b3dc7d7" title="endfieldmodel::Tanh\l::setLambda" alt="" coords="243,538,397,579"/>
+<area shape="rect" id="node38" href="$d5/d66/a05016.html#a71bd6cb01cbe8970e2e8c0ed6b6effcf" title="VerticalFFAMagnet::\lsetMaxOrder" alt="" coords="245,603,395,645"/>
+<area shape="rect" id="node39" href="$d5/d66/a05016.html#ab7c6f25909dc9956f4a506c86912bbf5" title="VerticalFFAMagnet::\lsetNegativeVerticalExtent" alt="" coords="224,669,416,710"/>
+<area shape="rect" id="node40" href="$d5/d66/a05016.html#afb9f1ba2a6ec23cc16ef425bc6d2f9d7" title="VerticalFFAMagnet::\lsetPositiveVerticalExtent" alt="" coords="227,734,413,775"/>
+<area shape="rect" id="node41" href="$de/df4/a04844.html#a286aa4a539a51a38a88360b307188635" title="endfieldmodel::Tanh\l::setTanhDiffIndices" alt="" coords="243,799,397,841"/>
+<area shape="rect" id="node49" href="$d5/d66/a05016.html#a1c9aebbcdce59a53f3ee95bea39897cb" title="VerticalFFAMagnet::\lsetWidth" alt="" coords="245,865,395,906"/>
+<area shape="rect" id="node50" href="$de/df4/a04844.html#a750e54f1a5b0daf52809bc6f1ea663bb" title="endfieldmodel::Tanh\l::setX0" alt="" coords="243,930,397,971"/>
+<area shape="rect" id="node6" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="480,97,671,124"/>
+<area shape="rect" id="node7" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="505,148,645,175"/>
+<area shape="rect" id="node8" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="496,199,655,225"/>
+<area shape="rect" id="node9" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="495,250,656,291"/>
+<area shape="rect" id="node10" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="502,47,649,73"/>
+<area shape="rect" id="node11" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="749,47,947,73"/>
+<area shape="rect" id="node13" href="$d5/d66/a05016.html#a29f78aba7cb5ad6de0911eaaa0c7e8ff" title="VerticalFFAMagnet::\linitialise" alt="" coords="501,315,650,357"/>
+<area shape="rect" id="node14" href="$d5/d66/a05016.html#a5479803206347c520722d6bb9e2e493e" title="VerticalFFAMagnet::\lcalculateDfCoefficients" alt="" coords="761,349,935,390"/>
+<area shape="rect" id="node15" href="$d3/d02/a05368.html#a57fcc99bad2c6e5faaaa117bb82e8f36" title="Set design length. " alt="" coords="739,283,957,325"/>
+<area shape="rect" id="node16" href="$d4/d6f/a03374.html#a418b01af7e1c6223e54608b7e75e0cf6" title="max" alt="" coords="1065,291,1116,317"/>
+<area shape="rect" id="node17" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="1355,265,1540,292"/>
+<area shape="rect" id="node18" href="$d4/d6f/a03374.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="1220,316,1307,343"/>
+<area shape="rect" id="node19" href="$d2/d76/a03296.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="1408,316,1487,343"/>
+<area shape="rect" id="node21" href="$db/d69/a03320.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="1632,367,1729,393"/>
+<area shape="rect" id="node22" href="$d7/d65/a03518.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="1385,595,1510,621"/>
+<area shape="rect" id="node20" href="$da/d54/a08124.html#ade95693db1906427a7c73b8364a07b20" title="BareFieldIterator::\lGetBareField" alt="" coords="1611,301,1750,342"/>
+<area shape="rect" id="node23" href="$d5/d16/a11864.html#a8bdcd8abcec1d747ecf82579b42c853c" title="IpplInfo::abort" alt="" coords="1624,620,1737,647"/>
+<area shape="rect" id="node24" href="$d7/d31/a08956.html#aa072c62b650774371674b050109d8051" title="Communicate::broadcast\l_others" alt="" coords="1588,722,1773,763"/>
+<area shape="rect" id="node25" href="$d7/d31/a08956.html#aca765179d2843e977a7a78098c8cbde8" title="Communicate::getNodes" alt="" coords="1821,729,2004,756"/>
+<area shape="rect" id="node26" href="$d7/d31/a08956.html#aedbfc462a5f9babc3fc07f875847547f" title="Communicate::myNode" alt="" coords="1825,813,2001,840"/>
+<area shape="rect" id="node27" href="$dc/d98/a03524.html#ac34b443397f0101557c34a5c235ee578" title="getMessage" alt="" coords="1631,417,1731,444"/>
+<area shape="rect" id="node28" href="$d1/d51/a09544.html#aec355d9c01194461adbba236ffbd7b21" title="TagMaker::next_tag" alt="" coords="1606,468,1755,495"/>
+<area shape="rect" id="node29" href="$dc/d98/a03524.html#a04b92846c9f02264188b7e562649ddb1" title="putMessage" alt="" coords="1631,519,1731,545"/>
+<area shape="rect" id="node30" href="$d7/d31/a08956.html#ac0e671485db61cd6fdf8961504250b2b" title="Communicate::receive\l_block" alt="" coords="1596,890,1765,931"/>
+<area shape="rect" id="node31" href="$d7/d31/a08956.html#a5c519594f60faadd9202606f1ba0bbc3" title="Communicate::send" alt="" coords="1605,788,1757,815"/>
+<area shape="rect" id="node32" href="$dc/dd6/a09360.html#a3064fb32119072349687a4a2fa603fd4" title="Message::size" alt="" coords="1624,569,1737,596"/>
+<area shape="rect" id="node42" href="$d4/d46/a04312.html#ac723882d762f287767dfb168b891eb33" title="endfieldmodel::CompactVector" alt="" coords="464,807,687,833"/>
+<area shape="rect" id="node43" href="$d4/d46/a04312.html#ad8755adb0cdde68f7ce5aff9388d3977" title="CompactVector helper function, used for sorting. " alt="" coords="746,781,950,808"/>
+<area shape="rect" id="node44" href="$d4/d46/a04312.html#ac7409c7bf6cbfc120a604bd6dd54a5b0" title="endfieldmodel::IterableEquality" alt="" coords="735,832,961,859"/>
+<area shape="rect" id="node45" href="$d0/d11/a00842.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375" title="begin" alt="" coords="819,883,877,909"/>
+<area shape="rect" id="node47" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="825,731,871,757"/>
+<area shape="rect" id="node46" href="$d1/dc3/a04492.html#ad6ece85323a4f116320d363dfb419738" title="PartBunchBase::begin" alt="" coords="1009,883,1172,909"/>
+<area shape="rect" id="node48" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="1015,731,1166,757"/>
+</map>

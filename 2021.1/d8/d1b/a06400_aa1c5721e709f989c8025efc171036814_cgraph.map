@@ -1,0 +1,11 @@
+<map id="OpalPolynomialTimeDependence::update" name="OpalPolynomialTimeDependence::update">
+<area shape="rect" id="node2" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="306,56,469,83"/>
+<area shape="rect" id="node3" href="$d9/d4e/a04307.html#a04ef4de7f8e753119a3d32411a0f0a2d" title="Return real value. " alt="" coords="316,107,459,133"/>
+<area shape="rect" id="node10" href="$d1/ddd/a05076.html#a01ef3c216ccd4fcc866d4426cc6e3532" title="AbstractTimeDependence\l::setTimeDependence" alt="" coords="292,158,483,199"/>
+<area shape="rect" id="node4" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="531,5,721,32"/>
+<area shape="rect" id="node5" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="556,56,696,83"/>
+<area shape="rect" id="node6" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="547,107,705,133"/>
+<area shape="rect" id="node7" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="545,158,707,199"/>
+<area shape="rect" id="node8" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="553,224,699,251"/>
+<area shape="rect" id="node9" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="769,224,968,251"/>
+</map>

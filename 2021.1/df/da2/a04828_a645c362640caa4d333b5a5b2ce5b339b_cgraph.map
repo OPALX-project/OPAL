@@ -1,0 +1,8 @@
+<map id="ElementBase::getEntranceFrame" name="ElementBase::getEntranceFrame">
+<area shape="rect" id="node2" href="$da/def/a05344.html#a80203d8413eeb9a6895c24682cb0a500" title="Get transform. " alt="" coords="248,23,463,65"/>
+<area shape="rect" id="node7" href="$df/da2/a04828.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="254,89,457,116"/>
+<area shape="rect" id="node3" href="$da/def/a05344.html#a5db85da1c96e5be8ffbdd0b2b913be47" title="Get entrance position. " alt="" coords="515,5,729,32"/>
+<area shape="rect" id="node6" href="$da/def/a05344.html#a0b27cf0c53d13be32e8cec8343c31900" title="Get transform. " alt="" coords="511,56,733,83"/>
+<area shape="rect" id="node4" href="$da/def/a05344.html#a801847a7293b13d6f3e589d14e705385" title="Get origin position. " alt="" coords="781,5,977,32"/>
+<area shape="rect" id="node5" href="$da/def/a05344.html#ad65fbb978aab956e163378ef589d74c0" title="Get arc length. " alt="" coords="1025,5,1248,32"/>
+</map>

@@ -1,0 +1,51 @@
+<map id="AmrMultiGrid::solve" name="AmrMultiGrid::solve">
+<area shape="rect" id="node2" href="$d0/d90/a06760.html#a70b77ceda52f5b63cf39d6c437ed657e" title="AmrMultiGrid::averageDown_m" alt="" coords="799,811,1025,837"/>
+<area shape="rect" id="node7" href="$d0/d90/a06760.html#adf3d9d09c5bf8a12a1920c7c826f684d" title="AmrMultiGrid::computeEfield_m" alt="" coords="207,912,437,939"/>
+<area shape="rect" id="node8" href="$d0/d90/a06760.html#a0606702e71475f17f5a76a932e0d47e6" title="AmrMultiGrid::trilinos2amrex_m" alt="" coords="504,861,735,888"/>
+<area shape="rect" id="node9" href="$d0/d90/a06760.html#a17ffd1d917d607279b69af92b0bbd6f7" title="AmrMultiGrid::initGuess_m" alt="" coords="223,1140,421,1167"/>
+<area shape="rect" id="node10" href="$d0/d90/a06760.html#ad460e676e9e75223f445175f790945f2" title="AmrMultiGrid::initLevels_m" alt="" coords="223,1267,421,1293"/>
+<area shape="rect" id="node12" href="$d0/d90/a06760.html#a5e7c4601feb9a14b910b75dd8167386c" title="AmrMultiGrid::iterate_m" alt="" coords="233,1089,411,1116"/>
+<area shape="rect" id="node26" href="$d0/d90/a06760.html#a2e180ab0cc86c1057a2a7b6ffb45cc57" title="AmrMultiGrid::setup_m" alt="" coords="826,253,998,280"/>
+<area shape="rect" id="node40" href="$d0/d90/a06760.html#abc5de7697bcbdf82fc93b2986509dd1d" title="AmrMultiGrid::writeSDDSData_m" alt="" coords="204,583,440,609"/>
+<area shape="rect" id="node3" href="$d0/d38/a11896.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="1091,1115,1265,1141"/>
+<area shape="rect" id="node5" href="$d0/d38/a11896.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="1092,1013,1264,1040"/>
+<area shape="rect" id="node4" href="$d2/dd7/a11892.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="1379,1115,1521,1141"/>
+<area shape="rect" id="node6" href="$d2/dd7/a11892.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="1379,1013,1521,1040"/>
+<area shape="rect" id="node11" href="$dc/de6/a04632.html#a062ec35947e1131dfa38ceb6643778c1" title="AmrBoxLib::getMeshScaling" alt="" coords="518,1317,721,1344"/>
+<area shape="rect" id="node13" href="$d2/d76/a03296.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="580,1267,659,1293"/>
+<area shape="rect" id="node15" href="$d0/d90/a06760.html#a4b60b4b05c2b4e9de06219bb77ea9d8d" title="AmrMultiGrid::getLevelResidualNorm" alt="" coords="488,1115,751,1141"/>
+<area shape="rect" id="node17" href="$d0/d90/a06760.html#aa6bfecd6e84941e61fe6b647a1d6b923" title="AmrMultiGrid::initResidual_m" alt="" coords="513,1064,725,1091"/>
+<area shape="rect" id="node19" href="$d0/d90/a06760.html#ad6fdd9687c094d5954e6aa57c4d38b8a" title="AmrMultiGrid::residual_m" alt="" coords="818,1064,1006,1091"/>
+<area shape="rect" id="node20" href="$d0/d90/a06760.html#aee5a4efcab86c6f495c0b774810520e8" title="AmrMultiGrid::isConverged_m" alt="" coords="511,1013,728,1040"/>
+<area shape="rect" id="node21" href="$d0/d90/a06760.html#a1397b24bb318d7415919012eebd15cbc" title="AmrMultiGrid::relax_m" alt="" coords="535,1216,704,1243"/>
+<area shape="rect" id="node14" href="$da/d54/a08124.html#ade95693db1906427a7c73b8364a07b20" title="BareFieldIterator::\lGetBareField" alt="" coords="843,1419,981,1461"/>
+<area shape="rect" id="node16" href="$d0/d90/a06760.html#a4bfcc31ba23b96065c47506710ca9949" title="AmrMultiGrid::evalNorm_m" alt="" coords="812,1013,1012,1040"/>
+<area shape="rect" id="node18" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="887,861,937,888"/>
+<area shape="rect" id="node22" href="$d0/d90/a06760.html#ae9a0ef81a4ef80a9fa0b9f1b1c7f9d81" title="AmrMultiGrid::prolongate_m" alt="" coords="809,1165,1015,1192"/>
+<area shape="rect" id="node23" href="$d0/d90/a06760.html#a7d3ecbc76e1c6e4e8a898260fcb35681" title="AmrMultiGrid::residual\l_no_fine_m" alt="" coords="1094,1335,1262,1377"/>
+<area shape="rect" id="node24" href="$d0/d90/a06760.html#a21a69065f354c1d4033db3314929c8eb" title="AmrMultiGrid::restrict_m" alt="" coords="821,1317,1003,1344"/>
+<area shape="rect" id="node25" href="$d0/d90/a06760.html#ad471a7d60ffeb12d94c26f38ed575c56" title="AmrMultiGrid::smooth_m" alt="" coords="819,1216,1005,1243"/>
+<area shape="rect" id="node27" href="$d0/d90/a06760.html#ab0cd5dd0a85a08fbe4eb3cb04c452cf3" title="AmrMultiGrid::buildMulti\lLevel_m" alt="" coords="1088,246,1268,287"/>
+<area shape="rect" id="node38" href="$d0/d90/a06760.html#a4db357155e8ec4a696ce5cb553063cfd" title="AmrMultiGrid::buildSingle\lLevel_m" alt="" coords="1084,151,1272,193"/>
+<area shape="rect" id="node39" href="$d0/d90/a06760.html#a31f732b78b09426449a48a2a71ae3213" title="AmrMultiGrid::clearMasks_m" alt="" coords="1073,312,1283,339"/>
+<area shape="rect" id="node28" href="$d0/d90/a06760.html#afe92d5378cd753d3288b4adbbe0456d2" title="AmrMultiGrid::buildComposite\lPoissonMatrix_m" alt="" coords="1341,501,1559,542"/>
+<area shape="rect" id="node29" href="$d0/d90/a06760.html#a067c747f7faa0009629aaebff43ad8f5" title="AmrMultiGrid::buildCrseBoundary\lMatrix_m" alt="" coords="1331,566,1569,607"/>
+<area shape="rect" id="node30" href="$d0/d90/a06760.html#ab37cba9d920e845ed27ae81fd38add36" title="AmrMultiGrid::buildDensity\lVector_m" alt="" coords="1351,57,1549,98"/>
+<area shape="rect" id="node31" href="$d0/d90/a06760.html#a47f4a7be7fd6bf7cc9176661c08b70ef" title="AmrMultiGrid::buildFineBoundary\lMatrix_m" alt="" coords="1332,305,1568,346"/>
+<area shape="rect" id="node32" href="$d0/d90/a06760.html#a5f815b07187918940aa700a39eaafea8" title="AmrMultiGrid::buildGradient\lMatrix_m" alt="" coords="1348,122,1552,163"/>
+<area shape="rect" id="node33" href="$d0/d90/a06760.html#adef22e84a29a509845be0d2a0e41d65c" title="AmrMultiGrid::buildInterpolation\lMatrix_m" alt="" coords="1335,370,1565,411"/>
+<area shape="rect" id="node34" href="$d0/d90/a06760.html#ab68eedb2cefba76e962c1c9e36746b7c" title="AmrMultiGrid::buildNoFine\lPoissonMatrix_m" alt="" coords="1354,187,1546,229"/>
+<area shape="rect" id="node35" href="$d0/d90/a06760.html#af643ef33bf06b6d74074c7084ef2dbc7" title="AmrMultiGrid::buildRestriction\lMatrix_m" alt="" coords="1341,435,1559,477"/>
+<area shape="rect" id="node36" href="$d0/d90/a06760.html#a1a69912c2f39f5cd29efa8af4a9e49b5" title="AmrMultiGrid::close_m" alt="" coords="1365,253,1535,280"/>
+<area shape="rect" id="node37" href="$d0/d90/a06760.html#ab255a03321099b235bd34277046864e4" title="AmrMultiGrid::open_m" alt="" coords="1366,5,1534,32"/>
+<area shape="rect" id="node41" href="$d0/d90/a06760.html#a49be61c53e8c82ce3379c916cc08b3dc" title="AmrMultiGrid::writeSDDSHeader_m" alt="" coords="493,583,745,609"/>
+<area shape="rect" id="node49" href="$dc/de6/a04632.html#a75ba1352ceca5ed55c4fcbe2cfef13c9" title="AmrBoxLib::getT" alt="" coords="554,443,685,469"/>
+<area shape="rect" id="node42" href="$da/dba/a07076.html#a4adfc867227c199839eca163e93da37c" title="Return date. " alt="" coords="825,608,999,635"/>
+<area shape="rect" id="node43" href="$da/dba/a07076.html#a6975c3ff3d6157c15de622f9123569ed" title="Return time. " alt="" coords="825,659,999,685"/>
+<area shape="rect" id="node44" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="829,709,995,736"/>
+<area shape="rect" id="node45" href="$d1/d55/a04496.html#a77ee645b42c83ac03ac8d6e1d1a8a1c1" title="get opals input filename " alt="" coords="832,405,992,432"/>
+<area shape="rect" id="node46" href="$d6/db7/a04354.html#ad397fcf4ef2da5e1b9a560b2c73d79f6" title="Util::getGitRevision" alt="" coords="838,456,986,483"/>
+<area shape="rect" id="node47" href="$d1/d55/a04496.html#a3f791fef03196163c941a8e685fd4b76" title="OpalData::isInOPALTMode" alt="" coords="818,507,1006,533"/>
+<area shape="rect" id="node48" href="$d1/d55/a04496.html#a6852d92bcca1864b63286ff91079bbe3" title="OpalData::isInOPALCyclMode" alt="" coords="807,557,1017,584"/>
+<area shape="rect" id="node50" href="$d1/dc3/a04492.html#af792389ff15f7f9fe61a13138ff0d6f3" title="PartBunchBase::getT" alt="" coords="834,355,990,381"/>
+</map>

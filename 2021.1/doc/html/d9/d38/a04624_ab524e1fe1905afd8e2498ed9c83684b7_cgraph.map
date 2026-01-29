@@ -1,0 +1,51 @@
+<map id="ThickTracker::execute" name="ThickTracker::execute">
+<area shape="rect" id="node2" href="$d9/d38/a04624.html#ae3439a0a5622d27f40d0d22ef838ec28" title="ThickTracker::checkElement\lOrder_m" alt="" coords="224,31,428,72"/>
+<area shape="rect" id="node4" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="869,1041,919,1067"/>
+<area shape="rect" id="node8" href="$d3/d4f/a00761.html#a7a49daa94331dcd77650d976f3030012" title="Euclidean norm. " alt="" coords="263,299,389,326"/>
+<area shape="rect" id="node14" href="$d9/d38/a04624.html#a3373d3d56685f283ce6d75ba6f4ed05b" title="Fills undefined beam path with a Drift Space. " alt="" coords="235,122,417,149"/>
+<area shape="rect" id="node19" href="$d1/dc3/a04492.html#a81291fdb255ef997ab2f30ea9d9306b4" title="PartBunchBase::get\l_pmean_Distribution" alt="" coords="247,1101,405,1143"/>
+<area shape="rect" id="node20" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="811,990,977,1017"/>
+<area shape="rect" id="node22" href="$d9/d38/a04624.html#a6fce7e66793c96d55e27cac43341b50c" title="ThickTracker::prepareSections" alt="" coords="217,1167,435,1194"/>
+<area shape="rect" id="node26" href="$d1/dc3/a04492.html#a2495b52e4f4220f661085319990c8936" title="PartBunchBase::set_sPos" alt="" coords="802,670,986,697"/>
+<area shape="rect" id="node27" href="$d1/d55/a04496.html#ab96bf6ce40100a4844495910c54adabe" title="units: (sec) " alt="" coords="230,1219,422,1260"/>
+<area shape="rect" id="node28" href="$d1/d55/a04496.html#aa9504d2b0e4c31131bce06c92f67e306" title="OpalData::setInPrepState" alt="" coords="233,1285,419,1311"/>
+<area shape="rect" id="node29" href="$d1/d55/a04496.html#a14da71b128f145bf6c1891a30e7bf77e" title="OpalData::setOpenMode" alt="" coords="236,1335,416,1362"/>
+<area shape="rect" id="node30" href="$d9/d38/a04624.html#aef61398c26e6886e70864f790374394d" title="ThickTracker::track_m" alt="" coords="243,695,409,722"/>
+<area shape="rect" id="node3" href="$d3/dee/a06300.html#a007175a913e2e430137586aa7ebe31b7" title="OpalBeamline::getElement\lByType" alt="" coords="512,5,709,47"/>
+<area shape="rect" id="node5" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1049,1041,1221,1067"/>
+<area shape="rect" id="node6" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1269,1041,1456,1067"/>
+<area shape="rect" id="node7" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1295,939,1430,966"/>
+<area shape="rect" id="node9" href="$d4/d79/a05020.html#a55cb732c23dd6b419f636aff0874ab82" title="Get beginning of data. " alt="" coords="551,274,670,301"/>
+<area shape="rect" id="node10" href="$d4/d79/a05020.html#a941ffba563af0a4e17aae45292b1659e" title="Get end of data. " alt="" coords="557,325,664,351"/>
+<area shape="rect" id="node11" href="$d4/dfa/a00746.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="871,223,917,250"/>
+<area shape="rect" id="node12" href="$db/df9/a05044.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="1063,249,1207,275"/>
+<area shape="rect" id="node13" href="$db/df9/a05044.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1089,198,1181,225"/>
+<area shape="rect" id="node15" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="588,71,633,98"/>
+<area shape="rect" id="node17" href="$db/d5a/a05136.html#a27d86c12be3dc52a56c245ff36041871" title="The relativistic gamma per particle. " alt="" coords="531,122,690,149"/>
+<area shape="rect" id="node18" href="$d7/da8/a04536.html#a23ed5c99bfa857b7228f42f3245ff5ea" title="Hamiltonian::drift" alt="" coords="542,173,679,199"/>
+<area shape="rect" id="node16" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="801,71,987,98"/>
+<area shape="rect" id="node21" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="1059,990,1211,1017"/>
+<area shape="rect" id="node23" href="$df/da2/a04828.html#a4c963794b96d83d5d3be0a9fe3c44322" title="Apply visitor. " alt="" coords="531,1185,690,1211"/>
+<area shape="rect" id="node24" href="$d3/dee/a06300.html#a930717579e990fd8ddd6063819f12acf" title="OpalBeamline::prepareSections" alt="" coords="497,1294,724,1321"/>
+<area shape="rect" id="node25" href="$d6/d18/a06036.html#a3d7539be5c573244e665e5ada5d7d256" title="ClassicField::SortAsc" alt="" coords="817,1361,971,1387"/>
+<area shape="rect" id="node31" href="$d0/d38/a11896.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="807,458,981,485"/>
+<area shape="rect" id="node33" href="$d1/dc3/a04492.html#acb795482bd65d1fb5f47ecfbb065f5f2" title="PartBunchBase::getSigmaMatrix" alt="" coords="495,695,726,722"/>
+<area shape="rect" id="node34" href="$d9/d38/a04624.html#a0f2ccd5fc8e4508b162b31ec06253b69" title="Writes Dispersion in X and Y plane. " alt="" coords="483,898,739,925"/>
+<area shape="rect" id="node37" href="$d9/d38/a04624.html#a1bbe43d173e5103bd75faa7f28e05a2b" title="ThickTracker::dump_m" alt="" coords="526,1134,695,1161"/>
+<area shape="rect" id="node43" href="$de/d2c/a01553.html#a2c0aceeb6d24d2947cce189b26abe9be" title="Build the exponential series. " alt="" coords="574,746,647,773"/>
+<area shape="rect" id="node44" href="$da/d11/a04792.html#a6e500dc5bf76643ad6601a389148df68" title="Truncate. " alt="" coords="837,513,951,539"/>
+<area shape="rect" id="node45" href="$d9/d38/a04624.html#a5b2265711bd8f477ddd5d6da4cad9f10" title="ThickTracker::advanceParticles_m" alt="" coords="489,797,732,823"/>
+<area shape="rect" id="node46" href="$d9/d38/a04624.html#a786c6b3638da6ceb1c892612cf34b825" title="ThickTracker::concatenate\lMaps_m" alt="" coords="515,477,707,519"/>
+<area shape="rect" id="node47" href="$d0/d38/a11896.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="808,582,980,609"/>
+<area shape="rect" id="node48" href="$da/d11/a04792.html#aed13dff3ca3cdc3561646f4dcc8e4aec" title="Extract the linear part of the map. " alt="" coords="542,426,679,453"/>
+<area shape="rect" id="node49" href="$d9/d38/a04624.html#addb089ad54fa25bfadd03e386d96cecb" title="ThickTracker::update_m" alt="" coords="522,594,699,621"/>
+<area shape="rect" id="node50" href="$d9/d38/a04624.html#a800345d6a791c37f7c528d7c6edb2dc1" title="ThickTracker::write_m" alt="" coords="528,949,693,975"/>
+<area shape="rect" id="node32" href="$d2/dd7/a11892.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="1064,458,1207,485"/>
+<area shape="rect" id="node35" href="$d1/dc3/a04492.html#a61c8df8f561fd396a27b8e5358b663b0" title="PartBunchBase::getInitialBeta" alt="" coords="787,838,1001,865"/>
+<area shape="rect" id="node36" href="$d1/d55/a04496.html#a3539361fbd2937b2b70723d6470ba8a6" title="get input file name without extension " alt="" coords="787,889,1001,915"/>
+<area shape="rect" id="node38" href="$df/da0/a06936.html#a7f1fc5c3a7495fbdcbb35d15aa258843" title="DataSink::dumpH5" alt="" coords="822,1091,966,1118"/>
+<area shape="rect" id="node39" href="$df/da0/a06936.html#a505ef3ad13321eefe16b9fd420a930bd" title="DataSink::dumpSDDS" alt="" coords="813,1142,975,1169"/>
+<area shape="rect" id="node40" href="$d1/dc3/a04492.html#aab5fcd7f5328af4f551a2a4885554635" title="PartBunchBase::get\l_bounds" alt="" coords="820,1193,968,1235"/>
+<area shape="rect" id="node41" href="$d1/dc3/a04492.html#a4951c53df6841fd275a56f41fc76bfdf" title="PartBunchBase::getdT" alt="" coords="812,1259,976,1286"/>
+<area shape="rect" id="node42" href="$d3/dee/a06300.html#ac0af82a5ad2c0099701f07f2a05864f5" title="OpalBeamline::getFieldAt" alt="" coords="801,1310,987,1337"/>
+</map>

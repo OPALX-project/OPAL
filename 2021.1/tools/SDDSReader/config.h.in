@@ -1,0 +1,2 @@
+#define VERSION_MAJOR ${StandAloneSDDSReader_VERSION_MAJOR}
+#define VERSION_MINOR ${StandAloneSDDSReader_VERSION_MINOR}

@@ -1,0 +1,8 @@
+<map id="OpalBeamline::getFieldAt" name="OpalBeamline::getFieldAt">
+<area shape="rect" id="node2" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="515,8,561,34"/>
+<area shape="rect" id="node4" href="$d3/dee/a06300.html#af966835f281da6e404951cefdfb536ca" title="OpalBeamline::getElements" alt="" coords="251,33,455,60"/>
+<area shape="rect" id="node5" href="$d3/dee/a06300.html#a68078928b9b5061896a305206c464f4e" title="OpalBeamline::rotateFrom\lLocalCS" alt="" coords="257,84,450,126"/>
+<area shape="rect" id="node6" href="$d3/dee/a06300.html#a1c39422c66259d152579e6d1b8233c1f" title="OpalBeamline::rotateToLocalCS" alt="" coords="240,150,467,177"/>
+<area shape="rect" id="node7" href="$d3/dee/a06300.html#a57d9e139d2b80688f4899012767e603f" title="OpalBeamline::transformTo\lLocalCS" alt="" coords="253,202,453,243"/>
+<area shape="rect" id="node3" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="609,8,760,34"/>
+</map>

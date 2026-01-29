@@ -1,0 +1,36 @@
+<map id="ippl/src/Field/AssignGeneralIBF.hpp" name="ippl/src/Field/AssignGeneralIBF.hpp">
+<area shape="rect" id="node2" href="$d6/d85/a03290.html" title="Field/Assign.h" alt="" coords="3211,95,3322,121"/>
+<area shape="rect" id="node3" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="2378,393,2550,420"/>
+<area shape="rect" id="node4" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="2679,468,2831,495"/>
+<area shape="rect" id="node12" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="499,692,626,719"/>
+<area shape="rect" id="node17" href="$d2/d76/a03296.html" title="Field/AssignDefs.h" alt="" coords="4089,244,4231,271"/>
+<area shape="rect" id="node19" href="$d0/de4/a03308.html" title="Field/BareField.h" alt="" coords="1620,244,1748,271"/>
+<area shape="rect" id="node20" href="$d0/d06/a03368.html" title="Field/LField.h" alt="" coords="2237,468,2342,495"/>
+<area shape="rect" id="node23" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="145,617,271,644"/>
+<area shape="rect" id="node27" href="$d5/d73/a03836.html" title="Utility/IpplStats.h" alt="" coords="1765,617,1899,644"/>
+<area shape="rect" id="node29" href="$d9/dd9/a03359.html" title="Field/IndexedBareField.h" alt="" coords="537,319,717,345"/>
+<area shape="rect" id="node43" href="$d4/d00/a03323.html" title="Field/BrickExpression.h" alt="" coords="4131,393,4303,420"/>
+<area shape="rect" id="node45" href="$d8/d63/a03500.html" title="Message/Communicate.h" alt="" coords="3336,393,3523,420"/>
+<area shape="rect" id="node16" href="$d2/d74/a03293.html" title="Field/Assign.hpp" alt="" coords="3203,169,3330,196"/>
+<area shape="rect" id="node50" href="$d8/de2/a03299.html" title="Field/AssignGeneralBF.hpp" alt="" coords="3652,169,3844,196"/>
+<area shape="rect" id="node11" href="$da/d72/a03527.html" title="Message/Message.hpp" alt="" coords="2783,543,2951,569"/>
+<area shape="rect" id="node13" href="$dc/d61/a03893.html" title="Utility/StaticIpplInfo.h" alt="" coords="481,767,645,793"/>
+<area shape="rect" id="node18" href="$d3/d34/a03305.html" title="Field/AssignTags.h" alt="" coords="4353,468,4493,495"/>
+<area shape="rect" id="node28" href="$d0/d33/a03899.html" title="Utility/Unique.h" alt="" coords="1550,617,1674,644"/>
+<area shape="rect" id="node30" href="$d9/dc9/a03347.html" title="Field/FieldLoc.h" alt="" coords="651,468,771,495"/>
+<area shape="rect" id="node31" href="$da/d6e/a03314.html" title="Field/BareFieldIterator.h" alt="" coords="822,393,997,420"/>
+<area shape="rect" id="node33" href="$d2/d21/a03392.html" title="FieldLayout/FieldLayout.h" alt="" coords="1275,468,1461,495"/>
+<area shape="rect" id="node34" href="$d1/d35/a03398.html" title="FieldLayout/FieldLayoutUser.h" alt="" coords="1482,543,1697,569"/>
+<area shape="rect" id="node35" href="$d1/d3a/a03353.html" title="Field/GuardCellSizes.h" alt="" coords="1087,543,1254,569"/>
+<area shape="rect" id="node36" href="$d6/d9d/a03917.html" title="Utility/vmap.h" alt="" coords="3572,543,3687,569"/>
+<area shape="rect" id="node39" href="$de/d6b/a03845.html" title="Utility/my_auto_ptr.h" alt="" coords="905,543,1063,569"/>
+<area shape="rect" id="node40" href="$d2/d78/a03431.html" title="Index/SIndex.h" alt="" coords="2855,468,2974,495"/>
+<area shape="rect" id="node41" href="$d4/df9/a03701.html" title="SubField/SubBareField.h" alt="" coords="1975,319,2151,345"/>
+<area shape="rect" id="node42" href="$de/d19/a03311.html" title="Field/BareField.hpp" alt="" coords="2829,319,2973,345"/>
+<area shape="rect" id="node21" href="$d9/db1/a03335.html" title="Field/CompressedBrickIterator.h" alt="" coords="1975,543,2204,569"/>
+<area shape="rect" id="node22" href="$d9/d58/a03371.html" title="Field/LField.hpp" alt="" coords="2229,543,2350,569"/>
+<area shape="rect" id="node32" href="$de/dce/a03362.html" title="Field/IndexedBareField.hpp" alt="" coords="499,393,695,420"/>
+<area shape="rect" id="node48" href="$dd/d25/a03545.html" title="Message/Tags.h" alt="" coords="3050,468,3174,495"/>
+<area shape="rect" id="node44" href="$dc/de3/a03326.html" title="Field/BrickExpression.hpp" alt="" coords="4141,468,4329,495"/>
+<area shape="rect" id="node46" href="$d4/d5e/a03542.html" title="Message/TagMaker.h" alt="" coords="3554,468,3710,495"/>
+</map>

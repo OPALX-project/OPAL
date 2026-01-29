@@ -1,0 +1,50 @@
+<map id="Component" name="Component">
+<area shape="rect" id="node4" href="$d2/d13/a04784.html" title="BendBase" alt="" coords="463,56,550,83"/>
+<area shape="rect" id="node7" href="$d5/dc9/a04804.html" title="Interface for general corrector. " alt="" coords="465,107,548,133"/>
+<area shape="rect" id="node9" href="$d1/daa/a04816.html" title="Cyclotron" alt="" coords="465,157,549,184"/>
+<area shape="rect" id="node11" href="$dd/dde/a04820.html" title="Degrader" alt="" coords="465,209,548,236"/>
+<area shape="rect" id="node13" href="$da/d47/a04824.html" title="Interface for drift space. " alt="" coords="481,261,532,288"/>
+<area shape="rect" id="node15" href="$db/d08/a04848.html" title="FlexibleCollimator" alt="" coords="436,319,577,345"/>
+<area shape="rect" id="node17" href="$de/d75/a04852.html" title="Interface for a marker. " alt="" coords="473,381,540,408"/>
+<area shape="rect" id="node19" href="$db/dde/a04856.html" title="Monitor" alt="" coords="471,457,542,484"/>
+<area shape="rect" id="node21" href="$d1/dda/a04860.html" title="Interface for general multipole. " alt="" coords="465,512,548,539"/>
+<area shape="rect" id="node24" href="$da/dea/a04864.html" title="MultipoleT" alt="" coords="461,563,552,589"/>
+<area shape="rect" id="node25" href="$d7/d61/a04868.html" title="MultipoleTBase" alt="" coords="445,613,568,640"/>
+<area shape="rect" id="node29" href="$da/d05/a04920.html" title="Offset" alt="" coords="476,664,537,691"/>
+<area shape="rect" id="node30" href="$d1/db7/a04924.html" title="PluginElement" alt="" coords="449,715,565,741"/>
+<area shape="rect" id="node35" href="$da/d94/a04940.html" title="Interface for RF cavity. " alt="" coords="467,765,547,792"/>
+<area shape="rect" id="node38" href="$d7/d3f/a04944.html" title="Ring describes a ring type geometry for tracking. " alt="" coords="481,816,532,843"/>
+<area shape="rect" id="node39" href="$d2/ddb/a04952.html" title="SBend3D" alt="" coords="466,867,547,893"/>
+<area shape="rect" id="node40" href="$d7/de6/a04956.html" title="ScalingFFAMagnet" alt="" coords="437,917,576,944"/>
+<area shape="rect" id="node41" href="$d1/dc6/a04964.html" title="Interface for solenoids. " alt="" coords="467,968,546,995"/>
+<area shape="rect" id="node43" href="$d5/d64/a04968.html" title="Source" alt="" coords="473,1019,540,1045"/>
+<area shape="rect" id="node45" href="$db/d04/a04992.html" title="Undulator" alt="" coords="463,1069,550,1096"/>
+<area shape="rect" id="node47" href="$d7/d8a/a05004.html" title="Vacuum" alt="" coords="469,1120,544,1147"/>
+<area shape="rect" id="node48" href="$d6/df3/a05008.html" title="VariableRFCavity" alt="" coords="440,1171,573,1197"/>
+<area shape="rect" id="node49" href="$d5/d66/a05016.html" title="VerticalFFAMagnet" alt="" coords="436,1221,577,1248"/>
+<area shape="rect" id="node2" href="$df/da2/a04828.html" title="ElementBase" alt="" coords="135,664,243,691"/>
+<area shape="rect" id="node3" href="$db/d2a/a05808.html" title="Abstract base class for reference counted objects. " alt="" coords="5,664,87,691"/>
+<area shape="rect" id="node5" href="$d6/db2/a04780.html" title="Bend2D" alt="" coords="697,5,770,32"/>
+<area shape="rect" id="node6" href="$dc/de0/a04936.html" title="Interface for solenoids. " alt="" coords="692,56,775,83"/>
+<area shape="rect" id="node8" href="$d8/de4/a05172.html" title="CorrectorRep" alt="" coords="680,107,787,133"/>
+<area shape="rect" id="node10" href="$d7/d64/a05180.html" title="CyclotronRep" alt="" coords="679,157,787,184"/>
+<area shape="rect" id="node12" href="$d6/d8c/a05188.html" title="DegraderRep" alt="" coords="680,208,787,235"/>
+<area shape="rect" id="node14" href="$d9/dff/a05196.html" title="DriftRep" alt="" coords="696,259,771,285"/>
+<area shape="rect" id="node16" href="$d6/d3f/a05204.html" title="FlexibleCollimatorRep" alt="" coords="651,309,816,336"/>
+<area shape="rect" id="node18" href="$df/dfd/a05208.html" title="Representation for a marker element. " alt="" coords="688,360,779,387"/>
+<area shape="rect" id="node20" href="$df/d2e/a05216.html" title="MonitorRep" alt="" coords="686,411,781,437"/>
+<area shape="rect" id="node22" href="$d1/d94/a05224.html" title="MultipoleRep" alt="" coords="680,461,787,488"/>
+<area shape="rect" id="node23" href="$df/d65/a05264.html" title="SingleMultipole\&lt; order \&gt;" alt="" coords="640,512,827,539"/>
+<area shape="rect" id="node26" href="$de/d6f/a04872.html" title="MultipoleTCurvedConstRadius" alt="" coords="625,563,841,589"/>
+<area shape="rect" id="node27" href="$d9/d27/a04876.html" title="MultipoleTCurvedVarRadius" alt="" coords="633,613,833,640"/>
+<area shape="rect" id="node28" href="$d1/d58/a04916.html" title="MultipoleTStraight" alt="" coords="663,664,804,691"/>
+<area shape="rect" id="node31" href="$d2/d5c/a04788.html" title="CCollimator" alt="" coords="684,715,783,741"/>
+<area shape="rect" id="node32" href="$db/d15/a04928.html" title="Probe" alt="" coords="704,765,763,792"/>
+<area shape="rect" id="node33" href="$d6/d0f/a04960.html" title="Septum" alt="" coords="697,816,769,843"/>
+<area shape="rect" id="node34" href="$d8/d36/a04984.html" title="Stripper" alt="" coords="697,867,770,893"/>
+<area shape="rect" id="node36" href="$d5/d76/a05244.html" title="RFCavityRep" alt="" coords="681,917,785,944"/>
+<area shape="rect" id="node37" href="$d5/d6e/a04988.html" title="Interface for Traveling Wave. " alt="" coords="675,968,792,995"/>
+<area shape="rect" id="node42" href="$d7/da2/a05276.html" title="SolenoidRep" alt="" coords="682,1019,785,1045"/>
+<area shape="rect" id="node44" href="$da/d75/a05284.html" title="SourceRep" alt="" coords="688,1069,779,1096"/>
+<area shape="rect" id="node46" href="$d6/d72/a05308.html" title="UndulatorRep" alt="" coords="678,1120,789,1147"/>
+</map>

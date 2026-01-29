@@ -1,0 +1,24 @@
+<map id="Sequence::storeLine" name="Sequence::storeLine">
+<area shape="rect" id="node2" href="$d1/d55/a04496.html#a696d78c4b23e4b0375ba2b3e0fc01e3b" title="Apply a function to all objects. " alt="" coords="233,56,359,83"/>
+<area shape="rect" id="node5" href="$d4/d61/a06612.html#a7a11f38b6f5a642a4587a2ba1e9b1d95" title="Return the embedded CLASSIC beam line. " alt="" coords="219,132,373,159"/>
+<area shape="rect" id="node7" href="$d5/d8e/a04448.html#a5b40298e379b7847c418b98760c601da" title="Find named Element. " alt="" coords="242,208,350,235"/>
+<area shape="rect" id="node10" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="652,208,819,235"/>
+<area shape="rect" id="node12" href="$d4/d61/a06612.html#ae507f99575ceb3143d1b7538dbaba2b9" title="Return the reference type flag. " alt="" coords="207,309,385,336"/>
+<area shape="rect" id="node23" href="$df/d3d/a04480.html#aa6e71ce6385ca4963129458e9c51ae91" title="Increment and return the occurrence counter. " alt="" coords="227,360,365,387"/>
+<area shape="rect" id="node3" href="$d1/d13/a04444.html#a6af87fa7c132144a4fed854a5c0ba253" title="First object in alphabetic order of name. " alt="" coords="450,5,575,32"/>
+<area shape="rect" id="node4" href="$d1/d13/a04444.html#a4a8d6e8dc3b5f4f851a86b64daad1978" title="Last object in alphabetic order of name. " alt="" coords="456,56,569,83"/>
+<area shape="rect" id="node6" href="$d5/d8e/a04448.html#a68136aee2ed8edfe943a7bf2933b08ca" title="Return the embedded CLASSIC element. " alt="" coords="433,107,592,133"/>
+<area shape="rect" id="node8" href="$d1/d55/a04496.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="455,157,570,184"/>
+<area shape="rect" id="node9" href="$d1/d13/a04444.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="679,157,792,184"/>
+<area shape="rect" id="node11" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="902,208,1054,235"/>
+<area shape="rect" id="node13" href="$d9/d4e/a04307.html#ad795567b62ebabd9fe7de3e4336303c2" title="Get string value. " alt="" coords="436,360,589,387"/>
+<area shape="rect" id="node14" href="$dc/d7e/a04424.html#ad501832e9f9617f12978cf0db5e3ca7a" title="Attribute::isBaseAllocated" alt="" coords="640,259,831,285"/>
+<area shape="rect" id="node15" href="$dc/d7e/a04424.html#a3ad89aafd57487e0cbbc62d29515b29f" title="Return reference to polymorphic value. " alt="" coords="665,309,805,336"/>
+<area shape="rect" id="node16" href="$dc/d7e/a04424.html#aea141e99b173cc9db4e66a0f62786ac9" title="Return a reference to the parser. " alt="" coords="656,360,815,387"/>
+<area shape="rect" id="node17" href="$df/dfb/a04472.html#ae8c45c92363031d6fadb6928be624d13" title="Evaluate. " alt="" coords="655,411,816,453"/>
+<area shape="rect" id="node18" href="$dc/d7e/a04424.html#a3d97098a5ee6cd812bc1c7e492ef52ac" title="Return the attribute name. " alt="" coords="662,477,809,504"/>
+<area shape="rect" id="node20" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="712,528,759,555"/>
+<area shape="rect" id="node22" href="$d6/db7/a04354.html#a5347325ce1b23ac589ce924b91af4b7c" title="Util::toUpper" alt="" coords="683,579,788,605"/>
+<area shape="rect" id="node19" href="$dd/d4b/a04432.html#a84f4cf017c5d2023dfa4f323812a3fe7" title="Return attribute name. " alt="" coords="879,477,1077,504"/>
+<area shape="rect" id="node21" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="903,528,1053,555"/>
+</map>

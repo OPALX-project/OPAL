@@ -1,0 +1,11 @@
+<map id="MultiBunchHandler::updateParticleBins" name="MultiBunchHandler::updateParticleBins">
+<area shape="rect" id="node2" href="$d0/d38/a11896.html#a59ffa7a04c160376d3a6593bff568fb4" title="IpplTimings::getTimer" alt="" coords="217,5,382,32"/>
+<area shape="rect" id="node5" href="$d1/dc3/a04492.html#a3c8ac277394f92f83e0b3860d84d05c7" title="PartBunchBase::resetPart\lBinBunch" alt="" coords="207,57,392,98"/>
+<area shape="rect" id="node6" href="$d1/dc3/a04492.html#a11978b650e12e724e45047fa09a7aafa" title="reset Bin[] for each particle according to the method given in paper PAST&#45;AB(064402) by G..." alt="" coords="207,122,392,163"/>
+<area shape="rect" id="node7" href="$d0/d38/a11896.html#af9d914cab7e60b310cb44c75c8bff228" title="IpplTimings::startTimer" alt="" coords="212,188,387,215"/>
+<area shape="rect" id="node9" href="$d0/d38/a11896.html#a8b229ce711198a6e0e190e7d9098c3eb" title="IpplTimings::stopTimer" alt="" coords="213,239,385,265"/>
+<area shape="rect" id="node3" href="$d2/dd7/a11892.html#ad8cc1e1e72cef6a72e059d33913d8af7" title="Timing::getTimer" alt="" coords="444,5,579,32"/>
+<area shape="rect" id="node4" href="$d8/db9/a00725.html#aa8ae23ddaa752827580a9345f34b7cca" title="value_type" alt="" coords="631,5,725,32"/>
+<area shape="rect" id="node8" href="$d2/dd7/a11892.html#ad39485290627108c6ac78c84427277aa" title="Timing::startTimer" alt="" coords="440,188,583,215"/>
+<area shape="rect" id="node10" href="$d2/dd7/a11892.html#a9b5f2cf6b4aa922ada3d453b0d656e34" title="Timing::stopTimer" alt="" coords="441,239,582,265"/>
+</map>

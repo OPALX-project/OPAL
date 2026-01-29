@@ -1,0 +1,51 @@
+<map id="SequenceParser::parseMember" name="SequenceParser::parseMember">
+<area shape="rect" id="node2" href="$df/d3d/a04480.html#a7efb77eddd1a249e149dcfec616c2d3e" title="Return a clone. " alt="" coords="340,157,447,184"/>
+<area shape="rect" id="node3" href="$df/da2/a04828.html#aa60aedf5e43e6a4561b4a93e6962f377" title="Make a structural copy. " alt="" coords="290,208,497,235"/>
+<area shape="rect" id="node6" href="$d1/d55/a04496.html#ad98bcdd94e9a6ce0149f2d3d976c8779" title="Define a new object. " alt="" coords="328,411,459,437"/>
+<area shape="rect" id="node20" href="$df/d3d/a04480.html#a5ec68ba1c3f450f8ea2b139f193c5a39" title="Return object name. " alt="" coords="569,664,732,691"/>
+<area shape="rect" id="node27" href="$d3/d19/a05828.html#aeb97c1ae2faf5064efe45c9cc49a3b11" title="Test for delimiter. " alt="" coords="1523,1044,1680,1071"/>
+<area shape="rect" id="node28" href="$d9/dd5/a06652.html#a6a3db2c0d1f0d4ac01af106e57752505" title="Find object by name in the main directory. " alt="" coords="331,765,455,792"/>
+<area shape="rect" id="node30" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="567,765,734,792"/>
+<area shape="rect" id="node32" href="$df/d3d/a04480.html#a5cd1a79e44ec73019ed8657e33855291" title="Macro handler function. " alt="" coords="311,715,475,741"/>
+<area shape="rect" id="node33" href="$d9/dd5/a06652.html#a479d09c292d7e35db8c840f9a520c893" title="Check for end of statement. " alt="" coords="313,917,473,944"/>
+<area shape="rect" id="node37" href="$d2/d5b/a06620.html#af3bc9b1e491c5aca7388b53713462d50" title="SequenceParser::parsePosition" alt="" coords="283,1095,504,1121"/>
+<area shape="rect" id="node38" href="$d2/dc7/a04303.html#a9e29aecbec1ad7229b05c0a932040582" title="Parse string value. " alt="" coords="559,1069,742,1096"/>
+<area shape="rect" id="node49" href="$da/de3/a05388.html#a7c6a3c02d66b3cb4c97f05b08b102fef" title="Set the element pointer. " alt="" coords="320,1145,467,1172"/>
+<area shape="rect" id="node50" href="$da/dc0/a05392.html#a573261c872dbeaace4bdc1eadc69630a" title="Set reflection flag. " alt="" coords="276,1196,511,1223"/>
+<area shape="rect" id="node4" href="$df/da2/a04828.html#aa5580165a9f8b9e6d873927cff20d986" title="Return clone. " alt="" coords="575,56,726,83"/>
+<area shape="rect" id="node5" href="$df/da2/a04828.html#ac39f80091bcbce72cd429499a33c18f5" title="Test if the element can be shared. " alt="" coords="559,5,743,32"/>
+<area shape="rect" id="node7" href="$d1/d13/a04444.html#a6af87fa7c132144a4fed854a5c0ba253" title="First object in alphabetic order of name. " alt="" coords="833,512,958,539"/>
+<area shape="rect" id="node8" href="$df/d3d/a04480.html#a2462226f913277dbeec5928dd40c25c9" title="Test if replacement is allowed. " alt="" coords="569,360,732,387"/>
+<area shape="rect" id="node9" href="$d1/d13/a04444.html#a4a8d6e8dc3b5f4f851a86b64daad1978" title="Last object in alphabetic order of name. " alt="" coords="839,309,952,336"/>
+<area shape="rect" id="node10" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="870,791,921,817"/>
+<area shape="rect" id="node15" href="$d1/d55/a04496.html#a352ed422ba6872cc3c76cc4dc32dc9d1" title="Delete existing entry. " alt="" coords="587,411,714,437"/>
+<area shape="rect" id="node17" href="$d1/d13/a04444.html#a9004a43fe680a069941293f8ab075c24" title="Find entry. " alt="" coords="839,563,952,589"/>
+<area shape="rect" id="node21" href="$d1/d13/a04444.html#afd593b9994a1000a969046c02dd66846" title="Define new object. " alt="" coords="587,259,714,285"/>
+<area shape="rect" id="node23" href="$df/d3d/a04480.html#ae7e75b2311e00969ae6308e899d32686" title="True, if [b]this[/b] is a built&#45;in object. " alt="" coords="588,563,713,589"/>
+<area shape="rect" id="node24" href="$d1/def/a04512.html#a83eb57bb3e4e17a0893ba0b217448a67" title="Find out if table depends on the object identified by [b]name[/b]. " alt="" coords="577,107,724,133"/>
+<area shape="rect" id="node25" href="$df/d3d/a04480.html#aa48af24109cadc6f450bcc37523651a5" title="Set/reset the [b]modified[/b] flag. " alt="" coords="589,157,713,184"/>
+<area shape="rect" id="node26" href="$d1/d55/a04496.html#a43390aa41dfa944e82a47c760923c242" title="Set the global momentum. " alt="" coords="587,208,714,235"/>
+<area shape="rect" id="node11" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1048,791,1220,817"/>
+<area shape="rect" id="node12" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1268,765,1455,792"/>
+<area shape="rect" id="node14" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1748,791,1883,817"/>
+<area shape="rect" id="node13" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1503,765,1700,792"/>
+<area shape="rect" id="node16" href="$d1/d13/a04444.html#a237a99238f9e6450701528719fee9791" title="Delete all entries. " alt="" coords="833,411,958,437"/>
+<area shape="rect" id="node18" href="$df/d3d/a04480.html#a489e6b0505923e64c18a8bb83062d5e3" title="Return parent pointer. " alt="" coords="828,461,963,488"/>
+<area shape="rect" id="node19" href="$df/d3d/a04480.html#a01d106dd393b42e0622f2158b2f0a6da" title="Set parent object. " alt="" coords="829,360,962,387"/>
+<area shape="rect" id="node22" href="$d8/db9/a00725.html#aa8ae23ddaa752827580a9345f34b7cca" title="value_type" alt="" coords="848,259,943,285"/>
+<area shape="rect" id="node29" href="$d1/d55/a04496.html#a8847589c28aa77d2797a61e8118ff5c6" title="Find entry. " alt="" coords="593,715,708,741"/>
+<area shape="rect" id="node31" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="819,740,971,767"/>
+<area shape="rect" id="node34" href="$d3/d19/a05828.html#addc8463ab069024b814f2a291c3fa620" title="Test for end of command. " alt="" coords="583,1019,718,1045"/>
+<area shape="rect" id="node35" href="$d3/d19/a05828.html#a432b410630045f73fcd57435499ecc3e" title="Return current character number in line. " alt="" coords="575,917,726,944"/>
+<area shape="rect" id="node36" href="$d3/d19/a05828.html#ad48f4bde092bb9fb68423da5b89d37d3" title="Print statement. " alt="" coords="587,816,715,843"/>
+<area shape="rect" id="node41" href="$d2/dc7/a04303.html#aaede2a5e3540f59d253c0a565f161599" title="Test for one&#45;character delimiter. " alt="" coords="793,1145,998,1172"/>
+<area shape="rect" id="node42" href="$d2/dc7/a04303.html#acab3a7269ef8ca60c0ac1da0fcdb4bc0" title="Parse real constant. " alt="" coords="791,1204,1000,1231"/>
+<area shape="rect" id="node47" href="$d3/d19/a05828.html#aaa1bb4a243de8fa46292cacffd574edf" title="Test for keyword. " alt="" coords="573,1364,728,1391"/>
+<area shape="rect" id="node48" href="$df/d3d/a04480.html#aaba6fa24b81be56d195924fa9f6ea9bd" title="Find an attribute by name. " alt="" coords="574,1171,727,1197"/>
+<area shape="rect" id="node39" href="$d3/d19/a05828.html#ac8e21e0dce1b621eacc7d1405f760af4" title="Return word value. " alt="" coords="830,1044,961,1071"/>
+<area shape="rect" id="node40" href="$d3/d19/a05828.html#a4f177c8818ebf7047e4302b5886dca1e" title="Return string value. " alt="" coords="838,1095,953,1121"/>
+<area shape="rect" id="node43" href="$d2/dc7/a04303.html#a1f8eac44bce6d98fadb0eb1dafe2e0b7" title="Parse real expression. " alt="" coords="1048,1204,1220,1231"/>
+<area shape="rect" id="node44" href="$d2/dc7/a04303.html#a4a48ce79884dc753e78895eb75a14fa4" title="Expressions::parseTerm" alt="" coords="1273,1212,1449,1239"/>
+<area shape="rect" id="node45" href="$de/d17/a06548.html#a02d55f31bfe013598c4501f55ad45c71" title="Make a new expression. " alt="" coords="1522,1230,1681,1271"/>
+<area shape="rect" id="node46" href="$db/d8d/a06580.html#aebb27b99fea35b7889e32a9c2cad8726" title="Make a new expression. " alt="" coords="1284,1146,1439,1187"/>
+</map>

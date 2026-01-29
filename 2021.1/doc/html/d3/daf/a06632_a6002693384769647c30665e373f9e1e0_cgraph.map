@@ -1,0 +1,8 @@
+<map id="CompoundStatement::CompoundStatement" name="CompoundStatement::CompoundStatement">
+<area shape="rect" id="node2" href="$d2/d56/a06648.html#a5487bbe9350796067803cd18bba86bb9" title="Append a token to the stream. " alt="" coords="231,5,395,32"/>
+<area shape="rect" id="node3" href="$dd/dce/a05840.html#af3c75bb1563dc851c714cead195c36ef" title="Return the token&#39;s file name. " alt="" coords="257,56,368,83"/>
+<area shape="rect" id="node4" href="$dd/dce/a05840.html#aabfcea7b4d2df9591a87095440764993" title="Return the token&#39;s line number. " alt="" coords="255,107,371,133"/>
+<area shape="rect" id="node5" href="$dd/dce/a05840.html#a2954e99066d74d540ededed11eaf469c" title="Test for delimiter. " alt="" coords="262,157,363,184"/>
+<area shape="rect" id="node6" href="$dd/dce/a05840.html#a4822f01048ccce2d0de033ee2be460f0" title="Test for end of file. " alt="" coords="261,208,365,235"/>
+<area shape="rect" id="node7" href="$d6/dfd/a05844.html#ac36e3948badf6b62c16c0cbcf775e8f3" title="Read single token from stream. " alt="" coords="221,259,404,285"/>
+</map>

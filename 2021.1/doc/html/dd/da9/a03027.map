@@ -1,0 +1,26 @@
+<map id="src/Structure/StatBaseWriter.h" name="src/Structure/StatBaseWriter.h">
+<area shape="rect" id="node2" href="$de/dec/a03020.html" title="SDDSWriter.h" alt="" coords="663,304,771,331"/>
+<area shape="rect" id="node19" href="$da/d14/a02066.html" title="Utilities/Util.h" alt="" coords="1421,80,1533,107"/>
+<area shape="rect" id="node14" href="$d8/dbd/a03008.html" title="Structure/SDDSColumn.h" alt="" coords="65,453,248,480"/>
+<area shape="rect" id="node16" href="$df/d3a/a03014.html" title="Structure/SDDSColumnSet.h" alt="" coords="696,379,900,405"/>
+<area shape="rect" id="node17" href="$d0/d2b/a03095.html" title="Utilities/OpalException.h" alt="" coords="643,453,825,480"/>
+<area shape="rect" id="node18" href="$d4/d29/a01817.html" title="Utilities/ClassicException.h" alt="" coords="680,528,879,555"/>
+<area shape="rect" id="node20" href="$db/ddf/a13198.html" title="Algorithms/Vektor.h" alt="" coords="2267,229,2417,256"/>
+<area shape="rect" id="node46" href="$dd/db2/a00866.html" title="Algorithms/Quaternion.h" alt="" coords="2251,155,2433,181"/>
+<area shape="rect" id="node21" href="$db/db0/a13201.html" title="AppTypes/Vektor.h" alt="" coords="2623,304,2765,331"/>
+<area shape="rect" id="node22" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="2625,528,2752,555"/>
+<area shape="rect" id="node25" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="3098,453,3250,480"/>
+<area shape="rect" id="node34" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="2807,379,2979,405"/>
+<area shape="rect" id="node37" href="$da/de5/a03170.html" title="AppTypes/TSVMeta.h" alt="" coords="1909,379,2066,405"/>
+<area shape="rect" id="node31" href="$da/d72/a03527.html" title="Message/Message.hpp" alt="" coords="3090,528,3258,555"/>
+<area shape="rect" id="node32" href="$d4/d5e/a03818.html" title="Utility/IpplInfo.h" alt="" coords="3112,603,3239,629"/>
+<area shape="rect" id="node35" href="$d4/d78/a03677.html" title="PETE/IpplTypeComputations.h" alt="" coords="2859,453,3073,480"/>
+<area shape="rect" id="node36" href="$df/d98/a03680.html" title="PETE/PETE.h" alt="" coords="2732,453,2835,480"/>
+<area shape="rect" id="node38" href="$d3/dcf/a03173.html" title="AppTypes/TSVMetaAssign.h" alt="" coords="1127,453,1327,480"/>
+<area shape="rect" id="node39" href="$d1/d45/a03191.html" title="AppTypes/TSVMetaUnary.h" alt="" coords="1351,453,1546,480"/>
+<area shape="rect" id="node40" href="$df/d0d/a03176.html" title="AppTypes/TSVMetaBinary.h" alt="" coords="1570,453,1767,480"/>
+<area shape="rect" id="node41" href="$d1/d30/a03185.html" title="AppTypes/TSVMetaDot.h" alt="" coords="1792,453,1972,480"/>
+<area shape="rect" id="node42" href="$dd/d71/a03182.html" title="AppTypes/TSVMetaCross.h" alt="" coords="1996,453,2189,480"/>
+<area shape="rect" id="node43" href="$da/dfb/a03188.html" title="AppTypes/TSVMetaDotDot.h" alt="" coords="2214,453,2417,480"/>
+<area shape="rect" id="node44" href="$db/d65/a03179.html" title="AppTypes/TSVMetaCompare.h" alt="" coords="2441,453,2657,480"/>
+</map>

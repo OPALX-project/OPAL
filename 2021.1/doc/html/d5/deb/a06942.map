@@ -1,0 +1,51 @@
+<map id="FieldSolver" name="FieldSolver">
+<area shape="rect" id="node19" href="$d1/dc3/a04492.html" title="PartBunchBase\&lt; double, 3 \&gt;" alt="" coords="2141,921,2351,948"/>
+<area shape="rect" id="node2" href="$dc/dc7/a04440.html" title="The base class for all OPAL definitions. " alt="" coords="1427,824,1512,851"/>
+<area shape="rect" id="node42" href="$d3/d12/a06268.html" title="Distribution" alt="" coords="1801,696,1899,723"/>
+<area shape="rect" id="node3" href="$df/d3d/a04480.html" title="The base class for all OPAL objects. " alt="" coords="1008,824,1072,851"/>
+<area shape="rect" id="node4" href="$db/d2a/a05808.html" title="Abstract base class for reference counted objects. " alt="" coords="648,824,729,851"/>
+<area shape="rect" id="node5" href="$da/d57/a08212.html" title="UniformCartesian\&lt; Dim,\l MFLOAT \&gt;" alt="" coords="1378,1609,1561,1650"/>
+<area shape="rect" id="node6" href="$d0/d7a/a08936.html" title="Mesh\&lt; Dim \&gt;" alt="" coords="808,1499,921,1525"/>
+<area shape="rect" id="node7" href="$d4/d75/a11956.html" title="UserList" alt="" coords="328,1552,403,1579"/>
+<area shape="rect" id="node14" href="$d3/d6d/a08204.html" title="FieldLayout\&lt; Dim \&gt;" alt="" coords="612,1771,765,1797"/>
+<area shape="rect" id="node8" href="$d2/d1c/a11968.html" title="vmap\&lt; Key, User * \&gt;" alt="" coords="5,1552,168,1579"/>
+<area shape="rect" id="node9" href="$df/d79/a07212.html" title="Vektor\&lt; MFLOAT, Dim \&gt;" alt="" coords="950,1585,1130,1612"/>
+<area shape="rect" id="node10" href="$dd/d54/a08008.html" title="BareField\&lt; Vektor\&lt;\l MFLOAT, Dim \&gt;, Dim \&gt;" alt="" coords="951,1638,1129,1679"/>
+<area shape="rect" id="node11" href="$db/d22/a08516.html" title="FieldLayoutUser" alt="" coords="625,1544,752,1571"/>
+<area shape="rect" id="node12" href="$d0/df3/a11076.html" title="PETE_Expr\&lt; BareField\l\&lt; Vektor\&lt; MFLOAT, Dim\l \&gt;, Dim \&gt; \&gt;" alt="" coords="599,1595,779,1651"/>
+<area shape="rect" id="node13" href="$d2/d1c/a11968.html" title="vmap\&lt; typename Unique\l::type, my_auto_ptr\&lt;\l LField\&lt; Vektor\&lt; MFLOAT,\l Dim \&gt;, Dim \&gt; \&gt; \&gt;" alt="" coords="593,1675,784,1746"/>
+<area shape="rect" id="node17" href="$da/d89/a08512.html" title="CenteredFieldLayout\l\&lt; Dim, Mesh, Centering \&gt;" alt="" coords="1159,1738,1351,1779"/>
+<area shape="rect" id="node15" href="$d2/d1c/a11968.html" title="vmap\&lt; Unique::type,\l my_auto_ptr\&lt; Vnode\l\&lt; Dim \&gt; \&gt; \&gt;" alt="" coords="283,1716,447,1772"/>
+<area shape="rect" id="node16" href="$d2/d1c/a11968.html" title="vmap\&lt; GuardCellSizes\l\&lt; Dim \&gt;, my_auto_ptr\l\&lt; ac_domain_vnodes \&gt; \&gt;" alt="" coords="269,1796,461,1852"/>
+<area shape="rect" id="node18" href="$d9/df8/a06872.html" title="PoissonSolver" alt="" coords="1413,1675,1526,1701"/>
+<area shape="rect" id="node20" href="$d8/d78/a05732.html" title="FMatrix\&lt; double, 2\l *Dim, 2 *Dim \&gt;" alt="" coords="1588,11,1733,53"/>
+<area shape="rect" id="node21" href="$de/d6e/a05724.html" title="A templated representation for 2&#45;dimensional arrays. " alt="" coords="945,25,1135,52"/>
+<area shape="rect" id="node41" href="$d8/d78/a05732.html" title="FMatrix\&lt; double, 6, 6 \&gt;" alt="" coords="1381,55,1557,81"/>
+<area shape="rect" id="node22" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; short \&gt;" alt="" coords="1765,1436,1935,1463"/>
+<area shape="rect" id="node23" href="$d6/dec/a09784.html" title="ParticleAttribBase" alt="" coords="1400,1093,1539,1120"/>
+<area shape="rect" id="node26" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; double \&gt;" alt="" coords="1760,959,1940,985"/>
+<area shape="rect" id="node30" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; int \&gt;" alt="" coords="1773,1045,1927,1072"/>
+<area shape="rect" id="node35" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; Particle\lOrigin \&gt;" alt="" coords="1765,1123,1935,1165"/>
+<area shape="rect" id="node37" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; Particle\lType \&gt;" alt="" coords="1765,881,1935,922"/>
+<area shape="rect" id="node47" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; T \&gt;" alt="" coords="1778,1336,1922,1363"/>
+<area shape="rect" id="node49" href="$dc/dd7/a07968.html" title="ParticleAttrib\&lt; Vektor \&gt;" alt="" coords="1761,1252,1939,1279"/>
+<area shape="rect" id="node24" href="$d7/d97/a07928.html" title="DataSource" alt="" coords="1421,1252,1518,1279"/>
+<area shape="rect" id="node25" href="$d0/df3/a11076.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; short \&gt; \&gt;" alt="" coords="1375,1543,1564,1585"/>
+<area shape="rect" id="node27" href="$d0/df3/a11076.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; double \&gt; \&gt;" alt="" coords="1375,941,1564,982"/>
+<area shape="rect" id="node28" href="$d4/dc5/a05148.html" title="Quaternion" alt="" coords="1422,105,1517,132"/>
+<area shape="rect" id="node32" href="$d3/d82/a05088.html" title="CoordinateSystemTrafo" alt="" coords="1763,351,1937,377"/>
+<area shape="rect" id="node29" href="$df/d79/a07212.html" title="Vektor\&lt; double, 4 \&gt;" alt="" coords="963,105,1117,132"/>
+<area shape="rect" id="node31" href="$d0/df3/a11076.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; int \&gt; \&gt;" alt="" coords="1375,1011,1564,1053"/>
+<area shape="rect" id="node33" href="$dc/ddb/a05144.html" title="Tenzor\&lt; double, 3 \&gt;" alt="" coords="1392,321,1547,348"/>
+<area shape="rect" id="node34" href="$df/d79/a07212.html" title="Vektor\&lt; double, 3 \&gt;" alt="" coords="963,435,1117,461"/>
+<area shape="rect" id="node40" href="$db/d29/a05096.html" title="DistributionMoments" alt="" coords="1771,249,1929,276"/>
+<area shape="rect" id="node43" href="$da/d6a/a06284.html" title="LaserProfile" alt="" coords="1420,723,1519,749"/>
+<area shape="rect" id="node36" href="$d0/df3/a11076.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; ParticleOrigin \&gt; \&gt;" alt="" coords="1375,1145,1564,1186"/>
+<area shape="rect" id="node38" href="$d0/df3/a11076.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; ParticleType \&gt; \&gt;" alt="" coords="1375,875,1564,917"/>
+<area shape="rect" id="node39" href="$df/d79/a07212.html" title="Vektor\&lt; int, 3 \&gt;" alt="" coords="1787,1569,1913,1596"/>
+<area shape="rect" id="node44" href="$d1/d5a/a07200.html" title="SymTenzor\&lt; double, 6 \&gt;" alt="" coords="1378,536,1561,563"/>
+<area shape="rect" id="node45" href="$dc/dcd/a05112.html" title="PartBins" alt="" coords="1432,773,1507,800"/>
+<area shape="rect" id="node46" href="$db/d5a/a05136.html" title="Particle reference data. " alt="" coords="1430,485,1509,512"/>
+<area shape="rect" id="node48" href="$d0/df3/a11076.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; T \&gt; \&gt;" alt="" coords="1375,1478,1564,1519"/>
+<area shape="rect" id="node50" href="$d0/df3/a11076.html" title="PETE_Expr\&lt; ParticleAttrib\l\&lt; Vektor \&gt; \&gt;" alt="" coords="1375,1378,1564,1419"/>
+</map>

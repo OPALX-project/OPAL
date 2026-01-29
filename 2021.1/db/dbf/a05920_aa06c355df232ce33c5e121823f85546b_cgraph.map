@@ -1,0 +1,51 @@
+<map id="CSRIGFWakeFunction::apply" name="CSRIGFWakeFunction::apply">
+<area shape="rect" id="node2" href="$db/dbf/a05920.html#aa105cfbe614d850556b43ac217fff665" title="CSRIGFWakeFunction\l::calculateContributionAfter" alt="" coords="219,305,420,346"/>
+<area shape="rect" id="node21" href="$df/d98/a03680.html#ae29244719985f3e4cbc22b58064177de" title="floor" alt="" coords="565,371,615,397"/>
+<area shape="rect" id="node30" href="$dd/dbc/a03800.html#a3479363bc276c3798e3f3656c66d93ed" title="endl" alt="" coords="837,565,888,592"/>
+<area shape="rect" id="node32" href="$d5/d16/a11864.html#aebc2813151a7229c571dc6e272d9feb6" title="IpplInfo::myNode" alt="" coords="1753,653,1887,680"/>
+<area shape="rect" id="node36" href="$db/dbf/a05920.html#aeda98bd7b3a86b1f87ad85fc99abfcef" title="CSRIGFWakeFunction\l::calculateContributionInside" alt="" coords="215,709,423,750"/>
+<area shape="rect" id="node37" href="$db/dbf/a05920.html#a21cc3bfa58de4a9efdde0253cbd599e1" title="CSRIGFWakeFunction\l::calculateGreenFunction" alt="" coords="1029,385,1212,426"/>
+<area shape="rect" id="node41" href="$db/dbf/a05920.html#a5a68314a185b84e9defea9105c232fe9" title="CSRIGFWakeFunction\l::calculateLineDensity" alt="" coords="236,774,403,815"/>
+<area shape="rect" id="node44" href="$d6/db7/a04354.html#a11460f59ebd4d9f7dc2f12724dece886" title="Util::combineFilePath" alt="" coords="240,840,399,867"/>
+<area shape="rect" id="node45" href="$d1/dc3/a04492.html#aab5fcd7f5328af4f551a2a4885554635" title="PartBunchBase::get\l_bounds" alt="" coords="245,891,393,933"/>
+<area shape="rect" id="node46" href="$d1/dc3/a04492.html#af1981256edd10c077d2c6ae225b1b9b6" title="PartBunchBase::get_sPos" alt="" coords="227,957,412,984"/>
+<area shape="rect" id="node47" href="$d1/d55/a04496.html#af5404b3339d48c4531df60b77ce628c3" title="get the name of the the additional data directory " alt="" coords="212,1009,427,1050"/>
+<area shape="rect" id="node48" href="$d1/d55/a04496.html#ac79e35ccb2194504a19ce52ddc5fd6e0" title="OpalData::getInstance" alt="" coords="236,1075,403,1101"/>
+<area shape="rect" id="node50" href="$d1/dc3/a04492.html#a1f81217882e2f010b529837e0abc8889" title="PartBunchBase::getLocalNum" alt="" coords="213,1125,426,1152"/>
+<area shape="rect" id="node3" href="$d4/dfa/a00746.html#a6dcaf0865921eacb4895202a9de28592" title="Integer power. " alt="" coords="1338,152,1387,179"/>
+<area shape="rect" id="node22" href="$db/dbf/a05920.html#af4ac4182964b7fb1412bb138fd719f27" title="CSRIGFWakeFunction\l::calcPsi" alt="" coords="511,305,669,346"/>
+<area shape="rect" id="node4" href="$db/df9/a05044.html#a747c2e74e3d524e7c66cee898c9871bc" title="Reciprocal value. " alt="" coords="1552,152,1653,179"/>
+<area shape="rect" id="node5" href="$db/df9/a05044.html#aceca454e6c358faab6fbb7ecef489e8b" title="Test for constant. " alt="" coords="1939,131,2061,157"/>
+<area shape="rect" id="node6" href="$d4/d6f/a03374.html#a7b0fcc46c994cf7a89ae3456787ecdda" title="min" alt="" coords="2357,181,2404,208"/>
+<area shape="rect" id="node12" href="$db/df9/a05044.html#ae7665696ee0f301916b75fc4a4ca7a3d" title="Get truncation order. " alt="" coords="2109,333,2253,360"/>
+<area shape="rect" id="node13" href="$db/df9/a05044.html#a9ee7284667df073cddbdd99c0880284d" title="Taylor series. " alt="" coords="1774,181,1866,208"/>
+<area shape="rect" id="node7" href="$d0/df3/a11076.html#a9e3caaa1091db73ad743988a76490937" title="PETE_Expr::PETE_unwrap" alt="" coords="2643,232,2828,259"/>
+<area shape="rect" id="node8" href="$d4/d6f/a03374.html#ae1ab014a7c97e67faaf205f29401ff11" title="Reduction" alt="" coords="2508,131,2595,157"/>
+<area shape="rect" id="node9" href="$d2/d76/a03296.html#a3099ce8a1a14a88e0a9476f23a62046b" title="for_each" alt="" coords="2696,131,2775,157"/>
+<area shape="rect" id="node10" href="$db/d69/a03320.html#af01b9b0c367940525ea2a7fffa7b3bf7" title="PETE_apply" alt="" coords="2876,131,2973,157"/>
+<area shape="rect" id="node11" href="$d7/d65/a03518.html#a4470dce378443ba50336eff842040674" title="reduce_masked" alt="" coords="2673,80,2798,107"/>
+<area shape="rect" id="node14" href="$db/df9/a05044.html#a1f0ce8cc9e9d7a37403ca2fc7b6a3f4f" title="Truncated multiplication. " alt="" coords="1947,181,2053,208"/>
+<area shape="rect" id="node15" href="$db/df9/a05044.html#a0b6c7d1a057ad24e08027a885d1b110a" title="Get number of variables. " alt="" coords="2114,232,2249,259"/>
+<area shape="rect" id="node16" href="$db/df9/a05044.html#ae77cb75645ce2127be32e4911d51b593" title="Get maximal order. " alt="" coords="2113,283,2250,309"/>
+<area shape="rect" id="node17" href="$d0/d8b/a05048.html#a60ca441d1df63dbb331a57cf3ebbfde4" title="TpsRep::create" alt="" coords="2122,80,2241,107"/>
+<area shape="rect" id="node19" href="$db/df9/a05044.html#a26cc178184334613f015bdce6dda5b74" title="Get number of coefficients. " alt="" coords="2131,131,2232,157"/>
+<area shape="rect" id="node20" href="$df/d98/a03680.html#a120639401358f60ba9c8377440c2aff5" title="prod" alt="" coords="2526,181,2577,208"/>
+<area shape="rect" id="node18" href="$dc/d96/a05060.html#a12f23d39f696c02da148722cb0bd8f06" title="TpsData::getTpsData" alt="" coords="2301,80,2460,107"/>
+<area shape="rect" id="node23" href="$d0/d1e/a03674.html#a7633e9416cb6fdd16745f5ba3e3ea7d3" title="abs" alt="" coords="1098,451,1143,477"/>
+<area shape="rect" id="node24" href="$da/d70/a05940.html#ac92d802f0c5c16ac8525a0e0a66cc05c" title="RootFinderForCSR::hasPositive\lRealRoots" alt="" coords="753,275,972,317"/>
+<area shape="rect" id="node28" href="$da/d70/a05940.html#ac4f6e940f5880f5c32abf2e3380d1e67" title="RootFinderForCSR::searchRoot" alt="" coords="755,173,971,200"/>
+<area shape="rect" id="node25" href="$d4/dfa/a00746.html#aff5fe19fcdf8761618dbaf37b209a9c6" title="Square root. " alt="" coords="1579,257,1626,284"/>
+<area shape="rect" id="node26" href="$d0/d1e/a03674.html#af6518b151e7b0d52fa4ec791b891f53b" title="copysign" alt="" coords="1081,283,1161,309"/>
+<area shape="rect" id="node27" href="$da/d70/a05940.html#a3baf5725eda91ab7991b4bd79291cc72" title="RootFinderForCSR::compute\lValue" alt="" coords="1020,166,1221,207"/>
+<area shape="rect" id="node29" href="$da/d70/a05940.html#af8b5c182855e5ada5c31a4fad3d98bde" title="RootFinderForCSR::compute\lValueGSL" alt="" coords="1020,101,1221,142"/>
+<area shape="rect" id="node31" href="$d9/d03/a11852.html#a1cbfef351ec64d2a23f2aeffe925fb3d" title="Inform::outputMessage" alt="" coords="1035,603,1207,629"/>
+<area shape="rect" id="node33" href="$d9/d03/a11852.html#a94df0d4272b58ccb485d957d02ae777e" title="Inform::display_message" alt="" coords="1269,603,1456,629"/>
+<area shape="rect" id="node34" href="$d9/d03/a11852.html#a2d6b9792e2d129b151c15c65933eeb16" title="Inform::display_single_line" alt="" coords="1504,603,1701,629"/>
+<area shape="rect" id="node35" href="$d5/d16/a11864.html#ace7b103c3bf58266544e165c6b5a69d4" title="IpplInfo::getNodes" alt="" coords="1749,603,1891,629"/>
+<area shape="rect" id="node38" href="$d1/dc3/a04492.html#a02fe0321c9ea6a5dd397b567e24eea57" title="PartBunchBase::get\l_meanKineticEnergy" alt="" coords="1285,385,1441,426"/>
+<area shape="rect" id="node39" href="$d1/dc3/a04492.html#af51331c43ea82142dd6d237e6e3e5bfd" title="PartBunchBase::getM" alt="" coords="1283,451,1442,477"/>
+<area shape="rect" id="node40" href="$d4/dfa/a00746.html#a06ff4f243bf8f2b00166b76eab20d29c" title="Natural logarithm. " alt="" coords="1979,333,2021,360"/>
+<area shape="rect" id="node42" href="$d1/dc3/a04492.html#a83419a264c21847fc3309bbbae0c3873" title="calculates the 1d line density (not normalized) and append it to a file. " alt="" coords="475,807,705,833"/>
+<area shape="rect" id="node43" href="$dd/dd5/a05700.html#a2590d60fb417b40303ef196fcae0e9ea" title="Filter::calc_derivative" alt="" coords="509,756,671,783"/>
+<area shape="rect" id="node49" href="$d1/d55/a04496.html#accc445ea08f633c3157728e420fd47c6" title="OpalData::OpalData" alt="" coords="514,1075,666,1101"/>
+</map>

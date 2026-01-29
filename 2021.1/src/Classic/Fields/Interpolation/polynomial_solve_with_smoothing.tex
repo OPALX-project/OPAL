@@ -1,0 +1,119 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+\begin{document}
+
+\section{Arbitrary Order, Arbitrary Dimensional Polynomial Solve With Smoothing}
+
+\emph{Chris Rogers, STFC Rutherford Appleton Laboratory, 2015}
+
+Below I outline the mathematical foundation for higher order polynomial solving.
+
+\subsection{Generalised Indexing and Notation}
+
+The polynomial solve is a quite straightforward consequence of a simultaneous
+equation solve. The only really tricky thing is one of notation. For a 
+polynomial in higher dimensional space, we have to be quite careful how things
+are indexed. For example, consider the generalised quadratic polynomial in two
+dimensions
+\begin{equation}
+\label{eq:quadratic}
+y = a_{00} + a_{10} x_0 + a_{01} x_1 + a_{11} x_0 x_1 + a_{20} x_0^2 + a_{02} x_1^2
+\end{equation}
+
+The polynomial coefficients $a_{jk}$ have been indexed by the power on the
+corresponding products of $x_i$. Explicitly,
+
+\begin{equation}
+y = a_{00} x_0^0 x_1^0 + a_{10} x_0^1 x_1^0 + a_{01} x_0^0 x_1^1 + a_{11} x_0^1 x_1^1 + a_{20} x_0^2 x_1^0 + a_{02} x_0^0 x_1^2
+\end{equation}
+
+which is identical to equation \ref{eq:quadratic}. In the code, this is termed
+\emph{index by power}. Occasionally we also use the concept of \emph{index by 
+vector}. In this indexing scheme, we index the $i$ in the product of $x_i$, so
+for example the quadratic equation above becomes
+
+\begin{equation}
+y = b+ b_{0} x_0 + b_{1} x_1 + b_{01} x_0 x_1 + b_{00} x_0 x_0 + b_{11} x_1 x_1
+\end{equation}
+
+Conventionally, a quadratic equation in higher dimension is one in which the sum
+of the powers $<=$ 2, i.e. the sum of \emph{index by power} $<=$ 2 and the
+length of \emph{index by vector} $<=$ 2.
+
+For reasons discussed below, in this note a polynomial of order $i$ will be one
+in which no term in \emph{index by power} is more than $i$, or equivalently no
+integer in \emph{index by vector} is repeated more than $i$ times.
+
+The coefficients $a_{00}, a_{01}, \ldots$ can be written in shorthand as 
+$a_{\vec{p}}$ where $\vec{p}$ is a vector of integers as discussed above.
+
+This notation can also be used to extend to derivatives. Consider the derivative
+\begin{equation}
+\frac{\partial^ny_i}{\partial x_0^{q_0} \partial x_1^{q_1} \ldots}
+\end{equation}
+which can be written in shorthand as 
+\begin{equation}
+y^{(\vec{q})}
+\end{equation}
+
+\subsection{Polynomial Solve with no Smoothing}
+Consider a polynomial in variables $\vec{x} = x_0, x_1, \ldots x_n$ such that
+\begin{equation}
+\vec{y}(x) = \sum_{\vec{p}} a_{\vec{p}} \prod^{j=n}_{j=1} x_j^{p_j}
+\end{equation}
+If we have a set of known values $\vec{y}_{\vec{b}}(\vec{x}_{\vec{b}}$ at some
+known positions $\vec{x}_{\vec{b}}$ e.g. on a rectangular grid; then we can 
+solve for $a_{\vec{p}}$ in the usual way as a linear system of simultaneous 
+equations.
+
+Then
+\begin{equation}
+\vec{y}_{\vec{b}}(\vec{x}_{\vec{b}}) = \sum_{\vec{p}} a_{\vec{p}} \prod^{j=n}_{j=1} x_{b_j}^{p_j}
+\end{equation}
+where the measured values to be fitted, $\vec{y}_{\vec{b}}$ are known, the
+positions at which those values were measured, $\vec{x}$, are known but the
+polynomial coefficients $a_{\vec{p}}$ are not known.
+
+This can be written as a system of linear equations like
+\begin{equation}
+\vec{G} = \mathbf{H} \vec{A}
+\end{equation}
+
+where $\vec{G}$ is the vector of $\vec{y}_{\vec{b}}$, $\vec{a}$ is the vector of
+$a_{\vec{p}}$ and $\mathbf{H}$ is the matrix of $\prod x_{b_j}^{p_j}$.
+
+In order for the polynomial fit to be successful, $\mathbf{H}$ must be invertible,
+so the points $\vec{x}_{\vec{b}}$ need to be chosen carefully. Otherwise no 
+presumption has been made on the dimension or order of the fit.
+
+\subsection{Polynomial Solve with Smoothing}
+Derivatives of the polynomial may be known, in which case they can be used in
+addition to measured points.
+
+Consider the measured derivatives 
+$\vec{y}_{\vec{b}}^{(\vec{q})}(\vec{x}_{\vec{b}})$. Then
+\begin{equation}
+y^{\vec{q}}_{\vec{b}} = \sum_{\vec{p}} a_{\vec{p}} 
+  \prod^j \frac{p_j!}{(p_j-q_j)!} \vec{x}_{\vec{b}}^{(p_j-q_j)}
+\end{equation}
+The simultaneous equation can then be reformulated as
+\begin{equation}
+\vec{G'} = \mathbf{H'} \vec{A}
+\end{equation}
+where $\vec{G'}$ is the vector of $y^{\vec{p}}$ and $y^{(\vec{q})}$; $\mathbf{H'}$
+is the matrix of $\prod x_{b_j}^{p_j}$ and $\prod p_j!/(p_j-q_j)! x_{b_j}^{p_j-q_j}$
+
+In order for the polynomial fit to be successful, $\mathbf{H'}$ must be
+invertible.
+
+\subsection{Issues}
+In this note, no attempt is made to demonstrate that a given set of points
+result in an invertible matrix. This is found empirically. So there may be a set
+of pathological cases that break the fitting.
+
+Boundary conditions can be an issue. At the moment, boundary condition is taken
+as derivative is zero.
+
+\end{document}
+

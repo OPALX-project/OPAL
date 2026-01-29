@@ -1,0 +1,37 @@
+<map id="src/Classic/AbsBeamline/MultipoleT.h" name="src/Classic/AbsBeamline/MultipoleT.h">
+<area shape="rect" id="node2" href="$d9/d4a/a00479.html" title="AbsBeamline/EndFieldModel\l/Tanh.h" alt="" coords="678,601,883,643"/>
+<area shape="rect" id="node6" href="$da/db7/a01088.html" title="BeamlineGeometry/PlanarArc\lGeometry.h" alt="" coords="1476,169,1691,211"/>
+<area shape="rect" id="node11" href="$db/d1c/a01229.html" title="Fields/BMultipoleField.h" alt="" coords="583,95,757,121"/>
+<area shape="rect" id="node14" href="$db/ddf/a13198.html" title="Algorithms/Vektor.h" alt="" coords="1959,430,2109,457"/>
+<area shape="rect" id="node33" href="$df/d70/a00431.html" title="AbsBeamline/Component.h" alt="" coords="781,95,980,121"/>
+<area shape="rect" id="node42" href="$d1/d98/a00407.html" title="AbsBeamline/BeamlineVisitor.h" alt="" coords="2178,95,2405,121"/>
+<area shape="rect" id="node43" href="$dc/dae/a00563.html" title="AbsBeamline/MultipoleTFunctions\l/RecursionRelation.h" alt="" coords="441,512,683,553"/>
+<area shape="rect" id="node46" href="$d4/d9e/a00569.html" title="AbsBeamline/MultipoleTFunctions\l/RecursionRelationTwo.h" alt="" coords="124,423,365,464"/>
+<area shape="rect" id="node5" href="$d7/d5e/a00467.html" title="AbsBeamline/EndFieldModel\l/EndFieldModel.h" alt="" coords="678,691,883,732"/>
+<area shape="rect" id="node7" href="$d5/d67/a01070.html" title="BeamlineGeometry/Geometry.h" alt="" coords="1581,266,1809,293"/>
+<area shape="rect" id="node8" href="$d5/d4c/a01058.html" title="BeamlineGeometry/Euclid3D.h" alt="" coords="1531,348,1753,375"/>
+<area shape="rect" id="node9" href="$d3/dbd/a01100.html" title="BeamlineGeometry/Rotation3D.h" alt="" coords="1606,430,1843,457"/>
+<area shape="rect" id="node10" href="$dd/d09/a01118.html" title="BeamlineGeometry/Vector3D.h" alt="" coords="1534,519,1758,546"/>
+<area shape="rect" id="node12" href="$d2/d41/a01493.html" title="Fields/StaticMagneticField.h" alt="" coords="569,177,771,203"/>
+<area shape="rect" id="node13" href="$d6/d0f/a01256.html" title="Fields/EMField.h" alt="" coords="569,266,693,293"/>
+<area shape="rect" id="node15" href="$db/db0/a13201.html" title="AppTypes/Vektor.h" alt="" coords="1917,519,2058,546"/>
+<area shape="rect" id="node16" href="$db/d06/a03866.html" title="Utility/PAssert.h" alt="" coords="1912,780,2039,807"/>
+<area shape="rect" id="node20" href="$dc/d98/a03524.html" title="Message/Message.h" alt="" coords="1431,698,1583,725"/>
+<area shape="rect" id="node26" href="$d0/d1e/a03674.html" title="PETE/IpplExpressions.h" alt="" coords="1703,609,1875,635"/>
+<area shape="rect" id="node29" href="$da/de5/a03170.html" title="AppTypes/TSVMeta.h" alt="" coords="2025,609,2182,635"/>
+<area shape="rect" id="node25" href="$da/d72/a03527.html" title="Message/Message.hpp" alt="" coords="1423,780,1591,807"/>
+<area shape="rect" id="node27" href="$d4/d78/a03677.html" title="PETE/IpplTypeComputations.h" alt="" coords="1608,698,1823,725"/>
+<area shape="rect" id="node28" href="$df/d98/a03680.html" title="PETE/PETE.h" alt="" coords="1847,698,1949,725"/>
+<area shape="rect" id="node30" href="$d3/dcf/a03173.html" title="AppTypes/TSVMetaAssign.h" alt="" coords="2025,698,2225,725"/>
+<area shape="rect" id="node34" href="$d5/d5f/a00461.html" title="AbsBeamline/ElementBase.h" alt="" coords="1129,177,1339,203"/>
+<area shape="rect" id="node35" href="$d7/d00/a00401.html" title="AbsBeamline/AttributeSet.h" alt="" coords="1218,348,1421,375"/>
+<area shape="rect" id="node36" href="$d5/d12/a00794.html" title="Algorithms/CoordinateSystem\lTrafo.h" alt="" coords="1885,259,2103,300"/>
+<area shape="rect" id="node37" href="$dd/db2/a00866.html" title="Algorithms/Quaternion.h" alt="" coords="1821,348,2002,375"/>
+<area shape="rect" id="node38" href="$d9/dfd/a01610.html" title="MemoryManagement/RCObject.h" alt="" coords="1322,266,1557,293"/>
+<area shape="rect" id="node39" href="$d9/d63/a01877.html" title="Utilities/GeneralClassic\lException.h" alt="" coords="717,259,892,300"/>
+<area shape="rect" id="node44" href="$d3/d87/a00539.html" title="DifferentialOperator.h" alt="" coords="441,609,603,635"/>
+<area shape="rect" id="node45" href="$d9/d87/a00551.html" title="Polynomial.h" alt="" coords="491,698,598,725"/>
+<area shape="rect" id="node47" href="$d8/deb/a00545.html" title="DifferentialOperatorTwo.h" alt="" coords="25,519,214,546"/>
+<area shape="rect" id="node48" href="$d8/df0/a00557.html" title="PolynomialSum.h" alt="" coords="26,609,162,635"/>
+<area shape="rect" id="node49" href="$d8/dc8/a00581.html" title="TwoPolynomial.h" alt="" coords="132,698,264,725"/>
+</map>

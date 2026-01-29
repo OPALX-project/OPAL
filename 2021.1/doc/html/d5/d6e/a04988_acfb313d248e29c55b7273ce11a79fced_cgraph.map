@@ -1,0 +1,11 @@
+<map id="TravelingWave::getElementDimensions" name="TravelingWave::getElementDimensions">
+<area shape="rect" id="node2" href="$d0/d11/a00842.html#a9c95c1e8b5a87fb9b7756fa8ccfd8375" title="begin" alt="" coords="327,5,386,32"/>
+<area shape="rect" id="node4" href="$d0/d11/a00842.html#a42b0c32b83ea01767b2e7e6159694743" title="end" alt="" coords="602,56,649,83"/>
+<area shape="rect" id="node6" href="$da/d94/a04940.html#adf914d956cbf7ecaf6f979f764c1ddce" title="Get design length. " alt="" coords="253,107,460,133"/>
+<area shape="rect" id="node3" href="$d1/dc3/a04492.html#ad6ece85323a4f116320d363dfb419738" title="PartBunchBase::begin" alt="" coords="544,5,707,32"/>
+<area shape="rect" id="node5" href="$d1/dc3/a04492.html#ad231fcc85484b425051ff45b9288da34" title="PartBunchBase::end" alt="" coords="821,48,971,75"/>
+<area shape="rect" id="node7" href="$df/da2/a04828.html#a1b412456edcf01147abada7721605101" title="Get design length. " alt="" coords="508,107,743,133"/>
+<area shape="rect" id="node10" href="$d9/ddd/a05512.html#a0a0aff97e6e62b388b5001a9d20c3154" title="Fieldmap::getFieldDimensions" alt="" coords="517,157,734,184"/>
+<area shape="rect" id="node8" href="$da/def/a05344.html#a73f1d2087c1b6c7fb3e5e00f6835f88e" title="Get geometry length. " alt="" coords="791,99,1001,141"/>
+<area shape="rect" id="node9" href="$df/da2/a04828.html#acc8b1c2de0674e1d3e1ff6173617bbed" title="Get geometry. " alt="" coords="795,165,997,192"/>
+</map>
