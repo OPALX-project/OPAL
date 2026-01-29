@@ -26,7 +26,8 @@ jobs:
       - name: list files
         run: |
           pwd
-          ls -l
+          ls -l doc
+          ls -l doc/html
 
   deploy:
     name: Deploy to GitHub Pages
@@ -39,7 +40,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './doc/html'
+          path: 'doc/html'
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
