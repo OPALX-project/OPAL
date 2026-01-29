@@ -22,12 +22,9 @@ jobs:
       - name: Create docs directory
         run: mkdir -p ./doc/html
       - name: Run Doxygen to generate documentation
-        run: doxygen Doxyfile.in
-      - name: list files
         run: |
-          pwd
-          ls -l doc
-          ls -l doc/html
+          sed 's/@CMAKE_SOURCE_DIR@/./' Doxyfile.in > Doxyfile
+          doxygen Doxyfile
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
