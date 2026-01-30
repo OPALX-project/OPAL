@@ -626,7 +626,7 @@ int main(int argc, char *argv[]){
 
     Vektor<int,Dim> nr;
 
-    nr = Vektor<int,Dim>(atoi(argv[1]),atoi(argv[2]),atoi(argv[3]));
+    nr = Vektor<int,Dim>({atoi(argv[1]),atoi(argv[2]),atoi(argv[3])});
     int param = 4;
     double beam_radius =atof(argv[param++]);
     double box_length =atof(argv[param++]);
@@ -667,10 +667,10 @@ int main(int argc, char *argv[]){
 
     /////////// Create the particle distribution /////////////////////////////////////////////////////
     double L = box_length/2.;
-    Vektor<double,Dim> extend_l(-L,-L,-L);
-    Vektor<double,Dim> extend_r(L,L,L);
+    Vektor<double,Dim> extend_l({-L,-L,-L});
+    Vektor<double,Dim> extend_r({L,L,L});
 
-    Vektor<double,Dim> Vmax(6,6,6);
+    Vektor<double,Dim> Vmax({6,6,6});
     P = new ChargedParticles<playout_t>(PL, nr, decomp, extend_l, extend_r);
     createParticleDistributionHeating(P,extend_l,extend_r,beam_radius, Nparticle,charge_per_part,mass_per_part);
 

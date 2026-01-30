@@ -46,8 +46,8 @@ SectorField::SectorField(const std::string& /*file_name*/)
     polarBBMin_m[1] = bbMin_m[1];
     polarBBMax_m[1] = bbMax_m[1];
     polarBBMax_m[0] = bbMax_m[0];
-    polarBBMin_m[2] = -2.*Physics::pi;
-    polarBBMax_m[2] = 2.*Physics::pi;
+    polarBBMin_m[2] = -Physics::two_pi;
+    polarBBMax_m[2] = Physics::two_pi;
 }
 
 SectorField::~SectorField() {}

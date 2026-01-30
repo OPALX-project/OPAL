@@ -38,8 +38,8 @@ EllipticDomain::EllipticDomain(BoundaryGeometry *bgeom, IntVector_t nr, Vector_t
                                std::string interpl)
     : RegularDomain(nr, hr, interpl)
 {
-    Vector_t min(-bgeom->getA(), -bgeom->getB(), bgeom->getS());
-    Vector_t max( bgeom->getA(),  bgeom->getB(), bgeom->getS() + bgeom->getLength());
+    Vector_t min({-bgeom->getA(), -bgeom->getB(), bgeom->getS()});
+    Vector_t max({ bgeom->getA(),  bgeom->getB(), bgeom->getS() + bgeom->getLength()});
     setRangeMin(min);
     setRangeMax(max);
     setMinMaxZ(min[2], max[2]);

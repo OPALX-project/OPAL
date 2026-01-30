@@ -80,18 +80,14 @@ public:
     X[3] = x03;
   }
 #endif
-//    Vektor(std::initializer_list<T> init) {
-//        for (auto it = init.begin(); it != init.end(); ++it) {
-//            auto i = std::distance(init.begin(), it);
-//            X[i] = *it;
-//        }
-//    }
     Vektor(std::initializer_list<T> init) {
         unsigned i = 0;
         for(auto it = init.begin(); it != init.end() && i < D; ++it, ++i) {
-            X[i] = *it;
+            X[i] = *it; // copy at most D elements to avoid out-of-bounds access
         }
-        for(; i < D; ++i) X[i] = T(0);
+        for(; i < D; ++i) {
+            X[i] = T(0); // zero-fill remaining components if initializer list is shorter
+        }
     }
 
   // Destructor
@@ -207,7 +203,7 @@ template<class T, unsigned D>
 typename Vektor<T,D>::Element_t& Vektor<T,D>::operator[](unsigned int i)
 {
   PAssert (i<D);
-  if (i >= D) i = D-1;
+  if (i >= D) i = D-1; // clamp index to avoid undefined behavior when assertions are disabled
   return X[i];
 }
 
@@ -215,7 +211,7 @@ template<class T, unsigned D>
 typename Vektor<T,D>::Element_t Vektor<T,D>::operator[](unsigned int i) const
 {
   PAssert (i<D);
-  if (i >= D) i = D-1;
+  if (i >= D) i = D-1; // defensive fallback for release builds without runtime bounds checking
   return X[i];
 }
 

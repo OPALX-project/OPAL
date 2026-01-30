@@ -56,7 +56,8 @@ template<class LHS, class RHS, class OP>
 class BrickExpLoop<LHS,RHS,OP,1U>
 {
 public:
-  void apply(LHS& Lhs, RHS& Rhs, OP Op)
+  static inline void
+  apply(LHS& Lhs, RHS& Rhs, OP Op)
     {
       int n0 = Lhs.size(0);
       for (int i0=0; i0<n0; ++i0) {
@@ -71,7 +72,7 @@ template<class LHS, class RHS, class OP>
 class BrickExpLoop<LHS,RHS,OP,2U>
 {
 public:
-  void
+  static inline void
   apply(LHS& __restrict__ Lhs, RHS& __restrict__ Rhs, OP Op)
     {
       int n0 = Lhs.size(0);
@@ -90,7 +91,7 @@ template<class LHS, class RHS, class OP>
 class BrickExpLoop<LHS,RHS,OP,3U>
 {
 public:
-     void
+    static inline void
     apply(LHS& Lhs, RHS& Rhs, OP Op)
     {
         int n0 = Lhs.size(0);
@@ -107,10 +108,11 @@ public:
 
 //////////////////////////////////////////////////////////////////////
 // BrickExpression::apply - just use BrickExpLoop
+// Legacy code attempted to call apply() as a static method.
+// This is invalid since apply() is a non-static member function.
 template<unsigned Dim, class LHS, class RHS, class OP>
 void BrickExpression<Dim,LHS,RHS,OP>::apply()
 {
-        BrickExpLoop<LHS,RHS,OP,Dim> loop;
-        loop.apply(Lhs, Rhs, Op);
-    	BrickExpLoop<LHS,RHS,OP,Dim>::apply(Lhs,Rhs,Op);
+    BrickExpLoop<LHS,RHS,OP,Dim> loop;
+    loop.apply(Lhs, Rhs, Op);
 }
