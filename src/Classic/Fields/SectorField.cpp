@@ -33,6 +33,7 @@
 #include <string>
 #include <vector>
 
+#include "Physics/Physics.h"
 #include "Utilities/LogicalError.h"
 
 // note I don't use exactly max() as the bounding box because I don't want to
@@ -45,8 +46,8 @@ SectorField::SectorField(const std::string& /*file_name*/)
     polarBBMin_m[1] = bbMin_m[1];
     polarBBMax_m[1] = bbMax_m[1];
     polarBBMax_m[0] = bbMax_m[0];
-    polarBBMin_m[2] = -2.*M_PI;
-    polarBBMax_m[2] = 2.*M_PI;
+    polarBBMin_m[2] = -2.*Physics::pi;
+    polarBBMax_m[2] = 2.*Physics::pi;
 }
 
 SectorField::~SectorField() {}
@@ -110,11 +111,11 @@ void SectorField::setPolarBoundingBox
                "Bounding box minimum angle was greater than maximum angle"
                ));
     }
-    if (bbMinPhi < -2.*M_PI || bbMinPhi > 2.*M_PI ||
-        bbMaxPhi < -2.*M_PI || bbMaxPhi > 2.*M_PI) {
+    if (bbMinPhi < -2.*Physics::pi || bbMinPhi > 2.*Physics::pi ||
+        bbMaxPhi < -2.*Physics::pi || bbMaxPhi > 2.*Physics::pi) {
         throw(LogicalError(
                "SectorField::SetPolarBoundingBox",
-               "Bounding box angles must be in range -2*M_PI < phi < 2*M_PI"
+               "Bounding box angles must be in range -2*Physics::pi < phi < 2*Physics::pi"
                ));
     }
 
@@ -142,19 +143,19 @@ void SectorField::setPolarBoundingBox
 
     // if the magnet crosses an axis, then the corners are no longer at the max
     // extent
-    if ( (bbMaxPhi > 0.5*M_PI && bbMinPhi < 0.5*M_PI) ||
-         (bbMaxPhi > -1.5*M_PI && bbMinPhi < -1.5*M_PI) ) {
+    if ( (bbMaxPhi > 0.5*Physics::pi && bbMinPhi < 0.5*Physics::pi) ||
+         (bbMaxPhi > -1.5*Physics::pi && bbMinPhi < -1.5*Physics::pi) ) {
         bbMax_m[2] = bbMaxR;
     }
-    if ((bbMaxPhi > M_PI && bbMinPhi < M_PI) ||
-        (bbMaxPhi > -M_PI && bbMinPhi < -M_PI)) {
+    if ((bbMaxPhi > Physics::pi && bbMinPhi < Physics::pi) ||
+        (bbMaxPhi > -Physics::pi && bbMinPhi < -Physics::pi)) {
         bbMin_m[0] = -bbMaxR;
     }
-    if ((bbMaxPhi > 1.5*M_PI && bbMinPhi < 1.5*M_PI) ||
-        (bbMaxPhi > -0.5*M_PI && bbMinPhi < -0.5*M_PI)) {
+    if ((bbMaxPhi > 1.5*Physics::pi && bbMinPhi < 1.5*Physics::pi) ||
+        (bbMaxPhi > -0.5*Physics::pi && bbMinPhi < -0.5*Physics::pi)) {
         bbMin_m[2] = -bbMaxR;
     }
-    if ((bbMaxPhi > 0.*M_PI && bbMinPhi < 0.*M_PI)) {
+    if ((bbMaxPhi > 0.*Physics::pi && bbMinPhi < 0.*Physics::pi)) {
         bbMax_m[0] = bbMaxR;
     }
 }

@@ -27,9 +27,9 @@ TEST(AppTypes, Operators)
     Field< SymTenzor<double,Dim>, Dim, UniformCartesian<Dim> >
         S1(layout), S2(layout), S3(layout);
 
-    Vektor<double,Dim> Vinit1(1.0,2.0);
-    Vektor<double,Dim> Vinit2(10.0,20.0);
-    Vektor<double,Dim> Vinit3(100.0,200.0);
+    Vektor<double,Dim> Vinit1({1.0,2.0});
+    Vektor<double,Dim> Vinit2({10.0,20.0});
+    Vektor<double,Dim> Vinit3({100.0,200.0});
 
     Tenzor<double,Dim> Tinit1(1.0,2.0,2.0,3.0);
     Tenzor<double,Dim> Tinit2(10.0,20.0,20.0,30.0);

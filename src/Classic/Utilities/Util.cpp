@@ -88,8 +88,8 @@ namespace Util {
         r = r * sign_x;
         x = x * sign_x;
 
-        r -= (std::erf (r) - x) / (2 / std::sqrt (M_PI) * std::exp (-r * r));
-        r -= (std::erf (r) - x) / (2 / std::sqrt (M_PI) * std::exp (-r * r));
+        r -= (std::erf (r) - x) / (2 / std::sqrt (Physics::pi) * std::exp (-r * r));
+        r -= (std::erf (r) - x) / (2 / std::sqrt (Physics::pi) * std::exp (-r * r));
 
         return r;
     }

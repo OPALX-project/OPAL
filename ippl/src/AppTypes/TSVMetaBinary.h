@@ -113,8 +113,8 @@ struct TSV_MetaBinary< Vektor<T1,2> , Vektor<T2,2> , OP >
   typedef typename PETEBinaryReturn<T1,T2,OP>::type T0;
   inline static Vektor<T0,2>
   apply(const Vektor<T1,2>& lhs, const Vektor<T2,2>& rhs) {
-    return Vektor<T0,2>( PETE_apply( OP(), lhs[0], rhs[0] ) ,
-			 PETE_apply( OP(), lhs[1], rhs[1] ) );
+    return Vektor<T0,2>({ PETE_apply( OP(), lhs[0], rhs[0] ) ,
+			 PETE_apply( OP(), lhs[1], rhs[1] ) });
   }
 };
 
@@ -124,8 +124,8 @@ struct TSV_MetaBinaryScalar< Vektor<T1,2> , T2 , OP >
   typedef typename PETEBinaryReturn<T1,T2,OP>::type T0;
   inline static Vektor<T0,2>
   apply(const Vektor<T1,2>& lhs, T2 rhs) {
-    return Vektor<T0,2>( PETE_apply( OP(), lhs[0], rhs ) ,
-			 PETE_apply( OP(), lhs[1], rhs ) );
+    return Vektor<T0,2>({ PETE_apply( OP(), lhs[0], rhs ) ,
+			 PETE_apply( OP(), lhs[1], rhs ) });
   }
 };
 

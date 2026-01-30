@@ -154,11 +154,11 @@ TEST(SBend3DTest, SBend3DGeometryTest) {
     for (double phi = -Physics::pi/4.+1e-3; phi < Physics::pi/2.; phi += Physics::pi/20)
         for (double r = -9.9; r < 31.; r += 5.)
             for (double y = -6.1; y < 6.; y += 1.) {
-                Vector_t B(0., 0., 0.);
+                Vector_t B({0., 0., 0.});
                 Vector_t pos(
-                    (radius+r)*cos(phi)-radius,
+                    {(radius+r)*cos(phi)-radius,
                     y,
-                    (radius+r)*sin(phi)
+                    (radius+r)*sin(phi)}
                 );
                 field->apply(pos, Vector_t(0.0), 0, E, B);
                 if (r > -10. && r < 10. &&
@@ -191,9 +191,9 @@ void testField(double r, double y, double phi,
     Vector_t B, E, centroid, pos;
     double radius = 2110.;
     pos = Vector_t(
-        (radius+r)*cos(phi)-radius,
+        {(radius+r)*cos(phi)-radius,
         y,
-        (radius+r)*sin(phi)
+        (radius+r)*sin(phi)}
     );
     field->apply(pos, Vector_t(0.0), 0, E, B);
     // the field map is rotated through pi/8. (into start at z=0. coordinates)
@@ -255,7 +255,7 @@ TEST(SBend3DTest, SBend3DPolyPatchTest) {
             for (double r = 2100.; r < 2120.1; r += 5.)
                 for (double phi =-dphi/2.; phi < dphi*3.1; phi += dphi/2.) {
                     Vector_t B, E, centroid;
-                    Vector_t pos(r*cos(phi)-radius, y, r*sin(phi));
+                    Vector_t pos({r*cos(phi)-radius, y, r*sin(phi)});
                     field1->apply(pos, Vector_t(0.0), 0, E, B);
                     field2->apply(pos, Vector_t(0.0), 0, E, B);
                     field3->apply(pos, Vector_t(0.0), 0, E, B);
@@ -289,11 +289,11 @@ TEST(SBend3DTest, GeometryTest2) {
     delta = euclid;
     std::cerr << " SBend3DTest::GeometryTest2 C" << std::endl;
     // Calculate change in position
-    Vector_t deltaPos(delta.getVector()(0), delta.getVector()(1), 0);
+    Vector_t deltaPos({delta.getVector()(0), delta.getVector()(1), 0});
     double endRot = delta.getRotation().getAxis()(2);
-    Vector_t deltaNorm(cos(endRot), sin(endRot), 0.);
+    Vector_t deltaNorm({cos(endRot), sin(endRot), 0.});
     std::cerr << " SBend3DTest::GeometryTest2 D" << std::endl;
 
-    std::cerr << 24.*(1-cos(M_PI/12.)) << " " << 24.*sin(M_PI/12.) << " ** " << cos(M_PI/12.) << " " << sin(M_PI/12.) << " ** " << M_PI/12. << std::endl;
+    std::cerr << 24.*(1-cos(Physics::pi/12.)) << " " << 24.*sin(Physics::pi/12.) << " ** " << cos(Physics::pi/12.) << " " << sin(Physics::pi/12.) << " ** " << M_PI/12. << std::endl;
     std::cerr << deltaPos << " ** " << deltaNorm << " ** " << endRot << std::endl;
 }

@@ -110,5 +110,7 @@ public:
 template<unsigned Dim, class LHS, class RHS, class OP>
 void BrickExpression<Dim,LHS,RHS,OP>::apply()
 {
-    BrickExpLoop<LHS,RHS,OP,Dim>::apply(Lhs,Rhs,Op);
+        BrickExpLoop<LHS,RHS,OP,Dim> loop;
+        loop.apply(Lhs, Rhs, Op);
+    	BrickExpLoop<LHS,RHS,OP,Dim>::apply(Lhs,Rhs,Op);
 }

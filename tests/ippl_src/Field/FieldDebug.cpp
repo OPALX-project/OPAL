@@ -76,7 +76,7 @@ TEST(Field, FieldDebug)
 
     // Vector Field--------------------------------------------------------------
     Field<Vektor<double,Dim3>,Dim3> B3(layout3,vbc,gc);
-    Vektor<double, Dim3 > Vinit3(1.0,2.0,3.0);
+    Vektor<double, Dim3 > Vinit3({1.0,2.0,3.0});
     assign(B3,Vinit3);
 
     fdi << endl << "--------setFormat(1,8)-------" << endl;

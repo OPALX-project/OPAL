@@ -80,11 +80,18 @@ public:
     X[3] = x03;
   }
 #endif
+//    Vektor(std::initializer_list<T> init) {
+//        for (auto it = init.begin(); it != init.end(); ++it) {
+//            auto i = std::distance(init.begin(), it);
+//            X[i] = *it;
+//        }
+//    }
     Vektor(std::initializer_list<T> init) {
-        for (auto it = init.begin(); it != init.end(); ++it) {
-            auto i = std::distance(init.begin(), it);
+        unsigned i = 0;
+        for(auto it = init.begin(); it != init.end() && i < D; ++it, ++i) {
             X[i] = *it;
         }
+        for(; i < D; ++i) X[i] = T(0);
     }
 
   // Destructor
@@ -200,6 +207,7 @@ template<class T, unsigned D>
 typename Vektor<T,D>::Element_t& Vektor<T,D>::operator[](unsigned int i)
 {
   PAssert (i<D);
+  if (i >= D) i = D-1;
   return X[i];
 }
 
@@ -207,6 +215,7 @@ template<class T, unsigned D>
 typename Vektor<T,D>::Element_t Vektor<T,D>::operator[](unsigned int i) const
 {
   PAssert (i<D);
+  if (i >= D) i = D-1;
   return X[i];
 }
 
