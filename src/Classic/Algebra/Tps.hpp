@@ -62,9 +62,13 @@ void Tps<T>::unique() {
 
 // Template class TpsRep<T>.
 //
+// THIS DOESN'T WORK WITH GCC >= 12:
 // The representation of a Tps<T> is based on a mechanism which avoids
 // double memory allocation (one for the TpsRep<T> object, one for the
-// table of monomials). If this causes problems, it can be reverted to
+// table of monomials).
+//
+// 
+// If this causes problems, it can be reverted to
 // using a double allocation by adding a data member "T *dat" to TpsRep<T>,
 // changing "TpsRep<T>::data()" to return "dat", and adapting the methods
 // "TpsRep<T>::operator new()" and "TpsRep<T>::operator delete()" so as
@@ -109,23 +113,20 @@ template <class T> class TpsRep {
     // Not implemented.
     TpsRep<T> &operator=(const TpsRep<T> &);
 
-    // May need to add this:
     T *dat;
 };
 
 
 template <class T> inline
 T *TpsRep<T>::data() {
-    // return reinterpret_cast<T *>(this + 1);
-    // Could be changed to:
     return dat;
 }
 
 
 template <class T> inline
 void *TpsRep<T>::operator new(size_t s, size_t extra) {
+    // with gcc >= 12 this doesn't work if T is std::complex
     //return new char[s + extra * sizeof(double)];
-    // Could be changed to:
     TpsRep<T> *p = reinterpret_cast<TpsRep<T>*>(new char[s]);
     p->dat = new T[extra];
     return p;
@@ -204,6 +205,7 @@ TpsRep<T> *TpsRep<T>::grab() {
 }
 
 #if 0
+// Looks like this is not used!
 template <class T> inline
 void TpsRep<T>::release(TpsRep<T> *p) {
     (p->ref)--;
