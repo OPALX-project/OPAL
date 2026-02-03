@@ -110,7 +110,7 @@ TEST(Vektor, tz)
         for (j=0; j<size; ++j)
             {
                 Vek v = V3[i][j].get();
-                v -= vselect1( Vek({double(i), double(j)}), Vek({double(i), double(j)}) );
+                v -= vselect1( Vek({double(i), double(j)}), Vek({double(j), double(i)}) );
                 err += fabs(v[0]);
                 err += fabs(v[1]);
             }
@@ -123,7 +123,7 @@ TEST(Vektor, tz)
         for (j=0; j<size; ++j)
             {
                 Vek v = V2[i][j].get();
-                v -= vselect1( Vek({double(i), double(j)}), Vek({double(i), double(j)}) );
+                v -= vselect1( Vek({double(i), double(j)}), Vek({double(j), double(i)}) );
                 err += fabs(v[0]);
                 err += fabs(v[1]);
             }

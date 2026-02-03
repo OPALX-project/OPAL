@@ -218,7 +218,7 @@ void DistributionMoments::computePercentiles(const InputIt & first, const InputI
         }
         std::sort(oneDPhaseSpace.begin(), oneDPhaseSpace.end(),
                   [d, this](Vektor<double, 2>& left, Vektor<double, 2>& right) {
-                      return std::abs(left[0] - meanR_m[0]) < std::abs(right[0] - meanR_m[0]);
+                      return std::abs(left[0] - meanR_m[d]) < std::abs(right[0] - meanR_m[d]);
                   });
 
         iterator_t endSixtyEight, endNinetyFive, endNinetyNine, endNinetyNine_NinetyNine;
