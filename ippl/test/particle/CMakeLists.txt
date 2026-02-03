@@ -81,8 +81,8 @@ target_link_libraries (
 )
 
 # :FIXME:
-#add_executable (chsr-1 chsr-1.cpp)
-#target_link_libraries (chsr-1 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
+add_executable (chsr-1 chsr-1.cpp)
+target_link_libraries (chsr-1 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
 
 add_executable (pbconds3D pbconds3D.cpp)
 target_link_libraries (pbconds3D ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
