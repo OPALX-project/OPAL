@@ -57,30 +57,8 @@ public:
   Vektor(const T& x00) {
     TSV_MetaAssignScalar<Vektor<T,D>,T,OpAssign>::apply(*this,x00);
   }
-#if 0
-  // Constructors for fixed dimension
-  Vektor(const T& x00, const T& x01) {
-    PInsist(D==2, "Number of arguments does not match Vektor dimension!!");
-    X[0] = x00;
-    X[1] = x01;
-  }
 
-  Vektor(const T& x00, const T& x01, const T& x02) {
-    PInsist(D==3, "Number of arguments does not match Vektor dimension!!");
-    X[0] = x00;
-    X[1] = x01;
-    X[2] = x02;
-  }
-
-  Vektor(const T& x00, const T& x01, const T& x02, const T& x03) {
-    PInsist(D==4, "Number of arguments does not match Vektor dimension!!");
-    X[0] = x00;
-    X[1] = x01;
-    X[2] = x02;
-    X[3] = x03;
-  }
-#endif
-    Vektor(std::initializer_list<T> init) {
+  Vektor(std::initializer_list<T> init) {
         unsigned i = 0;
         for(auto it = init.begin(); it != init.end() && i < D; ++it, ++i) {
             X[i] = *it; // copy at most D elements to avoid out-of-bounds access
