@@ -182,14 +182,14 @@ OptimizeCmd::OptimizeCmd():
     registerOwnership(AttributeHandler::COMMAND);
 }
 
-OptimizeCmd::OptimizeCmd(const std::string &name, OptimizeCmd *parent):
+OptimizeCmd::OptimizeCmd(const std::string& name, OptimizeCmd* parent):
     Action(name, parent)
 { }
 
 OptimizeCmd::~OptimizeCmd()
 { }
 
-OptimizeCmd *OptimizeCmd::clone(const std::string &name) {
+OptimizeCmd *OptimizeCmd::clone(const std::string& name) {
     return new OptimizeCmd(name, this);
 }
 
@@ -392,7 +392,6 @@ void OptimizeCmd::execute() {
         setenv("DISTRIBUTIONS", dir.c_str(), 1);
     }
 
-
     *gmsg << endl;
     for (size_t i = 0; i < arguments.size(); ++ i) {
         argv.push_back(const_cast<char*>(arguments[i].c_str()));
@@ -407,7 +406,6 @@ void OptimizeCmd::execute() {
         if (dvar == nullptr) {
             throw OpalException("OptimizeCmd::execute",
                                 "The design variable " + name + " is not known");
-
         }
         std::string var = dvar->getVariable();
         double lowerbound = dvar->getLowerBound();
@@ -428,7 +426,6 @@ void OptimizeCmd::execute() {
         if (objective == nullptr) {
             throw OpalException("OptimizeCmd::execute",
                                 "The objective " + name + " is not known");
-
         }
         std::string expr = objective->getExpression();
         objectives.insert(Expressions::SingleNamed_t(
@@ -446,7 +443,6 @@ void OptimizeCmd::execute() {
         if (constraint == nullptr) {
             throw OpalException("OptimizeCmd::execute",
                                 "The constraint " + name + " is not known");
-
         }
         std::string expr = constraint->getExpression();
         constraints.insert(Expressions::SingleNamed_t(
@@ -525,54 +521,36 @@ void OptimizeCmd::popEnvironment() {
     Track::pop();
 }
 
-OptimizeCmd::CrossOver OptimizeCmd::crossoverSelection(std::string crossover) {
-    std::map<std::string, CrossOver> map;
-    map["BLEND"] = CrossOver::Blend;
-    map["NAIVEONEPOINT"] = CrossOver::NaiveOnePoint;
-    map["NAIVEUNIFORM"] = CrossOver::NaiveUniform;
-    map["SIMULATEDBINARY"] = CrossOver::SimulatedBinary;
+OptimizeCmd::CrossOver OptimizeCmd::crossoverSelection(const std::string& crossover) {
+    static const std::map<std::string, CrossOver> map = {
+        {"BLEND",            CrossOver::Blend},
+        {"NAIVEONEPOINT",    CrossOver::NaiveOnePoint},
+        {"NAIVEUNIFORM",     CrossOver::NaiveUniform},
+        {"SIMULATEDBINARY",  CrossOver::SimulatedBinary}
+    };
 
-    CrossOver co = CrossOver::Blend;
-
-    switch ( map[crossover] ) {
-        case CrossOver::Blend:
-            break;
-        case CrossOver::NaiveOnePoint:
-            co = CrossOver::NaiveOnePoint;
-            break;
-        case CrossOver::NaiveUniform:
-            co = CrossOver::NaiveUniform;
-            break;
-        case CrossOver::SimulatedBinary:
-            co = CrossOver::SimulatedBinary;
-            break;
-        default:
-            throw OpalException("OptimizeCmd::crossoverSelection",
-                                "No cross over '" + crossover + "' supported.");
+    auto it = map.find(crossover);
+    if (it == map.end()) {
+        throw OpalException("OptimizeCmd::crossoverSelection",
+                            "No cross over '" + crossover + "' supported.");
     }
 
-    return co;
+    return it->second;
 }
 
-OptimizeCmd::Mutation OptimizeCmd::mutationSelection(std::string mutation) {
-    std::map<std::string, Mutation> map;
-    map["INDEPENDENTBIT"] = Mutation::IndependentBit;
-    map["ONEBIT"] = Mutation::OneBit;
+OptimizeCmd::Mutation OptimizeCmd::mutationSelection(const std::string& mutation) {
+    static const std::map<std::string, Mutation> map = {
+        {"INDEPENDENTBIT", Mutation::IndependentBit},
+        {"ONEBIT",         Mutation::OneBit}
+    };
 
-    Mutation mut = Mutation::IndependentBit;
-
-    switch ( map[mutation] ) {
-        case Mutation::IndependentBit:
-            break;
-        case Mutation::OneBit:
-            mut = Mutation::OneBit;
-            break;
-        default:
-            throw OpalException("OptimizeCmd::mutationSelection",
-                                "No mutation '" + mutation + "' supported.");
+    auto it = map.find(mutation);
+    if (it == map.end()) {
+        throw OpalException("OptimizeCmd::mutationSelection",
+                            "No mutation '" + mutation + "' supported.");
     }
 
-    return mut;
+    return it->second;
 }
 
 void OptimizeCmd::run(const CmdArguments_t& args,
@@ -593,109 +571,128 @@ void OptimizeCmd::run(const CmdArguments_t& args,
     CrossOver crossover = this->crossoverSelection(Attributes::getString(itsAttr[CROSSOVER]));
     Mutation mutation = this->mutationSelection(Attributes::getString(itsAttr[MUTATION]));
 
-
     std::map<std::string, std::string> userVariables = OpalData::getInstance()->getVariableData();
 
-    switch ( crossover + mutation ) {
-        case CrossOver::Blend + Mutation::IndependentBit:
-        {
-            typedef FixedPisaNsga2< BlendCrossover, IndependentBitMutation > Opt_t;
-            typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
+    switch (crossover) {
+        case CrossOver::Blend:
+            switch (mutation) {
+                case Mutation::IndependentBit:
+                {
+                    typedef FixedPisaNsga2<BlendCrossover, IndependentBitMutation> Opt_t;
+                    typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
-                                              funcs, dvars,
-                                              objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
-                                              true, userVariables));
-            break;
-        }
-        case CrossOver::Blend + Mutation::OneBit:
-        {
-            typedef FixedPisaNsga2< BlendCrossover, OneBitMutation > Opt_t;
-            typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
+                    const std::unique_ptr<pilot_t> pi(new pilot_t(
+                        args, comm, funcs, dvars, objectives, constraints,
+                        Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                        true, userVariables));
+                    break;
+                }
+                case Mutation::OneBit:
+                {
+                    typedef FixedPisaNsga2<BlendCrossover, OneBitMutation> Opt_t;
+                    typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
-                                              funcs, dvars,
-                                              objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
-                                              true, userVariables));
+                    const std::unique_ptr<pilot_t> pi(new pilot_t(
+                        args, comm, funcs, dvars, objectives, constraints,
+                        Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                        true, userVariables));
+                    break;
+                }
+                default:
+                    break;
+            }
             break;
-        }
-        case CrossOver::NaiveOnePoint + Mutation::IndependentBit:
-        {
-            typedef FixedPisaNsga2< NaiveOnePointCrossover, IndependentBitMutation > Opt_t;
-            typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
-                                              funcs, dvars,
-                                              objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
-                                              true, userVariables));
-            break;
-        }
-        case CrossOver::NaiveOnePoint + Mutation::OneBit:
-        {
-            typedef FixedPisaNsga2< NaiveOnePointCrossover, OneBitMutation > Opt_t;
-            typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
+        case CrossOver::NaiveOnePoint:
+            switch (mutation) {
+                case Mutation::IndependentBit:
+                {
+                    typedef FixedPisaNsga2<NaiveOnePointCrossover, IndependentBitMutation> Opt_t;
+                    typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
-                                              funcs, dvars,
-                                              objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
-                                              true, userVariables));
-            break;
-        }
-        case CrossOver::NaiveUniform + Mutation::IndependentBit:
-        {
-            typedef FixedPisaNsga2< NaiveUniformCrossover, IndependentBitMutation > Opt_t;
-            typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
+                    const std::unique_ptr<pilot_t> pi(new pilot_t(
+                        args, comm, funcs, dvars, objectives, constraints,
+                        Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                        true, userVariables));
+                    break;
+                }
+                case Mutation::OneBit:
+                {
+                    typedef FixedPisaNsga2<NaiveOnePointCrossover, OneBitMutation> Opt_t;
+                    typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
-                                              funcs, dvars,
-                                              objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
-                                              true, userVariables));
+                    const std::unique_ptr<pilot_t> pi(new pilot_t(
+                        args, comm, funcs, dvars, objectives, constraints,
+                        Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                        true, userVariables));
+                    break;
+                }
+                default:
+                    break;
+            }
             break;
-        }
-        case CrossOver::NaiveUniform + Mutation::OneBit:
-        {
-            typedef FixedPisaNsga2< NaiveUniformCrossover, OneBitMutation > Opt_t;
-            typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
-                                              funcs, dvars,
-                                              objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
-                                              true, userVariables));
-            break;
-        }
-        case CrossOver::SimulatedBinary + Mutation::IndependentBit:
-        {
-            typedef FixedPisaNsga2< SimulatedBinaryCrossover, IndependentBitMutation > Opt_t;
-            typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
+        case CrossOver::NaiveUniform:
+            switch (mutation) {
+                case Mutation::IndependentBit:
+                {
+                    typedef FixedPisaNsga2<NaiveUniformCrossover, IndependentBitMutation> Opt_t;
+                    typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
-                                              funcs, dvars,
-                                              objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
-                                              true, userVariables));
-            break;
-        }
-        case CrossOver::SimulatedBinary + Mutation::OneBit:
-        {
-            typedef FixedPisaNsga2< SimulatedBinaryCrossover, OneBitMutation > Opt_t;
-            typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
+                    const std::unique_ptr<pilot_t> pi(new pilot_t(
+                        args, comm, funcs, dvars, objectives, constraints,
+                        Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                        true, userVariables));
+                    break;
+                }
+                case Mutation::OneBit:
+                {
+                    typedef FixedPisaNsga2<NaiveUniformCrossover, OneBitMutation> Opt_t;
+                    typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
 
-            const std::unique_ptr<pilot_t> pi(new pilot_t(args, comm,
-                                              funcs, dvars,
-                                              objectives, constraints,
-                                              Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
-                                              true, userVariables));
+                    const std::unique_ptr<pilot_t> pi(new pilot_t(
+                        args, comm, funcs, dvars, objectives, constraints,
+                        Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                        true, userVariables));
+                    break;
+                }
+                default:
+                    break;
+            }
             break;
-        }
+
+        case CrossOver::SimulatedBinary:
+            switch (mutation) {
+                case Mutation::IndependentBit:
+                {
+                    typedef FixedPisaNsga2<SimulatedBinaryCrossover, IndependentBitMutation> Opt_t;
+                    typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
+
+                    const std::unique_ptr<pilot_t> pi(new pilot_t(
+                        args, comm, funcs, dvars, objectives, constraints,
+                        Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                        true, userVariables));
+                    break;
+                }
+                case Mutation::OneBit:
+                {
+                    typedef FixedPisaNsga2<SimulatedBinaryCrossover, OneBitMutation> Opt_t;
+                    typedef Pilot<Opt_t, Sim_t, SolPropagationGraph_t, Comm_t> pilot_t;
+
+                    const std::unique_ptr<pilot_t> pi(new pilot_t(
+                        args, comm, funcs, dvars, objectives, constraints,
+                        Attributes::getRealArray(itsAttr[HYPERVOLREFERENCE]),
+                        true, userVariables));
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+
         default:
             throw OpalException("OptimizeCmd::run",
-                                "No such cross over and mutation combination supported.");
+                "No such cross over and mutation combination supported.");
     }
 
     if (comm->isWorker())
