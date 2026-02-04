@@ -1,27 +1,22 @@
 #ifndef FUNCTION_HPP
 #define FUNCTION_HPP
 
+#include <functional>
+#include <string>
+#include <tuple>
+#include <variant>
 #include <vector>
 
-#include "boost/function.hpp"
-#include "boost/tuple/tuple.hpp"
-#include "boost/variant/variant.hpp"
+namespace client {
+    namespace function {
+        typedef std::variant<double, bool, std::string> argument_t;
 
-namespace client { namespace function {
+        typedef std::vector<argument_t> arguments_t;
 
-    typedef boost::variant <
-          double
-        , bool
-        , std::string
-        >
-    argument_t;
+        typedef std::function<std::tuple<double, bool> (arguments_t)> type;
 
-    typedef std::vector<argument_t> arguments_t;
-
-    typedef boost::function<boost::tuple<double, bool> (arguments_t)> type;
-
-    typedef std::pair<std::string, type> named_t;
-
-}}
+        typedef std::pair<std::string, type> named_t;
+    }
+}
 
 #endif

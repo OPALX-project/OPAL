@@ -50,9 +50,9 @@ namespace client { namespace code_gen {
         if (!boost::apply_visitor(*this, x.operand_))
             return false;
 
-        double op2 = boost::get<double>(evaluation_stack_.back());
+        double op2 = std::get<double>(evaluation_stack_.back());
         evaluation_stack_.pop_back();
-        double op1 = boost::get<double>(evaluation_stack_.back());
+        double op1 = std::get<double>(evaluation_stack_.back());
         evaluation_stack_.pop_back();
         double res = 0.0;
 
@@ -83,7 +83,7 @@ namespace client { namespace code_gen {
         if (!boost::apply_visitor(*this, x.operand_))
             return false;
 
-        double op = boost::get<double>(evaluation_stack_.back());
+        double op = std::get<double>(evaluation_stack_.back());
         evaluation_stack_.pop_back();
 
         switch (x.operator_) {
@@ -120,9 +120,9 @@ namespace client { namespace code_gen {
             return false;
         }
 
-        if(! boost::get<1>(itr->second(args))) return false;
+        if(! std::get<1>(itr->second(args))) return false;
 
-        double function_result = boost::get<0>(itr->second(args));
+        double function_result = std::get<0>(itr->second(args));
         evaluation_stack_.push_back(function_result);
 
         return true;

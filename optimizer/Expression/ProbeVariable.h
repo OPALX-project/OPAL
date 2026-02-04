@@ -22,10 +22,8 @@
 #define __PROBEVARIABLE_H__
 
 #include <string>
-
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
-#include "boost/smart_ptr.hpp"
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/ProbeReader.h"
@@ -41,9 +39,9 @@ struct ProbeVariable {
                                     "probeVariable expects 3 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        var_name_       = boost::get<std::string>(args[0]);
-        id_             = boost::get<double>(args[1]); //FIXME Can't we use integer?
-        probe_filename_ = boost::get<std::string>(args[2]);
+        var_name_       = std::get<std::string>(args[0]);
+        id_             = std::get<double>(args[1]); //FIXME Can't we use integer?
+        probe_filename_ = std::get<std::string>(args[2]);
 
         bool is_valid = true;
 
@@ -66,7 +64,7 @@ struct ProbeVariable {
             is_valid = false;
         }
 
-        return boost::make_tuple(sim_value, is_valid);
+        return std::make_tuple(sim_value, is_valid);
     }
 
 private:
@@ -75,7 +73,7 @@ private:
     std::string probe_filename_;
 
     // define a mapping to arguments in argument vector
-    boost::tuple<std::string, int, std::string> argument_types;
+    std::tuple<std::string, int, std::string> argument_types;
 	// :FIXME: unused
 #if 0
     enum {
