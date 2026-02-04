@@ -521,7 +521,7 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
             temp_R(1) < yBegin || temp_R(1) > yEnd ||
             temp_R(2) < zBegin || temp_R(2) > zEnd) continue;
 
-        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+        Vector_t tmpE({0.0, 0.0, 0.0}), tmpB({0.0, 0.0, 0.0});
         // out of bounds?
         if ((*fi)->getFieldstrength(temp_R, tmpE, tmpB)) continue;
 
@@ -1545,10 +1545,10 @@ void Cyclotron::writeOutputFieldFiles() {
         fp2.open(fname, std::ios::out);
         for (int i = 0; i < Bfield_m.nrad_m; i++) {
             for (int k = 0; k < Bfield_m.ntet_m; k++) {
-                Vector_t tmpR = Vector_t (BP_m.rmin_m + (i * BP_m.delr_m), 0.0, k * (BP_m.tetmin_m + BP_m.dtet_m));
-                Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+                Vector_t tmpR = Vector_t ({BP_m.rmin_m + (i * BP_m.delr_m), 0.0, k * (BP_m.tetmin_m + BP_m.dtet_m)});
+                Vector_t tmpE({0.0, 0.0, 0.0}), tmpB({0.0, 0.0, 0.0});
                 for (auto& fi: RFfields_m) {
-                    Vector_t E(0.0, 0.0, 0.0), B(0.0, 0.0, 0.0);
+                    Vector_t E({0.0, 0.0, 0.0}), B({0.0, 0.0, 0.0});
                     if (!fi->getFieldstrength(tmpR, tmpE, tmpB)) {
                         tmpE += E;
                         tmpB -= B;

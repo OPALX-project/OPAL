@@ -22,7 +22,7 @@ namespace mslang {
             try {
                 double x = parseMathExpression(arguments.get(i));
                 double y = parseMathExpression(arguments.get(i + 1));
-                nodes.push_back(Vector_t(x, y, 1.0));
+                nodes.push_back(Vector_t({x, y, 1.0}));
             } catch (std::runtime_error &e) {
                 std::cout << e.what() << std::endl;
                 return false;

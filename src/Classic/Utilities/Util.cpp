@@ -88,8 +88,8 @@ namespace Util {
         r = r * sign_x;
         x = x * sign_x;
 
-        r -= (std::erf (r) - x) / (2 / std::sqrt (M_PI) * std::exp (-r * r));
-        r -= (std::erf (r) - x) / (2 / std::sqrt (M_PI) * std::exp (-r * r));
+        r -= (std::erf (r) - x) / (2 / std::sqrt (Physics::pi) * std::exp (-r * r));
+        r -= (std::erf (r) - x) / (2 / std::sqrt (Physics::pi) * std::exp (-r * r));
 
         return r;
     }
@@ -118,7 +118,7 @@ namespace Util {
         Quaternion rotationBAK = rotation;
 
         // y axis
-        Vector_t tmp = rotation.rotate(Vector_t(0, 0, 1));
+        Vector_t tmp = rotation.rotate(Vector_t({0, 0, 1}));
         tmp(1) = 0.0;
         // tmp /= euclidean_norm(tmp);
         double theta = std::fmod(std::atan2(tmp(0), tmp(2)) + Physics::two_pi, Physics::two_pi);
@@ -127,7 +127,7 @@ namespace Util {
         rotation = rotTheta.conjugate() * rotation;
 
         // x axis
-        tmp = rotation.rotate(Vector_t(0, 0, 1));
+        tmp = rotation.rotate(Vector_t({0, 0, 1}));
         tmp(0) = 0.0;
         tmp /= euclidean_norm(tmp);
         double phi = std::fmod(std::atan2(-tmp(1), tmp(2)) + Physics::two_pi, Physics::two_pi);
@@ -136,12 +136,12 @@ namespace Util {
         rotation = rotPhi.conjugate() * rotation;
 
         // z axis
-        tmp = rotation.rotate(Vector_t(1, 0, 0));
+        tmp = rotation.rotate(Vector_t({1, 0, 0}));
         tmp(2) = 0.0;
         tmp /= euclidean_norm(tmp);
         double psi = std::fmod(std::atan2(tmp(1), tmp(0)) + Physics::two_pi, Physics::two_pi);
 
-        return Vector_t(theta, phi, psi);
+        return Vector_t({theta, phi, psi});
     }
 
     std::string toUpper(const std::string& str) {

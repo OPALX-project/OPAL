@@ -108,12 +108,12 @@ TEST_F(VariableRFCavityFringeFieldTest, TestCopyConstructor) {
 }
 
 TEST_F(VariableRFCavityFringeFieldTest, TestApplyBoundingBox) {
-    Vector_t centroid(0., 0., 0.);
-    Vector_t B(0., 0., 0.);
-    Vector_t E(0., 0., 0.);
+    Vector_t centroid({0., 0., 0.});
+    Vector_t B({0., 0., 0.});
+    Vector_t E({0., 0., 0.});
     std::vector<Vector_t> rVectorFalse = {
-        Vector_t(-99.9, -249.9, 0.1) * Vector_t(Units::mm2m),
-        Vector_t(-99.9, 249.9, 999.9) * Vector_t(Units::mm2m),
+        Vector_t({-99.9, -249.9, 0.1}) * Vector_t(Units::mm2m),
+        Vector_t({-99.9, 249.9, 999.9}) * Vector_t(Units::mm2m),
     };
     for (size_t i = 0; i < rVectorFalse.size(); ++i) {
         bool outOfBounds = cav1.apply(rVectorFalse[i], centroid, 0., B, E);
@@ -121,12 +121,12 @@ TEST_F(VariableRFCavityFringeFieldTest, TestApplyBoundingBox) {
     }
 
       std::vector<Vector_t> rVectorTrue = {
-        Vector_t(-100.1, 0., 500.) * Vector_t(Units::mm2m),
-        Vector_t(+100.1, 0., 500.) * Vector_t(Units::mm2m),
-        Vector_t(0., -250.1, 500.) * Vector_t(Units::mm2m),
-        Vector_t(0., +250.1, 500.) * Vector_t(Units::mm2m),
-        Vector_t(0., 0., -0.1) * Vector_t(Units::mm2m),
-        Vector_t(0., 0., 1000.1) * Vector_t(Units::mm2m),
+        Vector_t({-100.1, 0., 500.}) * Vector_t(Units::mm2m),
+        Vector_t({+100.1, 0., 500.}) * Vector_t(Units::mm2m),
+        Vector_t({0., -250.1, 500.}) * Vector_t(Units::mm2m),
+        Vector_t({0., +250.1, 500.}) * Vector_t(Units::mm2m),
+        Vector_t({0., 0., -0.1}) * Vector_t(Units::mm2m),
+        Vector_t({0., 0., 1000.1}) * Vector_t(Units::mm2m),
     };
     for (size_t i = 0; i < rVectorTrue.size(); ++i) {
         bool outOfBounds = cav1.apply(rVectorTrue[i], centroid, 0., B, E);
@@ -135,9 +135,9 @@ TEST_F(VariableRFCavityFringeFieldTest, TestApplyBoundingBox) {
 }
 
 void testFieldLookup(VariableRFCavityFringeField& cav, Vector_t R, double t, Vector_t E, Vector_t B) {
-    Vector_t centroid(0., 0., 0.);
-    Vector_t Btest(0., 0., 0.);
-    Vector_t Etest(0., 0., 0.);
+    Vector_t centroid({0., 0., 0.});
+    Vector_t Btest({0., 0., 0.});
+    Vector_t Etest({0., 0., 0.});
     cav.apply(R, centroid, t, Etest, Btest);
     for (size_t i = 0; i < 3; ++i) {
         EXPECT_FLOAT_EQ(E[i], Etest[i]) << "\nR:" << R << " t: " << t
@@ -151,11 +151,11 @@ void testFieldLookup(VariableRFCavityFringeField& cav, Vector_t R, double t, Vec
 
 void partial(VariableRFCavityFringeField& cav, Vector_t pos, double t, double delta, int var, Vector_t& dE, Vector_t& dB) {
     bool verbose = false;
-    Vector_t centroid(0., 0., 0.);
-    Vector_t Bplus(0., 0., 0.);
-    Vector_t Bminus(0., 0., 0.);
-    Vector_t Eplus(0., 0., 0.);
-    Vector_t Eminus(0., 0., 0.);
+    Vector_t centroid({0., 0., 0.});
+    Vector_t Bplus({0., 0., 0.});
+    Vector_t Bminus({0., 0., 0.});
+    Vector_t Eplus({0., 0., 0.});
+    Vector_t Eminus({0., 0., 0.});
     Vector_t posPlus(pos), posMinus(pos);
     double tPlus(t), tMinus(t);
     if (var == 3) {
@@ -182,18 +182,18 @@ void partial(VariableRFCavityFringeField& cav, Vector_t pos, double t, double de
 Vector_t testMaxwell4(VariableRFCavityFringeField& cav, Vector_t pos, double t, double deltaPos, double deltaT) {
     bool verbose = false;
     Vector_t dummy;
-    Vector_t dBdx(0, 0, 0);
-    Vector_t dBdy(0, 0, 0);
-    Vector_t dBdz(0, 0, 0);
-    Vector_t dEdt(0, 0, 0);
+    Vector_t dBdx({0, 0, 0});
+    Vector_t dBdy({0, 0, 0});
+    Vector_t dBdz({0, 0, 0});
+    Vector_t dEdt({0, 0, 0});
     partial(cav, pos, t, deltaPos, 0, dummy, dBdx);
     partial(cav, pos, t, deltaPos, 1, dummy, dBdy);
     partial(cav, pos, t, deltaPos, 2, dummy, dBdz);
     partial(cav, pos, t, deltaT,   3, dEdt, dummy);
     Vector_t curlB(
-        dBdy[2] - dBdz[1],
+        {dBdy[2] - dBdz[1],
         dBdz[0] - dBdx[2],
-        dBdx[1] - dBdy[0]
+        dBdx[1] - dBdy[0]}
     );
     double c_l = Physics::c/Units::s2ns;
     Vector_t result = dEdt - curlB*1e-1*c_l*c_l;
@@ -212,18 +212,18 @@ Vector_t testMaxwell4(VariableRFCavityFringeField& cav, Vector_t pos, double t, 
 Vector_t testMaxwell3(VariableRFCavityFringeField& cav, Vector_t pos, double t, double deltaPos, double deltaT) {
     bool verbose = false;
     Vector_t dummy;
-    Vector_t dEdx(0, 0, 0);
-    Vector_t dEdy(0, 0, 0);
-    Vector_t dEdz(0, 0, 0);
-    Vector_t dBdt(0, 0, 0);
+    Vector_t dEdx({0, 0, 0});
+    Vector_t dEdy({0, 0, 0});
+    Vector_t dEdz({0, 0, 0});
+    Vector_t dBdt({0, 0, 0});
     partial(cav, pos, t, deltaPos, 0, dEdx, dummy);
     partial(cav, pos, t, deltaPos, 1, dEdy, dummy);
     partial(cav, pos, t, deltaPos, 2, dEdz, dummy);
     partial(cav, pos, t, deltaT,   3, dummy, dBdt);
     Vector_t curlE(
-        dEdy[2] - dEdz[1],
+        {dEdy[2] - dEdz[1],
         dEdz[0] - dEdx[2],
-        dEdx[1] - dEdy[0]
+        dEdx[1] - dEdy[0]}
     );
     Vector_t result = dBdt*1e-1 + curlE;
 
@@ -244,12 +244,12 @@ Vector_t testMaxwell3(VariableRFCavityFringeField& cav, Vector_t pos, double t, 
 std::vector<double> testMaxwell1and2(VariableRFCavityFringeField& cav, Vector_t pos, double t, double deltaPos) {
     bool verbose = false;
     Vector_t dummy;
-    Vector_t dEdx(0, 0, 0);
-    Vector_t dEdy(0, 0, 0);
-    Vector_t dEdz(0, 0, 0);
-    Vector_t dBdx(0, 0, 0);
-    Vector_t dBdy(0, 0, 0);
-    Vector_t dBdz(0, 0, 0);
+    Vector_t dEdx({0, 0, 0});
+    Vector_t dEdy({0, 0, 0});
+    Vector_t dEdz({0, 0, 0});
+    Vector_t dBdx({0, 0, 0});
+    Vector_t dBdy({0, 0, 0});
+    Vector_t dBdz({0, 0, 0});
     partial(cav, pos, t, deltaPos, 0, dEdx, dBdx);
     partial(cav, pos, t, deltaPos, 1, dEdy, dBdy);
     partial(cav, pos, t, deltaPos, 2, dEdz, dBdz);
@@ -273,21 +273,21 @@ std::vector<double> testMaxwell1and2(VariableRFCavityFringeField& cav, Vector_t 
 
 
 TEST_F(VariableRFCavityFringeFieldTest, TestField) {
-    Vector_t centroid(0., 0., 0.);
+    Vector_t centroid({0., 0., 0.});
     double t = 0.;
     cav2.setMaxOrder(4);
     std::cerr << "\nOff midplane, 45 degree phase, in fringe field" << std::endl;
     std::cerr << "order B        E   max1   max2   maxwell3    maxwell4" << std::endl;
     t = 0.125;
     for (double s = 0; s < 1000.; s += 10.) {
-        Vector_t B0(0., 0., 0.);
-        Vector_t E0(0., 0., 0.);
-        Vector_t B10(0., 0., 0.);
-        Vector_t E10(0., 0., 0.);
-        Vector_t R(0., 0., 0.);
-        R = Vector_t(0., 0., s);
+        Vector_t B0({0., 0., 0.});
+        Vector_t E0({0., 0., 0.});
+        Vector_t B10({0., 0., 0.});
+        Vector_t E10({0., 0., 0.});
+        Vector_t R({0., 0., 0.});
+        R = Vector_t({0., 0., s});
         cav2.apply(R, centroid, t, E0, B0);
-        R = Vector_t(0., 10., s);
+        R = Vector_t({0., 10., s});
         cav2.apply(R, centroid, t, E10, B10);
         std::cerr << s << " " << E0 << " " << E10 << " " << B10 << std::endl;
     }
@@ -295,14 +295,14 @@ TEST_F(VariableRFCavityFringeFieldTest, TestField) {
 
 TEST_F(VariableRFCavityFringeFieldTest, TestMaxwell) {
     //double pi = Physics::pi;
-    Vector_t centroid(0., 0., 0.);
-    Vector_t B(0., 0., 0.);
-    Vector_t E(0., 0., 0.);
-    Vector_t R(0., 0., 500.);
+    Vector_t centroid({0., 0., 0.});
+    Vector_t B({0., 0., 0.});
+    Vector_t E({0., 0., 0.});
+    Vector_t R({0., 0., 500.});
     double t = 0.;
     std::cerr << "\nOff midplane, 45 degree phase, in fringe field" << std::endl;
     std::cerr << "order B        E   max1   max2   maxwell3    maxwell4" << std::endl;
-    R = Vector_t(0., 1., 750.);
+    R = Vector_t({0., 1., 750.});
     t = 0.125;
     for (size_t i = 0; i < 10; ++i) {
         cav2.setMaxOrder(i);
@@ -323,10 +323,10 @@ TEST_F(VariableRFCavityFringeFieldTest, TestMaxwell) {
 }
 
 TEST_F(VariableRFCavityFringeFieldTest, TestOrder) {
-    Vector_t centroid(0., 0., 0.);
-    Vector_t B(0., 0., 0.);
-    Vector_t E(0., 0., 0.);
-    Vector_t R(0., 0., 500.);
+    Vector_t centroid({0., 0., 0.});
+    Vector_t B({0., 0., 0.});
+    Vector_t E({0., 0., 0.});
+    Vector_t R({0., 0., 500.});
     double t = 0.;
     for (size_t i = 0; i < 20; ++i) {
         std::cerr << "Max Order " << i << std::endl;

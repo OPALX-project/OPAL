@@ -113,7 +113,7 @@ TEST(Field, Component)
 
     S1[I][J] = I+10*J ;
     S2[I][J] = -I-10*J ;
-    V1 = Vektor<double,2>(0,0);
+    V1 = Vektor<double,2>({0,0});
     V1[I][J](0) += S1[I][J] ;
     V1[I][J](1) += S2[I][J]*10.0 ;
     S1[I][J] = V1[I][J](0) - (I+10*J);
@@ -125,7 +125,7 @@ TEST(Field, Component)
     EXPECT_NEAR(s1,0,roundOffError);
     EXPECT_NEAR(s2,0,roundOffError);
 
-    V1 = Vektor<double,2>(0,0);
+    V1 = Vektor<double,2>({0,0});
     V1[I][J](0) += I ;
     V1[I][J](1) += 27.5 ;
     S1[I][J] = V1[I][J](0) - I;
@@ -918,7 +918,7 @@ TEST(Field, ScalarIndexing)
     double scalar = 1.0;
     scalarFld << scalar;
     Field<Vektor<double,D3>,D3> vectorFld(layout);
-    Vektor<double, D3> vector(1.0,2.0,3.0);
+    Vektor<double, D3> vector({1.0,2.0,3.0});
     vectorFld << vector;
     Field<Tenzor<double,D3>,D3,UniformCartesian<D3> > tensorFld(layout);
     Tenzor<double, D3> tensor(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0);
@@ -929,7 +929,7 @@ TEST(Field, ScalarIndexing)
 
     // Now try the scalar indexing:
     double scalar1 = 0.0;
-    Vektor<double, D3> vector1(0.0, 0.0, 0.0);
+    Vektor<double, D3> vector1({0.0, 0.0, 0.0});
     Tenzor<double, D3> tensor1(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     SymTenzor<double, D3> symTensor1(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
     scalar1 = scalarFld[1][1][1].get();
@@ -1196,15 +1196,15 @@ TEST(Field, SimpleTest7)
 TEST(Field, SimpleTest8)
 {
     OpalTestUtilities::SilenceTest silencer;
-    Vektor<double,D3> boxMin(2,3,4);
-    Vektor<double,D3> boxMax(5,6,7);
-    Vektor<double,D3> h(1.0e-2, 1.0e-2, 0.5e-2);
+    Vektor<double,D3> boxMin({2,3,4});
+    Vektor<double,D3> boxMax({5,6,7});
+    Vektor<double,D3> h({1.0e-2, 1.0e-2, 0.5e-2});
 
-    Vektor<double,D3> p1(8,9,10);
+    Vektor<double,D3> p1({8,9,10});
 
-    Vektor<unsigned,D3> N(static_cast<unsigned> (std::ceil( (std::abs(boxMin[0])+boxMax[0])/h[0])),
-                          static_cast<unsigned> (std::ceil( (std::abs(boxMin[1])+boxMax[1])/h[1])),
-                          static_cast<unsigned> (std::ceil( (std::abs(boxMin[2])+boxMax[2])/h[2])));
+    Vektor<unsigned,D3> N({static_cast<unsigned> (std::ceil( (std::abs(boxMin[0])+boxMax[0])/h[0])),
+                           static_cast<unsigned> (std::ceil( (std::abs(boxMin[1])+boxMax[1])/h[1])),
+                           static_cast<unsigned> (std::ceil( (std::abs(boxMin[2])+boxMax[2])/h[2]))});
 
     std::cout << "orig= " << boxMin << " maxext= " << boxMax << std::endl;
     std::cout << "h=  " << h << " N= " << N << std::endl;

@@ -96,7 +96,7 @@ void OpalKicker::update() {
     }
 
     if (fieldSet) {
-        corr->setKickField(Vector_t(Bx, By, 0));
+        corr->setKickField(Vector_t({Bx, By, 0}));
     }
 
     // Transmit "unknown" attributes.

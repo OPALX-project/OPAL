@@ -26,7 +26,7 @@
 
 class MockDipole : public Component {
 public:
-    MockDipole(const std::string /*&name*/) : bfield_m(0, 1, 0), efield_m() {}
+    MockDipole(const std::string /*&name*/) : bfield_m({0, 1, 0}), efield_m() {}
     NullField &getField() override {return nullfield_m;}
     const NullField &getField() const override {return nullfield_m;}
     void accept(BeamlineVisitor& /*&visitor*/) const override {}
@@ -83,14 +83,14 @@ TEST_F(OutputPlaneTest, TestSetGet) {
     output_m->setGlobalFieldMap(&dipole_m);
     EXPECT_EQ(output_m->getGlobalFieldMap(), &dipole_m);
 
-    output_m->setNormal(Vector_t(1.0, 2.0, 3.0));
-    Vector_t ref = Vector_t(1.0, 2.0, 3.0)/std::sqrt(14);
+    output_m->setNormal(Vector_t({1.0, 2.0, 3.0}));
+    Vector_t ref = Vector_t({1.0, 2.0, 3.0})/std::sqrt(14);
     EXPECT_NEAR(output_m->getNormal()[0], ref[0], 1e-9);
     EXPECT_NEAR(output_m->getNormal()[1], ref[1], 1e-9);
     EXPECT_NEAR(output_m->getNormal()[2], ref[2], 1e-9);
 
-    output_m->setCentre(Vector_t(4.0, 5.0, 6.0));
-    EXPECT_EQ(output_m->getCentre(), Vector_t(4.0, 5.0, 6.0));
+    output_m->setCentre(Vector_t({4.0, 5.0, 6.0}));
+    EXPECT_EQ(output_m->getCentre(), Vector_t({4.0, 5.0, 6.0}));
 
     output_m->setTolerance(1e-6);
     EXPECT_EQ(output_m->getTolerance(), 1e-6);
@@ -101,55 +101,55 @@ TEST_F(OutputPlaneTest, TestCheckOne_FieldOff) {
     //checkOne(const double tstep, const double chargeToMass,
     //         double& t, Vector_t& R, Vector_t& P)
     output_m->setGlobalFieldMap(&dipole_m);
-    output_m->setCentre(Vector_t(0.0, 0.0, 1.0));
-    output_m->setNormal(Vector_t(1.0, 0.0, 1.0));
+    output_m->setCentre(Vector_t({0.0, 0.0, 1.0}));
+    output_m->setNormal(Vector_t({1.0, 0.0, 1.0}));
     output_m->setTolerance(1e-9);
 
     Vector_t R, P;
     bool crossing;
     double t = 0.0;
 
-    R = Vector_t(1.0, 0.0, 1.0);
-    P = Vector_t(0.1, 0.0, 0.0);
+    R = Vector_t({1.0, 0.0, 1.0});
+    P = Vector_t({0.1, 0.0, 0.0});
     // c = 0.3 m/ns and particle is 1.0 m away; so should fail without doing RK4
     // step at all
     crossing = output_m->checkOne(0, 1.0e-9, 0.0, t, R, P);
-    EXPECT_EQ(R, Vector_t(1.0, 0.0, 1.0));
-    EXPECT_EQ(P, Vector_t(0.1, 0.0, 0.0));
+    EXPECT_EQ(R, Vector_t({1.0, 0.0, 1.0}));
+    EXPECT_EQ(P, Vector_t({0.1, 0.0, 0.0}));
     EXPECT_FALSE(crossing);
     // betagamma = 0.1 and particle is ~0.07 m away; so should fail after trying
     // a single RK4 step (which goes about 0.03 m)
-    R = Vector_t(1-0.05, 0.0, -0.05);
+    R = Vector_t({1-0.05, 0.0, -0.05});
     crossing = output_m->checkOne(0, 1.0e-9, 0.0, t, R, P);
-    EXPECT_EQ(R, Vector_t(1.0-0.05, 0.0, -0.05));
-    EXPECT_EQ(P, Vector_t(0.1, 0.0, 0.0));
+    EXPECT_EQ(R, Vector_t({1.0-0.05, 0.0, -0.05}));
+    EXPECT_EQ(P, Vector_t({0.1, 0.0, 0.0}));
     EXPECT_FALSE(crossing);
     // betagamma = 0.1 and particle is 0.014 m away; so should succeed after a
     // couple of RK4 step (which goes about 0.03 m)
-    R = Vector_t(1.0-0.01, 0.0, -0.01);
+    R = Vector_t({1.0-0.01, 0.0, -0.01});
     crossing = output_m->checkOne(0, 1.0, 0.0, t, R, P);
     EXPECT_NEAR(R[0], 1.01, 1e-5);
     EXPECT_NEAR(R[1], 0.0, 1e-5);
     EXPECT_NEAR(R[2], -0.01, 1e-5);
-    EXPECT_EQ(P, Vector_t(0.1, 0.0, 0.0));
+    EXPECT_EQ(P, Vector_t({0.1, 0.0, 0.0}));
     EXPECT_TRUE(crossing);
     // particle is past the plane but close; should fail after trying a single
     // RK4 step
-    R = Vector_t(1.0+0.01, 0.0, +0.01);
+    R = Vector_t({1.0+0.01, 0.0, +0.01});
     crossing = output_m->checkOne(0, 1.0, 0.0, t, R, P);
     EXPECT_NEAR(R[0], 1.0+0.01, 1e-5);
     EXPECT_NEAR(R[1], 0.0, 1e-5);
     EXPECT_NEAR(R[2], +0.01, 1e-5);
-    EXPECT_EQ(P, Vector_t(0.1, 0.0, 0.0));
+    EXPECT_EQ(P, Vector_t({0.1, 0.0, 0.0}));
     EXPECT_FALSE(crossing);
     // particle is past the plane but travelling backwards; should pass
-    R = Vector_t(1.0+0.01, 0.0, +0.01);
-    P = Vector_t(-0.1, 0.0, 0.0);
+    R = Vector_t({1.0+0.01, 0.0, +0.01});
+    P = Vector_t({-0.1, 0.0, 0.0});
     crossing = output_m->checkOne(0, 1.0, 0.0, t, R, P);
     EXPECT_NEAR(R[0], 1.0-0.01, 1e-5);
     EXPECT_NEAR(R[1], 0.0, 1e-5);
     EXPECT_NEAR(R[2], +0.01, 1e-5);
-    EXPECT_EQ(P, Vector_t(-0.1, 0.0, 0.0));
+    EXPECT_EQ(P, Vector_t({-0.1, 0.0, 0.0}));
     EXPECT_TRUE(crossing);
 }
 
@@ -166,8 +166,8 @@ double magnitude(Vector_t v) {
 // CHARGE TO MASS 0 Qi 1.60218e-19 Mi 0.938272 c 2.99792e+08 qe 1.60218e-19
 
 TEST_F(OutputPlaneTest, TestRK4StepNoField) {
-	Vector_t pVecRef(-1.0, -0.0, -0.4); // moving at beta gamma = 1.414
-	Vector_t rVecRef(2., 3., 4.);
+	Vector_t pVecRef({-1.0, -0.0, -0.4}); // moving at beta gamma = 1.414
+	Vector_t rVecRef({2., 3., 4.});
     Vector_t rVec = rVecRef;
     Vector_t pVec = pVecRef;
 	double time = 2.0e-9;
@@ -205,9 +205,9 @@ TEST_F(OutputPlaneTest, TestRK4StepDipole) {
 
     std::shared_ptr<MockDipole> testDipole;
     testDipole.reset(new MockDipole("mock"));
-    testDipole->setField(Vector_t(0.0, 0.0, -2.0), Vector_t());
-    Vector_t rVecRef = Vector_t(0.0, 0.0, 0.0);
-    Vector_t pVecRef = Vector_t(0.0, 1.0/Physics::m_p, 1.0);
+    testDipole->setField(Vector_t({0.0, 0.0, -2.0}), Vector_t());
+    Vector_t rVecRef = Vector_t({0.0, 0.0, 0.0});
+    Vector_t pVecRef = Vector_t({0.0, 1.0/Physics::m_p, 1.0});
     Vector_t rVec = rVecRef;
     Vector_t pVec = pVecRef;
     output_m->setGlobalFieldMap(testDipole.get());
@@ -227,9 +227,9 @@ TEST_F(OutputPlaneTest, TestRK4StepEField) {
 
     std::shared_ptr<MockDipole> testDipole;
     testDipole.reset(new MockDipole("mock"));
-    testDipole->setField(Vector_t(), Vector_t(0.0, 0.0, 2.0));
-    Vector_t rVecRef = Vector_t(1e9/2/Physics::c, 0.0, 0.0);
-    Vector_t pVecRef = Vector_t(0.0, 1.0/0.938272, 0.0);
+    testDipole->setField(Vector_t(), Vector_t({0.0, 0.0, 2.0}));
+    Vector_t rVecRef = Vector_t({1e9/2/Physics::c, 0.0, 0.0});
+    Vector_t pVecRef = Vector_t({0.0, 1.0/0.938272, 0.0});
     Vector_t rVec = rVecRef;
     Vector_t pVec = pVecRef;
     output_m->setGlobalFieldMap(testDipole.get());
@@ -242,8 +242,8 @@ TEST_F(OutputPlaneTest, TestCheckOne_FieldOn) {
     //checkOne(const double tstep, const double chargeToMass,
     //         double& t, Vector_t& R, Vector_t& P)
     output_m->setGlobalFieldMap(&dipole_m);
-    output_m->setCentre(Vector_t(0.0, 0.0, 0.0));
-    output_m->setNormal(Vector_t(1.0, 0.0, 0.0));
+    output_m->setCentre(Vector_t({0.0, 0.0, 0.0}));
+    output_m->setNormal(Vector_t({1.0, 0.0, 0.0}));
     output_m->setTolerance(1e-9);
     output_m->setAlgorithm(OutputPlane::algorithm::RK4STEP);
 
@@ -255,8 +255,8 @@ TEST_F(OutputPlaneTest, TestCheckOne_FieldOn) {
 
     // betagamma = 0.1 and particle is 0.02 m away; so should succeed after a
     // couple of RK4 step (which goes about 0.03 m)
-    R = Vector_t(-0.02, 0.0, 0.0);
-    P = Vector_t(0.1, 0.1, 0.0);
+    R = Vector_t({-0.02, 0.0, 0.0});
+    P = Vector_t({0.1, 0.1, 0.0});
     crossing = output_m->checkOne(0, 1.0, q2m, t, R, P);
     
     EXPECT_NEAR(R[0], 0.0, 1e-5);
@@ -271,19 +271,19 @@ TEST_F(OutputPlaneTest, TestCheckOne_FieldOn) {
 
 TEST_F(OutputPlaneTest, TestCentre) {
     // set centre
-    output_m->setCentre(Vector_t(2.0, 3.0, 4.0));
-    output_m->setNormal(Vector_t(1.0, 0.0, 0.0));
+    output_m->setCentre(Vector_t({2.0, 3.0, 4.0}));
+    output_m->setNormal(Vector_t({1.0, 0.0, 0.0}));
     output_m->setTolerance(1e-9);
 
     Vector_t R, P, normP, R1, R2, a, b, normaltoplane, unitnormaltoplane;
-    R = Vector_t(-0.02, 5.0, 7.1);
-    P = Vector_t(0.5, 0.8, 0.3);
+    R = Vector_t({-0.02, 5.0, 7.1});
+    P = Vector_t({0.5, 0.8, 0.3});
 
     //re centre plane
     output_m->recentre(R, P);
 
     double Ptot = std::sqrt(P[0]*P[0]+P[1]*P[1]+P[2]*P[2]);
-    normP = Vector_t(P[0]/Ptot, P[1]/Ptot, P[2]/Ptot);
+    normP = Vector_t({P[0]/Ptot, P[1]/Ptot, P[2]/Ptot});
 
     // check plane is recentred properly
     EXPECT_EQ(output_m->getCentre(), R);
@@ -291,8 +291,8 @@ TEST_F(OutputPlaneTest, TestCentre) {
  }
 
 TEST_F(OutputPlaneTest, TestExtent) {
-    output_m->setCentre(Vector_t(2.0, 3.0, 4.0));
-    output_m->setNormal(Vector_t(1.0, 0.0, 0.0));
+    output_m->setCentre(Vector_t({2.0, 3.0, 4.0}));
+    output_m->setNormal(Vector_t({1.0, 0.0, 0.0}));
     output_m->setTolerance(1e-9);
     double halfwidth, halfheight;
 
@@ -332,8 +332,8 @@ TEST_F(OutputPlaneTest, checkOneTest){
     myOutputPlane->setNormal(normal);
     myOutputPlane->setTolerance(1e-9);
 
-    R = Vector_t(0.1, 0.0, 0.1);
-    P = Vector_t(0.1, 0.0, 0.0); 
+    R = Vector_t({0.1, 0.0, 0.1});
+    P = Vector_t({0.1, 0.0, 0.0});
     double t = 0.0;
     bool cross;
     cross = myOutputPlane->checkOne(0, tStep, 0.0, t, R, P);
@@ -341,8 +341,8 @@ TEST_F(OutputPlaneTest, checkOneTest){
 
     // opposite case where it is near to the plane
     // distance from plane
-    R1 = Vector_t(1.0-0.01, 0.0, -0.01);
-    P1 = Vector_t(0.1, 0.0, 0.0); 
+    R1 = Vector_t({1.0-0.01, 0.0, -0.01});
+    P1 = Vector_t({0.1, 0.0, 0.0});
 
     bool cross1;
     cross1 = myOutputPlane->checkOne(0, tStep, 0.0, t, R1, P1);

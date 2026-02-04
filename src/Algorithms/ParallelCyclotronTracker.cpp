@@ -87,9 +87,9 @@
 #include <limits>
 #include <numeric>
 
-Vector_t const ParallelCyclotronTracker::xaxis = Vector_t(1.0, 0.0, 0.0);
-Vector_t const ParallelCyclotronTracker::yaxis = Vector_t(0.0, 1.0, 0.0);
-Vector_t const ParallelCyclotronTracker::zaxis = Vector_t(0.0, 0.0, 1.0);
+Vector_t const ParallelCyclotronTracker::xaxis = Vector_t({1.0, 0.0, 0.0});
+Vector_t const ParallelCyclotronTracker::yaxis = Vector_t({0.0, 1.0, 0.0});
+Vector_t const ParallelCyclotronTracker::zaxis = Vector_t({0.0, 0.0, 1.0});
 
 extern Inform *gmsg;
 extern Inform *gmsgALL;
@@ -1167,10 +1167,10 @@ void ParallelCyclotronTracker::execute() {
 
     // External field arrays for dumping
     for (int k = 0; k < 2; k++) {
-        FDext_m[k] = Vector_t(0.0, 0.0, 0.0);
+        FDext_m[k] = Vector_t({0.0, 0.0, 0.0});
     }
-    extE_m = Vector_t(0.0, 0.0, 0.0);
-    extB_m = Vector_t(0.0, 0.0, 0.0);
+    extE_m = Vector_t({0.0, 0.0, 0.0});
+    extB_m = Vector_t({0.0, 0.0, 0.0});
     DumpFields::writeFields((((*FieldDimensions.begin())->second).second));
     DumpEMFields::writeFields((((*FieldDimensions.begin())->second).second));
 
@@ -1593,7 +1593,7 @@ double ParallelCyclotronTracker::getHarmonicNumber() const {
 
 
 Vector_t ParallelCyclotronTracker::calcMeanR(short bunchNr) const {
-    Vector_t meanR(0.0, 0.0, 0.0);
+    Vector_t meanR({0.0, 0.0, 0.0});
 
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
         // take all particles if bunchNr <= -1
@@ -1616,7 +1616,7 @@ Vector_t ParallelCyclotronTracker::calcMeanR(short bunchNr) const {
 }
 
 Vector_t ParallelCyclotronTracker::calcMeanP() const {
-    Vector_t meanP(0.0, 0.0, 0.0);
+    Vector_t meanP({0.0, 0.0, 0.0});
 
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
         for (int d = 0; d < 3; ++d) {
@@ -1796,7 +1796,7 @@ inline void ParallelCyclotronTracker::localToGlobal(Vector_t& myVector,
 
 inline void ParallelCyclotronTracker::rotateWithQuaternion(ParticleAttrib<Vector_t>& particleVectors, Quaternion_t const quaternion) {
 
-    Vector_t const quaternionVectorComponent = Vector_t(quaternion(1), quaternion(2), quaternion(3));
+    Vector_t const quaternionVectorComponent = Vector_t({quaternion(1), quaternion(2), quaternion(3)});
     double const quaternionScalarComponent = quaternion(0);
 
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
@@ -2016,8 +2016,8 @@ void ParallelCyclotronTracker::borisExternalFields(double h) {
     IpplTimings::startTimer(IntegrationTimer_m);
     for (unsigned int i = 0; i < itsBunch_m->getLocalNum(); ++i) {
 
-        itsBunch_m->Ef[i] = Vector_t(0.0, 0.0, 0.0);
-        itsBunch_m->Bf[i] = Vector_t(0.0, 0.0, 0.0);
+        itsBunch_m->Ef[i] = Vector_t({0.0, 0.0, 0.0});
+        itsBunch_m->Bf[i] = Vector_t({0.0, 0.0, 0.0});
 
         computeExternalFields_m(i, itsBunch_m->getT(),
                                 itsBunch_m->Ef[i], itsBunch_m->Bf[i]);
@@ -2233,9 +2233,9 @@ void ParallelCyclotronTracker::initDistInGlobalFrame() {
         }
 
         // Initialize global R
-        Vector_t const initMeanR = Vector_t(referenceR * cosRefTheta_m,
+        Vector_t const initMeanR = Vector_t({referenceR * cosRefTheta_m,
                                             referenceR * sinRefTheta_m,
-                                            referenceZ);
+                                            referenceZ});
 
         localToGlobal(itsBunch_m->R, initialReferenceTheta, initMeanR);
 
@@ -2280,9 +2280,9 @@ void ParallelCyclotronTracker::initDistInGlobalFrame() {
 
             *gmsg << "* Restart in the local frame" << endl;
 
-            Vector_t const initMeanR = Vector_t(referenceR * cosRefTheta_m,
+            Vector_t const initMeanR = Vector_t({referenceR * cosRefTheta_m,
                                                 referenceR * sinRefTheta_m,
-                                                referenceZ);
+                                                referenceZ});
 
             // Do the transformations
             localToGlobal(itsBunch_m->R, referencePhi, referencePsi, initMeanR);
@@ -2590,8 +2590,8 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
     // --------------  Calculate the external fields at the center of the bunch ----------------- //
     beamline_list::iterator DumpSindex = FieldDimensions.begin();
 
-    extE_m = Vector_t(0.0, 0.0, 0.0);
-    extB_m = Vector_t(0.0, 0.0, 0.0);
+    extE_m = Vector_t({0.0, 0.0, 0.0});
+    extB_m = Vector_t({0.0, 0.0, 0.0});
 
     (((*DumpSindex)->second).second)->apply(meanR, meanP, temp_t, extE_m, extB_m);
 
@@ -2684,8 +2684,8 @@ void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
     // -----  Calculate the external fields at the center of the bunch (Cave: Global Frame) ----- //
     beamline_list::iterator DumpSindex = FieldDimensions.begin();
 
-    extE_m = Vector_t(0.0, 0.0, 0.0);
-    extB_m = Vector_t(0.0, 0.0, 0.0);
+    extE_m = Vector_t({0.0, 0.0, 0.0});
+    extB_m = Vector_t({0.0, 0.0, 0.0});
 
     (((*DumpSindex)->second).second)->apply(meanR, meanP, temp_t, extE_m, extB_m);
     FDext_m[0] = extB_m * Units::kG2T;
@@ -3300,7 +3300,7 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
         // If we are doing a spiral inflector simulation and are using the SAAMG solver
         // we don't rotate or translate the bunch and gamma is 1.0 (non-relativistic).
 
-        itsBunch_m->setGlobalMeanR(Vector_t(0.0, 0.0, 0.0));
+        itsBunch_m->setGlobalMeanR(Vector_t({0.0, 0.0, 0.0}));
         itsBunch_m->setGlobalToLocalQuaternion(Quaternion_t(1.0, 0.0, 0.0, 0.0));
 
         itsBunch_m->computeSelfFields_cycl(1.0);

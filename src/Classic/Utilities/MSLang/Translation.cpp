@@ -18,8 +18,8 @@ namespace mslang {
     }
 
     void Translation::applyTranslation(std::vector<std::shared_ptr<Base> > &bfuncs) {
-        AffineTransformation shift(Vector_t(1.0, 0.0, -shiftx_m),
-                                   Vector_t(0.0, 1.0, -shifty_m));
+        AffineTransformation shift(Vector_t({1.0, 0.0, -shiftx_m}),
+                                   Vector_t({0.0, 1.0, -shifty_m}));
 
         const unsigned int size = bfuncs.size();
         for (unsigned int j = 0; j < size; ++ j) {

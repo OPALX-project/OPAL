@@ -88,7 +88,7 @@ bool Solenoid::apply(const size_t &i, const double &t, Vector_t &E, Vector_t &B)
 bool Solenoid::apply(const Vector_t &R, const Vector_t &/*P*/, const  double &/*t*/, Vector_t &/*E*/, Vector_t &B) {
     if (R(2) >= startField_m
         && R(2) < startField_m + getElementLength()) {
-        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+        Vector_t tmpE({0.0, 0.0, 0.0}), tmpB({0.0, 0.0, 0.0});
 
         const bool outOfBounds = myFieldmap_m->getFieldstrength(R, tmpE, tmpB);
         if (outOfBounds) {
@@ -105,7 +105,7 @@ bool Solenoid::applyToReferenceParticle(const Vector_t &R, const Vector_t &/*P*/
 
     if (R(2) >= startField_m
         && R(2) < startField_m + getElementLength()) {
-        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+        Vector_t tmpE({0.0, 0.0, 0.0}), tmpB({0.0, 0.0, 0.0});
 
         const bool outOfBounds = myFieldmap_m->getFieldstrength(R, tmpE, tmpB);
         if (outOfBounds) return true;

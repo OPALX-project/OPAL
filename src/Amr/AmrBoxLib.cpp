@@ -55,7 +55,7 @@ AmrBoxLib::AmrBoxLib(const AmrDomain_t& domain,
     , rho_m(maxLevel + 1)
     , phi_m(maxLevel + 1)
     , efield_m(maxLevel + 1)
-    , meshScaling_m(Vector_t(1.0, 1.0, 1.0))
+    , meshScaling_m(Vector_t({1.0, 1.0, 1.0}))
     , isFirstTagging_m(maxLevel + 1, true)
     , isPoissonSolved_m(false)
 {
@@ -196,7 +196,7 @@ void AmrBoxLib::initFineLevels() {
 
 
 AmrBoxLib::VectorPair_t AmrBoxLib::getEExtrema() {
-    Vector_t maxE = Vector_t(0, 0, 0), minE = Vector_t(0, 0, 0);
+    Vector_t maxE = Vector_t({0, 0, 0}), minE = Vector_t({0, 0, 0});
     /* check for maximum / minimum values over all levels
      * and all components, i.e. Ex, Ey, Ez
      */
@@ -290,9 +290,9 @@ void AmrBoxLib::computeSelfFields_cycl(double gamma) {
     amrpbase_p->domainMapping(true);
 
     /// Back Lorentz transformation
-    bunch_mp->Ef *= Vector_t(gamma,
+    bunch_mp->Ef *= Vector_t({gamma,
                              1.0,
-                             gamma);
+                             gamma});
 
     /// calculate coefficient
     // Relativistic E&M says gamma*v/c^2 = gamma*beta/c = sqrt(gamma*gamma-1)/c
@@ -390,7 +390,7 @@ void AmrBoxLib::computeSelfFields_cycl(int bin) {
     }
 
     // mesh scaling for solver
-    meshScaling_m = Vector_t(1.0, 1.0, 1.0);
+    meshScaling_m = Vector_t({1.0, 1.0, 1.0});
 
     PoissonSolver *solver = bunch_mp->getFieldSolver();
 
@@ -443,7 +443,7 @@ void AmrBoxLib::computeSelfFields_cycl(int bin) {
     amrpbase_p->domainMapping(true);
 
     /// Back Lorentz transformation
-    bunch_mp->Eftmp *= Vector_t(gamma, 1.0, gamma);
+    bunch_mp->Eftmp *= Vector_t({gamma, 1.0, gamma});
 
     /// Calculate coefficient
     double betaC = std::sqrt(gamma * gamma - 1.0) / gamma / Physics::c;
@@ -506,9 +506,9 @@ Vektor<int, 3> AmrBoxLib::getBaseLevelGridPoints() const {
     const AmrIntVect_t& low = bx.smallEnd();
     const AmrIntVect_t& high = bx.bigEnd();
 
-    return Vektor<int, 3>(high[0] - low[0] + 1,
+    return Vektor<int, 3>({high[0] - low[0] + 1,
                           high[1] - low[1] + 1,
-                          high[2] - low[2] + 1);
+                          high[2] - low[2] + 1});
 }
 
 
@@ -815,7 +815,7 @@ double AmrBoxLib::solvePoisson_m() {
     int baseLevel = 0;
 
     // mesh scaling for solver
-    meshScaling_m = Vector_t(1.0, 1.0, 1.0);
+    meshScaling_m = Vector_t({1.0, 1.0, 1.0});
 
     // charge density is in rho_m
     // calculate Possion equation (with coefficient: -1/(eps))
@@ -1038,7 +1038,7 @@ void AmrBoxLib::tagForMomenta_m(int lev, TagBoxArray_t& tags,
     size_t lBegin = LocalNumPerLevel.begin(lev);
     size_t lEnd   = LocalNumPerLevel.end(lev);
 
-    Vector_t pmax = Vector_t(0.0, 0.0, 0.0);
+    Vector_t pmax = Vector_t({0.0, 0.0, 0.0});
     for (size_t i = lBegin; i < lEnd; ++i) {
         const Vector_t& tmp = bunch_mp->P[i];
         pmax = ( dot(tmp, tmp) > dot(pmax, pmax) ) ? tmp : pmax;

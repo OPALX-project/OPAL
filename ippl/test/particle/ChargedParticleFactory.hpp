@@ -76,7 +76,7 @@ void createParticleDistribution(Particles & P, std::string distribution, unsigne
                         for (double x=-2.*sphere_radius; x<2*sphere_radius; x+=pdist){
                                 for (double y=-2.*sphere_radius; y<2*sphere_radius; y+=pdist){
                                         for (double z=-2.*sphere_radius; z<2*sphere_radius; z+=pdist){
-                                                Vektor<double, 3> pos(x,y,z);
+                                                Vektor<double, 3> pos({x,y,z});
                                                 //msg << "checking particle pos = " << pos << endl;
                                                 if (dot(source-pos,source-pos)<sphere_radius*sphere_radius){
                                                         //msg << " Particle accepted " << endl;
@@ -93,7 +93,7 @@ void createParticleDistribution(Particles & P, std::string distribution, unsigne
                                 for (double x=-2.*sphere_radius; x<2*sphere_radius; x+=pdist){
                                         for (double y=-2.*sphere_radius; y<2*sphere_radius; y+=pdist){
                                                 for (double z=-2.*sphere_radius; z<2*sphere_radius; z+=pdist){
-                                                        Vektor<double, 3> pos(x,y,z);
+                                                        Vektor<double, 3> pos({x,y,z});
                                                         //msg << "checking particle pos = " << pos << endl;
                                                         if (dot(source-pos,source-pos)>sphere_radius*sphere_radius){
                                                                 //msg << " Particle accepted " << endl;
@@ -129,7 +129,7 @@ void createParticleDistribution(Particles & P, std::string distribution, unsigne
 
                         for (unsigned i = 0; i<count; ++i) {
 
-                                Vektor<double, 3> X(normal(),normal(),normal());
+                                Vektor<double, 3> X({normal(),normal(),normal()});
                                 double U = uni();
                                 Vektor<double, 3> pos = source + sphere_radius*std::pow(U,1./3.)/std::sqrt(dot(X,X))*X;
                                 //BEGIN reject close particles
@@ -139,7 +139,7 @@ void createParticleDistribution(Particles & P, std::string distribution, unsigne
                                                 reject = 1;
                                 }
                                 if (!reject){
-                                        Vektor<double, 3> vel(1.,1.,1.); //normal velocity distribution in z dir
+                                        Vektor<double, 3> vel({1.,1.,1.}); //normal velocity distribution in z dir
                                         //Vektor<double, 3> vel(0,0,0); //normal velocity distribution in z dir
                                         P->Q[index]=-qi;
                                         P->m[index]=1;
@@ -162,7 +162,7 @@ void createParticleDistribution(Particles & P, std::string distribution, unsigne
                                 //Vektor<double, Dim> X(normal(),normal(),normal());
                                 bool check_out_of_sphere = 1;
                                 while(check_out_of_sphere){
-                                        Vektor<double, 3> pos(o_uni(),o_uni(),o_uni());
+                                        Vektor<double, 3> pos({o_uni(),o_uni(),o_uni()});
                                         if (dot(source-pos,source-pos)>sphere_radius*sphere_radius){
                                                 std::cout << "dummy placed " << std::endl;
                                                 //P->Q[index]=1./count;
@@ -188,10 +188,9 @@ void createParticleDistribution(Particles & P, std::string distribution, unsigne
                         auto uni = std::bind(unidistribution, generator);
 
                         for (unsigned i = 0; i<count; ++i) {
-                                Vektor<double, 3> X(uni(),uni(),uni());
+                                Vektor<double, 3> X({uni(),uni(),uni()});
                                 Vektor<double, 3> pos = X;
-                                Vektor<double, 3> vel(normal(),normal(),normal());
-                                //Vektor<double, 3> vel(0,0,0);
+                                Vektor<double, 3> vel({normal(),normal(),normal()});
                                 P->Q[index]=qi;
                                 P->R[index++]=pos;
                         }
@@ -204,12 +203,12 @@ void createParticleDistribution(Particles & P, std::string distribution, unsigne
                                 std::cout << "please give coordinates of particle " << i << std::endl;
                                 double x,y,z;
                                 std::cin >> x; std::cin >> y; std::cin >>z;
-                                Vektor<double, 3> pos(0,0,0);
+                                Vektor<double, 3> pos({0,0,0});
                                 pos[0]=x; pos[1]=y; pos[2]=z;
                                 std::cout << "pos = " << pos << std::endl;
                                 P->create(1);
                                 P->Q[index]=qi;
-                                Vektor<double, 3> vel(0,0,0.1); //normal velocity distribution in z dir
+                                Vektor<double, 3> vel({0,0,0.1}); //normal velocity distribution in z dir
                                 P->v[index]=vel;
                                 P->R[index++]=pos;
                         }
@@ -228,8 +227,8 @@ void createParticleDistribution(Particles & P, std::string distribution, unsigne
                         auto normal = std::bind(normaldist, generator);
 
                         for (unsigned i = 0; i<count; ++i) {
-                                Vektor<double, 3> X(0,0,uni()); //place all particles on z axis
-                                Vektor<double, 3> vel(0,0,normal()); //normal velocity distribution in z dir
+                                Vektor<double, 3> X({0,0,uni()}); //place all particles on z axis
+                                Vektor<double, 3> vel({0,0,normal()}); //normal velocity distribution in z dir
                                 Vektor<double, 3> pos = X;
                                 P->Q[index]=qi;
                                 //P->v[index]=vel;
@@ -277,17 +276,17 @@ void createParticleDistributionTwoStream(Particles & P,
         for (int i = 0; i < Nx[0]; ++i) {
             for (int j = 0; j < Nx[1]; ++j) {
                 for (int k = 0; k < Nx[2]; ++k) {
-                    pos = Vektor<double,3> ( (.5 + i) * hx[0] + extend_l[0],
+                    pos = Vektor<double,3> ({(.5 + i) * hx[0] + extend_l[0],
                                              (.5 + j) * hx[1] + extend_l[1],
-                                             (.5 + k) * hx[2] + extend_l[2]);
+                                             (.5 + k) * hx[2] + extend_l[2]});
                     //std::cout << "pos = " << pos << std::endl;
                     for (int iv = 0; iv < Nv[0]; ++iv) {
                         for (int jv = 0; jv < Nv[1]; ++jv) {
                             for (int kv = 0; kv < Nv[2]; ++kv) {
                                 //double vx = (iv+.5)*hv+vmin; double vy = (jv+.5)*hv+vmin; double vz = (kv+.5)*hv+vmin;
-                                Vektor<double,3>vel = Vektor<double,3>(iv + .5,
+                                Vektor<double,3>vel = Vektor<double,3>({iv + .5,
                                                                        jv + .5,
-                                                                       kv + .5) * hv + Vmin;
+                                                                       kv + .5}) * hv + Vmin;
                                 double v2 = vel[0] * vel[0] +
                                             vel[1] * vel[1] +
                                             vel[2] * vel[2];
@@ -354,17 +353,17 @@ void createParticleDistributionLandau(Particles & P,
         for (int i = 0; i < Nx[0]; ++i) {
             for (int j = 0; j < Nx[1]; ++j) {
                 for (int k = 0; k < Nx[2]; ++k) {
-                    pos = Vektor<double,3> ( (.5 + i) * hx[0] + extend_l[0],
+                    pos = Vektor<double,3> ({(.5 + i) * hx[0] + extend_l[0],
                                              (.5 + j) * hx[1] + extend_l[1],
-                                             (.5 + k) * hx[2] + extend_l[2]
+                                             (.5 + k) * hx[2] + extend_l[2]}
                                            );
 
                     for (int iv = 0; iv < Nv[0]; ++iv) {
                         for (int jv = 0; jv < Nv[1]; ++jv) {
                             for (int kv = 0; kv < Nv[2]; ++kv) {
-                                Vektor<double,3>vel = Vektor<double,3>(iv + .5,
+                                Vektor<double,3>vel = Vektor<double,3>({iv + .5,
                                                                        jv + .5,
-                                                                       kv + .5) * hv + Vmin;
+                                                                       kv + .5}) * hv + Vmin;
                                 double v2 = vel[0] * vel[0] +
                                             vel[1] * vel[1] +
                                             vel[2] * vel[2];
@@ -431,16 +430,16 @@ void createParticleDistributionRecurrence(Particles & P,
         for (int i = 0; i < Nx[0]; ++i) {
             for (int j = 0; j < Nx[1]; ++j) {
                 for (int k = 0; k < Nx[2]; ++k) {
-                    pos = Vektor<double,3> ( (.5 + i) * hx[0] + extend_l[0],
+                    pos = Vektor<double,3> ({(.5 + i) * hx[0] + extend_l[0],
                                              (.5 + j) * hx[1] + extend_l[1],
-                                             (.5 + k) * hx[2] + extend_l[2]);
+                                             (.5 + k) * hx[2] + extend_l[2]});
 
                     for (int iv = 0; iv < Nv[0]; ++iv) {
                         for (int jv = 0; jv < Nv[1]; ++jv) {
                             for (int kv = 0; kv < Nv[2]; ++kv) {
-                                Vektor<double,3>vel = Vektor<double,3>(iv + .5,
+                                Vektor<double,3>vel = Vektor<double,3>({iv + .5,
                                                                        jv + .5,
-                                                                       kv + .5) * hv + Vmin;
+                                                                       kv + .5}) * hv + Vmin;
 
                                 double v2 = vel[0] * vel[0] +
                                             vel[1] * vel[1] +
@@ -536,8 +535,8 @@ std::cout<< P->beta0 << std::endl;
                         //do lorentz transformation
                         double z = unidistz(generator);
                         //Vektor<double, 3> momentumPrime(P->m0*normdistpx(generator),P->m0*normdistpy(generator),deltapz/P->gamma);
-                        Vektor<double, 3> momentumPrime(normdistpx(generator),normdistpy(generator),pz/P->gamma);
-                        Vektor<double, 3> posPrime(unidistx(generator),unidisty(generator),P->gamma*z);
+                        Vektor<double, 3> momentumPrime({normdistpx(generator),normdistpy(generator),pz/P->gamma});
+                        Vektor<double, 3> posPrime({unidistx(generator),unidisty(generator),P->gamma*z});
                         P->Q[i]=-P->q;
                         P->m[i]= P->m0;
                         P->total_charge+=-P->q;
@@ -654,16 +653,16 @@ void createParticleDistributionHeating(Particles & P, Vektor<double,3> /*extend_
         std::uniform_real_distribution<double> unidistribution(0,1);
         auto uni = std::bind(unidistribution, generator);
 
-        Vektor<double, 3> source(0,0,0);
+        Vektor<double, 3> source({0,0,0});
 
         if (P->singleInitNode()) {
                 P->create(Nparticle);
                 for (unsigned i = 0; i<Nparticle; ++i) {
-                        Vektor<double, 3> X(normal(),normal(),normal());
+                    Vektor<double, 3> X({normal(),normal(),normal()});
                         double U = uni();
                         Vektor<double, 3> pos = source + beam_radius*std::pow(U,1./3.)/std::sqrt(dot(X,X))*X;
 
-                        Vektor<double, 3> vel(0,0,0);
+                        Vektor<double, 3> vel({0,0,0});
                         P->Q[i]=-qi;
                         P->m[i]= mi;
                         P->total_charge+=-qi;

@@ -380,12 +380,12 @@ void H5PartWrapperForPT::writeStepHeader(PartBunchBase<double, 3>* bunch, const 
     WRITESTEPATTRIB(Int64, file_m, "SteptoLastInj", &SteptoLastInj, 1);
 
     try {
-        Vector_t referenceB(additionalStepAttributes.at("B-ref_x"),
+        Vector_t referenceB({additionalStepAttributes.at("B-ref_x"),
                             additionalStepAttributes.at("B-ref_z"),
-                            additionalStepAttributes.at("B-ref_y"));
-        Vector_t referenceE(additionalStepAttributes.at("E-ref_x"),
+                            additionalStepAttributes.at("B-ref_y")});
+        Vector_t referenceE({additionalStepAttributes.at("E-ref_x"),
                             additionalStepAttributes.at("E-ref_z"),
-                            additionalStepAttributes.at("E-ref_y"));
+                            additionalStepAttributes.at("E-ref_y")});
 
         WRITESTEPATTRIB(Float64, file_m, "B-ref", (h5_float64_t*)&referenceB, 3);
         WRITESTEPATTRIB(Float64, file_m, "E-ref", (h5_float64_t*)&referenceE, 3);

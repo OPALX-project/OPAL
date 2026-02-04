@@ -57,7 +57,7 @@ AmrParticleBase<PLayout>::AmrParticleBase(PLayout* layout)
     : IpplParticleBase<PLayout>(layout),
       forbidTransform_m(false),
       scale_m(1.0),
-      lorentzFactor_m(1.0, 1.0, 1.0),
+      lorentzFactor_m({1.0, 1.0, 1.0}),
 //       isLorentzTransformed_m(false),
       LocalNumPerLevel_m()
 {
@@ -274,8 +274,8 @@ const double& AmrParticleBase<PLayout>::domainMapping(bool inverse) {
 //             this->performDestroy(true);
 //         }
 
-        Vector_t rmin = Vector_t(0.0, 0.0, 0.0);
-        Vector_t rmax = Vector_t(0.0, 0.0, 0.0);
+        Vector_t rmin = Vector_t({0.0, 0.0, 0.0});
+        Vector_t rmax = Vector_t({0.0, 0.0, 0.0});
         
         getGlobalBounds_m(rmin, rmax);
         
@@ -284,9 +284,9 @@ const double& AmrParticleBase<PLayout>::domainMapping(bool inverse) {
          * particle lies on the origin (0, 0, 0).
          */
         if ( this->getTotalNum() == 1 ||
-             (rmin == Vector_t(0.0, 0.0, 0.0) && rmax == Vector_t( 0.0,  0.0,  0.0)) ) {
-            rmin = Vector_t(-1.0, -1.0, -1.0);
-            rmax = Vector_t( 1.0,  1.0,  1.0);
+             (rmin == Vector_t({0.0, 0.0, 0.0}) && rmax == Vector_t({0.0,  0.0,  0.0})) ) {
+            rmin = Vector_t({-1.0, -1.0, -1.0});
+            rmax = Vector_t({ 1.0,  1.0,  1.0});
         }
 
         /* Lorentz transfomration factor
@@ -301,9 +301,9 @@ const double& AmrParticleBase<PLayout>::domainMapping(bool inverse) {
         const auto& lo = layout.lowerBound;
         const auto& hi = layout.upperBound;
 
-        Vector_t tmp = Vector_t(std::max( std::abs(rmin[0] / lo[0]), std::abs(rmax[0] / hi[0]) ),
+        Vector_t tmp = Vector_t({std::max( std::abs(rmin[0] / lo[0]), std::abs(rmax[0] / hi[0]) ),
                                 std::max( std::abs(rmin[1] / lo[1]), std::abs(rmax[1] / hi[1]) ),
-                                std::max( std::abs(rmin[2] / lo[2]), std::abs(rmax[2] / hi[2]) )
+                                std::max( std::abs(rmin[2] / lo[2]), std::abs(rmax[2] / hi[2]) )}
                                );
         
         scale = std::max( tmp[0], tmp[1] );
@@ -319,7 +319,7 @@ const double& AmrParticleBase<PLayout>::domainMapping(bool inverse) {
                                 "Scale factor is Nan or Inf");
     }
 
-    Vector_t vscale = Vector_t(scale, scale, scale);
+    Vector_t vscale = Vector_t({scale, scale, scale});
     
     // Lorentz transform + mapping to [-1, 1]
     for (unsigned int i = 0; i < this->getLocalNum(); ++i) {
@@ -350,8 +350,8 @@ void AmrParticleBase<PLayout>::getLocalBounds_m(Vector_t &rmin, Vector_t &rmax) 
     const size_t localNum = this->getLocalNum();
     if (localNum == 0) {
         double max = 1e10;
-        rmin = Vector_t( max,  max,  max);
-        rmax = Vector_t(-max, -max, -max);
+        rmin = Vector_t({ max,  max,  max});
+        rmax = Vector_t({-max, -max, -max});
         return;
     }
 

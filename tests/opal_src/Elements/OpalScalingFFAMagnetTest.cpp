@@ -89,7 +89,7 @@ TEST(OpalScalingFFAMagnetTest, TestUpdate) {
 // r in mm, phi in rad
 Vector_t cartesianCoord(double r0, double phi) {
     //phi -= Physics::pi/2.0;
-    return Vector_t(r0*std::cos(phi)-r0, 0.0, r0*std::sin(phi));
+    return Vector_t({r0*std::cos(phi)-r0, 0.0, r0*std::sin(phi)});
 }
 
 TEST(OpalScalingFFAMagnetTest, TestFieldCheck) {
