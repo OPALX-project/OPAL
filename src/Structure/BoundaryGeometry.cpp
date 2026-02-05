@@ -313,7 +313,7 @@ Vector_t get_max_extent (std::vector<Vector_t>& coords) {
         coords.begin (), coords.end (), VectorLessY ());
     const Vector_t z = *max_element (
         coords.begin (), coords.end (), VectorLessZ ());
-    return Vector_t (x(0), y(1), z(2));
+    return Vector_t ({x(0), y(1), z(2)});
 }
 
 
@@ -327,7 +327,7 @@ Vector_t get_min_extent (std::vector<Vector_t>& coords) {
         coords.begin (), coords.end (), VectorLessY ());
     const Vector_t z = *min_element (
         coords.begin (), coords.end (), VectorLessZ ());
-    return Vector_t (x(0), y(1), z(2));
+    return Vector_t ({x(0), y(1), z(2)});
 }
 
 /*
@@ -798,7 +798,7 @@ public:
     Ray (Vector_t o, Vector_t d) {
         origin = o;
         direction = d;
-        inv_direction = Vector_t (1/d[0], 1/d[1], 1/d[2]);
+        inv_direction = Vector_t ({1/d[0], 1/d[1], 1/d[2]});
         sign[0] = (inv_direction[0] < 0);
         sign[1] = (inv_direction[1] < 0);
         sign[2] = (inv_direction[2] < 0);
@@ -1120,11 +1120,11 @@ BoundaryGeometry::intersectTriangleVoxel (
         getPoint (triangle_id, 3)
         );
 
-    const Vector_t P(
+    const Vector_t P({
         i * voxelMesh_m.sizeOfVoxel [0] + voxelMesh_m.minExtent[0],
         j * voxelMesh_m.sizeOfVoxel [1] + voxelMesh_m.minExtent[1],
         k * voxelMesh_m.sizeOfVoxel [2] + voxelMesh_m.minExtent[2]
-        );
+        });
 
     Voxel v(P, P+voxelMesh_m.sizeOfVoxel);
 
@@ -1564,10 +1564,10 @@ BoundaryGeometry::mapIndices2Voxel (
     const int j,
     const int k
     ) {
-    return Vector_t (
+    return Vector_t ({
         i * voxelMesh_m.sizeOfVoxel [0] + voxelMesh_m.minExtent[0],
         j * voxelMesh_m.sizeOfVoxel [1] + voxelMesh_m.minExtent[1],
-        k * voxelMesh_m.sizeOfVoxel [2] + voxelMesh_m.minExtent[2]);
+        k * voxelMesh_m.sizeOfVoxel [2] + voxelMesh_m.minExtent[2]});
 }
 
 inline Vector_t
@@ -1898,10 +1898,10 @@ Change orientation if diff is:
         static inline bool isInside (BoundaryGeometry* bg, const Vector_t x) {
             IpplTimings::startTimer (bg->TisInside_m);
 
-            Vector_t y = Vector_t (
+            Vector_t y = Vector_t ({
                 bg->maxExtent_m[0] * (1.1 + gsl_rng_uniform(bg->randGen_m)),
                 bg->maxExtent_m[1] * (1.1 + gsl_rng_uniform(bg->randGen_m)),
-                bg->maxExtent_m[2] * (1.1 + gsl_rng_uniform(bg->randGen_m)));
+                bg->maxExtent_m[2] * (1.1 + gsl_rng_uniform(bg->randGen_m))});
 
             std::vector<Vector_t> intersection_points;
             //int num_intersections = 0;
@@ -2082,10 +2082,10 @@ Change orientation if diff is:
     for (i = 0; i < num_points; i++) {
         h5_float64_t P[3];
         H5FedGetVertexCoordsByIndex (m, i, P);
-        Points_m.push_back (Vector_t (
+        Points_m.push_back (Vector_t ({
             P[0] * xyzscale * xscale,
             P[1] * xyzscale * yscale,
-            P[2] * xyzscale * zscale + zshift));
+            P[2] * xyzscale * zscale + zshift}));
     }
     H5FedCloseMesh (m);
     H5CloseFile (f);

@@ -495,7 +495,7 @@ void OpalElement::update() {
         }
 
         if (ori.size() == 3) {
-            origin = Vector_t(ori[0], ori[1], ori[2]);
+            origin = Vector_t({ori[0], ori[1], ori[2]});
         } else {
             if (itsAttr[ORIGIN]) {
                 throw OpalException("OpalElement::update",
@@ -522,9 +522,9 @@ void OpalElement::update() {
                !itsAttr[THETA].defaultUsed() ||
                !itsAttr[PHI].defaultUsed() ||
                !itsAttr[PSI].defaultUsed()) {
-        const Vector_t origin(Attributes::getReal(itsAttr[X]),
+        const Vector_t origin({Attributes::getReal(itsAttr[X]),
                               Attributes::getReal(itsAttr[Y]),
-                              Attributes::getReal(itsAttr[Z]));
+                              Attributes::getReal(itsAttr[Z])});
 
         const double theta = Attributes::getReal(itsAttr[THETA]);
         const double phi = Attributes::getReal(itsAttr[PHI]);
@@ -542,9 +542,9 @@ void OpalElement::update() {
         base->setRotationAboutZ(Attributes::getReal(itsAttr[PSI]));
     }
 
-    Vector_t misalignmentShift(Attributes::getReal(itsAttr[DX]),
+    Vector_t misalignmentShift({Attributes::getReal(itsAttr[DX]),
                                Attributes::getReal(itsAttr[DY]),
-                               Attributes::getReal(itsAttr[DZ]));
+                               Attributes::getReal(itsAttr[DZ])});
     double dtheta = Attributes::getReal(itsAttr[DTHETA]);
     double dphi = Attributes::getReal(itsAttr[DPHI]);
     double dpsi = Attributes::getReal(itsAttr[DPSI]);

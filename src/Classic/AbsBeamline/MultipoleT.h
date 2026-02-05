@@ -83,8 +83,9 @@
 #include "AbsBeamline/Component.h"
 #include <vector>
 #include "MultipoleTBase.h"
+#include "Algorithms/AbstractTimeDependence.h"
 
-class MultipoleT: public Component {
+class MultipoleT final: public Component {
 public:
     /** Constructor
      *  \param name -> User-defined name
@@ -159,8 +160,8 @@ public:
      *  @f[ 1/2 * \left [tanh \left( \frac{s + s_0}{\lambda_{left}} \right) 
      *  - tanh \left( \frac{s - s_0}{\lambda_{right}} \right) \right] @f] 
      *  \param s0 -> Centre field length and
-     *  \lambda_left -> Left end field length
-     *  \lambda_right -> Right end field length
+     *  \param lambda_left -> Left end field length
+     *  \param lambda_right -> Right end field length
      */
     void setFringeField(const double& s0, const double& lambda_left,
                         const double& lambda_right);
@@ -256,6 +257,11 @@ public:
     Vector_t localCartesianToOpalCartesian(const Vector_t& r);
     double localCartesianRotation();
 
+    void setScalingName(const std::string& name);
+    void setScalingModel(const std::shared_ptr<AbstractTimeDependence>& td) {scalingTD_m = td; }
+    std::string getScalingName() const { return scalingName_m; }
+    void initialiseTimeDepencencies() const;
+
 protected:
     /** Rotate the frame to account for the rotation and entry angles.
      * @param R -> coordinate to rotate
@@ -289,6 +295,10 @@ protected:
     double horizontalApert_m{0.5};
     /** Not implemented */
     BMultipoleField dummy;
+    // Time dependence
+    std::string scalingName_m;
+    mutable std::shared_ptr<AbstractTimeDependence> scalingTD_m;
+
     std::unique_ptr<MultipoleTBase> implementation_{};
 };
 

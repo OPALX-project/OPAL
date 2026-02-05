@@ -362,8 +362,8 @@ boost::python::object PyOpalObject<C>::getFieldValue(
         throw OpalException("PyElement<C>::getFieldValue",
                             "Failed to deduce Component from ElementBase.");
     }
-    Vector_t R(x*distanceUnits_m, y*distanceUnits_m, z*distanceUnits_m);
-    Vector_t P(0.0, 0.0, 0.0);
+    Vector_t R({x*distanceUnits_m, y*distanceUnits_m, z*distanceUnits_m});
+    Vector_t P({0.0, 0.0, 0.0});
     Vector_t B;
     Vector_t E;
     t *= timeUnits_m;

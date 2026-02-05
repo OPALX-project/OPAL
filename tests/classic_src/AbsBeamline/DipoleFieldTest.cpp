@@ -105,7 +105,7 @@ TEST(Maxwell, Zeros)
     myMagnet->Bend2D::initialise(bunch, startField, endField);
     delete partData;
     delete bunch;
-    Vector_t R(0. ,0., 0.);
+    Vector_t R({0. ,0., 0.});
     Vector_t P(0.), E(0.);
     //double radius = 1;
     double stepSize = 1.0e-6, x, z;
@@ -186,7 +186,7 @@ TEST(Quad, Quadrupole)
     quad->setSkewComponent(2, 0.0);
     delete partData;
     delete bunch;
-    Vector_t R(0. ,0., 0.);
+    Vector_t R({0. ,0., 0.});
     Vector_t P(0.), E(0.);
     ofstream gout("quadrupole_1");
     for(double z = -3.; z <= 9; z += 0.2)

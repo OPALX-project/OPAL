@@ -44,7 +44,7 @@ function(python_module MODULE_NAME PYTHON_SRCS INSTALL_DIRECTORY)
     if("${IS_ALLOWED}" STREQUAL "-1")
         MESSAGE(FATAL_ERROR "Python module install dir '${INSTALL_DIRECTORY}' must be one of '${PYTHON_ALLOWED_INSTALL_DIRS}'")
     endif()
-    add_library(${MODULE_NAME} SHARED ${PYTHON_SRCS})
+    add_library(${MODULE_NAME} MODULE ${PYTHON_SRCS})
     set_target_properties (${MODULE_NAME} PROPERTIES PREFIX "")
     target_link_libraries( ${MODULE_NAME}
         libOPALdynamic

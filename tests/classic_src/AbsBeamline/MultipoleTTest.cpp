@@ -10,10 +10,13 @@
 #include <cmath>
 #include <sstream>
 
+#include "Algorithms/PolynomialTimeDependence.h"
+
 using namespace std;
 
 Vector_t rotateBy(const Vector_t& center, const Vector_t& point, double theta) {
     auto x_prime = point[0] - center[0];
+
     auto z_prime = point[2] - center[2];
     auto x_rotated = x_prime * cos(theta) - z_prime * sin(theta) + center[0];
     auto z_rotated = x_prime * sin(theta) + z_prime * cos(theta) + center[2];
@@ -90,7 +93,7 @@ TEST(MultipoleTTest, Maxwell) {
     //      !!!  should be less than max_index / 2 !!!
     myMagnet->setMaxOrder(3, 10);
     //ofstream fout("Quad_CurlB_off");
-    Vector_t R(0., 0., 0.), P(3), E(3);
+    Vector_t R({0., 0., 0.}), P(3), E(3);
     double t = 0., stepSize= 1e-7;
     for(size_t i = 0; i < 5; ++i) {
         double x = -0.2 + static_cast<double>(i) * 0.1;
@@ -101,7 +104,7 @@ TEST(MultipoleTTest, Maxwell) {
                 R[0] = x;
                 R[1] = z;
                 R[2] = s - 0.5;
-                Vector_t B(0., 0., 0.);
+                Vector_t B({0., 0., 0.});
                 myMagnet->apply(R, P, t, E, B);
                 double div = calcDivB(R, B, stepSize, myMagnet.get());
                 vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get());
@@ -141,11 +144,11 @@ TEST(MultipoleTTest, CurvedMagnet) {
                               1.60,  1.83,  2.17,  2.30,  2.45,  2.77};
     double z = 0.2;
     Vector_t centerR{-rho, z, 0.0};
-    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+    Vector_t R({0.0, 0.0, 0.0}), P(3), E(3);
     double localTheta = myMagnet->localCartesianRotation();
     for (size_t n = 0; n < x.size() && n < y.size(); n++) {
         R = myMagnet->localCartesianToOpalCartesian({x[n], z, -y[n]});
-        Vector_t B(0., 0., 0.);
+        Vector_t B({0., 0., 0.});
         myMagnet->apply(R, P, t, E, B);
         double div = calcDivB(R, B, stepSize, myMagnet.get(), localTheta);
         vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get(), localTheta);
@@ -181,7 +184,7 @@ TEST(MultipoleTTest, Straight) {
     double t = 0.0;
     double stepSize = 1e-3;
     double z = -0.3;
-    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+    Vector_t R({0.0, 0.0, 0.0}), P(3), E(3);
     for(size_t i = 0; i < 6; ++i) {
         double x = -0.3 + static_cast<double>(i) * 0.1;
         for(size_t j = 0; j < 6; ++j) {
@@ -189,7 +192,7 @@ TEST(MultipoleTTest, Straight) {
             R[0] = x;
             R[1] = z;
             R[2] = y - length / 2.0;
-            Vector_t B(0., 0., 0.);
+            Vector_t B({0., 0., 0.});
             myMagnet->apply(R, P, t, E, B);
             double div = calcDivB(R, B, stepSize, myMagnet.get());
             vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get());
@@ -230,7 +233,7 @@ TEST(MultipoleTTest, ClonedStraight) {
     double t = 0.0;
     double stepSize = 1e-3;
     double z = -0.3;
-    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+    Vector_t R({0.0, 0.0, 0.0}), P(3), E(3);
     for(size_t i = 0; i < 6; ++i) {
         double x = -0.3 + static_cast<double>(i) * 0.1;
         for(size_t j = 0; j < 6; ++j) {
@@ -238,7 +241,7 @@ TEST(MultipoleTTest, ClonedStraight) {
             R[0] = x;
             R[1] = z;
             R[2] = y - length / 2.0;
-            Vector_t B(0., 0., 0.);
+            Vector_t B({0., 0., 0.});
             myMagnet->apply(R, P, t, E, B);
             double div = calcDivB(R, B, stepSize, myMagnet.get());
             vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get());
@@ -286,11 +289,11 @@ TEST(MultipoleTTest, CurvedConstRadius) {
         double y = radius * sin(theta + dTheta);
         for(size_t k = 0; k < 31; ++k) {
             double delta = -0.3 + static_cast<double>(k) * 0.02;
-            Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+            Vector_t R({0.0, 0.0, 0.0}), P(3), E(3);
             R[0] = x + delta * cos(theta + dTheta);
             R[1] = z;
             R[2] = y + delta * sin(theta + dTheta);
-            Vector_t B(0., 0., 0.);
+            Vector_t B({0., 0., 0.});
             myMagnet->apply(R, P, t, E, B);
             double div = calcDivB(R, B, stepSize, myMagnet.get(), dTheta);
             vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get(), dTheta);
@@ -340,11 +343,11 @@ TEST(MultipoleTTest, ClonedCurvedConstRadius) {
         double y = radius * sin(theta + dTheta);
         for(size_t k = 0; k < 31; ++k) {
             double delta = -0.3 + static_cast<double>(k) * 0.02;
-            Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+            Vector_t R({0.0, 0.0, 0.0}), P(3), E(3);
             R[0] = x + delta * cos(theta + dTheta);
             R[1] = z;
             R[2] = y + delta * sin(theta + dTheta);
-            Vector_t B(0., 0., 0.);
+            Vector_t B({0., 0., 0.});
             myMagnet->apply(R, P, t, E, B);
             double div = calcDivB(R, B, stepSize, myMagnet.get(), dTheta);
             vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get(), dTheta);
@@ -389,11 +392,11 @@ TEST(MultipoleTTest, CurvedVarRadius) {
                        0.00, 0.46, 0.90, 1.36, 1.60, 1.83, 2.17, 2.30, 2.45, 2.77};
     double z = 0.2;
     Vector_t centerR{-rho, z, 0.0};
-    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+    Vector_t R({0.0, 0.0, 0.0}), P(3), E(3);
     double localTheta = myMagnet->localCartesianRotation();
     for (int n = 0; n < 21; n++) {
         R = myMagnet->localCartesianToOpalCartesian({x[n], z, -y[n]});
-        Vector_t B(0., 0., 0.);
+        Vector_t B({0., 0., 0.});
         myMagnet->apply(R, P, t, E, B);
         double div = calcDivB(R, B, stepSize, myMagnet.get(), localTheta);
         vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get(), localTheta);
@@ -441,11 +444,11 @@ TEST(MultipoleTTest, ClonedCurvedVarRadius) {
                        0.00, 0.46, 0.90, 1.36, 1.60, 1.83, 2.17, 2.30, 2.45, 2.77};
     double z = 0.2;
     Vector_t centerR{-rho, z, 0.0};
-    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
+    Vector_t R({0.0, 0.0, 0.0}), P(3), E(3);
     double localTheta = myMagnet->localCartesianRotation();
     for (int n = 0; n < 21; n++) {
         R = myMagnet->localCartesianToOpalCartesian({x[n], z, -y[n]});
-        Vector_t B(0., 0., 0.);
+        Vector_t B({0., 0., 0.});
         myMagnet->apply(R, P, t, E, B);
         double div = calcDivB(R, B, stepSize, myMagnet.get(), localTheta);
         vector<double> curl = calcCurlB(R, B, stepSize, myMagnet.get(), localTheta);
@@ -551,6 +554,10 @@ TEST(MultipoleTTest, UserInterface) {
     Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], true);
     EXPECT_NO_THROW(ui.update());
     EXPECT_NEAR(myMagnet->getEntryOffset(), 1.2, 1e-6);
+    // Check time dependency
+    Attributes::setString(ui.itsAttr[OpalMultipoleT::SCALING_MODEL], "Scaling");
+    EXPECT_NO_THROW(ui.update());
+    EXPECT_EQ(myMagnet->getScalingName(), "SCALING");
 }
 
 TEST(MultipoleTTest, UserInterfaceClone) {
@@ -571,6 +578,7 @@ TEST(MultipoleTTest, UserInterfaceClone) {
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::MAXXORDER], 7.0);
     Attributes::setBool(ui.itsAttr[OpalMultipoleT::VARRADIUS], false);
     Attributes::setReal(ui.itsAttr[OpalMultipoleT::ENTRYOFFSET], 0.0);
+    Attributes::setString(ui.itsAttr[OpalMultipoleT::SCALING_MODEL], "Scaling");
     // Make the clone
     std::unique_ptr<OpalMultipoleT> uiClone{ui.clone("Clone")};
     // Update the magnet
@@ -598,6 +606,7 @@ TEST(MultipoleTTest, UserInterfaceClone) {
     EXPECT_NEAR(myMagnet->getMaxXOrder(), 7.0, 1e-6);
     EXPECT_FALSE(myMagnet->getVariableRadius());
     EXPECT_NEAR(myMagnet->getEntryOffset(), 0.0, 1e-6);
+    EXPECT_EQ(myMagnet->getScalingName(), "SCALING");
 }
 
 TEST(MultipoleTTest, UserInterfaceSanityCheck) {
@@ -731,8 +740,8 @@ TEST(MultipoleTTest, Aperture) {
     myMagnet->setMaxOrder(5, 20);
     myMagnet->setFlagDeleteOnTransverseExit(true);
     double t = 0.0;
-    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
-    Vector_t B(0., 0., 0.);
+    Vector_t R({0.0, 0.0, 0.0}), P(3), E(3);
+    Vector_t B({0., 0., 0.});
     // Inside the aperture
     R = {1.4, 1.4, length/2.0};
     EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
@@ -765,8 +774,8 @@ TEST(MultipoleTTest, BoundingBox) {
     myMagnet->setFlagDeleteOnTransverseExit(true);
     myMagnet->setBoundingBoxLength(length + 0.5);
     double t = 0.0;
-    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
-    Vector_t B(0., 0., 0.);
+    Vector_t R({0.0, 0.0, 0.0}), P(3), E(3);
+    Vector_t B({0., 0., 0.});
     // Inside the bounding box inside the magnet
     R = {1.4, 1.4, length / 2.0};
     EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
@@ -918,14 +927,76 @@ TEST(MultipoleTTest, ZeroTP) {
     myMagnet->setFringeField(0.25, 0.3, 0.3);
     myMagnet->setTransProfile({0.0, 0.0});
     double t = 0.0;
-    Vector_t R(0.0, 0.0, 0.0), P(3), E(3);
-    Vector_t B(0., 0., 0.);
+    Vector_t R({0.0, 0.0, 0.0}), E(3);
+    const Vector_t P(3);
+    Vector_t B({0., 0., 0.});
     // Inside the aperture
     R = {1.4, 1.4, 0.25};
     EXPECT_FALSE(myMagnet->apply(R, P, t, E, B));
     EXPECT_EQ(B[0], 0.0);
     EXPECT_EQ(B[1], 0.0);
     EXPECT_EQ(B[2], 0.0);
+}
+
+TEST(MultipoleTTest, TimeDependentStraight) {
+    const auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    const std::shared_ptr<AbstractTimeDependence> poly1 =
+        std::make_shared<PolynomialTimeDependence>(std::vector{0.5});
+    constexpr double length = 4.4;
+    myMagnet->setBendAngle(0.0, false);
+    myMagnet->setElementLength(length);
+    myMagnet->setAperture(3.5, 3.5);
+    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setMaxOrder(5, 20);
+    // Get the B field without the time dependency
+    constexpr double t = 0.0;
+    const Vector_t R({0.01, 0.01, 0.01});
+    Vector_t E(3);
+    const Vector_t P(3);
+    Vector_t B1{};
+    myMagnet->apply(R, P, t, E, B1);
+    // Get the B field with the time dependency
+    myMagnet->setScalingModel(poly1);
+    Vector_t B2{};
+    myMagnet->apply(R, P, t, E, B2);
+    // With should be half the without
+    EXPECT_NEAR(B1[0] * 0.5, B2[0], DBL_EPSILON);
+    EXPECT_NEAR(B1[1] * 0.5, B2[1], DBL_EPSILON);
+    EXPECT_NEAR(B1[2] * 0.5, B2[2], DBL_EPSILON);
+}
+
+TEST(MultipoleTTest, TimeDependentStraightClone) {
+    auto myMagnet = std::make_unique<MultipoleT>("Combined function");
+    const std::shared_ptr<AbstractTimeDependence> poly1 =
+        std::make_shared<PolynomialTimeDependence>(std::vector{0.5});
+    constexpr double length = 4.4;
+    myMagnet->setBendAngle(0.0, false);
+    myMagnet->setElementLength(length);
+    myMagnet->setAperture(3.5, 3.5);
+    myMagnet->setFringeField(2.2, 0.3, 0.3);
+    myMagnet->setRotation(0.0);
+    myMagnet->setEntranceAngle(0.0);
+    myMagnet->setTransProfile({1.0, 1.0});
+    myMagnet->setMaxOrder(5, 20);
+    // Get the B field without the time dependency
+    constexpr double t = 0.0;
+    const Vector_t R({0.01, 0.01, 0.01});
+    Vector_t E(3);
+    const Vector_t P(3);
+    Vector_t B1{};
+    myMagnet->apply(R, P, t, E, B1);
+    // Get the B field with the time dependency of a clone
+    myMagnet->setScalingModel(poly1);
+    myMagnet.reset(dynamic_cast<MultipoleT*>(myMagnet->clone()));
+    Vector_t B2{};
+    myMagnet->apply(R, P, t, E, B2);
+    // With should be half the without
+    EXPECT_NEAR(B1[0] * 0.5, B2[0], DBL_EPSILON);
+    EXPECT_NEAR(B1[1] * 0.5, B2[1], DBL_EPSILON);
+    EXPECT_NEAR(B1[2] * 0.5, B2[2], DBL_EPSILON);
 }
 
 #if 0

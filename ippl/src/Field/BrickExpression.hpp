@@ -10,9 +10,6 @@
  *
  ***************************************************************************/
 
-// include files
-
-
 
 //////////////////////////////////////////////////////////////////////
 // BrickExpLoop::apply member functions
@@ -21,7 +18,7 @@ template<class LHS, class RHS, class OP, unsigned Dim>
 class BrickExpLoop
 {
 public: 
-  static inline void
+  void
   apply(LHS& __restrict__ Lhs, RHS& __restrict__ Rhs, OP Op)
     {
       int n0 = Lhs.size(0);
@@ -59,7 +56,8 @@ template<class LHS, class RHS, class OP>
 class BrickExpLoop<LHS,RHS,OP,1U>
 {
 public:
-  static inline void apply(LHS& __restrict__ Lhs, RHS& __restrict__ Rhs, OP Op)
+  static inline void
+  apply(LHS& Lhs, RHS& Rhs, OP Op)
     {
       int n0 = Lhs.size(0);
       for (int i0=0; i0<n0; ++i0) {
@@ -93,26 +91,28 @@ template<class LHS, class RHS, class OP>
 class BrickExpLoop<LHS,RHS,OP,3U>
 {
 public:
-  static inline void
-  apply(LHS& __restrict__ Lhs, RHS& __restrict__ Rhs, OP Op)
+    static inline void
+    apply(LHS& Lhs, RHS& Rhs, OP Op)
     {
-      int n0 = Lhs.size(0);
-      int n1 = Lhs.size(1);
-      int n2 = Lhs.size(2);
-      for (int i2=0; i2<n2; ++i2) 
-	for (int i1=0; i1<n1; ++i1) 
-	  for (int i0=0; i0<n0; ++i0) 
-	    PETE_apply(Op,Lhs.offset(i0,i1,i2),
-		       for_each(Rhs,EvalFunctor_3(i0,i1,i2)));
+        int n0 = Lhs.size(0);
+        int n1 = Lhs.size(1);
+        int n2 = Lhs.size(2);
+        for (int i2=0; i2<n2; ++i2) 
+            for (int i1=0; i1<n1; ++i1) 
+                for (int i0=0; i0<n0; ++i0) 
+                    PETE_apply(Op,
+                               Lhs.offset(i0,i1,i2),
+                               for_each(Rhs,EvalFunctor_3(i0,i1,i2)));
     }
 };
 
 //////////////////////////////////////////////////////////////////////
 // BrickExpression::apply - just use BrickExpLoop
-// ada: remove restrict from apply to make  g++ 2.95.3 happy
+// Legacy code attempted to call apply() as a static method.
+// This is invalid since apply() is a non-static member function.
 template<unsigned Dim, class LHS, class RHS, class OP>
- void BrickExpression<Dim,LHS,RHS,OP>::apply()
+void BrickExpression<Dim,LHS,RHS,OP>::apply()
 {
-
-  BrickExpLoop<LHS,RHS,OP,Dim>::apply(Lhs,Rhs,Op);
+    BrickExpLoop<LHS,RHS,OP,Dim> loop;
+    loop.apply(Lhs, Rhs, Op);
 }

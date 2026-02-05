@@ -88,9 +88,9 @@ bool TravelingWave::apply(const Vector_t& R,
 
     if (R(2) < -0.5 * periodLength_m || R(2) + 0.5 * periodLength_m >= getElementLength()) return false;
 
-    Vector_t tmpR = Vector_t(R(0), R(1), R(2) + 0.5 * periodLength_m);
+    Vector_t tmpR = Vector_t({R(0), R(1), R(2) + 0.5 * periodLength_m});
     double tmpcos, tmpsin;
-    Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+    Vector_t tmpE({0.0, 0.0, 0.0}), tmpB({0.0, 0.0, 0.0});
 
     if (tmpR(2) < startCoreField_m) {
         if (!fieldmap_m->isInside(tmpR)) return getFlagDeleteOnTransverseExit();
@@ -99,7 +99,7 @@ bool TravelingWave::apply(const Vector_t& R,
         tmpsin = -(scale_m + scaleError_m) * std::sin(frequency_m * t + phase_m + phaseError_m);
 
     } else if (tmpR(2) < startExitField_m) {
-        Vector_t tmpE2(0.0, 0.0, 0.0), tmpB2(0.0, 0.0, 0.0);
+        Vector_t tmpE2({0.0, 0.0, 0.0}), tmpB2({0.0, 0.0, 0.0});
         tmpR(2) -= startCoreField_m;
         const double z = tmpR(2);
         tmpR(2) = tmpR(2) - periodLength_m * std::floor(tmpR(2) / periodLength_m);
@@ -144,9 +144,9 @@ bool TravelingWave::applyToReferenceParticle(const Vector_t& R,
 
     if (R(2) < -0.5 * periodLength_m || R(2) + 0.5 * periodLength_m >= getElementLength()) return false;
 
-    Vector_t tmpR = Vector_t(R(0), R(1), R(2) + 0.5 * periodLength_m);
+    Vector_t tmpR = Vector_t({R(0), R(1), R(2) + 0.5 * periodLength_m});
     double tmpcos, tmpsin;
-    Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+    Vector_t tmpE({0.0, 0.0, 0.0}), tmpB({0.0, 0.0, 0.0});
 
     if (tmpR(2) < startCoreField_m) {
         if (!fieldmap_m->isInside(tmpR)) return true;
@@ -154,7 +154,7 @@ bool TravelingWave::applyToReferenceParticle(const Vector_t& R,
         tmpsin = -scale_m * std::sin(frequency_m * t + phase_m);
 
     } else if (tmpR(2) < startExitField_m) {
-        Vector_t tmpE2(0.0, 0.0, 0.0), tmpB2(0.0, 0.0, 0.0);
+        Vector_t tmpE2({0.0, 0.0, 0.0}), tmpB2({0.0, 0.0, 0.0});
         tmpR(2) -= startCoreField_m;
         const double z = tmpR(2);
         tmpR(2) = tmpR(2) - periodLength_m * std::floor(tmpR(2) / periodLength_m);

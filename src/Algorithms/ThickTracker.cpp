@@ -216,7 +216,7 @@ void ThickTracker::execute() {
 
     //FIXME in local system only
     RefPartR_m = Vector_t(0.0);
-    RefPartP_m = euclidean_norm(itsBunch_m->get_pmean_Distribution()) * Vector_t(0, 0, 1);
+    RefPartP_m = euclidean_norm(itsBunch_m->get_pmean_Distribution()) * Vector_t({0, 0, 1});
 
     itsBunch_m->set_sPos(zstart_m);
 

@@ -96,25 +96,25 @@ void initialize(Field<Vektor<double, 3>, 3> &EFD, Field<Vektor<double, 3>, 3> &H
     for (int j = lDom[1].first() - 2; j <= lDom[1].last() + 2; ++ j) {
       elem[1] = Index(j,j);
       for (int k = lDom[2].first() - 2; k <= lDom[2].last() + 2; ++ k) {
-	elem[2] = Index(k,k);
+    elem[2] = Index(k,k);
 
-	// E-field edge centered 
-	EFD.localElement(elem) = Vektor<double, 3>((ky*ky + kz*kz) * cos((0.5 + i) * phase_x) * sin(j * phase_y) * sin(k * phase_z),
-						   -kx * ky * sin(i * phase_x) * cos((0.5 + j) * phase_y) * sin(k * phase_z),
-						   -kx * kz * sin(i * phase_x) * sin(j * phase_y) * cos((0.5 + k) * phase_z));
-	// H-field face centered 
-	HFD.localElement(elem) = Vektor<double, 3>(0.0,
-						   B_0 * kz * cos((0.5 + i) * phase_x) * sin(j * phase_y) * cos((0.5 + k) * phase_z),
-						   B_0 * ky * cos((0.5 + i) * phase_x) * cos((0.5 + j) * phase_y) * sin(k * phase_z));
+    // E-field edge centered
+    EFD.localElement(elem) = Vektor<double, 3>({(ky*ky + kz*kz) * std::cos((0.5 + i) * phase_x) * std::sin(j * phase_y) * std::sin(k * phase_z),
+                                                 -kx * ky * std::sin(i * phase_x) * std::cos((0.5 + j) * phase_y) * std::sin(k * phase_z),
+                                                 -kx * kz * std::sin(i * phase_x) * std::sin(j * phase_y) * std::cos((0.5 + k) * phase_z)});
+    // H-field face centered
+    HFD.localElement(elem) = Vektor<double, 3>({0.0,
+                                                B_0 * kz * std::cos((0.5 + i) * phase_x) * std::sin(j * phase_y) * std::cos((0.5 + k) * phase_z),
+                                                B_0 * ky * std::cos((0.5 + i) * phase_x) * std::cos((0.5 + j) * phase_y) * std::sin(k * phase_z)});
 
-	// E-field face centered		
-	//                 EFD.localElement(elem) = Vektor<double, 3>((ky*ky + kz*kz) * cos(i * phase_x) * sin((0.5 + j) * phase_y) * sin((0.5 + k) * phase_z),
-	//                                                            -kx * ky * sin((0.5 + i) * phase_x) * cos(j * phase_y) * sin((0.5 + k) * phase_z),
-	//                                                           -kx * kz * sin((0.5 + i) * phase_x) * sin((0.5 + j) * phase_y) * cos(k * phase_z));
-	//              H-field edge centered 
-	//                 HFD.localElement(elem) = Vektor<double, 3>(0.0,
-	//                                                            B_0 * kz * cos(i * phase_x) * sin((0.5 + j) * phase_y) * cos(k * phase_z),
-	//                                                            B_0 * ky * cos(i * phase_x) * cos(j * phase_y) * sin((0.5 + k) * phase_z));
+// E-field face centered
+//                 EFD.localElement(elem) = Vektor<double, 3>((ky*ky + kz*kz) * cos(i * phase_x) * sin((0.5 + j) * phase_y) * sin((0.5 + k) * phase_z),
+//                                                            -kx * ky * sin((0.5 + i) * phase_x) * cos(j * phase_y) * sin((0.5 + k) * phase_z),
+//                                                           -kx * kz * sin((0.5 + i) * phase_x) * sin((0.5 + j) * phase_y) * cos(k * phase_z));
+//              H-field edge centered
+//                 HFD.localElement(elem) = Vektor<double, 3>(0.0,
+//                                                            B_0 * kz * cos(i * phase_x) * sin((0.5 + j) * phase_y) * cos(k * phase_z),
+//                                                            B_0 * ky * cos(i * phase_x) * cos(j * phase_y) * sin((0.5 + k) * phase_z));
       }
     }
   }

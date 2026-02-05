@@ -119,7 +119,7 @@ void ArbitraryDomain::compute(Vector_t hr, NDIndex<3> localId){
 
                     std::tuple<int, int, int> pos(idx, idy, idz);
 
-                    dir = Vector_t(0, 0, 1);
+                    dir = Vector_t({0, 0, 1});
 
                     if (bgeom_m->intersectRayBoundary(P, dir, I)) {
                         intersectHiZ_m.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[2]));
@@ -139,7 +139,7 @@ void ArbitraryDomain::compute(Vector_t hr, NDIndex<3> localId){
 #endif
                     }
 
-                    dir = Vector_t(0, 1, 0);
+                    dir = Vector_t({0, 1, 0});
 
                     if (bgeom_m->intersectRayBoundary(P, dir, I)) {
                         intersectHiY_m.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[1]));
@@ -159,7 +159,7 @@ void ArbitraryDomain::compute(Vector_t hr, NDIndex<3> localId){
 #endif
                     }
 
-                    dir = Vector_t(1, 0, 0);
+                    dir = Vector_t({1, 0, 0});
 
                     if (bgeom_m->intersectRayBoundary(P, dir, I)) {
                         intersectHiX_m.insert(std::pair< std::tuple<int, int, int>, double >(pos, I[0]));

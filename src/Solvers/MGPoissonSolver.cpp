@@ -356,7 +356,7 @@ void MGPoissonSolver::computePotential(Field_t &rho, Vector_t hr) {
                 NDIndex<3> l(Index(idx, idx), Index(idy, idy), Index(idz, idz));
                 if (bp_m->isInside(idx, idy, idz))
                         RHS->replaceGlobalValue(bp_m->getIdx(idx, idy, idz),
-                                                4.0 * M_PI * rho.localElement(l) / scaleFactor);
+                                                4.0 * Physics::pi * rho.localElement(l) / scaleFactor);
             }
         }
     }

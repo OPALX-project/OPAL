@@ -107,7 +107,7 @@ private:
 inline
 CoordinateSystemTrafo Solenoid::getEdgeToBegin() const
 {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m),
+    CoordinateSystemTrafo ret(Vector_t({0, 0, startField_m}),
                               Quaternion(1, 0, 0, 0));
 
     return ret;
@@ -116,7 +116,7 @@ CoordinateSystemTrafo Solenoid::getEdgeToBegin() const
 inline
 CoordinateSystemTrafo Solenoid::getEdgeToEnd() const
 {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m + getElementLength()),
+    CoordinateSystemTrafo ret(Vector_t({0, 0, startField_m + getElementLength()}),
                               Quaternion(1, 0, 0, 0));
 
     return ret;

@@ -47,6 +47,7 @@ set (_SRCS
     OpalVKicker.cpp
     OpalBeamline.cpp
     OpalStripper.cpp
+    OpalSinusoidalTimeDependence.cpp
     )
 
 set (HDRS
@@ -96,6 +97,7 @@ set (HDRS
     OpalOffset/OpalGlobalCylindricalOffset.h
     OpalOffset/OpalLocalCartesianOffset.h
     OpalOffset/OpalLocalCylindricalOffset.h
+    OpalSinusoidalTimeDependence.h
     )
 
 if (ENABLE_OPAL_FEL)

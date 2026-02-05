@@ -73,9 +73,9 @@ public:
     }
 
     double getDBDu(int i, int j, Vector_t pos, double delta, bool isCartesian) {
-        Vector_t mom(0., 0., 0.);
-        Vector_t E(0., 0., 0.);
-        Vector_t BUpper(0., 0., 0.);
+        Vector_t mom({0., 0., 0.});
+        Vector_t E({0., 0., 0.});
+        Vector_t BUpper({0., 0., 0.});
         double t = 0;
         double derivative = 0;
         Vector_t posUpper = pos;
@@ -85,7 +85,7 @@ public:
         } else {
             sector_m->getFieldValueCylindrical(posUpper, BUpper);
         }
-        Vector_t BLower(0., 0., 0.);
+        Vector_t BLower({0., 0., 0.});
         Vector_t posLower = pos;
         posLower[j] -= delta;
         if (isCartesian) {
@@ -98,7 +98,7 @@ public:
     }
 
     double getDivBCart(Vector_t pos, Vector_t delta) {
-        Vector_t div_elements(0., 0., 0.);
+        Vector_t div_elements({0., 0., 0.});
         // dB_x/dx ~ (B_x(x+dx) - B_x(x-dx))/2/dx
         for (size_t i = 0; i < 3; ++i) {
             div_elements[i] = getDBDu(i, i, pos, delta[i], true);
@@ -107,7 +107,7 @@ public:
     }
 
     Vector_t getCurlBCart(Vector_t posCart, Vector_t delta) {
-        Vector_t curlElements(0., 0., 0.);
+        Vector_t curlElements({0., 0., 0.});
         // dB_x/dx ~ (B_x(x+dx) - B_x(x-dx))/2/dx
         curlElements[0] += getDBDu(2, 1, posCart, delta[1], true); // dBz/dy
         curlElements[0] -= getDBDu(1, 2, posCart, delta[2], true); // dBy/dz
@@ -120,8 +120,8 @@ public:
 
     Vector_t getCurlBCyl(Vector_t posCyl, Vector_t delta) {
         // posCyl goes like r, z, phi
-        Vector_t curlElements(0., 0., 0.);
-        Vector_t B(0., 0., 0.);
+        Vector_t curlElements({0., 0., 0.});
+        Vector_t B({0., 0., 0.});
         sector_m->getFieldValueCylindrical(posCyl, B);
 
         curlElements[0] += getDBDu(2, 1, posCyl, delta[1], false); // dBphi/dz
@@ -138,8 +138,8 @@ public:
     }
 
     double getDivBCyl(Vector_t posCyl, Vector_t delta) {
-        Vector_t B(0., 0., 0.);
-        Vector_t div_elements(0., 0., 0.);
+        Vector_t B({0., 0., 0.});
+        Vector_t div_elements({0., 0., 0.});
         sector_m->getFieldValueCylindrical(posCyl, B);
         div_elements[0] = B[0]/posCyl[0] + getDBDu(0, 0, posCyl, delta[0], false);
         div_elements[1] = getDBDu(1, 1, posCyl, delta[1], false);
@@ -165,11 +165,11 @@ public:
         double phi = posCyl[2];
         double x = r * (1 - std::cos(phi));
         double z = r * std::sin(phi);
-        Vector_t posCart(x, y, z);
-        Vector_t mom(0., 0., 0.);
-        Vector_t E(0., 0., 0.);
-        Vector_t B(0., 0., 0.);
-        Vector_t BCart(0., 0., 0.);
+        Vector_t posCart({x, y, z});
+        Vector_t mom({0., 0., 0.});
+        Vector_t E({0., 0., 0.});
+        Vector_t B({0., 0., 0.});
+        Vector_t BCart({0., 0., 0.});
         double t = 0;
 
         sector_m->getFieldValueCylindrical(posCyl, B);
@@ -178,10 +178,10 @@ public:
         if (delta > 1e-3 or delta < 1e-9) {
             delta = 1e-3;
         }
-        double divBCyl =  getDivBCyl(posCyl, Vector_t(delta, delta, delta/r0_m));
-        Vector_t curlBCyl = getCurlBCyl(posCyl, Vector_t(delta, delta, delta/r0_m)); //curlBCyl[0] should be cancelled by 2nd term
-        double divBCart = getDivBCart(posCart, Vector_t(delta, delta, delta));
-        Vector_t curlBCart = getCurlBCart(posCart, Vector_t(delta, delta, delta)); //curlBCyl[0] should be cancelled by 2nd term
+        double divBCyl =  getDivBCyl(posCyl, Vector_t({delta, delta, delta/r0_m}));
+        Vector_t curlBCyl = getCurlBCyl(posCyl, Vector_t({delta, delta, delta/r0_m})); //curlBCyl[0] should be cancelled by 2nd term
+        double divBCart = getDivBCart(posCart, Vector_t({delta, delta, delta}));
+        Vector_t curlBCart = getCurlBCart(posCart, Vector_t({delta, delta, delta})); //curlBCyl[0] should be cancelled by 2nd term
         std::stringstream ssout;
         ssout << "order " << sector_m->getMaxOrder()
              << " (x,y,z)  " << x << "    " << y << "    " << z
@@ -218,7 +218,7 @@ TEST_F(ScalingFFAMagnetTest, ConstructorTest) {
     test->setDipoleConstant(++i);
     test->setR0(++i);
     double x = ++i;
-    test->setCentre(Vector_t(x, x, x));
+    test->setCentre(Vector_t({x, x, x}));
     x = ++i;
     endfieldmodel::Tanh* tanh = new endfieldmodel::Tanh(x, x, i);
     test->setEndField(tanh);
@@ -274,7 +274,7 @@ TEST_F(ScalingFFAMagnetTest, PlacementTest) {
                 double phi = i*centre_length*2+phi_start;
                 Vector_t mom, E, B;
                 double t = 0;
-                Vector_t posCart(r0*(std::cos(phi)-1), 0., std::abs(r0)*std::sin(phi));
+                Vector_t posCart({r0*(std::cos(phi)-1), 0., std::abs(r0)*std::sin(phi)});
                 sector_m->apply(posCart, mom, t, E, B);
                 double byTest = 1-std::abs(i-0.5); // 0.5, 1.0, 0.5
                 EXPECT_NEAR(B[1], byTest, 1e-3) << " for r0 " << r0_m 
@@ -352,7 +352,7 @@ TEST_F(ScalingFFAMagnetTest, BTwoDTest) {
     for (double y = 0.; y < 0.025; y += 0.015) {
         for (double r = r0_m; r < r0_m+1; r += 0.02) {
             for (double psi = -2.*psi0_m; psi < 4.00001*psi0_m; psi += psi0_m/5.) {
-                passtest &= printLine(Vector_t(r, y, psi), 0., fout, 1e-1);
+                passtest &= printLine(Vector_t({r, y, psi}), 0., fout, 1e-1);
             }
         }
     }
@@ -363,10 +363,10 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceYTest) {
     std::ofstream fout("/tmp/convergence_y.out");
     bool passtest = true;
     for (double y = 0.00001; y < 0.02; y *= 2.) {
-        passtest &= printLine(Vector_t(r0_m, y, 2.*psi0_m), 0., fout, 1e-3);
+        passtest &= printLine(Vector_t({r0_m, y, 2.*psi0_m}), 0., fout, 1e-3);
     }
     for (double y = 0.051; y < 0.1; y += 0.002) {
-        passtest &= printLine(Vector_t(r0_m, y, 2.*psi0_m), 0., fout, 1e-3);
+        passtest &= printLine(Vector_t({r0_m, y, 2.*psi0_m}), 0., fout, 1e-3);
     }
     EXPECT_TRUE(passtest);
 }
@@ -383,11 +383,11 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceOrderTest) {
                 sector_m->initialise();
                 sector_m->setR0(r0sign*r0_m);
                 //Vector_t pos(r0_m, y, psi0_m*2);
-                Vector_t pos(r0sign*r0_m*(std::cos(2*psi0_m)-1), y, r0_m*std::sin(2*psi0_m));
-                Vector_t posCyl(r0_m, y, 2*psi0_m);
-                double divB = getDivBCart(pos, Vector_t(delta, delta, delta/r0_m));
-                Vector_t curlB = getCurlBCart(pos, Vector_t(delta, delta, delta/r0_m));
-                Vector_t curlBCyl = getCurlBCyl(posCyl, Vector_t(delta, delta, delta/r0_m));
+                Vector_t pos({r0sign*r0_m*(std::cos(2*psi0_m)-1), y, r0_m*std::sin(2*psi0_m)});
+                Vector_t posCyl({r0_m, y, 2*psi0_m});
+                double divB = getDivBCart(pos, Vector_t({delta, delta, delta/r0_m}));
+                Vector_t curlB = getCurlBCart(pos, Vector_t({delta, delta, delta/r0_m}));
+                Vector_t curlBCyl = getCurlBCyl(posCyl, Vector_t({delta, delta, delta/r0_m}));
                 Vector_t B = getB(pos);
                 Vector_t Bcyl;
                 sector_m->getFieldValueCylindrical(posCyl, Bcyl);
@@ -432,15 +432,15 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceOrderHackedTest) {
             Vector_t B, pos, curlB;
             double divB;
             if (cylindrical) {
-                pos = Vector_t(3.0, y, psi0_m*2);
+                pos = Vector_t({3.0, y, psi0_m*2});
                 sector_m->getFieldValueCylindrical(pos, B);
-                divB = getDivBCyl(pos, Vector_t(delta, delta, delta/3.));
-                curlB = getCurlBCyl(pos, Vector_t(delta, delta, delta/3.));
+                divB = getDivBCyl(pos, Vector_t({delta, delta, delta/3.}));
+                curlB = getCurlBCyl(pos, Vector_t({delta, delta, delta/3.}));
             } else {
-                pos = Vector_t(3.0*(std::cos(psi0_m*2)-1), y, 3.0*std::sin(psi0_m*2));
+                pos = Vector_t({3.0*(std::cos(psi0_m*2)-1), y, 3.0*std::sin(psi0_m*2)});
                 sector_m->apply(pos, pos, divBVec[0], B, B);
-                divB = getDivBCart(pos, Vector_t(delta, delta, delta));
-                curlB = getCurlBCart(pos, Vector_t(delta, delta, delta));
+                divB = getDivBCart(pos, Vector_t({delta, delta, delta}));
+                curlB = getCurlBCart(pos, Vector_t({delta, delta, delta}));
             }
             double curlBMag = std::sqrt(curlB[0]*curlB[0] + curlB[1]*curlB[1] + curlB[2]*curlB[2]);
             divB = std::abs(divB);
@@ -471,7 +471,7 @@ TEST_F(ScalingFFAMagnetTest, ConvergenceEndLengthTest) {
         endfieldmodel::Tanh* tanh = new endfieldmodel::Tanh(psi0_m, psi0_m/endLength, 20);
         sector_m->setEndField(tanh);
         sector_m->initialise();
-        passtest &= printLine(Vector_t(r0_m, 0.05, 2.*psi0_m), psi0_m/endLength*r0_m, fout, 1e-3);
+        passtest &= printLine(Vector_t({r0_m, 0.05, 2.*psi0_m}), psi0_m/endLength*r0_m, fout, 1e-3);
     }
     EXPECT_TRUE(passtest);
 }
@@ -480,7 +480,7 @@ TEST_F(ScalingFFAMagnetTest, VerticalBoundingBoxTest) {
     sector_m->setVerticalExtent(0.1);
     Vector_t mom, E, B;
     double t = 0;
-    Vector_t pos(r0_m*std::sin(psi0_m), 0.09, r0_m*std::cos(psi0_m));
+    Vector_t pos({r0_m*std::sin(psi0_m), 0.09, r0_m*std::cos(psi0_m)});
 
     EXPECT_FALSE(sector_m->apply(pos, mom, t, E, B));
     pos[1] = 0.11;
@@ -496,17 +496,17 @@ TEST_F(ScalingFFAMagnetTest, RadialBoundingBoxTest) {
     Vector_t mom, E, B;
     double t = 0;
     double r1 = r0_m-0.09;
-    Vector_t pos1(r1*std::cos(psi0_m)-r0_m, 0.0, r1*std::sin(psi0_m));
+    Vector_t pos1({r1*std::cos(psi0_m)-r0_m, 0.0, r1*std::sin(psi0_m)});
     double r2 = r0_m-0.11;
-    Vector_t pos2(r2*std::cos(psi0_m)-r0_m, 0.0, r2*std::sin(psi0_m));
+    Vector_t pos2({r2*std::cos(psi0_m)-r0_m, 0.0, r2*std::sin(psi0_m)});
     EXPECT_FALSE(sector_m->apply(pos1, mom, t, E, B));
     EXPECT_TRUE(sector_m->apply(pos2, mom, t, E, B));
 
     sector_m->setRMax(r0_m+0.1);
     double r3 = r0_m+0.09;
-    Vector_t pos3(r3*std::cos(psi0_m)-r0_m, 0.0, r3*std::sin(psi0_m));
+    Vector_t pos3({r3*std::cos(psi0_m)-r0_m, 0.0, r3*std::sin(psi0_m)});
     double r4 = r0_m+0.11;
-    Vector_t pos4(r4*std::cos(psi0_m)-r0_m, 0.0, r4*std::sin(psi0_m));
+    Vector_t pos4({r4*std::cos(psi0_m)-r0_m, 0.0, r4*std::sin(psi0_m)});
     EXPECT_FALSE(sector_m->apply(pos3, mom, t, E, B));
     EXPECT_TRUE(sector_m->apply(pos4, mom, t, E, B));
 }
@@ -519,7 +519,7 @@ TEST_F(ScalingFFAMagnetTest, AzimuthalBoundingBoxTest) {
     double phi[] = {-2.1*psi0_m, -1.9*psi0_m, 7.9*psi0_m, 8.1*psi0_m};
     bool bb[] = {true, false, false, true};
     for(size_t i = 0; i < 4; ++i) {
-        Vector_t pos(r0_m*(std::cos(phi[i])-1), 0,  r0_m*std::sin(phi[i]));
+        Vector_t pos({r0_m*(std::cos(phi[i])-1), 0,  r0_m*std::sin(phi[i])});
         EXPECT_EQ(sector_m->apply(pos, mom, t, E, B), bb[i]) << i << " " << pos;
     }
 }

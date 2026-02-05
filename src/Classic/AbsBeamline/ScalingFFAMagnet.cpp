@@ -96,9 +96,9 @@ bool ScalingFFAMagnet::getFieldValue(const Vector_t& R, Vector_t& B) const {
     double x = r0Sign_m * (r0_m + R[0]);
     double r = std::sqrt(x * x + R[2] * R[2]);
     double phi = std::atan2(R[2], x); // angle between y-axis and position vector in anticlockwise direction
-    Vector_t posCyl(r, R[1], phi);
+    Vector_t posCyl({r, R[1], phi});
     //Vector_t posCyl(r, pos[1], phi);
-    Vector_t bCyl(0., 0., 0.); //br bz bphi
+    Vector_t bCyl({0., 0., 0.}); //br bz bphi
     bool outOfBounds = getFieldValueCylindrical(posCyl, bCyl);
 
     // this is cartesian coordinates

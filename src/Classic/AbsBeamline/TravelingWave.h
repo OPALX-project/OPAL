@@ -207,14 +207,14 @@ void TravelingWave::setMode(double mode) {
 
 inline
 CoordinateSystemTrafo TravelingWave::getEdgeToBegin() const {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, -0.5 * periodLength_m),
+    CoordinateSystemTrafo ret(Vector_t({0, 0, -0.5 * periodLength_m}),
                               Quaternion(1, 0, 0, 0));
     return ret;
 }
 
 inline
 CoordinateSystemTrafo TravelingWave::getEdgeToEnd() const {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, -0.5 * periodLength_m + getElementLength()),
+    CoordinateSystemTrafo ret(Vector_t({0, 0, -0.5 * periodLength_m + getElementLength()}),
                               Quaternion(1, 0, 0, 0));
     return ret;
 }

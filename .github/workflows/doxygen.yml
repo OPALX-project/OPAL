@@ -1,0 +1,46 @@
+name: build-docs
+on:
+  push:
+    branches: ["master"]
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install Doxygen
+        run: |
+          sudo apt-get update 
+          sudo apt-get install -y doxygen
+      - name: Install Graphviz
+        run: sudo apt-get install -y graphviz
+      - name: Create docs directory
+        run: mkdir -p ./doc/html
+      - name: Run Doxygen to generate documentation
+        run: |
+          sed 's/@CMAKE_SOURCE_DIR@/./' Doxyfile.in > Doxyfile
+          doxygen Doxyfile
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: doc/html
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

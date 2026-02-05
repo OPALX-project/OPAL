@@ -60,12 +60,12 @@ int main(int argc, char *argv[])
             Vector_t llc, urc;
             std::shared_ptr<mslang::Base> & first = baseBlocks.front();
             const mslang::BoundingBox2D &bb = first->bb_m;
-            llc = Vector_t(bb.center_m[0] - 0.5 * bb.width_m,
+            llc = Vector_t({bb.center_m[0] - 0.5 * bb.width_m,
                            bb.center_m[1] - 0.5 * bb.height_m,
-                           0.0);
-            urc = Vector_t(bb.center_m[0] + 0.5 * bb.width_m,
+                           0.0});
+            urc = Vector_t({bb.center_m[0] + 0.5 * bb.width_m,
                            bb.center_m[1] + 0.5 * bb.height_m,
-                           0.0);
+                           0.0});
 
 
             for (unsigned int i = 1; i < baseBlocks.size(); ++ i) {

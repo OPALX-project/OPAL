@@ -226,7 +226,7 @@ void OpalBeamline::compute3DLattice() {
             }
 
             double beginThisPathLength = element->getElementPosition();
-            Vector_t beginThis3D(0, 0, beginThisPathLength - endPriorPathLength);
+            Vector_t beginThis3D({0, 0, beginThisPathLength - endPriorPathLength});
             BendBase * bendElement = static_cast<BendBase*>(element.get());
             double thisLength = bendElement->getChordLength();
             double bendAngle = bendElement->getBendAngle();
@@ -235,9 +235,9 @@ void OpalBeamline::compute3DLattice() {
 
             double rotationAngleAboutZ = bendElement->getRotationAboutZ();
             Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
-                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t(0, 0, 1));
+                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
 
-            Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t(0, -1, 0));
+            Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t({0, -1, 0}));
             effectiveRotationAxis /= euclidean_norm(effectiveRotationAxis);
 
             Quaternion_t rotationAboutAxis(cos(0.5 * bendAngle),
@@ -251,14 +251,14 @@ void OpalBeamline::compute3DLattice() {
                 std::vector<Vector_t> truePath = bendElement->getDesignPath();
                 Quaternion_t directionExitHardEdge(cos(0.5 * (0.5 * bendAngle - entranceAngle)),
                                                    sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
-                Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t(0, 0, 1));
+                Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t({0, 0, 1}));
                 double distanceEntryHETruePath = euclidean_norm(truePath.front());
                 double distanceExitHETruePath = euclidean_norm(rotationAboutZ.rotate(truePath.back()) - exitHardEdge);
                 double pathLengthTruePath = (*it).getEnd() - (*it).getStart();
                 arcLength = pathLengthTruePath - distanceEntryHETruePath - distanceExitHETruePath;
             }
 
-            Vector_t chord = thisLength * halfRotationAboutAxis.rotate(Vector_t(0, 0, 1));
+            Vector_t chord = thisLength * halfRotationAboutAxis.rotate(Vector_t({0, 0, 1}));
             Vector_t endThis3D = beginThis3D + chord;
             double endThisPathLength = beginThisPathLength + arcLength;
 
@@ -287,7 +287,7 @@ void OpalBeamline::compute3DLattice() {
 
         double beginThisPathLength = element->getElementPosition();
         double thisLength = element->getElementLength();
-        Vector_t beginThis3D(0, 0, beginThisPathLength - endPriorPathLength);
+        Vector_t beginThis3D({0, 0, beginThisPathLength - endPriorPathLength});
 
         if (element->getType() == ElementType::SOURCE) {
             beginThis3D(2) -= thisLength;
@@ -304,9 +304,9 @@ void OpalBeamline::compute3DLattice() {
 
             double rotationAngleAboutZ = bendElement->getRotationAboutZ();
             Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
-                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t(0, 0, 1));
+                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
 
-            Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t(0, -1, 0));
+            Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t({0, -1, 0}));
             effectiveRotationAxis /= euclidean_norm(effectiveRotationAxis);
 
             Quaternion_t rotationAboutAxis(cos(0.5 * bendAngle),
@@ -321,7 +321,7 @@ void OpalBeamline::compute3DLattice() {
                 double entranceAngle = bendElement->getEntranceAngle();
                 Quaternion_t directionExitHardEdge(cos(0.5 * (0.5 * bendAngle - entranceAngle)),
                                                    sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
-                Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t(0, 0, 1));
+                Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t({0, 0, 1}));
                 double distanceEntryHETruePath = euclidean_norm(truePath.front());
                 double distanceExitHETruePath = euclidean_norm(rotationAboutZ.rotate(truePath.back()) - exitHardEdge);
                 double pathLengthTruePath = (*it).getEnd() - (*it).getStart();
@@ -329,7 +329,7 @@ void OpalBeamline::compute3DLattice() {
             }
 
             endThis3D = (beginThis3D +
-                         halfRotationAboutAxis.rotate(Vector_t(0, 0, thisLength)));
+                         halfRotationAboutAxis.rotate(Vector_t({0, 0, thisLength})));
             CoordinateSystemTrafo fromEndLastToEndThis(endThis3D,
                                                        rotationAboutAxis.conjugate());
             currentCoordTrafo = fromEndLastToEndThis * currentCoordTrafo;
@@ -338,7 +338,7 @@ void OpalBeamline::compute3DLattice() {
         } else {
             double rotationAngleAboutZ = (*it).getElement()->getRotationAboutZ();
             Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
-                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t(0, 0, 1));
+                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
 
             CoordinateSystemTrafo fromLastToThis(beginThis3D, rotationAboutZ);
 

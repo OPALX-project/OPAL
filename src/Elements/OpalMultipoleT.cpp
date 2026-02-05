@@ -55,6 +55,11 @@ OpalMultipoleT::OpalMultipoleT()
     itsAttr[ENTRYOFFSET] = Attributes::makeReal(
         "ENTRYOFFSET", "Longitudinal offset from standard entrance point [m]", 0.0);
 
+    // Time dependence attributes
+    itsAttr[SCALING_MODEL] = Attributes::makeString
+        ("SCALING_MODEL",
+         "The name of the time dependence model, which should give a scaling factor.");
+
     registerOwnership();
     setElement(new MultipoleT("MULTIPOLET"));
 }
@@ -76,7 +81,7 @@ void OpalMultipoleT::update() {
     // Base class first
     OpalElement::update();
     // Make some sanity checks
-    auto maxFOrder = Attributes::getReal(itsAttr[MAXFORDER]);
+    const auto maxFOrder = Attributes::getReal(itsAttr[MAXFORDER]);
     if(maxFOrder < MinimumMAXFORDER) {
         throw OpalException("OpalMultipoleT::Update",
                             "Attribute MAXFORDER must be >= 1.0");
@@ -85,17 +90,17 @@ void OpalMultipoleT::update() {
         WARNMSG("OpalMultipoleT::Update, a value of "
                 << maxFOrder << " for MAXFORDER may lead to excessive run time");
     }
-    auto rotation = Attributes::getReal(itsAttr[ROTATION]);
-    double bendAngle = Attributes::getReal(itsAttr[ANGLE]);
+    const double rotation = Attributes::getReal(itsAttr[ROTATION]);
+    const double bendAngle = Attributes::getReal(itsAttr[ANGLE]);
     if(bendAngle != 0.0 && rotation != 0.0) {
         throw OpalException("OpalMultipoleT::Update",
                             "Non-zero ROTATION (a skew multipole) is only supported for straight magnets");
     }
-    bool varRadius = Attributes::getBool(itsAttr[VARRADIUS]);
+    const bool varRadius = Attributes::getBool(itsAttr[VARRADIUS]);
     if(varRadius && bendAngle != 0.0) {
         WARNMSG("OpalMultipoleT::Update, the variable radius multipole magnet implementation is very slow");
     }
-    double entryOffset = Attributes::getReal(itsAttr[ENTRYOFFSET]);
+    const double entryOffset = Attributes::getReal(itsAttr[ENTRYOFFSET]);
     if((!varRadius || bendAngle == 0.0) && entryOffset != 0.0) {
         throw OpalException("OpalMultipoleT::Update",
                             "The ENTRYOFFSET is only supported for variable radius curved magnets");
@@ -106,7 +111,7 @@ void OpalMultipoleT::update() {
         i *= Units::T2kG;
     }
     // Set the attributes
-    auto length = Attributes::getReal(itsAttr[LENGTH]);
+    const auto length = Attributes::getReal(itsAttr[LENGTH]);
     auto* multT = dynamic_cast<MultipoleT*>(getElement());
     multT->setElementLength(length);
     multT->setBendAngle(bendAngle, varRadius);
@@ -120,6 +125,7 @@ void OpalMultipoleT::update() {
     multT->setRotation(rotation);
     multT->setEntranceAngle(Attributes::getReal(itsAttr[EANGLE]));
     multT->setEntryOffset(entryOffset);
+    multT->setScalingName(Attributes::getString(itsAttr[SCALING_MODEL]));
     // Transmit "unknown" attributes.
     OpalElement::updateUnknown(multT);
 }

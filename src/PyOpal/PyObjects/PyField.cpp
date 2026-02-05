@@ -76,7 +76,7 @@ py::object get_field_value_cyclotron(double x,
         throw(OpalException("PyField::get_field_value_cyclotron",
                             "ParallelCyclotronTracker was nullptr"));
     }
-    Vector_t R(x, y, z);
+    Vector_t R({x, y, z});
     Vector_t P, B, E;
     int outOfBounds = tracker->computeExternalFields_m(R, P, t, E, B);
     boost::python::tuple value = boost::python::make_tuple(outOfBounds,

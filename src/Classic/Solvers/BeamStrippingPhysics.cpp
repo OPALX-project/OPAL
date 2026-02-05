@@ -148,8 +148,8 @@ void BeamStrippingPhysics::doPhysics(PartBunchBase<double, 3>* bunch) {
     */
     temperature_m = vac_m->getTemperature();
     bool stop = vac_m->getStop();
-    Vector_t extE = Vector_t(0.0, 0.0, 0.0);
-    Vector_t extB = Vector_t(0.0, 0.0, 0.0); //kGauss
+    Vector_t extE = Vector_t({0.0, 0.0, 0.0});
+    Vector_t extB = Vector_t({0.0, 0.0, 0.0}); //kGauss
 
     for (size_t i = 0; i < bunch->getLocalNum(); ++i) {
         Vector_t& R = bunch->R[i];

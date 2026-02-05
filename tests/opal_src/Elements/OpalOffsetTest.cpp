@@ -42,8 +42,8 @@ void setReal(OpalLocalCartesianOffset& mag, std::string attName, double value) {
 
 TEST(OpalOffsetTest, TestGlobalCartesianOffset) {
     OpalGlobalCartesianOffset offset;
-    Vector_t refDir(0.1, std::sqrt(0.99), 0.0);
-    Vector_t refPos(1, 2, 0.0);
+    Vector_t refDir({0.1, std::sqrt(0.99), 0.0});
+    Vector_t refPos({1, 2, 0.0});
     setReal(offset, "END_POSITION_X", refPos[0]);
     setReal(offset, "END_POSITION_Y", refPos[1]);
     setReal(offset, "END_NORMAL_X", refDir[0]);
@@ -66,8 +66,8 @@ TEST(OpalOffsetTest, TestGlobalCartesianOffset) {
 
 TEST(OpalOffsetTest, TestLocalCartesianOffset) {
     OpalLocalCartesianOffset offset;
-    Vector_t refDir(0.1, std::sqrt(0.99), 0.0);
-    Vector_t refPos(1, 2, 0.0);
+    Vector_t refDir({0.1, std::sqrt(0.99), 0.0});
+    Vector_t refPos({1, 2, 0.0});
     setReal(offset, "END_POSITION_X", refPos[0]);
     setReal(offset, "END_POSITION_Y", refPos[1]);
     setReal(offset, "END_NORMAL_X", refDir[0]);

@@ -60,7 +60,7 @@ boost::optional<Vector_t> BoundingBox::getIntersectionPoint(const Vector_t& posi
     boost::optional<Vector_t> result = boost::none;
     double minDistance = std::numeric_limits<double>::max();
     const Vector_t dimensions = upperRightCorner_m - lowerLeftCorner_m;
-    Vector_t normal(1, 0, 0);
+    Vector_t normal({1, 0, 0});
     for (unsigned int d = 0; d < 3; ++ d) {
         double sign = -1;
         Vector_t upperCorner = lowerLeftCorner_m + dot(normal, upperRightCorner_m) * normal;
@@ -90,7 +90,7 @@ boost::optional<Vector_t> BoundingBox::getIntersectionPoint(const Vector_t& posi
             sign *= -1;
         }
 
-        normal = Vector_t(normal[2], normal[0], normal[1]);
+        normal = Vector_t({normal[2], normal[0], normal[1]});
     }
 
     return result;

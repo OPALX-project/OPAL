@@ -25,6 +25,8 @@
 
 #include <vector>
 
+#include "Physics/Units.h"
+
 void testNull(VariableRFCavity& cav1) {
     std::shared_ptr<AbstractTimeDependence> null_poly(nullptr);
     EXPECT_DOUBLE_EQ(cav1.getLength(), 0.);
@@ -168,13 +170,15 @@ TEST(VariableRFCavityTest, TestApplyField) {
     cav1.setLength(2.);
     cav1.setWidth(3.);
     cav1.setHeight(4.);
-    Vector_t R(1., 1., 1.);
-    Vector_t centroid(0., 0., 0.);
-    Vector_t B(0., 0., 0.);
-    Vector_t E(0., 0., 0.);
-    for (double t = 0.; t < 10.; t += 1.) {
-        double frequency = (3.+4.*t)*1e-3;
-        double e_test = (1.+2.*t)*sin(Physics::two_pi*t*frequency+(5.+6.*t));
+    Vector_t R({1., 1., 1.});
+    Vector_t centroid({0., 0., 0.});
+    Vector_t B({0., 0., 0.});
+    Vector_t E({0., 0., 0.});
+    for (double t = 0.0; t < 10.0e-9; t += 1.0e-9) {
+        double phase = poly3->getValue(t);
+        double amplitude = poly1->getValue(t);
+        double integralF = poly2->getIntegral(t) * Units::MHz2Hz;
+        double e_test = amplitude * sin(Physics::two_pi * integralF + phase);
         ASSERT_FALSE(cav1.apply(R, Vector_t(0.0), t, E, B));
         EXPECT_NEAR(0., E[0], 1.e-6);
         EXPECT_NEAR(0., E[1], 1.e-6);
@@ -197,10 +201,10 @@ TEST(VariableRFCavityTest, TestApplyBoundingBox) {
     cav1.setLength(2.);
     cav1.setHeight(3.);
     cav1.setWidth(4.);
-    Vector_t R(0., 0., 1.);
-    Vector_t centroid(0., 0., 0.);
-    Vector_t B(0., 0., 0.);
-    Vector_t E(0., 0., 0.);
+    Vector_t R({0., 0., 1.});
+    Vector_t centroid({0., 0., 0.});
+    Vector_t B({0., 0., 0.});
+    Vector_t E({0., 0., 0.});
     double t = 0;
     EXPECT_FALSE(cav1.apply(R, Vector_t(0.0), t, E, B));
     R[2] = 2.-1e-9;

@@ -22,7 +22,7 @@
 
 #include "Elements/OpalElement.h"
 
-class OpalMultipoleT: public OpalElement {
+class OpalMultipoleT final: public OpalElement {
 
 public:
     // The attributes of class OpalMultipoleT
@@ -43,6 +43,8 @@ public:
         // Further attributes for a variable radius multipole
         VARRADIUS,       // Variable radius flag
         ENTRYOFFSET,     // Longitudinal offset from standard entrance point
+        // Time dependence
+        SCALING_MODEL,   // Name of a time dependence object
         SIZE             // size of the enum
     };
 
@@ -59,8 +61,8 @@ public:
 
 private:
     // Not implemented.
-    OpalMultipoleT(const OpalMultipoleT&);
-    void operator=(const OpalMultipoleT&);
+    OpalMultipoleT(const OpalMultipoleT&) = delete;
+    void operator=(const OpalMultipoleT&) = delete;
 
     /** Default value for maximum series expansion order */
     static constexpr double DefaultMAXFORDER = 3.0;

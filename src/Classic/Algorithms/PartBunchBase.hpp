@@ -51,7 +51,7 @@ PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb, const PartDat
       dt_m(0.0),
       t_m(0.0),
       spos_m(0.0),
-      globalMeanR_m(Vector_t(0.0, 0.0, 0.0)),
+      globalMeanR_m(Vector_t({0.0, 0.0, 0.0})),
       globalToLocalQuaternion_m(Quaternion_t(1.0, 0.0, 0.0, 0.0)),
       rmax_m(0.0),
       rmin_m(0.0),
@@ -579,7 +579,7 @@ void PartBunchBase<T, Dim>::boundp() {
             throw GeneralClassicException("boundp() ", "h<0, can not build a mesh");
         }
 
-        Vector_t origin = rmin_m - Vector_t(hr_m[0] / 2.0, hr_m[1] / 2.0, hr_m[2] / 2.0);
+        Vector_t origin = rmin_m - Vector_t({hr_m[0] / 2.0, hr_m[1] / 2.0, hr_m[2] / 2.0});
         this->updateFields(hr_m, origin);
 
         if (fs_m->getFieldSolverType() == FieldSolverType::P3M) {
@@ -898,8 +898,8 @@ void PartBunchBase<T, Dim>::getLocalBounds(Vector_t& rmin, Vector_t& rmax) const
     const size_t localNum = getLocalNum();
     if (localNum == 0) {
         double maxValue = 1e8;
-        rmin = Vector_t(maxValue, maxValue, maxValue);
-        rmax = Vector_t(-maxValue, -maxValue, -maxValue);
+        rmin = Vector_t({maxValue, maxValue, maxValue});
+        rmax = Vector_t({-maxValue, -maxValue, -maxValue});
         return;
     }
 
@@ -976,8 +976,8 @@ void PartBunchBase<T, Dim>::setParticle(OpalParticle const& particle, int ii) {
 template <class T, unsigned Dim>
 OpalParticle PartBunchBase<T, Dim>::getParticle(int ii) {
     OpalParticle particle(ID[ii],
-                          Vector_t(R[ii](0), R[ii](1), 0), P[ii],
-                          R[ii](2), Q[ii], M[ii]);
+                          Vector_t({R[ii](0), R[ii](1), 0}), P[ii],
+                                   R[ii](2), Q[ii], M[ii]);
     return particle;
 }
 
@@ -1143,7 +1143,7 @@ Vector_t PartBunchBase<T, Dim>::get_pmean_Distribution() const {
         return dist_m->get_pmean();
 
     double gamma = 0.1 / getM() + 1; // set default 0.1 eV
-    return Vector_t(0, 0, std::sqrt(std::pow(gamma, 2) - 1));
+    return Vector_t({0, 0, std::sqrt(std::pow(gamma, 2) - 1)});
 }
 
 

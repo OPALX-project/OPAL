@@ -89,6 +89,8 @@
 #include "Elements/OpalOutputPlane.h"
 #include "Elements/OpalPepperPot.h"
 #include "Elements/OpalPolynomialTimeDependence.h"
+#include "Elements/OpalSinusoidalTimeDependence.h"
+#include "Elements/OpalSplineTimeDependence.h"
 #include "Elements/OpalProbe.h"
 #include "Elements/OpalQuadrupole.h"
 #include "Elements/OpalRBend.h"
@@ -210,6 +212,8 @@ namespace {
         opal->create(new OpalOutputPlane());
         opal->create(new OpalPepperPot());
         opal->create(new OpalPolynomialTimeDependence());
+        opal->create(new OpalSinusoidalTimeDependence());
+        opal->create(new OpalSplineTimeDependence());
         opal->create(new OpalProbe());
         opal->create(new OpalQuadrupole());
         opal->create(new OpalRBend());
