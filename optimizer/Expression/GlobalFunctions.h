@@ -23,12 +23,10 @@
 #ifndef __GLOBAL_FUNCTIONS_H__
 #define __GLOBAL_FUNCTIONS_H__
 
-#include <string>
 #include <cmath>
-
-#include "boost/tuple/tuple.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
+#include <string>
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/SDDSReader.h"
@@ -141,8 +139,6 @@ struct _log {
     }
 };
 
-
-
 struct _ceil {
     Expressions::Result_t operator()(client::function::arguments_t args) {
         if (args.size() != 1) {
@@ -191,8 +187,6 @@ struct _fmod {
         return std::make_tuple(fmod(value, val2), true);
     }
 };
-
-
 
 struct _sin {
     Expressions::Result_t operator()(client::function::arguments_t args) {
@@ -266,7 +260,6 @@ struct _atan {
     }
 };
 
-
 static functionDictionary_t get() {
 
     typedef std::pair<std::string, client::function::type> funcEntry_t;
@@ -283,7 +276,6 @@ static functionDictionary_t get() {
     client::function::type log_; log_ = _log();
     funcs.insert(funcEntry_t("log", log_));
 
-
     client::function::type ceil_; ceil_ = _ceil();
     funcs.insert(funcEntry_t("ceil", ceil_));
     client::function::type fabs_; fabs_ = _fabs();
@@ -292,7 +284,6 @@ static functionDictionary_t get() {
     funcs.insert(funcEntry_t("floor", floor_));
     client::function::type fmod_; fmod_ = _fmod();
     funcs.insert(funcEntry_t("fmod", fmod_));
-
 
     client::function::type sin_; sin_ = _sin();
     funcs.insert(funcEntry_t("sin", sin_));
