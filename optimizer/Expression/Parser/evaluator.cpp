@@ -30,9 +30,8 @@ namespace client { namespace code_gen {
 
     bool StackEvaluator::operator()(ast::identifier const& x) {
 
-        std::map<std::string, double>::iterator i =
-            variableDictionary_.find(x.name);
-        if(i == variableDictionary_.end()) {
+        auto i = variableDictionary_.find(x.name);
+        if (i == variableDictionary_.end()) {
             std::cout << "Undefined variable " << x.name << std::endl;
             return false;
         }
@@ -43,8 +42,9 @@ namespace client { namespace code_gen {
 
     bool StackEvaluator::operator()(ast::operation const& x) {
 
-        if (!boost::apply_visitor(*this, x.operand_))
+        if (!boost::apply_visitor(*this, x.operand_)) {
             return false;
+        }
 
         double op2 = std::get<double>(evaluation_stack_.back());
         evaluation_stack_.pop_back();
@@ -89,7 +89,7 @@ namespace client { namespace code_gen {
             default               : BOOST_ASSERT(0); return false;
         }
 
-        evaluation_stack_.push_back(op);
+        evaluation_stack_.emplace_back(std::in_place_type<double>, op);
         return true;
     }
 
@@ -101,26 +101,25 @@ namespace client { namespace code_gen {
         }
 
         std::vector<client::function::argument_t> args;
-        args.reserve(x.args.size());
-        for (size_t i = 0; i < x.args.size(); ++i) {
-            args.emplace_back(evaluation_stack_.back());
+        for (size_t i = x.args.size(); i-- > 0; ) {
+            args.emplace_back(std::move(evaluation_stack_.back()));
             evaluation_stack_.pop_back();
         }
-        // reverse to restore original order
-        std::reverse(args.begin(), args.end());
 
         std::map<std::string, client::function::type>::iterator itr =
             functions_.find(x.function_name.name);
-        if(itr == functions_.end()) {
+        if (itr == functions_.end()) {
             std::cout << "Undefined function "
                       << x.function_name.name << std::endl;
             return false;
         }
 
-        if (! std::get<1>(itr->second(args))) return false;
+        if (! std::get<1>(itr->second(args))) {
+            return false;
+        }
 
         double function_result = std::get<0>(itr->second(args));
-        evaluation_stack_.push_back(function_result);
+        evaluation_stack_.emplace_back(std::in_place_type<double>, function_result);
 
         return true;
     }
