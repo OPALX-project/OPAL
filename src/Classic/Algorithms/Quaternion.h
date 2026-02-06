@@ -46,7 +46,7 @@ Quaternion getQuaternion(Vector_t vec, Vector_t reference);
 
 inline
 Quaternion::Quaternion():
-    Vektor<double, 4>(1.0, 0.0, 0.0, 0.0)
+    Vektor<double, 4>({1.0, 0.0, 0.0, 0.0})
 {}
 
 inline
@@ -56,7 +56,7 @@ Quaternion::Quaternion(const Quaternion & quat):
 
 inline
 Quaternion::Quaternion(const double & x0, const double & x1, const double & x2, const double & x3):
-    Vektor<double, 4>(x0, x1, x2, x3)
+    Vektor<double, 4>({x0, x1, x2, x3})
 {}
 
 inline
@@ -116,7 +116,7 @@ double Quaternion::real() const
 inline
 Vector_t Quaternion::imag() const
 {
-    Vector_t vec((*this)(1), (*this)(2), (*this)(3));
+    Vector_t vec({(*this)(1), (*this)(2), (*this)(3)});
 
     return vec;
 }

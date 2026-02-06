@@ -22,10 +22,10 @@ namespace mslang {
     }
 
     void Rectangle::computeBoundingBox() {
-        std::vector<Vector_t> corners({Vector_t(0.5 * width_m, 0.5 * height_m, 0),
-                    Vector_t(-0.5 * width_m, 0.5 * height_m, 0),
-                    Vector_t(-0.5 * width_m, -0.5 * height_m, 0),
-                    Vector_t(0.5 * width_m, -0.5 * height_m, 0)});
+        std::vector<Vector_t> corners({Vector_t({0.5 * width_m, 0.5 * height_m, 0}),
+                Vector_t({-0.5 * width_m, 0.5 * height_m, 0}),
+                Vector_t({-0.5 * width_m, -0.5 * height_m, 0}),
+                Vector_t({0.5 * width_m, -0.5 * height_m, 0})});
 
         for (Vector_t &v: corners) {
             v = trafo_m.transformFrom(v);
@@ -64,10 +64,12 @@ namespace mslang {
     }
 
     void Rectangle::writeGnuplot(std::ofstream &out) const {
-        std::vector<Vector_t> pts({Vector_t(0.5 * width_m, 0.5 * height_m, 0),
-                    Vector_t(-0.5 * width_m, 0.5 * height_m, 0),
-                    Vector_t(-0.5 * width_m, -0.5 * height_m, 0),
-                    Vector_t(0.5 * width_m, -0.5 * height_m, 0)});
+        std::vector<Vector_t> pts({
+                                  Vector_t({ 0.5 * width_m,  0.5 * height_m, 0}),
+                                  Vector_t({-0.5 * width_m,  0.5 * height_m, 0}),
+                                  Vector_t({-0.5 * width_m, -0.5 * height_m, 0}),
+                                  Vector_t({ 0.5 * width_m, -0.5 * height_m, 0})
+            });
         unsigned int width = out.precision() + 8;
         for (unsigned int i = 0; i < 5; ++ i) {
             Vector_t pt = pts[i % 4];

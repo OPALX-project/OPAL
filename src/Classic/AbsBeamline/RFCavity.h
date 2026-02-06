@@ -482,14 +482,14 @@ std::string RFCavity::getFrequencyModelName() {
 
 inline
 CoordinateSystemTrafo RFCavity::getEdgeToBegin() const {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m),
+    CoordinateSystemTrafo ret(Vector_t({0, 0, startField_m}),
                               Quaternion(1, 0, 0, 0));
     return ret;
 }
 
 inline
 CoordinateSystemTrafo RFCavity::getEdgeToEnd() const {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m + getElementLength()),
+    CoordinateSystemTrafo ret(Vector_t({0, 0, startField_m + getElementLength()}),
                               Quaternion(1, 0, 0, 0));
     return ret;
 }

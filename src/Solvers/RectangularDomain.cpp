@@ -32,8 +32,8 @@
 RectangularDomain::RectangularDomain(double a, double b, IntVector_t nr, Vector_t hr)
     : RegularDomain(nr, hr, "CONSTANT")
 {
-    setRangeMin(Vector_t(-a, -b, getMinZ()));
-    setRangeMax(Vector_t( a,  b, getMaxZ()));
+    setRangeMin(Vector_t({-a, -b, getMinZ()}));
+    setRangeMax(Vector_t({ a,  b, getMaxZ()}));
 }
 
 void RectangularDomain::compute(Vector_t hr, NDIndex<3> /*localId*/){

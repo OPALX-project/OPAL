@@ -40,7 +40,7 @@ public:
         // dmsg << "We use parallel hash pair builder small chaining mesh ****************************" << endl;
 
         //compute which dimensions are really serial process neighbors itself in this direction
-        Vektor<bool,3> parallel_dims(0,0,0);
+        Vektor<bool,3> parallel_dims({0,0,0});
 
         NDIndex<3> globDomain = particles.getFieldLayout().getDomain();
         NDIndex<3> locDomain = particles.getFieldLayout().getLocalNDIndex();
@@ -112,7 +112,7 @@ public:
                     //compute index of neighboring bucket to interact with
                     for (unsigned n=0; n<neigh;++n){
                         int bx_neigh, by_neigh, bz_neigh;
-                        Vektor<double,3> shift(0,0,0);
+                        Vektor<double,3> shift({0,0,0});
 
                         bx_neigh = bx+offset[n][0];
                         //if we are serial in x-dimension we have no cached ghost particles. The local positions get periodically shifted

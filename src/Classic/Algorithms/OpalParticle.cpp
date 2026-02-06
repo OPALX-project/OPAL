@@ -29,8 +29,8 @@ OpalParticle::OpalParticle(int64_t id,
                            double t,
                            double q, double m):
     id_m(id),
-    R_m(x, y, z),
-    P_m(px, py, pz),
+    R_m({x, y, z}),
+    P_m({px, py, pz}),
     time_m(t),
     charge_m(q),
     mass_m(m)

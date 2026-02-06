@@ -171,7 +171,7 @@ void OpalScalingFFAMagnet::update() {
     magnet->setRMin(rmin);
     magnet->setRMax(rmax);
 
-    Vector_t centre(r0Signed, 0, 0);
+    Vector_t centre({r0Signed, 0, 0});
     magnet->setCentre(centre);
 
     // we store maximum vertical displacement (which is half the height)

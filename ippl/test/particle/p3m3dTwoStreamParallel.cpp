@@ -277,7 +277,7 @@ class ChargedParticles : public IpplParticleBase<PL> {
                 void calc_Amplitude_E(){
                         //computes the maximum amplitude in the electric field
                         AmplitudeEfield=max(sqrt(dot(eg_m,eg_m)));
-                        eg_m=eg_m*Vektor<double,3>(0,0,1);
+                        eg_m=eg_m*Vektor<double,3>({0,0,1});
                         AmplitudeEFz=max(sqrt(dot(eg_m,eg_m)));
                 }
 
@@ -565,10 +565,10 @@ int main(int argc, char *argv[]){
         unsigned param = 1;
 
         if(Dim == 3) {
-                nr = Vektor<int,Dim>(atoi(argv[1]),atoi(argv[2]),atoi(argv[3]));
+            nr = Vektor<int,Dim>({atoi(argv[1]),atoi(argv[2]),atoi(argv[3])});
                 param = 4;
         } else {
-                nr = Vektor<int,Dim>(atoi(argv[1]),atoi(argv[2]));
+            nr = Vektor<int,Dim>({atoi(argv[1]),atoi(argv[2])});
                 param = 3;
         }
 
@@ -593,8 +593,8 @@ int main(int argc, char *argv[]){
 
 #ifdef SPHERE
         double L = 4.;
-        Vektor<double,Dim> extend_l(-L,-L,-L);
-        Vektor<double,Dim> extend_r(L,L,L);
+        Vektor<double,Dim> extend_l({-L,-L,-L});
+        Vektor<double,Dim> extend_r({L,L,L});
 #endif
         ///////////////////////////////////////////////////////////////
 
@@ -603,7 +603,7 @@ int main(int argc, char *argv[]){
         double dt = atof(argv[param++]);
         double eps = atof(argv[param++]);
         int iterations =  atoi(argv[param++]);
-        Vektor<double,3> source(0,0,0);
+        Vektor<double,3> source({0,0,0});
         source[0]=atof(argv[param++]);
         source[1]=atof(argv[param++]);
         source[2]=atof(argv[param++]);
@@ -666,9 +666,9 @@ int main(int argc, char *argv[]){
 
 
 #ifdef SPHERE
-        Vektor<int,Dim> Nx(16,16,16);
-        Vektor<int,Dim> Nv(16,16,16);
-        Vektor<double,Dim> Vmax(6,6,6);
+        Vektor<int,Dim> Nx({16,16,16});
+        Vektor<int,Dim> Nv({16,16,16});
+        Vektor<double,Dim> Vmax({6,6,6});
         //refinement factor for mesh in 2d phase space
         int refine = 4;
         P = new ChargedParticles<playout_t>(PL, nr, decomp, extend_l, extend_r,refine*Nx,refine*Nv,Vmax);

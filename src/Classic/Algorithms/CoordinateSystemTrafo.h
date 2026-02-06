@@ -52,8 +52,8 @@ Inform& operator<<(Inform& os, const CoordinateSystemTrafo &trafo) {
 inline
 void CoordinateSystemTrafo::print(std::ostream &os) const {
     os << "Origin: " << origin_m << "\n"
-       << "z-axis: " << orientation_m.conjugate().rotate(Vector_t(0,0,1)) << "\n"
-       << "x-axis: " << orientation_m.conjugate().rotate(Vector_t(1,0,0));
+       << "z-axis: " << orientation_m.conjugate().rotate(Vector_t({0,0,1})) << "\n"
+       << "x-axis: " << orientation_m.conjugate().rotate(Vector_t({1,0,0}));
 }
 
 inline

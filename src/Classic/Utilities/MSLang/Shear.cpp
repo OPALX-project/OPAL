@@ -20,8 +20,8 @@ namespace mslang {
     }
 
     void Shear::applyShear(std::vector<std::shared_ptr<Base> > &bfuncs) {
-        AffineTransformation shear(Vector_t(1.0, tan(angleX_m), 0.0),
-                                   Vector_t(-tan(angleY_m), 1.0, 0.0));
+        AffineTransformation shear(Vector_t({1.0, tan(angleX_m), 0.0}),
+                                   Vector_t({-tan(angleY_m), 1.0, 0.0}));
 
         const unsigned int size = bfuncs.size();
 

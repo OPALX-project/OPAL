@@ -170,10 +170,10 @@ TEST(VariableRFCavityTest, TestApplyField) {
     cav1.setLength(2.);
     cav1.setWidth(3.);
     cav1.setHeight(4.);
-    Vector_t R(1., 1., 1.);
-    Vector_t centroid(0., 0., 0.);
-    Vector_t B(0., 0., 0.);
-    Vector_t E(0., 0., 0.);
+    Vector_t R({1., 1., 1.});
+    Vector_t centroid({0., 0., 0.});
+    Vector_t B({0., 0., 0.});
+    Vector_t E({0., 0., 0.});
     for (double t = 0.0; t < 10.0e-9; t += 1.0e-9) {
         double phase = poly3->getValue(t);
         double amplitude = poly1->getValue(t);
@@ -201,10 +201,10 @@ TEST(VariableRFCavityTest, TestApplyBoundingBox) {
     cav1.setLength(2.);
     cav1.setHeight(3.);
     cav1.setWidth(4.);
-    Vector_t R(0., 0., 1.);
-    Vector_t centroid(0., 0., 0.);
-    Vector_t B(0., 0., 0.);
-    Vector_t E(0., 0., 0.);
+    Vector_t R({0., 0., 1.});
+    Vector_t centroid({0., 0., 0.});
+    Vector_t B({0., 0., 0.});
+    Vector_t E({0., 0., 0.});
     double t = 0;
     EXPECT_FALSE(cav1.apply(R, Vector_t(0.0), t, E, B));
     R[2] = 2.-1e-9;

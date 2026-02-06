@@ -540,7 +540,7 @@ int main(int argc, char *argv[]){
     Inform msg(argv[0]);
     Inform msg2all(argv[0],INFORM_ALL_NODES);
 
-    Vektor<int,Dim> nr(atoi(argv[1]),atoi(argv[2]),atoi(argv[3]));
+    Vektor<int,Dim> nr({atoi(argv[1]),atoi(argv[2]),atoi(argv[3])});
 
     const unsigned int totalP = atoi(argv[4]);
     const unsigned int nt     = atoi(argv[5]);

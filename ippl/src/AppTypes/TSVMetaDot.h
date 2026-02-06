@@ -246,8 +246,8 @@ struct TSV_MetaDot< Tenzor<T1,2> , Vektor<T2,2> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,2>
   apply(const Tenzor<T1,2>& lhs, const Vektor<T2,2>& rhs) {
-    return Vektor<T0,2>( lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] ,
-			 lhs(1,0)*rhs[0] + lhs(1,1)*rhs[1] );
+    return Vektor<T0,2>({ lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] ,
+			 lhs(1,0)*rhs[0] + lhs(1,1)*rhs[1] });
   }
 };
 
@@ -257,9 +257,9 @@ struct TSV_MetaDot< Tenzor<T1,3> , Vektor<T2,3> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,3>
   apply(const Tenzor<T1,3>& lhs, const Vektor<T2,3>& rhs) {
-    return Vektor<T0,3>( lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] + lhs(0,2)*rhs[2],
+    return Vektor<T0,3>({ lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] + lhs(0,2)*rhs[2],
 			 lhs(1,0)*rhs[0] + lhs(1,1)*rhs[1] + lhs(1,2)*rhs[2],
-			 lhs(2,0)*rhs[0] + lhs(2,1)*rhs[1] + lhs(2,2)*rhs[2] );
+			 lhs(2,0)*rhs[0] + lhs(2,1)*rhs[1] + lhs(2,2)*rhs[2] });
   }
 };
 
@@ -303,8 +303,8 @@ struct TSV_MetaDot< Vektor<T1,2> , Tenzor<T2,2> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,2>
   apply(const Vektor<T1,2>& lhs, const Tenzor<T2,2>& rhs) {
-    return Vektor<T0,2>( lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) ,
-			 lhs[0]*rhs(0,1) + lhs[1]*rhs(1,1) );
+    return Vektor<T0,2>({ lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) ,
+			 lhs[0]*rhs(0,1) + lhs[1]*rhs(1,1) });
   }
 };
 
@@ -314,9 +314,9 @@ struct TSV_MetaDot< Vektor<T1,3> , Tenzor<T2,3> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,3>
   apply(const Vektor<T1,3>& lhs, const Tenzor<T2,3>& rhs) {
-    return Vektor<T0,3>( lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) + lhs[2]*rhs(2,0),
+    return Vektor<T0,3>({ lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) + lhs[2]*rhs(2,0),
 			 lhs[0]*rhs(0,1) + lhs[1]*rhs(1,1) + lhs[2]*rhs(2,1),
-			 lhs[0]*rhs(0,2) + lhs[1]*rhs(1,2) + lhs[2]*rhs(2,2) );
+			 lhs[0]*rhs(0,2) + lhs[1]*rhs(1,2) + lhs[2]*rhs(2,2) });
   }
 };
 
@@ -363,8 +363,8 @@ struct TSV_MetaDot< SymTenzor<T1,2> , Vektor<T2,2> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,2>
   apply(const SymTenzor<T1,2>& lhs, const Vektor<T2,2>& rhs) {
-    return Vektor<T0,2>( lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] ,
-			 lhs(1,0)*rhs[0] + lhs(1,1)*rhs[1] );
+    return Vektor<T0,2>({ lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] ,
+			 lhs(1,0)*rhs[0] + lhs(1,1)*rhs[1] });
   }
 };
 
@@ -374,9 +374,9 @@ struct TSV_MetaDot< SymTenzor<T1,3> , Vektor<T2,3> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,3>
   apply(const SymTenzor<T1,3>& lhs, const Vektor<T2,3>& rhs) {
-    return Vektor<T0,3>( lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] + lhs(0,2)*rhs[2],
+    return Vektor<T0,3>({ lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] + lhs(0,2)*rhs[2],
 			 lhs(1,0)*rhs[0] + lhs(1,1)*rhs[1] + lhs(1,2)*rhs[2],
-			 lhs(2,0)*rhs[0] + lhs(2,1)*rhs[1] + lhs(2,2)*rhs[2] );
+			 lhs(2,0)*rhs[0] + lhs(2,1)*rhs[1] + lhs(2,2)*rhs[2] });
   }
 };
 
@@ -423,8 +423,8 @@ struct TSV_MetaDot< Vektor<T1,2> , SymTenzor<T2,2> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,2>
   apply(const Vektor<T1,2>& lhs, const SymTenzor<T2,2>& rhs) {
-    return Vektor<T0,2>( lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) ,
-			 lhs[0]*rhs(0,1) + lhs[1]*rhs(1,1) );
+    return Vektor<T0,2>({ lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) ,
+			 lhs[0]*rhs(0,1) + lhs[1]*rhs(1,1) });
   }
 };
 
@@ -434,9 +434,9 @@ struct TSV_MetaDot< Vektor<T1,3> , SymTenzor<T2,3> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,3>
   apply(const Vektor<T1,3>& lhs, const SymTenzor<T2,3>& rhs) {
-    return Vektor<T0,3>( lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) + lhs[2]*rhs(2,0),
+    return Vektor<T0,3>({ lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) + lhs[2]*rhs(2,0),
 			 lhs[0]*rhs(0,1) + lhs[1]*rhs(1,1) + lhs[2]*rhs(2,1),
-			 lhs[0]*rhs(0,2) + lhs[1]*rhs(1,2) + lhs[2]*rhs(2,2) );
+			 lhs[0]*rhs(0,2) + lhs[1]*rhs(1,2) + lhs[2]*rhs(2,2) });
   }
 };
 
@@ -609,8 +609,8 @@ struct TSV_MetaDot< Vektor<T1,2> , AntiSymTenzor<T2,2> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,2>
   apply(const Vektor<T1,2>& lhs, const AntiSymTenzor<T2,2>& rhs) {
-    return Vektor<T0,2>( lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) ,
-			 lhs[0]*rhs(0,1) + lhs[1]*rhs(1,1) );
+    return Vektor<T0,2>({ lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) ,
+			 lhs[0]*rhs(0,1) + lhs[1]*rhs(1,1) });
   }
 };
 
@@ -620,9 +620,9 @@ struct TSV_MetaDot< Vektor<T1,3> , AntiSymTenzor<T2,3> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,3>
   apply(const Vektor<T1,3>& lhs, const AntiSymTenzor<T2,3>& rhs) {
-    return Vektor<T0,3>( lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) + lhs[2]*rhs(2,0),
+    return Vektor<T0,3>({ lhs[0]*rhs(0,0) + lhs[1]*rhs(1,0) + lhs[2]*rhs(2,0),
 			 lhs[0]*rhs(0,1) + lhs[1]*rhs(1,1) + lhs[2]*rhs(2,1),
-			 lhs[0]*rhs(0,2) + lhs[1]*rhs(1,2) + lhs[2]*rhs(2,2) );
+			 lhs[0]*rhs(0,2) + lhs[1]*rhs(1,2) + lhs[2]*rhs(2,2) });
   }
 };
 
@@ -668,8 +668,8 @@ struct TSV_MetaDot< AntiSymTenzor<T1,2> , Vektor<T2,2> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,2>
   apply(const AntiSymTenzor<T1,2>& lhs, const Vektor<T2,2>& rhs) {
-    return Vektor<T0,2>( lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] ,
-			 lhs(1,0)*rhs[0] + lhs(1,1)*rhs[1] );
+    return Vektor<T0,2>({ lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] ,
+			 lhs(1,0)*rhs[0] + lhs(1,1)*rhs[1] });
   }
 };
 
@@ -679,9 +679,9 @@ struct TSV_MetaDot< AntiSymTenzor<T1,3> , Vektor<T2,3> >
   typedef typename PETEBinaryReturn<T1,T2,OpMultipply>::type T0;
   inline static Vektor<T0,3>
   apply(const AntiSymTenzor<T1,3>& lhs, const Vektor<T2,3>& rhs) {
-    return Vektor<T0,3>( lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] + lhs(0,2)*rhs[2],
+    return Vektor<T0,3>({ lhs(0,0)*rhs[0] + lhs(0,1)*rhs[1] + lhs(0,2)*rhs[2],
 			 lhs(1,0)*rhs[0] + lhs(1,1)*rhs[1] + lhs(1,2)*rhs[2],
-			 lhs(2,0)*rhs[0] + lhs(2,1)*rhs[1] + lhs(2,2)*rhs[2] );
+			 lhs(2,0)*rhs[0] + lhs(2,1)*rhs[1] + lhs(2,2)*rhs[2] });
   }
 };
 
