@@ -75,6 +75,9 @@ class Tanh : public EndFieldModel {
      */
     double function(double x, int n) const;
 
+    /** Offset from magnet nominal boundary to centre */
+    double getStartOffset() const {return getX0();}
+
     /** Nominal flat top length is twice x0 (one x0 in each direction) */
     double getCentreLength() const {return getX0()*2.0;}
 

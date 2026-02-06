@@ -54,6 +54,13 @@ class EndFieldModel {
    */
   virtual double getCentreLength() const = 0;
 
+  /** Return the distance from s = 0.0 to the fringe field boundary
+   *
+   *  Fringe field boundary can be defined as the position of step function in
+   *  the hard-edged limit.
+   */
+  virtual double getStartOffset() const = 0;
+
   /** Return the nominal end field length of the magnet
    */
   virtual double getEndLength() const = 0;

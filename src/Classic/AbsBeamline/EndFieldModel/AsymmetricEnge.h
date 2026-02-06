@@ -68,7 +68,10 @@ class AsymmetricEnge : public EndFieldModel {
         std::ostream& print(std::ostream& out) const;
 
         /** Return the value of enge at some point x */
-        inline double function(double x, int n) const;
+        double function(double x, int n) const;
+
+        /** Start offset is x0start */
+        inline double getStartOffset() const;
 
         /** Centre length is the average of x0End and x0Start */
         inline double getCentreLength() const;
@@ -141,22 +144,6 @@ void AsymmetricEnge::setX0End(double x0) {
     engeEnd_m->setX0(x0);
 }
 
-double AsymmetricEnge::function(double x, int n) const {
-    // f(x) = E(x-x0) + E(-x-x0) - 1
-    // f^{(2n)} = E^{(2n)}(x-x0) + E^{(2n)}(-x-x0)
-    // f^{(2n+1)} = E^{(2n)}(x-x0) - E^{(2n)}(-x-x0)
-    if (n == 0) {
-        return engeStart_m->getEnge(x-engeStart_m->getX0(), n)+
-               engeEnd_m->getEnge(-x-engeEnd_m->getX0(), n)-1;
-    } else if (n%2) {
-        return engeStart_m->getEnge(x-engeStart_m->getX0(), n)-
-               engeEnd_m->getEnge(-x-engeEnd_m->getX0(), n);
-    } else {
-        return engeStart_m->getEnge(x-engeStart_m->getX0(), n)+
-               engeEnd_m->getEnge(-x-engeEnd_m->getX0(), n);
-    }
-}
-
 AsymmetricEnge* AsymmetricEnge::clone() const {
     return new AsymmetricEnge(*this);
 }
@@ -166,7 +153,11 @@ void AsymmetricEnge::setMaximumDerivative(size_t n) {
 }
 
 double AsymmetricEnge::getCentreLength() const {
-    return (engeStart_m->getCentreLength()+engeEnd_m->getCentreLength())/2;
+    return (engeStart_m->getCentreLength()+engeEnd_m->getCentreLength())*2;
+}
+
+double AsymmetricEnge::getStartOffset() const {
+    return engeStart_m->getCentreLength();
 }
 
 double AsymmetricEnge::getEndLength() const {

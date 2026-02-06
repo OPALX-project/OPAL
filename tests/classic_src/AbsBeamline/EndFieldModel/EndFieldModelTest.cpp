@@ -14,6 +14,7 @@ public:
     void rescale(double scaleFactor) { if(scaleFactor) {}}
     double getEndLength() const {return 0;}
     double getCentreLength() const {return 0;}
+    double getStartOffset() const {return 0;}
 private:
 
 };
