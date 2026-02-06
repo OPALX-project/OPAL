@@ -155,8 +155,8 @@ private:
             Expressions::Result_t result =
                 constraint->evaluate(variable_dictionary);
 
-            double evaluation = boost::get<0>(result);
-            bool   is_valid   = boost::get<1>(result);
+            double evaluation = std::get<0>(result);
+            bool   is_valid   = std::get<1>(result);
 
             if (is_valid==false || evaluation==0) {
                 return false;
@@ -173,4 +173,3 @@ private:
 };
 
 #endif
-

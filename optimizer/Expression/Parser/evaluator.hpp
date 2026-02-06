@@ -8,12 +8,12 @@
 #define STACKEVALUATOR_HPP
 
 #include <map>
+#include <tuple>
+#include <variant>
 #include <vector>
 
 #include <boost/function.hpp>
 #include <boost/assert.hpp>
-#include <boost/variant/get.hpp>
-#include <boost/variant/variant.hpp>
 #include <boost/phoenix/core.hpp>
 #include <boost/phoenix/function.hpp>
 #include <boost/phoenix/operator.hpp>
@@ -43,7 +43,7 @@ namespace client { namespace code_gen
         double result() {
             BOOST_ASSERT(evaluation_stack_.size() == 1);
             client::function::argument_t res = evaluation_stack_.back();
-            double result = boost::get<double>(res);
+            double result = std::get<double>(res);
             evaluation_stack_.pop_back();
             return result;
         }

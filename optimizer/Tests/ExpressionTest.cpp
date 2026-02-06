@@ -20,6 +20,8 @@
 //
 #include <set>
 #include <string>
+#include <tuple>
+#include <variant>
 
 #include "Expression/Expression.h"
 #include "Util/OptPilotException.h"
@@ -28,11 +30,6 @@
 
 #include "gtest/gtest.h"
 
-#include "boost/tuple/tuple.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
-
-
 namespace {
 
 
@@ -40,8 +37,8 @@ struct my_abs {
 
     Expressions::Result_t operator()(client::function::arguments_t args) {
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(fabs(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(fabs(value), true);
     }
 };
 
@@ -49,9 +46,9 @@ struct my_pow {
 
     Expressions::Result_t operator()(client::function::arguments_t args) {
 
-        double base = boost::get<double>(args[0]);
-        double exponent = boost::get<double>(args[1]);
-        return boost::make_tuple(pow(base, exponent), true);
+        double base = std::get<double>(args[0]);
+        double exponent = std::get<double>(args[1]);
+        return std::make_tuple(pow(base, exponent), true);
     }
 };
 
@@ -125,8 +122,8 @@ struct my_pow {
         });
 
         double expected = fabs(1 + a * a * 2 * b + 2);
-        ASSERT_DOUBLE_EQ(expected, boost::get<0>(result));
-        ASSERT_TRUE(boost::get<1>(result));
+        ASSERT_DOUBLE_EQ(expected, std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
 
     }
 
@@ -154,8 +151,8 @@ struct my_pow {
         });
 
         double expected = fabs(1 + a * 2) + fabs(b + 2);
-        ASSERT_DOUBLE_EQ(expected, boost::get<0>(result));
-        ASSERT_TRUE(boost::get<1>(result));
+        ASSERT_DOUBLE_EQ(expected, std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
 
     }
 
@@ -187,8 +184,8 @@ struct my_pow {
         });
 
         double expected = fabs(1 + pow(a, 3.0) * 2) + fabs(b + 2);
-        ASSERT_DOUBLE_EQ(expected, boost::get<0>(result));
-        ASSERT_TRUE(boost::get<1>(result));
+        ASSERT_DOUBLE_EQ(expected, std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
 
     }
 
@@ -208,11 +205,11 @@ struct my_pow {
         });
 
         bool expected = true;
-        ASSERT_DOUBLE_EQ(expected, boost::get<0>(result));
-        ASSERT_TRUE(boost::get<1>(result));
+        ASSERT_DOUBLE_EQ(expected, std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
 
         Expressions::OperatorType_t op = e->getOpType();
-        ASSERT_EQ(Expressions::INEQ_RHS, op);
+        ASSERT_EQ(Expressions::OperatorType_t::INEQ_RHS, op);
     }
 
 }

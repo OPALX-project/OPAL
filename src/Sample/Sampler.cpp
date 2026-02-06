@@ -83,8 +83,8 @@ Sampler::Sampler(const std::map<std::string,
     for(itr = dvars_m.begin(); itr != dvars_m.end(); itr++) {
         dVarBounds_m.push_back(
                 std::pair<double, double>
-                    (boost::get<LOWER_BOUND>(itr->second),
-                     boost::get<UPPER_BOUND>(itr->second)));
+                    (std::get<LOWER_BOUND>(itr->second),
+                     std::get<UPPER_BOUND>(itr->second)));
     }
 
     writeJsonHeader();
@@ -195,7 +195,7 @@ void Sampler::createNewIndividual() {
 
     DVarContainer_t::iterator itr;
     for(itr = dvars_m.begin(); itr != dvars_m.end(); itr++) {
-        std::string dName = boost::get<VAR_NAME>(itr->second);
+        std::string dName = std::get<VAR_NAME>(itr->second);
         dNames.push_back(dName);
     }
 
@@ -204,7 +204,7 @@ void Sampler::createNewIndividual() {
     ind->id = gid++;
     
     for(itr = dvars_m.begin(); itr != dvars_m.end(); itr++) {
-        std::string dName = boost::get<VAR_NAME>(itr->second);
+        std::string dName = std::get<VAR_NAME>(itr->second);
         int i = ind->getIndex(dName);
         sampleMethods_m[dName]->create(ind, i);
     }
@@ -228,7 +228,7 @@ void Sampler::writeJsonHeader() {
     for (bounds_t::iterator it = dVarBounds_m.begin();
          it != dVarBounds_m.end(); ++it, ++itr)
     {
-        std::string dvar = boost::get<VAR_NAME>(itr->second);
+        std::string dvar = std::get<VAR_NAME>(itr->second);
         bounds << "[ " << it->first << ", " << it->second << " ]";
         tree.put("dvar-bounds." + dvar, bounds.str());
         bounds.str("");
@@ -267,7 +267,7 @@ void Sampler::dumpIndividualsToJSON() {
 
         DVarContainer_t::iterator itr;
         for(itr = dvars_m.begin(); itr != dvars_m.end(); itr++) {
-            std::string name = boost::get<VAR_NAME>(itr->second);
+            std::string name = std::get<VAR_NAME>(itr->second);
             int i = ind.getIndex(name);
             samples.put(id + ".dvar." + name, ind.genes[i]);
         }
@@ -347,7 +347,7 @@ void Sampler::dispatch_forward_solves() {
         DVarContainer_t::iterator itr;
 
         for(itr = dvars_m.begin(); itr != dvars_m.end(); itr++) {
-            std::string dName = boost::get<VAR_NAME>(itr->second);
+            std::string dName = std::get<VAR_NAME>(itr->second);
             int i = ind->getIndex(dName);
             params.insert(
                 std::pair<std::string, double>

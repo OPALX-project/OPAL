@@ -35,9 +35,8 @@
 #ifndef __PYTHON_EXPR_H__
 #define __PYTHON_EXPR_H__
 
-#include "boost/tuple/tuple.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
+#include <tuple>
+#include <variant>
 
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -52,10 +51,10 @@ using namespace boost::python;
 struct PythonExpression {
 
     Expressions::Result_t operator()(client::function::arguments_t args) {
-        std::string script = boost::get<std::string>(args[0]);
+        std::string script = std::get<std::string>(args[0]);
         std::vector<double> pargs;
         for(size_t i = 1; i < args.size(); i++) {
-            pargs.push_back(boost::get<double>(args[i]));
+            pargs.push_back(std::get<double>(args[i]));
         }
 
         try {
@@ -71,11 +70,11 @@ struct PythonExpression {
             double res = extract<double>(main_namespace["result"]);
 
             Py_Finalize();
-            return boost::make_tuple(res, true);
+            return std::make_tuple(res, true);
 
         } catch (error_already_set) {
             PyErr_Print();
-            return boost::make_tuple(0.0, false);
+            return std::make_tuple(0.0, false);
         }
     }
 };
