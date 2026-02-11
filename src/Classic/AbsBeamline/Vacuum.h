@@ -26,6 +26,7 @@
 #include "AbsBeamline/Cyclotron.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -51,9 +52,8 @@ struct PPositions {
 };
 
 enum class ResidualGas: short {
-    NOGAS = -1,
-    AIR   = 0,
-    H2    = 1
+    AIR,
+    H2
 };
 
 class Vacuum: public Component {
@@ -98,7 +98,7 @@ public:
     double checkPressure(const Vector_t& R);
 
     void setResidualGas(std::string_view gas);
-    ResidualGas getResidualGas() const noexcept;
+    ResidualGas getResidualGas() const;
     std::string getResidualGasName() const;
 
     void setPressure(double pressure);
@@ -134,7 +134,7 @@ private:
     void print();
 
     ///@{ parameters for Vacuum
-    ResidualGas gas_m;    /// Type of gas for residual vacuum
+    std::optional<ResidualGas> gas_m; /// Type of gas for residual vacuum
     double pressure_m;    /// mbar
     std::string pmapfn_m; /// stores the filename of the pressure map
     double pscale_m;      /// a scale factor for the P-field

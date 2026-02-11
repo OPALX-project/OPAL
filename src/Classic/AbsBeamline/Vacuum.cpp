@@ -65,7 +65,7 @@ Vacuum::Vacuum(const Vacuum& right):
 
 Vacuum::Vacuum(const std::string& name):
     Component(name),
-    gas_m(ResidualGas::NOGAS),
+    gas_m(std::nullopt),
     pressure_m(0.0),
     pmapfn_m(""),
     pscale_m(1.0),
@@ -87,8 +87,7 @@ void Vacuum::accept(BeamlineVisitor& visitor) const {
     visitor.visitVacuum(*this);
 }
 
-constexpr std::array<std::pair<ResidualGas, std::string_view>, 3> residualGasMap {{
-    {ResidualGas::NOGAS, "NOGAS"},
+constexpr std::array<std::pair<ResidualGas, std::string_view>, 2> residualGasMap {{
     {ResidualGas::AIR,   "AIR"},
     {ResidualGas::H2,    "H2"}
 }};
@@ -100,26 +99,28 @@ void Vacuum::setResidualGas(std::string_view gas) {
             return;
         }
     }
-    gas_m = ResidualGas::NOGAS;
+    gas_m.reset(); // no gas defined
 }
 
-ResidualGas Vacuum::getResidualGas() const noexcept {
-    return gas_m;
+ResidualGas Vacuum::getResidualGas() const {
+    if (!gas_m) {
+        throw GeneralClassicException("Vacuum::getResidualGas",
+                                      "Residual gas not set");
+    }
+    return *gas_m;
 }
 
 std::string Vacuum::getResidualGasName() const {
+    if (!gas_m) {
+        throw GeneralClassicException("Vacuum::getResidualGasName",
+                                      "Residual gas not set");
+    }
     for (const auto& [type, str] : residualGasMap) {
-        if (type == gas_m) {
-            if (type == ResidualGas::NOGAS) {
-                throw GeneralClassicException("Vacuum::getResidualGasName",
-                                              "Residual gas not set");
-            }
+        if (type == *gas_m) {
             return std::string(str);
         }
     }
-
-    throw GeneralClassicException("Vacuum::getResidualGasName",
-                                  "Unknown residual gas type");
+    return{};
 }
 
 void Vacuum::setPressure(double pressure) {
