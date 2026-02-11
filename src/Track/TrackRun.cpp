@@ -52,12 +52,9 @@
 #include "OPALconfig.h"
 #include "changes.h"
 
-#include <boost/assign.hpp>
-
 #include <cmath>
 #include <fstream>
 #include <iomanip>
-
 
 extern Inform *gmsg;
 
@@ -82,13 +79,6 @@ namespace {
 }
 
 const std::string TrackRun::defaultDistribution("DISTRIBUTION");
-
-const boost::bimap<TrackRun::RunMethod, std::string> TrackRun::stringMethod_s =
-    boost::assign::list_of<const boost::bimap<TrackRun::RunMethod, std::string>::relation>
-    (RunMethod::PARALLELT,  "PARALLEL-T")
-    (RunMethod::CYCLOTRONT, "CYCLOTRON-T")
-    (RunMethod::THICK,      "THICK");
-
 
 TrackRun::TrackRun():
     Action(SIZE, "RUN",
@@ -142,7 +132,6 @@ TrackRun::TrackRun():
     opalData_m = OpalData::getInstance();
 }
 
-
 TrackRun::TrackRun(const std::string& name, TrackRun* parent):
     Action(name, parent),
     dist_m(nullptr),
@@ -156,16 +145,13 @@ TrackRun::TrackRun(const std::string& name, TrackRun* parent):
     opalData_m = OpalData::getInstance();
 }
 
-
 TrackRun::~TrackRun() {
     delete phaseSpaceSink_m;
 }
 
-
 TrackRun* TrackRun::clone(const std::string& name) {
     return new TrackRun(name, this);
 }
-
 
 void TrackRun::execute() {
     const int currentVersion = ((OPAL_VERSION_MAJOR * 100) + OPAL_VERSION_MINOR) * 100;
@@ -254,16 +240,24 @@ void TrackRun::setRunMethod() {
     if (!itsAttr[METHOD]) {
         throw OpalException("TrackRun::setRunMethod",
                             "The attribute \"METHOD\" isn't set for the \"RUN\" command");
-    } else {
-        auto it = stringMethod_s.right.find(Attributes::getString(itsAttr[METHOD]));
-        if (it != stringMethod_s.right.end()) {
-            method_m = it->second;
+    } 
+
+    const std::string& method = Attributes::getString(itsAttr[METHOD]);
+    for (const auto& [type, str] : runMethodMap) {
+        if (str == method) {
+            method_m = type;
+            return;
         }
     }
 }
 
 std::string TrackRun::getRunMethodName() const {
-    return stringMethod_s.left.at(method_m);
+    for (const auto& [type, str] : runMethodMap) {
+        if (type == method_m) {
+            return std::string(str);
+        }
+    }
+    return std::string{};
 }
 
 void TrackRun::setupThickTracker() {

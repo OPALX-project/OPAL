@@ -23,9 +23,9 @@
 #include "AbstractObjects/Action.h"
 #include "Utilities/Options.h"
 
-#include <boost/bimap.hpp>
-
+#include <array>
 #include <string>
+#include <string_view>
 
 class Option: public Action {
 
@@ -56,7 +56,11 @@ private:
     // Clone constructor.
     Option(const std::string& name, Option* parent);
 
-    static const boost::bimap<DumpFrame, std::string> bmDumpFrameString_s;
+    static inline constexpr std::array<std::pair<DumpFrame, std::string_view>, 3> dumpFrameMap {{
+        {DumpFrame::GLOBAL,     "GLOBAL"},
+        {DumpFrame::BUNCH_MEAN, "BUNCH_MEAN"},
+        {DumpFrame::REFERENCE,  "REFERENCE"}
+    }};
 };
 
 #endif // OPAL_Option_HH

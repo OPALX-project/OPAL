@@ -30,10 +30,8 @@
 #include "Utility/IpplInfo.h"
 #include "Utility/IpplMemoryUsage.h"
 
-#include <boost/assign.hpp>
-
-#include <ctime>
 #include <cstddef>
+#include <ctime>
 #include <iostream>
 #include <limits>
 
@@ -41,12 +39,6 @@ extern Inform* gmsg;
 extern Inform* gmsgALL;
 
 using namespace Options;
-
-const boost::bimap<DumpFrame, std::string> Option::bmDumpFrameString_s =
-    boost::assign::list_of<const boost::bimap<DumpFrame, std::string>::relation>
-        (DumpFrame::GLOBAL,     "GLOBAL")
-        (DumpFrame::BUNCH_MEAN, "BUNCH_MEAN")
-        (DumpFrame::REFERENCE,  "REFERENCE");
 
 namespace {
     // The attributes of class Option.
@@ -524,11 +516,21 @@ void Option::execute() {
 }
 
 void Option::handlePsDumpFrame(const std::string& dumpFrame) {
-    psDumpFrame = bmDumpFrameString_s.right.at(dumpFrame);
+    for (const auto& [df, str] : dumpFrameMap) {
+        if (str == dumpFrame) {
+            psDumpFrame = df;
+            return;
+        }
+    }
 }
 
 std::string Option::getDumpFrameString(const DumpFrame& df) {
-    return bmDumpFrameString_s.left.at(df);
+    for (const auto& [key, str] : dumpFrameMap) {
+        if (key == df) {
+            return std::string(str);
+        }
+    }
+    return "GLOBAL"; // default
 }
 
 void Option::update(const std::vector<Attribute>& othersAttributes) {

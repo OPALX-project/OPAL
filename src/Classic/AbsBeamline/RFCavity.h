@@ -23,8 +23,6 @@
 #include "Physics/Physics.h"
 #include "Fields/Definitions.h"
 
-#include <boost/bimap.hpp>
-
 #include <cmath>
 #include <string>
 
@@ -79,8 +77,8 @@ public:
     virtual void setPhaseError(double phaseError);
     virtual double getPhaseError() const;
 
-    void setCavityType(const std::string& type);
-    CavityType getCavityType() const;
+    void setCavityType(const std::string& type) noexcept;
+    CavityType getCavityType() const noexcept;
     std::string getCavityTypeString() const;
 
     virtual void setFast(bool fast);
@@ -222,8 +220,6 @@ private:
 
     CavityType type_m;
 
-    static const boost::bimap<CavityType, std::string> bmCavityTypeString_s;
-
     double rmin_m;
     double rmax_m;
     double angle_m;
@@ -264,6 +260,11 @@ private:
 
     // Not implemented.
     void operator=(const RFCavity&);
+
+    static inline constexpr std::array<std::pair<CavityType, std::string_view>, 2> cavityMap {{
+        {CavityType::SW,   "STANDING"},
+        {CavityType::SGSW, "SINGLEGAP"}
+    }};
 };
 
 inline
@@ -411,7 +412,7 @@ double RFCavity::getPhaseError() const {
 }
 
 inline
-CavityType RFCavity::getCavityType() const {
+CavityType RFCavity::getCavityType() const noexcept{
     return type_m;
 }
 

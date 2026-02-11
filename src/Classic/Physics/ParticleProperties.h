@@ -18,10 +18,10 @@
 #ifndef PARTICLEPROPERTIES_H
 #define PARTICLEPROPERTIES_H
 
-#include <boost/bimap.hpp>
-
+#include <array>
 #include <map>
 #include <string>
+#include <string_view>
 
 enum class ParticleType: short {
     UNNAMED = -1,
@@ -47,20 +47,17 @@ enum class ParticleOrigin: unsigned short {
     STRIPPED
 };
 
-
 class ParticleProperties {
 public:
     static ParticleType getParticleType (const std::string& str);
-
     static std::string getParticleTypeString(const ParticleType& type);
 
     static double getParticleMass(const ParticleType& type);
-
     static double getParticleCharge(const ParticleType& type);
     static double getParticleChargeInCoulomb(const ParticleType& type);
 
 private:
-    static const boost::bimap<ParticleType, std::string> bmParticleType_s;
+    static const std::array<std::pair<ParticleType, std::string_view>, 15> particleTypeMap;
 
     static const std::map<ParticleType, double> particleMass_m;
     static const std::map<ParticleType, double> particleCharge_m;

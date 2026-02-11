@@ -20,9 +20,10 @@
 
 #include "AbstractObjects/Action.h"
 
-#include <boost/bimap.hpp>
+#include <array>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 class Beam;
@@ -61,6 +62,12 @@ private:
         CYCLOTRONT,
         THICK
     };
+
+    static inline constexpr std::array<std::pair<RunMethod, std::string_view>, 3> runMethodMap {{
+        {TrackRun::RunMethod::PARALLELT,  "PARALLEL-T"},
+        {TrackRun::RunMethod::CYCLOTRONT, "CYCLOTRON-T"},
+        {TrackRun::RunMethod::THICK,      "THICK"}
+    }};
 
     // Not implemented.
     TrackRun(const TrackRun&);
@@ -107,7 +114,6 @@ private:
     static const std::string defaultDistribution;
 
     RunMethod method_m;
-    static const boost::bimap<RunMethod, std::string> stringMethod_s;
 
     // macromass and charge for simulation particles
     double macromass_m;

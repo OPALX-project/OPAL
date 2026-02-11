@@ -25,8 +25,6 @@
 #include "AbsBeamline/Component.h"
 #include "AbsBeamline/Cyclotron.h"
 
-#include <boost/bimap.hpp>
-
 #include <memory>
 #include <string>
 #include <vector>
@@ -99,9 +97,9 @@ public:
 
     double checkPressure(const Vector_t& R);
 
-    void setResidualGas(std::string gas);
-    ResidualGas getResidualGas() const;
-    std::string getResidualGasName();
+    void setResidualGas(std::string_view gas);
+    ResidualGas getResidualGas() const noexcept;
+    std::string getResidualGasName() const;
 
     void setPressure(double pressure);
     double getPressure() const;
@@ -152,9 +150,6 @@ private:
     ///@}
 
     ParticleMatterInteractionHandler* parmatint_m;
-
-    static const boost::bimap<ResidualGas, std::string> bmResidualGasString_s;
-
 
 protected:
     // object of Matrices including pressure field map and its derivates
