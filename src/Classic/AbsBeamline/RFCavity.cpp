@@ -28,10 +28,10 @@
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_spline.h"
 
+#include <array>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <string_view>
 
 extern Inform *gmsg;
 

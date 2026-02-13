@@ -31,10 +31,12 @@
 #include "Utility/IpplInfo.h"
 #include "Utility/IpplMemoryUsage.h"
 
+#include <array>
 #include <cstddef>
 #include <ctime>
 #include <iostream>
 #include <limits>
+#include <string_view>
 
 extern Inform* gmsg;
 extern Inform* gmsgALL;
