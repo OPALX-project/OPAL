@@ -77,9 +77,9 @@ public:
     virtual void setPhaseError(double phaseError);
     virtual double getPhaseError() const;
 
-    void setCavityType(const std::string& type) noexcept;
+    void setCavityType(std::string_view type) noexcept;
     CavityType getCavityType() const noexcept;
-    std::string getCavityTypeString() const;
+    std::string getCavityTypeString() const noexcept;
 
     virtual void setFast(bool fast);
     virtual bool getFast() const;
@@ -260,11 +260,6 @@ private:
 
     // Not implemented.
     void operator=(const RFCavity&);
-
-    static inline constexpr std::array<std::pair<CavityType, std::string_view>, 2> cavityMap {{
-        {CavityType::SW,   "STANDING"},
-        {CavityType::SGSW, "SINGLEGAP"}
-    }};
 };
 
 inline
@@ -412,7 +407,7 @@ double RFCavity::getPhaseError() const {
 }
 
 inline
-CavityType RFCavity::getCavityType() const noexcept{
+CavityType RFCavity::getCavityType() const noexcept {
     return type_m;
 }
 

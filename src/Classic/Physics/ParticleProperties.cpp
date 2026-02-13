@@ -17,23 +17,14 @@
 //
 #include "Physics/ParticleProperties.h"
 #include "Physics/Physics.h"
+#include "Utilities/Util.h"
 
-ParticleType ParticleProperties::getParticleType(const std::string& str) {
-    for (const auto& [type, name] : particleTypeMap) {
-        if (name == str) {
-            return type;
-        }
-    }
-    return ParticleType::UNNAMED;
+ParticleType ParticleProperties::getParticleType(std::string_view str) noexcept {
+    return Util::stringToEnum(str, particleTypeMap, ParticleType::UNNAMED);
 }
 
-std::string ParticleProperties::getParticleTypeString(const ParticleType& type) {
-    for (const auto& [key, name] : particleTypeMap) {
-        if (key == type) {
-            return std::string(name);
-        }
-    }
-    return "UNNAMED";
+std::string ParticleProperties::getParticleTypeString(const ParticleType& type) noexcept {
+    return std::string(Util::enumToString(type, particleTypeMap, "UNNAMED"));
 }
 
 double ParticleProperties::getParticleMass(const ParticleType& type) {

@@ -240,24 +240,13 @@ void TrackRun::setRunMethod() {
     if (!itsAttr[METHOD]) {
         throw OpalException("TrackRun::setRunMethod",
                             "The attribute \"METHOD\" isn't set for the \"RUN\" command");
-    } 
-
-    const std::string& method = Attributes::getString(itsAttr[METHOD]);
-    for (const auto& [type, str] : runMethodMap) {
-        if (str == method) {
-            method_m = type;
-            return;
-        }
     }
+    std::string_view method = Attributes::getString(itsAttr[METHOD]);
+    method_m = Util::stringToEnum(method, runMethodMap, RunMethod::NONE);
 }
 
 std::string TrackRun::getRunMethodName() const {
-    for (const auto& [type, str] : runMethodMap) {
-        if (type == method_m) {
-            return std::string(str);
-        }
-    }
-    return std::string{};
+    return std::string(Util::enumToString(method_m, runMethodMap, "NONE"));
 }
 
 void TrackRun::setupThickTracker() {

@@ -322,23 +322,17 @@ double RFCavity::getPhi0() const {
     return phi0_m;
 }
 
-void RFCavity::setCavityType(const std::string& name) noexcept {
-    for (const auto& [type, str] : cavityMap) {
-        if (str == name) {
-            type_m = type;
-            return;
-        }
-    }
-    type_m = CavityType::SW;
+constexpr std::array<std::pair<CavityType, std::string_view>, 2> cavityMap {{
+    {CavityType::SW,   "STANDING"},
+    {CavityType::SGSW, "SINGLEGAP"}
+}};
+
+void RFCavity::setCavityType(std::string_view name) noexcept {
+    type_m = Util::stringToEnum(name, cavityMap, CavityType::SW);
 }
 
-std::string RFCavity::getCavityTypeString() const{
-    for (const auto& [type, str] : cavityMap) {
-        if (type == type_m) {
-            return std::string(str);
-        }
-    }
-    return "STANDING";
+std::string RFCavity::getCavityTypeString() const noexcept{
+    return std::string(Util::enumToString(type_m, cavityMap, "STANDING"));
 }
 
 std::string RFCavity::getFieldMapFN() const {

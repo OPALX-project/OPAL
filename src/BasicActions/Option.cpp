@@ -22,9 +22,10 @@
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "Parser/FileStream.h"
+#include "Utilities/ClassicRandom.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
-#include "Utilities/ClassicRandom.h"
+#include "Utilities/Util.h"
 
 #include "Utility/Inform.h"
 #include "Utility/IpplInfo.h"
@@ -515,22 +516,18 @@ void Option::execute() {
     }
 }
 
-void Option::handlePsDumpFrame(const std::string& dumpFrame) {
-    for (const auto& [df, str] : dumpFrameMap) {
-        if (str == dumpFrame) {
-            psDumpFrame = df;
-            return;
-        }
-    }
+constexpr std::array<std::pair<DumpFrame, std::string_view>, 3> dumpFrameMap {{
+    {DumpFrame::GLOBAL,     "GLOBAL"},
+    {DumpFrame::BUNCH_MEAN, "BUNCH_MEAN"},
+    {DumpFrame::REFERENCE,  "REFERENCE"}
+}};
+
+void Option::handlePsDumpFrame(std::string_view dumpFrameName) noexcept {
+    psDumpFrame = Util::stringToEnum(dumpFrameName, dumpFrameMap, DumpFrame::GLOBAL);
 }
 
-std::string Option::getDumpFrameString(const DumpFrame& df) {
-    for (const auto& [key, str] : dumpFrameMap) {
-        if (key == df) {
-            return std::string(str);
-        }
-    }
-    return "GLOBAL"; // default
+std::string Option::getDumpFrameString(const DumpFrame& df) noexcept {
+    return std::string(Util::enumToString(df, dumpFrameMap, "GLOBAL"));
 }
 
 void Option::update(const std::vector<Attribute>& othersAttributes) {

@@ -30,6 +30,7 @@
 #include "Solvers/ParticleMatterInteractionHandler.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/LogicalError.h"
+#include "Utilities/Util.h"
 
 #include <array>
 #include <cmath>
@@ -65,7 +66,7 @@ Vacuum::Vacuum(const Vacuum& right):
 
 Vacuum::Vacuum(const std::string& name):
     Component(name),
-    gas_m(std::nullopt),
+    gas_m(ResidualGas::NOGAS),
     pressure_m(0.0),
     pmapfn_m(""),
     pscale_m(1.0),
@@ -88,39 +89,25 @@ void Vacuum::accept(BeamlineVisitor& visitor) const {
 }
 
 constexpr std::array<std::pair<ResidualGas, std::string_view>, 2> residualGasMap {{
-    {ResidualGas::AIR,   "AIR"},
-    {ResidualGas::H2,    "H2"}
+    {ResidualGas::AIR, "AIR"},
+    {ResidualGas::H2,  "H2"}
 }};
 
-void Vacuum::setResidualGas(std::string_view gas) {
-    for (const auto& [type, str] : residualGasMap) {
-        if (str == gas) {
-            gas_m = type;
-            return;
-        }
-    }
-    gas_m.reset(); // no gas defined
+void Vacuum::setResidualGas(std::string_view gas) noexcept {
+    gas_m = Util::stringToEnum(gas, residualGasMap, ResidualGas::NOGAS);
 }
 
-ResidualGas Vacuum::getResidualGas() const {
-    if (!gas_m) {
-        throw GeneralClassicException("Vacuum::getResidualGas",
-                                      "Residual gas not set");
-    }
-    return *gas_m;
+ResidualGas Vacuum::getResidualGas() const noexcept {
+    return gas_m;
 }
 
 std::string Vacuum::getResidualGasName() const {
-    if (!gas_m) {
+    if (gas_m == ResidualGas::NOGAS) {
         throw GeneralClassicException("Vacuum::getResidualGasName",
                                       "Residual gas not set");
+    } else {
+        return std::string(Util::enumToString(gas_m, residualGasMap, ""));
     }
-    for (const auto& [type, str] : residualGasMap) {
-        if (type == *gas_m) {
-            return std::string(str);
-        }
-    }
-    return{};
 }
 
 void Vacuum::setPressure(double pressure) {

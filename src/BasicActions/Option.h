@@ -30,7 +30,6 @@
 class Option: public Action {
 
 public:
-
     Option();
     virtual ~Option();
 
@@ -41,10 +40,8 @@ public:
     virtual void execute();
 
 private:
-
-    void handlePsDumpFrame(const std::string& dumpFrame);
-
-    static std::string getDumpFrameString(const DumpFrame& df);
+    void handlePsDumpFrame(std::string_view dumpFrameName) noexcept;
+    static std::string getDumpFrameString(const DumpFrame& df) noexcept;
 
     using Object::update;
     void update(const std::vector<Attribute>&);
@@ -55,12 +52,6 @@ private:
 
     // Clone constructor.
     Option(const std::string& name, Option* parent);
-
-    static inline constexpr std::array<std::pair<DumpFrame, std::string_view>, 3> dumpFrameMap {{
-        {DumpFrame::GLOBAL,     "GLOBAL"},
-        {DumpFrame::BUNCH_MEAN, "BUNCH_MEAN"},
-        {DumpFrame::REFERENCE,  "REFERENCE"}
-    }};
 };
 
 #endif // OPAL_Option_HH

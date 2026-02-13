@@ -49,8 +49,8 @@ enum class ParticleOrigin: unsigned short {
 
 class ParticleProperties {
 public:
-    static ParticleType getParticleType (const std::string& str);
-    static std::string getParticleTypeString(const ParticleType& type);
+    static ParticleType getParticleType (std::string_view str) noexcept;
+    static std::string getParticleTypeString(const ParticleType& type) noexcept;
 
     static double getParticleMass(const ParticleType& type);
     static double getParticleCharge(const ParticleType& type);
