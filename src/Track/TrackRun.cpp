@@ -94,7 +94,7 @@ TrackRun::TrackRun():
     macrocharge_m(0.0) {
     itsAttr[METHOD] = Attributes::makePredefinedString
                       ("METHOD", "Name of tracking algorithm to use.",
-                       {"THICK", "OPAL-T", "PARALLEL-T", "OPAL-CYCL", "CYCLOTRON-T"});
+                       {"THICK", "PARALLEL-T", "CYCLOTRON-T"});
     
     itsAttr[TURNS] = Attributes::makeReal
         ("TURNS", "Number of turns to be tracked; Number of neighboring bunches to be tracked in cyclotron.", 1.0);

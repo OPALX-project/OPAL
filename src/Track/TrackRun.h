@@ -65,9 +65,7 @@ private:
 
     static inline constexpr std::array<std::pair<RunMethod, std::string_view>, 5> runMethodMap {{
         {TrackRun::RunMethod::PARALLELT,  "PARALLEL-T"},
-        {TrackRun::RunMethod::PARALLELT,  "OPAL-T"},
         {TrackRun::RunMethod::CYCLOTRONT, "CYCLOTRON-T"},
-        {TrackRun::RunMethod::CYCLOTRONT, "OPAL-CYCL"},
         {TrackRun::RunMethod::THICK,      "THICK"}
     }};
 
