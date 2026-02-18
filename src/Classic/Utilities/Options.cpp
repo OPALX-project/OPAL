@@ -19,8 +19,6 @@
 #include "Utilities/Options.h"
 #include "Utilities/ClassicRandom.h"
 
-#include <string>
-
 namespace Options {
     // The global program options.
     bool echo = false;

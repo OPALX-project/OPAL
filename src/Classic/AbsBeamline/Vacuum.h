@@ -25,10 +25,9 @@
 #include "AbsBeamline/Component.h"
 #include "AbsBeamline/Cyclotron.h"
 
-#include <boost/bimap.hpp>
-
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 class BeamlineVisitor;
@@ -53,9 +52,9 @@ struct PPositions {
 };
 
 enum class ResidualGas: short {
-    NOGAS = -1,
-    AIR   = 0,
-    H2    = 1
+    NOGAS,
+    AIR,
+    H2
 };
 
 class Vacuum: public Component {
@@ -99,9 +98,9 @@ public:
 
     double checkPressure(const Vector_t& R);
 
-    void setResidualGas(std::string gas);
-    ResidualGas getResidualGas() const;
-    std::string getResidualGasName();
+    void setResidualGas(std::string_view gas) noexcept;
+    ResidualGas getResidualGas() const noexcept;
+    std::string getResidualGasName() const;
 
     void setPressure(double pressure);
     double getPressure() const;
@@ -152,9 +151,6 @@ private:
     ///@}
 
     ParticleMatterInteractionHandler* parmatint_m;
-
-    static const boost::bimap<ResidualGas, std::string> bmResidualGasString_s;
-
 
 protected:
     // object of Matrices including pressure field map and its derivates
