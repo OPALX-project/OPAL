@@ -24,7 +24,10 @@
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
-#include <boost/optional.hpp>
+
+#include <optional>
+#include <ostream>
+#include <string>
 
 #define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
 #define BOOST_SPIRIT_QI_DEBUG
@@ -32,9 +35,8 @@
 namespace SDDS {
     struct description
     {
-        boost::optional<std::string> text_m;
-        boost::optional<std::string> content_m;
-
+        std::optional<std::string> text_m;
+        std::optional<std::string> content_m;
     };
 
     inline std::ostream& operator<<(std::ostream& out, const description& desc) {
@@ -46,8 +48,8 @@ namespace SDDS {
 
 BOOST_FUSION_ADAPT_STRUCT(
     SDDS::description,
-    (boost::optional<std::string>, text_m)
-    (boost::optional<std::string>, content_m)
+    (std::optional<std::string>, text_m)
+    (std::optional<std::string>, content_m)
 )
 
 namespace SDDS { namespace parser
