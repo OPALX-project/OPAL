@@ -15,6 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
+#ifndef __SDDSPARSER_H__
+#define __SDDSPARSER_H__
+
 #include "Util/SDDSParser/ast.hpp"
 #include "Util/SDDSParser/file.hpp"
 #include "Util/SDDSParser/skipper.hpp"
@@ -28,16 +31,11 @@
 
 #include "Util/SDDSParser/SDDSParserException.h"
 
-
-#include "boost/optional/optional_io.hpp"
-
-#include <iostream>
+#include <cmath>
 #include <fstream>
-#include <string>
+#include <iostream>
 #include <map>
-
-#ifndef __SDDSPARSER_H__
-#define __SDDSPARSER_H__
+#include <string>
 
 namespace SDDS {
 

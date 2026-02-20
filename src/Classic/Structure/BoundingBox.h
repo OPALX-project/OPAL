@@ -25,13 +25,13 @@
 
 #include "Algorithms/Vektor.h"
 
-#include "boost/optional.hpp"
-
-#include <vector>
+#include <optional>
+#include <ostream>
 #include <utility>
+#include <vector>
 
-class BoundingBox
-{
+class BoundingBox {
+
 public:
     BoundingBox();
 
@@ -40,14 +40,15 @@ public:
     void enlargeToContainPosition(const Vector_t& position);
     void enlargeToContainBoundingBox(const BoundingBox& boundingBox);
 
-    boost::optional<Vector_t> getIntersectionPoint(const Vector_t& position,
-                                                   const Vector_t& direction) const;
+    std::optional<Vector_t> getIntersectionPoint(const Vector_t& position,
+                                                 const Vector_t& direction) const;
 
     bool isInside(const Vector_t& position) const;
     bool isOutside(const Vector_t& position) const;
     void print(std::ostream& output) const;
 
     std::pair<Vector_t, Vector_t> getCorners() const;
+
 private:
     Vector_t lowerLeftCorner_m;
     Vector_t upperRightCorner_m;
