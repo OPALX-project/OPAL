@@ -49,9 +49,8 @@ template < class TopoDiscoveryStrategy_t >
 class SocialNetworkGraph : public TopoDiscoveryStrategy_t {
 
 public:
-
-    std::set<size_t> execute(size_t numMasters, size_t dimensions, size_t id,
-                             int /*island_id*/) {
+    std::set<size_t> execute(size_t numMasters, size_t dimensions,
+                             size_t id, int /*island_id*/) {
 
         numMasters_ = numMasters;
         dim_        = dimensions;
@@ -64,8 +63,7 @@ public:
 
 
 private:
-
-    std::mt19937 gen_{gen_{5489u}}; // default seed for reproducibility
+    std::mt19937 gen_{5489u}; // default seed for reproducibility
     double alpha_;
 
     size_t numMasters_;
@@ -76,17 +74,20 @@ private:
     std::set<size_t> realNetworkNeighborPIDs_;
 
     void setNetworkNeighbors() {
-        size_t m = static_cast<size_t>(sqrt(numMasters_));
+        size_t m = static_cast<size_t>(std::sqrt(numMasters_));
         size_t north = myID_ + m % numMasters_;
         int64_t south = myID_ - m;
-        if (south < 0) south += numMasters_;
-
+        if (south < 0) {
+            south += numMasters_;
+        }
         size_t east = myID_ + 1;
-        if ((myID_ + 1) % m == 0)
+        if ((myID_ + 1) % m == 0) {
             east = myID_ - m + 1;
+        }
         size_t west = myID_ - 1;
-        if (myID_ % m == 0)
+        if (myID_ % m == 0) {
             west = myID_ + m - 1;
+        }
 
         realNetworkNeighborPIDs_.insert(north);
         realNetworkNeighborPIDs_.insert(south);
@@ -94,19 +95,15 @@ private:
         realNetworkNeighborPIDs_.insert(west);
     }
 
-
     //XXX: at the moment assumes square number of masters
     //void setNetworkNeighbors() {
-
-        //size_t m = static_cast<size_t>(sqrt(numMasters_));
-
+        //size_t m = static_cast<size_t>(std::sqrt(numMasters_));
         //size_t north = myID_ + m;
         //if(north < numMasters_)
             //realNetworkNeighborPIDs_.insert(north);
         //size_t south = myID_ - m;
         //if(south >= 0)
             //realNetworkNeighborPIDs_.insert(south);
-
         //size_t east = myID_ + 1;
         //if((myID_ + 1) % m != 0)
             //realNetworkNeighborPIDs_.insert(east);
@@ -115,10 +112,9 @@ private:
             //realNetworkNeighborPIDs_.insert(west);
     //}
 
-
     double manhattenDistance(size_t from, size_t to) {
 
-        size_t m = static_cast<size_t>(sqrt(numMasters_));
+        size_t m = static_cast<size_t>(std::sqrt(numMasters_));
         int x_from = from / m;
         int y_from = from % m;
         int x_to = to / m;
@@ -135,19 +131,19 @@ private:
 
         double sum = 0.0;
         for (size_t i = 0; i < numMasters_; i++) {
-            if(i == myID_) continue;
+            if (i == myID_) continue;
             sum += std::pow(manhattenDistance(myID_, i), -alpha_);
         }
 
         for (size_t i = 0; i < numMasters_; i++) {
-
             if (i == myID_) continue;
-
             probabilities[i] =
                 std::pow(manhattenDistance(myID_, i), -alpha_) / sum;
         }
 
-        std::discrete_distribution<size_t> dist(probabilities.begin(), probabilities.end());
+        std::discrete_distribution<size_t>
+            dist(probabilities.begin(), probabilities.end());
+
         randomNeighbor_ = dist(gen_);
     }
 
