@@ -1,10 +1,11 @@
 #include "Utilities/MSLang/Translation.h"
 #include "Utilities/MSLang/ArgumentExtractor.h"
 #include "Utilities/MSLang/matheval.h"
-#include "Physics/Physics.h"
 
-#include <boost/regex.hpp>
+#include <iostream>
+#include <memory>
 #include <string>
+#include <vector>
 
 namespace mslang {
     void Translation::print(int indentwidth) {

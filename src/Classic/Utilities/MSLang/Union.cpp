@@ -1,6 +1,10 @@
 #include "Utilities/MSLang/Union.h"
 
-#include <boost/regex.hpp>
+#include <iostream>
+#include <memory>
+#include <regex>
+#include <string>
+#include <vector>
 
 namespace mslang {
     void Union::print(int indentwidth) {
@@ -33,12 +37,12 @@ namespace mslang {
         unin->funcs_m.push_back(nullptr);
         if (!parse(it, end, unin->funcs_m.back())) return false;
 
-        boost::regex argumentList("(,[a-z]+\\(.*)");
-        boost::regex endParenthesis("\\)(.*)");
-        boost::smatch what;
+        std::regex argumentList("(,[a-z]+\\(.*)");
+        std::regex endParenthesis("\\)(.*)");
+        std::smatch what;
 
         std::string str(it, end);
-        while (boost::regex_match(str, what, argumentList)) {
+        while (std::regex_match(str, what, argumentList)) {
             iterator it2 = it + 1;
             unin->funcs_m.push_back(nullptr);
 
@@ -49,7 +53,7 @@ namespace mslang {
         }
 
         str = std::string(it, end);
-        if (!boost::regex_match(str, what, endParenthesis)) return false;
+        if (!std::regex_match(str, what, endParenthesis)) return false;
 
         std::string fullMatch = what[0];
         std::string rest = what[1];

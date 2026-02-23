@@ -1,6 +1,10 @@
 #include "Utilities/MSLang/Intersection.h"
 
-#include <boost/regex.hpp>
+#include <iostream>
+#include <memory>
+#include <regex>
+#include <string>
+#include <vector>
 
 namespace mslang {
     void Intersection::print(int indentwidth) {
@@ -41,19 +45,19 @@ namespace mslang {
         Intersection *inter = static_cast<Intersection*>(fun);
         if (!parse(it, end, inter->firstOperand_m)) return false;
 
-        boost::regex argumentList("(,[a-z]+\\(.*)");
-        boost::regex endParenthesis("\\)(.*)");
-        boost::smatch what;
+        std::regex argumentList("(,[a-z]+\\(.*)");
+        std::regex endParenthesis("\\)(.*)");
+        std::smatch what;
 
         std::string str(it, end);
-        if (!boost::regex_match(str, what, argumentList)) return false;
+        if (!std::regex_match(str, what, argumentList)) return false;
 
         iterator it2 = it + 1;
         if (!parse(it2, end, inter->secondOperand_m)) return false;
 
         it = it2;
         str = std::string(it, end);
-        if (!boost::regex_match(str, what, endParenthesis)) return false;
+        if (!std::regex_match(str, what, endParenthesis)) return false;
 
         std::string fullMatch = what[0];
         std::string rest = what[1];

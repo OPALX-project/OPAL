@@ -178,7 +178,7 @@ if (NOT ${WILL_BUILD_SHARED_LIBRARY})
 endif ()
 set (Boost_USE_MULTITHREADED OFF)
 set (Boost_USE_STATIC_RUNTIME OFF)
-set (Boost_LIBS filesystem iostreams regex serialization system timer)
+set (Boost_LIBS filesystem iostreams serialization system timer)
 find_package (Boost 1.66.0
     REQUIRED COMPONENTS ${Boost_LIBS})
 if(UNIX AND NOT APPLE)

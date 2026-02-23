@@ -44,7 +44,6 @@
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_sf_erf.h>
 
-#include <boost/regex.hpp>
 #include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
 
 #include <sys/time.h>
@@ -55,6 +54,7 @@
 #include <iostream>
 #include <map>
 #include <numeric>
+#include <regex>
 
 extern Inform *gmsg;
 
@@ -1005,7 +1005,7 @@ size_t Distribution::getNumberOfParticlesInFile(std::ifstream &inputFile) {
 
     size_t numberOfParticlesRead = 0;
     if (Ippl::myNode() == 0) {
-        const boost::regex commentExpr("[[:space:]]*#.*");
+        const std::regex commentExpr("[[:space:]]*#.*");
         const std::string repl("");
         std::string line;
         std::stringstream linestream;
@@ -1013,7 +1013,7 @@ size_t Distribution::getNumberOfParticlesInFile(std::ifstream &inputFile) {
 
         do {
             std::getline(inputFile, line);
-            line = boost::regex_replace(line, commentExpr, repl);
+            line = std::regex_replace(line, commentExpr, repl);
         } while (line.length() == 0 && !inputFile.fail());
 
         linestream.str(line);

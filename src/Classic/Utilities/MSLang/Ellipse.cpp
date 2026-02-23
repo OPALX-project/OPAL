@@ -4,7 +4,13 @@
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
 
-#include <boost/regex.hpp>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <vector>
+#include <memory>
+#include <cmath>
+#include <string>
 
 namespace mslang {
     void Ellipse::print(int indentwidth) {
