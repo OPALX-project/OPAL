@@ -3,6 +3,9 @@
 
 #include "Utilities/MSLang.h"
 
+#include <memory>
+#include <vector>
+
 namespace mslang {
     struct Union: public Function {
         std::vector<Function*> funcs_m;

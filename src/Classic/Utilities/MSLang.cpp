@@ -18,15 +18,13 @@
 #include "Algorithms/Quaternion.h"
 #include "Physics/Physics.h"
 
-
-#include <boost/regex.hpp>
-
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <streambuf>
-#include <cstdlib>
 #include <cmath>
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <regex>
+#include <streambuf>
+#include <string>
 
 namespace mslang {
     const std::string Function::UDouble  = "([0-9]+\\.?[0-9]*([Ee][+-]?[0-9]+)?)";
@@ -46,11 +44,11 @@ namespace mslang {
     }
 
     bool Function::parse(iterator &it, const iterator &end, Function* &fun) {
-        boost::regex functionCall(Function::FCall);
-        boost::smatch what;
+        std::regex functionCall(Function::FCall);
+        std::smatch what;
 
         std::string str(it, end);
-        if( !boost::regex_match(str , what, functionCall ) ) return false;
+        if( !std::regex_match(str , what, functionCall ) ) return false;
 
         std::string identifier = what[1];
         std::string arguments = what[2];

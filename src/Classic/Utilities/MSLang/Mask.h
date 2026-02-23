@@ -4,6 +4,10 @@
 #include "Utilities/MSLang.h"
 #include "Utilities/MSLang/Rectangle.h"
 
+#include <memory>
+#include <utility>
+#include <vector>
+
 namespace mslang {
     struct Mask: public Function {
         static bool parse_detail(iterator &it, const iterator &end, Function* &fun);
