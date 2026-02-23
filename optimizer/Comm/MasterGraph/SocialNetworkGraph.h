@@ -38,11 +38,12 @@
 #ifndef __SOCIAL_NETWORK_GRAPH__
 #define __SOCIAL_NETWORK_GRAPH__
 
-#include <set>
+#include <algorithm>
+#include <cmath>
 #include <cstdint>
-
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/discrete_distribution.hpp>
+#include <random>
+#include <set>
+#include <vector>
 
 template < class TopoDiscoveryStrategy_t >
 class SocialNetworkGraph : public TopoDiscoveryStrategy_t {
@@ -64,7 +65,7 @@ public:
 
 private:
 
-    boost::random::mt19937 gen_;
+    std::mt19937 gen_{gen_{5489u}}; // default seed for reproducibility
     double alpha_;
 
     size_t numMasters_;
@@ -78,13 +79,13 @@ private:
         size_t m = static_cast<size_t>(sqrt(numMasters_));
         size_t north = myID_ + m % numMasters_;
         int64_t south = myID_ - m;
-        if(south < 0) south += numMasters_;
+        if (south < 0) south += numMasters_;
 
         size_t east = myID_ + 1;
-        if((myID_ + 1) % m == 0)
+        if ((myID_ + 1) % m == 0)
             east = myID_ - m + 1;
         size_t west = myID_ - 1;
-        if(myID_ % m == 0)
+        if (myID_ % m == 0)
             west = myID_ + m - 1;
 
         realNetworkNeighborPIDs_.insert(north);
@@ -123,7 +124,7 @@ private:
         int x_to = to / m;
         int y_to = to % m;
 
-        return abs(x_from - x_to) + abs(y_from - y_to);
+        return std::abs(x_from - x_to) + std::abs(y_from - y_to);
     }
 
     /// compute random neighbor using power law distribution with
@@ -133,21 +134,20 @@ private:
         std::vector<double> probabilities(numMasters_, 0.0);
 
         double sum = 0.0;
-        for(size_t i = 0; i < numMasters_; i++) {
+        for (size_t i = 0; i < numMasters_; i++) {
             if(i == myID_) continue;
             sum += std::pow(manhattenDistance(myID_, i), -alpha_);
         }
 
-        for(size_t i = 0; i < numMasters_; i++) {
+        for (size_t i = 0; i < numMasters_; i++) {
 
-            if(i == myID_) continue;
+            if (i == myID_) continue;
 
             probabilities[i] =
                 std::pow(manhattenDistance(myID_, i), -alpha_) / sum;
         }
 
-        boost::random::discrete_distribution<>
-            dist(probabilities.begin(), probabilities.end());
+        std::discrete_distribution<size_t> dist(probabilities.begin(), probabilities.end());
         randomNeighbor_ = dist(gen_);
     }
 
