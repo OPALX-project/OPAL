@@ -4,6 +4,6 @@
 #include <string>
 
 namespace mslang {
-    double parseMathExpression(const std::string &str);
+    double parseMathExpression(const std::string& str);
 }
 #endif
