@@ -16,13 +16,16 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Elements/OpalRCollimator.h"
+
 #include "AbstractObjects/Attribute.h"
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/FlexibleCollimatorRep.h"
 #include "Structure/ParticleMatterInteraction.h"
 
-#include <boost/regex.hpp>
-#include <cstdlib>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <typeinfo>
 
 OpalRCollimator::OpalRCollimator():
     OpalElement(SIZE, "RCOLLIMATOR",
