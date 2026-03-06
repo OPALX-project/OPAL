@@ -43,9 +43,9 @@ class AsymmetricEngeTest(unittest.TestCase):
         """Check that we can get values out of enge"""
         value = self.enge.function(0.0, 0)
         self.assertAlmostEqual(value, 1.0, 6)
-        value = self.enge.function(2.3, 0)
+        value = self.enge.function(1.2, 0)
         self.assertAlmostEqual(value, 0.5, 6)
-        value = self.enge.function(-1.2, 0)
+        value = self.enge.function(-2.3, 0)
         self.assertAlmostEqual(value, 0.5, 6)
 
     def test_name(self):
