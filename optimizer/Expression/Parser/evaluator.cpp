@@ -95,14 +95,14 @@ namespace client { namespace code_gen {
 
     bool StackEvaluator::operator()(ast::function_call const& x) {
 
-        for(ast::function_call_argument const& arg : x.args) {
+        for (ast::function_call_argument const& arg : x.args) {
             if (!boost::apply_visitor(*this, arg))
                 return false;
         }
 
-        std::vector<client::function::argument_t> args;
-        for (size_t i = x.args.size(); i-- > 0; ) {
-            args.emplace_back(std::move(evaluation_stack_.back()));
+        std::vector<client::function::argument_t> args(x.args.size());
+        for (size_t i = 0; i < x.args.size(); ++i) {
+            args[x.args.size() - 1 - i] = std::move(evaluation_stack_.back());
             evaluation_stack_.pop_back();
         }
 
@@ -114,11 +114,12 @@ namespace client { namespace code_gen {
             return false;
         }
 
-        if (! std::get<1>(itr->second(args))) {
+        auto function_eval = itr->second(args);
+        if (!std::get<1>(function_eval)) {
             return false;
         }
 
-        double function_result = std::get<0>(itr->second(args));
+        double function_result = std::get<0>(function_eval);
         evaluation_stack_.emplace_back(std::in_place_type<double>, function_result);
 
         return true;
@@ -138,4 +139,3 @@ namespace client { namespace code_gen {
     }
 
 }}
-

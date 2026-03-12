@@ -77,7 +77,9 @@ namespace {
 
     TEST_F(CmdArgumentsTest, CorrectDefaultIfNotPresent) {
 
+        testing::internal::CaptureStdout();
         double arg = args_->getArg<double>("arg22", 10.0, false);
+        (void) testing::internal::GetCapturedStdout();
         EXPECT_EQ(10.0, arg) << "second argument double value wrong";
     }
 
