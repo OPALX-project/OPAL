@@ -20,8 +20,11 @@
 #include "BeamlineCore/FlexibleCollimatorRep.h"
 #include "Structure/ParticleMatterInteraction.h"
 
-#include <boost/regex.hpp>
-#include <cstdlib>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <typeinfo>
+#include <vector>
 
 OpalSlit::OpalSlit():
     OpalElement(SIZE, "SLIT",
