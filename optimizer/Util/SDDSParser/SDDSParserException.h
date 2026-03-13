@@ -17,19 +17,17 @@
 #ifndef __SDDSPARSEREXCEPTION_H__
 #define __SDDSPARSEREXCEPTION_H__
 
+#include <stdexcept>
 #include <string>
 
-class SDDSParserException {
+class SDDSParserException: public std::runtime_error {
 
 public:
 
-    SDDSParserException(const std::string &meth, const std::string &descr) {
-        descr_ = descr;
-        meth_ = meth;
-    }
-
-    virtual const char* what() const throw() {
-        return descr_.c_str();
+    SDDSParserException(const std::string& meth, const std::string& descr):
+        std::runtime_error(descr),
+        meth_(meth)
+    {
     }
 
     virtual const char* where() const throw() {
@@ -38,7 +36,6 @@ public:
 
 private:
 
-    std::string descr_;
     std::string meth_;
 
 };

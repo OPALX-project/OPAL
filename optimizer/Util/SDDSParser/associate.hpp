@@ -17,22 +17,13 @@
 #ifndef ASSOCIATE_HPP_
 #define ASSOCIATE_HPP_
 
-#include "ast.hpp"
-#include "skipper.hpp"
-#include "error_handler.hpp"
+#include "Util/SDDSParser/ast.hpp"
+#include "Util/SDDSParser/error_handler.hpp"
+#include "Util/SDDSParser/skipper.hpp"
 
-#include <boost/config/warning_disable.hpp>
-#include <boost/spirit/include/qi.hpp>
-#include <boost/phoenix/core.hpp>
-#include <boost/phoenix/operator.hpp>
-#include <boost/phoenix/fusion.hpp>
-#include <boost/phoenix/bind.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
-
+#include <iostream>
 #include <list>
-
-#define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
-#define BOOST_SPIRIT_QI_DEBUG
+#include <string>
 
 namespace SDDS {
     struct associate
@@ -91,24 +82,4 @@ namespace SDDS {
     }
 }
 
-namespace SDDS { namespace parser
-{
-    namespace qi = boost::spirit::qi;
-    namespace ascii = boost::spirit::ascii;
-    namespace phx = boost::phoenix;
-
-    template <typename Iterator>
-    struct associate_parser: qi::grammar<Iterator, associate(), skipper<Iterator> >
-    {
-        associate_parser(error_handler<Iterator> & _error_handler);
-
-        qi::rule<Iterator, associate(), skipper<Iterator> > start;
-        qi::rule<Iterator, std::string(), skipper<Iterator> > string, quoted_string,
-                associate_name, associate_filename, associate_path, associate_description,
-                associate_contents;
-        qi::rule<Iterator, long(), skipper<Iterator> > associate_sdds;
-        qi::rule<Iterator, ast::nil(), skipper<Iterator> > associate_unsupported_pre,
-                associate_unsupported_post;
-    };
-}}
 #endif /* ASSOCIATE_HPP_ */

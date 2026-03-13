@@ -17,10 +17,8 @@
 #ifndef AST_HPP_
 #define AST_HPP_
 
-#include <boost/variant.hpp>
-#include <boost/spirit/include/qi.hpp>
-
 #include <string>
+#include <variant>
 #include <vector>
 
 namespace SDDS {
@@ -40,12 +38,12 @@ namespace SDDS {
 
         struct nil {};
 
-        typedef boost::variant<float,
-                               double,
-                               short,
-                               long,
-                               char,
-                               std::string> variant_t;
+        typedef std::variant<float,
+                             double,
+                             short,
+                             long,
+                             char,
+                             std::string> variant_t;
 
         typedef std::vector<variant_t> columnData_t;
 
@@ -71,25 +69,7 @@ namespace SDDS {
 
     }
 
-    namespace parser {
-        namespace qi = boost::spirit::qi;
-
-        template <typename Iterator, typename Skipper>
-        struct string: qi::grammar<Iterator, std::string(), Skipper >
-        {
-            string();
-
-            boost::spirit::qi::rule<Iterator, std::string(), Skipper> start;
-        };
-
-        template <typename Iterator, typename Skipper>
-        struct qstring: qi::grammar<Iterator, std::string(), Skipper >
-        {
-            qstring();
-
-            boost::spirit::qi::rule<Iterator, std::string(), Skipper> start;
-        };
-}
+    namespace parser {}
 }
 
 #endif // AST_HPP_

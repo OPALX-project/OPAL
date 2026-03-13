@@ -17,16 +17,12 @@
 #ifndef DATA_HPP_
 #define DATA_HPP_
 
-#include "ast.hpp"
-#include "skipper.hpp"
-#include "error_handler.hpp"
+#include "Util/SDDSParser/ast.hpp"
+#include "Util/SDDSParser/error_handler.hpp"
+#include "Util/SDDSParser/skipper.hpp"
 
-#include <boost/config/warning_disable.hpp>
-#include <boost/spirit/include/qi.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
-
-#define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
-#define BOOST_SPIRIT_QI_DEBUG
+#include <iostream>
+#include <string>
 
 namespace SDDS {
     struct data
@@ -43,8 +39,7 @@ namespace SDDS {
         ast::datamode mode_m;
         long numberRows_m;
 
-        bool isASCII() const
-        {
+        bool isASCII() const {
             if (mode_m == ast::BINARY) {
                 std::cerr << "can't handle binary data yet" << std::endl;
                 return false;
@@ -55,8 +50,7 @@ namespace SDDS {
         template <attributes A>
         struct complainUnsupported
         {
-            static bool apply()
-            {
+            static bool apply() {
                 std::string attributeString;
                 switch(A)
                 {
@@ -93,33 +87,5 @@ namespace SDDS {
     }
 }
 
-BOOST_FUSION_ADAPT_STRUCT(
-    SDDS::data,
-    (SDDS::ast::datamode, mode_m)
-    (long, numberRows_m)
-)
-
-namespace SDDS { namespace parser
-{
-    namespace qi = boost::spirit::qi;
-    namespace ascii = boost::spirit::ascii;
-    namespace phx = boost::phoenix;
-
-    template <typename Iterator>
-    struct data_parser: qi::grammar<Iterator, data(), skipper<Iterator> >
-    {
-        data_parser(error_handler<Iterator> & _error_handler);
-
-        qi::rule<Iterator, data(), skipper<Iterator> > start;
-        qi::rule<Iterator, ast::datamode(), skipper<Iterator> > data_mode;
-        qi::rule<Iterator, long(), skipper<Iterator> > data_lines,
-                data_row, data_fixed, data_additional;
-        qi::rule<Iterator, short(), skipper<Iterator> > data_column;
-        qi::rule<Iterator, ast::endianess(), skipper<Iterator> > data_endian;
-        qi::rule<Iterator, ast::nil(), skipper<Iterator> > data_unsupported_pre,
-                data_unsupported_post;
-        qi::symbols<char, ast::endianess> dataendian;
-        qi::symbols<char, ast::datamode> datamode;
-    };
-}}
+// Data parsing is now handled by SimpleParser
 #endif /* DATA_HPP_ */

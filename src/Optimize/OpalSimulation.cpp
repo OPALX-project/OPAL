@@ -1,15 +1,18 @@
+
+
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <exception>
 #include <iostream>
 #include <sstream>
-#include <cstring>
+#include <vector>
+
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <dirent.h>
-#include <cstdlib>
-#include <vector>
-#include <ctime>
-#include <exception>
 
 #include "Optimize/OpalSimulation.h"
 
@@ -47,7 +50,7 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
 
     simTmpDir_ = args->getArg<std::string>("simtmpdir");
     if (simTmpDir_.empty()) {
-        if(getenv("SIMTMPDIR") == nullptr) {
+        if (getenv("SIMTMPDIR") == nullptr) {
             std::cout << "Environment variable SIMTMPDIR not defined!"
                       << std::endl;
             simTmpDir_ = getenv("PWD");
@@ -59,7 +62,7 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
     // prepare design variables given by the optimizer for generating the
     // input file
     std::vector<std::string> dict;
-    for(auto parameter : params) {
+    for (auto parameter : params) {
         std::ostringstream tmp;
         tmp.precision(15);
         tmp << parameter.first << "=" << parameter.second;
@@ -107,7 +110,7 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
 
     std::string tmplDir = args->getArg<std::string>("templates");
     if (tmplDir.empty()) {
-        if(getenv("TEMPLATES") == nullptr) {
+        if (getenv("TEMPLATES") == nullptr) {
             throw OptPilotException("OpalSimulation::OpalSimulation",
                                     "Environment variable TEMPLATES not defined!");
         }
@@ -117,9 +120,10 @@ OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
     // data file is assumed to be located in the root directory
     std::string dataFile = simulationName_ + ".data";
 
-    if (!fs::exists(tmplFile))
+    if (!fs::exists(tmplFile)) {
         throw OptPilotException("OpalSimulation::OpalSimulation",
                                 "The template file '" + tmplFile + "' doesn't exit");
+    }
 
     for (const auto& uvar : userVariables_) {
         uvars[uvar.first] = uvar.second;
@@ -139,7 +143,7 @@ bool OpalSimulation::hasResultsAvailable() {
     std::string infile = simulationDirName_ + "/" + simulationName_ + ".in";
     struct stat fileInfo;
 
-    if(stat(infile.c_str(), &fileInfo) == 0) {
+    if (stat(infile.c_str(), &fileInfo) == 0) {
         std::cout << "-> Simulation input file (" << infile
                   << ") already exist from previous run.." << std::endl;
         return true;
@@ -205,7 +209,7 @@ void OpalSimulation::setupSimulation() {
     }
     std::string dataDir = simulationDirName_ + "/data";
 
-    OpalData *opal = OpalData::getInstance();
+    OpalData* opal = OpalData::getInstance();
     opal->setOptimizerFlag();
 
     // linking fieldmaps + distributions
@@ -325,7 +329,7 @@ void OpalSimulation::run() {
 
     // make sure input file is not already existing
     MPI_Barrier(comm_);
-    if( hasResultsAvailable() ) return;
+    if ( hasResultsAvailable() ) return;
     MPI_Barrier(comm_);
 
     setupSimulation();
@@ -434,7 +438,7 @@ void OpalSimulation::run() {
 }
 
 
-std::map<std::string, std::vector<double> > OpalSimulation::getData(const std::vector<std::string> &statVariables) {
+std::map<std::string, std::vector<double> > OpalSimulation::getData(const std::vector<std::string>& statVariables) {
     std::map<std::string, std::vector<double> > ret;
     SDDS::SDDSParser parser(simulationDirName_ + "/" + simulationName_ + ".stat");
     parser.run();
@@ -451,7 +455,7 @@ std::map<std::string, std::vector<double> > OpalSimulation::getData(const std::v
         values.reserve(column.size());
         auto type = parser.getColumnType(var);
         for (const auto& val: column) {
-            values.push_back(parser.getBoostVariantValue<double>(val,(int)type));
+            values.push_back(parser.getVariantValue<double>(val, type));
         }
         ret.insert(std::make_pair(var, values));
     }
@@ -480,12 +484,12 @@ void OpalSimulation::collectResults() {
     struct stat fileInfo;
 
     // if no stat file, simulation parameters produced invalid bunch
-    if(stat(fn.c_str(), &fileInfo) != 0) {
+    if (stat(fn.c_str(), &fileInfo) != 0) {
         invalidBunch();
     } else {
         Expressions::Named_t::iterator namedIt;
         try {
-            for(namedIt=objectives_.begin(); namedIt!=objectives_.end(); ++namedIt) {
+            for (namedIt=objectives_.begin(); namedIt!=objectives_.end(); ++namedIt) {
                 if (namedIt->first == "dummy") continue; // FIXME SamplePilot has default objective named dummy
                 Expressions::Expr_t *objective = namedIt->second;
 
@@ -509,7 +513,7 @@ void OpalSimulation::collectResults() {
             }
 
             // .. and constraints
-            for(namedIt=constraints_.begin(); namedIt!=constraints_.end(); ++namedIt) {
+            for (namedIt=constraints_.begin(); namedIt!=constraints_.end(); ++namedIt) {
 
                 Expressions::Expr_t *constraint = namedIt->second;
 
@@ -531,7 +535,7 @@ void OpalSimulation::collectResults() {
                              boost::token_compress_on);
                 std::string lhs_constr_str = split[0];
                 std::string rhs_constr_str = split[1];
-                boost::trim_left_if(rhs_constr_str, boost::is_any_of("="));
+                boost::trim_left_if (rhs_constr_str, boost::is_any_of("="));
 
                 functionDictionary_t funcs = constraint->getRegFuncs();
                 const std::unique_ptr<Expressions::Expr_t> lhs(
@@ -591,14 +595,14 @@ void OpalSimulation::getVariableDictionary(variableDictionary_t& dictionary,
         req_it = req_vars.erase(req_it); // remove and update iterator to next
     }
 
-    if(req_vars.empty()) return;
+    if (req_vars.empty()) return;
 
     // get remaining required variable values from the stat file
     const std::unique_ptr<SDDSReader> sddsr(new SDDSReader(filename));
     sddsr->parseFile();
 
-    for(std::string req_var : req_vars) {
-        if(dictionary.count(req_var) != 0) continue;
+    for (std::string req_var : req_vars) {
+        if (dictionary.count(req_var) != 0) continue;
 
         double value = 0.0;
         sddsr->getValue(-1 /*atTime*/, req_var, value);
@@ -608,7 +612,7 @@ void OpalSimulation::getVariableDictionary(variableDictionary_t& dictionary,
 
 void OpalSimulation::invalidBunch() {
 
-    for(auto namedObjective : objectives_) {
+    for (auto namedObjective : objectives_) {
         std::vector<double> tmp_values;
         tmp_values.push_back(0.0);
         reqVarInfo_t tmps = {EVALUATE, tmp_values, false};
