@@ -1,9 +1,19 @@
 //
-// Simple recursive descent parser for SDDS format
-// Replaces boost::spirit::qi parser
+// Class SimpleParser
+//   Simple recursive descent parser for SDDS format.
 //
-// Copyright (c) 2024
+// Copyright (c) 2026, Paul Scherrer Institute, Villigen PSI, Switzerland
 // All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #ifndef SIMPLE_PARSER_HPP_
 #define SIMPLE_PARSER_HPP_
