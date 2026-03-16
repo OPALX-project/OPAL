@@ -197,8 +197,7 @@ namespace SDDS {
 
         /// Convert value from variant (only numeric types) to a value of type T
         template <typename T>
-        T getVariantValue(const ast::variant_t& val, ast::dataType dataType) const
-        {
+        T getVariantValue(const ast::variant_t& val, ast::dataType type) const {
             static_assert(
                 std::is_same_v<T, float>  ||
                 std::is_same_v<T, double> ||
@@ -208,7 +207,7 @@ namespace SDDS {
             );
 
             try {
-                switch (dataType) {
+                switch (type) {
                 case ast::dataType::FLOAT:
                     return static_cast<T>(std::get<float>(val));
 
@@ -222,22 +221,19 @@ namespace SDDS {
                     return static_cast<T>(std::get<long>(val));
 
                 default:
-                    throw SDDSParserException(
-                        "SDDSParser::getVariantValue",
-                        "unsupported ast::dataType"
+                    throw SDDSParserException("SDDSParser::getVariantValue",
+                                              "unsupported ast::dataType"
                     );
                 }
             }
             catch (const std::bad_variant_access&) {
-                throw SDDSParserException(
-                    "SDDSParser::getVariantValue",
-                    "variant and dataType mismatch"
+                throw SDDSParserException("SDDSParser::getVariantValue",
+                                          "variant and dataType mismatch"
                 );
             }
         }
 
     private:
-
         int getColumnIndex(const std::string& col_name) const;
     };
 

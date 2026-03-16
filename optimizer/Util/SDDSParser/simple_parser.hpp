@@ -30,10 +30,8 @@
 #include "Util/SDDSParser/version.hpp"
 
 #include <algorithm>
-#include <array>
 #include <cctype>
 #include <limits>
-#include <optional>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -204,40 +202,6 @@ namespace SDDS {
                 return parseIdentifier();
             }
 
-            static bool equalsIgnoreCase(std::string_view lhs, std::string_view rhs) {
-                if (lhs.size() != rhs.size()) {
-                    return false;
-                }
-
-                for (size_t i = 0; i < lhs.size(); ++i) {
-                    if (std::tolower(static_cast<unsigned char>(lhs[i])) !=
-                        std::tolower(static_cast<unsigned char>(rhs[i]))) {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            static std::optional<ast::dataType> parseDatatype(std::string_view typeStr) {
-                constexpr std::array<std::pair<std::string_view, ast::dataType>, 6> dataTypeMap = {{
-                    { "float", ast::dataType::FLOAT },
-                    { "double", ast::dataType::DOUBLE },
-                    { "short", ast::dataType::SHORT },
-                    { "long", ast::dataType::LONG },
-                    { "character", ast::dataType::CHARACTER },
-                    { "string", ast::dataType::STRING }
-                }};
-
-                for (const auto& [name, dataType] : dataTypeMap) {
-                    if (equalsIgnoreCase(typeStr, name)) {
-                        return dataType;
-                    }
-                }
-
-                return std::nullopt;
-            }
-
             version parseVersion() {
                 version v;
                 expect("SDDS");
@@ -291,7 +255,7 @@ namespace SDDS {
                     } else if (match("type", true)) {
                         expect('=');
                         std::string typeStr = parseString();
-                        auto type = parseDatatype(typeStr);
+                        auto type = ast::parseDataType(typeStr);
                         if (!type) {
                             throw std::runtime_error("Unknown parameter type: " + typeStr);
                         }
@@ -327,7 +291,7 @@ namespace SDDS {
                     else if (match("type", true)) {
                         expect('=');
                         std::string typeStr = parseString();
-                        auto type = parseDatatype(typeStr);
+                        auto type = ast::parseDataType(typeStr);
                         if (!type) {
                             throw std::runtime_error("Unknown column type: " + typeStr);
                         }
@@ -404,12 +368,12 @@ namespace SDDS {
                     }
                     expect('=');
 
-                    if (equalsIgnoreCase(key, "mode")) {
+                    if (ast::equalsIgnoreCase(key, "mode")) {
                         auto modeStr = parseString();
-                        if (equalsIgnoreCase(modeStr, "ascii")) {
+                        if (ast::equalsIgnoreCase(modeStr, "ascii")) {
                             d.mode_m = ast::dataMode::ASCII;
                             modeSet = true;
-                        } else if (equalsIgnoreCase(modeStr, "binary")) {
+                        } else if (ast::equalsIgnoreCase(modeStr, "binary")) {
                             d.mode_m = ast::dataMode::BINARY;
                             modeSet = true;
                         } else {
