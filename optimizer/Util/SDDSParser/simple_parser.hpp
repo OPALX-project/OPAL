@@ -219,19 +219,19 @@ namespace SDDS {
                 return true;
             }
 
-            static std::optional<ast::datatype> parseDatatype(std::string_view typeStr) {
-                constexpr std::array<std::pair<std::string_view, ast::datatype>, 6> datatypeMap = {{
-                    { "float", ast::datatype::FLOAT },
-                    { "double", ast::datatype::DOUBLE },
-                    { "short", ast::datatype::SHORT },
-                    { "long", ast::datatype::LONG },
-                    { "character", ast::datatype::CHARACTER },
-                    { "string", ast::datatype::STRING }
+            static std::optional<ast::dataType> parseDatatype(std::string_view typeStr) {
+                constexpr std::array<std::pair<std::string_view, ast::dataType>, 6> dataTypeMap = {{
+                    { "float", ast::dataType::FLOAT },
+                    { "double", ast::dataType::DOUBLE },
+                    { "short", ast::dataType::SHORT },
+                    { "long", ast::dataType::LONG },
+                    { "character", ast::dataType::CHARACTER },
+                    { "string", ast::dataType::STRING }
                 }};
 
-                for (const auto& [name, datatype] : datatypeMap) {
+                for (const auto& [name, dataType] : dataTypeMap) {
                     if (equalsIgnoreCase(typeStr, name)) {
-                        return datatype;
+                        return dataType;
                     }
                 }
 
@@ -407,10 +407,10 @@ namespace SDDS {
                     if (equalsIgnoreCase(key, "mode")) {
                         auto modeStr = parseString();
                         if (equalsIgnoreCase(modeStr, "ascii")) {
-                            d.mode_m = ast::datamode::ASCII;
+                            d.mode_m = ast::dataMode::ASCII;
                             modeSet = true;
                         } else if (equalsIgnoreCase(modeStr, "binary")) {
-                            d.mode_m = ast::datamode::BINARY;
+                            d.mode_m = ast::dataMode::BINARY;
                             modeSet = true;
                         } else {
                             throw std::runtime_error("Unknown data mode: " + modeStr);

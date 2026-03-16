@@ -37,11 +37,11 @@ namespace SDDS {
                               , ENDIAN
         };
 
-        ast::datamode mode_m { ast::datamode::ASCII };
+        ast::dataMode mode_m { ast::dataMode::ASCII };
         long numberRows_m { 0 };
 
         bool isASCII() const {
-            if (mode_m == ast::datamode::BINARY) {
+            if (mode_m == ast::dataMode::BINARY) {
                 std::cerr << "can't handle binary data yet" << std::endl;
                 return false;
             }

@@ -44,7 +44,7 @@ namespace SDDS {
         std::optional<std::string> name_m;
         std::optional<std::string> units_m;
         std::optional<std::string> description_m;
-        std::optional<ast::datatype> type_m;
+        std::optional<ast::dataType> type_m;
         ast::columnData_t values_m;
         static unsigned int count_m;
 
@@ -80,7 +80,7 @@ namespace SDDS {
 
             parser::ValueParser parser(input, pos);
             switch(*this->type_m) {
-            case ast::datatype::FLOAT:
+            case ast::dataType::FLOAT:
             {
                 float f = 0.0f;
                 if (parser.parseFloat(f)) {
@@ -90,7 +90,7 @@ namespace SDDS {
                 }
                 break;
             }
-            case ast::datatype::DOUBLE:
+            case ast::dataType::DOUBLE:
             {
                 double d = 0.0;
                 if (parser.parseDouble(d)) {
@@ -100,7 +100,7 @@ namespace SDDS {
                 }
                 break;
             }
-            case ast::datatype::SHORT:
+            case ast::dataType::SHORT:
             {
                 short s = 0;
                 if (parser.parseShort(s)) {
@@ -110,7 +110,7 @@ namespace SDDS {
                 }
                 break;
             }
-            case ast::datatype::LONG:
+            case ast::dataType::LONG:
             {
                 long l = 0;
                 if (parser.parseLong(l)) {
@@ -120,7 +120,7 @@ namespace SDDS {
                 }
                 break;
             }
-            case ast::datatype::CHARACTER:
+            case ast::dataType::CHARACTER:
             {
                 char c = '\0';
                 if (parser.parseChar(c)) {
@@ -130,7 +130,7 @@ namespace SDDS {
                 }
                 break;
             }
-            case ast::datatype::STRING:
+            case ast::dataType::STRING:
             {
                 std::string s("");
                 if (parser.parseString(s)) {

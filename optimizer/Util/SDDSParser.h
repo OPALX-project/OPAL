@@ -61,7 +61,7 @@ namespace SDDS {
         const file& getData() const;
         const ast::columnData_t& getColumnData(const std::string& columnName) const;
 
-        ast::datatype getColumnType(const std::string& col_name) const {
+        ast::dataType getColumnType(const std::string& col_name) const {
             int index = getColumnIndex(col_name);
             return *sddsData_m.sddsColumns_m[index].type_m;
         }
@@ -122,7 +122,7 @@ namespace SDDS {
 
             size_t this_row = 0;
             size_t num_rows = ref_values.size();
-            ast::datatype datatype = getColumnType(col_name);
+            ast::dataType dataType = getColumnType(col_name);
             for (this_row = 0; this_row < num_rows; this_row++) {
                 value_after_ref = std::get<double>(ref_values[this_row]);
 
@@ -131,8 +131,8 @@ namespace SDDS {
                     size_t prev_row = 0;
                     if (this_row > 0) prev_row = this_row - 1;
 
-                    value_before = getVariantValue<T>(col_values[prev_row], datatype);
-                    value_after  = getVariantValue<T>(col_values[this_row], datatype);
+                    value_before = getVariantValue<T>(col_values[prev_row], dataType);
+                    value_after  = getVariantValue<T>(col_values[this_row], dataType);
 
                     value_before_ref = std::get<double>(ref_values[prev_row]);
                     value_after_ref  = std::get<double>(ref_values[this_row]);
@@ -197,7 +197,7 @@ namespace SDDS {
 
         /// Convert value from variant (only numeric types) to a value of type T
         template <typename T>
-        T getVariantValue(const ast::variant_t& val, ast::datatype datatype) const
+        T getVariantValue(const ast::variant_t& val, ast::dataType dataType) const
         {
             static_assert(
                 std::is_same_v<T, float>  ||
@@ -208,30 +208,30 @@ namespace SDDS {
             );
 
             try {
-                switch (datatype) {
-                case ast::datatype::FLOAT:
+                switch (dataType) {
+                case ast::dataType::FLOAT:
                     return static_cast<T>(std::get<float>(val));
 
-                case ast::datatype::DOUBLE:
+                case ast::dataType::DOUBLE:
                     return static_cast<T>(std::get<double>(val));
 
-                case ast::datatype::SHORT:
+                case ast::dataType::SHORT:
                     return static_cast<T>(std::get<short>(val));
 
-                case ast::datatype::LONG:
+                case ast::dataType::LONG:
                     return static_cast<T>(std::get<long>(val));
 
                 default:
                     throw SDDSParserException(
                         "SDDSParser::getVariantValue",
-                        "unsupported ast::datatype"
+                        "unsupported ast::dataType"
                     );
                 }
             }
             catch (const std::bad_variant_access&) {
                 throw SDDSParserException(
                     "SDDSParser::getVariantValue",
-                    "variant and datatype mismatch"
+                    "variant and dataType mismatch"
                 );
             }
         }

@@ -26,14 +26,14 @@
 
 namespace SDDS {
     namespace ast {
-        enum class datatype { FLOAT
+        enum class dataType { FLOAT
                             , DOUBLE
                             , SHORT
                             , LONG
                             , CHARACTER
                             , STRING };
 
-        enum class datamode { ASCII
+        enum class dataMode { ASCII
                             , BINARY};
 
         enum class endianess { BIGENDIAN
@@ -50,8 +50,8 @@ namespace SDDS {
 
         using columnData_t = std::vector<variant_t>;
 
-        constexpr std::string_view getDataTypeString(datatype type) {
-            constexpr std::array<std::string_view, 6> datatypeNames = {
+        constexpr std::string_view getDataTypeString(dataType type) {
+            constexpr std::array<std::string_view, 6> dataTypeNames = {
                 "float",
                 "double",
                 "short",
@@ -60,26 +60,26 @@ namespace SDDS {
                 "string"
             };
 
-            const auto index = static_cast<std::underlying_type_t<datatype>>(type);
-            if (index < 0 || static_cast<std::size_t>(index) >= datatypeNames.size()) {
+            const auto index = static_cast<std::underlying_type_t<dataType>>(type);
+            if (index < 0 || static_cast<std::size_t>(index) >= dataTypeNames.size()) {
                 return "unknown";
             }
 
-            return datatypeNames[static_cast<std::size_t>(index)];
+            return dataTypeNames[static_cast<std::size_t>(index)];
         }
 
-        constexpr std::string_view getDataModeString(datamode mode) {
-            constexpr std::array<std::string_view, 2> datamodeNames = {
+        constexpr std::string_view getDataModeString(dataMode mode) {
+            constexpr std::array<std::string_view, 2> dataModeNames = {
                 "ascii",
                 "binary"
             };
 
-            const auto index = static_cast<std::underlying_type_t<datamode>>(mode);
-            if (index < 0 || static_cast<std::size_t>(index) >= datamodeNames.size()) {
+            const auto index = static_cast<std::underlying_type_t<dataMode>>(mode);
+            if (index < 0 || static_cast<std::size_t>(index) >= dataModeNames.size()) {
                 return "unknown";
             }
 
-            return datamodeNames[static_cast<std::size_t>(index)];
+            return dataModeNames[static_cast<std::size_t>(index)];
         }
 
     }
