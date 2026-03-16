@@ -38,11 +38,6 @@ namespace SDDS {
         enum class dataMode { ASCII
                             , BINARY};
 
-        enum class endianess { BIGENDIAN
-                             , LITTLEENDIAN};
-
-        struct nil {};
-
         using variant_t = std::variant<float,
                                        double,
                                        short,
@@ -53,12 +48,12 @@ namespace SDDS {
         using columnData_t = std::vector<variant_t>;
 
         constexpr std::array<std::pair<std::string_view, dataType>, 6> dataTypeTable = {{
-            { "float", dataType::FLOAT },
-            { "double", dataType::DOUBLE },
-            { "short", dataType::SHORT },
-            { "long", dataType::LONG },
+            { "float",     dataType::FLOAT },
+            { "double",    dataType::DOUBLE },
+            { "short",     dataType::SHORT },
+            { "long",      dataType::LONG },
             { "character", dataType::CHARACTER },
-            { "string", dataType::STRING }
+            { "string",    dataType::STRING }
         }};
 
         constexpr char toLowerAscii(char c) {

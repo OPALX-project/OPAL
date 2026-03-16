@@ -18,24 +18,16 @@
 #ifndef __SDDSPARSER_H__
 #define __SDDSPARSER_H__
 
-#include "Util/SDDSParser/array.hpp"
-#include "Util/SDDSParser/associate.hpp"
 #include "Util/SDDSParser/ast.hpp"
-#include "Util/SDDSParser/column.hpp"
-#include "Util/SDDSParser/data.hpp"
-#include "Util/SDDSParser/description.hpp"
 #include "Util/SDDSParser/file.hpp"
-#include "Util/SDDSParser/include.hpp"
-#include "Util/SDDSParser/parameter.hpp"
-#include "Util/SDDSParser/simple_parser.hpp"
 #include "Util/SDDSParser/SDDSParserException.h"
 
 #include <cmath>
-#include <fstream>
-#include <iostream>
 #include <string>
 #include <string_view>
+#include <type_traits>
 #include <unordered_map>
+#include <variant>
 
 namespace SDDS {
 
