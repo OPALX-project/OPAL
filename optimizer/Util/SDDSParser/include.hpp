@@ -19,15 +19,18 @@
 
 #include "Util/SDDSParser/ast.hpp"
 #include "Util/SDDSParser/error_handler.hpp"
-#include "Util/SDDSParser/skipper.hpp"
 
+#include <array>
+#include <iostream>
 #include <list>
+#include <string>
+#include <string_view>
 
 namespace SDDS {
     struct include
     {
-        enum attributes { FILENAME
-                        , INCLUDE
+        enum class attributes { FILENAME
+                              , INCLUDE
         };
 
         template <attributes A>
@@ -35,20 +38,19 @@ namespace SDDS {
         {
             static bool apply()
             {
-                std::string attributeString;
-                switch(A)
-                {
-                case FILENAME:
-                    attributeString = "filename";
-                    break;
-                case INCLUDE:
-                    attributeString = "include";
-                    break;
-                default:
-                    return true;
+                constexpr std::array<std::pair<attributes, std::string_view>, 2> unsupportedAttributeNames = {{
+                    { attributes::FILENAME, "filename" },
+                    { attributes::INCLUDE, "include" }
+                }};
+
+                for (const auto& item : unsupportedAttributeNames) {
+                    if (item.first == A) {
+                        std::cerr << item.second << " not supported yet" << std::endl;
+                        return false;
+                    }
                 }
-                std::cerr << attributeString << " not supported yet" << std::endl;
-                return false;
+
+                return true;
             }
         };
     };

@@ -19,27 +19,29 @@
 
 #include "Util/SDDSParser/ast.hpp"
 #include "Util/SDDSParser/error_handler.hpp"
-#include "Util/SDDSParser/skipper.hpp"
 #include "Util/SDDSParser/value_parser.hpp"
 
+#include <array>
+#include <iostream>
 #include <list>
 #include <optional>
 #include <ostream>
 #include <string>
+#include <string_view>
 
 namespace SDDS {
     struct parameter
     {
-        enum attributes { NAME
-                        , SYMBOL
-                        , UNITS
-                        , DESCRIPTION
-                        , FORMAT_STRING
-                        , TYPE
-                        , FIXED_VALUE
+        enum class attributes { NAME
+                              , SYMBOL
+                              , UNITS
+                              , DESCRIPTION
+                              , FORMAT_STRING
+                              , TYPE
+                              , FIXED_VALUE
          };
 
-        unsigned int order_m;
+        unsigned int order_m { 0 };
         std::optional<std::string> name_m;
         std::optional<std::string> units_m;
         std::optional<std::string> description_m;
@@ -57,31 +59,32 @@ namespace SDDS {
         {
             static bool apply()
             {
-                std::string attributeString;
-                switch(A)
-                {
-                case SYMBOL:
-                    attributeString = "symbol";
-                    break;
-                case FORMAT_STRING:
-                    attributeString = "format_string";
-                    break;
-                case FIXED_VALUE:
-                    attributeString = "fixed_value";
-                    break;
-                default:
-                    return true;
+                constexpr std::array<std::pair<attributes, std::string_view>, 3> unsupportedAttributeNames = {{
+                    { attributes::SYMBOL, "symbol" },
+                    { attributes::FORMAT_STRING, "format_string" },
+                    { attributes::FIXED_VALUE, "fixed_value" }
+                }};
+
+                for (const auto& item : unsupportedAttributeNames) {
+                    if (item.first == A) {
+                        std::cerr << item.second << " not supported yet" << std::endl;
+                        return false;
+                    }
                 }
-                std::cerr << attributeString << " not supported yet" << std::endl;
-                return false;
+
+                return true;
             }
         };
 
-        bool parse(const std::string& input, size_t& pos)
+        bool parse(std::string_view input, size_t& pos)
         {
+            if (!type_m) {
+                return false;
+            }
+
             parser::ValueParser parser(input, pos);
             switch(*this->type_m) {
-            case ast::FLOAT:
+            case ast::datatype::FLOAT:
             {
                                 float f = 0.0f;
                 if (parser.parseFloat(f)) {
@@ -91,7 +94,7 @@ namespace SDDS {
                 }
                 break;
             }
-            case ast::DOUBLE:
+            case ast::datatype::DOUBLE:
             {
                 double d = 0.0;
                 if (parser.parseDouble(d)) {
@@ -101,7 +104,7 @@ namespace SDDS {
                 }
                 break;
             }
-            case ast::SHORT:
+            case ast::datatype::SHORT:
             {
                 short s = 0;
                 if (parser.parseShort(s)) {
@@ -111,7 +114,7 @@ namespace SDDS {
                 }
                 break;
             }
-            case ast::LONG:
+            case ast::datatype::LONG:
             {
                 long l = 0;
                 if (parser.parseLong(l)) {
@@ -121,7 +124,7 @@ namespace SDDS {
                 }
                 break;
             }
-            case ast::CHARACTER:
+            case ast::datatype::CHARACTER:
             {
                 char c = 0;
                 if (parser.parseChar(c)) {
@@ -131,7 +134,7 @@ namespace SDDS {
                 }
                 break;
             }
-            case ast::STRING:
+            case ast::datatype::STRING:
             {
                 std::string s;
                 if (parser.parseStringToEol(s)) {
@@ -162,7 +165,6 @@ namespace SDDS {
 
     inline std::ostream& operator<<(std::ostream& out, const parameter& param) {
         if (param.name_m) out << "name = " << *param.name_m << ", ";
-        if (param.type_m) out << "type = " << *param.type_m << ", ";
         if (param.units_m) out << "units = " << *param.units_m << ", ";
         if (param.description_m) out << "description = " << *param.description_m << ", ";
         out << "order = " << param.order_m;

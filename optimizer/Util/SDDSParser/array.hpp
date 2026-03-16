@@ -19,25 +19,26 @@
 
 #include "Util/SDDSParser/ast.hpp"
 #include "Util/SDDSParser/error_handler.hpp"
-#include "Util/SDDSParser/skipper.hpp"
 
+#include <array>
 #include <iostream>
 #include <list>
 #include <string>
+#include <string_view>
 
 namespace SDDS {
     struct array
     {
-        enum attributes { NAME
-                         , SYMBOL
-                         , UNITS
-                         , DESCRIPTION
-                         , FORMAT_STRING
-                         , GROUP_NAME
-                         , TYPE
-                         , FIELD_LENGTH
-                         , DIMENSIONS
-                         , ARRAY
+        enum class attributes { NAME
+                               , SYMBOL
+                               , UNITS
+                               , DESCRIPTION
+                               , FORMAT_STRING
+                               , GROUP_NAME
+                               , TYPE
+                               , FIELD_LENGTH
+                               , DIMENSIONS
+                               , ARRAY
          };
 
         template <attributes A>
@@ -45,44 +46,27 @@ namespace SDDS {
         {
             static bool apply()
             {
-                std::string attributeString;
-                switch(A)
-                {
-                case NAME:
-                    attributeString = "name";
-                    break;
-                case SYMBOL:
-                    attributeString = "symbol";
-                    break;
-                case UNITS:
-                    attributeString = "units";
-                    break;
-                case DESCRIPTION:
-                    attributeString = "description";
-                    break;
-                case FORMAT_STRING:
-                    attributeString = "format_string";
-                    break;
-                case GROUP_NAME:
-                    attributeString = "group_name";
-                    break;
-                case TYPE:
-                    attributeString = "type";
-                    break;
-                case FIELD_LENGTH:
-                    attributeString = "field_length";
-                    break;
-                case DIMENSIONS:
-                    attributeString = "dimensions";
-                    break;
-                case ARRAY:
-                    attributeString = "array";
-                    break;
-                default:
-                    return true;
+                constexpr std::array<std::pair<attributes, std::string_view>, 10> unsupportedAttributeNames = {{
+                    { attributes::NAME, "name" },
+                    { attributes::SYMBOL, "symbol" },
+                    { attributes::UNITS, "units" },
+                    { attributes::DESCRIPTION, "description" },
+                    { attributes::FORMAT_STRING, "format_string" },
+                    { attributes::GROUP_NAME, "group_name" },
+                    { attributes::TYPE, "type" },
+                    { attributes::FIELD_LENGTH, "field_length" },
+                    { attributes::DIMENSIONS, "dimensions" },
+                    { attributes::ARRAY, "array" }
+                }};
+
+                for (const auto& item : unsupportedAttributeNames) {
+                    if (item.first == A) {
+                        std::cerr << item.second << " not supported yet" << std::endl;
+                        return false;
+                    }
                 }
-                std::cerr << attributeString << " not supported yet" << std::endl;
-                return false;
+
+                return true;
             }
         };
     };

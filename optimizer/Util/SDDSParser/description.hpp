@@ -19,7 +19,6 @@
 
 #include "Util/SDDSParser/ast.hpp"
 #include "Util/SDDSParser/error_handler.hpp"
-#include "Util/SDDSParser/skipper.hpp"
 
 #include <optional>
 #include <ostream>

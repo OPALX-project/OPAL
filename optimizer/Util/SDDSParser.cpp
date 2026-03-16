@@ -16,19 +16,20 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Util/SDDSParser.h"
+#include "Util/SDDSParser/simple_parser.hpp"
 
-#include <algorithm>
 #include <cctype>
-#include <limits>
+#include <cstddef>
+#include <exception>
+#include <fstream>
 #include <string>
-#include <utility>
-
+#include <string_view>
 
 SDDS::SDDSParser::SDDSParser():
     sddsFileName_m("")
 { }
 
-SDDS::SDDSParser::SDDSParser(const std::string &input):
+SDDS::SDDSParser::SDDSParser(const std::string& input):
     sddsFileName_m(input)
 { }
 
@@ -53,7 +54,8 @@ SDDS::file SDDS::SDDSParser::run() {
     }
 
     // Parse parameter values from the data section, not from file start.
-    size_t pos = parser.dataStartPos();
+    std::size_t pos = parser.dataStartPos();
+    const std::size_t len = contents.size();
     if (pos == std::string::npos) {
         pos = contents.length();
     }
@@ -63,15 +65,16 @@ SDDS::file SDDS::SDDSParser::run() {
                                       "could not parse parameter value");
         }
         // Skip comma or whitespace
-        while (pos < contents.length() && (std::isspace(static_cast<unsigned char>(contents[pos])) || contents[pos] == ',')) {
+        while ( pos < len &&
+                (std::isspace(static_cast<unsigned char>(contents[pos])) || contents[pos] == ',') ) {
             pos++;
         }
     }
 
     // Parse column values row-by-row. A row is only accepted if all columns parse.
-    while (pos < contents.length()) {
-        size_t rowStart = pos;
-        size_t parsedColumns = 0;
+    while (pos < len) {
+        std::size_t rowStart = pos;
+        std::size_t parsedColumns = 0;
 
         for (auto& col : sddsData_m.sddsColumns_m) {
             if (!col.parse(contents, pos)) {
@@ -79,8 +82,8 @@ SDDS::file SDDS::SDDSParser::run() {
             }
             parsedColumns++;
 
-            while (pos < contents.length() &&
-                   (std::isspace(static_cast<unsigned char>(contents[pos])) || contents[pos] == ',')) {
+            while ( pos < len &&
+                    (std::isspace(static_cast<unsigned char>(contents[pos])) || contents[pos] == ',') ) {
                 pos++;
             }
         }
@@ -96,21 +99,19 @@ SDDS::file SDDS::SDDSParser::run() {
         }
     }
 
-    unsigned int param_order = 0;
+    paramNameToID_m.reserve(sddsData_m.sddsParameters_m.size());
+    std::size_t param_order = 0;
     for (const SDDS::parameter &param: sddsData_m.sddsParameters_m) {
-        std::string name = *param.name_m;
-        fixCaseSensitivity(name);
-        paramNameToID_m.insert(std::make_pair(name,
-                                              param_order));
+        const std::string name = normalizeKey(*param.name_m);
+        paramNameToID_m.emplace(name, param_order);
         ++ param_order;
     }
 
-    unsigned int col_order = 0;
+    columnNameToID_m.reserve(sddsData_m.sddsColumns_m.size());
+    std::size_t col_order = 0;
     for (const SDDS::column &col: sddsData_m.sddsColumns_m) {
-        std::string name = *col.name_m;
-        fixCaseSensitivity(name);
-        columnNameToID_m.insert(std::make_pair(name,
-                                               col_order));
+        const std::string name = normalizeKey(*col.name_m);
+        columnNameToID_m.emplace(name, col_order);
         ++ col_order;
     }
 
@@ -118,17 +119,22 @@ SDDS::file SDDS::SDDSParser::run() {
 }
 
 std::string SDDS::SDDSParser::readFile() {
-    std::ifstream in(sddsFileName_m.c_str());
+    std::ifstream in(sddsFileName_m, std::ios::binary);
 
     if (in) {
-        std::string contents;
         in.seekg(0, std::ios::end);
-        contents.resize(in.tellg());
+        const std::streamsize fileSize = in.tellg();
         in.seekg(0, std::ios::beg);
 
-        in.read(&contents[0], contents.size());
+        if (fileSize < 0) {
+            throw SDDSParserException("SDDSParser::readSDDSFile",
+                                      "could not determine size of file '" + sddsFileName_m + "'");
+        }
 
-        in.close();
+        std::string contents(static_cast<std::size_t>(fileSize), '\0');
+        if (!contents.empty()) {
+            in.read(contents.data(), fileSize);
+        }
 
         return contents;
     }
@@ -139,31 +145,39 @@ std::string SDDS::SDDSParser::readFile() {
     return std::string("");
 }
 
-SDDS::ast::columnData_t SDDS::SDDSParser::getColumnData(const std::string& columnName) {
-    int idx = getColumnIndex(columnName);
-
+const SDDS::ast::columnData_t&
+SDDS::SDDSParser::getColumnData(const std::string& columnName) const {
+    const int idx = getColumnIndex(columnName);
     return sddsData_m.sddsColumns_m[idx].values_m;
 }
 
-int SDDS::SDDSParser::getColumnIndex(std::string col_name) const {
-    fixCaseSensitivity(col_name);
-    auto it = columnNameToID_m.find(col_name);
+int SDDS::SDDSParser::getColumnIndex(const std::string& col_name) const {
+    const std::string normalizedName = normalizeKey(col_name);
+    const auto it = columnNameToID_m.find(normalizedName);
     if (it != columnNameToID_m.end()) {
-        return it->second;
+        return static_cast<int>(it->second);
     }
-
     throw SDDSParserException("SDDSParser::getColumnIndex",
                               "could not find column '" + col_name + "'");
-
 }
 
-//XXX use either all upper, or all lower case chars
-void SDDS::SDDSParser::fixCaseSensitivity(std::string& for_string) {
-    std::transform(for_string.begin(),
-                   for_string.end(),
-                   for_string.begin(),
-                   [](unsigned char c) {
-                        return std::tolower(c);
-                    }
-    );
+std::string SDDS::SDDSParser::normalizeKey(std::string_view value) {
+    std::size_t firstUppercase = std::string_view::npos;
+    for (std::size_t index = 0; index < value.size(); ++index) {
+        if (std::isupper(static_cast<unsigned char>(value[index]))) {
+            firstUppercase = index;
+            break;
+        }
+    }
+
+    if (firstUppercase == std::string_view::npos) {
+        return std::string(value);
+    }
+
+    std::string lower(value);
+    for (std::size_t index = firstUppercase; index < lower.size(); ++index) {
+        lower[index] = static_cast<char>(std::tolower(static_cast<unsigned char>(lower[index])));
+    }
+
+    return lower;
 }

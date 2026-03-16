@@ -33,26 +33,22 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
-#include <map>
 #include <string>
+#include <string_view>
+#include <unordered_map>
 
 namespace SDDS {
 
     class SDDSParser {
     private:
         std::string readFile();
-        static void fixCaseSensitivity(std::string& for_string);
-        static std::string fixCaseSensitivity(const std::string& for_string) {
-            std::string retval(for_string);
-            fixCaseSensitivity(retval);
-            return retval;
-        }
+        static std::string normalizeKey(std::string_view value);
         std::string sddsFileName_m;
 
         /// mapping from parameter name to offset in params_m
-        std::map<std::string, int> paramNameToID_m;
+        std::unordered_map<std::string, std::size_t> paramNameToID_m;
         /// mapping from column name to ID in columns_m
-        std::map<std::string, int> columnNameToID_m;
+        std::unordered_map<std::string, std::size_t> columnNameToID_m;
 
         SDDS::file sddsData_m;
 
@@ -62,10 +58,10 @@ namespace SDDS {
         void setInput(const std::string& input);
         file run();
 
-        file getData();
-        ast::columnData_t getColumnData(const std::string& columnName);
+        const file& getData() const;
+        const ast::columnData_t& getColumnData(const std::string& columnName) const;
 
-        ast::datatype getColumnType(const std::string& col_name) {
+        ast::datatype getColumnType(const std::string& col_name) const {
             int index = getColumnIndex(col_name);
             return *sddsData_m.sddsColumns_m[index].type_m;
         }
@@ -79,9 +75,7 @@ namespace SDDS {
          *  @param nval store result of type T in nval
          */
         template <typename T>
-        void getValue(int t, std::string column_name, T& nval) {
-
-            fixCaseSensitivity(column_name);
+        void getValue(int t, const std::string& column_name, T& nval) {
 
             int col_idx = getColumnIndex(column_name);
 
@@ -98,7 +92,7 @@ namespace SDDS {
                 row_idx = static_cast<size_t>(t) - 1;
             }
 
-            ast::variant_t val = sddsData_m.sddsColumns_m[col_idx].values_m[row_idx];
+            const ast::variant_t& val = sddsData_m.sddsColumns_m[col_idx].values_m[row_idx];
             nval = getVariantValue<T>(val, getColumnType(column_name));
         }
 
@@ -112,8 +106,10 @@ namespace SDDS {
          *  @param nval store result of type T in nval
          */
         template <typename T>
-        void getInterpolatedValue(std::string ref_name, double ref_val,
-                                  std::string col_name, T& nval) {
+        void getInterpolatedValue(const std::string& ref_name,
+                                  double ref_val,
+                                  const std::string& col_name,
+                                  T& nval) {
             T value_before = 0;
             T value_after  = 0;
             double value_before_ref = 0;
@@ -175,7 +171,7 @@ namespace SDDS {
          *  @param nval store result of type T in nval
          */
         template <typename T>
-        void getInterpolatedValue(double spos, std::string col_name, T& nval) {
+        void getInterpolatedValue(double spos, const std::string& col_name, T& nval) {
             getInterpolatedValue("s", spos, col_name, nval);
         }
 
@@ -187,22 +183,19 @@ namespace SDDS {
          *  @param nval store result of type T in nval
          */
         template <typename T>
-        void getParameterValue(std::string parameter_name, T& nval) {
-            fixCaseSensitivity(parameter_name);
-
-            if (paramNameToID_m.count(parameter_name) > 0) {
-                size_t id = paramNameToID_m[parameter_name];
-                auto value = sddsData_m.sddsParameters_m[id].value_m;
+        void getParameterValue(const std::string& parameter_name, T& nval) {
+            auto key = normalizeKey(parameter_name);
+            auto it = paramNameToID_m.find(key);
+            if (it != paramNameToID_m.end()) {
+                const auto& value = sddsData_m.sddsParameters_m[it->second].value_m;
                 nval = std::get<T>(value);
             } else {
                 throw SDDSParserException("SDDSParser::getParameterValue",
-                                        "unknown parameter name: '" + parameter_name + "'!");
+                                        "unknown parameter name: '" + key + "'!");
             }
         }
 
         /// Convert value from variant (only numeric types) to a value of type T
-        // use integer instead of ast::datatype enum since otherwise boost has ambigious overloads
-        // as tested on 8-1-2019, boost 1.68, gcc 7.3
         template <typename T>
         T getVariantValue(const ast::variant_t& val, ast::datatype datatype) const
         {
@@ -245,11 +238,11 @@ namespace SDDS {
 
     private:
 
-        int getColumnIndex(std::string col_name) const;
+        int getColumnIndex(const std::string& col_name) const;
     };
 
     inline
-    file SDDSParser::getData() {
+    const file& SDDSParser::getData() const {
         return sddsData_m;
     }
 }

@@ -20,19 +20,21 @@
 #include "Util/SDDSParser/version.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cctype>
 #include <limits>
 #include <optional>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 
 namespace SDDS {
     namespace parser {
 
         class SimpleParser {
         public:
-            SimpleParser(const std::string& input) 
+            SimpleParser(std::string_view input)
                 : input_(input), pos_(0), dataStartPos_(std::string::npos) {}
 
             file parse() {
@@ -51,7 +53,7 @@ namespace SDDS {
                 }
 
                 // Parse parameters, columns, associates, arrays, includes
-                while (pos_ < input_.length()) {
+                while (pos_ < input_.size()) {
                     skipWSAndComments();
                     if (match("&parameter", true)) {
                         result.sddsParameters_m.push_back(parseParameter());
@@ -80,17 +82,17 @@ namespace SDDS {
             }
 
         private:
-            std::string input_;
+            std::string_view input_;
             size_t pos_;
             size_t dataStartPos_;
 
             void skipWSAndComments() {
-                while (pos_ < input_.length()) {
+                while (pos_ < input_.size()) {
                     if (std::isspace(static_cast<unsigned char>(input_[pos_]))) {
                         pos_++;
                     } else if (input_[pos_] == '!') {
                         pos_++;
-                        while (pos_ < input_.length() && input_[pos_] != '\n') pos_++;
+                        while (pos_ < input_.size() && input_[pos_] != '\n') pos_++;
                     } else if (input_[pos_] == ',') {
                         pos_++;
                     } else {
@@ -99,17 +101,21 @@ namespace SDDS {
                 }
             }
 
-            bool match(const std::string& str, bool ignoreCase = false) {
+            bool match(std::string_view str, bool ignoreCase = false) {
                 skipWSAndComments();
+
+                if (pos_ + str.size() > input_.size())
+                    return false;
+
+                const char* data = input_.data() + pos_;
                 if (!ignoreCase) {
-                    if (input_.compare(pos_, str.length(), str) == 0) {
-                        pos_ += str.length();
+                    if (std::char_traits<char>::compare(data, str.data(), str.size()) == 0) {
+                        pos_ += str.size();
                         return true;
                     }
                 } else {
-                    if (str.size() + pos_ > input_.size()) return false;
                     for (size_t i = 0; i < str.size(); ++i) {
-                        if (std::tolower(static_cast<unsigned char>(input_[pos_ + i])) !=
+                        if (std::tolower(static_cast<unsigned char>(data[i])) !=
                             std::tolower(static_cast<unsigned char>(str[i]))) {
                             return false;
                         }
@@ -117,21 +123,22 @@ namespace SDDS {
                     pos_ += str.size();
                     return true;
                 }
+
                 return false;
             }
 
             bool match(char c) {
                 skipWSAndComments();
-                if (pos_ < input_.length() && input_[pos_] == c) {
+                if (pos_ < input_.size() && input_[pos_] == c) {
                     pos_++;
                     return true;
                 }
                 return false;
             }
 
-            void expect(const std::string& str) {
+            void expect(std::string_view str) {
                 if (!match(str, true)) {  // case-insensitive expect
-                    throw std::runtime_error("Expected: " + str);
+                    throw std::runtime_error("Expected: " + std::string(str));
                 }
             }
 
@@ -142,13 +149,13 @@ namespace SDDS {
             }
 
             std::string parseQuotedString() {
-                if (pos_ >= input_.length() || input_[pos_] != '"') {
+                if (pos_ >= input_.size() || input_[pos_] != '"') {
                     return "";
                 }
                 pos_++; // skip opening quote
                 std::string result;
-                while (pos_ < input_.length() && input_[pos_] != '"') {
-                    if (input_[pos_] == '\\' && pos_ + 1 < input_.length()) {
+                while (pos_ < input_.size() && input_[pos_] != '"') {
+                    if (input_[pos_] == '\\' && pos_ + 1 < input_.size()) {
                         pos_++;
                         result += input_[pos_];
                     } else {
@@ -156,7 +163,7 @@ namespace SDDS {
                     }
                     pos_++;
                 }
-                if (pos_ < input_.length() && input_[pos_] == '"') {
+                if (pos_ < input_.size() && input_[pos_] == '"') {
                     pos_++; // skip closing quote
                 }
                 return result;
@@ -164,48 +171,60 @@ namespace SDDS {
 
             std::string parseIdentifier() {
                 skipWSAndComments();
-                std::string result;
-                while (pos_ < input_.length()) {
+                size_t start = pos_;
+                while (pos_ < input_.size()) {
                     char c = input_[pos_];
-                    if (std::isalnum(static_cast<unsigned char>(c)) || 
-                        c == '@' || c == '#' || c == ':' || c == '+' || 
-                        c == '-' || c == '%' || c == '.' || c == '_' || 
+                    if (std::isalnum(static_cast<unsigned char>(c)) ||
+                        c == '@' || c == '#' || c == ':' || c == '+' ||
+                        c == '-' || c == '%' || c == '.' || c == '_' ||
                         c == '$' || c == '&' || c == '/') {
-                        result += c;
                         pos_++;
                     } else {
                         break;
                     }
                 }
-                return result;
+                return std::string(input_.substr(start, pos_ - start));
             }
 
             std::string parseString() {
                 skipWSAndComments();
-                if (pos_ < input_.length() && input_[pos_] == '"') {
+                if (pos_ < input_.size() && input_[pos_] == '"') {
                     return parseQuotedString();
                 }
                 return parseIdentifier();
             }
 
-            static std::string toLower(std::string value) {
-                std::transform(value.begin(),
-                               value.end(),
-                               value.begin(),
-                               [](unsigned char c) {
-                                   return static_cast<char>(std::tolower(c));
-                               });
-                return value;
+            static bool equalsIgnoreCase(std::string_view lhs, std::string_view rhs) {
+                if (lhs.size() != rhs.size()) {
+                    return false;
+                }
+
+                for (size_t i = 0; i < lhs.size(); ++i) {
+                    if (std::tolower(static_cast<unsigned char>(lhs[i])) !=
+                        std::tolower(static_cast<unsigned char>(rhs[i]))) {
+                        return false;
+                    }
+                }
+
+                return true;
             }
 
-            static std::optional<ast::datatype> parseDatatype(const std::string& typeStr) {
-                std::string typeLower = toLower(typeStr);
-                if (typeLower == "float") return ast::FLOAT;
-                if (typeLower == "double") return ast::DOUBLE;
-                if (typeLower == "short") return ast::SHORT;
-                if (typeLower == "long") return ast::LONG;
-                if (typeLower == "character") return ast::CHARACTER;
-                if (typeLower == "string") return ast::STRING;
+            static std::optional<ast::datatype> parseDatatype(std::string_view typeStr) {
+                constexpr std::array<std::pair<std::string_view, ast::datatype>, 6> datatypeMap = {{
+                    { "float", ast::datatype::FLOAT },
+                    { "double", ast::datatype::DOUBLE },
+                    { "short", ast::datatype::SHORT },
+                    { "long", ast::datatype::LONG },
+                    { "character", ast::datatype::CHARACTER },
+                    { "string", ast::datatype::STRING }
+                }};
+
+                for (const auto& [name, datatype] : datatypeMap) {
+                    if (equalsIgnoreCase(typeStr, name)) {
+                        return datatype;
+                    }
+                }
+
                 return std::nullopt;
             }
 
@@ -214,7 +233,7 @@ namespace SDDS {
                 expect("SDDS");
                 skipWSAndComments();
                 std::string numStr;
-                while (pos_ < input_.length() && std::isdigit(static_cast<unsigned char>(input_[pos_]))) {
+                while (pos_ < input_.size() && std::isdigit(static_cast<unsigned char>(input_[pos_]))) {
                     numStr += input_[pos_];
                     pos_++;
                 }
@@ -239,7 +258,7 @@ namespace SDDS {
                     } else if (match("contents", true)) {
                         expect('='); desc.content_m = parseString();
                     } else {
-                        while (pos_ < input_.length() && input_[pos_] != ',' && input_[pos_] != '\n') {
+                        while (pos_ < input_.size() && input_[pos_] != ',' && input_[pos_] != '\n') {
                             pos_++;
                         }
                         if (match(',')) continue;
@@ -252,7 +271,7 @@ namespace SDDS {
             parameter parseParameter() {
                 parameter param;
 
-                while (pos_ < input_.length()) {
+                while (pos_ < input_.size()) {
                     skipWSAndComments();
 
                     if (match("&end", true)) {
@@ -272,7 +291,7 @@ namespace SDDS {
                     } else if (match("description", true)) {
                         expect('='); param.description_m = parseString();
                     } else {
-                        while (pos_ < input_.length() && input_[pos_] != ',' && input_[pos_] != '\n') {
+                        while (pos_ < input_.size() && input_[pos_] != ',' && input_[pos_] != '\n') {
                             pos_++;
                         }
                         if (match(',')) continue;
@@ -306,7 +325,7 @@ namespace SDDS {
                     }
                     else if (match("units", true)) { expect('='); col.units_m = parseString(); }
                     else if (match("description", true)) { expect('='); col.description_m = parseString(); }
-                    else { while (pos_ < input_.length() && input_[pos_] != ',' && input_[pos_] != '\n') pos_++; if (match(',')) continue; }
+                    else { while (pos_ < input_.size() && input_[pos_] != ',' && input_[pos_] != '\n') pos_++; if (match(',')) continue; }
                 }
 
                 if (!col.checkMandatories()) {
@@ -363,25 +382,25 @@ namespace SDDS {
                 skipWSAndComments();
 
                 bool modeSet = false;
-                while (pos_ < input_.length()) {
+                while (pos_ < input_.size()) {
                     skipWSAndComments();
                     if (match("&end", true)) {
                         break;
                     }
 
-                    std::string key = toLower(parseIdentifier());
+                    auto key = parseIdentifier();
                     if (key.empty()) {
                         throw std::runtime_error("Malformed &data entry");
                     }
                     expect('=');
 
-                    if (key == "mode") {
-                        std::string modeStr = toLower(parseString());
-                        if (modeStr == "ascii") {
-                            d.mode_m = ast::ASCII;
+                    if (equalsIgnoreCase(key, "mode")) {
+                        auto modeStr = parseString();
+                        if (equalsIgnoreCase(modeStr, "ascii")) {
+                            d.mode_m = ast::datamode::ASCII;
                             modeSet = true;
-                        } else if (modeStr == "binary") {
-                            d.mode_m = ast::BINARY;
+                        } else if (equalsIgnoreCase(modeStr, "binary")) {
+                            d.mode_m = ast::datamode::BINARY;
                             modeSet = true;
                         } else {
                             throw std::runtime_error("Unknown data mode: " + modeStr);

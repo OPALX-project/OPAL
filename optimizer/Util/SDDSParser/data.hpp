@@ -19,28 +19,29 @@
 
 #include "Util/SDDSParser/ast.hpp"
 #include "Util/SDDSParser/error_handler.hpp"
-#include "Util/SDDSParser/skipper.hpp"
 
+#include <array>
 #include <iostream>
 #include <string>
+#include <string_view>
 
 namespace SDDS {
     struct data
     {
-        enum attributes { MODE
-                        , LINES_PER_ROW
-                        , NO_ROW_COUNT
-                        , FIXED_ROW_COUNT
-                        , ADDITIONAL_HEADER_LINES
-                        , COLUMN_MAJOR_ORDER
-                        , ENDIAN
+        enum class attributes { MODE
+                              , LINES_PER_ROW
+                              , NO_ROW_COUNT
+                              , FIXED_ROW_COUNT
+                              , ADDITIONAL_HEADER_LINES
+                              , COLUMN_MAJOR_ORDER
+                              , ENDIAN
         };
 
-        ast::datamode mode_m;
-        long numberRows_m;
+        ast::datamode mode_m { ast::datamode::ASCII };
+        long numberRows_m { 0 };
 
         bool isASCII() const {
-            if (mode_m == ast::BINARY) {
+            if (mode_m == ast::datamode::BINARY) {
                 std::cerr << "can't handle binary data yet" << std::endl;
                 return false;
             }
@@ -51,38 +52,29 @@ namespace SDDS {
         struct complainUnsupported
         {
             static bool apply() {
-                std::string attributeString;
-                switch(A)
-                {
-                case LINES_PER_ROW:
-                    attributeString = "lines_per_row";
-                    break;
-                case NO_ROW_COUNT:
-                    attributeString = "no_row_count";
-                    break;
-                case FIXED_ROW_COUNT:
-                    attributeString = "fixed_row_count";
-                    break;
-                case ADDITIONAL_HEADER_LINES:
-                    attributeString = "additional_header_lines";
-                    break;
-                case COLUMN_MAJOR_ORDER:
-                    attributeString = "column_major_order";
-                    break;
-                case ENDIAN:
-                    attributeString = "endian";
-                    break;
-                default:
-                    return true;
+                constexpr std::array<std::pair<attributes, std::string_view>, 6> unsupportedAttributeNames = {{
+                    { attributes::LINES_PER_ROW, "lines_per_row" },
+                    { attributes::NO_ROW_COUNT, "no_row_count" },
+                    { attributes::FIXED_ROW_COUNT, "fixed_row_count" },
+                    { attributes::ADDITIONAL_HEADER_LINES, "additional_header_lines" },
+                    { attributes::COLUMN_MAJOR_ORDER, "column_major_order" },
+                    { attributes::ENDIAN, "endian" }
+                }};
+
+                for (const auto& item : unsupportedAttributeNames) {
+                    if (item.first == A) {
+                        std::cerr << item.second << " not supported yet" << std::endl;
+                        return false;
+                    }
                 }
-                std::cerr << attributeString << " not supported yet" << std::endl;
-                return false;
+
+                return true;
             }
         };
     };
 
     inline std::ostream& operator<<(std::ostream& out, const data& data_) {
-        out << "mode = " << data_.mode_m;
+        out << "mode = " << ast::getDataModeString(data_.mode_m);
         return out;
     }
 }

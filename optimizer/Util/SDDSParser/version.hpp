@@ -19,12 +19,11 @@
 
 #include "Util/SDDSParser/ast.hpp"
 #include "Util/SDDSParser/error_handler.hpp"
-#include "Util/SDDSParser/skipper.hpp"
 
 namespace SDDS {
     struct version
     {
-        short layoutVersion_m;
+        short layoutVersion_m { 0 };
     };
 
     inline std::ostream& operator<<(std::ostream& out, const version& head) {

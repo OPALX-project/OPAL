@@ -26,7 +26,6 @@
 #include "Util/SDDSParser/error_handler.hpp"
 #include "Util/SDDSParser/include.hpp"
 #include "Util/SDDSParser/parameter.hpp"
-#include "Util/SDDSParser/skipper.hpp"
 #include "Util/SDDSParser/version.hpp"
 
 #include <optional>
@@ -45,8 +44,11 @@ namespace SDDS {
         includeList sddsIncludes_m;                         // 7
 
         void clear() {
+            sddsVersion_m = {};
+            sddsDescription_m.reset();
             sddsParameters_m.clear();
             sddsColumns_m.clear();
+            sddsData_m = {};
             sddsAssociates_m.clear();
             sddsArrays_m.clear();
             sddsIncludes_m.clear();

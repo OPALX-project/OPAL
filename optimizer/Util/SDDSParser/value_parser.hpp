@@ -6,6 +6,7 @@
 #include <cctype>
 #include <stdexcept>
 #include <string>
+#include <string_view>
 #include <type_traits>
 
 namespace SDDS {
@@ -13,17 +14,17 @@ namespace SDDS {
 
         class ValueParser {
         public:
-            ValueParser(const std::string& input, size_t start_pos = 0)
+            ValueParser(std::string_view input, size_t start_pos = 0)
                 : input_(input), pos_(start_pos) {}
 
             void skipWhitespaceAndComments() {
-                while (pos_ < input_.length()) {
+                while (pos_ < input_.size()) {
                     if (std::isspace(static_cast<unsigned char>(input_[pos_]))) {
                         pos_++;
                     } else if (input_[pos_] == '!') {
                         // Skip comment to end of line
                         pos_++;
-                        while (pos_ < input_.length() && input_[pos_] != '\n') pos_++;
+                        while (pos_ < input_.size() && input_[pos_] != '\n') pos_++;
                     } else if (input_[pos_] == ',') {
                         pos_++; // Skip comma as Boost Spirit does
                     } else {
@@ -40,9 +41,9 @@ namespace SDDS {
                 bool has_dot = false;
                 bool has_exp = false;
 
-                if (pos_ < input_.length() && (input_[pos_] == '+' || input_[pos_] == '-')) pos_++;
+                if (pos_ < input_.size() && (input_[pos_] == '+' || input_[pos_] == '-')) pos_++;
 
-                while (pos_ < input_.length()) {
+                while (pos_ < input_.size()) {
                     char c = input_[pos_];
                     if (std::isdigit(static_cast<unsigned char>(c))) {
                         pos_++;
@@ -51,7 +52,7 @@ namespace SDDS {
                     } else if ((c == 'e' || c == 'E') && !has_exp) {
                         has_exp = true;
                         pos_++;
-                        if (pos_ < input_.length() && (input_[pos_] == '+' || input_[pos_] == '-')) pos_++;
+                        if (pos_ < input_.size() && (input_[pos_] == '+' || input_[pos_] == '-')) pos_++;
                     } else {
                         break;
                     }
@@ -59,7 +60,7 @@ namespace SDDS {
 
                 if (pos_ > start) {
                     try {
-                        std::string token = input_.substr(start, pos_ - start);
+                        const std::string token(input_.data() + start, pos_ - start);
                         if constexpr (std::is_same_v<T, float>) value = std::stof(token);
                         else value = std::stod(token);
                         return true;
@@ -75,13 +76,14 @@ namespace SDDS {
             bool parseInteger(long& value) {
                 skipWhitespaceAndComments();
                 size_t start = pos_;
-                if (pos_ < input_.length() && (input_[pos_] == '+' || input_[pos_] == '-')) pos_++;
+                if (pos_ < input_.size() && (input_[pos_] == '+' || input_[pos_] == '-')) pos_++;
 
-                while (pos_ < input_.length() && std::isdigit(static_cast<unsigned char>(input_[pos_]))) pos_++;
+                while (pos_ < input_.size() && std::isdigit(static_cast<unsigned char>(input_[pos_]))) pos_++;
 
                 if (pos_ > start) {
                     try {
-                        value = std::stol(input_.substr(start, pos_ - start));
+                        const std::string token(input_.data() + start, pos_ - start);
+                        value = std::stol(token);
                         return true;
                     } catch (...) { pos_ = start; return false; }
                 }
@@ -103,7 +105,7 @@ namespace SDDS {
 
             bool parseChar(char& value) {
                 skipWhitespaceAndComments();
-                if (pos_ < input_.length() && !std::isspace(static_cast<unsigned char>(input_[pos_]))) {
+                if (pos_ < input_.size() && !std::isspace(static_cast<unsigned char>(input_[pos_]))) {
                     value = input_[pos_++];
                     return true;
                 }
@@ -113,11 +115,11 @@ namespace SDDS {
             // ----------------------- String Parsers -----------------------
             bool parseQuotedString(std::string& value) {
                 skipWhitespaceAndComments();
-                if (pos_ >= input_.length() || input_[pos_] != '"') return false;
+                if (pos_ >= input_.size() || input_[pos_] != '"') return false;
                 pos_++;
                 value.clear();
-                while (pos_ < input_.length() && input_[pos_] != '"') {
-                    if (input_[pos_] == '\\' && pos_ + 1 < input_.length()) {
+                while (pos_ < input_.size() && input_[pos_] != '"') {
+                    if (input_[pos_] == '\\' && pos_ + 1 < input_.size()) {
                         pos_++;
                         value += input_[pos_];
                     } else {
@@ -125,7 +127,7 @@ namespace SDDS {
                     }
                     pos_++;
                 }
-                if (pos_ < input_.length() && input_[pos_] == '"') {
+                if (pos_ < input_.size() && input_[pos_] == '"') {
                     pos_++; return true;
                 }
                 return false;
@@ -133,12 +135,12 @@ namespace SDDS {
 
             bool parseString(std::string& value) {
                 skipWhitespaceAndComments();
-                if (pos_ < input_.length() && input_[pos_] == '"') {
+                if (pos_ < input_.size() && input_[pos_] == '"') {
                     return parseQuotedString(value);
                 }
 
                 size_t start = pos_;
-                while (pos_ < input_.length()) {
+                while (pos_ < input_.size()) {
                     char c = input_[pos_];
                     if (std::isalnum(static_cast<unsigned char>(c)) ||
                         c == '@' || c == '#' || c == ':' || c == '+' ||
@@ -150,7 +152,7 @@ namespace SDDS {
                     }
                 }
                 if (pos_ > start) {
-                    value = input_.substr(start, pos_ - start);
+                    value.assign(input_.data() + start, pos_ - start);
                     return true;
                 }
                 return false;
@@ -158,12 +160,12 @@ namespace SDDS {
 
             bool parseStringToEol(std::string& value) {
                 skipWhitespaceAndComments();
-                if (pos_ < input_.length() && input_[pos_] == '"') {
+                if (pos_ < input_.size() && input_[pos_] == '"') {
                     return parseQuotedString(value);
                 }
 
                 size_t start = pos_;
-                while (pos_ < input_.length() && input_[pos_] != '\n' && input_[pos_] != '\r') {
+                while (pos_ < input_.size() && input_[pos_] != '\n' && input_[pos_] != '\r') {
                     pos_++;
                 }
 
@@ -173,7 +175,7 @@ namespace SDDS {
                 }
 
                 if (end > start) {
-                    value = input_.substr(start, end - start);
+                    value.assign(input_.data() + start, end - start);
                     return true;
                 }
 
@@ -185,7 +187,7 @@ namespace SDDS {
             void setPosition(size_t pos) { pos_ = pos; }
 
         private:
-            const std::string& input_;
+            std::string_view input_;
             size_t pos_;
         };
 

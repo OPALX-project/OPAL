@@ -17,54 +17,69 @@
 #ifndef AST_HPP_
 #define AST_HPP_
 
+#include <array>
 #include <string>
+#include <string_view>
+#include <type_traits>
 #include <variant>
 #include <vector>
 
 namespace SDDS {
     namespace ast {
-        enum datatype { FLOAT
-                      , DOUBLE
-                      , SHORT
-                      , LONG
-                      , CHARACTER
-                      , STRING };
+        enum class datatype { FLOAT
+                            , DOUBLE
+                            , SHORT
+                            , LONG
+                            , CHARACTER
+                            , STRING };
 
-        enum datamode { ASCII
-                      , BINARY};
+        enum class datamode { ASCII
+                            , BINARY};
 
-        enum endianess { BIGENDIAN
-                       , LITTLEENDIAN};
+        enum class endianess { BIGENDIAN
+                             , LITTLEENDIAN};
 
         struct nil {};
 
-        typedef std::variant<float,
-                             double,
-                             short,
-                             long,
-                             char,
-                             std::string> variant_t;
+        using variant_t = std::variant<float,
+                           double,
+                           short,
+                           long,
+                           char,
+                           std::string>;
 
-        typedef std::vector<variant_t> columnData_t;
+        using columnData_t = std::vector<variant_t>;
 
-        inline
-        std::string getDataTypeString(datatype type) {
-            switch(type) {
-            case FLOAT:
-                return "float";
-            case DOUBLE:
-                return "double";
-            case SHORT:
-                return "short";
-            case LONG:
-                return "long";
-            case CHARACTER:
-                return "char";
-            case STRING:
-                return "string";
-            default:
+        constexpr std::string_view getDataTypeString(datatype type) {
+            constexpr std::array<std::string_view, 6> datatypeNames = {
+                "float",
+                "double",
+                "short",
+                "long",
+                "char",
+                "string"
+            };
+
+            const auto index = static_cast<std::underlying_type_t<datatype>>(type);
+            if (index < 0 || static_cast<std::size_t>(index) >= datatypeNames.size()) {
                 return "unknown";
             }
+
+            return datatypeNames[static_cast<std::size_t>(index)];
+        }
+
+        constexpr std::string_view getDataModeString(datamode mode) {
+            constexpr std::array<std::string_view, 2> datamodeNames = {
+                "ascii",
+                "binary"
+            };
+
+            const auto index = static_cast<std::underlying_type_t<datamode>>(mode);
+            if (index < 0 || static_cast<std::size_t>(index) >= datamodeNames.size()) {
+                return "unknown";
+            }
+
+            return datamodeNames[static_cast<std::size_t>(index)];
         }
 
     }

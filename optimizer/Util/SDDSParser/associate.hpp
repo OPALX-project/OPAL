@@ -19,22 +19,23 @@
 
 #include "Util/SDDSParser/ast.hpp"
 #include "Util/SDDSParser/error_handler.hpp"
-#include "Util/SDDSParser/skipper.hpp"
 
+#include <array>
 #include <iostream>
 #include <list>
 #include <string>
+#include <string_view>
 
 namespace SDDS {
     struct associate
     {
-        enum attributes { NAME
-                        , FILENAME
-                        , PATH
-                        , DESCRIPTION
-                        , CONTENTS
-                        , SDDS
-                        , ASSOCIATE
+        enum class attributes { NAME
+                              , FILENAME
+                              , PATH
+                              , DESCRIPTION
+                              , CONTENTS
+                              , SDDS
+                              , ASSOCIATE
         };
 
         template <attributes A>
@@ -42,35 +43,24 @@ namespace SDDS {
         {
             static bool apply()
             {
-                std::string attributeString;
-                switch(A)
-                {
-                case NAME:
-                    attributeString = "name";
-                    break;
-                case FILENAME:
-                    attributeString = "filename";
-                    break;
-                case PATH:
-                    attributeString = "path";
-                    break;
-                case DESCRIPTION:
-                    attributeString = "description";
-                    break;
-                case CONTENTS:
-                    attributeString = "contents";
-                    break;
-                case SDDS:
-                    attributeString = "sdds";
-                    break;
-                case ASSOCIATE:
-                    attributeString = "associate";
-                    break;
-                default:
-                    return true;
+                constexpr std::array<std::pair<attributes, std::string_view>, 7> unsupportedAttributeNames = {{
+                    { attributes::NAME, "name" },
+                    { attributes::FILENAME, "filename" },
+                    { attributes::PATH, "path" },
+                    { attributes::DESCRIPTION, "description" },
+                    { attributes::CONTENTS, "contents" },
+                    { attributes::SDDS, "sdds" },
+                    { attributes::ASSOCIATE, "associate" }
+                }};
+
+                for (const auto& item : unsupportedAttributeNames) {
+                    if (item.first == A) {
+                        std::cerr << item.second << " not supported yet" << std::endl;
+                        return false;
+                    }
                 }
-                std::cerr << attributeString << " not supported yet" << std::endl;
-                return false;
+
+                return true;
             }
         };
     };
