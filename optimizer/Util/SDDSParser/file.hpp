@@ -23,7 +23,6 @@
 #include "Util/SDDSParser/column.hpp"
 #include "Util/SDDSParser/data.hpp"
 #include "Util/SDDSParser/description.hpp"
-#include "Util/SDDSParser/error_handler.hpp"
 #include "Util/SDDSParser/include.hpp"
 #include "Util/SDDSParser/parameter.hpp"
 #include "Util/SDDSParser/version.hpp"

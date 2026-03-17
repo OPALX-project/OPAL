@@ -17,8 +17,7 @@
 #ifndef VERSION_HPP_
 #define VERSION_HPP_
 
-#include "Util/SDDSParser/ast.hpp"
-#include "Util/SDDSParser/error_handler.hpp"
+#include <ostream>
 
 namespace SDDS {
     struct version

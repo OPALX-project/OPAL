@@ -28,7 +28,7 @@ namespace SDDS {
 
         class ValueParser {
         public:
-            ValueParser(std::string_view input, size_t start_pos = 0)
+            ValueParser(std::string_view input, std::size_t start_pos = 0)
                 : input_(input), pos_(start_pos) {}
 
             void skipWhitespaceAndComments() {
@@ -51,7 +51,7 @@ namespace SDDS {
             template<typename T>
             bool parseNumeric(T& value) {
                 skipWhitespaceAndComments();
-                size_t start = pos_;
+                std::size_t start = pos_;
                 bool has_dot = false;
                 bool has_exp = false;
 
@@ -89,7 +89,7 @@ namespace SDDS {
 
             bool parseInteger(long& value) {
                 skipWhitespaceAndComments();
-                size_t start = pos_;
+                std::size_t start = pos_;
                 if (pos_ < input_.size() && (input_[pos_] == '+' || input_[pos_] == '-')) pos_++;
 
                 while (pos_ < input_.size() && std::isdigit(static_cast<unsigned char>(input_[pos_]))) pos_++;
@@ -153,7 +153,7 @@ namespace SDDS {
                     return parseQuotedString(value);
                 }
 
-                size_t start = pos_;
+                std::size_t start = pos_;
                 while (pos_ < input_.size()) {
                     char c = input_[pos_];
                     if (std::isalnum(static_cast<unsigned char>(c)) ||
@@ -178,12 +178,12 @@ namespace SDDS {
                     return parseQuotedString(value);
                 }
 
-                size_t start = pos_;
+                std::size_t start = pos_;
                 while (pos_ < input_.size() && input_[pos_] != '\n' && input_[pos_] != '\r') {
                     pos_++;
                 }
 
-                size_t end = pos_;
+                std::size_t end = pos_;
                 while (end > start && (input_[end - 1] == ' ' || input_[end - 1] == '\t')) {
                     end--;
                 }
@@ -197,12 +197,12 @@ namespace SDDS {
             }
 
             // ----------------------- Position Control -----------------------
-            size_t getPosition() const { return pos_; }
-            void setPosition(size_t pos) { pos_ = pos; }
+            std::size_t getPosition() const { return pos_; }
+            void setPosition(std::size_t pos) { pos_ = pos; }
 
         private:
             std::string_view input_;
-            size_t pos_;
+            std::size_t pos_;
         };
 
     } // namespace parser

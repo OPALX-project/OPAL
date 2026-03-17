@@ -82,14 +82,14 @@ namespace SDDS {
                 return result;
             }
 
-            size_t dataStartPos() const {
+            std::size_t dataStartPos() const {
                 return dataStartPos_;
             }
 
         private:
             std::string_view input_;
-            size_t pos_;
-            size_t dataStartPos_;
+            std::size_t pos_;
+            std::size_t dataStartPos_;
 
             void skipWSAndComments() {
                 while (pos_ < input_.size()) {
@@ -119,7 +119,7 @@ namespace SDDS {
                         return true;
                     }
                 } else {
-                    for (size_t i = 0; i < str.size(); ++i) {
+                    for (std::size_t i = 0; i < str.size(); ++i) {
                         if (std::tolower(static_cast<unsigned char>(data[i])) !=
                             std::tolower(static_cast<unsigned char>(str[i]))) {
                             return false;
@@ -176,7 +176,7 @@ namespace SDDS {
 
             std::string parseIdentifier() {
                 skipWSAndComments();
-                size_t start = pos_;
+                std::size_t start = pos_;
                 while (pos_ < input_.size()) {
                     char c = input_[pos_];
                     if (std::isalnum(static_cast<unsigned char>(c)) ||

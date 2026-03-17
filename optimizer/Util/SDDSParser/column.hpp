@@ -18,14 +18,16 @@
 #define COLUMN_HPP_
 
 #include "Util/SDDSParser/ast.hpp"
-#include "Util/SDDSParser/error_handler.hpp"
 #include "Util/SDDSParser/value_parser.hpp"
 
 #include <array>
+#include <cstddef>
 #include <iostream>
 #include <optional>
+#include <ostream>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 namespace SDDS {

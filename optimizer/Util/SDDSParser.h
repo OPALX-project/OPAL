@@ -23,6 +23,7 @@
 #include "Util/SDDSParser/SDDSParserException.h"
 
 #include <cmath>
+#include <cstddef>
 #include <string>
 #include <string_view>
 #include <type_traits>
@@ -72,16 +73,16 @@ namespace SDDS {
             int col_idx = getColumnIndex(column_name);
 
             // round timestep to last if not in range
-            size_t row_idx = 0;
-            size_t num_rows = sddsData_m.sddsColumns_m[col_idx].values_m.size();
+            std::size_t row_idx = 0;
+            std::size_t num_rows = sddsData_m.sddsColumns_m[col_idx].values_m.size();
             if (num_rows == 0) {
                 throw SDDSParserException("SDDSParser::getValue",
                                           "requested column has no parsed rows");
             }
-            if (t <= 0 || static_cast<size_t>(t) > num_rows) {
+            if (t <= 0 || static_cast<std::size_t>(t) > num_rows) {
                 row_idx = num_rows - 1;
             } else {
-                row_idx = static_cast<size_t>(t) - 1;
+                row_idx = static_cast<std::size_t>(t) - 1;
             }
 
             const ast::variant_t& val = sddsData_m.sddsColumns_m[col_idx].values_m[row_idx];
@@ -107,20 +108,20 @@ namespace SDDS {
             double value_before_ref = 0;
             double value_after_ref  = 0;
 
-            size_t col_idx_ref = getColumnIndex(ref_name);
+            std::size_t col_idx_ref = getColumnIndex(ref_name);
             ast::columnData_t &ref_values = sddsData_m.sddsColumns_m[col_idx_ref].values_m;
             int index = getColumnIndex(col_name);
             ast::columnData_t &col_values = sddsData_m.sddsColumns_m[index].values_m;
 
-            size_t this_row = 0;
-            size_t num_rows = ref_values.size();
+            std::size_t this_row = 0;
+            std::size_t num_rows = ref_values.size();
             ast::dataType dataType = getColumnType(col_name);
             for (this_row = 0; this_row < num_rows; this_row++) {
                 value_after_ref = std::get<double>(ref_values[this_row]);
 
                 if (ref_val < value_after_ref) {
 
-                    size_t prev_row = 0;
+                    std::size_t prev_row = 0;
                     if (this_row > 0) prev_row = this_row - 1;
 
                     value_before = getVariantValue<T>(col_values[prev_row], dataType);

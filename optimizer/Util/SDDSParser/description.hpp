@@ -17,9 +17,6 @@
 #ifndef DESCRIPTION_HPP_
 #define DESCRIPTION_HPP_
 
-#include "Util/SDDSParser/ast.hpp"
-#include "Util/SDDSParser/error_handler.hpp"
-
 #include <optional>
 #include <ostream>
 #include <string>

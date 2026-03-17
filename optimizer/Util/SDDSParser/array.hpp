@@ -17,14 +17,13 @@
 #ifndef ARRAY_HPP_
 #define ARRAY_HPP_
 
-#include "Util/SDDSParser/ast.hpp"
-#include "Util/SDDSParser/error_handler.hpp"
-
 #include <array>
 #include <iostream>
 #include <list>
+#include <ostream>
 #include <string>
 #include <string_view>
+#include <utility>
 
 namespace SDDS {
     struct array

@@ -18,16 +18,18 @@
 #define PARAMETER_HPP_
 
 #include "Util/SDDSParser/ast.hpp"
-#include "Util/SDDSParser/error_handler.hpp"
 #include "Util/SDDSParser/value_parser.hpp"
 
 #include <array>
+#include <cstddef>
 #include <iostream>
 #include <list>
 #include <optional>
 #include <ostream>
 #include <string>
 #include <string_view>
+#include <utility>
+#include <vector>
 
 namespace SDDS {
     struct parameter
@@ -76,7 +78,7 @@ namespace SDDS {
             }
         };
 
-        bool parse(std::string_view input, size_t& pos)
+        bool parse(std::string_view input, std::size_t& pos)
         {
             if (!type_m) {
                 return false;
