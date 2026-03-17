@@ -17,6 +17,7 @@
 //
 #include "Util/SDDSParser.h"
 #include "Util/SDDSParser/simple_parser.hpp"
+#include "Util/SDDSParser/skipper.hpp"
 
 #include <cctype>
 #include <cstddef>
@@ -59,16 +60,17 @@ SDDS::file SDDS::SDDSParser::run() {
     if (pos == std::string::npos) {
         pos = contents.length();
     }
+
+    auto skipWSAndComments = [&]() {
+        parser::skipper::skipWhitespaceAndComments(contents, pos);
+    };
+
     for (auto& param : sddsData_m.sddsParameters_m) {
         if (!param.parse(contents, pos)) {
             throw SDDSParserException("SDDSParser::run",
                                       "could not parse parameter value");
         }
-        // Skip comma or whitespace
-        while ( pos < len &&
-                (std::isspace(static_cast<unsigned char>(contents[pos])) || contents[pos] == ',') ) {
-            pos++;
-        }
+        skipWSAndComments();
     }
 
     // Parse column values row-by-row. A row is only accepted if all columns parse.
@@ -82,10 +84,7 @@ SDDS::file SDDS::SDDSParser::run() {
             }
             parsedColumns++;
 
-            while ( pos < len &&
-                    (std::isspace(static_cast<unsigned char>(contents[pos])) || contents[pos] == ',') ) {
-                pos++;
-            }
+            skipWSAndComments();
         }
 
         if (parsedColumns == 0) {

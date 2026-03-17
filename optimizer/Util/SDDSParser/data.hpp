@@ -18,6 +18,7 @@
 #define DATA_HPP_
 
 #include "Util/SDDSParser/ast.hpp"
+
 #include <array>
 #include <iostream>
 #include <ostream>

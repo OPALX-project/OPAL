@@ -27,9 +27,11 @@
 #include "Util/SDDSParser/file.hpp"
 #include "Util/SDDSParser/include.hpp"
 #include "Util/SDDSParser/parameter.hpp"
+#include "Util/SDDSParser/skipper.hpp"
 #include "Util/SDDSParser/version.hpp"
 
 #include <cctype>
+#include <cstddef>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -92,18 +94,7 @@ namespace SDDS {
             std::size_t dataStartPos_;
 
             void skipWSAndComments() {
-                while (pos_ < input_.size()) {
-                    if (std::isspace(static_cast<unsigned char>(input_[pos_]))) {
-                        pos_++;
-                    } else if (input_[pos_] == '!') {
-                        pos_++;
-                        while (pos_ < input_.size() && input_[pos_] != '\n') pos_++;
-                    } else if (input_[pos_] == ',') {
-                        pos_++;
-                    } else {
-                        break;
-                    }
-                }
+                skipper::skipWhitespaceAndComments(input_, pos_);
             }
 
             bool match(std::string_view str, bool ignoreCase = false) {

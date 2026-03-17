@@ -18,6 +18,8 @@
 #ifndef VALUE_PARSER_HPP_
 #define VALUE_PARSER_HPP_
 
+#include "Util/SDDSParser/skipper.hpp"
+
 #include <cctype>
 #include <string>
 #include <string_view>
@@ -31,26 +33,14 @@ namespace SDDS {
             ValueParser(std::string_view input, std::size_t start_pos = 0)
                 : input_(input), pos_(start_pos) {}
 
-            void skipWhitespaceAndComments() {
-                while (pos_ < input_.size()) {
-                    if (std::isspace(static_cast<unsigned char>(input_[pos_]))) {
-                        pos_++;
-                    } else if (input_[pos_] == '!') {
-                        // Skip comment to end of line
-                        pos_++;
-                        while (pos_ < input_.size() && input_[pos_] != '\n') pos_++;
-                    } else if (input_[pos_] == ',') {
-                        pos_++; // Skip comma as Boost Spirit does
-                    } else {
-                        break;
-                    }
-                }
+            void skipWSAndComments() {
+                skipper::skipWhitespaceAndComments(input_, pos_);
             }
 
             // ----------------------- Numeric Parsers -----------------------
             template<typename T>
             bool parseNumeric(T& value) {
-                skipWhitespaceAndComments();
+                skipWSAndComments();
                 std::size_t start = pos_;
                 bool has_dot = false;
                 bool has_exp = false;
@@ -88,7 +78,7 @@ namespace SDDS {
             }
 
             bool parseInteger(long& value) {
-                skipWhitespaceAndComments();
+                skipWSAndComments();
                 std::size_t start = pos_;
                 if (pos_ < input_.size() && (input_[pos_] == '+' || input_[pos_] == '-')) pos_++;
 
@@ -118,7 +108,7 @@ namespace SDDS {
             bool parseLong(long& value) { return parseInteger(value); }
 
             bool parseChar(char& value) {
-                skipWhitespaceAndComments();
+                skipWSAndComments();
                 if (pos_ < input_.size() && !std::isspace(static_cast<unsigned char>(input_[pos_]))) {
                     value = input_[pos_++];
                     return true;
@@ -128,7 +118,7 @@ namespace SDDS {
 
             // ----------------------- String Parsers -----------------------
             bool parseQuotedString(std::string& value) {
-                skipWhitespaceAndComments();
+                skipWSAndComments();
                 if (pos_ >= input_.size() || input_[pos_] != '"') return false;
                 pos_++;
                 value.clear();
@@ -148,7 +138,7 @@ namespace SDDS {
             }
 
             bool parseString(std::string& value) {
-                skipWhitespaceAndComments();
+                skipWSAndComments();
                 if (pos_ < input_.size() && input_[pos_] == '"') {
                     return parseQuotedString(value);
                 }
@@ -173,7 +163,7 @@ namespace SDDS {
             }
 
             bool parseStringToEol(std::string& value) {
-                skipWhitespaceAndComments();
+                skipWSAndComments();
                 if (pos_ < input_.size() && input_[pos_] == '"') {
                     return parseQuotedString(value);
                 }
