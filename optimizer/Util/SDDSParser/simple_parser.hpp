@@ -47,21 +47,17 @@ namespace SDDS {
             file parse() {
                 file result;
                 dataStartPos_ = std::string::npos;
-                skipWSAndComments();
                 
                 // Parse version
                 result.sddsVersion_m = parseVersion();
-                skipWSAndComments();
 
                 // Parse optional description
                 if (match("&description", true)) {
                     result.sddsDescription_m = parseDescription();
-                    skipWSAndComments();
                 }
 
                 // Parse parameters, columns, associates, arrays, includes
                 while (pos_ < input_.size()) {
-                    skipWSAndComments();
                     if (match("&parameter", true)) {
                         result.sddsParameters_m.push_back(parseParameter());
                     } else if (match("&column", true)) {
@@ -78,7 +74,6 @@ namespace SDDS {
                     } else {
                         break;
                     }
-                    skipWSAndComments();
                 }
 
                 return result;
@@ -210,7 +205,6 @@ namespace SDDS {
                 description desc;
 
                 while (true) {
-                    skipWSAndComments();
                     if (match("&end", true)) {
                         break;
                     } else if (match("name", true)) {
@@ -234,8 +228,6 @@ namespace SDDS {
                 parameter param;
 
                 while (pos_ < input_.size()) {
-                    skipWSAndComments();
-
                     if (match("&end", true)) {
                         break;
                     } else if (match("name", true)) {
@@ -259,7 +251,6 @@ namespace SDDS {
                         if (match(',')) continue;
                     }
 
-                    skipWSAndComments();
                 }
 
                 if (!param.checkMandatories()) {
@@ -273,7 +264,6 @@ namespace SDDS {
                 column col;
 
                 while (true) {
-                    skipWSAndComments();
                     if (match("&end", true)) break;
                     else if (match("name", true)) { expect('='); col.name_m = parseString(); }
                     else if (match("type", true)) {
@@ -301,10 +291,8 @@ namespace SDDS {
                 associate assoc;
 
                 while (true) {
-                    skipWSAndComments();
                     if (match("&end", true)) break;
                     parseString();
-                    skipWSAndComments();
                     if (match(',')) continue;
                 }
 
@@ -315,10 +303,8 @@ namespace SDDS {
                 array arr;
 
                 while (true) {
-                    skipWSAndComments();
                     if (match("&end", true)) break;
                     parseString();
-                    skipWSAndComments();
                     if (match(',')) continue;
                 }
 
@@ -329,10 +315,8 @@ namespace SDDS {
                 include inc;
 
                 while (true) {
-                    skipWSAndComments();
                     if (match("&end", true)) break;
                     parseString();
-                    skipWSAndComments();
                     if (match(',')) continue;
                 }
 
@@ -341,11 +325,9 @@ namespace SDDS {
 
             data parseData() {
                 data d;
-                skipWSAndComments();
 
                 bool modeSet = false;
                 while (pos_ < input_.size()) {
-                    skipWSAndComments();
                     if (match("&end", true)) {
                         break;
                     }
@@ -372,7 +354,6 @@ namespace SDDS {
                         parseString();
                     }
 
-                    skipWSAndComments();
                     if (match(',')) {
                         continue;
                     }
@@ -381,7 +362,6 @@ namespace SDDS {
                 if (!modeSet) {
                     throw std::runtime_error("Missing mode attribute in &data");
                 }
-                skipWSAndComments();
                 dataStartPos_ = pos_;
 
                 return d;
