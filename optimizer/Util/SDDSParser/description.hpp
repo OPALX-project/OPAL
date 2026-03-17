@@ -22,8 +22,7 @@
 #include <string>
 
 namespace SDDS {
-    struct description
-    {
+    struct description {
         std::optional<std::string> text_m;
         std::optional<std::string> content_m;
     };

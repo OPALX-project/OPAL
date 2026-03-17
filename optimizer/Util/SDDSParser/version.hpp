@@ -20,8 +20,7 @@
 #include <ostream>
 
 namespace SDDS {
-    struct version
-    {
+    struct version {
         short layoutVersion_m { 0 };
     };
 

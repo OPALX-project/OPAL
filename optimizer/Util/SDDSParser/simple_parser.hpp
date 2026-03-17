@@ -47,7 +47,7 @@ namespace SDDS {
             file parse() {
                 file result;
                 dataStartPos_ = std::string::npos;
-                
+
                 // Parse version
                 result.sddsVersion_m = parseVersion();
 
@@ -106,8 +106,8 @@ namespace SDDS {
                     }
                 } else {
                     for (std::size_t i = 0; i < str.size(); ++i) {
-                        if (std::tolower(static_cast<unsigned char>(data[i])) !=
-                            std::tolower(static_cast<unsigned char>(str[i]))) {
+                        if (std::tolower(static_cast<unsigned char>(data[i]))
+                            != std::tolower(static_cast<unsigned char>(str[i]))) {
                             return false;
                         }
                     }
@@ -128,7 +128,7 @@ namespace SDDS {
             }
 
             void expect(std::string_view str) {
-                if (!match(str, true)) {  // case-insensitive expect
+                if (!match(str, true)) { // case-insensitive expect
                     throw std::runtime_error("Expected: " + std::string(str));
                 }
             }
@@ -190,7 +190,8 @@ namespace SDDS {
                 expect("SDDS");
                 skipWSAndComments();
                 std::string numStr;
-                while (pos_ < input_.size() && std::isdigit(static_cast<unsigned char>(input_[pos_]))) {
+                while (pos_ < input_.size()
+                       && std::isdigit(static_cast<unsigned char>(input_[pos_]))) {
                     numStr += input_[pos_];
                     pos_++;
                 }
@@ -208,13 +209,17 @@ namespace SDDS {
                     if (match("&end", true)) {
                         break;
                     } else if (match("name", true)) {
-                        expect('='); desc.text_m = parseString();
+                        expect('=');
+                        desc.text_m = parseString();
                     } else if (match("text", true)) {
-                        expect('='); desc.text_m = parseString();
+                        expect('=');
+                        desc.text_m = parseString();
                     } else if (match("contents", true)) {
-                        expect('='); desc.content_m = parseString();
+                        expect('=');
+                        desc.content_m = parseString();
                     } else {
-                        while (pos_ < input_.size() && input_[pos_] != ',' && input_[pos_] != '\n') {
+                        while (pos_ < input_.size()
+                               && input_[pos_] != ',' && input_[pos_] != '\n') {
                             pos_++;
                         }
                         if (match(',')) continue;
@@ -231,7 +236,8 @@ namespace SDDS {
                     if (match("&end", true)) {
                         break;
                     } else if (match("name", true)) {
-                        expect('='); param.name_m = parseString();
+                        expect('=');
+                        param.name_m = parseString();
                     } else if (match("type", true)) {
                         expect('=');
                         std::string typeStr = parseString();
@@ -241,11 +247,14 @@ namespace SDDS {
                         }
                         param.type_m = *type;
                     } else if (match("units", true)) {
-                        expect('='); param.units_m = parseString();
+                        expect('=');
+                        param.units_m = parseString();
                     } else if (match("description", true)) {
-                        expect('='); param.description_m = parseString();
+                        expect('=');
+                        param.description_m = parseString();
                     } else {
-                        while (pos_ < input_.size() && input_[pos_] != ',' && input_[pos_] != '\n') {
+                        while (pos_ < input_.size()
+                               && input_[pos_] != ',' && input_[pos_] != '\n') {
                             pos_++;
                         }
                         if (match(',')) continue;
@@ -264,9 +273,12 @@ namespace SDDS {
                 column col;
 
                 while (true) {
-                    if (match("&end", true)) break;
-                    else if (match("name", true)) { expect('='); col.name_m = parseString(); }
-                    else if (match("type", true)) {
+                    if (match("&end", true)) {
+                        break;
+                    } else if (match("name", true)) {
+                        expect('=');
+                        col.name_m = parseString();
+                    } else if (match("type", true)) {
                         expect('=');
                         std::string typeStr = parseString();
                         auto type = ast::parseDataType(typeStr);
@@ -274,10 +286,19 @@ namespace SDDS {
                             throw std::runtime_error("Unknown column type: " + typeStr);
                         }
                         col.type_m = *type;
+                    } else if (match("units", true)) {
+                        expect('=');
+                        col.units_m = parseString();
+                    } else if (match("description", true)) {
+                        expect('=');
+                        col.description_m = parseString();
+                    } else {
+                        while (pos_ < input_.size()
+                               && input_[pos_] != ',' && input_[pos_] != '\n') {
+                            pos_++;
+                        }
+                        if (match(',')) continue;
                     }
-                    else if (match("units", true)) { expect('='); col.units_m = parseString(); }
-                    else if (match("description", true)) { expect('='); col.description_m = parseString(); }
-                    else { while (pos_ < input_.size() && input_[pos_] != ',' && input_[pos_] != '\n') pos_++; if (match(',')) continue; }
                 }
 
                 if (!col.checkMandatories()) {

@@ -38,21 +38,24 @@ namespace SDDS {
             }
 
             // ----------------------- Numeric Parsers -----------------------
-            template<typename T>
+            template <typename T>
             bool parseNumeric(T& value) {
                 skipWSAndComments();
                 std::size_t start = pos_;
                 bool has_dot = false;
                 bool has_exp = false;
 
-                if (pos_ < input_.size() && (input_[pos_] == '+' || input_[pos_] == '-')) pos_++;
+                if (pos_ < input_.size() && (input_[pos_] == '+' || input_[pos_] == '-')) {
+                    pos_++;
+                }
 
                 while (pos_ < input_.size()) {
                     char c = input_[pos_];
                     if (std::isdigit(static_cast<unsigned char>(c))) {
                         pos_++;
                     } else if (c == '.' && !has_dot) {
-                        has_dot = true; pos_++;
+                        has_dot = true;
+                        pos_++;
                     } else if ((c == 'e' || c == 'E') && !has_exp) {
                         has_exp = true;
                         pos_++;
@@ -65,8 +68,11 @@ namespace SDDS {
                 if (pos_ > start) {
                     try {
                         const std::string token(input_.data() + start, pos_ - start);
-                        if constexpr (std::is_same_v<T, float>) value = std::stof(token);
-                        else value = std::stod(token);
+                        if constexpr (std::is_same_v<T, float>) {
+                            value = std::stof(token);
+                        } else {
+                            value = std::stod(token);
+                        }
                         return true;
                     } catch (...) {
                         pos_ = start;
@@ -80,16 +86,23 @@ namespace SDDS {
             bool parseInteger(long& value) {
                 skipWSAndComments();
                 std::size_t start = pos_;
-                if (pos_ < input_.size() && (input_[pos_] == '+' || input_[pos_] == '-')) pos_++;
+                if (pos_ < input_.size() && (input_[pos_] == '+' || input_[pos_] == '-')) {
+                    pos_++;
+                }
 
-                while (pos_ < input_.size() && std::isdigit(static_cast<unsigned char>(input_[pos_]))) pos_++;
+                while (pos_ < input_.size() && std::isdigit(static_cast<unsigned char>(input_[pos_]))) {
+                    pos_++;
+                }
 
                 if (pos_ > start) {
                     try {
                         const std::string token(input_.data() + start, pos_ - start);
                         value = std::stol(token);
                         return true;
-                    } catch (...) { pos_ = start; return false; }
+                    } catch (...) {
+                        pos_ = start;
+                        return false;
+                    }
                 }
                 pos_ = start;
                 return false;
@@ -119,7 +132,9 @@ namespace SDDS {
             // ----------------------- String Parsers -----------------------
             bool parseQuotedString(std::string& value) {
                 skipWSAndComments();
-                if (pos_ >= input_.size() || input_[pos_] != '"') return false;
+                if (pos_ >= input_.size() || input_[pos_] != '"') {
+                    return false;
+                }
                 pos_++;
                 value.clear();
                 while (pos_ < input_.size() && input_[pos_] != '"') {
@@ -132,7 +147,8 @@ namespace SDDS {
                     pos_++;
                 }
                 if (pos_ < input_.size() && input_[pos_] == '"') {
-                    pos_++; return true;
+                    pos_++;
+                    return true;
                 }
                 return false;
             }

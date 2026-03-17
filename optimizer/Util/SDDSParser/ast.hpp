@@ -28,15 +28,18 @@
 
 namespace SDDS {
     namespace ast {
-        enum class dataType { FLOAT
-                            , DOUBLE
-                            , SHORT
-                            , LONG
-                            , CHARACTER
-                            , STRING };
-
-        enum class dataMode { ASCII
-                            , BINARY};
+        enum class dataType {
+            FLOAT,
+            DOUBLE,
+            SHORT,
+            LONG,
+            CHARACTER,
+            STRING
+        };
+        enum class dataMode {
+            ASCII,
+            BINARY
+        };
 
         using variant_t = std::variant<float,
                                        double,

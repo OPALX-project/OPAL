@@ -21,30 +21,27 @@
 #include <iostream>
 #include <list>
 #include <ostream>
-#include <string>
 #include <string_view>
 #include <utility>
 
 namespace SDDS {
-    struct array
-    {
-        enum class attributes { NAME
-                               , SYMBOL
-                               , UNITS
-                               , DESCRIPTION
-                               , FORMAT_STRING
-                               , GROUP_NAME
-                               , TYPE
-                               , FIELD_LENGTH
-                               , DIMENSIONS
-                               , ARRAY
+    struct array {
+        enum class attributes {
+            NAME,
+            SYMBOL,
+            UNITS,
+            DESCRIPTION,
+            FORMAT_STRING,
+            GROUP_NAME,
+            TYPE,
+            FIELD_LENGTH,
+            DIMENSIONS,
+            ARRAY
          };
 
         template <attributes A>
-        struct complainUnsupported
-        {
-            static bool apply()
-            {
+        struct complainUnsupported {
+            static bool apply() {
                 constexpr std::array<std::pair<attributes, std::string_view>, 10> unsupportedAttributeNames = {{
                     { attributes::NAME, "name" },
                     { attributes::SYMBOL, "symbol" },
@@ -70,9 +67,9 @@ namespace SDDS {
         };
     };
 
-    struct arrayList: std::list<array> {};
+    struct arrayList : std::list<array> {};
 
-    inline std::ostream& operator<<(std::ostream& out, const array& ) {
+    inline std::ostream& operator<<(std::ostream& out, const array&) {
         return out;
     }
 }

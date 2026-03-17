@@ -20,22 +20,19 @@
 #include <stdexcept>
 #include <string>
 
-class SDDSParserException: public std::runtime_error {
+class SDDSParserException : public std::runtime_error {
 
 public:
-
     SDDSParserException(const std::string& meth, const std::string& descr):
         std::runtime_error(descr),
         meth_(meth)
-    {
-    }
+    { }
 
     virtual const char* where() const throw() {
         return meth_.c_str();
     }
 
 private:
-
     std::string meth_;
 
 };

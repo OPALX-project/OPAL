@@ -19,7 +19,6 @@
 
 #include "Util/SDDSParser/array.hpp"
 #include "Util/SDDSParser/associate.hpp"
-#include "Util/SDDSParser/ast.hpp"
 #include "Util/SDDSParser/column.hpp"
 #include "Util/SDDSParser/data.hpp"
 #include "Util/SDDSParser/description.hpp"
@@ -31,8 +30,7 @@
 #include <ostream>
 
 namespace SDDS {
-    struct file
-    {
+    struct file {
         version sddsVersion_m;                              // 0
         std::optional<description> sddsDescription_m;       // 1
         parameterList sddsParameters_m;                     // 2

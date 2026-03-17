@@ -22,20 +22,19 @@
 #include <array>
 #include <iostream>
 #include <ostream>
-#include <string>
 #include <string_view>
 #include <utility>
 
 namespace SDDS {
-    struct data
-    {
-        enum class attributes { MODE
-                              , LINES_PER_ROW
-                              , NO_ROW_COUNT
-                              , FIXED_ROW_COUNT
-                              , ADDITIONAL_HEADER_LINES
-                              , COLUMN_MAJOR_ORDER
-                              , ENDIAN
+    struct data {
+        enum class attributes {
+            MODE,
+            LINES_PER_ROW,
+            NO_ROW_COUNT,
+            FIXED_ROW_COUNT,
+            ADDITIONAL_HEADER_LINES,
+            COLUMN_MAJOR_ORDER,
+            ENDIAN
         };
 
         ast::dataMode mode_m { ast::dataMode::ASCII };

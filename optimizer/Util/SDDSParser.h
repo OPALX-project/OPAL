@@ -201,22 +201,23 @@ namespace SDDS {
 
             try {
                 switch (type) {
-                case ast::dataType::FLOAT:
-                    return static_cast<T>(std::get<float>(val));
-
-                case ast::dataType::DOUBLE:
-                    return static_cast<T>(std::get<double>(val));
-
-                case ast::dataType::SHORT:
-                    return static_cast<T>(std::get<short>(val));
-
-                case ast::dataType::LONG:
-                    return static_cast<T>(std::get<long>(val));
-
-                default:
-                    throw SDDSParserException("SDDSParser::getVariantValue",
-                                              "unsupported ast::dataType"
-                    );
+                    case ast::dataType::FLOAT: {
+                        return static_cast<T>(std::get<float>(val));
+                    }
+                    case ast::dataType::DOUBLE: {
+                        return static_cast<T>(std::get<double>(val));
+                    }
+                    case ast::dataType::SHORT: {
+                        return static_cast<T>(std::get<short>(val));
+                    }
+                    case ast::dataType::LONG: {
+                        return static_cast<T>(std::get<long>(val));
+                    }
+                    default: {
+                        throw SDDSParserException("SDDSParser::getVariantValue",
+                                                "unsupported ast::dataType"
+                        );
+                    }
                 }
             }
             catch (const std::bad_variant_access&) {

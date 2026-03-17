@@ -83,7 +83,6 @@ SDDS::file SDDS::SDDSParser::run() {
                 break;
             }
             parsedColumns++;
-
             skipWSAndComments();
         }
 

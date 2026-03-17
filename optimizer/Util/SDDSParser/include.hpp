@@ -21,22 +21,19 @@
 #include <iostream>
 #include <list>
 #include <ostream>
-#include <string>
 #include <string_view>
 #include <utility>
 
 namespace SDDS {
-    struct include
-    {
-        enum class attributes { FILENAME
-                              , INCLUDE
+    struct include {
+        enum class attributes {
+            FILENAME,
+            INCLUDE
         };
 
         template <attributes A>
-        struct complainUnsupported
-        {
-            static bool apply()
-            {
+        struct complainUnsupported {
+            static bool apply() {
                 constexpr std::array<std::pair<attributes, std::string_view>, 2> unsupportedAttributeNames = {{
                     { attributes::FILENAME, "filename" },
                     { attributes::INCLUDE, "include" }
@@ -54,9 +51,9 @@ namespace SDDS {
         };
     };
 
-    struct includeList: std::list<include> {};
+    struct includeList : std::list<include> {};
 
-    inline std::ostream& operator<<(std::ostream& out, const include& ) {
+    inline std::ostream& operator<<(std::ostream& out, const include&) {
         return out;
     }
 }

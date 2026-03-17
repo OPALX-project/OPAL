@@ -21,27 +21,24 @@
 #include <iostream>
 #include <list>
 #include <ostream>
-#include <string>
 #include <string_view>
 #include <utility>
 
 namespace SDDS {
-    struct associate
-    {
-        enum class attributes { NAME
-                              , FILENAME
-                              , PATH
-                              , DESCRIPTION
-                              , CONTENTS
-                              , SDDS
-                              , ASSOCIATE
+    struct associate {
+        enum class attributes {
+            NAME,
+            FILENAME,
+            PATH,
+            DESCRIPTION,
+            CONTENTS,
+            SDDS,
+            ASSOCIATE
         };
 
         template <attributes A>
-        struct complainUnsupported
-        {
-            static bool apply()
-            {
+        struct complainUnsupported {
+            static bool apply() {
                 constexpr std::array<std::pair<attributes, std::string_view>, 7> unsupportedAttributeNames = {{
                     { attributes::NAME, "name" },
                     { attributes::FILENAME, "filename" },
@@ -64,9 +61,9 @@ namespace SDDS {
         };
     };
 
-    struct associateList: std::list<associate> {};
+    struct associateList : std::list<associate> {};
 
-    inline std::ostream& operator<<(std::ostream& out, const associate& ) {
+    inline std::ostream& operator<<(std::ostream& out, const associate&) {
         return out;
     }
 }

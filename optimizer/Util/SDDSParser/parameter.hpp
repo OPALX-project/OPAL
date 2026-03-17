@@ -23,7 +23,6 @@
 #include <array>
 #include <cstddef>
 #include <iostream>
-#include <list>
 #include <optional>
 #include <ostream>
 #include <string>
@@ -32,15 +31,15 @@
 #include <vector>
 
 namespace SDDS {
-    struct parameter
-    {
-        enum class attributes { NAME
-                              , SYMBOL
-                              , UNITS
-                              , DESCRIPTION
-                              , FORMAT_STRING
-                              , TYPE
-                              , FIXED_VALUE
+    struct parameter {
+        enum class attributes {
+            NAME,
+            SYMBOL,
+            UNITS,
+            DESCRIPTION,
+            FORMAT_STRING,
+            TYPE,
+            FIXED_VALUE
          };
 
         unsigned int order_m { 0 };
@@ -51,16 +50,14 @@ namespace SDDS {
         ast::variant_t value_m;
         static unsigned int count_m;
 
-        bool checkMandatories() const
-        {
+        bool checkMandatories() const {
             return name_m && type_m;
         }
 
         template <attributes A>
-        struct complainUnsupported
-        {
-            static bool apply()
-            {
+        struct complainUnsupported {
+
+            static bool apply() {
                 constexpr std::array<std::pair<attributes, std::string_view>, 3> unsupportedAttributeNames = {{
                     { attributes::SYMBOL, "symbol" },
                     { attributes::FORMAT_STRING, "format_string" },
@@ -78,74 +75,67 @@ namespace SDDS {
             }
         };
 
-        bool parse(std::string_view input, std::size_t& pos)
-        {
+        bool parse(std::string_view input, std::size_t& pos) {
             if (!type_m) {
                 return false;
             }
 
             parser::ValueParser parser(input, pos);
             switch(*this->type_m) {
-            case ast::dataType::FLOAT:
-            {
-                                float f = 0.0f;
-                if (parser.parseFloat(f)) {
-                    this->value_m = f;
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::FLOAT: {
+                                    float f = 0.0f;
+                    if (parser.parseFloat(f)) {
+                        this->value_m = f;
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::dataType::DOUBLE:
-            {
-                double d = 0.0;
-                if (parser.parseDouble(d)) {
-                    this->value_m = d;
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::DOUBLE: {
+                    double d = 0.0;
+                    if (parser.parseDouble(d)) {
+                        this->value_m = d;
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::dataType::SHORT:
-            {
-                short s = 0;
-                if (parser.parseShort(s)) {
-                    this->value_m = s;
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::SHORT: {
+                    short s = 0;
+                    if (parser.parseShort(s)) {
+                        this->value_m = s;
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::dataType::LONG:
-            {
-                long l = 0;
-                if (parser.parseLong(l)) {
-                    this->value_m = l;
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::LONG: {
+                    long l = 0;
+                    if (parser.parseLong(l)) {
+                        this->value_m = l;
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::dataType::CHARACTER:
-            {
-                char c = 0;
-                if (parser.parseChar(c)) {
-                    this->value_m = c;
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::CHARACTER: {
+                    char c = 0;
+                    if (parser.parseChar(c)) {
+                        this->value_m = c;
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::dataType::STRING:
-            {
-                std::string s;
-                if (parser.parseStringToEol(s)) {
-                    this->value_m = s;
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::STRING: {
+                    std::string s;
+                    if (parser.parseStringToEol(s)) {
+                        this->value_m = s;
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
             }
             return false;
         }
@@ -154,13 +144,13 @@ namespace SDDS {
     struct parameterList : std::vector<parameter> {};
 
     template <typename Iterator>
-    struct parameterOrder
-    {
+    struct parameterOrder {
         template <typename, typename>
-        struct result { typedef void type; };
+        struct result {
+            typedef void type;
+        };
 
-        void operator()(parameter& param, Iterator) const
-        {
+        void operator()(parameter& param, Iterator) const {
             param.order_m = parameter::count_m ++;
         }
     };

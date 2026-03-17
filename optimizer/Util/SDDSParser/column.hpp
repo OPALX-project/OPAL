@@ -31,15 +31,15 @@
 #include <vector>
 
 namespace SDDS {
-    struct column
-    {
-        enum class attributes { NAME
-                              , SYMBOL
-                              , UNITS
-                              , DESCRIPTION
-                              , FORMAT_STRING
-                              , TYPE
-                              , FIELD_LENGTH
+    struct column {
+        enum class attributes {
+            NAME,
+            SYMBOL,
+            UNITS,
+            DESCRIPTION,
+            FORMAT_STRING,
+            TYPE,
+            FIELD_LENGTH
         };
 
         unsigned int order_m { 0 };
@@ -55,8 +55,7 @@ namespace SDDS {
         }
 
         template <attributes A>
-        struct complainUnsupported
-        {
+        struct complainUnsupported {
             static bool apply() {
                 constexpr std::array<std::pair<attributes, std::string_view>, 3> unsupportedAttributeNames = {{
                     { attributes::SYMBOL, "symbol" },
@@ -82,81 +81,75 @@ namespace SDDS {
 
             parser::ValueParser parser(input, pos);
             switch(*this->type_m) {
-            case ast::dataType::FLOAT:
-            {
-                float f = 0.0f;
-                if (parser.parseFloat(f)) {
-                    this->values_m.push_back(f);
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::FLOAT: {
+                    float f = 0.0f;
+                    if (parser.parseFloat(f)) {
+                        this->values_m.push_back(f);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::dataType::DOUBLE:
-            {
-                double d = 0.0;
-                if (parser.parseDouble(d)) {
-                    this->values_m.push_back(d);
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::DOUBLE: {
+                    double d = 0.0;
+                    if (parser.parseDouble(d)) {
+                        this->values_m.push_back(d);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::dataType::SHORT:
-            {
-                short s = 0;
-                if (parser.parseShort(s)) {
-                    this->values_m.push_back(s);
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::SHORT: {
+                    short s = 0;
+                    if (parser.parseShort(s)) {
+                        this->values_m.push_back(s);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::dataType::LONG:
-            {
-                long l = 0;
-                if (parser.parseLong(l)) {
-                    this->values_m.push_back(l);
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::LONG: {
+                    long l = 0;
+                    if (parser.parseLong(l)) {
+                        this->values_m.push_back(l);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::dataType::CHARACTER:
-            {
-                char c = '\0';
-                if (parser.parseChar(c)) {
-                    this->values_m.push_back(c);
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::CHARACTER: {
+                    char c = '\0';
+                    if (parser.parseChar(c)) {
+                        this->values_m.push_back(c);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::dataType::STRING:
-            {
-                std::string s("");
-                if (parser.parseString(s)) {
-                    this->values_m.push_back(s);
-                    pos = parser.getPosition();
-                    return true;
+                case ast::dataType::STRING: {
+                    std::string s("");
+                    if (parser.parseString(s)) {
+                        this->values_m.push_back(s);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
             }
             return false;
         }
     };
 
-    struct columnList: std::vector<column> {};
+    struct columnList : std::vector<column> {};
 
     template <typename Iterator>
-    struct columnOrder
-    {
+    struct columnOrder {
         template <typename, typename>
-        struct result { typedef void type; };
+        struct result {
+            typedef void type;
+        };
 
-        void operator()(column& col, Iterator) const
-        {
+        void operator()(column& col, Iterator) const {
             col.order_m = column::count_m ++;
         }
     };
