@@ -20,14 +20,14 @@
 // include files
 #include "Message/TagMaker.h"
 #include "Message/Tags.h"
+
+#include <cstddef>
 #include <cstdlib>
-#include <memory>
 #include <cstring>
-
-#include <vector>
-#include <utility>
-
 #include <iostream>
+#include <map>
+#include <utility>
+#include <vector>
 
 #include <mpi.h>
 
@@ -41,7 +41,7 @@ const int COMM_ANY_NODE = (-1);
 const int COMM_ANY_TAG  = (-1);
 
 
-// A simple class used to store information for caching sent messages.  This
+// A simple class used to store information for caching sent messages. This
 // is only used if the 'retransmit' option is active.
 class CommSendInfo
 {
@@ -125,7 +125,6 @@ public:
     enum CommCodes { COMM_ANY_NODE = (-1), COMM_ANY_TAG = (-1) };
 
 public:
-
     // constructor and destructor
     // constructor arguments: command-line args, and number of processes
     // to start (if < 0, start the 'default' number, i.e. the number of
@@ -209,7 +208,6 @@ public:
     {
         return 0;
     }
-     
 
     //
     //    virtual routines to broadcast data
@@ -222,7 +220,6 @@ public:
     // The first argument is the Message; the last argument is the tag.
     virtual int broadcast_all(Message *, int);
     virtual int broadcast_others(Message *, int, bool delmsg=true);
-
 
     //
     //    routines to synchronize processors at a barrier
@@ -244,9 +241,9 @@ protected:
     // struct used to store messages, tags, and nodes
     struct MessageData
     {
-        int node;			// sending/receiving node
-        int tag;			// tag of the message
-        Message *msg;		// pointer to the message itself
+        int node; // sending/receiving node
+        int tag; // tag of the message
+        Message *msg; // pointer to the message itself
         MessageData(int n, int t, Message *m) : node(n),tag(t),msg(m) {}
         MessageData() : node(-1), tag(-1), msg(0) { }
         MessageData(const MessageData& m) : node(m.node),tag(m.tag),msg(m.msg) {}
@@ -258,11 +255,11 @@ protected:
     std::vector<MessageData> recMsgList;
 
     // the following items should be filled in by the derived classes
-    int TotalNodes;		// number of nodes available (0 ... # nodes-1)
-    int myHost;			// which node am I?
-    int ErrorStatus;		// error code, from above enumeration
-    std::vector<int> Contexts;		// the number of contexts per node
-    std::vector< std::vector<int> > Processes;   // number of running processes per context
+    int TotalNodes;  // number of nodes available (0 ... # nodes-1)
+    int myHost;      // which node am I?
+    int ErrorStatus; // error code, from above enumeration
+    std::vector<int> Contexts; // the number of contexts per node
+    std::vector< std::vector<int> > Processes; // number of running processes per context
 
     // An integer message number identifier; this is included in each
     // message, and continually increases as more messages are sent.

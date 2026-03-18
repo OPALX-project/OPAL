@@ -39,14 +39,18 @@
 #include "Utility/IpplInfo.h"
 #include "Utility/IpplStats.h"
 #include "Utility/PAssert.h"
-#include <cstdio>
 
+#include <cstdlib>
+#include <cstring>
+#include <map>
+#include <ostream>
+#include <utility>
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////
 // print summary of this class to the given output stream
 std::ostream& operator<<(std::ostream& o, const Communicate& c)
 {
-
     o << "Parallel communication method: " << c.name() << "\n";
     o << "  Total nodes: " << c.getNodes() << ", Current node: ";
     o << c.myNode() << "\n";
@@ -67,30 +71,24 @@ std::ostream& operator<<(std::ostream& o, const Communicate& c)
 // Also note: the derived classes should erase Contexts and Processes, and
 // put in the proper values.
 Communicate::Communicate(int, char **, int)
-        : nextMsgNum(1)
+        : TotalNodes(1),
+          myHost(0),
+          ErrorStatus(COMM_NOERROR),
+          Contexts(1, 1),
+          Processes(1, std::vector<int>(1, 1)),
+          nextMsgNum(1)
 {
-
-    // initialize data for Communicate
-    TotalNodes = 1;
-    myHost = 0;
-    ErrorStatus = COMM_NOERROR;
-    Contexts.push_back(1);
-    Processes.push_back(Contexts); // using Contexts is just convenient here
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 // Destructor.  Nothing to do at present.
 Communicate::~Communicate(void)
 {
-
-
     // delete the cached messages
     SentCache_t::iterator cachei = sentMsgCache.begin();
     for ( ; cachei != sentMsgCache.end(); ++cachei)
         (*cachei).second.freebuf();
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 // Add a new on-node message to the linked list.  Return success.
@@ -100,7 +98,6 @@ bool Communicate::add_msg(Message *msg, int node, int tag)
     return true;
 }
 
-
 ////////////////////////////////////////////////////////////////////////////
 // Looks for a message in the message queue from the specified node
 // and tag.  This understands wildcards for node and tag.
@@ -109,7 +106,6 @@ bool Communicate::add_msg(Message *msg, int node, int tag)
 // the queue.
 Message* Communicate::find_msg(int& node, int& tag)
 {
-
     // just find the first message that meets the criteria
     std::vector<MessageData>::iterator qi   = recMsgList.begin();
     std::vector<MessageData>::iterator qend = recMsgList.end();
@@ -132,48 +128,38 @@ Message* Communicate::find_msg(int& node, int& tag)
     return 0;
 }
 
-
 ////////////////////////////////////////////////////////////////////////////
 // Default version of virtual send function ... here, does nothing.
 bool Communicate::mysend(Message *, int, int, int)
 {
-
     // just return false, since we cannot send a message with this function
     return false;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 // Default version of virtual receive function ... here, does nothing.
 Message* Communicate::myreceive(int&, int&, int)
 {
-
     // just return NULL, since we cannot find a message with this function
     return 0;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 // Default version of virtual barrier function ... here, does nothing.
 void Communicate::mybarrier(void)
 {
-
-
     // just return NULL, since we cannot find a message with this function
     return;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 // resent a message buffer that has been previously packed and copied
 // into the provided buffer.  Return success.
 bool Communicate::resend(void *, int, int, int)
 {
-
     // just return false, since we cannot resend a message with this function
     return false;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 // Send data to the given node, with given tag.  If delmsg==true, the
@@ -223,7 +209,6 @@ bool Communicate::send(Message *msg, int node, int tag, bool delmsg)
     return retval;
 }
 
-
 ////////////////////////////////////////////////////////////////////////////
 // Receive data from another node.  Returns newly created Message object
 // with received message, or NULL if no message is available.
@@ -239,8 +224,6 @@ bool Communicate::send(Message *msg, int node, int tag, bool delmsg)
 //      2. In receive queue
 Message* Communicate::receive(int& node, int& tag)
 {
-
-
     //Inform dbgmsg("Comm::receive", INFORM_ALL_NODES);
     //dbgmsg << "Doing receive from node " << node << ", tag " << tag << endl;
 
@@ -294,16 +277,10 @@ Message* Communicate::receive(int& node, int& tag)
     return msg;
 }
 
-
 ////////////////////////////////////////////////////////////////////////////
 // A blocking version of receive.
 Message *Communicate::receive_block(int& node, int &tag)
 {
-
-
-
-
-
     // process list of resend requests
     process_resend_requests();
 
@@ -363,7 +340,6 @@ Message *Communicate::receive_block(int& node, int &tag)
         }
     }
 
-
     // If we're on just one node, and we did not find a message, this is
     // a big problem.
     PInsist(!(myNode() == node && msg == 0),
@@ -375,7 +351,6 @@ Message *Communicate::receive_block(int& node, int &tag)
     // return the message, or NULL if none was found
     return msg;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 // Broadcast the given message to ALL nodes, including this node.
@@ -404,7 +379,6 @@ int Communicate::broadcast_all(Message *msg, int tag)
     return getNodes();
 }
 
-
 ////////////////////////////////////////////////////////////////////////////
 // Broadcast the given message to all OTHER nodes, but not this node.
 // Return number of nodes sent to.
@@ -412,7 +386,7 @@ int Communicate::broadcast_all(Message *msg, int tag)
 // we should delete the given message object.
 int Communicate::broadcast_others(Message *msg, int tag, bool delmsg)
 {
-    int i;			// loop variable
+    int i; // loop variable
 
     // send message to all other nodes
     for (i=(getNodes() - 1); i >= 0; i--)
@@ -432,30 +406,24 @@ int Communicate::broadcast_others(Message *msg, int tag, bool delmsg)
     return getNodes() - 1;
 }
 
-
 ////////////////////////////////////////////////////////////////////////////
 // Synchronize all processors (everybody waits for everybody
 // else to get here before returning to calling function).
 void Communicate::barrier()
 {
-
-
     mybarrier();
     //INCIPPLSTAT(incBarriers);
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 // clean up after a Message has been used (called by Message).  By
 // default, does nothing.
 void Communicate::cleanupMessage(void *) { }
 
-
 ////////////////////////////////////////////////////////////////////////////
 // calculate how big the buffer must be to send the given message
 int Communicate::find_msg_length(Message &msg)
 {
-
     static const unsigned int longsize = wordround(sizeof(MsgNum_t));
     static const unsigned int intsize4 = wordround(4 * sizeof(int));
     static const unsigned int intsize2 = wordround(2 * sizeof(int));
@@ -477,13 +445,11 @@ int Communicate::find_msg_length(Message &msg)
     return buffsize;
 }
 
-
 ////////////////////////////////////////////////////////////////////////////
 // put data from the given Message into the given buffer
 void Communicate::fill_msg_buffer(void *buffer, Message &msg, int tag,
                                   int bufsize, int node)
 {
-
     void *pos = buffer;		  // location in buffer to pack data
     int nitems = msg.size();	  // Number of items in Message
     int mdata[4];			  // Array to store msg header info
@@ -549,12 +515,10 @@ void Communicate::fill_msg_buffer(void *buffer, Message &msg, int tag,
     ADDIPPLSTAT(incMessageBytesSent,bufsize);
 }
 
-
 ////////////////////////////////////////////////////////////////////////////
 // get data out of a buffer and create a Message
 Message* Communicate::unpack_message(int &node, int &tag, void *buffer)
 {
-
     Message *newmsg = 0;
 
     // pos will always point to the next location in the buffer to get data
@@ -580,25 +544,21 @@ Message* Communicate::unpack_message(int &node, int &tag, void *buffer)
     {
         ERRORMSG("Stopping due to abort request sent from node " << node << endl);
         ::abort();
-
     }
     else if (tag == IPPL_EXIT_TAG)
     {
         ERRORMSG("Exiting due to exit request sent from node " << node << endl);
         ::exit(1);
-
     }
     else if (tag == IPPL_RETRANSMIT_TAG)
     {
         // get the retransmit message number and tag out of the current buffer
         unpack_retransmission_request(nitems, pos);
-
     }
     else if (tag == IPPL_MSG_OK_TAG)
     {
         // clear out the messages that this message lists are OK to be deleted
         clear_ok_messages(nitems, pos);
-
     }
     else
     {
@@ -688,7 +648,6 @@ Message* Communicate::unpack_message(int &node, int &tag, void *buffer)
 void Communicate::add_to_send_cache(void *msgbuf, MsgNum_t mnum, int msgsize,
                                     int node)
 {
-
     // make sure we do not already have this message
     SentCache_t::iterator senti = sentMsgCache.find(mnum);
     if (senti != sentMsgCache.end())
@@ -779,7 +738,6 @@ void Communicate::perform_resend(MsgNum_t mnum)
     resend((*senti).second.buf(), size, node, COMM_SEND_TAG);
 }
 
-
 ////////////////////////////////////////////////////////////////////////////
 // tell the sender that we received this message OK
 void Communicate::send_ok_message(int node, MsgNum_t mnum)
@@ -793,7 +751,6 @@ void Communicate::send_ok_message(int node, MsgNum_t mnum)
 
     send(&msg, node, IPPL_MSG_OK_TAG, false); // does not delete message
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 // unpack message with a list of OK message numbers, and delete them
@@ -831,7 +788,6 @@ void Communicate::clear_ok_messages(int nitems, void *pos)
         sentOKList.push_back(mnum);
     }
 }
-
 
 ////////////////////////////////////////////////////////////////////////////
 // unpack message with a list of OK message numbers, and delete them

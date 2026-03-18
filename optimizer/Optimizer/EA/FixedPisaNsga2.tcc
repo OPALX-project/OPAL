@@ -129,13 +129,13 @@ FixedPisaNsga2<CO, MO>::FixedPisaNsga2(
     std::vector<std::string> dNames;
 
     for(itr = dvars_m.begin(); itr != dvars_m.end(); itr++) {
-        std::string dName = boost::get<VAR_NAME>(itr->second);
+        std::string dName = std::get<VAR_NAME>(itr->second);
         file_param_descr_ += '%' + dName + ',';
         dNames.push_back(dName);
         dVarBounds_m.push_back(
                                std::pair<double, double>
-                               (boost::get<LOWER_BOUND>(itr->second),
-                                boost::get<UPPER_BOUND>(itr->second)));
+                               (std::get<LOWER_BOUND>(itr->second),
+                                std::get<UPPER_BOUND>(itr->second)));
     }
     file_param_descr_ = file_param_descr_.substr(0,
                                                  file_param_descr_.size()-1);
@@ -496,7 +496,7 @@ void FixedPisaNsga2<CO, MO>::dispatch_forward_solves() {
         for(itr = dvars_m.begin(); itr != dvars_m.end(); itr++, i++) {
             params.insert(
                 std::pair<std::string, double>
-                    (boost::get<VAR_NAME>(itr->second),
+                    (std::get<VAR_NAME>(itr->second),
                      ind->genes_m[i]));
         }
 
@@ -799,7 +799,7 @@ void FixedPisaNsga2<CO, MO>::dumpPopulationToJSON(std::shared_ptr<Population_t> 
     for (bounds_t::iterator it = dVarBounds_m.begin();
          it != dVarBounds_m.end(); ++it, ++itr)
     {
-        std::string dvar = boost::get<VAR_NAME>(itr->second);
+        std::string dvar = std::get<VAR_NAME>(itr->second);
         bounds << "[ " << it->first << ", " << it->second << " ]";
         tree.put("dvar-bounds." + dvar, bounds.str());
         bounds.str("");
@@ -858,7 +858,7 @@ void FixedPisaNsga2<CO, MO>::dumpIndividualToJSON(int idx,
 
     size_t i = 0;
     for(DVarContainer_t::iterator itr = dvars_m.begin(); itr != dvars_m.end(); ++i, ++itr) {
-        std::string name = boost::get<VAR_NAME>(itr->second);
+        std::string name = std::get<VAR_NAME>(itr->second);
         tree.put("population." + id + ".dvar." + name, ind->genes_m[i]);
     }
 }

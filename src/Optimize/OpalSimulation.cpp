@@ -24,8 +24,6 @@
 #include "Expression/SumErrSq.h"
 #include "Expression/FromFile.h"
 
-#include "boost/variant.hpp"
-#include "boost/smart_ptr.hpp"
 #include "boost/algorithm/string.hpp"
 
 // access to OPAL lib
@@ -501,8 +499,8 @@ void OpalSimulation::collectResults() {
                     objective->evaluate(variable_dictionary);
 
                 std::vector<double> values;
-                values.push_back(boost::get<0>(result));
-                bool is_valid = boost::get<1>(result);
+                values.push_back(std::get<0>(result));
+                bool is_valid = std::get<1>(result);
 
                 reqVarInfo_t tmps = {EVALUATE, values, is_valid};
                 requestedVars_.insert(
@@ -523,8 +521,8 @@ void OpalSimulation::collectResults() {
                     constraint->evaluate(variable_dictionary);
 
                 std::vector<double> values;
-                values.push_back(boost::get<0>(result));
-                bool is_valid = boost::get<1>(result);
+                values.push_back(std::get<0>(result));
+                bool is_valid = std::get<1>(result);
 
                 //FIXME: hack to give feedback about values of LHS and RHS
                 std::string constr_str = constraint->toString();
@@ -544,8 +542,8 @@ void OpalSimulation::collectResults() {
                 Expressions::Result_t lhs_res = lhs->evaluate(variable_dictionary);
                 Expressions::Result_t rhs_res = rhs->evaluate(variable_dictionary);
 
-                values.push_back(boost::get<0>(lhs_res));
-                values.push_back(boost::get<0>(rhs_res));
+                values.push_back(std::get<0>(lhs_res));
+                values.push_back(std::get<0>(rhs_res));
 
                 reqVarInfo_t tmps = {EVALUATE, values, is_valid};
                 requestedVars_.insert(

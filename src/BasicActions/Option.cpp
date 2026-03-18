@@ -22,31 +22,26 @@
 #include "AbstractObjects/OpalData.h"
 #include "Attributes/Attributes.h"
 #include "Parser/FileStream.h"
+#include "Utilities/ClassicRandom.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
-#include "Utilities/ClassicRandom.h"
+#include "Utilities/Util.h"
 
 #include "Utility/Inform.h"
 #include "Utility/IpplInfo.h"
 #include "Utility/IpplMemoryUsage.h"
 
-#include <boost/assign.hpp>
-
-#include <ctime>
+#include <array>
 #include <cstddef>
+#include <ctime>
 #include <iostream>
 #include <limits>
+#include <string_view>
 
 extern Inform* gmsg;
 extern Inform* gmsgALL;
 
 using namespace Options;
-
-const boost::bimap<DumpFrame, std::string> Option::bmDumpFrameString_s =
-    boost::assign::list_of<const boost::bimap<DumpFrame, std::string>::relation>
-        (DumpFrame::GLOBAL,     "GLOBAL")
-        (DumpFrame::BUNCH_MEAN, "BUNCH_MEAN")
-        (DumpFrame::REFERENCE,  "REFERENCE");
 
 namespace {
     // The attributes of class Option.
@@ -523,12 +518,18 @@ void Option::execute() {
     }
 }
 
-void Option::handlePsDumpFrame(const std::string& dumpFrame) {
-    psDumpFrame = bmDumpFrameString_s.right.at(dumpFrame);
+constexpr std::array<std::pair<DumpFrame, std::string_view>, 3> dumpFrameMap {{
+    {DumpFrame::GLOBAL,     "GLOBAL"},
+    {DumpFrame::BUNCH_MEAN, "BUNCH_MEAN"},
+    {DumpFrame::REFERENCE,  "REFERENCE"}
+}};
+
+void Option::handlePsDumpFrame(std::string_view dumpFrameName) noexcept {
+    psDumpFrame = Util::stringToEnum(dumpFrameName, dumpFrameMap, DumpFrame::GLOBAL);
 }
 
-std::string Option::getDumpFrameString(const DumpFrame& df) {
-    return bmDumpFrameString_s.left.at(df);
+std::string Option::getDumpFrameString(const DumpFrame& df) noexcept {
+    return std::string(Util::enumToString(df, dumpFrameMap, "GLOBAL"));
 }
 
 void Option::update(const std::vector<Attribute>& othersAttributes) {

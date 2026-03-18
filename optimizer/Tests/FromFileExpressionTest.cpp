@@ -20,6 +20,8 @@
 //
 #include <set>
 #include <string>
+#include <tuple>
+#include <variant>
 
 #include "Util/OptPilotException.h"
 #include "Expression/Expression.h"
@@ -28,10 +30,6 @@
 
 #include "gtest/gtest.h"
 
-#include "boost/tuple/tuple.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
-
 
 namespace {
 
@@ -39,9 +37,9 @@ struct my_sqrt {
 
     Expressions::Result_t operator()(client::function::arguments_t args) {
 
-        double value = boost::get<double>(args[0]);
-        if (value < 0.0) return boost::make_tuple(0.0, false);
-        return boost::make_tuple(sqrt(value), true);
+        double value = std::get<double>(args[0]);
+        if (value < 0.0) return std::make_tuple(0.0, false);
+        return std::make_tuple(sqrt(value), true);
     }
 };
 
@@ -49,9 +47,9 @@ struct my_pow {
 
     Expressions::Result_t operator()(client::function::arguments_t args) {
 
-        double base = boost::get<double>(args[0]);
-        double exponent = boost::get<double>(args[1]);
-        return boost::make_tuple(pow(base, exponent), true);
+        double base = std::get<double>(args[0]);
+        double exponent = std::get<double>(args[1]);
+        return std::make_tuple(pow(base, exponent), true);
     }
 };
 
@@ -100,8 +98,8 @@ struct my_pow {
             result = e->evaluate(vars);
         });
 
-        ASSERT_NEAR(expected, boost::get<0>(result), 1e-6);
-        ASSERT_TRUE(boost::get<1>(result));
+        ASSERT_NEAR(expected, std::get<0>(result), 1e-6);
+        ASSERT_TRUE(std::get<1>(result));
     }
 
     TEST_F(FromFileExpressionTest, EvaluateCombinedFromFileExpression) {
@@ -131,8 +129,8 @@ struct my_pow {
             result = e->evaluate(vars);
         });
 
-        ASSERT_NEAR(expected, boost::get<0>(result), 1e-6);
-        ASSERT_TRUE(boost::get<1>(result));
+        ASSERT_NEAR(expected, std::get<0>(result), 1e-6);
+        ASSERT_TRUE(std::get<1>(result));
     }
 
 }

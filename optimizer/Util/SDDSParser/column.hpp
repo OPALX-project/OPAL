@@ -24,8 +24,11 @@
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
-#include <boost/optional.hpp>
 
+#include <iostream>
+#include <optional>
+#include <ostream>
+#include <string>
 #include <vector>
 
 #define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
@@ -44,10 +47,10 @@ namespace SDDS {
         };
 
         unsigned int order_m;
-        boost::optional<std::string> name_m;
-        boost::optional<std::string> units_m;
-        boost::optional<std::string> description_m;
-        boost::optional<ast::datatype> type_m;
+        std::optional<std::string> name_m;
+        std::optional<std::string> units_m;
+        std::optional<std::string> description_m;
+        std::optional<ast::datatype> type_m;
         ast::columnData_t values_m;
         static unsigned int count_m;
 
@@ -180,10 +183,10 @@ namespace SDDS {
 
 BOOST_FUSION_ADAPT_STRUCT(
     SDDS::column,
-    (boost::optional<std::string>, name_m)
-    (boost::optional<SDDS::ast::datatype>, type_m)
-    (boost::optional<std::string>, units_m)
-    (boost::optional<std::string>, description_m)
+    (std::optional<std::string>, name_m)
+    (std::optional<SDDS::ast::datatype>, type_m)
+    (std::optional<std::string>, units_m)
+    (std::optional<std::string>, description_m)
     (SDDS::ast::variant_t, value_m)
 )
 

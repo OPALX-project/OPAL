@@ -411,7 +411,7 @@ void OptimizeCmd::execute() {
         double lowerbound = dvar->getLowerBound();
         double upperbound = dvar->getUpperBound();
 
-        DVar_t tmp = boost::make_tuple(var, lowerbound, upperbound);
+        DVar_t tmp = std::make_tuple(var, lowerbound, upperbound);
         dvars.insert(namedDVar_t(name, tmp));
         auto ret = vars.insert(var);
         if (ret.second == false) {
@@ -467,7 +467,7 @@ void OptimizeCmd::execute() {
 
         std::map<std::string, short> dvarCheck;
         for (auto itr = dvars.begin(); itr != dvars.end(); ++ itr) {
-            dvarCheck.insert(std::make_pair(boost::get<0>(itr->second), 0));
+            dvarCheck.insert(std::make_pair(std::get<0>(itr->second), 0));
         }
 
         while(infile.good()) {

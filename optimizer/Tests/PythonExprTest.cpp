@@ -20,6 +20,8 @@
 //
 #include <set>
 #include <string>
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/OptPilotException.h"
@@ -28,10 +30,6 @@
 #include "Expression/PythonExpr.h"
 
 #include "gtest/gtest.h"
-
-#include "boost/tuple/tuple.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
 
 
 namespace {
@@ -82,8 +80,8 @@ namespace {
             result = e->evaluate(vars);
         });
 
-        ASSERT_EQ(expected, boost::get<0>(result));
-        ASSERT_TRUE(boost::get<1>(result));
+        ASSERT_EQ(expected, std::get<0>(result));
+        ASSERT_TRUE(std::get<1>(result));
     }
 
 }

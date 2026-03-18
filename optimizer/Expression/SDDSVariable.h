@@ -28,9 +28,8 @@
 #define __SDDSVARIABLE_H__
 
 #include <string>
-
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/SDDSReader.h"
@@ -45,17 +44,17 @@ struct SDDSVariable {
     Expressions::Result_t operator()(client::function::arguments_t args) {
         switch ( args.size() ) {
             case 3: {
-                var_name_      = boost::get<std::string>(args[0]);
+                var_name_      = std::get<std::string>(args[0]);
                 ref_name_      = "s";
-                ref_val_       = boost::get<double>(args[1]);
-                stat_filename_ = boost::get<std::string>(args[2]);
+                ref_val_       = std::get<double>(args[1]);
+                stat_filename_ = std::get<std::string>(args[2]);
                 break;
             }
             case 4: {
-                var_name_      = boost::get<std::string>(args[0]);
-                ref_name_      = boost::get<std::string>(args[1]);
-                ref_val_       = boost::get<double>(args[2]);
-                stat_filename_ = boost::get<std::string>(args[3]);
+                var_name_      = std::get<std::string>(args[0]);
+                ref_name_      = std::get<std::string>(args[1]);
+                ref_val_       = std::get<double>(args[2]);
+                stat_filename_ = std::get<std::string>(args[3]);
                 break;
             }
             default: {
@@ -90,7 +89,7 @@ struct SDDSVariable {
             is_valid = false;
         }
 
-        return boost::make_tuple(sim_value, is_valid);
+        return std::make_tuple(sim_value, is_valid);
     }
 
 private:

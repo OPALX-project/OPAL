@@ -29,11 +29,6 @@
 
 #include "gtest/gtest.h"
 
-#include "boost/tuple/tuple.hpp"
-#include "boost/type_traits/remove_cv.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
-
 
 namespace {
 
@@ -85,10 +80,9 @@ namespace {
             result = e->evaluate(vars);
         });
 
-
         //XXX: expected uses the nearest (and NOT interpolated) rms_x values
-        ASSERT_NEAR(expected, boost::get<0>(result), 1e-6);
-        ASSERT_TRUE(boost::get<1>(result));
+        ASSERT_NEAR(expected, std::get<0>(result), 1e-6);
+        ASSERT_TRUE(std::get<1>(result));
     }
 
 }

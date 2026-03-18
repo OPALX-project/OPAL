@@ -23,12 +23,10 @@
 #ifndef __GLOBAL_FUNCTIONS_H__
 #define __GLOBAL_FUNCTIONS_H__
 
-#include <string>
 #include <cmath>
-
-#include "boost/tuple/tuple.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
+#include <string>
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/SDDSReader.h"
@@ -45,10 +43,10 @@ struct _stat_sum {
     double operator()(client::function::arguments_t args) const {
 
         // get all arguments
-        double start     = boost::get<double>(args[0]);
-        double end       = boost::get<double>(args[1]);
-        double step      = boost::get<double>(args[2]);
-        std::string name = boost::get<std::string>(args[3]);
+        double start     = std::get<double>(args[0]);
+        double end       = std::get<double>(args[1]);
+        double step      = std::get<double>(args[2]);
+        std::string name = std::get<std::string>(args[3]);
 
         const std::unique_ptr<SDDSReader> sim_stats(new SDDSReader(stat_filename_));
         try {
@@ -75,7 +73,7 @@ struct _stat_sum {
             sum += sim_value;
         }
 
-        return boost::make_tuple(value, is_valid);
+        return std::make_tuple(value, is_valid);
     }
 };
 */
@@ -87,8 +85,8 @@ struct _sqrt {
                                     "sqrt expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(sqrt(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(sqrt(value), true);
     }
 };
 
@@ -99,8 +97,8 @@ struct _sq {
                                     "sq expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(value * value, true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(value * value, true);
     }
 };
 
@@ -111,9 +109,9 @@ struct _pow {
                                     "pow expects 2 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        double exp   = boost::get<double>(args[1]);
-        return boost::make_tuple(pow(value, exp), true);
+        double value = std::get<double>(args[0]);
+        double exp   = std::get<double>(args[1]);
+        return std::make_tuple(pow(value, exp), true);
     }
 };
 
@@ -124,8 +122,8 @@ struct _exp {
                                     "exp expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(exp(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(exp(value), true);
     }
 };
 
@@ -136,12 +134,10 @@ struct _log {
                                     "log expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(log(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(log(value), true);
     }
 };
-
-
 
 struct _ceil {
     Expressions::Result_t operator()(client::function::arguments_t args) {
@@ -150,8 +146,8 @@ struct _ceil {
                                     "ceil expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(ceil(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(ceil(value), true);
     }
 };
 
@@ -162,8 +158,8 @@ struct _fabs {
                                     "fabs expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(fabs(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(fabs(value), true);
     }
 };
 
@@ -174,8 +170,8 @@ struct _floor {
                                     "floor expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(floor(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(floor(value), true);
     }
 };
 
@@ -186,13 +182,11 @@ struct _fmod {
                                     "fmod expects 2 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        double val2  = boost::get<double>(args[1]);
-        return boost::make_tuple(fmod(value, val2), true);
+        double value = std::get<double>(args[0]);
+        double val2  = std::get<double>(args[1]);
+        return std::make_tuple(fmod(value, val2), true);
     }
 };
-
-
 
 struct _sin {
     Expressions::Result_t operator()(client::function::arguments_t args) {
@@ -201,8 +195,8 @@ struct _sin {
                                     "sin expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(sin(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(sin(value), true);
     }
 };
 
@@ -213,8 +207,8 @@ struct _asin {
                                     "asin expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(asin(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(asin(value), true);
     }
 };
 
@@ -225,8 +219,8 @@ struct _cos {
                                     "cos expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(cos(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(cos(value), true);
     }
 };
 
@@ -237,8 +231,8 @@ struct _acos {
                                     "acos expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(acos(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(acos(value), true);
     }
 };
 
@@ -249,8 +243,8 @@ struct _tan {
                                     "tan expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(tan(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(tan(value), true);
     }
 };
 
@@ -261,11 +255,10 @@ struct _atan {
                                     "atan expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        double value = boost::get<double>(args[0]);
-        return boost::make_tuple(atan(value), true);
+        double value = std::get<double>(args[0]);
+        return std::make_tuple(atan(value), true);
     }
 };
-
 
 static functionDictionary_t get() {
 
@@ -283,7 +276,6 @@ static functionDictionary_t get() {
     client::function::type log_; log_ = _log();
     funcs.insert(funcEntry_t("log", log_));
 
-
     client::function::type ceil_; ceil_ = _ceil();
     funcs.insert(funcEntry_t("ceil", ceil_));
     client::function::type fabs_; fabs_ = _fabs();
@@ -292,7 +284,6 @@ static functionDictionary_t get() {
     funcs.insert(funcEntry_t("floor", floor_));
     client::function::type fmod_; fmod_ = _fmod();
     funcs.insert(funcEntry_t("fmod", fmod_));
-
 
     client::function::type sin_; sin_ = _sin();
     funcs.insert(funcEntry_t("sin", sin_));

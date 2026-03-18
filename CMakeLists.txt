@@ -115,11 +115,6 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     endif ()
 
 elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-    # An error in Trilinos/12.18.1 causes
-    # -Waggressive-loop-optimizations with -O3 optimization.
-    # See issue 587 and corresponding merge request 415.
-    # Clang does not support this flag!
-    add_compile_options (-fno-aggressive-loop-optimizations)
     add_compile_options (-Wno-error=cpp)
 
     if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "9.5.0")

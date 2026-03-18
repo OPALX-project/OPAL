@@ -52,12 +52,9 @@
 #include "OPALconfig.h"
 #include "changes.h"
 
-#include <boost/assign.hpp>
-
 #include <cmath>
 #include <fstream>
 #include <iomanip>
-
 
 extern Inform *gmsg;
 
@@ -83,13 +80,6 @@ namespace {
 
 const std::string TrackRun::defaultDistribution("DISTRIBUTION");
 
-const boost::bimap<TrackRun::RunMethod, std::string> TrackRun::stringMethod_s =
-    boost::assign::list_of<const boost::bimap<TrackRun::RunMethod, std::string>::relation>
-    (RunMethod::PARALLELT,  "PARALLEL-T")
-    (RunMethod::CYCLOTRONT, "CYCLOTRON-T")
-    (RunMethod::THICK,      "THICK");
-
-
 TrackRun::TrackRun():
     Action(SIZE, "RUN",
            "The \"RUN\" sub-command tracks the defined particles through "
@@ -104,7 +94,7 @@ TrackRun::TrackRun():
     macrocharge_m(0.0) {
     itsAttr[METHOD] = Attributes::makePredefinedString
                       ("METHOD", "Name of tracking algorithm to use.",
-                       {"THICK", "OPAL-T", "PARALLEL-T", "OPAL-CYCL", "CYCLOTRON-T"});
+                       {"THICK", "PARALLEL-T", "CYCLOTRON-T"});
     
     itsAttr[TURNS] = Attributes::makeReal
         ("TURNS", "Number of turns to be tracked; Number of neighboring bunches to be tracked in cyclotron.", 1.0);
@@ -142,7 +132,6 @@ TrackRun::TrackRun():
     opalData_m = OpalData::getInstance();
 }
 
-
 TrackRun::TrackRun(const std::string& name, TrackRun* parent):
     Action(name, parent),
     dist_m(nullptr),
@@ -156,16 +145,13 @@ TrackRun::TrackRun(const std::string& name, TrackRun* parent):
     opalData_m = OpalData::getInstance();
 }
 
-
 TrackRun::~TrackRun() {
     delete phaseSpaceSink_m;
 }
 
-
 TrackRun* TrackRun::clone(const std::string& name) {
     return new TrackRun(name, this);
 }
-
 
 void TrackRun::execute() {
     const int currentVersion = ((OPAL_VERSION_MAJOR * 100) + OPAL_VERSION_MINOR) * 100;
@@ -254,16 +240,13 @@ void TrackRun::setRunMethod() {
     if (!itsAttr[METHOD]) {
         throw OpalException("TrackRun::setRunMethod",
                             "The attribute \"METHOD\" isn't set for the \"RUN\" command");
-    } else {
-        auto it = stringMethod_s.right.find(Attributes::getString(itsAttr[METHOD]));
-        if (it != stringMethod_s.right.end()) {
-            method_m = it->second;
-        }
     }
+    std::string_view method = Attributes::getString(itsAttr[METHOD]);
+    method_m = Util::stringToEnum(method, runMethodMap, RunMethod::NONE);
 }
 
 std::string TrackRun::getRunMethodName() const {
-    return stringMethod_s.left.at(method_m);
+    return std::string(Util::enumToString(method_m, runMethodMap, "NONE"));
 }
 
 void TrackRun::setupThickTracker() {

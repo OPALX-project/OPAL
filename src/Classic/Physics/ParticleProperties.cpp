@@ -17,21 +17,14 @@
 //
 #include "Physics/ParticleProperties.h"
 #include "Physics/Physics.h"
+#include "Utilities/Util.h"
 
-#include <boost/assign.hpp>
-
-
-ParticleType ParticleProperties::getParticleType(const std::string& str) {
-    auto it = bmParticleType_s.right.find(str);
-    if (it != bmParticleType_s.right.end()) {
-        return it->second;
-    } else {
-        return ParticleType::UNNAMED;
-    }
+ParticleType ParticleProperties::getParticleType(std::string_view str) noexcept {
+    return Util::stringToEnum(str, particleTypeMap, ParticleType::UNNAMED);
 }
 
-std::string ParticleProperties::getParticleTypeString(const ParticleType& type) {
-    return bmParticleType_s.left.at(type);
+std::string ParticleProperties::getParticleTypeString(const ParticleType& type) noexcept {
+    return std::string(Util::enumToString(type, particleTypeMap, "UNNAMED"));
 }
 
 double ParticleProperties::getParticleMass(const ParticleType& type) {
@@ -46,23 +39,24 @@ double ParticleProperties::getParticleChargeInCoulomb(const ParticleType& type) 
     return getParticleCharge(type) * Physics::q_e;
 }
 
-const boost::bimap<ParticleType, std::string> ParticleProperties::bmParticleType_s =
-    boost::assign::list_of<const boost::bimap<ParticleType, std::string>::relation>
-        (ParticleType::UNNAMED,    "UNNAMED")
-        (ParticleType::ELECTRON,   "ELECTRON")
-        (ParticleType::POSITRON,   "POSITRON")
-        (ParticleType::MUON,       "MUON")
-        (ParticleType::PROTON,     "PROTON")
-        (ParticleType::ANTIPROTON, "ANTIPROTON")
-        (ParticleType::DEUTERON,   "DEUTERON")
-        (ParticleType::HMINUS,     "HMINUS")
-        (ParticleType::HYDROGEN,   "HYDROGEN")
-        (ParticleType::H2P,        "H2P")
-        (ParticleType::H3P,        "H3P")
-        (ParticleType::ALPHA,      "ALPHA")
-        (ParticleType::CARBON,     "CARBON")
-        (ParticleType::XENON,      "XENON")
-        (ParticleType::URANIUM,    "URANIUM");
+const std::array<std::pair<ParticleType, std::string_view>, 15>
+    ParticleProperties::particleTypeMap {{
+        {ParticleType::UNNAMED,    "UNNAMED"},
+        {ParticleType::ELECTRON,   "ELECTRON"},
+        {ParticleType::POSITRON,   "POSITRON"},
+        {ParticleType::MUON,       "MUON"},
+        {ParticleType::PROTON,     "PROTON"},
+        {ParticleType::ANTIPROTON, "ANTIPROTON"},
+        {ParticleType::DEUTERON,   "DEUTERON"},
+        {ParticleType::HMINUS,     "HMINUS"},
+        {ParticleType::HYDROGEN,   "HYDROGEN"},
+        {ParticleType::H2P,        "H2P"},
+        {ParticleType::H3P,        "H3P"},
+        {ParticleType::ALPHA,      "ALPHA"},
+        {ParticleType::CARBON,     "CARBON"},
+        {ParticleType::XENON,      "XENON"},
+        {ParticleType::URANIUM,    "URANIUM"}
+}};
 
 const std::map<ParticleType, double> ParticleProperties::particleMass_m = {
     {ParticleType::ELECTRON,   Physics::m_e},

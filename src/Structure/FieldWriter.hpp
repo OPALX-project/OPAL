@@ -87,9 +87,9 @@ void FieldWriter::dumpField(FieldType& field, std::string name,
     fout << std::endl;
 
     Vector_t origin = field.get_mesh().get_origin();
-    Vector_t spacing(field.get_mesh().get_meshSpacing(0),
-                     field.get_mesh().get_meshSpacing(1),
-                     field.get_mesh().get_meshSpacing(2));
+    Vector_t spacing({field.get_mesh().get_meshSpacing(0),
+                      field.get_mesh().get_meshSpacing(1),
+                      field.get_mesh().get_meshSpacing(2)});
 
     NDIndex<3> localIdx = field.getLayout().getLocalNDIndex();
     for (int x = localIdx[0].first(); x <= localIdx[0].last(); x++) {

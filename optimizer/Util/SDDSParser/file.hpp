@@ -32,7 +32,9 @@
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
-#include <boost/optional.hpp>
+
+#include <optional>
+#include <ostream>
 
 #define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
 #define BOOST_SPIRIT_QI_DEBUG
@@ -41,7 +43,7 @@ namespace SDDS {
     struct file
     {
         version sddsVersion_m;                              // 0
-        boost::optional<description> sddsDescription_m;     // 1
+        std::optional<description> sddsDescription_m;       // 1
         parameterList sddsParameters_m;                     // 2
         columnList sddsColumns_m;                           // 3
         data sddsData_m;                                    // 4
@@ -82,7 +84,7 @@ namespace SDDS {
 BOOST_FUSION_ADAPT_STRUCT(
     SDDS::file,
     (SDDS::version, sddsVersion_m)
-    (boost::optional<SDDS::description>, sddsDescription_m)
+    (std::optional<SDDS::description>, sddsDescription_m)
     (SDDS::parameterList, sddsParameters_m)
     (SDDS::columnList, sddsColumns_m)
     (SDDS::data, sddsData_m)

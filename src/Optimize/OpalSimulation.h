@@ -1,8 +1,8 @@
 #ifndef __OPALSIMULATION_H__
 #define __OPALSIMULATION_H__
 
-#include <string>
 #include <map>
+#include <string>
 
 #include "mpi.h"
 
@@ -11,7 +11,6 @@
 #include "Simulation/Simulation.h"
 #include "Simulation/GenerateOpalSimulation.h"
 
-#include "boost/smart_ptr.hpp"
 
 /**
  *  \class OpalSimulation

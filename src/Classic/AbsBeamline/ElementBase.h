@@ -72,11 +72,12 @@
 #include "MemoryManagement/RCObject.h"
 #include "Utilities/GeneralClassicException.h"
 
-#include <boost/optional.hpp>
-
 #include <map>
+#include <ostream>
 #include <queue>
 #include <string>
+#include <utility>
+#include <vector>
 
 class BeamlineVisitor;
 class BoundaryGeometry;

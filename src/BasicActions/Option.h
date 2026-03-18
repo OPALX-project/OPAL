@@ -23,14 +23,11 @@
 #include "AbstractObjects/Action.h"
 #include "Utilities/Options.h"
 
-#include <boost/bimap.hpp>
-
 #include <string>
 
 class Option: public Action {
 
 public:
-
     Option();
     virtual ~Option();
 
@@ -41,10 +38,8 @@ public:
     virtual void execute();
 
 private:
-
-    void handlePsDumpFrame(const std::string& dumpFrame);
-
-    static std::string getDumpFrameString(const DumpFrame& df);
+    void handlePsDumpFrame(std::string_view dumpFrameName) noexcept;
+    static std::string getDumpFrameString(const DumpFrame& df) noexcept;
 
     using Object::update;
     void update(const std::vector<Attribute>&);
@@ -55,8 +50,6 @@ private:
 
     // Clone constructor.
     Option(const std::string& name, Option* parent);
-
-    static const boost::bimap<DumpFrame, std::string> bmDumpFrameString_s;
 };
 
 #endif // OPAL_Option_HH

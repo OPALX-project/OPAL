@@ -25,12 +25,11 @@
 
 #include "H5hut.h"
 
-#include <boost/optional.hpp>
-
 #include <fstream>
-#include <functional>
+#include <optional>
 #include <set>
 #include <string>
+#include <utility>
 #include <vector>
 
 struct SetStatistics {
@@ -97,7 +96,7 @@ public:
                               double spos,
                               long long globalTrackStep);
 
-    void addParticle(const OpalParticle&, const boost::optional<std::pair<int, short int>>& turnBunchNumPair = boost::none);
+    void addParticle(const OpalParticle&, const std::optional<std::pair<int, short int>>& turnBunchNumPair = std::nullopt);
 
     size_t size() const;
 

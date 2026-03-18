@@ -25,22 +25,15 @@
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
-#include <boost/assign.hpp>
-#include <filesystem>
-
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_spline.h"
 
-#include <iostream>
+#include <array>
+#include <filesystem>
 #include <fstream>
+#include <iostream>
 
 extern Inform *gmsg;
-
-const boost::bimap<CavityType, std::string> RFCavity::bmCavityTypeString_s =
-    boost::assign::list_of<const boost::bimap<CavityType, std::string>::relation>
-        (CavityType::SW,   "STANDING")
-        (CavityType::SGSW, "SINGLEGAP");
-
 
 RFCavity::RFCavity():
     RFCavity("")
@@ -329,17 +322,17 @@ double RFCavity::getPhi0() const {
     return phi0_m;
 }
 
-void RFCavity::setCavityType(const std::string& name) {
-    auto it = bmCavityTypeString_s.right.find(name);
-    if (it != bmCavityTypeString_s.right.end()) {
-        type_m = it->second;
-    } else {
-        type_m = CavityType::SW;
-    }
+constexpr std::array<std::pair<CavityType, std::string_view>, 2> cavityMap {{
+    {CavityType::SW,   "STANDING"},
+    {CavityType::SGSW, "SINGLEGAP"}
+}};
+
+void RFCavity::setCavityType(std::string_view name) noexcept {
+    type_m = Util::stringToEnum(name, cavityMap, CavityType::SW);
 }
 
-std::string RFCavity::getCavityTypeString() const {
-    return bmCavityTypeString_s.left.at(type_m);
+std::string RFCavity::getCavityTypeString() const noexcept{
+    return std::string(Util::enumToString(type_m, cavityMap, "STANDING"));
 }
 
 std::string RFCavity::getFieldMapFN() const {

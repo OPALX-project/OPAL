@@ -30,31 +30,35 @@
 #include "Structure/BoundingBox.h"
 #include "Structure/ValueRange.h"
 
-#include <string>
+#include <cstddef>
+#include <fstream>
 #include <map>
+#include <memory>
+#include <set>
+#include <string>
 
 class OrbitThreader
 {
 public:
 
-    OrbitThreader(const PartData &ref,
-                  const Vector_t &r,
-                  const Vector_t &p,
+    OrbitThreader(const PartData& ref,
+                  const Vector_t& r,
+                  const Vector_t& p,
                   double s,
                   double maxDiffZBunch,
                   double t,
                   double dT,
                   StepSizeConfig stepSizes,
-                  OpalBeamline &bl);
+                  OpalBeamline& bl);
 
     void execute();
 
     IndexMap::value_t query(IndexMap::key_t::first_type step,
                             IndexMap::key_t::second_type length);
 
-    IndexMap::key_t getRange(const IndexMap::value_t::value_type &element,
+    IndexMap::key_t getRange(const IndexMap::value_t::value_type& element,
                              double position) const;
-    IndexMap::value_t getTouchingElements(const IndexMap::key_t &range) const;
+    IndexMap::value_t getTouchingElements(const IndexMap::key_t& range) const;
 
     BoundingBox getBoundingBox() const;
 
@@ -80,7 +84,7 @@ private:
     const double zstop_m;
     ValueRange<double> pathLengthRange_m;
 
-    OpalBeamline &itsOpalBeamline_m;
+    OpalBeamline& itsOpalBeamline_m;
     IndexMap imap_m;
 
     unsigned int errorFlag_m;
@@ -100,7 +104,7 @@ private:
     };
 
     struct elementPositionComp {
-        bool operator() (const elementPosition &a, const elementPosition &b) const {
+        bool operator() (const elementPosition& a, const elementPosition& b) const {
             return a.elementEdge_m < b.elementEdge_m;
         }
     };
@@ -108,19 +112,19 @@ private:
     std::multimap<std::string, elementPosition> elementRegistry_m;
 
     void trackBack();
-    void integrate(const IndexMap::value_t &activeSet, double maxDrift = 10.0);
-    bool containsCavity(const IndexMap::value_t &activeSet);
-    void autophaseCavities(const IndexMap::value_t &activeSet, const std::set<std::string> &visitedElements);
-    double getMaxDesignEnergy(const IndexMap::value_t &elementSet) const;
+    void integrate(const IndexMap::value_t& activeSet, double maxDrift = 10.0);
+    bool containsCavity(const IndexMap::value_t& activeSet);
+    void autophaseCavities(const IndexMap::value_t& activeSet, const std::set<std::string>& visitedElements);
+    double getMaxDesignEnergy(const IndexMap::value_t& elementSet) const;
 
-    void registerElement(const IndexMap::value_t &elementSet, double, const Vector_t &r, const Vector_t &p);
+    void registerElement(const IndexMap::value_t& elementSet, double, const Vector_t& r, const Vector_t& p);
     void processElementRegister();
-    void setDesignEnergy(FieldList &allElements, const std::set<std::string> &visitedElements);
+    void setDesignEnergy(FieldList& allElements, const std::set<std::string>& visitedElements);
     void computeBoundingBox();
     void updateBoundingBoxWithCurrentPosition();
-    double computeDriftLengthToBoundingBox(const std::set<std::shared_ptr<Component>> & elements,
-                                           const Vector_t & position,
-                                           const Vector_t & direction) const;
+    double computeDriftLengthToBoundingBox(const std::set<std::shared_ptr<Component>>& elements,
+                                           const Vector_t& position,
+                                           const Vector_t& direction) const;
 
     void checkElementLengths(const std::set<std::shared_ptr<Component>>& elements);
 };
@@ -132,13 +136,13 @@ IndexMap::value_t OrbitThreader::query(IndexMap::key_t::first_type pathLength,
 }
 
 inline
-IndexMap::key_t OrbitThreader::getRange(const IndexMap::value_t::value_type &element,
+IndexMap::key_t OrbitThreader::getRange(const IndexMap::value_t::value_type& element,
                                         double position) const {
     return imap_m.getRange(element, position);
 }
 
 inline
-IndexMap::value_t OrbitThreader::getTouchingElements(const IndexMap::key_t &range) const {
+IndexMap::value_t OrbitThreader::getTouchingElements(const IndexMap::key_t& range) const {
     return imap_m.getTouchingElements(range);
 }
 
