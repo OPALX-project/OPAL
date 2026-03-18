@@ -157,7 +157,7 @@ double AsymmetricEnge::getCentreLength() const {
 }
 
 double AsymmetricEnge::getStartOffset() const {
-    return engeStart_m->getCentreLength();
+    return engeStart_m->getCentreLength()/2;
 }
 
 double AsymmetricEnge::getEndLength() const {

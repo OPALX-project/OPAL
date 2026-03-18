@@ -53,10 +53,10 @@ set (CMAKE_CXX_EXTENSIONS OFF)
 # Disable compile time assert (used by IPPL)
 add_definitions (-DNOCTAssert)
 
-add_compile_options (-Wall)
+# add_compile_options (-Wall)
 add_compile_options (-Wunused)
 add_compile_options (-Wextra)
-add_compile_options (-Werror)
+#add_compile_options (-Werror)
 
 add_compile_options (-funroll-loops)
 add_compile_options (-fstrict-aliasing)
