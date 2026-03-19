@@ -21,6 +21,7 @@ This takes about 0.1 s to run on my average desktop PC.
 import os
 import sys
 import tempfile
+import uuid
 
 import pyopal.objects.track_run
 import pyopal.objects.beam
@@ -70,6 +71,13 @@ class MinimalRunner(object):
         self.tmp_dir = tempfile.mkdtemp()
         self.distribution_filename = os.path.join(self.tmp_dir,
                                                   "distribution.dat")
+        unique = uuid.uuid4().hex[:8].upper()
+        self.field_solver_name = f"PYOPAL_FIELD_SOLVER_{unique}"
+        self.distribution_name = f"PYOPAL_DISTRIBUTION_{unique}"
+        self.line_name = f"PYOPAL_LINE_{unique}"
+        self.beam_name = f"PYOPAL_BEAM_{unique}"
+        self.ring_name = f"PYOPAL_RING_{unique}"
+        self.drift_name = f"PYOPAL_DRIFT_{unique}"
         self.max_steps = 100
         self.r0 = 1.0 # [m]
         self.momentum = 0.1 # [GeV/c]
@@ -88,7 +96,7 @@ class MinimalRunner(object):
         (i.e. set to type = "NONE").
         """
         self.field_solver = pyopal.objects.field_solver.FieldSolver()
-        self.field_solver.set_opal_name("DefaultFieldSolver")
+        self.field_solver.set_opal_name(self.field_solver_name)
         self.field_solver.type = "NONE"
         self.field_solver.mesh_size_x = 5
         self.field_solver.mesh_size_y = 5
@@ -114,7 +122,7 @@ class MinimalRunner(object):
         dist_file.flush()
         dist_file.close()
         self.distribution = pyopal.objects.distribution.Distribution()
-        self.distribution.set_opal_name("DefaultDistribution")
+        self.distribution.set_opal_name(self.distribution_name)
         self.distribution.type = "FROMFILE"
         self.distribution.filename = self.distribution_filename
         self.distribution.register()
@@ -128,7 +136,7 @@ class MinimalRunner(object):
         so on.
         """
         beam = pyopal.objects.beam.Beam()
-        beam.set_opal_name("DefaultBeam")
+        beam.set_opal_name(self.beam_name)
         beam.mass = self.mass
         beam.momentum = self.momentum
         beam.charge = 1.0
@@ -139,15 +147,14 @@ class MinimalRunner(object):
         beam.register()
         self.beam = beam
 
-    @classmethod
-    def null_drift(cls):
+    def null_drift(self):
         """Returns a drift of length 0
 
         OPAL requires at least one element in each beam line. For this simplest
         example a drift of length 0 is used.
         """
         drift = pyopal.elements.local_cartesian_offset.LocalCartesianOffset()
-        drift.set_opal_name("DefaultDrift")
+        drift.set_opal_name(self.drift_name)
         drift.end_position_x=0.0
         drift.end_position_y=0.0
         drift.end_normal_x=0.0
@@ -164,7 +171,7 @@ class MinimalRunner(object):
         to self.line and used with OPAL cyclotron mode.
         """
         self.ring = pyopal.elements.ring_definition.RingDefinition()
-        self.ring.set_opal_name("DefaultRing")
+        self.ring.set_opal_name(self.ring_name)
         self.ring.lattice_initial_r = self.r0
         self.ring.beam_initial_r = self.r0
         self.ring.minimum_r = self.r0/2
@@ -188,7 +195,7 @@ class MinimalRunner(object):
         The Line holds a sequence of beam elements.
         """
         self.line = pyopal.objects.line.Line()
-        self.line.set_opal_name("DefaultLine")
+        self.line.set_opal_name(self.line_name)
         try:
             self.line.append(self.ring)
         except Exception:
@@ -207,10 +214,11 @@ class MinimalRunner(object):
         elements.
         """
         track = pyopal.objects.track.Track()
-        track.line = "DefaultLine"
-        track.beam = "DefaultBeam"
+        track.line = self.line_name
+        track.beam = self.beam_name
         track.max_steps = [self.max_steps]
         track.steps_per_turn = self.steps_per_turn
+        track.method = "CYCLOTRON-T"
         self.track = track
         self.track.execute()
 
@@ -223,9 +231,9 @@ class MinimalRunner(object):
         run = pyopal.objects.track_run.TrackRun()
         run.method = "CYCLOTRON-T"
         run.keep_alive = True
-        run.beam_name = "DefaultBeam"
-        run.distribution = ["DefaultDistribution"]
-        run.field_solver = "DefaultFieldSolver"
+        run.beam_name = self.beam_name
+        run.distribution = [self.distribution_name]
+        run.field_solver = self.field_solver_name
         self.track_run = run
 
     def make_element_iterable(self):
