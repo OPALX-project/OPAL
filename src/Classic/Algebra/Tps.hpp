@@ -204,15 +204,14 @@ TpsRep<T> *TpsRep<T>::grab() {
     return this;
 }
 
-#if 0
-// Looks like this is not used!
 template <class T> inline
-void TpsRep<T>::release(TpsRep<T> *p) {
-    (p->ref)--;
-    if(p->ref <= 0)
+void TpsRep<T>::release(TpsRep<T>* p) {
+    --(p->ref);
+    if (p->ref <= 0) {
         delete [] reinterpret_cast<char *>(p);
+    }
 }
-#endif
+
 
 // Template class Tps<T>.
 // ------------------------------------------------------------------------
