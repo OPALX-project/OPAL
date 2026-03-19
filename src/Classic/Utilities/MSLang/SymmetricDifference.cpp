@@ -1,6 +1,10 @@
 #include "Utilities/MSLang/SymmetricDifference.h"
 
-#include <boost/regex.hpp>
+#include <memory>
+#include <regex>
+#include <string>
+#include <vector>
+#include <iostream>
 
 namespace mslang {
     void SymmetricDifference::print(int indentwidth) {
@@ -44,19 +48,19 @@ namespace mslang {
         SymmetricDifference *dif = static_cast<SymmetricDifference*>(fun);
         if (!parse(it, end, dif->firstOperand_m)) return false;
 
-        boost::regex argumentList("(,[a-z]+\\(.*)");
-        boost::regex endParenthesis("\\)(.*)");
-        boost::smatch what;
+        std::regex argumentList("(,[a-z]+\\(.*)");
+        std::regex endParenthesis("\\)(.*)");
+        std::smatch what;
 
         std::string str(it, end);
-        if (!boost::regex_match(str, what, argumentList)) return false;
+        if (!std::regex_match(str, what, argumentList)) return false;
 
         iterator it2 = it + 1;
         if (!parse(it2, end, dif->secondOperand_m)) return false;
 
         it = it2;
         str = std::string(it, end);
-        if (!boost::regex_match(str, what, endParenthesis)) return false;
+        if (!std::regex_match(str, what, endParenthesis)) return false;
 
         std::string fullMatch = what[0];
         std::string rest = what[1];

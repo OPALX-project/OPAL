@@ -16,12 +16,17 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Elements/OpalFlexibleCollimator.h"
+
 #include "Attributes/Attributes.h"
 #include "BeamlineCore/FlexibleCollimatorRep.h"
 #include "Structure/ParticleMatterInteraction.h"
 #include "Utilities/OpalException.h"
 
-#include <boost/regex.hpp>
+#include <fstream>
+#include <iterator>
+#include <regex>
+#include <string>
+#include <typeinfo>
 
 OpalFlexibleCollimator::OpalFlexibleCollimator():
     OpalElement(SIZE, "FLEXIBLECOLLIMATOR",
@@ -73,12 +78,12 @@ void OpalFlexibleCollimator::update() {
         std::string str((std::istreambuf_iterator<char>(it)),
                         std::istreambuf_iterator<char>());
 
-        str = boost::regex_replace(str, boost::regex("//.*?\\n"), std::string(""), boost::match_default | boost::format_all);
-        str = boost::regex_replace(str, boost::regex("\\s"), std::string(""), boost::match_default | boost::format_all);
+        str = std::regex_replace(str,std::regex("//.*?\\n"), std::string(""), std::regex_constants::match_default |std::regex_constants::format_default);
+        str = std::regex_replace(str,std::regex("\\s"), std::string(""), std::regex_constants::match_default |std::regex_constants::format_default);
 
         coll->setDescription(str);
     } else if (!desc.empty()) {
-        desc = boost::regex_replace(desc, boost::regex("[\\t ]"), std::string(""), boost::match_default | boost::format_all);
+        desc = std::regex_replace(desc,std::regex("[\\t ]"), std::string(""), std::regex_constants::match_default |std::regex_constants::format_default);
         coll->setDescription(desc);
     } else if (getOpalName() != "FLEXIBLECOLLIMATOR") {
         throw OpalException("OpalFlexibleCollimator::update",

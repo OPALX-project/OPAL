@@ -3,6 +3,9 @@
 
 #include "Utilities/MSLang.h"
 
+#include <memory>
+#include <vector>
+
 namespace mslang {
     struct Rotation: public Function {
         Function* func_m;

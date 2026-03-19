@@ -20,8 +20,11 @@
 
 #include "AbstractObjects/Element.h"
 #include "MemoryManagement/OwnPtr.h"
+
 #include <map>
+#include <ostream>
 #include <string>
+#include <vector>
 
 class Statement;
 
