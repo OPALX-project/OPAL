@@ -204,11 +204,18 @@ TpsRep<T> *TpsRep<T>::grab() {
     return this;
 }
 
+
 template <class T> inline
 void TpsRep<T>::release(TpsRep<T>* p) {
+    // Tps uses reference-counted shared storage with copy-on-write semantics.
+    // This function drops one reference and destroys the representation when
+    // the last owner goes away. It must stay defined in the template
+    // implementation, not just declared, otherwise some instantiations leave
+    // libOPAL.so with an unresolved TpsRep<T>::release symbol at PyOpal load
+    // time.
     --(p->ref);
     if (p->ref <= 0) {
-        delete [] reinterpret_cast<char *>(p);
+        delete [] reinterpret_cast<char*>(p);
     }
 }
 
