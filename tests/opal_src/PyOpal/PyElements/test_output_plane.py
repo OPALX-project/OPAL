@@ -101,15 +101,15 @@ class OutputPlaneRunner(pyopal.objects.minimal_runner.MinimalRunner):
 
     def make_rf(self):
         rf = pyopal.elements.variable_rf_cavity.VariableRFCavity()
-        phase = self.make_time_dependence("phase", math.pi/2, 0.0)
+        phase = self.make_time_dependence("PY_PHASE", math.pi/2, 0.0)
         # nb: 4 GeV protons; significant energy change in 0.1 m -> O(GV/m)
-        voltage = self.make_time_dependence("voltage", self.bz*1000.0, 0.0)
+        voltage = self.make_time_dependence("PY_VOLTAGE", self.bz*1000.0, 0.0)
         # time step is ~ ns so frequency ~ GHz is appropriate
-        frequency = self.make_time_dependence("frequency", 1e3, 0.0)
+        frequency = self.make_time_dependence("PY_FREQUENCY", 1e3, 0.0)
         rf.set_attributes(
-            phase_model = "phase",
-            amplitude_model = "voltage",
-            frequency_model = "frequency",
+            phase_model = "PY_PHASE",
+            amplitude_model = "PY_VOLTAGE",
+            frequency_model = "PY_FREQUENCY",
             height = 10.0,
             width = 10.0,
             length = 100.0,
