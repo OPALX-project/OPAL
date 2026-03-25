@@ -17,109 +17,61 @@
 #ifndef ARRAY_HPP_
 #define ARRAY_HPP_
 
-#include "ast.hpp"
-#include "skipper.hpp"
-#include "error_handler.hpp"
-
-#include <boost/config/warning_disable.hpp>
-#include <boost/spirit/include/qi.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
-
+#include <array>
+#include <iostream>
 #include <list>
-
-#define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
-#define BOOST_SPIRIT_QI_DEBUG
+#include <ostream>
+#include <string_view>
+#include <utility>
 
 namespace SDDS {
-    struct array
-    {
-        enum attributes { NAME
-                         , SYMBOL
-                         , UNITS
-                         , DESCRIPTION
-                         , FORMAT_STRING
-                         , GROUP_NAME
-                         , TYPE
-                         , FIELD_LENGTH
-                         , DIMENSIONS
-                         , ARRAY
+    struct array {
+        enum class attributes {
+            NAME,
+            SYMBOL,
+            UNITS,
+            DESCRIPTION,
+            FORMAT_STRING,
+            GROUP_NAME,
+            TYPE,
+            FIELD_LENGTH,
+            DIMENSIONS,
+            ARRAY
          };
 
         template <attributes A>
-        struct complainUnsupported
-        {
-            static bool apply()
-            {
-                std::string attributeString;
-                switch(A)
-                {
-                case NAME:
-                    attributeString = "name";
-                    break;
-                case SYMBOL:
-                    attributeString = "symbol";
-                    break;
-                case UNITS:
-                    attributeString = "units";
-                    break;
-                case DESCRIPTION:
-                    attributeString = "description";
-                    break;
-                case FORMAT_STRING:
-                    attributeString = "format_string";
-                    break;
-                case GROUP_NAME:
-                    attributeString = "group_name";
-                    break;
-                case TYPE:
-                    attributeString = "type";
-                    break;
-                case FIELD_LENGTH:
-                    attributeString = "field_length";
-                    break;
-                case DIMENSIONS:
-                    attributeString = "dimensions";
-                    break;
-                case ARRAY:
-                    attributeString = "array";
-                    break;
-                default:
-                    return true;
+        struct complainUnsupported {
+            static bool apply() {
+                constexpr std::array<std::pair<attributes, std::string_view>, 10> unsupportedAttributeNames = {{
+                    { attributes::NAME, "name" },
+                    { attributes::SYMBOL, "symbol" },
+                    { attributes::UNITS, "units" },
+                    { attributes::DESCRIPTION, "description" },
+                    { attributes::FORMAT_STRING, "format_string" },
+                    { attributes::GROUP_NAME, "group_name" },
+                    { attributes::TYPE, "type" },
+                    { attributes::FIELD_LENGTH, "field_length" },
+                    { attributes::DIMENSIONS, "dimensions" },
+                    { attributes::ARRAY, "array" }
+                }};
+
+                for (const auto& item : unsupportedAttributeNames) {
+                    if (item.first == A) {
+                        std::cerr << item.second << " not supported yet" << std::endl;
+                        return false;
+                    }
                 }
-                std::cerr << attributeString << " not supported yet" << std::endl;
-                return false;
+
+                return true;
             }
         };
     };
 
-    struct arrayList: std::list<array> {};
+    struct arrayList : std::list<array> {};
 
-    inline std::ostream& operator<<(std::ostream& out, const array& ) {
+    inline std::ostream& operator<<(std::ostream& out, const array&) {
         return out;
     }
 }
 
-namespace SDDS { namespace parser
-{
-    namespace qi = boost::spirit::qi;
-    namespace ascii = boost::spirit::ascii;
-    namespace phx = boost::phoenix;
-
-    template <typename Iterator>
-    struct array_parser: qi::grammar<Iterator, array(), skipper<Iterator> >
-    {
-        array_parser(error_handler<Iterator> & _error_handler);
-
-        qi::rule<Iterator, array(), skipper<Iterator> > start;
-        qi::rule<Iterator, std::string(), skipper<Iterator> > array_name,
-                array_symbol, array_units, array_description, array_format,
-                array_group, units, string, quoted_string;
-        qi::rule<Iterator, long(), skipper<Iterator> > array_field,
-                array_dimensions;
-        qi::rule<Iterator, ast::datatype, skipper<Iterator> > array_type;
-        qi::rule<Iterator, ast::nil(), skipper<Iterator> > array_unsupported_pre,
-                array_unsupported_post;
-        qi::symbols<char, ast::datatype> arraytype;
-    };
-}}
 #endif /* ARRAY_HPP_ */
