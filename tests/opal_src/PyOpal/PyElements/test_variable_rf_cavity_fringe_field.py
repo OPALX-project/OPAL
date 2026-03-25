@@ -39,13 +39,13 @@ class TestVariableRFCavityFringeField(unittest.TestCase):
 
     def setUp(self):
         """Set up the cavity"""
-        self.phase = self.make_time_dependence("phase", 0.0, 0.0)
-        self.voltage = self.make_time_dependence("voltage", 2.0, 0.0)
-        self.frequency = self.make_time_dependence("frequency", 100.0, 0.0) # MHz
+        self.phase = self.make_time_dependence("PY_PHASE", 0.0, 0.0)
+        self.voltage = self.make_time_dependence("PY_VOLTAGE", 2.0, 0.0)
+        self.frequency = self.make_time_dependence("PY_FREQUENCY", 100.0, 0.0) # MHz
         self.rf = pyopal.elements.variable_rf_cavity_fringe_field.VariableRFCavityFringeField()
-        self.rf.phase_model = "phase"
-        self.rf.amplitude_model = "voltage"
-        self.rf.frequency_model = "frequency"
+        self.rf.phase_model = "PY_PHASE"
+        self.rf.amplitude_model = "PY_VOLTAGE"
+        self.rf.frequency_model = "PY_FREQUENCY"
         self.rf.height = 0.5
         self.rf.width = 0.7
         self.rf.length = 1.6
