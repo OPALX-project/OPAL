@@ -39,13 +39,20 @@ namespace endfieldmodel {
 
 /** Calculate the AsymmetricEnge function (e.g. for multipole end fields).
  *
- *  AsymmetricEnge function is given by\n
- *  \f$T(x) = (tanh( (x+x0)/\lambda )-tanh( (x-x0)/\lambda ))/2\f$\n
- *  The derivatives of tanh(x) are given by\n
- *  \f$d^p tanh(x)/dx^p = \sum_q I_{pq} tanh^{q}(x)\f$\n
- *  where \f$I_{pq}\f$ are calculated using some recursion relation. Using these
- *  expressions, one can calculate a recursion relation for higher order
- *  derivatives and hence calculate analytical derivatives at arbitrary order.
+ *  AsymmetricEnge function is similar to the Enge function but user can specify
+ *  enge parameters independently for start and end. So function is given by\n
+ *
+ *  \f$f(x) = 1/(1+exp(h_s(x-x_s)))+1/(1+exp(h_e(-x-x_e)))-1\f$.
+ *
+ *  where h is a polynomial in \f$x/\lambda\f$ with polynomial coefficients a
+ *  and the subscript s refers to the start, e refers to the end.
+ *
+ *  The algorithm can also return the analytically calculated derivative to
+ *  user-specified precision. n^th derivative is given by
+ *
+ *  \f$f^{(n)}(x) = E^{(n)}(x-x_s)+(-1)^n E^{(n)}(-x-x_e)\f$
+ *
+ *  for Enge function having n^th derivative \f$E^{(n)}(x)\f$
  */
 class AsymmetricEnge : public EndFieldModel {
     public:
@@ -68,7 +75,10 @@ class AsymmetricEnge : public EndFieldModel {
         std::ostream& print(std::ostream& out) const;
 
         /** Return the value of enge at some point x */
-        inline double function(double x, int n) const;
+        double function(double x, int n) const;
+
+        /** Start offset is x0start */
+        inline double getStartOffset() const;
 
         /** Centre length is the average of x0End and x0Start */
         inline double getCentreLength() const;
@@ -141,22 +151,6 @@ void AsymmetricEnge::setX0End(double x0) {
     engeEnd_m->setX0(x0);
 }
 
-double AsymmetricEnge::function(double x, int n) const {
-    // f(x) = E(x-x0) + E(-x-x0) - 1
-    // f^{(2n)} = E^{(2n)}(x-x0) + E^{(2n)}(-x-x0)
-    // f^{(2n+1)} = E^{(2n)}(x-x0) - E^{(2n)}(-x-x0)
-    if (n == 0) {
-        return engeStart_m->getEnge(x-engeStart_m->getX0(), n)+
-               engeEnd_m->getEnge(-x-engeEnd_m->getX0(), n)-1;
-    } else if (n%2) {
-        return engeStart_m->getEnge(x-engeStart_m->getX0(), n)-
-               engeEnd_m->getEnge(-x-engeEnd_m->getX0(), n);
-    } else {
-        return engeStart_m->getEnge(x-engeStart_m->getX0(), n)+
-               engeEnd_m->getEnge(-x-engeEnd_m->getX0(), n);
-    }
-}
-
 AsymmetricEnge* AsymmetricEnge::clone() const {
     return new AsymmetricEnge(*this);
 }
@@ -166,7 +160,11 @@ void AsymmetricEnge::setMaximumDerivative(size_t n) {
 }
 
 double AsymmetricEnge::getCentreLength() const {
-    return (engeStart_m->getCentreLength()+engeEnd_m->getCentreLength())/2;
+    return (engeStart_m->getCentreLength()+engeEnd_m->getCentreLength())*2;
+}
+
+double AsymmetricEnge::getStartOffset() const {
+    return engeStart_m->getCentreLength()/2;
 }
 
 double AsymmetricEnge::getEndLength() const {

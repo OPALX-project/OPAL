@@ -256,6 +256,20 @@ class TestTrackRun(unittest.TestCase):
         runner.execute_fork()
         print("Finished\n\n")
 
+    def test_end_length(self):
+        """
+        Test that we can run okay without an exception.
+
+        If running from the command line, will spit out the OPAL log to screen.
+        """
+        runner = ScalingFFARunner()
+        runner.bend_direction = 1
+        runner.plot_dir = os.getcwd()
+        runner.postprocess = runner.plots
+        runner.execute_fork()
+        print("Finished\n\n")
+
+
 
 if __name__ == "__main__":
     unittest.main()

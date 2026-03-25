@@ -206,7 +206,7 @@ void ScalingFFAMagnet::setupEndField() {
     if (phiStart_m < 0.0) {
         setPhiStart(defaultExtent/2.0);
     } else {
-        setPhiStart(getPhiStart()+newEFM->getCentreLength()*0.5);
+        setPhiStart(getPhiStart()+newEFM->getStartOffset());
     }
     if (phiEnd_m < 0.0) {
         setPhiEnd(defaultExtent);
