@@ -2,7 +2,12 @@
 #include "Utilities/MSLang/ArgumentExtractor.h"
 #include "Utilities/MSLang/matheval.h"
 
-#include <boost/regex.hpp>
+#include <cmath> 
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 namespace mslang {
     void Shear::print(int indentwidth) {
@@ -20,8 +25,8 @@ namespace mslang {
     }
 
     void Shear::applyShear(std::vector<std::shared_ptr<Base> > &bfuncs) {
-        AffineTransformation shear(Vector_t({1.0, tan(angleX_m), 0.0}),
-                                   Vector_t({-tan(angleY_m), 1.0, 0.0}));
+        AffineTransformation shear(Vector_t({1.0, std::tan(angleX_m), 0.0}),
+                                   Vector_t({-std::tan(angleY_m), 1.0, 0.0}));
 
         const unsigned int size = bfuncs.size();
 
