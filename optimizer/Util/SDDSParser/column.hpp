@@ -17,162 +17,145 @@
 #ifndef COLUMN_HPP_
 #define COLUMN_HPP_
 
-#include "ast.hpp"
-#include "skipper.hpp"
-#include "error_handler.hpp"
+#include "Util/SDDSParser/ast.hpp"
+#include "Util/SDDSParser/value_parser.hpp"
 
-#include <boost/config/warning_disable.hpp>
-#include <boost/spirit/include/qi.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
-
+#include <array>
+#include <cstddef>
 #include <iostream>
 #include <optional>
 #include <ostream>
 #include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
-#define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
-#define BOOST_SPIRIT_QI_DEBUG
-
 namespace SDDS {
-    struct column
-    {
-        enum attributes { NAME
-                        , SYMBOL
-                        , UNITS
-                        , DESCRIPTION
-                        , FORMAT_STRING
-                        , TYPE
-                        , FIELD_LENGTH
+    struct column {
+        enum class attributes {
+            NAME,
+            SYMBOL,
+            UNITS,
+            DESCRIPTION,
+            FORMAT_STRING,
+            TYPE,
+            FIELD_LENGTH
         };
 
-        unsigned int order_m;
+        unsigned int order_m { 0 };
         std::optional<std::string> name_m;
         std::optional<std::string> units_m;
         std::optional<std::string> description_m;
-        std::optional<ast::datatype> type_m;
+        std::optional<ast::dataType> type_m;
         ast::columnData_t values_m;
         static unsigned int count_m;
 
-        bool checkMandatories() const
-        {
+        bool checkMandatories() const {
             return name_m && type_m;
         }
 
         template <attributes A>
-        struct complainUnsupported
-        {
-            static bool apply()
-            {
-                std::string attributeString;
-                switch(A)
-                {
-                case SYMBOL:
-                    attributeString = "symbol";
-                    break;
-                case FORMAT_STRING:
-                    attributeString = "format_string";
-                    break;
-                case FIELD_LENGTH:
-                    attributeString = "field_length";
-                    break;
-                default:
-                    return true;
+        struct complainUnsupported {
+            static bool apply() {
+                constexpr std::array<std::pair<attributes, std::string_view>, 3> unsupportedAttributeNames = {{
+                    { attributes::SYMBOL, "symbol" },
+                    { attributes::FORMAT_STRING, "format_string" },
+                    { attributes::FIELD_LENGTH, "field_length" }
+                }};
+
+                for (const auto& item : unsupportedAttributeNames) {
+                    if (item.first == A) {
+                        std::cerr << item.second << " not supported yet" << std::endl;
+                        return false;
+                    }
                 }
-                std::cerr << attributeString << " not supported yet" << std::endl;
-                return false;
+
+                return true;
             }
         };
 
-        template <typename Iterator, typename Skipper>
-        bool parse(
-            Iterator& first
-          , Iterator last
-          , Skipper const& skipper)
-        {
+        bool parse(std::string_view input, size_t& pos) {
+            if (!type_m) {
+                return false;
+            }
+
+            parser::ValueParser parser(input, pos);
             switch(*this->type_m) {
-            case ast::FLOAT:
-            {
-                float f = 0.0;
-                boost::spirit::qi::float_type float_;
-                if (phrase_parse(first, last, float_, skipper, f)) {
-                    this->values_m.push_back(f);
-                    return true;
+                case ast::dataType::FLOAT: {
+                    float f = 0.0f;
+                    if (parser.parseFloat(f)) {
+                        this->values_m.push_back(f);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::DOUBLE:
-            {
-                double d = 0.0;
-                boost::spirit::qi::double_type double_;
-                if (phrase_parse(first, last, double_, skipper, d)) {
-                    this->values_m.push_back(d);
-                    return true;
+                case ast::dataType::DOUBLE: {
+                    double d = 0.0;
+                    if (parser.parseDouble(d)) {
+                        this->values_m.push_back(d);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::SHORT:
-            {
-                short s = 0;
-                boost::spirit::qi::short_type short_;
-                if (phrase_parse(first, last, short_, skipper, s)) {
-                    this->values_m.push_back(s);
-                    return true;
+                case ast::dataType::SHORT: {
+                    short s = 0;
+                    if (parser.parseShort(s)) {
+                        this->values_m.push_back(s);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::LONG:
-            {
-                long l = 0;
-                boost::spirit::qi::long_type long_;
-                if (phrase_parse(first, last, long_, skipper, l)) {
-                    this->values_m.push_back(l);
-                    return true;
+                case ast::dataType::LONG: {
+                    long l = 0;
+                    if (parser.parseLong(l)) {
+                        this->values_m.push_back(l);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::CHARACTER:
-            {
-                char c = '\0';
-                boost::spirit::qi::char_type char_;
-                if (phrase_parse(first, last, char_, skipper, c)) {
-                    this->values_m.push_back(c);
-                    return true;
+                case ast::dataType::CHARACTER: {
+                    char c = '\0';
+                    if (parser.parseChar(c)) {
+                        this->values_m.push_back(c);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
-            case ast::STRING:
-            {
-                std::string s("");
-                parser::qstring<Iterator, Skipper> qstring;
-                if (phrase_parse(first, last, qstring, skipper, s)) {
-                    this->values_m.push_back(s);
-                    return true;
+                case ast::dataType::STRING: {
+                    std::string s("");
+                    if (parser.parseString(s)) {
+                        this->values_m.push_back(s);
+                        pos = parser.getPosition();
+                        return true;
+                    }
+                    break;
                 }
-                break;
-            }
             }
             return false;
         }
     };
 
-    struct columnList: std::vector<column> {};
+    struct columnList : std::vector<column> {};
 
     template <typename Iterator>
-    struct columnOrder
-    {
+    struct columnOrder {
         template <typename, typename>
-        struct result { typedef void type; };
+        struct result {
+            typedef void type;
+        };
 
-        void operator()(column& col, Iterator) const
-        {
+        void operator()(column& col, Iterator) const {
             col.order_m = column::count_m ++;
         }
     };
 
     inline std::ostream& operator<<(std::ostream& out, const column& col) {
         if (col.name_m) out << "name = " << *col.name_m << ", ";
-        if (col.type_m) out << "type = " << *col.type_m << ", ";
         if (col.units_m) out << "units = " << *col.units_m << ", ";
         if (col.description_m) out << "description = " << *col.description_m << ", ";
         out << "order = " << col.order_m;
@@ -181,38 +164,4 @@ namespace SDDS {
     }
 }
 
-BOOST_FUSION_ADAPT_STRUCT(
-    SDDS::column,
-    (std::optional<std::string>, name_m)
-    (std::optional<SDDS::ast::datatype>, type_m)
-    (std::optional<std::string>, units_m)
-    (std::optional<std::string>, description_m)
-    (SDDS::ast::variant_t, value_m)
-)
-
-namespace SDDS { namespace parser
-{
-    namespace qi = boost::spirit::qi;
-    namespace ascii = boost::spirit::ascii;
-    namespace phx = boost::phoenix;
-
-    ///////////////////////////////////////////////////////////////////////////////
-    //  The expression grammar
-    ///////////////////////////////////////////////////////////////////////////////
-    template <typename Iterator>
-    struct column_parser: qi::grammar<Iterator, column(), skipper<Iterator> >
-    {
-        column_parser(error_handler<Iterator> & _error_handler);
-
-        qi::rule<Iterator, std::string(), skipper<Iterator> > string, quoted_string, units;
-        qi::rule<Iterator, std::string(), skipper<Iterator> > column_name, column_units,
-                column_description, column_symbol, column_format;
-        qi::rule<Iterator, ast::datatype(), skipper<Iterator> > column_type;
-        qi::rule<Iterator, column(), skipper<Iterator> > start;
-        qi::rule<Iterator, long(), skipper<Iterator> > column_field;
-        qi::rule<Iterator, ast::nil(), skipper<Iterator> > column_unsupported_pre,
-                column_unsupported_post;
-        qi::symbols<char, ast::datatype> datatype;
-    };
-}}
 #endif /* COLUMN_HPP_ */

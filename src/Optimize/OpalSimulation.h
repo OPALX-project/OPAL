@@ -1,3 +1,20 @@
+//
+// Class OpalSimulation
+//   Concrete implementation of an Opal simulation wrapper.
+//
+// Copyright (c) 2017, Paul Scherrer Institute, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef __OPALSIMULATION_H__
 #define __OPALSIMULATION_H__
 
@@ -6,21 +23,14 @@
 
 #include "mpi.h"
 
-#include "Util/Types.h"
-#include "Util/CmdArguments.h"
-#include "Simulation/Simulation.h"
 #include "Simulation/GenerateOpalSimulation.h"
-
+#include "Simulation/Simulation.h"
+#include "Util/CmdArguments.h"
+#include "Util/Types.h"
 
 /**
- *  \class OpalSimulation
- *  \brief Concrete implementation of an Opal simulation wrapper.
- *
- *  @see http://amas.web.psi.ch
- *
  *  In order to work properly the user must ensure that the environment
  *  variables
- *
  *    - SIMTMPDIR (temporary directory for simulation input data) and
  *    - TEMPLATES (directory containing tmpl file)
  *
@@ -53,7 +63,7 @@ public:
     /// either failed or finished.
     void run();
 
-    std::map<std::string, std::vector<double> > getData(const std::vector<std::string> &statVariables);
+    std::map<std::string, std::vector<double> > getData(const std::vector<std::string>& statVariables);
 
     /// Parse SDDS stat file and build up requested variable dictionary.
     void collectResults();

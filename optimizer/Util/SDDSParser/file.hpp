@@ -17,31 +17,20 @@
 #ifndef FILE_HPP_
 #define FILE_HPP_
 
-#include "ast.hpp"
-#include "skipper.hpp"
-#include "error_handler.hpp"
-#include "version.hpp"
-#include "description.hpp"
-#include "parameter.hpp"
-#include "column.hpp"
-#include "data.hpp"
-#include "associate.hpp"
-#include "array.hpp"
-#include "include.hpp"
-
-#include <boost/config/warning_disable.hpp>
-#include <boost/spirit/include/qi.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
+#include "Util/SDDSParser/array.hpp"
+#include "Util/SDDSParser/associate.hpp"
+#include "Util/SDDSParser/column.hpp"
+#include "Util/SDDSParser/data.hpp"
+#include "Util/SDDSParser/description.hpp"
+#include "Util/SDDSParser/include.hpp"
+#include "Util/SDDSParser/parameter.hpp"
+#include "Util/SDDSParser/version.hpp"
 
 #include <optional>
 #include <ostream>
 
-#define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
-#define BOOST_SPIRIT_QI_DEBUG
-
 namespace SDDS {
-    struct file
-    {
+    struct file {
         version sddsVersion_m;                              // 0
         std::optional<description> sddsDescription_m;       // 1
         parameterList sddsParameters_m;                     // 2
@@ -52,8 +41,11 @@ namespace SDDS {
         includeList sddsIncludes_m;                         // 7
 
         void clear() {
+            sddsVersion_m = {};
+            sddsDescription_m.reset();
             sddsParameters_m.clear();
             sddsColumns_m.clear();
+            sddsData_m = {};
             sddsAssociates_m.clear();
             sddsArrays_m.clear();
             sddsIncludes_m.clear();
@@ -81,37 +73,4 @@ namespace SDDS {
     }
 }
 
-BOOST_FUSION_ADAPT_STRUCT(
-    SDDS::file,
-    (SDDS::version, sddsVersion_m)
-    (std::optional<SDDS::description>, sddsDescription_m)
-    (SDDS::parameterList, sddsParameters_m)
-    (SDDS::columnList, sddsColumns_m)
-    (SDDS::data, sddsData_m)
-    (SDDS::associateList, sddsAssociates_m)
-    (SDDS::arrayList, sddsArrays_m)
-    (SDDS::includeList, sddsIncludes_m)
-)
-
-namespace SDDS { namespace parser
-{
-    namespace qi = boost::spirit::qi;
-    namespace ascii = boost::spirit::ascii;
-
-    template <typename Iterator>
-    struct file_parser: qi::grammar<Iterator, file(), skipper<Iterator> >
-    {
-        file_parser(error_handler<Iterator> & _error_handler);
-
-        version_parser<Iterator> version_m;
-        description_parser<Iterator> description_m;
-        parameter_parser<Iterator> parameter_m;
-        column_parser<Iterator> column_m;
-        data_parser<Iterator> data_m;
-        associate_parser<Iterator> associate_m;
-        array_parser<Iterator> array_m;
-        include_parser<Iterator> include_m;
-        qi::rule<Iterator, file(), skipper<Iterator> > start;
-    };
-}}
 #endif /* FILE_HPP_ */

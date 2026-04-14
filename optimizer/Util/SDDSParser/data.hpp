@@ -17,35 +17,31 @@
 #ifndef DATA_HPP_
 #define DATA_HPP_
 
-#include "ast.hpp"
-#include "skipper.hpp"
-#include "error_handler.hpp"
+#include "Util/SDDSParser/ast.hpp"
 
-#include <boost/config/warning_disable.hpp>
-#include <boost/spirit/include/qi.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
-
-#define BOOST_SPIRIT_NO_PREDEFINED_TERMINALS
-#define BOOST_SPIRIT_QI_DEBUG
+#include <array>
+#include <iostream>
+#include <ostream>
+#include <string_view>
+#include <utility>
 
 namespace SDDS {
-    struct data
-    {
-        enum attributes { MODE
-                        , LINES_PER_ROW
-                        , NO_ROW_COUNT
-                        , FIXED_ROW_COUNT
-                        , ADDITIONAL_HEADER_LINES
-                        , COLUMN_MAJOR_ORDER
-                        , ENDIAN
+    struct data {
+        enum class attributes {
+            MODE,
+            LINES_PER_ROW,
+            NO_ROW_COUNT,
+            FIXED_ROW_COUNT,
+            ADDITIONAL_HEADER_LINES,
+            COLUMN_MAJOR_ORDER,
+            ENDIAN
         };
 
-        ast::datamode mode_m;
-        long numberRows_m;
+        ast::dataMode mode_m { ast::dataMode::ASCII };
+        long numberRows_m { 0 };
 
-        bool isASCII() const
-        {
-            if (mode_m == ast::BINARY) {
+        bool isASCII() const {
+            if (mode_m == ast::dataMode::BINARY) {
                 std::cerr << "can't handle binary data yet" << std::endl;
                 return false;
             }
@@ -55,71 +51,33 @@ namespace SDDS {
         template <attributes A>
         struct complainUnsupported
         {
-            static bool apply()
-            {
-                std::string attributeString;
-                switch(A)
-                {
-                case LINES_PER_ROW:
-                    attributeString = "lines_per_row";
-                    break;
-                case NO_ROW_COUNT:
-                    attributeString = "no_row_count";
-                    break;
-                case FIXED_ROW_COUNT:
-                    attributeString = "fixed_row_count";
-                    break;
-                case ADDITIONAL_HEADER_LINES:
-                    attributeString = "additional_header_lines";
-                    break;
-                case COLUMN_MAJOR_ORDER:
-                    attributeString = "column_major_order";
-                    break;
-                case ENDIAN:
-                    attributeString = "endian";
-                    break;
-                default:
-                    return true;
+            static bool apply() {
+                constexpr std::array<std::pair<attributes, std::string_view>, 6> unsupportedAttributeNames = {{
+                    { attributes::LINES_PER_ROW, "lines_per_row" },
+                    { attributes::NO_ROW_COUNT, "no_row_count" },
+                    { attributes::FIXED_ROW_COUNT, "fixed_row_count" },
+                    { attributes::ADDITIONAL_HEADER_LINES, "additional_header_lines" },
+                    { attributes::COLUMN_MAJOR_ORDER, "column_major_order" },
+                    { attributes::ENDIAN, "endian" }
+                }};
+
+                for (const auto& item : unsupportedAttributeNames) {
+                    if (item.first == A) {
+                        std::cerr << item.second << " not supported yet" << std::endl;
+                        return false;
+                    }
                 }
-                std::cerr << attributeString << " not supported yet" << std::endl;
-                return false;
+
+                return true;
             }
         };
     };
 
     inline std::ostream& operator<<(std::ostream& out, const data& data_) {
-        out << "mode = " << data_.mode_m;
+        out << "mode = " << ast::getDataModeString(data_.mode_m);
         return out;
     }
 }
 
-BOOST_FUSION_ADAPT_STRUCT(
-    SDDS::data,
-    (SDDS::ast::datamode, mode_m)
-    (long, numberRows_m)
-)
-
-namespace SDDS { namespace parser
-{
-    namespace qi = boost::spirit::qi;
-    namespace ascii = boost::spirit::ascii;
-    namespace phx = boost::phoenix;
-
-    template <typename Iterator>
-    struct data_parser: qi::grammar<Iterator, data(), skipper<Iterator> >
-    {
-        data_parser(error_handler<Iterator> & _error_handler);
-
-        qi::rule<Iterator, data(), skipper<Iterator> > start;
-        qi::rule<Iterator, ast::datamode(), skipper<Iterator> > data_mode;
-        qi::rule<Iterator, long(), skipper<Iterator> > data_lines,
-                data_row, data_fixed, data_additional;
-        qi::rule<Iterator, short(), skipper<Iterator> > data_column;
-        qi::rule<Iterator, ast::endianess(), skipper<Iterator> > data_endian;
-        qi::rule<Iterator, ast::nil(), skipper<Iterator> > data_unsupported_pre,
-                data_unsupported_post;
-        qi::symbols<char, ast::endianess> dataendian;
-        qi::symbols<char, ast::datamode> datamode;
-    };
-}}
+// Data parsing is now handled by SimpleParser
 #endif /* DATA_HPP_ */

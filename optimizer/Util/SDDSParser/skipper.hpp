@@ -1,7 +1,7 @@
 //
-// Struct skipper
+// Namespace skipper
 //
-// Copyright (c) 2015, Christof Metzger-Kraus, Helmholtz-Zentrum Berlin
+// Copyright (c) 2026, Paul Scherrer Institute, Villigen PSI, Switzerland
 // All rights reserved
 //
 // This file is part of OPAL.
@@ -17,54 +17,35 @@
 #ifndef SKIPPER_HPP_
 #define SKIPPER_HPP_
 
-#include <boost/spirit/include/qi.hpp>
+#include <cctype>
+#include <cstddef>
+#include <string_view>
 
-namespace SDDS { namespace parser
-{
-    namespace qi = boost::spirit::qi;
-    namespace ascii = boost::spirit::ascii;
+namespace SDDS {
+    namespace parser {
+        namespace skipper {
 
-    ///////////////////////////////////////////////////////////////////////////////
-    //  The skipper grammar
-    ///////////////////////////////////////////////////////////////////////////////
-    template <typename Iterator>
-    struct skipper : qi::grammar<Iterator>
-    {
-        skipper() : skipper::base_type(start)
-        {
-        	qi::eol_type eol;
-        	qi::eoi_type eoi;
-        	qi::char_type char_;
-            ascii::space_type space;
+            inline void skipWhitespaceAndComments(std::string_view input, std::size_t& pos) {
+                while (pos < input.size()) {
+                    if (std::isspace(static_cast<unsigned char>(input[pos]))) {
+                        pos++;
+                    } else if (input[pos] == '!') {
+                        // Skip comment to end of line.
+                        pos++;
+                        while (pos < input.size() && input[pos] != '\n') {
+                            pos++;
+                        }
+                    } else if (input[pos] == ',') {
+                        // Keep comma behavior aligned with legacy parser semantics.
+                        pos++;
+                    } else {
+                        break;
+                    }
+                }
+            }
 
-            start =
-                    space
-				|   "!" >> *(char_ - eol) >> (eol|eoi)       // comments
-                ;
-        }
+        } // namespace utils
+    } // namespace parser
+} // namespace SDDS
 
-        qi::rule<Iterator> start;
-    };
-
-    template <typename Iterator>
-    struct listskipper : qi::grammar<Iterator>
-    {
-        listskipper() : listskipper::base_type(start)
-        {
-            qi::char_type char_;
-            ascii::space_type space;
-
-            start =
-                    space
-                |   char_(',')
-                ;
-        }
-
-        qi::rule<Iterator> start;
-    };
-
-}}
-
-#endif
-
-
+#endif /* SKIPPER_HPP_ */

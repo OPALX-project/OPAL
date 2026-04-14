@@ -15,76 +15,101 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "SDDSParser.h"
+#include "Util/SDDSParser.h"
+#include "Util/SDDSParser/simple_parser.hpp"
+#include "Util/SDDSParser/skipper.hpp"
 
-#include <boost/algorithm/string.hpp>
+#include <cctype>
+#include <cstddef>
+#include <exception>
+#include <fstream>
+#include <string>
+#include <string_view>
 
 SDDS::SDDSParser::SDDSParser():
     sddsFileName_m("")
 { }
 
-SDDS::SDDSParser::SDDSParser(const std::string &input):
+SDDS::SDDSParser::SDDSParser(const std::string& input):
     sddsFileName_m(input)
 { }
 
-void SDDS::SDDSParser::setInput(const std::string &input) {
+void SDDS::SDDSParser::setInput(const std::string& input) {
     sddsFileName_m = input;
 }
 
 SDDS::file SDDS::SDDSParser::run() {
-    typedef std::string::const_iterator iterator_t;
-    typedef SDDS::parser::file_parser<iterator_t> file_parser_t;
-    typedef SDDS::parser::skipper<iterator_t> skipper_t;
-    typedef SDDS::error_handler<iterator_t> error_handler_t;
-
     sddsData_m.clear();
     paramNameToID_m.clear();
     columnNameToID_m.clear();
 
-    skipper_t skipper;
     std::string contents = readFile();
-    iterator_t contentsIter = contents.begin();
-    iterator_t contentsEnd = contents.end();
-    error_handler_t error_handler(contentsIter, contentsEnd);
-    file_parser_t parser(error_handler);
 
-    bool success = phrase_parse(contentsIter, contentsEnd, parser, skipper, sddsData_m);
-    {
-        SDDS::parameterList::iterator piter = sddsData_m.sddsParameters_m.begin();
-        SDDS::parameterList::iterator pend = sddsData_m.sddsParameters_m.end();
-        for (; piter != pend && success; ++ piter) {
-            success = piter->parse(contentsIter, contentsEnd, skipper);
+    // Use simple parser instead of boost::spirit
+    parser::SimpleParser parser(contents);
+    try {
+        sddsData_m = parser.parse();
+    } catch (const std::exception& e) {
+        throw SDDSParserException("SDDSParser::run",
+                                  std::string("could not parse SDDS file: ") + e.what());
+    }
+
+    // Parse parameter values from the data section, not from file start.
+    std::size_t pos = parser.dataStartPos();
+    const std::size_t len = contents.size();
+    if (pos == std::string::npos) {
+        pos = contents.length();
+    }
+
+    auto skipWSAndComments = [&]() {
+        parser::skipper::skipWhitespaceAndComments(contents, pos);
+    };
+
+    for (auto& param : sddsData_m.sddsParameters_m) {
+        if (!param.parse(contents, pos)) {
+            throw SDDSParserException("SDDSParser::run",
+                                      "could not parse parameter value");
         }
-        while (success && contentsIter != contentsEnd) {
-            SDDS::columnList::iterator citer = sddsData_m.sddsColumns_m.begin();
-            SDDS::columnList::iterator cend = sddsData_m.sddsColumns_m.end();
-            for (; citer != cend && success; ++ citer) {
-                success = citer->parse(contentsIter, contentsEnd, skipper);
+        skipWSAndComments();
+    }
+
+    // Parse column values row-by-row. A row is only accepted if all columns parse.
+    while (pos < len) {
+        std::size_t rowStart = pos;
+        std::size_t parsedColumns = 0;
+
+        for (auto& col : sddsData_m.sddsColumns_m) {
+            if (!col.parse(contents, pos)) {
+                break;
             }
+            parsedColumns++;
+            skipWSAndComments();
+        }
+
+        if (parsedColumns == 0) {
+            pos = rowStart;
+            break;
+        }
+
+        if (parsedColumns != sddsData_m.sddsColumns_m.size()) {
+            throw SDDSParserException("SDDSParser::run",
+                                      "could not parse a complete data row");
         }
     }
 
-    if (!success || contentsIter != contentsEnd)
-        {
-            throw SDDSParserException("SDDSParser::parseSDDSFile",
-                                      "could not parse SDDS file");
-        }
-
-    unsigned int param_order = 0;
+    paramNameToID_m.reserve(sddsData_m.sddsParameters_m.size());
+    std::size_t param_order = 0;
     for (const SDDS::parameter &param: sddsData_m.sddsParameters_m) {
-        std::string name = *param.name_m;
-        fixCaseSensitivity(name);
-        paramNameToID_m.insert(std::make_pair(name,
-                                              param_order));
+        const std::string name = normalizeKey(*param.name_m);
+        paramNameToID_m.emplace(name, param_order);
         ++ param_order;
     }
 
-    unsigned int col_order = 0;
+    columnNameToID_m.reserve(sddsData_m.sddsColumns_m.size());
+    std::size_t col_order = 0;
     for (const SDDS::column &col: sddsData_m.sddsColumns_m) {
-        std::string name = *col.name_m;
-        fixCaseSensitivity(name);
-        columnNameToID_m.insert(std::make_pair(name,
-                                               col_order));
+        const std::string name = normalizeKey(*col.name_m);
+        columnNameToID_m.emplace(name, col_order);
         ++ col_order;
     }
 
@@ -92,17 +117,22 @@ SDDS::file SDDS::SDDSParser::run() {
 }
 
 std::string SDDS::SDDSParser::readFile() {
-    std::ifstream in(sddsFileName_m.c_str());
+    std::ifstream in(sddsFileName_m, std::ios::binary);
 
     if (in) {
-        std::string contents;
         in.seekg(0, std::ios::end);
-        contents.resize(in.tellg());
+        const std::streamsize fileSize = in.tellg();
         in.seekg(0, std::ios::beg);
 
-        in.read(&contents[0], contents.size());
+        if (fileSize < 0) {
+            throw SDDSParserException("SDDSParser::readSDDSFile",
+                                      "could not determine size of file '" + sddsFileName_m + "'");
+        }
 
-        in.close();
+        std::string contents(static_cast<std::size_t>(fileSize), '\0');
+        if (!contents.empty()) {
+            in.read(contents.data(), fileSize);
+        }
 
         return contents;
     }
@@ -113,27 +143,39 @@ std::string SDDS::SDDSParser::readFile() {
     return std::string("");
 }
 
-SDDS::ast::columnData_t SDDS::SDDSParser::getColumnData(const std::string &columnName) {
-    int idx = getColumnIndex(columnName);
-
+const SDDS::ast::columnData_t&
+SDDS::SDDSParser::getColumnData(const std::string& columnName) const {
+    const int idx = getColumnIndex(columnName);
     return sddsData_m.sddsColumns_m[idx].values_m;
 }
 
-
-int SDDS::SDDSParser::getColumnIndex(std::string col_name) const {
-    fixCaseSensitivity(col_name);
-    auto it = columnNameToID_m.find(col_name);
+int SDDS::SDDSParser::getColumnIndex(const std::string& col_name) const {
+    const std::string normalizedName = normalizeKey(col_name);
+    const auto it = columnNameToID_m.find(normalizedName);
     if (it != columnNameToID_m.end()) {
-        return it->second;
+        return static_cast<int>(it->second);
     }
-
     throw SDDSParserException("SDDSParser::getColumnIndex",
                               "could not find column '" + col_name + "'");
-
 }
 
-//XXX use either all upper, or all lower case chars
-void SDDS::SDDSParser::fixCaseSensitivity(std::string &for_string) {
+std::string SDDS::SDDSParser::normalizeKey(std::string_view value) {
+    std::size_t firstUppercase = std::string_view::npos;
+    for (std::size_t index = 0; index < value.size(); ++index) {
+        if (std::isupper(static_cast<unsigned char>(value[index]))) {
+            firstUppercase = index;
+            break;
+        }
+    }
 
-    boost::to_lower(for_string);
+    if (firstUppercase == std::string_view::npos) {
+        return std::string(value);
+    }
+
+    std::string lower(value);
+    for (std::size_t index = firstUppercase; index < lower.size(); ++index) {
+        lower[index] = static_cast<char>(std::tolower(static_cast<unsigned char>(lower[index])));
+    }
+
+    return lower;
 }
