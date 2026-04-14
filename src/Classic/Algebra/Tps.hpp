@@ -213,9 +213,12 @@ void TpsRep<T>::release(TpsRep<T>* p) {
     // implementation, not just declared, otherwise some instantiations leave
     // libOPAL.so with an unresolved TpsRep<T>::release symbol at PyOpal load
     // time.
-    --(p->ref);
-    if (p->ref <= 0) {
-        delete [] reinterpret_cast<char*>(p);
+    if (!p) return;
+
+    int newref = --(p->ref);
+    if (newref <= 0) {
+        auto* raw = reinterpret_cast<char*>(p);
+        delete [] raw;
     }
 }
 
