@@ -291,9 +291,14 @@ bool ElementBase::isInsideTransverse(const Vector_t &r) const
     double factor = 1.0;
     if (aperture_m.first == ApertureType::CONIC_RECTANGULAR ||
         aperture_m.first == ApertureType::CONIC_ELLIPTICAL) {
-        Vector_t rRelativeToBegin = getEdgeToBegin().transformTo(r);
-        double fractionLength = rRelativeToBegin(2) / getElementLength();
-        factor = fractionLength * aperture_m.second[2];
+        const double length = getElementLength();
+        if (std::abs(length) > 0.0) {
+            Vector_t rRelativeToBegin = getEdgeToBegin().transformTo(r);
+            double fractionLength = rRelativeToBegin(2) / length;
+            fractionLength = std::clamp(fractionLength, 0.0, 1.0);
+            // Interpolate aperture scaling from begin (1.0) to end (aperture_m.second[2]).
+            factor = 1.0 + fractionLength * (aperture_m.second[2] - 1.0);
+        }
     }
 
     switch(aperture_m.first) {
