@@ -292,7 +292,7 @@ bool ElementBase::isInsideTransverse(const Vector_t &r) const
     if (aperture_m.first == ApertureType::CONIC_RECTANGULAR ||
         aperture_m.first == ApertureType::CONIC_ELLIPTICAL) {
         const double length = getElementLength();
-        if (std::abs(length) > 0.0) {
+        if (length > 0.0) {
             Vector_t rRelativeToBegin = getEdgeToBegin().transformTo(r);
             double fractionLength = rRelativeToBegin(2) / length;
             fractionLength = std::clamp(fractionLength, 0.0, 1.0);

@@ -182,11 +182,11 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
                 retvalue.second[0] = width2HalfWidth * std::stod(match[1]);
                 retvalue.second[1] = retvalue.second[0];
                 retvalue.second[2] = std::stod(match[2]);
-                validateConicScale(retvalue.second[2], arguments);
             } catch (const std::exception &ex) {
                 throw OpalException("OpalElement::getApert()",
                                     "could not convert '" + arguments + "' to doubles");
             }
+            validateConicScale(retvalue.second[2], arguments);
         }
 
         return retvalue;
@@ -200,11 +200,9 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
 
             try {
                 size_t sz = 0;
-
                 retvalue.second[0] = width2HalfWidth * std::stod(arguments, &sz);
                 sz = arguments.find_first_of(",", sz) + 1;
                 retvalue.second[1] = width2HalfWidth * std::stod(arguments.substr(sz));
-
             } catch (const std::exception &ex) {
                 throw OpalException("OpalElement::getApert()",
                                     "could not convert '" + arguments + "' to doubles");
@@ -212,16 +210,15 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
 
         } else {
             retvalue.first = ApertureType::CONIC_RECTANGULAR;
-
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(match[1]);
                 retvalue.second[1] = width2HalfWidth * std::stod(match[2]);
                 retvalue.second[2] = std::stod(match[3]);
-                validateConicScale(retvalue.second[2], arguments);
             } catch (const std::exception &ex) {
                 throw OpalException("OpalElement::getApert()",
                                     "could not convert '" + arguments + "' to doubles");
             }
+            validateConicScale(retvalue.second[2], arguments);
         }
 
         return retvalue;
@@ -231,7 +228,6 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
         std::string arguments = match[1];
         if (!std::regex_search(arguments, match, twoArguments)) {
             retvalue.first = ApertureType::ELLIPTICAL;
-
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(arguments);
                 retvalue.second[1] = retvalue.second[0];
@@ -242,16 +238,15 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
 
         } else {
             retvalue.first = ApertureType::CONIC_ELLIPTICAL;
-
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(match[1]);
                 retvalue.second[1] = retvalue.second[0];
                 retvalue.second[2] = std::stod(match[2]);
-                validateConicScale(retvalue.second[2], arguments);
             } catch (const std::exception &ex) {
                 throw OpalException("OpalElement::getApert()",
                                     "could not convert '" + arguments + "' to doubles");
             }
+            validateConicScale(retvalue.second[2], arguments);
         }
 
         return retvalue;
@@ -262,7 +257,6 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
 
         if (!std::regex_search(arguments, match, threeArguments)) {
             retvalue.first = ApertureType::ELLIPTICAL;
-
             try {
                 size_t sz = 0;
 
@@ -277,16 +271,15 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
 
         } else {
             retvalue.first = ApertureType::CONIC_ELLIPTICAL;
-
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(match[1]);
                 retvalue.second[1] = width2HalfWidth * std::stod(match[2]);
                 retvalue.second[2] = std::stod(match[3]);
-                validateConicScale(retvalue.second[2], arguments);
             } catch (const std::exception &ex) {
                 throw OpalException("OpalElement::getApert()",
                                     "could not convert '" + arguments + "' to doubles");
             }
+            validateConicScale(retvalue.second[2], arguments);
         }
 
         return retvalue;
