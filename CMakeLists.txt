@@ -73,7 +73,6 @@ endif ()
 
 if (${WILL_BUILD_SHARED_LIBRARY})
     add_compile_options (-fPIE -fPIC)
-    add_link_options (-pie)
     # force OPAL to link to shared libraries
     if (UNIX)
         set(CMAKE_FIND_LIBRARY_SUFFIXES ".so")

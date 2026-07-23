@@ -393,7 +393,7 @@ std::istream &TransportFun<T, N>::get(std::istream &is) {
 
 template <class T, int N>
 std::ostream &TransportFun<T, N>::put(std::ostream &os) const {
-    os << "Tps " << this->itsRep->max << ' ' << this->itsRep->trc << ' ' << N
+    os << "Tps " << 2 << ' ' << 2 << ' ' << N
        << std::endl;
     std::streamsize old_prec = os.precision(14);
     os.setf(std::ios::scientific, std::ios::floatfield);
