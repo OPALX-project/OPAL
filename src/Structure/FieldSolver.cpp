@@ -456,11 +456,19 @@ void FieldSolver::initCartesianFields() {
     }
 }
 
-bool FieldSolver::hasPeriodicZ() {
-    if (itsAttr[deprecated::BCFFTT])
-        return (Attributes::getString(itsAttr[deprecated::BCFFTT]) == "PERIODIC");
+const Attribute& FieldSolver::getBCZAttribute() const {
+    if (itsAttr[BCFFTZ].defaultUsed() &&
+        !itsAttr[deprecated::BCFFTT].defaultUsed()) {
+        return itsAttr[deprecated::BCFFTT];
+    }
 
-    return (Attributes::getString(itsAttr[BCFFTZ]) == "PERIODIC");
+    return itsAttr[BCFFTZ];
+}
+
+bool FieldSolver::hasPeriodicZ() {
+    std::string bcz = Attributes::getString(getBCZAttribute());
+
+    return (bcz == "PERIODIC");
 }
 
 bool FieldSolver::isAmrSolverType() const {
@@ -502,10 +510,7 @@ void FieldSolver::initSolver(PartBunchBase<double, 3>* b) {
     std::string greens = Attributes::getString(itsAttr[GREENSF]);
     std::string bcx = Attributes::getString(itsAttr[BCFFTX]);
     std::string bcy = Attributes::getString(itsAttr[BCFFTY]);
-    std::string bcz = Attributes::getString(itsAttr[deprecated::BCFFTT]);
-    if (bcz.empty()) {
-        bcz = Attributes::getString(itsAttr[BCFFTZ]);
-    }
+    std::string bcz = Attributes::getString(getBCZAttribute());
 
     if ( isAmrSolverType() ) {
         Inform m("FieldSolver::initAmrSolver");
@@ -605,7 +610,10 @@ Inform& FieldSolver::printInfo(Inform& os) const {
            << "* ALPHA        " << Attributes::getReal(itsAttr[ALPHA]) << '\n'
            << "* GREENSF      " << Attributes::getString(itsAttr[GREENSF]) << endl;
     } else if (fsType_m == FieldSolverType::FFT) {
-        os << "* GREENSF      " << Attributes::getString(itsAttr[GREENSF]) << endl;
+        os << "* GREENSF      " << Attributes::getString(itsAttr[GREENSF]) << '\n'
+           << "* BCFFTX       " << Attributes::getString(itsAttr[BCFFTX]) << '\n'
+           << "* BCFFTY       " << Attributes::getString(itsAttr[BCFFTY]) << '\n'
+           << "* BCFFTZ       " << Attributes::getString(getBCZAttribute()) << endl;
     } else if (fsType_m == FieldSolverType::SAAMG) {
         os << "* GEOMETRY     " << Attributes::getString(itsAttr[GEOMETRY]) << '\n'
            << "* ITSOLVER     " << Attributes::getString(itsAttr[ITSOLVER]) << '\n'
@@ -666,13 +674,8 @@ Inform& FieldSolver::printInfo(Inform& os) const {
            << Attributes::getString(itsAttr[BCFFTX]) << '\n'
            << "* BCFFTY               "
            << Attributes::getString(itsAttr[BCFFTY]) << '\n';
-        if (itsAttr[deprecated::BCFFTT]) {
-            os << "* BCFFTT (deprec.) "
-               << Attributes::getString(itsAttr[deprecated::BCFFTT]) << endl;
-        } else {
-            os << "* BCFFTZ           "
-               << Attributes::getString(itsAttr[BCFFTZ]) << endl;
-        }
+           << "* BCFFTZ               "
+           << Attributes::getString(getBCZAttribute()) << endl;
     }
 #endif
 
@@ -787,10 +790,8 @@ void FieldSolver::initAmrSolver_m() {
             throw OpalException("FieldSolver::initAmrSolver_m()",
                                 "FMultiGrid solver requires AMReX.");
 
-        std::string bcz = Attributes::getString(itsAttr[deprecated::BCFFTT]);
-        if (bcz.empty()) {
-            bcz = Attributes::getString(itsAttr[BCFFTZ]);
-        }
+        std::string bcz = Attributes::getString(getBCZAttribute());
+
         solver_m = new AmrMultiGrid(static_cast<AmrBoxLib*>(itsAmrObject_mp.get()),
                                     Attributes::getString(itsAttr[ITSOLVER]),
                                     Attributes::getString(itsAttr[AMR_MG_PREC]),
