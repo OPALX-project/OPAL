@@ -393,8 +393,11 @@ std::istream &TransportFun<T, N>::get(std::istream &is) {
 
 template <class T, int N>
 std::ostream &TransportFun<T, N>::put(std::ostream &os) const {
-    os << "Tps " << this->itsRep->max << ' ' << this->itsRep->trc << ' ' << N
-       << std::endl;
+    // TransportFun is a fixed second-order polynomial container (constant,
+    // linear, and quadratic terms only), so max/truncation orders are always 2.
+    // Older code used FTps-style `itsRep` fields by analogy, but TransportFun
+    // has no dynamic representation object.
+    os << "Tps " << 2 << ' ' << 2 << ' ' << N << std::endl;
     std::streamsize old_prec = os.precision(14);
     os.setf(std::ios::scientific, std::ios::floatfield);
 

@@ -120,6 +120,9 @@ add_library(libOPALObj OBJECT ${OPAL_SRCS})
 set_property(TARGET libOPALObj PROPERTY POSITION_INDEPENDENT_CODE 1)
 
 add_executable (opal Main.cpp)
+if (WILL_BUILD_SHARED_LIBRARY)
+    target_link_options(opal PRIVATE -pie)
+endif()
 
 set (OPAL_LIBS
     ${SAAMG_SOLVER_LIBS}
