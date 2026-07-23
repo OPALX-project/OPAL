@@ -1331,7 +1331,7 @@ FTps<T, N> FTps<T, N>::substitute(const FVps<T, N> &rhs, int trunc) const {
     if(nl == 0) nl = 1;
 
     // Allocate working arrays.
-    std::vector<std::vector<const T*>> fp(N, std::vector<const T*>(nh+1));
+    std::vector<const T*> fp(nh + 1);
     Array1D< FTps<T, N> > t(nh + 1);
 
     // Initialisations.
