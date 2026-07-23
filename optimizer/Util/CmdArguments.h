@@ -93,7 +93,7 @@ public:
                     warn << "\" not found! Using default value (";
                     warn << default_value;
                     warn << ").";
-                    warn << "\e[0m" << std::endl;
+                    warn << "\033[0m" << std::endl;
                     std::cout << warn.str() << std::flush;
                     warned_.insert(name);
                 }

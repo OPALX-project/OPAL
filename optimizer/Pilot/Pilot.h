@@ -216,7 +216,7 @@ private:
             // ADA            std::cout << "☷ Version: \t"    << PACKAGE_VERSION << std::endl;
             //std::cout << "☷ Git: \t\t"      << GIT_VERSION     << std::endl;
             //std::cout << "☷ Build Date: \t" << BUILD_DATE      << std::endl;
-            std::cout << "\e[0m";
+            std::cout << "\033[0m";
             std::cout << std::endl;
         }
 
@@ -257,7 +257,7 @@ protected:
             }
             os << "  ✔ " << dvars_.size()
                << " dvars" << std::endl;
-            os << "\e[0m";
+            os << "\033[0m";
             os << std::endl;
             std::cout << os.str() << std::flush;
         }
@@ -270,7 +270,7 @@ protected:
 
         std::ostringstream os;
         os << "\033[01;35m" << "  " << global_rank_ << " (PID: " << getpid() << ") ▶ Opt"
-           << "\e[0m" << std::endl;
+           << "\033[0m" << std::endl;
         std::cout << os.str() << std::flush;
 
         const std::unique_ptr<Opt_t> opt(
@@ -286,7 +286,7 @@ protected:
 
         std::ostringstream os;
         os << "\033[01;35m" << "  " << global_rank_ << " (PID: " << getpid() << ") ▶ Worker"
-           << "\e[0m" << std::endl;
+           << "\033[0m" << std::endl;
         std::cout << os.str() << std::flush;
 
         size_t pos = input_file_.find_last_of("/");
@@ -308,7 +308,7 @@ protected:
 
         std::ostringstream os;
         os << "\033[01;35m" << "  " << global_rank_ << " (PID: " << getpid() << ") ▶ Pilot"
-           << "\e[0m" << std::endl;
+           << "\033[0m" << std::endl;
         std::cout << os.str() << std::flush;
 
         // Traces

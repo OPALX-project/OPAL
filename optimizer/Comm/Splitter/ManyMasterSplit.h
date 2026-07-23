@@ -110,7 +110,7 @@ private:
             num_coworkers_worker_ = cmd_args_->getArg<size_t>("num-coworkers");
         } catch (OptPilotException &e) {
             std::cout << "\033[01;31m" << "Could not find 'num-coworkers' "
-                      << "in arguments.. Aborting." << "\e[0m" << std::endl;
+                      << "in arguments.. Aborting." << "\033[0m" << std::endl;
             MPI_Abort(getComm(), -111);
         }
 
@@ -120,13 +120,13 @@ private:
             num_masters_ = cmd_args_->getArg<size_t>("num-masters");
         } catch (OptPilotException &e) {
             std::cout << "\033[01;31m" << "Could not find 'num-masters' "
-                      << "in arguments.. Aborting." << "\e[0m" << std::endl;
+                      << "in arguments.. Aborting." << "\033[0m" << std::endl;
             MPI_Abort(getComm(), -1111);
         }
 
         if(num_masters_ == 0 || num_coworkers_worker_ == 0) {
             std::cout << "\033[01;31m" << "Need at least"
-                      << " 1 master and 1 coworker to run.. Aborting." << "\e[0m" << std::endl;
+                      << " 1 master and 1 coworker to run.. Aborting." << "\033[0m" << std::endl;
             MPI_Abort(getComm(), -1111);
         }
 
@@ -134,7 +134,7 @@ private:
                                              (2 + num_coworkers_worker_)) {
             std::cout << "\033[01;31m" << "Need at least "
                       << (num_coworkers_worker_ + 2) * num_masters_
-                      << " cores to run.. Aborting." << "\e[0m" << std::endl;
+                      << " cores to run.. Aborting." << "\033[0m" << std::endl;
             MPI_Abort(getComm(), -1111);
         }
     }

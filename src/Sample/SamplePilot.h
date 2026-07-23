@@ -121,7 +121,7 @@ protected:
 
         std::ostringstream os;
         os << "\033[01;35m" << "  " << this->global_rank_ << " (PID: " << getpid() << ") ▶ Sampler"
-           << "\e[0m" << std::endl;
+           << "\033[0m" << std::endl;
         std::cout << os.str() << std::flush;
 
         const std::unique_ptr<Opt_t> opt(
@@ -139,7 +139,7 @@ protected:
     {
         std::ostringstream os;
         os << "\033[01;35m" << "  " << this->global_rank_ << " (PID: " << getpid() << ") ▶ Worker"
-           << "\e[0m" << std::endl;
+           << "\033[0m" << std::endl;
         std::cout << os.str() << std::flush;
 
         size_t pos = this->input_file_.find_last_of("/");
