@@ -37,13 +37,14 @@ public:
     typedef amr::AmrIntVect_t           AmrIntVect_t;
     
 public:
-    
+
     /*!
      * @param nPoints used in stencil for applying the boundary
      */
     AmrBoundary(go_t nPoints) : nPoints_m(nPoints) { };
-    
-    
+
+    virtual ~AmrBoundary() = default;
+
     /*!
      * Check if we are on the physical boundary (all directions)
      * @param iv cell to check

@@ -42,8 +42,7 @@ public:
         : args_(args)
     {}
 
-    ~Simulation()
-    {}
+    virtual ~Simulation() = default;
 
     CmdArguments_t getArgs() { return args_; }
 
