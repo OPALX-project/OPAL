@@ -31,8 +31,7 @@ public:
     TraceComponent(std::string name) : name_(name)
     {}
 
-    ~TraceComponent()
-    {}
+    virtual ~TraceComponent() = default;
 
     virtual void execute(std::ostringstream &dump) = 0;
 

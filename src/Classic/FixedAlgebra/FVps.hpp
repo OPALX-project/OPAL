@@ -783,14 +783,17 @@ FVps<T, N> FVps<T, N>::substitute(const FMatrix<T, N, N> &mat, int nl, int nh) c
     // Initialisations.
     // Array element fp[k][m] points to the next order m monomial
     // to transform in k-th component.
-    const T *fp[N][nh+1];
-    T *g[N];
+    std::vector<std::vector<const T*>> fp(N, std::vector<const T*>(nh+1));
+    std::vector<T*> g(N);
     for(int k = N; k-- > 0;) {
-        for(int m = nl; m <= nh; ++m) fp[k][m] = f[k].begin(m);
+        for(int m = nl; m <= nh; ++m) {
+            fp[k][m] = f[k].begin(m);
+        }
         g[k] = result[k].begin();
     }
     const Array1D<int> *oldvrbl = 0;
-    int start_nh = FTps<T, N>::orderStart(nh), end_nh = FTps<T, N>::orderEnd(nh);
+    int start_nh = FTps<T, N>::orderStart(nh);
+    int end_nh   = FTps<T, N>::orderEnd(nh);
     int nh1 = nh - 1, nh2 = nh - 2;
 
     // Loop over order nh monomials; construct lower orders along the way.
@@ -925,14 +928,17 @@ FVps<T, N> FVps<T, N>::substitute(const FVps<T, N> &rhs, int trunc) const {
     if(nl == 0) nl = 1;
 
     // Allocate working arrays.
-    const T *fp[N][nh+1];
+    std::vector<std::vector<const T*>> fp(N, std::vector<const T*>(nh+1));
     Array1D< FTps<T, N> > t(nh + 1);
 
     // Initialisations.
     // Array element fp[k][m] points to the next order m monomial
     // to transform in the k-th component.
-    for(int k = N; k-- > 0;)
-        for(int m = nl; m <= nh; ++m) fp[k][m] = f[k].begin(m);
+    for(int k = N; k-- > 0;) {
+        for(int m = nl; m <= nh; ++m) {
+            fp[k][m] = f[k].begin(m);
+        }
+    }
     const Array1D<int> *oldvrbl = 0;
     int start_nh = FTps<T, N>::orderStart(nh), end_nh = FTps<T, N>::orderEnd(nh);
     int nh1 = nh - 1, nh2 = nh - 2;

@@ -26,6 +26,8 @@ public:
       {
       }
 
+  virtual ~BrickExpression() = default;
+
   virtual void apply();
 
 private:

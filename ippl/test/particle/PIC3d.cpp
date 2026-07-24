@@ -358,7 +358,7 @@ public:
 
         for (int i=0; i<Ippl::getNodes(); i++)
             m << "Node " << i << " has "
-              <<   globalPartPerNode[i]/this->getTotalNum()*100.0 << " \% of the total particles " << endl;
+              <<   globalPartPerNode[i]/this->getTotalNum()*100.0 << " % of the total particles " << endl;
     }
 
 

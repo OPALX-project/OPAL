@@ -47,7 +47,7 @@ void H5PartWrapperForPC::readHeader() {
     h5_int64_t numFileAttributes = H5GetNumFileAttribs(file_m);
 
     const h5_size_t lengthAttributeName = 256;
-    char attributeName[lengthAttributeName];
+    std::vector<char> attributeName(lengthAttributeName);
     h5_int64_t attributeType;
     h5_size_t numAttributeElements;
     std::set<std::string> attributeNames;
@@ -55,12 +55,12 @@ void H5PartWrapperForPC::readHeader() {
     for (h5_int64_t i = 0; i < numFileAttributes; ++ i) {
         REPORTONERROR(H5GetFileAttribInfo(file_m,
                                           i,
-                                          attributeName,
+                                          attributeName.data(),
                                           lengthAttributeName,
                                           &attributeType,
                                           &numAttributeElements));
 
-        attributeNames.insert(attributeName);
+        attributeNames.insert(attributeName.data());
     }
 
     if (attributeNames.find("dump frequency") != attributeNames.end()) {

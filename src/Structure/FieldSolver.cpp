@@ -673,7 +673,7 @@ Inform& FieldSolver::printInfo(Inform& os) const {
            << "* BCFFTX               "
            << Attributes::getString(itsAttr[BCFFTX]) << '\n'
            << "* BCFFTY               "
-           << Attributes::getString(itsAttr[BCFFTY]) << '\n';
+           << Attributes::getString(itsAttr[BCFFTY]) << '\n'
            << "* BCFFTZ               "
            << Attributes::getString(getBCZAttribute()) << endl;
     }

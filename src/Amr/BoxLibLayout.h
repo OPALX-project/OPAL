@@ -99,6 +99,8 @@ public:
      */
     BoxLibLayout();
 
+    virtual ~BoxLibLayout() = default;
+
     /*!
      * Given a layout it copies that.
      */
