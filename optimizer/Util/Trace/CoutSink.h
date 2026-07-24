@@ -24,6 +24,7 @@
 #include <iostream>
 #include <string>
 
+#include "Util/AnsiColors.h"
 #include "Util/Trace/TraceComponent.h"
 
 class CoutSink : public TraceComponent {
@@ -35,7 +36,7 @@ public:
         : TraceComponent("CoutSink")
         , prefix_(prefix) {
 
-        clear_color_ = "\033[0m";
+        clear_color_ = AnsiColors::Reset;
     }
 
     ~CoutSink()

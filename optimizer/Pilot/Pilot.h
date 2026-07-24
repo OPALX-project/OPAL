@@ -47,6 +47,7 @@
 #include "Comm/MasterNode.h"
 #include "Comm/CommSplitter.h"
 
+#include "Util/AnsiColors.h"
 #include "Util/Types.h"
 #include "Util/CmdArguments.h"
 #include "Util/OptPilotException.h"
@@ -204,7 +205,7 @@ private:
         global_rank_ = comm_->globalRank();
 
         if(global_rank_ == 0) {
-            std::cout << "\033[01;35m";
+            std::cout << AnsiColors::BoldMagenta;
             std::cout << "             _                _ _       _   " << std::endl;
             std::cout << "            | |              (_) |     | |  " << std::endl;
             std::cout << "  ___  _ __ | |_ ______ _ __  _| | ___ | |_ " << std::endl;
@@ -216,7 +217,7 @@ private:
             // ADA            std::cout << "☷ Version: \t"    << PACKAGE_VERSION << std::endl;
             //std::cout << "☷ Git: \t\t"      << GIT_VERSION     << std::endl;
             //std::cout << "☷ Build Date: \t" << BUILD_DATE      << std::endl;
-            std::cout << "\033[0m";
+            std::cout << AnsiColors::Reset;
             std::cout << std::endl;
         }
 
@@ -248,7 +249,7 @@ protected:
 
         if(global_rank_ == 0) {
             std::ostringstream os;
-            os << "\033[01;35m";
+            os << AnsiColors::BoldMagenta;
             os << "  ✔ " << objectives_.size()
                << " objectives" << std::endl;
             if (isOptimizationRun) {
@@ -257,7 +258,7 @@ protected:
             }
             os << "  ✔ " << dvars_.size()
                << " dvars" << std::endl;
-            os << "\033[0m";
+            os << AnsiColors::Reset;
             os << std::endl;
             std::cout << os.str() << std::flush;
         }
@@ -269,8 +270,8 @@ protected:
     void startOptimizer() {
 
         std::ostringstream os;
-        os << "\033[01;35m" << "  " << global_rank_ << " (PID: " << getpid() << ") ▶ Opt"
-           << "\033[0m" << std::endl;
+          os << AnsiColors::BoldMagenta << "  " << global_rank_ << " (PID: " << getpid() << ") ▶ Opt"
+              << AnsiColors::Reset << std::endl;
         std::cout << os.str() << std::flush;
 
         const std::unique_ptr<Opt_t> opt(
@@ -285,8 +286,8 @@ protected:
     void startWorker(const std::map<std::string, std::string> &userVariables) {
 
         std::ostringstream os;
-        os << "\033[01;35m" << "  " << global_rank_ << " (PID: " << getpid() << ") ▶ Worker"
-           << "\033[0m" << std::endl;
+          os << AnsiColors::BoldMagenta << "  " << global_rank_ << " (PID: " << getpid() << ") ▶ Worker"
+              << AnsiColors::Reset << std::endl;
         std::cout << os.str() << std::flush;
 
         size_t pos = input_file_.find_last_of("/");
@@ -307,8 +308,8 @@ protected:
     void startPilot() {
 
         std::ostringstream os;
-        os << "\033[01;35m" << "  " << global_rank_ << " (PID: " << getpid() << ") ▶ Pilot"
-           << "\033[0m" << std::endl;
+          os << AnsiColors::BoldMagenta << "  " << global_rank_ << " (PID: " << getpid() << ") ▶ Pilot"
+              << AnsiColors::Reset << std::endl;
         std::cout << os.str() << std::flush;
 
         // Traces
