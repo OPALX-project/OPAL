@@ -1,10 +1,16 @@
 #include "Utilities/MSLang/Polygon.h"
+
 #include "Utilities/MSLang/ArgumentExtractor.h"
 #include "Utilities/MSLang/matheval.h"
+#include "Utilities/MSLang/Triangle.h"
 #include "Utilities/Mesher.h"
-#include "Physics/Physics.h"
 
-#include <boost/regex.hpp>
+#include <fstream>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 namespace mslang {
     void Polygon::triangulize(std::vector<Vector_t> &nodes) {

@@ -3,6 +3,10 @@
 
 #include "Utilities/MSLang.h"
 
+#include <fstream>
+#include <memory>
+#include <vector>
+
 namespace mslang {
     struct Triangle: public Base {
         std::vector<Vector_t> nodes_m;

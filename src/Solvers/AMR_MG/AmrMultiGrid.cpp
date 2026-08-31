@@ -1094,10 +1094,12 @@ void AmrMultiGrid::buildNoFinePoissonMatrix_m(const lo_t& level,
 
     this->map2vector_m(map, indices, values);
 
-    mglevel_m[level]->Anf_p->insertGlobalValues(gidx,
-                                                indices.size(),
-                                                &values[0],
-                                                &indices[0]);
+    if (!indices.empty()) {
+        mglevel_m[level]->Anf_p->insertGlobalValues(gidx,
+                                                    indices.size(),
+                                                    values.data(),
+                                                    indices.data());
+    }
 }
 
 
@@ -1246,10 +1248,12 @@ void AmrMultiGrid::buildCompositePoissonMatrix_m(const lo_t& level,
 
     this->map2vector_m(map, indices, values);
 
-    mglevel_m[level]->Awf_p->insertGlobalValues(gidx,
-                                                indices.size(),
-                                                &values[0],
-                                                &indices[0]);
+    if (!indices.empty()) {
+        mglevel_m[level]->Awf_p->insertGlobalValues(gidx,
+                                                    indices.size(),
+                                                    values.data(),
+                                                    indices.data());
+    }
 
     scalar_t vv = 1.0;
     mglevel_m[level]->UnCovered_p->insertGlobalValues(gidx,
@@ -1304,10 +1308,12 @@ void AmrMultiGrid::buildRestrictionMatrix_m(const lo_t& level,
         }
     }
 
-    mglevel_m[level]->R_p->insertGlobalValues(gidx,
-                                              indices.size(),
-                                              &values[0],
-                                              &indices[0]);
+    if (!indices.empty()) {
+        mglevel_m[level]->R_p->insertGlobalValues(gidx,
+                                                  indices.size(),
+                                                  values.data(),
+                                                  indices.data());
+    }
 }
 
 
@@ -1341,10 +1347,12 @@ void AmrMultiGrid::buildInterpolationMatrix_m(const lo_t& level,
 
     this->map2vector_m(map, indices, values);
 
-    mglevel_m[level]->I_p->insertGlobalValues(gidx,
-                                              indices.size(),
-                                              &values[0],
-                                              &indices[0]);
+    if (!indices.empty()) {
+        mglevel_m[level]->I_p->insertGlobalValues(gidx,
+                                                  indices.size(),
+                                                  values.data(),
+                                                  indices.data());
+    }
 }
 
 
@@ -1406,10 +1414,12 @@ void AmrMultiGrid::buildCrseBoundaryMatrix_m(const lo_t& level,
 
     this->map2vector_m(map, indices, values);
 
-    mglevel_m[level]->Bcrse_p->insertGlobalValues(gidx,
-                                                  indices.size(),
-                                                  &values[0],
-                                                  &indices[0]);
+    if (!indices.empty()) {
+        mglevel_m[level]->Bcrse_p->insertGlobalValues(gidx,
+                                                      indices.size(),
+                                                      values.data(),
+                                                      indices.data());
+    }
 }
 
 
@@ -1547,10 +1557,12 @@ void AmrMultiGrid::buildFineBoundaryMatrix_m(const lo_t& level,
 
     // iv: not covered coarse cell at crse-fine interface
 
-    mglevel_m[level]->Bfine_p->insertGlobalValues(gidx,
-                                                  indices.size(),
-                                                  &values[0],
-                                                  &indices[0]);
+    if (!indices.empty()) {
+        mglevel_m[level]->Bfine_p->insertGlobalValues(gidx,
+                                                      indices.size(),
+                                                      values.data(),
+                                                      indices.data());
+    }
 }
 
 
@@ -1638,10 +1650,12 @@ void AmrMultiGrid::buildGradientMatrix_m(const lo_t& level,
 
         this->map2vector_m(map, indices, values);
 
-        mglevel_m[level]->G_p[d]->insertGlobalValues(gidx,
-                                                     indices.size(),
-                                                     &values[0],
-                                                     &indices[0]);
+        if (!indices.empty()) {
+            mglevel_m[level]->G_p[d]->insertGlobalValues(gidx,
+                                                         indices.size(),
+                                                         values.data(),
+                                                         indices.data());
+        }
     }
 }
 

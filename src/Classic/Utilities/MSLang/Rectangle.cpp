@@ -3,7 +3,7 @@
 #include "Utilities/MSLang/matheval.h"
 #include "Physics/Units.h"
 
-#include <boost/regex.hpp>
+#include <regex>
 
 namespace mslang {
     void Rectangle::print(int indentwidth) {
@@ -108,8 +108,8 @@ namespace mslang {
 
     bool Rectangle::parse_detail(iterator &it, const iterator &end, Function* fun) {
         std::string str(it, end);
-        boost::regex argumentList(UDouble + "," + UDouble + "(\\).*)");
-        boost::smatch what;
+        std::regex argumentList(UDouble + "," + UDouble + "(\\).*)");
+        std::smatch what;
 
         Rectangle *rect = static_cast<Rectangle*>(fun);
         ArgumentExtractor arguments(str);

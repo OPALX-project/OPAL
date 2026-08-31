@@ -197,6 +197,7 @@ namespace {
         opal->create(new OpalDegrader());
         opal->create(new OpalDrift());
         opal->create(new OpalECollimator());
+        opal->create(new OpalEnge());
         opal->create(new OpalFlexibleCollimator());
         opal->create(new OpalHKicker());
         opal->create(new OpalKicker());

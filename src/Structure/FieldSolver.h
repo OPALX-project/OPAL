@@ -106,6 +106,8 @@ public:
 
     unsigned int getInteractionRadius() {return (unsigned int) rpp_m; }
 
+    const Attribute& getBCZAttribute() const;
+
     bool hasPeriodicZ();
 
     bool isAmrSolverType() const;

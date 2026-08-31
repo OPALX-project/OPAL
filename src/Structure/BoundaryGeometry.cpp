@@ -1952,8 +1952,8 @@ Change orientation if diff is:
         // helper for function  makeTriangleNormalInwardPointing()
         static void orientTriangle (BoundaryGeometry* bg, int ref_id, int triangle_id) {
             // find pts of common edge
-            int ic[2];
-            int id[2];
+            int ic[2] = {0, 0};
+            int id[2] = {0, 0};
             int n = 0;
             for (int i = 1; i <= 3; i++) {
                 for (int j = 1; j <= 3; j++) {

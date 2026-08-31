@@ -5,11 +5,9 @@
 #include "Utilities/MSLang/AffineTransformation.h"
 #include "Algorithms/Vektor.h"
 
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <list>
 #include <memory>
+#include <string>
+#include <vector>
 
 namespace mslang {
     typedef std::string::iterator iterator;

@@ -120,6 +120,9 @@ add_library(libOPALObj OBJECT ${OPAL_SRCS})
 set_property(TARGET libOPALObj PROPERTY POSITION_INDEPENDENT_CODE 1)
 
 add_executable (opal Main.cpp)
+if (WILL_BUILD_SHARED_LIBRARY)
+    target_link_options(opal PRIVATE -pie)
+endif()
 
 set (OPAL_LIBS
     ${SAAMG_SOLVER_LIBS}
@@ -171,7 +174,24 @@ endif ()
 
 if (ENABLE_OPAL_FEL)
     include_directories (${MITHRA_INCLUDE_DIR})
-    target_link_libraries(libOPALstatic ${MITHRA_LIBRARY_DIR}/libmithra.a)
+    set(MITHRA_STATIC_LIB "${MITHRA_LIBRARY_DIR}/libmithra.a")
+    set(MITHRA_SHARED_LIB "${MITHRA_LIBRARY_DIR}/libmithra.so")
+
+    if (EXISTS "${MITHRA_STATIC_LIB}")
+        target_link_libraries(libOPALstatic ${MITHRA_STATIC_LIB})
+    else()
+        message(FATAL_ERROR
+            "ENABLE_OPAL_FEL is ON but static MITHRA library was not found at ${MITHRA_STATIC_LIB}")
+    endif()
+
+    if (WILL_BUILD_SHARED_LIBRARY)
+        if (EXISTS "${MITHRA_SHARED_LIB}")
+            target_link_libraries(libOPALdynamic ${MITHRA_SHARED_LIB})
+        else()
+            message(FATAL_ERROR
+                "ENABLE_OPAL_FEL and WILL_BUILD_SHARED_LIBRARY are ON, but ${MITHRA_SHARED_LIB} was not found. ")
+        endif()
+    endif()
 endif()
 
 install (TARGETS ${TEST_EXE} RUNTIME DESTINATION "${CMAKE_INSTALL_PREFIX}/bin")

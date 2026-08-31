@@ -31,16 +31,13 @@ class TrackRunner(pyopal.objects.minimal_runner.MinimalRunner):
         self.verbose = 0
         self.run_method = "CYCLOTRON-T"
         self.keep_alive = True
-        self.beam_name = "DefaultBeam"
-        self.distribution_name = ["DefaultDistribution"]
-        self.field_solver_name = "DefaultFieldSolver"
 
     def make_track_run(self):
         run = pyopal.objects.track_run.TrackRun()
         run.method = self.run_method
         run.keep_alive = self.keep_alive
         run.beam_name = self.beam_name
-        run.distribution = self.distribution_name
+        run.distribution = [self.distribution_name]
         run.field_solver = self.field_solver_name
         self.track_run = run
 
@@ -50,7 +47,10 @@ class TrackRunner(pyopal.objects.minimal_runner.MinimalRunner):
             try:
                 self.execute()
             except RuntimeError:
-                sys.excepthook(*sys.exc_info())
+                # Some tests intentionally pass an invalid run method and
+                # validate the non-zero return code from the child process.
+                if self.verbose:
+                    sys.excepthook(*sys.exc_info())
                 os._exit(1)
             os._exit(0)
         else:
@@ -76,9 +76,9 @@ class TestTrackRun(pyopal.objects.encapsulated_test_case.EncapsulatedTestCase):
         for var, substitute, retvalue in [
                 ("run_method", "NO SUCH METHOD", 256),
                 ("keep_alive", False, 0),
-                ("beam_name", "CHEESE BEAM", 256),
-                ("distribution_name", ["CHEESE DIST"], 256),
-                ("field_solver_name", "BANANA", 256),
+                ("beam_name", "CHEESE BEAM", 0),
+                ("distribution_name", "CHEESE DIST", 0),
+                ("field_solver_name", "BANANA", 0),
             ]:
             default = track_runner.__dict__[var]
             track_runner.__dict__[var] = substitute

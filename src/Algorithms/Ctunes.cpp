@@ -104,8 +104,8 @@ int TUNE_class::lombAnalysis(std::vector<double> &x, std::vector<double> &y, int
         return(-1);
     }
 
-    double pairx[nout];
-    double pairy[nout];
+    std::vector<double> pairx(nout);
+    std::vector<double> pairy(nout);
 
     pairc = 0;
     for(i = 0; i < nout; i++) {
@@ -198,8 +198,8 @@ int TUNE_class::lombAnalysis(double *x, double *y, int Ndat, int /*nhis*/)
 
     *gmsg << "* =====> jmax = " << jmax << endl;
 
-    double pairx[nout];
-    double pairy[nout];
+    std::vector<double> pairx(nout);
+    std::vector<double> pairy(nout);
 
     *gmsg << "* ********** Peaks in Data:       **************" << endl;
 

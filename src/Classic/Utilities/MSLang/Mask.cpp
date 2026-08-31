@@ -3,8 +3,14 @@
 #include "Utilities/MSLang/matheval.h"
 #include "Utilities/PortableBitmapReader.h"
 
-#include <boost/regex.hpp>
 #include <filesystem>
+#include <iostream>
+#include <regex>
+#include <stack>
+#include <string>
+#include <tuple>
+#include <utility>
+#include <vector>
 
 namespace {
     void updateCache(const std::vector<bool> &pixels, std::vector<int> &cache, int x, int width) {

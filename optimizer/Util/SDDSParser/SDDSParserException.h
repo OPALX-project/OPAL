@@ -28,6 +28,8 @@ public:
         meth_(meth)
     { }
 
+    virtual ~SDDSParserException() = default;
+
     virtual const char* where() const throw() {
         return meth_.c_str();
     }

@@ -1,6 +1,6 @@
 #include "Utilities/MSLang/Difference.h"
 
-#include <boost/regex.hpp>
+#include <regex>
 
 namespace mslang {
     void Difference::print(int indentwidth) {
@@ -33,19 +33,19 @@ namespace mslang {
         Difference *dif = static_cast<Difference*>(fun);
         if (!parse(it, end, dif->dividend_m)) return false;
 
-        boost::regex argumentList("(,[a-z]+\\(.*)");
-        boost::regex endParenthesis("\\)(.*)");
-        boost::smatch what;
+        std::regex argumentList("(,[a-z]+\\(.*)");
+        std::regex endParenthesis("\\)(.*)");
+        std::smatch what;
 
         std::string str(it, end);
-        if (!boost::regex_match(str, what, argumentList)) return false;
+        if (!std::regex_match(str, what, argumentList)) return false;
 
         iterator it2 = it + 1;
         if (!parse(it2, end, dif->divisor_m)) return false;
 
         it = it2;
         str = std::string(it, end);
-        if (!boost::regex_match(str, what, endParenthesis)) return false;
+        if (!std::regex_match(str, what, endParenthesis)) return false;
 
         std::string fullMatch = what[0];
         std::string rest = what[1];

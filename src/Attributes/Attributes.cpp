@@ -18,6 +18,7 @@
 #include "Attributes/Attributes.h"
 
 #include "AbstractObjects/Attribute.h"
+#include "AbstractObjects/OpalData.h"
 #include "Attributes/Bool.h"
 #include "Attributes/BoolArray.h"
 #include "Attributes/Place.h"
@@ -37,12 +38,13 @@
 #include "Expressions/SRefAttr.h"
 #include "Expressions/SValue.h"
 #include "Utilities/OpalException.h"
-
-#include "AbstractObjects/OpalData.h"
-#include "ValueDefinitions/RealVariable.h"
 #include "Utilities/Util.h"
+#include "ValueDefinitions/RealVariable.h"
 
-#include <boost/regex.hpp>
+#include <algorithm>
+#include <regex>
+#include <sstream>
+#include <string>
 
 using namespace Expressions;
 
@@ -359,14 +361,14 @@ namespace Attributes {
 
             auto opal = OpalData::getInstance();
 
-            boost::regex variableRE("\\$\\{(.*?)\\}");
-            boost::smatch what;
+            std::regex variableRE("\\$\\{(.*?)\\}");
+            std::smatch what;
 
             std::string exprDeref;
             std::string::const_iterator start = expr.begin();
             std::string::const_iterator end = expr.end();
 
-            while (boost::regex_search(start, end, what, variableRE, boost::match_default)) {
+            while (std::regex_search(start, end, what, variableRE, std::regex_constants::match_default)) {
                 exprDeref += std::string(start, what[0].first);
                 std::string variable = Util::toUpper(std::string(what[1].first, what[1].second));
 
@@ -482,8 +484,8 @@ namespace Attributes {
                 || dynamic_cast<UpperCaseStringArray *>(&attr.getHandler())) {
                 auto opal = OpalData::getInstance();
 
-                boost::regex variableRE("\\$\\{(.*?)\\}");
-                boost::smatch what;
+                std::regex variableRE("\\$\\{(.*?)\\}");
+                std::smatch what;
 
                 std::vector<std::string> value = dynamic_cast<AValue<std::string>*>(base)->evaluate();
                 for (auto expr: value) {
@@ -491,7 +493,7 @@ namespace Attributes {
                     std::string::const_iterator start = expr.begin();
                     std::string::const_iterator end = expr.end();
 
-                    while (boost::regex_search(start, end, what, variableRE, boost::match_default)) {
+                    while (std::regex_search(start, end, what, variableRE, std::regex_constants::match_default)) {
                         exprDeref += std::string(start, what[0].first);
                         std::string variable = Util::toUpper(std::string(what[1].first, what[1].second));
 

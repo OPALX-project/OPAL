@@ -18,19 +18,21 @@
 #ifndef OPAL_BEAMLINE_H
 #define OPAL_BEAMLINE_H
 
-#include <set>
-#include <string>
-
-#include "Beamlines/Beamline.h"
 #include "AbsBeamline/Corrector.h"
 #include "AbsBeamline/Degrader.h"
 #include "AbsBeamline/Marker.h"
 #include "AbsBeamline/Septum.h"
 #include "AbsBeamline/Source.h"
-
+#include "AbsBeamline/Component.h"
+#include "Beamlines/Beamline.h"
+#include "Algorithms/CoordinateSystemTrafo.h"
 #include "Utilities/ClassicField.h"
 
-#include "Algorithms/CoordinateSystemTrafo.h"
+#include <filesystem>
+#include <fstream>
+#include <memory>
+#include <set>
+#include <string>
 
 template <class T, unsigned Dim>
 class PartBunchBase;

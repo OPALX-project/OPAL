@@ -20,10 +20,11 @@
 
 #include "AbstractObjects/Attribute.h"
 #include "Parser/Token.h"
+
+#include <initializer_list>
 #include <list>
 #include <string>
 #include <vector>
-#include <initializer_list>
 
 class PlaceRep;
 class RangeRep;

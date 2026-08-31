@@ -1,5 +1,6 @@
 set (_SRCS
     OpalAsymmetricEngeTest.cpp
+    OpalDriftTest.cpp
     OpalEngeTest.cpp
     OpalOffsetTest.cpp
     OpalOutputPlaneTest.cpp

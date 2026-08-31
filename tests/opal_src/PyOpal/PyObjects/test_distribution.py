@@ -13,6 +13,7 @@
 """Test that distribution parses okay"""
 import unittest
 import pyopal.objects.distribution
+import pyopal.objects.encapsulated_test_case
 
 class TestDistribution(pyopal.objects.encapsulated_test_case.EncapsulatedTestCase):
     """Test that distribution parses okay"""

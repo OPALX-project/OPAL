@@ -32,6 +32,8 @@ public:
     //  Set an internal flag so as to force re-evaluation of any expression
     //  when the value is referred next time.
     virtual void invalidate();
+
+    virtual ~Invalidator() = default;
 };
 
 #endif // OPAL_Invalidator_HH

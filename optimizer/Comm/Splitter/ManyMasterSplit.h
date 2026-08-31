@@ -6,6 +6,7 @@
 #include "Comm/types.h"
 #include "Comm/Splitter/SplitStrategy.h"
 
+#include "Util/AnsiColors.h"
 #include "Util/CmdArguments.h"
 #include "Util/OptPilotException.h"
 
@@ -109,8 +110,8 @@ private:
         try {
             num_coworkers_worker_ = cmd_args_->getArg<size_t>("num-coworkers");
         } catch (OptPilotException &e) {
-            std::cout << "\033[01;31m" << "Could not find 'num-coworkers' "
-                      << "in arguments.. Aborting." << "\e[0m" << std::endl;
+            std::cout << AnsiColors::BoldRed << "Could not find 'num-coworkers' "
+                      << "in arguments.. Aborting." << AnsiColors::Reset << std::endl;
             MPI_Abort(getComm(), -111);
         }
 
@@ -119,22 +120,22 @@ private:
         try {
             num_masters_ = cmd_args_->getArg<size_t>("num-masters");
         } catch (OptPilotException &e) {
-            std::cout << "\033[01;31m" << "Could not find 'num-masters' "
-                      << "in arguments.. Aborting." << "\e[0m" << std::endl;
+            std::cout << AnsiColors::BoldRed << "Could not find 'num-masters' "
+                      << "in arguments.. Aborting." << AnsiColors::Reset << std::endl;
             MPI_Abort(getComm(), -1111);
         }
 
         if(num_masters_ == 0 || num_coworkers_worker_ == 0) {
-            std::cout << "\033[01;31m" << "Need at least"
-                      << " 1 master and 1 coworker to run.. Aborting." << "\e[0m" << std::endl;
+            std::cout << AnsiColors::BoldRed << "Need at least"
+                      << " 1 master and 1 coworker to run.. Aborting." << AnsiColors::Reset << std::endl;
             MPI_Abort(getComm(), -1111);
         }
 
         if(static_cast<size_t>(num_procs_) < num_masters_ *
                                              (2 + num_coworkers_worker_)) {
-            std::cout << "\033[01;31m" << "Need at least "
+            std::cout << AnsiColors::BoldRed << "Need at least "
                       << (num_coworkers_worker_ + 2) * num_masters_
-                      << " cores to run.. Aborting." << "\e[0m" << std::endl;
+                      << " cores to run.. Aborting." << AnsiColors::Reset << std::endl;
             MPI_Abort(getComm(), -1111);
         }
     }

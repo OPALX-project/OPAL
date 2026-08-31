@@ -73,7 +73,6 @@ endif ()
 
 if (${WILL_BUILD_SHARED_LIBRARY})
     add_compile_options (-fPIE -fPIC)
-    add_link_options (-pie)
     # force OPAL to link to shared libraries
     if (UNIX)
         set(CMAKE_FIND_LIBRARY_SUFFIXES ".so")
@@ -115,11 +114,6 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     endif ()
 
 elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-    # An error in Trilinos/12.18.1 causes
-    # -Waggressive-loop-optimizations with -O3 optimization.
-    # See issue 587 and corresponding merge request 415.
-    # Clang does not support this flag!
-    add_compile_options (-fno-aggressive-loop-optimizations)
     add_compile_options (-Wno-error=cpp)
 
     if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "9.5.0")
@@ -178,7 +172,7 @@ if (NOT ${WILL_BUILD_SHARED_LIBRARY})
 endif ()
 set (Boost_USE_MULTITHREADED OFF)
 set (Boost_USE_STATIC_RUNTIME OFF)
-set (Boost_LIBS filesystem iostreams regex serialization system timer)
+set (Boost_LIBS filesystem iostreams serialization system timer)
 find_package (Boost 1.66.0
     REQUIRED COMPONENTS ${Boost_LIBS})
 if(UNIX AND NOT APPLE)

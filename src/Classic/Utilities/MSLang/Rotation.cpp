@@ -1,8 +1,14 @@
 #include "Utilities/MSLang/Rotation.h"
+
 #include "Utilities/MSLang/ArgumentExtractor.h"
 #include "Utilities/MSLang/matheval.h"
 
-#include <boost/regex.hpp>
+#include <cmath>
+#include <iostream>
+#include <memory>
+#include <stdexcept>
+#include <string>
+#include <vector>
 
 namespace mslang {
     void Rotation::print(int indentwidth) {
@@ -16,8 +22,8 @@ namespace mslang {
 
     void Rotation::applyRotation(std::vector<std::shared_ptr<Base> > &bfuncs) {
 
-        AffineTransformation rotation(Vector_t({cos(angle_m), sin(angle_m), 0.0}),
-                                      Vector_t({-sin(angle_m), cos(angle_m), 0.0}));
+        AffineTransformation rotation(Vector_t({std::cos(angle_m), std::sin(angle_m), 0.0}),
+                                      Vector_t({-std::sin(angle_m), std::cos(angle_m), 0.0}));
 
         const unsigned int size = bfuncs.size();
 

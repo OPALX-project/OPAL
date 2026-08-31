@@ -1,5 +1,10 @@
 #include "Utilities/MSLang/QuadTree.h"
+
+#include <iostream>
+#include <list>
+#include <memory>
 #include <utility>
+#include <vector>
 
 namespace mslang {
     QuadTree::QuadTree(const QuadTree &right):

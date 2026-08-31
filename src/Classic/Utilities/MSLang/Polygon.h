@@ -4,6 +4,9 @@
 #include "Utilities/MSLang.h"
 #include "Utilities/MSLang/Triangle.h"
 
+#include <memory>
+#include <vector>
+
 namespace mslang {
     struct Polygon: public Function {
         std::vector<Triangle> triangles_m;
