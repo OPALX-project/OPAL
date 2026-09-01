@@ -253,6 +253,8 @@ namespace Util {
         return defaultStr;
     }
 
+    std::string compressString(const std::string& str);
+
     struct KahanAccumulation {
         long double sum;
         long double correction;

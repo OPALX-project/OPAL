@@ -32,6 +32,8 @@
 #include <string>
 #include <vector>
 
+#include <zlib.h>
+
 namespace Util {
     std::string getGitRevision() {
         return std::string(GIT_VERSION);
@@ -222,6 +224,24 @@ namespace Util {
         return std::all_of(str.begin(),
                            str.end(),
                            [](char c) { return std::isdigit(c); });
+    }
+
+    std::string compressString(const std::string& str) {
+        if (str.empty()) return {};
+
+        uLongf compressed_size = compressBound(str.size());
+        std::string out(compressed_size, '\0');
+
+        int ret = compress2(reinterpret_cast<Bytef*>(&out[0]), &compressed_size,
+                            reinterpret_cast<const Bytef*>(str.data()),
+                            str.size(), Z_BEST_COMPRESSION);
+
+        if (ret != Z_OK) {
+            throw std::runtime_error("zlib compression failed");
+        }
+
+        out.resize(compressed_size);
+        return out;
     }
 
     KahanAccumulation::KahanAccumulation():
