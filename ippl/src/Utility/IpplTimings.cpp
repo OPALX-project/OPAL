@@ -10,11 +10,15 @@
 #include "Message/GlobalComm.h"
 #include "PETE/IpplExpressions.h"
 
-#include <boost/algorithm/string/predicate.hpp>
-
+#include <algorithm>
+#include <cctype>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <algorithm>
+#include <map>
+#include <stack>
+#include <string>
 
 Timing* IpplTimings::instance = new Timing();
 std::stack<Timing*> IpplTimings::stashedInstance;
@@ -116,9 +120,14 @@ void Timing::print() {
     auto begin = ++ TimerList.begin();
     auto end = TimerList.end();
     std::sort(begin, end, [](const my_auto_ptr<TimerInfo>& a, const my_auto_ptr<TimerInfo>& b)
-              {
-                  return boost::ilexicographical_compare(a->name, b->name);
-              });
+        {
+            return std::lexicographical_compare(
+                a->name.begin(), a->name.end(),
+                b->name.begin(), b->name.end(),
+                [](unsigned char c1, unsigned char c2) {
+                    return std::tolower(c1) < std::tolower(c2);
+                });
+        });
 
     for (unsigned int i=1; i < TimerList.size(); ++i) {
         TimerInfo *tptr = TimerList[i].get();
@@ -204,9 +213,14 @@ void Timing::print(const std::string &fn, const std::map<std::string, unsigned i
     auto begin = ++ TimerList.begin();
     auto end = TimerList.end();
     std::sort(begin, end, [](const my_auto_ptr<TimerInfo>& a, const my_auto_ptr<TimerInfo>& b)
-              {
-                  return boost::ilexicographical_compare(a->name, b->name);
-              });
+        {
+            return std::lexicographical_compare(
+                a->name.begin(), a->name.end(),
+                b->name.begin(), b->name.end(),
+                [](unsigned char c1, unsigned char c2) {
+                    return std::tolower(c1) < std::tolower(c2);
+                });
+        });
 
     *msg << "\n"
          << std::setw(27) << "num Nodes"
