@@ -76,7 +76,7 @@ const T TransportFun<T, N>::getCoefficient(int index1, int index2) const {
         int index = N * (2 * N + 1 - index1) * index1 + (N + 1) + index2;
         return data[index];
     } else {
-        return T(0);
+        return T{};
     }
 }
 
