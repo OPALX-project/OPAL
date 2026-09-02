@@ -35,8 +35,6 @@
 #include "Utilities/Options.h"
 #include "Utility/Inform.h"
 
-#include <boost/math/special_functions/chebyshev.hpp>
-
 #include <sys/time.h>
 
 #include <algorithm>
@@ -514,6 +512,24 @@ double BeamStrippingPhysics::computeCrossSectionTabata(double energy, double ene
 /// C.F.Barnett, "Atomic data for fusion. Volume 1: Collisions of H, H2, He
 /// and Li atoms and ions with atoms and molecules", ORNL-6068/V1 (1990).
 // -------------------------------------------------------------------------
+// double BeamStrippingPhysics::computeCrossSectionChebyshev(double energy,
+//                                                           double energyMin,
+//                                                           double energyMax) {
+//     // energy -> eV/amu
+//     if (energy <= energyMin || energy >= energyMax) {
+//         return 0.0;
+//     }
+//     double sum_aT = 0.0;
+//     double aT[8] = {0.0};
+//     double x = ((std::log(energy)-std::log(energyMin)) - (std::log(energyMax)-std::log(energy))) / (std::log(energyMax)-std::log(energyMin));
+//     for (int i = 0; i < 8; ++i) {
+//         aT[i] = a_m[i+1] * chebyshevT(i+1, x);
+//         sum_aT += aT[i];
+//     }
+//     double sigma = std::exp(0.5*a_m[0] + sum_aT); //cm2
+
+//     return sigma;
+// }
 double BeamStrippingPhysics::computeCrossSectionChebyshev(double energy,
                                                           double energyMin,
                                                           double energyMax) {
@@ -521,14 +537,31 @@ double BeamStrippingPhysics::computeCrossSectionChebyshev(double energy,
     if (energy <= energyMin || energy >= energyMax) {
         return 0.0;
     }
+
+    const double logEnergy = std::log(energy);
+    const double logEnergyMin = std::log(energyMin);
+    const double logEnergyMax = std::log(energyMax);
+    double x = ((logEnergy - logEnergyMin) -
+                (logEnergyMax - logEnergy)) /
+               (logEnergyMax - logEnergyMin);
+
+    // Chebyshev: T0(x) = 1, T1(x) = x, Tn(x) = 2*x*T(n-1)(x) - T(n-2)(x)
+    double T_prev = 1.0;  // T0
+    double T_curr = x;    // T1
     double sum_aT = 0.0;
-    double aT[8] = {0.0};
-    double x = ((std::log(energy)-std::log(energyMin)) - (std::log(energyMax)-std::log(energy))) / (std::log(energyMax)-std::log(energyMin));
     for (int i = 0; i < 8; ++i) {
-        aT[i] = (a_m[i+1] * boost::math::chebyshev_t(i+1, x));
-        sum_aT += aT[i];
+        double T;
+        if (i == 0) {
+            T = T_curr;  // T1
+        } else {
+            T = 2.0 * x * T_curr - T_prev;
+            T_prev = T_curr;
+            T_curr = T;
+        }
+        sum_aT += a_m[i + 1] * T;
     }
-    double sigma = std::exp(0.5*a_m[0] + sum_aT); //cm2
+
+    double sigma = std::exp(0.5 * a_m[0] + sum_aT); // cm2
 
     return sigma;
 }
@@ -723,7 +756,6 @@ void BeamStrippingPhysics::gatherStatistics() {
     rediffusedStat_m = partStatistics[1];
     stoppedPartStat_m = partStatistics[2];
 }
-
 
 /*
     Cross sections parameters for interaction with air
