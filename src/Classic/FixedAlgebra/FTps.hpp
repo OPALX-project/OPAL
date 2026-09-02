@@ -227,7 +227,7 @@ const T FTps<T, N>::getCoefficient(int index) const {
         return T(0);
     }
 
-    if(index < orderStart(itsRep->minOrd) || orderEnd(itsRep->maxOrd) <= index) return T{};
+    if(index < orderStart(itsRep->minOrd) || orderEnd(itsRep->maxOrd) <= index) return T(0);
     return itsRep->data[index];
 }
 
