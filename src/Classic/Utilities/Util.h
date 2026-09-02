@@ -221,7 +221,7 @@ namespace Util {
 
     std::string combineFilePath(std::initializer_list<std::string>);
 
-    void checkInt(double real, std::string name, double tolerance = 1e-9);
+    void checkInt(double real, const std::string& name, double tolerance = 1e-9);
 
     /// Check if there are only digits in a string
     /// from https://stackoverflow.com/questions/19678572/how-to-validate-that-there-are-only-digits-in-a-string
@@ -229,6 +229,19 @@ namespace Util {
 
     template<class IteratorIn, class IteratorOut>
     void toString(IteratorIn first, IteratorIn last, IteratorOut out);
+
+    std::string compressString(const std::string& str);
+
+    std::string replaceAll(const std::string& str, const std::string& from, const std::string& to);
+
+    // Split string on any of the characters in 'delims'. If compress==true,
+    // consecutive delimiters are treated as one (no empty tokens).
+    std::vector<std::string> split_any_of(const std::string& s,
+                                          const std::string& delims,
+                                          bool compress = true);
+
+    // Trim characters on the left that are present in 'chars'
+    std::string trim_chars(const std::string& s, const std::string& chars);
 
     template <typename T>
     std::string toStringWithThousandSep(T value, char sep = '\'');
@@ -253,7 +266,28 @@ namespace Util {
         return defaultStr;
     }
 
-    std::string compressString(const std::string& str);
+    template <typename It>
+    std::string join(It begin, It end, const std::string& delimiter) {
+        std::string result;
+
+        if (begin == end) return result;
+
+        result += *begin;
+        ++begin;
+
+        while (begin != end) {
+            result += delimiter;
+            result += *begin;
+            ++begin;
+        }
+
+        return result;
+    }
+
+    template <typename Container>
+    std::string join(const Container& container, const std::string& delimiter) {
+        return join(std::begin(container), std::end(container), delimiter);
+    }
 
     struct KahanAccumulation {
         long double sum;

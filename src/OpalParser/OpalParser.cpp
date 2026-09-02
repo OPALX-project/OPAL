@@ -18,30 +18,26 @@
 // ------------------------------------------------------------------------
 
 #include "OpalParser/OpalParser.h"
-#include "AbstractObjects/Action.h"
 #include "AbstractObjects/Attribute.h"
 #include "AbstractObjects/Expressions.h"
-#include "AbstractObjects/OpalData.h"
 #include "AbstractObjects/Object.h"
-#include "AbstractObjects/ValueDefinition.h"
-#include "Attributes/Attributes.h"
+#include "AbstractObjects/OpalData.h"
 #include "OpalParser/CompoundStatement.h"
 #include "OpalParser/IfStatement.h"
 #include "OpalParser/WhileStatement.h"
 #include "MemoryManagement/Pointer.h"
 #include "Parser/SimpleStatement.h"
 #include "Parser/Token.h"
-#include "Utilities/OpalException.h"
-#include "Utilities/ParseError.h"
 #include "Utilities/Options.h"
+#include "Utilities/ParseError.h"
+#include "Utilities/Util.h"
+
 #include <cmath>
 #include <ctime>
 #include <exception>
 #include <iostream>
 #include <new>
-#include <boost/algorithm/string.hpp>
 
-#include "Message/GlobalComm.h"
 #include "Utility/Inform.h"
 #include "Utility/IpplInfo.h"
 
@@ -587,7 +583,7 @@ Statement *OpalParser::readStatement(TokenStream *is) const {
         stat->printWhere(*IpplInfo::Error, true);
 
         std::string what = ex.what();
-        boost::replace_all(what, "\n", "\n    ");
+        Util::replaceAll(what, "\n", "\n    ");
 
         ERRORMSG("     " << *stat <<"    a" << what << '\n' << endl);
 

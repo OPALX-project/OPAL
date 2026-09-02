@@ -151,8 +151,10 @@ namespace Util {
 
     std::string toUpper(const std::string& str) {
         std::string output = str;
-        std::transform(output.begin(), output.end(), output.begin(), [](const char c) { return std::toupper(c);});
-
+        std::transform(output.begin(), output.end(), output.begin(),
+             [](unsigned char c) {
+                return std::toupper(c);
+        });
         return output;
     }
 
@@ -207,7 +209,7 @@ namespace Util {
         return path.string();
     }
 
-    void checkInt(double real, std::string name, double tolerance) {
+    void checkInt(double real, const std::string& name, double tolerance) {
         real += tolerance; // prevent rounding error
         if (std::abs(std::floor(real) - real) > 2*tolerance) {
             throw OpalException("Util::checkInt",
@@ -224,6 +226,58 @@ namespace Util {
         return std::all_of(str.begin(),
                            str.end(),
                            [](char c) { return std::isdigit(c); });
+    }
+
+    std::string replaceAll(const std::string& str,
+                            const std::string& from,
+                            const std::string& to) {
+        if (from.empty()) return str;
+
+        std::string result;
+        result.reserve(str.size());
+
+        std::size_t pos = 0, found;
+        while ((found = str.find(from, pos)) != std::string::npos) {
+            result.append(str, pos, found - pos);
+            result += to;
+            pos = found + from.length();
+        }
+        result.append(str, pos, std::string::npos);
+
+        return result;
+    }
+
+    std::vector<std::string> split_any_of(const std::string& s,
+                                          const std::string& delims,
+                                          bool compress) {
+        std::vector<std::string> out;
+        std::string token;
+        for (char c : s) {
+            if (delims.find(c) != std::string::npos) {
+                if (!token.empty() || !compress) {
+                    out.push_back(token);
+                }
+                token.clear();
+            } else {
+                token.push_back(c);
+            }
+        }
+        if (!token.empty() || !compress) {
+            out.push_back(token);
+        }
+        return out;
+    }
+
+    std::string trim_chars(const std::string& s, const std::string& chars) {
+        std::size_t first = 0;
+        while (first < s.size() && chars.find(s[first]) != std::string::npos)
+            ++first;
+
+        std::size_t last = s.size();
+        while (last > first && chars.find(s[last - 1]) != std::string::npos)
+            --last;
+
+        return s.substr(first, last - first);
     }
 
     std::string compressString(const std::string& str) {

@@ -49,11 +49,10 @@ class Statement;
 class AttributeHandler: public RCObject {
 
 public:
-
     /// Constructor.
     //  Assigns the attribute name [b]name[/b] and the help text [b]help[/b],
     //  as well as a possible default value [b]def[/b]for the attribute.
-    AttributeHandler(const std::string &name, const std::string &help, AttributeBase *def);
+    AttributeHandler(const std::string& name, const std::string& help, AttributeBase* def);
 
     virtual ~AttributeHandler();
 
@@ -61,27 +60,27 @@ public:
     //  Attribute handlers are always shared, so this method should never
     //  be called.  It exists only to fulfill the requirements of the class
     //  [b]Pointer[/b].
-    virtual AttributeHandler *clone() const;
+    virtual AttributeHandler* clone() const;
 
     /// Return default value.
     //  Return the default value stored in this parser.
-    virtual AttributeBase *getDefault() const;
+    virtual AttributeBase* getDefault() const;
 
     /// Return help string.
-    virtual const std::string &getHelp() const;
+    virtual const std::string& getHelp() const;
 
     /// Return attribute name.
-    virtual const std::string &getName() const;
+    virtual const std::string& getName() const;
 
     /// Return attribute type.
     //  Return a string describing the attribute type
     //  ("logical", "real", etc.).
-    virtual const std::string &getType() const = 0;
+    virtual const std::string& getType() const = 0;
 
     /// Parse new value.
     //  Parse value from the statement [b]s[/b] and assign it to the
     //  attribute [b]a[/b].
-    virtual void parse(Attribute &a, Statement &s, bool eval) const = 0;
+    virtual void parse(Attribute& a, Statement& s, bool eval) const = 0;
 
     /// Parse component value.
     //  Parse value from the statement [b]s[/b] and assign it to the
@@ -89,7 +88,7 @@ public:
     //  The default version assumes that the value is scalar,
     //  and it throws [b]OpalException[/b].
     virtual void parseComponent
-    (Attribute &a, Statement &s, bool eval, int i) const;
+    (Attribute& a, Statement& s, bool eval, int i) const;
 
     /// Return defer flag.
     //  True, if any expression evaluation is to be deferred.
@@ -122,10 +121,10 @@ public:
         STATEMENT,
         NONE};
 
-    static std::multimap<OwnerType, std::string> getOwner(const std::string &att);
-    static void addAttributeOwner(const std::string &owner, const OwnerType &type, const std::string &name);
-protected:
+    static std::multimap<OwnerType, std::string> getOwner(const std::string& att);
+    static void addAttributeOwner(const std::string& owner, const OwnerType& type, const std::string& name);
 
+    protected:
     /// Attribute name.
     const std::string itsName;
 
@@ -142,11 +141,10 @@ protected:
     bool is_readonly;
 
 private:
-
     // Not implemented.
     AttributeHandler();
-    AttributeHandler(const AttributeHandler &);
-    void operator=(const AttributeHandler &);
+    AttributeHandler(const AttributeHandler&);
+    void operator=(const AttributeHandler&);
 
     static std::multimap<std::string, std::pair<OwnerType, std::string> > attributeOwnerDictionary_s;
 };
