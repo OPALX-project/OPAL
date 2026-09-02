@@ -21,8 +21,8 @@
 #include "Structure/BoundaryGeometry.h"
 
 #include <algorithm>
+#include <chrono>
 #include <cmath>
-#include <ctime>
 #include <filesystem>
 #include <fstream>
 #include <string>
@@ -39,8 +39,6 @@
 #include "Utilities/Options.h"
 
 #include <gsl/gsl_sys.h>
-
-#include <boost/filesystem.hpp>
 
 extern Inform* gmsg;
 
@@ -1627,11 +1625,9 @@ BoundaryGeometry::computeMeshVoxelization (void) {
         if (!std::filesystem::exists(vtkFileName)) {
             writeVTK = true;
         } else {
-            // here we keep using boost::filesystem. See
-            // https://stackoverflow.com/questions/51273205/how-to-compare-time-t-and-stdfilesystemfile-time-type
-            auto t_geom = boost::filesystem::last_write_time(h5FileName_m);
-            auto t_vtk = boost::filesystem::last_write_time(vtkFileName);
-            if (std::difftime(t_geom, t_vtk) > 0) {
+            const auto t_geom = std::filesystem::last_write_time(h5FileName_m);
+            const auto t_vtk = std::filesystem::last_write_time(vtkFileName);
+            if (t_geom > t_vtk) {
                 writeVTK = true;
             }
         }
