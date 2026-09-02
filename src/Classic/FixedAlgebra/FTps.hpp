@@ -224,7 +224,7 @@ const T FTps<T, N>::getCoefficient(int index) const {
     if(index < 0) {
         std::cerr << " <*** WARNING ***> from FTps<T,N>::getCoefficient(index):\n"
                   << "    No coefficient has a negative index; returning 0." << std::endl;
-        return T{};
+        return T(0);
     }
 
     if(index < orderStart(itsRep->minOrd) || orderEnd(itsRep->maxOrd) <= index) return T{};
