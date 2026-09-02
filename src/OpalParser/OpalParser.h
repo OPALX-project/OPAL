@@ -18,6 +18,8 @@
 //
 // ------------------------------------------------------------------------
 
+#include <OpalParser/CompoundStatement.h>
+#include <OpalParser/IfStatement.h>
 #include "Parser/Parser.h"
 #include "MemoryManagement/Pointer.h"
 #include <string>
@@ -49,10 +51,10 @@ public:
     virtual ~OpalParser();
 
     /// Parse and execute current statement.
-    virtual void parse(Statement &) const;
+    virtual void parse(CompoundStatement&) const;
 
     /// Read complete statement from a token stream.
-    virtual Statement *readStatement(TokenStream *) const;
+    virtual Statement* readStatement(TokenStream*) const;
 
     /// Read current stream.
     //  Read, parse, and execute statements one at a time.
@@ -61,7 +63,7 @@ public:
     /// Read given stream.
     //  Switch to given stream, then read, parse, and execute statements
     //  one at a time. Used for CALL statements and macros.
-    virtual void run(TokenStream *) const;
+    virtual void run(TokenStream*) const;
 
     /// Set stop flag.
     //  Causes [tt]run()[/tt] to return when the next statement should be
@@ -74,43 +76,43 @@ public:
 protected:
 
     /// Execute or check the current command.
-    void execute(Object *, const std::string &) const;
+    void execute(Object*, const std::string&) const;
 
     /// Find object by name in the main directory.
-    virtual Object *find(const std::string &) const;
+    virtual Object* find(const std::string&) const;
 
     /// Parse executable command.
-    virtual void parseAction(Statement &) const;
+    virtual void parseAction(Statement&) const;
 
     /// Parse assignment statement.
-    virtual void parseAssign(Statement &) const;
+    virtual void parseAssign(Statement&) const;
 
     /// Parse definition.
-    virtual void parseDefine(Statement &) const;
+    virtual void parseDefine(Statement&) const;
 
     /// Check for end of statement.
-    virtual void parseEnd(Statement &) const;
+    virtual void parseEnd(Statement&) const;
 
     /// Parse macro definition or call.
-    virtual void parseMacro(const std::string &name, Statement &) const;
+    virtual void parseMacro(const std::string& name, Statement& ) const;
 
     /// Print help on named command.
-    virtual void printHelp(const std::string &) const;
+    virtual void printHelp(const std::string&) const;
 
 private:
 
     // Not implemented.
-    OpalParser(const OpalParser &);
-    void operator=(const OpalParser &);
+    OpalParser(const OpalParser&);
+    void operator=(const OpalParser&);
 
     // Parse a bracketed token list into statement.
-    static void parseBracketList(char close, Statement &);
+    static void parseBracketList(char close, Statement&);
 
     // Parse a token list into statement.
-    static void parseTokenList(Statement &);
+    static void parseTokenList(IfStatement&);
 
     // get hint on cause of error
-    static std::string getHint(const std::string &, const std::string & = "attribute");
+    static std::string getHint(const std::string&, const std::string& = "attribute");
 
     // This flag is set by all commands which return from a mode.
     mutable bool stopFlag;
