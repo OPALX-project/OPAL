@@ -18,8 +18,6 @@
 //
 // ------------------------------------------------------------------------
 
-#include <OpalParser/CompoundStatement.h>
-#include <OpalParser/IfStatement.h>
 #include "Parser/Parser.h"
 #include "MemoryManagement/Pointer.h"
 #include <string>
@@ -46,12 +44,11 @@ class Statement;
 class OpalParser: public Parser {
 
 public:
-
     OpalParser();
     virtual ~OpalParser();
 
     /// Parse and execute current statement.
-    virtual void parse(CompoundStatement&) const;
+    virtual void parse(Statement&) const;
 
     /// Read complete statement from a token stream.
     virtual Statement* readStatement(TokenStream*) const;
@@ -74,7 +71,6 @@ public:
     static Token readToken();
 
 protected:
-
     /// Execute or check the current command.
     void execute(Object*, const std::string&) const;
 
@@ -94,13 +90,12 @@ protected:
     virtual void parseEnd(Statement&) const;
 
     /// Parse macro definition or call.
-    virtual void parseMacro(const std::string& name, Statement& ) const;
+    virtual void parseMacro(const std::string& name, Statement&) const;
 
     /// Print help on named command.
     virtual void printHelp(const std::string&) const;
 
 private:
-
     // Not implemented.
     OpalParser(const OpalParser&);
     void operator=(const OpalParser&);
@@ -109,7 +104,7 @@ private:
     static void parseBracketList(char close, Statement&);
 
     // Parse a token list into statement.
-    static void parseTokenList(IfStatement&);
+    static void parseTokenList(Statement&);
 
     // get hint on cause of error
     static std::string getHint(const std::string&, const std::string& = "attribute");
