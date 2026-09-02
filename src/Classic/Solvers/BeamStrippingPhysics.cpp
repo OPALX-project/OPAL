@@ -512,24 +512,6 @@ double BeamStrippingPhysics::computeCrossSectionTabata(double energy, double ene
 /// C.F.Barnett, "Atomic data for fusion. Volume 1: Collisions of H, H2, He
 /// and Li atoms and ions with atoms and molecules", ORNL-6068/V1 (1990).
 // -------------------------------------------------------------------------
-// double BeamStrippingPhysics::computeCrossSectionChebyshev(double energy,
-//                                                           double energyMin,
-//                                                           double energyMax) {
-//     // energy -> eV/amu
-//     if (energy <= energyMin || energy >= energyMax) {
-//         return 0.0;
-//     }
-//     double sum_aT = 0.0;
-//     double aT[8] = {0.0};
-//     double x = ((std::log(energy)-std::log(energyMin)) - (std::log(energyMax)-std::log(energy))) / (std::log(energyMax)-std::log(energyMin));
-//     for (int i = 0; i < 8; ++i) {
-//         aT[i] = a_m[i+1] * chebyshevT(i+1, x);
-//         sum_aT += aT[i];
-//     }
-//     double sigma = std::exp(0.5*a_m[0] + sum_aT); //cm2
-
-//     return sigma;
-// }
 double BeamStrippingPhysics::computeCrossSectionChebyshev(double energy,
                                                           double energyMin,
                                                           double energyMax) {
