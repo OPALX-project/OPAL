@@ -1,10 +1,39 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- ***************************************************************************/
-
+//
+// Class IpplTimings
+//   IpplTimings - a simple singleton class which lets the user create and
+//   timers that can be printed out at the end of the program.
+//
+//   General usage
+//    1) create a timer:
+//       IpplTimings::TimerRef val = IpplTimings::getTimer("timer name");
+//    This will either create a new one, or return a ref to an existing one
+//
+//    2) start a timer:
+//       IpplTimings::startTimer(val);
+//    This will start the referenced timer running.  If it is already running,
+//    it will not change anything.
+//
+//    3) stop a timer:
+//       IpplTimings::stopTimer(val);
+//    This will stop the timer, assuming it was running, and add in the
+//    time to the accumulating time for that timer.
+//
+//    4) print out the results:
+//       IpplTimings::print();
+//
+// Copyright (c) 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of IPPL.
+//
+// IPPL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with IPPL. If not, see <https://www.gnu.org/licenses/>.
+//
 #include "Utility/IpplTimings.h"
 #include "Utility/Inform.h"
 #include "Message/GlobalComm.h"
@@ -15,7 +44,6 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <algorithm>
 #include <map>
 #include <stack>
 #include <string>
@@ -30,7 +58,6 @@ Timing::Timing():
     TimerMap()
 { }
 
-
 //////////////////////////////////////////////////////////////////////
 // destructor
 Timing::~Timing() {
@@ -42,12 +69,11 @@ Timing::~Timing() {
     TimerList.clear();
 }
 
-
 //////////////////////////////////////////////////////////////////////
 // create a timer, or get one that already exists
-Timing::TimerRef Timing::getTimer(const char *nm) {
+Timing::TimerRef Timing::getTimer(const char* nm) {
     std::string s(nm);
-    TimerInfo *tptr = 0;
+    TimerInfo* tptr = 0;
     TimerMap_t::iterator loc = TimerMap.find(s);
     if (loc == TimerMap.end()) {
         tptr = new TimerInfo;
@@ -61,7 +87,6 @@ Timing::TimerRef Timing::getTimer(const char *nm) {
     return tptr->indx;
 }
 
-
 //////////////////////////////////////////////////////////////////////
 // start a timer
 void Timing::startTimer(TimerRef t) {
@@ -69,7 +94,6 @@ void Timing::startTimer(TimerRef t) {
         return;
     TimerList[t]->start();
 }
-
 
 //////////////////////////////////////////////////////////////////////
 // stop a timer, and accumulate it's values
@@ -79,7 +103,6 @@ void Timing::stopTimer(TimerRef t) {
     TimerList[t]->stop();
 }
 
-
 //////////////////////////////////////////////////////////////////////
 // clear a timer, by turning it off and throwing away its time
 void Timing::clearTimer(TimerRef t) {
@@ -87,7 +110,6 @@ void Timing::clearTimer(TimerRef t) {
         return;
     TimerList[t]->clear();
 }
-
 
 //////////////////////////////////////////////////////////////////////
 // print out the timing results
@@ -105,7 +127,7 @@ void Timing::print() {
     msg << "\n";
 
     {
-        TimerInfo *tptr = TimerList[0].get();
+        TimerInfo* tptr = TimerList[0].get();
         double walltotal = 0.0, cputotal = 0.0;
         reduce(tptr->wallTime, walltotal, OpMaxAssign());
         reduce(tptr->cpuTime, cputotal, OpMaxAssign());
@@ -130,7 +152,7 @@ void Timing::print() {
         });
 
     for (unsigned int i=1; i < TimerList.size(); ++i) {
-        TimerInfo *tptr = TimerList[i].get();
+        TimerInfo* tptr = TimerList[i].get();
         double wallmax = 0.0, cpumax = 0.0, wallmin = 0.0, cpumin = 0.0;
         double wallavg = 0.0, cpuavg = 0.0;
         reduce(tptr->wallTime, wallmax, OpMaxAssign());
@@ -159,7 +181,7 @@ void Timing::print() {
 
 //////////////////////////////////////////////////////////////////////
 // save the timing results into a file
-void Timing::print(const std::string &fn, const std::map<std::string, unsigned int> &problemSize) {
+void Timing::print(const std::string& fn, const std::map<std::string, unsigned int>& problemSize) {
 
     std::ofstream *timer_stream;
     Inform *msg;
