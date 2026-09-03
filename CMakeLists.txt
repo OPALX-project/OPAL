@@ -1,5 +1,5 @@
-cmake_minimum_required (VERSION 3.12)
-cmake_policy(VERSION 3.12)
+cmake_minimum_required (VERSION 3.18)
+cmake_policy(VERSION 3.18)
 
 project (OPAL VERSION 2024.2)
 set (PROJECT_BUGREPORT opal@lists.psi.ch)
@@ -116,8 +116,8 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
 elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
     add_compile_options (-Wno-error=cpp)
 
-    if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "9.5.0")
-        message (FATAL_ERROR "To build OPAL you need GCC version 9.5.0 or greater")
+    if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "11.5.0")
+        message (FATAL_ERROR "To build OPAL you need GCC version 11.5.0 or greater")
     endif ()
     # Warning flags
 

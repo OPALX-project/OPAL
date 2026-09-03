@@ -665,9 +665,9 @@ void Distribution::applyEmissModelAstra(double &px, double &py, double &pz, std:
     double phi = 2.0 * std::acos(std::sqrt(additionalRNs[0]));
     double theta = Physics::two_pi * additionalRNs[1];
 
-    px = pTotThermal_m * std::sin(phi) * std::cos(theta);
-    py = pTotThermal_m * std::sin(phi) * std::sin(theta);
-    pz = pTotThermal_m * std::abs(std::cos(phi));
+    px += pTotThermal_m * std::sin(phi) * std::cos(theta);
+    py += pTotThermal_m * std::sin(phi) * std::sin(theta);
+    pz += pTotThermal_m * std::abs(std::cos(phi));
 
 }
 
@@ -726,9 +726,9 @@ void Distribution::applyEmissModelNonEquil(double lowEnergyLimit,
     double betaGammaExternal
         = std::sqrt(std::pow(energyExternal / (Physics::m_e * Units::GeV2eV) + 1.0, 2) - 1.0);
 
-    bgx = betaGammaExternal * sinThetaOut * std::cos(phi);
-    bgy = betaGammaExternal * sinThetaOut * std::sin(phi);
-    bgz = betaGammaExternal * std::sqrt(1.0 - std::pow(sinThetaOut, 2));
+    bgx += betaGammaExternal * sinThetaOut * std::cos(phi);
+    bgy += betaGammaExternal * sinThetaOut * std::sin(phi);
+    bgz += betaGammaExternal * std::sqrt(1.0 - std::pow(sinThetaOut, 2));
 
 }
 
