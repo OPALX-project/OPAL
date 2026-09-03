@@ -1,21 +1,26 @@
-/*=============================================================================
-    Adapted from boost spirit mini_c example.
-
-    Distributed under the Boost Software License, Version 1.0. (See accompanying
-    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-=============================================================================*/
-#if !defined(REQUIREMENTS_HPP)
+//
+// Namespace requirements
+//
+// Copyright (c) 2026, Paul Scherrer Institute, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#ifndef REQUIREMENTS_HPP
 #define REQUIREMENTS_HPP
 
 #include "ast.hpp"
-#include "error_handler.hpp"
 
-#include <functional>
+#include <cassert>
 #include <set>
-
-#include <boost/phoenix/core.hpp>
-#include <boost/phoenix/function.hpp>
-#include <boost/phoenix/operator.hpp>
 
 namespace client { namespace code_gen
 {
@@ -24,31 +29,24 @@ namespace client { namespace code_gen
         typedef bool result_type;
 
         template <typename ErrorHandler>
-        requirements(ErrorHandler& error_handler_)
+        requirements(ErrorHandler&)
         {
-            namespace phx = boost::phoenix;
-            using boost::phoenix::function;
-
-            error_handler = function<ErrorHandler>(error_handler_)
-                (std::string("Error! "),
-                 phx::arg_names::_2,
-                 phx::cref(error_handler_.iters)[phx::arg_names::_1]);
         }
 
-        bool operator()(ast::nil) { BOOST_ASSERT(0); return false; }
+        bool operator()(ast::nil) { assert(false); return false; }
         bool operator()(unsigned int /*x*/) { return true; }
         bool operator()(double /*x*/) { return true; }
         bool operator()(bool /*x*/) { return true; }
         bool operator()(ast::quoted_string const & /*x*/) { return true; }
 
         bool operator()(ast::operation const& x) {
-            if (!boost::apply_visitor(*this, x.operand_))
+            if (!ast::apply_visitor(*this, x.operand_))
                 return false;
             return true;
         }
 
         bool operator()(ast::unary const& x) {
-            if (!boost::apply_visitor(*this, x.operand_))
+            if (!ast::apply_visitor(*this, x.operand_))
                 return false;
             return true;
         }
@@ -63,7 +61,7 @@ namespace client { namespace code_gen
             functions_.insert(x.function_name.name);
 
             for(ast::function_call_argument const& arg: x.args) {
-                if (!boost::apply_visitor(*this, arg))
+                if (!ast::apply_visitor(*this, arg))
                     return false;
                 //if (!(*this)(arg))
                     //return false;
@@ -73,7 +71,7 @@ namespace client { namespace code_gen
 
         bool operator()(ast::expression const& x) {
 
-            if (!boost::apply_visitor(*this, x.first))
+            if (!ast::apply_visitor(*this, x.first))
                 return false;
 
             for (ast::operation const& oper: x.rest) {
@@ -88,13 +86,9 @@ namespace client { namespace code_gen
     std::set<std::string> functions() { return functions_; }
 
     private:
-        std::function<void(int tag, std::string const& what)>
-        error_handler;
-
         std::set<std::string> variables_;
         std::set<std::string> functions_;
     };
 }}
 
 #endif
-

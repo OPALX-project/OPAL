@@ -1,26 +1,28 @@
-/*=============================================================================
-    Adapted from boost spirit mini_c example.
-
-    Distributed under the Boost Software License, Version 1.0. (See accompanying
-    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-=============================================================================*/
-#if !defined(STACKEVALUATOR_HPP)
+//
+// Struct StackEvaluator
+//
+// Copyright (c) 2026, Paul Scherrer Institute, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#ifndef STACKEVALUATOR_HPP
 #define STACKEVALUATOR_HPP
 
-#include <functional>
+#include <cassert>
 #include <map>
-#include <tuple>
-#include <variant>
-#include <vector>
-
-#include <boost/assert.hpp>
-#include <boost/phoenix/core.hpp>
-#include <boost/phoenix/function.hpp>
-#include <boost/phoenix/operator.hpp>
+#include <string>
 
 #include "ast.hpp"
 #include "function.hpp"
-#include "error_handler.hpp"
 
 namespace client { namespace code_gen
 {
@@ -29,19 +31,12 @@ namespace client { namespace code_gen
         typedef bool result_type;
 
         template <typename ErrorHandler>
-        StackEvaluator(ErrorHandler& error_handler_)
+        StackEvaluator(ErrorHandler&)
         {
-            namespace phx = boost::phoenix;
-            using boost::phoenix::function;
-
-            error_handler = function<ErrorHandler>(error_handler_)
-                (std::string("Error! "),
-                 phx::arg_names::_2,
-                 phx::cref(error_handler_.iters)[phx::arg_names::_1]);
         }
 
         double result() {
-            BOOST_ASSERT(evaluation_stack_.size() == 1);
+            assert(evaluation_stack_.size() == 1);
             client::function::argument_t res = evaluation_stack_.back();
             double result = std::get<double>(res);
             evaluation_stack_.pop_back();
@@ -64,7 +59,7 @@ namespace client { namespace code_gen
         }
 
         // visitor
-        bool operator()(ast::nil) { BOOST_ASSERT(0); return false; }
+        bool operator()(ast::nil) { assert(false); return false; }
         bool operator()(unsigned int x);
         bool operator()(double x);
         bool operator()(bool x);
@@ -76,8 +71,6 @@ namespace client { namespace code_gen
         bool operator()(ast::expression const& x);
 
     private:
-        std::function<void(int tag, std::string const& what)> error_handler;
-
         std::map<std::string, double> variableDictionary_;
         std::map<std::string, client::function::type> functions_;
 

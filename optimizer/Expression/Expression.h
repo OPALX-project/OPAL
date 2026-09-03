@@ -43,7 +43,6 @@
 #include "Expression/Parser/expression.hpp"
 #include "Expression/Parser/evaluator.hpp"
 #include "Expression/Parser/requirements.hpp"
-#include "Expression/Parser/skipper.hpp"
 #include "Expression/Parser/function.hpp"
 
 #include <boost/function.hpp>
@@ -189,10 +188,9 @@ private:
 
         client::error_handler<iterator_type>       error_handler(iter, end);
         client::parser::expression<iterator_type>  expression(error_handler);
-        client::parser::skipper<iterator_type>     skipper;
         client::code_gen::requirements             requirements(error_handler);
 
-        bool success = phrase_parse(iter, end, expression, skipper, ast_);
+        bool success = expression.parse(iter, end, ast_);
 
         if (!success || iter != end) {
             std::cout << "Parsing failed!" << std::endl;
