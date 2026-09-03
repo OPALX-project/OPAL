@@ -4,8 +4,8 @@
 //
 //   @see GlobalFunctions.h
 //
-//   This class uses the Boost Spirit parser to parse and evaluate string
-//   expressions (objectives or constraints).
+//   This class parses and evaluates string expressions (objectives or
+//   constraints) using a hand-written recursive-descent parser.
 //   Custom functions called in the expression should be registered by the
 //   driver. A collection of C math default functions is always included.
 //   For constraints the operator type can be queried.
@@ -30,6 +30,7 @@
 #ifndef __EXPRESSION_H__
 #define __EXPRESSION_H__
 
+#include <iostream>
 #include <map>
 #include <set>
 #include <string>
@@ -44,10 +45,6 @@
 #include "Expression/Parser/evaluator.hpp"
 #include "Expression/Parser/requirements.hpp"
 #include "Expression/Parser/function.hpp"
-
-#include <boost/function.hpp>
-#include <boost/lexical_cast.hpp>
-#include "boost/algorithm/string.hpp"
 
 
 typedef std::map<std::string, double> variableDictionary_t;
@@ -195,8 +192,8 @@ private:
         if (!success || iter != end) {
             std::cout << "Parsing failed!" << std::endl;
             std::string here = (iter != end ? std::string(iter, end): expr_);
-            throw new OptPilotException("Expression::parse()",
-                                         "Parsing failed here: " + here + "!");
+            throw OptPilotException("Expression::parse()",
+                                     "Parsing failed here: " + here + "!");
         }
 
         // store the functions and variables required to evaluate this
