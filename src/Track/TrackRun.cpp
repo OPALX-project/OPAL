@@ -241,7 +241,7 @@ void TrackRun::setRunMethod() {
         throw OpalException("TrackRun::setRunMethod",
                             "The attribute \"METHOD\" isn't set for the \"RUN\" command");
     }
-    std::string_view method = Attributes::getString(itsAttr[METHOD]);
+    std::string method = Attributes::getString(itsAttr[METHOD]);
     method_m = Util::stringToEnum(method, runMethodMap, RunMethod::NONE);
 }
 
