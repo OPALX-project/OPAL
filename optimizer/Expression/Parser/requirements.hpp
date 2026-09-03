@@ -9,8 +9,10 @@
 
 #include "ast.hpp"
 #include "error_handler.hpp"
+
+#include <functional>
 #include <set>
-#include <boost/function.hpp>
+
 #include <boost/phoenix/core.hpp>
 #include <boost/phoenix/function.hpp>
 #include <boost/phoenix/operator.hpp>
@@ -74,7 +76,7 @@ namespace client { namespace code_gen
             if (!boost::apply_visitor(*this, x.first))
                 return false;
 
-            for(ast::operation const& oper: x.rest) {
+            for (ast::operation const& oper: x.rest) {
                 if (!(*this)(oper))
                     return false;
         }
@@ -86,9 +88,7 @@ namespace client { namespace code_gen
     std::set<std::string> functions() { return functions_; }
 
     private:
-
-        boost::function<
-            void(int tag, std::string const& what)>
+        std::function<void(int tag, std::string const& what)>
         error_handler;
 
         std::set<std::string> variables_;

@@ -7,12 +7,12 @@
 #if !defined(STACKEVALUATOR_HPP)
 #define STACKEVALUATOR_HPP
 
+#include <functional>
 #include <map>
 #include <tuple>
 #include <variant>
 #include <vector>
 
-#include <boost/function.hpp>
 #include <boost/assert.hpp>
 #include <boost/phoenix/core.hpp>
 #include <boost/phoenix/function.hpp>
@@ -76,8 +76,7 @@ namespace client { namespace code_gen
         bool operator()(ast::expression const& x);
 
     private:
-
-        boost::function<void(int tag, std::string const& what)> error_handler;
+        std::function<void(int tag, std::string const& what)> error_handler;
 
         std::map<std::string, double> variableDictionary_;
         std::map<std::string, client::function::type> functions_;
