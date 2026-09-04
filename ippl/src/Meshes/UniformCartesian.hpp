@@ -2132,9 +2132,9 @@ Grad(Field<T,3U,UniformCartesian<3U,MFLOAT>,Cell>& x,
 	 idz * (x[I  ][J  ][K+1] - x[I  ][J  ][K-1]));
 
   //approximate at the border up to a term of order O(h^2)
-  Vektor<T,3U> xx = Vektor<T,3U>(1.0,0.0,0.0);
-  Vektor<T,3U> yy = Vektor<T,3U>(0.0,1.0,0.0);
-  Vektor<T,3U> zz = Vektor<T,3U>(0.0,0.0,1.0);
+  Vektor<T,3U> xx = Vektor<T,3U>({1.0,0.0,0.0});
+  Vektor<T,3U> yy = Vektor<T,3U>({0.0,1.0,0.0});
+  Vektor<T,3U> zz = Vektor<T,3U>({0.0,0.0,1.0});
 
   Index lo(0, 0);
 

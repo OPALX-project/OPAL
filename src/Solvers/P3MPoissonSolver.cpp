@@ -85,7 +85,7 @@ struct ApplyField {
                    + 3*(1 - std::pow(xi,2))/alpha)))
                    + ((double)(1.0 - isIntGreen) 
                    * (-ke*(diff/r)*((2.*alpha*std::exp(-alpha*alpha*sqr))
-                   / (std::sqrt(M_PI)*r) + (1.-std::erf(alpha*r))/(r*r))));
+                   / (std::sqrt(Physics::pi)*r) + (1.-std::erf(alpha*r))/(r*r))));
 
             //Actual Force is F_ij multiplied by Qi*Qj
             //The electrical field on particle i is E=F/q_i and hence:

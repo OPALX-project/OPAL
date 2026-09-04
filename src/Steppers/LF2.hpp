@@ -55,8 +55,8 @@ bool LF2<FieldFunction, Arguments ...>::kick_m(PartBunchBase<double, 3>* bunch, 
                                                const double& t, const double& h,
                                                Arguments& ... args) const
 {
-    Vector_t externalE = Vector_t(0.0, 0.0, 0.0);
-    Vector_t externalB = Vector_t(0.0, 0.0, 0.0);
+    Vector_t externalE = Vector_t({0.0, 0.0, 0.0});
+    Vector_t externalB = Vector_t({0.0, 0.0, 0.0});
 
     bool outOfBound = this->fieldfunc_m(t, i, externalE, externalB, args ...);
 

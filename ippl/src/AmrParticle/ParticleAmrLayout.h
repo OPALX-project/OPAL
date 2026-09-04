@@ -39,9 +39,11 @@ public:
     typedef ParticleAttrib<Index_t>             ParticleIndex_t;
     
 public:
-    
+
     ParticleAmrLayout();
-    
+
+    virtual ~ParticleAmrLayout() = default;
+
     /*!
      * @param finestLevel of current simulation state
      */

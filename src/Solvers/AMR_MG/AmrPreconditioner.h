@@ -42,9 +42,9 @@ class AmrPreconditioner
 {
 public:
     typedef amr::operator_t operator_t;
-    
-public:
-    
+
+    virtual ~AmrPreconditioner() = default;
+
     /*!
      * Instantiate the preconditioner matrix
      * @param A matrix for which to create preconditioner

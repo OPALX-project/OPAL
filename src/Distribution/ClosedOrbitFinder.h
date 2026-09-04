@@ -575,7 +575,10 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
         }
     }
 
-    *gmsg << level3 << "Finished closed orbit finder successfully." << endl;
+    bool isConvergent = error < accuracy;
+    if (isConvergent) {
+        *gmsg << level3 << "Finished closed orbit finder successfully." << endl;
+    }
 
     /* store last entry, since it is needed in computeVerticalOscillations(), because we have to do the same
      * number of integrations steps there.
@@ -595,7 +598,7 @@ bool ClosedOrbitFinder<Value_type, Size_type, Stepper>::findOrbit(value_type acc
     }
 
     // returns true if converged, otherwise false
-    return error < accuracy;
+    return isConvergent;
 }
 
 template<typename Value_type, typename Size_type, class Stepper>

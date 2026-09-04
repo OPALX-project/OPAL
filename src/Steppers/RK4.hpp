@@ -102,8 +102,8 @@ bool RK4<FieldFunction, Arguments ...>::derivate_m(PartBunchBase<double, 3>* bun
 
     Vector_t externalE, externalB, tempR;
 
-    externalB = Vector_t(0.0, 0.0, 0.0);
-    externalE = Vector_t(0.0, 0.0, 0.0);
+    externalB = Vector_t({0.0, 0.0, 0.0});
+    externalE = Vector_t({0.0, 0.0, 0.0});
 
     for (int j = 0; j < 3; ++j) {
         tempR(j) = y[j];

@@ -21,6 +21,7 @@
 
 #include "AbsBeamline/Component.h"
 #include "Algorithms/AbstractTimeDependence.h"
+#include "Algorithms/TimeDependenceCache.h"
 #include "BeamlineGeometry/StraightGeometry.h"
 #include "Fields/Definitions.h"
 #include "Fields/EMField.h"
@@ -28,7 +29,7 @@
 /** @class VariableRFCavity
  *
  *  Generates a field like
- *      E = E0*a(t)*sin{f(t)*t-q(t)}
+ *      E = a(t) * sin{2*pi * integral(f(tau),0,t) + q(t)}
  *      B = 0
  *  where E0, B0 are user defined fields, a(t), f(t), q(t) are time
  *  dependent amplitude, frequency, phase respectively; it is assumed that these
@@ -217,6 +218,7 @@ protected:
     double halfWidth_m;
     double halfHeight_m;
     double length_m;
+    TimeDependenceCache frequencyCache_m;
 
     /// The cavity's geometry.
     StraightGeometry geometry;

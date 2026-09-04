@@ -291,9 +291,14 @@ bool ElementBase::isInsideTransverse(const Vector_t &r) const
     double factor = 1.0;
     if (aperture_m.first == ApertureType::CONIC_RECTANGULAR ||
         aperture_m.first == ApertureType::CONIC_ELLIPTICAL) {
-        Vector_t rRelativeToBegin = getEdgeToBegin().transformTo(r);
-        double fractionLength = rRelativeToBegin(2) / getElementLength();
-        factor = fractionLength * aperture_m.second[2];
+        const double length = getElementLength();
+        if (length > 0.0) {
+            Vector_t rRelativeToBegin = getEdgeToBegin().transformTo(r);
+            double fractionLength = rRelativeToBegin(2) / length;
+            fractionLength = std::clamp(fractionLength, 0.0, 1.0);
+            // Interpolate aperture scaling from begin (1.0) to end (aperture_m.second[2]).
+            factor = 1.0 + fractionLength * (aperture_m.second[2] - 1.0);
+        }
     }
 
     switch(aperture_m.first) {
@@ -322,8 +327,8 @@ BoundingBox ElementBase::getBoundingBoxInLabCoords() const {
     for (int i = -1; i < 2; i += 2) {
         for (int j = -1; j < 2; j += 2) {
             unsigned int idx = (i + 1)/2 + (j + 1);
-            corners[idx] = toBegin.transformFrom(Vector_t(i * x, j * y, 0.0));
-            corners[idx + 4] = toEnd.transformFrom(Vector_t(i * f * x, j * f * y, 0.0));
+            corners[idx] = toBegin.transformFrom(Vector_t({i * x, j * y, 0.0}));
+            corners[idx + 4] = toEnd.transformFrom(Vector_t({i * f * x, j * f * y, 0.0}));
         }
     }
 

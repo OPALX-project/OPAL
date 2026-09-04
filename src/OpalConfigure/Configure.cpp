@@ -81,9 +81,6 @@
 #include "Elements/OpalMonitor.h"
 #include "Elements/OpalMultipole.h"
 #include "Elements/OpalMultipoleT.h"
-#include "Elements/OpalMultipoleTStraight.h"
-#include "Elements/OpalMultipoleTCurvedConstRadius.h"
-#include "Elements/OpalMultipoleTCurvedVarRadius.h"
 #include "Elements/OpalOctupole.h"
 #include "Elements/OpalOffset/OpalLocalCartesianOffset.h"
 #include "Elements/OpalOffset/OpalLocalCylindricalOffset.h"
@@ -92,6 +89,8 @@
 #include "Elements/OpalOutputPlane.h"
 #include "Elements/OpalPepperPot.h"
 #include "Elements/OpalPolynomialTimeDependence.h"
+#include "Elements/OpalSinusoidalTimeDependence.h"
+#include "Elements/OpalSplineTimeDependence.h"
 #include "Elements/OpalProbe.h"
 #include "Elements/OpalQuadrupole.h"
 #include "Elements/OpalRBend.h"
@@ -198,6 +197,7 @@ namespace {
         opal->create(new OpalDegrader());
         opal->create(new OpalDrift());
         opal->create(new OpalECollimator());
+        opal->create(new OpalEnge());
         opal->create(new OpalFlexibleCollimator());
         opal->create(new OpalHKicker());
         opal->create(new OpalKicker());
@@ -205,9 +205,6 @@ namespace {
         opal->create(new OpalMonitor());
         opal->create(new OpalMultipole());
         opal->create(new OpalMultipoleT());
-        opal->create(new OpalMultipoleTStraight());
-        opal->create(new OpalMultipoleTCurvedConstRadius());
-        opal->create(new OpalMultipoleTCurvedVarRadius());
         opal->create(new OpalOctupole());
         opal->create(new OpalOffset::OpalLocalCartesianOffset());
 //        opal->create(new OpalOffset::OpalLocalCylindricalOffset());
@@ -216,6 +213,8 @@ namespace {
         opal->create(new OpalOutputPlane());
         opal->create(new OpalPepperPot());
         opal->create(new OpalPolynomialTimeDependence());
+        opal->create(new OpalSinusoidalTimeDependence());
+        opal->create(new OpalSplineTimeDependence());
         opal->create(new OpalProbe());
         opal->create(new OpalQuadrupole());
         opal->create(new OpalRBend());

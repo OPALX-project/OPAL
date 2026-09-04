@@ -25,22 +25,15 @@
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
-#include <boost/assign.hpp>
-#include <filesystem>
-
 #include "gsl/gsl_interp.h"
 #include "gsl/gsl_spline.h"
 
-#include <iostream>
+#include <array>
+#include <filesystem>
 #include <fstream>
+#include <iostream>
 
 extern Inform *gmsg;
-
-const boost::bimap<CavityType, std::string> RFCavity::bmCavityTypeString_s =
-    boost::assign::list_of<const boost::bimap<CavityType, std::string>::relation>
-        (CavityType::SW,   "STANDING")
-        (CavityType::SGSW, "SINGLEGAP");
-
 
 RFCavity::RFCavity():
     RFCavity("")
@@ -133,7 +126,7 @@ bool RFCavity::apply(const Vector_t& R,
     if (R(2) >= startField_m &&
         R(2) < startField_m + getElementLength()) {
 
-        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+        Vector_t tmpE({0.0, 0.0, 0.0}), tmpB({0.0, 0.0, 0.0});
 
         bool outOfBounds = fieldmap_m->getFieldstrength(R, tmpE, tmpB);
         if (outOfBounds) return getFlagDeleteOnTransverseExit();
@@ -152,7 +145,7 @@ bool RFCavity::applyToReferenceParticle(const Vector_t& R,
 
     if (R(2) >= startField_m &&
         R(2) < startField_m + getElementLength()) {
-        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+        Vector_t tmpE({0.0, 0.0, 0.0}), tmpB({0.0, 0.0, 0.0});
 
         bool outOfBounds = fieldmap_m->getFieldstrength(R, tmpE, tmpB);
         if (outOfBounds) return true;
@@ -329,17 +322,17 @@ double RFCavity::getPhi0() const {
     return phi0_m;
 }
 
-void RFCavity::setCavityType(const std::string& name) {
-    auto it = bmCavityTypeString_s.right.find(name);
-    if (it != bmCavityTypeString_s.right.end()) {
-        type_m = it->second;
-    } else {
-        type_m = CavityType::SW;
-    }
+constexpr std::array<std::pair<CavityType, std::string_view>, 2> cavityMap {{
+    {CavityType::SW,   "STANDING"},
+    {CavityType::SGSW, "SINGLEGAP"}
+}};
+
+void RFCavity::setCavityType(std::string_view name) noexcept {
+    type_m = Util::stringToEnum(name, cavityMap, CavityType::SW);
 }
 
-std::string RFCavity::getCavityTypeString() const {
-    return bmCavityTypeString_s.left.at(type_m);
+std::string RFCavity::getCavityTypeString() const noexcept{
+    return std::string(Util::enumToString(type_m, cavityMap, "STANDING"));
 }
 
 std::string RFCavity::getFieldMapFN() const {
@@ -511,14 +504,14 @@ double RFCavity::getAutoPhaseEstimateFallback(double E0, double t0, double q, do
     setPhasem(phi);
     std::pair<double, double> ret = trackOnAxisParticle(p0, t0, dt, q, mass);
     double phimax = 0.0;
-    double Emax = Util::getKineticEnergy(Vector_t(0.0, 0.0, ret.first), mass);
+    double Emax = Util::getKineticEnergy(Vector_t({0.0, 0.0, ret.first}), mass);
     phi += dphi;
 
     for (unsigned int j = 0; j < 2; ++ j) {
         for (unsigned int i = 0; i < 36; ++ i, phi += dphi) {
             setPhasem(phi);
             ret = trackOnAxisParticle(p0, t0, dt, q, mass);
-            double Ekin = Util::getKineticEnergy(Vector_t(0.0, 0.0, ret.first), mass);
+            double Ekin = Util::getKineticEnergy(Vector_t({0.0, 0.0, ret.first}), mass);
             if (Ekin > Emax) {
                 Emax = Ekin;
                 phimax = phi;
@@ -678,14 +671,14 @@ std::pair<double, double> RFCavity::trackOnAxisParticle(const double& p0,
                                                         const double& /*q*/,
                                                         const double& mass,
                                                         std::ofstream *out) {
-    Vector_t p(0, 0, p0);
+    Vector_t p({0, 0, p0});
     double t = t0;
     BorisPusher integrator(*RefPartBunch_m->getReference());
     const double cdt = Physics::c * dt;
     const double zbegin = startField_m;
     const double zend = getElementLength() + startField_m;
 
-    Vector_t z(0.0, 0.0, zbegin);
+    Vector_t z({0.0, 0.0, zbegin});
     double dz = 0.5 * p(2) / Util::getGamma(p) * cdt;
     Vector_t Ef(0.0), Bf(0.0);
 

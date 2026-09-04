@@ -115,18 +115,18 @@ TEST(RingTest, TestAppend1) {
         // note phiInit is at pi/2 i.e. on the y axis pointing towards negative x
         for (int i = 0; i < 3; ++i) {
             EXPECT_NEAR(ring.getNextPosition()(i), 
-                        Vector_t(-1, 5., 0.)(i),
+                        Vector_t({-1, 5., 0.})(i),
                         1e-6) << i;
-            EXPECT_NEAR(ring.getNextNormal()(i), Vector_t(-cos(Physics::pi/6.),
+            EXPECT_NEAR(ring.getNextNormal()(i), Vector_t({-cos(Physics::pi/6.),
                                                           -sin(Physics::pi/6.),
-                                                          0.)(i), 1e-6) << i;
+                                                          0.})(i), 1e-6) << i;
         }
         ring.appendElement(off);
         for (int i = 0; i < 3; ++i) {
             EXPECT_NEAR(ring.getNextPosition()(i),
-                        Vector_t(-1-cos(Physics::pi/6.),
-                                  5-sin(Physics::pi/6.), 0.)(i), 1e-6) << i;
-            Vector_t expected(-cos(Physics::pi/3.), -sin(Physics::pi/3.), 0.);
+                        Vector_t({-1-cos(Physics::pi/6.),
+                                  5-sin(Physics::pi/6.), 0.})(i), 1e-6) << i;
+            Vector_t expected({-cos(Physics::pi/3.), -sin(Physics::pi/3.), 0.});
             EXPECT_NEAR(ring.getNextNormal()(i),
                         expected(i),
                         1e-6) << i;
@@ -152,18 +152,18 @@ TEST(RingTest, TestAppend2) {
         ring.appendElement(off);
         for (int i = 0; i < 3; ++i) {
             EXPECT_NEAR(ring.getNextPosition()(i),
-                        Vector_t(5.-sin(Physics::pi/24.),
-                                 cos(Physics::pi/24.), 0.)(i), 1e-6)
+                        Vector_t({5.-sin(Physics::pi/24.),
+                                 cos(Physics::pi/24.), 0.})(i), 1e-6)
                 << i << "\n";
-            EXPECT_NEAR(ring.getNextNormal()(i), Vector_t(-sin(Physics::pi/6.),
+            EXPECT_NEAR(ring.getNextNormal()(i), Vector_t({-sin(Physics::pi/6.),
                                                            cos(Physics::pi/6.),
-                                                           0.)(i), 1e-6)
+                                                           0.})(i), 1e-6)
                 << i << "\n";
         }
         ring.appendElement(off);
         ring.appendElement(off);
         for (int i = 0; i < 3; ++i) {
-            EXPECT_NEAR(ring.getNextNormal()(i), Vector_t(-1., 0., 0.)(i), 1e-6)
+            EXPECT_NEAR(ring.getNextNormal()(i), Vector_t({-1., 0., 0.})(i), 1e-6)
                 << i << "\n";
         }
     } catch (OpalException& exc) {
@@ -209,14 +209,14 @@ TEST(RingTest, TestLatticeRInitPhiInit) {
                 ring.setLatticePhiInit(phi);
                 ring.setLatticeThetaInit(theta);
                 Vector_t pos = ring.getNextPosition();
-                Vector_t refPos(radius*cos(phi), radius*sin(phi), 0.);
+                Vector_t refPos({radius*cos(phi), radius*sin(phi), 0.});
                 for (size_t i = 0; i < 3; ++i) {
                     EXPECT_EQ(pos(i), refPos(i))
                         << i << " f: " << phi
                         << " t: " << theta << " r: " << radius << "\n";
                 }
                 Vector_t norm = ring.getNextNormal();
-                Vector_t refNorm(-sin(phi+theta), cos(phi+theta), 0.);
+                Vector_t refNorm({-sin(phi+theta), cos(phi+theta), 0.});
                 for (size_t i = 0; i < 3; ++i) {
                     EXPECT_EQ(norm(i), refNorm(i))
                         << i << " f: " << phi
@@ -252,7 +252,7 @@ TEST(RingTest, TestApply) {
             // position should always be 0.5, -0.75, 0.25 in the local
             // (OPAL-T) coordinate system. B Field should be the vector between
             // the field looku position and the start position of the element
-            Vector_t position(2.5*Units::mm2m, 0.25*Units::mm2m, -0.75*Units::mm2m);
+            Vector_t position({2.5*Units::mm2m, 0.25*Units::mm2m, -0.75*Units::mm2m});
             Vector_t rotated_position, P, B, E;
             rotated_position[0] = position[0]*cos(phi) - position[1]*sin(phi);
             rotated_position[1] = position[0]*sin(phi) + position[1]*cos(phi);

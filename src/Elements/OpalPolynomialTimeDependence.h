@@ -42,6 +42,7 @@ class OpalPolynomialTimeDependence : public OpalElement {
         P1,
         P2,
         P3,
+        COEFFICIENTS,
         SIZE // size of the enum
     };
 

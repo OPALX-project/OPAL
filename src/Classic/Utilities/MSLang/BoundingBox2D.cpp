@@ -37,17 +37,17 @@ namespace mslang {
     }
 
     bool BoundingBox2D::isInside(const BoundingBox2D &b) const {
-        return (isInside(b.center_m + 0.5 * Vector_t( b.width_m,  b.height_m, 0.0)) &&
-                isInside(b.center_m + 0.5 * Vector_t(-b.width_m,  b.height_m, 0.0)) &&
-                isInside(b.center_m + 0.5 * Vector_t(-b.width_m, -b.height_m, 0.0)) &&
-                isInside(b.center_m + 0.5 * Vector_t( b.width_m, -b.height_m, 0.0)));
+        return (isInside(b.center_m + 0.5 * Vector_t({ b.width_m,  b.height_m, 0.0})) &&
+                isInside(b.center_m + 0.5 * Vector_t({-b.width_m,  b.height_m, 0.0})) &&
+                isInside(b.center_m + 0.5 * Vector_t({-b.width_m, -b.height_m, 0.0})) &&
+                isInside(b.center_m + 0.5 * Vector_t({ b.width_m, -b.height_m, 0.0})));
     }
 
     void BoundingBox2D::writeGnuplot(std::ostream &out) const {
-        std::vector<Vector_t> pts({Vector_t(center_m[0] + 0.5 * width_m, center_m[1] + 0.5 * height_m, 0),
-                    Vector_t(center_m[0] - 0.5 * width_m, center_m[1] + 0.5 * height_m, 0),
-                    Vector_t(center_m[0] - 0.5 * width_m, center_m[1] - 0.5 * height_m, 0),
-                    Vector_t(center_m[0] + 0.5 * width_m, center_m[1] - 0.5 * height_m, 0)});
+        std::vector<Vector_t> pts({Vector_t({center_m[0] + 0.5 * width_m, center_m[1] + 0.5 * height_m, 0}),
+                Vector_t({center_m[0] - 0.5 * width_m, center_m[1] + 0.5 * height_m, 0}),
+                Vector_t({center_m[0] - 0.5 * width_m, center_m[1] - 0.5 * height_m, 0}),
+                Vector_t({center_m[0] + 0.5 * width_m, center_m[1] - 0.5 * height_m, 0})});
         unsigned int width = out.precision() + 8;
         for (unsigned int i = 0; i < 5; ++ i) {
             Vector_t & pt = pts[i % 4];

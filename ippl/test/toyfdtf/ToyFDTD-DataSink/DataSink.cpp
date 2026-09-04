@@ -365,9 +365,9 @@ void DataSink::dumpBinary(Field<Vektor<double,3>,3> &EFD, Field<Vektor<double,3>
             for (i = lxf; i < lxl; ++ i) {
                 elem[0]=Index(i,i);
                 Vektor<double, 3> tmp_d = NBV.localElement(elem);
-                Vektor<float, 3> tmp_f(static_cast<float>(tmp_d(0)),
+                Vektor<float, 3> tmp_f({static_cast<float>(tmp_d(0)),
                                        static_cast<float>(tmp_d(1)),
-                                       static_cast<float>(tmp_d(2)));
+                                       static_cast<float>(tmp_d(2))});
                 vtkout.write(reinterpret_cast<char* >(&tmp_f(0)), sizeof(float));
                 vtkout.write(reinterpret_cast<char* >(&tmp_f(1)), sizeof(float));
                 vtkout.write(reinterpret_cast<char* >(&tmp_f(2)), sizeof(float));
@@ -385,9 +385,9 @@ void DataSink::dumpBinary(Field<Vektor<double,3>,3> &EFD, Field<Vektor<double,3>
             for (i = lxf; i < lxl; ++ i) {
                 elem[0]=Index(i,i);
                 Vektor<double, 3> tmp_d = NBV.localElement(elem);
-                Vektor<float, 3> tmp_f(static_cast<float>(tmp_d(0)),
+                Vektor<float, 3> tmp_f({static_cast<float>(tmp_d(0)),
                                        static_cast<float>(tmp_d(1)),
-                                       static_cast<float>(tmp_d(2)));
+                                       static_cast<float>(tmp_d(2))});
                 vtkout.write(reinterpret_cast<char* >(&tmp_f(0)), sizeof(float));
                 vtkout.write(reinterpret_cast<char* >(&tmp_f(1)), sizeof(float));
                 vtkout.write(reinterpret_cast<char* >(&tmp_f(2)), sizeof(float));

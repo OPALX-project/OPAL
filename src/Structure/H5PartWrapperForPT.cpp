@@ -52,7 +52,7 @@ void H5PartWrapperForPT::readHeader() {
     h5_int64_t numFileAttributes = H5GetNumFileAttribs(file_m);
 
     const h5_size_t lengthAttributeName = 256;
-    char attributeName[lengthAttributeName];
+    std::vector<char> attributeName(lengthAttributeName);
     h5_int64_t attributeType;
     h5_size_t numAttributeElements;
     std::set<std::string> attributeNames;
@@ -60,12 +60,12 @@ void H5PartWrapperForPT::readHeader() {
     for (h5_int64_t i = 0; i < numFileAttributes; ++ i) {
         REPORTONERROR(H5GetFileAttribInfo(file_m,
                                           i,
-                                          attributeName,
+                                          attributeName.data(),
                                           lengthAttributeName,
                                           &attributeType,
                                           &numAttributeElements));
 
-        attributeNames.insert(attributeName);
+        attributeNames.insert(attributeName.data());
     }
 
     if (attributeNames.find("dump frequency") != attributeNames.end()) {
@@ -380,12 +380,12 @@ void H5PartWrapperForPT::writeStepHeader(PartBunchBase<double, 3>* bunch, const 
     WRITESTEPATTRIB(Int64, file_m, "SteptoLastInj", &SteptoLastInj, 1);
 
     try {
-        Vector_t referenceB(additionalStepAttributes.at("B-ref_x"),
+        Vector_t referenceB({additionalStepAttributes.at("B-ref_x"),
                             additionalStepAttributes.at("B-ref_z"),
-                            additionalStepAttributes.at("B-ref_y"));
-        Vector_t referenceE(additionalStepAttributes.at("E-ref_x"),
+                            additionalStepAttributes.at("B-ref_y")});
+        Vector_t referenceE({additionalStepAttributes.at("E-ref_x"),
                             additionalStepAttributes.at("E-ref_z"),
-                            additionalStepAttributes.at("E-ref_y"));
+                            additionalStepAttributes.at("E-ref_y")});
 
         WRITESTEPATTRIB(Float64, file_m, "B-ref", (h5_float64_t*)&referenceB, 3);
         WRITESTEPATTRIB(Float64, file_m, "E-ref", (h5_float64_t*)&referenceE, 3);

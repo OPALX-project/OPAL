@@ -38,8 +38,8 @@ BoxCornerDomain::BoxCornerDomain(double A, double B, double C,
                                  std::string interpl)
     : RegularDomain(nr, hr, interpl)
 {
-    setRangeMin(Vector_t(-A, -B, L1));
-    setRangeMax(Vector_t( A,  B, L1 + L2));
+    setRangeMin(Vector_t({-A, -B, L1}));
+    setRangeMax(Vector_t({ A,  B, L1 + L2}));
     C_m = C;
 
     throw OpalException("BoxCornerDomain::BoxCornerDomain()",

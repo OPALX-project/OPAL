@@ -31,10 +31,8 @@
 #define __SUMERRSQRADIALPEAK_H__
 
 #include <string>
-
-#include "boost/type_traits/remove_cv.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/PeakReader.h"
@@ -50,10 +48,10 @@ struct SumErrSqRadialPeak {
                                     "sumErrSqRadialPeak expects 4 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        meas_filename_ = boost::get<std::string>(args[0]);
-        sim_filename_  = boost::get<std::string>(args[1]);
-        begin_         = boost::get<double>(args[2]);
-        end_           = boost::get<double>(args[3]);
+        meas_filename_ = std::get<std::string>(args[0]);
+        sim_filename_  = std::get<std::string>(args[1]);
+        begin_         = std::get<double>(args[2]);
+        end_           = std::get<double>(args[3]);
 
         bool is_valid = true;
 
@@ -90,7 +88,7 @@ struct SumErrSqRadialPeak {
             sum += val * val;
         }
 
-        return boost::make_tuple(std::sqrt(sum) / (double)nPeaks, is_valid);
+        return std::make_tuple(std::sqrt(sum) / (double)nPeaks, is_valid);
     }
 
 private:
@@ -100,7 +98,7 @@ private:
     int end_;
 
     // define a mapping to arguments in argument vector
-    boost::tuple<std::string, std::string, int, int> argument_types;
+    std::tuple<std::string, std::string, int, int> argument_types;
     // :FIXME: remove unused enum
 #if 0
     enum {

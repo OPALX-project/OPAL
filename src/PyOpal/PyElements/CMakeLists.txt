@@ -39,5 +39,11 @@ python_module(variable_rf_cavity_fringe_field "${VARIABLERFCAVITYFRINGEFIELD_SRC
 set (POLYNOMIALTIMEDEPENDENCE_SRCS PyPolynomialTimeDependence.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
 python_module(polynomial_time_dependence "${POLYNOMIALTIMEDEPENDENCE_SRCS}" "elements")
 
+set (SINUSOIDALTIMEDEPENDENCE_SRCS PySinusoidalTimeDependence.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
+python_module(sinusoidal_time_dependence "${SINUSOIDALTIMEDEPENDENCE_SRCS}" "elements")
+
+set (SPLINETIMEDEPENDENCE_SRCS PySplineTimeDependence.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
+python_module(spline_time_dependence "${SPLINETIMEDEPENDENCE_SRCS}" "elements")
+
 set (OUTPUTPLANE_SRCS PyOutputPlane.cpp $<TARGET_OBJECTS:libPyOPALPyCore>)
 python_module(output_plane "${OUTPUTPLANE_SRCS}" "elements")

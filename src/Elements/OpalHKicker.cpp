@@ -76,7 +76,7 @@ void OpalHKicker::update() {
     }
 
     if (itsAttr[K0]) {
-        corr->setKickField(Vector_t(0, Attributes::getReal(itsAttr[K0]), 0));
+        corr->setKickField(Vector_t({0, Attributes::getReal(itsAttr[K0]), 0}));
     }
 
     // Transmit "unknown" attributes.

@@ -146,7 +146,7 @@ void PartBunch::computeSelfFields(int binNumber) {
 
         /// Scale field. Combine Lorentz transform with conversion to proper field
         /// units.
-        eg_m *= Vector_t(gammaz / (scaleFactor), gammaz / (scaleFactor), 1.0 / (scaleFactor * gammaz));
+        eg_m *= Vector_t({gammaz / (scaleFactor), gammaz / (scaleFactor), 1.0 / (scaleFactor * gammaz)});
 
         // If desired write E-field and potential to terminal
 #ifdef FIELDSTDOUT
@@ -233,7 +233,7 @@ void PartBunch::computeSelfFields(int binNumber) {
 
         /// Scale field. Combine Lorentz transform with conversion to proper field
         /// units.
-        eg_m *= Vector_t(gammaz / (scaleFactor), gammaz / (scaleFactor), 1.0 / (scaleFactor * gammaz));
+        eg_m *= Vector_t({gammaz / (scaleFactor), gammaz / (scaleFactor), 1.0 / (scaleFactor * gammaz)});
 
         // If desired write E-field and potential to terminal
 #ifdef FIELDSTDOUT
@@ -324,7 +324,7 @@ void PartBunch::resizeMesh() {
         get_bounds(rmin_m, rmax_m);
     }
 
-    Vector_t origin = Vector_t(0.0, 0.0, 0.0);
+    Vector_t origin = Vector_t({0.0, 0.0, 0.0});
 
     // update the mesh origin and mesh spacing hr_m
     fs_m->solver_m->resizeMesh(origin, hr_m, rmin_m, rmax_m, dh_m);
@@ -448,7 +448,7 @@ void PartBunch::computeSelfFields() {
             fs_m->solver_m->calculatePairForces(this,gammaz);
         }
 
-        Ef = Ef * Vector_t(gammaz / (scaleFactor), gammaz / (scaleFactor), 1.0 / (scaleFactor * gammaz));
+        Ef = Ef * Vector_t({gammaz / (scaleFactor), gammaz / (scaleFactor), 1.0 / (scaleFactor * gammaz)});
         
         /** Magnetic field in x and y direction induced by the electric field
          *
@@ -548,7 +548,7 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
         /// CAVE: y coordinate needs 1/gamma factor because IPPL function Grad() divides by
         /// hr_m which is not scaled appropriately with Lorentz contraction in y direction
         /// only hr_scaled is! -DW
-        eg_m *= Vector_t(gamma, 1.0 / gamma, gamma);
+        eg_m *= Vector_t({gamma, 1.0 / gamma, gamma});
 
 #ifdef FIELDSTDOUT
         // Immediate debug output:
@@ -683,7 +683,7 @@ void PartBunch::computeSelfFields_cycl(int bin) {
         /// CAVE: y coordinate needs 1/gamma factor because IPPL function Grad() divides by
         /// hr_m which is not scaled appropriately with Lorentz contraction in y direction
         /// only hr_scaled is! -DW
-        eg_m *= Vector_t(gamma, 1.0 / gamma, gamma);
+        eg_m *= Vector_t({gamma, 1.0 / gamma, gamma});
 
 #ifdef FIELDSTDOUT
         // Immediate debug output:

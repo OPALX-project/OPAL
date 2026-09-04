@@ -358,7 +358,7 @@ public:
 
         for (int i=0; i<Ippl::getNodes(); i++)
             m << "Node " << i << " has "
-              <<   globalPartPerNode[i]/this->getTotalNum()*100.0 << " \% of the total particles " << endl;
+              <<   globalPartPerNode[i]/this->getTotalNum()*100.0 << " % of the total particles " << endl;
     }
 
 
@@ -540,7 +540,7 @@ int main(int argc, char *argv[]){
     Inform msg(argv[0]);
     Inform msg2all(argv[0],INFORM_ALL_NODES);
 
-    Vektor<int,Dim> nr(atoi(argv[1]),atoi(argv[2]),atoi(argv[3]));
+    Vektor<int,Dim> nr({atoi(argv[1]),atoi(argv[2]),atoi(argv[3])});
 
     const unsigned int totalP = atoi(argv[4]);
     const unsigned int nt     = atoi(argv[5]);

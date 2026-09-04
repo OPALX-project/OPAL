@@ -1,3 +1,21 @@
+//
+// Class OptimizeCmd
+//   The OptimizeCmd definition.
+//   A OptimizeCmd definition is used to parse the parametes for the optimizer.
+//
+// Copyright (c) 2017, Christof Metzger-Kraus
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
 #ifndef OPAL_OptimizeCmd_HH
 #define OPAL_OptimizeCmd_HH
 
@@ -9,10 +27,6 @@
 
 #include <string>
 
-// Class OptimizeCmd
-// ------------------------------------------------------------------------
-/// The OPTIMIZE command.
-
 class OptimizeCmd: public Action {
 
 public:
@@ -23,7 +37,7 @@ public:
     virtual ~OptimizeCmd();
 
     /// Make clone.
-    virtual OptimizeCmd *clone(const std::string &name);
+    virtual OptimizeCmd *clone(const std::string& name);
 
     /// Execute the command.
     virtual void execute();
@@ -31,31 +45,29 @@ public:
 private:
 
     // Not implemented.
-    OptimizeCmd(const OptimizeCmd &)    = delete;
-    void operator=(const OptimizeCmd &) = delete;
+    OptimizeCmd(const OptimizeCmd&)    = delete;
+    void operator=(const OptimizeCmd&) = delete;
 
     // Clone constructor.
-    OptimizeCmd(const std::string &name, OptimizeCmd *parent);
+    OptimizeCmd(const std::string &name, OptimizeCmd* parent);
 
     void stashEnvironment();
     void popEnvironment();
-    
-    enum CrossOver {
-        Blend = 0,
+
+    enum class CrossOver {
+        Blend,
         NaiveOnePoint,
         NaiveUniform,
         SimulatedBinary
     };
-    
-    CrossOver crossoverSelection(std::string crossover);
-    
-    enum Mutation {
-        IndependentBit = 10,
-        OneBit = 20
+    CrossOver crossoverSelection(const std::string& crossover);
+
+    enum class Mutation {
+        IndependentBit,
+        OneBit
     };
-    
-    Mutation mutationSelection(std::string mutation);
-    
+    Mutation mutationSelection(const std::string& mutation);
+
     void run(const CmdArguments_t& args,
              const functionDictionary_t& funcs,
              const DVarContainer_t& dvars,

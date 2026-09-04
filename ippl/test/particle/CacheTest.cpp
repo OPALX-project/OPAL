@@ -148,9 +148,9 @@ int main(int argc, char *argv[]) {
 
     // need to use preprocessor to prevent clang compiler error
 #if DIM == 3
-    nr = Vektor<int, Dim>(atoi(argv[1]), atoi(argv[2]), atoi(argv[3]));
+    nr = Vektor<int, Dim>({atoi(argv[1]), atoi(argv[2]), atoi(argv[3]))};
 #else
-    nr = Vektor<int, Dim>(atoi(argv[1]), atoi(argv[2]));
+    nr = Vektor<int, Dim>({atoi(argv[1]), atoi(argv[2])});
 #endif
 
     e_dim_tag decomp[Dim];

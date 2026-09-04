@@ -72,11 +72,12 @@
 #include "MemoryManagement/RCObject.h"
 #include "Utilities/GeneralClassicException.h"
 
-#include <boost/optional.hpp>
-
 #include <map>
+#include <ostream>
 #include <queue>
 #include <string>
+#include <utility>
+#include <vector>
 
 class BeamlineVisitor;
 class BoundaryGeometry;
@@ -501,7 +502,7 @@ CoordinateSystemTrafo ElementBase::getCSTrafoGlobal2Local() const {
 
 inline
 CoordinateSystemTrafo ElementBase::getEdgeToBegin() const {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, 0),
+    CoordinateSystemTrafo ret(Vector_t({0, 0, 0}),
                               Quaternion(1, 0, 0, 0));
 
     return ret;
@@ -509,7 +510,7 @@ CoordinateSystemTrafo ElementBase::getEdgeToBegin() const {
 
 inline
 CoordinateSystemTrafo ElementBase::getEdgeToEnd() const {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, getElementLength()),
+    CoordinateSystemTrafo ret(Vector_t({0, 0, getElementLength()}),
                               Quaternion(1, 0, 0, 0));
 
     return ret;

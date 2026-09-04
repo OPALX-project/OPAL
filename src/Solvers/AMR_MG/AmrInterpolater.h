@@ -36,6 +36,8 @@ public:
     
 public:
     
+    virtual ~AmrInterpolater() = default;
+
     /*!
      * @param nPoints is the number of interpolation points used
      */

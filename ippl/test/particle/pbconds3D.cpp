@@ -63,12 +63,12 @@ int main(int argc, char *argv[])
     P.create(20); // makes new particles at end of current array
     // put ten particles near right edge, and ten near left edge
     for (j=0; j < 10; j++) { // initialize new values
-      P.R[j] = Vektor<Real,Dim>(5, j * 10,j * 10);
+      P.R[j] = Vektor<Real,Dim>({5, double(j * 10), double(j * 10)});
       P.data[0][j] = Ippl::myNode();
       P.data[1][j] = 5;
     }
     for (j=10; j < 20; j++) { // initialize new values
-      P.R[j] = Vektor<Real,Dim>(95, (j-10) * 10 + 2,(j-10) * 10 + 2);
+      P.R[j] = Vektor<Real,Dim>({95, (double(j-10) * 10 + 2), double((j-10) * 10 + 2)});
       P.data[0][j] = Ippl::myNode();
       P.data[1][j] = 95;
     }
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
   for (unsigned int i=0; i < 2*Dim; ++i)
     P.getBConds()[i] = ParticleNoBCond;
 
-  Vektor<Real,Dim> offset1(5,-1,10);
+  Vektor<Real,Dim> offset1({5,-1,10});
   assign(P.R, P.R + offset1);
   P.update();
   testmsg << "------------------" << endl;
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
   P.getBConds()[4] = ParticlePeriodicBCond;
   P.getBConds()[5] = ParticlePeriodicBCond;
 
-  Vektor<Real,Dim> offset2(5,-1,10);
+  Vektor<Real,Dim> offset2({5,-1,10});
   assign(P.R, P.R + offset2);
   P.update();
   testmsg << "------------------" << endl;

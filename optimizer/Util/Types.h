@@ -22,10 +22,9 @@
 #define __TYPES_H__
 
 #include <map>
+#include <tuple>
 #include <utility>
 #include <vector>
-
-#include "boost/tuple/tuple.hpp"
 
 #include "Expression/Expression.h"
 
@@ -50,7 +49,7 @@ typedef namedVariableCollection_t variableDictionary_t;
 
 /// type of an expression value is either a single double in case of
 /// objectives and for constraints we include the value of LHS and RHS.
-//typedef boost::variant< double, boost::tuple<double, double, double> >
+//typedef std::variant< double, std::tuple<double, double, double> >
     //reqVarValue_t;
 
 //FIXME: do we need InfoType_t ?
@@ -78,10 +77,9 @@ typedef struct reqVarInfo {
 typedef std::pair<std::string, reqVarInfo_t> namedReqVar_t;
 typedef std::map<std::string, reqVarInfo_t> reqVarContainer_t;
 
-
-
 /// type of design variables
-typedef boost::tuple<std::string, double, double> DVar_t;
+typedef std::tuple<std::string, double, double> DVar_t;
+
 enum DVar_tIdx {
     VAR_NAME,
     LOWER_BOUND,

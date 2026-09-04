@@ -50,11 +50,11 @@
 
 
 template <class T, unsigned Dim>
-Vector_t BoxLibLayout<T, Dim>::lowerBound = - Vector_t(1.0, 1.0, 1.0);
+Vector_t BoxLibLayout<T, Dim>::lowerBound = - Vector_t({1.0, 1.0, 1.0});
 
 
 template <class T, unsigned Dim>
-Vector_t BoxLibLayout<T, Dim>::upperBound = Vector_t(1.0, 1.0, 1.0);
+Vector_t BoxLibLayout<T, Dim>::upperBound = Vector_t({1.0, 1.0, 1.0});
 
 
 template<class T, unsigned Dim>

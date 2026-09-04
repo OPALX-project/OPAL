@@ -70,7 +70,7 @@ TEST(Field, Eureka)
     Field<T,2,M,C> B1(layout,gc,bc2), B0(layout0);
 
     // Fill with nontrivial data.
-    B1[I][J] = T(1,1)*(I + 10.0*J);
+    B1[I][J] = T({1,1})*(I + 10.0*J);
 
     std::cout << B1 << std::endl << std::endl;
 
@@ -80,19 +80,19 @@ TEST(Field, Eureka)
     std::cout << B0 << std::endl << std::endl;
 
     // See if we got the right answer.
-    B0[I1][J1] -= T(1,1)*(I1+10.0*J1);
-    B0[1][J1]  -= T(1,1)*(1+10.0*J1);
-    B0[N][J1]  -= T(1,1)*(N+10.0*J1);
-    B0[I1][1]  -= T(1,1)*(I1+10.0);
-    B0[I1][N]  -= T(1,1)*(I1+10.0*N);
+    B0[I1][J1] -= T({1,1})*(I1+10.0*J1);
+    B0[1][J1]  -= T({1,1})*(1+10.0*J1);
+    B0[N][J1]  -= T({1,1})*(N+10.0*J1);
+    B0[I1][1]  -= T({1,1})*(I1+10.0);
+    B0[I1][N]  -= T({1,1})*(I1+10.0*N);
 
-    B0[N][N]  -= T(1,1)*(N+10.0*N);
-    B0[1][N]  -= T(1,1)*(1+10.0*N);
-    B0[1][1]  -= T(1,1)*(1+10.0);
-    B0[N][1]  -= T(1,1)*(N+10.0);
+    B0[N][N]  -= T({1,1})*(N+10.0*N);
+    B0[1][N]  -= T({1,1})*(1+10.0*N);
+    B0[1][1]  -= T({1,1})*(1+10.0);
+    B0[N][1]  -= T({1,1})*(N+10.0);
 
     Vektor<T,2> s2 = sum(B0*B0);
-    EXPECT_TRUE((s2 == Vektor<T,2>(0,0)) );
+    EXPECT_TRUE((s2 == Vektor<T,2>({0,0})) );
 
     std::cout << s2 << std::endl;
     std::cout << B0 << std::endl << std::endl;

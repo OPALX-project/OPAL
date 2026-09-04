@@ -7,16 +7,15 @@
 
 #include <gsl/gsl_rng.h>
 
-#include <boost/regex.hpp>
-
-#include <iostream>
-#include <string>
+#include <cmath>
+#include <cstdlib>
 #include <fstream>
+#include <iostream>
+#include <regex>
+#include <set>
 #include <sstream>
 #include <streambuf>
-#include <cstdlib>
-#include <cmath>
-#include <set>
+#include <string>
 
 Ippl *ippl;
 int main(int argc, char *argv[])
@@ -38,8 +37,8 @@ int main(int argc, char *argv[])
 
     // std::string str("repeat( translate(union(rectangle(0.1, 0.1), ellipse(0.1, 0.1)), -0.01, -0.02), 2, 0.1, 0.2)");
 
-    str = boost::regex_replace(str, boost::regex("//.*?\\n"), std::string(""), boost::match_default | boost::format_all);
-    str = boost::regex_replace(str, boost::regex("\\s"), std::string(""), boost::match_default | boost::format_all);
+    str = std::regex_replace(str,std::regex("//.*?\\n"), std::string(""), std::regex_constants::match_default |std::regex_constants::format_default);
+    str = std::regex_replace(str,std::regex("\\s"), std::string(""), std::regex_constants::match_default |std::regex_constants::format_default);
 
     if (parse(str, fun)) {
         // fun->print(0);
@@ -60,12 +59,12 @@ int main(int argc, char *argv[])
             Vector_t llc, urc;
             std::shared_ptr<mslang::Base> & first = baseBlocks.front();
             const mslang::BoundingBox2D &bb = first->bb_m;
-            llc = Vector_t(bb.center_m[0] - 0.5 * bb.width_m,
+            llc = Vector_t({bb.center_m[0] - 0.5 * bb.width_m,
                            bb.center_m[1] - 0.5 * bb.height_m,
-                           0.0);
-            urc = Vector_t(bb.center_m[0] + 0.5 * bb.width_m,
+                           0.0});
+            urc = Vector_t({bb.center_m[0] + 0.5 * bb.width_m,
                            bb.center_m[1] + 0.5 * bb.height_m,
-                           0.0);
+                           0.0});
 
 
             for (unsigned int i = 1; i < baseBlocks.size(); ++ i) {

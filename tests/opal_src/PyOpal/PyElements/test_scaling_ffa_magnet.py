@@ -93,22 +93,28 @@ class ScalingFFAMagnetTest(unittest.TestCase):
         the end field model around the place. It's a bit clunky.
         """
         end_field = pyopal.elements.enge.Enge()
-        end_field.enge_lambda = 1
+        end_field.enge_lambda = 0.1
         end_field.x0 = 2.5
         end_field.coefficients = [0.0, 1.0]
         end_field.set_opal_name("enge1")
         end_field.update()
         self.magnet.end_field_model = "enge1"
-        point = self.get_cartesian_position(self.r0, 0.0, 4.6)
+        point = self.get_cartesian_position(self.r0, 0.0, 1.5) # magnet_start = 1.5
         by = self.magnet.get_field_value(*point)[2]
         # check normal operation
+        self.assertAlmostEqual(by, 2.0, 2)
+        point = self.get_cartesian_position(self.r0, 0.0, 1.5+2.5*2)
+        by = self.magnet.get_field_value(*point)[2]
         self.assertAlmostEqual(by, 2.0, 2)
 
         # check updates in end field model propagate
         end_field.x0 = 2.2
         end_field.update()
         self.magnet.update_end_field()
-        point = self.get_cartesian_position(self.r0, 0.0, 4.2)
+        point = self.get_cartesian_position(self.r0, 0.0, 1.5)
+        by = self.magnet.get_field_value(*point)[2]
+        self.assertAlmostEqual(by, 2.0, 2)
+        point = self.get_cartesian_position(self.r0, 0.0, 1.5+2.2*2)
         by = self.magnet.get_field_value(*point)[2]
         self.assertAlmostEqual(by, 2.0, 2)
 

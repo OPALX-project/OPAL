@@ -213,12 +213,12 @@ void ParallelTTracker::execute() {
         itsBunch_m->toLabTrafo_m = beamlineToLab;
 
         itsBunch_m->RefPartR_m = beamlineToLab.transformTo(Vector_t(0.0));
-        itsBunch_m->RefPartP_m = beamlineToLab.rotateTo(momentum * Vector_t(0, 0, 1));
+        itsBunch_m->RefPartP_m = beamlineToLab.rotateTo(momentum * Vector_t({0, 0, 1}));
 
         if (itsBunch_m->getTotalNum() > 0) {
             if (!itsOpalBeamline_m.containsSource()) {
                 momentum = itsReference.getP() / itsBunch_m->getM();
-                itsBunch_m->RefPartP_m = beamlineToLab.rotateTo(momentum * Vector_t(0, 0, 1));
+                itsBunch_m->RefPartP_m = beamlineToLab.rotateTo(momentum * Vector_t({0, 0, 1}));
             }
 
             if (zstart_m > pathLength_m) {
@@ -482,8 +482,8 @@ void ParallelTTracker::computeSpaceChargeFields(unsigned long long step) {
     }
 
     itsBunch_m->calcBeamParameters();
-    Quaternion alignment = getQuaternion(itsBunch_m->get_pmean(), Vector_t(0, 0, 1));
-    CoordinateSystemTrafo beamToReferenceCSTrafo(Vector_t(0, 0, pathLength_m), alignment.conjugate());
+    Quaternion alignment = getQuaternion(itsBunch_m->get_pmean(), Vector_t({0, 0, 1}));
+    CoordinateSystemTrafo beamToReferenceCSTrafo(Vector_t({0, 0, pathLength_m}), alignment.conjugate());
     CoordinateSystemTrafo referenceToBeamCSTrafo = beamToReferenceCSTrafo.inverted();
     const unsigned int localNum1 = itsBunch_m->getLocalNum();
     for (unsigned int i = 0; i < localNum1; ++ i) {
@@ -675,7 +675,7 @@ void ParallelTTracker::computeWakefield(IndexMap::value_t &elements) {
 
             if (!itsBunch_m->hasFieldSolver()) itsBunch_m->calcBeamParameters();
 
-            Quaternion alignment = getQuaternion(itsBunch_m->get_pmean(), Vector_t(0, 0, 1));
+            Quaternion alignment = getQuaternion(itsBunch_m->get_pmean(), Vector_t({0, 0, 1}));
             CoordinateSystemTrafo referenceToBeamCSTrafo(Vector_t(0.0), alignment);
             CoordinateSystemTrafo beamToReferenceCSTrafo = referenceToBeamCSTrafo.inverted();
 
@@ -1163,7 +1163,7 @@ void ParallelTTracker::updateRefToLabCSTrafo() {
 
     pathLength_m += std::copysign(1, itsBunch_m->getdT()) * euclidean_norm(R);
 
-    CoordinateSystemTrafo update(R, getQuaternion(P, Vector_t(0, 0, 1)));
+    CoordinateSystemTrafo update(R, getQuaternion(P, Vector_t({0, 0, 1})));
 
     transformBunch(update);
 
@@ -1185,7 +1185,7 @@ void ParallelTTracker::applyFractionalStep(const BorisPusher &pusher, double tau
 
     Vector_t R = itsBunch_m->toLabTrafo_m.transformFrom(itsBunch_m->RefPartR_m);
     Vector_t P = itsBunch_m->toLabTrafo_m.rotateFrom(itsBunch_m->RefPartP_m);
-    CoordinateSystemTrafo update(R, getQuaternion(P, Vector_t(0, 0, 1)));
+    CoordinateSystemTrafo update(R, getQuaternion(P, Vector_t({0, 0, 1})));
     itsBunch_m->toLabTrafo_m = itsBunch_m->toLabTrafo_m * update.inverted();
 }
 
@@ -1206,7 +1206,7 @@ void ParallelTTracker::findStartPosition(const BorisPusher &pusher) {
         Util::getKineticEnergy(itsBunch_m->RefPartP_m, itsBunch_m->getM()) < 1e-3) {
         double gamma = 0.1 / itsBunch_m->getM() + 1.0;
         double beta = sqrt(1.0 - 1.0 / std::pow(gamma, 2));
-        itsBunch_m->RefPartP_m = itsBunch_m->toLabTrafo_m.rotateTo(beta * gamma * Vector_t(0, 0, 1));
+        itsBunch_m->RefPartP_m = itsBunch_m->toLabTrafo_m.rotateTo(beta * gamma * Vector_t({0, 0, 1}));
     }
 
     while (true) {
@@ -1390,8 +1390,8 @@ void ParallelTTracker::evenlyDistributeParticles() {
             itsBunch_m->create(1);
             {
                 const double *buffer = reinterpret_cast<const double*>(recvbuf + j);
-                itsBunch_m->R[idx] = Vector_t(buffer[0], buffer[1], buffer[2]);
-                itsBunch_m->P[idx] = Vector_t(buffer[3], buffer[4], buffer[5]);
+                itsBunch_m->R[idx] = Vector_t({buffer[0], buffer[1], buffer[2]});
+                itsBunch_m->P[idx] = Vector_t({buffer[3], buffer[4], buffer[5]});
                 itsBunch_m->Q[idx] = buffer[6];
                 itsBunch_m->M[idx] = buffer[7];
                 itsBunch_m->dt[idx] = buffer[8];

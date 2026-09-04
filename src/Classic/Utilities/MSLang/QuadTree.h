@@ -3,7 +3,10 @@
 
 #include "Utilities/MSLang.h"
 
+#include <list>
 #include <memory>
+#include <ostream>
+#include <vector>
 
 namespace mslang {
     struct QuadTree {

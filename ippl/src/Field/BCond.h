@@ -201,7 +201,8 @@ public:
   typedef typename vmap<int, RefCountedP <BCondBase<T,D,M,C> > >::iterator 
     iterator; 
   typedef typename vmap<int, RefCountedP <BCondBase<T,D,M,C> > >::const_iterator 
-    const_iterator; 
+    const_iterator;
+  virtual ~BConds() = default;
   void apply( Field<T,D,M,C>& a );
   bool changesPhysicalCells() const;
   virtual void write(std::ostream&) const;

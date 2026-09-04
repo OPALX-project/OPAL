@@ -88,7 +88,19 @@ void SDDSColumn::writeValue(std::ostream& os) const {
 
     os.flags(writeFlags_m);
     os.precision(writePrecision_m);
-    os << value_m << std::setw(10) << "\t";
+    
+    std::visit([&os](auto&& arg){
+        using T = std::decay_t<decltype(arg)>;
+        if constexpr (std::is_arithmetic_v<T>) {
+            // float, double, int
+            os << static_cast<double>(arg);
+        } else {
+            // string, char
+            os << arg;
+        }
+        os << std::setw(10) << "\t";
+    }, value_m);
+
     set_m = false;
 }
 

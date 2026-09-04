@@ -224,12 +224,12 @@ void FlexibleCollimator::setDescription(const std::string& desc) {
     std::shared_ptr<mslang::Base>& first = holes_m.front();
     const mslang::BoundingBox2D& bb = first->bb_m;
 
-    Vector_t llc(bb.center_m[0] - 0.5 * bb.width_m,
+    Vector_t llc({bb.center_m[0] - 0.5 * bb.width_m,
                  bb.center_m[1] - 0.5 * bb.height_m,
-                 0.0);
-    Vector_t urc(bb.center_m[0] + 0.5 * bb.width_m,
+                 0.0});
+    Vector_t urc({bb.center_m[0] + 0.5 * bb.width_m,
                  bb.center_m[1] + 0.5 * bb.height_m,
-                 0.0);
+                 0.0});
 
     for (const std::shared_ptr<mslang::Base>& it: holes_m) {
         const mslang::BoundingBox2D& bb = it->bb_m;

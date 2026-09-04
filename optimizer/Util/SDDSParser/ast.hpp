@@ -17,79 +17,100 @@
 #ifndef AST_HPP_
 #define AST_HPP_
 
-#include <boost/variant.hpp>
-#include <boost/spirit/include/qi.hpp>
-
+#include <array>
+#include <optional>
 #include <string>
+#include <string_view>
+#include <type_traits>
+#include <utility>
+#include <variant>
 #include <vector>
 
 namespace SDDS {
     namespace ast {
-        enum datatype { FLOAT
-                      , DOUBLE
-                      , SHORT
-                      , LONG
-                      , CHARACTER
-                      , STRING };
+        enum class dataType {
+            FLOAT,
+            DOUBLE,
+            SHORT,
+            LONG,
+            CHARACTER,
+            STRING
+        };
+        enum class dataMode {
+            ASCII,
+            BINARY
+        };
 
-        enum datamode { ASCII
-                      , BINARY};
+        using variant_t = std::variant<float,
+                                       double,
+                                       short,
+                                       long,
+                                       char,
+                                       std::string>;
 
-        enum endianess { BIGENDIAN
-                       , LITTLEENDIAN};
+        using columnData_t = std::vector<variant_t>;
 
-        struct nil {};
+        constexpr std::array<std::pair<std::string_view, dataType>, 6> dataTypeTable = {{
+            { "float",     dataType::FLOAT },
+            { "double",    dataType::DOUBLE },
+            { "short",     dataType::SHORT },
+            { "long",      dataType::LONG },
+            { "character", dataType::CHARACTER },
+            { "string",    dataType::STRING }
+        }};
 
-        typedef boost::variant<float,
-                               double,
-                               short,
-                               long,
-                               char,
-                               std::string> variant_t;
+        constexpr char toLowerAscii(char c) {
+            return (c >= 'A' && c <= 'Z') ? static_cast<char>(c + ('a' - 'A')) : c;
+        }
 
-        typedef std::vector<variant_t> columnData_t;
+        constexpr bool equalsIgnoreCase(std::string_view lhs, std::string_view rhs) {
+            if (lhs.size() != rhs.size()) {
+                return false;
+            }
+            for (std::size_t i = 0; i < lhs.size(); ++i) {
+                if (toLowerAscii(lhs[i]) != toLowerAscii(rhs[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
 
-        inline
-        std::string getDataTypeString(datatype type) {
-            switch(type) {
-            case FLOAT:
-                return "float";
-            case DOUBLE:
-                return "double";
-            case SHORT:
-                return "short";
-            case LONG:
-                return "long";
-            case CHARACTER:
-                return "char";
-            case STRING:
-                return "string";
-            default:
+        constexpr std::optional<dataType> parseDataType(std::string_view typeName) {
+            for (const auto& [name, type] : dataTypeTable) {
+                if (equalsIgnoreCase(typeName, name)) {
+                    return type;
+                }
+            }
+            return std::nullopt;
+        }
+
+        constexpr std::string_view getDataTypeString(dataType type) {
+            for (const auto& [name, value] : dataTypeTable) {
+                if (value == type) {
+                    return name;
+                }
+            }
+
+            return "unknown";
+        }
+
+        constexpr std::string_view getDataModeString(dataMode mode) {
+            constexpr std::array<std::string_view, 2> dataModeNames = {
+                "ascii",
+                "binary"
+            };
+
+            const auto index = static_cast<std::underlying_type_t<dataMode>>(mode);
+            if (index < 0 || static_cast<std::size_t>(index) >= dataModeNames.size()) {
                 return "unknown";
             }
+
+            return dataModeNames[static_cast<std::size_t>(index)];
         }
 
     }
 
-    namespace parser {
-        namespace qi = boost::spirit::qi;
-
-        template <typename Iterator, typename Skipper>
-        struct string: qi::grammar<Iterator, std::string(), Skipper >
-        {
-            string();
-
-            boost::spirit::qi::rule<Iterator, std::string(), Skipper> start;
-        };
-
-        template <typename Iterator, typename Skipper>
-        struct qstring: qi::grammar<Iterator, std::string(), Skipper >
-        {
-            qstring();
-
-            boost::spirit::qi::rule<Iterator, std::string(), Skipper> start;
-        };
-}
+    namespace parser {}
 }
 
 #endif // AST_HPP_

@@ -87,7 +87,7 @@ void FFTBase<Dim,T>::write(std::ostream& out) const {
     out << "---------------FFT Object Dump Begin-------------------" << std::endl;
     // Output the user-defined names for transform directions:
     out << "Map of transform direction names:" << std::endl;
-    std::map<char*,unsigned>::const_iterator mi, m_end = directions_m.end();
+    std::map<const char*,int>::const_iterator mi, m_end = directions_m.end();
     for (mi = directions_m.begin(); mi != m_end; ++mi)
         out << "[" << (*mi).first << "," << (*mi).second << "]" << std::endl;
     // Output type of transform

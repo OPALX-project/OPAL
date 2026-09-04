@@ -19,10 +19,10 @@
 #ifndef OPAL_SDDS_WRITER_H
 #define OPAL_SDDS_WRITER_H
 
-#include <fstream>
 #include <iomanip>
 #include <map>
 #include <ostream>
+#include <fstream>
 #include <queue>
 #include <sstream>
 #include <string>

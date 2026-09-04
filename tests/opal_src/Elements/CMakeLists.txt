@@ -1,5 +1,6 @@
 set (_SRCS
     OpalAsymmetricEngeTest.cpp
+    OpalDriftTest.cpp
     OpalEngeTest.cpp
     OpalOffsetTest.cpp
     OpalOutputPlaneTest.cpp
@@ -8,6 +9,7 @@ set (_SRCS
     OpalSplineTimeDependenceTest.cpp
     OpalVariableRFCavityTest.cpp
     OpalVariableRFCavityFringeFieldTest.cpp
+    OpalSinusoidalTimeDependenceTest.cpp
 )
 
 include_directories (

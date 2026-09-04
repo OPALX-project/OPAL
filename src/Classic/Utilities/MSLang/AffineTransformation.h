@@ -53,7 +53,7 @@ namespace mslang {
         }
 
         Vector_t getOrigin() const {
-            return Vector_t(-(*this)(0, 2), -(*this)(1, 2), 0.0);
+            return Vector_t({-(*this)(0, 2), -(*this)(1, 2), 0.0});
         }
 
         double getAngle() const {
@@ -66,7 +66,7 @@ namespace mslang {
             b(1, 0) = v(1);
             b(2, 0) = 1.0;
             matrix_t w = boost::numeric::ublas::prod(*this, b);
-            return Vector_t(w(0, 0), w(1, 0), 0.0);
+            return Vector_t({w(0, 0), w(1, 0), 0.0});
         }
 
         Vector_t transformFrom(const Vector_t &v) const {

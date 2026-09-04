@@ -29,7 +29,7 @@ RegularDomain::RegularDomain(const IntVector_t& nr,
 void RegularDomain::resizeMesh(Vector_t& origin, Vector_t& hr, const Vector_t& rmin,
                                 const Vector_t& rmax, double dh)
 {
-    Vector_t mymax = Vector_t(0.0, 0.0, 0.0);
+    Vector_t mymax = Vector_t({0.0, 0.0, 0.0});
 
     // apply bounding box increment dh, i.e., "BBOXINCR" input argument
     double zsize = rmax[2] - rmin[2];
@@ -37,8 +37,8 @@ void RegularDomain::resizeMesh(Vector_t& origin, Vector_t& hr, const Vector_t& r
     setMinMaxZ(rmin[2] - zsize * (1.0 + dh),
                rmax[2] + zsize * (1.0 + dh));
 
-    origin = Vector_t(getXRangeMin(), getYRangeMin(), getMinZ());
-    mymax  = Vector_t(getXRangeMax(), getYRangeMax(), getMaxZ());
+    origin = Vector_t({getXRangeMin(), getYRangeMin(), getMinZ()});
+    mymax  = Vector_t({getXRangeMax(), getYRangeMax(), getMaxZ()});
 
     for (int i = 0; i < 3; ++i)
         hr[i] = (mymax[i] - origin[i]) / nr_m[i];

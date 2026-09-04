@@ -30,6 +30,8 @@
 #include "Utilities/OpalException.h"
 #include "Elements/OpalSplineTimeDependence.h"
 
+#include "Algorithms/SplineTimeDependence.h"
+
 const std::string OpalSplineTimeDependence::doc_string =
     std::string("The \"SPLINE_TIME_DEPENDENCE\" element defines ")+\
     std::string("an array of times and corresponding values for time lookup, ")+\
@@ -39,22 +41,22 @@ const std::string OpalSplineTimeDependence::doc_string =
 // I investigated using a StringArray or RealArray here;
 // Don't seem to have capacity to handle variables, so for now not implemented
 OpalSplineTimeDependence::OpalSplineTimeDependence()
-       : OpalElement(int(SIZE),
+       : OpalElement(static_cast<int>(SIZE),
                      "SPLINE_TIME_DEPENDENCE",
                      doc_string.c_str()) {
     itsAttr[ORDER] = Attributes::makeReal("ORDER",
-      std::string("Order of the lookup - either 1 for linear interpolation, ")+
-      std::string("or 3 for cubic interpolation with quadratic smoothing. ")+
-      std::string("Other values make an error."));
+      "Order of the lookup - either 1 for linear interpolation, "
+      "or 3 for cubic interpolation with quadratic smoothing. "
+      "Other values make an error.", 1);
 
     itsAttr[TIMES] = Attributes::makeRealArray("TIMES",
-      std::string("Array of real times in ns. There must be at least \"ORDER\"+1 ")+
-      std::string("elements in the array and they must be strictly monotically ")+
-      std::string("increasing"));
+      "Array of real times in ns. There must be at least \"ORDER\"+1 "
+      "elements in the array and they must be strictly monotically "
+      "increasing");
 
     itsAttr[VALUES] = Attributes::makeRealArray("VALUES",
-      std::string("Array of real values. The length of \"VALUES\" must be the ")+
-      std::string("same as the length of \"TIMES\"."));
+      "Array of real values. The length of \"VALUES\" must be the "
+      "same as the length of \"TIMES\".");
 
     registerOwnership();
 }
@@ -72,21 +74,26 @@ OpalSplineTimeDependence::OpalSplineTimeDependence(const std::string &name,
     OpalElement(name, parent) {
 }
 
-OpalSplineTimeDependence::~OpalSplineTimeDependence() {}
-
 void OpalSplineTimeDependence::update() {
-
-    double orderReal = Attributes::getReal(itsAttr[ORDER])+1e-10;
-    if ((orderReal - 1.) > 1e-9 && (orderReal - 3.) > 1e-9) {
+    const double order = Attributes::getReal(itsAttr[ORDER]);
+    if (order != 1.0 && order != 3.0) {
         throw OpalException("OpalSplineTimeDependence::update",
                             "SPLINE_TIME_DEPENDENCE \"ORDER\" should be 1 or 3.");
     }
-    size_t order(floor(orderReal));
-    std::vector<double> times = Attributes::getRealArray(itsAttr[TIMES]);
-    std::vector<double> values = Attributes::getRealArray(itsAttr[VALUES]);
-    std::shared_ptr<SplineTimeDependence> spline =
-                                  std::make_shared<SplineTimeDependence>(order,
-                                                                        times,
-                                                                        values);
+    // Note we set array defaults as it seems that the default object must be valid
+    std::vector<double> times;
+    if (itsAttr[TIMES]) {
+        times = Attributes::getRealArray(itsAttr[TIMES]);
+    } else {
+        times = {0.0, 1.0}; // A default time array
+    }
+    std::vector<double> values;
+    if (itsAttr[VALUES]) {
+        values = Attributes::getRealArray(itsAttr[VALUES]);
+    } else {
+        values = {0.0, 0.0}; // A default value array
+    }
+    const auto spline = std::make_shared<SplineTimeDependence>(static_cast<size_t>(order),
+            times,values);
     AbstractTimeDependence::setTimeDependence(getOpalName(), spline);
 }

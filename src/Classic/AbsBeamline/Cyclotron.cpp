@@ -255,6 +255,9 @@ double Cyclotron::getSymmetry() const {
 
 void Cyclotron::setCyclotronType(const std::string& type) {
     typeName_m = type;
+    if (!typeName_m.empty()) {
+        setBFieldType();
+    }
 }
 
 const std::string& Cyclotron::getCyclotronType() const {
@@ -384,13 +387,7 @@ void Cyclotron::setBFieldType() {
         {"SYNCHROCYCLOTRON", BFieldType::SYNCHRO}
     };
 
-    if (typeName_m.empty()) {
-        throw GeneralClassicException(
-                "Cyclotron::setBFieldType",
-                "The attribute TYPE isn't set for the CYCLOTRON element");
-    } else {
-        fieldType_m = typeStringToBFieldType_s.at(typeName_m);
-    }
+    fieldType_m = typeStringToBFieldType_s.at(typeName_m);
 }
 
 Cyclotron::BFieldType Cyclotron::getBFieldType() const {
@@ -524,7 +521,7 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
             temp_R(1) < yBegin || temp_R(1) > yEnd ||
             temp_R(2) < zBegin || temp_R(2) > zEnd) continue;
 
-        Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+        Vector_t tmpE({0.0, 0.0, 0.0}), tmpB({0.0, 0.0, 0.0});
         // out of bounds?
         if ((*fi)->getFieldstrength(temp_R, tmpE, tmpB)) continue;
 
@@ -795,6 +792,10 @@ bool Cyclotron::interpolate(const double& rad,
 
 
 void Cyclotron::read(const double& scaleFactor) {
+    if (typeName_m.empty()) {
+        throw GeneralClassicException("Cyclotron::read",
+                                      "The attribute TYPE isn't set for the CYCLOTRON element");
+    }
     switch (fieldType_m) {
         case BFieldType::PSIBF: {
             *gmsg << "* Read field data from PSI format field map file" << endl;
@@ -1544,10 +1545,10 @@ void Cyclotron::writeOutputFieldFiles() {
         fp2.open(fname, std::ios::out);
         for (int i = 0; i < Bfield_m.nrad_m; i++) {
             for (int k = 0; k < Bfield_m.ntet_m; k++) {
-                Vector_t tmpR = Vector_t (BP_m.rmin_m + (i * BP_m.delr_m), 0.0, k * (BP_m.tetmin_m + BP_m.dtet_m));
-                Vector_t tmpE(0.0, 0.0, 0.0), tmpB(0.0, 0.0, 0.0);
+                Vector_t tmpR = Vector_t ({BP_m.rmin_m + (i * BP_m.delr_m), 0.0, k * (BP_m.tetmin_m + BP_m.dtet_m)});
+                Vector_t tmpE({0.0, 0.0, 0.0}), tmpB({0.0, 0.0, 0.0});
                 for (auto& fi: RFfields_m) {
-                    Vector_t E(0.0, 0.0, 0.0), B(0.0, 0.0, 0.0);
+                    Vector_t E({0.0, 0.0, 0.0}), B({0.0, 0.0, 0.0});
                     if (!fi->getFieldstrength(tmpR, tmpE, tmpB)) {
                         tmpE += E;
                         tmpB -= B;

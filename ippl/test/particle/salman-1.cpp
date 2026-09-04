@@ -243,15 +243,15 @@ int main(int argc, char *argv[]){
   Inform msg("cic ");
   Inform msg2all(argv[0],INFORM_ALL_NODES);
 
-  Vektor<int,Dim> nr(atoi(argv[1]),atoi(argv[1]));
+  Vektor<int,Dim> nr({atoi(argv[1]),atoi(argv[1])});
 
   // coordinate space
   size_t nx = nr[0] - 1;
   size_t ny = nr[1] - 1;
 
   const unsigned int totalP = nx*ny;
-  Vector_t mesh_org = Vector_t(atof(argv[3]),atof(argv[4]));
-  Vector_t hr = Vector_t(atof(argv[5]),atof(argv[6]));
+  Vector_t mesh_org = Vector_t({atof(argv[3]),atof(argv[4])});
+  Vector_t hr = Vector_t({atof(argv[5]),atof(argv[6])});
 
   const unsigned int domplus = atoi(argv[7]);
 
@@ -300,7 +300,7 @@ int main(int argc, char *argv[]){
   size_t k = 0;
   for (unsigned int i=0; i<nx; i++)
     for (unsigned int j=0; j<ny; j++) {
-      P->R[k]  = Vector_t(i,j);
+        P->R[k]  = Vector_t({(double)i, (double)j});
       k++;
     }
 
@@ -325,7 +325,7 @@ int main(int argc, char *argv[]){
 
   for (unsigned int n=0; n<steps; n++) {
     P->rho_m= 0.0;
-    P->R[loc] += Vector_t(0.0,0.1);
+    P->R[loc] += Vector_t({0.0,0.1});
     P->update();
 
     k = 0;

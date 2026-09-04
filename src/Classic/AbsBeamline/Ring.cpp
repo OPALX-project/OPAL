@@ -115,8 +115,8 @@ bool Ring::apply(const size_t& id, const double& t,
 
 bool Ring::apply(const Vector_t& R, const Vector_t& /*P*/,
                  const double& t, Vector_t& E, Vector_t& B) {
-    B = Vector_t(0.0, 0.0, 0.0);
-    E = Vector_t(0.0, 0.0, 0.0);
+    B = Vector_t({0.0, 0.0, 0.0});
+    E = Vector_t({0.0, 0.0, 0.0});
 
     std::vector<RingSection*> sections = getSectionsAt(R); // I think this doesn't actually use R -DW
     bool outOfBounds = true;
@@ -128,8 +128,8 @@ bool Ring::apply(const Vector_t& R, const Vector_t& /*P*/,
         }
     }
     for (size_t i = 0; i < sections.size(); ++i) {
-        Vector_t B_temp(0.0, 0.0, 0.0);
-        Vector_t E_temp(0.0, 0.0, 0.0);
+        Vector_t B_temp({0.0, 0.0, 0.0});
+        Vector_t E_temp({0.0, 0.0, 0.0});
         outOfBounds &= sections[i]->getFieldValue(R, refPartBunch_m->get_centroid(), t, E_temp, B_temp);
         B += (scale_m * B_temp);
         E += (scale_m * E_temp);
@@ -212,9 +212,9 @@ Vector_t Ring::getNextPosition() const {
 }
 
 Vector_t Ring::getStartPosition() const {
-    return Vector_t(latticeRInit_m * std::cos(latticePhiInit_m),
+    return Vector_t({latticeRInit_m * std::cos(latticePhiInit_m),
                     latticeRInit_m * std::sin(latticePhiInit_m),
-                    0.);
+                    0.});
 }
 
 Vector_t Ring::getNextNormal() const {
@@ -226,9 +226,9 @@ Vector_t Ring::getNextNormal() const {
 }
 
 Vector_t Ring::getStartNormal() const {
-    return Vector_t(-std::sin(latticePhiInit_m+latticeThetaInit_m),
+    return Vector_t({-std::sin(latticePhiInit_m+latticeThetaInit_m),
                     std::cos(latticePhiInit_m+latticeThetaInit_m),
-                    0.);
+                    0.});
 }
 
 void Ring::appendElement(const Component& element) {
@@ -254,21 +254,21 @@ void Ring::appendElement(const Component& element) {
     checkMidplane(delta);
 
     double placeF = std::atan2(startNorm(0), startNorm(1)); // angle between y axis and norm
-    Vector_t endPos = Vector_t(+delta.getVector()(0) * std::sin(placeF) + delta.getVector()(1) * std::cos(placeF),
+    Vector_t endPos = Vector_t({+delta.getVector()(0) * std::sin(placeF) + delta.getVector()(1) * std::cos(placeF),
                                +delta.getVector()(0) * std::cos(placeF) - delta.getVector()(1) * std::sin(placeF),
-                               0) + startPos;
+                               0}) + startPos;
     section->setEndPosition(endPos);
 
     double endF = delta.getRotation().getAxis()(2);//+
     //atan2(delta.getVector()(1), delta.getVector()(0));
-    Vector_t endNorm = Vector_t(+startNorm(0) * std::cos(endF) - startNorm(1) * std::sin(endF),
+    Vector_t endNorm = Vector_t({+startNorm(0) * std::cos(endF) - startNorm(1) * std::sin(endF),
                                 +startNorm(0) * std::sin(endF) + startNorm(1) * std::cos(endF),
-                                0);
+                                0});
     section->setEndNormal(endNorm);
 
     section->setComponentPosition(startPos);
     double orientation = std::atan2(startNorm(1), startNorm(0));
-    section->setComponentOrientation(Vector_t(0, 0, orientation));
+    section->setComponentOrientation(Vector_t({0, 0, orientation}));
 
     section_list_m.push_back(section);
     *gmsg << "* Added " << element.getName() << " to Ring" << endl;

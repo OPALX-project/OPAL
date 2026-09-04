@@ -27,15 +27,12 @@
 #ifndef __SUMERRSQ_H__
 #define __SUMERRSQ_H__
 
-#include <map>
-#include <string>
 #include <fstream>
 #include <iterator>
-
-#include "boost/type_traits/remove_cv.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
-#include "boost/smart_ptr.hpp"
+#include <map>
+#include <string>
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/SDDSReader.h"
@@ -61,9 +58,9 @@ struct SumErrSq {
                                     "sumErrSq expects 3 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        std::string measurement_filename = boost::get<std::string>(args[0]);
-        var_name_                        = boost::get<std::string>(args[1]);
-        stat_filename_                   = boost::get<std::string>(args[2]);
+        std::string measurement_filename = std::get<std::string>(args[0]);
+        var_name_                        = std::get<std::string>(args[1]);
+        stat_filename_                   = std::get<std::string>(args[2]);
 
         //FIXME: we could assume measurements don't change
         parseMeasurements(measurement_filename);
@@ -94,7 +91,7 @@ struct SumErrSq {
             sum += val * val;
         }
 
-        return boost::make_tuple(sqrt(sum/measurements_.size()), is_valid);
+        return std::make_tuple(std::sqrt(sum/measurements_.size()), is_valid);
     }
 
 private:
@@ -107,7 +104,7 @@ private:
     void parseMeasurements(std::string measurement_filename);
 
     // define a mapping to arguments in argument vector
-    boost::tuple<std::string, std::string, std::string> argument_types;
+    std::tuple<std::string, std::string, std::string> argument_types;
 };
 
 #endif

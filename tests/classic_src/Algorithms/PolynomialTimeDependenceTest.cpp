@@ -45,7 +45,7 @@ TEST(PolynomialTimeDependenceTest, PolynomialTimeDependenceTest) {
     PolynomialTimeDependence time_dependence_2(test);
     EXPECT_DOUBLE_EQ(time_dependence_2.getValue(0.1), 1.);
 
-    // Check cubic terms
+    // Check linear and quadratic terms
     test.push_back(2.);
     test.push_back(3.);
     PolynomialTimeDependence time_dependence_3(test);
@@ -101,3 +101,24 @@ TEST(PolynomialTimeDependenceTest, TDMapNameLookupTest) {
                  GeneralClassicException);
 
 }
+
+TEST(PolynomialTimeDependenceTest, Integral) {
+    OpalTestUtilities::SilenceTest silencer;
+
+    // Check empty polynomial coefficients always returns 0.
+    std::vector<double> test;
+    PolynomialTimeDependence time_dependence_1(test);
+    EXPECT_DOUBLE_EQ(time_dependence_1.getIntegral(0.1), 0.);
+
+    // Check constant term produces constant
+    test.push_back(1.);
+    PolynomialTimeDependence time_dependence_2(test);
+    EXPECT_DOUBLE_EQ(time_dependence_2.getIntegral(0.1), 0.1);
+
+    // Check linear and quadratic terms
+    test.push_back(2.);
+    test.push_back(3.);
+    PolynomialTimeDependence time_dependence_3(test);
+    EXPECT_DOUBLE_EQ(time_dependence_3.getIntegral(0.1), 0.111);
+}
+

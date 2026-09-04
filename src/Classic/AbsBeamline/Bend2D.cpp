@@ -257,8 +257,8 @@ double Bend2D::calculateBendAngle() {
     const double cdt = Physics::c * deltaT;
     // Integrate through field for initial angle.
     Vector_t oldX;
-    Vector_t X = -deltaBeginEntry_m * Vector_t(tanEntranceAngle_m, 0.0, 1.0);
-    Vector_t P = betaGamma * Vector_t(sinEntranceAngle_m, 0.0, cosEntranceAngle_m);
+    Vector_t X = -deltaBeginEntry_m * Vector_t({tanEntranceAngle_m, 0.0, 1.0});
+    Vector_t P = betaGamma * Vector_t({sinEntranceAngle_m, 0.0, cosEntranceAngle_m});
     double deltaS = 0.0;
     double bendLength = endField_m - startField_m;
     const Vector_t eField(0.0);
@@ -269,7 +269,7 @@ double Bend2D::calculateBendAngle() {
         pusher_m.push(X, P, deltaT);
         X *= cdt;
 
-        Vector_t bField(0.0, 0.0, 0.0);
+        Vector_t bField({0.0, 0.0, 0.0});
         calculateMapField(X, bField);
         bField = fieldAmplitude_m * bField;
 
@@ -355,7 +355,7 @@ void Bend2D::calcEngeFunction(double zNormalized,
 // :FIXME: is this correct?
 Vector_t Bend2D::calcCentralField(const Vector_t &/*R*/, double /*deltaX*/) {
 
-    Vector_t B(0, 0, 0);
+    Vector_t B({0, 0, 0});
     //double nOverRho = fieldIndex_m / designRadius_m;
     //double expFactor = exp(-nOverRho * deltaX);
     //double bxBzFactor = expFactor * nOverRho * R(1);
@@ -374,7 +374,7 @@ Vector_t Bend2D::calcCentralField(const Vector_t &/*R*/, double /*deltaX*/) {
 Vector_t Bend2D::calcEntranceFringeField(const Vector_t &R,
                                          double /*deltaX*/) {
 
-    const CoordinateSystemTrafo toEntranceRegion(Vector_t(0, 0, entranceParameter2_m),
+    const CoordinateSystemTrafo toEntranceRegion(Vector_t({0, 0, entranceParameter2_m}),
                                                  Quaternion(0, 0, 1, 0));
     const Vector_t Rprime = toEntranceRegion.transformTo(R);
 
@@ -411,7 +411,7 @@ Vector_t Bend2D::calcEntranceFringeField(const Vector_t &R,
 Vector_t Bend2D::calcExitFringeField(const Vector_t &R,
                                      double /*deltaX*/) {
 
-    const CoordinateSystemTrafo fromEndToExitRegion(Vector_t(0, 0, exitParameter2_m),
+    const CoordinateSystemTrafo fromEndToExitRegion(Vector_t({0, 0, exitParameter2_m}),
                                                     Quaternion(1, 0, 0, 0));
     const CoordinateSystemTrafo toExitRegion = (fromEndToExitRegion *
                                                  getBeginToEnd_local());
@@ -449,7 +449,7 @@ bool Bend2D::calculateMapField(const Vector_t &R, Vector_t &B) {
     B = Vector_t(0.0);
     bool verticallyInside = (std::abs(R(1)) < 0.5 * gap_m);
     bool horizontallyInside = false;
-    Vector_t rotationCenter(-designRadius_m * cosEntranceAngle_m, R(1), designRadius_m * sinEntranceAngle_m);
+    Vector_t rotationCenter({-designRadius_m * cosEntranceAngle_m, R(1), designRadius_m * sinEntranceAngle_m});
     if (inMagnetCentralRegion(R)) {
         if (verticallyInside) {
             double deltaX = 0.0;//euclidean_norm(R - rotationCenter) - designRadius_m;
@@ -526,8 +526,8 @@ void Bend2D::calculateRefTrajectory(double &angleX, double &/*angleY*/) {
 
     const double gamma = calcGamma();
     const double betaGamma = calcBetaGamma();
-    Vector_t X = -deltaBeginEntry_m * Vector_t(tanEntranceAngle_m, 0.0, 1.0);
-    Vector_t P = betaGamma * Vector_t(sinEntranceAngle_m, 0.0, cosEntranceAngle_m);
+    Vector_t X = -deltaBeginEntry_m * Vector_t({tanEntranceAngle_m, 0.0, 1.0});
+    Vector_t P = betaGamma * Vector_t({sinEntranceAngle_m, 0.0, cosEntranceAngle_m});
 
     if (!refTrajMap_m.empty())
         refTrajMap_m.clear();
@@ -546,7 +546,7 @@ void Bend2D::calculateRefTrajectory(double &angleX, double &/*angleY*/) {
         pusher_m.push(X, P, dt);
         X *= scaleFactor;
 
-        Vector_t bField(0.0, 0.0, 0.0);
+        Vector_t bField({0.0, 0.0, 0.0});
         Vector_t XInBendFrame = X;
 
         calculateMapField(XInBendFrame, bField);
@@ -797,7 +797,7 @@ bool Bend2D::initializeFieldMap() {
 
 bool Bend2D::inMagnetCentralRegion(const Vector_t &R) const {
 
-    Vector_t rotationCenter(-designRadius_m * cosEntranceAngle_m, R(1), designRadius_m * sinEntranceAngle_m);
+    Vector_t rotationCenter({-designRadius_m * cosEntranceAngle_m, R(1), designRadius_m * sinEntranceAngle_m});
     double distFromRotCenter = euclidean_norm(R - rotationCenter);
     Vector_t Rprime = getBeginToEnd_local().transformTo(R);
     Vector_t Rpprime = computeAngleTrafo_m.transformTo(R);
@@ -1080,29 +1080,29 @@ void Bend2D::setFieldCalcParam() {
 
     double rotationAngleAboutZ = getRotationAboutZ();
     Quaternion_t rotationAboutZ(std::cos(0.5 * rotationAngleAboutZ),
-                                std::sin(0.5 * rotationAngleAboutZ) * Vector_t(0, 0, 1));
+                                std::sin(0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
 
-    Vector_t rotationAxis(0, -1, 0);
+    Vector_t rotationAxis({0, -1, 0});
     Quaternion_t halfRotationAboutAxis(std::cos(0.5 * (0.5 * bendAngle - entranceAngle)),
                                        std::sin(0.5 * (0.5 * bendAngle - entranceAngle)) * rotationAxis);
     Quaternion_t exitFaceRotation(std::cos(0.5 * (bendAngle - entranceAngle - exitAngle_m)),
                                   std::sin(0.5 * (bendAngle - entranceAngle - exitAngle_m)) * rotationAxis);
-    Vector_t chord = getChordLength() * halfRotationAboutAxis.rotate(Vector_t(0, 0, 1));
+    Vector_t chord = getChordLength() * halfRotationAboutAxis.rotate(Vector_t({0, 0, 1}));
     beginToEnd_lcs_m = CoordinateSystemTrafo(chord, exitFaceRotation.conjugate());
     beginToEnd_m = beginToEnd_lcs_m * CoordinateSystemTrafo(Vector_t(0.0), rotationAboutZ.conjugate());
-    toEntranceRegion_m = CoordinateSystemTrafo(Vector_t(0, 0, entranceParameter2_m),
+    toEntranceRegion_m = CoordinateSystemTrafo(Vector_t({0, 0, entranceParameter2_m}),
                                                Quaternion(0, 0, 1, 0));
-    const CoordinateSystemTrafo fromEndToExitRegion(Vector_t(0, 0, exitParameter2_m),
+    const CoordinateSystemTrafo fromEndToExitRegion(Vector_t({0, 0, exitParameter2_m}),
                                                     Quaternion(1, 0, 0, 0));
     toExitRegion_m = CoordinateSystemTrafo(fromEndToExitRegion *
                                            getBeginToEnd_local());
 
-    Vector_t rotationCenter = Vector_t(-designRadius_m * cosEntranceAngle_m, 0.0, designRadius_m * sinEntranceAngle_m);
+    Vector_t rotationCenter = Vector_t({-designRadius_m * cosEntranceAngle_m, 0.0, designRadius_m * sinEntranceAngle_m});
 
     Vector_t maxAngleEntranceAperture;
     if (rotationCenter(2) < 0.0) {
         double tau, tmp;
-        Vector_t P(0.5 * aperture_m.second[0], 0.0, 0.0), &R = rotationCenter;
+        Vector_t P({0.5 * aperture_m.second[0], 0.0, 0.0}), &R = rotationCenter;
         gsl_poly_solve_quadratic(dot(P,P),
                                  -2 * dot(P,R),
                                  dot(R,R) - std::pow(designRadius_m + 0.5 * aperture_m.second[0], 2),
@@ -1112,7 +1112,7 @@ void Bend2D::setFieldCalcParam() {
         maxAngleEntranceAperture = tau * P;
     } else {
         double tau, tmp;
-        Vector_t P(-0.5 * aperture_m.second[0], 0.0, 0.0), &R = rotationCenter;
+        Vector_t P({-0.5 * aperture_m.second[0], 0.0, 0.0}), &R = rotationCenter;
         gsl_poly_solve_quadratic(dot(P,P),
                                  -2 * dot(P,R),
                                  dot(R,R) - std::pow(designRadius_m - 0.5 * aperture_m.second[0], 2),
@@ -1124,7 +1124,7 @@ void Bend2D::setFieldCalcParam() {
     Vector_t maxAngleExitAperture;
     if (getBeginToEnd_local().transformTo(rotationCenter)(2) > 0.0) {
         double tau, tmp;
-        Vector_t P(0.5 * aperture_m.second[0], 0.0, 0.0), R = getBeginToEnd_local().transformTo(rotationCenter);
+        Vector_t P({0.5 * aperture_m.second[0], 0.0, 0.0}), R = getBeginToEnd_local().transformTo(rotationCenter);
         gsl_poly_solve_quadratic(dot(P,P),
                                  -2 * dot(P,R),
                                  dot(R,R) - std::pow(designRadius_m + 0.5 * aperture_m.second[0], 2),
@@ -1134,7 +1134,7 @@ void Bend2D::setFieldCalcParam() {
         maxAngleExitAperture = getBeginToEnd_local().transformFrom(tau * P);
     } else {
         double tau, tmp;
-        Vector_t P(-0.5 * aperture_m.second[0], 0.0, 0.0), R = getBeginToEnd_local().transformTo(rotationCenter);
+        Vector_t P({-0.5 * aperture_m.second[0], 0.0, 0.0}), R = getBeginToEnd_local().transformTo(rotationCenter);
         gsl_poly_solve_quadratic(dot(P,P),
                                  -2 * dot(P,R),
                                  dot(R,R) - std::pow(designRadius_m - 0.5 * aperture_m.second[0], 2),
@@ -1146,7 +1146,7 @@ void Bend2D::setFieldCalcParam() {
 
     maxAngleEntranceAperture -= rotationCenter;
 
-    Quaternion rotation = getQuaternion(maxAngleEntranceAperture, Vector_t(0, 0, 1));
+    Quaternion rotation = getQuaternion(maxAngleEntranceAperture, Vector_t({0, 0, 1}));
     computeAngleTrafo_m = CoordinateSystemTrafo(rotationCenter,
                                                 rotation);
     Vector_t tmp = computeAngleTrafo_m.transformTo(maxAngleExitAperture);
@@ -1280,18 +1280,18 @@ bool Bend2D::isFieldZero() {
 
 std::vector<Vector_t> Bend2D::getOutline() const {
     std::vector<Vector_t> outline;
-    Vector_t rotationCenter = Vector_t(-designRadius_m * cosEntranceAngle_m, 0.0, designRadius_m * sinEntranceAngle_m);
+    Vector_t rotationCenter = Vector_t({-designRadius_m * cosEntranceAngle_m, 0.0, designRadius_m * sinEntranceAngle_m});
     unsigned int numSteps = 2;
 
-    outline.push_back(Vector_t(-0.5 * widthEntranceFringe_m, 0.0, 0.0));
-    outline.push_back(Vector_t(-0.5 * widthEntranceFringe_m + entranceParameter1_m * tanEntranceAngle_m, 0.0, entranceParameter1_m));
-    outline.push_back(Vector_t(entranceParameter1_m * tanEntranceAngle_m, 0.0, entranceParameter1_m));
-    outline.push_back(Vector_t(0.5 * widthEntranceFringe_m + entranceParameter1_m * tanEntranceAngle_m, 0.0, entranceParameter1_m));
-    outline.push_back(Vector_t(0.5 * widthEntranceFringe_m, 0.0, 0.0));
+    outline.push_back(Vector_t({-0.5 * widthEntranceFringe_m, 0.0, 0.0}));
+    outline.push_back(Vector_t({-0.5 * widthEntranceFringe_m + entranceParameter1_m * tanEntranceAngle_m, 0.0, entranceParameter1_m}));
+    outline.push_back(Vector_t({entranceParameter1_m * tanEntranceAngle_m, 0.0, entranceParameter1_m}));
+    outline.push_back(Vector_t({0.5 * widthEntranceFringe_m + entranceParameter1_m * tanEntranceAngle_m, 0.0, entranceParameter1_m}));
+    outline.push_back(Vector_t({0.5 * widthEntranceFringe_m, 0.0, 0.0}));
 
     {
         double tau1, tau2;
-        Vector_t P(0.5 * aperture_m.second[0], 0.0, 0.0), R = rotationCenter;
+        Vector_t P({0.5 * aperture_m.second[0], 0.0, 0.0}), R = rotationCenter;
         gsl_poly_solve_quadratic(dot(P,P),
                                  -2 * dot(P,R),
                                  dot(R,R) - std::pow(designRadius_m + 0.5 * aperture_m.second[0], 2),
@@ -1309,7 +1309,7 @@ std::vector<Vector_t> Bend2D::getOutline() const {
         tau1 = (std::abs(1.0 - tau2) < std::abs(1.0 - tau1)? tau2: tau1);
         Vector_t upperCornerAtExit = getBeginToEnd_local().transformFrom(tau1 * P);
 
-        Quaternion rotation = getQuaternion(upperCornerAtEntry - rotationCenter, Vector_t(0,0,1));
+        Quaternion rotation = getQuaternion(upperCornerAtEntry - rotationCenter, Vector_t({0,0,1}));
         Vector_t tmp = CoordinateSystemTrafo(rotationCenter, rotation).transformTo(upperCornerAtExit);
         double totalAngle = -std::fmod(Physics::two_pi - std::atan2(tmp(0), tmp(2)), Physics::two_pi);
         numSteps = std::max(2.0, std::ceil(-totalAngle / (5.0 * Units::deg2rad)));
@@ -1324,15 +1324,15 @@ std::vector<Vector_t> Bend2D::getOutline() const {
         outline.push_back(upperCornerAtExit);
     }
 
-    outline.push_back(getBeginToEnd_local().transformFrom(Vector_t(0.5 * widthExitFringe_m, 0.0, 0.0)));
-    outline.push_back(getBeginToEnd_local().transformFrom(Vector_t(0.5 * widthExitFringe_m - exitParameter3_m * tanExitAngle_m, 0.0, exitParameter3_m)));
-    outline.push_back(getBeginToEnd_local().transformFrom(Vector_t(-exitParameter3_m * tanExitAngle_m, 0.0, exitParameter3_m)));
-    outline.push_back(getBeginToEnd_local().transformFrom(Vector_t(-0.5 * widthExitFringe_m - exitParameter3_m * tanExitAngle_m, 0.0, exitParameter3_m)));
-    outline.push_back(getBeginToEnd_local().transformFrom(Vector_t(-0.5 * widthExitFringe_m, 0.0, 0.0)));
+    outline.push_back(getBeginToEnd_local().transformFrom(Vector_t({0.5 * widthExitFringe_m, 0.0, 0.0})));
+    outline.push_back(getBeginToEnd_local().transformFrom(Vector_t({0.5 * widthExitFringe_m - exitParameter3_m * tanExitAngle_m, 0.0, exitParameter3_m})));
+    outline.push_back(getBeginToEnd_local().transformFrom(Vector_t({-exitParameter3_m * tanExitAngle_m, 0.0, exitParameter3_m})));
+    outline.push_back(getBeginToEnd_local().transformFrom(Vector_t({-0.5 * widthExitFringe_m - exitParameter3_m * tanExitAngle_m, 0.0, exitParameter3_m})));
+    outline.push_back(getBeginToEnd_local().transformFrom(Vector_t({-0.5 * widthExitFringe_m, 0.0, 0.0})));
 
     {
         double tau1, tau2;
-        Vector_t P(-0.5 * aperture_m.second[0], 0.0, 0.0), R = rotationCenter;
+        Vector_t P({-0.5 * aperture_m.second[0], 0.0, 0.0}), R = rotationCenter;
         gsl_poly_solve_quadratic(dot(P,P),
                                  -2 * dot(P,R),
                                  dot(R,R) - std::pow(designRadius_m - 0.5 * aperture_m.second[0], 2),
@@ -1350,7 +1350,7 @@ std::vector<Vector_t> Bend2D::getOutline() const {
         tau1 = (std::abs(1.0 - tau2) < std::abs(1.0 - tau1)? tau2: tau1);
         Vector_t lowerCornerAtExit = getBeginToEnd_local().transformFrom(tau1 * P);
 
-        Quaternion rotation = getQuaternion(lowerCornerAtEntry - rotationCenter, Vector_t(0,0,1));
+        Quaternion rotation = getQuaternion(lowerCornerAtEntry - rotationCenter, Vector_t({0,0,1}));
         Vector_t tmp = CoordinateSystemTrafo(rotationCenter, rotation).transformTo(lowerCornerAtExit);
         double totalAngle = -std::fmod(Physics::two_pi - std::atan2(tmp(0), tmp(2)), Physics::two_pi);
         double dAngle = 0.5 * totalAngle / (1.0 * numSteps - 1.0);
@@ -1387,7 +1387,7 @@ std::vector<Vector_t> Bend2D::getOutline() const {
 
 MeshData Bend2D::getSurfaceMesh() const {
     MeshData mesh;
-    const Vector_t hgap(0, 0.5 * getFullGap(), 0);
+    const Vector_t hgap({0, 0.5 * getFullGap(), 0});
     std::vector<Vector_t> outline = getOutline();
 
     unsigned int size = outline.size();
@@ -1428,48 +1428,48 @@ MeshData Bend2D::getSurfaceMesh() const {
     mesh.vertices_m.push_back(outline[midIdx]);
     mesh.vertices_m.push_back(outline[midIdx + 4]);
 
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2, 1, 0));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2, 4, 3));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2, 5, 4));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2, 0, last));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2, last, 5));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(last, last - 1, 5));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(5, last - 1, 6));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2, 1, 0}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2, 4, 3}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2, 5, 4}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2, 0, last}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2, last, 5}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({last, last - 1, 5}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({5, last - 1, 6}));
 
     // exit region top
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(midIdx + 2, midIdx + 1, midIdx));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(midIdx + 2, midIdx + 4, midIdx + 3));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(midIdx + 2, midIdx + 5, midIdx + 4));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(midIdx + 2, midIdx, midIdx - 1));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(midIdx + 2, midIdx - 1, midIdx + 5));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(midIdx - 1, midIdx - 2, midIdx + 5));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(midIdx + 5, midIdx - 2, midIdx + 6));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({midIdx + 2, midIdx + 1, midIdx}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({midIdx + 2, midIdx + 4, midIdx + 3}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({midIdx + 2, midIdx + 5, midIdx + 4}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({midIdx + 2, midIdx, midIdx - 1}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({midIdx + 2, midIdx - 1, midIdx + 5}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({midIdx - 1, midIdx - 2, midIdx + 5}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({midIdx + 5, midIdx - 2, midIdx + 6}));
 
     // entry region bottom
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 2, size + 0, size + 1));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 2, size + 3, size + 4));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 2, size + 4, size + 5));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 2, size + last, size + 0));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 2, size + 5, size + last));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + last, size + 5, size + last - 1));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 5, size + 6, size + last - 1));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 2, size + 0, size + 1}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 2, size + 3, size + 4}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 2, size + 4, size + 5}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 2, size + last, size + 0}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 2, size + 5, size + last}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + last, size + 5, size + last - 1}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 5, size + 6, size + last - 1}));
 
     // exit region bottom
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + midIdx + 2, size + midIdx + 0, size + midIdx + 1));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + midIdx + 2, size + midIdx + 3, size + midIdx + 4));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + midIdx + 2, size + midIdx + 4, size + midIdx + 5));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + midIdx + 2, size + midIdx - 1, size + midIdx + 0));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + midIdx + 2, size + midIdx + 5, size + midIdx - 1));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + midIdx - 1, size + midIdx + 5, size + midIdx - 2));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + midIdx + 5, size + midIdx + 6, size + midIdx - 2));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + midIdx + 2, size + midIdx + 0, size + midIdx + 1}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + midIdx + 2, size + midIdx + 3, size + midIdx + 4}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + midIdx + 2, size + midIdx + 4, size + midIdx + 5}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + midIdx + 2, size + midIdx - 1, size + midIdx + 0}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + midIdx + 2, size + midIdx + 5, size + midIdx - 1}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + midIdx - 1, size + midIdx + 5, size + midIdx - 2}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + midIdx + 5, size + midIdx + 6, size + midIdx - 2}));
 
     // central region
     for (unsigned int i = 6; i < 5 + numSteps; ++ i) {
-        mesh.triangles_m.push_back(Vektor<unsigned int, 3>(i, last + 5 - i, i + 1));
-        mesh.triangles_m.push_back(Vektor<unsigned int, 3>(last + 5 - i, last + 4 - i, i + 1));
+        mesh.triangles_m.push_back(Vektor<unsigned int, 3>({i, last + 5 - i, i + 1}));
+        mesh.triangles_m.push_back(Vektor<unsigned int, 3>({last + 5 - i, last + 4 - i, i + 1}));
 
-        mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + i, size + i + 1, size + last + 5 - i));
-        mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + last + 5 - i, size + i + 1, size + last + 4 - i));
+        mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + i, size + i + 1, size + last + 5 - i}));
+        mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + last + 5 - i, size + i + 1, size + last + 4 - i}));
     }
 
     // side
@@ -1479,48 +1479,48 @@ MeshData Bend2D::getSurfaceMesh() const {
             i == 11 + numSteps || i == 12 + numSteps) continue;
 
         unsigned int next = (i + 1) % size;
-        mesh.triangles_m.push_back(Vektor<unsigned int, 3>(i, next, next + size));
-        mesh.triangles_m.push_back(Vektor<unsigned int, 3>(i, next + size, i + size));
+        mesh.triangles_m.push_back(Vektor<unsigned int, 3>({i, next, next + size}));
+        mesh.triangles_m.push_back(Vektor<unsigned int, 3>({i, next + size, i + size}));
     }
 
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(last, 0, last-1));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2*size, last - 1, 0));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2*size, size + last - 1, last - 1));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2*size, size, size + last - 1));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + last, size + last - 1, size));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({last, 0, last-1}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2*size, last - 1, 0}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2*size, size + last - 1, last - 1}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2*size, size, size + last - 1}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + last, size + last - 1, size}));
 
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(4, 5, 6));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(4, 6, 2*size + 1));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2*size + 1, 6, size + 6));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 4, 2*size + 1, size + 6));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 4, size + 6, size + 5));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({4, 5, 6}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({4, 6, 2*size + 1}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2*size + 1, 6, size + 6}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 4, 2*size + 1, size + 6}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 4, size + 6, size + 5}));
 
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(6 + numSteps, midIdx, 5 + numSteps));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(5 + numSteps, midIdx, 2*size + 2));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(5 + numSteps, 2*size + 2, size + 5 + numSteps));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 5 + numSteps, 2*size + 2, size + midIdx));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 6 + numSteps, size + 5 + numSteps, size + midIdx));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({6 + numSteps, midIdx, 5 + numSteps}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({5 + numSteps, midIdx, 2*size + 2}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({5 + numSteps, 2*size + 2, size + 5 + numSteps}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 5 + numSteps, 2*size + 2, size + midIdx}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 6 + numSteps, size + 5 + numSteps, size + midIdx}));
 
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(6 + midIdx, 4 + midIdx, 5 + midIdx));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(6 + midIdx, 2*size + 3, 4 + midIdx));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(2*size + 3, 6 + midIdx, size + 6 + midIdx));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 4 + midIdx,  2*size + 3, size + 6 + midIdx));
-    mesh.triangles_m.push_back(Vektor<unsigned int, 3>(size + 4 + midIdx, size + 6 + midIdx, size + 5 + midIdx));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({6 + midIdx, 4 + midIdx, 5 + midIdx}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({6 + midIdx, 2*size + 3, 4 + midIdx}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({2*size + 3, 6 + midIdx, size + 6 + midIdx}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 4 + midIdx,  2*size + 3, size + 6 + midIdx}));
+    mesh.triangles_m.push_back(Vektor<unsigned int, 3>({size + 4 + midIdx, size + 6 + midIdx, size + 5 + midIdx}));
 
-    Vector_t rotationCenter(-designRadius_m * cosEntranceAngle_m, 0.0, designRadius_m * sinEntranceAngle_m);
+    Vector_t rotationCenter({-designRadius_m * cosEntranceAngle_m, 0.0, designRadius_m * sinEntranceAngle_m});
 
-    Vector_t P1 = toEntranceRegion_m.transformFrom(Vector_t(0, 0, entranceParameter1_m));
-    Vector_t P2 = toExitRegion_m.transformFrom(Vector_t(0, 0, exitParameter1_m));
+    Vector_t P1 = toEntranceRegion_m.transformFrom(Vector_t({0, 0, entranceParameter1_m}));
+    Vector_t P2 = toExitRegion_m.transformFrom(Vector_t({0, 0, exitParameter1_m}));
 
     Vector_t T = cross(P1 - rotationCenter, P2 - rotationCenter);
     if (T[1] > 0) { // fringe fields are overlapping
-        Vector_t dir1 = toEntranceRegion_m.rotateFrom(Vector_t(1, 0, 0));
+        Vector_t dir1 = toEntranceRegion_m.rotateFrom(Vector_t({1, 0, 0}));
         if (this->getType() == ElementType::RBEND ||
             std::abs(entranceAngle_m + exitAngle_m - angle_m) < 1e-8) {
             mesh.decorations_m.push_back(std::make_pair(0.5 * (P1 + P2) - 0.25 * dir1,
                                                         0.5 * (P1 + P2) + 0.25 * dir1));
         } else {
-            Vector_t dir2 = toExitRegion_m.rotateFrom(Vector_t(-1, 0, 0));
+            Vector_t dir2 = toExitRegion_m.rotateFrom(Vector_t({-1, 0, 0}));
             matrix_t inv(3,3);
             double det = -dir1[0] * dir2[2] + dir1[2] * dir2[0];
             inv(0, 0) = -dir2[2] / det;
@@ -1538,7 +1538,7 @@ MeshData Bend2D::getSurfaceMesh() const {
 
             Vector_t crossPoint = P1 + Tau[0] * dir1;
             double angle = std::asin(cross(dir1, dir2)[1]);
-            Quaternion halfRot(std::cos(0.25 * angle), std::sin(0.25 * angle) * Vector_t(0, 1, 0));
+            Quaternion halfRot(std::cos(0.25 * angle), std::sin(0.25 * angle) * Vector_t({0, 1, 0}));
             Vector_t P = halfRot.rotate(dir1);
             Vector_t R = crossPoint - rotationCenter;
 
@@ -1571,15 +1571,15 @@ MeshData Bend2D::getSurfaceMesh() const {
     } else {
 
         double tau1, tau2;
-        Vector_t P(-0.5 * aperture_m.second[0], 0.0, 0.0);
-        Vector_t R = Vector_t(0, 0, entranceParameter3_m) - rotationCenter;
+        Vector_t P({-0.5 * aperture_m.second[0], 0.0, 0.0});
+        Vector_t R = Vector_t({0, 0, entranceParameter3_m}) - rotationCenter;
         gsl_poly_solve_quadratic(dot(P,P),
                                  2 * dot(P,R),
                                  dot(R,R) - std::pow(designRadius_m - 0.5 * aperture_m.second[0],2),
                                  &tau1,
                                  &tau2);
         tau1 = (std::abs(1.0 - tau2) < std::abs(1.0 - tau1)? tau2: tau1);
-        Vector_t lowerCornerFringeLimitEntrance = Vector_t(0, 0, entranceParameter3_m) + tau1 * P;
+        Vector_t lowerCornerFringeLimitEntrance = Vector_t({0, 0, entranceParameter3_m}) + tau1 * P;
 
         gsl_poly_solve_quadratic(dot(P,P),
                                  -2 * dot(P,R),
@@ -1587,17 +1587,17 @@ MeshData Bend2D::getSurfaceMesh() const {
                                  &tau1,
                                  &tau2);
         tau1 = (std::abs(1.0 - tau2) < std::abs(1.0 - tau1)? tau2: tau1);
-        Vector_t upperCornerFringeLimitEntrance = Vector_t(0, 0, entranceParameter3_m) - tau1 * P;
+        Vector_t upperCornerFringeLimitEntrance = Vector_t({0, 0, entranceParameter3_m}) - tau1 * P;
 
-        P = Vector_t(0.5 * aperture_m.second[0], 0.0, 0.0);
-        R = Vector_t(0, 0, exitParameter1_m) - getBeginToEnd_local().transformTo(rotationCenter);
+        P = Vector_t({0.5 * aperture_m.second[0], 0.0, 0.0});
+        R = Vector_t({0, 0, exitParameter1_m}) - getBeginToEnd_local().transformTo(rotationCenter);
         gsl_poly_solve_quadratic(dot(P,P),
                                  2 * dot(P,R),
                                  dot(R,R) - std::pow(designRadius_m + 0.5 * aperture_m.second[0],2),
                                  &tau1,
                                  &tau2);
         tau1 = (std::abs(1.0 - tau2) < std::abs(1.0 - tau1)? tau2: tau1);
-        Vector_t upperCornerFringeLimitExit = getBeginToEnd_local().transformFrom(Vector_t(0, 0, exitParameter1_m) + tau1 * P);
+        Vector_t upperCornerFringeLimitExit = getBeginToEnd_local().transformFrom(Vector_t({0, 0, exitParameter1_m}) + tau1 * P);
 
         gsl_poly_solve_quadratic(dot(P,P),
                                  -2 * dot(P,R),
@@ -1605,17 +1605,17 @@ MeshData Bend2D::getSurfaceMesh() const {
                                  &tau1,
                                  &tau2);
         tau1 = (std::abs(1.0 - tau2) < std::abs(1.0 - tau1)? tau2: tau1);
-        Vector_t lowerCornerFringeLimitExit = getBeginToEnd_local().transformFrom(Vector_t(0, 0, exitParameter1_m) - tau1 * P);
+        Vector_t lowerCornerFringeLimitExit = getBeginToEnd_local().transformFrom(Vector_t({0, 0, exitParameter1_m}) - tau1 * P);
 
         mesh.decorations_m.push_back(std::make_pair(lowerCornerFringeLimitEntrance, upperCornerFringeLimitEntrance));
         mesh.decorations_m.push_back(std::make_pair(lowerCornerFringeLimitExit, upperCornerFringeLimitExit));
 
     }
 
-    mesh.decorations_m.push_back(std::make_pair(Vector_t(entranceParameter1_m * tanEntranceAngle_m, 0.0, entranceParameter1_m),
+    mesh.decorations_m.push_back(std::make_pair(Vector_t({entranceParameter1_m * tanEntranceAngle_m, 0.0, entranceParameter1_m}),
                                                 Vector_t(0.0)));
     mesh.decorations_m.push_back(std::make_pair(getBeginToEnd_local().transformFrom(Vector_t(0.0)),
-                                                getBeginToEnd_local().transformFrom(Vector_t(-exitParameter3_m * tanExitAngle_m, 0.0, exitParameter3_m))));
+                                                getBeginToEnd_local().transformFrom(Vector_t({-exitParameter3_m * tanExitAngle_m, 0.0, exitParameter3_m}))));
 
     return mesh;
 }
@@ -1697,7 +1697,7 @@ BoundingBox Bend2D::getBoundingBoxInLabCoords() const {
     std::vector<Vector_t> outline = getOutline();
 
     BoundingBox bb;
-    Vector_t dY(0, 0.5 * getFullGap(), 0);
+    Vector_t dY({0, 0.5 * getFullGap(), 0});
     for (int i : {-1, 1}) {
         for (const Vector_t & vec: outline) {
             Vector_t vecInLabCoords = csTrafoGlobal2Local_m.transformFrom(vec + i * dY);
