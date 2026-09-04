@@ -12,7 +12,6 @@ include_directories (
 link_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src
-    ${Boost_LIBRARY_DIRS}
 )
 
 set (IPPL_LIBS ippl)
@@ -23,7 +22,6 @@ target_link_libraries (
     PIC3d
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
 
 add_executable (CacheTest CacheTest.cpp)
@@ -33,7 +31,6 @@ target_link_libraries (
     ${H5Hut_LIBRARY}
     ${HDF5_LIBRARIES}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
 
 add_executable (p3m3dHeating p3m3dHeating.cpp)
@@ -43,7 +40,6 @@ target_link_libraries (
     ${H5Hut_LIBRARY}
     ${HDF5_LIBRARIES}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
 
 add_executable (p3m3d p3m3d.cpp)
@@ -51,7 +47,6 @@ target_link_libraries (
     p3m3d
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
 
 add_executable (p3m3dTwoStreamParallel p3m3dTwoStreamParallel.cpp)
@@ -59,7 +54,6 @@ target_link_libraries (
     p3m3dTwoStreamParallel
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
 
 add_executable (p3m3dRegressionTests p3m3dRegressionTests.cpp)
@@ -67,7 +61,6 @@ target_link_libraries (
     p3m3dRegressionTests
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
 
 add_executable (p3m3dMicrobunching p3m3dMicrobunching.cpp)
@@ -77,23 +70,21 @@ target_link_libraries (
     ${MPI_CXX_LIBRARIES}
     ${H5Hut_LIBRARY}
     ${HDF5_LIBRARIES}
-    boost_timer
 )
 
 # :FIXME:
 add_executable (chsr-1 chsr-1.cpp)
-target_link_libraries (chsr-1 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
+target_link_libraries (chsr-1 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
 
 add_executable (pbconds3D pbconds3D.cpp)
-target_link_libraries (pbconds3D ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
+target_link_libraries (pbconds3D ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
 
 add_executable (salman-1 salman-1.cpp)
-target_link_libraries (salman-1 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
+target_link_libraries (salman-1 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
 
 add_executable (test-scatter-1 test-scatter-1.cpp)
 target_link_libraries (
     test-scatter-1
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
