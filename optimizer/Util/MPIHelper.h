@@ -81,28 +81,29 @@ enum MPITag_t {
 /// Worker state is either idle or running
 enum State_t {IDLE = 0, RUNNING = 1};
 
-/// serializes params using Boost archive
+/// serializes params to a text stream, replaces boost::serialization
 void serialize(Param_t           params, std::ostringstream &os);
 void serialize(reqVarContainer_t params, std::ostringstream &os);
 
-/// deserializes params using Boost archive
-void deserialize(char *buffer, Param_t           &params);
-void deserialize(char *buffer, reqVarContainer_t &params);
+/// deserializes params from an explicitly sized buffer (not null-terminated),
+/// replaces boost::serialization
+void deserialize(const char *buffer, std::size_t buf_size, Param_t           &params);
+void deserialize(const char *buffer, std::size_t buf_size, reqVarContainer_t &params);
 
 /// broadcast params to all entities in comm
-void MPI_Bcast_params(Param_t &params, size_t root, MPI_Comm comm);
+void MPI_Bcast_params(Param_t &params, std::size_t root, MPI_Comm comm);
 
 /// broadcast requested variables to all entities in comm
-void MPI_Bcast_reqvars(reqVarContainer_t reqvars, size_t root, MPI_Comm comm);
+void MPI_Bcast_reqvars(reqVarContainer_t reqvars, std::size_t root, MPI_Comm comm);
 
 
 //FIXME: test
 template<class Data_t>
-void MPI_Send_serialized(Data_t data, size_t pid, MPI_Comm comm) {
+void MPI_Send_serialized(Data_t data, std::size_t pid, MPI_Comm comm) {
 
     std::ostringstream os;
     serialize(data, os);
-    size_t buf_size = os.str().length();
+    std::size_t buf_size = os.str().length();
 
     MPI_Send(&buf_size, 1, MPI_LONG, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm);
@@ -117,10 +118,10 @@ void MPI_Send_serialized(Data_t data, size_t pid, MPI_Comm comm) {
 }
 
 template<class Data_t>
-void MPI_Recv_serialized(Data_t &data, size_t pid, MPI_Comm comm) {
+void MPI_Recv_serialized(Data_t &data, std::size_t pid, MPI_Comm comm) {
 
     MPI_Status status;
-    size_t buf_size = 0;
+    std::size_t buf_size = 0;
     MPI_Recv(&buf_size, 1, MPI_LONG, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm, &status);
 
@@ -128,7 +129,7 @@ void MPI_Recv_serialized(Data_t &data, size_t pid, MPI_Comm comm) {
     MPI_Recv(buffer, buf_size, MPI_CHAR, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm, &status);
 
-    deserialize(buffer, data);
+    deserialize(buffer, buf_size, data);
     delete[] buffer;
 }
 
@@ -141,7 +142,7 @@ void MPI_Recv_serialized(Data_t &data, size_t pid, MPI_Comm comm) {
  *  @param pid processor ID to send data to
  *  @param comm MPI communicator group used for sending the data
  */
-void MPI_Send_params(Param_t params, size_t pid, MPI_Comm comm);
+void MPI_Send_params(Param_t params, std::size_t pid, MPI_Comm comm);
 
 /**
  *  Serializes a parameter list and asynchronously sends (MPI) to another
@@ -153,7 +154,7 @@ void MPI_Send_params(Param_t params, size_t pid, MPI_Comm comm);
  *  @param comm MPI communicator group used for sending the data
  *  @param req MPI request assigned with the ISend
  */
-std::pair<size_t*, char*> MPI_ISend_params(Param_t params, size_t pid,
+std::pair<std::size_t*, char*> MPI_ISend_params(Param_t params, std::size_t pid,
                                            MPI_Comm comm, MPI_Request *req);
 
 /**
@@ -163,7 +164,7 @@ std::pair<size_t*, char*> MPI_ISend_params(Param_t params, size_t pid,
  *  @param pid processor ID to receive data from
  *  @param comm MPI communicator group used for receiving the data
  */
-void MPI_Recv_params(Param_t &params, size_t pid, MPI_Comm comm);
+void MPI_Recv_params(Param_t &params, std::size_t pid, MPI_Comm comm);
 
 /**
  *  Serializes requested variable list and sends (MPI) to another processor.
@@ -172,7 +173,7 @@ void MPI_Recv_params(Param_t &params, size_t pid, MPI_Comm comm);
  *  @param pid processor ID to send data to
  *  @param comm MPI communicator group used for sending the data
  */
-void MPI_Send_reqvars(reqVarContainer_t reqvars, size_t pid, MPI_Comm comm);
+void MPI_Send_reqvars(reqVarContainer_t reqvars, std::size_t pid, MPI_Comm comm);
 
 /**
  *  Receives and unpacks a required variable list from another (MPI)
@@ -182,6 +183,6 @@ void MPI_Send_reqvars(reqVarContainer_t reqvars, size_t pid, MPI_Comm comm);
  *  @param pid processor ID to receive data from
  *  @param comm MPI communicator group used for receiving the data
  */
-void MPI_Recv_reqvars(reqVarContainer_t &reqvars, size_t pid, MPI_Comm comm);
+void MPI_Recv_reqvars(reqVarContainer_t &reqvars, std::size_t pid, MPI_Comm comm);
 
 #endif

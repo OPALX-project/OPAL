@@ -172,15 +172,8 @@ if (NOT ${WILL_BUILD_SHARED_LIBRARY})
 endif ()
 set (Boost_USE_MULTITHREADED OFF)
 set (Boost_USE_STATIC_RUNTIME OFF)
-set (Boost_LIBS filesystem iostreams serialization system timer)
-find_package (Boost 1.66.0
-    REQUIRED COMPONENTS ${Boost_LIBS})
-if(UNIX AND NOT APPLE)
-    set (Boost_LIBRARIES ${Boost_LIBRARIES} rt)
-endif ()
+find_package (Boost 1.66.0 REQUIRED)
 message (STATUS "Found Boost include dirs: ${Boost_INCLUDE_DIRS}")
-message (STATUS "Found Boost library dirs: ${Boost_LIBRARY_DIRS}")
-message (STATUS "Found Boost libraries: ${Boost_LIBRARIES}")
 include_directories (SYSTEM ${Boost_INCLUDE_DIRS})
 
 # Handle options

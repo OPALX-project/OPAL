@@ -21,10 +21,13 @@
 #ifndef __VARIATOR_H__
 #define __VARIATOR_H__
 
-#include <string>
-#include <vector>
+#include <cstdlib>
 #include <map>
+#include <memory>
+#include <set>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "Util/Types.h"
 #include "Util/CmdArguments.h"
@@ -44,7 +47,6 @@ class Variator : public CrossoverOperator<ind_t>,
 {
 
 public:
-
     Variator(std::vector<std::string> dNames,
              Optimizer::bounds_t dVarBounds, Expressions::Named_t constraints,
              CmdArguments_t args)
@@ -52,7 +54,7 @@ public:
         , dVarBounds_m(dVarBounds)
     {
         // add constraints, if only design variables are needed for evaluation
-        for(auto constraint : constraints) {
+        for (auto constraint : constraints) {
             bool allDesignVariables = true;
             std::set<std::string> req_vars = constraint.second->getReqVars();
             if (req_vars.empty()) allDesignVariables = false;
@@ -178,21 +180,21 @@ public:
     void variate(std::vector<unsigned int> parents) {
 
         // copying all individuals from parents
-        for(unsigned int parent : parents) {
+        for (unsigned int parent : parents) {
             new_individual( population_m->get_individual(parent) );
         }
 
         // only variate new offspring, individuals in staging area have been
         // variated already
         std::queue<unsigned int> tmp(individualsToEvaluate_m);
-        while(!tmp.empty()) {
+        while (!tmp.empty()) {
 
             // pop first individual
             unsigned int idx = tmp.front(); tmp.pop();
             std::shared_ptr<ind_t> a = population_m->get_staging(idx);
 
             // handle special case where we have an odd number of offspring
-            if(tmp.empty()) {
+            if (tmp.empty()) {
                 if (drand(1) <= mutationProbability_m) {
                     // temporary copy in case not successful
                     std::shared_ptr<ind_t> copyA(new ind_t(a));
@@ -232,7 +234,7 @@ public:
                 *b = copyB;
 
                 // do recombination
-                if(drand(1) <= recombinationProbability_m) {
+                if (drand(1) <= recombinationProbability_m) {
                     this->crossover(a, b, args_);
                 }
 
@@ -264,9 +266,7 @@ public:
         }
     }
 
-
 protected:
-    
     /// create a new individual
     void new_individual(Individual::genes_t& dvars) {
         std::shared_ptr<ind_t> ind(new ind_t(dVarBounds_m, dNames_m, constraints_m));
@@ -288,7 +288,6 @@ protected:
     }
 
 private:
-
     /// population of individuals
     std::shared_ptr< Population<ind_t> > population_m;
 
@@ -316,7 +315,7 @@ private:
      *  @return random double value between [0, range]
      */
     double drand(double range) {
-        return (range * (double) rand() / (RAND_MAX + 1.0));
+        return (range * (double) std::rand() / (RAND_MAX + 1.0));
     }
 };
 

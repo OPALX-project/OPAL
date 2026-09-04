@@ -18,77 +18,114 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include <string.h>
-
-#include <boost/static_assert.hpp>
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/vector.hpp>
-
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
+#include <iomanip>
+#include <limits>
+#include <string>
 
 #include "Util/MPIHelper.h"
 
-void serialize(Param_t params, std::ostringstream &os) {
+namespace {
 
-    boost::archive::text_oarchive oa(os);
-    oa << params;
+/// length-prefixed so keys may contain arbitrary characters, including spaces
+void writeString(std::ostream& os, const std::string& s) {
+    os << s.size() << ' ' << s;
 }
 
-void serialize(reqVarContainer_t reqvars, std::ostringstream &os) {
-
-    boost::archive::text_oarchive oa(os);
-    oa << reqvars;
+void readString(std::istream& is, std::string& s) {
+    std::size_t n = 0;
+    is >> n;
+    is.get(); // consume the single separator space
+    s.resize(n);
+    is.read(&s[0], n);
 }
 
-void deserialize(char *buffer, Param_t &params) {
+} // namespace
+
+void serialize(Param_t params, std::ostringstream& os) {
+
+    os << std::setprecision(std::numeric_limits<double>::max_digits10);
+    os << params.size();
+    for (const auto& kv : params) {
+        os << ' ';
+        writeString(os, kv.first);
+        os << ' ' << kv.second;
+    }
+}
+
+void serialize(reqVarContainer_t reqvars, std::ostringstream& os) {
+
+    os << reqvars.size();
+    for (const auto& kv : reqvars) {
+        os << ' ';
+        writeString(os, kv.first);
+        os << ' ';
+        kv.second.writeState(os);
+    }
+}
+
+void deserialize(const char* buffer, std::size_t buf_size, Param_t& params) {
 
     params.clear();
-    std::istringstream is(buffer);
-    boost::archive::text_iarchive ia(is);
-    ia >> params;
+    std::istringstream is(std::string(buffer, buf_size));
+
+    std::size_t n = 0;
+    is >> n;
+    for (std::size_t i = 0; i < n; ++i) {
+        std::string key;
+        readString(is, key);
+        double value = 0.0;
+        is >> value;
+        params[key] = value;
+    }
 }
 
-void deserialize(char *buffer, reqVarContainer_t &reqvars) {
+void deserialize(const char* buffer, std::size_t buf_size, reqVarContainer_t& reqvars) {
 
     reqvars.clear();
-    std::istringstream is(buffer);
-    boost::archive::text_iarchive ia(is);
-    ia >> reqvars;
+    std::istringstream is(std::string(buffer, buf_size));
+
+    std::size_t n = 0;
+    is >> n;
+    for (std::size_t i = 0; i < n; ++i) {
+        std::string key;
+        readString(is, key);
+        reqVarInfo_t info;
+        info.readState(is);
+        reqvars[key] = info;
+    }
 }
 
-void MPI_Bcast_params(Param_t &params, size_t root, MPI_Comm comm) {
+void MPI_Bcast_params(Param_t& params, std::size_t root, MPI_Comm comm) {
 
     int pid = 0;
-    size_t my_pid = 0;
+    std::size_t my_pid = 0;
     MPI_Comm_rank(comm, &pid);
-    my_pid = static_cast<size_t>(pid);
+    my_pid = static_cast<std::size_t>(pid);
 
-    size_t buf_size = 0;
+    std::size_t buf_size = 0;
     std::ostringstream os;
 
-    if(my_pid == root) {
+    if (my_pid == root) {
         serialize(params, os);
-        buf_size = os.str().length() + 1;  // +1 for null-termination
+        buf_size = os.str().length();
     }
 
     MPI_Bcast(&buf_size, 1, MPI_UNSIGNED_LONG, root, comm);
 
     char *buffer = new char[buf_size];
-    if(my_pid == root) memcpy(buffer, os.str().c_str(), buf_size);
+    if (my_pid == root) memcpy(buffer, os.str().c_str(), buf_size);
 
     MPI_Bcast(buffer, buf_size, MPI_CHAR, root, comm);
-    if(my_pid != root) deserialize(buffer, params);
+    if (my_pid != root) deserialize(buffer, buf_size, params);
 
     delete[] buffer;
 }
 
-
-void MPI_Send_params(Param_t params, size_t pid, MPI_Comm comm) {
+void MPI_Send_params(Param_t params, std::size_t pid, MPI_Comm comm) {
 
     std::ostringstream os;
     serialize(params, os);
-    size_t buf_size = os.str().length() + 1; // +1 for null-termination
+    std::size_t buf_size = os.str().length();
 
     MPI_Send(&buf_size, 1, MPI_UNSIGNED_LONG, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm);
@@ -102,13 +139,13 @@ void MPI_Send_params(Param_t params, size_t pid, MPI_Comm comm) {
     delete[] buffer;
 }
 
-std::pair<size_t*, char*> MPI_ISend_params(Param_t params, size_t pid,
+std::pair<std::size_t*, char*> MPI_ISend_params(Param_t params, std::size_t pid,
                                            MPI_Comm comm, MPI_Request *req) {
 
     std::ostringstream os;
     serialize(params, os);
-    size_t* buf_size = new size_t();
-    *buf_size = os.str().length() + 1;  // +1 for null-termination
+    std::size_t* buf_size = new std::size_t();
+    *buf_size = os.str().length();
 
     MPI_Isend(buf_size, 1, MPI_UNSIGNED_LONG, pid,
               MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm, req);
@@ -119,16 +156,15 @@ std::pair<size_t*, char*> MPI_ISend_params(Param_t params, size_t pid,
     MPI_Isend(buffer, *buf_size, MPI_CHAR, pid,
               MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm, req);
 
-    std::pair<size_t*, char*> p(buf_size, buffer);
+    std::pair<std::size_t*, char*> p(buf_size, buffer);
 
     return p;
 }
 
-
-void MPI_Recv_params(Param_t &params, size_t pid, MPI_Comm comm) {
+void MPI_Recv_params(Param_t& params, std::size_t pid, MPI_Comm comm) {
 
     MPI_Status status;
-    size_t buf_size = 0;
+    std::size_t buf_size = 0;
     MPI_Recv(&buf_size, 1, MPI_UNSIGNED_LONG, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm, &status);
 
@@ -137,17 +173,16 @@ void MPI_Recv_params(Param_t &params, size_t pid, MPI_Comm comm) {
     MPI_Recv(buffer, buf_size, MPI_CHAR, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm, &status);
 
-    deserialize(buffer, params);
+    deserialize(buffer, buf_size, params);
 
     delete[] buffer;
 }
 
-
-void MPI_Send_reqvars(reqVarContainer_t reqvars, size_t pid, MPI_Comm comm) {
+void MPI_Send_reqvars(reqVarContainer_t reqvars, std::size_t pid, MPI_Comm comm) {
 
     std::ostringstream os;
     serialize(reqvars, os);
-    size_t buf_size = os.str().length() + 1;  // +1 for null-termination
+    std::size_t buf_size = os.str().length();
 
     MPI_Send(&buf_size, 1, MPI_UNSIGNED_LONG, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm);
@@ -161,11 +196,10 @@ void MPI_Send_reqvars(reqVarContainer_t reqvars, size_t pid, MPI_Comm comm) {
     delete[] buffer;
 }
 
-
-void MPI_Recv_reqvars(reqVarContainer_t &reqvars, size_t pid, MPI_Comm comm) {
+void MPI_Recv_reqvars(reqVarContainer_t& reqvars, std::size_t pid, MPI_Comm comm) {
 
     MPI_Status status;
-    size_t buf_size = 0;
+    std::size_t buf_size = 0;
     MPI_Recv(&buf_size, 1, MPI_UNSIGNED_LONG, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm, &status);
 
@@ -174,8 +208,7 @@ void MPI_Recv_reqvars(reqVarContainer_t &reqvars, size_t pid, MPI_Comm comm) {
     MPI_Recv(buffer, buf_size, MPI_CHAR, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm, &status);
 
-    deserialize(buffer, reqvars);
+    deserialize(buffer, buf_size, reqvars);
 
     delete[] buffer;
 }
-

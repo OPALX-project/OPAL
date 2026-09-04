@@ -1,23 +1,92 @@
-/*=============================================================================
-    Copyright (c) 2001-2011 Joel de Guzman
-
-    Distributed under the Boost Software License, Version 1.0. (See accompanying
-    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-=============================================================================*/
-#if !defined(AST_HPP)
+//
+// Namespace ast
+//
+// Copyright (c) 2026, Paul Scherrer Institute, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of OPAL.
+//
+// OPAL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with OPAL. If not, see <https://www.gnu.org/licenses/>.
+//
+#ifndef AST_HPP
 #define AST_HPP
 
-#include <boost/config/warning_disable.hpp>
-#include <boost/variant/recursive_variant.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
-#include <boost/fusion/include/io.hpp>
-
 #include <list>
+#include <memory>
 #include <ostream>
 #include <string>
+#include <type_traits>
+#include <utility>
+#include <variant>
 
 namespace client { namespace ast
 {
+    /// Local, C++20 replacement for boost::recursive_wrapper.
+    /// Holds a heap-allocated T so that recursive/incomplete types can be
+    /// stored as an alternative of a std::variant.
+    template <typename T>
+    class recursive_wrapper
+    {
+    public:
+        recursive_wrapper() : ptr_(std::make_unique<T>()) {}
+        recursive_wrapper(T const& value) : ptr_(std::make_unique<T>(value)) {}
+        recursive_wrapper(T&& value) : ptr_(std::make_unique<T>(std::move(value))) {}
+
+        recursive_wrapper(recursive_wrapper const& other) : ptr_(std::make_unique<T>(*other.ptr_)) {}
+        recursive_wrapper(recursive_wrapper&&) noexcept = default;
+
+        recursive_wrapper& operator=(recursive_wrapper const& other) {
+            if (this != &other) {
+                ptr_ = std::make_unique<T>(*other.ptr_);
+            }
+            return *this;
+        }
+        recursive_wrapper& operator=(recursive_wrapper&&) noexcept = default;
+
+        recursive_wrapper& operator=(T const& value) { *ptr_ = value; return *this; }
+        recursive_wrapper& operator=(T&& value) { *ptr_ = std::move(value); return *this; }
+
+        T& get() { return *ptr_; }
+        T const& get() const { return *ptr_; }
+
+        explicit operator T&() { return *ptr_; }
+        explicit operator T const&() const { return *ptr_; }
+
+    private:
+        std::unique_ptr<T> ptr_;
+    };
+
+    template <typename T>
+    struct is_recursive_wrapper : std::false_type {};
+    template <typename T>
+    struct is_recursive_wrapper<recursive_wrapper<T>> : std::true_type {};
+    template <typename T>
+    inline constexpr bool is_recursive_wrapper_v = is_recursive_wrapper<T>::value;
+
+    /// Local replacement for boost::apply_visitor: dispatches on a
+    /// std::variant while transparently unwrapping recursive_wrapper<T>
+    /// alternatives to T, matching boost::variant's visitation semantics.
+    template <typename Visitor, typename Variant>
+    decltype(auto) apply_visitor(Visitor&& vis, Variant&& var)
+    {
+        return std::visit(
+            [&vis](auto&& alternative) -> decltype(auto) {
+                using Alternative = std::decay_t<decltype(alternative)>;
+                if constexpr (is_recursive_wrapper_v<Alternative>) {
+                    return vis(alternative.get());
+                } else {
+                    return vis(alternative);
+                }
+            },
+            std::forward<Variant>(var));
+    }
+
     struct tagged
     {
         int id; // Used to annotate the AST with the iterator position.
@@ -42,19 +111,19 @@ namespace client { namespace ast
         std::string value;
     };
 
-    typedef boost::variant<
+    typedef std::variant<
             nil
           , bool
           , unsigned int
           , double
           , identifier
-          , boost::recursive_wrapper<unary>
-          , boost::recursive_wrapper<function_call>
-          , boost::recursive_wrapper<expression>
+          , recursive_wrapper<unary>
+          , recursive_wrapper<function_call>
+          , recursive_wrapper<expression>
         >
     operand;
 
-    typedef boost::variant<
+    typedef std::variant<
             expression
           , quoted_string
         >
@@ -114,29 +183,5 @@ namespace client { namespace ast
         out << id.name; return out;
     }
 }}
-
-BOOST_FUSION_ADAPT_STRUCT(
-    client::ast::unary,
-    (client::ast::optoken, operator_)
-    (client::ast::operand, operand_)
-)
-
-BOOST_FUSION_ADAPT_STRUCT(
-    client::ast::operation,
-    (client::ast::optoken, operator_)
-    (client::ast::operand, operand_)
-)
-
-BOOST_FUSION_ADAPT_STRUCT(
-    client::ast::function_call,
-    (client::ast::identifier, function_name)
-    (std::list<client::ast::function_call_argument>, args)
-)
-
-BOOST_FUSION_ADAPT_STRUCT(
-    client::ast::expression,
-    (client::ast::operand, first)
-    (std::list<client::ast::operation>, rest)
-)
 
 #endif

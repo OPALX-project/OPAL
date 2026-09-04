@@ -4,8 +4,8 @@
 //
 //   @see GlobalFunctions.h
 //
-//   This class uses the Boost Spirit parser to parse and evaluate string
-//   expressions (objectives or constraints).
+//   This class parses and evaluates string expressions (objectives or
+//   constraints) using a hand-written recursive-descent parser.
 //   Custom functions called in the expression should be registered by the
 //   driver. A collection of C math default functions is always included.
 //   For constraints the operator type can be queried.
@@ -30,6 +30,7 @@
 #ifndef __EXPRESSION_H__
 #define __EXPRESSION_H__
 
+#include <iostream>
 #include <map>
 #include <set>
 #include <string>
@@ -43,17 +44,11 @@
 #include "Expression/Parser/expression.hpp"
 #include "Expression/Parser/evaluator.hpp"
 #include "Expression/Parser/requirements.hpp"
-#include "Expression/Parser/skipper.hpp"
 #include "Expression/Parser/function.hpp"
-
-#include <boost/function.hpp>
-#include <boost/lexical_cast.hpp>
-#include "boost/algorithm/string.hpp"
 
 
 typedef std::map<std::string, double> variableDictionary_t;
 typedef std::map<std::string, client::function::type> functionDictionary_t;
-
 
 class Expression;
 namespace Expressions {
@@ -85,7 +80,6 @@ namespace Expressions {
         INEQ_RHS,       // >
         INEQ_RHS_EQ     // >=
     };
-
 }
 
 #include "Expression/GlobalFunctions.h"
@@ -93,7 +87,6 @@ namespace Expressions {
 class Expression {
 
 public:
-
     Expression()
     {}
 
@@ -148,9 +141,7 @@ public:
         return std::make_tuple(result, valid);
     }
 
-
 private:
-
     typedef std::string::const_iterator iterator_type;
     client::ast::expression ast_;
 
@@ -189,16 +180,15 @@ private:
 
         client::error_handler<iterator_type>       error_handler(iter, end);
         client::parser::expression<iterator_type>  expression(error_handler);
-        client::parser::skipper<iterator_type>     skipper;
         client::code_gen::requirements             requirements(error_handler);
 
-        bool success = phrase_parse(iter, end, expression, skipper, ast_);
+        bool success = expression.parse(iter, end, ast_);
 
         if (!success || iter != end) {
             std::cout << "Parsing failed!" << std::endl;
             std::string here = (iter != end ? std::string(iter, end): expr_);
-            throw new OptPilotException("Expression::parse()",
-                                         "Parsing failed here: " + here + "!");
+            throw OptPilotException("Expression::parse()",
+                                     "Parsing failed here: " + here + "!");
         }
 
         // store the functions and variables required to evaluate this

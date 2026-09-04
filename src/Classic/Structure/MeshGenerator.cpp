@@ -96,10 +96,6 @@ void MeshGenerator::add(const ElementBase &element) {
     elements_m.push_back(mesh);
 }
 
-#include <boost/iostreams/filtering_streambuf.hpp>
-#include <boost/iostreams/copy.hpp>
-#include <boost/iostreams/filter/zlib.hpp>
-
 void MeshGenerator::write(const std::string &fname) {
     std::string filename = Util::combineFilePath({
         OpalData::getInstance()->getAuxiliaryOutputDirectory(),
@@ -131,10 +127,7 @@ void MeshGenerator::write(const std::string &fname) {
     out << "]\n";
 
     {
-        boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
-        in.push(boost::iostreams::zlib_compressor());
-        in.push(vertices_ascii);
-        boost::iostreams::copy(in, vertices_compressed);
+        std::string vertices_compressed = Util::compressString(vertices_ascii.str());
     }
 
     std::string vertices_base64 = Util::base64_encode(vertices_compressed.str());
@@ -254,10 +247,7 @@ void MeshGenerator::write(const std::string &fname) {
                 << "</body>\n"
                 << "</html>";
     {
-        boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
-        in.push(boost::iostreams::zlib_compressor());
-        in.push(index_ascii);
-        boost::iostreams::copy(in, index_compressed);
+        std::string index_compressed = Util::compressString(index_ascii.str());
     }
 
     out << "index_base64 = '" << Util::base64_encode(index_compressed.str()) << "'\n\n";

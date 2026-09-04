@@ -28,8 +28,6 @@
 
 #include <gsl/gsl_histogram.h>
 
-#include <boost/numeric/conversion/cast.hpp>
-
 extern Inform* gmsg;
 
 const double DistributionMoments::percentileOneSigmaNormalDist_m = std::erf(1 / sqrt(2));
@@ -203,10 +201,10 @@ void DistributionMoments::computePercentiles(const InputIt & first, const InputI
 
     allreduce(localHistogramValues.data(), globalHistogramValues.data(), 3 * (numBins + 1), std::plus<int>());
 
-    int numParticles68 = boost::numeric_cast<int>(std::floor(totalNumParticles_m * percentileOneSigmaNormalDist_m + 0.5));
-    int numParticles95 = boost::numeric_cast<int>(std::floor(totalNumParticles_m * percentileTwoSigmasNormalDist_m + 0.5));
-    int numParticles99 = boost::numeric_cast<int>(std::floor(totalNumParticles_m * percentileThreeSigmasNormalDist_m + 0.5));
-    int numParticles99_99 = boost::numeric_cast<int>(std::floor(totalNumParticles_m * percentileFourSigmasNormalDist_m + 0.5));
+    int numParticles68 = static_cast<int>(std::floor(totalNumParticles_m * percentileOneSigmaNormalDist_m + 0.5));
+    int numParticles95 = static_cast<int>(std::floor(totalNumParticles_m * percentileTwoSigmasNormalDist_m + 0.5));
+    int numParticles99 = static_cast<int>(std::floor(totalNumParticles_m * percentileThreeSigmasNormalDist_m + 0.5));
+    int numParticles99_99 = static_cast<int>(std::floor(totalNumParticles_m * percentileFourSigmasNormalDist_m + 0.5));
 
     for (int d = 0; d < 3; d++) {
         unsigned int localNum = last - first, current = 0;

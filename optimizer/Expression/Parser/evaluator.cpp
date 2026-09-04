@@ -1,10 +1,6 @@
-/*=============================================================================
-    Distributed under the Boost Software License, Version 1.0. (See accompanying
-    file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-=============================================================================*/
 #include "evaluator.hpp"
 
-#include <boost/variant/apply_visitor.hpp>
+#include <iostream>
 
 namespace client { namespace code_gen {
 
@@ -42,7 +38,7 @@ namespace client { namespace code_gen {
 
     bool StackEvaluator::operator()(ast::operation const& x) {
 
-        if (!boost::apply_visitor(*this, x.operand_)) {
+        if (!ast::apply_visitor(*this, x.operand_)) {
             return false;
         }
 
@@ -67,7 +63,7 @@ namespace client { namespace code_gen {
 
             case ast::op_and           : res = op1 && op2; break;
             case ast::op_or            : res = op1 || op2; break;
-            default                    : BOOST_ASSERT(0);  return false;
+            default                    : assert(false);  return false;
         }
 
         evaluation_stack_.emplace_back(std::in_place_type<double>, res);
@@ -76,7 +72,7 @@ namespace client { namespace code_gen {
 
     bool StackEvaluator::operator()(ast::unary const& x) {
 
-        if (!boost::apply_visitor(*this, x.operand_))
+        if (!ast::apply_visitor(*this, x.operand_))
             return false;
 
         double op = std::get<double>(evaluation_stack_.back());
@@ -86,7 +82,7 @@ namespace client { namespace code_gen {
             case ast::op_negative : op = -op; break;
             case ast::op_not      : op = !op; break;
             case ast::op_positive :           break;
-            default               : BOOST_ASSERT(0); return false;
+            default               : assert(false); return false;
         }
 
         evaluation_stack_.emplace_back(std::in_place_type<double>, op);
@@ -96,7 +92,7 @@ namespace client { namespace code_gen {
     bool StackEvaluator::operator()(ast::function_call const& x) {
 
         for (ast::function_call_argument const& arg : x.args) {
-            if (!boost::apply_visitor(*this, arg))
+            if (!ast::apply_visitor(*this, arg))
                 return false;
         }
 
@@ -127,7 +123,7 @@ namespace client { namespace code_gen {
 
     bool StackEvaluator::operator()(ast::expression const& x) {
 
-        if (!boost::apply_visitor(*this, x.first))
+        if (!ast::apply_visitor(*this, x.first))
             return false;
 
         for (ast::operation const& oper : x.rest) {

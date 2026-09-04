@@ -35,15 +35,12 @@
 #include <sstream>
 #include <set>
 
-#include "boost/utility/value_init.hpp"
-
 #include "Util/AnsiColors.h"
 #include "Util/OptPilotException.h"
 
 class CmdArguments {
 
 public:
-
     CmdArguments(int argc, char **argv) {
         addArguments(argc, argv);
     }
@@ -59,7 +56,7 @@ public:
     */
     template<class T>
     T getArg(const std::string name, bool isFatal = false) {
-        boost::value_initialized<T> value;
+        T value{};
         return getArg<T>(name, value, isFatal);
     }
 
@@ -78,15 +75,15 @@ public:
         T value = default_value;
         try {
             value = this->arg<T>(name);
-        } catch(OptPilotException &e) {
-            if(isFatal) {
+        } catch(OptPilotException& e) {
+            if (isFatal) {
                 std::ostringstream exe;
                 exe << "Fatal: argument \"";
                 exe << name;
                 exe << "\" not found!";
                 throw OptPilotException("CmdArguments::getArg", exe.str());
             } else {
-                if(warned_.count(name) == 0) {
+                if (warned_.count(name) == 0) {
                     std::ostringstream warn;
                     warn << AnsiColors::BoldMagenta;
                     warn << "Warning: argument \"";
@@ -105,7 +102,7 @@ public:
     }
 
     template <class T>
-    void addArgument(const std::string &name, const T &value) {
+    void addArgument(const std::string& name, const T& value) {
         std::ostringstream oss;
         oss << value;
 
@@ -118,7 +115,7 @@ public:
     }
 
     template <class T>
-    void replaceArgument(const std::string &name, const T &value) {
+    void replaceArgument(const std::string& name, const T& value) {
         std::ostringstream oss;
         oss << value;
 
@@ -155,7 +152,6 @@ public:
     //}
 
 private:
-
     /// container for storing command line options
     std::map<std::string, std::string> arguments_;
 
@@ -165,7 +161,7 @@ private:
     void addArguments(int argc, char **argv);
 
     /// helper to split string
-    void split(std::string &name, std::string &value, std::string arg);
+    void split(std::string& name, std::string& value, std::string arg);
 
     /// tries to retrieve command line parameter.
     /// @throws OptPilotException if parameter was not found.
@@ -180,7 +176,7 @@ template<class T>
 inline T CmdArguments::arg(const std::string name) {
     T t;
     std::map<std::string, std::string>::iterator it = arguments_.find(name);
-    if(it != arguments_.end()) {
+    if (it != arguments_.end()) {
         std::istringstream iss(arguments_[name]);
         iss >> t;
         return t;
@@ -192,7 +188,7 @@ inline T CmdArguments::arg(const std::string name) {
 template<>
 inline std::string CmdArguments::arg<std::string>(const std::string name) {
     std::map<std::string, std::string>::iterator it = arguments_.find(name);
-    if(it != arguments_.end()) {
+    if (it != arguments_.end()) {
         return arguments_[name];
     } else {
         throw OptPilotException("CmdArguments::getArg", "argument not found!");
