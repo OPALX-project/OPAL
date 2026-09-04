@@ -4185,13 +4185,15 @@ void Distribution::writeOutFileHeader() {
 
     unsigned int totalNum = tOrZDist_m.size();
     reduce(totalNum, totalNum, OpAddAssign());
-    if (Ippl::myNode() != 0)
-        return;
 
+    // Every node needs outFilename_m, e.g. to append its own particles later on.
     outFilename_m = Util::combineFilePath({
         OpalData::getInstance()->getAuxiliaryOutputDirectory(),
         OpalData::getInstance()->getInputBasename() + "_" + getOpalName() + ".dat"
     });
+
+    if (Ippl::myNode() != 0)
+        return;
 
     std::ofstream outputFile(outFilename_m);
     if (outputFile.bad()) {
