@@ -170,7 +170,7 @@ namespace Util {
         if (b.size() > 1) {
             output << "(";
         }
-        for (size_t i = 0; i < b.size(); ++i) {
+        for (std::size_t i = 0; i < b.size(); ++i) {
             output << std::boolalpha << boolToUpperString(b[i]);
             if (b.size() > 1) {
                 (i < (b.size()-1)) ? (output << ", ") : (output << ")");
@@ -266,18 +266,6 @@ namespace Util {
             out.push_back(token);
         }
         return out;
-    }
-
-    std::string trim_chars(const std::string& s, const std::string& chars) {
-        std::size_t first = 0;
-        while (first < s.size() && chars.find(s[first]) != std::string::npos)
-            ++first;
-
-        std::size_t last = s.size();
-        while (last > first && chars.find(s[last - 1]) != std::string::npos)
-            --last;
-
-        return s.substr(first, last - first);
     }
 
     std::string compressString(const std::string& str) {

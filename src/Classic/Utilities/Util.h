@@ -240,8 +240,19 @@ namespace Util {
                                           const std::string& delims,
                                           bool compress = true);
 
-    // Trim characters on the left that are present in 'chars'
-    std::string trim_chars(const std::string& s, const std::string& chars);
+    // Trim characters on both ends that are present in 'chars'
+    inline
+    std::string trim_chars(const std::string& s, const std::string& chars) {
+        std::size_t first = 0;
+        while (first < s.size() && chars.find(s[first]) != std::string::npos)
+            ++first;
+
+        std::size_t last = s.size();
+        while (last > first && chars.find(s[last - 1]) != std::string::npos)
+            --last;
+
+        return s.substr(first, last - first);
+    }
 
     template <typename T>
     std::string toStringWithThousandSep(T value, char sep = '\'');

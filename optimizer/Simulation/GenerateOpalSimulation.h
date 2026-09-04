@@ -159,16 +159,16 @@ private:
             std::fill_n(tmp, 1024, '\0');
             infile.getline(tmp, 1024);
             line_nr++;
-            if(tmp[0] != '#') {
+            if (tmp[0] != '#') {
                 std::string stmp(tmp);
                 stmp = Util::trim_chars(stmp, "\r\n\v\f\t ");
-                if(stmp.size() == 0)
+                if (stmp.size() == 0)
                     continue;
 
                 std::vector<std::string> all_strings = Util::split_any_of(
                         stmp, "\r\n\v\f\t ", true);
 
-                if(all_strings.size() < 2) {
+                if (all_strings.size() < 2) {
                     std::cout << "PROBLEM with the following line "
                               << "(at least name and value required)!"
                               << std::endl;
@@ -194,7 +194,7 @@ private:
 
     /// Helper method to scale variable if necessary.
     void scale(std::string name, std::string *value) {
-        if(scaleVars_.count(name) > 0) {
+        if (scaleVars_.count(name) > 0) {
             std::istringstream instr(*value);
             double val;
             instr >> val;
