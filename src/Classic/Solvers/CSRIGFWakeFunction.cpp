@@ -73,10 +73,24 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
     double minPathLength = smin(2) + bunch->get_sPos() - FieldBegin_m;
     for (unsigned int i = 1; i < numOfSlices; i++) {
         double pathLengthOfSlice = minPathLength + i * meshSpacing;
-        double angleOfSlice = pathLengthOfSlice/bendRadius_m;
+
+        /*
+          bendRadius_m==0.0 can happen if we just go out into a drift
+          
+         */
+        double angleOfSlice;
+        if (bendRadius_m==0.0)
+            angleOfSlice = 0.;
+        else 
+            angleOfSlice = pathLengthOfSlice/bendRadius_m;
+
+        if (pathLengthOfSlice < 0.0) // should never happen
+            ERRORMSG("In CSRWakeFunction::apply() pathLengthOfSlice<0.0" << endl);
+
         if (angleOfSlice > 0.0 && angleOfSlice <= totalBendAngle_m){
             calculateGreenFunction(bunch, meshSpacing);
         }
+
         // convolute with line density
         calculateContributionInside(i, angleOfSlice, meshSpacing);
         calculateContributionAfter(i, angleOfSlice, meshSpacing);
@@ -133,7 +147,7 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
 
 void CSRIGFWakeFunction::initialize(const ElementBase* ref) {
     if (ref->getType() == ElementType::RBEND ||
-       ref->getType() == ElementType::SBEND) {
+        ref->getType() == ElementType::SBEND) {
 
         const Bend2D *bend = static_cast<const Bend2D *>(ref);
         double End;
