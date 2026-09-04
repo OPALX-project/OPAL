@@ -25,14 +25,10 @@
 #ifndef __NUMBER_OF_PEAKS_H__
 #define __NUMBER_OF_PEAKS_H__
 
-#include <string>
-
 #include <cmath>
-
-#include "boost/type_traits/remove_cv.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
-#include "boost/smart_ptr.hpp"
+#include <string>
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/PeakReader.h"
@@ -48,7 +44,7 @@ struct NumberOfPeaks {
                                     "numberOfPeaks expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        sim_filename_  = boost::get<std::string>(args[0]);
+        sim_filename_  = std::get<std::string>(args[0]);
 
         bool is_valid = true;
 
@@ -64,14 +60,14 @@ struct NumberOfPeaks {
         }
 
 
-        return boost::make_tuple(nPeaks, is_valid);
+        return std::make_tuple(nPeaks, is_valid);
     }
 
 private:
     std::string sim_filename_;
 
     // define a mapping to arguments in argument vector
-    boost::tuple<std::string> argument_types;
+    std::tuple<std::string> argument_types;
 };
 
 #endif

@@ -110,8 +110,8 @@ void RingSection::updateComponentOrientation() {
 }
 
 std::vector<Vector_t> RingSection::getVirtualBoundingBox() const {
-    Vector_t startParallel(getStartNormal()(1), -getStartNormal()(0), 0);
-    Vector_t endParallel(getEndNormal()(1), -getEndNormal()(0), 0);
+    Vector_t startParallel({getStartNormal()(1), -getStartNormal()(0), 0});
+    Vector_t endParallel({getEndNormal()(1), -getEndNormal()(0), 0});
     normalise(startParallel);
     normalise(endParallel);
     double startRadius = 0.99 * std::sqrt(getStartPosition()(0) * getStartPosition()(0) +
@@ -129,18 +129,18 @@ std::vector<Vector_t> RingSection::getVirtualBoundingBox() const {
 //    double phi = atan2(r(1), r(0))+Physics::pi;
 bool RingSection::doesOverlap(double phiStart, double phiEnd) const {
     RingSection phiVirtualORS;
-    phiVirtualORS.setStartPosition(Vector_t(std::sin(phiStart),
+    phiVirtualORS.setStartPosition(Vector_t({std::sin(phiStart),
                                             std::cos(phiStart),
-                                            0.));
-    phiVirtualORS.setStartNormal(Vector_t(std::cos(phiStart),
+                                            0.}));
+    phiVirtualORS.setStartNormal(Vector_t({std::cos(phiStart),
                                           -std::sin(phiStart),
-                                          0.));
-    phiVirtualORS.setEndPosition(Vector_t(std::sin(phiEnd),
+                                          0.}));
+    phiVirtualORS.setEndPosition(Vector_t({std::sin(phiEnd),
                                           std::cos(phiEnd),
-                                          0.));
-    phiVirtualORS.setEndNormal(Vector_t(std::cos(phiEnd),
+                                          0.}));
+    phiVirtualORS.setEndNormal(Vector_t({std::cos(phiEnd),
                                         -std::sin(phiEnd),
-                                        0.));
+                                        0.}));
     std::vector<Vector_t> virtualBB = getVirtualBoundingBox();
     // at least one of the bounding box coordinates is in the defined sector
     // std::cerr << "RingSection::doesOverlap " << phiStart << " " << phiEnd << " "

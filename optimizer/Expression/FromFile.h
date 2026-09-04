@@ -26,16 +26,13 @@
 #ifndef __FROMFILE_H__
 #define __FROMFILE_H__
 
-#include <string>
-#include <map>
-#include <set>
 #include <fstream>
 #include <iterator>
-
-#include "boost/tuple/tuple.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
-#include "boost/smart_ptr.hpp"
+#include <map>
+#include <set>
+#include <string>
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/OptPilotException.h"
@@ -51,7 +48,7 @@ struct FromFile {
                                     "fromFile expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        filename_   = boost::get<std::string>(args[0]);
+        filename_ = std::get<std::string>(args[0]);
 
         double sum = 0;
         bool is_valid = true;
@@ -59,13 +56,13 @@ struct FromFile {
         try {
             readValues();
         } catch(const OptPilotException& e) {
-            return boost::make_tuple(0.0, false);
+            return std::make_tuple(0.0, false);
         }
 
         for(double obj_value : values_)
             sum += obj_value;
 
-        return boost::make_tuple(sum, is_valid);
+        return std::make_tuple(sum, is_valid);
     }
 
 

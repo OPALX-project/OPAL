@@ -2,10 +2,8 @@
 #define __RADIALPEAK_H__
 
 #include <string>
-
-#include "boost/type_traits/remove_cv.hpp"
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/PeakReader.h"
@@ -19,36 +17,32 @@ struct RadialPeak {
 
     static const std::string name;
 
+    RadialPeak()
+        : argument_types("peak_filename", 0)
+    {}
+
     Expressions::Result_t operator()(client::function::arguments_t args) {
         if (args.size() != 2) {
             throw OptPilotException("RadialPeak::operator()",
                                     "radialPeak expects 2 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        peak_filename_ = boost::get<std::string>(args[0]);
-        turn_number_   = boost::get<double>(args[1]);
+        peak_filename_ = std::get<std::string>(args[0]);
+        turn_number_   = static_cast<int>(std::get<double>(args[1]));
 
         bool is_valid = true;
-
-        const std::unique_ptr<PeakReader> sim_peaks(new PeakReader(peak_filename_));
-        try {
-            sim_peaks->parseFile();
-        } catch (OptPilotException &ex) {
-            std::cout << "Caught exception: " << ex.what() << std::endl;
-            is_valid = false;
-        }
-
         double sim_radius = 0.0;
+
         try {
-            sim_peaks->getPeak(turn_number_, sim_radius);
-        } catch(OptPilotException &e) {
-            std::cout << "Exception while getting value "
-                      << "from peak file: " << e.what()
-                      << std::endl;
+            PeakReader sim_peaks(peak_filename_);
+            sim_peaks.parseFile();
+            sim_peaks.getPeak(turn_number_, sim_radius);
+        } catch (const OptPilotException& e) {
+            std::cerr << "RadialPeak exception: " << e.what() << std::endl;
             is_valid = false;
         }
 
-        return boost::make_tuple(sim_radius, is_valid);
+        return std::make_tuple(sim_radius, is_valid);
     }
 
 private:
@@ -57,14 +51,7 @@ private:
     int turn_number_;
 
     // define a mapping to arguments in argument vector
-    boost::tuple<std::string, int> argument_types;
-    // :FIXME: remove unused enum
-#if 0
-    enum {
-          peak_filename
-        , turn_number
-    } argument_type_id;
-#endif
+    std::tuple<std::string, int> argument_types;
 };
 
 #endif

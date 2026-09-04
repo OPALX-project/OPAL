@@ -26,6 +26,8 @@ public:
       {
       }
 
+  virtual ~BrickExpression() = default;
+
   virtual void apply();
 
 private:
@@ -39,10 +41,3 @@ private:
 #include "Field/BrickExpression.hpp"
 
 #endif // BRICK_EXPRESSION_H
-
-/***************************************************************************
- * $RCSfile: BrickExpression.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:26 $
- * IPPL_VERSION_ID: $Id: BrickExpression.h,v 1.1.1.1 2003/01/23 07:40:26 adelmann Exp $ 
- ***************************************************************************/
-

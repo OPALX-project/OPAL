@@ -1,6 +1,13 @@
 #include "Utilities/MSLang/Triangle.h"
 #include "Physics/Units.h"
 
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <memory>
+#include <utility>
+#include <vector>
+
 namespace mslang {
     void Triangle::print(int indentwidth) {
         std::string indent(indentwidth, ' ');

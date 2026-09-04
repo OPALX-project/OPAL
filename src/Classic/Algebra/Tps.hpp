@@ -62,9 +62,13 @@ void Tps<T>::unique() {
 
 // Template class TpsRep<T>.
 //
+// THIS DOESN'T WORK WITH GCC >= 12:
 // The representation of a Tps<T> is based on a mechanism which avoids
 // double memory allocation (one for the TpsRep<T> object, one for the
-// table of monomials). If this causes problems, it can be reverted to
+// table of monomials).
+//
+// 
+// If this causes problems, it can be reverted to
 // using a double allocation by adding a data member "T *dat" to TpsRep<T>,
 // changing "TpsRep<T>::data()" to return "dat", and adapting the methods
 // "TpsRep<T>::operator new()" and "TpsRep<T>::operator delete()" so as
@@ -109,33 +113,29 @@ template <class T> class TpsRep {
     // Not implemented.
     TpsRep<T> &operator=(const TpsRep<T> &);
 
-    // May need to add this:
-    //   T *dat;
+    T *dat;
 };
 
 
 template <class T> inline
 T *TpsRep<T>::data() {
-    return reinterpret_cast<T *>(this + 1);
-    // Could be changed to:
-    //   return dat;
+    return dat;
 }
 
 
 template <class T> inline
 void *TpsRep<T>::operator new(size_t s, size_t extra) {
-    return new char[s + extra * sizeof(double)];
-    // Could be changed to:
-    //   TpsRep<T> *p = new char[s];
-    //   p->dat = new T[extra];
-    //   return p;
+    // with gcc >= 12 this doesn't work if T is std::complex
+    //return new char[s + extra * sizeof(double)];
+    TpsRep<T> *p = reinterpret_cast<TpsRep<T>*>(new char[s]);
+    p->dat = new T[extra];
+    return p;
 }
 
 
 template <class T> inline
 void TpsRep<T>::operator delete(void *p) {
-    // May have to add this:
-    //   delete [] reinterpret_cast<TpsRep<T>*>(p)->dat;
+    delete [] reinterpret_cast<TpsRep<T>*>(p)->dat;
     delete [] reinterpret_cast<char *>(p);
 }
 
@@ -206,8 +206,20 @@ TpsRep<T> *TpsRep<T>::grab() {
 
 
 template <class T> inline
-void TpsRep<T>::release(TpsRep<T> *p) {
-    if(--(p->ref) <= 0) delete p;
+void TpsRep<T>::release(TpsRep<T>* p) {
+    // Tps uses reference-counted shared storage with copy-on-write semantics.
+    // This function drops one reference and destroys the representation when
+    // the last owner goes away. It must stay defined in the template
+    // implementation, not just declared, otherwise some instantiations leave
+    // libOPAL.so with an unresolved TpsRep<T>::release symbol at PyOpal load
+    // time.
+    if (!p) return;
+
+    int newref = --(p->ref);
+    if (newref <= 0) {
+        auto* raw = reinterpret_cast<char*>(p);
+        delete [] raw;
+    }
 }
 
 

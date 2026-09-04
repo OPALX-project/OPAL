@@ -128,7 +128,7 @@ namespace Expressions {
             }
         }
 
-        return T(0);
+        return T{};
     }
 
 

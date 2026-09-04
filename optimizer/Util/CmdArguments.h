@@ -37,6 +37,7 @@
 
 #include "boost/utility/value_init.hpp"
 
+#include "Util/AnsiColors.h"
 #include "Util/OptPilotException.h"
 
 class CmdArguments {
@@ -87,13 +88,13 @@ public:
             } else {
                 if(warned_.count(name) == 0) {
                     std::ostringstream warn;
-                    warn << "\033[01;35m";
+                    warn << AnsiColors::BoldMagenta;
                     warn << "Warning: argument \"";
                     warn << name;
                     warn << "\" not found! Using default value (";
                     warn << default_value;
                     warn << ").";
-                    warn << "\e[0m" << std::endl;
+                    warn << AnsiColors::Reset << std::endl;
                     std::cout << warn.str() << std::flush;
                     warned_.insert(name);
                 }

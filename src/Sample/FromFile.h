@@ -26,120 +26,93 @@
 #define SAMPLE_FROMFILE_H
 
 #include "Sample/SamplingMethod.h"
-#include "Utilities/OpalException.h"
 
 #include <string>
-#include <fstream>
-#include <sstream>
-#include <iterator>
-
 #include <vector>
 
-class FromFile : public SamplingMethod
-{
+/**
+ * @class FromFile
+ * @brief Sampling method that reads design variable values from a text file.
+ *
+ * This class parses a file containing design variable samples. Each column corresponds to a variable,
+ * and the first line must contain the names of the variables. It supports selecting a specific column
+ * and accessing values sequentially or cyclically.
+ *
+ * The expected file format is:
+ * @code
+ * a b c
+ * 1 2 3
+ * 4 5 6
+ * ...
+ * @endcode
+ * where "a", "b", "c" are variable names and subsequent lines are numerical values.
+ */
+class FromFile : public SamplingMethod {
 
 public:
+    explicit FromFile(const std::string& filename, const std::string& dvarName, std::size_t modulo);
 
-    FromFile(const std::string &filename, const std::string &dvarName, size_t modulo)
-        : mod_m(modulo)
-        , filename_m(filename)
-        , dvarName_m(dvarName)
-    {
-        // we need to count the number of lines
-        std::ifstream in(filename_m);
+    /// Destructor
+    ~FromFile() override = default;
 
-        if ( !in.is_open() ) {
-            throw OpalException("FromFile()",
-                                "Couldn't open file \"" + filename_m + "\".");
-        }
+    // Disable copying to avoid issues with memory management
+    FromFile(const FromFile&) = delete;
+    FromFile& operator=(const FromFile&) = delete;
 
-        int nLines = std::count(std::istreambuf_iterator<char>(in),
-                                std::istreambuf_iterator<char>(), '\n');
+    // Allow move semantics for efficient resource transfer
+    FromFile(FromFile&&) noexcept = default;
+    FromFile& operator=(FromFile&&) noexcept = default;
 
-        // make sure we do not count empty lines at end
-        in.seekg(-1, std::ios_base::end);
-        std::size_t pos =  in.tellg();
+    /**
+     * @brief Assign a sampled value to an individual's gene.
+     *
+     * @param ind The individual to modify.
+     * @param i Index of the gene (design variable) to assign.
+     */
+    void create(std::shared_ptr<SampleIndividual>& ind, std::size_t i) override;
 
-        std::string line;
-        std::getline(in, line);
+    /**
+     * @brief Parses and loads the data from the file into memory.
+     *
+     * @param args Command-line arguments (unused here).
+     * @param comm Communication context (unused here).
+     *
+     * @throws OpalException if the file is invalid or the variable is missing.
+     */
+    void allocate(const CmdArguments_t& args, const Comm::Bundle_t& comm) override;
 
-        while ( line.empty() ) {
-            --nLines;
-            --pos;
-            in.seekg(pos, std::ios_base::beg);
-            std::getline(in, line);
-        }
+    /**
+     * @brief Returns the next value for the given individual ID.
+     *
+     * The value is selected cyclically from the chain.
+     *
+     * @param id The individual's ID.
+     * @return The corresponding sample value.
+     */
+    double getNext(unsigned int id);
 
-        if ( nLines < 0 )
-            throw OpalException("FromFile()", "Empty file \"" + filename_m + "\".");
-
-        globalSize_m = nLines;
-
-        in.close();
-    }
-
-    void create(std::shared_ptr<SampleIndividual>& ind, size_t i) {
-        ind->genes[i] = getNext(ind->id);
-    }
-
-    void allocate(const CmdArguments_t& /*args*/, const Comm::Bundle_t& /*comm*/) {
-        std::ifstream in(filename_m);
-
-        if ( !in.is_open() ) {
-            throw OpalException("FromFile()",
-                                "Couldn't open file \"" + filename_m + "\".");
-        }
-
-        std::string header;
-        std::getline(in, header);
-        std::istringstream iss(header);
-        std::vector<std::string> dvars({std::istream_iterator<std::string>{iss},
-                                        std::istream_iterator<std::string>{}});
-        size_t j = 0;
-        for (const std::string& str: dvars) {
-            if (str == dvarName_m) break;
-            ++ j;
-        }
-
-        if (j == dvars.size()) {
-            throw OpalException("FromFile()",
-                                "Couldn't find the dvar '" + dvarName_m + "' in the file '" + filename_m + "'");
-        }
-
-        std::string line;
-        std::getline(in, line);
-
-        for (unsigned int i = 0; i < globalSize_m; ++i) {
-            std::istringstream iss(line);
-            std::vector<std::string> numbers({std::istream_iterator<std::string>{iss},
-                                              std::istream_iterator<std::string>{}});
-
-            chain_m.push_back(std::stod(numbers[j]));
-
-            std::getline(in, line);
-        }
-        in.close();
-    }
-
-    double getNext(unsigned int id) {
-        int idx = int(id / mod_m) % globalSize_m;
-        double sample = chain_m[idx];
-        return sample;
-    }
-
-    unsigned int getSize() const {
-        return globalSize_m;
-    }
-
-    ~FromFile();
+    /**
+     * @brief Get the number of lines in the file (including the header).
+     *
+     * @return Number of total lines parsed from the file.
+     */
+    unsigned int getSize() const;
 
 private:
+    /// The values for the selected design variable loaded from the file
     std::vector<double> chain_m;
-    size_t mod_m;
+
+    /// Modulo used to wrap indices
+    std::size_t mod_m;
+
+    /// File name where samples are read from
     std::string filename_m;
+
+    /// Name of the design variable to extract
     std::string dvarName_m;
 
-    unsigned int globalSize_m;
+    /// Number of lines in the file (including header)
+    std::size_t globalSize_m;
 };
 
 #endif

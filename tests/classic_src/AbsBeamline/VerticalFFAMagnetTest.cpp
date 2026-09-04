@@ -83,7 +83,7 @@ TEST_F(VerticalFFAMagnetTest, MidplaneFieldTest) {
     // test.
     for (double z = -length_m*2.; z < length_m*2.; z += length_m/10.) {
         for (double y = -length_m/4.; y < length_m*2.; y += length_m/10.) {
-            Vector_t position(0., y, z+length_m*2.); // z is relative to centre
+            Vector_t position({0., y, z+length_m*2.}); // z is relative to centre
             Vector_t bfield;
             bool outOfBounds = magnet_m->getFieldValue(position, bfield);
             double bRef = b0_m*tanh_m->function(z, 0)*std::exp(k_m*y)*10.;
@@ -98,18 +98,18 @@ TEST_F(VerticalFFAMagnetTest, BoundingBoxTest) {
     // check getFieldValue returns true if outside the bounding box
     std::vector< std::pair<Vector_t, bool> > tests;
     tests.insert(tests.begin(), {
-        std::pair<Vector_t, bool>(Vector_t(0., 0., 1e-6), false),
-        std::pair<Vector_t, bool>(Vector_t(0., 0., -1e-6), true),
-        std::pair<Vector_t, bool>(Vector_t(0., 0., length_m*4.-1e-6), false),
-        std::pair<Vector_t, bool>(Vector_t(0., 0., length_m*4.+1e-6), true),
-        std::pair<Vector_t, bool>(Vector_t(0., -length_m/4.+1e-6, length_m*2), false),
-        std::pair<Vector_t, bool>(Vector_t(0., -length_m/4.-1e-6, length_m*2), true),
-        std::pair<Vector_t, bool>(Vector_t(0., length_m*2.-1e-6, length_m*2), false),
-        std::pair<Vector_t, bool>(Vector_t(0., length_m*2.+1e-6, length_m*2), true),
-        std::pair<Vector_t, bool>(Vector_t(-length_m/2+1e-6, 0., length_m*2), false),
-        std::pair<Vector_t, bool>(Vector_t(-length_m/2-1e-6, 0., length_m*2), true),
-        std::pair<Vector_t, bool>(Vector_t(+length_m/2-1e-6, 0., length_m*2), false),
-        std::pair<Vector_t, bool>(Vector_t(+length_m/2+1e-6, 0., length_m*2), true),
+        std::pair<Vector_t, bool>(Vector_t({0., 0., 1e-6}), false),
+        std::pair<Vector_t, bool>(Vector_t({0., 0., -1e-6}), true),
+        std::pair<Vector_t, bool>(Vector_t({0., 0., length_m*4.-1e-6}), false),
+        std::pair<Vector_t, bool>(Vector_t({0., 0., length_m*4.+1e-6}), true),
+        std::pair<Vector_t, bool>(Vector_t({0., -length_m/4.+1e-6, length_m*2}), false),
+        std::pair<Vector_t, bool>(Vector_t({0., -length_m/4.-1e-6, length_m*2}), true),
+        std::pair<Vector_t, bool>(Vector_t({0., length_m*2.-1e-6, length_m*2}), false),
+        std::pair<Vector_t, bool>(Vector_t({0., length_m*2.+1e-6, length_m*2}), true),
+        std::pair<Vector_t, bool>(Vector_t({-length_m/2+1e-6, 0., length_m*2}), false),
+        std::pair<Vector_t, bool>(Vector_t({-length_m/2-1e-6, 0., length_m*2}), true),
+        std::pair<Vector_t, bool>(Vector_t({+length_m/2-1e-6, 0., length_m*2}), false),
+        std::pair<Vector_t, bool>(Vector_t({+length_m/2+1e-6, 0., length_m*2}), true),
     });
 
     Vector_t bfield;
@@ -126,14 +126,14 @@ TEST_F(VerticalFFAMagnetTest, MaxwellTest) {
     double z = length_m*0.8;
     VerticalFFAMagnet* magnet = dynamic_cast<VerticalFFAMagnet*>(magnet_m->clone());
     double dr = 1e-3;
-    MaxwellTest maxTest(Vector_t(dr, dr, dr), 1., magnet);
+    MaxwellTest maxTest(Vector_t({dr, dr, dr}), 1., magnet);
     //maxTest.printHeading(std::cerr);
     double divOld = 1.e9;
     std::cerr << "Testing Maxwellianness" << std::endl;
     for (size_t i = 1; i < 12; i += 1) {
         magnet->setMaxOrder(i);
         magnet->initialise();
-        Vector_t pos(x, y, z);
+        Vector_t pos({x, y, z});
         //maxTest.printLine(std::cerr, pos, 0.);
         double div = maxTest.divB(pos, 0.);
         double curl = euclidean_norm(maxTest.curlB(pos, 0.));

@@ -419,7 +419,7 @@ private:
 };
 
 Vector_t Ring::convert(const Vector3D& vec_3d) {
-    return Vector_t(vec_3d(0), vec_3d(1), vec_3d(2));
+    return Vector_t({vec_3d(0), vec_3d(1), vec_3d(2)});
 }
 
 Vector3D Ring::convert(const Vector_t& vec_t) {

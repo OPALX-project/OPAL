@@ -136,7 +136,7 @@ int main(int argc, char *argv[]){
     if (string(argv[4])==string("CIC")) myInterpol = CIC;
     else myInterpol = NGP;
 #else
-    nr = Vektor<int,Dim>(atoi(argv[1]),atoi(argv[2]));
+    nr = Vektor<int,Dim>({atoi(argv[1]),atoi(argv[2])});
     if (string(argv[3])==string("CIC")) myInterpol = CIC;
     else myInterpol = NGP;
 #endif

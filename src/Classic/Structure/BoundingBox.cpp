@@ -18,8 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "BoundingBox.h"
+#include "Structure/BoundingBox.h"
 
+#include <algorithm>
 #include <iomanip>
 #include <limits>
 
@@ -54,13 +55,13 @@ void BoundingBox::enlargeToContainBoundingBox(const BoundingBox& boundingBox)
     }
 }
 
-boost::optional<Vector_t> BoundingBox::getIntersectionPoint(const Vector_t& position,
-                                                            const Vector_t& direction) const
+std::optional<Vector_t> BoundingBox::getIntersectionPoint(const Vector_t& position,
+                                                          const Vector_t& direction) const
 {
-    boost::optional<Vector_t> result = boost::none;
+    std::optional<Vector_t> result = std::nullopt;
     double minDistance = std::numeric_limits<double>::max();
     const Vector_t dimensions = upperRightCorner_m - lowerLeftCorner_m;
-    Vector_t normal(1, 0, 0);
+    Vector_t normal({1, 0, 0});
     for (unsigned int d = 0; d < 3; ++ d) {
         double sign = -1;
         Vector_t upperCorner = lowerLeftCorner_m + dot(normal, upperRightCorner_m) * normal;
@@ -82,7 +83,7 @@ boost::optional<Vector_t> BoundingBox::getIntersectionPoint(const Vector_t& posi
             }
             if (isOnFace) {
                 double distance = euclidean_norm(pointOnPlane - position);
-                if (distance < minDistance) {
+                    if (distance < minDistance) {
                     minDistance = distance;
                     result = pointOnPlane;
                 }
@@ -90,7 +91,7 @@ boost::optional<Vector_t> BoundingBox::getIntersectionPoint(const Vector_t& posi
             sign *= -1;
         }
 
-        normal = Vector_t(normal[2], normal[0], normal[1]);
+        normal = Vector_t({normal[2], normal[0], normal[1]});
     }
 
     return result;

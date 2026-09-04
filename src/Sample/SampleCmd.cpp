@@ -192,7 +192,7 @@ void SampleCmd::execute() {
                                 "There is already a design variable with the variable " + var + " defined");
         }
 
-        DVar_t tmp = boost::make_tuple(var, lowerbound, upperbound);
+        DVar_t tmp = std::make_tuple(var, lowerbound, upperbound);
         dvars.insert(namedDVar_t(name, tmp));
     }
 
@@ -426,7 +426,7 @@ void SampleCmd::execute() {
         std::map<std::string, short> dvarCheck;
         auto itr = dvars.begin();
         for (; itr != dvars.end(); ++ itr) {
-            dvarCheck.insert(std::make_pair(boost::get<0>(itr->second), 0));
+            dvarCheck.insert(std::make_pair(std::get<0>(itr->second), 0));
         }
 
         while(infile.good()) {

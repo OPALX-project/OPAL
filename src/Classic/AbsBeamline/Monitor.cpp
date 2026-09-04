@@ -92,7 +92,7 @@ void Monitor::driftToCorrectPositionAndSave(const Vector_t& refR, const Vector_t
     const double cdt = Physics::c * RefPartBunch_m->getdT();
     const Vector_t driftPerTimeStep = cdt * Util::getBeta(refP);
     const double tau = -refR(2) / driftPerTimeStep(2);
-    const CoordinateSystemTrafo update(refR + tau * driftPerTimeStep, getQuaternion(refP, Vector_t(0, 0, 1)));
+    const CoordinateSystemTrafo update(refR + tau * driftPerTimeStep, getQuaternion(refP, Vector_t({0, 0, 1})));
     const CoordinateSystemTrafo refToLocalCSTrafo = update * (getCSTrafoGlobal2Local() * RefPartBunch_m->toLabTrafo_m);
 
     for (OpalParticle particle : *RefPartBunch_m) {

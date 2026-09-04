@@ -106,3 +106,12 @@ TEST_F(SplineTimeDependenceTest, CubicLookupTest) {
         EXPECT_NEAR(test_y, ref_y, 1e-9);
     }
 }
+
+TEST_F(SplineTimeDependenceTest, LinearIntegralTest) {
+    SplineTimeDependence timeDep(1, times_m, values_m);
+    double test_x = (times_m[2]+times_m[3])/2.;
+    EXPECT_NEAR(timeDep.getIntegral(test_x), 40.5, 1e-9);
+    test_x = times_m[0] - (times_m[1]-times_m[0])/2.;
+    EXPECT_THROW(timeDep.getIntegral(test_x), GeneralClassicException);
+}
+

@@ -19,7 +19,6 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-
 #include "Algorithms/OrbitThreader.h"
 
 #include "AbsBeamline/BendBase.h"
@@ -29,30 +28,40 @@
 #include "Algorithms/CavityAutophaser.h"
 #include "BasicActions/Option.h"
 #include "BeamlineCore/MarkerRep.h"
+#include "Physics/Physics.h"
 #include "Physics/Units.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
+#include <algorithm>
 #include <cmath>
 #include <filesystem>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <limits>
+#include <map>
+#include <memory>
+#include <queue>
+#include <set>
+#include <string>
+#include <utility>
 
 #define HITMATERIAL 0x80000000
 #define EOL 0x40000000
 #define EVERYTHINGFINE 0x00000000
 extern Inform *gmsg;
 
-OrbitThreader::OrbitThreader(const PartData &ref,
-                             const Vector_t &r,
-                             const Vector_t &p,
+OrbitThreader::OrbitThreader(const PartData& ref,
+                             const Vector_t& r,
+                             const Vector_t& p,
                              double s,
                              double maxDiffZBunch,
                              double t,
                              double dt,
                              StepSizeConfig stepSizes,
-                             OpalBeamline &bl) :
+                             OpalBeamline& bl) :
     r_m(r),
     p_m(p),
     pathLength_m(s),
@@ -205,7 +214,7 @@ void OrbitThreader::execute() {
     processElementRegister();
 }
 
-void OrbitThreader::integrate(const IndexMap::value_t &activeSet, double /*maxDrift*/) {
+void OrbitThreader::integrate(const IndexMap::value_t& activeSet, double /*maxDrift*/) {
     CoordinateSystemTrafo labToBeamline = itsOpalBeamline_m.getCSTrafoLab2Local();
     Vector_t nextR;
     do {
@@ -297,8 +306,8 @@ bool OrbitThreader::containsCavity(const IndexMap::value_t &activeSet) {
     return false;
 }
 
-void OrbitThreader::autophaseCavities(const IndexMap::value_t &activeSet,
-                                      const std::set<std::string> &visitedElements) {
+void OrbitThreader::autophaseCavities(const IndexMap::value_t& activeSet,
+                                      const std::set<std::string>& visitedElements) {
     if (Options::autoPhase == 0) return;
 
     IndexMap::value_t::const_iterator it = activeSet.begin();
@@ -322,8 +331,7 @@ void OrbitThreader::autophaseCavities(const IndexMap::value_t &activeSet,
 }
 
 
-double OrbitThreader::getMaxDesignEnergy(const IndexMap::value_t &elementSet) const
-{
+double OrbitThreader::getMaxDesignEnergy(const IndexMap::value_t& elementSet) const {
     IndexMap::value_t::const_iterator it = elementSet.begin();
     const IndexMap::value_t::const_iterator end = elementSet.end();
 
@@ -367,10 +375,10 @@ void OrbitThreader::trackBack() {
     stepRange_m.enlargeIfOutside(currentStep_m);
 }
 
-void OrbitThreader::registerElement(const IndexMap::value_t &elementSet,
+void OrbitThreader::registerElement(const IndexMap::value_t& elementSet,
                                     double start,
-                                    const Vector_t &R,
-                                    const Vector_t &P) {
+                                    const Vector_t& R,
+                                    const Vector_t& P) {
 
     IndexMap::value_t::const_iterator it = elementSet.begin();
     const IndexMap::value_t::const_iterator end = elementSet.end();
@@ -436,7 +444,7 @@ void OrbitThreader::processElementRegister() {
     }
 }
 
-void OrbitThreader::setDesignEnergy(FieldList &allElements, const std::set<std::string> &visitedElements) {
+void OrbitThreader::setDesignEnergy(FieldList& allElements, const std::set<std::string>& visitedElements) {
     double kineticEnergyeV = reference_m.getM() * (sqrt(dot(p_m, p_m) + 1.0) - 1.0);
 
     FieldList::iterator it = allElements.begin();
@@ -468,7 +476,6 @@ void OrbitThreader::computeBoundingBox() {
     updateBoundingBoxWithCurrentPosition();
 }
 
-
 void OrbitThreader::updateBoundingBoxWithCurrentPosition() {
     Vector_t dR = Physics::c * dt_m * p_m / Util::getGamma(p_m);
     for (const Vector_t& pos : {r_m - 10 * dR, r_m + 10 * dR}) {
@@ -476,14 +483,14 @@ void OrbitThreader::updateBoundingBoxWithCurrentPosition() {
     }
 }
 
-double OrbitThreader::computeDriftLengthToBoundingBox(const std::set<std::shared_ptr<Component>> & elements,
-                                                      const Vector_t & position,
-                                                      const Vector_t & direction) const {
+double OrbitThreader::computeDriftLengthToBoundingBox(const std::set<std::shared_ptr<Component>>& elements,
+                                                      const Vector_t& position,
+                                                      const Vector_t& direction) const {
     if (elements.empty() ||
         (elements.size() == 1 && (*elements.begin())->getType() == ElementType::DRIFT)) {
-        boost::optional<Vector_t> intersectionPoint = globalBoundingBox_m.getIntersectionPoint(position, direction);
+        std::optional<Vector_t> intersectionPoint = globalBoundingBox_m.getIntersectionPoint(position, direction);
 
-        return intersectionPoint ? euclidean_norm(intersectionPoint.get() - position): 10.0;
+            return intersectionPoint ? euclidean_norm(intersectionPoint.value() - position) : 10.0;
     }
 
     return std::numeric_limits<double>::max();

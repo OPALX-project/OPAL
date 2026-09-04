@@ -622,7 +622,7 @@ int main(int argc, char *argv[]){
 
         Vektor<int,Dim> nr;
 
-        nr = Vektor<int,Dim>(atoi(argv[1]),atoi(argv[2]),atoi(argv[3]));
+        nr = Vektor<int,Dim>({atoi(argv[1]),atoi(argv[2]),atoi(argv[3])});
         int param = 4;
 
         double interaction_radius = atof(argv[param++]);

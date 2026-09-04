@@ -47,6 +47,29 @@ class PolynomialTimeDependenceTest(unittest.TestCase):
         """No test - just check we don't get anything evil here"""
         self.ptd.update()
 
+class PolynomialTimeDependenceTest2(unittest.TestCase):
+    """Test PolynomialTimeDependence"""
+    def setUp(self):
+        """Make a generic PTD"""
+        self.ptd = pyopal.elements.polynomial_time_dependence.PolynomialTimeDependence()
+        self.ptd.coefficients = [1.0, 2.0, 3.0, 4.0]
+
+    def test_setup(self):
+        """Check that parameters are set okay"""
+        self.assertEqual(self.ptd.coefficients, [1.0, 2.0, 3.0, 4.0])
+
+    def test_function(self):
+        """Check that we can get correct values out"""
+        for i in range(10):
+            x = i*0.1
+            value = self.ptd.function(x)
+            test = sum([(i+1.0)*x**i for i in range(4)])
+            self.assertAlmostEqual(test, value)
+
+    def test_update(self):
+        """No test - just check we don't get anything evil here"""
+        self.ptd.update()
+
 
 if __name__ == "__main__":
     unittest.main()

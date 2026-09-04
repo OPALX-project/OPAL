@@ -20,8 +20,8 @@
 #include "BeamlineCore/FlexibleCollimatorRep.h"
 #include "Structure/ParticleMatterInteraction.h"
 
-#include <boost/regex.hpp>
-#include <cstdlib>
+#include <sstream>
+#include <string>
 
 OpalECollimator::OpalECollimator():
     OpalElement(SIZE, "ECOLLIMATOR",

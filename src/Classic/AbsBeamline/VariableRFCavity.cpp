@@ -23,6 +23,7 @@
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
 #include "Utilities/GeneralClassicException.h"
+#include <boost/algorithm/string/case_conv.hpp>
 
 #include <cmath>
 
@@ -101,6 +102,7 @@ void VariableRFCavity::setPhaseModel(std::shared_ptr<AbstractTimeDependence> pha
 
 void VariableRFCavity::setFrequencyModel(std::shared_ptr<AbstractTimeDependence> frequency_td) {
     frequencyTD_m = frequency_td;
+    frequencyCache_m.setTimeDependence(frequencyTD_m.get());
 }
 
 StraightGeometry& VariableRFCavity::getGeometry() {
@@ -139,10 +141,10 @@ bool VariableRFCavity::apply(const Vector_t& R, const Vector_t& /*P*/,
         if (std::abs(R[0]) > halfWidth_m || std::abs(R[1]) > halfHeight_m) {
             return true;
         }
-        double E0 = amplitudeTD_m->getValue(t);
-        double f = frequencyTD_m->getValue(t) * Units::MHz2Hz * Units::Hz2GHz; // need GHz on the element we have MHz
-        double phi = phaseTD_m->getValue(t);
-        E = Vector_t(0., 0., E0 * std::sin(Physics::two_pi * f * t + phi));
+        const double E0 = amplitudeTD_m->getValue(t);
+        const double integralF = frequencyCache_m.getIntegral(t) * Units::MHz2Hz;
+        const double phi = phaseTD_m->getValue(t);
+        E = Vector_t({0., 0., E0 * std::sin(Physics::two_pi * integralF + phi)});
         return false;
     }
     return true;
@@ -153,7 +155,8 @@ bool VariableRFCavity::applyToReferenceParticle(const Vector_t& R, const Vector_
     return apply(R, P, t, E, B);
 }
 
-void VariableRFCavity::initialise(PartBunchBase<double, 3>* bunch, double& /*startField*/, double& /*endField*/) {
+void VariableRFCavity::initialise(PartBunchBase<double, 3>* bunch, double& /*startField*/,
+        double& /*endField*/) {
     RefPartBunch_m = bunch;
 }
 
@@ -173,13 +176,13 @@ void VariableRFCavity::accept(BeamlineVisitor& visitor) const {
 void VariableRFCavity::initialise() const {
     VariableRFCavity* cavity = const_cast<VariableRFCavity*>(this);
     std::shared_ptr<AbstractTimeDependence> phaseTD =
-        AbstractTimeDependence::getTimeDependence(phaseName_m);
+        AbstractTimeDependence::getTimeDependence(boost::to_upper_copy<std::string>(phaseName_m));
     cavity->setPhaseModel(std::shared_ptr<AbstractTimeDependence>(phaseTD->clone()));
     std::shared_ptr<AbstractTimeDependence> frequencyTD =
-        AbstractTimeDependence::getTimeDependence(frequencyName_m);
+        AbstractTimeDependence::getTimeDependence(boost::to_upper_copy<std::string>(frequencyName_m));
     cavity->setFrequencyModel(std::shared_ptr<AbstractTimeDependence>(frequencyTD->clone()));
     std::shared_ptr<AbstractTimeDependence> amplitudeTD =
-        AbstractTimeDependence::getTimeDependence(amplitudeName_m);
+        AbstractTimeDependence::getTimeDependence(boost::to_upper_copy<std::string>(amplitudeName_m));
     cavity->setAmplitudeModel(std::shared_ptr<AbstractTimeDependence>(amplitudeTD->clone()));
 
     if (halfHeight_m < 1e-9 || halfWidth_m < 1e-9)

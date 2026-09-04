@@ -33,6 +33,9 @@
 #include <map>
 #include <set>
 #include <string>
+#include <string_view>
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/OptPilotException.h"
@@ -45,10 +48,6 @@
 
 #include <boost/function.hpp>
 #include <boost/lexical_cast.hpp>
-#include <boost/variant/get.hpp>
-#include <boost/variant/variant.hpp>
-#include "boost/smart_ptr.hpp"
-#include "boost/tuple/tuple.hpp"
 #include "boost/algorithm/string.hpp"
 
 
@@ -63,7 +62,7 @@ namespace Expressions {
     typedef Expression Expr_t;
 
     // result of an evaluated expression
-    typedef boost::tuple<double, bool> Result_t;
+    typedef std::tuple<double, bool> Result_t;
     enum Result_tIdx{
         VALUE,
         IS_VALID
@@ -77,7 +76,7 @@ namespace Expressions {
     typedef std::pair<std::string, Expressions::Expr_t*> SingleNamed_t;
 
     /// distinguish different constraints
-    enum OperatorType_t {
+    enum class OperatorType_t {
         NONE,
         EQ,             // ==
         NOT_EQ,         // !=
@@ -108,7 +107,7 @@ public:
     }
 
     Expression(std::string expr, functionDictionary_t known_expr_funcs)
-        : expr_(expr)
+        : expr_(std::move(expr))
         , known_expr_funcs_(known_expr_funcs)
     {
         determineConstrOperator();
@@ -120,17 +119,17 @@ public:
     virtual ~Expression()
     {}
 
+    const std::set<std::string>& getReqVars()  const { return vars_; }
+    const std::set<std::string>& getReqFuncs() const { return funcs_; }
+    const std::string&           toString()    const { return expr_; }
 
-    std::set<std::string> getReqVars()  const { return vars_;  }
-    std::set<std::string> getReqFuncs() const { return funcs_; }
-    std::string toString()              const { return expr_;  }
     functionDictionary_t getRegFuncs()  const { return known_expr_funcs_; }
 
     /// get operator type present (if expression is constraint)
     Expressions::OperatorType_t getOpType() const { return type_; }
 
     /// evaluate an expression given a value dictionary of free variables
-    Expressions::Result_t evaluate(variableDictionary_t vars) {
+    Expressions::Result_t evaluate(const variableDictionary_t& vars) {
 
         iterator_type iter = expr_.begin();
         iterator_type end  = expr_.end();
@@ -146,7 +145,7 @@ public:
             valid  = true;
         }
 
-        return boost::make_tuple(result, valid);
+        return std::make_tuple(result, valid);
     }
 
 
@@ -164,27 +163,27 @@ private:
     Expressions::OperatorType_t type_;
 
     void determineConstrOperator() {
+        type_ = Expressions::OperatorType_t::NONE;
+        std::string_view op(expr_);
 
-        std::string op = expr_;
+        constexpr std::pair<std::string_view, Expressions::OperatorType_t> op_map[] = {
+            {"==", Expressions::OperatorType_t::EQ},
+            {"!=", Expressions::OperatorType_t::NOT_EQ},
+            {"<=", Expressions::OperatorType_t::INEQ_LHS_EQ},
+            {">=", Expressions::OperatorType_t::INEQ_RHS_EQ},
+            {"<",  Expressions::OperatorType_t::INEQ_LHS},
+            {">",  Expressions::OperatorType_t::INEQ_RHS}
+        };
 
-        if(boost::find_first(op, "=="))
-            type_ = Expressions::EQ;
-        else if(boost::find_first(op, "!="))
-            type_ = Expressions::NOT_EQ;
-        else if(boost::find_first(op, "<="))
-            type_ = Expressions::INEQ_LHS_EQ;
-        else if(boost::find_first(op, "<"))
-            type_ = Expressions::INEQ_LHS;
-        else if(boost::find_first(op, ">="))
-            type_ = Expressions::INEQ_RHS_EQ;
-        else if(boost::find_first(op,">"))
-            type_ = Expressions::INEQ_RHS;
-        else
-            type_ = Expressions::NONE;
+        for (const auto& p : op_map) {
+            if (op.find(p.first) != std::string_view::npos) {
+                type_ = p.second;
+                break;
+            }
+        }
     }
 
     void parse() {
-
         iterator_type iter = expr_.begin();
         iterator_type end  = expr_.end();
 

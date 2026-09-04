@@ -4,7 +4,13 @@
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
 
-#include <boost/regex.hpp>
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <vector>
+#include <memory>
+#include <cmath>
+#include <string>
 
 namespace mslang {
     void Ellipse::print(int indentwidth) {
@@ -71,7 +77,7 @@ namespace mslang {
 
     void Ellipse::computeBoundingBox() {
         Vector_t llc(0.0), urc(0.0);
-        const Vector_t e_x(1.0, 0.0, 0.0), e_y(0.0, 1.0, 0.0);
+        const Vector_t e_x({1.0, 0.0, 0.0}), e_y({0.0, 1.0, 0.0});
         const Vector_t center = trafo_m.transformFrom(Vector_t(0.0));
         const Vector_t e_xp = trafo_m.transformFrom(e_x) - center;
         const Vector_t e_yp = trafo_m.transformFrom(e_y) - center;

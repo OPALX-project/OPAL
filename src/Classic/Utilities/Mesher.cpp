@@ -1,3 +1,4 @@
+#include "Physics/Physics.h"
 #include "Utilities/Mesher.h"
 
 Mesher::Mesher(std::vector<Vector_t> &vertices):
@@ -15,9 +16,9 @@ void Mesher::orientVerticesCCW() {
     double sum = 0.0;
     for (unsigned int i = 0; i < size; ++ i) {
         unsigned int iPlusOne = (i + 1) % size;
-        Vector_t edge(vertices_m[iPlusOne][0] - vertices_m[i][0],
+        Vector_t edge({vertices_m[iPlusOne][0] - vertices_m[i][0],
                       vertices_m[iPlusOne][1] + vertices_m[i][1],
-                      0.0);
+                      0.0});
         sum += edge[0] * edge[1];
     }
     if (sum <= 0.0) return;
@@ -116,7 +117,7 @@ double getAngleBetweenEdges(const Vector_t &a,
 
     double angle = std::acos((a[0] * b[0] + a[1] * b[1]) / lengthA / lengthB);
     if (a[0] * b[1] - a[1] * b[0] < 0.0)
-        angle += M_PI;
+        angle += Physics::pi;
 
     return angle;
 }
@@ -193,7 +194,7 @@ double Mesher::computeMinimumAngle(unsigned int i) const {
 
     double angle01 = std::acos(-(edge0[0] * edge1[0] + edge0[1] * edge1[1]) / length0 / length1);
     double angle12 = std::acos(-(edge1[0] * edge2[0] + edge1[1] * edge2[1]) / length1 / length2);
-    double angle20 = M_PI - angle01 - angle12;
+    double angle20 = Physics::pi - angle01 - angle12;
 
     return std::min(std::min(angle01, angle12), angle20);
 }

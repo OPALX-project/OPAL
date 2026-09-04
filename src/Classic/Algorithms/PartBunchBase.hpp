@@ -51,7 +51,7 @@ PartBunchBase<T, Dim>::PartBunchBase(AbstractParticle<T, Dim>* pb, const PartDat
       dt_m(0.0),
       t_m(0.0),
       spos_m(0.0),
-      globalMeanR_m(Vector_t(0.0, 0.0, 0.0)),
+      globalMeanR_m(Vector_t({0.0, 0.0, 0.0})),
       globalToLocalQuaternion_m(Quaternion_t(1.0, 0.0, 0.0, 0.0)),
       rmax_m(0.0),
       rmin_m(0.0),
@@ -579,7 +579,7 @@ void PartBunchBase<T, Dim>::boundp() {
             throw GeneralClassicException("boundp() ", "h<0, can not build a mesh");
         }
 
-        Vector_t origin = rmin_m - Vector_t(hr_m[0] / 2.0, hr_m[1] / 2.0, hr_m[2] / 2.0);
+        Vector_t origin = rmin_m - Vector_t({hr_m[0] / 2.0, hr_m[1] / 2.0, hr_m[2] / 2.0});
         this->updateFields(hr_m, origin);
 
         if (fs_m->getFieldSolverType() == FieldSolverType::P3M) {
@@ -898,8 +898,8 @@ void PartBunchBase<T, Dim>::getLocalBounds(Vector_t& rmin, Vector_t& rmax) const
     const size_t localNum = getLocalNum();
     if (localNum == 0) {
         double maxValue = 1e8;
-        rmin = Vector_t(maxValue, maxValue, maxValue);
-        rmax = Vector_t(-maxValue, -maxValue, -maxValue);
+        rmin = Vector_t({maxValue, maxValue, maxValue});
+        rmax = Vector_t({-maxValue, -maxValue, -maxValue});
         return;
     }
 
@@ -976,8 +976,8 @@ void PartBunchBase<T, Dim>::setParticle(OpalParticle const& particle, int ii) {
 template <class T, unsigned Dim>
 OpalParticle PartBunchBase<T, Dim>::getParticle(int ii) {
     OpalParticle particle(ID[ii],
-                          Vector_t(R[ii](0), R[ii](1), 0), P[ii],
-                          R[ii](2), Q[ii], M[ii]);
+                          Vector_t({R[ii](0), R[ii](1), 0}), P[ii],
+                                   R[ii](2), Q[ii], M[ii]);
     return particle;
 }
 
@@ -1143,7 +1143,7 @@ Vector_t PartBunchBase<T, Dim>::get_pmean_Distribution() const {
         return dist_m->get_pmean();
 
     double gamma = 0.1 / getM() + 1; // set default 0.1 eV
-    return Vector_t(0, 0, std::sqrt(std::pow(gamma, 2) - 1));
+    return Vector_t({0, 0, std::sqrt(std::pow(gamma, 2) - 1)});
 }
 
 
@@ -1518,9 +1518,9 @@ template <class T, unsigned Dim>
 double PartBunchBase<T, Dim>::calcMeanPhi() {
 
     const int emittedBins = pbin_m->getLastemittedBin();
-    double phi[emittedBins];
-    double px[emittedBins];
-    double py[emittedBins];
+    std::vector<double> phi(emittedBins);
+    std::vector<double> px(emittedBins);
+    std::vector<double> py(emittedBins);
     double meanPhi = 0.0;
 
     for (int ii = 0; ii < emittedBins; ii++) {
@@ -1534,8 +1534,8 @@ double PartBunchBase<T, Dim>::calcMeanPhi() {
         py[Bin[ii]] += P[ii](1);
     }
 
-    reduce(px, px + emittedBins, px, OpAddAssign());
-    reduce(py, py + emittedBins, py, OpAddAssign());
+    ::reduce(px.begin(), px.end(), px.begin(), OpAddAssign());
+    ::reduce(py.begin(), py.end(), py.begin(), OpAddAssign());
     for (int ii = 0; ii < emittedBins; ii++) {
         phi[ii] = calculateAngle(px[ii], py[ii]);
         meanPhi += phi[ii];
@@ -1560,7 +1560,7 @@ bool PartBunchBase<T, Dim>::resetPartBinID2(const double eta) {
     INFOMSG("Before reset Bin: " << endl);
     calcGammas_cycl();
     int maxbin = pbin_m->getNBins();
-    size_t partInBin[maxbin];
+    std::vector<size_t> partInBin(maxbin);
     for (int ii = 0; ii < maxbin; ii++) partInBin[ii] = 0;
 
     double pMin0 = 1.0e9;
@@ -1594,7 +1594,7 @@ bool PartBunchBase<T, Dim>::resetPartBinID2(const double eta) {
     }
 
     // partInBin only count particle on the local node.
-    pbin_m->resetPartInBin_cyc(partInBin, maxbinIndex);
+    pbin_m->resetPartInBin_cyc(partInBin.data(), maxbinIndex);
 
     // after reset Particle Bin ID, update mass gamma of each bin again
     INFOMSG("After reset Bin: " << endl);
@@ -1607,7 +1607,7 @@ bool PartBunchBase<T, Dim>::resetPartBinID2(const double eta) {
 template <class T, unsigned Dim>
 bool PartBunchBase<T, Dim>::resetPartBinBunch() {
     int maxbin = pbin_m->getNBins();
-    std::size_t partInBin[maxbin];
+    std::vector<size_t> partInBin(maxbin);
     for (int i = 0; i < maxbin; ++i) {
         partInBin[i] = 0;
     }
@@ -1617,7 +1617,7 @@ bool PartBunchBase<T, Dim>::resetPartBinBunch() {
     }
 
     // partInBin only count particle on the local node.
-    pbin_m->resetPartInBin_cyc(partInBin, numBunch_m - 1);
+    pbin_m->resetPartInBin_cyc(partInBin.data(), numBunch_m - 1);
 
     // after reset Particle Bin ID, update mass gamma of each bin again
     calcGammas_cycl();

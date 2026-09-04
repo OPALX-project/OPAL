@@ -281,7 +281,7 @@ class ChargedParticles : public IpplParticleBase<PL> {
                         f_m=0;
                         for (unsigned i=0; i<this->getLocalNum(); ++i) {
                                 SpaceQ[i]=Q[i]/(dx[0]*dx[1]*dv[0]*dv[1]);
-                                Rphase[i]=Vektor<double,2>(this->R[i][2],v[i][2]);
+                                Rphase[i]=Vektor<double,2>({this->R[i][2],v[i][2]});
                         }
                         //this->SpaceQ.scatter(this->f_m, this->Rphase, IntrplCIC_t());
                         this->Q.scatter(this->f_m, this->Rphase, IntrplCIC_t());
@@ -317,7 +317,7 @@ class ChargedParticles : public IpplParticleBase<PL> {
                 void calc_Amplitude_E(){
                         //computes the maximum amplitude in the electric field
                         AmplitudeEfield=max(sqrt(dot(eg_m,eg_m)));
-                        eg_m=eg_m*Vektor<double,3>(0,0,1);
+                        eg_m=eg_m*Vektor<double,3>({0,0,1});
                         AmplitudeEFz=max(sqrt(dot(eg_m,eg_m)));
                 }
 
@@ -595,7 +595,7 @@ int main(int argc, char *argv[]){
         else if(argv[param] == std::string("recurrence"))
                 std::cout << "Please call the program with a valid test from [sphere, recurrence, landau, twostream]" << std::endl;
 
-        nr = Vektor<int,Dim>(atoi(argv[2]),atoi(argv[3]),atoi(argv[4]));
+        nr = Vektor<int,Dim>({atoi(argv[2]),atoi(argv[3]),atoi(argv[4])});
         param = 5;
 
         double interaction_radius = atof(argv[param++]);
@@ -606,7 +606,7 @@ int main(int argc, char *argv[]){
         double dt = atof(argv[param++]);
         double eps = atof(argv[param++]);
         int iterations =  atoi(argv[param++]);
-        Vektor<double,3> source(0,0,0);
+        Vektor<double,3> source({0,0,0});
         source[0]=atof(argv[param++]);
         source[1]=atof(argv[param++]);
         source[2]=atof(argv[param++]);
@@ -638,13 +638,13 @@ int main(int argc, char *argv[]){
         switch(test) {
                 case TWOSTREAM: {
                                                         double k = 0.5;
-                                                        Vektor<double,Dim> extend_r(2.*M_PI/k,2.*M_PI/k,2.*M_PI/k);
-                                                        Vektor<double,Dim> extend_l(0,0,0);
+                                                        Vektor<double,Dim> extend_r({2.*M_PI/k,2.*M_PI/k,2.*M_PI/k});
+                                                        Vektor<double,Dim> extend_l({0,0,0});
 
                                                         double ampl_alpha = 0.05;
-                                                        Vektor<int,Dim> Nx(4,4,32);
-                                                        Vektor<int,Dim> Nv(8,8,128);
-                                                        Vektor<double,Dim> Vmax(6,6,6);
+                                                        Vektor<int,Dim> Nx({4,4,32});
+                                                        Vektor<int,Dim> Nv({8,8,128});
+                                                        Vektor<double,Dim> Vmax({6,6,6});
                                                         P = new ChargedParticles<playout_t>(PL, nr, decomp, extend_l, extend_r,Nx,Nv,Vmax);
                                                         createParticleDistributionTwoStream(P,extend_l,extend_r,Nx,Nv,Vmax,ampl_alpha);
                                                         P->interpolate_distribution((extend_r-extend_l)/(Nx),2.*Vmax/(Nv));
@@ -654,26 +654,26 @@ int main(int argc, char *argv[]){
 
                 case RECURRENCE: {
                                                          double k = 0.5;
-                                                         Vektor<double,Dim> extend_l(0,0,0);
-                                                         Vektor<double,Dim> extend_r(2.*M_PI/k,2.*M_PI/k,2.*M_PI/k);
+                                                         Vektor<double,Dim> extend_l({0,0,0});
+                                                         Vektor<double,Dim> extend_r({2.*M_PI/k,2.*M_PI/k,2.*M_PI/k});
 
                                                          double ampl_alpha = 0.01;
-                                                         Vektor<int,Dim> Nx(8,8,8);
-                                                         Vektor<int,Dim> Nv(32,32,32);
-                                                         Vektor<double,Dim> Vmax(6,6,6);
+                                                         Vektor<int,Dim> Nx({8,8,8});
+                                                         Vektor<int,Dim> Nv({32,32,32});
+                                                         Vektor<double,Dim> Vmax({6,6,6});
                                                          P = new ChargedParticles<playout_t>(PL, nr, decomp, extend_l, extend_r,Nx,Nv,Vmax);
                                                          createParticleDistributionRecurrence(P,extend_l,extend_r,Nx,Nv,Vmax,ampl_alpha);
                                                          break;
                                                  }
                 case LANDAU: {
                                                  double k = 0.5;
-                                                 Vektor<double,Dim> extend_l(0,0,0);
-                                                 Vektor<double,Dim> extend_r(2.*M_PI/k,2.*M_PI/k,2.*M_PI/k);
+                                                 Vektor<double,Dim> extend_l({0,0,0});
+                                                 Vektor<double,Dim> extend_r({2.*M_PI/k,2.*M_PI/k,2.*M_PI/k});
 
                                                  double ampl_alpha = 0.05;
-                                                 Vektor<int,Dim> Nx(8,8,8);
-                                                 Vektor<int,Dim> Nv(32,32,32);
-                                                 Vektor<double,Dim> Vmax(6,6,6);
+                                                 Vektor<int,Dim> Nx({8,8,8});
+                                                 Vektor<int,Dim> Nv({32,32,32});
+                                                 Vektor<double,Dim> Vmax({6,6,6});
                                                  P = new ChargedParticles<playout_t>(PL, nr, decomp, extend_l, extend_r,Nx,Nv,Vmax);
                                                  createParticleDistributionLandau(P,extend_l,extend_r,Nx,Nv,Vmax,ampl_alpha);
 
@@ -681,12 +681,12 @@ int main(int argc, char *argv[]){
                                          }
                 case SPHERE: {
                                                  double L = 4.;
-                                                 Vektor<double,Dim> extend_l(-L,-L,-L);
-                                                 Vektor<double,Dim> extend_r(L,L,L);
+                                                 Vektor<double,Dim> extend_l({-L,-L,-L});
+                                                 Vektor<double,Dim> extend_r({L,L,L});
 
-                                                 Vektor<int,Dim> Nx(16,16,16);
-                                                 Vektor<int,Dim> Nv(16,16,16);
-                                                 Vektor<double,Dim> Vmax(6,6,6);
+                                                 Vektor<int,Dim> Nx({16,16,16});
+                                                 Vektor<int,Dim> Nv({16,16,16});
+                                                 Vektor<double,Dim> Vmax({6,6,6});
                                                  P = new ChargedParticles<playout_t>(PL, nr, decomp, extend_l, extend_r,Nx,Nv,Vmax);
                                                  createParticleDistribution(P,"random", 20000, 0.00005, extend_l,extend_r,source,1.,0);
 

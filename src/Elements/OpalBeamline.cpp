@@ -24,9 +24,16 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
-#include <boost/regex.hpp>
+#include <algorithm>
+#include <cmath>
+#include <cstdio>
 #include <filesystem>
 #include <fstream>
+#include <iomanip>
+#include <memory>
+#include <regex>
+#include <string>
+#include <vector>
 
 OpalBeamline::OpalBeamline():
     elements_m(),
@@ -226,7 +233,7 @@ void OpalBeamline::compute3DLattice() {
             }
 
             double beginThisPathLength = element->getElementPosition();
-            Vector_t beginThis3D(0, 0, beginThisPathLength - endPriorPathLength);
+            Vector_t beginThis3D({0, 0, beginThisPathLength - endPriorPathLength});
             BendBase * bendElement = static_cast<BendBase*>(element.get());
             double thisLength = bendElement->getChordLength();
             double bendAngle = bendElement->getBendAngle();
@@ -235,9 +242,9 @@ void OpalBeamline::compute3DLattice() {
 
             double rotationAngleAboutZ = bendElement->getRotationAboutZ();
             Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
-                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t(0, 0, 1));
+                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
 
-            Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t(0, -1, 0));
+            Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t({0, -1, 0}));
             effectiveRotationAxis /= euclidean_norm(effectiveRotationAxis);
 
             Quaternion_t rotationAboutAxis(cos(0.5 * bendAngle),
@@ -251,14 +258,14 @@ void OpalBeamline::compute3DLattice() {
                 std::vector<Vector_t> truePath = bendElement->getDesignPath();
                 Quaternion_t directionExitHardEdge(cos(0.5 * (0.5 * bendAngle - entranceAngle)),
                                                    sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
-                Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t(0, 0, 1));
+                Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t({0, 0, 1}));
                 double distanceEntryHETruePath = euclidean_norm(truePath.front());
                 double distanceExitHETruePath = euclidean_norm(rotationAboutZ.rotate(truePath.back()) - exitHardEdge);
                 double pathLengthTruePath = (*it).getEnd() - (*it).getStart();
                 arcLength = pathLengthTruePath - distanceEntryHETruePath - distanceExitHETruePath;
             }
 
-            Vector_t chord = thisLength * halfRotationAboutAxis.rotate(Vector_t(0, 0, 1));
+            Vector_t chord = thisLength * halfRotationAboutAxis.rotate(Vector_t({0, 0, 1}));
             Vector_t endThis3D = beginThis3D + chord;
             double endThisPathLength = beginThisPathLength + arcLength;
 
@@ -287,7 +294,7 @@ void OpalBeamline::compute3DLattice() {
 
         double beginThisPathLength = element->getElementPosition();
         double thisLength = element->getElementLength();
-        Vector_t beginThis3D(0, 0, beginThisPathLength - endPriorPathLength);
+        Vector_t beginThis3D({0, 0, beginThisPathLength - endPriorPathLength});
 
         if (element->getType() == ElementType::SOURCE) {
             beginThis3D(2) -= thisLength;
@@ -304,9 +311,9 @@ void OpalBeamline::compute3DLattice() {
 
             double rotationAngleAboutZ = bendElement->getRotationAboutZ();
             Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
-                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t(0, 0, 1));
+                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
 
-            Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t(0, -1, 0));
+            Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t({0, -1, 0}));
             effectiveRotationAxis /= euclidean_norm(effectiveRotationAxis);
 
             Quaternion_t rotationAboutAxis(cos(0.5 * bendAngle),
@@ -321,7 +328,7 @@ void OpalBeamline::compute3DLattice() {
                 double entranceAngle = bendElement->getEntranceAngle();
                 Quaternion_t directionExitHardEdge(cos(0.5 * (0.5 * bendAngle - entranceAngle)),
                                                    sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
-                Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t(0, 0, 1));
+                Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t({0, 0, 1}));
                 double distanceEntryHETruePath = euclidean_norm(truePath.front());
                 double distanceExitHETruePath = euclidean_norm(rotationAboutZ.rotate(truePath.back()) - exitHardEdge);
                 double pathLengthTruePath = (*it).getEnd() - (*it).getStart();
@@ -329,7 +336,7 @@ void OpalBeamline::compute3DLattice() {
             }
 
             endThis3D = (beginThis3D +
-                         halfRotationAboutAxis.rotate(Vector_t(0, 0, thisLength)));
+                         halfRotationAboutAxis.rotate(Vector_t({0, 0, thisLength})));
             CoordinateSystemTrafo fromEndLastToEndThis(endThis3D,
                                                        rotationAboutAxis.conjugate());
             currentCoordTrafo = fromEndLastToEndThis * currentCoordTrafo;
@@ -338,7 +345,7 @@ void OpalBeamline::compute3DLattice() {
         } else {
             double rotationAngleAboutZ = (*it).getElement()->getRotationAboutZ();
             Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
-                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t(0, 0, 1));
+                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
 
             CoordinateSystemTrafo fromLastToThis(beginThis3D, rotationAboutZ);
 
@@ -455,11 +462,11 @@ namespace {
         std::string str;
         char testBit;
         const std::string commentFormat("");
-        const boost::regex empty("^[ \t]*$");
-        const boost::regex lineEnd(";");
+        const std::regex empty("^[ \t]*$");
+        const std::regex lineEnd(";");
         const std::string lineEndFormat(";\n");
-        const boost::regex cppCommentExpr("//.*");
-        const boost::regex cCommentExpr("/\\*.*?\\*/"); // "/\\*(?>[^*/]+|\\*[^/]|/[^*])*(?>(?R)(?>[^*/]+|\\*[^/]|/[^*])*)*\\*/"
+        const std::regex cppCommentExpr("//.*");
+        const std::regex cCommentExpr("/\\*.*?\\*/"); // "/\\*(?>[^*/]+|\\*[^/]|/[^*])*(?>(?R)(?>[^*/]+|\\*[^/]|/[^*])*)*\\*/"
         bool priorEmpty = true;
 
         in.get(testBit);
@@ -467,8 +474,8 @@ namespace {
             in.putback(testBit);
 
             std::getline(in, str);
-            str = boost::regex_replace(str, cppCommentExpr, commentFormat);
-            str = boost::regex_replace(str, empty, commentFormat);
+            str = std::regex_replace(str, cppCommentExpr, commentFormat);
+            str = std::regex_replace(str, empty, commentFormat);
             if (!str.empty()) {
                 source += str;// + '\n';
                 priorEmpty = false;
@@ -480,15 +487,15 @@ namespace {
             in.get(testBit);
         }
 
-        source = boost::regex_replace(source, cCommentExpr, commentFormat);
-        source = boost::regex_replace(source, lineEnd, lineEndFormat, boost::match_default | boost::format_all);
+        source = std::regex_replace(source, cCommentExpr, commentFormat);
+        source = std::regex_replace(source, lineEnd, lineEndFormat, std::regex_constants::match_default |std::regex_constants::format_default);
 
         // Since the positions of the elements are absolute in the laboratory coordinate system we have to make
         // sure that the line command doesn't provide an origin and orientation. Everything after the sequence of
         // elements can be deleted and only "LINE = (...);", the first sub-expression (denoted by '\1'), should be kept.
-        const boost::regex lineCommand("(LINE[ \t]*=[ \t]*\\([^\\)]*\\))[ \t]*,[^;]*;", boost::regex::icase);
+        const std::regex lineCommand("(LINE[ \t]*=[ \t]*\\([^\\)]*\\))[ \t]*,[^;]*;", std::regex::icase);
         const std::string firstSubExpression("\\1;");
-        source = boost::regex_replace(source, lineCommand, firstSubExpression);
+        source = std::regex_replace(source, lineCommand, firstSubExpression);
 
         return source;
     }
@@ -534,10 +541,10 @@ void OpalBeamline::save3DInput() {
     for (; it != end; ++ it) {
         std::shared_ptr<Component> element = (*it).getElement();
         std::string elementName = element->getName();
-        const boost::regex replacePSI("(" + elementName + "\\s*:[^\\n]*)PSI\\s*=[^,;]*,?", boost::regex::icase);
-        input = boost::regex_replace(input, replacePSI, "\\1\\2");
+        const std::regex replacePSI("(" + elementName + "\\s*:[^\\n]*)PSI\\s*=[^,;]*,?", std::regex::icase);
+        input = std::regex_replace(input, replacePSI, "\\1\\2");
 
-        const boost::regex replaceELEMEDGE("(" + elementName + "\\s*:[^\\n]*)ELEMEDGE\\s*=[^,;]*(.)", boost::regex::icase);
+        const std::regex replaceELEMEDGE("(" + elementName + "\\s*:[^\\n]*)ELEMEDGE\\s*=[^,;]*(.)", std::regex::icase);
 
         CoordinateSystemTrafo cst = element->getCSTrafoGlobal2Local();
         Vector_t origin = cst.getOrigin();
@@ -559,7 +566,7 @@ void OpalBeamline::save3DInput() {
 
         std::string position = ("\\1" + coordTrafo + "\\2");
 
-        input = boost::regex_replace(input, replaceELEMEDGE, position);
+        input = std::regex_replace(input, replaceELEMEDGE, position);
 
         if (element->getType() == ElementType::RBEND ||
             element->getType() == ElementType::SBEND) {
@@ -568,25 +575,25 @@ void OpalBeamline::save3DInput() {
             double E1 = dipole->getEntranceAngle();
             double E2 = dipole->getExitAngle();
 
-            const boost::regex angleR("(" + elementName + "\\s*:[^\\n]*ANGLE\\s*=)[^,;]*(.)");
+            const std::regex angleR("(" + elementName + "\\s*:[^\\n]*ANGLE\\s*=)[^,;]*(.)");
             const std::string angleF("\\1 " + round2string(angle * Units::rad2deg, 6) + " / 180 * PI\\2");
-            const boost::regex E1R("(" + elementName + "\\s*:[^\\n]*E1\\s*=)[^,;]*(.)");
+            const std::regex E1R("(" + elementName + "\\s*:[^\\n]*E1\\s*=)[^,;]*(.)");
             const std::string E1F("\\1 " + round2string(E1 * Units::rad2deg, 6) + " / 180 * PI\\2");
-            const boost::regex E2R("(" + elementName + "\\s*:[^\\n]*E2\\s*=)[^,;]*(.)");
+            const std::regex E2R("(" + elementName + "\\s*:[^\\n]*E2\\s*=)[^,;]*(.)");
             const std::string E2F("\\1 " + round2string(E2 * Units::rad2deg, 6) + " / 180 * PI\\2");
-            const boost::regex noRotation("(" + elementName + "\\s*:[^\\n]*),\\s*ROTATION\\s*=[^,;]*(.)");
+            const std::regex noRotation("(" + elementName + "\\s*:[^\\n]*),\\s*ROTATION\\s*=[^,;]*(.)");
             const std::string noRotationFormat("\\1\\2  ");
 
-            input = boost::regex_replace(input, angleR, angleF);
-            input = boost::regex_replace(input, E1R, E1F);
-            input = boost::regex_replace(input, E2R, E2F);
-            input = boost::regex_replace(input, noRotation, noRotationFormat);
+            input = std::regex_replace(input, angleR, angleF);
+            input = std::regex_replace(input, E1R, E1F);
+            input = std::regex_replace(input, E2R, E2F);
+            input = std::regex_replace(input, noRotation, noRotationFormat);
         }
     }
 
-    const boost::regex empty("##EMPTY_LINE##");
+    const std::regex empty("##EMPTY_LINE##");
     const std::string emptyFormat("\n");
-    input = boost::regex_replace(input, empty, emptyFormat);
+    input = std::regex_replace(input, empty, emptyFormat);
 
     pos << input << std::endl;
 }

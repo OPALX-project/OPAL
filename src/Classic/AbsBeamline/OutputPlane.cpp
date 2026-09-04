@@ -107,20 +107,20 @@ void OutputPlane::RK4Step(
     getDerivatives(R1, P1, t, chargeToMass, deriv1);
     // f2 = f(x+dt*f1/2, t+dt/2 )
     double  deriv2[6];
-    Vector_t R2(R1[0] + thalfStep * deriv1[0], R1[1] + thalfStep * deriv1[1], R1[2] + thalfStep * deriv1[2]);
-    Vector_t P2(P1[0] + thalfStep * deriv1[3], P1[1] + thalfStep * deriv1[4], P1[2] + thalfStep * deriv1[5]);
+    Vector_t R2({R1[0] + thalfStep * deriv1[0], R1[1] + thalfStep * deriv1[1], R1[2] + thalfStep * deriv1[2]});
+    Vector_t P2({P1[0] + thalfStep * deriv1[3], P1[1] + thalfStep * deriv1[4], P1[2] + thalfStep * deriv1[5]});
     getDerivatives(R2, P2, tPlusHalf, chargeToMass, deriv2);
 
     // f3 = f( x+dt*f2/2, t+dt/2 )
     double  deriv3[6];
-    Vector_t R3(R1[0] + thalfStep * deriv2[0], R1[1] + thalfStep * deriv2[1], R1[2] + thalfStep * deriv2[2]);
-    Vector_t P3(P1[0] + thalfStep * deriv2[3], P1[1] + thalfStep * deriv2[4], P1[2] + thalfStep * deriv2[5]);
+    Vector_t R3({R1[0] + thalfStep * deriv2[0], R1[1] + thalfStep * deriv2[1], R1[2] + thalfStep * deriv2[2]});
+    Vector_t P3({P1[0] + thalfStep * deriv2[3], P1[1] + thalfStep * deriv2[4], P1[2] + thalfStep * deriv2[5]});
     getDerivatives(R3, P3, tPlusHalf, chargeToMass, deriv3);
 
     // f4 = f(x+dt*f3, t+dt ).
     double  deriv4[6];
-    Vector_t R4(R1[0] + tStep * deriv3[0], R1[1] + tStep * deriv3[1], R1[2] + tStep * deriv3[2]);
-    Vector_t P4(P1[0] + tStep * deriv3[3], P1[1] + tStep * deriv3[4], P1[2] + tStep * deriv3[5]);
+    Vector_t R4({R1[0] + tStep * deriv3[0], R1[1] + tStep * deriv3[1], R1[2] + tStep * deriv3[2]});
+    Vector_t P4({P1[0] + tStep * deriv3[3], P1[1] + tStep * deriv3[4], P1[2] + tStep * deriv3[5]});
     getDerivatives(R4, P4, tPlusStep, chargeToMass, deriv4);
 
     // Return x(t+dt) computed from fourth-order R-K.

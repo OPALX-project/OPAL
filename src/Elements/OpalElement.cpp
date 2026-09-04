@@ -29,13 +29,14 @@
 #include "Utilities/ParseError.h"
 #include "Utilities/Util.h"
 
-#include <boost/regex.hpp>
-
 #include <cmath>
-#include <cctype>
+#include <exception>
+#include <ostream>
+#include <regex>
 #include <sstream>
+#include <string>
+#include <utility>
 #include <vector>
-
 
 OpalElement::OpalElement(int size, const char* name, const char* help):
     Element(size, name, help), itsSize(size) {
@@ -141,21 +142,29 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
 
     std::string aperture = Attributes::getString(itsAttr[APERT]);
 
-    boost::regex square("square *\\((.*)\\)", boost::regex::icase);
-    boost::regex rectangle("rectangle *\\((.*)\\)", boost::regex::icase);
-    boost::regex circle("circle *\\((.*)\\)", boost::regex::icase);
-    boost::regex ellipse("ellipse *\\((.*)\\)", boost::regex::icase);
+    std::regex square("square *\\((.*)\\)", std::regex::icase);
+    std::regex rectangle("rectangle *\\((.*)\\)", std::regex::icase);
+    std::regex circle("circle *\\((.*)\\)", std::regex::icase);
+    std::regex ellipse("ellipse *\\((.*)\\)", std::regex::icase);
 
-    boost::regex twoArguments("([^,]*),([^,]*)");
-    boost::regex threeArguments("([^,]*),([^,]*),([^,]*)");
+    std::regex twoArguments("^\\s*([^,]+)\\s*,\\s*([^,]+)\\s*$");
+    std::regex threeArguments("^\\s*([^,]+)\\s*,\\s*([^,]+)\\s*,\\s*([^,]+)\\s*$");
 
-    boost::smatch match;
+    std::smatch match;
 
     const double width2HalfWidth = 0.5;
 
-    if (boost::regex_search(aperture, match, square)) {
+    auto validateConicScale = [&](double scale, const std::string& arguments) {
+        if (!(scale > 0.0)) {
+            throw OpalException("OpalElement::getApert()",
+                                "invalid conic aperture scale in '" + arguments +
+                                "': expected positive real value");
+        }
+    };
+
+    if (std::regex_search(aperture, match, square)) {
         std::string arguments = match[1];
-        if (!boost::regex_search(arguments, match, twoArguments)) {
+        if (!std::regex_search(arguments, match, twoArguments)) {
             retvalue.first = ApertureType::RECTANGULAR;
 
             try {
@@ -177,24 +186,23 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
                 throw OpalException("OpalElement::getApert()",
                                     "could not convert '" + arguments + "' to doubles");
             }
+            validateConicScale(retvalue.second[2], arguments);
         }
 
         return retvalue;
     }
 
-    if (boost::regex_search(aperture, match, rectangle)) {
+    if (std::regex_search(aperture, match, rectangle)) {
         std::string arguments = match[1];
 
-        if (!boost::regex_search(arguments, match, threeArguments)) {
+        if (!std::regex_search(arguments, match, threeArguments)) {
             retvalue.first = ApertureType::RECTANGULAR;
 
             try {
                 size_t sz = 0;
-
                 retvalue.second[0] = width2HalfWidth * std::stod(arguments, &sz);
                 sz = arguments.find_first_of(",", sz) + 1;
                 retvalue.second[1] = width2HalfWidth * std::stod(arguments.substr(sz));
-
             } catch (const std::exception &ex) {
                 throw OpalException("OpalElement::getApert()",
                                     "could not convert '" + arguments + "' to doubles");
@@ -202,7 +210,6 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
 
         } else {
             retvalue.first = ApertureType::CONIC_RECTANGULAR;
-
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(match[1]);
                 retvalue.second[1] = width2HalfWidth * std::stod(match[2]);
@@ -211,16 +218,16 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
                 throw OpalException("OpalElement::getApert()",
                                     "could not convert '" + arguments + "' to doubles");
             }
+            validateConicScale(retvalue.second[2], arguments);
         }
 
         return retvalue;
     }
 
-    if (boost::regex_search(aperture, match, circle)) {
+    if (std::regex_search(aperture, match, circle)) {
         std::string arguments = match[1];
-        if (!boost::regex_search(arguments, match, twoArguments)) {
+        if (!std::regex_search(arguments, match, twoArguments)) {
             retvalue.first = ApertureType::ELLIPTICAL;
-
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(arguments);
                 retvalue.second[1] = retvalue.second[0];
@@ -231,7 +238,6 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
 
         } else {
             retvalue.first = ApertureType::CONIC_ELLIPTICAL;
-
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(match[1]);
                 retvalue.second[1] = retvalue.second[0];
@@ -240,17 +246,17 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
                 throw OpalException("OpalElement::getApert()",
                                     "could not convert '" + arguments + "' to doubles");
             }
+            validateConicScale(retvalue.second[2], arguments);
         }
 
         return retvalue;
     }
 
-    if (boost::regex_search(aperture, match, ellipse)) {
+    if (std::regex_search(aperture, match, ellipse)) {
         std::string arguments = match[1];
 
-        if (!boost::regex_search(arguments, match, threeArguments)) {
+        if (!std::regex_search(arguments, match, threeArguments)) {
             retvalue.first = ApertureType::ELLIPTICAL;
-
             try {
                 size_t sz = 0;
 
@@ -265,7 +271,6 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
 
         } else {
             retvalue.first = ApertureType::CONIC_ELLIPTICAL;
-
             try {
                 retvalue.second[0] = width2HalfWidth * std::stod(match[1]);
                 retvalue.second[1] = width2HalfWidth * std::stod(match[2]);
@@ -274,6 +279,7 @@ std::pair<ApertureType, std::vector<double> > OpalElement::getApert() const {
                 throw OpalException("OpalElement::getApert()",
                                     "could not convert '" + arguments + "' to doubles");
             }
+            validateConicScale(retvalue.second[2], arguments);
         }
 
         return retvalue;
@@ -495,7 +501,7 @@ void OpalElement::update() {
         }
 
         if (ori.size() == 3) {
-            origin = Vector_t(ori[0], ori[1], ori[2]);
+            origin = Vector_t({ori[0], ori[1], ori[2]});
         } else {
             if (itsAttr[ORIGIN]) {
                 throw OpalException("OpalElement::update",
@@ -522,9 +528,9 @@ void OpalElement::update() {
                !itsAttr[THETA].defaultUsed() ||
                !itsAttr[PHI].defaultUsed() ||
                !itsAttr[PSI].defaultUsed()) {
-        const Vector_t origin(Attributes::getReal(itsAttr[X]),
+        const Vector_t origin({Attributes::getReal(itsAttr[X]),
                               Attributes::getReal(itsAttr[Y]),
-                              Attributes::getReal(itsAttr[Z]));
+                              Attributes::getReal(itsAttr[Z])});
 
         const double theta = Attributes::getReal(itsAttr[THETA]);
         const double phi = Attributes::getReal(itsAttr[PHI]);
@@ -542,9 +548,9 @@ void OpalElement::update() {
         base->setRotationAboutZ(Attributes::getReal(itsAttr[PSI]));
     }
 
-    Vector_t misalignmentShift(Attributes::getReal(itsAttr[DX]),
+    Vector_t misalignmentShift({Attributes::getReal(itsAttr[DX]),
                                Attributes::getReal(itsAttr[DY]),
-                               Attributes::getReal(itsAttr[DZ]));
+                               Attributes::getReal(itsAttr[DZ])});
     double dtheta = Attributes::getReal(itsAttr[DTHETA]);
     double dphi = Attributes::getReal(itsAttr[DPHI]);
     double dpsi = Attributes::getReal(itsAttr[DPSI]);

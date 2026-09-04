@@ -274,7 +274,7 @@ void AmrPartBunch::updateLorentzFactor(int bin) {
 
 void AmrPartBunch::updateLorentzFactor(double gamma) {
     // keep all 1.0, except longitudinal direction
-    Vector_t lorentzFactor(1.0, 1.0, 1.0);
+    Vector_t lorentzFactor({1.0, 1.0, 1.0});
 
     if (OpalData::getInstance()->isInOPALCyclMode()) {
         lorentzFactor[1] = gamma;

@@ -72,7 +72,7 @@ public:
                     //compute index of neighboring bucket to interact with
                     for (unsigned n=0; n<neigh;++n){
                         int bx_neigh, by_neigh, bz_neigh;
-                        Vektor<double,3> shift(0,0,0);
+                        Vektor<double,3> shift({0,0,0});
 
                         bx_neigh = bx+offset[n][0];
                         if (bx_neigh < 0) {

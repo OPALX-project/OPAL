@@ -57,7 +57,7 @@ void Initialise() {
         // I am not strong on the C-style strings, but if I understand correctly
         // there is a secret null pointer at the end of each string, hence the
         // char arrays have to be one character longer than you might think.
-        char* argvr[argc+1];
+        std::vector<char*> argvr(argc + 1);
         argvr[0] = new char[7];
         strcpy(argvr[0], "pyopal");
         for (int i = 1; i < argc; ++i) {
@@ -70,7 +70,7 @@ void Initialise() {
         argvr[argc] = nullptr;
         // and here is another secret nullptr to mark the end of the array of strings
         // don't forget it, you might spend days debugging the segv otherwise...
-        char** argv = argvr;
+        char** argv = argvr.data();
         // Ippl is a typedef of IpplInfo in ippl/Utilities
         ippl = new Ippl(argc, argv);
     }

@@ -88,7 +88,7 @@ private:
 
 class MockComponent2 : public Component {
 public:
-    MockComponent2() : Component("MockComponent"), geom_m(nullptr), refB(1,2,3) {
+    MockComponent2() : Component("MockComponent"), geom_m(nullptr), refB({1,2,3}) {
     }
     MockComponent2(const MockComponent2& rhs)
         : Component("MockComponent"), geom_m(rhs.geom_m), refB(rhs.refB) {

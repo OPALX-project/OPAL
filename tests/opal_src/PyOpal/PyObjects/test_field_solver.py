@@ -15,6 +15,7 @@
 import os
 import unittest
 import pyopal.objects.field_solver
+import pyopal.objects.encapsulated_test_case
 
 class TestFieldSolver(pyopal.objects.encapsulated_test_case.EncapsulatedTestCase):
     """Test the Field Solver"""

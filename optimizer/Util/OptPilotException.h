@@ -32,6 +32,8 @@ public:
         meth_ = meth;
     }
 
+    virtual ~OptPilotException() = default;
+
     virtual const char* what() const throw() {
         return descr_.c_str();
     }

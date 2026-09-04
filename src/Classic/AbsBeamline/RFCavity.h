@@ -23,10 +23,9 @@
 #include "Physics/Physics.h"
 #include "Fields/Definitions.h"
 
-#include <boost/bimap.hpp>
-
 #include <cmath>
 #include <string>
+#include <string_view>
 
 enum class CavityType: unsigned short {
     SW,
@@ -79,9 +78,9 @@ public:
     virtual void setPhaseError(double phaseError);
     virtual double getPhaseError() const;
 
-    void setCavityType(const std::string& type);
-    CavityType getCavityType() const;
-    std::string getCavityTypeString() const;
+    void setCavityType(std::string_view type) noexcept;
+    CavityType getCavityType() const noexcept;
+    std::string getCavityTypeString() const noexcept;
 
     virtual void setFast(bool fast);
     virtual bool getFast() const;
@@ -221,8 +220,6 @@ private:
     double endField_m;
 
     CavityType type_m;
-
-    static const boost::bimap<CavityType, std::string> bmCavityTypeString_s;
 
     double rmin_m;
     double rmax_m;
@@ -411,7 +408,7 @@ double RFCavity::getPhaseError() const {
 }
 
 inline
-CavityType RFCavity::getCavityType() const {
+CavityType RFCavity::getCavityType() const noexcept {
     return type_m;
 }
 
@@ -482,14 +479,14 @@ std::string RFCavity::getFrequencyModelName() {
 
 inline
 CoordinateSystemTrafo RFCavity::getEdgeToBegin() const {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m),
+    CoordinateSystemTrafo ret(Vector_t({0, 0, startField_m}),
                               Quaternion(1, 0, 0, 0));
     return ret;
 }
 
 inline
 CoordinateSystemTrafo RFCavity::getEdgeToEnd() const {
-    CoordinateSystemTrafo ret(Vector_t(0, 0, startField_m + getElementLength()),
+    CoordinateSystemTrafo ret(Vector_t({0, 0, startField_m + getElementLength()}),
                               Quaternion(1, 0, 0, 0));
     return ret;
 }

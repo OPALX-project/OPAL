@@ -10,8 +10,8 @@ double engeTest(double delta_s, double c, double lambda_end) {
 
 double tryEnge(double s, double c1, double c2, double l1, double l2, double x1, double x2) {
     double out = -1.0;
-    out += engeTest(s-x1, c1, l1);
-    out += engeTest(-x2-s, c2, l2);
+    out += engeTest(-s-x1, c1, l1);
+    out += engeTest(-x2+s, c2, l2);
     return out;
 }
 
@@ -24,6 +24,15 @@ TEST(AsymmetricEngeTest, FunctionTest) {
         EXPECT_NEAR(test, ref, 1e-12) << s << " " << test << " " << ref;
     }
 
+}
+
+TEST(AsymmetricEngeTest, FunctionTest2) {
+    endfieldmodel::AsymmetricEnge enge({0.0, 1.0}, 10.0, 3.0e-3, // c, x0, lambda
+                                       {0.0, 4.0}, 11.0, 6.0e-3);
+    double test1 = enge.function(11.0, 0);
+    EXPECT_NEAR(test1, 0.5, 1e-3) << test1;
+    double test2 = enge.function(-10.0, 0);
+    EXPECT_NEAR(test2, 0.5, 1e-3) << test2;
 }
 
 TEST(AsymmetricEngeTest, DerivativeTest) {
@@ -41,4 +50,3 @@ TEST(AsymmetricEngeTest, DerivativeTest) {
         }
     }
 }
-

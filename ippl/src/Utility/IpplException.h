@@ -12,6 +12,8 @@ public:
         meth_ = meth;
     }
 
+    virtual ~IpplException() = default;
+
     virtual const char* what() const throw() {
         return descr_.c_str();
     }

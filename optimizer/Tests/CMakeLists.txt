@@ -27,16 +27,6 @@ link_directories (
 
 set (OPT_PILOT_SOURCE_DIR ${CMAKE_SOURCE_DIR}/optimizer)
 set (SDDSPARSER_SRC
-    ${OPT_PILOT_SOURCE_DIR}/Util/SDDSParser/array.cpp
-    ${OPT_PILOT_SOURCE_DIR}/Util/SDDSParser/associate.cpp
-    ${OPT_PILOT_SOURCE_DIR}/Util/SDDSParser/ast.cpp
-    ${OPT_PILOT_SOURCE_DIR}/Util/SDDSParser/column.cpp
-    ${OPT_PILOT_SOURCE_DIR}/Util/SDDSParser/data.cpp
-    ${OPT_PILOT_SOURCE_DIR}/Util/SDDSParser/description.cpp
-    ${OPT_PILOT_SOURCE_DIR}/Util/SDDSParser/file.cpp
-    ${OPT_PILOT_SOURCE_DIR}/Util/SDDSParser/include.cpp
-    ${OPT_PILOT_SOURCE_DIR}/Util/SDDSParser/parameter.cpp
-    ${OPT_PILOT_SOURCE_DIR}/Util/SDDSParser/version.cpp
     ${OPT_PILOT_SOURCE_DIR}/Util/SDDSParser.cpp
 )
 

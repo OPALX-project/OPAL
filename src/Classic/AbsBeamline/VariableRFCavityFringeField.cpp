@@ -107,8 +107,8 @@ bool VariableRFCavityFringeField::apply(const Vector_t& R, const Vector_t& /*P*/
         omegaPower[i] = omegaPower[i-1] * omega;
     }
 
-    E = Vector_t(0., 0., 0.);
-    B = Vector_t(0., 0., 0.);
+    E = Vector_t({0., 0., 0.});
+    B = Vector_t({0., 0., 0.});
     // even power of y
     for (size_t n = 0; n <= maxOrder_m ; n += 2) { // power of y
         double fCoeff = 0.;

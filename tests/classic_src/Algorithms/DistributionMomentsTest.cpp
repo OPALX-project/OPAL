@@ -28,12 +28,12 @@
 TEST_F(DistributionMomentsTest, FullPositionTest) {
     OpalTestUtilities::SilenceTest silencer;
 
-    Vector_t expectedMeanPosition(5.75796e-8, 4.65360e-7, 1.56891e-3);
+    Vector_t expectedMeanPosition({5.75796e-8, 4.65360e-7, 1.56891e-3});
     EXPECT_NEAR(distributionMoments_m.getMeanPosition()(0), expectedMeanPosition(0), expectedMeanPosition(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getMeanPosition()(1), expectedMeanPosition(1), expectedMeanPosition(1) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getMeanPosition()(2), expectedMeanPosition(2), expectedMeanPosition(2) * 1e-4);
 
-    Vector_t expectedStdPosition(1.85588e-4, 1.93126e-4, 2.68480e-4);
+    Vector_t expectedStdPosition({1.85588e-4, 1.93126e-4, 2.68480e-4});
     EXPECT_NEAR(distributionMoments_m.getStandardDeviationPosition()(0), expectedStdPosition(0), expectedStdPosition(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getStandardDeviationPosition()(1), expectedStdPosition(1), expectedStdPosition(1) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getStandardDeviationPosition()(2), expectedStdPosition(2), expectedStdPosition(2) * 1e-4);
@@ -42,12 +42,12 @@ TEST_F(DistributionMomentsTest, FullPositionTest) {
 TEST_F(DistributionMomentsTest, FullMomentumTest) {
     OpalTestUtilities::SilenceTest silencer;
 
-    Vector_t expectedMeanMomentum(1.47652e-6, 3.61031e-6, 2.44518e1);
+    Vector_t expectedMeanMomentum({1.47652e-6, 3.61031e-6, 2.44518e1});
     EXPECT_NEAR(distributionMoments_m.getMeanMomentum()(0), expectedMeanMomentum(0), expectedMeanMomentum(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getMeanMomentum()(1), expectedMeanMomentum(1), expectedMeanMomentum(1) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getMeanMomentum()(2), expectedMeanMomentum(2), expectedMeanMomentum(2) * 1e-4);
 
-    Vector_t expectedStdMomentum(2.46592e-3, 2.49964e-3, 9.17394e-3);
+    Vector_t expectedStdMomentum({2.46592e-3, 2.49964e-3, 9.17394e-3});
     EXPECT_NEAR(distributionMoments_m.getStandardDeviationMomentum()(0), expectedStdMomentum(0), expectedStdMomentum(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getStandardDeviationMomentum()(1), expectedStdMomentum(1), expectedStdMomentum(1) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getStandardDeviationMomentum()(2), expectedStdMomentum(2), expectedStdMomentum(2) * 1e-4);
@@ -56,7 +56,7 @@ TEST_F(DistributionMomentsTest, FullMomentumTest) {
 TEST_F(DistributionMomentsTest, FullNormalizeEmittanceTest) {
     OpalTestUtilities::SilenceTest silencer;
 
-    Vector_t expectedNormalizedEmittance(2.5302e-1, 2.55949e-1, 1.87916e-1);
+    Vector_t expectedNormalizedEmittance({2.5302e-1, 2.55949e-1, 1.87916e-1});
     EXPECT_NEAR(distributionMoments_m.getNormalizedEmittance()(0) * 1e6,
                 expectedNormalizedEmittance(0), expectedNormalizedEmittance(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getNormalizedEmittance()(1) * 1e6,
@@ -130,7 +130,7 @@ TEST_F(DistributionMomentsTest, FullDispersionTest) {
 TEST_F(DistributionMomentsTest, SixtyEightPercentile) {
     OpalTestUtilities::SilenceTest silencer;
 
-    Vector_t expectedPercentile(1.88262e-1, 1.96753e-1, 2.90999e-1);
+    Vector_t expectedPercentile({1.88262e-1, 1.96753e-1, 2.90999e-1});
     EXPECT_NEAR(distributionMoments_m.get68Percentile()(0) * 1e3,
                 expectedPercentile(0), expectedPercentile(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.get68Percentile()(1) * 1e3,
@@ -142,7 +142,7 @@ TEST_F(DistributionMomentsTest, SixtyEightPercentile) {
 TEST_F(DistributionMomentsTest, NormalizedEmittanceAt68Percentile) {
     OpalTestUtilities::SilenceTest silencer;
 
-    Vector_t expectedEmittance(1.24194e-1, 1.23424e-1, 8.1483e-2);
+    Vector_t expectedEmittance({1.24194e-1, 1.23424e-1, 8.1483e-2});
     EXPECT_NEAR(distributionMoments_m.getNormalizedEmittance68Percentile()(0) * 1e6,
                 expectedEmittance(0), expectedEmittance(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getNormalizedEmittance68Percentile()(1) * 1e6,
@@ -155,7 +155,7 @@ TEST_F(DistributionMomentsTest, NormalizedEmittanceAt68Percentile) {
 TEST_F(DistributionMomentsTest, NinetyFivePercentile) {
     OpalTestUtilities::SilenceTest silencer;
 
-    Vector_t expectedPercentile(3.63691e-1, 3.77796e-1, 5.08294e-1);
+    Vector_t expectedPercentile({3.63691e-1, 3.77796e-1, 5.08294e-1});
     EXPECT_NEAR(distributionMoments_m.get95Percentile()(0) * 1e3,
                 expectedPercentile(0), expectedPercentile(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.get95Percentile()(1) * 1e3,
@@ -167,7 +167,7 @@ TEST_F(DistributionMomentsTest, NinetyFivePercentile) {
 TEST_F(DistributionMomentsTest, NormalizedEmittanceAt95Percentile) {
     OpalTestUtilities::SilenceTest silencer;
 
-    Vector_t expectedEmittance(2.17939e-1, 2.20570e-1, 1.53668e-1);
+    Vector_t expectedEmittance({2.17939e-1, 2.20570e-1, 1.53668e-1});
     EXPECT_NEAR(distributionMoments_m.getNormalizedEmittance95Percentile()(0) * 1e6,
                 expectedEmittance(0), expectedEmittance(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getNormalizedEmittance95Percentile()(1) * 1e6,
@@ -179,7 +179,7 @@ TEST_F(DistributionMomentsTest, NormalizedEmittanceAt95Percentile) {
 TEST_F(DistributionMomentsTest, NinetyNinePercentile) {
     OpalTestUtilities::SilenceTest silencer;
 
-    Vector_t expectedPercentile(5.31749e-1, 5.56874e-1, 5.94257e-1);
+    Vector_t expectedPercentile({5.31749e-1, 5.56874e-1, 5.94257e-1});
     EXPECT_NEAR(distributionMoments_m.get99Percentile()(0) * 1e3,
                 expectedPercentile(0), expectedPercentile(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.get99Percentile()(1) * 1e3,
@@ -191,7 +191,7 @@ TEST_F(DistributionMomentsTest, NinetyNinePercentile) {
 TEST_F(DistributionMomentsTest, NormalizedEmittanceAt99Percentile) {
     OpalTestUtilities::SilenceTest silencer;
 
-    Vector_t expectedEmittance(2.47584e-1, 2.50709e-1, 1.86971e-1);
+    Vector_t expectedEmittance({2.47584e-1, 2.50709e-1, 1.86971e-1});
     EXPECT_NEAR(distributionMoments_m.getNormalizedEmittance99Percentile()(0) * 1e6,
                 expectedEmittance(0), expectedEmittance(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getNormalizedEmittance99Percentile()(1) * 1e6,
@@ -203,7 +203,7 @@ TEST_F(DistributionMomentsTest, NormalizedEmittanceAt99Percentile) {
 TEST_F(DistributionMomentsTest, NinetyNine_NinetyNinePercentile) {
     OpalTestUtilities::SilenceTest silencer;
 
-    Vector_t expectedPercentile(9.36452e-1, 9.83767e-1, 6.10324e-1);
+    Vector_t expectedPercentile({9.36452e-1, 9.83767e-1, 6.10324e-1});
     EXPECT_NEAR(distributionMoments_m.get99_99Percentile()(0) * 1e3,
                 expectedPercentile(0), expectedPercentile(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.get99_99Percentile()(1) * 1e3,
@@ -215,7 +215,7 @@ TEST_F(DistributionMomentsTest, NinetyNine_NinetyNinePercentile) {
 TEST_F(DistributionMomentsTest, NormalizedEmittanceAt99_99Percentile) {
     OpalTestUtilities::SilenceTest silencer;
 
-    Vector_t expectedEmittance(2.52308e-1, 2.55184e-1, 1.87881e-1);
+    Vector_t expectedEmittance({2.52308e-1, 2.55184e-1, 1.87881e-1});
     EXPECT_NEAR(distributionMoments_m.getNormalizedEmittance99_99Percentile()(0) * 1e6,
                 expectedEmittance(0), expectedEmittance(0) * 1e-4);
     EXPECT_NEAR(distributionMoments_m.getNormalizedEmittance99_99Percentile()(1) * 1e6,

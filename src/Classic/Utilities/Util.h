@@ -23,14 +23,17 @@
 #include "Physics/Physics.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstring>
-#include <functional>
+#include <iomanip>
 #include <initializer_list>
 #include <limits>
 #include <sstream>
 #include <string>
+#include <string_view>
 #include <type_traits>
+#include <vector>
 
 // ------- DON'T DELETE: start --------
 #define __FILENAME__ (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
@@ -229,6 +232,26 @@ namespace Util {
 
     template <typename T>
     std::string toStringWithThousandSep(T value, char sep = '\'');
+
+    template<typename Enum, std::size_t N>
+    constexpr Enum stringToEnum(std::string_view str,
+                                const std::array<std::pair<Enum, std::string_view>, N>& map,
+                                Enum defaultEnum) noexcept {
+        for (const auto& [e, s] : map) {
+            if (s == str) return e;
+        }
+        return defaultEnum;
+    }
+
+    template<typename Enum, std::size_t N>
+    constexpr std::string_view enumToString(Enum e,
+                                            const std::array<std::pair<Enum, std::string_view>, N>& map,
+                                            std::string_view defaultStr) noexcept {
+        for (const auto& [key, s] : map) {
+            if (key == e) return s;
+        }
+        return defaultStr;
+    }
 
     struct KahanAccumulation {
         long double sum;

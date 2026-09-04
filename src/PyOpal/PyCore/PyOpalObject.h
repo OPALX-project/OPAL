@@ -145,7 +145,7 @@ public:
     /** Copying is disabled */
     PyOpalObject(const PyOpalObject<C>& rhs);
     /** Default destructor */
-    ~PyOpalObject() {}
+    virtual ~PyOpalObject() = default;
 
     /** This is the basic method to make a class for OpalObjects. It should
      *  normally be called when the module is declared, BOOST_PYTHON_MODULE.
@@ -362,8 +362,8 @@ boost::python::object PyOpalObject<C>::getFieldValue(
         throw OpalException("PyElement<C>::getFieldValue",
                             "Failed to deduce Component from ElementBase.");
     }
-    Vector_t R(x*distanceUnits_m, y*distanceUnits_m, z*distanceUnits_m);
-    Vector_t P(0.0, 0.0, 0.0);
+    Vector_t R({x*distanceUnits_m, y*distanceUnits_m, z*distanceUnits_m});
+    Vector_t P({0.0, 0.0, 0.0});
     Vector_t B;
     Vector_t E;
     t *= timeUnits_m;
@@ -390,7 +390,13 @@ boost::python::object PyOpalObject<C>::setAttributes(boost::python::tuple args,
     boost::python::list key_list = kwargs.keys();
     for (boost::python::ssize_t i = 0; i < boost::python::len(key_list); ++i) {
         boost::python::object key = key_list[i];
-        std::string keyStr = boost::python::extract<std::string>(key);
+        boost::python::object keyObjStr = boost::python::str(key);
+        boost::python::extract<const char*> keyExtract(keyObjStr);
+        if (!keyExtract.check()) {
+            throw OpalException("PyOpalObject::setAttributes",
+                                "Attribute key is not convertible to string");
+        }
+        std::string keyStr(keyExtract());
         boost::python::object value = kwargs[key];
         if (PyOpalObject<C>::pyNameToAttribute.find(keyStr) ==
                                     PyOpalObject<C>::pyNameToAttribute.end()) {

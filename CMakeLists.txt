@@ -1,5 +1,5 @@
-cmake_minimum_required (VERSION 3.12)
-cmake_policy(VERSION 3.12)
+cmake_minimum_required (VERSION 3.18)
+cmake_policy(VERSION 3.18)
 
 project (OPAL VERSION 2024.2)
 set (PROJECT_BUGREPORT opal@lists.psi.ch)
@@ -46,7 +46,7 @@ message (STATUS "The underlying C++ compiler is: ${CMAKE_CXX_COMPILER}")
 
 option (ENABLE_OpenMP "Use hybrid parallelism MPI-OpenMP" OFF)
 
-set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 set (CMAKE_CXX_EXTENSIONS OFF)
 
@@ -73,7 +73,6 @@ endif ()
 
 if (${WILL_BUILD_SHARED_LIBRARY})
     add_compile_options (-fPIE -fPIC)
-    add_link_options (-pie)
     # force OPAL to link to shared libraries
     if (UNIX)
         set(CMAKE_FIND_LIBRARY_SUFFIXES ".so")
@@ -100,8 +99,8 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     add_compile_options (-ftemplate-depth=1024)
     # get rid of linking warning with boost. Looks like that boost
     # is using this visibility setting.
-    add_compile_options (-fvisibility=hidden)
-    add_compile_options (-fvisibility-inlines-hidden)
+    add_compile_options (-fvisibility=default)
+    add_link_options("-Wl,-undefined,dynamic_lookup")
     add_compile_options (-Wno-deprecated-declarations)
     add_compile_options (-Wno-deprecated-builtins)
     add_compile_options (-Wno-deprecated-copy)
@@ -115,15 +114,10 @@ elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
     endif ()
 
 elseif (${CMAKE_CXX_COMPILER_ID} MATCHES "GNU")
-    # An error in Trilinos/12.18.1 causes
-    # -Waggressive-loop-optimizations with -O3 optimization.
-    # See issue 587 and corresponding merge request 415.
-    # Clang does not support this flag!
-    add_compile_options (-fno-aggressive-loop-optimizations)
     add_compile_options (-Wno-error=cpp)
 
-    if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "9.5.0")
-        message (FATAL_ERROR "To build OPAL you need GCC version 9.5.0 or greater")
+    if (${CMAKE_CXX_COMPILER_VERSION} VERSION_LESS "11.5.0")
+        message (FATAL_ERROR "To build OPAL you need GCC version 11.5.0 or greater")
     endif ()
     # Warning flags
 
@@ -178,7 +172,7 @@ if (NOT ${WILL_BUILD_SHARED_LIBRARY})
 endif ()
 set (Boost_USE_MULTITHREADED OFF)
 set (Boost_USE_STATIC_RUNTIME OFF)
-set (Boost_LIBS filesystem iostreams regex serialization system timer)
+set (Boost_LIBS filesystem iostreams serialization system timer)
 find_package (Boost 1.66.0
     REQUIRED COMPONENTS ${Boost_LIBS})
 if(UNIX AND NOT APPLE)

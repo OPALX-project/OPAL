@@ -3,6 +3,9 @@
 
 #include "Utilities/MSLang.h"
 
+#include <memory>
+#include <vector>
+
 namespace mslang {
     struct Shear: public Function {
         Function* func_m;

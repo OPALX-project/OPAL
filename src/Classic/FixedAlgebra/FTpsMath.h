@@ -23,9 +23,9 @@
 
 #include "FixedAlgebra/FTps.h"
 #include "Utilities/DomainError.h"
+#include "Physics/Physics.h"
 
 #include <complex> // std::real
-
 #include <type_traits>
 
 // 25. March 2017,
@@ -400,7 +400,7 @@ FTps<T, N> erf(const FTps<T, N> &x, int trunc) {
     
     Array1D<T> series(trcOrder + 1);
     series[0] = std::erf(std::real(aZero));
-    series[1] = 2.0 / std::sqrt(M_PI) * std::exp(-aZero*aZero);
+    series[1] = 2.0 / std::sqrt(Physics::pi) * std::exp(-aZero*aZero);
     
     for(int i = 2; i <= trcOrder; ++i) {
         series[i] = - 2.0 / double(i-1) * double((i-2)) * series[i-2] / double(i);

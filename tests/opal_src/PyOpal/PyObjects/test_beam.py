@@ -12,6 +12,8 @@
 
 """Check that beam can be set up okay"""
 
+import os
+import sys
 import unittest
 
 import pyopal.objects.minimal_runner
@@ -29,7 +31,7 @@ class BeamRunner(pyopal.objects.minimal_runner.MinimalRunner):
 
     def make_beam(self):
         beam = pyopal.objects.beam.Beam()
-        beam.set_opal_name("DefaultBeam")
+        beam.set_opal_name(self.beam_name)
         beam.mass = self.mass
         beam.momentum = self.momentum
         beam.charge = 1.0
@@ -45,6 +47,22 @@ class BeamRunner(pyopal.objects.minimal_runner.MinimalRunner):
         self.distribution_str = f"""1
 0.0 0.0 0.0 {momentum} 0.0 0.0
 """
+
+    def execute_fork(self):
+        a_pid = os.fork()
+        if a_pid == 0:  # the child process
+            try:
+                self.execute()
+            except RuntimeError:
+                # Some checks intentionally trigger OPAL momentum validation.
+                # Return non-zero to the parent test without noisy tracebacks.
+                if self.verbose:
+                    sys.excepthook(*sys.exc_info())
+                os._exit(1)
+            os._exit(self.exit_code)
+        else:
+            retvalue = os.waitpid(a_pid, 0)[1]
+        return retvalue
 
 class TestBeam(pyopal.objects.encapsulated_test_case.EncapsulatedTestCase):
     """Very light beam test class"""

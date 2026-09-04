@@ -33,6 +33,7 @@
 #ifndef __SAMPLE_PILOT_H__
 #define __SAMPLE_PILOT_H__
 
+#include "Util/AnsiColors.h"
 #include "Pilot/Pilot.h"
 #include "Sample/SampleWorker.h"
 #include "Expression/Parser/function.hpp"
@@ -120,8 +121,8 @@ protected:
     void startSampler() {
 
         std::ostringstream os;
-        os << "\033[01;35m" << "  " << this->global_rank_ << " (PID: " << getpid() << ") ▶ Sampler"
-           << "\e[0m" << std::endl;
+          os << AnsiColors::BoldMagenta << "  " << this->global_rank_ << " (PID: " << getpid() << ") ▶ Sampler"
+              << AnsiColors::Reset << std::endl;
         std::cout << os.str() << std::flush;
 
         const std::unique_ptr<Opt_t> opt(
@@ -138,8 +139,8 @@ protected:
                      const std::map<std::string, std::string> &userVariables)
     {
         std::ostringstream os;
-        os << "\033[01;35m" << "  " << this->global_rank_ << " (PID: " << getpid() << ") ▶ Worker"
-           << "\e[0m" << std::endl;
+          os << AnsiColors::BoldMagenta << "  " << this->global_rank_ << " (PID: " << getpid() << ") ▶ Worker"
+              << AnsiColors::Reset << std::endl;
         std::cout << os.str() << std::flush;
 
         size_t pos = this->input_file_.find_last_of("/");

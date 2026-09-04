@@ -237,6 +237,10 @@ private:
 
   NDIndex<Dim>   Allocated;
 
+  // If compressed, put the data here.  If not compressed, this is not used.
+
+  T              CompressedData;
+
   // An iterator pointing to the first element in the owned domain.
 
   iterator       Begin;
@@ -244,10 +248,6 @@ private:
   // An iterator pointing one past the last element in the owned domain.
 
   iterator       End;
-
-  // If compressed, put the data here.  If not compressed, this is not used.
-
-  T              CompressedData;
 
   // The overlap cache, an whether it has been initialized.
 

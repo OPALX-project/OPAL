@@ -77,6 +77,9 @@ class Enge : public EndFieldModel {
     /** Nominal centre length is x0/2 */
     inline double getCentreLength() const;
 
+    /** Nominal start position is -x0/2 */
+    inline double getStartOffset() const;
+
     /** Print human-readable version of enge */
     std::ostream& print(std::ostream& out) const;
 
@@ -174,11 +177,15 @@ double Enge::getDoubleEnge(double x, int n) const {
 }
 
 double Enge::getCentreLength() const {
-  return _x0/2.0;
+  return _x0*2.0;
 }
 
 double Enge::getEndLength() const {
   return _lambda;
+}
+
+double Enge::getStartOffset() const {
+    return _x0;
 }
 }
 

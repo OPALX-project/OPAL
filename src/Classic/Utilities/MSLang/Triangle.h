@@ -3,12 +3,16 @@
 
 #include "Utilities/MSLang.h"
 
+#include <fstream>
+#include <memory>
+#include <vector>
+
 namespace mslang {
     struct Triangle: public Base {
         std::vector<Vector_t> nodes_m;
         Triangle():
             Base(),
-            nodes_m(std::vector<Vector_t>(3, Vector_t(0, 0, 1)))
+            nodes_m(std::vector<Vector_t>(3, Vector_t({0, 0, 1})))
         { }
 
         Triangle(const Triangle &right):

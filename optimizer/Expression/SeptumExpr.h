@@ -21,12 +21,10 @@
 #ifndef __SEPTUM_EXPRESSION_H__
 #define __SEPTUM_EXPRESSION_H__
 
-#include <string>
 #include <iostream>
-
-#include "boost/variant/get.hpp"
-#include "boost/variant/variant.hpp"
-#include "boost/smart_ptr.hpp"
+#include <string>
+#include <tuple>
+#include <variant>
 
 #include "Util/Types.h"
 #include "Util/PeakReader.h"
@@ -44,7 +42,7 @@ struct SeptumExpr {
                                     "SeptumExpr expects 1 arguments, " + std::to_string(args.size()) + " given");
         }
 
-        std::string probe = boost::get<std::string>(args[0]);
+        std::string probe = std::get<std::string>(args[0]);
 
         bool is_valid = true;
 
@@ -73,7 +71,7 @@ struct SeptumExpr {
             is_valid = false;
         }
 
-        return boost::make_tuple(result, is_valid);
+        return std::make_tuple(result, is_valid);
     }
 };
 

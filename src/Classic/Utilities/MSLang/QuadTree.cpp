@@ -1,5 +1,10 @@
 #include "Utilities/MSLang/QuadTree.h"
+
+#include <iostream>
+#include <list>
+#include <memory>
 #include <utility>
+#include <vector>
 
 namespace mslang {
     QuadTree::QuadTree(const QuadTree &right):
@@ -68,8 +73,8 @@ namespace mslang {
         nodes_m.reserve(4);
         for (unsigned int i = 0; i < 4u; ++ i) {
             nodes_m.emplace_back(new QuadTree(level_m + 1,
-                                              BoundingBox2D(Vector_t(X[i / 2], Y[i % 2], 0.0),
-                                                            Vector_t(X[i / 2 + 1], Y[i % 2 + 1], 0.0))));
+                                              BoundingBox2D(Vector_t({X[i / 2], Y[i % 2], 0.0}),
+                                                            Vector_t({X[i / 2 + 1], Y[i % 2 + 1], 0.0}))));
 
             nodes_m.back()->transferIfInside(objects_m);
 

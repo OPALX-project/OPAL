@@ -454,10 +454,10 @@ int main(int argc, char *argv[]){
     unsigned param = 1;
 
     if(Dim == 3) {
-        nr = Vektor<int,Dim>(atoi(argv[1]),atoi(argv[2]),atoi(argv[3]));
+        nr = Vektor<int,Dim>({atoi(argv[1]),atoi(argv[2]),atoi(argv[3])});
         param = 4;
     } else {
-        nr = Vektor<int,Dim>(atoi(argv[1]),atoi(argv[2]));
+        nr = Vektor<int,Dim>({atoi(argv[1]),atoi(argv[2])});
         param = 3;
     }
 
@@ -508,7 +508,7 @@ int main(int argc, char *argv[]){
     Ippl::Comm->barrier();
 
     //center of charge distribution
-    Vektor<double,Dim> source(0.1+(32)/2, 0.3+(32)/2, 0.7+(32)/2);
+    Vektor<double,Dim> source({0.1+(32)/2, 0.3+(32)/2, 0.7+(32)/2});
 
     double total_charge = 0;
 
@@ -525,7 +525,7 @@ int main(int argc, char *argv[]){
                 for (int j = 0;j<32;++j)
                     for (int k = 0;k<32;++k)
                         {
-                            Vektor<double, Dim> pos(i,j,k);
+                            Vektor<double, Dim> pos({(double)i, (double)j, (double)k});
 
                             if(type!= POINT && dot(pos-source, pos-source)<=(radius+pdist/3)*(radius+pdist/3))
                                 continue;
@@ -544,7 +544,7 @@ int main(int argc, char *argv[]){
                         for (double y = 0;y<32;y+=pdist)
                             for (double z = 0;z<32;z+=pdist)
                                 {
-                                    Vektor<double, Dim> pos(x,y,z);
+                                    Vektor<double, Dim> pos({x,y,z});
 
                                     if(dot(pos-source, pos-source)<=radius*radius)
                                         {
@@ -565,7 +565,7 @@ int main(int argc, char *argv[]){
                         {
                             Vektor<double, Dim> pos;
                             do {
-                                pos = 2*Vektor<double, Dim>((IpplRandom()-0.5), (IpplRandom()-0.5), (IpplRandom()-0.5));
+                                pos = 2*Vektor<double, Dim>({(IpplRandom()-0.5), (IpplRandom()-0.5), (IpplRandom()-0.5)});
                             } while(dot(pos, pos) > 1);
 
                             P->R[index] = source + pos*radius;

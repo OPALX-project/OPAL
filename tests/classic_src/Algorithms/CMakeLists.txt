@@ -3,6 +3,8 @@ set (_SRCS
     SplineTimeDependenceTest.cpp
     DistributionMomentsTest.cpp
     DistributionMomentsTestFixture.cpp
+    SinusoidalTimeDependenceTest.cpp
+    TimeDependenceCacheTest.cpp
 )
 
 include_directories (

@@ -371,7 +371,7 @@ int main(int argc, char *argv[]){
     Inform msg(argv[0]);
     Inform msg2all(argv[0],INFORM_ALL_NODES);
 
-    Vektor<int,Dim> nr(64,64,64);
+    Vektor<int,Dim> nr({64,64,64});
 
     bool gCells = false;
     e_dim_tag decomp[Dim];
