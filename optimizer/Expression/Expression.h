@@ -50,7 +50,6 @@
 typedef std::map<std::string, double> variableDictionary_t;
 typedef std::map<std::string, client::function::type> functionDictionary_t;
 
-
 class Expression;
 namespace Expressions {
 
@@ -81,7 +80,6 @@ namespace Expressions {
         INEQ_RHS,       // >
         INEQ_RHS_EQ     // >=
     };
-
 }
 
 #include "Expression/GlobalFunctions.h"
@@ -89,7 +87,6 @@ namespace Expressions {
 class Expression {
 
 public:
-
     Expression()
     {}
 
@@ -144,9 +141,7 @@ public:
         return std::make_tuple(result, valid);
     }
 
-
 private:
-
     typedef std::string::const_iterator iterator_type;
     client::ast::expression ast_;
 

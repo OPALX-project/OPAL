@@ -42,9 +42,9 @@
 #include <cstdlib>
 
 #include <vector>
-#include <boost/algorithm/string.hpp>
 
 #include "Util/OptPilotException.h"
+#include "Utilities/Util.h"
 
 class GenerateOpalSimulation {
 
@@ -161,14 +161,12 @@ private:
             line_nr++;
             if(tmp[0] != '#') {
                 std::string stmp(tmp);
-                boost::trim(stmp);
+                stmp = Util::trim_chars(stmp, "\r\n\v\f\t ");
                 if(stmp.size() == 0)
                     continue;
 
-                std::vector<std::string> all_strings;
-                boost::split(all_strings, stmp,
-                             boost::is_any_of("\r\n\v\f\t "),
-                             boost::token_compress_on);
+                std::vector<std::string> all_strings = Util::split_any_of(
+                        stmp, "\r\n\v\f\t ", true);
 
                 if(all_strings.size() < 2) {
                     std::cout << "PROBLEM with the following line "
