@@ -1,57 +1,53 @@
-// -*- C++ -*-
-/***************************************************************************
- *
- * The IPPL Framework
- *
- *
- * Visit http://people.web.psi.ch/adelmann/ for more details
- *
- ***************************************************************************/
-
+//
+// Class IpplTimings
+//   IpplTimings - a simple singleton class which lets the user create and
+//   timers that can be printed out at the end of the program.
+//
+//   General usage
+//    1) create a timer:
+//       IpplTimings::TimerRef val = IpplTimings::getTimer("timer name");
+//    This will either create a new one, or return a ref to an existing one
+//
+//    2) start a timer:
+//       IpplTimings::startTimer(val);
+//    This will start the referenced timer running.  If it is already running,
+//    it will not change anything.
+//
+//    3) stop a timer:
+//       IpplTimings::stopTimer(val);
+//    This will stop the timer, assuming it was running, and add in the
+//    time to the accumulating time for that timer.
+//
+//    4) print out the results:
+//       IpplTimings::print();
+//
+// Copyright (c) 2020, Paul Scherrer Institut, Villigen PSI, Switzerland
+// All rights reserved
+//
+// This file is part of IPPL.
+//
+// IPPL is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// You should have received a copy of the GNU General Public License
+// along with IPPL. If not, see <https://www.gnu.org/licenses/>.
+//*************************************************************************/
 #ifndef IPPL_TIMINGS_H
 #define IPPL_TIMINGS_H
 
-/*************************************************************************
- * IpplTimings - a simple singleton class which lets the user create and
- *   timers that can be printed out at the end of the program.
- *
- * General usage
- *  1) create a timer:
- *     IpplTimings::TimerRef val = IpplTimings::getTimer("timer name");
- *  This will either create a new one, or return a ref to an existing one
- *
- *  2) start a timer:
- *     IpplTimings::startTimer(val);
- *  This will start the referenced timer running.  If it is already running,
- *  it will not change anything.
- *
- *  3) stop a timer:
- *     IpplTimings::stopTimer(val);
- *  This will stop the timer, assuming it was running, and add in the
- *  time to the accumulating time for that timer.
- *
- *  4) print out the results:
- *     IpplTimings::print();
- *
- *************************************************************************/
-
-// include files
 #include "Utility/Timer.h"
 #include "Utility/my_auto_ptr.h"
 
-#include <string>
-#include <vector>
-#include <map>
-#include <limits>
-#include <stack>
-
-#ifdef TIMERDEBUG
 #include <exception>
-#endif
+#include <limits>
+#include <map>
+#include <string>
+#include <stack>
+#include <vector>
 
-// a simple class used to store timer values
-class IpplTimerInfo
-{
+class IpplTimerInfo {
 public:
     // typedef for reference to a timer
     typedef unsigned int TimerRef;
@@ -72,11 +68,9 @@ public:
             t.clear();
             t.start();
         }
-#ifdef TIMERDEBUG
         else {
             throw std::runtime_error("Timer '" + name + "' already running");
         }
-#endif
     }
 
     void stop() {
@@ -86,11 +80,9 @@ public:
             cpuTime += t.cpu_time();
             wallTime += t.clock_time();
         }
-#ifdef TIMERDEBUG
         else {
             throw std::runtime_error("Timer '" + name + "' already idling");
         }
-#endif
     }
 
     void clear() {
@@ -116,8 +108,7 @@ public:
     TimerRef indx;
 };
 
-struct Timing
-{
+struct Timing {
     // typedef for reference to a timer
     typedef unsigned int TimerRef;
 
@@ -131,7 +122,7 @@ struct Timing
     ~Timing();
 
     // create a timer, or get one that already exists
-    TimerRef getTimer(const char *);
+    TimerRef getTimer(const char*);
 
     // start a timer
     void startTimer(TimerRef);
@@ -143,7 +134,7 @@ struct Timing
     void clearTimer(TimerRef);
 
     // return a TimerInfo struct by asking for the name
-    TimerInfo *infoTimer(const char *nm) {
+    TimerInfo* infoTimer(const char* nm) {
         return TimerMap[std::string(nm)];
     }
 
@@ -152,12 +143,11 @@ struct Timing
 
     // print the results to a file
     void print(const std::string &fn,
-               const std::map<std::string, unsigned int> &problemSize);
-
+               const std::map<std::string, unsigned int>& problemSize);
 
     // type of storage for list of TimerInfo
     typedef std::vector<my_auto_ptr<TimerInfo> > TimerList_t;
-    typedef std::map<std::string, TimerInfo *> TimerMap_t;
+    typedef std::map<std::string, TimerInfo*> TimerMap_t;
 
 private:
     // a list of timer info structs
@@ -168,9 +158,7 @@ private:
 };
 
 
-
-class IpplTimings
-{
+class IpplTimings {
 public:
     // typedef for reference to a timer
     typedef Timing::TimerRef TimerRef;
@@ -179,7 +167,7 @@ public:
     typedef Timing::TimerInfo TimerInfo;
 
     // create a timer, or get one that already exists
-    static TimerRef getTimer(const char * nm) {
+    static TimerRef getTimer(const char* nm) {
         return instance->getTimer(nm);
     }
 
@@ -210,7 +198,7 @@ public:
 
     // print the results to a file
     static void print(std::string fn,
-                      const std::map<std::string, unsigned int> &problemSize = std::map<std::string, unsigned int>()) {
+                      const std::map<std::string, unsigned int>& problemSize = std::map<std::string, unsigned int>()) {
         instance->print(fn, problemSize);
     }
 
@@ -228,20 +216,8 @@ private:
     // Destructor - clear out the existing timers
     ~IpplTimings();
 
-
-    static Timing *instance;
+    static Timing* instance;
     static std::stack<Timing*> stashedInstance;
 };
 
 #endif
-
-/***************************************************************************
- * $RCSfile: IpplTimings.h,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:33 $
- ***************************************************************************/
-
-/***************************************************************************
- * $RCSfile: addheaderfooter,v $   $Author: adelmann $
- * $Revision: 1.1.1.1 $   $Date: 2003/01/23 07:40:17 $
- * IPPL_VERSION_ID: $Id: addheaderfooter,v 1.1.1.1 2003/01/23 07:40:17 adelmann Exp $
- ***************************************************************************/

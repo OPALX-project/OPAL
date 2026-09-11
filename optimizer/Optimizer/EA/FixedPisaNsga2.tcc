@@ -43,9 +43,7 @@
 
 #include "boost/algorithm/string.hpp"
 
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/serialization/map.hpp>
+#include "Comm/SolutionStateIO.h"
 
 #include "OPALconfig.h"
 #include "Utilities/Util.h"
@@ -236,9 +234,8 @@ bool FixedPisaNsga2<CO, MO>::onMessage(MPI_Status status, size_t length) {
         job_trace_->log(dump);
 
         SolutionState_t new_states;
-        std::istringstream is(buffer);
-        boost::archive::text_iarchive ia(is);
-        ia >> new_states;
+        std::istringstream is(std::string(buffer, buf_size));
+        readSolutionState(is, new_states);
         delete[] buffer;
 
         std::set<unsigned int> new_state_ids;
@@ -414,7 +411,6 @@ void FixedPisaNsga2<CO, MO>::exchangeSolutionStates() {
     int pilot_rank = comms_.master_local_pid;
 
     std::ostringstream os;
-    boost::archive::text_oarchive oa(os);
 
     SolutionState_t population;
     typename std::map<unsigned int, individual >::iterator itr;
@@ -427,7 +423,7 @@ void FixedPisaNsga2<CO, MO>::exchangeSolutionStates() {
         population.push_back(ind);
     }
 
-    oa << population;
+    writeSolutionState(os, population);
 
     size_t buf_size = os.str().length();
 

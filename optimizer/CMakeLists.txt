@@ -30,7 +30,10 @@ add_subdirectory (extlib)
 # Build liboptp for linking to OPAL
 #
 
-include_directories (${CMAKE_CURRENT_SOURCE_DIR})
+include_directories (
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src/Classic
+)
 add_library (optp ${OPTP_SRCS} ${PILOT_OPAL_SRCS})
 # Set OPTP variables everywhere (childs and parents)
 set (OPTP_LIBRARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE INTERNAL "" FORCE)

@@ -17,10 +17,9 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include <filesystem>
+#include <format>
 #include <fstream>
 #include <iomanip>
-
-#include <boost/format.hpp>
 
 #include "Utilities/Util.h"
 #include "AbstractObjects/OpalData.h"
@@ -56,10 +55,11 @@ void FieldWriter::dumpField(FieldType& field, std::string name,
      */
     std::string dirname = OpalData::getInstance()->getAuxiliaryOutputDirectory();
     std::filesystem::path file(dirname);
-    boost::format filename("%1%-%2%-%|3$06|.dat");
     std::string basename = OpalData::getInstance()->getInputBasename();
-    filename % basename % (name + std::string("_") + type) % step;
-    file /= filename.str();
+    std::string filename = std::format(
+        "{}-{}-{:06}.dat",
+        basename, name + "_" + type, step);
+    file /= filename;
 
     std::ofstream fout(file.string(), std::ios::out);
     fout.precision(9);

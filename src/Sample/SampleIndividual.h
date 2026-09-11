@@ -24,20 +24,17 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 #include <iomanip>
+#include <iostream>
+#include <limits>
 #include <utility>
 #include <vector>
 
 #include "Utilities/OpalException.h"
 
-
-#include "boost/smart_ptr.hpp"
-
 class SampleIndividual {
 
 public:
-
     /// representation of genes
     typedef std::vector<double> genes_t;
     /// gene names
@@ -54,12 +51,25 @@ public:
         genes.resize(names.size(), 0.0);
     }
 
-    /// serialization of structure
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int /*version*/) {
-        ar & genes;
-        ar & objectives;
-        ar & id;
+    /// write this individual's state to a stream, replaces boost::serialization
+    void writeState(std::ostream& os) const {
+        os << std::setprecision(std::numeric_limits<double>::max_digits10);
+        os << id << ' ' << genes.size();
+        for (double g : genes) os << ' ' << g;
+        os << ' ' << objectives.size();
+        for (double o : objectives) os << ' ' << o;
+        os << '\n';
+    }
+
+    /// read this individual's state from a stream, replaces boost::serialization
+    void readState(std::istream& is) {
+        std::size_t ngenes = 0, nobjs = 0;
+        is >> id >> ngenes;
+        genes.resize(ngenes);
+        for (double& g : genes) is >> g;
+        is >> nobjs;
+        objectives.resize(nobjs);
+        for (double& o : objectives) is >> o;
     }
 
     /// genes of an individual
@@ -79,12 +89,11 @@ public:
         return std::distance(std::begin(names_m), res);
     }
 
-
-    std::string getName(size_t i) {
+    std::string getName(std::size_t i) {
         return names_m[i];
     }
 
-    void print(std::ostream &out) const {
+    void print(std::ostream& out) const {
         out << std::setw(8) << id << std::endl;
         for (unsigned int i = 0; i < genes.size(); ++ i) {
             out << names_m[i] << ": " << genes[i] << std::endl;
@@ -96,7 +105,7 @@ private:
 };
 
 inline
-std::ostream & operator<<(std::ostream & out, const SampleIndividual &ind) {
+std::ostream& operator<<(std::ostream& out, const SampleIndividual& ind) {
     ind.print(out);
 
     return out;

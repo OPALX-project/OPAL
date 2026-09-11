@@ -17,6 +17,7 @@ include_directories (
     ${GTEST_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src/Classic
 #    ${PYTHON_INCLUDE_DIRS}
 )
 
