@@ -83,13 +83,13 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
 
         /*
           bendRadius_m==0.0 can happen if we just go out into a drift
-          
          */
         double angleOfSlice;
-        if (bendRadius_m==0.0)
+        if (bendRadius_m==0.0) {
             angleOfSlice = 0.;
-        else 
+        } else {
             angleOfSlice = pathLengthOfSlice/bendRadius_m;
+        }
 
         // pathLengthOfSlice<0.0 is expected while the bunch straddles the bend
         // entrance; angleOfSlice<0.0 is handled safely downstream.
@@ -210,7 +210,7 @@ void CSRIGFWakeFunction::calculateGreenFunction(PartBunchBase<double, 3>* bunch,
 void CSRIGFWakeFunction::calculateContributionInside(std::size_t sliceNumber,
                                                      double angleOfSlice,
                                                      double /*meshSpacing*/) {
-    if (angleOfSlice > totalBendAngle_m || angleOfSlice < 0.0) return;
+    if (bendRadius_m == 0.0 || angleOfSlice > totalBendAngle_m || angleOfSlice < 0.0) return;
     int startSliceNum = 0;
     for (int j = sliceNumber; j >= startSliceNum; j--)
         Ez_m[sliceNumber] += lineDensity_m[j] * Grn_m[sliceNumber - j];
