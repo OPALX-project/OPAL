@@ -19,9 +19,11 @@
 
 #include "Solvers/WakeFunction.h"
 
+#include <cstddef>
 #include <memory>
 #include <string>
 #include <vector>
+#include <utility>
 
 class Filter;
 class ElementBase;
@@ -39,8 +41,8 @@ public:
 private:
     void calculateLineDensity(PartBunchBase<double, 3>* bunch, std::pair<double, double>& meshInfo);
 
-    void calculateContributionInside(size_t sliceNumber, double angleOfSlice, double meshSpacing);
-    void calculateContributionAfter(size_t sliceNumber, double angleOfSlice, double meshSpacing);
+    void calculateContributionInside(std::size_t sliceNumber, double angleOfSlice, double meshSpacing);
+    void calculateContributionAfter(std::size_t sliceNumber, double angleOfSlice, double meshSpacing);
     void calculateGreenFunction(PartBunchBase<double, 3>* bunch, double meshSpacing);
     double calcPsi(const double& psiInitial, const double& x, const double& Ds) const;
 

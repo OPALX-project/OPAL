@@ -16,10 +16,12 @@
 //
 #include "Solvers/CSRIGFWakeFunction.h"
 
-#include "AbsBeamline/RBend.h"
-#include "AbsBeamline/SBend.h"
+#include "AbsBeamline/Bend2D.h"
+#include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
+#include "Algorithms/PartBunchBase.hpp"
+#include "Algorithms/Vektor.h"
 #include "Filters/Filter.h"
 #include "Filters/SavitzkyGolay.h"
 #include "Physics/Physics.h"
@@ -28,9 +30,14 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
+#include "Utility/Inform.h"              // for operator<<, Inform, endl
+#include "Utility/IpplInfo.h"            // for ERRORMSG, Ippl, IpplInfo
+#include "Utility/PAssert.h"             // for toss_cookies, PAssert_LT
+
 #include <cmath>
 #include <fstream>
-#include <iostream>
+#include <iomanip>
+#include <sstream>
 
 CSRIGFWakeFunction::CSRIGFWakeFunction(const std::string& name, std::vector<Filter*> filters, const unsigned int& N):
     WakeFunction(name, N),
@@ -200,7 +207,7 @@ void CSRIGFWakeFunction::calculateGreenFunction(PartBunchBase<double, 3>* bunch,
     }
 }
 
-void CSRIGFWakeFunction::calculateContributionInside(size_t sliceNumber,
+void CSRIGFWakeFunction::calculateContributionInside(std::size_t sliceNumber,
                                                      double angleOfSlice,
                                                      double /*meshSpacing*/) {
     if (angleOfSlice > totalBendAngle_m || angleOfSlice < 0.0) return;
@@ -209,7 +216,7 @@ void CSRIGFWakeFunction::calculateContributionInside(size_t sliceNumber,
         Ez_m[sliceNumber] += lineDensity_m[j] * Grn_m[sliceNumber - j];
 }
 
-void CSRIGFWakeFunction::calculateContributionAfter(size_t sliceNumber,
+void CSRIGFWakeFunction::calculateContributionAfter(std::size_t sliceNumber,
                                                     double angleOfSlice,
                                                     double meshSpacing) {
     if (angleOfSlice <= totalBendAngle_m) return;
