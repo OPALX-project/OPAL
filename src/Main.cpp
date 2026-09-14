@@ -49,13 +49,12 @@
 
 #include <gsl/gsl_errno.h>
 
-#include <boost/system/error_code.hpp>
-
 #include <cstring>
 #include <filesystem>
 #include <iomanip>
 #include <iostream>
 #include <set>
+#include <system_error>
 
 // ippl and gmsg need to be defined within the python module (these global
 // objects are shared across several python modules (dynamically loaded libs).

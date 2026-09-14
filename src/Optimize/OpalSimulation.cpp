@@ -15,6 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
+#include "Optimize/OpalSimulation.h"
+
+#include "opal.h"
+
+#include "AbstractObjects/OpalData.h"
+#include "Utilities/OpalException.h"
+#include "Utilities/Options.h"
+#include "Utilities/Util.h"
+
+#include "Util/SDDSReader.h"
+#include "Util/SDDSParser.h"
+#include "Util/SDDSParser/SDDSParserException.h"
+#include "Util/OptPilotException.h"
+#include "Util/NativeHashGenerator.h"
+
 #include <cstdlib>
 #include <cstring>
 #include <ctime>
@@ -23,32 +38,11 @@
 #include <sstream>
 #include <vector>
 
-#include <unistd.h>
+#include <dirent.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
-#include <dirent.h>
-
-#include "Optimize/OpalSimulation.h"
-
-#include "Util/SDDSReader.h"
-#include "Util/SDDSParser.h"
-#include "Util/SDDSParser/SDDSParserException.h"
-#include "Util/OptPilotException.h"
-#include "Util/NativeHashGenerator.h"
-
-#include "AbstractObjects/OpalData.h"
-
-#include "Expression/SumErrSq.h"
-#include "Expression/FromFile.h"
-
-#include "boost/algorithm/string.hpp"
-
-// access to OPAL lib
-#include "opal.h"
-#include "Utilities/OpalException.h"
-#include "Utilities/Options.h"
-#include "Utilities/Util.h"
+#include <unistd.h>
 
 OpalSimulation::OpalSimulation(Expressions::Named_t objectives,
                                Expressions::Named_t constraints,
@@ -545,12 +539,10 @@ void OpalSimulation::collectResults() {
 
                 //FIXME: hack to give feedback about values of LHS and RHS
                 std::string constr_str = constraint->toString();
-                std::vector<std::string> split;
-                boost::split(split, constr_str, boost::is_any_of("<>!="),
-                             boost::token_compress_on);
-                std::string lhs_constr_str = split[0];
-                std::string rhs_constr_str = split[1];
-                boost::trim_left_if (rhs_constr_str, boost::is_any_of("="));
+                std::vector<std::string> split = Util::split_any_of(constr_str, "<>!=", true);
+                std::string lhs_constr_str = (split.size() > 0) ? split[0] : std::string();
+                std::string rhs_constr_str = (split.size() > 1) ? split[1] : std::string();
+                rhs_constr_str = Util::trim_chars(rhs_constr_str, "=");
 
                 functionDictionary_t funcs = constraint->getRegFuncs();
                 const std::unique_ptr<Expressions::Expr_t> lhs(

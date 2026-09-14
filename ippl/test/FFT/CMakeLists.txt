@@ -9,7 +9,6 @@ include_directories (
 link_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src
-    ${Boost_LIBRARY_DIRS}
 )
 
 set (IPPL_LIBS ippl)
@@ -24,14 +23,14 @@ add_executable (TestFFT-XT3 TestFFT-XT3.cpp)
 add_executable (TestRC      TestRC.cpp)
 add_executable (TestRCMIC   TestRCMIC.cpp)
 
-target_link_libraries (fftspeed    ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
-target_link_libraries (TestFFT     ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
-target_link_libraries (TestFFT-1   ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
-target_link_libraries (TestFFT-2   ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
-target_link_libraries (TestFFTCos  ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
-target_link_libraries (TestFFTSin  ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
-target_link_libraries (TestFFT-XT3 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
-target_link_libraries (TestRC      ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
-target_link_libraries (TestRCMIC   ${IPPL_LIBS} ${MPI_CXX_LIBRARIES} boost_timer)
+target_link_libraries (fftspeed    ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
+target_link_libraries (TestFFT     ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
+target_link_libraries (TestFFT-1   ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
+target_link_libraries (TestFFT-2   ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
+target_link_libraries (TestFFTCos  ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
+target_link_libraries (TestFFTSin  ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
+target_link_libraries (TestFFT-XT3 ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
+target_link_libraries (TestRC      ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
+target_link_libraries (TestRCMIC   ${IPPL_LIBS} ${MPI_CXX_LIBRARIES})
 
 add_subdirectory (SeaborgRes)

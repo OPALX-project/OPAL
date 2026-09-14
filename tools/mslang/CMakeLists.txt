@@ -15,13 +15,11 @@ include_directories (
 link_directories (
     ${IPPL_LIBRARY_DIR}
     ${CMAKE_BINARY_DIR}/src
-    ${Boost_LIBRARY_DIRS}
 )
 
 set (MSLANG_LIBS
     libOPALstatic
     ${OPAL_LIBS}
-    boost_timer
 )
 
 message (STATUS "Compiling MSLang")

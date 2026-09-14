@@ -61,7 +61,7 @@ namespace {
         serialize(params, serialized);
 
         Param_t deserialized_params;
-        deserialize(const_cast<char*>(serialized.str().c_str()),
+        deserialize(serialized.str().data(), serialized.str().size(),
                                       deserialized_params);
 
         EXPECT_EQ(5.5, deserialized_params["a"])
