@@ -26,12 +26,15 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Util/CmdArguments.h"
+#include "Utilities/Util.h"
 
-#include "boost/algorithm/string.hpp"
+#include <cstddef>
+#include <cstring>
+
 
 void CmdArguments::addArguments(int argc, char **argv) {
 
-    for(int i=1; i<argc; i++) {
+    for (int i=1; i<argc; i++) {
         std::string arg = argv[i];
         std::string name, value;
         this->split(name, value, arg);
@@ -39,16 +42,16 @@ void CmdArguments::addArguments(int argc, char **argv) {
     }
 }
 
-void CmdArguments::split(std::string &name,
-                         std::string &value, std::string arg) {
+void CmdArguments::split(std::string& name,
+                         std::string& value, std::string arg) {
 
-    size_t pos = arg.find("=");
+    std::size_t pos = arg.find("=");
     //strip leading '--' and '='
     name = arg.substr(2, pos - 2);
     value = arg.substr(pos + 1);
 
-    boost::trim(name);
-    boost::trim(value);
+    name  = Util::trim_chars(name, " \t\n\r\f\v");
+    value = Util::trim_chars(value, " \t\n\r\f\v");
 }
 
 char** CmdArguments::getArguments() const {
@@ -59,15 +62,15 @@ char** CmdArguments::getArguments() const {
     auto it = arguments_.cbegin();
     const auto end = arguments_.cend();
     for (; it != end; ++ it) {
-        const std::string &key = it->first;
+        const std::string& key = it->first;
         char* argname = new char[key.length() + 1];
-        strcpy(argname, key.c_str());
-        args[i ++] = argname;
+        std::strcpy(argname, key.c_str());
+        args[i++] = argname;
 
-        const std::string &value = it->second;
+        const std::string& value = it->second;
         char* argvalue = new char[value.length() + 1];
-        strcpy(argvalue, value.c_str());
-        args[i ++] = argvalue;
+        std::strcpy(argvalue, value.c_str());
+        args[i++] = argvalue;
     }
 
     return args;

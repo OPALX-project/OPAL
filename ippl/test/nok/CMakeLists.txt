@@ -7,7 +7,6 @@ include_directories (
 
 link_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${Boost_LIBRARY_DIRS}
 )
 
 set (IPPL_LIBS ippl)
@@ -18,5 +17,4 @@ target_link_libraries (
     t3
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )

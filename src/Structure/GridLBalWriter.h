@@ -21,7 +21,7 @@
 #ifndef OPAL_GRID_LBAL_WRITER_H
 #define OPAL_GRID_LBAL_WRITER_H
 
-#include "SDDSWriter.h"
+#include "Structure/SDDSWriter.h"
 
 class GridLBalWriter : public SDDSWriter {
 

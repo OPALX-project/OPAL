@@ -7,7 +7,6 @@ include_directories (
 
 link_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${Boost_LIBRARY_DIRS}
 )
 
 set (IPPL_LIBS ippl)
@@ -18,7 +17,6 @@ target_link_libraries (
     2ddens
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
 
 add_executable (dualmpi dualmpi.cpp)
@@ -26,7 +24,6 @@ target_link_libraries (
     dualmpi
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
 
 add_executable (reduce-1 reduce-1.cpp)
@@ -34,7 +31,6 @@ target_link_libraries (
     reduce-1
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
 
 add_executable (reduce-2 reduce-2.cpp)
@@ -42,7 +38,6 @@ target_link_libraries (
     reduce-2
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
 
 add_executable (volley volley.cpp)
@@ -50,5 +45,4 @@ target_link_libraries (
     volley
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )

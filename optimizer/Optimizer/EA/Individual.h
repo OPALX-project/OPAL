@@ -27,7 +27,13 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstdlib>
+#include <iomanip>
 #include <iostream>
+#include <limits>
+#include <memory>
+#include <set>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -36,7 +42,6 @@
 class Individual {
 
 public:
-
     /// representation of genes
     typedef std::vector<double> genes_t;
     /// gene names
@@ -69,7 +74,7 @@ public:
 
         int iter = 0;
         while (iter < 100) { // somewhat arbitrary limit
-            for (size_t i=0; i < bounds_m.size(); i++) {
+            for (std::size_t i=0; i < bounds_m.size(); i++) {
                 new_gene(i);
             }
             // check constraints
@@ -90,21 +95,34 @@ public:
         id_m          = individual->id_m;
     }
 
-    /// serialization of structure
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int /*version*/) {
-        ar & genes_m;
-        ar & objectives_m;
-        ar & id_m;
+    /// write this individual's state to a stream, replaces boost::serialization
+    void writeState(std::ostream& os) const {
+        os << std::setprecision(std::numeric_limits<double>::max_digits10);
+        os << id_m << ' ' << genes_m.size();
+        for (double g : genes_m) os << ' ' << g;
+        os << ' ' << objectives_m.size();
+        for (double o : objectives_m) os << ' ' << o;
+        os << '\n';
+    }
+
+    /// read this individual's state from a stream, replaces boost::serialization
+    void readState(std::istream& is) {
+        std::size_t ngenes = 0, nobjs = 0;
+        is >> id_m >> ngenes;
+        genes_m.resize(ngenes);
+        for (double& g : genes_m) is >> g;
+        is >> nobjs;
+        objectives_m.resize(nobjs);
+        for (double& o : objectives_m) is >> o;
     }
 
     /// initialize the gene with index gene_idx with a new random value
     /// contained in the specified gene boundaries
-    double new_gene(size_t gene_idx) {
+    double new_gene(std::size_t gene_idx) {
         double max = std::max(bounds_m[gene_idx].first, bounds_m[gene_idx].second);
         double min = std::min(bounds_m[gene_idx].first, bounds_m[gene_idx].second);
         double delta = std::abs(max - min);
-        genes_m[gene_idx] = rand() / (RAND_MAX + 1.0) * delta + min;
+        genes_m[gene_idx] = std::rand() / (RAND_MAX + 1.0) * delta + min;
         return genes_m[gene_idx];
     }
     /// test if individual within bounds and constraints
@@ -122,7 +140,7 @@ public:
 private:
     /// check bounds
     bool checkBounds() {
-        for (size_t i=0; i < bounds_m.size(); i++) {
+        for (std::size_t i=0; i < bounds_m.size(); i++) {
              double value = genes_m[i];
              double max = std::max(bounds_m[i].first, bounds_m[i].second);
              double min = std::min(bounds_m[i].first, bounds_m[i].second);
@@ -148,7 +166,7 @@ private:
                     std::cerr << "Individual::checkConstraints(): " << req_var << " is not a design variable" << std::endl;
                     exit(1);
                 }
-                size_t gene_idx = std::distance(names_m.begin(),it);
+                std::size_t gene_idx = std::distance(names_m.begin(),it);
                 double value    = genes_m[gene_idx];
                 variable_dictionary.insert(std::pair<std::string, double>(req_var, value));
             }
