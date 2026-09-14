@@ -480,13 +480,19 @@ void PartBunch::computeSelfFields() {
  */
 void PartBunch::computeSelfFields_cycl(double gamma) {
 
-    IpplTimings::startTimer(selfFieldTimer_m);
-
-    size_t numGridPoints = static_cast<size_t>(nr_m[0]) * static_cast<size_t>(nr_m[1]) * static_cast<size_t>(nr_m[2]);
-    if (getTotalNum() < numGridPoints) {
-        WARNMSG("The number of particles decreased below the grid points. Skip space-charge calculation." << endl);
+    if (getTotalNum() == 0) {
         return;
     }
+
+    if (fs_m->getFieldSolverType() == FieldSolverType::SAAMG) {
+        std::size_t numGridPoints = static_cast<std::size_t>(nr_m[0]) * static_cast<std::size_t>(nr_m[1]) * static_cast<std::size_t>(nr_m[2]);
+        if (getTotalNum() < numGridPoints) {
+            WARNMSG("The number of particles decreased below the grid points. Skip space-charge calculation." << endl);
+            return;
+        }
+    }
+
+    IpplTimings::startTimer(selfFieldTimer_m);
 
     if (fs_m->getFieldSolverType() == FieldSolverType::P3M) {
         throw GeneralClassicException("PartBunch::computeSelfFields_cycl(double gamma)",
