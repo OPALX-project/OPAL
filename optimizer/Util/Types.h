@@ -21,7 +21,12 @@
 #ifndef __TYPES_H__
 #define __TYPES_H__
 
+#include <iomanip>
+#include <istream>
+#include <limits>
 #include <map>
+#include <ostream>
+#include <string>
 #include <tuple>
 #include <utility>
 #include <vector>
@@ -66,11 +71,24 @@ typedef struct reqVarInfo {
     std::vector<double> value;
     bool                is_valid;
 
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int /*version*/) {
-        ar & type;
-        ar & value;
-        ar & is_valid;
+    /// write this info to a stream, replaces boost::serialization
+    void writeState(std::ostream& os) const {
+        os << std::setprecision(std::numeric_limits<double>::max_digits10);
+        os << static_cast<int>(type) << ' ' << value.size();
+        for (double v : value) os << ' ' << v;
+        os << ' ' << is_valid;
+    }
+
+    /// read this info from a stream, replaces boost::serialization
+    void readState(std::istream& is) {
+        int t = 0;
+        is >> t;
+        type = static_cast<InfoType_t>(t);
+        std::size_t n = 0;
+        is >> n;
+        value.resize(n);
+        for (double& v : value) is >> v;
+        is >> is_valid;
     }
 } reqVarInfo_t;
 

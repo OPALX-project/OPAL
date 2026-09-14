@@ -67,7 +67,6 @@ public:
     void doPhysics(PartBunchBase<double, 3>* bunch);
 
 private:
-
     void computeCrossSection(double energy);
 
     double computeCrossSectionNakai(double energy, double energyThreshold, int& i);

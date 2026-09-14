@@ -18,17 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include <vector>
 #include <algorithm>
-#include <string.h>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
+
 #include "mpi.h"
-#include "boost/bind.hpp"
 
 class AsyncSendBuffer {
 
 public:
-
-    AsyncSendBuffer(std::ostringstream &os) {
+    AsyncSendBuffer(std::ostringstream& os) {
         this->size_req   = new MPI_Request();
         this->buffer_req = new MPI_Request();
         this->buf_size   = os.str().length();
@@ -60,17 +61,14 @@ public:
         MPI_Isend(buffer, buf_size, MPI_CHAR, recv_rank, data_tag, comm, buffer_req);
     }
 
-
 private:
-
     // can't use smart pointers because MPI will hold last valid reference to
     // pointer
     MPI_Request *size_req;
     MPI_Request *buffer_req;
     char        *buffer;
 
-    size_t buf_size;
-
+    std::size_t buf_size;
 };
 
 
@@ -83,17 +81,21 @@ public:
         collection_.push_back(buf);
     }
 
-    void cleanup() {
-        collection_.erase(std::remove_if(
-            collection_.begin(), collection_.end(), boost::bind(&AsyncSendBuffer::hasCompleted, _1)),
+        void cleanup() {
+        collection_.erase(
+            std::remove_if(
+                collection_.begin(),
+                collection_.end(),
+                [](const std::shared_ptr<AsyncSendBuffer>& buf) {
+                    return buf->hasCompleted();
+                }),
             collection_.end());
     }
 
-    size_t size() {
+    std::size_t size() {
         return collection_.size();
     }
 
 private:
     std::vector< std::shared_ptr<AsyncSendBuffer> > collection_;
 };
-

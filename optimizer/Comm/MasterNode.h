@@ -31,56 +31,64 @@
 #ifndef __MASTER_NODE__
 #define __MASTER_NODE__
 
-#include <set>
 #include <cmath>
-#include <vector>
-
+#include <set>
 #include <string>
 #include <sstream>
+#include <iostream>
+#include <vector>
 
 #include "mpi.h"
 
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/utility.hpp>
+#include "Comm/SolutionStateIO.h"
 
 
-//XXX: SolutionState_t must be serializable! (call
-//     SerializableSolutionState_t?)
+//XXX: SolutionState_t must be serializable, i.e. its value_type must provide
+//     writeState(std::ostream&) const and readState(std::istream&)!
+//     (call SerializableSolutionState_t?)
 template <
       class SolutionState_t
     , class NeighborStrategy_t
 >
 class MasterNode : public NeighborStrategy_t {
 
+    /// header prefixed to the serialized data in the (single) shared window:
+    /// revision together with the actual number of valid payload bytes
+    /// (<= buf_size_upper_bound_). Keeping both in the same window as the
+    /// payload and writing/reading them within a single fence epoch avoids
+    /// tearing between "new revision" and "new data" that two independent
+    /// windows could not guarantee.
+    struct Meta_t {
+        std::size_t revision = 0;
+        std::size_t size = 0;
+    };
 
 public:
-
-    MasterNode(MPI_Comm master_comm, size_t buf_size_upper_bound, size_t dim,
+    MasterNode(MPI_Comm master_comm, std::size_t buf_size_upper_bound, std::size_t dim,
                int island_id)
             : buf_size_upper_bound_(buf_size_upper_bound)
-            , master_comm_(master_comm) {
+            , win_bytes_(sizeof(Meta_t) + buf_size_upper_bound)
+            , master_comm_(master_comm)
+            , revision_(0) {
 
         int tmp = 0;
         MPI_Comm_rank(master_comm, &tmp);
-        myID_ = static_cast<size_t>(tmp);
+        myID_ = static_cast<std::size_t>(tmp);
 
         MPI_Comm_size(master_comm, &tmp);
-        numMasters_ = static_cast<size_t>(tmp);
+        numMasters_ = static_cast<std::size_t>(tmp);
         revision_state_.resize(numMasters_, 0);
 
         // better to use MPI-2 memory allocation methods
-        MPI_Alloc_mem(sizeof(char) * buf_size_upper_bound,
-                      MPI_INFO_NULL, &serialized_best_values_);
+        MPI_Alloc_mem(win_bytes_, MPI_INFO_NULL, &serialized_best_values_);
 
-        // expose our shared memory holding our best values
-        MPI_Win_create(serialized_best_values_, buf_size_upper_bound,
+        // zero-initialize the header so an unwritten window reads as revision 0
+        Meta_t empty;
+        memcpy(serialized_best_values_, &empty, sizeof(Meta_t));
+
+        // expose our shared memory holding header + best values as one window
+        MPI_Win_create(serialized_best_values_, win_bytes_,
                        sizeof(char), MPI_INFO_NULL, master_comm, &win_);
-
-        MPI_Win_create(&revision_, 1, sizeof(size_t), MPI_INFO_NULL,
-                       master_comm, &win_rev_);
-
 
         // execute neighbor strategy to learn which neighbors have to be
         // updated with our solution state (and we collect from)
@@ -90,90 +98,98 @@ public:
     ~MasterNode() {
         MPI_Win_free(&win_);
         MPI_Free_mem(serialized_best_values_);
-        MPI_Win_free(&win_rev_);
     }
-
 
     /// store my best values
-    void store(char *local_state, size_t buffer_size) {
+    void store(char *local_state, std::size_t buffer_size) {
 
-        revision_++;
-        MPI_Win_fence(MPI_MODE_NOPUT, win_rev_);
+        if (buffer_size > buf_size_upper_bound_) {
+            std::cerr << "MasterNode::store(): serialized state (" << buffer_size
+                      << " bytes) exceeds window capacity (" << buf_size_upper_bound_
+                      << " bytes), dropping this update" << std::endl;
+            return;
+        }
 
-        size_t buf_size = buffer_size;
-        if(buf_size > buf_size_upper_bound_)
-            std::cout << "windows too small: " << buffer_size << " / "
-                      << buf_size_upper_bound_ << std::endl;
+        Meta_t meta;
+        meta.revision = ++revision_;
+        meta.size = buffer_size;
 
-        memcpy(serialized_best_values_, local_state, buf_size);
+        // header and payload are written within the same epoch so a reader
+        // can never observe a new revision paired with stale/partial data
         MPI_Win_fence(MPI_MODE_NOPUT, win_);
-        //MPI_Win_fence((MPI_MODE_NOPUT | MPI_MODE_NOPRECEDE), win_);
+        memcpy(serialized_best_values_, &meta, sizeof(Meta_t));
+        memcpy(serialized_best_values_ + sizeof(Meta_t), local_state, buffer_size);
+        MPI_Win_fence(MPI_MODE_NOPUT, win_);
     }
-
 
     /// collect all best values from all other masters
     void collect(std::ostringstream &states) {
 
         char *buffer;
-        MPI_Alloc_mem(buf_size_upper_bound_, MPI_INFO_NULL, &buffer);
+        MPI_Alloc_mem(win_bytes_, MPI_INFO_NULL, &buffer);
         SolutionState_t tmp_states;
 
-
-        for(size_t i=0; i < numMasters_; i++) {
+        for (std::size_t i=0; i < numMasters_; i++) {
             // ignore all except for selected master PIDs
-            if(i == myID_) continue;
-            if(collectFrom_.count(i) == 0) continue;
+            if (i == myID_) continue;
+            if (collectFrom_.count(i) == 0) continue;
 
-            // only continue if new values are available on master i
-            size_t revision = 0;
-            MPI_Get(&revision, 1, MPI_UNSIGNED_LONG, i, 0, 1, MPI_UNSIGNED_LONG, win_rev_);
-            MPI_Win_fence(0, win_rev_);
-
-            if(revision <= revision_state_[i]) continue;
-            revision_state_[i] = revision;
-
-            MPI_Get(buffer, buf_size_upper_bound_, MPI_CHAR, i, 0,
-                    buf_size_upper_bound_, MPI_CHAR, win_);
+            // cheap pre-check: only the header, to avoid a full fetch when unchanged
+            Meta_t hint;
+            MPI_Get(&hint, sizeof(Meta_t), MPI_BYTE, i, 0, sizeof(Meta_t), MPI_BYTE, win_);
             MPI_Win_fence(0, win_);
 
-            std::istringstream is(buffer);
-            boost::archive::text_iarchive ia(is);
+            if(hint.revision <= revision_state_[i]) continue;
+
+            // fetch header + payload together so they can never be torn apart
+            MPI_Get(buffer, win_bytes_, MPI_BYTE, i, 0, win_bytes_, MPI_BYTE, win_);
+            MPI_Win_fence(0, win_);
+
+            Meta_t meta;
+            memcpy(&meta, buffer, sizeof(Meta_t));
+
+            // re-check with the value that is guaranteed consistent with the payload
+            if (meta.revision <= revision_state_[i]) continue;
+            revision_state_[i] = meta.revision;
+
+            // build the stream from an explicit length, buffer is not null-terminated
+            std::istringstream is(std::string(buffer + sizeof(Meta_t), meta.size));
 
             //XXX: ugly that we have to know the SolutionState_t here
             SolutionState_t state;
-            ia >> state;
+            readSolutionState(is, state);
             tmp_states.insert(tmp_states.end(), state.begin(), state.end());
         }
 
-        boost::archive::text_oarchive oa(states);
-        oa << tmp_states;
+        writeSolutionState(states, tmp_states);
 
         MPI_Free_mem(buffer);
     }
 
-
 private:
-
-    /// pointer to MPI window holding current best solution state
+    /// pointer to MPI window holding header (revision + size) and best solution state
     char *serialized_best_values_;
 
-    /// and upper bound on the allocated memory in the MPI window
-    size_t buf_size_upper_bound_;
-    size_t numMasters_;
+    /// upper bound on the serialized payload (excludes the header)
+    std::size_t buf_size_upper_bound_;
+    /// total window size in bytes: sizeof(Meta_t) + buf_size_upper_bound_
+    std::size_t win_bytes_;
+    std::size_t numMasters_;
     MPI_Comm master_comm_;
 
-    // windows for storing revision and solution state
+    /// single window for header + solution state; all ranks must call
+    /// MPI_Win_fence on it the same number of times, in the same order, which
+    /// requires collectFrom_ to have equal cardinality on every rank
     MPI_Win win_;
-    MPI_Win win_rev_;
 
-    size_t myID_;
+    std::size_t myID_;
 
     /// neighbors we collect solution states from
-    std::set<size_t> collectFrom_;
+    std::set<std::size_t> collectFrom_;
     /// my solution state revision number
-    size_t revision_;
+    std::size_t revision_;
     /// revision numbers of my neighbors
-    std::vector<size_t> revision_state_;
+    std::vector<std::size_t> revision_state_;
 };
 
 #endif

@@ -219,8 +219,6 @@ void MemoryProfiler::write(PartBunchBase<double, 3>* beam) {
     columns_m.addColumnValue("t", beam->getT() * Units::s2ns); // 1
     columns_m.addColumnValue("s", pathLength);                   // 2
 
-    // boost::variant can't overload double and long double. By using a
-    // string this shortcoming can be bypassed.
     columns_m.addColumnValue("VmPeak-Min", toString(vmMin[VMPEAK]));
     columns_m.addColumnValue("VmPeak-Max", toString(vmMax[VMPEAK]));
     columns_m.addColumnValue("VmPeak-Avg", toString(vmAvg[VMPEAK]));

@@ -1,7 +1,6 @@
 //
 // Class Timer
 //   This class is used in IpplTimings.
-//   https://www.boost.org/doc/libs/1_70_0/libs/timer/doc/cpu_timers.html
 //
 // Copyright (c) 2019, Matthias Frey, Paul Scherrer Institut, Villigen PSI, Switzerland
 // All rights reserved
@@ -25,43 +24,31 @@ Timer::Timer() {
     this->clear();
 }
 
-
 void Timer::clear() {
-    wall_m = user_m = sys_m = 0.0;
+    wall_m = 0.0;
+    cpu_m = 0.0;
 }
-
 
 void Timer::start() {
-    timer_m.start();
+    wall_start_m = std::chrono::steady_clock::now();
+    cpu_start_m = std::clock();
 }
-
 
 void Timer::stop() {
-    timer_m.stop();
-    
-    boost::timer::cpu_times elapsed = timer_m.elapsed();
-    
-    wall_m += elapsed.wall;
-    user_m += elapsed.user;
-    sys_m  += elapsed.system;
-}
+    const auto wall_end = std::chrono::steady_clock::now();
+    const auto cpu_end = std::clock();
 
+    wall_m += std::chrono::duration<double>(
+        wall_end - wall_start_m).count();
+
+    cpu_m += static_cast<double>(cpu_end - cpu_start_m) /
+             CLOCKS_PER_SEC;
+}
 
 double Timer::clock_time() {
-    return wall_m * 1.0e-9;
+    return wall_m;
 }
-
-
-double Timer::user_time() {
-    return user_m * 1.0e-9;
-}
-
-
-double Timer::system_time() {
-    return sys_m * 1.0e-9;
-}
-
 
 double Timer::cpu_time() {
-    return (user_m + sys_m) * 1.0e-9;
+    return cpu_m;
 }

@@ -28,14 +28,14 @@
  *  POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include "MultipoleT.h"
+#include "AbsBeamline/MultipoleT.h"
 
 #include "BeamlineVisitor.h"
 #include "AbsBeamline/MultipoleTFunctions/tanhDeriv.h"
 #include "MultipoleTStraight.h"
 #include "MultipoleTCurvedConstRadius.h"
 #include "MultipoleTCurvedVarRadius.h"
-#include <boost/algorithm/string/case_conv.hpp>
+#include "Utilities/Util.h"
 
 using namespace endfieldmodel;
 
@@ -245,9 +245,9 @@ void MultipoleT::setBendAngle(double angle, bool variableRadius) {
 }
 
 void MultipoleT::chooseImplementation() {
-    if(bendAngle_m == 0.0) {
+    if (bendAngle_m == 0.0) {
         implementation_ = std::make_unique<MultipoleTStraight>(this);
-    } else if(variableRadius_m) {
+    } else if (variableRadius_m) {
         implementation_ = std::make_unique<MultipoleTCurvedVarRadius>(this);
     } else {
         implementation_ = std::make_unique<MultipoleTCurvedConstRadius>(this);
@@ -302,7 +302,7 @@ void MultipoleT::initialise(PartBunchBase<double, 3>* bunch,
 
 void MultipoleT::setScalingName(const std::string& name) {
     // Element names are stored in upper case
-    scalingName_m = boost::to_upper_copy<std::string>(name);
+    scalingName_m = Util::toUpper(name);
 }
 
 void MultipoleT::initialiseTimeDepencencies() const {

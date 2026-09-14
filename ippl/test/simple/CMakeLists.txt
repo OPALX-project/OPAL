@@ -7,7 +7,6 @@ include_directories (
 
 link_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}
-    ${Boost_LIBRARY_DIRS}
 )
 
 set (IPPL_LIBS ippl)
@@ -18,7 +17,6 @@ target_link_libraries (
     ScalarAdvection
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
 
 add_executable (fermi-dirac-field fermi-dirac-field.cpp)
@@ -26,5 +24,4 @@ target_link_libraries (
     fermi-dirac-field
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )

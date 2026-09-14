@@ -18,10 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "GridLBalWriter.h"
+#include "Structure/GridLBalWriter.h"
 
+#include "AbstractObjects/OpalData.h"
 #include "Algorithms/AmrPartBunch.h"
 #include "Physics/Units.h"
+#include "Utilities/OpalException.h"
 #include "Utilities/Timer.h"
 
 #include <sstream>
@@ -30,7 +32,6 @@
 GridLBalWriter::GridLBalWriter(const std::string& fname, bool restart)
     : SDDSWriter(fname, restart)
 { }
-
 
 void GridLBalWriter::fillHeader(const PartBunchBase<double, 3> *beam) {
 
@@ -87,7 +88,6 @@ void GridLBalWriter::fillHeader(const PartBunchBase<double, 3> *beam) {
     this->addInfo("ascii", 1);
 }
 
-
 void GridLBalWriter::write(PartBunchBase<double, 3> *beam) {
     AmrPartBunch* amrbeam = dynamic_cast<AmrPartBunch*>(beam);
 
@@ -116,7 +116,6 @@ void GridLBalWriter::write(PartBunchBase<double, 3> *beam) {
     for (int lev = 0; lev < nLevel; ++lev) {
         std::stringstream ss;
         ss << "\"level-" << lev << "\"";
-        // we need to cast due to boost::variant
         columns_m.addColumnValue(ss.str(), toString(gridsPerLevel[lev]));
     }
 
@@ -124,7 +123,6 @@ void GridLBalWriter::write(PartBunchBase<double, 3> *beam) {
     for (int p = 0; p < nProcs; ++p) {
         std::stringstream ss;
         ss << "\"processor-" << p << "\"";
-        // we need to cast due to boost::variant
         columns_m.addColumnValue(ss.str(), toString(gridPtsPerCore[p]));
     }
 

@@ -32,6 +32,8 @@
 #include <string>
 #include <vector>
 
+#include <zlib.h>
+
 namespace Util {
     std::string getGitRevision() {
         return std::string(GIT_VERSION);
@@ -149,8 +151,10 @@ namespace Util {
 
     std::string toUpper(const std::string& str) {
         std::string output = str;
-        std::transform(output.begin(), output.end(), output.begin(), [](const char c) { return std::toupper(c);});
-
+        std::transform(output.begin(), output.end(), output.begin(),
+             [](unsigned char c) {
+                return std::toupper(c);
+        });
         return output;
     }
 
@@ -166,7 +170,7 @@ namespace Util {
         if (b.size() > 1) {
             output << "(";
         }
-        for (size_t i = 0; i < b.size(); ++i) {
+        for (std::size_t i = 0; i < b.size(); ++i) {
             output << std::boolalpha << boolToUpperString(b[i]);
             if (b.size() > 1) {
                 (i < (b.size()-1)) ? (output << ", ") : (output << ")");
@@ -205,7 +209,7 @@ namespace Util {
         return path.string();
     }
 
-    void checkInt(double real, std::string name, double tolerance) {
+    void checkInt(double real, const std::string& name, double tolerance) {
         real += tolerance; // prevent rounding error
         if (std::abs(std::floor(real) - real) > 2*tolerance) {
             throw OpalException("Util::checkInt",
@@ -222,6 +226,64 @@ namespace Util {
         return std::all_of(str.begin(),
                            str.end(),
                            [](char c) { return std::isdigit(c); });
+    }
+
+    std::string replaceAll(const std::string& str,
+                            const std::string& from,
+                            const std::string& to) {
+        if (from.empty()) return str;
+
+        std::string result;
+        result.reserve(str.size());
+
+        std::size_t pos = 0, found;
+        while ((found = str.find(from, pos)) != std::string::npos) {
+            result.append(str, pos, found - pos);
+            result += to;
+            pos = found + from.length();
+        }
+        result.append(str, pos, std::string::npos);
+
+        return result;
+    }
+
+    std::vector<std::string> split_any_of(const std::string& s,
+                                          const std::string& delims,
+                                          bool compress) {
+        std::vector<std::string> out;
+        std::string token;
+        for (char c : s) {
+            if (delims.find(c) != std::string::npos) {
+                if (!token.empty() || !compress) {
+                    out.push_back(token);
+                }
+                token.clear();
+            } else {
+                token.push_back(c);
+            }
+        }
+        if (!token.empty() || !compress) {
+            out.push_back(token);
+        }
+        return out;
+    }
+
+    std::string compressString(const std::string& str) {
+        if (str.empty()) return {};
+
+        uLongf compressed_size = compressBound(str.size());
+        std::string out(compressed_size, '\0');
+
+        int ret = compress2(reinterpret_cast<Bytef*>(&out[0]), &compressed_size,
+                            reinterpret_cast<const Bytef*>(str.data()),
+                            str.size(), Z_BEST_COMPRESSION);
+
+        if (ret != Z_OK) {
+            throw std::runtime_error("zlib compression failed");
+        }
+
+        out.resize(compressed_size);
+        return out;
     }
 
     KahanAccumulation::KahanAccumulation():

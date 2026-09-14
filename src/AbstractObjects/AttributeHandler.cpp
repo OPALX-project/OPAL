@@ -19,8 +19,7 @@
 #include "AbstractObjects/AttributeHandler.h"
 #include "Parser/Statement.h"
 #include "Utilities/OpalException.h"
-
-#include <boost/algorithm/string/join.hpp>
+#include "Utilities/Util.h"
 
 // Class AttributeHandler
 // ------------------------------------------------------------------------
@@ -31,7 +30,7 @@ std::multimap<std::string,
               > AttributeHandler::attributeOwnerDictionary_s;
 
 AttributeHandler::AttributeHandler
-(const std::string &name, const std::string &help, AttributeBase *def):
+(const std::string& name, const std::string& help, AttributeBase* def):
     RCObject(), itsName(name), itsHelp(help), itsDefault(def),
     is_deferred(false), is_readonly(false)
 {}
@@ -41,14 +40,14 @@ AttributeHandler::~AttributeHandler()
 {}
 
 
-AttributeHandler *AttributeHandler::clone() const {
+AttributeHandler* AttributeHandler::clone() const {
     throw OpalException("AttributeHandler::clone()",
                         "Internal error: should not call this method.");
 }
 
 
-AttributeBase *AttributeHandler::getDefault() const {
-    if(itsDefault.isValid()) {
+AttributeBase* AttributeHandler::getDefault() const {
+    if (itsDefault.isValid()) {
         return &*itsDefault;
     } else {
         throw OpalException("AttributeHandler::getDefault()",
@@ -57,18 +56,18 @@ AttributeBase *AttributeHandler::getDefault() const {
 }
 
 
-const std::string &AttributeHandler::getHelp() const {
+const std::string& AttributeHandler::getHelp() const {
     return itsHelp;
 }
 
 
-const std::string &AttributeHandler::getName() const {
+const std::string& AttributeHandler::getName() const {
     return itsName;
 }
 
 
 void AttributeHandler::parseComponent
-(Attribute &, Statement &, bool, int) const {
+(Attribute&, Statement&, bool, int) const {
     // Default behaviour.
     throw OpalException("AttributeHandler::parseComponent()",
                         "You cannot assign to a component of \"" + itsName +
@@ -98,7 +97,7 @@ void AttributeHandler::setReadOnly(bool flag) {
 void AttributeHandler::setPredefinedValues(const std::set<std::string>& predefinedValues,
                                            const std::string& defaultValue)
 {
-    std::string validValues = " Valid values are " + boost::algorithm::join(predefinedValues, ", ") + ".";
+    std::string validValues = " Valid values are " + Util::join(predefinedValues, ", ") + ".";
     if (defaultValue != "_HAS_NO_DEFAULT_") {
         validValues += " Its default is " + defaultValue + ".";
     }
@@ -106,7 +105,7 @@ void AttributeHandler::setPredefinedValues(const std::set<std::string>& predefin
     *help += validValues;
 }
 
-std::multimap<AttributeHandler::OwnerType, std::string> AttributeHandler::getOwner(const std::string &att) {
+std::multimap<AttributeHandler::OwnerType, std::string> AttributeHandler::getOwner(const std::string& att) {
     std::multimap<OwnerType, std::string> possibleOwners;
 
     if (attributeOwnerDictionary_s.find(att) != attributeOwnerDictionary_s.end()) {
@@ -122,9 +121,9 @@ std::multimap<AttributeHandler::OwnerType, std::string> AttributeHandler::getOwn
     return possibleOwners;
 }
 
-void AttributeHandler::addAttributeOwner(const std::string &owner,
-                                         const AttributeHandler::OwnerType &type,
-                                         const std::string &name) {
+void AttributeHandler::addAttributeOwner(const std::string& owner,
+                                         const AttributeHandler::OwnerType& type,
+                                         const std::string& name) {
     attributeOwnerDictionary_s.insert(std::make_pair(name,
                                                      std::make_pair(type,
                                                                     owner)

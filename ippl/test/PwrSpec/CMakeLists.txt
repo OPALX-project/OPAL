@@ -10,7 +10,6 @@ include_directories (
 link_directories (
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src
-    ${Boost_LIBRARY_DIRS}
 )
 
 set (COMPILE_FLAGS ${OPAL_CXX_FLAGS})
@@ -22,5 +21,4 @@ target_link_libraries (
     testPwrSpec
     ${IPPL_LIBS}
     ${MPI_CXX_LIBRARIES}
-    boost_timer
 )
