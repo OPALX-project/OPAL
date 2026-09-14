@@ -30,9 +30,9 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
-#include "Utility/Inform.h"              // for operator<<, Inform, endl
-#include "Utility/IpplInfo.h"            // for ERRORMSG, Ippl, IpplInfo
-#include "Utility/PAssert.h"             // for toss_cookies, PAssert_LT
+#include "Utility/Inform.h"
+#include "Utility/IpplInfo.h"
+#include "Utility/PAssert.h"
 
 #include <cmath>
 #include <fstream>
