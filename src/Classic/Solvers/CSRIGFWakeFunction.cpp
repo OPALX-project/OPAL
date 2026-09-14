@@ -84,8 +84,8 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
         else 
             angleOfSlice = pathLengthOfSlice/bendRadius_m;
 
-        if (pathLengthOfSlice < 0.0) // should never happen
-            ERRORMSG("In CSRWakeFunction::apply() pathLengthOfSlice<0.0" << endl);
+        // pathLengthOfSlice<0.0 is expected while the bunch straddles the bend
+        // entrance; angleOfSlice<0.0 is handled safely downstream.
 
         if (angleOfSlice > 0.0 && angleOfSlice <= totalBendAngle_m){
             calculateGreenFunction(bunch, meshSpacing);

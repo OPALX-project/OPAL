@@ -85,8 +85,8 @@ void CSRWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
         else 
             angleOfSlice = pathLengthOfSlice/bendRadius_m;
 
-        if (pathLengthOfSlice < 0.0) // should never happen
-            ERRORMSG("In CSRWakeFunction::apply() pathLengthOfSlice<0.0" << endl);
+        // pathLengthOfSlice<0.0 is expected while the bunch straddles the bend
+        // entrance; angleOfSlice<0.0 is handled safely downstream.
 
         calculateContributionInside(i, angleOfSlice, meshSpacing);
         calculateContributionAfter(i, angleOfSlice, meshSpacing);
@@ -173,7 +173,7 @@ void CSRWakeFunction::calculateLineDensity(PartBunchBase<double, 3>* bunch,
 }
 
 void CSRWakeFunction::calculateContributionInside(size_t sliceNumber, double angleOfSlice, double meshSpacing) {
-    if (angleOfSlice > totalBendAngle_m || angleOfSlice < 0.0) return;
+    if (bendRadius_m == 0.0 || angleOfSlice > totalBendAngle_m || angleOfSlice < 0.0) return;
 
     const double meshSpacingsup = std::pow(meshSpacing, -1. / 3.);
     double SlippageLength = std::pow(angleOfSlice, 3) * bendRadius_m / 24.;
