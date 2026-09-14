@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
+#include <cstddef>
+#include <cstring>
 #include <iomanip>
 #include <limits>
 #include <string>
@@ -113,7 +115,7 @@ void MPI_Bcast_params(Param_t& params, std::size_t root, MPI_Comm comm) {
     MPI_Bcast(&buf_size, 1, MPI_UNSIGNED_LONG, root, comm);
 
     char *buffer = new char[buf_size];
-    if (my_pid == root) memcpy(buffer, os.str().c_str(), buf_size);
+    if (my_pid == root) std::memcpy(buffer, os.str().c_str(), buf_size);
 
     MPI_Bcast(buffer, buf_size, MPI_CHAR, root, comm);
     if (my_pid != root) deserialize(buffer, buf_size, params);
@@ -131,7 +133,7 @@ void MPI_Send_params(Param_t params, std::size_t pid, MPI_Comm comm) {
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm);
 
     char *buffer = new char[buf_size];
-    memcpy(buffer, os.str().c_str(), buf_size);
+    std::memcpy(buffer, os.str().c_str(), buf_size);
 
     MPI_Send(buffer, buf_size, MPI_CHAR, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm);
@@ -151,7 +153,7 @@ std::pair<std::size_t*, char*> MPI_ISend_params(Param_t params, std::size_t pid,
               MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm, req);
 
     char *buffer = new char[*buf_size];
-    memcpy(buffer, os.str().c_str(), *buf_size);
+    std::memcpy(buffer, os.str().c_str(), *buf_size);
 
     MPI_Isend(buffer, *buf_size, MPI_CHAR, pid,
               MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm, req);
@@ -188,7 +190,7 @@ void MPI_Send_reqvars(reqVarContainer_t reqvars, std::size_t pid, MPI_Comm comm)
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm);
 
     char *buffer = new char[buf_size];
-    memcpy(buffer, os.str().c_str(), buf_size);
+    std::memcpy(buffer, os.str().c_str(), buf_size);
 
     MPI_Send(buffer, buf_size, MPI_CHAR, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm);

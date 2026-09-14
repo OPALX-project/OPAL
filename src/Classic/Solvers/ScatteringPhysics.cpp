@@ -463,7 +463,7 @@ void  ScatteringPhysics::computeCoulombScattering(Vector_t& R,
 
     double phi = Physics::two_pi * gsl_rng_uniform(rGen_m);
     for (unsigned int i = 0; i < 2; ++ i) {
-        CoordinateSystemTrafo randomTrafo(R, Quaternion(cos(phi), 0, 0, sin(phi)));
+        CoordinateSystemTrafo randomTrafo(R, Quaternion(std::cos(phi), 0, 0, std::sin(phi)));
         P = randomTrafo.rotateTo(P);
         R = Vector_t(0.0); // corresponds to randomTrafo.transformTo(R);
 

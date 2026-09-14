@@ -17,6 +17,9 @@
 #include <Python.h>
 #include <structmember.h>
 
+#include <cstdlib>
+#include <vector>
+
 #include "Fields/Interpolation/PolynomialCoefficient.h"
 #include "PyOpal/Globals.h"
 #include "PyOpal/PyPolynomialCoefficient.h"
@@ -83,7 +86,7 @@ int _init(PyObject* self, PyObject *args, PyObject *kwds) {
 }
 
 PyObject *_alloc(PyTypeObject *type, Py_ssize_t nitems) {
-    void* void_coeff = malloc(sizeof(PyCoefficient));
+    void* void_coeff = std::malloc(sizeof(PyCoefficient));
     PyCoefficient* coeff = reinterpret_cast<PyCoefficient*>(void_coeff);
     coeff->coeff = nullptr;
     Py_REFCNT(coeff) = 1;
@@ -194,5 +197,3 @@ PyMODINIT_FUNC PyInit_polynomial_coefficient(void) {
                        reinterpret_cast<PyObject*>(polynomial_coeff_type));
     return module;
 }
-
-

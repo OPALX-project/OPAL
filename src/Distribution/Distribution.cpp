@@ -685,13 +685,13 @@ void Distribution::applyEmissModelNonEquil(double lowEnergyLimit,
     double energy = 0.0;
     bool allow = false;
 
-    const double expRelativeLaserEnergy = exp(laserEnergy_m / cathodeTemp_m);
+    const double expRelativeLaserEnergy = std::exp(laserEnergy_m / cathodeTemp_m);
     // double energyRange = emitEnergyUpperLimit_m - lowEnergyLimit;
     unsigned int counter = 0;
     while (!allow) {
         energy = lowEnergyLimit + additionalRNs[counter++] * emitEnergyUpperLimit_m;
         double randFuncValue = additionalRNs[counter++];
-        double expRelativeEnergy = exp((energy - cathodeFermiEnergy_m) / cathodeTemp_m);
+        double expRelativeEnergy = std::exp((energy - cathodeFermiEnergy_m) / cathodeTemp_m);
         double funcValue = ((1.0
                             - 1.0 / (1.0 + expRelativeEnergy * expRelativeLaserEnergy)) /
                             (1.0 + expRelativeEnergy));
@@ -963,7 +963,7 @@ void Distribution::createDistributionMultiGauss(size_t numberOfParticles, double
 
             double proba = 0.0;
             for (unsigned i = 0; i < nPeaks_m; i++)
-                proba += exp( - .5 * std::pow( (tOrZ + L/2 - i * sepPeaks_m) / sigmaR_m[2], 2) );
+                proba += std::exp( - .5 * std::pow( (tOrZ + L/2 - i * sepPeaks_m) / sigmaR_m[2], 2) );
             allow = (r <= proba);
         }
 

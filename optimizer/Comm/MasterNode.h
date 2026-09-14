@@ -84,7 +84,7 @@ public:
 
         // zero-initialize the header so an unwritten window reads as revision 0
         Meta_t empty;
-        memcpy(serialized_best_values_, &empty, sizeof(Meta_t));
+        std::memcpy(serialized_best_values_, &empty, sizeof(Meta_t));
 
         // expose our shared memory holding header + best values as one window
         MPI_Win_create(serialized_best_values_, win_bytes_,
@@ -117,8 +117,8 @@ public:
         // header and payload are written within the same epoch so a reader
         // can never observe a new revision paired with stale/partial data
         MPI_Win_fence(MPI_MODE_NOPUT, win_);
-        memcpy(serialized_best_values_, &meta, sizeof(Meta_t));
-        memcpy(serialized_best_values_ + sizeof(Meta_t), local_state, buffer_size);
+        std::memcpy(serialized_best_values_, &meta, sizeof(Meta_t));
+        std::memcpy(serialized_best_values_ + sizeof(Meta_t), local_state, buffer_size);
         MPI_Win_fence(MPI_MODE_NOPUT, win_);
     }
 
@@ -146,7 +146,7 @@ public:
             MPI_Win_fence(0, win_);
 
             Meta_t meta;
-            memcpy(&meta, buffer, sizeof(Meta_t));
+            std::memcpy(&meta, buffer, sizeof(Meta_t));
 
             // re-check with the value that is guaranteed consistent with the payload
             if (meta.revision <= revision_state_[i]) continue;

@@ -17,7 +17,7 @@
 #include <Python.h>
 #include <structmember.h>
 
-#include <vector>
+#include <cstdlib>
 #include <string>
 
 #include "Fields/Interpolation/MMatrix.h"
@@ -472,7 +472,7 @@ int _init(PyObject* self, PyObject *args, PyObject *kwds) {
 }
 
 PyObject *_alloc(PyTypeObject *type, Py_ssize_t nitems) {
-    void* void_map = malloc(sizeof(PyPolynomialMap));
+    void* void_map = std::malloc(sizeof(PyPolynomialMap));
     PyPolynomialMap* map = reinterpret_cast<PyPolynomialMap*>(void_map);
     map->map = nullptr;
     Py_REFCNT(map) = 1;

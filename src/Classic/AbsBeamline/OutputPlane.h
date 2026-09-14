@@ -238,7 +238,7 @@ private:
     void interpolation(double& t, Vector_t& R, Vector_t& P);
     bool getFieldsAtPoint(const Vector_t& R, const Vector_t& P, const double& t, Vector_t& Efield, Vector_t& Bfield);
     
-    Component* field_m = NULL; // field map - this is a borrowed pointer
+    Component* field_m = nullptr; // field map - this is a borrowed pointer
     Vector_t normal_m; // normal to the output plane
     Vector_t centre_m; // centre of the output plane
     double radialExtent_m = -1.0; // maximum radial extent of the plane (circular)

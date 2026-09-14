@@ -142,7 +142,7 @@ void H5PartWrapperForPC::readStepHeader(PartBunchBase<double, 3>* bunch) {
     }
 
     double mass = bunch->getM() * Units::eV2MeV;
-    meanMomentum_m = sqrt(std::pow(meanE_m,2.0) + 2 * meanE_m * mass) / mass;
+    meanMomentum_m = std::sqrt(std::pow(meanE_m,2.0) + 2 * meanE_m * mass) / mass;
 }
 
 void H5PartWrapperForPC::readStepData(PartBunchBase<double, 3>* bunch,

@@ -225,9 +225,9 @@ void Line::parse(Statement &stat) {
             const double &phi = direction[1];
             const double &psi = direction[2];
 
-            Quaternion rotTheta(cos(0.5 * theta), 0, -sin(0.5 * theta), 0);
-            Quaternion rotPhi(cos(0.5 * phi), -sin(0.5 * phi), 0, 0);
-            Quaternion rotPsi(cos(0.5 * psi), 0, 0, -sin(0.5 * psi));
+            Quaternion rotTheta(std::cos(0.5 * theta), 0, -std::sin(0.5 * theta), 0);
+            Quaternion rotPhi(std::cos(0.5 * phi), -std::sin(0.5 * phi), 0, 0);
+            Quaternion rotPsi(std::cos(0.5 * psi), 0, 0, -std::sin(0.5 * psi));
             line->setInitialDirection(rotPsi * rotPhi * rotTheta);
         } else {
             line->setInitialDirection(Quaternion(1, 0, 0, 0));
@@ -247,9 +247,9 @@ void Line::parse(Statement &stat) {
         const double phi = Attributes::getReal(itsAttr[PHI]);
         const double psi = Attributes::getReal(itsAttr[PSI]);
 
-        Quaternion rotTheta(cos(0.5 * theta), 0, -sin(0.5 * theta), 0);
-        Quaternion rotPhi(cos(0.5 * phi), -sin(0.5 * phi), 0, 0);
-        Quaternion rotPsi(cos(0.5 * psi), 0, 0, -sin(0.5 * psi));
+        Quaternion rotTheta(std::cos(0.5 * theta), 0, -std::sin(0.5 * theta), 0);
+        Quaternion rotPhi(std::cos(0.5 * phi), -std::sin(0.5 * phi), 0, 0);
+        Quaternion rotPsi(std::cos(0.5 * psi), 0, 0, -std::sin(0.5 * psi));
 
         line->setOrigin3D(origin);
         line->setInitialDirection(rotPsi * rotPhi * rotTheta);

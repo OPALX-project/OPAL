@@ -110,12 +110,14 @@
 // vtk is a common unsed file format and used for E and B-field output.
 //
 #include "Ippl.h"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <float.h>
-#include <string>
+
+#include <cfloat>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include <fstream>
+#include <ios>
+#include <string>
 
 // program control constants
 #define MAXIMUM_ITERATION 100
@@ -153,13 +155,13 @@
 void dumpVTK(Field<Vektor<double,3>,3> &EFD, Field<Vektor<double,3>,3> &HFD, NDIndex<3> lDom, int nx, int ny, int nz, int iteration,
              double dx, double dy, double dz) {
 
-    ofstream vtkout;
+    std::ofstream vtkout;
     vtkout.precision(10);
-    vtkout.setf(ios::scientific, ios::floatfield);
+    vtkout.setf(std::ios::scientific, std::ios::floatfield);
 
     std::stringstream fname;
     fname << "data/c_";
-    fname << setw(4) << setfill('0') << iteration;
+    fname << std::setw(4) << std::setfill('0') << iteration;
     fname << ".vtk";
 
     //SERIAL at the moment
@@ -167,36 +169,36 @@ void dumpVTK(Field<Vektor<double,3>,3> &EFD, Field<Vektor<double,3>,3> &HFD, NDI
 
     // open a new data file for this iteration
     // and start with header
-    vtkout.open(fname.str().c_str(), ios::out);
-    vtkout << "# vtk DataFile Version 2.0" << endl;
-    vtkout << "toyfdtd" << endl;
-    vtkout << "ASCII" << endl;
-    vtkout << "DATASET STRUCTURED_POINTS" << endl;
-    vtkout << "DIMENSIONS " << nx << " " << ny << " " << nz << endl;
-    vtkout << "ORIGIN 0 0 0" << endl;
-    vtkout << "SPACING " << dx << " " << dy << " " << dz << endl;
-    vtkout << "POINT_DATA " << nx*ny*nz << endl;
+    vtkout.open(fname.str().c_str(), std::ios::out);
+    vtkout << "# vtk DataFile Version 2.0" << std::endl;
+    vtkout << "toyfdtd" << std::endl;
+    vtkout << "ASCII" << std::endl;
+    vtkout << "DATASET STRUCTURED_POINTS" << std::endl;
+    vtkout << "DIMENSIONS " << nx << " " << ny << " " << nz << std::endl;
+    vtkout << "ORIGIN 0 0 0" << std::endl;
+    vtkout << "SPACING " << dx << " " << dy << " " << dz << std::endl;
+    vtkout << "POINT_DATA " << nx*ny*nz << std::endl;
 
-    vtkout << "VECTORS E-Field float" << endl;
+    vtkout << "VECTORS E-Field float" << std::endl;
     for(int z=lDom[2].first(); z<lDom[2].last(); z++) {
         for(int y=lDom[1].first(); y<lDom[1].last(); y++) {
             for(int x=lDom[0].first(); x<lDom[0].last(); x++) {
                 Vektor<double, 3> tmp = EFD[x][y][z].get();
                 vtkout << tmp(0) << "\t"
                        << tmp(1) << "\t"
-                       << tmp(2) << endl;
+                       << tmp(2) << std::endl;
             }
         }
     }
 
-    vtkout << "VECTORS B-Field float" << endl;
+    vtkout << "VECTORS B-Field float" << std::endl;
     for(int z=lDom[2].first(); z<lDom[2].last(); z++) {
         for(int y=lDom[1].first(); y<lDom[1].last(); y++) {
             for(int x=lDom[0].first(); x<lDom[0].last(); x++) {
                 Vektor<double, 3> tmp = HFD[x][y][z].get();
                 vtkout << tmp(0) << "\t"
                        << tmp(1) << "\t"
-                       << tmp(2) << endl;
+                       << tmp(2) << std::endl;
             }
         }
     }

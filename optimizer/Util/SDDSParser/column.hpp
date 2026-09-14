@@ -78,7 +78,12 @@ namespace SDDS {
             if (!type_m) {
                 return false;
             }
-
+            // GCC false positive: variant construction inside vector growth is
+            // misdiagnosed as reading an uninitialized local.
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
             parser::ValueParser parser(input, pos);
             switch(*this->type_m) {
                 case ast::dataType::FLOAT: {
@@ -136,6 +141,9 @@ namespace SDDS {
                     break;
                 }
             }
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
             return false;
         }
     };

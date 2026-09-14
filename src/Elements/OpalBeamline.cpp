@@ -238,26 +238,26 @@ void OpalBeamline::compute3DLattice() {
             double thisLength = bendElement->getChordLength();
             double bendAngle = bendElement->getBendAngle();
             double entranceAngle = bendElement->getEntranceAngle();
-            double arcLength = (thisLength * std::abs(bendAngle) / (2 * sin(std::abs(bendAngle) / 2)));
+            double arcLength = (thisLength * std::abs(bendAngle) / (2 * std::sin(std::abs(bendAngle) / 2)));
 
             double rotationAngleAboutZ = bendElement->getRotationAboutZ();
-            Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
-                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
+            Quaternion_t rotationAboutZ(std::cos(0.5 * rotationAngleAboutZ),
+                                        std::sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
 
             Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t({0, -1, 0}));
             effectiveRotationAxis /= euclidean_norm(effectiveRotationAxis);
 
-            Quaternion_t rotationAboutAxis(cos(0.5 * bendAngle),
-                                           sin(0.5 * bendAngle) * effectiveRotationAxis);
-            Quaternion_t halfRotationAboutAxis(cos(0.25 * bendAngle),
-                                               sin(0.25 * bendAngle) * effectiveRotationAxis);
-            Quaternion_t entryFaceRotation(cos(0.5 * entranceAngle),
-                                           sin(0.5 * entranceAngle) * effectiveRotationAxis);
+            Quaternion_t rotationAboutAxis(std::cos(0.5 * bendAngle),
+                                           std::sin(0.5 * bendAngle) * effectiveRotationAxis);
+            Quaternion_t halfRotationAboutAxis(std::cos(0.25 * bendAngle),
+                                               std::sin(0.25 * bendAngle) * effectiveRotationAxis);
+            Quaternion_t entryFaceRotation(std::cos(0.5 * entranceAngle),
+                                           std::sin(0.5 * entranceAngle) * effectiveRotationAxis);
 
             if (!Options::idealized) {
                 std::vector<Vector_t> truePath = bendElement->getDesignPath();
-                Quaternion_t directionExitHardEdge(cos(0.5 * (0.5 * bendAngle - entranceAngle)),
-                                                   sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
+                Quaternion_t directionExitHardEdge(std::cos(0.5 * (0.5 * bendAngle - entranceAngle)),
+                                                   std::sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
                 Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t({0, 0, 1}));
                 double distanceEntryHETruePath = euclidean_norm(truePath.front());
                 double distanceExitHETruePath = euclidean_norm(rotationAboutZ.rotate(truePath.back()) - exitHardEdge);
@@ -310,24 +310,24 @@ void OpalBeamline::compute3DLattice() {
             double bendAngle = bendElement->getBendAngle();
 
             double rotationAngleAboutZ = bendElement->getRotationAboutZ();
-            Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
-                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
+            Quaternion_t rotationAboutZ(std::cos(0.5 * rotationAngleAboutZ),
+                                        std::sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
 
             Vector_t effectiveRotationAxis = rotationAboutZ.rotate(Vector_t({0, -1, 0}));
             effectiveRotationAxis /= euclidean_norm(effectiveRotationAxis);
 
-            Quaternion_t rotationAboutAxis(cos(0.5 * bendAngle),
-                                           sin(0.5 * bendAngle) * effectiveRotationAxis);
-            Quaternion halfRotationAboutAxis(cos(0.25 * bendAngle),
-                                             sin(0.25 * bendAngle) * effectiveRotationAxis);
+            Quaternion_t rotationAboutAxis(std::cos(0.5 * bendAngle),
+                                           std::sin(0.5 * bendAngle) * effectiveRotationAxis);
+            Quaternion halfRotationAboutAxis(std::cos(0.25 * bendAngle),
+                                             std::sin(0.25 * bendAngle) * effectiveRotationAxis);
 
             double arcLength = (thisLength * std::abs(bendAngle) /
-                                (2 * sin(bendAngle / 2)));
+                                (2 * std::sin(bendAngle / 2)));
             if (!Options::idealized) {
                 std::vector<Vector_t> truePath = bendElement->getDesignPath();
                 double entranceAngle = bendElement->getEntranceAngle();
-                Quaternion_t directionExitHardEdge(cos(0.5 * (0.5 * bendAngle - entranceAngle)),
-                                                   sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
+                Quaternion_t directionExitHardEdge(std::cos(0.5 * (0.5 * bendAngle - entranceAngle)),
+                                                   std::sin(0.5 * (0.5 * bendAngle - entranceAngle)) * effectiveRotationAxis);
                 Vector_t exitHardEdge = thisLength * directionExitHardEdge.rotate(Vector_t({0, 0, 1}));
                 double distanceEntryHETruePath = euclidean_norm(truePath.front());
                 double distanceExitHETruePath = euclidean_norm(rotationAboutZ.rotate(truePath.back()) - exitHardEdge);
@@ -344,8 +344,8 @@ void OpalBeamline::compute3DLattice() {
             endPriorPathLength = beginThisPathLength + arcLength;
         } else {
             double rotationAngleAboutZ = (*it).getElement()->getRotationAboutZ();
-            Quaternion_t rotationAboutZ(cos(0.5 * rotationAngleAboutZ),
-                                        sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
+            Quaternion_t rotationAboutZ(std::cos(0.5 * rotationAngleAboutZ),
+                                        std::sin(-0.5 * rotationAngleAboutZ) * Vector_t({0, 0, 1}));
 
             CoordinateSystemTrafo fromLastToThis(beginThis3D, rotationAboutZ);
 

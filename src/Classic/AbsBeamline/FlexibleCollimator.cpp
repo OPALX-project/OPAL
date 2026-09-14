@@ -22,11 +22,13 @@
 #include "Algorithms/PartBunchBase.h"
 #include "Fields/Fieldmap.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Solvers/ParticleMatterInteractionHandler.h"
 #include "Structure/LossDataSink.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
+#include <cstddef>
 #include <memory>
 
 extern Inform *gmsg;
@@ -99,7 +101,7 @@ bool FlexibleCollimator::isStopped(const Vector_t& R) {
     return false;
 }
 
-bool FlexibleCollimator::apply(const size_t& i, const double& t,
+bool FlexibleCollimator::apply(const std::size_t& i, const double& t,
                                Vector_t& /*E*/, Vector_t& /*B*/) {
     const Vector_t& R = RefPartBunch_m->R[i];
     bool pdead = isStopped(R);
@@ -183,7 +185,6 @@ void FlexibleCollimator::print() {
         }
         return;
     }
-
     *gmsg << level3;
 }
 
@@ -242,10 +243,10 @@ void FlexibleCollimator::setDescription(const std::string& desc) {
     double width = urc[0] - llc[0];
     double height = urc[1] - llc[1];
 
-    llc[0] -= 1e-3 * width;
-    urc[0] += 1e-3 * width;
-    llc[1] -= 1e-3 * height;
-    urc[1] += 1e-3 * height;
+    llc[0] -= Units::mm2m * width;
+    urc[0] += Units::mm2m * width;
+    llc[1] -= Units::mm2m * height;
+    urc[1] += Units::mm2m * height;
 
     bb_m = mslang::BoundingBox2D(llc, urc);
 

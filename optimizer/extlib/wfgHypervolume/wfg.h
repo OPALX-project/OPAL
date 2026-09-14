@@ -1,9 +1,9 @@
 #ifndef _WFG_H_
 #define _WFG_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <string>
 
 typedef double OBJECTIVE;
 

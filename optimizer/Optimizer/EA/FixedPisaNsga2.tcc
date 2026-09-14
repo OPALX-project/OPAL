@@ -436,7 +436,7 @@ void FixedPisaNsga2<CO, MO>::exchangeSolutionStates() {
              EXCHANGE_SOL_STATE_TAG, comms_.opt);
 
     char *buffer = new char[buf_size];
-    memcpy(buffer, os.str().c_str(), buf_size);
+    std::memcpy(buffer, os.str().c_str(), buf_size);
     MPI_Send(buffer, buf_size, MPI_CHAR, pilot_rank,
              MPI_EXCHANGE_SOL_STATE_DATA_TAG, comms_.opt);
     delete[] buffer;

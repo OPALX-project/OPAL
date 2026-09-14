@@ -101,7 +101,7 @@ bool MultipoleT::insideAperture(const Vector_t& R) const {
 }
 
 bool MultipoleT::insideBoundingBox(const Vector_t& R) const {
-    return boundingBoxLength_m == 0.0 || fabs(R[2]) <= boundingBoxLength_m / 2.0;
+    return boundingBoxLength_m == 0.0 || std::abs(R[2]) <= boundingBoxLength_m / 2.0;
 }
 
 Vector_t MultipoleT::toMagnetCoords(const Vector_t& R) {

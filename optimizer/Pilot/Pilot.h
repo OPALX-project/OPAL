@@ -536,7 +536,7 @@ protected:
                      MPI_EXCHANGE_SOL_STATE_RES_SIZE_TAG, opt_comm_);
 
             buffer = new char[buffer_size];
-            memcpy(buffer, states.str().c_str(), buffer_size);
+            std::memcpy(buffer, states.str().c_str(), buffer_size);
             MPI_Send(buffer, buffer_size, MPI_CHAR, opt_master_rank,
                      MPI_EXCHANGE_SOL_STATE_RES_TAG, opt_comm_);
 

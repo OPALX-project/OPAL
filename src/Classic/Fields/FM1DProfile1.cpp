@@ -310,5 +310,5 @@ double _FM1DProfile1::computeFringe(const std::vector<double> &coefs, double z) 
         expSum += std::pow(z, i) * coefs.at(i);
     }
 
-    return 1.0 / (1.0 + exp(expSum));
+    return 1.0 / (1.0 + std::exp(expSum));
 }

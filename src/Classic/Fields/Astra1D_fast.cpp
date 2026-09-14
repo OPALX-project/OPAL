@@ -1,9 +1,10 @@
-
 #include "Fields/Astra1D_fast.h"
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
+
 #include "gsl/gsl_fft_real.h"
 
+#include <cmath>
 #include <fstream>
 #include <ios>
 
@@ -161,8 +162,8 @@ void _Astra1D_fast::computeFieldDerivatives(std::vector<double> & fourierCompone
             int coefIndex = 2 * l - 1;
             base = Physics::two_pi / length_m * l;
             interiorDerivative = base;
-            coskzl = cos(kz * l);
-            sinkzl = sin(kz * l);
+            coskzl = std::cos(kz * l);
+            sinkzl = std::sin(kz * l);
 
             higherDerivatives[0][i] += interiorDerivative * (-fourierComponents[coefIndex] * sinkzl
                                                              - fourierComponents[coefIndex + 1] * coskzl);

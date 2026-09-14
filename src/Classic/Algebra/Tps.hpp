@@ -114,6 +114,14 @@ template <class T> class TpsRep {
     TpsRep<T> &operator=(const TpsRep<T> &);
 
     T *dat;
+
+    TpsRep(size_t extra)
+        : ref(0),
+          maxOrd(0),
+          trcOrd(0),
+          len(0),
+          help(nullptr),
+          dat(new T[extra]) {}
 };
 
 
@@ -124,19 +132,15 @@ T *TpsRep<T>::data() {
 
 
 template <class T> inline
-void *TpsRep<T>::operator new(size_t s, size_t extra) {
-    // with gcc >= 12 this doesn't work if T is std::complex
-    //return new char[s + extra * sizeof(double)];
-    TpsRep<T> *p = reinterpret_cast<TpsRep<T>*>(new char[s]);
-    p->dat = new T[extra];
-    return p;
+void *TpsRep<T>::operator new(size_t s, size_t) {
+    return ::operator new(s);
 }
 
 
 template <class T> inline
 void TpsRep<T>::operator delete(void *p) {
     delete [] reinterpret_cast<TpsRep<T>*>(p)->dat;
-    delete [] reinterpret_cast<char *>(p);
+    ::operator delete(p);
 }
 
 
@@ -151,7 +155,7 @@ TpsRep<T> *TpsRep<T>::create(int maxOrder, int trcOrder, int variables) {
     }
 
     // Allocate representation and fill in data.
-    TpsRep<T> *p = new(s) TpsRep<T>;
+    TpsRep<T> *p = new(s) TpsRep<T>(s);
     p->ref = 1;
     p->maxOrd = maxOrder;
     p->trcOrd = trcOrder;
@@ -167,7 +171,7 @@ TpsRep<T> *TpsRep<T>::create(int maxOrder, int trcOrder, int variables) {
 template <class T> inline
 TpsRep<T> *TpsRep<T>::zero() {
     // Allocate representation and fill in data.
-    TpsRep<T> *p = new(1) TpsRep<T>;
+    TpsRep<T> *p = new(1) TpsRep<T>(1);
     p->ref = 1;
     p->maxOrd = 0;
     p->trcOrd = Tps<T>::EXACT;
@@ -183,7 +187,7 @@ TpsRep<T> *TpsRep<T>::zero() {
 template <class T> inline
 TpsRep<T> *TpsRep<T>::clone() {
     // Allocate copy and copy monomial coefficients.
-    TpsRep<T> *p = new(len) TpsRep<T>;
+    TpsRep<T> *p = new(len) TpsRep<T>(len);
     for(int i = 0; i < len; ++i) {
         new(&p->data()[i]) T(data()[i]);
     }
@@ -217,8 +221,7 @@ void TpsRep<T>::release(TpsRep<T>* p) {
 
     int newref = --(p->ref);
     if (newref <= 0) {
-        auto* raw = reinterpret_cast<char*>(p);
-        delete [] raw;
+        TpsRep<T>::operator delete(p);
     }
 }
 

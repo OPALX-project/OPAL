@@ -73,7 +73,7 @@ void Random::gauss(double &gr1, double &gr2) {
     } while(zzr > 1.0);
 
     // transform accepted point to Gaussian distribution
-    zzr = sqrt(-2.0 * log(zzr) / zzr);
+    zzr = std::sqrt(-2.0 * std::log(zzr) / zzr);
     gr1 = xi1 * zzr;
     gr2 = xi2 * zzr;
 }
