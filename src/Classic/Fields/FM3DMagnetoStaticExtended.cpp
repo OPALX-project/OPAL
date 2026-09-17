@@ -4,10 +4,10 @@
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/Util.h"
 
+#include <algorithm>
 #include <cmath>
 #include <fstream>
-#include <ios>
-#include <algorithm>
+#include <iomanip>
 
 extern Inform *gmsg;
 
@@ -689,8 +689,8 @@ double _FM3DMagnetoStaticExtended::getWeightedData(double *data, const IndexTrip
 bool _FM3DMagnetoStaticExtended::getFieldstrength(const Vector_t &R, Vector_t &/*E*/, Vector_t &B) const {
     if (isInside(R)) {
         Vector_t suppB = interpolateTrilinearly(R);
-        suppB(0) *= copysign(1, R(1));
-        suppB(2) *= copysign(1, R(1));
+        suppB(0) *= std::copysign(1, R(1));
+        suppB(2) *= std::copysign(1, R(1));
 
         B += suppB;
     }

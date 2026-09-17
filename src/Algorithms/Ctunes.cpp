@@ -6,9 +6,10 @@
 /* ASM, September 2001                                                       */
 /*****************************************************************************/
 #include <algorithm>
+#include <cstring>
+#include <iomanip>
 #include <memory>
 #include <vector>
-#include <cstring>
 
 #include "Utility/Inform.h"
 

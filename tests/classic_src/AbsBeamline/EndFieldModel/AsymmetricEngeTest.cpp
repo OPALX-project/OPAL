@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 
 #include "gtest/gtest.h"
 #include "Classic/AbsBeamline/EndFieldModel/AsymmetricEnge.h"
@@ -45,7 +45,7 @@ TEST(AsymmetricEngeTest, DerivativeTest) {
             double fminus = enge.function(s-ds, n-1);
             double test = enge.function(s, n);
             double ref = (fplus-fminus)/2/ds;
-            double delta = abs(ref*1e-3);
+            double delta = std::abs(ref*1e-3);
             EXPECT_NEAR(test, ref, delta) << s << " " << test << " " << ref;
         }
     }

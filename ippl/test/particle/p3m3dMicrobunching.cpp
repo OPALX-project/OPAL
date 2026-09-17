@@ -35,7 +35,7 @@
 #include "Particle/PairBuilder/HashPairBuilderPeriodicParallel.h"
 #include "Particle/PairBuilder/PairConditions.h"
 #include "Utility/PAssert.h"
-#include "math.h"
+#include <cmath>
 //#include "FixedAlgebra/FMatrix.h"
 
 #include <random>

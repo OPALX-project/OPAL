@@ -25,7 +25,10 @@
 #include "Utilities/DomainError.h"
 #include "Physics/Physics.h"
 
-#include <complex> // std::real
+#include <algorithm>
+#include <cmath>
+#include <complex>
+#include <iostream>
 #include <type_traits>
 
 // 25. March 2017,
@@ -286,7 +289,7 @@ FTps<T, N> log(const FTps<T, N> &x, int trunc) {
     T a0inv = T(1) / aZero;
     T ain = a0inv;
     Array1D<T> series(trcOrder + 1);
-    series[0] = log(aZero);
+    series[0] = std::log(aZero);
     series[1] = a0inv;
     for(int i = 2; i <= trcOrder; i++) {
         ain *= -a0inv;

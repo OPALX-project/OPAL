@@ -389,16 +389,16 @@ Vector_t Bend2D::calcEntranceFringeField(const Vector_t &R,
 
         //double nOverRho = fieldIndex_m / designRadius_m;
         //double expFactor = exp(-nOverRho * deltaX);
-        //double trigFactor = pow(nOverRho, 2.0) + engeFuncSecDerivNorm;
+        //double trigFactor = std::pow(nOverRho, 2.0) + engeFuncSecDerivNorm;
 
         //double bXEntrance = -nOverRho * expFactor * Rprime(1) * engeFunc;
         //double bYEntrance = (expFactor * engeFunc *
-        //                      (1.0  - 0.5 * trigFactor * pow(Rprime(1), 2.0)));
+        //                      (1.0  - 0.5 * trigFactor * std::pow(Rprime(1), 2.0)));
         //double bZEntrance = expFactor * Rprime(1) * engeFuncDeriv;
 
 
         // B(1) = (engeFunc *
-        //  (1.0 - 0.5 * engeFuncSecDerivNorm * pow(Rprime(1), 2.0)));
+        //  (1.0 - 0.5 * engeFuncSecDerivNorm * std::pow(Rprime(1), 2.0)));
 
         B(1) = (engeFunc - 0.5 * engeFuncSecDeriv * std::pow(Rprime(1), 2.0));
 
@@ -428,15 +428,15 @@ Vector_t Bend2D::calcExitFringeField(const Vector_t &R,
 
         //double nOverRho = fieldIndex_m / designRadius_m;
         //double expFactor = exp(-nOverRho * deltaX);
-        //double trigFactor = pow(nOverRho, 2.0) + engeFuncSecDerivNorm;
+        //double trigFactor = std::pow(nOverRho, 2.0) + engeFuncSecDerivNorm;
 
         //double bXExit = -nOverRho * expFactor * Rprime(1) * engeFunc;
         //double bYExit = (expFactor * engeFunc *
-        //                 (1.0 - 0.5 * trigFactor * pow(Rprime(1), 2.0)));
+        //                 (1.0 - 0.5 * trigFactor * std::pow(Rprime(1), 2.0)));
         //double bZExit = expFactor * Rprime(1) * engeFuncDeriv;
 
         //B(1) = (engeFunc *
-        //        (1.0 - 0.5 * engeFuncSecDerivNorm * pow(Rprime(1), 2.0)));
+        //        (1.0 - 0.5 * engeFuncSecDerivNorm * std::pow(Rprime(1), 2.0)));
         B(1) = (engeFunc - 0.5 * engeFuncSecDeriv * std::pow(Rprime(1), 2.0));
 
         B(2) = engeFuncDeriv * Rprime(1);

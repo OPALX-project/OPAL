@@ -9,9 +9,9 @@
 #include "gsl/gsl_spline.h"
 #include "gsl/gsl_fft_real.h"
 
+#include <cmath>
 #include <fstream>
 #include <ios>
-
 
 _Astra1DDynamic::_Astra1DDynamic(const std::string& filename):
     _Fieldmap(filename),
@@ -200,8 +200,8 @@ bool _Astra1DDynamic::getFieldstrength(const Vector_t &R, Vector_t &E, Vector_t 
     for (int l = 1; l < accuracy_m ; ++ l, n += 2) {
         double somefactor_base = Physics::two_pi / length_m * l;       // = \frac{d(kz*l)}{dz}
         double somefactor = 1.0;
-        double coskzl = cos(kz * l);
-        double sinkzl = sin(kz * l);
+        double coskzl = std::cos(kz * l);
+        double sinkzl = std::sin(kz * l);
         ez    += (FourCoefs_m[n] * coskzl - FourCoefs_m[n + 1] * sinkzl);
         somefactor *= somefactor_base;
         ezp   += somefactor * (-FourCoefs_m[n] * sinkzl - FourCoefs_m[n + 1] * coskzl);
@@ -232,7 +232,7 @@ bool _Astra1DDynamic::getFieldDerivative(const Vector_t &R, Vector_t &E, Vector_
 
     int n = 1;
     for (int l = 1; l < accuracy_m; ++ l, n += 2)
-        ezp += Physics::two_pi / length_m * l * (-FourCoefs_m[n] * sin(kz * l) - FourCoefs_m[n + 1] * cos(kz * l));
+        ezp += Physics::two_pi / length_m * l * (-FourCoefs_m[n] * std::sin(kz * l) - FourCoefs_m[n + 1] * std::cos(kz * l));
 
     E(2) +=  ezp;
 

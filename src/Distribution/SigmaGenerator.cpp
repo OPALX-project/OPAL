@@ -28,16 +28,17 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "SigmaGenerator.h"
+#include "Distribution/SigmaGenerator.h"
 
 #include "AbstractObjects/OpalData.h"
 #include "AbsBeamline/Cyclotron.h"
+#include "Distribution/matrix_vector_operation.h"
+#include "Distribution/ClosedOrbitFinder.h"
+#include "Distribution/MapGenerator.h"
+#include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Utilities/OpalException.h"
 #include "Utilities/Util.h"
-
-#include "matrix_vector_operation.h"
-#include "ClosedOrbitFinder.h"
-#include "MapGenerator.h"
 
 #include <cmath>
 #include <filesystem>
@@ -46,6 +47,7 @@
 #include <numeric>
 #include <sstream>
 #include <utility>
+#include <vector>
 
 #include <boost/numeric/odeint/stepper/runge_kutta4.hpp>
 
@@ -672,12 +674,12 @@ SigmaGenerator::updateInitialSigma(const matrix_t& M,
 
     // x-direction
     //double alphax = 0.0;
-    double betax  = std::sqrt(std::fabs(eigen(0) / eigen(1)));
+    double betax  = std::sqrt(std::abs(eigen(0) / eigen(1)));
     double gammax = 1.0 / betax;
 
     // l-direction
     //double alphal = 0.0;
-    double betal  = std::sqrt(std::fabs(eigen(2) / eigen(3)));
+    double betal  = std::sqrt(std::abs(eigen(2) / eigen(3)));
     double gammal = 1.0 / betal;
 
     /*
@@ -704,7 +706,7 @@ SigmaGenerator::updateInitialSigma(const matrix_t& M,
 
     double sign = (std::signbit(M(2,3))) ? double(-1) : double(1);
 
-    double invsinz = sign / std::sqrt(std::fabs( 1.0 - cosz * cosz));
+    double invsinz = sign / std::sqrt(std::abs( 1.0 - cosz * cosz));
 
     double alphaz = 0.5 * (M(2,2) - M(3,3)) * invsinz;
     double betaz  =   M(2,3) * invsinz;

@@ -52,9 +52,9 @@ AmrMultiGridLevel<MatrixType,
 {
     for (int j = 0; j < AMREX_SPACEDIM; ++j) {
         G_p[j] = Teuchos::null;
-        
+
         nr_m[j] = _geom.Domain().length(j);
-        
+
 #if AMR_NO_SCALE
         // mesh spacing in particle rest frame
         dx_m[j] = geom.CellSize(j);
@@ -64,15 +64,14 @@ AmrMultiGridLevel<MatrixType,
         dx_m[j] = meshScaling[j] * geom.CellSize(j);
         invdx_m[j] = meshScaling[j] * geom.InvCellSize(j);
 #endif
-        
+
         bc_mp[j] = bc[j];
     }
-    
+
     this->buildLevelMask();
-    
+
     this->buildMap(comm);
-    
-    
+
     residual_p = Teuchos::rcp( new vector_t(map_p, false) );
     error_p = Teuchos::rcp( new vector_t(map_p, false) );
 }
@@ -82,19 +81,19 @@ template <class MatrixType, class VectorType>
 AmrMultiGridLevel<MatrixType, VectorType>::~AmrMultiGridLevel()
 {
     map_p = Teuchos::null;
-    
+
     Anf_p = Teuchos::null;
     R_p = Teuchos::null;
     I_p = Teuchos::null;
     Bcrse_p = Teuchos::null;
     Bfine_p = Teuchos::null;
     Awf_p = Teuchos::null;
-    
+
     for (int j = 0; j < AMREX_SPACEDIM; ++j)
         G_p[j] = Teuchos::null;
-    
+
     UnCovered_p = Teuchos::null;
-    
+
     rho_p = Teuchos::null;
     phi_p = Teuchos::null;
     residual_p = Teuchos::null;
@@ -217,16 +216,13 @@ bool AmrMultiGridLevel<MatrixType, VectorType>::isValid(const AmrIntVect_t& iv) 
 template <class MatrixType, class VectorType>
 void AmrMultiGridLevel<MatrixType, VectorType>::buildMap(const Teuchos::RCP<comm_t>& comm)
 {
-    
-    go_t localNumElements = 0;
-    
     Teuchos::Array<go_t> globalindices;
-    
+
     for (amrex::MFIter mfi(grids, dmap, true); mfi.isValid(); ++mfi) {
         const amrex::Box&    tbx  = mfi.tilebox();
         const int* lo = tbx.loVect();
         const int* hi = tbx.hiVect();
-        
+
         for (int i = lo[0]; i <= hi[0]; ++i) {
             for (int j = lo[1]; j <= hi[1]; ++j) {
 #if AMREX_SPACEDIM == 3
@@ -235,31 +231,30 @@ void AmrMultiGridLevel<MatrixType, VectorType>::buildMap(const Teuchos::RCP<comm
                     AmrIntVect_t iv(D_DECL(i, j, k));
 
                     go_t globalidx = serialize(iv);
-                    
+
                     globalindices.push_back(globalidx);
-                    
-                    ++localNumElements;
+
 #if AMREX_SPACEDIM == 3
                 }
 #endif
             }
         }
     }
-    
+
     /*
      * create map that specifies which processor gets which data
      */
-    
+
     // get smallest global index of this level
     amrex::Box bx = grids.minimalBox();
     const int* lo = bx.loVect();
     AmrIntVect_t lowcorner(D_DECL(lo[0], lo[1], lo[2]));
-    
+
     // where to start indexing
     go_t baseIndex = serialize(lowcorner);
-    
+
     // numGlobalElements == N
     go_t N = grids.numPts();
-    
+
     map_p = Teuchos::rcp( new dmap_t(N, globalindices, baseIndex, comm) );
 }

@@ -663,7 +663,7 @@ void Communicate::add_to_send_cache(void *msgbuf, MsgNum_t mnum, int msgsize,
 
     // make a copy of the message
     char *copybuf = new char[msgsize];
-    memcpy(copybuf, msgbuf, msgsize);
+    std::memcpy(copybuf, msgbuf, msgsize);
 
     // add the message to the cache list
     CommSendInfo csi(msgsize, copybuf, node);

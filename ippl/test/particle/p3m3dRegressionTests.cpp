@@ -34,7 +34,7 @@
 #include "Particle/PairBuilder/HashPairBuilderPeriodic.h"
 #include "Particle/PairBuilder/HashPairBuilderPeriodicParallel.h"
 #include "Particle/PairBuilder/PairConditions.h"
-#include "math.h"
+#include <cmath>
 
 #include <random>
 

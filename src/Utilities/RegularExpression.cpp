@@ -82,7 +82,7 @@ bool RegularExpression::OK() const {
 
 
 void RegularExpression::init() {
-    expr = (Expression *) malloc(sizeof(regex_t));
+    expr = (Expression *) std::malloc(sizeof(regex_t));
     int flags = REG_NOSUB;
     if(caseIgnore) flags |= REG_ICASE;
     state = regcomp(expr, patt.c_str(), flags);

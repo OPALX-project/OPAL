@@ -29,6 +29,7 @@
 #include "Utility/Inform.h"
 #include "Utility/Timer.h"
 
+#include <cstring>
 
 //////////////////////////////////////////////////////////////////////////
 // constructor: Initialize all the ippl-specific statistics objects,
@@ -113,7 +114,7 @@ void IpplStats::print(Inform &o) {
   o << "Runtime statistics summary:" << endl;
   for (unsigned int i=0; i < StatList.size(); ++i) {
     o << StatList[i]->Name << " ";
-    int numperiods = 48 - strlen(StatList[i]->Name.c_str());
+    int numperiods = 48 - std::strlen(StatList[i]->Name.c_str());
     if (numperiods < 2)
       numperiods = 2;
     for (int j=0; j < numperiods; ++j)

@@ -213,7 +213,7 @@ void GreenWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
                 double dE = OutEnergy[idx];
 
                 // ACHTUNG spacing auch in transversal richtung
-                double dist = sqrt(bunch->R[i](0) * bunch->R[i](0) + bunch->R[i](1) * bunch->R[i](1));
+                double dist = std::sqrt(bunch->R[i](0) * bunch->R[i](0) + bunch->R[i](1) * bunch->R[i](1));
                 PAssert(dist > 0);
                 bunch->Ef[i](0) += dE * bunch->R[i](0) / dist;
                 bunch->Ef[i](1) += dE * bunch->R[i](1) / dist;

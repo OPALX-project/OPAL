@@ -37,11 +37,11 @@ namespace mslang {
         double phi = 0;
         for (unsigned int i = 0; i < N; ++ i, phi += dp) {
             Vector_t pt(0.0);
-            pt[0] = std::copysign(sqrt(std::pow(height_m * width_m * 0.25, 2) /
+            pt[0] = std::copysign(std::sqrt(std::pow(height_m * width_m * 0.25, 2) /
                                        (std::pow(height_m * 0.5, 2) +
-                                        std::pow(width_m * 0.5 * tan(phi), 2))),
-                                  cos(phi));
-            pt[1] = pt[0] * tan(phi);
+                                        std::pow(width_m * 0.5 * std::tan(phi), 2))),
+                                  std::cos(phi));
+            pt[1] = pt[0] * std::tan(phi);
             pt = trafo_m.transformFrom(pt);
 
             out << std::setw(colwidth) << pt[0]
@@ -86,16 +86,16 @@ namespace mslang {
         const double &M21 = e_xp[1];
         const double &M22 = e_yp[1];
 
-        double t = atan2(height_m * M12, width_m * M11);
-        double halfwidth = 0.5 * (M11 * width_m * cos(t) +
-                                  M12 * height_m * sin(t));
+        double t = std::atan2(height_m * M12, width_m * M11);
+        double halfwidth = 0.5 * (M11 * width_m * std::cos(t) +
+                                  M12 * height_m * std::sin(t));
         llc[0] = center[0] - std::abs(halfwidth);
         urc[0] = center[0] + std::abs(halfwidth);
 
-        t = atan2(height_m * M22, width_m * M21);
+        t = std::atan2(height_m * M22, width_m * M21);
 
-        double halfheight = 0.5 * (M21 * width_m * cos(t) +
-                                   M22 * height_m * sin(t));
+        double halfheight = 0.5 * (M21 * width_m * std::cos(t) +
+                                   M22 * height_m * std::sin(t));
 
         llc[1] = center[1] - std::abs(halfheight);
         urc[1] = center[1] + std::abs(halfheight);

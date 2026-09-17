@@ -884,7 +884,7 @@ MeshData MeshGenerator::getCylinder(double length,
     MeshData mesh;
     mesh.vertices_m.push_back(Vector_t(0.0));
     for (unsigned int i = 0; i < numSegments; ++ i, angle += dAngle) {
-        Vector_t node({major * cos(angle), minor * sin(angle), 0});
+        Vector_t node({major * std::cos(angle), minor * std::sin(angle), 0});
         mesh.vertices_m.push_back(node);
 
         unsigned int next = (i + 1) % numSegments;
@@ -900,7 +900,7 @@ MeshData MeshGenerator::getCylinder(double length,
 
     mesh.vertices_m.push_back(Vector_t({0.0, 0.0, length}));
     for (unsigned int i = 0; i < numSegments; ++ i, angle += dAngle) {
-        Vector_t node({formFactor * major * cos(angle), formFactor * minor * sin(angle), length});
+        Vector_t node({formFactor * major * std::cos(angle), formFactor * minor * std::sin(angle), length});
         mesh.vertices_m.push_back(node);
 
         unsigned int next = (i + 1) % numSegments;

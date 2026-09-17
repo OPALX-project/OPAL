@@ -29,16 +29,14 @@
 // - heuristics
 
 // hyper_opt:  0 = basic, 1 = sorting, 2 = slicing to 2D, 3 = slicing to 3D
-#include <stdio.h>
-#include <stdbool.h>
-#include <math.h>
+#include <cmath>
+#include <cstdio>
+
 #include <sys/time.h>
 #include <sys/resource.h>
 
 #include "wfg.h"
 #include "avl.h"
-
-#include <string>
 
 #include "hypervolume.h"
 
@@ -78,8 +76,8 @@ namespace Hypervolume {
   int greater(const void *v1, const void *v2)
   // this sorts points improving in the last objective
   {
-    POINT p = *(POINT*)v1;
-    POINT q = *(POINT*)v2;
+    POINT p = *static_cast<const POINT*>(v1);
+    POINT q = *static_cast<const POINT*>(v2);
 #if hyper_opt == 1
     for (int i = n - fr - 1; i >= 0; i--) {
 #else
@@ -162,10 +160,10 @@ namespace Hypervolume {
   // returns the hypervolume of ps[0 ..] in 2D
   // assumes that ps is sorted improving
   {
-    double volume = fabs((ps.points[0].objectives[0] - ref.objectives[0]) *
+    double volume = std::abs((ps.points[0].objectives[0] - ref.objectives[0]) *
                          (ps.points[0].objectives[1] - ref.objectives[1]));
     for (int i = 1; i < ps.nPoints; i++)
-      volume += fabs((ps.points[i].objectives[0] - ref.objectives[0]) *
+      volume += std::abs((ps.points[i].objectives[0] - ref.objectives[0]) *
                      (ps.points[i].objectives[1] - ps.points[i - 1].objectives[1]));
     return volume;
   }
@@ -284,7 +282,7 @@ namespace Hypervolume {
   {
     double volume = 1;
     for (int i = 0; i < n; i++)
-      volume *= fabs(p.objectives[i] - ref.objectives[i]);
+      volume *= std::abs(p.objectives[i] - ref.objectives[i]);
     return volume;
   }
 

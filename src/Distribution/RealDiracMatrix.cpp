@@ -116,7 +116,7 @@ void RealDiracMatrix::diagonalize(matrix_t& Ms, sparse_matrix_t& R, sparse_matri
     // Transformation distinction made according to function "rdm_Decouple_F"
     // in rdm.c of Dr. Christian Baumgarten
 
-    if (std::fabs(mr) < std::fabs(b(1))) {
+    if (std::abs(mr) < std::abs(b(1))) {
         transform(Ms, 2, 0.5 * std::atanh(mr / b(1)), R, invR);
     } else {
         transform(Ms, 2, 0.5 * std::atanh(b(1) / mr), R, invR);

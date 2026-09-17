@@ -10,9 +10,8 @@
 #include "Ippl.h"
 #include "Clock.h" // Borrowed from IPPL 2.
 
+#include <cstdio>
 #include <iostream>
-
-#include <stdio.h>
 
 // Forward declarations:
 template<class T, class M, class C>

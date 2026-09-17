@@ -153,9 +153,10 @@ namespace client { namespace parser
                 return false;
             }
 
-            ast::operation operation;
-            operation.operator_ = *op;
-            operation.operand_ = to_operand(std::move(rhsExpr));
+            ast::operation operation{
+                *op,
+                to_operand(std::move(rhsExpr))
+            };
             out.rest.push_back(std::move(operation));
         }
 

@@ -34,7 +34,7 @@ public:
         this->buffer_req = new MPI_Request();
         this->buf_size   = os.str().length();
         buffer           = new char[buf_size];
-        memcpy(buffer, os.str().c_str(), buf_size);
+        std::memcpy(buffer, os.str().c_str(), buf_size);
     }
 
     ~AsyncSendBuffer() {

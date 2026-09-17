@@ -26,14 +26,16 @@
 #include "OpalParticle.h"
 #include "PartBunchBase.h"
 
+#include <cmath>
+
 #include <gsl/gsl_histogram.h>
 
 extern Inform* gmsg;
 
-const double DistributionMoments::percentileOneSigmaNormalDist_m = std::erf(1 / sqrt(2));
-const double DistributionMoments::percentileTwoSigmasNormalDist_m = std::erf(2 / sqrt(2));
-const double DistributionMoments::percentileThreeSigmasNormalDist_m = std::erf(3 / sqrt(2));
-const double DistributionMoments::percentileFourSigmasNormalDist_m = std::erf(4 / sqrt(2));
+const double DistributionMoments::percentileOneSigmaNormalDist_m = std::erf(1 / std::sqrt(2));
+const double DistributionMoments::percentileTwoSigmasNormalDist_m = std::erf(2 / std::sqrt(2));
+const double DistributionMoments::percentileThreeSigmasNormalDist_m = std::erf(3 / std::sqrt(2));
+const double DistributionMoments::percentileFourSigmasNormalDist_m = std::erf(4 / std::sqrt(2));
 
 DistributionMoments::DistributionMoments()
 {

@@ -357,13 +357,13 @@ void FFTPoissonSolver::integratedGreensFunction() {
                 vv(1) = j * hr_m[1] - hr_m[1] / 2;
                 vv(2) = k * hr_m[2] - hr_m[2] / 2;
 
-                double r = sqrt(vv(0) * vv(0) + vv(1) * vv(1) + vv(2) * vv(2));
-                double tmpgrn  = -vv(2) * vv(2) * atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
-                tmpgrn += -vv(1) * vv(1) * atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
-                tmpgrn += -vv(0) * vv(0) * atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
-                tmpgrn += vv(1) * vv(2) * log(vv(0) + r);
-                tmpgrn += vv(0) * vv(2) * log(vv(1) + r);
-                tmpgrn += vv(0) * vv(1) * log(vv(2) + r);
+                double r = std::sqrt(vv(0) * vv(0) + vv(1) * vv(1) + vv(2) * vv(2));
+                double tmpgrn  = -vv(2) * vv(2) * std::atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
+                tmpgrn += -vv(1) * vv(1) * std::atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
+                tmpgrn += -vv(0) * vv(0) * std::atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
+                tmpgrn += vv(1) * vv(2) * std::log(vv(0) + r);
+                tmpgrn += vv(0) * vv(2) * std::log(vv(1) + r);
+                tmpgrn += vv(0) * vv(1) * std::log(vv(2) + r);
 
                 tmpgreen_m[i][j][k] = tmpgrn / cellVolume;
 
@@ -418,13 +418,13 @@ void FFTPoissonSolver::shiftedIntGreensFunction(double zshift) {
                 vv(1) = j * hr_m[1] - hr_m[1] / 2;
                 vv(2) = k * hr_m[2] - hr_m[2] / 2 + zshift;
 
-                double r = sqrt(vv(0) * vv(0) + vv(1) * vv(1) + vv(2) * vv(2));
-                double tmpgrn  = -vv(2) * vv(2) * atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
-                tmpgrn += -vv(1) * vv(1) * atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
-                tmpgrn += -vv(0) * vv(0) * atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
-                tmpgrn += vv(1) * vv(2) * log(vv(0) + r);
-                tmpgrn += vv(0) * vv(2) * log(vv(1) + r);
-                tmpgrn += vv(0) * vv(1) * log(vv(2) + r);
+                double r = std::sqrt(vv(0) * vv(0) + vv(1) * vv(1) + vv(2) * vv(2));
+                double tmpgrn  = -vv(2) * vv(2) * std::atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
+                tmpgrn += -vv(1) * vv(1) * std::atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
+                tmpgrn += -vv(0) * vv(0) * std::atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
+                tmpgrn += vv(1) * vv(2) * std::log(vv(0) + r);
+                tmpgrn += vv(0) * vv(2) * std::log(vv(1) + r);
+                tmpgrn += vv(0) * vv(1) * std::log(vv(2) + r);
 
                 tmpgreen_m[i][j][k] = tmpgrn / cellVolume;
 
@@ -441,13 +441,13 @@ void FFTPoissonSolver::shiftedIntGreensFunction(double zshift) {
                 vv(1) = j * hr_m[1] - hr_m[1] / 2;
                 vv(2) = k * hr_m[2] - hr_m[2] / 2 + zshift - nr_m[2] * hr_m[2];
 
-                double r = sqrt(vv(0) * vv(0) + vv(1) * vv(1) + vv(2) * vv(2));
-                double tmpgrn  = -vv(2) * vv(2) * atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
-                tmpgrn += -vv(1) * vv(1) * atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
-                tmpgrn += -vv(0) * vv(0) * atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
-                tmpgrn += vv(1) * vv(2) * log(vv(0) + r);
-                tmpgrn += vv(0) * vv(2) * log(vv(1) + r);
-                tmpgrn += vv(0) * vv(1) * log(vv(2) + r);
+                double r = std::sqrt(vv(0) * vv(0) + vv(1) * vv(1) + vv(2) * vv(2));
+                double tmpgrn  = -vv(2) * vv(2) * std::atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
+                tmpgrn += -vv(1) * vv(1) * std::atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
+                tmpgrn += -vv(0) * vv(0) * std::atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
+                tmpgrn += vv(1) * vv(2) * std::log(vv(0) + r);
+                tmpgrn += vv(0) * vv(2) * std::log(vv(1) + r);
+                tmpgrn += vv(0) * vv(1) * std::log(vv(2) + r);
 
                 grn2[i][j][k] = tmpgrn / cellVolume;
 

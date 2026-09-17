@@ -36,8 +36,8 @@ Euclid3D VarRadiusGeometry::getTransform(double fromS, double toS) const {
     coordinatetransform::CoordinateTransform t(0.0, 0.0, 0.0,
                                                s_0_m, lambda_left_m,
                                                lambda_right_m, rho_m);
-    double phifrom = acos(t.getUnitTangentVector(fromS)[1]);
-    double phito = acos(t.getUnitTangentVector(toS)[1]);
+    double phifrom = std::acos(t.getUnitTangentVector(fromS)[1]);
+    double phito = std::acos(t.getUnitTangentVector(toS)[1]);
     std::vector<double> ref_from = t.calcReferenceTrajectory(fromS);
     std::vector<double> ref_to = t.calcReferenceTrajectory(toS);
     v = Euclid3D::YRotation(-(phifrom + phito));

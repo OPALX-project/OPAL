@@ -21,13 +21,13 @@
 #ifndef __MPIHELPER_H__
 #define __MPIHELPER_H__
 
-#include <vector>
-#include <map>
+#include <cstddef>
+#include <cstring>
 #include <sstream>
+
 #include <mpi.h>
 
 #include "Util/Types.h"
-
 
 /// notify pilot about worker status
 #define MPI_WORKER_STATUSUPDATE_TAG    0x11
@@ -109,7 +109,7 @@ void MPI_Send_serialized(Data_t data, std::size_t pid, MPI_Comm comm) {
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm);
 
     char *buffer = new char[buf_size];
-    memcpy(buffer, os.str().c_str(), buf_size);
+    std::memcpy(buffer, os.str().c_str(), buf_size);
 
     MPI_Send(buffer, buf_size, MPI_CHAR, pid,
              MPI_EXCHANGE_SERIALIZED_DATA_TAG, comm);
@@ -132,7 +132,6 @@ void MPI_Recv_serialized(Data_t &data, std::size_t pid, MPI_Comm comm) {
     deserialize(buffer, buf_size, data);
     delete[] buffer;
 }
-
 
 
 /**

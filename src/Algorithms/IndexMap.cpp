@@ -20,11 +20,15 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include <map>
-#include <limits>
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
 #include <iostream>
-#include <fstream>
+#include <limits>
+#include <map>
+#include <memory>
 #include <tuple>
+#include <vector>
 
 #include "Algorithms/IndexMap.h"
 #include "AbstractObjects/OpalData.h"
@@ -56,7 +60,7 @@ void IndexMap::print(std::ostream &out) const {
     auto mapItf = mapRange2Element_m.end();
 
     double totalLength = (*mapRange2Element_m.rbegin()).first.end;
-    unsigned int numDigits = std::floor(std::max(0.0, log(totalLength) / log(10.0))) + 1;
+    unsigned int numDigits = std::floor(std::max(0.0, std::log(totalLength) / std::log(10.0))) + 1;
 
     for (; mapIti != mapItf; mapIti++) {
         const key_t key = (*mapIti).first;
