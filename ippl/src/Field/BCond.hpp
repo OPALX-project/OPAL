@@ -1034,7 +1034,7 @@ void PeriodicFaceBCApply(PeriodicFace<T,D,M,
 
 #ifdef PRINT_DEBUG
 // For distance.
-#  include <iterator.h>
+#  include <iterator>
 #endif
 
 template <class T, unsigned D, class M>

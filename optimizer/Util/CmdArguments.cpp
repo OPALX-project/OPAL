@@ -26,11 +26,12 @@
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
 #include "Util/CmdArguments.h"
+
 #include "Utilities/Util.h"
 
 #include <cstddef>
 #include <cstring>
-
+#include <string>
 
 void CmdArguments::addArguments(int argc, char **argv) {
 

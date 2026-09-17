@@ -34,6 +34,8 @@
 #include <gsl/gsl_sf_gamma.h>
 #include "tanhDeriv.h"
 
+#include <Physics/Physics.h>
+
 namespace tanhderiv {
 
 struct my_f_params {
@@ -60,7 +62,7 @@ double my_f (double x, void *p) {
                                        gsl_complex_rect(2, 0));
     func = gsl_complex_mul(func, gsl_complex_polar(1, -params->n * x));
     return gsl_sf_fact(params->n) * GSL_REAL(func)
-           / (2 * M_PI * gsl_sf_pow_int(params->r, params->n));
+           / (Physics::two_pi * gsl_sf_pow_int(params->r, params->n));
 }
 
 double integrate(const double &a,
@@ -69,8 +71,8 @@ double integrate(const double &a,
                  const double &lambdaright,
                  const int &n) {
     gsl_function F;
-    double radius = gsl_hypot(a - 2, lambdaright * M_PI / 2) - 0.01;
-    double radius2 = gsl_hypot(a + 2, lambdaleft * M_PI / 2) - 0.01;
+    double radius = gsl_hypot(a - 2, lambdaright * Physics::pi / 2) - 0.01;
+    double radius2 = gsl_hypot(a + 2, lambdaleft * Physics::pi / 2) - 0.01;
     if (radius > radius2) radius = radius2;
     my_f_params params = {a, s0, lambdaleft, lambdaright, radius, n};
     F.function = &my_f;
@@ -80,7 +82,7 @@ double integrate(const double &a,
     double result;
     double abserr;
     gsl_set_error_handler_off();
-    int status = gsl_integration_qag(&F, 0, 2 * M_PI, 0, error,
+    int status = gsl_integration_qag(&F, 0, Physics::two_pi, 0, error,
                                      100, GSL_INTEG_GAUSS61, w, &result, &abserr);
     gsl_integration_workspace_free(w);
     if (status) {

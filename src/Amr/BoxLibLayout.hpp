@@ -222,7 +222,6 @@ void BoxLibLayout<T, Dim>::update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
     std::vector<int> msgsend(N);
     std::vector<int> msgrecv(N);
 
-    unsigned sent = 0;
     size_t lBegin = LocalNumPerLevel.begin(lev_min);
     size_t lEnd   = LocalNumPerLevel.end(lev_max);
 
@@ -262,7 +261,6 @@ void BoxLibLayout<T, Dim>::update(AmrParticleBase< BoxLibLayout<T,Dim> >& PData,
             // we lost the particle to another process
             msgsend[who] = 1;
             p2n.insert(std::pair<unsigned, unsigned>(who, ip));
-            sent++;
         } else {
             /* if we still own the particle it may have moved to
              * another level

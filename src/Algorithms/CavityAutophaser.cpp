@@ -29,9 +29,12 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
+#include <cmath>
 #include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <string>
+#include <utility>
 
 extern Inform *gmsg;
 
@@ -53,7 +56,7 @@ double CavityAutophaser::getPhaseAtMaxEnergy(const Vector_t &R,
                                              const Vector_t &P,
                                              double t,
                                              double dt) {
-    if(!(itsCavity_m->getType() == ElementType::TRAVELINGWAVE ||
+    if (!(itsCavity_m->getType() == ElementType::TRAVELINGWAVE ||
          itsCavity_m->getType() == ElementType::RFCAVITY)) {
         throw OpalException("CavityAutophaser::getPhaseAtMaxEnergy()",
                             "given element is not a cavity");
@@ -65,7 +68,7 @@ double CavityAutophaser::getPhaseAtMaxEnergy(const Vector_t &R,
     bool apVeto           = element->getAutophaseVeto();
     bool isDCGun          = false;
     double originalPhase  = element->getPhasem();
-    double tErr           = (initialR_m(2) - R(2)) * sqrt(dot(P,P) + 1.0) / (P(2) * Physics::c);
+    double tErr           = (initialR_m(2) - R(2)) * std::sqrt(dot(P,P) + 1.0) / (P(2) * Physics::c);
     double optimizedPhase = 0.0;
     double finalEnergy    = 0.0;
     double newPhase       = 0.0;
@@ -252,7 +255,7 @@ std::pair<double, double> CavityAutophaser::optimizeCavityPhase(double initialPh
         E = track(t, dt, phi);
     } while(E > Emax);
 
-    if(j == 0) {
+    if (j == 0) {
         phi = initialPhase;
         E = Emax;
         // j = -1;
@@ -265,17 +268,17 @@ std::pair<double, double> CavityAutophaser::optimizeCavityPhase(double initialPh
         } while(E > Emax);
     }
 
-    for(int rl = 0; rl < numRefinements; ++ rl) {
+    for (int rl = 0; rl < numRefinements; ++ rl) {
         dphi /= 2.;
         phi = initialPhase - dphi;
         E = track(t, dt, phi);
-        if(E > Emax) {
+        if (E > Emax) {
             initialPhase = phi;
             Emax = E;
         } else {
             phi = initialPhase + dphi;
             E = track(t, dt, phi);
-            if(E > Emax) {
+            if (E > Emax) {
                 initialPhase = phi;
                 Emax = E;
             }

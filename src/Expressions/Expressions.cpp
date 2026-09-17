@@ -214,7 +214,7 @@ namespace Expressions {
 
     double Mod(double a, double b) {
         if(b <= 0.0) errno = EDOM;
-        return fmod(a, b);
+        return std::fmod(a, b);
     }
 
     static TFunction2<double, double> power = { "^", 6, pow };
@@ -266,7 +266,7 @@ namespace Expressions {
             for(std::vector<double>::size_type i = 0; i < array.size(); ++i) {
                 result += array[i] * array[i];
             }
-            return sqrt(result / double(array.size()));
+            return std::sqrt(result / double(array.size()));
         } else if(Options::warn) {
             std::cerr << "\n### Warning ### \"VRMS\" function of empty array.\n"
                       << std::endl;

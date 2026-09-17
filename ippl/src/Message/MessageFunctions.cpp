@@ -130,7 +130,7 @@ Message& Message::getmsg(void *data)
             //dbgmsg << "Getting item " << removed() << " from loc=" << m.data();
             //dbgmsg << " to loc=" << data << " with totbytes=" << m.numBytes();
             //dbgmsg << endl;
-            memcpy(data, m.data(), m.numBytes());
+            std::memcpy(data, m.data(), m.numBytes());
         }
 
         // delete this top MsgItem
@@ -179,7 +179,7 @@ void *Message::remove()
     else if (retdata != 0)
     {
         retdata = malloc(m.numBytes());
-        memcpy(retdata, m.data(), m.numBytes());
+        std::memcpy(retdata, m.data(), m.numBytes());
     }
 
     // delete the item

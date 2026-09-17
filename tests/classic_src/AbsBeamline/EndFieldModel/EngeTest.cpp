@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 #include "gtest/gtest.h"
 #include "Classic/AbsBeamline/EndFieldModel/Enge.h"
 
@@ -25,7 +25,7 @@ double myEnge(double x, std::vector<double> a, double x0, double lambda) {
         p += a[i]*xPow;
         xPow *= deltaX;
     }
-    double enge = 1/(1.0+exp(p));
+    double enge = 1/(1.0+std::exp(p));
     return enge;
 }
 

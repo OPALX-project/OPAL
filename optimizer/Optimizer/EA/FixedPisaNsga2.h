@@ -33,10 +33,10 @@
 #ifndef __FIXED_PISA_NSGA2_H__
 #define __FIXED_PISA_NSGA2_H__
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
 
+#include <cstdio>
+#include <cstdlib>
 #include <deque>
 #include <fstream>
 #include <map>

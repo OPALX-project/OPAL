@@ -161,7 +161,7 @@ void _FM1DProfile2::readMap() {
         for (int i = 0; i < num_gridp_fringe_entry; ++i) {
             double powerOfZ = 1.;
             double Z = (first - dZ * i) / gapHeight_m;
-            rightHandSide[i] = log(1. / RealValues[num_gridp_before_fringe_entry + i + 1] - 1.);
+            rightHandSide[i] = std::log(1. / RealValues[num_gridp_before_fringe_entry + i + 1] - 1.);
             for (int j = 0; j < polynomialOrder_entry_m + 1; ++j) {
                 leastSquareMatrix[i * (polynomialOrder_entry_m + 1) + j] = powerOfZ;
                 powerOfZ *= Z;
@@ -174,7 +174,7 @@ void _FM1DProfile2::readMap() {
         for (int i = 0; i < num_gridp_fringe_exit; ++i) {
             double powerOfZ = 1.;
             double Z = (dZ * i - first) / gapHeight_m;
-            rightHandSide[i] = log(1. / RealValues[num_gridp_before_fringe_exit + i + 1] - 1.);
+            rightHandSide[i] = std::log(1. / RealValues[num_gridp_before_fringe_exit + i + 1] - 1.);
             for (int j = 0; j < polynomialOrder_exit_m + 1; ++j) {
                 leastSquareMatrix[i * (polynomialOrder_exit_m + 1) + j] = powerOfZ;
                 powerOfZ *= Z;

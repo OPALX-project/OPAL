@@ -108,30 +108,25 @@ T scaled_norm(const FArray1D<T, N> D, const FVector<T, N> &V);
 
 // Implementation of template class FVector<T,N>.
 // ------------------------------------------------------------------------
-
 template<class T, int N>
 FVector<T, N>::FVector():
     FArray1D<T, N>()
 {}
-
 
 template<class T, int N>
 FVector<T, N>::FVector(const T &val):
     FArray1D<T, N>(val)
 {}
 
-
 template<class T, int N>
 FVector<T, N>::FVector(const T *rhs):
     FArray1D<T, N>(rhs)
 {}
 
-
 template<class T, int N>
 FVector<T, N>::FVector(const FArray1D<T, N> &rhs):
     FArray1D<T, N>(rhs)
 {}
-
 
 template<class T, int N>
 FVector<T, N> FVector<T, N>::operator-() const {
@@ -140,14 +135,12 @@ FVector<T, N> FVector<T, N>::operator-() const {
     return result;
 }
 
-
 template<class T, int N>
 FVector<T, N> &FVector<T, N>::operator*=(const T &val) {
     std::transform(this->begin(), this->end(), this->begin(),
                    std::bind(std::multiplies<T>(), std::placeholders::_1, val));
     return *this;
 }
-
 
 template<class T, int N>
 FVector<T, N> &FVector<T, N>::operator/=(const T &val) {
@@ -156,14 +149,12 @@ FVector<T, N> &FVector<T, N>::operator/=(const T &val) {
     return *this;
 }
 
-
 template<class T, int N>
 FVector<T, N> &FVector<T, N>::operator+=(const FVector<T, N> &rhs) {
     std::transform(this->begin(), this->end(), rhs.begin(), this->begin(),
                    std::plus<T>());
     return *this;
 }
-
 
 template<class T, int N>
 FVector<T, N> &FVector<T, N>::operator-=(const FVector<T, N> &rhs) {
@@ -172,10 +163,8 @@ FVector<T, N> &FVector<T, N>::operator-=(const FVector<T, N> &rhs) {
     return *this;
 }
 
-
 // Global template operators.
 // ------------------------------------------------------------------------
-
 template<class T, int N>
 FVector<T, N> operator+(const FVector<T, N> &lhs, const FVector<T, N> &rhs) {
     FVector<T, N> result;
@@ -183,7 +172,6 @@ FVector<T, N> operator+(const FVector<T, N> &lhs, const FVector<T, N> &rhs) {
                    result.begin(), std::plus<T>());
     return result;
 }
-
 
 template<class T, int N>
 FVector<T, N> operator-(const FVector<T, N> &lhs, const FVector<T, N> &rhs) {
@@ -193,7 +181,6 @@ FVector<T, N> operator-(const FVector<T, N> &lhs, const FVector<T, N> &rhs) {
     return result;
 }
 
-
 // NOTE: this is the standard FVector dot product,
 // NOT memberwise multiplication.
 template<class T, int N>
@@ -201,20 +188,17 @@ T operator*(const FVector<T, N> &lhs, const FVector<T, N> &rhs) {
     return std::inner_product(lhs.begin(), lhs.end(), rhs.begin(), T(0));
 }
 
-
 template<class T, int N>
 FVector<T, N> operator*(const FVector<T, N> &lhs, const T &x) {
     FVector<T, N> result(lhs);
     return result *= x;
 }
 
-
 template<class T, int N>
 FVector<T, N> operator/(const FVector<T, N> &lhs, const T &x) {
     FVector<T, N> result(lhs);
     return result /= x;
 }
-
 
 // NOTE: this function assumes that multiplication for T is commutative.
 template<class T, int N>
@@ -225,12 +209,10 @@ FVector<T, N> operator*(const T &x, const FVector<T, N> &lhs) {
     return result;
 }
 
-
 template<class T, int N>
 T euclidean_norm(const FVector<T, N> &V) {
-    return sqrt(std::inner_product(V.begin(), V.end(), V.begin(), T(0)));
+    return std::sqrt(std::inner_product(V.begin(), V.end(), V.begin(), T(0)));
 }
-
 
 template<class T, int N>
 T scaled_norm(const FArray1D<T, N> D, const FVector<T, N> &V) {
@@ -241,7 +223,7 @@ T scaled_norm(const FArray1D<T, N> D, const FVector<T, N> &V) {
         sum += dv * dv;
     }
 
-    return sqrt(sum);
+    return std::sqrt(sum);
 }
 
 #endif //  CLASSIC_FVector_HH

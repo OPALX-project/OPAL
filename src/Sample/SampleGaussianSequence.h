@@ -43,7 +43,7 @@ public:
     {
         double mean = 0.5 * (lower + upper);
         double sigma = (upper - lower) / 10; // +- 5 sigma
-        double factor = sigma / sqrt(2);
+        double factor = sigma / std::sqrt(2);
         double dx = 2.0 / nSample;
         for (long i = 0; i < nSample; ++ i) {
             double x = -1.0 + (i + 0.5) * dx;

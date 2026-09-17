@@ -3,16 +3,16 @@
 
 #include "AbsBeamline/Component.h"
 #include "Fields/Definitions.h"
+#include "Physics/Units.h"
 
-#include <vector>
 #include <string>
-
+#include <vector>
 
 class BendBase: public Component {
 public:
     BendBase();
-    BendBase(const BendBase &);
-    BendBase(const std::string &);
+    BendBase(const BendBase&);
+    BendBase(const std::string&);
 
     /// Indicates that element bends the beam.
     virtual bool bends() const;
@@ -35,6 +35,7 @@ public:
 
     void setFieldMapFN(std::string fileName);
     std::string getFieldMapFN() const;
+
 protected:
     /// Calculate design radius from design energy and field amplitude
     double calcDesignRadius(double fieldAmplitude) const;
@@ -117,7 +118,7 @@ double BendBase::getFullGap() const {
 inline
 void BendBase::setDesignEnergy(const double& energy, bool changeable) {
     if (designEnergyChangeable_m) {
-        designEnergy_m = std::abs(energy) * 1e6;
+        designEnergy_m = std::abs(energy) * Units::MeV2eV;
         designEnergyChangeable_m = changeable;
     }
 }
@@ -142,6 +143,5 @@ inline
 std::string BendBase::getFieldMapFN() const {
     return fileName_m;
 }
-
 
 #endif

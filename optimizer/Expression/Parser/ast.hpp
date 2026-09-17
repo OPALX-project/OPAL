@@ -89,9 +89,9 @@ namespace client { namespace ast
 
     struct tagged
     {
-        int id; // Used to annotate the AST with the iterator position.
-                // This id is used as a key to a map<int, Iterator>
-                // (not really part of the AST.)
+        int id = 0; // Used to annotate the AST with the iterator position.
+                    // This id is used as a key to a map<int, Iterator>
+                    // (not really part of the AST.)
     };
 
     struct nil {};

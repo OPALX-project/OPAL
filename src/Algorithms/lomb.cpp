@@ -9,6 +9,7 @@
 
 #include "Physics/Physics.h"
 
+#include <cmath>
 #include <iostream>
 
 LOMB_class::LOMB_class(int)
@@ -68,8 +69,7 @@ int LOMB_class::period(std::vector<LOMB_TYPE> *indata, std::vector<LOMB_TYPE> *o
 
     *nout = ntmp;
 
-
-    if(avevar(indata, &ave, &var) != 0) {
+    if (avevar(indata, &ave, &var) != 0) {
         std::cerr << "LOMB: Average failed!\n";
         return(-1);
     }
@@ -77,9 +77,9 @@ int LOMB_class::period(std::vector<LOMB_TYPE> *indata, std::vector<LOMB_TYPE> *o
     p = indata->begin();
     xmax = xmin = (*p).x;
 
-    for(p = indata->begin(); p != indata->end(); p++) {
-        if((*p).x > xmax) xmax = (*p).x;
-        if((*p).x < xmin) xmin = (*p).x;
+    for (p = indata->begin(); p != indata->end(); p++) {
+        if ((*p).x > xmax) xmax = (*p).x;
+        if ((*p).x < xmin) xmin = (*p).x;
     }
 
     xdiff = xmax - xmin;
@@ -87,29 +87,28 @@ int LOMB_class::period(std::vector<LOMB_TYPE> *indata, std::vector<LOMB_TYPE> *o
     pymax = 0.0;
     pnow  = 1. / (xdiff * ofac);
 
-    for(p = indata->begin(); p != indata->end(); p++) {
+    for (p = indata->begin(); p != indata->end(); p++) {
 
         arg    = Physics::two_pi * (((*p).x - xave) * pnow);
-        wpr.push_back((-2. * pow(sin(0.5 * arg) , 2)));
-        wpi.push_back(sin(arg));
-        wr.push_back(cos(arg));
-        wi.push_back(sin(arg));
+        wpr.push_back((-2. * std::pow(std::sin(0.5 * arg) , 2)));
+        wpi.push_back(std::sin(arg));
+        wr.push_back(std::cos(arg));
+        wi.push_back(std::sin(arg));
 
     }
 
     // check wr range and data range !!!!
-    if((wr.end() - wr.begin()) != n) {
+    if ((wr.end() - wr.begin()) != n) {
         std::cerr << "LOMB: Vector range mismatch!!!\n";
         return(-1);
     }
 
-    for(i = 0; i < (*nout); i++) {
-
+    for (i = 0; i < (*nout); i++) {
         pt.x = pnow;
         sumsh = 0. ;
         sumc  = 0.;
 
-        for(j = 0; j < n; j++) {
+        for (j = 0; j < n; j++) {
             c = wr[j];
             s = wi[j];
 
@@ -117,16 +116,15 @@ int LOMB_class::period(std::vector<LOMB_TYPE> *indata, std::vector<LOMB_TYPE> *o
             sumc  += (c - s) * (c + s);
         }
 
-        wtau = 0.5 * atan2(2.0 * sumsh, sumc);
-        swtau = sin(wtau);
-        cwtau = cos(wtau);
+        wtau = 0.5 * std::atan2(2.0 * sumsh, sumc);
+        swtau = std::sin(wtau);
+        cwtau = std::cos(wtau);
         sums = 0.;
         sumc = 0.;
         sumsy = 0.;
         sumcy = 0.;
 
-        for(j = 0, p = indata->begin() ; j < n && p != indata->end() ; j++, p++) {
-
+        for (j = 0, p = indata->begin() ; j < n && p != indata->end() ; j++, p++) {
             s = wi[j];
             c = wr[j];
             ss = s * cwtau - c * swtau;
@@ -143,9 +141,9 @@ int LOMB_class::period(std::vector<LOMB_TYPE> *indata, std::vector<LOMB_TYPE> *o
         }
 
         pt.y = 0.5 * (sumcy * sumcy / sumc + sumsy * sumsy / sums) / var;
-        if(amp) pt.y = sqrt(pow((sumcy / sumc), 2.) + pow((sumsy / sums), 2.));
+        if (amp) pt.y = std::sqrt(std::pow((sumcy / sumc), 2.) + std::pow((sumsy / sums), 2.));
 
-        if(pt.y >= pymax) {
+        if (pt.y >= pymax) {
             pymax = pt.y;
             *jmax = i;
         }
@@ -153,14 +151,13 @@ int LOMB_class::period(std::vector<LOMB_TYPE> *indata, std::vector<LOMB_TYPE> *o
         outdata->push_back(pt);
 
         pnow += 1. / (ofac * xdiff);
-
     }
 
-    expy  = exp(-pymax);
+    expy  = std::exp(-pymax);
     effm  = 2. * (*nout) / ofac;
     *prob = effm * expy;
 
-    if(*prob > 0.01) *prob = 1. - pow((1. - expy), effm);
+    if (*prob > 0.01) *prob = 1. - std::pow((1. - expy), effm);
 
     wi.erase(wi.begin(), wi.end());
     wpi.erase(wpi.begin(), wpi.end());
@@ -186,25 +183,24 @@ int LOMB_class::avevar(std::vector<LOMB_TYPE> *data, double *ave, double *var)
 
     /*---------------------------------------------------------------------------*/
 
-
     *ave = 0.;
     p = data->begin();
     q = data->end();
 
     n = q - p;
 
-    if(n < 2) {
+    if (n < 2) {
         std::cerr << "Only one datapoint -> no averaging....\n";
         return(-1);
     }
 
-    for(p = data->begin(); p != data->end(); p++) *ave += (*p).y;
+    for (p = data->begin(); p != data->end(); p++) *ave += (*p).y;
 
     *ave = *ave / n;
     *var = 0.;
     ep   = 0.;
 
-    for(p = data->begin(); p != data->end(); p++) {
+    for (p = data->begin(); p != data->end(); p++) {
         s     = (*p).y - *ave;
         ep   += s;
         *var += s * s;
@@ -213,9 +209,7 @@ int LOMB_class::avevar(std::vector<LOMB_TYPE> *data, double *ave, double *var)
     *var = (*var - ep * ep / n) / (n - 1);
 
     return(0);
-
 }
-
 
 
 double LOMB_class::signi(double *peak, int *nout, double *ofac)
@@ -229,19 +223,16 @@ double LOMB_class::signi(double *peak, int *nout, double *ofac)
  * Output: double  Sign: Significance of peak
  *---------------------------------------------------------------------------*/
 {
-
     double  expy, effm, prob;
 
     /*---------------------------------------------------------------------------*/
 
-    expy = exp(-1 * (*peak));
+    expy = std::exp(-1 * (*peak));
     effm = 2. * (double)(*nout) / (*ofac);
     prob = effm * expy ;
-    if(prob > 0.01) prob = 1. - pow((1. - expy), effm);
+    if (prob > 0.01) prob = 1. - std::pow((1. - expy), effm);
 
     return(prob);
-
-
 }
 
 
@@ -272,20 +263,18 @@ int LOMB_class::moment(std::vector<LOMB_TYPE> *indata, double *ave, double *adev
 
     n = q - p;
 
-    if(n < 2) {
+    if (n < 2) {
         std::cerr << "To few data points for moment analysis!\n";
         return(-1);
     }
-
 
     /*
      * First pass to get the mean
      * --------------------------
      */
-
     s = 0;
     double nn = 0;
-    for(p = indata->begin(); p != indata->end(); p++) {
+    for (p = indata->begin(); p != indata->end(); p++) {
         s += (*p).y * (*p).x;
         nn += (*p).y;
     }
@@ -297,15 +286,13 @@ int LOMB_class::moment(std::vector<LOMB_TYPE> *indata, double *ave, double *adev
      * ------------
      */
 
-
     *adev = 0.;
     *var  = 0.;
     *skew = 0.;
     *curt = 0.;
     ep    = 0.;
 
-    for(p = indata->begin(); p != indata->end(); p++) {
-
+    for (p = indata->begin(); p != indata->end(); p++) {
         s = ((*p).x - *ave);
         ep += s * (*p).y;
         *adev = *adev + (double)std::abs((double)s);
@@ -318,22 +305,20 @@ int LOMB_class::moment(std::vector<LOMB_TYPE> *indata, double *ave, double *adev
 
         pnr *= s;
         *curt += pnr * (*p).y;
-
     }
 
     *adev = *adev / (double)nn;
 
     *var = (*var - ep * ep / (double)nn) / ((double)(nn - 1));
 
-    *sdev = sqrt(*var);
+    *sdev = std::sqrt(*var);
 
-    if(*var != 0.) {
-        *skew = *skew / ((double)nn * pow(*sdev, 3.));
-        *curt = *curt / ((double)nn * pow(*var, 2.)) - 3.;
+    if (*var != 0.) {
+        *skew = *skew / ((double)nn * std::pow(*sdev, 3.));
+        *curt = *curt / ((double)nn * std::pow(*var, 2.)) - 3.;
     } else {
         std::cerr << "No skew or kurtosis when zero variance in moment\n";
     }
 
     return(0);
-
 }

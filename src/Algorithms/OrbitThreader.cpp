@@ -262,7 +262,7 @@ void OrbitThreader::integrate(const IndexMap::value_t& activeSet, double /*maxDr
                      << std::setw(18) << std::setprecision(8) << Bf(0)
                      << std::setw(18) << std::setprecision(8) << Bf(1)
                      << std::setw(18) << std::setprecision(8) << Bf(2)
-                     << std::setw(18) << std::setprecision(8) << reference_m.getM() * (sqrt(dot(p_m, p_m) + 1) - 1) * Units::eV2MeV
+                     << std::setw(18) << std::setprecision(8) << reference_m.getM() * (std::sqrt(dot(p_m, p_m) + 1) - 1) * Units::eV2MeV
                      << std::setw(18) << std::setprecision(8) << (time_m + 0.5 * dt_m) * Units::s2ns
                      << names
                      << std::endl;

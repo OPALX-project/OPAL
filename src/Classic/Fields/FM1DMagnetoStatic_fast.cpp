@@ -176,13 +176,13 @@ void _FM1DMagnetoStatic_fast::computeFieldDerivatives(std::vector<double> fourie
         for (unsigned int n = 1; n < accuracy_m; ++ n) {
 
             double kn = n * Physics::two_pi / length_m;
-            double coskzn = cos(kz * n);
-            double sinkzn = sin(kz * n);
+            double coskzn = std::cos(kz * n);
+            double sinkzn = std::sin(kz * n);
 
             onAxisFieldP[zStepIndex] += kn * (-fourierCoefs.at(coefIndex) * sinkzn
                                               - fourierCoefs.at(coefIndex + 1) * coskzn);
 
-            double derivCoeff = pow(kn, 2.0);
+            double derivCoeff = std::pow(kn, 2.0);
             onAxisFieldPP[zStepIndex] += derivCoeff * (-fourierCoefs.at(coefIndex) * coskzn
                                                        + fourierCoefs.at(coefIndex + 1) * sinkzn);
             derivCoeff *= kn;
@@ -199,7 +199,7 @@ void _FM1DMagnetoStatic_fast::computeFieldOffAxis(const Vector_t &R,
                                                  Vector_t &B,
                                                  std::vector<double> fieldComponents) const {
 
-    double radiusSq = pow(R(0), 2.0) + pow(R(1), 2.0);
+    double radiusSq = std::pow(R(0), 2.0) + std::pow(R(1), 2.0);
     double transverseBFactor = -fieldComponents.at(1) / 2.0
         + radiusSq * fieldComponents.at(3) / 16.0;
 

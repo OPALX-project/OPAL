@@ -61,11 +61,11 @@ void cumul(Field<T,Dim> &/*vTherm1*/, Field<T,Dim> &/*vTherm2*/, int nmax,int nv
   assign (parray[I], (I-1)*pmax/(1.0*nmax));
   dv = pmax/nmax/(nvdint-1);
 
-  int i,j;
+  int i;
 
   fit2=parray.begin();
   ++fit2;
-  for (j=2; fit2!=carray.end(); ++fit2,++j) {
+  for (; fit2!=carray.end(); ++fit2) {
       for (fit1=vv.begin(),i=1; fit1!=vv.end(); ++fit1,++i) {
           *fit1 = ((i-1)*dv * (*fit2));
       }

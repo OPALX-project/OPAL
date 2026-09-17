@@ -195,8 +195,8 @@ bool _Astra1DElectroStatic::getFieldstrength(const Vector_t &R, Vector_t &E, Vec
     for (int l = 1; l < accuracy_m ; l++, n += 2) {
         double somefactor_base =  Physics::two_pi / length_m * l;  // = \frac{d(kz*l)}{dz}
         double somefactor = 1.0;
-        double coskzl = cos(kz * l);
-        double sinkzl = sin(kz * l);
+        double coskzl = std::cos(kz * l);
+        double sinkzl = std::sin(kz * l);
         ez    += (FourCoefs_m[n] * coskzl - FourCoefs_m[n + 1] * sinkzl);
         somefactor *= somefactor_base;
         ezp   += somefactor * (-FourCoefs_m[n] * sinkzl - FourCoefs_m[n + 1] * coskzl);

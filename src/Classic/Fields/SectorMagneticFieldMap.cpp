@@ -232,9 +232,9 @@ bool SectorMagneticFieldMap::getFieldstrength (
         B_temp[0] *= -1; // reflect Bx
         B_temp[2] *= -1; // reflect Bz
     }
-    B_c(0) = B_temp[0]*cos(phiOffset_m)-B_temp[2]*sin(phiOffset_m); // x
+    B_c(0) = B_temp[0]*std::cos(phiOffset_m)-B_temp[2]*std::sin(phiOffset_m); // x
     B_c(1) = B_temp[1]; // axial
-    B_c(2) = B_temp[0]*sin(phiOffset_m)+B_temp[2]*cos(phiOffset_m); // z
+    B_c(2) = B_temp[0]*std::sin(phiOffset_m)+B_temp[2]*std::cos(phiOffset_m); // z
     return false;
 }
 
