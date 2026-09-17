@@ -16,10 +16,12 @@
 //
 #include "Solvers/CSRIGFWakeFunction.h"
 
-#include "AbsBeamline/RBend.h"
-#include "AbsBeamline/SBend.h"
+#include "AbsBeamline/Bend2D.h"
+#include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
+#include "Algorithms/PartBunchBase.hpp"
+#include "Algorithms/Vektor.h"
 #include "Filters/Filter.h"
 #include "Filters/SavitzkyGolay.h"
 #include "Physics/Physics.h"
@@ -28,9 +30,14 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
+#include "Utility/Inform.h"
+#include "Utility/IpplInfo.h"
+#include "Utility/PAssert.h"
+
 #include <cmath>
 #include <fstream>
-#include <iostream>
+#include <iomanip>
+#include <sstream>
 
 CSRIGFWakeFunction::CSRIGFWakeFunction(const std::string& name, std::vector<Filter*> filters, const unsigned int& N):
     WakeFunction(name, N),
@@ -73,10 +80,24 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
     double minPathLength = smin(2) + bunch->get_sPos() - FieldBegin_m;
     for (unsigned int i = 1; i < numOfSlices; i++) {
         double pathLengthOfSlice = minPathLength + i * meshSpacing;
-        double angleOfSlice = pathLengthOfSlice/bendRadius_m;
+
+        /*
+          bendRadius_m==0.0 can happen if we just go out into a drift
+         */
+        double angleOfSlice;
+        if (bendRadius_m==0.0) {
+            angleOfSlice = 0.;
+        } else {
+            angleOfSlice = pathLengthOfSlice/bendRadius_m;
+        }
+
+        // pathLengthOfSlice<0.0 is expected while the bunch straddles the bend
+        // entrance; angleOfSlice<0.0 is handled safely downstream.
+
         if (angleOfSlice > 0.0 && angleOfSlice <= totalBendAngle_m){
             calculateGreenFunction(bunch, meshSpacing);
         }
+
         // convolute with line density
         calculateContributionInside(i, angleOfSlice, meshSpacing);
         calculateContributionAfter(i, angleOfSlice, meshSpacing);
@@ -133,7 +154,7 @@ void CSRIGFWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
 
 void CSRIGFWakeFunction::initialize(const ElementBase* ref) {
     if (ref->getType() == ElementType::RBEND ||
-       ref->getType() == ElementType::SBEND) {
+        ref->getType() == ElementType::SBEND) {
 
         const Bend2D *bend = static_cast<const Bend2D *>(ref);
         double End;
@@ -186,16 +207,16 @@ void CSRIGFWakeFunction::calculateGreenFunction(PartBunchBase<double, 3>* bunch,
     }
 }
 
-void CSRIGFWakeFunction::calculateContributionInside(size_t sliceNumber,
+void CSRIGFWakeFunction::calculateContributionInside(std::size_t sliceNumber,
                                                      double angleOfSlice,
                                                      double /*meshSpacing*/) {
-    if (angleOfSlice > totalBendAngle_m || angleOfSlice < 0.0) return;
+    if (bendRadius_m == 0.0 || angleOfSlice > totalBendAngle_m || angleOfSlice < 0.0) return;
     int startSliceNum = 0;
     for (int j = sliceNumber; j >= startSliceNum; j--)
         Ez_m[sliceNumber] += lineDensity_m[j] * Grn_m[sliceNumber - j];
 }
 
-void CSRIGFWakeFunction::calculateContributionAfter(size_t sliceNumber,
+void CSRIGFWakeFunction::calculateContributionAfter(std::size_t sliceNumber,
                                                     double angleOfSlice,
                                                     double meshSpacing) {
     if (angleOfSlice <= totalBendAngle_m) return;

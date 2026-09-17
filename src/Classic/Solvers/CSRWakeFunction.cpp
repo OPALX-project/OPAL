@@ -16,10 +16,12 @@
 //
 #include "Solvers/CSRWakeFunction.h"
 
-#include "AbsBeamline/RBend.h"
-#include "AbsBeamline/SBend.h"
+#include "AbsBeamline/Bend2D.h"
+#include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
+#include "Algorithms/PartBunchBase.hpp"
+#include "Algorithms/Vektor.h"
 #include "Filters/Filter.h"
 #include "Filters/SavitzkyGolay.h"
 #include "Physics/Physics.h"
@@ -27,9 +29,14 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
+#include "Utility/Inform.h"
+#include "Utility/IpplInfo.h"
+#include "Utility/PAssert.h"
+
 #include <cmath>
 #include <fstream>
-#include <iostream>
+#include <iomanip>
+#include <sstream>
 
 CSRWakeFunction::CSRWakeFunction(const std::string& name,
                                  std::vector<Filter*> filters,
@@ -75,12 +82,21 @@ void CSRWakeFunction::apply(PartBunchBase<double, 3>* bunch) {
 
         double angleOfSlice = 0.0;
         double pathLengthOfSlice = minPathLength + i * meshSpacing;
-        if (pathLengthOfSlice > 0.0)
-            angleOfSlice = pathLengthOfSlice / bendRadius_m;
+
+        /*
+          bendRadius_m==0.0 can happen if we just go out into a drift
+        */
+        if (bendRadius_m==0.0) {
+            angleOfSlice = 0.;
+        } else {
+            angleOfSlice = pathLengthOfSlice/bendRadius_m;
+        }
+
+        // pathLengthOfSlice<0.0 is expected while the bunch straddles the bend
+        // entrance; angleOfSlice<0.0 is handled safely downstream.
 
         calculateContributionInside(i, angleOfSlice, meshSpacing);
         calculateContributionAfter(i, angleOfSlice, meshSpacing);
-
         Ez_m[i] /= (4. * Physics::pi * Physics::epsilon_0);
     }
 
@@ -163,8 +179,8 @@ void CSRWakeFunction::calculateLineDensity(PartBunchBase<double, 3>* bunch,
     diffOp_m->calc_derivative(dlineDensitydz_m, meshInfo.second);
 }
 
-void CSRWakeFunction::calculateContributionInside(size_t sliceNumber, double angleOfSlice, double meshSpacing) {
-    if (angleOfSlice > totalBendAngle_m || angleOfSlice < 0.0) return;
+void CSRWakeFunction::calculateContributionInside(std::size_t sliceNumber, double angleOfSlice, double meshSpacing) {
+    if (bendRadius_m == 0.0 || angleOfSlice > totalBendAngle_m || angleOfSlice < 0.0) return;
 
     const double meshSpacingsup = std::pow(meshSpacing, -1. / 3.);
     double SlippageLength = std::pow(angleOfSlice, 3) * bendRadius_m / 24.;
@@ -249,7 +265,7 @@ void CSRWakeFunction::calculateContributionInside(size_t sliceNumber, double ang
     Ez_m[sliceNumber] *= prefactor;
 }
 
-void CSRWakeFunction::calculateContributionAfter(size_t sliceNumber, double angleOfSlice, double meshSpacing) {
+void CSRWakeFunction::calculateContributionAfter(std::size_t sliceNumber, double angleOfSlice, double meshSpacing) {
     if (angleOfSlice <= totalBendAngle_m) return;
 
     double Ds_max = bendRadius_m * std::pow(totalBendAngle_m, 3) / 24. * (4. - 3.* totalBendAngle_m / angleOfSlice);
