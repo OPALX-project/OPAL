@@ -24,8 +24,8 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
-
 #include <cmath>
+#include <vector>
 
 #include "gsl/gsl_sf_gamma.h"
 #include "gsl/gsl_sf_pow_int.h"
@@ -67,10 +67,10 @@ double Enge::hN(double x, int n) const {
 // g     = 1+exp(h)
 // g^(n) = d^ng/dx^n
 double Enge::gN(double x, int n) const {
-  if (n == 0) return 1+exp(hN(x, 0));  // special case
+  if (n == 0) return 1+std::exp(hN(x, 0));  // special case
   std::vector<double> hn(n+1);
   for (int i = 0; i <= n; i++) hn[i] = hN(x, i);
-  double exp_h0 = exp(hn[0]);
+  double exp_h0 = std::exp(hn[0]);
   double gn = 0;
   for (size_t i = 0; i < _h[n].size(); ++i) {
     double gnj = _h[n][i][0]*exp_h0;

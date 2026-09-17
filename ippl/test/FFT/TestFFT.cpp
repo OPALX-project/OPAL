@@ -6,9 +6,10 @@
 #include "Ippl.h"
 #include "Utilities/Timer.h"
 
-#include <fstream>
+#include <cmath>
 #include <complex>
-using namespace std;
+#include <fstream>
+#include <string>
 
 bool Configure(int argc, char *argv[],
 	       unsigned int *nx, unsigned int *ny, unsigned int *nz,
@@ -19,15 +20,15 @@ bool Configure(int argc, char *argv[],
   Inform errmsg("Error ");
 
   for (int i=1; i < argc; ++i) {
-    string s(argv[i]);
+    std::string s(argv[i]);
     if (s == "-grid") {
-      *nx = atoi(argv[++i]);
-      *ny = atoi(argv[++i]);
-      *nz = atoi(argv[++i]);
+      *nx = std::atoi(argv[++i]);
+      *ny = std::atoi(argv[++i]);
+      *nz = std::atoi(argv[++i]);
     }   else if (s == "-Loop") {
-      *nLoop = atoi(argv[++i]);
+      *nLoop = std::atoi(argv[++i]);
     } else if (s == "-Decomp") {
-      *domainDec = atoi(argv[++i]);
+      *domainDec = std::atoi(argv[++i]);
     } 
     else {
       errmsg << "Illegal format for or unknown option '" << s.c_str() << "'.";
@@ -42,7 +43,6 @@ bool Configure(int argc, char *argv[],
 
 void writeMemoryHeader(std::ofstream &outputFile)
 {
-
     std::string dateStr("no time");
     std::string timeStr("no time");
     std::string indent("        ");
@@ -362,9 +362,9 @@ int main(int argc, char *argv[])
     IpplTimings::startTimer(fEvalccppTimer);
     diffFieldPPStan = Abs(CFieldPPStan - CFieldPPStan_save);
     realDiff = max(diffFieldPPStan);
-    if (fabs(realDiff) > errorTol) {
+    if (std::abs(realDiff) > errorTol) {
       //      correct = false;
-      testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+      testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
     }
     IpplTimings::stopTimer(fEvalccppTimer);
   }
@@ -380,9 +380,9 @@ int main(int argc, char *argv[])
     IpplTimings::startTimer(fEvalccpsTimer);
     diffFieldSPStan = Abs(CFieldSPStan - CFieldSPStan_save);
     realDiff = max(diffFieldSPStan);
-    if (fabs(realDiff) > errorTol) {
+    if (std::abs(realDiff) > errorTol) {
       //      correct = false;
-      testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+      testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
     }
     IpplTimings::stopTimer(fEvalccpsTimer);
   }
@@ -403,9 +403,9 @@ int main(int argc, char *argv[])
 
     diffFieldSPStan = Abs(CFieldSPStan - CFieldSPStan_save);
     realDiff = max(diffFieldSPStan);
-    if (fabs(realDiff) > errorTol) {
+    if (std::abs(realDiff) > errorTol) {
       correct = false;
-      testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+      testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
     }
     testmsg << "CPU time used = " << timer.cpu_time() << " secs." << endl;
     timer.clear();
@@ -440,9 +440,9 @@ int main(int argc, char *argv[])
       IpplTimings::startTimer(fEvalrcppTimer);
       diffFieldPPStan = Abs(RFieldPPStan - RFieldPPStan_save);
       realDiff = max(diffFieldPPStan);
-      if (fabs(realDiff) > errorTol) {
+      if (std::abs(realDiff) > errorTol) {
 	//	correct = false;
-	testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+	testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
       }
       IpplTimings::stopTimer(fEvalrcppTimer);
     }
@@ -459,9 +459,9 @@ int main(int argc, char *argv[])
       IpplTimings::startTimer(fEvalrcpsTimer);
       diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
       realDiff = max(diffFieldSPStan);
-      if (fabs(realDiff) > errorTol) {
+      if (std::abs(realDiff) > errorTol) {
 	//	correct = false;
-	testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+	testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
       }
       IpplTimings::stopTimer(fEvalrcpsTimer);
     }
@@ -483,9 +483,9 @@ int main(int argc, char *argv[])
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
     realDiff = max(diffFieldSPStan);
-    if (fabs(realDiff) > errorTol) {
+    if (std::abs(realDiff) > errorTol) {
       correct = false;
-      testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+      testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
     }
     testmsg << "CPU time used = " << timer.cpu_time() << " secs." << endl;
     timer.clear();
@@ -525,9 +525,9 @@ int main(int argc, char *argv[])
 
     diffFieldPPStan = Abs(RFieldPPStan - RFieldPPStan_save);
     realDiff = max(diffFieldPPStan);
-    if (fabs(realDiff) > errorTol) {
+    if (std::abs(realDiff) > errorTol) {
       correct = false;
-      testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+      testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
     }
     testmsg << "CPU time used = " << timer.cpu_time() << " secs." << endl;
     timer.clear();
@@ -546,9 +546,9 @@ int main(int argc, char *argv[])
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
     realDiff = max(diffFieldSPStan);
-    if (fabs(realDiff) > errorTol) {
+    if (std::abs(realDiff) > errorTol) {
       correct = false;
-      testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+      testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
     }
     testmsg << "CPU time used = " << timer.cpu_time() << " secs." << endl;
     timer.clear();
@@ -569,9 +569,9 @@ int main(int argc, char *argv[])
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
     realDiff = max(diffFieldSPStan);
-    if (fabs(realDiff) > errorTol) {
+    if (std::abs(realDiff) > errorTol) {
       correct = false;
-      testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+      testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
     }
     testmsg << "CPU time used = " << timer.cpu_time() << " secs." << endl;
     timer.clear();
@@ -600,9 +600,9 @@ int main(int argc, char *argv[])
 
     diffFieldPPStan = Abs(RFieldPPStan - RFieldPPStan_save);
     realDiff = max(diffFieldPPStan);
-    if (fabs(realDiff) > errorTol) {
+    if (std::abs(realDiff) > errorTol) {
       correct = false;
-      testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+      testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
     }
     testmsg << "CPU time used = " << timer.cpu_time() << " secs." << endl;
     timer.clear();
@@ -620,9 +620,9 @@ int main(int argc, char *argv[])
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
     realDiff = max(diffFieldSPStan);
-    if (fabs(realDiff) > errorTol) {
+    if (std::abs(realDiff) > errorTol) {
       correct = false;
-      testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+      testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
     }
     testmsg << "CPU time used = " << timer.cpu_time() << " secs." << endl;
     timer.clear();
@@ -642,9 +642,9 @@ int main(int argc, char *argv[])
 
     diffFieldSPStan = Abs(RFieldSPStan - RFieldSPStan_save);
     realDiff = max(diffFieldSPStan);
-    if (fabs(realDiff) > errorTol) {
+    if (std::abs(realDiff) > errorTol) {
       correct = false;
-      testmsg << "fabs(realDiff) = " << fabs(realDiff) << endl;
+      testmsg << "abs(realDiff) = " << std::abs(realDiff) << endl;
     }
     testmsg << "CPU time used = " << timer.cpu_time() << " secs." << endl;
     timer.clear();

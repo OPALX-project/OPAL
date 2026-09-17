@@ -83,8 +83,8 @@ void RecursionRelation::applyOperator() {
  */
     std::vector<int> p, q;
     for (std::size_t i = 0; i <= highestXorder_m; i++) {
-        p.push_back(pow(-1, i));
-        q.push_back(pow(-1, i) * (i + 1));
+        p.push_back(std::pow(-1, i));
+        q.push_back(std::pow(-1, i) * (i + 1));
     }
 /*  Differentiate first term by x, then multiply by p(x) */
     firstTerm.differentiateX();

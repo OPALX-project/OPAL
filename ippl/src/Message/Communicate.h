@@ -357,17 +357,17 @@ protected:
         pos = static_cast<void *>(wordround(size) + static_cast<char *>(pos));
     }
 
-    // memcpy data into the given location, and then increment the pointer
+    // std::memcpy data into the given location, and then increment the pointer
     static inline void pack(void *packdata, void * &pos, int size)
     {
-        memcpy(pos, packdata, size);
+        std::memcpy(pos, packdata, size);
         addwordround(pos, size);
     }
 
-    // memcpy data out of a given location to another, updating 'pos'
+    // std::memcpy data out of a given location to another, updating 'pos'
     static inline void unpack(void * &pos, void *packdata, int size)
     {
-        memcpy(packdata, pos, size);
+        std::memcpy(packdata, pos, size);
         addwordround(pos, size);
     }
 

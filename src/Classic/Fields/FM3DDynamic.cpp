@@ -153,13 +153,13 @@ void _FM3DDynamic::readMap() {
         double Ezmax = 0.0;
 
         if (normalize_m) {
-            int index_x = static_cast<int>(ceil(-xbegin_m / hx_m));
+            int index_x = static_cast<int>(std::ceil(-xbegin_m / hx_m));
             double lever_x = index_x * hx_m + xbegin_m;
             if(lever_x > 0.5) {
                 -- index_x;
             }
 
-            int index_y = static_cast<int>(ceil(-ybegin_m / hy_m));
+            int index_y = static_cast<int>(std::ceil(-ybegin_m / hy_m));
             double lever_y = index_y * hy_m + ybegin_m;
             if(lever_y > 0.5) {
                 -- index_y;
@@ -350,13 +350,13 @@ void _FM3DDynamic::setFrequency(double freq) {
 void _FM3DDynamic::getOnaxisEz(std::vector<std::pair<double, double> > & F) {
     F.resize(num_gridpz_m);
 
-    int index_x = static_cast<int>(ceil(-xbegin_m / hx_m));
+    int index_x = static_cast<int>(std::ceil(-xbegin_m / hx_m));
     double lever_x = index_x * hx_m + xbegin_m;
     if(lever_x > 0.5) {
         -- index_x;
     }
 
-    int index_y = static_cast<int>(ceil(-ybegin_m / hy_m));
+    int index_y = static_cast<int>(std::ceil(-ybegin_m / hy_m));
     double lever_y = index_y * hy_m + ybegin_m;
     if(lever_y > 0.5) {
         -- index_y;

@@ -185,7 +185,7 @@ public:
                         item = malloc(totbytes);
                         needDelete = true;
                     }
-                    memcpy(item, d, totbytes);
+                    std::memcpy(item, d, totbytes);
                 }
                 else
                 {

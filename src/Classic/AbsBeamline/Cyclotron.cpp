@@ -1445,7 +1445,6 @@ void Cyclotron::getFieldFromFile_Synchrocyclotron(const double& scaleFactor) {
     std::vector<std::string>::const_iterator rffcfni = RFFCoeff_fn_m.begin();
     std::vector<std::string>::const_iterator rfvcfni = RFVCoeff_fn_m.begin();
     // loop over all field maps and superpose fields
-    int fcount = 0;
     FILE *rffcf = nullptr;
     FILE *rfvcf = nullptr;
 
@@ -1454,7 +1453,7 @@ void Cyclotron::getFieldFromFile_Synchrocyclotron(const double& scaleFactor) {
     *gmsg << "*      READ IN 3D RF Fields and Frequency Coefficients        " << endl;
     *gmsg << "* ------------------------------------------------------------" << endl;
 
-    for (; fm != RFfilename_m.end(); ++fm, ++rffcfni, ++rfvcfni, ++fcount) {
+    for (; fm != RFfilename_m.end(); ++fm, ++rffcfni, ++rfvcfni) {
         Fieldmap f = _Fieldmap::getFieldmap(*fm, false);
         f->readMap();
         // if (IPPL::Comm->getOutputLevel() != 0) f->getInfo(gmsg);

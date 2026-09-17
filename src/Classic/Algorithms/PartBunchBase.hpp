@@ -1795,7 +1795,7 @@ Inform& PartBunchBase<T, Dim>::print(Inform& os) {
 // angle range [0~2PI) degree
 template <class T, unsigned Dim>
 double PartBunchBase<T, Dim>::calculateAngle(double x, double y) {
-    double thetaXY = atan2(y, x);
+    double thetaXY = std::atan2(y, x);
 
     return thetaXY >= 0 ? thetaXY : thetaXY + Physics::two_pi;
 }

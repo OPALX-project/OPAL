@@ -1,6 +1,10 @@
 #include "wfg.h"
 #include "avl.h"
 
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+
 static void trimLine(char line[])
 {
 	int i = 0;
@@ -43,7 +47,7 @@ FILECONTENTS *readFile(const char filename[])
 	char line[BUFSIZ];
 	int front = 0, point = 0, objective = 0;
 
-	FILECONTENTS *fc = (FILECONTENTS *) malloc(sizeof(FILECONTENTS));
+	FILECONTENTS *fc = (FILECONTENTS *) std::malloc(sizeof(FILECONTENTS));
 	fc->nFronts = 0;
 	fc->fronts = NULL;
 
@@ -57,32 +61,32 @@ FILECONTENTS *readFile(const char filename[])
 	while(fgets(line, sizeof line, fp) != NULL)
 	{
 		trimLine(line);
-		if (strcmp(line, "#") == 0)
+		if (std::strcmp(line, "#") == 0)
 		{
 			front = fc->nFronts;
 			fc->nFronts++;
 			fc->fronts = (FRONT*)realloc(fc->fronts, sizeof(FRONT) * fc->nFronts);
 			fc->fronts[front].nPoints = 0;
-			fc->fronts[front].points = NULL;
+			fc->fronts[front].points = nullptr;
 		}
 		else
 		{
 			FRONT *f = &fc->fronts[front];
 			point = f->nPoints;
 			f->nPoints++;
-			f->points = (POINT*)realloc(f->points, sizeof(POINT) * f->nPoints);
+			f->points = (POINT*)std::realloc(f->points, sizeof(POINT) * f->nPoints);
 			f->n = 0;
 			f->points[point].objectives = NULL;
-			f->points[point].tnode = (avl_node_t*) malloc(sizeof(avl_node_t));
-			char *tok = strtok(line, " \t\n");
+			f->points[point].tnode = (avl_node_t*) std::malloc(sizeof(avl_node_t));
+			char *tok = std::strtok(line, " \t\n");
 			do
 			{
 				POINT *p = &f->points[point];
 				objective = f->n;
 				f->n++;
-				p->objectives = (OBJECTIVE*) realloc(p->objectives, sizeof(OBJECTIVE) * f->n);
-				p->objectives[objective] = atof(tok);
-			} while ((tok = strtok(NULL, " \t\n")) != NULL);
+				p->objectives = (OBJECTIVE*) std::realloc(p->objectives, sizeof(OBJECTIVE) * f->n);
+				p->objectives[objective] = std::atof(tok);
+			} while ((tok = std::strtok(NULL, " \t\n")) != NULL);
 		}
 	}
 

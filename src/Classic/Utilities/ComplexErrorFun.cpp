@@ -53,7 +53,7 @@ std::complex<double> Werrf(std::complex<double> z) {
         }
 
         // Equations (3.12) for n = N, N - 1, ..., 0.
-        double power = pow(3.2 * q, nc);           // (2*h)^nc
+        double power = std::pow(3.2 * q, nc);           // (2*h)^nc
         const double div   = 0.3125 / q;           // 1 / (2*h)
         std::complex<double> s(0.0);               // s_{N}
         for(int n = nc; n >= 0; n--) {             // for n = N, N-1, ..., 0

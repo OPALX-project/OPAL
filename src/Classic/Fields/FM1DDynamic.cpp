@@ -92,8 +92,8 @@ bool _FM1DDynamic::getFieldDerivative(const Vector_t &R,
     for(int n = 1; n < accuracy_m; ++ n) {
 
         eZPrime += (n * Physics::two_pi / length_m
-                    * (-fourierCoefs_m.at(coefIndex) * sin(kz * n)
-                       - fourierCoefs_m.at(coefIndex + 1) * cos(kz * n)));
+                    * (-fourierCoefs_m.at(coefIndex) * std::sin(kz * n)
+                       - fourierCoefs_m.at(coefIndex + 1) * std::cos(kz * n)));
         coefIndex += 2;
 
     }
@@ -158,7 +158,7 @@ void _FM1DDynamic::computeFieldOffAxis(const Vector_t &R,
                                       Vector_t &B,
                                       std::vector<double> fieldComponents) const {
 
-    double radiusSq = pow(R(0), 2.0) + pow(R(1), 2.0);
+    double radiusSq = std::pow(R(0), 2.0) + std::pow(R(1), 2.0);
     double transverseEFactor = (fieldComponents.at(1)
                                 * (0.5 - radiusSq * twoPiOverLambdaSq_m / 16.0)
                                 - radiusSq * fieldComponents.at(3) / 16.0);
@@ -191,8 +191,8 @@ void _FM1DDynamic::computeFieldOnAxis(double z,
     for(int n = 1; n < accuracy_m; ++ n) {
 
         double kn = n * Physics::two_pi / length_m;
-        double coskzn = cos(kz * n);
-        double sinkzn = sin(kz * n);
+        double coskzn = std::cos(kz * n);
+        double sinkzn = std::sin(kz * n);
 
         fieldComponents.at(0) += (fourierCoefs_m.at(coefIndex) * coskzn
                                   - fourierCoefs_m.at(coefIndex + 1) * sinkzn);
@@ -200,7 +200,7 @@ void _FM1DDynamic::computeFieldOnAxis(double z,
         fieldComponents.at(1) += kn * (-fourierCoefs_m.at(coefIndex) * sinkzn
                                        - fourierCoefs_m.at(coefIndex + 1) * coskzn);
 
-        double derivCoeff = pow(kn, 2.0);
+        double derivCoeff = std::pow(kn, 2.0);
         fieldComponents.at(2) += derivCoeff * (-fourierCoefs_m.at(coefIndex) * coskzn
                                                + fourierCoefs_m.at(coefIndex + 1) * sinkzn);
         derivCoeff *= kn;
@@ -243,7 +243,7 @@ void _FM1DDynamic::convertHeaderData() {
     zBegin_m *= Units::cm2m;
     zEnd_m *= Units::cm2m;
 
-    twoPiOverLambdaSq_m = pow(frequency_m / Physics::c, 2.0);
+    twoPiOverLambdaSq_m = std::pow(frequency_m / Physics::c, 2.0);
 }
 
 double _FM1DDynamic::readFileData(std::ifstream &fieldFile, double fieldData[]) {

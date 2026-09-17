@@ -96,29 +96,29 @@ public:
     /*!
      * Inherited from AmrObject
      */
-    void regrid(double time);
+    void regrid(double time) override;
 
     void getGridStatistics(std::map<int, long>& gridPtsPerCore,
-                           std::vector<int>& gridsPerLevel) const;
+                           std::vector<int>& gridsPerLevel) const override;
 
     /*!
      * Initial gridding. Sets up all levels.
      */
-    void initFineLevels();
+    void initFineLevels() override;
 
-    VectorPair_t getEExtrema();
+    VectorPair_t getEExtrema() override;
 
-    double getRho(int x, int y, int z);
+    double getRho(int x, int y, int z) override;
 
-    void computeSelfFields();
+    void computeSelfFields() override;
 
-    void computeSelfFields(int bin);
+    void computeSelfFields(int bin) override;
 
-    void computeSelfFields_cycl(double gamma);
+    void computeSelfFields_cycl(double gamma) override;
 
-    void computeSelfFields_cycl(int bin);
+    void computeSelfFields_cycl(int bin) override;
 
-    void updateMesh();
+    void updateMesh() override;
 
     /*!
      * Mesh scaling for solver (gamma factor)
@@ -126,18 +126,17 @@ public:
      */
     const Vector_t& getMeshScaling() const;
 
-    Vektor<int, 3> getBaseLevelGridPoints() const;
+    Vektor<int, 3> getBaseLevelGridPoints() const override;
 
-    const int& maxLevel() const;
-    const int& finestLevel() const;
+    const int& maxLevel() const override;
+    const int& finestLevel() const override;
 
     /*!
      * @returns the time of the bunch [s]
      */
-    double getT() const;
+    double getT() const override;
 
-    void redistributeGrids(int how);
-
+    void redistributeGrids(int how) override;
 
 protected:
     /*
@@ -175,7 +174,7 @@ protected:
      * Is called in the AmrMesh function for performing tagging. (inherited from AmrMesh)
      */
     virtual void ErrorEst(int lev, TagBoxArray_t& tags,
-                          AmrReal_t time, int ngrow) override;
+                          AmrReal_t time, int ngrow);
 
     /*!
      * Make a new level from scratch using provided BoxArray and
@@ -207,7 +206,6 @@ protected:
     void MakeNewLevelFromCoarse(int lev, AmrReal_t time,
                                 const AmrGrid_t& ba,
                                 const AmrProcMap_t& dm);
-
 
 private:
     /*!

@@ -62,8 +62,8 @@ Quaternion getQuaternion(Vector_t u, Vector_t ref)
 
     axis /= normAxis;
 
-    double cosAngle = sqrt(0.5 * (1 + dot(u, ref)));
-    double sinAngle = sqrt(1 - cosAngle * cosAngle);
+    double cosAngle = std::sqrt(0.5 * (1 + dot(u, ref)));
+    double sinAngle = std::sqrt(1 - cosAngle * cosAngle);
 
     return Quaternion(cosAngle, sinAngle * axis);
 }

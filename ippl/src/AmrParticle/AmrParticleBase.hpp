@@ -42,7 +42,7 @@
 template<class PLayout>
 AmrParticleBase<PLayout>::AmrParticleBase() : forbidTransform_m(false),
                                               scale_m(1.0),
-                                              lorentzFactor_m(1.0, 1.0, 1.0),
+                                              lorentzFactor_m({1.0, 1.0, 1.0}),
 //                                               isLorentzTransformed_m(false),
                                               LocalNumPerLevel_m()
 {

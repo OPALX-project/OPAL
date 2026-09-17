@@ -25,10 +25,13 @@
  *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  *  POSSIBILITY OF SUCH DAMAGE.
  */
+#include <cmath>
 #include <vector>
+
 #include "gsl/gsl_sf_pow_int.h"
-#include "MultipoleTCurvedVarRadius.h"
-#include "MultipoleT.h"
+
+#include "AbsBeamline/MultipoleTCurvedVarRadius.h"
+#include "AbsBeamline/MultipoleT.h"
 #include "AbsBeamline/MultipoleTFunctions/CoordinateTransform.h"
 
 MultipoleTCurvedVarRadius::MultipoleTCurvedVarRadius(MultipoleT* element):
@@ -61,10 +64,10 @@ void MultipoleTCurvedVarRadius::initialise() {
 
 void MultipoleTCurvedVarRadius::transformCoords(Vector_t &R) {
     // Rotate Opal supplied cartesian coordinates around its origin
-    auto x_rotated = R[0] * cos(localCartesianRotation_) -
-                     R[2] * sin(localCartesianRotation_);
-    auto z_rotated = R[0] * sin(localCartesianRotation_) +
-                     R[2] * cos(localCartesianRotation_);
+    auto x_rotated = R[0] * std::cos(localCartesianRotation_) -
+                     R[2] * std::sin(localCartesianRotation_);
+    auto z_rotated = R[0] * std::sin(localCartesianRotation_) +
+                     R[2] * std::cos(localCartesianRotation_);
     // Offset to the center of the magnet
     R = {x_rotated + localCartesianEntryPoint_[0], R[1],
          z_rotated + localCartesianEntryPoint_[2]};
@@ -77,10 +80,10 @@ Vector_t MultipoleTCurvedVarRadius::localCartesianToOpalCartesian(const Vector_t
     auto x_offset = r[0] - localCartesianEntryPoint_[0];
     auto z_offset = r[2] - localCartesianEntryPoint_[2];
     // And rotate
-    auto x_rotated = x_offset * cos(-localCartesianRotation_) -
-                     z_offset * sin(-localCartesianRotation_);
-    auto z_rotated = x_offset * sin(-localCartesianRotation_) +
-                     z_offset * cos(-localCartesianRotation_);
+    auto x_rotated = x_offset * std::cos(-localCartesianRotation_) -
+                     z_offset * std::sin(-localCartesianRotation_);
+    auto z_rotated = x_offset * std::sin(-localCartesianRotation_) +
+                     z_offset * std::cos(-localCartesianRotation_);
     return {x_rotated, r[1], -z_rotated};
 }
 
@@ -95,13 +98,13 @@ Vector_t MultipoleTCurvedVarRadius::localCartesianToCurvilinear(const Vector_t& 
 void MultipoleTCurvedVarRadius::transformBField(Vector_t &B, const Vector_t &R) {
     auto [s0, leftFringe, rightFringe] = element_m->getFringeField();
     double rho = element_m->getLength() / element_m->getBendAngle();
-    double prefactor = rho * (tanh(s0 / leftFringe) + tanh(s0 / rightFringe));
-    double theta = leftFringe * log(cosh((R[2] + s0) / leftFringe)) -
-                   rightFringe * log(cosh((R[2] - s0) / rightFringe));
+    double prefactor = rho * (std::tanh(s0 / leftFringe) + std::tanh(s0 / rightFringe));
+    double theta = leftFringe * std::log(std::cosh((R[2] + s0) / leftFringe)) -
+                   rightFringe * std::log(std::cosh((R[2] - s0) / rightFringe));
     theta /= prefactor;
     double Bx = B[0], Bs = B[2];
-    B[0] = Bx * cos(theta) - Bs * sin(theta);
-    B[2] = Bx * sin(theta) + Bs * cos(theta);
+    B[0] = Bx * std::cos(theta) - Bs * std::sin(theta);
+    B[2] = Bx * std::sin(theta) + Bs * std::cos(theta);
 }
 
 void MultipoleTCurvedVarRadius::setMaxOrder(size_t orderZ, size_t orderX) {
@@ -158,7 +161,7 @@ double MultipoleTCurvedVarRadius::reverseTransformResidual(const Vector_t& r,
     auto c = localCartesianToCurvilinear(r);
     double dx = c[0] - target[0];
     double ds = c[2] - target[2];
-    return sqrt(dx * dx + ds * ds);
+    return std::sqrt(dx * dx + ds * ds);
 }
 
 Vector_t MultipoleTCurvedVarRadius::curvilinearToLocalCartesian(const Vector_t& r) {

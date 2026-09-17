@@ -18,11 +18,10 @@
 #ifndef SDDSWRITERCOLUMN_H
 #define SDDSWRITERCOLUMN_H
 
-#include <variant>
-
 #include <ostream>
 #include <tuple>
 #include <string>
+#include <variant>
 
 class SDDSColumn {
 public:
@@ -41,7 +40,6 @@ public:
                      const std::string& indent) const;
 
 protected:
-
     void writeValue(std::ostream& os) const;
 
 private:
@@ -54,10 +52,10 @@ private:
                        std::string> desc_t;
 
     typedef std::variant<float,
-                           double,
-                           long unsigned int,
-                           char,
-                           std::string> variant_t;
+                         double,
+                         long unsigned int,
+                         char,
+                         std::string> variant_t;
     std::string name_m;
     desc_t description_m;
     variant_t value_m;
@@ -68,15 +66,13 @@ private:
     mutable bool set_m;
 };
 
-
 template<typename T>
 void SDDSColumn::addValue(const T& val) {
     value_m = val;
     set_m = true;
 }
 
-
 std::ostream& operator<<(std::ostream& os,
-                             const SDDSColumn& col);
+                         const SDDSColumn& col);
 
 #endif

@@ -39,11 +39,10 @@
 
   C port by Martin Reinecke (2010)
 */
-
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 #ifdef __cplusplus
 extern "C" {
@@ -288,7 +287,7 @@ extern "C" {
         ipph=(ip+1)/ 2;
         if(ido!=1)
         {
-            memcpy(ch,cc,idl1*sizeof(double));
+            std::memcpy(ch,cc,idl1*sizeof(double));
 
             for(j=1; j<ip; j++)
                 for(k=0; k<l1; k++)
@@ -308,7 +307,7 @@ extern "C" {
                             }
         }
         else
-            memcpy(cc,ch,idl1*sizeof(double));
+            std::memcpy(cc,ch,idl1*sizeof(double));
 
         for(j=1,jc=ip-1; j<ipph; j++,jc--)
             for(k=0; k<l1; k++)
@@ -356,7 +355,7 @@ extern "C" {
                 CH2(ik,0)+=C2(ik,j);
 
         for(k=0; k<l1; k++)
-            memcpy(&CC(0,0,k),&CH(0,k,0),ido*sizeof(double));
+            std::memcpy(&CC(0,0,k),&CH(0,k,0),ido*sizeof(double));
         for(j=1; j<ipph; j++)
         {
             jc=ip-j;
@@ -558,7 +557,7 @@ extern "C" {
 
         ipph=(ip+1)/ 2;
         for(k=0; k<l1; k++)
-            memcpy(&CH(0,k,0),&CC(0,0,k),ido*sizeof(double));
+            std::memcpy(&CH(0,k,0),&CC(0,0,k),ido*sizeof(double));
         for(j=1; j<ipph; j++)
         {
             jc=ip-j;
@@ -636,7 +635,7 @@ extern "C" {
                     PM (CH(i-1,k,jc),CH(i-1,k,j ),C1(i-1,k,j),C1(i  ,k,jc))
                         PM (CH(i  ,k,j ),CH(i  ,k,jc),C1(i  ,k,j),C1(i-1,k,jc))
                         }
-        memcpy(cc,ch,idl1*sizeof(double));
+        std::memcpy(cc,ch,idl1*sizeof(double));
 
         for(j=1; j<ip; j++)
             for(k=0; k<l1; k++)
@@ -692,7 +691,7 @@ extern "C" {
             iw+=(ip-1)*ido;
         }
         if (p1!=c)
-            memcpy (c,p1,n*sizeof(cmplx));
+            std::memcpy (c,p1,n*sizeof(cmplx));
     }
 
     void cfftf(size_t n, double c[], double wsave[])
@@ -815,7 +814,7 @@ extern "C" {
             }
         }
         if (p1==c)
-            memcpy (c,ch,n*sizeof(double));
+            std::memcpy (c,ch,n*sizeof(double));
     }
 
     static void rfftb1(size_t n, double c[], double ch[], const double wa[],
@@ -847,7 +846,7 @@ extern "C" {
             iw+=(ip-1)*ido;
         }
         if (p1!=c)
-            memcpy (c,ch,n*sizeof(double));
+            std::memcpy (c,ch,n*sizeof(double));
     }
 
     void rfftf(size_t n, double r[], double wsave[])

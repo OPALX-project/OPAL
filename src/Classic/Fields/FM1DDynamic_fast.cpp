@@ -186,13 +186,13 @@ void _FM1DDynamic_fast::computeFieldDerivatives(std::vector<double> fourierCoefs
         for (unsigned int n = 1; n < accuracy_m; ++ n) {
 
             double kn = n * Physics::two_pi / length_m;
-            double coskzn = cos(kz * n);
-            double sinkzn = sin(kz * n);
+            double coskzn = std::cos(kz * n);
+            double sinkzn = std::sin(kz * n);
 
             onAxisFieldP[zStepIndex] += kn * (-fourierCoefs.at(coefIndex) * sinkzn
                                               - fourierCoefs.at(coefIndex + 1) * coskzn);
 
-            double derivCoeff = pow(kn, 2.0);
+            double derivCoeff = std::pow(kn, 2.0);
             onAxisFieldPP[zStepIndex] += derivCoeff * (-fourierCoefs.at(coefIndex) * coskzn
                                                        + fourierCoefs.at(coefIndex + 1) * sinkzn);
             derivCoeff *= kn;
@@ -210,7 +210,7 @@ void _FM1DDynamic_fast::computeFieldOffAxis(const Vector_t &R,
                                            Vector_t &B,
                                            std::vector<double> fieldComponents) const {
 
-    double radiusSq = pow(R(0), 2.0) + pow(R(1), 2.0);
+    double radiusSq = std::pow(R(0), 2.0) + std::pow(R(1), 2.0);
     double transverseEFactor = (fieldComponents.at(1)
                                 * (0.5 - radiusSq * twoPiOverLambdaSq_m / 16.0)
                                 - radiusSq * fieldComponents.at(3) / 16.0);
@@ -319,7 +319,7 @@ void _FM1DDynamic_fast::convertHeaderData() {
     zBegin_m *= Units::cm2m;
     zEnd_m *= Units::cm2m;
 
-    twoPiOverLambdaSq_m = pow(frequency_m / Physics::c, 2.0);
+    twoPiOverLambdaSq_m = std::pow(frequency_m / Physics::c, 2.0);
 }
 
 void _FM1DDynamic_fast::normalizeField(double maxEz,

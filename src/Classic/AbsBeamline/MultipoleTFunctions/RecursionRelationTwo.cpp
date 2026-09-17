@@ -92,8 +92,8 @@ void RecursionRelationTwo::applyOperator() {
     for (std::size_t i = 0; i <= highestXorder_m; i++) {
         p[i].resize(highestXorder_m + 2, 0);
         q[i].resize(highestXorder_m + 1, 0);
-        p[i][i + 1] = pow(-1, i);
-        q[i][i] = pow(-1, i);
+        p[i][i + 1] = std::pow(-1, i);
+        q[i][i] = std::pow(-1, i);
     }
 /*  Differentiate first term by x, then multiply by p(x) */
     firstTerm.differentiateX();

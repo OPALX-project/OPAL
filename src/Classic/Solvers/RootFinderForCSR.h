@@ -7,11 +7,12 @@
 #include <gsl/gsl_math.h>
 #include <gsl/gsl_roots.h>
 
-#include <complex>
-#include <vector>
 #include <algorithm>
+#include <cmath>
+#include <complex>
 #include <iostream>
 #include <utility>
+#include <vector>
 
 class RootFinderForCSR {
 public:
@@ -31,19 +32,19 @@ public:
     }
 
     bool hasPositiveRealRoots() {
-        std::complex<double> tmp = sqrt(std::pow(deltaOne_m, 2) - 4.0 * std::pow(deltaZero_m, 3));
-        std::complex<double> C1 = std::pow(0.5 * (deltaOne_m + copysign(1.0, deltaOne_m.real()) * tmp), 1.0 / 3.0);
+        std::complex<double> tmp = std::sqrt(std::pow(deltaOne_m, 2) - 4.0 * std::pow(deltaZero_m, 3));
+        std::complex<double> C1 = std::pow(0.5 * (deltaOne_m + std::copysign(1.0, deltaOne_m.real()) * tmp), 1.0 / 3.0);
 
         std::complex<double> x1 = -(3.0 * b_m + C1 + deltaZero_m / C1) / (12. * a_m);
         if (std::abs(x1.imag()) < 1e-9 && x1.real() > 0.0)
             thirdOrderRoots_m.push_back(x1.real());
 
-        std::complex<double> C2 = C1 * std::complex<double>(-0.5, -0.5 * sqrt(3));
+        std::complex<double> C2 = C1 * std::complex<double>(-0.5, -0.5 * std::sqrt(3));
         std::complex<double> x2 = -(3. * b_m + C2 + deltaZero_m / C2) / (12. * a_m);
         if (std::abs(x2.imag()) < 1e-9 && x2.real() > 0.0)
             thirdOrderRoots_m.push_back(x2.real());
 
-        std::complex<double> C3 = C1 * std::complex<double>(-0.5, 0.5 * sqrt(3));
+        std::complex<double> C3 = C1 * std::complex<double>(-0.5, 0.5 * std::sqrt(3));
         std::complex<double> x3 = -(3. * b_m + C3 + deltaZero_m / C3) / (12. * a_m);
         if (std::abs(x3.imag()) < 1e-9 && x3.real() > 0.0)
             thirdOrderRoots_m.push_back(x3.real());

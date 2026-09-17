@@ -57,7 +57,7 @@ namespace mslang {
         }
 
         double getAngle() const {
-            return atan2((*this)(1, 0), (*this)(0, 0));
+            return std::atan2((*this)(1, 0), (*this)(0, 0));
         }
 
         Vector_t transformTo(const Vector_t &v) const {

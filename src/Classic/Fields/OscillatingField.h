@@ -120,7 +120,7 @@ EVector OscillatingField<Field>::Efield(const Point3D &p) const
 
 template < class Field >
 EVector OscillatingField<Field>::Efield(const Point3D &p, double t) const
-{ return Field::Efield(p) * cos(t * frequency - phase); }
+{ return Field::Efield(p) * std::cos(t * frequency - phase); }
 
 
 template < class Field >
@@ -130,6 +130,6 @@ BVector OscillatingField<Field>::Bfield(const Point3D &p) const
 
 template < class Field >
 BVector OscillatingField<Field>::Bfield(const Point3D &p, double t) const
-{ return Field::Bfield(p) * cos(t * frequency - phase); }
+{ return Field::Bfield(p) * std::cos(t * frequency - phase); }
 
 #endif // CLASSIC_OscillatingField_HH

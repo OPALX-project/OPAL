@@ -323,12 +323,12 @@ void FFTBoxPoissonSolver::integratedGreensFunction() {
                 vv(2) = k * hr_m[2] - hr_m[2] / 2;
 
                 r = sqrt(vv(0) * vv(0) + vv(1) * vv(1) + vv(2) * vv(2));
-                tmpgrn  = -vv(2) * vv(2) * atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
-                tmpgrn += -vv(1) * vv(1) * atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
-                tmpgrn += -vv(0) * vv(0) * atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
-                tmpgrn += vv(1) * vv(2) * log(vv(0) + r);
-                tmpgrn += vv(0) * vv(2) * log(vv(1) + r);
-                tmpgrn += vv(0) * vv(1) * log(vv(2) + r);
+                tmpgrn  = -vv(2) * vv(2) * std::atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
+                tmpgrn += -vv(1) * vv(1) * std::atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
+                tmpgrn += -vv(0) * vv(0) * std::atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
+                tmpgrn += vv(1) * vv(2) * std::log(vv(0) + r);
+                tmpgrn += vv(0) * vv(2) * std::log(vv(1) + r);
+                tmpgrn += vv(0) * vv(1) * std::log(vv(2) + r);
 
                 tmpgreen[i][j][k] = tmpgrn / (hr_m[0] * hr_m[1] * hr_m[2]);
 
@@ -407,12 +407,12 @@ void FFTBoxPoissonSolver::shiftedIntGreensFunction(double zshift) {
                 vv(2) = k * hr_m[2] - hr_m[2] / 2 + zshift;
 
                 r = sqrt(vv(0) * vv(0) + vv(1) * vv(1) + vv(2) * vv(2));
-                tmpgrn  = -vv(2) * vv(2) * atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
-                tmpgrn += -vv(1) * vv(1) * atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
-                tmpgrn += -vv(0) * vv(0) * atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
-                tmpgrn += vv(1) * vv(2) * log(vv(0) + r);
-                tmpgrn += vv(0) * vv(2) * log(vv(1) + r);
-                tmpgrn += vv(0) * vv(1) * log(vv(2) + r);
+                tmpgrn  = -vv(2) * vv(2) * std::atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
+                tmpgrn += -vv(1) * vv(1) * std::atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
+                tmpgrn += -vv(0) * vv(0) * std::atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
+                tmpgrn += vv(1) * vv(2) * std::log(vv(0) + r);
+                tmpgrn += vv(0) * vv(2) * std::log(vv(1) + r);
+                tmpgrn += vv(0) * vv(1) * std::log(vv(2) + r);
 
                 tmpgreen[i][j][k] = tmpgrn / (hr_m[0] * hr_m[1] * hr_m[2]);
 
@@ -434,12 +434,12 @@ void FFTBoxPoissonSolver::shiftedIntGreensFunction(double zshift) {
                 //vv(2) = zshift-k*hr_m[2]-hr_m[2]/2;
 
                 r = sqrt(vv(0) * vv(0) + vv(1) * vv(1) + vv(2) * vv(2));
-                tmpgrn  = -vv(2) * vv(2) * atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
-                tmpgrn += -vv(1) * vv(1) * atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
-                tmpgrn += -vv(0) * vv(0) * atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
-                tmpgrn += vv(1) * vv(2) * log(vv(0) + r);
-                tmpgrn += vv(0) * vv(2) * log(vv(1) + r);
-                tmpgrn += vv(0) * vv(1) * log(vv(2) + r);
+                tmpgrn  = -vv(2) * vv(2) * std::atan(vv(0) * vv(1) / (vv(2) * r)) / 2;
+                tmpgrn += -vv(1) * vv(1) * std::atan(vv(0) * vv(2) / (vv(1) * r)) / 2;
+                tmpgrn += -vv(0) * vv(0) * std::atan(vv(1) * vv(2) / (vv(0) * r)) / 2;
+                tmpgrn += vv(1) * vv(2) * std::log(vv(0) + r);
+                tmpgrn += vv(0) * vv(2) * std::log(vv(1) + r);
+                tmpgrn += vv(0) * vv(1) * std::log(vv(2) + r);
 
                 grn2[i][j][k] = tmpgrn / (hr_m[0] * hr_m[1] * hr_m[2]);
 
