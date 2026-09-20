@@ -58,10 +58,16 @@ bool CCollimator::doPreCheck(PartBunchBase<double, 3>* bunch) {
     bunch->get_bounds(rmin, rmax);
 
     if (rmax(2) >= zstart_m && rmin(2) <= zend_m) {
-        // interested in absolute minimum and maximum
-        double xmin = std::min(std::abs(rmin(0)), std::abs(rmax(0)));
+        // Absolute minimum and maximum of |x| and |y| over the bunch's bounding box.
+        // When an interval straddles zero the smallest attainable |coordinate| is 0,
+        // not min(|lo|,|hi|). Getting this wrong makes rbunch_min far too large, so
+        // the precheck reports the bunch out of range and the collimator silently
+        // never collimates anything.
+        double xmin = (rmin(0) <= 0.0 && rmax(0) >= 0.0)
+                        ? 0.0 : std::min(std::abs(rmin(0)), std::abs(rmax(0)));
         double xmax = std::max(std::abs(rmin(0)), std::abs(rmax(0)));
-        double ymin = std::min(std::abs(rmin(1)), std::abs(rmax(1)));
+        double ymin = (rmin(1) <= 0.0 && rmax(1) >= 0.0)
+                        ? 0.0 : std::min(std::abs(rmin(1)), std::abs(rmax(1)));
         double ymax = std::max(std::abs(rmin(1)), std::abs(rmax(1)));
         double rbunch_min = std::hypot(xmin, ymin);
         double rbunch_max = std::hypot(xmax, ymax);

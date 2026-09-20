@@ -68,10 +68,15 @@ double Probe::getStep() const {
 bool Probe::doPreCheck(PartBunchBase<double, 3> *bunch) {
     Vector_t rmin, rmax;
     bunch->get_bounds(rmin, rmax);
-    // interested in absolute minimum and maximum
-    double xmin = std::min(std::abs(rmin(0)), std::abs(rmax(0)));
+    // Absolute minimum and maximum of |x| and |y| over the bunch's bounding box.
+    // When an interval straddles zero the smallest attainable |coordinate| is 0,
+    // not min(|lo|,|hi|); otherwise rbunch_min is far too large and the probe can
+    // silently miss particles. Same defect as CCollimator::doPreCheck.
+    double xmin = (rmin(0) <= 0.0 && rmax(0) >= 0.0)
+                    ? 0.0 : std::min(std::abs(rmin(0)), std::abs(rmax(0)));
     double xmax = std::max(std::abs(rmin(0)), std::abs(rmax(0)));
-    double ymin = std::min(std::abs(rmin(1)), std::abs(rmax(1)));
+    double ymin = (rmin(1) <= 0.0 && rmax(1) >= 0.0)
+                    ? 0.0 : std::min(std::abs(rmin(1)), std::abs(rmax(1)));
     double ymax = std::max(std::abs(rmin(1)), std::abs(rmax(1)));
     double rbunch_min = std::hypot(xmin, ymin);
     double rbunch_max = std::hypot(xmax, ymax);
