@@ -51,23 +51,37 @@ void _FM3DH5Block::readMap (
     setStep (last_step);
 
     size_t field_size = num_gridpx_m * num_gridpy_m * num_gridpz_m;
-    FieldstrengthEx_m.resize (field_size);
-    FieldstrengthEy_m.resize (field_size);
-    FieldstrengthEz_m.resize (field_size);
-    FieldstrengthHx_m.resize (field_size);
-    FieldstrengthHy_m.resize (field_size);
-    FieldstrengthHz_m.resize (field_size);
+
+    // One physical copy per node instead of one per rank, when the file allows it.
+    if (tryMapComponents ("Efield", last_step,
+                          FieldstrengthEx_m, FieldstrengthEy_m, FieldstrengthEz_m, field_size)) {
+        if (tryMapComponents ("Hfield", last_step,
+                              FieldstrengthHx_m, FieldstrengthHy_m,
+                              FieldstrengthHz_m, field_size)) {
+            closeFile ();
+            return;
+        }
+        FieldstrengthEx_m.reset ();
+        FieldstrengthEy_m.reset ();
+        FieldstrengthEz_m.reset ();
+    }
+    FieldstrengthEx_m.allocate (field_size);
+    FieldstrengthEy_m.allocate (field_size);
+    FieldstrengthEz_m.allocate (field_size);
+    FieldstrengthHx_m.allocate (field_size);
+    FieldstrengthHy_m.allocate (field_size);
+    FieldstrengthHz_m.allocate (field_size);
 
     readField (
         "Efield",
-        &(FieldstrengthEx_m[0]),
-        &(FieldstrengthEy_m[0]),
-        &(FieldstrengthEz_m[0]));
+        FieldstrengthEx_m.mutableData(),
+        FieldstrengthEy_m.mutableData(),
+        FieldstrengthEz_m.mutableData());
     readField (
         "Hfield",
-        &(FieldstrengthHx_m[0]),
-        &(FieldstrengthHy_m[0]),
-        &(FieldstrengthHz_m[0]));
+        FieldstrengthHx_m.mutableData(),
+        FieldstrengthHy_m.mutableData(),
+        FieldstrengthHz_m.mutableData());
 
     closeFile ();
     INFOMSG (level3
@@ -81,12 +95,12 @@ void _FM3DH5Block::freeMap (
     if(FieldstrengthEz_m.empty ()) {
         return;
     }
-    FieldstrengthEx_m.clear ();
-    FieldstrengthEy_m.clear ();
-    FieldstrengthEz_m.clear ();
-    FieldstrengthHx_m.clear ();
-    FieldstrengthHy_m.clear ();
-    FieldstrengthHz_m.clear ();
+    FieldstrengthEx_m.reset ();
+    FieldstrengthEy_m.reset ();
+    FieldstrengthEz_m.reset ();
+    FieldstrengthHx_m.reset ();
+    FieldstrengthHy_m.reset ();
+    FieldstrengthHz_m.reset ();
 }
 
 bool _FM3DH5Block::getFieldstrength (

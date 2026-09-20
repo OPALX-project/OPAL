@@ -17,6 +17,8 @@
 //
 
 #include "Fields/FM3DH5BlockBase.h"
+
+#include <cstdlib>
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
 #include "Utilities/GeneralClassicException.h"
@@ -163,7 +165,7 @@ void _FM3DH5BlockBase::closeFile (void) {
 }
 
 double _FM3DH5BlockBase::getWeightedData (
-    const std::vector<double>& data,
+    const FieldArray& data,
     const IndexTriplet& idx,
     unsigned short corner
     ) const {
@@ -180,9 +182,9 @@ double _FM3DH5BlockBase::getWeightedData (
 }
 
 Vector_t _FM3DH5BlockBase::interpolateTrilinearly (
-    const std::vector<double>& field_strength_x,
-    const std::vector<double>& field_strength_y,
-    const std::vector<double>& field_strength_z,
+    const FieldArray& field_strength_x,
+    const FieldArray& field_strength_y,
+    const FieldArray& field_strength_z,
     const Vector_t& X
     ) const {
     IndexTriplet idx = getIndex (X);
@@ -263,4 +265,39 @@ void _FM3DH5BlockBase::getOnaxisEz (
         }
         F[i].second /= Ez_max;
     }
+}
+bool _FM3DH5BlockBase::tryMapComponents (
+    const char* name,
+    long long step,
+    FieldArray& x,
+    FieldArray& y,
+    FieldArray& z,
+    std::size_t n
+    ) {
+    static bool disabled = (std::getenv ("OPAL_NO_MMAP_FIELDMAPS") != nullptr);
+    if (disabled) {
+        return false;
+    }
+
+    const std::string base =
+        "/Step#" + std::to_string (step) + "/Block/" + std::string (name) + "/";
+    FieldArray* comp[3] = {&x, &y, &z};
+    std::string why;
+    for (int i = 0; i < 3; ++ i) {
+        if (!comp[i]->tryMap (Filename_m, base + std::to_string (i), n, why)) {
+            // All or nothing: a half-mapped field would be silently wrong.
+            for (int j = 0; j < 3; ++ j) {
+                comp[j]->reset ();
+            }
+            INFOMSG (level3
+                     << "field map '" << Filename_m << "' " << name
+                     << ": reading into private memory (" << why << ")" << endl);
+            return false;
+        }
+    }
+    INFOMSG (level3
+             << "field map '" << Filename_m << "' " << name
+             << ": mapped read-only, "
+             << (3 * n * sizeof (double)) / (1024 * 1024) << " MiB shared per node" << endl);
+    return true;
 }

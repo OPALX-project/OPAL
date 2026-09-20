@@ -55,33 +55,43 @@ void _FM3DH5Block_nonscale::readMap (
     setStep (last_step);
 
     size_t field_size = num_gridpx_m * num_gridpy_m * num_gridpz_m;
-    FieldstrengthEx_m.resize (field_size);
-    FieldstrengthEy_m.resize (field_size);
-    FieldstrengthEz_m.resize (field_size);
-    FieldstrengthHx_m.resize (field_size);
-    FieldstrengthHy_m.resize (field_size);
-    FieldstrengthHz_m.resize (field_size);
+    FieldstrengthEx_m.allocate (field_size);
+    FieldstrengthEy_m.allocate (field_size);
+    FieldstrengthEz_m.allocate (field_size);
+    FieldstrengthHx_m.allocate (field_size);
+    FieldstrengthHy_m.allocate (field_size);
+    FieldstrengthHz_m.allocate (field_size);
 
     readField (
         "Efield",
-        &(FieldstrengthEx_m[0]),
-        &(FieldstrengthEy_m[0]),
-        &(FieldstrengthEz_m[0]));
+        FieldstrengthEx_m.mutableData(),
+        FieldstrengthEy_m.mutableData(),
+        FieldstrengthEz_m.mutableData());
     readField (
         "Hfield",
-        &(FieldstrengthHx_m[0]),
-        &(FieldstrengthHy_m[0]),
-        &(FieldstrengthHz_m[0]));
+        FieldstrengthHx_m.mutableData(),
+        FieldstrengthHy_m.mutableData(),
+        FieldstrengthHz_m.mutableData());
 
     closeFile ();
 
+    // This class rescales the samples in place, so it always owns its buffers and is
+    // never backed by a read-only mapping of the file.
+    double* ex = FieldstrengthEx_m.mutableData();
+    double* ey = FieldstrengthEy_m.mutableData();
+    double* ez = FieldstrengthEz_m.mutableData();
+    double* hx = FieldstrengthHx_m.mutableData();
+    double* hy = FieldstrengthHy_m.mutableData();
+    double* hz = FieldstrengthHz_m.mutableData();
+
+    const double muFactor = 1.0e6 * Physics::mu_0;
     for (long long unsigned i = 0; i < num_gridpx_m * num_gridpy_m * num_gridpz_m; i++) {
-        FieldstrengthEz_m[i] *= Units::MVpm2Vpm ;
-        FieldstrengthEx_m[i] *= Units::MVpm2Vpm ;
-        FieldstrengthEy_m[i] *= Units::MVpm2Vpm ;
-        FieldstrengthHx_m[i] *= 1.0e6 * Physics::mu_0 ;
-        FieldstrengthHy_m[i] *= 1.0e6 * Physics::mu_0 ;
-        FieldstrengthHz_m[i] *= 1.0e6 * Physics::mu_0 ;
+        ez[i] *= Units::MVpm2Vpm ;
+        ex[i] *= Units::MVpm2Vpm ;
+        ey[i] *= Units::MVpm2Vpm ;
+        hx[i] *= muFactor ;
+        hy[i] *= muFactor ;
+        hz[i] *= muFactor ;
     }
     INFOMSG (level3
              << typeset_msg("3d dynamic (non-scaled) fieldmap '"
@@ -94,12 +104,12 @@ void _FM3DH5Block_nonscale::freeMap (
     if(FieldstrengthEz_m.empty ()) {
         return;
     }
-    FieldstrengthEx_m.clear ();
-    FieldstrengthEy_m.clear ();
-    FieldstrengthEz_m.clear ();
-    FieldstrengthHx_m.clear ();
-    FieldstrengthHy_m.clear ();
-    FieldstrengthHz_m.clear ();
+    FieldstrengthEx_m.reset ();
+    FieldstrengthEy_m.reset ();
+    FieldstrengthEz_m.reset ();
+    FieldstrengthHx_m.reset ();
+    FieldstrengthHy_m.reset ();
+    FieldstrengthHz_m.reset ();
 }
 
 bool _FM3DH5Block_nonscale::getFieldstrength (

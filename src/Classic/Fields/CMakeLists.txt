@@ -25,6 +25,7 @@ set (_SRCS
     FM2DMagnetoStatic.cpp
     FM3DDynamic.cpp
     FM3DH5Block.cpp
+    FieldArray.cpp
     FM3DH5BlockBase.cpp
     FM3DH5Block_nonscale.cpp
     FM3DMagnetoStatic.cpp
@@ -76,6 +77,7 @@ set (HDRS
     FM2DMagnetoStatic.h
     FM3DDynamic.h
     FM3DH5Block.h
+    FieldArray.h
     FM3DH5BlockBase.h
     FM3DH5Block_nonscale.h
     FM3DMagnetoStatic.h

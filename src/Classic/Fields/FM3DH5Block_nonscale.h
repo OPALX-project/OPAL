@@ -44,9 +44,9 @@ private:
     virtual void freeMap (
         );
 
-    std::vector<double> FieldstrengthHz_m;    /**< 3D array with Hz */
-    std::vector<double> FieldstrengthHx_m;    /**< 3D array with Hx */
-    std::vector<double> FieldstrengthHy_m;    /**< 3D array with Hy */
+    FieldArray FieldstrengthHz_m;    /**< 3D array with Hz */
+    FieldArray FieldstrengthHx_m;    /**< 3D array with Hx */
+    FieldArray FieldstrengthHy_m;    /**< 3D array with Hy */
 
     friend class _Fieldmap;
     friend class _FM3DH5BlockBase;

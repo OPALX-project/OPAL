@@ -20,6 +20,7 @@
 #define CLASSIC_FIELDMAP3DH5BLOCKBASE_H
 
 #include "Fields/Fieldmap.h"
+#include "Fields/FieldArray.h"
 
 #include <cmath>
 #include <vector>
@@ -113,6 +114,18 @@ protected:
         double* x,
         double* y,
         double* z
+        );
+
+    /// Try to back three components with a read-only mapping of the file instead of
+    /// reading them. All three succeed or none do. Returns false when the dataset layout
+    /// is not directly mappable, in which case the caller reads as before.
+    bool tryMapComponents (
+        const char* name,
+        long long step,
+        FieldArray& x,
+        FieldArray& y,
+        FieldArray& z,
+        std::size_t n
         );
 
     void closeFile (
@@ -222,14 +235,14 @@ protected:
     }
 
     double getWeightedData (
-        const std::vector<double>& data,
+        const FieldArray& data,
         const IndexTriplet& idx,
         unsigned short corner) const;
 
     Vector_t interpolateTrilinearly (
-        const std::vector<double>&,
-        const std::vector<double>&,
-        const std::vector<double>&,
+        const FieldArray&,
+        const FieldArray&,
+        const FieldArray&,
         const Vector_t& X) const;
 
     enum : unsigned short {
@@ -241,9 +254,9 @@ protected:
         HZ = 1}; // high Z
 
     h5_file_t file_m;
-    std::vector<double> FieldstrengthEz_m;    /**< 3D array with Ez */
-    std::vector<double> FieldstrengthEx_m;    /**< 3D array with Ex */
-    std::vector<double> FieldstrengthEy_m;    /**< 3D array with Ey */
+    FieldArray FieldstrengthEz_m;    /**< 3D array with Ez */
+    FieldArray FieldstrengthEx_m;    /**< 3D array with Ex */
+    FieldArray FieldstrengthEy_m;    /**< 3D array with Ey */
 
     double xbegin_m;
     double xend_m;

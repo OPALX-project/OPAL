@@ -49,23 +49,37 @@ void _FM3DMagnetoStaticH5Block::readMap (
     setStep (last_step);
 
     size_t field_size = num_gridpx_m * num_gridpy_m * num_gridpz_m;
-    FieldstrengthEx_m.resize (field_size);
-    FieldstrengthEy_m.resize (field_size);
-    FieldstrengthEz_m.resize (field_size);
-    FieldstrengthBx_m.resize (field_size);
-    FieldstrengthBy_m.resize (field_size);
-    FieldstrengthBz_m.resize (field_size);
+
+    // One physical copy per node instead of one per rank, when the file allows it.
+    if (tryMapComponents ("Efield", last_step,
+                          FieldstrengthEx_m, FieldstrengthEy_m, FieldstrengthEz_m, field_size)) {
+        if (tryMapComponents ("Bfield", last_step,
+                              FieldstrengthBx_m, FieldstrengthBy_m,
+                              FieldstrengthBz_m, field_size)) {
+            closeFile ();
+            return;
+        }
+        FieldstrengthEx_m.reset ();
+        FieldstrengthEy_m.reset ();
+        FieldstrengthEz_m.reset ();
+    }
+    FieldstrengthEx_m.allocate (field_size);
+    FieldstrengthEy_m.allocate (field_size);
+    FieldstrengthEz_m.allocate (field_size);
+    FieldstrengthBx_m.allocate (field_size);
+    FieldstrengthBy_m.allocate (field_size);
+    FieldstrengthBz_m.allocate (field_size);
 
     readField (
         "Efield",
-        &(FieldstrengthEx_m[0]),
-        &(FieldstrengthEy_m[0]),
-        &(FieldstrengthEz_m[0]));
+        FieldstrengthEx_m.mutableData(),
+        FieldstrengthEy_m.mutableData(),
+        FieldstrengthEz_m.mutableData());
     readField (
         "Bfield",
-        &(FieldstrengthBx_m[0]),
-        &(FieldstrengthBy_m[0]),
-        &(FieldstrengthBz_m[0]));
+        FieldstrengthBx_m.mutableData(),
+        FieldstrengthBy_m.mutableData(),
+        FieldstrengthBz_m.mutableData());
 
     closeFile ();
     INFOMSG (level3
@@ -78,12 +92,12 @@ void _FM3DMagnetoStaticH5Block::freeMap (
     if(FieldstrengthEz_m.empty()) {
         return;
     }
-    FieldstrengthEx_m.clear();
-    FieldstrengthEy_m.clear();
-    FieldstrengthEz_m.clear();
-    FieldstrengthBx_m.clear();
-    FieldstrengthBy_m.clear();
-    FieldstrengthBz_m.clear();
+    FieldstrengthEx_m.reset ();
+    FieldstrengthEy_m.reset ();
+    FieldstrengthEz_m.reset ();
+    FieldstrengthBx_m.reset ();
+    FieldstrengthBy_m.reset ();
+    FieldstrengthBz_m.reset ();
 }
 
 bool _FM3DMagnetoStaticH5Block::getFieldstrength (
