@@ -427,6 +427,14 @@ private:
 
     void bunchDumpStatData();
 
+    /// Fetch the phase space of the reference particle (the one with ID 0).
+    ///
+    /// The reference particle can be on any rank and a repartition can move it at any
+    /// step, so it must be located by ID rather than by position in the local arrays.
+    /// Collective: every rank must call this, and every rank gets the same answer.
+    /// Returns false if no rank holds ID 0, in which case refR/refP are untouched.
+    bool getReferenceParticle(Vector_t& refR, Vector_t& refP) const;
+
     void bunchDumpPhaseSpaceData();
 
     void evaluateSpaceChargeField();

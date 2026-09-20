@@ -2630,6 +2630,44 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
 }
 
 
+bool ParallelCyclotronTracker::getReferenceParticle(Vector_t& refR,
+                                                    Vector_t& refP) const {
+    // Which rank holds ID 0 is not fixed: ParticleSpatialLayout::update() and
+    // BinaryRepartition (REPARTFREQ) move particles between ranks, and within a rank
+    // the index changes whenever particles are destroyed. So it cannot be found by
+    // position - only by ID, and only collectively.
+    //
+    // Each rank contributes the values if it holds the particle and zeros if it does
+    // not, plus a count. One sum then gives every rank the same answer, which matters
+    // because the caller uses the result to define the dump frame on all ranks.
+    double buf[7] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+
+    for (size_t i = 0; i < itsBunch_m->getLocalNum(); ++ i) {
+        if (itsBunch_m->ID[i] == 0) {
+            buf[0] = itsBunch_m->R[i](0);
+            buf[1] = itsBunch_m->R[i](1);
+            buf[2] = itsBunch_m->R[i](2);
+            buf[3] = itsBunch_m->P[i](0);
+            buf[4] = itsBunch_m->P[i](1);
+            buf[5] = itsBunch_m->P[i](2);
+            buf[6] = 1.0;
+            break;
+        }
+    }
+
+    allreduce(buf, 7, std::plus<double>());
+
+    if (buf[6] != 1.0) {
+        // 0 means the particle has been lost. Anything else means it is duplicated,
+        // which would make the sum meaningless - treat both as "not available".
+        return false;
+    }
+
+    refR = Vector_t({buf[0], buf[1], buf[2]});
+    refP = Vector_t({buf[3], buf[4], buf[5]});
+    return true;
+}
+
 void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
     // --------------------------------- Particle dumping --------------------------------------- //
     // Note: Don't dump when
@@ -2649,9 +2687,17 @@ void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
     if (Options::psDumpFrame == DumpFrame::BUNCH_MEAN || isMultiBunch()) {
         meanR = calcMeanR();
         meanP = calcMeanP();
-    } else if (itsBunch_m->getLocalNum() > 0) {
-        meanR = itsBunch_m->R[0];
-        meanP = itsBunch_m->P[0];
+    } else if (!getReferenceParticle(meanR, meanP)) {
+        // No rank holds ID 0 any more - it was lost. The centroid is the only
+        // well-defined fallback; the previous behaviour (an arbitrary particle) is not.
+        static bool warned = false;
+        if (!warned) {
+            warned = true;
+            *gmsg << "* Warning: the reference particle (ID 0) is no longer in the bunch; "
+                  << "falling back to the bunch mean for the dump frame." << endl;
+        }
+        meanR = calcMeanR();
+        meanP = calcMeanP();
     }
 
     double const betagamma_temp = euclidean_norm(meanP);
