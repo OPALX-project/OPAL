@@ -23,6 +23,7 @@
 #include "Parser/FileStream.h"
 #include "Utilities/Timer.h"
 #include "Fields/Fieldmap.h"
+#include "Track/TrackRun.h"
 #include "FixedAlgebra/FTps.h"
 
 #include "BasicActions/Option.h"
@@ -523,6 +524,9 @@ int opalMain(int argc, char *argv[]) {
                        OpalData::getInstance()->getProblemCharacteristicValues());
 
     Ippl::Comm->barrier();
+    // Before clearDictionary() and before Ippl is torn down: the tracker is held in a
+    // static shared_ptr and would otherwise be destroyed after MPI_Finalize.
+    TrackRun::releaseTracker();
     _Fieldmap::clearDictionary();
     OpalData::deleteInstance();
     delete gmsg;

@@ -9,6 +9,7 @@ extern Inform *gmsg;
 #include "Parser/FileStream.h"
 #include "Utilities/OpalException.h"
 #include "Fields/Fieldmap.h"
+#include "Track/TrackRun.h"
 #include "Structure/IpplInfoWrapper.h"
 #include "Utilities/Options.h"
 
@@ -84,6 +85,10 @@ int run_opal(char */*args*/[], std::string inputfile, int restartStep,
 
     // cleanup
     //OPAL->reset();
+    // Same reason as in Main.cpp. This path is used by the optimiser, which calls
+    // run_opal() once per design evaluation in the same process, so leaving the tracker
+    // alive here also keeps a second copy of every field map resident.
+    TrackRun::releaseTracker();
     OpalData::deleteInstance();
     _Fieldmap::clearDictionary();
     delete parser;
