@@ -96,6 +96,10 @@ void _FM3DH5BlockBase::getFieldInfo (const char* name) {
             " in file '" + Filename_m + "' failed!");
     }
 
+    inv_hx_m = 1.0 / hx_m;
+    inv_hy_m = 1.0 / hy_m;
+    inv_hz_m = 1.0 / hz_m;
+
     if (H5Block3dGetFieldOrigin(
             file_m, "Efield", &xbegin_m, &ybegin_m, &zbegin_m) == H5_ERR) {
         throw GeneralClassicException (
