@@ -276,6 +276,9 @@ bool _FM3DH5BlockBase::tryMapComponents (
     ) {
     static bool disabled = (std::getenv ("OPAL_NO_MMAP_FIELDMAPS") != nullptr);
     if (disabled) {
+        INFOMSG (level1
+                 << "field map '" << Filename_m << "' " << name
+                 << ": reading into private memory (OPAL_NO_MMAP_FIELDMAPS is set)" << endl);
         return false;
     }
 
@@ -289,13 +292,13 @@ bool _FM3DH5BlockBase::tryMapComponents (
             for (int j = 0; j < 3; ++ j) {
                 comp[j]->reset ();
             }
-            INFOMSG (level3
+            INFOMSG (level1
                      << "field map '" << Filename_m << "' " << name
                      << ": reading into private memory (" << why << ")" << endl);
             return false;
         }
     }
-    INFOMSG (level3
+    INFOMSG (level1
              << "field map '" << Filename_m << "' " << name
              << ": mapped read-only, "
              << (3 * n * sizeof (double)) / (1024 * 1024) << " MiB shared per node" << endl);
