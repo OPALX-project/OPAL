@@ -702,14 +702,20 @@ void PartBunchBase<T, Dim>::boundp_destroyCycl() {
         pbin_m->updatePartInBin_cyc(countLost.get());
     }
 
-    /* we also need to update the number of particles per bunch
-     * expensive since does an allreduce!
-     */
-    countTotalNumPerBunch();
-
     IpplTimings::startTimer(boundpUpdateTimer_m);
     update();
     IpplTimings::stopTimer(boundpUpdateTimer_m);
+
+    /* we also need to update the number of particles per bunch
+     * expensive since does an allreduce!
+     *
+     * This has to come after update(): destroy() above only queues the
+     * particles, update() is what removes them. Counting before it left the
+     * per-bunch totals holding the remotely deleted particles, and the next
+     * deleteParticle() then failed its consistency check
+     * ("Total number of particles N != N+k (sum over all bunches)").
+     */
+    countTotalNumPerBunch();
 
     IpplTimings::stopTimer(boundpTimer_m);
 }
