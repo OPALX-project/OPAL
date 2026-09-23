@@ -2631,8 +2631,9 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
     FDext_m[0] = extB_m * Units::kG2T;
     FDext_m[1] = extE_m;        // kV/mm? -DW
 
-    // Save the stat file
-    itsDataSink->dumpSDDS(itsBunch_m, FDext_m, azimuth_m);
+    // Save the stat file, with the time step we integrate with (cf. initializeTracking_m)
+    itsDataSink->dumpSDDS(itsBunch_m, FDext_m, azimuth_m,
+                          itsBunch_m->getdT() * getHarmonicNumber());
 
     // If we are in local mode, transform back after saving
     if (Options::psDumpFrame != DumpFrame::GLOBAL) {

@@ -44,8 +44,11 @@ public:
      *  - FDext[3] = E at reference particle location (in x, y and z).
      *  - FDext[4] = B at tail particle location (in x, y, and z).
      *  - FDext[5] = E at tail particle location (in x, y, and z).
+     * \param timeStep The integration time step [s] written as 'dt'. This is beam->getdT(), except in
+     * OPAL-cycl, which integrates with getdT() times the harmonic number.
      */
     void write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
+               const double& timeStep,
                const losses_t &losses = losses_t(), const double& azimuth = -1,
                const size_t npOutside = 0);
 
