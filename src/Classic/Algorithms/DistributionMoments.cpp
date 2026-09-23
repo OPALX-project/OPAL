@@ -463,9 +463,9 @@ void DistributionMoments::computeDebyeLength(PartBunchBase<double, 3> const& bun
     }
     allreduce(tempAvg, 1, std::plus<double>());
 
-    // Compute the average temperature k_B T in units of kg m^2/s^2, where k_B is 
-    // Boltzmann constant
-    temperature_m = (1.0/3.0) * Units::eV2kg * Units::GeV2eV * Physics::m_e * (tempAvg/N);
+    // Compute the average temperature k_B T in units of kg m^2/s^2, where k_B is
+    // Boltzmann constant, with the rest mass of the bunch's particles (getM() in eV)
+    temperature_m = (1.0/3.0) * Units::eV2kg * bunch_r.getM() * (tempAvg/N);
 
     debyeLength_m = std::sqrt((temperature_m * Physics::epsilon_0) / 
                               (density * std::pow(Physics::q_e,2)));
