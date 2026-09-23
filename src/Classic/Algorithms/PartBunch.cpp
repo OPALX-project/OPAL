@@ -509,10 +509,14 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
         double tmp2 = 1.0 / (hr_scaled[0] * hr_scaled[1] * hr_scaled[2]);
         rho_m *= tmp2;
 
-        double Npoints = nr_m[0] * nr_m[1] * nr_m[2];
-        rmsDensity_m = std::sqrt((1.0 /Npoints) * sum((rho_m / Physics::q_e) * (rho_m / Physics::q_e)));
+        // Diagnostics for the stat file only: a field reduction and two particle passes
+        // with collectives, skipped when the tracker says no stat row needs them.
+        if (computeSCDiagnostics_m) {
+            double Npoints = nr_m[0] * nr_m[1] * nr_m[2];
+            rmsDensity_m = std::sqrt((1.0 /Npoints) * sum((rho_m / Physics::q_e) * (rho_m / Physics::q_e)));
 
-        calcDebyeLength(); 
+            calcDebyeLength();
+        }
 
         // If debug flag is set, dump scalar field (charge density 'rho') into file under ./data/
 #ifdef DBG_SCALARFIELD

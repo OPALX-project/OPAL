@@ -2809,6 +2809,17 @@ bool ParallelCyclotronTracker::isTurnDone() {
     return (step_m > 10) && (((step_m + 1) %setup_m.stepsPerTurn) == 0);
 }
 
+bool ParallelCyclotronTracker::statDumpBeforeNextSolve_m() const {
+    // The stat-row condition of update_m(), with isTurnDone(), for each step this solve covers.
+    for (long long step = step_m; step < step_m + setup_m.scSolveFreq; ++step) {
+        const bool turnDone = (step > 10) && (((step + 1) % setup_m.stepsPerTurn) == 0);
+        if (((step + 1) % Options::statDumpFreq == 0) || (Options::psDumpEachTurn && turnDone)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void ParallelCyclotronTracker::update_m(double& t, const double& dt,
                                         const bool& finishedTurn)
 {
@@ -3165,6 +3176,7 @@ void ParallelCyclotronTracker::bunchMode_m(double& t, const double dt, bool& fin
     if (itsBunch_m->hasFieldSolver()) {
 
         if (step_m % setup_m.scSolveFreq == 0) {
+            itsBunch_m->setComputeSCDiagnostics(statDumpBeforeNextSolve_m());
             computeSpaceChargeFields_m();
         } else {
             // If we are not solving for the space charge fields at this time step

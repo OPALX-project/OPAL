@@ -144,6 +144,11 @@ public:
     /** \brief Compute the (global) Debye length for the beam */
     void calcDebyeLength();
 
+    /// Whether computeSelfFields_cycl(double) also evaluates the rms density and the
+    /// Debye length. They are only written to the stat file, so a tracker that knows no
+    /// stat row follows before the next solve can switch them off. On by default.
+    void setComputeSCDiagnostics(bool compute) { computeSCDiagnostics_m = compute; }
+
     /** \brief Get gamma of one bin */
     double getBinGamma(int bin);
 
@@ -662,6 +667,9 @@ protected:
 
     //RMS number density of particles from grid
     double rmsDensity_m;
+
+    /// See setComputeSCDiagnostics().
+    bool computeSCDiagnostics_m = true;
 
     /// meshspacing of cartesian mesh
     Vector_t hr_m;

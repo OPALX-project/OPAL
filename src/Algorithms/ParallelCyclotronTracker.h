@@ -481,6 +481,10 @@ private:
     /// Check if turn done
     bool isTurnDone();
 
+    /// True if update_m() writes a stat row at any step from now up to the next space-charge
+    /// solve, i.e. if this solve's plasma diagnostics will be written.
+    bool statDumpBeforeNextSolve_m() const;
+
     /// Update time and path length, write to output files
     void update_m(double& t, const double& dt, const bool& finishedTurn);
 
