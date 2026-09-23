@@ -21,6 +21,7 @@
 #include <cfloat>
 #include <memory>
 #include <utility>
+#include <vector>
 
 #include "FixedAlgebra/FMatrix.h"
 #include "FixedAlgebra/FVector.h"
@@ -497,8 +498,24 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
         /// mesh the whole domain
         resizeMesh();
 
+        /// Particles flagged lost (Bin < 0) stay in the bunch until the tracker deletes them,
+        /// every DELPARTFREQ steps. Leave their charge off the mesh, as setBinCharge() does in
+        /// the multi-bunch solve. Q itself is restored: the integrator, ScatteringPhysics and
+        /// the loss records still read it.
+        std::vector<std::pair<size_t, double>> lostCharge;
+        for (size_t i = 0; i < getLocalNum(); ++i) {
+            if (this->Bin[i] < 0) {
+                lostCharge.emplace_back(i, this->Q[i]);
+                this->Q[i] = 0.0;
+            }
+        }
+
         /// scatter particles charge onto grid.
         this->Q.scatter(this->rho_m, this->R, IntrplCIC_t());
+
+        for (const auto& lost : lostCharge) {
+            this->Q[lost.first] = lost.second;
+        }
 
         /// Lorentz transformation
         /// In particle rest frame, the longitudinal length (y for cyclotron) enlarged
