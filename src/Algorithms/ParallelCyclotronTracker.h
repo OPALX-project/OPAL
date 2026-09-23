@@ -296,8 +296,9 @@ private:
 
     void computePathLengthUpdate(std::vector<double>& dl, const double& dt);
 
-    // external field arrays for dumping
-    Vector_t FDext_m[2], extE_m, extB_m;
+    // external field arrays for dumping: {B-head, E-head, B-ref, E-ref, B-tail, E-tail} in the
+    // order H5Writer::writePhaseSpace() reads them; the stat file reads only the first two
+    Vector_t FDext_m[6], extE_m, extB_m;
 
     const int myNode_m;
     const size_t initialLocalNum_m;

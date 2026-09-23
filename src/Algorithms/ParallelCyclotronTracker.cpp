@@ -1177,7 +1177,7 @@ void ParallelCyclotronTracker::execute() {
         lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(bgf_m->getOpalName(),!Options::asciidump));
 
     // External field arrays for dumping
-    for (int k = 0; k < 2; k++) {
+    for (int k = 0; k < 6; k++) {
         FDext_m[k] = Vector_t({0.0, 0.0, 0.0});
     }
     extE_m = Vector_t({0.0, 0.0, 0.0});
@@ -2776,8 +2776,12 @@ void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
             globalToLocal(extE_m, phi, psi);
         }
 
-        FDext_m[0] = extB_m * Units::kG2T;
-        FDext_m[1] = extE_m;
+        // The field is evaluated only at the reference point (meanR), so B-ref/E-ref, and
+        // B-head/E-head and B-tail/E-tail for want of separate samples, all hold that value.
+        for (int k = 0; k < 6; k += 2) {
+            FDext_m[k]     = extB_m * Units::kG2T;
+            FDext_m[k + 1] = extE_m;
+        }
 
         lastDumpedStep_m = itsDataSink->dumpH5(itsBunch_m, // Local and in m
                                                FDext_m, E,
