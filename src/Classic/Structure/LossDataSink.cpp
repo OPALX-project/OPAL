@@ -384,7 +384,7 @@ bool LossDataSink::save(unsigned int numSets, OpalData::OpenMode openMode) {
     spos_m            = std::vector<double>();
     refTime_m         = std::vector<double>();
     RefPartR_m        = std::vector<Vector_t>();
-    RefPartR_m        = std::vector<Vector_t>();
+    RefPartP_m        = std::vector<Vector_t>();
     globalTrackStep_m = std::vector<h5_int64_t>();
 
     return true;
