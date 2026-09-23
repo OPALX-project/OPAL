@@ -66,6 +66,7 @@ public:
     void dumpH5(PartBunchBase<double, 3>* beam, Vector_t FDext[]) const;
 
     int dumpH5(PartBunchBase<double, 3>* beam, Vector_t FDext[], double meanEnergy,
+               int refSource,
                double refPr, double refPt, double refPz,
                double refR, double refTheta, double refZ,
                double azimuth, double elevation, bool local) const;

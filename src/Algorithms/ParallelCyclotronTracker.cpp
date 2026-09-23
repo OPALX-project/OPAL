@@ -1165,6 +1165,7 @@ void ParallelCyclotronTracker::execute() {
     turnnumber_m    = 1;
     azimuth_m       = -1.0;
     prevAzimuth_m   = -1.0;
+    refLostWarned_m = false;
 
     // Record how many bunches have already been injected. ONLY FOR MPM
     if (isMultiBunch())
@@ -2709,12 +2710,14 @@ bool ParallelCyclotronTracker::setRefPartForDump_m(Vector_t& refR, Vector_t& ref
         // No rank holds ID 0 any more - it was lost. The centroid is the only well-defined
         // fallback: the last values or another particle would pass for ID 0, and NaN would
         // stop OPAL's own SDDS parser (restart, optimiser) from reading the stat file.
-        static bool warned = false;
-        if (!warned) {
-            warned = true;
-            *gmsg << "* Warning: the reference particle (ID 0) is no longer in the bunch; "
-                  << "falling back to the bunch mean for the reference values and the dump frame."
-                  << endl;
+        // REFSOURCE = 2 marks every such phase-space dump; the message is once per run.
+        if (!refLostWarned_m) {
+            refLostWarned_m = true;
+            *gmsg << "* Warning: at integration step " << step_m + 1
+                  << " the reference particle (ID 0) is no longer in the bunch; falling back to "
+                  << "the bunch mean for the reference values and the dump frame of this and "
+                  << "all later dumps (H5 step attribute REFSOURCE = 2 in the GLOBAL and "
+                  << "REFERENCE dump frames)." << endl;
         }
         refR = calcMeanR();
         refP = calcMeanP();
@@ -2742,12 +2745,16 @@ void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
 
     // Collective, and in every mode: the RefPartR/RefPartP step attributes. If ID 0 has been
     // lost, meanR/meanP are already the centroid.
-    setRefPartForDump_m(meanR, meanP);
+    const bool haveRef = setRefPartForDump_m(meanR, meanP);
+
+    // What the REF* step attributes describe, written as REFSOURCE (see H5Writer.h)
+    int refSource = haveRef ? 0 : 2;
 
     // in case of multi-bunch mode take always bunch mean (although it takes all bunches)
     if (Options::psDumpFrame == DumpFrame::BUNCH_MEAN || isMultiBunch()) {
         meanR = calcMeanR();
         meanP = calcMeanP();
+        refSource = 1;
     }
 
     double const betagamma_temp = euclidean_norm(meanP);
@@ -2816,6 +2823,7 @@ void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
 
         lastDumpedStep_m = itsDataSink->dumpH5(itsBunch_m, // Local and in m
                                                FDext_m, E,
+                                               refSource,            // what REF* describe
                                                referencePr,
                                                referencePt,
                                                referencePz,

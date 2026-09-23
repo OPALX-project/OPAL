@@ -441,6 +441,9 @@ private:
     /// a warning, once) and false is returned. Collective; called by both dumps.
     bool setRefPartForDump_m(Vector_t& refR, Vector_t& refP);
 
+    /// setRefPartForDump_m() has reported the loss of ID 0 in this run
+    bool refLostWarned_m = false;
+
     void bunchDumpPhaseSpaceData();
 
     void evaluateSpaceChargeField();

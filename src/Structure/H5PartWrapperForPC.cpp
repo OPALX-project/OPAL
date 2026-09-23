@@ -291,6 +291,7 @@ void H5PartWrapperForPC::writeHeader() {
     WRITESTRINGFILEATTRIB(file_m, "REFZUnit",         "mm");
     WRITESTRINGFILEATTRIB(file_m, "REFAZIMUTHUnit",   "deg");
     WRITESTRINGFILEATTRIB(file_m, "REFELEVATIONUnit", "deg");
+    WRITESTRINGFILEATTRIB(file_m, "REFSOURCEUnit",    "1");
 
     WRITESTRINGFILEATTRIB(file_m, "spos-headUnit", "m");
     WRITESTRINGFILEATTRIB(file_m, "spos-refUnit",  "m");
@@ -414,6 +415,9 @@ void H5PartWrapperForPC::writeStepHeader(PartBunchBase<double, 3>* bunch,
         h5_float64_t refz      = additionalStepAttributes.at("REFZ");
         h5_float64_t azimuth   = additionalStepAttributes.at("AZIMUTH");
         h5_float64_t elevation = additionalStepAttributes.at("ELEVATION");
+        // 0: REF* describe the reference particle (ID 0); 1: the bunch centroid (BUNCH_MEAN
+        // frame, multi-bunch); 2: the bunch centroid because ID 0 has been lost
+        h5_int64_t   refsource = static_cast<h5_int64_t>(additionalStepAttributes.at("REFSOURCE"));
 
         Vector_t referenceB({additionalStepAttributes.at("B-ref_x"),
                             additionalStepAttributes.at("B-ref_z"),
@@ -442,6 +446,7 @@ void H5PartWrapperForPC::writeStepHeader(PartBunchBase<double, 3>* bunch,
         WRITESTEPATTRIB(Float64, file_m, "REFZ",      &refz, 1);
         WRITESTEPATTRIB(Float64, file_m, "AZIMUTH",   &azimuth, 1);
         WRITESTEPATTRIB(Float64, file_m, "ELEVATION", &elevation, 1);
+        WRITESTEPATTRIB(Int64,   file_m, "REFSOURCE", &refsource, 1);
 
         WRITESTEPATTRIB(Float64, file_m, "spos-head", &sposHead, 1);
         WRITESTEPATTRIB(Float64, file_m, "spos-ref",  &sposRef,  1);
