@@ -128,6 +128,15 @@ protected:
         std::size_t n
         );
 
+    /// Collective over Ippl::getComm(): true if any sample of the three components is
+    /// nonzero. Each rank scans an equal share, so every sample is read once per job
+    /// and all ranks get the same answer.
+    bool anyNonZero (
+        const FieldArray& x,
+        const FieldArray& y,
+        const FieldArray& z
+        ) const;
+
     void closeFile (
         void);
 
@@ -257,6 +266,11 @@ protected:
     FieldArray FieldstrengthEz_m;    /**< 3D array with Ez */
     FieldArray FieldstrengthEx_m;    /**< 3D array with Ex */
     FieldArray FieldstrengthEy_m;    /**< 3D array with Ey */
+
+    /// False once readMap() has found every Efield sample to be exactly zero; the E arrays
+    /// are then released and never interpolated. Only readMap() implementations that scan
+    /// clear it.
+    bool hasE_m = true;
 
     double xbegin_m;
     double xend_m;

@@ -53,6 +53,11 @@ public:
 
     const double* data() const { return data_m; }
 
+    /// True if any sample in [begin, end) is nonzero; NaN counts as nonzero. For a mapped
+    /// array the range is read with sequential readahead: this is a one-off pass, not the
+    /// random gather of tracking.
+    bool anyNonZero(std::size_t begin, std::size_t end) const;
+
     /// True when the samples are a view of a mapped file rather than our own buffer.
     /// Callers that modify the samples in place must check this.
     bool isMapped() const { return mapping_m != nullptr; }

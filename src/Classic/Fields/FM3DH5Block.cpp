@@ -43,7 +43,7 @@ FM3DH5Block _FM3DH5Block::create(const std::string& filename)
 
 void _FM3DH5Block::readMap (
     ) {
-    if (!FieldstrengthEz_m.empty()) {
+    if (loaded_m) {
         return;
     }
     openFileMPIOCollective (Filename_m);
@@ -53,46 +53,76 @@ void _FM3DH5Block::readMap (
     size_t field_size = num_gridpx_m * num_gridpy_m * num_gridpz_m;
 
     // One physical copy per node instead of one per rank, when the file allows it.
+    bool mapped = false;
     if (tryMapComponents ("Efield", last_step,
                           FieldstrengthEx_m, FieldstrengthEy_m, FieldstrengthEz_m, field_size)) {
         if (tryMapComponents ("Hfield", last_step,
                               FieldstrengthHx_m, FieldstrengthHy_m,
                               FieldstrengthHz_m, field_size)) {
-            closeFile ();
-            return;
+            mapped = true;
+        } else {
+            FieldstrengthEx_m.reset ();
+            FieldstrengthEy_m.reset ();
+            FieldstrengthEz_m.reset ();
         }
+    }
+    if (!mapped) {
+        FieldstrengthEx_m.allocate (field_size);
+        FieldstrengthEy_m.allocate (field_size);
+        FieldstrengthEz_m.allocate (field_size);
+        FieldstrengthHx_m.allocate (field_size);
+        FieldstrengthHy_m.allocate (field_size);
+        FieldstrengthHz_m.allocate (field_size);
+
+        readField (
+            "Efield",
+            FieldstrengthEx_m.mutableData(),
+            FieldstrengthEy_m.mutableData(),
+            FieldstrengthEz_m.mutableData());
+        readField (
+            "Hfield",
+            FieldstrengthHx_m.mutableData(),
+            FieldstrengthHy_m.mutableData(),
+            FieldstrengthHz_m.mutableData());
+    }
+    closeFile ();
+
+    // A group that is zero everywhere, such as the Efield of a static magnet map or the
+    // Hfield of an E-only RF export, costs as much to interpolate as a real one and adds
+    // exactly nothing. Find out once, release it, and skip it in getFieldstrength().
+    // Proving a group zero means reading all of it, so on the mapped path this reads each
+    // zero group from disk once per job at startup, split across the ranks.
+    hasE_m = anyNonZero (FieldstrengthEx_m, FieldstrengthEy_m, FieldstrengthEz_m);
+    hasH_m = anyNonZero (FieldstrengthHx_m, FieldstrengthHy_m, FieldstrengthHz_m);
+    if (!hasE_m) {
         FieldstrengthEx_m.reset ();
         FieldstrengthEy_m.reset ();
         FieldstrengthEz_m.reset ();
+        INFOMSG (level1
+                 << "field map '" << Filename_m << "' Efield: zero everywhere, not interpolated"
+                 << endl);
     }
-    FieldstrengthEx_m.allocate (field_size);
-    FieldstrengthEy_m.allocate (field_size);
-    FieldstrengthEz_m.allocate (field_size);
-    FieldstrengthHx_m.allocate (field_size);
-    FieldstrengthHy_m.allocate (field_size);
-    FieldstrengthHz_m.allocate (field_size);
+    if (!hasH_m) {
+        FieldstrengthHx_m.reset ();
+        FieldstrengthHy_m.reset ();
+        FieldstrengthHz_m.reset ();
+        INFOMSG (level1
+                 << "field map '" << Filename_m << "' Hfield: zero everywhere, not interpolated"
+                 << endl);
+    }
+    loaded_m = true;
 
-    readField (
-        "Efield",
-        FieldstrengthEx_m.mutableData(),
-        FieldstrengthEy_m.mutableData(),
-        FieldstrengthEz_m.mutableData());
-    readField (
-        "Hfield",
-        FieldstrengthHx_m.mutableData(),
-        FieldstrengthHy_m.mutableData(),
-        FieldstrengthHz_m.mutableData());
-
-    closeFile ();
-    INFOMSG (level3
-             << typeset_msg("3d dynamic fieldmap '"
-                            + Filename_m  + "' (H5hut format) read", "info")
-             << endl);
+    if (!mapped) {
+        INFOMSG (level3
+                 << typeset_msg("3d dynamic fieldmap '"
+                                + Filename_m  + "' (H5hut format) read", "info")
+                 << endl);
+    }
 }
 
 void _FM3DH5Block::freeMap (
     ) {
-    if(FieldstrengthEz_m.empty ()) {
+    if (!loaded_m) {
         return;
     }
     FieldstrengthEx_m.reset ();
@@ -101,6 +131,9 @@ void _FM3DH5Block::freeMap (
     FieldstrengthHx_m.reset ();
     FieldstrengthHy_m.reset ();
     FieldstrengthHz_m.reset ();
+    hasE_m   = true;
+    hasH_m   = true;
+    loaded_m = false;
 }
 
 bool _FM3DH5Block::getFieldstrength (
@@ -111,7 +144,12 @@ bool _FM3DH5Block::getFieldstrength (
     if (!isInside(R)) {
         return true;
     }
-    E += interpolateTrilinearly (FieldstrengthEx_m, FieldstrengthEy_m, FieldstrengthEz_m, R);
-    B += interpolateTrilinearly (FieldstrengthHx_m, FieldstrengthHy_m, FieldstrengthHz_m, R);
+    // Skipping a zero group is exact: its interpolation would add a signed zero.
+    if (hasE_m) {
+        E += interpolateTrilinearly (FieldstrengthEx_m, FieldstrengthEy_m, FieldstrengthEz_m, R);
+    }
+    if (hasH_m) {
+        B += interpolateTrilinearly (FieldstrengthHx_m, FieldstrengthHy_m, FieldstrengthHz_m, R);
+    }
     return false;
 }

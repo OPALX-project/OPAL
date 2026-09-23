@@ -19,6 +19,7 @@
 #include "Fields/FM3DH5BlockBase.h"
 
 #include <cstdlib>
+#include <limits>
 #include "Fields/Fieldmap.hpp"
 #include "Physics/Physics.h"
 #include "Utilities/GeneralClassicException.h"
@@ -156,6 +157,25 @@ void _FM3DH5BlockBase::readField (
     }
 }
 
+bool _FM3DH5BlockBase::anyNonZero (
+    const FieldArray& x,
+    const FieldArray& y,
+    const FieldArray& z
+    ) const {
+    const std::size_t n     = x.size ();
+    const std::size_t nodes = Ippl::getNodes ();
+    const std::size_t rank  = Ippl::myNode ();
+    const std::size_t begin = n * rank / nodes;
+    const std::size_t end   = n * (rank + 1) / nodes;
+
+    int local = (x.anyNonZero (begin, end) ||
+                 y.anyNonZero (begin, end) ||
+                 z.anyNonZero (begin, end)) ? 1 : 0;
+    int global = 0;
+    MPI_Allreduce (&local, &global, 1, MPI_INT, MPI_MAX, Ippl::getComm ());
+    return global != 0;
+}
+
 void _FM3DH5BlockBase::closeFile (void) {
     if (H5CloseFile (file_m) == H5_ERR) {
         throw GeneralClassicException (
@@ -243,6 +263,15 @@ void _FM3DH5BlockBase::getOnaxisEz (
 
     double Ez_max = 0.0;
     const double dz = (zend_m - zbegin_m) / (num_gridpz_m - 1);
+    if (!hasE_m) {
+        // readMap() released an Efield that is zero everywhere. Normalising the zero
+        // profile below used to give 0/0, so return the same NaN the arrays would have.
+        for (unsigned long int i = 0; i < num_gridpz_m; i++) {
+            F[i].first  = dz * i;
+            F[i].second = std::numeric_limits<double>::quiet_NaN();
+        }
+        return;
+    }
     const int index_x = -static_cast<int>(std::floor(xbegin_m / hx_m));
     const double lever_x = -xbegin_m / hx_m - index_x;
 

@@ -48,6 +48,12 @@ private:
     FieldArray FieldstrengthHx_m;    /**< 3D array with Hx */
     FieldArray FieldstrengthHy_m;    /**< 3D array with Hy */
 
+    /// False once readMap() has found every Hfield sample to be exactly zero.
+    bool hasH_m = true;
+
+    /// readMap() has run. The arrays cannot tell any more: a zero group is released.
+    bool loaded_m = false;
+
     friend class _Fieldmap;
     friend class _FM3DH5BlockBase;
 };

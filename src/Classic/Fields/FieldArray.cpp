@@ -24,7 +24,15 @@
 #include <sys/mman.h>
 #include <unistd.h>
 
+#include <algorithm>
 #include <cstdint>
+
+namespace {
+    // The access pattern during tracking is an 8-corner gather per particle, i.e.
+    // effectively random over a multi-GB region, so tell the kernel not to bother with
+    // readahead.
+    constexpr int trackingAdvice = MADV_RANDOM;
+}
 
 void FieldArray::allocate(std::size_t n) {
     reset();
@@ -117,9 +125,7 @@ bool FieldArray::tryMap(const std::string& filename,
     close(fd);   // the mapping keeps its own reference to the file
     if (p == MAP_FAILED) { why = "mmap failed"; return false; }
 
-    // The access pattern is an 8-corner gather per particle, i.e. effectively random over
-    // a multi-GB region, so tell the kernel not to bother with readahead.
-    madvise(p, bytes, MADV_RANDOM);
+    madvise(p, bytes, trackingAdvice);
 
     reset();
     mapping_m  = p;
@@ -127,4 +133,40 @@ bool FieldArray::tryMap(const std::string& filename,
     data_m     = reinterpret_cast<const double*>(static_cast<const char*>(p) + delta);
     size_m     = expectedSamples;
     return true;
+}
+
+bool FieldArray::anyNonZero(std::size_t begin, std::size_t end) const {
+    end = std::min(end, size_m);
+    if (begin >= end) {
+        return false;
+    }
+
+    void* adviseBase = nullptr;
+    std::size_t adviseBytes = 0;
+    if (mapping_m != nullptr) {
+        // madvise wants a page-aligned start; rounding down stays inside the mapping,
+        // whose base is page aligned.
+        const std::uintptr_t pageMask = static_cast<std::uintptr_t>(sysconf(_SC_PAGESIZE)) - 1;
+        const std::uintptr_t lo = reinterpret_cast<std::uintptr_t>(data_m + begin) & ~pageMask;
+        const std::uintptr_t hi = reinterpret_cast<std::uintptr_t>(data_m + end);
+        adviseBase  = reinterpret_cast<void*>(lo);
+        adviseBytes = hi - lo;
+        madvise(adviseBase, adviseBytes, MADV_SEQUENTIAL);
+    }
+
+    // A block at a time, so the inner loop has no early exit and vectorises.
+    // x != 0.0 is also true for NaN, which must not be mistaken for an empty field.
+    constexpr std::size_t block = 4096;
+    bool found = false;
+    for (std::size_t i = begin; i < end && !found; i += block) {
+        const std::size_t stop = std::min(i + block, end);
+        for (std::size_t j = i; j < stop; ++j) {
+            found |= (data_m[j] != 0.0);
+        }
+    }
+
+    if (adviseBase != nullptr) {
+        madvise(adviseBase, adviseBytes, trackingAdvice);
+    }
+    return found;
 }
