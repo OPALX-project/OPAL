@@ -187,9 +187,9 @@ void StatWriter::fillHeader(const losses_t &losses) {
     }
 
     if (OpalData::getInstance()->isInOPALCyclMode()) {
-        columns_m.addColumn("halo_x", "double", "1", "Halo in x");
-        columns_m.addColumn("halo_y", "double", "1", "Halo in y");
-        columns_m.addColumn("halo_z", "double", "1", "Halo in z");
+        columns_m.addColumn("halo_x", "double", "1", "Halo in x (kurtosis of x minus HALOSHIFT)");
+        columns_m.addColumn("halo_y", "double", "1", "Halo in y (kurtosis of y minus HALOSHIFT)");
+        columns_m.addColumn("halo_z", "double", "1", "Halo in z (kurtosis of z minus HALOSHIFT)");
 
         columns_m.addColumn("azimuth", "double", "deg",
                             "Azimuth in global coordinates");

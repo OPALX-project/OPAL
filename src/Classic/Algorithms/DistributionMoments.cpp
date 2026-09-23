@@ -113,8 +113,9 @@ void DistributionMoments::computeMeans(const InputIt &first, const InputIt &last
  * --> 1st order moments: 0, ..., 2 * Dim - 1
  * --> 2nd order moments: 2 * Dim, ..., Dim * ( 2 * Dim + 1 )
  * --> 3rd order moments: Dim * ( 2 * Dim + 1 ) + 1, ..., Dim * ( 2 * Dim + 1 ) + Dim
- * (only, <x^3>, <y^3> and <z^3>)
+ * (only, central <dx^3>, <dy^3> and <dz^3>, interleaved with the 4th order moments)
  * --> 4th order moments: Dim * ( 2 * Dim + 1 ) + Dim + 1, ..., Dim * ( 2 * Dim + 1 ) + 2 * Dim
+ * (only, central <dx^4>, <dy^4> and <dz^4>)
  *
  * For a 6x6 matrix we have each 2nd order moment (except diagonal
  * entries) twice. We only store the upper half of the matrix.
@@ -144,9 +145,10 @@ void DistributionMoments::computeStatistics(const InputIt &first, const InputIt 
         localStatistics[l++] += std::pow(particle.getTime() - meanTime_m, 2);
 
         for (unsigned int i = 0; i < 3; ++ i, l += 2) {
-            double r2 = std::pow(particle[i], 2);
-            localStatistics[l] += r2 * particle[i];
-            localStatistics[l + 1] += r2 * r2;
+            double dr = particle[2 * i] - meanR_m(i);
+            double dr2 = dr * dr;
+            localStatistics[l] += dr2 * dr;
+            localStatistics[l + 1] += dr2 * dr2;
         }
 
         double eKin = Util::getKineticEnergy(particle.getP(), particle.getMass());
@@ -392,14 +394,13 @@ void DistributionMoments::fillMembers(std::vector<double> const& localMoments) {
 
     stdTime_m = localMoments[l++] * perParticle;
 
+    // halo parameter: kurtosis <dr^4> / <dr^2>^2 of the positions, from the
+    // central moments accumulated in computeStatistics
     for (unsigned int i = 0; i < 3; ++ i, l += 2) {
-        double w1 = centroid_m[2 * i] * perParticle;
-        double w2 = moments_m(2 * i , 2 * i);
-        double w3 = localMoments[l] * perParticle;
-        double w4 = localMoments[l + 1] * perParticle;
-        double tmp = w2 - std::pow(w1, 2);
+        double variance = localMoments[2 * i] * perParticle;
+        double fourthMoment = localMoments[l + 1] * perParticle;
 
-        halo_m(i) = (w4 + w1 * (-4 * w3 + 3 * w1 * (tmp + w2))) / tmp;
+        halo_m(i) = fourthMoment / std::pow(variance, 2);
         halo_m(i) -= Options::haloShift;
     }
 
