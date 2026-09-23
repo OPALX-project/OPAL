@@ -297,6 +297,16 @@ private:
     // Necessary for quick and dirty phase output -DW
     int waitingGap_m = 1;
 
+    /// BANDRF only: the midplane map is zero everywhere and there are no trim coils, so
+    /// in the interior of the map it contributes nothing and only its radial extent matters
+    /// (see midplaneMapInterior()).
+    bool midplaneMapIsZero_m = false;
+
+    /// True if the midplane map is known to give a zero field at R: R lies strictly inside
+    /// its radial range, where interpolate() is guaranteed to succeed, off the axis, with
+    /// a finite z.
+    bool midplaneMapInterior(const Vector_t& R) const;
+
 protected:
     // object of Matrices including magnetic field map and its derivates
     BfieldData Bfield_m;
