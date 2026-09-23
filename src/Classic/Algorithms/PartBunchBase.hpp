@@ -690,13 +690,22 @@ void PartBunchBase<T, Dim>::boundp_destroyCycl() {
 
     for (int i = 0; i < dimIdx; i++) {
         double length = std::abs(rmax_m[i] - rmin_m[i]);
-        rmax_m[i] += dh_m * length;
-        rmin_m[i] -= dh_m * length;
+        if (length < 1e-10) {
+            rmax_m[i] += 1e-10;
+            rmin_m[i] -= 1e-10;
+        } else {
+            rmax_m[i] += dh_m * length;
+            rmin_m[i] -= dh_m * length;
+        }
         hr_m[i]    = (rmax_m[i] - rmin_m[i]) / (nr_m[i] - 1);
     }
 
-    // rescale mesh
-    this->updateFields(hr_m, rmin_m);
+    // rescale mesh, with the same origin as boundp(). With the origin at rmin_m instead,
+    // every call moved all rank boundaries by half a cell, and the next boundp() moved them
+    // back: the particles near each cut changed owner twice, and the push in between ran in
+    // a skewed decomposition.
+    Vector_t origin = rmin_m - Vector_t({hr_m[0] / 2.0, hr_m[1] / 2.0, hr_m[2] / 2.0});
+    this->updateFields(hr_m, origin);
 
     if (weHaveBins()) {
         pbin_m->updatePartInBin_cyc(countLost.get());
