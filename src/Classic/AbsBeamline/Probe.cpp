@@ -101,6 +101,8 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
     for (unsigned int i = 0; i < tempnum; ++i) {
         double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m; // [m]
         if (std::abs(dist1) > reach) continue;
+        // flagged lost (Bin < 0) but not deleted yet: the tracker deletes every DELPARTFREQ steps
+        if (bunch->Bin[i] < 0) continue;
         double tangle = calculateIncidentAngle(bunch->P[i](0), bunch->P[i](1));
         changeWidth(bunch, i, tstep, tangle);
         int pflag = checkPoint(bunch->R[i](0), bunch->R[i](1));

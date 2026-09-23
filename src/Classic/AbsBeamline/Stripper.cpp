@@ -119,6 +119,8 @@ bool Stripper::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, co
 
     for (unsigned int i = 0; i < tempnum; ++i) {
         if (bunch->POrigin[i] != ParticleOrigin::REGULAR) continue;
+        // already lost (Bin < 0) and recorded, waiting for the tracker to delete it
+        if (bunch->Bin[i] < 0) continue;
 
         double tangle = calculateIncidentAngle(bunch->P[i](0), bunch->P[i](1));
         changeWidth(bunch, i, tstep, tangle);

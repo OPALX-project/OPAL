@@ -185,6 +185,9 @@ void ParallelCyclotronTracker::bgf_main_collision_test() {
 
     int triId = 0;
     for (size_t i = 0; i < itsBunch_m->getLocalNum(); i++) {
+        // already lost (Bin < 0) and recorded, waiting for deleteParticle()
+        if (itsBunch_m->Bin[i] < 0) continue;
+
         int res = bgf_m->partInside(itsBunch_m->R[i], itsBunch_m->P[i],
                                     dtime, intecoords, triId);
         if (res >= 0) {
