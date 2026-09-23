@@ -21,6 +21,9 @@
 
 #include "Algorithms/PartBunchBase.h"
 
+#include <cstddef>
+#include <functional>
+
 class PartBunch: public PartBunchBase<double, 3> {
 
 public:
@@ -86,6 +89,26 @@ public:
     void computeSelfFields_cycl(double gamma);
     void computeSelfFields_cycl(int b);
 
+    /// Per-particle predicate on the local index, for scatterMasked() and gatherMasked().
+    typedef std::function<bool(size_t)> ParticleMask_t;
+
+    /** \brief CIC scatter of Q onto rho_m, of the particles with Bin >= 0 and accept(i) true.
+     *
+     * Without a predicate (an empty accept) it is Q.scatter(rho_m, R, IntrplCIC_t()) with Q
+     * of the particles flagged lost (Bin < 0) set to zero for the call, which visits every
+     * particle. With one, the others are not read, so they may lie outside the mesh, and a
+     * predicate that is true for every particle gives the same rho_m, bit for bit.
+     */
+    void scatterMasked(const ParticleMask_t& accept);
+
+    /** \brief CIC gather of eg_m into Ef, at the particles with accept(i) true.
+     *
+     * Ef of the others is left as it is, for the caller to set; they may lie outside the
+     * mesh. A predicate that is true for every particle gives the Ef of
+     * Ef.gather(eg_m, R, IntrplCIC_t()), bit for bit.
+     */
+    void gatherMasked(const ParticleMask_t& accept);
+
     void resetInterpolationCache(bool clearCache = false);
 
     void swap(unsigned int i, unsigned int j);
@@ -115,6 +138,10 @@ private:
     bool interpolationCacheSet_m;
 
     ParticleAttrib<CacheDataCIC<double, 3U> > interpolationCache_m;
+
+    /// scatterMasked(): the charges and positions of the particles that a predicate accepts
+    ParticleAttrib<double> maskedQ_m;
+    ParticleAttrib<Vector_t> maskedR_m;
 
     //FIXME
     ParticleLayout<double, 3> & getLayout() {

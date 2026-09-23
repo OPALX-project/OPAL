@@ -3,6 +3,7 @@ set (_SRCS
     SplineTimeDependenceTest.cpp
     DistributionMomentsTest.cpp
     DistributionMomentsTestFixture.cpp
+    PartBunchTest.cpp
     SinusoidalTimeDependenceTest.cpp
     TimeDependenceCacheTest.cpp
 )

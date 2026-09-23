@@ -764,6 +764,73 @@ void PartBunch::computeSelfFields_cycl(int bin) {
 }
 
 
+void PartBunch::scatterMasked(const ParticleMask_t& accept) {
+    /// Particles flagged lost (Bin < 0) stay in the bunch until the tracker deletes them,
+    /// every DELPARTFREQ steps. Leave their charge off the mesh, as setBinCharge() does in
+    /// the multi-bunch solve. Without a predicate their Q is set to zero for the scatter and
+    /// restored after it: the integrator, ScatteringPhysics and the loss records still read
+    /// it. With a predicate the accepted particles that are not flagged lost are copied, in
+    /// order, into maskedQ_m and maskedR_m; a flagged particle adds only zero to the scatter
+    /// of Q, so an all-true predicate gives the same rho_m, bit for bit. Both cases share
+    /// one call of IPPL's scatter: with a second call, or with a loop of its own over IPPL's
+    /// CIC kernel, the production build no longer inlines the kernel into
+    /// computeSelfFields_cycl(double) and computeSelfFields().
+    std::vector<std::pair<size_t, double>> lostCharge;
+    if (accept) {
+        const size_t localNum = getLocalNum();
+        if (maskedQ_m.size() < localNum) {
+            const size_t missing = localNum - maskedQ_m.size();
+            maskedQ_m.create(missing);
+            maskedR_m.create(missing);
+        }
+        size_t numAccepted = 0;
+        for (size_t i = 0; i < localNum; ++i) {
+            if (this->Bin[i] >= 0 && accept(i)) {
+                maskedQ_m[numAccepted] = this->Q[i];
+                maskedR_m[numAccepted] = this->R[i];
+                ++numAccepted;
+            }
+        }
+        const size_t numUnused = maskedQ_m.size() - numAccepted;
+        maskedQ_m.destroy(numUnused, numAccepted);
+        maskedR_m.destroy(numUnused, numAccepted);
+    } else {
+        for (size_t i = 0; i < getLocalNum(); ++i) {
+            if (this->Bin[i] < 0) {
+                lostCharge.emplace_back(i, this->Q[i]);
+                this->Q[i] = 0.0;
+            }
+        }
+    }
+
+    const ParticleAttrib<double>& charge = accept ? maskedQ_m : this->Q;
+    const ParticleAttrib<Vector_t>& position = accept ? maskedR_m : this->R;
+    charge.scatter(rho_m, position, IntrplCIC_t());
+
+    for (const auto& lost : lostCharge) {
+        this->Q[lost.first] = lost.second;
+    }
+}
+
+
+void PartBunch::gatherMasked(const ParticleMask_t& accept) {
+    /// The loop of ParticleAttrib::gather, restricted to the accepted particles.
+    eg_m.Uncompress();
+    if (eg_m.isDirty()) {
+        eg_m.fillGuardCells(true);
+    }
+
+    const Mesh_t& mesh = eg_m.get_mesh();
+    for (size_t i = 0; i < getLocalNum(); ++i) {
+        if (accept(i)) {
+            IntrplCIC_t::gather(Ef[i], eg_m, this->R[i], mesh);
+        }
+    }
+
+    eg_m.Compress();
+}
+
+
 // void PartBunch::setMesh(Mesh_t* mesh) {
 //     Layout_t* layout = static_cast<Layout_t*>(&getLayout());
 // //     layout->getLayout().setMesh(mesh);
