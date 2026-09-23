@@ -1,5 +1,6 @@
 set (_SRCS
     EdgeCentering.cpp
+    OutsideToNearest.cpp
     ParticleDebug.cpp
 )
 
