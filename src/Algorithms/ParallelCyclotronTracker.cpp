@@ -124,6 +124,7 @@ ParallelCyclotronTracker::ParallelCyclotronTracker(const Beamline& beamline,
     , cycl_m(nullptr)
     , maxSteps_m(maxSTEPS)
     , lastDumpedStep_m(0)
+    , pathLength_m(0.0)
     , myNode_m(Ippl::myNode())
     , initialLocalNum_m(bunch->getLocalNum())
     , initialTotalNum_m(bunch->getTotalNum())
@@ -246,8 +247,10 @@ void ParallelCyclotronTracker::computePathLengthUpdate(std::vector<double>& dl,
 
         allreduce(dotP.data(), dotP.size(), std::plus<double>());
 
-        // dot-product over all particles
-        double sum = std::accumulate(dotP.begin(), dotP.end() - 1, 0);
+        // dot-product over all particles; without multi-bunches dotP has a single
+        // entry, which already holds the sum over all particles
+        const size_t numBunchEntries = std::max(dotP.size() - 1, size_t(1));
+        double sum = std::accumulate(dotP.begin(), dotP.begin() + numBunchEntries, 0.0);
         dotP.back() = sum / double(itsBunch_m->getTotalNum());
 
         // bunch specific --> multi-bunches only
@@ -2310,9 +2313,10 @@ void ParallelCyclotronTracker::initDistInGlobalFrame() {
             // Or do a global frame restart (no transformations necessary)
         } else {
             *gmsg << "* Restart in the global frame" << endl;
-
-            pathLength_m = itsBunch_m->get_sPos();
         }
+
+        // continue the path length read from the h5 file
+        pathLength_m = itsBunch_m->get_sPos();
     }
 
     // set the number of particles per bunch
@@ -2844,7 +2848,7 @@ void ParallelCyclotronTracker::update_m(double& t, const double& dt,
     updateTime(dt);
 
     itsBunch_m->setLocalTrackStep((step_m + 1));
-    if (!(step_m + 1 % 1000)) {
+    if ((step_m + 1) % 1000 == 0) {
         *gmsg << "Step " << step_m + 1 << endl;
     }
 
