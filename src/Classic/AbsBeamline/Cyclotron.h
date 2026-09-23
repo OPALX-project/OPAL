@@ -307,6 +307,23 @@ private:
     /// a finite z.
     bool midplaneMapInterior(const Vector_t& R) const;
 
+    /// cos and sin of the RF phase of one RF map for the last few times t. Within one RK4
+    /// step every particle asks for the same three times (t, t+h/2, t+h), so this turns two
+    /// transcendental calls per map per field evaluation into a lookup. BANDRF only: there
+    /// the phase depends on nothing but t.
+    struct RFPhaseCache {
+        static constexpr int size = 4;
+        double t[size];
+        double cosPhase[size];
+        double sinPhase[size];
+        int next = 0;
+        RFPhaseCache();
+    };
+    std::vector<RFPhaseCache> rfPhaseCache_m;
+
+    void rfPhase(std::size_t map, double t, double frequency, double phi,
+                 double& cosPhase, double& sinPhase);
+
 protected:
     // object of Matrices including magnetic field map and its derivates
     BfieldData Bfield_m;

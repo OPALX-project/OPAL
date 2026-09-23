@@ -43,6 +43,7 @@
 #include <cstdio>
 #include <filesystem>
 #include <fstream>
+#include <limits>
 #include <map>
 
 #define CHECK_CYC_FSCANF_EOF(arg) if (arg == EOF)\
@@ -115,6 +116,35 @@ void Cyclotron::applyTrimCoil(const double r, const double z,
         applyTrimCoil_m(r, z, tet_rad, &br, &tmp_bz);
         bz += tmp_bz * std::abs(bz) / trimCoilThreshold_m;
     }
+}
+
+Cyclotron::RFPhaseCache::RFPhaseCache() {
+    // NaN never compares equal, so an unused slot can never be hit.
+    std::fill(t, t + size, std::numeric_limits<double>::quiet_NaN());
+    std::fill(cosPhase, cosPhase + size, 0.0);
+    std::fill(sinPhase, sinPhase + size, 0.0);
+}
+
+void Cyclotron::rfPhase(std::size_t map, double t, double frequency, double phi,
+                        double& cosPhase, double& sinPhase) {
+    RFPhaseCache& cache = rfPhaseCache_m[map];
+    for (int k = 0; k < RFPhaseCache::size; ++k) {
+        if (cache.t[k] == t) {
+            cosPhase = cache.cosPhase[k];
+            sinPhase = cache.sinPhase[k];
+            return;
+        }
+    }
+    // The same expression apply() used before this cache existed. Keep cos and sin of the
+    // phase together in one function: GCC fuses them into one sincos call, as it did in the
+    // old code, and glibc's sincos can differ from a separate sin or cos by one ulp.
+    const double phase = Physics::two_pi * Units::MHz2Hz * frequency * t + phi;
+    cosPhase = std::cos(phase);
+    sinPhase = std::sin(phase);
+    cache.t[cache.next]        = t;
+    cache.cosPhase[cache.next] = cosPhase;
+    cache.sinPhase[cache.next] = sinPhase;
+    cache.next = (cache.next + 1) % RFPhaseCache::size;
 }
 
 bool Cyclotron::midplaneMapInterior(const Vector_t& R) const {
@@ -565,10 +595,18 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
             }
         }
 
-        double phase = Physics::two_pi * Units::MHz2Hz * frequency * t + (*rfphii);
+        double phase = 0.0, cosPhase = 0.0, sinPhase = 0.0;
+        const std::size_t map = fi - RFfields_m.begin();
+        if (fieldType_m == BFieldType::SYNCHRO || map >= rfPhaseCache_m.size()) {
+            phase = Physics::two_pi * Units::MHz2Hz * frequency * t + (*rfphii);
+            cosPhase = std::cos(phase);
+            sinPhase = std::sin(phase);
+        } else {
+            rfPhase(map, t, frequency, *rfphii, cosPhase, sinPhase);
+        }
 
-        E += ebscale * std::cos(phase) * tmpE;
-        B -= ebscale * std::sin(phase) * tmpB;
+        E += ebscale * cosPhase * tmpE;
+        B -= ebscale * sinPhase * tmpB;
 
         if (fieldType_m != BFieldType::SYNCHRO)
             continue;
@@ -889,6 +927,8 @@ void Cyclotron::read(const double& scaleFactor) {
                   << BP_m.rmin_m + (Bfield_m.nrad_m - 1) * BP_m.delr_m << " m" << endl;
         }
     }
+
+    rfPhaseCache_m.assign(RFfields_m.size(), RFPhaseCache());
 }
 
 // evaluate other derivative of magnetic field.
