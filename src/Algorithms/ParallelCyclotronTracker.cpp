@@ -2982,15 +2982,19 @@ void ParallelCyclotronTracker::finalizeTracking_m(dvector_t& Ttime,
                                                   dvector_t& Tdeltr,
                                                   dvector_t& Tdeltz, ivector_t& TturnNumber) {
 
-    for (size_t ii = 0; ii < (itsBunch_m->getLocalNum()); ii++) {
-        if (itsBunch_m->ID[ii] == 0) {
-            double FinalMomentum2 = std::pow(itsBunch_m->P[ii](0), 2.0) + std::pow(itsBunch_m->P[ii](1), 2.0) + std::pow(itsBunch_m->P[ii](2), 2.0);
-            double FinalEnergy = (std::sqrt(1.0 + FinalMomentum2) - 1.0) * itsBunch_m->getM() * Units::eV2MeV;
-            *gmsg << "* Final energy of reference particle = " << FinalEnergy << " [MeV]" << endl;
-            *gmsg << "* Total phase space dump number(includes the initial distribution) = " << lastDumpedStep_m + 1 << endl;
-            *gmsg << "* One can restart simulation from the last dump step (--restart " << lastDumpedStep_m << ")" << endl;
-        }
+    // gmsg prints on rank 0 only, and ID 0 can be on any rank or lost, so fetch it
+    // collectively. The dump count and the restart hint do not depend on it.
+    Vector_t refR, refP;
+    if (getReferenceParticle(refR, refP)) {
+        double FinalMomentum2 = std::pow(refP(0), 2.0) + std::pow(refP(1), 2.0) + std::pow(refP(2), 2.0);
+        double FinalEnergy = (std::sqrt(1.0 + FinalMomentum2) - 1.0) * itsBunch_m->getM() * Units::eV2MeV;
+        *gmsg << "* Final energy of reference particle = " << FinalEnergy << " [MeV]" << endl;
+    } else {
+        *gmsg << "* Final energy of reference particle: not available, "
+              << "the reference particle (ID 0) is no longer in the bunch" << endl;
     }
+    *gmsg << "* Total phase space dump number(includes the initial distribution) = " << lastDumpedStep_m + 1 << endl;
+    *gmsg << "* One can restart simulation from the last dump step (--restart " << lastDumpedStep_m << ")" << endl;
 
     Ippl::Comm->barrier();
 
