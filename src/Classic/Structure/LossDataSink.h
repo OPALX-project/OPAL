@@ -88,7 +88,8 @@ public:
 
     bool inH5Mode() { return h5hut_mode_m;}
 
-    void save(unsigned int numSets = 1, OpalData::OpenMode openMode = OpalData::OpenMode::UNDEFINED);
+    /// Returns whether the file was written; false (on all ranks) if there was nothing to save
+    bool save(unsigned int numSets = 1, OpalData::OpenMode openMode = OpalData::OpenMode::UNDEFINED);
 
     void addReferenceParticle(const Vector_t& x,
                               const Vector_t& p,

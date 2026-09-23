@@ -334,11 +334,11 @@ void LossDataSink::addParticle(
     particles_m.push_back(particle);
 }
 
-void LossDataSink::save(unsigned int numSets, OpalData::OpenMode openMode) {
+bool LossDataSink::save(unsigned int numSets, OpalData::OpenMode openMode) {
     if (outputName_m.empty())
-        return;
+        return false;
     if (hasNoParticlesToDump())
-        return;
+        return false;
 
     if (openMode == OpalData::OpenMode::UNDEFINED) {
         openMode = OpalData::getInstance()->getOpenMode();
@@ -386,6 +386,8 @@ void LossDataSink::save(unsigned int numSets, OpalData::OpenMode openMode) {
     RefPartR_m        = std::vector<Vector_t>();
     RefPartR_m        = std::vector<Vector_t>();
     globalTrackStep_m = std::vector<h5_int64_t>();
+
+    return true;
 }
 
 // Note: This was changed to calculate the global number of dumped particles
