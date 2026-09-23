@@ -220,6 +220,10 @@ bool Cyclotron::getSpiralFlag() const {
     return spiralFlag_m;
 }
 
+void Cyclotron::setTurnNumber(int turn) {
+    turnNumber_m = turn;
+}
+
 void Cyclotron::setFieldMapFN(const std::string& f) {
     fmapfn_m = f;
 }
@@ -462,27 +466,32 @@ bool Cyclotron::apply(const size_t& id, const double& t, Vector_t& E, Vector_t& 
     const double rpos = std::hypot(RefPartBunch_m->R[id](0), RefPartBunch_m->R[id](1));
     const double zpos = RefPartBunch_m->R[id](2);
 
-    if (zpos > maxz_m || zpos < minz_m || rpos > maxr_m || rpos < minr_m) {
-        flagNeedUpdate = true;
-        *gmsgALL << level4 << getName() << ": Particle " << id
-                 << " out of the global aperture of cyclotron!" << endl;
-        *gmsgALL << level4 << getName()
-                 << ": Coords: "<< RefPartBunch_m->R[id] << " m"  << endl;
+    // A particle that is already flagged lost (Bin < 0, by this element, a collimator or
+    // the boundary geometry) stays in the bunch until the tracker deletes it, and keeps
+    // failing here on every step: report and record only its first loss.
+    const bool flaggedBefore = (RefPartBunch_m->Bin[id] < 0);
+    const bool outsideAperture = (zpos > maxz_m || zpos < minz_m || rpos > maxr_m || rpos < minr_m);
 
+    if (outsideAperture) {
+        flagNeedUpdate = true;
     } else {
         flagNeedUpdate = apply(RefPartBunch_m->R[id], RefPartBunch_m->P[id], t, E, B);
-        if (flagNeedUpdate) {
-            *gmsgALL << level4 << getName() << ": Particle "<< id
-                     << " out of the field map boundary!" << endl;
-            *gmsgALL << level4 << getName()
-                     << ": Coords: "<< RefPartBunch_m->R[id] << " m" << endl;
-        }
     }
 
-    if (flagNeedUpdate) {
-        lossDs_m->addParticle(OpalParticle(id, RefPartBunch_m->R[id], RefPartBunch_m->P[id],
+    if (flagNeedUpdate && !flaggedBefore) {
+        *gmsgALL << level4 << getName() << ": Particle " << RefPartBunch_m->ID[id]
+                 << (outsideAperture ? " out of the global aperture of cyclotron!"
+                                     : " out of the field map boundary!") << endl;
+        *gmsgALL << level4 << getName()
+                 << ": Coords: "<< RefPartBunch_m->R[id] << " m" << endl;
+
+        // Called by the integrator: R and t are those of the field evaluation (with RK-4 the
+        // stage point and time); P is only updated when the step completes, so it is the
+        // momentum at the start of the step.
+        lossDs_m->addParticle(OpalParticle(RefPartBunch_m->ID[id],
+                                           RefPartBunch_m->R[id], RefPartBunch_m->P[id],
                                            t, RefPartBunch_m->Q[id], RefPartBunch_m->M[id]),
-                              std::make_pair(0, RefPartBunch_m->bunchNum[id]));
+                              std::make_pair(turnNumber_m, RefPartBunch_m->bunchNum[id]));
         RefPartBunch_m->Bin[id] = -1;
     }
 

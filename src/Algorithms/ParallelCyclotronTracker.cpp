@@ -121,6 +121,7 @@ ParallelCyclotronTracker::ParallelCyclotronTracker(const Beamline& beamline,
                                                    const std::string& mbBinning)
     : Tracker(beamline, bunch, reference, revBeam, revTrack)
     , bgf_m(nullptr)
+    , cycl_m(nullptr)
     , maxSteps_m(maxSTEPS)
     , lastDumpedStep_m(0)
     , myNode_m(Ippl::myNode())
@@ -1255,6 +1256,9 @@ void ParallelCyclotronTracker::MtsTracker() {
 
         bool finishedTurn = false;
 
+        // the turn that the plugin elements get in this step, for the cyclotron's loss records
+        if (cycl_m) cycl_m->setTurnNumber(turnnumber_m);
+
         if (step_m % Options::sptDumpFreq == 0) {
             singleParticleDump();
         }
@@ -1394,6 +1398,9 @@ void ParallelCyclotronTracker::GenericTracker() {
     for (; (step_m < maxSteps_m) && (itsBunch_m->getTotalNum()>0); step_m++) {
 
         bool finishedTurn = false;
+
+        // the turn that the plugin elements get in this step, for the cyclotron's loss records
+        if (cycl_m) cycl_m->setTurnNumber(turnnumber_m);
 
         switch (mode_m) {
             case TrackingMode::SEO: {

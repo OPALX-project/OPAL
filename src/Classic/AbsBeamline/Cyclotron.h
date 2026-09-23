@@ -188,6 +188,9 @@ public:
     void setSpiralFlag(bool spiral_flag);
     virtual bool getSpiralFlag() const;
 
+    /// Turn number written into the loss records of apply(); the tracker sets it every step.
+    void setTurnNumber(int turn);
+
     virtual bool apply(const size_t& id, const double& t, Vector_t& E, Vector_t& B);
 
     virtual bool apply(const Vector_t& R, const Vector_t& P, const double& t, Vector_t& E, Vector_t& B);
@@ -293,6 +296,8 @@ private:
     std::vector<std::string> RFVCoeff_fn_m;
 
     std::unique_ptr<LossDataSink> lossDs_m; /**< Handling for store the particle out of region*/
+
+    int turnNumber_m = 0; /**< Turn number for the loss records, see setTurnNumber()*/
 
     // Necessary for quick and dirty phase output -DW
     int waitingGap_m = 1;
