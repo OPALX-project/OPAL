@@ -485,6 +485,9 @@ private:
     /// solve, i.e. if this solve's plasma diagnostics will be written.
     bool statDumpBeforeNextSolve_m() const;
 
+    /// RFCAVITY entries in FieldDimensions; gapCrossKick_m() has nothing to do without them.
+    unsigned int numRFCavities_m = 0;
+
     /// Update time and path length, write to output files
     void update_m(double& t, const double& dt, const bool& finishedTurn);
 

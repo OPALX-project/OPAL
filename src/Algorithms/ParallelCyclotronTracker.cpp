@@ -1086,6 +1086,10 @@ void ParallelCyclotronTracker::buildupFieldList(double BcParameter[], ElementTyp
 
     (localpair->second).second = elptr;
 
+    if (elementType == ElementType::RFCAVITY) {
+        ++numRFCavities_m;
+    }
+
     // always put cyclotron as the first element in the list.
     if (elementType == ElementType::RING || elementType == ElementType::CYCLOTRON) {
         sindex = FieldDimensions.begin();
@@ -3257,6 +3261,11 @@ void ParallelCyclotronTracker::gapCrossKick_m(size_t i, double t,
                                               double dt,
                                               const Vector_t& Rold,
                                               const Vector_t& Pold) {
+
+    // Called for every particle on every step; without cavities the scan below finds nothing.
+    if (numRFCavities_m == 0) {
+        return;
+    }
 
     for (beamline_list::iterator sindex = ++(FieldDimensions.begin());
         sindex != FieldDimensions.end(); ++sindex)
