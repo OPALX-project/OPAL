@@ -323,9 +323,10 @@ void ParallelCyclotronTracker::openFiles(size_t numFiles, std::string SfileName)
         outfTheta_m.emplace_back(new std::ofstream(SfileName2.c_str()));
         outfTheta_m.back()->precision(8);
         outfTheta_m.back()->setf(std::ios::scientific, std::ios::floatfield);
-        *outfTheta_m.back() << "# r [mm]        beta_r*gamma       "
+        // r and z are written as they are tracked, in metres
+        *outfTheta_m.back() << "# r [m]         beta_r*gamma       "
                             << "theta [deg]     beta_theta*gamma        "
-                            << "z [mm]          beta_z*gamma" << std::endl;
+                            << "z [m]           beta_z*gamma" << std::endl;
     }
 }
 
