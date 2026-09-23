@@ -436,6 +436,11 @@ private:
     /// Returns false if no rank holds ID 0, in which case refR/refP are untouched.
     bool getReferenceParticle(Vector_t& refR, Vector_t& refP) const;
 
+    /// getReferenceParticle(), and set itsBunch_m->RefPartR_m/RefPartP_m (global frame) to the
+    /// result on every rank. If ID 0 is lost, refR/refP and both are the bunch centroid (with
+    /// a warning, once) and false is returned. Collective; called by both dumps.
+    bool setRefPartForDump_m(Vector_t& refR, Vector_t& refP);
+
     void bunchDumpPhaseSpaceData();
 
     void evaluateSpaceChargeField();

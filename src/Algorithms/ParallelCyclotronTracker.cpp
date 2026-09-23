@@ -258,12 +258,36 @@ void ParallelCyclotronTracker::computePathLengthUpdate(std::vector<double>& dl,
             dotP[b] /= double(itsBunch_m->getTotalNumPerBunch(b));
         }
 
-    } else if ( itsBunch_m->getLocalNum() == 0 ) {
-        // here we are in DumpFrame::GLOBAL mode
-        dotP[0] = 0.0;
     } else {
-        // here we are in DumpFrame::GLOBAL mode
-        dotP[0] = dot(itsBunch_m->P[0], itsBunch_m->P[0]);
+        // here we are in DumpFrame::GLOBAL (or REFERENCE) mode: s is the path length of the
+        // reference particle, ID 0. Local index 0 is an arbitrary particle that differs between
+        // ranks and changes with every migration, so ID 0 is looked up collectively and every
+        // rank accumulates the same s (stat file 's', H5 'SPOS'). Once ID 0 is lost, s goes on
+        // with the bunch mean of |P|^2, as in BUNCH_MEAN mode.
+        double buf[2] = {0.0, 0.0};
+        for (size_t i = 0; i < itsBunch_m->getLocalNum(); ++i) {
+            if (itsBunch_m->ID[i] == 0) {
+                buf[0] = dot(itsBunch_m->P[i], itsBunch_m->P[i]);
+                buf[1] = 1.0;
+                break;
+            }
+        }
+
+        allreduce(buf, 2, std::plus<double>());
+
+        if (buf[1] == 1.0) {
+            dotP[0] = buf[0];
+        } else {
+            double sum = 0.0;
+            for (size_t i = 0; i < itsBunch_m->getLocalNum(); ++i) {
+                sum += dot(itsBunch_m->P[i], itsBunch_m->P[i]);
+            }
+
+            allreduce(sum, 1, std::plus<double>());
+
+            const size_t totalNum = itsBunch_m->getTotalNum();
+            dotP[0] = (totalNum > 0) ? sum / double(totalNum) : 0.0;
+        }
     }
 
     for (size_t i = 0; i < dotP.size(); ++i) {
@@ -2483,14 +2507,6 @@ void ParallelCyclotronTracker::singleParticleDump() {
 
                 outfTrackOrbit_m << "ID" << tmpid;
 
-                if (tmpid == 0) { // for stat file
-                    itsBunch_m->RefPartR_m[0] = *itParameter;
-                    itsBunch_m->RefPartR_m[1] = *(itParameter + 2);
-                    itsBunch_m->RefPartR_m[2] = *(itParameter + 4);
-                    itsBunch_m->RefPartP_m[0] = *(itParameter + 1);
-                    itsBunch_m->RefPartP_m[1] = *(itParameter + 3);
-                    itsBunch_m->RefPartP_m[2] = *(itParameter + 5);
-                }
                 for (int ii = 0; ii < 6; ii++) {
                     outfTrackOrbit_m << " " << *itParameter;
                     ++itParameter;
@@ -2529,11 +2545,6 @@ void ParallelCyclotronTracker::singleParticleDump() {
                 outfTrackOrbit_m << itsBunch_m->R[i](0) << " " << itsBunch_m->P[i](0) << " ";
                 outfTrackOrbit_m << itsBunch_m->R[i](1) << " " << itsBunch_m->P[i](1) << " ";
                 outfTrackOrbit_m << itsBunch_m->R[i](2) << " " << itsBunch_m->P[i](2) << std::endl;
-
-                if (itsBunch_m->ID[i] == 0) { // for stat file
-                    itsBunch_m->RefPartR_m = itsBunch_m->R[i];
-                    itsBunch_m->RefPartP_m = itsBunch_m->P[i];
-                }
             }
         }
     }
@@ -2589,12 +2600,13 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
     double const temp_t = itsBunch_m->getT();
     Vector_t meanR;
     Vector_t meanP;
+    // Collective: ref_x..ref_pz, and below the azimuth and the fields at the reference, must
+    // describe the particle with ID 0, not whatever sits at local index 0 on rank 0. Once ID 0
+    // is lost they are the centroid, as in bunchDumpPhaseSpaceData().
+    setRefPartForDump_m(meanR, meanP);
     if (Options::psDumpFrame == DumpFrame::BUNCH_MEAN) {
         meanR = calcMeanR();
         meanP = calcMeanP();
-    } else if (itsBunch_m->getLocalNum() > 0) {
-        meanR = itsBunch_m->R[0];
-        meanP = itsBunch_m->P[0];
     }
     double phi = 0;
     double psi = 0;
@@ -2687,6 +2699,32 @@ bool ParallelCyclotronTracker::getReferenceParticle(Vector_t& refR,
     return true;
 }
 
+bool ParallelCyclotronTracker::setRefPartForDump_m(Vector_t& refR, Vector_t& refP) {
+    // RefPartR_m/RefPartP_m are written by every rank as H5 step attributes, which must be
+    // identical on all ranks, and by rank 0 as ref_x..ref_pz in the stat file. They used to
+    // be set on rank 0 only, every SPTDUMPFREQ steps.
+    const bool found = getReferenceParticle(refR, refP);
+
+    if (!found) {
+        // No rank holds ID 0 any more - it was lost. The centroid is the only well-defined
+        // fallback: the last values or another particle would pass for ID 0, and NaN would
+        // stop OPAL's own SDDS parser (restart, optimiser) from reading the stat file.
+        static bool warned = false;
+        if (!warned) {
+            warned = true;
+            *gmsg << "* Warning: the reference particle (ID 0) is no longer in the bunch; "
+                  << "falling back to the bunch mean for the reference values and the dump frame."
+                  << endl;
+        }
+        refR = calcMeanR();
+        refP = calcMeanP();
+    }
+
+    itsBunch_m->RefPartR_m = refR;
+    itsBunch_m->RefPartP_m = refP;
+    return found;
+}
+
 void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
     // --------------------------------- Particle dumping --------------------------------------- //
     // Note: Don't dump when
@@ -2702,19 +2740,12 @@ void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
     Vector_t meanR;
     Vector_t meanP;
 
+    // Collective, and in every mode: the RefPartR/RefPartP step attributes. If ID 0 has been
+    // lost, meanR/meanP are already the centroid.
+    setRefPartForDump_m(meanR, meanP);
+
     // in case of multi-bunch mode take always bunch mean (although it takes all bunches)
     if (Options::psDumpFrame == DumpFrame::BUNCH_MEAN || isMultiBunch()) {
-        meanR = calcMeanR();
-        meanP = calcMeanP();
-    } else if (!getReferenceParticle(meanR, meanP)) {
-        // No rank holds ID 0 any more - it was lost. The centroid is the only
-        // well-defined fallback; the previous behaviour (an arbitrary particle) is not.
-        static bool warned = false;
-        if (!warned) {
-            warned = true;
-            *gmsg << "* Warning: the reference particle (ID 0) is no longer in the bunch; "
-                  << "falling back to the bunch mean for the dump frame." << endl;
-        }
         meanR = calcMeanR();
         meanP = calcMeanP();
     }
