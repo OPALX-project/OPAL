@@ -47,7 +47,12 @@ void Probe::accept(BeamlineVisitor &visitor) const {
 
 void Probe::doInitialise(PartBunchBase<double, 3> *bunch) {
     bool singlemode = (bunch->getTotalNum() == 1) ? true : false;
-    peakfinder_m = std::unique_ptr<PeakFinder> (new PeakFinder(getOutputFN(), rmin_m, rend_m, step_m, singlemode));
+    // PeakFinder works in millimetre (doCheck() passes it the radii in mm), the element in metre
+    peakfinder_m = std::unique_ptr<PeakFinder> (new PeakFinder(getOutputFN(),
+                                                               rmin_m * Units::m2mm,
+                                                               rend_m * Units::m2mm,
+                                                               step_m * Units::m2mm,
+                                                               singlemode));
 }
 
 void Probe::doGoOffline() {
