@@ -91,7 +91,16 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
     Vector_t probepoint;
     size_t tempnum = bunch->getLocalNum();
 
+    // checkPoint() tests a strip around the probe line that is at most half a step wide on
+    // either side, and half a step is beta*c*tstep/2 < c*tstep/2. Testing the distance to the
+    // line first skips the per-particle strip for all but a thin slice of the bunch; the
+    // margin covers the single-precision arithmetic in checkPoint(), so exactly the same
+    // particles are recorded.
+    const double reach = 0.5 * Physics::c * std::abs(tstep) + 1.0e-3; // [m]
+
     for (unsigned int i = 0; i < tempnum; ++i) {
+        double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m; // [m]
+        if (std::abs(dist1) > reach) continue;
         double tangle = calculateIncidentAngle(bunch->P[i](0), bunch->P[i](1));
         changeWidth(bunch, i, tstep, tangle);
         int pflag = checkPoint(bunch->R[i](0), bunch->R[i](1));
@@ -104,7 +113,6 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
         // probepoint(2) = bunch->R[i](2);
         // calculate time correction for probepoint
         // dist1 > 0, right hand, dt > 0; dist1 < 0, left hand, dt < 0
-        double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m; // [m]
         double dist2 = dist1 * std::sqrt(1.0 + 1.0 / tangle / tangle);
         double dt = dist2 / (std::sqrt(1.0 - 1.0 / (1.0 + dot(bunch->P[i], bunch->P[i]))) * Physics::c);
 
