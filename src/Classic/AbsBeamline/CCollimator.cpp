@@ -20,6 +20,7 @@
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Fields/Fieldmap.h"
+#include "Physics/Units.h"
 #include "Solvers/ParticleMatterInteractionHandler.h"
 #include "Structure/LossDataSink.h"
 
@@ -94,9 +95,14 @@ bool CCollimator::doCheck(PartBunchBase<double, 3>* bunch, const int turnnumber,
             pflag = checkPoint(bunch->R[i](0), bunch->R[i](1));
             /// bunch->Bin[i] != -1 makes sure the particle is not stored in more than one collimator
             if ((pflag != 0) && (bunch->Bin[i] != -1)) {
+                // OpalParticle takes the rest mass in MeV. M[i] is the macro-particle mass in
+                // GeV, except for particles made by a Stripper (STOP=FALSE) or by beam
+                // stripping, whose M[i] is their own mass in GeV.
+                const double mass = (bunch->POrigin[i] == ParticleOrigin::REGULAR) ?
+                    bunch->getM() * Units::eV2MeV : bunch->M[i] * Units::GeV2MeV;
                 lossDs_m->addParticle(OpalParticle(bunch->ID[i],
                                                    bunch->R[i], bunch->P[i],
-                                                   t, bunch->Q[i], bunch->M[i]),
+                                                   t, bunch->Q[i], mass),
                                       std::make_pair(turnnumber, bunch->bunchNum[i]));
 
                 bunch->Bin[i] = -1;

@@ -192,10 +192,15 @@ void ParallelCyclotronTracker::bgf_main_collision_test() {
         int res = bgf_m->partInside(itsBunch_m->R[i], itsBunch_m->P[i],
                                     dtime, intecoords, triId);
         if (res >= 0) {
+            // OpalParticle takes the rest mass in MeV. M[i] is the macro-particle mass in
+            // GeV, except for particles made by a Stripper (STOP=FALSE) or by beam
+            // stripping, whose M[i] is their own mass in GeV.
+            const double mass = (itsBunch_m->POrigin[i] == ParticleOrigin::REGULAR) ?
+                itsBunch_m->getM() * Units::eV2MeV : itsBunch_m->M[i] * Units::GeV2MeV;
             lossDs_m->addParticle(OpalParticle(itsBunch_m->ID[i],
                                                itsBunch_m->R[i], itsBunch_m->P[i],
                                                itsBunch_m->getT(),
-                                               itsBunch_m->Q[i], itsBunch_m->M[i]),
+                                               itsBunch_m->Q[i], mass),
                                   std::make_pair(turnnumber_m, itsBunch_m->bunchNum[i]));
             itsBunch_m->Bin[i] = -1;
             *gmsgALL << level4 << "* Particle " << itsBunch_m->ID[i]

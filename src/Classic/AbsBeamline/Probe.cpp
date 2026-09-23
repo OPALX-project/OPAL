@@ -123,8 +123,13 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
         // peak finder uses millimetre not metre
         peakfinder_m->addParticle(probepoint * Units::m2mm);
 
+        // OpalParticle takes the rest mass in MeV. M[i] is the macro-particle mass in
+        // GeV, except for particles made by a Stripper (STOP=FALSE) or by beam
+        // stripping, whose M[i] is their own mass in GeV.
+        const double mass = (bunch->POrigin[i] == ParticleOrigin::REGULAR) ?
+            bunch->getM() * Units::eV2MeV : bunch->M[i] * Units::GeV2MeV;
         lossDs_m->addParticle(OpalParticle(bunch->ID[i], probepoint, bunch->P[i],
-                                           t+dt, bunch->Q[i], bunch->M[i]),
+                                           t+dt, bunch->Q[i], mass),
                               std::make_pair(turnnumber, bunch->bunchNum[i]));
     }
 
