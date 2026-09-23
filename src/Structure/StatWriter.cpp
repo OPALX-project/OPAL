@@ -38,8 +38,15 @@ void StatWriter::fillHeader(const losses_t &losses) {
 
     columns_m.addColumn("t", "double", "ns", "Time");
     columns_m.addColumn("s", "double", "m", "Path length");
-    columns_m.addColumn("numParticles", "long", "1", "Number of Macro Particles");
-    columns_m.addColumn("charge", "double", "1", "Bunch Charge");
+    // in OPAL-cycl the particle with ID 0 is tracked and counted but left out of
+    // the moments (DistributionMoments::isParticleExcluded)
+    if (OpalData::getInstance()->isInOPALCyclMode() && !Options::amr) {
+        columns_m.addColumn("numParticles", "long", "1",
+                            "Number of Macro Particles including the one with ID 0 that the moments exclude");
+    } else {
+        columns_m.addColumn("numParticles", "long", "1", "Number of Macro Particles");
+    }
+    columns_m.addColumn("charge", "double", "C", "Bunch Charge");
     columns_m.addColumn("energy", "double", "MeV", "Mean Bunch Energy");
 
     columns_m.addColumn("rms_x", "double", "m", "RMS Beamsize in x");
@@ -66,18 +73,19 @@ void StatWriter::fillHeader(const losses_t &losses) {
     columns_m.addColumn("ref_py", "double", "1", "y momentum of reference particle in lab cs");
     columns_m.addColumn("ref_pz", "double", "1", "z momentum of reference particle in lab cs");
 
-    columns_m.addColumn("max_x", "double", "m", "Max Beamsize in x");
-    columns_m.addColumn("max_y", "double", "m", "Max Beamsize in y");
-    columns_m.addColumn("max_s", "double", "m", "Max Beamsize in s");
+    columns_m.addColumn("max_x", "double", "m", "Maximum x coordinate of the particles");
+    columns_m.addColumn("max_y", "double", "m", "Maximum y coordinate of the particles");
+    columns_m.addColumn("max_s", "double", "m", "Maximum s coordinate of the particles");
 
     columns_m.addColumn("xpx", "double", "1", "Correlation xpx");
     columns_m.addColumn("ypy", "double", "1", "Correlation ypy");
     columns_m.addColumn("zpz", "double", "1", "Correlation zpz");
 
-    columns_m.addColumn("Dx", "double", "m", "Dispersion in x");
-    columns_m.addColumn("DDx", "double", "1", "Derivative of dispersion in x");
-    columns_m.addColumn("Dy", "double", "m", "Dispersion in y");
-    columns_m.addColumn("DDy", "double", "1", "Derivative of dispersion in y");
+    // not the dispersion: non-central second moments with pz, see DistributionMoments::getDx()
+    columns_m.addColumn("Dx", "double", "m", "Raw moment mean(x*pz) (not the dispersion)");
+    columns_m.addColumn("DDx", "double", "1", "Raw moment mean(px*pz) (not the dispersion derivative)");
+    columns_m.addColumn("Dy", "double", "m", "Raw moment mean(y*pz) (not the dispersion)");
+    columns_m.addColumn("DDy", "double", "1", "Raw moment mean(py*pz) (not the dispersion derivative)");
 
     columns_m.addColumn("Bx_ref", "double", "T", "Bx-Field component of ref particle");
     columns_m.addColumn("By_ref", "double", "T", "By-Field component of ref particle");
@@ -284,7 +292,7 @@ void StatWriter::write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
     columns_m.addColumnValue("ypy", beam->get_rprms()(1));         // 28
     columns_m.addColumnValue("zpz", beam->get_rprms()(2));         // 29
 
-    // Write out dispersion.
+    // Write out the raw moments <x*pz>, <px*pz>, <y*pz> and <py*pz> (named after the dispersion).
     columns_m.addColumnValue("Dx",  beam->get_Dx());               // 30
     columns_m.addColumnValue("DDx", beam->get_DDx());              // 31
     columns_m.addColumnValue("Dy",  beam->get_Dy());               // 32
