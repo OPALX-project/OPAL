@@ -138,6 +138,14 @@ ParallelCyclotronTracker::ParallelCyclotronTracker(const Beamline& beamline,
     itsDataSink = &ds;
 
     if ( numBunch > 1 ) {
+        // The core-fitted mesh exists for the single-bunch solve only. Deciding here, and
+        // not at the first solve with more than one bunch, keeps a run from switching
+        // between the two meshes after the second injection.
+        if (bunch->getMeshFit().type == MeshFitType::CORE) {
+            throw OpalException("ParallelCyclotronTracker::ParallelCyclotronTracker()",
+                                "FIELDSOLVER, MESHFIT=\"CORE\" is not available in "
+                                "multi-bunch mode (TURNS > 1 in RUN).");
+        }
         mbHandler_m = std::unique_ptr<MultiBunchHandler>(
             new MultiBunchHandler(bunch, numBunch, mbEta,
                                   mbPara, mbMode, mbBinning)
@@ -1367,6 +1375,7 @@ void ParallelCyclotronTracker::MtsTracker() {
                 *gmsg << "*** Finished turn " << turnnumber_m - 1
                       << ", Total number of live particles: "
                       << itsBunch_m->getTotalNum() << endl;
+                printMeshFit_m();
             }
 
             // Recalculate bingamma and reset the BinID for each particles according to its current gamma
@@ -3319,6 +3328,7 @@ void ParallelCyclotronTracker::bunchMode_m(double& t, const double dt, bool& fin
         *gmsg << "*** Finished turn " << turnnumber_m - 1
               << ", Total number of live particles: "
               << itsBunch_m->getTotalNum() << endl;
+        printMeshFit_m();
     }
 
     Ippl::Comm->barrier();
@@ -3454,11 +3464,14 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
 
         globalToLocal(itsBunch_m->R, quaternionToYAxis, meanR);
 
+        // The mesh fit of this solve, in its frame (FIELDSOLVER, MESHFIT)
+        itsBunch_m->setMeshFitSolveStep(true);
         if ((step_m + 1) % Options::boundpDestroyFreq == 0) {
             itsBunch_m->boundp_destroyCycl();
         } else {
             itsBunch_m->boundp();
         }
+        itsBunch_m->setMeshFitSolveStep(false);
 
         if (hasMultiBunch()) {
             // --- Multibunch mode --- //
@@ -3496,6 +3509,36 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
         localToGlobal(itsBunch_m->Ef, quaternionToYAxis);
         localToGlobal(itsBunch_m->Bf, quaternionToYAxis);
     }
+}
+
+
+void ParallelCyclotronTracker::printMeshFit_m() const {
+    const CoreFitSC::CoreSelection& core = itsBunch_m->getMeshFitCore();
+    if (itsBunch_m->getMeshFit().type != MeshFitType::CORE || core.numLive == 0) {
+        return;
+    }
+
+    // Resolution of the core: cells per clipped rms width on a mesh fitted to the core
+    // bounds and on the mesh fitted to all particles
+    Vector_t fullMin, fullMax;
+    itsBunch_m->getMeshFitFullBounds(fullMin, fullMax);
+    const Vector_t hrFull = itsBunch_m->getMeshSpacing(fullMin, fullMax);
+
+    *gmsg << "* SC mesh fit (report only): " << core.numFar << " far particles ("
+          << 100.0 * core.getFarChargeFraction() << " % of the live charge, max "
+          << core.farMaxDistance << " sigma), "
+          << core.numHalo << " beyond " << CoreFitSC::haloSigma << " sigma, "
+          << core.passes << " clipped passes, ";
+    if (core.numCore > 0) {
+        const Vector_t hrCore = itsBunch_m->getMeshSpacing(core.boundsMin, core.boundsMax);
+        *gmsg << "cells per sigma " << core.sigma[0] / hrCore[0] << "/"
+              << core.sigma[1] / hrCore[1] << "/" << core.sigma[2] / hrCore[2]
+              << " (mesh of all particles ";
+    } else {
+        *gmsg << "no core particle (cells per sigma on the mesh of all particles ";
+    }
+    *gmsg << core.sigma[0] / hrFull[0] << "/" << core.sigma[1] / hrFull[1] << "/"
+          << core.sigma[2] / hrFull[2] << ")" << endl;
 }
 
 

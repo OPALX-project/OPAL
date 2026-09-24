@@ -53,7 +53,14 @@ public:
                const size_t npOutside = 0);
 
 private:
-    void fillHeader(const losses_t &losses = losses_t());
+    void fillHeader(const PartBunchBase<double, 3> *beam, const losses_t &losses = losses_t());
+
+    /// The header has the columns of FIELDSOLVER, MESHFIT=CORE. Like all columns they are
+    /// fixed by the first write: a later TRACK/RUN with MESHFIT=ALL writes zeros into them,
+    /// and one with MESHFIT=CORE goes without them if the first had MESHFIT=ALL.
+    bool hasMeshFitColumns_m = false;
+    /// The warning that the core selection is not written has been given.
+    bool warnedMeshFitColumns_m = false;
 };
 
 #endif

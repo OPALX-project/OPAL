@@ -30,7 +30,7 @@ StatWriter::StatWriter(const std::string& fname, bool restart)
 { }
 
 
-void StatWriter::fillHeader(const losses_t &losses) {
+void StatWriter::fillHeader(const PartBunchBase<double, 3> *beam, const losses_t &losses) {
 
     if (this->hasColumns()) {
         return;
@@ -203,6 +203,35 @@ void StatWriter::fillHeader(const losses_t &losses) {
                             "Azimuth in global coordinates");
     }
 
+    // FIELDSOLVER, MESHFIT=CORE: the core selection of the last space-charge solve, in its
+    // local frame (x radial, y along the mean momentum, s = z vertical)
+    hasMeshFitColumns_m = (beam->getMeshFit().type == MeshFitType::CORE);
+    if (hasMeshFitColumns_m) {
+        columns_m.addColumn("scNumFar", "long", "1",
+                            "Live particles outside the core of the space-charge mesh fit");
+        columns_m.addColumn("scNumHalo", "long", "1",
+                            "Live particles beyond 10 clipped rms widths in any axis");
+        columns_m.addColumn("scFarCharge", "double", "1",
+                            "Charge of the far particles over the live charge");
+        columns_m.addColumn("scClipPasses", "long", "1",
+                            "Clipped passes of the core selection");
+
+        columns_m.addColumn("scBox_x", "double", "m", "Extent of the core in x");
+        columns_m.addColumn("scBox_y", "double", "m", "Extent of the core in y");
+        columns_m.addColumn("scBox_s", "double", "m", "Extent of the core in z");
+
+        columns_m.addColumn("scHr_x", "double", "m", "Mesh spacing in x of the core-fitted mesh");
+        columns_m.addColumn("scHr_y", "double", "m", "Mesh spacing in y of the core-fitted mesh");
+        columns_m.addColumn("scHr_s", "double", "m", "Mesh spacing in z of the core-fitted mesh");
+
+        columns_m.addColumn("scCoreRms_x", "double", "m", "Clipped rms of the core in x");
+        columns_m.addColumn("scCoreRms_y", "double", "m", "Clipped rms of the core in y");
+        columns_m.addColumn("scCoreRms_s", "double", "m", "Clipped rms of the core in z");
+
+        columns_m.addColumn("scFarMaxDist", "double", "1",
+                            "Largest distance of a far particle in clipped rms widths");
+    }
+
     for (size_t i = 0; i < losses.size(); ++ i) {
         columns_m.addColumn(losses[i].first, "long", "1",
                             "Number of lost particles in element");
@@ -247,7 +276,7 @@ void StatWriter::write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
         return;
     }
 
-    fillHeader(losses);
+    fillHeader(beam, losses);
 
     this->open();
 
@@ -396,6 +425,39 @@ void StatWriter::write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
         columns_m.addColumnValue("halo_z", halo(2));
 
         columns_m.addColumnValue("azimuth", azimuth);
+    }
+
+    if (hasMeshFitColumns_m) {
+        // zero before the first solve of a TRACK/RUN, with MESHFIT=ALL (in a later one) and
+        // without a core particle
+        const CoreFitSC::CoreSelection& core = beam->getMeshFitCore();
+        Vector_t box(0.0), hr(0.0);
+        if (core.numCore > 0) {
+            box = core.boundsMax - core.boundsMin;
+            hr  = beam->getMeshSpacing(core.boundsMin, core.boundsMax);
+        }
+        columns_m.addColumnValue("scNumFar", core.numFar);
+        columns_m.addColumnValue("scNumHalo", core.numHalo);
+        columns_m.addColumnValue("scFarCharge", core.getFarChargeFraction());
+        columns_m.addColumnValue("scClipPasses", static_cast<long unsigned int>(core.passes));
+
+        columns_m.addColumnValue("scBox_x", box(0));
+        columns_m.addColumnValue("scBox_y", box(1));
+        columns_m.addColumnValue("scBox_s", box(2));
+
+        columns_m.addColumnValue("scHr_x", hr(0));
+        columns_m.addColumnValue("scHr_y", hr(1));
+        columns_m.addColumnValue("scHr_s", hr(2));
+
+        columns_m.addColumnValue("scCoreRms_x", core.sigma(0));
+        columns_m.addColumnValue("scCoreRms_y", core.sigma(1));
+        columns_m.addColumnValue("scCoreRms_s", core.sigma(2));
+
+        columns_m.addColumnValue("scFarMaxDist", core.farMaxDistance);
+    } else if (beam->getMeshFit().type == MeshFitType::CORE && !warnedMeshFitColumns_m) {
+        WARNMSG("The stat file has no columns for FIELDSOLVER, MESHFIT=\"CORE\": its columns "
+                "are those of the first TRACK/RUN, which had MESHFIT=\"ALL\"." << endl);
+        warnedMeshFitColumns_m = true;
     }
 
     for(size_t i = 0; i < losses.size(); ++ i) {

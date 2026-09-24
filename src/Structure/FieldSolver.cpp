@@ -87,6 +87,11 @@ namespace {
         PRECMODE,   // preconditioner mode [SAAMG only]
         RC,         // cutoff radius for PP interactions
         ALPHA,      // Green’s function splitting parameter
+        MESHFIT,          // particles the mesh is fitted to [FFT in OPAL-cycl only]
+        MESHFITNSIGMA,    // core half-width in clipped rms widths [MESHFIT=CORE]
+        MESHFITCLIP,      // clip half-width of the clipped rms [MESHFIT=CORE]
+        MESHFITMAXFAR,    // far charge fraction for the full box, % [MESHFIT=CORE]
+        MESHFITFARFIELD,  // field of the particles outside the mesh [MESHFIT=CORE]
 #ifdef ENABLE_AMR
         AMR_MAXLEVEL,       // AMR, maximum refinement level
         AMR_REFX,           // AMR, refinement ratio in x
@@ -176,6 +181,34 @@ FieldSolver::FieldSolver():
     itsAttr[BBOXINCR] = Attributes::makeReal("BBOXINCR",
                                              "Increase of bounding box in % ",
                                              2.0);
+
+    // FFT in OPAL-cycl only:
+    itsAttr[MESHFIT] = Attributes::makePredefinedString("MESHFIT",
+                                                        "Particles the space-charge mesh is fitted to: "
+                                                        "ALL, or the CORE of the bunch.",
+                                                        {"ALL", "CORE"},
+                                                        "ALL");
+
+    itsAttr[MESHFITNSIGMA] = Attributes::makeReal("MESHFITNSIGMA",
+                                                  "MESHFIT=CORE: half-width of the core in clipped "
+                                                  "rms widths, in every axis of the local frame",
+                                                  6.0);
+
+    itsAttr[MESHFITCLIP] = Attributes::makeReal("MESHFITCLIP",
+                                                "MESHFIT=CORE: clip half-width of the clipped rms "
+                                                "in rms widths",
+                                                4.0);
+
+    itsAttr[MESHFITMAXFAR] = Attributes::makeReal("MESHFITMAXFAR",
+                                                  "MESHFIT=CORE: far charge fraction in % above "
+                                                  "which the mesh is fitted to all particles",
+                                                  5.0);
+
+    itsAttr[MESHFITFARFIELD] = Attributes::makePredefinedString("MESHFITFARFIELD",
+                                                                "MESHFIT=CORE: field of the particles "
+                                                                "outside the core mesh.",
+                                                                {"FULL", "QUADRUPOLE", "MONOPOLE"},
+                                                                "FULL");
 
     // P3M only:
     itsAttr[RC] = Attributes::makeReal("RC",
@@ -590,6 +623,60 @@ void FieldSolver::initSolver(PartBunchBase<double, 3>* b) {
         solver_m = 0;
         INFOMSG("No solver attached" << endl);
     }
+
+    itsBunch_m->setMeshFit(getMeshFitParameters_m());
+}
+
+MeshFitParameters FieldSolver::getMeshFitParameters_m() const {
+    MeshFitParameters meshFit;
+    if (Attributes::getString(itsAttr[MESHFIT]) == "ALL") {
+        return meshFit;
+    }
+
+    static const std::map<std::string, FarFieldModel> stringFarField_s = {
+        {"MONOPOLE",   FarFieldModel::MONOPOLE},
+        {"QUADRUPOLE", FarFieldModel::QUADRUPOLE},
+        {"FULL",       FarFieldModel::FULL}
+    };
+    meshFit.type           = MeshFitType::CORE;
+    meshFit.nSigma         = Attributes::getReal(itsAttr[MESHFITNSIGMA]);
+    meshFit.clip           = Attributes::getReal(itsAttr[MESHFITCLIP]);
+    meshFit.maxFarFraction = Attributes::getReal(itsAttr[MESHFITMAXFAR]) / 100.0;
+    meshFit.farField       = stringFarField_s.at(Attributes::getString(itsAttr[MESHFITFARFIELD]));
+
+    if (!(meshFit.nSigma > 0.0) || !(meshFit.clip > 0.0)) {
+        throw OpalException("FieldSolver::initSolver",
+                            "MESHFITNSIGMA and MESHFITCLIP must be positive.");
+    }
+    if (!(meshFit.maxFarFraction > 0.0 && meshFit.maxFarFraction <= 1.0)) {
+        throw OpalException("FieldSolver::initSolver",
+                            "MESHFITMAXFAR must be larger than 0 and at most 100 (%).");
+    }
+
+    // The core-fitted mesh exists for the single-bunch solve of OPAL-cycl with the FFT
+    // solver and open boundary conditions; the tracker refuses it in multi-bunch mode.
+    if (!OpalData::getInstance()->isInOPALCyclMode()) {
+        throw OpalException("FieldSolver::initSolver",
+                            "MESHFIT=\"CORE\" is only available in OPAL-cycl "
+                            "(METHOD=\"CYCLOTRON-T\").");
+    }
+    if (fsType_m != FieldSolverType::FFT) {
+        throw OpalException("FieldSolver::initSolver",
+                            "MESHFIT=\"CORE\" is only available with FSTYPE=\"FFT\", "
+                            "not with \"" + fsName_m + "\".");
+    }
+    if (Attributes::getString(getBCZAttribute()) == "PERIODIC") {
+        // a periodic z would wrap the particles outside the mesh into it
+        throw OpalException("FieldSolver::initSolver",
+                            "MESHFIT=\"CORE\" is not available with BCFFTZ=\"PERIODIC\".");
+    }
+    if (itsBunch_m->isGridFixed() || itsBunch_m->getIfBeamEmitting()) {
+        throw OpalException("FieldSolver::initSolver",
+                            "MESHFIT=\"CORE\" is not available with a fixed grid "
+                            "or an emitting beam.");
+    }
+
+    return meshFit;
 }
 
 bool FieldSolver::hasValidSolver() {
@@ -613,7 +700,16 @@ Inform& FieldSolver::printInfo(Inform& os) const {
         os << "* GREENSF      " << Attributes::getString(itsAttr[GREENSF]) << '\n'
            << "* BCFFTX       " << Attributes::getString(itsAttr[BCFFTX]) << '\n'
            << "* BCFFTY       " << Attributes::getString(itsAttr[BCFFTY]) << '\n'
-           << "* BCFFTZ       " << Attributes::getString(getBCZAttribute()) << endl;
+           << "* BCFFTZ       " << Attributes::getString(getBCZAttribute()) << '\n'
+           << "* MESHFIT      " << Attributes::getString(itsAttr[MESHFIT]) << endl;
+        if (Attributes::getString(itsAttr[MESHFIT]) == "CORE") {
+            os << "* MESHFITNSIGMA   " << Attributes::getReal(itsAttr[MESHFITNSIGMA]) << '\n'
+               << "* MESHFITCLIP     " << Attributes::getReal(itsAttr[MESHFITCLIP]) << '\n'
+               << "* MESHFITMAXFAR   " << Attributes::getReal(itsAttr[MESHFITMAXFAR]) << " %\n"
+               << "* MESHFITFARFIELD " << Attributes::getString(itsAttr[MESHFITFARFIELD]) << '\n'
+               << "* MESHFIT=CORE reports the core selection only: the mesh is still fitted "
+               << "to all particles" << endl;
+        }
     } else if (fsType_m == FieldSolverType::SAAMG) {
         os << "* GEOMETRY     " << Attributes::getString(itsAttr[GEOMETRY]) << '\n'
            << "* ITSOLVER     " << Attributes::getString(itsAttr[ITSOLVER]) << '\n'

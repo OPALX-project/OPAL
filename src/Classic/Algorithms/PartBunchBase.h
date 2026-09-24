@@ -19,6 +19,7 @@
 #define PART_BUNCH_BASE_H
 
 #include "Algorithms/CoordinateSystemTrafo.h"
+#include "Algorithms/CoreFitSC.h"
 #include "Algorithms/DistributionMoments.h"
 #include "Algorithms/OpalParticle.h"
 #include "Algorithms/PBunchDefs.h"
@@ -348,6 +349,25 @@ public:
 
     virtual void set_meshEnlargement(double dh);
 
+    /// FIELDSOLVER, MESHFIT: the particles the space-charge mesh is fitted to
+    void setMeshFit(const MeshFitParameters& meshFit);
+    const MeshFitParameters& getMeshFit() const;
+
+    /// Set by the tracker around the mesh fit (boundp() or boundp_destroyCycl()) of each
+    /// space-charge solve step. With MESHFIT=CORE only that fit selects the core: the
+    /// other fits of a step (repartition, deleteParticle(), in another frame) would
+    /// otherwise replace the reported selection before the stat file is written.
+    void setMeshFitSolveStep(bool solveStep);
+
+    /// MESHFIT=CORE: the core selection of the last fit of a space-charge solve step, in
+    /// the local frame of that fit (all zero before the first one)
+    const CoreFitSC::CoreSelection& getMeshFitCore() const;
+    /// MESHFIT=CORE: the bounds of all particles of the same fit
+    void getMeshFitFullBounds(Vector_t& rmin, Vector_t& rmax) const;
+
+    /// Mesh spacing that boundp() gives to particles within [rmin, rmax]
+    Vector_t getMeshSpacing(const Vector_t& rmin, const Vector_t& rmax) const;
+
     void gatherLoadBalanceStatistics();
     size_t getLoadBalance(int p) const;
 
@@ -568,6 +588,12 @@ private:
 
     virtual void updateFields(const Vector_t& hr, const Vector_t& origin);
 
+    /// Bounds the space-charge mesh is fitted to, before the enlargement by BBOXINCR:
+    /// get_bounds() with MESHFIT=ALL. With MESHFIT=CORE the fit of a space-charge solve
+    /// step also selects the core (CoreFitSC::selectCore()) and stores it with the bounds
+    /// of all particles; in this version the mesh is still fitted to all particles.
+    void getSolverMeshBounds(Vector_t& rmin, Vector_t& rmax);
+
     void setup(AbstractParticle<T, Dim>* pb);
 
 public:
@@ -689,6 +715,15 @@ protected:
 
     /// Mesh enlargement
     double dh_m; /// relative enlargement of the mesh
+
+    /// FIELDSOLVER, MESHFIT and its parameters
+    MeshFitParameters meshFit_m;
+    /// See setMeshFitSolveStep().
+    bool meshFitSolveStep_m = false;
+    /// MESHFIT=CORE: see getMeshFitCore() and getMeshFitFullBounds()
+    CoreFitSC::CoreSelection scCore_m;
+    Vector_t scFullMin_m;
+    Vector_t scFullMax_m;
 
     /// if larger than 0, emitt particles for tEmission_m [s]
     double tEmission_m;

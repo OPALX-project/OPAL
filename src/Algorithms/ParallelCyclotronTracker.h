@@ -538,6 +538,9 @@ private:
 
     void computeSpaceChargeFields_m();
 
+    /// FIELDSOLVER, MESHFIT=CORE: one line on the core selection of the last solve
+    void printMeshFit_m() const;
+
     bool computeExternalFields_m(const size_t& i,
                                  const double& t,
                                  Vector_t& Efield,

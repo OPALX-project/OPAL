@@ -529,7 +529,7 @@ void PartBunchBase<T, Dim>::boundp() {
 
         this->updateDomainLength(nr_m);
         IpplTimings::startTimer(boundpBoundsTimer_m);
-        get_bounds(rmin_m, rmax_m);
+        getSolverMeshBounds(rmin_m, rmax_m);
         IpplTimings::stopTimer(boundpBoundsTimer_m);
         Vector_t len = rmax_m - rmin_m;
 
@@ -656,6 +656,10 @@ void PartBunchBase<T, Dim>::boundp_destroyCycl() {
                         //update bin parameter
                         if (weHaveBins())
                             countLost[Bin[ii]] += 1 ;
+                        // MESHFIT=CORE: flag it lost, so that the core selection
+                        // below leaves it out
+                        if (meshFit_m.type == MeshFitType::CORE)
+                            Bin[ii] = -1;
                         /* INFOMSG("REMOTE PARTICLE DELETION: ID = " << ID[ii] << ", R = " << R[ii]
                          * << ", beam rms = " << rrms_m << endl;);
                          */
@@ -679,6 +683,10 @@ void PartBunchBase<T, Dim>::boundp_destroyCycl() {
                         //update bin parameter
                         if (weHaveBins())
                             countLost[Bin[ii]] += 1 ;
+                        // MESHFIT=CORE: flag it lost, so that the core selection
+                        // below leaves it out
+                        if (meshFit_m.type == MeshFitType::CORE)
+                            Bin[ii] = -1;
                         /* INFOMSG("REMOTE PARTICLE DELETION: ID = " << ID[ii] << ", R = " << R[ii]
                          * << ", beam rms = " << rrms_m << endl;);
                          */
@@ -686,6 +694,15 @@ void PartBunchBase<T, Dim>::boundp_destroyCycl() {
                 }
             }
         }
+    }
+
+    // The REMOTEPARTDEL test takes the bounds of all particles, the mesh those of
+    // getSolverMeshBounds(), as in boundp(). The particles queued for deletion above are
+    // still in the bunch until update() below; with MESHFIT=CORE they are flagged lost.
+    if (meshFit_m.type == MeshFitType::CORE) {
+        IpplTimings::startTimer(boundpBoundsTimer_m);
+        getSolverMeshBounds(rmin_m, rmax_m);
+        IpplTimings::stopTimer(boundpBoundsTimer_m);
     }
 
     for (int i = 0; i < dimIdx; i++) {
@@ -1252,6 +1269,72 @@ Vector_t PartBunchBase<T, Dim>::get_hr() const {
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::set_meshEnlargement(double dh) {
     dh_m = dh;
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::setMeshFit(const MeshFitParameters& meshFit) {
+    meshFit_m = meshFit;
+    // nothing selected yet in this TRACK/RUN
+    scCore_m = CoreFitSC::CoreSelection();
+}
+
+
+template <class T, unsigned Dim>
+const MeshFitParameters& PartBunchBase<T, Dim>::getMeshFit() const {
+    return meshFit_m;
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::setMeshFitSolveStep(bool solveStep) {
+    meshFitSolveStep_m = solveStep;
+}
+
+
+template <class T, unsigned Dim>
+const CoreFitSC::CoreSelection& PartBunchBase<T, Dim>::getMeshFitCore() const {
+    return scCore_m;
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::getMeshFitFullBounds(Vector_t& rmin, Vector_t& rmax) const {
+    rmin = scFullMin_m;
+    rmax = scFullMax_m;
+}
+
+
+template <class T, unsigned Dim>
+Vector_t PartBunchBase<T, Dim>::getMeshSpacing(const Vector_t& rmin, const Vector_t& rmax) const {
+    // the enlargement of boundp(), without its DC beam and emission cases
+    Vector_t hr;
+    for (unsigned short d = 0; d < 3u; ++ d) {
+        const double length = std::abs(rmax[d] - rmin[d]);
+        const double margin = (length < 1e-10) ? 1e-10 : dh_m * length;
+        hr[d] = ((rmax[d] + margin) - (rmin[d] - margin)) / (nr_m[d] - 1);
+    }
+    return hr;
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::getSolverMeshBounds(Vector_t& rmin, Vector_t& rmax) {
+    get_bounds(rmin, rmax);
+    if (meshFit_m.type != MeshFitType::CORE || !meshFitSolveStep_m) {
+        return;
+    }
+
+    // Report only: the core of the particles in the frame of this fit, for the stat file
+    // and the log. The mesh is still fitted to the bounds of all particles.
+    const size_t localNum = getLocalNum();
+    scCore_m = CoreFitSC::selectCore(localNum > 0 ? &R[0] : nullptr,
+                                     localNum > 0 ? &Q[0] : nullptr,
+                                     localNum > 0 ? &Bin[0] : nullptr,
+                                     localNum, meshFit_m.nSigma, meshFit_m.clip,
+                                     CoreFitSC::IpplReducer());
+    scFullMin_m = rmin;
+    scFullMax_m = rmax;
 }
 
 
