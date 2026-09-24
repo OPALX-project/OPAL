@@ -56,9 +56,10 @@ enum class MeshFitType: short {
 
 /// Field of the particles outside the core-fitted mesh (MESHFITFARFIELD)
 enum class FarFieldModel: short {
-    MONOPOLE,     // monopole of the core charge, plus the far-far field
-    QUADRUPOLE,   // monopole and quadrupole of the core charge, plus the far-far field
-    FULL          // as QUADRUPOLE, and the exact core field where the expansion fails
+    MONOPOLE,     // monopole of the core charge only
+    QUADRUPOLE,   // monopole and quadrupole of the core charge
+    FULL          // as QUADRUPOLE, the exact core field where the expansion fails, and
+                  // the field of the other particles outside the mesh (far-far)
 };
 
 /// Parameters of the mesh fit, passed to the bunch (PartBunchBase::setMeshFit())

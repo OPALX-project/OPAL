@@ -18,10 +18,16 @@
 //
 #include "Algorithms/PartBunch.h"
 
+#include <algorithm>
 #include <cfloat>
+#include <functional>
 #include <memory>
+#include <sstream>
+#include <string>
 #include <utility>
 #include <vector>
+
+#include <mpi.h>
 
 #include "FixedAlgebra/FMatrix.h"
 #include "FixedAlgebra/FVector.h"
@@ -95,6 +101,7 @@ void PartBunch::computeSelfFields(int binNumber) {
         resizeMesh();
 
         /// Scatter charge onto space charge grid.
+        checkUnmaskedInterpolation("PartBunch::computeSelfFields(int binNumber)");
         this->Q *= this->dt;
         if(!interpolationCacheSet_m) {
             if(interpolationCache_m.size() < getLocalNum()) {
@@ -357,6 +364,7 @@ void PartBunch::computeSelfFields() {
         resizeMesh();
 
         //scatter charges onto grid
+        checkUnmaskedInterpolation("PartBunch::computeSelfFields()");
         this->Q *= this->dt;
         this->Q.scatter(this->rho_m, this->R, IntrplCIC_t());
         this->Q /= this->dt;
@@ -498,24 +506,38 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
         /// mesh the whole domain
         resizeMesh();
 
-        /// Particles flagged lost (Bin < 0) stay in the bunch until the tracker deletes them,
-        /// every DELPARTFREQ steps. Leave their charge off the mesh, as setBinCharge() does in
-        /// the multi-bunch solve. Q itself is restored: the integrator, ScatteringPhysics and
-        /// the loss records still read it.
-        std::vector<std::pair<size_t, double>> lostCharge;
-        for (size_t i = 0; i < getLocalNum(); ++i) {
-            if (this->Bin[i] < 0) {
-                lostCharge.emplace_back(i, this->Q[i]);
-                this->Q[i] = 0.0;
+        /// FIELDSOLVER, MESHFIT=CORE: the mesh of this solve, as the stat file and the log
+        /// report it. A repartition after the fit of the solve step fits the mesh again.
+        if (meshFit_m.type == MeshFitType::CORE) {
+            scStatistics_m.meshSpacing = hr_m;
+        }
+
+        /// FIELDSOLVER, MESHFIT=CORE: on a mesh fitted to the core only the core particles
+        /// are deposited, and only the particles within the range of cell centres gathered
+        /// (CoreFitSC::ParticleClass); the others may lie outside the mesh.
+        const bool coreMesh = isMeshFitToCore();
+        std::vector<CoreFitSC::ParticleClass> particleClass;
+        ParticleMask_t isCore;
+        if (coreMesh) {
+            const size_t localNum = getLocalNum();
+            const ParticleAttrib<Vector_t>& Rc = this->R;
+            const ParticleAttrib<int>& Binc = this->Bin;
+            particleClass.resize(localNum);
+            for (size_t i = 0; i < localNum; ++i) {
+                particleClass[i] = CoreFitSC::classify(Binc[i], Rc[i],
+                                                       scBoxMin_m, scBoxMax_m,
+                                                       scMeshMin_m, scMeshMax_m);
             }
+            isCore = [&particleClass](size_t i) {
+                return particleClass[i] == CoreFitSC::ParticleClass::CORE;
+            };
+        } else {
+            checkUnmaskedInterpolation("PartBunch::computeSelfFields_cycl(double gamma)");
         }
 
-        /// scatter particles charge onto grid.
-        this->Q.scatter(this->rho_m, this->R, IntrplCIC_t());
-
-        for (const auto& lost : lostCharge) {
-            this->Q[lost.first] = lost.second;
-        }
+        /// scatter particles charge onto grid, on a mesh fitted to the core that of the core
+        /// particles. One call serves both meshes (see scatterMasked()).
+        scatterMasked(isCore);
 
         /// Lorentz transformation
         /// In particle rest frame, the longitudinal length (y for cyclotron) enlarged
@@ -527,7 +549,9 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
         rho_m *= tmp2;
 
         // Diagnostics for the stat file only: a field reduction and two particle passes
-        // with collectives, skipped when the tracker says no stat row needs them.
+        // with collectives, skipped when the tracker says no stat row needs them. On a mesh
+        // fitted to the core (MESHFIT=CORE) the rms density, and with it the Debye length,
+        // are those of the core charge on the core mesh.
         if (computeSCDiagnostics_m) {
             double Npoints = nr_m[0] * nr_m[1] * nr_m[2];
             rmsDensity_m = std::sqrt((1.0 /Npoints) * sum((rho_m / Physics::q_e) * (rho_m / Physics::q_e)));
@@ -595,8 +619,17 @@ void PartBunch::computeSelfFields_cycl(double gamma) {
         fwriter.dumpField(eg_m, "e", "V/m", localTrackStep_m);
 #endif
 
-        /// interpolate electric field at particle positions.
-        Ef.gather(eg_m, this->R,  IntrplCIC_t());
+        if (coreMesh) {
+            /// interpolate electric field at the particles within the range of cell
+            /// centres, then the field of the particles outside the core bounds.
+            gatherMasked([&particleClass](size_t i) {
+                return particleClass[i] != CoreFitSC::ParticleClass::FAR;
+            });
+            computeFarField(gamma, particleClass);
+        } else {
+            /// interpolate electric field at particle positions.
+            Ef.gather(eg_m, this->R,  IntrplCIC_t());
+        }
 
 
         
@@ -661,6 +694,7 @@ void PartBunch::computeSelfFields_cycl(int bin) {
         resizeMesh();
 
         /// scatter particles charge onto grid.
+        checkUnmaskedInterpolation("PartBunch::computeSelfFields_cycl(int bin)");
         this->Q.scatter(this->rho_m, this->R, IntrplCIC_t());
 
         /// Lorentz transformation
@@ -828,6 +862,289 @@ void PartBunch::gatherMasked(const ParticleMask_t& accept) {
     }
 
     eg_m.Compress();
+}
+
+
+void PartBunch::computeFarField(double gamma,
+                                const std::vector<CoreFitSC::ParticleClass>& particleClass) {
+    IpplTimings::startTimer(farFieldTimer_m);
+
+    typedef CoreFitSC::ParticleClass Class_t;
+    const int numNodes = Ippl::getNodes();
+    const int myNode = Ippl::myNode();
+    MPI_Comm comm = Ippl::getComm();
+    const size_t localNum = getLocalNum();
+    const ParticleAttrib<Vector_t>& Rc = this->R;
+    const ParticleAttrib<double>& Qc = this->Q;
+    const ParticleAttrib<int>& Binc = this->Bin;
+    const ParticleIndex_t& IDc = this->ID;
+
+    // rest-frame positions about the centre of the core bounds, for conditioning
+    const Vector_t centre = 0.5 * (scBoxMin_m + scBoxMax_m);
+
+    // This rank's part of the far table: the particles outside the core bounds, with their
+    // rest-frame position, charge (0 for those flagged lost), class (1 for FAR, 0 for MESH)
+    // and ID, which picks the subsample of the far-far sources.
+    const int tableWidth = 6;
+    std::vector<size_t> farIndex;
+    std::vector<double> localTable;
+    for (size_t i = 0; i < localNum; ++i) {
+        if (particleClass[i] != Class_t::MESH && particleClass[i] != Class_t::FAR) {
+            continue;
+        }
+        const Vector_t s = CoreFitSC::toRestFrame(Rc[i], centre, gamma);
+        farIndex.push_back(i);
+        localTable.insert(localTable.end(),
+                          {s(0), s(1), s(2), Binc[i] >= 0 ? Qc[i] : 0.0,
+                           particleClass[i] == Class_t::FAR ? 1.0 : 0.0,
+                           static_cast<double>(IDc[i])});
+    }
+
+    // the table of all ranks, in rank order
+    const int localCount = farIndex.size();
+    std::vector<int> counts(numNodes), offsets(numNodes + 1, 0);
+    MPI_Allgather(&localCount, 1, MPI_INT, counts.data(), 1, MPI_INT, comm);
+    for (int p = 0; p < numNodes; ++p) {
+        offsets[p + 1] = offsets[p] + counts[p];
+    }
+    const size_t numTable = offsets[numNodes];
+    scStatistics_m.numFlagged = 0;
+    if (numTable == 0) {
+        IpplTimings::stopTimer(farFieldTimer_m);
+        return;
+    }
+
+    // monopole, centroid and quadrupole of the charge on the mesh
+    CoreFitSC::MomentSums sums(centre, gamma);
+    for (size_t i = 0; i < localNum; ++i) {
+        if (particleClass[i] == Class_t::CORE) {
+            sums.add(Qc[i], Rc[i]);
+        }
+    }
+    const CoreFitSC::CoreMoments moments = sums.reduce(CoreFitSC::IpplReducer());
+
+    std::vector<int> recvCounts(numNodes), displs(numNodes);
+    for (int p = 0; p < numNodes; ++p) {
+        recvCounts[p] = tableWidth * counts[p];
+        displs[p] = tableWidth * offsets[p];
+    }
+    std::vector<double> table(tableWidth * numTable);
+    MPI_Allgatherv(localTable.data(), tableWidth * localCount, MPI_DOUBLE,
+                   table.data(), recvCounts.data(), displs.data(), MPI_DOUBLE, comm);
+
+    // The live entries are the sources and the targets of the far-far field. The entries of
+    // particles flagged lost get the multipole field (FAR) or keep their mesh field (MESH).
+    std::vector<Vector_t> position(numTable);
+    std::vector<size_t> liveRow;
+    std::vector<Vector_t> livePosition;
+    for (size_t j = 0; j < numTable; ++j) {
+        const double* entry = &table[tableWidth * j];
+        position[j] = Vector_t({entry[0], entry[1], entry[2]});
+        if (entry[3] != 0.0) {
+            liveRow.push_back(j);
+            livePosition.push_back(position[j]);
+        }
+    }
+    const size_t numLive = liveRow.size();
+
+    // This rank's share of the table and of its live entries, by index: the far particles
+    // sit on the few ranks that own the faces of the mesh nearest to them.
+    const std::pair<size_t, size_t> range = CoreFitSC::getTableRange(numTable, myNode, numNodes);
+    const std::pair<size_t, size_t> liveRange = CoreFitSC::getTableRange(numLive, myNode,
+                                                                         numNodes);
+    const FarFieldModel model = meshFit_m.farField;
+    std::vector<Vector_t> multipole(numTable);
+    std::vector<double> indicator(numTable);
+    CoreFitSC::computeMultipoleField(moments, position, range.first, range.second,
+                                     model != FarFieldModel::MONOPOLE, multipole, indicator);
+    std::vector<Vector_t> liveFarFar(numLive, Vector_t(0.0));
+    size_t farFarStride = 1;
+    if (model == FarFieldModel::FULL) {
+        // Above CoreFitSC::maxFarFarPairs pairs the sources are the live entries whose ID is
+        // in the subsample, with their charge scaled to that of all live entries.
+        farFarStride = CoreFitSC::getSampleStride(numLive, numLive, CoreFitSC::maxFarFarPairs);
+        std::vector<Vector_t> sourcePosition;
+        std::vector<double> sourceCharge;
+        double liveCharge = 0.0;
+        double sampledCharge = 0.0;
+        for (const size_t j: liveRow) {
+            const double* entry = &table[tableWidth * j];
+            liveCharge += entry[3];
+            if (CoreFitSC::isSampled(static_cast<size_t>(entry[5]), farFarStride)) {
+                sourcePosition.push_back(position[j]);
+                sourceCharge.push_back(entry[3]);
+                sampledCharge += entry[3];
+            }
+        }
+        if (farFarStride > 1 && sampledCharge != 0.0) {
+            const double scale = liveCharge / sampledCharge;
+            for (double& q: sourceCharge) {
+                q *= scale;
+            }
+        }
+        // softened by the smallest rest-frame cell of the core mesh
+        const double eps = std::min({hr_m[0], gamma * hr_m[1], hr_m[2]});
+        CoreFitSC::addDirectField(livePosition, liveRange.first, liveRange.second,
+                                  sourcePosition, sourceCharge, eps, liveFarFar);
+    }
+
+    // The results of all ranks: the multipole field and the indicator of their share of the
+    // table, then the far-far field of their share of the live entries.
+    std::vector<double> localResult;
+    localResult.reserve(4 * (range.second - range.first) +
+                        3 * (liveRange.second - liveRange.first));
+    for (size_t j = range.first; j < range.second; ++j) {
+        localResult.insert(localResult.end(),
+                           {multipole[j](0), multipole[j](1), multipole[j](2), indicator[j]});
+    }
+    for (size_t k = liveRange.first; k < liveRange.second; ++k) {
+        localResult.insert(localResult.end(),
+                           {liveFarFar[k](0), liveFarFar[k](1), liveFarFar[k](2)});
+    }
+    int numResults = 0;
+    for (int p = 0; p < numNodes; ++p) {
+        const std::pair<size_t, size_t> rangeP = CoreFitSC::getTableRange(numTable, p, numNodes);
+        const std::pair<size_t, size_t> liveRangeP = CoreFitSC::getTableRange(numLive, p,
+                                                                              numNodes);
+        recvCounts[p] = 4 * (rangeP.second - rangeP.first) +
+                        3 * (liveRangeP.second - liveRangeP.first);
+        displs[p] = numResults;
+        numResults += recvCounts[p];
+    }
+    std::vector<double> result(numResults);
+    MPI_Allgatherv(localResult.data(), static_cast<int>(localResult.size()), MPI_DOUBLE,
+                   result.data(), recvCounts.data(), displs.data(), MPI_DOUBLE, comm);
+    std::vector<Vector_t> farFar(numTable, Vector_t(0.0));
+    for (int p = 0; p < numNodes; ++p) {
+        const std::pair<size_t, size_t> rangeP = CoreFitSC::getTableRange(numTable, p, numNodes);
+        const std::pair<size_t, size_t> liveRangeP = CoreFitSC::getTableRange(numLive, p,
+                                                                              numNodes);
+        const double* entry = &result[displs[p]];
+        for (size_t j = rangeP.first; j < rangeP.second; ++j, entry += 4) {
+            multipole[j] = Vector_t({entry[0], entry[1], entry[2]});
+            indicator[j] = entry[3];
+        }
+        for (size_t k = liveRangeP.first; k < liveRangeP.second; ++k, entry += 3) {
+            farFar[liveRow[k]] = Vector_t({entry[0], entry[1], entry[2]});
+        }
+    }
+
+    // The live FAR entries where the expansion is not valid get the exact field of the core
+    // particles instead: every rank sums over its own, one sum over the ranks. Above
+    // CoreFitSC::maxCorePairsPerCore pairs per core particle, the core particles in the outer
+    // shell of the box and the others are summed apart (one more sum, of the shell count),
+    // each over the particles whose ID is in its subsample if its pairs exceed that budget,
+    // with their charge scaled to that of the part (one more sum).
+    std::vector<size_t> flagged;
+    for (const size_t j: liveRow) {
+        const Class_t c = (table[tableWidth * j + 4] != 0.0 ? Class_t::FAR : Class_t::MESH);
+        if (CoreFitSC::needsExactCoreField(c, indicator[j])) {
+            flagged.push_back(j);
+        }
+    }
+    scStatistics_m.numFlagged = flagged.size();
+    // strides of the core particles in the shell of the box and of the others
+    size_t coreStride[2] = {1, 1};
+    if (model == FarFieldModel::FULL && !flagged.empty()) {
+        IpplTimings::startTimer(exactCoreTimer_m);
+        std::vector<Vector_t> target(flagged.size());
+        for (size_t k = 0; k < flagged.size(); ++k) {
+            target[k] = position[flagged[k]];
+        }
+
+        const double maxPairs = CoreFitSC::maxCorePairsPerCore * scNumCore_m;
+        const bool split = (static_cast<double>(flagged.size()) * scNumCore_m > maxPairs);
+        if (split) {
+            double numShell = 0.0;
+            for (size_t i = 0; i < localNum; ++i) {
+                if (particleClass[i] == Class_t::CORE &&
+                    CoreFitSC::isInCoreShell(Rc[i], scBoxMin_m, scBoxMax_m)) {
+                    numShell += 1.0;
+                }
+            }
+            allreduce(&numShell, 1, std::plus<double>());
+            const size_t numShellCore = static_cast<size_t>(numShell);
+            coreStride[0] = CoreFitSC::getSampleStride(flagged.size(), numShellCore, maxPairs);
+            coreStride[1] = CoreFitSC::getSampleStride(flagged.size(),
+                                                       scNumCore_m - numShellCore, maxPairs);
+        }
+
+        // the sources of the two parts (all of them in the first without a split), and the
+        // charge of each part and of its subsample
+        std::vector<Vector_t> corePosition[2];
+        std::vector<double> coreCharge[2];
+        double charges[4] = {0.0, 0.0, 0.0, 0.0};
+        for (size_t i = 0; i < localNum; ++i) {
+            if (particleClass[i] != Class_t::CORE) {
+                continue;
+            }
+            const int part = (split && !CoreFitSC::isInCoreShell(Rc[i], scBoxMin_m,
+                                                                 scBoxMax_m)) ? 1 : 0;
+            charges[2 * part] += Qc[i];
+            if (CoreFitSC::isSampled(IDc[i], coreStride[part])) {
+                corePosition[part].push_back(CoreFitSC::toRestFrame(Rc[i], centre, gamma));
+                coreCharge[part].push_back(Qc[i]);
+                charges[2 * part + 1] += Qc[i];
+            }
+        }
+        const bool sampled = (coreStride[0] > 1 || coreStride[1] > 1);
+        if (sampled) {
+            allreduce(charges, 4, std::plus<double>());
+            ++ scStatistics_m.nearSampled;
+        }
+        std::vector<Vector_t> exact(flagged.size(), Vector_t(0.0));
+        for (int part = 0; part < 2; ++part) {
+            if (coreStride[part] > 1 && charges[2 * part + 1] != 0.0) {
+                const double scale = charges[2 * part] / charges[2 * part + 1];
+                for (double& q: coreCharge[part]) {
+                    q *= scale;
+                }
+            }
+            CoreFitSC::addDirectField(target, 0, flagged.size(), corePosition[part],
+                                      coreCharge[part], 0.0, exact);
+        }
+        allreduce(&(exact[0](0)), 3 * static_cast<int>(flagged.size()), std::plus<double>());
+        for (size_t k = 0; k < flagged.size(); ++k) {
+            multipole[flagged[k]] = exact[k];
+        }
+        IpplTimings::stopTimer(exactCoreTimer_m);
+    }
+
+    // Lab-frame field of this rank's particles, with the coupling constant of the mesh
+    // field; the MESH particles have their mesh field already.
+    const double couplingConstant = getCouplingConstant();
+    for (int j = 0; j < localCount; ++j) {
+        const size_t row = offsets[myNode] + j;
+        const size_t i = farIndex[j];
+        if (particleClass[i] == Class_t::FAR) {
+            Ef[i] = couplingConstant * CoreFitSC::toLabFrame(multipole[row] + farFar[row], gamma);
+        } else {
+            Ef[i] += couplingConstant * CoreFitSC::toLabFrame(farFar[row], gamma);
+        }
+    }
+
+    if (farFarStride > 1) {
+        ++ scStatistics_m.farFarSampled;
+        std::ostringstream message;
+        message << "the far-far field of the " << numLive << " far particles is summed over "
+                << "about 1 in " << farFarStride << " of them, as " << numLive << " x "
+                << numLive << " pairs exceed " << CoreFitSC::maxFarFarPairs;
+        warnMeshFitOnce(FarFarWarning, message.str());
+    }
+
+    IpplTimings::stopTimer(farFieldTimer_m);
+}
+
+
+void PartBunch::checkUnmaskedInterpolation(const std::string& where) const {
+    if (meshFit_m.type == MeshFitType::CORE && scStatistics_m.numOutside > 0) {
+        throw GeneralClassicException(where,
+                                      "FIELDSOLVER, MESHFIT=\"CORE\": " +
+                                      std::to_string(scStatistics_m.numOutside) +
+                                      " particles are outside the space-charge mesh, which "
+                                      "the unmasked charge scatter and field gather cannot "
+                                      "handle.");
+    }
 }
 
 

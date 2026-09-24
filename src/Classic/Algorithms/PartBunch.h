@@ -19,10 +19,13 @@
 #ifndef OPAL_PartBunch_HH
 #define OPAL_PartBunch_HH
 
+#include "Algorithms/CoreFitSC.h"
 #include "Algorithms/PartBunchBase.h"
 
 #include <cstddef>
 #include <functional>
+#include <string>
+#include <vector>
 
 class PartBunch: public PartBunchBase<double, 3> {
 
@@ -129,6 +132,32 @@ private:
 
     /// resize mesh to geometry specified
     void resizeMesh();
+
+    /** \brief MESHFIT=CORE: field of the particles outside the core bounds.
+     *
+     * The MESH particles (inside the range of cell centres) have their mesh field in Ef
+     * already, the FAR particles get theirs here. Every rank adds its particles outside the
+     * core bounds to a far table of rest-frame positions, charges (0 for particles flagged
+     * lost), classes and IDs, in rank order, and evaluates an even share of it by index: the
+     * monopole and quadrupole of the core charge and the validity indicator, and for the
+     * live entries the far-far field, whose sources they are. The live FAR entries whose
+     * indicator exceeds CoreFitSC::indicatorThreshold get the exact field of the core
+     * particles instead of the multipole field, summed on every rank over its own. Above
+     * CoreFitSC::maxFarFarPairs pairs, the far-far field runs over a subsample of its
+     * sources; above CoreFitSC::maxCorePairsPerCore pairs per core particle, the exact core
+     * field sums over the core particles in the outer shell of the box and over the others
+     * apart, each over a subsample if its pairs exceed that budget. A subsample is picked by
+     * particle ID (CoreFitSC::isSampled()), its charge scaled to that of the sources it
+     * stands for. The entries flagged lost get the multipole field (FAR) or keep their mesh
+     * field (MESH). MESHFITFARFIELD="QUADRUPOLE" leaves out the far-far field and the exact
+     * core field, "MONOPOLE" also the quadrupole.
+     */
+    void computeFarField(double gamma, const std::vector<CoreFitSC::ParticleClass>& particleClass);
+
+    /// MESHFIT=CORE: throws if particles were outside the mesh at the last update(). IPPL's
+    /// unmasked CIC scatter and gather visit every particle, and such a particle aborts
+    /// there, or writes past the local brick or loses its charge (see scatterMasked()).
+    void checkUnmaskedInterpolation(const std::string& where) const;
 
     /// for defining the boundary conditions
     BConds<double, 3, Mesh_t, Center_t> bc_m;

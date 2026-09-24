@@ -39,6 +39,7 @@
 
 #include <array>
 #include <cstddef>
+#include <cstdint>
 #include <utility>
 #include <vector>
 
@@ -59,6 +60,21 @@ namespace CoreFitSC {
     /// FAR particles whose quadrupole term exceeds this fraction of the monopole term get
     /// the exact core field (needsExactCoreField()).
     constexpr double indicatorThreshold = 0.1;
+    /// The far-far field (N_far x N_far pairs) takes at most about this many pairs, all ranks
+    /// together (1 / P of them on each rank); above it, the sum runs over a subsample of its
+    /// sources (getSampleStride(), isSampled()).
+    constexpr double maxFarFarPairs = 1e8;
+    /// The exact core field (N_flag x N_core pairs) sums over two parts of the core apart: the
+    /// core particles in the outer shell of the box (isInCoreShell()), next to the flagged
+    /// far particles just outside it, and the others. Each part takes at most about this many
+    /// pairs per core particle, maxCorePairsPerCore * N_core, all ranks together; above it,
+    /// the part runs over a subsample of its particles (getSampleStride(), isSampled()).
+    constexpr double maxCorePairsPerCore = 8;
+    /// The outer shell of the box: the points farther from its centre than
+    /// 1 - coreShellFraction of its half-width in some axis.
+    constexpr double coreShellFraction = 0.25;
+    /// The solve warns when the far charge fraction exceeds this.
+    constexpr double warnFarFraction = 0.01;
 
     /// Mode decision: the solve falls back to the full box (FULL) when the core holds
     /// fewer than max(minCoreParticles, minCoreFraction * live) particles or the far charge
@@ -135,6 +151,21 @@ namespace CoreFitSC {
     CoreSelection selectCore(const Vector_t* R, const double* Q, const int* bin,
                              std::size_t localNum, double nSigma, double clip,
                              const Reducer& reducer);
+
+    /// Box the core-fitted mesh is fitted to (before boundp() enlarges it): the core bounds
+    /// of the selection, widened to the particles flagged lost (Bin < 0) in its core window,
+    /// within nSigma * sigma of the clipped mean in every axis, by the test with which
+    /// selectCore() takes a live particle into the core. The particles flagged lost stay in
+    /// the bunch until the tracker deletes them, and the mesh of all particles holds them:
+    /// with an nSigma so large that every particle lies in the window, the box is the bounds
+    /// of all particles. Lost particles outside the window never widen it. classify() takes
+    /// the box in place of the core bounds: a live particle lies in it exactly when it is a
+    /// core particle, as the extremes of the box pass the core test in every axis. R, bin,
+    /// localNum and nSigma must be those of the selection. Collective: one minimum of 6
+    /// doubles.
+    void getMeshBox(const Vector_t* R, const int* bin, std::size_t localNum,
+                    const CoreSelection& selection, double nSigma, const Reducer& reducer,
+                    Vector_t& boxMin, Vector_t& boxMax);
 
     /// True if r lies in [lower, upper] in every axis
     inline bool isInside(const Vector_t& r, const Vector_t& lower, const Vector_t& upper) {
@@ -236,6 +267,35 @@ namespace CoreFitSC {
     /// Entries [rank * n / numRanks, (rank + 1) * n / numRanks) of a table of n entries: the
     /// far-field work of one rank, independent of which rank owns the particles.
     std::pair<std::size_t, std::size_t> getTableRange(std::size_t n, int rank, int numRanks);
+
+    /// Stride of the subsample of the sources that keeps a direct sum over numTargets targets
+    /// and numSources sources within maxPairs pairs: 1 (every source) up to maxPairs pairs,
+    /// else ceil(numTargets * numSources / maxPairs). With global counts every rank gets the
+    /// same stride.
+    std::size_t getSampleStride(std::size_t numTargets, std::size_t numSources,
+                                double maxPairs);
+
+    /// True if r lies in the outer shell of the box [lower, upper]: farther from its centre
+    /// than 1 - coreShellFraction of its half-width in some axis. The exact core field sums
+    /// over the core particles in the shell and over the others apart (maxCorePairsPerCore).
+    bool isInCoreShell(const Vector_t& r, const Vector_t& lower, const Vector_t& upper);
+
+    /// True if the source with this particle ID belongs to the subsample of the stride: every
+    /// source for stride 1, else about one in stride, those whose hashed ID (the splitmix64
+    /// finalizer) is a multiple of the stride. The hash keeps the subsample from following
+    /// the order in which the particles were created (a FROMFILE distribution numbers them in
+    /// the order of the file), and a particle stays in the subsample, on whichever rank, as
+    /// long as the stride does not change. The solve scales the charges of the subsample to
+    /// the charge of all the sources it stands for.
+    inline bool isSampled(std::size_t id, std::size_t stride) {
+        if (stride <= 1) {
+            return true;
+        }
+        std::uint64_t z = id + 0x9E3779B97F4A7C15ULL;
+        z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9ULL;
+        z = (z ^ (z >> 27)) * 0x94D049BB133111EBULL;
+        return (z ^ (z >> 31)) % stride == 0;
+    }
 
     /// CORE solves on the core-fitted mesh, FULL on the box of all particles (fallback).
     /// The values are those of the stat column scMode.

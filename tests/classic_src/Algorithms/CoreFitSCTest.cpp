@@ -1042,6 +1042,156 @@ TEST(CoreFitSCTest, SelectionIpplReducer) {
 }
 
 
+// The box of the core-fitted mesh: the core bounds, widened to the particles flagged lost
+// in the core window, and never by those outside it. With nSigma 1e6 it is the bounds of all
+// particles, lost ones included, as MESHFIT="ALL" fits the mesh. A live particle lies in the
+// box exactly when it is a core particle, and the box does not depend on the rank count.
+TEST(CoreFitSCTest, MeshBox) {
+    // the 10 lost particles of the synthetic bunch lie at 20-50 sigma, outside the window
+    Bunch b = makeSynthetic(false);
+    const CoreSelection s = select(b);
+    Vector_t boxMin, boxMax;
+    getMeshBox(b.R.data(), b.bin.data(), b.R.size(), s, 6.0, SerialReducer(), boxMin, boxMax);
+    for (unsigned int d = 0; d < 3; ++d) {
+        EXPECT_EQ(boxMin[d], s.boundsMin[d]);
+        EXPECT_EQ(boxMax[d], s.boundsMax[d]);
+    }
+
+    // lost particles in the window beyond the core bounds (at most 5 sigma here) widen the
+    // box; those outside the window in one axis do not, nor do they change the selection
+    const Vector_t& mean = s.mean;
+    const Vector_t& sigma = s.sigma;
+    for (unsigned int d = 0; d < 3; ++d) {
+        ASSERT_LT(s.boundsMax[d], mean[d] + 5.0 * sigma[d]);
+        ASSERT_GT(s.boundsMin[d], mean[d] - 5.0 * sigma[d]);
+    }
+    const Vector_t widenX({mean[0] + 5.9 * sigma[0], mean[1], mean[2]});
+    const Vector_t widenYZ({mean[0], mean[1] - 5.9 * sigma[1], mean[2] + 5.9 * sigma[2]});
+    b.push(widenX, syntheticCharge, -1);
+    b.push(widenYZ, syntheticCharge, -1);
+    b.push(Vector_t({mean[0] - 6.1 * sigma[0], mean[1], mean[2]}), syntheticCharge, -1);
+    b.push(Vector_t({mean[0], mean[1] + 5.9 * sigma[1], mean[2] - 6.1 * sigma[2]}),
+           syntheticCharge, -1);
+    const CoreSelection sLost = select(b);
+    expectSameSelection(sLost, s, 0.0);
+    getMeshBox(b.R.data(), b.bin.data(), b.R.size(), sLost, 6.0, SerialReducer(),
+               boxMin, boxMax);
+    EXPECT_EQ(boxMin[0], s.boundsMin[0]);
+    EXPECT_EQ(boxMax[0], widenX[0]);
+    EXPECT_EQ(boxMin[1], widenYZ[1]);
+    EXPECT_EQ(boxMax[1], s.boundsMax[1]);
+    EXPECT_EQ(boxMin[2], s.boundsMin[2]);
+    EXPECT_EQ(boxMax[2], widenYZ[2]);
+
+    // classes on the box: CORE exactly for the live particles in the window, INSIDE for the
+    // two lost ones in it
+    std::size_t numCore = 0, numInside = 0;
+    for (std::size_t i = 0; i < b.R.size(); ++i) {
+        bool inWindow = true;
+        for (unsigned int d = 0; d < 3; ++d) {
+            if (std::abs(b.R[i][d] - mean[d]) > 6.0 * sigma[d]) {
+                inWindow = false;
+            }
+        }
+        const ParticleClass c = classify(b.bin[i], b.R[i], boxMin, boxMax, boxMin, boxMax);
+        if (c == ParticleClass::CORE) {
+            ++ numCore;
+        } else if (c == ParticleClass::INSIDE) {
+            ++ numInside;
+        }
+        const ParticleClass inBox = (b.bin[i] >= 0 ? ParticleClass::CORE :
+                                     ParticleClass::INSIDE);
+        EXPECT_EQ(c == inBox, inWindow) << "particle " << i;
+    }
+    EXPECT_EQ(numCore, s.numCore);
+    EXPECT_EQ(numInside, 2u);
+
+    // nSigma 1e6: the bounds of all particles, live and lost
+    const CoreSelection sAll = select(b, SerialReducer(), 1e6);
+    getMeshBox(b.R.data(), b.bin.data(), b.R.size(), sAll, 1e6, SerialReducer(),
+               boxMin, boxMax);
+    Vector_t lower(std::numeric_limits<double>::max()), upper(-std::numeric_limits<double>::max());
+    for (const Vector_t& r: b.R) {
+        for (unsigned int d = 0; d < 3; ++d) {
+            lower[d] = std::min(lower[d], r[d]);
+            upper[d] = std::max(upper[d], r[d]);
+        }
+    }
+    bool lostOutsideLive = false;
+    for (unsigned int d = 0; d < 3; ++d) {
+        EXPECT_EQ(boxMin[d], lower[d]);
+        EXPECT_EQ(boxMax[d], upper[d]);
+        if (lower[d] < sAll.boundsMin[d] || upper[d] > sAll.boundsMax[d]) {
+            lostOutsideLive = true;
+        }
+    }
+    // (the lost particles at 20-50 sigma lie beyond the live ones in some axis)
+    EXPECT_TRUE(lostOutsideLive);
+
+    // 1, 3 and 8 simulated ranks, the lost particles spread over them: the same box
+    getMeshBox(b.R.data(), b.bin.data(), b.R.size(), sLost, 6.0, SerialReducer(),
+               boxMin, boxMax);
+    for (int numRanks: {1, 3, 8}) {
+        const std::vector<Bunch> parts = distributeRoundRobin(b, numRanks);
+        std::vector<Vector_t> rankMin(numRanks), rankMax(numRanks);
+        const unsigned int numCalls = runOnRanks(numRanks, [&](int p, const Reducer& reducer) {
+            const Bunch& part = parts[p];
+            const CoreSelection sp = select(part, reducer);
+            getMeshBox(part.R.data(), part.bin.data(), part.R.size(), sp, 6.0, reducer,
+                       rankMin[p], rankMax[p]);
+        });
+        // the selection, then one minimum
+        EXPECT_EQ(numCalls, sLost.passes + 4);
+        for (int p = 0; p < numRanks; ++p) {
+            for (unsigned int d = 0; d < 3; ++d) {
+                EXPECT_EQ(rankMin[p][d], boxMin[d]);
+                EXPECT_EQ(rankMax[p][d], boxMax[d]);
+            }
+        }
+    }
+
+    // and on all ranks of the test, through IpplReducer (mpirun -np 4 for a real test)
+    const std::size_t numNodes = Ippl::getNodes();
+    const std::size_t node = Ippl::myNode();
+    Bunch part;
+    for (std::size_t i = node; i < b.R.size(); i += numNodes) {
+        part.push(b.R[i], b.Q[i], b.bin[i]);
+    }
+    const CoreSelection sPart = select(part, IpplReducer());
+    Vector_t partMin, partMax;
+    getMeshBox(part.R.data(), part.bin.data(), part.R.size(), sPart, 6.0, IpplReducer(),
+               partMin, partMax);
+    for (unsigned int d = 0; d < 3; ++d) {
+        EXPECT_EQ(partMin[d], boxMin[d]);
+        EXPECT_EQ(partMax[d], boxMax[d]);
+    }
+
+    // the window includes its boundary: two live particles one sigma from the mean (powers of
+    // 2, so the mean and rms are exact), nSigma 2
+    const double a = std::ldexp(1.0, -10);
+    Bunch pair;
+    pair.push(Vector_t({a, 2.0 * a, 4.0 * a}), 1e-15, 0);
+    pair.push(Vector_t({-a, -2.0 * a, -4.0 * a}), 1e-15, 0);
+    pair.push(Vector_t({2.0 * a, 0.0, 0.0}), 1e-15, -1);
+    pair.push(Vector_t({0.0, -std::nextafter(4.0 * a, 1.0), 0.0}), 1e-15, -1);
+    const CoreSelection sPair = selectCore(pair.R.data(), pair.Q.data(), pair.bin.data(), 4,
+                                           2.0, 1.0, SerialReducer());
+    ASSERT_EQ(sPair.sigma[0], a);
+    getMeshBox(pair.R.data(), pair.bin.data(), 4, sPair, 2.0, SerialReducer(),
+               boxMin, boxMax);
+    EXPECT_EQ(boxMax[0], 2.0 * a);
+    EXPECT_EQ(boxMin[1], -2.0 * a);
+
+    // no particle: an empty box
+    const CoreSelection sNone = selectCore(nullptr, nullptr, nullptr, 0, 6.0, 4.0,
+                                           SerialReducer());
+    getMeshBox(nullptr, nullptr, 0, sNone, 6.0, SerialReducer(), boxMin, boxMax);
+    for (unsigned int d = 0; d < 3; ++d) {
+        EXPECT_GT(boxMin[d], boxMax[d]);
+    }
+}
+
+
 // The far-field model against the Python reference; the model's accuracy against a direct
 // sum beyond 10 sigma
 TEST(CoreFitSCTest, FarFieldAccuracy) {
@@ -1363,6 +1513,133 @@ TEST(CoreFitSCTest, WorkSplitByTableIndex) {
         expectVectorNear(onSource[k], Vector_t({double(exact[0]), double(exact[1]),
                                                 double(exact[2])}), 1e-15, "target on a source");
     }
+}
+
+
+// The subsample of the sources of a direct sum above its pair budget. The stride keeps the
+// pairs within the budget. Every ID is in the subsample of stride 1, and about one in
+// stride otherwise, for consecutive IDs and for IDs in steps of the stride (IPPL numbers the
+// particles created on one rank in steps of the rank count). The outer shell of the box is
+// the part of it beyond 1 - coreShellFraction of its half-width in some axis. On the scraped
+// bunch, the exact core field at the flagged FAR entries with the budget of the solve, the
+// core particles in the shell and the others each subsampled to maxCorePairsPerCore pairs
+// per core particle and scaled to their charge, is close to the field of all core
+// particles, and much closer than the multipole field that the indicator rejects there.
+TEST(CoreFitSCTest, DirectSumSubsample) {
+    EXPECT_EQ(getSampleStride(0, 0, maxFarFarPairs), 1u);
+    EXPECT_EQ(getSampleStride(10000, 10000, maxFarFarPairs), 1u);
+    EXPECT_EQ(getSampleStride(10000, 10001, maxFarFarPairs), 2u);
+    EXPECT_EQ(getSampleStride(20000, 20000, maxFarFarPairs), 4u);
+    // the exact core field: about one in N_flag / maxCorePairsPerCore core particles
+    EXPECT_EQ(getSampleStride(8, 349641, maxCorePairsPerCore * 349641), 1u);
+    EXPECT_EQ(getSampleStride(9, 349641, maxCorePairsPerCore * 349641), 2u);
+    EXPECT_EQ(getSampleStride(292, 349641, maxCorePairsPerCore * 349641), 37u);
+
+    const Vector_t lower({-1.0, -2.0, -3.0});
+    const Vector_t upper({1.0, 2.0, 5.0});
+    EXPECT_FALSE(isInCoreShell(Vector_t({0.0, 0.0, 1.0}), lower, upper));
+    EXPECT_FALSE(isInCoreShell(Vector_t({0.74, -1.49, 3.99}), lower, upper));
+    EXPECT_TRUE(isInCoreShell(Vector_t({0.76, 0.0, 1.0}), lower, upper));
+    EXPECT_TRUE(isInCoreShell(Vector_t({0.0, -1.51, 1.0}), lower, upper));
+    EXPECT_TRUE(isInCoreShell(Vector_t({0.0, 0.0, -2.01}), lower, upper));
+    EXPECT_TRUE(isInCoreShell(lower, lower, upper));
+    EXPECT_TRUE(isInCoreShell(upper, lower, upper));
+
+    for (std::size_t id = 0; id < 1000; ++id) {
+        EXPECT_TRUE(isSampled(id, 1));
+    }
+    const std::size_t numIds = 100000;
+    for (std::size_t stride: {2, 3, 8, 100}) {
+        std::size_t consecutive = 0;
+        std::size_t steps = 0;
+        for (std::size_t id = 0; id < numIds; ++id) {
+            consecutive += isSampled(id, stride);
+            steps += isSampled(id * stride, stride);
+        }
+        const double expected = double(numIds) / stride;
+        EXPECT_LT(std::abs(consecutive - expected), 5.0 * std::sqrt(expected));
+        EXPECT_LT(std::abs(steps - expected), 5.0 * std::sqrt(expected));
+    }
+
+    const Bunch b = makeSynthetic(true);
+    const FarModel m = computeFarModel(b, syntheticGamma);
+    ASSERT_GT(m.flagged.size(), 50u);
+    std::vector<Vector_t> target;
+    for (std::size_t k: m.flagged) {
+        target.push_back(m.position[k]);
+    }
+    std::vector<Vector_t> exact(target.size(), Vector_t(0.0));
+    addDirectField(target, 0, target.size(), m.coreSource, m.coreCharge, 0.0, exact);
+
+    // the core particles in index order, with their index as ID, in the shell of the box
+    // (the core bounds) or not
+    const std::size_t numCore = m.coreSource.size();
+    const double maxPairs = maxCorePairsPerCore * numCore;
+    std::vector<bool> inShell;
+    std::size_t numShell = 0;
+    for (std::size_t i = 0; i < b.R.size(); ++i) {
+        if (m.classes[i] == ParticleClass::CORE) {
+            inShell.push_back(isInCoreShell(b.R[i], m.selection.boundsMin,
+                                            m.selection.boundsMax));
+            numShell += inShell.back();
+        }
+    }
+    const std::size_t stride[2] = {getSampleStride(target.size(), numShell, maxPairs),
+                                   getSampleStride(target.size(), numCore - numShell,
+                                                   maxPairs)};
+    // the numpy implementation: 475 of the 201241 core particles in the shell, strides 1 and 12
+    EXPECT_GT(numShell, 100u);
+    EXPECT_LT(numShell, numCore / 100);
+    EXPECT_EQ(stride[0], 1u);
+    EXPECT_GT(stride[1], 8u);
+
+    std::vector<Vector_t> sampled(target.size(), Vector_t(0.0));
+    std::size_t numSources = 0;
+    for (int part = 0; part < 2; ++part) {
+        std::vector<Vector_t> source;
+        std::vector<double> charge;
+        double partCharge = 0.0;
+        double sampledCharge = 0.0;
+        for (std::size_t i = 0, l = 0; i < b.R.size(); ++i) {
+            if (m.classes[i] != ParticleClass::CORE) {
+                continue;
+            }
+            if (inShell[l] == (part == 0)) {
+                partCharge += m.coreCharge[l];
+                if (isSampled(i, stride[part])) {
+                    source.push_back(m.coreSource[l]);
+                    charge.push_back(m.coreCharge[l]);
+                    sampledCharge += m.coreCharge[l];
+                }
+            }
+            ++ l;
+        }
+        for (double& q: charge) {
+            q *= partCharge / sampledCharge;
+        }
+        addDirectField(target, 0, target.size(), source, charge, 0.0, sampled);
+        numSources += source.size();
+    }
+    EXPECT_LT(std::abs(double(numSources) - double(numShell) -
+                       double(numCore - numShell) / stride[1]),
+              5.0 * std::sqrt(double(numCore - numShell) / stride[1]));
+    EXPECT_LE(double(numSources) * target.size(), 2.0 * maxPairs);
+
+    std::vector<double> error, multipoleError;
+    for (std::size_t l = 0; l < target.size(); ++l) {
+        const double norm = euclidean_norm(exact[l]);
+        error.push_back(euclidean_norm(sampled[l] - exact[l]) / norm);
+        multipoleError.push_back(euclidean_norm(m.multipole[m.flagged[l]] - exact[l]) / norm);
+    }
+    std::sort(error.begin(), error.end());
+    std::sort(multipoleError.begin(), multipoleError.end());
+    const std::size_t median = error.size() / 2;
+    // the numpy implementation gives 4.9e-3 and 9.0e-3 on the same particles, the multipole
+    // 6.0e-2 and 0.39
+    EXPECT_LT(error[median], 1e-2);
+    EXPECT_LT(error.back(), 2e-2);
+    EXPECT_LT(error[median], 0.2 * multipoleError[median]);
+    EXPECT_LT(error.back(), 0.2 * multipoleError.back());
 }
 
 

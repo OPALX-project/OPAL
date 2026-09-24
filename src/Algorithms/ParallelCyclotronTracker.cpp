@@ -1685,8 +1685,8 @@ Vector_t ParallelCyclotronTracker::calcMeanP() const {
     return meanP / Vector_t(itsBunch_m->getTotalNum());
 }
 
-void ParallelCyclotronTracker::repartition() {
-    if ((step_m % Options::repartFreq) == 0) {
+void ParallelCyclotronTracker::repartition(bool force) {
+    if (force || (step_m % Options::repartFreq) == 0) {
         IpplTimings::startTimer(BinRepartTimer_m);
         itsBunch_m->do_binaryRepart();
         Ippl::Comm->barrier();
@@ -3495,7 +3495,10 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
             // --- Single bunch mode --- //
             double temp_meangamma = Util::getGamma(PreviousMeanP);
 
-            repartition();
+            // FIELDSOLVER, MESHFIT=CORE: the partition of the old box is out of balance
+            // at the first solve and after a switch between the core box and the box of
+            // all particles
+            repartition(itsBunch_m->isMeshFitRepartitionDue());
 
             itsBunch_m->setGlobalMeanR(meanR);
             itsBunch_m->setGlobalToLocalQuaternion(quaternionToYAxis);
@@ -3512,33 +3515,42 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
 }
 
 
-void ParallelCyclotronTracker::printMeshFit_m() const {
-    const CoreFitSC::CoreSelection& core = itsBunch_m->getMeshFitCore();
-    if (itsBunch_m->getMeshFit().type != MeshFitType::CORE || core.numLive == 0) {
+void ParallelCyclotronTracker::printMeshFit_m() {
+    if (itsBunch_m->getMeshFit().type != MeshFitType::CORE) {
         return;
     }
 
-    // Resolution of the core: cells per clipped rms width on a mesh fitted to the core
-    // bounds and on the mesh fitted to all particles
-    Vector_t fullMin, fullMax;
-    itsBunch_m->getMeshFitFullBounds(fullMin, fullMax);
-    const Vector_t hrFull = itsBunch_m->getMeshSpacing(fullMin, fullMax);
+    const CoreFitSC::CoreSelection& core = itsBunch_m->getMeshFitCore();
+    const PartBunchBase<double, 3>::MeshFitStatistics& statistics =
+        itsBunch_m->getMeshFitStatistics();
+    if (core.numLive > 0) {
+        // Resolution of the core: cells per clipped rms width on the mesh of the last solve
+        // (in FULL mode that of all particles) and on the mesh fitted to all particles
+        Vector_t fullMin, fullMax;
+        itsBunch_m->getMeshFitFullBounds(fullMin, fullMax);
+        const Vector_t hrFull = itsBunch_m->getMeshSpacing(fullMin, fullMax);
+        const bool full = (itsBunch_m->getMeshFitMode().mode == CoreFitSC::Mode::FULL);
 
-    *gmsg << "* SC mesh fit (report only): " << core.numFar << " far particles ("
-          << 100.0 * core.getFarChargeFraction() << " % of the live charge, max "
-          << core.farMaxDistance << " sigma), "
-          << core.numHalo << " beyond " << CoreFitSC::haloSigma << " sigma, "
-          << core.passes << " clipped passes, ";
-    if (core.numCore > 0) {
-        const Vector_t hrCore = itsBunch_m->getMeshSpacing(core.boundsMin, core.boundsMax);
-        *gmsg << "cells per sigma " << core.sigma[0] / hrCore[0] << "/"
-              << core.sigma[1] / hrCore[1] << "/" << core.sigma[2] / hrCore[2]
-              << " (mesh of all particles ";
-    } else {
-        *gmsg << "no core particle (cells per sigma on the mesh of all particles ";
+        *gmsg << "* SC mesh fit: mode " << (full ? "FULL" : "CORE") << ", "
+              << core.numFar << " far particles (" << 100.0 * core.getFarChargeFraction()
+              << " % of the live charge, max " << core.farMaxDistance << " sigma), "
+              << core.numHalo << " beyond " << CoreFitSC::haloSigma << " sigma, "
+              << core.passes << " clipped passes, " << statistics.numFlagged << " flagged, "
+              << statistics.numOutside << " outside the mesh, ";
+        if (core.numCore > 0) {
+            const Vector_t& hr = statistics.meshSpacing;
+            *gmsg << "cells per sigma " << core.sigma[0] / hr[0] << "/"
+                  << core.sigma[1] / hr[1] << "/" << core.sigma[2] / hr[2]
+                  << " (mesh of all particles ";
+        } else {
+            *gmsg << "no core particle (cells per sigma on the mesh of all particles ";
+        }
+        *gmsg << core.sigma[0] / hrFull[0] << "/" << core.sigma[1] / hrFull[1] << "/"
+              << core.sigma[2] / hrFull[2] << "), " << statistics.turnFullSolves << " of "
+              << statistics.turnSolves << " solves of this turn in FULL mode, "
+              << statistics.modeSwitches << " mode switches" << endl;
     }
-    *gmsg << core.sigma[0] / hrFull[0] << "/" << core.sigma[1] / hrFull[1] << "/"
-          << core.sigma[2] / hrFull[2] << ")" << endl;
+    itsBunch_m->resetMeshFitTurn();
 }
 
 

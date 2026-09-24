@@ -706,9 +706,7 @@ Inform& FieldSolver::printInfo(Inform& os) const {
             os << "* MESHFITNSIGMA   " << Attributes::getReal(itsAttr[MESHFITNSIGMA]) << '\n'
                << "* MESHFITCLIP     " << Attributes::getReal(itsAttr[MESHFITCLIP]) << '\n'
                << "* MESHFITMAXFAR   " << Attributes::getReal(itsAttr[MESHFITMAXFAR]) << " %\n"
-               << "* MESHFITFARFIELD " << Attributes::getString(itsAttr[MESHFITFARFIELD]) << '\n'
-               << "* MESHFIT=CORE reports the core selection only: the mesh is still fitted "
-               << "to all particles" << endl;
+               << "* MESHFITFARFIELD " << Attributes::getString(itsAttr[MESHFITFARFIELD]) << endl;
         }
     } else if (fsType_m == FieldSolverType::SAAMG) {
         os << "* GEOMETRY     " << Attributes::getString(itsAttr[GEOMETRY]) << '\n'

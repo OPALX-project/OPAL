@@ -342,7 +342,8 @@ private:
 
     Vector_t calcMeanP() const;
 
-    void repartition(); // Do repartition between nodes if step_m is multiple of Options::repartFreq
+    // Do repartition between nodes if step_m is multiple of Options::repartFreq, or if forced
+    void repartition(bool force = false);
 
     // Transform the x- and y-parts of a particle attribute (position, momentum, fields) from the
     // global reference frame to the local reference frame.
@@ -538,8 +539,9 @@ private:
 
     void computeSpaceChargeFields_m();
 
-    /// FIELDSOLVER, MESHFIT=CORE: one line on the core selection of the last solve
-    void printMeshFit_m() const;
+    /// FIELDSOLVER, MESHFIT=CORE: one line on the core selection of the last solve and on
+    /// the solves of the turn, which starts the next turn of the bunch's statistics
+    void printMeshFit_m();
 
     bool computeExternalFields_m(const size_t& i,
                                  const double& t,

@@ -203,6 +203,40 @@ CoreFitSC::CoreSelection CoreFitSC::selectCore(const Vector_t* R, const double* 
 }
 
 
+void CoreFitSC::getMeshBox(const Vector_t* R, const int* bin, std::size_t localNum,
+                           const CoreSelection& selection, double nSigma,
+                           const Reducer& reducer, Vector_t& boxMin, Vector_t& boxMax) {
+    // the core test of the final pass of selectCore(), here for the particles flagged lost
+    const Vector_t coreWidth = getHalfWidth(nSigma, selection.sigma);
+    double extrema[6];      // min x, y, z; -max x, y, z
+    for (unsigned int d = 0; d < 3; ++d) {
+        extrema[d]     = selection.boundsMin[d];
+        extrema[3 + d] = -selection.boundsMax[d];
+    }
+    for (std::size_t i = 0; i < localNum; ++i) {
+        if (bin[i] >= 0) {
+            continue;
+        }
+        const Vector_t dr = R[i] - selection.mean;
+        if (std::abs(dr[0]) > coreWidth[0] ||
+            std::abs(dr[1]) > coreWidth[1] ||
+            std::abs(dr[2]) > coreWidth[2]) {
+            continue;
+        }
+        for (unsigned int d = 0; d < 3; ++d) {
+            extrema[d]     = std::min(extrema[d], R[i][d]);
+            extrema[3 + d] = std::min(extrema[3 + d], -R[i][d]);
+        }
+    }
+    reducer.min(extrema, 6);
+
+    for (unsigned int d = 0; d < 3; ++d) {
+        boxMin[d] = extrema[d];
+        boxMax[d] = -extrema[3 + d];
+    }
+}
+
+
 CoreFitSC::ParticleClass CoreFitSC::classify(int bin, const Vector_t& r,
                                              const Vector_t& boundsMin,
                                              const Vector_t& boundsMax,
@@ -324,6 +358,28 @@ std::pair<std::size_t, std::size_t> CoreFitSC::getTableRange(std::size_t n, int 
     const std::size_t p = rank;
     const std::size_t numP = numRanks;
     return std::make_pair(p * n / numP, (p + 1) * n / numP);
+}
+
+
+std::size_t CoreFitSC::getSampleStride(std::size_t numTargets, std::size_t numSources,
+                                       double maxPairs) {
+    const double pairs = static_cast<double>(numTargets) * static_cast<double>(numSources);
+    if (pairs <= maxPairs) {
+        return 1;
+    }
+    return static_cast<std::size_t>(std::ceil(pairs / maxPairs));
+}
+
+
+bool CoreFitSC::isInCoreShell(const Vector_t& r, const Vector_t& lower, const Vector_t& upper) {
+    for (unsigned int d = 0; d < 3; ++d) {
+        const double centre = 0.5 * (lower[d] + upper[d]);
+        const double halfWidth = 0.5 * (upper[d] - lower[d]);
+        if (std::abs(r[d] - centre) > (1.0 - coreShellFraction) * halfWidth) {
+            return true;
+        }
+    }
+    return false;
 }
 
 
