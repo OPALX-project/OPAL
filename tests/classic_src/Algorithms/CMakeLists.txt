@@ -6,6 +6,7 @@ set (_SRCS
     PartBunchTest.cpp
     SinusoidalTimeDependenceTest.cpp
     TimeDependenceCacheTest.cpp
+    CoreFitSCTest.cpp
 )
 
 include_directories (
