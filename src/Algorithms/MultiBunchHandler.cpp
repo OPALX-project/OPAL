@@ -144,6 +144,7 @@ void MultiBunchHandler::saveBunch(PartBunchBase<double, 3>* beam) {
         std::make_pair("REFZ", 0.0),
         std::make_pair("AZIMUTH", 0.0),
         std::make_pair("ELEVATION", 0.0),
+        std::make_pair("REFSOURCE", 0.0),
         std::make_pair("B-ref_x",  0.0),
         std::make_pair("B-ref_z",  0.0),
         std::make_pair("B-ref_y",  0.0),
