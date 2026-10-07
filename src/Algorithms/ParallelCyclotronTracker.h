@@ -28,16 +28,32 @@
 #ifndef OPAL_ParallelCyclotronTracker_HH
 #define OPAL_ParallelCyclotronTracker_HH
 
+#include "AbsBeamline/Component.h"
 #include "AbsBeamline/ElementBase.h"
+#include "AbsBeamline/Ring.h"
 #include "Algorithms/BoostMatrix.h"
 #include "Algorithms/MultiBunchHandler.h"
+#include "Algorithms/PartBunchBase.h"
+#include "Algorithms/Quaternion.h"
 #include "Algorithms/Tracker.h"
-#include "Steppers/Steppers.h"
+#include "Physics/Physics.h"
+#include "Steppers/Stepper.h"
+#include "Utility/Inform.h"
+#include "Utility/IpplTimings.h"
 
+#include <cmath>
+#include <cstddef>
+#include <fstream>
+#include <functional>
+#include <list>
 #include <memory>
+#include <string>
 #include <tuple>
+#include <utility>
 #include <vector>
 
+namespace Steppers { enum TimeIntegrator : short; }
+template <class T> class ParticleAttrib;
 class DataSink;
 class PluginElement;
 class LossDataSink;

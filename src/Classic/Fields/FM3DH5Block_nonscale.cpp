@@ -15,11 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 //
-
 #include "Fields/FM3DH5Block_nonscale.h"
+
+#include "Fields/Fieldmap.h"
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
-#include "Utilities/GeneralClassicException.h"
+
+#include <cstddef>
 
 _FM3DH5Block_nonscale::_FM3DH5Block_nonscale (
     const std::string& filename
@@ -54,7 +56,7 @@ void _FM3DH5Block_nonscale::readMap (
     long long last_step = getNumSteps () - 1;
     setStep (last_step);
 
-    size_t field_size = num_gridpx_m * num_gridpy_m * num_gridpz_m;
+    std::size_t field_size = num_gridpx_m * num_gridpy_m * num_gridpz_m;
     FieldstrengthEx_m.allocate (field_size);
     FieldstrengthEy_m.allocate (field_size);
     FieldstrengthEz_m.allocate (field_size);

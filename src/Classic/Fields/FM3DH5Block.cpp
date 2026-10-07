@@ -18,6 +18,10 @@
 
 #include "Fields/FM3DH5Block.h"
 
+#include "Fields/Fieldmap.h"
+
+#include <cstddef>
+
 _FM3DH5Block::_FM3DH5Block (
     const std::string& filename
     ) : _Fieldmap(
@@ -50,7 +54,7 @@ void _FM3DH5Block::readMap (
     long long last_step = getNumSteps () - 1;
     setStep (last_step);
 
-    size_t field_size = num_gridpx_m * num_gridpy_m * num_gridpz_m;
+    std::size_t field_size = num_gridpx_m * num_gridpy_m * num_gridpz_m;
 
     // One physical copy per node instead of one per rank, when the file allows it.
     bool mapped = false;

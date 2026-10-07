@@ -18,8 +18,13 @@
 #ifndef CLASSIC_CCollimator_HH
 #define CLASSIC_CCollimator_HH
 
+#include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/PluginElement.h"
 
+#include <string>
+
+class BeamlineVisitor;
+template <class T, unsigned int Dim> class PartBunchBase;
 class ParticleMatterInteractionHandler;
 
 class CCollimator: public PluginElement {

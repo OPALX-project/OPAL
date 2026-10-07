@@ -15,14 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 //
-
 #include "Fields/FM3DH5BlockBase.h"
+
+#include "Physics/Physics.h"
+#include "Utilities/GeneralClassicException.h"
 
 #include <cstdlib>
 #include <limits>
-#include "Fields/Fieldmap.hpp"
-#include "Physics/Physics.h"
-#include "Utilities/GeneralClassicException.h"
+#include <string>
+
+#include "H5hut.h"
 
 void _FM3DH5BlockBase::openFileMPIOCollective (
     const std::string& filename

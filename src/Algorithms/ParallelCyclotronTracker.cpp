@@ -55,7 +55,6 @@
 #include "AbsBeamline/VariableRFCavityFringeField.h"
 #include "AbsBeamline/VerticalFFAMagnet.h"
 
-#include "AbstractObjects/Element.h"
 #include "AbstractObjects/OpalData.h"
 
 #include "Algorithms/Ctunes.h"
@@ -69,8 +68,6 @@
 
 #include "Distribution/Distribution.h"
 
-#include "Elements/OpalBeamline.h"
-
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
 
@@ -81,9 +78,9 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 
+#include <algorithm>
 #include <cmath>
-#include <fstream>
-#include <iostream>
+#include <filesystem>
 #include <limits>
 #include <numeric>
 

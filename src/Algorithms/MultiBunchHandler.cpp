@@ -31,14 +31,32 @@
 #ifdef ENABLE_AMR
     #include "Algorithms/AmrPartBunch.h"
 #endif
+#include "Algorithms/PBunchDefs.h"
+#include "Algorithms/PartBins.h"
 #include "Algorithms/PartBinsCyc.h"
-//FIXME Remove headers and dynamic_cast in
 #include "Algorithms/PartBunch.h"
+#include "Algorithms/PartBunchBase.h"
+#include "Algorithms/Vektor.h"
+#include "Particle/ParticleAttrib.h"
+#include "Physics/ParticleProperties.h"
 #include "Physics/Units.h"
 #include "Structure/H5PartWrapperForPC.h"
 #include "Utilities/OpalException.h"
+#include "Utility/Inform.h"
+#include "Utility/IpplInfo.h"
+#include "Utility/IpplTimings.h"
 
+#include <h5core/h5_types.h>
+
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <functional>
 #include <map>
+#include <memory>
+#include <utility>
+
+class PartData;
 
 extern Inform *gmsg;
 

@@ -28,11 +28,11 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iterator>
+#include <functional>
 
 extern Inform* gmsg;
 
-PeakFinder::PeakFinder(std::string outfn, double min,
+PeakFinder::PeakFinder(const std::string& outfn, double min,
                        double max, double binWidth, bool singlemode)
     : outputName_m(outfn)
     , binWidth_m(binWidth)

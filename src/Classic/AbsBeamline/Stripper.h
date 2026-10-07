@@ -26,7 +26,10 @@
 #ifndef CLASSIC_Stripper_HH
 #define CLASSIC_Stripper_HH
 
+#include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/PluginElement.h"
+
+#include <string>
 
 class Stripper: public PluginElement {
 

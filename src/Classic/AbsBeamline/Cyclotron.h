@@ -27,8 +27,12 @@
 #define CLASSIC_Cyclotron_HH
 
 #include "AbsBeamline/Component.h"
+#include "AbsBeamline/ElementBase.h"
+#include "Algorithms/Vektor.h"
 #include "Fields/Definitions.h"
 
+#include <cstddef>
+#include <memory>
 #include <string>
 #include <vector>
 

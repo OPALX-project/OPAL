@@ -15,17 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 //
-
 #ifndef CLASSIC_FIELDMAP3DH5BLOCKBASE_H
 #define CLASSIC_FIELDMAP3DH5BLOCKBASE_H
 
-#include "Fields/Fieldmap.h"
+#include "Algorithms/Vektor.h"
 #include "Fields/FieldArray.h"
+#include "Fields/Fieldmap.h"
 
+#include <h5core/h5_types.h>
+
+#include <algorithm>
 #include <cmath>
+#include <cstddef>
+#include <memory>
+#include <string>
+#include <utility>
 #include <vector>
 
-#include "H5hut.h"
+class Inform;
 static_assert (sizeof(double) == sizeof (h5_float64_t),
                "double and h5_float64_t are not the same type" );
 static_assert (sizeof(long long) == sizeof (h5_int64_t),

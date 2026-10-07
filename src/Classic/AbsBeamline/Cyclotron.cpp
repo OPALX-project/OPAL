@@ -25,22 +25,22 @@
 //
 #include "AbsBeamline/Cyclotron.h"
 
-#include "AbstractObjects/OpalData.h"
 #include "AbsBeamline/BeamlineVisitor.h"
+#include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Fields/Fieldmap.h"
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
 #include "Structure/LossDataSink.h"
 #include "TrimCoils/TrimCoil.h"
-#include "Utilities/Options.h"
 #include "Utilities/GeneralClassicException.h"
+#include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
 #include <algorithm>
 #include <cmath>
-#include <cstring>
 #include <cstdio>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <limits>

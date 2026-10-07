@@ -23,13 +23,21 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
+
 #include "AbsBeamline/Stripper.h"
 
 #include "AbsBeamline/BeamlineVisitor.h"
+#include "Algorithms/OpalParticle.h"
 #include "Algorithms/PartBunchBase.h"
+#include "Algorithms/Vektor.h"
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
 #include "Structure/LossDataSink.h"
+
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <string>
 
 extern Inform *gmsg;
 extern Inform *gmsgALL;

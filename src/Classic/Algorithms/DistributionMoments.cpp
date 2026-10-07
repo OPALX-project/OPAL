@@ -15,20 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL. If not, see <https://www.gnu.org/licenses/>.
 //
-#include "DistributionMoments.h"
+#include "Algorithms/DistributionMoments.h"
 
+#include "AbstractObjects/OpalData.h"
+#include "Algorithms/OpalParticle.h"
+#include "Algorithms/PartBunchBase.h"
+#include "Physics/Units.h"
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
 #include "Message/GlobalComm.h"
 #include "Utility/Inform.h"
 
-#include "OpalParticle.h"
-#include "PartBunchBase.h"
-
-#include <cmath>
-
 #include <gsl/gsl_histogram.h>
+
+#include <cstddef>
+#include <cmath>
+#include <functional>
+#include <iterator>
+#include <limits>
+#include <numeric>
+#include <tuple>
 
 extern Inform* gmsg;
 

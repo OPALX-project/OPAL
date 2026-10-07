@@ -15,13 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 //
-
 #ifndef CLASSIC_FIELDMAP3DH5BLOCK_H
 #define CLASSIC_FIELDMAP3DH5BLOCK_H
 
+#include "Algorithms/Vektor.h"
+#include "Fields/Definitions.h"
 #include "Fields/FM3DH5BlockBase.h"
+#include "Fields/FieldArray.h"
 
-#include <vector>
+#include <memory>
+#include <string>
 
 class _FM3DH5Block: public _FM3DH5BlockBase {
 

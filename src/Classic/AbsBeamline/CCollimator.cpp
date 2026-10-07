@@ -24,8 +24,11 @@
 #include "Solvers/ParticleMatterInteractionHandler.h"
 #include "Structure/LossDataSink.h"
 
+#include <algorithm>
 #include <cmath>
 #include <fstream>
+#include <limits>
+#include <utility>
 
 extern Inform *gmsg;
 

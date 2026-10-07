@@ -24,6 +24,11 @@
 #include "Structure/LossDataSink.h"
 #include "Structure/PeakFinder.h"
 
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <utility>
+
 extern Inform *gmsg;
 
 Probe::Probe():Probe("")
