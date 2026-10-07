@@ -528,7 +528,9 @@ int opalMain(int argc, char *argv[]) {
     Ippl::Comm->barrier();
     // Before clearDictionary() and before Ippl is torn down: the tracker is held in a
     // static shared_ptr and would otherwise be destroyed after MPI_Finalize.
+#ifndef DONT_DEFINE_IPPL_GMSG
     TrackRun::releaseTracker();
+#endif
     _Fieldmap::clearDictionary();
     OpalData::deleteInstance();
     delete gmsg;
@@ -541,7 +543,9 @@ int opalMain(int argc, char *argv[]) {
 
     // Calls MPI_Finalize, collectively like the barrier above. Nothing after this,
     // static destructors included, may use MPI, parallel HDF5 or Ippl::Comm.
+#ifndef DONT_DEFINE_IPPL_GMSG
     delete ippl;
+#endif
     delete Ippl::Info;
     delete Ippl::Warn;
     delete Ippl::Error;
