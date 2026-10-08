@@ -30,7 +30,7 @@ StatWriter::StatWriter(const std::string& fname, bool restart)
 { }
 
 
-void StatWriter::fillHeader(const losses_t &losses) {
+void StatWriter::fillHeader(const PartBunchBase<double, 3> *beam, const losses_t &losses) {
 
     if (this->hasColumns()) {
         return;
@@ -38,8 +38,15 @@ void StatWriter::fillHeader(const losses_t &losses) {
 
     columns_m.addColumn("t", "double", "ns", "Time");
     columns_m.addColumn("s", "double", "m", "Path length");
-    columns_m.addColumn("numParticles", "long", "1", "Number of Macro Particles");
-    columns_m.addColumn("charge", "double", "1", "Bunch Charge");
+    // in OPAL-cycl the particle with ID 0 is tracked and counted but left out of
+    // the moments (DistributionMoments::isParticleExcluded)
+    if (OpalData::getInstance()->isInOPALCyclMode() && !Options::amr) {
+        columns_m.addColumn("numParticles", "long", "1",
+                            "Number of Macro Particles including the one with ID 0 that the moments exclude");
+    } else {
+        columns_m.addColumn("numParticles", "long", "1", "Number of Macro Particles");
+    }
+    columns_m.addColumn("charge", "double", "C", "Bunch Charge");
     columns_m.addColumn("energy", "double", "MeV", "Mean Bunch Energy");
 
     columns_m.addColumn("rms_x", "double", "m", "RMS Beamsize in x");
@@ -66,18 +73,19 @@ void StatWriter::fillHeader(const losses_t &losses) {
     columns_m.addColumn("ref_py", "double", "1", "y momentum of reference particle in lab cs");
     columns_m.addColumn("ref_pz", "double", "1", "z momentum of reference particle in lab cs");
 
-    columns_m.addColumn("max_x", "double", "m", "Max Beamsize in x");
-    columns_m.addColumn("max_y", "double", "m", "Max Beamsize in y");
-    columns_m.addColumn("max_s", "double", "m", "Max Beamsize in s");
+    columns_m.addColumn("max_x", "double", "m", "Maximum x coordinate of the particles");
+    columns_m.addColumn("max_y", "double", "m", "Maximum y coordinate of the particles");
+    columns_m.addColumn("max_s", "double", "m", "Maximum s coordinate of the particles");
 
     columns_m.addColumn("xpx", "double", "1", "Correlation xpx");
     columns_m.addColumn("ypy", "double", "1", "Correlation ypy");
     columns_m.addColumn("zpz", "double", "1", "Correlation zpz");
 
-    columns_m.addColumn("Dx", "double", "m", "Dispersion in x");
-    columns_m.addColumn("DDx", "double", "1", "Derivative of dispersion in x");
-    columns_m.addColumn("Dy", "double", "m", "Dispersion in y");
-    columns_m.addColumn("DDy", "double", "1", "Derivative of dispersion in y");
+    // not the dispersion: non-central second moments with pz, see DistributionMoments::getDx()
+    columns_m.addColumn("Dx", "double", "m", "Raw moment mean(x*pz) (not the dispersion)");
+    columns_m.addColumn("DDx", "double", "1", "Raw moment mean(px*pz) (not the dispersion derivative)");
+    columns_m.addColumn("Dy", "double", "m", "Raw moment mean(y*pz) (not the dispersion)");
+    columns_m.addColumn("DDy", "double", "1", "Raw moment mean(py*pz) (not the dispersion derivative)");
 
     columns_m.addColumn("Bx_ref", "double", "T", "Bx-Field component of ref particle");
     columns_m.addColumn("By_ref", "double", "T", "By-Field component of ref particle");
@@ -187,12 +195,59 @@ void StatWriter::fillHeader(const losses_t &losses) {
     }
 
     if (OpalData::getInstance()->isInOPALCyclMode()) {
-        columns_m.addColumn("halo_x", "double", "1", "Halo in x");
-        columns_m.addColumn("halo_y", "double", "1", "Halo in y");
-        columns_m.addColumn("halo_z", "double", "1", "Halo in z");
+        columns_m.addColumn("halo_x", "double", "1", "Halo in x (kurtosis of x minus HALOSHIFT)");
+        columns_m.addColumn("halo_y", "double", "1", "Halo in y (kurtosis of y minus HALOSHIFT)");
+        columns_m.addColumn("halo_z", "double", "1", "Halo in z (kurtosis of z minus HALOSHIFT)");
 
         columns_m.addColumn("azimuth", "double", "deg",
                             "Azimuth in global coordinates");
+    }
+
+    // FIELDSOLVER, MESHFIT=CORE: the core selection of the last space-charge solve, in its
+    // local frame (x radial, y along the mean momentum, s = z vertical)
+    hasMeshFitColumns_m = (beam->getMeshFit().type == MeshFitType::CORE);
+    if (hasMeshFitColumns_m) {
+        columns_m.addColumn("scMode", "long", "1",
+                            "Mesh fitted to the core (1) or to all particles (0)");
+        columns_m.addColumn("scNumFar", "long", "1",
+                            "Live particles outside the core of the space-charge mesh fit");
+        columns_m.addColumn("scNumHalo", "long", "1",
+                            "Live particles beyond 10 clipped rms widths in any axis");
+        columns_m.addColumn("scFarCharge", "double", "1",
+                            "Charge of the far particles over the live charge");
+        columns_m.addColumn("scClipPasses", "long", "1",
+                            "Clipped passes of the core selection");
+        columns_m.addColumn("scNumFlagged", "long", "1",
+                            "Far particles outside the mesh where the multipole expansion "
+                            "is not valid");
+        columns_m.addColumn("scNumOutside", "long", "1",
+                            "Particles outside the space-charge mesh at the last update");
+
+        columns_m.addColumn("scBox_x", "double", "m", "Extent of the core in x");
+        columns_m.addColumn("scBox_y", "double", "m", "Extent of the core in y");
+        columns_m.addColumn("scBox_s", "double", "m", "Extent of the core in z");
+
+        columns_m.addColumn("scHr_x", "double", "m", "Mesh spacing in x of the space-charge solve");
+        columns_m.addColumn("scHr_y", "double", "m", "Mesh spacing in y of the space-charge solve");
+        columns_m.addColumn("scHr_s", "double", "m", "Mesh spacing in z of the space-charge solve");
+
+        columns_m.addColumn("scCoreRms_x", "double", "m", "Clipped rms of the core in x");
+        columns_m.addColumn("scCoreRms_y", "double", "m", "Clipped rms of the core in y");
+        columns_m.addColumn("scCoreRms_s", "double", "m", "Clipped rms of the core in z");
+
+        columns_m.addColumn("scFarMaxDist", "double", "1",
+                            "Largest distance of a far particle in clipped rms widths");
+
+        columns_m.addColumn("scFullSteps", "long", "1",
+                            "Solves with the mesh fitted to all particles");
+        columns_m.addColumn("scModeSwitches", "long", "1",
+                            "Switches between the core and all particles");
+        columns_m.addColumn("scFarFarSampled", "long", "1",
+                            "Solves with the far-far field summed over a subsample "
+                            "of the far particles");
+        columns_m.addColumn("scNearSampled", "long", "1",
+                            "Solves with the exact core field summed over a "
+                            "subsample of the core particles");
     }
 
     for (size_t i = 0; i < losses.size(); ++ i) {
@@ -222,6 +277,7 @@ void StatWriter::fillHeader(const losses_t &losses) {
 
 
 void StatWriter::write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
+                       const double& timeStep,
                        const losses_t &losses, const double& azimuth,
                        const size_t npOutside)
 {
@@ -238,7 +294,7 @@ void StatWriter::write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
         return;
     }
 
-    fillHeader(losses);
+    fillHeader(beam, losses);
 
     this->open();
 
@@ -283,7 +339,7 @@ void StatWriter::write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
     columns_m.addColumnValue("ypy", beam->get_rprms()(1));         // 28
     columns_m.addColumnValue("zpz", beam->get_rprms()(2));         // 29
 
-    // Write out dispersion.
+    // Write out the raw moments <x*pz>, <px*pz>, <y*pz> and <py*pz> (named after the dispersion).
     columns_m.addColumnValue("Dx",  beam->get_Dx());               // 30
     columns_m.addColumnValue("DDx", beam->get_DDx());              // 31
     columns_m.addColumnValue("Dy",  beam->get_Dy());               // 32
@@ -299,7 +355,7 @@ void StatWriter::write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
     columns_m.addColumnValue("Ez_ref", FDext[1](2));               // 39 E-ref z
 
     columns_m.addColumnValue("dE", beam->getdE());                 // 40 dE energy spread
-    columns_m.addColumnValue("dt", beam->getdT() * Units::s2ns); // 41 dt time step size
+    columns_m.addColumnValue("dt", timeStep * Units::s2ns);         // 41 dt time step size
     columns_m.addColumnValue("partsOutside", npOutside);           // 42 number of particles outside n*sigma
 
     columns_m.addColumnValue("DebyeLength", beam->get_debyeLength()); // 43 Debye length in the boosted frame
@@ -387,6 +443,50 @@ void StatWriter::write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
         columns_m.addColumnValue("halo_z", halo(2));
 
         columns_m.addColumnValue("azimuth", azimuth);
+    }
+
+    if (hasMeshFitColumns_m) {
+        // zero before the first solve of a TRACK/RUN and with MESHFIT=ALL (in a later one),
+        // those of the core also without a core particle
+        const CoreFitSC::CoreSelection& core = beam->getMeshFitCore();
+        const PartBunchBase<double, 3>::MeshFitStatistics& statistics =
+            beam->getMeshFitStatistics();
+        const bool coreMode = (beam->getMeshFitMode().mode == CoreFitSC::Mode::CORE &&
+                               beam->getMeshFit().type == MeshFitType::CORE);
+        Vector_t box(0.0);
+        if (core.numCore > 0) {
+            box = core.boundsMax - core.boundsMin;
+        }
+        columns_m.addColumnValue("scMode", static_cast<long unsigned int>(coreMode));
+        columns_m.addColumnValue("scNumFar", core.numFar);
+        columns_m.addColumnValue("scNumHalo", core.numHalo);
+        columns_m.addColumnValue("scFarCharge", core.getFarChargeFraction());
+        columns_m.addColumnValue("scClipPasses", static_cast<long unsigned int>(core.passes));
+        columns_m.addColumnValue("scNumFlagged", statistics.numFlagged);
+        columns_m.addColumnValue("scNumOutside", statistics.numOutside);
+
+        columns_m.addColumnValue("scBox_x", box(0));
+        columns_m.addColumnValue("scBox_y", box(1));
+        columns_m.addColumnValue("scBox_s", box(2));
+
+        columns_m.addColumnValue("scHr_x", statistics.meshSpacing(0));
+        columns_m.addColumnValue("scHr_y", statistics.meshSpacing(1));
+        columns_m.addColumnValue("scHr_s", statistics.meshSpacing(2));
+
+        columns_m.addColumnValue("scCoreRms_x", core.sigma(0));
+        columns_m.addColumnValue("scCoreRms_y", core.sigma(1));
+        columns_m.addColumnValue("scCoreRms_s", core.sigma(2));
+
+        columns_m.addColumnValue("scFarMaxDist", core.farMaxDistance);
+
+        columns_m.addColumnValue("scFullSteps", statistics.fullSolves);
+        columns_m.addColumnValue("scModeSwitches", statistics.modeSwitches);
+        columns_m.addColumnValue("scFarFarSampled", statistics.farFarSampled);
+        columns_m.addColumnValue("scNearSampled", statistics.nearSampled);
+    } else if (beam->getMeshFit().type == MeshFitType::CORE && !warnedMeshFitColumns_m) {
+        WARNMSG("The stat file has no columns for FIELDSOLVER, MESHFIT=\"CORE\": its columns "
+                "are those of the first TRACK/RUN, which had MESHFIT=\"ALL\"." << endl);
+        warnedMeshFitColumns_m = true;
     }
 
     for(size_t i = 0; i < losses.size(); ++ i) {

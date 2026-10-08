@@ -19,6 +19,7 @@
 #define PART_BUNCH_BASE_H
 
 #include "Algorithms/CoordinateSystemTrafo.h"
+#include "Algorithms/CoreFitSC.h"
 #include "Algorithms/DistributionMoments.h"
 #include "Algorithms/OpalParticle.h"
 #include "Algorithms/PBunchDefs.h"
@@ -143,6 +144,11 @@ public:
 
     /** \brief Compute the (global) Debye length for the beam */
     void calcDebyeLength();
+
+    /// Whether computeSelfFields_cycl(double) also evaluates the rms density and the
+    /// Debye length. They are only written to the stat file, so a tracker that knows no
+    /// stat row follows before the next solve can switch them off. On by default.
+    void setComputeSCDiagnostics(bool compute) { computeSCDiagnostics_m = compute; }
 
     /** \brief Get gamma of one bin */
     double getBinGamma(int bin);
@@ -342,6 +348,62 @@ public:
     double get_DDy() const;
 
     virtual void set_meshEnlargement(double dh);
+
+    /// FIELDSOLVER, MESHFIT: the particles the space-charge mesh is fitted to
+    void setMeshFit(const MeshFitParameters& meshFit);
+    const MeshFitParameters& getMeshFit() const;
+
+    /// Set by the tracker around the mesh fit (boundp() or boundp_destroyCycl()) of each
+    /// space-charge solve step. With MESHFIT=CORE every fit selects the core and fits the
+    /// mesh to it, but only that fit decides the mode and is reported: the other fits of
+    /// a step (repartition, deleteParticle(), in another frame) would otherwise switch the
+    /// mode or replace the reported selection before the stat file is written.
+    void setMeshFitSolveStep(bool solveStep);
+
+    /// MESHFIT=CORE: the core selection of the last fit of a space-charge solve step, in
+    /// the local frame of that fit (all zero before the first one)
+    const CoreFitSC::CoreSelection& getMeshFitCore() const;
+    /// MESHFIT=CORE: the bounds of all particles of the same fit
+    void getMeshFitFullBounds(Vector_t& rmin, Vector_t& rmax) const;
+
+    /// Mesh spacing that boundp() gives to particles within [rmin, rmax]
+    Vector_t getMeshSpacing(const Vector_t& rmin, const Vector_t& rmax) const;
+
+    /// MESHFIT=CORE: the mode of the last space-charge solve step (CORE: the mesh fitted to
+    /// the core; FULL: fitted to all particles) and the solves done in it
+    const CoreFitSC::ModeState& getMeshFitMode() const;
+    /// MESHFIT=CORE: restores the mode, from the step attributes of an H5 restart
+    void setMeshFitMode(const CoreFitSC::ModeState& mode);
+
+    /// MESHFIT=CORE: the mesh of the last fit is fitted to the core, so the solve deposits
+    /// and gathers the particles by their CoreFitSC::ParticleClass
+    bool isMeshFitToCore() const;
+
+    /// MESHFIT=CORE: the fit of the space-charge solve step changed the mesh box, at the
+    /// first solve of a TRACK/RUN or at a switch of the mode; the tracker repartitions at
+    /// once, whatever REPARTFREQ
+    bool isMeshFitRepartitionDue() const;
+
+    /// MESHFIT=CORE: statistics of the solves of this TRACK/RUN, for the stat file and the log
+    struct MeshFitStatistics {
+        size_t numFlagged = 0;      ///< far particles of the last solve above the indicator
+                                    ///< threshold (the exact core field with FULL)
+        Vector_t meshSpacing;       ///< spacing of the mesh of the last solve, fitted to the
+                                    ///< box of the core or to all particles [m]
+        size_t numOutside = 0;      ///< particles outside the mesh domain at the last update()
+        size_t fullSolves = 0;      ///< solves in FULL mode
+        size_t modeSwitches = 0;    ///< switches between CORE and FULL
+        size_t farFarSampled = 0;   ///< solves with the far-far field summed over a
+                                    ///< subsample of its sources (maxFarFarPairs)
+        size_t nearSampled = 0;     ///< solves with the exact core field summed over a
+                                    ///< subsample of the core particles (maxCorePairsPerCore)
+        size_t turnSolves = 0;      ///< solves in this turn
+        size_t turnFullSolves = 0;  ///< solves in FULL mode in this turn
+    };
+    const MeshFitStatistics& getMeshFitStatistics() const;
+    /// MESHFIT=CORE: starts a turn for the per-turn statistics and for the warnings, which
+    /// are given at most once per turn
+    void resetMeshFitTurn();
 
     void gatherLoadBalanceStatistics();
     size_t getLoadBalance(int p) const;
@@ -557,11 +619,32 @@ protected:
     /// angle range [0~2PI) degree
     double calculateAngle(double x, double y);
 
+    /// MESHFIT=CORE: the warnings of the solve, each given at most once per turn
+    enum MeshFitWarning: unsigned int {
+        FarChargeWarning = 1,  // far charge fraction above CoreFitSC::warnFarFraction
+        FullBoxWarning = 2,    // core bounds equal to the bounds of all particles
+        FarFarWarning = 4      // far-far field summed over a subsample of its sources
+    };
+    void warnMeshFitOnce(MeshFitWarning warning, const std::string& message);
+
 
 private:
     virtual void updateDomainLength(Vektor<int, 3>& grid) = 0;
 
     virtual void updateFields(const Vector_t& hr, const Vector_t& origin);
+
+    /// Bounds the space-charge mesh is fitted to, before the enlargement by BBOXINCR:
+    /// get_bounds() with MESHFIT=ALL. With MESHFIT=CORE every fit selects the core
+    /// (CoreFitSC::selectCore()) and returns its bounds, widened to the particles flagged
+    /// lost within the core window (CoreFitSC::getMeshBox()), or the bounds of all particles
+    /// in FULL mode; the fit of a space-charge solve step also decides the mode and stores
+    /// its selection with the bounds of all particles for the stat file and the log.
+    void getSolverMeshBounds(Vector_t& rmin, Vector_t& rmax);
+
+    /// MESHFIT=CORE, after every update(): counts the particles outside the mesh domain and
+    /// throws if there are more than a mesh fitted to the core in the frame of the particles
+    /// can leave outside (an update() in another frame)
+    void checkMeshFitOutside();
 
     void setup(AbstractParticle<T, Dim>* pb);
 
@@ -626,6 +709,11 @@ protected:
     IpplTimings::TimerRef histoTimer_m;
     /// timer for selfField calculation
     IpplTimings::TimerRef selfFieldTimer_m;
+    /// MESHFIT=CORE: timers for the core selection, for the field outside the core and for
+    /// its exact core field; setMeshFit() creates them with CORE only
+    IpplTimings::TimerRef meshFitTimer_m;
+    IpplTimings::TimerRef farFieldTimer_m;
+    IpplTimings::TimerRef exactCoreTimer_m;
 
     const PartData* reference;
 
@@ -663,6 +751,9 @@ protected:
     //RMS number density of particles from grid
     double rmsDensity_m;
 
+    /// See setComputeSCDiagnostics().
+    bool computeSCDiagnostics_m = true;
+
     /// meshspacing of cartesian mesh
     Vector_t hr_m;
     /// meshsize of cartesian mesh
@@ -681,6 +772,35 @@ protected:
 
     /// Mesh enlargement
     double dh_m; /// relative enlargement of the mesh
+
+    /// FIELDSOLVER, MESHFIT and its parameters
+    MeshFitParameters meshFit_m;
+    /// See setMeshFitSolveStep().
+    bool meshFitSolveStep_m = false;
+    /// MESHFIT=CORE: see getMeshFitCore() and getMeshFitFullBounds()
+    CoreFitSC::CoreSelection scCore_m;
+    Vector_t scFullMin_m;
+    Vector_t scFullMax_m;
+    /// MESHFIT=CORE: see getMeshFitMode(), isMeshFitRepartitionDue() and
+    /// getMeshFitStatistics(). scHasSolved_m: a solve step of this TRACK/RUN has decided
+    /// the mode; scWarned_m: the warnings given in this turn (MeshFitWarning bits).
+    CoreFitSC::ModeState scMode_m;
+    bool scRepartitionDue_m = false;
+    bool scHasSolved_m = false;
+    MeshFitStatistics scStatistics_m;
+    unsigned int scWarned_m = 0;
+    /// MESHFIT=CORE: the mesh of the last fit. If scCoreMesh_m, it is fitted to
+    /// [scBoxMin_m, scBoxMax_m], the core bounds widened to the particles flagged lost within
+    /// the core window (CoreFitSC::getMeshBox()); [scMeshMin_m, scMeshMax_m] is the range of
+    /// its cell centres (the enlarged box), and the fit has scNumCore_m core particles.
+    /// scFitted_m: a fit has been done in this TRACK/RUN.
+    bool scCoreMesh_m = false;
+    Vector_t scBoxMin_m;
+    Vector_t scBoxMax_m;
+    Vector_t scMeshMin_m;
+    Vector_t scMeshMax_m;
+    size_t scNumCore_m = 0;
+    bool scFitted_m = false;
 
     /// if larger than 0, emitt particles for tEmission_m [s]
     double tEmission_m;

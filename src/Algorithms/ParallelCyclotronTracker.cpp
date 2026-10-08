@@ -55,7 +55,6 @@
 #include "AbsBeamline/VariableRFCavityFringeField.h"
 #include "AbsBeamline/VerticalFFAMagnet.h"
 
-#include "AbstractObjects/Element.h"
 #include "AbstractObjects/OpalData.h"
 
 #include "Algorithms/Ctunes.h"
@@ -69,8 +68,6 @@
 
 #include "Distribution/Distribution.h"
 
-#include "Elements/OpalBeamline.h"
-
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
 
@@ -81,9 +78,9 @@
 #include "Utilities/OpalException.h"
 #include "Utilities/Options.h"
 
+#include <algorithm>
 #include <cmath>
-#include <fstream>
-#include <iostream>
+#include <filesystem>
 #include <limits>
 #include <numeric>
 
@@ -121,8 +118,10 @@ ParallelCyclotronTracker::ParallelCyclotronTracker(const Beamline& beamline,
                                                    const std::string& mbBinning)
     : Tracker(beamline, bunch, reference, revBeam, revTrack)
     , bgf_m(nullptr)
+    , cycl_m(nullptr)
     , maxSteps_m(maxSTEPS)
     , lastDumpedStep_m(0)
+    , pathLength_m(0.0)
     , myNode_m(Ippl::myNode())
     , initialLocalNum_m(bunch->getLocalNum())
     , initialTotalNum_m(bunch->getTotalNum())
@@ -136,6 +135,14 @@ ParallelCyclotronTracker::ParallelCyclotronTracker(const Beamline& beamline,
     itsDataSink = &ds;
 
     if ( numBunch > 1 ) {
+        // The core-fitted mesh exists for the single-bunch solve only. Deciding here, and
+        // not at the first solve with more than one bunch, keeps a run from switching
+        // between the two meshes after the second injection.
+        if (bunch->getMeshFit().type == MeshFitType::CORE) {
+            throw OpalException("ParallelCyclotronTracker::ParallelCyclotronTracker()",
+                                "FIELDSOLVER, MESHFIT=\"CORE\" is not available in "
+                                "multi-bunch mode (TURNS > 1 in RUN).");
+        }
         mbHandler_m = std::unique_ptr<MultiBunchHandler>(
             new MultiBunchHandler(bunch, numBunch, mbEta,
                                   mbPara, mbMode, mbBinning)
@@ -184,13 +191,21 @@ void ParallelCyclotronTracker::bgf_main_collision_test() {
 
     int triId = 0;
     for (size_t i = 0; i < itsBunch_m->getLocalNum(); i++) {
+        // already lost (Bin < 0) and recorded, waiting for deleteParticle()
+        if (itsBunch_m->Bin[i] < 0) continue;
+
         int res = bgf_m->partInside(itsBunch_m->R[i], itsBunch_m->P[i],
                                     dtime, intecoords, triId);
         if (res >= 0) {
+            // OpalParticle takes the rest mass in MeV. M[i] is the macro-particle mass in
+            // GeV, except for particles made by a Stripper (STOP=FALSE) or by beam
+            // stripping, whose M[i] is their own mass in GeV.
+            const double mass = (itsBunch_m->POrigin[i] == ParticleOrigin::REGULAR) ?
+                itsBunch_m->getM() * Units::eV2MeV : itsBunch_m->M[i] * Units::GeV2MeV;
             lossDs_m->addParticle(OpalParticle(itsBunch_m->ID[i],
                                                itsBunch_m->R[i], itsBunch_m->P[i],
                                                itsBunch_m->getT(),
-                                               itsBunch_m->Q[i], itsBunch_m->M[i]),
+                                               itsBunch_m->Q[i], mass),
                                   std::make_pair(turnnumber_m, itsBunch_m->bunchNum[i]));
             itsBunch_m->Bin[i] = -1;
             *gmsgALL << level4 << "* Particle " << itsBunch_m->ID[i]
@@ -242,8 +257,10 @@ void ParallelCyclotronTracker::computePathLengthUpdate(std::vector<double>& dl,
 
         allreduce(dotP.data(), dotP.size(), std::plus<double>());
 
-        // dot-product over all particles
-        double sum = std::accumulate(dotP.begin(), dotP.end() - 1, 0);
+        // dot-product over all particles; without multi-bunches dotP has a single
+        // entry, which already holds the sum over all particles
+        const size_t numBunchEntries = std::max(dotP.size() - 1, size_t(1));
+        double sum = std::accumulate(dotP.begin(), dotP.begin() + numBunchEntries, 0.0);
         dotP.back() = sum / double(itsBunch_m->getTotalNum());
 
         // bunch specific --> multi-bunches only
@@ -251,12 +268,36 @@ void ParallelCyclotronTracker::computePathLengthUpdate(std::vector<double>& dl,
             dotP[b] /= double(itsBunch_m->getTotalNumPerBunch(b));
         }
 
-    } else if ( itsBunch_m->getLocalNum() == 0 ) {
-        // here we are in DumpFrame::GLOBAL mode
-        dotP[0] = 0.0;
     } else {
-        // here we are in DumpFrame::GLOBAL mode
-        dotP[0] = dot(itsBunch_m->P[0], itsBunch_m->P[0]);
+        // here we are in DumpFrame::GLOBAL (or REFERENCE) mode: s is the path length of the
+        // reference particle, ID 0. Local index 0 is an arbitrary particle that differs between
+        // ranks and changes with every migration, so ID 0 is looked up collectively and every
+        // rank accumulates the same s (stat file 's', H5 'SPOS'). Once ID 0 is lost, s goes on
+        // with the bunch mean of |P|^2, as in BUNCH_MEAN mode.
+        double buf[2] = {0.0, 0.0};
+        for (size_t i = 0; i < itsBunch_m->getLocalNum(); ++i) {
+            if (itsBunch_m->ID[i] == 0) {
+                buf[0] = dot(itsBunch_m->P[i], itsBunch_m->P[i]);
+                buf[1] = 1.0;
+                break;
+            }
+        }
+
+        allreduce(buf, 2, std::plus<double>());
+
+        if (buf[1] == 1.0) {
+            dotP[0] = buf[0];
+        } else {
+            double sum = 0.0;
+            for (size_t i = 0; i < itsBunch_m->getLocalNum(); ++i) {
+                sum += dot(itsBunch_m->P[i], itsBunch_m->P[i]);
+            }
+
+            allreduce(sum, 1, std::plus<double>());
+
+            const size_t totalNum = itsBunch_m->getTotalNum();
+            dotP[0] = (totalNum > 0) ? sum / double(totalNum) : 0.0;
+        }
     }
 
     for (size_t i = 0; i < dotP.size(); ++i) {
@@ -287,9 +328,10 @@ void ParallelCyclotronTracker::openFiles(size_t numFiles, std::string SfileName)
         outfTheta_m.emplace_back(new std::ofstream(SfileName2.c_str()));
         outfTheta_m.back()->precision(8);
         outfTheta_m.back()->setf(std::ios::scientific, std::ios::floatfield);
-        *outfTheta_m.back() << "# r [mm]        beta_r*gamma       "
+        // r and z are written as they are tracked, in metres
+        *outfTheta_m.back() << "# r [m]         beta_r*gamma       "
                             << "theta [deg]     beta_theta*gamma        "
-                            << "z [mm]          beta_z*gamma" << std::endl;
+                            << "z [m]           beta_z*gamma" << std::endl;
     }
 }
 
@@ -1086,6 +1128,10 @@ void ParallelCyclotronTracker::buildupFieldList(double BcParameter[], ElementTyp
 
     (localpair->second).second = elptr;
 
+    if (elementType == ElementType::RFCAVITY) {
+        ++numRFCavities_m;
+    }
+
     // always put cyclotron as the first element in the list.
     if (elementType == ElementType::RING || elementType == ElementType::CYCLOTRON) {
         sindex = FieldDimensions.begin();
@@ -1130,6 +1176,7 @@ void ParallelCyclotronTracker::execute() {
     turnnumber_m    = 1;
     azimuth_m       = -1.0;
     prevAzimuth_m   = -1.0;
+    refLostWarned_m = false;
 
     // Record how many bunches have already been injected. ONLY FOR MPM
     if (isMultiBunch())
@@ -1166,7 +1213,7 @@ void ParallelCyclotronTracker::execute() {
         lossDs_m = std::unique_ptr<LossDataSink>(new LossDataSink(bgf_m->getOpalName(),!Options::asciidump));
 
     // External field arrays for dumping
-    for (int k = 0; k < 2; k++) {
+    for (int k = 0; k < 6; k++) {
         FDext_m[k] = Vector_t({0.0, 0.0, 0.0});
     }
     extE_m = Vector_t({0.0, 0.0, 0.0});
@@ -1251,6 +1298,9 @@ void ParallelCyclotronTracker::MtsTracker() {
 
         bool finishedTurn = false;
 
+        // the turn that the plugin elements get in this step, for the cyclotron's loss records
+        if (cycl_m) cycl_m->setTurnNumber(turnnumber_m);
+
         if (step_m % Options::sptDumpFreq == 0) {
             singleParticleDump();
         }
@@ -1322,6 +1372,7 @@ void ParallelCyclotronTracker::MtsTracker() {
                 *gmsg << "*** Finished turn " << turnnumber_m - 1
                       << ", Total number of live particles: "
                       << itsBunch_m->getTotalNum() << endl;
+                printMeshFit_m();
             }
 
             // Recalculate bingamma and reset the BinID for each particles according to its current gamma
@@ -1390,6 +1441,9 @@ void ParallelCyclotronTracker::GenericTracker() {
     for (; (step_m < maxSteps_m) && (itsBunch_m->getTotalNum()>0); step_m++) {
 
         bool finishedTurn = false;
+
+        // the turn that the plugin elements get in this step, for the cyclotron's loss records
+        if (cycl_m) cycl_m->setTurnNumber(turnnumber_m);
 
         switch (mode_m) {
             case TrackingMode::SEO: {
@@ -1628,8 +1682,8 @@ Vector_t ParallelCyclotronTracker::calcMeanP() const {
     return meanP / Vector_t(itsBunch_m->getTotalNum());
 }
 
-void ParallelCyclotronTracker::repartition() {
-    if ((step_m % Options::repartFreq) == 0) {
+void ParallelCyclotronTracker::repartition(bool force) {
+    if (force || (step_m % Options::repartFreq) == 0) {
         IpplTimings::startTimer(BinRepartTimer_m);
         itsBunch_m->do_binaryRepart();
         Ippl::Comm->barrier();
@@ -2296,9 +2350,10 @@ void ParallelCyclotronTracker::initDistInGlobalFrame() {
             // Or do a global frame restart (no transformations necessary)
         } else {
             *gmsg << "* Restart in the global frame" << endl;
-
-            pathLength_m = itsBunch_m->get_sPos();
         }
+
+        // continue the path length read from the h5 file
+        pathLength_m = itsBunch_m->get_sPos();
     }
 
     // set the number of particles per bunch
@@ -2465,14 +2520,6 @@ void ParallelCyclotronTracker::singleParticleDump() {
 
                 outfTrackOrbit_m << "ID" << tmpid;
 
-                if (tmpid == 0) { // for stat file
-                    itsBunch_m->RefPartR_m[0] = *itParameter;
-                    itsBunch_m->RefPartR_m[1] = *(itParameter + 2);
-                    itsBunch_m->RefPartR_m[2] = *(itParameter + 4);
-                    itsBunch_m->RefPartP_m[0] = *(itParameter + 1);
-                    itsBunch_m->RefPartP_m[1] = *(itParameter + 3);
-                    itsBunch_m->RefPartP_m[2] = *(itParameter + 5);
-                }
                 for (int ii = 0; ii < 6; ii++) {
                     outfTrackOrbit_m << " " << *itParameter;
                     ++itParameter;
@@ -2511,11 +2558,6 @@ void ParallelCyclotronTracker::singleParticleDump() {
                 outfTrackOrbit_m << itsBunch_m->R[i](0) << " " << itsBunch_m->P[i](0) << " ";
                 outfTrackOrbit_m << itsBunch_m->R[i](1) << " " << itsBunch_m->P[i](1) << " ";
                 outfTrackOrbit_m << itsBunch_m->R[i](2) << " " << itsBunch_m->P[i](2) << std::endl;
-
-                if (itsBunch_m->ID[i] == 0) { // for stat file
-                    itsBunch_m->RefPartR_m = itsBunch_m->R[i];
-                    itsBunch_m->RefPartP_m = itsBunch_m->P[i];
-                }
             }
         }
     }
@@ -2571,12 +2613,13 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
     double const temp_t = itsBunch_m->getT();
     Vector_t meanR;
     Vector_t meanP;
+    // Collective: ref_x..ref_pz, and below the azimuth and the fields at the reference, must
+    // describe the particle with ID 0, not whatever sits at local index 0 on rank 0. Once ID 0
+    // is lost they are the centroid, as in bunchDumpPhaseSpaceData().
+    setRefPartForDump_m(meanR, meanP);
     if (Options::psDumpFrame == DumpFrame::BUNCH_MEAN) {
         meanR = calcMeanR();
         meanP = calcMeanP();
-    } else if (itsBunch_m->getLocalNum() > 0) {
-        meanR = itsBunch_m->R[0];
-        meanP = itsBunch_m->P[0];
     }
     double phi = 0;
     double psi = 0;
@@ -2617,8 +2660,9 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
     FDext_m[0] = extB_m * Units::kG2T;
     FDext_m[1] = extE_m;        // kV/mm? -DW
 
-    // Save the stat file
-    itsDataSink->dumpSDDS(itsBunch_m, FDext_m, azimuth_m);
+    // Save the stat file, with the time step we integrate with (cf. initializeTracking_m)
+    itsDataSink->dumpSDDS(itsBunch_m, FDext_m, azimuth_m,
+                          itsBunch_m->getdT() * getHarmonicNumber());
 
     // If we are in local mode, transform back after saving
     if (Options::psDumpFrame != DumpFrame::GLOBAL) {
@@ -2629,6 +2673,72 @@ void ParallelCyclotronTracker::bunchDumpStatData(){
     IpplTimings::stopTimer(DumpTimer_m);
 }
 
+
+bool ParallelCyclotronTracker::getReferenceParticle(Vector_t& refR,
+                                                    Vector_t& refP) const {
+    // Which rank holds ID 0 is not fixed: ParticleSpatialLayout::update() and
+    // BinaryRepartition (REPARTFREQ) move particles between ranks, and within a rank
+    // the index changes whenever particles are destroyed. So it cannot be found by
+    // position - only by ID, and only collectively.
+    //
+    // Each rank contributes the values if it holds the particle and zeros if it does
+    // not, plus a count. One sum then gives every rank the same answer, which matters
+    // because the caller uses the result to define the dump frame on all ranks.
+    double buf[7] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+
+    for (size_t i = 0; i < itsBunch_m->getLocalNum(); ++ i) {
+        if (itsBunch_m->ID[i] == 0) {
+            buf[0] = itsBunch_m->R[i](0);
+            buf[1] = itsBunch_m->R[i](1);
+            buf[2] = itsBunch_m->R[i](2);
+            buf[3] = itsBunch_m->P[i](0);
+            buf[4] = itsBunch_m->P[i](1);
+            buf[5] = itsBunch_m->P[i](2);
+            buf[6] = 1.0;
+            break;
+        }
+    }
+
+    allreduce(buf, 7, std::plus<double>());
+
+    if (buf[6] != 1.0) {
+        // 0 means the particle has been lost. Anything else means it is duplicated,
+        // which would make the sum meaningless - treat both as "not available".
+        return false;
+    }
+
+    refR = Vector_t({buf[0], buf[1], buf[2]});
+    refP = Vector_t({buf[3], buf[4], buf[5]});
+    return true;
+}
+
+bool ParallelCyclotronTracker::setRefPartForDump_m(Vector_t& refR, Vector_t& refP) {
+    // RefPartR_m/RefPartP_m are written by every rank as H5 step attributes, which must be
+    // identical on all ranks, and by rank 0 as ref_x..ref_pz in the stat file. They used to
+    // be set on rank 0 only, every SPTDUMPFREQ steps.
+    const bool found = getReferenceParticle(refR, refP);
+
+    if (!found) {
+        // No rank holds ID 0 any more - it was lost. The centroid is the only well-defined
+        // fallback: the last values or another particle would pass for ID 0, and NaN would
+        // stop OPAL's own SDDS parser (restart, optimiser) from reading the stat file.
+        // REFSOURCE = 2 marks every such phase-space dump; the message is once per run.
+        if (!refLostWarned_m) {
+            refLostWarned_m = true;
+            *gmsg << "* Warning: at integration step " << step_m + 1
+                  << " the reference particle (ID 0) is no longer in the bunch; falling back to "
+                  << "the bunch mean for the reference values and the dump frame of this and "
+                  << "all later dumps (H5 step attribute REFSOURCE = 2 in the GLOBAL and "
+                  << "REFERENCE dump frames)." << endl;
+        }
+        refR = calcMeanR();
+        refP = calcMeanP();
+    }
+
+    itsBunch_m->RefPartR_m = refR;
+    itsBunch_m->RefPartP_m = refP;
+    return found;
+}
 
 void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
     // --------------------------------- Particle dumping --------------------------------------- //
@@ -2645,13 +2755,18 @@ void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
     Vector_t meanR;
     Vector_t meanP;
 
+    // Collective, and in every mode: the RefPartR/RefPartP step attributes. If ID 0 has been
+    // lost, meanR/meanP are already the centroid.
+    const bool haveRef = setRefPartForDump_m(meanR, meanP);
+
+    // What the REF* step attributes describe, written as REFSOURCE (see H5Writer.h)
+    int refSource = haveRef ? 0 : 2;
+
     // in case of multi-bunch mode take always bunch mean (although it takes all bunches)
     if (Options::psDumpFrame == DumpFrame::BUNCH_MEAN || isMultiBunch()) {
         meanR = calcMeanR();
         meanP = calcMeanP();
-    } else if (itsBunch_m->getLocalNum() > 0) {
-        meanR = itsBunch_m->R[0];
-        meanP = itsBunch_m->P[0];
+        refSource = 1;
     }
 
     double const betagamma_temp = euclidean_norm(meanP);
@@ -2711,11 +2826,16 @@ void ParallelCyclotronTracker::bunchDumpPhaseSpaceData() {
             globalToLocal(extE_m, phi, psi);
         }
 
-        FDext_m[0] = extB_m * Units::kG2T;
-        FDext_m[1] = extE_m;
+        // The field is evaluated only at the reference point (meanR), so B-ref/E-ref, and
+        // B-head/E-head and B-tail/E-tail for want of separate samples, all hold that value.
+        for (int k = 0; k < 6; k += 2) {
+            FDext_m[k]     = extB_m * Units::kG2T;
+            FDext_m[k + 1] = extE_m;
+        }
 
         lastDumpedStep_m = itsDataSink->dumpH5(itsBunch_m, // Local and in m
                                                FDext_m, E,
+                                               refSource,            // what REF* describe
                                                referencePr,
                                                referencePt,
                                                referencePz,
@@ -2763,6 +2883,17 @@ bool ParallelCyclotronTracker::isTurnDone() {
     return (step_m > 10) && (((step_m + 1) %setup_m.stepsPerTurn) == 0);
 }
 
+bool ParallelCyclotronTracker::statDumpBeforeNextSolve_m() const {
+    // The stat-row condition of update_m(), with isTurnDone(), for each step this solve covers.
+    for (long long step = step_m; step < step_m + setup_m.scSolveFreq; ++step) {
+        const bool turnDone = (step > 10) && (((step + 1) % setup_m.stepsPerTurn) == 0);
+        if (((step + 1) % Options::statDumpFreq == 0) || (Options::psDumpEachTurn && turnDone)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void ParallelCyclotronTracker::update_m(double& t, const double& dt,
                                         const bool& finishedTurn)
 {
@@ -2772,7 +2903,7 @@ void ParallelCyclotronTracker::update_m(double& t, const double& dt,
     updateTime(dt);
 
     itsBunch_m->setLocalTrackStep((step_m + 1));
-    if (!(step_m + 1 % 1000)) {
+    if ((step_m + 1) % 1000 == 0) {
         *gmsg << "Step " << step_m + 1 << endl;
     }
 
@@ -2921,15 +3052,19 @@ void ParallelCyclotronTracker::finalizeTracking_m(dvector_t& Ttime,
                                                   dvector_t& Tdeltr,
                                                   dvector_t& Tdeltz, ivector_t& TturnNumber) {
 
-    for (size_t ii = 0; ii < (itsBunch_m->getLocalNum()); ii++) {
-        if (itsBunch_m->ID[ii] == 0) {
-            double FinalMomentum2 = std::pow(itsBunch_m->P[ii](0), 2.0) + std::pow(itsBunch_m->P[ii](1), 2.0) + std::pow(itsBunch_m->P[ii](2), 2.0);
-            double FinalEnergy = (std::sqrt(1.0 + FinalMomentum2) - 1.0) * itsBunch_m->getM() * Units::eV2MeV;
-            *gmsg << "* Final energy of reference particle = " << FinalEnergy << " [MeV]" << endl;
-            *gmsg << "* Total phase space dump number(includes the initial distribution) = " << lastDumpedStep_m + 1 << endl;
-            *gmsg << "* One can restart simulation from the last dump step (--restart " << lastDumpedStep_m << ")" << endl;
-        }
+    // gmsg prints on rank 0 only, and ID 0 can be on any rank or lost, so fetch it
+    // collectively. The dump count and the restart hint do not depend on it.
+    Vector_t refR, refP;
+    if (getReferenceParticle(refR, refP)) {
+        double FinalMomentum2 = std::pow(refP(0), 2.0) + std::pow(refP(1), 2.0) + std::pow(refP(2), 2.0);
+        double FinalEnergy = (std::sqrt(1.0 + FinalMomentum2) - 1.0) * itsBunch_m->getM() * Units::eV2MeV;
+        *gmsg << "* Final energy of reference particle = " << FinalEnergy << " [MeV]" << endl;
+    } else {
+        *gmsg << "* Final energy of reference particle: not available, "
+              << "the reference particle (ID 0) is no longer in the bunch" << endl;
     }
+    *gmsg << "* Total phase space dump number(includes the initial distribution) = " << lastDumpedStep_m + 1 << endl;
+    *gmsg << "* One can restart simulation from the last dump step (--restart " << lastDumpedStep_m << ")" << endl;
 
     Ippl::Comm->barrier();
 
@@ -3119,6 +3254,7 @@ void ParallelCyclotronTracker::bunchMode_m(double& t, const double dt, bool& fin
     if (itsBunch_m->hasFieldSolver()) {
 
         if (step_m % setup_m.scSolveFreq == 0) {
+            itsBunch_m->setComputeSCDiagnostics(statDumpBeforeNextSolve_m());
             computeSpaceChargeFields_m();
         } else {
             // If we are not solving for the space charge fields at this time step
@@ -3189,6 +3325,7 @@ void ParallelCyclotronTracker::bunchMode_m(double& t, const double dt, bool& fin
         *gmsg << "*** Finished turn " << turnnumber_m - 1
               << ", Total number of live particles: "
               << itsBunch_m->getTotalNum() << endl;
+        printMeshFit_m();
     }
 
     Ippl::Comm->barrier();
@@ -3199,6 +3336,11 @@ void ParallelCyclotronTracker::gapCrossKick_m(size_t i, double t,
                                               double dt,
                                               const Vector_t& Rold,
                                               const Vector_t& Pold) {
+
+    // Called for every particle on every step; without cavities the scan below finds nothing.
+    if (numRFCavities_m == 0) {
+        return;
+    }
 
     for (beamline_list::iterator sindex = ++(FieldDimensions.begin());
         sindex != FieldDimensions.end(); ++sindex)
@@ -3319,11 +3461,14 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
 
         globalToLocal(itsBunch_m->R, quaternionToYAxis, meanR);
 
+        // The mesh fit of this solve, in its frame (FIELDSOLVER, MESHFIT)
+        itsBunch_m->setMeshFitSolveStep(true);
         if ((step_m + 1) % Options::boundpDestroyFreq == 0) {
             itsBunch_m->boundp_destroyCycl();
         } else {
             itsBunch_m->boundp();
         }
+        itsBunch_m->setMeshFitSolveStep(false);
 
         if (hasMultiBunch()) {
             // --- Multibunch mode --- //
@@ -3347,7 +3492,10 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
             // --- Single bunch mode --- //
             double temp_meangamma = Util::getGamma(PreviousMeanP);
 
-            repartition();
+            // FIELDSOLVER, MESHFIT=CORE: the partition of the old box is out of balance
+            // at the first solve and after a switch between the core box and the box of
+            // all particles
+            repartition(itsBunch_m->isMeshFitRepartitionDue());
 
             itsBunch_m->setGlobalMeanR(meanR);
             itsBunch_m->setGlobalToLocalQuaternion(quaternionToYAxis);
@@ -3361,6 +3509,45 @@ void ParallelCyclotronTracker::computeSpaceChargeFields_m() {
         localToGlobal(itsBunch_m->Ef, quaternionToYAxis);
         localToGlobal(itsBunch_m->Bf, quaternionToYAxis);
     }
+}
+
+
+void ParallelCyclotronTracker::printMeshFit_m() {
+    if (itsBunch_m->getMeshFit().type != MeshFitType::CORE) {
+        return;
+    }
+
+    const CoreFitSC::CoreSelection& core = itsBunch_m->getMeshFitCore();
+    const PartBunchBase<double, 3>::MeshFitStatistics& statistics =
+        itsBunch_m->getMeshFitStatistics();
+    if (core.numLive > 0) {
+        // Resolution of the core: cells per clipped rms width on the mesh of the last solve
+        // (in FULL mode that of all particles) and on the mesh fitted to all particles
+        Vector_t fullMin, fullMax;
+        itsBunch_m->getMeshFitFullBounds(fullMin, fullMax);
+        const Vector_t hrFull = itsBunch_m->getMeshSpacing(fullMin, fullMax);
+        const bool full = (itsBunch_m->getMeshFitMode().mode == CoreFitSC::Mode::FULL);
+
+        *gmsg << "* SC mesh fit: mode " << (full ? "FULL" : "CORE") << ", "
+              << core.numFar << " far particles (" << 100.0 * core.getFarChargeFraction()
+              << " % of the live charge, max " << core.farMaxDistance << " sigma), "
+              << core.numHalo << " beyond " << CoreFitSC::haloSigma << " sigma, "
+              << core.passes << " clipped passes, " << statistics.numFlagged << " flagged, "
+              << statistics.numOutside << " outside the mesh, ";
+        if (core.numCore > 0) {
+            const Vector_t& hr = statistics.meshSpacing;
+            *gmsg << "cells per sigma " << core.sigma[0] / hr[0] << "/"
+                  << core.sigma[1] / hr[1] << "/" << core.sigma[2] / hr[2]
+                  << " (mesh of all particles ";
+        } else {
+            *gmsg << "no core particle (cells per sigma on the mesh of all particles ";
+        }
+        *gmsg << core.sigma[0] / hrFull[0] << "/" << core.sigma[1] / hrFull[1] << "/"
+              << core.sigma[2] / hrFull[2] << "), " << statistics.turnFullSolves << " of "
+              << statistics.turnSolves << " solves of this turn in FULL mode, "
+              << statistics.modeSwitches << " mode switches" << endl;
+    }
+    itsBunch_m->resetMeshFitTurn();
 }
 
 

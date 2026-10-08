@@ -44,13 +44,23 @@ public:
      *  - FDext[3] = E at reference particle location (in x, y and z).
      *  - FDext[4] = B at tail particle location (in x, y, and z).
      *  - FDext[5] = E at tail particle location (in x, y, and z).
+     * \param timeStep The integration time step [s] written as 'dt'. This is beam->getdT(), except in
+     * OPAL-cycl, which integrates with getdT() times the harmonic number.
      */
     void write(const PartBunchBase<double, 3> *beam, Vector_t FDext[],
+               const double& timeStep,
                const losses_t &losses = losses_t(), const double& azimuth = -1,
                const size_t npOutside = 0);
 
 private:
-    void fillHeader(const losses_t &losses = losses_t());
+    void fillHeader(const PartBunchBase<double, 3> *beam, const losses_t &losses = losses_t());
+
+    /// The header has the columns of FIELDSOLVER, MESHFIT=CORE. Like all columns they are
+    /// fixed by the first write: a later TRACK/RUN with MESHFIT=ALL writes zeros into them,
+    /// and one with MESHFIT=CORE goes without them if the first had MESHFIT=ALL.
+    bool hasMeshFitColumns_m = false;
+    /// The warning that the core selection is not written has been given.
+    bool warnedMeshFitColumns_m = false;
 };
 
 #endif

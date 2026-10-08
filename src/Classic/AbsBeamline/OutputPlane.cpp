@@ -291,6 +291,8 @@ bool OutputPlane::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber,
                           const double t, const double tstep) {
     size_t tempnum = bunch->getLocalNum();
     for(unsigned int i = 0; i < tempnum; ++i) {
+        // flagged lost (Bin < 0) but not deleted yet: the tracker deletes every DELPARTFREQ steps
+        if (bunch->Bin[i] < 0) continue;
         if (verbose_m > 2) {
             *gmsg << "OutputPlane checking at time " << t
                   << " turn number " << turnnumber << " track id " << i << endl;

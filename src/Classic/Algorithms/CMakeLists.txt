@@ -2,6 +2,7 @@ set (_SRCS
     AbstractTimeDependence.cpp
     AbstractTracker.cpp
     CoordinateSystemTrafo.cpp
+    CoreFitSC.cpp
     DefaultVisitor.cpp
     DistributionMoments.cpp
     Flagger.cpp
@@ -32,6 +33,7 @@ set (HDRS
     AbstractTimeDependence.h
     AbstractTracker.h
     CoordinateSystemTrafo.h
+    CoreFitSC.h
     DefaultVisitor.h
     DistributionMoments.h
     Flagger.h

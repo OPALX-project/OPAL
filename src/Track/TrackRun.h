@@ -55,6 +55,15 @@ public:
 
     static std::shared_ptr<Tracker> getTracker();
 
+    /// Destroy the tracker held by itsTracker_m.
+    ///
+    /// itsTracker_m is static, so without this its destructor runs during static
+    /// destruction - after main() has returned and therefore after MPI_Finalize. The
+    /// tracker transitively owns the beamline, its elements, their field maps and any
+    /// LossDataSink, so anything of theirs that touches MPI or HDF5 at destruction is
+    /// then operating on a torn-down library. Call this while MPI is still up.
+    static void releaseTracker();
+
 private:
     enum class RunMethod: unsigned short {
         NONE,

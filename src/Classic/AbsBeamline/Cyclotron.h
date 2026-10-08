@@ -27,8 +27,12 @@
 #define CLASSIC_Cyclotron_HH
 
 #include "AbsBeamline/Component.h"
+#include "AbsBeamline/ElementBase.h"
+#include "Algorithms/Vektor.h"
 #include "Fields/Definitions.h"
 
+#include <cstddef>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -188,6 +192,9 @@ public:
     void setSpiralFlag(bool spiral_flag);
     virtual bool getSpiralFlag() const;
 
+    /// Turn number written into the loss records of apply(); the tracker sets it every step.
+    void setTurnNumber(int turn);
+
     virtual bool apply(const size_t& id, const double& t, Vector_t& E, Vector_t& B);
 
     virtual bool apply(const Vector_t& R, const Vector_t& P, const double& t, Vector_t& E, Vector_t& B);
@@ -294,8 +301,37 @@ private:
 
     std::unique_ptr<LossDataSink> lossDs_m; /**< Handling for store the particle out of region*/
 
+    int turnNumber_m = 0; /**< Turn number for the loss records, see setTurnNumber()*/
+
     // Necessary for quick and dirty phase output -DW
     int waitingGap_m = 1;
+
+    /// BANDRF only: the midplane map is zero everywhere and there are no trim coils, so
+    /// in the interior of the map it contributes nothing and only its radial extent matters
+    /// (see midplaneMapInterior()).
+    bool midplaneMapIsZero_m = false;
+
+    /// True if the midplane map is known to give a zero field at R: R lies strictly inside
+    /// its radial range, where interpolate() is guaranteed to succeed, off the axis, with
+    /// a finite z.
+    bool midplaneMapInterior(const Vector_t& R) const;
+
+    /// cos and sin of the RF phase of one RF map for the last few times t. Within one RK4
+    /// step every particle asks for the same three times (t, t+h/2, t+h), so this turns two
+    /// transcendental calls per map per field evaluation into a lookup. BANDRF only: there
+    /// the phase depends on nothing but t.
+    struct RFPhaseCache {
+        static constexpr int size = 4;
+        double t[size];
+        double cosPhase[size];
+        double sinPhase[size];
+        int next = 0;
+        RFPhaseCache();
+    };
+    std::vector<RFPhaseCache> rfPhaseCache_m;
+
+    void rfPhase(std::size_t map, double t, double frequency, double phi,
+                 double& cosPhase, double& sinPhase);
 
 protected:
     // object of Matrices including magnetic field map and its derivates

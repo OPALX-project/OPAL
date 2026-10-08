@@ -39,8 +39,47 @@
 
 
 /////////////////////////////////////////////////////////////////////////////
+// number density scatter as scatter(f, pp, intop), but only of the particles
+// inside the given region.  A particle outside it is not counted, and its
+// position is never looked up on the Field: beyond the guard cells, the lookup
+// would abort.
+template <class FT, unsigned Dim, class M, class C, class PT, class IntOp>
+void
+scatterInsideDomain(Field<FT,Dim,M,C>& f,
+                    const ParticleAttrib< Vektor<PT,Dim> >& pp,
+                    const NDRegion<PT,Dim>& domain, const IntOp& /*intop*/) {
+
+  // make sure field is uncompressed and guard cells are zeroed
+  f.Uncompress();
+  FT zero = 0;
+  f.setGuardCells(zero);
+
+  const M& mesh = f.get_mesh();
+  // iterate through the particles and call scatter operation for those
+  // inside the half-open domain [min, max)
+  typename ParticleAttrib< Vektor<PT,Dim> >::const_iterator ppiter;
+  size_t i = 0;
+  for (ppiter = pp.cbegin(); i < pp.size(); ++i, ++ppiter) {
+    const Vektor<PT,Dim>& pos = *ppiter;
+    bool inside = true;
+    for (unsigned int d = 0; d < Dim; ++d)
+      inside = inside && (pos[d] >= domain[d].min() && pos[d] < domain[d].max());
+    if (inside)
+      IntOp::scatter(FT(1), f, pos, mesh);
+  }
+
+  // accumulate values in guard cells
+  f.accumGuardCells();
+
+  INCIPPLSTAT(incParticleScatters);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
 // calculate a new RegionLayout for a given ParticleBase, and distribute the
 // new RegionLayout to all the nodes.  This uses a Field BinaryBalancer.
+// With ParticleSpatialLayout::setOutsideToNearest(true), the particles
+// outside the domain of the RegionLayout do not count in the balance.
 template < class T, unsigned Dim, class Mesh, class CachingPolicy>
 bool
 BinaryRepartition(IpplParticleBase<ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy> >& PB, double offset) {
@@ -84,6 +123,9 @@ BinaryRepartition(IpplParticleBase<ParticleSpatialLayout<T,Dim,Mesh,CachingPolic
   }
 
 
+  // particles outside the domain are legal with this setting
+  const bool outsideToNearest = PB.getLayout().getOutsideToNearest();
+
   if (CenteringTotal == Dim) { // allCell centering
     Field<double,Dim,Mesh,Cell> BF(mesh,FL,GuardCellSizes<Dim>(1));
 
@@ -92,7 +134,10 @@ BinaryRepartition(IpplParticleBase<ParticleSpatialLayout<T,Dim,Mesh,CachingPolic
     // FieldLayout.  This is desired so that when we repartition the
     // FieldLayout, we do not waste time redistributing the Field's data.
     BF = offset;
-    scatter(BF,PB.R,interp);
+    if (outsideToNearest)
+      scatterInsideDomain(BF,PB.R,RL.getDomain(),interp);
+    else
+      scatter(BF,PB.R,interp);
 
     // calculate a new repartitioning of the field, and use this to repartition
     // the FieldLayout used inside the Particle object
@@ -113,7 +158,10 @@ BinaryRepartition(IpplParticleBase<ParticleSpatialLayout<T,Dim,Mesh,CachingPolic
     // FieldLayout.  This is desired so that when we repartition the
     // FieldLayout, we do not waste time redistributing the Field's data.
     BF = offset;
-    scatter(BF,PB.R,interp);
+    if (outsideToNearest)
+      scatterInsideDomain(BF,PB.R,RL.getDomain(),interp);
+    else
+      scatter(BF,PB.R,interp);
 
     // calculate a new repartitioning of the field, and use this to repartition
     // the FieldLayout used inside the Particle object

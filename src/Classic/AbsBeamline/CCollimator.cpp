@@ -20,11 +20,15 @@
 #include "AbsBeamline/BeamlineVisitor.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Fields/Fieldmap.h"
+#include "Physics/Units.h"
 #include "Solvers/ParticleMatterInteractionHandler.h"
 #include "Structure/LossDataSink.h"
 
+#include <algorithm>
 #include <cmath>
 #include <fstream>
+#include <limits>
+#include <utility>
 
 extern Inform *gmsg;
 
@@ -58,10 +62,16 @@ bool CCollimator::doPreCheck(PartBunchBase<double, 3>* bunch) {
     bunch->get_bounds(rmin, rmax);
 
     if (rmax(2) >= zstart_m && rmin(2) <= zend_m) {
-        // interested in absolute minimum and maximum
-        double xmin = std::min(std::abs(rmin(0)), std::abs(rmax(0)));
+        // Absolute minimum and maximum of |x| and |y| over the bunch's bounding box.
+        // When an interval straddles zero the smallest attainable |coordinate| is 0,
+        // not min(|lo|,|hi|). Getting this wrong makes rbunch_min far too large, so
+        // the precheck reports the bunch out of range and the collimator silently
+        // never collimates anything.
+        double xmin = (rmin(0) <= 0.0 && rmax(0) >= 0.0)
+                        ? 0.0 : std::min(std::abs(rmin(0)), std::abs(rmax(0)));
         double xmax = std::max(std::abs(rmin(0)), std::abs(rmax(0)));
-        double ymin = std::min(std::abs(rmin(1)), std::abs(rmax(1)));
+        double ymin = (rmin(1) <= 0.0 && rmax(1) >= 0.0)
+                        ? 0.0 : std::min(std::abs(rmin(1)), std::abs(rmax(1)));
         double ymax = std::max(std::abs(rmin(1)), std::abs(rmax(1)));
         double rbunch_min = std::hypot(xmin, ymin);
         double rbunch_max = std::hypot(xmax, ymax);
@@ -88,9 +98,14 @@ bool CCollimator::doCheck(PartBunchBase<double, 3>* bunch, const int turnnumber,
             pflag = checkPoint(bunch->R[i](0), bunch->R[i](1));
             /// bunch->Bin[i] != -1 makes sure the particle is not stored in more than one collimator
             if ((pflag != 0) && (bunch->Bin[i] != -1)) {
+                // OpalParticle takes the rest mass in MeV. M[i] is the macro-particle mass in
+                // GeV, except for particles made by a Stripper (STOP=FALSE) or by beam
+                // stripping, whose M[i] is their own mass in GeV.
+                const double mass = (bunch->POrigin[i] == ParticleOrigin::REGULAR) ?
+                    bunch->getM() * Units::eV2MeV : bunch->M[i] * Units::GeV2MeV;
                 lossDs_m->addParticle(OpalParticle(bunch->ID[i],
                                                    bunch->R[i], bunch->P[i],
-                                                   t, bunch->Q[i], bunch->M[i]),
+                                                   t, bunch->Q[i], mass),
                                       std::make_pair(turnnumber, bunch->bunchNum[i]));
 
                 bunch->Bin[i] = -1;

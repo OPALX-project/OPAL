@@ -118,7 +118,7 @@ protected:
     double A_m, B_m, R_m, C_m; ///< Geometric lengths used in calculations
 
     std::unique_ptr<LossDataSink> lossDs_m;   ///< Pointer to Loss instance
-    int numPassages_m = 0; ///< Number of turns (number of times save() method is called)
+    int numPassages_m = 0; ///< Number of save() calls in this run that wrote the file
 };
 
 #endif // CLASSIC_PluginElement_HH

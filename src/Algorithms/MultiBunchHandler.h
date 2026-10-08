@@ -28,9 +28,13 @@
 #ifndef OPAL_MULTI_BUNCH_HANDLER_H
 #define OPAL_MULTI_BUNCH_HANDLER_H
 
-#include "Algorithms/PartBunchBase.h"
+#include "Utility/PAssert.h"
 
+#include <string>
 #include <vector>
+
+class PartData;
+template <class T, unsigned int Dim> class PartBunchBase;
 
 class MultiBunchHandler {
 public:

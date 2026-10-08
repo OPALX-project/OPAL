@@ -512,7 +512,9 @@ void FFTPoissonSolver::mirrorRhoField() {
     Index mirroredJE = 2 * nr_m[1] - JE;
     Index mirroredKE = 2 * nr_m[2] - KE;
 
-    rho2_m[0][0][0] = rho2_m[0][0][1];
+    // The integrated Green's function is finite in the self cell, so unlike the
+    // point kernel in SpecializedGreensFunction it must not be replaced by the
+    // value of the neighbouring cell, which would weaken the field in the core.
 
     rho2_m[IE][J ][K ] = rho2_m[mirroredIE][J         ][K         ];
     rho2_m[aI][JE][K ] = rho2_m[aI        ][mirroredJE][K         ];

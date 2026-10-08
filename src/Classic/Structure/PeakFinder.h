@@ -25,9 +25,9 @@
 #include "Algorithms/Vektor.h"
 
 #include <fstream>
+#include <list>
 #include <string>
 #include <vector>
-#include <list>
 
 class PeakFinder {
 
@@ -35,10 +35,9 @@ public:
     using container_t = std::vector<double>;
 
 public:
-
     PeakFinder() = delete;
 
-    PeakFinder(std::string elem, double min, double max, double binwidth, bool singlemode);
+    PeakFinder(const std::string& elem, double min, double max, double binwidth, bool singlemode);
 
     /*!
      * Append the particle coordinates to the container
@@ -54,7 +53,6 @@ public:
     void save();
 
 private:
-
     // compute global histogram, involves some inter-node communication
     void createHistogram_m();
 

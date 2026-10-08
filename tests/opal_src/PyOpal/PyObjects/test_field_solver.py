@@ -38,6 +38,12 @@ class TestFieldSolver(pyopal.objects.encapsulated_test_case.EncapsulatedTestCase
 
         self.bounding_box_increase = 5
 
+        self.fs.mesh_fit = "Core"
+        self.fs.mesh_fit_n_sigma = 11
+        self.fs.mesh_fit_clip = 12
+        self.fs.mesh_fit_max_far = 13
+        self.fs.mesh_fit_far_field = "Quadrupole"
+
         self.fs.geometry = "Lucy"
         self.fs.iterative_solver = "Sally"
         self.fs.interpolation = "Cara"
@@ -67,6 +73,12 @@ class TestFieldSolver(pyopal.objects.encapsulated_test_case.EncapsulatedTestCase
         self.assertEqual(self.fs.greens_function, "SARA")
 
         self.assertEqual(self.bounding_box_increase, 5)
+
+        self.assertEqual(self.fs.mesh_fit, "CORE")
+        self.assertEqual(self.fs.mesh_fit_n_sigma, 11)
+        self.assertEqual(self.fs.mesh_fit_clip, 12)
+        self.assertEqual(self.fs.mesh_fit_max_far, 13)
+        self.assertEqual(self.fs.mesh_fit_far_field, "QUADRUPOLE")
 
         self.assertEqual(self.fs.geometry, "LUCY")
         self.assertEqual(self.fs.iterative_solver, "SALLY")
