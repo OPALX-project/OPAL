@@ -25,6 +25,7 @@
 #include "Distribution/Distribution.h"
 #include "Physics/ParticleProperties.h"
 #include "Physics/Physics.h"
+#include "Physics/Units.h"
 #include "Structure/FieldSolver.h"
 #include "Utilities/GeneralClassicException.h"
 #include "Utilities/OpalException.h"
@@ -33,7 +34,10 @@
 #include "Utilities/Util.h"
 
 #include <cmath>
+#include <functional>
 #include <numeric>
+#include <sstream>
+#include <string>
 
 extern Inform* gmsg;
 
@@ -529,7 +533,7 @@ void PartBunchBase<T, Dim>::boundp() {
 
         this->updateDomainLength(nr_m);
         IpplTimings::startTimer(boundpBoundsTimer_m);
-        get_bounds(rmin_m, rmax_m);
+        getSolverMeshBounds(rmin_m, rmax_m);
         IpplTimings::stopTimer(boundpBoundsTimer_m);
         Vector_t len = rmax_m - rmin_m;
 
@@ -577,6 +581,12 @@ void PartBunchBase<T, Dim>::boundp() {
 
         if (hr_m[0] * hr_m[1] * hr_m[2] <= 0) {
             throw GeneralClassicException("boundp() ", "h<0, can not build a mesh");
+        }
+
+        if (meshFit_m.type == MeshFitType::CORE) {
+            // the range of the cell centres, which the solve on a core-fitted mesh gathers
+            scMeshMin_m = rmin_m;
+            scMeshMax_m = rmax_m;
         }
 
         Vector_t origin = rmin_m - Vector_t({hr_m[0] / 2.0, hr_m[1] / 2.0, hr_m[2] / 2.0});
@@ -656,6 +666,10 @@ void PartBunchBase<T, Dim>::boundp_destroyCycl() {
                         //update bin parameter
                         if (weHaveBins())
                             countLost[Bin[ii]] += 1 ;
+                        // MESHFIT=CORE: flag it lost, so that the core selection
+                        // below leaves it out
+                        if (meshFit_m.type == MeshFitType::CORE)
+                            Bin[ii] = -1;
                         /* INFOMSG("REMOTE PARTICLE DELETION: ID = " << ID[ii] << ", R = " << R[ii]
                          * << ", beam rms = " << rrms_m << endl;);
                          */
@@ -679,6 +693,10 @@ void PartBunchBase<T, Dim>::boundp_destroyCycl() {
                         //update bin parameter
                         if (weHaveBins())
                             countLost[Bin[ii]] += 1 ;
+                        // MESHFIT=CORE: flag it lost, so that the core selection
+                        // below leaves it out
+                        if (meshFit_m.type == MeshFitType::CORE)
+                            Bin[ii] = -1;
                         /* INFOMSG("REMOTE PARTICLE DELETION: ID = " << ID[ii] << ", R = " << R[ii]
                          * << ", beam rms = " << rrms_m << endl;);
                          */
@@ -688,28 +706,58 @@ void PartBunchBase<T, Dim>::boundp_destroyCycl() {
         }
     }
 
+    // The REMOTEPARTDEL test takes the bounds of all particles, the mesh those of
+    // getSolverMeshBounds(), as in boundp(). The particles queued for deletion above are
+    // still in the bunch until update() below; with MESHFIT=CORE they are flagged lost.
+    if (meshFit_m.type == MeshFitType::CORE) {
+        IpplTimings::startTimer(boundpBoundsTimer_m);
+        getSolverMeshBounds(rmin_m, rmax_m);
+        IpplTimings::stopTimer(boundpBoundsTimer_m);
+    }
+
     for (int i = 0; i < dimIdx; i++) {
         double length = std::abs(rmax_m[i] - rmin_m[i]);
-        rmax_m[i] += dh_m * length;
-        rmin_m[i] -= dh_m * length;
+        if (length < 1e-10) {
+            rmax_m[i] += 1e-10;
+            rmin_m[i] -= 1e-10;
+        } else {
+            rmax_m[i] += dh_m * length;
+            rmin_m[i] -= dh_m * length;
+        }
         hr_m[i]    = (rmax_m[i] - rmin_m[i]) / (nr_m[i] - 1);
     }
 
-    // rescale mesh
-    this->updateFields(hr_m, rmin_m);
+    if (meshFit_m.type == MeshFitType::CORE) {
+        // the range of the cell centres, which the solve on a core-fitted mesh gathers
+        scMeshMin_m = rmin_m;
+        scMeshMax_m = rmax_m;
+    }
+
+    // rescale mesh, with the same origin as boundp(). With the origin at rmin_m instead,
+    // every call moved all rank boundaries by half a cell, and the next boundp() moved them
+    // back: the particles near each cut changed owner twice, and the push in between ran in
+    // a skewed decomposition.
+    Vector_t origin = rmin_m - Vector_t({hr_m[0] / 2.0, hr_m[1] / 2.0, hr_m[2] / 2.0});
+    this->updateFields(hr_m, origin);
 
     if (weHaveBins()) {
         pbin_m->updatePartInBin_cyc(countLost.get());
     }
 
-    /* we also need to update the number of particles per bunch
-     * expensive since does an allreduce!
-     */
-    countTotalNumPerBunch();
-
     IpplTimings::startTimer(boundpUpdateTimer_m);
     update();
     IpplTimings::stopTimer(boundpUpdateTimer_m);
+
+    /* we also need to update the number of particles per bunch
+     * expensive since does an allreduce!
+     *
+     * This has to come after update(): destroy() above only queues the
+     * particles, update() is what removes them. Counting before it left the
+     * per-bunch totals holding the remotely deleted particles, and the next
+     * deleteParticle() then failed its consistency check
+     * ("Total number of particles N != N+k (sum over all bunches)").
+     */
+    countTotalNumPerBunch();
 
     IpplTimings::stopTimer(boundpTimer_m);
 }
@@ -1237,6 +1285,263 @@ Vector_t PartBunchBase<T, Dim>::get_hr() const {
 template <class T, unsigned Dim>
 void PartBunchBase<T, Dim>::set_meshEnlargement(double dh) {
     dh_m = dh;
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::setMeshFit(const MeshFitParameters& meshFit) {
+    // A mesh fitted to the core leaves the far particles outside its domain. The particle
+    // layout then gives each of them to the rank that owns the nearest point of the domain.
+    // This has to be set before the first mesh fit of the run, in Distribution::create()
+    // or at a restart: with more than one rank, update() would otherwise refuse a particle
+    // outside the domain. The layout is only touched when CORE is set or unset.
+    if (meshFit.type == MeshFitType::CORE || meshFit_m.type == MeshFitType::CORE) {
+        Layout_t* layoutp = static_cast<Layout_t*>(&getLayout());
+        try {
+            layoutp->setOutsideToNearest(meshFit.type == MeshFitType::CORE);
+        } catch (const IpplException& ex) {
+            throw OpalException(ex.where(), ex.what());
+        }
+    }
+
+    // created here, so that the timing file of a run without CORE does not list them
+    if (meshFit.type == MeshFitType::CORE) {
+        meshFitTimer_m   = IpplTimings::getTimer("SC mesh fit");
+        farFieldTimer_m  = IpplTimings::getTimer("SC far field");
+        exactCoreTimer_m = IpplTimings::getTimer("SC exact core field");
+    }
+
+    meshFit_m = meshFit;
+    // nothing selected or solved yet in this TRACK/RUN; it starts in CORE mode
+    scCore_m = CoreFitSC::CoreSelection();
+    scMode_m = CoreFitSC::ModeState();
+    scRepartitionDue_m = false;
+    scHasSolved_m = false;
+    scStatistics_m = MeshFitStatistics();
+    scWarned_m = 0;
+    scCoreMesh_m = false;
+    scNumCore_m = 0;
+    scFitted_m = false;
+}
+
+
+template <class T, unsigned Dim>
+const MeshFitParameters& PartBunchBase<T, Dim>::getMeshFit() const {
+    return meshFit_m;
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::setMeshFitSolveStep(bool solveStep) {
+    meshFitSolveStep_m = solveStep;
+}
+
+
+template <class T, unsigned Dim>
+const CoreFitSC::CoreSelection& PartBunchBase<T, Dim>::getMeshFitCore() const {
+    return scCore_m;
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::getMeshFitFullBounds(Vector_t& rmin, Vector_t& rmax) const {
+    rmin = scFullMin_m;
+    rmax = scFullMax_m;
+}
+
+
+template <class T, unsigned Dim>
+Vector_t PartBunchBase<T, Dim>::getMeshSpacing(const Vector_t& rmin, const Vector_t& rmax) const {
+    // the enlargement of boundp(), without its DC beam and emission cases
+    Vector_t hr;
+    for (unsigned short d = 0; d < 3u; ++ d) {
+        const double length = std::abs(rmax[d] - rmin[d]);
+        const double margin = (length < 1e-10) ? 1e-10 : dh_m * length;
+        hr[d] = ((rmax[d] + margin) - (rmin[d] - margin)) / (nr_m[d] - 1);
+    }
+    return hr;
+}
+
+
+template <class T, unsigned Dim>
+const CoreFitSC::ModeState& PartBunchBase<T, Dim>::getMeshFitMode() const {
+    return scMode_m;
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::setMeshFitMode(const CoreFitSC::ModeState& mode) {
+    scMode_m = mode;
+}
+
+
+template <class T, unsigned Dim>
+bool PartBunchBase<T, Dim>::isMeshFitToCore() const {
+    return meshFit_m.type == MeshFitType::CORE && scCoreMesh_m;
+}
+
+
+template <class T, unsigned Dim>
+bool PartBunchBase<T, Dim>::isMeshFitRepartitionDue() const {
+    return meshFit_m.type == MeshFitType::CORE && scRepartitionDue_m;
+}
+
+
+template <class T, unsigned Dim>
+const typename PartBunchBase<T, Dim>::MeshFitStatistics&
+PartBunchBase<T, Dim>::getMeshFitStatistics() const {
+    return scStatistics_m;
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::resetMeshFitTurn() {
+    scStatistics_m.turnSolves = 0;
+    scStatistics_m.turnFullSolves = 0;
+    scWarned_m = 0;
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::warnMeshFitOnce(MeshFitWarning warning, const std::string& message) {
+    if ((scWarned_m & warning) == 0) {
+        scWarned_m |= warning;
+        *gmsg << "* Warning: SC mesh fit at integration step " << getLocalTrackStep() + 1
+              << ": " << message << " (at most once per turn)" << endl;
+    }
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::getSolverMeshBounds(Vector_t& rmin, Vector_t& rmax) {
+    get_bounds(rmin, rmax);
+    if (meshFit_m.type != MeshFitType::CORE) {
+        return;
+    }
+
+    // The core of the particles in the frame of this fit. Every fit selects, so that the
+    // mesh and the particle classes of the solve always belong to the same box.
+    IpplTimings::startTimer(meshFitTimer_m);
+    const ParticleAttrib<Vector_t>& Rc = R;
+    const ParticleAttrib<double>& Qc = Q;
+    const ParticleAttrib<int>& Binc = Bin;
+    const size_t localNum = getLocalNum();
+    const CoreFitSC::CoreSelection selection =
+        CoreFitSC::selectCore(localNum > 0 ? &Rc[0] : nullptr,
+                              localNum > 0 ? &Qc[0] : nullptr,
+                              localNum > 0 ? &Binc[0] : nullptr,
+                              localNum, meshFit_m.nSigma, meshFit_m.clip,
+                              CoreFitSC::IpplReducer());
+    IpplTimings::stopTimer(meshFitTimer_m);
+
+    // Only the fit of a space-charge solve step decides the mode, from reduced values, so
+    // that every rank switches, and at most once per step. It is also the fit reported in
+    // the stat file and the log.
+    if (meshFitSolveStep_m) {
+        const CoreFitSC::ModeState previous = scMode_m;
+        scMode_m = CoreFitSC::decideMode(previous, selection.numCore, selection.numLive,
+                                         selection.getFarChargeFraction(),
+                                         meshFit_m.maxFarFraction, Options::repartFreq);
+        const bool switched = (scMode_m.mode != previous.mode);
+        scRepartitionDue_m = (switched || !scHasSolved_m);
+        scHasSolved_m = true;
+
+        scCore_m = selection;
+        scFullMin_m = rmin;
+        scFullMax_m = rmax;
+
+        // set by the solve on a core-fitted mesh
+        scStatistics_m.numFlagged = 0;
+        ++ scStatistics_m.turnSolves;
+        if (scMode_m.mode == CoreFitSC::Mode::FULL) {
+            ++ scStatistics_m.fullSolves;
+            ++ scStatistics_m.turnFullSolves;
+        }
+        if (switched) {
+            ++ scStatistics_m.modeSwitches;
+            const bool toFull = (scMode_m.mode == CoreFitSC::Mode::FULL);
+            *gmsg << "* SC mesh fit at integration step " << getLocalTrackStep() + 1
+                  << ": the mesh is fitted to " << (toFull ? "all particles" : "the core")
+                  << " from now on (MESHFIT mode " << (toFull ? "FULL" : "CORE") << "), "
+                  << selection.numCore << " of " << selection.numLive
+                  << " live particles in the core, far charge "
+                  << 100.0 * selection.getFarChargeFraction() << " % of the live charge"
+                  << endl;
+        }
+
+        if (selection.getFarChargeFraction() > CoreFitSC::warnFarFraction) {
+            std::ostringstream message;
+            message << "the far charge is " << 100.0 * selection.getFarChargeFraction()
+                    << " % of the live charge (MESHFITMAXFAR "
+                    << 100.0 * meshFit_m.maxFarFraction << " %)";
+            warnMeshFitOnce(FarChargeWarning, message.str());
+        }
+        // a far particle lies outside the core bounds in some axis, so these can only be
+        // equal to the bounds of all particles if something is wrong
+        if (selection.numFar > 0 && selection.numCore > 0 &&
+            selection.boundsMin == rmin && selection.boundsMax == rmax) {
+            warnMeshFitOnce(FullBoxWarning, "the core bounds equal the bounds of all "
+                            "particles, although there are far particles");
+        }
+    }
+
+    scFitted_m = true;
+    scNumCore_m = selection.numCore;
+    scCoreMesh_m = (scMode_m.mode == CoreFitSC::Mode::CORE && selection.numCore > 0);
+    if (scCoreMesh_m) {
+        // The core bounds, widened to the particles flagged lost within the core window:
+        // they stay in the bunch until the tracker deletes them, and boundp_destroyCycl()
+        // flags those it queues for deletion. With a MESHFITNSIGMA so large that every
+        // particle lies in the window, the mesh is that of MESHFIT=ALL.
+        IpplTimings::startTimer(meshFitTimer_m);
+        CoreFitSC::getMeshBox(localNum > 0 ? &Rc[0] : nullptr,
+                              localNum > 0 ? &Binc[0] : nullptr,
+                              localNum, selection, meshFit_m.nSigma,
+                              CoreFitSC::IpplReducer(), rmin, rmax);
+        IpplTimings::stopTimer(meshFitTimer_m);
+        scBoxMin_m = rmin;
+        scBoxMax_m = rmax;
+    }
+}
+
+
+template <class T, unsigned Dim>
+void PartBunchBase<T, Dim>::checkMeshFitOutside() {
+    if (meshFit_m.type != MeshFitType::CORE || !scFitted_m) {
+        return;
+    }
+
+    // Particles outside the domain [origin, origin + nr h) of the mesh, counted here and not
+    // by the particle layout, whose swap does not run on one rank. After a fit to the core
+    // only particles outside the core can be outside the mesh.
+    const NDRegion<T, Dim>& domain =
+        static_cast<Layout_t*>(&getLayout())->getLayout().getDomain();
+    const ParticleAttrib<Vector_t>& Rc = R;
+    const size_t localNum = getLocalNum();
+    double counts[2] = {0.0, static_cast<double>(localNum)};
+    for (size_t i = 0; i < localNum; ++ i) {
+        for (unsigned int d = 0; d < Dim; ++ d) {
+            if (!(Rc[i](d) >= domain[d].min() && Rc[i](d) < domain[d].max())) {
+                counts[0] += 1.0;
+                break;
+            }
+        }
+    }
+    allreduce(counts, 2, std::plus<double>());
+    scStatistics_m.numOutside = static_cast<size_t>(counts[0]);
+
+    // In a frame the mesh was not fitted to, most particles are outside.
+    const double numNotCore = std::max(counts[1] - static_cast<double>(scNumCore_m), 0.0);
+    if (counts[0] > 2.0 * numNotCore + 100.0) {
+        throw OpalException("PartBunchBase::update()",
+                            "FIELDSOLVER, MESHFIT=\"CORE\": " +
+                            std::to_string(scStatistics_m.numOutside) + " of " +
+                            std::to_string(static_cast<size_t>(counts[1])) +
+                            " particles are outside the space-charge mesh, but only " +
+                            std::to_string(static_cast<size_t>(numNotCore)) +
+                            " are outside the core of the last mesh fit. The particles were "
+                            "updated in a frame the mesh was not fitted to.");
+    }
 }
 
 
@@ -1970,6 +2275,7 @@ void PartBunchBase<T, Dim>::update() {
     } catch (const IpplException& ex) {
         throw OpalException(ex.where(), ex.what());
     }
+    checkMeshFitOutside();
 }
 
 template <class T, unsigned Dim>
@@ -1979,6 +2285,7 @@ void PartBunchBase<T, Dim>::update(const ParticleAttrib<char>& canSwap) {
     } catch (const IpplException& ex) {
         throw OpalException(ex.where(), ex.what());
     }
+    checkMeshFitOutside();
 }
 
 template <class T, unsigned Dim>

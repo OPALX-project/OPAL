@@ -88,6 +88,9 @@ bool Septum::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, cons
     const double intcept2 = intcept + halfLength;
 
     for (unsigned int i = 0; i < bunch->getLocalNum(); ++i) {
+        // already lost (Bin < 0) and recorded, waiting for the tracker to delete it
+        if (bunch->Bin[i] < 0) continue;
+
         const Vector_t& R = bunch->R[i];
 
         double line1 = std::abs(slope * R(0) + intcept1);

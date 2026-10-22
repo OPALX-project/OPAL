@@ -45,6 +45,7 @@ void H5Writer::writePhaseSpace(PartBunchBase<double, 3> *beam, Vector_t FDext[])
 
 
 int H5Writer::writePhaseSpace(PartBunchBase<double, 3> *beam, Vector_t FDext[], double /*meanEnergy*/,
+                              int refSource,
                               double refPr, double refPt, double refPz,
                               double refR, double refTheta, double refZ,
                               double azimuth, double elevation, bool /*local*/) {
@@ -61,6 +62,7 @@ int H5Writer::writePhaseSpace(PartBunchBase<double, 3> *beam, Vector_t FDext[], 
         std::make_pair("REFZ", refZ),
         std::make_pair("AZIMUTH", azimuth),
         std::make_pair("ELEVATION", elevation),
+        std::make_pair("REFSOURCE", static_cast<double>(refSource)),
         std::make_pair("B-head_x", FDext[0](0)),
         std::make_pair("B-head_z", FDext[0](1)),
         std::make_pair("B-head_y", FDext[0](2)),

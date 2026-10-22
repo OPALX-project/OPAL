@@ -64,8 +64,11 @@ void PluginElement::finalise() {
 }
 
 void PluginElement::goOffline() {
+    // After per-turn saves (PSDUMPEACHTURN) the file holds the earlier turns: append the
+    // records since the last one, as save() does, instead of starting the file anew.
     if (online_m && lossDs_m)
-        lossDs_m->save();
+        lossDs_m->save(1, (numPassages_m > 0) ? OpalData::OpenMode::APPEND
+                                              : OpalData::OpenMode::UNDEFINED);
     lossDs_m.reset(nullptr);
     doGoOffline();
     online_m = false;
@@ -229,6 +232,8 @@ void PluginElement::save() {
     } else {
         openMode = OpalData::getInstance()->getOpenMode();
     }
-    lossDs_m->save(1, openMode);
-    numPassages_m++;
+    // Count only saves that wrote the file: after per-turn saves without any records the
+    // next one must still use the run's open mode (WRITE truncates a file of an earlier run).
+    if (lossDs_m->save(1, openMode))
+        numPassages_m++;
 }

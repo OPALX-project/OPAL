@@ -92,26 +92,35 @@ void DataSink::dumpH5(PartBunchBase<double, 3> *beam, Vector_t FDext[]) const {
 
 
 int DataSink::dumpH5(PartBunchBase<double, 3>* beam, Vector_t FDext[], double meanEnergy,
+                     int refSource,
                      double refPr, double refPt, double refPz,
                      double refR, double refTheta, double refZ,
                      double azimuth, double elevation, bool local) const
 {
     if (!Options::enableHDF5) return -1;
 
-    return h5Writer_m->writePhaseSpace(beam, FDext, meanEnergy, refPr, refPt, refPz,
+    return h5Writer_m->writePhaseSpace(beam, FDext, meanEnergy, refSource, refPr, refPt, refPz,
                                        refR, refTheta, refZ, azimuth, elevation, local);
 }
 
 
 void DataSink::dumpSDDS(PartBunchBase<double, 3>* beam, Vector_t FDext[],
-                        const double& azimuth) const
+                        const double& azimuth, const double& timeStep) const
 {
-    this->dumpSDDS(beam, FDext, losses_t(), azimuth);
+    this->dumpSDDS_m(beam, FDext, losses_t(), azimuth, timeStep);
 }
 
 
 void DataSink::dumpSDDS(PartBunchBase<double, 3>* beam, Vector_t FDext[],
                         const losses_t& losses, const double& azimuth) const
+{
+    this->dumpSDDS_m(beam, FDext, losses, azimuth, beam->getdT());
+}
+
+
+void DataSink::dumpSDDS_m(PartBunchBase<double, 3>* beam, Vector_t FDext[],
+                          const losses_t& losses, const double& azimuth,
+                          const double& timeStep) const
 {
     beam->calcBeamParameters();
 
@@ -121,7 +130,7 @@ void DataSink::dumpSDDS(PartBunchBase<double, 3>* beam, Vector_t FDext[],
 
     IpplTimings::startTimer(StatMarkerTimer_m);
 
-    statWriter_m->write(beam, FDext, losses, azimuth, npOutside);
+    statWriter_m->write(beam, FDext, timeStep, losses, azimuth, npOutside);
 
     beam->gatherLoadBalanceStatistics();
 

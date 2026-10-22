@@ -25,23 +25,25 @@
 //
 #include "AbsBeamline/Cyclotron.h"
 
-#include "AbstractObjects/OpalData.h"
 #include "AbsBeamline/BeamlineVisitor.h"
+#include "AbstractObjects/OpalData.h"
 #include "Algorithms/PartBunchBase.h"
 #include "Fields/Fieldmap.h"
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
 #include "Structure/LossDataSink.h"
 #include "TrimCoils/TrimCoil.h"
-#include "Utilities/Options.h"
 #include "Utilities/GeneralClassicException.h"
+#include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
+#include <algorithm>
 #include <cmath>
-#include <cstring>
 #include <cstdio>
+#include <cstring>
 #include <filesystem>
 #include <fstream>
+#include <limits>
 #include <map>
 
 #define CHECK_CYC_FSCANF_EOF(arg) if (arg == EOF)\
@@ -116,6 +118,48 @@ void Cyclotron::applyTrimCoil(const double r, const double z,
     }
 }
 
+Cyclotron::RFPhaseCache::RFPhaseCache() {
+    // NaN never compares equal, so an unused slot can never be hit.
+    std::fill(t, t + size, std::numeric_limits<double>::quiet_NaN());
+    std::fill(cosPhase, cosPhase + size, 0.0);
+    std::fill(sinPhase, sinPhase + size, 0.0);
+}
+
+void Cyclotron::rfPhase(std::size_t map, double t, double frequency, double phi,
+                        double& cosPhase, double& sinPhase) {
+    RFPhaseCache& cache = rfPhaseCache_m[map];
+    for (int k = 0; k < RFPhaseCache::size; ++k) {
+        if (cache.t[k] == t) {
+            cosPhase = cache.cosPhase[k];
+            sinPhase = cache.sinPhase[k];
+            return;
+        }
+    }
+    // The same expression apply() used before this cache existed. Keep cos and sin of the
+    // phase together in one function: GCC fuses them into one sincos call, as it did in the
+    // old code, and glibc's sincos can differ from a separate sin or cos by one ulp.
+    const double phase = Physics::two_pi * Units::MHz2Hz * frequency * t + phi;
+    cosPhase = std::cos(phase);
+    sinPhase = std::sin(phase);
+    cache.t[cache.next]        = t;
+    cache.cosPhase[cache.next] = cosPhase;
+    cache.sinPhase[cache.next] = sinPhase;
+    cache.next = (cache.next + 1) % RFPhaseCache::size;
+}
+
+bool Cyclotron::midplaneMapInterior(const Vector_t& R) const {
+    if (!midplaneMapIsZero_m || !trimcoils_m.empty()) {
+        return false;
+    }
+    // The radial cell index exactly as interpolate() computes it. For 0 <= ir <= nrad-3
+    // interpolate() succeeds at every angle (see read()), so the angle is not needed.
+    // On the axis and for a NaN z the original path divides by r or multiplies by z and
+    // returns NaN, so those inputs keep taking it.
+    const double rad = std::hypot(R[0], R[1]);
+    const int ir = (int)((rad - BP_m.rmin_m) / BP_m.delr_m);
+    return rad > 0.0 && std::isfinite(R[2]) && ir >= 0 && ir <= Bfield_m.nrad_m - 3;
+}
+
 void Cyclotron::accept(BeamlineVisitor &visitor) const {
     visitor.visitCyclotron(*this);
 }
@@ -174,6 +218,10 @@ void Cyclotron::setSpiralFlag(bool spiral_flag) {
 
 bool Cyclotron::getSpiralFlag() const {
     return spiralFlag_m;
+}
+
+void Cyclotron::setTurnNumber(int turn) {
+    turnNumber_m = turn;
 }
 
 void Cyclotron::setFieldMapFN(const std::string& f) {
@@ -418,27 +466,32 @@ bool Cyclotron::apply(const size_t& id, const double& t, Vector_t& E, Vector_t& 
     const double rpos = std::hypot(RefPartBunch_m->R[id](0), RefPartBunch_m->R[id](1));
     const double zpos = RefPartBunch_m->R[id](2);
 
-    if (zpos > maxz_m || zpos < minz_m || rpos > maxr_m || rpos < minr_m) {
-        flagNeedUpdate = true;
-        *gmsgALL << level4 << getName() << ": Particle " << id
-                 << " out of the global aperture of cyclotron!" << endl;
-        *gmsgALL << level4 << getName()
-                 << ": Coords: "<< RefPartBunch_m->R[id] << " m"  << endl;
+    // A particle that is already flagged lost (Bin < 0, by this element, a collimator or
+    // the boundary geometry) stays in the bunch until the tracker deletes it, and keeps
+    // failing here on every step: report and record only its first loss.
+    const bool flaggedBefore = (RefPartBunch_m->Bin[id] < 0);
+    const bool outsideAperture = (zpos > maxz_m || zpos < minz_m || rpos > maxr_m || rpos < minr_m);
 
+    if (outsideAperture) {
+        flagNeedUpdate = true;
     } else {
         flagNeedUpdate = apply(RefPartBunch_m->R[id], RefPartBunch_m->P[id], t, E, B);
-        if (flagNeedUpdate) {
-            *gmsgALL << level4 << getName() << ": Particle "<< id
-                     << " out of the field map boundary!" << endl;
-            *gmsgALL << level4 << getName()
-                     << ": Coords: "<< RefPartBunch_m->R[id] << " m" << endl;
-        }
     }
 
-    if (flagNeedUpdate) {
-        lossDs_m->addParticle(OpalParticle(id, RefPartBunch_m->R[id], RefPartBunch_m->P[id],
+    if (flagNeedUpdate && !flaggedBefore) {
+        *gmsgALL << level4 << getName() << ": Particle " << RefPartBunch_m->ID[id]
+                 << (outsideAperture ? " out of the global aperture of cyclotron!"
+                                     : " out of the field map boundary!") << endl;
+        *gmsgALL << level4 << getName()
+                 << ": Coords: "<< RefPartBunch_m->R[id] << " m" << endl;
+
+        // Called by the integrator: R and t are those of the field evaluation (with RK-4 the
+        // stage point and time); P is only updated when the step completes, so it is the
+        // momentum at the start of the step.
+        lossDs_m->addParticle(OpalParticle(RefPartBunch_m->ID[id],
+                                           RefPartBunch_m->R[id], RefPartBunch_m->P[id],
                                            t, RefPartBunch_m->Q[id], RefPartBunch_m->M[id]),
-                              std::make_pair(0, RefPartBunch_m->bunchNum[id]));
+                              std::make_pair(turnNumber_m, RefPartBunch_m->bunchNum[id]));
         RefPartBunch_m->Bin[id] = -1;
     }
 
@@ -449,48 +502,56 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
                       const double& t, Vector_t& E, Vector_t& B) {
 
     double tet = 0.0;
-    if (std::abs(R[0]) < 1.0E-10) {
-        if (R[1] >= 0.0) {
-            tet = Physics::pi / 2.0;
-        } else {
-            tet = 1.5 * Physics::pi;
-        }
-    } else if (R[0] < 0.0) {
-        tet = Physics::pi + std::atan(R[1] / R[0]);
-    } else { 
-        if (R[1] > 0.0) {       // R[0] > 0.0 && R[1] > 0.0 
-            tet = std::atan(R[1] / R[0]);
-        } else {                // R[0] > 0.0 && R[1] <= 0.0 
-            tet = Physics::two_pi + std::atan(R[1] / R[0]);
-        }
-    }
-
-    // Necessary for gap phase output -DW
-    if ( 0 <= tet && tet <= (Physics::pi / 4) ) waitingGap_m = 1;
-
-    // dB_{z}/dr, dB_{z}/dtheta, B_{z}
-    double brint = 0.0, btint = 0.0, bzint = 0.0;
-
-    const double rad = std::hypot(R[0],R[1]);
-    if ( this->interpolate(rad, tet, brint, btint, bzint) ) {
-
-        /* Br */
-        double br = - brint * R[2];
-
-        /* Btheta */
-        double bt = - btint / rad * R[2];
-
-        /* Bz */
-        double bz = - bzint;
-
-        this->applyTrimCoil(rad, R[2], tet, br, bz);
-
-        /* Br Btheta -> Bx By */
-        B[0] = br * std::cos(tet) - bt * std::sin(tet);
-        B[1] = br * std::sin(tet) + bt * std::cos(tet);
-        B[2] = bz;
+    if (midplaneMapInterior(R)) {
+        // A midplane map of zeros, away from its radial edge: the interpolation below would
+        // succeed and give a zero field, so skip the angle, the lookup and the rotation. It
+        // would give signed zeros; a zero of either sign cannot change a nonzero sum, so only
+        // the sign of an exactly-zero result can differ.
+        B = Vector_t(0.0);
     } else {
-        return true;
+        if (std::abs(R[0]) < 1.0E-10) {
+            if (R[1] >= 0.0) {
+                tet = Physics::pi / 2.0;
+            } else {
+                tet = 1.5 * Physics::pi;
+            }
+        } else if (R[0] < 0.0) {
+            tet = Physics::pi + std::atan(R[1] / R[0]);
+        } else {
+            if (R[1] > 0.0) {       // R[0] > 0.0 && R[1] > 0.0
+                tet = std::atan(R[1] / R[0]);
+            } else {                // R[0] > 0.0 && R[1] <= 0.0
+                tet = Physics::two_pi + std::atan(R[1] / R[0]);
+            }
+        }
+
+        // Necessary for gap phase output -DW
+        if ( 0 <= tet && tet <= (Physics::pi / 4) ) waitingGap_m = 1;
+
+        // dB_{z}/dr, dB_{z}/dtheta, B_{z}
+        double brint = 0.0, btint = 0.0, bzint = 0.0;
+
+        const double rad = std::hypot(R[0],R[1]);
+        if ( this->interpolate(rad, tet, brint, btint, bzint) ) {
+
+            /* Br */
+            double br = - brint * R[2];
+
+            /* Btheta */
+            double bt = - btint / rad * R[2];
+
+            /* Bz */
+            double bz = - bzint;
+
+            this->applyTrimCoil(rad, R[2], tet, br, bz);
+
+            /* Br Btheta -> Bx By */
+            B[0] = br * std::cos(tet) - bt * std::sin(tet);
+            B[1] = br * std::sin(tet) + bt * std::cos(tet);
+            B[2] = bz;
+        } else {
+            return true;
+        }
     }
 
     if (fieldType_m != BFieldType::SYNCHRO && fieldType_m != BFieldType::BANDRF) {
@@ -543,10 +604,18 @@ bool Cyclotron::apply(const Vector_t& R, const Vector_t& /*P*/,
             }
         }
 
-        double phase = Physics::two_pi * Units::MHz2Hz * frequency * t + (*rfphii);
+        double phase = 0.0, cosPhase = 0.0, sinPhase = 0.0;
+        const std::size_t map = fi - RFfields_m.begin();
+        if (fieldType_m == BFieldType::SYNCHRO || map >= rfPhaseCache_m.size()) {
+            phase = Physics::two_pi * Units::MHz2Hz * frequency * t + (*rfphii);
+            cosPhase = std::cos(phase);
+            sinPhase = std::sin(phase);
+        } else {
+            rfPhase(map, t, frequency, *rfphii, cosPhase, sinPhase);
+        }
 
-        E += ebscale * std::cos(phase) * tmpE;
-        B -= ebscale * std::sin(phase) * tmpB;
+        E += ebscale * cosPhase * tmpE;
+        B -= ebscale * sinPhase * tmpB;
 
         if (fieldType_m != BFieldType::SYNCHRO)
             continue;
@@ -843,6 +912,32 @@ void Cyclotron::read(const double& scaleFactor) {
 
     // calculate the remaining derivatives
     getdiffs();
+
+    // A BANDRF deck may bring its whole magnetic field in through RFMAPFN and give FMAPFN
+    // a midplane map of zeros. That map then only acts through its radial extent, as an
+    // aperture, and apply() can skip the interpolation away from the edge. The skip is exact
+    // for 0 <= ir <= nrad-3: interpolate() reads up to index it + ntetS*(ir+1), where
+    // it <= 360/(symmetry*dtet) + 1, and that stays below nrad*ntetS as long as
+    // 360/(symmetry*dtet) + 2 < 2*ntetS, i.e. for any map that covers its sector.
+    midplaneMapIsZero_m = false;
+    if (fieldType_m == BFieldType::BANDRF && trimcoils_m.empty() && Bfield_m.nrad_m >= 3) {
+        auto allZero = [](const std::vector<double>& v) {
+            return std::all_of(v.begin(), v.end(), [](double x) { return x == 0.0; });
+        };
+        const double ntetS = Bfield_m.ntet_m + 1;
+        const double sectorSteps = 360.0 / symmetry_m / BP_m.dtet_m;
+        midplaneMapIsZero_m = symmetry_m > 0.0 && BP_m.dtet_m > 0.0 &&
+                              std::isfinite(sectorSteps) && sectorSteps < 2.0 * ntetS - 2.0 &&
+                              allZero(Bfield_m.bfld_m) && allZero(Bfield_m.dbr_m) &&
+                              allZero(Bfield_m.dbt_m);
+        if (midplaneMapIsZero_m) {
+            *gmsg << "* The midplane field map is zero everywhere: it adds no field and only "
+                  << "limits the radius to r < "
+                  << BP_m.rmin_m + (Bfield_m.nrad_m - 1) * BP_m.delr_m << " m" << endl;
+        }
+    }
+
+    rfPhaseCache_m.assign(RFfields_m.size(), RFPhaseCache());
 }
 
 // evaluate other derivative of magnetic field.

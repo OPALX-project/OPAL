@@ -15,13 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 //
-
 #ifndef CLASSIC_FIELDMAP3DMAGNETOSTATICH5BLOCK_H
 #define CLASSIC_FIELDMAP3DMAGNETOSTATICH5BLOCK_H
 
+#include "Algorithms/Vektor.h"
+#include "Fields/Definitions.h"
 #include "Fields/FM3DH5BlockBase.h"
+#include "Fields/FieldArray.h"
 
-#include <vector>
+#include <memory>
+#include <string>
 
 class _FM3DMagnetoStaticH5Block: public _FM3DH5BlockBase {
 
@@ -47,9 +50,9 @@ private:
     virtual double getFrequency (
         ) const;
 
-    std::vector<double> FieldstrengthBz_m;    /**< 3D array with Bz */
-    std::vector<double> FieldstrengthBx_m;    /**< 3D array with Bx */
-    std::vector<double> FieldstrengthBy_m;    /**< 3D array with By */
+    FieldArray FieldstrengthBz_m;    /**< 3D array with Bz */
+    FieldArray FieldstrengthBx_m;    /**< 3D array with Bx */
+    FieldArray FieldstrengthBy_m;    /**< 3D array with By */
 
     friend class _Fieldmap;
     friend class _FM3DH5BlockBase;

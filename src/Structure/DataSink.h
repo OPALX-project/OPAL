@@ -66,12 +66,18 @@ public:
     void dumpH5(PartBunchBase<double, 3>* beam, Vector_t FDext[]) const;
 
     int dumpH5(PartBunchBase<double, 3>* beam, Vector_t FDext[], double meanEnergy,
+               int refSource,
                double refPr, double refPt, double refPz,
                double refR, double refTheta, double refZ,
                double azimuth, double elevation, bool local) const;
 
+    /** \brief Write the stat file (OPAL-cycl)
+     *
+     * @param timeStep the integration time step, written as 'dt'; in OPAL-cycl
+     *        it is beam->getdT() times the harmonic number
+     */
     void dumpSDDS(PartBunchBase<double, 3>* beam, Vector_t FDext[],
-                  const double& azimuth = -1) const;
+                  const double& azimuth, const double& timeStep) const;
 
     void dumpSDDS(PartBunchBase<double, 3>* beam, Vector_t FDext[],
                   const losses_t& losses = losses_t(), const double& azimuth = -1) const;
@@ -124,6 +130,10 @@ private:
     DataSink &operator = (const DataSink &) = delete;
 
     void rewindLines();
+
+    void dumpSDDS_m(PartBunchBase<double, 3>* beam, Vector_t FDext[],
+                    const losses_t& losses, const double& azimuth,
+                    const double& timeStep) const;
 
     void init(bool restart = false,
               H5PartWrapper* h5wrapper = nullptr,

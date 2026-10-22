@@ -18,11 +18,14 @@
 #ifndef CLASSIC_Probe_HH
 #define CLASSIC_Probe_HH
 
+#include "AbsBeamline/ElementBase.h"
 #include "AbsBeamline/PluginElement.h"
 
 #include <memory>
 #include <string>
 
+class BeamlineVisitor;
+template <class T, unsigned int Dim> class PartBunchBase;
 class PeakFinder;
 
 class Probe: public PluginElement {

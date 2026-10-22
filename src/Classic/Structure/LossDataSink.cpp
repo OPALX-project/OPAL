@@ -25,10 +25,14 @@
 #include "Utilities/Options.h"
 #include "Utilities/Util.h"
 
+#include "Utility/Inform.h"
 #include "Utility/IpplInfo.h"
+
+#include "H5hut.h"
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <filesystem>
 #include <functional>
 #include <memory>
@@ -334,11 +338,11 @@ void LossDataSink::addParticle(
     particles_m.push_back(particle);
 }
 
-void LossDataSink::save(unsigned int numSets, OpalData::OpenMode openMode) {
+bool LossDataSink::save(unsigned int numSets, OpalData::OpenMode openMode) {
     if (outputName_m.empty())
-        return;
+        return false;
     if (hasNoParticlesToDump())
-        return;
+        return false;
 
     if (openMode == OpalData::OpenMode::UNDEFINED) {
         openMode = OpalData::getInstance()->getOpenMode();
@@ -379,13 +383,15 @@ void LossDataSink::save(unsigned int numSets, OpalData::OpenMode openMode) {
     /// clear and return memory
 
     particles_m       = std::vector<OpalParticle>();
-    turnNumber_m      = std::vector<size_t>();
-    bunchNumber_m     = std::vector<size_t>();
+    turnNumber_m      = std::vector<std::size_t>();
+    bunchNumber_m     = std::vector<std::size_t>();
     spos_m            = std::vector<double>();
     refTime_m         = std::vector<double>();
     RefPartR_m        = std::vector<Vector_t>();
-    RefPartR_m        = std::vector<Vector_t>();
+    RefPartP_m        = std::vector<Vector_t>();
     globalTrackStep_m = std::vector<h5_int64_t>();
+
+    return true;
 }
 
 // Note: This was changed to calculate the global number of dumped particles
@@ -395,7 +401,7 @@ void LossDataSink::save(unsigned int numSets, OpalData::OpenMode openMode) {
 // nodes HAVE to participate, otherwise H5 waits endlessly for a response from
 // the nodes that didn't enter the saveH5 function. -DW
 bool LossDataSink::hasNoParticlesToDump() const {
-    size_t nLoc = particles_m.size();
+    std::size_t nLoc = particles_m.size();
 
     reduce(nLoc, nLoc, OpAddAssign());
 
@@ -411,16 +417,16 @@ bool LossDataSink::hasTurnInformations() const {
 }
 
 void LossDataSink::saveH5(unsigned int setIdx) {
-    size_t nLoc     = particles_m.size();
-    size_t startIdx = 0, endIdx = nLoc;
+    std::size_t nLoc     = particles_m.size();
+    std::size_t startIdx = 0, endIdx = nLoc;
     if (setIdx + 1 < startSet_m.size()) {
         startIdx = startSet_m[setIdx];
         endIdx   = startSet_m[setIdx + 1];
         nLoc     = endIdx - startIdx;
     }
 
-    std::unique_ptr<size_t[]> locN(new size_t[Ippl::getNodes()]);
-    std::unique_ptr<size_t[]> globN(new size_t[Ippl::getNodes()]);
+    std::unique_ptr<std::size_t[]> locN(new std::size_t[Ippl::getNodes()]);
+    std::unique_ptr<std::size_t[]> globN(new std::size_t[Ippl::getNodes()]);
 
     for (int i = 0; i < Ippl::getNodes(); i++) {
         globN[i] = locN[i] = 0;
@@ -586,7 +592,7 @@ void LossDataSink::saveASCII() {
             rmsg->get(&hasTurn);
             for (unsigned i = 0; i < dataBlocks; i++) {
                 long id;
-                size_t bunchNum, turn;
+                std::size_t bunchNum, turn;
                 double rx, ry, rz, px, py, pz, time;
 
                 os_m << (rmsg->get(&rx), rx) << "   ";
@@ -654,9 +660,9 @@ void LossDataSink::splitSets(unsigned int numSets) {
     if (numSets <= 1 || particles_m.size() == 0)
         return;
 
-    const size_t nLoc   = particles_m.size();
-    size_t avgNumPerSet = nLoc / numSets;
-    std::vector<size_t> numPartsInSet(numSets, avgNumPerSet);
+    const std::size_t nLoc   = particles_m.size();
+    std::size_t avgNumPerSet = nLoc / numSets;
+    std::vector<std::size_t> numPartsInSet(numSets, avgNumPerSet);
     for (unsigned int j = 0; j < (nLoc - numSets * avgNumPerSet); ++j) {
         ++numPartsInSet[j];
     }
@@ -669,10 +675,10 @@ void LossDataSink::splitSets(unsigned int numSets) {
     double maxT = particles_m[0].getTime();
 
     for (unsigned int iteration = 0; iteration < 2; ++iteration) {
-        size_t partIdx = 0;
+        std::size_t partIdx = 0;
         for (unsigned int j = 0; j < numSets; ++j) {
-            const size_t& numThisSet = numPartsInSet[j];
-            for (size_t k = 0; k < numThisSet; ++k, ++partIdx) {
+            const std::size_t& numThisSet = numPartsInSet[j];
+            for (std::size_t k = 0; k < numThisSet; ++k, ++partIdx) {
                 meanT[j] += particles_m[partIdx].getTime();
                 maxT = std::max(maxT, particles_m[partIdx].getTime());
             }
@@ -691,10 +697,9 @@ void LossDataSink::splitSets(unsigned int numSets) {
         timeRange[numSets - 1] = maxT;
 
         std::fill(numPartsInSet.begin(), numPartsInSet.end(), 0);
-
-        size_t setNum   = 0;
-        size_t idxPrior = 0;
-        for (size_t idx = 0; idx < nLoc; ++idx) {
+        std::size_t setNum   = 0;
+        std::size_t idxPrior = 0;
+        for (std::size_t idx = 0; idx < nLoc; ++idx) {
             if (particles_m[idx].getTime() > timeRange[setNum]) {
                 numPartsInSet[setNum] = idx - idxPrior;
                 idxPrior              = idx;
@@ -722,8 +727,8 @@ SetStatistics LossDataSink::computeSetStatistics(unsigned int setIdx) {
     Util::KahanAccumulation* localMoments  = data + 7;
     Util::KahanAccumulation* localOthers   = data + 43;
 
-    size_t startIdx = 0;
-    size_t nLoc     = particles_m.size();
+    std::size_t startIdx = 0;
+    std::size_t nLoc     = particles_m.size();
     if (setIdx + 1 < startSet_m.size()) {
         startIdx = startSet_m[setIdx];
         nLoc     = startSet_m[setIdx + 1] - startSet_m[setIdx];

@@ -15,13 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 //
-
 #ifndef CLASSIC_FIELDMAP3DH5BLOCK_NONSCALE_H
 #define CLASSIC_FIELDMAP3DH5BLOCK_NONSCALE_H
 
+#include "Algorithms/Vektor.h"
+#include "Fields/Definitions.h"
 #include "Fields/FM3DH5BlockBase.h"
+#include "Fields/FieldArray.h"
 
-#include <vector>
+#include <memory>
+#include <string>
 
 class _FM3DH5Block_nonscale: public _FM3DH5BlockBase {
 
@@ -44,9 +47,9 @@ private:
     virtual void freeMap (
         );
 
-    std::vector<double> FieldstrengthHz_m;    /**< 3D array with Hz */
-    std::vector<double> FieldstrengthHx_m;    /**< 3D array with Hx */
-    std::vector<double> FieldstrengthHy_m;    /**< 3D array with Hy */
+    FieldArray FieldstrengthHz_m;    /**< 3D array with Hz */
+    FieldArray FieldstrengthHx_m;    /**< 3D array with Hx */
+    FieldArray FieldstrengthHy_m;    /**< 3D array with Hy */
 
     friend class _Fieldmap;
     friend class _FM3DH5BlockBase;

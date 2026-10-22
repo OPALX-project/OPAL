@@ -48,6 +48,29 @@ enum class FieldSolverType: short {
     HPGMG
 };
 
+/// The particles the space-charge mesh is fitted to (MESHFIT)
+enum class MeshFitType: short {
+    ALL,    // all particles
+    CORE    // the bunch core (CoreFitSC), OPAL-cycl with the FFT solver only
+};
+
+/// Field of the particles outside the core-fitted mesh (MESHFITFARFIELD)
+enum class FarFieldModel: short {
+    MONOPOLE,     // monopole of the core charge only
+    QUADRUPOLE,   // monopole and quadrupole of the core charge
+    FULL          // as QUADRUPOLE, the exact core field where the expansion fails, and
+                  // the field of the other particles outside the mesh (far-far)
+};
+
+/// Parameters of the mesh fit, passed to the bunch (PartBunchBase::setMeshFit())
+struct MeshFitParameters {
+    MeshFitType type = MeshFitType::ALL;
+    double nSigma = 6.0;            // core half-width in clipped rms widths (MESHFITNSIGMA)
+    double clip = 4.0;              // clip half-width in rms widths (MESHFITCLIP)
+    double maxFarFraction = 0.05;   // far charge fraction for the full box (MESHFITMAXFAR)
+    FarFieldModel farField = FarFieldModel::FULL;
+};
+
 
 class FieldSolver: public Definition {
 
@@ -136,6 +159,9 @@ private:
 
     std::unique_ptr<AmrObject> itsAmrObject_mp;
 #endif
+
+    /// MESHFIT and its parameters; throws if they are invalid or CORE is not available
+    MeshFitParameters getMeshFitParameters_m() const;
 
     // Not implemented.
     FieldSolver(const FieldSolver&);

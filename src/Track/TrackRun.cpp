@@ -60,6 +60,10 @@ extern Inform *gmsg;
 
 std::shared_ptr<Tracker> TrackRun::itsTracker_m = nullptr;
 
+void TrackRun::releaseTracker() {
+    itsTracker_m.reset();
+}
+
 namespace {
     // The attributes of class TrackRun.
     enum {

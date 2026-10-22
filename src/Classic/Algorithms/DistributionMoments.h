@@ -18,17 +18,19 @@
 #ifndef DISTRIBUTIONMOMENTS_H
 #define DISTRIBUTIONMOMENTS_H
 
+#include "Algorithms/OpalParticle.h"
 #include "FixedAlgebra/FMatrix.h"
 
 #include "Vektor.h"
 #include "Physics/Physics.h"
 #include "Physics/Units.h"
 
+#include <algorithm>
+#include <cmath>
+#include <utility>
 #include <vector>
 
-class OpalParticle;
-template<class T, unsigned Dim>
-class PartBunchBase;
+template<class T, unsigned Dim> class PartBunchBase;
 
 class DistributionMoments {
 public:

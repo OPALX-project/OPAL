@@ -31,10 +31,13 @@
 #include "FieldLayout/FieldLayoutUser.h"
 #include "Utility/IpplException.h"
 
+#include <algorithm>
+#include <cmath>
 #include <cstddef>
 
 #include <functional>
 #include <iostream>
+#include <limits>
 #include <map>
 #include <memory>
 #include <vector>
@@ -168,8 +171,39 @@ public:
     // Tell this object that an object is being deleted
     virtual void notifyUserOfDelete(UserList *);
 
-    void enableCaching() { caching = true; }
+    void enableCaching() {
+        if (outsideToNearest_m)
+            throw IpplException("ParticleSpatialLayout::enableCaching",
+                                "not supported with setOutsideToNearest(true)");
+        caching = true;
+    }
     void disableCaching() { caching = false; }
+
+    // What update() does with a particle that lies in no rnode, i.e. outside
+    // the global domain. false (the default): throw "could not find node
+    // responsible for particle". true: send it to the node owning the point of
+    // the global domain nearest to it. Only the point used for the lookup is
+    // moved, the particle position is not changed. A particle with a
+    // coordinate that is not finite is still refused. The particle boundary
+    // conditions are applied before the lookup, as always, so a periodic or
+    // reflective face still moves the particle back into the domain. The
+    // legacy swap_particles(), used by ParticleCashedLayout and
+    // ParticleInteractLayout, ignores this setting and still aborts.
+    // Caching is refused with it: the ghost particles are selected by the
+    // rnodes, so a particle outside all of them would miss its neighbours.
+    void setOutsideToNearest(bool outsideToNearest) {
+        if (outsideToNearest && caching)
+            throw IpplException("ParticleSpatialLayout::setOutsideToNearest",
+                                "not supported with caching of ghost particles");
+        outsideToNearest_m = outsideToNearest;
+    }
+    bool getOutsideToNearest() const { return outsideToNearest_m; }
+
+    // Number of local particles that the last particle swap found outside the
+    // global domain with setOutsideToNearest(true). The swap runs only on more
+    // than one node, and it skips the particles that update(canSwap) is told
+    // not to swap.
+    size_t getOutsideCount() const { return outsideCount_m; }
 
 protected:
     // The RegionLayout which determines where our particles go.
@@ -190,8 +224,41 @@ protected:
 
 	bool caching;
 
+    // see setOutsideToNearest() and getOutsideCount()
+    bool outsideToNearest_m;
+    size_t outsideCount_m;
+
     // perform common constructor tasks
     void setup();
+
+    // Move the lookup point pLoc of a particle at pos, which lies in no rnode,
+    // to the point of the global domain nearest to it, just inside the
+    // half-open domain [min, max). The shift is 1e-7 of the domain width or,
+    // far from the origin where that would round away, 16 to 32 units in the
+    // last place of the bounds. Both are far below one cell, so the lookup
+    // point lies in the rnode at the nearest point of the domain. A coordinate
+    // that is not finite (NaN or Inf) is not moved, so such a particle is
+    // still not found.
+    void moveIntoDomain(NDRegion<T,Dim>& pLoc, const SingleParticlePos_t& pos) const
+    {
+        const NDRegion<T,Dim>& domain = RLayout.getDomain();
+        for (unsigned int j = 0; j < Dim; j++)
+        {
+            const T lo  = domain[j].min();
+            const T hi  = domain[j].max();
+            const T eps = std::max((T)1e-7 * (hi - lo),
+                                   (T)16 * std::numeric_limits<T>::epsilon() *
+                                   std::max(std::abs(lo), std::abs(hi)));
+            T x = pos[j];
+            if (std::isfinite(x)) {
+                if (x < lo + eps)
+                    x = lo + eps;
+                else if (x >= hi - eps)
+                    x = hi - eps;
+            }
+            pLoc[j] = PRegion<T>(x, x);
+        }
+    }
 
     /////////////////////////////////////////////////////////////////////
     // Rebuild the RegionLayout entirely, by recalculating our min and max
@@ -1088,6 +1155,7 @@ protected:
         std::multimap<unsigned, unsigned> p2n; //<node ID, particle ID>
 
         bool responsibleNodeNotFound = false;
+        outsideCount_m = 0;
         for (unsigned int ip=0; ip<LocalNum; ++ip)
         {
             for (unsigned int j = 0; j < Dim; j++)
@@ -1108,8 +1176,28 @@ protected:
 
             //external location
             if (touchingVN.first == touchingVN.second) {
-                responsibleNodeNotFound = true;
-                break;
+                if (!outsideToNearest_m) {
+                    responsibleNodeNotFound = true;
+                    break;
+                }
+
+                // look up the owner of the nearest point of the domain instead
+                ++outsideCount_m;
+                moveIntoDomain(pLoc, PData.R[ip]);
+                for (localV = RLayout.begin_iv(); localV != localEnd && !found; ++localV)
+                {
+                    if ((((*localV).second)->getDomain()).touches(pLoc))
+                        found = true;
+                }
+
+                if (found)
+                    continue;
+
+                touchingVN = RLayout.touch_range_rdv(pLoc);
+                if (touchingVN.first == touchingVN.second) {
+                    responsibleNodeNotFound = true;
+                    break;
+                }
             }
             destination = (*(touchingVN.first)).second->getNode();
 
@@ -1210,6 +1298,7 @@ protected:
         std::multimap<unsigned, unsigned> p2n; //<node ID, particle ID>
 
         bool responsibleNodeNotFound = false;
+        outsideCount_m = 0;
         for (unsigned int ip=0; ip<LocalNum; ++ip)
         {
             if (!bool(canSwap[ip]))//skip if it can't be swapped
@@ -1233,8 +1322,28 @@ protected:
 
             //external location
             if (touchingVN.first == touchingVN.second) {
-                responsibleNodeNotFound = true;
-                break;
+                if (!outsideToNearest_m) {
+                    responsibleNodeNotFound = true;
+                    break;
+                }
+
+                // look up the owner of the nearest point of the domain instead
+                ++outsideCount_m;
+                moveIntoDomain(pLoc, PData.R[ip]);
+                for (localV = RLayout.begin_iv(); localV != localEnd && !found; ++localV)
+                {
+                    if ((((*localV).second)->getDomain()).touches(pLoc))
+                        found = true;
+                }
+
+                if (found)
+                    continue;
+
+                touchingVN = RLayout.touch_range_rdv(pLoc);
+                if (touchingVN.first == touchingVN.second) {
+                    responsibleNodeNotFound = true;
+                    break;
+                }
             }
             destination = (*(touchingVN.first)).second->getNode();
 

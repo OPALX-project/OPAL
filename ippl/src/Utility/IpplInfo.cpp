@@ -40,6 +40,7 @@
 #include <unistd.h>
 #include <cstdio>
 #include <csignal>
+#include <execinfo.h>
 
 /////////////////////////////////////////////////////////////////////
 // public static members of IpplInfo, initialized to default values
@@ -619,6 +620,18 @@ void IpplInfo::abort(const char *msg) {
         ERRORMSG(msg << endl);
     }
 
+    // Say where we are. This runs on the one node that hit the error. The
+    // frames print as <binary>(+0xoffset); resolve them against the same
+    // executable with addr2line -f -e <binary> <offset>, or with nm -n if
+    // the build carries no debug information.
+    {
+        void* frames[64];
+        int nframes = backtrace(frames, 64);
+        ERRORMSG("IpplInfo::abort on node " << MyNode << " of " << TotalNodes
+                 << ", backtrace (" << nframes << " frames):" << endl);
+        backtrace_symbols_fd(frames, nframes, STDERR_FILENO);
+    }
+
     // print out final stats, if necessary
     if (PrintStats) {
         Inform statsmsg("Stats", INFORM_ALL_NODES);
@@ -626,11 +639,17 @@ void IpplInfo::abort(const char *msg) {
         printStatistics(statsmsg);
     }
 
-    // delete communication object, if necessary
+    // Do NOT delete the Communicate object here. CommMPI's destructor makes
+    // every node but 0 block in MPI_Recv for a "die" message that node 0 only
+    // sends from its own destructor - and node 0 is at this point sitting in a
+    // collective waiting for the node that is aborting. That deadlock turned
+    // every IPPL error into a 100% CPU spin that never returned, so the
+    // runtime_error below was never thrown and Main's MPI_Abort never ran.
+    // If we own the communicator (a standalone run), take the whole job down
+    // now. If we do not (e.g. the optimiser's nocomminit path), keep the old
+    // behaviour and let the caller handle the exception.
     if (NeedDeleteComm) {
-        NeedDeleteComm = false;
-        delete Comm;
-        Comm = 0;
+        MPI_Abort(communicator_m, 1);
     }
 
     // that's it, folks this error will be propperly catched in the main

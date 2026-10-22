@@ -95,14 +95,18 @@ Ring::~Ring() {
 bool Ring::apply(const size_t& id, const double& t,
                  Vector_t& E, Vector_t& B) {
 
+    // A particle already flagged lost (Bin < 0) keeps failing here until the tracker
+    // deletes it: record only its first loss.
+    const bool flaggedBefore = (refPartBunch_m->Bin[id] < 0);
+
     bool flagNeedUpdate = apply(refPartBunch_m->R[id], refPartBunch_m->P[id], t, E, B);
 
-    if (flagNeedUpdate) {
-        *gmsgALL << level4 << getName() << ": particle " << id
+    if (flagNeedUpdate && !flaggedBefore) {
+        *gmsgALL << level4 << getName() << ": particle " << refPartBunch_m->ID[id]
                 << " at " << refPartBunch_m->R[id]
                 << " m out of the field map boundary" << endl;
 
-        lossDS_m->addParticle(OpalParticle(id,
+        lossDS_m->addParticle(OpalParticle(refPartBunch_m->ID[id],
                                            refPartBunch_m->R[id] , refPartBunch_m->P[id],
                                            t,
                                            refPartBunch_m->Q[id], refPartBunch_m->M[id]));

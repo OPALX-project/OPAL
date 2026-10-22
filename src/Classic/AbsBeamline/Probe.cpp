@@ -24,6 +24,11 @@
 #include "Structure/LossDataSink.h"
 #include "Structure/PeakFinder.h"
 
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <utility>
+
 extern Inform *gmsg;
 
 Probe::Probe():Probe("")
@@ -47,7 +52,12 @@ void Probe::accept(BeamlineVisitor &visitor) const {
 
 void Probe::doInitialise(PartBunchBase<double, 3> *bunch) {
     bool singlemode = (bunch->getTotalNum() == 1) ? true : false;
-    peakfinder_m = std::unique_ptr<PeakFinder> (new PeakFinder(getOutputFN(), rmin_m, rend_m, step_m, singlemode));
+    // PeakFinder works in millimetre (doCheck() passes it the radii in mm), the element in metre
+    peakfinder_m = std::unique_ptr<PeakFinder> (new PeakFinder(getOutputFN(),
+                                                               rmin_m * Units::m2mm,
+                                                               rend_m * Units::m2mm,
+                                                               step_m * Units::m2mm,
+                                                               singlemode));
 }
 
 void Probe::doGoOffline() {
@@ -68,10 +78,15 @@ double Probe::getStep() const {
 bool Probe::doPreCheck(PartBunchBase<double, 3> *bunch) {
     Vector_t rmin, rmax;
     bunch->get_bounds(rmin, rmax);
-    // interested in absolute minimum and maximum
-    double xmin = std::min(std::abs(rmin(0)), std::abs(rmax(0)));
+    // Absolute minimum and maximum of |x| and |y| over the bunch's bounding box.
+    // When an interval straddles zero the smallest attainable |coordinate| is 0,
+    // not min(|lo|,|hi|); otherwise rbunch_min is far too large and the probe can
+    // silently miss particles. Same defect as CCollimator::doPreCheck.
+    double xmin = (rmin(0) <= 0.0 && rmax(0) >= 0.0)
+                    ? 0.0 : std::min(std::abs(rmin(0)), std::abs(rmax(0)));
     double xmax = std::max(std::abs(rmin(0)), std::abs(rmax(0)));
-    double ymin = std::min(std::abs(rmin(1)), std::abs(rmax(1)));
+    double ymin = (rmin(1) <= 0.0 && rmax(1) >= 0.0)
+                    ? 0.0 : std::min(std::abs(rmin(1)), std::abs(rmax(1)));
     double ymax = std::max(std::abs(rmin(1)), std::abs(rmax(1)));
     double rbunch_min = std::hypot(xmin, ymin);
     double rbunch_max = std::hypot(xmax, ymax);
@@ -86,7 +101,18 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
     Vector_t probepoint;
     size_t tempnum = bunch->getLocalNum();
 
+    // checkPoint() tests a strip around the probe line that is at most half a step wide on
+    // either side, and half a step is beta*c*tstep/2 < c*tstep/2. Testing the distance to the
+    // line first skips the per-particle strip for all but a thin slice of the bunch; the
+    // margin covers the single-precision arithmetic in checkPoint(), so exactly the same
+    // particles are recorded.
+    const double reach = 0.5 * Physics::c * std::abs(tstep) + 1.0e-3; // [m]
+
     for (unsigned int i = 0; i < tempnum; ++i) {
+        double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m; // [m]
+        if (std::abs(dist1) > reach) continue;
+        // flagged lost (Bin < 0) but not deleted yet: the tracker deletes every DELPARTFREQ steps
+        if (bunch->Bin[i] < 0) continue;
         double tangle = calculateIncidentAngle(bunch->P[i](0), bunch->P[i](1));
         changeWidth(bunch, i, tstep, tangle);
         int pflag = checkPoint(bunch->R[i](0), bunch->R[i](1));
@@ -99,7 +125,6 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
         // probepoint(2) = bunch->R[i](2);
         // calculate time correction for probepoint
         // dist1 > 0, right hand, dt > 0; dist1 < 0, left hand, dt < 0
-        double dist1 = (A_m * bunch->R[i](0) + B_m * bunch->R[i](1) + C_m) / R_m; // [m]
         double dist2 = dist1 * std::sqrt(1.0 + 1.0 / tangle / tangle);
         double dt = dist2 / (std::sqrt(1.0 - 1.0 / (1.0 + dot(bunch->P[i], bunch->P[i]))) * Physics::c);
 
@@ -108,8 +133,13 @@ bool Probe::doCheck(PartBunchBase<double, 3> *bunch, const int turnnumber, const
         // peak finder uses millimetre not metre
         peakfinder_m->addParticle(probepoint * Units::m2mm);
 
+        // OpalParticle takes the rest mass in MeV. M[i] is the macro-particle mass in
+        // GeV, except for particles made by a Stripper (STOP=FALSE) or by beam
+        // stripping, whose M[i] is their own mass in GeV.
+        const double mass = (bunch->POrigin[i] == ParticleOrigin::REGULAR) ?
+            bunch->getM() * Units::eV2MeV : bunch->M[i] * Units::GeV2MeV;
         lossDs_m->addParticle(OpalParticle(bunch->ID[i], probepoint, bunch->P[i],
-                                           t+dt, bunch->Q[i], bunch->M[i]),
+                                           t+dt, bunch->Q[i], mass),
                               std::make_pair(turnnumber, bunch->bunchNum[i]));
     }
 

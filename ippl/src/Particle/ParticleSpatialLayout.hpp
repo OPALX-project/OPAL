@@ -72,6 +72,9 @@ void ParticleSpatialLayout<T,Dim,Mesh,CachingPolicy>::setup()
 
 	caching = false;
 
+    outsideToNearest_m = false;
+    outsideCount_m = 0;
+
     // check ourselves in as a user of the RegionLayout
     RLayout.checkin(*this);
 

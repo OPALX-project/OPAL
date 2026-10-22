@@ -15,11 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 //
-
 #include "Fields/FM3DH5BlockBase.h"
-#include "Fields/Fieldmap.hpp"
+
 #include "Physics/Physics.h"
 #include "Utilities/GeneralClassicException.h"
+
+#include <cstdlib>
+#include <limits>
+#include <string>
+
+#include "H5hut.h"
 
 void _FM3DH5BlockBase::openFileMPIOCollective (
     const std::string& filename
@@ -96,6 +101,10 @@ void _FM3DH5BlockBase::getFieldInfo (const char* name) {
             " in file '" + Filename_m + "' failed!");
     }
 
+    inv_hx_m = 1.0 / hx_m;
+    inv_hy_m = 1.0 / hy_m;
+    inv_hz_m = 1.0 / hz_m;
+
     if (H5Block3dGetFieldOrigin(
             file_m, "Efield", &xbegin_m, &ybegin_m, &zbegin_m) == H5_ERR) {
         throw GeneralClassicException (
@@ -150,6 +159,25 @@ void _FM3DH5BlockBase::readField (
     }
 }
 
+bool _FM3DH5BlockBase::anyNonZero (
+    const FieldArray& x,
+    const FieldArray& y,
+    const FieldArray& z
+    ) const {
+    const std::size_t n     = x.size ();
+    const std::size_t nodes = Ippl::getNodes ();
+    const std::size_t rank  = Ippl::myNode ();
+    const std::size_t begin = n * rank / nodes;
+    const std::size_t end   = n * (rank + 1) / nodes;
+
+    int local = (x.anyNonZero (begin, end) ||
+                 y.anyNonZero (begin, end) ||
+                 z.anyNonZero (begin, end)) ? 1 : 0;
+    int global = 0;
+    MPI_Allreduce (&local, &global, 1, MPI_INT, MPI_MAX, Ippl::getComm ());
+    return global != 0;
+}
+
 void _FM3DH5BlockBase::closeFile (void) {
     if (H5CloseFile (file_m) == H5_ERR) {
         throw GeneralClassicException (
@@ -159,7 +187,7 @@ void _FM3DH5BlockBase::closeFile (void) {
 }
 
 double _FM3DH5BlockBase::getWeightedData (
-    const std::vector<double>& data,
+    const FieldArray& data,
     const IndexTriplet& idx,
     unsigned short corner
     ) const {
@@ -176,9 +204,9 @@ double _FM3DH5BlockBase::getWeightedData (
 }
 
 Vector_t _FM3DH5BlockBase::interpolateTrilinearly (
-    const std::vector<double>& field_strength_x,
-    const std::vector<double>& field_strength_y,
-    const std::vector<double>& field_strength_z,
+    const FieldArray& field_strength_x,
+    const FieldArray& field_strength_y,
+    const FieldArray& field_strength_z,
     const Vector_t& X
     ) const {
     IndexTriplet idx = getIndex (X);
@@ -237,6 +265,15 @@ void _FM3DH5BlockBase::getOnaxisEz (
 
     double Ez_max = 0.0;
     const double dz = (zend_m - zbegin_m) / (num_gridpz_m - 1);
+    if (!hasE_m) {
+        // readMap() released an Efield that is zero everywhere. Normalising the zero
+        // profile below used to give 0/0, so return the same NaN the arrays would have.
+        for (unsigned long int i = 0; i < num_gridpz_m; i++) {
+            F[i].first  = dz * i;
+            F[i].second = std::numeric_limits<double>::quiet_NaN();
+        }
+        return;
+    }
     const int index_x = -static_cast<int>(std::floor(xbegin_m / hx_m));
     const double lever_x = -xbegin_m / hx_m - index_x;
 
@@ -259,4 +296,42 @@ void _FM3DH5BlockBase::getOnaxisEz (
         }
         F[i].second /= Ez_max;
     }
+}
+bool _FM3DH5BlockBase::tryMapComponents (
+    const char* name,
+    long long step,
+    FieldArray& x,
+    FieldArray& y,
+    FieldArray& z,
+    std::size_t n
+    ) {
+    static bool disabled = (std::getenv ("OPAL_NO_MMAP_FIELDMAPS") != nullptr);
+    if (disabled) {
+        INFOMSG (level1
+                 << "field map '" << Filename_m << "' " << name
+                 << ": reading into private memory (OPAL_NO_MMAP_FIELDMAPS is set)" << endl);
+        return false;
+    }
+
+    const std::string base =
+        "/Step#" + std::to_string (step) + "/Block/" + std::string (name) + "/";
+    FieldArray* comp[3] = {&x, &y, &z};
+    std::string why;
+    for (int i = 0; i < 3; ++ i) {
+        if (!comp[i]->tryMap (Filename_m, base + std::to_string (i), n, why)) {
+            // All or nothing: a half-mapped field would be silently wrong.
+            for (int j = 0; j < 3; ++ j) {
+                comp[j]->reset ();
+            }
+            INFOMSG (level1
+                     << "field map '" << Filename_m << "' " << name
+                     << ": reading into private memory (" << why << ")" << endl);
+            return false;
+        }
+    }
+    INFOMSG (level1
+             << "field map '" << Filename_m << "' " << name
+             << ": mapped read-only, "
+             << (3 * n * sizeof (double)) / (1024 * 1024) << " MiB shared per node" << endl);
+    return true;
 }

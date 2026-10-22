@@ -23,6 +23,7 @@
 #include "Parser/FileStream.h"
 #include "Utilities/Timer.h"
 #include "Fields/Fieldmap.h"
+#include "Track/TrackRun.h"
 #include "FixedAlgebra/FTps.h"
 
 #include "BasicActions/Option.h"
@@ -138,7 +139,9 @@ int opalMain(int argc, char *argv[]);
 int main(int argc, char *argv[]) {
     // python has its own main function that can interfere with opal main;
     // so when calling from python we call opalMain instead
-    new Ippl(argc, argv);
+    // Keep the pointer: 'delete ippl' at the end of opalMain() destroys the last
+    // IpplInfo, which deletes the communicator and so calls MPI_Finalize.
+    ippl = new Ippl(argc, argv);
     gmsg = new  Inform("OPAL");
     gmsgALL = new Inform("OPAL", INFORM_ALL_NODES);
     return opalMain(argc, argv);
@@ -523,6 +526,11 @@ int opalMain(int argc, char *argv[]) {
                        OpalData::getInstance()->getProblemCharacteristicValues());
 
     Ippl::Comm->barrier();
+    // Before clearDictionary() and before Ippl is torn down: the tracker is held in a
+    // static shared_ptr and would otherwise be destroyed after MPI_Finalize.
+#ifndef DONT_DEFINE_IPPL_GMSG
+    TrackRun::releaseTracker();
+#endif
     _Fieldmap::clearDictionary();
     OpalData::deleteInstance();
     delete gmsg;
@@ -533,7 +541,11 @@ int opalMain(int argc, char *argv[]) {
     }
 #endif
 
+    // Calls MPI_Finalize, collectively like the barrier above. Nothing after this,
+    // static destructors included, may use MPI, parallel HDF5 or Ippl::Comm.
+#ifndef DONT_DEFINE_IPPL_GMSG
     delete ippl;
+#endif
     delete Ippl::Info;
     delete Ippl::Warn;
     delete Ippl::Error;

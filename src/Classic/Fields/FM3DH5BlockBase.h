@@ -15,14 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with OPAL.  If not, see <https://www.gnu.org/licenses/>.
 //
-
 #ifndef CLASSIC_FIELDMAP3DH5BLOCKBASE_H
 #define CLASSIC_FIELDMAP3DH5BLOCKBASE_H
 
+#include "Algorithms/Vektor.h"
+#include "Fields/FieldArray.h"
 #include "Fields/Fieldmap.h"
+
+#include <h5core/h5_types.h>
+
+#include <algorithm>
+#include <cmath>
+#include <cstddef>
+#include <memory>
+#include <string>
+#include <utility>
 #include <vector>
 
-#include "H5hut.h"
+class Inform;
 static_assert (sizeof(double) == sizeof (h5_float64_t),
                "double and h5_float64_t are not the same type" );
 static_assert (sizeof(long long) == sizeof (h5_int64_t),
@@ -113,6 +123,27 @@ protected:
         double* z
         );
 
+    /// Try to back three components with a read-only mapping of the file instead of
+    /// reading them. All three succeed or none do. Returns false when the dataset layout
+    /// is not directly mappable, in which case the caller reads as before.
+    bool tryMapComponents (
+        const char* name,
+        long long step,
+        FieldArray& x,
+        FieldArray& y,
+        FieldArray& z,
+        std::size_t n
+        );
+
+    /// Collective over Ippl::getComm(): true if any sample of the three components is
+    /// nonzero. Each rank scans an equal share, so every sample is read once per job
+    /// and all ranks get the same answer.
+    bool anyNonZero (
+        const FieldArray& x,
+        const FieldArray& y,
+        const FieldArray& z
+        ) const;
+
     void closeFile (
         void);
 
@@ -189,47 +220,45 @@ protected:
     */
     IndexTriplet getIndex(const Vector_t &X) const {
         IndexTriplet idx;
-        long double difference = (long double)(X(0)) - (long double)(xbegin_m);
-        idx.i = std::min(
-                         (unsigned int)((difference) / (long double)(hx_m)),
-                         num_gridpx_m-2
-                         );
-        idx.weight(0) = std::fmod(
-                                  (long double)difference,
-                                  (long double)hx_m
-                                  );
 
-        difference = (long double)(X(1)) - (long double)(ybegin_m);
-        idx.j = std::min(
-                         (unsigned int)((difference) / (long double)(hy_m)),
-                         num_gridpy_m-2
-                         );
-        idx.weight(1) = std::fmod(
-                                  (long double)difference,
-                                  (long double)hy_m
-                                  );
+        // Derive the cell index and the in-cell weight from the SAME quantity, so the
+        // two can never disagree, and keep the weight normalised to [0,1) as
+        // getWeightedData() requires. Plain double throughout: the input X is already
+        // double, so long double bought no accuracy, while fmodl() is a libm call and
+        // x87 arithmetic does not vectorise.
+        const double fx = (X(0) - xbegin_m) * inv_hx_m;
+        const double fy = (X(1) - ybegin_m) * inv_hy_m;
+        const double fz = (X(2) - zbegin_m) * inv_hz_m;
 
-        difference = (long double)(X(2)) - (long double)(zbegin_m);
-        idx.k = std::min(
-                         (unsigned int)((difference) / (long double)(hz_m)),
-                         num_gridpz_m-2
-			 );
-        idx.weight(2) = std::fmod(
-                                  (long double)difference,
-                                  (long double)hz_m
-                                  );
+        // floor() before the cast: a negative fx would make the unsigned conversion
+        // undefined. isInside() is supposed to exclude that, but this is one multiply
+        // away from being free and removes the trap.
+        const double ax = std::floor(fx);
+        const double ay = std::floor(fy);
+        const double az = std::floor(fz);
+
+        idx.i = (unsigned int)std::min(std::max(ax, 0.0), (double)(num_gridpx_m - 2));
+        idx.j = (unsigned int)std::min(std::max(ay, 0.0), (double)(num_gridpy_m - 2));
+        idx.k = (unsigned int)std::min(std::max(az, 0.0), (double)(num_gridpz_m - 2));
+
+        // Measured against idx.* rather than a*, so that when the clamp fires the
+        // weight still describes the cell we actually selected.
+        idx.weight(0) = fx - (double)idx.i;
+        idx.weight(1) = fy - (double)idx.j;
+        idx.weight(2) = fz - (double)idx.k;
+
         return idx;
     }
 
     double getWeightedData (
-        const std::vector<double>& data,
+        const FieldArray& data,
         const IndexTriplet& idx,
         unsigned short corner) const;
 
     Vector_t interpolateTrilinearly (
-        const std::vector<double>&,
-        const std::vector<double>&,
-        const std::vector<double>&,
+        const FieldArray&,
+        const FieldArray&,
+        const FieldArray&,
         const Vector_t& X) const;
 
     enum : unsigned short {
@@ -241,9 +270,14 @@ protected:
         HZ = 1}; // high Z
 
     h5_file_t file_m;
-    std::vector<double> FieldstrengthEz_m;    /**< 3D array with Ez */
-    std::vector<double> FieldstrengthEx_m;    /**< 3D array with Ex */
-    std::vector<double> FieldstrengthEy_m;    /**< 3D array with Ey */
+    FieldArray FieldstrengthEz_m;    /**< 3D array with Ez */
+    FieldArray FieldstrengthEx_m;    /**< 3D array with Ex */
+    FieldArray FieldstrengthEy_m;    /**< 3D array with Ey */
+
+    /// False once readMap() has found every Efield sample to be exactly zero; the E arrays
+    /// are then released and never interpolated. Only readMap() implementations that scan
+    /// clear it.
+    bool hasE_m = true;
 
     double xbegin_m;
     double xend_m;
@@ -257,6 +291,12 @@ protected:
     double hx_m;            /**< length between points in grid, x-direction */
     double hy_m;            /**< length between points in grid, y-direction */
     double hz_m;            /**< length between points in grid, z-direction */
+
+    // Reciprocals of the grid spacing, cached in getFieldInfo(). getIndex() runs
+    // ~16x per particle per step; a division there is pure waste.
+    double inv_hx_m;
+    double inv_hy_m;
+    double inv_hz_m;
 
     unsigned int num_gridpx_m;    /**< number of points after 0(not counted here) in grid, x-direction*/
     unsigned int num_gridpy_m;    /**< number of points after 0(not counted here) in grid, y-direction*/

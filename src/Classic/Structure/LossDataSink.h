@@ -18,14 +18,15 @@
 #ifndef LOSSDATASINK_H_
 #define LOSSDATASINK_H_
 
-#include "AbsBeamline/ElementBase.h"
 #include "AbstractObjects/OpalData.h"
-#include "Algorithms/Vektor.h"
 #include "Algorithms/OpalParticle.h"
+#include "Algorithms/Vektor.h"
 
-#include "H5hut.h"
+#include <h5core/h5_types.h>
 
+#include <cstddef>
 #include <fstream>
+#include <functional>
 #include <optional>
 #include <set>
 #include <string>
@@ -88,7 +89,8 @@ public:
 
     bool inH5Mode() { return h5hut_mode_m;}
 
-    void save(unsigned int numSets = 1, OpalData::OpenMode openMode = OpalData::OpenMode::UNDEFINED);
+    /// Returns whether the file was written; false (on all ranks) if there was nothing to save
+    bool save(unsigned int numSets = 1, OpalData::OpenMode openMode = OpalData::OpenMode::UNDEFINED);
 
     void addReferenceParticle(const Vector_t& x,
                               const Vector_t& p,
@@ -98,7 +100,7 @@ public:
 
     void addParticle(const OpalParticle&, const std::optional<std::pair<int, short int>>& turnBunchNumPair = std::nullopt);
 
-    size_t size() const;
+    std::size_t size() const;
 
     std::set<SetStatistics> computeStatistics(unsigned int numSets);
 
@@ -154,8 +156,8 @@ private:
     h5_int64_t H5call_m;
 
     std::vector<OpalParticle> particles_m;
-    std::vector<size_t> bunchNumber_m;
-    std::vector<size_t> turnNumber_m;
+    std::vector<std::size_t> bunchNumber_m;
+    std::vector<std::size_t> turnNumber_m;
 
     std::vector<Vector_t> RefPartR_m;
     std::vector<Vector_t> RefPartP_m;
@@ -169,7 +171,7 @@ private:
 };
 
 inline
-size_t LossDataSink::size() const {
+std::size_t LossDataSink::size() const {
     return particles_m.size();
 }
 

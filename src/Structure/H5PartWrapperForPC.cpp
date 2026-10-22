@@ -136,6 +136,21 @@ void H5PartWrapperForPC::readStepHeader(PartBunchBase<double, 3>* bunch) {
         } else {
             if (localDump == 1) previousH5Local_m = true;
         }
+
+        // FIELDSOLVER, MESHFIT=CORE: the mode of the space-charge solve and the solves done
+        // in it, if the file was written with MESHFIT="CORE"
+        if (H5HasStepAttrib(file_m, "SCMODE") > 0 &&
+            H5HasStepAttrib(file_m, "SCMODEDWELL") > 0) {
+            h5_int64_t scMode = 0;
+            h5_int64_t scModeDwell = 0;
+            READSTEPATTRIB(Int64, file_m, "SCMODE", &scMode);
+            READSTEPATTRIB(Int64, file_m, "SCMODEDWELL", &scModeDwell);
+            CoreFitSC::ModeState mode;
+            mode.mode = (scMode == static_cast<h5_int64_t>(CoreFitSC::Mode::FULL) ?
+                         CoreFitSC::Mode::FULL : CoreFitSC::Mode::CORE);
+            mode.dwell = static_cast<unsigned int>(scModeDwell);
+            bunch->setMeshFitMode(mode);
+        }
     } else {
         bunch->setT(0.0);
         bunch->setLocalTrackStep((long long) 0 );
@@ -291,6 +306,7 @@ void H5PartWrapperForPC::writeHeader() {
     WRITESTRINGFILEATTRIB(file_m, "REFZUnit",         "mm");
     WRITESTRINGFILEATTRIB(file_m, "REFAZIMUTHUnit",   "deg");
     WRITESTRINGFILEATTRIB(file_m, "REFELEVATIONUnit", "deg");
+    WRITESTRINGFILEATTRIB(file_m, "REFSOURCEUnit",    "1");
 
     WRITESTRINGFILEATTRIB(file_m, "spos-headUnit", "m");
     WRITESTRINGFILEATTRIB(file_m, "spos-refUnit",  "m");
@@ -405,6 +421,27 @@ void H5PartWrapperForPC::writeStepHeader(PartBunchBase<double, 3>* bunch,
     WRITESTEPATTRIB(Int64, file_m, "SteptoLastInj", &SteptoLastInj, 1);
     WRITESTEPATTRIB(Int64, file_m, "LOCAL", &localFrame, 1);
 
+    // FIELDSOLVER, MESHFIT=CORE: the mode of the space-charge solve (1 CORE, 0 FULL) and the
+    // solves done in it (0 before the first solve), which an H5 restart restores, and the
+    // core bounds (local space-charge frame) and far particles of the last solve, once there
+    // is one
+    if (bunch->getMeshFit().type == MeshFitType::CORE) {
+        const CoreFitSC::ModeState& mode = bunch->getMeshFitMode();
+        const CoreFitSC::CoreSelection& core = bunch->getMeshFitCore();
+        h5_int64_t scMode = static_cast<h5_int64_t>(mode.mode);
+        h5_int64_t scModeDwell = static_cast<h5_int64_t>(mode.dwell);
+        WRITESTEPATTRIB(Int64, file_m, "SCMODE", &scMode, 1);
+        WRITESTEPATTRIB(Int64, file_m, "SCMODEDWELL", &scModeDwell, 1);
+        if (core.numLive > 0) {
+            h5_int64_t scNumFar = static_cast<h5_int64_t>(core.numFar);
+            Vector_t scBoxMin = core.boundsMin;
+            Vector_t scBoxMax = core.boundsMax;
+            WRITESTEPATTRIB(Float64, file_m, "SCBOXMIN", (h5_float64_t *)&scBoxMin, 3);
+            WRITESTEPATTRIB(Float64, file_m, "SCBOXMAX", (h5_float64_t *)&scBoxMax, 3);
+            WRITESTEPATTRIB(Int64, file_m, "SCNFAR", &scNumFar, 1);
+        }
+    }
+
     try {
         h5_float64_t refpr     = additionalStepAttributes.at("REFPR");
         h5_float64_t refpt     = additionalStepAttributes.at("REFPT");
@@ -414,6 +451,9 @@ void H5PartWrapperForPC::writeStepHeader(PartBunchBase<double, 3>* bunch,
         h5_float64_t refz      = additionalStepAttributes.at("REFZ");
         h5_float64_t azimuth   = additionalStepAttributes.at("AZIMUTH");
         h5_float64_t elevation = additionalStepAttributes.at("ELEVATION");
+        // 0: REF* describe the reference particle (ID 0); 1: the bunch centroid (BUNCH_MEAN
+        // frame, multi-bunch); 2: the bunch centroid because ID 0 has been lost
+        h5_int64_t   refsource = static_cast<h5_int64_t>(additionalStepAttributes.at("REFSOURCE"));
 
         Vector_t referenceB({additionalStepAttributes.at("B-ref_x"),
                             additionalStepAttributes.at("B-ref_z"),
@@ -442,6 +482,7 @@ void H5PartWrapperForPC::writeStepHeader(PartBunchBase<double, 3>* bunch,
         WRITESTEPATTRIB(Float64, file_m, "REFZ",      &refz, 1);
         WRITESTEPATTRIB(Float64, file_m, "AZIMUTH",   &azimuth, 1);
         WRITESTEPATTRIB(Float64, file_m, "ELEVATION", &elevation, 1);
+        WRITESTEPATTRIB(Int64,   file_m, "REFSOURCE", &refsource, 1);
 
         WRITESTEPATTRIB(Float64, file_m, "spos-head", &sposHead, 1);
         WRITESTEPATTRIB(Float64, file_m, "spos-ref",  &sposRef,  1);

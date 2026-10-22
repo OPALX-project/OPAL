@@ -28,16 +28,32 @@
 #ifndef OPAL_ParallelCyclotronTracker_HH
 #define OPAL_ParallelCyclotronTracker_HH
 
+#include "AbsBeamline/Component.h"
 #include "AbsBeamline/ElementBase.h"
+#include "AbsBeamline/Ring.h"
 #include "Algorithms/BoostMatrix.h"
 #include "Algorithms/MultiBunchHandler.h"
+#include "Algorithms/PartBunchBase.h"
+#include "Algorithms/Quaternion.h"
 #include "Algorithms/Tracker.h"
-#include "Steppers/Steppers.h"
+#include "Physics/Physics.h"
+#include "Steppers/Stepper.h"
+#include "Utility/Inform.h"
+#include "Utility/IpplTimings.h"
 
+#include <cmath>
+#include <cstddef>
+#include <fstream>
+#include <functional>
+#include <list>
 #include <memory>
+#include <string>
 #include <tuple>
+#include <utility>
 #include <vector>
 
+namespace Steppers { enum TimeIntegrator : short; }
+template <class T> class ParticleAttrib;
 class DataSink;
 class PluginElement;
 class LossDataSink;
@@ -296,8 +312,9 @@ private:
 
     void computePathLengthUpdate(std::vector<double>& dl, const double& dt);
 
-    // external field arrays for dumping
-    Vector_t FDext_m[2], extE_m, extB_m;
+    // external field arrays for dumping: {B-head, E-head, B-ref, E-ref, B-tail, E-tail} in the
+    // order H5Writer::writePhaseSpace() reads them; the stat file reads only the first two
+    Vector_t FDext_m[6], extE_m, extB_m;
 
     const int myNode_m;
     const size_t initialLocalNum_m;
@@ -341,7 +358,8 @@ private:
 
     Vector_t calcMeanP() const;
 
-    void repartition(); // Do repartition between nodes if step_m is multiple of Options::repartFreq
+    // Do repartition between nodes if step_m is multiple of Options::repartFreq, or if forced
+    void repartition(bool force = false);
 
     // Transform the x- and y-parts of a particle attribute (position, momentum, fields) from the
     // global reference frame to the local reference frame.
@@ -427,6 +445,22 @@ private:
 
     void bunchDumpStatData();
 
+    /// Fetch the phase space of the reference particle (the one with ID 0).
+    ///
+    /// The reference particle can be on any rank and a repartition can move it at any
+    /// step, so it must be located by ID rather than by position in the local arrays.
+    /// Collective: every rank must call this, and every rank gets the same answer.
+    /// Returns false if no rank holds ID 0, in which case refR/refP are untouched.
+    bool getReferenceParticle(Vector_t& refR, Vector_t& refP) const;
+
+    /// getReferenceParticle(), and set itsBunch_m->RefPartR_m/RefPartP_m (global frame) to the
+    /// result on every rank. If ID 0 is lost, refR/refP and both are the bunch centroid (with
+    /// a warning, once) and false is returned. Collective; called by both dumps.
+    bool setRefPartForDump_m(Vector_t& refR, Vector_t& refP);
+
+    /// setRefPartForDump_m() has reported the loss of ID 0 in this run
+    bool refLostWarned_m = false;
+
     void bunchDumpPhaseSpaceData();
 
     void evaluateSpaceChargeField();
@@ -473,6 +507,13 @@ private:
     /// Check if turn done
     bool isTurnDone();
 
+    /// True if update_m() writes a stat row at any step from now up to the next space-charge
+    /// solve, i.e. if this solve's plasma diagnostics will be written.
+    bool statDumpBeforeNextSolve_m() const;
+
+    /// RFCAVITY entries in FieldDimensions; gapCrossKick_m() has nothing to do without them.
+    unsigned int numRFCavities_m = 0;
+
     /// Update time and path length, write to output files
     void update_m(double& t, const double& dt, const bool& finishedTurn);
 
@@ -513,6 +554,10 @@ private:
                                     bool& finishedTurn);
 
     void computeSpaceChargeFields_m();
+
+    /// FIELDSOLVER, MESHFIT=CORE: one line on the core selection of the last solve and on
+    /// the solves of the turn, which starts the next turn of the bunch's statistics
+    void printMeshFit_m();
 
     bool computeExternalFields_m(const size_t& i,
                                  const double& t,

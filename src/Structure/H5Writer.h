@@ -63,9 +63,13 @@ public:
      *  - FDext[4] = B at tail particle location (in x, y, and z).
      *  - FDext[5] = E at tail particle location (in x, y, and z).
      *  \param E average energy (MeB)
+     *  \param refSource what the REF* attributes describe, written as step attribute REFSOURCE:
+     *  0 = the reference particle (ID 0), 1 = the bunch centroid (BUNCH_MEAN dump frame or
+     *  multi-bunch mode), 2 = the bunch centroid because ID 0 has been lost.
      *  \return Returns the number of the time step just written.
      */
     int writePhaseSpace(PartBunchBase<double, 3> *beam, Vector_t FDext[], double E,
+                        int refSource,
                         double refPr, double refPt, double refPz,
                         double refR, double refTheta, double refZ,
                         double azimuth, double elevation, bool local);

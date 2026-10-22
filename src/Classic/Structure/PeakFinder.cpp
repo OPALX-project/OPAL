@@ -28,11 +28,11 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iterator>
+#include <functional>
 
 extern Inform* gmsg;
 
-PeakFinder::PeakFinder(std::string outfn, double min,
+PeakFinder::PeakFinder(const std::string& outfn, double min,
                        double max, double binWidth, bool singlemode)
     : outputName_m(outfn)
     , binWidth_m(binWidth)
@@ -156,9 +156,12 @@ void PeakFinder::createHistogram_m() {
 
     double invBinWidth = 1.0 / binWidth_m;
     for(container_t::iterator it = radius_m.begin(); it != radius_m.end(); ++it) {
-        int bin = static_cast<int>(std::abs(*it - min_m ) * invBinWidth);
-        if (bin < 0 || (unsigned int)bin >= nBins_m) continue; // Probe might save particles outside its boundary
-        ++locHist[bin];
+        // No std::abs: a radius below min_m must be dropped, not mirrored into the histogram.
+        // The bin index is formed in double so that a far-off radius cannot overflow int, and
+        // the test is written so that it also drops a NaN radius.
+        double bin = std::floor((*it - min_m) * invBinWidth);
+        if (!(bin >= 0.0 && bin < nBins_m)) continue; // Probe might save particles outside its boundary
+        ++locHist[static_cast<unsigned int>(bin)];
     }
 
     /*
